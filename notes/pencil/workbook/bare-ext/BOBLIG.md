@@ -3,7 +3,7 @@
 **It opens at exactly the tail BNONUNI declared** (*"THE LIVE TAIL IS NOW
 (BE-225) / Step BE224"*), enumerated rather than sampled per clause (L7) as
 this direction's first action; the collision record and the (L6) disclosure
-are `notes/Pencil-labels.md`'s. **One correction to the dispatch spec, and it
+are `notes/pencil/labels.md`'s. **One correction to the dispatch spec, and it
 is the kind clause (L7) exists for:** the spec called the range *"verified
 0-hit"*, and `(BE-225)` / *Step BE224* is **2 hits / 2 files** — BNONUNI's
 tail-declaration sentence in the registry and in its untracked draft. Both are

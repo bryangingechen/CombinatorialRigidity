@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BEARFULL): the merge inequality's **real theorem** is a **SHORT-CYCLE LAW** — every cycle of length `≤ 6` forces `δ = 0`, which **contains** (BE-32)(ii)/(iii) and proves (BE-32)(+) at **196 043 of 203 723** forced pairs; **(b2) is a COROLLARY of (b1)** by one line of Grassmann, so the ear case's (β) side loses a clause; and the **EAR-DECOMPOSITION route is REFUTED as a replacement for the internal R-node** — a one-line theorem shows every minimum-degree-`≥ 3` graph forces a single-edge ear
 
-Direction **BEARFULL** (`notes/Pencil-fanout.md` §"BEARFULL", ordinal 47), the
+Direction **BEARFULL** (`notes/pencil/fanout.md` §"BEARFULL", ordinal 47), the
 arc's fifty-fifth and the **fourth** consecutive whose primary jobs were forced:
 BEARCASE closed **(α)** and left the (β) side with exactly two items — **(1)**
 (BE-32)(+) as a theorem and **(2)** (b2) for a general piece — plus a

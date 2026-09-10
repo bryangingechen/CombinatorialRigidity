@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BSPREAD): **(BE-32)(+) IS A THEOREM** — the spread step closes not by a better cycle certificate but by spending (BE-39)(i) on the **closure's own admission rule** instead of on cycles of `G`, where it never runs out; a block of an optimal partition absorbs **at most two** points of any outside vertex's closed star and the closure admits on **three**, so the star-2 / spread **split is retired**, not its second half closed. **(BE-41)(ii) is CONFIRMED REFUTED** as stated (job 0) and annotated at five surfaces. And job 2's cross-cut-only forcing is **confined to `δ₁ = δ₂ = 1`**, which exposes BPEEL's census-3 zero as **vacuous at the only shape the theorem allows**
 
-Direction **BSPREAD** (`notes/Pencil-fanout.md` §"BSPREAD", ordinal 55), the
+Direction **BSPREAD** (`notes/pencil/fanout.md` §"BSPREAD", ordinal 55), the
 arc's sixty-third, at **(BE-32)(+) at the SPREAD steps** — *forced `π_u = π_v`
 ⇒ `δ_{uv} = 0`* where (BE-41)(i)'s star-2 certificate does not apply, **55** of
 401 544 forcing steps, **7 680** of 203 723 pairs. BPEEL's successor (1), taken

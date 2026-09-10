@@ -1,6 +1,6 @@
 ## §(K-frame) — the shared chart-to-frame dominance residue: the lemma shape delivered in its honest minimal form, both bad divisors made **combinatorial** at grid points, the **(ANH-14) residue discharged at every enumerated bare-cycle site by a colouring recipe** (1904/1904 + 30 exact certificates), and the (OC-16) residue's non-containment half witnessed **by construction** at θ(3,4,5) — with the strict availability package measured **0/8** and its (AC-9) mechanism named
 
-Answering `notes/Pencil-fanout-archive.md` §"Fourth fan-out" → Direction J, i.e.
+Answering `notes/pencil/fanout-archive.md` §"Fourth fan-out" → Direction J, i.e.
 §(K-grid) *Step G13*'s candidate lemma shape, aimed at the two terminal
 residues of the third fan-out: §(K-out) (OC-16)'s (at degree-3 hubs,
 availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}`) and
@@ -500,7 +500,7 @@ be a genuine (FR-R1) counterexample and would re-aim item (i) at repair.
 
 **Continuation (2026-08-07, fifth fan-out direction PEX) — (FR-R1) is PROVEN: the bare-cycle stratum is *finite*, its frame has a normal form that makes the 3–3 split and the distinct-component clause automatic, the legality clauses are read exactly (one of them is a proper edge-2-colouring of the hub-hub graph, the *only* place a refutation could have lived), and the whole stratum is enumerated exhaustively (22 isomorphism classes, 76 sites, 1976 labelled instances, all pattern-available) — so (ANH-14)(b)'s boundedness caveat dissolves rather than widens, with the sweep's coverage measured at 14 of 22 classes and §(K-ann) *Step A14*'s `c′ ≤ 1` cells re-derived.**
 
-Answering `notes/Pencil-fanout-archive.md` §"Fifth fan-out" → Direction PEX, i.e.
+Answering `notes/pencil/fanout-archive.md` §"Fifth fan-out" → Direction PEX, i.e.
 §(K-frame) *Step FR4*'s residual **(FR-R1)** and *What would change this*
 item (i) — the section's own chief hand-off. Read against §(K-frame) *Steps
 FR0–FR3* ((FR-1)/(FR-3)/(FR-4)); §(K-ann) *Steps A14/A15* ((ANH-13)(i)/(iv),
@@ -789,7 +789,7 @@ cells sit where the `|V°| ≤ 5` cap genuinely binds.
 that shows the mechanism is real.** By (ii), a graph whose `Λ` contains an
 **odd cycle** admits *no legal admissible colouring whatsoever*, so (FR-R1)
 would fail at every one of its bare-cycle sites — a clean structural flank,
-of exactly the shape `Pencil-strategy.md` §2.3 warns to look for. `--kill`
+of exactly the shape `pencil/strategy.md` §2.3 warns to look for. `--kill`
 **constructs** such a graph (a 5-cycle of hubs, each with a pendant 2-path
 to a common body): 1024 admissible colourings, **0** legal; and its
 6-cycle-of-hubs control has 4 legal of 4096. So the mechanism fires and the
@@ -1105,7 +1105,7 @@ family of questions.
 
 **Continuation (2026-08-19, sixth fan-out direction FRES) — (FR-4)'s named gap is CLOSED, and the closing needed a clause the gap's own name did not carry: (GR-5) restates at `G′` verbatim ((FR-15), every hypothesis either free or already driver-asserted), but (GR-5) is a *chart-MAP* statement — hub normals free, body points derived — while (ANH-9)(iii)'s semicontinuity consumes membership in the *chart VARIETY* of (ANH-9)(ii), whose parametrization runs the other way (hub points free, panel normals derived); (FR-16) supplies that second statement, and the mechanism is that at a σ-fixed configuration `normal ∝ point` makes the two parametrizations' genericity loci COINCIDE — both are exactly the closed-hub-neighbourhood LI clause `framedom.legality_free` already tests — so (FR-17) discharges the (ANH-14) residue on the WHOLE bare-cycle stratum with NO named gap, by formula rather than by search, and with no driver run at all.**
 
-Answering `notes/Pencil-fanout-archive.md` §"Sixth fan-out" → Direction FRES, i.e.
+Answering `notes/pencil/fanout-archive.md` §"Sixth fan-out" → Direction FRES, i.e.
 §(K-frame) *Step FR3*'s **(FR-4) named gap** and *What would change this* item
 (v) — "the (GR-5)-at-`G′` restatement, written". Read against §(K-grid) *Step
 G6* ((GR-5)) and *Step G13*; §(K-frame) *Steps FR3/FR4* ((FR-4)/(FR-5)) and

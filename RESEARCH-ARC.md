@@ -22,8 +22,8 @@ kernel, run as **66 docs+script-only dispatches** across roughly four weeks
 (2026-08-02 → 08-26; the figure was 49 to 2026-08-19, when this file was
 written), including **three** multidispatch fan-outs of five concurrent
 directions each and a long tail of single directions and coordinator-picked
-pairs. `notes/Phase39.md`, `notes/Pencil-fanout.md`,
-`notes/Pencil-labels.md`, `notes/pencil/workbook/` and
+pairs. `notes/Phase39.md`, `notes/pencil/fanout.md`,
+`notes/pencil/labels.md`, `notes/pencil/workbook/` and
 `notes/dispatch-log.md` are the canonical homes for that phase's own
 detail; this file distills the **general** lesson and points back at them
 for the worked example, rather than duplicating it. It is written to
@@ -90,11 +90,11 @@ everything, not a coordination protocol between the directions themselves.
 PENCIL's own registry states this precisely, and it is the line to quote:
 "*A reserved prefix protects a dispatch from its siblings, not from the
 existing corpus; clause L1 still binds inside a reservation*"
-(`notes/Pencil-labels.md`, the direction-A landing incident that forced the
+(`notes/pencil/labels.md`, the direction-A landing incident that forced the
 point home — a reserved dispatch still hit a three-way collision on a bare
 label it reached for from inside its own reservation).
 
-**Canonical detail — read there, not here:** `notes/Pencil-labels.md` is
+**Canonical detail — read there, not here:** `notes/pencil/labels.md` is
 the worked example: its four-clause minting rule (grep the registry before
 minting; never label a *step*, only a claim; qualify every cross-section
 citation with its owning section; never rename an existing label — new
@@ -368,7 +368,7 @@ doc round.
 
 **The evidence, stated honestly: three instances in one session (2026-09-03),
 which is one wave, plus the structural argument that this is §6 applied to the
-half of the documentation §6 never covered.** In PENCIL: `Pencil-strategy.md`
+half of the documentation §6 never covered.** In PENCIL: `pencil/strategy.md`
 §5.3's item (i) was listed as the CAS layer's highest-value unrun item and had
 been **dead since the day it was written** — the result that killed it, (D4),
 landed the same day — surviving four weeks and costing a dispatch; §8's option
@@ -584,7 +584,7 @@ three, landing-time verification caught the **same species in all three** return
 under-qualified summary on an authoritative status object — while the directions caught
 **two coordinator defects**, one of them an *arithmetically impossible* instruction (a
 compression target of 1,250 words against 219 undroppable labels). Three and two.
-Full round record: `notes/Pencil-fanout.md`'s round-of-three state block.
+Full round record: `notes/pencil/fanout.md`'s round-of-three state block.
 
 **A TENTH KIND, at the twenty-seventh instance (2026-09-08, direction BSTEER) —
 *CONFIRMED, FOR THE WRONG REASON*; and it is the first instance in the tally whose
@@ -744,7 +744,7 @@ paths by a landed witness — and a first-draft reading of a **population-scoped
 equivalence as if it were available, which its own predecessor's counterexample refutes
 outright. Both were caught by opening the cited proofs rather than their conclusions, which
 is §7's *docstrings are not evidence* rule applied to a workbook label. It also caught a
-**coordinator-side status surface**: `notes/Pencil-fanout.md`'s own `**Status:**` header,
+**coordinator-side status surface**: `notes/pencil/fanout.md`'s own `**Status:**` header,
 left **stale by one** at the previous landing — the **seventh** instance of that shape and
 the **second** in that file, and one more confirmation of its own generalization that *a
 document's own header is precisely the part a section-scoped edit does not re-read.*

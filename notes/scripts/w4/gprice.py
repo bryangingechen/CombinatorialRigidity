@@ -1,5 +1,5 @@
 """GPRICE -- the thirty-third kernel-(K) ordinal: (GR-104)(i), the PRICE
-form of the selection clause (spec: notes/Pencil-fanout.md S"GPRICE --
+form of the selection clause (spec: notes/pencil/fanout.md S"GPRICE --
 thirty-third ordinal").
 
 TARGET: (GR-104)(i) -- at some parity-optimal configuration with

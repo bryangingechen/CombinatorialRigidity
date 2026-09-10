@@ -71,7 +71,7 @@ section and reappears in another as RELOCATED rather than removed -- direction
 RESGRID's six `(RS-.)` claims moved with their section, and a naive diff
 reported six deletions and no arrivals.
 
-WHAT THIS IS NOT. An index, exactly as `notes/Pencil-labels.md` says of
+WHAT THIS IS NOT. An index, exactly as `notes/pencil/labels.md` says of
 itself: the owning section stays authoritative for what a claim MEANS.
 Regeneration guarantees the ledger matches the prose. It guarantees nothing
 about whether the prose is right -- a `PROVED` here is a claim by whoever
@@ -153,12 +153,11 @@ def _sources():
                    + glob.glob(os.path.join(pat, "bare-ext", "*.md")))
     rel = [os.path.relpath(f, ROOT) for f in found
            if not os.path.basename(f).startswith(("README", "_"))]
-    return rel + [
-        "notes/Pencil-informal-grid.md",
-        "notes/Pencil-W4-informal.md",
-        "notes/Pencil-strategy.md",
-        "notes/Pencil-fanout.md",
-    ]
+    # Two files outside `workbook/` also carry label-clause openers: the
+    # strategy doc's own C/U/ZH families and the fan-out write-ups. They are
+    # few (16 claims) but they are claims, and a ledger that silently skipped
+    # them would answer "no such label" for a label that exists.
+    return rel + ["notes/pencil/strategy.md", "notes/pencil/fanout.md"]
 
 
 SOURCES = _sources()
@@ -364,7 +363,7 @@ def parse(path, text):
 
 
 # Bare (dashless) label families that really are labels, not prose: the
-# collision-prone ones `notes/Pencil-labels.md` (L5) documents.
+# collision-prone ones `notes/pencil/labels.md` (L5) documents.
 ALLCAPS_BARE = set()
 
 
@@ -480,7 +479,7 @@ def cmd_lint(rows, args):
     this commit ADDS or CHANGES, compared against HEAD.
 
     Like the other two docs gates it inspects changed-vs-HEAD files, so it
-    must be run BEFORE committing, or with --all (`notes/Pencil-structure.md`
+    must be run BEFORE committing, or with --all (`notes/pencil/structure.md`
     *Gates for any continuation*, blind spot 1).
     """
     before = {}
@@ -589,7 +588,7 @@ def cmd_label(rows, args):
     if len(homes) > 1:
         print(f"# NOTE: ({args.label.strip('()')}) is claimed in {len(homes)} "
               f"sections -- a collision the registry warns about "
-              f"(notes/Pencil-labels.md). All shown.\n")
+              f"(notes/pencil/labels.md). All shown.\n")
     for r in hits:
         show(r, full=args.full)
     return 0

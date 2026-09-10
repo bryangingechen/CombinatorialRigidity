@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BWIN): **THE WINDOW IS CLOSED, BY A CLASS THEOREM** — at every piece that is a series end at **both** ends with `δ₁ ≤ 4`, a constructed configuration has **`ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` exactly**, because the ends see the middle's screw space through **ONE hyperplane and ONE linear functional**, and `δ₁ ≤ 4` is precisely the hypothesis that leaves an excess **one rank-1 functional can kill**; the middle enters as an **arbitrary subspace** — no induction on it, no enumeration of window shapes — so the ear case's **(β) side has all three clauses at every window piece**, and job 3 shows the window is **NOT the barbells**: theta chains and **R-node middles** live in it
 
-Direction **BWIN** (`notes/Pencil-fanout.md` §"BWIN", ordinal 51), the arc's
+Direction **BWIN** (`notes/pencil/fanout.md` §"BWIN", ordinal 51), the arc's
 fifty-ninth, at the **last open item of the ear case's (β) side**: BSHARP's
 window identity as a **CLASS statement**. Read against *Steps BE43–BE47*
 (BSHARP), *Steps BE48–BE52* (BRULE), *Steps BE38–BE42* (BEARFULL), *Steps

@@ -53,7 +53,7 @@ convention. Three additions:
 > zone, i.e. off (BE-22)(vi)'s collapse; it is (BE-29)(i)'s *"genuinely open
 > zone"*. The `BE-` prefix is clause (L1)'s remedy for a `(X<digit>)`-shaped
 > token, and the prime follows the `(GR-4′)` convention; the collision on the
-> **un-prefixed** `(E4)` is recorded in `notes/Pencil-labels.md`'s collision
+> **un-prefixed** `(E4)` is recorded in `notes/pencil/labels.md`'s collision
 > table, and every citation of it here is (L3)-qualified.
 >
 > **The `pr` axis.** `bdegtwo.peel_of` and `bdegtwo.sweep_points` both
@@ -309,7 +309,7 @@ general-position content whatsoever"*.
 > at 3.
 
 > **(BE-160)(vi)** *(**the §8 bar, and it REVERSES — for (E4) ONLY**)*
-> (BE-154)(iii) lifted `notes/Pencil-strategy.md` §8's bar for **(E4)** as *"a
+> (BE-154)(iii) lifted `notes/pencil/strategy.md` §8's bar for **(E4)** as *"a
 > new object and … the cheaper of the two: (BE-152)/(BE-153) are already
 > exhaustive on the arithmetic, so what remains is the geometry of a single
 > lower bound on `e₁ + e₂`."* That geometry is now settled **negatively**: no

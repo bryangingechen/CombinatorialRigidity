@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BEARCASE): **(α) IS CLOSED** — the greedy's last step is a **complete 2-line criterion**, a **reordering of the chain** removes the obstruction it names, and the reach formula is **PROVED for `m ≥ 3`**; and **(β) AS STATED IS FALSE** at `δ₁ ≥ 5`, its correct form reducing to **three generic-position statements** whose "every configuration" quantifier **collapses to one generic draw**
 
-Direction **BEARCASE** (`notes/Pencil-fanout.md` §"BEARCASE", ordinal 46), the
+Direction **BEARCASE** (`notes/pencil/fanout.md` §"BEARCASE", ordinal 46), the
 arc's fifty-fourth and the **third** consecutive whose selection was forced:
 BIMAGE reduced the **ear** case of the strengthened 2-cut lemma to exactly two
 items, **(α)** the greedy's last step and **(β)** the `ρ̄₁` non-containment, and

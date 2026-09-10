@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BATTAIN): the seed-free direct-attainment shape, an **exact characterization** of `HasPencilRealization` off the Lean bodies, bare realizability proved **unconditional**, an exact **cone rank law** `6(|V|−1) − def₂(G)` that turns the standing "no T2 is producible by this harness" into a **decidable criterion**, and **774/774** attainment certificates with **no** shortfall anywhere
 
-Direction **BATTAIN** (`notes/Pencil-fanout.md` §"BATTAIN", ordinal 39) — the
+Direction **BATTAIN** (`notes/pencil/fanout.md` §"BATTAIN", ordinal 39) — the
 arc's **first** direction aimed at `hbareSplit`. Read against §(K-bare-ext)
 *Steps BE1–BE8* (probe KBARE-FALSIFY, whose figures are cited, not re-run) and
 `notes/Phase39-design.md` §"(K-bare) extension-route recon". Driver
@@ -290,7 +290,7 @@ now tested rather than inherited.** Precisely:
   sample is a one-sided Schwartz–Zippel test. Deciding it symbolically means
   the rank of a `5|E| × 6|V|` matrix over `ℚ(t)` in `3|V| − #hubs` parameters —
   at DZ, `115 × 120` in **54** parameters, against
-  `notes/Pencil-strategy.md` §5.3's measured death of a **28**-coordinate
+  `notes/pencil/strategy.md` §5.3's measured death of a **28**-coordinate
   degree-52 expansion at 600 s. **Out of reach, and now with the exact number
   saying why.**
 - **But (BE-9)'s "not producible by this harness" is too strong as stated, and

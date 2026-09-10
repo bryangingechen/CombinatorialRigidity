@@ -23,7 +23,7 @@ qualifier** stated immediately after the bullets.
   for a **null** correlation the fixed locus is degenerate — it
   forces every hinge line into a linear line complex and produces a self-stress
   per cycle (*Step σ6*, measured deficit exactly 1 at 6/6 on tight `C₆`). This
-  is `notes/Pencil-strategy.md` §2.4's *"degenerate enough to compute, and you
+  is `notes/pencil/strategy.md` §2.4's *"degenerate enough to compute, and you
   break the thing you're computing"* wall, now with a proof. **Over `ℂ̄` the `ℝ`
   half REVERSES** — σ-fixed configurations exist and are *nondegenerate* at the
   Tay target (§(K-clos) (AC-2)/(AC-3)) — **and the verdict survives anyway**, on

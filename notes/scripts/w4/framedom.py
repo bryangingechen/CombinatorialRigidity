@@ -5,7 +5,7 @@ sigma-fixed grid witnesses of (K-grid) (GR-5)/(GR-9), transported to the
 SPLIT graph `G' = G - v + ab`.
 
 Workbook section: `(K-frame)`, labels `(FR-1)+` (the reserved direction-J
-namespace, `notes/Pencil-labels.md` 2026-08-06 E/J table).  Read against
+namespace, `notes/pencil/labels.md` 2026-08-06 E/J table).  Read against
 section (K-grid) *Step G13* (the candidate lemma shape), section (K-ann)
 *Steps A14-A17* ((ANH-13)/(ANH-14): the bare-cycle stratum's universal
 degree-12 polynomial `C`), section (K-out) *Steps O11-O12*

@@ -18,8 +18,8 @@ do not fit*), so they are run one at a time.  `--sweep` alone is 484 s
 measured -- it FITS, but with little room, so a future extension of the pool
 belongs in a sixth leg rather than inside that one.
 
-Argument state: `notes/Pencil-informal-grid.md` §(K-res) *Steps RS11-RS16*
-(labels (RS-11)-(RS-15); reserved at `notes/Pencil-labels.md`).
+Argument state: `notes/pencil/workbook/grid.md` §(K-res) *Steps RS11-RS16*
+(labels (RS-11)-(RS-15); reserved at `notes/pencil/labels.md`).
 
 WHAT IS MEASURED vs WHAT IS PROVEN.  Same instrument and same standing as
 `resgrid.py`, whose devices this driver reuses: colouring enumeration is

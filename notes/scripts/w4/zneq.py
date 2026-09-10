@@ -671,7 +671,7 @@ def reject():
           "arithmetic identity.  The mechanism is section (K-flank) *F5(d)*'s "
           "theta\n      sub-multigraph stress -- a self-stress of a "
           "SUBframework of `H`, i.e. the\n      combinatorially-certifiable "
-          "direction of `Pencil-strategy.md` section 2.3.")
+          "direction of `pencil/strategy.md` section 2.3.")
     print("\nREJECT OK.")
 
 

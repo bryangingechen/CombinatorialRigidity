@@ -9,7 +9,7 @@
 -- gauge slice does not reach it, but `dim(R_1 cap L_b) = 1` "would follow from
 -- `L_b subseteq.not R_1` as a polynomial non-vanishing", and that is the one
 -- piece of (OC-8) that looks symbolically tractable
--- (`notes/Pencil-strategy.md` section 5.3).
+-- (`notes/pencil/strategy.md` section 5.3).
 --
 -- (OC-11) removes the far-ness.  `dim R_1 = 5` is a THEOREM ((OC-10)), so
 -- `R_1` is a hyperplane; and `R_1` is contained in the hinge-line span of
@@ -63,7 +63,7 @@
 --        `pt(b)` after the collinearity factor is removed -- so the bad locus
 --        is a LINE of the panel and not the whole panel.
 --
--- THE GAUGE SLICE, and why it is legitimate (`notes/Pencil-strategy.md`
+-- THE GAUGE SLICE, and why it is legitimate (`notes/pencil/strategy.md`
 -- section 5.3's measured boundary: the ungauged whole-frame expansion is a
 -- 600 s kill; budget for the local frame).  The datum is: two distinct planes
 -- `Pi(b)`, `Pi(c)` of `P^3`; a point `pt(b) in Pi(b)`; a point `pt(c) in

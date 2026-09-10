@@ -1,6 +1,6 @@
 ## §(K-ann) — the annihilator as a self-stress of the contracted framework: a class-uniform bracket recipe for `dλ`, and the mixed-stratum independence statement it still needs (**the recipe's KERNEL is delivered — the arc's first *formula* rather than a search — and its two INPUTS are not; the crux moves to (ANH-R1), relocation #4**)
 
-Answering the second fan-out's **direction A** — `notes/Pencil-strategy.md` §4.6's
+Answering the second fan-out's **direction A** — `notes/pencil/strategy.md` §4.6's
 **U1** (retarget the image problem from `Gr(3,6)` to the annihilator), **U2** (the
 hinge-rate / cycle-space presentation, whose ground set is `E(H)`) and kernel-(K)
 **option B** (the stress-function reading), fused. Read against §(K-pitch)
@@ -12,7 +12,7 @@ kernel, not a chart rational function.
 
 **Status, stated before the mathematics.**
 
-- **The headline is (ANH-2)/(ANH-3): a *recipe*, in `Pencil-strategy.md` §2.2's
+- **The headline is (ANH-2)/(ANH-3): a *recipe*, in `pencil/strategy.md` §2.2's
   sense — a formula, not a search, and the first the arc has produced.** The
   **reciprocity identity** `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)` is local at the
   moved vertex, holds at every class member with no genericity hypothesis, and at
@@ -40,7 +40,7 @@ kernel, not a chart rational function.
   relocation for three reasons given in *Step A8*, and **whether it is genuinely
   easier than its parent or merely smaller is OPEN** — nothing in this pass settles
   it, and the three reasons must not be read as settling it. It does **not** evade
-  `Pencil-strategy.md` §2.3: `τ_β ≠ 0` is a rank **lower** bound. Limiting, not
+  `pencil/strategy.md` §2.3: `τ_β ≠ 0` is a rank **lower** bound. Limiting, not
   fatal.
 - **No gap-map *status* moves.** The (K-wit) row's *what would close it* cell gains
   (ANH-R1) as a named, scoped, `k = 4`-only sufficient route; the (K-dom) row gains
@@ -57,7 +57,7 @@ written down before it ran:
    **far** framework `H/P`; it is **not** `[r]`, the transmitted wrench of the split
    that option B is about. Different frameworks, no shared infrastructure.
 2. **U2's cocircuit reading is the DUAL of what the recipe needs.**
-   `Pencil-strategy.md` §4.6-U2 is right that `supp(λ)` is a **cocircuit** of the
+   `pencil/strategy.md` §4.6-U2 is right that `supp(λ)` is a **cocircuit** of the
    linear matroid on `E(H)` — that is the object §(K-Λ) *Step 5a*'s (OUT) half
    needs. The *recipe* question turns on `supp(τ)`, a **circuit** of the contracted
    framework. Same ground set, dual objects; everything below is about the circuit.
@@ -123,7 +123,7 @@ bounds that happen to be attained.
 **(ii) U2's ground set survives contact — with the correction above.** `E(H)`
 really is the index set, and the matroid really has exchange (it is linear). Its
 *generic* form is combinatorial: for `A ⊆ E(H)`, `r(A) = |A| − dof(H/(E∖A))`, and
-`dof` of a generic body-hinge graph is Tay's count — so `Pencil-strategy.md` §2.2's
+`dof` of a generic body-hinge graph is Tay's count — so `pencil/strategy.md` §2.2's
 ingredient 3 (Edmonds / Nash-Williams, the project's Phase-12/13/14 machinery) is
 available too. What U2 named is the **cocircuit** `supp(λ)`; the recipe turns on the
 **circuit** `supp(τ)`.
@@ -320,11 +320,11 @@ would *not* close the class — see *Step A9*.
 
 **Is this relocation #4? Yes, and the record should say so in those words.** C1
 relocated `Q(z) ≢ 0` to `rank dV = 9` (§(K-dom), struck as a route); the ∀λ seed
-relocated it to `λ`'s realizability (`Pencil-strategy.md` §4.6); this relocates it
+relocated it to `λ`'s realizability (`pencil/strategy.md` §4.6); this relocates it
 to **(ANH-R1)**. Three things distinguish it, and none of them is "it is smaller so
 it must be easier":
 
-1. **It crosses `Pencil-strategy.md` §2.2's ingredient-2 boundary in the right
+1. **It crosses `pencil/strategy.md` §2.2's ingredient-2 boundary in the right
    direction.** `Q(z) ≠ 0` is a Klein-form condition, invisible to any matroid
    (§(K-pure) *P5*). (ANH-R1) is an **independence** condition in the body-hinge
    matroid — a matroid whose ground set grows with the graph *and* which **has** a
@@ -336,9 +336,9 @@ it must be easier":
    induction needs — though §(K-ind) *Step I6* is exactly why `pencil_reduction` does
    not supply one: the welded body `X` carries non-concurrent hinges, so (ANH-R1)
    lives on the **mixed stratum**. It is therefore **not the same problem shrunk**,
-   and it is `Pencil-strategy.md` §4-C3's **second** concrete consumer, alongside
+   and it is `pencil/strategy.md` §4-C3's **second** concrete consumer, alongside
    §(K-Λ) *Step 5a*'s (OUT).
-3. **It does not escape §2.3, and `Pencil-strategy.md` §4.6-U2's honesty flag is
+3. **It does not escape §2.3, and `pencil/strategy.md` §4.6-U2's honesty flag is
    confirmed as *limiting, not fatal* — say both halves.** (ANH-R1) is a rank
    **lower** bound, so the asymmetry is relocated onto a smaller contracted graph
    exactly as flagged, not evaded. The flag is *not* fatal because the smaller
@@ -346,7 +346,7 @@ it must be easier":
    characterised — unlike `R_3`, where §2.3's asymmetry is an open problem of the
    subject. The wall changes character: from *"no matroid sees this"* to *"the
    matroid sees it and the pin may not respect the matroid"*. That second wall is
-   the **weak-map / specialization-stability** direction `Pencil-strategy.md` §4.6
+   the **weak-map / specialization-stability** direction `pencil/strategy.md` §4.6
    named as the only remaining (M3)-passing literature lead, and it now has a
    specific statement to attach to, which that subsection said it could not supply.
 
@@ -355,7 +355,7 @@ it must be easier":
 > reasons above say the relocation is of a different *kind*; they do **not** say it
 > is a *reduction in difficulty*, and they must not be read as saying so. The arc's
 > own base rate for "smaller and better-structured, therefore tractable" is
-> unencouraging (`Pencil-strategy.md` §2.3), and the honest position is that
+> unencouraging (`pencil/strategy.md` §2.3), and the honest position is that
 > relocation #4 has better structure than #1–#3 and an unmeasured difficulty.
 
 **Pointer (2026-08-19, direction OCON).** Since §(K-out) *Steps O13–O18*, (OUT)'s own residue
@@ -378,7 +378,7 @@ statement at `H/P`. No status moves on either side.
 - **So no `k`-graded mechanism, this one included, can close the class** — `k = 4`
   is the `hnoRigid` **equality** case (§(K-dom) *(D3)*, (ANH-4) above) with `k ≥ 5`
   the interior, and both populations are non-empty in the arc's habitat table. This
-  is the same verdict `Pencil-strategy.md` §4.6 already carries, reached again from
+  is the same verdict `pencil/strategy.md` §4.6 already carries, reached again from
   the inside; this pass does not claim otherwise.
 - **What (ANH-R1) *would* close, if it fell, is the length-4-companion stratum
   outright** — a well-defined, non-empty chunk of `hK` — via §(K-Λ)'s Λ-completeness,
@@ -522,7 +522,7 @@ Per mode, what is asserted:
 - **(ANH-2)** (the reciprocity identity) and **(ANH-3)** (the one-pairing form at the
   named move): **proven**, with a two-line derivation and 276 × 828 exact checks
   against an independent implicit differentiation. **This is the pass's headline**: a
-  recipe in `Pencil-strategy.md` §2.2's sense, and the first the arc has produced.
+  recipe in `pencil/strategy.md` §2.2's sense, and the first the arc has produced.
   Quote it with its caveat — *the formula's kernel is bounded-size and
   class-uniform; what it pairs against (`τ`, `ω`) is not.*
 - **(ANH-4)** (`E(H/P)` is a Tay circuit at `k = 4`): **proven-informally** from
@@ -567,7 +567,7 @@ The off-class control shows the phenomenon is real once `hnoRigid` is dropped.
 and it closes `dλ ≢ 0` at `k = 4` outright and, with §(K-Λ)'s Λ-completeness, the whole
 length-4-companion stratum of `hK`. It is a **mixed-stratum** statement (§(K-ind)
 *Step I6*: `X` is not a pencil body) on a strictly smaller graph, and it is the second
-concrete consumer `Pencil-strategy.md` §4-C3 has, after (OUT).
+concrete consumer `pencil/strategy.md` §4-C3 has, after (OUT).
 
 *(iii)* **One of the 476 triples whose `H/P` branches are all of length `≤ 4`**, with
 `dλ ≡ 0`. That is where the closed form does not reach, and it is the cheapest place to
@@ -591,10 +591,10 @@ attack on `Gr(k−3,k)`.
 
 **Continuation (2026-08-06, second fan-out direction R) — pencil-rigidity of the contracted framework: (ANH-R1) is one-point-decidable per shape and discharged at every probed triple, its bad locus is INHABITED by exact rational points of the honest chart, and the "easier or merely smaller" question is settled as scoped.**
 
-Answering the second fan-out's **direction R** (`notes/Pencil-fanout-archive.md`
+Answering the second fan-out's **direction R** (`notes/pencil/fanout-archive.md`
 §"Second fan-out" → Direction R). Read against *Steps A4/A7/A8* above
 ((ANH-4), (ANH-7), (ANH-R1)), §(K-out) *Steps O3/O6* ((OC-3)/(OC-4), whose
-shape *Step A12* mirrors on the τ side), and `Pencil-strategy.md` §§2.3/4.6
+shape *Step A12* mirrors on the τ side), and `pencil/strategy.md` §§2.3/4.6
 (the rank-lower-bound asymmetry and the weak-map lead). Driver:
 `notes/scripts/w4/shrink.py` (imports `annih` read-only).
 
@@ -622,7 +622,7 @@ shape *Step A12* mirrors on the τ side), and `Pencil-strategy.md` §§2.3/4.6
   counting, matroid, or placement-blind argument (the τ-side analogue of
   §(K-out) (OC-3)), and the remaining geometric half has exactly the profile
   of §(K-out) (OC-8): a whole-chart genericity statement. That is
-  `Pencil-strategy.md` §2.3's wall, met from inside the relocation itself —
+  `pencil/strategy.md` §2.3's wall, met from inside the relocation itself —
   see *Step A13* for what this does to §2.3's recorded stop-rule prediction.
 
 ### Step A10 — (ANH-9): the weak-map formulation, and one-point decidability
@@ -662,7 +662,7 @@ every single-edge deletion stays independent generically, iff the (unique,
 `dim = k − 3 = 1`) generic pencil stress has full support. ∎
 
 Two immediate consequences. First, the *Shared dictionary*-level reading:
-**the weak-map / specialization-stability lead of `Pencil-strategy.md` §4.6
+**the weak-map / specialization-stability lead of `pencil/strategy.md` §4.6
 now has its precise statement** — *(ANH-R1) class-uniformly = the
 specialization `M_gen ⇝ M_pen^gen` restricts to the identity weak map on the
 co-branch family, at every `k = 4` class contraction* — which is what that
@@ -703,7 +703,7 @@ This extends *Step A4*'s realized-side 14/14 to 26/26 over a pool whose swept
 majority was never hand-picked, and it upgrades each pointwise `τ_β ≠ 0`
 into a per-shape generic-point discharge via (ANH-9). It does **not** touch
 class uniformity: 26 shapes is evidence, not an argument — exactly
-`Pencil-strategy.md` §2.3's "every positive is per-shape".
+`pencil/strategy.md` §2.3's "every positive is per-shape".
 
 ### Step A12 — (ANH-11)/(ANH-12): the bad locus is inhabited, exactly
 
@@ -729,7 +729,7 @@ sampler-degenerate boundary points, but at exact rational points satisfying
 > *Proof.* Lines meeting `L` are exactly the **special linear complex** of
 > axis `L`: `B(C, C(L)) = 0` (the arc already uses "hinge lines in a linear
 > line complex ⟹ a self-stress per cycle" at §(K-σ) *Step σ6* /
-> `Pencil-strategy.md` §2.4's null-correlation exhibit; this is its localized,
+> `pencil/strategy.md` §2.4's null-correlation exhibit; this is its localized,
 > single-cycle form). Put `τ_e = ±C(L)` along a traversal of `Z`, `0` on all
 > other far edges, and the telescoping partial sums on the companion edges
 > between `Z`'s two attachment vertices when `X ∈ Z`. Equilibrium: at a far
@@ -813,7 +813,7 @@ it that are answerable without closing the gap itself:
    a contraction of `H` — **exactly §(K-out) (OC-8)'s profile**, now with the
    nonemptiness of the bad locus *witnessed inside the habitat stratum*
    rather than inferred.
-2. **`Pencil-strategy.md` §2.3's recorded prediction is checked, not
+2. **`pencil/strategy.md` §2.3's recorded prediction is checked, not
    admired.** The prediction said a third independent route should terminate
    on a rank lower bound at a pencil placement of a contraction of `H`, and
    that if it does, "stop looking for routes: the productive target becomes
@@ -837,7 +837,7 @@ it that are answerable without closing the gap itself:
    pencil body — §(K-ind) *Step I6* — so this is strictly outside (GR-5)'s
    current scope; recorded as a lead, not a claim).
 4. **The one symbolically tractable per-shape upgrade** (parallel to
-   `Pencil-strategy.md` §5.3): by White–Whiteley (WW87 Prop. 2.6, verified in
+   `pencil/strategy.md` §5.3): by White–Whiteley (WW87 Prop. 2.6, verified in
    `notes/Phase39.md` *Citations*), `H/P − β` at `k = 4` is count-0, so
    (ANH-R1) per shape is "`C(H/P − β)` (the pure condition, a bracket
    polynomial) does not vanish identically on the chart" — an M2-checkable
@@ -982,14 +982,14 @@ reimplemented.
 
 **Continuation (2026-08-06, third fan-out direction Q) — (ANH-R1) as a PURE CONDITION: a branch-core normal form and an exact size law, one UNIVERSAL irreducible degree-12 bracket polynomial governing the whole bare-cycle stratum, a bad locus strictly larger than (ANH-11)'s, and the verdict that the M2 identity is the *pointwise restatement* of (ANH-R1) rather than an upgrade of it.**
 
-Answering `notes/Pencil-fanout-archive.md` §"Third fan-out" → Direction Q, i.e. *Step A13*
+Answering `notes/pencil/fanout-archive.md` §"Third fan-out" → Direction Q, i.e. *Step A13*
 item 4 and *What would change this (Steps A10–A13)* item (iii). Read against
 *Steps A4/A6/A7* ((ANH-4), (ANH-6), (ANH-7)) and *Steps A10–A13* ((ANH-9)'s
 one-point decidability, (ANH-10)'s census, (ANH-11)/(ANH-12)'s inhabited bad
 locus); against §(K-pure) *Step P0*, whose reading of White–Whiteley's pure
 condition this pass re-uses **verbatim on the τ side**; against §(K-out)
 *Step O12* ((OC-16)'s chart-to-frame dominance residue, which turns out to be
-this section's residue too); and against `Pencil-strategy.md` §§5.2/5.3/5.4.
+this section's residue too); and against `pencil/strategy.md` §§5.2/5.3/5.4.
 Drivers: `notes/scripts/w4/anhr1.py` (imports `annih` / `shrink` / `outer`
 read-only) and `notes/scripts/m2/anhr1.m2`.
 
@@ -1157,7 +1157,7 @@ and unbounded over the class — while `deg C = 12(c(G) − 2)` is unbounded
 outright. The bounded end is therefore the **finite** end: `c(G) = 3` pins
 `(|V|,|E|) = (16,18)`, finitely many graphs, and §(K-ind) *(I4)* says the
 class's infinitude lives entirely in the `G°` direction, which is exactly the
-direction `deg C` grows in. **`Pencil-strategy.md` §2.2's ingredient-2 boundary appears here in
+direction `deg C` grows in. **`pencil/strategy.md` §2.2's ingredient-2 boundary appears here in
 the mirror of §(K-Δ)'s (M3):** there the ground set was frozen at `[3]` and
 never grew with the graph; here the certificate's *degree* grows with the graph,
 and a bounded-size symbolic identity is impossible for exactly that reason.
@@ -1292,7 +1292,7 @@ governs them, and the θ-core computation below is per-type, not universal.
 >  `{C = 0}` ⊋ `{`the six lines have a common transversal`}`,
 >
 > and (ANH-11) reaches only part of the bad locus. This is the localized form of
-> §(K-σ) *Step σ6* / `Pencil-strategy.md` §2.4's null-correlation device.
+> §(K-σ) *Step σ6* / `pencil/strategy.md` §2.4's null-correlation device.
 >
 > (c) **Consistency with (ANH-12), checked in this section's own object.**
 > Re-running `shrink.construct_at` read-only and evaluating the branch-screw

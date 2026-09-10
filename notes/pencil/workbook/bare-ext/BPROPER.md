@@ -659,7 +659,7 @@ BSIGMA's recorded figures are untouched; both must stay, and the README's
 ### TERMINATION riders
 
 **E1 / E2 / E3 — reported, never fired; E3 remains ARMED (by GBAL).** Read
-against their actual definitions in `notes/Pencil-fanout-archive.md`
+against their actual definitions in `notes/pencil/fanout-archive.md`
 (`:1686–1712` and `:2078–2106`), not by analogy and not from a later
 landing's paraphrase, with the 2026-09-02 correction (`61e046a6`) in force:
 **"the target" in E1–E3 is the ARC's target, `PencilPair K 3 G`**, never a

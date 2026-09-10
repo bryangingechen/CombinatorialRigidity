@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BONEONE): **THE ANSWER IS YES, AND HALF (B)'s LAST GENERAL-POSITION ENEMY IS NOT GONE BUT LIVE** — the question never was about peels, because `δ_i` and the R-node test are both **per-SIDE** and any two sides glue, so it asks whether ONE side can be R-node-shaped at `δ = 1`, and a 9-vertex K₄-skeleton side is. **Both zeros behind the old `no` are VACUOUS**: an R-node-shaped `(1,1)` peel needs **11** vertices, one above tier A's cap, and every peel of a subdivided skeleton has a **PATH side**, whose `δ` is `min(L,6)` and never `1`, so tier B had **0 chances at any cap**. Of the **48** R-node-shaped `(1,1)` peels on 11 vertices, **24** force `π_u = π_v`, on exactly (BE-77)(ii)'s `{v, b₁, b₂}` certificate split `(2,2)` by the cut — so **(BE-66)(iv)'s CONCLUSION is refuted**, not merely unproved, and what now stands between the enemy and half (B) is the **genuineness** of the aggressive operator's forcing, which is geometry
 
-Direction **BONEONE** (`notes/Pencil-fanout.md` §"BONEONE", ordinal 56), the
+Direction **BONEONE** (`notes/pencil/fanout.md` §"BONEONE", ordinal 56), the
 arc's sixty-fourth, at **the whole of what BSPREAD reduced job 2 to** —
 *can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?* ((BE-77)(iv)). BSPREAD's
 own successor, taken after the coordinator re-ran the F26 consumer trace for a

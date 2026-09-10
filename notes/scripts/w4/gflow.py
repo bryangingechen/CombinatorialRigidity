@@ -1,6 +1,6 @@
 """GFLOW -- the twenty-sixth kernel-(K) direction: (b')'s AVAILABILITY half,
 Clause A' sub-clause 2, the DOUBLY-BLOCKED case (spec:
-notes/Pencil-fanout.md S"GFLOW -- twenty-sixth direction (eighth fan-out)").
+notes/pencil/fanout.md S"GFLOW -- twenty-sixth direction (eighth fan-out)").
 
 TARGET: BALB proved (b')'s PRICE half outright ((GR-68)) and left its
 AVAILABILITY half as Clause A' -- at every unbalanced parity-optimal

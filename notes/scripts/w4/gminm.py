@@ -1,5 +1,5 @@
 """GMINM -- the thirty-seventh kernel-(K) ordinal: does GHWIT's
-refutation REACH THE LEDGER?  (spec: notes/Pencil-fanout.md S"GMINM").
+refutation REACH THE LEDGER?  (spec: notes/pencil/fanout.md S"GMINM").
 
 TARGET.  GHWIT landed *"per-matching (b') at the constant 2 is FALSE"*
 -- (GR-104)(i) at 2k = 2 refuted at the habitat-gated n = 20 pair

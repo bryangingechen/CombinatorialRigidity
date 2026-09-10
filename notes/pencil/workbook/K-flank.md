@@ -512,7 +512,7 @@ where a uniform reason would live.
    target list, and it cannot be reached from the tight class: §(K-slide-cl)
    *Step C0*'s "`ℓ = 6` forces a rigid complement" lemma means a length-6 path
    is impossible under `hnoRigid`, so a probe needs a genuine `(K-res)`
-   residual member (`notes/Pencil-W4-informal.md` §"widened kernels" *Step 4*),
+   residual member (`notes/pencil/workbook/W4.md` §"widened kernels" *Step 4*),
    and none parallel-free was at hand. The right next probe, and cheap: build
    one, and run `--conj`/`--split` on it.
 4. **The model dictionary.** Every rank figure lives in the harness'

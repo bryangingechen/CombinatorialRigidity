@@ -11,9 +11,9 @@ repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --theta    # (RS-6): the deficient-fringe control theta(2,3,7) — the old (AC-6) miss, now a mechanism
     PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --validate # all four
 
-Argument state: `notes/Pencil-informal-grid.md` §(K-res) (new with this
+Argument state: `notes/pencil/workbook/grid.md` §(K-res) (new with this
 driver; labels (RS-1)-(RS-6), *Steps RS1-RS10*, reserved at
-`notes/Pencil-labels.md` §"Reserved namespace — direction RESGRID").
+`notes/pencil/labels.md` §"Reserved namespace — direction RESGRID").
 
 WHAT IS MEASURED vs WHAT IS PROVEN, in one paragraph.  The (K-res) shapes
 (`widened.W19`, `saferes.w29`, `dominance.nt21c3`) are NOT tight class

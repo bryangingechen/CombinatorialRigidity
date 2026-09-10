@@ -1,6 +1,6 @@
 ## §(K-Λ) — the Λ-compression's quadric: a two-hyperplane factorization, and why (K-Λ) collapses onto (K-wit) (**(K-Λ) REFUTED as an independent gap; `ℓ ∈ {5,6}` refuted through the (T5) frame**)
 
-Answering the fan-out's **direction B** (`notes/Pencil-fanout-archive.md` §"Direction B").
+Answering the fan-out's **direction B** (`notes/pencil/fanout-archive.md` §"Direction B").
 Read against §(K-pitch) *Steps 0–5b*, whose notation it inherits verbatim.
 
 **Headline, stated up front because it is a correction.** (K-Λ) was recorded
@@ -263,7 +263,7 @@ the driver establishes, in four blocks:
 **ungauged** end-to-end expansion (all 28 point coordinates indeterminate) has
 degree 52 and does **not** finish: killed at 600 s inside `cross4` on the
 ungauged bracket rows. The local frame is symbolically viable; a whole-graph
-placement is not (`notes/Pencil-strategy.md` §5.3). That probe is recorded as
+placement is not (`notes/pencil/strategy.md` §5.3). That probe is recorded as
 *measured, script not retained* — it is (M4) with the gauge removed, a one-line
 edit of the committed driver (`notes/scripts/m2/README.md`).
 
@@ -482,7 +482,7 @@ together:
 
 ### Step 5a — (OUT): the outer-line criterion, a far-side sufficient condition (2026-08-05, no driver)
 
-Migrated here from `notes/Pencil-strategy.md` §4.6-U1, which derived it and
+Migrated here from `notes/pencil/strategy.md` §4.6-U1, which derived it and
 flagged it as having no workbook home; that file now carries only a pointer and
 the strategic readings. **It is a corollary of Steps 3–5 and nothing else** —
 no new geometry — but it is the one *positive* the broad class-uniformity recon
@@ -546,13 +546,13 @@ motion of `b` and `X` lies in `⟨C₁⟩` and is `ω_{e₁}C₁`; it is nonzero
 equivalence survives them.)
 
 **Two consequences recorded, neither proven here.** *(1)* `C₁ ∉ V_bc` is a rank
-**lower** bound (a rigidity statement), so `notes/Pencil-strategy.md` §2.3's
+**lower** bound (a rigidity statement), so `notes/pencil/strategy.md` §2.3's
 asymmetry is **relocated onto a smaller contracted graph, not evaded** — and
 that is the honest reason (OUT) is a reformulation rather than a closure.
 *(2)* The welded body `X` carries the hinges formerly at `x₁, x₂, x₃, c`, which
 are not concurrent, so `X` is **not a pencil body**: the fact (OUT) reduces to
 lives on the **mixed stratum** (§(K-ind) *Step I6* is why no transport repairs
-this). That gives `Pencil-strategy.md` §4-C3 a consumer it did not have.
+this). That gives `pencil/strategy.md` §4-C3 a consumer it did not have.
 
 **MEASURED, 2026-08-06 — §(K-out) is the canonical home of the answer and it is
 not restated here.** `--adv` reports `λ ∝ p⁺` and `λ ∝ q` at **0** hits over its
@@ -659,7 +659,7 @@ analysis is not). **It is recorded as a lead, not as a proven step.**
 
 > **Step numbering, flagged because it is new in this section.** §(K-Λ)'s
 > existing steps are bare numbers (*Step 0* … *Step 8*, plus *Step 3a* and
-> *Step 5a*), and `notes/Pencil-labels.md`'s measured diagnosis clause 4
+> *Step 5a*), and `notes/pencil/labels.md`'s measured diagnosis clause 4
 > records that bare step numbers collide with claim labels — §(K-Λ) already
 > mints driver blocks (P1)–(P7) against §(K-pure)'s *Steps P0–P9*. The steps
 > below therefore use the **`Λ`-prefixed form**: ***Step Λ8*** is a **new**
@@ -1176,7 +1176,7 @@ Per mode, what is asserted:
   `lambda1.m2` (M3).)
 - **(OUT) (the outer-line criterion, *Step 5a*): proven-informally,
   CONDITIONAL, and carrying NO DRIVER** (2026-08-05; migrated from
-  `notes/Pencil-strategy.md` §4.6-U1, which now points here). It is a corollary
+  `notes/pencil/strategy.md` §4.6-U1, which now points here). It is a corollary
   of Steps 3–5 with no new geometry, and it is **exactly as conditional as
   (Λ2)** — (Λ0) in full, including two-sided (Λ0d) and the widened (Λ0f′) with
   its `g₁₄` clause; either degeneration replaces a bad *point* by a bad
@@ -1203,7 +1203,7 @@ Per mode, what is asserted:
   to leave the far data in the free covector `λ`. The escape's uniformity,
   **(K-wit)**, quantifies over `λ`, so it is not a statement on this variety at
   all and no amount of generic-point computation on the frame reaches it. The
-  upgrade therefore **confirms rather than circumvents** `notes/Pencil-strategy.md`
+  upgrade therefore **confirms rather than circumvents** `notes/pencil/strategy.md`
   §2.3's diagnosis: the symbolic route can make every far-graph-free
   *hypothesis package* of the arc uniform, and stops precisely where the far
   graph enters. **No gap-map status moves.**

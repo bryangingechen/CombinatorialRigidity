@@ -1,5 +1,5 @@
 """GFLIP -- the thirtieth kernel-(K) ordinal: (GR-R1), the flip-availability
-clause of GFLOW's descent (spec: notes/Pencil-fanout.md S"GFLIP -- thirtieth
+clause of GFLOW's descent (spec: notes/pencil/fanout.md S"GFLIP -- thirtieth
 ordinal").
 
 TARGET: (GR-R1) -- at every unbalanced admissible configuration, some

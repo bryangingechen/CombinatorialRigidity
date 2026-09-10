@@ -101,7 +101,7 @@ ITS EXACT RESIDUE ZONE `rho_1 + rho_2 <= 7`?
   NOTATION AND THE (L3) QUALIFICATION, stated ONCE for the whole file.
   Every `(E4)` below means **`section (K-bare-ext) (E4)`** -- the two-sided
   clause of (BE-153)(i), a grandfathered bare token with a recorded
-  collision (`notes/Pencil-labels.md`) -- and `(BE-E4')` is its
+  collision (`notes/pencil/labels.md`) -- and `(BE-E4')` is its
   `delta_i >= 1` restriction, (BE-162)'s repair.  `e_i := rho_i - c_i(Pi_x)`,
   `c_i(U) := dim(rho_bar_i cap U)`, `slack := max(0, delta_1 + delta_2 - 6)`,
   and `a_i := dim M_i - 6 - f_i` is side `i`'s own attainment loss, all as

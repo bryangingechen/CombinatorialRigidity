@@ -5,7 +5,7 @@ Answering §(K-Λ) *What would change this* item (viii) and §(K-Λ) *Step 5a*'s
 **new driver mode**, not run by this pass."* Read against §(K-Λ), whose
 notation this section inherits verbatim: (OUT), (Λ0a)–(Λ0i), (Λ0f′), (Λ1),
 (Λ2), (Λ3) are all §(K-Λ)'s, and their qualified form is used here per
-`notes/Pencil-labels.md` clause L3.
+`notes/pencil/labels.md` clause L3.
 
 **Headline, negative first, because the negative is the load-bearing result.**
 
@@ -53,7 +53,7 @@ notation this section inherits verbatim: (OUT), (Λ0a)–(Λ0i), (Λ0f′), (Λ1
 - **(OC-8), the residual, is OPEN.** Class uniformity of (OUT) ⟺ at every class
   shape the whole-graph chart carries a hard-stratum point with `L_b ⊄ R₁` or
   `L_c ⊄ R₄` — a rank **lower** bound at a pencil placement, i.e.
-  `notes/Pencil-strategy.md` §2.3's wall **relocated** onto the smaller
+  `notes/pencil/strategy.md` §2.3's wall **relocated** onto the smaller
   `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation
   cannot be discharged combinatorially.
 
@@ -149,7 +149,7 @@ wrong.** `deficiency` is the **unconstrained** generic count. The pencil chart
 is a proper subvariety of the placement space, so `A₁ = 0` is *not* evidence
 that `λ₁ ≠ 0` at a pencil-generic placement — it is the ambient-generic
 statement, and the gap between the two is precisely
-`notes/Pencil-strategy.md` §2.3's asymmetry. **The combinatorial half therefore
+`notes/pencil/strategy.md` §2.3's asymmetry. **The combinatorial half therefore
 does not deliver availability.** Step O3 is where the pencil constraint enters,
 and it changes the answer qualitatively.
 
@@ -421,7 +421,7 @@ demonstrably out of reach of any counting argument.** Component by component:
 > length-4-companion splits is *equivalent* to: at every class shape, the
 > whole-graph pencil chart carries a hard-stratum target-rank point with
 > `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil
-> placement — the class of statement `notes/Pencil-strategy.md` §2.3 identifies
+> placement — the class of statement `notes/pencil/strategy.md` §2.3 identifies
 > as the arc's wall — relocated onto the *smaller* graph `H/{e₂,e₃,e₄}` and
 > *weakened* (it asks for one constraint between `b` and `X`, not the full
 > escape), but **not crossed**. (OC-3) shows the relocation cannot be discharged
@@ -434,7 +434,7 @@ demonstrably out of reach of any counting argument.** Component by component:
 
 **This measurement is informative, not decisive, and the reason is sharper than
 "it is pointwise."** It measures a hypothesis never measured, so it is not a
-re-run of a saturated question (`notes/Pencil-strategy.md` §5.2). But what it
+re-run of a saturated question (`notes/pencil/strategy.md` §5.2). But what it
 can establish is *availability* — that (OUT) is not vacuous and not dead —
 whereas what (OUT) as a route needs is *uniform* availability, and (OC-3) shows
 that the natural cheap route to uniformity (a count on the contracted graph) is
@@ -1003,7 +1003,7 @@ generator `C(b,a)` of `L_b`,
 
 — **one `6×6` Plücker determinant in seven points**, and `R₁`'s far-ness has
 dissolved: this is a statement about the **local frame**, inside
-`notes/Pencil-strategy.md` §5.3's boundary, which is what item 6 asked for and
+`notes/pencil/strategy.md` §5.3's boundary, which is what item 6 asked for and
 what the arc has never had on the `λ` side. `m2/outerwide.m2` computes it on the
 gauge slice `Π(b) = {x₄ = 0}`, `Π(c) = {x₃ = 0}`, `pt(c) = e₄`, `pt(a) = e₁`
 (legitimate: `PGL(4)` is transitive on (ordered distinct planes, a point of the
@@ -1348,7 +1348,7 @@ whenever `C(ab) ≠ 0` — i.e. whenever `pt(a) ≠ pt(b)`, which
 *Proof of the two displayed forms.* At target rank,
 `corank(G′) = 5|E(G′)| − [6(|V(G′)| − 1) − def(G′)] = index(G′) + def(G′)`, and
 `index(G′) = index(G) + 1` (§(K-ind) *Step I2*), which is
-`notes/Pencil-W4-informal.md`'s recorded count identity
+`notes/pencil/workbook/W4.md`'s recorded count identity
 `corank(G′) = index(G) + 1 + def(G′)`. With `index(G) = 0`, `def(G′) = 0`:
 `dim R_a = 1 − s₀`, so on the target-rank locus `dim R_a = 1 ⟺ s₀ = 0`. And
 `s₀ = 0` is `rank R(G − v) = 5|E(G − v)|`, the maximum a matrix with that many
@@ -1830,7 +1830,7 @@ the genericity argument (OC-3) demands needs **no hard-stratum qualifier**.
 Driver `notes/scripts/w4/zneq.py` (new this pass; imports `ocon`, `outerline`,
 `outer`, `flanks`, `kslidecomb`, `widened`, `repin` **read-only** and modifies
 nothing); labels **(OC-23)–(OC-28)**, Steps **O19–O24**. Everything cited that
-this pass did not mint is qualified per `notes/Pencil-labels.md` clause L3:
+this pass did not mint is qualified per `notes/pencil/labels.md` clause L3:
 **(OUT)**, **(Λ0a)–(Λ0i)** are §(K-Λ)'s; **(FR-4)**/**(FR-6)**/**(FR-7)** are
 §(K-frame)'s; **(ANH-9)**/**(ANH-R1)** are §(K-ann)'s; **(S1)** is §(K-slide)'s;
 **(D4)** is §(K-dom)'s; **(CH-1)**/**(CH-2)**/**(CH-5)** are §(K-chart)'s
@@ -1955,7 +1955,7 @@ own residual, and a half that is the (K-tight) criterion one split down whose
 failure has a closed form. **Class uniformity is untouched**, and the honest
 boundary is that neither half is *proven* class-uniformly here: the `s₀` half
 waits on (GR-10) (or on any class-uniform independence statement for `H` at
-pencil placements — the hard direction of `Pencil-strategy.md` §2.3), and the
+pencil placements — the hard direction of `pencil/strategy.md` §2.3), and the
 target-rank half waits on a class-uniform non-containment `M̂ ∧ w ⊄ D`.
 
 ---
@@ -2368,7 +2368,7 @@ rank 6 — the same support §(K-slide) *Step 5* exhibits for `P21`'s limit stre
 By (OC-23) that stress lives in `H`. So **the only known mechanism for the `s₀`
 half to fail is a self-stress of a *subframework* of `H` forced by the pencil
 pin** — §(K-pure) **(PC-OBS)**'s dependence side, which is exactly the
-*combinatorially certifiable* direction of `Pencil-strategy.md` §2.3. Two
+*combinatorially certifiable* direction of `pencil/strategy.md` §2.3. Two
 consequences: a future proof of the `s₀` half should look for a counting /
 `hnoRigid`-driven exclusion of such subframework circuits rather than for a
 genericity argument; and a search for a *counterexample* should look at class
@@ -3198,7 +3198,7 @@ Driver `notes/scripts/w4/oschu.py` (new this pass; imports `zneq`, `ocon`,
 `outerline`, `outer`, `grid`, `gridwit`, `closure`, `dominance`, `kslide`,
 `widened`, `repin`, `pitch` **read-only** and modifies nothing); labels
 **(OC-29)–(OC-34)**, Steps **O25–O30**. Everything cited that this pass did not
-mint is qualified per `notes/Pencil-labels.md` clause L3: **(OUT)**,
+mint is qualified per `notes/pencil/labels.md` clause L3: **(OUT)**,
 **(Λ0d)** are §(K-Λ)'s; **(OC-1)**, **(OC-3)**, **(OC-8)**, **(OC-17)**–**(OC-28)**
 are this section's own earlier items; **(K-tight)** *Step 2*'s items are
 §(K-tight)'s; **(CH-1)**/**(CH-2)** are §(K-chart)'s; **(GR-5)**/**(GR-9)**/**(GR-10)**/**(GR-15)**
@@ -4049,7 +4049,7 @@ colouring existence and the second confinement's mechanism
 ((OC-44)(iii)). **No gap-map status moves.**
 
 *(Everything cited that this pass did not mint, per
-`notes/Pencil-labels.md` clause L3: (OC-1), (OC-3), (OC-7)–(OC-8),
+`notes/pencil/labels.md` clause L3: (OC-1), (OC-3), (OC-7)–(OC-8),
 (OC-17)–(OC-34) are §(K-out)'s own earlier items; (AC-2)/(AC-4)/(AC-7)/
 (AC-9) are §(K-clos)'s; (FR-2)/(FR-3) are §(K-frame)'s; (GR-5)/(GR-9)/
 (GR-10) are §(K-grid)'s; (CH-1)/(CH-2) are §(K-chart)'s; (Λ0d) is

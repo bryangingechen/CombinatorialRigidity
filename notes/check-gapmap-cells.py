@@ -175,7 +175,7 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 # per row, `KEY_RE` above), but it is a structural change to the phase's single
 # status object and is the coordinator's to authorize, NOT a landing's to take:
 # the proposal with its word counts is in the BRANKV write-up in
-# `notes/Pencil-fanout.md`.
+# `notes/pencil/fanout.md`.
 # **2026-09-08 THIRD `K-bare` bump (coordinator, at BEFOURP's landing) -- and it
 # is the trigger the coordinator reserved, fired and then DECIDED AGAINST THE
 # SPLIT, with the reason recorded because it reverses that trigger's own
@@ -194,7 +194,7 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 # is not worth that, and it is not what the trigger assumed it was buying.
 # **So: bumped to this recompute's size plus ~15%, 1,428 / 1,428, combined
 # 2,856** (~370 words of headroom), and the split stays DECLINED with its
-# costing intact in `notes/Pencil-fanout.md`. **The real lever, if this
+# costing intact in `notes/pencil/fanout.md`. **The real lever, if this
 # recurs, is neither a bump nor a split: it is RELOCATION** -- the row is a
 # summary whose per-label detail already lives in section (K-bare-ext), and
 # this phase's standing doc remedy is *relocation or merger, never a fold*.

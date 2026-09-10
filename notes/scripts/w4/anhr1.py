@@ -4,10 +4,10 @@ CONDITION: the reduced object `H/P - beta`, its branch-core normal form, and
 the finite list of PENCIL-CHART LOCAL TYPES the class realizes.
 
 Workbook section: `(K-ann)`, continuation Steps A14+; labels `(ANH-13)+` (the
-reserved direction-Q namespace, `notes/Pencil-labels.md` 2026-08-06 G/Q/O
+reserved direction-Q namespace, `notes/pencil/labels.md` 2026-08-06 G/Q/O
 table).  Read against section (K-ann) *Steps A7/A10-A13* ((ANH-7), (ANH-9)
 one-point decidability, (ANH-10) the census, (ANH-11)/(ANH-12) the inhabited
-bad locus) and `notes/Pencil-strategy.md` sections 5.3/5.4 (the symbolic
+bad locus) and `notes/pencil/strategy.md` sections 5.3/5.4 (the symbolic
 layer's local-frame budget).
 
 THE OBJECT.  At a `k = 4` class (shape, split, companion) triple with a

@@ -1,6 +1,6 @@
 ## §(K-chart) — the pencil chart is irreducible, written down once: the tower of affine-linear fibres, the constant-fibre-dimension clause identified as `IsNondegPencilRealization`'s **conjunct 3**, and a nonemptiness clause that FRES's stated hypotheses do **not** supply
 
-Answering `notes/Pencil-fanout.md` §"Seventh fan-out" → direction **CIRR**
+Answering `notes/pencil/fanout.md` §"Seventh fan-out" → direction **CIRR**
 (twenty-fourth kernel-(K) direction, 2026-08-19), landed as a **HIT**. Read
 against §(K-out) *Steps O13–O18* ((OC-19)), §(K-slide) *Step 1(e)* ((S1)),
 §(K-dom) *Step D4* ((D4)), §(K-ann) *Steps A10/A14–A17* ((ANH-9)) and

@@ -1,5 +1,5 @@
 """GHWIT -- the thirty-sixth kernel-(K) ordinal: the HALF-WITNESS CLAUSE
-(GR-117)(iii) (spec: notes/Pencil-fanout.md S"GHWIT").
+(GR-117)(iii) (spec: notes/pencil/fanout.md S"GHWIT").
 
 TARGET: *every pos-carrying O <= M pair has a maximum that is
 balance-valid or half-resident* -- equivalently (contrapositive) no

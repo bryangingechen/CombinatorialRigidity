@@ -1,18 +1,20 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: SLICES 8, 9, 12 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
+**Status: SLICES 8, 9, 12, 13 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
 bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
 `notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
-content byte-identical, 1 308 claims before and after. Slices 10, 11, 13, 14
-remain plan; the next concrete task is **slice 13** (move the remaining PENCIL
-assets in, add `notes/pencil/CLAUDE.md`), then 14, 11, 10. Opened 2026-09-09 at the user's
+content byte-identical, 1 308 claims before and after. Slice 13 — the rest of
+the corpus moved under `notes/pencil/`, a subtree `CLAUDE.md` added, and
+`notes/CLAUDE.md` trimmed 425 → 321 lines. Slices 10, 11, 14 remain plan; the
+next concrete task is **slice 14** (split the coordinator command), then 11
+(generated round packets), then 10 (the tag backfill). Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
-8–14, continuing `notes/Pencil-structure.md`'s slice numbering; this is a
+8–14, continuing `notes/pencil/structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
 derived-ledger layer, a split coordinator command, a new agent core, a
 status vocabulary with a gate) rather than PENCIL file layout alone, which
-is what slices 1–7 were. `notes/Pencil-structure.md` carries the pointer.**
+is what slices 1–7 were. `notes/pencil/structure.md` carries the pointer.**
 
 Round discipline is `CLEANUP.md`'s, per the slice-3 precedent: a
 *structural* round (layout / navigability / cross-phase promotion), not a
@@ -47,7 +49,7 @@ call:
 
 - calls 3–6 — **`RESEARCH-ARC.md` read end-to-end**, ~15k tokens of
   *process* doc;
-- calls 7–13 — `notes/Phase39.md` + `notes/Pencil-strategy.md` §8, ~14k;
+- calls 7–13 — `notes/Phase39.md` + `notes/pencil/strategy.md` §8, ~14k;
 - calls 25–28 — `notes/scripts/README.md` conventions, ~7k;
 - calls 14–56 — **~35 `grep`→`sed` probes** into the 41 343-line workbook,
   recovering the statements of ~18 prior `(BE-·)` claims.
@@ -65,10 +67,10 @@ Census of the `> **(LABEL)(clause)**` openers across the doc set:
 | file | openers | distinct labels |
 |---|---|---|
 | `Pencil-informal.md` | 1 019 | 415 |
-| `Pencil-informal-grid.md` | 232 | 165 |
-| `Pencil-W4-informal.md` | 22 | 22 |
-| `Pencil-strategy.md` | 7 | 7 |
-| `Pencil-fanout.md` | 14 | 12 |
+| `pencil/workbook/grid.md` | 232 | 165 |
+| `pencil/workbook/W4.md` | 22 | 22 |
+| `pencil/strategy.md` | 7 | 7 |
+| `pencil/fanout.md` | 14 | 12 |
 
 In the main workbook: only **543 of 1 019 openers (53%)** carry any
 parenthetical status tag at all, and those 543 use **188 distinct
@@ -146,8 +148,8 @@ notes/pencil/                     PENCIL asset root
     gapmap.md                     the State of (K) table, lifted out
     K-out.md K-mech.md K-frame.md …        33 topical gap sections
     bare-ext/BEFOURP.md BEARFULL.md …      37 direction continuations
-    grid.md                       was Pencil-informal-grid.md
-    W4.md                         was Pencil-W4-informal.md
+    grid.md                       was pencil/workbook/grid.md
+    W4.md                         was pencil/workbook/W4.md
   strategy.md labels.md fanout.md fanout-archive.md
   adjudications.md structure.md cleanup.md
   (no ledger file — the cache is gitignored, see slice 8)
@@ -167,7 +169,7 @@ ledger before split, never the reverse.
 
 Each slice is one commit unless stated. Every slice runs the standing
 per-commit checklists (`CLAUDE.md` *Before each commit*) plus the gates in
-`notes/Pencil-structure.md` *Gates for any continuation*.
+`notes/pencil/structure.md` *Gates for any continuation*.
 
 ### Slice 8 — the claim ledger and its query CLI  *(LANDED 2026-09-09)*
 
@@ -357,7 +359,7 @@ prose directly — there is no stored artifact in the loop. Pre-existing openers
 are grandfathered as `UNTAGGED`: the gate must not fail the tree on day one,
 or it will be disabled instead of obeyed. Like the other two docs gates it
 inspects changed-vs-`HEAD` files by default and so must be **run before
-committing, or with `--all`** (`Pencil-structure.md` *Gates for any
+committing, or with `--all`** (`pencil/structure.md` *Gates for any
 continuation*, blind spot 1).
 
 ### Slice 10 — backfill the 476 untagged openers  *(N commits, incremental)*
@@ -435,7 +437,7 @@ a `§(…)` qualifier); the remaining 64 generic mentions and 17 ambiguous
 rather than precise.
 
 **A live tool was broken by the move and is fixed here.**
-`notes/scripts/gapdiff.py` — the gate `notes/Pencil-structure.md` names as
+`notes/scripts/gapdiff.py` — the gate `notes/pencil/structure.md` names as
 *"the one that actually looks at content"* — hard-coded the workbook path and
 died with a traceback. It now falls back to the pre-split path when a ref
 predates the move, so the one gate that compares gap-map content still works
@@ -446,9 +448,9 @@ with no edit.
 
 **40 references used a bare `Pencil-informal.md` without the `notes/` prefix**
 and so were missed by the path rewriter. They were sorted by hand: the live
-ones (in `notes/CLAUDE.md`, `notes/scripts/README.md`, `Pencil-labels.md`,
+ones (in `notes/CLAUDE.md`, `notes/scripts/README.md`, `pencil/labels.md`,
 four drivers and three Macaulay2 files) are repointed; the ones in
-`Pencil-cleanup.md`, `Pencil-structure.md` and this file's own measurement
+`pencil/cleanup.md`, `pencil/structure.md` and this file's own measurement
 tables are **retirement history** and correctly keep the old name.
 
 **The discipline that genuinely changed, repaired in the same commit.**
@@ -504,16 +506,16 @@ across the doc set to the moving files:
 | file | mentions | files |
 |---|---|---|
 | `Pencil-informal.md` | 265 | 47 |
-| `Pencil-strategy.md` | 224 | 35 |
-| `Pencil-fanout.md` | 217 | 33 |
-| `Pencil-labels.md` | 166 | 38 |
-| `Pencil-informal-grid.md` | 109 | 29 |
-| `Pencil-fanout-archive.md` | 106 | 17 |
-| `Pencil-W4-informal.md` | 63 | 16 |
-| `Pencil-structure.md` | 50 | 12 |
-| `Pencil-adjudications.md` | 30 | 7 |
+| `pencil/strategy.md` | 224 | 35 |
+| `pencil/fanout.md` | 217 | 33 |
+| `pencil/labels.md` | 166 | 38 |
+| `pencil/workbook/grid.md` | 109 | 29 |
+| `pencil/fanout-archive.md` | 106 | 17 |
+| `pencil/workbook/W4.md` | 63 | 16 |
+| `pencil/structure.md` | 50 | 12 |
+| `pencil/adjudications.md` | 30 | 7 |
 | `gapmap.py` | 16 | 11 |
-| `Pencil-cleanup.md` | 4 | 2 |
+| `pencil/cleanup.md` | 4 | 2 |
 
 Path repair is `sed`-mechanical; **section citations (`§(K-out)`, step
 names, label tokens) survive the split unchanged**, which is what makes this
@@ -531,13 +533,50 @@ becomes weaker is worse than one that is deleted.
 diff against the pre-split original, modulo the inserted per-file headers.
 Zero remaining hits for the old paths outside a retirement-history note.
 
-### Slice 13 — move the rest, add `notes/pencil/CLAUDE.md`
+### Slice 13 — move the rest, add `notes/pencil/CLAUDE.md`  *(LANDED 2026-09-09)*
+
+**What landed.** Ten files moved into `notes/pencil/`, with **1 005 reference
+rewrites across 134 files**. `notes/pencil/CLAUDE.md` (92 lines) is the
+subtree manual and auto-loads only when the corpus is touched;
+`notes/CLAUDE.md` drops **425 → 321 lines** as its 119-line PENCIL catalogue
+becomes a pointer — so a session that never opens the corpus stops paying for
+its file list on every `notes/` touch.
+
+**`grid.md` and `W4.md` moved unsplit**, deliberately: `grid.md` is 97% a
+single `§(K-grid)` section and `W4.md`'s arc is closed and parked, so splitting
+them further would restructure sections rather than move them — outside a
+structural round's scope. One-file-per-section earns its keep where 62 sections
+share a file and concurrent directions append to it, which is the case slice 12
+addressed.
+
+**Three defects the verification pass caught**, and the pass is the finding
+worth keeping. Checking that all **5 248** path references in the tree resolve
+turned up:
+
+- **A line-wrapped reference.** `notes/scripts/w4/dominance.py` cited
+  ``` `notes/Pencil-
+informal.md` ``` broken across a line, so no
+  path-substitution rewriter could see it. This is the failure mode a
+  `grep`-and-replace move cannot catch by construction — only a
+  does-every-path-resolve check finds it.
+- **A path I broke while repairing paths.** The Macaulay2 drivers spell the
+  section ASCII-style (`S(K-Lambda)`), and repointing them produced
+  `K-Lambda.md` against an actual file named `K-Λ.md`.
+- **A stale forward reference in this plan**, to a `notes/INDEX.md` that slice
+  13 decided not to create.
+
+Every `notes/pencil/…` reference now resolves. The 122 remaining unresolved
+paths tree-wide are pre-existing and out of scope: 68 are template
+placeholders (`notes/PhaseN.md`), 7 are GitHub URLs, and the rest — including
+a dangling `notes/scripts/w4/fres.py` cited from three files — predate this
+round.
+
+### Slice 13 — as originally specified  *(retained for the record)*
 
 The remaining PENCIL assets to `notes/pencil/`. A thin subtree `CLAUDE.md`
 (~60 lines: the ledger CLI, canonical homes, the round map) auto-loads for
-work under it. Trim `notes/CLAUDE.md`'s 230-line file catalogue — the part
-that today auto-loads 6.6k tokens on every `notes/` touch — to a pointer at
-a generated `notes/INDEX.md`.
+work under it. Trim `notes/CLAUDE.md`'s file catalogue — the part
+that auto-loads on every `notes/` touch — to a pointer at the subtree manual.
 
 Smallest measured win of the round (~4% of a dispatch's ramp-up). It is here
 because it is cheap once slice 12 has moved the bulk, not because it matters
@@ -570,7 +609,7 @@ command does not re-home.** The formalization phases resume after PENCIL.
   listing every claim it left alone. If a slice is tempted to adjudicate,
   it stops and hands the claim to a direction.
 - **The ledger is trusted past its evidence.** It is an *index*, exactly as
-  `Pencil-labels.md` says of itself: the owning section stays authoritative
+  `pencil/labels.md` says of itself: the owning section stays authoritative
   for what a claim means. Regeneration guarantees the index *matches* the
   prose; it guarantees nothing about whether the prose is right, and a
   `[PROVED]` tag is a claim by whoever wrote it, not a check. Slice 9's lint

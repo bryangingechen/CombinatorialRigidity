@@ -29,7 +29,7 @@ typechecked signatures), and by the 2026-07-30 recon day.
 > `Phase22-realization-design.md` (8,590 → 1,939 lines with **zero** repoints),
 > had **8** anchors — that is *why* it cost nothing. `Phase23-design.md`, at
 > **136**, was frozen for exactly this reason. At 119 this file is the
-> `Phase23-design.md` case, not the `Phase22` one. `notes/Pencil-fanout.md`
+> `Phase23-design.md` case, not the `Phase22` one. `notes/pencil/fanout.md`
 > *Shared mechanics* already treats it as frozen operationally ("no agent
 > edits … `notes/Phase39-design.md` (frozen)").
 >
@@ -61,7 +61,7 @@ is load-bearing.
 | Higher-`d` note / Citations | 4172–4212 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
-(the workbook) and `notes/Pencil-strategy.md`. This file is the dated recon
+(the workbook) and `notes/pencil/strategy.md`. This file is the dated recon
 record and the W5/W4 leaf decompositions.
 
 Methods used: KT primary source (`.refs/`
@@ -3281,7 +3281,7 @@ picture throughout.
 
 **Widened-habitat pointer (2026-08-02).** Finding 1's *explanation* ("no proper
 subgraph to localise the stress onto") is a `hnoRigid` consequence, but the gate's
-NO-GO verdict does not depend on it — see `notes/Pencil-W4-informal.md` §"widened
+NO-GO verdict does not depend on it — see `notes/pencil/workbook/W4.md` §"widened
 kernels (routes 1/3)" *Step 1* (row K4).
 
 **Verdict: route 1 is NO-GO.** The escape's (non)vanishing at a generic seed is a genuinely
@@ -3450,7 +3450,7 @@ section's stratification is consumed on a habitat where `hnoRigid` is FALSE. Wha
 survives, what breaks (item 3's `s₀ = 0` and item 4's proof, not its conclusion),
 the corank identity `dim R_a = 5 + def(G′) − def(G−v)`, the reduction of item 1's
 `index ≤ 4` to a cheap leaf plus (E-loc), and a caveat against item 2's failure
-criterion: `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)".
+criterion: `notes/pencil/workbook/W4.md` §"widened kernels (routes 1/3)".
 
 **(K-tight) re-pin pointer (2026-08-02, later).** Item 2's owed KT pp. 684–691 re-pin is
 **done, against the carrier** — `notes/pencil/workbook/K-tight.md` §(K-tight). The §2 criterion is
@@ -3751,7 +3751,7 @@ here closes the leaf; (K-bare-ext) as pinned is unchanged. Findings:
 **Widened-habitat pointer (2026-08-02).** W4 routes 1/3 do **not** reach this kernel —
 a residual is `PencilNondegFeasible` by hypothesis, so the split producer's
 `hbareSplit` branch (`Escape.lean:424–428`) is unreachable there; this recon's count
-dichotomy and (K-bare-ext) stand exactly as pinned. `notes/Pencil-W4-informal.md`
+dichotomy and (K-bare-ext) stand exactly as pinned. `notes/pencil/workbook/W4.md`
 §"widened kernels (routes 1/3)" *Step 0*.
 
 **(K-tight) re-pin pointer (2026-08-02, later).** (K-bare-ext)'s named prerequisite —
@@ -3765,7 +3765,7 @@ side condition is unaffected. Implications for the statement:
 
 **Probe KBARE-FALSIFY pointer (2026-08-20) — this recon's central open statement is
 REFUTED as stated, and three of its figures are corrected.** The commissioned
-falsification hunt (`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED
+falsification hunt (`notes/pencil/fanout.md` §"Two probes SPECCED and AUTHORIZED
 2026-08-20"; driver `notes/scripts/kbare/breakhunt.py`) landed **(K-bare-ext) REFUTED**
 at tier **T1** — a *route* finding, not a refutation of `hbareSplit`, whose consequent is
 an `∃` over frameworks and which is therefore **untouched and still carried as pinned**
@@ -4164,7 +4164,7 @@ proxies in either direction.
 **REFUTED 2026-08-02** — the conjecture is FALSE (an explicit `|V| = 19` inhabitant, both
 feasibility verdicts landed-lemma-certified; the caps above were the blind spot). Current
 argument state, the structure theorem that survives, and the routes out:
-`notes/Pencil-W4-informal.md` §"`hnoGood'` vacuity".
+`notes/pencil/workbook/W4.md` §"`hnoGood'` vacuity".
 
 **The reshaped skeleton (L3′) and the W4-L5 interface (`hremove`) — supersedes the
 decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
@@ -4206,7 +4206,7 @@ decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
   conjuncts at `v` and its neighbours.
 - **Kernels** `hKc` / `hbareContract`: carried, unchanged. **`hnoGood'`**: carried,
   narrowed; ~~its research options are (i) prove the vacuity conjecture … or (ii) attack
-  it directly~~ — option (i) is **REFUTED** (2026-08-02, `notes/Pencil-W4-informal.md`
+  it directly~~ — option (i) is **REFUTED** (2026-08-02, `notes/pencil/workbook/W4.md`
   §"`hnoGood'` vacuity"); the live options are now that section's routes 1–3.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)

@@ -4,15 +4,15 @@
 bullets from `notes/Phase39.md` *Current state* that selected the picks for the
 Phase-39 (PENCIL) kernel-(K) research fan-out — **ordinals 1–44, the whole arc**
 — split out of `notes/Phase39.md` **verbatim** in two rounds: **ordinals 1–19**
-on 2026-08-19 (the phase-note doc split, `notes/Pencil-structure.md` slice 4)
+on 2026-08-19 (the phase-note doc split, `notes/pencil/structure.md` slice 4)
 and **ordinals 20–44** on 2026-08-26 (the phase-note compression round, slice
 6). Every quoted user decision below is byte-for-byte what stood in the parent
 file; nothing is re-worded, re-dated or re-verdicted by either move.
 `notes/CLAUDE.md` deliberately keeps selection provenance in the phase note
 (or, now, its split-out companion) rather than duplicating it into the fan-out
 doc — this file is that provenance record for every landed ordinal, whether the
-matching dispatch history sits in `notes/Pencil-fanout-archive.md` (1–19) or
-`notes/Pencil-fanout.md` (20–44).
+matching dispatch history sits in `notes/pencil/fanout-archive.md` (1–19) or
+`notes/pencil/fanout.md` (20–44).
 
 **What did not move, and why.** `notes/Phase39.md` *Current state* keeps the
 **standing kernel GO/NO-GO constraints** a fresh session must read before
@@ -36,11 +36,11 @@ is dispatch-*selection* provenance only, never mathematics.
 
 ---
 
-## Ordinals 1–19 — moved 2026-08-19 (`notes/Pencil-structure.md` slice 4)
+## Ordinals 1–19 — moved 2026-08-19 (`notes/pencil/structure.md` slice 4)
 
 - **2026-08-05…07, second through fifth fan-outs (all COMPLETE; user-adjudicated).**
   T/R/M, G/Q/O, E/J, PEX/TCOL; route σ / W4 / the (FR-6) follow-ons not selected at any of
-  them; cap lifted, rescue §1 pre-authorized (`notes/Pencil-fanout-archive.md` §§"Second"–"Fifth").
+  them; cap lifted, rescue §1 pre-authorized (`notes/pencil/fanout-archive.md` §§"Second"–"Fifth").
 - **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at the
   session-start check-in what to do once TCOL lands, the user selected **"Keep going on my
   own judgment"** — *"After landing TCOL I pick the next direction from the hand-off's
@@ -52,7 +52,7 @@ is dispatch-*selection* provenance only, never mathematics.
   constraint).** The user, verbatim: *"Let's have a fable subagent make the decision / do a
   reprioritization and then follow its guidance."* — the precedent that the pick may itself
   be delegated to a **top-rung fable recon**. Its verdict (GCAP) was verified, accepted and
-  LANDED 2026-08-13 (`notes/Pencil-fanout-archive.md` §"Seventh direction"). Same check-in: top rung
+  LANDED 2026-08-13 (`notes/pencil/fanout-archive.md` §"Seventh direction"). Same check-in: top rung
   = fable (opus only if the weekly limit runs out); cap **lifted**; rescue §1 mechanical
   fixups **pre-authorized** — all still binding.
 - **2026-08-13, phase-shape adjudication, then the ninth- through fourteenth-direction
@@ -66,7 +66,7 @@ is dispatch-*selection* provenance only, never mathematics.
   routing clause); fourteenth **no selection pass at all** — GPSA's own landed
   otherwise-clause routed it deterministically (GDESC, dispatched opus against a
   top-rung-mapped task, a logged deviation) — and the **fifteenth left un-dispatched**.
-  Per-direction verdicts, dates and detail: `notes/Pencil-fanout-archive.md`
+  Per-direction verdicts, dates and detail: `notes/pencil/fanout-archive.md`
   §§"Ninth"–"Fourteenth direction"; the rung deviation in `notes/dispatch-log.md`.
 - **2026-08-19, sixth-fan-out dispatch — a NEW shape (user-adjudicated multidispatch;
   changes no standing constraint).** Asked how to proceed with the unrouted fifteenth, the
@@ -76,7 +76,7 @@ is dispatch-*selection* provenance only, never mathematics.
   maximize the number of ideas we make progress on at once without getting interrupted."*
   Five dispatched concurrently — **GBAL**/**GLAW** (compute-licensed), **OCON**/**LTWO**/
   **FRES** (derivation-first), tier split and label reservations coordinator-set. **All five
-  LANDED 2026-08-19; COMPLETE** — `notes/Pencil-fanout-archive.md` §"Sixth fan-out".
+  LANDED 2026-08-19; COMPLETE** — `notes/pencil/fanout-archive.md` §"Sixth fan-out".
 
 ## Ordinals 20–44 — moved 2026-08-26 (the phase-note compression round, slice 6)
 
@@ -90,11 +90,11 @@ is dispatch-*selection* provenance only, never mathematics.
   **YLOC**/**BALB**/**AGLU** (§(K-grid)), **ZNEQ** (§(K-out)), **CIRR** (new §(K-chart)) —
   tier split, direction selection and label reservations **coordinator-set**, so the
   twelfth's disclosure applies: **no independent top-rung ranking of the losers**, itemized
-  in `notes/Pencil-fanout.md` §"Seventh fan-out". Same check-in: rungs **sonnet + opus only,
+  in `notes/pencil/fanout.md` §"Seventh fan-out". Same check-in: rungs **sonnet + opus only,
   top rung = opus** (fable conserved), cap **lifted**, rescue §1 fixups **pre-authorized**.
   **One coordinator sharpening overrode GLAW's landed routing clause** (routing only, not
   its mathematics) and was then **SPLIT, not simply upheld, by YLOC's landing** — recorded
-  in full at `notes/Pencil-fanout.md` §"The coordinator's one routing sharpening" and
+  in full at `notes/pencil/fanout.md` §"The coordinator's one routing sharpening" and
   §"Twentieth direction", not restated here. **All five LANDED 2026-08-19; COMPLETE.**
 
 - **2026-08-19, post-wave adjudication (two calls; neither changes a kernel constraint).** With
@@ -121,7 +121,7 @@ is dispatch-*selection* provenance only, never mathematics.
   **OSCHU** / **SIGZ** (§(K-out)). Tier split, direction selection and label reservations
   **coordinator-set**, so the twelfth's disclosure applies for the **third consecutive
   wave** — **no independent top-rung ranking of the losers**, itemized in
-  `notes/Pencil-fanout.md` §"Not selected — the eighth fan-out's losers"; what is *not* the
+  `notes/pencil/fanout.md` §"Not selected — the eighth fan-out's losers"; what is *not* the
   coordinator's is the candidate **pool**, since each of the five is a successor named by a
   landed direction's own hand-off. Same check-in: rungs **sonnet + opus only, top rung =
   opus** (fable conserved, `weekly_scoped` 92 %), cap **lifted**, rescue §1 fixups
@@ -143,7 +143,7 @@ is dispatch-*selection* provenance only, never mathematics.
   (ANH-R1)/(ANH-R2) at landing). They are only three commits old, so the repoint is
   small."* An option selection, not free text, so the QUALIFY disposition is superseded:
   GFLOW's three tokens are `(GR-R1)`/`(GR-C1)`/`(GR-C2)` everywhere in the corpus now,
-  verified 0-hit before minting; `notes/Pencil-labels.md`'s collision record is
+  verified 0-hit before minting; `notes/pencil/labels.md`'s collision record is
   ADJUDICATED/RENAMED. Everything else stands unchanged.
 
 - **2026-08-20, probe KBARE-FALSIFY landed — a T1 hit, and no standing constraint
@@ -301,7 +301,7 @@ is dispatch-*selection* provenance only, never mathematics.
   **(2)** **diversification is now a selection criterion** — the arc's recent
   concentration is the thing being corrected (**six of the last seven
   directions are §(K-grid)**, four of them consecutively on the (GR-104)(i)
-  price-form thread GPRICE → GBLAW → GXESC → GHWIT, a thread `notes/Pencil-strategy.md`
+  price-form thread GPRICE → GBLAW → GXESC → GHWIT, a thread `notes/pencil/strategy.md`
   §8's own re-rank calls *"a residual-of-a-residual inside the (a′)/(b′)
   ledger"* that *"does not touch a named `hK` gap"*); **(3)** **§8.5's category
   — "test the architecture instead of extending it" — is promoted from a board
@@ -321,7 +321,7 @@ is dispatch-*selection* provenance only, never mathematics.
   the steps we would take are clear, right? We should clean up that disproof and
   prepare it for formalization (probably in the next phase)."* This **supersedes
   the stop-and-adjudicate half** of the Direction-A pivot rule
-  (`notes/Pencil-fanout-archive.md` §"Direction A") and of the 2026-08-19 SIGZ
+  (`notes/pencil/fanout-archive.md` §"Direction A") and of the 2026-08-19 SIGZ
   authorization terms: on a confirmed half-2 disproof the loop does **not** halt
   for a user decision — the coordinator works the disproof up to a
   formalization-ready informal statement inside this phase, under the standing

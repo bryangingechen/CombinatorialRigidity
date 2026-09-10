@@ -1,6 +1,6 @@
 ## §(K-bare-ext), continued — direction BSCOND: **BOTH WINDOW CONDITIONS ARE DECIDED — (S1) IS REMOVABLE, (S2)'s FIRST HALF IS A THEOREM WITH AN EXHAUSTIVE MECHANISM LIST, AND ITS SECOND HALF IS REFUTED AS STATED AND THEN CLOSED** (*Steps BE141–BE147*)
 
-Direction **BSCOND** (`notes/Pencil-fanout.md` §"BSCOND", ordinal 76), the
+Direction **BSCOND** (`notes/pencil/fanout.md` §"BSCOND", ordinal 76), the
 arc's eighty-fourth, at **(BE-57)(iv)**'s two side conditions — half (β)'s
 only residue, open since **BWIN** (ordinal 51) and attacked by none of the
 eleven (BE-14)-thread landings BONEONE (56) through BDEGTWO (74). Read
@@ -660,7 +660,7 @@ future module that writes an interior vertex that way would lose the guard.
 
 ## TERMINATION check (E1/E2/E3) — read at source, decided explicitly
 
-Read at `notes/Pencil-fanout-archive.md` (the ledger's own statement, not by
+Read at `notes/pencil/fanout-archive.md` (the ledger's own statement, not by
 analogy), each decided:
 
 - **(E1)** — *a g-flank: a `D = 0` shape whose every admissible colouring is

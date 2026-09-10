@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BIMAGE): the image is **BOUNDED and CLASSIFIED** — the ear's `ρ̄₂` is the span of a **chain on the Klein quadric**, its bad locus is **exactly three trapping mechanisms**, every one of them is a **configuration artifact at 607/607 escalated instances**, and job 2's candidate bound is **REFUTED as an equality** by the series/parallel recursion that replaces it
 
-Direction **BIMAGE** (`notes/Pencil-fanout.md` §"BIMAGE", ordinal 45), the arc's
+Direction **BIMAGE** (`notes/pencil/fanout.md` §"BIMAGE", ordinal 45), the arc's
 fifty-third and the **second** consecutive whose selection was forced: BTWOCUT
 reduced the strengthened 2-cut composition lemma — hence (BE-14) — to one
 geometric sentence, *the image of a piece's realization space in `Gr(δ₂,6)` is

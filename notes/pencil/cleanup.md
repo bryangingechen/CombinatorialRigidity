@@ -24,8 +24,8 @@ by this round.
 ## Scope
 
 The Phase-39 pencil doc set: `notes/pencil/workbook/`,
-`notes/Pencil-W4-informal.md`, `notes/Pencil-labels.md`,
-`notes/Pencil-fanout.md`, `notes/Pencil-strategy.md`,
+`notes/pencil/workbook/W4.md`, `notes/pencil/labels.md`,
+`notes/pencil/fanout.md`, `notes/pencil/strategy.md`,
 `notes/scripts/README.md`, plus `notes/Phase39.md` itself (length/balance)
 and `notes/FRICTION.md` (archive-readiness, project-wide but flagged by the
 coordinator alongside this round).
@@ -164,7 +164,7 @@ statement: (GR-4)/(GR-4′) is bypassed, not assumed"), *Step G18* item 3 ("off
 the critical path **for direction G**"), TCOL's standing table and CFLANK's
 *What does NOT move*, GCAP's and GEXIST's Step-0 pins ("the (GR-4′) rider is
 genuinely load-bearing and never dissolves silently"), and
-`notes/Pencil-fanout.md` §"Ninth direction" route-ledger entry 2 ("open, off
+`notes/pencil/fanout.md` §"Ninth direction" route-ledger entry 2 ("open, off
 the critical path … **Unchanged**") — the verdict is: **both readings are true
 in named senses, and the cell must carry both.** (GR-4′) is off the critical
 path in that the *discharge* need never consume it ((GR-9)'s certificate, and
@@ -237,13 +237,13 @@ No repoints landed; none were live.
 
 ### D-4 — other pencil docs and the wider sweep: swept, nothing found
 
-- **Cross-file references to `Pencil-informal.md`** (`Pencil-fanout.md`,
-  `Pencil-labels.md`, `Pencil-strategy.md`, `Pencil-W4-informal.md`): every
+- **Cross-file references to `Pencil-informal.md`** (`pencil/fanout.md`,
+  `pencil/labels.md`, `pencil/strategy.md`, `pencil/workbook/W4.md`): every
   citation uses the `§(K-…)` heading form, never a bare line number
   (`grep -no 'Pencil-informal\.md[^)]*' …` over all four files, checked for
   a trailing `:[0-9]+`, no hits) — so D-1's drift does **not** propagate as
   a stale cross-reference anywhere else in the doc set.
-- **`Pencil-labels.md`'s registry** (the (K)-workbook table, from line ~302):
+- **`pencil/labels.md`'s registry** (the (K)-workbook table, from line ~302):
   up to date through `(GR-32)`–`(GR-35)` / GEXIST; every owning section has a
   row, no stale tag, no missing entry.
 - **`notes/scripts/README.md`'s driver invocation table**: every `.py` file
@@ -253,7 +253,7 @@ No repoints landed; none were live.
   `patexist.m2`) are each explicitly annotated "reserved and returned
   unused" — intentional, not drift. The *Harness debt* section already
   reads "ALL FOUR CLEARED… the round is CLOSED."
-- **`Pencil-strategy.md` / `Pencil-fanout.md`**: neither carries its own
+- **`pencil/strategy.md` / `pencil/fanout.md`**: neither carries its own
   line-range "Section index" (only `Pencil-informal.md` has one), so there
   is no analogous index to go stale in these files. Section headers read as
   a forward-consistent narrative (fan-out entries added serially, dated,
@@ -434,7 +434,7 @@ constraints in `notes/Phase39.md` *Current state*: Lean hold STANDS, W4
 PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned; none touched by
 this round). **Next concrete task, project-wide:** select and prep a TENTH
 kernel-(K) research direction from the four dispatchable attacks named in
-`notes/Pencil-fanout.md` §"Ninth direction"'s route ledger (the orientation
+`notes/pencil/fanout.md` §"Ninth direction"'s route ledger (the orientation
 theorem itself; the defect-≤ 1 intersection kill; the no-collateral clause
 for the guided repair; the pruned `n_hub = 8` hot-hub enumerator as a cruder
 fallback) — see `notes/Phase39.md` *Hand-off*, which this commit re-points
@@ -457,8 +457,8 @@ at that selection now that the round no longer has open work ahead of it.
   still 14750 lines; line-range table (D-1's) untouched outside this cell.
 - **Round opened 2026-08-13, sweep-only commit.** Task list above populated
   from a full read of the pencil doc set (`Pencil-informal.md`,
-  `Pencil-W4-informal.md`, `Pencil-labels.md`, `Pencil-fanout.md`,
-  `Pencil-strategy.md`, `scripts/README.md`, `FRICTION.md`, `Phase39.md`); no
+  `pencil/workbook/W4.md`, `pencil/labels.md`, `pencil/fanout.md`,
+  `pencil/strategy.md`, `scripts/README.md`, `FRICTION.md`, `Phase39.md`); no
   fixes landed. D-1's drift table was independently recomputed
   programmatically (not copied from the coordinator's seed) and found the
   seed's own two flagged gaps (the unmeasured rows, the unverified end

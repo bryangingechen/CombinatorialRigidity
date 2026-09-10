@@ -16,8 +16,8 @@ as packmm -> gridwit -> grid -> closure).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --validate  # all but --lam6
 
 Argument state: session draft `fanout-CFLANK.md` (to be merged into
-`notes/Pencil-informal-grid.md` §(K-grid) as Steps G24+; labels (GR-21)+ per the
-2026-08-07 CFLANK reservation in `notes/Pencil-labels.md`).
+`notes/pencil/workbook/grid.md` §(K-grid) as Steps G24+; labels (GR-21)+ per the
+2026-08-07 CFLANK reservation in `notes/pencil/labels.md`).
 
 WHY THIS POOL, in one paragraph.  TCOL's *What would change this* item (v)
 named two places to look for a flank: shapes whose `G°` is rich in `(2,2,3)`

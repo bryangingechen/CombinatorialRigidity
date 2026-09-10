@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BRNODE): the INTERNAL R-NODE IS DESCRIBED — `ρ̄` at every 2-connected piece is computed by ONE law over the SPQR tree, because a child's whole boundary trace is a function of its `ρ̄` alone (the **decorated-skeleton law**), so job 1's sharp question comes back **YES**; the (BE-22)(vi) collapse at an R-node peel is an exact **checkable condition on `B`** that `K₄` passes at the opposite edge and the **prism fails at two rungs** — the both-flexible case is nonempty already at ONE flexible child; and the routing verdict is that the description was never what the consumer was short of — the residue is the **achievable-decorations** class statement, the (BE-30)(ii)-analogue
 
-Direction **BRNODE** (`notes/Pencil-fanout.md` §"BRNODE", ordinal 52), the arc's
+Direction **BRNODE** (`notes/pencil/fanout.md` §"BRNODE", ordinal 52), the arc's
 sixtieth, at **(BE-31)(ii)'s named residue** — the internal R-node, the step
 from *ear* to *general piece*, **user-selected 2026-08-29** and confirmed on the
 critical path by (BE-43)(v). Read against *Steps BE29–BE33* (BIMAGE, the SP

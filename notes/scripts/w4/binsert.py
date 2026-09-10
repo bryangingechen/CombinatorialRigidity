@@ -2,7 +2,7 @@
 """BINSERT (arc ordinal 82) — does KT's ROUTE B escape where route A fails?
 
 The question this driver decides, and it is one link of option B's chain
-(`notes/Pencil-strategy.md` §8.4, the *option B for `hbareSplit`* row):
+(`notes/pencil/strategy.md` §8.4, the *option B for `hbareSplit`* row):
 
   Probe KBARE-FALSIFY refuted **(K-bare-ext)** at tier T1 (§(K-bare-ext)
   (BE-5)): at the option-C C2 cube-skeleton index-2 danger gadget's

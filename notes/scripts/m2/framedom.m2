@@ -4,7 +4,7 @@
 --
 -- Workbook section: `(K-frame)`, claims `(FR-2)`/`(FR-3)`; driver blocks
 -- `(FR-M0)`-`(FR-M3)` (the reserved direction-J namespace,
--- `notes/Pencil-labels.md` 2026-08-06 E/J table; the block prefix appends a
+-- `notes/pencil/labels.md` 2026-08-06 E/J table; the block prefix appends a
 -- letter per that file's sanctioned form).
 --
 -- Read `notes/scripts/m2/README.md` FIRST: the four conventions of this

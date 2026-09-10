@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BGENUINE): **THE COINCIDENCE IS GENUINE, AND IT DOES NOT BITE** — the aggressive operator's over-claim is *vacuous on this family*, because (BE-77)(ii)'s certificate `{v, b₁, b₂}` is a **HINGE PAIR** and the arc's standing genericity guard asserts exactly that such a triple is affinely independent, so genuineness needs no draw, no genericity and no irreducibility; and the forced `π_u = π_v` costs **nothing** — at all **392** witnesses `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁ + a₂` **exactly**, `ρ̄₁ ∩ ρ̄₂ = 0` **as spaces**, and `H` **ATTAINS** on an exhibited exact-ℚ certificate. The naive shortfall `2 − dim(ρ̄₁+ρ̄₂)` reads `−1` at 100 of them, and the `−1` is a **denominator error**: (BE-22)(iii)'s own *both-pieces-attain* hypothesis fails there, and the side's loss `a_i` cancels the excess. The whole family is **OFF (CH-1)'s class** — girth `3` at **392/392**, and at **648/648** of a NEW row one cell beyond BONEONE's cap, where the triangle-free sub-row is **0-forced** — and it costs nothing, because both conclusions are pointwise or existential
 
-Direction **BGENUINE** (`notes/Pencil-fanout.md` §"BGENUINE", ordinal 57), the
+Direction **BGENUINE** (`notes/pencil/fanout.md` §"BGENUINE", ordinal 57), the
 arc's sixty-fifth, at **the price BONEONE itself named** ((BE-82)(ii)):
 *is the re-opened coincidence GENUINE, and does it BITE?* BONEONE's own
 successor, taken after the coordinator re-ran the F26 consumer trace for a

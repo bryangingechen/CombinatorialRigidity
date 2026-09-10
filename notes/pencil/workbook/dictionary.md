@@ -40,8 +40,8 @@ Consequences used throughout (all elementary, all numerically re-checked in
   spanning `C₃` or a two-vertex ear hanging at one vertex.
 - **(SD-6) branches are short: length `≤ 5`.** *(New 2026-08-06; §(K-ann)
   calls it **(ANH-8)** and points here — this is the only copy. The `SD-`
-  form is forced by `notes/Pencil-labels.md` clause L1: `(R6)` is taken by
-  `Pencil-strategy.md` §4.6.)* Let `β` be a branch (maximal degree-2 chain)
+  form is forced by `notes/pencil/labels.md` clause L1: `(R6)` is taken by
+  `pencil/strategy.md` §4.6.)* Let `β` be a branch (maximal degree-2 chain)
   of a class member `G` — tight, `def = 0`, `hnoRigid`, `|V| ≥ 2` — of
   length `ℓ`. Then `ℓ ≤ 5`.
   *Proof.* `G` is 2-edge-connected: a bridge would split `V` into `A, B`
@@ -60,7 +60,7 @@ Consequences used throughout (all elementary, all numerically re-checked in
 Two explicit graphs recur as **test shapes** across both workbooks. They were
 built as the W4 residual arc's counterexamples — their certification, their
 role there, and their robustness/minimality records are
-`notes/Pencil-W4-informal.md` §`hnoGood'` vacuity *Step 3* and §(SAFE-RES)
+`notes/pencil/workbook/W4.md` §`hnoGood'` vacuity *Step 3* and §(SAFE-RES)
 *Step 2* — and the (K) sections below reuse them as residual-habitat probes
 (they are the (K-res) habitat's two named members). **This is their canonical
 definition; neither workbook redefines them.**

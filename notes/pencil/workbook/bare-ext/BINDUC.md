@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BINDUC): the induction's **BASE IS FREE** — 3-connectivity forces `def₂ = 0`, so the declined `def₂ = def₃` slice covers the whole base — BZAVOID's asserted 2-cut `− 6` is **REFUTED** and replaced by an exact `max`-law, the rank half is reduced to **one named composition lemma** with its free sub-case proved and its obstruction located, and a **named construction** proves (BE-14) at 5 824 further graphs, 2 441 of them beyond every witness the arc had
 
-Direction **BINDUC** (`notes/Pencil-fanout.md` §"BINDUC", ordinal 42), the arc's
+Direction **BINDUC** (`notes/pencil/fanout.md` §"BINDUC", ordinal 42), the arc's
 fiftieth and the **max-impact pick under a user-supplied criterion** (2026-08-26:
 *"the direction that is most likely to have most impact towards either proving or
 disproving the target theorem"*). Read against *Steps BE14–BE18* (direction

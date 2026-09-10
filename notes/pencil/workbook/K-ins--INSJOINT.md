@@ -1,7 +1,7 @@
 ## §(K-ins) — option B's insertion calculus: **BOTH KT-inherited routes REFUTED** at `corank(G′) = 3` (route A by KBARE-FALSIFY, route B here, each cap-free at the same 8 seeds), the mechanism identified as a **chain-end panel collapse**, and — since direction INSJOINT (ordinal 90) — **the last endpoint EXCLUDED**: the joint sweep's own `U′` grows by exactly the dimension its required rank grows, so the deficit is preserved and **option B is SPENT OUTRIGHT**
 
-Direction **BINSERT** (arc ordinal 82; `notes/Pencil-fanout.md` §"BINSERT"), the design pass
-`notes/Pencil-strategy.md` §8 ranked **4**: *does option B for `hbareSplit` — the insertion
+Direction **BINSERT** (arc ordinal 82; `notes/pencil/fanout.md` §"BINSERT"), the design pass
+`notes/pencil/strategy.md` §8 ranked **4**: *does option B for `hbareSplit` — the insertion
 calculus — still have an endpoint?* Read against `notes/Phase39-design.md` §"(K-bare)
 extension-route recon" (the chain, the corank stratification, the danger gadgets),
 §(K-bare-ext) *Steps BE1–BE8* (the route-A refutation this section extends) and §(K-tight)
@@ -10,7 +10,7 @@ extension-route recon" (the chain, the corank stratification, the danger gadgets
 
 **Scope declaration for this section's citations (L3), a coordinator call at the landing and
 not a registry deviation:** unqualified `(BE-n)` and `(E4)` mean §(K-bare-ext); `(GR-n)`
-§(K-grid); `(OC-n)` §(K-out); `(RS-n)` §(K-res); `(L n)` `notes/Pencil-labels.md`'s minting
+§(K-grid); `(OC-n)` §(K-out); `(RS-n)` §(K-res); `(L n)` `notes/pencil/labels.md`'s minting
 rule. The owning section stays authoritative for meaning and status.
 
 **Verdict.** Option B is **SPENT, not declined**. Its chain has **no un-run link**: link 1
@@ -264,8 +264,8 @@ reducing to shape 1. (Note §8.4's `(i)`/`(ii)` are **not** *Step BE8*'s `1`/`2`
 
 ### Step INS8 — `U′` for the two-vertex-deleted framework, derived off the matrix rows
 
-Direction **INSJOINT** (arc ordinal 90; `notes/Pencil-fanout.md` §"INSJOINT"), the design
-pass `notes/Pencil-strategy.md` §8 ranked **4**, answering *Step INS7*'s own kill condition.
+Direction **INSJOINT** (arc ordinal 90; `notes/pencil/fanout.md` §"INSJOINT"), the design
+pass `notes/pencil/strategy.md` §8 ranked **4**, answering *Step INS7*'s own kill condition.
 Driver `notes/scripts/w4/insjoint.py` (`uprime|pairing|deficit|sweep|dz`); all exact ℚ.
 
 **How `U′` differs from `U`, and why — stated before any number.** `binsert.py` mode

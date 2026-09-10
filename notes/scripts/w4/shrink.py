@@ -3,12 +3,12 @@ Phase 39, kernel-(K) second fan-out direction R -- (ANH-R1): PENCIL-RIGIDITY
 OF THE CONTRACTED FRAMEWORK, THE WEAK-MAP QUESTION, AND THE BAD LOCUS.
 
 Workbook section: `(K-ann)`, continuation Steps A10-A13; labels `(ANH-9)` --
-`(ANH-12)` (the reserved direction-R namespace, `notes/Pencil-labels.md`
+`(ANH-12)` (the reserved direction-R namespace, `notes/pencil/labels.md`
 2026-08-06 T/R/M table).  Read against section (K-ann) *Steps A4/A7/A8*
 ((ANH-4) the `k = 4` Tay circuit, (ANH-7) the one-bracket recipe, (ANH-R1)
 its open input), section (K-out) *Steps O3/O6* ((OC-3)/(OC-4), whose shape
 this driver's `--bad` mode mirrors on the tau side) and
-`notes/Pencil-strategy.md` sections 2.3 / 4.6 (the rank-lower-bound
+`notes/pencil/strategy.md` sections 2.3 / 4.6 (the rank-lower-bound
 asymmetry and the weak-map lead).
 
 THE OBJECT.  At a `k = 4` class (shape, split, companion) with a guarded

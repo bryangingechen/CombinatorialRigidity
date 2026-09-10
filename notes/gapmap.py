@@ -70,8 +70,8 @@ states the true total up front and ends with an explicit
 so a truncated answer can never be mistaken for a complete one.
 
 Other files. `--file` takes any path, so this also serves
-`notes/Pencil-informal-grid.md` (14 924 lines, owns section (K-grid)) and
-`notes/Pencil-W4-informal.md`. Those carry no gap-map table, so `--label` /
+`notes/pencil/workbook/grid.md` (14 924 lines, owns section (K-grid)) and
+`notes/pencil/workbook/W4.md`. Those carry no gap-map table, so `--label` /
 `--grep` fall back to a whole-file sentence scan tagged by nearest heading +
 line number, and `--list` prints the heading outline with per-section sizes.
 

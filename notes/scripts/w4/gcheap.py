@@ -1,5 +1,5 @@
 """GCHEAP -- the thirty-first kernel-(K) ordinal: (GR-C2), the selection
-clause of GFLOW's descent (spec: notes/Pencil-fanout.md S"GCHEAP --
+clause of GFLOW's descent (spec: notes/pencil/fanout.md S"GCHEAP --
 thirty-first ordinal").
 
 TARGET: (GR-C2) -- at some parity-optimal configuration with |delta| <= 2,

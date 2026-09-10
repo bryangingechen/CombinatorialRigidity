@@ -1,5 +1,5 @@
 """GBLAW -- the thirty-fourth kernel-(K) ordinal: (GR-108), the balance
-law (spec: notes/Pencil-fanout.md S"GBLAW -- thirty-fourth ordinal").
+law (spec: notes/pencil/fanout.md S"GBLAW -- thirty-fourth ordinal").
 
 TARGET: (GR-108) -- at every perfect matching M of a cubic loop-free hub
 multigraph with all odd branches inside M, the parity optimum is attained

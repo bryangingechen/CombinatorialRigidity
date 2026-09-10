@@ -2,8 +2,8 @@
 """GLAW -- direction GLAW (Phase 39, sixth fan-out, 2026-08-19): attack
 (a'), the `d_fg = d_adm` LAW, at route-ledger entry 1.
 
-Answers `notes/Pencil-fanout-archive.md` S"Sixteenth direction -- GLAW"; the
-mathematics is `notes/Pencil-informal-grid.md` S(K-grid) *Steps G74-G79*, labels (GR-55)-(GR-60).
+Answers `notes/pencil/fanout-archive.md` S"Sixteenth direction -- GLAW"; the
+mathematics is `notes/pencil/workbook/grid.md` S(K-grid) *Steps G74-G79*, labels (GR-55)-(GR-60).
 
 Everything here is at `Lambda = empty`, `D = 0`, modulo (GR-4').  The
 target is entry 1's primary attack (a'): at every habitat shape the

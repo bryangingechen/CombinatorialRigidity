@@ -75,7 +75,7 @@ locus). Two consequences frame everything below.
   simultaneously target-rank and `P ≠ 0`; §(K-tight) Steps 2/5 then give
   the escape, and `hK`/(K-res)'s conclusion follows (the hub-selector /
   `pencilRow` packaging is combinatorial, from `hcard` —
-  `notes/Pencil-W4-informal.md` §"widened kernels" Step 5).
+  `notes/pencil/workbook/W4.md` §"widened kernels" Step 5).
 - **Polynomial specialization ≠ the refuted degeneration route.** The
   route-1 NO-GO (design doc §"(K) route-1 gate") refuted *analytic stress
   control at degenerate seeds*; evaluating the polynomial `P` at a special

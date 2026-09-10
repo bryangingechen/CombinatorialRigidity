@@ -2,7 +2,7 @@
 
 **It opens at exactly the tail BGTWOA declared** (*"THE LIVE TAIL IS NOW
 (BE-218) / Step BE217"*), 0-hit re-verified as this direction's first action;
-the collision record and the (L6) disclosure are `notes/Pencil-labels.md`'s.
+the collision record and the (L6) disclosure are `notes/pencil/labels.md`'s.
 
 **The dispatch asked prove-or-refute and the answer is a third branch, which
 is the shape (BE-57)(i)'s own landing named** (a spec offering two outcomes

@@ -15,7 +15,7 @@ kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)*
 the `hK` lane**; the ninth pass's ranks 1–4 SPENT and **the tenth's ranks 1, 2 and 4 ALL SPENT**
 — 1 thrice (85–87), 2 with **NO SUCCESSOR** (88–89, 91), 4 at 90; rounds of four and
 three COMPLETE (78–83), 84–89 SINGLE, **90–91 a CONCURRENT PAIR**, 92 SINGLE. Per-direction verdicts and write-ups:
-`notes/Pencil-fanout.md` §"<CODE>", **not here**. **Standing result,
+`notes/pencil/fanout.md` §"<CODE>", **not here**. **Standing result,
 unchanged: `hK` is not closer.** **(GR-15)** is **untouched**; **class uniformity
 untouched**; no g-flank found; **E3 ARMED (GBAL), NEVER fired, NOT one landing away** — **block 14**.
 
@@ -49,7 +49,7 @@ rows**, residue **0** ((BE-225)–(BE-230)). **BOTH halves hang on it**. **OPEN*
 **On a future HIT the phase-boundary consequences are the USER's call** — a
 `PHASE-BOUNDARIES.md` event against the 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never unilateral; the 2026-08-05 Lean hold binds regardless.
 
-**FIFTEEN reference blocks in `notes/Pencil-structure.md`**, indexed there — **read once
+**FIFTEEN reference blocks in `notes/pencil/structure.md`**, indexed there — **read once
 per session**. The **State of (K)** gap map (`notes/pencil/workbook/`) is this phase's
 status object, **authoritative for every status word**; read with `python3 notes/gapmap.py`,
 never `sed`/`grep`.
@@ -58,12 +58,12 @@ never `sed`/`grep`.
 
 **The phase stays OPEN.** Standing user adjudications, verbatim (these are the live GO/NO-GO
 constraints; the **dated dispatch/selection narrative for every ordinal, 1–44, is
-`notes/Pencil-adjudications.md`**, quoting the user byte-for-byte, and git):
+`notes/pencil/adjudications.md`**, quoting the user byte-for-byte, and git):
 
 - **2026-07-24:** *"Let's leave the phase open and continue the work on the conjecture in this
   phase. Unless there's a good reason to split here."*
 - **2026-07-30 (both kernels) / 2026-08-02 (W4) — RELOCATED VERBATIM 2026-09-03** to
-  `notes/Pencil-adjudications.md`: the same day's *declines are not locks* directive demotes
+  `notes/pencil/adjudications.md`: the same day's *declines are not locks* directive demotes
   them to **history**. `hK`/`hbareSplit` stay **pinned** (a claim about the proof, not a bar);
   W4's build is parked **by the Lean hold**, not by the 2026-08-02 call.
 - **2026-08-05, the standing reproducibility requirement:** *"in general, I would like all of
@@ -71,11 +71,11 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   (`notes/scripts/README.md`); every script the project runs is tracked, probes included.
 - **2026-08-05 → 08-26, the selection history for ordinals 1–44, ARCHIVED IN FULL.**
   Every dated adjudication/delegation bullet that picked a direction is in
-  `notes/Pencil-adjudications.md` **verbatim** (1–19 moved 2026-08-19, 20–44 moved
+  `notes/pencil/adjudications.md` **verbatim** (1–19 moved 2026-08-19, 20–44 moved
   2026-08-26). **None changes a standing constraint** beyond what the next three
   bullets summarize. Read there for the exact quotes — including the 2026-08-19 SIGZ
   authorization terms and the 2026-08-20 `(GR-R1)`/`(GR-C1)`/`(GR-C2)` rename call
-  (collision record: `notes/Pencil-labels.md`).
+  (collision record: `notes/pencil/labels.md`).
 
 - **THE STANDING RESEARCH-PICK DELEGATION — WIDENED, and re-elected for the current
   session** (2026-08-07, widened at the 2026-08-26 seventh check-in's second call,
@@ -133,27 +133,27 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   `weekly_all` moves **1–2 points per pair-round**.
 
 **The arc's cumulative tally** — roll call, ordinals, dates and rungs live in
-`notes/Pencil-fanout.md`'s header and per-direction sections, **the only place they are
+`notes/pencil/fanout.md`'s header and per-direction sections, **the only place they are
 maintained** (this note's copy has gone stale before). Counting rules: the count moves only
 on a **landing**; a user call on dispatch *shape* is **no** strategy pass; the two probes
 (KBARE-FALSIFY, C3-AVOID) sit outside it. Net effect: **disproof risk removed**, every
 refuted route/gap has a gap-map successor, **entry 5 PROVEN**, **class uniformity
-untouched**. **Doc-debt round CLOSED** (`notes/Pencil-cleanup.md`, 2026-08-13).
+untouched**. **Doc-debt round CLOSED** (`notes/pencil/cleanup.md`, 2026-08-13).
 
 **The other candidate continuations, unselected — RELOCATED 2026-08-29** (verbatim) to
-`notes/Pencil-structure.md` §"The unselected candidate continuations": items (a)/(g) **DONE**,
+`notes/pencil/structure.md` §"The unselected candidate continuations": items (a)/(g) **DONE**,
 (b)–(f) each with a canonical home carrying the detail. Stable reference, not status by its
 own last sentence — **the current ranking of what a wave did not pick is
-`notes/Pencil-fanout.md`'s own losers sections, not that list.**
+`notes/pencil/fanout.md`'s own losers sections, not that list.**
 
-**Read `notes/Pencil-strategy.md` before choosing anything else** — the strategic record (why
+**Read `notes/pencil/strategy.md` before choosing anything else** — the strategic record (why
 class uniformity resists, the candidate stronger invariants with **C1 run and struck**, §5's
 symbolic assessment); its own header is its contents table and **its §4.6** is the entry point
 for any attack on the crux. **Any (K)- or W4-side numerics dispatch starts from
 `notes/scripts/README.md`**; detail in *Blockers*.
 
 **The question, and opening recon verdicts R1–R3 — RELOCATED 2026-08-28** (verbatim) to
-`notes/Pencil-structure.md` §"The question and the opening recon": the `ROADMAP.md` §39
+`notes/pencil/structure.md` §"The question and the opening recon": the `ROADMAP.md` §39
 pointer plus the two clauses that section does not carry, and R1/R2/R3's three clauses that
 still constrain statements. Stable reference, not status — unmoved since 2026-07-23.
 
@@ -195,7 +195,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
   and the standing remedy is **relocation or merger, never a fold** — **FIFTEEN** reference
-  blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with no
+  blocks now sit verbatim in `notes/pencil/structure.md`, indexed by its own table, with no
   cap ever bumped and nothing deleted; **which relocation bought what is that file's record,
   not this one's**. **The rule that keeps working:** ask *"what here is reference rather than
   status?"* — six landings running have paid for themselves that way. **LINES bind, not
@@ -222,10 +222,11 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 (slices 8–14; **8, 9, 12 LANDED**). `python3 notes/ledger.py --label '(BE-216)' | --brief |
 --frontier | --delta` answers "what is proved" in one call (1 308 claims, 51% UNTAGGED); a
 `[STATUS]` vocabulary with a `--lint` gate; and the workbook is now ONE FILE PER SECTION
-under `notes/pencil/workbook/` (gap map: `.../gapmap.md`). Next there: slice 13.
+under `notes/pencil/workbook/`, whole corpus under `notes/pencil/` with its own
+CLAUDE.md (gap map: `notes/pencil/workbook/gapmap.md`). Next there: slice 14.
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the
+`notes/pencil/structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the
 write-ups and the `(K-bare)` gap-map row stay authoritative. **Reference, not status.** The
 status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved at the window
 **modulo (BE-57)(iv)'s (S1)/(S2)**, half (B)'s residue is **item 1 of the workbook's four**
@@ -234,28 +235,28 @@ status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved a
 where BLINE killed the `(∗)` route ((BE-130)) — and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` **block 9**: the thread is untouched since WGROW (61) and its
+`notes/pencil/structure.md` **block 9**: the thread is untouched since WGROW (61) and its
 informal argument is **closed**. Status is in the header, not repeated here.
 
 **BBASE (62) → BSATUR (65) — RELOCATED 2026-09-08** to **block 8**, which already owned the detail; the one *status* clause, **(CH-1) does not apply to the flag base** ((BE-89)), is in the header.
 
 **THE 2026-09-02 ROUND'S PER-LANDING CLAUSES (66–72) — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` **block 13**; blocks 8/11/12 already own the detail. **Reference,
+`notes/pencil/structure.md` **block 13**; blocks 8/11/12 already own the detail. **Reference,
 not status.** The two clauses that stay: **no gap-map status word moved at any of the six,
 and BOPEN (72) closes half (B)'s item 1 at side-degree `1`** (block 8), and **the `hK` lane's ranking is
-`notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
+`notes/pencil/strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
 carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose ranks 1 and
 3 are spent.
 
-**THE TENTH STRATEGY-ONLY PASS'S RANKING LIVES AT `notes/Pencil-strategy.md` §8** and is **not restated here** (it supersedes the ninth pass, the 2026-08-25 list and the 2026-09-02 `hK` table *as rankings*). **The ninth's ranks 1–4 ALL SPENT**: BSCOND 76 ((S1)/(S2)), BARCH 77 (the method class **changes ambient**, 14 → 12 reduced to (E4), (BE-149)–(BE-155)), GLEAF 80 (the reach question SPLIT, no proof there moves (GR-10), (GR-145)–(GR-152)), BINSERT 82. **AND THE TENTH'S RANK 1 IS SPENT THREE TIMES OVER** (BGPROP 85, BRANKV 86, BLONGARC 87), **AND ITS RANK 2 IS SPENT WITH ITS FRONTIER EXHAUSTED** (BEFOURP 88, BGTWOA 89), **AND ITS RANK 4 IS SPENT** (INSJOINT 90 — option B's last endpoint EXCLUDED, so option B is **SPENT OUTRIGHT** and its row is CLOSED). **§8's bar now reads: `A_sharp` properness BARRED, (E4) REVERSED, `Γ`-properness STRUCK AS A CLOSURE ROUTE, and the whole ARC / PATH-BOUND METHOD CLASS SPENT** — recorded in §8, as §8's own rule requires; **no further properness attempt on that population is authorized**.
-**THE NEXT CONCRETE TASK is `(BE-OBL)`** — *at an internal R-node peel in the generic flag regime, `c_i(Π_x) = 2` **and** `c_j(Π_x) ≥ 1` ⟹ `ρ_i = 6`* — which is **item 0(a)'s own clause with ONE ADDED HYPOTHESIS** and is **sufficient for the naked `Π_x` obligation at `a = 0`** ((BE-228)). **WHY IT, and not the obligation directly:** BOBLIG **decomposed** the obligation exactly. It is a **three-rung ladder in `Σδ = δ₁+δ₂`**, which is *constant on the chart* — `c₁+c₂ ≤ 4` always, so **`Σδ ≥ 8` ⟹ TRUE with no hypothesis at all**, `Σδ = 7` ⟹ *not both sides fire*, `Σδ ≤ 6` ⟹ **(NO-DOUBLE-PENCIL) verbatim** — residue **exactly `Σδ ≤ 7`**, and at `a = 0` **exactly 30 tuples**, all Grassmann-floor-legal, all attainment-compatible and **all at `max(ρ₁,ρ₂) ≤ 5`**, because `ρ_i = 6` forces `c_i = 2` and then `slack = δ_j = ρ_j ≥ c_j` closes it for free ((BE-225)/(BE-227)(ii)). **TWO ROUTES ARE CLOSED, NOT OPEN:** the modular law (BE-95)(i) derives the obligation from **its own conclusion** ((BE-227)(i)), and **no per-side floor below `f = 6` implies it** — the two cheapest members of the two-piece frontier, `(0,4)` and `(4,3)`, are **REFUTED at a fully-gated in-regime `a = 0` peel** by (BE-175)(i) on the non-firing side, BGTWOA's own kill mechanism one rung down ((BE-226)). **`(BE-OBL)`'s two halves are each tight:** the conclusion cannot drop to `ρ_i ≥ 5` and the hypothesis cannot strengthen to `c_j = 2` ((BE-228)(ii)); and it is **vacuous at a series end at `x`** by (BE-175)(i), so it has content **exactly at side-degree `≥ 2` on BOTH sides** ((BE-228)(iii)). **AND THE UN-FENCING PAID:** `plant_peel`'s `deg₁(x) = 1` gate was BNONUNI's largest blind axis, and `bproper.free_peel` — the same peel's F13 negative control, **no degree gate** — opened it at **zero tracked edits**, giving the **first population in the thread to reach the target's own quantifier** (`a = (0,0)`, generic flag regime, `deg₁(x) = 2` at **135/135**) with **0 violations** ((BE-229)(ii)). **THE CAP, and it is the other half of the finding:** that population reaches the **residue at 0 rows** — every firing it produces is at `ρ_i = 6`, where the obligation is free — and the only landed population that violates the obligation, the arc-3/arc-4 families, **fails it 48/48 but is off the quantifier on two independent counts, one of them structural** ((BE-229)(iii)). So the geometry reads *not found under this cap*, and **the discriminating shape IS item 0(a)'s bad locus** — which is why the successor is a restricted clause and not a smaller number. **BARS, cumulative:** BLONGARC's four, BEFOURP's three, BGTWOA's three, BNONUNI's three, **plus three new** — no further per-side-floor attempt on the obligation at `a = 0`, no modular-law derivation of it, and no reading of the arc-3/arc-4 families as a refutation of it ((BE-230)(iii)). **BNONUNI's OWN per-landing detail (the `(BE-E4′)` kill, its census and its two predecessor audit findings) is RELOCATED 2026-09-09** to `notes/Pencil-structure.md` **block 8**, which already owns this thread's detail. **Alternatives after it, in order:** §8's rank 3 (ledger item 1, habitat (II)); a *less degenerate* (BE-192)/(BE-200) witness; then the `V^k` graph at `k ≥ 3`. **DOC DEBT:** `(K-bare)` is **2,828 / 2,856** words at **28** of headroom, `gapdiff` **0 DROPPED**, **no bump** — paid by **compressing the row's close-it cell**, a restatement whose only irreplaceable content is its citation tokens; the ledger is `notes/Pencil-structure.md` **block 15**. **(BE-14) needs both halves of S-mark and both hang on that obligation** ((BE-177)(iii)/(BE-223)(iii)).
+**THE TENTH STRATEGY-ONLY PASS'S RANKING LIVES AT `notes/pencil/strategy.md` §8** and is **not restated here** (it supersedes the ninth pass, the 2026-08-25 list and the 2026-09-02 `hK` table *as rankings*). **The ninth's ranks 1–4 ALL SPENT**: BSCOND 76 ((S1)/(S2)), BARCH 77 (the method class **changes ambient**, 14 → 12 reduced to (E4), (BE-149)–(BE-155)), GLEAF 80 (the reach question SPLIT, no proof there moves (GR-10), (GR-145)–(GR-152)), BINSERT 82. **AND THE TENTH'S RANK 1 IS SPENT THREE TIMES OVER** (BGPROP 85, BRANKV 86, BLONGARC 87), **AND ITS RANK 2 IS SPENT WITH ITS FRONTIER EXHAUSTED** (BEFOURP 88, BGTWOA 89), **AND ITS RANK 4 IS SPENT** (INSJOINT 90 — option B's last endpoint EXCLUDED, so option B is **SPENT OUTRIGHT** and its row is CLOSED). **§8's bar now reads: `A_sharp` properness BARRED, (E4) REVERSED, `Γ`-properness STRUCK AS A CLOSURE ROUTE, and the whole ARC / PATH-BOUND METHOD CLASS SPENT** — recorded in §8, as §8's own rule requires; **no further properness attempt on that population is authorized**.
+**THE NEXT CONCRETE TASK is `(BE-OBL)`** — *at an internal R-node peel in the generic flag regime, `c_i(Π_x) = 2` **and** `c_j(Π_x) ≥ 1` ⟹ `ρ_i = 6`* — which is **item 0(a)'s own clause with ONE ADDED HYPOTHESIS** and is **sufficient for the naked `Π_x` obligation at `a = 0`** ((BE-228)). **WHY IT, and not the obligation directly:** BOBLIG **decomposed** the obligation exactly. It is a **three-rung ladder in `Σδ = δ₁+δ₂`**, which is *constant on the chart* — `c₁+c₂ ≤ 4` always, so **`Σδ ≥ 8` ⟹ TRUE with no hypothesis at all**, `Σδ = 7` ⟹ *not both sides fire*, `Σδ ≤ 6` ⟹ **(NO-DOUBLE-PENCIL) verbatim** — residue **exactly `Σδ ≤ 7`**, and at `a = 0` **exactly 30 tuples**, all Grassmann-floor-legal, all attainment-compatible and **all at `max(ρ₁,ρ₂) ≤ 5`**, because `ρ_i = 6` forces `c_i = 2` and then `slack = δ_j = ρ_j ≥ c_j` closes it for free ((BE-225)/(BE-227)(ii)). **TWO ROUTES ARE CLOSED, NOT OPEN:** the modular law (BE-95)(i) derives the obligation from **its own conclusion** ((BE-227)(i)), and **no per-side floor below `f = 6` implies it** — the two cheapest members of the two-piece frontier, `(0,4)` and `(4,3)`, are **REFUTED at a fully-gated in-regime `a = 0` peel** by (BE-175)(i) on the non-firing side, BGTWOA's own kill mechanism one rung down ((BE-226)). **`(BE-OBL)`'s two halves are each tight:** the conclusion cannot drop to `ρ_i ≥ 5` and the hypothesis cannot strengthen to `c_j = 2` ((BE-228)(ii)); and it is **vacuous at a series end at `x`** by (BE-175)(i), so it has content **exactly at side-degree `≥ 2` on BOTH sides** ((BE-228)(iii)). **AND THE UN-FENCING PAID:** `plant_peel`'s `deg₁(x) = 1` gate was BNONUNI's largest blind axis, and `bproper.free_peel` — the same peel's F13 negative control, **no degree gate** — opened it at **zero tracked edits**, giving the **first population in the thread to reach the target's own quantifier** (`a = (0,0)`, generic flag regime, `deg₁(x) = 2` at **135/135**) with **0 violations** ((BE-229)(ii)). **THE CAP, and it is the other half of the finding:** that population reaches the **residue at 0 rows** — every firing it produces is at `ρ_i = 6`, where the obligation is free — and the only landed population that violates the obligation, the arc-3/arc-4 families, **fails it 48/48 but is off the quantifier on two independent counts, one of them structural** ((BE-229)(iii)). So the geometry reads *not found under this cap*, and **the discriminating shape IS item 0(a)'s bad locus** — which is why the successor is a restricted clause and not a smaller number. **BARS, cumulative:** BLONGARC's four, BEFOURP's three, BGTWOA's three, BNONUNI's three, **plus three new** — no further per-side-floor attempt on the obligation at `a = 0`, no modular-law derivation of it, and no reading of the arc-3/arc-4 families as a refutation of it ((BE-230)(iii)). **BNONUNI's OWN per-landing detail (the `(BE-E4′)` kill, its census and its two predecessor audit findings) is RELOCATED 2026-09-09** to `notes/pencil/structure.md` **block 8**, which already owns this thread's detail. **Alternatives after it, in order:** §8's rank 3 (ledger item 1, habitat (II)); a *less degenerate* (BE-192)/(BE-200) witness; then the `V^k` graph at `k ≥ 3`. **DOC DEBT:** `(K-bare)` is **2,828 / 2,856** words at **28** of headroom, `gapdiff` **0 DROPPED**, **no bump** — paid by **compressing the row's close-it cell**, a restatement whose only irreplaceable content is its citation tokens; the ledger is `notes/pencil/structure.md` **block 15**. **(BE-14) needs both halves of S-mark and both hang on that obligation** ((BE-177)(iii)/(BE-223)(iii)).
 (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
 **2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
 consistency decide where arc does not), and **4 is SPENT** (GLEAF 80: reached, and
 *necessary*, so it moves nothing) — **the list is one step from exhausted and no member of
 it reaches (GR-10)**. The (K-res) **cheap
 slice is SPENT** (RPOOL). **The three replacement picks that failed are RELOCATED** to
-`notes/Pencil-structure.md` **block 14**, with the sub-item re-lettering hazard. Two things
+`notes/pencil/structure.md` **block 14**, with the sub-item re-lettering hazard. Two things
 stay the USER's call, both OFFERED 2026-09-02 and DECLINED IN FAVOUR OF CONTINUING RESEARCH:
 the **(K-res) wave** (its *scoping slice* LANDED 2026-08-28, below — it is **not** queued) and
 whether W4's now-closed informal side changes anything about the **2026-08-05 Lean hold** —
@@ -283,9 +284,9 @@ The ranked list:
 
 1. **THE FLAG BASE — DISCHARGED by BBASE** (verdict in *Decisions made*); its three cheap
    leftovers (is `B_real` a forest on the class; cyclomatic `≥ 2`; is a triangle necessary)
-   are **RELOCATED** to `notes/Pencil-structure.md` **block 8**.
+   are **RELOCATED** to `notes/pencil/structure.md` **block 8**.
 2.–4. **THE LANE'S STANDING MENU — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
+`notes/pencil/structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
 ~~one-end-series~~ (**entry 2 SPENT at BSERIES, 83** — fired on ONE habitat, **conditionally**,
 and re-scoped onto (BE-45)(iv) on the other), ~~**(S1)/(S2)**~~ (**entry 3 KILLED by BSCOND,
 76**), BTWOCUT's bundle, and the *also ranked* tail (cross-pair closure, the
@@ -301,7 +302,7 @@ started nor pre-empted, and is now **dearer**: see *Blockers*. **Kill condition 
 successor: the repaired statement settled, or a flank at `g_forced ≥ 2` — decided by the
 `§(K-res)/(RS-5)` row.**
 
-**THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
+**THE CANDIDATE LIST lives in `notes/pencil/strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
 candidates on sight (growing-ground-set; counting saturation, now closed in **both**
 directions by (OC-3)/(OC-37)). **Not restated here** — and the board, not this section,
@@ -312,13 +313,13 @@ dispatchable candidate, (ZH-2) stratified**; the per-item provenance, caveats an
 strategy §9's, not restated here.
 
 **DO NOT RE-OPEN — what the recent landings closed: RELOCATED 2026-08-29** (verbatim) to
-`notes/Pencil-structure.md` §"What the recent landings closed" — BZAVOID's three (incl. the
+`notes/pencil/structure.md` §"What the recent landings closed" — BZAVOID's three (incl. the
 **`G²` apparatus**), ZJACOB, ZSHEAR, GHWIT/GMINM. Stable reference, not status; every item's
 own gap-map row carries the same close.
 
 **THE THREE CARRIED ITEMS, RANKED BY DISTANCE TO THE PHASE TARGET** (the 2026-08-26
 directive; *Current state*'s delegation bullet; the superseded successor-order convention and
-its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The target is
+its cost are `notes/dispatch-log.md`'s and `notes/pencil/fanout.md`'s). **The target is
 `PencilPair K 3 G`; exactly these three stand between it and the landed theorem. Rank accordingly.**
 
 1. **`hbareSplit`** (kernel (K-bare), research) **via (BE-14), direct attainment** — *the
@@ -331,7 +332,7 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    cheaper in structure. Carried as pinned; **OPTION B IS SPENT OUTRIGHT** (BINSERT 82,
    INSJOINT 90) — **(K-bare-ext) REFUTED on BOTH KT routes** by a panel collapse, and its last
    endpoint (the joint sweep) **EXCLUDED**; link 2 stays discharged (§(K-ins)). **WHY IT IS
-   *CARRIED* — RELOCATED 2026-09-03** to `notes/Pencil-structure.md` **block 14**: the
+   *CARRIED* — RELOCATED 2026-09-03** to `notes/pencil/structure.md` **block 14**: the
    definitional NO-GO, the KT pp. 684–691 re-pin (LANDED 2026-08-02), the `hK` comparison, and
    KBARE-FALSIFY's sample-scoped evidence. **Reference, not status**; the `(K-bare)`
    gap-map row stays authoritative.
@@ -354,14 +355,14 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    next commit is **W4-L4b** (`exists_degree_two_of_co1_rigid`, pinned +
    spike-elaborated), then order-flexibly W4-L1/L2/L3′/L5; gates N8/N9/N10/N10b all
    PASSED. Canonical homes: `notes/Phase39-design.md` §§"W4 decomposition recon"/"W4-L4
-   identification recon" and `notes/Pencil-W4-informal.md`.
+   identification recon" and `notes/pencil/workbook/W4.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the arc attacks: **untouched by every kernel-(K)
    direction through BSCOND (ordinal 76)** — name the last ordinal, never a count (SWEEP C;
    this line carried two mutually inconsistent tallies until 2026-09-03) — but GPACK (66),
    GLIST (68) and GGLOB (71) reshaped its named next slice.
    **THE LANE'S PER-LANDING DETAIL IS RELOCATED 2026-09-02** to
-   `notes/Pencil-structure.md` §"The `hK` lane — per-landing detail" (**block 11**), the
+   `notes/pencil/structure.md` §"The `hK` lane — per-landing detail" (**block 11**), the
    disposition blocks 8 and 9 got; it also carries (GR-133)'s **price** and the standing
    *do not quote §2.5 as supplying freeness* warning. **Reference, not status.** The status:
    **(GR-18)(iii)'s packing-and-split half is a THEOREM** ((GR-130)); its residual is a
@@ -395,23 +396,23 @@ three items above.
 > **Route σ — a live candidate on THIS section's list; ranking is §8's, not this
 > section's.** Route A at the dual seed `σu`; it would close (K-tight) on the hard stratum,
 > *length-free*. **Offered for adjudication**, **not field-blocked**, **not in flight**
-> (`notes/Pencil-adjudications.md`: never selected); it moves no gap-map status. It rests on
+> (`notes/pencil/adjudications.md`: never selected); it moves no gap-map status. It rests on
 > **four obligations, only the first of which is Lean** — that one genuinely the hold's, the
 > other three dispatchable and two decision-relevant *before* any Lean is commissioned. **The
 > four, their `--hunt` findings, the validation scope, the smallest opening commit and the
 > not-the-bridge warning are THIRD-COPIED here no longer** (thinned 2026-08-28; the *Field
 > scope* caveat left the list 2026-09-03 — **DISCHARGED**, §(K-clos) (AC-1), source-level):
 > canonical homes are §(K-σ) *Step σ5*, the **(K-σ)**/**(K-tight)** rows, and
-> `notes/Pencil-strategy.md` §8.4. The one clause that is *status* and stays here: **route σ
+> `notes/pencil/strategy.md` §8.4. The one clause that is *status* and stays here: **route σ
 > is not a route to (K-res)** (obligation 2), so it does not substitute for the wave.
 >
 > **The durable negatives and the deliberate non-goals — RELOCATED 2026-08-28** (verbatim)
-> to `notes/Pencil-structure.md` §"Durable negatives and deliberate non-goals": the two
+> to `notes/pencil/structure.md` §"Durable negatives and deliberate non-goals": the two
 > 2026-08-07 do-not-re-run items, the *not re-litigated per wave* list, and the
 > do-not-re-derive/re-sweep/re-open batch. Stable reference, not status.
 
 **Gates for any continuation — RELOCATED 2026-08-28** (verbatim) to
-`notes/Pencil-structure.md` §"Gates for any continuation": which gate fires on which file
+`notes/pencil/structure.md` §"Gates for any continuation": which gate fires on which file
 type, and the figure-invariance discharge. Stable reference, not status; read it once per
 session alongside the *Conventions* block relocated there 2026-08-27.
 
@@ -425,9 +426,9 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 **One-line verdicts, reverse-chronological** (`notes/CLAUDE.md` *Forward-weighted note*:
 a settled decision keeps full prose only while upcoming work might lean on it — the four
 newest (BE-14) entries do, the rest do not). Each direction's *mathematics* is in the workbook
-section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<CODE>"
-(`notes/Pencil-fanout-archive.md` for ordinals 1–19); the *user call that picked it* in
-`notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
+section named; its *spec and landing write-up* in `notes/pencil/fanout.md` §"<CODE>"
+(`notes/pencil/fanout-archive.md` for ordinals 1–19); the *user call that picked it* in
+`notes/pencil/adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
 - **THE NINTH STRATEGY PASS — THE RE-RANK** (2026-09-03, coordinator, no dispatch) — **ranks
@@ -556,7 +557,7 @@ landing above it is RPOOL (ordinal 75). Settled, one line each:
   **KBARE-FALSIFY** (2026-08-20): a **T1 HIT**, (K-bare-ext) **refuted as stated**,
   `hbareSplit` **untouched** (§(K-bare-ext) *BE1–BE8*).
 - **Structural rounds 1–2 + the slice-6 compression round: COMPLETE** (2026-08-19 → 08-26;
-  record `notes/Pencil-structure.md`). **ROADMAP §39 was split by volatility** — **do not
+  record `notes/pencil/structure.md`). **ROADMAP §39 was split by volatility** — **do not
   re-add a direction count or fan-out roll-call there**; the count is the Status row's.
 - **The EIGHTH FAN-OUT — all five LANDED 2026-08-19** (ordinals 25–29): GTMPL, GFLOW, SIGZ
   ((OC-37) killing the counting route to a disproof), OSCHU, GCOLL (**(GR-64)(R2) REFUTED**).
@@ -566,14 +567,14 @@ landing above it is RPOOL (ordinal 75). Settled, one line each:
   halves (GBAL, discharging (X)); chart irreducibility PROVEN (CIRR); AA-glue NOT
   realizable at `n_hub = 8` (AGLU) — the rest honest MISSes or OPEN reshapes, each with a
   named successor. **(GR-15) OPEN throughout; E1/E2 never fired; E3 ARMED by GBAL, not
-  fired.** Canonical homes `notes/Pencil-fanout{,-archive}.md` + `notes/Pencil-labels.md`.
-- **The 2026-08-05 research cluster — RELOCATED 2026-09-03** to `Pencil-structure.md`
+  fired.** Canonical homes `notes/Pencil-fanout{,-archive}.md` + `notes/pencil/labels.md`.
+- **The 2026-08-05 research cluster — RELOCATED 2026-09-03** to `pencil/structure.md`
   **block 14** (settled history; `Phase39-design.md` + git carry the detail).
 - **Pre-fan-out arc (2026-07-24 → 08-04) and the *Promoted out of this phase* pointer list
-  — RELOCATED 2026-09-03** to `Pencil-structure.md` **block 14** (settled history + pointers).
+  — RELOCATED 2026-09-03** to `pencil/structure.md` **block 14** (settled history + pointers).
 ## Citations (transcribed, project-canonical sources)
 
-**RELOCATED 2026-09-01** (verbatim) to `notes/Pencil-structure.md` §"Citations — the
+**RELOCATED 2026-09-01** (verbatim) to `notes/pencil/structure.md` §"Citations — the
 phase's verified bibliography (block 7), which carries the per-source venue data and
 the verification dates. **Stable reference, not status.** **A direction that verifies a
 new source adds it THERE, in its landing commit.**

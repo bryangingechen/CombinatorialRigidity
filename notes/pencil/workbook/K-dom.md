@@ -1,6 +1,6 @@
 ## §(K-dom) — the dominance spike: the differential of `H ↦ V_bc`, why C1 is not an inductive route, and (2026-09-03) C2's satisfiability trace (**dominance HOLDS at every class habitat probed; C1's two claimed values REFUTED; C2 UNSAT as a *uniform* carry — proved off the class, measured quiet on it — and NOT shown dead as a class-only conjunct; class uniformity untouched**)
 
-Answering `notes/Pencil-strategy.md` §4-C1, the one candidate on that doc's
+Answering `notes/pencil/strategy.md` §4-C1, the one candidate on that doc's
 list nothing in the arc had run: *compute the Jacobian of the `V_bc` map with
 respect to the far-realization parameters and measure its rank against
 `dim Gr(3,6) = 9`.* Read against §(K-pitch) *Steps 1, 5b* (path-sum
@@ -296,7 +296,7 @@ equally per-shape condition. It is not a route to class uniformity.
 
 ### Step D8 — the C2 satisfiability trace: the consumer's object, and three readings
 
-`notes/Pencil-strategy.md` §8.2 carried **C2** — *carry `V_bc` general position
+`notes/pencil/strategy.md` §8.2 carried **C2** — *carry `V_bc` general position
 as a motive conjunct* — as **live and unpriced** while naming its own
 prerequisite: *"a stronger motive can be **unsatisfiable** — needs a
 satisfiability trace first (the L6b/F10 precedent)."* *Steps D8–D14* run that

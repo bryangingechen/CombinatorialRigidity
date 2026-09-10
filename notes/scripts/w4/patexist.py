@@ -7,7 +7,7 @@ an admissible 2-colouring of `G' = G - v + ab` whose six frame edges split
 placement-free legality clauses?
 
 Workbook section: `(K-frame)`, labels `(FR-8)+`, Steps `FR7+` (the reserved
-direction-PEX namespace, `notes/Pencil-labels.md` 2026-08-07 PEX/TCOL
+direction-PEX namespace, `notes/pencil/labels.md` 2026-08-07 PEX/TCOL
 table).  Read against section (K-frame) *Steps FR0-FR6*, section (K-grid)
 *Step G12* (admissible colourings = one free bit per branch), section
 (K-ann) *Steps A14/A15* ((ANH-13)(iv): `c' = 1 <=> c(G) = 3`; (ANH-14)(a):

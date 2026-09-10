@@ -606,7 +606,7 @@ devices, not variants of existing ones; `bopen.bad_plane` is the
 
 ## TERMINATION check (E1/E2/E3) — read at source, decided explicitly
 
-Read at `notes/Pencil-fanout-archive.md` (the ledger's own statement, not by
+Read at `notes/pencil/fanout-archive.md` (the ledger's own statement, not by
 analogy), each decided:
 
 - **(E1)** — *a g-flank: a `D = 0` shape whose every admissible colouring is

@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BTWOCUT): the strengthened statement **PINNED and checked**, BINDUC's 56 ear misses **REFUTED as a constructor artifact** by the pieces' own moduli, the general-position half **dissolved on everything swept** (13 484 / 13 484, zero shortfalls), the concurrent-plane rung BINDUC's cap 7 named **BUILT and load-bearing at exactly one instance**, and the induction's one genuinely-new obligation **located and named: the CROSS-PAIR closure**
 
-Direction **BTWOCUT** (`notes/Pencil-fanout.md` §"BTWOCUT", ordinal 44), the arc's
+Direction **BTWOCUT** (`notes/pencil/fanout.md` §"BTWOCUT", ordinal 44), the arc's
 fifty-second and the first whose selection was **forced rather than ranked**: by
 BINDUC's exhaustive decomposition (§(K-bare-ext) (BE-23)), the strengthened 2-cut
 composition lemma is the only open layer of (BE-14), so proving it proves

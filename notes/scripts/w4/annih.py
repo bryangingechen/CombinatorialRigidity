@@ -2,7 +2,7 @@
 Phase 39, kernel-(K) fan-out direction A (second fan-out) -- THE ANNIHILATOR
 AS A SELF-STRESS, AND WHETHER IT PRODUCES A CLASS-WIDE RECIPE.
 
-Fuses `notes/Pencil-strategy.md` section 4.6's **U1** (retarget the image
+Fuses `notes/pencil/strategy.md` section 4.6's **U1** (retarget the image
 problem from `Gr(3,6)` to the annihilator `Lambda`), **U2** (the hinge-rate /
 cycle-space presentation, whose ground set is `E(H)`) and kernel-(K)
 **option B** (the stress-function reading).  Workbook section: `(K-ann)`;

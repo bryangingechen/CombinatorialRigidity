@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BPEEL): the EXHAUSTIVENESS OBLIGATION IS RETIRED, NOT DISCHARGED BY ENUMERATION — the good locus is **Zariski-open** on an irreducible chart, so it is **dense or empty**, and **no topological branch crosses a 2-cut**, so the peel's two sides are **independent coordinate blocks sharing exactly ONE datum**, the flag pair; together those bound what any mechanism can depend on, so a third mechanism could only appear as a shortfall of ONE generic invariant that one exact-ℚ draw computes. Job 2's proviso `G` is **CLOSED on (CH-1)'s own class by (CH-1)(a) itself** — a forced-empty `G` says the chart is empty. And **(BE-66)(iv)'s REASON is REFUTED**: the landed *general* propagation rule forces `π_x = π_y` at **non-adjacent** pairs; the conclusion survives by (BE-32)(+) + (BE-22)(vi), which **re-ranks the SPREAD step** as the last gap in half (B)'s discharge
 
-Direction **BPEEL** (`notes/Pencil-fanout.md` §"BPEEL", ordinal 54), the arc's
+Direction **BPEEL** (`notes/pencil/fanout.md` §"BPEEL", ordinal 54), the arc's
 sixty-second, at **(BE-67)(iii)** — *for **every** internal R-node piece `H`,
 does some point of `Chart(H)` make both peel sides attain and put `ρ̄₁, ρ̄₂` in
 general position?* — BDECOR's residue (1), taken after the coordinator re-ran

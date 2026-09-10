@@ -1,6 +1,6 @@
 ## §(K-ind) — can a numerical invariant of the failure locus be carried along the generating moves? (**NO — the transport graph on the class is edgeless; the one genuine chart relation runs the wrong way and bottoms out at `k ≤ 3`**)
 
-Answering the question `notes/Pencil-strategy.md` §4's framing correction raises
+Answering the question `notes/pencil/strategy.md` §4's framing correction raises
 but never poses: *the induction is already the framework, so strengthen the
 inductive invariant — can a **numerical** invariant of the failure locus
 (equivalently of the image of `H ↦ V_bc`) be **carried along the generating
@@ -71,13 +71,13 @@ consequences, both worth stating because they bound the whole question:
    equivalently of the image") is the only non-circular reading.
 2. **On the image side the only transportable number is `dim Image Φ`.**
    `deg Image Φ` is not monotone under any containment and is unavailable
-   without a description of the image (`Pencil-strategy.md` §2.4's open
+   without a description of the image (`pencil/strategy.md` §2.4's open
    problem); `dim Image Φ = 9` is exactly **(K-dom)**.
 
 > **Four objects, kept apart** (coordinator scrutiny, 2026-08-05; the arc's prose
 > had been conflating them). **(1)** `V_bc(p)` is a **point** of `Gr(3,6)`, not a
 > locus. **(2)** The graph-dependent object is the **map**
-> `φ_G : chart(G) → Gr(3,6)` and its **image** — the thing `Pencil-strategy.md`
+> `φ_G : chart(G) → Gr(3,6)` and its **image** — the thing `pencil/strategy.md`
 > §2.4 says we have no description of. **(3)** The bad locus `B ⊆ Gr(3,6)` is the
 > union of the two Schubert divisors `σ₁(α(a))`, `σ₁(Λ²π̂)`, each the
 > **hyperplane class** in the Plücker embedding, so `B` is cut by a *single
@@ -235,7 +235,7 @@ smaller finite set, and the moves never cross between finite sets.*
 
 ### Step I5 — the three cheap kill-checks, answered
 
-**(1) The `Pencil-strategy.md` §2.5 saturation trap — evaded in form, re-entered
+**(1) The `pencil/strategy.md` §2.5 saturation trap — evaded in form, re-entered
 in substance.** `dim Image Φ` is a Jacobian rank, not a count, so §2.5's blanket
 ruling does not literally apply. But the split is the familiar §2.3 asymmetry:
 the **upper** bound `dim Image ≤ min(9, 6k−14)` is (D1), a pure count, *proven*;
@@ -281,7 +281,7 @@ there. It cannot be done by transport:
 > not determine the internal geometry of `H₀`.
 
 So the contraction move relates the two charts by **no** morphism in either
-direction. This is the structural half of `notes/Pencil-strategy.md` §4-C2's
+direction. This is the structural half of `notes/pencil/strategy.md` §4-C2's
 first bullet: the obstruction is not only that the conjunct would quantify over
 subgraphs — it is that the arm which would have to re-establish it has no map to
 pull it back along.

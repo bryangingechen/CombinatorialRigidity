@@ -1,7 +1,7 @@
 ## §(K-mech) — the mechanisms of the residual (W2)/(W4) anomalies: the load space Ω, the α-confinement calculus, and the 6v11e rescue
 
 Sibling of §(K-pure), answering its *Step P8* and *Step P9* item 5 (the
-second fan-out's direction M, `notes/Pencil-fanout-archive.md` §"Direction M").
+second fan-out's direction M, `notes/pencil/fanout-archive.md` §"Direction M").
 Standing notation inherited from §(K-pure): the slide-limit carrier at a
 support `Σ`, witnesses (W1)–(W4), chain spans `S_P`, available bars
 `R_P = S_P^{⊥_B}`, loaded stresses and loads, `T = ⟨C_ab, C_ac⟩`,
@@ -909,7 +909,7 @@ no geometry in it, in the *same object class* as §(K-grid) (GR-10) and
 class-uniform statement and is not an independent gap; (OC-8) stays OPEN; (OC-44)(ii)
 is untouched; (OC-44)(iii) is restated as (OW) and stays OPEN.
 
-*(Everything cited that this pass did not mint, per `notes/Pencil-labels.md`
+*(Everything cited that this pass did not mint, per `notes/pencil/labels.md`
 clause L3: (OC-29)–(OC-34), (OC-40)–(OC-44), (OC-49) are §(K-out)'s own earlier
 items; (AC-2)/(AC-4)/(AC-9) are §(K-clos)'s; (FR-2)/(FR-3) are §(K-frame)'s;
 (GR-5)/(GR-9)/(GR-10) are §(K-grid)'s; §(K-slide-comb) (C6) is that section's.
@@ -1273,7 +1273,7 @@ networks, so its 78 confined cases are a small absolute number.
 > existence statement over admissible colourings** — the *same object class* as
 > §(K-grid) (GR-10) and §(K-slide-comb) (C6), for which the arc has an
 > off-the-shelf prototype (Nash-Williams/Tutte, Edmonds) but no min-max, and to
-> which `Pencil-strategy.md` §2.3's base-rate warning applies verbatim: every
+> which `pencil/strategy.md` §2.3's base-rate warning applies verbatim: every
 > prior class-uniform combinatorial-existence claim of this arc was eventually
 > either proven by a min-max or refuted by a structural flank.
 >
@@ -1384,9 +1384,9 @@ direction).
 
 ---
 
-### Termination check (Steps O47–O51) — read at source in `notes/Pencil-fanout-archive.md`
+### Termination check (Steps O47–O51) — read at source in `notes/pencil/fanout-archive.md`
 
-E1/E2/E3 read at `notes/Pencil-fanout-archive.md` *"The route ledger and the
+E1/E2/E3 read at `notes/pencil/fanout-archive.md` *"The route ledger and the
 TERMINATION test"* (the GEXIST statement, and the GORIENT restatement with its
 recorded deliberate E3 deviation) — not from a paraphrase. They are stated over
 the **§(K-grid) / (GR-15) ledger**; *Step O41*'s reading transposed them, and
@@ -1429,7 +1429,7 @@ Cap disclosure: every "not found" above is *not found under the stated caps* —
 > uniformity.
 >
 > **Numbering.** This section opens at **(OC-56) / *Step O52***, the tail
-> `notes/Pencil-labels.md` declares for §(K-out) at OWALL's landing
+> `notes/pencil/labels.md` declares for §(K-out) at OWALL's landing
 > (*"the live tail is therefore (OC-56)+ / Step O52+"*). The dispatched
 > reservation offered (OC-58)+ / O53+; the direction **deviated DOWN** to the
 > declared tail and says so in its return, per that file's standing lesson
@@ -1623,7 +1623,7 @@ specializations at 18 seeds each (`obar.py --validate`, `--onerow`, `--hinge`).
 (OC-57) at `dim A = 1`. The (T3) reading is that clause's own statement. ∎
 
 **U3's own kill clause fires, and by a cheaper mechanism than the one it
-names.** `Pencil-strategy.md` §4.6 wrote: *"if chart-wide stresses turn out to
+names.** `pencil/strategy.md` §4.6 wrote: *"if chart-wide stresses turn out to
 have no more structure than pointwise ones, U3 is only a change of wording"*.
 The kill does fire — but it needs **no comparison of chart-wide with pointwise
 structure at all**. The bar-support question is *pointwise* equivalent to the
@@ -1634,7 +1634,7 @@ pointwise) stress"* asked for a support enumeration; the correct answer is that
 the support in question is one coordinate, and its vanishing is (K-wit).
 
 **And the logical-form move that motivated U3 does not survive the
-identification.** `Pencil-strategy.md` §2.3's asymmetry (negatives uniform,
+identification.** `pencil/strategy.md` §2.3's asymmetry (negatives uniform,
 positives per-shape) was the reason to care: U3 stated the target as a
 **non-existence**. But (OC-58) shows the non-existence is the *escape*, i.e.
 `V_bc ⊄ C(M)^{⊥_B}` — a rank **lower** bound, the same side of §2.3's wall the
@@ -1735,7 +1735,7 @@ under cap** at the other 13 (`obar.py --conic`).
 
 > **(OC-61)** *(an assessment)*
 >
-> **(1) `Pencil-strategy.md` §8.2's U3 gate is answered NEGATIVE and U3's one
+> **(1) `pencil/strategy.md` §8.2's U3 gate is answered NEGATIVE and U3's one
 > genuine residue is RETIRED.** Its kill condition — *"the `H ∪ {bar along M}`
 > ledger run, or the admissibility check coming back negative"* — is exercised
 > on its **second** branch. §8.2's U3 row and §4.6's residue paragraph both
@@ -1763,7 +1763,7 @@ under cap** at the other 13 (`obar.py --conic`).
 > **growing-ground-set** test: the object's index set is `E(H) ∪ {bar}`, so it
 > passes ingredient 2 formally — and (OC-58) shows that is cosmetic, since the
 > bar coordinate carries the entire question and it is one scalar, not a growing
-> family. **Counting saturation** (`Pencil-strategy.md` §2.5): consistent, and
+> family. **Counting saturation** (`pencil/strategy.md` §2.5): consistent, and
 > used only as a negative — `dim(A ∩ V_bc^{⊥_E})` is a placement datum with no
 > count-expressible content, which is (OC-3) again. **§2.5 supplies no freeness
 > here and is not quoted as if it did.**

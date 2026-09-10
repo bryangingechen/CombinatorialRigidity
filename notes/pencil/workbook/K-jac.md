@@ -1,7 +1,7 @@
 ## §(K-jac) — the Jacobian / singular-locus route is **DEAD**, and the reason is that the zero-section Jacobian **computes `rank R(y)` and nothing else**: the identification is exact, classical and free, but its own hypothesis — *the cone has the expected dimension* — is, at its weakest instance, the phase target; and the one structure it advertised as leverage, the pure-condition quadric, is exactly the fibre-degree-2 part the criterion is identically blind to
 
-Direction **ZJACOB** (`notes/Pencil-fanout.md` §"ZJACOB"), the second
-direction `notes/Pencil-strategy.md` §9's external-technique shelf has
+Direction **ZJACOB** (`notes/pencil/fanout.md` §"ZJACOB"), the second
+direction `notes/pencil/strategy.md` §9's external-technique shelf has
 produced and the head of §9.3's order after ZSHEAR struck (ZH-1). It settles
 candidate **(ZH-4)** of that shelf (§9.2). Read against §(K-tight) *Steps 2,
 5* (the boundary-load calculus, its escape criterion, and the two-line failure
@@ -10,7 +10,7 @@ conic), §(K-pitch) *Step 0* (the pitch polynomial `P = Q(r̃)`), §(K-pure)
 Thm 2.18 does not descend to a constrained subfamily), §(K-chart) (the pencil
 chart is irreducible), §(K-bare-ext) *Step BE12/BE13* (the universal partition
 rank cap, and the cone rank law), §(K-shear) *Step SH5* ((SH-6)'s dichotomy and
-the `PGL(4)`-invariance residue), and `notes/Pencil-strategy.md` §2.4 / §2.5 /
+the `PGL(4)`-invariance residue), and `notes/pencil/strategy.md` §2.4 / §2.5 /
 §4.6 (the wall and the two filters). Driver
 `notes/scripts/w4/zjacob.py`; all exact ℚ, the `--sym` mode fully **symbolic**
 (identities in `ℚ[…]`, no sampling).
@@ -68,7 +68,7 @@ lifting the bar.
   from **above**, and all take the generic rank `r` as an **input**. On our
   shapes the sharpest of them reads `height(I_t) ≤ 6|V| − 6(|V|−1) + 1 = 7`,
   **the same 7 at every class habitat measured** — so it does not see the graph
-  at all, and dies on `notes/Pencil-strategy.md` §4.6's growing-ground-set
+  at all, and dies on `notes/pencil/strategy.md` §4.6's growing-ground-set
   filter as well. Exhibited twice, at a tight carrier and at a constructed one.
   **(JC-3)**.
 - **And the criterion is identically blind to the half of §(K-pure) that
@@ -96,7 +96,7 @@ lifting the bar.
   one backwards** after ZSHEAR, and the **first that relocates onto the
   conclusion itself** rather than onto another open step. **(JC-6)**.
 - **Gap-map effect: NONE.** No *State of (K)* row moves and no status keyword
-  changes. What moves is `notes/Pencil-strategy.md` §9's shelf: **(ZH-4) is
+  changes. What moves is `notes/pencil/strategy.md` §9's shelf: **(ZH-4) is
   struck**, **(ZH-3)'s circularity is confirmed and explained** (it is (ZH-4)'s
   hypothesis), and §9.3's order is left with **one** dispatchable candidate —
   **(ZH-2)** in its stratified reading only, since (ZH-5) is a design note and
@@ -321,7 +321,7 @@ pointer is asserted).**
 > **8/8** shapes, with `5|E| = 6(|V|−1) = target` and
 > `6|E| = 6|V| + |E| − 6` asserted at each. The bound is `6 + 1` — the number
 > of trivial motions plus one — **independent of the graph**. By
-> `notes/Pencil-strategy.md` §4.6's growing-ground-set filter a
+> `notes/pencil/strategy.md` §4.6's growing-ground-set filter a
 > fixed-dimensional quantity cannot see the graph, so this one cannot
 > distinguish one class member from another, let alone certify one.
 
@@ -465,7 +465,7 @@ a worse coordinate system.
 > exhibited phenomenon: §(K-pure) *Step P6* **(PC6)** shows at `P21` that a
 > constrained subfamily can be **dependent at every point** while the ambient
 > system with the same multiplicities is independent (rank `15/15`) and the (C6)
-> packing holds. It is also `notes/Pencil-strategy.md` §2.4's wall in one line:
+> packing holds. It is also `notes/pencil/strategy.md` §2.4's wall in one line:
 > *"`V_bc` is not a generic point … and we have no description of that image."*
 > So the repair is the descent problem, which is the arc's open problem.
 >
@@ -500,7 +500,7 @@ attacks properness and lands on properness. (JC-6)(d) records it.
 **The `PGL(4)`-invariance residue binds, and it decides the symbolic-leaf
 question.** §(K-shear)'s residue is that `Q(r̃) ≠ 0` is `PGL(4)`-invariant, so
 **no gauge-fixing or frame normalization can ever supply it**. The only
-symbolic slice `notes/Pencil-strategy.md` §5.3 measures as *feasible* is the
+symbolic slice `notes/pencil/strategy.md` §5.3 measures as *feasible* is the
 **gauge-fixed local frame** (`m2/lambda1.m2` block (M4); the ungauged
 28-coordinate degree-52 expansion is killed at 600 s). So a Macaulay2 leaf
 aimed at the pitch-side variant of this route is barred **twice over** — by
@@ -561,7 +561,7 @@ prediction.
 - **(JC-4)** would change if the escape criterion could be re-presented with
   the pitch as a **fibre-linear** condition on some auxiliary bundle. That is
   what (PC-Z) already does for `V_bc` (the two Schubert `σ₁` conditions), and
-  `notes/Pencil-strategy.md` §2.4 records the result: the bad locus becomes a
+  `notes/pencil/strategy.md` §2.4 records the result: the bad locus becomes a
   hypersurface in `Gr(3,6)` and the whole difficulty moves to describing the
   image of `φ_G`. So the re-presentation exists and the difficulty is
   conserved — which is (JC-6)(a) again.
@@ -653,7 +653,7 @@ move", first bullet).
 *Steps JC1–JC5*; **all consumed**, none unused. Tag `JC-` was verified 0-hit at
 reservation and this section is its only consumer.
 
-## Shelf effect — `notes/Pencil-strategy.md` §9
+## Shelf effect — `notes/pencil/strategy.md` §9
 
 Proposed edits for the coordinator's landing commit (this dispatch touches no
 shared file):

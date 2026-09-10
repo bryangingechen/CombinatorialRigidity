@@ -1,6 +1,6 @@
 ## §(K-Δ) — the Δ-matroid / orthogonal-matroid literature: **NO HIT, with the reason** (and the two readings it does buy)
 
-Discharges `notes/Pencil-strategy.md` §7's single recorded unverified lead —
+Discharges `notes/pencil/strategy.md` §7's single recorded unverified lead —
 *does the Δ-matroid / orthogonal-matroid literature (Bouchet and successors)
 contain anything bearing on the phase's structural obstruction: combinatorics
 that can see a quadric?* Verdict on the dispatch's own bar (a specific theorem,
@@ -27,7 +27,7 @@ not a thematic resemblance):
   with the graph.** Even granting M1, the Δ-matroid of a maximal isotropic in
   `K⁶` lives on a 3-element ground set: its whole content is which of `2³ = 8`
   subsets are feasible. Nothing for a min-max to count, no subset-indexed family
-  over `E(G)`. **This is `Pencil-strategy.md` §2.2's ingredient-2 failure
+  over `E(G)`. **This is `pencil/strategy.md` §2.2's ingredient-2 failure
   restated in the target literature's own terms**, and it is the more damaging of
   the two, because it would survive any repair of M1.
 - **(M2 — a *pass*, recorded so the verdict is honest.)** The *form* of the
@@ -61,7 +61,7 @@ not a thematic resemblance):
   symplectic matroids are `B_n`/`C_n`; ordinary matroids are `A_n`.
 
 **What the subject supplies is ingredient 3, not ingredient 2.** Against
-`Pencil-strategy.md` §2.1: the irreducible parameter space is the spinor variety;
+`pencil/strategy.md` §2.1: the irreducible parameter space is the spinor variety;
 min-max theorems exist in quantity (Geelen–Iwata–Murota's linear Δ-matroid
 parity, Bouchet–Cunningham's jump systems / bisubmodular polyhedra,
 Koana–Wahlström's union and delta-sum); the subset-indexed family

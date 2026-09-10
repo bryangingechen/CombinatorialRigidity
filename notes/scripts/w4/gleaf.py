@@ -85,7 +85,7 @@ harness limit and disclosed as one.  `--flank` reports a WITNESS-shaped
 negative and two ARGUMENTS; its census leg is a capped sweep and its
 `not found` is reported as *not found under cap*.
 
-Workbook home: `notes/Pencil-informal-grid.md` section (K-grid) *Steps
+Workbook home: `notes/pencil/workbook/grid.md` section (K-grid) *Steps
 G165--G172*, labels (GR-145)--(GR-152).  The reservation opens at the tail
 GGLOB declared ((GR-145) / *Step G165*), one step BELOW the dispatch spec's
 range, which skipped it; (GR-153) / *Step G173* are returned unused.

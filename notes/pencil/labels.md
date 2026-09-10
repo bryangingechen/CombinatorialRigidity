@@ -11,8 +11,8 @@ states a verdict; the status column is a one-word pointer.
 below) and anyone unsure what a bare `(C6)`-style token refers to.
 
 **Files in scope.** `notes/pencil/workbook/` (the (K) workbook),
-`notes/Pencil-W4-informal.md` (the W4 residual workbook),
-`notes/Pencil-strategy.md`, `notes/Pencil-fanout.md`, `notes/Phase39.md`,
+`notes/pencil/workbook/W4.md` (the W4 residual workbook),
+`notes/pencil/strategy.md`, `notes/pencil/fanout.md`, `notes/Phase39.md`,
 `notes/Phase39-design.md`.
 
 **This file is the canonical detail for the general rule.** `RESEARCH-ARC.md`
@@ -56,7 +56,7 @@ inevitable."* That is half right, and the half it gets wrong changes the fix:
    the letter is taken.
 3. **A file boundary does not help.** The (C6)/(C7) incident was *already* a
    cross-**file** collision: §(SAFE-RES)'s (C7)/(C8) live in
-   `Pencil-W4-informal.md`, §(K-slide-comb)'s (C6)/(C7) in
+   `pencil/workbook/W4.md`, §(K-slide-comb)'s (C6)/(C7) in
    `pencil/workbook/`, and the strategy doc's C1/C2/C3 in a third file.
    Splitting the W4 arc into its own file on 2026-08-05 did not prevent the
    collision — it is why the phase note needs a hand-written disambiguation.
@@ -175,7 +175,7 @@ structurally cannot see, and (L7) is how the *check itself* is run.
 
 ## Reserved namespaces — the three incoming parallel dispatches
 
-Reserved 2026-08-05 for the three-way fan-out of `notes/Pencil-fanout.md`, so
+Reserved 2026-08-05 for the three-way fan-out of `notes/pencil/fanout.md`, so
 that three concurrent read-only passes cannot collide with each other or with
 anything above. Each prefix was verified **0-hit** across `*.md`, `*.tex`,
 `*.lean`, `*.py`, `*.m2` at reservation time, as was each section name.
@@ -189,7 +189,7 @@ what each of the three landing commits did. The mechanics below stay because
 they bind the *next* parallel dispatch, not because one is in flight.
 
 **Reserved 2026-08-06 for the SECOND fan-out — directions T / R / M**
-(`notes/Pencil-fanout-archive.md` §"Second fan-out"; letters chosen precisely to avoid
+(`notes/pencil/fanout-archive.md` §"Second fan-out"; letters chosen precisely to avoid
 the A/B/C date-ambiguity below). Each token verified **0-hit** across `*.md`,
 `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time. T and R *extend* live
 sections, so their reservations are the unclaimed tails of those sections'
@@ -202,7 +202,7 @@ minted nothing in §(K-pure), as required), and (ANH-9)–(ANH-12)/Steps A10–A
 never minted, so both return to the pool).
 
 **Reserved 2026-08-06 for the THIRD fan-out — directions G / Q / O**
-(`notes/Pencil-fanout-archive.md` §"Third fan-out"; letters dated — A/B/C and T/R/M
+(`notes/pencil/fanout-archive.md` §"Third fan-out"; letters dated — A/B/C and T/R/M
 are taken above; G/Q/O chosen off the collision table's bare-token rows).
 Each token verified **0-hit** across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` at reservation time (`outerwide.m2` replaced a first candidate whose
@@ -220,7 +220,7 @@ Steps G8–G13, `gridwit.py` (§(K-grid)'s row — `gridwit.m2` was never needed
 and **§(K-pack)** / `PK-` return to the pool unopened).
 
 **Reserved 2026-08-06 for the FOURTH fan-out — directions E / J**
-(`notes/Pencil-fanout-archive.md` §"Fourth fan-out"; letters dated — A/B/C (×2),
+(`notes/pencil/fanout-archive.md` §"Fourth fan-out"; letters dated — A/B/C (×2),
 S1–S4, T/R/M and G/Q/O are taken above; E/J chosen off the collision
 table's bare-token rows). One recorded hazard, not a rename (L4): **(E)**
 bare remains §(SAFE-RES)'s gap token in the W4 workbook — the direction is
@@ -241,7 +241,7 @@ J (2026-08-07) as the new section **§(K-frame)**, tag `FR-` — (FR-1)–(FR-7)
 `framedom.m2` (its `m2` leaf WAS needed, unlike E's).
 
 **Reserved 2026-08-07 for the FIFTH fan-out — directions PEX / TCOL**
-(`notes/Pencil-fanout-archive.md` §"Fifth fan-out"). **The first fan-out under (L5)**:
+(`notes/pencil/fanout-archive.md` §"Fifth fan-out"). **The first fan-out under (L5)**:
 the codes are topic-tagged mnemonics (`PEX` = pattern-existence, `TCOL` =
 tight-stratum colouring), not letters, and each was verified **0-hit as a raw
 substring** across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation
@@ -264,19 +264,19 @@ rejected as a **direction code** under (L5)'s substring check, which is a
 distinct test from a prefixed label's — recorded so the two are not confused.
 
 **The SIXTH direction — CFLANK — LANDED 2026-08-07**
-(`notes/Pencil-fanout-archive.md` §"Sixth direction"), reservation row moved into
+(`notes/pencil/fanout-archive.md` §"Sixth direction"), reservation row moved into
 the registry above: (GR-21)–(GR-26), Steps G24–G28, `w4/cflank.py` (§(K-grid)'s
 row — the argument stayed inside §(K-grid)'s own family, so the reserved
 section name **§(K-prof)** and its tag **`PF-`** were never opened and
 return to the pool unopened; the optional M2 leaf `m2/cflank.m2` was also
 never needed). A **single direction**, not a fan-out — its selection was
 **delegated to the coordinator**, not user-adjudicated from a candidate
-list (`notes/Pencil-adjudications.md`, the "keep going on my own
+list (`notes/pencil/adjudications.md`, the "keep going on my own
 judgment" adjudication). No flank found; (GR-15) stays OPEN, unchanged in
 status.
 
 **The SEVENTH direction — GCAP — LANDED 2026-08-13**
-(`notes/Pencil-fanout-archive.md` §"Seventh direction"), reservation row moved
+(`notes/pencil/fanout-archive.md` §"Seventh direction"), reservation row moved
 into the registry above: (GR-27)–(GR-28), Steps G29–G33, `w4/gcap.py`
 (§(K-grid)'s row — the argument stayed inside §(K-grid)'s own family, so
 the reserved section name **§(K-gcap)** and its tag **`GC-`** were never
@@ -289,7 +289,7 @@ the 2026-08-12 refinement of the standing delegation (`notes/Phase39.md`
 status.
 
 **The EIGHTH direction — GUNIF — LANDED 2026-08-13**
-(`notes/Pencil-fanout-archive.md` §"Eighth direction"), reservation row moved
+(`notes/pencil/fanout-archive.md` §"Eighth direction"), reservation row moved
 into the registry above: (GR-29)–(GR-31), Steps G34–G37, `w4/gunif.py`
 (§(K-grid)'s row — the argument stayed inside §(K-grid)'s own family
 **again**, so the reserved section name **§(K-gcap)** and its tag
@@ -309,7 +309,7 @@ is, again, deliberately NOT reserved** — verified 0-hit and recorded
 here so a successor does not mint them.
 
 **The NINTH direction — GEXIST — LANDED 2026-08-13**
-(`notes/Pencil-fanout-archive.md` §"Ninth direction"), reservation row moved
+(`notes/pencil/fanout-archive.md` §"Ninth direction"), reservation row moved
 into the registry above: (GR-32)–(GR-35), Steps G38–G42, driver modes
 `--exh`/`--charge`/`--repair`/`--adv`/`--validate` (`w4/gexist.py`;
 §(K-grid)'s row — the argument stayed inside §(K-grid)'s own family
@@ -332,7 +332,7 @@ explicit rank-certified colourings. No g-flank found; the target stays
 stays, again, deliberately NOT reserved.**
 
 **The TENTH direction — GORIENT — LANDED 2026-08-13**
-(`notes/Pencil-fanout-archive.md` §"Tenth direction"), reservation row moved
+(`notes/pencil/fanout-archive.md` §"Tenth direction"), reservation row moved
 into the registry above: (GR-36)–(GR-39), Steps G43–G47, driver modes
 `--hall`/`--kill`/`--hot`/`--adv`/`--validate` (`w4/gorient.py`;
 §(K-grid)'s row — the argument stayed inside §(K-grid)'s own family
@@ -353,7 +353,7 @@ measured `d ≤ 2` elsewhere). No g-flank found; the target stays
 stays, again, deliberately NOT reserved.**
 
 **The ELEVENTH direction — GDEV — LANDED 2026-08-15**
-(`notes/Pencil-fanout-archive.md` §"Eleventh direction"), reservation converted
+(`notes/pencil/fanout-archive.md` §"Eleventh direction"), reservation converted
 in place: **(GR-40)–(GR-42) and Steps G48–G52 are CLAIMED**, leaving
 **(GR-43)+ and Steps G53+** as §(K-grid)'s live unclaimed tails; driver
 modes `--charge`/`--bound`/`--adv`/`--hunt`/`--validate`
@@ -393,7 +393,7 @@ authoritative. **Do not mint §(K-unif)/`GU-`** (considered twice,
 deliberately not minted — recorded below).
 
 **The TWELFTH direction — GADM — LANDED 2026-08-17**
-(`notes/Pencil-fanout-archive.md` §"Twelfth direction"), reservation converted
+(`notes/pencil/fanout-archive.md` §"Twelfth direction"), reservation converted
 in place: **(GR-43) and Steps G53–G57 are CLAIMED**, leaving
 **(GR-44)+ and Steps G58+** as §(K-grid)'s live unclaimed tails; driver
 modes `--nk`/`--free`/`--balance`/`--adv`/`--validate` (`w4/gadm.py`;
@@ -447,7 +447,7 @@ twice, deliberately not minted, and this landing does not revive it.
 No M2 leaf was expected or opened.
 
 **The THIRTEENTH direction — GPSA — LANDED 2026-08-18**
-(`notes/Pencil-fanout-archive.md` §"Thirteenth direction"), reservation
+(`notes/pencil/fanout-archive.md` §"Thirteenth direction"), reservation
 converted in place: **(GR-44)–(GR-45) and Steps G58–G62 are CLAIMED**,
 leaving **(GR-46)+ and Steps G63+** as §(K-grid)'s live unclaimed
 tails; driver modes `--sdr`/`--balance`/`--odd`/`--adv`/`--validate`
@@ -496,7 +496,7 @@ minted, and this prep does not revive it. No M2 leaf expected — the
 target is a finite combinatorial statement.
 
 **The FOURTEENTH direction — GDESC — LANDED 2026-08-18**
-(`notes/Pencil-fanout-archive.md` §"Fourteenth direction"), reservation
+(`notes/pencil/fanout-archive.md` §"Fourteenth direction"), reservation
 converted in place: **(GR-46)–(GR-48) and Steps G63–G67 are CLAIMED**,
 leaving **(GR-49)+ and Steps G68+** as §(K-grid)'s live unclaimed
 tails; driver modes `--stuck`/`--cases`/`--opt`/`--adv`/`--validate`
@@ -543,7 +543,7 @@ at) was verified **0-hit as a raw substring**, case-insensitively,
 across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time —
 as was the driver basename `gdesc` (controls `gpsa` 7 files and `gadm`
 9, so the grep was live). **`GDART` was checked and REJECTED for a
-hit** — it sits in `notes/Pencil-fanout-archive.md` §"Eighth direction"'s
+hit** — it sits in `notes/pencil/fanout-archive.md` §"Eighth direction"'s
 code-minting paragraph (the GUNIF prep's own checked-but-not-used
 list): a **bookkeeping** hit like `GBAL`'s one prep ago, not a semantic
 one, and the second consecutive time clause L5's
@@ -565,7 +565,7 @@ minted, and this landing does not revive it. No M2 leaf was expected
 or opened — the target was a finite combinatorial statement.
 
 **The FIFTEENTH direction — GBAL — LANDED 2026-08-19**
-(`notes/Pencil-fanout-archive.md` §"Fifteenth direction"), reservation
+(`notes/pencil/fanout-archive.md` §"Fifteenth direction"), reservation
 converted in place: **(GR-49)–(GR-54) and Steps G68–G73 are CLAIMED**,
 leaving **(GR-55)+ and Steps G74+** as §(K-grid)'s live unclaimed
 tails; driver modes
@@ -598,7 +598,7 @@ habitat shapes**. No g-flank; **(GR-15) stays OPEN, unchanged in
 status.** **§(K-unif)/`GU-` stays, again, deliberately NOT reserved.**
 One of **five** concurrent directions in the **sixth fan-out**
 (GBAL/GLAW/OCON/LTWO/FRES, dispatched 2026-08-19 by explicit user
-adjudication, `notes/Pencil-fanout-archive.md` §"Sixth fan-out"), not a serial
+adjudication, `notes/pencil/fanout-archive.md` §"Sixth fan-out"), not a serial
 single direction — GBAL and GLAW ran in the **compute-licensed** tier,
 OCON/LTWO/FRES in the **derivation-first** tier (coordinator-set).
 Dispatched **opus**. Target: **input (X)** — balance existence in the
@@ -625,7 +625,7 @@ leaf was expected or opened — the target was a finite combinatorial
 statement.
 
 **The SIXTEENTH direction — GLAW — LANDED 2026-08-19**
-(`notes/Pencil-fanout-archive.md` §"Sixteenth direction"), reservation
+(`notes/pencil/fanout-archive.md` §"Sixteenth direction"), reservation
 converted in place: **(GR-55)–(GR-60) and Steps G74–G79 are CLAIMED**,
 leaving **(GR-61)+ and Steps G80+** as §(K-grid)'s live unclaimed
 tails; driver modes
@@ -657,7 +657,7 @@ whole-graph and proper-chunk instances of one inequality, but the
 proof does **not** transfer. **(a′) did NOT HIT; entry 1 stays OPEN,
 no bar; E3 stays ARMED (by GBAL) but does NOT fire**; no g-flank,
 (GR-15) stays OPEN. One of **five** concurrent directions in the
-**sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout-archive.md`
+**sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/pencil/fanout-archive.md`
 §"Sixth fan-out"), in the **compute-licensed** tier alongside GBAL.
 Dispatched **opus**. Target: **(a′)**, the `d_fg = d_adm` law, entry
 1's primary. **The direction code GLAW is the arc's first re-use of a
@@ -666,7 +666,7 @@ at GADM's prep (*"names the growth law generically rather than which
 layer this direction proves"*) — that ground no longer applies here,
 since this direction's deliverable *is* that law itself, so the code
 was taken; its only pre-existing occurrences are the two bookkeeping
-lines recording the earlier rejection (`notes/Pencil-fanout-archive.md`
+lines recording the earlier rejection (`notes/pencil/fanout-archive.md`
 §"Twelfth direction", this file above), a **bookkeeping** hit in the
 `GBAL`/`GDART` sense, not a semantic one. The direction *extended*
 §(K-grid), so its reservation was that section's unclaimed tails —
@@ -677,11 +677,11 @@ the owning section stays authoritative. **Do not mint §(K-unif)/`GU-`**
 revive it. No M2 leaf was expected or opened.
 
 **The NINETEENTH direction — FRES — LANDED 2026-08-19**
-(`notes/Pencil-fanout-archive.md` §"Nineteenth direction"), reservation converted in
+(`notes/pencil/fanout-archive.md` §"Nineteenth direction"), reservation converted in
 place in §(K-frame)'s row above: **(FR-15)–(FR-17) and Steps FR12–FR15 are
 CLAIMED**; **(FR-18) is reserved and returned UNUSED**, available for a
 later direction. One of **five** concurrent directions in the **sixth
-fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout-archive.md` §"Sixth
+fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/pencil/fanout-archive.md` §"Sixth
 fan-out"), in the **derivation-first** tier. Dispatched **opus**. Target:
 §(K-frame) (FR-4)'s single named gap (the (GR-5)-at-`G′` restatement).
 **Verdict: (FR-4) CLOSED — but not by the restatement alone.** (FR-15)
@@ -710,12 +710,12 @@ proposed**; (L5)'s substring check is stated repo-wide, so the reservation
 technically missed it, recorded so the next one greps the whole tree.
 
 **The SEVENTEENTH direction — OCON — LANDED 2026-08-19** (fourth of the
-sixth fan-out's five to land, after GBAL/GLAW/FRES; `notes/Pencil-fanout-archive.md`
+sixth fan-out's five to land, after GBAL/GLAW/FRES; `notes/pencil/fanout-archive.md`
 §"Seventeenth direction"), reservation converted in place in §(K-out)'s row
 above: **(OC-17)–(OC-22) and Steps O13–O18 are CLAIMED**; the tails move to
 **(OC-23)+ / O19+**, §(K-out)'s live unclaimed range. One of **five**
 concurrent directions in the **sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES,
-`notes/Pencil-fanout-archive.md` §"Sixth fan-out"), in the **derivation-first** tier.
+`notes/pencil/fanout-archive.md` §"Sixth fan-out"), in the **derivation-first** tier.
 Dispatched **opus**. Target: §(K-out) (OC-8)'s hard-stratum target-rank
 qualifier. **Verdict: an honest MISS carrying three theorems and a
 reduction — (OC-8) stays OPEN, reshaped.** **(OC-17)** proves
@@ -756,11 +756,11 @@ one.
 
 **The EIGHTEENTH direction — LTWO — LANDED 2026-08-19** (fifth and last of
 the sixth fan-out's five to land, after GBAL/GLAW/FRES/OCON;
-`notes/Pencil-fanout-archive.md` §"Eighteenth direction"), reservation converted in
+`notes/pencil/fanout-archive.md` §"Eighteenth direction"), reservation converted in
 place in §(K-Λ)'s row above: **(Λ4)–(Λ8) and Steps Λ8–Λ12 are CLAIMED**; the
 tails move to **(Λ9)+ / Steps Λ13+**, §(K-Λ)'s live unclaimed range. One of
 **five** concurrent directions in the **sixth fan-out**
-(GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout-archive.md` §"Sixth fan-out"), in the
+(GBAL/GLAW/OCON/LTWO/FRES, `notes/pencil/fanout-archive.md` §"Sixth fan-out"), in the
 **derivation-first** tier. Dispatched **opus**. Target: §(K-Λ) item (vii) —
 class shapes with two or more hubs on a length-4 companion's interior.
 **Verdict: an honest MISS on the commissioned "prove the class forbids it"
@@ -800,12 +800,12 @@ entry — and the owning section stays authoritative. One driver added
 M2 leaf was expected or opened — the target was an exact-ℚ derivation, not a
 symbolic one. The **`Λ`-prefixed step scheme** (*Step Λ8* … *Step Λ12*,
 distinct from the existing bare *Step 8*) is this direction's own convention,
-per `notes/Pencil-labels.md`'s clause-4 diagnosis that bare step numbers
+per `notes/pencil/labels.md`'s clause-4 diagnosis that bare step numbers
 collide with claim labels — recorded in §(K-Λ)'s registry row above, not a
 new minting rule.
 
 **Reserved 2026-08-19 for the SEVENTH fan-out — directions YLOC / BALB / AGLU /
-ZNEQ / CIRR** (`notes/Pencil-fanout.md` §"Seventh fan-out"; five concurrent
+ZNEQ / CIRR** (`notes/pencil/fanout.md` §"Seventh fan-out"; five concurrent
 opus directions, the second multidispatch). Codes are **multi-letter and
 topic-tagged** per clause (L5) — `YLOC` = input **(Y)** **LOC**alized, `BALB` =
 the **BAL**ance-layer **B**ound, `AGLU` = the **A**A-**GLU**e configuration,
@@ -818,13 +818,13 @@ stays authoritative**; only CIRR opened a section. **All five have LANDED —
 the seventh fan-out is COMPLETE — and every row is released below.**
 
 **The TWENTY-FOURTH direction — CIRR — LANDED 2026-08-19** (first of the
-seventh fan-out's five to land, `notes/Pencil-fanout.md` §"Twenty-fourth
+seventh fan-out's five to land, `notes/pencil/fanout.md` §"Twenty-fourth
 direction"), reservation released: **the new section §(K-chart) is OPENED**,
 tag `CH-`, with **(CH-1)–(CH-8) and Steps CH1–CH8 CLAIMED exactly** — the full
 reservation consumed, nothing returned to the pool; see its new row in the
 Registry below. One of **five** concurrent directions in the **seventh
 fan-out** (YLOC/BALB/AGLU/ZNEQ/CIRR, dispatched 2026-08-19,
-`notes/Pencil-fanout.md` §"Seventh fan-out"), in the **derivation-first**
+`notes/pencil/fanout.md` §"Seventh fan-out"), in the **derivation-first**
 tier. Dispatched **opus**. Target: write chart irreducibility down once, as a
 standalone statement with a proof. **Verdict: a HIT.** **(CH-1)** proves the
 pencil chart of `G′` (loopless, `hcard`, min degree 2, girth ≥ 4) is a
@@ -851,7 +851,7 @@ reservation time. No M2 leaf was expected or opened — the target was
 algebraic-geometry prose, not a symbolic computation.
 
 **The TWENTIETH direction — YLOC — LANDED 2026-08-19** (second of the
-seventh fan-out's five to land, after CIRR; `notes/Pencil-fanout.md`
+seventh fan-out's five to land, after CIRR; `notes/pencil/fanout.md`
 §"Twentieth direction"), reservation released into §(K-grid)'s existing
 registry row: **(GR-61)–(GR-66) and Steps G80–G85 CLAIMED exactly** — the
 full reservation consumed, nothing returned to the pool; see the extension of
@@ -892,7 +892,7 @@ all seven but exceeds the 600 s foreground budget at ~890 s). The code
 opened.
 
 **The TWENTY-FIRST direction — BALB — LANDED 2026-08-19** (third of the
-seventh fan-out's five to land, after CIRR and YLOC; `notes/Pencil-fanout.md`
+seventh fan-out's five to land, after CIRR and YLOC; `notes/pencil/fanout.md`
 §"Twenty-first direction"), reservation released into §(K-grid)'s existing
 registry row: **(GR-67)–(GR-72) and Steps G86–G91 CLAIMED exactly** — the
 full reservation consumed, nothing returned to the pool; see the extension of
@@ -928,7 +928,7 @@ verified 0-hit as a raw substring across `*.md`, `*.tex`, `*.lean`, `*.py`,
 
 **The TWENTY-THIRD direction — ZNEQ — LANDED 2026-08-19** (fourth of the
 seventh fan-out's five to land, after CIRR, YLOC and BALB;
-`notes/Pencil-fanout.md` §"Twenty-third direction"), reservation released
+`notes/pencil/fanout.md` §"Twenty-third direction"), reservation released
 into §(K-out)'s existing registry row: **(OC-23)–(OC-28) and Steps O19–O24
 CLAIMED exactly** — the full reservation consumed, nothing returned to the
 pool; see the extension of §(K-out)'s row in the Registry below. (**Its
@@ -974,7 +974,7 @@ a successor, not made (see the README's *Harness debt* list).
 
 **The TWENTY-SECOND direction — AGLU — LANDED 2026-08-19** (fifth and last of
 the seventh fan-out's five to land, after CIRR, YLOC, BALB and ZNEQ;
-`notes/Pencil-fanout.md` §"Twenty-second direction"), reservation released
+`notes/pencil/fanout.md` §"Twenty-second direction"), reservation released
 into §(K-grid)'s existing registry row: **(GR-73)–(GR-78) and Steps G92–G97
 CLAIMED exactly** — the full reservation consumed, nothing returned to the
 pool; see the extension of §(K-grid)'s row in the Registry below. Target:
@@ -1035,7 +1035,7 @@ reference.
 One thing direction A's landing exercised, worth recording because it is the
 first time a *reserved* dispatch hit clause L1 from the inside: the draft minted
 bare `(R1)`/`(R2)` for its two residual inputs — a **three-way** collision (the
-*Shared dictionary*, the opening recon questions, and `Pencil-strategy.md`
+*Shared dictionary*, the opening recon questions, and `pencil/strategy.md`
 §4.6's six refutations), which the reserved prefix does not by itself prevent
 because the draft reached for a bare letter. They landed as **(ANH-R1)** /
 **(ANH-R2)**, the "append a letter" form sanctioned below, and the promoted
@@ -1055,7 +1055,7 @@ dispatch's namespace: moving a status is a coordinator action, per the fan-out
 landing checklist.
 
 **Reserved 2026-08-19 for the EIGHTH FAN-OUT — directions GTMPL / GFLOW /
-GCOLL / OSCHU / SIGZ** (`notes/Pencil-fanout.md` §"Eighth fan-out"; five
+GCOLL / OSCHU / SIGZ** (`notes/pencil/fanout.md` §"Eighth fan-out"; five
 concurrent directions, the third consecutive multidispatch wave). All five
 *extend* live sections, so each reservation is a **disjoint sub-range of the
 owning section's unclaimed tail** and the owning section stays authoritative:
@@ -1187,15 +1187,15 @@ which clause L1 forbids and which this file's own diagnosis predicted would
 collide — and they did:
 
 - **`(R1)`** had **five** owners: the *Shared dictionary*'s rigid-graph facts
-  (R1)–(R5), the opening recon questions R1–R3, `Pencil-strategy.md` §4.6's
+  (R1)–(R5), the opening recon questions R1–R3, `pencil/strategy.md` §4.6's
   refutations (R1)–(R6), **(GR-64)(R1)** (a sub-item, so qualified already),
   and GFLOW's own (R1).
-- **`(C1)`/`(C2)`** collided with `Pencil-strategy.md` §4's candidate
+- **`(C1)`/`(C2)`** collided with `pencil/strategy.md` §4's candidate
   invariants C1/C2/C3, §`hnoGood'` vacuity's (C1)–(C6), and §(K-slide-cl)'s
   step/claim pair — the same overload clause 4 names.
 
 **Disposition: RENAMED**, per the 2026-08-20 user adjudication
-(`notes/Pencil-adjudications.md`): the rename option this record left open for the user was
+(`notes/pencil/adjudications.md`): the rename option this record left open for the user was
 offered as one of a small option selection, and the user selected **"Rename
 to (GR-R1)/(GR-C1)/(GR-C2)"** verbatim, citing the direction-A precedent
 (bare `(R1)`/`(R2)` → renamed to `(ANH-R1)`/`(ANH-R2)` at landing, before
@@ -1215,7 +1215,7 @@ reservation for a sub-clause.
 
 **Reserved 2026-08-20 for probe KBARE-FALSIFY**, the first of the two
 architecture-testing probes specced and authorized 2026-08-20
-(`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED 2026-08-20").
+(`notes/pencil/fanout.md` §"Two probes SPECCED and AUTHORIZED 2026-08-20").
 Coordinator-set, single dispatch — **not** a fan-out, so this reservation
 protects against the *existing corpus* only; there are no siblings in flight.
 
@@ -1229,7 +1229,7 @@ protects against the *existing corpus* only; there are no siblings in flight.
 
 **0-hit verification, at reservation time.** `(BE-1)`, `(BE-2)`, `(BE-10)`,
 *Step BE*, `BE1` and `breakhunt` were each verified **0-hit** across this
-file's *Files in scope* plus `notes/Pencil-informal-grid.md`. `breakhunt` is
+file's *Files in scope* plus `notes/pencil/workbook/grid.md`. `breakhunt` is
 additionally 0-hit as a **raw substring**, case-insensitively, across `*.md`,
 `*.tex`, `*.lean`, `*.py`, `*.m2`.
 
@@ -1280,14 +1280,14 @@ open on purpose, **`zneq.ledger`**, is not this probe's to disturb.
 ## Reserved namespace — probe C3-AVOID (2026-08-20, **USED — the probe landed 2026-08-24; §(K-avoid) RELEASED unopened**)
 
 **Reserved 2026-08-20 for probe C3-AVOID**, the second of the two
-architecture-testing probes authorized 2026-08-20 (`notes/Pencil-fanout.md`
+architecture-testing probes authorized 2026-08-20 (`notes/pencil/fanout.md`
 §"Two probes SPECCED and AUTHORIZED 2026-08-20"). Coordinator-set, single
 dispatch. **KBARE-FALSIFY ran first and did NOT moot it** (its T1 hit is a
 route finding on the *other* kernel), so this reservation goes live as written.
 
 | what | reserved | note |
 |---|---|---|
-| section | **§(K-avoid)** | **new**, 0-hit; open it only if the mathematics warrants a workbook section — the spec's default deliverable is a design-pass on `notes/Pencil-strategy.md` §4's C3 entry |
+| section | **§(K-avoid)** | **new**, 0-hit; open it only if the mathematics warrants a workbook section — the spec's default deliverable is a design-pass on `notes/pencil/strategy.md` §4's C3 entry |
 | tag / labels | **`AV-`**, tokens **(AV-1)–(AV-8)** | 0-hit |
 | steps | ***Steps AV1–AV6*** | 0-hit |
 | driver | **`notes/scripts/w4/avoidgen.py`** — *only if a search is needed* | the spec makes the driver conditional; the question is combinatorial on the **landed** generation theorem (Thm 4.9, Phase 20), so a leaf that consumes `nogood_subdiv`'s combinatorial oracles sits on the `w4/` stack |
@@ -1303,7 +1303,7 @@ AV* from build artifacts, which is worth knowing for the next prep: **exclude
 **One disclosure, the same shape as KBARE-FALSIFY's.** The code **`C3-AVOID`**
 embeds the strategy doc's own **§4 candidate-invariant label `C3`**, so it is
 not 0-hit as a raw substring; the **full token** hits exactly 3 files, all of
-them its own authorizing bookkeeping (`Pencil-fanout.md`, `Pencil-strategy.md`,
+them its own authorizing bookkeeping (`pencil/fanout.md`, `pencil/strategy.md`,
 `Phase39.md`). Deliberate and self-naming, exactly like `KBARE-FALSIFY`'s
 `kbare`, and it falls inside the narrow exception that reservation recorded —
 the substring hit **is** the dispatch's declared subject. Not renamed.
@@ -1316,7 +1316,7 @@ the corpus, so it can never be a code or basename here) and **`dodge`** (22).
 **What was actually minted (2026-08-24, at landing).** Tokens **(AV-1)–(AV-8)
 CLAIMED exactly** — the full reservation consumed, nothing returned to the pool
 — together with ***Steps AV1–AV6***, all of them **inside
-`notes/Pencil-strategy.md` §4.7**, which is their owning section. The driver
+`notes/pencil/strategy.md` §4.7**, which is their owning section. The driver
 landed at the reserved path `notes/scripts/w4/avoidgen.py` with seven modes
 (`--supply|--census|--betti|--forced|--avoid|--count|--validate`, plus `--all`).
 
@@ -1324,14 +1324,14 @@ landed at the reserved path `notes/scripts/w4/avoidgen.py` with seven modes
 unopened** — the deliberate branch the reservation itself provided for. The
 mathematics is about the **generation theorem** (Thm 4.9, Phase 20), not about
 kernel (K): it has no *State of (K)* gap-map row, moves no gap-map status, and
-putting it in the (K) workbook would have mis-filed it. `notes/Pencil-strategy.md`
+putting it in the (K) workbook would have mis-filed it. `notes/pencil/strategy.md`
 §4 is the canonical home for the C3 option, so §4.7 is where its gate's pricing
 belongs. **`§(K-avoid)` and a *fresh* `AV-` tag stay available** for any future
 kernel-side avoidance question — but the `AV-` **tokens (AV-1)–(AV-8) are spent**
 and a successor mints (AV-9) onward under clause (L4)'s no-renaming rule.
 
 **One consequence for the registry, executed here:** because the labels live in
-`notes/Pencil-strategy.md` rather than a workbook, the **strategy registry table
+`notes/pencil/strategy.md` rather than a workbook, the **strategy registry table
 below carries the `AV-` row** — not the (K) workbook table. That is the first
 time this registry has had to route a reservation's labels to the strategy
 document, and it is the general rule: **a namespace is registered where its
@@ -1340,7 +1340,7 @@ labels actually land, not where they were reserved.**
 ## Reserved namespace — direction GFLIP (2026-08-25, **USED — the direction landed the same day, returning two labels and a step to the tail**)
 
 **Reserved 2026-08-25 for the single direction GFLIP** (ordinal 30, the arc's
-thirty-eighth direction; `notes/Pencil-fanout.md` §"GFLIP"), the standing
+thirty-eighth direction; `notes/pencil/fanout.md` §"GFLIP"), the standing
 research pick made at the 2026-08-25 check-in (single direction, cheapest
 first → **(GR-R1)**, §8.1's cheapest board entry). One direction, no siblings
 — the reservation still binds because it protects the *next* dispatch's prep
@@ -1379,7 +1379,7 @@ unopened fourteen times); **do not mint §(K-unif)/`GU-`**.
 ## Reserved namespace — direction GCHEAP (2026-08-25, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-25 for the single direction GCHEAP** (ordinal 31, the
-arc's thirty-ninth direction; `notes/Pencil-fanout.md` §"GCHEAP"), the
+arc's thirty-ninth direction; `notes/pencil/fanout.md` §"GCHEAP"), the
 standing research pick made at the second 2026-08-25 check-in (single
 direction, cheapest first → **(GR-C2)**, §8.1's cheapest board entry with
 (GR-R1) struck by GFLIP). One direction, no siblings — the reservation still
@@ -1414,7 +1414,7 @@ GCHEAP *cites* it and mints its own results at (GR-100)+.
 ## Reserved namespace — direction OQRANK (2026-08-25, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-25 for the single direction OQRANK** (ordinal 32, the
-arc's fortieth direction; `notes/Pencil-fanout.md` §"OQRANK"), the standing
+arc's fortieth direction; `notes/pencil/fanout.md` §"OQRANK"), the standing
 research pick made at the third 2026-08-25 check-in via two option
 selections (recon-first → the eighth strategy-only pass's board re-rank
 `f72cbb35`; then its rank-1 front-runner, the ℚ(i) eigen-block leg of
@@ -1450,7 +1450,7 @@ OSCHU's landed labels — already minted, **not** in this reservation; OQRANK
 ## Reserved namespace — direction GPRICE (2026-08-25, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-25 for the single direction GPRICE** (ordinal 33, the
-arc's forty-first direction; `notes/Pencil-fanout.md` §"GPRICE"), the
+arc's forty-first direction; `notes/pencil/fanout.md` §"GPRICE"), the
 standing research pick made at the fourth 2026-08-25 check-in (single
 direction, front-runner-first → **(GR-104)(i)**, the 2026-08-25 re-rank's
 rank 2 and its highest unlanded entry, rank 1 having landed as OQRANK the
@@ -1485,7 +1485,7 @@ results at (GR-105)+.
 ## Reserved namespace — direction GBLAW (2026-08-25, **USED — the direction landed 2026-08-26; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-25 for the single direction GBLAW** (ordinal 34, the
-arc's forty-second direction; `notes/Pencil-fanout.md` §"GBLAW"), the
+arc's forty-second direction; `notes/pencil/fanout.md` §"GBLAW"), the
 standing research pick made at the fifth 2026-08-25 check-in (single
 direction, front-runner-first → **(GR-108)**, the balance law — GPRICE's
 residual #1 and the head of *Step G129*'s successor order, the re-rank's
@@ -1522,7 +1522,7 @@ in this reservation; GBLAW *cites* it and mints its own results at (GR-110)+.
 ## Reserved namespace — direction GXESC (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction GXESC** (ordinal 35, the
-arc's forty-third direction; `notes/Pencil-fanout.md` §"GXESC"), the
+arc's forty-third direction; `notes/pencil/fanout.md` §"GXESC"), the
 standing research pick made at the sixth check-in of the 2026-08-25/26
 session (single direction, front-runner-first → **existential escape**,
 (GR-112)(v)'s hypothesis — GBLAW's sharpened residual #1 and the head of
@@ -1559,7 +1559,7 @@ at (GR-115)+.
 ## Reserved namespace — direction GHWIT (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction GHWIT** (ordinal 36, the
-arc's forty-fourth direction; `notes/Pencil-fanout.md` §"GHWIT"), the
+arc's forty-fourth direction; `notes/pencil/fanout.md` §"GHWIT"), the
 standing research pick made at the seventh check-in of the 2026-08-26
 session (single direction, front-runner-first → the **half-witness
 clause**, (GR-117)(iii) — GXESC's reshaped residual and the head of
@@ -1598,9 +1598,9 @@ in this reservation; GHWIT *cites* them and mints its own results at
 ## Reserved namespace — direction GMINM (2026-08-26, **USED — the direction landed the same day; (GR-125)–(GR-128) and Steps G145–G148 consumed, (GR-129) and Step G149 RETURNED to the tail**)
 
 **Reserved 2026-08-26 for the single direction GMINM** (ordinal 37, the
-arc's forty-fifth direction; `notes/Pencil-fanout.md` §"GMINM"), the first
+arc's forty-fifth direction; `notes/pencil/fanout.md` §"GMINM"), the first
 direction picked under the **2026-08-26 widened delegation** (the
-coordinator chooses; `notes/Pencil-adjudications.md`). Target: the
+coordinator chooses; `notes/pencil/adjudications.md`). Target: the
 **`min_M` reading** of (GR-104)(i), GHWIT's residual #2.
 
 | direction | owning § | labels reserved | steps reserved | driver |
@@ -1628,10 +1628,10 @@ reading* rather than the object. **`GMINM` names the statement's content**
 ## Reserved namespace — direction OGEOM (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction OGEOM** (ordinal 38, the
-arc's forty-sixth direction; `notes/Pencil-fanout.md` §"OGEOM"), the second
+arc's forty-sixth direction; `notes/pencil/fanout.md` §"OGEOM"), the second
 pick under the 2026-08-26 widened delegation and the first to leave
 §(K-grid). Target: **the geometric route to a disproof** —
-`notes/Pencil-strategy.md` §8.5's one open row.
+`notes/pencil/strategy.md` §8.5's one open row.
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
@@ -1659,8 +1659,8 @@ the counting half.
 ## Reserved namespace — direction OWALL (2026-09-02, **USED — the direction landed the same day; all six labels and all five steps consumed, none returned**)
 
 **Reserved 2026-09-02 for the single direction OWALL** (ordinal 70;
-`notes/Pencil-fanout.md` §"OWALL"), a **draft-only** dispatch run concurrently
-with one committing dispatch in `notes/Pencil-informal-grid.md` §(K-grid) and a
+`notes/pencil/fanout.md` §"OWALL"), a **draft-only** dispatch run concurrently
+with one committing dispatch in `notes/pencil/workbook/grid.md` §(K-grid) and a
 second draft-only one in §(K-bare-ext) — `RESEARCH-ARC.md` §2's serial-landing
 pattern at a **three-way** concurrency, the widest exercised outside a prepared
 fan-out, and it landed with zero label collisions.
@@ -1695,7 +1695,7 @@ to the pool.
 ## Reserved namespace — direction BATTAIN (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction BATTAIN** (ordinal 39, the
-arc's forty-seventh direction; `notes/Pencil-fanout.md` §"BATTAIN"), the
+arc's forty-seventh direction; `notes/pencil/fanout.md` §"BATTAIN"), the
 third pick under the 2026-08-26 widened delegation and **the arc's FIRST
 direction ever aimed at `hbareSplit`** — 46 directions on `hK`, zero on
 (K-bare), the imbalance the gap map has called *"open, nothing being
@@ -1724,7 +1724,7 @@ than what it delivers. **`BATTAIN` names the target's content** — direct
 ## Reserved namespace — direction BZAVOID (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction BZAVOID** (ordinal 40, the
-arc's forty-eighth direction; `notes/Pencil-fanout.md` §"BZAVOID"), the
+arc's forty-eighth direction; `notes/pencil/fanout.md` §"BZAVOID"), the
 **first pick this arc has ever made by USER OPTION SELECTION between slice
 shapes of a landed direction's own offer** — BATTAIN's `def₂ = def₃`
 proof-of-concept was declined in favour of **(BE-14) at the full statement**.
@@ -1762,10 +1762,10 @@ locus **Z**(G), on the **b**are half.
 ## Reserved namespace — direction ZSHEAR (2026-08-26, **USED — the direction landed the same day; all six labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction ZSHEAR** (ordinal 41, the arc's
-forty-ninth direction; `notes/Pencil-fanout.md` §"ZSHEAR"), dispatched
+forty-ninth direction; `notes/pencil/fanout.md` §"ZSHEAR"), dispatched
 **concurrently with BZAVOID as the session's side line**, on unprompted user
 initiative. It is the **first direction ever produced by
-`notes/Pencil-strategy.md` §9's external-technique shelf**, and the first to
+`notes/pencil/strategy.md` §9's external-technique shelf**, and the first to
 mint a section from an outside idea source rather than from an internal
 residual.
 
@@ -1800,7 +1800,7 @@ unminted section would leave the shelf row unresolvable.
 ## Reserved namespace — direction BINDUC (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the direction BINDUC** (ordinal 42, the arc's fiftieth
-direction; `notes/Pencil-fanout.md` §"BINDUC"), the max-impact half of the
+direction; `notes/pencil/fanout.md` §"BINDUC"), the max-impact half of the
 session's second concurrent pair, picked under a **user-supplied criterion**
 (max impact on proving or disproving `PencilPair K 3 G`). It is the direct
 successor of BZAVOID inside the same section, carrying the induction (BE-18)
@@ -1841,7 +1841,7 @@ already dense in §(K-bare-ext). **`BINDUC` names the target's content** — the
 ## Reserved namespace — direction ZJACOB (2026-08-26, **USED — the direction landed the same day; all six labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the direction ZJACOB** (ordinal 43, the arc's
-fifty-first direction; `notes/Pencil-fanout.md` §"ZJACOB"), the **Zheng line's
+fifty-first direction; `notes/pencil/fanout.md` §"ZJACOB"), the **Zheng line's
 second direction** and the second section this arc mints from an external idea
 source. Dispatched concurrently with BINDUC.
 
@@ -1877,7 +1877,7 @@ correctness, only about where the idea came from.
 ## Reserved namespace — direction BTWOCUT (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction BTWOCUT** (ordinal 44, the arc's
-fifty-second direction; `notes/Pencil-fanout.md` §"BTWOCUT"), the **fifth
+fifty-second direction; `notes/pencil/fanout.md` §"BTWOCUT"), the **fifth
 consecutive direction to work this namespace** and the first whose selection was
 **forced rather than ranked**: BINDUC proved (BE-14)'s decomposition exhaustive
 and closed every layer but one, so the strengthened 2-cut composition lemma is
@@ -1921,7 +1921,7 @@ successor rather than as the 2-cut lemma.
 ## Reserved namespace — direction BIMAGE (2026-08-27, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-27 for the single direction BIMAGE** (ordinal 45, the arc's
-fifty-third direction; `notes/Pencil-fanout.md` §"BIMAGE"), the **sixth
+fifty-third direction; `notes/pencil/fanout.md` §"BIMAGE"), the **sixth
 consecutive direction to work this namespace** and the second in a row whose
 selection was **forced rather than ranked**: BTWOCUT reduced the strengthened
 2-cut lemma to a single geometric sentence and ranked its own successors, and
@@ -1970,7 +1970,7 @@ another clause.
 ## Reserved namespace — direction BEARCASE (2026-08-27, **USED — the direction landed the same day; four of five labels and four of five steps consumed, (BE-39) and *Step BE38* RETURNED**)
 
 **Reserved 2026-08-27 for the single direction BEARCASE** (ordinal 46, the arc's
-fifty-fourth direction; `notes/Pencil-fanout.md` §"BEARCASE"), the **seventh
+fifty-fourth direction; `notes/pencil/fanout.md` §"BEARCASE"), the **seventh
 consecutive direction to work this namespace** and the **third in a row whose
 selection was forced rather than ranked**: BIMAGE reduced the ear case to exactly
 two open items and stated that together they prove it.
@@ -2029,7 +2029,7 @@ cell's.
 ## Reserved namespace — direction BEARFULL (2026-08-27, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-27 for the single direction BEARFULL** (ordinal 47, the arc's
-fifty-fifth direction; `notes/Pencil-fanout.md` §"BEARFULL"), the **eighth
+fifty-fifth direction; `notes/pencil/fanout.md` §"BEARFULL"), the **eighth
 consecutive direction to work this namespace**. Jobs 1–2 are forced (BEARCASE's
 successors (1) and (2), the ear case's last two items); **job 3 is not** — it is
 a coordinator-raised routing question, and the spec lifts BEARCASE's own
@@ -2081,7 +2081,7 @@ sentences*, not to add one.
 ## Reserved namespace — direction RESGRID (2026-08-28, **USED — the direction landed the same day; §(K-res) opened with (RS-1)–(RS-6) and *Steps RS1–RS10* consumed, (RS-7)–(RS-12) RETURNED, the M2 leaf never needed**)
 
 **Reserved 2026-08-28 for the single direction RESGRID** (ordinal 48, the arc's
-fifty-sixth direction; `notes/Pencil-fanout.md` §"RESGRID") — the **(K-res)
+fifty-sixth direction; `notes/pencil/fanout.md` §"RESGRID") — the **(K-res)
 scoping slice**, a user-selected item (2026-08-26) deferred four rounds and
 committed to this slot at the BEARFULL prep. It is the **first direction ever
 aimed at the (K-res) habitat**, which has been a *bar* in eight consecutive
@@ -2091,7 +2091,7 @@ single dispatch — **not** a fan-out, so this reservation protects against the
 
 | what | reserved | note |
 |---|---|---|
-| section | **§(K-res)**, new, in `notes/Pencil-informal-grid.md` | that workbook owns §(K-grid), so the audit sits beside what it audits |
+| section | **§(K-res)**, new, in `notes/pencil/workbook/grid.md` | that workbook owns §(K-grid), so the audit sits beside what it audits |
 | tag / labels | **`RS-`**, tokens **(RS-1)–(RS-12)** | no `RS-` token has ever been minted in the pencil doc set |
 | steps | ***Steps RS1–RS10*** | first steps the section has had |
 | driver | **`notes/scripts/w4/resgrid.py`** — **optional** | job 1 is an audit and may need no code; job 3 reuses `gridcol`/`gridwit`/`gexist` + `widened`/`saferes` by read-only import |
@@ -2134,7 +2134,7 @@ never by eye**. Bump a cap only with a dated one-line reason.
 ## Reserved namespace — direction RPOOL (2026-09-03, **USED — the direction landed the same day; (RS-11)–(RS-15) and *Steps RS11–RS16* consumed, (RS-16)–(RS-18) RETURNED, no M2 leaf needed**)
 
 **Reserved 2026-09-03 for the single direction RPOOL** (arc ordinal 75;
-`notes/Pencil-fanout.md` §"RPOOL") — the `§(K-res)/(RS-5)` row's own **two
+`notes/pencil/fanout.md` §"RPOOL") — the `§(K-res)/(RS-5)` row's own **two
 cheap items**, the 255-residual pool sweep and the flank hunt. It is the
 **second** direction ever aimed at the (K-res) habitat (RESGRID, 2026-08-28,
 was the first) and the first dispatched under the **2026-09-03 declines-are-
@@ -2144,7 +2144,7 @@ Coordinator-set, one half of a concurrent pair (sibling on
 
 | what | reserved | note |
 |---|---|---|
-| section | **§(K-res)**, existing, in `notes/Pencil-informal-grid.md` | the row's own section; the direction extends it rather than opening one |
+| section | **§(K-res)**, existing, in `notes/pencil/workbook/grid.md` | the row's own section; the direction extends it rather than opening one |
 | tag / labels | **`RS-`**, tokens **(RS-11)–(RS-18)** | (RS-7)–(RS-12) were RETURNED by RESGRID, so (RS-11)/(RS-12) were free to re-reserve; **a returned token is back in the pool, and re-reserving one is not a rename (clause L4 untouched)** |
 | steps | ***Steps RS11–RS18*** | RS1–RS10 consumed by RESGRID |
 | driver | **`notes/scripts/w4/rpool.py`** | imports `resgrid.py` read-only for the floor's ingredients; third consumer of `saferes.prime()`'s pool list (harness debt) |
@@ -2155,7 +2155,7 @@ first action.** `RPOOL`, `rpool`, `w4/rpool.py`, `(RS-11)`–`(RS-18)` and
 *`Step RS11`*/*`RS18`* were each verified **0-hit** as raw substrings across
 `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`. The two live `RS-` hits found at
 re-verification were the RESGRID reservation's own *"(RS-7)–(RS-12)
-returned"* records in this file and `notes/Pencil-fanout.md` — records of a
+returned"* records in this file and `notes/pencil/fanout.md` — records of a
 **return**, not of a use, so they are not collisions; the re-reservation is
 noted in the table row above so a later reader does not read the two
 sentences as contradicting each other.
@@ -2171,7 +2171,7 @@ convention gives no label, per clause L2 *never label a step*).
 ## Reserved namespace — direction BSHARP (2026-08-28, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-28 for the single direction BSHARP** (ordinal 49, the arc's
-fifty-seventh direction; `notes/Pencil-fanout.md` §"BSHARP") — BEARFULL's
+fifty-seventh direction; `notes/pencil/fanout.md` §"BSHARP") — BEARFULL's
 successor (1), the ear case's **last (β) clause**: prove `ρ̄₁ ∩ Π_u = 0`, which
 by the proved (BE-42)(ii) carries **both** (b1) and (b2). Coordinator-set,
 single dispatch — **not** a fan-out, so this reservation protects against the
@@ -2189,7 +2189,7 @@ a returned token.
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
 `*.py`, `*.m2`: `BSHARP`, `bsharp`, `(BE-45)`, `(BE-48)` and *`Step BE47`* each
 **0-hit**. **`(BE-44)` and *`Step BE43`* each have TWO hits, and both were
-opened and confirmed to be the tail POINTERS** — `notes/Pencil-fanout.md`'s
+opened and confirmed to be the tail POINTERS** — `notes/pencil/fanout.md`'s
 BEARFULL reservation line and this file's line 1993 (*"The tail is (BE-44)+ /
 Step BE43+"*) — **not consumed labels**. Recorded because a bare hit count
 would otherwise read as a collision; clause L1 binds inside a reservation, and
@@ -2238,7 +2238,7 @@ landing has room to integrate a clause; the one after that asks this question ag
 ## Reserved namespace — direction BRULE (2026-08-28, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-28 for the single direction BRULE** (ordinal 50, the arc's
-fifty-eighth direction; `notes/Pencil-fanout.md` §"BRULE") — **(b3)**, the one
+fifty-eighth direction; `notes/pencil/fanout.md` §"BRULE") — **(b3)**, the one
 clause of the ear case's (β) side that has **never been attacked**.
 Coordinator-set, single dispatch — **not** a fan-out, so this reservation
 protects against the *existing corpus* only; there are no siblings in flight.
@@ -2281,7 +2281,7 @@ corrected inference is stated. The tail a successor opens at is **(BE-54) /
 ## Reserved namespace — direction BWIN (2026-08-28, **USED — landed 2026-08-29; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-28 for the single direction BWIN** (ordinal 51, the arc's
-fifty-ninth direction; `notes/Pencil-fanout.md` §"BWIN") — BSHARP's **window
+fifty-ninth direction; `notes/pencil/fanout.md` §"BWIN") — BSHARP's **window
 identity as a CLASS statement**, the **last open item of the ear case's (β)
 side** after BRULE proved (b3) and (BE-50)(iii) proved it disjoint from the
 window. Coordinator-set, single dispatch — **not** a fan-out, so this
@@ -2333,7 +2333,7 @@ paid** and the next landing has **431 words of headroom**, not 50.
 ## Reserved namespace — direction BRNODE (2026-09-01, **USED — landed 2026-09-01; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-09-01 for the single direction BRNODE** (ordinal 52, the arc's
-sixtieth direction; `notes/Pencil-fanout.md` §"BRNODE") — the **internal
+sixtieth direction; `notes/pencil/fanout.md` §"BRNODE") — the **internal
 R-node**, (BE-31)(ii)'s named residue and the step from *ear* to *general
 piece*, **user-selected at the 2026-08-29 twelfth check-in**. Coordinator-set,
 single dispatch — **not** a fan-out, so this reservation protects against the
@@ -2385,7 +2385,7 @@ sub-clauses. The tail a successor opens at is **(BE-64) / *Step BE63***.
 ## Reserved namespace — direction BDECOR (2026-09-01, **LANDED**)
 
 **Reserved 2026-09-01 for the single direction BDECOR** (ordinal 53, the arc's
-sixty-first direction; `notes/Pencil-fanout.md` §"BDECOR") — the
+sixty-first direction; `notes/pencil/fanout.md` §"BDECOR") — the
 **achievable-decorations class statement** ((BE-62)(iii)), BRNODE's successor (1),
 taken only after the coordinator re-ran the F26 consumer trace. Coordinator-set,
 single dispatch — **not** a fan-out, so this reservation protects against the
@@ -2401,7 +2401,7 @@ declared; BRNODE consumed its reservation in full and returned nothing.
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
 `*.py`, `*.m2` with `.git`/`.lake` excluded: `BDECOR`, `bdecor`, `(BE-68)` and
 *`Step BE67`* each **0-hit**. **`(BE-64)` and *`Step BE63`* have TWO hits each —
-`notes/Pencil-fanout.md:7789` and this file's line 2271 — and both were opened
+`notes/pencil/fanout.md:7789` and this file's line 2271 — and both were opened
 and confirmed to be the tail POINTER** BRNODE wrote, not consumed labels. Two
 rather than one because BRNODE records its tail in both places; recorded because
 a bare hit count would read as a collision, the same carve-out BSHARP's, BWIN's
@@ -2438,7 +2438,7 @@ BE68***.
 ## Reserved namespace — direction BPEEL (2026-09-01, **USED — the direction landed**)
 
 **Reserved 2026-09-01 for the single direction BPEEL** (ordinal 54, the arc's
-sixty-second direction; `notes/Pencil-fanout.md` §"BPEEL") — **half (B)'s class
+sixty-second direction; `notes/pencil/fanout.md` §"BPEEL") — **half (B)'s class
 statement** ((BE-67)(iii)), BDECOR's residue (1), taken after the coordinator
 re-ran the F26 consumer trace. Coordinator-set, single dispatch — **not** a
 fan-out, so this reservation protects against the *existing corpus* only.
@@ -2453,7 +2453,7 @@ declared; BDECOR consumed its reservation in full and returned nothing.
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
 `*.py`, `*.m2` with `.git`/`.lake` excluded: `BPEEL`, `bpeel`, `(BE-73)` and
 *`Step BE72`* each **0-hit**. **`(BE-69)` has TWO hits and *`Step BE68`* ONE** —
-`notes/Pencil-fanout.md:8090` and this file's line 2323 — **all opened and
+`notes/pencil/fanout.md:8090` and this file's line 2323 — **all opened and
 confirmed to be the tail POINTER** BDECOR wrote, not consumed labels; the same
 carve-out the four preceding reservations needed.
 
@@ -2506,7 +2506,7 @@ The tail a successor opens at is **(BE-79) / *Step BE78*** (BSPREAD reserved
 ## Reserved namespace — direction BSPREAD (2026-09-01, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved 2026-09-01 for the single direction BSPREAD** (ordinal 55, the arc's
-sixty-third direction; `notes/Pencil-fanout.md` §"BSPREAD") — the **SPREAD step**,
+sixty-third direction; `notes/pencil/fanout.md` §"BSPREAD") — the **SPREAD step**,
 (BE-32)(+)'s last 3.8 %, re-ranked to the top by BPEEL and picked by the
 coordinator under the standing research delegation. Coordinator-set, single
 dispatch — **not** a fan-out, so this reservation protects against the *existing
@@ -2563,7 +2563,7 @@ Status keywords are pointers to the owning section's verdict block and the
 
 | owning section | tag | labels in use | what the family is | status (see owner) |
 |---|---|---|---|---|
-| *Shared dictionary* | `SD-` | (R1)–(R5) *(grandfathered)*; **(SD-6)** | elementary rigid-graph facts used by **both** workbooks: min degree, size bound, short cycles, `hcard` restated, feasible triangles pendant, **branch length `≤ 5`** (= §(K-ann)'s (ANH-8), promoted here 2026-08-06; `SD-` because `(R6)` is taken by `Pencil-strategy.md` §4.6) | settled |
+| *Shared dictionary* | `SD-` | (R1)–(R5) *(grandfathered)*; **(SD-6)** | elementary rigid-graph facts used by **both** workbooks: min degree, size bound, short cycles, `hcard` restated, feasible triangles pendant, **branch length `≤ 5`** (= §(K-ann)'s (ANH-8), promoted here 2026-08-06; `SD-` because `(R6)` is taken by `pencil/strategy.md` §4.6) | settled |
 | §(K-tight) | `KT-` | (K-move) *(named here)*; Steps 0–5 | the carrier escape criterion, KT pp. 684–691 re-pin | criterion proven-informally; (K-tight) open |
 | §(K-ins) | `INS-` ✓ | **(INS-1)–(INS-8)**; Steps INS1–INS7 | **new, 2026-09-08, direction BINSERT** — option B for `hbareSplit`, the insertion calculus: the chain audit, KT route B on the `ρ`-pullback, the chain-end **panel collapse** mechanism, and the one surviving endpoint (the joint sweep) | **option B SPENT save its joint sweep**; both KT-inherited routes REFUTED at `corank(G′) = 3`; `hbareSplit` UNTOUCHED (tier T1) |
 | §(K-pitch) | `PT-` | (T1)–(T5); (K-wit), (K-pitch-∞) *(named here)*; Steps 0–6 | motion-side transfer, sign law, placement quartic, Λ-compression | (T1)–(T5) proven-informally; uniform form open |
@@ -2583,11 +2583,11 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-bare-ext) | `BE-` ✓ | **(BE-1)–(BE-9)**, Steps BE1–BE8, driver modes `arith`/`danger`/`optc` (`kbare/breakhunt.py`) *(probe KBARE-FALSIFY, 2026-08-20)*; **since 2026-08-26 (direction BATTAIN)** **(BE-10)–(BE-14)**, Steps BE9–BE13, driver modes `model`/`cone`/`census`/`attain`/`indep`/`hunt`/`decide`/`localcone`/`probe` (`w4/battain.py`); (K-bare-ext) *(named here)* | the bare-half kernel off feasibility: the arbitrary-seed insertion lemma and its refutation; then the motive characterized off the Lean bodies, unconditional bare realizability, the hub-determinant form, the cone rank law `6(|V|−1) − def₂(G)`, and the direct-attainment statement | **(K-bare-ext) REFUTED as stated** (a *route* finding — `hbareSplit` UNTOUCHED and still pinned); (BE-10)/(BE-11)/(BE-12) **proven**; (BE-13) **proven-informally**, exact at 68/68; **(BE-14) OPEN**, measured 774/774, hard step isolated to `Y° ⊄ Z(G)`; **since 2026-08-26 (direction BTWOCUT)** **(BE-25)–(BE-29)**, Steps BE24–BE28, driver modes `wcheck`/`spqr`/`earfix`/`moduli`/`crosspair`/`hunt`/`probe`/`validate` (`w4/btwocut.py`) — the strengthened statement **PINNED** (S-mark closes, S-all does not, with the cost of each stated), the simultaneity worry proved **VACUOUS** by lower semicontinuity, a new elementary theorem (3-connected **minus one edge** still has `def₂ = def₃ = 0`) making the leaf base free, BINDUC's 56 ear misses **cleared as a constructor artifact**, the general-position half **dissolved on everything swept** (16/16, hunt empty at 13 484), and the induction's one genuinely-new obligation **named**: cross-pair welding; **since 2026-08-26 (direction BINDUC)** **(BE-20)–(BE-24)**, Steps BE19–BE23, driver modes `base`/`flatwit`/`gate`/`twocut`/`rank2`/`ear`/`hubplane`/`force`/`validate` (`w4/binduc.py`) — the FREE base (3-connected ⇒ `def₂ = 0`, exhaustive at 226 891), the exact 2-cut `max`-law **refuting BZAVOID's asserted `− 6`**, the rank-half composition criterion, the hub-plane construction (5 824 per-graph theorems) and the **generalized forcing mechanism** which strictly generalizes (BE-15)'s triangle rule and **fires empty as MEASURED** — **which is also the scope correction to (BE-15)(ii)**: its cap-free closure covers the TRIANGLE-forced mechanism, not the general one; **since 2026-08-26 (direction BZAVOID)** **(BE-15)–(BE-19)**, Steps BE14–BE18, driver modes `tri`/`crit`/`cap`/`pn`/`flat`/`sq`/`glue`/`validate` (`w4/bzavoid.py`) — the generalized forced-class cap and the **cap-free closure of the falsification arm at every graph**, the **planar-atom molecular identification** off the Lean bodies, the landed `G²` apparatus and the transversality count both **CLOSED**, and (BE-14) reduced to 2-connected graphs: **(BE-15)(ii)/(BE-16)(i)(ii)(iv)/(BE-17)(i)(ii)/(BE-18) proven, (BE-15)(i) proven-informally, (BE-16)(iii) proven on the distinct-adjacent-points locus, (BE-17)(iii) measured; (BE-14) still OPEN, `hbareSplit` untouched**; **since 2026-08-27/28 (directions BIMAGE, BEARCASE, BEARFULL, BSHARP — this clause repairs an index gap the first three left)** **(BE-30)–(BE-48)**, Steps BE29–BE47, drivers `w4/bimage.py`, `w4/bearcase.py`, `w4/bearfull.py`, `w4/bsharp.py` — the ear's image classified on the Klein quadric, (α) closed with the reach formula proved for `m ≥ 3`, the short-cycle law, and the (b1)-sharpening **dichotomy**; **since 2026-08-28 (direction BRULE)** **(BE-49)–(BE-53)**, Steps BE48–BE52, driver modes `dom`/`sep`/`domin`/`wit`/`hunt`/`validate` (`w4/brule.py`) — (b3)'s honest domain, the **separation theorem** making (b3) free wherever a BSHARP mechanism fires, the (R)/(Z) dominance correcting (BE-37)(ii)'s inference, and the one-witness-per-shape discharge; **since 2026-08-29 (direction BWIN)** **(BE-54)–(BE-58)**, Steps BE53–BE57, driver modes `dec`/`sweep`/`exc`/`cls`/`wide`/`validate` (`w4/bwin.py`) — the modular-law reformulation, the end-choice lemma and rank-one budget, the excess law, **the window identity PROVED as a CLASS THEOREM**, and job 3's window-is-not-the-barbells census; **since 2026-09-01 (direction BRNODE)** **(BE-59)–(BE-63)**, Steps BE58–BE62, driver modes `law`/`rec`/`carve`/`route`/`validate` (`w4/brnode.py`) — the boundary-pair lemma, the **decorated-skeleton law**, the complete SPQR recursion, the (BE-22)(vi) carve-out as a checkable condition on `B`, and the routing verdict relocating the R-node's content to the achievable decorations; **since 2026-09-01 (direction BDECOR)** **(BE-64)–(BE-68)**, Steps BE63–BE67, driver modes `prod`/`theta`/`small`/`chart`/`attain`/`validate` (`w4/bdecor.py`) — the **branch-product theorem** (at fixed hub flags the configurations of ANY piece are a literal product of ear chains, so per-child sets past ears are never needed), the flag base identified with §(K-chart)'s tower, the theta child's generic dimension law with welded attainment FREE, the small-`m` confinement propagating THROUGH the P-node, and half (B) at 28/28 peels as per-piece theorems; **since 2026-09-01 (direction BPEEL)** **(BE-69)–(BE-73)**, Steps BE68–BE72, driver modes `open`/`indep`/`law`/`force`/`gate`/`validate` (`w4/bpeel.py`) — the **dichotomy** (the good locus is Zariski-open on an irreducible chart, hence dense or empty, so the class statement is ONE generic invariant one draw computes), the **peel-independence theorem** (no topological branch crosses a 2-cut, so the two sides are disjoint coordinate blocks sharing only the flag pair — which is what RETIRES the exhaustiveness obligation), the shared-flag classification with the Klein-**ruling** candidate examined and set aside, the proviso `G` **closed on (CH-1)'s class**, and the **correction to (BE-66)(iv)** with the enumeration behind it (3 497 forced R-node-shaped peels, all with `min(δ₁,δ₂) = 0`) re-ranking the SPREAD step; **since 2026-09-01 (direction BSPREAD)** **(BE-74)–(BE-78)**, Steps BE73–BE77, driver modes `lemma`/`chain`/`peel`/`validate` (`w4/bspread.py`) — the **block-absorption lemma** (a block of an optimal partition absorbs at most TWO points of an outside vertex's closed star, and the closure admits on THREE), which proves **(BE-32)(+) OUTRIGHT** for the aggressive operator and three widenings of it, **retires** the star-2/SPREAD split rather than closing its second half, contains (BE-32)(ii)/(iii) as its `|B| = 1` case, makes the coordinator's closure-restriction hypothesis **MOOT**, confirms **(BE-41)(ii) REFUTED as stated** (five surfaces annotated) and confines cross-cut-only forcing at a 2-cut to **`δ₁ = δ₂ = 1`**, which exposes BPEEL's census-3 zero as vacuous; **since 2026-09-08 (direction BSERIES)** **(BE-164)-(BE-171)**, Steps BE163-BE170, driver modes `peel`/`conf`/`sweep`/`tools`/`budget`/`b1`/`board`/`validate` (`w4/bseries.py`) - the ONE-END peel, the two SELF-CONJUGATE confinements `Λ²π_v` and `Σ_{p_v}` meeting exactly in `Π_v`, the one-end excess law with a kill budget of TWO, the reduction of (b2) to (b1) **conditional on (PENCIL-SATURATES) at side-degree `≥ 2`**, the no-peel habitat, and the re-scoping of (BE-58)(iv) to **two items plus a corner**; **since 2026-09-08 (direction BGPROP)** **(BE-180)–(BE-187)**, Steps BE179–BE186, driver modes `geom`/`reduce`/`crit`/`validate` (`w4/bgprop.py`) — the proper → generic bridge read at source and found to TRANSPORT one step SHORTER than at `k = 1`, the reduction `Π_x(p) = Σ_p ∩ Ω^⊥` turning the family into products of **α-planes**, Lemma A's quadric dichotomy with its 2-space *vertex-pinning* refinement, the incidence bound delivering the route's first **class-uniform** properness positive (53/99), the codimension-6 **floor** REFUTING (BE-149)(v)'s own successor lemma at 10/99 by a proof, the `0 → R₀ → Γ → A → 0` extension bound, and the finding that properness is the **wrong target** where it fails (the containment forced, the clause POINTWISE, the population unable to exhibit a violation); **since 2026-09-08 (direction BRANKV)** **(BE-188)–(BE-195)**, Steps BE187–BE194, driver modes `ceil`/`arc`/`hunt`/`validate` (`w4/brankv.py`) — the framing correction (the pointwise target is **strictly stronger** than the clause, (BE-149)(iii) being one-directional), two proved ceilings turning the clause's conclusion into the combinatorial `dist ≥ 6`, the **arc-length-2 impossibility** (`c₁ ≁ y ∧ c₂ ≁ y`, cap-free), the **arc-length-3 RADICAL theorem** forcing coplanarity and `π_x = τ` hence `q_y ∈ π_x`, the **refutation of the pointwise clause** at 24/24 fully gated chart points, and the **first GENERIC closure of half (B)'s item 0(a) at side-degree `≥ 2`** on the arc-`≤ 3` strata (15/99) with the rank-4 boundary named; **since 2026-09-08 (direction BLONGARC)** **(BE-196)–(BE-203)**, Steps BE195–BE202, driver modes `form`/`perp`/`ladder`/`pop`/`validate` (`w4/blongarc.py`) — the object corrected (`Π_x` already contains `ℓ_j`, so the containment is ONE membership inside the **α-space** `α_x = p_x ∧ K⁴`), the dispatch's question answered **NO** (`det(B|_U) = (ac)²`, `rank = 2·rank(Y)` always even and **4** generically), (BE-193)(iv)'s hyperbolicity warrant made **unconditional** by the arc's own splitting `⟨ℓ₁,ℓ₂⟩ ⊕ ⟨ℓ₃,ℓ₄⟩` with both `P¹`-rulings **constructed**, the **perp-reduction** relocating the radical's habitat to `U ∩ ℓ_j^⊥`, the **arc-4 theorem** (exactly two candidates, one forbidden, the other forcing `q_z ∈ π_x`) with the pointwise clause **refuted again** at 24/24 gated arc-4 chart points, the **master invariant** `dim(U ∩ α_x) = max(1, min(|arc|,6) − 3)` subsuming (BE-190)/(BE-191)/(BE-193)/(BE-200) as four cases of one count and closing item 0(a) generically at arc `≤ 5` (**48 of 99**), and the **exact structural boundary** `|arc| = 6` — which is (BE-189)(iii)'s own threshold, so the path-bound method class closes precisely the strata where the clause is vacuous and provably cannot reach the 51 where it has content; the owning section's continuation verdict blocks are authoritative for every label listed in this row - **their count is deliberately NOT written here** (`grep -c '^## §(K-bare-ext) — continuation' notes/pencil/workbook/`), because the figure this clause carried, *fourteen*, was stale by ten at the 2026-09-08 BSERIES landing: that is the **third** stale count in this one clause, and the round's *name the last ordinal, never a count* rule applies to it. *(Both counts in this clause's predecessor were stale — it said "eight continuation verdict blocks" and "all thirty-nine labels"; the block count is recomputed here (13, `grep -c '^## §(K-bare-ext) — continuation'`) and the label count is replaced by a pointer rather than silently recounted, per the 2026-09-01 `5ef8d70b` precedent for a disclosed stale count.)* |
 | §(K-mech) | `MX-` ✓ | (MX-1)–(MX-9); driver modes `--flex`/`--wide`/`--inc`/`--sigma`/`--sweep` (`mech.py`) | the mechanisms of the residual (W2)/(W4) anomalies: the realizable-load space `Ω`, α-confinement, pole-cluster loads, the welded flex, the 6v11e rescue, the σ rider | (MX-1)/(MX-2) proven; (MX-3)–(MX-7) proven-informally; (MX-8) settled-NO in the probed family; (MX-9) measured |
 | §(K-grid) | `GR-` ✓  ; **since 2026-08-19 (direction GTMPL, eighth fan-out)** (GR-79)–(GR-84), Steps G98–G103, driver modes `--charge`/`--frame`/`--tpl`/`--min`/`--wit`/`--e1`/`--lam`/`--val` (`w4/gtmpl.py`), the `n_hub = 16` **witness shape** and its 30-member family  ; **since 2026-08-19 (direction GFLOW, eighth fan-out)** (GR-85)–(GR-90), Steps G104–G109, driver modes `--model`/`--chain`/`--exact`/`--desc`/`--big`/`--adv`/`--validate` (`w4/gflow.py`), the clauses **(GR-R1)** and **(GR-C2)**  ; **since 2026-08-19 (direction GCOLL, eighth fan-out)** (GR-91)–(GR-96), Steps G110–G115, driver modes `--slack`/`--dem`/`--tf`/`--suff`/`--big8`/`--bigp`/`--wit`/`--dfg`/`--adv` (`w4/gcoll.py`), the Petersen witness family | (GR-1)–(GR-6); Steps G0–G7; driver blocks GR-D1–GR-D5 (`grid.py`); **since 2026-08-06 (direction G)** (GR-7)–(GR-11) + the primed successor **(GR-4′)** (recorded under (GR-4) as its repaired form, per L4 no-renaming), Steps G8–G13, driver modes `--formula`/`--treetriple`/`--wide`/`--validate` (`gridwit.py`); **since 2026-08-07 (direction E)** (GR-12)–(GR-15), Steps G14–G18, driver modes `--restate`/`--hard`/`--sep`/`--exemplar`/`--validate` (`packmm.py`); **since 2026-08-07 (direction TCOL)** (GR-16)–(GR-20), Steps G19–G23, driver modes `--branch`/`--runs`/`--pack`/`--hier`/`--wide`/`--validate` (`w4/gridcol.py`; `m2/gridcol.m2` not needed); **since 2026-08-07 (direction CFLANK)** (GR-21)–(GR-26), Steps G24–G28, driver modes `--law`/`--adv`/`--cubic`/`--lam`/`--lam6`/`--dens`/`--tight`/`--validate` (`w4/cflank.py`; `m2/cflank.m2` not needed, `§(K-prof)`/`PF-` unopened); **since 2026-08-13 (direction GCAP)** (GR-27)–(GR-28), Steps G29–G33, driver modes `--probe`/`--law`/`--cap`/`--flip`/`--adv`/`--validate` (`w4/gcap.py`; `m2/gcap.m2` not needed, `§(K-gcap)`/`GC-` unopened); **since 2026-08-13 (direction GUNIF)** (GR-29)–(GR-31), Steps G34–G37, driver modes `--menu`/`--ledger`/`--wit`/`--repair`/`--validate` (`w4/gunif.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened, `§(K-unif)`/`GU-` still not minted); **since 2026-08-13 (direction GEXIST)** (GR-32)–(GR-35), Steps G38–G42, driver modes `--exh`/`--charge`/`--repair`/`--adv`/`--validate` (`w4/gexist.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened a third time, `§(K-unif)`/`GU-` still not minted); **since 2026-08-13 (direction GORIENT)** (GR-36)–(GR-39), Steps G43–G47, driver modes `--hall`/`--kill`/`--hot`/`--adv`/`--validate` (`w4/gorient.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened a fourth time, `§(K-unif)`/`GU-` still not minted); **since 2026-08-15 (direction GDEV)** (GR-40)–(GR-42), Steps G48–G52, driver modes `--charge`/`--bound`/`--adv`/`--hunt`/`--validate` (`w4/gdev.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened a fifth time, `§(K-unif)`/`GU-` still not minted) *(clause BACKFILLED at the GADM landing — the GDEV landing recorded its claim only in the narrative entry below)*; **since 2026-08-17 (direction GADM)** (GR-43), Steps G53–G57, driver modes `--nk`/`--free`/`--balance`/`--adv`/`--validate` (`w4/gadm.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened a sixth time, `§(K-unif)`/`GU-` still not minted); **since 2026-08-18 (direction GPSA)** (GR-44)–(GR-45), Steps G58–G62, driver modes `--sdr`/`--balance`/`--odd`/`--adv`/`--validate` (`w4/gpsa.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened a seventh time, `§(K-unif)`/`GU-` still not minted); **since 2026-08-18 (direction GDESC)** (GR-46)–(GR-48), Steps G63–G67, driver modes `--stuck`/`--cases`/`--opt`/`--adv`/`--validate` (`w4/gdesc.py`; no M2 leaf expected or opened, `§(K-gcap)`/`GC-` still unopened an eighth time, `§(K-unif)`/`GU-` still not minted); **since 2026-08-19 (direction GBAL)** (GR-49)–(GR-54), Steps G68–G73, driver modes `--zform`/`--oracle`/`--two`/`--split`/`--thm`/`--adv`/`--validate` (`w4/gbal.py`; the argument stayed inside §(K-grid)'s own family again, so `§(K-gcap)`/`GC-` were still never opened and return to the pool unopened, reserved-but-unopened, a ninth time; `§(K-unif)`/`GU-` still not minted; no M2 leaf expected or opened); **since 2026-08-19 (direction YLOC, seventh fan-out)** (GR-61)–(GR-66), Steps G80–G85, driver modes `--loc`/`--fibre`/`--par`/`--coll`/`--fit`/`--cert`/`--adv`/`--validate` (`w4/yloc.py`; the argument stayed inside §(K-grid)'s own family a further time, so `§(K-gcap)`/`GC-` were still never opened and return to the pool unopened, reserved-but-unopened, a tenth time; `§(K-unif)`/`GU-` still not minted; no M2 leaf expected or opened); **since 2026-08-19 (direction BALB, seventh fan-out)** (GR-67)–(GR-72), Steps G86–G91, driver modes `--anchor`/`--flip`/`--ceil`/`--exh`/`--big`/`--adv`/`--validate` (`w4/balb.py`; the argument stayed inside §(K-grid)'s own family a further time, so `§(K-gcap)`/`GC-` were still never opened and return to the pool unopened, reserved-but-unopened, an eleventh time; `§(K-unif)`/`GU-` still not minted; no M2 leaf expected or opened); **since 2026-08-19 (direction AGLU, seventh fan-out)** (GR-73)–(GR-78), Steps G92–G97, driver modes `--pool`/`--pin`/`--kill8`/`--lam8`/`--adv`/`--val` (`w4/aglu.py`; the argument stayed inside §(K-grid)'s own family a further time, so `§(K-gcap)`/`GC-` were still never opened and return to the pool unopened, reserved-but-unopened, a twelfth time; `§(K-unif)`/`GU-` still not minted; no M2 leaf expected or opened) | the tight-stratum residual of (AC-6): eigen-blocks as conic direction networks / generalized-spline systems, the counting obstruction families ((GR-3); unified as **(GR-8)** sub-multigraph cycle spaces), chart-image membership, the 907-shape census, the interpolation factorization (GR-7), the tree-triple certificate theorem (GR-9), the merged residual (GR-10), the ε-adic fallback (GR-11), the branch-level reduction to the hub multigraph (GR-16), the circuit run law (GR-17), the 6-spanning-tree packing statement (GR-18), the collapse-order hierarchy (GR-19), the excess law (GR-21), the five sparsity caps (GR-22), the flip injection (GR-23), the private-branch repair theorem (GR-24), the cut criterion (GR-25), the 40 742-shape exhaustive hunt (GR-26), the block-additive exact computation of the (GR-8) maximum (GR-27), the closed defect formula and `g ≤ 1` cap (GR-28), the exhaustive dart-menu budget ledger (GR-29), the exact-boundary refutation of the all-`k` cap (GR-30), the per-shape survival + sweep-local repair-distance measurement (GR-31), the capacity theorem (GR-32), the weakness/orientation lemma (GR-33), the union-bound refutation + rung-minority rule (GR-34), the submodularity/uncrossing lemma (GR-35), the structural interior-adjacency charge (GR-36), the (c,m) selection model and its cut-space parity obstruction (GR-37), the exact slack identity / attachment lemma / intersection kill (GR-38), the capacity-tight structure theorem with its saturation kills (GR-39), the corner charge (GR-40), the parity floor (GR-41), the pentagon-necklace refutation family (GR-42), the odd-cycle-packing shift floor (GR-43), the exact parity-layer selection formula with its automatic Hall/SDR discharge (GR-44), the balance-move calculus (GR-45), its one-move transitivity (GR-46), the (X, φ, T) normal form (GR-47), the stuck-case escape catalogue (GR-48), the z-form bijection (GR-49), the orientation criterion (GR-50), the weight criterion (GR-51), the parity theorem (GR-52), the splitting lemma (GR-53), the balance theorem (GR-54), the z-form translation of the chunk invariants (GR-61), the degree-predicate refutation (GR-62), the parity-step audit (GR-63), the collision bound (GR-64), the fit identity (GR-65), the GBAL-certificate measurement (GR-66), the M-anchored z-form and parity law (GR-67), the closed-form legal-move price (GR-68), the imbalance ceiling with its exact boundary (GR-69), the reduction to one availability clause with its exhaustive stratum verification and T1 refutation (GR-70), the beyond-stratum extension with cap-free certificates (GR-71), the slack-0 degree lemma and its J-charge extension to arbitrary branch sets (GR-73), the `n_hub = 8` AA-glue pinning to a single template (GR-74), the `n_hub = 8` intersection-kill theorem (GR-75), the general-`n` W-charge forcing `n_hub ≥ 10` (GR-76), the `n_hub = 8` binding-non-laminarity census (GR-77), and the exhaustive `n_hub = 8` fully-good-colouring census (GR-78) | reduction proven; (GR-2) a proven refutation of the former (AC-6) close-route sentence; **(GR-4) refuted-as-stated, repaired as (GR-4′), off the critical path; (GR-9) proven; (GR-12)/(GR-13)/(GR-14) proven-informally — the (GR-10) min-max REFUTED as posed, (GR-10) itself open (exhaustively certified where swept); (GR-16)–(GR-19) proven — the branch reduction, circuit run law, 6-tree packing and collapse hierarchy — collapse order 4 measured at all 18 habitat separators; (GR-21)–(GR-25) proven — the excess law, five sparsity caps, flip injection, private-branch repair, cut criterion — TCOL's two named flank sites both CLOSED AS A ROUTE, (GR-26) exhaustive over 40 742 shapes with no hit; **(GR-27) proven; (GR-28)(i)–(iii) proven, (GR-28)(iv) REFUTED at `k ≥ 3` with an exact boundary — a THEOREM at `n_hub ≤ 6` (GR-29's ledger), FALSE from `n_hub = 8` on (GR-30's four witnesses, `g` up to 3) — the certificate-3 target still proven per swept shape at every `D = 0` shape checked; per-shape (GR-15) HOLDS at all four new witnesses and *Step G32*'s ≤ 2-flip repair law is sweep-local, breaking at `n_hub = 16` (GR-31)**; **(GR-32)–(GR-33) and (GR-35) proven — the capacity theorem (whole graph exactly critical, every proper chunk one unit slack), the weakness lemma (binding needs ≥ 2 aligned per-hub weaknesses; the all-even case is a pure orientation problem) and the uncrossing lemma (defect submodular) reduce the uniform target to a minority-dart orientation problem; (GR-34) REFUTES the uncorrelated union-bound mechanism by a constructed witness (`CL10`) while a correlated rung-minority rule closes the whole ladder family — GEXIST is an honest MISS, no g-flank found**; **(GR-36)–(GR-39) proven — the structural charge (the corrected obstruction family is the binding-capable chunks, strictly larger than capacity-tight), the (c,m) selection model (matching-based colourings, cut-space parity obstruction), the intersection kill (settled VACUOUSLY STRONG at `n_hub ≤ 6` — binding is laminar, no crossing same-block pairs), and the hot-hub structure theorem + kills (0 fully-hot hubs, now EXHAUSTIVE over all 4920 shapes) — GORIENT is an honest MISS, re-anchoring the target on a bounded-deviation selection principle (W3 the sticking instance, needing `d = 3` against `d ≤ 2` elsewhere), no g-flank found**; **(GR-40)–(GR-42) proven (direction GDEV) — the corner charge (tight at W3M, where (GR-36) prices 0), the parity floor (deviations bounded below by the coset invariant `φ*`), and the pentagon necklaces: the bounded-deviation selection form is REFUTED AS POSED (`d ≥ m/2` unbounded; every member rank-certified fully-good — a form-refutation, never a flank); the layer split measured, `d_fg = d_adm` at 133/133**; **(GR-43) proven (direction GADM) — the odd-cycle-packing shift floor: `d_par = d_adm = d_fg = m` EXACTLY at NK(2)/6/8/10 (rank-certified at the optimum, up to `n_hub = 50`), so the shift-metric layer is UNBOUNDED and the growth law's bounded-correction reading is REFUTED while the (a′) `d_fg = d_adm` law SURVIVES its first large-`d` test; ledger entry 5 (per-shape admissibility) settled as a separate OPEN statement ((GR-37)(iii)'s balance clause statement-beyond-proof); the W3 stick corrected to a 1-shift + 1-balance split — an honest MISS on (a′)-as-a-theorem, no g-flank found**; **(GR-44)–(GR-45) proven (direction GPSA) — the Hall/SDR step AUTOMATIC and `d_par(M) = w_M` EXACT (entry 5's parity half PROVEN, (GR-37)(iii) repaired there; the balance clause stays statement-beyond-proof), plus the cut-move calculus with its exact flip formula — entry 5's balance half true-modulo-named-gap (the descent lemma's stuck case), exhaustively true at 97 censused shapes, entry 5 NOT a HIT, no g-flank found**; **(GR-46)–(GR-48) proven (direction GDESC) — the move family is ONE-MOVE TRANSITIVE, so the descent lemma over the FULL family is EQUIVALENT to entry 5's balance half (the stuck case no smaller residual; a full-family demotion witness would be E1 clause (v)); the (X, φ, T) normal form restates balance as matching flexibility; the escape catalogue's PROVEN {T1, T2} kill is REALIZED at n = 30 — the bounded {T1, T2} descent route DEMOTED BY WITNESS while {T1, T2, K3} stays unbeaten, entry 5 still OPEN and NOT a HIT with its residual named input (X), (b′)'s unmeasured half measured, no g-flank found**; residual = (GR-15), OPEN unchanged, no flank found, the route re-anchored on the growth-law form — (a′) primary with its sticking case named (fixed-μ exchange insufficient); GADM's shift-metric routing of the thirteenth was OVERRIDDEN by the accepted 2026-08-18 recon verdict (GPSA, ledger entry 5 — LANDED 2026-08-18; GDESC, the descent lemma's stuck case — LANDED 2026-08-18); (GR-49)–(GR-54) proven (direction GBAL, one of five in the sixth fan-out) — the z-form absorbs the (c, m)/coset/SDR/matching apparatus into one bit per branch, balance becomes a degree-constrained orientation decided EXACTLY in polynomial time, the two-sided Hall condition collapses to a local weight inequality, a parity contradiction shows one monochromatic-pair hub per side is harmless, and a finite exhaustion over the maximal constraint structures shows one always suffices — chaining to **the balance theorem**: **entry 5 is PROVEN in BOTH halves, a HIT** (the parity half re-derived without Petersen, `d_par(M) = w_M` untouched), **E3 ARMED but does NOT fire** (entry 1's (a′) stays open), the (GR-45)–(GR-48) apparatus subsumed not contradicted, no g-flank found — the certificate-3 uniformity ROUTE stays dead as posed**; **(GR-61)–(GR-66) proven-informally (direction YLOC, one of five in the seventh fan-out)** — the pinned GBAL-localization route DEMOTED BY WITNESS (GR-62): full goodness is not a function of the (GR-50) degree data, so no (GR-51)-shaped criterion applies to the chunk system; the coordinator's predicted break point REFUTED as stated (GR-63) — (GR-52) localizes for free, the chain actually breaking two links earlier, at (GR-50)→(GR-51); the positive content is a colouring-free collision bound on `d_fg` (GR-64) and a coordinate-free fit identity unifying `dist(m, M)` and `z_mono(S)` (GR-65); GBAL's own certificate measured against (Y), missing both constraints (GR-66) — input (Y) stays OPEN, not hit, **E3 (ARMED by GBAL) does NOT fire**, no g-flank found; **(GR-67)–(GR-72) proven (direction BALB, one of five in the seventh fan-out)** — the M-anchored z-form gives the PARITY LAW (every per-matching layer gap EVEN) and is the perfect-matching instance of the landed (GR-65)(i) fit identity, independently re-derived and corroborating it (GR-67); every legal move is priced in closed form, matching branches and whole 2-factor cycles FREE, PROVING (b′)'s price half outright (GR-68); the imbalance ceiling `\|δ\| ≤ 2 min(k, ⌊n_hub/4⌋)` is a THEOREM at `n_hub ≤ 6` and FALSE from `n_hub = 8` at an explicit Wagner-graph witness (GR-69); (b′) reduces to one availability clause, verified EXHAUSTIVELY on the whole stratum in its landed T1-only instance, which is REFUTED from `n_hub = 8` with stuck witnesses each repaired at price 0 by a named mixed-pair successor (GR-70); (b′) extended to 536 exact shapes at `n_hub = 8/10/12` with cap-free per-matching certificates at `n = 30` (GR-71) — **(b′) stays OPEN, NOT a HIT**, residual Clause A′'s doubly-blocked case; no g-flank found; **(GR-73)–(GR-78) proven/measured (direction AGLU, one of five in the seventh fan-out)** — ledger attack (c) is **SETTLED NEGATIVE at `n_hub = 8`**: the AA-glue configuration is pinned to a single 10-branch template (GR-74) and proven NOT realizable there, independently certified by an EXHAUSTIVE, uncapped scan of the complete stratum that reproduces (GR-38)'s own `n_hub ≤ 6` headline exactly, so the (GR-38) intersection kill is a **THEOREM at `n_hub = 8`, non-vacuously** (GR-75); a general-`n` charge pushes the open case to **`n_hub ≥ 10`**, a three-template question (GR-76); the dispatch's predicted consequence is **REFUTED** — outright binding laminarity is FALSE at `n_hub = 8` (3 774 crossing same-block binding pairs, EXHAUSTIVE, against 0 at `n_hub ≤ 6`), so only the **maximal** family's uncrossing survives (GR-77); the (GR-15) counting-side target holds EXHAUSTIVELY over the whole `n_hub = 8` stratum with no cap, 86.9 % of colourings fully good, no g-flank (GR-78) — a HIT on the not-realizable branch; no gap-map status moves, (GR-15) OPEN modulo (GR-4′), class uniformity untouched  ; **since 2026-08-25 (direction GFLIP, single dispatch)** (GR-97)–(GR-99), Steps G116–G119, driver modes `--form`/`--lemma`/`--thm`/`--wit`/`--validate` (`w4/gflip.py`) — the demand form of the (GR-51) criterion, the cubic counting lemma, and the selection theorem (at most `b` A-branches blocked); **(GR-R1) PROVEN**, so (GR-89)(ii)'s `n`-free `≤ 12` is a THEOREM; (GR-100)/(GR-101)/Step G120 returned to the tail  ; **since 2026-08-25 (direction GCHEAP, single dispatch)** (GR-100)–(GR-104), Steps G120–G124, driver modes `--cap`/`--sel`/`--bnd`/`--validate` (`w4/gcheap.py`) — the lone-dart identity + blocked-end capacity, the selection corollary (every-step (GR-C2) PROVEN for `n_hub < 6|δ|`, so (b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum), the stall tax, the `n_hub = 12` boundary witness (per-configuration (GR-C2) REFUTED, boundary exact both ways), and the price-form residual (GR-104); the GFLIP-returned (GR-100)/(GR-101)/Step G120 re-claimed here  ; **since 2026-08-25 (direction GPRICE, single dispatch)** (GR-105)–(GR-109), Steps G125–G129, driver modes `--cell`/`--seed`/`--hunt`/`--mech`/`--validate` (`w4/gprice.py`) — the colour-swap identity `f(p) = f(p̄)`, the reversal-set normal form at `O ⊆ M` (`dist = n − |R|` exact, `f` computable in `2^n`), the reachability theorem (affine pattern-subspaces, the linkage obstruction), the minted **balance law (GR-108)** — (GR-104)(i) a THEOREM at `2k = 2`, every `n`, modulo it alone — and the status statement (GR-109)  ; **since 2026-08-25 (direction GBLAW, single dispatch)** (GR-110)–(GR-114), Steps G130–G134, driver modes `--form`/`--conn`/`--recomb`/`--strand`/`--validate` (`w4/gblaw.py`) — the arc-transversal normal form, the recombination theorem (maximum-family connectivity, the universal-linkage refutation shape), the escape lemma (**(GR-108) ⟸ existential escape**), the measured escape verdict (universal escape REFUTED at the `n = 16` strand witness; existential escape 0 failures at 1 099 pairs), and the status statement (GR-114)  ; **since 2026-08-26 (direction GXESC, single dispatch)** (GR-115)–(GR-119), Steps G135–G139, driver modes `--ledger`/`--closure`/`--hunt`/`--verify`/`--strand`/`--validate` (`w4/gxesc.py`) — the reversal-label ledger (M-closed ⟹ balance-valid at every `2k`), the **refutation of (GR-108) and existential escape by four verified witnesses from `n = 16`**, the gap-2 law (⟺ (GR-104)(i) at the cell, proven except at the all-(2,2) case), the measured record, and the status statement (GR-119) |
-| §(K-res) *(in `notes/Pencil-informal-grid.md`, end of file)* | `RS-` ✓ (2026-08-28, direction RESGRID) | (RS-1)–(RS-6), *Steps RS1–RS10*; (RS-7)–(RS-10) returned; driver modes `--audit`/`--dimz`/`--rank`/`--theta`/`--validate` (`w4/resgrid.py`); **since 2026-09-03 (direction RPOOL)** (RS-11)–(RS-15), *Steps RS11–RS16*, driver modes `--pool`/`--sweep`/`--proof`/`--witness`/`--law` (`w4/rpool.py`, no `--validate`: the five legs are past the 600 s foreground budget together) — RESGRID's returned (RS-11)/(RS-12) re-reserved here, (RS-16)–(RS-18) returned | the residual-habitat transport audit: (RS-1) the habitat-free rank identity, (RS-2) the slack law, (RS-3) the forced core witness + rigidity-covers-excess, (RS-4) the transported discharge, (RS-5) the (K-res) grid residual ((GR-15)'s criterion, quantifier widened), (RS-6) the deficient-fringe refutation (θ(2,3,7)); (RS-11) the **per-block floor law** (`h₊ = h₋ = c`, the two slacks sum to `index`, `dim Z_± ≥ max(0, g_± − s_±)`), (RS-12) the 255-pool census (**102** `def = 0` members), (RS-13) **the refutation of (RS-5)** with the witness `R20 = family_g(5,(0,0,2),(4,4,4))` (**30 of the 102 refute it, 72 carry exact-point proofs**), (RS-14) the mechanism ((RS-3)(ii) bounds the SUM, the witness lives in BOTH blocks), (RS-15) the covering law `flank ⟺ index < 2·g_forced` | (RS-1)–(RS-4), (RS-6) proven-informally; **(RS-5) REFUTED 2026-09-03** (its per-shape proofs at `W19`/`S29`/`NT21c3` stand); (RS-11)/(RS-13)/(RS-14) proven, (RS-12) measured-exhaustive over the recorded pool, (RS-15) measured at 153 shapes with 0 counterexamples; the repaired statement OPEN and the `index < 2·g_forced` members ROUTELESS; the (K-res) wave a user call, re-priced |
+| §(K-res) *(in `notes/pencil/workbook/grid.md`, end of file)* | `RS-` ✓ (2026-08-28, direction RESGRID) | (RS-1)–(RS-6), *Steps RS1–RS10*; (RS-7)–(RS-10) returned; driver modes `--audit`/`--dimz`/`--rank`/`--theta`/`--validate` (`w4/resgrid.py`); **since 2026-09-03 (direction RPOOL)** (RS-11)–(RS-15), *Steps RS11–RS16*, driver modes `--pool`/`--sweep`/`--proof`/`--witness`/`--law` (`w4/rpool.py`, no `--validate`: the five legs are past the 600 s foreground budget together) — RESGRID's returned (RS-11)/(RS-12) re-reserved here, (RS-16)–(RS-18) returned | the residual-habitat transport audit: (RS-1) the habitat-free rank identity, (RS-2) the slack law, (RS-3) the forced core witness + rigidity-covers-excess, (RS-4) the transported discharge, (RS-5) the (K-res) grid residual ((GR-15)'s criterion, quantifier widened), (RS-6) the deficient-fringe refutation (θ(2,3,7)); (RS-11) the **per-block floor law** (`h₊ = h₋ = c`, the two slacks sum to `index`, `dim Z_± ≥ max(0, g_± − s_±)`), (RS-12) the 255-pool census (**102** `def = 0` members), (RS-13) **the refutation of (RS-5)** with the witness `R20 = family_g(5,(0,0,2),(4,4,4))` (**30 of the 102 refute it, 72 carry exact-point proofs**), (RS-14) the mechanism ((RS-3)(ii) bounds the SUM, the witness lives in BOTH blocks), (RS-15) the covering law `flank ⟺ index < 2·g_forced` | (RS-1)–(RS-4), (RS-6) proven-informally; **(RS-5) REFUTED 2026-09-03** (its per-shape proofs at `W19`/`S29`/`NT21c3` stand); (RS-11)/(RS-13)/(RS-14) proven, (RS-12) measured-exhaustive over the recorded pool, (RS-15) measured at 153 shapes with 0 counterexamples; the repaired statement OPEN and the `index < 2·g_forced` members ROUTELESS; the (K-res) wave a user call, re-priced |
 | §(K-frame) | `FR-` ✓ | (FR-1)–(FR-7); the residual input **(FR-R1)**; Steps FR0–FR6; driver modes `--rulings`/`--pattern`/`--transport`/`--outer`/`--validate` (`framedom.py`) and M2 blocks (FR-M0)–(FR-M3) (`framedom.m2`); **since 2026-08-07 (direction PEX)** (FR-8)–(FR-14), Steps FR7–FR11, driver modes `--frame`/`--recipe`/`--strat`/`--kill`/`--validate`/`--recon` (`w4/patexist.py`; `m2/patexist.m2` not needed); **since 2026-08-19 (direction FRES)** (FR-15)–(FR-17), Steps FR12–FR15, no driver ((FR-18) reserved and unused) | the shared chart-to-frame dominance residue of §(K-out) (OC-16) / §(K-ann) (ANH-14): the minimal non-containment lemma, the ruling decomposition and determinant law at grid points, the `G′`-regridding transport, the 1904-site pattern battery, the θ(3,4,5) constructed witnesses, (since PEX) the bare-cycle stratum's finiteness + exhaustive enumeration, and (since FRES) the chart-map-vs-chart-variety correction that closes the residue with no rider | (FR-1)/(FR-2)/(FR-3) proven / proven-informally; (FR-4) superseded by **(FR-17)**, proven-informally with **no named gap**; (FR-5) measured (each certificate a per-site proof); (FR-6) exact per point, retro-certified by (FR-16); **(FR-R1) PROVEN** (Steps FR7–FR11, direction PEX); **(FR-15)–(FR-17) proven-informally** (Steps FR12–FR15, direction FRES) — no rider remains |
 | §(K-chart) | `CH-` ✓ | (CH-1)–(CH-8); Steps CH1–CH8; driver modes `--empty`/`--guard`/`--fibre`/`--all` (`w4/cirr.py`) | *(new, 2026-08-19, direction CIRR)* the pencil chart of `G′` proven irreducible, ℚ-rational, a tower of affine-linear fibres: the constant-fibre-dimension restriction identified as `IsNondegPencilRealization` conjunct 3 ((CH-6)), the closure argument that makes the restriction cost nothing ((CH-4)), the nonemptiness clause and its girth ≥ 4 correction to §(K-frame) *Step FR13* ((CH-5)), and the consumer audit of §(K-out) (OC-19) / §(K-slide) (S1)(e) / §(K-dom) (D4) / §(K-ann) (ANH-9)(ii) ((CH-7)); (CH-8) is a pointer to the landed, strictly stronger `not_pencilNondegFeasible_of_triangle_two_hubs` | (CH-1)–(CH-7) proven-informally, no named gap; (CH-3)/(CH-6) proven; **a HIT** — all four consumers clean; no gap-map status moves |
-| §(K-shear) | `SH-` ✓ | (SH-1)–(SH-6); Steps SH1–SH5; driver modes `--iso`/`--bed`/`--inv`/`--prod`/`--validate` (`w4/zshear.py`) | *(new, 2026-08-26, direction ZSHEAR — the first section minted from an EXTERNAL idea source rather than an internal residual)* the Witt shear of `notes/Pencil-strategy.md` §9's (ZH-1) settled: the shear group identified as the `Λ²`-image of the affine translations, `Q` as its own defining invariant, the §(K-tight) criterion proved **equivariant entry-for-entry**, the coordinator-offered per-body repair decided in both readings, and the general symmetry-vs-deformation dichotomy | **(SH-1)–(SH-6) proven** — (SH-1)/(SH-2)/(SH-5)(i) **symbolic identities** in `ℚ[…]`, no sampling; **(ZH-1) REFUTED / STRUCK from the shelf**, a HIT of the negative kind. **No gap-map row moves.** Durable residue: `Q(r̃) ≠ 0` is `PGL(4)`-invariant, so **no gauge-fixing or frame normalization can ever supply it** |
-| §(K-jac) | `JC-` ✓ | (JC-1)–(JC-6); Steps JC1–JC5; driver modes `--sym`/`--tan`/`--codim`/`--validate` (`w4/zjacob.py`; no M2 leaf, barred for stated mathematical reasons) | *(new, 2026-08-26, direction ZJACOB — the SECOND section minted from the external §9 shelf)* the Jacobian / singular-locus route of `notes/Pencil-strategy.md` §9's (ZH-4) settled: the polynomial presentation of the motion cone and its zero-section Jacobian `[0 \| A(y)]`, the corank stratification identity `dim 𝒞 = max_k(dim B_k + 6 + k)`, the direction and input-dependence of the classical height bounds on ideals of minors, the criterion's blindness to fibre-quadratic (pure-condition) data, and the faithful re-encoding of §(K-tight) *Steps 2.1/2.4* | **(JC-1)–(JC-6) proven / proven-informally** — (JC-1)(b) and (JC-4) **symbolic identities** in `ℚ[pts]`, no sampling; **(ZH-4) REFUTED / STRUCK from the shelf, and its refutation ABSORBS (ZH-3)**. A HIT of the negative kind. **No gap-map row moves.** Durable residue: the determinantal/scheme package is a **conservation law** — it converts expected codimension *into* structure and has no theorem *producing* it over a non-generic base |
+| §(K-shear) | `SH-` ✓ | (SH-1)–(SH-6); Steps SH1–SH5; driver modes `--iso`/`--bed`/`--inv`/`--prod`/`--validate` (`w4/zshear.py`) | *(new, 2026-08-26, direction ZSHEAR — the first section minted from an EXTERNAL idea source rather than an internal residual)* the Witt shear of `notes/pencil/strategy.md` §9's (ZH-1) settled: the shear group identified as the `Λ²`-image of the affine translations, `Q` as its own defining invariant, the §(K-tight) criterion proved **equivariant entry-for-entry**, the coordinator-offered per-body repair decided in both readings, and the general symmetry-vs-deformation dichotomy | **(SH-1)–(SH-6) proven** — (SH-1)/(SH-2)/(SH-5)(i) **symbolic identities** in `ℚ[…]`, no sampling; **(ZH-1) REFUTED / STRUCK from the shelf**, a HIT of the negative kind. **No gap-map row moves.** Durable residue: `Q(r̃) ≠ 0` is `PGL(4)`-invariant, so **no gauge-fixing or frame normalization can ever supply it** |
+| §(K-jac) | `JC-` ✓ | (JC-1)–(JC-6); Steps JC1–JC5; driver modes `--sym`/`--tan`/`--codim`/`--validate` (`w4/zjacob.py`; no M2 leaf, barred for stated mathematical reasons) | *(new, 2026-08-26, direction ZJACOB — the SECOND section minted from the external §9 shelf)* the Jacobian / singular-locus route of `notes/pencil/strategy.md` §9's (ZH-4) settled: the polynomial presentation of the motion cone and its zero-section Jacobian `[0 \| A(y)]`, the corank stratification identity `dim 𝒞 = max_k(dim B_k + 6 + k)`, the direction and input-dependence of the classical height bounds on ideals of minors, the criterion's blindness to fibre-quadratic (pure-condition) data, and the faithful re-encoding of §(K-tight) *Steps 2.1/2.4* | **(JC-1)–(JC-6) proven / proven-informally** — (JC-1)(b) and (JC-4) **symbolic identities** in `ℚ[pts]`, no sampling; **(ZH-4) REFUTED / STRUCK from the shelf, and its refutation ABSORBS (ZH-3)**. A HIT of the negative kind. **No gap-map row moves.** Durable residue: the determinantal/scheme package is a **conservation law** — it converts expected codimension *into* structure and has no theorem *producing* it over a non-generic base |
 
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
 (K-move), (K-pitch), (K-pitch-∞), (K-wit), (K-Λ), (K-slide), (K-slide-cl),
@@ -2597,7 +2597,7 @@ W4 workbook, below). These are already tagged and collision-free; keep the `K-`
 form for any new gap. ((K-clos) was landed 2026-08-06 with its registry row but
 was missed from this sentence; added here with (K-ann) and (K-out).)
 
-## Registry — `notes/Pencil-W4-informal.md` (the W4 residual workbook)
+## Registry — `notes/pencil/workbook/W4.md` (the W4 residual workbook)
 
 | owning section | tag | labels in use | what the family is |
 |---|---|---|---|
@@ -2608,7 +2608,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 | §widened kernels (routes 1/3), direction WPAIR | `PAIR-` | **(PAIR-1)–(PAIR-6)**; ***Steps PR1–PR6*** | the (E-pair) obligation: **all six consumed, LANDED 2026-09-02** (identity / contraction criterion / seed lemma / `e₀ = 0` stratum / seed condition / (V)). `EP-` rejected on the (L5) substring rule (`STEP-1`/`STEP-4`) |
 | §widened kernels (routes 1/3) | `WK-` | (E-loc) — **REFUTED**; **(E-pair)** (minted 2026-09-02, WELOC); **(K-res)** | the routes-1/3 kernel widening; (E-pair) is (E)'s successor target, *two adjacent degree-`2` vertices*; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
-## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
+## Registry — `notes/pencil/strategy.md`, `Phase39.md`, `Phase39-design.md`
 
 | owner | labels in use | what the family is |
 |---|---|---|
@@ -2633,7 +2633,7 @@ token a reader will meet bare in the existing corpus.
 | **(D1)–(D4)** | §(K-dom) claims | §(K-dom) *Steps* D0–**D14** | §(K-slide-comb) *Steps* D0–D5; **`notes/Phase23-design.md`'s Phase-23f item-4 *Steps* D1–D8** *(found 2026-09-03, direction DSAT: bare `D8` is 4 hits / 2 files there and in `model-experiment-archive.md`)* |
 | **(M1)–(M4)** | §(K-Λ) `lambda1.m2` driver blocks | §(K-Δ) the three hypothesis tests | — |
 | **(P1)–(P7)** | §(K-Λ) `lambda0.m2` driver blocks | §(K-pure) *Steps* P0–P9 | — |
-| **(R1)–(R6)** | *Shared dictionary* rigid-graph facts (R1)–(R5) | R1/R2/R3 the opening recon questions | `Pencil-strategy.md` §4.6's six refutations (R1)–(R6) — **and (ANH-R1)/(ANH-R2)**, §(K-ann)'s two residual inputs, which are *prefixed precisely to stay out of this row* |
+| **(R1)–(R6)** | *Shared dictionary* rigid-graph facts (R1)–(R5) | R1/R2/R3 the opening recon questions | `pencil/strategy.md` §4.6's six refutations (R1)–(R6) — **and (ANH-R1)/(ANH-R2)**, §(K-ann)'s two residual inputs, which are *prefixed precisely to stay out of this row* |
 | **(T)** | §(K-pitch) (T1)–(T5) transfer claims | W4 §(SAFE-RES) (T) — triangle-freeness, **PROVED 2026-09-02** (*Step TF5*); the token stays ambiguous, so keep qualifying it | — |
 | **(W1)–(W4)** | §(K-slide) limit-system conditions | the phase's **work packages** W0–W5 (**W4 = `hcontract`**) | — |
 | **(N1), (N2)** | §(K-Δ) the two readings | N8/N9/N10/N10b the W4 gates | — |
@@ -2650,7 +2650,7 @@ caused one landed fixup.
 ## Reserved namespace — direction BONEONE (2026-09-01, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved 2026-09-01 for the single direction BONEONE** (ordinal 56, the arc's
-sixty-fourth direction; `notes/Pencil-fanout.md` §"BONEONE") — **can an
+sixty-fourth direction; `notes/pencil/fanout.md` §"BONEONE") — **can an
 R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?**, which is the whole of what
 BSPREAD reduced job 2 to ((BE-77)(iv)). Coordinator-set, single dispatch —
 **not** a fan-out, so this reservation protects against the *existing corpus*
@@ -2719,7 +2719,7 @@ body without either, which is the one thing a successor's 0-hit check reads.)*
 ## Reserved namespace — direction BGENUINE (2026-09-01, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved 2026-09-01 for the single direction BGENUINE** (ordinal 57, the arc's
-sixty-fifth direction; `notes/Pencil-fanout.md` §"BGENUINE") — **is the
+sixty-fifth direction; `notes/pencil/fanout.md` §"BGENUINE") — **is the
 coincidence BONEONE re-opened GENUINE, and does it BITE?**, the price BONEONE
 itself named ((BE-82)). Coordinator-set, single dispatch — **not** a fan-out, so
 this reservation protects against the *existing corpus* only.
@@ -2782,7 +2782,7 @@ gap-map row spells the gloss out rather than carrying the bare symbol.
 
 ## Reserved namespace — direction WTRI (2026-09-01, **CONSUMED 2026-09-02 — the direction LANDED; kept as the minting record**)
 
-**Reserved 2026-09-01 for the single direction WTRI** (ordinal 58; `notes/Pencil-fanout.md`
+**Reserved 2026-09-01 for the single direction WTRI** (ordinal 58; `notes/pencil/fanout.md`
 §"WTRI") — **W4 / `hcontract`, route 3's cost (T): is a feasible residual `G`
 triangle-free?** Coordinator-set, single dispatch — **not** a fan-out, so this reservation
 protects against the *existing corpus* only.
@@ -2790,7 +2790,7 @@ protects against the *existing corpus* only.
 **This is the sequence's FIRST W4-side direction**, so two things differ from every
 reservation above it and both are deliberate:
 
-- **The owning file is `notes/Pencil-W4-informal.md`, not `notes/pencil/workbook/`.**
+- **The owning file is `notes/pencil/workbook/W4.md`, not `notes/pencil/workbook/`.**
   The `(BE-…)` family belongs to §(K-bare-ext) and **must not be extended here**; the W4
   workbook's own families are `NG-`, `SR-` and `WK-` (registry table below).
 - **There is NO gap-map row for the W4 side, and this direction does not open one.** The
@@ -2801,12 +2801,12 @@ reservation above it and both are deliberate:
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **WTRI** | `notes/Pencil-W4-informal.md` §(SAFE-RES) — **extends**, no new file | **(TF-1)–(TF-6)** — **all six consumed, no remainder** | **TF1–TF6** — all six used | `w4/wtri.py` **SHIPPED** (`--validate`/`--audit`/`--regress`): it does *not* hunt for a triangle-carrying residual (impossible in principle) but audits the theorem's side conditions on the blind-spot family and regression-tests the new (TF-6) certificate against the 255 recorded inhabitants |
+| **WTRI** | `notes/pencil/workbook/W4.md` §(SAFE-RES) — **extends**, no new file | **(TF-1)–(TF-6)** — **all six consumed, no remainder** | **TF1–TF6** — all six used | `w4/wtri.py` **SHIPPED** (`--validate`/`--audit`/`--regress`): it does *not* hunt for a triangle-carrying residual (impossible in principle) but audits the theorem's side conditions on the blind-spot family and regression-tests the new (TF-6) certificate against the 255 recorded inhabitants |
 
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WTRI`, `wtri`, `(TF-1)`–`(TF-6)` and
 *`Steps TF1–TF6`* each **0-hit**. The `TF-` tag is new and topic-tagged, which is the shape
-`notes/Pencil-labels.md`'s own diagnosis says has **never** collided.
+`notes/pencil/labels.md`'s own diagnosis says has **never** collided.
 
 **Checked and NOT chosen:** extending the `SR-` family — `(T)` already lives there as a
 bare single letter, and the **collision table** in this file records `(T)` as ambiguous
@@ -2823,17 +2823,17 @@ worst-case mint in the whole doc set.
 
 ## Reserved namespace — direction WELOC (2026-09-02, **CONSUMED 5/6 — LANDED, (EL-6) RETURNED**)
 
-**Reserved 2026-09-02 for the single direction WELOC** (ordinal 59; `notes/Pencil-fanout.md`
+**Reserved 2026-09-02 for the single direction WELOC** (ordinal 59; `notes/pencil/fanout.md`
 §"WELOC") — **W4 / `hcontract`, the gap (E-loc)**: *every residual `G` has a degree-`2`
 vertex `v₀` with `E(G − v₀)` independent in the `(6,6)` count matroid.* The **second**
 W4-side direction; the conventions WTRI's reservation established for that side bind here
-unchanged and are **not restated** (owning file `notes/Pencil-W4-informal.md`, the
+unchanged and are **not restated** (owning file `notes/pencil/workbook/W4.md`, the
 `(BE-…)` family **not** extended, **no gap-map row** and none opened, so
 `notes/check-gapmap-cells.py` will not fire — state that rather than skip it).
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **WELOC** | `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3) — **extends**, no new file | **(EL-1)–(EL-6)** | **EL1–EL6** | `w4/weloc.py` *(conditional, as WTRI's was — see the spec on why this question's 255/255 is **not** in (T)'s blind spot but has a different limitation)* |
+| **WELOC** | `notes/pencil/workbook/W4.md` §widened kernels (routes 1/3) — **extends**, no new file | **(EL-1)–(EL-6)** | **EL1–EL6** | `w4/weloc.py` *(conditional, as WTRI's was — see the spec on why this question's 255/255 is **not** in (T)'s blind spot but has a different limitation)* |
 
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WELOC`, `weloc`, `(EL-1)`–`(EL-6)` and
@@ -2860,22 +2860,22 @@ EL6* is the consumer trace and carries no claim that wanted a label. The two obs
 shapes took **prose** names as instructed (*brick* and *shape 1*), and one new token was
 minted outside this family: **(E-pair)**, in §widened kernels' own bare-token neighbourhood
 beside (E-loc)/(K-res), registered in the `WK-` row above. `T32` follows the `W19`/`S29`
-witness-naming convention and is defined in `notes/Pencil-W4-informal.md` §widened kernels
+witness-naming convention and is defined in `notes/pencil/workbook/W4.md` §widened kernels
 *Step EL5*, its canonical home.
 
 
 ## Reserved namespace — direction WPAIR (2026-09-02, **CONSUMED 6/6 — LANDED, nothing returned**)
 
 **Reserved 2026-09-02 for the single direction WPAIR** (ordinal 60;
-`notes/Pencil-fanout.md` §"WPAIR") — **(E-pair)**: *every residual carries two adjacent
+`notes/pencil/fanout.md` §"WPAIR") — **(E-pair)**: *every residual carries two adjacent
 degree-`2` vertices.* The **third** W4-side direction; WTRI's W4-side conventions bind
-unchanged and are **not restated** (owning file `notes/Pencil-W4-informal.md`, `(BE-…)`
+unchanged and are **not restated** (owning file `notes/pencil/workbook/W4.md`, `(BE-…)`
 not extended, **no gap-map row** and none opened, so `notes/check-gapmap-cells.py` will
 not fire — state it, do not skip it).
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **WPAIR** | `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3) — **extends** | **(PAIR-1)–(PAIR-6)** | **PR1–PR6** | `w4/wpair.py` (conditional, as WTRI's and WELOC's were) |
+| **WPAIR** | `notes/pencil/workbook/W4.md` §widened kernels (routes 1/3) — **extends** | **(PAIR-1)–(PAIR-6)** | **PR1–PR6** | `w4/wpair.py` (conditional, as WTRI's and WELOC's were) |
 
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WPAIR`, `wpair`,
@@ -2918,20 +2918,20 @@ the landing-time bare-token grep was run.
 rigidity criterion + hub closure, **(GROW-3)** the rigid parts of a
 minimum-excess partition, **(GROW-4)** the seed dichotomy, **(GROW-5)** `K₂,₃`
 refuting (PAIR-5) as stated, **(GROW-6)** **(E-pair) is a theorem**; *Steps
-GW1–GW6* in `notes/Pencil-W4-informal.md` §widened kernels.
+GW1–GW6* in `notes/pencil/workbook/W4.md` §widened kernels.
 
 **Reserved 2026-09-02 for the single direction WGROW** (ordinal 61;
-`notes/Pencil-fanout.md` §"WGROW") — the target is **(PAIR-5)**, the *seed condition*:
+`notes/pencil/fanout.md` §"WGROW") — the target is **(PAIR-5)**, the *seed condition*:
 every simple, 2EC, triangle-free, `hcard` graph whose degree-`2` vertices are independent
 and which carries a proper rigid subgraph has a rigid `U` with `3 ≤ |U| ≤ |V| − 2` and
 `|∂_hub U| ≤ 2`. The **fourth** W4-side direction; WTRI's W4-side conventions bind
-unchanged and are **not restated** (owning file `notes/Pencil-W4-informal.md`, `(BE-…)`
+unchanged and are **not restated** (owning file `notes/pencil/workbook/W4.md`, `(BE-…)`
 not extended, **no gap-map row** and none opened, so `notes/check-gapmap-cells.py` will
 not fire — state it, do not skip it).
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **WGROW** | `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3) — **extends** | **(GROW-1)–(GROW-6)** | **GW1–GW6** | `w4/wgrow.py` (conditional, as WTRI's / WELOC's / WPAIR's were) |
+| **WGROW** | `notes/pencil/workbook/W4.md` §widened kernels (routes 1/3) — **extends** | **(GROW-1)–(GROW-6)** | **GW1–GW6** | `w4/wgrow.py` (conditional, as WTRI's / WELOC's / WPAIR's were) |
 
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `WGROW`, `wgrow`,
@@ -2969,7 +2969,7 @@ Qualify every one with its owner (L3). New objects this direction is likely to n
 ## Reserved namespace — direction BBASE (2026-09-02, **CONSUMED IN FULL — LANDED 2026-09-02**)
 
 **Reserved 2026-09-02 for the single direction BBASE** (ordinal 62, the arc's seventieth
-direction; `notes/Pencil-fanout.md` §"BBASE") — **the flag base off the no-adjacent-hubs
+direction; `notes/pencil/fanout.md` §"BBASE") — **the flag base off the no-adjacent-hubs
 class** ((BE-65)(i)/(BE-68)(ii) item 1), candidate 1 of the (BE-14) thread and the smaller
 of half (B)'s two residue items. Coordinator-set, single dispatch — **not** a fan-out, so
 this reservation protects against the *existing corpus* only.
@@ -3029,7 +3029,7 @@ stratum), which keep prose names as BSPREAD / BONEONE / BGENUINE did.
 ## Reserved namespace — direction BUNIF (2026-09-02, **CONSUMED IN FULL**)
 
 **Reserved 2026-09-02 for the single direction BUNIF** (ordinal 63, the arc's seventy-first
-direction; `notes/Pencil-fanout.md` §"BUNIF") — **half (B)'s LAST residue**, the class
+direction; `notes/pencil/fanout.md` §"BUNIF") — **half (B)'s LAST residue**, the class
 quantifier (BE-67)(iii), i.e. *`reach(H;x,y) = min(δ₁+δ₂,6)` at every internal R-node piece
 and peel*. Coordinator-set, single dispatch — **not** a fan-out, so this reservation
 protects against the *existing corpus* only.
@@ -3088,7 +3088,7 @@ set-diff **101 labels in, 112 out, ZERO dropped**.
 ## Reserved namespace — direction BDOUBLE (2026-09-02, **CONSUMED IN FULL**)
 
 **Reserved 2026-09-02 for the single direction BDOUBLE** (ordinal 64, the arc's
-seventy-second direction; `notes/Pencil-fanout.md` §"BDOUBLE") — **(NO-DOUBLE-PENCIL)**
+seventy-second direction; `notes/pencil/fanout.md` §"BDOUBLE") — **(NO-DOUBLE-PENCIL)**
 ((BE-97)(iii)), the one place BUNIF's 14 per-side inequalities are tight. Coordinator-set,
 single dispatch — **not** a fan-out, so this reservation protects against the *existing
 corpus* only.
@@ -3149,7 +3149,7 @@ not move. Reason in `check-gapmap-cells.py`'s docstring.
 ## Reserved namespace — direction BSATUR (2026-09-02, **CONSUMED IN FULL**)
 
 **Reserved 2026-09-02 for the single direction BSATUR** (ordinal 65, the arc's
-seventy-third direction; `notes/Pencil-fanout.md` §"BSATUR") — **(PENCIL-SATURATES)**,
+seventy-third direction; `notes/pencil/fanout.md` §"BSATUR") — **(PENCIL-SATURATES)**,
 *`dim(ρ̄_i ∩ Π) = 2 ⟹ ρ_i = 6`*, the clause BDOUBLE's redundancy theorem ((BE-101)) is
 conditional on. Coordinator-set, single dispatch — **not** a fan-out, so this reservation
 protects against the *existing corpus* only.
@@ -3160,7 +3160,7 @@ protects against the *existing corpus* only.
 
 The reservation opens at **(BE-104) / Step BE103**, exactly the tail **BDOUBLE declared**.
 Both tokens have **two hits each**, opened and confirmed to be that declaration in its two
-homes — this registry's BDOUBLE row and `notes/Pencil-fanout.md` §"BDOUBLE" — not consumed
+homes — this registry's BDOUBLE row and `notes/pencil/fanout.md` §"BDOUBLE" — not consumed
 labels. (BDOUBLE declared its tail in **both** places, which is one better than BUNIF's one
 and two better than BBASE's none; the habit is worth keeping.)
 
@@ -3204,14 +3204,14 @@ ZERO dropped**. **The tail this direction declares, for the next reservation:
 ## Reserved namespace — direction GPACK (2026-09-02, **LANDED**)
 
 **Reserved 2026-09-02 for the single direction GPACK** (ordinal 66, the arc's
-seventy-fourth direction; `notes/Pencil-fanout.md` §"GPACK") — **(GR-18)(iii)**, the
+seventy-fourth direction; `notes/pencil/fanout.md` §"GPACK") — **(GR-18)(iii)**, the
 grouping problem, and **the arc's first `hK`-side direction in 22 dispatches**.
 Coordinator-set, single dispatch — **not** a fan-out, so this reservation protects against
 the *existing corpus* only.
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **GPACK** | §(K-grid) (`notes/Pencil-informal-grid.md`) — **extends**, no new section | **(GR-129)–(GR-133)** | **G149–G153** | `w4/gpack.py` (expected — extend `gridcol.py`'s `--pack` and `packmm.py`/`gridwit.py` by read-only import) |
+| **GPACK** | §(K-grid) (`notes/pencil/workbook/grid.md`) — **extends**, no new section | **(GR-129)–(GR-133)** | **G149–G153** | `w4/gpack.py` (expected — extend `gridcol.py`'s `--pack` and `packmm.py`/`gridwit.py` by read-only import) |
 
 **This is the first reservation on the `GR-` tail since GMINM (ordinal 36, 2026-08-26)** —
 21 directions on other namespaces — and it opens exactly where GMINM **returned**. GMINM
@@ -3241,7 +3241,7 @@ namespace: bare **`(C6)`/`(C7)`** (this file's oldest recorded collision, §(SAF
 2026-08-20 user call — **do not re-mint the bare forms**; and `A(β)`, `C_β`, `J`, `Ĝ`,
 `D_β`, which are *Step G21*'s own symbol names — **reuse them, mint nothing**.
 
-**LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-129)–(GR-133) and *Steps G149–G153* are all written, in `notes/Pencil-informal-grid.md` §(K-grid), which the direction **extends** exactly as reserved; driver `w4/gpack.py` as named. **(L6) landing grep run**: the bare `(C6)` appears three times in the new steps, twice written `§(K-slide-comb) (C6)` and once inside a direct quotation of that result's own remark (c), in a sentence that names §(K-slide-comb) twice — unambiguous, no rename; `(C7)`, `(R1)`, `(C1)`, `(C2)` **0-hit**. *Step G21*'s symbols `A(β)`, `C_β`, `J`, `Ĝ`, `D_β` reused and nothing re-minted; the newly named objects are `σ(F)` (the sparsity slack), the signing `s`, `H₀`, `N₃` and *the split graph*, which is deliberately left **unlettered** because `P` was already carrying two jobs in §(K-grid) ((GR-8)'s subgraph, and this direction's own signing subset `P ⊆ O`). **F21 discharged**: the `(K-grid)` row recomputed to an explicit target of **≤ 2 500** status words and landing at exactly **2 500 / 2 715** (close-it **980 / 985**), no `SPECIAL_CAPS` entry proposed and none needed — the row was under cap before and after; label preservation by `notes/scripts/gapdiff.py`, **135 in, 141 out, ZERO dropped, 6 added**. **The tail this direction declares, for the next reservation: (GR-134) / Step G154.**
+**LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-129)–(GR-133) and *Steps G149–G153* are all written, in `notes/pencil/workbook/grid.md` §(K-grid), which the direction **extends** exactly as reserved; driver `w4/gpack.py` as named. **(L6) landing grep run**: the bare `(C6)` appears three times in the new steps, twice written `§(K-slide-comb) (C6)` and once inside a direct quotation of that result's own remark (c), in a sentence that names §(K-slide-comb) twice — unambiguous, no rename; `(C7)`, `(R1)`, `(C1)`, `(C2)` **0-hit**. *Step G21*'s symbols `A(β)`, `C_β`, `J`, `Ĝ`, `D_β` reused and nothing re-minted; the newly named objects are `σ(F)` (the sparsity slack), the signing `s`, `H₀`, `N₃` and *the split graph*, which is deliberately left **unlettered** because `P` was already carrying two jobs in §(K-grid) ((GR-8)'s subgraph, and this direction's own signing subset `P ⊆ O`). **F21 discharged**: the `(K-grid)` row recomputed to an explicit target of **≤ 2 500** status words and landing at exactly **2 500 / 2 715** (close-it **980 / 985**), no `SPECIAL_CAPS` entry proposed and none needed — the row was under cap before and after; label preservation by `notes/scripts/gapdiff.py`, **135 in, 141 out, ZERO dropped, 6 added**. **The tail this direction declares, for the next reservation: (GR-134) / Step G154.**
 
 **Gap-map note (F21) — this is the corpus's biggest row.** `(K-grid)` stood at **2 390 /
 2 715 status words** at reservation time (**2 500** after this landing), the one row with a `SPECIAL_CAPS` entry, bumped three times and every
@@ -3253,7 +3253,7 @@ on 2026-09-02 for exactly that reason.
 ## Reserved namespace — direction BSIGMA (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved and consumed on 2026-09-02 for the single direction BSIGMA** (ordinal 67, the
-arc's seventy-fifth direction; `notes/Pencil-fanout.md` §"BSIGMA") — **(BE-107)(iii)**,
+arc's seventy-fifth direction; `notes/pencil/fanout.md` §"BSIGMA") — **(BE-107)(iii)**,
 BSATUR's own named residual. **This reservation was never a separate commit**: BSIGMA ran
 **draft-only** in parallel with a committing direction, so its spec and its labels were
 carried in the invocation prompt and land here with the write-up. That is
@@ -3280,7 +3280,7 @@ section has now gone **seven** directions without a configuration-level token.
 ## Reserved namespace — direction BPROPER (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved and consumed on 2026-09-02 for the single direction BPROPER** (ordinal 69;
-`notes/Pencil-fanout.md` §"BPROPER") — (BE-113)(i) item 1's own designated successor target.
+`notes/pencil/fanout.md` §"BPROPER") — (BE-113)(i) item 1's own designated successor target.
 Like BSIGMA, **this reservation was never a separate commit**: BPROPER ran **draft-only** in
 parallel with a committing dispatch, so its spec and its labels were carried in the
 invocation prompt and land here with the write-up (`RESEARCH-ARC.md` §2).
@@ -3342,16 +3342,16 @@ dropping the same label *and lengthening the row*; the row finally went **1 466 
 
 ## Reserved namespace — direction GLIST (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
 
-**Reserved 2026-09-02 for the direction GLIST** (ordinal 68; `notes/Pencil-fanout.md`
+**Reserved 2026-09-02 for the direction GLIST** (ordinal 68; `notes/pencil/fanout.md`
 §"GLIST") — **(GR-132)'s hub list-colouring at the `ℓ = 2`-rich shapes**, the `hK` lane's own
-named successor and rank 1 of `notes/Pencil-strategy.md` §8's corrected ranking. The
+named successor and rank 1 of `notes/pencil/strategy.md` §8's corrected ranking. The
 **committing** dispatch of a concurrent pair; the sibling ran **draft-only on the (BE-14)
 thread**, so this reservation protects against the existing corpus *and* against one live
 sibling on a disjoint prefix.
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **GLIST** | §(K-grid) (`notes/Pencil-informal-grid.md`) — **extends**, no new section | **(GR-134)–(GR-138)** | **G154–G158** | `w4/glist.py` |
+| **GLIST** | §(K-grid) (`notes/pencil/workbook/grid.md`) — **extends**, no new section | **(GR-134)–(GR-138)** | **G154–G158** | `w4/glist.py` |
 
 **It opens at exactly the tail GPACK declared** (*"the tail this direction declares, for the
 next reservation: (GR-134) / Step G154"*).
@@ -3366,7 +3366,7 @@ would not have been (hundreds of hits inside "listed" / "colouring-existence" pr
 why the code carries the topic tag.
 
 **LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-134)–(GR-138)
-and *Steps G154–G158* are all written, in `notes/Pencil-informal-grid.md` §(K-grid), which the
+and *Steps G154–G158* are all written, in `notes/pencil/workbook/grid.md` §(K-grid), which the
 direction **extends** exactly as reserved; driver `w4/glist.py` as named. **(L6) landing grep
 run**: **no bare `(X<digit>)` token is minted anywhere in the new steps** — the newly named
 objects are the two hub functions `α`, `γ`, the two lists `P_β`/`Q_β`, and the words *pure
@@ -3384,7 +3384,7 @@ ZERO dropped, 5 added**. **The tail this direction declares, for the next reserv
 
 ## Reserved namespace — direction GGLOB (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
 
-**Reserved 2026-09-02 for the direction GGLOB** (ordinal 71; `notes/Pencil-fanout.md`
+**Reserved 2026-09-02 for the direction GGLOB** (ordinal 71; `notes/pencil/fanout.md`
 §"GGLOB") — **(GR-138)'s successor 1, the GLOBAL `(α, γ)` CSP at `D = 0`**, the `hK` lane's
 own named successor one direction after GLIST. The **committing** dispatch of a concurrent
 pair; the sibling ran **draft-only on the (BE-14) thread**, so this reservation protects
@@ -3392,7 +3392,7 @@ against the existing corpus *and* against one live sibling on a disjoint prefix.
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **GGLOB** | §(K-grid) (`notes/Pencil-informal-grid.md`) — **extends**, no new section | **(GR-139)–(GR-144)** | **G159–G164** | `w4/gglob.py` |
+| **GGLOB** | §(K-grid) (`notes/pencil/workbook/grid.md`) — **extends**, no new section | **(GR-139)–(GR-144)** | **G159–G164** | `w4/gglob.py` |
 
 **It opens at exactly the tail GLIST declared** (*"the tail this direction declares, for the
 next reservation: (GR-139) / Step G159"*).
@@ -3406,7 +3406,7 @@ DECLARATION** — one in its registry row above, one in its fan-out landing para
 consumed labels. `GGLOB` was checked for the substring hazard (L5) and is clean.
 
 **LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-139)–(GR-144)
-and *Steps G159–G164* are all written, in `notes/Pencil-informal-grid.md` §(K-grid), which the
+and *Steps G159–G164* are all written, in `notes/pencil/workbook/grid.md` §(K-grid), which the
 direction **extends** exactly as reserved; driver `w4/gglob.py` as named. **(L6) landing grep
 run**: the only `(X<digit>)`-shaped token anywhere in the new steps is **`(F11)`**, the
 dispatch-log finding code the *Verification* block cites by long-standing convention (GLIST's
@@ -3426,7 +3426,7 @@ ZERO dropped, 8 added**. **The tail this direction declares, for the next reserv
 ## Reserved namespace — direction BOPEN (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved and consumed on 2026-09-02 for the single direction BOPEN**
-(ordinal 72; `notes/Pencil-fanout.md` §"BOPEN") — (BE-121)(i) item 1's own
+(ordinal 72; `notes/pencil/fanout.md` §"BOPEN") — (BE-121)(i) item 1's own
 designated successor, *"the passage from proper to generic … a chart question
 rather than a configuration hunt"*. Like BSIGMA and BPROPER, **this
 reservation was never a separate commit**: BOPEN ran **draft-only** in
@@ -3446,7 +3446,7 @@ in the invocation prompt and land here with the write-up (`RESEARCH-ARC.md`
 excluded: `BOPEN`, `bopen`, `bopen.py`, `(BE-123)`–`(BE-129)` and the raw step
 tokens `BE122`–`BE127` each **0-hit**; `(BE-122)` and `BE121` had exactly one
 hit each, opened and confirmed to be **BPROPER's own tail declaration**
-(`notes/Pencil-labels.md:3232`), not consumed labels. **`BGENERIC` was checked
+(`notes/pencil/labels.md:3232`), not consumed labels. **`BGENERIC` was checked
 and NOT chosen** — it names the **predicted answer**, which `RESEARCH-ARC.md`
 §7 warns against baking into a code; `BOPEN` names the **question** (the
 passage from proper to generic, i.e. whether the good locus is *open*), and
@@ -3499,7 +3499,7 @@ row can be invisible to one and not the other.
 ## Reserved namespace — direction BLINE (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved and consumed on 2026-09-02 for the single direction BLINE**
-(ordinal 73; `notes/Pencil-fanout.md` §"BLINE") — BOPEN's own designated
+(ordinal 73; `notes/pencil/fanout.md` §"BLINE") — BOPEN's own designated
 residue, *prove or refute §(K-bare-ext) (BE-127)(ii)'s `(∗)`*, which
 `notes/Phase39.md` *Hand-off* item 0(a) carries as half (B)'s last open
 sub-item. A **single, committing** dispatch: no sibling was in flight, so
@@ -3520,7 +3520,7 @@ even though no sibling was running, because the run itself dirties the tree
 with the new driver): `BLINE` and `bline` each **0-hit as raw substrings**;
 `(BE-130)`–`(BE-135)` and the raw step tokens `BE129`–`BE134` each
 **0-hit**. **`(BE-129)` has two hits and `BE128` one, all three in BOPEN's
-own reservation block** (`notes/Pencil-labels.md:3369` — its excluded-range
+own reservation block** (`notes/pencil/labels.md:3369` — its excluded-range
 line — and `:3390`, its tail declaration): a **declaration**, not a consumed
 label. `BLINE` was checked for the substring hazard (L5) and is clean; it
 names the **object** (`L_c`, the fixed line the whole condition is
@@ -3574,7 +3574,7 @@ in the same pass, at a cost of two words.
 ## Reserved namespace — direction BDEGTWO (2026-09-03, **CONSUMED IN FULL at the landing; two labels returned**)
 
 **Reserved and consumed on 2026-09-03 for the single direction BDEGTWO**
-(ordinal 74; `notes/Pencil-fanout.md` §"BDEGTWO") — *does half (B)'s item 1
+(ordinal 74; `notes/pencil/fanout.md` §"BDEGTWO") — *does half (B)'s item 1
 close at side-degree `≥ 2`, and what exactly is missing?*, i.e. BLINE's own
 two named residues (BE-134)(i)/(ii). One of a **concurrent pair**; the
 sibling ran the **(K-res)** lane and shares no section, label family or
@@ -3597,8 +3597,8 @@ than the direction needed, and are **available**.
 **at `HEAD`**: `BDEGTWO` and `bdegtwo` each **0-hit as raw substrings**;
 `(BE-137)`–`(BE-143)` and the raw step tokens `BE136`–`BE142` each
 **0-hit**. **`(BE-136)` has exactly one hit and `BE135` three** — BLINE's
-own tail declaration (`notes/Pencil-labels.md:3470`) carries both, and the
-two further `BE135` hits are `notes/Pencil-strategy.md`'s **`BE129–BE135`**
+own tail declaration (`notes/pencil/labels.md:3470`) carries both, and the
+two further `BE135` hits are `notes/pencil/strategy.md`'s **`BE129–BE135`**
 range citations (its §9 thread line and its §8 board row), i.e. a
 **declaration plus two citations of a WRONG range**, not consumed labels —
 see the citation repair below. `BDEGTWO` was checked for the substring hazard (L5) and is
@@ -3608,7 +3608,7 @@ verdict, `BSWEEP` having been rejected by this registry for naming a
 turned out to be the **easy** half and a code named for it would have
 implied the direction was about building one.
 
-**A citation repaired at this landing.** `notes/Pencil-strategy.md` recorded
+**A citation repaired at this landing.** `notes/pencil/strategy.md` recorded
 BLINE as *"Steps BE129–BE135"* in **two** places (§9's thread line and §8's
 `(K-bare)` board row). That is BLINE's **label** range; its **step** range is
 *BE128–BE134*. Both are corrected, and both now read *BDEGTWO (Steps
@@ -3666,7 +3666,7 @@ citation and parses as one and a half.
 (BE-144). **CONSUMED 2026-09-03 by direction BSCOND — see the block below.**
 
 **Reserved and consumed on 2026-09-03 for the single direction BSCOND**
-(ordinal 76; `notes/Pencil-fanout.md` §"BSCOND") — *prove or refute
+(ordinal 76; `notes/pencil/fanout.md` §"BSCOND") — *prove or refute
 (BE-57)(iv)'s two window conditions (S1) and (S2)*, the ninth strategy
 pass's rank 1 and half (β)'s only residue since BWIN (ordinal 51). A
 **single** dispatch, so the reservation protects only against the corpus;
@@ -3688,7 +3688,7 @@ wider result than the direction needed, and **available**.
 `(BE-145)`–`(BE-149)` and the raw step tokens `BE143`–`BE148` each **hard
 0-hit**. **The carve-out the coordinator flagged is CONFIRMED in its
 conclusion and CORRECTED in its counts:** the prep said `(BE-142)`/`(BE-143)`
-and `BE141`/`BE142` had *"exactly one hit, in `notes/Pencil-labels.md`
+and `BE141`/`BE142` had *"exactly one hit, in `notes/pencil/labels.md`
 only"*; the re-run at `HEAD` measured **`(BE-142)` 2, `(BE-143)` 3,
 `(BE-144)` 1, `BE141` 2, `BE142` 3** — **all in this file only, and all
 declarations**: BDEGTWO's reservation range row, its two-labels-returned-
@@ -3793,7 +3793,7 @@ the reservation protects against the corpus and against them.
 round**, whose diagnosis is in the *Coordinator reservation defects* block below and is
 **not duplicated here**. What this row adds is the disposition: GGLOB's landing declares
 *"the tail declared for the next reservation is (GR-145) / Step G165"* **verbatim in two
-places** (this file and `notes/Pencil-fanout.md` §"GGLOB"), so the opening token was
+places** (this file and `notes/pencil/fanout.md` §"GGLOB"), so the opening token was
 `(GR-145)`, and the spec's range skipped it. Nothing is renamed (L4); the spec's
 `(GR-153)` / *Step G173* are simply **RETURNED UNUSED**. Shape **five** (OBAR, off by two
 in §(K-out)) is the *same* error, which is what promoted the diagnosis from five incidents
@@ -3802,7 +3802,7 @@ to one habit.
 **The tail declared for the next reservation is (GR-153) / *Step G173***, 0-hit verified at
 this landing (the pair returned unused above), so a successor to §(K-grid) opens **there**
 and **not** at (GR-154). *Declared verbatim in two places, per the defects block's own
-root-cause fix: here, and in `notes/Pencil-fanout.md` §"GLEAF".*
+root-cause fix: here, and in `notes/pencil/fanout.md` §"GLEAF".*
 
 **0-hit verification, re-run by the direction as its FIRST action and again after `HEAD`
 moved mid-round**, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`**,
@@ -3836,7 +3836,7 @@ three *forms*.
 ## Reservation — DSAT (arc ordinal 79, 2026-09-03, the same CONCURRENT ROUND OF FOUR)
 
 **Scope: §(K-dom), which DSAT *extends* — no new section.** The direction runs
-the satisfiability trace `notes/Pencil-strategy.md` §8.2's **C2** row had been
+the satisfiability trace `notes/pencil/strategy.md` §8.2's **C2** row had been
 demanding of itself: *is the strengthened motive — the four landed
 `IsNondegPencilRealization` conjuncts plus `V_bc` general position —
 satisfiable at the objects the induction's consumer hands it?* Its three
@@ -3875,7 +3875,7 @@ verified at this landing (**HITS 0 / FILES 0** for `(DM-12)`, bare `DM-12`,
 `(DM-13)`, and bare `D15` at word boundary), so a successor to §(K-dom) opens
 **there** — and **not** at `(D15)`, which is not this section's family, nor at
 `(DM-13)`. *Declared verbatim in two places, per the defects block's own root-cause
-fix: here, and in `notes/Pencil-fanout.md` §"DSAT".*
+fix: here, and in `notes/pencil/fanout.md` §"DSAT".*
 
 **0-hit verification, re-run by the direction as its FIRST action**, across
 `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`**, reporting **HITS**
@@ -3886,7 +3886,7 @@ range rather than sampled endpoints** (shapes 1 and 2's fixes): `dsat` **0/0**;
 this file's own (L1) worked example at `:84` — a **prescription**, not a
 consumption, under the `(GR-145)`/`(BE-149)`/`(OC-56)` precedent; **`DSAT` 2
 hits / 2 files**, both the coordinator's own in-flight round-state notices in
-`Pencil-fanout.md` and this file; and bare **`D8` 4 hits / 2 files**,
+`pencil/fanout.md` and this file; and bare **`D8` 4 hits / 2 files**,
 adjudicated above. **Reservation clean.**
 
 **(L7) fired again, on the very next range, and in the direction it predicted.**
@@ -3957,7 +3957,7 @@ deviation and after two siblings' round-state commits: `obar` **0/0**;
 **declaration**, one OWALL's own 0-hit **record** — hence declarations, not
 consumptions, under the `(GR-145)`/`(BE-149)`/`(BE-150)` precedent; and **`OBAR`
 5 hits / 3 files**, every one the coordinator's own in-flight round-state
-notice in `Pencil-fanout.md`, `Pencil-labels.md` and `Phase39.md`. **Reservation
+notice in `pencil/fanout.md`, `pencil/labels.md` and `Phase39.md`. **Reservation
 clean.**
 
 **Code and basename**: `OBAR` names the direction's own object — the **bar**
@@ -3995,7 +3995,7 @@ section that came in at seven, and **available**. **The next tail is (BE-156) /
 `BE150`–`BE155`, `(BE-151)`–`(BE-156)` all **0/0**; `(BE-150)` **1 hit / 1
 file**, the BSCOND tail clause immediately above — a **declaration, not a
 consumed label**; and `(BE-149)`/`BE148` **6 hits / 3 files**, all six being
-this reservation's *own* declaration across `Pencil-fanout.md`,
+this reservation's *own* declaration across `pencil/fanout.md`,
 `pencil/workbook/` and this file. Reservation clean.
 
 ### CLAUSE (L7), minted here: check EVERY token in a reserved range, not sampled endpoints
@@ -4130,7 +4130,7 @@ the metric — never to DERIVE it.** Concretely, the coordinator's pre-dispatch 
 
 ```
 grep -n "tail declared for the next reservation\|the live tail is therefore" \
-     notes/Pencil-labels.md | tail -20
+     notes/pencil/labels.md | tail -20
 ```
 
 which lists every section's declared tail in landing order. Both of shapes 4 and 5 would
@@ -4140,7 +4140,7 @@ of shape, nor a declaration from a consumption; the declaration can.
 ## Reserved namespace — direction BINSERT (2026-09-08, **CONSUMED: all eight labels; one STEP returned**)
 
 **Reserved and consumed on 2026-09-08 for the single direction BINSERT**
-(ordinal 82; `notes/Pencil-fanout.md` §"BINSERT") — the ninth strategy pass's
+(ordinal 82; `notes/pencil/fanout.md` §"BINSERT") — the ninth strategy pass's
 **rank 4**: *does option B for `hbareSplit`, the insertion calculus, still have
 an endpoint at all?* One of a **concurrent round of three**; the two siblings
 (BFOUR, BSERIES) both **extend §(K-bare-ext)** and held
@@ -4220,7 +4220,7 @@ mints.
 ## Reserved namespace — direction BSERIES (2026-09-08, **CONSUMED: all eight labels and all eight steps; NOTHING returned**)
 
 **Reserved and consumed on 2026-09-08 for the single direction BSERIES**
-(ordinal 83; `notes/Pencil-fanout.md` §"BSERIES") — block 10's **entry 2**:
+(ordinal 83; `notes/pencil/fanout.md` §"BSERIES") — block 10's **entry 2**:
 *can the (BE-46)/(BE-52) per-shape witnesses behind the sharpened-at-one-end
 route be retired class-level by running BWIN's machine at ONE peel?* One of a
 **concurrent round of three**; the siblings are BFOUR (same section, the tail
@@ -4283,7 +4283,7 @@ half (B)'s item-0 sub-items).
 ## Reserved namespace — direction BFOUR (2026-09-08, **CONSUMED: seven labels and seven steps; one of each RETURNED**)
 
 **Reserved 2026-09-08 for the single direction BFOUR** (arc ordinal 81, run
-concurrently with BSERIES and BINSERT; `notes/Pencil-fanout.md` §"BFOUR") —
+concurrently with BSERIES and BINSERT; `notes/pencil/fanout.md` §"BFOUR") —
 **(BE-154)(iv): does a peel exist with `c_i(Π_x) = 2` and `e₁ + e₂ ≤ 3`, i.e.
 is §(K-bare-ext) (E4) false?** It extends **§(K-bare-ext)** and opens **no** new
 section, so the reservation is the unclaimed tail of that section's own `(BE-n)`
@@ -4328,8 +4328,8 @@ reproduced the coordinator's prep token-for-token. **Reservation clean.**
 
 **AND THE DIRECTION CODE ITSELF IS NOT 0-HIT — a NINTH declaration, caught by
 re-measuring rather than by assuming.** `BFOUR` is **6 hits / 3 files** at
-`HEAD`: `notes/Pencil-labels.md` ×4, `notes/pencil/workbook/` ×1,
-`notes/Pencil-fanout.md` ×1 — **all six written by the two siblings that landed
+`HEAD`: `notes/pencil/labels.md` ×4, `notes/pencil/workbook/` ×1,
+`notes/pencil/fanout.md` ×1 — **all six written by the two siblings that landed
 first in this same round** (BSERIES and BINSERT naming BFOUR as the direction
 holding the `(BE-156)` tail), so every one is a **declaration, not a
 consumption**, and the code was 0-hit when the round was reserved. **Recorded
@@ -4363,7 +4363,7 @@ substring hazard and is clean; `bfour` is likewise 0-hit as a raw substring.
 
 **Reserved 2026-09-08 for the single direction BSTEER** (arc ordinal 84, the
 first dispatch of the arc with nothing else in flight since ordinal 75;
-`notes/Pencil-fanout.md` §"BSTEER") — **(BE-162)(iii): at `δ₂ = 1`, can side
+`notes/pencil/fanout.md` §"BSTEER") — **(BE-162)(iii): at `δ₂ = 1`, can side
 2's single screw line be steered inside `Π_x` while side 1 stays bad?**, the
 task BFOUR's own hand-off named. It extends **§(K-bare-ext)** and opens **no**
 new section, so the reservation is the unclaimed tail of that section's `(BE-n)`
@@ -4396,7 +4396,7 @@ for hits and `git grep -l` for files:
 `BSTEER` and `bsteer` both **0 / 0** as raw substrings, (L5)'s check included.
 Every non-zero hit is a **declaration, not a consumption**: `(BE-172)`/`BE171`
 are the tail hand-over written *twice* — by BFOUR and by BSERIES, in
-`Pencil-fanout.md`, `pencil/workbook/` and this file — and the single
+`pencil/fanout.md`, `pencil/workbook/` and this file — and the single
 `(BE-179)` hit is BINSERT's own block noting that it names the token without
 minting it. The enumeration **reproduced the coordinator's prep
 token-for-token**, and this is the first reservation in the phase whose opening
@@ -4424,7 +4424,7 @@ it is the Klein form, written as code (`pitch.Q`) and defined in the section's
 
 **Reserved 2026-09-08 for the single direction BGPROP** (arc ordinal 85, the
 second consecutive dispatch with nothing else in flight;
-`notes/Pencil-fanout.md` §"BGPROP") — **the tenth strategy pass's rank 1,
+`notes/pencil/fanout.md` §"BGPROP") — **the tenth strategy pass's rank 1,
 `Γ`-properness**: does (BE-122)/(BE-123)'s proper → generic bridge TRANSPORT to
 the `Γ`-locus, and can the incidence lemma (BE-149)(v) names as *what is
 genuinely missing* be proved? It extends **§(K-bare-ext)** and opens **no** new
@@ -4483,7 +4483,7 @@ a grep confined to prose sees neither a `*.lean` doc-comment nor a `*.py` one.
 
 **Reserved 2026-09-08 for the single direction BRANKV** (arc ordinal 86, the
 third consecutive dispatch with nothing else in flight;
-`notes/Pencil-fanout.md` §"BRANKV") — **BGPROP's own named successor: is the
+`notes/pencil/fanout.md` §"BRANKV") — **BGPROP's own named successor: is the
 clause `Π_x ⊆ ρ̄_i ⟹ ρ_i = 6` true POINTWISE at `k = 2`?** It extends
 **§(K-bare-ext)** and opens **no** new section.
 
@@ -4545,7 +4545,7 @@ hazard one step further out, and renaming a fresh local costs nothing while
 
 **Reserved 2026-09-08 for the single direction BLONGARC** (arc ordinal 87, the
 fourth consecutive dispatch with nothing else in flight;
-`notes/Pencil-fanout.md` §"BLONGARC") — **BRANKV's own named successor: at arc
+`notes/pencil/fanout.md` §"BLONGARC") — **BRANKV's own named successor: at arc
 length `≥ 4`, is `rank(B|_U) ≤ 2` forced on the 4-dimensional
 `U = ⟨ℓ_j⟩ + W_j` at a legal chart point?** It extends **§(K-bare-ext)** and
 opens **no** new section.
@@ -4595,7 +4595,7 @@ first draft of `w4/blongarc.py` carried the Python locals `P1`, `P2`, `U1` and
 `(P2)`, `(U1)`, `(v2)`** — call-parenthesis strings, not label mints, but
 `(P1)` and `(P2)` have **16** and **13** hits elsewhere in the tree
 (`notes/Phase23-cleanup.md`, `notes/Phase28.md`, `notes/model-experiment-archive.md`,
-`notes/pencil/workbook/`, `notes/Pencil-fanout-archive.md`,
+`notes/pencil/workbook/`, `notes/pencil/fanout-archive.md`,
 `notes/Phase23-design.md` among them), so they collide *in appearance* with
 live label families exactly as BRANKV's `(E1)`/`(E2)` did. Following BRANKV's
 precedent the locals were **renamed** (`Pca`, `Pcb`, `Uperp`, `vsec`), after
@@ -4727,7 +4727,7 @@ files reported separately**), across the whole tree **at `HEAD`**:
 
 `BGTWOA` and `bgtwoa` both **0 / 0** as raw substrings, (L5)'s check
 included. **Every non-zero cell was OPENED, not counted**: all of them are
-BEFOURP's reservation-and-return record (`notes/Pencil-fanout.md` ×2,
+BEFOURP's reservation-and-return record (`notes/pencil/fanout.md` ×2,
 this file ×2) plus the tail declaration above — **no consumption anywhere**.
 The enumeration **reproduced the coordinator's prep token-for-token in both
 metrics**, the **sixth consecutive** reservation to do so, and the first where
@@ -4759,7 +4759,7 @@ parameters, written as mathematics, never parenthesized alone.
 Ordinal **90** (direction 98). Answering the `§(K-ins)` row's own close-it cell —
 *(INS-7)'s kill condition: derive `U′` for the two-vertex-deleted shared framework and
 measure `rank⟨U′, Λ²Π̂⟩` at BINSERT's 8 hit seeds* — the design pass
-`notes/Pencil-strategy.md` §8 ranked **4**. One of a **concurrent round of two**; the
+`notes/pencil/strategy.md` §8 ranked **4**. One of a **concurrent round of two**; the
 sibling (BNONUNI) works `§(K-bare-ext)`'s tail and edits `w4/bline.py`, so the two ranges
 are disjoint by construction and every check below is against `HEAD` (`4a3d7c36`), never the
 working tree (`RESEARCH-ARC.md` §2's first concurrency hazard; the tree carried the sibling's
@@ -4806,7 +4806,7 @@ else: `(INS-9)` is BINSERT's tail declaration (the line above), and the eleven `
 that same declaration plus BINSERT's own reservation table/return note and the eight later
 blocks re-declaring the step free (lines 4155, 4175, 4182, 4197, 4305, 4380, 4438, 4494, 4557,
 4627, 4711 as they stood at `HEAD`). **Zero hits in any `*.lean`, `*.py`, `*.tex` or `*.m2`,
-and zero outside `notes/Pencil-labels.md`.** This is exactly the case (L7) was written
+and zero outside `notes/pencil/labels.md`.** This is exactly the case (L7) was written
 against and it fired as predicted — *"the **opening** tokens are exactly the ones the
 predecessor's own tail-declaration had to write down, so a hit there is **guaranteed** and is
 precisely what a sampled check will miss"*: a check that sampled the range's closing tokens
@@ -4859,7 +4859,7 @@ files reported separately**), across the whole tree **at the dispatch baseline
 
 `BNONUNI` and `bnonuni` both **0 / 0** as raw substrings, (L5)'s check
 included. **Both non-zero cells were OPENED, not counted**: they are BGTWOA's
-tail-declaration sentence in this file and in `notes/Pencil-fanout.md` — **no
+tail-declaration sentence in this file and in `notes/pencil/fanout.md` — **no
 consumption anywhere**. The enumeration **reproduced the coordinator's prep
 token-for-token in both metrics**, and the opening tokens were non-zero *by
 design*, the same way BGTWOA's were.
@@ -4954,7 +4954,7 @@ the cheapest of the three when the token sits inside a **quotation**.
 > ***Recorded observation*, not a mint and not a rename: `(PS-f)` is a
 > pre-existing UNREGISTERED token.** `barch.ps_floor`'s clause family is
 > written `(PS-f)` in `w4/barch.py`, `notes/pencil/workbook/` and
-> `notes/Pencil-fanout.md`, and it has **no row in this registry** — so by
+> `notes/pencil/fanout.md`, and it has **no row in this registry** — so by
 > (L1)'s own sentence (*"a label that is not in this registry does not
 > exist"*) it is invisible to a reservation check. This direction did **not**
 > mint it, does not rename it (L4), and deliberately **kept it out of the

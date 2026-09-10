@@ -1,5 +1,5 @@
 """BALB -- the twenty-first kernel-(K) direction: (b'), THE BALANCE-LAYER
-BOUND `d_adm - d_par <= 2` (spec: notes/Pencil-fanout.md S"Twenty-first
+BOUND `d_adm - d_par <= 2` (spec: notes/pencil/fanout.md S"Twenty-first
 direction -- BALB (seventh fan-out)").
 
 TARGET: (b'), open and supported since GDEV/GADM, ridden as a SECONDARY

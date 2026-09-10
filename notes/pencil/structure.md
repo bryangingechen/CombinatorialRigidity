@@ -15,9 +15,9 @@ round splits `notes/pencil/workbook/` and slice 13 moves this file to
 `notes/pencil/structure.md`. The phase's own next concrete task is unchanged:
 the kernel-(K) research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
 §(K-grid) split out of `notes/pencil/workbook/` into its own file,
-`notes/Pencil-informal-grid.md`. **Slice 2** — `notes/Pencil-fanout.md`'s
+`notes/pencil/workbook/grid.md`. **Slice 2** — `notes/pencil/fanout.md`'s
 ordinals-1–19 landed direction history archived to
-`notes/Pencil-fanout-archive.md`. **Slice 3** — the phase's research-arc
+`notes/pencil/fanout-archive.md`. **Slice 3** — the phase's research-arc
 discipline, invented in-phase and referenced across six files with no
 promoted standing home, distilled into the new read-on-demand root manual
 **`RESEARCH-ARC.md`** (alongside `CLEANUP.md`, `PHASE-BOUNDARIES.md`; pointer
@@ -36,7 +36,7 @@ day. Agreed with the user at the seventh fan-out's close (`notes/Phase39.md`
 numbered as a continuation (slices 4–5) rather than a new file, since this
 round is more of the same structural work, not a different kind. **Slice 4**
 — `notes/Phase39.md`'s own dated adjudication bullets covering the archived
-ordinals 1–19 moved verbatim to the new `notes/Pencil-adjudications.md`,
+ordinals 1–19 moved verbatim to the new `notes/pencil/adjudications.md`,
 same precedent as slice 2. **Slice 5, LANDED 2026-08-20** — the harness
 move-down round, paying all five debt items the sixth-to-eighth fan-outs
 accumulated (`notes/scripts/README.md` *Harness debt*, now **BOTH ROUNDS
@@ -99,7 +99,7 @@ the section three of the seventh fan-out's five directions (YLOC, BALB, AGLU)
 wrote into, and its gap-map cell has regressed from a changelog into a
 current-state cell and back **five times** now (four before this round, per
 `notes/check-gapmap-cells.py`'s docstring, plus the `4edd2143` recompute this
-phase already logged). `notes/Pencil-fanout.md` is 6 221 lines, of which
+phase already logged). `notes/pencil/fanout.md` is 6 221 lines, of which
 roughly 5 100 is landed direction history (fan-out specs + their landing
 write-ups) rather than live dispatch scoping — slice 2's target. The *Section
 index*'s line ranges go stale on every landing and must be recomputed by hand
@@ -113,9 +113,9 @@ that cost permanently for it.
   Confidence / What-would-change-this blocks. The *State of (K)* gap map
   (incl. §(K-grid)'s own row) stays whole in `Pencil-informal.md`; repoint
   every cross-reference that named §(K-grid)'s old *location* (not its
-  labels, which resolve via `Pencil-labels.md` regardless of file). Detail
+  labels, which resolve via `pencil/labels.md` regardless of file). Detail
   below.
-- [x] **Slice 2 — archive `Pencil-fanout.md`'s landed direction history.**
+- [x] **Slice 2 — archive `pencil/fanout.md`'s landed direction history.**
   Precedent: `notes/FRICTION.md` → `notes/FRICTION-archive.md` (`88436c0b`) —
   verbatim relocation, live cross-references repointed. The split line was
   coordinator-set at dispatch (not worked out fresh at slice-2 time): the
@@ -144,7 +144,7 @@ that cost permanently for it.
   *Current state*'s dated adjudication bullets covering the archived
   ordinals 1–19 (2026-08-05…07, 2026-08-07, 2026-08-12, 2026-08-13, and the
   2026-08-19 sixth-fan-out dispatch) verbatim to the new
-  `notes/Pencil-adjudications.md`. Precedent and shape: slice 2 above. Detail
+  `notes/pencil/adjudications.md`. Precedent and shape: slice 2 above. Detail
   below.
 - [x] **Slice 5 — the harness move-down round (LANDED 2026-08-20).** One pass
   paying all five debt items (`ocon.meet` → `lambda`; `aglu.py`'s seven
@@ -158,7 +158,7 @@ that cost permanently for it.
 
 ## Decisions made
 
-- **New file name: `notes/Pencil-informal-grid.md`.** Sorts next to its parent
+- **New file name: `notes/pencil/workbook/grid.md`.** Sorts next to its parent
   `Pencil-informal.md` in a directory listing, matching the coordinator's own
   suggestion; no reason found to deviate.
 - **Exact boundary: lines 11212–21094 of the pre-split `Pencil-informal.md`**
@@ -191,32 +191,32 @@ that cost permanently for it.
     original token lost or duplicated.
   - *No dangling location references.* Grepped the whole `notes/` tree for
     `§(K-grid)`; audited every hit against the label/location distinction
-    (a label — `(GR-nn)` — resolves via `Pencil-labels.md` regardless of
+    (a label — `(GR-nn)` — resolves via `pencil/labels.md` regardless of
     file; a location claim — the word "workbook" adjacent to `§(K-grid)`, or
     an explicit `` `notes/pencil/workbook/` `` pointer next to it, or a raw
     line range — asserts a specific file and had to be repointed). Found and
     fixed **41** genuine location claims, verified by diffing (not
     eyeballing) each pattern's count: **25** instances of the literal string
-    `workbook §(K-grid)` (`notes/Pencil-fanout.md` ×5, `notes/scripts/
+    `workbook §(K-grid)` (`notes/pencil/fanout.md` ×5, `notes/scripts/
     README.md` ×18, `notes/scripts/w4/{grid,yloc}.py` ×1 each); **12**
     instances of an explicit `` `notes/pencil/workbook/` §(K-grid) ``
     pairing (11 in driver docstrings —
     `notes/scripts/w4/{aglu,cflank,gexist,gcap,gorient,gdev,gridwit,gridcol,
     gunif,packmm}.py` ×1 each plus a second occurrence in `grid.py` — and 1
-    more inside `notes/Pencil-fanout.md`'s Step-0 pin paragraph); **1**
+    more inside `notes/pencil/fanout.md`'s Step-0 pin paragraph); **1**
     ASCII-typo variant `workbook S(K-grid)` in `glaw.py` (kept the pre-existing
-    typo, fixed only the file pointer); **1** more in `notes/Pencil-fanout.md`
+    typo, fixed only the file pointer); **1** more in `notes/pencil/fanout.md`
     naming the file in the opposite word order — "§(K-grid) Steps G29–G33,
     `notes/pencil/workbook/`)" — before the section name; and **2** inside
     `notes/Phase39.md` itself (one `` (`notes/pencil/workbook/`) ``
     parenthetical in *Current state*, one "the workbook sections" generic
     claim in *Decisions made*).
-    Every fix repointed to `` `notes/Pencil-informal-grid.md` ``, keeping the
+    Every fix repointed to `` `notes/pencil/workbook/grid.md` ``, keeping the
     surrounding sentence otherwise verbatim. Left alone (confirmed
     label-only, no location claim): bare `§(K-grid) (GR-nn)` citations, bare
     `§(K-grid)'s pool/residual/route/census/driver` mentions, and every
     citation inside the *State of (K)* gap map itself (which does not move
-    and is not edited for this reason or any other). `notes/Pencil-cleanup.md`
+    and is not edited for this reason or any other). `notes/pencil/cleanup.md`
     and `notes/dispatch-log.md` carry several `§(K-grid)` + line-number
     mentions too, but every one of them is a **historical** record of a
     *closed* round/logged incident (word counts and line numbers as they
@@ -229,7 +229,7 @@ that cost permanently for it.
     unmodified (`git status` shows no change to it), as expected — it reads
     only `## State of (K)`, which did not move.
 - **Section index: now stale, explicitly, for three rows.** §(K-grid)'s row
-  is now `` | §(K-grid) | `notes/Pencil-informal-grid.md` | ... | `` — a file
+  is now `` | §(K-grid) | `notes/pencil/workbook/grid.md` | ... | `` — a file
   reference, per the task. Every row **before** §(K-grid) in the table is
   unaffected (all above line 11212). Every row **after** it —
   **§(K-frame)/§(K-chart)/§(K-mech)** — had its line range shift by exactly
@@ -248,10 +248,10 @@ that cost permanently for it.
 
 ## Slice 2 — Decisions made
 
-- **New file name: `notes/Pencil-fanout-archive.md`.** Matches the
+- **New file name: `notes/pencil/fanout-archive.md`.** Matches the
   `FRICTION.md`→`FRICTION-archive.md` precedent (`88436c0b`) exactly.
 - **The split line is coordinator-set, not heading-mechanical.** Unlike
-  FRICTION.md's `[resolved]` tag, `Pencil-fanout.md`'s sections carry no
+  FRICTION.md's `[resolved]` tag, `pencil/fanout.md`'s sections carry no
   archived/live marker, so the coordinator's invocation prompt named the
   exact boundary: STAYS = *The adjudication that produced this*, *Shared
   mechanics*, the *Landing checklist*, and the **entire seventh fan-out**
@@ -291,19 +291,19 @@ that cost permanently for it.
     **identical**, confirmed by `diff` on sorted lists, not eyeballing.
   - *Line accounting* — above; confirmed by `wc -l` on all four inputs/outputs.
   - *No dangling references.* Swept the whole `notes/` tree plus the eight
-    `.py` drivers that cite `Pencil-fanout.md` by name+section. Repointed
+    `.py` drivers that cite `pencil/fanout.md` by name+section. Repointed
     **62** cross-file citations: `Phase39.md` (6), `Pencil-informal.md` (9,
-    incl. one gap-map cell), `Pencil-informal-grid.md` (15), `Pencil-labels.md`
+    incl. one gap-map cell), `pencil/workbook/grid.md` (15), `pencil/labels.md`
     (25), `ROADMAP.md` (1 row rewrite) and 6 `.py` drivers — plus the six
     same-file spots above — every one verified against the STAYS/MOVES
     partition before touching it (not a blind string replace): a citation
     naming a MOVED heading got `-archive.md`; a citation naming a STAYS
     heading (Landing checklist, Shared mechanics, the adjudication, or
     ordinals 20–24) was left alone.
-    Two false-positive traps caught: `notes/Pencil-cleanup.md` and
+    Two false-positive traps caught: `notes/pencil/cleanup.md` and
     `notes/dispatch-log.md` cite several now-moved section names, but both
     are **closed round logs** describing a past state — left untouched, same
-    call as slice 1 made for `Pencil-cleanup.md`.
+    call as slice 1 made for `pencil/cleanup.md`.
   - `python3 notes/check-gapmap-cells.py` — **0 gap-map row(s) checked
     (changed vs HEAD); all within cap** (the one gap-map cell edited — the
     (K-out) row's file-pointer repoint — changed no cell's *word count*, so
@@ -347,12 +347,12 @@ that cost permanently for it.
   F17–F21) are the primary source the manual points at; rewriting them would
   duplicate exactly what this round exists to stop.
 - **Lift-on-promotion applied to the six referencing files**, per the
-  adjudication's canonical-detail-stays-put rule: `notes/Pencil-labels.md`
+  adjudication's canonical-detail-stays-put rule: `notes/pencil/labels.md`
   and `notes/pencil/workbook/gapmap.md`'s gap-map header and
   `notes/scripts/README.md` convention 8 are each the **canonical detail**
   for one promoted item (label reservations; the gap map; cap disclosure
   respectively) — each gained a one-line pointer to `RESEARCH-ARC.md` for the
-  cross-phase generalization, with no content removed. `notes/Pencil-fanout.md`'s
+  cross-phase generalization, with no content removed. `notes/pencil/fanout.md`'s
   *Shared mechanics* section carried the one genuine **duplicate** — the
   worktree/serial-landing rationale and the "F11 requirement" paragraph,
   both full restatements of the general rule inside a live (non-archived)
@@ -367,8 +367,8 @@ that cost permanently for it.
 
 ## Slice 4 — phase-note doc split — Decisions made
 
-- **New file name: `notes/Pencil-adjudications.md`.** Sibling of
-  `notes/Pencil-fanout-archive.md`, same precedent
+- **New file name: `notes/pencil/adjudications.md`.** Sibling of
+  `notes/pencil/fanout-archive.md`, same precedent
   (`FRICTION.md`→`FRICTION-archive.md`, `88436c0b`): verbatim relocation,
   live cross-references repointed, search-target only.
 - **Exact scope, coordinator-set at dispatch:** the five dated bullets in
@@ -397,8 +397,8 @@ that cost permanently for it.
     (pre-commit) against the corresponding lines of the new file's bullet
     body: **identical**, confirmed by `diff` returning no output.
   - *No dangling references.* Grepped the whole tree for
-    `Pencil-adjudications.md` (resolves to the three files that cite it —
-    `Phase39.md`, `Pencil-structure.md`, `CLAUDE.md` — all intentional, no
+    `pencil/adjudications.md` (resolves to the three files that cite it —
+    `Phase39.md`, `pencil/structure.md`, `CLAUDE.md` — all intentional, no
     stray) and for unique phrases from the moved bullets (e.g.
     "seventh-direction delegation", "phase-shape adjudication, then the
     ninth") outside the two files touched: **zero** hits, so no other file
@@ -418,7 +418,7 @@ that cost permanently for it.
   commits" wording, and a since-superseded "four remaining returns"
   eighth-fan-out banner), which added lines back. The file does not land
   under its ~500-line tripwire from this slice alone — see *Hand-off*'s
-  honest note on why. New file `Pencil-adjudications.md` is 76
+  honest note on why. New file `pencil/adjudications.md` is 76
   lines (39 moved + a 34-line header/provenance preamble + the `---`
   separator).
 - **Forward/finished ratio.** Unharmed: the moved material was entirely
@@ -442,7 +442,7 @@ not-yet-commissioned kind of work."* This slice is that pass, commissioned.
 **What moved, and the rule it moved under.** Governing rule: **relocate, never
 delete**, and cut only verified duplication.
 
-- **Ordinals 20–44's dated adjudication bullets → `notes/Pencil-adjudications.md`,
+- **Ordinals 20–44's dated adjudication bullets → `notes/pencil/adjudications.md`,
   verbatim** (385 lines, relocation verified byte-identical by `md5` on the
   extracted block before and after). That file's title and header now cover
   **ordinals 1–44**; it is sectioned by move round (1–19 / 20–44). Slice 4's
@@ -461,8 +461,8 @@ delete**, and cut only verified duplication.
   BZAVOID / OGEOM / GMINM / GHWIT landing recaps and successor lists (same, plus
   the workbook sections each names); both probe paragraphs
   (`Pencil-informal.md` §(K-bare-ext) *Step BE1* carries the tier semantics;
-  `Pencil-strategy.md` §4.7 the C3 pricing); the wider-candidate-list and
-  harness-debt recitals (`Pencil-strategy.md` §8, `notes/scripts/README.md`
+  `pencil/strategy.md` §4.7 the C3 pricing); the wider-candidate-list and
+  harness-debt recitals (`pencil/strategy.md` §8, `notes/scripts/README.md`
   *Harness debt*); the "nothing awaits adjudication" pair (both discharged); the
   structural-rounds paragraph (this file); and `## The question` /
   `## Opening recon verdicts`, which duplicated `ROADMAP.md` §39 against
@@ -485,11 +485,11 @@ deferral, **retired** by the 2026-08-26 adjudication rather than "stale"; and
 *Harness debt*'s **four** outstanding items against the phase note's "one".
 
 **Cross-references repaired in the same commit** (the slice-2 lesson): the
-`Pencil-fanout.md` header's selection-provenance rule; seven per-direction
-*Selection provenance* citations in `Pencil-fanout.md` (GFLIP…GMINM); three in
-`Pencil-labels.md`; four **pre-existing slice-4 dangles** in
-`Pencil-fanout-archive.md` that had cited moved 1–19 bullets since 2026-08-19;
-and `notes/CLAUDE.md`'s own `Pencil-adjudications.md` entry.
+`pencil/fanout.md` header's selection-provenance rule; seven per-direction
+*Selection provenance* citations in `pencil/fanout.md` (GFLIP…GMINM); three in
+`pencil/labels.md`; four **pre-existing slice-4 dangles** in
+`pencil/fanout-archive.md` that had cited moved 1–19 bullets since 2026-08-19;
+and `notes/CLAUDE.md`'s own `pencil/adjudications.md` entry.
 
 **Result: 1 500 → 554 lines**, forward (*Current state* 97 + *Blockers* 60 +
 *Hand-off* 169 = **326**) outweighing finished (*Decisions made* **93**); Status
@@ -524,11 +524,11 @@ change however large the line grows.
 carried ten distinctive figures; each was grepped for a canonical home first.
 Eight resolved immediately. The two that did not — `907 out of 907` and
 `32-vertex` — resolved under their canonical spellings (`907/907` in
-`Pencil-fanout.md`, `Pencil-strategy.md` and this file; `T32` / `|V| = 32` in
-`Pencil-W4-informal.md` and `Pencil-fanout.md`), which is the reason the check
+`pencil/fanout.md`, `pencil/strategy.md` and this file; `T32` / `|V| = 32` in
+`pencil/workbook/W4.md` and `pencil/fanout.md`), which is the reason the check
 is a **grep for the fact, not for the string**. CLAUDE.md's *extract, don't
 delete* rule is satisfied by the extraction having already happened: every
-clause cut was a third or fourth copy of text `notes/Pencil-fanout.md` and this
+clause cut was a third or fourth copy of text `notes/pencil/fanout.md` and this
 file's blocks 8/9/11/12/13 already own.
 
 **Result: 10 109 → 623 characters** (−94 %), the cell now carrying exactly the
@@ -551,16 +551,16 @@ landings stop appending to it. The rule that binds: a landing updates the cell's
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
   ranges in `notes/pencil/workbook/` (shifted −9 883 by slice 1). **Not**
   folded into slice 2 — that file's line ranges are unrelated to
-  `Pencil-fanout.md`'s split — so it remains a standing, cheap, dedicated
+  `pencil/fanout.md`'s split — so it remains a standing, cheap, dedicated
   one-line follow-up commit whenever someone next reads that table.
 - No mathematical content defect was noticed while moving §(K-grid) (slice 1)
-  or while sweeping `Pencil-fanout.md`'s cross-references (slice 2) — both
+  or while sweeping `pencil/fanout.md`'s cross-references (slice 2) — both
   were mechanical relocations with a boundary/reference audit, not a close
   read of the mathematics, and none was owed either time.
 - **One pre-existing, not-this-round defect noticed in passing (slice 2):**
   `notes/scripts/w4/glaw.py`'s docstring cites its own spec as "Seventeenth
   direction — GLAW"; GLAW is the **sixteenth** direction everywhere else
-  (`Pencil-labels.md`, the heading itself, `Phase39.md`). Predates this
+  (`pencil/labels.md`, the heading itself, `Phase39.md`). Predates this
   round (confirmed by `git diff` showing only the file-pointer changed);
   left verbatim per the "kept the pre-existing typo, fixed only the file
   pointer" precedent (slice 1's `glaw.py` §(K-grid) fix).
@@ -625,9 +625,9 @@ gate's caps. `notes/Phase39.md` keeps a pointer plus the one line that genuinely
 is status (the gap map is authoritative).
 
 **Conventions.** Direction codes are multi-letter and topic-tagged from the
-fifth fan-out on (`notes/Pencil-labels.md` (L5)); grandfathered single letters
+fifth fan-out on (`notes/pencil/labels.md` (L5)); grandfathered single letters
 are re-used across dates, so **always date those**. The doc-split and
-discipline-distillation rounds are both COMPLETE (`notes/Pencil-structure.md`;
+discipline-distillation rounds are both COMPLETE (`notes/pencil/structure.md`;
 `RESEARCH-ARC.md` is the promoted manual). Both architecture probes are landed
 (KBARE-FALSIFY, C3-AVOID). File layout: `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,
@@ -635,12 +635,12 @@ Pair2,Escape,Base}.lean`; per-leaf history `notes/Phase39-design.md`.
 
 **Canonical homes — read these, not a summary of them.** The **State of (K)**
 gap map in `notes/pencil/workbook/` is the phase's status object and is
-authoritative for every status word; `notes/Pencil-informal-grid.md` owns
-§(K-grid); `notes/Pencil-W4-informal.md` owns the W4 (`hcontract`) residual arc;
-`notes/Pencil-strategy.md` owns the option board (§8) and the unpriced
+authoritative for every status word; `notes/pencil/workbook/grid.md` owns
+§(K-grid); `notes/pencil/workbook/W4.md` owns the W4 (`hcontract`) residual arc;
+`notes/pencil/strategy.md` owns the option board (§8) and the unpriced
 §9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
-`notes/Pencil-fanout.md` owns dispatch specs and landing write-ups;
-`notes/Pencil-adjudications.md` owns the archived verbatim user calls.
+`notes/pencil/fanout.md` owns dispatch specs and landing write-ups;
+`notes/pencil/adjudications.md` owns the archived verbatim user calls.
 
 ## Gates for any continuation
 
@@ -677,7 +677,7 @@ violation through; both mean a *green* run can certify **nothing**.
 
 The general rule both share: `gapdiff.py` is the gate that actually looks at content, and
 it is the one to trust for a recompute. Fuller record of (2), with its incident, in
-`notes/Pencil-labels.md`.
+`notes/pencil/labels.md`.
 
 ## The question and the opening recon
 
@@ -767,9 +767,9 @@ PROVEN — **do not re-open either**.
 **Relocated verbatim from `notes/Phase39.md`'s *Current state* section, 2026-08-29**, at the
 same recompute and for the same reason. This list is **reference, not status** by its own
 last sentence — *"the current ranking of what a wave did not pick is
-`notes/Pencil-fanout.md`'s own losers sections, not this list"* — so what a fresh session
+`notes/pencil/fanout.md`'s own losers sections, not this list"* — so what a fresh session
 needs from `notes/Phase39.md` is the pointer, and the ranking is read where it is live. The
-`notes/Pencil-fanout-archive.md` references to *"the unselected leads (b)–(f)"* are dated
+`notes/pencil/fanout-archive.md` references to *"the unselected leads (b)–(f)"* are dated
 records of what a user did **not** select and name no section, so they do not dangle; the one
 live section-naming reference, in §"Durable negatives and deliberate non-goals" above, is
 repointed here in the same commit. The note keeps a pointer.
@@ -784,7 +784,7 @@ Lean hold; **(d)** the companion-length dichotomy frame (§(K-dom) *D7*) + the u
 `k ≥ 4` parallel-edge item (§(K-pure) *P4*); **(e)** §(K-Λ) item (vii)'s residual, since
 LTWO a named, non-empty, floor-classified family; **(f)** strategy §4.6's shortlist,
 **partially superseded** for the tight stratum, U3 still unrun. **The current ranking of
-what a wave did not pick is `notes/Pencil-fanout.md`'s own losers sections, not this list.**
+what a wave did not pick is `notes/pencil/fanout.md`'s own losers sections, not this list.**
 
 ## Citations — the phase's verified bibliography
 
@@ -806,7 +806,7 @@ bibliographies this section deliberately does not duplicate keep their own homes
 
 - Katoh–Tanigawa, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45** (2011) —
   the KT pointers in this note (Cor. 5.7, Thm 5.5, Lemma 6.13, the Case I/II/III split) are
-  transcribed from `notes/Pencil.md`'s 2026-07-23 survey against the project-canonical source
+  transcribed from `notes/pencil/scope.md`'s 2026-07-23 survey against the project-canonical source
   (ROADMAP *References*); pointer verification history: `notes/Phase35.md` *Citations*,
   `notes/Phase23-cleanup.md`. The (K-tight) re-pin (2026-08-02) verified pp. 681–691 directly
   against the `.refs` copy — workbook §(K-tight) *Step 0*. **KT Thm 4.9 is cited by the
@@ -837,7 +837,7 @@ bibliographies this section deliberately does not duplicate keep their own homes
   project-new source, verified against publisher metadata: **Grünbaum**, *Acyclic colorings of
   planar graphs*, Israel J. Math. **14** (1973) 390–408, DOI 10.1007/BF02764716. Brooks' theorem
   is cited by name only (classical).
-- **The 2026-08-05 broad class-uniformity recon** (`notes/Pencil-strategy.md` §4.6) verified one
+- **The 2026-08-05 broad class-uniformity recon** (`notes/pencil/strategy.md` §4.6) verified one
   project-new source against publisher metadata + the arXiv preprint listing, **no section pointer
   asserted**: **Scott**, *Grassmannians and Cluster Algebras*, Proc. London Math. Soc. **92**
   (2006), no. 2, 345–380, DOI 10.1112/S0024611505015571 (preprint arXiv:math/0311148) — the
@@ -866,7 +866,7 @@ each. Relocating this paragraph took the header to **420/525**, buying **105** w
 **Why this is reference and not status, when the thread itself is very much live.** The cut
 is between *where the three sides stand* — which the note keeps, in three clauses — and
 *which direction proved which sub-clause, with its labels and its HIT shapes*, which is
-attribution. Attribution has two canonical homes already (`notes/Pencil-fanout.md` §"<CODE>"
+attribution. Attribution has two canonical homes already (`notes/pencil/fanout.md` §"<CODE>"
 for the landing write-up, and the note's own *Decisions made* one-liners), so the header was
 a third copy; and the **`(K-bare)` gap-map row is authoritative for every status word**
 regardless. Nothing was deleted and no cap was bumped; `notes/Phase39.md` keeps a pointer
@@ -897,7 +897,7 @@ SIDE:** cross-pair welding ((BE-28)(i)), untouched. **The phase-boundary consequ
 reported, NOT acted on** (next block).
 
 **Reading it later.** Every label in it resolves in `notes/pencil/workbook/`
-§(K-bare-ext); the direction codes resolve in `notes/Pencil-fanout.md`. Treat the paragraph
+§(K-bare-ext); the direction codes resolve in `notes/pencil/fanout.md`. Treat the paragraph
 as a snapshot dated 2026-09-01, **not** as a live status surface — if it disagrees with the
 gap map, the gap map wins.
 
@@ -909,7 +909,7 @@ for the same reason block 8 itself moved: the thread has not been worked since B
 became reference while the phase note's line cap was saturated at **580/580**. The status
 clauses the note keeps are named in its pointer; everything below is the frame.
 
-**THE (BE-14) FRAME, settled and not restated** (write-ups `notes/Pencil-fanout.md`
+**THE (BE-14) FRAME, settled and not restated** (write-ups `notes/pencil/fanout.md`
 §"<CODE>"; the `(K-bare)` gap-map row is **authoritative**). The strengthened 2-cut
 lemma **is** (BE-14): decomposition exhaustive, base `{3-connected}` ∪ `{max deg ≤ 2}`
 ∪ `{def₂ = def₃}` free, 1-cuts (BE-18), statement **PINNED** as **S-mark**, simultaneity
@@ -920,7 +920,7 @@ at every window piece on the **87-of-91** domain by BWIN's class theorem with BS
 theorem.
 
 **WHAT THE THREAD'S LAST FIVE LANDINGS ESTABLISHED** (52, 53, 55, 56, 57 — write-ups
-`notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*; the
+`notes/pencil/fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*; the
 `(K-bare)` gap-map row is **authoritative and not restated here**). The decorated-skeleton
 law and the branch-product theorem; **(BE-32)(+) proved outright**, retiring the
 star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, then found there,
@@ -928,7 +928,7 @@ then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO it
 (BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
 
 **WHAT THE THREAD'S 2026-09-02 LANDINGS ESTABLISHED** (62 BBASE, 63 BUNIF, 64 BDOUBLE,
-65 BSATUR — write-ups `notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext)
+65 BSATUR — write-ups `notes/pencil/fanout.md` §"<CODE>", mathematics §(K-bare-ext)
 *Steps BE88–BE107*; the `(K-bare)` gap-map row is **authoritative and not restated
 here**). The **flag base is FREE** and is **not** (CH-1)'s object ((BE-89)); `reach` is a
 function of **two per-side profiles**, so (BE-67)(iii) at a peel is **14 numerical
@@ -973,7 +973,7 @@ ANSWERED** generically; at `π_x = π_y` only the cap survives.
 
 **BOPEN (72), 2026-09-02 — the thread's next landing, draft-only beside a committing
 `(K-grid)` dispatch.** It **closes half (B)'s item 1 at every side-degree-`1` terminal**
-((BE-122)–(BE-128), §(K-bare-ext) *Steps BE121–BE127*; `notes/Pencil-fanout.md` §"BOPEN").
+((BE-122)–(BE-128), §(K-bare-ext) *Steps BE121–BE127*; `notes/pencil/fanout.md` §"BOPEN").
 Three things generalize past this thread. **(1)** *(BE-69) was the wrong citation and is not
 needed*: its locus is the **attainment** locus `A₁ ∩ A₂ ∩ GP`, cut out by rank **lower**
 bounds, while saturation is an **upper** bound on an intersection dimension — and "generic"
@@ -998,7 +998,7 @@ shortfall is still unexhibited after 54 further rows. *(The first clause's secon
 
 **BLINE (73), 2026-09-02 — the thread's next landing, and it REFUTES A ROUTE rather than
 proving or refuting a clause.** It decides BOPEN's own residue `(∗)` ((BE-129)–(BE-135),
-§(K-bare-ext) *Steps BE128–BE134*; `notes/Pencil-fanout.md` §"BLINE"). Three things
+§(K-bare-ext) *Steps BE128–BE134*; `notes/pencil/fanout.md` §"BLINE"). Three things
 generalize past this thread. **(1)** *`(∗)` is not a quantifier over a line*: with
 `z = p_{c₁} ∧ p_{c₂}` and `W = z^⊥`, the quotient `W/⟨z⟩` is a `2 × 2` matrix space whose
 Segre rulings are exactly the `Σ_t`, so `(∗)` ⟺ `dim(A ∩ W) ≤ 3` plus two incidence
@@ -1033,7 +1033,7 @@ disagrees with the `(K-bare)` gap-map row, the row wins.
 sibling on the (K-res) lane), and it SETTLES BOTH of BLINE's named residues
 ((BE-134)(i)/(ii)) while relocating the obstruction from the clause to the
 METHOD.** Mathematics at §(K-bare-ext) *Steps BE135–BE140* ((BE-136)–(BE-141));
-write-up `notes/Pencil-fanout.md` §"BDEGTWO"; the `(K-bare)` gap-map row is
+write-up `notes/pencil/fanout.md` §"BDEGTWO"; the `(K-bare)` gap-map row is
 **authoritative and not restated here**. Four things generalize past this
 thread. **(1)** *a "no lemma covers that" is not an obstruction claim*:
 (BE-134)(i)'s doubt about the `k ≥ 2` sweep rested on the disappearance of a
@@ -1061,7 +1061,7 @@ side-degree `≥ 2` both of (BE-134)'s gaps are settled, the obstruction is
 the method, and the clause stays **OPEN**, unviolated at 0/772.
 
 **A doc-side finding this landing forces, recorded because it touched three
-surfaces.** `notes/Pencil-strategy.md` cited BLINE as *"Steps BE129–BE135"*
+surfaces.** `notes/pencil/strategy.md` cited BLINE as *"Steps BE129–BE135"*
 in **two** places — that is BLINE's **label** range; its step range is
 *BE128–BE134*, the two being offset by one throughout §(K-bare-ext) because
 step `BEn` carries label `(BE-(n+1))`. Both are repaired and rolled forward.
@@ -1069,7 +1069,7 @@ And the `(K-bare)` row's recompute dropped **two** labels on first assembly
 — `(BE-124)(i)`, whose only carrier was the sentence this direction refutes,
 and `(BE-45)(ii)`, lost to the slash abbreviation `(BE-45)(i)/(ii)` — caught
 by `gapdiff.py`, the **fourth** time that gate has caught a drop the word cap
-could not see. Both shapes are new to `notes/Pencil-labels.md`'s list.
+could not see. Both shapes are new to `notes/pencil/labels.md`'s list.
 
 ### Addendum, 2026-09-03 — BLINE's *Decisions made* entry, relocated verbatim
 
@@ -1164,7 +1164,7 @@ buy the lines the round's own records needed. Settled history; nothing here is s
 
 - **The 2026-08-05 research cluster, one-lined** (all same day; full detail
   `Phase39-design.md` + git, workbook sections named): notes reorganization
-  (`Pencil-labels.md`; design doc **FROZEN**) + class-uniformity recon (5 REFUTED, 3
+  (`pencil/labels.md`; design doc **FROZEN**) + class-uniformity recon (5 REFUTED, 3
   ranked, strategy **§4.6**); route σ a **CANDIDATE** (obligation 1 DONE); (K-ind) and the
   Δ-matroid lead **BOTH REFUTED**; the §(K-Λ) triad settled ((Λ0)/(Λ1) PROVEN via M2); the
   sixth–ninth dispatches found the conjecture HOLDS at every uncovered flank, the pure
@@ -1181,7 +1181,7 @@ clause that is *status* and stayed in the note: **(BE-14) needs both halves of
 S-mark and both hang on the naked `Π_x` obligation**, now decomposed by
 (BE-225)–(BE-230).
 
-**THE NEXT CONCRETE TASK is the NAKED `Π_x` OBLIGATION** — `c₁(Π_x) + c₂(Π_x) ≤ 2 + slack` at a generic chart point with `a₁ = a₂ = 0`, at side-degree `≥ 2`. It is **strictly weaker** than half (B)'s item-0(a) clause (at `a = 0`, (PENCIL-SATURATES) implies it 324/324 and the converse fails at 98), it **IS** (NO-DOUBLE-PENCIL) at `slack = 0` ((BE-100)(i)) and unrefuted there ((BE-100)(ii) puts (BE-99)'s family on the **slack** side), and it is what `(BE-E4′)` turns out to *be* — so §8's rank 2 **collapses into item 0(a), one rung weaker** ((BE-223)). **WHY: `(BE-E4′)` IS DECIDED, DEAD BOTH WAYS, and rank 2 has NO successor** ((BE-218)–(BE-224)). Firing gives `e_i = ρ_i − 2` exactly, so the clause **IS** `c_j(Π_x) ≤ ρ₁+ρ₂ − 6` — hypothesis-free, hence **FALSE at EVERY firing configuration with `ρ₁+ρ₂ ≤ 5`** (297/297 tuples, all floor-legal), which is (BE-216)(i)'s identity read **downward** and had not been taken ((BE-219)(i)); **REFUTED** at **14** fully-gated in-regime peels, **4** of them inside `barch.all_tuples` and none in the non-attainable zone — `ρ = (4,1)`, `c(Π_x) = (2,0)`, `e = (2,1)`, `δ = (2,1)`, `a = (2,0)`, `flag_frame` non-None, side 2 `rnode_shaped`, side 1 BEFOURP's own firing piece **byte-unchanged** with only side 2's profile moved ((BE-221)); and at `a = 0` on `ρ₁+ρ₂ ≥ 6` it **IS** the `Π_x` obligation **verbatim**, so it is not a reduction of its target but the target ((BE-219)(ii)) — (BE-153)(i) named that trap and its `c_i(Π_x) = 2` repair works **off** `a = 0`, not **on** it, which is where (BE-101)(ii) applies the clause ((BE-220)(i)). **AND THE KILL IS COMPLETE, not zonal:** the clause's whole *relaxation* content — the **1 270** firing tuples where it holds and the obligation fails — has `min(δ₁+δ₂,6) + a₁ + a₂ > 6 = dim Λ²K⁴`, so by (BE-22)(iii)/(BE-86)(i) the composite **cannot attain** there; of 3 375 firing tuples the **688** attainment-compatible ones split **538** clause-equals-obligation and **150** clause-strictly-stronger-hence-false, and nothing else occurs — **so `(BE-E4′)` can never contribute to (BE-14)**, by a proof rather than a cap ((BE-220)(ii)). The boundary is **EXACT and measured on geometry**: over 42 gated rows every `ρ₁+ρ₂ ≤ 5` row FAILS and every `ρ₁+ρ₂ ≥ 6` row HOLDS, with the `δ₂ = 3` column reproducing (BE-207)(ii) as the negative control ((BE-222)). The enabling move was **parameterizing the `pr` axis**: `δ₂` is quantized to `{0,3,6}` along the uniform profile every driver varied and reaches every value of `{0,1,2,3}` non-uniformly, `δ₂ = max(0, #{length-3 branches} − 6)` asserted at 3 072 profiles ((BE-218)). **TWO PREDECESSOR AUDIT FINDINGS STAND, recorded not repaired:** (BE-206)'s grading is a **TAUTOLOGY** where asserted and false off it, so **`(BE-F_4)` IS the floor `ρ_i ≥ 4`** ((BE-212)); and `barch.all_tuples` omits the Grassmann floor, 2 800 of 6 400 tuples unrealizable, the frontier grid IDENTICAL anyway so (BE-205)(iii) is **PROTECTED** ((BE-213)) — the priced repair is a coordinator round. **BARS, cumulative:** BLONGARC's four, BEFOURP's three, BGTWOA's three, **plus three new** — the (E4)/`(BE-E4′)` two-sided family is barred **as a family** (a repair cannot exist, (BE-220)(ii)), no further `ρ₁+ρ₂`-zone refinement, and **no reading of a "0 escapes at `a = 0`" figure as evidence that a clause reduces the `Π_x` obligation** — at `a = 0` such a figure is the equivalence ((BE-224)(iii)). **Alternatives after it, in order:** §8's rank 3 (ledger item 1, habitat (II)); a *less degenerate* (BE-192)/(BE-200) witness; then the `V^k` graph at `k ≥ 3`. **DOC DEBT — the row DID NOT NEED TO PAY, and the ledger is now REFERENCE:** `(K-bare)` is **2,812 / 2,856** words, `gapdiff` **0 DROPPED**, no bump — and the paragraph that tracked it is **RELOCATED** to `notes/Pencil-structure.md` **block 15**, because every number in it is owned by the gap map and by `check-gapmap-cells.py`, which is what made it go stale under BGTWOA. **(BE-14) needs both halves of S-mark and both now hang on that OBLIGATION** — one rung weaker than the clause they hung on ((BE-177)(iii)/(BE-223)(iii)).
+**THE NEXT CONCRETE TASK is the NAKED `Π_x` OBLIGATION** — `c₁(Π_x) + c₂(Π_x) ≤ 2 + slack` at a generic chart point with `a₁ = a₂ = 0`, at side-degree `≥ 2`. It is **strictly weaker** than half (B)'s item-0(a) clause (at `a = 0`, (PENCIL-SATURATES) implies it 324/324 and the converse fails at 98), it **IS** (NO-DOUBLE-PENCIL) at `slack = 0` ((BE-100)(i)) and unrefuted there ((BE-100)(ii) puts (BE-99)'s family on the **slack** side), and it is what `(BE-E4′)` turns out to *be* — so §8's rank 2 **collapses into item 0(a), one rung weaker** ((BE-223)). **WHY: `(BE-E4′)` IS DECIDED, DEAD BOTH WAYS, and rank 2 has NO successor** ((BE-218)–(BE-224)). Firing gives `e_i = ρ_i − 2` exactly, so the clause **IS** `c_j(Π_x) ≤ ρ₁+ρ₂ − 6` — hypothesis-free, hence **FALSE at EVERY firing configuration with `ρ₁+ρ₂ ≤ 5`** (297/297 tuples, all floor-legal), which is (BE-216)(i)'s identity read **downward** and had not been taken ((BE-219)(i)); **REFUTED** at **14** fully-gated in-regime peels, **4** of them inside `barch.all_tuples` and none in the non-attainable zone — `ρ = (4,1)`, `c(Π_x) = (2,0)`, `e = (2,1)`, `δ = (2,1)`, `a = (2,0)`, `flag_frame` non-None, side 2 `rnode_shaped`, side 1 BEFOURP's own firing piece **byte-unchanged** with only side 2's profile moved ((BE-221)); and at `a = 0` on `ρ₁+ρ₂ ≥ 6` it **IS** the `Π_x` obligation **verbatim**, so it is not a reduction of its target but the target ((BE-219)(ii)) — (BE-153)(i) named that trap and its `c_i(Π_x) = 2` repair works **off** `a = 0`, not **on** it, which is where (BE-101)(ii) applies the clause ((BE-220)(i)). **AND THE KILL IS COMPLETE, not zonal:** the clause's whole *relaxation* content — the **1 270** firing tuples where it holds and the obligation fails — has `min(δ₁+δ₂,6) + a₁ + a₂ > 6 = dim Λ²K⁴`, so by (BE-22)(iii)/(BE-86)(i) the composite **cannot attain** there; of 3 375 firing tuples the **688** attainment-compatible ones split **538** clause-equals-obligation and **150** clause-strictly-stronger-hence-false, and nothing else occurs — **so `(BE-E4′)` can never contribute to (BE-14)**, by a proof rather than a cap ((BE-220)(ii)). The boundary is **EXACT and measured on geometry**: over 42 gated rows every `ρ₁+ρ₂ ≤ 5` row FAILS and every `ρ₁+ρ₂ ≥ 6` row HOLDS, with the `δ₂ = 3` column reproducing (BE-207)(ii) as the negative control ((BE-222)). The enabling move was **parameterizing the `pr` axis**: `δ₂` is quantized to `{0,3,6}` along the uniform profile every driver varied and reaches every value of `{0,1,2,3}` non-uniformly, `δ₂ = max(0, #{length-3 branches} − 6)` asserted at 3 072 profiles ((BE-218)). **TWO PREDECESSOR AUDIT FINDINGS STAND, recorded not repaired:** (BE-206)'s grading is a **TAUTOLOGY** where asserted and false off it, so **`(BE-F_4)` IS the floor `ρ_i ≥ 4`** ((BE-212)); and `barch.all_tuples` omits the Grassmann floor, 2 800 of 6 400 tuples unrealizable, the frontier grid IDENTICAL anyway so (BE-205)(iii) is **PROTECTED** ((BE-213)) — the priced repair is a coordinator round. **BARS, cumulative:** BLONGARC's four, BEFOURP's three, BGTWOA's three, **plus three new** — the (E4)/`(BE-E4′)` two-sided family is barred **as a family** (a repair cannot exist, (BE-220)(ii)), no further `ρ₁+ρ₂`-zone refinement, and **no reading of a "0 escapes at `a = 0`" figure as evidence that a clause reduces the `Π_x` obligation** — at `a = 0` such a figure is the equivalence ((BE-224)(iii)). **Alternatives after it, in order:** §8's rank 3 (ledger item 1, habitat (II)); a *less degenerate* (BE-192)/(BE-200) witness; then the `V^k` graph at `k ≥ 3`. **DOC DEBT — the row DID NOT NEED TO PAY, and the ledger is now REFERENCE:** `(K-bare)` is **2,812 / 2,856** words, `gapdiff` **0 DROPPED**, no bump — and the paragraph that tracked it is **RELOCATED** to `notes/pencil/structure.md` **block 15**, because every number in it is owned by the gap map and by `check-gapmap-cells.py`, which is what made it go stale under BGTWOA. **(BE-14) needs both halves of S-mark and both now hang on that OBLIGATION** — one rung weaker than the clause they hung on ((BE-177)(iii)/(BE-223)(iii)).
 
 ## The W4 deviation — per-landing detail
 
@@ -1191,8 +1191,8 @@ already blocked one correction commit (`61e046a6`). Same disposition as **block 
 for the same stated reason: the W4 thread has not been worked since WGROW (ordinal 61) and
 its **informal argument is closed**, so *which landing proved which sub-clause* is
 attribution, not status. Attribution has two canonical homes already —
-`notes/Pencil-fanout.md` §"<CODE>" for each landing write-up, and the phase note's own
-*Decisions made* one-liners — and the mathematics has a third, `notes/Pencil-W4-informal.md`.
+`notes/pencil/fanout.md` §"<CODE>" for each landing write-up, and the phase note's own
+*Decisions made* one-liners — and the mathematics has a third, `notes/pencil/workbook/W4.md`.
 The phase note keeps the three status clauses named in its pointer.
 
 **The paragraph, as it stood at the BUNIF landing (`27e2bd18`):**
@@ -1234,8 +1234,8 @@ a single pointer carrying the verdict.
   Denominator **0** at both. `w4/wtri.py`, `w4/weloc.py`.
 
 **Reading it later.** Same caution as block 8's: a snapshot dated 2026-09-02, **not** a live
-status surface. Every label resolves in `notes/Pencil-W4-informal.md`; the direction codes
-resolve in `notes/Pencil-fanout.md`. If it disagrees with the phase note's *Blockers* W4
+status surface. Every label resolves in `notes/pencil/workbook/W4.md`; the direction codes
+resolve in `notes/pencil/fanout.md`. If it disagrees with the phase note's *Blockers* W4
 bullet, the phase note wins.
 
 ## The (BE-14) lane's standing candidate list
@@ -1253,7 +1253,7 @@ gap-map row, and the header's own counter was the stalest thing in it.** It read
 changed in **fifteen** landings"* while the identical sentence in `notes/Phase39.md` read
 *"**sixteen**"* — two copies of one snapshot, hand-incremented by whoever remembered, drifting
 apart. Both now read **"unmoved since BSIGMA (ordinal 67)"**: an ordinal is checkable against
-`notes/Pencil-fanout.md`'s headings and **decays visibly** instead of silently. That is the
+`notes/pencil/fanout.md`'s headings and **decays visibly** instead of silently. That is the
 round's generalizable rule — **name the last ordinal, never a count** — and it applies to every
 monotone counter on a recommendation surface. **No entry's STATUS moved**; what moved is
 recorded per entry below.
@@ -1350,7 +1350,7 @@ Also ranked — **all four LIVE, none moved in status; two had a stale claim, co
   triangle one, so it is the **highest-value single search on the board** — 25 270 instances
   say no."* That board is **BINDUC's, ordinal 42, 2026-08-26**, and nothing has re-ranked it
   since; `notes/Phase39.md` now says the live items are 0 and 1 and defers ranking to
-  `notes/Pencil-strategy.md` §8. Read the superlative as dated, not current. **Kill
+  `notes/pencil/strategy.md` §8. Read the superlative as dated, not current. **Kill
   condition:** a forced-flat graph with `def₂ > def₃`.
 - **A flat-star dictionary**, unclaimed, from BZAVOID's own successor ranking: re-proving
   `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis admitting
@@ -1367,7 +1367,7 @@ group supplies general position — *the gauge group was never the right place t
 
 **Reading it later.** Same caution as blocks 8 and 9': a snapshot dated 2026-09-02, not a
 live surface. Every label resolves in `notes/pencil/workbook/` §(K-bare-ext); the direction
-codes resolve in `notes/Pencil-fanout.md`. If it disagrees with the `(K-bare)` gap-map row,
+codes resolve in `notes/pencil/fanout.md`. If it disagrees with the `(K-bare)` gap-map row,
 the row wins.
 
 ## The `hK` lane — per-landing detail (RELOCATED from `notes/Phase39.md` 2026-09-02, the GLIST landing)
@@ -1378,9 +1378,9 @@ made it a third paragraph. The lane's *status* is one sentence; **which directio
 which sub-clause is attribution**, and attribution is reference. Same disposition blocks 8
 and 9 got, for the same reason and by the same rule (`notes/Phase39.md` *Blockers*, the
 doc-debt bullet: *"ask what here is reference rather than status"*). The mathematics is
-**not** here — it is §(K-grid) *Steps G149–G158* (`notes/Pencil-informal-grid.md`) and the
+**not** here — it is §(K-grid) *Steps G149–G158* (`notes/pencil/workbook/grid.md`) and the
 `(K-grid)` gap-map row, which stay authoritative; the specs and landing write-ups are
-`notes/Pencil-fanout.md` §"GPACK" / §"GLIST".
+`notes/pencil/fanout.md` §"GPACK" / §"GLIST".
 
 **GPACK (66, 2026-09-02) — (GR-18)(iii) splits, and the split half is a THEOREM.** The split
 condition is an **equitable bisection** of each `C_β`; a (packing, split) pair is exactly a
@@ -1416,7 +1416,7 @@ feasible at **every** shape.
 
 **The price, sourced ((GR-133)) and unchanged by GLIST.** A (GR-15) HIT buys `hK` on the
 **tight stratum** only; the `def > 0` habitat (`C11`) is **owned** — `§(K-res)` (RS-5)/(RS-6)
-route it to the **escape route** — but **not free**, and `Pencil-strategy.md` §2.5's
+route it to the **escape route** — but **not free**, and `pencil/strategy.md` §2.5's
 `dim R_a ≥ 2` reading **inverts its source** (§2.5 is a *negative* result: at tight shapes
 the count *forces* `dim R_a = 1`). **Do not quote §2.5 as supplying freeness anywhere.**
 
@@ -1450,7 +1450,7 @@ this block carries the attribution. Same rule as blocks 8, 9 and 11 (`notes/Phas
 one landing earlier than usual because the note stood at **577/580 lines** when OWALL
 returned. The mathematics is **not** here — it is §(K-out) *Steps O47–O51*
 (`notes/pencil/workbook/gapmap.md`) and the `(K-out)` gap-map row, which stay authoritative; the
-spec and landing write-up are `notes/Pencil-fanout.md` §"OWALL".
+spec and landing write-up are `notes/pencil/fanout.md` §"OWALL".
 
 **OWALL (70, 2026-09-02, draft-only) — the route *Step O41* named is refuted by LOGIC.**
 (OC-44)(iii) asked for a certificate colouring *with no single-class `b`–`c` `X`-path* and
@@ -1522,7 +1522,7 @@ of each. The *detail* is already owned by blocks **8** ((BE-14)), **11** (`hK`) 
 (the escape route); what stood in the note was per-landing attribution, which is exactly the
 disposition blocks 8/9/11/12 got. The two clauses that are genuinely *status* stayed in the
 note: **no gap-map status word moved at any of the six**, and the `hK` lane's ranking is
-`notes/Pencil-strategy.md` §8's board rather than the note's own list.
+`notes/pencil/strategy.md` §8's board rather than the note's own list.
 
 - **`hK` (GPACK 66, GLIST 68, GGLOB 71).** (GR-18)(iii)'s packing-and-split half is a
   **THEOREM** ((GR-130)) — neither the packing nor the split is ever the obstruction. Its
@@ -1564,14 +1564,14 @@ not status.**
 Verbatim from `notes/Phase39.md`'s *Hand-off*, 2026-09-03:
 
 > **The coordinator then failed THREE times to name a replacement from
-> `notes/Pencil-strategy.md`**: §5.3 item (i) (dead since (D4), struck `beb1b7ca`), §4.6's
+> `notes/pencil/strategy.md`**: §5.3 item (i) (dead since (D4), struck `beb1b7ca`), §4.6's
 > `∀λ` (discharged; residue is realizability), U1 (criterion **(OUT)** = §(K-out)'s 51
 > steps; retarget = §(K-ann)). Each looked live where it is *recommended* and was spent one
 > layer down.
 
 That is the measured evidence behind the note's surviving one-line status clause — **the
 ranked lists are not a safe dispatch basis** — and behind `RESEARCH-ARC.md` §8's promotion.
-The per-item adjudication of §5.3/§4.6/U1 belongs to `notes/Pencil-strategy.md` and its own
+The per-item adjudication of §5.3/§4.6/U1 belongs to `notes/pencil/strategy.md` and its own
 sweeps, not here.
 
 ### 2. The item-0 sub-item RE-LETTERING HAZARD, and why the note now carries tags
@@ -1653,7 +1653,7 @@ most — it made the residual **CSP-free** — three sentences below in the item
 had gone stale silently in exactly §8's way: *"none has moved in sixteen landings"* (note)
 against *"fifteen"* (block 10) — two copies of one snapshot; *"excluded from ten consecutive
 direction specs"* (eleven landings since it was set, so twenty-one); *"skipped four times"*;
-*"all 76 directions"*. An ordinal is checkable against `notes/Pencil-fanout.md`'s headings
+*"all 76 directions"*. An ordinal is checkable against `notes/pencil/fanout.md`'s headings
 and **decays visibly**; a hand-incremented word does neither. Where a count must appear
 because a home owns it — the harness-debt list, which read **SIX** while
 `notes/scripts/README.md` read **TEN** — the note now says *the count is the home's* and
@@ -1698,7 +1698,7 @@ to pay nothing.
 **The three bumps, and the standing lever.** The cap has been raised **three**
 times, the last at `a5b071ce`; a **fourth** bump is the coordinator's trigger
 to revisit the **ROW SPLIT, still PROPOSED, NOT EXECUTED** (DECLINED FOR NOW
-at `424f93dc`; costing in `notes/Pencil-fanout.md` §"BRANKV"). **Compression is
+at `424f93dc`; costing in `notes/pencil/fanout.md` §"BRANKV"). **Compression is
 exhausted** — the density floor has climbed **9.23 → 9.74 → 9.83** words per
 label across the last three landings, so a compression pass now buys words a
 later landing cannot spend without dropping a label. **RELOCATION, not

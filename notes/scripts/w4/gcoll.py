@@ -4,8 +4,8 @@
 `M` with `B(M) = 0` -- i.e. can the (GR-64) collision mechanism ever
 obstruct (a')?
 
-Answers `notes/Pencil-fanout.md` §"GCOLL -- twenty-seventh direction
-(eighth fan-out)"; the mathematics is `notes/Pencil-informal-grid.md`
+Answers `notes/pencil/fanout.md` §"GCOLL -- twenty-seventh direction
+(eighth fan-out)"; the mathematics is `notes/pencil/workbook/grid.md`
 §(K-grid) *Steps G110-G115*, labels (GR-91)-(GR-96).
 
 Everything here is at `Lambda = empty`, `D = 0`, modulo (GR-4').  Nothing

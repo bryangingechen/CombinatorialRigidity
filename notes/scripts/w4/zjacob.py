@@ -1,6 +1,6 @@
 """Phase 39 direction ZJACOB -- is the Jacobian / singular-locus route alive?
 
-The question (`notes/Pencil-strategy.md` §9.2 candidate **(ZH-4)**, the head of
+The question (`notes/pencil/strategy.md` §9.2 candidate **(ZH-4)**, the head of
 that shelf's order after ZSHEAR struck (ZH-1)): present the escape-failure
 locus as the SINGULAR LOCUS of the universal infinitesimal-motion cone along
 its ZERO SECTION, so that "escape fails only on a proper closed subset" becomes

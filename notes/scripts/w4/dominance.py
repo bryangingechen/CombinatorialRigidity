@@ -1,13 +1,13 @@
 """
 Phase 39, strategy candidate C1 -- DOMINANCE OF THE `V_bc` MAP.
 
-`notes/Pencil-strategy.md` section 4-C1 proposes carrying, as a stronger
+`notes/pencil/strategy.md` section 4-C1 proposes carrying, as a stronger
 inductive invariant, a statement about the MAP
 
     {class far graphs + pencil realizations}  ->  Gr(3,6),   H |-> V_bc
 
-rather than the pointwise escape condition.  By (PC-Z) (`notes/Pencil-
-informal.md` section (K-pure) Step P3) the escape fails exactly when `V_bc`
+rather than the pointwise escape condition.  By (PC-Z) (`notes/pencil/workbook/K-pure.md`
+section (K-pure) Step P3) the escape fails exactly when `V_bc`
 meets one of the two maximal totally isotropic 3-spaces `alpha(a)` and
 `Lambda^2 pi-hat`, each a Schubert `sigma_1` condition of CODIMENSION 1.  So
 if the map were dominant (image dense in the 9-dimensional `Gr(3,6)`) a

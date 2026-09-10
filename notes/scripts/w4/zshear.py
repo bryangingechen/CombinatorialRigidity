@@ -1,6 +1,6 @@
 """Phase 39 direction ZSHEAR -- is the Witt shear a uniformity device?
 
-The question (`notes/Pencil-strategy.md` §9.2 candidate **(ZH-1)**, the first
+The question (`notes/pencil/strategy.md` §9.2 candidate **(ZH-1)**, the first
 direction the external-technique shelf has produced): the orthogonal group of
 the split form `q(w, m) = w . m` on `k^3 (+) k^3` contains unipotent shears
 `Phi_S(w, m) = (w, m + S w)` for `S` skew, which fix each generator of a
@@ -13,7 +13,7 @@ preprint whose own acknowledgment credits an AI assistant with the proof
 details and the Lean verification, and which this project has NOT independently
 checked.  It is an IDEA SOURCE, never a citation: no theorem of it is imported,
 assumed, or leaned on anywhere below.  Everything here stands on (a) classical
-facts already in `notes/Pencil-strategy.md` §7's in-use list -- the Klein
+facts already in `notes/pencil/strategy.md` §7's in-use list -- the Klein
 quadric, its alpha/beta maximal isotropics, Witt's theorem -- and (b) this
 project's own harness.  In particular the shear is NOT taken on trust as a new
 object: `--iso` PROVES, as an identity in `Q[s0, s1, s2]`, that it is the

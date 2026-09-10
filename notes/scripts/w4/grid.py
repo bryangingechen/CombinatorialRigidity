@@ -10,8 +10,8 @@ A `w4/` leaf beside `closure.py`, importing it read-only (README §2: a new
     PYTHONHASHSEED=0 python3 notes/scripts/w4/grid.py --chart    # (GR-5) chart-image membership, verified end to end
     PYTHONHASHSEED=0 python3 notes/scripts/w4/grid.py --validate # all five
 
-Argument state: `notes/Pencil-informal-grid.md` §(K-grid) (new with this driver;
-labels reserved for the 2026-08-06 T/R/M fan-out, `notes/Pencil-labels.md`).
+Argument state: `notes/pencil/workbook/grid.md` §(K-grid) (new with this driver;
+labels reserved for the 2026-08-06 T/R/M fan-out, `notes/pencil/labels.md`).
 
 WHAT IS NEW HERE, in one paragraph.  §(K-clos) *Step Z4* left the residual
 system of a σ-fixed grid configuration as a "direction network in K³" and did
@@ -572,7 +572,7 @@ def leg_counts():
         for (nm, g), c in sorted(gaps.items()):
             print(f"    {nm}  gap {g}: {c}")
         print("  a gap here is a THIRD obstruction family beyond (GR-3)'s")
-        print("  two proven ones -- `notes/Pencil-informal-grid.md` §(K-grid) (GR-4) is the owner.")
+        print("  two proven ones -- `notes/pencil/workbook/grid.md` §(K-grid) (GR-4) is the owner.")
     else:
         print("  the two proven bound families are EXACT at generic labels")
         print("  on this pool ((GR-4)): no third obstruction mechanism.  The")

@@ -13,7 +13,7 @@ tight (`def = 0`, hence 5/6-sparse on every subgraph) and `hnoRigid`, both
 > `(C0)`–`(C5)` run, so this section's **(C6)** (the unrestricted packing) and
 > **(C7)** (the length-4 menu repair) belong to the *collapse* family. They are
 > unrelated to the identically-numbered **(C7)/(C8)** of
-> `notes/Pencil-W4-informal.md` §(SAFE-RES) / §`hnoGood'`
+> `notes/pencil/workbook/W4.md` §(SAFE-RES) / §`hnoGood'`
 > vacuity, which are the *W4 residual structure theorem*'s claims — the ones the
 > route-3(b) adjudication is pinned on. Cite either by section, never by bare
 > number.

@@ -29,9 +29,9 @@ Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --val     # every local device cross-certified against the canonical layer
 
 Argument state: session draft `notes/Pencil-draft-GTMPL.md` (to be merged into
-`notes/Pencil-informal-grid.md` §(K-grid) as Steps G98-G103; labels
+`notes/pencil/workbook/grid.md` §(K-grid) as Steps G98-G103; labels
 (GR-79)-(GR-84) per the 2026-08-19 GTMPL reservation in
-`notes/Pencil-labels.md`).
+`notes/pencil/labels.md`).
 
 THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; ASSERTED here,
 never trusted).  Throughout `Lambda = empty`, `D = 0`: `G°` cubic loopless,

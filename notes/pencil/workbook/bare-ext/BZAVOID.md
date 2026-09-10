@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BZAVOID): the forced-degeneration T2 criterion is **UNSATISFIABLE for every graph** (BATTAIN's triangle-free premise is unnecessary — the trap is empty), the pencil stratum is identified as the **planar-atom molecular** stratum, and the two routes that identification suggests are both **closed** — the landed `G²` molecule apparatus by a measured dictionary gap, the transversality count by a structural impossibility
 
-Direction **BZAVOID** (`notes/Pencil-fanout.md` §"BZAVOID", ordinal 40), the
+Direction **BZAVOID** (`notes/pencil/fanout.md` §"BZAVOID", ordinal 40), the
 arc's forty-eighth and the **first pick made by user option selection between
 slice shapes of a landed direction's own offer** — BATTAIN's `def₂ = def₃`
 proof-of-concept declined in favour of **(BE-14) at the full statement**. Read

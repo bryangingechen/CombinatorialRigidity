@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BSERIES): the *sharpened-at-one-end* route **SPLITS INTO TWO HABITATS** — at a piece clean at **exactly one** end BWIN's machine **DOES transport**, at ONE peel, with the end sweep **confined to two self-conjugate 3-spaces** whose intersection is `Π_v` and a kill budget of **TWO**, reducing **(b2) to (b1)** and making the *sharpening* unnecessary — but the reduction is **CONDITIONAL on (PENCIL-SATURATES) at side-degree `≥ 2`**, half (B)'s OPEN item 0(a); and at a piece clean at **both** ends there is **no bridge, hence no peel and no end sweep at all**, so no machine in this sub-arc has an object — which is (BE-45)(iv)'s item, and (BE-58)(iv)'s four-item ledger therefore reads **TWO items plus a corner**
 
-Direction **BSERIES** (`notes/Pencil-fanout.md` §"BSERIES", ordinal 83), one
+Direction **BSERIES** (`notes/pencil/fanout.md` §"BSERIES", ordinal 83), one
 of a **concurrent round of three** (siblings BFOUR, same section; BINSERT,
 §(K-ins)), at **(BE-58)(iv)'s largest item**: can the (BE-46)/(BE-52)
 per-shape witnesses behind the *sharpened-at-one-end* route be retired

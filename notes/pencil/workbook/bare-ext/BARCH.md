@@ -402,7 +402,7 @@ convention. Six more, all introduced here:
 > stay so — this step changes only what the *reduction to 12* costs.
 
 > **(BE-154)(iii)** *(**the §8 bar, and it LIFTS — narrowly, with the
-> reason recorded here**)* `notes/Pencil-strategy.md` §8 bars, as a build,
+> reason recorded here**)* `notes/pencil/strategy.md` §8 bars, as a build,
 > *"`A_sharp` properness — or any further single-clause repair of
 > (PENCIL-SATURATES-CHART) at side-degree `≥ 2`"* until this recon runs, the
 > reason being that four structurally-different attempts hit **one** named
@@ -691,7 +691,7 @@ exception.
 
 - **(E1)** — *a g-flank: a `D = 0` shape whose every admissible colouring is
   binding, refuting per-shape (GR-15)* (read at
-  `notes/Pencil-fanout-archive.md`, the ledger's own statement). **DOES NOT
+  `notes/pencil/fanout-archive.md`, the ledger's own statement). **DOES NOT
   FIRE**: this landing is on the `(K-bare)` line and exhibits no colouring
   object at all; (GR-15) is untouched.
 - **(E2)** — the target refuted or unprovable-as-posed **and** no ledger entry

@@ -2,7 +2,7 @@
 Phase 39 (K-out) direction OBAR -- is `H u {bar along M}` an admissible
 (OC-35) subgraph, and what does the ledger say on it?
 
-Settles the flagged, unverified gate of `notes/Pencil-strategy.md` §8.2's U3
+Settles the flagged, unverified gate of `notes/pencil/strategy.md` §8.2's U3
 row and §4.6's U3 residue paragraph.  Setting is section (K-out)'s
 standing notation: chain b - v - a - c (v, a degree 2; b, c hubs on the hard
 stratum), G' = G - v + ab, H := G - v - a = G' - a, sigma := corank R(H),

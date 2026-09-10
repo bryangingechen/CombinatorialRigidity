@@ -18,8 +18,8 @@ READ-ONLY (README §2).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gexist.py --validate # all four in one process
 
 Argument state: session draft `fanout-GEXIST.md` (to be merged into
-`notes/Pencil-informal-grid.md` §(K-grid) as Steps G38+; labels (GR-32)+ per the
-2026-08-13 GEXIST reservation in `notes/Pencil-labels.md`).
+`notes/pencil/workbook/grid.md` §(K-grid) as Steps G38+; labels (GR-32)+ per the
+2026-08-13 GEXIST reservation in `notes/pencil/labels.md`).
 
 THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; asserted
 here rather than trusted).  Throughout: `Lambda = empty`, `D = 0`, so G°

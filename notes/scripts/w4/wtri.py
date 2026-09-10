@@ -2,7 +2,7 @@
 """WTRI (Phase 39, direction 58) — the (T) theorem's side conditions, audited on
 the family a certified sweep can NEVER produce.
 
-`notes/Pencil-W4-informal.md` §(SAFE-RES) *Steps TF1-TF6*.
+`notes/pencil/workbook/W4.md` §(SAFE-RES) *Steps TF1-TF6*.
 
 WHAT THIS SCRIPT IS FOR, AND WHAT IT IS *NOT* FOR
 -------------------------------------------------

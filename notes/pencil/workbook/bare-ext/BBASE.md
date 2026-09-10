@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BBASE): **THE FLAG BASE IS FREE, AND IT WAS NEVER (CH-1)'s OBJECT** — the base is the FLAG variety of `B_real`, a flag at *every* vertex, so it is §(K-chart)'s tower with the hub set taken to be **all of `W`** and therefore **stages 1–2 only**; stages 3 and 4 — the ones where min degree `2` and girth `≥ 4` are spent — **do not exist**, because `B_real` has no non-hub vertices. It is a **complete intersection of the expected dimension `5|W| − 2|E|`**, it **factors over `B_real`'s components**, and on a **FOREST** component it is nonempty, irreducible, ℚ-rational with dense ℚ-points **unconditionally** — no genericity, no degree bound — because the flag tower's fibre `F_Π` is irreducible of **constant** dimension `3` at every `Π`; a **unicyclic** component follows on `Base°`, so **every component of cyclomatic number `≤ 1` is covered**, which is every component the census meets. That kills the coordinator's reading (3): the fibre-dimension jump at `p_i = p_{i+1}` is an artifact of **splitting the flag** into point-then-plane. Reading (2) is **refuted** — (CH-1) does not apply to `B_real` at all — and reading (1) is **refuted as stated**, because `W` is the *marked-pair-augmented* hub set and `hcard` caps `Λ(H)`, not `B_real` (`Δ = 3` at **737** class-tier pieces). The one genuine obstruction is a **short cycle**: the FULL base is **REDUCIBLE** at a `B_real`-triangle (flag dims `10 > 9`) and at a `B_real`-4-cycle (`12 = 12`), both extra components living entirely off the constant-rank locus that the arc's own proviso `G` already imposes — and both **excluded outright on the class**, where a `B_real`-cycle is a cycle of `G` and girth is `≥ 6`. Measured: `B_real` is a **forest at 78 564 / 78 564** class-tier peel pieces, `hcard` at **0 / 78 564** failures, and a component of cyclomatic number `≥ 2` — the one shape no clause here reaches — occurs **0 / 78 564** on the class against **22 / 10 678** off it, where **118** triangle components also live
 
-Answering `notes/Pencil-fanout.md` §"BBASE" (sixty-second ordinal, 2026-09-02),
+Answering `notes/pencil/fanout.md` §"BBASE" (sixty-second ordinal, 2026-09-02),
 the (BE-14) thread's **candidate 1**: the flag base off the no-adjacent-hubs
 class, (BE-65)(i) / (BE-68)(ii) item 1. Read against §(K-bare-ext)'s BDECOR
 block (*Steps BE63–BE67*), §(K-chart) *Steps CH1–CH6* ((CH-1)/(CH-5)/(CH-6))
@@ -341,7 +341,7 @@ quotation of it (see *Step BE92*).
 > (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). **Read at one
 > remove**: the 2026-08-05 Lean hold binds this direction, so the statement
 > and the `closedHubNbhd` definition body are taken from
-> `notes/Pencil-W4-informal.md`'s own quotation of them, not from the file.
+> `notes/pencil/workbook/W4.md`'s own quotation of them, not from the file.
 > **`hcard` is therefore not the sampler's cap** — (BE-65)(ii)'s sentence was
 > about the sampler; this is about the pieces, and it holds at `0 / 78 564`
 > failures over the class tier.
@@ -581,7 +581,7 @@ standing rule.
 ### TERMINATION riders
 
 **E1 / E2 / E3 — reported, never fired; E3 remains ARMED (by GBAL).** Read
-against their actual definitions in `notes/Pencil-fanout-archive.md`, with the
+against their actual definitions in `notes/pencil/fanout-archive.md`, with the
 2026-09-02 correction (`61e046a6`) in force: **"the target" in E1–E3 is the
 ARC's target, `PencilPair K 3 G`**, never a direction's local obligation. The
 corpus carries **two** E3 texts; **this reading is `:1700`'s two-conjunct

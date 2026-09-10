@@ -1,7 +1,7 @@
 ## §(K-pure) — the pure condition of the limit carrier, un-specialized: the wrong invariant, the chord obstruction, and the support lever (**direction C REFUTED as a strategy; (K-slide-cl) REFUTED as stated; 5 of 6 flank shapes closed by reduced supports**)
 
 Sibling of §(K-slide-cl)/§(K-slide-comb), answering the fan-out's **direction C**
-(`notes/Pencil-fanout-archive.md` §"Direction C"). Standing notation inherited (`G°` the
+(`notes/pencil/fanout-archive.md` §"Direction C"). Standing notation inherited (`G°` the
 hub multigraph on `n = |V°|` hubs, lengths `ℓ`, `E° = E(G°) ∖ {e₀}`, split edge
 `e₀ = bc` of length 3, decorations, the slide support `Σ`, the per-edge limit
 chain span `S_P` of dimension `ℓ_P`, witnesses (W1)–(W4),

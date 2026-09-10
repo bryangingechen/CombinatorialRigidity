@@ -2,7 +2,7 @@
 Phase 39 PENCIL — probe C3-AVOID: can the KT generation reduction avoid a
 prescribed vertex set `S`?
 
-`notes/Pencil-strategy.md` §4's option **C3** weakens the pencil target: pin
+`notes/pencil/strategy.md` §4's option **C3** weakens the pencil target: pin
 only a subset `S` of bodies to pencils, generic elsewhere.  Its gate is purely
 combinatorial and lives entirely inside the ALREADY-FORMALIZED generation
 theorem (KT 2011 Thm 4.9 = `Graph.minimal_kdof_reduction`, Phase 20):
@@ -34,7 +34,7 @@ on `5G`), `.rigid_vertex_sets{,_bruteforce}`, `.induced_edges`, `.contraction`,
 and `kbare_common.split_off` / `.is_2ec` / `.degrees` / `.verts_of` /
 `.exact_deficiency`.  That places this leaf on the `w4/` stack.
 
-WHAT IT ESTABLISHES (labels are `notes/Pencil-strategy.md` §4.7's `AV-`):
+WHAT IT ESTABLISHES (labels are `notes/pencil/strategy.md` §4.7's `AV-`):
 
   --supply   (AV-1) the degree-2 SUPPLY bound.  At every Case-II node,
              `#{v : deg v = 2} >= ceil(((D-3)|V| + 4)/(D-1))`, i.e.

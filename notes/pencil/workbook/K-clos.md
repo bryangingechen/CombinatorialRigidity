@@ -44,7 +44,7 @@ quadric `{x ⬝ᵥ x = 0}`, and `Λ²₊`, `Λ²₋` the `±1` eigenspaces of `�
   left open is the narrow question — does the recipe reach the target at every
   **tight** shape — and only that; if it did it would discharge `hK` there
   **directly, with no escape route at all**. This arc's record says the base rate
-  for such a question is "no" (`Pencil-strategy.md` §2.3).
+  for such a question is "no" (`pencil/strategy.md` §2.3).
 - **Settled — the field-generality of `hK` factors.** **(AC-7)**: `hK` over
   `ℂ̄` **implies** `hK` over every infinite field of characteristic 0, `ℝ` and
   `ℚ` included. Working over `ℂ̄` is therefore **not** a weakening; it is the
@@ -332,7 +332,7 @@ not, and (AC-5) replaces it.**
 The grids are not useless — they are just not useful *to route σ*. What they are
 is a **combinatorial recipe for target-rank nondegenerate pencil realizations**:
 input a ruling 2-colouring of `E(G)`, output an exact configuration. That is the
-shape of thing `Pencil-strategy.md` §2.2 says the whole arc lacks, and it exists
+shape of thing `pencil/strategy.md` §2.2 says the whole arc lacks, and it exists
 only over a field with isotropic vectors. **It is not class-uniform, and the same
 run that produced it produced the counterexample.**
 
@@ -423,14 +423,14 @@ it is the second place a small Lean spike is the right instrument.
 
 **Three reasons to distrust even the narrowed question.** (1) The isostaticity of
 the two contracted direction networks is **measured, never proven**, and it is
-exactly the "rank condition becomes combinatorial" step `Pencil-strategy.md` §2.2
+exactly the "rank condition becomes combinatorial" step `pencil/strategy.md` §2.2
 identifies as this arc's recurring failure. (2) The flank rows probe only the
 **first 6 filter-passing colourings per shape** — the `hit` column there
 *saturates* at 6 and is **not** a fraction of `pass`; the load-bearing column is
 `best`. A full census was run only at `ds-K4` (64/64 colourings) and in
 `--shapes` (all colourings, ≤ 8 alternation chains). (3) 15 tight shapes is a
 small pool, and this arc's record is that every uniform claim so far has been a
-negative (`Pencil-strategy.md` §2.3) — the base rate says the tight-stratum
+negative (`pencil/strategy.md` §2.3) — the base rate says the tight-stratum
 answer is "no" and the obstruction has simply not been probed for yet.
 
 *Confidence: **refuted** as a class statement over `hK`'s habitat (one exhibited

@@ -19,7 +19,7 @@ for the gap map. `notes/Phase39.md` sat at ~500 lines from 2026-07-25 to
 back to 554 (forward 326 / finished 93; the `**Status:**` header 155 -> 57
 lines). **Three prose rules already forbade that growth and all three
 failed**: the ~500-line tripwire (`notes/CLAUDE.md`); steps 4-5 of
-`notes/Pencil-fanout.md`'s Landing checklist ("add a **one-line** *Decisions
+`notes/pencil/fanout.md`'s Landing checklist ("add a **one-line** *Decisions
 made* entry ... keep `notes/Phase39.md` forward-weighted and under the
 ~500-line tripwire"); and that file's own header rule "Selection provenance is
 NOT duplicated here". The one rule that held over the same period is the one

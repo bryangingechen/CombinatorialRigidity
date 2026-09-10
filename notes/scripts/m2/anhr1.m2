@@ -5,7 +5,7 @@
 --
 -- Workbook section: `(K-ann)`, Steps A14+; labels `(ANH-13)+`; driver blocks
 -- `(ANH-Q0)`-`(ANH-Q4)` (the reserved direction-Q namespace,
--- `notes/Pencil-labels.md` 2026-08-06 G/Q/O table; the block prefix appends
+-- `notes/pencil/labels.md` 2026-08-06 G/Q/O table; the block prefix appends
 -- a letter per that file's sanctioned form, because a bare `(Q..)` would
 -- collide with section (K-pitch)'s placement quartic `Q(z)`).
 --

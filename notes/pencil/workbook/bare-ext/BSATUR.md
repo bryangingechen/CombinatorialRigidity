@@ -479,7 +479,7 @@ landing ships its own (`notes/scripts/gapdiff.py`) for the F21 label check.
 ### TERMINATION riders
 
 **E1 / E2 / E3 — reported, never fired; E3 remains ARMED (by GBAL).** Read
-against their actual definitions in `notes/Pencil-fanout-archive.md`, with the
+against their actual definitions in `notes/pencil/fanout-archive.md`, with the
 2026-09-02 correction (`61e046a6`) in force: **"the target" in E1–E3 is the
 ARC's target, `PencilPair K 3 G`**, never a direction's local obligation. The
 corpus carries **two** E3 texts; **this reading is `:1700`'s two-conjunct

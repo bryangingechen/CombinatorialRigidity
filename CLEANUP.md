@@ -246,7 +246,7 @@ phase notes. Two findings should shape whoever picks it up:
   an arc into its own file had not prevented it, while topic-tagged label
   families never collided at all. Reorganize directories for *findability and
   context budget*, never as a fix for naming collisions — that fix is a registry
-  plus a minting rule (`notes/Pencil-labels.md` is the worked example).
+  plus a minting rule (`notes/pencil/labels.md` is the worked example).
 - **Convention-named files have gravity.** `notes/PhaseN.md` is reading-order
   step 3 in the top-level `CLAUDE.md` and is named in `PHASE-BOUNDARIES.md`;
   `notes/PhaseN-design.md` is pinned by this file's sub-lettered-phase rule and

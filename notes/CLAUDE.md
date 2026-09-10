@@ -51,125 +51,21 @@ for *organizing* this directory is here.
   `scripts/sweep-deprecations.py` (build-log-driven rename sweep). Read it
   before attempting a bump; it is maintenance, not a phase, so it outlives
   whatever phase is active.
-- **`pencil/workbook/`** — the Phase-39 (PENCIL) **informal-mathematics
-  workbook**: proofs under development for the kernels and branch arms the
-  phase carries as hypotheses, staged *before* blueprint transcription
-  (nothing in it is formalization-committed). Same editing discipline as a
-  phase note — each section is the *current* state of its argument, revised
-  in place, and carries an explicit confidence verdict
-  (proven-informally / true-modulo-named-gap / open / refuted) plus a "what
-  would change this" line. Dated recon history stays in
-  `Phase39-design.md`; this file carries only the mathematics. It holds the
-  live **kernel-(K)** arc except §(K-grid) (split out 2026-08-19, see
-  `Pencil-informal-grid.md` below), the **Shared dictionary** both workbooks
-  use, and the **State of (K)** gap map — which stays whole here, including
-  §(K-grid)'s own row, since it is the phase's single status object (the
-  artifact a new pass *updates* rather than re-summarizing). **The gap map's
-  per-cell size is machine-gated**
-  (`notes/check-gapmap-cells.py`, the `check-log-rows.py` shape adapted to
-  this table): the `(K-grid)` row alone regressed from a changelog into a
-  current-state cell and back four times (dc4ecc7b → 2ab3c630, prose-only
-  repairs both times) before the cap replaced the prose rule. Run it
-  (default mode; no flags) before any commit that edits a gap-map row —
-  it checks only the rows that changed, so unrelated commits never block on
-  grandfathered ones. **To READ the map use `notes/gapmap.py`** (`--list`,
-  `--row '(K-grid)' --cell status`, `--label '(GR-15)'`, `--grep`), never
-  `sed`/`grep`: a row is ONE physical line — `(K-grid)` alone is 22 000 chars
-  ≈ 7 300 tokens, and there is no way to read part of one. Detail in its
-  docstring. **When you RECOMPUTE a row rather than append to it, also run
-  `notes/scripts/gapdiff.py [gap-key] [git-ref]`** (added 2026-09-02): it
-  set-diffs the row's label codes against `git-ref` and fails if the
-  compression dropped one, which is the failure mode a word cap cannot see.
-  Both scripts share `check-gapmap-cells.py`'s row parser, so they agree on
-  what a row and a cell are.
-- **`Pencil-W4-informal.md`** — the same workbook's **W4 (`hcontract`)
-  residual arc**, split out 2026-08-05: three sections closed *as arguments*
-  (`hnoGood'` vacuity / (SAFE-RES) refuted, the kernel widening priced) and
-  kept at full detail because they are the input to the eventual W4 build,
-  which the route-3(b) adjudication parks. Same discipline; the (K) arc is
-  the sibling file above.
-- **`Pencil-informal-grid.md`** — §(K-grid) of the same workbook, split out
-  2026-08-19 (`notes/Pencil-structure.md` slice 1) because the section alone
-  had grown to 9883 lines (39% of the parent file, six times the
-  next-largest section). Verbatim relocation — same editing discipline as
-  the sections that stayed behind; `pencil/workbook/README.md`'s *Section index*
-  points here, and its *State of (K)* gap map (incl. §(K-grid)'s own row)
-  did **not** move. Since 2026-08-28 (direction RESGRID) it also carries
-  **§(K-res)** — the residual-habitat transport audit, at the end of the
-  file — whose gap-map row likewise stays in `pencil/workbook/gapmap.md`.
-- **`Pencil-labels.md`** — the Phase-39 **label registry and minting rule**: one
-  index of every label token in use across the pencil doc set, the measured
-  diagnosis of why bare single-letter families collide while topic-tagged ones
-  never have, the four-clause minting rule (**grep the registry before minting;
-  never label a step; qualify every cross-section citation; do not rename**),
-  the collision table for tokens that are ambiguous today, and the **reserved
-  label namespaces** for in-flight parallel dispatches. **Mandatory read before
-  minting any label** in that doc set; it is an index, so the owning section
-  stays authoritative for meaning and status. Opened 2026-08-05 after six
-  recorded confusion incidents, three of them naming collisions.
-- **`Pencil-fanout.md`** — dispatch scoping (not mathematics) for the Phase-39
-  three-way kernel-(K) research fan-out: the user adjudication holding the Lean
-  back pending a standalone-significant informal result, the three independent
-  directions and why the fourth was declined, the non-collision mechanics for
-  **parallel** read-only research dispatches (own new script, draft to the
-  scratchpad, commit nothing, coordinator lands serially), and the per-return
-  landing checklist. Read it when dispatching or landing that fan-out;
-  `pencil/workbook/gapmap.md` is the mathematical entry point, and
-  its *Section index* is the navigation table (per-section line ranges + status,
-  so a dispatch loads only the sections it needs).
-  **The fan-out is COMPLETE** (all three landed 2026-08-05); its strategic
-  aftermath is the file below. Ordinals 1–19's dispatch specs and landing
-  write-ups are now archived (2026-08-19, `notes/Pencil-structure.md` slice 2)
-  in `Pencil-fanout-archive.md` below; this file keeps the mechanics, the
-  landing checklist, and the seventh fan-out (ordinals 20–24) as the worked
-  exemplar.
-- **`Pencil-fanout-archive.md`** — the landed dispatch history for ordinals
-  1–19 (the first through sixth fan-outs and the nine single directions in
-  between), split out of `Pencil-fanout.md` **verbatim** — same precedent as
-  `FRICTION.md` → `FRICTION-archive.md` (`88436c0b`): the specs and landing
-  write-ups moved unchanged, live cross-references repointed. Search-target
-  only, read when checking an old bar; the mechanics/checklist/exemplar stay
-  in the parent file above.
-- **`Pencil-adjudications.md`** — the dated, verbatim-quoted user
-  adjudication/delegation bullets from `notes/Phase39.md` *Current state*
-  that selected the picks for **ordinals 1–44, the whole kernel-(K) arc**,
-  split out of `Phase39.md` **verbatim** in two rounds — ordinals 1–19 on
-  2026-08-19 (the phase-note doc split) and ordinals 20–44 on 2026-08-26 (the
-  phase-note compression round), both recorded in
-  `notes/Pencil-structure.md`. Same precedent as `Pencil-fanout-archive.md`
-  above: relocation only, no re-wording or re-verdicting. What stays in
-  `Phase39.md` *Current state* is the **standing kernel GO/NO-GO constraints**
-  plus a **compressed statement** of the standing research-pick delegation,
-  its selection criteria and the direction-A pivot rule's pre-adjudicated stop
-  clause, since a fresh session must read those; the verbatim quotes behind
-  them are here. **A citation naming a dated Phase-39 bullet resolves here,
-  not in the phase note.** Selection provenance only, never mathematics.
-- **`Pencil-strategy.md`** — the Phase-39 **strategic record** written after the
-  fan-out landed: *why* class uniformity of the escape resists (a
-  three-ingredient diagnosis of how rank conditions become combinatorial and
-  which ingredient the pencil pin costs; the uniform-negatives /
-  per-shape-positives asymmetry; the whole crux restated inside `Gr(3,6)`; and a
-  counting-saturation argument ruling out every count-expressible invariant),
-  what the KT formalization did and did not yield as extractable technique,
-  **three candidate stronger inductive invariants** — of which C1 (dominance of
-  the `V_bc` map) was adjudicated, run and struck on 2026-08-05, its verdict in
-  `pencil/workbook/K-dom.md` — and the **symbolic-computation assessment**
-  (the Python harness is exact-pointwise with hand-rolled univariate
-  interpolation only; its §5.4 **Macaulay2 layer is now LANDED** —
-  `notes/scripts/m2/`, opened 2026-08-05 with `lambda1.m2`, which turned
-  §(K-Λ)'s (Λ1) into an identity over the function field — and **§5.3's first
-  item is likewise DELIVERED** (`m2/lambda0.m2`, same day: §(K-Λ)'s 38-strata
-  evidence upgraded to a class-uniform generic-point proof, plus the missing
-  `g₁₄` clause); **§5.3 item (i) is STRUCK** (2026-09-03, `beb1b7ca` — it was
-  dead on the day it was written, by (D4) landing the same day: contentless at
-  `k ≥ 4` where dominance already gives `φ_G^*(f_B) ≢ 0`, and frame-expressible
-  with content only at `k = 3`, which is **(K-res)**. The cause this file gave
-  until 2026-09-03 — *"beyond §5.3's own local-frame feasibility boundary"* —
-  was the **wrong** one; at `k = 3` it would run). Strategy, **not** mathematics: every mathematical claim points at
-  the workbook section that owns it, and its §§2–4 *diagnoses* carry no driver —
-  they are arguments a successor should attack rather than assume. Read it
-  before choosing the phase's direction; `notes/Phase39.md` *Current state* is
-  authoritative for the standing adjudications.
+- **`pencil/`** — the whole Phase-39 (PENCIL) corpus: the informal-mathematics
+  workbook (`workbook/`, **one file per section** since the 2026-09-09 split),
+  the *State of (K)* gap map that is the phase's status object
+  (`workbook/gapmap.md`), the label registry (`labels.md`), the dispatch
+  specs and landing write-ups (`fanout.md`, `fanout-archive.md`), the option
+  board (`strategy.md`), the archived verbatim user calls
+  (`adjudications.md`) and the structural-round logs (`structure.md`,
+  `cleanup.md`).
+  **`notes/pencil/CLAUDE.md` is the operating manual for all of it** and
+  auto-loads when you touch the subtree — the per-file catalogue that used to
+  sit here (119 lines, loaded on *every* `notes/` touch) lives there now, so a
+  session that never opens the corpus no longer pays for it.
+  **To find a claim, ask `python3 notes/ledger.py --label '(BE-216)'`** — not
+  `grep`: retrieval by grep was measured at ~35 probes and ~137k tokens of
+  context growth for ~18 claims, against ~7 600 tokens for 14 in one call.
 - **`scripts/`** — the numerics harness (exact ℚ Python, plus the `m2/`
   Macaulay2 layer). Entry point is **`scripts/README.md`**: primitive index,
   layering map, invocation table, and the standing rules. Two of those rules

@@ -1,12 +1,12 @@
 -- notes/scripts/m2/lambda0.m2 -- Phase 39 (PENCIL), kernel-(K) arc.
 --
--- (Lambda0) and the a-line SPANS of notes/pencil/workbook/K-Lambda.md S(K-Lambda)
+-- (Lambda0) and the a-line SPANS of notes/pencil/workbook/K-Λ.md S(K-Lambda)
 -- (Standing notation + Step 3; the driver mode it upgrades is
 -- `python3 notes/scripts/w4/lambda.py --span`, 164 sampled frames over 38
 -- strata).  Established here at the GENERIC POINT of the local frame, i.e.
 -- with the frame's coordinates as indeterminates -- the one argument in the
 -- arc whose logical form is *generic-point computation ⟹ uniform over the
--- class* (notes/Pencil-strategy.md S5.3).
+-- class* (notes/pencil/strategy.md S5.3).
 --
 -- HEADLINE.  The span criterion is not a per-frame observation but an exact
 -- identity.  Writing g13 = B(C1,C3), g14 = B(C1,C4), g24 = B(C2,C4) for the

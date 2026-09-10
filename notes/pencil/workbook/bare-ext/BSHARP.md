@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BSHARP): the sharpening **`ρ̄₁ ∩ Π_u = 0` IS FALSE**, and its failure locus is an exact **DICHOTOMY OF TWO THEOREMS** — a *series end* and a *path-saturated* piece — which **CORRECTS (BE-38)(iii)'s prose** against the arc's own landed rows; the coordinator's reduction is **sound but bounded by a dimension count, not by a genericity proviso**; **every failure case discharges (b2) by another route**, leaving the (β) side at **(b3) plus ONE NAMED WINDOW**; and job 3's new sampler — the **first parametrization past bearcase's shape guard** — is exactly what reaches that window
 
-Direction **BSHARP** (`notes/Pencil-fanout.md` §"BSHARP", ordinal 49), the arc's
+Direction **BSHARP** (`notes/pencil/fanout.md` §"BSHARP", ordinal 49), the arc's
 fifty-seventh, taking BEARFULL's own successor (1): the ear case's **last (β)
 clause**. Read against *Steps BE38–BE42* (BEARFULL), *Steps BE34–BE37*
 (BEARCASE), *Steps BE29–BE33* (BIMAGE) and *Steps BE24–BE28* (BTWOCUT), whose

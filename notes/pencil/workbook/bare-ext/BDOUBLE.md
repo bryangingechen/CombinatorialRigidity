@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BDOUBLE): **(NO-DOUBLE-PENCIL) IS REFUTED, AND THE TIGHT BLOCK IS REDUNDANT** — BUNIF's named residue forbade a configuration that is generic, harmless and produced by **one landed lemma read at both ends**: (BE-45)(ii)'s own explicitly-flagged **vacuous corner** `d_min = 6` gives `ρ̄_i = ⟨P⟩ = Λ²K⁴`, hence `c_i(U) = dim U` at **every** stable `U` and in particular `c_i(Π_x) = c_i(Π_y) = 2`, while (BE-45)(i)/(ii) at the other side gives `c_j(Π_x) ≥ 1` — exactly the `(2, ≥ 1)` pair (NO-DOUBLE-PENCIL) forbids. It is realized **inside BUNIF's own 92-row population**, at `K4 + th(6,6,6)/ab + ear4/ua`, peel `(a,b)`: side 2 the `θ(6,6,6)` at `δ₂ = ρ₂ = 6`, side 1 the two-path side at `δ₁ = ρ₁ = d_min = 2`, `c = (1,2)` at **both** 2-blocks. **BUNIF's *"the two clauses have never been sought jointly"* is answered: they are not merely compatible, one lemma produces both.** And the double pencil is **SLACK, NOT A SHORTFALL** — `δ₁+δ₂ = 8`, so the block inequality's slack is `2` and the margin is `−1`, with the peel attaining at `dim(ρ̄₁+ρ̄₂) = 6`. The coordinator's **reading (1) is CONFIRMED**: (NO-DOUBLE-PENCIL) ⟺ `c₁+c₂ ≤ 2`, which is the obligation only at `δ₁+δ₂ ≤ 6` (28 of 49 `(δ₁,δ₂)` pairs), so the condition was **strictly stronger** than half (B) needs, and 320 of 1 975 conceivable double pencils are not violations at all. What replaces it is smaller and **per-side**: under **(PENCIL-SATURATES)** — *`c_i(Π) = 2` forces `ρ_i = 6`*, which is **(BE-38)(iii)'s third clause** read contrapositively — **every `Π_x` violation is a `U = Λ²K⁴` violation**, so `Π_x` and `Π_y` are **implied by the all-of-it inequality**, drop out of the fourteen, and are **FREE in the attaining case**. Reading (2)'s named weak link `dist_i ≥ 6 ⟹ δ_i = 6` is **REFUTED** — (BE-30) bounds `ρ` by `dist` from **above**, so a large `dist` removes a constraint rather than supplying one, and two measured sides sit at `dist = 6`, `δ = 1` — but its **conclusion** is recovered by a shorter route that never mentions `dist`. Job 2 **fires on both of the target's citations**
 
-**Direction BDOUBLE** (ordinal 64, `notes/Pencil-fanout.md` §"BDOUBLE"), 2026-09-02.
+**Direction BDOUBLE** (ordinal 64, `notes/pencil/fanout.md` §"BDOUBLE"), 2026-09-02.
 Driver `notes/scripts/w4/bdouble.py`; labels **(BE-99)–(BE-103)**, *Steps
 BE98–BE102*. Read against *Steps BE93–BE97* (BUNIF), whose (BE-97)(iii) is the
 target, and *Steps BE43–BE45* ((BE-44)/(BE-45)/(BE-46)), which price it.
@@ -417,7 +417,7 @@ coordinator/user call.
 ### TERMINATION riders
 
 **E1 / E2 / E3 — reported, never fired; E3 remains ARMED (by GBAL).** Read
-against their actual definitions in `notes/Pencil-fanout-archive.md`, with the
+against their actual definitions in `notes/pencil/fanout-archive.md`, with the
 2026-09-02 correction (`61e046a6`) in force: **"the target" in E1–E3 is the
 ARC's target, `PencilPair K 3 G`**, never a direction's local obligation. The
 corpus carries **two** E3 texts; **this reading is `:1700`'s two-conjunct

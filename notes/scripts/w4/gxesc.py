@@ -1,5 +1,5 @@
 """GXESC -- the thirty-fifth kernel-(K) ordinal: existential escape /
-(GR-108) by global construction (spec: notes/Pencil-fanout.md S"GXESC").
+(GR-108) by global construction (spec: notes/pencil/fanout.md S"GXESC").
 
 TARGET: (GR-112)(v)'s hypothesis -- existential escape -- or an
 unconditional proof of (GR-108), or a refutation by witness (S(K-grid)

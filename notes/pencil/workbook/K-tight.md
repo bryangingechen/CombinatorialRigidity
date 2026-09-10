@@ -3,7 +3,7 @@
 The hard residue of kernel **(K)** after the corank stratification: tight
 habitats (`5|E| = 6(|V| − 1)`), both chain ends hubs, 2-connected — plus,
 since the W4 route-3(b) adjudication, the whole (K-res) residual habitat,
-which sits in the same `dim R_a = 1` shape (`notes/Pencil-W4-informal.md`
+which sits in the same `dim R_a = 1` shape (`notes/pencil/workbook/W4.md`
 §"widened kernels" *Step 2*).
 
 **Verdict (two-part).** The **escape criterion** below is

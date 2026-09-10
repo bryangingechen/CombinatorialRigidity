@@ -665,7 +665,7 @@ def run_t2():
     print("      a cap over Y-main is a statement about a 3|V|-#hub-dimensional")
     print("      variety.  Deciding it symbolically means the generic rank of a")
     print("      5|E| x 6|V| matrix over Q(t) in 3|V| - #hub parameters -- at DZ,")
-    print("      115 x 120 over Q(t) in 54 parameters.  `Pencil-strategy.md`")
+    print("      115 x 120 over Q(t) in 54 parameters.  `pencil/strategy.md`")
     print("      section 5.3 measures the ungauged 28-coordinate degree-52")
     print("      expansion dying at 600 s; this is four times the coordinates.")
     print("      So: T2 at a FIXED G is decided in the positive direction")

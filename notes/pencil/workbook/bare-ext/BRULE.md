@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BRULE): **(b3) is the CHEAPEST of the three clauses, and the reason is a SEPARATION THEOREM** — `Π_u` and `Π_v` lie in the *same* ruling as the offending `y ∧ L`, so a (b3) failure would force the sharpening `ρ̄₁ ∩ Π_u = 0` at **both** ends; hence **(b3) holds wherever either BSHARP mechanism fires**, in particular **throughout the residual window**, and the (β) side's two remaining obligations are **DISJOINT**; the clause's honest domain is named and it is **struck, not proved, in every degenerate regime**; and (BE-37)(ii)'s stated **inference** is corrected — (b3) does not give `lossR = 0`, **(Z) dominates (R)** instead — with **every landed measurement intact**
 
-Direction **BRULE** (`notes/Pencil-fanout.md` §"BRULE", ordinal 50), the arc's
+Direction **BRULE** (`notes/pencil/fanout.md` §"BRULE", ordinal 50), the arc's
 fifty-eighth, and a coordinator pick that **deviates** from BSHARP's successor
 order for the reason `notes/dispatch-log.md` **F26** records: **(b3)** is the one
 clause of the ear case's (β) side that had **never been attacked**. Read against
@@ -119,7 +119,7 @@ here:
 - `lossP`, `lossZ`, `lossR`: the three lower bounds of (BE-33)(ii), named
   separately because this direction separates them.
 
-**One notation clash, flagged rather than renamed** (`notes/Pencil-labels.md`
+**One notation clash, flagged rather than renamed** (`notes/pencil/labels.md`
 *do not rename*): `E` is the 4-dimensional subspace `Π_u + Π_v`, while `E(G)`
 and `E(G₁)` are edge sets. Both are inherited; every occurrence below carries
 its argument or does not.

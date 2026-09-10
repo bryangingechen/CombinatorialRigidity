@@ -1,12 +1,12 @@
 ## §(K-shear) — the Witt shear as a uniformity device is **DEAD**, and the reason is that it is a **gauge transformation**: the skew shears are exactly the `Λ²`-image of the affine translations, the pitch quadric is **their own defining invariant**, and the §(K-tight) criterion matrix is not merely rank-invariant but **literally the same matrix** in the pushed basis
 
-Direction **ZSHEAR** (`notes/Pencil-fanout.md` §"ZSHEAR"), the first direction
-`notes/Pencil-strategy.md` §9's external-technique shelf has ever produced,
+Direction **ZSHEAR** (`notes/pencil/fanout.md` §"ZSHEAR"), the first direction
+`notes/pencil/strategy.md` §9's external-technique shelf has ever produced,
 dispatched on unprompted user initiative as a side line. It settles candidate
 **(ZH-1)** of that shelf (§9.2). Read against §(K-tight) *Steps 0–3* (the
 boundary-load calculus and its escape criterion), §(K-flank) *Step F5(d)* (the
 adversarial bed), §(K-pitch) *Step 0* (the pitch quadric), and
-`notes/Pencil-strategy.md` §2.5 / §4.6 (the two filters). Driver
+`notes/pencil/strategy.md` §2.5 / §4.6 (the two filters). Driver
 `notes/scripts/w4/zshear.py`; all exact ℚ, the two structural modes fully
 **symbolic** (identities in `ℚ[…]`, no sampling).
 
@@ -17,7 +17,7 @@ and which **this project has not independently checked**. Per top-level
 `CLAUDE.md` *Referencing prior work* and `DESIGN.md` *Formalize everything the
 argument uses*, it is an **idea source, never a citation**: **no theorem of it
 is imported, assumed, or leaned on anywhere in this section**. Everything below
-stands on (a) classical facts already in `notes/Pencil-strategy.md` §7's in-use
+stands on (a) classical facts already in `notes/pencil/strategy.md` §7's in-use
 list — the Klein quadric, its α/β maximal isotropics, Witt's theorem — and (b)
 this project's own drivers and definition bodies. Nothing here needs the
 source's Lemma 3.4 or Proposition 3.3, and nothing here is evidence for or
@@ -69,7 +69,7 @@ against them.
   failing seed into an escaping one, and a family that *does* move a failure is
   not a symmetry and propagates no witness. **(SH-6)**.
 - **Gap-map effect: NONE.** No *State of (K)* row moves and no status keyword
-  changes. What moves is `notes/Pencil-strategy.md` §9's shelf: **(ZH-1) is
+  changes. What moves is `notes/pencil/strategy.md` §9's shelf: **(ZH-1) is
   struck**, and §9.3's order advances to **(ZH-4)**.
 
 ### Standing notation
@@ -91,7 +91,7 @@ affine `x, y` has `dir = x − y`, `mom = x × y`. `T_t : x ↦ x + t`.
 > 1. `Q(w) = ⟨w, ★w⟩ = 2·dir(w)·mom(w)` identically in `ℚ[w₀,…,w₅]`. So
 >    §(K-pitch) *Step 0*'s pitch quadric and the split form `q(ω,b) = ω·b` are
 >    **the same form in the harness's own coordinates**, with the dictionary
->    `ω ↔ dir`, `b ↔ mom`. This upgrades `notes/Pencil-strategy.md` §9.1's
+>    `ω ↔ dir`, `b ↔ mom`. This upgrades `notes/pencil/strategy.md` §9.1's
 >    "same form, same vanishing locus, same meaning" from a reading to an
 >    identity in the project's convention.
 > 2. Writing `s` for the axial vector of the skew `S` (i.e. `Sx = s × x`),
@@ -115,7 +115,7 @@ and nothing here is a claim about the source.)
 > `x ∈ K⁶`: **`Q` is the shear group's own defining invariant**. The maximal
 > isotropic the shears fix *pointwise* is `span(e₀₁, e₀₂, e₁₂)` = the lines
 > lying in the plane at infinity — a **β-plane** of the Klein quadric,
-> i.e. one of the classical objects already in `notes/Pencil-strategy.md` §7's
+> i.e. one of the classical objects already in `notes/pencil/strategy.md` §7's
 > in-use list. Conversely the shears **exhaust** that β-plane's pointwise
 > stabilizer in `O(Q)`, by the classical argument: `W₀` maximal isotropic gives
 > `W₀^⊥ = W₀`, so `g` trivial on `W₀` is also trivial on `K⁶/W₀ ≅ W₀^*` (the
@@ -283,7 +283,7 @@ settled.
 > **properness** — establishing `P ≢ 0` uniformly over the class. (ZH-1) buys
 > avoidance, which the arc already has, and supplies nothing towards
 > properness. This is the fourth instance of the relocation pattern
-> `notes/Pencil-strategy.md` §4.6 (R1) names (C1 relocated the crux to
+> `notes/pencil/strategy.md` §4.6 (R1) names (C1 relocated the crux to
 > `rank dV = 9`; `∀λ` to "`λ ≠ p⁺` is realizable"; §(K-out) (OC-8) to
 > chart-to-frame dominance), and the first where the relocation is **backwards**
 > — onto a step that was never the difficulty.
@@ -362,7 +362,7 @@ plus the 6/6 failure-moving measurement.
 ## Secondary deliverable — the OWED §2.5 filter check on (ZH-2)/(ZH-3)
 
 Prose only, per the dispatch: **no driver, no labels, no pricing onto §8's
-board.** This is a verdict on `notes/Pencil-strategy.md` §9.2's two held
+board.** This is a verdict on `notes/pencil/strategy.md` §9.2's two held
 candidates against **§2.5** (counting saturation), which is the check they owe.
 The shelf stays off-board either way.
 

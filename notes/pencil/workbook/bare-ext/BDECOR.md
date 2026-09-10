@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BDECOR): the ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR CHAINS — at a fixed flag assignment on the hub set the legal configurations of ANY piece are a *product*, one factor per topological branch, modulo the cross-branch proviso `G`, so the per-child sets (BE-62)(iii) left open **are never needed past ears**; the coordinator's job-2 hypothesis is CONFIRMED and STRENGTHENED beyond the P-layer, the theta child's law falls out as a corollary with an exact generic dimension `max(0, Σ min(a_j,6) − 12)` and welded attainment FREE; the residual coupling is the **flag base**, which is the arc's own §(K-chart) object, so (CH-1) already supplies irreducibility, rationality and dense ℚ-points; and the small-`m` correction (BE-30)(iii) does **not** stay inside its branch — at `π_x = π_y` two length-3 branches have EQUAL spans and `ρ̄` **exceeds** general position by up to 3, at configurations that are exactly the NON-ATTAINING ones (BE-22)(iii)'s hypothesis excludes
 
-Direction **BDECOR** (`notes/Pencil-fanout.md` §"BDECOR", ordinal 53), the arc's
+Direction **BDECOR** (`notes/pencil/fanout.md` §"BDECOR", ordinal 53), the arc's
 sixty-first, at **(BE-62)(iii)'s named residue** — *which decoration tuples
 `{ρ̄_e}` are simultaneously achievable by pencil configurations of an internal
 R-node piece* — BRNODE's successor (1), taken only after the coordinator

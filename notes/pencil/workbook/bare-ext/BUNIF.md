@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — continuation (direction BUNIF): **`reach` IS A FUNCTION OF TWO PER-SIDE PROFILES, AND BOTH DIRECTIONS OF THE LAW ARE PROVED** — the flag pair `(ϕ_x, ϕ_y)` has a **5-dimensional stabilizer** `S(ϕ) ⊆ PGL₄` which, by (BE-70)(ii), acts on **each side's achievable family separately**; in the generic flag regime the screw space splits `S(ϕ)`-canonically as `Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` of dimensions `(2,1,1,2)`, whose **16 sums are exactly the `S(ϕ)`-stable subspaces**. Against those 16 the modular law gives a **CAP** on `dim(ρ̄₁+ρ̄₂)` written entirely in per-side data, and degenerating each side independently along a 1-PS of `S(ϕ)` gives a matching **LOWER BOUND** — so where the two agree (**121 of 122** measured peel rows, **393/400** abstract pairs) `reach` is **PINNED BY TWO PROOFS** and (BE-71)(ii)'s explicitly-unclaimed completeness is **CLOSED at that row**: the mechanism list is not merely long enough, it is *the lattice of stable subspaces*, with two-sided (P) the `U = core₁ ∩ core₂` instance and two-sided (Z) the `U = Π_x ⊕ Π_y` one. The cap is **ATTAINED by a group move at 400/400** abstract pairs. So **(BE-67)(iii) at a peel becomes 14 numerical inequalities `c₁(U) + c₂(U) ≤ dim U + max(0, δ₁+δ₂−6)`, each side's `c_i(U) = dim(ρ̄_i ∩ U)` computed on ITS OWN**, which is the *"statement about ONE piece, not about two pieces in relative position"* (BE-22)(vi) named as the successor's target. Measured: the violation margin is `0` at **92/92** rows — never positive, so **no shortfall** — and `Π_x` is the **ONLY** block at which BOTH sides exceed the generic profile (12 of 92), where they sit at `c₁ = c₂ = 1 = dim Π_x / 2` and the class statement survives by **EXACTLY ZERO MARGIN**, tight at **8** rows. That is the whole residue, and it is (BE-45)'s dichotomy read at both ends of one peel. The law is stated for the **generic flag regime only**: at `π_x = π_y` the four blocks collapse (`Π_x + Π_y = Λ²π`, `Π_x ∩ Π_y = ⟨M⟩`, both asserted), the cap survives because it is the modular law, and (BE-71)(i)'s two-sided (Z) at `dim Z = 3` is **exhibited losing dimension outright at 24 of 60** constructed ear pairs
 
-**Direction BUNIF** (ordinal 63, `notes/Pencil-fanout.md` §"BUNIF"), 2026-09-02.
+**Direction BUNIF** (ordinal 63, `notes/pencil/fanout.md` §"BUNIF"), 2026-09-02.
 Driver `notes/scripts/w4/bunif.py`; labels **(BE-94)–(BE-98)**, *Steps BE93–BE97*.
 Read against *Steps BE68–BE72* (BPEEL), which this continues, and *Steps
 BE63–BE67* (BDECOR), whose (BE-67)(iii) is the target.
@@ -360,7 +360,7 @@ of `L`. It is BE-22(v)'s regime **(β)**. The complement is *Step BE96*.
 >    landed reading — vacuous at every drawn piece, neither a theorem — is
 >    superseded.** (The token *"window conditions"* has three
 >    owners in the corpus — these; §(SAFE-RES′)'s (S1)–(S5) in
->    `notes/Pencil-W4-informal.md`, which disambiguates itself inline; and the
+>    `notes/pencil/workbook/W4.md`, which disambiguates itself inline; and the
 >    §(K-slide) (W1)–(W4) family — so it is qualified here.) Outside the
 >    window, (β)'s discharge is **per-shape** ((BE-45)(iv), (BE-58)).
 > 2. **Cross-pair welding** ((BE-28)(i)), untouched.
@@ -530,7 +530,7 @@ recorded at (BE-83)(iii) remains a coordinator/user call.
 ### TERMINATION riders
 
 **E1 / E2 / E3 — reported, never fired; E3 remains ARMED (by GBAL).** Read
-against their actual definitions in `notes/Pencil-fanout-archive.md`, with the
+against their actual definitions in `notes/pencil/fanout-archive.md`, with the
 2026-09-02 correction (`61e046a6`) in force: **"the target" in E1–E3 is the
 ARC's target, `PencilPair K 3 G`**, never a direction's local obligation. The
 corpus carries **two** E3 texts; **this reading is `:1700`'s two-conjunct

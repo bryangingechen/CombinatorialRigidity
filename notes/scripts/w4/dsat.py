@@ -1,7 +1,7 @@
 """
 Phase 39, strategy board option C2 -- THE SATISFIABILITY TRACE.
 
-`notes/Pencil-strategy.md` section 8.2 carries **C2** -- *carry `V_bc` general
+`notes/pencil/strategy.md` section 8.2 carries **C2** -- *carry `V_bc` general
 position as a motive conjunct* -- as **live and unpriced**, and the row names
 what must happen first: *"a stronger motive can be UNSATISFIABLE -- needs a
 satisfiability trace first (the L6b/F10 precedent)."*  This driver is that

@@ -1,6 +1,6 @@
 ## §(K-bare-ext) — the arbitrary-seed insertion lemma is **REFUTED as stated** (a legal target-rank seed where route A fails at *every* placement, exact and cap-free), the §(K-tight) boundary-load calculus **transports** to this kernel (192/192), and the dependent stratum is **complete** at `corank(G′) ≤ 3`
 
-Probe **KBARE-FALSIFY** (`notes/Pencil-fanout.md` §"Two probes SPECCED and
+Probe **KBARE-FALSIFY** (`notes/pencil/fanout.md` §"Two probes SPECCED and
 AUTHORIZED 2026-08-20"), the commissioned falsification hunt for `hbareSplit`.
 Read against `notes/Phase39-design.md` §"(K-bare) extension-route recon" (the
 statement, the corank stratification, the DZ/cube/Wagner danger gadgets, the

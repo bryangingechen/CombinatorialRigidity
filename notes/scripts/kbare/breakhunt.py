@@ -1,8 +1,8 @@
 """
 Probe KBARE-FALSIFY — the falsification hunt for `hbareSplit` / (K-bare-ext).
 
-Commissioned 2026-08-20 (`notes/Pencil-fanout.md` §"Two probes SPECCED and
-AUTHORIZED 2026-08-20"); labels/paths reserved in `notes/Pencil-labels.md`
+Commissioned 2026-08-20 (`notes/pencil/fanout.md` §"Two probes SPECCED and
+AUTHORIZED 2026-08-20"); labels/paths reserved in `notes/pencil/labels.md`
 §"Reserved namespace — probe KBARE-FALSIFY".  Backs
 `notes/pencil/workbook/K-bare-ext.md` §(K-bare-ext) *Steps BE1–BE8*.
 

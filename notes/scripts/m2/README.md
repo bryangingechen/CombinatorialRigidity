@@ -4,7 +4,7 @@
 layering map, invocation table and mandatory conventions. This file is the
 per-driver description list for this directory, plus the four conventions the
 M2 layer adds on top (they were specified in advance in
-`notes/Pencil-strategy.md` §5.4 and are binding here).
+`notes/pencil/strategy.md` §5.4 and are binding here).
 
 Opened 2026-08-05 with `lambda1.m2`; `lambda0.m2` followed the same day. This
 is the **only** non-Python part of the harness.
@@ -27,7 +27,7 @@ repair. The same reading applies to an M2 driver found defective.
 `notes/scripts/`'s Python is **exact-pointwise**: it evaluates the geometry at
 sampled rational points. That can *prove* `≢ 0` at a fixed shape and can
 *refute* identical vanishing, but it can never establish a statement uniform
-over an infinite family (`notes/Pencil-strategy.md` §5.2). The only symbolic
+over an infinite family (`notes/pencil/strategy.md` §5.2). The only symbolic
 capability on the Python side is hand-rolled and **univariate**
 (`pitch.lagrange_coeffs` and `lambda.poly_of` on top of it).
 
@@ -39,7 +39,7 @@ sampling harness structurally cannot.
 
 ## Sandbox mechanics — established 2026-08-05, not assumed
 
-`notes/Pencil-strategy.md` §5.4 originally recorded only the *run-in-a-temp-dir*
+`notes/pencil/strategy.md` §5.4 originally recorded only the *run-in-a-temp-dir*
 pattern as confirmed, and flagged repo-internal I/O as possibly needing sandbox
 directories added. Re-probed directly, and it is better than that — this is what
 a dispatch can rely on:
@@ -191,7 +191,7 @@ output unchanged.
   28 point indeterminates and does **not** finish: killed at 600 s inside
   `cross4` on the ungauged bracket rows (2026-08-05). Anyone extending this
   layer should budget for that wall — the local frame is viable symbolically,
-  a whole-graph placement is not (`notes/Pencil-strategy.md` §5.3's closing
+  a whole-graph placement is not (`notes/pencil/strategy.md` §5.3's closing
   paragraph). That probe is recorded as **measured, script not retained**: it
   is (M4) with the gauge removed — replace `bv, x1, x2, x3 = ev 0 .. ev 3` by
   four more free 4-tuples of ring generators — so it reconstructs from the
@@ -211,7 +211,7 @@ output unchanged.
 
 - **`lambda0.m2`** — **(Λ0)** and the **`a`-line spans**, `notes/pencil/workbook/K-Λ.md`
   §(K-Λ) *Standing notation* + *Step 3*, established at the **generic point of
-  the local frame**. This is `notes/Pencil-strategy.md` §5.3's *first* item: the
+  the local frame**. This is `notes/pencil/strategy.md` §5.3's *first* item: the
   one argument in the arc whose logical form is *generic-point computation ⟹
   uniform over the class*, and the reason the layer was built. It upgrades
   `w4/lambda.py --span` (164 sampled frames over 38 strata).
