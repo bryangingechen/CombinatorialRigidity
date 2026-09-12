@@ -1767,26 +1767,63 @@ question at the rung where BWHOLEH's refutation lives.
    > arithmetic shown to leave a block that neither instrument can reach, which names the real
    > residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
    >
-2. **THE CORRELATED COLOURING RULE ON THE BASE, ATTACKED AT THE PARITY FAILURE.** *(new —
-   GBASE's named successor, and the only `hK` entry whose success is not contingent on a struck
-   route.)* Owner: §(K-grid) *Steps G258–G259*, (GR-238)/(GR-239), standing on (GR-34). **(GR-34)
-   proves the shape any proof must have** — *"any proof of the target must correlate the per-hub
-   minority choices; no uncorrelated charging can close it"* — and the corpus has **exactly one**
-   correlated rule: the rung-minority rule, which certifies `CL_m` with an explicit exact-ℚ
-   `dim Z = 0` colouring. **GBASE extended it to `n_hub = 24` and located precisely where it
-   dies:** it is **PARITY-FRAGILE**, needing every rung length **even**, because a length-`L`
-   branch flips its dart colour `L − 1` times so a rung is its hub's minority dart at **both**
-   ends only when `L` is even. **(GR-175)'s family — six rungs at `ℓ = 3` — is exactly the
-   witness**, and it is the family that makes the base infinite. **GLEAF's question: SUFFICIENT
-   for an infinite subfamily** — a repair covering odd rung lengths is a **uniform** (GR-15)
-   argument on an infinite part of the base, which is the first uniform result the base would
-   have and the only route (GR-34) leaves open.
-   *Kill condition: a correlated rule exhibited that certifies `CL_m` at (GR-175)'s recipe for
-   every `m ≥ 6` — a uniform (GR-15) theorem on an infinite base subfamily — or the parity
-   obstruction shown to be **essential**, i.e. no minority assignment correlated along the rails
-   can be admissible at odd rung length, which would say the base's one landed instrument cannot
-   be repaired and is itself a result. Decided by: the `(K-grid)` row, close-it u9.*
+2. **THE CORRELATED RULE ON THE BASE — SPENT (GODDRUNG 112, 2026-09-12): THE PARITY OBSTRUCTION IS
+   NOT ESSENTIAL, THE RULE IS REPAIRED — AND THIS ENTRY'S PREMISE IS REFUTED.** Owner of the
+   answer: §(K-grid) *Steps G269–G276*, (GR-249)–(GR-256). **The criterion was never parity.**
+   §(K-grid) (GR-37)(ii) already states it — the all-`M` prescription extends **iff `[ℓ even]` lies
+   in the CUT SPACE of `G°`** — and on `CL_m` that reads `k = 2a` with `a` the number of **cyclic
+   arcs** of the odd-rung set. **The decisive witness is `m = 6`:** all six rungs at `ℓ = 3`, yet
+   `k = 0`, `τ = 0`, so `t ∈ Cut(CL_6)` — **no obstruction at all** — and the landed rule is *still*
+   inadmissible, failing the **mono-hub** conjunct because `gexist.ladder_rule_first` hardcodes the
+   two rails' majority colours *opposite* while the `ℓ = 3` branch equation forces them *equal*.
+   **THE REPAIRED RULE is admissible, NC1-clear and FULLY-GOOD at every even `m` from 6 to 40** —
+   `n_hub = 12…80`, **18 of 18** rows by exhibited exact-ℚ `dim Z₊ = dim Z₋ = 0` points in both
+   blocks, hence **cap-free** — with a closed-form rung defect `ρ(ℓ) = k + 2·[k = 0 ∧ τ = 1]`
+   verified against brute force at **62** `(m, excess)` pairs and against **all `2^{3m}`**
+   colourings at `m ≤ 6`, where the balance rider costs **zero** extra deviations.
+   **TWO LANDED SENTENCES FALL.** (GR-239)(ii)'s *"covers exactly the even-rung-length slice"* is
+   **SCOPED** — its four `admissible = False` rows are correct and reproduce; its *criterion* is
+   not, the slice being the **cut-space** slice, which contains all-odd-rung shapes. And
+   **(GR-34)(ii)'s *"odd `m` needs ONE deviating hub"* is REFUTED — it is TWO**, exhaustive over
+   all `4m` single-hub deviations at `m = 5, 7, 9, 11, 13` (`0/20, 0/28, 0/36, 0/44, 0/52`), a
+   single deviation always flipping exactly one face. Its *"the repair sells `save == 0`"* was a
+   property of the **all-even** recipe and was never available here.
+   **AND THE F26 CHECK LOWERS THIS ENTRY'S OWN PAYOFF, which the spec promised and did not
+   deliver.** A uniform **rule** is **not** a uniform **(GR-15) argument**: (GR-15) has two halves —
+   *exhibit* an admissible colouring, and *certify generic `dim Z = 0` at it* — and the rule
+   supplies only the first, (GR-34)(ii)'s own text saying it is proven *"per tested shape, not for
+   all `m`"*. With the induction struck, **nothing landed consumes (GR-15) on a subfamily**. The
+   entry's stated payoff — *"a uniform (GR-15) argument on an infinite subfamily"* — is therefore
+   **REFUTED**, and it was inherited from (GR-238)(ii)'s phrase *"one uniform rule"*, accurate
+   about the **rule** and read as if about **(GR-15)**.
+   *Kill condition: MET on its first arm — the obstruction is not essential and the repair is
+   exhibited. **What the repair genuinely buys** is that the uniformity question is now **single
+   and rank-shaped**: one statement about an explicitly-described `m`-indexed family with no
+   colouring-existence quantifier left. **The successor is uniform `dim Z = 0` for the repaired
+   rule's colouring over all `m`** — untouched, and now the ONLY thing between the repair and
+   uniform (GR-15) on `CL_m`. Decided by: the `(K-grid)` row, close-it u9.*
 
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new —
+   > GBASE's named successor, and the only `hK` entry whose success is not contingent on a struck
+   > route.)* Owner: §(K-grid) *Steps G258–G259*, (GR-238)/(GR-239), standing on (GR-34). **(GR-34)
+   > proves the shape any proof must have** — *"any proof of the target must correlate the per-hub
+   > minority choices; no uncorrelated charging can close it"* — and the corpus has **exactly one**
+   > correlated rule: the rung-minority rule, which certifies `CL_m` with an explicit exact-ℚ
+   > `dim Z = 0` colouring. **GBASE extended it to `n_hub = 24` and located precisely where it
+   > dies:** it is **PARITY-FRAGILE**, needing every rung length **even**, because a length-`L`
+   > branch flips its dart colour `L − 1` times so a rung is its hub's minority dart at **both**
+   > ends only when `L` is even. **(GR-175)'s family — six rungs at `ℓ = 3` — is exactly the
+   > witness**, and it is the family that makes the base infinite. **GLEAF's question: SUFFICIENT
+   > for an infinite subfamily** — a repair covering odd rung lengths is a **uniform** (GR-15)
+   > argument on an infinite part of the base, which is the first uniform result the base would
+   > have and the only route (GR-34) leaves open.
+   > *Kill condition: a correlated rule exhibited that certifies `CL_m` at (GR-175)'s recipe for
+   > every `m ≥ 6` — a uniform (GR-15) theorem on an infinite base subfamily — or the parity
+   > obstruction shown to be **essential**, i.e. no minority assignment correlated along the rails
+   > can be admissible at odd rung length, which would say the base's one landed instrument cannot
+   > be repaired and is itself a result. Decided by: the `(K-grid)` row, close-it u9.*
+   >
 3. **THE SHARED RESIDUE — ONE LEMMA FOR TWO LANDED CLOSURES.** *(new — named independently by
    BGOODEMPTY and by BMBLOCK, each calling it "a direction's question, not a coordinator's".)*
    Owner: §(K-bare-ext) (BE-262)(ii)'s FIRST item and (BE-277)(iii). Both landed closures are

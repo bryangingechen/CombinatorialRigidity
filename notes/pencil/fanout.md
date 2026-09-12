@@ -18361,3 +18361,86 @@ figure, reached by a different route and disclosed as a same-input reproduction.
 (BE-81)'s `392 of 928` was checked by summing that clause's own landed table
 (48+720+160 peels, 24+312+56 forced), and (BE-30)(iv) was read at source to
 confirm it names no block.
+
+## GODDRUNG — ordinal 112, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's seventeenth pass, RANK 2** — the `hK` lane's only surviving entry after
+the induction was struck, ranked on (GR-15) directly rather than on reviving a
+struck route. *Question:* is the rung-minority rule's parity obstruction
+essential, or repairable at odd rung lengths?
+
+**VERDICT: not essential, repaired — and the entry's own premise refuted.**
+Landed as (GR-249)–(GR-256) / *Steps G269–G276*.
+
+- **THE CRITERION WAS NEVER PARITY, and the corpus already said so.**
+  §(K-grid) (GR-37)(ii): the all-`M` prescription extends **iff `[ℓ even]` lies
+  in the CUT SPACE of `G°`**. Evaluated on `CL_m` with rims at `ℓ = 2`, that is
+  `k = 2a` with `a` the number of **cyclic arcs** of the odd-rung set — exact
+  GF(2), no cap. The spec's *"where I expect to be wrong"* named exactly this
+  and was right; the direction built on it.
+- **THE DECISIVE WITNESS IS `m = 6`.** All six rungs at `ℓ = 3`, yet `k = 0`,
+  `τ = 0`, so `t ∈ Cut(CL_6)` — **no obstruction at all** — and
+  `gexist.ladder_rule_first` is *still* `admissible = False`, reproducing
+  (GR-239)(ii)'s measurement. It fails the **mono-hub** conjunct, not a parity
+  one: the implementation hardcodes the two rails' majority colours *opposite*,
+  while the `ℓ = 3` branch equation forces them *equal*, so every bottom hub
+  comes out monochromatic. **The one-line repair at `m = 6`: give the bottom
+  rail the same majority colours. Zero deviating hubs.**
+- **THE REPAIRED RULE, MEASURED:** admissible, NC1-clear and **fully-good at
+  every even `m` from 6 to 40** — `n_hub = 12…80`, **18 of 18** rows, each by an
+  exhibited exact-ℚ `dim Z₊ = dim Z₋ = 0` point in **both** blocks through both
+  matrices ((GR-31)(i)'s device), hence **cap-free**. GBASE's `n_hub = 24` wall
+  was `cflank.cubic_habitat`'s `2^{n_hub}` scan and is **not needed**: (GR-175)
+  *proves* the shape property, and the admissibility/rank devices read only the
+  hub model.
+- **The rung defect in closed form:** `ρ(ℓ) = k + 2·[k = 0 ∧ τ = 1]`, verified
+  against brute force at **62** `(m, excess)` pairs (`m = 4..7`) and against
+  **all `2^{3m}`** colourings at `m = 4..6`, where the balance rider costs
+  **zero** extra deviations.
+
+**TWO LANDED SENTENCES FALL, one of them from this same session.**
+*(a)* **(GR-239)(ii)'s *"covers exactly the even-rung-length slice"* is
+SCOPED** — its four `admissible = False` rows are correct and reproduce, and its
+parity derivation is a true property of *the landed implementation's colour
+prescription*; what is wrong is treating it as the criterion. The slice is the
+**cut-space** slice, which contains all-odd-rung shapes.
+*(b)* **(GR-34)(ii)'s *"odd `m` needs ONE deviating hub"* is REFUTED — it is
+TWO**, exhaustive over all `4m` single-hub deviations at `m = 5, 7, 9, 11, 13`
+(`0/20, 0/28, 0/36, 0/44, 0/52`), a single deviation always flipping exactly one
+face while the two ends of one rung always work. That clause flags itself as
+*"observed, not developed"*, so the correction lands on an acknowledged gap.
+Its *"the repair sells `save == 0`"* was a property of the **all-even** recipe
+and was never available at (GR-175)'s — `gexist.weak_frame` charges one save per
+**odd branch** in a chunk regardless of the minority map, and every interval
+chunk of that recipe contains one (`24/24, 48/48, 80/80, 120/120`). What the
+repair keeps is `defect ≥ 3`, `0/120` failures.
+
+**AND THE F26 CHECK LOWERS THE ENTRY'S OWN PAYOFF.** (GR-15) has two halves —
+*exhibit* an admissible colouring, and *certify generic `dim Z = 0` at it* — and
+a rule supplies only the first; (GR-34)(ii)'s own text says the rule is proven
+*"per tested shape, not for all `m`"*. With the `G°` induction struck by
+(GR-238), **nothing landed consumes (GR-15) on a subfamily.** So §8's stated
+payoff (*"a uniform (GR-15) argument on an infinite subfamily"*) is **refuted**,
+and it was inherited from (GR-238)(ii)'s phrase *"one uniform rule"* — accurate
+about the **rule**, read as if about **(GR-15)**. What the repair does buy: the
+uniformity question becomes **single and rank-shaped**, one explicitly-described
+`m`-indexed family with no colouring-existence quantifier left. **The successor
+is uniform `dim Z = 0` for that colouring over all `m`** — the only thing left
+between the repair and uniform (GR-15) on `CL_m`.
+
+**THREE SELF-CATCHES, ALL OF WHICH CHANGED A STATED CONCLUSION.** A too-narrow
+knob set manufactured a **false theorem** — an alternating `m ≡ 0 (mod 4)`
+pattern with a plausible mechanism, which widening to all four moves per face
+turned uniformly True. A hand-rolled `save` proxy **reversed** a finding until
+re-run through the canonical `gexist.weak_frame`. And `ρ` was defined over
+admissible `(c, m)` but brute-forced over the branch equations only, fixed by
+the exhaustive `2^{3m}` cross-check — which is also what limits the
+balance-free clause to `m ≤ 6`.
+
+**Coordinator verification:** `--cut`, `--oddm`, `--rho`, `--repair --hi 40
+--rank-hi 40` and `--consumer` all re-run at the landing baseline and reproduce
+every figure — the `m = 6` witness (`k = 0`, `τ = 0`, in the cut space), the
+`0/20 … 0/52` single-hub exhaustions, the closed form at 62 pairs and the
+`2^{3m}` cross-check, and **18 of 18** fully-good rows to `n_hub = 80`. Two
+landed inputs were read at source rather than trusted: (GR-37)(ii)'s cut-space
+sentence, and (GR-34)(ii)'s *"observed, not developed"* self-flag.
