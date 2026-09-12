@@ -154,6 +154,9 @@ keeps only what git cannot show.
 | 2026-09-12 | Phase39 BWHOLEH reported a lint FAIL in a SIBLING's untracked draft | opus | concurrent-read working **as intended** — logged as the benign case, since the hazard class usually appears here as a defect | BWHOLEH's return flagged `(GR-215)(iv)` in `grid-draft-GOWNHALF.md` as `[MEASURED]` with no driver named, correctly identifying it as not its own. The clause was the **coordinator's**, minted at GOWNHALF's landing, and `--lint` had already caught it pre-commit. Accurate when it looked, stale by the time it was read. Worth a row because F18's shared-scratchpad hazard is normally logged as a cost: here a sibling's read of a shared tree produced a **correct, independent** defect report at zero extra dispatch. |
 | 2026-09-12 | Phase39 SECOND round of three vs §8's FIFTEENTH pass — BGOODEMPTY 105 / GCOLTRANS 106 / BTAKERS 107 | opus ×3, concurrent | **ranks 1–3 spent together for the SECOND consecutive round; 6 of 6 stated MECHANISMS refuted across both rounds** | Verdicts improved sharply once the board ranked on decisiveness rather than cost: **2 of 3 verdicts CONFIRMED** here against 0 of 3 last round. **Mechanisms did not: 3 of 3 again, 6 for 6 across the day.** Three of the six directions **corrected or upgraded a sibling's landed work from the same session** — BGOODEMPTY turning BWHOLEH's (BE-250)(iii) into a theorem, BTAKERS qualifying its *"untouched"* lists, GCOLTRANS scoping GTRIFREE's (GR-218). Two *independent* cross-return agreements (the 667 845 triple split; the 1 428 `K₃,₃` shapes) arrived from directions that never saw each other. |
 | 2026-09-12 | Phase39 figure reproduction across the six landings | opus (coordinator) | **3 of 6 directions shipped a figure or driver defect that NO gate could see** — all three caught by coordinator re-runs, one by a gate | GOWNHALF: a headline disclosure with **no driver** (RESEARCH-ARC §4). BGOODEMPTY: **two** — a 31 338-row count irreproducible from the committed driver (defaults lowered to 120/200 *after* the figure was taken; restoring 200/400 recovered it **exactly**), and a `pix` count of 527 that no setting recovered, plus a display formula wrong at its own largest bucket by its **own printed histogram**. `ledger.py --lint` caught exactly one defect of the six landings (an untagged `[CONSTRUCTED]` driver). **The re-run is the gate here, and nothing else is.** |
+| 2026-09-12 | Phase39 THIRD round of three vs §8's SIXTEENTH pass — GBASE 108 / BMBLOCK 109 / GSECOND 110 | opus ×3, concurrent | **ranks 1–3 spent together for the THIRD consecutive round; the round completed one leg of a route and STRUCK the route** | GSECOND all but finished the induction's STEP leg (obstruction named, avoidable by a constructive rule) while GBASE struck it at the BASE leg — visible only across returns, and order-dependent: alone, GSECOND's `100 %` would have read as progress toward a closing lemma. Fence held (F20): the spec told GSECOND *if you find yourself counting frames, stop — that is GBASE's*, and no figure was derived twice. |
+| 2026-09-12 | Phase39 coordinator-error audit across the round | opus (coordinator) | **FOUR coordinator errors, each in a DIFFERENT artifact, all caught by the directions** | §8's `80 of 80` at `n_hub = 4` (a figure rank 1 was ranked on — the base there is EMPTY); GBASE's spec mechanism (refuted BY SIZE); GSECOND's spec semicontinuity clause (backwards for the predicate, F32); BMBLOCK's spec blind-axis note (`bunif.SUBS` IS the 16 stable `U`). F19's rate recurring exactly: coordinator artifacts need correction at least as often as the directions'. |
+| 2026-09-12 | Phase39 verification compute for the round | opus (coordinator) | **one 36-min exhaustive re-run WASTED to a coordinator mistake** | The first re-run of `gsecond.py --split --shapes 7892` was launched without `--out`, so it produced the control figures but no records, and `--rule` could not be verified from it; a second 35-min run was needed. Read the driver's CLI before launching a long verification, not after. Also logged: the cache keepalive was deliberately kept armed past step 4 while two siblings were still in flight, rather than deleted at the first return — the loop's self-heal is wanted until the LAST dispatch returns. |
 
 ## Findings
 
@@ -759,3 +762,39 @@ At phase close, promote stable entries into the coordinator command's
   one.** Note this is the same family as the two unsatisfiable tells
   of 2026-09-10, now recurring with a diagnosable cause rather than
   as a pair of one-offs.
+- **F32 — for a predicate built as a DIFFERENCE of two semicontinuous
+  quantities, NEITHER verdict is cap-free**, and a landed `100 %` can
+  be capped in the direction that would destroy it. F31 says a tell
+  must sample a quantity whose semicontinuity runs the way the verdict
+  needs. GSECOND (2026-09-12) shows the sharper form on the corpus's
+  own transport predicate: the weak lift is `cg ⊆ pg`, an inclusion
+  between two sets that are **both lower bounds** (deeper draws only
+  add GOOD colourings to each side), so raising the draw count can
+  **break a holding triple** as well as repair a failing one. The
+  coordinator's spec asserted the one-way reading — *"the failure side
+  is capped and the success side is not"* — which is true of a single
+  colouring's GOOD verdict and **false of the predicate built from
+  it**, and (GR-232)(ii)'s headline `15 304/15 304 = 100 %` is a
+  HOLDING figure. Three controls found 0 movement at a 200-shape
+  prefix, so it does not bite here; the reading was still wrong.
+  Operationally: before quoting a cap direction, write the predicate
+  out and ask which way EACH of its arguments moves — a cap inherited
+  from a component is not a cap on the composite.
+- **F33 — a driver's own DOCSTRING is an unguarded status surface, and
+  the only gate on it is re-running the mode at its documented
+  default.** `ledger.py --lint` does not run drivers;
+  `check-driver-refs.py` checks that a cited mode EXISTS, never what
+  it claims; nothing re-runs a docstring. GSECOND (2026-09-12) ran
+  `gcoltrans.py --lift --shapes 400` — the default its own caps block
+  and its own `--lift` mode description both describe as showing **0**
+  lift failures — and got **125**; the coordinator reproduced it
+  independently before the sentence was touched. The companion clause
+  was separately wrong in the same two places (for a PREFIX cap the
+  capped and full runs ARE bit-identical on the first N shapes, the
+  stream being in the same state throughout). This is the same
+  gate-invisible class as BGOODEMPTY's drifted defaults (2026-09-12,
+  cross-return pass), one level up: there the PROSE was right and the
+  driver had drifted, here the DRIVER is right and its own prose is
+  wrong. Operationally: when a spec names a driver's documented
+  default as a fence, re-run it at that default before quoting it —
+  which is what the F26 consumer check produced here as a side effect.
