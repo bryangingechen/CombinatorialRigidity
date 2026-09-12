@@ -2,12 +2,14 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; **112 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+dispatched; **113 LANDED, TWO IN FLIGHT** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
-§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three is COMPLETE**
-against §8's FOURTEENTH pass — BWHOLEH (102), GOWNHALF (103), GTRIFREE (104), spending ranks
-1, 2 and 3 in one round. Landed ordinals are 1–104 — 104 ordinals, 112 directions. **All three
+§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
+COMPLETE** — BWHOLEH (102), GOWNHALF (103), GTRIFREE (104), spending ranks 1, 2 and 3 in one
+round — **and a SECOND round of three, against the FIFTEENTH pass, is mid-landing: BTAKERS
+(107) LANDED; BGOODEMPTY (105) and GCOLTRANS (106) IN FLIGHT.** Landed ordinals are 1–104 and
+107 — 105 ordinals, 113 directions. **All three
 returned REFUTATIONS; all three refuted the coordinator's own prediction; and each refuted at
 least one LANDED clause, including a `[PROVED]` one.** The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
@@ -17795,3 +17797,76 @@ and no upper bound — so the refutation stands against the definition **as
 written**, which is exactly why the size-bound question is a board call rather
 than a correction. (GR-220)(ii)'s `∂(A) = 2a + 2b + |S Δ T|` and its case
 analysis were re-derived by hand and are correct.
+
+
+## BTAKERS — ordinal 107, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's fifteenth pass, RANK 3** — a REDUCTION, dispatched to price what
+BWHOLEH's refutation actually cost. *Question:* which consumers of the `Π_x`
+obligation in *Steps BE148–BE237* needed it as a **universal**, and which only
+at a **generic chart point**?
+
+**VERDICT: ZERO needed the universal — because the obligation is never
+CONSUMED in the range at all.** It appears throughout as a **target**, a
+**measured statistic**, or the **consequent** of a sufficiency implication; no
+clause assumes it and derives anything. **So `(BE-239)(ii)`'s *"which is how
+every consumer in Steps BE148–BE237 uses it"* is REFUTED** — by four landed
+sentences inside its own range, three of them that range's own **verdict**
+clauses: (BE-223)(iii), (BE-230)(i), (BE-238)(i), each carrying the
+**generic-chart-point** quantifier explicitly, plus **BOBLIG's un-indexed
+refutation criterion** at `BOBLIG.md:399`, which BWHOLEH's certificate meets in
+**five of six** conjuncts and misses **only `generic`**. That it misses it is
+**proved**, not assumed: a rung-3 violation forbids attainment, so the failure
+locus sits inside `Chart(H) \ Good`, and (BE-253)(ii)'s free draw plus
+(BE-69)(i)/(ii) make `Good` dense open — the failure locus on that very `H` is
+**nowhere dense**. Landed as (BE-263)–(BE-270) / *Steps BE262–BE269*.
+
+**So the round's headline cost the (BE-14) arc NOTHING at the consumer layer.**
+What does fall as a universal is **three SUCCESSORS** — `(BE-OBL7)`,
+`(BE-OBLK)`, `(BE-E4′)` — each failing at the landed tuple by arithmetic, and
+**all three intact read generically**, which is the only reading under which
+BWHOLEH's own *"untouched"* lists are consistent with its verdict clause. Those
+lists are now qualified.
+
+**A GAIN NOBODY COUNTED, including BWHOLEH.** **Item 0(b) [MARGIN] is
+EXHIBITED** — margin `2+1−2−0 = +1 > 0` at `Π_x`, confirmed independently at
+the `H` layer by (BE-250)(i) (`dim M(H) = 7` against `6`). Item 0(b) is
+**existential**, so the steering that bounds BWHOLEH's headline verdict is
+**sufficient** there rather than a weakness. Unexhibited for five directions
+running; `notes/Phase39.md` and §8 both said so and are now corrected.
+
+**THE SPEC'S OWN DICHOTOMY WAS THE DEFECT**, which the spec had flagged as its
+mechanism-to-eliminate and the direction eliminated first: the 44
+obligation-naming clauses sort into **five** classes, not two — tuple-space
+(18, configuration-free), configuration-universal theorems, named-population
+measurements, the target at a generic chart point (4), status words that are
+universals (3), and existential (1). **Neither pole of the binary contains the
+tuple-space or existential classes**, and the existential one is where the
+round's actual change lands.
+
+**Prediction outcome: verdict CONFIRMED — the first confirmation in several
+rounds — and stronger than predicted (not "most" but ALL). Mechanism REFUTED.**
+The reason is *not* that (BE-69)(ii)(1) phrased consumers generically; no
+consumer invokes it for the obligation. The range's quantifier discipline comes
+from **(BE-192)(ii)**: *"the third time on this thread that a
+degenerate-configuration witness has refuted a clause's universal form without
+touching its generic one … the word *generic* in that clause is
+load-bearing."* BWHOLEH's is the **fourth**. The spec's *"where I expect to be
+wrong"* was right about the class and right to order it first.
+
+**Four self-caught errors**, the first two structural: item 0(a)
+(`(PENCIL-SATURATES)`) conflated with the obligation for two probes, caught by
+(BE-223)(ii)'s *"strictly weaker"*; **`--cited-by` alone missing the single
+most decisive sentence**, because the obligation **has no label of its own**;
+nearly reporting three status words as *contradictions* in BWHOLEH's board when
+they are a missing **qualifier**; and finding item 0(b) **last, from the debris
+of the first correction**.
+
+**Coordinator verification.** No driver to re-run — correct for this entry. All
+four quoted clauses and `BOBLIG.md:399` checked **verbatim at the source**;
+(BE-239)(ii)'s *"every consumer"* sentence confirmed to say exactly what the
+refutation attributes to it; and the **zero-consumers** claim re-tested with an
+independent scan of the whole `bare-ext/` tree for assume/under/by-the-obligation
+phrasings — **0 hits in landed prose** (the only two were inside this
+direction's own draft). Item 0(b)'s margin re-derived against (BE-97)(ii)'s
+definition and against `Phase39.md:272`'s own wording.

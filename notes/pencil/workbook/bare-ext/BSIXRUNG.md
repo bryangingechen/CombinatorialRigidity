@@ -65,6 +65,18 @@ predecessor's own builder (`bproper.free_peel` through
 > What it would refute is the obligation **as a universally-quantified
 > statement over the chart's generic-flag stratum**, which is how every
 > consumer in *Steps BE148–BE237* uses it. `bsixrung.py arith`.
+> **— THAT LAST CLAUSE IS REFUTED, 2026-09-12 by (BE-264)(i) (direction
+> BTAKERS). ZERO consumers in the range use it as a universal; the obligation
+> is never *consumed* in the range at all** — it appears only as a target, a
+> measured statistic, or the consequent of a sufficiency implication. Four
+> landed sentences inside this very range carry the **generic-chart-point**
+> quantifier instead, three of them the range's own verdict clauses:
+> (BE-223)(iii), (BE-230)(i), (BE-238)(i), and BOBLIG's un-indexed refutation
+> criterion at `BOBLIG.md:399`. **Everything else in this clause stands** —
+> the 26/26 shortfall arithmetic and the (BE-14)/(BE-69) scope half are
+> untouched and correct; only the population sentence was wrong, and it is the
+> same claim class (a population claim in prose, with no driver) that this
+> round refuted three times.
 
 > **(BE-239)(iii)** *(**the re-aiming, and the coordinator is right**)* The
 > dispatch was re-aimed off §8's stated item — `(BE-OBL7) ∧ (BE-OBLK)` —

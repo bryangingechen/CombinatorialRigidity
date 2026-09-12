@@ -2173,7 +2173,10 @@ complement.** Entries where that move is available are ranked up accordingly.
 
 **THE CROSS-LANE NOTE, because this board is not the phase.** §8 ranks the **(GR-15)/`hK`**
 lane. The **(BE-14)/`hbareSplit`** lane's own next item is **`(BE-OBL7)` ∧ `(BE-OBLK)`** —
-still sufficient for the `Π_x` obligation and unrefuted, worth **4 residue tuples**, and
+still sufficient for the `Π_x` obligation and unrefuted **— as a UNIVERSAL both are REFUTED
+2026-09-12 at BWHOLEH's certificate ((BE-266)(i)/(ii)); both stand at a generic chart point,
+which is the quantifier the range's own verdict clauses carry, so a successor named here must
+be restated at (Q-gen) before it is dispatched** — worth **4 residue tuples**, and
 needing **a builder whose side 1 is not a single branch** (a new builder, not a parameter).
 By the standing *distance to the phase target* criterion `hbareSplit` outranks `hK`, so a
 coordinator picking across lanes should weigh it against ranks 1–2 here, not below rank 5.
@@ -3062,7 +3065,9 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > **Grassmann floor** `c_j ≥ max(0, ρ_j − 4)` supplies the added hypothesis
    > hypothesis-free at 62/62, a mechanism (BE-228)(iii) never named
    > ((BE-233)/(BE-234)). **The successor, and it is a DEMOTION:**
-   > **`(BE-OBL7)`** = `(BE-OBL)` ∧ `Σδ ≤ 7` — still sufficient for the
+   > **`(BE-OBL7)`** *(both it and `(BE-OBLK)` REFUTED as universals 2026-09-12, (BE-266);
+   > the sentence below is their **generic**-chart-point reading, which stands)*
+   > = `(BE-OBL)` ∧ `Σδ ≤ 7` — still sufficient for the
    > obligation, and it **survives** this witness by construction ((BE-237)(i))
    > — conjoined with **`(BE-OBLK)`** (side-degree `≥ 2` both sides), *not
    > found under cap C* rather than refuted, since `deg₁(x) = 1` is structurally
@@ -3151,8 +3156,9 @@ disproving `PencilPair K 3 G`**), not cheapness.
 (ANH-9)(iii) *is* (GR-10)'s missing technology, which is why it stays below a live clause);
 **block 10's one-end-series tail** and **BTWOCUT's bundle construction**; the **point-side
 flat law** (priced NOT cheap, load-bearing twice); **cross-pair welding** ((BE-28)(i),
-motive economy only); the **12 unwitnessed-not-excluded blocks** and **item 0(b) [MARGIN]**,
-still unexhibited after this round; **RPOOL's two successors** and the **(K-res) wave**
+motive economy only); the **12 unwitnessed-not-excluded blocks**, still unexhibited after this
+round *(**item 0(b) [MARGIN] was on this list and is now OFF it: EXHIBITED 2026-09-12** at
+BWHOLEH's certificate, margin `+1` at `Π_x`, (BE-267))*; **RPOOL's two successors** and the **(K-res) wave**
 (a **USER call**, dearer since RPOOL); **(GR-144) successors 2 and 3**; **(AV-7)'s Case-I
 gluing arm** (unpriced, untouched); **(ZH-2) stratified**; **route σ obligations 2–4**.
 

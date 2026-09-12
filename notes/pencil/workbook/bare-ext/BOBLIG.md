@@ -557,13 +557,21 @@ Driver: `notes/scripts/w4/bcorner.py` (modes `arith` / `kill` / `degfree` / `cel
 > refuting row is at `Σδ ∈ {10, 11}` ((BE-232)(ii)). Further, on `Σδ ≤ 7` the
 > added hypothesis **cannot** come from the Grassmann floor — `ρ_j ≥ 5` with
 > `c_i = 2` forces `ρ_i ≤ 2`, hence `ρ̄_i = Π_x` exactly — so `(BE-OBL7)` is not
-> reachable by (BE-234)'s mechanism at all. `bcorner.py arith`. **UNREFUTED, and
+> reachable by (BE-234)'s mechanism at all. `bcorner.py arith`.
+> **— QUANTIFIER ADDED 2026-09-12 ((BE-266)(i), direction BTAKERS): REFUTED
+> AS A UNIVERSAL** at BWHOLEH's certificate `(2,4,0,0,2,4,2,1)`, and
+> **UNREFUTED at a generic chart point**, which is the reading every verdict
+> clause in this range actually carries. Read unqualified the word below is
+> now false.** **UNREFUTED, and
 > unproved.**
 
 > **(BE-237)(ii)** `[OPEN]` *(the habitat-restricted successor, named because the
 > dispatch's quantifier is it)* Name **`(BE-OBLK)`**: `(BE-OBL)` restricted to
 > **side-degree `≥ 2` on both sides**. (BE-231)(i)'s witness does not reach it
-> ((BE-232)(iii)), so it is unrefuted. But it is **not** the honest successor:
+> ((BE-232)(iii)), so it is unrefuted **— as a universal, REFUTED 2026-09-12 at
+> BWHOLEH's certificate ((BE-266)(ii)); unrefuted at a generic chart point.
+> (BE-232)(iii)'s sentence stays true of ITS OWN witness, which is a different
+> object.** But it is **not** the honest successor:
 > (BE-233)(i) shows the habitat restriction rests on a false *"exactly"*, and
 > (BE-235) shows that on `Σδ ≤ 6` — restriction or no restriction — the clause is
 > the target verbatim. **The honest successor is `(BE-OBL7)` ∧ `(BE-OBLK)`, whose

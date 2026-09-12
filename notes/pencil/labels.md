@@ -5452,3 +5452,47 @@ bare `(X<digit>)` token — the only such token appearing is `(L6)` itself.
 > which is the finding one level above the mathematics: **a listed fence is
 > not an acted-on fence**, and the round's other two decisive fences were of
 > the *unlistable* population class. See `notes/dispatch-log.md`.
+
+## Reserved namespace — direction BTAKERS (2026-09-12, **EIGHT of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BTAKERS** | §(K-bare-ext) — **new file** `workbook/bare-ext/BTAKERS.md` | **(BE-263)–(BE-270)** | ***Steps BE262–BE269*** | **none — a prose re-read, and shipping no driver was the expected outcome** |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`). At
+`29a60d1a`: **CLEAN — 0 hits on every one of the 18 tokens enumerated**, and
+re-verified by the direction at the same sha. *(The code `BCONSUME` was
+considered and rejected: `bconsume` is a substring of `\bconsumed\b` inside a
+regex in `ledger.py`, so the check reported a hit. Recorded because it is the
+reservation mechanism working exactly as designed — the alternative was a
+direction code that would have grepped dirty forever.)*
+
+**(L6) landing-time grep run by the coordinator:** the section mints **no**
+bare `(X<digit>)` token.
+
+**THE LIVE TAIL IS NOW (BE-271) / *Step BE270***.
+
+> ***THE DIRECTION THAT SHIPPED NO DRIVER FOUND THE ROUND'S ONLY GAIN.***
+> BTAKERS was ranked **3** — a REDUCTION, pricing damage rather than proving
+> anything — and its spec said explicitly that shipping no script was an
+> acceptable outcome. It returned four results a computation could not have
+> produced: (BE-239)(ii)'s *"how every consumer … uses it"* **refuted from
+> four landed sentences inside its own range**; the count of consumers needing
+> the universal at **zero**, because the obligation is **never consumed** in
+> the range at all; three **successors** that do fall as universals and stand
+> at (Q-gen); and **item 0(b) [MARGIN] EXHIBITED** after five directions
+> reported it unexhibited — a *gain* that BWHOLEH's own write-up missed
+> because item 0(b) is **existential**, so the steering that bounds BWHOLEH's
+> headline verdict is sufficient there rather than a weakness.
+>
+> ***AND THE RETRIEVAL LESSON, which is this corpus's own tooling turned on
+> itself.*** `ledger.py --cited-by` **alone missed the single most decisive
+> sentence** — BOBLIG's refutation criterion at `BOBLIG.md:399` — because it
+> sits in an un-indexed `### What would change this` bullet rather than a
+> `> **(LABEL)**` blockquote. The root cause is that **the `Π_x` obligation
+> has no label of its own**, so every named generator over-returns and
+> under-returns at once. `--selftest` already lists labels mentioned 20+ times
+> with no row precisely so this boundary stays visible; this is the first
+> landing where that boundary cost a decisive sentence, and the fix is to pair
+> `--cited-by` with a read of the section's own verdict and
+> *"what would change this"* blocks.

@@ -86,7 +86,12 @@ own builder (`bproper.free_peel`). Baseline `HEAD` = `fde0317f`.
 > that stratum (*Steps BE148–BE237*) loses its hypothesis there. `PencilPair
 > K 3 G`, `hbareSplit`, `hK`, `hcontract`, (GR-15), (BE-14), the S-mark,
 > half (B), half (β), the 2-cut step, class uniformity, cross-pair welding,
-> `(BE-E4′)`, the flag base, `(BE-OBL7)` and `(BE-OBLK)` are **untouched**.
+> `(BE-E4′)`, the flag base, `(BE-OBL7)` and `(BE-OBLK)` are **untouched**
+> **— QUALIFIED 2026-09-12 by (BE-266) (direction BTAKERS): untouched AT A
+> GENERIC CHART POINT, which is the quantifier every verdict clause in this
+> range carries, and REFUTED as universals at this direction's own
+> certificate. Without the qualifier this list contradicts the verdict clause
+> above it.**
 > **No termination-ledger entry fires**: E1/E2/E3 are §(K-grid) objects.
 
 ### Step BE247 — (BE-248): THE FENCE `blindaxes.py` CANNOT LIST — `bline.longcore_library()`'s side-1 shapes, checked at the GENERATOR
@@ -401,7 +406,8 @@ own builder (`bproper.free_peel`). Baseline `HEAD` = `fde0317f`.
 > ((BE-250)(i)). **What did NOT move.** `PencilPair K 3 G`, `hbareSplit`,
 > `hK`, `hcontract`, (GR-15), (BE-14), the S-mark, half (B), half (β), the
 > 2-cut step, class uniformity, cross-pair welding, `(BE-E4′)`, the flag
-> base, `(BE-OBL7)`, `(BE-OBLK)`, and **every landed measurement** —
+> base, `(BE-OBL7)`, `(BE-OBLK)` *(these three **at (Q-gen)**; as universals
+> they fall at this certificate — (BE-266))*, and **every landed measurement** —
 > including (BE-243)(ii)'s 216/216 and (BE-244)(i)'s 236 196, both of which
 > this direction *reproduces or leaves intact* rather than contradicts.
 > **No `.lean` opened for editing, no `lake build`**; the 2026-08-05 hold
