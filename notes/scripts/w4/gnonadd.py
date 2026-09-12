@@ -178,7 +178,21 @@ _CUT3 = {}
 def cut3_sets(n, hedges, sizes=(3,)):
     """Every connected hub set `A` with `partial(A) = 3` and odd
     `|A| >= 3` -- the LENGTH-INDEPENDENT half of the Y-reduction search,
-    so it is computed once per hub multigraph."""
+    so it is computed once per hub multigraph.
+
+    SCOPE, added 2026-09-12 after direction GTRIFREE and a user ruling.
+    The guard below admits `|A|` up to `n - 1`, and that is NOT what the
+    arc's induction means by a move.  Because `partial(A) = partial(V-A)`
+    in a cubic hub multigraph, EVERY hub's complement is a frame at
+    `|A| = n-1` with forced budget 12, so at that size every `D = 0`
+    class shape reduces -- in one step, to `n_hub = 2`, transporting
+    nothing.  RULED 2026-09-12: the intended move class is LOCAL, i.e.
+    `|A|` bounded independently of `n`.  The unbounded frames are real
+    and are recorded at §(K-grid) (GR-220) as a statement about this
+    definition; they are out of scope for the `G°` induction.  The guard
+    is deliberately NOT changed -- narrowing it would invalidate
+    (GR-217)-(GR-223)'s landed measurements, which are measurements OF
+    the unbounded family."""
     ck = (n, tuple(hedges), tuple(sizes))
     if ck in _CUT3:
         return _CUT3[ck]

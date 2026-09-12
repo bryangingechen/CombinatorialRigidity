@@ -19409,12 +19409,21 @@ itself supplied.
 
 > **(GR-200)** `[PROVED]` *(the triangle-free half; and `[MEASURED]`
 > `gnonadd.py --ladder` for `|A| = 5` at `m = 6..11`)* §(K-grid) (GR-175)'s
-> **— REPAIRED 2026-09-12 by (GR-220) (direction GTRIFREE): the clause below is
-> true and now PROVED for every `m ≥ 4`, but only AT `|A| ≤ 2m − 3`. Its
-> unqualified *"`CL_m` admits no Y-reduction"* is FALSE at `|A| = 2m − 1`,
-> where the complement of any single hub is a legal cut-3 frame (1 520
-> exhibited reductions, `m = 6..13`). The `|A| ∈ {3,5}`, `m = 6..11`
-> MEASUREMENT is correct; the quantifier was not.** §(K-grid) (GR-175)'s
+> **— REPAIRED 2026-09-12 by (GR-220) (direction GTRIFREE), AND SCOPED BY A
+> USER RULING THE SAME DAY. The clause below is true and now PROVED for every
+> `m ≥ 4` at `|A| ≤ 2m − 3`** — three directions stronger than as written (all
+> `m`, all `|A| ≤ 2m − 3`, proved rather than measured). Its **unqualified**
+> form is false at `|A| = 2m − 1`, where the complement of any single hub is a
+> legal cut-3 frame under `gnonadd.cut3_sets`' guard as written (1 520
+> exhibited reductions, `m = 6..13`); the `|A| ∈ {3,5}`, `m = 6..11`
+> MEASUREMENT was always correct. **THE RULING (user, 2026-09-12): the arc
+> intends a LOCAL move, so a bounded `|A|` is the intended class and the
+> `|A| = n − 1` frames are out of scope for the induction** — they contract
+> `n − 1` hubs into one and transport nothing. So this clause **stands as
+> intended, with its bound now explicit and proved**, rather than falling; and
+> (GR-220)'s unbounded frames stand as a **statement about the definition**,
+> recorded because the definition did not say so. See `gnonadd.cut3_sets`'
+> docstring, amended in the same commit.** §(K-grid) (GR-175)'s
 > circular ladder `CL_m = C_m × K₂` is **triangle-free for every `m ≥ 4`**, and
 > it is simple, so it carries **no** connected hub set with `|A| = 3` and
 > `∂(A) = 3`; at `|A| = 5` the measured count of such sets is **0** at

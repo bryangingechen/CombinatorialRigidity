@@ -1665,6 +1665,105 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-12 (second) — THE FIFTEENTH STRATEGY-ONLY PASS, AND IT RANKS ON A NEW
+CRITERION BY USER RULING. THE FOURTEENTH'S RANKS 1, 2 AND 3 WERE ALL SPENT IN ONE ROUND** —
+BWHOLEH 102 (rank 1, refuted the obligation), GOWNHALF 103 (rank 2, not rule-attributable),
+GTRIFREE 104 (rank 3, refuted and re-routed). **All three refuted the coordinator's stated
+verdict AND its stated mechanism, and each refuted at least one landed clause — including the
+`[PROVED]` (GR-200).** Coordinator-authored at the round close, **no dispatch spent, no label
+minted.** Every entry re-derived from its **owning** step.
+
+**THE CRITERION CHANGED, and it is the first time this board has ranked on anything but cost
+and lane-distance.** *(User ruling, 2026-09-12: "prioritizing items that seem the most likely
+to prove or disprove the conjecture.")* So the ordering below is by **GLEAF's question first**
+— SUFFICIENT above REDUCTION above NECESSARY — and by cost only **within** a class. Two
+consequences worth stating because they invert earlier passes: a **cheap** entry that is
+NECESSARY-only now ranks **below** an expensive SUFFICIENT one, and *"the instrument is
+landed"* stops being a promotion argument. The fourteenth pass's rank 2 was ranked on exactly
+that reasoning and returned a REDUCTION; this pass does not repeat it.
+
+**THE RULING THIS PASS RECORDS.** GTRIFREE showed that `gnonadd.cut3_sets`' guard admits
+`|A| = n − 1`, where **every** `D = 0` class shape reduces in one step to `n_hub = 2`,
+transporting nothing. **RULED (user, 2026-09-12): the arc intends a LOCAL move — `|A|` bounded
+independently of `n`.** So (GR-200) **stands as intended, with its bound now explicit and
+PROVED** for every `m ≥ 4` at `|A| ≤ 2m − 3`, rather than falling; the unbounded frames stay on
+the record as a statement about the *definition*, at (GR-220), and `cut3_sets`' docstring now
+says so. **The guard was deliberately NOT narrowed** — that would invalidate
+(GR-217)–(GR-223), which are measurements *of* the unbounded family.
+
+**AND THE RE-ROUTE THE ROUND FORCED, which is why rank 2 below is what it is.** Reachability
+at `D = 0` is **satisfiable trivially** (unbounded) and **unsatisfiable under any bound**
+(`CL_m`, by (GR-220)(ii)). There is **no bound at which it is the interesting question**, so it
+was never separable from the second gate. **§8 no longer prices move-family searches at
+`D = 0`.** Bar *(j)* keeps its prohibition and **loses its cited reason**; bar *(l)* survives
+with *triangle* load-bearing.
+
+1. **IS THERE AN `H` AT RUNG 3 WITH `Good(H; x, y) = ∅`?** *(new — BWHOLEH's own open item (1),
+   and its words for it are* "the search that would begin to reach (BE-14)"*.)* Owner:
+   §(K-bare-ext) *Steps BE246–BE253*, (BE-249)/(BE-250)/(BE-253)(ii). **GLEAF's question:
+   SUFFICIENT, and it is the only SUFFICIENT entry on either lane.** BWHOLEH's certificate is
+   a shortfall at a **steered, non-generic** point of a piece whose `Good` is **dense**, and
+   (BE-69)(ii)'s consequence 3 is exactly the dividing line: if `Good = ∅` the shortfall holds
+   **identically on `Chart(H)`**, so it is a structural fact about the whole chart rather than
+   a phenomenon at a special point — *"which is what makes 'are the two located ones the only
+   two?' a well-posed question rather than an unbounded search over configurations."* **A
+   `Good = ∅` piece in the rung-3 region is an obstruction to `hbareSplit` itself**, not merely
+   to a universal reading of the obligation. Ranked 1 on the standing distance-to-target
+   criterion as well: this is the `hbareSplit` lane. *Kill condition: an `H` in the region with
+   `Good = ∅` exhibited — which reaches (BE-14) — or `Good ≠ ∅` shown on a structurally
+   characterized family, which closes this route and sends the lane to rank 3's re-read.
+   Decided by: the `(K-bare)/(K-bare-ext)` row.*
+2. **THE COLOURING-TRANSPORT GATE AT `D = 0`.** *(new — GTRIFREE's re-route; the gate that is
+   now the ONLY live one on the `G°` induction.)* Owner: §(K-grid) *Steps G218–G243*,
+   (GR-200)/(GR-220), and **no landed result touches it**. A move between class *shapes* must
+   transport an **admissible colouring** — one with generic `dim Z₊ = dim Z₋ = 0` in both
+   blocks, which is (GR-15) itself at the child. **GLEAF's question: SUFFICIENT for the
+   induction route** — with a bounded move family reaching every shape (rank 1 of the
+   fourteenth pass is spent POSITIVE on the triangle-carrying part, and (GR-220)(iii) bounds
+   what is left), transport is the remaining gate, and a negative kills the `G°` induction as
+   a route rather than merely blocking it. Ranked 2 and not 1 because it is the **least
+   scoped** entry on the board: the arc has never posed it directly, so the first slice is a
+   framing, not a sweep. *Kill condition: transport exhibited along the landed Y→Δ at one
+   shape pair with both colourings admissible — or proven impossible for the family, which
+   **kills the `G°` induction outright**. Decided by: the `(K-grid)` row, close-it u9.*
+3. **WHICH CONSUMERS NEEDED THE OBLIGATION AS A UNIVERSAL?** *(new — BWHOLEH's named successor,
+   and it is a **consumer re-read, not a computation**.)* Owner: §(K-bare-ext) *Steps
+   BE148–BE237*, (BE-239)(ii)'s *"how every consumer … uses it"*. BWHOLEH refuted the rung-3
+   `Π_x` obligation **as a universal over an open stratum** and left untouched any consumer
+   that only ever needed it **at a generic chart point**. **GLEAF's question: a REDUCTION —
+   it prices damage rather than proving anything** — which is why it ranks below two SUFFICIENT
+   entries despite being much the cheapest item on the board and on the lane closest to the
+   target. **What makes it worth a dispatch anyway:** it is the only entry whose answer can
+   move a *landed* count in either direction — if the consumers needed only the generic form,
+   the round's headline refutation **cost the arc nothing** and the lane is healthier than it
+   reads; if they needed the universal, a documented chain of landed results is damaged and
+   the damage is currently **unmeasured**. *Kill condition: every consumer in* Steps
+   BE148–BE237 *classified universal-vs-generic with its own citation, or a consumer found that
+   demonstrably needs the universal. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+4.–8. **THE FOURTEENTH PASS'S RANKS 4–8, UNCHANGED IN CONTENT AND RE-ORDERED BY THE NEW
+   CRITERION ONLY** — the (c)-strengthened closure's 14/18 residual (SUFFICIENT but **capped**:
+   the closure is below (GR-9) on the pool, and GOWNHALF has now removed its fifth-handle
+   branch, leaving only *"the dichotomy shown unavoidable"*); GCOIND's matrix-valued corank
+   statistic (a REDUCTION); the island at `n_hub = 10` (NECESSARY only); the `4T + 3Q ≥ 12`
+   habitat (NECESSARY, but enabling a SUFFICIENT flank by (GR-17)(c)); the `P¹`/splitting-type
+   reading of (GR-7)(ii) (an enabler, ranked last). Their kill conditions and deciding rows
+   stand as written below.
+
+**THE BARS THIS PASS ADDS — one, and it is a scoping rule rather than a mathematical fact.**
+*(m)* **No further move-family search at `D = 0` may be ranked on reachability alone.**
+Reachability is settled in both directions — trivially satisfiable unbounded, unsatisfiable
+under any bound — so an entry proposing one must say what it buys **at the transport gate**,
+or it is not an entry.
+
+**AND THE LESSON, which is about the board's own ranking rather than any entry.** The
+fourteenth pass ranked its rank 2 on *"cheapest live probe on this lane; the instrument is
+landed"*, and it returned a **REDUCTION** — an explanation of a gain the closure already had.
+Its rank 3 was ranked on *"genuinely open and cheaply framed"* and returned a refutation of the
+entry's own premise. **Both were ranked on cost and both were NECESSARY-or-REDUCTION class
+before they were dispatched, which the board could have read off its own GLEAF line.** The new
+criterion is not a new idea — GLEAF's question has been on every entry for six passes — it is
+the criterion finally being used to **order** rather than to annotate.
+
 **RE-RANKED 2026-09-12 — THE FOURTEENTH STRATEGY-ONLY PASS. THE THIRTEENTH'S RANKS 1 AND 2
 ARE BOTH SPENT** — GNONADD 100 (rank 1, answered **POSITIVE**, and the entry's promise that a
 positive revives the induction **withdrawn**) and GLAMPROP 99 (rank 2, spent, and the entry's
