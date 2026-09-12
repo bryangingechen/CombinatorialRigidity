@@ -2,13 +2,14 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; **110 LANDED, TWO IN FLIGHT** — BOTH 2026-09-10 rounds of three
+dispatched; **111 LANDED, ONE RETURNED AND LANDING** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12
-round of three is MID-LANDING against §8's FOURTEENTH pass: GOWNHALF (103) LANDED; BWHOLEH
-(102, rank 1, the `hbareSplit` lane) and GTRIFREE (104, rank 3) are IN FLIGHT.** Landed
-ordinals are therefore 1–101 and 103 — 102 ordinals, 110 directions. The round of three (BFOUR 81,
+round of three is MID-LANDING against §8's FOURTEENTH pass: GOWNHALF (103) and BWHOLEH (102)
+LANDED; GTRIFREE (104, rank 3) has RETURNED and lands next.** Landed ordinals are therefore
+1–103 — 103 ordinals, 111 directions. **All three returned REFUTATIONS, and all three refuted
+the coordinator's own prediction.** The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -17636,3 +17637,78 @@ independent arithmetic rather than from the draft's account of it. The fence
 figures were recomputed independently (1 751 / 430 / 35-of-336 / 180-of-930,
 all exact) — which is how the missing driver was found, and `gownhalf.py
 --fence` now supplies one.
+
+
+## BWHOLEH — ordinal 102, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's fourteenth pass, RANK 1** — the entry the pass promoted **across lanes**
+to the top. *Question:* can a whole-`H` peel be built at rung 3 with
+`c₁ + c₂ ≥ 3`, refuting the `Π_x` obligation there, or is the one-vertex `p_y`
+steering infeasible against side 2's gates?
+
+**VERDICT: REFUTED — the kill condition fired on its FIRST arm.** An exact-ℚ
+whole-`H` peel is **exhibited** at `t = (2,4,0,0,2,4,2,1)`: `Σδ = 6`,
+`slack = 0`, `a = (0,0)`, side-degree `≥ 2` on both sides, internal R-node,
+in-regime, `c₁ + c₂ = 3 > 2`. Reproduced at **72 of 72** rows over 2 skeletons
+× all 6 skeleton-non-adjacent hub pairs each × 2 path-saturated profiles × 3
+seeds, against a matched **36 of 36** negative control differing only in
+whether side 2 is saturated. The shortfall is read **at the `H` layer**:
+`dim M(H) = 7` against `6 + def₃(H) = 6`. Landed as (BE-247)–(BE-254) /
+*Steps BE246–BE253*.
+
+**Both halves were separately free; the whole cost was pairing them in one
+`H`** — which is exactly how §8 priced the entry. Side 1 is (BE-242)(ii)'s
+firing cycle steered through BSIXRUNG's own `_linear_pyk`; side 2 is a
+subdivided 3-connected skeleton that is **path-saturated**, so (BE-45)(ii) —
+`[PROVED]`, no genericity, no degree hypothesis — gives `c₂(Π_x) ≥ 1` free.
+The F13 control is the most informative row: the **landed** `bproper.free_peel`,
+unsteered, already reaches `c₂ = 1` on the same composite at 6 of 6.
+
+**THE SCOPE, and it travels with the verdict everywhere.** The killing point is
+**steered, hence non-generic**: the same `H` **attains** at a free draw, so
+`Good ≠ ∅` and is **dense** by (BE-69)(ii). The direction ran the **F26
+consumer check first**, as its spec required, and read `hbareSplit` at the
+binder: its conclusion is `HasPencilRealization`, which is **existential**. So
+**(BE-14), half (B) and `hbareSplit` are NOT reached.** What falls is the
+obligation **as a universal over an open stratum** — which (BE-239)(ii) records
+as how every consumer in *Steps BE148–BE237* uses it. The successor is a
+**consumer re-read**, not a computation.
+
+**A landed clause's disclosed cap refuted by moving it one step.**
+(BE-244)(i)'s *"0 of 236 196"* is **reproduced exactly** at branch lengths
+`{1,2,3}`; at `{1,2,3,4}`, same three skeletons and same hub pairs,
+**100 656 of 3 145 728** sides are path-saturated. So (BE-244)(ii)'s
+disclosure was right and its **diagnosis wrong**: the missing axis is the
+**branch length**, not *"a larger 3-connected core"* — the enumeration was
+blind by a constant, not by a classification.
+
+**Four self-caught errors, volunteered:** a hoisted `rng.randint` in a
+comprehension that made side 1 fail to fire at 40/40 and nearly read as a
+negative; the shortfall inequality written backwards (its own assertion caught
+it); an over-stated *"the library cannot present the firing side at all"*
+reworded before it became a conclusion; and `sigma`'s default `maxlen = 4`
+being ~12.6 M builds that never finish — *a mode that cannot be run is not a
+driver*.
+
+**Prediction outcome: verdict REFUTED, mechanism REFUTED, separately.** The
+spec predicted NEGATIVE on the ground that (BE-243)(ii)'s Grassmann-floor
+equality might be forced at `a = 0`; both sides of the certificate exceed the
+floor. The spec's *"where I expect to be wrong"* was **right about the class and
+wrong about the instance**: it predicted *a fence, not a theorem*, and named
+`legal_peel(xy=…)` and `run_peel(nseed=1)`. Neither was it — `xy` un-fenced
+changes nothing (all twelve pairs kill) and the seed count changes nothing
+(72/72). The two that mattered were the **side-1 generator** and
+**(BE-244)(i)'s branch-length family**, both of the population class
+`blindaxes.py` cannot list, which is the class the spec's own last bullet
+names.
+
+**Coordinator verification.** `peel`, `cross`, `sigma`, `sat{1,2,3}` and
+`sat{1,2,3,4}` all re-run at the baseline; every headline figure reproduced
+exactly, the named certificate byte-for-byte, and the `sat` counts
+3 145 728 / 100 656 / 48 444 / 7 440 with the per-hub-pair split
+(9 951 × 6 K33, 6 825 × 6 prism). The F26 consumer claim was checked **at the
+Lean binder** (`Escape.lean`) and `HasPencilRealization` confirmed existential
+at its definition; (BE-45)(ii) and (BE-69)(ii) were read in the ledger and both
+are used in their **proved** direction. `sigma`'s `δ₂ = 0` census is an artefact
+of its own `maxlen = 2` default — consistent, and documented in the driver
+docstring, though the printed figure does not carry that cap.

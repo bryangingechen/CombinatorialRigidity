@@ -5391,3 +5391,35 @@ the tail skips past its range rather than reusing it.
 > 3. `RESEARCH-ARC.md` §4 — *a driver per headline sentence* — is what
 > surfaced it: the question was not *"is this true?"* but *"which driver tests
 > this sentence?"*, and the answer was *none*.
+
+## Reserved namespace — direction BWHOLEH (2026-09-12, **EIGHT of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BWHOLEH** | §(K-bare-ext) — **new file** `workbook/bare-ext/BWHOLEH.md` | **(BE-247)–(BE-254)** | ***Steps BE246–BE253*** | `w4/bwholeh.py` (four modes + `validate`) |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`). At
+`fde0317f`: **CLEAN EXCEPT THE DECLARATION** — `(BE-247)` and `BE246` hit only
+BSIXRUNG's own live-tail declarations in `labels.md` and `fanout.md` (2 hits /
+2 files each); `(BE-248)`–`(BE-254)`, `BE247`–`BE253`, `BWHOLEH` / `bwholeh`
+**0 hits / 0 files each**. The whole range is consumed; nothing returned.
+
+**(L6) landing-time grep run by the coordinator:** the section mints **no**
+bare `(X<digit>)` token — the only such tokens appearing in it are `(L6)`
+itself and the standing notation `(M1)`/`(M2)` for (BE-45)(i)/(ii), all
+pre-existing references.
+
+**THE LIVE TAIL IS NOW (BE-255) / *Step BE254***.
+
+> ***THE RESERVATION THAT REFUTED THE OBLIGATION IT WAS AIMED AT, AND THEN
+> LIMITED ITS OWN PRIZE.*** This direction ran the F26 consumer check FIRST,
+> as its spec required, and that check is what bounds the result: `hbareSplit`
+> is taken by `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` with an
+> **existential** conclusion (`HasPencilRealization`, read at the binder), and
+> the same `H` **attains at a free draw**, so `Good ≠ ∅` and hence dense by
+> (BE-69)(ii). The killing point is **steered, non-generic**. So what falls is
+> the obligation **as a universal over an open stratum** — which (BE-239)(ii)
+> says is how every consumer in *Steps BE148–BE237* uses it — and **not**
+> (BE-14), half (B), or `hbareSplit`. The direction wrote that scope into its
+> own headline rather than leaving it to the coordinator, which is the
+> behaviour F26 exists to produce.

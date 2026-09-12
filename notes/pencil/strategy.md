@@ -1708,39 +1708,65 @@ split is measured only there. So the entry this board carries is
 the **triangle-free complement**; the regularity question is demoted to a corollary of it and
 is not ranked on its own.
 
-1. **THE WHOLE-`H` BUILDER AT RUNG 3.** *(new — BSIXRUNG's successor; the
-   **(BE-14)/`hbareSplit`** lane, promoted across lanes on (i) above.)* Owner:
-   §(K-bare-ext) *Steps BE241–BE244*, (BE-242)/(BE-243)/(BE-245). The rung-3 obligation —
-   `a = 0`, `Σδ ≤ 6`, side-degree `≥ 2` on both sides, internal R-node peel, generic flag
-   regime, **26 of the 30 residue tuples**, and by **(BE-235)(i)** *the `Π_x` obligation
-   verbatim* rather than a surrogate — is neither proved nor refuted, and the state is
-   **asymmetric**: the **firing** half is **exhibited at the side layer** at `ρ_i = δ_i = 2`,
-   `a_i = 0`, side-degree 2, in-regime, with `ρ̄_i = Π_x` exactly as spaces ((BE-242)(ii)); the
-   **non-firing** half is not. A refutation at this rung is a whole-`H` peel with
-   `c₁ + c₂ ≥ 3` ((BE-235)(i)), and since side 1 is built, what is missing is **`H` plus
-   side 2**. **Why now and not before:** (BE-244) closed the one free mechanism that reached
-   the region on the landed skeleton family — path saturation, **absent at 236 196 of
-   236 196 R-node-shaped sides** — so the route is *"closed unless the family is enlarged"*
-   ((BE-245)(iii)(b)), and a whole-`H` builder is exactly the instrument that enlarges it.
-   **GLEAF's question: SUFFICIENT** — a peel with `c₁ + c₂ ≥ 3` refutes the obligation
-   outright, and the obligation is the lane's carried item. *Kill condition: a whole-`H` peel
-   exhibited at `Σδ ≤ 6`, `a = 0`, side-degree `≥ 2` on both sides, in-regime, with
-   `c₁ + c₂ ≥ 3` — which **refutes** the rung-3 obligation; or the one-vertex `p_y` steering
-   shown infeasible against side 2's `bline.legal_peel` gates (H's (CH-1), min degree `≥ 2`,
-   girth `≥ 4`, `deg_H(x) ≥ 3`, `rnode_shaped`, `sized`), which closes the refutation route
-   and leaves the obligation standing on the residue. Decided by: the `(K-bare)/(K-bare-ext)`
-   row.*
+1. **THE WHOLE-`H` BUILDER AT RUNG 3 — SPENT (BWHOLEH 102, 2026-09-12), AND THE ENTRY'S KILL
+   CONDITION FIRED ON ITS *FIRST* ARM: THE OBLIGATION IS REFUTED AT RUNG 3.** Owner of the
+   answer: §(K-bare-ext) *Steps BE246–BE253*, (BE-247)–(BE-254). An exact-ℚ whole-`H` peel is
+   **exhibited** at `t = (2,4,0,0,2,4,2,1)` — `Σδ = 6`, `slack = 0`, `a = (0,0)`, side-degree
+   `≥ 2` on both sides, in-regime, `c₁ + c₂ = 3 > 2` — reproduced at **72 of 72** rows over
+   2 skeletons × 6 hub pairs × 2 profiles × 3 seeds against a matched **36 of 36** negative
+   control, with the shortfall read directly at the `H` layer (`dim M(H) = 7` against
+   `6 + def₃(H) = 6`). **Both halves were separately free and the whole cost was pairing them
+   in one `H`**, exactly as this entry priced it: side 1 is (BE-242)(ii)'s firing cycle steered
+   in `p_y`, side 2 is path-saturated so (BE-45)(ii) supplies `c₂ ≥ 1` with no genericity.
+   **THE SCOPE, and it must travel with the verdict:** the killing point is **steered, hence
+   non-generic** — the same `H` **attains** at a free draw, so `Good ≠ ∅` and is **dense** by
+   (BE-69)(ii) — and the F26 consumer check, run first, found `hbareSplit`'s conclusion
+   **existential** (`HasPencilRealization`, read at the binder). **So (BE-14), half (B) and
+   `hbareSplit` are NOT reached.** What falls is the obligation *as a universal over an open
+   stratum*. **And this entry's own risk paragraph was right for the wrong reason**: it named
+   `legal_peel(xy=…)` and `run_peel(nseed=1)` as the likely fences and **neither was** — `xy`
+   un-fenced changes nothing (all twelve pairs kill) and the seed count changes nothing
+   (72/72). The two that mattered were the **side-1 generator** and **(BE-244)(i)'s
+   branch-length family**, both of the population class `blindaxes.py` cannot list.
+   *Kill condition: MET on its first arm. The successor is a **consumer re-read**, not a
+   computation: which consumers in* Steps BE148–BE237 *needed the universal and which only the
+   generic-chart-point form. Decided by: the `(K-bare)/(K-bare-ext)` row.*
 
-   > **THE RISK, named because this entry is a promotion.** The **firing** half is off the
-   > quantifier by **(BE-245)(iii)(b)** — no effort may be spent re-exhibiting it — and
-   > **(BE-241)(iii)** bars any firing side carrying an x–y path of length `≤ 3`, so
-   > `d_min_i ≥ 4`. The entry therefore lives or dies on **side 2 and the `H` that carries
-   > both**, and a direction that returns another side-layer certificate has returned
-   > nothing. Note also that (BE-243)(ii) found `c_i(Π_x)` **equal to the Grassmann floor
-   > `max(0, ρ_i − 4)` at 216 of 216 side-instances** on the landed population: a builder
-   > that only reproduces that population will reproduce that equality, and the equality is
-   > precisely what makes `c₁ + c₂ ≥ 3` unreachable there. **Enlarging the family is the
-   > deliverable, not a side effect.**
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — BSIXRUNG's successor; the
+   > **(BE-14)/`hbareSplit`** lane, promoted across lanes on (i) above.)* Owner:
+   > §(K-bare-ext) *Steps BE241–BE244*, (BE-242)/(BE-243)/(BE-245). The rung-3 obligation —
+   > `a = 0`, `Σδ ≤ 6`, side-degree `≥ 2` on both sides, internal R-node peel, generic flag
+   > regime, **26 of the 30 residue tuples**, and by **(BE-235)(i)** *the `Π_x` obligation
+   > verbatim* rather than a surrogate — is neither proved nor refuted, and the state is
+   > **asymmetric**: the **firing** half is **exhibited at the side layer** at `ρ_i = δ_i = 2`,
+   > `a_i = 0`, side-degree 2, in-regime, with `ρ̄_i = Π_x` exactly as spaces ((BE-242)(ii)); the
+   > **non-firing** half is not. A refutation at this rung is a whole-`H` peel with
+   > `c₁ + c₂ ≥ 3` ((BE-235)(i)), and since side 1 is built, what is missing is **`H` plus
+   > side 2**. **Why now and not before:** (BE-244) closed the one free mechanism that reached
+   > the region on the landed skeleton family — path saturation, **absent at 236 196 of
+   > 236 196 R-node-shaped sides** — so the route is *"closed unless the family is enlarged"*
+   > ((BE-245)(iii)(b)), and a whole-`H` builder is exactly the instrument that enlarges it.
+   > **GLEAF's question: SUFFICIENT** — a peel with `c₁ + c₂ ≥ 3` refutes the obligation
+   > outright, and the obligation is the lane's carried item. *Kill condition: a whole-`H` peel
+   > exhibited at `Σδ ≤ 6`, `a = 0`, side-degree `≥ 2` on both sides, in-regime, with
+   > `c₁ + c₂ ≥ 3` — which **refutes** the rung-3 obligation; or the one-vertex `p_y` steering
+   > shown infeasible against side 2's `bline.legal_peel` gates (H's (CH-1), min degree `≥ 2`,
+   > girth `≥ 4`, `deg_H(x) ≥ 3`, `rnode_shaped`, `sized`), which closes the refutation route
+   > and leaves the obligation standing on the residue. Decided by: the `(K-bare)/(K-bare-ext)`
+   > row.*
+   >
+   > > **THE RISK, named because this entry is a promotion.** The **firing** half is off the
+   > > quantifier by **(BE-245)(iii)(b)** — no effort may be spent re-exhibiting it — and
+   > > **(BE-241)(iii)** bars any firing side carrying an x–y path of length `≤ 3`, so
+   > > `d_min_i ≥ 4`. The entry therefore lives or dies on **side 2 and the `H` that carries
+   > > both**, and a direction that returns another side-layer certificate has returned
+   > > nothing. Note also that (BE-243)(ii) found `c_i(Π_x)` **equal to the Grassmann floor
+   > > `max(0, ρ_i − 4)` at 216 of 216 side-instances** on the landed population: a builder
+   > > that only reproduces that population will reproduce that equality, and the equality is
+   > > precisely what makes `c₁ + c₂ ≥ 3` unreachable there. **Enlarging the family is the
+   > > deliverable, not a side effect.**
+   >
 2. **(GR-206)(iv) — THE `own`-HALF PROPAGATION GAIN — SPENT (GOWNHALF 103, 2026-09-12), AND
    THE ANSWER IS THE ENTRY'S *OTHER* BRANCH: NOT RULE-ATTRIBUTABLE.** Owner of the answer:
    §(K-grid) *Steps G229–G235*, (GR-209)–(GR-215). **The clause is refuted at its PREMISE.**
