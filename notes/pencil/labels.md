@@ -5496,3 +5496,41 @@ bare `(X<digit>)` token.
 > landing where that boundary cost a decisive sentence, and the fix is to pair
 > `--cited-by` with a read of the section's own verdict and
 > *"what would change this"* blocks.
+
+## Reserved namespace — direction GCOLTRANS (2026-09-12, **EIGHT of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GCOLTRANS** | §(K-grid) — continuation in `workbook/grid.md` | **(GR-225)–(GR-232)** | ***Steps G245–G252*** | `w4/gcoltrans.py` (eight modes + `--validate` + `--shapes`/`--blockshapes`/`--draws`) |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`). At
+`29a60d1a`: **CLEAN EXCEPT THE DECLARATION** — `(GR-225)` and `G245` hit only
+the previous reservation's own live-tail bookkeeping in `labels.md` (2 hits /
+1 file each); `(GR-226)`–`(GR-232)`, `G246`–`G252`, `GCOLTRANS` / `gcoltrans`
+**0 hits / 0 files each**. **Re-verified 0-hit by the direction at `105ec34f`**
+after `HEAD` advanced under it — the concurrent-read discipline working.
+
+**Whole range consumed; nothing returned. THE LIVE TAIL IS NOW (GR-233) /
+*Step G253***.
+
+> ***THE QUESTION HAD NO TRUTH VALUE AS POSED, AND SAYING SO WAS THE RESULT.***
+> The dispatch asked whether the Y-move *"transports an admissible colouring"*.
+> Fixing **direction**, **shared datum** and **quantifier** splits that into
+> **four** statements with four different verdicts: both **existential** forms
+> are **vacuous** (each is literally (GR-15) at one end, hypothesis unused);
+> **both map-forms are REFUTED cap-free**, by one balance law read in the two
+> directions; and what survives — the parent choosing frame *and* re-length —
+> holds at **15 304 / 15 304 (100 %)** in both its weak and its strong
+> (extension) form, and **is the only form the induction ever needed**. A
+> direction ranked as a *framing* returned the framing, and the framing is
+> what carried the verdicts.
+>
+> ***AND THE METHOD LESSON, self-caught and load-bearing: A PREFIX IS NOT A
+> SAMPLE.*** Prefixes of 40, then 60, then 25 shapes of `gisland.stratum(6)`
+> gave **0** lift failures over 1 145 / 1 693 / 709 triples. The exhaustive run
+> gives **1 890 of 194 325**, and the adversarial slice — `2.4 %` of the triple
+> space, which every prefix missed — carries **608** of them, **594 cap-free**.
+> The refutation came from **asking where the mechanism predicts a failure and
+> going there**, not from sweeping harder. This is the population-fence class
+> `blindaxes.py` cannot list, in its sharpest form yet: the fence was not a
+> keyword but the **order the generator emits shapes in**.

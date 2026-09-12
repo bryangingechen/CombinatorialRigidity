@@ -1713,19 +1713,61 @@ with *triangle* load-bearing.
    `Good = ∅` exhibited — which reaches (BE-14) — or `Good ≠ ∅` shown on a structurally
    characterized family, which closes this route and sends the lane to rank 3's re-read.
    Decided by: the `(K-bare)/(K-bare-ext)` row.*
-2. **THE COLOURING-TRANSPORT GATE AT `D = 0`.** *(new — GTRIFREE's re-route; the gate that is
-   now the ONLY live one on the `G°` induction.)* Owner: §(K-grid) *Steps G218–G243*,
-   (GR-200)/(GR-220), and **no landed result touches it**. A move between class *shapes* must
-   transport an **admissible colouring** — one with generic `dim Z₊ = dim Z₋ = 0` in both
-   blocks, which is (GR-15) itself at the child. **GLEAF's question: SUFFICIENT for the
-   induction route** — with a bounded move family reaching every shape (rank 1 of the
-   fourteenth pass is spent POSITIVE on the triangle-carrying part, and (GR-220)(iii) bounds
-   what is left), transport is the remaining gate, and a negative kills the `G°` induction as
-   a route rather than merely blocking it. Ranked 2 and not 1 because it is the **least
-   scoped** entry on the board: the arc has never posed it directly, so the first slice is a
-   framing, not a sweep. *Kill condition: transport exhibited along the landed Y→Δ at one
-   shape pair with both colourings admissible — or proven impossible for the family, which
-   **kills the `G°` induction outright**. Decided by: the `(K-grid)` row, close-it u9.*
+2. **THE COLOURING-TRANSPORT GATE AT `D = 0` — SPENT (GCOLTRANS 106, 2026-09-12). THE QUESTION
+   HAD NO TRUTH VALUE AS POSED, AND SAYING SO IS THE RESULT.** Owner of the answer: §(K-grid)
+   *Steps G245–G252*, (GR-225)–(GR-232). Fixing **direction**, **shared datum** and
+   **quantifier** splits it into **four** statements with four verdicts. **Both EXISTENTIAL
+   forms are VACUOUS** — each is literally (GR-15) at one end with the hypothesis unused, so a
+   positive is a corollary of the target and a negative is a counterexample to it; the
+   circularity this entry flagged is **real**, and it is precisely why the statement carries
+   **no step**. **Both MAP-forms are REFUTED cap-free**, by one law read in two directions:
+   (GR-16)(i)'s balance law as an interval nested increasing in `n_odd`, so the **descent**
+   fails when the child loses odd branches and the **lift** when it gains them — descent by a
+   named cap-free witness, lift at **1 890 of 194 325** triples with the adversarial slice
+   (2.4 % of the space) carrying **608**, **594 cap-free**. **And transport is NECESSARY, NOT
+   SUFFICIENT** — this entry's own claim, refuted: interior coverage is **0/80** at `n_hub = 4`,
+   **6 464/7 892** at `6` and **16 969/39 689** at `8` ((GR-231)). **WHAT SURVIVES IS THE ONLY
+   FORM THE INDUCTION EVER NEEDED:** with the parent free to **choose** frame and re-length, the
+   weak lift holds at **15 304/15 304 (100 %)** over the whole `n_hub = 6` interior region, and
+   so does the **strong** extension form; (GR-16)(iv)'s `Θ` is **block-triangular** at 9 680/9 680,
+   so a lift lemma is a **rank factorization**, not a circularity.
+   *Kill condition: MET — the gate is posed and four-way decided. The live successor is `T↑∃∃` at
+   `n_hub = 8 → 6` with `Λ` unrestricted, which needs a population the corpus does not have;
+   and bar (m)'s converse is now owed — an entry proposing transport as the closing gate must
+   price the COVERAGE gate.*
+
+   > **THE SCOPE CONSEQUENCE OF THE LOCAL-MOVE RULING, which this direction surfaced and the
+   > fifteenth pass did not spell out.** The ruling puts **interior** frames in scope and
+   > complement frames out. **(GR-218)'s budget-12 is a COMPLEMENT-frame theorem** — true, and
+   > used correctly everywhere in the corpus — so it is now **about frames the induction no
+   > longer means**. At an interior frame the budget takes every value in `{4,…,11}` and
+   > **never 12**; `n_hub = 4` carries **0 interior frames at all**, which makes the whole of
+   > (GR-198)(i)'s `80/80` (all 3 200 triples) complement-frame data ((GR-225)(i)/(iii)).
+   >
+   > **AND A COORDINATOR ERROR THIS DIRECTION CAUGHT.** The spec offered a one-line disposal of
+   > its own mechanism — *"a colouring is not a length assignment, so if those are independent
+   > data the mechanism is vacuous"*. **That is wrong:** the colouring's domain **is** the
+   > subdivision, a branch's parity decides its majority colour, and the length vector controls
+   > admissibility directly. Length and colouring are **coupled**, which is exactly why
+   > re-lengthing is what breaks transport — so the disposal would have discarded the mechanism
+   > that turned out to be the answer. **§7's rule that a spec's mechanism is a candidate to
+   > ELIMINATE does not license eliminating it by assertion.**
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — GTRIFREE's re-route; the gate that is
+   > now the ONLY live one on the `G°` induction.)* Owner: §(K-grid) *Steps G218–G243*,
+   > (GR-200)/(GR-220), and **no landed result touches it**. A move between class *shapes* must
+   > transport an **admissible colouring** — one with generic `dim Z₊ = dim Z₋ = 0` in both
+   > blocks, which is (GR-15) itself at the child. **GLEAF's question: SUFFICIENT for the
+   > induction route** — with a bounded move family reaching every shape (rank 1 of the
+   > fourteenth pass is spent POSITIVE on the triangle-carrying part, and (GR-220)(iii) bounds
+   > what is left), transport is the remaining gate, and a negative kills the `G°` induction as
+   > a route rather than merely blocking it. Ranked 2 and not 1 because it is the **least
+   > scoped** entry on the board: the arc has never posed it directly, so the first slice is a
+   > framing, not a sweep. *Kill condition: transport exhibited along the landed Y→Δ at one
+   > shape pair with both colourings admissible — or proven impossible for the family, which
+   > **kills the `G°` induction outright**. Decided by: the `(K-grid)` row, close-it u9.*
+   >
 3. **WHICH CONSUMERS NEEDED THE OBLIGATION AS A UNIVERSAL?** *(new — BWHOLEH's named successor,
    and it is a **consumer re-read, not a computation**.)* Owner: §(K-bare-ext) *Steps
    BE148–BE237*, (BE-239)(ii)'s *"how every consumer … uses it"*. BWHOLEH refuted the rung-3

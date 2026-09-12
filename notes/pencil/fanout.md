@@ -2,14 +2,14 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; **113 LANDED, TWO IN FLIGHT** — BOTH 2026-09-10 rounds of three
+dispatched; **114 LANDED, ONE IN FLIGHT** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
 COMPLETE** — BWHOLEH (102), GOWNHALF (103), GTRIFREE (104), spending ranks 1, 2 and 3 in one
-round — **and a SECOND round of three, against the FIFTEENTH pass, is mid-landing: BTAKERS
-(107) LANDED; BGOODEMPTY (105) and GCOLTRANS (106) IN FLIGHT.** Landed ordinals are 1–104 and
-107 — 105 ordinals, 113 directions. **All three
+round — **and a SECOND round of three, against the FIFTEENTH pass, is mid-landing:
+BTAKERS (107) and GCOLTRANS (106) LANDED; BGOODEMPTY (105) IN FLIGHT.** Landed ordinals are
+1–104, 106 and 107 — 106 ordinals, 114 directions. **All three
 returned REFUTATIONS; all three refuted the coordinator's own prediction; and each refuted at
 least one LANDED clause, including a `[PROVED]` one.** The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
@@ -17870,3 +17870,90 @@ independent scan of the whole `bare-ext/` tree for assume/under/by-the-obligatio
 phrasings — **0 hits in landed prose** (the only two were inside this
 direction's own draft). Item 0(b)'s margin re-derived against (BE-97)(ii)'s
 definition and against `Phase39.md:272`'s own wording.
+
+
+## GCOLTRANS — ordinal 106, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's fifteenth pass, RANK 2** — ranked as a **framing** because the arc had
+never posed the question, with the spec saying a well-posed statement plus one
+worked instance would be a complete return. *Question:* does the landed Y→Δ
+move transport an admissible colouring?
+
+**VERDICT: THE QUESTION HAD NO TRUTH VALUE AS POSED — and saying so is the
+result.** Fixing **direction**, **shared datum** and **quantifier** splits it
+into **four** statements with four verdicts. Landed as (GR-225)–(GR-232) /
+*Steps G245–G252*.
+
+- **Both EXISTENTIAL forms are VACUOUS.** `y_reductions` gates every child
+  through `gridcol.class_shape`, so the child *is* a certified tight `D = 0`
+  class shape and `T↓∃` is **literally (GR-15) at the child**, hypothesis
+  unused; `T↑∃` is the same defect the other way. A positive is a corollary of
+  the target theorem, a negative a counterexample to it. **The circularity the
+  spec flagged is real — and it is exactly why the statement carries no
+  step**, which refutes the spec's hope that it might be an induction
+  hypothesis instead.
+- **Both MAP-forms are REFUTED, cap-free, by ONE law read in two directions.**
+  (GR-16)(i)'s balance law as an **interval** `I(n_odd)`, nested increasing in
+  `n_odd`: whichever side has fewer odd branches has the strictly narrower
+  interval, so the **descent** fails when the child *loses* odd branches and
+  the **lift** when it *gains* them. Descent: a named witness whose child has
+  no admissible colouring at either out-restriction the parent realizes,
+  failing at **every** re-length of **796** frames. Lift: **1 890 of 194 325**
+  triples, the adversarial slice carrying **608**, **594 cap-free**.
+  *Honest limit, disclosed: the law explains 32 % of lift failures (13×
+  enrichment); 1 282 have another cause the direction did not identify.*
+- **Transport is NECESSARY, NOT SUFFICIENT** — the spec's own claim, refuted.
+  Interior coverage: **0/80** at `n_hub = 4`, **6 464/7 892** at `6`,
+  **16 969/39 689** at `8`.
+
+**WHAT SURVIVES, AND IT IS THE ONLY FORM THE INDUCTION EVER NEEDED.** With the
+parent free to **choose** frame and re-length, the weak lift holds at
+**15 304/15 304 (100 %)** over the whole `n_hub = 6` interior region, and so
+does the **strong** (extension) form — everything outside `A` and the three
+interface darts fixed. Structural support: (GR-16)(iv)'s `Θ` is
+**block-triangular** under `C(G°[A]) ≤ C(G°) ↠ C(G°/A)` at **9 680/9 680**, 0
+exceptions, so a lift lemma is a **rank factorization** rather than a
+circularity.
+
+**A SCOPE CONSEQUENCE OF THE LOCAL-MOVE RULING** the fifteenth pass did not
+spell out: the ruling puts **interior** frames in scope and complement frames
+out, and **(GR-218)'s budget-12 is a COMPLEMENT-frame theorem** — true, and
+used correctly everywhere, but now about frames the induction no longer means.
+At an interior frame the budget takes every value in `{4,…,11}` and **never
+12**; `n_hub = 4` carries **0 interior frames at all**, making (GR-198)(i)'s
+`80/80` (all 3 200 triples) complement-frame data.
+
+**THE METHOD LESSON, SELF-CAUGHT AND LOAD-BEARING: A PREFIX IS NOT A SAMPLE.**
+Prefixes of 40, then 60, then 25 shapes gave **0** lift failures over 1 145 /
+1 693 / 709 triples. The exhaustive run gives 1 890 of 194 325, and the
+adversarial slice — 2.4 % of the space, missed by every prefix — carries 608.
+**The refutation came from asking where the mechanism predicts a failure and
+going there, not from sweeping harder.** This is the population-fence class
+`blindaxes.py` cannot list in its sharpest form yet: the fence was the **order
+the generator emits shapes in**.
+
+**Prediction outcome: right for the wrong reason, at the wrong statement.** The
+spec's "negative" holds for the descent map-form, but the lift is refuted too
+and the grounds given were about the corpus rather than the mathematics. Its
+*"the circularity may be the ANSWER"* is **refuted**. Its **TELL could not have
+fired as stated** — whole-shape existence would refute (GR-15), and 0 of 8 768
+certified shapes lacked a GOOD colouring; it fires only re-pointed at the
+shared datum, and then in **both** directions. **And the spec's own one-line
+disposal of its mechanism was wrong**: length and colouring are **coupled**
+through the subdivision, which is why re-lengthing is what breaks transport —
+the disposal would have discarded the mechanism that turned out to be the
+answer.
+
+**Coordinator verification.** `--frame`, `--cover` and `--desc` re-run at the
+landing sha and reproduce exactly, the descent witness down to its missed
+out-restrictions; `--validate` green through every stage. The `class_shape`
+gating claim was checked **at the source** (`gnonadd.canon_gate` → `class_shape`
+at `n ≤ 6`), and the vacuity argument confirmed to be about **quantifier
+structure** rather than about `class_shape` certifying colourings — it is
+worded precisely. Two independent **cross-return agreements with GTRIFREE**,
+neither direction having seen the other: the triple split
+**194 325 + 473 520 = 667 845** reproduces (GR-198)(ii) exactly, and the
+**1 428** shapes with no interior frame at `n_hub = 6` are exactly GTRIFREE's
+1 428 triangle-free `K₃,₃` shapes. The direction's criticism of (GR-218)'s use
+was checked against every landed site (F24): the clause is correctly scoped
+everywhere, and the real point is the ruling's consequence, recorded as such.

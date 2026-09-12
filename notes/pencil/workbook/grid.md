@@ -20135,6 +20135,18 @@ not exotic: it contains `n` frames at every single shape, one per hub.
 > **(GR-218)** `[PROVED]` *(and `[MEASURED]` `gtrifree.py --comp` /
 > `--univ` / `--ladder7`: budget `= 12` at **every** reduction this
 > direction exhibits, `n_hub = 4` through `26`; 0 exceptions)*
+> **— SCOPE, added 2026-09-12 at GCOLTRANS's landing ((GR-225)(iii)); a
+> consequence of the local-move ruling, not a defect here.** This is a
+> **COMPLEMENT-frame** theorem — stated at `A = V∖{v}`, and every use of it in
+> the corpus is at `|A| = n − 1`, which is correct. But the 2026-09-12 ruling
+> puts the **interior** frames in scope for the induction and the complement
+> frames out of it, and **at an interior frame the budget is not 12**: measured
+> exhaustively, `n_hub = 4` carries **0 interior frames at all**, and
+> `n_hub = 6` carries 15 304 whose budgets take **every value in `{4,…,11}`
+> and never 12** ((GR-225)(i)). **So this theorem is true, is used correctly,
+> and is now about frames the induction no longer means** — and the same reading
+> makes the whole of (GR-198)(i)'s `80/80` at `n_hub = 4` (all 3 200 triples)
+> complement-frame data.
 > At `D = 0`, `M = 3n/2` and `Σℓ = 6(M − n + 1) = 3n + 6`. In a contraction
 > at `A = V∖{v}` every branch is inside `A` or on its boundary, so
 > `gnonadd.y_reductions`' forced budget
@@ -20437,3 +20449,573 @@ proved rather than measured.
   direction does **not** measure a general `n_hub ≥ 10` stratum.
 
 ---
+
+## §(K-grid) — continuation (direction GCOLTRANS, 2026-09-12): the **colouring-transport gate, POSED** — and it is **four** statements, not one: two **VACUOUS**, and **BOTH map-forms REFUTED cap-free by a single balance law**; what survives is the `∃`-choice form, which is the only one the induction needed
+
+*Step G240*'s closing paragraph asked §8 to *"stop pricing move-family
+searches at `D = 0` and price the **colouring-transport** gate, which no
+landed result touches."* This continuation poses that gate. It is a
+**framing** step: the arc has never stated transport with a direction, a
+shared datum, or a quantifier, and once those three are fixed the question
+splits into **four** statements with four different verdicts.
+
+**The headline, in one paragraph.** The `G°` induction runs on `n_hub` and
+its step is **child → parent** — the *lift* — not the parent → child
+*descent* the dispatch asked about. Both **existential** forms (*"the other
+end has a GOOD colouring"*) are **vacuous**: each is literally (GR-15) at
+one end, hypothesis unused. Both **map** forms — the ones preserving the
+branch data the two shapes share — are **REFUTED**, by cap-free witnesses,
+and by the **same law**: (GR-16)(i)'s balance condition is a global count
+over **odd** branches, the move's re-lengthing freedom changes the
+odd-branch supply, and whichever side ends up with fewer odd branches has
+the strictly narrower interval of realizable colourings on the shared part.
+The descent fails when the child loses odd branches; the lift fails when it
+gains them. What is **not** refuted, and is the only form an induction ever
+needed, is the `∃`-choice form: *the parent may CHOOSE the frame and the
+re-length*. Driver `notes/scripts/w4/gcoltrans.py`, eight modes.
+
+**Why this was worth a framing pass rather than a sweep.** Three of the four
+verdicts follow from writing the statement down: the two vacuity results are
+two-line derivations from `y_reductions`' own certification gate, and the
+refutations are found by asking *where does the mechanism predict a
+failure* and going there. The first `40`, `60` and `25`-shape prefixes of
+the population gave `0` lift failures over `1 145`, `1 693` and `709`
+triples; the adversarial slice — `2.4 %` of the triple space, and invisible
+to a prefix — gives `594`.
+
+### Step G245 — (GR-225): the arithmetic of the move — what a transport must supply, and where (GR-218)'s **budget 12** actually lives
+
+> **(GR-225)** `[PROVED]` *(and `[MEASURED]` `gcoltrans.py --frame`: every
+> frame of `gisland.stratum(4, lamcap=99)` and `gisland.stratum(6,
+> lamcap=99)`, EXHAUSTIVE, `Λ` unrestricted, `0` assertion failures)*
+> Let `S = (G°, ℓ)` be a `D = 0` tight class shape, `n = n_hub`,
+> `M = 3n/2`, `Σℓ = 3n + 6` ((GR-21), (GR-218)), and let `A` be a
+> `gnonadd.cut3_sets` frame: connected, `|A| = sz` odd `≥ 3`, `∂(A) = 3`,
+> with `ins` the `(3sz − 3)/2` branches inside `A`, `bd` the three boundary
+> branches, `out` the rest. Write `S'` for a child emitted by
+> `gnonadd.y_reductions` at `A`, `n' = n − sz + 1`.
+> **(i) Four deltas, all forced.** `|E(S)| − |E(S')| = 3(sz − 1)`;
+> `n − n' = sz − 1`; `c − c' = (sz − 1)/2`; and because both sides are
+> **balanced**, a colouring of `S` extending one of `S'` must carry exactly
+> `3(sz − 1)/2` more A-edges **and** `3(sz − 1)/2` more B-edges. At
+> `sz = 3`: six new edges, three of each colour, two new hubs, one new
+> independent cycle.
+> **(ii) COMPLEMENT versus INTERIOR frames.** Call `A` a **complement**
+> frame if `|A| = n − 1` (equivalently `out = ∅`, equivalently `A = V∖{v}` —
+> the class (GR-217)/(GR-218) are about) and **interior** otherwise
+> (`|A| ≤ n − 3`, so the child keeps `≥ 3` of the parent's hubs and `≥ 1`
+> out-branch). Measured over the landed strata: at **`n_hub = 4`,
+> `0` interior frames and `320` complement**; at **`n_hub = 6`, `15 304`
+> interior and `47 352` complement**.
+> **(iii) The budget is `12` exactly at the complement frames.**
+> `Σ_bd ℓ' = 12` at all `47 672` complement frames above (re-deriving
+> (GR-218) as a measurement); at the `15 304` interior frames the budget is
+> `Σ_out ℓ` subtracted from `3n' + 6` and **varies**, taking every value in
+> `{4, …, 11}` (`7, 52, 223, 699, 2 201, 3 907, 4 600, 3 615` times
+> respectively) and the value `12` **never**.
+
+**What (iii) costs.** (GR-218)'s *"forced budget `12`, independent of `n`
+and of the child's lengths"* is true, and is a theorem **about the
+complement frames only** — the frames the 2026-09-12 user ruling puts
+outside the induction's move class. Any reasoning that treats the budget-12
+three-way split as *"the move's only freedom"* is reasoning about the
+out-of-scope half of the move family. At an interior frame the move has two
+freedoms, the **split** and the **budget itself**.
+
+**What (ii) costs, and it is sharper.** §(K-grid) (GR-223)(ii) already
+observed that measuring at the `|A| = n − 1` frame *alone* reproduces
+(GR-198)(i)/(ii) exactly (`80/80`, `7 892/7 892`). (GR-225)(ii) adds the
+converse at the bottom of the range: at `n_hub = 4` there is **nothing
+else**. So **the whole of (GR-198)(i) — the `80 of 80`, all `3 200`
+triples — is complement-frame data**, and a dispatch that names
+*"`n_hub ∈ {4, 6}`"* as a densely-populated test region for a **local**
+move is naming a region that is half empty. The interior region begins at
+`n_hub = 6`, `|A| = 3`.
+
+### Step G246 — (GR-226): the gate, **POSED** — four statements, two directions, and the **shared datum** without which none of them says anything
+
+Fix `S`, an interior frame `A`, and a child `S'` certified by
+`y_reductions`. Write `O := out` for the branch set the two shapes
+**share**: `y_reductions` emits the out-branches first, in `out` order,
+with the same orientation and the **same length**, so a colouring bit on
+`O` is literally the same colouring of the same edges on both sides (a
+branch bit determines the branch's whole edge-colouring by alternation —
+*Step G12*(i)). Call a colouring **GOOD** if it is admissible
+(`cflank.admissible`: alternating, both ruling classes forests, balanced,
+no monochromatic hub) **and** has generic `dim Z₊ = dim Z₋ = 0`. (GR-15)
+is *"every tight class shape has a GOOD colouring"*.
+
+> **(GR-226)** `[PROVED]` *(the vacuity clauses are one-line derivations;
+> the shared-datum clauses are what `gcoltrans.py --pair` / `--lift` /
+> `--desc` measure)*
+> There are **four** statements in the neighbourhood of *"the move
+> transports an admissible colouring"*, and they are not variants of one
+> claim:
+> **(i) `T↓∃` — the descent, existentially.** *`S` GOOD ⟹ `S'` GOOD.*
+> **VACUOUS.** `y_reductions` gates every child through
+> `gridcol.class_shape` (or `cflank.cubic_habitat`), so `S'` **is** a tight
+> `D = 0` class shape; `T↓∃` is therefore **literally (GR-15) at `S'`**,
+> with the hypothesis unused. A positive answer is a corollary of the
+> target theorem; a negative answer is a **counterexample to (GR-15)**, not
+> a fact about the move.
+> **(ii) `T↑∃` — the lift, existentially.** *`S'` GOOD ⟹ `S` GOOD.* Same
+> defect in the other direction: the conclusion is (GR-15) at `S`, the
+> hypothesis is unused, and there is no map.
+> **(iii) `T↓map` — the descent with a shared datum.** *For every GOOD
+> colouring `b` of `S` there is a GOOD colouring `b'` of `S'` with
+> `b'|_O = b|_O`.*
+> **(iv) `T↑map` — the lift with a shared datum.** *For every GOOD
+> colouring `b'` of `S'` there is a GOOD colouring `b` of `S` with
+> `b|_O = b'|_O`.*
+> Only (iii) and (iv) have content. **(iv) is the statement the `G°`
+> induction consumes**, and (iii) is not: the induction runs on `n_hub`,
+> which drops by `sz − 1 ≥ 2` at every frame ((GR-225)(i)) with base
+> `n_hub = 2` (the three `θ` shapes, (GR-218)), so the induction hypothesis
+> is *(GR-15) at the child* and the inductive **step** is *child GOOD ⟹
+> parent GOOD, by an explicit map*. The ∀ over the child's GOOD colourings
+> in (iv) is forced: a plain existential hypothesis hands the step an
+> **arbitrary** GOOD child colouring.
+> **(v) The quantifier the induction actually gets to choose.** (iv) fixes
+> the frame and the re-length as given. The induction does not have to: it
+> may **pick** them. So the form it truly consumes is (iv) preceded by
+> `∃A ∃ℓ'`, which is (GR-232)'s `T↑∃∃` — and the distinction is not
+> cosmetic, because (iv) is **false** ((GR-227)) and `T↑∃∃` is not.
+
+**Two strengths of shared datum, and the second is the one a glueing proof
+wants.** The **WEAK** datum is `b|_O`, the out-branch bits. The **STRONG**
+datum adds the three boundary branches' darts **at their outside hub** —
+the colours the three surviving boundary hubs actually see, so preserving
+them makes the no-monochromatic-hub condition at those hubs a statement
+about the outside alone. `gcoltrans.py` measures both.
+
+**Worked instance (`--pair`), the whole gate on one certified pair.**
+Parent `G° = [(0,4),(0,5),(0,5),(1,3),(1,4),(1,5),(2,3),(2,3),(2,4)]`,
+`ℓ = (1,2,5,1,2,3,2,5,3)` (`n_hub 6`, `M 9`, `Σℓ 24`, `c 4`); interior
+frame `A = (0,4,5)` with `ins = [0,1,2]`, `bd = [4,5,8]`, `out = [3,6,7]`,
+**budget `10`**; child `G° = [(1,3),(2,3),(2,3),(0,1),(0,1),(0,2)]`,
+`ℓ = (1,2,5,4,4,2)` (`n_hub 4`, `M 6`, `Σℓ 18`, `c 3`). Both certified by
+the CANONICAL `gridcol.class_shape`. Parent: `44` admissible colourings,
+**`36` GOOD**; child: `16` admissible, **`16` GOOD** (each GOOD verdict by
+an exact rational witness draw — a proof, no cap). Out-restrictions:
+parent GOOD realizes `{000, 001, 011, 100, 110, 111}`, child GOOD realizes
+`{001, 011, 100, 110}`. So **`T↑map` holds here and `T↓map` FAILS here**,
+at `(0,0,0)` and `(1,1,1)`.
+
+### Step G247 — (GR-227): the **LIFT** `T↑map` is **REFUTED too**, cap-free — and both refutations are the **same law**: the balance interval on the shared odd branches
+
+> **(GR-227)** `[REFUTED]` *(witnesses below; `gcoltrans.py --adverse`, and
+> the frame-level rows of `--lift`)*
+> **(i) The law.** Let `o` be the number of **odd** branches on the shared
+> set `O` — the same on both sides, since `O`'s lengths are preserved by the
+> move — and let `n_odd` be a shape's total odd-branch count. By (GR-16)(i)
+> an admissible colouring is balanced iff exactly `n_odd/2` of its odd
+> branches are A-majority, and an odd branch is A-majority iff its bit is
+> `1`. Hence the A-majority count **on `O`** of any admissible colouring
+> lies in
+> `I(n_odd) := [max(0, o − n_odd/2), min(o, n_odd/2)]`,
+> and `I` is **nested increasing in `n_odd`**, with `I(n_odd) = [0, o]` once
+> `n_odd ≥ 2o`. So a map-form of transport from `X` to `Y` requires
+> `I(n_odd(X)) ⊆ I(n_odd(Y))`, which for proper intervals means
+> **`n_odd(X) ≤ n_odd(Y)`**. The move controls `n_odd` directly: the child's
+> odd supply is `O`'s odd branches plus the odd entries of the re-length
+> `(a, b, c)`, the parent's is `O`'s plus the odd branches of `bd ∪ ins`.
+> **(ii) Both directions therefore fail, in complementary halves of the
+> triple space.** Over the `n_hub = 6` interior region there are `194 325`
+> `(frame, re-length)` triples ((GR-225); consistent with (GR-198)(ii)'s
+> `667 845` total, the remaining `473 520 = 47 352 × 10` being complement
+> triples). `n_odd(parent) ≥ n_odd(child)` at `189 728` of them and **fails
+> at `4 597`** — the ADVERSARIAL slice, where the law predicts the **lift**
+> to break.
+> **(iii) It breaks there, cap-free.** Over exactly those `4 597` triples:
+> **`849`** have a child-admissible out-restriction the parent cannot
+> realize admissibly at all, **`608`** have a **GOOD** child colouring whose
+> out-restriction no GOOD parent colouring realizes, and at **`594`** of
+> those the missed restriction is not even parent-**admissible** — so
+> **`594` cap-free refutations of `T↑map`**, which no number of extra draws
+> can repair. First witness: parent
+> `G° = [(0,4),(0,5),(0,5),(1,2),(1,3),(1,5),(2,3),(2,4),(3,4)]`,
+> `ℓ = (1,2,5,2,2,2,4,2,4)` (`n_odd = 2`), frame `A = (1,2,3)`
+> (`out = [0,1,2]`, odd out-branches `0, 2`, so `o = 2` and
+> `I(2) = [1,1]`), child `ℓ = (1,2,5,1,4,5)` (`n_odd = 4`, `I(4) = [0,2]`);
+> the child has GOOD colourings at out-restrictions `(0,1,0)` and `(1,0,1)`
+> — A-majority counts `0` and `2` — and the parent has **no admissible
+> colouring** at either. ∎
+> **(iv) The complementary half is where the descent breaks**, by the same
+> law read the other way: on the adversarial slice the DESCENT has **`0`**
+> cap-free failures, while (GR-228)'s witness lives at
+> `n_odd(parent) > n_odd(child)`.
+> **(v) So neither map-form is a universal.** The gate is not *"does the
+> move transport a colouring"* — it does not, in either direction — but
+> *"can the move be CHOSEN so that it does"*, which is (GR-232).
+
+**Self-correction recorded, because it is the load-bearing one.** The first
+`40`, then `60`, then `25`-shape prefixes of `gisland.stratum(6)` gave
+`0` lift failures over `1 145`, `1 693` and `709` triples respectively, and
+that is what a prefix of this generator looks like: the adversarial slice is
+`2.4 %` of the triple space and the prefix misses it. The refutation came
+from asking **where the mechanism predicts a failure** and going there —
+`--adverse` — not from sweeping harder. A prefix is not a sample.
+
+
+### Step G248 — (GR-228): the **DESCENT** `T↓map` is **REFUTED**, cap-free — and the obstruction is (GR-16)(i)'s **balance law**, a statement about **lengths**, with no reference to `dim Z` at all
+
+> **(GR-228)** `[REFUTED]` *(witness above; `gcoltrans.py --pair` /
+> `--desc`)*
+> `T↓map` is **false**. At the (GR-226) worked pair the parent's GOOD
+> colourings realize the out-restrictions `(0,0,0)` and `(1,1,1)`, and the
+> child has **no admissible colouring at all** — GOOD or not — realizing
+> either. **The failure is at ADMISSIBILITY, so the witness carries no
+> draw cap**: it is a proof, not a shortfall.
+> **The mechanism.** (GR-16)(i) reads balance as a counting law on the
+> **odd** branches: an admissible colouring is balanced iff exactly
+> `n_odd/2` of the odd branches are A-majority, and an odd branch is
+> A-majority iff its bit is `1`. The parent has `6` odd branches (needing
+> `3` A-majority), two of them on `O`, so the realizable A-majority count
+> on `O` is the whole interval `[0, 2]`. The re-length `(a,b,c) = (4,4,2)`
+> makes all three of the child's boundary branches **even**, so the child's
+> entire odd supply is those same two out-branches, `n_odd = 2`, and
+> balance forces **exactly one** of them A-majority: the realizable
+> interval collapses to `[1, 1]`, killing `(0,0,0)` and `(1,1,1)`.
+> **So the obstruction to the descent is a parity/counting fact about the
+> LENGTH VECTOR, not a rank fact about `dim Z`** — the re-lengthing is
+> precisely the move's freedom, and it is the freedom that breaks the
+> descent.
+
+**The general form of the mechanism is (GR-227)(i), and it is symmetric.**
+This witness sits on the `n_odd(parent) > n_odd(child)` side of the triple
+space; (GR-227)(iii) exhibits the mirror-image failure of the **lift** on
+the other side. One law, two refutations: *the move's re-lengthing freedom
+changes the odd-branch supply, and balance is a global count over odd
+branches, so exactly one of the two balance intervals contains the other.*
+
+### Step G249 — (GR-229): both **existential** forms are **vacuous** — the circularity is real, and it is the reason the statement carries **no step**, not a reason it is an induction hypothesis
+
+> **(GR-229)** `[PROVED]` *(a derivation from `y_reductions`' own gate; no
+> driver is needed, and `gcoltrans.py --desc` prints the statement beside
+> the measured map-forms so the two cannot be confused)*
+> The reading *"transport is provably equivalent to (GR-15)-at-the-child,
+> and the child is strictly smaller in a well-founded order, so the gate is
+> exactly an induction hypothesis rather than an extra obligation"* is
+> **half right and the wrong half is load-bearing.**
+> **(i)** The equivalence is real: `T↓∃` **is** (GR-15) at the child,
+> because `y_reductions` certifies the child ((GR-226)(i)).
+> **(ii)** The order is real and needs no check beyond (GR-225)(i):
+> `n' = n − (sz − 1) ≤ n − 2`, a strictly decreasing `ℕ`-valued measure
+> with base `n_hub = 2`, where the three `θ` shapes `θ(2,5,5)`, `θ(3,4,5)`,
+> `θ(4,4,4)` are the whole stratum ((GR-218)).
+> **(iii)** But an induction hypothesis is what a step **consumes**, not
+> what it **is**. A gate that is *literally* the induction hypothesis
+> supplies the hypothesis and **none of the step**: it says the child is
+> GOOD, which the induction already knew, and says nothing about the
+> parent. So the route does **not** come back to life on (i) + (ii); it
+> comes back to life only on a statement with a **map** — (GR-226)(iv) —
+> and that statement is not equivalent to (GR-15) at either end.
+> **(iv)** The same applies to `T↑∃`, whose conclusion is (GR-15) at the
+> parent: it is the theorem, not a lemma toward it.
+
+### Step G250 — (GR-230): the cycle filtration `C(G°[A]) ≤ C(G°) ↠ C(G°/A)` makes (GR-16)(iv)'s `Θ` **block triangular** — so a lift lemma is a **rank factorization**, and the rank half of the gate points **downward**
+
+> **(GR-230)** `[PROVED]` *(and `[MEASURED]` `gcoltrans.py --block`: the
+> zero block asserted at every `(shape, interior frame, admissible
+> colouring, block)` instance of the first `25` shapes of
+> `gisland.stratum(6, lamcap=99)`, `0` exceptions)*
+> Let `d := (sz − 1)/2`. The cycles supported inside `A` form
+> `C(G°[A]) ≤ C(G°)` of dimension exactly `d` (`|ins| − sz + 1 =
+> (3sz−3)/2 − sz + 1`), and the quotient is `C(G°/A) ≅ C(G°)/C(G°[A])` of
+> dimension `c' = c − d`. Take a cycle basis whose first `d` vectors span
+> `C(G°[A])`. Then in (GR-16)(iv)'s matrix `Θ₊` — rows indexed by
+> `(branch β, class X ∈ K_A(β))`, columns by `(basis cycle, t-power)` —
+> **every row of a branch in `out ∪ bd` is zero on every column of an
+> inside cycle**, because such a cycle has zero coefficient on every
+> branch outside `A`. So
+> `Θ = [[0, X], [Y, W]]` with row blocks `(out ∪ bd | ins)` and column
+> blocks `(C(G°[A]) | quotient)`, of sizes `r₁ × 3d`, `r₁ × 3c'`,
+> `r₂ × 3d`, `r₂ × 3c'`, `r₁ + r₂ = 3c` at balance.
+> **(i) The rank consequence, and it is a NECESSARY condition pointing
+> DOWN.** `rank Θ ≤ rank X + 3d`, so `dim Z₊ = 0` at the parent **forces**
+> `rank X = 3c'` — full column rank of a *child-shaped* block. The rank
+> half of transport therefore descends for free.
+> **(ii) When the split is square it factorizes exactly.** If
+> `r₂ = 3d` (equivalently `r₁ = 3c'`) then `det Θ = ± det X · det Y`, so
+> `dim Z₊ = 0` **iff** both blocks have full rank. Measured over the first
+> `25` shapes of `gisland.stratum(6, lamcap=99)`: `9 680` `(shape, interior
+> frame, admissible colouring, block)` instances, block triangularity
+> `9 680/9 680` with `0` exceptions, `r₂ ∈ {3, 4, 5, 6}` against `3d = 3`
+> (counts `408, 5 088, 3 948, 236`), square at **`408`**, and at all `408`
+> the factorization verdict agrees with the full-matrix rank
+> (**`408/408`**).
+> **(iii) What this buys the framing.** A lift lemma is the statement that
+> full rank of a child block plus full rank of a **local** `3d × 3d` block
+> gives full rank of `Θ` — a rank-factorization claim about an explicitly
+> block-triangular matrix. That is **not** circular and **not** a
+> restatement of (GR-15) at either end; it is exactly the shape of lemma
+> the `G°` induction is missing, and (GR-232)'s `T↑∃∃` — **not** the refuted
+> universal (GR-226)(iv) — is its combinatorial hypothesis. Note the
+> asymmetry the block structure itself predicts: (i) descends and says
+> nothing upward, so the **rank** half of transport points DOWN while the
+> **combinatorial** half (GR-227)(i) is what decides the direction that
+> actually fails. The two halves of the gate do not point the same way,
+> which is the second reason a single undirected sentence about
+> *"transport"* could not have had a truth value.
+
+### Step G251 — (GR-231): what transport does **not** buy — the interior half of the move family does **not** cover the stratum, so transport is **necessary and NOT sufficient** for the `G°` induction
+
+> **(GR-231)** `[MEASURED]` `notes/scripts/w4/gcoltrans.py --cover`
+> Fix the move family `M_c :=` *the Y-reductions at `|A| ≤ c`*, the class
+> the 2026-09-12 user ruling makes the intended one. For every `n` with
+> `n − 1 ≤ c` the complement frames of (GR-217)(i) are inside `M_c`, so
+> coverage is total there and (GR-198)(i)/(ii) reproduce ((GR-223)(ii)).
+> The question is what happens once `n − 1 > c`, and the answer is measured
+> at the first size where the corpus can see it.
+> **(i)** `n_hub = 4`: **`0` of `80`** class shapes carry an interior
+> frame — every frame at that size is a complement frame ((GR-225)(ii)).
+> **(ii)** `n_hub = 6`: **`6 464` of `7 892`** (`81.9 %`) carry an interior
+> (`|A| = 3`) frame, and **all `6 464` of those admit an interior
+> Y-reduction to a certified child** — so the interior reach and the
+> interior frame count coincide exactly. The **`1 428`** that do not are
+> precisely §(K-grid) (GR-223)(i)'s `K₃,₃` class.
+> **(iii)** `n_hub = 8`, `aglu._pool8()` — the **`Λ = ∅`** stratum,
+> **NOT** a general `n_hub = 8` pool: **`16 969` of `39 689`** (`42.8 %`)
+> carry an `|A| = 3` frame (`9` of the `11` inhabited hub classes), and by
+> (GR-217)(iii) the other **`22 720`** carry no `|A| = 5` frame either —
+> they are the `Q₃ = CL₄` and `V₈` classes of (GR-221)(ii), so they carry
+> **no interior frame at all**.
+> **(iv) The reading.** Taking `c = 5` (the largest bound the corpus has
+> measured): `M₅` reaches `80/80` at `n_hub = 4` and `7 892/7 892` at
+> `n_hub = 6` — entirely through complement frames, which `M₅` still
+> contains at those sizes — and then **`16 969` of `39 689` at
+> `n_hub = 8`**, the first size at which `n − 1 > c`. Together with
+> (GR-220)(iii) (`CL_m` has no reduction at `|A| ≤ c` for
+> `m > (c+1)/2`, an infinite family) this settles the shape of the route:
+> **a transport lemma closes the `G°` induction on the part of the stratum
+> `M_c` reaches, and that part is not the stratum.** A positive transport
+> verdict is therefore **necessary and not sufficient** for (GR-15); a
+> negative one would be sufficient to kill the route.
+
+**§8 consequence, stated so the board can price it.** Bar *(m)* asked that
+a move-family search at `D = 0` say what it buys at the transport gate.
+(GR-231) is the converse bar: **an entry proposing transport as the closing
+gate must say what it buys at the COVERAGE gate**, because the two are
+independent and neither closes (GR-15) alone. The `G°` induction now needs
+**both** a transport lemma *and* a second move (or a direct argument) for
+`K₃,₃`, `Q₃`, `V₈` and `CL_m` — which is the same triangle-free residue
+(GR-200) named, unchanged by this direction.
+
+### Step G252 — (GR-232): what **survives** — the `∃`-choice form, which is the only form the induction actually needs, and it is **not** refuted
+
+> **(GR-232)** `[MEASURED]` `gcoltrans.py --lift` (frame-level rows) and
+> `--frame` (the length-only half)
+> The `G°` induction is allowed to **choose** the frame and the re-length;
+> it is handed only the child's GOOD colouring. So the form it consumes is
+> not (GR-226)(iv) as a universal over triples but
+> **`T↑∃∃` : for every tight `D = 0` class shape `S` with `n_hub ≥ 4` there
+> is an interior frame `A` and a certified re-length `ℓ'` such that EVERY
+> GOOD colouring of the child `S' = (G°/A, ℓ')` extends to a GOOD colouring
+> of `S` fixing the shared out-branches** (and, in the strong form, the
+> three boundary darts at their outside hubs, which by alternation fixes
+> the whole colouring outside `A` and leaves the lift free only on the
+> `(3|A|−3)/2` branches inside `A` — at `|A| = 3`, exactly three bits).
+> **(i) The balance obstruction is always avoidable by the choice of
+> re-length.** Of the `15 304` interior frames at `n_hub = 6` carrying a
+> certified child, **`0`** have every re-length adversarial — so at every
+> frame the parent can pick a child with `n_odd(child) ≤ n_odd(parent)`,
+> which is exactly the side of (GR-227)(i) on which the lift's balance
+> half holds.
+> **(ii) Measured `T↑∃∃`, over the WHOLE `n_hub = 6` interior region.**
+> `gcoltrans.py --lift --shapes 7892` (EXHAUSTIVE over
+> `gisland.stratum(6, lamcap=99)`): **`7 892` parent shapes, `15 304`
+> interior frames, `194 325` `(frame, re-length)` triples**; censuses
+> totalling `8 768` distinct certified shapes, `386 238` admissible
+> colourings and **`315 024` GOOD ones, each by an exact rational witness
+> draw** — every one of those a proof, so the GOOD side of this figure
+> carries no cap.
+> * **weak lift**: fails at `1 890` of `194 325` triples (`0.97 %`); the
+>   same test at the exact **admissibility** predicate fails at `1 246`
+>   triples (a different, not a nested, count). Of the `1 890`, **`608`
+>   lie in the `4 597`-triple adversarial slice** — `2.4 %` of the triples
+>   carrying `32 %` of the failures, a `13×` enrichment — and `594` of
+>   those `608` are cap-free. The other `1 282` are **not** explained by
+>   (GR-227)(i): the balance law is the mechanism this direction can
+>   exhibit, not the whole obstruction. Holds
+>   at **every** re-length of `15 096` of `15 304` frames, and at **SOME**
+>   re-length of **`15 304` of `15 304` — `100 %`**.
+> * **strong lift** (the EXTENSION form: everything outside `A` and the
+>   three interface darts fixed, only the three inside bits free): fails at
+>   `51 099` triples and at every re-length of `6 827` frames, but holds at
+>   **SOME** re-length of **`15 304` of `15 304` — `100 %`**.
+> * **weak descent**: fails at `32 378` triples (the admissibility-level
+>   test fails at `55 186`) and — the asymmetry that matters — fails at
+>   **EVERY** re-length of `796` frames, so `T↓∃∃` is **false**.
+> * **strong descent**: fails at `191 489` of `194 325` triples and holds
+>   at some re-length of only `905` of `15 304` frames.
+> **So `T↑∃∃` is satisfied at `100 %` of the interior frames the corpus can
+> afford to test, in BOTH strengths of shared datum, while `T↓∃∃` is
+> refuted.** The lift and the descent are not two readings of one gate:
+> they have opposite verdicts at every quantifier level.
+> **(iii) Cross-checked against a second implementation, and a (GR-15)
+> by-product.** `--lift`'s `sweep2` and `--comp`'s independent weak-datum
+> `sweep` agree on every shared figure (`w_up = 1 890`,
+> `w_down = 32 378`). `--comp --shapes 7892` adds what `sweep` tracks and
+> `sweep2` does not: the admissibility-level counts (`up_adm = 1 246`,
+> `down_adm = 55 186`) and, more usefully, **`0` of the `7 892` parent
+> shapes and `0` of the `194 325` triples' children lack a GOOD
+> colouring**. Between them the two runs censused `8 768` and `10 286`
+> distinct certified shapes (`386 238` / `466 828` admissible colourings,
+> `315 024` / `380 152` GOOD, every GOOD one by an exact witness draw).
+> That is (GR-15) re-measured on a population an order of magnitude larger
+> than, and disjoint in construction from, the `907`-shape
+> `grid.census_shapes` census it is usually quoted against — and it
+> agrees.
+> **(iv) What is NOT settled.** `T↑∃∃` is measured at `n_hub 6 → 4` only,
+> and by (GR-231) it is not enough by itself: at `n_hub = 8` the interior
+> family already misses `22 720` of `39 689` `Λ = ∅` shapes. A proof of
+> `T↑∃∃` closes the induction **on the reachable part** and nothing more.
+
+---
+
+## VERDICT BLOCK — direction GCOLTRANS (ordinal 106, rank 2, 2026-09-12)
+
+**The question as dispatched:** *does the landed Y-move at `D = 0` transport
+an admissible colouring with generic `dim Z₊ = dim Z₋ = 0` from a class
+shape to the smaller class shape it reduces to?*
+
+**Answer, in the register the question needs.** The question as posed names
+the **parent → child** direction, and that direction splits into two
+statements with opposite verdicts and neither of them is the gate:
+
+| statement | verdict | evidence |
+|---|---|---|
+| `T↓∃` — child GOOD, no map | **VACUOUS** — it *is* (GR-15) at the child | (GR-226)(i), (GR-229)(i): `y_reductions` certifies the child |
+| `T↓map` — descent preserving the shared out-part | **REFUTED**, cap-free | (GR-228): an exhibited certified pair with **no admissible** child colouring over two of the parent's GOOD out-restrictions |
+| `T↑∃` — parent GOOD, no map | **VACUOUS** — it *is* (GR-15) at the parent | (GR-229)(iv) |
+| `T↑map` — **lift** preserving the shared out-part | **REFUTED**, cap-free, as a **universal** | (GR-227)(iii): `594` cap-free witnesses in the adversarial slice |
+| the **∃-choice** form: *some* frame and *some* re-length at which every GOOD child colouring lifts | **the live question** | (GR-232) |
+| coverage of the interior move family | `0/80`, `6 464/7 892`, `16 969/39 689` | (GR-231) |
+
+**So the gate is the LIFT, and the lift is the one statement the dispatch
+did not ask about.** That is the framing this entry was ranked for: the
+`G°` induction runs on `n_hub`, its hypothesis is (GR-15) at the child, and
+its **step** is child → parent. The dispatch's direction is the converse of
+the step.
+
+**Confidence.**
+* Both map-forms refuted: **certain** — exhibited pairs, exact admissibility
+  predicate, no draw enters either witness.
+* `T↓∃` / `T↑∃` vacuous: **certain** — two-line derivations from
+  `y_reductions`' own gate.
+* The balance law (GR-227)(i): **proved** as a necessary condition; it
+  accounts for `32 %` of the weak-lift failures at a `13×` enrichment and
+  **not** for the rest. Do not quote it as *the* obstruction.
+* `T↑∃∃` at `100 %`: **measured, exhaustive at `n_hub 6 → 4`** — the whole
+  interior region the corpus can afford — and **not measured anywhere
+  else**. This is the load-bearing capped claim.
+* (GR-231) coverage: **certain** for the counts; the `n_hub = 8` row
+  inherits `_pool8()`'s `Λ = ∅` restriction.
+
+**How the dispatch's prediction came out — verdict and mechanism
+separately.**
+* **VERDICT: right for the wrong reason, and at the wrong statement.** The
+  spec predicted *NEGATIVE* for *"does the move transport an admissible
+  colouring from a class shape to the smaller one it reduces to"*. The
+  descent's map-form is indeed **REFUTED** — but so is the **lift's**, which
+  the spec did not ask about, and the spec's own stated grounds (*"no
+  landed result touches transport"*) are a statement about the corpus, not
+  about the mathematics.
+* **REASON clause: half right, and the half that is right does not do what
+  the spec thought.** *"Admissibility is a condition at the child, which is
+  (GR-15) at the child, so transport looks circular"* — the circularity is
+  REAL and it is exactly (GR-229): it makes the existential forms
+  **vacuous**. The spec's *"where I expect to be wrong"* then read the
+  circularity as *"the gate is exactly an induction hypothesis, so the
+  route comes back to life"* — **refuted** by (GR-229)(iii): a gate that is
+  the induction hypothesis supplies no step. The well-founded-order worry
+  in the same sentence is discharged in one line ((GR-229)(ii)).
+* **MECHANISM: ELIMINATED, and the spec's own proposed refutation of it was
+  also wrong.** The spec's mechanism was *"the Y→Δ's three boundary
+  branches can always be re-coloured freely because the budget-12 three-way
+  split is the move's only freedom ((GR-218))"*. It dies at (GR-225)(iii):
+  **budget `12` is a complement-frame theorem**, and at the interior frames
+  — the only ones in scope under the local ruling — the budget takes every
+  value in `{4,…,11}` and the value `12` never. The spec also offered a
+  one-line disposal of its own mechanism — *"a colouring is not a length
+  assignment, so if those are independent data the mechanism is vacuous"* —
+  and **that is wrong too**: the colouring's very domain is the
+  subdivision, the branch's parity decides its majority colour, and
+  (GR-227)(i) shows the length vector controls admissibility directly. The
+  length and the colouring are **coupled**, which is why re-lengthing is
+  what breaks transport.
+* **TELL: could NOT have fired as stated; fired once re-pointed.** The
+  spec's tell was *"one shape pair with an admissible colouring at the
+  parent and none at the child, or vice versa"*. As a statement about
+  whole shapes this samples a region where a hit would **refute (GR-15)**:
+  across the `8 768` distinct certified shapes censused here, `0` lacked a
+  GOOD colouring ((GR-232)(iii)). The tell fires only when re-pointed at
+  the **shared datum** — and there it fires in both directions, which is
+  the whole result.
+
+**What would change this.**
+1. **One `T↑∃∃` failure at `n_hub = 8 → 6`.** The `100 %` is at a single
+   size step, and the `n_hub = 8` population with `Λ` unrestricted does not
+   exist in the corpus — building it is the natural next dispatch, and the
+   cost is a colouring census at `M = 12` (`2^12` bit vectors per shape),
+   an order of magnitude past what this direction ran.
+2. **A proof of `T↑∃∃`.** (GR-230) says what the rank half looks like — a
+   factorization of a block-triangular `Θ` — and (GR-227)(i) supplies the
+   combinatorial half as a necessary condition. The gap is that the balance
+   law explains only `32 %` of the observed weak-lift failures, so a proof
+   needs the other obstruction identified first.
+3. **Anything that restores `T↓`.** Nothing here does: the descent fails at
+   the exact admissibility predicate, cap-free, at `55 186` triples and at
+   **every** re-length of `796` frames.
+4. **A second move family for the triangle-free residue.** Independently of
+   transport, (GR-231) leaves `K₃,₃`, `Q₃`, `V₈` and `CL_m` unreached.
+
+**Caps and blind axes this direction ran under, stated once.**
+* **Populations.** `gisland.stratum(4, lamcap=99)` (80 shapes) and
+  `gisland.stratum(6, lamcap=99)` (7 892) — EXHAUSTIVE, `Λ` unrestricted,
+  the populations (GR-198)(i)/(ii) used. `aglu._pool8()` is used **only**
+  for the (GR-231) frame count and is the **`Λ = ∅`** stratum, not a
+  general `n_hub = 8` pool. **No colouring was computed at `n_hub = 8`:**
+  the transport verdicts are all at `n_hub 6 → 4` (interior) and
+  `n_hub 6 → 2` / `4 → 2` (complement).
+* **The complement rows test nothing** (`--comp`). At a complement frame `out = ∅`,
+  so the shared datum is the empty tuple and every transport comparison is
+  trivially satisfied. The `3 200` triples at `n_hub = 4` and the `24 000`
+  at `n_hub = 6`, `|A| = 5` returned `0` failures in all four directions and
+  that figure is **vacuous** — recorded here only because it is what
+  (GR-217)/(GR-218)'s *"transports nothing"* looks like when a transport
+  test is actually run on it. The load-bearing measurement is the interior
+  one.
+* **Draws.** `--draws 8` exact rational parameter draws per block, against
+  `gridcol.block_generic_zero`'s default of `2` and `grid.dim_Z_generic`'s
+  `3`. A colouring called **GOOD** is **proven** GOOD (an attaining exact
+  draw is a witness — no cap). A colouring called **not GOOD** means *"no
+  vanishing draw found in 8"*. The asymmetry favours the lift verdict:
+  extra draws can only move colourings into GOOD, which can only **remove**
+  lift failures, and the measured count is already `0`.
+* **Move family.** `gnonadd.y_reductions` — hub contraction at cut `3`,
+  `|A| ∈ {3, 5}`. No other move. Sizes `|A| ≥ 7` are unsearched at
+  `n_hub = 8`.
+* **Exactness.** Every rank is over `ℚ` (`exactcore.rank`); no `GF(p)`
+  shortcut is used anywhere in this direction, unlike
+  `gridcol.block_generic_zero`'s default `modp=True`.
+* **Seed / order coupling.** One `random.Random(C_SEED)` feeds every census
+  in a run, so the draws a given shape receives depend on the iteration
+  order — changing `--shapes` changes which draws a late shape sees. This
+  can only move a colouring across the GOOD boundary in the capped
+  direction (a GOOD verdict is an exhibited witness), and at `8` draws no
+  shape in the exhaustive run needed more than a few; but a figure quoted
+  from a `--shapes`-capped run is not bit-identical to the same figure
+  from the full run, and the full-run figures are the ones in (GR-232)(ii).
+* **The populations are PREFIXES when capped.** `--shapes N` takes the
+  first `N` of `gisland.stratum(6, lamcap=99)` in generator order, **not a
+  random sample** — and (GR-227)'s self-correction is exactly what that
+  costs.
+* **Un-fenced, not copied.** `gcoltrans.py` reaches `dim Z` through the
+  landed `grid.dim_Z` and `gridcol.dim_W_branch` and asserts the (GR-16)
+  identity between them at every colouring of the `--pair` instance; the
+  admissibility predicate is `gridcol.filter_pass` (= `cflank.admissible`
+  plus its `build_fixed_config` conjunct), reached through
+  `closure.colourings`, not a re-implementation. The one local device is
+  `spec_paths`, and it **asserts** its grouping against
+  `gridcol.branch_decomp`.
