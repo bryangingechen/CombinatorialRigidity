@@ -18444,3 +18444,89 @@ every figure — the `m = 6` witness (`k = 0`, `τ = 0`, in the cut space), the
 `2^{3m}` cross-check, and **18 of 18** fully-good rows to `n_hub = 80`. Two
 landed inputs were read at source rather than trusted: (GR-37)(ii)'s cut-space
 sentence, and (GR-34)(ii)'s *"observed, not developed"* self-flag.
+
+## BPROPCL — ordinal 113, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's seventeenth pass, RANK 3** — a REDUCTION, ranked third and dispatched
+because two landed clauses were conditional in the same corner and each called
+it *"a direction's question, not a coordinator's"*. *Question:* is
+`U ⊆ ρ̄_i` a proper closed condition at `ρ_i ≤ 5` once the path confinement has
+gone vacuous?
+
+**VERDICT: it is NOT A LEMMA — it is a ONE-DRAW CERTIFICATE**, and the "one
+lemma for both" sentence is refuted in its own frame and confirmed in
+BSIXTEEN's. Landed as (BE-291)–(BE-298) / *Steps BE290–BE297*.
+
+- **Properness is a property of ONE PEEL.** One draw with `a_i = 0`,
+  `ρ_i = δ_i ≤ 5` and `c_i(U) < dim U` **proves** it at that peel — a
+  certificate assembled entirely from landed ingredients, composing rows **2, 3
+  and 4** of (BE-255)(i) in three *different* semicontinuity directions, which
+  the corpus had never done together. **Cap-free.**
+- **Census** (`gp`, 1 281 draws over 400 distinct sides): `a_i = 0` at
+  **1 281/1 281**; a tight draw at **400/400**; **properness certified at 375 of
+  375 eligible rows**, both blocks; **15 of the 15 ELIGIBLE rows** in the residue regime
+  `dist ≥ 6`. The 25 non-certifying rows are exactly `ρ = δ = 6`, where
+  containment genuinely holds and the arithmetic closes the peel.
+- **What is NOT supplied is the class statement the two clauses INTEND.** Read
+  at their owning sections both ask for *"a proof that `U ⊆ ρ̄_i` is a proper
+  closed condition"*, and that is discharged peel-by-peel; a statement
+  quantified over **all** internal R-node peels at rung 3 is a **different
+  object**. Saying so is the direction's main deliverable, and it is stated
+  before any figure because a figure cannot make it.
+
+**THE MECHANISM BOTH RESIDUE CLAUSES NAME IS FALSE.** General position against
+`Λ²K⁴` is **exceeded at 102 of 1 281** draws at `Π_x` — never at `⟨M⟩`
+(`0/1 281`) — and the reason is **proved**, not counted: **saturation**,
+`ρ_i = dim ⟨P₀⟩ ⟹ ρ̄_i = ⟨P₀⟩ ∋ ℓ₁ ∈ Π_x`, asserted at 198/198 saturated draws,
+with the intersection line a side hinge at **102 of 102** excesses and *not* a
+hinge at exactly the three `(dist 6, ρ 5)` draws.
+
+**THE CROSS-RETURN REVERSAL — this round's compounding item.** The direction's
+headline through six steps was *"the two residues are NOT one question"*.
+**BSIXTEEN landed mid-run**, and its (BE-281)(iii) proposed the repair: state
+the lemma **relative to `⟨P₀⟩`**. BPROPCL **tested it rather than arguing
+against it** — `c_i(U) = max(0, ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩)`, asserted at
+**1 281/1 281**, both blocks, 0 exceptions. **So (BE-277)(iii)'s *"a single
+lemma would discharge both"* is REFUTED in its own frame and CONFIRMED in
+BSIXTEEN's**, and two directions each fenced off the other's lemma **converged
+on one**, from opposite ends of the `dim ⟨P₀⟩` axis. It was reached by
+**diffing against `HEAD` rather than against the dispatch baseline** — the
+concurrency discipline producing a result rather than merely avoiding a
+collision.
+
+**THE F26 CHECK, RUN FIRST AND REPORTED AGAINST ITS OWN INTEREST.** Every citer
+of both residues sits **inside this lane**, and the terminal clauses disclaim
+the payoff verbatim — **no landed claim is conditional on either residue's
+tag.** It *is* consumed (removing L6 takes (BE-274)(i)'s survivors 0 → 1 120),
+but nothing requires it to be `[PROVED]`.
+
+**THE CORNER STAYS LIVE, priced draw-free and against the direction's own
+interest.** `bmblock.run_reach` **computes and drops** the
+`((δ₁,δ₂),(dist₁,dist₂))` joint; recovered, the 248 corner peels read
+`{(2,2): 6, (2,3): 13, (2,4): 1, (3,2): 72, (3,3): 156}` — so `min δ ≥ 2` and
+**`max δ ≤ 4`, hence `ρ_i ≤ 4`: both clauses' `ρ_i ≤ 5` is NOT TIGHT**, and
+(BE-259)(ii)'s own `δ_j = 0` collapse **cannot fire anywhere in the corner**.
+Residue **live at 248/248**.
+
+**A DENOMINATOR DISCLOSURE THAT SCOPES TWO SIBLING LANDINGS:** the **427** side
+rows are **400 DISTINCT sides** — `side_library ∩ side1_library = 27` shapes, 26
+at `dist ≤ 5` and exactly 1 at `dist ≥ 6`. *"427 side rows"* over-reads distinct
+shapes by 27. No cell count or verdict moves, since every assertion is per row,
+but the figure is annotated at both sites.
+
+**FOUR SELF-CATCHES THAT MATTER**, one of them a false statement caught before
+anything rested on it: the certificate's **first** form omitted `a_i = 0`,
+without which `{ρ_i = δ_i}` need not be open — caught by reading (BE-22)(ii) at
+its owning section. The direction also nearly imported (BE-262)(i)'s
+*"confinement tight at 234 of 257"* as evidence about `ρ_i = δ_i` when it is
+`δ_i = m_i` on the **path** confinement; and it found `cmin_rho` is a minimum
+while `ρ` is *lower* semicontinuous — conservative where used, **no landed
+figure affected**.
+
+**Coordinator verification:** `pop` and `gp` re-run at the landing baseline and
+reproduce every figure, including the 2 946/248 population, the corner's `(δ₁,δ₂)`
+profile summing to 248, and the census. The F26 claim was **re-run
+independently** — `--cited-by` on both residues returns citers only in
+`bare-ext/`. **The draft arrived failing `ledger.py --lint` with 18 violations**,
+all one mechanical error (a literal `[UNTAGGED]` tag, which the parser *infers*
+rather than accepts); stripped at landing, lint green.

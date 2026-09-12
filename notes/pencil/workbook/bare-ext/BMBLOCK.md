@@ -547,6 +547,23 @@ terminals, `δ₁ + δ₂ ≤ 6`) — **and drawing nothing**.
 > `ρ̄_i` in general position against a stable block once the path confinement
 > has gone vacuous.* *A direction's question, not a coordinator's.*
 
+> > **— SCOPED 2026-09-12 by (BE-295)/(BE-298) (direction BPROPCL): this sentence
+> > is REFUTED IN ITS OWN FRAME and CONFIRMED IN BSIXTEEN'S.** Stated as it is here
+> > — one lemma about `U ⊆ ρ̄_i` covering both residues — it is **false**: `Π_x` is
+> > the span of the side's own hinges while `⟨M⟩` sits in the direct complement of
+> > both pencils, and **general position against `Λ²K⁴` — the mechanism this clause
+> > and (BE-259)(ii) both name — is FALSE at `Π_x`**, exceeded at **102 of 1 281**
+> > draws (never at `⟨M⟩`, 0 of 1 281), by a **proved** saturation mechanism
+> > (`ρ_i = dim ⟨P₀⟩ ⟹ ρ̄_i = ⟨P₀⟩ ∋ ℓ₁ ∈ Π_x`). **But stated relative to `⟨P₀⟩`**,
+> > as (BE-281)(iii) proposes, one identity does cover both:
+> > `c_i(U) = max(0, ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩)` at **1 281/1 281**. **And the
+> > residue is not a lemma at all** — properness is a property of ONE PEEL, and
+> > (BE-293)(i) proves it **per peel from one draw**, composing rows 2, 3 and 4 of
+> > (BE-255)(i) in three different semicontinuity directions. Certified at **375 of
+> > 375** eligible rows and **15 of the 15 ELIGIBLE** in this clause's own `dist ≥ 6` regime.
+> > **The corner stays live at 248/248**, and `max δ = 4` there, so this clause's
+> > `ρ_i ≤ 5` is not tight.
+
 > **(BE-277)(iv)** — **the board.** **What moved.** The `⟨M⟩` path
 > lemma, proved, with transversal certificates at `m ∈ {3,4}` and a determinant
 > at `m = 5` ((BE-272)); the `⟨M⟩` block closed at rung 3 whenever either side

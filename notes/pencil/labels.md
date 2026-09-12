@@ -5684,6 +5684,13 @@ baselines; its LIST is baseline-dependent and must be re-read rather than
 quoted.** Worth recording because a reservation record is the one artifact whose
 own landing changes what a later grep finds.
 
+**BPROPCL CONSUMED ITS WHOLE RANGE** — **(BE-291)–(BE-298)** / ***Steps
+BE290–BE297***, landed 2026-09-12 into the new `workbook/bare-ext/BPROPCL.md`.
+Nothing returned. Its reservation was **re-verified at `d073ddb4`** after `HEAD`
+advanced **twice** under it (BSIXTEEN, then GODDRUNG): 0 hits outside its own two
+files — the concurrent-read discipline working, and the same re-verification is
+what surfaced this round's cross-return reversal.
+
 **GODDRUNG CONSUMED ITS WHOLE RANGE** — **(GR-249)–(GR-256)** / ***Steps
 G269–G276***, landed 2026-09-12 into `workbook/grid.md` after GBASE's
 continuation. Nothing returned.

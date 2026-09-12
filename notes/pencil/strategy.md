@@ -1824,23 +1824,63 @@ question at the rung where BWHOLEH's refutation lives.
    > can be admissible at odd rung length, which would say the base's one landed instrument cannot
    > be repaired and is itself a result. Decided by: the `(K-grid)` row, close-it u9.*
    >
-3. **THE SHARED RESIDUE — ONE LEMMA FOR TWO LANDED CLOSURES.** *(new — named independently by
-   BGOODEMPTY and by BMBLOCK, each calling it "a direction's question, not a coordinator's".)*
-   Owner: §(K-bare-ext) (BE-262)(ii)'s FIRST item and (BE-277)(iii). Both landed closures are
-   **conditional in the same corner**: (BE-259)(ii) needs *"a proof that `Π_x ⊆ ρ̄_i` is a proper
-   closed condition when `ρ_i ≤ 5` and `dim ⟨P₀⟩ ∈ {5, 6}`"*, and (BE-274) needs the same for
-   `⟨M⟩` at `dim ⟨P₀⟩ = 6` — one dimension down and one regime narrower, because at
-   `dim ⟨P₀⟩ = 5` the path lemma already closes it where the `α_x` bound does not. **It is the
-   same question about `ρ̄_i` in general position against a stable block once the path confinement
-   has gone vacuous, and ONE lemma discharges BOTH.** Population priced **draw-free**: **248 of
-   2 946** in-region peels ((BE-276)(i)). **GLEAF's question: a REDUCTION** — it proves nothing
-   new, it removes a hypothesis from two things already proved — which is why it ranks below two
-   SUFFICIENT entries despite being the cheapest and most sharply posed item on either lane.
-   *Kill condition: the properness lemma proved — which makes (BE-259) and (BE-274) unconditional
-   at once — or a rung-3 peel exhibited at which `Π_x ⊆ ρ̄_i` (or `⟨M⟩ ⊆ ρ̄_i`) holds
-   IDENTICALLY on the chart rather than on a proper closed subset, which turns the residue into a
-   live route rather than a hypothesis. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+3. **THE SHARED RESIDUE — SPENT (BPROPCL 113, 2026-09-12): IT IS NOT A LEMMA, IT IS A ONE-DRAW
+   CERTIFICATE — AND THE "ONE LEMMA FOR BOTH" SENTENCE IS REFUTED IN ITS OWN FRAME AND CONFIRMED IN
+   BSIXTEEN'S.** Owner of the answer: §(K-bare-ext) *Steps BE290–BE297*, (BE-291)–(BE-298).
+   **Properness is a property of ONE PEEL**, and one draw with `a_i = 0`, `ρ_i = δ_i ≤ 5` and
+   `c_i(U) < dim U` **proves** it there — a certificate assembled from landed ingredients,
+   composing rows **2, 3 and 4** of (BE-255)(i) in three *different* semicontinuity directions,
+   which the corpus had never done together. **Certified at 375 of 375 eligible rows**, both
+   blocks, and **15 of the 15 ELIGIBLE rows** in the `dist ≥ 6` regime — which holds **40** rows in
+   all, the other **25** being exactly the `ρ = δ = 6` rows, where containment genuinely holds and
+   the arithmetic closes the peel. **What is NOT
+   supplied is the class statement the two clauses INTEND** — and saying that the two are different
+   objects is the direction's main deliverable, stated before any figure because a figure cannot
+   make it.
+   **THE MECHANISM BOTH RESIDUE CLAUSES NAME IS FALSE.** General position against `Λ²K⁴` is
+   **exceeded at 102 of 1 281** draws at `Π_x` — never at `⟨M⟩` (0 of 1 281) — and the reason is
+   **proved**, not counted: saturation, `ρ_i = dim ⟨P₀⟩ ⟹ ρ̄_i = ⟨P₀⟩ ∋ ℓ₁ ∈ Π_x`, asserted at
+   198/198 saturated draws with the intersection line a side hinge at **102 of 102** excesses.
+   **THE CROSS-RETURN REVERSAL, and it is this round's compounding item.** This direction's
+   headline through six steps was *"the two residues are NOT one question"*. **BSIXTEEN landed
+   mid-run** and its (BE-281)(iii) proposed the repair — state the lemma **relative to `⟨P₀⟩`** —
+   which BPROPCL **tested rather than argued against**:
+   `c_i(U) = max(0, ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩)`, asserted at **1 281/1 281**, both blocks, 0
+   exceptions. So **(BE-277)(iii) is REFUTED in its own frame and CONFIRMED in BSIXTEEN's**, and
+   two directions each fenced off the other's lemma **converged on one** from opposite ends of the
+   `dim ⟨P₀⟩` axis. It was reached by **diffing against `HEAD` rather than against the dispatch
+   baseline**.
+   **AND THE F26 CHECK, RUN FIRST AND REPORTED AGAINST ITS OWN INTEREST:** every citer of both
+   residues sits **inside this lane**, and the terminal clauses disclaim the payoff verbatim — **no
+   landed claim is conditional on either residue's tag.** It is consumed (removing L6 takes
+   (BE-274)(i)'s survivors 0 → 1 120) but nothing requires it to be `[PROVED]`.
+   *Kill condition: MET, and in the shape the entry did not anticipate — the residue as literally
+   stated is discharged **peel-by-peel**, at every eligible row of the population the two clauses
+   cite. The corner stays **LIVE at 248/248**, priced draw-free, and `max δ = 4` there, so both
+   clauses' `ρ_i ≤ 5` is **not tight** and (BE-259)(ii)'s `δ_j = 0` collapse **cannot fire** in it.
+   The successor is the **class** statement over all internal R-node peels — a different object —
+   and the widest open axis under it is whether `Chart(H) → Chart(side_i)` is **dominant**, which
+   conditions every side-row figure on this lane and is a coordinator's to route. Decided by: the
+   `(K-bare)/(K-bare-ext)` row.*
 
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — named independently by
+   > BGOODEMPTY and by BMBLOCK, each calling it "a direction's question, not a coordinator's".)*
+   > > Owner: §(K-bare-ext) (BE-262)(ii)'s FIRST item and (BE-277)(iii). Both landed closures are
+   > **conditional in the same corner**: (BE-259)(ii) needs *"a proof that `Π_x ⊆ ρ̄_i` is a proper
+   > closed condition when `ρ_i ≤ 5` and `dim ⟨P₀⟩ ∈ {5, 6}`"*, and (BE-274) needs the same for
+   > `⟨M⟩` at `dim ⟨P₀⟩ = 6` — one dimension down and one regime narrower, because at
+   > `dim ⟨P₀⟩ = 5` the path lemma already closes it where the `α_x` bound does not. **It is the
+   > same question about `ρ̄_i` in general position against a stable block once the path confinement
+   > has gone vacuous, and ONE lemma discharges BOTH.** Population priced **draw-free**: **248 of
+   > 2 946** in-region peels ((BE-276)(i)). **GLEAF's question: a REDUCTION** — it proves nothing
+   > new, it removes a hypothesis from two things already proved — which is why it ranks below two
+   > SUFFICIENT entries despite being the cheapest and most sharply posed item on either lane.
+   > *Kill condition: the properness lemma proved — which makes (BE-259) and (BE-274) unconditional
+   > at once — or a rung-3 peel exhibited at which `Π_x ⊆ ρ̄_i` (or `⟨M⟩ ⊆ ρ̄_i`) holds
+   > IDENTICALLY on the chart rather than on a proper closed subset, which turns the residue into a
+   > live route rather than a hypothesis. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 4.–9. **THE CARRIED ENTRIES, RE-ORDERED ONLY BY THE STANDING CRITERION** — the (c)-strengthened
    closure's 14/18 residual (SUFFICIENT but **capped twice**, and now a third time: it was ranked
    as a route to (GR-15) on a lane whose structural route is struck, so its *"does not obviously

@@ -341,13 +341,29 @@ discharge both**, and that — not two lemmas — is what this direction hands
 forward. *Stated as a direction's question; the two dispatches are complementary
 and not duplicative, exactly as the spec's division intends.*
 
+> **— TESTED 2026-09-12 by (BE-295) (direction BPROPCL), and it is the round's
+> cross-return item.** That direction's headline through six steps was *"the two
+> residues are NOT one question"*. This clause landed **mid-run**, proposing the
+> repair — state the lemma **relative to `⟨P₀⟩`** — and BPROPCL **tested it rather
+> than argued against it**: `c_i(U) = max(0, ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩)`,
+> asserted at **1 281/1 281** draws, both blocks, 0 exceptions. **So
+> (BE-277)(iii)'s *"a single lemma would discharge both"* is REFUTED in its own
+> frame and CONFIRMED in this one**, and two directions each told not to attempt
+> the other's lemma converged on one from opposite ends of the `dim ⟨P₀⟩` axis.
+> BPROPCL reached it by **diffing against `HEAD` rather than against its dispatch
+> baseline**, which is the concurrency discipline working as intended.
+
 ---
 
 ### *Step BE281* — **(BE-282): THE CARRIER READING — the table holds on `Chart(H)` at 13 664 cells, and the law's 100 % is a CAP, not a confirmation**
 
 **(BE-282)(i)** `[MEASURED]` — `bsixteen.py side`, **368.7 s**, seed
 `20260912`, exact ℚ, **427 side rows**, **854 generic-regime draws**, **13 664
-`(draw, U)` cells**. Asserted at every cell, **0 failures**:
+`(draw, U)` cells**. *(**Denominator disclosure, added 2026-09-12 by (BE-293)
+(direction BPROPCL): the 427 rows are **400 DISTINCT sides** — `side_library`
+and `side1_library` share **27** shapes, 26 of them at `dist ≤ 5` and exactly
+1 at `dist ≥ 6`. So "427 side rows" over-reads distinct shapes by 27; no cell
+count or verdict here moves, because every assertion is per row.)* Asserted at every cell, **0 failures**:
 
 * **the block path bound** `c_i(U) ≤ dim(⟨P₀⟩ ∩ U)` ((BE-278)(iii)) — the
   pointwise instrument, now on the carrier rather than on free legal chains;
