@@ -5355,3 +5355,39 @@ coordinator's spec exactly.
 > asserts the Grassmann implication, not the exhaustion. Third member of the
 > (BE-228)(iii) / (BE-233)(i) family, and the first caught by the ledger rather
 > than by a sweep.
+
+## Reserved namespace — direction GOWNHALF (2026-09-12, **SEVEN of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GOWNHALF** | §(K-grid) — continuation in `workbook/grid.md` | **(GR-209)–(GR-215)** | ***Steps G229–G235*** | `w4/gownhalf.py` (six modes + `--ps N` + `validate`) |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`). At
+`fde0317f`: **CLEAN EXCEPT THE DECLARATION** — `(GR-209)` and `G229` hit only
+previous reservations' own live-tail bookkeeping in `labels.md` and
+`fanout.md` (four and four lines respectively, every one a declaration);
+`(GR-210)`–`(GR-216)`, `G230`–`G236`, `GOWNHALF` / `gownhalf` **0 hits / 0
+files each**.
+
+**(GR-216) / *Step G236* RETURNED UNUSED** and available. **(GR-215) /
+*Step G235* was minted by the COORDINATOR at landing**, not by the direction,
+out of this same reserved range — see the step's own preamble.
+
+**THE LIVE TAIL IS NOW (GR-225) / *Step G245*** — direction **GTRIFREE holds
+(GR-217)–(GR-224) / *G237–G244* IN FLIGHT** at the time of this landing, so
+the tail skips past its range rather than reusing it.
+
+> ***THE LABEL THE COORDINATOR MINTED IS THE INTERESTING ONE, AND IT IS AN
+> §4 CATCH RATHER THAN A MATHEMATICAL ONE.*** The draft disclosed the census
+> fence's `Λ`-asymmetry at two strata — *"35 of 336 (10.4 %) at `Λ = ∅`
+> against 180 of 930 (19.4 %) at `|Λ| = 1`"* — with **no driver behind it**,
+> in a section that otherwise carries a driver per headline sentence.
+> Verification reproduced both figures **exactly** and then found the sentence
+> understated in one direction and mis-priced in another: the asymmetry is
+> **monotone** and reaches **100 % at `|Λ| = 3`** (20 of 20, by arithmetic, so
+> that stratum's emptiness is a *consequence of the filter* rather than the
+> observation the corpus records), and the `3` is **not a removable literal**
+> at all, since `kslidecomb.shape_data` **asserts** the split edge has length
+> 3. `RESEARCH-ARC.md` §4 — *a driver per headline sentence* — is what
+> surfaced it: the question was not *"is this true?"* but *"which driver tests
+> this sentence?"*, and the answer was *none*.

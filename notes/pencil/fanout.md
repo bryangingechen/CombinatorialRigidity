@@ -2,10 +2,13 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; 109 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+dispatched; **110 LANDED, TWO IN FLIGHT** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
-§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. The round of three (BFOUR 81,
+§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12
+round of three is MID-LANDING against §8's FOURTEENTH pass: GOWNHALF (103) LANDED; BWHOLEH
+(102, rank 1, the `hbareSplit` lane) and GTRIFREE (104, rank 3) are IN FLIGHT.** Landed
+ordinals are therefore 1–101 and 103 — 102 ordinals, 110 directions. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -17570,3 +17573,66 @@ never *"does not exist"*.
 
 **Reservation.** (BE-239)–(BE-245) / *Steps BE238–BE244* consumed; **(BE-246) /
 *Step BE245* returned unused**. Live tail **(BE-247) / *Step BE246***.
+
+
+## GOWNHALF — ordinal 103, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's fourteenth pass, RANK 2.** *Question:* is (GR-206)(iv)'s `own`-half
+propagation gain — `gen` 91.2 % against 82.8 %, Type A failures 7× fewer, from
+an initialisation profile reported as *indistinguishable* — attributable to a
+named rule among (b), (s), (c)?
+
+**VERDICT: NOT RULE-ATTRIBUTABLE — and the clause is refuted at its PREMISE,
+not its conclusion.** The initial tables are not the same. The landed `gen`
+verdict is a **function of the class table's isomorphism type**, measured two
+independent ways (**0 of 6 501** blocks move under 48 relabellings; **0 of 86**
+types split), and the four size statistics (GR-206)(iv) quotes do not determine
+that type. Over the **46 types both strata reach** — 4 667 blocks — the whole
+**7.7-point shared-type gap** is a **re-weighting**, exactly and necessarily;
+re-weighting the shared portions closes 5.3–6.3 of the whole-stratum 7.8, and
+the residue is exclusive-type composition. **No fifth handle**: the one genuine
+affordance of an own-coloured `Λ`-edge — 15 non-sub-star types structurally
+unreachable at `Λ = ∅` — certifies at **89.2 %, below** its own stratum's
+90.6 %. Landed as (GR-209)–(GR-215) / *Steps G229–G235*.
+
+**Two corrections to LANDED prose**, both caught inside the direction's own
+population: *(1)* **(GR-214)** — (GR-206)(iii)/(iv)'s rows are labelled
+`(own, other)` but `leg_mech` keys on **positivity**
+(`(k['nhub'], k['own'] > 0, k['other'] > 0)`), so the row read as `(1, 0)` is
+`own ≥ 1` = 3 165 blocks at 91.2 %, while the **exact** `(1, 0)` stratum is
+**2 850** at **90.6 %** — and the *same sentence*'s `38/2 620` Type A
+denominator is **exact**-keyed, which the arithmetic pins
+(`2 850 − 2 620 = 230 = 268 − 38`, with no matching quantity at 3 165).
+*(2)* **(GR-215)**, coordinator-minted at landing: the census's `3 in lens`
+filter is **monotonically `Λ`-asymmetric** — 10.4 / 19.4 / 41.9 / **100 %**
+across `|Λ| = 0..3` — so `|Λ| = 3` at `n_hub = 4` is empty **as a consequence
+of the filter**, by arithmetic rather than by search; and the `3` is **not a
+removable literal**, `kslidecomb.shape_data` asserting the split edge has
+length 3, so opening that axis is a **new construction** rather than an
+un-fencing.
+
+**Three self-caught errors, recorded because the direction volunteered them:**
+its own derived mechanism (a non-star lifting rule (b)'s yield cap 1 → 3) is
+**true, exhibited, and not the answer** — those blocks certify *below* their
+stratum; it briefly concluded from a failing assert that the landed closure was
+not label-invariant, and `--order` refuted that in one run (its own canonical
+form was at fault); and it found the positivity defect by an invariance assert
+failing.
+
+**Prediction outcome: verdict REFUTED, mechanism REFUTED.** The spec predicted
+*attributable, to rule (s)*; no rule shows anything near 7×, and **(c) moves
+the wrong way** (0.98 → 0.80 → 0.40 as `own` rises). The spec's *"where I
+expect to be wrong"* — *"I expect the **partition** to be wrong, not the
+attribution … if the tables differ in a fifth statistic nobody tabulated, the
+question dissolves"* — **was right, and it is the sentence that decided the
+direction.** Fourth of five consecutive instances in which that field carried
+the outcome.
+
+**Coordinator verification.** All six driver modes re-run at the landing sha
+(`--shape --rules --ablate --types --order` plus `--types --ps 3` and
+`--validate`); every headline figure reproduced exactly. The (GR-214) scope
+defect was checked **at the landed source** (`glamprop.py:444`) and by
+independent arithmetic rather than from the draft's account of it. The fence
+figures were recomputed independently (1 751 / 430 / 35-of-336 / 180-of-930,
+all exact) — which is how the missing driver was found, and `gownhalf.py
+--fence` now supplies one.

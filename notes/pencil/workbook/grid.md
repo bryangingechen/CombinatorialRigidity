@@ -19035,18 +19035,37 @@ other layers, all under the seeded-draw cap: `n_hub = 5` — `Λ = ∅` 0/60,
 > so contracting a `Λ`-edge removes a super-edge **without removing any class
 > incidence**: the same 9 incidences ride on fewer branches. At `n_hub = 4`:
 >
-> | `(own, other)` | blocks | super-edges/blk | `\|K\|≥3` /blk | round-0 kills | `gen` |
+> | `(own, other)` — **read as POSITIVITY, see the scope note** | blocks | super-edges/blk | `\|K\|≥3` /blk | round-0 kills | `gen` |
 > |---|---|---|---|---|---|
 > | `(0, 0)` | 3 336 | 6.00 | 0.28 | 28.1 % | 82.8 % |
 > | `(0, 1)` | 3 165 | **4.90** | **0.64** | **55.7 %** | **94.8 %** |
 > | `(1, 0)` | 3 165 | 6.00 | 0.25 | 24.8 % | 91.2 % |
 > | `(1, 1)` | 882 | 5.00 | 0.70 | 63.6 % | 100.0 % |
 >
+> **SCOPE, corrected 2026-09-12 by (GR-215)/(GR-214) — the row labels say a
+> PAIR and the driver keys on POSITIVITY.** `leg_mech`'s stratum key is
+> `(k['nhub'], k['own'] > 0, k['other'] > 0)`, so the row printed `(1, 0)` is
+> `own ≥ 1, other = 0` — it **pools** `own = 1` and `own = 2`. Exactly:
+> `own = 1` is **2 850** blocks at `gen` **90.6 %** and `own = 2` is **315** at
+> **97.1 %**, which sum to the 3 165 / 91.2 % above. The same holds of the
+> `(0, 1)` row. The *measurements* are right and were reproduced block for
+> block; only the **labels** are. Every figure quoted from this table must
+> carry which key it is on.
+>
 > Rule (a) kills a super-edge at round 0 **iff** `|K_own(β)| ≥ 3`, and that
 > is the closure's only parameter-free head start. Contraction doubles how
 > often it fires, and `gen` rises with it.
 >
-> **(iv) The `own` half's mechanism is OPEN.** The `(1, 0)` row's
+> **(iv) The `own` half's mechanism is OPEN.** **— ANSWERED 2026-09-12 by
+> direction GOWNHALF ((GR-212)): the gain is NOT rule-attributable, and this
+> clause is refuted at its PREMISE rather than its conclusion. The initial
+> tables are not the same: the landed `gen` verdict is a function of the class
+> table's ISOMORPHISM TYPE ((GR-211)/(GR-212)), which the four size statistics
+> below do not determine, and over the 46 types both strata reach the whole
+> shared-type gap is a re-weighting. Read the rest of this clause as the
+> question it posed, not as a live claim; note also that its `gen` figure is
+> positivity-keyed (3 165 / 91.2 %) while its `38/2 620` Type A denominator is
+> exact-keyed (2 850) — in the same sentence ((GR-214)).** The `(1, 0)` row's
 > initialisation profile is **indistinguishable** from `Λ = ∅` — same 6.00
 > super-edges, `|K| ≥ 3` per block 0.25 against 0.28, round-0 kill rate
 > **24.8 % against 28.1 %, i.e. slightly LOWER** — and its suppressed graph
@@ -19422,3 +19441,605 @@ so **measured nothing, script not retained** (`notes/scripts/README.md`'s
 standing rule). It is a curiosity, not a dependency: the correction fixes a
 quantifier on a **construction**, and (GR-200)'s obstruction only ever uses
 `m ≥ 6`.*
+
+## §(K-grid) — continuation (direction GOWNHALF, ordinal 103, 2026-09-12): §8's rank 2 is answered **NOT RULE-ATTRIBUTABLE**, and (GR-206)(iv) is refuted at its **premise** rather than its conclusion — the two strata's initial tables are *not* the same, because the landed `gen` verdict is a **function of the class table's isomorphism type** (**0 of 6 501** blocks move under 48 relabellings, **0 of 86** types split, two independent measurements), so over the **46 types both strata reach** the whole **7.7-point** shared-type gap is a **re-weighting** and nothing in the propagation behaves differently at `(1, 0)`; **no fifth handle is visible from here**; the one genuinely new affordance — 15 non-sub-star types the own-coloured `Λ`-edge unlocks — runs **below** its own stratum's average; and (GR-206)(iii)/(iv)'s rows are keyed on **POSITIVITY** where their labels say a pair, so the row read as `(1, 0)` is `own ≥ 1` = 3 165 blocks at 91.2 % while the **exact** `(1, 0)` stratum is 2 850 at **90.6 %** ((GR-214))
+
+*Driver `notes/scripts/w4/gownhalf.py` (modes `--shape --rules --ablate --types --order --fence`, plus `--ps N` and `--validate`), landed with this section. Labels **(GR-209)–(GR-215)** / *Steps G229–G235*; **(GR-216)** / *G236* returned unused. *Step G235* ((GR-215)) is **coordinator-authored at landing** — see its own preamble.*
+
+## The question, and the verdict
+
+(GR-206)(iv) (§(K-grid) *Step G226*) leaves this: the `(1, 0)` stratum
+certifies `gen` **91.2 %** against `Λ = ∅`'s **82.8 %**, with a Type A failure
+rate of 38/2 620 (1.45 %) against 320/3 083 (10.4 %) — a **7×** reduction —
+from an initialisation profile it reports as *indistinguishable*, on the *same
+simple K4*. It concludes: *"the entire `own`-half gain is produced **during**
+the propagation — by rules (b), (s) and (c) on a graph and an initial table
+that look the same."* Is that gain attributable to a named rule among (b), (s)
+and (c)?
+
+> **VERDICT: NOT rule-attributable — and (GR-206)(iv)'s framing is REFUTED at
+> its premise, not at its conclusion.** The initial tables are *not* the same.
+> The landed `gen` verdict is a **function of the class table's isomorphism
+> type** — measured, not assumed: invariant under all 24 node relabellings of
+> K4 crossed with both class orders at **0 of 6 501** blocks ((GR-211)), and a
+> complete invariant on **0 of 86** types ((GR-212)). So no rule can behave
+> differently at `(1, 0)`; the two strata hand the closure **different
+> problems**. Over the **46 types both strata reach** — 4 667 of the 6 501
+> `n_hub = 4, other = 0` blocks — **100 % of the gap is a re-weighting**:
+> re-weighting `(1, 0)`'s per-type verdicts to `Λ = ∅`'s type distribution
+> returns 84.5 %, which is `Λ = ∅`'s own rate on those types, exactly and by
+> construction.
+
+Consequences for §8, stated plainly because that is what the entry was priced
+on:
+
+- **No fifth handle is visible from here.** Nothing in the propagation does
+  anything at `(1, 0)` that it does not do at `Λ = ∅`. The positive branch of
+  rank 4's kill condition takes **no** candidate from this direction.
+- The rank-4 cap stands as stated and is **restated, not rediscovered**: the
+  (c)-strengthened closure certifies **9 595** against (GR-9)'s **10 203** at
+  `dim Z = 0` ((GR-183) *Step G202*, (GR-183)(i) *Step G225*), so a fifth
+  handle would have been worth what it is worth against **that**, not against
+  the 608-block residual alone.
+- §8 bar *(h)* is untouched: nothing here compares the (GR-16)(a)/(b)
+  propagation with (GR-9), which are **incomparable** by §(K-grid) (GR-180).
+  §8 bar *(f)* is untouched: no counting-and-closure criterion for
+  `r`-certification appears below.
+
+**Three things this direction got wrong and caught itself on**, recorded
+because they are the load-bearing corrections: *(1)* the mechanism it derived
+structurally — that an own-coloured `Λ`-edge lets a class's incidence set be a
+**non-star**, lifting rule (b)'s per-class yield cap from 1 to 3 — is **true,
+exhibited, and not the answer** ((GR-210)); *(2)* it briefly concluded from a
+failing assertion that the landed closure was **not label-invariant**, and
+`--order` refuted that in one run — the fault was its own canonical form
+((GR-211)); *(3)* it found a **scope defect in (GR-206)(iii)/(iv) itself**
+((GR-214)).
+
+---
+
+## *Step G229* — (GR-209): the fifth statistic is not a statistic, it is the whole incidence structure
+
+> **(GR-209)** `[PROVED]` (the law) / `[MEASURED]` (the profile);
+> `notes/scripts/w4/gownhalf.py --shape`, all 907 shapes, `col_cap = 4096`,
+> `per_shape = 6`, balanced filter-passing blocks only, **no randomness**.
+>
+> **(i) A class IS a component of the own-coloured subgraph.** `grid.py`'s
+> `block_data` sets `comp_mine = components(allverts, E_mine)` and
+> `cls = [comp_mine[e[0]] for e in E_mine]`, so `bd['cls']` is the component
+> index of `E_own`. Derived from the **body**, not from a docstring
+> (`CLAUDE.md` *Docstrings are not evidence*).
+>
+> **(ii) THE SUB-STAR LAW.** Write `inc(X) = {β : X ∈ K_own(β)}` for a class's
+> incidence set among the super-edges. By (GR-16)(iii) (§(K-grid) *Step G19*)
+> every class is `star_own(u₁) ∪ … ∪ star_own(u_p)` over the hubs of a
+> `Γ_own`-path of `Λ`, or a singleton interior edge; at `Λ = ∅` the path has
+> `p = 1`, so **every class is a sub-star of one hub** and `inc(X)` is a set of
+> super-edges sharing a common node. An own-coloured `Λ`-edge `uw` is a hub-hub
+> own edge, so it **fuses** `star_own(u)` and `star_own(w)` into one component
+> whose incidence set need not be a star. *Asserted per class, every block,
+> every stratum of the sweep:* an `inc(X)` that is not a sub-star occurs only
+> at a class that is fused in `glamprop --mech`'s own sense (its own-colour
+> edges touch ≥ 2 hubs of `G°`). **0 violations.**
+>
+> **(iii) The size statistics really do match — all SEVEN of them.**
+> (GR-206)(iii)/(iv) quote four; `glamprop --mech` prints three more, and they
+> match too. At `n_hub = 4` (exact `(own, other)` strata, see (GR-214)):
+>
+> | statistic | `Λ = ∅` | `(1, 0)` |
+> |---|---|---|
+> | super-edges / block | 6.00 | 6.00 |
+> | `Σ_β \|K_own(β)\|` / block | 9.00 | 9.00 |
+> | distinct classes / block | 7.00 | 7.00 |
+> | `\|K\| ≥ 3` / block | 0.28 | 0.25 |
+> | `\|K\| = 2` / block | 2.44 | 2.50 |
+> | `\|K\| ≤ 1` / block | 3.28 | 3.25 |
+> | blocks with a round-0 (a) kill | 28.1 % | 24.8 % |
+>
+> (The last four are `glamprop --mech`'s positivity rows; `--shape` reproduces
+> the exact-pair split and asserts it sums to them.) `rowdef = 0` at every
+> block of both strata, so (GR-207)(i)'s squareness holds throughout and
+> `Σ_β |K_own(β)| = 3h = 9` is **forced**, not observed.
+>
+> **(iv) The class-multiplicity histogram is where they first come apart, and
+> it is rigid.** `|inc(X)|` over all classes:
+>
+> | stratum | blocks | `\|inc\| = 1` | `= 2` | `= 3` |
+> |---|---|---|---|---|
+> | `Λ = ∅` | 3 336 | 16 680 (**exactly 5/blk**) | 6 672 (**exactly 2/blk**) | **0** |
+> | `(1, 0)` | 2 850 | 15 121 | 3 958 | **871** |
+> | `(2, 0)` | 315 | 1 726 | 328 | 151 |
+>
+> **Every `Λ = ∅` block at `n_hub = 4` has the identical multiplicity profile:
+> five singleton classes and two multiplicity-2 classes.** That is forced —
+> 7 classes and 9 incidences with no class of multiplicity ≥ 3 leaves only
+> `5 × 1 + 2 × 2`. Multiplicity 3 is **structurally unavailable** at `Λ = ∅`
+> here: a hub star could reach it (a hub of K4 has three branches) but never
+> does in this census, and a fused class reaches it 871 times.
+>
+> **(v) So the honest restatement of (GR-206)(iv)'s premise.** The two strata's
+> initialisation profiles are indistinguishable in every *size* statistic and
+> distinguishable in the *incidence structure*. The question *"which rule
+> produces the gain during the propagation"* presupposes a shared input it does
+> not have. **The gain is not produced during the propagation. It is present in
+> the table.**
+
+---
+
+## *Step G230* — (GR-210): the rule-(b) yield law in K4 — a correct derivation that is NOT the answer
+
+> **(GR-210)** `[PROVED]` (the yield law) / `[MEASURED]` (its consequence);
+> `notes/scripts/w4/gownhalf.py --shape`, same caps.
+>
+> **(i) The yield law.** `propagate`'s rule (b) forms, per class `X`, the
+> support `supp(X) = alive ∖ inc(X)` and adds `X` to `S[j]` for every `j` that
+> `forced_zero` (coloops ∪ iterated leaves) kills in `supp(X)`. On the full K4
+> the yield is a function of `inc(X)`'s shape alone:
+>
+> | `inc(X)` | `supp(X)` = K4 ∖ `inc(X)` | yield |
+> |---|---|---|
+> | sub-star, size 1 | K4 − e, 2-edge-connected | **0** |
+> | sub-star, size 2 | K4 − 2 adjacent edges | **1** |
+> | sub-star, size 3 (a full hub star) | a triangle, bridgeless | **0** |
+> | **triangle**, size 3 | a 3-star — all three coloops | **3** |
+> | **3-path**, size 3 | a 3-path — all three coloops | **3** |
+>
+> *Measured, exactly as derived,* over every class of every `n_hub = 4`,
+> `other = 0` block: `star1` 16 680 + 15 121 + 1 726 classes, yield **0.00**
+> each; `star2` 6 672 + 3 958 + 328 classes, yield **1.00** each; `nonstar3`
+> 871 + 151 classes, yield **3.00** each. `star3` **never occurs**, by
+> (GR-209)(iv).
+>
+> **So the sub-star law of (GR-209)(ii) CAPS the per-class round-1 (b) yield at
+> 1, and fusing two hub stars is exactly what lifts the cap to 3.** Per block:
+> `Λ = ∅` **2.00** (five 0s and two 1s — the rigid profile, every block), and
+> `(1, 0)` **2.31**.
+>
+> **(ii) AND IT IS NOT THE ANSWER. Two independent refutations, both from the
+> same run.**
+>
+> *The observational control.* Split the 2 850 `(1, 0)` blocks by whether the
+> fused class's incidence set is a non-star:
+>
+> | fused class's `inc` | blocks | `gen` |
+> |---|---|---|
+> | a sub-star (cap not lifted) | 1 979 | 1 805 (**91.2 %**) |
+> | a non-star (cap lifted) | 871 | 777 (**89.2 %**) |
+>
+> The blocks that exercise the new affordance certify **less** often than their
+> own stratum's 90.6 %, not more. *The mechanism is exhibited and is not
+> vacuous; it does not carry the gain.*
+>
+> *The sufficient-statistic test.* Cross-tabulate `gen` against the block's
+> total round-1 (b) yield. On the structural yield of (i): at yield 2 — the
+> only value `Λ = ∅` takes — `Λ = ∅` gets 2 763/3 336 (82.8 %) and `(1, 0)`
+> gets 1 805/1 979 (**91.2 %**). On the yield as actually realised inside
+> `propagate` (after rule (a)'s round-0 kills, `--rules`): at `(b)@1 = 2`,
+> 1 571/2 047 (**76.7 %**) against 1 310/1 484 (**88.3 %**); at `(b)@1 = 0`,
+> 647/703 (92.0 %) against 403/425 (94.8 %); at `(b)@1 = 3`, **0/30** against
+> 495/567 (87.3 %). **At every matched yield the gap survives, and at one it
+> inverts from 0 % to 87 %.** The rule-(b) yield is not a sufficient statistic
+> for the verdict in either reading.
+>
+> *This is the direction's own prediction refuted by its own driver, and it is
+> the reason (GR-212) exists.*
+
+---
+
+## *Step G231* — (GR-211): the landed closure is LABEL-INVARIANT, and the per-rule histogram says no single rule carries the gain
+
+> **(GR-211)** `[MEASURED]`; `notes/scripts/w4/gownhalf.py --order` and
+> `--rules`, same caps, no randomness.
+>
+> **(i) Label-invariance, MEASURED.** `gforce.propagate` applies rule (c) in a
+> `for v in hnodes` loop and rule (b) in a `for X in classes` loop, each firing
+> changing what the next sees, and `forced_zero` is **not** monotone in the
+> surviving edge set (deleting an edge *creates* coloops). So its verdict could
+> in principle depend on the arbitrary integer labels `hub_model` and
+> `block_data` hand it. It does not. `--order` re-runs the landed closure on
+> every relabelling that those two loops can read: the **24** orderings of the
+> hub list (K4's node permutations, which also permute the super-edge indices)
+> crossed with the **2** class orders, ascending and descending — **48
+> relabelled runs per block beside the landed one, 312 048 propagations** over
+> all **6 501** `n_hub = 4, other = 0` blocks. The `gen` verdict **moves at 0
+> blocks**, and best-of-48 = worst-of-48 = the landed figure in every stratum
+> (2 763/3 336, 2 582/2 850, 306/315).
+>
+> *This clause exists because this direction got it wrong first.* A canonical
+> form that disagreed with itself was read as evidence that the closure was
+> **not** label-invariant; `--order` refuted that in one run, and the fault was
+> the canonical form — it was expressed in each block's own edge indices, and
+> `hub_model` emits super-edges in its own walk order, so index `j` names a
+> different node pair in different blocks. The fix (re-index by the sorted pair
+> of node *positions*) is in `canon_type`'s docstring, and `--types` then
+> reports **0** type-splits over 86 types — an independent second measurement
+> of the same invariance.
+>
+> **(ii) The per-rule firing histogram.** Per-block means, `n_hub = 4`, exact
+> `(own, other)`, from an instrumented copy of `propagate` **asserted equal to
+> the landed one** (`dead`, `alive`, `S`, `residual`, `rounds`) at every block:
+>
+> | stratum | blocks | `gen` | rounds | (a₀) | (z) | (s) | (s)-kill | (c) | (b) | (a) |
+> |---|---|---|---|---|---|---|---|---|---|---|
+> | `(0, 0)` | 3 336 | 82.8 % | 1.52 | 0.28 | 0.03 | 2.26 | 2.52 | 0.98 | 3.58 | 1.34 |
+> | `(1, 0)` | 2 850 | 90.6 % | 1.71 | 0.25 | 0.11 | 2.79 | 2.96 | **0.80** | 4.08 | 1.49 |
+> | `(2, 0)` | 315 | 97.1 % | 1.81 | 0.19 | 0.21 | 3.20 | 3.56 | **0.40** | 3.58 | 1.50 |
+>
+> **No rule shows a factor anywhere near the 7× the spec's tell asked for.**
+> The largest ratio is rule (z) at 0.11/0.03 ≈ 3.7× on a mean of 0.11 firings
+> per block — an outcome of earlier kills, not a cause. (b) moves 3.58 → 4.08
+> (1.14×), (s) 2.26 → 2.79 (1.23×), and **(c) moves the wrong way**, 0.98 →
+> 0.80 → 0.40, falling monotonically as the stratum gets *easier*. These are
+> means over certified and uncertified blocks alike, so they are downstream of
+> the verdict; the cross-tab in (GR-210)(ii) conditions on the one upstream
+> quantity and the gap survives there too.
+>
+> **So the tell FIRED IN THE NEGATIVE and it could have fired positive.** The
+> region it samples — `(1, 0)` against `(0, 0)` at `n_hub = 4` — is exactly
+> where the gain lives (2 850 and 3 336 blocks, `gen` 90.6 % against 82.8 %),
+> both strata are populated, and a per-rule ratio of order 7 would have been
+> visible in this table. There is none.
+
+---
+
+## *Step G232* — (GR-212): THE VERDICT — the whole gap is a shift in WHICH class tables occur
+
+> **(GR-212)** `[MEASURED]`; `notes/scripts/w4/gownhalf.py --types`, all 907
+> shapes, `col_cap = 4096`, `per_shape = 6`, no randomness. Restricted by
+> construction to `n_hub = 4, other = 0`, where the suppressed model is the
+> same simple K4 for both strata ((GR-203)(ii); asserted per block).
+>
+> **(i) The instrument.** By (GR-211)(i) the `gen` verdict is a function of the
+> class table's **isomorphism type** — the multiset of incidence sets `inc(X)`
+> as a sub-multiset-system of K4's six edges, canonicalised over the 24 node
+> permutations. Independently confirmed: **0** of the **86** occurring types
+> carries two blocks that disagree on `gen`. So the question *"which rule
+> produces the gain"* has an exact answer available — **none can**, because the
+> closure is the same function on both strata and only its *input distribution*
+> differs.
+>
+> **(ii) The decomposition.** 6 501 blocks, 86 types:
+>
+> | | types | `Λ = ∅` blocks | `gen` | `(1, 0)` blocks | `gen` |
+> |---|---|---|---|---|---|
+> | carried by **both** strata | **46** | 2 710 | 2 291 (**84.5 %**) | 1 957 | 1 805 (**92.2 %**) |
+> | only at `Λ = ∅` | 24 | 626 | 472 (75.4 %) | — | — |
+> | only at `(1, 0)` | 16 | — | — | 893 | 777 (87.0 %) |
+> | **total** | 86 | 3 336 | 2 763 (**82.8 %**) | 2 850 | 2 582 (**90.6 %**) |
+>
+> **On the 46 shared types — 4 667 of the 6 501 blocks, and the bulk of both
+> strata — 100 % of the gap is a re-weighting.** *(Two gaps are in play and
+> they must not be conflated: the **shared-type** gap 92.2 − 84.5 = **7.7
+> points**, which is the one this paragraph closes entirely, and the
+> **whole-stratum** gap 90.6 − 82.8 = **7.8 points**, which the next paragraph
+> closes only in part. Both are read off the table above.)* Re-weighting
+> `(1, 0)`'s per-type verdicts to `Λ = ∅`'s type distribution returns
+> 2 291/2 710 = **84.5 %**, i.e. `Λ = ∅`'s own rate, *exactly and necessarily*,
+> because the verdict is a function of the type. The closure does not behave
+> differently; it is handed a different mix of the same problems.
+>
+> **The re-weighting is not merely tautological — it is most of the gap, and
+> the driver prices it.** Standardise each stratum's *shared-type portion* to
+> the other's shared-type distribution, leaving its exclusive-type portion
+> alone (exact rationals, `--types`):
+>
+> - `(1, 0)` re-weighted down to `Λ = ∅`'s shared mix → **85.3 %**, closing
+>   **5.3** of the 7.8 points;
+> - `Λ = ∅` re-weighted up to `(1, 0)`'s shared mix → **89.1 %**, closing
+>   **6.3** of the 7.8 points.
+>
+> The residue is the exclusive-type composition: `Λ = ∅` carries **626 blocks
+> (18.8 % of its stratum) in 24 types that certify at only 75.4 %**, while
+> `(1, 0)` carries 893 (31.3 %) at 87.0 %. So the own-half gain is *the absence
+> of a hard tail plus a better mix of shared tables* — and **not** a new
+> affordance, because the only genuinely new tables run below average
+> ((iii)).
+>
+> **(iii) The exclusive types, split into STRUCTURAL and CAPPED.** Of the 16
+> types only `(1, 0)` reaches, **15 (871 blocks) carry a non-sub-star incidence
+> set** and are therefore **structurally unreachable** at `Λ = ∅` by
+> (GR-209)(ii)/(GR-16)(iii) — a genuine affordance of the own-coloured
+> `Λ`-edge. The remaining 1 type (22 blocks) is *not found under cap C*, never
+> "impossible". And the affordance does not pay: those 871 blocks certify at
+> **89.2 %**, *below* their own stratum's 90.6 %. Symmetrically the 24 types
+> only `Λ = ∅` reaches (626 blocks, 75.4 %) are all "not found under cap C" for
+> `(1, 0)` — they are sub-star types, which `(1, 0)` could in principle carry.
+>
+> **(iv) Cap-invariance of the type support, checked the way (GR-183)(iii)
+> checks the coverage figures.** Re-run at `per_shape = 3` (3 262 blocks
+> instead of 6 501): **86 types again, and the same 46 / 24 / 16 split**, with
+> shared-type rates 82.9 % against 90.6 % (gap 7.7 points, against 7.7 at
+> `per_shape = 6`) and the same 15 structurally-unreachable types. The support
+> claim is not an artefact of the cut. *(`--types --ps 3`; the `--ps` flag
+> parameterises the landed default rather than copying it.)*
+>
+> **(v) The handle decomposition — what a "fifth handle" would have been added
+> to.** `full` is the (a)/(b)/(s)/(z) closure; `gen` adds (c) ((GR-183)):
+>
+> | stratum | blocks | certified **without** (c) | only **with** (c) | not certified |
+> |---|---|---|---|---|
+> | `Λ = ∅` | 3 336 | 2 133 (63.9 %) | 630 (18.9 %) | 573 (17.2 %) |
+> | `(1, 0)` | 2 850 | 2 102 (**73.8 %**) | 480 (16.8 %) | 268 (9.4 %) |
+> | `(2, 0)` | 315 | 264 (83.8 %) | 42 (13.3 %) | 9 (2.9 %) |
+>
+> The `(1, 0)` gain is carried by the (a)/(b)/(s)/(z) core (+9.9 points) and
+> **(c) is worth *less* there** (−2.1 points), monotonically so across
+> `own = 0, 1, 2`. So even read as an outcome decomposition rather than a
+> cause, the answer is not "(c) does more at `(1, 0)`".
+>
+> **(vi) Arithmetic tie-back to (GR-206)(i)/(iv), so this is the same
+> partition and not a new measurement.** Not-certified counts are 573 and 268;
+> (GR-206)(i)'s `n_hub = 4` residuals are 320 and 38; (GR-206)(iv)'s
+> `dim Z = 0` denominators are 3 083 and 2 620. Then
+> `3 336 − 3 083 = 253 = 573 − 320` and `2 850 − 2 620 = 230 = 268 − 38` —
+> the not-certified blocks split into (GR-184)'s residual plus the blocks no
+> sound scheme may certify, exactly, on both strata. *This driver computes no
+> `dim Z` and draws no randomness, so it says nothing about the Type A/B split
+> itself; the identity above is the whole of its connection to it.*
+
+---
+
+## *Step G233* — (GR-213): the ablation — the class table's SHARING is load-bearing, and the four quoted statistics are not
+
+> **(GR-213)** `[MEASURED]` (a synthetic counterfactual, labelled as such);
+> `notes/scripts/w4/gownhalf.py --ablate`, same caps, no randomness.
+>
+> At a `(1, 0)` block the single own-coloured `Λ`-edge `uw` fuses
+> `star_own(u)` and `star_own(w)` into one component of `E_own`. **Un-fuse it**
+> — recompute the classes with `uw` deleted from the own-subgraph — and re-run
+> the **landed** `propagate` on the result. Two variants:
+>
+> - **SPLIT-3** gives `uw` a class of its own. That is strictly *less* shared
+>   than either real stratum, so it **lower-bounds** the counterfactual.
+> - **CALIBRATED** re-attaches `uw` to one of the two stars (both sides run),
+>   which lands the table in the `Λ = ∅` structural family: *every class is
+>   then a sub-star, asserted per class*.
+>
+> Both variants **preserve every `|K_own(β)|`** — asserted per super-edge — and
+> hence preserve every one of (GR-206)(iii)'s four quoted statistics, the three
+> further ones of (GR-209)(iii), `Σ_β |K_own(β)| = 3h` ((GR-207)(i)'s
+> `rowdef = 0`) and the suppressed graph. **The only thing that changes is
+> which super-edges share a class.** A **placebo** is asserted alongside: a
+> pure renaming of class identities moves neither `residual` nor `dead` at any
+> block, so the closure reads the partition and not the labels.
+>
+> | `n_hub` | `(1, 0)` blocks | `gen` REAL | `gen` SPLIT-3 | `gen` CALIBRATED | both sides |
+> |---|---|---|---|---|---|
+> | 4 | 2 850 | 2 582 (**90.6 %**) | 1 481 (**52.0 %**) | 4 439/5 700 (**77.9 %**) | 1 660 (58.2 %) |
+> | 6 | 6 | 1 (16.7 %) | 0 (0.0 %) | 1/12 (8.3 %) | 0 (0.0 %) |
+>
+> 1 226 blocks lose their certificate and 125 gain one. **Holding all seven
+> size statistics fixed and changing only the sharing costs 12.7 points, and
+> the three-way split costs 38.6.** So (GR-206)(iv)'s *"an initial table that
+> look[s] the same"* is refuted causally as well as descriptively: the tables
+> differ in the one thing the closure reads.
+>
+> **The ablation OVERSHOOTS and that is disclosed, not hidden.** 77.9 % is
+> *below* `Λ = ∅`'s 82.8 %, so the calibrated tables, while inside the sub-star
+> family, are not distributed like real `Λ = ∅` tables — the re-attached star
+> reaches multiplicities the census's own colourings do not produce at that
+> `|K|` vector. The ablation is therefore evidence that **sharing is
+> load-bearing**, and is *not* a calibration of the 7.7-point shared-type gap. (GR-212)
+> supplies that calibration, on real blocks only.
+
+---
+
+## *Step G234* — (GR-214): a scope correction to (GR-206)(iii)/(iv) — POSITIVITY where the label says a PAIR
+
+> **(GR-214)** `[MEASURED]` / scope; `notes/scripts/w4/gownhalf.py --shape`,
+> which asserts both readings and their aggregation.
+>
+> **(i) The defect.** (GR-206)(iii)/(iv)'s table is headed *"Write a block's
+> `Λ` data as `(own, other)`"* and its rows are labelled `(0, 0)`, `(0, 1)`,
+> `(1, 0)`, `(1, 1)`. But those rows come from `glamprop.leg_mech`, which keys
+> its profile on
+> `pk = (k['nhub'], k['own'] > 0, k['other'] > 0)` — **positivity, not
+> counts** — while (GR-206)(i)'s table and the `3 083` / `2 620` denominators
+> come from `glamprop.leg_cover`'s `"(n_hub=4 only) (own, other)"`
+> stratification, which keys on the **exact pair** (its own `(2, 1)` row is
+> already proof of that). Both are correct as computed; the write-up presents
+> them as one stratum.
+>
+> **The arithmetic settles it independently of the source code.** This
+> direction's own not-certified counts at `n_hub = 4` are **573** at `(0, 0)`
+> and **268** at exact `(1, 0)`. (GR-206)(i)'s residuals there are **320** and
+> **38**, and a not-certified block is either residual or `dim Z ≠ 0`. So the
+> `dim Z = 0` denominators must be `3 336 − (573 − 320) = 3 083` and
+> `2 850 − (268 − 38) = 2 620` — which are (GR-206)(iv)'s two denominators, **on
+> the nose**. Had `2 620` been the positivity stratum's count it would have had
+> to be `3 165 − 239 = 2 926` (the `(2, 0)` stratum contributes 9 uncertified
+> blocks and **0** residual at `n_hub = 4`, by (GR-206)(i)'s own table). So
+> (GR-206)(iv)'s Type A rate is exact-pair-keyed and its `gen` rate is
+> positivity-keyed, in the same sentence.
+>
+> **(ii) The exact figures.** At `n_hub = 4`:
+>
+> | row as labelled | what it is | blocks | `gen` |
+> |---|---|---|---|
+> | `(0, 0)` | exact `(0,0)` | 3 336 | 2 763 (82.8 %) |
+> | `(0, 1)` | `own = 0, other ≥ 1` = `(0,1)` + `(0,2)` | 3 165 | 3 000 (94.8 %) |
+> | `(1, 0)` | `own ≥ 1, other = 0` = `(1,0)` + `(2,0)` | 3 165 | 2 888 (91.2 %) |
+> | `(1, 1)` | exact `(1,1)` | 882 | 882 (100 %) |
+> | — | **exact `(1, 0)`** | **2 850** | **2 582 (90.6 %)** |
+> | — | exact `(2, 0)` | 315 | 306 (97.1 %) |
+> | — | exact `(0, 1)` | 2 850 | 2 685 (94.2 %) |
+> | — | exact `(0, 2)` | 315 | 315 (100 %) |
+>
+> **(iii) What to restate.** (GR-206)(iv) compares a `gen` figure computed on
+> `own ≥ 1` (3 165 blocks, 91.2 %) with a Type A rate computed on exact
+> `(1, 0)` (38/2 620). Against the **same** population the figures are
+> **`gen` 90.6 %** and Type A 38/2 620. The direction of every claim survives;
+> the headline number moves by 0.6 points and the row labels need the `≥`.
+> The same correction applies to (GR-206)(iii)'s `(1,0)`/`(0,1)` profile rows
+> (6.00 / 0.25 / 24.8 % and 4.90 / 0.64 / 55.7 %), which are positivity rows.
+>
+> *Asserted in-driver, both ways:* the exact-pair block and `gen` counts are
+> checked against the eight figures above, **and** their sums over the
+> positivity key are checked against the landed `--mech` profile
+> (3 336/2 763, 3 165/3 000, 3 165/2 888, 882/882). So the two readings cannot
+> silently diverge again.
+
+---
+
+## *Step G235* — (GR-215): the census fence, measured — the `Λ`-asymmetry is MONOTONE, it EXHAUSTS the top stratum, and the `3` is not a removable literal
+
+*(Added by the coordinator at landing, not by the direction. The draft stated
+the fence's `Λ`-asymmetry at two strata with **no driver behind it** —
+`RESEARCH-ARC.md` §4's "a driver per headline sentence" — and verification both
+reproduced the two figures exactly and found the statement understated in one
+direction and mis-priced in another. Label `(GR-215)` / *Step G235* is taken
+from this direction's own returned range; `(GR-216)` / *G236* stay returned.)*
+
+> **(GR-215)(i)** `[MEASURED]` *(exhaustive over the K4 length tuples; no caps,
+> no randomness, no shape construction and no closure run —
+> `notes/scripts/w4/gownhalf.py --fence`)* `Λ` is the set of length-1 branches
+> of the hub multigraph, so for a K4 length tuple `|Λ|` is exactly the number
+> of entries equal to 1, and the fence's whole `Λ` profile is computable in
+> closed form. Of the **1 751** tuples with `ℓ ≤ 5` and `Σℓ = 18`, the
+> `census_shapes` filter `3 not in lens` drops **430**:
+>
+> | `\|Λ\|` | tuples | dropped | dropped % |
+> |---|---|---|---|
+> | 0 | 336 | 35 | **10.4 %** |
+> | 1 | 930 | 180 | **19.4 %** |
+> | 2 | 465 | 195 | **41.9 %** |
+> | 3 | 20 | 20 | **100 %** |
+>
+> The draft quoted the first two rows. **The asymmetry is monotone in `|Λ|`
+> and it does not merely thin the `Λ ≠ ∅` side — at `|Λ| = 3` it removes the
+> stratum entirely.**
+
+> **(GR-215)(ii)** `[PROVED]` *(the `|Λ| = 3` row is arithmetic, not search;
+> asserted in `--fence`)* The only `Σℓ = 18` tuples with three 1s are the **20**
+> permutations of `(1, 1, 1, 5, 5, 5)` — three 1s leave three branches summing
+> to 15 with each `≤ 5`, forcing all three to be 5 — and none of them contains
+> a 3. ∎ **So `|Λ| = 3` at `n_hub = 4` is empty as a CONSEQUENCE OF THE FENCE.**
+> §(K-grid) (GR-206)/(GR-208) and this direction's own cross-check record that
+> emptiness as an **observation** about the census; it is a theorem about the
+> filter, and the distinction matters because an observed emptiness invites a
+> wider search while a forced one tells you exactly what to change.
+
+> **(GR-215)(iii)** `[PROVED]` *(read at the two call sites)* **The `3` is NOT a
+> removable literal, and the draft's framing of it as a `blindaxes.py`-style
+> fence is wrong about the price.** The census relabels by
+> `relabel(4, K4E, lens, lens.index(3))`, and `kslidecomb.shape_data`
+> **asserts** `specs[0] == (0, 1, 3)` — the split edge `e0` must have length 3.
+> A tuple with no length-3 branch therefore has **no admissible `e0` at all**,
+> and deleting the filter raises an assertion rather than widening the
+> population. **Opening this axis is a NEW CONSTRUCTION, not a parameter
+> change** — which prices (GR-212)'s successor question far above the one-line
+> un-fencing the draft's *"What would change this"* implies, and is the
+> honest reason it is a successor rather than a slice.
+
+> **(GR-215)(iv)** `[MEASURED]` *(scope, stated so it travels;
+> `notes/scripts/w4/gownhalf.py --fence` for the asymmetry and `--order` /
+> `--types` for the verdict's independence of it)* Every `gen`
+> **magnitude** in (GR-212) is measured on this `Λ`-asymmetric sub-population.
+> The **verdict** *"not rule-attributable"* is not: it rests on label-invariance
+> ((GR-211)) and the standardisation identity ((GR-212)(ii)), both of which hold
+> **table by table** and are therefore indifferent to which tables the census
+> reaches. That split is the direction's own and survives verification intact.
+
+---
+
+## Caps, and the blind axes — including the one no keyword can express
+
+Every figure above is **"not found under cap C"**, never "does not exist", and
+the cap travels with it.
+
+1. **`per_shape = 6`, `col_cap = 4096`, all 907 census shapes**, balanced
+   filter-passing blocks only — `gforce.sweep`'s caps verbatim, the landed cut.
+   **Opened** for the one claim most exposed to it: `--types --ps 3` gives the
+   same **86** types and the same **46 / 24 / 16** split, with the shared-type
+   gap 7.7 points at both cuts ((GR-212)(iv)).
+2. **…but that re-run is a WEAKER check than it looks, and this is the
+   sharpest thing to hold against (GR-212)(iii).** `sweep` takes the **first**
+   `per_shape` filter-passing colourings in `closure.colourings`' enumeration
+   order — a *prefix*, not a random sample. Re-running at 3 shortens the same
+   prefix, so it cannot detect a type that the enumeration order never reaches.
+   The ~18 320-block universe under `col_cap = 4096` is not enumerated
+   ((GR-208) item 3). The **24 `Λ = ∅`-only** and **1 `(1, 0)`-only** types are
+   therefore "not found under this prefix", and only the **15 non-sub-star**
+   types are *structurally* unreachable ((GR-16)(iii), asserted per class).
+3. **`n_hub = 4` only, by construction.** `canon_type` asserts the model is
+   K4; `--shape` / `--rules` / `--ablate` print the other layers and none of
+   this direction's claims rest on them. At `Λ ≠ ∅` the census supplies **1**
+   shape at `n_hub = 5` and **2** at `n_hub = 6`, both seeded draws — which is
+   (GR-208)'s own item 1 and is untouched here.
+4. **The class of fence `blindaxes.py` cannot list is the provenance of the
+   POPULATION, and this direction's verdict is a claim ABOUT the population.**
+   The stream is `gforce.sweep → gridcol.pool_shapes → grid.census_shapes`, and
+   `census_shapes`' K4 loop is
+   `itertools.product((1,2,3,4,5), repeat=6)` filtered by
+   `sum(lens) != 18 or 3 not in lens: continue`. Read at the generator:
+   - `ℓ ≤ 5` and `sum = 18` admit **1 751** length tuples;
+   - the **`3 in lens`** fence drops **430** of them, and it is **not
+     `Λ`-neutral**: see **(GR-215)** below, which measures the whole profile
+     and sharpens this bullet in two ways the draft first got wrong;
+   - a further `shape_ok` filter takes the surviving 1 321 down to the **877**
+     `K4…` shapes `pool_shapes` actually yields (of 907 census shapes).
+
+   So *"which class tables occur"* — the whole content of (GR-212) — is
+   measured on a **doubly filtered, `Λ`-asymmetric** sub-population of the K4
+   length tuples. The verdict *"not rule-attributable"* does **not** depend on
+   this (it rests on label-invariance plus the standardisation identity, both
+   of which hold table by table); the *magnitudes* in (GR-212)(ii) do.
+   (`|Λ| ≥ 3` is empty at `n_hub = 4` under this fence — a cross-check: the
+   strata observed are exactly `(0,0)`, `(0,1)`, `(0,2)`, `(1,0)`, `(1,1)`,
+   `(2,0)`.)
+5. **No randomness anywhere in `gownhalf.py`** — no rng is constructed and
+   `dim_Z_generic` is called at **zero** sites, so the `dim_Z_generic(draws=4)`
+   fence that `blindaxes.py` lists at four sites in `glamprop.py` does not
+   touch any figure here. The price of that: this direction says **nothing**
+   about `dim Z`, about soundness, or about the Type A/B split. Its connection
+   to (GR-206)(iv)'s 7× Type A figure is the arithmetic identity of
+   (GR-212)(vi) and nothing more.
+6. **Label-invariance is measured under 48 relabellings, not all of them**
+   ((GR-211)(i)): the 24 hub-list orderings crossed with the ascending and
+   descending class orders — not all `7!` class orders, which is the axis
+   `propagate`'s `for X in classes` loop actually reads. The stronger evidence is
+   independent: **6 501 blocks — with genuinely different shapes, hub names and
+   component indices — land on 86 types with 0 verdict disagreements**
+   ((GR-212)(i)). Neither is a proof that `propagate` is label-invariant in
+   general; both are measurements on this population.
+7. **The (GR-183) population discipline is inherited and re-asserted, not
+   re-measured.** `--shape` asserts its exact-pair counts sum to the landed
+   `glamprop --mech` profile, so every split here is a **partition of the
+   landed run**. Priced by its **population**, not by its existence: that
+   assertion says the strata agree *wherever `sweep` went under these caps* —
+   which is item 4's filtered sub-population — and says nothing about the 430
+   dropped length tuples.
+
+## What would change this
+
+- **A single pair of blocks of the same class-table type disagreeing on
+  `gen`.** That would break (GR-212)'s frame at the root and reopen
+  "which rule". `--types` asserts against it: 0 of 86 today.
+- **A `Λ = ∅` block at `n_hub = 4` carrying a non-sub-star class incidence
+  set.** That refutes (GR-209)(ii) — and with it (GR-16)(iii) as read here.
+  `--shape` asserts against it per class, 0 violations today.
+- **Re-running (GR-212) on a population without the `3 in lens` fence** (the
+  430 dropped tuples, 19.4 % of the `|Λ| = 1` side against 10.4 % of the
+  `Λ = ∅` side). If the shared-type re-weighting narrows or reverses there, the
+  *magnitude* of the own-half effect is partly an artefact of the census
+  generator. The verdict would not move; the table in (GR-212)(ii) would.
+  **This is the successor question this direction would hand on**, and
+  GISLAND's separately-swept 166 088-shape population ((GR-157), cited via
+  §(K-grid) (GR-208)) is the instrument (GR-208) already names for the
+  neighbouring `n_hub` question.
+- **Anything at `n_hub ≥ 5`.** Entirely unmeasured here.
+
+## What this does NOT claim
+
+- It does **not** claim the closure is weak, unsound, or mis-implemented.
+  (GR-177)/(GR-204) soundness is untouched and unexamined.
+- It does **not** claim the own-coloured `Λ`-edge is irrelevant: it is the sole
+  cause of the 15 structurally-new types ((GR-212)(iii)) and the ablation of
+  (GR-213) is decisive that class **sharing** is load-bearing. What it refutes
+  is that a **rule** does more work at `(1, 0)`.
+- It does **not** treat the (GR-16)(a)/(b) propagation as stronger than (GR-9)
+  anywhere (§8 bar *(h)*; they are **incomparable**, §(K-grid) (GR-180)), and
+  it proposes **no** counting-and-closure criterion for `r`-certification
+  (§8 bar *(f)*).
+- It does **not** touch move families or triangle-freeness — that is direction
+  GTRIFREE's question, and nothing here approaches it.

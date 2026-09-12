@@ -1741,26 +1741,60 @@ is not ranked on its own.
    > that only reproduces that population will reproduce that equality, and the equality is
    > precisely what makes `c₁ + c₂ ≥ 3` unreachable there. **Enlarging the family is the
    > deliverable, not a side effect.**
-2. **(GR-206)(iv) — THE `own`-HALF PROPAGATION GAIN.** *(new — GLAMPROP's successor, and its
-   own prose calls it "the sharpest open question this direction leaves".)* Owner:
-   §(K-grid) *Step G226*, (GR-206). At `n_hub = 4` the `(own, other)` split of (GR-184)'s
-   residual dichotomy is **perfect** — `(0,1) ⟹` Type B 38/38, `(1,0) ⟹` Type A 38/38,
-   `Λ = ∅ ⟹` Type A 320/320 ((GR-206)(i)). The `other` half's mechanism is **measured and
-   understood**: contraction removes a super-edge without removing a class incidence, so
-   rule (a)'s round-0 kill rate doubles, 28.1 % → 55.7 % ((GR-206)(iii)). The `own` half is
-   **not**: same 6.00 super-edges, `|K| ≥ 3` per block 0.25 against 0.28, round-0 kill rate
-   **24.8 % against 28.1 %, i.e. slightly LOWER**, the same simple `K4` suppressed graph —
-   yet `gen` 91.2 % against 82.8 % and Type A failures **7× fewer** (1.45 % against 10.4 %).
-   So the whole gain happens **during** propagation, on a graph and an initial table that
-   look the same. **And the natural explanation is already REFUTED and pinned:** (GR-16)(iii)
-   fusion is the obvious mechanism and it fires at **2 of 1 104 (0.18 %)** ((GR-206)(ii)), so
-   this entry starts with its own tautology removed — the field the last two passes found
-   rots first is, uniquely here, already burned. **GLEAF's question: a REDUCTION, not a
-   closure** — it explains a gain the closure already has. Cheapest live probe on this lane;
-   the instrument is landed and the first slice is a `propagate(trace=True)` rule histogram
-   at `(1, 0)` against `(0, 0)`. *Kill condition: the `own`-half gain attributed to a named
-   rule among (b)/(s)/(c), or shown not to be rule-attributable at all (e.g. an ordering or
-   tie-break artefact). Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+2. **(GR-206)(iv) — THE `own`-HALF PROPAGATION GAIN — SPENT (GOWNHALF 103, 2026-09-12), AND
+   THE ANSWER IS THE ENTRY'S *OTHER* BRANCH: NOT RULE-ATTRIBUTABLE.** Owner of the answer:
+   §(K-grid) *Steps G229–G235*, (GR-209)–(GR-215). **The clause is refuted at its PREMISE.**
+   The initialisation profiles are not the same: the landed `gen` verdict is a **function of
+   the class table's isomorphism type** — **0 of 6 501** blocks move under 48 relabellings and
+   **0 of 86** types split, two independent measurements ((GR-211)/(GR-212)) — and the four
+   size statistics quoted below do not determine that type. Over the **46 types both strata
+   reach** (4 667 blocks) the whole **7.7-point shared-type gap is a re-weighting**, exactly
+   and necessarily, because the verdict is a function of the type; re-weighting the shared
+   portions closes 5.3–6.3 of the whole-stratum 7.8, and the residue is exclusive-type
+   composition ((GR-212)(ii)). **So NO fifth handle comes from here**, and rank 4's positive
+   branch receives no candidate. The one genuine affordance of an own-coloured `Λ`-edge — 15
+   non-sub-star types structurally unreachable at `Λ = ∅` — certifies at **89.2 %, BELOW** its
+   own stratum's 90.6 % ((GR-212)(iii)). **Two corrections landed with it:** (GR-206)(iii)/(iv)'s
+   rows are keyed on **positivity** where their labels name a pair, so the row read as `(1, 0)`
+   is `own ≥ 1` = 3 165 blocks at 91.2 % while the **exact** stratum is 2 850 at **90.6 %** —
+   and the same sentence's `38/2 620` Type A denominator is **exact**-keyed ((GR-214)); and the
+   census's `3 in lens` filter is `Λ`-asymmetric **monotonically**, 10.4 / 19.4 / 41.9 / **100 %**
+   across `|Λ| = 0..3`, so `|Λ| = 3` at `n_hub = 4` is empty **by arithmetic as a consequence of
+   the filter** rather than as an observation, and the `3` is **not a removable literal** —
+   `shape_data` asserts the split edge has length 3, so opening that axis is a **new
+   construction** ((GR-215)).
+   *Kill condition: MET — the gain is shown not to be rule-attributable. The successor, priced:
+   the magnitudes of (GR-212) rest on that `Λ`-asymmetric census, and re-taking them off it is
+   a construction, not an un-fencing.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because the board's own rule is that a spent entry's
+   > reasoning stays visible.** *(new — GLAMPROP's successor, and its
+   > own prose calls it "the sharpest open question this direction leaves".)* Owner:
+   > §(K-grid) *Step G226*, (GR-206). At `n_hub = 4` the `(own, other)` split of (GR-184)'s
+   > residual dichotomy is **perfect** — `(0,1) ⟹` Type B 38/38, `(1,0) ⟹` Type A 38/38,
+   > `Λ = ∅ ⟹` Type A 320/320 ((GR-206)(i)). The `other` half's mechanism is **measured and
+   > understood**: contraction removes a super-edge without removing a class incidence, so
+   > rule (a)'s round-0 kill rate doubles, 28.1 % → 55.7 % ((GR-206)(iii)). The `own` half is
+   > **not**: same 6.00 super-edges, `|K| ≥ 3` per block 0.25 against 0.28, round-0 kill rate
+   > **24.8 % against 28.1 %, i.e. slightly LOWER**, the same simple `K4` suppressed graph —
+   > yet `gen` 91.2 % against 82.8 % and Type A failures **7× fewer** (1.45 % against 10.4 %).
+   > So the whole gain happens **during** propagation, on a graph and an initial table that
+   > look the same. **And the natural explanation is already REFUTED and pinned:** (GR-16)(iii)
+   > fusion is the obvious mechanism and it fires at **2 of 1 104 (0.18 %)** ((GR-206)(ii)), so
+   > this entry starts with its own tautology removed — the field the last two passes found
+   > rots first is, uniquely here, already burned. **GLEAF's question: a REDUCTION, not a
+   > closure** — it explains a gain the closure already has. Cheapest live probe on this lane;
+   > the instrument is landed and the first slice is a `propagate(trace=True)` rule histogram
+   > at `(1, 0)` against `(0, 0)`. *Kill condition: the `own`-half gain attributed to a named
+   > rule among (b)/(s)/(c), or shown not to be rule-attributable at all (e.g. an ordering or
+   > tie-break artefact). Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+   >
+   > **AND THE ENTRY'S OWN PREDICTION FAILED THE WAY THE BOARD SAYS THEY DO.** This entry was
+   > ranked 2 partly because its natural mechanism was *already* burned ((GR-206)(ii) at
+   > 2 of 1 104), which the pass called *"uniquely here, already burned"*. It was: the
+   > direction's replacement mechanism — a non-star lifting rule (b)'s yield cap 1 → 3 — is
+   > **true, exhibited, and still not the answer**, its blocks certifying at 89.2 % against
+   > their stratum's 90.6 %. **Burning the obvious mechanism does not protect the next one.**
 3. **THE TRIANGLE-FREE COMPLEMENT AT `D = 0`.** *(new — GNONADD's successor, **re-aimed** off
    the regularity question per (ii) above.)* Owner: §(K-grid) *Steps G218–G220*,
    (GR-198)(iv)/(GR-200). The `G°` induction's reachability gate is now located exactly:
