@@ -2,14 +2,15 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; **114 LANDED, ONE IN FLIGHT** — BOTH 2026-09-10 rounds of three
+dispatched; **115 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
 COMPLETE** — BWHOLEH (102), GOWNHALF (103), GTRIFREE (104), spending ranks 1, 2 and 3 in one
-round — **and a SECOND round of three, against the FIFTEENTH pass, is mid-landing:
-BTAKERS (107) and GCOLTRANS (106) LANDED; BGOODEMPTY (105) IN FLIGHT.** Landed ordinals are
-1–104, 106 and 107 — 106 ordinals, 114 directions. **All three
+round — **and so is the SECOND round of three, against the FIFTEENTH
+pass** — BGOODEMPTY (105), GCOLTRANS (106), BTAKERS (107), spending ranks 1, 2 and 3 in one
+round for the second consecutive round. Landed ordinals are **1–107 — 107 ordinals, 115
+directions**, with none in flight. **All three
 returned REFUTATIONS; all three refuted the coordinator's own prediction; and each refuted at
 least one LANDED clause, including a `[PROVED]` one.** The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
@@ -17957,3 +17958,82 @@ neither direction having seen the other: the triple split
 1 428 triangle-free `K₃,₃` shapes. The direction's criticism of (GR-218)'s use
 was checked against every landed site (F24): the clause is correctly scoped
 everywhere, and the real point is the ruling's consequence, recorded as such.
+
+
+## BGOODEMPTY — ordinal 105, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's fifteenth pass, RANK 1** — the only SUFFICIENT entry on either lane
+under the new decisiveness criterion. *Question:* is there a piece `H` in the
+rung-3 region with `Good(H; x, y) = ∅`?
+
+**VERDICT: NOT FOUND UNDER CAP C — and the tally is the least interesting
+part**, exactly as the spec's centrepiece said it would be: by (BE-69)(ii) a
+failed search **cannot** prove `Good = ∅`, so the direction was told a positive
+would need a structural argument and draws could only aim it. It returned
+structure instead, and **two of the three routes to a `Good = ∅` piece are now
+closed by PROOF.** Landed as (BE-255)–(BE-262) / *Steps BE254–BE261*.
+
+- **`δ_{xy} ≤ dist(x,y)` is a combinatorial theorem** of the partition formula
+  `def₃(G) = max_𝒫 [6(|𝒫|−1) − 5d(𝒫)]`: merge the `t` blocks a shortest x–y
+  path meets, lose `6(t−1)`, bury `≥ t−1` crossing edges, net `≤ t−1 ≤ dist`.
+  With (BE-30)(iv)'s unconditional `ρ_i ≤ dist_i` the **one-sided** obstruction
+  is **unreachable** — and the proof also strips (BE-30)(iv)'s own *"at a
+  configuration where `H` and `H/uv` attain"* hypothesis from that clause.
+  31 338/31 338 as a check.
+- **`rank(ω ↦ ω ∧ p_x) = 3`** on `Λ²K⁴` (the image is `Λ²(K⁴/p_x)`), so generic
+  `dim(⟨P₀⟩ ∩ α_x) = max(1, dist_i − 3)` — measured exactly at 527/527 — hence
+  **`dist_i ≤ 4` ⟹ generic `c_i(Π_x) ≤ 1`, proved**. And `c_i(Π_x) = 2` occurs
+  **only** at `ρ_i = 6`, which at rung 3 forces `δ_j = 0`, a rigid other side,
+  `c_j = 0`: **`Π_x` cannot bind.**
+- Two-sided hunt: **253 in-region whole-`H` rows × 3 free draws, margin
+  `{0: 253}`** over all 16 stable blocks. Plus a new **one-draw decision
+  procedure** — `δ_i > m_i` at a max-profile draw *proves* `Good = ∅` — hunted
+  at **0 certificates over 257 rows**.
+
+**AND IT LANDS ON A SIBLING'S CERTIFICATE — AN UPGRADE, NOT A CONTRADICTION.**
+BWHOLEH's side 1 is the `(4,4)` cycle, so `dist₁ = 4` and the proved half
+applies to that very certificate: generic `c₁(Π_x) ≤ 1`, so the killing point is
+**provably** non-generic. (BE-250)(iii)'s 6-of-6 free-draw control becomes the
+**consequence of a theorem**, and (BE-253)(ii)'s *"steered, hence non-generic"*
+is **forced** rather than measured — removing the fragility BWHOLEH had flagged
+in itself (*"rests on 6 free draws of one `H`"*). Its verdict, certificate and
+scope are untouched.
+
+**The spec's MECHANISM was refuted first, before anything rested on it**, as
+instructed: (BE-22)(ii)'s partition cap is a universal **upper** bound on rank,
+and attainment is the **maximal**-rank locus, which the cap makes *open* —
+(BE-69)(i) uses it for exactly that — so it says nothing about nonemptiness.
+Landed counterwitnesses: `a_i = 1` at 100/392, `a_i ∈ {1,2,3,6}`, and
+(BE-250)(i)'s own `dim M(H) = 7 > 6` at an `a = (0,0)` point.
+
+**Self-caught, load-bearing:** its first `Π_x` lemma was **false by one** — it
+claimed `d−1` generically independent vectors where they all lie in the
+**3-dimensional** `p_x ∧ Λ²K⁴`, so the rank saturates at 3. **The driver's own
+assert caught it**, and the threshold moved from `dist ≤ 5` to `dist ≤ 4`. Also
+self-caught: an (L6) hazard it created (the driver minted bare `(U1)`/`(U2)`/
+`(U3)`), renamed before drafting.
+
+**Prediction outcome: verdict CONFIRMED but for a better reason than given**
+(the stated reason — all landed free-draw shortfalls are 0 — is evidence, not a
+reason); **mechanism REFUTED**; **TELL did not fire and could not have settled
+it**, since it samples `dim(ρ̄₁+ρ̄₂)`, which is *lower* semicontinuous — the one
+quantity a draw cannot settle in the needed direction.
+
+**THE F28 CALIBRATION, cutting the other way from the previous round.** The
+spec's *"where I expect to be wrong"* named constructor fences and the direction
+**acted on them** — `bproper.NONADJ` 3 → 6, branch length 4/3 → 5, a 66-shape
+side-1 library. The un-fencing was real: 23 new tuples and the first `(1,1)`
+both-sides-bite at `Π_x`. **And the margin was still 0 at 253/253.** So an
+opened fence is not always load-bearing.
+
+**Coordinator verification.** `dist` re-run and reproduces the theorem check
+(`max(δ − dist) = 0` at every row). **One defect found and fixed:** the section's
+headline count of 31 338 rows did **not** reproduce from the committed driver,
+which gave 28 738 — because `run_dist`'s `nsamp`/`nrand` defaults had been
+lowered to 120/200 *after* the figure was taken. Re-running at 200/400
+reproduces **31 338 and the histogram exactly**, so the prose was right and the
+default had drifted; the defaults are restored here, with the reason in the
+source, since the run costs ~4 s either way. The `(BE-259)(iii)` claim was
+checked for consistency against BWHOLEH's landed certificate — it is an upgrade
+and says so, with generic-vs-steered doing the work. The driver's `(E1)`,
+`(E2)`, `(P0)` were confirmed to be **Python identifiers**, not labels.

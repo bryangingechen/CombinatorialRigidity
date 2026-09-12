@@ -1698,21 +1698,55 @@ was never separable from the second gate. **§8 no longer prices move-family sea
 `D = 0`.** Bar *(j)* keeps its prohibition and **loses its cited reason**; bar *(l)* survives
 with *triangle* load-bearing.
 
-1. **IS THERE AN `H` AT RUNG 3 WITH `Good(H; x, y) = ∅`?** *(new — BWHOLEH's own open item (1),
-   and its words for it are* "the search that would begin to reach (BE-14)"*.)* Owner:
-   §(K-bare-ext) *Steps BE246–BE253*, (BE-249)/(BE-250)/(BE-253)(ii). **GLEAF's question:
-   SUFFICIENT, and it is the only SUFFICIENT entry on either lane.** BWHOLEH's certificate is
-   a shortfall at a **steered, non-generic** point of a piece whose `Good` is **dense**, and
-   (BE-69)(ii)'s consequence 3 is exactly the dividing line: if `Good = ∅` the shortfall holds
-   **identically on `Chart(H)`**, so it is a structural fact about the whole chart rather than
-   a phenomenon at a special point — *"which is what makes 'are the two located ones the only
-   two?' a well-posed question rather than an unbounded search over configurations."* **A
-   `Good = ∅` piece in the rung-3 region is an obstruction to `hbareSplit` itself**, not merely
-   to a universal reading of the obligation. Ranked 1 on the standing distance-to-target
-   criterion as well: this is the `hbareSplit` lane. *Kill condition: an `H` in the region with
-   `Good = ∅` exhibited — which reaches (BE-14) — or `Good ≠ ∅` shown on a structurally
-   characterized family, which closes this route and sends the lane to rank 3's re-read.
-   Decided by: the `(K-bare)/(K-bare-ext)` row.*
+1. **IS THERE AN `H` AT RUNG 3 WITH `Good(H; x, y) = ∅`? — SPENT (BGOODEMPTY 105, 2026-09-12):
+   NOT FOUND UNDER CAP C, AND TWO OF THE THREE ROUTES TO ONE ARE NOW CLOSED BY PROOF.** Owner of
+   the answer: §(K-bare-ext) *Steps BE254–BE261*, (BE-255)–(BE-262). The tally is the least
+   interesting part, exactly as the entry's centrepiece predicted — a failed search **cannot**
+   prove `Good = ∅` ((BE-69)(ii)), and the direction delivered structure instead.
+   *(a)* **`δ_{xy} ≤ dist(x,y)` is a COMBINATORIAL theorem** of the partition formula — merge
+   the `t` blocks a shortest x–y path meets, losing `6(t−1)` and burying `≥ t−1` crossing edges
+   — so with (BE-30)(iv)'s unconditional `ρ_i ≤ dist_i` the **one-sided** obstruction is
+   **unreachable**, and (BE-30)(iv)'s own attainment hypothesis drops off that clause.
+   *(b)* `rank(ω ↦ ω ∧ p_x) = 3` on `Λ²K⁴` gives generic `dim(⟨P₀⟩ ∩ α_x) = max(1, dist_i − 3)`,
+   so **`dist_i ≤ 4` ⟹ generic `c_i(Π_x) ≤ 1`, PROVED**, and `c_i(Π_x) = 2` occurs only at
+   `ρ_i = 6` — which at rung 3 forces the other side rigid, so **`Π_x` cannot bind**.
+   *(c)* Two-sided: **margin `{0: 253}`** over all 16 stable blocks.
+   **AND (b) LANDS ON BWHOLEH'S OWN CERTIFICATE**, whose side 1 is the `(4,4)` cycle at
+   `dist₁ = 4`: (BE-250)(iii)'s 6-of-6 free-draw control becomes a **theorem**, and
+   (BE-253)(ii)'s *"steered, hence non-generic"* is **forced** rather than measured — removing
+   the fragility BWHOLEH flagged in itself. **An upgrade, not a contradiction:** that verdict,
+   its certificate and its scope all stand.
+   *Kill condition: MET on its second arm — `Good ≠ ∅` shown on a structurally characterized
+   family rather than by exhaustion. The lane's successor is **`⟨M⟩`**, now the cheapest
+   remaining route (both sides `c_i = 1` at `dim U = 1`), unwitnessed at 0 of 93 + 253; and the
+   `dist_i ∈ {5,6}` corner would make (BE-259) unconditional.*
+
+   > **THE F28 CALIBRATION THIS SUPPLIES, and it cuts the OTHER WAY from the previous round.**
+   > This entry's *"where I expect to be wrong"* named constructor fences, and the direction
+   > **acted on them** — `bproper.NONADJ` 3 → 6, branch length 4/3 → 5, a 66-shape side-1
+   > library. The un-fencing was **real**: 23 new tuples and the first `(1,1)` both-sides-bite
+   > at `Π_x`. **And the margin was still 0 at 253/253.** So an opened fence is not always a
+   > load-bearing one. F28 says a listed fence must be *opened* rather than merely disclosed;
+   > this round says opening it is not a promise. Both are needed, and the pair is the honest
+   > statement.
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — BWHOLEH's own open item (1),
+   > and its words for it are* "the search that would begin to reach (BE-14)"*.)* Owner:
+   > §(K-bare-ext) *Steps BE246–BE253*, (BE-249)/(BE-250)/(BE-253)(ii). **GLEAF's question:
+   > SUFFICIENT, and it is the only SUFFICIENT entry on either lane.** BWHOLEH's certificate is
+   > a shortfall at a **steered, non-generic** point of a piece whose `Good` is **dense**, and
+   > (BE-69)(ii)'s consequence 3 is exactly the dividing line: if `Good = ∅` the shortfall holds
+   > **identically on `Chart(H)`**, so it is a structural fact about the whole chart rather than
+   > a phenomenon at a special point — *"which is what makes 'are the two located ones the only
+   > two?' a well-posed question rather than an unbounded search over configurations."* **A
+   > `Good = ∅` piece in the rung-3 region is an obstruction to `hbareSplit` itself**, not merely
+   > to a universal reading of the obligation. Ranked 1 on the standing distance-to-target
+   > criterion as well: this is the `hbareSplit` lane. *Kill condition: an `H` in the region with
+   > `Good = ∅` exhibited — which reaches (BE-14) — or `Good ≠ ∅` shown on a structurally
+   > characterized family, which closes this route and sends the lane to rank 3's re-read.
+   > Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 2. **THE COLOURING-TRANSPORT GATE AT `D = 0` — SPENT (GCOLTRANS 106, 2026-09-12). THE QUESTION
    HAD NO TRUTH VALUE AS POSED, AND SAYING SO IS THE RESULT.** Owner of the answer: §(K-grid)
    *Steps G245–G252*, (GR-225)–(GR-232). Fixing **direction**, **shared datum** and

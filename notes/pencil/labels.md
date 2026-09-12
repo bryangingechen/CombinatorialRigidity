@@ -5534,3 +5534,56 @@ after `HEAD` advanced under it — the concurrent-read discipline working.
 > going there**, not from sweeping harder. This is the population-fence class
 > `blindaxes.py` cannot list, in its sharpest form yet: the fence was not a
 > keyword but the **order the generator emits shapes in**.
+
+## Reserved namespace — direction BGOODEMPTY (2026-09-12, **EIGHT of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BGOODEMPTY** | §(K-bare-ext) — **new file** `workbook/bare-ext/BGOODEMPTY.md` | **(BE-255)–(BE-262)** | ***Steps BE254–BE261*** | `w4/bgoodempty.py` (six modes + `validate`) |
+
+**0-hit verification, emitted PER TOKEN, and run TWICE.** At `29a60d1a` (the
+dispatch baseline): **CLEAN EXCEPT THE DECLARATION** — `BE254` hits only the
+previous reservation's live-tail line in `labels.md` (1 hit / 1 file); the range
+`(BE-255)`–`(BE-262)`, `BE255`–`BE261`, `BGOODEMPTY` and `bgoodempty` all **0
+hits / 0 files**. **Re-run by the direction at `6372ec45`**, after two siblings
+landed underneath it: the label and step tokens are **still 0-hit**, and
+`BGOODEMPTY` then reports **4 hits / 3 files, classed REVIEW** — all four the
+**coordinator's own in-flight bookkeeping** (the ROADMAP Status cell, two
+sentences in `notes/Phase39.md`, the round line in `fanout.md`), not a
+collision. **The token is not consumed by them.**
+
+**THE LIVE TAIL DOES NOT MOVE.** BTAKERS (107) had already consumed
+(BE-263)–(BE-270) / *BE262–BE269* and taken the tail to **(BE-271) /
+*Step BE270***; this reservation **fills the gap below it** and leaves it there.
+First time in the arc that a reservation has landed *under* a later one — an
+artefact of serial landing in a non-ordinal order, and correct.
+
+**(L6) landing-time grep run by the coordinator:** the section mints **no** bare
+`(X<digit>)` token (only the standing `(M1)`/`(M2)`). A repo-wide grep surfaces
+`(E1)`, `(E2)`, `(P0)` inside `bgoodempty.py`; **verified to be Python
+identifiers** in expressions such as `neighbors(E1)` and `dim(P0) - 3`, not
+labels. The driver's first draft *did* mint bare `(U1)`/`(U2)`/`(U3)` and the
+direction renamed them to `U-1`/`U-2`/`U-3` **before drafting** — (L6) catching
+a hazard at the point it was created rather than at landing.
+
+> ***A NEGATIVE VERDICT THAT CLOSED TWO ROUTES AND UPGRADED A SIBLING'S LANDED
+> CLAUSE.*** No `Good = ∅` piece was found — *"NOT FOUND under cap C"*, and the
+> spec had warned that a search **cannot** prove `Good = ∅` anyway. What the
+> direction returned instead is two **proofs**: `δ_{xy} ≤ dist(x,y)` from the
+> partition formula, making the one-sided obstruction **combinatorially
+> unreachable**; and `rank(ω ↦ ω ∧ p_x) = 3` on `Λ²K⁴`, giving generic
+> `dim(⟨P₀⟩ ∩ α_x) = max(1, dist_i − 3)` and hence **`dist_i ≤ 4` ⟹ generic
+> `c_i(Π_x) ≤ 1`**. The second lands on **BWHOLEH's own certificate** (side 1 is
+> the `(4,4)` cycle, `dist₁ = 4`), turning (BE-250)(iii)'s 6-of-6 free-draw
+> control into a **theorem** and removing the fragility BWHOLEH had flagged in
+> itself — **an upgrade, not a contradiction**: the verdict, the certificate and
+> the scope sentence all stand.
+>
+> ***AND THE F28 CALIBRATION POINT, which cuts the other way from last round.***
+> The spec's *"where I expect to be wrong"* named constructor fences, and the
+> direction **acted on them** (`bproper.NONADJ` 3 → 6, branch length 4/3 → 5, a
+> 66-shape side-1 library). The un-fencing was **real** — it produced 23 new
+> tuples and the first `(1,1)` both-sides-bite at `Π_x` — **and still margin 0
+> at 253/253**. So an opened fence is not always a load-bearing one, which is
+> the honest complement to F28 and to the previous round, where un-fencing
+> decided everything.

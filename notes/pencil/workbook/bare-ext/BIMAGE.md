@@ -169,6 +169,14 @@ screw-space convention used throughout is read off
 > in every regime. In regime (c) every one of thirty draws fails
 > `legal_chain`.
 
+> **— STRENGTHENED 2026-09-12 by (BE-256)(ii) (direction BGOODEMPTY): the
+> `δ ≤ dist` half is a COMBINATORIAL theorem of the partition formula and
+> carries NO configuration hypothesis** — in particular not this clause's *"at a
+> configuration where `H` and `H/uv` attain"*. Merge the `t` blocks a shortest
+> x–y path meets: `6(t−1)` is lost and `≥ t−1` crossing edges are buried, so the
+> net is `≤ t−1 ≤ dist`. Checked at 31 338 rows, 0 exceptions. Consequence: the
+> one-sided obstruction `ρ_i < δ_i` is **unreachable**, which closes one of the
+> three routes to a `Good = ∅` piece.
 > **(BE-30)(iv)** *(proven; the hypothesis's own cheapest consequence, which the
 > spec named as the first falsification to run)* For **every** `u–v` path `P` of
 > a piece `H`, `ρ̄_{uv}(H) ⊆ ⟨ℓ_e : e ∈ P⟩` (the telescoping of (i)); hence

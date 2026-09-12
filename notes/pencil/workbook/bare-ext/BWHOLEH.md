@@ -239,6 +239,15 @@ own builder (`bproper.free_peel`). Baseline `HEAD` = `fde0317f`.
 > so the firing side obeys (BE-241)(iii); (g) `ρ_i = δ_i + a_i` on both
 > sides, so the `a = (0,0)` reading is measured and not assumed.
 
+> **— UPGRADED 2026-09-12 by (BE-259)(iii) (direction BGOODEMPTY), and it is an
+> upgrade rather than a contradiction.** This direction's side 1 is the `(4,4)`
+> cycle, so `dist₁ = 4`, and `rank(ω ↦ ω ∧ p_x) = 3` on `Λ²K⁴` then PROVES
+> generic `c₁(Π_x) ≤ 1` there. So the 6-of-6 free-draw control below is now the
+> **consequence of a theorem** rather than the evidence for a reading, and
+> (BE-253)(ii)'s *"the killing configuration is steered, hence non-generic"* is
+> **forced** by `dist₁ = 4` rather than measured — removing the fragility this
+> direction itself flagged (*"rests on 6 free draws of one `H`"*). **The verdict,
+> the exact-ℚ certificate and the scope sentence are untouched.**
 > **(BE-250)(iii)** `[MEASURED]` *(**the F13 control that locates the gap**,
 > and it is the most informative row in the direction)* `bproper.free_peel`
 > — the **landed** builder, side 1 **not** steered — run on the **same**
