@@ -1700,7 +1700,11 @@ levels** (80/80, 7 892/7 892, 16 969/16 969). GNONADD's own closing paragraph sa
 obstruction actually sits: *"the block is **absence of a triangle**, never failure of the
 contraction."* And the complement is not a vague remainder — it is **enumerated and landed**:
 at `n_hub = 8`, **2 of the 11 inhabited hub-multigraph classes carry no cut-3 triangle at all,
-and they hold 22 720 of the 39 689 shapes** ((GR-198)(iv)). So the entry this board carries is
+and they hold 22 720 of the 39 689 shapes** ((GR-198)(iv)) — **on the `Λ = ∅` stratum, which is
+the disclosure that travels with this figure**: the `n_hub = 8` population is `aglu._pool8()`,
+which (GR-198)(iii) states in terms is *"the **`Λ = ∅`** stratum and NOT a general `n_hub = 8`
+pool"*, so the count is a lower bound on the triangle-free part of a general pool and the class
+split is measured only there. So the entry this board carries is
 the **triangle-free complement**; the regularity question is demoted to a corollary of it and
 is not ranked on its own.
 
@@ -1765,7 +1769,10 @@ is not ranked on its own.
    triangle-free for every `m ≥ 4` and carrying no `|A| = 3` cut-3 hub set, with **0**
    measured at `|A| = 5` for `m = 6..11` ((GR-200)). The complement is a **landed, enumerable
    population**, not a remainder: **2 of 11 inhabited hub-multigraph classes, 22 720 of
-   39 689 shapes at `n_hub = 8`**. The question is whether `CL_m` is the *only* obstruction
+   39 689 shapes at `n_hub = 8` — on the `Λ = ∅` stratum** (`aglu._pool8()`, disclosed as
+   such by (GR-198)(iii)), which is a **population fence, not a keyword fence**, and therefore
+   the shape `blindaxes.py` cannot list; re-taking the class split with `Λ` unrestricted is
+   part of this entry, not a precondition for it. The question is whether `CL_m` is the *only* obstruction
    there, or whether the `Λ`/length structure supplies a move the triangle-based families
    cannot see. **This is the board's standing technique's natural target:** ask what (GR-25)
    says at those two classes' distinguished subsets **and at their complements** — the move

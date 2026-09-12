@@ -19348,7 +19348,9 @@ is the move model.
 And the `43 %` at `n_hub = 8` is **not** a weakening of the positive: it is
 exactly the point at which triangle-free hub multigraphs become common
 (2 of the 11 inhabited classes carry no cut-3 triangle, and they hold
-22 720 of the 39 689 shapes). Among the shapes that have the move available,
+22 720 of the 39 689 shapes — **all three figures on `aglu._pool8()`, i.e. the
+`Λ = ∅` stratum, exactly as (iii) discloses two paragraphs above; the class
+split has NOT been re-taken with `Λ` unrestricted**). Among the shapes that have the move available,
 it always works. That is the same phenomenon (GR-200) turns into the
 obstruction — the block is **absence of a triangle**, never failure of the
 contraction.
