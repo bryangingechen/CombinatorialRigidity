@@ -5645,3 +5645,33 @@ directions mint in the **same** section file (`workbook/grid.md`) and the
 ranges are disjoint by construction — reservations prevent naming collisions,
 not two directions deriving one identity (dispatch-log F20), so the
 cross-return pass carries the duplication check.
+
+## Reserved namespace — the SEVENTEENTH pass's round of three (2026-09-12, dispatched together)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BSIXTEEN** | §(K-bare-ext) — continuation in `workbook/bare-ext/BSIXTEEN.md` | **(BE-278)–(BE-290)** | ***Steps BE277–BE289*** | `w4/bsixteen.py` (new) |
+| **GODDRUNG** | §(K-grid) — continuation in `workbook/grid.md` | **(GR-249)–(GR-256)** | ***Steps G269–G276*** | `w4/goddrung.py` (new) |
+| **BPROPCL** | §(K-bare-ext) — continuation in `workbook/bare-ext/BPROPCL.md` | **(BE-291)–(BE-298)** | ***Steps BE290–BE297*** | `w4/bpropcl.py` (new) |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`), all at
+the round's baseline `69712c87`:
+
+* **BSIXTEEN** — **CLEAN EXCEPT THE DECLARATION**: `BE277` and `BE279` hit only
+  previous reservations' own bookkeeping (`labels.md`'s live-tail and
+  returned-to-pool lines, and the hand-off sentence in `notes/Phase39.md` naming
+  BMBLOCK's consumed steps); every other label and step token, and
+  `BSIXTEEN`/`bsixteen`, **0 hits / 0 files**.
+* **GODDRUNG** — **CLEAN EXCEPT THE DECLARATION**: `(GR-249)` and `G269` hit
+  only `labels.md`'s live-tail sentence; everything else, and
+  `GODDRUNG`/`goddrung`, **0 hits / 0 files**.
+* **BPROPCL** — **fully CLEAN, 0 hits on every token**, including
+  `BPROPCL`/`bpropcl`.
+
+**NOTE ON THE `(BE-.)` TAIL.** BMBLOCK returned **(BE-278)–(BE-280)** /
+***BE277–BE279*** to the pool, and BSIXTEEN's range **opens exactly there** —
+the first re-use of returned labels in the arc. That is why BSIXTEEN's check
+reports declaration hits on `BE277`/`BE279` rather than on its own opening
+token: the bookkeeping that returned them is what the grep finds. **Live tail
+after this round, if all three ranges are consumed: (GR-257) / *Step G277* and
+(BE-299) / *Step BE298*.**

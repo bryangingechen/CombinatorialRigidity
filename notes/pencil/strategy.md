@@ -1665,6 +1665,123 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-12 (fourth) — THE SEVENTEENTH STRATEGY-ONLY PASS, AND IT IS THE FIRST TO
+RE-ROUTE A LANE RATHER THAN RE-ORDER IT.** The sixteenth's ranks 1, 2 and 3 were **all spent in
+one round** — GBASE 108 (struck the route), BMBLOCK 109 (closed `⟨M⟩` by proof), GSECOND 110
+(named the lift's second obstruction and showed it avoidable) — the **third consecutive round**
+to spend its whole top three. Coordinator-authored at the round close, **no dispatch spent, no
+label minted.** Every entry re-derived from its **owning** step.
+
+**THE CALL THIS PASS RECORDS, and its provenance matters.** The sixteenth pass's hand-off put the
+routing question to the user with four options and an estimate each; the user's answer was
+*"per your best judgment"* (2026-09-12). **That is a DELEGATION, not a ruling** — it does not
+carry the force of the 2026-07-24 no-split adjudication or the 2026-09-12 local-move ruling, and
+a future pass may revisit it freely on evidence. Recorded as a coordinator call so that no later
+session mistakes it for a user constraint.
+
+**THE CALL.** The `G°` induction under a local move family is **STRUCK** ((GR-238)), and it was
+the `hK` lane's principal structural route since GPACK (66). **Weight moves to the
+`(BE-14)`/`hbareSplit` lane**, whose question is now sharper than it has ever been, and the `hK`
+lane keeps **one** entry — the correlated colouring rule — because (GR-34) proves that is the
+**only shape a proof of (GR-15) can have**, so it is the one `hK` item whose success is not
+contingent on a struck route.
+
+**WHAT THAT DEMOTES, said explicitly so the successors do not rot on the board.** Three items
+inherited from the round now serve a **struck** route and are **demoted below every entry
+here**: GSECOND's `T↑∃∃` successors (the `n_hub = 8` admissibility census, the `|ca|`-rule's
+generalization past the `|O| = 3` artifact), GBASE's `n_hub = 10` **residual**, and the transport
+gate generally. **None of them is retracted** — GSECOND's rule is a real theorem-shaped object and
+would be waiting if the induction is ever revived under a different move family — but **a
+positive on any of them closes nothing while the base stands**, which is (GR-231)(iv) read after
+(GR-238) rather than before it.
+
+**WHY THE `hbareSplit` LANE IS SHARP NOW, which is the substance of the re-route.** Three of the
+three routes BGOODEMPTY named to a rung-3 `Good = ∅` piece are closed — the one-sided obstruction
+combinatorially ((BE-256)), the `Π_x`/`Π_y` blocks ((BE-259)(i)), `⟨M⟩` by a transversal
+((BE-272)/(BE-274)) — and by **(BE-97)(ii)** the object those closures live in is a *single
+inequality*: `margin := max over the 16 stable U of [c₁(U) + c₂(U) − dim U − slack]`, which by
+**(BE-95)(i)** is `> 0` **exactly** at a shortfall. **So closing every block at rung 3 is not a
+pile of lemmas — it is a proof that no rung-3 shortfall exists**, which is the whole `Good = ∅`
+question at the rung where BWHOLEH's refutation lives.
+
+1. **THE BLOCK LAW AT RUNG 3 — CLOSE THE ELEVEN THAT REMAIN.** *(new — the object BGOODEMPTY and
+   BMBLOCK have been closing one block at a time without anyone naming the target.)* Owner:
+   §(K-bare-ext) *Step BE96*, (BE-97)(i)–(iv), with (BE-95)(i) supplying the equivalence and
+   *Steps BE254–BE276* the three closures. **GLEAF's question: SUFFICIENT, and in BOTH
+   directions** — close them all and `Good ≠ ∅` at rung 3 is **PROVED**, which removes the
+   `Good = ∅` route to (BE-14) at that rung outright and leaves BWHOLEH's steered certificate as
+   the only phenomenon there; witness one and the shortfall is **chart-wide** by (BE-69)(ii),
+   which **reaches (BE-14)**.
+   **THE COUNT, STATED PRECISELY BECAUSE TWO DIFFERENT ONES ARE IN CIRCULATION.** Of the `16`
+   stable `U`, **`14` can host a violation arithmetically** — only `U = 0` and `U = Λ²K⁴` die
+   ((BE-97)(i)). **`3` are now CLOSED at rung 3** (`Π_x`, `Π_y`, `⟨M⟩`), so **`11` remain OPEN**;
+   but **`12` remain UNWITNESSED**, because `Π_y` was closed without ever having been witnessed.
+   **These are different predicates and a spec must not conflate them** — BMBLOCK's own summary
+   says *"12"*, correctly, of the unwitnessed count.
+   **First slice, and it is one block:** `⟨L⟩` — the Plücker point of `π_x ∩ π_y`, `dim 1`,
+   `cap 1`, the **exact structural analogue** of `⟨M⟩` (`bunif.BLK`/`CAP`, read at source). The
+   coordinator's candidate is that BMBLOCK's transversal transports to it; **that is a candidate
+   to ELIMINATE, not a premise** — `⟨M⟩` is the virtual edge's own hinge line and (BE-30)(iv)
+   confines `ρ̄_i` to `⟨P⟩` *because of that identification*, which `⟨L⟩` does not obviously
+   inherit. Refute it cheaply first.
+   *Kill condition: all eleven closed at rung 3 — which PROVES `Good ≠ ∅` there — or one block
+   exhibited with `c₁(U) + c₂(U) > dim U` at a rung-3 peel, which reaches (BE-14); or the
+   arithmetic shown to leave a block that neither instrument can reach, which names the real
+   residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+2. **THE CORRELATED COLOURING RULE ON THE BASE, ATTACKED AT THE PARITY FAILURE.** *(new —
+   GBASE's named successor, and the only `hK` entry whose success is not contingent on a struck
+   route.)* Owner: §(K-grid) *Steps G258–G259*, (GR-238)/(GR-239), standing on (GR-34). **(GR-34)
+   proves the shape any proof must have** — *"any proof of the target must correlate the per-hub
+   minority choices; no uncorrelated charging can close it"* — and the corpus has **exactly one**
+   correlated rule: the rung-minority rule, which certifies `CL_m` with an explicit exact-ℚ
+   `dim Z = 0` colouring. **GBASE extended it to `n_hub = 24` and located precisely where it
+   dies:** it is **PARITY-FRAGILE**, needing every rung length **even**, because a length-`L`
+   branch flips its dart colour `L − 1` times so a rung is its hub's minority dart at **both**
+   ends only when `L` is even. **(GR-175)'s family — six rungs at `ℓ = 3` — is exactly the
+   witness**, and it is the family that makes the base infinite. **GLEAF's question: SUFFICIENT
+   for an infinite subfamily** — a repair covering odd rung lengths is a **uniform** (GR-15)
+   argument on an infinite part of the base, which is the first uniform result the base would
+   have and the only route (GR-34) leaves open.
+   *Kill condition: a correlated rule exhibited that certifies `CL_m` at (GR-175)'s recipe for
+   every `m ≥ 6` — a uniform (GR-15) theorem on an infinite base subfamily — or the parity
+   obstruction shown to be **essential**, i.e. no minority assignment correlated along the rails
+   can be admissible at odd rung length, which would say the base's one landed instrument cannot
+   be repaired and is itself a result. Decided by: the `(K-grid)` row, close-it u9.*
+
+3. **THE SHARED RESIDUE — ONE LEMMA FOR TWO LANDED CLOSURES.** *(new — named independently by
+   BGOODEMPTY and by BMBLOCK, each calling it "a direction's question, not a coordinator's".)*
+   Owner: §(K-bare-ext) (BE-262)(ii)'s FIRST item and (BE-277)(iii). Both landed closures are
+   **conditional in the same corner**: (BE-259)(ii) needs *"a proof that `Π_x ⊆ ρ̄_i` is a proper
+   closed condition when `ρ_i ≤ 5` and `dim ⟨P₀⟩ ∈ {5, 6}`"*, and (BE-274) needs the same for
+   `⟨M⟩` at `dim ⟨P₀⟩ = 6` — one dimension down and one regime narrower, because at
+   `dim ⟨P₀⟩ = 5` the path lemma already closes it where the `α_x` bound does not. **It is the
+   same question about `ρ̄_i` in general position against a stable block once the path confinement
+   has gone vacuous, and ONE lemma discharges BOTH.** Population priced **draw-free**: **248 of
+   2 946** in-region peels ((BE-276)(i)). **GLEAF's question: a REDUCTION** — it proves nothing
+   new, it removes a hypothesis from two things already proved — which is why it ranks below two
+   SUFFICIENT entries despite being the cheapest and most sharply posed item on either lane.
+   *Kill condition: the properness lemma proved — which makes (BE-259) and (BE-274) unconditional
+   at once — or a rung-3 peel exhibited at which `Π_x ⊆ ρ̄_i` (or `⟨M⟩ ⊆ ρ̄_i`) holds
+   IDENTICALLY on the chart rather than on a proper closed subset, which turns the residue into a
+   live route rather than a hypothesis. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+4.–9. **THE CARRIED ENTRIES, RE-ORDERED ONLY BY THE STANDING CRITERION** — the (c)-strengthened
+   closure's 14/18 residual (SUFFICIENT but **capped twice**, and now a third time: it was ranked
+   as a route to (GR-15) on a lane whose structural route is struck, so its *"does not obviously
+   beat the tool the arc already has"* is the binding sentence); GCOIND's matrix-valued corank
+   statistic (a REDUCTION); the island at `n_hub = 10`, the `4T + 3Q ≥ 12` habitat and the
+   `P¹`/splitting-type reading of (GR-7)(ii) (NECESSARY or enabler). **Below all of them: the
+   three demoted transport/coverage successors named above.** Kill conditions as written.
+
+**THE BAR THIS PASS ADDS.** *(o)* **No entry may be ranked on advancing the `G°` induction under
+a local move family.** It is struck by (GR-238), on landed statements, and the strike is about
+the **base**, which no amount of transport or coverage work touches. An entry that proposes
+transport, coverage, a move family or a re-length rule at `D = 0` must say **what it buys for a
+route that is not struck** — and *"it would close the induction on the reachable part"* is not
+such a statement, since (GR-231)(iv) already says that part is not the stratum. Bars *(a)*–*(n)*
+stand.
+
 **ALL THREE OF THIS PASS'S RANKS WERE SPENT IN ONE ROUND (2026-09-12): GBASE 108 struck the
 route, BMBLOCK 109 closed `⟨M⟩` by proof, GSECOND 110 named the lift's second obstruction and
 showed it avoidable. The THIRD consecutive round to spend its whole top three. The seventeenth
