@@ -152,6 +152,8 @@ keeps only what git cannot show.
 | 2026-09-12 | Phase39 `notes/pencil/fanout.md` header stale by THREE directions (`3d34bc6b`) | opus (coordinator) | **F17 / the file's own item (v), THIRD instance in this file and eighth of the shape** | The header read *"106 LANDED, BOTH 2026-09-10 rounds of three are COMPLETE"* with no mention of GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101 — each of which has its **own section in that same file**. It also still named `(BE-OBL7)` ∧ `(BE-OBLK)` as the lane's successor, which (BE-235)(ii) had already refuted *as a reduction* when the sentence was written. Found by the landing sweep, not by an edit to the file. A section-scoped edit does not re-read the document's header; the only defence is sweeping the surfaces the landing did **not** touch. |
 | 2026-09-12 | Phase39 round of three vs §8's fourteenth pass — BWHOLEH 102 / GOWNHALF 103 / GTRIFREE 104 | opus ×3, concurrent | **3 of 3 coordinator predictions REFUTED, and 3 of 3 refuted a LANDED clause — including a `[PROVED]` one** | The round spent §8's ranks 1, 2 and 3 together. Every verdict went against the spec's stated verdict **and** its stated mechanism, scored separately. Casualties among landed prose: (GR-206)(iii)/(iv) keyed on positivity where their labels name a pair; (BE-244)(ii)'s diagnosis of its own disclosed cap; (GR-200) `[PROVED]`, refuted at its quantifier and repaired stronger; (GR-198)(iv)'s triangle thesis. **Two of the four were refutable from the corpus with no new computation.** The board's *"the entry's reason rots first"* rule now has a fourth confirming round and has generalized past the mechanism field. |
 | 2026-09-12 | Phase39 BWHOLEH reported a lint FAIL in a SIBLING's untracked draft | opus | concurrent-read working **as intended** — logged as the benign case, since the hazard class usually appears here as a defect | BWHOLEH's return flagged `(GR-215)(iv)` in `grid-draft-GOWNHALF.md` as `[MEASURED]` with no driver named, correctly identifying it as not its own. The clause was the **coordinator's**, minted at GOWNHALF's landing, and `--lint` had already caught it pre-commit. Accurate when it looked, stale by the time it was read. Worth a row because F18's shared-scratchpad hazard is normally logged as a cost: here a sibling's read of a shared tree produced a **correct, independent** defect report at zero extra dispatch. |
+| 2026-09-12 | Phase39 SECOND round of three vs §8's FIFTEENTH pass — BGOODEMPTY 105 / GCOLTRANS 106 / BTAKERS 107 | opus ×3, concurrent | **ranks 1–3 spent together for the SECOND consecutive round; 6 of 6 stated MECHANISMS refuted across both rounds** | Verdicts improved sharply once the board ranked on decisiveness rather than cost: **2 of 3 verdicts CONFIRMED** here against 0 of 3 last round. **Mechanisms did not: 3 of 3 again, 6 for 6 across the day.** Three of the six directions **corrected or upgraded a sibling's landed work from the same session** — BGOODEMPTY turning BWHOLEH's (BE-250)(iii) into a theorem, BTAKERS qualifying its *"untouched"* lists, GCOLTRANS scoping GTRIFREE's (GR-218). Two *independent* cross-return agreements (the 667 845 triple split; the 1 428 `K₃,₃` shapes) arrived from directions that never saw each other. |
+| 2026-09-12 | Phase39 figure reproduction across the six landings | opus (coordinator) | **3 of 6 directions shipped a figure or driver defect that NO gate could see** — all three caught by coordinator re-runs, one by a gate | GOWNHALF: a headline disclosure with **no driver** (RESEARCH-ARC §4). BGOODEMPTY: **two** — a 31 338-row count irreproducible from the committed driver (defaults lowered to 120/200 *after* the figure was taken; restoring 200/400 recovered it **exactly**), and a `pix` count of 527 that no setting recovered, plus a display formula wrong at its own largest bucket by its **own printed histogram**. `ledger.py --lint` caught exactly one defect of the six landings (an untagged `[CONSTRUCTED]` driver). **The re-run is the gate here, and nothing else is.** |
 
 ## Findings
 
@@ -725,3 +727,35 @@ At phase close, promote stable entries into the coordinator command's
   candidates should be written as *"start here, expect to discard"*
   rather than as the expected answer — the same discipline §7 already
   imposes on the MECHANISM field, now earned by a second field.
+
+- **F30 — a PREFIX is not a SAMPLE, and the generator's emission
+  ORDER is a population fence.** GCOLTRANS took prefixes of 40, then
+  60, then 25 shapes of `gisland.stratum(6)` and got **0** lift
+  failures over 1 145 / 1 693 / 709 triples. The exhaustive run gives
+  **1 890 of 194 325**, and the adversarial slice — 2.4 % of the
+  triple space, which every prefix missed — carries **608** of them,
+  **594 cap-free**. The refutation came from **asking where the
+  mechanism predicts a failure and going there**, not from sweeping
+  harder. This is the population-fence class `blindaxes.py` cannot
+  list in its sharpest form yet: not a keyword, not a stream's
+  provenance, but the **order a generator emits its population in**.
+  Operationally: a `--shapes N` style cap is a **prefix**, so it may
+  not be reported as a sample; either sweep the region exhaustively
+  or aim at the slice the mechanism predicts, and say which.
+- **F31 — a TELL must sample a quantity whose SEMICONTINUITY runs the
+  way the verdict needs.** The tell check had three parts — not
+  already satisfied, satisfiable at all, could the verdict differ
+  inside the region. This round shows a fourth, and it decided two of
+  three specs. BGOODEMPTY: the tell sampled `dim(ρ̄₁+ρ̄₂)`, which is
+  **lower** semicontinuous, while the verdict needed an **upper**
+  bound — so it *could not have settled the question* however it came
+  out, and the direction said so. GCOLTRANS: the tell was posed at
+  whole-shape existence, where a hit would have **refuted (GR-15)**
+  rather than answering the question asked; it fired only once
+  re-pointed at the shared datum. Both passed all three existing
+  checks. **Add the fourth: name the quantity the tell measures and
+  the direction the verdict needs it to move; if a draw can only
+  bound it the wrong way, the tell is a pointer and must be labelled
+  one.** Note this is the same family as the two unsatisfiable tells
+  of 2026-09-10, now recurring with a diagnosable cause rather than
+  as a pair of one-offs.
