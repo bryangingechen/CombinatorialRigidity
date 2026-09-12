@@ -1821,30 +1821,72 @@ is not ranked on its own.
    > direction's replacement mechanism — a non-star lifting rule (b)'s yield cap 1 → 3 — is
    > **true, exhibited, and still not the answer**, its blocks certifying at 89.2 % against
    > their stratum's 90.6 %. **Burning the obvious mechanism does not protect the next one.**
-3. **THE TRIANGLE-FREE COMPLEMENT AT `D = 0`.** *(new — GNONADD's successor, **re-aimed** off
-   the regularity question per (ii) above.)* Owner: §(K-grid) *Steps G218–G220*,
-   (GR-198)(iv)/(GR-200). The `G°` induction's reachability gate is now located exactly:
-   every class shape **carrying** a cut-3 triangle is Y-reducible (100 % at three levels),
-   and every known obstruction is **triangle-free** — (GR-175)'s `CL_m = C_m × K₂`, proved
-   triangle-free for every `m ≥ 4` and carrying no `|A| = 3` cut-3 hub set, with **0**
-   measured at `|A| = 5` for `m = 6..11` ((GR-200)). The complement is a **landed, enumerable
-   population**, not a remainder: **2 of 11 inhabited hub-multigraph classes, 22 720 of
-   39 689 shapes at `n_hub = 8` — on the `Λ = ∅` stratum** (`aglu._pool8()`, disclosed as
-   such by (GR-198)(iii)), which is a **population fence, not a keyword fence**, and therefore
-   the shape `blindaxes.py` cannot list; re-taking the class split with `Λ` unrestricted is
-   part of this entry, not a precondition for it. The question is whether `CL_m` is the *only* obstruction
-   there, or whether the `Λ`/length structure supplies a move the triangle-based families
-   cannot see. **This is the board's standing technique's natural target:** ask what (GR-25)
-   says at those two classes' distinguished subsets **and at their complements** — the move
-   that produced both of the previous round's proofs, and never yet taken on a triangle-free
-   population. **GLEAF's question: NECESSARY only, and honestly so** — even total
-   reducibility leaves the **second** gate standing, a move between *shapes* still having to
-   transport an admissible **colouring** ((GR-200) + rank 1's withdrawn promise). Rank it
-   here for that reason and not higher. *Kill condition: a move family exhibited that reduces
-   a triangle-free `D = 0` class shape, or the two triangle-free classes shown to be
-   `CL_m`-like — i.e. irreducible under every move family the arc has — which upgrades
-   (GR-200) from an infinite family to a **characterization** of the obstruction. Decided by:
-   the `(K-grid)` row, close-it u9.*
+3. **THE TRIANGLE-FREE COMPLEMENT AT `D = 0` — SPENT (GTRIFREE 104, 2026-09-12). THE KILL
+   CONDITION FIRED ON ITS FIRST ARM, AND THE ENTRY'S WHOLE FRAMING IS REFUTED WITH IT.**
+   Owner of the answer: §(K-grid) *Steps G237–G243*, (GR-217)–(GR-223). In a cubic hub
+   multigraph `∂(A) = ∂(V∖A)`, so cut-3 sets come in **complementary pairs** and **every
+   hub's complement** is a legal Y-reduction frame at `|A| = n−1` — odd, connected whenever
+   the hub is non-cut, which a connected graph always has two of — with forced budget
+   **`Σℓ − 3(n−2) = 12` at every `n`**, always realizable since all three `n_hub = 2` class
+   shapes have `Σℓ = 12` with every `ℓ ≤ 5`. **So NO `D = 0` class shape is irreducible.**
+   `CL_m` reduces (**1 520** exhibited certificates, `m = 6..13`), and the two triangle-free
+   classes at `n_hub = 8` — **named for the first time: the cube `Q₃ = CL₄` and the Wagner
+   graph `V₈`** — reduce at **22 720 of 22 720**. **THREE THINGS FALL.** *(1)* **(GR-200)'s
+   *"`CL_m` admits no Y-reduction"* is REFUTED at its quantifier** — and **repaired stronger**:
+   `CL_m`'s only 3-edge-cuts are its `2m` hub stars, **proved for every `m ≥ 4`** via
+   `∂(A) = 2a + 2b + \|S Δ T\|`, so no Y-reduction at `|A| ≤ 2m−3` (all `m`, all `|A| ≤ 2m−3`,
+   proved rather than measured). *(2)* **(GR-198)(iv)'s *"the block is absence of a triangle"***
+   falls — absence of a triangle blocks the `|A| = 3` **search**, not the move. *(3)* **This
+   entry's own premise.** **AND IT WAS REFUTABLE FROM THE LANDED CORPUS WITH NO NEW
+   COMPUTATION: 1 428 of (GR-198)(ii)'s own 7 892** `n_hub = 6` shapes sit on triangle-free
+   `K₃,₃` and were certified reducible **by that very census**, through the `|A| = 5 = n−1`
+   frame it happened to search. The `100 % / 100 % / 43 %` census shape is the size cap sliding
+   past `n−1` between `n = 6` and `n = 8`. **The `Λ` re-take this entry asked for is DONE** at
+   `|Λ| = 1`: `2 of 12`, **378 864 of 635 144 (59.6 %)** against `2 of 11`, 22 720 of 39 689
+   (57.2 %) at `Λ = ∅` — the split is **length-independent** (proved), so `Λ` moves multiplicity
+   only. *(Cap: `lamcap = 1`; `|Λ| ≥ 2` at `n_hub = 8` is NOT swept.)*
+   *Kill condition: MET on its first arm — and more cheaply than priced. No new move family was
+   needed: the landed one at an unsearched `sizes=` value.*
+
+   > **THE RE-ROUTE THIS FORCES, and it is larger than the entry.** The move that meets the
+   > reachability gate contracts `n−1` hubs into one and **transports nothing**; under **any**
+   > size bound the gate is *unsatisfiable* on `CL_m`. **So reachability is satisfiable
+   > trivially and unsatisfiable under any bound — there is no bound at which it is the
+   > interesting question, and it was never separable from the second gate.** §8 should **stop
+   > pricing move-family searches at `D = 0`** and price **colouring transport**, which no
+   > landed result touches. Bar *(j)* keeps its prohibition and **loses its cited reason**; bar
+   > *(l)* survives with *triangle* load-bearing. **An open board question this pass cannot
+   > settle by measurement:** whether the arc intends a **size bound on `|A|`** that
+   > `cut3_sets`' own guard (`n − sz + 1 ≥ 2`, i.e. `sz ≤ n−1`) does not impose. Unbounded,
+   > (GR-200) simply falls; bounded, its intent survives strengthened. Either ruling leaves the
+   > mathematics standing — the fifteenth pass owns the choice.
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — GNONADD's successor, **re-aimed** off
+   > the regularity question per (ii) above.)* Owner: §(K-grid) *Steps G218–G220*,
+   > (GR-198)(iv)/(GR-200). The `G°` induction's reachability gate is now located exactly:
+   > every class shape **carrying** a cut-3 triangle is Y-reducible (100 % at three levels),
+   > and every known obstruction is **triangle-free** — (GR-175)'s `CL_m = C_m × K₂`, proved
+   > triangle-free for every `m ≥ 4` and carrying no `|A| = 3` cut-3 hub set, with **0**
+   > measured at `|A| = 5` for `m = 6..11` ((GR-200)). The complement is a **landed, enumerable
+   > population**, not a remainder: **2 of 11 inhabited hub-multigraph classes, 22 720 of
+   > 39 689 shapes at `n_hub = 8` — on the `Λ = ∅` stratum** (`aglu._pool8()`, disclosed as
+   > such by (GR-198)(iii)), which is a **population fence, not a keyword fence**, and therefore
+   > the shape `blindaxes.py` cannot list; re-taking the class split with `Λ` unrestricted is
+   > part of this entry, not a precondition for it. The question is whether `CL_m` is the *only* obstruction
+   > there, or whether the `Λ`/length structure supplies a move the triangle-based families
+   > cannot see. **This is the board's standing technique's natural target:** ask what (GR-25)
+   > says at those two classes' distinguished subsets **and at their complements** — the move
+   > that produced both of the previous round's proofs, and never yet taken on a triangle-free
+   > population. **GLEAF's question: NECESSARY only, and honestly so** — even total
+   > reducibility leaves the **second** gate standing, a move between *shapes* still having to
+   > transport an admissible **colouring** ((GR-200) + rank 1's withdrawn promise). Rank it
+   > here for that reason and not higher. *Kill condition: a move family exhibited that reduces
+   > a triangle-free `D = 0` class shape, or the two triangle-free classes shown to be
+   > `CL_m`-like — i.e. irreducible under every move family the arc has — which upgrades
+   > (GR-200) from an infinite family to a **characterization** of the obstruction. Decided by:
+   > the `(K-grid)` row, close-it u9.*
+   >
 4. **THE (c)-STRENGTHENED CLOSURE'S 14/18 RESIDUAL.** *(the thirteenth pass's rank 3,
    **demoted one place** on rank 2's account: (GR-206)(iv) is the cheaper probe into the same
    lane, and its answer feeds this entry's own "fifth handle" branch.)* Owner: §(K-grid)

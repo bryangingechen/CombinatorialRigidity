@@ -2,14 +2,14 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; **111 LANDED, ONE RETURNED AND LANDING** — BOTH 2026-09-10 rounds of three
+dispatched; **112 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
-§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12
-round of three is MID-LANDING against §8's FOURTEENTH pass: GOWNHALF (103) and BWHOLEH (102)
-LANDED; GTRIFREE (104, rank 3) has RETURNED and lands next.** Landed ordinals are therefore
-1–103 — 103 ordinals, 111 directions. **All three returned REFUTATIONS, and all three refuted
-the coordinator's own prediction.** The round of three (BFOUR 81,
+§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three is COMPLETE**
+against §8's FOURTEENTH pass — BWHOLEH (102), GOWNHALF (103), GTRIFREE (104), spending ranks
+1, 2 and 3 in one round. Landed ordinals are 1–104 — 104 ordinals, 112 directions. **All three
+returned REFUTATIONS; all three refuted the coordinator's own prediction; and each refuted at
+least one LANDED clause, including a `[PROVED]` one.** The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -17712,3 +17712,86 @@ at its definition; (BE-45)(ii) and (BE-69)(ii) were read in the ledger and both
 are used in their **proved** direction. `sigma`'s `δ₂ = 0` census is an artefact
 of its own `maxlen = 2` default — consistent, and documented in the driver
 docstring, though the printed figure does not carry that cap.
+
+
+## GTRIFREE — ordinal 104, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's fourteenth pass, RANK 3** — the entry the pass **re-aimed** off
+GNONADD's named successor. *Question:* is `CL_m` the only obstruction among
+triangle-free `D = 0` class shapes?
+
+**VERDICT: REFUTED, and it reaches past the entry — THERE IS NO OBSTRUCTION.**
+In a cubic hub multigraph `∂(A) = ∂(V∖A)`, so cut-3 sets come in
+**complementary pairs** and **every hub's complement** is a legal Y-reduction
+frame at `|A| = n−1` — odd, and connected whenever the hub is non-cut, which
+every connected graph has at least two of. Its forced budget is
+`Σℓ − 3(n−2) = **12** at every `n``, independent of the child's lengths, and
+all three `n_hub = 2` class shapes have `Σℓ = 12` with every `ℓ ≤ 5`, so the
+re-length always succeeds. **Hence no `D = 0` class shape is irreducible.**
+Landed as (GR-217)–(GR-223) / *Steps G237–G243*.
+
+**Three landed readings fall.** *(1)* §(K-grid) **(GR-200)**'s *"`CL_m`
+admits no Y-reduction"* is **refuted at its quantifier** — 1 520 exhibited
+reductions, `20m` at each `m = 6..13` — and **repaired stronger**: via
+`∂(A) = 2a + 2b + |S Δ T|`, `CL_m`'s only 3-edge-cuts are its `2m` hub stars,
+**proved for every `m ≥ 4`**, so no Y-reduction at `|A| ≤ 2m−3` (all `m`, all
+`|A| ≤ 2m−3`, proved rather than measured). *(2)* **(GR-198)(iv)**'s *"the
+block is absence of a triangle, never failure of the contraction"* — absence
+of a triangle blocks the `|A| = 3` **search**, not the move. *(3)* The §8
+entry's own premise. **And (2) was refutable from the landed corpus with NO
+new computation: 1 428 of (GR-198)(ii)'s own 7 892** `n_hub = 6` shapes sit on
+triangle-free `K₃,₃` and were certified reducible **by that very census**,
+through the `|A| = 5 = n−1` frame it happened to search. The
+`100 % / 100 % / 43 %` census shape is the size cap sliding past `n−1` between
+`n = 6` and `n = 8`.
+
+**The two triangle-free classes, NAMED for the first time:** the cube
+`Q₃ = C₄ × K₂ = CL₄` and the **Wagner graph** `V₈ = M₈`, verified by explicit
+isomorphism. Both carry 0 frames at `|A| = 3, 5` and 8 at `|A| = 7`, so under
+any size bound `< 7` they **are** irreducible. Over `aglu._pool8()` (the
+`Λ = ∅` stratum) they hold 22 720 of 39 689 shapes and **22 720 of 22 720
+reduce**. **The `Λ` re-take the fourteenth pass flagged as un-taken is DONE**
+at `|Λ| = 1`: `2 of 12`, **378 864 of 635 144 (59.6 %)** against `2 of 11`,
+22 720 of 39 689 (57.2 %) — the split is **length-independent** (proved), so
+`Λ` moves multiplicity only. *Cap: `lamcap = 1`; `|Λ| ≥ 2` unswept.*
+
+**THE RE-ROUTE, and it is the direction's real contribution.** The move that
+meets the reachability gate contracts `n−1` hubs into one and **transports
+nothing**; under **any** size bound the gate is unsatisfiable on `CL_m`. **So
+reachability is satisfiable trivially and unsatisfiable under any bound —
+there is no bound at which it is the interesting question, and it was never
+separable from the colouring gate.** §8 should stop pricing move-family
+searches at `D = 0` and price **colouring transport**, which no landed result
+touches. **The board question this leaves, explicitly not a measurement:**
+whether the arc intends a size bound on `|A|` that `cut3_sets`' own guard
+(`sz ≤ n−1`) does not impose.
+
+**Four self-caught errors, volunteered:** an initial claim that triangle-free
+classes are uninhabited below `n_hub = 8` — **`K₃,₃` refutes it**, and chasing
+that produced the direction's strongest finding; a per-class count of 0 from
+keying two generators' *different* canonical representatives against each
+other; a mis-citation of `gridcol.multigraphs` as the generator behind
+`cubic_iso_classes` (it is a separate device); and a shell-level `timeout` plus
+a `pgrep` wait loop, the first prohibited and the second silently always-true
+in this sandbox — neither affecting a figure.
+
+**Prediction outcome: verdict REFUTED, mechanism REFUTED.** The spec predicted
+IRREDUCIBLE on the mechanism *"both landed families are defined on a cut-3 hub
+set, and Y→Δ needs a triangle by construction"*. Y-reduction needs a
+**3-edge-cut**, not a triangle, and every cubic graph has `n` of them. The
+spec's *"where I expect to be wrong"* named the right suspect class — *"the
+quantifier is a statement about two drivers"* — but predicted a **third move
+family** would be needed; none was. **The fence was `cut3_sets(sizes=(3,))`, a
+keyword default that `blindaxes.py` listed, that `gnonadd.py`'s own CAPS block
+disclosed as unsearched, and that the dispatch spec itself named.** Three
+disclosures, and it still took a direction to act on it.
+
+**Coordinator verification.** `--comp`, `--tri6` and `--ladder7` re-run
+independently and reproduce exactly (the per-class frame counts, the 1 428 of
+7 892 `K₃,₃` split, the `20m` reduction counts). The `|A| = n−1` frame was
+checked **at the landed definition**: `gnonadd.cut3_sets`' guard is
+`n - sz + 1 < 2`, i.e. `sz ≤ n−1`, with the docstring saying *"odd `|A| ≥ 3`"*
+and no upper bound — so the refutation stands against the definition **as
+written**, which is exactly why the size-bound question is a board call rather
+than a correction. (GR-220)(ii)'s `∂(A) = 2a + 2b + |S Δ T|` and its case
+analysis were re-derived by hand and are correct.

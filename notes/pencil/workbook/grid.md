@@ -19154,7 +19154,7 @@ other layers, all under the seeded-draw cap: `n_hub = 5` — `Λ = ∅` 0/60,
 >    conservative reading is left visible here because the correction is the
 >    kind §4 says the next pass supplies.
 
-## §(K-grid) — continuation (direction GNONADD, ordinal 100, 2026-09-11): §8's rank 1 is answered **POSITIVE** — a NON-ADDITIVE move DOES relate two `D = 0` class shapes, exhibited at `n_hub = 2 → 4`, at `6 → 4`, and along an unbroken six-step chain to `n_hub = 16`; (GR-170)'s complement cut does **NOT** extend to deletions, because at the changed region it *is* (GR-173), an inequality the parent already satisfies; **every one of the 7 972 class shapes at `n_hub ∈ {4, 6}` is Y-reducible** (80/80 and 7 892/7 892, `Λ` unrestricted); and therefore §(K-grid) **(GR-176)** is FALSE as stated — but the induction is still not revived, because (GR-175)'s infinite `CL_m` family is triangle-free and stays irreducible
+## §(K-grid) — continuation (direction GNONADD, ordinal 100, 2026-09-11): §8's rank 1 is answered **POSITIVE** — a NON-ADDITIVE move DOES relate two `D = 0` class shapes, exhibited at `n_hub = 2 → 4`, at `6 → 4`, and along an unbroken six-step chain to `n_hub = 16`; (GR-170)'s complement cut does **NOT** extend to deletions, because at the changed region it *is* (GR-173), an inequality the parent already satisfies; **every one of the 7 972 class shapes at `n_hub ∈ {4, 6}` is Y-reducible** (80/80 and 7 892/7 892, `Λ` unrestricted); and therefore §(K-grid) **(GR-176)** is FALSE as stated — but the induction is still not revived, because (GR-175)'s infinite `CL_m` family is triangle-free and stays irreducible **under every move family the arc had SEARCHED** *(header quantifier repaired 2026-09-12 by (GR-220): `CL_m` does reduce at `|A| = 2m − 1`, so what survives is irreducibility **under any size bound** — the induction is still not revived, but for a different reason)*
 
 Driver: `notes/scripts/w4/gnonadd.py`. Full write-up: `notes/pencil/fanout.md` §"GNONADD".
 
@@ -19372,7 +19372,13 @@ exactly the point at which triangle-free hub multigraphs become common
 split has NOT been re-taken with `Λ` unrestricted**). Among the shapes that have the move available,
 it always works. That is the same phenomenon (GR-200) turns into the
 obstruction — the block is **absence of a triangle**, never failure of the
-contraction.
+contraction.*
+**— READING REPAIRED 2026-09-12 by (GR-223) (direction GTRIFREE): absence of a
+triangle blocks the `|A| = 3` SEARCH, not the move.** Every figure in (GR-198)
+stands; 1 428 of (GR-198)(ii)'s own 7 892 `n_hub = 6` shapes sit on
+triangle-free `K₃,₃` and were certified reducible **by this very census**,
+through the `|A| = 5 = n − 1` frame it happened to search — so the thesis was
+refutable from the landed corpus with no new computation. *
 
 ### Step G219 — (GR-199): the architectural blind axis, exhibited rather than asserted
 
@@ -19403,6 +19409,12 @@ itself supplied.
 
 > **(GR-200)** `[PROVED]` *(the triangle-free half; and `[MEASURED]`
 > `gnonadd.py --ladder` for `|A| = 5` at `m = 6..11`)* §(K-grid) (GR-175)'s
+> **— REPAIRED 2026-09-12 by (GR-220) (direction GTRIFREE): the clause below is
+> true and now PROVED for every `m ≥ 4`, but only AT `|A| ≤ 2m − 3`. Its
+> unqualified *"`CL_m` admits no Y-reduction"* is FALSE at `|A| = 2m − 1`,
+> where the complement of any single hub is a legal cut-3 frame (1 520
+> exhibited reductions, `m = 6..13`). The `|A| ∈ {3,5}`, `m = 6..11`
+> MEASUREMENT is correct; the quantifier was not.** §(K-grid) (GR-175)'s
 > circular ladder `CL_m = C_m × K₂` is **triangle-free for every `m ≥ 4`**, and
 > it is simple, so it carries **no** connected hub set with `|A| = 3` and
 > `∂(A) = 3`; at `|A| = 5` the measured count of such sets is **0** at
@@ -20043,3 +20055,376 @@ the cap travels with it.
   (§8 bar *(f)*).
 - It does **not** touch move families or triangle-freeness — that is direction
   GTRIFREE's question, and nothing here approaches it.
+
+## §(K-grid) — continuation (direction GTRIFREE, ordinal 104, 2026-09-12): the triangle-free half is **NOT** an obstruction — §(K-grid) **(GR-200) is REFUTED at its quantifier**, because in a cubic hub multigraph `∂(A) = ∂(V∖A)` makes **every hub's complement** a cut-3 Y-reduction frame whose forced budget is **12 at every `n`**, so **every** `D = 0` class shape with `n_hub ≥ 4` reduces — `CL_m` included (1 520 exhibited certificates, `m = 6..13`), and all **22 720 of 22 720** triangle-free shapes at `n_hub = 8` (`aglu._pool8()`, `Λ = ∅`); the triangle thesis was refutable **from the landed corpus with no new computation** at all, since **1 428 of (GR-198)(ii)'s own 7 892** `n_hub = 6` shapes (`Λ` unrestricted) sit on `K₃,₃`, which carries no cut-3 triangle and was certified reducible anyway; the intent of (GR-200) survives and is **strengthened** to a *proved characterization* — `CL_m`'s only 3-edge-cuts are its `2m` hub stars, for **every** `m ≥ 4` — and the arc's real lesson is that the reachability gate is **satisfiable trivially and unsatisfiable under any size bound**, so it was never separable from the colouring gate
+
+**Verification.** `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtrifree.py --comp`
+(complement law, budget identity), `--ladder7` ((GR-200) refuted + the
+characterization sweep), `--split` (the `n_hub = 8` class table),
+`--seven` (the triangle-free census), `--univ` (the universal census),
+`--cl4` ((GR-200)'s recorded-open curiosity), `--tri6` (the corpus-only
+refutation at `n_hub = 6`), `--lam --lamcap 1` (the `Λ` re-take).
+`--validate` runs all but `--lam`.
+
+**What this direction was asked.** §8's fourteenth pass, rank 3: *in the
+`D = 0` stratum, is `CL_m` the only obstruction among **triangle-free** class
+shapes — are the inhabited hub-multigraph classes carrying no cut-3 triangle
+irreducible under every move family the arc has?* The dispatch's own
+prediction was **IRREDUCIBLE**, on the mechanism *"both landed families are
+defined on a cut-3 hub set, and Y→Δ needs a triangle by construction."*
+**Both halves are refuted**, and the refutation needed no new move family: it
+needed the landed family read at a size its search's keyword default fences
+off.
+
+---
+
+### Step G237 — (GR-217): the branch cut is a property of the BIPARTITION, so every hub's complement is a Y-reduction frame
+
+The dispatch's standing technique is *ask what (GR-25) says at the entry's
+distinguished subset **and at its complement***. Taken here it does not
+produce an inequality at all; it produces a **frame**.
+
+> **(GR-217)** `[PROVED]` *(and `[MEASURED]` `gtrifree.py --comp`: 0 misses
+> over every hub multigraph class at `n_hub = 4, 6, 8`; `≥ 2` frames at
+> `|A| = n−1` per class, 0 classes short)*
+> Let `G°` be the hub multigraph of a `D = 0` class shape, `n = n_hub`. For
+> every `A ⊆ V`, `∂(A) = ∂(V∖A)` — a branch is cut by `A` iff it is cut by
+> `V∖A` — and `|A|` is odd iff `|V∖A|` is, since `n` is even. Hence the
+> connected cut-3 hub sets of `gnonadd.cut3_sets` come in **complementary
+> pairs**, and the only thing that can break a pair is the *connectedness*
+> side condition. Three consequences.
+> **(i)** For every loopless hub `v`, `∂({v}) = deg(v) = 3`, so
+> `A = V∖{v}` is a hub set with `∂(A) = 3` and `|A| = n−1` **odd**, and it
+> is `≥ 3` for `n ≥ 4`. It is a legal Y-reduction frame exactly when
+> `G° − v` is connected.
+> **(ii)** Both hub-multigraph generators this corpus uses are **connected
+> and loopless** by construction — `gridcol.multigraphs` (behind
+> `gisland.stratum`) and the separate local device `gridcol.cubic_iso_classes`
+> (behind `aglu._pool8()`); `aglu.leg_pool` asserts the two agree in class
+> count at `n = 2, 4, 6`. A connected graph on `≥ 2` vertices has at least
+> **two** non-cut vertices, and a loopless cubic hub has three distinct
+> branch-darts. So **every** `D = 0` class shape with `n_hub ≥ 4` carries at
+> least two `|A| = n−1` frames — **measured**: `192` such frames over the
+> `2 + 6 + 20` hub-multigraph classes at `n_hub = 4, 6, 8`, minimum `2` per
+> class, `0` classes short.
+> **(iii)** At `n_hub = 8` the partner of an `|A| = 5` frame is an `|A| = 3`
+> frame, and a 3-hub set with `∂ = 3` has 3 internal branches, hence is
+> **always connected**. So `|c5| ≤ |c3|` there, and a class with **no** cut-3
+> triangle has **no** `|A| = 5` frame either: §(K-grid) (GR-198)(iii)'s
+> `|A| = 3`-only cap is **not a cap on the triangle-free classes**.
+
+*Why this was invisible.* `gnonadd.cut3_sets` is declared
+`cut3_sets(n, hedges, sizes=(3,))` and `y_reductions(..., sizes=(3,5))` is
+fenced in at exactly one call site; `notes/scripts/blindaxes.py w4/gnonadd.py`
+lists both under **DEFAULTS / FENCED**. `gnonadd.py`'s own CAPS block says
+*"A Y-reduction at `|A| ≥ 7` is NOT searched"* — so the frame was **disclosed
+as unsearched**, not hidden. What was missing is that the unsearched region is
+not exotic: it contains `n` frames at every single shape, one per hub.
+
+### Step G238 — (GR-218): the forced budget at an `|A| = n−1` contraction is **12**, at every `n`
+
+> **(GR-218)** `[PROVED]` *(and `[MEASURED]` `gtrifree.py --comp` /
+> `--univ` / `--ladder7`: budget `= 12` at **every** reduction this
+> direction exhibits, `n_hub = 4` through `26`; 0 exceptions)*
+> At `D = 0`, `M = 3n/2` and `Σℓ = 6(M − n + 1) = 3n + 6`. In a contraction
+> at `A = V∖{v}` every branch is inside `A` or on its boundary, so
+> `gnonadd.y_reductions`' forced budget
+> `Σ_boundary ℓ' = Σ_bd ℓ + Σ_{E(A)} ℓ − 3(|A| − 1)` evaluates to
+> `(3n + 6) − 3(n − 2) = **12**`, independent of `n` **and of the child's
+> lengths**. The parent is `θ(a, b, c)` on `n_hub = 2` (the new hub and the
+> survivor `v`, joined by the three re-lengthed boundary branches, never a
+> self-loop). The `n_hub = 2` class shapes are exactly
+> `θ(2,5,5)`, `θ(3,4,5)`, `θ(4,4,4)` — enumerated over `1 ≤ ℓ ≤ 5` through
+> the CANONICAL `gridcol.class_shape`, consistent with §(K-grid) (GR-173)'s
+> *"the three `n_hub = 2` shapes"* — and **all three have `Σℓ = 12` with
+> every length `≤ 5`**. So the forced budget is always realizable, and
+> `y_reductions`' `hi = 5` LIMITER does not bind (`12 ≤ 3·5`).
+
+Two of the three blind axes `blindaxes.py` flagged on `gnonadd.py` are
+therefore **inert at this frame** and one is decisive: the `hi = 5` LIMITER
+does not bind, the `budget < 3 or budget > 3·hi` early exit does not fire,
+and `sizes=(3,)` is the whole fence.
+
+### Step G239 — (GR-219): therefore **no** `D = 0` class shape is irreducible
+
+> **(GR-219)** `[PROVED]` *(and `[MEASURED]` `gtrifree.py --univ`)*
+> Every `D = 0` class shape with `n_hub ≥ 4` admits a Y-reduction — as
+> `notes/scripts/w4/gnonadd.py`'s module docstring defines the family
+> (*"a hub set `A` that induces a connected subgraph, has branch cut
+> `∂(A) = 3` and odd `|A| ≥ 3`"*, with no upper bound on `|A|`) — to
+> `θ(4,4,4)` on `n_hub = 2`, by contracting `A = V∖{v}` at any non-cut hub
+> `v`. Proof: (GR-217)(ii) supplies the frame, (GR-218) the budget and the
+> parent. **Measured**, with the parent certified by the CANONICAL
+> `gridcol.class_shape` at every shape (the parent is `n_hub = 2`, so no cut
+> surrogate is used anywhere in this direction's positives):
+> `n_hub = 4`: `80/80` (`3 200` (hub set, re-length) triples);
+> `n_hub = 6`: `7 892/7 892` (`473 520` triples) — both over
+> `gisland.stratum(n, lamcap=99)`, EXHAUSTIVE, **`Λ` unrestricted**;
+> `n_hub = 8`: `39 689/39 689` (`3 175 120` triples) over `aglu._pool8()`,
+> which is the **`Λ = ∅`** stratum and NOT a general `n_hub = 8` pool. Every
+> count is `shapes × n × 10` exactly — `n` frames per shape and all `10`
+> ordered `(a,b,c)` with `a+b+c = 12`, `1 ≤ a,b,c ≤ 5`, since (GR-218) makes
+> the budget length-independent.
+
+**Read this together with the two figures it sits between.** §(K-grid)
+(GR-174)(i) is *"**0** of 39 689 admit any **additive** reduction"*;
+§(K-grid) (GR-198)(iii) is *"**16 969** of 39 689"* (`419 939` triples)
+under Y-reduction at `|A| = 3`; (GR-219) is *"**39 689** of 39 689"*
+(`3 175 120` triples — **7.6×** what the whole `|A| = 3` search found) under
+Y-reduction with the size cap removed. **Same population, three verdicts, and the entire
+difference is the move model and its size cap** — which is (GR-199)'s thesis
+(*"the blindness is in the move model, not in a parameter"*) with a sharper
+second clause: here it **was** in a parameter, and the parameter was a
+keyword default.
+
+### Step G240 — (GR-220): §(K-grid) (GR-200) is **REFUTED** at its quantifier — and its intent is **strengthened** to a proved characterization
+
+> **(GR-220)** `[PROVED]` *(and `[MEASURED]` `gtrifree.py --ladder7`: 1 520
+> exhibited Y-reductions at `m = 6..13`; the full odd-size frame sweep at
+> `m = 6..8`)*
+> **(i) The refutation.** §(K-grid) (GR-200)'s sentence *"So `CL_m` admits
+> **no** Y-reduction"* is **false**. `CL_m` is 3-connected, so every hub is
+> non-cut, and (GR-217)/(GR-218) give `2m` frames at `|A| = 2m−1`, each with
+> budget `12` and each admitting all **10** ordered re-lengths
+> `(a,b,c)`, `a+b+c = 12`, `1 ≤ a,b,c ≤ 5` — every one of them a certified
+> `n_hub = 2` class shape. **`20m` exhibited Y-reductions of `CL_m`**,
+> measured at `m = 6..13` (`120, 140, …, 260`). An exhibited reduction is a
+> **proof**; this figure carries no cap. (GR-200)'s `|A| ∈ {3,5}`,
+> `m = 6..11` measurement is **correct**; its quantifier *"every move family
+> the arc has"* is not.
+> **(ii) The characterization, which is what (GR-200) was reaching for, and
+> it holds for every `m ≥ 4` rather than `m = 6..11`.** Write `A ⊆ V(CL_m)`
+> as `S` on the top rail and `T` on the bottom, `a` = number of cyclic arcs
+> of `S` (0 if `S ∈ {∅, Z_m}`), `b` likewise for `T`. Then
+> `∂(A) = 2a + 2b + |S Δ T|`. `∂(A) = 3` forces `a + b ≤ 1`. If `a = b = 0`
+> then `|S Δ T| ∈ {0, m}`, giving `m = 3`. If `a + b = 1` — say `a = 1`,
+> `b = 0` — then `|S Δ T| = 1` with `T ∈ {∅, Z_m}`, i.e. `A` is a **single
+> hub** or the **complement of a single hub**. ∎ So for every `m ≥ 4` the
+> only 3-edge-cuts of `CL_m` are its `2m` **hub stars**, and `CL_m`'s only
+> Y-reduction frames are the `2m` complements-of-a-hub. Measured check: the
+> full odd sweep `|A| = 3, 5, …, 2m−1` at `m = 6..8` finds frames at
+> `|A| = 2m−1` and **nowhere else** (`[(11, 12)]`, `[(13, 14)]`,
+> `[(15, 16)]`).
+> **(iii) The repaired statement.** For every fixed bound `c` and every
+> `m > (c+1)/2`, `CL_m` admits **no** Y-reduction at `|A| ≤ c` — and by
+> §(K-grid) (GR-171) no additive reduction at all. This is **stronger** than
+> (GR-200) in three directions at once (every `m ≥ 4`, not `6..11`; every
+> `|A| ≤ 2m−3`, not `{3,5}`; proved, not measured) and **weaker** in exactly
+> one: the unbounded family does reach `CL_m`.
+
+**The honest reading, and it is the point of this step.** Both halves are
+real. The move family as the corpus defines it reaches every shape, so the
+**reachability gate is met**; and it is met by a move that contracts `n−1`
+hubs into one, which transports nothing and makes the reachability gate
+**content-free**. Under any size bound the gate is *unsatisfiable* on `CL_m`,
+by (ii). So reachability is satisfiable trivially and unsatisfiable under any
+bound: **there is no bound at which it is the interesting question**, and it
+was never separable from §(K-grid) (GR-200)'s second gate — the transport of
+an admissible colouring with generic `dim Z₊ = dim Z₋ = 0`. §8 should stop
+pricing move-family searches at `D = 0` and price the **colouring-transport**
+gate, which no landed result touches.
+
+### Step G241 — (GR-221): the entry's own region — the two triangle-free classes at `n_hub = 8`, NAMED, and `22 720 of 22 720` reducible (`aglu._pool8()`, `Λ = ∅`)
+
+> **(GR-221)** `[MEASURED]` `notes/scripts/w4/gtrifree.py --split` / `--seven`
+> **(i)** `gnonadd.cut3_sets` reads only the hub multigraph, so the
+> triangle-free/-carrying split of the `20` `gridcol.cubic_iso_classes(8)`
+> classes is **length-independent**: opening `Λ` can change which classes are
+> *inhabited* and with what multiplicity, **never** the split.
+> **(ii)** Exactly **2 of the 20** carry no connected cut-3 hub set at
+> `|A| = 3`, and the corpus has not named them: they are the **cube**
+> `Q₃ = C₄ × K₂ = CL₄` and the **Wagner graph** `V₈ = M₈` (the Möbius ladder
+> on 8 hubs) — verified by explicit isomorphism against both constructions.
+> Both are simple; both carry **0** frames at `|A| = 3` and `|A| = 5` and
+> **8** at `|A| = 7`, which is (GR-220)(ii)'s characterization for `CL₄` and
+> the same statement for `V₈`.
+> **(iii)** Over `aglu._pool8()` — the **`Λ = ∅`** stratum, `11 440` excess
+> profiles × `20` classes, `39 689` habitat-gated shapes, `11` classes
+> inhabited — those two classes hold `11 360` shapes each, **`22 720` of the
+> `39 689`**, reproducing §(K-grid) (GR-198)(iv)'s split exactly.
+> **(iv) `22 720` of `22 720` of them admit a Y-reduction** at `|A| = 7` —
+> **over `aglu._pool8()`, the `Λ = ∅` stratum** — parent certified by
+> `gridcol.class_shape`, budget `12` at every one. **0** irreducible, and
+> since (ii) gives them `0` frames at `|A| = 3` and `|A| = 5`, the
+> `|A| = 7` frame is their **only** reduction: under any size bound `< 7`
+> they are irreducible, which is (GR-220)(iii) one level down.
+> **(v) The `Λ` re-take the fourteenth pass flagged as un-taken — TAKEN, in
+> full, at `|Λ| = 1`.** By (i) it cannot move membership, so what it measures
+> is multiplicity, and the answer is that the triangle-free classes get
+> **larger**, not smaller. Over `cflank.length_tuples(12, 30, lamcap=1)`
+> restricted to `|Λ| ≥ 1` — **195 624** labelled tuples, the same count
+> §(K-grid) (GR-174)(ii) reports, **not** quotiented by `gisland.edge_auts`
+> and so in the same unit as `aglu._pool8()`'s per-representative excess
+> profiles — all **20** classes measured:
+> **`12` of the `20` are inhabited** (a strict superset of the `11` at
+> `Λ = ∅`: class `8` turns on, none turns off), and the two triangle-free
+> classes take **`189 432` each**, i.e. **`378 864` of `635 144`
+> (`59.6 %`)**, against **`22 720` of `39 689` (`57.2 %`)** at `Λ = ∅`.
+> **So the fourteenth pass's `2 of 11, 22 720 of 39 689` becomes
+> `2 of 12, 378 864 of 635 144` once `|Λ| = 1` is opened — the same split,
+> a slightly larger share.** **CAP: `lamcap = 1`; `|Λ| ≥ 2` at `n_hub = 8`
+> is NOT swept.** The reason those classes absorb nearly every length
+> assignment (`96.8 %` of all `|Λ| = 1` tuples apiece) is (GR-25)(i) itself:
+> they are simple with no proper connected `W'` at `∂ ≤ 3` except the hub
+> stars, so `2·∂(W') + exc ≥ 7` has slack everywhere and almost nothing is
+> rejected.
+
+So the dispatched question — *is `CL_m` the only obstruction among
+triangle-free class shapes?* — has the answer **there is no obstruction**:
+the triangle-free region is 100 % reducible, and so is `CL_m`. §(K-grid)
+(GR-198)(iv)'s prose *"the block is **absence of a triangle**, never failure
+of the contraction"* is the sentence that falls: absence of a triangle blocks
+the `|A| = 3` **search**, not the move.
+
+### Step G242 — (GR-222): (GR-200)'s recorded-open curiosity, settled for free — `CL₄` **is** a `D = 0` class shape
+
+§(K-grid) (GR-200)'s scope correction to (GR-175) records: *"whether `CL_4`
+or `CL_5` is a `D = 0` class shape under some length assignment OTHER than
+the six-rung one is **unmeasured** — a probe … was started and killed at
+~2 min, so measured nothing."* It falls out of the `n_hub = 8` class table.
+
+> **(GR-222)** `[MEASURED]` `notes/scripts/w4/gtrifree.py --cl4`
+> **Both halves are YES.** `CL₄ = Q₃` is one of the `20`
+> `cubic_iso_classes(8)` classes, and **11 360 of the 11 440** `Λ = ∅`
+> excess profiles pass `cflank.cubic_habitat` on it — e.g. hedges
+> `[(0,1),(0,2),(0,3),(1,4),(1,5),(2,4),(2,6),(3,5),(3,6),(4,7),(5,7),(6,7)]`
+> with `ℓ = [5,4,2,3,2,2,2,2,2,2,2,2]`, `Σℓ = 30`. `CL₅` at `n_hub = 10`,
+> `M = 15`, `Σℓ = 36`: also YES, e.g. `ℓ = [5,5,2,2,2,2,2,2,2,2,2,2,2,2,2]`
+> on `C₅ × K₂`. So **`CL₄` and `CL₅` ARE `D = 0` tight class shapes** — they
+> are simply not ones under (GR-175)'s *six-rung* assignment, which needs
+> `≥ 12` hubs. Both admit the `|A| = n−1` Y-reduction: `80` of them for
+> `CL₄`, `100` for `CL₅` (= `n` frames × `10` re-lengths, as (GR-220)(i)
+> predicts). **STRATUM: `Λ = ∅` for both.** This changes nothing about
+> (GR-175)'s infinitude claim; it retires an open curiosity before it rots,
+> and it is why `CL₄` shows up in (GR-221)(ii) as one of the two
+> triangle-free `n_hub = 8` classes. It also **extends (GR-220)(ii)'s
+> characterization down to `m = 4, 5`**, where the family is now known to be
+> inhabited.
+### Step G243 — (GR-223): the triangle thesis was refutable **from the landed corpus, with no new computation** — `K₃,₃` is 1 428 of (GR-198)(ii)'s own `n_hub = 6` census (`gisland.stratum(6, lamcap=99)`, `Λ` unrestricted)
+
+> **(GR-223)** `[MEASURED]` `notes/scripts/w4/gtrifree.py --tri6` / `--univ`
+> **(i)** §(K-grid) (GR-198)(ii)'s `7 892` shapes — `gisland.stratum(6,
+> lamcap=99)`, EXHAUSTIVE, `Λ` unrestricted — sit on **5** inhabited hub
+> multigraphs, and one of them, carrying **1 428 of the 7 892 (18.1 %)**, is
+> **`K₃,₃`**, which has **0** connected cut-3 hub sets at `|A| = 3`. So
+> **1 428 triangle-free `D = 0` class shapes were already certified
+> Y-reducible by a landed measurement**, and §(K-grid) (GR-198)(iv)'s *"the
+> block is absence of a triangle, never failure of the contraction"* is
+> refutable **from the corpus alone** — no new population, no new driver,
+> one re-slice of a figure the corpus already has.
+> **(ii) Why the three-level census could not see it.** (GR-198) searched
+> `|A| ∈ {3}` at `n_hub = 4`, `{3, 5}` at `n_hub = 6`, `{3}` at `n_hub = 8`.
+> By (GR-217)(i) the always-present frame is at `|A| = n − 1` — **`3` at
+> `n = 4`**, **`5` at `n = 6`** (*inside* the searched set both times, which
+> is why `K₃,₃`'s 1 428 came out reducible without anyone noticing they were
+> triangle-free) and **`7` at `n = 8`** (*outside* it). Measured at the
+> `|A| = n−1` frame **alone**, (GR-198)(i) and (ii) reproduce exactly:
+> `80/80` and `7 892/7 892`. **So the `100 %, 100 %, 43 %` shape of the
+> census is the size cap sliding past `n − 1` between `n = 6` and `n = 8`**,
+> and §(K-grid) (GR-198)(iv)'s reading — *"exactly the point at which
+> triangle-free hub multigraphs become common"* — names a true correlate of
+> the cap, not its cause.
+
+**(iii) The triple counts settle it arithmetically, again from the landed
+figures.** At `n_hub = 4` every class has `4` frames at `|A| = 3 = n−1` and
+each admits all `10` re-lengths, so `80 × 4 × 10 = 3 200` — **exactly**
+§(K-grid) (GR-198)(i)'s triple count, i.e. *every* triple it found is an
+`|A| = n−1` triple. At `n_hub = 6` every inhabited class has `6` frames at
+`|A| = 5 = n−1`, giving `7 892 × 6 × 10 = **473 520**` triples — measured
+here — against (GR-198)(ii)'s `667 845`. The remainder is
+`667 845 − 473 520 = **194 325**`, which is *precisely* the figure §(K-grid)
+(GR-196)'s tag reports for the `|A| = 3` search. So the landed census
+decomposes with no residue into *"the always-present `n−1` frame"* plus
+*"the cut-3 triangles"*, and the first summand alone already gives `100 %`.
+
+`K₃,₃` is also the `n_hub = 6` instance of the (GR-220)(ii) pattern: it is
+cyclically 4-edge-connected, so its only 3-edge-cuts are its 6 hub stars —
+`0` frames at `|A| = 3`, `6` at `|A| = 5`, exactly as measured. The two
+triangle-free `n_hub = 8` classes of (GR-221) are the *same* phenomenon one
+level up; nothing new begins at `n_hub = 8`.
+
+---
+
+### What this costs the board, and what it does not
+
+**Landed claims that fall.** One: §(K-grid) **(GR-200)**'s sentence *"So
+`CL_m` admits no Y-reduction"*, and with it the GNONADD section header's
+*"the induction is still not revived, because (GR-175)'s infinite `CL_m`
+family is triangle-free and stays irreducible"* and (GR-198)(iv)'s *"the
+block is absence of a triangle"*. All three are the same over-stated
+quantifier, repaired by inserting the size bound — the round's recurring
+defect shape (an over-stated SCOPE), and like two of the previous round's it
+is **refutable from the corpus alone**: (GR-223)(i) needs no new computation.
+The running tally of fallen clauses is the coordinator's; it is deliberately
+not re-derived here.
+
+**Claims that do NOT fall.** §(K-grid) (GR-171) (no additive move — the
+proof is about additive expansion and is untouched); (GR-174) (additive,
+already re-qualified); (GR-196); (GR-198)(i)–(iv) *as measurements* — every
+figure is correct at its disclosed cap; (GR-199) (the `reduction_frames`
+blindness is architectural and this direction confirms it — the frame at
+`|A| = n−1` has `|W'|` odd, so `reduction_frames` cannot express it either);
+(GR-175) (infinitude); (GR-25).
+
+**§8 bars this forces to be restated.** Bar *(j)* — *"no reading of `G°`
+induction as dead for want of a move — it is **blocked** by (GR-200)"* —
+keeps its prohibition and **loses its cited reason**: (GR-200) does not block
+it. The replacement reason is (GR-220)(iii): the first gate is trivially met
+and *therefore* uninformative, so the induction is neither dead nor revived,
+and the whole content is at the second gate. Bar *(l)* — *"no proposal of
+cut-3-**triangle** Y-reducibility as a route to the reachability gate"* —
+**survives**, with the word *triangle* now load-bearing rather than
+incidental: it is triangle-ness, not cut-3-ness, that `CL_m` escapes.
+
+### Confidence, and what would change it
+
+**High** on (GR-217)–(GR-223). Every positive is an **exhibited certificate**
+through the CANONICAL `gridcol.class_shape` oracle, not a failed search, and
+the two structural claims ((GR-217)'s complement law, (GR-220)(ii)'s
+characterization) are proofs with the measurement as an independent check.
+
+**What would change it.** *(a)* If the arc's Y-reduction family is
+**intended** to carry a size bound that its definition does not state, then
+(GR-200) is true-as-intended and this direction's contribution collapses to
+(GR-220)(ii)+(iii) — the characterization and the repaired statement — plus
+(GR-221) and (GR-222). That is a **definitional** call and it belongs to the
+coordinator, not to a measurement; the draft is written so that either ruling
+leaves the mathematics standing. *(b)* If `n_hub = 2` were ruled outside the
+`D = 0` stratum's scope, every `|A| = n−1` parent would leave the stratum.
+The corpus is against this: §(K-grid) (GR-173) states a bound *at* `n_hub = 2`
+and names its three shapes, and `gexpand.reductions` searches *"parents at
+`n_hub = 6, 4, 2`"*. *(c)* A `Λ ≠ ∅` population at `n_hub = 8` could contain
+a shape whose hub multigraph is disconnected or has a loop — impossible by
+`gridcol.multigraphs`' own construction, which is why (GR-219) is stated as
+proved rather than measured.
+
+### Caps and blind axes this direction ran under
+
+- Everything is at `D = 0` (cubic `G°`) and under (SD-6)'s `ℓ ≤ 5`.
+- `--seven` / `--univ` at `n_hub = 8` run over `aglu._pool8()`: the
+  **`Λ = ∅`** stratum, `39 689` shapes. `Λ ≠ ∅` at `n_hub = 8` is swept only
+  by `--lam`, at its `--lamcap` (default `1`).
+- `--univ` at `n_hub = 4, 6` is `gisland.stratum(n, lamcap=99)` —
+  EXHAUSTIVE, `Λ` unrestricted, one representative per isomorphism class.
+- `--ladder7`'s exhibition half runs `m = 6..13` and needs no cap (it is a
+  certificate); its frame-sweep half is capped at `m = 6..8` and is
+  **superseded** by (GR-220)(ii)'s proof, which is uncapped in `m`.
+- `--cl4`'s `CL₅` half stops at the first hits: an existence question, so a
+  certificate settles it; **no count** for `CL₅` is measured.
+- `--tri6` is `gisland.stratum(6, lamcap=99)` — EXHAUSTIVE, `Λ` unrestricted,
+  and it re-slices a landed population rather than building a new one.
+- **`--lam` ran at `--lamcap 1` over all `20` classes** (`613 s`), plus a
+  `--lamonly 5,17,9,19` control that agrees class-for-class. `|Λ| ≥ 2` at
+  `n_hub = 8` is **NOT swept**; the counts are labelled tuples, not
+  `gisland.edge_auts` orbits. What is settled without any sweep is that `Λ`
+  cannot move the triangle-free/-carrying *membership*, by (GR-221)(i).
+- `gnonadd.y_reductions`' `hi = 5` LIMITER and its
+  `budget < 3 or budget > 3·hi` early exit are both **inert** at the
+  `|A| = n−1` frame (budget `= 12`, `3·hi = 15`) — checked, not assumed.
+- **The population fence `cflank.CUBIC_N = (2, 4, 6)` is untouched by this
+  direction**: every `n_hub = 8` figure here arrives through
+  `aglu._pool8()`, exactly as the corpus's do, and `n_hub ≥ 10` appears only
+  as `CL_m`, which is a *construction*, not a swept population. This
+  direction does **not** measure a general `n_hub ≥ 10` stratum.
+
+---

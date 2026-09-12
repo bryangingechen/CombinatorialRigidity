@@ -5423,3 +5423,32 @@ pre-existing references.
 > (BE-14), half (B), or `hbareSplit`. The direction wrote that scope into its
 > own headline rather than leaving it to the coordinator, which is the
 > behaviour F26 exists to produce.
+
+## Reserved namespace — direction GTRIFREE (2026-09-12, **SEVEN of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GTRIFREE** | §(K-grid) — continuation in `workbook/grid.md` | **(GR-217)–(GR-223)** | ***Steps G237–G243*** | `w4/gtrifree.py` (ten modes + `--lamcap`/`--mmax` + `validate`) |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`). At
+`fde0317f`: **CLEAN — 0 hits on every one of the 18 tokens enumerated**
+(`(GR-217)`–`(GR-224)`, `G237`–`G244`, `GTRIFREE`, `gtrifree`). This is the
+rare unqualified form: the range did not open at the declared tail, GOWNHALF
+holding `(GR-209)`–`(GR-216)` in the same round.
+
+**(GR-224) / *Step G244* RETURNED UNUSED** and available.
+
+**(L6) landing-time grep run by the coordinator:** the section mints **no**
+bare `(X<digit>)` token — the only such token appearing is `(L6)` itself.
+
+**THE LIVE TAIL IS NOW (GR-225) / *Step G245***.
+
+> ***THE REFUTATION CAME OUT OF A KEYWORD DEFAULT THAT THE TOOL HAD ALREADY
+> LISTED, THE DRIVER HAD ALREADY DISCLOSED, AND THE SPEC HAD ALREADY NAMED.***
+> `gnonadd.cut3_sets(sizes=(3,))` appears in `blindaxes.py`'s DEFAULTS/FENCED
+> section, in `gnonadd.py`'s own CAPS block as explicitly unsearched, and in
+> this direction's dispatch spec as the second bullet of its blind-axis list.
+> Three independent disclosures, and it still took a direction to act on it —
+> which is the finding one level above the mathematics: **a listed fence is
+> not an acted-on fence**, and the round's other two decisive fences were of
+> the *unlistable* population class. See `notes/dispatch-log.md`.
