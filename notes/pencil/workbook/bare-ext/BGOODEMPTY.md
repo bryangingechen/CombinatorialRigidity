@@ -401,7 +401,27 @@ point.
 > unwitnessed (0 of the landed 93 ((BE-120)(i)), and 0 at this direction's 253
 > rows; the two denominators are left **un-summed** deliberately). **`⟨M⟩` is
 > now the cheapest remaining route to a rung-3 `Good = ∅` piece and this
-> direction did not close it.** THIRD, the class statement: (BE-67)(ii)'s
+> direction did not close it.**
+>
+> > **— SPENT 2026-09-12 by (BE-274)/(BE-277) (direction BMBLOCK), and the
+> > evidence trail of the `0 of 253` is corrected without its value moving.**
+> > `⟨M⟩` is **closed by proof** whenever either side has `dist_i ≤ 5`, by the
+> > path lemma (BE-272)(ii) — `⟨M⟩` is the virtual edge's own hinge line, so
+> > (BE-30)(iv) confines it to `⟨P⟩` and an explicit decomposable transversal
+> > kills the intersection at `m ∈ {3,4}` (pointwise) and a `6 × 6`
+> > determinant at `m = 5` — and closed by the measured step `c_i(⟨M⟩) = 1 ⟹
+> > ρ_i = 6` on the remaining `dist_i ≥ 6` corner. So this clause's *"the
+> > cheapest remaining route"* is **spent**, and three of the three routes this
+> > direction named are closed. **On the figure itself:** `bgoodempty.block_row`
+> > **does** compute the field `cM` and `run_block` never aggregates or prints
+> > it, so the `0 of 253` rests on the **margin histogram** — which at
+> > `slack = 0` would score a `(1,1)` at `⟨M⟩` as `margin = +1` and fire. The
+> > inference is **valid and the figure stands**; what was never reported is the
+> > `⟨M⟩` **marginal**, which (BE-273) supplies. Do not quote *"0 of 253"* as a
+> > `cM` census. **The residue this leaves is (BE-262)(ii)'s FIRST item one
+> > dimension down and is the same question ((BE-277)(iii)).**
+>
+> THIRD, the class statement: (BE-67)(ii)'s
 > residue is not touched — nothing here proves `Good ≠ ∅` for a piece it did
 > not measure; what it removes is two of the three ways a piece could fail.
 > FOURTH, both skeletons used are 3-regular on 6 vertices; a side 2 from a

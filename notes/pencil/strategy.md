@@ -1736,27 +1736,51 @@ corpus** — the corpus-level question needs its own grep, and this one takes tw
    it is open in general, which STRIKES the `G°` induction. Decided by: the `(K-grid)` row,
    close-it u9.*
 
-2. **`⟨M⟩` AT RUNG 3 — THE LAST OPEN ROUTE TO A `Good = ∅` PIECE.** *(new — BGOODEMPTY's own named
-   successor, and its words are* "now the cheapest remaining route … and this direction did not
-   close it"*.)* Owner: §(K-bare-ext) *Step BE261*, (BE-262)(ii), standing on (BE-97)(iv). The
-   shape is `c_i(⟨M⟩) = 1` on **both** sides — both sides' relative screw spaces containing the
-   virtual edge's own line `p_x ∨ p_y` — which at `dim U = 1` is a violation by `2 > 1`, **the
-   cheapest the arithmetic allows**. It is **unwitnessed and not excluded**: `0` of the landed
-   `93` ((BE-120)(i)) and `0` at BGOODEMPTY's `253` in-region rows, the two denominators left
-   un-summed deliberately. **GLEAF's question: SUFFICIENT**, and it is the only SUFFICIENT entry
-   on either lane — by (BE-69)(ii) a `Good = ∅` piece makes the shortfall hold **identically on
-   `Chart(H)`**, which is an obstruction to `hbareSplit` itself and not merely to a universal
-   reading of the obligation. **Why it is rank 2 and not rank 1 despite being much the cheapest:**
-   BGOODEMPTY closed the `Π_x`/`Π_y` route by proof and the one-sided route combinatorially, so
-   this entry is what its own round left standing, and the prior on the *positive* arm is a
-   measured `0 of 346`. **What makes it worth a dispatch anyway:** its negative arm is a proof, not
-   a tally — (BE-258)'s `rank(ω ↦ ω ∧ p_x) = 3` closed a 2-dimensional block outright, and nobody
-   has asked the same question of the 1-dimensional one.
-   *Kill condition: a rung-3 `H` with `c_i(⟨M⟩) = 1` on both sides exhibited — which reaches
-   (BE-14) — or `c₁(⟨M⟩) + c₂(⟨M⟩) ≤ 1` proved generically at rung 3 the way (BE-259)(i) proved
-   the `Π_x` block, which closes the last cheap route and sends the lane to the `dist_i ∈ {5,6}`
-   corner. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+2. **`⟨M⟩` AT RUNG 3 — SPENT (BMBLOCK 109, 2026-09-12): CLOSED BY PROOF, AND THE PROOF IS NOT
+   (BE-258)'s METHOD.** Owner of the answer: §(K-bare-ext) *Steps BE270–BE276*,
+   (BE-272)/(BE-274)/(BE-277). `⟨M⟩ = ⟨p_x ∧ p_y⟩` is, in this carrier, **the virtual edge's own
+   hinge line**, so (BE-30)(iv) confines it to `⟨P⟩` for *every* x–y path — and **THE PATH
+   LEMMA** kills the intersection: `dim(⟨P⟩ ∩ ⟨M⟩) = 0` at every path of edge-length
+   `2 ≤ m ≤ 5`, **POINTWISE** at `m ∈ {2,3,4}` by an explicit **decomposable transversal**
+   (`η = p₁∧p₂`, `η = p₁∧p₃`; at `m = 2` the carrier's own `legal_chain` gate supplies the
+   non-degeneracy) and **generically** at `m = 5` by a non-vanishing `6 × 6` determinant with an
+   exhibited integer witness. Since an internal R-node peel forces `dist_i ≥ 2` on **both**
+   sides, **ONE** side at `dist_i ≤ 5` already gives `c₁ + c₂ ≤ 1 = dim ⟨M⟩` — a **strictly
+   stronger** closure shape than (BE-259)(i)'s, which needs `dist_i ≤ 4` on **both**. The only
+   escape is `dist_i ≥ 6` on both sides, and there `c_i(⟨M⟩) = 1 ⟹ ρ_i = 6` (measured, 25/25)
+   forces `δ₁ = δ₂ = 6`, hence `Σδ = 12 > 6`, contradicting rung 3 — **cap-free over 31 588
+   tuples: 4 145 raw violations → 1 120 after the path lemma, all at `(6,6)` → 0.**
+   **SO THREE OF THE THREE ROUTES BGOODEMPTY NAMED ARE CLOSED**, and `⟨M⟩` is **not** a route to
+   a rung-3 `Good = ∅` piece. **There is no rank count anywhere in this** — `⟨M⟩` carries no
+   operator, so (BE-258)'s `rank φ = 3` has no analogue; the spec predicted the verdict and was
+   **refuted on the method**.
+   *Kill condition: MET on its second arm. The residue is `⟨M⟩ ⊆ ρ̄_i` proper-closed at `ρ_i ≤ 5`,
+   `dim ⟨P₀⟩ = 6` — **248 of 2 946** in-region peels, priced DRAW-FREE — and it is **the same
+   question** (BE-259)(ii) leaves at `Π_x`, one dimension down and one regime narrower. **ONE
+   LEMMA DISCHARGES BOTH**, and that is the lane's successor. A direction's question.*
 
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — BGOODEMPTY's own named
+   > successor, and its words are* "now the cheapest remaining route … and this direction did not
+   > close it"*.)* Owner: §(K-bare-ext) *Step BE261*, (BE-262)(ii), standing on (BE-97)(iv). The
+   > shape is `c_i(⟨M⟩) = 1` on **both** sides — both sides' relative screw spaces containing the
+   > virtual edge's own line `p_x ∨ p_y` — which at `dim U = 1` is a violation by `2 > 1`, **the
+   > cheapest the arithmetic allows**. It is **unwitnessed and not excluded**: `0` of the landed
+   > `93` ((BE-120)(i)) and `0` at BGOODEMPTY's `253` in-region rows, the two denominators left
+   > un-summed deliberately. **GLEAF's question: SUFFICIENT**, and it is the only SUFFICIENT entry
+   > on either lane — by (BE-69)(ii) a `Good = ∅` piece makes the shortfall hold **identically on
+   > `Chart(H)`**, which is an obstruction to `hbareSplit` itself and not merely to a universal
+   > reading of the obligation. **Why it is rank 2 and not rank 1 despite being much the cheapest:**
+   > BGOODEMPTY closed the `Π_x`/`Π_y` route by proof and the one-sided route combinatorially, so
+   > this entry is what its own round left standing, and the prior on the *positive* arm is a
+   > measured `0 of 346`. **What makes it worth a dispatch anyway:** its negative arm is a proof, not
+   > a tally — (BE-258)'s `rank(ω ↦ ω ∧ p_x) = 3` closed a 2-dimensional block outright, and nobody
+   > has asked the same question of the 1-dimensional one.
+   > *Kill condition: a rung-3 `H` with `c_i(⟨M⟩) = 1` on both sides exhibited — which reaches
+   > (BE-14) — or `c₁(⟨M⟩) + c₂(⟨M⟩) ≤ 1` proved generically at rung 3 the way (BE-259)(i) proved
+   > the `Π_x` block, which closes the last cheap route and sends the lane to the `dist_i ∈ {5,6}`
+   > corner. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 3. **`T↑∃∃` — FROM `100 %` TO A THEOREM, WHICH MEANS NAMING THE SECOND OBSTRUCTION.** *(new —
    GCOLTRANS's *What would change this* item 2.)* Owner: §(K-grid) *Step G252*, (GR-232)(ii) and
    (GR-230). The lift holds at **some** re-length of `15 304 of 15 304` frames, and the weak form

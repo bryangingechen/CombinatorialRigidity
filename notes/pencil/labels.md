@@ -5615,8 +5615,16 @@ the round's baseline `ce69720c`:
   but a name a future reader would have to disambiguate, so it was dropped for
   a 0-hit one instead of argued for.
 
-**THE LIVE TAIL AFTER THIS ROUND, if all three ranges are consumed, is
-(GR-249) / *Step G269* and (BE-281) / *Step BE280*.** Two of the three
+**BMBLOCK CONSUMED SEVEN OF ITS TEN LABELS AND SEVEN OF ITS TEN STEPS** —
+**(BE-271)–(BE-277)** / ***Steps BE270–BE276***, landed 2026-09-12 into the new
+`workbook/bare-ext/BMBLOCK.md`. **(BE-278)–(BE-280)** / ***BE277–BE279*** were
+reserved and **NOT used**; they are **returned to the pool**, so the live tail on
+that lane moves to **(BE-278) / *Step BE277***, not to (BE-281). The reservation
+was re-verified 0-hit by the direction at its own baseline after `HEAD` advanced
+under it — the concurrent-read discipline working.
+
+**THE LIVE TAIL AFTER THIS ROUND, if the two `(GR-.)` ranges are consumed, is
+(GR-249) / *Step G269*; on the `(BE-.)` lane it is (BE-278) / *Step BE277*.** Two of the three
 directions mint in the **same** section file (`workbook/grid.md`) and the
 ranges are disjoint by construction — reservations prevent naming collisions,
 not two directions deriving one identity (dispatch-log F20), so the

@@ -18037,3 +18037,75 @@ source, since the run costs ~4 s either way. The `(BE-259)(iii)` claim was
 checked for consistency against BWHOLEH's landed certificate — it is an upgrade
 and says so, with generic-vs-steered doing the work. The driver's `(E1)`,
 `(E2)`, `(P0)` were confirmed to be **Python identifiers**, not labels.
+
+## BMBLOCK — ordinal 109, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's sixteenth pass, RANK 2** — the only SUFFICIENT entry on either lane, and
+much the cheapest of the round. *Question:* can `c₁(⟨M⟩) = c₂(⟨M⟩) = 1` occur at
+an internal R-node peel at rung 3 — the last open route to a `Good = ∅` piece —
+or is it closed by proof?
+
+**VERDICT: CLOSED BY PROOF — and the proof does NOT transport (BE-258)'s
+method.** Landed as (BE-271)–(BE-277) / *Steps BE270–BE276*.
+
+- **The path lemma, and it is the whole result.** `⟨M⟩ = ⟨p_x ∧ p_y⟩` is, in
+  this carrier, **the virtual edge's own hinge line** (`bimage.chain_of`:
+  `ℓ_i = p_{i−1} ∧ p_i`), so (BE-30)(iv) confines it to `⟨P⟩` for **every** x–y
+  path. Through the Klein pairing a **decomposable** `η` annihilates a line
+  exactly when the two lines meet, so it suffices to exhibit a **transversal**
+  skew to `p_0p_m`: `η = p₁∧p₂` at `m = 3`, `η = p₁∧p₃` at `m = 4`, both
+  **POINTWISE** under a named span hypothesis; at `m = 2` every element of
+  `⟨P⟩` is a line through `p₁` and the carrier's own `legal_chain` gate supplies
+  the non-degeneracy, so that case is pointwise **on the habitat**. At `m = 5`
+  **no decomposable transversal exists** (measured: the annihilator is
+  decomposable at **0 of 60** draws) and the exclusion is a non-vanishing
+  `6 × 6` determinant with an exhibited integer witness. At `m ≥ 6`
+  `⟨P⟩ = Λ²K⁴` and the confinement is vacuous — the only corner it leaves.
+- **The closure shape is STRICTLY STRONGER than (BE-259)(i)'s.** An internal
+  R-node peel forces `x ≁ y`, hence `dist_i ≥ 2` on both sides, so **ONE** side
+  at `dist_i ≤ 5` already gives `c₁ + c₂ ≤ 1 = dim ⟨M⟩`; (BE-259)(i) needs
+  `dist_i ≤ 4` on **both**.
+- **The remaining corner closes cap-free.** `c_i(⟨M⟩) = 1 ⟹ ρ_i = 6` (measured,
+  25 of 25 firing rows) forces `δ₁ = δ₂ = 6`, hence `Σδ = 12 > 6`, contradicting
+  rung 3. Over **31 588** tuples: **4 145** raw violations → **1 120** after the
+  path lemma, *all* at `(dist₁, dist₂) = (6,6)` → **0**.
+- **The residue is real and is priced with NO DRAWS.** `(dist₁, dist₂)` is
+  combinatorial, so BGOODEMPTY's whole job list prices in 6 s: **2 946**
+  in-region peels, **2 698 (91.6 %)** closed by the proved half alone, **248** in
+  the corner. `δ_i ≤ dist_i` ((BE-256)(ii)) re-verified at all 2 946.
+- **THE SPEC'S MECHANISM, REFUTED AT THE CORPUS'S OWN BEST CASE.** (M1) puts
+  `p_x ∧ p_{w₁}` in `Π_x`, which is `⟨M⟩` only at `dist_i = 1`, excluded
+  in-region; (M2) gives `ρ̄_i = ⟨P⟩`, so on `2 ≤ d_min ≤ 5` the path lemma makes
+  it a mechanism for `c_i(⟨M⟩) = 0`, **not** `= 1`. At (BE-99)(iii)'s double
+  pencil — the one landed peel where both clauses fire — `⟨M⟩` reads `(0,1)` at
+  **6 of 6** seeds while `Π_x` reproduces `(1,2)`.
+
+**THE F26 CONSUMER CHECK, AND IT DOES NOT KILL THE QUESTION.** The chain
+(BE-67)(iii) → (BE-22)(iii) → (BE-25)(ii)'s S-mark → (BE-14)'s 2-cut step
+consumes a `Good = ∅` piece at the **universal** quantifier. The re-rooting
+escape is **closed**: a 2-separation is a *tree edge*, the criterion is symmetric
+in the sides, so the split set is rooting-independent and (BE-25)(i) needs all
+splits at once. `git grep` for re-rooting over `notes/pencil/` returns **0
+hits** — never priced before.
+
+**TWO EVIDENCE TRAILS CORRECTED WITHOUT EITHER VALUE MOVING.** (BE-262)(ii)'s
+*"0 at this direction's 253 rows"* rests on the **margin histogram**, not on a
+`cM` census — `bgoodempty.block_row` computes the field and `run_block` never
+prints it; the inference is valid and the gate would have fired, but the `⟨M⟩`
+marginal had never been reported. And the 427-row match with (BE-258)(iii) is a
+**same-input reproduction** (`bmblock.SEED == bgoodempty.SEED`), with
+denominators moving up to 10 rows across seeds — a cap, not a constant.
+
+**THE SUCCESSOR, AND IT IS THE ROUND'S MOST VALUABLE HAND-FORWARD.** The residue
+— `⟨M⟩ ⊆ ρ̄_i` proper-closed at `ρ_i ≤ 5`, `dim ⟨P₀⟩ = 6` — is **the same
+question** (BE-259)(ii) leaves at `Π_x`, one dimension down and one regime
+narrower. **One lemma discharges both.** *A direction's question, not a
+coordinator's.*
+
+**Coordinator verification:** `reach`, `arith`, `path`, `dbl` and `side` all
+re-run at the landing baseline and reproduce every quoted figure; the three
+source-level self-catches (`bunif`'s `'M' = wedge2(px, py)`, `bunif.SUBS` being
+every subset of `BLK`, committed `bproper.NONADJ` still listing 3) were checked
+at source. **Two of them correct the coordinator's own spec** — the spec said
+the four-block table and the 16 stable `U` were different populations, and they
+are not.
