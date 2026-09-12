@@ -18279,3 +18279,85 @@ at all four sizes) and `--ladder` (both recipes at `m = 6, 8, 10, 12`) all
 re-run at the landing baseline and reproduce every figure. The two
 `[MEASURED]`-without-a-driver lint failures were repaired at landing by naming
 the mode in each tag.
+
+## BSIXTEEN — ordinal 111, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's seventeenth pass, RANK 1** — the first entry to name the target the arc
+had been walking toward one block at a time. *Question:* can the eleven
+remaining stable blocks be closed at rung 3 — which proves `Good ≠ ∅` there — or
+does one host a violation?
+
+**VERDICT: the eleven can be closed, and they are NOT eleven problems.** Two
+close cap-free; the other nine reduce to **one named candidate**. Landed as
+(BE-278)–(BE-285) / *Steps BE277–BE284*.
+
+- **THE INSTRUMENT WAS BLOCK-AGNOSTIC ALL ALONG.** (BE-30)(iv) names **no
+  block** — it says `ρ̄_i ⊆ ⟨P⟩` for *every* x–y path — so intersecting both
+  sides with any stable `U` gives `c_i(U) ≤ dim(⟨P₀⟩ ∩ U)` **pointwise at all
+  sixteen**. This is (BE-272)(i) with `⟨M⟩` deleted, and nobody had deleted it.
+- **THE TABLE.** `B(m, U) = max(|U ∩ {Π_x, Π_y}|, m + dim U − 6)` — a forced
+  floor (`ℓ₁ ∈ Π_x`, `ℓ_m ∈ Π_y` are (BE-30)(ii)) and a general-position count,
+  **never anything between**. Asserted at **4 480** cells, Klein-pairing identity
+  at **4 200**, equality at **4 256** off two named loci, and **13 664/13 664**
+  on `Chart(H)`. **It reproduces (BE-258)(iii)'s `α_x` histogram — including the
+  `dist = 7 → 3` saturation that clause corrected — and (BE-272)(ii)'s `⟨M⟩`
+  column, neither fitted.** (Coordinator check: specialized to `α_x`, `dim 3`,
+  the table reads `max(1, m − 3)`, which is (BE-258)(iii)'s landed closed form
+  exactly — derivable by hand.)
+- **Two more blocks close CAP-FREE:** `⟨L⟩` and `⟨M⟩⊕⟨L⟩`, by exactly
+  (BE-274)(i)'s two-step. At `⟨L⟩` the `m = 2` separating line is `⟨M⟩` itself,
+  skew to `L` by the generic flag regime alone — **cheaper** than BMBLOCK's.
+- **The other nine reduce to (BLOCK-GP)**, one named law, under which **all
+  sixteen close**.
+
+**THREE THINGS FALL OUT, AND THE FIRST REFUTES THE SPEC'S OWN HOPE.** *(a)* The
+spec's *"where I expect to be wrong"* asked for a block-sum **inheritance
+lemma**; it is **FALSE, and in the dangerous direction** — `c_i` is
+**superadditive** over sums, so a sum can bind where both summands are closed.
+Exact-ℚ witness: `W = ⟨(p_x ∧ p_y) + (e₁ ∧ e₂)⟩`, `dim 1`, with
+`c(⟨M⟩) = c(⟨L⟩) = 0` and `c(⟨M⟩⊕⟨L⟩) = 1`; strict at **7 120/10 000**. The one
+true block-sum lemma (the trace lemma, 16 200 asserts) runs the other way and
+closes nothing. *(b)* **(BE-259)(i)'s threshold extends to `dist_i ≤ 5`** — read
+at the block rather than through `α_x`, which costs a unit; generic-with-witness
+at `m = 5`, one status notch below, so it **extends, not supersedes**, and
+(BE-258)(iii)'s own `0 of 27` rows at `dist = 5` is the same fact measured.
+*(c)* **`Σδ ≤ dim U + 5`**, proved, generalizing (BE-225)(i): `⟨M⟩`/`⟨L⟩` bind
+**only** at rung 3, the 5-dimensional blocks survive to `Σδ ≤ 10` — so *"the
+higher rungs are free"* is true at `Π_x` and **false in general**.
+
+**THE F26 CONSUMER CHECK CAME BACK FAVOURABLE — the POSITIVE arm has a
+consumer.** `Good ≠ ∅` **is** (BE-67)(iii) at that peel by (BE-69)(ii); that is
+the general-position half of (BE-22)(iii)(b); which is the 2-cut criterion the
+S-mark induction of (BE-25)(ii) runs at every node up to (BE-14). **Both arms
+land somewhere**, which the spec asked to be established before the round was
+spent.
+
+**AND THE SCOPE LIMIT, which corrects the dispatching board's own framing.**
+(BE-96)(iv) holds at a **generic-regime** flag pair, but `π_u = π_v` is **FORCED
+at 392 of 928** internal R-node peels ((BE-81)) — and those are **rung-3** peels
+(`Σδ = 2`), where the four blocks do not decompose the screw space at all, so
+the criterion is not merely unproved there but **not the right object**. They
+are settled **per-piece** ((BE-86)(ii), 392 exact-ℚ certificates) and stay
+**class-level open**. **So closing all sixteen proves `Good ≠ ∅` at rung 3 in
+the GENERIC FLAG REGIME**, not at rung 3 simpliciter. No surface in the corpus
+carried this in one place.
+
+**THE SELF-CATCH WORTH THE MOST**, and it is a methodological one: the `side`
+census's 100 % agreement with the unfloored law is a **CAP, not a
+confirmation** — a draw-free count shows **0 of 428** sides carry a (BE-45)(i)
+series end, because the library is built from 2-connected shapes where every
+terminal has two path-disjoint first edges. **A population that cannot host the
+counterexample cannot confirm the law.** The direction wrote that mode *because
+the number looked suspiciously clean*, then stated (BLOCK-GP) in the **floored**
+form — the weakest that still closes all sixteen and the one that survives a
+series end.
+
+**Coordinator verification:** `trace`, `arith`, `mech`, `table`, `cert`, `pop`
+and `validate` all re-run at the landing baseline and reproduce every figure,
+including the superadditivity witness, the 16-column table, the non-decomposable
+annihilator at `m = 5` (0 of 30 draws, against `⟨M⟩`'s 0 of 60), and `pop`'s
+cross-check that `⟨M⟩`'s `+LP` residue is **248 of 2 946** — (BE-276)(i)'s own
+figure, reached by a different route and disclosed as a same-input reproduction.
+(BE-81)'s `392 of 928` was checked by summing that clause's own landed table
+(48+720+160 peels, 24+312+56 forced), and (BE-30)(iv) was read at source to
+confirm it names no block.

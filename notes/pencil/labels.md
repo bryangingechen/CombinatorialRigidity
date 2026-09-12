@@ -5668,6 +5668,22 @@ the round's baseline `69712c87`:
 * **BPROPCL** — **fully CLEAN, 0 hits on every token**, including
   `BPROPCL`/`bpropcl`.
 
+**BSIXTEEN CONSUMED EIGHT OF ITS THIRTEEN LABELS AND EIGHT OF ITS THIRTEEN
+STEPS** — **(BE-278)–(BE-285)** / ***Steps BE277–BE284***, landed 2026-09-12 into
+the new `workbook/bare-ext/BSIXTEEN.md`. **(BE-286)–(BE-290)** / ***BE285–BE289***
+were **NOT used and are returned to the pool.**
+
+**A RESERVATION-RECORD CORRECTION, and it is about this file rather than about
+any claim.** The per-token list above was taken at `69712c87` and named
+`BE277`/`BE279` as the declaration hits. Re-run by the direction at its own
+baseline `16881765`, the list is **(BE-278), (BE-280), (BE-281), (BE-290)** —
+different tokens, same classification, because the *seventeenth pass's own
+commit* added this reservation block and a hand-off sentence naming those
+numbers. **The verdict *"clean except the declaration"* was true at both
+baselines; its LIST is baseline-dependent and must be re-read rather than
+quoted.** Worth recording because a reservation record is the one artifact whose
+own landing changes what a later grep finds.
+
 **NOTE ON THE `(BE-.)` TAIL.** BMBLOCK returned **(BE-278)–(BE-280)** /
 ***BE277–BE279*** to the pool, and BSIXTEEN's range **opens exactly there** —
 the first re-use of returned labels in the arc. That is why BSIXTEEN's check

@@ -1704,31 +1704,69 @@ inequality*: `margin := max over the 16 stable U of [c₁(U) + c₂(U) − dim U
 pile of lemmas — it is a proof that no rung-3 shortfall exists**, which is the whole `Good = ∅`
 question at the rung where BWHOLEH's refutation lives.
 
-1. **THE BLOCK LAW AT RUNG 3 — CLOSE THE ELEVEN THAT REMAIN.** *(new — the object BGOODEMPTY and
-   BMBLOCK have been closing one block at a time without anyone naming the target.)* Owner:
-   §(K-bare-ext) *Step BE96*, (BE-97)(i)–(iv), with (BE-95)(i) supplying the equivalence and
-   *Steps BE254–BE276* the three closures. **GLEAF's question: SUFFICIENT, and in BOTH
-   directions** — close them all and `Good ≠ ∅` at rung 3 is **PROVED**, which removes the
-   `Good = ∅` route to (BE-14) at that rung outright and leaves BWHOLEH's steered certificate as
-   the only phenomenon there; witness one and the shortfall is **chart-wide** by (BE-69)(ii),
-   which **reaches (BE-14)**.
-   **THE COUNT, STATED PRECISELY BECAUSE TWO DIFFERENT ONES ARE IN CIRCULATION.** Of the `16`
-   stable `U`, **`14` can host a violation arithmetically** — only `U = 0` and `U = Λ²K⁴` die
-   ((BE-97)(i)). **`3` are now CLOSED at rung 3** (`Π_x`, `Π_y`, `⟨M⟩`), so **`11` remain OPEN**;
-   but **`12` remain UNWITNESSED**, because `Π_y` was closed without ever having been witnessed.
-   **These are different predicates and a spec must not conflate them** — BMBLOCK's own summary
-   says *"12"*, correctly, of the unwitnessed count.
-   **First slice, and it is one block:** `⟨L⟩` — the Plücker point of `π_x ∩ π_y`, `dim 1`,
-   `cap 1`, the **exact structural analogue** of `⟨M⟩` (`bunif.BLK`/`CAP`, read at source). The
-   coordinator's candidate is that BMBLOCK's transversal transports to it; **that is a candidate
-   to ELIMINATE, not a premise** — `⟨M⟩` is the virtual edge's own hinge line and (BE-30)(iv)
-   confines `ρ̄_i` to `⟨P⟩` *because of that identification*, which `⟨L⟩` does not obviously
-   inherit. Refute it cheaply first.
-   *Kill condition: all eleven closed at rung 3 — which PROVES `Good ≠ ∅` there — or one block
-   exhibited with `c₁(U) + c₂(U) > dim U` at a rung-3 peel, which reaches (BE-14); or the
-   arithmetic shown to leave a block that neither instrument can reach, which names the real
-   residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+1. **THE BLOCK LAW AT RUNG 3 — SPENT (BSIXTEEN 111, 2026-09-12): THE ELEVEN ARE NOT ELEVEN
+   PROBLEMS, AND THE INSTRUMENT WAS BLOCK-AGNOSTIC ALL ALONG.** Owner of the answer:
+   §(K-bare-ext) *Steps BE277–BE284*, (BE-278)–(BE-285). **(BE-30)(iv) names no block** — it says
+   `ρ̄_i ⊆ ⟨P⟩` for *every* x–y path — so intersecting with any stable `U` gives
+   `c_i(U) ≤ dim(⟨P₀⟩ ∩ U)` **pointwise at all sixteen**, and the right-hand side is a closed-form
+   **TABLE**, `B(m, U) = max(|U ∩ {Π_x, Π_y}|, m + dim U − 6)` — a forced floor and a
+   general-position count, never anything between. Asserted at **4 480** cells, equality at
+   **4 256** off two named loci, **13 664/13 664** on `Chart(H)`, and it **reproduces
+   (BE-258)(iii)'s `α_x` histogram and (BE-272)(ii)'s `⟨M⟩` column without being fitted**.
+   **RESULT: two more blocks close CAP-FREE** (`⟨L⟩` and `⟨M⟩⊕⟨L⟩`, by (BE-274)(i)'s two-step —
+   and at `⟨L⟩` the `m = 2` separating line is `⟨M⟩` itself, *cheaper* than BMBLOCK's) **and the
+   other NINE reduce to ONE named candidate, (BLOCK-GP)**, under which **all sixteen close**. So
+   `Good ≠ ∅` at rung 3 follows from **one lemma, not eleven**.
+   **THREE THINGS FALL OUT, and the first refutes this entry's own hope.** *(a)* The
+   **inheritance lemma this entry asked for is FALSE, and in the dangerous direction**: `c_i` is
+   **superadditive** over block sums (exact-ℚ witness `W = ⟨(p_x∧p_y) + (e₁∧e₂)⟩`, `dim 1`, with
+   `c(⟨M⟩) = c(⟨L⟩) = 0` and `c(⟨M⟩⊕⟨L⟩) = 1`), strict at **7 120/10 000** — a sum can bind where
+   both summands are closed. The one true block-sum lemma runs the other way and closes nothing.
+   *(b)* **(BE-259)(i)'s threshold EXTENDS to `dist_i ≤ 5`** — read at the block instead of through
+   `α_x`, which costs a unit; generic-with-witness at `m = 5`, one status notch below, so it
+   extends rather than supersedes. *(c)* **`Σδ ≤ dim U + 5`**, proved, generalizing (BE-225)(i)'s
+   `Π_x` case: `⟨M⟩`/`⟨L⟩` can bind **only at rung 3** while the 5-dimensional blocks survive to
+   `Σδ ≤ 10`, so *"the higher rungs are free"* is true at `Π_x` and **false in general**.
+   **THE SCOPE LIMIT, AND IT CORRECTS THIS ENTRY'S OWN FRAMING.** (BE-96)(iv) holds at a
+   **generic-regime** flag pair, but `π_u = π_v` is **FORCED at 392 of 928** internal R-node peels
+   ((BE-81)) — and those are **rung-3** peels, where the four blocks do not decompose the screw
+   space at all, so the 16-block criterion is not merely unproved there but **not the right
+   object**. Those are settled **per-piece** ((BE-86)(ii), 392 exact-ℚ certificates) and remain
+   **class-level OPEN**. **So closing all sixteen proves `Good ≠ ∅` at rung 3 IN THE GENERIC FLAG
+   REGIME — not at rung 3 simpliciter, which is what this entry said.** No single surface in the
+   corpus carried that, and a spec must now.
+   *Kill condition: MET on its first arm — the eleven are reduced, not ground out. The successor is
+   **(BLOCK-GP)** at `dim ⟨P₀⟩ ∈ {4, 5}`, which is **DISJOINT from BPROPCL's** residue (the
+   `dim ⟨P₀⟩ = 6` instance): all 40 surviving shapes have `dim ⟨P₀⟩ ≤ 5` on **both** sides. One
+   lemma stated relative to `⟨P₀⟩` discharges both, and that is the lane's next object. Decided by:
+   the `(K-bare)/(K-bare-ext)` row.*
 
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — the object BGOODEMPTY and
+   > BMBLOCK have been closing one block at a time without anyone naming the target.)* Owner:
+   > §(K-bare-ext) *Step BE96*, (BE-97)(i)–(iv), with (BE-95)(i) supplying the equivalence and
+   > *Steps BE254–BE276* the three closures. **GLEAF's question: SUFFICIENT, and in BOTH
+   > directions** — close them all and `Good ≠ ∅` at rung 3 is **PROVED**, which removes the
+   > `Good = ∅` route to (BE-14) at that rung outright and leaves BWHOLEH's steered certificate as
+   > the only phenomenon there; witness one and the shortfall is **chart-wide** by (BE-69)(ii),
+   > which **reaches (BE-14)**.
+   > **THE COUNT, STATED PRECISELY BECAUSE TWO DIFFERENT ONES ARE IN CIRCULATION.** Of the `16`
+   > stable `U`, **`14` can host a violation arithmetically** — only `U = 0` and `U = Λ²K⁴` die
+   > ((BE-97)(i)). **`3` are now CLOSED at rung 3** (`Π_x`, `Π_y`, `⟨M⟩`), so **`11` remain OPEN**;
+   > but **`12` remain UNWITNESSED**, because `Π_y` was closed without ever having been witnessed.
+   > **These are different predicates and a spec must not conflate them** — BMBLOCK's own summary
+   > says *"12"*, correctly, of the unwitnessed count.
+   > **First slice, and it is one block:** `⟨L⟩` — the Plücker point of `π_x ∩ π_y`, `dim 1`,
+   > `cap 1`, the **exact structural analogue** of `⟨M⟩` (`bunif.BLK`/`CAP`, read at source). The
+   > coordinator's candidate is that BMBLOCK's transversal transports to it; **that is a candidate
+   > to ELIMINATE, not a premise** — `⟨M⟩` is the virtual edge's own hinge line and (BE-30)(iv)
+   > confines `ρ̄_i` to `⟨P⟩` *because of that identification*, which `⟨L⟩` does not obviously
+   > inherit. Refute it cheaply first.
+   > *Kill condition: all eleven closed at rung 3 — which PROVES `Good ≠ ∅` there — or one block
+   > exhibited with `c₁(U) + c₂(U) > dim U` at a rung-3 peel, which reaches (BE-14); or the
+   > arithmetic shown to leave a block that neither instrument can reach, which names the real
+   > residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 2. **THE CORRELATED COLOURING RULE ON THE BASE, ATTACKED AT THE PARITY FAILURE.** *(new —
    GBASE's named successor, and the only `hK` entry whose success is not contingent on a struck
    route.)* Owner: §(K-grid) *Steps G258–G259*, (GR-238)/(GR-239), standing on (GR-34). **(GR-34)

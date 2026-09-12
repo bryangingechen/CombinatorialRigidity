@@ -259,6 +259,19 @@ point.
 > generic `c_i(Π_x) ≤ 1` on each, so `c₁ + c₂ ≤ 2 = dim Π_x`, and by the
 > density lever (BE-255)(ii) **`Π_x` cannot bind.** No draw is used. The same
 > at `Π_y`, every ingredient being x/y symmetric.
+>
+> > **— THRESHOLD EXTENDED 2026-09-12 by (BE-279)(v) (direction BSIXTEEN), and
+> > it EXTENDS rather than supersedes.** The threshold here is `dist_i ≤ 4`
+> > because the bound runs through `α_x = ker(ω ↦ ω ∧ p_x)` (`dim 3`), and the
+> > `α_x` detour costs a unit. Read at the **block itself** — `Π_x` has
+> > `dim 2` — the path table gives `dim(⟨P₀⟩ ∩ Π_x) = max(1, m − 4)`, so
+> > **generic `c_i(Π_x) ≤ 1` at `dist_i ≤ 5`**, one better. **(BE-258)(iii)'s
+> > own `0 of 27` rows at `dist = 5` is the same fact measured.** The extension
+> > is **generic with a witness** at `m = 5`, one status notch below this
+> > clause's draw-free half, so (BE-259)(i) remains the stronger statement in
+> > *kind* and the extension is the stronger one in *reach*. Nothing here is
+> > contradicted, and the general table specializes to (BE-258)(iii)'s
+> > `max(1, min(dist, 6) − 3)` exactly.
 
 > **(BE-259)(ii)** `[MEASURED]` *(`bgoodempty.py pix`; the half that is a
 > 427-row assert — and the residue it leaves is named rather than smoothed)*

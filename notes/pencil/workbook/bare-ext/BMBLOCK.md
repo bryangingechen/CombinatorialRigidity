@@ -200,6 +200,20 @@ count at all**, and what replaces it is stronger.
 > reading is (BE-273) and (BE-274), which is where the lemma is tested against
 > the carrier's own constraints.
 
+> > **— GENERALIZED 2026-09-12 by (BE-279) (direction BSIXTEEN): the instrument
+> > was always BLOCK-AGNOSTIC.** (BE-30)(iv) names **no block** — it says
+> > `ρ̄_i ⊆ ⟨P⟩` for every x–y path — so intersecting both sides with any stable
+> > `U` gives `c_i(U) ≤ dim(⟨P₀⟩ ∩ U)` pointwise at **all sixteen** blocks, and
+> > the right-hand side is a closed-form **table**
+> > `B(m, U) = max(|U ∩ {Π_x, Π_y}|, m + dim U − 6)`. This clause's `⟨M⟩` column
+> > is the `U = ⟨M⟩` row of it, reproduced without being fitted, and `⟨L⟩` — the
+> > Plücker point of `π_x ∩ π_y` — has the **same** row and closes by the same
+> > two-step. The transversal at `m ∈ {2,3,4}` and the non-decomposable
+> > annihilator at `m = 5` both recur at `⟨L⟩` (0 of 30 draws decomposable,
+> > against 0 of 60 here). **Nothing in this step is contradicted**; what is
+> > added is that the hinge-line identification, which this direction leaned on,
+> > was not load-bearing for the confinement.
+
 > **(BE-272)(iii)** `[PROVED]` — *the consequence, and it is strictly stronger
 > than (BE-259)(i)'s shape.* An internal R-node peel requires **`x ≁ y`**
 > (`bgoodempty.block_row` gates `y ∉ N_H(x)`; `bproper.NONADJ`'s own comment
