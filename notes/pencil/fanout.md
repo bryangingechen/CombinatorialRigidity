@@ -18195,3 +18195,87 @@ and the whole `2 × 2`; `--deeper --shapes 200 --deep 64`, `--split --shapes 200
 and `--split --shapes 60` reproduce exactly; and `gcoltrans.py --lift
 --shapes 400` was re-run to confirm the `125`. The `60`-prefix figure matches
 dispatch-log **F30**'s own landed `0 over 1 693 triples`.
+
+## GBASE — ordinal 108, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's sixteenth pass, RANK 1** — ranked first as the third leg of the only
+proof architecture on the `hK` lane whose other two legs are landed.
+*Question:* under the local-move ruling, how big is the `G°` induction's base,
+and is (GR-15) restricted to it easier than (GR-15) itself?
+
+**VERDICT: the `G°` induction under `M_c` is STRUCK as a route — on the entry's
+THIRD kill condition, and the strike costs ZERO measurement.** Landed as
+(GR-233)–(GR-240) / *Steps G253–G260*.
+
+- **The strike, from three landed statements.** (GR-220)(iii) proves `CL_m`
+  admits no Y-reduction at `|A| ≤ c` for every `m > (c+1)/2`; (GR-221)(i) makes
+  frame-existence **length-independent**, so *every* length assignment on `CL_m`
+  is a base shape past that point; and **(GR-34) is stated on `CL_m`** and
+  concludes *"any proof of the target must correlate the per-hub minority
+  choices; no uncorrelated charging can close it"*. So the family on which the
+  corpus **already proved the available technique cannot work** is a subfamily
+  of the base. **A BASE lemma is (GR-15) with its easy half deleted.**
+- **F26, and it found that the corpus states the induction ONCE.** (GR-226)(iv)
+  gives base `n_hub = 2` (the three `θ` shapes) — correct for the **unbounded**
+  family, which the 2026-09-12 ruling deletes. **No statement of the `M_c`
+  induction exists in the corpus**; this entry writes the first one, with its
+  three legs (BASE / STEP / TERMINATION) named.
+- **The size, in both units, exhaustively.** Isomorphism-class unit, `Λ = ∅`,
+  `c = 3`: **`0 % → 20.5 % → 27.7 % → 30.3 %`** at `n_hub = 4, 6, 8, 10`,
+  increments `+7.2`, `+2.6`, with the `n_hub = 10` class list **PROVED complete**
+  by orbit counting (**91** classes, `Σ 10!/|Aut| = 94 008 600`). Per-
+  representative unit — the one every landed `n_hub = 8` figure uses — **flat**
+  (`55.2 → 57.2 → 56.4`) and **falling** at `c = 5` (`57.2 → 48.1`). **So the
+  induction reduces the clear majority, ≈ 70 %**, and the two units disagree on
+  the direction.
+- **(GR-221)(iii)'s `11 360` is now a THEOREM**, `11 440 − 8·10`, cap-free: the
+  two base classes at `n_hub = 8` are precisely the two habitat-**maximizers**,
+  which is why their `10 %` class share is a `57.2 %` shape share.
+
+**THREE CORRECTIONS, ONE OF THEM TO THE BOARD THAT DISPATCHED IT.**
+*(a)* §8's rank-1 entry listed *"80 of 80 at `n_hub = 4`"* among the base's
+inhabitants. Wrong: (GR-231)(i)'s `0 of 80` counts **interior** frames, absent
+there by arithmetic, while the `|A| = 3 = n−1` complement frame **is** inside
+`M_c` for any `c ≥ 3`. **The base at `n_hub = 4` is EMPTY**, measured `0.0 %`.
+*(b)* The coordinator's candidate mechanism — *the base is the cyclically
+4-edge-connected shapes* — is **REFUTED**: one direction holds, the converse
+fails **by size**, with an exhibited `n_hub = 10` witness carrying frames only
+at `|A| ∈ {5, 9}`, and the two sides agree only when `c ≥ n − 3`, i.e. in the
+unbounded regime the ruling excluded. The spec's own suggested refutation aimed
+at the wrong clause: **oddness is automatic** in a cubic multigraph
+(`∂(A) ≡ |A| mod 2`). The correct characterization is *"no `∂ = 3` set with a
+connected side of size `≤ c`"*.
+*(c)* ***"Cut-3 triangle" is a MISNOMER.*** At `|A| = 3`, `∂(A) = 3` there are
+two connected shapes — the triangle and a **digon plus pendant** — and the
+second is the **majority** (`68` against `26` over every class at
+`n_hub ≤ 8`). **No landed figure moves**: every count in
+(GR-198)/(GR-221)/(GR-231) comes from `cut3_sets`, the correct predicate. The
+direction's own first draft asserted the false claim and **its own driver
+assertion fired on it**.
+
+**CAUTION *(n)* ANSWERED IN BOTH DIRECTIONS.** *"Never measured"* would have
+been a false headline — `cflank.targets()`'s named hard candidates at
+`n_hub = 8` are `Q₃` and `V₈`, **exactly** the two base classes, and
+`gexist.py --charge` certifies `CL_m` at `m = 6, 8, 10` with an explicit rule
+colouring. But the delta runs the other way: what is landed on the base is
+**per-shape** (GR-15) at a handful of recipes plus **one uniform rule on one
+recipe slice of one family** — and that rule is **PARITY-FRAGILE**. Extended
+here to `n_hub = 24` on (GR-34)'s recipe, it is **not even admissible** on
+(GR-175)'s, because a length-`L` branch flips its dart colour `L − 1` times, so
+a rung is its hub's minority at both ends only when `L` is **even**. Per-shape
+(GR-15) still holds there, by exact-ℚ witness at draw 1.
+
+**THE ONE UNMEASURED ASSUMPTION, disclosed by the direction itself:** the
+`n_hub = 10` **residual** is not taken (`--residual` written, started three
+times, abandoned on wall clock), so every `n_hub = 10` figure is `B_c^frame` — a
+**lower bound** on the base, which pushes the measured rise in the direction it
+already goes.
+
+**Coordinator verification:** `--val` (local devices against
+`gridcol.cubic_iso_classes`, `aglu._pool8()` and `gnonadd.cut3_sets` at every
+size), `--char` (parity at 5 480 subsets, the 26/68 split, the mechanism
+witness), `--labcount 10` (the completeness certificate), `--orbits` (both units
+at all four sizes) and `--ladder` (both recipes at `m = 6, 8, 10, 12`) all
+re-run at the landing baseline and reproduce every figure. The two
+`[MEASURED]`-without-a-driver lint failures were repaired at landing by naming
+the mode in each tag.

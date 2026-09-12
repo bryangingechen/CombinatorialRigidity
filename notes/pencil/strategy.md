@@ -1665,6 +1665,12 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**ALL THREE OF THIS PASS'S RANKS WERE SPENT IN ONE ROUND (2026-09-12): GBASE 108 struck the
+route, BMBLOCK 109 closed `⟨M⟩` by proof, GSECOND 110 named the lift's second obstruction and
+showed it avoidable. The THIRD consecutive round to spend its whole top three. The seventeenth
+pass opens on a USER DECISION about the `hK` lane's routing, not on a re-rank — see
+`notes/Phase39.md` *Hand-off*.**
+
 **RE-RANKED 2026-09-12 (third) — THE SIXTEENTH STRATEGY-ONLY PASS. THE FIFTEENTH'S RANKS 1, 2
 AND 3 WERE ALL SPENT IN ONE ROUND, THE SECOND CONSECUTIVE ROUND TO SPEND ITS WHOLE TOP THREE** —
 BGOODEMPTY 105 (rank 1, `Good = ∅` NOT FOUND under cap C and two of the three routes to one
@@ -1712,30 +1718,77 @@ landed work as its headline. **The rule, and it is bar *(n)* below: a cap senten
 direction's own disclosure block is a statement about THAT DIRECTION's figures, never about the
 corpus** — the corpus-level question needs its own grep, and this one takes two minutes.
 
-1. **THE INDUCTION'S BASE AT `D = 0` — HOW BIG IS IT, AND IS (GR-15) ON IT EASIER THAN (GR-15)?**
-   *(new — the coverage gate, from (GR-231)(iv)'s own closing sentence.)* Owner: §(K-grid)
-   *Steps G244–G252*, (GR-220)(iii)/(GR-221)(ii)–(v)/(GR-231). Under the local-move ruling the
-   induction's base is **every `D = 0` tight class shape with no frame at `|A| ≤ c`**, and the
-   corpus already names its inhabitants at three sizes without ever collecting them: `80 of 80` at
-   `n_hub = 4` (**no interior frame exists at all** there, (GR-231)(i)), the `1 428` `K₃,₃` shapes
-   at `n_hub = 6`, the `Q₃ = CL₄` and `V₈` classes at `n_hub = 8`, and `CL_m` for every
-   `m > (c+1)/2`. **GLEAF's question: this is the THIRD LEG of the only proof architecture on this
-   lane whose other two legs are landed** — reachability settled, transport at `100 %` — so a
-   uniform argument on the base **closes (GR-15) on the stratum** in combination, and a
-   demonstration that the base is as hard as (GR-15) itself **strikes the `G°` induction as a
-   route** rather than merely blocking it. Ranked 1 for that, and because the entry is cheap in
-   its decisive half: **the share is a cubic-multigraph enumeration, not a colouring census.**
-   **First slice:** the base's *characterization* — (GR-220)(ii)'s own argument says `CL_m`'s only
-   3-edge-cuts are its `2m` hub stars, and (GR-221)(ii) gives `Q₃`/`V₈` `0` frames at `|A| ∈
-   {3,5}`, so *the coordinator's candidate is that the base is exactly the shapes whose hub
-   multigraph has no NON-TRIVIAL 3-edge-cut* — **a candidate to eliminate, not a premise**; then
-   its share at `n_hub = 10` against the landed `0/80 → 81.9 % → 42.8 %` reduction trend.
-   *Kill condition: the base's share shown to fall with `n_hub` — which would make the induction a
-   genuine reduction and re-rank transport to the top — or a uniform (GR-15) argument on the base
-   exhibited, or the base shown to contain a family on which (GR-15) is open for the same reason
-   it is open in general, which STRIKES the `G°` induction. Decided by: the `(K-grid)` row,
-   close-it u9.*
+1. **THE INDUCTION'S BASE AT `D = 0` — SPENT (GBASE 108, 2026-09-12), AND THE ENTRY'S THIRD KILL
+   CONDITION FIRES: THE `G°` INDUCTION UNDER `M_c` IS STRUCK AS A ROUTE.** Owner of the answer:
+   §(K-grid) *Steps G253–G260*, (GR-233)–(GR-240). **The strike needs no measurement at all.**
+   (GR-220)(iii) proves `CL_m` admits no Y-reduction at `|A| ≤ c` for every `m > (c+1)/2`, and
+   (GR-221)(i) makes frame-existence **length-independent**, so **every** length assignment on
+   `CL_m` is a base shape once `m > (c+1)/2` — including (GR-34)'s own recipe. And (GR-34) is
+   stated **on `CL_m`** and concludes *"any proof of the target must correlate the per-hub
+   minority choices; **no uncorrelated charging can close it**"*. **So the family on which the
+   corpus already PROVED that the available proof technique cannot work is a subfamily of the
+   base.** Restricting (GR-15) to the base removes none of the difficulty the corpus has located
+   — it removes only the part of the stratum the corpus already knows how to reduce.
+   **A BASE lemma is (GR-15) with its easy half deleted.**
+   **THE SIZE, and it refutes the coordinator's verdict AND its negation.** In the unit the
+   induction consumes — **isomorphism classes** — the share **rises to a constant, not to 1**:
+   `0 % → 20.5 % → 27.7 % → 30.3 %` at `n_hub = 4, 6, 8, 10` (`Λ = ∅`, `c = 3`), increments
+   `+7.2`, `+2.6`, with the `n_hub = 10` class list **PROVED complete** by an orbit-counting
+   identity (`Σ 10!/|Aut| = 94 008 600` over **91** classes). In the **per-representative** unit —
+   the one every landed `n_hub = 8` figure uses — it is **flat** (`55.2 → 57.2 → 56.4`) and
+   **falls** at `c = 5` (`57.2 → 48.1`). **So the induction reduces the clear MAJORITY, ≈ 70 %**,
+   and the two units disagree on the direction.
+   **THREE CORRECTIONS COME WITH IT.** *(a)* **This board's own `80 of 80` at `n_hub = 4` was the
+   wrong quantity:** (GR-231)(i)'s `0 of 80` counts **interior** frames, absent there by
+   arithmetic (`|A|` odd and `≤ n−3 = 1`), while the `|A| = 3 = n−1` complement frame **is**
+   inside `M_c` for any `c ≥ 3` — **the base at `n_hub = 4` is EMPTY**, measured `0 (0.0 %)`.
+   *(b)* **The candidate mechanism is REFUTED:** the base is **not** the cyclically
+   4-edge-connected shapes — the converse fails **by size**, with an exhibited `n_hub = 10`
+   witness carrying frames only at `|A| ∈ {5,9}`, and the two sides agree only when `c ≥ n − 3`,
+   the unbounded regime the ruling excluded. The correct characterization is *"no `∂ = 3` set with
+   a **connected side of size `≤ c`**"*. *(c)* ***"Cut-3 triangle" is a MISNOMER*** — at `|A| = 3`
+   the **digon-plus-pendant** shape is the **majority** (`68` against `26`); no landed figure
+   moves, since every count comes from `cut3_sets`, but the prose name is wrong wherever it is
+   used as a synonym, and bar *(l)* is annotated accordingly.
+   **AND CAUTION *(n)* IS ANSWERED IN BOTH DIRECTIONS.** *"Never measured"* would have been a
+   false headline: `cflank.targets()`'s named hard candidates at `n_hub = 8` are `Q₃` and `V₈` —
+   **exactly** the two base classes — and `gexist.py --charge` certifies `CL_m` at `m = 6, 8, 10`
+   with an explicit rule colouring. But the delta runs the other way: what is landed on the base
+   is **per-shape** (GR-15) at a handful of recipes plus **one uniform rule on one recipe slice of
+   one family**, and that rule is **PARITY-FRAGILE** — extended here to `n_hub = 24` on (GR-34)'s
+   recipe, it is **not even admissible** on (GR-175)'s, because a length-`L` branch flips its dart
+   colour `L − 1` times so a rung is its hub's minority at both ends only when `L` is **even**.
+   (Per-shape (GR-15) still holds there, by exact-ℚ witness at draw 1.)
+   *Kill condition: MET on its third arm. The successors are a **correlated** colouring rule that
+   covers the base — which (GR-34) says is the only shape a proof can have — and, if the size
+   question is ever reopened, the `n_hub = 10` **residual** (`--residual`, written and abandoned
+   three times on wall clock), which would turn every `n_hub = 10` figure from a lower bound
+   `B_c^frame` into the base itself. Decided by: the `(K-grid)` row, close-it u9.*
 
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new — the coverage gate, from (GR-231)(iv)'s own closing sentence.)* Owner: §(K-grid)
+   > *Steps G244–G252*, (GR-220)(iii)/(GR-221)(ii)–(v)/(GR-231). Under the local-move ruling the
+   > induction's base is **every `D = 0` tight class shape with no frame at `|A| ≤ c`**, and the
+   > corpus already names its inhabitants at three sizes without ever collecting them: `80 of 80` at
+   > `n_hub = 4` (**no interior frame exists at all** there, (GR-231)(i)), the `1 428` `K₃,₃` shapes
+   > at `n_hub = 6`, the `Q₃ = CL₄` and `V₈` classes at `n_hub = 8`, and `CL_m` for every
+   > `m > (c+1)/2`. **GLEAF's question: this is the THIRD LEG of the only proof architecture on this
+   > lane whose other two legs are landed** — reachability settled, transport at `100 %` — so a
+   > uniform argument on the base **closes (GR-15) on the stratum** in combination, and a
+   > demonstration that the base is as hard as (GR-15) itself **strikes the `G°` induction as a
+   > route** rather than merely blocking it. Ranked 1 for that, and because the entry is cheap in
+   > its decisive half: **the share is a cubic-multigraph enumeration, not a colouring census.**
+   > **First slice:** the base's *characterization* — (GR-220)(ii)'s own argument says `CL_m`'s only
+   > 3-edge-cuts are its `2m` hub stars, and (GR-221)(ii) gives `Q₃`/`V₈` `0` frames at `|A| ∈
+   > {3,5}`, so *the coordinator's candidate is that the base is exactly the shapes whose hub
+   > multigraph has no NON-TRIVIAL 3-edge-cut* — **a candidate to eliminate, not a premise**; then
+   > its share at `n_hub = 10` against the landed `0/80 → 81.9 % → 42.8 %` reduction trend.
+   > *Kill condition: the base's share shown to fall with `n_hub` — which would make the induction a
+   > genuine reduction and re-rank transport to the top — or a uniform (GR-15) argument on the base
+   > exhibited, or the base shown to contain a family on which (GR-15) is open for the same reason
+   > it is open in general, which STRIKES the `G°` induction. Decided by: the `(K-grid)` row,
+   > close-it u9.*
+   >
 2. **`⟨M⟩` AT RUNG 3 — SPENT (BMBLOCK 109, 2026-09-12): CLOSED BY PROOF, AND THE PROOF IS NOT
    (BE-258)'s METHOD.** Owner of the answer: §(K-bare-ext) *Steps BE270–BE276*,
    (BE-272)/(BE-274)/(BE-277). `⟨M⟩ = ⟨p_x ∧ p_y⟩` is, in this carrier, **the virtual edge's own
@@ -2295,7 +2348,10 @@ is not ranked on its own.
 region as unreachable for want of a builder** — (BE-243)(i) enters it with the **landed**
 `bproper.free_peel` chain at **84** fully-gated rows; §8's *"needs a new builder"* is right
 only about **steering inside** the region, never about entering it. *(l)* **No proposal of
-cut-3-triangle Y-reducibility as a route to the `G°` reachability gate** — (GR-200)'s `CL_m`
+cut-3-triangle Y-reducibility as a route to the `G°` reachability gate** *(and note,
+per (GR-234)(ii), that* "cut-3 triangle" *names a PROPER SUBFAMILY of what
+`gnonadd.cut3_sets` computes — the digon-plus-pendant shape is the majority, 68 against 26 —
+so the bar binds on the `cut3_sets` predicate, not on triangles)* — (GR-200)'s `CL_m`
 is triangle-free for every `m ≥ 4` and hence **outside that question's quantifier by
 construction**, so a 100 % regularity theorem there would leave the known infinite obstruction
 exactly where it stands.

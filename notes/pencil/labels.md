@@ -5632,8 +5632,15 @@ its kind-markers were first written `**(A)**` / `**(B)**` and `ledger.py
 re-linted clean. **A bolded parenthesized capital at a clause start is a label
 to the parser, whatever the author meant.**
 
-**THE LIVE TAIL AFTER THIS ROUND, if GBASE's range is consumed, is
-(GR-249) / *Step G269*; on the `(BE-.)` lane it is (BE-278) / *Step BE277*.** Two of the three
+**GBASE CONSUMED ITS WHOLE RANGE** — **(GR-233)–(GR-240)** / ***Steps
+G253–G260***, landed 2026-09-12 into `workbook/grid.md`. Nothing returned.
+
+**THE LIVE TAIL AFTER THIS ROUND IS (GR-249) / *Step G269* on the `(GR-.)` lane
+and (BE-278) / *Step BE277* on the `(BE-.)` lane.** All three ranges of the
+sixteenth pass's round are now consumed or partly returned, and the two G-lane
+directions minted into the **same file** with no collision — the disjoint-range
+discipline working, with the duplication check left to the cross-return pass
+(F20). Two of the three
 directions mint in the **same** section file (`workbook/grid.md`) and the
 ranges are disjoint by construction — reservations prevent naming collisions,
 not two directions deriving one identity (dispatch-log F20), so the

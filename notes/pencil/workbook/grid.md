@@ -19373,6 +19373,21 @@ split has NOT been re-taken with `Λ` unrestricted**). Among the shapes that hav
 it always works. That is the same phenomenon (GR-200) turns into the
 obstruction — the block is **absence of a triangle**, never failure of the
 contraction.*
+
+> **— NAME CORRECTED 2026-09-12 by (GR-234)(ii) (direction GBASE); NO FIGURE
+> MOVES.** *"Cut-3 triangle"* names a **proper subfamily** of what
+> `gnonadd.cut3_sets` actually computes. At `|A| = 3` with `∂(A) = 3` there are
+> `e(A) = 3` internal branches and internal degrees summing to `6`, and **two**
+> connected configurations realize that: the **triangle** (degrees `2,2,2`) and
+> a **digon plus a pendant branch** (degrees `3,2,1`). Measured over every class
+> at `n_hub = 4, 6, 8`: **26 triangles against 68 digon-plus-pendant** — the
+> misnamed shape is the **majority**. Every count in (GR-198)/(GR-221)/(GR-231)
+> is produced by `cut3_sets`, i.e. by the correct predicate, so **no landed
+> figure moves**; what is wrong is the prose name wherever it is used as a
+> synonym for *"carries a connected cut-3 hub set at `|A| = 3`"*. (Shape (b)
+> carries a digon, which (GR-25)(i) taxes at `exc ≥ 3` out of a budget of `6`,
+> so it is habitat-rare — which is why nobody hit it.) GTRIFREE's
+> (GR-221)(ii) states the correct predicate and is unaffected.
 **— READING REPAIRED 2026-09-12 by (GR-223) (direction GTRIFREE): absence of a
 triangle blocks the `|A| = 3` SEARCH, not the move.** Every figure in (GR-198)
 stands; 1 428 of (GR-198)(ii)'s own 7 892 `n_hub = 6` shapes sit on
@@ -21673,3 +21688,858 @@ simultaneously — three controls say it will not, all at a `200`-shape
 prefix. *(d)* Nothing here can be changed by a better choice rule into a
 *sufficient* condition for (GR-15): (GR-231)(iv) bars that, and the VERDICT
 BLOCK's consumer check confirms `T↑∃∃` has exactly one consumer.
+
+## §(K-grid) — continuation (direction GBASE, ordinal 108, 2026-09-12): the `G°` induction's BASE at `D = 0` — how big is it, and is (GR-15) on it easier than (GR-15)?
+
+**THE ONE-LINE ANSWER.** In the unit the induction actually consumes —
+**isomorphism classes** of `(G°, ℓ)` — the base's share **RISES** with
+`n_hub`, and it rises to a **constant, not to `1`**: at `Λ = ∅`, `c = 3`,
+**`20.5 % → 27.7 % → 30.3 %`** at `n_hub = 6, 8, 10`, with the increment
+falling from `+7.2` to `+2.6` points. *(Three points with a shrinking
+increment do not separate "converging to `≈ 1/3`" from "still climbing
+slowly"; what they DO rule out, inside the measured range, is a rise to
+`1`. A fourth point at `n_hub = 12` is the cheapest thing that would
+sharpen this — see* WHAT WOULD CHANGE THIS *item 4.)* So the `G°`
+induction **is** a
+genuine reduction and stays one — it reaches roughly **70 %** of the
+stratum at the largest size the corpus can enumerate — but its base is a
+**positive-density** subset at every size and shows no sign of shrinking.
+Neither kill condition 1 (*the share FALLS*) nor the coordinator's verdict
+(*the induction reduces an asymptotically VANISHING fraction*) holds.
+**What decides the entry is kill condition 3, and it fires on landed
+statements alone with no measurement at all: the base contains `CL_m` for
+every `m > (c+1)/2` ((GR-220)(iii)), and `CL_m` is the family on which
+§(K-grid) (GR-34) PROVED that no uncorrelated charging can close
+(GR-15).** (GR-15) restricted to the base is therefore **not easier than
+(GR-15)**: restricting to the base deletes the part of the stratum the
+corpus knows how to reduce and keeps the part it has proved hard. **The
+`G°` induction is STRUCK as a route.**
+
+Four landed readings are corrected on the way. *(a)* The base at
+`n_hub = 4` is **empty**, not everything — (GR-231)(i)'s `0 of 80` counts
+*interior* frames and is not a base figure ((GR-233)(iii)). *(b)* An
+`|A| = 3` frame is **not always a triangle**; there is a second shape, and
+this direction's own driver assertion refuted its first claim
+((GR-234)(ii)). *(c)* The corpus's `n_hub = 8` base figure
+`22 720 / 39 689 = 57.2 %` is in the **per-representative** unit; in the
+isomorphism-class unit it is `1 060 / 3 825 = 27.7 %`, and **the unit
+reverses the TREND at `c = 5`** ((GR-237)(i)). *(d)* At `n_hub = 6` there
+are **two** frame-free classes, not one; the second is **uninhabited**,
+which is a third reason the class count and the shape count disagree
+((GR-236)(i)). And (GR-34)'s uniform rung-minority rule is extended two
+sizes, to `n_hub = 24`, then refuted at (GR-175)'s own length recipe
+((GR-239)).
+
+---
+
+### *Step G253* — (GR-233): the F26 consumer check. The induction's base is **not** what the corpus's only written statement of the induction says it is, and the difference is exactly the 2026-09-12 ruling
+
+> **(GR-233)(i)** `[PROVED]` *(a two-line derivation from two landed
+> statements; no new population)* The corpus states the `G°` induction in
+> exactly one place — §(K-grid) (GR-226)(iv), direction GCOLTRANS — and
+> what it says is: *"the induction runs on `n_hub`, which drops by
+> `sz − 1 ≥ 2` at every frame ((GR-225)(i)) **with base `n_hub = 2` (the
+> three `θ` shapes, (GR-218))**, so the induction hypothesis is *(GR-15)
+> at the child* and the inductive **step** is *child GOOD ⟹ parent GOOD,
+> by an explicit map*."* That base — **three shapes**, `θ(2,5,5)`,
+> `θ(3,4,5)`, `θ(4,4,4)` ((GR-218)) — is the base of the induction run
+> against the **UNBOUNDED** move family, and it is correct there: by
+> (GR-217)(i)/(ii) every `D = 0` class shape with `n_hub ≥ 4` carries a
+> complement frame at `|A| = n − 1`, and by (GR-218) its budget is `12`
+> and always realizable, so one move takes **any** shape to `n_hub = 2`.
+> **The 2026-09-12 ruling deletes exactly that move.** Under `M_c` the
+> complement frame is available only while `n − 1 ≤ c`; past that the base
+> is no longer three shapes but *every `D = 0` tight class shape with no
+> frame at `|A| ≤ c`*. **The corpus contains no statement of the induction
+> against `M_c`**, and this is the first entry to write one down.
+
+> **(GR-233)(ii)** `[PROVED]` **What the `M_c` induction would actually
+> need, stated so the base is a defined object.** *For a constant `c ≥ 3`:
+> (BASE) (GR-15) holds at every `D = 0` tight class shape carrying no
+> Y-reduction at `|A| ≤ c`; (STEP) `T↑∃∃` restricted to frames with
+> `|A| ≤ c` — for every `D = 0` tight class shape `S` carrying such a
+> frame there are a frame `A`, `|A| ≤ c`, and a certified re-length `ℓ'`
+> with every GOOD colouring of the child extending to a GOOD colouring of
+> `S`; (TERMINATION) `n_hub` drops by `|A| − 1 ≥ 2` at every step
+> ((GR-225)(i)), so the recursion is well-founded.* Two of the three legs
+> are landed: TERMINATION is (GR-225)(i); STEP is measured at
+> `15 304 / 15 304 = 100 %` in both strengths of shared datum, at
+> `n_hub = 6` ((GR-232)(ii)). **BASE is the leg with no measurement at
+> all**, and (GR-231)(iv) says so in terms: *"a transport lemma closes the
+> `G°` induction on the part of the stratum `M_c` reaches, and that part is
+> not the stratum."*
+
+> **(GR-233)(iii)** `[PROVED]` *(the correction this check bought, and it
+> changes a figure the entry was ranked on)* **The base is *"no frame at
+> `|A| ≤ c`"*, NOT *"no INTERIOR frame"* — and §(K-grid) (GR-231)(i)'s
+> `0 of 80` at `n_hub = 4` is therefore **not** a base measurement.**
+> (GR-231)(i) counts *interior* frames (`|A| ≤ n − 3`), and at
+> `n_hub = 4` there are none **by arithmetic**: `|A|` must be odd and
+> `≤ 1`. But (GR-231)'s own preamble states the rule that governs the
+> base — *"For every `n` with `n − 1 ≤ c` the complement frames of
+> (GR-217)(i) are inside `M_c`, so coverage is total there"* — so at
+> `n_hub = 4` with any `c ≥ 3` **all `80` shapes reduce and the base is
+> EMPTY**. Read as a base series the landed figures are therefore
+> `0 %, 0 %, 57.2 %` at `c = 5` and `0 %, 18.1 %, 57.2 %` at `c = 3`, not
+> `100 %, 18.1 %, 57.2 %`. **The base's share at `n_hub = 4` is `0`, not
+> `1`**, and the first point of the coordinator's trend was the wrong
+> quantity.
+
+---
+
+### *Step G254* — (GR-234): the base, CHARACTERIZED — and the coordinator's candidate mechanism REFUTED, in the regime the ruling created
+
+> **(GR-234)(i)** `[PROVED]` *(one line from cubicity; hypothesis-free)*
+> **The parity side-condition of `gnonadd.cut3_sets` is not a condition.**
+> For `A ⊆ V(G°)` in a cubic hub multigraph, `Σ_{v∈A} deg(v) = 3|A| =
+> 2·e(A) + ∂(A)`, so `∂(A) ≡ |A| (mod 2)`. Hence `∂(A) = 3` **forces** `|A|`
+> odd. `cut3_sets`' `if sz % 2 == 0: continue` skips sizes that cannot
+> occur; it filters nothing. **Consequence for the spec's mechanism:** the
+> *"odd"* half of *"`|A|` odd and connected as well as `∂(A) = 3`"* cannot
+> be a reason a 3-edge-cut fails to be a frame. Only **connectedness** and
+> **size** can be, and size is the one that binds.
+
+> **(GR-234)(ii)** `[PROVED]` *(and `[MEASURED]` — `gbase.py --char`
+> counts both shapes over every class at `n_hub = 4, 6, 8`)* **`|A| = 3`
+> frames come in TWO shapes, and the corpus's standing name for them —
+> *"cut-3 triangle"* — covers only one. THIS DIRECTION FIRST WROTE THE
+> WRONG CLAIM AND ITS OWN DRIVER ASSERTION REFUTED IT.** `|A| = 3`,
+> `∂(A) = 3` gives `e(A) = (9−3)/2 = 3` internal branches on `3` hubs, and
+> the internal degrees sum to `6`. Two connected configurations realize
+> that: *(a)* every hub at internal degree `2` — the **triangle**; *(b)*
+> internal degrees `(3, 2, 1)` — a **digon `c=b` plus a pendant branch
+> `c–a`**, with `a` carrying two boundary darts, `b` one and `c` none.
+> The draft's first version asserted `(a)` was the only one and the
+> driver's own `assert` fired on `(b)`. **So §(K-grid) (GR-198)(iv)'s
+> *"every `D = 0` class shape with a cut-3 triangle … is Y-reducible"* and
+> (GR-221)(ii)'s *"no connected cut-3 hub set at `|A| = 3`"* are NOT the
+> same predicate**: the second is the correct one (it is what
+> `gnonadd.cut3_sets` computes), the first names a proper subfamily. No
+> landed FIGURE moves — every count in (GR-198)/(GR-221)/(GR-231) is
+> produced by `cut3_sets`, i.e. by the correct predicate — but the prose
+> name is wrong wherever *"cut-3 triangle"* is used as a synonym for it.
+> *(Shape (b) carries a digon, which (GR-25)(i) taxes at `exc ≥ 3` out of a
+> budget of `6`, so it is habitat-rare — which is why nobody hit it.)*
+
+> **(GR-234)(iii)** `[PROVED]` **The base is a UNION OF WHOLE CLASSES, plus
+> a length-dependent residual — and the corpus has already measured the
+> residual at `0`.** `gnonadd.cut3_sets` reads only `hedges` ((GR-221)(i)),
+> so *"carries a frame at `|A| ≤ c`"* is a property of the hub multigraph
+> alone. Write `B_c^frame` for the shapes whose `G°` carries no frame at
+> `|A| ≤ c` — a union of whole `gridcol.cubic_iso_classes` classes — and
+> `B_c` for the actual base (*no Y-REDUCTION at `|A| ≤ c`*, i.e. no
+> **certified child** at any such frame). Then `B_c^frame ⊆ B_c` and the
+> difference is the shapes with a small frame but no certified re-length at
+> any of them. **That residual is `0` everywhere the corpus has looked:**
+> (GR-231)(ii) — *"all `6 464` of those admit an interior Y-reduction to a
+> certified child — so the interior reach and the interior frame count
+> coincide exactly"* at `n_hub = 6`; (GR-198)(iv) — *"`16 969` of `16 969`
+> of those reduce"* at `n_hub = 8`. So the base is, so far as measured, a
+> **purely graph-theoretic** object, and this entry measures it as one.
+> **CAP, AND THIS DIRECTION DID NOT CLEAR IT: the residual is `0` at
+> `n_hub = 6` (`Λ` unrestricted) and at `n_hub = 8` (`Λ = ∅`, `|A| = 3`
+> only); it is NOT measured at `n_hub = 10`.** `gbase.py --residual
+> --rescap N` is written and correct and was started three times (at
+> `N = 4 000`, `120`, `12`) and abandoned each time on wall clock:
+> `gnonadd.y_reductions` must exhaust `frames × 25` re-length pairs before
+> it can report *no certified child*, and each re-length runs
+> `cflank.cubic_habitat` at `n' = 8`, a `2⁸` scan. **So every `n_hub = 10`
+> figure in this entry is a FRAME figure, `B_c^frame`, and equals the base
+> only if the residual is `0` there as it is at `6` and `8`. It is
+> reported as such throughout and it is the entry's one unmeasured
+> assumption.**
+
+> **(GR-234)(iv)** `[REFUTED]` *(witness: `gbase.py --char`, the
+> `n_hub = 10` class it names)* **The coordinator's candidate mechanism —
+> *"the base is exactly the shapes whose hub multigraph has no non-trivial
+> 3-edge-cut (cyclically 4-edge-connected)"* — is FALSE, and it is false in
+> exactly the regime the 2026-09-12 ruling created.** One direction holds:
+> if `G°` has no `∂ = 3` set with `3 ≤ |A| ≤ n − 3` then, for `c < n − 1`,
+> it carries no frame at `|A| ≤ c` at all, so it is in the base. The
+> converse fails for two reasons, and the second is generic:
+> * *(a) connectedness.* A `∂ = 3` set can be disconnected; its components
+>   then split `∂` as `1 + 2`, so a bridge is needed, and (GR-25)(i) taxes a
+>   bridge at `exc ≥ 5` out of a total budget of `6`. Real but rare.
+> * *(b) **size**, which is the whole point.* A class can carry a
+>   non-trivial 3-edge-cut every one of whose sides has size `> c`. Since
+>   `c` is a **constant** and `n` grows, this is the typical case, not a
+>   corner. **The mechanism's two sides agree exactly when `c ≥ n − 3` —
+>   i.e. when the move bound is NOT independent of `n`, which is the family
+>   the ruling excluded.** The candidate is a true statement about the
+>   **unbounded** family (GR-220) is about, transplanted into the bounded
+>   one.
+>
+> **Verdict: the correct characterization is *"no `∂ = 3` set with a
+> CONNECTED side of size `≤ c`"* — a BOUNDED cut condition, strictly weaker
+> than cyclic 4-edge-connectivity for every fixed `c` and all large `n`.**
+> The mechanism was **eliminated before the first measurement**, as clause
+> 2(a) requires, and nothing below rests on it.
+
+---
+
+### *Step G255* — (GR-235): why the class share and the shape share disagree — the base is the **habitat-RICH** end of the class list, and §(K-grid) (GR-221)(iii)'s `11 360` is now a THEOREM
+
+The entry's spec flagged that *"the share of classes and the share of
+shapes are different quantities with different answers"*. They are, and the
+reason is not bookkeeping: **the same structure that makes a class
+reducible makes it habitat-poor**, so the two shares are pushed in opposite
+directions by one mechanism.
+
+> **(GR-235)(i)** `[PROVED]` *(from (GR-25)(i) as stated, with its
+> hypotheses)* **At `Λ = ∅` only the sets with `∂(W') ≤ 3` can bind.**
+> (GR-25)(i) demands `2·∂(W') + exc(E(W')) ≥ 7` for every proper `W'` with
+> `|W'| ≥ 2` inducing a connected subgraph. At `Λ = ∅` every `exc ≥ 0`, so
+> `∂(W') ≥ 4` gives `8 > 7` unconditionally. Hence the habitat gate is a
+> conjunction over the (few) connected proper `W'` with `∂ ≤ 3`:
+> `exc(E(W')) ≥ 1` at `∂ = 3`, `≥ 3` at `∂ = 2`, `≥ 5` at `∂ = 1`.
+> **Every frame `A` with `|A| ≤ n − 3` is itself such a `W'`, and so is its
+> complement** — so a class carrying interior frames carries *strictly
+> more* habitat constraints than one carrying none. **A frame costs its
+> class habitat mass, out of a total excess budget of `6` that does not
+> grow with `n`.**
+
+> **(GR-235)(ii)** `[PROVED]` *(and `[MEASURED]` — `gbase.py --shapes`
+> reproduces `aglu._pool8()` class by class, `0` mismatches, total
+> `39 689`)* **§(K-grid) (GR-221)(iii)'s `11 360` per triangle-free class
+> is a cap-free count, derivable in two lines.** `Q₃` and `V₈` are simple,
+> triangle-free and 3-edge-connected, so their only connected proper `W'`
+> with `∂ ≤ 3` are the `8` sets `V∖{v}` (`|W'| = 3` needs a triangle;
+> `|W'| = 5` needs its complement to be one; `∂ ≤ 2` needs a bridge or a
+> 2-cut) — **measured: `8` constraint sets each, all at `∂ = 3`, each on
+> `9` of the `12` branches.** The single constraint is then
+> *"not all `6` units of excess on the `3` branches at `v`"*, and the
+> number of profiles violating it at a fixed `v` is
+> `#{(a,b,c) ∈ [0,3]³ : a+b+c = 6} = 10`; two hubs of a cubic simple graph
+> share at most one branch, which cannot hold `6`, so the `8` violating
+> sets are disjoint. Hence `11 440 − 8·10 = **11 360**`, exactly the landed
+> figure, **and `11 360` is the MAXIMUM the gate allows any `n_hub = 8`
+> class.** So **the two base classes at `n_hub = 8` are precisely the two
+> habitat-maximizers**, and their `22 720 / 39 689 = 57.2 %` share of
+> shapes against a `2 / 20 = 10.0 %` share of classes is that fact, not a
+> coincidence. (GR-221)(iv)'s explanation — *"they are simple with no
+> proper connected `W'` at `∂ ≤ 3` except the hub stars, so
+> `2·∂(W') + exc ≥ 7` has slack everywhere"* — is **correct and is now
+> proved**; this entry supplies the count it was missing.
+
+> **(GR-235)(iii)** `[MEASURED]` *(`gbase.py --orbits` for both units and
+> `gbase.py --classes` for the class share; `Λ = ∅`, exhaustive at each size)*
+> **The enrichment is real, and the
+> ISOMORPHISM QUOTIENT partly undoes it — because the habitat-rich classes
+> are exactly the SYMMETRIC ones.** In the per-representative unit the
+> base's shape share massively exceeds its class share (`n_hub = 8`:
+> `57.2 %` against `10.0 %`). Quotienting by `Aut(G°)` cuts it roughly in
+> half (`27.7 %`), because the base classes at `n_hub = 8` are `Q₃` and
+> `V₈`, whose automorphism groups (`48`, `16`) are the largest at that
+> size, so their length assignments collapse into the fewest orbits. At
+> `n_hub = 6` the quotient takes the share BELOW the class share
+> (`20.5 %` against `33.3 %` — and `K₃,₃`, the one inhabited base class
+> there, has `|Aut| = 72`). **So (GR-221)(iv)'s explanation of why the two
+> triangle-free classes absorb so much is correct about the habitat and
+> silent about the quotient, and the quotient is the larger of the two
+> corrections at small `n`.**
+> **Which share the induction consumes:** BASE is a statement about tight
+> `D = 0` **class shapes** ((GR-233)(ii)), and a class shape is an
+> **isomorphism class** of `(G°, ℓ)` — so the **orbit-reduced** figure is
+> the induction-relevant one, and every landed `n_hub = 8` base figure is
+> in the other unit. The base is nevertheless a union of whole *classes*
+> ((GR-234)(iii)), so a **uniform** argument on it is a statement about
+> classes with all their lengths, and the class share is what prices that.
+
+---
+
+### *Step G256* — (GR-236): the base, MEASURED — at `n_hub = 4, 6, 8, 10`, exhaustively, with the `n_hub = 10` class list PROVED complete
+
+`gridcol.cubic_iso_classes` is affordable to `n_hub = 8` (`20` classes,
+~165 s; the labelled recursion behind it has `1.03 × 10⁸` leaves at
+`n_hub = 10`). `gbase.classes_certified(10)` gets past that by a route that
+costs no cap: build candidates any way at all, then close the
+**orbit-counting identity**
+
+`Σ_classes n!/|Aut| = #labelled connected loopless cubic multigraphs on n hubs`
+
+whose right-hand side comes from the same least-deficient recursion,
+memoised on the multiset of remaining degrees. **At `n_hub = 10` the
+identity closes at `91` classes and `94 008 600`** — so the list is
+**proved** complete, and (dispatch-log F31) an exhaustive count over it is
+a proof, not a bound.
+
+> **(GR-236)(i)** `[MEASURED]` *(`gbase.py --classes`; EXHAUSTIVE, no cap;
+> `n_hub = 10` complete by the certificate above)* **The base at the CLASS
+> layer.** Share of classes / share weighted by `n!/|Aut|` (the measure a
+> uniform random labelled cubic multigraph carries):
+>
+> | `n_hub` | classes | base `c=3` | base `c=5` | base `c=7` | base `c=9` |
+> |---|---|---|---|---|---|
+> | `4` | `2` | `0` — `0.0 % / 0.0 %` | `0` | `0` | `0` |
+> | `6` | `6` | `2` — `33.3 % / 15.6 %` | `0` | `0` | `0` |
+> | `8` | `20` | `2` — `10.0 % / 2.0 %` | `2` — `10.0 % / 2.0 %` | `0` | `0` |
+> | `10` | `91` | `8` — `8.8 % / 2.3 %` | `5` — `5.5 % / 1.9 %` | `5` — `5.5 % / 1.9 %` | `0` |
+>
+> **Read the zeros first: for each fixed `c` the base is EMPTY until
+> `n > c + 1`**, because the complement frame at `|A| = n − 1` is still
+> inside `M_c` ((GR-231)'s preamble, (GR-233)(iii)). So the `c = 9` column
+> is all-zero for `n ≤ 10` by arithmetic, and each column's series only
+> begins two sizes after its own `c`.
+> **The trend, on the only column with three meaningful points
+> (`c = 3`): `33.3 % → 10.0 % → 8.8 %` by classes, `15.6 % → 2.0 % → 2.3 %`
+> by labelled weight. It FALLS off the tiny `n_hub = 6` population and then
+> FLATTENS.** It does not go to `0` and it does not go to `1`.
+> **This row is the entry's TELL** — *"at `n_hub = 10`, enumerate the cubic
+> multigraph classes and count how many carry a connected odd cut-3 hub set
+> at `|A| ≤ 5`"* — and the answer is **`86` of `91` carry one; `5` do
+> not**. The count is exhaustive over a class list whose completeness is
+> **proved**, so it is a proof and not a bound.
+> **`n_hub = 6` carries a correction to a landed reading:** *two* of the six
+> classes carry no frame at `|A| ≤ 3`, not one. §(K-grid) (GR-231)(ii)'s
+> *"The `1 428` that do not are precisely (GR-223)(i)'s `K₃,₃` class"* is
+> right about the SHAPES because the second frame-free class
+> (`hedges = [(0,1),(0,1),(0,2),(1,2),(2,3),(3,4),(3,5),(4,5),(4,5)]`,
+> frames only at `|A| = 5`) is **UNINHABITED** — `0` habitat shapes at
+> `Λ = ∅`, and absent from `gisland.stratum(6, lamcap=99)`'s five inhabited
+> classes. The class count and the shape count disagree here for a third
+> reason: **inhabitation**.
+
+> **(GR-236)(ii)** `[MEASURED]` *(`gbase.py --shapes`; EXHAUSTIVE over
+> every excess profile at every class; asserted against `aglu._pool8()` at
+> `n_hub = 8`: `39 689` total and `22 720` base)* **The base at the SHAPE
+> layer, `Λ = ∅`, in the `aglu._pool8()` unit** (excess profiles per class
+> representative, **not** quotiented by `gisland.edge_auts` — the unit
+> every landed `n_hub = 8` figure uses):
+>
+> | `n_hub` | classes (inhabited) | profiles | habitat shapes | base `c=3` | base `c=5` |
+> |---|---|---|---|---|---|
+> | `4` | `2` (`2`) | `336` | `312` | `0` — `0.0 %` | `0` — `0.0 %` |
+> | `6` | `6` (`4`) | `2 598` | `4 598` | `2 538` — `55.2 %` | `0` — `0.0 %` |
+> | `8` | `20` (`11`) | `11 440` | `39 689` | `22 720` — `57.2 %` | `22 720` — `57.2 %` |
+> | `10` | `91` (`39`) | `36 960` | `383 180` | `216 074` — `56.4 %` | `184 300` — `48.1 %` |
+>
+> **`c = 3`: `55.2 % → 57.2 % → 56.4 %` — FLAT. `c = 5`: `57.2 % → 48.1 %`
+> — one step, DOWN.** But this unit is not the induction's: (GR-237)(i)
+> re-takes the same population up to `Aut(G°)` and the trend **reverses**
+> to a monotone rise. Both tables are here because the landed
+> `n_hub = 8` figures are in this one, and a reader who compares
+> `57.2 %` with anything must know which column it came from.
+
+> **(GR-236)(iii)** `[REFUTED]` *(the (GR-234)(iv) witness, now exhibited)*
+> **The mechanism's refuting class, at `n_hub = 10`.**
+> `hedges = [(0,1),(0,2),(1,3),(2,5),(3,6),(3,7),(4,6),(4,7),(5,6),(5,7),
+> (8,9),(0,8),(4,8),(1,9),(2,9)]` carries frames **only** at
+> `|A| ∈ {5, 9}`. It is therefore in the base at `c = 3` while having a
+> **non-trivial 3-edge-cut** (at `|A| = 5`), so it is not cyclically
+> 4-edge-connected. Over `91` classes × `4` bounds the mechanism and the
+> base agree at `356 / 364`; at `n_hub = 4` they agree at `0 / 8`. Three of
+> the eight `c = 3` base classes at `n_hub = 10` have their smallest frame
+> at `|A| = 5` — which is exactly why `base(c=3) = 8` and
+> `base(c=5) = 5`.
+
+---
+
+### *Step G257* — (GR-237): the two remaining axes — the UNIT, and `Λ`. **The unit REVERSES the trend; `Λ` is worth two points.**
+
+> **(GR-237)(i)** `[MEASURED]` *(`gbase.py --orbits`; the fast
+> `edge_auts_fast` is asserted equal to `gisland.edge_auts` at every class
+> at `n_hub = 4, 6`)* **THE LANDED `n_hub = 8` BASE FIGURE IS IN THE WRONG
+> UNIT FOR THE QUESTION, AND THE RIGHT UNIT REVERSES THE TREND.** A `D = 0` tight **class shape** is an isomorphism class of
+> `(G°, ℓ)`; `gisland.stratum` counts those (it quotients the length tuples
+> by `gisland.edge_auts`), while `aglu._pool8()` counts **labelled length
+> assignments on a fixed representative** and does not. The two base
+> classes at `n_hub = 8` are `Q₃` and `V₈`, whose automorphism groups
+> (`|Aut| = 48` and `16`) are the **largest at that size** — so the
+> unquotiented unit inflates them the most. Measured in both units, at
+> `Λ = ∅`:
+>
+> | `n_hub` | shapes up to `Aut(G°)` | labelled assignments | base `c=3` up to `Aut` | base `c=3` labelled | base `c=5` up to `Aut` | base `c=5` labelled |
+> |---|---|---|---|---|---|---|
+> | `4` | `23` | `312` | `0` — `0.0 %` | `0` — `0.0 %` | `0` | `0` |
+> | `6` | `264` | `4 598` | `54` — **`20.5 %`** | `2 538` — `55.2 %` | `0` | `0` |
+> | `8` | `3 825` | `39 689` | `1 060` — **`27.7 %`** | `22 720` — `57.2 %` | `1 060` — `27.7 %` | `22 720` — `57.2 %` |
+> | `10` | `63 938` | `383 180` | `19 368` — **`30.3 %`** | `216 074` — `56.4 %` | `18 554` — `29.0 %` | `184 300` — `48.1 %` |
+>
+> *(The `n_hub = 4` and `6` orbit counts `23` and `264` are exactly
+> `gisland.stratum(4, lamcap=0)` and `gisland.stratum(6, lamcap=0)` — an
+> independent check of `orbit_counts` against the canonical stratum
+> generator, which cannot reach `n_hub = 8`.)*
+>
+> **THE UNIT REVERSES THE TREND.** Up to `Aut(G°)` the base's share
+> **RISES monotonically**, `20.5 % → 27.7 % → 30.3 %` at `c = 3` and
+> `27.7 % → 29.0 %` at `c = 5`. In the per-representative unit the same
+> data reads **FLAT** at `c = 3` (`55.2 % → 57.2 % → 56.4 %`) and
+> **FALLING** at `c = 5` (`57.2 % → 48.1 %`). The ratio between the units
+> is `2.7 ×` at `n_hub = 6`, `2.1 ×` at `8`, `1.9 ×` at `10` — it is not a
+> constant factor, which is precisely why it can flip a trend. **A `D = 0`
+> tight class SHAPE is an isomorphism class, so the left-hand columns are
+> the induction's own numbers, and every landed `n_hub = 8` base figure is
+> in the right-hand ones.**
+
+> **(GR-237)(ii)** `[MEASURED]` *(`gisland.stratum(n, lamcap=k)` at
+> `k = 0, 1, 2, 99` — the FENCED default `lamcap=99` un-fenced downward,
+> which is the blind axis `blindaxes.py` lists as
+> `gisland.stratum(lamcap=0)`)* **`Λ` is NOT the axis that was hiding
+> anything.** At `n_hub = 6`, in the orbit-reduced unit:
+> `lamcap = 0`: **`54` of `264` — `20.5 %`**; `lamcap = 1`: `358` of
+> `1 884` — `19.0 %`; `lamcap = 2`: `968` of `5 263` — `18.4 %`;
+> `lamcap = 99`: **`1 428` of `7 892` — `18.1 %`**, reproducing
+> §(K-grid) (GR-231)(ii)/(GR-223)(i) exactly. **So opening `Λ` moves the
+> base share by `2.4` points, while changing the UNIT moves it from
+> `20.5 %` to `55.2 %`.** Every `Λ = ∅` figure in this entry is therefore
+> safe against the `Λ` cap to within a couple of points — and the caution
+> that matters is the unit, not `Λ`.
+
+> **(GR-237)(iii)** `[MEASURED]` *(`gbase.py --sample`; seeded
+> `20260912`, `300` configuration-model draws per size, binomial s.e.
+> `≤ 0.029`)* **Past the exhaustive range, at the CLASS layer, the share
+> does not run away in either direction.** `n_hub = 8, 10, 12, 16, 20, 24,
+> 30` give base(`c=3`) `= 6.7 %, 5.0 %, 4.0 %, 6.0 %, 11.0 %, 6.0 %,
+> 9.3 %` and base(`c=5`) `= 6.7 %, 4.7 %, 3.3 %, 4.7 %, 9.3 %, 4.7 %,
+> 8.7 %`. **CALIBRATION, and it is the reason these are a TREND and not a
+> share:** the pairing model gives a multigraph weight `∝ 1/∏_e μ_e!`, so
+> a class with `D` digons is under-weighted by `2^{−D}` and the
+> simple-graph classes are over-stated. At `n_hub = 8` the EXACT labelled
+> share is `(8!/48 + 8!/16)/168 840 = 3 360/168 840 = 1.99 %` against the
+> sampler's `6.7 %`; at `n_hub = 10` it is `2.3 %` against `5.0 %`. **So
+> read only the shape of the sequence, never its level** — and the shape
+> is: no collapse to `0` and no drift to `1` out to `n_hub = 30`, which is
+> the input (GR-240)(iii) needs and cannot prove.
+
+
+---
+
+### *Step G258* — (GR-238): **(GR-15) restricted to the base is NOT easier than (GR-15)** — the base contains §(K-grid) (GR-34)'s own refutation family, and the entry's caution *(n)* is answered in both directions
+
+> **(GR-238)(i)** `[PROVED]` *(three landed statements, no new
+> measurement)* **The barrier the corpus has proved against the
+> first-moment / union-bound / LLL route to *uniform* (GR-15) — the one
+> §(K-grid) (GR-31)(i) calls *"the route to uniform (GR-15)"* when it says
+> *"The refutation kills the route to uniform (GR-15), not (GR-15)"* —
+> lives entirely inside the base.** §(K-grid) (GR-34) is
+> stated on *"the circular ladders `CL_m` (hub graph `cflank.ladder`,
+> excess `2+2+2` on three adjacent rungs — the CFLANK `--tight` recipe,
+> habitat-certified by the proven (GR-25) criterion at `n = 2m ≤ 20`)"*
+> and concludes *"**Any proof of the target must correlate the per-hub
+> minority choices; no uncorrelated charging can close it.**"* §(K-grid)
+> (GR-220)(iii) proves *"For every fixed bound `c` and every
+> `m > (c+1)/2`, `CL_m` admits **no** Y-reduction at `|A| ≤ c` — and by
+> §(K-grid) (GR-171) no additive reduction at all."* And frame-existence is
+> **length-independent** ((GR-221)(i), (GR-234)(iii)), so **every** length
+> assignment on `CL_m` — (GR-34)'s excess-`2+2+2` recipe included — is a
+> base shape once `m > (c+1)/2`. **The family on which the corpus proved
+> that no first-moment / union-bound / Lovász-local-lemma scheme can work
+> is a subfamily of the base.** Restricting (GR-15) to the base therefore
+> removes none of the difficulty the corpus has actually located: it
+> removes only the part of the stratum the corpus already knows how to
+> reduce.
+>
+> **This is the entry's third kill condition, verbatim** — *"the base shown
+> to contain a family on which (GR-15) is open for the same reason it is
+> open in general, which STRIKES the `G°` induction"* — and it fires on
+> landed statements alone, at zero measurement cost.
+
+> **(GR-238)(ii)** `[PROVED]` **The caution *(n)* is right that the region
+> is not unmeasured, and the delta is sharper than *"per-shape (GR-15) is
+> already landed on part of the base"*.** Three landed families of exact
+> `dim Z = 0` certificates sit **on base shapes**:
+> * `cflank.targets()`'s `--tight` list opens with *"cube `Q₃`, excess on
+>   two opposite top edges / two adjacent top edges / spread `2+2+2` on the
+>   top square"* and *"Wagner `V₈`, excess on two rim edges / two spokes"* —
+>   and `Q₃` and `V₈` are **exactly** (GR-221)(ii)'s two base classes at
+>   `n_hub = 8`. The corpus's named hard targets at `n_hub = 8` were
+>   already base shapes; nobody had said so.
+> * `cflank.targets()` continues with *"ladder `CL_k`, excess on two far
+>   rungs"* and *"ladder `CL_k`, excess `2+2+2` on three rungs"* for
+>   `k = 5, 6, 7, 8` — base shapes for every `c < 2k − 1`.
+> * `gexist.py --charge`'s ladder leg certifies `CL_m` at `m = 6, 8, 10`
+>   with an **explicit rule colouring**, `assert`ed *admissible, minority =
+>   rung at ALL `n` hubs, save `= 0` on all intervals, NC1 clear,
+>   `dim Z = 0` BOTH blocks at an exact point*.
+>
+> So *"never measured"* would have been a false headline, exactly as the
+> caution says. **But the delta that matters runs the other way:** what is
+> landed on the base is **per-shape** (GR-15) at a handful of named
+> recipes, plus **one uniform rule** on one recipe slice of one family —
+> and (GR-239) shows that rule is parity-fragile and does not even cover
+> the other ladder recipe the corpus carries.
+
+> **(GR-238)(iii)** `[PROVED]` **The caution's own open question, settled:
+> (GR-175)'s recipe does NOT lie inside (GR-34)'s.** (GR-34) places
+> `excess 2 + 2 + 2` on three **adjacent** rungs — three branches at
+> `ℓ = 4`, the rest at `ℓ = 2`. (GR-175) places six pairwise
+> **non-adjacent** rungs at `ℓ = 3`, the rest at `ℓ = 2`. Both have
+> `Σ(ℓ − 2) = 6` and both sit on `cflank.ladder(m)`, but their excess
+> profiles differ (`{4,4,4}` versus `{3,3,3,3,3,3}`), so neither is an
+> instance of the other. The coordinator's belief is **confirmed**. What
+> follows from (GR-221)(i), however, is that the distinction is invisible
+> to the base: **both recipes are base shapes on the same hub multigraph**,
+> so the landed (GR-34) certificates and (GR-175)'s infinite family are in
+> the same base classes. The recipes differ where it counts for
+> (GR-15) — see (GR-239).
+
+---
+
+### *Step G259* — (GR-239): the one UNIFORM (GR-15) argument the corpus has on the base — extended two sizes, and shown to be PARITY-FRAGILE
+
+`gexist.ladder_rule_first` is the only construction in the corpus that
+produces a fully-good colouring **by a rule** rather than by a draw. Its
+docstring: *"top hub `i` carries rim darts `c_i = A` iff `i` even and rung
+dart `~c_i`; bottom hub `m+i` carries rim darts `~c_i` and rung dart `c_i`.
+Every hub's minority dart is its RUNG — which no interval or square chunk
+ever uses as an exit — so `save == 0` on that whole family."* It takes `m`
+and ignores the lengths, so it is defined at **every** length assignment on
+`CL_m` with `m` even.
+
+> **(GR-239)(i)** `[MEASURED]` *(`gbase.py --ladder`)* **(GR-34)'s rule
+> extends past (GR-34)'s own range: `m = 12`, `n_hub = 24`.** At `CL₁₂`
+> with excess `2+2+2` on rungs `0, 1, 2`: habitat **True** ((GR-25)), rule
+> colouring **admissible**, **NC1 clear**, and **fully-good — an exact-ℚ
+> `dim Z₊ = dim Z₋ = 0` point in BOTH blocks through BOTH matrices**
+> (`gexist.fully_good_rank`, which is (GR-31)(i)'s device). (GR-34)'s
+> ladder leg runs `m = 6, 8, 10`; this adds `m = 12`. **The certificate is
+> an exhibited witness, so it carries no cap** — but see the LIMITER below
+> for why it stops at `24`.
+
+> **(GR-239)(ii)** `[REFUTED]` *(witness: the same driver, the `(GR-175)`
+> rows at `m = 6, 8, 10, 12`)* **The rule FAILS at (GR-175)'s recipe on the
+> very same hub multigraph — it is not even admissible there — and the
+> reason is parity, not size.** At `CL_m` with six rungs at `ℓ = 3`
+> (`m = 6, 8, 10, 12`, i.e. `n_hub = 12, 16, 20, 24`) the rule colouring
+> comes out **`admissible = False` at all four**. *Proof of the
+> mechanism.* A branch of length `L` carries `L` edges in alternation, so
+> its dart at `w` is its dart at `u` flipped `L − 1` times. The rule wants
+> the rung to be the **minority** dart at its top hub (whose two rim darts
+> are `c_i`) and at its bottom hub (whose two rim darts are `~c_i`): top
+> rung dart `= ~c_i`, bottom rung dart `= c_i`. So `~c_i ⊕ (L−1) = c_i`,
+> i.e. **`L` must be EVEN**. (GR-34)'s recipe uses rungs at `ℓ ∈ {2, 4}` —
+> all even. (GR-175)'s uses six at `ℓ = 3`. ∎ **So the corpus's one
+> uniform (GR-15) argument on the base covers exactly the even-rung-length
+> slice of one family**, and the corpus's own infinite `D = 0` ladder
+> family ((GR-175)) is outside it.
+
+> **(GR-239)(iii)** `[MEASURED]` *(the same driver; four exhibited
+> exact-ℚ witnesses, hence cap-free)* **(GR-15) still holds at (GR-175)'s
+> recipe — by SEARCH, not by rule.** At `CL_m` with six `ℓ = 3` rungs,
+> `m = 6, 8, 10, 12` (`n_hub = 12, 16, 20, 24`, habitat **True** at all
+> four), a seeded `cflank.one_admissible` draw — note
+> `cflank.private_even` returns **None** at every one, so (GR-24)'s repair
+> is unavailable and the draw is **unrepaired** — is NC1-clear, admissible
+> and **fully-good at the FIRST draw**, certified by an exact-ℚ
+> `dim Z₊ = dim Z₋ = 0` point in both blocks. So per-shape (GR-15) reaches
+> `n_hub = 24` on **both** ladder recipes; what does not reach it is a
+> *rule*. **A side correction:** (GR-175)'s *"six rungs of length 3
+> (pairwise non-adjacent)"* — non-adjacency is **automatic**, since the
+> rungs of `CL_m` are pairwise vertex-disjoint. GNONADD's 2026-09-11
+> correction (*"need `≥ 12` hubs"*, i.e. `n_hub ≥ 12`, `m ≥ 6`) is
+> therefore exactly right and the phrase *"pairwise non-adjacent"* is
+> descriptive rather than restrictive; a reader who takes it as a
+> restriction on the CYCLE positions will wrongly conclude the family is
+> empty below `m = 12`.
+
+> **(GR-239)(iv)** `[PROVED]` **The reading. The base is not a soft
+> target; it is where the corpus's hardest known instances already were.**
+> Putting (GR-238) and (i)–(iii) together: on the base the corpus has
+> *(a)* a proof that no uncorrelated scheme can work ((GR-34)), *(b)* one
+> correlated rule that does work, on an even-rung slice of one family, and
+> *(c)* per-shape certificates at named recipes. A BASE lemma for the `M_c`
+> induction needs *(b)* generalized to **every** class in the base and
+> **every** length assignment on it — and the base contains, at minimum,
+> `Q₃`, `V₈`, `K₃,₃` (at `c = 3`), every `CL_m` with `m > (c+1)/2`, and
+> (GR-236)'s measured remainder. **There is no evidence that this is
+> easier than (GR-15); there is landed evidence ((GR-34)) that it carries
+> the same obstruction.**
+
+---
+
+### *Step G260* — (GR-240): the mechanism for the SIZE — (GR-25)(i) taxes every frame out of an excess budget that does **not** grow with `n`, and the tax is one of THREE factors
+
+> **(GR-240)(i)** `[PROVED]` **A frame costs its class habitat mass, and
+> the budget it is paid out of is `6` for every `n`.** Write `P(m)` for the
+> number of `Λ = ∅` excess profiles on `m` branches (entries in `[0,3]`,
+> total `6`); the stratum at `n_hub = n` has `M = 3n/2` branches. Let `A`
+> be a frame with `|A| = s`; it has `k = (3s−3)/2` internal branches and
+> `∂(A) = 3`, so (GR-25)(i) demands `2·3 + exc(E(A)) ≥ 7`, i.e.
+> `exc(E(A)) ≥ 1`. The profiles **violating** that are exactly those
+> supported off `E(A)`, of which there are `P(M − k)`. So a class carrying
+> a frame at `|A| = s` keeps at most
+>
+> `1 − P(M − k)/P(M)`
+>
+> of the profiles, and since `P(m) = C(m+5,5) − m·C(m+1,5) + …` is
+> asymptotically `m⁵/120`, that bound tends to `5k/M → 0`. Numerically the
+> single-frame bound is `1 − P(9)/P(12) = 1 − 2 598/11 440 = 77.3 %` at
+> `n_hub = 8` and `1 − P(12)/P(15) = 1 − 11 440/36 960 = 69.1 %` at
+> `n_hub = 10` — **loose**, because a class with one small frame almost
+> always has several `∂ ≤ 3` sets. The MEASURED average survival of a
+> non-base class is `943/11 440 = 8.2 %` at `n_hub = 8` and
+> `2 013/36 960 = 5.4 %` at `n_hub = 10`. **The tax is real and it is
+> growing.**
+
+> **(GR-240)(ii)** `[PROVED]` **(GR-221)(iii)'s `11 360` falls out exactly,
+> and it is the ceiling.** A class whose only connected proper `W'` with
+> `∂ ≤ 3` are the `n` hub-complements `V∖{v}` loses only the profiles
+> concentrated on some hub's three branches — `10` per hub, disjoint across
+> hubs — so it keeps `P(M) − 10n`, which at `n_hub = 8` is
+> `11 440 − 80 = 11 360`. See (GR-235)(ii).
+
+> **(GR-240)(iii)** `[MEASURED]` *(`gbase.py --classes` and `gbase.py --orbits`
+> together — the class counts `B`, `C` from the first and the survival averages
+> `s_B`, `s_N` from the second; `Λ = ∅`, `c = 3`, exhaustive at each size)*
+> **Why the PER-REPRESENTATIVE share is
+> nevertheless flat: the tax and the base's class share cancel there, and
+> this entry does NOT settle which wins asymptotically.** Write the share as `p/(1+p)` with
+> `p = [B/(C−B)]·[s_B/s_N]`, `B` the base classes, `s_B`/`s_N` the average
+> survival of a base / non-base class. Measured at `Λ = ∅`, `c = 3`:
+>
+> | `n_hub` | `B/(C−B)` | `s_B` | `s_N` | `s_B/s_N` | `p` | share |
+> |---|---|---|---|---|---|---|
+> | `8` | `2/18 = 0.111` | `0.993` | `0.082` | `12.1` | `1.34` | `57.2 %` |
+> | `10` | `8/83 = 0.096` | `0.731` | `0.054` | `13.4` | `1.29` | `56.4 %` |
+>
+> **The tax ratio `s_B/s_N` grows (`12.1 → 13.4`) and the base's class
+> share shrinks (`0.111 → 0.096`), and the two nearly cancel.** Note also
+> that `s_B` itself FELL, `0.993 → 0.731`: three of the eight `c = 3` base
+> classes at `n_hub = 10` carry a frame at `|A| = 5`, which is a `∂ = 3`
+> set and therefore taxed by (i) just like a `|A| = 3` frame. **A base at
+> bound `c` is not tax-free; it is only free of the tax from frames of size
+> `≤ c`.** That is the correction to the naive reading of (i), and it is
+> why the *"share → 1"* corollary a one-frame analysis suggests is **not**
+> what the data shows.
+> **And the same cancellation does NOT happen in the isomorphism-class
+> unit**, where the share rises `20.5 % → 27.7 % → 30.3 %` ((GR-237)(i)):
+> the automorphism quotient is a third factor, it bears hardest on exactly
+> the habitat-rich base classes, and its weight drifts with `n` (the unit
+> ratio goes `2.7× → 2.1× → 1.9×`). **So this entry identifies the excess
+> tax as a real mechanism and explicitly does NOT claim it determines the
+> trend:** three factors are in play — the base's class share, the habitat
+> tax, and the automorphism quotient — two of them measured and one of
+> them proved, and only their product is the answer.
+
+---
+
+### Caps and blind axes this direction ran under, stated once
+
+* **Populations.** *(a)* `gridcol.cubic_iso_classes(n)` at `n_hub = 4, 6, 8`
+  — CANONICAL, exhaustive. *(b)* `gbase.classes_certified(n)` at
+  `n_hub = 10` — a seeded search whose completeness is **PROVED**, not
+  assumed, by the orbit-counting identity `Σ_classes n!/|Aut| = #labelled
+  connected` (`91` classes, `94 008 600`); once that identity closes, *how*
+  the candidates were found carries no cap. *(c)* the `Λ = ∅` excess
+  profiles `aglu.excess_profiles(3n/2, 6)` — exhaustive at every `n`
+  reported. *(d)* `gisland.stratum(4, lamcap=99)` for the (GR-233)(iii)
+  check — exhaustive, `Λ` unrestricted.
+* **`Λ = ∅` IS THE BINDING CAP ON THE SHAPE LAYER, AND IT IS THE SAME CAP
+  `aglu._pool8()` CARRIES. `|Λ| ≥ 1` IS NOT SWEPT AT `n_hub = 8` OR `10`.**
+  Every shape-layer figure here is at `Λ = ∅`, reported in **both** units:
+  the **per-representative** one (excess profiles per class
+  representative, not quotiented) that `aglu._pool8()` and
+  (GR-198)(iii)/(GR-221)(iii)/(GR-231)(iii) use — which is why `--shapes`
+  can assert against `39 689` and `22 720` — and the **isomorphism-class**
+  one that `gisland.stratum` uses and the induction consumes. The `Λ` cap
+  is measured where it can be: at `n_hub = 6`, in the isomorphism-class
+  unit, `lamcap = 0 / 1 / 2 / 99` gives `20.5 % / 19.0 % / 18.4 % /
+  18.1 %` ((GR-237)(ii)) — a `2.4`-point drift. **A `2.4`-point `Λ` drift
+  cannot account for a `9.8`-point rise (`20.5 % → 30.3 %`), but it is
+  measured only at `n_hub = 6` and is assumed, not shown, to stay that
+  small at `8` and `10`.**
+* **The class share is MEASURED, not proved, and (GR-240)(ii) rests on
+  it.** The corollary needs `B(n)/C(n) ≥ β > 0`. That is exact at
+  `n_hub ≤ 10` and **sampled** past it.
+* **The sampler's measure is NOT labelled-uniform.** `gbase.sample_cubic`
+  draws a uniform pairing (configuration model) and rejects loops and
+  disconnection, so it gives a multigraph `G` weight `∝ 1/∏_e μ_e!` — a
+  class with `D` digons is under-weighted by `2^{−D}`. **Calibration, and
+  it is not small:** at `n_hub = 8` the EXACT labelled base share at
+  `c = 3` is `(8!/48 + 8!/16)/168 840 = 3 360/168 840 = 1.99 %`
+  (`|Aut(Q₃)| = 48`, `|Aut(V₈)| = 16`) while the sampler reports `6.7 %`.
+  **So every `--sample` figure is a configuration-model figure and
+  over-states the simple-graph classes; it is reported as a TREND, never
+  as a share.** The exhaustive `n_hub ≤ 10` rows are the shares.
+* **`cflank.cubic_habitat` is a `2^{n_hub}` scan.** Every habitat
+  certificate in `--ladder` therefore stops at `n_hub = 24`; `m = 14`
+  (`n_hub = 28`, `2²⁸` masks) was started and abandoned at that LIMITER,
+  not at a mathematical obstruction. The same scan is inside
+  `gbase.small_cut_sets`, so the exact shape layer is capped at
+  `n_hub ≤ 20` by the same constant.
+* **`gnonadd.cut3_sets`' `sizes=(3,)` default, un-fenced.** Every frame
+  count here calls it at `sizes = (3, 5, …, n−1)` — the full odd range the
+  guard admits. `gbase.frames_upto` is a performance device
+  (connected-set growth instead of `itertools.combinations`), checked
+  equal to `cut3_sets` at every class at `n_hub = 4, 6`, at `Q₃` and `V₈`,
+  and on `CL₆`/`CL₈` to `|A| ≤ 7` — `0` mismatches over `12` hub
+  multigraphs; `--val` runs the same check over the full `n_hub = 8, 10`
+  class lists.
+* **Two more local devices, both asserted against a canonical oracle.**
+  `gbase.edge_auts_fast` == `gisland.edge_auts` at every class at
+  `n_hub = 4, 6` (`gisland.edge_auts` is `itertools.permutations(range(n))`,
+  `3.6 × 10⁶` per class at `n_hub = 10`). `gbase.orbit_counts` reproduces
+  `gisland.stratum(4, lamcap=0)` and `gisland.stratum(6, lamcap=0)`
+  exactly (`23` and `264` shapes) — the canonical stratum generator cannot
+  reach `n_hub = 8`, which is why this device exists.
+* **`gbase.labelled_all` is memoised on the remaining-degree multiset**
+  and reproduces the raw least-deficient recursion at `n = 2, 4, 6, 8, 10`
+  (`1 / 10 / 760 / 190 050 / 103 050 570`; the raw run at `n = 10` was
+  measured at ~5 min, the memoised one is instant).
+* **`gisland.CUBIC_N` / `cflank.CUBIC_N = (2, 4, 6)` and `aglu._pool8()`'s
+  hardcoded `8`** are un-fenced **by parameter**, not by copy: this driver
+  calls `gridcol.cubic_iso_classes`, `aglu.excess_profiles` and
+  `cflank.cubic_habitat` at new arguments. No landed driver is edited, so
+  no landed figure can move.
+* **Exactness / randomness.** Every count is an exhaustive integer count
+  over a finite set — no rank, no dimension, no semicontinuous statistic,
+  so **an exhaustive count here is a proof and not a bound** (dispatch-log
+  F31). The only sampling is `--sample` (seeded, `20260912`, binomial
+  s.e. `≤ 0.029` at `300` draws) and the colouring draws in `--ladder`,
+  where a **fully-good verdict is an exhibited exact-ℚ witness and
+  therefore cap-free**, while a *"no fully-good colouring in 40 draws"*
+  verdict would be capped — and none was returned.
+* **THE ONE UNMEASURED ASSUMPTION.** Every `n_hub = 10` figure is a
+  **frame** figure (`B_c^frame` — no frame at `|A| ≤ c`), not a
+  **reduction** figure (`B_c` — no certified child at any such frame). The
+  two coincide at `n_hub = 6` and `8` by (GR-231)(ii) and (GR-198)(iv);
+  at `n_hub = 10` the check is written (`--residual`) and was **not
+  completed** — see (GR-234)(iii). Since `B_c^frame ⊆ B_c`, every base
+  share here is a **lower bound** on the true base share, which pushes the
+  rise `20.5 % → 27.7 % → 30.3 %` in the direction it already goes.
+* **The `|A| = 3` frame family.** (GR-234)(ii) found a second shape
+  (digon-plus-pendant) the corpus's prose name misses. It is habitat-rare
+  at `Λ = ∅` (the digon costs `exc ≥ 3` of `6`), so it has little effect on
+  the shape layer; its effect on the CLASS layer is included, because
+  `frame_sizes` calls `cut3_sets`, which never used the prose name.
+
+---
+
+### The verdict, the prediction, and what would change this
+
+*(closing block of the section; no step of its own — Steps G253–G260 carry (GR-233)–(GR-240) one apiece.)*
+
+**VERDICT ON THE ROUTE: the `G°` induction under `M_c` is STRUCK as a
+route to (GR-15), on the entry's THIRD kill condition.** Not because it
+fails to be a reduction — it is one — and not because its base is the
+majority at some size, but because **the base contains the family on which
+the corpus has already PROVED that the only available proof technique
+cannot work** ((GR-238)(i): (GR-34) on `CL_m`, which (GR-220)(iii) puts in
+the base for every `m > (c+1)/2`). A BASE lemma is therefore not a
+sub-problem of (GR-15); it is (GR-15) with its easy half deleted.
+
+**HOW THE COORDINATOR'S PREDICTION CAME OUT — verdict and mechanism
+separately.**
+
+* **VERDICT: direction RIGHT, magnitude REFUTED — and in the OTHER unit
+  even the direction is wrong.** The spec predicted *"the base's share
+  does not fall — it rises with `n_hub`, and the `G°` induction reduces an
+  asymptotically vanishing fraction of the stratum."* In the
+  induction's own unit the share **does** rise — `20.5 % → 27.7 % →
+  30.3 %` at `c = 3`, `Λ = ∅`, `n_hub = 6, 8, 10` — so the first clause
+  is **confirmed** and kill condition 1 does **not** fire. The second
+  clause is **refuted**: the increments shrink (`+7.2`, `+2.6`), the share
+  is `30.3 %` at the largest size the corpus can enumerate, and the
+  induction therefore reduces the clear **majority** (`≈ 70 %`), not a
+  vanishing complement. And in the per-representative unit — the one every
+  landed `n_hub = 8` figure uses, and the one the spec's own evidence
+  (`(GR-231)(iii)`'s `42.8 %`) came from — the share is **flat** at
+  `c = 3` and **falls** at `c = 5`. **The prediction's evidence stratum and
+  its conclusion are in different units.**
+* **The spec's *"where I expect to be wrong"* paragraph — the highest-yield
+  sentence, as advertised — was RIGHT that two quantities were being
+  conflated, and it named the wrong pair.** It contrasted *share of
+  classes* with *share of shapes*, and told this direction to *"decide
+  which quantity the induction actually consumes before measuring
+  either"*. Both exist and both were measured (`10.0 % → 8.8 %` by
+  classes against `57.2 % → 56.4 %` by per-representative shapes). **But
+  the axis that flips the answer is a THIRD one the spec did not name:
+  the UNIT the shapes are counted in** ((GR-237)(i)). Landed `n_hub = 8`
+  figures count labelled length assignments on a class representative; a
+  `D = 0` tight class shape is an **isomorphism class**; the two differ by
+  `2.7× / 2.1× / 1.9×` at `n_hub = 6 / 8 / 10` and the ratio's drift is
+  what reverses the trend. **The spec's instruction was the right
+  instruction and it found a quantity the spec had not considered.**
+* **MECHANISM: REFUTED, cheaply and first, as clause 2(a) requires.** The
+  spec's mechanism — *"the base is exactly the shapes whose hub multigraph
+  has no non-trivial 3-edge-cut"* — is (GR-234)(iv), with the exhibited
+  `n_hub = 10` witness at (GR-236)(iii). One direction holds; the converse
+  fails by SIZE; and the two sides agree only when `c ≥ n − 3`, i.e. in
+  the unbounded regime the ruling excluded. The spec's own suggested
+  refutation aimed at the wrong clause: (GR-234)(i) shows **oddness is
+  automatic in a cubic multigraph** and can never be a reason. The working
+  mechanism is (GR-240)'s excess tax, which the spec did not contain — and
+  even that does **not** produce the spec's verdict.
+* **TELL: FIRED, and it was a real test.** The spec's tell — *"at
+  `n_hub = 10`, enumerate the cubic multigraph classes and count how many
+  carry a connected odd cut-3 hub set at `|A| ≤ 5`"* — is (GR-236)(i)'s
+  `n_hub = 10` row (`5` of `91` at `c = 5`, `8` of `91` at `c = 3`). Its
+  region was genuinely unsampled; the verdict could have gone either way
+  inside it; and the count is exhaustive over a set whose completeness is
+  **proved** by orbit counting, so F31's semicontinuity check passes
+  exactly as the spec argued. **It fired AGAINST the prediction.**
+* **Taxonomy (`RESEARCH-ARC.md` §7): RIGHT-WITH-A-DROPPED-PROVISO, then
+  REFRAMED.** The verdict's direction survives in one unit and dies in the
+  other, its magnitude dies in both, the mechanism is refuted, and the
+  route is struck for a **third** reason ((GR-238)) that neither the
+  verdict nor the mechanism named and that needed **no measurement at
+  all** — every input to it was landed before this dispatch opened.
+
+**CONFIDENCE.** *High* on (GR-238) — it is three landed statements
+composed, with no new measurement and no cap. *High* on (GR-233),
+(GR-234)(i)/(ii)/(iv), (GR-235)(ii) and (GR-240)(i)/(ii) — derivations, two
+of them reproducing a landed figure exactly. *High* on the (GR-236)/
+(GR-237) counts as counts (exhaustive, with a completeness proof at
+`n_hub = 10`), *medium* on the TREND they show (three points, one
+unmeasured residual, one un-swept `Λ` axis past `n_hub = 6`). *Medium* on
+(GR-239)(ii)'s parity mechanism — the derivation is clean but it is
+checked only on `CL_m`. *Low* on anything asymptotic: (GR-240) names three
+factors and settles none of them.
+
+**WHAT WOULD CHANGE THIS.**
+
+1. **A correlated colouring rule that covers the base.** (GR-239) shows
+   the corpus has exactly one such rule and it is parity-fragile. A rule
+   that covers `CL_m` at **every** habitat length assignment — not only
+   even rung lengths — would be the first real evidence that BASE is
+   tractable, and it would be worth having independently of the induction.
+   *This is the successor this entry names.*
+2. **A second move family that reaches the base.** `M_c` is Y-reduction
+   only. (GR-171) proves no additive expansion move exists at `D = 0`, so
+   a new family must be non-additive. §(K-grid)'s own closing list already
+   carries this as item 4 of GCOLTRANS's *"what would move it"*.
+3. **Opening `Λ` at `n_hub = 8` or `10`.** Every shape-layer figure here
+   is at `Λ = ∅`. The `Λ` drift is measured only at `n_hub = 6`
+   (`2.4` points, (GR-237)(ii)); a `2.4`-point drift cannot account for the
+   `9.8`-point rise, but it is assumed and not shown to stay that small.
+4. **`n_hub = 12`, in the isomorphism-class unit.** The rise
+   `20.5 % → 27.7 % → 30.3 %` has three points and a shrinking increment;
+   a fourth would separate *converging to `≈ 1/3`* from *still climbing*.
+   The class-list certificate at `n_hub = 12` is affordable (`509` classes,
+   `95 054 374 800` labelled connected, `labelled_all(12)` instant); the
+   binding limiter is `small_cut_sets`' `2^{n_hub}` scan, and the
+   `36 960 → 97 869` profile growth. **This is the cheapest thing that
+   would move the SIZE half of the entry.**
+5. **A THIRD reading of the unit question.** This entry reports the base in
+   the isomorphism-class unit and the per-representative unit and shows
+   they disagree. It does **not** ask whether the induction's BASE
+   obligation should be weighted by anything at all — a proof discharges
+   one shape at a time, so arguably only the *class* list matters and both
+   shape counts are the wrong denominator. **That is a question for the
+   coordinator, not a measurement**, and it is the one place where this
+   entry's headline could be reframed again.
+
+---
+
+### Verification
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --val        # the four local devices vs their canonical oracles
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --consumer   # (GR-233)(iii): 80 of 80 at n_hub = 4 carry a frame at |A| = 3
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --char       # (GR-234): parity at 5 480 subsets; 26 triangles + 68 digon-pendant; the mechanism, with its n_hub = 10 witness
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --classes    # (GR-236)(i): the class layer, n_hub = 4, 6, 8, 10
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --shapes     # (GR-236)(ii): the per-representative shape layer; asserts 39 689 and 22 720
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --orbits     # (GR-237)(i): the SAME, up to Aut(G) -- the induction's own unit
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --residual --rescap 12   # (GR-234)(iii): the residual at n_hub = 10 -- NOT COMPLETED by this direction (wall clock)
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --ladder     # (GR-238)/(GR-239): both recipes in the base; the rule at n_hub = 24; its parity refutation
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --sample     # (GR-237): the configuration-model TREND to n_hub = 30
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gbase.py --labcount 10  # the n_hub = 10 completeness certificate: 91 classes, 94 008 600
+```
+
+`gisland.stratum(n, lamcap=k)` at `k = 0, 1, 2, 99` for (GR-237)(ii) is a
+direct call to the landed generator at a non-default argument; it is the
+blind axis `blindaxes.py` lists as `gisland.stratum(lamcap=0)` and is
+recorded here as **measured, script not retained** — the figures are
+`23 / 0`, `80 / 0` at `n_hub = 4` and `264 / 54`, `1 884 / 358`,
+`5 263 / 968`, `7 892 / 1 428` at `n_hub = 6`, and `--orbits` reproduces
+the first and third of those from inside the driver.
