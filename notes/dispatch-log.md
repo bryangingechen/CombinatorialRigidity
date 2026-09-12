@@ -157,6 +157,9 @@ keeps only what git cannot show.
 | 2026-09-12 | Phase39 THIRD round of three vs §8's SIXTEENTH pass — GBASE 108 / BMBLOCK 109 / GSECOND 110 | opus ×3, concurrent | **ranks 1–3 spent together for the THIRD consecutive round; the round completed one leg of a route and STRUCK the route** | GSECOND all but finished the induction's STEP leg (obstruction named, avoidable by a constructive rule) while GBASE struck it at the BASE leg — visible only across returns, and order-dependent: alone, GSECOND's `100 %` would have read as progress toward a closing lemma. Fence held (F20): the spec told GSECOND *if you find yourself counting frames, stop — that is GBASE's*, and no figure was derived twice. |
 | 2026-09-12 | Phase39 coordinator-error audit across the round | opus (coordinator) | **FOUR coordinator errors, each in a DIFFERENT artifact, all caught by the directions** | §8's `80 of 80` at `n_hub = 4` (a figure rank 1 was ranked on — the base there is EMPTY); GBASE's spec mechanism (refuted BY SIZE); GSECOND's spec semicontinuity clause (backwards for the predicate, F32); BMBLOCK's spec blind-axis note (`bunif.SUBS` IS the 16 stable `U`). F19's rate recurring exactly: coordinator artifacts need correction at least as often as the directions'. |
 | 2026-09-12 | Phase39 verification compute for the round | opus (coordinator) | **one 36-min exhaustive re-run WASTED to a coordinator mistake** | The first re-run of `gsecond.py --split --shapes 7892` was launched without `--out`, so it produced the control figures but no records, and `--rule` could not be verified from it; a second 35-min run was needed. Read the driver's CLI before launching a long verification, not after. Also logged: the cache keepalive was deliberately kept armed past step 4 while two siblings were still in flight, rather than deleted at the first return — the loop's self-heal is wanted until the LAST dispatch returns. |
+| 2026-09-12 | Phase39 FOURTH round of three vs §8's SEVENTEENTH pass — BSIXTEEN 111 / GODDRUNG 112 / BPROPCL 113 | opus ×3, concurrent | **ranks 1–3 spent together for the FOURTH consecutive round; the fence PRODUCED a convergence** | Two directions fenced off each other's lemma converged on one (F35). Three landed sentences corrected across the round — (GR-239)(ii) scoped, (GR-34)(ii) refuted, (BE-277)(iii) scoped — plus a denominator (427 side rows are 400 distinct sides) that scopes two sibling landings. No direction shipped a figure defect; one shipped a GATE failure. |
+| 2026-09-12 | Phase39 in-flight gate failure reported from OUTSIDE | opus (direction GODDRUNG) | **a direction reported a SIBLING's gate failure while both were in flight** | GODDRUNG hit `ledger.py --lint` for its own draft, saw 10 violations it did not own, and reported them as *"not mine, but it will block your landing"*. By landing time BPROPCL's draft carried 18, all one mechanical error (a literal `[UNTAGGED]`, which the parser INFERS rather than accepts). First time one in-flight direction has flagged another's gate state; it saved a landing-time surprise and cost nothing. |
+| 2026-09-12 | Phase39 coordinator-error audit, fourth round | opus (coordinator) | **FIVE coordinator errors across THREE specs, all caught by the directions** | The inheritance-lemma hope (refuted by an exact-ℚ witness); the *"eleven problems"* framing; §8's *"closing all sixteen proves `Good ≠ ∅` at rung 3"* (true only in the generic flag regime — `π_u = π_v` is forced at 392 of 928); the GODDRUNG entry's stated payoff (a uniform RULE is not a uniform (GR-15) argument); and BPROPCL's spec mechanism. F19's rate holds across four rounds. |
 
 ## Findings
 
@@ -798,3 +801,35 @@ At phase close, promote stable entries into the coordinator command's
   wrong. Operationally: when a spec names a driver's documented
   default as a fence, re-run it at that default before quoting it —
   which is what the F26 consumer check produced here as a side effect.
+- **F34 — a tell can be ALREADY SATISFIED IN THE LANDED CORPUS without
+  anyone having read it that way**, and the standing *"is it already
+  satisfied?"* check does not catch that. BPROPCL (2026-09-12) was
+  dispatched with a tell — *one chart point where `U ⊄ ρ̄_i`* — and the
+  spec recorded *"not reported anywhere: the corpus has measured
+  `c_i(U)` but has not reported the containment as a chart-level
+  condition"*. It was reported, twice: (BE-258)(iii)'s `dist = 6`
+  column (16 rows at `c(Π_x) ≤ 1`) and (BE-273)(i)'s same 16 rows at
+  `c(⟨M⟩) = 0` **are** the tell, and neither clause read them as
+  containment. The check as written asks whether the corpus contains
+  the **claim**; it must ask whether the corpus contains the
+  **answer**, which is a different grep and usually a different
+  vocabulary. Operationally: before calling a tell unsatisfied,
+  ask what a landed measurement of the tell's quantity would LOOK
+  like under a different name, and grep for that.
+- **F35 — the anti-duplication fence can PRODUCE a convergence rather
+  than merely prevent a collision**, when a fenced direction treats
+  the sibling's landed work as an external input to TEST. The
+  2026-09-12 round told BSIXTEEN not to attempt BPROPCL's properness
+  lemma and BPROPCL not to close a block. BSIXTEEN landed mid-run
+  proposing a repair — state the lemma relative to `⟨P₀⟩` — and
+  BPROPCL, whose own headline through six steps was *"the two
+  residues are NOT one question"*, **tested the proposal instead of
+  arguing against it**: asserted at 1 281/1 281, which refutes the
+  sibling sentence in its own frame and confirms it in the new one.
+  Two directions fenced off each other's lemma converged on one from
+  opposite ends of the same axis. **The mechanism is the concurrency
+  rule** — diff against `HEAD`, never against the dispatch baseline —
+  so that rule earns its keep as a discovery device and not only as a
+  hazard control. F20 says reservations prevent naming collisions and
+  not duplicated derivation; this is the other half: a PROSE fence
+  plus a live `HEAD` can turn the overlap into a joint result.
