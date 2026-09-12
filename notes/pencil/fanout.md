@@ -18109,3 +18109,89 @@ every subset of `BLK`, committed `bproper.NONADJ` still listing 3) were checked
 at source. **Two of them correct the coordinator's own spec** — the spec said
 the four-block table and the 16 stable `U` were different populations, and they
 are not.
+
+## GSECOND — ordinal 110, concurrent round of three, `research-direction-opus`, LANDED 2026-09-12
+
+**§8's sixteenth pass, RANK 3** — NECESSARY-class by (GR-231)(iv) verbatim, and
+dispatched anyway because its *negative* would kill the induction's transport
+leg. *Question:* what is the obstruction behind the `1 282` weak-lift failures
+(GR-227)(i)'s balance law does not explain, and is it avoidable by the parent's
+choice of re-length?
+
+**VERDICT: the second obstruction is SATURATION OF THE SHARED CUBE, it is a
+RANK effect and not a combinatorial one, and it IS avoidable — by a named,
+parent-computable, cap-free choice function.** Landed as (GR-241)–(GR-248) /
+*Steps G261–G268*.
+
+- **The partition was already latent in the landed driver.** `transport_at`
+  returns `up_good = cg − pg` and `up_adm = ca − pa` and **never intersects
+  them**. A missed restriction is of KIND A (not parent-admissible — decided by
+  `filter_pass`, **exact**, so CAP-FREE) or KIND B (admissible but not GOOD —
+  capped). That is orthogonal to the balance split, so the `1 890` carry a
+  `2 × 2` of which the corpus had published one cell.
+- **The first slice needed NO measurement.** `class A ⊆ U` (a GOOD colouring is
+  admissible), and `|U| = 1 246` with `|U ∩ Adv| = 849`, so
+  `|A ∩ residual| ≤ 397` — **cap-free, before any run**, and therefore
+  **at least `885` of the `1 282` is a GOOD-ness effect**. The dispatch's own
+  mechanism ("an admissibility effect") was capped at `≤ 31 %` of its target
+  before anything rested on it.
+- **Exhaustively: `1 095` rank / `187` admissibility**, and the run reproduces
+  **every** shared figure of (GR-232)(ii) bit-for-bit while independently
+  re-deriving (GR-227)(iii)'s `594`.
+- **The mechanism, named.** All `1 282` have `|ca| = 8` — the child reaches
+  *every* out-restriction while the parent's GOOD set does not. Sufficient
+  condition: **`n_odd(child) ≤ n_odd(parent)` ∧ `ca ≠ {0,1}^O` ⟹ the weak lift
+  holds, `78 332/78 332`.** Both hypotheses are needed: on the adversarial slice
+  `64` non-saturated triples still fail. Structure, derived not measured: the
+  global `A ↔ B` swap makes all four sets complement-closed, so every deficiency
+  is a union of **antipodal pairs** and the whole lift is a question about one
+  pair.
+- **AVOIDABILITY, CONSTRUCTIVELY — the result that upgrades (GR-232).**
+  Minimizing `|ca|` picks a lifting re-length at **`15 304/15 304`** frames,
+  `0` of `89 781` failing in its argmin set, and it is **parent-computable**:
+  `filter_pass` over the child's `2^6` colourings, no rank, no draw, no cap.
+  So `∃ℓ'` becomes a **named** `ℓ'`. Controls discriminate — `minspread` is
+  all-fail at `197` frames, `maxodd` at `155`, `lexmin` at `112` — and the
+  direction separates a rule's PRINCIPLE from its arbitrary TIEBREAK after two
+  rules on one principle disagreed.
+
+**THE CORRECTION THAT REACHES THIS COORDINATOR AND THE BOARD.** The draw cap on
+the lift runs **both ways**: `cg ⊆ pg` compares two **lower** bounds, so raising
+`--draws` can break a HOLDING triple as well as repair a failing one, and
+(GR-232)(ii)'s headline `100 %` is a **holding** figure — capped in the
+direction that could destroy it. The dispatch spec asserted the opposite
+(*"the failure side is capped and the success side is not"*), which is true of
+one colouring's GOOD verdict and false of the predicate. Three controls find
+`0` movement (8 vs 64 draws; a per-shape re-keyed draw stream; the swap-closure
+check), all at a `200`-shape prefix.
+
+**AND A LANDED DISCLOSURE SENTENCE IS FALSE AGAINST ITS OWN DRIVER.**
+`gcoltrans.py`'s caps block and its `--lift` mode description both state that
+the default `--shapes 400` shows **0** lift failures. It shows **125**
+(`400` shapes, `1 608` interior frames, `15 647` triples). The onset sits
+between shapes `60` (0 over 1 693 triples) and `200` (32). **Gate-invisible by
+construction — `ledger.py --lint` does not run drivers and nothing re-runs a
+docstring** — and repaired in this commit. Its companion clause is separately
+wrong: for a **prefix** cap the capped and full runs **are** bit-identical on
+the first N shapes, the stream being in the same state throughout; the real
+order-dependence is *between legs*.
+
+**THE SCOPE LIMIT, which the dispatch spec did not name and the direction
+volunteered.** `|O| = 3n/2 − 6`, so the `3`-cube, the single antipodal pair and
+the `|ca| ≤ 6` sufficient condition are **`n_hub = 6` artifacts** — at
+`n_hub = 8` the cube has `64` points. The swap argument generalizes verbatim;
+the rest does not. Live successor and the cheapest next measurement: an
+**admissibility** census at `n_hub = 8`, which pays no colouring cost.
+
+**F26:** `--cited-by '(GR-232)'` returns three claims, **all inside GCOLTRANS's
+own cluster**; `--cited-by '(GR-230)'` returns **0**. `T↑∃∃` has exactly one
+consumer — the `G°` induction's inductive step — and (GR-231)(iv) keeps it
+necessary-not-sufficient. The direction reported this **before** its own
+measurements and it lowers the value of its own question.
+
+**Coordinator verification:** the exhaustive `--split --shapes 7892` was re-run
+independently at the landing baseline (2 140 s) and reproduces the control line
+and the whole `2 × 2`; `--deeper --shapes 200 --deep 64`, `--split --shapes 200`
+and `--split --shapes 60` reproduce exactly; and `gcoltrans.py --lift
+--shapes 400` was re-run to confirm the `125`. The `60`-prefix figure matches
+dispatch-log **F30**'s own landed `0 over 1 693 triples`.

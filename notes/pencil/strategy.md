@@ -1781,23 +1781,54 @@ corpus** — the corpus-level question needs its own grep, and this one takes tw
    > the `Π_x` block, which closes the last cheap route and sends the lane to the `dist_i ∈ {5,6}`
    > corner. Decided by: the `(K-bare)/(K-bare-ext)` row.*
    >
-3. **`T↑∃∃` — FROM `100 %` TO A THEOREM, WHICH MEANS NAMING THE SECOND OBSTRUCTION.** *(new —
-   GCOLTRANS's *What would change this* item 2.)* Owner: §(K-grid) *Step G252*, (GR-232)(ii) and
-   (GR-230). The lift holds at **some** re-length of `15 304 of 15 304` frames, and the weak form
-   fails at `1 890` of `194 325` triples of which **(GR-227)(i)'s balance law explains `608`** —
-   `32 %`, a `13×` enrichment on `2.4 %` of the space. **The other `1 282` are not explained**, and
-   GCOLTRANS says so in terms: *"the balance law is the mechanism this direction can exhibit, not
-   the whole obstruction."* **GLEAF's question: NECESSARY**, by (GR-231)(iv) verbatim — which is
-   why it ranks below both entries above even though it is the leg nearest to done. **Its negative
-   is the decisive half:** a second obstruction that is *not* avoidable by the choice of re-length
-   refutes `T↑∃∃` and kills the induction's transport leg outright. **First slice is landed data,
-   not a new population:** the `1 282` are a committed run's output; partition them before building
-   anything.
-   *Kill condition: the residual obstruction named and shown avoidable by re-length choice — which
-   with (GR-230)'s block-triangular `Θ` is the proof — or a frame exhibited at which EVERY
-   re-length fails the weak lift, which refutes `T↑∃∃` at `n_hub = 6` and kills the leg. Decided
-   by: the `(K-grid)` row, close-it u9.*
+3. **`T↑∃∃` — SPENT (GSECOND 110, 2026-09-12): THE SECOND OBSTRUCTION IS **SATURATION OF THE
+   SHARED CUBE**, IT IS A **RANK** EFFECT, AND IT IS AVOIDABLE BY A NAMED CHOICE OF RE-LENGTH.**
+   Owner of the answer: §(K-grid) *Steps G261–G268*, (GR-241)–(GR-248). The `1 890` weak-lift
+   failures split `2 × 2` against (GR-227)(i)'s balance class by a kind **already latent in
+   `gcoltrans.transport_at`'s own return value** — it computes `cg − pg` and `ca − pa` and never
+   intersects them — and the first slice needed **no measurement at all**: `class A ⊆ U` plus
+   `|U| = 1 246`, `|U ∩ Adv| = 849` caps the **combinatorial** explanation of the residual at
+   **`397` of `1 282`, CAP-FREE, before any run** ((GR-242)). Exhaustively it is **`1 095` rank /
+   `187` admissibility**, with **every one of the `1 282` at `|ca| = 8`** — the child reaching
+   *every* out-restriction while the parent's GOOD set does not — and
+   **`n_odd(child) ≤ n_odd(parent)` ∧ `ca ≠ {0,1}^O` ⟹ the weak lift holds, `78 332/78 332`**
+   ((GR-243)/(GR-247)). **AVOIDABLE, CONSTRUCTIVELY:** minimizing `|ca|` — decided by
+   `filter_pass` over `2^6`, **no rank, no draw, no cap**, and computable by the parent *before*
+   it commits — picks a lifting re-length at **`15 304/15 304`** frames, `0` of `89 781` failing
+   in its argmin set, which upgrades (GR-232)'s `∃ℓ'` to a **named** `ℓ'` ((GR-248)). Controls
+   discriminate: `minspread` is all-fail at `197` frames, `maxodd` at `155`, `lexmin` at `112`.
+   **AND THE DRAW CAP RUNS BOTH WAYS — this board and the dispatch spec both had it one-way.**
+   `cg ⊆ pg` compares two **lower** bounds, so the *holding* side is capped too, and
+   (GR-232)(ii)'s headline `100 %` is a **holding** figure ((GR-244)); three independent controls
+   find `0` movement at a `200`-shape prefix, at `8` versus `64` draws and under a per-shape
+   re-keying of the draw stream. **A landed DISCLOSURE sentence is false against its own driver
+   at its own documented default** — `gcoltrans.py --lift --shapes 400` reports **`125`** weak-lift
+   failures, not the `0` its caps block and its `--lift` mode description both claimed; repaired
+   in the same commit ((GR-245)). *Kill condition: MET on its first arm — the obstruction is named
+   and shown avoidable. `T↑∃∃` is NOT refuted at `n_hub = 6`: no frame has every re-length
+   failing. **The cap that matters is `|O| = 3n/2 − 6`**, so the `3`-cube, the single antipodal
+   pair and `|ca| ≤ 6` are `n_hub = 6` artifacts — at `n_hub = 8` the cube has `64` points, and
+   the cheapest next measurement is an **admissibility** census there, which pays no colouring
+   cost. Decided by: the `(K-grid)` row, close-it u9.*
 
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > *(new —
+   > GCOLTRANS's *What would change this* item 2.)* Owner: §(K-grid) *Step G252*, (GR-232)(ii) and
+   > (GR-230). The lift holds at **some** re-length of `15 304 of 15 304` frames, and the weak form
+   > fails at `1 890` of `194 325` triples of which **(GR-227)(i)'s balance law explains `608`** —
+   > `32 %`, a `13×` enrichment on `2.4 %` of the space. **The other `1 282` are not explained**, and
+   > GCOLTRANS says so in terms: *"the balance law is the mechanism this direction can exhibit, not
+   > the whole obstruction."* **GLEAF's question: NECESSARY**, by (GR-231)(iv) verbatim — which is
+   > why it ranks below both entries above even though it is the leg nearest to done. **Its negative
+   > is the decisive half:** a second obstruction that is *not* avoidable by the choice of re-length
+   > refutes `T↑∃∃` and kills the induction's transport leg outright. **First slice is landed data,
+   > not a new population:** the `1 282` are a committed run's output; partition them before building
+   > anything.
+   > *Kill condition: the residual obstruction named and shown avoidable by re-length choice — which
+   > with (GR-230)'s block-triangular `Θ` is the proof — or a frame exhibited at which EVERY
+   > re-length fails the weak lift, which refutes `T↑∃∃` at `n_hub = 6` and kills the leg. Decided
+   > by: the `(K-grid)` row, close-it u9.*
+   >
 4.–8. **THE FOURTEENTH AND FIFTEENTH PASSES' REMAINING ENTRIES, UNCHANGED IN CONTENT AND
    RE-ORDERED BY THE STANDING CRITERION ONLY** — the (c)-strengthened closure's 14/18 residual
    (SUFFICIENT but **capped twice over**: incomparable with (GR-9) and *below* it on the pool,

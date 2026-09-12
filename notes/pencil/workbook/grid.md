@@ -21019,3 +21019,657 @@ separately.**
   `closure.colourings`, not a re-implementation. The one local device is
   `spec_paths`, and it **asserts** its grouping against
   `gridcol.branch_decomp`.
+
+## §(K-grid) — continuation (direction GSECOND, ordinal 110, 2026-09-12): the SECOND obstruction behind the `1 282` unexplained weak-lift failures is **SATURATION OF THE SHARED CUBE**, and it is a **RANK** effect, not a combinatorial one. The failures split `2 × 2` against (GR-227)(i)'s balance class by an **admissibility / GOOD-ness** kind that is already latent in `gcoltrans.transport_at`'s own return value — it computes both sets and never intersects them — and the landed figures alone **cap the combinatorial explanation at `397` of `1 282` before any measurement**; exhaustively the residual is **`1 095` rank / `187` admissibility**, with every one of the `1 282` at `|ca| = 8`, the child reaching **every** out-restriction while the parent's GOOD set does not. **`n_odd(child) ≤ n_odd(parent)` AND `ca ≠ {0,1}^O` ⟹ the weak lift holds, `78 332/78 332`.** **AVOIDABLE, CONSTRUCTIVELY:** minimizing `|ca|` — exact, cap-free and **parent-computable** by `filter_pass` over `2^6`, no rank and no draw — picks a lifting re-length at **`15 304/15 304`** frames, `0` of `89 781` failing in its argmin set, which upgrades (GR-232)'s `∃ℓ'` to a **named** `ℓ'`. **The draw cap runs BOTH ways** and the dispatch spec (and the reading it came from) had it one-way: `cg ⊆ pg` compares two **lower** bounds, so the *holding* side is capped too — and (GR-232)(ii)'s headline `100 %` is a holding figure. **A landed disclosure sentence is FALSE against its own driver at its own documented default** ((GR-245)). *Steps G261–G268*
+
+
+### Step G261 — (GR-241): the weak lift's failures split into **two kinds**, and the split is already latent in `gcoltrans.transport_at`'s own return value — it computes both sets and never intersects them
+
+(GR-232)(ii) reports the weak lift failing at `1 890` of `194 325`
+`(frame, re-length)` triples and (GR-227)(iii) accounts for `608` of them by
+(GR-227)(i)'s balance law. The remaining `1 282` are recorded there as *"not
+explained by (GR-227)(i)"* and nothing in the corpus decomposes them
+further. They do not need a new predicate to decompose: the decomposition is
+a **refinement of `transport_at`'s existing output**.
+
+Fix the notation of `gcoltrans.transport_at`, at one interior triple
+`(S, A, ℓ')` of the `n_hub = 6` region. Write `O` for the shared
+out-branches and, for a colouring set `B`, write `B|_O` for the set of its
+restrictions to `O`. Then
+
+* `pa := padm|_O`, `pg := pgood|_O` — the parent's **admissible** and
+  **GOOD** out-restrictions;
+* `ca := cadm|_O`, `cg := cgood|_O` — the child's.
+
+`transport_at` returns `up_good = cg − pg` and `up_adm = ca − pa`; the weak
+lift **holds** at the triple iff `up_good = ∅`.
+
+> **(GR-241)** `[PROVED]` *(the classification and its nesting clause are
+> one-line derivations, asserted in-driver at every triple by*
+> `gsecond.py --split`*'s* `transport_fine`*; the counts are (GR-243))*
+> At a triple where the weak lift **fails**, each missed restriction
+> `k ∈ cg − pg` is of **exactly one** of two kinds, KIND A and KIND B:
+>
+> * **KIND A — the parent does not admit `k` at all.** `k ∉ pa`. Decided by
+>   `gridcol.filter_pass`, an **exact** predicate: **CAP-FREE**, and no
+>   number of extra draws can repair it.
+> * **KIND B — the parent admits `k` but is not GOOD at it.** `k ∈ pa`,
+>   `k ∉ pg`: every admissible parent colouring restricting to `k` failed to
+>   produce a vanishing draw. **CAPPED**, and repairable in principle by
+>   drawing deeper.
+>
+> Call a failing triple **class A** if at least one of its missed
+> restrictions is of KIND A, and **class B** if every one of them is of
+> KIND B. This is the **ADMISSIBILITY / GOOD-NESS** split, and it is
+> orthogonal to (GR-227)(i)'s **ADVERSARIAL / BALANCE-SAFE** split, so the
+> `1 890` carry a `2 × 2` cross-tabulation of which the corpus has so far
+> published one cell.
+>
+> **(i) The nesting clause, and it is the one that makes the split cheap.**
+> `cg ⊆ ca` (a GOOD colouring is admissible). So if `k ∈ cg − pg` with
+> `k ∉ pa`, then `k ∈ ca − pa`, i.e.
+>
+> > **class A ⟹ `up_adm ≠ ∅`.**
+>
+> (GR-232)(ii) is right that the `1 890` and the `1 246` are *"a different,
+> not a nested, count"* — neither set of triples contains the other — but
+> the **cap-free part** of the `1 890` **is** nested inside the `1 246`.
+> That is what (GR-242) prices.
+>
+> **(ii) (GR-227)(iii)'s published figures are three cells of this table.**
+> Over the `4 597` adversarial triples it reports `849` with
+> `up_adm ≠ ∅`, `608` weak-lift failures, and `594` of those `608` whose
+> missed restriction *"is not even parent-admissible"* — which is exactly
+> **class A ∩ ADVERSARIAL = `594`**, hence **class B ∩ ADVERSARIAL = `14`**.
+> So on the adversarial slice the failure is overwhelmingly of KIND A, and
+> the question this direction asks is whether that persists off it.
+
+**Why the two kinds are different mathematics, not two names for one thing.**
+KIND A is a statement about `filter_pass` — alternation plus the
+hub conditions — and is therefore a **combinatorial** obstruction of the
+same species as (GR-227)(i)'s balance law, just not that law. KIND B is a
+statement that every admissible parent colouring in the fibre over `k` has
+`dim Z₊ > 0` or `dim Z₋ > 0`, which by (GR-16)(iv) is `rank Θ < 3c` — a
+**rank** obstruction. (GR-230)(iii) already names this as the axis that
+matters: *"the **rank** half of transport points DOWN while the
+**combinatorial** half (GR-227)(i) is what decides the direction that
+actually fails."* The `2 × 2` above is that sentence made countable.
+
+---
+
+### Step G262 — (GR-242): **before measuring anything**, the landed figures alone cap the admissibility explanation of the residual at `397` of `1 282` — so at least `885` of it is a GOOD-ness effect
+
+The cross-tabulation of (GR-241) can be bounded from the numbers already in
+the workbook, with no new run. Write, over the `194 325` interior triples at
+`n_hub = 6`:
+
+* `W := { t : up_good(t) ≠ ∅ }`, `|W| = 1 890` — (GR-232)(ii);
+* `U := { t : up_adm(t) ≠ ∅ }`, `|U| = 1 246` — (GR-232)(iii), the
+  `--comp` cross-check;
+* `Adv := { t : n_odd(child) > n_odd(parent) }`, `|Adv| = 4 597` —
+  (GR-227)(i);
+* `|W ∩ Adv| = 608` — (GR-232)(ii); `|U ∩ Adv| = 849` and
+  `|A ∩ Adv| = 594` — (GR-227)(iii);
+* `R := W ∖ Adv`, the **residual this direction was dispatched at**,
+  `|R| = 1 890 − 608 = 1 282`.
+
+> **(GR-242)** `[PROVED]` *(arithmetic on landed figures; independently
+> confirmed by the exhaustive measurement (GR-243))*
+> By (GR-241)(i), `A ⊆ U`. Since `R ∩ Adv = ∅`,
+>
+> > `A ∩ R ⊆ U ∖ Adv`, and `|U ∖ Adv| = 1 246 − 849 = 397`.
+>
+> Hence **`|A ∩ R| ≤ 397`** and therefore
+> **`|B ∩ R| ≥ 1 282 − 397 = 885`**, i.e. **at least `69.0 %` of the
+> residual is class B** — a triple at which the parent *does* admit every
+> missed out-restriction and simply is not GOOD at any of them.
+>
+> **(i) Which half of this is cap-free.** `|U| = 1 246` and
+> `|U ∩ Adv| = 849` are counts of the **exact** admissibility predicate and
+> carry no draw cap, so the bound `|A ∩ R| ≤ 397` is **CAP-FREE**. The
+> residual's own size `|R| = 1 282` is a GOOD-level figure and inherits
+> (GR-232)(ii)'s `8`-draw cap; so the honest statement of the ratio is
+> *"at most `397` of the `1 282` measured under an `8`-draw cap"*, and
+> (GR-244) is the control that says that cap does not bind.
+>
+> **(ii) What this already settles about the dispatch question.** The
+> question *"what is the obstruction behind the other `1 282`"* cannot be
+> answered *"a second combinatorial condition"* in the majority: a
+> combinatorial (admissibility-level) obstruction is KIND A, and KIND A
+> is capped at `397` **before any measurement**. Whatever the residual is,
+> it is **mostly a rank obstruction**.
+
+This is the whole first slice, and it rests on nothing but (GR-241)(i)'s
+one-line nesting clause and five landed counts.
+
+---
+
+### Step G263 — (GR-244): the **direction** of the draw cap on the lift predicate, which is not the direction the dispatch spec (and the reading it came from) assumed — and the control that says it does not bite
+
+`gcoltrans`' caps block is right about a **colouring**: *"a colouring called
+GOOD is PROVEN good — an attaining exact draw is a witness and carries no
+cap. A colouring called NOT-GOOD is 'no vanishing draw found under
+`--draws`'."* The inference usually drawn from it — that the **failure**
+side of a transport verdict is capped and the **success** side is not — does
+not survive contact with the predicate the lift actually is.
+
+> **(GR-244)** `[PROVED]` *(one-line derivation; the empirical control is
+> `[MEASURED]`* `gsecond.py --deeper --shapes 200 --deep 64`*)*
+> The weak lift at a triple is `cg ⊆ pg`, an inclusion between two sets
+> **both** of which are **lower bounds**: raising `--draws` can only *add*
+> colourings to `pgood` and to `cgood`, hence only *grow* `pg` and `cg`.
+> Therefore
+>
+> * the lift **FAILING** is capped — growing `pg` can repair it; and
+> * the lift **HOLDING** is **also capped** — growing `cg` can break it.
+>
+> **Neither verdict of the weak lift is cap-free.** The only cap-free part
+> of the picture is KIND A of (GR-241), because `pa` is exact.
+>
+> **(i) Where this bites hardest, and it is the headline.** (GR-232)(ii)'s
+> `T↑∃∃` figure — the weak lift holds at **SOME** re-length of `15 304` of
+> `15 304` frames, `100 %` — is a **HOLDING** figure. It is therefore capped
+> **in the direction that could destroy it**: deeper draws at the children
+> could add a GOOD child colouring whose restriction no GOOD parent
+> colouring realizes, turning a holding triple into a failing one and, if it
+> caught a frame's last surviving re-length, pulling `15 304` below `15 304`.
+> A `100 %` that is capped downward is a different object from a `100 %`
+> that is capped upward, and the corpus has been quoting it as the latter.
+>
+> **(ii) The control, and it is reassuring.** Over the first `200` shapes —
+> `1 233` distinct censused shapes, `24 780` admissible colourings,
+> `6 730` triples — the GOOD census at `8` draws and at `64` draws is
+> **identical**: `22 092` GOOD in both. Consequently `0` triples had their
+> child GOOD set grow, `0` had their parent GOOD set grow, `0` failures were
+> repaired and **`0` holdings were broken**; the weak-lift failure count is
+> `32` at both depths, and the class-A count is `0` at both (as it must be —
+> `pa` is exact, and the driver asserts that equality).
+>
+> **(iii) A second, independent perturbation of the same axis.** The same
+> region re-measured with the draw stream keyed on the **shape** instead of
+> on the iteration order (`gsecond.PerShapeCensus`, seeded
+> `C_SEED ⊕ crc32(spec)`) reproduces every figure exactly: `32` weak-lift
+> failures, `1 233` / `24 780` / `22 092` censuses. So the blind axis
+> *"the draws a shape receives depend on iteration order"* is **real in
+> principle and measured inert in this region**.
+>
+> **(iv) What (ii) and (iii) together license, and what they do not.** They
+> license treating the GOOD predicate as a **function of the shape and the
+> colouring alone** on this region, which makes every figure in (GR-232)
+> deterministic rather than seed-dependent. They do **not** license dropping
+> the cap from the prose: `0` movement under two perturbations at
+> `200` shapes is *"no movement found under cap C"*, never *"the GOOD sets
+> are exact"*, and the perturbations were not run at `7 892`.
+
+---
+
+### Step G264 — (GR-245): a landed disclosure sentence is **false against its own driver at its own documented default**, and re-running the landed driver is what catches it
+
+While establishing which code path produced the `1 890` — the F26 obligation
+to know one's denominator before treating it as a population — the landed
+driver was re-run at the default its own docstring describes.
+
+> **(GR-245)** `[REFUTED]` *(witness:* `PYTHONHASHSEED=0 python3
+> notes/scripts/w4/gcoltrans.py --lift --shapes 400`*, exit `0`, at baseline*
+> `2145cb0b`*)*
+> `gcoltrans.py`'s caps block states: *"`--shapes N` takes a PREFIX of
+> `gisland.stratum(6, lamcap=99)` in generator order, NOT a random sample:
+> **the default 400 shows 0 lift failures** and the exhaustive run shows
+> `1 890`."* Its `--lift` mode description repeats it: *"DEFAULT
+> `--shapes 400` is a PREFIX and **shows 0 failures**."*
+>
+> The landed driver at `--shapes 400` reports **`125`** weak-lift failures
+> (`400` shapes, `1 608` interior frames, `15 647` triples; `s_up = 4 202`;
+> `f_up_all = 1 593`, `f_up_some = 1 608`). Not `0`. The first weak-lift
+> failure appears well before shape `400`: `gsecond.py --split --shapes 200`
+> already reports `32`, and `--shapes 60` reports `0`, so the onset is
+> between shapes `60` and `200`.
+>
+> **(i) What this does and does not touch.** It does **not** touch
+> (GR-232)(ii)'s figures, every one of which is `--shapes 7892`. It touches
+> a **caps / blind-axis disclosure sentence**, which is exactly the surface
+> `RESEARCH-ARC.md` §7's bar (n) was written about: a direction's own
+> disclosure block is a statement about that direction, and it is also the
+> surface with no gate on it — `ledger.py --lint` does not run drivers, and
+> nothing re-runs a docstring.
+>
+> **(ii) The clause it was doing work for is separately wrong.** The
+> sentence's purpose is the conclusion *"a capped run is not bit-identical
+> to the full one"*. For a **prefix** cap that conclusion is false in the
+> direction it is used: `--shapes N` processes shapes `0 … N−1` in the same
+> order with the same single stream, so the shared `random.Random(C_SEED)`
+> is in the same state throughout, and every verdict on the first `N` shapes
+> is bit-identical between an `N`-run and the `7 892`-run. The real
+> order-dependence is **between legs** (`--lift` and `--comp` censused
+> `8 768` and `10 286` distinct shapes, (GR-232)(iii)), not between a prefix
+> and its extension. And by (GR-244)(ii)–(iii) the dependence is measured
+> inert in any case.
+
+---
+
+### Step G265 — (GR-246): the shared datum lives in a **3-cube**, every one of the four sets in it is closed under the global `A ↔ B` swap, and therefore the whole weak lift is a question about **one antipodal pair**
+
+Everything below is a statement about the `n_hub = 6`, `|A| = 3` interior
+region, where the arithmetic pins the shared datum to three branches: the
+parent has `M = 3n/2 = 9` branches, an interior frame has
+`|ins| = (3·3−3)/2 = 3` and `|bd| = 3`, so `|O| = 9 − 3 − 3 = 3` and the
+child has `|O| + 3 = 6` branches on `n' = 4` hubs. The shared datum is a bit
+triple: **`pa`, `pg`, `ca`, `cg` are all subsets of the `8`-element cube
+`{0,1}^O`** (asserted in-driver, `gsecond.py --sets`).
+
+> **(GR-246)** `[PROVED]` *(the swap argument; and `[MEASURED]`*
+> `gsecond.py --sets --shapes 200`*: `0` violations over `1 233` censused
+> shapes and `24 780` admissible colourings)*
+> Flipping **every** branch bit, `b ↦ b ⊕ (2^M − 1)`, flips the start colour
+> of every branch and hence every edge: it is the global `A ↔ B` swap.
+> `gridcol.filter_pass` is symmetric in the two ruling classes (balance
+> `|E_A| = |E_B|`, both classes forests, no monochromatic hub), and GOOD asks
+> for `dim Z₊ = dim Z₋ = 0` in **both** blocks. So `padm`, `pgood`, `cadm`,
+> `cgood` are each closed under the swap, and therefore so are their images
+> `pa`, `pg`, `ca`, `cg` in the cube, the image of the swap being bitwise
+> complementation of the triple. Hence:
+>
+> > **every one of the four sets is a complement-closed subset of the
+> > `3`-cube, so its deficiency is a union of ANTIPODAL pairs `{k, k̄}` and
+> > its size is `0`, `2`, `4`, `6` or `8` — never odd.**
+>
+> **(i) Measured, and the taxonomy is tiny.** Over the first `200` shapes
+> (`808` interior frames, `6 730` triples): `pa` is **FULL** at `168` frames
+> and misses exactly one **ANTIPODAL** pair at `640`; `pg` is FULL at `120`
+> and antipodal-deficient at `688`. Nothing else occurs. On the child side
+> `ca` is FULL at `1 310` triples, antipodal-deficient at `4 992` and misses
+> four at `428`.
+>
+> **(ii) The `0` GOOD violations are a third cap control.** `b` and `b̄`
+> receive **different** draws, so a binding draw cap would break the
+> symmetry of `pgood`/`cgood` almost surely. `0` violations over the whole
+> region is therefore independent evidence, alongside (GR-244)(ii) and
+> (iii), that the `8`-draw cap is not binding here.
+
+---
+### Step G266 — (GR-247): the second obstruction, **named** — it is **SATURATION of the shared cube**: all `1 282` residual failures have the child reaching **every** out-restriction while the parent's GOOD set does not
+
+Two facts turn (GR-246) into a mechanism.
+
+**First, `pa` and `pg` are frame invariants.** They are computed from the
+parent shape and the frame alone; the re-length changes only the child. So at
+a fixed interior frame the weak lift `cg ⊆ pg` compares a **moving** left
+side against a **fixed** right side. (Asserted in-driver at every one of the
+`15 304` frames by `gsecond.py --rule`: `|pa|` and `|pg|` are constant across
+a frame's re-lengths.) A corollary worth recording because it looked like a
+rule and is not: **`maxpg` ranks re-lengths by a constant**, which is why it
+picks a failing re-length at all `208` frames that carry one.
+
+**Second, by (GR-246) both sides are complement-closed**, so `cg ⊆ pg` can
+fail only where `pg` is deficient and `cg` reaches into the deficiency.
+
+> **(GR-247)** `[MEASURED]` *(`gsecond.py --split --shapes 7892` +
+> `--rule`, EXHAUSTIVE over `gisland.stratum(6, lamcap=99)`: `7 892` shapes,
+> `15 304` interior frames, `194 325` triples; structural clauses (iii)–(iv)
+> are `--sets --shapes 200` and carry that prefix cap)*
+> **(i) The residual is, without exception, a SATURATION failure.** Of the
+> `1 890` weak-lift failures, the `1 282` balance-safe ones — the residual
+> this direction was dispatched at — **all `1 282` have `|ca| = 8`**, the
+> child realizing *every* out-restriction of the cube. Conversely, on the
+> balance-safe slice **no non-saturated triple fails at all**:
+>
+> > `n_odd(child) ≤ n_odd(parent)` **and** `ca ≠ {0,1}^O` ⟹ the weak lift
+> > holds — **`78 332` of `78 332` triples**.
+>
+> **(ii) BOTH hypotheses are needed, and the second alone is false.**
+> Dropping the balance hypothesis breaks it: on the ADVERSARIAL slice there
+> are **`64`** failures among the `1 690` non-saturated triples (all at
+> `|ca| = 6`). So saturation does not subsume (GR-227)(i) — the two
+> conditions are independent halves, the balance law governing the
+> adversarial slice and saturation the rest, which is the precise sense in
+> which the `1 282` are *"a second obstruction"*.
+>
+> **(iii) Why the parent is ever deficient, and it is mostly NOT balance.**
+> `|pg| ∈ {4, 6, 8}` over the `15 304` frames — `8 432` FULL, `6 825` missing
+> one antipodal pair, `47` missing two — and `|pa| ∈ {4, 6, 8}` likewise
+> (`12 079` / `3 178` / `47`). (GR-227)(i)'s band, evaluated at the parent,
+> is **SATURATED at `14 976` of `15 304` frames** (`97.9 %`): it permits all
+> eight out-restrictions and therefore explains none of the deficiency. The
+> `47` frames at `|pa| = |pg| = 4` are exactly the frames where it does bite
+> — `(o, n_odd(parent)) = (2, 2)`, band `[1,1]`, predicted bound `4`,
+> attained — and **every one of those `47` frames carries a failure**. The
+> `208` failing frames are precisely those `47` plus `161` of the `6 825`
+> antipodal-deficient ones; **no `|pg| = 8` frame carries a failure**, as
+> (GR-246) forces.
+>
+> **(iv) The identity of the missed pair, at a prefix cap.** Over the first
+> `200` shapes every one of the `32` failures there misses exactly
+> `{(0,0,0), (1,1,1)}` — the two monochromatic out-restrictions — with `pg`
+> antipodal-deficient and `ca`, `cg` FULL. (GR-246) forces the deficiency to
+> be *antipodal*; that it is always *this* antipodal pair is **not found to
+> fail under cap `--shapes 200`** and is **not** established exhaustively,
+> because `--split`'s records carry the four sets' SIZES and not the sets.
+> A frame missing some other pair `{k, k̄}` is not excluded.
+>
+> **(v) So the second obstruction is a RANK obstruction wearing a
+> combinatorial mask.** What saturation measures is the *child* side, and
+> `|ca|` is exact combinatorics. What it collides with is the *parent* side
+> — `pg` deficient where `pa` is not, which is the **`3 647`** frames at
+> which `pa` is FULL but `pg` is not (`12 079 − 8 432`; the band table's
+> `(|pa|, |pg|) = (8, 6)` rows sum to `3 647`) — and that is (GR-241)'s
+> KIND B: `dim Z₊ > 0` or
+> `dim Z₋ > 0` at every admissible parent colouring over the missed
+> restriction, i.e. `rank Θ < 3c` by (GR-16)(iv). (GR-243) prices that at
+> `1 095` of the `1 282`.
+
+---
+
+### Step G267 — (GR-248): avoidability, **constructively** — an explicit, exact, parent-computable choice of re-length picks a lifting one at `15 304` of `15 304` frames
+
+(GR-232)(ii) establishes `T↑∃∃` by an existential: the weak lift holds at
+**SOME** re-length of `15 304` of `15 304` frames. What a *proof* needs is a
+**choice function** — an explicitly computable `ℓ'(S, A)` plus an argument
+that it lifts. This step reports the search for one, and it separates a
+rule's **principle** from its arbitrary **tiebreak**, because the two are
+easy to confuse here: `minodd` (rank on `n_odd(child)`, ties lexicographic)
+and `minodd_bal` (same principle, ties by the most equal split) score
+`80/15 304` and `106/15 304` — the same principle, different verdicts, so a
+rule's score is not evidence about its principle. The driver therefore also
+reports the **argmin-set** test with the tiebreak removed.
+
+> **(GR-248)** `[MEASURED]` *(`gsecond.py --rule` on the EXHAUSTIVE
+> `--split --shapes 7892` records: `15 304` interior frames, `194 325`
+> triples)*
+> **(i) The balance law, pushed to its extreme, is NOT sufficient.**
+> Minimizing `n_odd(child)` — (GR-227)(i) strengthened from band
+> *containment* to band *minimization* — leaves **`1 018` failing triples in
+> its argmin set** of `86 140`, and is *mixed* at `161` frames. It is not
+> **refuted** as a principle (`0` frames at which *every* balance-minimal
+> re-length fails), but it does not decide the question, and as a rule it
+> picks a failing re-length at `80` frames.
+>
+> **(ii) The rule that does decide it, and it is parent-computable.**
+> Minimizing **`|ca|`**, the number of distinct ADMISSIBLE child
+> out-restrictions, has **`0` failing triples in its argmin set of
+> `89 781`**, at **`15 304/15 304`** frames — `0` all-fail, `0` mixed,
+> `15 304` clean. `|ca|` is decided by `filter_pass` over the child's `2^6`
+> colourings: **no rank computation, no draw, no cap**, and computable by
+> the parent before it commits to a re-length. Unlike `minncg` — the same
+> test on `|cg|`, also `0` of `119 935`, but needing the child's GOOD
+> census — it is a genuine explicit choice function.
+>
+> **(iii) Its availability, which is the clause that could have killed it.**
+> The rule needs a safe pick only where `pg` is deficient. At every one of
+> those `6 872` frames one exists: `min_ℓ' |ca(ℓ')| = 4` at `933` and `6` at
+> `5 939`, and **`0` frames have `pg` deficient with every re-length
+> saturating the cube**. (The `1 085` frames whose every re-length saturates
+> all have `pg` FULL, where saturation is harmless.)
+>
+> **(iv) Controls, so the `0` is not read as more than it is.** The region
+> does discriminate: `minspread` (the most equal split) is **all-fail at
+> `197` frames**, `maxspread` at `54`, `maxodd` fails at `155` frames,
+> `lexmin` at `112`, `maxpg` at all `208`. So `minnca`'s `0` is not an
+> artifact of a region where everything works.
+>
+> **(v) The cap, stated in the direction it bears.** The menu is the
+> author's: *"no rule in the menu is both available and sufficient"* would
+> never be *"no rule exists"*, and symmetrically **`minnca`'s `0` is "not
+> refuted over the exhaustive `n_hub = 6` interior region at `8` draws",
+> never "minimizing `|ca|` lifts"**. Its *conclusion* is a GOOD-set
+> inclusion and inherits (GR-244)'s two-sided draw cap; only its
+> *hypothesis* is exact. And by the scope note in this direction's VERDICT
+> BLOCK, `|O| = 3` is an `n_hub = 6` fact: at `n_hub = 8` the cube has `64`
+> points and there is no evidence yet that a `|ca|`-minimal child is safe
+> there.
+
+---
+
+### Step G268 — (GR-243): the exhaustive `2 × 2` — the residual is **`1 095` rank / `187` admissibility**, the landed `594` reproduces independently, and the population is confirmed bit-for-bit
+
+> **(GR-243)** `[MEASURED]` *(`gsecond.py --split --shapes 7892`,
+> EXHAUSTIVE over `gisland.stratum(6, lamcap=99)`, `8` draws, seed
+> `20260912`, `2 065` s, baseline `2145cb0b`)*
+> **(i) The population is (GR-232)(ii)'s, verified and not assumed.** The
+> run reproduces **every** shared figure exactly: `7 892` shapes, `15 304`
+> interior frames, `194 325` triples, `w_up = 1 890`, `s_up = 51 099`,
+> `up_adm = 1 246`, `f_up_all = 15 096`, `f_up_some = 15 304`, and censuses
+> of `8 768` distinct shapes / `386 238` admissible colourings / `315 024`
+> GOOD. So the partition below is a refinement of the landed count, not a
+> re-measurement of a different one.
+>
+> **(ii) The `2 × 2` of (GR-241), over the `1 890` weak-lift failures.**
+>
+> | | KIND A (missed restriction **not parent-admissible** — CAP-FREE) | KIND B (parent-admissible, no GOOD parent colouring — capped) | total |
+> |---|---|---|---|
+> | **ADVERSARIAL** ((GR-227)(i)) | `594` | `14` | `608` |
+> | **BALANCE-SAFE** (*the residual*) | `187` | `1 095` | `1 282` |
+> | total | `781` | `1 109` | `1 890` |
+>
+> **(iii) The answer to the dispatched question.** The `1 282` are
+> **`1 095` (`85.4 %`) class B — a RANK obstruction — and `187` (`14.6 %`)
+> class A — a second COMBINATORIAL one.** So there *is* a second
+> combinatorial condition, but it is the **minority**, and the majority
+> class is the one the question did not anticipate. This confirms
+> (GR-242)'s cap-free bound `|A ∩ R| ≤ 397` with room to spare (`187`), and
+> independently **reproduces (GR-227)(iii)'s `594`** from a separate
+> implementation.
+>
+> **(iv) The strong datum splits the same way, more sharply.** Of the
+> `51 099` strong-lift failures: ADVERSARIAL `2 173` A / `129` B;
+> BALANCE-SAFE `8 209` A / `40 588` B. So class B is `79.7 %` of the strong
+> failures too, and the balance law explains only `4.5 %` of them
+> (`2 302` of `51 099`).
+>
+> **(v) Cap disclosure.** The KIND A counts are **cap-free** (the `pa`
+> membership test is exact; only the child colouring exhibiting the missed
+> restriction is a GOOD witness, which is a proof). The KIND B counts are
+> **capped at `8` draws in both directions** by (GR-244): deeper draws could
+> move a triple out of class B by growing `pg`, or move a *holding* triple
+> into it by growing `cg`. (GR-244)(ii)–(iii) and (GR-246)(ii) are three
+> independent controls finding `0` movement, at a `200`-shape prefix.
+
+---
+
+## VERDICT BLOCK — direction GSECOND (ordinal 110, rank 3, 2026-09-12)
+
+**The question as dispatched:** *(GR-232)(ii) reports the weak lift failing
+at `1 890` of `194 325` `(frame, re-length)` triples, of which (GR-227)(i)'s
+balance law explains `608` — what is the obstruction behind the other
+`1 282`, and is it avoidable by the parent's choice of re-length?*
+
+### The F26 consumer check, run first, and it lowers the value of this direction's own question
+
+**What cites `T↑∃∃`.** `python3 notes/ledger.py --cited-by '(GR-232)'`
+returns **three** claims — (GR-226)(v), (GR-227)(v), (GR-230)(iii) — and all
+three sit inside **GCOLTRANS's own step cluster** (Steps G246, G247, G250),
+i.e. the direction that minted it. **No claim outside that cluster consumes
+it.** `--cited-by '(GR-230)'` returns **`0`**: the block-triangular cycle
+filtration, which is the structure that would make a lift lemma a rank
+factorization, is cited by nothing at all.
+
+**What would consume a proof of it, and at which quantifier.** The consumer
+is the `G°` induction's inductive **step**, in the shape (GR-226)(iv)/(v)
+fix: the induction runs on `n_hub`, dropping by `sz − 1 ≥ 2` per frame with
+base `n_hub = 2`; the induction hypothesis is *(GR-15) at the child* and the
+step is *child GOOD ⟹ parent GOOD by an explicit map*, with the `∀` over the
+child's GOOD colourings forced because the hypothesis hands the step an
+arbitrary one. So a proof of `T↑∃∃` would be consumed **once**, as that step,
+and nowhere else.
+
+**And it is necessary, not sufficient — quoted with its hypotheses.**
+(GR-231)(iv), verbatim: *"a transport lemma closes the `G°` induction on the
+part of the stratum `M_c` reaches, and that part is not the stratum … A
+positive transport verdict is therefore **necessary and not sufficient** for
+(GR-15); a negative one would be sufficient to kill the route."* The
+unreached part is not a remainder: `22 720` of `39 689` at `n_hub = 8` on the
+`Λ = ∅` stratum ((GR-231)(iii)), and it contains the proved infinite family
+`CL_m` ((GR-220)(iii)). **This direction's own question therefore cannot
+close the lane, and the entry was ranked `3` for exactly that reason; nothing
+found here changes that ranking.**
+
+### The scope limit that matters most, and it is not in the dispatch spec
+
+Every structural result below — the `3`-cube, the single antipodal pair, the
+`|ca| ≤ 6` sufficient condition — is stated at `|O| = 3`, and **`|O|` is not
+a constant of the problem**. At an interior `|A| = 3` frame,
+`|O| = 3n/2 − |ins| − |bd| = 3n/2 − 6`, so `|O| = 3` at `n_hub = 6`,
+**`6` at `n_hub = 8`** and `9` at `n_hub = 10`: the shared datum lives in a
+cube of size `2^(3n/2 − 6)`, and `n_hub = 6` is the **smallest case in which
+the cube is nontrivial at all**. The `A ↔ B` swap argument (GR-246)
+generalizes verbatim — complement-closure is a symmetry, not an arithmetic
+accident — but *"the deficiency is ONE antipodal pair"* and *"`|ca| ≤ 6`
+suffices"* are statements about an `8`-element cube and there is no reason
+yet to expect either at `n_hub = 8`. Treat (GR-247) and (GR-248) as a
+mechanism **identified at the smallest size that has one**, not as a
+size-free law.
+
+### How the dispatch's prediction came out — verdict and mechanism priced separately
+
+**VERDICT — SPLIT, and the half that was cheap was right for a reason the
+spec named itself.** The spec predicted *"the residual `1 282` are avoidable
+by the choice of re-length, so `T↑∃∃` survives, and the second obstruction is
+a second **combinatorial** condition rather than a rank condition"*, and said
+of the first half that it *"is worth almost nothing as a prediction"* because
+(GR-232)(ii)'s `100 %` already forces it. That is correct, and it is
+**CONFIRMED** and strengthened: not only does some re-length work, an
+explicit parent-computable one does ((GR-248)). The second half — *a second
+**combinatorial** condition rather than a rank condition* — is **REFUTED**,
+cap-free and before any new measurement, by (GR-242): a combinatorial
+obstruction is KIND A, KIND A is nested inside the exact `1 246`, and the
+adversarial slice already spends `849` of those, leaving **at most `397` of
+the `1 282`**. The residual is **majority rank**, not majority combinatorial.
+
+**WHERE THE SPEC EXPECTED TO BE WRONG, it was right to expect it, and the
+shape it predicted is the shape that occurred.** It wrote: *"I expect to be
+wrong that 'the second obstruction' is a single object … the honest
+deliverable may be a **partition with a named majority class** rather than
+one law."* That is exactly what (GR-241)–(GR-243) deliver: a `2 × 2`
+partition with a named majority class (**class B**, the rank/GOOD-ness side),
+and the majority is large. The instruction *"partition first, name second"*
+was followed literally and was the right order — the partition is what made
+the naming cheap.
+
+**MECHANISM — REFUTED, by the cheap test the spec asked for, and nothing in
+this direction's first slice rested on it.** The spec's mechanism was *"the
+residual failures are an ADMISSIBILITY effect rather than a GOOD-ness effect
+— the child's colouring is good but its lift is not admissible at the parent,
+which the `1 246` count would be measuring from the other side."* That is
+precisely KIND A, and the spec's own suggested test — *"ask whether the
+`1 282` and the `1 246` intersect at all"* — is the right one, but it
+under-states what is available: the two do not merely fail to nest, the
+**cap-free part of the `1 890` is strictly nested inside the `1 246`**
+((GR-241)(i)), which converts the question from "do they intersect" into a
+**bound**. The mechanism is not merely unsupported, it is capped at `≤ 31 %`
+of the residual by exact figures.
+
+**THE TELL FIRED, and the region it named was the right one.** The spec's
+tell was *"a frame at `n_hub = 6` at which EVERY re-length fails the weak
+lift"*, located at *"the `208` frames where some re-length fails"*. It did
+**not** fire — no such frame exists — so `T↑∃∃` is not refuted at
+`n_hub = 6`. It **could** have: the region is exactly where the mechanism
+lives, and the driver reports `f_up_all` / `f_up_some` per frame, so a frame
+with every re-length failing would have been counted. This is a tell that was
+structurally able to fire and did not, which is the informative kind.
+
+### What this direction self-caught
+
+1. **The spec's semicontinuity clause is backwards for the lift predicate**,
+   and this was nearly inherited. The spec said *"the failure side is capped
+   and the success side is not"*. True of one colouring's GOOD verdict; false
+   of `cg ⊆ pg`, which compares two sets that are **both** lower bounds, so
+   the **holding** side is capped too — and the headline `100 %` is a holding
+   figure ((GR-244)). Caught by writing the predicate out rather than
+   quoting the disclosure.
+2. **A wrong formula in this direction's own diagnostic.** The first version
+   of the balance-band bound computed the number of admitted out-restrictions
+   as `2^(3−o) · (hi − lo + 1)` instead of `2^(3−o) · Σ_{j=lo}^{hi} C(o, j)`,
+   which produced a "predicted `|pa|` = 6, actual = 8" row — an impossible
+   reading, since the band is a necessary condition. Caught by the
+   impossibility, fixed, and the driver now **asserts** `|pa| ≤ bound` at
+   every frame. The corrected table is what shows the parent's band is
+   **saturated at `804` of `808` frames**, i.e. (GR-227)(i) constrains the
+   parent side not at all here.
+3. **`minnca` was mislabelled an ORACLE in the driver's own menu.** It needs
+   only the child's ADMISSIBLE census — `filter_pass` over `2^6` colourings,
+   no rank and no draw — so it is parent-computable and is a genuine choice
+   rule; only `minncg` (the GOOD version) and `maxpg` are oracles. Had this
+   not been caught the direction would have reported its one constructive
+   result as unusable.
+4. **`maxpg` is not a rule at all.** `pa` and `pg` are frame invariants, so
+   ranking re-lengths by `|pg|` ranks by a constant. Retained in the menu
+   only as a labelled degenerate control.
+5. **Phantom labels in this direction's own draft.** The kind-markers were
+   written `**(A)**` / `**(B)**` and `ledger.py --lint` parsed them as
+   **labels**, minting phantom rows `(A)`, `(B)`, `(B)(i)`, `(B)(ii)` outside
+   the reserved range. Renamed to `KIND A` / `KIND B`; re-linted clean. Worth
+   recording as a general trap: a bolded parenthesized capital at a clause
+   start is a label to the parser, whatever the author meant.
+6. **A citation taken from a commit message.** `CL_m`'s infinitude was first
+   written here from the sixteenth pass's commit-message summary; re-checked
+   against the owning sections, which give (GR-175) `[PROVED]` **for
+   `m ≥ 6`** — itself carrying an inline `2026-09-11` correction from
+   `m ≥ 4`, the construction being empty at `m = 4, 5` — and (GR-220)(iii)
+   for the no-reduction half. The scope word `m ≥ 6` came only from the
+   owning section.
+
+### Caps and blind axes this direction's evidence ran under
+
+**Every blind axis the dispatch named was opened, and each is reported as
+found, not as assumed.**
+
+* **The FENCED call — `good_bits(draws=1)` at `gcoltrans.py` L488 — does
+  NOT touch the `1 890`.** L488 is inside **`leg_pair`** (the `--pair`
+  worked instance, where `check_identity=True` asserts `dim_Z` against the
+  branch model). `leg_lift` runs `Census(random.Random(C_SEED),
+  draws=draws)` with `draws=8`. The denominator was established **before**
+  the population was used, per F26, and it is `8` draws throughout.
+* **`C_SEED = 20260912` / iteration order — opened, measured inert.**
+  `gsecond.PerShapeCensus` re-keys the draw stream on the shape
+  (`C_SEED ⊕ crc32(spec)`) and reproduces `32` failures and
+  `1 233`/`24 780`/`22 092` censuses at `--shapes 200`, identical to the
+  global stream. (GR-245)(ii) adds that for a **prefix** cap the two runs
+  are bit-identical by construction anyway.
+* **`draws=8` — opened, measured inert.** `--deep 64` gives an identical
+  GOOD census (`22 092`) and `0` repaired / `0` broken verdicts
+  ((GR-244)(ii)). The `A ↔ B` swap closure of the GOOD sets, `0` violations
+  over `24 780` colourings, is a third, independent control ((GR-246)(ii)).
+  All three are at a `200`-shape prefix, not at `7 892`.
+* **`closure.colourings(cap=4096)` — provably inert here, by derivation not
+  measurement.** `gcoltrans` calls it at `COL_CAP = 1 << 14 = 16 384`, and
+  the alternation-class count is the branch count `M`, which is `9` at the
+  parent and `6` at the child, so the gate `2^M > cap` reads `512 > 16 384`
+  — false. `admissible_list` additionally **asserts**
+  `len(cols) == 1 << mod['M']`, so a binding cap would raise rather than
+  truncate.
+* **`gisland.stratum(lamcap=0)` — not used.** Every run here inherits
+  `gcoltrans`' `stratum(6, lamcap=99)`: `Λ` unrestricted, and `--shapes
+  7892` is the whole stratum.
+* **`gcoltrans.leg_block(shape_cap=25)` — not relied on.** (GR-230) is
+  cited for the *structure* of `Θ` (a derivation) and for the framing of
+  KIND B as a rank condition; none of this direction's counts depends on
+  its `25`-shape measured figures.
+* **Uncontrolled axes, named.** `n_hub = 6` and `|A| = 3` only — see the
+  VERDICT BLOCK's scope note, which is the binding limitation. The
+  *identity* of the missed antipodal pair ((GR-247)(iv)) is at a
+  `200`-shape prefix. `--sets` was never run exhaustively.
+
+### Confidence, and what would change it
+
+**High** on (GR-241)–(GR-243) and (GR-245): the partition is a one-line
+derivation, the exhaustive run reproduces every one of (GR-232)(ii)'s shared
+figures bit-for-bit *and* independently re-derives (GR-227)(iii)'s `594`,
+and the disclosure refutation is a single re-run of the landed driver.
+**High** on (GR-244) and (GR-246) as derivations. **Moderate** on (GR-247)
+and (GR-248): the figures are exhaustive at `n_hub = 6`, but the objects
+they are about — a `3`-cube, one antipodal pair, `|ca| ≤ 6` — are artifacts
+of `|O| = 3n/2 − 6 = 3`, and `n_hub = 6` is the smallest size at which the
+shared datum exists at all.
+
+**What would change this.** *(a)* Any `n_hub = 8` interior frame at which
+`min_ℓ' |ca(ℓ')|` saturates the `64`-point cube while `pg` is deficient
+would refute (GR-248) as a size-free rule, and is the single cheapest next
+measurement — it is an **admissibility** census (`filter_pass`), not a GOOD
+census, so it does not pay (GR-232)'s colouring cost. *(b)* A frame whose
+`pg` misses a non-monochromatic antipodal pair would restrict (GR-247)(iv)
+to a coincidence of the prefix; `--sets --shapes 7892` settles it at one
+`--split`'s cost. *(c)* A GOOD colouring found at `> 8` draws anywhere in
+the region would reopen (GR-244) and move `1 890`, `1 095` and `1 282`
+simultaneously — three controls say it will not, all at a `200`-shape
+prefix. *(d)* Nothing here can be changed by a better choice rule into a
+*sufficient* condition for (GR-15): (GR-231)(iv) bars that, and the VERDICT
+BLOCK's consumer check confirms `T↑∃∃` has exactly one consumer.

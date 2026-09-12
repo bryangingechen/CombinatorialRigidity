@@ -5623,7 +5623,16 @@ that lane moves to **(BE-278) / *Step BE277***, not to (BE-281). The reservation
 was re-verified 0-hit by the direction at its own baseline after `HEAD` advanced
 under it — the concurrent-read discipline working.
 
-**THE LIVE TAIL AFTER THIS ROUND, if the two `(GR-.)` ranges are consumed, is
+**GSECOND CONSUMED ITS WHOLE RANGE** — **(GR-241)–(GR-248)** / ***Steps
+G261–G268***, landed 2026-09-12 into `workbook/grid.md` after GCOLTRANS's
+verdict block. Nothing returned. A trap worth recording from this direction:
+its kind-markers were first written `**(A)**` / `**(B)**` and `ledger.py
+--lint` parsed them as **labels**, minting phantom rows `(A)`, `(B)`, `(B)(i)`,
+`(B)(ii)` **outside** the reserved range; renamed to `KIND A` / `KIND B` and
+re-linted clean. **A bolded parenthesized capital at a clause start is a label
+to the parser, whatever the author meant.**
+
+**THE LIVE TAIL AFTER THIS ROUND, if GBASE's range is consumed, is
 (GR-249) / *Step G269*; on the `(BE-.)` lane it is (BE-278) / *Step BE277*.** Two of the three
 directions mint in the **same** section file (`workbook/grid.md`) and the
 ranges are disjoint by construction — reservations prevent naming collisions,

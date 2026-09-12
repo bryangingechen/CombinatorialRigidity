@@ -48,8 +48,11 @@ headline sentence).
          (the universal (GR-226)(iv), which is REFUTED) and per FRAME in
          both the EVERY and the SOME form -- the SOME form is (GR-232)'s
          `T-up-exists-exists`, the only form the induction consumes.
-         DEFAULT `--shapes 400` is a PREFIX and shows 0 failures; the
-         landed figures are `--shapes 7892` (~30 min).
+         DEFAULT `--shapes 400` is a PREFIX and shows 125 weak-lift
+         failures (CORRECTED 2026-09-12, direction GSECOND, (GR-245): this
+         line and the caps block below both read "0", and both were wrong --
+         the onset is between shapes 60 and 200).  The landed figures are
+         `--shapes 7892` (~30 min).
 
 --desc   [GCT-4] (GR-229): T-down -- the descent the dispatch spec named,
          measured, and the demonstration that its existential form is
@@ -97,10 +100,17 @@ CAPS AND BLIND AXES, stated once.
    where `n - 1 <= c`; what excludes them from a transport measurement is
    that they share nothing.)
  * `--shapes N` takes a PREFIX of `gisland.stratum(6, lamcap=99)` in
-   generator order, NOT a random sample: the default 400 shows 0 lift
-   failures and the exhaustive run shows 1 890.  One `random.Random(C_SEED)`
-   feeds every census in a run, so the draws a shape receives depend on the
-   iteration order and a capped run is not bit-identical to the full one.
+   generator order, NOT a random sample.  CORRECTED 2026-09-12 (direction
+   GSECOND, (GR-245)): this sentence used to claim "the default 400 shows 0
+   lift failures"; it shows **125** (400 shapes, 1 608 interior frames,
+   15 647 triples), the exhaustive run shows 1 890, and the onset sits
+   between shapes 60 (0 failures over 1 693 triples) and 200 (32).  One
+   `random.Random(C_SEED)` feeds every census in a run, so the draws a shape
+   receives depend on the iteration order -- but for a PREFIX cap the two
+   runs ARE bit-identical on the first N shapes, the stream being in the same
+   state throughout; the real order-dependence is BETWEEN legs (`--lift` and
+   `--comp` censused 8 768 and 10 286 distinct shapes), and (GR-244)(ii)-(iii)
+   measure the dependence inert at a 200-shape prefix.
  * GOOD is decided by `--draws` exact rational draws (default 8, vs the
    landed `block_generic_zero` default of 2 and `dim_Z_generic`'s 3).  A
    colouring called GOOD is PROVEN good -- an attaining exact draw is a
