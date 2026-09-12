@@ -1665,6 +1665,190 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-12 — THE FOURTEENTH STRATEGY-ONLY PASS. THE THIRTEENTH'S RANKS 1 AND 2
+ARE BOTH SPENT** — GNONADD 100 (rank 1, answered **POSITIVE**, and the entry's promise that a
+positive revives the induction **withdrawn**) and GLAMPROP 99 (rank 2, spent, and the entry's
+**premise false**) — **and the cross-lane note's own item was spent off-board**: BSIXRUNG 101
+ran the (BE-14) lane after the coordinator **re-aimed it off** the `(BE-OBL7)` ∧ `(BE-OBLK)`
+target this board named. Coordinator-authored at a round close, **no dispatch spent, no label
+minted.** Every entry re-derived from its **owning** step.
+
+**WHAT THIS PASS CHANGES — a promotion ACROSS LANES, and one of the round's own successors
+re-aimed. Both changes came out of the re-derivation, not out of the round's summaries.**
+
+*(i) The (BE-14) lane's item is now PRICED, and the pricing that kept it off the top is
+REFUTED.* The thirteenth pass's cross-lane note named `(BE-OBL7)` ∧ `(BE-OBLK)` and priced the
+lane's habitat as *"needs a new builder, not a parameter"*. Both halves are now wrong at their
+owning steps. **(BE-235)(ii)** (proved, and landed *before* that note was written) splits the
+324 `a = 0` tuples by rung and finds `(BE-OBL)`'s only rung of genuine reduction value is
+`Σδ = 7`, carrying **4** of the 30 residue tuples, while on `Σδ ≤ 6` — the other **26** — it is
+**the target restated**; *"a successor that equals its target on 87 % of the residue is not a
+reduction."* And **(BE-243)(i)** reaches the rung-3 region with the **landed** `bproper.free_peel`
+chain at **84 of 108** fully-gated rows, `a = (0,0)`, generic flag regime, side-degree `≥ 2` on
+both sides — so the *"needs a new builder"* pricing is wrong about **entering** the region and
+right only about **steering inside** it. Meanwhile **(BE-242)(iii)** prices the steering
+itself for the first time: *"two linear systems in **one vertex**, `p_y`."* An unpriced
+*"needs a new builder"* is what held this lane below rank 5 on a board whose own standing
+*distance to the phase target* criterion puts `hbareSplit` **above** `hK`. It is priced now.
+It goes to rank 1.
+
+*(ii) The round's own named successor on the `hK` lane is aimed at the SETTLED half.* The
+hand-off and rank 1's kill line both name **(GR-198)**'s regularity — *is every
+cut-3-triangle-carrying class shape Y-reducible?* — as the successor to price. Re-derived at
+*Step G218*, that question is asked **of the population that is already 100 % at all three
+levels** (80/80, 7 892/7 892, 16 969/16 969). GNONADD's own closing paragraph says where the
+obstruction actually sits: *"the block is **absence of a triangle**, never failure of the
+contraction."* And the complement is not a vague remainder — it is **enumerated and landed**:
+at `n_hub = 8`, **2 of the 11 inhabited hub-multigraph classes carry no cut-3 triangle at all,
+and they hold 22 720 of the 39 689 shapes** ((GR-198)(iv)). So the entry this board carries is
+the **triangle-free complement**; the regularity question is demoted to a corollary of it and
+is not ranked on its own.
+
+1. **THE WHOLE-`H` BUILDER AT RUNG 3.** *(new — BSIXRUNG's successor; the
+   **(BE-14)/`hbareSplit`** lane, promoted across lanes on (i) above.)* Owner:
+   §(K-bare-ext) *Steps BE241–BE244*, (BE-242)/(BE-243)/(BE-245). The rung-3 obligation —
+   `a = 0`, `Σδ ≤ 6`, side-degree `≥ 2` on both sides, internal R-node peel, generic flag
+   regime, **26 of the 30 residue tuples**, and by **(BE-235)(i)** *the `Π_x` obligation
+   verbatim* rather than a surrogate — is neither proved nor refuted, and the state is
+   **asymmetric**: the **firing** half is **exhibited at the side layer** at `ρ_i = δ_i = 2`,
+   `a_i = 0`, side-degree 2, in-regime, with `ρ̄_i = Π_x` exactly as spaces ((BE-242)(ii)); the
+   **non-firing** half is not. A refutation at this rung is a whole-`H` peel with
+   `c₁ + c₂ ≥ 3` ((BE-235)(i)), and since side 1 is built, what is missing is **`H` plus
+   side 2**. **Why now and not before:** (BE-244) closed the one free mechanism that reached
+   the region on the landed skeleton family — path saturation, **absent at 236 196 of
+   236 196 R-node-shaped sides** — so the route is *"closed unless the family is enlarged"*
+   ((BE-245)(iii)(b)), and a whole-`H` builder is exactly the instrument that enlarges it.
+   **GLEAF's question: SUFFICIENT** — a peel with `c₁ + c₂ ≥ 3` refutes the obligation
+   outright, and the obligation is the lane's carried item. *Kill condition: a whole-`H` peel
+   exhibited at `Σδ ≤ 6`, `a = 0`, side-degree `≥ 2` on both sides, in-regime, with
+   `c₁ + c₂ ≥ 3` — which **refutes** the rung-3 obligation; or the one-vertex `p_y` steering
+   shown infeasible against side 2's `bline.legal_peel` gates (H's (CH-1), min degree `≥ 2`,
+   girth `≥ 4`, `deg_H(x) ≥ 3`, `rnode_shaped`, `sized`), which closes the refutation route
+   and leaves the obligation standing on the residue. Decided by: the `(K-bare)/(K-bare-ext)`
+   row.*
+
+   > **THE RISK, named because this entry is a promotion.** The **firing** half is off the
+   > quantifier by **(BE-245)(iii)(b)** — no effort may be spent re-exhibiting it — and
+   > **(BE-241)(iii)** bars any firing side carrying an x–y path of length `≤ 3`, so
+   > `d_min_i ≥ 4`. The entry therefore lives or dies on **side 2 and the `H` that carries
+   > both**, and a direction that returns another side-layer certificate has returned
+   > nothing. Note also that (BE-243)(ii) found `c_i(Π_x)` **equal to the Grassmann floor
+   > `max(0, ρ_i − 4)` at 216 of 216 side-instances** on the landed population: a builder
+   > that only reproduces that population will reproduce that equality, and the equality is
+   > precisely what makes `c₁ + c₂ ≥ 3` unreachable there. **Enlarging the family is the
+   > deliverable, not a side effect.**
+2. **(GR-206)(iv) — THE `own`-HALF PROPAGATION GAIN.** *(new — GLAMPROP's successor, and its
+   own prose calls it "the sharpest open question this direction leaves".)* Owner:
+   §(K-grid) *Step G226*, (GR-206). At `n_hub = 4` the `(own, other)` split of (GR-184)'s
+   residual dichotomy is **perfect** — `(0,1) ⟹` Type B 38/38, `(1,0) ⟹` Type A 38/38,
+   `Λ = ∅ ⟹` Type A 320/320 ((GR-206)(i)). The `other` half's mechanism is **measured and
+   understood**: contraction removes a super-edge without removing a class incidence, so
+   rule (a)'s round-0 kill rate doubles, 28.1 % → 55.7 % ((GR-206)(iii)). The `own` half is
+   **not**: same 6.00 super-edges, `|K| ≥ 3` per block 0.25 against 0.28, round-0 kill rate
+   **24.8 % against 28.1 %, i.e. slightly LOWER**, the same simple `K4` suppressed graph —
+   yet `gen` 91.2 % against 82.8 % and Type A failures **7× fewer** (1.45 % against 10.4 %).
+   So the whole gain happens **during** propagation, on a graph and an initial table that
+   look the same. **And the natural explanation is already REFUTED and pinned:** (GR-16)(iii)
+   fusion is the obvious mechanism and it fires at **2 of 1 104 (0.18 %)** ((GR-206)(ii)), so
+   this entry starts with its own tautology removed — the field the last two passes found
+   rots first is, uniquely here, already burned. **GLEAF's question: a REDUCTION, not a
+   closure** — it explains a gain the closure already has. Cheapest live probe on this lane;
+   the instrument is landed and the first slice is a `propagate(trace=True)` rule histogram
+   at `(1, 0)` against `(0, 0)`. *Kill condition: the `own`-half gain attributed to a named
+   rule among (b)/(s)/(c), or shown not to be rule-attributable at all (e.g. an ordering or
+   tie-break artefact). Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+3. **THE TRIANGLE-FREE COMPLEMENT AT `D = 0`.** *(new — GNONADD's successor, **re-aimed** off
+   the regularity question per (ii) above.)* Owner: §(K-grid) *Steps G218–G220*,
+   (GR-198)(iv)/(GR-200). The `G°` induction's reachability gate is now located exactly:
+   every class shape **carrying** a cut-3 triangle is Y-reducible (100 % at three levels),
+   and every known obstruction is **triangle-free** — (GR-175)'s `CL_m = C_m × K₂`, proved
+   triangle-free for every `m ≥ 4` and carrying no `|A| = 3` cut-3 hub set, with **0**
+   measured at `|A| = 5` for `m = 6..11` ((GR-200)). The complement is a **landed, enumerable
+   population**, not a remainder: **2 of 11 inhabited hub-multigraph classes, 22 720 of
+   39 689 shapes at `n_hub = 8`**. The question is whether `CL_m` is the *only* obstruction
+   there, or whether the `Λ`/length structure supplies a move the triangle-based families
+   cannot see. **This is the board's standing technique's natural target:** ask what (GR-25)
+   says at those two classes' distinguished subsets **and at their complements** — the move
+   that produced both of the previous round's proofs, and never yet taken on a triangle-free
+   population. **GLEAF's question: NECESSARY only, and honestly so** — even total
+   reducibility leaves the **second** gate standing, a move between *shapes* still having to
+   transport an admissible **colouring** ((GR-200) + rank 1's withdrawn promise). Rank it
+   here for that reason and not higher. *Kill condition: a move family exhibited that reduces
+   a triangle-free `D = 0` class shape, or the two triangle-free classes shown to be
+   `CL_m`-like — i.e. irreducible under every move family the arc has — which upgrades
+   (GR-200) from an infinite family to a **characterization** of the obstruction. Decided by:
+   the `(K-grid)` row, close-it u9.*
+4. **THE (c)-STRENGTHENED CLOSURE'S 14/18 RESIDUAL.** *(the thirteenth pass's rank 3,
+   **demoted one place** on rank 2's account: (GR-206)(iv) is the cheaper probe into the same
+   lane, and its answer feeds this entry's own "fifth handle" branch.)* Owner: §(K-grid)
+   *Steps G202–G203*, (GR-183)/(GR-184). The residual is **structurally characterized** —
+   Type A 567 + Type B 41 = 608/608, none left over ((GR-184)) — which is what makes it
+   attackable rather than merely open. **Its value is capped and the cap is now measured
+   twice over:** the closure is **INCOMPARABLE** with (GR-9) and *below* it on the pool
+   (9 595 against (GR-9)'s 10 203 at `dim Z = 0`), and GLAMPROP's stratification shows the
+   residual is a **`Λ = ∅` phenomenon** — **525 of 608 (86.3 %)** sit in a stratum that is
+   only 33.1 % of the population ((GR-183)(iv)). Say both in any spec. **GLEAF's question:
+   SUFFICIENT, but capped by that incomparability.** *Kill condition: the (GR-184) dichotomy
+   shown unavoidable — which closes the propagation line by mathematics — or a fifth handle
+   exhibited. Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+5. **GCOIND's MATRIX-VALUED CORANK STATISTIC.** *(the thirteenth pass's rank 4, unchanged and
+   re-derived: its other successor, the tree-triple's sufficiency for `κ < ∞`, stays
+   **STRUCK** by GFORCE.)* Owner: §(K-grid) *Steps G181–G188*, (GR-167). The
+   counting-and-closure class is **REFUTED** at 4 of the 9 distinct separator blocks by
+   exhibited witness pairs — false positives only, 61/67/24/16 of 800 sampled co-independent
+   4-partitions, never a false negative, exactly as the two necessity proofs (GR-167)(a)/(b)
+   require. The open question is whether an **ordered or matrix-valued** corank statistic
+   survives those pairs. **GLEAF's question: a REDUCTION, not a closure.** Cheap, and its
+   instrument is landed. *Kill condition: such a statistic exhibited and shown to separate
+   all nine blocks, or the four witness pairs shown to defeat every ordered refinement.
+   Decided by: the `(K-grid)` row, close-it u6 target (iii).*
+6. **THE ISLAND AT `n_hub = 10`, WHERE (GR-190)'s BOUND EXPIRES.** *(the thirteenth pass's
+   rank 5, unchanged.)* Owner: §(K-grid) *Steps G210–G212*, (GR-190). Two sub-questions: an
+   all-`Λ` binding circuit at `n_hub = 10` — where (GR-190)(iii)'s chain expires exactly
+   (`r = 7`, `s ≥ 0`, `r − s ≤ 7`, against the `r − s ≥ 7` the cut criterion forces) — and
+   whether the four `Σ_γ(ℓ−1) = 2` profiles that turn *feasible* at `n = 8` ever **occur**.
+   **GLEAF's question: NECESSARY only** — it advances route-ledger entry 3, it does not close
+   (GR-15). Ranked here because it is genuinely open and cheaply framed, not because it moves
+   the target. *Kill condition: an all-`Λ` circuit exhibited at `n_hub = 10`, or a
+   `Σ_γ(ℓ−1) = 2` island circuit shown to OCCUR at `n_hub = 8`. Decided by: the `(K-grid)`
+   row, status u12/u77.*
+7.–8. **THE TWELFTH PASS'S RANKS 5 AND 6, UNCHANGED AND NOT RE-DERIVED** — the `4T + 3Q ≥ 12`
+   habitat question and the `P¹`/splitting-type reading of (GR-7)(ii), with their kill
+   conditions and deciding rows as written below. Nothing this round touched either. **Both
+   remain candidates for the standing (GR-25)-at-a-chosen-subset technique**, and rank 3 is
+   now the worked instance of it to copy.
+
+**THE BARS THIS PASS ADDS — two, both mathematical.** *(k)* **No further pricing of the rung-3
+region as unreachable for want of a builder** — (BE-243)(i) enters it with the **landed**
+`bproper.free_peel` chain at **84** fully-gated rows; §8's *"needs a new builder"* is right
+only about **steering inside** the region, never about entering it. *(l)* **No proposal of
+cut-3-triangle Y-reducibility as a route to the `G°` reachability gate** — (GR-200)'s `CL_m`
+is triangle-free for every `m ≥ 4` and hence **outside that question's quantifier by
+construction**, so a 100 % regularity theorem there would leave the known infinite obstruction
+exactly where it stands.
+
+**THE CROSS-LANE NOTE, RETIRED INTO RANK 1.** The thirteenth pass kept the **(BE-14)** lane in
+a footnote because its item was unpriced. It is priced, so it is ranked, and this board now
+spans both lanes directly: **rank 1 is `hbareSplit`, ranks 2–8 are `hK`.** The standing
+*distance to the phase target* criterion is the reason rank 1 sits above a cheaper rank 2, and
+a coordinator who wants the cheaper dispatch first should say so explicitly rather than
+re-read the criterion as a tie-break.
+
+**AND THE LESSON — the twelfth pass's, confirmed a third time and now GENERALIZED, because
+this round widened *which* field rotted.** The twelfth and thirteenth passes both warned:
+*re-derive an entry's stated **mechanism** before its stated cost.* This round rotted three
+different fields and the mechanism was only one of them — rank 1's **promise** was withdrawn
+(a positive was to revive the induction; it does not, there being two gates), rank 2's
+**premise** was false (*"`Λ ≠ ∅` is not measured at all"*, when it was 604 of 907), and the
+cross-lane note's **target** was wrong (`(BE-OBL7)` ∧ `(BE-OBLK)`, refuted as a reduction by a
+clause that had **already landed** when the note was written). **So the rule is not about the
+mechanism field. Every field of a board entry except its verdict is written before the work
+and never re-checked when the entry is picked** — mechanism, premise, promise, target, and
+price alike. The operational form, and it is cheap: **before dispatching at an entry, open its
+owning step and check the entry's non-verdict fields against it — including fields that landed
+*after* the entry was written.** Two of this pass's own three changes came from exactly that
+check, and both were refutable from the corpus with no new computation.
+
 **RE-RANKED 2026-09-10 (second) — THE THIRTEENTH STRATEGY-ONLY PASS. THE TWELFTH'S RANKS
 1–4 ARE ALL SPENT IN ONE DAY** — GEXPAND 96 (rank 1, refuted by a proof), GFORCE 97 (rank 2,
 refuted at its first slice **and** striking rank 3 in passing), GSIMUL 98 (rank 4, split) —

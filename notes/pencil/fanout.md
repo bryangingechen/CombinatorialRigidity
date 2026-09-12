@@ -1,9 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
-FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
-dispatched; 106 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
-are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98). The round of three (BFOUR 81,
+FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
+dispatched; 109 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
+**and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
+§8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -18,7 +20,12 @@ target's own quantifier** ((BE-225)–(BE-230), `(BE-OBL)`). **BCORNER 93 then R
 `degenerate_peel`, a population nobody had re-read against the predicate — **without
 touching the obligation**, every refuting row sitting on rung 1 where (BE-225)(i) had
 already made it free; the successor is the demoted `(BE-OBL7)` ∧ `(BE-OBLK)`, worth 4
-residue tuples ((BE-231)–(BE-238), §"BCORNER").
+residue tuples ((BE-231)–(BE-238), §"BCORNER"). **That successor sentence is SUPERSEDED —
+corrected 2026-09-12 at the fourteenth strategy pass, and the correction was available in
+the corpus when the sentence was written:** (BE-235)(ii) splits the same 324 tuples by rung
+and finds `(BE-OBL)` *equal to its target* on the 26 tuples at `Σδ ≤ 6`, so a successor
+worth 4 of the 30 residue tuples *"is not a reduction"*. BSIXRUNG 101 was re-aimed off it
+onto the bottom rung, and §8's rank 1 is now the whole-`H` builder there.
 
 *(**THIS HEADER WAS STALE BY ONE, caught at BEFOURP's landing (2026-09-08).** It read
 *"94 LANDED"* with the chain ending at BRANKV 86: **BLONGARC's landing (`19f5d8b5`)
