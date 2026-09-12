@@ -5587,3 +5587,37 @@ a hazard at the point it was created rather than at landing.
 > at 253/253**. So an opened fence is not always a load-bearing one, which is
 > the honest complement to F28 and to the previous round, where un-fencing
 > decided everything.
+
+## Reserved namespace — the SIXTEENTH pass's round of three (2026-09-12, dispatched together)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GBASE** | §(K-grid) — continuation in `workbook/grid.md` | **(GR-233)–(GR-240)** | ***Steps G253–G260*** | `w4/gbase.py` (new; the direction names its modes) |
+| **BMBLOCK** | §(K-bare-ext) — continuation in `workbook/bare-ext/BMBLOCK.md` | **(BE-271)–(BE-280)** | ***Steps BE270–BE279*** | `w4/bmblock.py` (new; the direction names its modes) |
+| **GSECOND** | §(K-grid) — continuation in `workbook/grid.md` | **(GR-241)–(GR-248)** | ***Steps G261–G268*** | `w4/gsecond.py` (new) + `w4/gcoltrans.py` re-runs |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`), all at
+the round's baseline `ce69720c`:
+
+* **GBASE** — **CLEAN EXCEPT THE DECLARATION**: `(GR-233)` and `G253` hit only
+  the previous reservation's own live-tail bookkeeping in `labels.md` (1 hit /
+  1 file each, line 5513/5514); `(GR-234)`–`(GR-240)`, `G254`–`G260`, `GBASE` /
+  `gbase` **0 hits / 0 files each**.
+* **BMBLOCK** — **CLEAN EXCEPT THE DECLARATION**: `(BE-271)` and `BE270` hit
+  only the two live-tail sentences in `labels.md` (2 hits / 1 file each, lines
+  5473 and 5556/5557); `(BE-272)`–`(BE-280)`, `BE271`–`BE279`, `BMBLOCK` /
+  `bmblock` **0 hits / 0 files each**.
+* **GSECOND** — `(GR-241)`–`(GR-248)`, `G261`–`G268`, `GSECOND` / `gsecond`
+  **0 hits / 0 files each**, corpus-wide. The first choice of code, `GLIFT`,
+  was **rejected at the check**: it is 2 hits / 2 files, both a
+  *checked-not-chosen* name in GDEV-prep's list (`fanout-archive.md:2852`,
+  `labels.md:439`) rather than a consumed direction — clean by classification,
+  but a name a future reader would have to disambiguate, so it was dropped for
+  a 0-hit one instead of argued for.
+
+**THE LIVE TAIL AFTER THIS ROUND, if all three ranges are consumed, is
+(GR-249) / *Step G269* and (BE-281) / *Step BE280*.** Two of the three
+directions mint in the **same** section file (`workbook/grid.md`) and the
+ranges are disjoint by construction — reservations prevent naming collisions,
+not two directions deriving one identity (dispatch-log F20), so the
+cross-return pass carries the duplication check.

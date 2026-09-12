@@ -1665,6 +1665,140 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-12 (third) — THE SIXTEENTH STRATEGY-ONLY PASS. THE FIFTEENTH'S RANKS 1, 2
+AND 3 WERE ALL SPENT IN ONE ROUND, THE SECOND CONSECUTIVE ROUND TO SPEND ITS WHOLE TOP THREE** —
+BGOODEMPTY 105 (rank 1, `Good = ∅` NOT FOUND under cap C and two of the three routes to one
+CLOSED BY PROOF), GCOLTRANS 106 (rank 2, the gate had no truth value as posed and is four
+statements), BTAKERS 107 (rank 3, the previous round's headline priced at ZERO at the consumer
+layer, plus the round's only gain). **Two of three verdicts CONFIRMED against zero of three in
+the fourteenth-pass round; three of three MECHANISMS refuted, six for six across the day** —
+which is the cross-return pass's measurement of what the criterion change bought and what it did
+not. Coordinator-authored at the round close, **no dispatch spent, no label minted.** Every entry
+re-derived from its **owning** step. **The criterion is unchanged: GLEAF's question first —
+SUFFICIENT above REDUCTION above NECESSARY — and cost only *within* a class** (user ruling,
+2026-09-12).
+
+**WHAT THIS PASS CHANGES — the `G°` induction's architecture is now fully mapped, and the leg
+that is missing is the BASE, not the move family.** Three landed results, none of them written
+as a statement about the induction, say together what is left of it.
+
+*(i)* **Reachability is settled in both directions** and no longer ranks anything (GTRIFREE,
+bar *(m)*). *(ii)* **Transport is measured at `100 %` in the only form the induction consumes** —
+`T↑∃∃`, parent free to choose frame and re-length, `15 304 / 15 304` interior frames at
+`n_hub = 6`, in both strengths of shared datum ((GR-232)(ii)). *(iii)* **And (GR-231)(iv) says in
+terms what that buys:** *"a transport lemma closes the `G°` induction on the part of the stratum
+`M_c` reaches, and that part is not the stratum … A positive transport verdict is therefore
+**necessary and not sufficient** for (GR-15)."* **The part `M_c` does not reach is not a
+remainder.** At the largest size the corpus has enumerated it is the **majority**: `22 720` of
+`39 689` at `n_hub = 8` on the `Λ = ∅` stratum ((GR-231)(iii)), `378 864` of `635 144` (`59.6 %`)
+once `|Λ| = 1` is opened ((GR-221)(iv)), and it contains a **proved infinite family** — `CL_m` is a
+`D = 0` tight class shape for every `m ≥ 6` ((GR-175)) with **no** Y-reduction at `|A| ≤ c` for
+every `m > (c+1)/2` ((GR-220)(iii)). **Every shape in it is a base case of the induction, and no
+pass has priced the base.** Ranking it discharges the converse the fifteenth pass left owed on bar
+*(m)* — *"an entry proposing transport as the closing gate must price the COVERAGE gate"* — from
+the other side.
+
+**AND A COORDINATOR CAUTION THIS PASS RECORDS, BECAUSE IT NEARLY WENT INTO A SPEC AS A HEADLINE.**
+GCOLTRANS's own caps block reads *"**No colouring was computed at `n_hub = 8`:** the transport
+verdicts are all at `n_hub 6 → 4` … and `n_hub 6 → 2` / `4 → 2`"*. That sentence is **direction-
+scoped and is false of the corpus.** §(K-grid) **(GR-34)** certifies a **fully-good colouring per
+shape** on the circular ladders — `cflank.ladder`, excess `2+2+2` on three adjacent rungs, the
+CFLANK `--tight` recipe — habitat-certified at **`n = 2m ≤ 20`**; and **(GR-71)** carries (b′) to
+**536 exact shapes at `n_hub = 8/10/12`** and to cap-free per-matching certificates at `n = 30`.
+Since *fully-good* is defined as an **exact-ℚ `dim Z = 0` point in both blocks** ((GR-31)(i)),
+**per-shape (GR-15) is already landed on part of the base**, at a length recipe that is not
+(GR-175)'s. A rank-1 entry ranked on *"this region has never been measured"* would have re-derived
+landed work as its headline. **The rule, and it is bar *(n)* below: a cap sentence inside a
+direction's own disclosure block is a statement about THAT DIRECTION's figures, never about the
+corpus** — the corpus-level question needs its own grep, and this one takes two minutes.
+
+1. **THE INDUCTION'S BASE AT `D = 0` — HOW BIG IS IT, AND IS (GR-15) ON IT EASIER THAN (GR-15)?**
+   *(new — the coverage gate, from (GR-231)(iv)'s own closing sentence.)* Owner: §(K-grid)
+   *Steps G244–G252*, (GR-220)(iii)/(GR-221)(ii)–(v)/(GR-231). Under the local-move ruling the
+   induction's base is **every `D = 0` tight class shape with no frame at `|A| ≤ c`**, and the
+   corpus already names its inhabitants at three sizes without ever collecting them: `80 of 80` at
+   `n_hub = 4` (**no interior frame exists at all** there, (GR-231)(i)), the `1 428` `K₃,₃` shapes
+   at `n_hub = 6`, the `Q₃ = CL₄` and `V₈` classes at `n_hub = 8`, and `CL_m` for every
+   `m > (c+1)/2`. **GLEAF's question: this is the THIRD LEG of the only proof architecture on this
+   lane whose other two legs are landed** — reachability settled, transport at `100 %` — so a
+   uniform argument on the base **closes (GR-15) on the stratum** in combination, and a
+   demonstration that the base is as hard as (GR-15) itself **strikes the `G°` induction as a
+   route** rather than merely blocking it. Ranked 1 for that, and because the entry is cheap in
+   its decisive half: **the share is a cubic-multigraph enumeration, not a colouring census.**
+   **First slice:** the base's *characterization* — (GR-220)(ii)'s own argument says `CL_m`'s only
+   3-edge-cuts are its `2m` hub stars, and (GR-221)(ii) gives `Q₃`/`V₈` `0` frames at `|A| ∈
+   {3,5}`, so *the coordinator's candidate is that the base is exactly the shapes whose hub
+   multigraph has no NON-TRIVIAL 3-edge-cut* — **a candidate to eliminate, not a premise**; then
+   its share at `n_hub = 10` against the landed `0/80 → 81.9 % → 42.8 %` reduction trend.
+   *Kill condition: the base's share shown to fall with `n_hub` — which would make the induction a
+   genuine reduction and re-rank transport to the top — or a uniform (GR-15) argument on the base
+   exhibited, or the base shown to contain a family on which (GR-15) is open for the same reason
+   it is open in general, which STRIKES the `G°` induction. Decided by: the `(K-grid)` row,
+   close-it u9.*
+
+2. **`⟨M⟩` AT RUNG 3 — THE LAST OPEN ROUTE TO A `Good = ∅` PIECE.** *(new — BGOODEMPTY's own named
+   successor, and its words are* "now the cheapest remaining route … and this direction did not
+   close it"*.)* Owner: §(K-bare-ext) *Step BE261*, (BE-262)(ii), standing on (BE-97)(iv). The
+   shape is `c_i(⟨M⟩) = 1` on **both** sides — both sides' relative screw spaces containing the
+   virtual edge's own line `p_x ∨ p_y` — which at `dim U = 1` is a violation by `2 > 1`, **the
+   cheapest the arithmetic allows**. It is **unwitnessed and not excluded**: `0` of the landed
+   `93` ((BE-120)(i)) and `0` at BGOODEMPTY's `253` in-region rows, the two denominators left
+   un-summed deliberately. **GLEAF's question: SUFFICIENT**, and it is the only SUFFICIENT entry
+   on either lane — by (BE-69)(ii) a `Good = ∅` piece makes the shortfall hold **identically on
+   `Chart(H)`**, which is an obstruction to `hbareSplit` itself and not merely to a universal
+   reading of the obligation. **Why it is rank 2 and not rank 1 despite being much the cheapest:**
+   BGOODEMPTY closed the `Π_x`/`Π_y` route by proof and the one-sided route combinatorially, so
+   this entry is what its own round left standing, and the prior on the *positive* arm is a
+   measured `0 of 346`. **What makes it worth a dispatch anyway:** its negative arm is a proof, not
+   a tally — (BE-258)'s `rank(ω ↦ ω ∧ p_x) = 3` closed a 2-dimensional block outright, and nobody
+   has asked the same question of the 1-dimensional one.
+   *Kill condition: a rung-3 `H` with `c_i(⟨M⟩) = 1` on both sides exhibited — which reaches
+   (BE-14) — or `c₁(⟨M⟩) + c₂(⟨M⟩) ≤ 1` proved generically at rung 3 the way (BE-259)(i) proved
+   the `Π_x` block, which closes the last cheap route and sends the lane to the `dist_i ∈ {5,6}`
+   corner. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+3. **`T↑∃∃` — FROM `100 %` TO A THEOREM, WHICH MEANS NAMING THE SECOND OBSTRUCTION.** *(new —
+   GCOLTRANS's *What would change this* item 2.)* Owner: §(K-grid) *Step G252*, (GR-232)(ii) and
+   (GR-230). The lift holds at **some** re-length of `15 304 of 15 304` frames, and the weak form
+   fails at `1 890` of `194 325` triples of which **(GR-227)(i)'s balance law explains `608`** —
+   `32 %`, a `13×` enrichment on `2.4 %` of the space. **The other `1 282` are not explained**, and
+   GCOLTRANS says so in terms: *"the balance law is the mechanism this direction can exhibit, not
+   the whole obstruction."* **GLEAF's question: NECESSARY**, by (GR-231)(iv) verbatim — which is
+   why it ranks below both entries above even though it is the leg nearest to done. **Its negative
+   is the decisive half:** a second obstruction that is *not* avoidable by the choice of re-length
+   refutes `T↑∃∃` and kills the induction's transport leg outright. **First slice is landed data,
+   not a new population:** the `1 282` are a committed run's output; partition them before building
+   anything.
+   *Kill condition: the residual obstruction named and shown avoidable by re-length choice — which
+   with (GR-230)'s block-triangular `Θ` is the proof — or a frame exhibited at which EVERY
+   re-length fails the weak lift, which refutes `T↑∃∃` at `n_hub = 6` and kills the leg. Decided
+   by: the `(K-grid)` row, close-it u9.*
+
+4.–8. **THE FOURTEENTH AND FIFTEENTH PASSES' REMAINING ENTRIES, UNCHANGED IN CONTENT AND
+   RE-ORDERED BY THE STANDING CRITERION ONLY** — the (c)-strengthened closure's 14/18 residual
+   (SUFFICIENT but **capped twice over**: incomparable with (GR-9) and *below* it on the pool,
+   9 595 against 10 203, and `525 of 608` of the residual sits in the `33.1 %` `Λ = ∅` stratum, so
+   even closing it does not obviously beat the tool the arc already has — say both in any spec, and
+   GOWNHALF has removed its fifth-handle branch, leaving only *"the dichotomy shown unavoidable"*);
+   GCOIND's matrix-valued corank statistic (a REDUCTION); the island at `n_hub = 10` (NECESSARY
+   only); the `4T + 3Q ≥ 12` habitat (NECESSARY, but enabling a SUFFICIENT flank by (GR-17)(c));
+   the `P¹`/splitting-type reading of (GR-7)(ii) (an enabler, ranked last). Their kill conditions
+   and deciding rows stand as written below. **Two carried successors are named here so they do not
+   rot off the board:** the `dist_i ∈ {5,6}` corner that would make (BE-259) unconditional
+   ((BE-262)(ii), *"a direction's question, not a coordinator's"*), and `T↑∃∃` at `n_hub = 8 → 6`
+   with `Λ` unrestricted, which needs a population the corpus lacks and whose cost is a colouring
+   census at `M = 12` — and note that `closure.colourings(cap=4096)` returns `None` as soon as the
+   **alternation-class** count passes `12` (`2 ** len(comps) > cap`, read at source, NOT a branch
+   count), so that population is fenced by a limiter as well as by compute.
+
+**THE BAR THIS PASS ADDS — one, and it is a reading rule rather than a mathematical fact.**
+*(n)* **A cap or blind-axis sentence inside a direction's own disclosure block is a statement
+about THAT DIRECTION, never about the corpus.** *"No colouring was computed at `n_hub = 8`"* is
+true of GCOLTRANS and false of the arc, which has per-shape (GR-15) certificates on the ladders at
+`2m ≤ 20` ((GR-34)) and 536 exact shapes at `n_hub = 8/10/12` ((GR-71)). No entry may be ranked on
+*"never measured"* without a corpus-level grep, and no spec may quote a direction's cap sentence as
+a corpus fact. Bars *(a)*–*(m)* stand.
+
 **RE-RANKED 2026-09-12 (second) — THE FIFTEENTH STRATEGY-ONLY PASS, AND IT RANKS ON A NEW
 CRITERION BY USER RULING. THE FOURTEENTH'S RANKS 1, 2 AND 3 WERE ALL SPENT IN ONE ROUND** —
 BWHOLEH 102 (rank 1, refuted the obligation), GOWNHALF 103 (rank 2, not rule-attributable),
