@@ -457,8 +457,11 @@ terminals, `δ₁ + δ₂ ≤ 6`) — **and drawing nothing**.
 > (`ndraw = 3`, `njob = None`) it is a **multi-hour** run: measured, **40 jobs
 > at `ndraw = 2` take 117.3 s** (~2.9 s/job), so the full 4 752-job list is
 > **≈ 4 hours** — it was started in the background at the committed defaults
-> and did **not** complete inside this direction's window, and **no figure
-> here is quoted from a partial run**. What *is* reported is a run that
+> and was **killed before completion** (the direction reports the harness
+> killing it under memory pressure), having written **`0` bytes of computed
+> output**, the mode printing only on completion. **So there is no partial run
+> to resume and no figure here is quoted from one** — a successor wanting this
+> census must re-run it from scratch, and should budget the ≈ 4 hours. What *is* reported is a run that
 > finished, with **both** its fences disclosed: **`ndraw = 2` against the
 > committed `3`, and `njob = 40` against the committed `None`** — the same
 > two fences `bgoodempty.run_validate` carries (plus `quick=True`, which this
