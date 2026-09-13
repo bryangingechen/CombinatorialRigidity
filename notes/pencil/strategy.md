@@ -1687,8 +1687,11 @@ form of the law was tested by BPROPCL at **1 281/1 281**. *(iii)* **But `π_u = 
 392 of 928 internal R-node peels** ((BE-81)), and those are **rung-3** peels where the four
 blocks **do not decompose the screw space at all** — there is no `L = π_x ∩ π_y` of dimension 1
 — so the 16-block criterion is not merely unproved there, it is **not the right object**
-((BE-284)(ii)). Those peels are a **theorem per piece** ((BE-86)(ii), 392 exact-ℚ certificates,
-shortfall `0` at 392/392) and **class-level OPEN**.
+((BE-284)(ii)). Those peels are a **theorem per piece at 292 of the 392** ((BE-86)(ii); this pass
+first wrote *"392 … shortfall `0` at 392/392"*, **corrected 2026-09-13 by BCOFLAG's (BE-312)** —
+at the other **100** the exhibited draw has `a_i = 1`, lies outside `Good`, and the appeal to
+(BE-69)(ii) consequence 1 is void because (CH-1)(a) is unavailable at **0 of 392** ((BE-85)(iii));
+what holds at 392/392 is that **`H` attains**, a different predicate) and **class-level OPEN**.
 
 **So rung 3 has two halves and the corpus has been ranking one of them.** BSIXTEEN says so in
 its own words — *"no single surface in the corpus states this, and the dispatch's own framing
@@ -1747,28 +1750,67 @@ the `G°` induction under a local move family.
    which reaches (BE-14); or the `f(U)` floor shown to be unprovable by the instruments the lane
    has, which names the real residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
 
-2. **THE COINCIDENT-FLAG ARM AS A CLASS STATEMENT — 392 OF 928, AND OUTSIDE THE 16-BLOCK FAMILY**
-   *(new — (BE-284)(ii)'s scope limit, which no surface carried before yesterday).* Owner:
-   §(K-bare-ext) *Step BE283*, (BE-284)(ii), standing on (BE-81) (direction BONEONE) for the
-   forcing and (BE-86)(ii) (direction BGENUINE) for the 392 per-piece certificates. **The
-   question: is `Good ≠ ∅` a class theorem at the coincident-flag peels, and what is the right
-   object there given that the four blocks do not decompose the screw space?** **GLEAF's
-   question: SUFFICIENT for completing rung 3** — with rank 1 it is all of rung 3, and without it
-   rank 1's verdict carries a qualifier on **42 %** of the internal R-node peels the corpus has
-   enumerated.
-   **Two things make this cheaper than it looks, and a spec must state both.** The 392
-   certificates **exist** and are exact-ℚ with shortfall `0` ((BE-86)(ii)) — by (BE-69)(ii)'s
-   consequence 1 a **theorem per piece**, not a measurement — so the direction is asked to
-   generalize a proved per-piece statement, not to hunt. And **(BE-282)(iv) already establishes
-   that the corpus's side-library sampling CANNOT reach this arm at all**: `bunif.flag_frame`'s
-   `0 of 854` rejections are one-sided rows where `π_x` and `π_y` are drawn independently, and
-   the forced coincidence is a property of the **composite** two-sided peel. So a measurement
-   here needs a **composite** population, and the entry must price building one.
-   *Kill condition: a class statement proved at the coincident-flag peels — which with rank 1
-   gives `Good ≠ ∅` at rung 3 simpliciter; or a coincident-flag peel exhibited with a shortfall,
-   which reaches (BE-14) by (BE-69)(ii) exactly as rank 1's negative arm does; or the arm shown
-   to need an instrument the lane does not have, which is itself the first statement of what
-   replaces the 16 blocks off the generic regime. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+2. **THE COINCIDENT-FLAG ARM — SPENT (BCOFLAG 115, 2026-09-13): THE QUESTION HAD A FALSE
+   PREMISE, THE 16 BLOCKS ARE REPLACED BY *ONE* INEQUALITY, AND THE ARM'S PER-PIECE RESULT IS
+   `292`, NOT `392`.** Owner of the answer: §(K-bare-ext) *Steps BE308–BE312*, (BE-309)–(BE-313).
+   **THE RIGHT OBJECT, and it is one inequality rather than a family.** At a coincident-flag pair
+   the stable-subspace lattice is **11 elements with a unique atom `⟨M⟩`**, not the generic
+   regime's Boolean `2⁴ = 16` — `Λ²K⁴` is an **indecomposable** `S(ϕ)`-module there, so **no**
+   direct-sum block decomposition exists, coarse or fine. What replaces it: both `ρ̄_i` are
+   confined to `Λ²π`, a **maximal totally singular 3-space**, proved draw-free and exhaustively at
+   **392/392** from (BE-30)(iv) + (BE-16)(iii) + a `u–v` path inside the forced coplanar set. With
+   (BE-86)(i) that gives **`H` attains ⟹ `min(Σδ,6) + a₁ + a₂ ≤ 3`** — at `Σδ = 2`, *at most one
+   side may lose attainment*. **Fourteen inequalities collapse to one.**
+   **THE PREMISE THAT WAS FALSE, and it corrects this entry's own text above.** This entry said
+   the 392 certificates are *"by (BE-69)(ii)'s consequence 1 a theorem per piece"*. **Both halves
+   of that are wrong, and both were refutable from the landed corpus with NO computation.**
+   (BE-86)(ii)'s **own table** reads `(0,0,…)` at **292**, `(0,1,…)` at **60**, `(1,0,…)` at
+   **40**: at **100** of the 392 the draw has `a_i = 1`, lies **outside `Good`**, and by
+   (BE-69)(ii) consequence 2 settles nothing — (BE-86)(i)'s own text already says *"its hypothesis
+   fails at 100 of the 392"*. And consequence 1 is **void** at this arm regardless, because it
+   rests on dense-or-empty, which needs (CH-1)(a) — measured **unavailable at 0 of 392** by
+   **(BE-85)(iii), inside the very step this entry cited for the certificates**. The 292 survive
+   **by exhibition**, which needs no density at all. What holds at 392/392 is that **`H`
+   attains** — a different predicate, and it stands.
+   **AND THE CONSUMER DOES NOT CLOSE HERE** ((BE-313)): S-mark's 2-cut step hypothesises flags at
+   `u, v` **prescribed**, but at a forced peel the parent has no choice of prescription, and the
+   child fails to attain inside the composite at **1 200/1 200** redrawn draws while attaining on
+   its **own** chart at **40/40** — two different charts. So (BE-69)(iii)'s *"`A_i ≠ ∅` is (BE-14)
+   for the side"* discharge is a **non-sequitur** at a forced peel, and the repair is named as a
+   deliverable rather than as wiring: **S-mark must carry (BE-86)(i) instead of (BE-22)(iii)**.
+   *Kill condition: MET on its framing arm — the arm is not a missing class proof of a 16-block
+   criterion, it is a different and smaller criterion whose per-piece base is 292. **The successor
+   carries its own derivation**, which is what makes it dispatchable: at `Σδ ≥ 4` the confinement
+   gives `min(Σδ,6) ≥ 4 > 3`, so **`H` CANNOT attain** — a forced coincident-flag peel at `Σδ ≥ 4`
+   is a **shortfall**, and by (BE-69)(ii) it reaches (BE-14). **NOT FOUND UNDER CAP `Σδ = 2`**:
+   BONEONE's generator is `(δ₁,δ₂) = (1,1)` only, so the successor needs a `(δ₁,δ₂)`-widened
+   generator and that is its whole cost. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible — and
+   > because its second paragraph is exactly the sentence the direction refuted.**
+   > 2. **THE COINCIDENT-FLAG ARM AS A CLASS STATEMENT — 392 OF 928, AND OUTSIDE THE 16-BLOCK FAMILY**
+   > *(new — (BE-284)(ii)'s scope limit, which no surface carried before yesterday).* Owner:
+   > §(K-bare-ext) *Step BE283*, (BE-284)(ii), standing on (BE-81) (direction BONEONE) for the
+   > forcing and (BE-86)(ii) (direction BGENUINE) for the 392 per-piece certificates. **The
+   > question: is `Good ≠ ∅` a class theorem at the coincident-flag peels, and what is the right
+   > object there given that the four blocks do not decompose the screw space?** **GLEAF's
+   > question: SUFFICIENT for completing rung 3** — with rank 1 it is all of rung 3, and without it
+   > rank 1's verdict carries a qualifier on **42 %** of the internal R-node peels the corpus has
+   > enumerated.
+   > **Two things make this cheaper than it looks, and a spec must state both.** The 392
+   > certificates **exist** and are exact-ℚ with shortfall `0` ((BE-86)(ii)) — by (BE-69)(ii)'s
+   > consequence 1 a **theorem per piece**, not a measurement — so the direction is asked to
+   > generalize a proved per-piece statement, not to hunt. And **(BE-282)(iv) already establishes
+   > that the corpus's side-library sampling CANNOT reach this arm at all**: `bunif.flag_frame`'s
+   > `0 of 854` rejections are one-sided rows where `π_x` and `π_y` are drawn independently, and
+   > the forced coincidence is a property of the **composite** two-sided peel. So a measurement
+   > here needs a **composite** population, and the entry must price building one.
+   > *Kill condition: a class statement proved at the coincident-flag peels — which with rank 1
+   > gives `Good ≠ ∅` at rung 3 simpliciter; or a coincident-flag peel exhibited with a shortfall,
+   > which reaches (BE-14) by (BE-69)(ii) exactly as rank 1's negative arm does; or the arm shown
+   > to need an instrument the lane does not have, which is itself the first statement of what
+   > replaces the 16 blocks off the generic regime. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 
 3. **UNIFORM `dim Z = 0` FOR THE REPAIRED COLOURING — THE `hK` LANE'S ONE ENTRY** *(carried,
    re-aimed by GODDRUNG onto its own successor).* Owner: §(K-grid) *Steps G269–G276*,
@@ -1875,7 +1917,8 @@ question at the rung where BWHOLEH's refutation lives.
    **generic-regime** flag pair, but `π_u = π_v` is **FORCED at 392 of 928** internal R-node peels
    ((BE-81)) — and those are **rung-3** peels, where the four blocks do not decompose the screw
    space at all, so the 16-block criterion is not merely unproved there but **not the right
-   object**. Those are settled **per-piece** ((BE-86)(ii), 392 exact-ℚ certificates) and remain
+   object**. Those are settled **per-piece** ((BE-86)(ii); **292**, not 392 — corrected 2026-09-13 by
+   (BE-312), see the eighteenth pass's rank 2) and remain
    **class-level OPEN**. **So closing all sixteen proves `Good ≠ ∅` at rung 3 IN THE GENERIC FLAG
    REGIME — not at rung 3 simpliciter, which is what this entry said.** No single surface in the
    corpus carried that, and a spec must now.

@@ -194,6 +194,20 @@ hold binds.**
 > by irreducibility, which is the *simultaneity* clause (BE-25)(i) already
 > settled, re-proved here from the same source.
 >
+> ***SCOPED 2026-09-13 by (BE-312)(iii)/(BE-313) (direction BCOFLAG): the sentence
+> immediately above holds in the generic flag regime and BOTH of its halves fail at a
+> FORCED coincident-flag peel ((BE-81), 392 of 928).*** *(a)* `A_i` is a subset of
+> **`Chart(H)`**, while the side's (BE-14) is a statement about **`Chart(H_i)`**; at a
+> forced peel the restriction lands inside the coincidence locus, which (BE-282)(iv)
+> makes a **proper closed** subset, so the implication is a **non-sequitur** there —
+> exhibited at 40 losing sides, each attaining on its **own** chart at `a_i = 0`
+> (**40/40**, at configurations with `π_u ≠ π_v`) while the **same** side has `a_i = 1`
+> at **1 200/1 200** composite draws. *(b)* The *"by irreducibility"* step needs
+> `Chart(H)` irreducible via **(CH-1)(a)**, measured **unavailable at 0 of 392** by
+> (BE-85)(iii). **Nothing landed outside the coincident-flag arm is affected**; the repair
+> BCOFLAG names is that the S-mark 2-cut step must carry (BE-86)(i), whose statement has
+> the `a`-term in it, rather than (BE-22)(iii), whose hypothesis is what fails.
+>
 > Measured (`bpeel.py open`): over **8** pieces (BDECOR's `R_BATTERY` plus the
 > nested two-level R-node piece) and **16** peels, the **first** draw's tuple
 > `(dim(ρ̄₁+ρ̄₂), ρ₁, ρ₂, attains₁, attains₂)` equals the coordinatewise maximum

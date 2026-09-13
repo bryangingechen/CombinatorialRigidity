@@ -511,6 +511,23 @@ four blocks are their atoms. Read at source (`bunif.BLK` line 131, `bunif.CAP` 1
 > own framing (*"close them all → `Good ≠ ∅` at rung 3 is PROVED"*) does not carry
 > it.
 >
+> ***CORRECTED 2026-09-13 by (BE-312)(i)/(ii) (direction BCOFLAG), and the error was
+> available in the landed corpus with NO computation. Two independent defects in the
+> sentence above.*** *(a)* **The per-piece count is `292`, not `392`.** `Good = A₁ ∩ A₂ ∩ GP`
+> with `A_i = {a_i = 0}` ((BE-69)(i)), and **(BE-86)(ii)'s own table** reads
+> `(0,0,1,1,2)` at **292**, `(0,1,1,2,3)` at **60** and `(1,0,2,1,3)` at **40** — so at
+> **100** of the 392 the exhibited draw has `a_i = 1`, lies **outside `Good`**, and by
+> (BE-69)(ii) consequence 2 *"settles nothing"*. (BE-86)(i) says so in its own text:
+> *"its hypothesis fails at 100 of the 392"*. What IS certified at 392/392 is that
+> **`H` attains**, which is a different predicate and stands. *(b)* **The appeal to
+> (BE-69)(ii) consequence 1 is VOID here**, because that consequence rests on the
+> dense-or-empty dichotomy, which needs `Chart(H)` irreducible via **(CH-1)(a)** — and
+> **(BE-85)(iii), inside the very step this clause cites for the certificates**, measures
+> (CH-1)(a) unavailable at **0 of 392** and says in terms that it takes *"(BE-69)(ii)'s
+> dense-or-empty dichotomy and (BE-72)(iii) with it"*. The 292 survive **by exhibition**
+> — a point in `Good` is a pointwise witness needing no density — so the per-piece
+> result is real, smaller, and reached by a different argument than the one claimed.
+>
 > **(BE-284)(iii)** `[PROVED]` — **which rungs each block can live at, since the
 > question will be asked next.** `c_i(U) ≤ min(ρ_i, d_S)` and `ρ₁ + ρ₂ ≤ Σδ` give
 > `c₁ + c₂ ≤ min(2 d_S, Σδ)`, while a violation needs

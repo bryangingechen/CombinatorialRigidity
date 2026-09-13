@@ -2,7 +2,7 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
-dispatched; **121 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+dispatched; **122 LANDED, TWO IN FLIGHT (BGPLAW 114, GUNIZERO 116), NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
@@ -18534,3 +18534,96 @@ independently** — `--cited-by` on both residues returns citers only in
 `bare-ext/`. **The draft arrived failing `ledger.py --lint` with 18 violations**,
 all one mechanical error (a literal `[UNTAGGED]` tag, which the parser *infers*
 rather than accepts); stripped at landing, lint green.
+
+## BCOFLAG — ordinal 115, concurrent round of three, `research-direction-opus`, LANDED 2026-09-13
+
+**§8's eighteenth pass, RANK 2** — the coincident-flag arm, ranked as one of
+rung 3's two halves and dispatched because (BE-284)(ii) had just made it visible.
+*Question:* at the internal R-node peels where `π_u = π_v` is forced, is
+`Good ≠ ∅` a CLASS theorem, and what is the right object there given that the
+four blocks do not decompose the screw space at all?
+
+**VERDICT: the question had a FALSE PREMISE, supplied by the entry itself.**
+Landed as (BE-309)–(BE-313) / *Steps BE308–BE312*. Driver
+`notes/scripts/w4/bcoflag.py` (modes `blocks`/`conf`/`prof`/`losers`/`side`,
+seed `20260913`, exact ℚ).
+
+- **THE PER-PIECE RESULT IS `292`, NOT `392`, and the correction needed no
+  computation.** `Good = A₁ ∩ A₂ ∩ GP` with `A_i = {a_i = 0}` ((BE-69)(i)), and
+  **(BE-86)(ii)'s own table** reads `(0,0,1,1,2)` at **292**, `(0,1,1,2,3)` at
+  **60**, `(1,0,2,1,3)` at **40**. At **100** of the 392 the exhibited draw has
+  `a_i = 1`, lies **outside `Good`**, and by (BE-69)(ii) consequence 2 *"settles
+  nothing"*. **(BE-86)(i)'s own text already said it** — *"its hypothesis fails
+  at 100 of the 392"*.
+- **AND THE APPEAL TO CONSEQUENCE 1 IS VOID AT THIS ARM REGARDLESS.** It rests
+  on dense-or-empty, which needs `Chart(H)` irreducible via **(CH-1)(a)** —
+  measured **unavailable at 0 of 392** by **(BE-85)(iii), inside the very step
+  (BE-284)(ii) cites for the certificates**, which says in terms that it takes
+  *"(BE-69)(ii)'s dense-or-empty dichotomy and (BE-72)(iii) with it"*. The 292
+  survive **by exhibition**, needing no density at all. What holds at **392/392**
+  is that **`H` attains** — a different predicate, and it stands.
+- **THE RIGHT OBJECT IS ONE INEQUALITY, NOT A SMALLER FAMILY** (`blocks`/`conf`).
+  The stable-subspace lattice at a coincident-flag pair is **11 elements with a
+  unique atom `⟨M⟩`** against the generic regime's Boolean `2⁴ = 16` (the generic
+  16 reproduced as the method's own control), so `Λ²K⁴` is an **INDECOMPOSABLE**
+  `S(ϕ)`-module and no direct-sum decomposition exists, coarse or fine. Instead
+  both `ρ̄_i` lie in `Λ²π`, a **maximal totally singular 3-space** — proved
+  draw-free and exhaustively at **392/392** from (BE-30)(iv) + (BE-16)(iii) plus
+  a `u–v` path inside the forced coplanar set. With (BE-86)(i): **`H` attains ⟹
+  `min(Σδ,6) + a₁ + a₂ ≤ 3`**, i.e. at `Σδ = 2` **at most one side may lose
+  attainment**.
+- **THE CONSUMER DOES NOT CLOSE HERE** ((BE-313)). S-mark's 2-cut step
+  hypothesises flags at `u, v` **prescribed**; at a forced peel the parent has no
+  choice of prescription, and the child fails to attain **inside the composite**
+  at **1 200/1 200** redrawn draws while attaining on its **own** chart at
+  **40/40** (`side`, 38.5 s). Two different charts — so **(BE-69)(iii)'s
+  *"`A_i ≠ ∅` is (BE-14) for the side"* discharge is a NON-SEQUITUR** at a forced
+  peel. Repair named as a deliverable, not as wiring: **S-mark must carry
+  (BE-86)(i) instead of (BE-22)(iii)**.
+- **SUCCESSOR, WITH ITS DERIVATION ATTACHED** (which is what makes it
+  dispatchable): at **`Σδ ≥ 4`** the confinement gives `min(Σδ,6) ≥ 4 > 3`, so
+  **`H` cannot attain** — a forced coincident-flag peel at `Σδ ≥ 4` **is** a
+  shortfall and reaches (BE-14) by (BE-69)(ii). **NOT FOUND UNDER CAP
+  `Σδ = 2`**: BONEONE's generator is `(δ₁,δ₂) = (1,1)` only, so the successor's
+  whole cost is a `(δ₁,δ₂)`-widened generator.
+- **PREDICTION SCORED.** Verdict **split** — *"the 16-block criterion is not the
+  instrument"* CONFIRMED, *"`Good ≠ ∅` holds class-wide"* NOT established and
+  **demoted as the right proxy**. *Where I expect to be wrong* was again the
+  highest-yield line and **CONFIRMED**: `Good` does degenerate, but via the
+  **ambient irreducibility** failing at exactly these graphs rather than via the
+  definition. **MECHANISM REFUTED** (`Π_x = Π_y` needs `p_x = p_y`, false at
+  every guarded draw; the lattice is 11, not 4) — **now 0 of 7 across five
+  rounds**, and nothing rested on it: `blocks` ran first, 0.1 s.
+- **THE TELL DID NOT FIRE AND COULD HAVE.** *A coincident-flag peel with nonzero
+  shortfall*: 1 200 draws, shortfall `0` against the corrected denominator at
+  every one. Its region (392 peels) is inhabited, and it now has a **mechanism** —
+  a nonzero shortfall at rung 3 is exactly an `(a₁,a₂) = (1,1)` row, never seen
+  in 392 + 1 200 redraws.
+- **CAPS AND BLIND AXES.** The F27 rider's fence is `run_bite(nwit=4)` **plus a
+  hardcoded `range(4)`** — 16 draws, un-fenced here to **1 200** (×75) by
+  parameterizing this direction's own loop around the imported
+  `draw_flat`/`measure`, **no landed driver edited**. `draw_flat(s=20)` opened
+  (20 vs 60, no movement); `tries=120` not opened. Every population is BONEONE's
+  `(9,4)/(9,5)/(10,4)` at `δ₁ = δ₂ = 1`, `n ≤ 12`: nothing reaches `Σδ ≥ 3`, the
+  `(10,5)` row, or a non-`K₄`-skeleton R-node side. `prof` and `side` are
+  **stride subsamples** (60 of 392, 40 of 100), disclosed as chosen for cost —
+  not random, not exhaustive.
+- **FOUR SELF-CAUGHT ITEMS**, including one that cuts against its own headline:
+  girth 3 holds at **928/928**, not only at the forced 392, so the girth figure
+  is a **generator artifact** and is *not* evidence that forcing needs a triangle
+  — it still supports the (CH-1)-unavailability claim, with (BE-85)(iv)'s
+  `0 of 648` the only non-degenerate control.
+
+**COORDINATOR VERIFICATION.** All five driver modes re-run independently:
+`blocks` (11-element lattice, unique atom, generic 16 control), `conf`
+(392/392 draw-free, path histogram `{(2,2):256, (2,3):36, (3,2):88, (3,3):12}`),
+`prof` (60/60), `losers` (100 of 392 losing rows; `a₁=a₂=0` found at **0/100**
+over 1 200 draws in two coordinate boxes), `side` (160/160, 40/40, 38.5 s). The
+two refutations were checked at their **owning clauses** rather than taken on the
+direction's word (F24): (BE-86)(ii)'s table and (BE-86)(i)'s *"fails at 100"*
+sentence both read as reported, and (BE-85)(iii) carries the (CH-1) verdict
+verbatim. **Two coordinator repairs at landing:** the draft's section header was
+`#` where the corpus uses `##`, which cost it its ledger **section key**; and
+three of the five driver step banners were misnumbered against the draft's own
+clause citations (`conf` and `prof` printed BE312/BE310, `losers` printed BE309)
+— both realigned, with the draft's citations taken as authoritative.
