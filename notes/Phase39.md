@@ -8,10 +8,10 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 118 directions COMPLETE** (2026-08-05 → 09-12, ordinals **1–110** —
-113 on kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
-= ordinal + 8), **none in flight**, plus **sixteen** strategy passes (the sixteenth, 2026-09-12,
-ranking the `G°` induction's **BASE** first now that its other two legs are landed; board at
+**The research arc: 121 directions COMPLETE** (2026-08-05 → 09-12, ordinals **1–113** —
+116 on kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
+= ordinal + 8), **none in flight**, plus **seventeen** strategy passes (the seventeenth,
+2026-09-12, the first to RE-ROUTE a lane rather than re-order it; board at
 §8's head), two probes, a scoping recon. **GPACK (66) opened the
 `hK` lane**; roll calls are §8's, per-direction verdicts `fanout.md`'s. **Standing result,
 unchanged: `hK` is not closer.** **(GR-15)** and **class uniformity untouched**; no g-flank;

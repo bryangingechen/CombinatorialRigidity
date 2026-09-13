@@ -1,15 +1,19 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
-FIVE concurrent pairs, ONE concurrent round of four and THREE concurrent rounds of three
-dispatched; **115 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
+dispatched; **121 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
 COMPLETE** — BWHOLEH (102), GOWNHALF (103), GTRIFREE (104), spending ranks 1, 2 and 3 in one
 round — **and so is the SECOND round of three, against the FIFTEENTH
 pass** — BGOODEMPTY (105), GCOLTRANS (106), BTAKERS (107), spending ranks 1, 2 and 3 in one
-round for the second consecutive round. Landed ordinals are **1–107 — 107 ordinals, 115
+round for the second consecutive round. **Two further rounds of three then landed, each
+spending §8's ranks 1, 2 and 3 together** — GBASE (108), BMBLOCK (109), GSECOND (110) against
+the SIXTEENTH pass, then BSIXTEEN (111), GODDRUNG (112), BPROPCL (113) against the
+SEVENTEENTH — the **third and fourth consecutive** rounds to spend their whole top three.
+Landed ordinals are **1–113 — 113 ordinals, 121
 directions**, with none in flight. **All three
 returned REFUTATIONS; all three refuted the coordinator's own prediction; and each refuted at
 least one LANDED clause, including a `[PROVED]` one.** The round of three (BFOUR 81,
