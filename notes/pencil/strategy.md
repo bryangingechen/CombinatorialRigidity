@@ -1782,26 +1782,68 @@ corrections cost none of its compute.** Bars *(a)*–*(p)* stand, *(p)* in its r
    > `(K-bare)/(K-bare-ext)` row.*
    >
 
-2. **A SHORTFALL AT `Σδ ≥ 4` — THE ONLY POSITIVE ROUTE TO (BE-14) ON EITHER LANE** *(new —
-   BCOFLAG's successor, and the rare entry that arrives with its derivation attached).* Owner:
-   §(K-bare-ext) *Steps BE309–BE310*, (BE-310)/(BE-311). **The derivation, in one line:** at a
-   forced coincident-flag peel both `ρ̄_i` lie in `Λ²π`, a maximal totally singular 3-space, so
-   `dim(ρ̄₁+ρ̄₂) ≤ 3`; by (BE-86)(i) `H` attains **iff** that equals `min(Σδ,6) + a₁ + a₂`; hence
-   at **`Σδ ≥ 4`** attainment is **impossible**, the peel **is** a shortfall, and by (BE-69)(ii)
-   it **reaches (BE-14)**. **GLEAF's question: SUFFICIENT, and positive** — every other live
-   entry on this lane closes a route or removes a hypothesis; this one would prove the target.
-   **THE ENTIRE QUESTION IS WHETHER THE REGION IS INHABITED, and that is the first slice.**
-   **NOT FOUND UNDER CAP `Σδ = 2`**: (BE-81)(i)'s generator is (BE-79)(i)'s factorized
-   `δ = (1,1)`, `n ≤ 12` family, so `Σδ = 2` at every one of the 392 — the corpus has **never
-   drawn** a forced peel at `Σδ ≥ 4`. A `(δ₁,δ₂)`-widened generator is the whole cost, and the
-   honest prior is that forcing may **require** `δ₁ = δ₂ = 1` — (BE-77) is cited for exactly
-   that shape, and a direction must read it before building.
-   *Kill condition: a forced coincident-flag peel exhibited at `Σδ ≥ 4`, which by the derivation
-   above **is** a shortfall and **reaches (BE-14)**; or forcing proved to require `Σδ = 2`, which
-   closes this route **and** explains why the corpus never drew one, and is itself the sharpest
-   statement available about the forced arm; or the region shown inhabited but the confinement
-   shown to fail there, which retires (BE-310)'s reach rather than the arm. Decided by: the
-   `(K-bare)/(K-bare-ext)` row.*
+2. **A SHORTFALL AT `Σδ ≥ 4` — SPENT (BSIGFOUR 118, 2026-09-13): THE REGION IS INHABITED, THE
+   CONFINEMENT IS NOT, AND A LANDED `[PROVED]` CLAUSE FELL ON THE WAY.** Owner of the answer:
+   §(K-bare-ext) *Steps BE323–BE332*, (BE-324)–(BE-333).
+   **THE ENTRY'S OWN PRIOR WAS WRONG, AND SO WAS THE COORDINATOR'S.** The region is **inhabited**:
+   **486 forced peels at `Σδ ≥ 4`** over an exhaustively swept `(δ₁,δ₂)`-widened generator
+   (221 364 peels), where the corpus had **zero** — the smallest at **`n = 7`**, `K₄−uv` glued to
+   the path `u–b₂–b₀–b₁–v`, `(δ₁,δ₂) = (0,4)`, forced on an all-hinge-pair derivation. **But the
+   kill condition is NOT MET: 0 of the 486 carry the confinement**, and in every one it is the
+   **high-`δ` side** that fails it. **Bar *(q)* paid immediately:** the spec's specific worry —
+   that (BE-310)(i)'s confinement proof might silently assume `δ_i = 1` — was checked and is
+   **false**; the proof uses only (BE-30)(iv), (BE-16)(iii), (BE-85)(i)/(ii) and `δ_i` appears
+   nowhere, so the derivation applies at any `Σδ`.
+   **AND IT EXPLAINS THE MISS WITH A NEW THEOREM, which is worth more than the hunt.**
+   **(BE-333)(ii):** *confinement ⟹ `δ_i ≤ 3`*, **per side and glue-independently**, proved from
+   (BE-74)(i) by a two-case chain argument — `0` of **8 491** exhaustively enumerated sides are
+   both `δ ≥ 4` and `side_reach`, with `δ = 3` **attained**. **That squeezes the kill condition
+   into six `(δ₁,δ₂)` cells** — `(1,3), (3,1), (2,2), (2,3), (3,2), (3,3)` — **all tested, 6 444
+   peels, none forced.** Also landed: **(BE-327)(i)**, `δ_i ≤ dist_{H_i}(u,v)` **unconditionally**,
+   removing (BE-30)(iv)'s attainment proviso on the `δ` half at 228 468 side-readings.
+   **THE LANDED CLAUSE THAT FELL: (BE-77)(ii) `[PROVED]` (BSPREAD) is REFUTED.** *"Cross-cut-only
+   forcing is confined to `δ₁ = δ₂ = 1`"* fails at **372** forced rows with `min(δ₁,δ₂) ≥ 1` and
+   `(δ₁,δ₂) ≠ (1,1)`, the exhibited witness at `n = 12`, `(1,2)`, both flexible, all-hinge-pair at
+   96/96. **The defect is localized**: (i)(c)'s *"`A ∩ V(H₂)` evolves exactly as the `H₂`-run"*
+   drops that `u, v` lie in **both** sides, so Step 2 reads (BE-74)(i)'s bound on the wrong set
+   and Step 3 has no edge to merge along. **(BE-77)(iii)'s vacuity correction and the identical
+   sentence in (BE-73)(iii) go with it — BPEEL's census-3 non-vacuity check is RIGHT again.** All
+   that survives is `Σδ ≤ 6` from (BE-74)(ii).
+   **F34 HIT:** `n = 7` is **inside BPEEL census 1's range**. (BE-73)(iii)'s *"3 497 forced R-node
+   peels, every one with `min(δ₁,δ₂) = 0"* **is** this region; its `Σδ` was simply never
+   tabulated. **The corpus's silence was the wrong statistic, not a search.**
+   *Kill condition: NOT MET — the region is inhabited but the confinement is absent from all 486,
+   so no shortfall is exhibited and **(BE-14) is not reached**. **AND THE PAYOFF GATE IS NEGATIVE
+   INDEPENDENTLY**, which the direction reported against its own interest: (BE-85)(iii) measures
+   (CH-1)(a) **unavailable at 0/392**, and every widened member inherits the same triangle, so
+   **(BE-69)(ii)'s route is unavailable at every witness this generator can build** — a hit would
+   land pointwise, not on `Chart(H)`. The successor is the **six-cell forcing hunt**
+   ((BE-333)(iv)); and whether (BE-77)(ii) admits an unconditional successor is (BE-325)(iii).
+   Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible — and
+   > because its stated prior was refuted by its own first slice.**
+   > 2. **A SHORTFALL AT `Σδ ≥ 4` — THE ONLY POSITIVE ROUTE TO (BE-14) ON EITHER LANE** *(new —
+   > BCOFLAG's successor, and the rare entry that arrives with its derivation attached).* Owner:
+   > §(K-bare-ext) *Steps BE309–BE310*, (BE-310)/(BE-311). **The derivation, in one line:** at a
+   > forced coincident-flag peel both `ρ̄_i` lie in `Λ²π`, a maximal totally singular 3-space, so
+   > `dim(ρ̄₁+ρ̄₂) ≤ 3`; by (BE-86)(i) `H` attains **iff** that equals `min(Σδ,6) + a₁ + a₂`; hence
+   > at **`Σδ ≥ 4`** attainment is **impossible**, the peel **is** a shortfall, and by (BE-69)(ii)
+   > it **reaches (BE-14)**. **GLEAF's question: SUFFICIENT, and positive** — every other live
+   > entry on this lane closes a route or removes a hypothesis; this one would prove the target.
+   > **THE ENTIRE QUESTION IS WHETHER THE REGION IS INHABITED, and that is the first slice.**
+   > **NOT FOUND UNDER CAP `Σδ = 2`**: (BE-81)(i)'s generator is (BE-79)(i)'s factorized
+   > `δ = (1,1)`, `n ≤ 12` family, so `Σδ = 2` at every one of the 392 — the corpus has **never
+   > drawn** a forced peel at `Σδ ≥ 4`. A `(δ₁,δ₂)`-widened generator is the whole cost, and the
+   > honest prior is that forcing may **require** `δ₁ = δ₂ = 1` — (BE-77) is cited for exactly
+   > that shape, and a direction must read it before building.
+   > *Kill condition: a forced coincident-flag peel exhibited at `Σδ ≥ 4`, which by the derivation
+   > above **is** a shortfall and **reaches (BE-14)**; or forcing proved to require `Σδ = 2`, which
+   > closes this route **and** explains why the corpus never drew one, and is itself the sharpest
+   > statement available about the forced arm; or the region shown inhabited but the confinement
+   > shown to fail there, which retires (BE-310)'s reach rather than the arm. Decided by: the
+   > `(K-bare)/(K-bare-ext)` row.*
+   >
 
 3. **NON-NESTEDNESS AT THE TWO SURVIVING PROFILES — THE WHOLE (BLOCK-GP) RESIDUE** *(new —
    BGPLAW's named hand-forward).* Owner: §(K-bare-ext) *Step BE304*, (BE-305), with (BE-279)(ii)

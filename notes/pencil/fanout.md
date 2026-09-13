@@ -2,7 +2,7 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
-dispatched; **125 LANDED, NONE IN FLIGHT, TWO DRAFTED AND AWAITING LANDING (BSIGFOUR 118, BNEST 119)** — BOTH 2026-09-10 rounds of three
+dispatched; **126 LANDED, NONE IN FLIGHT, ONE DRAFTED AND AWAITING LANDING (BNEST 119)** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
@@ -18948,3 +18948,96 @@ NOTHING"*) beside a clause stating a verdict in `ρ_i` (*"a theorem"*) — the s
 44 rows, opposite-sounding verdicts, both correct. The mode now prints **both
 quantities with their semicontinuity directions** and says which one the clause
 states.
+
+## BSIGFOUR — ordinal 118, concurrent round of three, `research-direction-opus`, LANDED 2026-09-13
+
+**§8's nineteenth pass, RANK 2** — the only positive route to (BE-14) on either
+lane, dispatched with its derivation already attached. *Question:* is a forced
+coincident-flag peel at `Σδ ≥ 4` inhabited?
+
+**VERDICT: the region IS inhabited; the confinement is NOT. Kill condition not
+met, and a landed `[PROVED]` clause fell on the way.** Landed as
+(BE-324)–(BE-333) / *Steps BE323–BE332*. Driver `notes/scripts/w4/bsigfour.py`
+(8 modes: `fence widen theory blame cover reach rand w9alt`).
+
+- **THE REGION IS INHABITED — 486 forced peels at `Σδ ≥ 4`**, over an exhaustive
+  sweep of 221 364 peels of a `(δ₁,δ₂)`-widened generator, where the corpus had
+  **zero**. Smallest at **`n = 7`**: `K₄−uv` glued to the path `u–b₂–b₀–b₁–v`,
+  `(δ₁,δ₂) = (0,4)`, forced on an all-hinge-pair derivation. **The coordinator's
+  prediction of emptiness is REFUTED.**
+- **BUT 0 OF THE 486 CARRY THE CONFINEMENT**, and in every one it is the
+  **high-`δ` side** that fails it — so no shortfall is exhibited and **(BE-14) is
+  not reached**.
+- **BAR *(q)* PAID IMMEDIATELY.** The spec's specific worry — that (BE-310)(i)'s
+  confinement proof might silently assume `δ_i = 1`, collapsing the entry to the
+  fenced population — was checked and is **false**: the proof uses only
+  (BE-30)(iv), (BE-16)(iii), (BE-85)(i)/(ii), and `δ_i` appears nowhere.
+  (BE-311)(i) and (BE-86)(i) likewise untouched.
+- **THE NEW THEOREM, WORTH MORE THAN THE HUNT — (BE-333)(ii):** *confinement ⟹
+  `δ_i ≤ 3`*, **per side and glue-independently**, proved from (BE-74)(i) by a
+  two-case chain argument (`A ∩ V(H_i) ⊆ R(H_i)` for every partner, then two
+  cases giving a chain of length ≤ 3). Checked: **0** of **8 491** exhaustively
+  enumerated sides are both `δ ≥ 4` and `side_reach`, with `δ = 3` **attained**,
+  i.e. the bound is tight. **This squeezes the kill condition into six
+  `(δ₁,δ₂)` cells** — `(1,3), (3,1), (2,2), (2,3), (3,2), (3,3)` — **all tested,
+  6 444 peels, none forced.**
+- **(BE-327)(i):** `δ_i ≤ dist_{H_i}(u,v)` **unconditionally**, removing
+  (BE-30)(iv)'s attainment proviso on the `δ` half; 228 468 side-readings, 0
+  violations.
+- **THE LANDED `[PROVED]` CLAUSE THAT FELL: (BE-77)(ii) is REFUTED.**
+  *"Cross-cut-only forcing is confined to `δ₁ = δ₂ = 1`"* fails at **372** forced
+  rows with `min(δ₁,δ₂) ≥ 1` and `(δ₁,δ₂) ≠ (1,1)`. Exhibited witness: `WIT11`'s
+  own R-node side glued to `{b₀b₁, b₀b₂, b₀u, b₁v, b₂u}` — `n = 12`,
+  `(δ₁,δ₂) = (1,2)`, **both flexible**, `pair_forced` True, `deltas_at(check=True)`
+  confirming, **all-hinge-pair at 96/96** so it is not a `pair_forced`
+  over-claim. **The defect is localized to (i)(c)**: *"`A ∩ V(H₂)` evolves exactly
+  as the `H₂`-run"* drops that `u, v` lie in **both** sides, so a terminal enters
+  `A_i` with no admission and no cut-crossing; Step 2 then reads (BE-74)(i)'s
+  bound on the wrong set and Step 3 has no edge to merge along. Side 2's
+  **unique** optimal partition has `B₂ = {u, b₀, b₂}` with `v ∉ B₂ ∪ N(B₂)`, yet
+  `v ∈ A₂`. **(BE-77)(iii)'s vacuity correction and the identical sentence in
+  (BE-73)(iii) go with it — BPEEL's census-3 non-vacuity check is RIGHT again.**
+  All that survives is `Σδ ≤ 6` from (BE-74)(ii).
+- **F34 HIT, and it is the cheapest kind:** `n = 7` is **inside BPEEL census 1's
+  range**. (BE-73)(iii)'s *"3 497 forced R-node peels, every one with
+  `min(δ₁,δ₂) = 0"* **is** this region — its `Σδ` was simply never tabulated.
+  **The corpus's silence was the wrong statistic, not a search.**
+- **PREDICTION SCORED.** **VERDICT REFUTED** (not empty: 486 witnesses).
+  **MECHANISM REFUTED, and it was the load-bearing error** — *"forcing requires
+  `Σδ = 2`"* reads (BE-77)(ii) without its both-sides-flexible hypothesis, and
+  the clause is false anyway. The spec's *"where I expect to be wrong"* was
+  **itself wrong in a useful way**: the interesting predicate is neither *forced*
+  nor *coincident* but the **confinement**.
+- **THE PAYOFF GATE IS NEGATIVE, REPORTED AGAINST ITS OWN INTEREST.**
+  (BE-85)(iii) measures **(CH-1)(a) unavailable at 0/392**, and every widened
+  member inherits the same triangle — so **(BE-69)(ii)'s route is unavailable at
+  every witness this generator can build**; a hit would land pointwise, not on
+  `Chart(H)`. That is BSMARK's question, untouched here.
+- **CAPS.** `K₄` skeleton **only** (no prism, no `K₃,₃`); R-node profiles
+  exhaustive `n₁ ≤ 12`; free sides exhaustive `n₂ ≤ 5` glued, `≤ 6` profiled;
+  `pair_forced` over-claims by its own cap (2); `blame`'s partitions need `n ≤ 9`.
+  **`rand` never completed** (two kills at the harness ceiling) and **no figure is
+  quoted from it**; `reach`'s default random tier was likewise killed, with the
+  exact completing invocation named in the clause instead.
+- **FIVE SELF-CAUGHT**, including a **false headline** — a targeted tier first
+  reported **51** kill-condition hits, which were an artifact of `free_sides`'
+  own `'B'` tag identifying interior vertices at the glue; re-tagged with
+  disjointness and `deltas_at(check=True)` asserted at every glue, the count is
+  **0**, and both assertions are now in the driver. Also: its own sharpening
+  *"δ_i ≥ 2 ⟹ δ_{3−i} = 0"*, derived from (BE-77)(ii)'s proof and believed, dies
+  with its parent at **1 404** counterexamples; and **`blindaxes.py` cannot see
+  the fence that mattered** here, `side_delta(...)[2] == 1` being a filter-body
+  comparison rather than a constant or default.
+
+**COORDINATOR VERIFICATION.** `widen` re-run (**486** forced at `Σδ ≥ 4`, **0**
+forced-and-confined, and the control line **372** rows refuting (BE-77)(ii));
+`blame` re-run (**46** counterexamples, with the `δ_i = 2` rows present and the
+`nbr_in_B = False, c_i = 2` localization printed); `theory` re-run (**1 404**
+counterexamples to the direction's own sharpening); `fence` re-run (**600/600**
+seeded glues re-asserting (BE-79)(i) outside its original `δ = 1` scope); `cover`
+re-run. **One apparent discrepancy was chased and is not one:** `cover`'s random
+tier finds **3** sides that are both `δ = 4` and *coverable*, where the return
+quotes *"0 of 8 491"* — but `coverable` is the **weaker, merely necessary** test
+and the quoted zero is for `side_reach`; **(BE-333)(iii) already discloses those
+three explicitly** as its own adversarial check (b). (BE-77)(ii)'s refutation is
+recorded at its **owning prose** in BSPREAD.md, not only here (F12).

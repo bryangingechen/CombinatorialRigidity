@@ -401,6 +401,26 @@ each cross-checked inside the driver against `kbare_common.exact_deficiency`.
 > population as a bare count and read its zero at the R-node shape; the theorem
 > says what the population **is**.
 
+> ***REFUTED 2026-09-13 by (BE-325) (direction BSIGFOUR). The clause above is
+> FALSE as stated, and the defect is localized to its own (i)(c).*** **Witness:**
+> `WIT11`'s own R-node side glued to `{b₀b₁, b₀b₂, b₀u, b₁v, b₂u}` — `n = 12`,
+> `(δ₁, δ₂) = (1, 2)`, **both sides flexible**, `bpeel.pair_forced` **True** and
+> `deltas_at(check=True)` confirming, with the derivation **all-hinge-pair at
+> 96/96** so it is not a `pair_forced` over-claim. Not an isolated witness: over
+> a `(δ₁,δ₂)`-widened generator, **372** forced rows have `min(δ₁,δ₂) ≥ 1` and
+> `(δ₁,δ₂) ≠ (1,1)`. **THE DEFECT.** (i)(c)'s *"`A ∩ V(H₂)` evolves **exactly**
+> as the `H₂`-run"* drops that `u, v` lie in **both** sides, so a terminal can
+> enter `A_i` with no admission and no cut-crossing; Step 2 then reads
+> (BE-74)(i)'s bound on the **wrong set**, and Step 3 has no edge to merge along.
+> Mechanically exhibited: side 2's **unique** optimal partition has
+> `B₂ = {u, b₀, b₂}` with `v ∉ B₂ ∪ N(B₂)`, yet `v ∈ A₂`. `bsigfour.py blame`
+> tabulates it — every row with `nbr_in_B = False` and `c_i = 2` is a row where
+> Step 3 has no edge, and those are exactly the rows where `δ_i ≤ 1` fails.
+> **WHAT FALLS WITH IT:** **(BE-77)(iii)**'s vacuity correction below, and the
+> identical sentence in **(BE-73)(iii)** — so **BPEEL's census-3 non-vacuity
+> check is RIGHT again**. **WHAT SURVIVES:** only `Σδ ≤ 6`, from (BE-74)(ii) at
+> the whole graph. A repaired successor is (BE-325)(iii)'s open item.
+>
 > **(BE-77)(iii)** *(**a vacuity correction** — F11, and it is BPEEL's own
 > discipline applied with the denominator the theorem supplies)* BPEEL's
 > census 3 reported *"**24 874** R-node-shaped peels with both `δ` positive,
