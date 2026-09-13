@@ -544,9 +544,21 @@ four blocks are their atoms. Read at source (`bunif.BLK` line 131, `bunif.CAP` 1
 > `bsixteen.forced(S) = |S ∩ {Π_x, Π_y}|` — **(BE-30)(ii)'s forced path hinge lines**,
 > active at **428 of 428** — so the floor's source is the unconditional end-line
 > confinement, not the rare series end. At `Π_x ⊕ Π_y` that shows plainly: `f = 2` while a
-> one-terminal series end supplies only `1`. **(BE-281)(ii)'s conclusion stands** — the
-> *unfloored* equality is genuinely refuted by (M1) — it is the attribution of where the
-> floor comes from that was loose.
+> one-terminal series end supplies only `1`.
+>
+> ***THAT ANNOTATION IS ITSELF WITHDRAWN, 2026-09-13, by (BE-341) (direction BNEST) — and
+> the coordinator landed it without checking the second call site.*** `forced(S)` has
+> **two** occurrences in `bsixteen.py`: one **inside** `Bbound` (`bsixteen.py:133`, which
+> is the reading (BE-306)(i) checked, and correctly) and one as the **OUTER** floor of the
+> shipped law, `max(forced(S), ρ_i + Bbound(m_i, S) − m_i)` (`bsixteen.py:637`).
+> **(BLOCK-GP)'s stated `f(U)` is the OUTER one**, and `bsixteen.py`'s own law table records
+> that it exists precisely because L7 is *"REFUTED in principle by (BE-45)(i)"*. So
+> **(BE-281)(ii)'s sourcing STANDS as written** — the floor is there for the series end —
+> and (BE-306)(i)'s separation fails, because (BE-45)(i) applies at **each** terminal, which
+> is exactly what `f = |S ∩ {Π_x, Π_y}|` counts. The coordinator verified `forced`'s
+> **definition** and not its **use sites**, which is the same defect one level down as the
+> bar-*(p)* error: a generated list, or a single grep, is evidence about syntax and not
+> about dispatch.
 >
 > **(BE-284)(iii)** `[PROVED]` — **which rungs each block can live at, since the
 > question will be asked next.** `c_i(U) ≤ min(ρ_i, d_S)` and `ρ₁ + ρ₂ ≤ Σδ` give

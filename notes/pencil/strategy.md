@@ -1845,26 +1845,68 @@ corrections cost none of its compute.** Bars *(a)*–*(p)* stand, *(p)* in its r
    > `(K-bare)/(K-bare-ext)` row.*
    >
 
-3. **NON-NESTEDNESS AT THE TWO SURVIVING PROFILES — THE WHOLE (BLOCK-GP) RESIDUE** *(new —
-   BGPLAW's named hand-forward).* Owner: §(K-bare-ext) *Step BE304*, (BE-305), with (BE-279)(ii)
-   supplying the instrument. **The question: is `ρ̄_i` ever nested with `⟨P₀⟩ ∩ U` at
-   `U = L+M+Π_x` or `L+M+Π_y`, `dim ⟨P₀⟩ = 5`, `ρ_i = 3`?** A proof of non-nestedness there kills
-   **30 of 32** targets outright and leaves those two; a proof at those two closes **(BLOCK-GP)
-   entire**, hence all sixteen blocks at rung 3 in the generic flag regime. **GLEAF's question:
-   SUFFICIENT for the generic-flag half**, which by (BE-284)(i) discharges the rung-3 instances
-   of the universal the S-mark induction consumes — **subject to rank 1**, since at the forced
-   peels that discharge currently has no consumer.
-   **The instrument is named and is the entry's own first slice:** (BE-279)(ii)'s `m = 5` Klein
-   annihilator, read against **`ρ̄_i`** instead of `⟨P₀⟩` — the corpus has only ever read it the
-   other way. **The status caveat the consumer inherits, stated here so a spec carries it:** by
-   (BE-279)(ii)'s own table the `B(m,U)` certificate is pointwise at `m ≤ 4` and
-   **generic-with-a-witness at `m = 5`**, and **26 of the 32 targets live at `m = 5`** — so this
-   entry works entirely inside the one regime where the table is a notch weaker.
-   *Kill condition: non-nestedness proved at the two profiles — which closes (BLOCK-GP) and all
-   sixteen blocks at rung 3 in the generic regime; or a nested configuration exhibited at either
-   profile, which is a (BLOCK-GP) violation and **reaches (BE-14)** by (BE-69)(ii); or the `m = 5`
-   generic-with-a-witness gap shown to block the instrument, which names what the lane needs
-   instead of (BE-279)(ii). Decided by: the `(K-bare)/(K-bare-ext)` row.*
+3. **NON-NESTEDNESS — SPENT (BNEST 119, 2026-09-13): THE QUESTION DISSOLVES, AND THIS ENTRY AS
+   WRITTEN WAS WRONG — THE TWO SURVIVORS ARE THE TARGETS *DEFINED* BY ESCAPING
+   NON-NESTEDNESS.** Owner of the answer: §(K-bare-ext) *Steps BE333–BE342*, (BE-334)–(BE-343).
+   **THE ENTRY'S OWN PREMISE WAS REFUTABLE FROM A LANDED DRIVER'S IN-BAND OUTPUT.**
+   `bgplaw.py targets` prints, at `bgplaw.py:203`, *"NON-NESTEDNESS kills N of the 32 targets and
+   is **NOT sufficient** for …"*, and (BE-308)(iv) calls the survivors *"the two that **escape**
+   non-nestedness"*. The survivors are `(L+M+Π_x, m = 5, ρ_i = 3, c_i = 2)` and its mirror, where
+   the nested extreme is `min(ρ_i, B(5,U)) = 3` — so non-nestedness is a property they **have**,
+   not one they can be excluded by. **Bar *(q)* caught it on its first outing, at 0.0 s.**
+   §7 taxonomy: **MOOT**. *(The entry also mis-cited the 30-of-32 count to (BE-305), which is the
+   bar-*(p)* clause; it is **(BE-301)(iii)**.)*
+   **WHAT REPLACES IT IS SHARPER THAN WHAT WAS ASKED — the residue is ONE RANK CONDITION.**
+   `L+M+Π_x` **is** `Π_x^⊥` (`Π_x` totally singular, plus `blocks_of`'s direct-sum assert), so at
+   **every** configuration `c_i(L+M+Π_x) = ρ_i − rank K(ρ̄_i, Π_x) = ρ_i − 2 + dim(Π_x ∩ ρ̄_i^⊥)`.
+   At `ρ_i = 3` that is `1 + k_i(x)` against an allowance of `1`, so **the whole rung-3
+   generic-flag residue of (BLOCK-GP) ⟺ `ρ̄_i^⊥ ∩ Π_x = 0`** — one rank condition on one `3 × 2`
+   matrix, with nested / surviving / legal reading off as `k_i(x) = 2 / 1 / 0`. That **is** the
+   spec's named instrument, delivered as an **equivalence** rather than a bound.
+   **AND THE RESIDUE HAS NO FLOOR IN IT.** At both survivors `f(U) = ρ_i + B − m = 1`, so
+   (BLOCK-GP) there is exactly the **unfloored** L7 — already measured at 1 281/1 281 and
+   13 664/13 664. **The whole floored/unfloored dispute is inert on the residue.** Why these two
+   blocks: `L+M+Π_x` is the **unique 4-dimensional block** (up to mirror) with `f(U) = 1`; the
+   other 4-dimensional block `Π_x⊕Π_y` has `f = 2`, and the 3-dimensional ones drop the nested
+   extreme to 2. A **floor/dimension asymmetry**, not superadditivity.
+   **NEW MEASUREMENT IN THE RESIDUE'S OWN CURRENCY** (`bnest.py perp`): `rank K(ρ̄_i, Π_x) =
+   min(ρ_i, 2)`, **maximal at 1 281/1 281**, and `k_i(x) = 0` at **18/18** in the survivors' cell,
+   both blocks. The one non-maximal class (`m = 2, ρ = 2`) is **proved** from (BE-30)(ii)'s
+   conjugacy pattern, not an outlier. **The fifth family is SPENT** ((BE-302)(iii)'s *"cheapest
+   unspent probe"*, never run before): 0 of 32 targets, 0 violations, **survivor region NOT FOUND
+   UNDER CAP C**.
+   *Kill condition: MET by dissolution — non-nestedness holds at both survivors, **trivially and
+   for a reason the entry did not have**, and its holding is exactly **why** (BLOCK-GP) does not
+   close. The successor is `ρ̄_i^⊥ ∩ Π_x = 0`, unproved, with three slices priced cheapest-first:
+   **is `ρ̄_i` spanned by decomposables at a survivor** — draw-free, unmeasured anywhere, and it
+   turns the residue into a transversal-line question in (BE-279)(ii)'s own vocabulary; then
+   widening `maxarc`/`maxtheta`/`nlad` and re-running `perp`; then proving the unfloored law at
+   the two cells. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible — and
+   > because it is the clearest case in the arc of a spec refuted by a driver the coordinator had
+   > already run.**
+   > 3. **NON-NESTEDNESS AT THE TWO SURVIVING PROFILES — THE WHOLE (BLOCK-GP) RESIDUE** *(new —
+   > BGPLAW's named hand-forward).* Owner: §(K-bare-ext) *Step BE304*, (BE-305), with (BE-279)(ii)
+   > supplying the instrument. **The question: is `ρ̄_i` ever nested with `⟨P₀⟩ ∩ U` at
+   > `U = L+M+Π_x` or `L+M+Π_y`, `dim ⟨P₀⟩ = 5`, `ρ_i = 3`?** A proof of non-nestedness there kills
+   > **30 of 32** targets outright and leaves those two; a proof at those two closes **(BLOCK-GP)
+   > entire**, hence all sixteen blocks at rung 3 in the generic flag regime. **GLEAF's question:
+   > SUFFICIENT for the generic-flag half**, which by (BE-284)(i) discharges the rung-3 instances
+   > of the universal the S-mark induction consumes — **subject to rank 1**, since at the forced
+   > peels that discharge currently has no consumer.
+   > **The instrument is named and is the entry's own first slice:** (BE-279)(ii)'s `m = 5` Klein
+   > annihilator, read against **`ρ̄_i`** instead of `⟨P₀⟩` — the corpus has only ever read it the
+   > other way. **The status caveat the consumer inherits, stated here so a spec carries it:** by
+   > (BE-279)(ii)'s own table the `B(m,U)` certificate is pointwise at `m ≤ 4` and
+   > **generic-with-a-witness at `m = 5`**, and **26 of the 32 targets live at `m = 5`** — so this
+   > entry works entirely inside the one regime where the table is a notch weaker.
+   > *Kill condition: non-nestedness proved at the two profiles — which closes (BLOCK-GP) and all
+   > sixteen blocks at rung 3 in the generic regime; or a nested configuration exhibited at either
+   > profile, which is a (BLOCK-GP) violation and **reaches (BE-14)** by (BE-69)(ii); or the `m = 5`
+   > generic-with-a-witness gap shown to block the instrument, which names what the lane needs
+   > instead of (BE-279)(ii). Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 
 4.–9. **THE CARRIED ENTRIES** — GUNIZERO's **`i·m//6` placement** ((GR-262); the `hK` lane's only
    remaining item, and low-yield by its own F26 check); BPROPCL's **class** properness statement

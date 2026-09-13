@@ -100,6 +100,16 @@ holding `maxarc = 8`, `maxtheta = 7`.
 ### *Step BE305* — **(BE-306): `f(U)` is the TABLE's floor, not (M1)'s — the second half of the spec's mechanism, eliminated at the definition body**
 
 > **(BE-306)(i)** `[REFUTED]` *(a definition-body reading; the docstring and the landed prose disagree and the body decides)* — The spec's mechanism is *"`f(U)` is exactly the (M1) correction"*, and (BE-281)(ii) says it in the corpus: *"(M1) is the floor, (M2) is the saturated end of the count."* **`f(U)` is neither.** `bsixteen.forced(S)` returns `|S ∩ {Π_x, Π_y}|`, and its docstring names its provenance exactly: *"the number of path hinge lines (BE-30)(ii) FORCES into `U`: `ℓ₁ ∈ Π_x` and `ℓ_m ∈ Π_y`, **always**"*. It enters (BLOCK-GP) as the `forced` term of `Bbound(m, S) = max(forced(S), m + d_S − 6)` — i.e. as **(BE-279)(i)'s pointwise floor on `dim(⟨P⟩ ∩ U)`**, proved there from the pencil condition at the terminals, at **every legal configuration**. **Three separations, any one of which is enough.** *(1) Different carrier:* `f` bounds `⟨P₀⟩ ∩ U` from below; (M1) bounds `ρ̄_i ∩ Π_x` from below. *(2) Different support:* `f ≥ 1` at every block containing an end block, at **428 of 428** library sides; (M1) fires at **0 of 428** ((BE-282)(iii)). *(3) Different value:* at `U = Π_x ⊕ Π_y`, `f = 2`, while (BE-45)(i) is a **one-terminal** statement and a series end at `x` supplies only `⟨ℓ_e⟩ ⊆ ρ̄_i ∩ Π_x`, i.e. `1`. ∎ **What (BE-281)(ii)'s conclusion keeps:** the floor is needed, and the unfloored law is refuted in principle by a series end — that argument stands untouched; what is wrong is the identification of the floor's **source**, and it matters because it is the sentence a proof attempt would build on.
+>
+> ***SCOPED 2026-09-13 by (BE-341) (direction BNEST): this clause reads only ONE of
+> `forced`'s two occurrences.*** It checks `forced(S)` **inside** `Bbound`
+> (`bsixteen.py:133`) — correctly — but the shipped law's floor is the **OUTER**
+> `max(forced(S), ρ_i + Bbound(m_i, S) − m_i)` at `bsixteen.py:637`, and **that** is
+> (BLOCK-GP)'s `f(U)`. So this clause's separation (3) fails and **(BE-281)(ii)'s sourcing
+> of the floor to (BE-45)(i) stands**: the driver's own law table says the outer floor
+> exists because L7 is *"REFUTED in principle by (BE-45)(i)"*, and (BE-45)(i) applies at
+> **each** terminal, which is what `f = |S ∩ {Π_x, Π_y}|` counts. **Nothing measured in
+> this clause moves**; what falls is the attribution it drew from the measurement.
 
 > **(BE-306)(ii)** `[PROVED]` *(the mechanism's other half, already eliminated at (BE-301)(ii), stated here as one verdict)* — Both halves of the spec's mechanism fail, and for **independent** reasons: `f` is the table's floor, not (M1)'s ((i)); and the trace-lemma + Klein-pairing route **produces the table**, which is the bound (BLOCK-GP) must strictly beat at all 32 targets ((BE-301)(ii)). **Coordinator mechanisms now stand at 0 of 7 on this arc**, and this one was eliminated draw-free, before the first slice was run, exactly as `RESEARCH-ARC.md` §7(a) asks.
 

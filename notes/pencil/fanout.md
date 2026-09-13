@@ -2,7 +2,7 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
-dispatched; **126 LANDED, NONE IN FLIGHT, ONE DRAFTED AND AWAITING LANDING (BNEST 119)** — BOTH 2026-09-10 rounds of three
+dispatched; **127 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
@@ -19041,3 +19041,85 @@ quotes *"0 of 8 491"* — but `coverable` is the **weaker, merely necessary** te
 and the quoted zero is for `side_reach`; **(BE-333)(iii) already discloses those
 three explicitly** as its own adversarial check (b). (BE-77)(ii)'s refutation is
 recorded at its **owning prose** in BSPREAD.md, not only here (F12).
+
+## BNEST — ordinal 119, concurrent round of three, `research-direction-opus`, LANDED 2026-09-13
+
+**§8's nineteenth pass, RANK 3.** *Question:* is `ρ̄_i` ever nested with
+`⟨P₀⟩ ∩ U` at the two surviving (BLOCK-GP) profiles?
+
+**VERDICT: the question DISSOLVES, and the entry as specced was WRONG — the two
+survivors are the targets *defined* by escaping non-nestedness.** Landed as
+(BE-334)–(BE-343) / *Steps BE333–BE342*. Driver `notes/scripts/w4/bnest.py`
+(`arith perp fifth wide delta validate`).
+
+- **THE SPEC'S PREMISE WAS REFUTABLE FROM A LANDED DRIVER'S OWN IN-BAND OUTPUT.**
+  `bgplaw.py` prints at line 203: *"NON-NESTEDNESS kills N of the 32 targets and
+  is **NOT sufficient** for …"*, and (BE-308)(iv) calls the survivors *"the two
+  that **escape** non-nestedness"*. The survivors are
+  `(L+M+Π_x, m = 5, ρ_i = 3, c_i = 2)` and its mirror, where the nested extreme is
+  `min(ρ_i, B(5,U)) = 3` — non-nestedness is a property they **have**. **Bar
+  *(q)* caught it at 0.0 s on the bar's first outing.** §7 taxonomy: **MOOT**.
+- **WHAT REPLACES IT IS SHARPER THAN WHAT WAS ASKED.** `L+M+Π_x` **is** `Π_x^⊥`
+  (`Π_x` totally singular + `blocks_of`'s direct-sum assert), so at **every**
+  configuration `c_i(L+M+Π_x) = ρ_i − rank K(ρ̄_i, Π_x) = ρ_i − 2 + dim(Π_x ∩
+  ρ̄_i^⊥)`. At `ρ_i = 3` that is `1 + k_i(x)` against an allowance of `1`, so
+  **the whole rung-3 generic-flag residue of (BLOCK-GP) ⟺ `ρ̄_i^⊥ ∩ Π_x = 0`** —
+  one rank condition on one `3 × 2` matrix, with nested / surviving / legal
+  reading off as `k_i(x) = 2 / 1 / 0`. That is the spec's named instrument,
+  delivered as an **equivalence** rather than a bound.
+- **THE RESIDUE HAS NO FLOOR IN IT.** At both survivors `f(U) = ρ_i + B − m = 1`,
+  so (BLOCK-GP) there is exactly the **unfloored** L7 — already measured at
+  1 281/1 281 and 13 664/13 664. **The floored/unfloored dispute is inert on the
+  residue.** Why these two: `L+M+Π_x` is the **unique 4-dimensional block** (up to
+  mirror) with `f(U) = 1`; `Π_x⊕Π_y` has `f = 2` and the 3-dimensional blocks drop
+  the nested extreme to 2. A **floor/dimension asymmetry**, not superadditivity —
+  which is where the coordinator's *"where I expect to be wrong"* had the right
+  address and the wrong mechanism.
+- **NEW MEASUREMENT IN THE RESIDUE'S OWN CURRENCY** (`perp`, 669 s, 427 rows,
+  1 281 draws, 4 asserts/draw, 0 failures): `rank K(ρ̄_i, Π_x) = min(ρ_i, 2)`,
+  **maximal at 1 281/1 281**; `k_i(x) = 0` at **18/18** in the survivors' cell,
+  both blocks. The one non-maximal class (`m = 2, ρ = 2`) is **proved** from
+  (BE-30)(ii)'s conjugacy pattern, not an outlier.
+- **THE FIFTH FAMILY IS SPENT** — (BE-302)(iii)'s *"cheapest unspent probe"*,
+  never run before: a draw-free `δ_xy` census at `maxlen = 4` over 24 936 rows,
+  then two derived filters. **0 of 32 targets, 0 violations, survivor region NOT
+  FOUND UNDER CAP C.**
+- **TWO ATTRIBUTION CORRECTIONS, one of them to a coordinator annotation landed
+  hours earlier.** **(BE-306)(i) reads only ONE of `forced`'s two occurrences** —
+  it checks `forced(S)` **inside** `Bbound` (`bsixteen.py:133`), correctly, but
+  the shipped law's floor is the **OUTER** `max(forced(S), ρ_i + Bbound − m_i)` at
+  `bsixteen.py:637`, and that is (BLOCK-GP)'s `f(U)`. **So (BE-281)(ii)'s sourcing
+  STANDS**, (BE-45)(i) applying at **each** terminal — which is what
+  `f = |S ∩ {Π_x, Π_y}|` counts — and the coordinator's annotation withdrawing it
+  is itself withdrawn at BSIXTEEN.md.
+- **AND THE SPEC'S F27 GLOSS WAS INVERTED.** By **(BE-255)(i) row 4** —
+  *"`c_i(U) ≤ k` is provable from a draw, `c_i(U) ≥ k` is not"* — a **satisfying**
+  draw is the certificate and a **violating** one is the guess; the spec said the
+  reverse. Consequence at the survivors: `f(U) = 1` alone makes one satisfying
+  draw a proof **at that row**, with no `a_i = 0` / `ρ_i = δ_i` needed, unlike
+  (BE-293)(i) — modulo irreducibility of `Chart♭(side_i)`, which (BE-299)(i) flags
+  as open.
+- **PREDICTION SCORED.** **VERDICT right-for-the-wrong-reason, consequent
+  refuted:** *"non-nestedness holds"* is trivially true, and *"so (BLOCK-GP)
+  closes"* is false — its holding is **why** it does not close.
+  **WHERE-I-EXPECT-TO-BE-WRONG: SPLIT** — right address (`L+M`), wrong mechanism.
+  **MECHANISM REFUTED** draw-free before anything was built. **TELL: did not fire,
+  could have — but structurally blind to the survivors**, which sit at `c_i = 2`;
+  a working tell is `k_i(x) ≥ 1`, which `perp` measures.
+- **FIVE SELF-CAUGHT**, including a characterization assert that **fired on its
+  first run** (the gap-2 sweep needs `m ≤ 5`; 16 further cells exist at `m = 6`),
+  a `ρ_i = 0` guard bug caught by an identity assert, and a first `fifth` run at
+  `maxlen = 2` that gave `ρ = 0` at 1 119/1 119 and nearly produced *"the family
+  is blind"* — refuted by the direction's own draw-free `delta` census, and
+  recorded as **measured, superseded**.
+
+**COORDINATOR VERIFICATION.** `arith` re-run (draw-free: the two survivors are
+the **only** cells at `m ≤ 5`, both at `(m, ρ_i) = (5,3)`, with the 16 `m = 6`
+cells listed and excluded); `perp` re-run (`k_i(x) = 0` at 18/18 in the survivor
+cell, both blocks, 0 violations); `fifth` re-run (0 of 32, 0 violations,
+survivor region not found, fences disclosed in band). The spec's refutation was
+checked at its **sources** rather than on the direction's word: `bgplaw.py:203`
+carries the *"NOT sufficient"* print verbatim, (BE-301)(iii) is the 30-of-32
+clause the spec mis-cited to (BE-305), `bsixteen.py:637` carries the outer
+`forced(S)` the coordinator had missed, and (BE-255)(i) row 4 reads exactly as
+BNEST quotes it.
