@@ -2,7 +2,7 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
-dispatched; **123 LANDED, ONE IN FLIGHT (GUNIZERO 116), NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+dispatched; **124 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
@@ -18743,3 +18743,106 @@ coordinator error the direction caught, and it had already reached three landed
 surfaces.** `notes/scripts/README.md`'s invocation table was missing this driver
 **and the previous four landings' drivers** — a pre-existing gap of four, fixed
 in the same commit rather than only for this one.
+
+## GUNIZERO — ordinal 116, concurrent round of three, `research-direction-opus`, LANDED 2026-09-13
+
+**§8's eighteenth pass, RANK 3** — the `hK` lane's one entry, carried from
+GODDRUNG's own named successor. *Question:* does the repaired colouring have
+generic `dim Z₊ = dim Z₋ = 0` for **all** `m`?
+
+**VERDICT: PROVED FOR ALL `m` at the clumped placement — and the proof computes
+no rank and classifies no chunk.** Landed as (GR-257)–(GR-266) / *Steps
+G277–G286*, merged into `grid.md`. Driver `notes/scripts/w4/gunizero.py`
+(legs `--rule`/`--triple`/`--tail`/`--spread`/`--consumer`/`--validate`).
+
+- **THE INSTRUMENT IS ALREADY LANDED AND ITS HYPOTHESIS IS COMBINATORIAL.**
+  §(K-grid) **(GR-9)** — `[PROVED]`, opened at its owning section — says a legal
+  colouring-block whose classes partition into three groups with `H₊ ∖ F_j`
+  connected has **`dim Z = 0` at generic parameters**. So the "rank-shaped"
+  target turns out not to need a rank.
+- **(GR-261), the theorem.** For every even `m ≥ 12`, `CL_m` carrying six `ℓ = 3`
+  rungs at the **fixed** columns `0, 2, 4, 6, 8, 10` (every other branch at
+  `ℓ = 2`) is a `D = 0` tight class shape by **(GR-175)**; the repaired rule's
+  colouring is **admissible** there; and its classes carry a **tree-triple in
+  BOTH blocks**. Hence **(GR-15) holds uniformly in `m` on an infinite family of
+  tight class shapes**, and so does the strictly stronger **(GR-10)**, since the
+  certificate *is* the tree-triple (GR-10) asks for.
+- **WHY IT IS A PROOF AND NOT A TABLE.** Outside a fixed window `[0,11]` the
+  assignment is completely uniform — **every** tail top rim to `F₁`, **every**
+  tail bottom rim to `F₂`, **every** tail rung to `F₃` — so the six connectivity
+  checks are **finite and `m`-independent** ((GR-260)(i)). The construction is
+  re-verified by the **canonical** device (`closure.cycle_rank` on `bd['ced']`,
+  pairwise unions acyclic, all three groups of size `m+1`) at **35 of 35** even
+  `m` in `12…80`, 0 failures, cap-free. Note `grid.tree_triple`'s own
+  250 000-node DFS **caps out at `m = 12`** on this colouring — the landed search
+  could not have found it.
+- **TWO ENABLING LEMMAS.** **(GR-257)** solves the **balance rider in closed
+  form** — `du(p_i) = (p_i − i + σ₀ + σ_i + off) mod 2`, one arithmetic condition,
+  always solvable — which **discharges what (GR-251)(iv) itself left open**
+  (*"this is `m ≤ 6`; the rider is not proved free in general"*). **(GR-258)**
+  makes the rule **genuinely a formula**: (GR-252) step 6 is a *search* over
+  `4^k` knobs under a 200 000 cap, so (GR-256)(iv)'s *"colouring given by a
+  formula in the length vector"* was not yet true; this rule never enters step 6,
+  at **25/25** admissible rows for `m = 12…60`, exact predicate, cap-free.
+- **TWO LANDED SENTENCES FALL.** **(GR-256)(i)'s *"the rank half … stays per
+  shape"* is REFUTED as a structural claim** — (GR-9) discharges it
+  combinatorially and (GR-10) is exactly its uniform form; the clause reported
+  GODDRUNG's own per-shape route as if it were the only one. And **(GR-34)(ii)'s
+  *"the all-`m` statement would need the ladder's chunk classification"* is
+  REFUTED**: no chunk object is touched. (GR-256)(iv) was
+  *right-with-a-dropped-proviso* — the knob quantifier — which (GR-258)
+  discharges.
+- **F26, AND IT CUTS BOTH WAYS.** (GR-256)(iii) **stands**: no landed structure
+  consumes (GR-15) on a subfamily, the `G°` route is struck, and **no gap-map
+  status word moves**. But its escape clause reads *"on any **finite** set of
+  shapes"*, and one-point decidability settles **one shape at a time**, so it
+  does **not** cover an infinite family. This is a theorem that was **not**
+  already obtainable, and the corpus's first **uniform (GR-10)** instance.
+- **PREDICTION SCORED.** **VERDICT CONFIRMED.** The coordinator's *"where I
+  expect to be wrong"* was again the load-bearing sentence and was **itself wrong
+  in the productive direction** — the rank half does *not* stay per shape.
+  **MECHANISM REFUTED**, killed first and cheaply: not a transfer matrix,
+  (GR-252)'s correlation riding a **global GF(2) solve** and the certificate that
+  works being a **cotree partition**. **Coordinator mechanisms 0 of 7.**
+- **THE TELL DID NOT FIRE AND COULD HAVE.** An `m` with the repaired rule
+  admissible and `dim Z ≠ 0`: **not found** at 25/25 even `m` in `12…60` on
+  **GBASE's own `i·m//6`** placement, for *both* the landed `search_repair`
+  colouring and this one — past `--far`'s `m = 40`. Region unbounded, so this is
+  a **range verdict, not an existence verdict**; and the driver states the F27
+  direction in-band — each `0` is an **exhibited vanishing point (a proof)** while
+  a nonzero would have been **one draw**.
+- **CAPS.** `--rule` admissibility exact and cap-free to `m = 60`;
+  `fully_good_rank` to `m = 40`; **NC1 only to `m = 12`** (`cflank.nc1_violations`
+  needs the cycle enumeration, the same fence as (GR-253)(ii)); `--triple`
+  cap-free to `m = 80`; `--spread` `dim Z` is **one seeded exact-ℚ draw per
+  block** to `m = 60`; windowed/rotation searches at 800 000 / 20 000 nodes.
+  `gridcol.class_shape` at `n_hub = 24` did not return in budget, so shapehood
+  rests on **(GR-175)**, whose count is position-independent (*measured, script
+  not retained*).
+- **OPEN, AND NAMED AS A COORDINATOR CALL: the `i·m//6` PLACEMENT.** Six windows
+  instead of one; the tail assignment does not close under these caps (found at
+  `m = 12, 18` in block A and `12` in block B; capped at 24, 30, 36, 42, 48, 60).
+  `dim Z = 0` there is **measured to `n_hub = 120`, proved nowhere** ((GR-262)).
+- **SELF-CAUGHT, TWICE.** The `--tail` leg first asserted *"every tail rim class
+  is an adjacent PAIR"* and **the leg refuted its own sentence** — block `B`
+  carries a lone rim `B_{m−1}` at the window edge at every `m`; **kind-purity** is
+  the property the construction actually uses, and the leg was rewritten rather
+  than the claim quietly weakened. And a first randomized triple search failed at
+  `m ≥ 10` for lack of a size prune, which **would have read as "no triple
+  exists"** had it stopped there.
+
+**COORDINATOR VERIFICATION.** Every figure-bearing leg re-run: `--triple`
+(35/35, `CANONICAL = True`, group sizes `m+1`, 0 failures), `--rule` (25/25
+admissible with `knob search = NONE`), `--tail` (25/25 kind-pure, tail counts
+growing linearly in `m` exactly as the uniform-tail argument requires, and the
+lone `B_{m−1}` rim visible in every block-B row), `--spread` (`dim Z = [0,0]` in
+both blocks at every `m` to 60, for **both** the landed and the closed-form
+colouring). **(GR-9) was opened at its owning section** rather than taken from
+the return, and licenses the inference as stated. **One suspected gap was checked
+and is NOT one:** `--rule` honestly prints `NC1 clear = None` past `m = 12`, but
+`cflank.admissible` does not include NC1, and `cflank.nc1_violations`'s own
+docstring says each violation **proves `dim Z > 0`** — so NC1-clearness is a
+*consequence* of (GR-9)'s conclusion, not a prerequisite of its hypothesis, and
+the `m = 12` fence does not weaken the theorem. The draft was merged into
+`grid.md` (its canonical home) with its DRAFT preamble stripped and its step
+headings normalised to the file's `### *Step Gnnn* —` form.

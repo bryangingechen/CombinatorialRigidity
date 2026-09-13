@@ -23124,3 +23124,411 @@ changed a stated conclusion:
    in the statement and not in the check. Fixed by adding the exhaustive
    `2^{3m}` cross-check through `cflank.admissible`, which is (GR-251)(iv) —
    and which is also what limits (GR-251)(iv) to `m ≤ 6`.
+
+## §(K-grid) — continuation (direction GUNIZERO, ordinal 116, 2026-09-13)
+
+**The question.** §(K-grid) (GR-256)(iv) reduced *uniform (GR-15) on `CL_m`*
+to one statement — *the repaired rule's colouring has `dim Z₊ = dim Z₋ = 0`
+generically, for all `m`* — and (GR-256)(i) said the rank half of (GR-15)
+*"is a rank computation on a shape-sized pair of matrices and stays **per
+shape**"*. §(K-grid) (GR-34)(ii) said the all-`m` statement *"would need the
+ladder's chunk classification"*.
+
+**The answer.** The all-`m` statement is **PROVED**, on an infinite family of
+tight class shapes, by a route that computes **no rank at all** and
+classifies **no chunk**. The instrument is §(K-grid) (GR-9) — a *landed,
+proven* theorem whose hypothesis is purely combinatorial — and the two
+sentences quoted above are, as structural claims, **refuted**.
+
+Two scope statements up front, because they are what the result costs:
+
+* The family is `CL_m` with the six length-3 rungs at the **fixed** columns
+  `0, 2, 4, 6, 8, 10` — the *clumped* placement. §(K-grid) (GR-175) asks only
+  for *"six rungs of length `3` (pairwise non-adjacent)"* and pins no
+  positions, so this **is** (GR-175)'s recipe; GBASE's `i·m//6` is a
+  *different placement of the same recipe*, and the uniform certificate is
+  **not** established there (*Step G282*).
+* The theorem is about the **repaired rule as a rule** — i.e. about the
+  colouring the construction below produces at each `m`. That colouring is a
+  member of (GR-252)'s knob family at every `m`, and (*Step G278*) it needs
+  **none** of (GR-252) step 6's search.
+
+---
+
+### *Step G277* — (GR-257): the balance rider, solved in closed form
+
+> **(GR-257)** `[PROVED]` *(closed form; cross-checked `[MEASURED]` by
+> `gunizero.py --rule`, whose admissibility verdicts are the canonical
+> `cflank.admissible` — an exact predicate, cap-free in both directions —
+> at every even `m` in `12…60`)* — On `CL_m` at any placement of six
+> pairwise non-adjacent length-3 rungs at columns `P = (p_0 < … < p_5)`,
+> take the deviation set that, for each `i`, re-points **both** hubs of
+> column `p_i` onto rim darts: the hub at one rail onto its **forward**
+> rim, the hub at the other rail onto its **backward** rim, with
+> `σ_i ∈ {0,1}` naming which rail is which. Then the colouring exists,
+> uses exactly `ρ(ℓ) = 12` deviating hubs, meets §(K-grid) (GR-251)'s
+> `τ`-parity clause automatically, and its **odd-branch balance** — the
+> one conjunct §(K-grid) (GR-37)(iii)'s *second caveat* says the
+> class-level span argument does not deliver — is governed by the closed
+> form below. Balance is therefore **always achievable**, at every `m`, by
+> a formula.
+
+> **(GR-257)(i)** `[PROVED]` *(the deviation set is well-defined)* — By
+> §(K-grid) (GR-249)(i), with every rim at `ℓ = 2` the faces needing a flip
+> are exactly `{p_i − 1, p_i : i = 0…5}` (`k = 12`, `a = 6`), and face `j`
+> is served only by *(hub `j+1`, forward rim)* or *(hub `j`, backward
+> rim)*. Serving face `p_i − 1` from hub `p_i` forward and face `p_i` from
+> hub `p_i` backward uses the **same column** twice, so the two services
+> must sit on **opposite rails** — which is exactly `σ_i`, and which makes
+> the hub collision impossible for any `m` with the `p_i` pairwise
+> non-adjacent. `#top = 6 ≡ 0 = τ` for even `m`, so (GR-252) step 2's
+> parity clause is met with no further choice.
+
+> **(GR-257)(ii)** `[PROVED]` *(the colour solve, in closed form)* — The
+> BFS of (GR-252) step 4 has an explicit solution on `CL_m`: along each rim
+> the majority colour **alternates**, except that it **stalls** at every rim
+> that is some hub's new minority dart. Writing `Stop = {p_i − σ_i}` and
+> `Sbot = {p_i − (1 − σ_i)}` for the two stall sets,
+> `c(t_j) = c(t_0) ⊕ (j − |Stop ∩ [0,j)|)` and
+> `c(b_j) = c(b_0) ⊕ (j − |Sbot ∩ [0,j)|)` mod 2. Consistency around the
+> cycle is `m ≡ 6 ≡ 0 (mod 2)`; consistency across the rungs is
+> `c(t_j) ⊕ c(b_j) = 1 ⊕ [j ∈ P]`, which the two stall sets deliver because
+> `|Sbot ∩ [0,j)| − |Stop ∩ [0,j)| ≡ [j ∈ P] ⊕ 1` whenever `p_0 = 0`.
+
+> **(GR-257)(iii)** `[PROVED]` *(balance, and why it is free)* — At an
+> alternating colouring `cflank.admissible`'s balance conjunct
+> (`#A edges = #B edges`) reduces to *exactly three of the six length-3
+> rungs carry dart colour `A`*, because an `ℓ = 2` branch contributes one
+> edge of each colour and an `ℓ = 3` branch contributes two of its dart
+> colour and one of the other. With the deviation set of (i), the rung at
+> `p_i` is a **majority** dart at both of its hubs, so its dart colour is
+> `c(t_{p_i})`, and (ii) gives
+> > `du(p_i) = (p_i − i + σ_0 + σ_i + off) mod 2`
+>
+> (`off` the global `A ↔ B` swap). Balance is therefore the single
+> arithmetic condition `#{i : a_i ⊕ σ_i = σ_0 ⊕ off} = 3` with
+> `a_i := (p_i − i) mod 2` — and since `σ_1,…,σ_5` are free, it is
+> **solvable at every `m` and every placement**: fix `σ_0 = off = 0`
+> (`i = 0` is then a hit for free, as `a_0 = 0`), set `σ_i = a_i` for two
+> further indices and `σ_i = 1 ⊕ a_i` for the remaining three. **This is a
+> proof of the rider §(K-grid) (GR-251)(iv) left explicitly open** — its
+> own scope line reads *"this is `m ≤ 6`; the rider is not proved free in
+> general"*.
+
+> **(GR-257)(iv)** `[MEASURED]` *(`gunizero.py --rule`; `cflank.admissible`
+> is exact, so this is cap-free in both directions)* — At the clumped
+> placement `P = (0,2,4,6,8,10)` the formula gives `σ = (0,1,0,0,1,0)` at
+> **every** `m`, the three `A`-coloured length-3 rungs are always
+> `R_0, R_2, R_4` and the three `B`-coloured ones always `R_6, R_8, R_10`,
+> and the colouring is admissible at **25 of 25** even `m` in `12…60`
+> (`n_hub = 24…120`), with NC1 clear at `m = 12` (where
+> `cflank.nc1_violations` is affordable) and `gexist.fully_good_rank` True —
+> an **exhibited** exact-ℚ `dim Z₊ = dim Z₋ = 0` pair, hence a per-shape
+> proof — at **15 of 15** rows to `m = 40`.
+
+---
+
+### *Step G278* — (GR-258): the rule is now genuinely a formula
+
+> **(GR-258)** `[PROVED]` *(from (GR-257) plus (GR-252)'s own step list)* —
+> §(GR-256)(iv) states its target as *"with the colouring given by a formula
+> in the length vector"*. **(GR-252) does not give one.** Its steps 1–5 are
+> deterministic, but step 6 is a **search** — *"Search the finite knob set
+> of step 2 (`4^k` service maps × the global swap, plus, if none balances,
+> one extra neutral pair costing 2)"* — and at (GR-175)'s recipe `k = 12`,
+> so the knob set has `4^12 = 16 777 216` members and `goddrung.
+> search_repair` samples it under a `200 000` cap above `4^k > cap`. So the
+> landed object is *"the first admissible colouring in an enumeration
+> order"*, not a formula, and its deviation positions move unpredictably
+> with `m` (measured: `dev` at `m = 14` is `{1,3,4,6,9,11,15,17,21,23,25,27}`
+> and at `m = 16` is `{0,1,3,4,8,14,17,22,23,26,27,29}`). **(GR-257) removes
+> that quantifier**: the deviation set and `σ` are formulas, step 6 is never
+> entered, and the `200 000` cap disappears from the certificate. This is a
+> **precondition** of (GR-256)(iv)'s own target, not a strengthening of it.
+
+---
+
+### *Step G279* — (GR-259): the branch reformulation, and the tail lemma
+
+> **(GR-259)** `[PROVED]` *(from `grid.block_data`'s definition and the
+> spanning-forest count; asserted row by row against the canonical device in
+> `gunizero.py --triple`)* — Let `G` be the subdivision of `CL_m` at an
+> admissible alternating colouring and `H₊` the contracted multigraph of one
+> block. Then `E_B` is a **spanning forest** of `G` (both colour classes
+> are: no class crosses a subdivision vertex, where the two incident edges
+> always carry opposite colours), so `|E_A| = 3m + 3`, `n_c = 2m + 3` and
+> `h = m + 1`; the `dim Z` matrix is therefore **square** (`3h = |E_A|`) and
+> §(K-grid) (GR-9)'s balance equality `2|E_A| = 3(n_c − 1)` holds at every
+> `m`. Moreover a set `F ⊆ E_A` is a **cotree of `H₊`** iff `E ∖ F` is a
+> spanning tree of `G`, iff **`F` meets each branch at most once and the
+> branch set it cuts is a cotree of `CL_m`**. So the tree-triple search
+> moves from the `(2m+3)`-node contracted multigraph to the `2m`-node hub
+> graph, with a connectivity union-find in place of `cycle_rank`.
+
+> **(GR-259)(i)** `[PROVED]` *(from the class description; verified
+> `[MEASURED]` exhaustively over the class set at 15 of 15 even `m` in
+> `12…40`, `gunizero.py --tail`)* — **The class structure is fully
+> explicit.** No `A`-component crosses a subdivision vertex, so every
+> `A`-class is one of: *(a)* the two **majority** darts at a hub with
+> `c = A`; *(b)* the lone **minority** dart at a hub with `c = B`; *(c)* an
+> interior edge of a length-3 branch coloured `A`. Counting: `m` classes of
+> size 2, `m + 3` of size 1, total `2m + 3 = n_c`. **In the tail** — every
+> column outside the window `[0, 11]` — no hub deviates, so its minority
+> dart is its **rung**; hence a `c = A` hub's class is its two **rim** darts
+> *on one rail* and a `c = B` hub's class is a lone **rung** dart. Every
+> tail class is therefore **kind-pure** (all top rims, or all bottom rims,
+> or one rung), which is exactly the property the uniform assignment of
+> *Step G280* needs.
+
+> **(GR-259)(ii)** `[PROVED]` *(from (GR-257)(ii) with `m` even)* — **The
+> construction is `m`-independent.** At the clumped placement,
+> `Stop = {0,1,4,6,7,10}` and `Sbot = {m−1, 2,3,5,8,9}`, so for every
+> `j ≥ 11` the stall counts are saturated and `c(t_j) = j mod 2`,
+> `c(b_j) = (j+1) mod 2` — independent of `m`. The window `[0, 11]` and the
+> three wrap branches `T_{m−1}, B_{m−1}, R_{m−1}` therefore carry the
+> **same** structure at every even `m ≥ 12`, which is why a single formula
+> can serve all of them.
+
+---
+
+### *Step G280* — (GR-260): the tree-triple, as a formula in `m`
+
+> **(GR-260)** `[CONSTRUCTED]` *(`gunizero.py --triple`; every row
+> re-verified by the CANONICAL device — `closure.cycle_rank` on
+> `bd['ced']`, the same test `grid.tree_triple` applies — pairwise unions
+> acyclic and all three groups of size `m + 1`; an exhibited partition, so
+> each row is a PROOF carrying no cap)* — For every even `m ≥ 12` at the
+> clumped placement, the following partitions the classes of the two blocks
+> into three groups whose pairwise unions are **spanning trees** of `H₊`.
+> Writing `T_j, B_j, R_j` for the top rim, bottom rim and rung of column `j`:
+>
+> **Block `A`:**
+> > `F₁ = {T_0, T_1, T_3} ∪ {T_6 … T_{m−2}} ∪ {B_0, B_5} ∪ {R_0, R_3, R_4}`
+> > `F₂ = {T_2, T_4, T_5} ∪ {B_2, B_3} ∪ {B_6 … B_{m−1}} ∪ {R_1, R_2}`
+> > `F₃ = {T_{m−1}} ∪ {B_1, B_4} ∪ {R_0, R_2, R_4} ∪ {R_5 … R_{m−1}}`
+>
+> **Block `B`:**
+> > `F₁ = {T_1, T_2, T_3, T_6, T_7} ∪ {T_{10} … T_{m−1}} ∪ {B_0, B_1, B_4, B_5, B_8, B_9}`
+> > `F₂ = {T_0, T_4, T_5, T_9} ∪ {B_2, B_3, B_7} ∪ {B_{11} … B_{m−1}} ∪ {R_1, R_6, R_7, R_8, R_{10}}`
+> > `F₃ = {T_8, B_6, B_{10}} ∪ {R_j : j ∉ {1, 7}}`
+>
+> Each group has `m + 1` branches. Verified: **35 of 35** even `m` in
+> `12…80` (`n_hub = 24…160`), **both** blocks, canonical device, zero
+> failures.
+
+> **(GR-260)(i)** `[PROVED]` *(the tail is the whole point)* — Outside the
+> window the assignment is completely uniform: **every** tail top rim to
+> `F₁`, **every** tail bottom rim to `F₂`, **every** tail rung to `F₃`. By
+> (GR-259)(i) that respects classes for free, and growing `m` by 2 adds
+> exactly one top-rim pair, one bottom-rim pair and two rung singletons —
+> `+2` to each group, matching `|F_k| = m + 1`. The three doubled rungs
+> (the length-3 rungs whose dart colour is the block's own) are
+> `R_0, R_2, R_4` in block `A` and `R_6, R_8, R_{10}` in block `B`, exactly
+> as (GR-257)(iv) predicts, and each sits in two groups.
+
+> **(GR-260)(ii)** `[PROVED]` *(the six connectivity checks, by hand, for
+> every even `m ≥ 12`)* — By (GR-259) it suffices that `CL_m` minus each
+> `F_k`'s branch set is **connected** (the sizes then force a spanning
+> tree). Block `A`: removing `F₁` leaves top rims `{T_2, T_4, T_5, T_{m−1}}`
+> and bottom arcs `{b_1…b_5}`, `{b_6…b_0}`, joined by the surviving
+> `R_1, R_2, R_5, R_6, …, R_{m−1}` — every top component reaches a bottom
+> arc and `R_6` joins the two arcs. Removing `F₂` leaves three top
+> components `{t_3,t_4}, {t_5}, {t_6…t_2}` and `m−4` bottom components
+> `{b_0,b_1,b_2}, {b_3}, {b_4,b_5,b_6}, {b_7}, …, {b_{m−1}}`, joined by the
+> `m−2` surviving rungs into a tree (`R_0, R_3, R_4, R_5, R_6` inside the
+> window; `R_7 … R_{m−1}` pendant). Removing `F₃` leaves the whole top path
+> `t_0 … t_{m−1}`, two bottom arcs `{b_2,b_3,b_4}`, `{b_5…b_1}`, and exactly
+> `R_1, R_3` — a 3-node, 2-edge tree. Block `B` is the same argument with a
+> six-component window: `F₁`'s complement keeps all `m` rungs on `m+1`
+> components and is a tree; `F₂`'s keeps `m−5` rungs on `m−4` components;
+> `F₃`'s keeps only `R_1, R_7` on three components. **Every one of the six
+> checks is finite and `m`-independent** by (GR-259)(ii) — the tail
+> contributes only pendant edges — which is what makes this a proof for all
+> `m` rather than a table.
+
+---
+
+### *Step G281* — (GR-261): the theorem
+
+> **(GR-261)** `[PROVED]` *(from (GR-257), (GR-259), (GR-260) and the
+> landed, proven §(K-grid) (GR-9); no rank computed, no parameter drawn, no
+> chunk classified)* — **Let `m ≥ 12` be even and let `CL_m` carry six
+> length-3 rungs at columns `0, 2, 4, 6, 8, 10` and every other branch at
+> `ℓ = 2` — a `D = 0` tight class shape by (GR-175). Then the repaired
+> rule's colouring (with the closed-form deviation set and `σ` of (GR-257))
+> is admissible, and its classes carry a tree-triple in BOTH blocks; hence
+> by (GR-9) it has generic `dim Z₊ = dim Z₋ = 0`, and reaches the Tay target
+> `6(|V| − 1)` at every generic parameter draw.** In particular **(GR-15)
+> holds, uniformly in `m`, on this infinite family of tight class shapes** —
+> and so does the strictly stronger **(GR-10)**, since the certificate *is*
+> the tree-triple (GR-10) asks for.
+
+> **(GR-261)(i)** `[PROVED]` *(where the shape property comes from)* — The
+> *tight class shape* half is **(GR-175)**, not a measurement: its proof is
+> the position-independent count `Σℓ = 6m + 6 = 6(M − n + 1)`,
+> `Σ(ℓ − 2) = 6`, plus the pairwise non-adjacency that (GNONADD)'s 2026-09-11
+> correction requires — and `0, 2, 4, 6, 8, 10` are pairwise non-adjacent in
+> `Z_m` for every `m ≥ 12`. `gridcol.class_shape` is **not** run here: it is
+> the `2^{n_hub}` device (GR-253)(iii) already declared unnecessary for
+> exactly this reason, and a spot-check attempt at `n_hub = 24` did not
+> return inside this direction's budget (*measured, not retained*).
+
+> **(GR-261)(ii)** `[PROVED]` *(scope, stated against the question that was
+> asked)* — This answers *Step G276*(iv)'s target **in the affirmative on
+> this placement**, and does so through a device (GR-256)(iv) did not
+> anticipate: the vanishing is certified **combinatorially**, so the
+> "rank-shaped" target turns out not to need a rank. What it does **not**
+> settle is the same statement at GBASE's `i·m//6` placement (*Step G282*),
+> nor (GR-15) on any shape outside this family.
+
+---
+
+### *Step G282* — (GR-262): the tell, and the placement that stays open
+
+> **(GR-262)** `[MEASURED]` *(`gunizero.py --spread`; admissibility is the
+> exact `cflank.admissible`, cap-free; the `dim Z` column is ONE seeded
+> exact-ℚ draw per block)* — **The tell — an `m` at which the repaired rule
+> is admissible and `dim Z ≠ 0` — did not fire.** At GBASE's own `i·m//6`
+> placement, both the **landed** `goddrung.search_repair` colouring and this
+> direction's closed-form one are admissible and show `dim Z₊ = dim Z₋ = 0`
+> at every even `m` in `12…60` (`n_hub = 24…120`), i.e. at **25 of 25** rows
+> — past the `--far` leg's `m = 40` and the `--repair` leg's `--rank-hi 40`.
+> **Direction of the evidence, stated exactly:** a `0` here is an *exhibited*
+> vanishing point and hence a per-shape **proof** (`dim Z` is
+> upper-semicontinuous in the labels, so the generic value is the minimum); a
+> nonzero would have been **one draw**, a lower bound on the generic value
+> and not a measurement of it. The region is unbounded, so this is a **range
+> verdict, not an existence verdict**.
+
+> **(GR-262)(i)** `[MEASURED]` *(`gunizero.py`'s windowed search; a capped
+> search, so "not found under cap", never "does not exist")* — **The uniform
+> certificate is NOT established at the `i·m//6` placement.** With six
+> length-3 rungs spread around the cycle there are six windows rather than
+> one, and the tail assignment of (GR-260)(i) no longer closes: a tail-forced
+> DFS (`W = 3`, `800 000` nodes) finds a triple at `m = 12, 18` in block `A`
+> and `m = 12` in block `B` and is **capped** at `m = 24, 30, 36, 42, 48, 60`
+> in both blocks; a per-segment rotation of the tail assignment (`3^6`
+> rotations, `20 000` nodes each) finds none at `m = 24` in either block.
+> The unconstrained branch-level DFS does find triples there at every `m`
+> tested (`12…30` both blocks, `36` block `A`; capped at `2 000 000` nodes
+> for block `B` at `36`), but with no periodic pattern this direction could
+> read off. **So the honest statement is: `dim Z = 0` is measured at every
+> tested `m` at that placement, and proved for all `m` only at the clumped
+> one.**
+
+> **(GR-262)(ii)** `[MEASURED]` *(the landed device's own reach, for the
+> record)* — `grid.tree_triple`'s `250 000`-node DFS **caps out already at
+> `m = 12`** on this colouring, in both blocks. The certificate of
+> (GR-260) is therefore not something the corpus's existing search could
+> have found; it is the *verification* that is canonical, not the search.
+
+---
+
+### *Step G283* — (GR-263): F26 — what this buys, and what it does not
+
+> **(GR-263)** `[PROVED]` *(from landed statements alone;
+> `gunizero.py --consumer` prints the accounting and measures nothing)* — the
+> accounting has three lines. **(a) It does not move `hK`.** §(K-grid) (GR-15)'s discharge chain
+> consumes the **full** `∀` over tight class shapes, and §(K-grid)
+> (GR-256)(iii) is right that an infinite subfamily is not a partial input
+> to it; the `G°` induction that would have consumed one was struck by
+> (GR-238). **This direction moves no gap-map row.** **(b) But (GR-256)(iii)'s
+> escape clause does not cover it.** That clause reads *"on any **finite**
+> set of shapes the rule buys convenience, not a theorem that was not
+> already obtainable"* — and one-point decidability settles one shape at a
+> time, so no amount of it settles an **infinite** family. (GR-261) is
+> therefore a theorem that was **not** already obtainable, which is exactly
+> the distinction (GR-256)(iii) draws and this entry sits on the far side
+> of. **(c) The re-pricing is methodological and it is real:** the corpus
+> now has one worked instance of a **uniform** (GR-10) certificate, and it
+> shows what the general argument would have to look like — a colouring
+> given by a formula, plus a tree-triple given by a formula, with the
+> parameter-dependent half never entered.
+
+---
+
+### *Step G284* — (GR-264): three landed sentences this refutes
+
+> **(GR-264)** `[REFUTED]` *(witness: (GR-261) and its driver)* —
+> **(i) §(K-grid) (GR-256)(i)'s *"The rank half is a rank computation on a
+> shape-sized pair of matrices and stays per shape"* is false as a
+> structural claim.** The rank half has a *landed, proven* combinatorial
+> discharge — (GR-9) — and (GR-10) is precisely the statement that it is
+> available uniformly. (GR-256)(i) reports the route GODDRUNG's own driver
+> used (`gexist.fully_good_rank`, a per-shape exact-ℚ draw) as though it
+> were the only one; the clause does not mention (GR-9), and with (GR-9) in
+> view its verdict inverts on the very family it was stated about.
+> **(ii) §(K-grid) (GR-34)(ii)'s *"the all-`m` statement would need the
+> ladder's chunk classification, which nothing here requires"* is false.**
+> (GR-261) proves an all-`m` statement and classifies no chunk; it does not
+> use `save`, `defect`, `gexist.interval_chunks`, or any chunk object.
+> **(iii) §(K-grid) (GR-256)(iv)'s *"With the colouring given by a formula
+> in the length vector … with no colouring-existence quantifier left in
+> it"* was, at the time it was written, **premature**: (GR-252) step 6 is a
+> search over `4^k` knobs under a `200 000` cap, so a knob quantifier was
+> still in it. (GR-258) makes the sentence true rather than refuting it —
+> *right-with-a-dropped-proviso*, and the proviso is now discharged.
+
+---
+
+### *Step G285* — (GR-265): what stays open
+
+> **(GR-265)** `[OPEN]` — **(i)** (GR-15) at GBASE's `i·m//6` placement, for
+> all `m`: measured to `n_hub = 120`, no uniform certificate
+> ((GR-262)(i)). **(ii)** Whether the tail-assignment device generalises —
+> i.e. whether *every* tight class shape built as **a fixed window plus a
+> growing 2-periodic tail** carries a formula tree-triple. That is the
+> natural next target and it is a strictly larger family than `CL_m`; it is
+> **not** (GR-15), and (GR-263)(a) still applies to it. **(iii)** NC1 above
+> `m = 12` at the clumped placement: `cflank.nc1_violations` needs
+> `cflank.hub_model`'s simple-cycle enumeration and is fenced at
+> `n_hub = 24`, exactly as in (GR-253)(ii). Nothing in (GR-261) depends on
+> NC1 — (GR-9)'s certificate implies the whole filter by (GR-9) consequence
+> (i) — but the *measured* NC1 column stops there and is quoted with its
+> cap.
+
+---
+
+### *Step G286* — (GR-266): the board
+
+> **(GR-266)** `[PROVED]` *(a report, not a measurement)* — **What moved.**
+> The `hK` lane's one entry returns a **proof**, not a longer table: uniform
+> (GR-15) — indeed uniform (GR-10) — on an infinite family of tight class
+> shapes ((GR-261)), the balance rider discharged in closed form
+> ((GR-257)(iii), against (GR-251)(iv)'s explicit *"not proved free in
+> general"*), the repaired rule made genuinely search-free ((GR-258)), and
+> three landed sentences corrected ((GR-264)). **What did NOT move.** `hK`,
+> (GR-15), (GR-10), the `G°` route, class uniformity, and every gap-map row:
+> (GR-263)(a). **Caps carried forward.** `--rule` admissibility cap-free to
+> `m = 60`; `fully_good_rank` to `m = 40`; NC1 to `m = 12`; `--triple`
+> cap-free (exhibited partitions) to `m = 80`; `--spread`'s `dim Z` one
+> seeded exact-ℚ draw per block to `m = 60`; `grid.tree_triple`'s
+> `250 000`-node DFS capped at `m = 12` on this colouring; the windowed and
+> rotation searches of (GR-262)(i) at `800 000` / `20 000` nodes.
+> **Self-caught, in run.** The `--tail` leg was first written asserting
+> *"every tail rim class is an adjacent PAIR"* and **refuted its own
+> sentence** — block `B` carries a lone rim `B_{m−1}` at the window edge at
+> every `m`. The strong form is false; **kind-purity** is the property the
+> construction actually uses, and (GR-259)(i) states that instead. The
+> driver's docstring records the correction rather than quietly weakening
+> the claim.
+
+---
+
+## What would change this
+
+* **(GR-261) falls** if the class description in (GR-259)(i) is wrong at some
+  `m` — but that description is forced by the alternation along branches and
+  is asserted exhaustively over the class set at 15 values of `m`; or if one
+  of (GR-260)(ii)'s six connectivity checks is wrong, which the canonical
+  device re-tests at 35 values of `m`.
+* **(GR-264)(i) falls** if (GR-9)'s hypothesis is not met here — it needs the
+  other class to be a forest, which (GR-259) proves, and the tight balanced
+  equality `2|E_A| = 3(n_c − 1)`, which (GR-259) also proves.
+* **(GR-263)(b) falls** if some landed structure does consume (GR-15) on a
+  subfamily. `ledger.py --cited-by '(GR-15)'` returns 66 citing clauses and
+  the substantive ones are boards and status rows; the discharge chain is the
+  only consumer, and it takes the full `∀`.
+* **(GR-262) would be overturned** by a single `m` at which the repaired rule
+  is admissible with `dim Z ≠ 0` in some block — a **shortfall**, so it would
+  need several independent draws, not one, before it could be reported.

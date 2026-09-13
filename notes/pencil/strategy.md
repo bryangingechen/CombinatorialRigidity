@@ -1882,28 +1882,70 @@ the `G°` induction under a local move family.
    > replaces the 16 blocks off the generic regime. Decided by: the `(K-bare)/(K-bare-ext)` row.*
    >
 
-3. **UNIFORM `dim Z = 0` FOR THE REPAIRED COLOURING — THE `hK` LANE'S ONE ENTRY** *(carried,
-   re-aimed by GODDRUNG onto its own successor).* Owner: §(K-grid) *Steps G269–G276*,
-   (GR-249)–(GR-256), standing on (GR-34). **The repair is landed**: admissible, NC1-clear and
-   fully-good at every even `m` from 6 to 40 (`n_hub = 12…80`, **18 of 18**, exact-ℚ `dim Z₊ =
-   dim Z₋ = 0`, cap-free), with a closed-form rung defect. **What is left is the quantifier** —
-   (GR-15) has two halves, *exhibit* an admissible colouring and *certify generic `dim Z = 0` at
-   it*, and the repaired rule supplies the first for all `m` while the second is **18 rows**.
-   **GLEAF's question: SUFFICIENT on an infinite subfamily**, and (GR-34) proves a correlated
-   rule is the **only shape a proof of (GR-15) can have**, so this is the one `hK` item whose
-   success is not contingent on a struck route.
-   **The entry carries GODDRUNG's own F26 finding against itself, and a spec must not re-inflate
-   it:** a uniform **rule** is **not** a uniform **(GR-15) argument**, and with the `G°`
-   induction struck **nothing landed consumes (GR-15) on a subfamily**. What it buys is the first
-   uniform (GR-15) statement the arc would own, on a family proved infinite ((GR-175)) — not a
-   step in a landed derivation. **The caps are in `goddrung.py`'s legs**, `leg_far(hi=40)`
-   against `leg_repair(rank_hi=12, nc1_hi=12, shape_hi=6)`, and the entry is exactly the question
-   of what happens past them.
-   *Kill condition: `dim Z = 0` proved for the repaired rule's colouring at every `m` — uniform
-   (GR-15) on an infinite subfamily; or an `m` exhibited at which the repaired rule is admissible
-   and `dim Z ≠ 0`, which says the rule is not the certificate and re-opens what (GR-34) leaves;
-   or the rank question shown to need a per-shape input, which prices the gap between a rule and
-   an argument. Decided by: the `(K-grid)` row, close-it u9.*
+3. **UNIFORM `dim Z = 0` — SPENT (GUNIZERO 116, 2026-09-13): PROVED FOR ALL `m` AT THE CLUMPED
+   PLACEMENT, AND THE PROOF COMPUTES NO RANK.** Owner of the answer: §(K-grid) *Steps G277–G286*,
+   (GR-257)–(GR-266). **The instrument is §(K-grid) (GR-9)** — landed, `[PROVED]`, and with a
+   **purely combinatorial** hypothesis: a legal colouring-block whose classes partition into three
+   groups with `H₊ ∖ F_j` connected has **`dim Z = 0` at generic parameters**. **(GR-261):** for
+   every even `m ≥ 12`, `CL_m` with six `ℓ = 3` rungs at the **fixed** columns `0,2,4,6,8,10` is a
+   `D = 0` tight class shape by (GR-175), the repaired rule's colouring is admissible, and its
+   classes carry a **tree-triple in BOTH blocks** — so **(GR-15) holds uniformly in `m` on an
+   infinite family**, and so does the strictly stronger **(GR-10)**, the certificate *being* the
+   tree-triple (GR-10) asks for.
+   **WHY IT IS A PROOF AND NOT A TABLE.** Outside a fixed window `[0,11]` the assignment is
+   completely uniform — *every* tail top rim to `F₁`, *every* tail bottom rim to `F₂`, *every*
+   tail rung to `F₃` — so the connectivity checks are **finite and `m`-independent**
+   ((GR-260)(i)). The construction is exhibited and verified by the **canonical** device
+   (`closure.cycle_rank` on `bd['ced']`, pairwise unions acyclic, all three groups size `m+1`) at
+   **35 of 35** even `m` in `12…80`, 0 failures, cap-free. **Two enabling lemmas land with it:**
+   (GR-257) solves the **balance rider in closed form** — `du(p_i) = (p_i − i + σ₀ + σ_i + off)
+   mod 2`, always solvable — **discharging what (GR-251)(iv) left open**; and (GR-258) makes the
+   rule **genuinely a formula**, never entering (GR-252) step 6's `4^k`-knob search under its
+   200 000 cap, at **25/25** admissible rows to `m = 60`.
+   **TWO LANDED SENTENCES FALL.** **(GR-256)(i)'s *"the rank half … stays per shape"* is REFUTED
+   as a structural claim** — (GR-9) discharges it combinatorially, and the clause had reported
+   GODDRUNG's own per-shape route as if it were the only one. And **(GR-34)(ii)'s *"the all-`m`
+   statement would need the ladder's chunk classification"* is REFUTED**: no chunk object is
+   touched.
+   **THE F26 CHECK STANDS AND IS SHARPENED AGAINST ITS OWN ENTRY.** (GR-256)(iii) holds — nothing
+   landed consumes (GR-15) on a subfamily, the `G°` route is struck, and **no gap-map status word
+   moves**. But its escape clause reads *"on any **finite** set of shapes"*, and one-point
+   decidability settles **one shape at a time**, so it does **not** cover an infinite family. This
+   is therefore a theorem that was **not** already obtainable, and the corpus's first **uniform
+   (GR-10)** instance.
+   *Kill condition: MET at the clumped placement, by proof. **What stays open is the PLACEMENT**:
+   GBASE's `i·m//6` spread gives six windows instead of one, the tail assignment does not close
+   under this direction's caps (found at `m = 12, 18` in block A and `12` in block B; capped at
+   24, 30, 36, 42, 48, 60), and `dim Z = 0` there is **measured to `n_hub = 120`, proved nowhere**
+   — (GR-262). Whether that gap is worth a follow-up is a coordinator call, and it is the only
+   thing between this result and the same statement on GBASE's own family. Decided by: the
+   `(K-grid)` row, close-it u9.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible — and
+   > because its *"where I expect to be wrong"* named the sentence that fell.**
+   > 3. **UNIFORM `dim Z = 0` FOR THE REPAIRED COLOURING — THE `hK` LANE'S ONE ENTRY** *(carried,
+   > re-aimed by GODDRUNG onto its own successor).* Owner: §(K-grid) *Steps G269–G276*,
+   > (GR-249)–(GR-256), standing on (GR-34). **The repair is landed**: admissible, NC1-clear and
+   > fully-good at every even `m` from 6 to 40 (`n_hub = 12…80`, **18 of 18**, exact-ℚ `dim Z₊ =
+   > dim Z₋ = 0`, cap-free), with a closed-form rung defect. **What is left is the quantifier** —
+   > (GR-15) has two halves, *exhibit* an admissible colouring and *certify generic `dim Z = 0` at
+   > it*, and the repaired rule supplies the first for all `m` while the second is **18 rows**.
+   > **GLEAF's question: SUFFICIENT on an infinite subfamily**, and (GR-34) proves a correlated
+   > rule is the **only shape a proof of (GR-15) can have**, so this is the one `hK` item whose
+   > success is not contingent on a struck route.
+   > **The entry carries GODDRUNG's own F26 finding against itself, and a spec must not re-inflate
+   > it:** a uniform **rule** is **not** a uniform **(GR-15) argument**, and with the `G°`
+   > induction struck **nothing landed consumes (GR-15) on a subfamily**. What it buys is the first
+   > uniform (GR-15) statement the arc would own, on a family proved infinite ((GR-175)) — not a
+   > step in a landed derivation. **The caps are in `goddrung.py`'s legs**, `leg_far(hi=40)`
+   > against `leg_repair(rank_hi=12, nc1_hi=12, shape_hi=6)`, and the entry is exactly the question
+   > of what happens past them.
+   > *Kill condition: `dim Z = 0` proved for the repaired rule's colouring at every `m` — uniform
+   > (GR-15) on an infinite subfamily; or an `m` exhibited at which the repaired rule is admissible
+   > and `dim Z ≠ 0`, which says the rule is not the certificate and re-opens what (GR-34) leaves;
+   > or the rank question shown to need a per-shape input, which prices the gap between a rule and
+   > an argument. Decided by: the `(K-grid)` row, close-it u9.*
+   >
 
 4.–9. **THE CARRIED ENTRIES, UNCHANGED IN ORDER** — BPROPCL's **class** properness statement over
    all internal R-node peels (a REDUCTION: it removes a hypothesis from things already proved,
