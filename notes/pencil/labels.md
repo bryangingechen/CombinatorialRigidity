@@ -5724,7 +5724,7 @@ available for re-use, as BMBLOCK's returned range was by BSIXTEEN.
 
 | direction | labels | steps | verdict |
 |---|---|---|---|
-| **BSMARK** (rank 1, the S-mark restatement at a forced peel — USER-RULED into the round) | `(BE-314)`–`(BE-323)` | *BE313–BE322* | **clean except the declaration** — every hit is this file's own returned-to-pool bookkeeping above; it **re-uses BCOFLAG's returned `(BE-314)`–`(BE-318)`**, the second such re-use in the arc |
+| **BSMARK** (rank 1, the S-mark restatement at a forced peel — USER-RULED into the round) | `(BE-314)`–`(BE-323)` | *BE313–BE322* | **clean except the declaration** — every hit is this file's own returned-to-pool bookkeeping above; it **re-uses BCOFLAG's returned `(BE-314)`–`(BE-318)`**, the second such re-use in the arc. **CONSUMED 2026-09-13 at `(BE-314)`–`(BE-317)` / *BE313–BE316*; `(BE-318)`–`(BE-323)` / *BE317–BE322* RETURNED to the pool.** |
 | **BSIGFOUR** (rank 2, a shortfall at `Σδ ≥ 4`) | `(BE-324)`–`(BE-333)` | *BE323–BE332* | **CLEAN** — 0 hits on every token |
 | **BNEST** (rank 3, non-nestedness at the two surviving (BLOCK-GP) profiles) | `(BE-334)`–`(BE-343)` | *BE333–BE342* | **CLEAN** — 0 hits on every token |
 

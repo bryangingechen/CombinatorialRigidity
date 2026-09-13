@@ -1710,28 +1710,77 @@ bar *(p)* fell to arithmetic on (BE-282)(iv); (BE-96)(iv) already said (BLOCK-GP
 (GR-9) was a landed theorem nobody had pointed at GUNIZERO's question. **The round's decisive
 corrections cost none of its compute.** Bars *(a)*–*(p)* stand, *(p)* in its re-founded form.
 
-1. **THE S-MARK RESTATEMENT AT A FORCED PEEL — CAN THE CONSUMER BE MADE TO CLOSE?** *(new —
-   BCOFLAG's surfaced item, ranked here by USER RULING 2026-09-13.)* Owner: §(K-bare-ext)
-   *Step BE311*, (BE-313), with (BE-86)(i) supplying the proposed replacement and (BE-25)(ii)
-   the step that consumes it. **The question: does the S-mark 2-cut step, restated to carry
-   (BE-86)(i) — whose statement has the `a`-term in it — close at a forced coincident-flag peel;
-   and what does that cost the claims that consume (BE-22)(iii), whose hypothesis is exactly
-   what fails there?** **GLEAF's question: SUFFICIENT, and it GATES the other two entries** —
-   until it is answered, a rung-3 verdict at the forced peels reaches nothing, so rank 2's
-   witness hunt and rank 3's lemma both bank on it.
-   **What makes it tractable:** the replacement is already a landed `[PROVED]` clause with a
-   proof, not a conjecture, and BCOFLAG established the failure is a **chart mismatch** (`A_i ⊆
-   Chart(H)` against the side's `Chart(H_i)`) rather than a false statement — so the object to
-   repair is the induction's bookkeeping, not its mathematics. **What makes it risky:**
-   (BE-22)(iii) is consumed widely, and a restatement that closes the forced arm by weakening
-   the generic arm trades one hole for a larger one. The direction must price the blast radius
-   with `--cited-by` before proposing anything.
-   *Kill condition: the restated step proved to close at forced peels with its cost to
-   (BE-22)(iii)'s consumers enumerated — which makes rung-3 results at 42 % of the enumerated
-   peels consumable; or the restatement shown to be impossible, which is a **structural** fact
-   about the 2-cut induction and re-routes the lane; or the forced peels shown to be reachable
-   by (BE-22)(vi)/(BE-20) after all, which retires (BE-313) and costs nothing. Decided by: the
-   `(K-bare)/(K-bare-ext)` row.*
+1. **THE S-MARK RESTATEMENT — SPENT (BSMARK 117, 2026-09-13): IT CLOSES, AND IT IS A DELETION
+   RATHER THAN THE ADDITION OF AN `a`-TERM — BUT TWO LANDED `[PROVED]` CLAUSES CARRY THE SAME
+   DROPPED HYPOTHESIS AND ONE OF THEM IS NOW REFUTED.** Owner of the answer: §(K-bare-ext)
+   *Steps BE313–BE316*, (BE-314)–(BE-317).
+   **THE RESTATEMENT IS THE DELETION OF S-MARK'S FIRST CONJUNCT.** (BE-22)(ii) is already
+   unconditional in `a` — *"`ρ_i ≤ dim M_i − 6 − g_i`, with equality iff the WELDED framework
+   attains"*, and `dim M_i − 6 − g_i = δ_i + a_i` — so *"`H_B/uv` attains"* **is** `ρ = δ + a`.
+   S-mark's **second** conjunct already has the `a`-form; only the first (`a = 0`) fails at a
+   forced prescription. **BCOFLAG's proposed disjunction is ill-shaped as an inductive clause**,
+   its second disjunct naming `ρ̄₁, ρ̄₂` of *both* sides — an object one level above the node.
+   **AND THE `a`-TERMS CANCEL, so the restatement is not paid for in general position.** With
+   `ρ_i = δ_i + a_i` on both sides, (BE-86)(i) ⟺ `dim(ρ̄₁ ∩ ρ̄₂) = max(0, Σδ − 6)` — **no `a` on
+   the right** — so (BE-95)(i)/(BE-96)(iv)/(BE-97)'s obligation is **byte-for-byte unchanged**.
+   Asserted draw-free at 1 344/1 344 tuples. The cost is instead a **budget line**:
+   `a₁ + a₂ ≤ 6 − min(Σδ,6)`, and under the coincident-flag confinement `≤ 3 − min(Σδ,6)`.
+   **THE ENTRY'S OWN GATING WORRY IS REFUTED BY A LANDED CLAUSE (F34).** The spec's
+   highest-yield branch — *"the forced peels may not be in the induction's range at all, in which
+   case (BE-313) is retired rather than repaired"* — falls to **(BE-271)(ii)** `[PROVED]`:
+   *"A 2-separation of `G` is a tree edge of the 3-block tree; re-rooting … does not delete the
+   edge."* The region is non-empty and **(BE-313) is NOT retired**.
+   **WHAT IT BUYS, AND IT IS MORE THAN `Good` GIVES:** under S-mark′ a forced witness must
+   exhibit welded tightness on both sides and `ρ̄₁ ∩ ρ̄₂ = 0`, and (BE-86)(ii) asserts both —
+   plus *"`H` attains"* — at **392/392**, each a theorem **at the component of the exhibited
+   point**, needing **no irreducibility**. So (BE-85)(iii)'s removal of dense-or-empty does not
+   touch it, and BCOFLAG's *"292 not 392"* is correct **about `Good`** and does not transfer.
+   **THE COLLATERAL, AND IT IS THE LARGER HALF.** **(BE-22)(iv)** and **(BE-22)(vi)** carry the
+   *same* dropped hypothesis BGENUINE corrected at (iii) on 2026-09-01 and were not corrected with
+   it. **(iv)** — *"two rigid pieces always compose … this is why the base of the induction never
+   meets the hard case"* — is **false without the proviso**: 15 box tuples have `δ₁ = δ₂ = 0`,
+   both `ρ_i ≥ 1` and attainment-compatible, smallest `(a₁,a₂,ρ₁,ρ₂) = (1,1,1,1)`, where both
+   pieces are rigid, both lose attainment, and `H` attains **iff the two lines are distinct**.
+   **(vi)** — *"if one side is rigid the general-position half disappears"* — is **REFUTED**:
+   over a `δ₂ = 0` generator, **1 064** members, **984 forced** (*forcing is MORE common with a
+   rigid side*), and **44 of the 972 drawing rows have `ρ₂ ≥ 1`**, a theorem at the component by
+   (BE-255)(i) row 2's **lower** semicontinuity. At all 44 the general-position half was not
+   absent but **doing the work**.
+   *Kill condition: MET — the restatement closes and its price is enumerated. **Blast radius, at
+   baseline:** (BE-22)(iii) is cited by **28** claims, (vi) by **16**, (iv) by **1**. Group A is
+   untouched (already reads the `a`-corrected criterion); group B loses the **pin** but not its
+   conclusions — the **14 → 12** block reduction lapses to **15 of 16**, recoverable **per peel
+   from one draw**, and counted: 1 281/1 281 in the generic-flag regime against 0/100 at the
+   losing forced rows, so **12 → 15 is nominal on the generic-flag lane and actual only at the
+   forced peels**. The successors are the **S-mark″** design decision (stating the clause over
+   **unrooted** tree edges, which (BE-271)(ii) licenses, closes a gap this direction found in the
+   rooted form and makes (BE-25)(v)'s motive **cheaper**, not dearer) and restoring the
+   hypotheses in (iv)/(vi)'s prose — done here. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible.**
+   > 1. **THE S-MARK RESTATEMENT AT A FORCED PEEL — CAN THE CONSUMER BE MADE TO CLOSE?** *(new —
+   > BCOFLAG's surfaced item, ranked here by USER RULING 2026-09-13.)* Owner: §(K-bare-ext)
+   > *Step BE311*, (BE-313), with (BE-86)(i) supplying the proposed replacement and (BE-25)(ii)
+   > the step that consumes it. **The question: does the S-mark 2-cut step, restated to carry
+   > (BE-86)(i) — whose statement has the `a`-term in it — close at a forced coincident-flag peel;
+   > and what does that cost the claims that consume (BE-22)(iii), whose hypothesis is exactly
+   > what fails there?** **GLEAF's question: SUFFICIENT, and it GATES the other two entries** —
+   > until it is answered, a rung-3 verdict at the forced peels reaches nothing, so rank 2's
+   > witness hunt and rank 3's lemma both bank on it.
+   > **What makes it tractable:** the replacement is already a landed `[PROVED]` clause with a
+   > proof, not a conjecture, and BCOFLAG established the failure is a **chart mismatch** (`A_i ⊆
+   > Chart(H)` against the side's `Chart(H_i)`) rather than a false statement — so the object to
+   > repair is the induction's bookkeeping, not its mathematics. **What makes it risky:**
+   > (BE-22)(iii) is consumed widely, and a restatement that closes the forced arm by weakening
+   > the generic arm trades one hole for a larger one. The direction must price the blast radius
+   > with `--cited-by` before proposing anything.
+   > *Kill condition: the restated step proved to close at forced peels with its cost to
+   > (BE-22)(iii)'s consumers enumerated — which makes rung-3 results at 42 % of the enumerated
+   > peels consumable; or the restatement shown to be impossible, which is a **structural** fact
+   > about the 2-cut induction and re-routes the lane; or the forced peels shown to be reachable
+   > by (BE-22)(vi)/(BE-20) after all, which retires (BE-313) and costs nothing. Decided by: the
+   > `(K-bare)/(K-bare-ext)` row.*
+   >
 
 2. **A SHORTFALL AT `Σδ ≥ 4` — THE ONLY POSITIVE ROUTE TO (BE-14) ON EITHER LANE** *(new —
    BCOFLAG's successor, and the rare entry that arrives with its derivation attached).* Owner:

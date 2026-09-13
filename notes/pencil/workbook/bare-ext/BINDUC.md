@@ -308,6 +308,24 @@ confirmed and quantified there.
 > and (iii) fires with no general-position content. In particular **two rigid
 > pieces always compose over a 2-cut** — and by (BE-20) every 3-connected piece
 > is rigid. This is why the *base* of the induction never meets the hard case.
+>
+> ***CORRECTED 2026-09-13 by (BE-314)(iii)/(BE-315)(i) (direction BSMARK): the
+> step `ρ_i ≤ δ_i` above is (BE-22)(ii)'s ATTAINING case, and this clause drops
+> that hypothesis — the same drop BGENUINE corrected at (iii) on 2026-09-01,
+> which was not carried across to (iv).*** In general (BE-22)(ii) gives
+> `ρ_i ≤ dim M_i − 6 − g_i = δ_i + a_i`, so at `δ₁ = δ₂ = 0` the bound is
+> `ρ_i ≤ a_i`, not `0`. Driver-checked draw-free and exhaustively over the
+> `(δ_i, a_i)` box (`bsmark.py cancel`): **15** tuples have `δ₁ = δ₂ = 0`, both
+> `ρ_i ≥ 1`, and are attainment-compatible, the smallest being
+> `(a₁, a₂, ρ₁, ρ₂) = (1, 1, 1, 1)` — where **both pieces are rigid, both lose
+> attainment, and `H` attains iff the two lines `ρ̄₁, ρ̄₂` are DISTINCT.** So
+> *"two rigid pieces always compose"* is **false without the proviso**, and the
+> general-position half does **not** vanish at the base either. **What survives
+> is the clause with its hypothesis restored:** at `δ₁ = δ₂ = 0` **and both
+> pieces attaining**, the composition is automatic exactly as stated. The
+> induction's base is free **where the pieces attain**, which is what (BE-20)
+> delivers for 3-connected pieces — so no landed use of this clause through
+> (BE-20) is disturbed.
 
 > **(BE-22)(v)** *(the obstruction, located and dimension-counted; NOT closed)*
 > The alignment the 1-cut argument got for free is a `PGL₄` transitivity on
@@ -341,6 +359,25 @@ confirmed and quantified there.
 > 3-block decomposition, and it is the honest first target: **the successor lemma
 > is a statement about ONE piece and its welding, not about two pieces in
 > relative position.**
+>
+> ***CORRECTED 2026-09-13 by (BE-315)(ii) (direction BSMARK) — same dropped
+> hypothesis as (iv), and here it is REFUTED rather than merely unproved.*** The
+> step *"when `δ₂ = 0`, (ii) gives `ρ₂ = 0`"* again uses (BE-22)(ii)'s attaining
+> case; in general `ρ₂ ≤ δ₂ + a₂ = a₂`. **Witness population** (`bsmark.py rigid 1`,
+> BONEONE's factorized generator with side 2 moved to `δ = 0`): **1 064** members,
+> **984 FORCED** — *forcing is MORE common with a rigid side*, against 392 of 928
+> at `(1,1)` — and of the **972** rows that drew, **44 have `ρ₂ ≥ 1` on a `δ₂ = 0`
+> side** (`ρ₂ = 1` at 20, `ρ₂ = 2` at 24). By (BE-255)(i) **row 2** `ρ_i` is
+> **lower** semicontinuous, so a draw is a lower bound and `ρ₂ ≥ 1` at a draw is a
+> **THEOREM at the irreducible component containing it** — no cap, and no
+> irreducibility of `Chart(H)` needed. **So the collapse to a single condition
+> fails as a general implication**; what survives is a **per-peel check**, and at
+> all 44 the general-position half was not absent but *doing the work*
+> (`dim(ρ̄₁ ∩ ρ̄₂) = 0` and `H` attains at every one, with a 2-dimensional `ρ̄₂` on
+> the rigid side at 24). **Read the driver's own two-quantity reading before
+> quoting the number**: the same 44 rows also have `a₂ ≥ 1` at every draw, which
+> by row 3 (upper) certifies *nothing* — the counts coincide, the verdicts do not,
+> and it is the `ρ` reading that refutes the clause.
 >
 > Measured (`binduc.py ear`, 55 s, exact ℚ): **296 ear additions** — a path with
 > `m = 1…4` interior vertices attached at *every* vertex pair of each of `K₄`,

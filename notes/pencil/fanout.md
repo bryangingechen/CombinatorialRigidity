@@ -2,7 +2,7 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
-dispatched; **124 LANDED, NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+dispatched; **125 LANDED, NONE IN FLIGHT, TWO DRAFTED AND AWAITING LANDING (BSIGFOUR 118, BNEST 119)** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
@@ -18849,3 +18849,102 @@ docstring says each violation **proves `dim Z > 0`** — so NC1-clearness is a
 the `m = 12` fence does not weaken the theorem. The draft was merged into
 `grid.md` (its canonical home) with its DRAFT preamble stripped and its step
 headings normalised to the file's `### *Step Gnnn* —` form.
+
+## BSMARK — ordinal 117, concurrent round of three, `research-direction-opus`, LANDED 2026-09-13
+
+**§8's nineteenth pass, RANK 1 — the entry the USER RULED into the round** after
+BCOFLAG surfaced and declined to decide it. *Question:* can the S-mark 2-cut step
+be restated to close at a forced coincident-flag peel, and what does that cost
+the claims consuming (BE-22)(iii)?
+
+**VERDICT: it closes, and it is a DELETION rather than the addition of an
+`a`-term — but two landed `[PROVED]` clauses carry the same dropped hypothesis
+and one of them is now REFUTED.** Landed as (BE-314)–(BE-317) / *Steps
+BE313–BE316*. Driver `notes/scripts/w4/bsmark.py` (`cancel` draw-free and
+seedless; `rigid [stride]`; `validate`).
+
+- **THE RESTATEMENT IS THE DELETION OF S-MARK'S FIRST CONJUNCT.** (BE-22)(ii),
+  read at BINDUC *Step BE21*, is already unconditional in `a` — *"`ρ_i ≤ dim M_i
+  − 6 − g_i`, with equality iff the WELDED framework attains"* — and `dim M_i − 6
+  − g_i = δ_i + a_i`. So *"`H_B/uv` attains"* **is** `ρ = δ + a`; the second
+  conjunct already has the `a`-form, and only the first (`a = 0`) fails at a
+  forced prescription. **BCOFLAG's proposed disjunction is ill-shaped as an
+  inductive clause**, its second disjunct naming both sides' `ρ̄_i` — an object
+  one level above the node.
+- **THE `a`-TERMS CANCEL, so the restatement is not paid for in general
+  position.** With `ρ_i = δ_i + a_i` on both sides, (BE-86)(i) ⟺ `dim(ρ̄₁ ∩ ρ̄₂)
+  = max(0, Σδ − 6)` — **no `a` on the right** — leaving
+  (BE-95)(i)/(BE-96)(iv)/(BE-97)'s obligation **byte-for-byte unchanged**.
+  Asserted draw-free at **1 344/1 344**. The cost is a **budget line** instead:
+  `a₁ + a₂ ≤ 6 − min(Σδ,6)`, and `≤ 3 − min(Σδ,6)` under the coincident-flag
+  confinement — which is negative at `Σδ ≥ 4`, independently reaching
+  BSIGFOUR's territory from the other side.
+- **F34 HIT: the spec's own highest-yield branch was refuted by a landed
+  clause.** *"The forced peels may not be in the induction's range at all"* falls
+  to **(BE-271)(ii)** `[PROVED]`: *"A 2-separation of `G` is a tree edge of the
+  3-block tree; re-rooting … does not delete the edge."* **(BE-313) is NOT
+  retired.**
+- **WHAT IT BUYS, AND IT IS MORE THAN `Good` GIVES: 392/392 against 292/392.**
+  Under S-mark′ a forced witness must exhibit welded tightness on both sides and
+  `ρ̄₁ ∩ ρ̄₂ = 0`, and (BE-86)(ii) asserts both plus *"`H` attains"* at all 392 —
+  each a theorem **at the component of the exhibited point**, by semicontinuity
+  alone and with **no irreducibility**, so (BE-85)(iii)'s removal of
+  dense-or-empty does not touch it. BCOFLAG's *"292 not 392"* is correct **about
+  `Good`** and does not transfer.
+- **THE COLLATERAL, AND IT IS THE LARGER HALF.** **(BE-22)(iv)** and
+  **(BE-22)(vi)** carry the *same* dropped hypothesis BGENUINE corrected at (iii)
+  on 2026-09-01 and were not corrected with it. **(iv)** is **false without the
+  proviso** — 15 box tuples have `δ₁ = δ₂ = 0`, both `ρ_i ≥ 1`, attainment-
+  compatible, smallest `(a₁,a₂,ρ₁,ρ₂) = (1,1,1,1)`, where **both pieces are
+  rigid, both lose attainment, and `H` attains iff the two lines are DISTINCT**.
+  **(vi)** is **REFUTED**: a `δ₂ = 0` generator gives **1 064** members and
+  **984 FORCED** — *forcing is MORE common with a rigid side*, against 392 of 928
+  at `(1,1)` — and **44 of the 972** drawing rows have **`ρ₂ ≥ 1` on a `δ₂ = 0`
+  side**, a theorem at the component by (BE-255)(i) **row 2**'s lower
+  semicontinuity. At all 44, `dim(ρ̄₁ ∩ ρ̄₂) = 0` and `H` attains: the
+  general-position half was not absent but **doing the work**, with a
+  2-dimensional `ρ̄₂` on the rigid side at 24 of them.
+- **BLAST RADIUS, PRICED BEFORE PROPOSING ANYTHING** (`--cited-by`, at baseline):
+  (BE-22)(iii) **28**, (vi) **16**, (iv) **1**. *Group A* untouched (already reads
+  the `a`-corrected criterion). *Group B* loses the **pin**, not its conclusions:
+  the **14 → 12** block reduction lapses, (BE-101)(iii) already prices it at
+  **15 of 16** — and the pin is **recoverable per peel from one draw**, counted at
+  1 281/1 281 in the generic-flag regime against 0/100 at the losing forced rows,
+  so **12 → 15 is nominal on the generic-flag lane and actual only at the forced
+  peels**. BNEST's lane is not damaged. *Group C* is (iv)/(vi), corrected here.
+- **BONUS, from adversarially attacking its own check:** S-mark under a fixed
+  rooting covers only the **child** side of each tree edge while the 2-cut step
+  needs welded attainment on **both**, and the first gluing at an R-node with ≥2
+  children leaves side 2 = skeleton minus **two** edges, which (BE-25)(iii) does
+  not cover (its bound is recorded by its own clause as tight at one). **Stating
+  the clause over UNROOTED tree edges (S-mark″), which (BE-271)(ii) licenses,
+  closes this and makes (BE-25)(v)'s priced rooted-tree motive CHEAPER, not
+  dearer.** That is a design decision, not a measurement.
+- **PREDICTION SCORED.** Verdict **CONFIRMED**. **Where-I-expect-to-be-wrong:
+  REFUTED** by (BE-271)(ii). **MECHANISM REFUTED** at the cost of one read, before
+  anything was built: there is no *"the side whose flag is forced"* — `π_u = π_v`
+  is one coincidence forcing **both** flags — and the bookkeeping is not *made*
+  additive, the `a`-terms **cancel**.
+- **SELF-CAUGHT, THREE**, including one that would have moved a base case's
+  support from two `[PROVED]` clauses onto an `[INFORMAL]` one; and **12 phantom
+  openers removed** after `--lint`/`--list` showed the ledger indexing other
+  directions' clauses as rows in this file — the BSIXTEEN failure mode caught by
+  re-running the tools rather than trusting the write.
+
+**COORDINATOR VERIFICATION.** `cancel` re-run (draw-free, seedless, 1 344/1 344
+and the (iv)/(vi) tables); `rigid` re-run at both strides. **(BE-22)(ii)**,
+**(BE-271)(ii)** and **(BE-255)(i)** were opened at their owning sections rather
+than taken from the return, and all three read as reported — (BE-255)(i) row 2
+confirms `ρ_i` is **lower** semicontinuous with generic = maximum, which is what
+makes the 44 a theorem. Blast-radius counts re-derived at baseline: **28 / 16 /
+1**, matching the return exactly once this direction's own draft is excluded.
+**TWO COORDINATOR REPAIRS AT LANDING, both about reproducibility rather than
+mathematics.** *(1)* `run_rigid`'s `stride` defaulted to **8** with no CLI path to
+the **stride 1** sweep (BE-315)(ii) reports, so the landed figure could not be
+re-run from the committed driver; `stride` is now a positional argument and the
+stride-1 run reproduces the clause's table **exactly** (604 / 12 / 24 / 324 / 8,
+12 rows undrawn). *(2)* The mode printed a reading in `a_i` (*"settles
+NOTHING"*) beside a clause stating a verdict in `ρ_i` (*"a theorem"*) — the same
+44 rows, opposite-sounding verdicts, both correct. The mode now prints **both
+quantities with their semicontinuity directions** and says which one the clause
+states.
