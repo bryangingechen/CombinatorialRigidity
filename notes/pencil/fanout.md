@@ -18592,8 +18592,9 @@ seed `20260913`, exact ℚ).
   highest-yield line and **CONFIRMED**: `Good` does degenerate, but via the
   **ambient irreducibility** failing at exactly these graphs rather than via the
   definition. **MECHANISM REFUTED** (`Π_x = Π_y` needs `p_x = p_y`, false at
-  every guarded draw; the lattice is 11, not 4) — **now 0 of 7 across five
-  rounds**, and nothing rested on it: `blocks` ran first, 0.1 s.
+  every guarded draw; the lattice is 11, not 4) — **one of this round's three, and
+  of the arc's 13th, 14th and 15th; see the cross-return pass for why the
+  direction's own "0 of 7" was wrong**, and nothing rested on it: `blocks` ran first, 0.1 s.
 - **THE TELL DID NOT FIRE AND COULD HAVE.** *A coincident-flag peel with nonzero
   shortfall*: 1 200 draws, shortfall `0` against the corrected denominator at
   every one. Its region (392 peels) is inhabited, and it now has a **mechanism** —
@@ -18709,7 +18710,8 @@ profiles.** Landed as (BE-299)–(BE-308) / *Steps BE298–BE307*. Driver
   value"*) came out in the **opposite direction**. **MECHANISM: REFUTED, both
   halves, draw-free, before the first slice ran** — `max(f, ρ+B−m) < B` asserted
   at all 32 targets, so (BLOCK-GP) must *beat* the table and no route that outputs
-  the table can output it. **Coordinator mechanisms now 0 of 7.**
+  the table can output it. **One of this round's three; the return's own
+  "now 0 of 7" mis-incremented a fixed sample — see the cross-return pass.**
 - **TELL: did not fire, and could have** — the region carries all 32 targets, the
   library reaches all five required pairs, and 19 cells sit exactly on the bound;
   one more unit anywhere was the tell.
@@ -18803,7 +18805,8 @@ G277–G286*, merged into `grid.md`. Driver `notes/scripts/w4/gunizero.py`
   in the productive direction** — the rank half does *not* stay per shape.
   **MECHANISM REFUTED**, killed first and cheaply: not a transfer matrix,
   (GR-252)'s correlation riding a **global GF(2) solve** and the certificate that
-  works being a **cotree partition**. **Coordinator mechanisms 0 of 7.**
+  works being a **cotree partition**. **One of this round's three; the return's own
+  "0 of 7" mis-incremented a fixed sample — see the cross-return pass.**
 - **THE TELL DID NOT FIRE AND COULD HAVE.** An `m` with the repaired rule
   admissible and `dim Z ≠ 0`: **not found** at 25/25 even `m` in `12…60` on
   **GBASE's own `i·m//6`** placement, for *both* the landed `search_repair`
