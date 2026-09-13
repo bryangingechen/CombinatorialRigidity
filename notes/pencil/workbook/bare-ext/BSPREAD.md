@@ -401,7 +401,7 @@ each cross-checked inside the driver against `kbare_common.exact_deficiency`.
 > population as a bare count and read its zero at the R-node shape; the theorem
 > says what the population **is**.
 
-> ***REFUTED 2026-09-13 by (BE-325) (direction BSIGFOUR). The clause above is
+> ***REFUTED 2026-09-13 by (BE-324) (direction BSIGFOUR). The clause above is
 > FALSE as stated, and the defect is localized to its own (i)(c).*** **Witness:**
 > `WIT11`'s own R-node side glued to `{b₀b₁, b₀b₂, b₀u, b₁v, b₂u}` — `n = 12`,
 > `(δ₁, δ₂) = (1, 2)`, **both sides flexible**, `bpeel.pair_forced` **True** and
