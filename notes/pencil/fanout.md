@@ -2,7 +2,7 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and FIVE concurrent rounds of three
-dispatched; **122 LANDED, TWO IN FLIGHT (BGPLAW 114, GUNIZERO 116), NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+dispatched; **123 LANDED, ONE IN FLIGHT (GUNIZERO 116), NONE DRAFTED** — BOTH 2026-09-10 rounds of three
 are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98),
 **and so is the 2026-09-11 round** (GLAMPROP 99 / GNONADD 100 / BSIXRUNG 101), which spent
 §8's ranks 1 and 2 and ran the (BE-14) lane off a coordinator re-aiming. **The 2026-09-12 round of three against §8's FOURTEENTH pass is
@@ -18627,3 +18627,119 @@ verbatim. **Two coordinator repairs at landing:** the draft's section header was
 three of the five driver step banners were misnumbered against the draft's own
 clause citations (`conf` and `prof` printed BE312/BE310, `losers` printed BE309)
 — both realigned, with the draft's citations taken as authoritative.
+
+## BGPLAW — ordinal 114, concurrent round of three, `research-direction-opus`, LANDED 2026-09-13
+
+**§8's eighteenth pass, RANK 1** — (BLOCK-GP), the one lemma the nine remaining
+blocks reduce to, dispatched carrying the coordinator-routed **dominance**
+question as a bounded first slice with instructions to STOP on a negative.
+*Question:* is (BLOCK-GP) true at `dim ⟨P₀⟩ ∈ {4,5}`?
+
+**VERDICT: the first slice came back a THEOREM and dissolved its own worry; the
+lemma is NOT FOUND UNDER CAP C with the residue cut from nine blocks to TWO
+profiles.** Landed as (BE-299)–(BE-308) / *Steps BE298–BE307*. Driver
+`notes/scripts/w4/bgplaw.py` (modes `targets`/`dom`/`reach`/`gp`/`orbit` +
+`validate`, every cap a keyword argument defaulting to the landed value).
+
+- **DOMINANCE IS SURJECTIVITY, AND THE PROOF IS GROUP-THEORETIC.**
+  `bunif.flag_frame`'s own gate `rank[p_x, e₁, e₂, p_y] = 4` **is** the statement
+  that the flag pair is a projective frame, so the generic flag regime `F°` is a
+  **single PGL₄ orbit**; `Chart♭` is PGL₄-invariant and the restriction
+  equivariant, so `im φ₂ ∩ F°` is empty or all of `F°` — **no middle**. And
+  `Chart(H) = Chart♭(H₁) ×_F Chart♭(H₂)`, by rewriting (BE-25)(ii)'s closed-star
+  coplanarity at `x`, `y`. Exhibited (`orbit`, 8.8 s): **39** glued peels, **351**
+  exact-ℚ assertions, **0** failures, two independently drawn library sides
+  transported onto one frame and glued into a genuine `Chart(H)` point, with side
+  2's whole 16-block profile preserved at **624/624**. Measured independently
+  (`dom`, 162 s): **1 200/1 200** cells agree, **0** in either direction, and the
+  `(dim ⟨P₀⟩, ρ)` support is identical at **75/75** sides.
+- **AND THE BIGGER HALF: (BLOCK-GP) IS A ONE-SIDED STATEMENT**, so the routed
+  worry never bound. `c_i(U)`, `ρ_i`, `⟨P₀⟩`, `f(U)` and all four blocks are
+  functions of side `i`'s flagged configuration alone; *peel*, *rung 3* and
+  *internal R-node* are the **consumer's** hypotheses. **(BE-96)(iv) already said
+  it** — *"Both sides of the criterion are **per-side**: `c_i(U)` is computed from
+  side `i` and the flag pair alone."* The side library **is** the object.
+- **THE REPAIR THE SLICE NEEDED FIRST, measured not assumed.** `Chart(side_i)` is
+  not the corpus's `Chart(Γ)`: (CH-1)'s hypotheses are never checked at a peel
+  *side*, and **min degree 2 fails at a side-degree-1 terminal**, where the closed
+  side-star spans a line, `bimage.plane_at` returns `None`, and `Π_x`, `⟨L⟩`,
+  `⟨M⟩` are **undefined on the side**. `dom` records **77 of 152** sides with a
+  side-degree-1 terminal and **77 of 152** at which the standalone flag frame
+  never exists, and prints the equality: **they coincide**. 308 standalone
+  rejections against **0** composite.
+- **(BLOCK-GP): NOT FOUND UNDER CAP C, AND THE CAP IS *REACH*.** The 40 `+L6`
+  survivors resolve to **32 per-side targets, every one at `m ∈ {4,5}`** (6 at 4,
+  26 at 5) — the region is the *whole* residue. The library reaches **all five**
+  required `(dim ⟨P₀⟩, ρ_i)` pairs and **0 of 32** targets; of the 26 reached
+  cells the bound is **saturated at 19** and slack at 7, **never exceeded** — a
+  law tested at its edge. Un-fenced `ndraw` 2→3: **17 934** cells, 0 violations.
+  First **composite** measurement (`gp`, 66 s): **6 384** cells, **0** violations,
+  1 260 at `m = 4` and 1 932 at `m = 5`.
+- **THE REDUCTION IS THE MOST USEFUL NUMBER.** 30 of the 32 targets are the
+  *nested extreme* `c_i = min(ρ_i, B)`, so a lemma *"`ρ̄_i` and `⟨P₀⟩ ∩ U` are
+  never nested"* kills 30 and **leaves exactly two** — `L+M+Π_x` and `L+M+Π_y` at
+  `m = 5`, `ρ = 3`, `c = 2`. The direction asserted non-nestedness **is**
+  (BLOCK-GP), and then that it **suffices**; its own asserts refuted both in 0.0 s
+  and both survive as counters. The honest 30-of-32 is what stands.
+- **THREE CORRECTIONS THE CORPUS OWED**, all verified in tree by the coordinator:
+  **(1)** §8's bar *(p)* rested on a **false premise** — the fenced
+  `run_side(ndraw=1, maxarc=4, maxtheta=4)` call is inside `run_validate()`, which
+  prints its own fence disclosure **in-band**, while `bsixteen.py side` dispatches
+  to `run_side()` at **full defaults**; refutable arithmetically with no re-run
+  from (BE-282)(iv)'s **854** draws over **427** rows. **(2)** (BE-284)(ii)'s
+  *"392 of 928 internal R-node peels"* **over-reads (BE-81)(i)**, whose three
+  exhaustive rows are (BE-79)(i)'s factorized generator at `δ = (1,1)`, `n ≤ 12`.
+  **(3)** (BE-281)(ii) **mis-sources `f(U)`**: it is `bsixteen.forced(S)`,
+  (BE-30)(ii)'s forced hinge lines active at **428/428**, not (M1), which fires at
+  **0/428** — conclusion untouched.
+- **F34 HIT, re-reading a landed disclosure rather than a landed claim.**
+  (BE-282)(ii)'s L7 at 13 664/13 664 **is** already a (BLOCK-GP) measurement
+  (L7-equality ⟹ LG in one line); and **(BE-282)(iii)'s `NOT FOUND UNDER CAP C`
+  disqualifies the *unfloored* law only** — (M1) is exactly what the floor
+  survives, so it cannot disqualify the floored one. The right cap question is
+  **reach**, which no landed clause asks.
+- **F26, and it costs nothing only because of this direction's own first slice.**
+  S-mark's object is `Y°(H_B)` **with flags at `u,v` prescribed** — a *fibre* — so
+  (BE-284)(i)'s chain does not carry verbatim. By the orbit theorem the (BLOCK-GP)
+  locus is PGL₄-invariant, so generic-on-`Chart♭` and generic-on-the-fibre are the
+  **same** statement. Nothing in the corpus said so; (BE-307) now does.
+- **PREDICTION SCORED.** **VERDICT CONFIRMED but right-for-a-different-reason.**
+  **WHERE-I-EXPECT-TO-BE-WRONG: REFUTED** — dominance is neither false nor
+  ill-posed; the half that was right (*"it will matter more than the truth
+  value"*) came out in the **opposite direction**. **MECHANISM: REFUTED, both
+  halves, draw-free, before the first slice ran** — `max(f, ρ+B−m) < B` asserted
+  at all 32 targets, so (BLOCK-GP) must *beat* the table and no route that outputs
+  the table can output it. **Coordinator mechanisms now 0 of 7.**
+- **TELL: did not fire, and could have** — the region carries all 32 targets, the
+  library reaches all five required pairs, and 19 cells sit exactly on the bound;
+  one more unit anywhere was the tell.
+- **CAPS AND BLIND AXES.** `ndraw` varied 2→3/4 (the one real `run_side` fence);
+  `maxarc = 8`, `maxtheta = 7`, `nlad = 40`, `cap = 400`, `maxlen = 9` **held at
+  committed values and NOT varied**; **one** shortest path per side (sound, not
+  sharp); `orbit` fenced to `maxarc=5, maxtheta=4, nlad=6`, which bounds **how
+  many** certificates, not whether one exists, and says so in-band. Populations
+  A/B are `bunif`'s own at the shared seed, so **no fresh generator anywhere**.
+  Target cells are supported by **1–9 distinct rows** — thin, and singleton
+  distributions are not a determinacy claim. **Not run: `bgoodempty.skeleton_pairs`,
+  the fifth family** — the cheapest next probe, and `reach` scores any library
+  against the printed targets in one command.
+- **FOUR SELF-CAUGHT ITEMS**, each by the direction's own in-driver asserts or
+  arithmetic, including that its first draft of (BE-299)(i) said `Chart` carries
+  no plane at a **degree-2** vertex — wrong, since vacuous as a *condition* is not
+  absent as a *quantity*; the repair is local to side-degree **1**, and the
+  coincidence was measured rather than asserted.
+
+**COORDINATOR VERIFICATION.** All headline modes re-run independently: `validate`
+(57 s — 0 of 32 targets reached, 19 of 26 saturated, 0 violations), `orbit`
+(39 peels / 351 assertions / 0 failures / 624 cells preserved), `dom` (162 s —
+1 200 agreeing, 0 either way, the 77-of-152 coincidence printed `True`, 0 support
+differences), `gp` (66 s — 2 100 + 966 + 1 260 + 1 932 + 126 = **6 384** cells, 0
+violations). The three corrections were then checked at their **owning sources**
+rather than on the direction's word (F24): the `bsixteen.py` dispatch table reads
+`run_side()` bare with the fenced call inside `run_validate()`; (BE-81)(i)'s table
+is the three `(9,4)/(9,5)/(10,4)` rows at `δ = 1` summing to 392/928; and
+`bsixteen.forced(S)` returns `|S ∩ {Π_x, Π_y}|`. **The first of those is a
+coordinator error the direction caught, and it had already reached three landed
+surfaces.** `notes/scripts/README.md`'s invocation table was missing this driver
+**and the previous four landings' drivers** — a pre-existing gap of four, fixed
+in the same commit rather than only for this one.

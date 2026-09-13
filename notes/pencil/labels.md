@@ -5709,7 +5709,7 @@ every token separately so a hit can be attributed (L7):
 
 | direction | labels | steps | verdict |
 |---|---|---|---|
-| **BGPLAW** (rank 1, (BLOCK-GP) at `dim ⟨P₀⟩ ∈ {4,5}`) | `(BE-299)`–`(BE-308)` | *BE298–BE307* | **clean except the declaration** — the two hits are this file's own live-tail sentence above |
+| **BGPLAW** (rank 1, (BLOCK-GP) at `dim ⟨P₀⟩ ∈ {4,5}`) | `(BE-299)`–`(BE-308)` | *BE298–BE307* | **clean except the declaration** — the two hits are this file's own live-tail sentence above. **CONSUMED IN FULL 2026-09-13**, all ten labels and all ten steps. |
 | **BCOFLAG** (rank 2, the coincident-flag arm as a class statement) | `(BE-309)`–`(BE-318)` | *BE308–BE317* | **CLEAN** — 0 hits on every token. **CONSUMED 2026-09-13 at `(BE-309)`–`(BE-313)` / *BE308–BE312*; `(BE-314)`–`(BE-318)` / *BE313–BE317* RETURNED to the pool.** |
 | **GUNIZERO** (rank 3, uniform `dim Z = 0` for the repaired colouring) | `(GR-257)`–`(GR-266)` | *G277–G286* | **clean except the declaration** — same sentence |
 

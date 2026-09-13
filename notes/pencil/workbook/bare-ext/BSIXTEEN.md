@@ -527,6 +527,26 @@ four blocks are their atoms. Read at source (`bunif.BLK` line 131, `bunif.CAP` 1
 > dense-or-empty dichotomy and (BE-72)(iii) with it"*. The 292 survive **by exhibition**
 > — a point in `Good` is a pointwise witness needing no density — so the per-piece
 > result is real, smaller, and reached by a different argument than the one claimed.
+> ***AND A THIRD, INDEPENDENT DEFECT, found the same day by BGPLAW (114): the phrase
+> "392 of 928 internal R-node peels" OVER-READS the population.*** (BE-81)(i)'s table is
+> **three exhaustive rows of (BE-79)(i)'s factorized generator** — `(n₁,n₂) = (9,4)`,
+> `(9,5)`, `(10,4)`, every **`K₄`-skeleton** R-node side at `δ = 1` glued to every
+> unrestricted side at `δ = 1`, so `δ₁ = δ₂ = 1` and `n ≤ 12`. Each row is exhaustive over
+> **the class it names**, and `24 + 312 + 56 = 392` of `48 + 720 + 160 = 928` is a count
+> over **that class**, not over internal R-node peels in general. Read the figure as
+> *"392 of 928 in (BE-79)(i)'s `δ = (1,1)`, `n ≤ 12` factorized generator"*. **Nothing
+> measured moves**; what moves is the quantifier the number is reported under, and it is
+> also the cap on (BE-313)'s `Σδ ≥ 4` successor.
+>
+> ***AND A NOTE ON (BE-281)(ii)'s SOURCING OF `f(U)`, conclusion untouched (BGPLAW, same
+> day).*** That clause motivates the floor through (BE-45)(i)'s **series end (M1)**, which
+> is a floor on `ρ̄_i ∩ Π_x` and fires at **0 of 428** sides. `f(U)` in the shipped law is
+> `bsixteen.forced(S) = |S ∩ {Π_x, Π_y}|` — **(BE-30)(ii)'s forced path hinge lines**,
+> active at **428 of 428** — so the floor's source is the unconditional end-line
+> confinement, not the rare series end. At `Π_x ⊕ Π_y` that shows plainly: `f = 2` while a
+> one-terminal series end supplies only `1`. **(BE-281)(ii)'s conclusion stands** — the
+> *unfloored* equality is genuinely refuted by (M1) — it is the attribution of where the
+> floor comes from that was loose.
 >
 > **(BE-284)(iii)** `[PROVED]` — **which rungs each block can live at, since the
 > question will be asked next.** `c_i(U) ≤ min(ρ_i, d_S)` and `ρ₁ + ρ₂ ≤ Σδ` give

@@ -1684,7 +1684,9 @@ flag regime**, and this pass records the correction its own round delivered.
 *(ii)* **The residue under it** is discharged **peel-by-peel** by BPROPCL's one-draw
 certificate, at 375 of 375 eligible rows ((BE-291)–(BE-298)), and BSIXTEEN's `⟨P₀⟩`-relative
 form of the law was tested by BPROPCL at **1 281/1 281**. *(iii)* **But `π_u = π_v` is FORCED at
-392 of 928 internal R-node peels** ((BE-81)), and those are **rung-3** peels where the four
+392 of 928 peels of (BE-79)(i)'s `δ = (1,1)`, `n ≤ 12` factorized generator** ((BE-81)(i);
+this pass first wrote *"internal R-node peels"* unqualified — **corrected 2026-09-13 by
+BGPLAW**, the three exhaustive rows being `(9,4)`, `(9,5)`, `(10,4)`), and those are **rung-3** peels where the four
 blocks **do not decompose the screw space at all** — there is no `L = π_x ∩ π_y` of dimension 1
 — so the 16-block criterion is not merely unproved there, it is **not the right object**
 ((BE-284)(ii)). Those peels are a **theorem per piece at 292 of the 392** ((BE-86)(ii); this pass
@@ -1709,11 +1711,19 @@ discharges the rung-3 instances of the universal the induction consumes** — it
 for the `Good = ∅` route, it is the arc's actual target from the other side. **Both arms land
 somewhere**, which is why rank 1 is decisive whichever way it goes.
 
-**THE PRICING THE §4 PASS ADDS, AND IT BELONGS IN THE RANKING RATHER THAN IN A DISCLOSURE
-BLOCK.** `notes/scripts/blindaxes.py --imports`, run over `w4/bsixteen.py`, reports that the committed entry
-point calls **`run_side(ndraw=1, maxarc=4, maxtheta=4)`** where the function's own defaults are
-**`2, 8, 7`**. So (BLOCK-GP)'s entire **13 664**-cell evidence base is **one draw per side**, on
-a library fenced to **half** the generator's arc and theta range. **This is not a criticism of
+**THE PRICING THE §4 PASS ADDS — ***AND ITS PREMISE IS FALSE. REFUTED 2026-09-13 BY BGPLAW
+(114), (BE-308); the strike-through reading is kept because the bar it produced survives and
+because this is the pass's own error.*** This pass wrote that
+`notes/scripts/blindaxes.py --imports` over `w4/bsixteen.py` shows the committed entry point
+calling **`run_side(ndraw=1, maxarc=4, maxtheta=4)`** against defaults `2, 8, 7`, and concluded
+that (BLOCK-GP)'s **13 664**-cell base is one draw per side on a half-range library. **It is
+not.** Those fenced calls live inside **`run_validate()`**, which **prints its own fence
+disclosure in-band**; the dispatch table sends `bsixteen.py side` to **`run_side()` with no
+arguments**, i.e. `ndraw = 2, maxarc = 8, maxtheta = 7` — **full defaults**. The error was the
+coordinator reading `blindaxes.py`'s FENCED-CALLS list without checking **where** the calls sit,
+which is precisely the *"it is a lister, not a judge"* caution §4 attaches to that tool. It was
+refutable **arithmetically with no re-run**: (BE-282)(iv)'s **854** draws over **427** rows is
+`ndraw = 2` (at 1 it would be 427), and `362 + 66 = 428` is (BE-282)(iii)'s own denominator. **This is not a criticism of
 BSIXTEEN, which disclosed more than any gate required:** (BE-282)(iii) says in terms that the
 100 % *"is evidence about the library's shape … and not evidence that the unfloored law holds"*,
 names (M1) as firing at **zero** of 428 sides, and stamps the figure **NOT FOUND UNDER CAP C**;
@@ -1723,32 +1733,92 @@ says a coordinator must **generate** rather than grep, and is the BNONUNI shape 
 parameter, 12 insertions, refuting a clause that had survived an exhaustive sweep of the fenced
 population, against five directions spent on it).
 
-**THE BAR THIS PASS ADDS.** *(p)* **No entry on the `(BE-14)`/`hbareSplit` lane may be ranked on
-a side-row figure without naming `run_side`'s three fenced parameters and saying which of them
-the entry's own claim varies.** A side-row figure at `ndraw = 1` is a **one-draw** figure, and
-F27 binds on it: one draw is a **lower bound, not a measurement**, for a semicontinuous
-statistic. Bars *(a)*–*(o)* stand; *(o)* in particular still bars any entry ranked on advancing
+**THE BAR THIS PASS ADDS — RE-FOUNDED 2026-09-13, THE PRACTICE SURVIVING ITS PREMISE.** *(p)*
+**No entry on the `(BE-14)`/`hbareSplit` lane may be ranked on a side-row figure without naming
+the `run_side` parameters its own claim varies — and without reading the DISPATCH TABLE to see
+which values that mode actually ran at.** The second half is the part this pass got wrong and is
+now the operative one: a fenced call in a driver is a statement about **the function that makes
+it**, never about every mode of the file. F27 still binds wherever a figure genuinely is one
+draw — one draw is a **lower bound, not a measurement**, for a semicontinuous statistic — and
+BGPLAW obeyed the bar while refuting its premise, varying `ndraw` 2→3/4 and holding
+`maxarc = 8`, `maxtheta = 7`, `nlad = 40`, `cap = 400`, `maxlen = 9` at their committed values. Bars *(a)*–*(o)* stand; *(o)* in particular still bars any entry ranked on advancing
 the `G°` induction under a local move family.
 
-1. **(BLOCK-GP) AT `dim ⟨P₀⟩ ∈ {4, 5}` — THE ONE LEMMA THE NINE REDUCE TO** *(new — BSIXTEEN's
-   named successor, and the whole generic-flag half of rung 3).* Owner: §(K-bare-ext) *Step
-   BE280*, (BE-281)(i)/(ii)/(iii), with (BE-280)(i)/(iii)/(iv) supplying the arithmetic and
-   (BE-282) the carrier reading. **The statement:** at an internal R-node peel at rung 3 in the
-   generic flag regime, for every stable `U` and each side `i`,
-   `generic c_i(U) ≤ max( f(U), ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩ )`. **GLEAF's question:
-   SUFFICIENT, and in both directions** — proved, all sixteen blocks close and the rung-3
-   generic-regime instances of the S-mark universal are **discharged** ((BE-284)(i)); refuted at
-   a rung-3 peel with `c₁(U) + c₂(U) > dim U`, and the shortfall is **chart-wide** by
-   (BE-69)(ii), which **reaches (BE-14)**.
-   **The floor is load-bearing and the unfloored form is already REFUTED** — (BE-281)(ii) kills
-   the pure general-position equality by (BE-45)(i)'s series end (M1), so an attack must not
-   quietly drop `f(U)`. **The surviving shapes are disjoint from BPROPCL's residue**: all 40 have
-   `dim ⟨P₀⟩ ≤ 5` on **both** sides ((BE-280)(iv)), so this entry and the closed one-draw
-   certificate do not overlap.
-   *Kill condition: (BLOCK-GP) proved at `dim ⟨P₀⟩ ∈ {4, 5}`, which with BPROPCL's certificate
-   closes all sixteen at rung 3 in the generic flag regime; or a counterexample at a rung-3 peel,
-   which reaches (BE-14); or the `f(U)` floor shown to be unprovable by the instruments the lane
-   has, which names the real residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+1. **(BLOCK-GP) — SPENT (BGPLAW 114, 2026-09-13): THE ROUTED FIRST SLICE CAME BACK A **THEOREM**
+   AND DISSOLVED ITS OWN WORRY, AND THE LEMMA IS **NOT FOUND UNDER CAP C** WITH THE RESIDUE CUT
+   FROM NINE BLOCKS TO **TWO PROFILES**.** Owner of the answer: §(K-bare-ext) *Steps BE298–BE307*,
+   (BE-299)–(BE-308).
+   **THE FIRST SLICE: `Chart(H) → Chart♭(side_i)` IS SURJECTIVE OVER THE GENERIC FLAG REGIME**,
+   not merely dominant, and the proof is group-theoretic rather than measured.
+   `bunif.flag_frame`'s own gate `rank[p_x, e₁, e₂, p_y] = 4` **is** the statement that the flag
+   pair is a projective frame, so the regime `F°` is a **single PGL₄ orbit**; `Chart♭` is
+   PGL₄-invariant and the restriction equivariant, so the image meets `F°` in `∅` or all of it —
+   **no middle**. `Chart(H) = Chart♭(H₁) ×_F Chart♭(H₂)` by rewriting (BE-25)(ii)'s closed-star
+   coplanarity. Exhibited at **39** glued peels / **351** exact-ℚ assertions, 0 failures, side 2's
+   whole 16-block profile preserved at **624/624**; measured independently at **1 200/1 200**
+   agreeing cells, **0** in either direction.
+   **AND THE BIGGER HALF, which retires the worry rather than answering it: (BLOCK-GP) IS A
+   ONE-SIDED STATEMENT.** `c_i(U)`, `ρ_i`, `⟨P₀⟩`, `f(U)` and all four blocks are functions of
+   side `i`'s flagged configuration alone; *peel*, *rung 3* and *internal R-node* are the
+   **consumer's** hypotheses, not the law's. **(BE-96)(iv) already said so** — *"Both sides of the
+   criterion are **per-side**: `c_i(U)` is computed from side `i` and the flag pair alone."* So the
+   side library **is** the object and not a proxy, and the coordinator's routed worry does not
+   bind. **The one place it does fail is off (BLOCK-GP)'s own hypothesis** — when the other side
+   realizes no generic flag pair, i.e. (BE-81)'s forcing, which is rank 2's territory.
+   **THE LEMMA ITSELF: NOT FOUND UNDER CAP C, and the cap is REACH, not draws.** The 40 `+L6`
+   survivors resolve to **32 per-side targets, every one at `m ∈ {4,5}`** (6 at 4, 26 at 5) — the
+   region is the *whole* residue. The library **reaches all five** required `(dim ⟨P₀⟩, ρ_i)`
+   pairs and **0 of 32** targets; of the 26 reached cells the bound is **saturated at 19** and
+   slack at 7, **never exceeded** — a law being tested at its edge. Un-fenced `ndraw` 2→3:
+   **17 934** cells, 0 violations. **First composite measurement** (`gp`): **6 384** cells, 0
+   violations, 1 260 at `m = 4` and 1 932 at `m = 5`.
+   **THE MOST USEFUL NUMBER IS THE REDUCTION:** 30 of the 32 targets are the *nested extreme*
+   `c_i = min(ρ_i, B)`, so a lemma *"`ρ̄_i` and `⟨P₀⟩ ∩ U` are never nested"* kills 30 and
+   **leaves exactly two** — `L+M+Π_x` and `L+M+Π_y` at `m = 5`, `ρ = 3`, `c = 2`. The direction
+   asserted non-nestedness **is** (BLOCK-GP) and then that it **suffices**, and its own asserts
+   refuted both in 0.0 s; the honest 30-of-32 is what survives.
+   **F34 HIT, and it re-reads a landed disclosure:** (BE-282)(ii)'s L7 at 13 664/13 664 **is**
+   already a (BLOCK-GP) measurement (L7-equality ⟹ LG in one line), and **(BE-282)(iii)'s
+   `NOT FOUND UNDER CAP C` disqualifies the UNFLOORED law only** — (M1) is exactly what the floor
+   survives, so it cannot disqualify the floored one. The right cap question is **reach**, which no
+   landed clause asks.
+   **F26, and it costs nothing only because of this entry's own first slice:** S-mark's object is
+   `Y°(H_B)` with flags at `u,v` **prescribed** — a *fibre* — so (BE-284)(i)'s chain does not carry
+   verbatim. By the orbit theorem the (BLOCK-GP) locus is PGL₄-invariant, hence generic-on-`Chart♭`
+   and generic-on-the-fibre are the **same** statement. **Nothing in the corpus says so**, and it
+   is now (BE-307)'s to say.
+   *Kill condition: NOT MET — (BLOCK-GP) is neither proved nor refuted, and the cap is named:
+   **the library reaches 0 of 32 targets**, so no population in the harness can currently refute
+   it. **NOT FOUND UNDER CAP C.** The successor is sharp and is the direction's own hand-forward:
+   the **two** surviving profiles `L+M+Π_x` / `L+M+Π_y` at `m = 5`, `ρ = 3`, attacked through
+   (BE-279)(ii)'s `m = 5` Klein annihilator read against `ρ̄_i` instead of `⟨P₀⟩`. **Status caveat
+   the consumer inherits:** by (BE-279)(ii)'s own table the `B(m,U)` certificate is pointwise at
+   `m ≤ 4` and **generic-with-a-witness at `m = 5`**, where 26 of the 32 targets live. The cheapest
+   unspent probe is `bgoodempty.skeleton_pairs`, the fifth side family, which `reach` scores
+   against the printed targets in one command. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+   > **THE ENTRY AS IT WAS WRITTEN, kept because a spent entry's reasoning stays visible — and
+   > because its routed first slice is the part that came back inverted.**
+   > 1. **(BLOCK-GP) AT `dim ⟨P₀⟩ ∈ {4, 5}` — THE ONE LEMMA THE NINE REDUCE TO** *(new — BSIXTEEN's
+   > named successor, and the whole generic-flag half of rung 3).* Owner: §(K-bare-ext) *Step
+   > BE280*, (BE-281)(i)/(ii)/(iii), with (BE-280)(i)/(iii)/(iv) supplying the arithmetic and
+   > (BE-282) the carrier reading. **The statement:** at an internal R-node peel at rung 3 in the
+   > generic flag regime, for every stable `U` and each side `i`,
+   > `generic c_i(U) ≤ max( f(U), ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩ )`. **GLEAF's question:
+   > SUFFICIENT, and in both directions** — proved, all sixteen blocks close and the rung-3
+   > generic-regime instances of the S-mark universal are **discharged** ((BE-284)(i)); refuted at
+   > a rung-3 peel with `c₁(U) + c₂(U) > dim U`, and the shortfall is **chart-wide** by
+   > (BE-69)(ii), which **reaches (BE-14)**.
+   > **The floor is load-bearing and the unfloored form is already REFUTED** — (BE-281)(ii) kills
+   > the pure general-position equality by (BE-45)(i)'s series end (M1), so an attack must not
+   > quietly drop `f(U)`. **The surviving shapes are disjoint from BPROPCL's residue**: all 40 have
+   > `dim ⟨P₀⟩ ≤ 5` on **both** sides ((BE-280)(iv)), so this entry and the closed one-draw
+   > certificate do not overlap.
+   > *Kill condition: (BLOCK-GP) proved at `dim ⟨P₀⟩ ∈ {4, 5}`, which with BPROPCL's certificate
+   > closes all sixteen at rung 3 in the generic flag regime; or a counterexample at a rung-3 peel,
+   > which reaches (BE-14); or the `f(U)` floor shown to be unprovable by the instruments the lane
+   > has, which names the real residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+   >
 
 2. **THE COINCIDENT-FLAG ARM — SPENT (BCOFLAG 115, 2026-09-13): THE QUESTION HAD A FALSE
    PREMISE, THE 16 BLOCKS ARE REPLACED BY *ONE* INEQUALITY, AND THE ARM'S PER-PIECE RESULT IS
