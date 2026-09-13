@@ -1665,6 +1665,150 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-13 — THE EIGHTEENTH STRATEGY-ONLY PASS, AND IT RANKS A ROUND ON ONE
+LANE'S TWO HALVES FOR THE FIRST TIME.** The seventeenth's ranks 1, 2 and 3 were **all spent
+in one round** — BSIXTEEN 111 (the eleven blocks are one law), GODDRUNG 112 (the parity
+obstruction is not essential and the rule is repaired), BPROPCL 113 (the shared residue is a
+one-draw certificate, not a lemma) — the **fourth consecutive round** to spend its whole top
+three. Coordinator-authored at the round close, **no dispatch spent, no label minted.** Every
+entry re-derived from its **owning** step.
+
+**WHAT THIS PASS CHANGES — the `hbareSplit` lane's single inequality is now ONE LEMMA AND ONE
+ARM, and the arm was invisible until yesterday.** The seventeenth pass re-routed weight here on
+the sentence that closing every one of the 16 stable blocks at rung 3 **is** a proof that no
+rung-3 shortfall exists ((BE-97)(ii)/(BE-95)(i)). That sentence is **true only in the generic
+flag regime**, and this pass records the correction its own round delivered.
+
+*(i)* **The lemma.** BSIXTEEN collapsed the eleven open blocks to **one named candidate**,
+(BLOCK-GP), under which all sixteen close ((BE-280)(i)); two more closed cap-free on the way.
+*(ii)* **The residue under it** is discharged **peel-by-peel** by BPROPCL's one-draw
+certificate, at 375 of 375 eligible rows ((BE-291)–(BE-298)), and BSIXTEEN's `⟨P₀⟩`-relative
+form of the law was tested by BPROPCL at **1 281/1 281**. *(iii)* **But `π_u = π_v` is FORCED at
+392 of 928 internal R-node peels** ((BE-81)), and those are **rung-3** peels where the four
+blocks **do not decompose the screw space at all** — there is no `L = π_x ∩ π_y` of dimension 1
+— so the 16-block criterion is not merely unproved there, it is **not the right object**
+((BE-284)(ii)). Those peels are a **theorem per piece** ((BE-86)(ii), 392 exact-ℚ certificates,
+shortfall `0` at 392/392) and **class-level OPEN**.
+
+**So rung 3 has two halves and the corpus has been ranking one of them.** BSIXTEEN says so in
+its own words — *"no single surface in the corpus states this, and the dispatch's own framing
+does not carry it"* — and its *what would change this* item 5 says the arm *"would still be open
+as a class statement after all of that"*. Ranks 1 and 2 are those two halves, and they are
+independent: neither's verdict constrains the other's.
+
+**AND THE POSITIVE ARM IS CONSUMED, which re-prices rank 1 upward and was checked before this
+pass was written.** (BE-284)(i) reads the chain at its owning sections: `Good(H; x,y) ≠ ∅` **is**
+(BE-67)(iii) at that peel; (BE-67)(iii) is the class form of the general-position half of
+(BE-22)(iii)(b); that is the 2-cut composition criterion the **S-mark** induction of (BE-25)(ii)
+runs at every node of the rooted 3-block tree; and (BE-25)(ii)'s check (a) is *"implies (BE-14)
+at the top — **yes**, at the root `H = G`"*. **So a proof of the inequalities at rung 3
+discharges the rung-3 instances of the universal the induction consumes** — it is not a funeral
+for the `Good = ∅` route, it is the arc's actual target from the other side. **Both arms land
+somewhere**, which is why rank 1 is decisive whichever way it goes.
+
+**THE PRICING THE §4 PASS ADDS, AND IT BELONGS IN THE RANKING RATHER THAN IN A DISCLOSURE
+BLOCK.** `notes/scripts/blindaxes.py --imports`, run over `w4/bsixteen.py`, reports that the committed entry
+point calls **`run_side(ndraw=1, maxarc=4, maxtheta=4)`** where the function's own defaults are
+**`2, 8, 7`**. So (BLOCK-GP)'s entire **13 664**-cell evidence base is **one draw per side**, on
+a library fenced to **half** the generator's arc and theta range. **This is not a criticism of
+BSIXTEEN, which disclosed more than any gate required:** (BE-282)(iii) says in terms that the
+100 % *"is evidence about the library's shape … and not evidence that the unfloored law holds"*,
+names (M1) as firing at **zero** of 428 sides, and stamps the figure **NOT FOUND UNDER CAP C**;
+(BE-282)(iv) does the same for the `0` off-regime rejections. **What no clause says is that two
+of the three fences are literals passed past a wider default** — which is exactly the axis §4
+says a coordinator must **generate** rather than grep, and is the BNONUNI shape (one defaulted
+parameter, 12 insertions, refuting a clause that had survived an exhaustive sweep of the fenced
+population, against five directions spent on it).
+
+**THE BAR THIS PASS ADDS.** *(p)* **No entry on the `(BE-14)`/`hbareSplit` lane may be ranked on
+a side-row figure without naming `run_side`'s three fenced parameters and saying which of them
+the entry's own claim varies.** A side-row figure at `ndraw = 1` is a **one-draw** figure, and
+F27 binds on it: one draw is a **lower bound, not a measurement**, for a semicontinuous
+statistic. Bars *(a)*–*(o)* stand; *(o)* in particular still bars any entry ranked on advancing
+the `G°` induction under a local move family.
+
+1. **(BLOCK-GP) AT `dim ⟨P₀⟩ ∈ {4, 5}` — THE ONE LEMMA THE NINE REDUCE TO** *(new — BSIXTEEN's
+   named successor, and the whole generic-flag half of rung 3).* Owner: §(K-bare-ext) *Step
+   BE280*, (BE-281)(i)/(ii)/(iii), with (BE-280)(i)/(iii)/(iv) supplying the arithmetic and
+   (BE-282) the carrier reading. **The statement:** at an internal R-node peel at rung 3 in the
+   generic flag regime, for every stable `U` and each side `i`,
+   `generic c_i(U) ≤ max( f(U), ρ_i + dim(⟨P₀⟩ ∩ U) − dim ⟨P₀⟩ )`. **GLEAF's question:
+   SUFFICIENT, and in both directions** — proved, all sixteen blocks close and the rung-3
+   generic-regime instances of the S-mark universal are **discharged** ((BE-284)(i)); refuted at
+   a rung-3 peel with `c₁(U) + c₂(U) > dim U`, and the shortfall is **chart-wide** by
+   (BE-69)(ii), which **reaches (BE-14)**.
+   **The floor is load-bearing and the unfloored form is already REFUTED** — (BE-281)(ii) kills
+   the pure general-position equality by (BE-45)(i)'s series end (M1), so an attack must not
+   quietly drop `f(U)`. **The surviving shapes are disjoint from BPROPCL's residue**: all 40 have
+   `dim ⟨P₀⟩ ≤ 5` on **both** sides ((BE-280)(iv)), so this entry and the closed one-draw
+   certificate do not overlap.
+   *Kill condition: (BLOCK-GP) proved at `dim ⟨P₀⟩ ∈ {4, 5}`, which with BPROPCL's certificate
+   closes all sixteen at rung 3 in the generic flag regime; or a counterexample at a rung-3 peel,
+   which reaches (BE-14); or the `f(U)` floor shown to be unprovable by the instruments the lane
+   has, which names the real residue. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+2. **THE COINCIDENT-FLAG ARM AS A CLASS STATEMENT — 392 OF 928, AND OUTSIDE THE 16-BLOCK FAMILY**
+   *(new — (BE-284)(ii)'s scope limit, which no surface carried before yesterday).* Owner:
+   §(K-bare-ext) *Step BE283*, (BE-284)(ii), standing on (BE-81) (direction BONEONE) for the
+   forcing and (BE-86)(ii) (direction BGENUINE) for the 392 per-piece certificates. **The
+   question: is `Good ≠ ∅` a class theorem at the coincident-flag peels, and what is the right
+   object there given that the four blocks do not decompose the screw space?** **GLEAF's
+   question: SUFFICIENT for completing rung 3** — with rank 1 it is all of rung 3, and without it
+   rank 1's verdict carries a qualifier on **42 %** of the internal R-node peels the corpus has
+   enumerated.
+   **Two things make this cheaper than it looks, and a spec must state both.** The 392
+   certificates **exist** and are exact-ℚ with shortfall `0` ((BE-86)(ii)) — by (BE-69)(ii)'s
+   consequence 1 a **theorem per piece**, not a measurement — so the direction is asked to
+   generalize a proved per-piece statement, not to hunt. And **(BE-282)(iv) already establishes
+   that the corpus's side-library sampling CANNOT reach this arm at all**: `bunif.flag_frame`'s
+   `0 of 854` rejections are one-sided rows where `π_x` and `π_y` are drawn independently, and
+   the forced coincidence is a property of the **composite** two-sided peel. So a measurement
+   here needs a **composite** population, and the entry must price building one.
+   *Kill condition: a class statement proved at the coincident-flag peels — which with rank 1
+   gives `Good ≠ ∅` at rung 3 simpliciter; or a coincident-flag peel exhibited with a shortfall,
+   which reaches (BE-14) by (BE-69)(ii) exactly as rank 1's negative arm does; or the arm shown
+   to need an instrument the lane does not have, which is itself the first statement of what
+   replaces the 16 blocks off the generic regime. Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+3. **UNIFORM `dim Z = 0` FOR THE REPAIRED COLOURING — THE `hK` LANE'S ONE ENTRY** *(carried,
+   re-aimed by GODDRUNG onto its own successor).* Owner: §(K-grid) *Steps G269–G276*,
+   (GR-249)–(GR-256), standing on (GR-34). **The repair is landed**: admissible, NC1-clear and
+   fully-good at every even `m` from 6 to 40 (`n_hub = 12…80`, **18 of 18**, exact-ℚ `dim Z₊ =
+   dim Z₋ = 0`, cap-free), with a closed-form rung defect. **What is left is the quantifier** —
+   (GR-15) has two halves, *exhibit* an admissible colouring and *certify generic `dim Z = 0` at
+   it*, and the repaired rule supplies the first for all `m` while the second is **18 rows**.
+   **GLEAF's question: SUFFICIENT on an infinite subfamily**, and (GR-34) proves a correlated
+   rule is the **only shape a proof of (GR-15) can have**, so this is the one `hK` item whose
+   success is not contingent on a struck route.
+   **The entry carries GODDRUNG's own F26 finding against itself, and a spec must not re-inflate
+   it:** a uniform **rule** is **not** a uniform **(GR-15) argument**, and with the `G°`
+   induction struck **nothing landed consumes (GR-15) on a subfamily**. What it buys is the first
+   uniform (GR-15) statement the arc would own, on a family proved infinite ((GR-175)) — not a
+   step in a landed derivation. **The caps are in `goddrung.py`'s legs**, `leg_far(hi=40)`
+   against `leg_repair(rank_hi=12, nc1_hi=12, shape_hi=6)`, and the entry is exactly the question
+   of what happens past them.
+   *Kill condition: `dim Z = 0` proved for the repaired rule's colouring at every `m` — uniform
+   (GR-15) on an infinite subfamily; or an `m` exhibited at which the repaired rule is admissible
+   and `dim Z ≠ 0`, which says the rule is not the certificate and re-opens what (GR-34) leaves;
+   or the rank question shown to need a per-shape input, which prices the gap between a rule and
+   an argument. Decided by: the `(K-grid)` row, close-it u9.*
+
+4.–9. **THE CARRIED ENTRIES, UNCHANGED IN ORDER** — BPROPCL's **class** properness statement over
+   all internal R-node peels (a REDUCTION: it removes a hypothesis from things already proved,
+   and its corner is **LIVE at 248/248** with `max δ = 4`, so `ρ_i ≤ 5` is not tight); the
+   (c)-strengthened closure's 14/18 residual; GCOIND's matrix-valued corank statistic; the island
+   at `n_hub = 10`, the `4T + 3Q ≥ 12` habitat and the `P¹`/splitting-type reading of (GR-7)(ii).
+   **Below all of them: the three transport/coverage successors demoted by bar *(o)*.** Kill
+   conditions as written.
+
+**ONE AXIS THIS PASS ROUTES RATHER THAN RANKS.** BPROPCL's close names *"whether
+`Chart(H) → Chart(side_i)` is **dominant**, which conditions every side-row figure on this lane"*
+as a coordinator's call. It is **not** a rank of its own: it is rank 1's own evidence base — every
+cell of (BLOCK-GP)'s 13 664 is a side row — so it is dispatched as rank 1's **first slice**, with
+the instruction that a negative verdict **stops the direction and outranks the lemma**, because a
+negative re-prices every side-row figure on the lane at once. Ranked separately it would compete
+with the entry it conditions; folded in, it is answered before anything is built on it.
+
 **RE-RANKED 2026-09-12 (fourth) — THE SEVENTEENTH STRATEGY-ONLY PASS, AND IT IS THE FIRST TO
 RE-ROUTE A LANE RATHER THAN RE-ORDER IT.** The sixteenth's ranks 1, 2 and 3 were **all spent in
 one round** — GBASE 108 (struck the route), BMBLOCK 109 (closed `⟨M⟩` by proof), GSECOND 110

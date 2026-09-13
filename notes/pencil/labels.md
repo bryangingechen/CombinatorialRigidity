@@ -5702,3 +5702,17 @@ reports declaration hits on `BE277`/`BE279` rather than on its own opening
 token: the bookkeeping that returned them is what the grep finds. **Live tail
 after this round, if all three ranges are consumed: (GR-257) / *Step G277* and
 (BE-299) / *Step BE298*.**
+
+**EIGHTEENTH-PASS ROUND — THREE RANGES RESERVED 2026-09-13**, each checked with
+`ledger.py --reserve-range … --steps … --also <CODE> --ref HEAD`, which enumerates
+every token separately so a hit can be attributed (L7):
+
+| direction | labels | steps | verdict |
+|---|---|---|---|
+| **BGPLAW** (rank 1, (BLOCK-GP) at `dim ⟨P₀⟩ ∈ {4,5}`) | `(BE-299)`–`(BE-308)` | *BE298–BE307* | **clean except the declaration** — the two hits are this file's own live-tail sentence above |
+| **BCOFLAG** (rank 2, the coincident-flag arm as a class statement) | `(BE-309)`–`(BE-318)` | *BE308–BE317* | **CLEAN** — 0 hits on every token |
+| **GUNIZERO** (rank 3, uniform `dim Z = 0` for the repaired colouring) | `(GR-257)`–`(GR-266)` | *G277–G286* | **clean except the declaration** — same sentence |
+
+The three codenames are themselves 0-hit corpus-wide. **Live tail after this
+round, if all three ranges are consumed: (GR-267) / *Step G287* and (BE-319) /
+*Step BE318*.**
