@@ -160,6 +160,11 @@ keeps only what git cannot show.
 | 2026-09-12 | Phase39 FOURTH round of three vs §8's SEVENTEENTH pass — BSIXTEEN 111 / GODDRUNG 112 / BPROPCL 113 | opus ×3, concurrent | **ranks 1–3 spent together for the FOURTH consecutive round; the fence PRODUCED a convergence** | Two directions fenced off each other's lemma converged on one (F35). Three landed sentences corrected across the round — (GR-239)(ii) scoped, (GR-34)(ii) refuted, (BE-277)(iii) scoped — plus a denominator (427 side rows are 400 distinct sides) that scopes two sibling landings. No direction shipped a figure defect; one shipped a GATE failure. |
 | 2026-09-12 | Phase39 in-flight gate failure reported from OUTSIDE | opus (direction GODDRUNG) | **a direction reported a SIBLING's gate failure while both were in flight** | GODDRUNG hit `ledger.py --lint` for its own draft, saw 10 violations it did not own, and reported them as *"not mine, but it will block your landing"*. By landing time BPROPCL's draft carried 18, all one mechanical error (a literal `[UNTAGGED]`, which the parser INFERS rather than accepts). First time one in-flight direction has flagged another's gate state; it saved a landing-time surprise and cost nothing. |
 | 2026-09-12 | Phase39 coordinator-error audit, fourth round | opus (coordinator) | **FIVE coordinator errors across THREE specs, all caught by the directions** | The inheritance-lemma hope (refuted by an exact-ℚ witness); the *"eleven problems"* framing; §8's *"closing all sixteen proves `Good ≠ ∅` at rung 3"* (true only in the generic flag regime — `π_u = π_v` is forced at 392 of 928); the GODDRUNG entry's stated payoff (a uniform RULE is not a uniform (GR-15) argument); and BPROPCL's spec mechanism. F19's rate holds across four rounds. |
+| 2026-09-13 | Phase39 ledger-invisibility defect in a landed workbook | opus (coordinator, setup read) | **BSIXTEEN's (111) entire 737-line workbook was invisible to `ledger.py`** — 29 of its 30 clause openers lacked the blockquote marker the opener regex requires, so `--list` reported **1 claim**. Nothing fired at its landing because `--lint` reads the same index. Found in the eighteenth pass's own setup, when `--brief` on the lane §8 ranks first returned nothing. Repair verified content-preserving line-by-line (738 lines, zero non-prefix differences); the lint then reported **16 real violations** the file had hidden — 13 literal `` `[UNTAGGED]` `` markers (a word that means *absence* of a marker) and 3 `[MEASURED]` clauses naming no driver, repaired by reading the owning clause and **re-running** it. Corpus-wide scan: BSIXTEEN is the sole outlier. → **F36** |
+| 2026-09-13 | Phase39 FIFTH round of three vs §8's EIGHTEENTH pass — BGPLAW 114 / BCOFLAG 115 / GUNIZERO 116 | opus ×3, concurrent | **ranks 1, 2 and 3 spent together for the FIFTH consecutive round; all three refuted a coordinator claim and two refuted clauses the same pass had written hours earlier.** BGPLAW turned the routed dominance question into a theorem (single PGL₄ orbit ⇒ surjective) and then dissolved it — (BLOCK-GP) is one-sided and **(BE-96)(iv) already said so**. BCOFLAG found rank 2's premise false (292 not 392; the dense-or-empty appeal void). GUNIZERO **proved uniform `dim Z = 0` for all `m`** at the clumped placement via the landed combinatorial (GR-9). Mechanisms **0 for 3**, arc **15 for 15 across five rounds**. |
+| 2026-09-13 | Phase39 shared-counter hazard manufactured by the SPEC | opus ×3 (all three directions) | **All three returns independently wrote the same wrong number, "0 of 7".** Each spec quoted §7's mechanism record as *"record: 0 of 6"* and asked the direction to score itself against it; each refuted its mechanism and incremented. §7's figure is a **fixed unselected sample**, not a counter, and three refutations move the arc tally by three. The coordinator merged all three verbatim **and repeated the figure in two coordinator-authored surfaces** — five sites, one error, invisible to every per-return check because each draft was internally consistent. → **F37** |
+| 2026-09-13 | Phase39 coordinator-error audit, fifth round | opus (coordinator) | **THREE coordinator errors, all caught by the directions, and all refutable from the landed corpus with NO computation.** (a) Bar *(p)*'s premise — `blindaxes.py`'s FENCED-CALLS list read without checking **where** the calls sit; the fenced call is inside `run_validate()` while the mode runs at full defaults, refutable by arithmetic on (BE-282)(iv). (b) Rank 2's *"theorem per piece at 392"*, inherited from (BE-284)(ii) whose own cited step refutes it. (c) The *"392 of 928 internal R-node peels"* population scope. F19's rate holds across five rounds. |
+| 2026-09-13 | Phase39 draft-hygiene defects caught in verification | opus (coordinator) | **Two gate-invisible defects in BCOFLAG's draft.** Its section header was `#` where the corpus uses `##`, which cost it its ledger **section key** (claim identity is file + section-key + label + clause, so `--delta` and `--status --section` were both degraded while `--lint` stayed green). And **three of five driver step banners were misnumbered** against the draft's own clause citations. Both realigned with the draft's citations taken as authoritative. BGPLAW's and GUNIZERO's drafts were checked for the same two defects and are clean. |
 
 ## Findings
 
@@ -833,3 +838,34 @@ At phase close, promote stable entries into the coordinator command's
   hazard control. F20 says reservations prevent naming collisions and
   not duplicated derivation; this is the other half: a PROSE fence
   plus a live `HEAD` can turn the overlap into a joint result.
+
+- **F36 — a landed workbook can be INVISIBLE to the ledger, and every
+  gate stays green.** `ledger.py`'s opener regex requires the `> `
+  blockquote marker; a direction that writes its clause blocks as plain
+  paragraphs produces a file with **zero** indexed claims, and because
+  `--lint` reads the same index, the landing gate certifies nothing.
+  BSIXTEEN (111) shipped 29 such openers and the defect survived a
+  landing, a cross-return pass and a strategy pass before `--brief`
+  returned empty on the lane §8 ranked first. **The check is one call** —
+  `ledger.py --list | grep <FILE>` at landing, against the file's own
+  opener count — and it belongs in the landing sweep, not in a cleanup
+  round. Corollary: a direction's draft must be linted **while the
+  coordinator can still see it**, since a green `--lint` on an unindexed
+  file is vacuous.
+- **F37 — a spec that QUOTES a tally manufactures agreement between
+  independent returns.** `RESEARCH-ARC.md` §2 says never have a direction
+  re-derive a shared monotone counter; the sharper form is that **citing
+  the counter is the same hazard as asking for one**. Three concurrent
+  directions, each handed *"record: 0 of 6"* and asked to score its own
+  mechanism against it, each refuted its mechanism and each wrote
+  *"0 of 7"* — three copies of a wrong value that **agree with each
+  other**, which is precisely the signal a coordinator is otherwise
+  entitled to trust, and which no per-return check can see because each
+  draft is internally consistent. Two things were wrong: §7's figure is a
+  **fixed unselected sample** whose value depends on not being
+  incremented, and three refutations move the arc tally by three. **Fix:**
+  cite a tally as a fixed, dated value with *"do not increment — the
+  coordinator updates this at the cross-return pass"*, or omit the number
+  and ask only for the direction's own verdict. Recorded after the
+  coordinator propagated the same error into two coordinator-authored
+  surfaces.
