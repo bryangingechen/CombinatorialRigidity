@@ -1665,6 +1665,123 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-13 (second) — THE NINETEENTH STRATEGY-ONLY PASS, AND IT PUTS THE WHOLE ROUND
+ON ONE LANE FOR THE FIRST TIME.** The eighteenth's ranks 1, 2 and 3 were **all spent in one
+round** — BGPLAW 114 (the routed question a theorem, then dissolved), BCOFLAG 115 (rank 2's
+premise false), GUNIZERO 116 (uniform `dim Z = 0` proved for all `m`) — the **fifth consecutive
+round** to spend its whole top three. Coordinator-authored at the round close, **no dispatch
+spent, no label minted.** Every entry re-derived from its **owning** step.
+
+**WHY ONE LANE, said plainly because it costs the diversification criterion.** The `hK` lane's
+single entry was **spent and closed**: GUNIZERO proved uniform `dim Z = 0` — hence (GR-15) and the
+stronger (GR-10) — on an infinite family of tight class shapes. What it leaves is the **placement**
+((GR-262)), and that item is **explicitly low-yield by its own direction's F26 check**: nothing
+landed consumes (GR-15) on a subfamily, so extending the family buys reach, not a discharge. Every
+entry below is on the `(BE-14)`/`hbareSplit` lane, and the placement sits at rank 4 rather than in
+the round.
+
+**WHAT THIS PASS CHANGES — rung 3's two halves are now ASYMMETRIC, and the asymmetry is the
+ranking.** The eighteenth pass ranked them as independent halves of one question. They came back
+in very different states.
+
+*(i)* **The generic-flag half is nearly finished.** (BLOCK-GP) is unrefuted at **6 384** composite
+cells and **17 934** un-fenced side cells, its whole residue is **32 per-side targets**, and
+**30 of them die to a single lemma** — non-nestedness of `ρ̄_i` and `⟨P₀⟩ ∩ U` — leaving **two**
+profiles, `L+M+Π_x` and `L+M+Π_y` at `m = 5`, `ρ = 3`, `c = 2` ((BE-305)). *(ii)* **The
+coincident-flag half is in worse shape than "class-level open" said**, and BCOFLAG is the reason:
+the **consumer does not close there at all**. S-mark's 2-cut step hypothesises flags at `u, v`
+**prescribed**; at a forced peel the parent has no choice of prescription, and the child fails to
+attain inside the composite at **1 200/1 200** while attaining on its own chart at **40/40**
+((BE-313)). **So a rung-3 result at the forced peels currently reaches nothing**, whatever its
+truth value — which is why the restatement outranks the measurement.
+
+**AND A USER RULING THIS PASS RECORDS.** BCOFLAG surfaced, and declined to decide, whether the
+corpus should **demote `Good ≠ ∅` as the right proxy** at this arm and restate S-mark with
+(BE-86)(i)'s `a`-term. Put to the user with three options and an estimate each, the answer
+(2026-09-13) was to **rank it as a direction**. It is rank 1 below. This is a **ruling**, not a
+delegation: a later pass may re-rank it on evidence, but it may not quietly drop it.
+
+**THE BAR THIS PASS ADDS.** *(q)* **A direction's FIRST slice is a re-read of the clause its entry
+stands on.** Across the last two rounds, **every** landed-clause correction — six of them — came
+from reading a landed clause rather than from measuring: (BE-86)(ii)'s own table carried the
+292/60/40 split; (BE-86)(i)'s own text said *"its hypothesis fails at 100 of the 392"*;
+(BE-85)(iii), inside the step (BE-284)(ii) cited, said (CH-1)(a) takes dense-or-empty with it;
+bar *(p)* fell to arithmetic on (BE-282)(iv); (BE-96)(iv) already said (BLOCK-GP) is per-side; and
+(GR-9) was a landed theorem nobody had pointed at GUNIZERO's question. **The round's decisive
+corrections cost none of its compute.** Bars *(a)*–*(p)* stand, *(p)* in its re-founded form.
+
+1. **THE S-MARK RESTATEMENT AT A FORCED PEEL — CAN THE CONSUMER BE MADE TO CLOSE?** *(new —
+   BCOFLAG's surfaced item, ranked here by USER RULING 2026-09-13.)* Owner: §(K-bare-ext)
+   *Step BE311*, (BE-313), with (BE-86)(i) supplying the proposed replacement and (BE-25)(ii)
+   the step that consumes it. **The question: does the S-mark 2-cut step, restated to carry
+   (BE-86)(i) — whose statement has the `a`-term in it — close at a forced coincident-flag peel;
+   and what does that cost the claims that consume (BE-22)(iii), whose hypothesis is exactly
+   what fails there?** **GLEAF's question: SUFFICIENT, and it GATES the other two entries** —
+   until it is answered, a rung-3 verdict at the forced peels reaches nothing, so rank 2's
+   witness hunt and rank 3's lemma both bank on it.
+   **What makes it tractable:** the replacement is already a landed `[PROVED]` clause with a
+   proof, not a conjecture, and BCOFLAG established the failure is a **chart mismatch** (`A_i ⊆
+   Chart(H)` against the side's `Chart(H_i)`) rather than a false statement — so the object to
+   repair is the induction's bookkeeping, not its mathematics. **What makes it risky:**
+   (BE-22)(iii) is consumed widely, and a restatement that closes the forced arm by weakening
+   the generic arm trades one hole for a larger one. The direction must price the blast radius
+   with `--cited-by` before proposing anything.
+   *Kill condition: the restated step proved to close at forced peels with its cost to
+   (BE-22)(iii)'s consumers enumerated — which makes rung-3 results at 42 % of the enumerated
+   peels consumable; or the restatement shown to be impossible, which is a **structural** fact
+   about the 2-cut induction and re-routes the lane; or the forced peels shown to be reachable
+   by (BE-22)(vi)/(BE-20) after all, which retires (BE-313) and costs nothing. Decided by: the
+   `(K-bare)/(K-bare-ext)` row.*
+
+2. **A SHORTFALL AT `Σδ ≥ 4` — THE ONLY POSITIVE ROUTE TO (BE-14) ON EITHER LANE** *(new —
+   BCOFLAG's successor, and the rare entry that arrives with its derivation attached).* Owner:
+   §(K-bare-ext) *Steps BE309–BE310*, (BE-310)/(BE-311). **The derivation, in one line:** at a
+   forced coincident-flag peel both `ρ̄_i` lie in `Λ²π`, a maximal totally singular 3-space, so
+   `dim(ρ̄₁+ρ̄₂) ≤ 3`; by (BE-86)(i) `H` attains **iff** that equals `min(Σδ,6) + a₁ + a₂`; hence
+   at **`Σδ ≥ 4`** attainment is **impossible**, the peel **is** a shortfall, and by (BE-69)(ii)
+   it **reaches (BE-14)**. **GLEAF's question: SUFFICIENT, and positive** — every other live
+   entry on this lane closes a route or removes a hypothesis; this one would prove the target.
+   **THE ENTIRE QUESTION IS WHETHER THE REGION IS INHABITED, and that is the first slice.**
+   **NOT FOUND UNDER CAP `Σδ = 2`**: (BE-81)(i)'s generator is (BE-79)(i)'s factorized
+   `δ = (1,1)`, `n ≤ 12` family, so `Σδ = 2` at every one of the 392 — the corpus has **never
+   drawn** a forced peel at `Σδ ≥ 4`. A `(δ₁,δ₂)`-widened generator is the whole cost, and the
+   honest prior is that forcing may **require** `δ₁ = δ₂ = 1` — (BE-77) is cited for exactly
+   that shape, and a direction must read it before building.
+   *Kill condition: a forced coincident-flag peel exhibited at `Σδ ≥ 4`, which by the derivation
+   above **is** a shortfall and **reaches (BE-14)**; or forcing proved to require `Σδ = 2`, which
+   closes this route **and** explains why the corpus never drew one, and is itself the sharpest
+   statement available about the forced arm; or the region shown inhabited but the confinement
+   shown to fail there, which retires (BE-310)'s reach rather than the arm. Decided by: the
+   `(K-bare)/(K-bare-ext)` row.*
+
+3. **NON-NESTEDNESS AT THE TWO SURVIVING PROFILES — THE WHOLE (BLOCK-GP) RESIDUE** *(new —
+   BGPLAW's named hand-forward).* Owner: §(K-bare-ext) *Step BE304*, (BE-305), with (BE-279)(ii)
+   supplying the instrument. **The question: is `ρ̄_i` ever nested with `⟨P₀⟩ ∩ U` at
+   `U = L+M+Π_x` or `L+M+Π_y`, `dim ⟨P₀⟩ = 5`, `ρ_i = 3`?** A proof of non-nestedness there kills
+   **30 of 32** targets outright and leaves those two; a proof at those two closes **(BLOCK-GP)
+   entire**, hence all sixteen blocks at rung 3 in the generic flag regime. **GLEAF's question:
+   SUFFICIENT for the generic-flag half**, which by (BE-284)(i) discharges the rung-3 instances
+   of the universal the S-mark induction consumes — **subject to rank 1**, since at the forced
+   peels that discharge currently has no consumer.
+   **The instrument is named and is the entry's own first slice:** (BE-279)(ii)'s `m = 5` Klein
+   annihilator, read against **`ρ̄_i`** instead of `⟨P₀⟩` — the corpus has only ever read it the
+   other way. **The status caveat the consumer inherits, stated here so a spec carries it:** by
+   (BE-279)(ii)'s own table the `B(m,U)` certificate is pointwise at `m ≤ 4` and
+   **generic-with-a-witness at `m = 5`**, and **26 of the 32 targets live at `m = 5`** — so this
+   entry works entirely inside the one regime where the table is a notch weaker.
+   *Kill condition: non-nestedness proved at the two profiles — which closes (BLOCK-GP) and all
+   sixteen blocks at rung 3 in the generic regime; or a nested configuration exhibited at either
+   profile, which is a (BLOCK-GP) violation and **reaches (BE-14)** by (BE-69)(ii); or the `m = 5`
+   generic-with-a-witness gap shown to block the instrument, which names what the lane needs
+   instead of (BE-279)(ii). Decided by: the `(K-bare)/(K-bare-ext)` row.*
+
+4.–9. **THE CARRIED ENTRIES** — GUNIZERO's **`i·m//6` placement** ((GR-262); the `hK` lane's only
+   remaining item, and low-yield by its own F26 check); BPROPCL's **class** properness statement
+   (a REDUCTION, corner LIVE at 248/248); the (c)-strengthened closure's 14/18 residual; GCOIND's
+   matrix-valued corank statistic; the island at `n_hub = 10` and the `4T + 3Q ≥ 12` habitat.
+   **Below all of them: the three transport/coverage successors demoted by bar *(o)*.** Kill
+   conditions as written.
+
 **RE-RANKED 2026-09-13 — THE EIGHTEENTH STRATEGY-ONLY PASS, AND IT RANKS A ROUND ON ONE
 LANE'S TWO HALVES FOR THE FIRST TIME.** The seventeenth's ranks 1, 2 and 3 were **all spent
 in one round** — BSIXTEEN 111 (the eleven blocks are one law), GODDRUNG 112 (the parity

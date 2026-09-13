@@ -5718,3 +5718,18 @@ CONSUMED (2026-09-13), BGPLAW and GUNIZERO in full and BCOFLAG at five of ten.
 Live tail: (GR-267) / *Step G287* and (BE-319) / *Step BE318*** — with
 `(BE-314)`–`(BE-318)` / *BE313–BE317* returned to the pool by BCOFLAG and
 available for re-use, as BMBLOCK's returned range was by BSIXTEEN.
+
+**NINETEENTH-PASS ROUND — THREE RANGES RESERVED 2026-09-13**, each checked with
+`ledger.py --reserve-range … --steps … --also <CODE> --ref HEAD`:
+
+| direction | labels | steps | verdict |
+|---|---|---|---|
+| **BSMARK** (rank 1, the S-mark restatement at a forced peel — USER-RULED into the round) | `(BE-314)`–`(BE-323)` | *BE313–BE322* | **clean except the declaration** — every hit is this file's own returned-to-pool bookkeeping above; it **re-uses BCOFLAG's returned `(BE-314)`–`(BE-318)`**, the second such re-use in the arc |
+| **BSIGFOUR** (rank 2, a shortfall at `Σδ ≥ 4`) | `(BE-324)`–`(BE-333)` | *BE323–BE332* | **CLEAN** — 0 hits on every token |
+| **BNEST** (rank 3, non-nestedness at the two surviving (BLOCK-GP) profiles) | `(BE-334)`–`(BE-343)` | *BE333–BE342* | **CLEAN** — 0 hits on every token |
+
+**A codename was CHANGED at the check**: `BSHORT` was the first candidate for
+rank 2 and is **not** 0-hit — it appears in this file and in `fanout.md` as a
+previously-*considered* name, exactly the kind of hit (L7) asks to be reported
+separately rather than collapsed. Renamed `BSIGFOUR` before dispatch. **Live
+tail if all three ranges are consumed: (BE-344) / *Step BE343*.**
