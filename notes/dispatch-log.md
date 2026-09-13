@@ -165,6 +165,11 @@ keeps only what git cannot show.
 | 2026-09-13 | Phase39 shared-counter hazard manufactured by the SPEC | opus ×3 (all three directions) | **All three returns independently wrote the same wrong number, "0 of 7".** Each spec quoted §7's mechanism record as *"record: 0 of 6"* and asked the direction to score itself against it; each refuted its mechanism and incremented. §7's figure is a **fixed unselected sample**, not a counter, and three refutations move the arc tally by three. The coordinator merged all three verbatim **and repeated the figure in two coordinator-authored surfaces** — five sites, one error, invisible to every per-return check because each draft was internally consistent. → **F37** |
 | 2026-09-13 | Phase39 coordinator-error audit, fifth round | opus (coordinator) | **THREE coordinator errors, all caught by the directions, and all refutable from the landed corpus with NO computation.** (a) Bar *(p)*'s premise — `blindaxes.py`'s FENCED-CALLS list read without checking **where** the calls sit; the fenced call is inside `run_validate()` while the mode runs at full defaults, refutable by arithmetic on (BE-282)(iv). (b) Rank 2's *"theorem per piece at 392"*, inherited from (BE-284)(ii) whose own cited step refutes it. (c) The *"392 of 928 internal R-node peels"* population scope. F19's rate holds across five rounds. |
 | 2026-09-13 | Phase39 draft-hygiene defects caught in verification | opus (coordinator) | **Two gate-invisible defects in BCOFLAG's draft.** Its section header was `#` where the corpus uses `##`, which cost it its ledger **section key** (claim identity is file + section-key + label + clause, so `--delta` and `--status --section` were both degraded while `--lint` stayed green). And **three of five driver step banners were misnumbered** against the draft's own clause citations. Both realigned with the draft's citations taken as authoritative. BGPLAW's and GUNIZERO's drafts were checked for the same two defects and are clean. |
+| 2026-09-13 | Phase39 SIXTH round of three vs §8's NINETEENTH pass — BSMARK 117 / BSIGFOUR 118 / BNEST 119 | opus ×3, concurrent | **ranks 1, 2 and 3 spent together for the SIXTH consecutive round; all three refuted a coordinator claim.** BSMARK: the S-mark restatement is a **deletion** and the `a`-terms **cancel**, but (BE-22)(iv)/(vi) carry a hypothesis dropped twelve days earlier and **(vi) is REFUTED**. BSIGFOUR: the `Σδ ≥ 4` region **is inhabited** (486) but **0 confined**, and the landed `[PROVED]` **(BE-77)(ii) falls at 372 rows**. BNEST: the rank-3 question **dissolves** and the residue is **one rank condition**. Mechanisms **0 for 3**; arc **18 for 18 across six rounds**. |
+| 2026-09-13 | Phase39 coordinator-error audit, sixth round | opus (coordinator) | **FOUR errors, and all four are in ONE spec — rank 3's.** *(a)* Its sufficiency claim (*"prove non-nestedness and (BLOCK-GP) closes"*) is contradicted by `bgplaw.py:203`'s own in-band print, **in a driver the coordinator had run**. *(b)* It mis-cited the 30-of-32 count to (BE-305) instead of (BE-301)(iii). *(c)* Its **F27 gloss was inverted** against (BE-255)(i) row 4 — a *satisfying* `c_i` draw is the certificate, a *violating* one the guess. *(d)* Separately, the coordinator landed BGPLAW's criticism of (BE-281)(ii) after verifying `forced`'s **definition** and not its **use sites**; BNEST refuted it, and the annotation was withdrawn in the same session. All three substantive ones were refutable **with no computation**. → **F38** |
+| 2026-09-13 | Phase39 bar *(q)* validated on its first outing | opus (directions BNEST, BSIGFOUR) | The nineteenth pass added *(q)* — **a direction's first slice is a re-read of the clause its entry stands on** — on the evidence that six landed-clause corrections in two rounds all came from reading rather than measuring. It paid immediately and twice: BNEST caught its entry's false premise at **0.0 s**, and BSIGFOUR checked the spec's specific worry (that (BE-310)(i)'s proof might assume `δ_i = 1`) and found it **false**, which was load-bearing for its whole census. Candidate, not Ready — one wave. |
+| 2026-09-13 | Phase39 reproducibility gap in a committed driver | opus (coordinator, verification) | **A committed script whose landed figure cannot be re-run is not reproducible.** `bsmark.py`'s `run_rigid` defaulted to `stride=8` with no CLI path to the **stride-1** sweep (BE-315)(ii) reports, so the 972-row table could not be reproduced from the command line — the standing 2026-08-05 requirement met in letter, not in effect. `stride` exposed as a positional argument; the stride-1 run then reproduced the clause's table exactly. Second repair in the same driver: it printed a reading in `a_i` (*"settles NOTHING"*) beside a clause stating its verdict in `ρ_i` (*"a theorem"*) — same 44 rows, opposite-sounding verdicts, both correct. → **F39** |
+| 2026-09-13 | Phase39 coordinator mutated the shared working tree mid-flight | opus (coordinator) | To re-derive a `--cited-by` count at baseline the coordinator ran `git stash -u` **while two directions were writing untracked drafts into the tree**. Nothing was lost (stash list empty afterwards, all three drafts intact at their reported sizes), but it was an avoidable risk against `RESEARCH-ARC.md` §2's shared-scratchpad rule, and the safe form costs the same: read the baseline with `git show HEAD:<file>` or a throwaway worktree, never by mutating the tree siblings are writing to. |
 
 ## Findings
 
@@ -869,3 +874,25 @@ At phase close, promote stable entries into the coordinator command's
   and ask only for the direction's own verdict. Recorded after the
   coordinator propagated the same error into two coordinator-authored
   surfaces.
+
+- **F38 — the errors cluster in ONE spec, not across the round.** Two
+  consecutive rounds now show the same shape: the coordinator's mistakes are not
+  spread evenly but concentrated in whichever entry was written last or fastest
+  (round five: bar *(p)*'s premise; round six: **four** in rank 3 alone, three of
+  them refutable with no computation). The operative lesson is not *"check
+  harder"* but *"the last spec written is the one to re-read"* — and in both
+  rounds the refuting evidence was **in an artifact the coordinator had already
+  run or already cited**: `bgplaw.py`'s own in-band print, `bsixteen.py`'s
+  dispatch table, `bsixteen.py:637`'s second `forced` call site. **A generated
+  list, a single grep, or a definition read without its use sites is evidence
+  about syntax, never about dispatch.**
+- **F39 — a committed driver whose landed figure cannot be re-run from the
+  command line is not reproducible**, and the standing requirement is met in
+  letter but not in effect. `bsmark.py`'s figure-bearing `stride` was a default
+  only, so the clause's stride-1 sweep had no invocation; the fix is that **any
+  cap a landed figure varies must be a CLI argument, not just a keyword
+  default**. Corollary from the same driver: when a mode prints a reading in a
+  quantity whose semicontinuity runs **opposite** to the one its clause argues
+  in, the same count carries opposite-sounding verdicts and a reader running the
+  driver will think it contradicts the workbook — print **both quantities with
+  their directions**, and name which one the clause states.
