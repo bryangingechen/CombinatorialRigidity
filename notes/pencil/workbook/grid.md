@@ -23370,8 +23370,18 @@ Two scope statements up front, because they are what the result costs:
 > correction requires — and `0, 2, 4, 6, 8, 10` are pairwise non-adjacent in
 > `Z_m` for every `m ≥ 12`. `gridcol.class_shape` is **not** run here: it is
 > the `2^{n_hub}` device (GR-253)(iii) already declared unnecessary for
-> exactly this reason, and a spot-check attempt at `n_hub = 24` did not
-> return inside this direction's budget (*measured, not retained*).
+> exactly this reason, and a spot-check attempt at `n_hub = 24` produced **no
+> figure at all** (*attempted, no figure; script not retained*). ***Corrected
+> 2026-09-13, after the landing, by the direction itself*** — the first tag read
+> *"measured, not retained"*, which the harness reserves for a probe that **did**
+> produce a figure, and *"did not return inside this direction's budget"*
+> understated the outcome: the direction reports the run was killed for **memory
+> exhaustion**, i.e. a **reach limit of the device** rather than of the budget.
+> Not re-verified here — reproducing an OOM is not a measurement — and **nothing
+> load-bearing moves**: shapehood rests on (GR-175)'s position-independent count,
+> never on this device, and (GR-261) is unaffected. Recorded because it
+> **independently corroborates (GR-253)(iii)'s own point** that the `2^{n_hub}`
+> habitat scan is the wrong instrument at these sizes.
 
 > **(GR-261)(ii)** `[PROVED]` *(scope, stated against the question that was
 > asked)* — This answers *Step G276*(iv)'s target **in the affirmative on
