@@ -53,16 +53,18 @@ G2, G3 and G4 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `G
 `Molecule/Pencil/Motive.lean`), pinning `def:girth` / `lem:pencil-short-cycle-spanning` /
 `lem:pencil-girth-of-hub` / `lem:pencil-closed-nbhd-girth-five` — **the girth-lemmas checklist
 item (all four leaves) is now fully landed**, four of the eight red nodes green.
-**M3a/M3b and M1 landed 2026-09-15** (new file
-`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
+**M3a/M3b, M1 and M2 landed 2026-09-15** (`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
 `Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
 `Graph.degree_deleteVerts_interior_add_one`,
-`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`), pinning
-`lem:pencil-chain-side-connected` and `lem:pencil-chain-walk-extension` (statement and proof
-each) — **six of the eight red nodes are green**, two consumed-shape leaves left.
-**Next concrete Lean commit: M2** (the trichotomy dispatch at the split arm's hypotheses,
-sonnet-rated, ~60 lines: two M1 calls, the second on `P₁.reverse`), then M4/M4′ (side
-distance, unblocked since G3 but wanting M1/M2's path shape).
+`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`,
+`Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`), pinning
+`lem:pencil-chain-side-connected`, `lem:pencil-chain-walk-extension` and
+`lem:pencil-degree-two-chain` (statement and proof each) — **seven of the eight red nodes are
+green**, one side-distance leaf left. M2's route needed no swap lemma: the trichotomy's
+conclusion mentions neither `a` nor `b`, so the WLOG (`degree a = 2` vs `degree b = 2`) is a
+private one-sided helper called twice with the roles swapped, not a symmetry rewrite.
+**Next concrete Lean commit: M4/M4′** (side distance, unblocked since G3 but wanting M1/M2's
+path shape).
 Item 3
 (the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
 `[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
@@ -147,7 +149,15 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `Graph.IsPath.concat_isCyclicWalk` supersedes the design note's lower-level
   `IsWalk.isCyclicWalk_of_closed_nodup` (FRICTION, top entry); and `isLink_interior_iff_eq`
   collapses the template's ~30-line "the far end is interior" refutation to four lines.
-  Remaining: M2 (trichotomy dispatch), M4/M4′ (side-distance).
+  **M2 landed 2026-09-15** (`Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`,
+  same file; `lem:pencil-degree-two-chain` green) — two M1 calls (`cons v eₐ (nil a)`, then its
+  own reverse) dispatched through a private one-sided helper (`degree_two_pair_aux`, taking
+  `G.degree a = 2` directly) called twice with the roles swapped; since the conclusion mentions
+  neither `a` nor `b`, no explicit swap/symmetry lemma was needed. `eₐ ≠ e_b` is unused in the
+  proof (renamed `_hne` at the public theorem per the project's unused-hypothesis convention);
+  the length-3+ bounds (`3 ≤ C.length` / `3 ≤ P.length`) each come from a strict-prefix argument
+  (`IsPrefix.eq_of_length_ge` refuted by a degree mismatch at the shared end). Remaining:
+  M4/M4′ (side-distance).
 - [x] **The field hypothesis** — **SETTLED 2026-09-15 (PI, option C)**: the reduction stays
   `[Infinite K]` (its proof uses no characteristic); kernel (K) via the grid expects
   `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2` — the quadric and the polarity's eigen-splitting
@@ -225,14 +235,15 @@ carries a two-line pointer to it, edited by the PI. The hold is lifted for check
 (2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in
 forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1–G4 all
 landed 2026-09-15** (`Molecular/Induction/Girth.lean` + `Molecule/Pencil/Motive.lean`; the girth
-lemmas checklist item is DONE), and **M3a/M3b + M1 landed 2026-09-15**
+lemmas checklist item is DONE), and **M3a/M3b, M1 and M2 landed 2026-09-15**
 (`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
 `Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
-`Graph.degree_deleteVerts_interior_add_one` and
-`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`, pinning
-`lem:pencil-chain-side-connected` and `lem:pencil-chain-walk-extension` — six of the eight red
-nodes green); next is **M2** (the trichotomy dispatch, sonnet-rated: M1 at `cons v eₐ (nil a)`,
-then M1 again at the reversed result), then M4/M4′ — with
+`Graph.degree_deleteVerts_interior_add_one`,
+`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected` and
+`Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`, pinning
+`lem:pencil-chain-side-connected`, `lem:pencil-chain-walk-extension` and
+`lem:pencil-degree-two-chain` — seven of the eight red nodes green); next is **M4/M4′** (side
+distance) — with
 any crux as a hypothesis; a later lift for items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.

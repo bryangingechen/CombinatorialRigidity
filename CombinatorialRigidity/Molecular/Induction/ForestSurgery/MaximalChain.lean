@@ -9,12 +9,13 @@ import CombinatorialRigidity.Molecular.Induction.Girth
 /-!
 # The maximal degree-two chain's side graph (`sec:pencil-girth-chain`)
 
-Phase 39 (PENCIL), Lean track: leaves **M3a**, **M3b** and **M1** of the girth-and-chain design
-pass (`notes/Phase39-design.md` § *Lean-track design pass (2026-09-15): checklist items 1–2*),
-pinning `lem:pencil-chain-side-connected` and `lem:pencil-chain-walk-extension` of
+Phase 39 (PENCIL), Lean track: leaves **M3a**, **M3b**, **M1** and **M2** of the
+girth-and-chain design pass (`notes/Phase39-design.md` § *Lean-track design pass (2026-09-15):
+checklist items 1–2*), pinning `lem:pencil-chain-side-connected`,
+`lem:pencil-chain-walk-extension` and `lem:pencil-degree-two-chain` of
 `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains under no proper rigid
-subgraph*. The trichotomy dispatch (M2) and the side-distance leaves (M4, M4′) are not built
-here; they get their own sections below when landed.
+subgraph*. The side-distance leaves (M4, M4′) are not built here; they get their own section
+below when landed.
 
 * `Graph.connected_deleteVerts_interior_of_twoEdgeConnected` (M3a): deleting a path's interior
   (every vertex but the two ends) from a `2`-edge-connected graph leaves a connected side.
@@ -23,8 +24,11 @@ here; they get their own sections below when landed.
 * `Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected` (M1): a degree-`2` chain
   extends until it either exhausts a cycle, closes back onto its own start at a degree-`≥ 3`
   anchor, or terminates at a degree-`≥ 3` vertex.
+* `Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair` (M2): the consumed-shape
+  trichotomy at a degree-`2` vertex's split arm — `G` is a cycle, or the maximal degree-`2`
+  chain through it closes at a single hub (a lollipop), or it runs between two distinct hubs.
 
-All three leaves need only `TwoEdgeConnected`/`Simple`/`Loopless` plus the interior's degree-`2`
+All four leaves need only `TwoEdgeConnected`/`Simple`/`Loopless` plus the interior's degree-`2`
 closure, no girth; the private helpers below package the shared fact that an interior vertex's
 only `G`-neighbours are its two path-flanking vertices (`isLink_eq_of_degree_eq_two`,
 `ForestSurgery/ChainExtraction.lean`'s `chainData_of_isPath` is the template).
@@ -427,5 +431,135 @@ theorem exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected [Finite α]
             (hpre.concat g y) (by rw [WList.concat_length]; omega) hP'deg
             (by rw [WList.concat_last]; exact hy2)
   exact main P₀ hP₀ (WList.isPrefix_refl P₀) hlen hdeg hlast
+
+/-! ## M2 — the consumed-shape trichotomy at the split arm's hypotheses -/
+
+/-- The one-sided form of M2, taking `G.degree a = 2` directly instead of the disjunction
+`hab`. Route: M1 at `P₀ := cons v eₐ (nil a)` (a path since `v ≠ a`, `G.Simple` ⇒ loopless);
+its first disjunct is this lemma's first; its second has `C.first = P₀.first = v` (prefix
+preserves `first`) with `3 ≤ G.degree v`, refuted by `hdeg`; its third gives a path
+`P₁ : v … w'` with `3 ≤ G.degree w'` and, since `a` has degree `2` while `w'` has degree
+`≥ 3` (so `P₁ ≠ P₀`), `2 ≤ P₁.length`. M1 again at `P₀ := P₁.reverse` (`IsPath.reverse`;
+`first = w'`, `last = v` of degree `2` = the new `hlast`, interior degree `2` inherited via
+`mem_reverse`/`reverse_first`/`reverse_last`): its first disjunct is this lemma's first; its
+second gives the lollipop at `w'` (`v ∈ C` via the prefix; `3 ≤ C.length` since a closed `C`
+cannot equal the non-closed `P₁.reverse`, so the prefix is proper); its third gives the
+two-hub chain (`3 ≤ P.length` likewise). -/
+private lemma degree_two_pair_aux [Finite α] [Finite β] {G : Graph α β} [G.Simple]
+    (h2ec : G.TwoEdgeConnected) {v a : α} {eₐ : β}
+    (hdeg : G.degree v = 2) (hla : G.IsLink eₐ v a) (ha : G.degree a = 2) :
+    Nonempty G.CycleData ∨
+    (∃ C : WList α β, G.IsCyclicWalk C ∧ 3 ≤ G.degree C.first ∧
+      (∀ x ∈ C, x ≠ C.first → G.degree x = 2) ∧ v ∈ C ∧ 3 ≤ C.length) ∨
+    (∃ P : WList α β, G.IsPath P ∧ 3 ≤ G.degree P.first ∧ 3 ≤ G.degree P.last ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ v ∈ P ∧ 3 ≤ P.length) := by
+  classical
+  set P₀ : WList α β := WList.cons v eₐ (WList.nil a) with hP₀def
+  have hP₀first : P₀.first = v := by simp [hP₀def]
+  have hP₀last : P₀.last = a := by simp [hP₀def]
+  have hP₀path : G.IsPath P₀ := by
+    rw [hP₀def, cons_isPath_iff]
+    exact ⟨by simpa using hla, nil_isPath hla.right_mem, by simpa using hla.ne⟩
+  have hP₀deg : ∀ x ∈ P₀, x ≠ P₀.first → x ≠ P₀.last → G.degree x = 2 := by
+    intro x hx hxfirst hxlast
+    rw [hP₀def] at hx
+    simp only [WList.mem_cons_iff, WList.mem_nil_iff] at hx
+    rw [hP₀first] at hxfirst
+    rw [hP₀last] at hxlast
+    rcases hx with rfl | rfl
+    · exact absurd rfl hxfirst
+    · exact absurd rfl hxlast
+  -- First M1 call: extend `P₀` until it closes or hits a hub.
+  have hM1a := exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected h2ec hP₀path
+    (by rw [hP₀def]; simp) hP₀deg (by rw [hP₀last]; exact ha)
+  rcases hM1a with hcyc | ⟨C, hCcyc, hCpre, hCfirst, hCdeg⟩ |
+    ⟨P₁, hP₁path, hP₁pre, hP₁deg, hP₁last⟩
+  · exact Or.inl hcyc
+  · -- Impossible: a closed walk through `v` would need `3 ≤ G.degree v`, but `v` has degree `2`.
+    exfalso
+    have hCv : C.first = v := by rw [← hCpre.first_eq]; exact hP₀first
+    rw [hCv] at hCfirst
+    omega
+  · -- `P₁ : v … w'` with hub `w'`; it strictly extends `P₀`, so `2 ≤ P₁.length`.
+    have hP₁first : P₁.first = v := by rw [← hP₁pre.first_eq]; exact hP₀first
+    have hP₁len2 : 2 ≤ P₁.length := by
+      by_contra hcon
+      have hle : P₀.length ≤ P₁.length := hP₁pre.length_le
+      have hP₀len : P₀.length = 1 := by simp [hP₀def]
+      have hge : P₁.length ≤ P₀.length := by omega
+      have heq : P₀ = P₁ := hP₁pre.eq_of_length_ge hge
+      rw [← heq, hP₀last] at hP₁last
+      omega
+    -- Second M1 call, at `P₁.reverse` (first `w'`, last `v` of degree `2`).
+    set P₁r : WList α β := P₁.reverse with hP₁rdef
+    have hP₁rfirst : P₁r.first = P₁.last := WList.reverse_first
+    have hP₁rlast0 : P₁r.last = P₁.first := WList.reverse_last
+    have hP₁rlast : P₁r.last = v := by rw [hP₁rlast0, hP₁first]
+    have hP₁rlen : P₁r.length = P₁.length := WList.reverse_length
+    have hP₁rpath : G.IsPath P₁r := hP₁path.reverse
+    have hP₁rdeg : ∀ x ∈ P₁r, x ≠ P₁r.first → x ≠ P₁r.last → G.degree x = 2 := by
+      intro x hx hxf hxl
+      rw [hP₁rdef, WList.mem_reverse] at hx
+      rw [hP₁rfirst] at hxf
+      rw [hP₁rlast0] at hxl
+      exact hP₁deg x hx hxl hxf
+    have hvP₁r : v ∈ P₁r := by rw [← hP₁rlast]; exact WList.last_mem
+    have hP₁rlen2 : 2 ≤ P₁r.length := by rw [hP₁rlen]; exact hP₁len2
+    have hM1b := exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected h2ec hP₁rpath
+      (by omega) hP₁rdeg (by rw [hP₁rlast]; exact hdeg)
+    rcases hM1b with hcyc | ⟨C, hCcyc, hCpre, hCfirst, hCdeg⟩ |
+      ⟨P, hPpath, hPpre, hPdeg, hPlast3⟩
+    · exact Or.inl hcyc
+    · -- The lollipop: a closed walk anchored at hub `w' = P₁.last`, through `v`.
+      have hCfirst_eq : C.first = P₁.last := by rw [← hCpre.first_eq, hP₁rfirst]
+      have hvC : v ∈ C := hCpre.mem hvP₁r
+      have hClen : 3 ≤ C.length := by
+        have hle : P₁r.length ≤ C.length := hCpre.length_le
+        by_contra hcon
+        have hge : C.length ≤ P₁r.length := by omega
+        have heq : P₁r = C := hCpre.eq_of_length_ge hge
+        have hCclosed : C.first = C.last := hCcyc.isClosed.eq
+        rw [← heq, hP₁rfirst, hP₁rlast] at hCclosed
+        rw [hCclosed] at hP₁last
+        omega
+      refine Or.inr (Or.inl ⟨C, hCcyc, ?_, hCdeg, hvC, hClen⟩)
+      rw [hCfirst_eq]; exact hP₁last
+    · -- The two-hub chain: a path from hub `w' = P₁.last` through `v` to a second hub.
+      have hPfirst_eq : P.first = P₁.last := by rw [← hPpre.first_eq, hP₁rfirst]
+      have hvP : v ∈ P := hPpre.mem hvP₁r
+      have hPlen3 : 3 ≤ P.length := by
+        have hle : P₁r.length ≤ P.length := hPpre.length_le
+        by_contra hcon
+        have hge : P.length ≤ P₁r.length := by omega
+        have heq : P₁r = P := hPpre.eq_of_length_ge hge
+        rw [← heq, hP₁rlast] at hPlast3
+        omega
+      refine Or.inr (Or.inr ⟨P, hPpath, ?_, hPlast3, hPdeg, hvP, hPlen3⟩)
+      rw [hPfirst_eq]; exact hP₁last
+
+/-- **M2**: the consumed-shape trichotomy (`lem:pencil-degree-two-chain`) at the two
+hypotheses of `hbareSplit`'s split arm (a degree-`2` vertex `v` and its two neighbours `a`,
+`b` via distinct edges). Either `G` is a cycle, or the maximal degree-`2` chain through `v`
+closes at a single hub `w'` (a lollipop: a closed walk anchored at a degree-`≥ 3` vertex,
+running through `v`, all of whose other vertices have degree `2`), or it runs between two
+distinct hubs (a path with both ends of degree `≥ 3`, `v` interior, all other interior
+vertices of degree `2`). The consumer's `¬ G.PencilHub a ∨ ¬ G.PencilHub b` is `hab` by one
+line (`a ∈ V(G)` from `hla.right_mem`, `¬ PencilHub a ↔ G.degree a < 3`, and
+`two_le_degree_of_twoEdgeConnected`) — not part of this lemma. `5 ≤ |V|` and `hnp` are not
+needed for the trichotomy itself (only for its girth consequences downstream). Route: WLOG
+`G.degree a = 2` (`degree_two_pair_aux`, applied with `a`/`b` and `eₐ`/`e_b` swapped in the
+other case) — the conclusion mentions neither `a` nor `b`, so no explicit swap lemma is
+needed. -/
+theorem cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] (h2ec : G.TwoEdgeConnected)
+    {v a b : α} {eₐ e_b : β} (hdeg : G.degree v = 2) (_hne : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hab : G.degree a = 2 ∨ G.degree b = 2) :
+    Nonempty G.CycleData ∨
+    (∃ C : WList α β, G.IsCyclicWalk C ∧ 3 ≤ G.degree C.first ∧
+      (∀ x ∈ C, x ≠ C.first → G.degree x = 2) ∧ v ∈ C ∧ 3 ≤ C.length) ∨
+    (∃ P : WList α β, G.IsPath P ∧ 3 ≤ G.degree P.first ∧ 3 ≤ G.degree P.last ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ v ∈ P ∧ 3 ≤ P.length) :=
+  hab.elim (degree_two_pair_aux h2ec hdeg hla) (degree_two_pair_aux h2ec hdeg hlb)
 
 end Graph

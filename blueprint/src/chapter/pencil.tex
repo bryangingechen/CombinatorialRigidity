@@ -1067,6 +1067,8 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[The maximal degree-two chain through the split vertex]
   \label{lem:pencil-degree-two-chain}
+  \lean{Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair}
+  \leanok
   \uses{def:cut-edges-2ec, def:cycle-data, def:pencil-nondegenerate}
   Let $G$ be a simple two-edge-connected multigraph, $v$ a vertex of degree
   two whose two edges $e_a \ne e_b$ join it to $a$ and $b$, and suppose $a$
@@ -1082,6 +1084,7 @@ case of the induction rather than by the two-cut composition.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-chain-walk-extension}
   Say $a$ has degree two. Apply \cref{lem:pencil-chain-walk-extension} to
   the path $v a$. Unless $G$ is a cycle, this yields either a closed walk
