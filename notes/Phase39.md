@@ -210,12 +210,14 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
-(slices 8–14 + the review/tagging/taxonomy passes LANDED; **§D6 + §D7 = the NEXT round's diagnosis**, D7 instrumented post-hoc; kill conditions on each). Use **`/coordinate-research`**, not
-`/coordinate-phase`. `python3 notes/ledger.py --label '(BE-216)' | --brief | --round |
---frontier | --delta | --lint` answers "what is proved" in one call (`--stats` for the live claim census — never quoted here, D6.8; `--backlog` ranks the tagging worklist, `--label` flags CONTESTED
-claims where a later row supersedes an earlier); the corpus is now one file per section under `notes/pencil/` with its own
-CLAUDE.md (gap map: `notes/pencil/workbook/gapmap.md`).
+**RESEARCH TRACK — `HARNESS.md` and attack tracks (2026-09-15).** The `/coordinate-research`
+loop is RETIRED (archive `notes/harness/archive/`; the evaluation's record is
+`notes/harness/incidents.md`). Research on the carried items runs as **attack tracks** under
+`/attack <name>`, one agent per lemma, with `notes/attacks/<name>/state.md` as that lemma's
+status surface; one-page briefs for **S-mark** (`hbareSplit`) and **(GR-10)** (`hK`) are at
+`notes/attacks/{smark,gr10}/brief.md`, **pending PI review**. The ledger (`python3
+notes/ledger.py --label | --brief | --cited-by | --lint`) and `notes/pencil/CLAUDE.md` stay
+the retrieval path; the corpus is one file per section under `notes/pencil/`.
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to
 `notes/pencil/structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the

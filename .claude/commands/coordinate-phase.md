@@ -4,13 +4,13 @@ check and dispatch the next. Stop when the phase closes or something
 looks off.
 
 **If the phase is RESEARCH-shaped — no Lean landing, no blueprint
-dep-graph (`RESEARCH-ARC.md`'s definition) — use
-`/coordinate-research` instead.** This body is formalization-shaped:
-84% of its paragraph blocks reference Lean or blueprint machinery
-(measured 2026-09-09, `notes/Harness-structure.md` D4) that such a
-phase cannot use, and a dispatch under this command pays for it twice,
-in the coordinator's prefix and again in the build-agent cores. A
-research phase needing one Lean commit comes back here for it.
+dep-graph — it does not run under this command.** Research runs as
+attack tracks (`HARNESS.md`, `/attack <name>`); `/coordinate-research`,
+which this paragraph used to point at, was retired 2026-09-15 to
+`notes/harness/archive/`. This body is formalization-shaped: 84% of its
+paragraph blocks reference Lean or blueprint machinery (measured
+2026-09-09, `notes/Harness-structure.md` D4) that a research track
+cannot use. A research track needing a Lean commit comes here for it.
 
 **Rare / explicit-trigger detail lives in
 `notes/coordinate-phase-rescue.md`, symptom-indexed** (mechanical
@@ -121,9 +121,9 @@ first). Three calibrations that repeatedly bit:
   top rung when the verdict re-routes a phase, adjudicates a carried-
   hypothesis / motive change, or settles new mirror math. This bullet
   stays because THIS command still dispatches recons inside a Lean
-  phase; for a phase with **no Lean at all**, `/coordinate-research`
-  *Picking the rung* carries the fuller treatment, including why S/P/B
-  has no referent there.
+  phase; a phase with **no Lean at all** runs as an attack track
+  (`HARNESS.md`), where the rung is fixed in the agent definition and
+  S/P/B has no referent.
 - **Post-recon downgrade.** Once a top-rung recon has settled exact
   signatures, the transcription leaves rate as written (usually
   sonnet) — the faithfulness risk lives in the recon, not the
@@ -314,16 +314,13 @@ CLAUDE.md at phase close.
    pair, dissolved in ONE spike). Recon is this workflow's
    highest-leverage move; trigger it **early**, before the next leaf
    (one phase burned ~4 leaf commits on an undischargeable core; the
-   2-leaf trigger is the floor). **When the research-shaped phase has
-   no Lean at all and runs as a multi-dispatch fan-out of its own**
-   (PENCIL's kernel-(K) shape — read-only recons, no blueprint
-   dep-graph, its own status object in place of green/red nodes),
-   read `RESEARCH-ARC.md` before scoping the wave: label reservations,
-   serial coordinator landing, the gap-map-as-status-object pattern,
-   the driver-per-headline-claim rule, and cap disclosure are all
-   distilled there so a fresh research phase does not reinvent them.
-   **Read that status object with `python3 notes/gapmap.py` (`--list` /
-   `--row` / `--label '(GR-15)'`), never `sed`/`grep`: one row is one
+   2-leaf trigger is the floor). **A research-shaped phase with no Lean
+   at all does not run as a fan-out under this command**; it runs as an
+   attack track (`HARNESS.md`), and the research-loop machinery this
+   paragraph used to distil (label reservations, serial landing, the
+   gap-map status object) is retired. **PENCIL's *State of (K)* gap map
+   is still read with `python3 notes/gapmap.py` (`--list` / `--row` /
+   `--label '(GR-15)'`), never `sed`/`grep`: one row is one
    22 000-character line.**
 2. **Rate S/P/B and pick the rung per the Dispatch playbook** (above);
    the rung is carried by the **agent type**, not the `model`

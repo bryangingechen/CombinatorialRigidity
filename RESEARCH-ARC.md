@@ -1,5 +1,7 @@
 # RESEARCH-ARC.md — running a research-shaped phase
 
+> **RETIRED 2026-09-15.** Historical record of the research-loop manual; superseded by `HARNESS.md` (attack tracks). Read by no command. Section references to this file elsewhere remain valid as provenance.
+
 **Read-on-demand reference, not session-start orientation.** Most phases in
 this project land in Lean against a blueprint dep-graph, so `PHASE-BOUNDARIES.md`'s
 checklists and the forward-mode workflow in `CLAUDE.md` cover them. A

@@ -1,5 +1,7 @@
 # Harness + PENCIL doc-set structural round (work log)
 
+> **RETIRED 2026-09-15.** Historical record of the harness self-measurement log; superseded by `HARNESS.md` (attack tracks). Read by no command. Section references to this file elsewhere remain valid as provenance.
+
 **Status: ALL SEVEN SLICES (8–14) LANDED 2026-09-09, plus a defect-fix pass an
 adversarial review forced — three CRITICAL bugs in the shipped ledger, all
 reproduced and fixed (see *The review pass* at the end). The round is COMPLETE, and its forward part is now **D6 + D7** — D7 re-measures the first `/coordinate-research` session from the recorded transcripts after it closed, confirms D2 is fixed, re-prices the coordinator's prep by ~20x, and retires the cap proposal D7.5 was about to add.** Slice 8 — `notes/ledger.py`, 1 308

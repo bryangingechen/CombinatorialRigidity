@@ -2,7 +2,8 @@
 
 Auto-loads when a session touches anything under `notes/pencil/`. It carries
 only what is specific to this corpus; `notes/CLAUDE.md` still governs notes
-generally, and `RESEARCH-ARC.md` carries the research-phase discipline.
+generally, and `HARNESS.md` carries the research-side rules (`RESEARCH-ARC.md`
+is its retired predecessor, kept as history).
 
 ## Ask the ledger; do not grep the workbook
 
@@ -111,7 +112,7 @@ meantime.
 Three sharp rules this corpus paid for:
 
 - **A driver per headline sentence**, and *exhaustive* / *forced* / *the only*
-  are their own claim class needing their own driver (`RESEARCH-ARC.md` §4).
+  are their own claim class needing their own driver (`HARNESS.md` *Evidence*).
 - **A kill condition that names a NUMBER must carry its DERIVATION.**
 - **Quote a criterion WITH its hypotheses**, or say which surface it came
   from. A spec once quoted one without its proviso, copied from a summary

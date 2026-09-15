@@ -30,11 +30,11 @@ Three further references are **read on demand, not session-start
 orientation**: `PHASE-BOUNDARIES.md` (the full phase open/close
 checklists — read at a phase boundary; the trigger summaries +
 pointers stay in *Per-session workflow* below), `REFS.md` (reading
-the reference PDFs in `.refs/`), and `RESEARCH-ARC.md` (running a
-research-shaped phase — no Lean landing, no blueprint dep-graph, a
-dispatch discipline invented inside the phase itself; read it when
-scoping such a phase, e.g. at the start of Phase 39 PENCIL's kernel-(K)
-arc). The auto-loaded CLAUDE.md suite is a per-session token budget;
+the reference PDFs in `.refs/`), and `HARNESS.md` (the binding rules
+for research-side agent work — attack tracks under `/attack <name>`,
+the evidence and reproducibility rules, and how the harness itself
+changes; its retired predecessor `RESEARCH-ARC.md` stays in place as
+history). The auto-loaded CLAUDE.md suite is a per-session token budget;
 when it grows, extract to read-on-demand references like these rather
 than deleting content (these three, and `notes/coordinate-phase-
 rescue.md`, are exactly that).
