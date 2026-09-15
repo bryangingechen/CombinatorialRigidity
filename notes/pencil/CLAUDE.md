@@ -74,6 +74,7 @@ in, so it cannot drift from the prose (`notes/Harness-structure.md` slice 8).
 | label registry + the minting rule | `labels.md` — **read before minting any label** |
 | dispatch specs and landing write-ups | `fanout.md` (ordinals 1–19: `fanout-archive.md`) |
 | archived verbatim user calls | `adjudications.md` |
+| the retired loop's final work log, verbatim (2026-09-15) | `arc-worklog.md` — not maintained; live status is `notes/attacks/<name>/state.md` |
 | structural-round work logs | `structure.md`, `cleanup.md` |
 
 `grid.md` and `W4.md` keep several sections each rather than one: `grid.md` is
