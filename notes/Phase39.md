@@ -39,14 +39,19 @@ base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-0
 passed; canonical homes `notes/Phase39-design.md` §§ *W4 decomposition recon* / *W4-L4
 identification recon* and `notes/pencil/workbook/W4.md`).
 
-**What the briefs found that the corpus's summary surfaces did not carry** (the writers'
-readings, to be checked by the PI; each is a Lean-shaped foundations item below): *(a)* the
-S-mark induction frame does not cover the partially assembled core of a 3-block with ≥ 2
-children — no owner in the corpus; *(b)* at girth ≥ 5 the coplanarity closure never fires, so
-the coincident-flag arm the last six rounds worked may be deletable by inducting inside
-girth-5 graphs; *(c)* the chain from (GR-15) to `hK` needs each hub's closed-hub-neighbourhood
-points independent, which the 40 742- and 166 088-shape sweeps did not certify; *(d)* the
-target is stated over any infinite field while the informal route is characteristic 0.
+**Four foundations findings from the briefs** (the writers' readings, to be checked by the
+PI; this paragraph is a summary — the owning text is the brief section named, and each is a
+Lean checklist item below). **Frame gap:** the S-mark induction does not cover the partially
+assembled core of a 3-block with ≥ 2 children, and no corpus clause owns that obligation
+(`notes/attacks/smark/brief.md` §3 *Why it suffices*, §6 idea 2). **Girth-5 restriction:** at
+girth ≥ 5 the coplanarity closure never fires, so the coincident-flag arm the last six rounds
+worked may be deletable by inducting inside girth-5 graphs (`smark/brief.md` §6 idea 1, §7).
+**Independence proviso:** the chain from (GR-15) to `hK` needs each hub's
+closed-hub-neighbourhood points independent, which the 40 742- and 166 088-shape sweeps did
+not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch:** the
+target is stated over any infinite field while the informal route is characteristic 0 (both
+briefs, §3). The briefs are **untracked until the PI has read them**; these pointers resolve
+only on a checkout that has them.
 
 **Standing user adjudications that bind:** 2026-07-24 the phase stays open; 2026-08-05 the
 Lean hold, and *"all of the scripts we run [are] committed"*; 2026-09-03 *"we should
@@ -63,22 +68,25 @@ crux as a HYPOTHESIS, never a `sorry`.*
 - [ ] **Girth lemmas.** No proper rigid subgraph ⇒ girth ≥ 7 (a ≤ 6-cycle of bodies is
   rigid; check whether the tight-stratum analysis already carries it); girth ≥ 5 ⇒
   `|N[v] ∩ N[h]| ≤ 2` for distinct hubs, so the coplanarity closure never forces `π_u = π_v`.
-  Decides brief finding *(b)*.
+  Decides the **girth-5 restriction** (`notes/attacks/smark/brief.md` §6 idea 1).
 - [ ] **The field hypothesis.** Decide whether the phase target scopes to characteristic 0
   (KT work over ℝ; the grid route descends through a nonvanishing ℤ-polynomial) or someone
-  owes a positive-characteristic argument; record it in the blueprint chapter. Finding *(d)*.
+  owes a positive-characteristic argument; record it in the blueprint chapter. The **field
+  mismatch** (both briefs, §3; `Escape.lean` carries only `[Infinite K]`).
 - [ ] **Deficiency laws** (BINDUC's, cited by 45 claims through (BE-22)): 3-connected ⇒
   `def₂ = 0`; the 2-cut law `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)`; the fibre-product identity
   `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)`; the welded bound `ρ_i ≤ δ_i + a_i` with
   equality iff `H_i/uv` attains. Makes the composition criterion exact.
 - [ ] **`hK` on the tight stratum from grid vanishing**, the colouring statement as
   hypothesis: decoupling, rank formula, Vandermonde, chart step, descent. Decides whether the
-  independence proviso is a hypothesis of the crux (finding *(c)*). Substantial: the chart
+  **independence proviso** is a hypothesis of the crux (`notes/attacks/gr10/brief.md` §2
+  *Proviso (P)*). Substantial: the chart
   machinery (`IsFin3SelectorOf`, `cross₃`, `pencilRow`) exists; the grid geometry does not.
 - [ ] **Tree-triple ⇒ `dim Z = 0`**, and the circular-ladder family (GUNIZERO's uniform
   instance) as a formal witness.
 - [ ] **The 3-block induction skeleton** with the composition lemma as hypothesis. Decides
-  finding *(a)*. Heavy: 3-block trees are not in Mathlib.
+  the **frame gap** (`notes/attacks/smark/brief.md` §3, §6 idea 2). Heavy: 3-block trees are
+  not in Mathlib.
 - [ ] **W4 build**, when commissioned: W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and
   spike-elaborated), then order-flexibly W4-L1/L2/L3′/L5; residual carry `hnoGood'`
   (non-vacuous — `|V| = 19` witness — so branch 4 needs content).
