@@ -12,7 +12,7 @@ one agent per lemma under `/attack <name>` (`HARNESS.md`); each lemma's status s
 `notes/attacks/<name>/state.md`. **DRAFT one-page briefs** for **S-mark** (the 2-cut
 composition lemma, all that stands before `hbareSplit`) and **(GR-10)** (uniform colouring,
 the crux of `hK` on the tight stratum) are at `notes/attacks/{smark,gr10}/brief.md`,
-**pending PI review**. *(2)* **Lean track** — this note and `/coordinate-phase 39`:
+**PI-reviewed 2026-09-15 and committed**. *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
 hypotheses, no `sorry`; **parked by the Lean hold** until the PI names items to lift it for.
 
@@ -27,10 +27,11 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next concrete step: the PI reads the two DRAFT briefs, marks what is unclear or
-unconvincing, and picks the first attack** (`/attack smark` or `/attack gr10`, run as a main
-session in its own worktree — `notes/attacks/README.md`). A second pass on either page
-follows the marks.
+**Next concrete step: session 1 of `/attack smark` and of `/attack gr10`** (the PI's call,
+2026-09-15: both briefs worth a try), each a main session in its own worktree
+(`notes/attacks/README.md`); session 1 writes `state.md` from the template. Recommended
+order if serial: S-mark first, because its first check (the girth-5 restriction) may delete
+an arm of the problem. Optional in parallel: lift the Lean hold for checklist items 1–2 only.
 
 **Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
 base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-07-24 → 07-30),
@@ -50,8 +51,7 @@ worked may be deletable by inducting inside girth-5 graphs (`smark/brief.md` §6
 closed-hub-neighbourhood points independent, which the 40 742- and 166 088-shape sweeps did
 not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch:** the
 target is stated over any infinite field while the informal route is characteristic 0 (both
-briefs, §3). The briefs are **untracked until the PI has read them**; these pointers resolve
-only on a checkout that has them.
+briefs, §3). The briefs are committed (PI-reviewed 2026-09-15).
 
 **Standing user adjudications that bind:** 2026-07-24 the phase stays open; 2026-08-05 the
 Lean hold, and *"all of the scripts we run [are] committed"*; 2026-09-03 *"we should
@@ -97,9 +97,9 @@ crux as a HYPOTHESIS, never a `sorry`.*
 
 - **The Lean hold (2026-08-05) is the user's** and parks every checklist item above; lifting
   it for named items is a PI call, made per item.
-- **Which kernel to attack first** is open until the briefs are read; both pages name their
-  next step as a reading check, not a sweep (girth-5 restriction and frame gap for S-mark;
-  the independence proviso for (GR-10)).
+- **Each attack's first move is a reading check, not a sweep:** the girth-5 restriction and
+  the frame gap for S-mark; the independence proviso for (GR-10). Session 1 should settle or
+  scope these before choosing a route.
 - **The (K-res) wave** (a kernel of `hK`'s difficulty class on the complementary habitat,
   scoped RESGRID, cheap items spent RPOOL) stays a user call; route σ is a live candidate
   that is not a route to (K-res). Detail: `notes/pencil/arc-worklog.md` *Hand-off*.

@@ -1,0 +1,65 @@
+> **Brief — reviewed by the PI 2026-09-15.** Written by an agent from owning sections, driver code, the Lean statements and the KT paper; rewritten only at milestones (`/review-attack`). Its claims are the writer's readings of the sections cited in §8; an attack re-derives what it builds on.
+
+# The 2-cut composition step for the trigonal-planar molecular theorem
+
+## 1. Objects
+
+A *pencil configuration* of a finite simple graph `G` is `p : V → P³` (characteristic 0), adjacent points distinct, each closed neighbourhood `N[v]` coplanar in a plane `π_v` (unique at a *hub*, `deg v ≥ 3`); hinge line `p_u p_v` per edge — the molecular framework with trigonal-planar atoms (dually, Katoh–Tanigawa's panel-hinge stratum with concurrent hinges). Rank `≤ target(G) := 6(|V|−1) − def₃(G)`, `def₃ = max_P [6(|P|−1) − 5d(P)]` over vertex partitions (Lean `deficiency G 3`). `G` *attains* if some configuration reaches the target; rank is lower semicontinuous, so one witness suffices and "generic point of a component" is the right quantifier.
+
+A 2-separation `{u,v}` of 2-connected `G` has sides `H₁, H₂` (union `G`, meeting in `{u,v}`, edge-disjoint, each with an interior vertex). Per side: `f_i := def₃(H_i)`, `g_i := def₃(H_i/uv)` (partitions with `u,v` together), `δ_i := f_i − g_i ∈ [0,6]`. At a configuration: `M_i` the side's motion space; `a_i := dim M_i − 6 − f_i ≥ 0` its attainment loss; `ρ̄_i := {m(v) − m(u) : m ∈ M_i} ⊆ Λ²K⁴ ≅ K⁶`, the relative screws of `v` against `u` inside side `i`; `ρ_i := dim ρ̄_i`. Shared flag data `ϕ = (p_u, π_u, p_v, π_v)`, `p_u ∈ π_u`, `p_v ∈ π_v`; `Y°(H_i; ϕ)` is side `i`'s configuration variety at those flags.
+
+## 2. The statement to prove
+
+Proved (re-derived): `def₃(G) = f₁+f₂ − min(δ₁+δ₂,6)`; `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁+ρ̄₂)`; `ρ_i ≤ δ_i + a_i`, equality iff the *welded* framework `H_i/uv` (bodies `u,v` identified, hinges kept) attains. Hence at every configuration
+
+    G attains ⟺ dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁ + a₂,
+
+and, given both welded frameworks attain, ⟺ `dim(ρ̄₁ ∩ ρ̄₂) = max(0, δ₁+δ₂−6)` (forcing `a₁+a₂ ≤ max(0, 6−δ₁−δ₂)`).
+
+**Lemma.** Assume for `i = 1,2` and every `ϕ` with `Y°(H_i; ϕ) ≠ ∅` some irreducible component of `Y°(H_i; ϕ)` has `ρ_i = δ_i + a_i` at its generic point. Then for some `ϕ` and such components `Y₁, Y₂`, the generic point of `Y₁ ×_ϕ Y₂ ⊆ Y°(G)` has `dim(ρ̄₁ ∩ ρ̄₂) = max(0, δ₁+δ₂−6)`; so `G` attains.
+
+The pinned form also assumed each side attains (`a_i = 0`) at the prescribed flags and concluded `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`. It was weakened (2026-09-13) because where the coplanarity closure forces `π_u = π_v`, one side is *observed* not to attain (`a_i = 1` at 100 of 392 witnesses over 1 200 redraws; not proved) while welded attainment held at all 392; the `a`-terms cancel. Price: with `a_i > 0` the condition is harder, impossible once `δ₁+δ₂ ≥ 6`.
+
+## 3. Why it suffices
+
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` derives the target from three carried hypotheses; the relevant one concludes `HasPencilRealization K 3 G` — an existential — for `G` simple, `≥ 5` vertices, 2-edge-connected, no proper rigid subgraph (so girth `≥ 7`), a degree-2 vertex, no nondegenerate realization; its antecedent may be discarded. So "every `G` attains" implies it. Unchecked: the 5-rows-per-hinge matrix against Lean's `rigidityRows`; and Lean allows any infinite field while the corpus works in characteristic 0.
+
+"Every connected `G` attains" reduces to the Lemma by induction on `|V|`: (a) 3-connected ⇒ `def₂ = def₃ = 0` [proved] and the all-coplanar configuration has rank `6(|V|−1) − def₂` [Jackson–Jordán's pin-collinear theorem via duality; published, unformalized]; (b) paths, cycles [elementary; measured]; (c) `def₂ = def₃` [same witness]; (d) cut vertex: additive deficiency, `PGL₄` transitive on flags [proved]; (e) the Lemma. Frame gap: the welded hypothesis must come from the same induction, and the corpus's clause (indexed by 3-block-tree edges) does not cover the partially assembled core of a block with `≥ 2` children, whose welded attainment the step needs — the corpus claims its unrooted form closes this; I believe it does not. Welded attainment is a real obligation: a planted degenerate stratum has `ρ_i < δ_i + a_i` at 15 of 21 rows.
+
+## 4. What is known
+
+Proved (checked): both sides rigid *and attaining* ⇒ automatic; one side rigid and attaining ⇒ only welded attainment of the other side is needed; without "attaining" both fail (44 configurations with `ρ₂ ∈ {1,2}` on a rigid side). `ρ̄_i` lies in the span of any u–v path's hinge lines, so `ρ_i ≤ dist_i`; `δ_i ≤ dist_i`; `δ_xy = 0` when `x,y` share a cycle of length `≤ 6`. Generic flags form one `PGL₄`-orbit.
+
+Ear side (a path, `m` interior vertices, side-degree 1 at both terminals): `ρ̄₂` is the span of its `m+1` lines; the maximum of `dim(ρ̄₁+ρ̄₂)` over the ear's moduli is claimed proved for `m ≥ 3` with an explicit loss (pencil-meets-subspace lemma plus sliding; read, unverified); loss `≤ max(0,Σδ−6)` when `ρ̄₁` meets each terminal pencil in `≤ 1` dimension plus one condition on their sum — true if side 1 is a path or has a short generic u–v path. Side-degree `≥ 2`: 16 necessary block inequalities hold at 1 281/1 281 draws on a 427-row side library; the residue is one rank condition (no terminal-pencil line Klein-orthogonal to `ρ̄_i`) at one profile; a saturation clause fails at side-degree 1.
+
+Sweeps (an attaining draw is a theorem for its graph): connected `n ≤ 6`, max degree `≤ 4`, 2-cut, both `δ_i > 0`: 11 896/11 896; 1 588 sampled at `n = 7–9`; 5 824 graphs of hub load `≤ 3`; all 216 habitat members with `≤ 6` hubs; forced-coincident-flag peels (girth 3, `n = 11–13`): 392/392, 81/81. Kill-condition hunt: 486 forced peels at `Σδ ≥ 4` (`n₁ ≤ 12`, `n₂ ≤ 5`), none path-confined on both sides; confinement is claimed to force `δ_i ≤ 3`, leaving six cells: 6 444 peels, 0 forced.
+
+## 5. What has failed
+
+- Placing `v` into a given realization of `G − v` (the Lean antecedent's shape): an exact gadget where every placement fails; hence the bypass.
+- Additive law `f₁+f₂−6`: goes negative.
+- Rigid-side shortcuts without "attaining": false; the one-sided discharge built on them is void.
+- General position from the gauge group: orbit 5/7 versus Grassmannian 9; but side moduli (4–26) dwarf both, so the pessimism was also wrong.
+- Constructor misses read as shortfalls (56 ears: flattened free vertices).
+- "Cross-cut forcing needs `(1,1)`" and "forcing impossible with both sides flexible": witnesses at `n = 12`, `11`; prior zeros vacuous.
+- Irreducibility upgrades: unavailable at girth 3, i.e. at every forced-flag family.
+- Dimension count for `Y° ⊄ Z(G)`: compatible at every graph with a hub.
+- Forced-flat + `def₂ > def₃`: empty to `n = 6`; needs a triangle or `K_{2,3}`.
+
+## 6. Live ideas
+
+1. **Induct inside girth-`≥ 5` graphs** — closed under sides and cut-pieces, containing the habitat. There `|N[v] ∩ N[h]| ≤ 2` for distinct hubs, so the coplanarity closure never fires and coincident flags are never forced: the whole coincident-flag arm vanishes. Untried; needs the Lemma at generic/incident flags plus item 2.
+2. **The core clause**: welded attainment of a 3-block with children glued at some virtual pairs, at a remaining one; bonds and cycles easy, 3-connected minus one edge rigid, so the content is 3-connected minus `≥ 2` edges. Unaddressed.
+3. **Classical:** a class-level configuration with a combinatorial certificate — Tay-style packing of six trees in `5G`, or a computable degenerate configuration as the flat one is via Jackson–Jordán. Corpus constructions are per-graph.
+
+## 7. What a counterexample would look like
+
+Universal statement: 2-connected, girth 3/4, a 2-separation with `u ≁ v`, the closure forcing `π_u = π_v` and a u–v path of *each* side into that plane, `δ₁+δ₂ ≥ 4`, each `δ_i ≤ 3`: then `dim(ρ̄₁+ρ̄₂) ≤ 3 < target` on the guarded locus. Needs hubs along long u–v geodesics; outside the habitat, so it kills the route only. Lean hypothesis: girth `≥ 7`, 2-edge-connected, no proper rigid subgraph, a degree-2 vertex, a closed hub neighbourhood with `≥ 4` hubs, every placement rank-deficient — no triangle-free cap mechanism is known. Lemma alone: a side whose `ρ̄_i` at generic flags always contains a line Klein-orthogonal to a terminal pencil.
+
+## 8. Pointers
+
+- Lean: `Escape.lean:467/555`; `Statement.lean:103`; `Motive.lean:133,160`; `Deficiency.lean:273,483`.
+- §2: (BE-21)(ii), (BE-22) `BINDUC.md`; (BE-86)(i) `BGENUINE.md`; (BE-314)–(BE-315) `BSMARK.md`; (BE-25)(ii) `BTWOCUT.md`; `binduc.py rank2`, `bsmark.py cancel|rigid`.
+- §3: (BE-14) `BATTAIN.md`; (BE-16)(iii), (BE-18) `BZAVOID.md`; (BE-20), (BE-23) `BINDUC.md`; (BE-25)(iii), (BE-28) `BTWOCUT.md`; (BE-120)(iv) in (BE-86)(ii); (BE-5) `K-bare-ext.md`.
+- §4: (BE-30) `BIMAGE.md`; (BE-35)–(BE-38) `BEARCASE.md`; (BE-40) `BEARFULL.md`; (BE-326)–(BE-333) `BSIGFOUR.md`; (BE-299) `BGPLAW.md`; (BE-337) `BNEST.md`; (BE-104) `BSATUR.md`; (BE-95) `BUNIF.md`; (BE-29) `btwocut.py hunt`; `binduc.py hubplane`; `bgenuine.py bite`; `bsigfour.py widen`.
+- §5: (BE-77)(ii)→(BE-324); (BE-79)–(BE-81) `BONEONE.md`; (BE-312) `BCOFLAG.md`; (BE-16)(iv); (BE-23)(ii); (BE-42) `BEARFULL.md`; (BE-334) `BNEST.md`.
