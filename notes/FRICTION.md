@@ -98,6 +98,24 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `induce_le hsub |>.trans restrict_le` pins the wrong graph when `hsub`'s stated type is `X ⊆ V(G)`
+- **Where it bit:** Phase 39 (PENCIL) G2 (`Molecular/Induction/Girth.lean`,
+  `Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid`). Needed `H ≤ G` for
+  `H := (G.restrict F).induce X`, via `(induce_le hsub).trans restrict_le` (mathlib's
+  `Graph.induce_le : X ⊆ V(G') → G'.induce X ≤ G'`, `Graph.restrict_le : G.restrict F ≤ G`).
+- **Friction:** `hsub : Set.range vtx ⊆ V(G)` elaborates `induce_le hsub` by unifying
+  `induce_le`'s implicit graph argument from `hsub`'s *stated* type — it picks `G` literally
+  (since `V(G)` is syntactically what `hsub` mentions), not `G.restrict F`, even though
+  `V(G.restrict F) = V(G)` by `rfl` (the field literal). The result: `induce_le hsub :
+  G.induce X ≤ G` (the *wrong* subgraph — `.induce`, not `(.restrict F).induce`), and
+  `.trans restrict_le` then fails with a `Type mismatch` reporting `G.induce X ≤ ?m` expected
+  `H ≤ G`. Lean does not try to unify against the later `.trans` argument first; the metavariable
+  is pinned by the time `hsub` is checked.
+- **Fix:** insert an intermediate `have` that re-ascribes `hsub`'s type to the graph you actually
+  want `induce_le` to see: `have hsub' : Set.range vtx ⊆ V(G.restrict F) := hsub` (typechecks by
+  the `rfl`-defeq of `restrict`'s vertex set), then `(induce_le hsub').trans restrict_le`.
+- **Status:** idiom.
+
 ### [mirror-candidate] No packaged "extend a `LinearIndepOn` partial family by filling the free slots" lemma
 - **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-d, the post-steering `fillNbr` re-choice
   (`Molecular/Molecule/Pencil/Steer.lean`, `exists_fillNbr_pencilChartWF_of_standing`). Closing

@@ -30,6 +30,7 @@ import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
+import CombinatorialRigidity.Molecular.Induction.Girth
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Molecule.Application
 import CombinatorialRigidity.Molecular.Molecule.Carrier

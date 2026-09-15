@@ -955,6 +955,8 @@ case of the induction rather than by the two-cut composition.
 
 \begin{definition}[Girth]
   \label{def:girth}
+  \lean{Graph.GirthGE, Graph.GirthGE.mono, Graph.GirthGE.anti}
+  \leanok
   A \emph{cycle on $m$ vertices} of a multigraph $G$, for $m \ge 3$,
   consists of $m$ distinct vertices $v_0, \dots, v_{m-1}$ and $m$ distinct
   edges $e_0, \dots, e_{m-1}$ with $e_i$ joining $v_i$ to $v_{i+1}$, indices
@@ -966,12 +968,15 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[Short cycles are spanning]
   \label{lem:pencil-short-cycle-spanning}
+  \lean{Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid}
+  \leanok
   \uses{def:girth, def:rigid-subgraph}
   Let $G$ be a multigraph with no proper rigid subgraph and
   $D = \binom{n+1}{2} \ge 3$. Then every cycle of $G$ on $m$ vertices with
   $3 \le m \le D$ passes through every vertex of $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:chain-cycle-dichotomy, def:rigid-subgraph}
   The subgraph $H$ consisting of the cycle's vertices and edges is a cycle
   on $m \le D$ vertices, hence $0$-dof by the deficiency count of the cycle
