@@ -2570,6 +2570,25 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `exact`, then consume `ha : a • y = x` in span form.
 - **Status:** resolved in-proof (one build cycle).
 
+### [resolved] `obtain ⟨a, haS, b, hbS, …⟩` from a flattened `∃ a b c, P₁ ∧ P₂ ∧ …` silently interleaves witnesses and proofs into the wrong slots
+- **Where it bit:** Phase 39 G4, `Graph.ncard_closedNbhd_inter_le_two_of_girthGE`
+  (`Molecular/Molecule/Pencil/Motive.lean`), destructuring `Set.two_lt_ncard_iff.mp hcon`.
+- **Friction:** `⟨a, haS, b, hbS, c, hcS, hab, hac, hbc⟩` type-checked (right slot count) but
+  `haS`/`hbS` turned out bound to the *next witness*, not the membership proof, surfacing only as
+  a confusing type mismatch several lines later.
+- **Fix:** `⟨a, b, c, haS, hbS, hcS, hab, hac, hbc⟩` — nested `∃`s flatten witnesses-then-
+  propositions, never interleaved.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 109.
+
+### [resolved] `X.mp` dot notation on a bare `autoParam`-guarded `Iff` constant fails as *"Unknown constant"*
+- **Where it bit:** same lemma as above, `Set.two_lt_ncard_iff.mp hcon`.
+- **Friction:** `Set.two_lt_ncard_iff.mp hcon` failed `unknownIdentifier: Unknown constant
+  Set.two_lt_ncard_iff.mp` even though `#check @Set.two_lt_ncard_iff` resolves fine — the bare,
+  unapplied constant's `.mp` tries the whole dotted string as a namespaced lookup before falling
+  back to elaborate-then-project.
+- **Fix:** parenthesize, `(Set.two_lt_ncard_iff).mp hcon`.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 110.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

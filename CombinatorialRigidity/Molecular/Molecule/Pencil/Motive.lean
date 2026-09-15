@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
+import CombinatorialRigidity.Molecular.Induction.Girth
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
@@ -471,6 +472,126 @@ theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β}
   calc (insert v (N(G, v))).ncard ≤ (N(G, v)).ncard + 1 := Set.ncard_insert_le v (N(G, v))
     _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
     _ = 3 := by norm_num
+
+/-- **Two distinct bodies' closed neighbourhoods overlap in at most `2` at girth `≥ 5`** (Phase 39
+girth-and-chain design pass, leaf **G4**, `lem:pencil-closed-nbhd-girth-five`): needs neither
+`G.Simple` nor hubness, only `G.GirthGE 5` and `v ≠ h` (design-pass verdict V6). By contradiction, a
+third shared member `x` distinct from `v` and `h` would close either a triangle `v–h–x` (if `v` and
+`h` are themselves adjacent) or, with a further shared member `y`, a `4`-cycle `v–a–h–b`, either way
+contradicting `hg`. The route below streamlines the design note's shared "extract three, discard at
+most two" pigeonhole into two direct extractions: `{v, h} ⊆ closedNbhd v ∩ closedNbhd h` when
+`v ~ h` gives the third member `x` straight from `Set.exists_mem_notMem_of_ncard_lt_ncard` (no
+case-bash needed), and `v, h ∉ closedNbhd v ∩ closedNbhd h` when `v ≁ h` (each fails one conjunct of
+the intersection) makes any two of `Set.two_lt_ncard_iff`'s three witnesses automatically avoid
+`{v, h}`. Edge-label distinctness in each cycle comes from `IsLink.eq_and_eq_or_eq_and_eq` applied
+to a same-edge-label assumption forcing two of the (pairwise distinct) endpoints to coincide, and
+the `fin_cases` link checks follow `CycleData.ofCardThree`'s template
+(`Molecular/Induction/Operations.lean`). -/
+theorem _root_.Graph.ncard_closedNbhd_inter_le_two_of_girthGE [Finite α] {G : Graph α β}
+    (hg : G.GirthGE 5) {v h : α} (hvh : v ≠ h) :
+    (G.closedNbhd v ∩ G.closedNbhd h).ncard ≤ 2 := by
+  classical
+  by_contra hcon
+  push Not at hcon
+  by_cases hadj : ∃ e, G.IsLink e h v
+  · obtain ⟨e₀, he₀⟩ := hadj
+    obtain ⟨x, hxS, hxvh⟩ :=
+      Set.exists_mem_notMem_of_ncard_lt_ncard
+        (s := ({v, h} : Set α)) (t := G.closedNbhd v ∩ G.closedNbhd h)
+        (by rwa [Set.ncard_pair hvh])
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hxvh
+    obtain ⟨hxv, hxh⟩ := hxvh
+    obtain ⟨e_xv, he_xv⟩ := hxS.1.resolve_left hxv
+    obtain ⟨e_xh, he_xh⟩ := hxS.2.resolve_left hxh
+    have h01 : e₀ ≠ e_xh := by
+      rintro rfl
+      rcases he₀.eq_and_eq_or_eq_and_eq he_xh with ⟨_, h2⟩ | ⟨h1, _⟩
+      · exact hxv h2.symm
+      · exact hxh h1.symm
+    have h02 : e₀ ≠ e_xv := by
+      rintro rfl
+      rcases he₀.eq_and_eq_or_eq_and_eq he_xv with ⟨h1, _⟩ | ⟨h1, _⟩
+      · exact hvh h1.symm
+      · exact hxh h1.symm
+    have h12 : e_xh ≠ e_xv := by
+      rintro rfl
+      rcases he_xh.eq_and_eq_or_eq_and_eq he_xv with ⟨h1, _⟩ | ⟨h1, _⟩
+      · exact hvh h1.symm
+      · exact hxh h1.symm
+    have hcontra : (5 : ℕ) ≤ 3 :=
+      hg (m := 3) (by norm_num) (vtx := ![v, h, x]) (edge := ![e₀, e_xh, e_xv])
+        (by intro i j hij; fin_cases i <;> fin_cases j <;>
+          simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Ne.symm hvh, Ne.symm hxv,
+            Ne.symm hxh])
+        (by intro i j hij; fin_cases i <;> fin_cases j <;>
+          simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Ne.symm h01, Ne.symm h02,
+            Ne.symm h12])
+        (by intro i; fin_cases i
+            · exact he₀.symm
+            · exact he_xh
+            · exact he_xv.symm)
+    omega
+  · have hvS : v ∉ G.closedNbhd v ∩ G.closedNbhd h := fun hmem => hadj (by
+      rcases hmem.2 with heq | ⟨e, he⟩
+      · exact absurd heq hvh
+      · exact ⟨e, he⟩)
+    have hhS : h ∉ G.closedNbhd v ∩ G.closedNbhd h := fun hmem => hadj (by
+      rcases hmem.1 with heq | ⟨e, he⟩
+      · exact absurd heq.symm hvh
+      · exact ⟨e, he.symm⟩)
+    obtain ⟨a, b, -, haS, hbS, -, hab, -, -⟩ := (Set.two_lt_ncard_iff).mp hcon
+    have hav : a ≠ v := by rintro rfl; exact hvS haS
+    have hah : a ≠ h := by rintro rfl; exact hhS haS
+    have hbv : b ≠ v := by rintro rfl; exact hvS hbS
+    have hbh : b ≠ h := by rintro rfl; exact hhS hbS
+    obtain ⟨e1, he1⟩ := haS.1.resolve_left hav
+    obtain ⟨e2, he2⟩ := haS.2.resolve_left hah
+    obtain ⟨e3, he3⟩ := hbS.2.resolve_left hbh
+    obtain ⟨e4, he4⟩ := hbS.1.resolve_left hbv
+    have h12 : e1 ≠ e2 := by
+      rintro rfl
+      rcases he1.eq_and_eq_or_eq_and_eq he2 with ⟨h1, _⟩ | ⟨h1, _⟩
+      · exact hvh h1
+      · exact hav h1.symm
+    have h13 : e1 ≠ e3 := by
+      rintro rfl
+      rcases he1.eq_and_eq_or_eq_and_eq he3 with ⟨h1, _⟩ | ⟨h1, _⟩
+      · exact hvh h1
+      · exact hbv h1.symm
+    have h14 : e1 ≠ e4 := by
+      rintro rfl
+      rcases he1.eq_and_eq_or_eq_and_eq he4 with ⟨_, h2⟩ | ⟨_, h2⟩
+      · exact hab h2
+      · exact hav h2
+    have h23 : e2 ≠ e3 := by
+      rintro rfl
+      rcases he2.eq_and_eq_or_eq_and_eq he3 with ⟨_, h2⟩ | ⟨_, h2⟩
+      · exact hab h2
+      · exact hah h2
+    have h24 : e2 ≠ e4 := by
+      rintro rfl
+      rcases he2.eq_and_eq_or_eq_and_eq he4 with ⟨_, h2⟩ | ⟨_, h2⟩
+      · exact hab h2
+      · exact hav h2
+    have h34 : e3 ≠ e4 := by
+      rintro rfl
+      rcases he3.eq_and_eq_or_eq_and_eq he4 with ⟨h1, _⟩ | ⟨_, h2⟩
+      · exact hvh h1.symm
+      · exact hbv h2
+    have hcontra : (5 : ℕ) ≤ 4 :=
+      hg (m := 4) (by norm_num) (vtx := ![v, a, h, b]) (edge := ![e1, e2, e3, e4])
+        (by intro i j hij; fin_cases i <;> fin_cases j <;>
+          simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Ne.symm hav, Ne.symm hah,
+            Ne.symm hbv, Ne.symm hbh])
+        (by intro i j hij; fin_cases i <;> fin_cases j <;>
+          simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Ne.symm h12, Ne.symm h13,
+            Ne.symm h14, Ne.symm h23, Ne.symm h24, Ne.symm h34])
+        (by intro i; fin_cases i
+            · exact he1
+            · exact he2.symm
+            · exact he3
+            · exact he4.symm)
+    omega
 
 /-! ## The triple-independence transfer lemma (Phase 39, moved from `Engine.lean` 2026-07-25)
 

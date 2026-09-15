@@ -1014,12 +1014,15 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[Closed neighbourhoods at girth five]
   \label{lem:pencil-closed-nbhd-girth-five}
+  \lean{Graph.ncard_closedNbhd_inter_le_two_of_girthGE}
+  \leanok
   \uses{def:girth, def:pencil-nondegenerate}
   Let $G$ be a multigraph of girth at least five and $v \ne h$ two of its
   vertices. Then the closed neighbourhoods of $v$ and $h$
   (\cref{def:pencil-nondegenerate}) share at most two vertices.
 \end{lemma}
 \begin{proof}
+  \leanok
   If they shared three vertices, then either $v$ and $h$ are adjacent and
   have a common neighbour $x$, giving a cycle on the three vertices
   $v, h, x$, or they are not adjacent and have two common neighbours

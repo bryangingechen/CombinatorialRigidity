@@ -46,14 +46,16 @@ the headline typeclass. The attack decides when to run it.
 **Lean track (hold lifted 2026-09-15 for items 1–3):** items 1–2 are **PINNED** (design pass
 2026-09-15, `notes/Phase39-design.md` § *Lean-track design pass*; eight red nodes in
 `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains*, the chapter's first). **G1,
-G2 and G3 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `Graph.GirthGE` +
+G2, G3 and G4 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `Graph.GirthGE` +
 `.mono`/`.anti`, `Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid`, and
-`Graph.girthGE_of_noRigid_of_three_le_degree`), pinning `def:girth` /
-`lem:pencil-short-cycle-spanning` / `lem:pencil-girth-of-hub` (three of the eight now green).
-**Next concrete Lean commit: G4** (`Graph.ncard_closedNbhd_inter_le_two_of_girthGE`, needs only
-G1, into `Molecule/Pencil/Motive.lean`; S1/P2/B1 — sonnet); M3a/M3b (`MaximalChain.lean`) are also
-buildable any time (need only 2EC + `Simple`/`Loopless`, no girth), and M4/M4′ are unblocked now
-that G3 is in. Item 3
+`Graph.girthGE_of_noRigid_of_three_le_degree`; `Graph.ncard_closedNbhd_inter_le_two_of_girthGE` in
+`Molecule/Pencil/Motive.lean`), pinning `def:girth` / `lem:pencil-short-cycle-spanning` /
+`lem:pencil-girth-of-hub` / `lem:pencil-closed-nbhd-girth-five` — **the girth-lemmas checklist
+item (all four leaves) is now fully landed**, four of the eight red nodes green.
+**Next concrete Lean commit: M3a/M3b** (`MaximalChain.lean`, new file; need only 2EC +
+`Simple`/`Loopless`, no girth) or **M1** (the `MaximalChain.lean` chain-walk builder, opus-rated,
+~250 lines); M4/M4′ are also unblocked now that G3 is in, but wait on M1/M2 for the path shape.
+Item 3
 (the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
 `[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
 § *Field-hypothesis recon*; chapter `fmlnote:pencil-conditional-realization-pair-field`).
@@ -104,15 +106,18 @@ ultimately be driven by the math … we shouldn't lock [declined directions] out
 *Items 1–3 unparked 2026-09-15 (PI); items 4–10 stay parked by the hold. Ranked cheapest and
 most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `sorry`.*
 
-- [ ] **Girth lemmas** — **PINNED** (design pass 2026-09-15, `notes/Phase39-design.md`
+- [x] **Girth lemmas** — **DONE 2026-09-15** (design pass same day, `notes/Phase39-design.md`
   § *Lean-track design pass*, leaves G1–G4; red nodes `def:girth`,
   `lem:pencil-short-cycle-spanning`, `lem:pencil-girth-of-hub`,
-  `lem:pencil-closed-nbhd-girth-five`). Carrier: `Fin m` cycle data and the predicate
-  `Graph.GirthGE` (V1). Sharpened against the review: *any* vertex of degree `≥ 3` forces girth
-  `≥ 7`, and no hub + 2EC makes `G` a cycle of any length `≥ 5` (V5); `|N[v] ∩ N[h]| ≤ 2` needs
-  only girth `≥ 5` and `v ≠ h` (V6). Target: new `Molecular/Induction/Girth.lean` (G1–G3) and
-  `Motive.lean` (G4). **G1 + G2 + G3 landed 2026-09-15** (`def:girth` /
-  `lem:pencil-short-cycle-spanning` / `lem:pencil-girth-of-hub` now green); **remaining: G4**.
+  `lem:pencil-closed-nbhd-girth-five` — all four now green). Carrier: `Fin m` cycle data and the
+  predicate `Graph.GirthGE` (V1). Sharpened against the review: *any* vertex of degree `≥ 3`
+  forces girth `≥ 7`, and no hub + 2EC makes `G` a cycle of any length `≥ 5` (V5);
+  `|N[v] ∩ N[h]| ≤ 2` needs only girth `≥ 5` and `v ≠ h` (V6, needs neither `G.Simple` nor
+  hubness). Landed in `Molecular/Induction/Girth.lean` (G1–G3) and `Molecule/Pencil/Motive.lean`
+  (G4, `Graph.ncard_closedNbhd_inter_le_two_of_girthGE`) — G4's route streamlines the design
+  note's shared pigeonhole into two direct `Set.ncard`-cardinality extractions (adjacent case:
+  `Set.exists_mem_notMem_of_ncard_lt_ncard`; non-adjacent case: `v, h` provably absent from the
+  intersection, so `Set.two_lt_ncard_iff`'s witnesses qualify directly).
 - [ ] **Consumed-shape normal form** — **PINNED** (same §, leaves M1–M4′; red nodes
   `lem:pencil-chain-walk-extension`, `lem:pencil-degree-two-chain`,
   `lem:pencil-chain-side-connected`, `lem:pencil-chain-side-distance`). Carrier: `WList` paths
@@ -197,10 +202,13 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 When the first attack starts, its `state.md` becomes that lemma's status surface and this note
 carries a two-line pointer to it, edited by the PI. The hold is lifted for checklist items 1–3
 (2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in
-forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1 + G2
-+ G3 landed 2026-09-15** (`Molecular/Induction/Girth.lean`); next is **G4**
-(`ncard_closedNbhd_inter_le_two_of_girthGE`, into `Molecule/Pencil/Motive.lean`, needs only G1 —
-sonnet-rated), then M3a/M3b/M1/M2/M4/M4′ — with any crux as a hypothesis; a later lift for
+forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1–G4 all
+landed 2026-09-15** (`Molecular/Induction/Girth.lean` + `Molecule/Pencil/Motive.lean`; the girth
+lemmas checklist item is DONE); next is **M3a/M3b** (`MaximalChain.lean`, new file, sonnet-rated:
+`Graph.connected_deleteVerts_interior_of_twoEdgeConnected` and
+`Graph.degree_deleteVerts_interior_add_one`, buildable any time off 2EC +
+`Simple`/`Loopless` alone, no girth dependency) or **M1** (the un-capped chain-walk builder,
+opus-rated, ~250 lines, needed before M2/M4/M4′) — with any crux as a hypothesis; a later lift for
 items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.

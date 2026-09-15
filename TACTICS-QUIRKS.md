@@ -136,6 +136,8 @@ failing pattern and the working fix.
 - A `convert … using N`, or a term-mode `by simpa … using X`, **breaks on a mathlib bump** — especially if it fails leaving *instance-path* goals like `Real.instRing.toSemiring = Real.semiring` → § 106 (the statement was definitionally true all along and the tactic was doing unification mathlib's unifier no longer performs: try plain `exact X` FIRST, or drop the `by simpa … using` wrapper entirely, before debugging the `convert`)
 - `simp` on concrete `![…]`/`Matrix.cons` coordinate arithmetic (typically via `homogenize`/`Fin.snoc`) leaves a residual like `¬![0, 0, 1] (Fin.castPred 2 ⋯) = 0` that only `exact one_ne_zero` / `rfl` closes — and `linter.flexible` then reports that closer → § 107 (the index is one unfolding short of a `Fin.mk` literal: add **`Fin.castLT`** to the simp set. `Fin.castPred_mk` makes no progress and plain `Fin.castPred` hits max recursion, which is what sends you looking for a mirror lemma you don't need)
 - `linter.overlappingInstances` reports *"There are 2 `[C α]` instances; one is sufficient"*, and deleting the duplicate breaks the build — with `cannot omit referenced section variable inst✝¹`, or `MVar does not look like a recursive call` + `Unknown constant …induct` → § 108 (a bare `omit [C]` does *not* remove `C` from the section's variable list, so a later `variable [C]` puts a **second copy in scope**; and a section `variable` instance is inserted where it is first *referenced*, which for a well-founded recursion is inside the termination measure — at the *end* of the telescope. Fix by **scoping**, never by deleting a binder: `section`/`end` the region that needs it, or move the `variable` line *below* the def whose inline binders the recursion needs. The linter counts copies *in scope*, not arguments in the signature, so the fix changes no signature — verify with `#check`)
+- `obtain ⟨a, haS, b, hbS, …⟩ := h` from `h : ∃ a b c, a ∈ s ∧ b ∈ s ∧ c ∈ s ∧ …` type-checks with no arity complaint, but a later use of `haS`/`hbS` fails with a confusing *"Application type mismatch"* — e.g. `haS` reported as having the base type `α`, not the membership `Prop` → § 109 (nested `∃`s flatten to *witnesses-then-propositions*: `⟨a, b, c, h₁, h₂, …⟩`, never interleaved to match the statement's informal per-variable reading)
+- `X.mp`/`X.mpr` on a bare, unapplied `autoParam`-guarded `Iff` lemma name fails with *"Unknown constant `X.mp`"*, not an elaboration error against the `Iff` → § 110 (dot notation on an unapplied global constant tries the whole dotted string as a namespaced declaration lookup first; wrap in parens, `(X).mp`, to force the elaborate-then-project fallback)
 
 ## Sections
 
@@ -4080,5 +4082,58 @@ the inline binders and the section copies both survive.
 Worked cases: `Search/DFS.lean`'s `reachableFindingAux` (mechanism 2) and
 `Molecular/Induction/Operations.lean`'s three `candidate*` defs (mechanism 1),
 both in the v4.34.0-rc1 bump cleanup — `notes/ToolchainBumps.md` item 4c.
+
+---
+
+## 109. `∃ a b c, P₁ ∧ P₂ ∧ …` destructures witnesses-then-propositions, never interleaved — `⟨a, b, c, h₁, h₂, …⟩`, not `⟨a, h₁, b, h₂, …⟩`
+
+**Symptom.** `obtain ⟨a, haS, b, hbS, c, hcS, hab, hac, hbc⟩ := Set.two_lt_ncard_iff.mp hcon`
+(destructuring `2 < s.ncard ↔ ∃ a b c, a ∈ s ∧ b ∈ s ∧ c ∈ s ∧ a ≠ b ∧ a ≠ c ∧ b ≠ c`) elaborates
+with no arity complaint — the pattern has exactly as many slots as the statement has pieces — but a
+later use of `haS`/`hbS` fails with a confusing *"Application type mismatch"*, e.g. `haS` reported
+as having the base type `α`, not the membership proposition `a ∈ s`.
+
+**Cause.** `∃ a b c, X` is `∃ a, ∃ b, ∃ c, X` — three *nested* existentials wrapping the whole
+conjunction `X = P₁ ∧ P₂ ∧ …` as one block. The flattened anonymous-constructor shape for nested
+`Exists`/`And` follows the nesting, not the statement's informal "for each of `a`, `b`, `c` there's
+a fact about it" reading: **all three witnesses first** (one per nesting level), **then** the
+conjunction's components in order — `⟨a, b, c, p₁, p₂, …⟩`. Writing `⟨a, haS, b, hbS, …⟩`
+(interleaving a witness with what looks like "its" proof) instead binds `haS := b` (the *second*
+witness, of type `α`), `b := c`, `hbS :=` the first conjunct `a ∈ s`, and so on — every slot one
+off, silently, because the total count still matches.
+
+**Fix.** For any `∃ x₁ … xₙ, P₁ ∧ … ∧ Pₖ`, always write the flat pattern as
+`⟨x₁, …, xₙ, p₁, …, pₖ⟩`: witnesses first in binder order, then propositions in conjunction order.
+`-` discards a slot that isn't needed (e.g. `⟨a, b, -, haS, hbS, -, hab, -, -⟩` when only `a`, `b`
+and `hab` are used).
+
+**Worked case:** Phase 39 (PENCIL) leaf G4, `Graph.ncard_closedNbhd_inter_le_two_of_girthGE`
+(`Molecular/Molecule/Pencil/Motive.lean`), destructuring `Set.two_lt_ncard_iff`.
+
+---
+
+## 110. `X.mp`/`X.mpr` dot notation on a bare `autoParam`-guarded `Iff` constant fails as *"Unknown constant"* — wrap in parens, `(X).mp`
+
+**Symptom.** `Set.two_lt_ncard_iff.mp hcon`, where
+`Set.two_lt_ncard_iff (hs : s.Finite := by toFiniteTac) : 2 < s.ncard ↔ …`, fails with
+`unknownIdentifier: Unknown constant Set.two_lt_ncard_iff.mp` — a flat "no such declaration", not
+an elaboration error against the autoParam or the `Iff` itself. `#check @Set.two_lt_ncard_iff`
+confirms the constant is perfectly visible; only the dotted call fails.
+
+**Cause.** When the term to the left of the dot is a *bare, unapplied* global identifier (as
+opposed to a local hypothesis, or an already-applied term), Lean first tries the whole dotted
+string as a single namespaced declaration lookup (`Set.two_lt_ncard_iff.mp`) before falling back to
+generalized field notation (elaborate the identifier, then resolve `.mp` against its type's head).
+That first attempt fails outright since no such declaration exists, and — for a bare constant —
+takes priority over the fallback. Forcing the constant to be *applied* first (even just to its own
+`autoParam`, by parenthesizing it) makes Lean elaborate it as a term and use the fallback instead.
+
+**Fix.** Parenthesize: `(Set.two_lt_ncard_iff).mp hcon`; or supply the leading `hs` argument
+explicitly, `(Set.two_lt_ncard_iff hs).mp`; or call positionally, `Iff.mp Set.two_lt_ncard_iff
+hcon`. The bare dotted form is fine once the constant already carries at least one *visible*
+application (e.g. a hypothesis `h := Set.two_lt_ncard_iff hs` and then `h.mp`) — the trap is
+specific to leaning on the `autoParam` default with no application in sight at all.
+
+**Worked case:** Phase 39 (PENCIL) leaf G4, same lemma as § 109.
 
 ---
