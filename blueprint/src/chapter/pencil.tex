@@ -859,6 +859,40 @@ realization's own nondegenerate-satisfiability.
   span that the pencil condition cuts to five, so the pencil case is a
   genuinely open statement rather than an instance of their result.
 \end{fmlnote}
+\begin{fmlnote}
+  \label{fmlnote:pencil-conditional-realization-pair-field}
+  On the field. The theorem is stated and proved over an arbitrary
+  infinite field $K$, like the reduction behind it
+  (\cref{thm:pencil-reduction}): the only property of $K$ its proof uses
+  is that a nonzero polynomial over an infinite field has a non-root, and
+  the statement is not strengthened by any hypothesis on the
+  characteristic. The informal arguments known for the two kernels are
+  narrower, and the field hypothesis is expected to enter through them,
+  each at the weakest form its proof needs, with the eventual
+  unconditional statement inheriting whatever the kernels require. For
+  kernel (K) the known route places the bodies on the quadric
+  $x \cdot x = 0$ in homogeneous coordinates on $K^4$ and splits the screw
+  space along the two eigenspaces of the polarity of
+  \cref{lem:panel-hinge-dual-molecular}; in characteristic $2$ that
+  quadric degenerates to a double plane and the two eigenspaces coincide,
+  so the argument needs an infinite field of characteristic different
+  from $2$ (in Lean, \texttt{[Infinite K]} together with
+  \texttt{[NeZero (2 : K)]}, satisfied by every field of characteristic
+  $0$) and nothing more: the certifying minor is a polynomial with integer
+  coefficients in the free parameters of the realization, so a proof over
+  the algebraic closure of one field of a given characteristic gives the
+  statement over every infinite field of that characteristic. For kernel
+  (K-bare) the known route argues at the generic point of an irreducible
+  component of the configuration variety, which presupposes an
+  algebraically closed field, and uses no property of the characteristic;
+  if the induction it rests on is restated in terms of explicit witnessing
+  configurations over $K$, an infinite field suffices
+  (\texttt{[Infinite K]}), and until then the interim hypothesis is an
+  algebraically closed field (\texttt{IsAlgClosed K}). Both routes have
+  been tested only in characteristic $0$, by exact computation over $\Q$
+  and $\Q(i)$; whether the conjecture itself holds over infinite fields of
+  characteristic $2$ is open.
+\end{fmlnote}
 \begin{proof}
   \leanok
   \uses{thm:pencil-reduction, def:pencil-nondegenerate}

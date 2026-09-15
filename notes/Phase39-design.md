@@ -58,7 +58,8 @@ is load-bearing.
 | (K-bare) extension-route recon | 3590–3764 | CLOSED — NO-GO; minimal statement (K-bare-ext) | — |
 | W4 decomposition recon (2026-07-30) | 3765–3990 | **live as W4's canonical leaf list**; W4 parked | — |
 | W4-L4 identification recon (2026-07-30) | 3991–4171 | **live** with the above | — |
-| **Lean-track design pass (2026-09-15): items 1–2** | 4254–end | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
+| **Lean-track design pass (2026-09-15): items 1–2** | 4254–4583 | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
+| **Field-hypothesis recon (2026-09-15): item 3** | 4585–end | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
 | Higher-`d` note / Citations | 4172–4212 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -4581,3 +4582,145 @@ is added in the commit its Lean lands (red nodes carry no `\lean{}` today; `chec
 2. Whether M2 should be sharpened to "exactly one of" — no consumer asks; not pinned.
 3. `GirthGE` predicate vs `egirth : ℕ∞` — revisit only if a consumer needs the number (V1).
 4. Nothing here touches checklist item 3 (the field hypothesis) or items 4–10.
+
+## Field-hypothesis recon (2026-09-15): checklist item 3 — what field each informal route needs, and the decision
+
+**Status: SETTLED — option C (PI, 2026-09-15; verbatim `notes/pencil/adjudications.md`
+§ *2026-09-15 — the field hypothesis*).** The reduction stays at `[Infinite K]`; the field
+hypothesis enters through the kernel lemmas, each at the weakest form its proof needs; the
+eventual unconditional corollary inherits them. Chapter record:
+`blueprint/src/chapter/pencil.tex` `fmlnote:pencil-conditional-realization-pair-field`, a sibling
+note of the `\leanok` node `thm:pencil-conditional-realization-pair` (no statement and no
+`\lean{}` changed). The characteristic-2 probe (last subsection) is **deferred to the (GR-10)
+attack track** (PI); no coordinator dispatch.
+
+Read-only recon against HEAD `91515fd9`, recorded at `1359ad46`. Methods: definition bodies
+(files cited per claim), the two briefs and their workbooks (`python3 notes/gapmap.py` slices,
+never `grep` on the gap map), `notes/Phase33.md` and the blueprint's *Field generality* preamble,
+the Katoh–Tanigawa and Jackson–Jordán PDFs (`.refs/`, via pypdf), and one scratch `lake env lean`
+witness (deleted): `example (K) [Field K] [NeZero (2 : K)] : (2 : K) ≠ 0 := two_ne_zero`;
+`[CharZero K] → NeZero (2 : K)` by `inferInstance`; `Infinite (AlgebraicClosure (ZMod 2))` and
+`(2 : AlgebraicClosure (ZMod 2)) = 0` — so `[Infinite K]` alone can never supply `2 ≠ 0`.
+
+### The question
+
+`PencilPair K 3 G` and `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
+(`Molecule/Pencil/Escape.lean:555`; instance list `[Inhabited α] [Finite α] [Finite β]
+[DecidableEq β] [Infinite K]`, nothing on the characteristic) are stated over any infinite field,
+as is Phase 33's KT chain. Both attack briefs argue in characteristic 0
+(`notes/attacks/gr10/brief.md` §1/§3; `notes/attacks/smark/brief.md` §1/§3;
+`notes/attacks/smark/state.md` *Worries*). Which field does each informal route need, and where
+would a hypothesis enter the Lean?
+
+### Verdict
+
+Neither route needs characteristic 0. **The grid route to `hK` needs `char K ≠ 2`** and otherwise
+`[Infinite K]`; its "characteristic 0" is a convention inherited from the ℚ(i) computations, and
+the descent step (K-clos (AC-7)) works in every characteristic separately. **The S-mark route to
+`hbareSplit` uses no characteristic**; its live field item is algebraic closure (generic points of
+irreducible components) versus K-rational points — orthogonal to the characteristic and already
+flagged in the attack's own workbook. **No landed Lean proof depends on the characteristic** (it
+cannot: every headline is universally quantified over `[Field K] [Infinite K]` and compiles). A
+decorative `[CharZero K]` on the reduction would be unused by its proof and flagged by
+`lake lint` (`batteries/runLinter` with `weak.linter.mathlibStandardSet = true`, lakefile lines
+4/13 — the `unusedArguments` linter). Options A (scope the target to characteristic 0), B (keep
+`[Infinite K]`, record a characteristic-0 debt on the node) and C (hypothesis on the kernels)
+were put to the PI verbatim; C was chosen.
+
+### (i) Where the grid route (kernel (K)) uses characteristic 0 or algebraic closure
+
+| # | where | what is used | verdict |
+|---|---|---|---|
+| G1 | brief §1 "fields are infinite of characteristic 0; computations live over ℚ(i)" | `x·x = 0` has no ℚ/ℝ points | not characteristic 0 — a *hyperbolic* quadric: **`char ≠ 2`** (K-clos Z8 (AC-8): `x·x = (Σxᵢ)²`, a double plane, no rulings); over odd `F_p` the quadric has points (Chevalley–Warning) and rulings over at worst a quadratic extension |
+| G2 | brief §1 "the polarity of Q splits the screw space into two 3-spaces and the rigidity matrix into two blocks"; K-clos Z2/Z4 (AC-2)/(AC-4) | the `±1` eigenspaces of `⋆`; Z2 divides by 2 (`2⟨x,y⟩ = 0`) | **`char ≠ 2`, essential to the method** (Z8: `⋆ − 1 = ⋆ + 1`, `Λ²K⁴` does not split); not a statement about `hK` itself |
+| G3 | `grid.md` G1 (GR-1) L145 "over ℂ̄ (char ≠ 2) the conic is projectively the moment curve `(1, t, t²)`"; spline moduli `(t − t_X)²` | a K-point on `α² + β² + γ² = 0`; the derivative `2(t − t_X)` | `char ≠ 2`; the conic has points over `\bar K` and over every odd `F_p`, none over ℝ |
+| G4 | brief §2 strong ⟹ weak; `grid.md` G10 (GR-9) proof L653 ("three distinct values", "invertibility of the 3×3 Vandermonde") | three distinct field elements | **`[Infinite K]`** (any field with ≥ 3 elements) |
+| G5 | brief §2 "dim Z is a matrix corank, polynomial in the `t_X`, so one exact rational zero proves generic vanishing"; semicontinuity throughout | a nonzero polynomial has a non-root | **`[Infinite K]`** (Phase 33's device); the exact rational zero is characteristic-0 *evidence* |
+| G6 | brief §3 chart step; `grid.md` G6 (GR-5) | `pencilChartPoint ∝ p_v` when the seed normals are the grid points | a polynomial identity (`cross₃` of three vectors in `p_v^⊥`): **any field**; Proviso (P) is field-free |
+| G7 | brief §3 descent "the certifying minor is a ℤ-polynomial in the seed" = K-clos Z7 (AC-7) | `P ∈ ℤ[q]` | **verified from the bodies**: `PencilSeed.ofCoord` reads `q` (`Molecule/Pencil/Engine.lean:89`); `cross₃` is `toDualEquiv.symm` of the determinant functional `w ↦ det[x, y, z, w]` (`Chart.lean:76-84`), i.e. signed 3×3 minors; `pencilRow` = `hingeRow ∘ annihRow` of `extensor ![p_u, p_v]` (`Engine.lean:318`), `annihRow` a `±` combination of coordinates (`AlgebraicInduction/PanelLayer.lean:1464`), `hingeRow` composes with `S u − S v` (`RigidityMatrix/Basic.lean:494`); no denominator anywhere. Characteristic 0: `P ≠ 0` in `ℤ[q]` ⇒ `P ≠ 0` in `K[q]`. Characteristic `p`: needs `P ≢ 0 mod p`, a separate per-shape condition. **Characteristic-0 as written, not essentially**; K-clos itself calls (AC-7) "characteristic-0 by construction" and the char-`p` residual "never probed" |
+| G8 | brief §7 "test by GF(p) rank per pattern"; drivers `rank_modp(rows, P61)`, `P61 = 2⁶¹ − 1` (`notes/scripts/kbare/kbare_common.py:50`, `notes/scripts/w4/gridcol.py:120`) | GF(p) rank as a lower bound for the rational rank | each full-rank hit is also a proof of `dim Z = 0` in characteristic `2⁶¹ − 1` at that shape (on the branch-system matrix, not the chart matrix); never drawn as a conclusion by the arc |
+| G9 | the escape / sweep argument for `def > 0` (K-tight) | genericity sweeps | `K-tight.md` has no field remark (0 hits); the (K-tight) gap-map row's only field item is route σ's polarity, general-`K` since (AC-1). `[Infinite K]` |
+| G10 | factors of 2 and 3 in `bodyBarDim` / `screwDim` | ℕ/ℤ arithmetic | never cast into `K`; the only `Nat.cast_sub` sites in `Pencil/` are ℕ→ℤ on `finrank` inequalities (`Arms.lean:736`, `Pair.lean:733`). Field-free |
+
+**Structural consequence the brief does not state.** (GR-10) is purely combinatorial (a colouring
+with tree-triples), and each link of (GR-10) → (GR-9) → (AC-4) → (GR-5) → transfer is char-free
+for `char ≠ 2` once the transfer runs over `\bar{F_p}` rather than through ℚ(i). So a proof of
+(GR-10) closes `hK` on the tight case over **every infinite field of characteristic ≠ 2**, not
+only characteristic 0. Moreover (AC-7)'s argument plus completeness of `ACF_p` gives `hK` over
+`\bar{F_p}` ⇒ `hK` over every infinite field of characteristic `p`: for fixed finite `α, β` the
+statement is a first-order ring sentence (finitely many `G`, `hubSel`, `s`; the antecedent
+base-changes upward — rank is extension-invariant, `ExtensorThroughPoint`/`ExtensorInPanel`
+witnesses transport; the conclusion is a ℤ-minor's non-vanishing at a K-seed). **The residual
+content of `[Infinite K]` is exactly the countable family {`hK` over `\bar{F_p}` : `p` prime}, and
+`p = 2` is the one the grid method cannot reach.**
+
+### (i′) Where the two-cut composition route (kernel (K-bare)) uses characteristic 0 or algebraic closure
+
+| # | where | what is used | verdict |
+|---|---|---|---|
+| S1 | brief §1 "(characteristic 0)"; workbook `attack-smark.md:33-37` "`K` is algebraically closed of characteristic 0 throughout … every dimension statement descends to an infinite subfield … is not automatic — see the field worry"; `state.md` *Worries* | a convention, self-flagged | not essential; see S2 |
+| S2 | brief §2 Lemma ("irreducible component … generic point"); S5, S7(vi) (upper semicontinuity on an irreducible variety), S8 (irreducible fibres); the frame's induction hypothesis in the same language | algebraic closure | **essential as *stated*; replaceable by `[Infinite K]` if the frame is restated in witness form.** Over non-closed `K`, "generic point" ≠ "some K-point" unless the component has dense K-points (K-unirational; over ℝ a smooth real point suffices). In witness form (S7(vi): one exact configuration certifies attainment, welded attainment and the `c(U)` bounds) with K-witnesses on the sides, S2–S5 is a K-construction: `S(ϕ) = (K*×K*×GL₂)/K*` is K-split with dense K-points for infinite `K`, and the good set is a nonempty K-open. **Decide together with the frame** (PI pending, `notes/Phase39.md` *Blockers*) |
+| S3 | S1(i) "`x∧x` has coefficient `2(x_M x_L − det[x_u|x_v])`"; S1(ii) "free over `K̄`" (`x_M ↦ x_M/c₃²`); (X1) "smooth member `{Q₁ = I₀Q₂}`" | a factor 2; square classes; a quadric pencil | cosmetic: define `Q := Q₁ − Q₂` directly (both terms hyperbolic planes, nondegenerate in every characteristic); square classes affect only orbit *dimension*; `Q₁ − I₀Q₂` is nondegenerate for `I₀ ≠ 0` in every characteristic. **No characteristic use** |
+| S4 | Klein orthogonality `U^⊥`; S4 Klein parity (two α-planes meet); S7 bars along lines spanning `U^⊥` | the wedge pairing `Λ² × Λ² → Λ⁴` | nondegenerate in every characteristic (alternating in char 2). **No characteristic use** |
+| S5 | brief §3 (a): 3-connected ⇒ the flat configuration attains, via Jackson–Jordán pin-collinear | an ℝ-theorem | JJ TR-2006-06 (`.refs/jackson-jordan-2006-pin-collinear-tr.pdf`, p5: generic = coordinates algebraically independent over ℚ). Combinatorial proof, plausibly infinite-field-general, **unverified beyond ℝ**, unformalized |
+| S6 | brief §3 (b), (d): paths and cycles; `PGL₄` transitive on flags | elementary | any field |
+| S7 | the consumer antecedent `¬ PencilNondegFeasible K G` | K-dependent (feasibility may hold over `\bar K` but not over `K`) | harmless — the route discards the antecedent |
+| S8 | all sweeps (11 896/11 896 and the rest) | exact ℚ | **characteristic-0 evidence only**; no char-`p` sample exists for either route (K-clos *What would change this* (v)) |
+
+### (ii) The Lean side
+
+- **Definitions are field-agnostic:** `HasPencilRealization` (`Molecule/Pencil/Statement.lean:103`),
+  `PencilNondegFeasible` / `HasGenericPencilRealization` / `PencilPair`
+  (`Motive.lean:133/140/160`) take `(K : Type*) [Field K]`. No scoping would touch them.
+- **`[Infinite K]` is threaded per-decl on 15 decls** in `Pencil/` (`Escape.lean:96, 187, 335,
+  450, 556`; `Pair2.lean:983, 1068, 1225`; `Steer.lean:308, 421, 998, 1271, 1345`;
+  `Engine.lean:449, 476`), all for the non-root device `exists_common_eval_ne_zero_of_forall_exists`
+  — exactly Phase 33's shape (`notes/Phase33.md` *Field-hypothesis shape: THREADED*).
+- **No characteristic assumption anywhere in `Pencil/`:** grep for
+  `CharZero|two_ne_zero|three_ne_zero|Nat.cast_injective|NeZero` → 0 hits; `⁻¹` occurs only in
+  proofs as rescaling by a witnessed nonzero `c`, never in a definition. Phase 33's record agrees:
+  the KT chain is any-characteristic, its two hidden-`CharZero` traps discharged
+  (`Countable.exists_injective_of_infinite`; the det factor built over `K`), genericity = a
+  non-root of a nonzero polynomial over an infinite field (`algebraic-induction.tex:35-44`); KT's
+  own device is "coordinates algebraically independent over the rational field" in `ℝ^d`
+  (KT 2011 PDF p22), the `K = ℝ` specialization.
+- **The only ℝ-pinned decls in `Pencil/`** are the W0 polarity cluster
+  (`Statement.lean:166, 185, 216, 257`) and the nonvacuity witness (`:665`) — off the
+  `PencilPair` chain, matching the chapter's "Fix $K = \R$" at `pencil.tex:81`, scoped to
+  `sec:pencil-duality`; K-clos (AC-1) prices their general-`K` restatement at one section.
+- **Had option A been chosen**, the signature changes would have been `Escape.lean:555` and
+  `:450` (plus `:335` and `Pair2.lean:1225` for consistency), the node statement at
+  `pencil.tex:829` ("Let $K$ be an infinite field"), and `notes/Phase39.md`; `formalization.yaml`,
+  `README.md` and `home_page/` carry no pencil entry and `intro.tex:359-370` names no field.
+  Blocked in practice by the unused-argument lint above.
+- **Where the hypothesis will actually enter:** the Lean-track item-5 lemma (`hK` on the tight
+  case from grid vanishing) takes `[Infinite K] [NeZero (2 : K)]`; the `hbareSplit` lemma takes
+  `[Infinite K]` (witness-form frame) or interim `IsAlgClosed K`; the unconditional corollary
+  inherits both. `CharZero K` instantiates `NeZero (2 : K)`, so every characteristic-0 field,
+  ℝ included, satisfies the expected form.
+
+### Hand-off to the (GR-10) attack, session 1 — the characteristic-2 probe (PI: deferred to the attack track)
+
+The attack has no `state.md` yet and its brief is rewritten only at review, so this paragraph is
+the record until session 1 writes its backlog. **The probe:** evaluate the census shapes' *chart*
+matrix (`pencilRow` at a random seed — not the branch-system matrix `dim_W_branch` that the
+drivers rank) over `F_{2^k}` (k large enough that a random seed is generic with high probability)
+and over a few odd `F_p`. A full-rank hit at a shape is a **proof** of `hK`'s conclusion at that
+shape over every infinite field of that characteristic (the ℤ-minor is nonzero mod `p`; then
+(AC-7)'s transfer). Systematic `F_{2^k}` misses would be **evidence that the target itself fails
+in characteristic 2** — the chart reproduces every nondegenerate realization projectively (the
+W5-L4 contract), so a chart-rank deficit at every seed says no nondegenerate realization attains
+there — and a **re-pin trigger for the headline typeclass**. A miss is probabilistic
+(Schwartz–Zippel), a hit is exact. Nothing in the pencil *statement* involves a quadratic form, so
+the expectation is hits; the value is deciding whether characteristic 2 limits the method or the
+conjecture. Cost: one driver leg beside `closure.py --char2`, which tested one *seed*, not the
+polynomial. The attack decides when; no coordinator dispatch (PI).
+
+### What would change this
+
+*(i)* A `pencilRow` entry with a denominator (none — G7) would break the ℤ-minor descent.
+*(ii)* A refutation of `hK` over `\bar{F_2}` at a habitat shape re-pins the headline typeclass to
+exclude characteristic 2 (`[NeZero (2 : K)]` on the reduction as well) — the only outcome under
+which option A's direction was right. *(iii)* A witness-form restatement of the S-mark frame
+removes `IsAlgClosed K` from the (K-bare) expectation. *(iv)* Jackson–Jordán pin-collinear over
+a general infinite field, if the frame's base case (a) is kept.

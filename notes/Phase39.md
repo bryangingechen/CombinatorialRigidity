@@ -15,7 +15,9 @@ the crux of `hK` on the tight stratum) are at `notes/attacks/{smark,gr10}/brief.
 **PI-reviewed 2026-09-15 and committed**. *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
 hypotheses, no `sorry`; **the Lean hold is LIFTED (2026-09-15, PI) for checklist items 1–3**
-(girth lemmas, consumed-shape normal form, the field-hypothesis decision); items 4–10 stay parked.
+(girth lemmas and consumed-shape normal form, both PINNED; the field-hypothesis decision,
+**SETTLED — option C**: the reduction stays `[Infinite K]`, the kernel lemmas take what their
+proofs need); items 4–10 stay parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -35,14 +37,21 @@ coincident-flag arm; the review found the consumer's shape narrower than the bri
 (the *consumed-shape disjunct* below) and re-aimed the attack's O4 at it —
 `notes/attacks/smark/state.md` is the status surface, and session 3 verifies the review's
 arithmetic (workbook S10) before building on it. (GR-10) has not started; session 1 writes
-its `state.md` from the template.
+its `state.md` from the template — **and its backlog takes the char-2 probe** (PI 2026-09-15,
+deferred to the attack track; spec in `notes/Phase39-design.md` § *Field-hypothesis recon*,
+last subsection): the census shapes' chart matrix over `F_{2^k}` and a few odd `F_p` — a
+full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
+misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
+the headline typeclass. The attack decides when to run it.
 **Lean track (hold lifted 2026-09-15 for items 1–3):** items 1–2 are **PINNED** (design pass
 2026-09-15, `notes/Phase39-design.md` § *Lean-track design pass*; eight red nodes in
 `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains*, the chapter's first). **The
 next concrete Lean commit is the first build, leaf G1 + G2:** the new file
 `Molecular/Induction/Girth.lean` with `Graph.GirthGE` and the spanning-short-cycle lemma,
-pinning `def:girth` / `lem:pencil-short-cycle-spanning` (S1/P2/B1; build order in the §). The
-item-3 field-hypothesis recon runs in parallel, read-only; the PI decides on its verdict.
+pinning `def:girth` / `lem:pencil-short-cycle-spanning` (S1/P2/B1; build order in the §). Item 3
+(the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
+`[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
+§ *Field-hypothesis recon*; chapter `fmlnote:pencil-conditional-realization-pair-field`).
 Builds need `LAKE_CACHE_DIR` set
 (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
 `.claude/settings.local.json`).
@@ -72,9 +81,10 @@ the chain length stratifies the obligation: `≥ 4` closes from the attack's S3 
 core (`smark/brief.md` §3 *Consumed shape*; workbook S10, reviewer's arithmetic).
 **Independence proviso:** the chain from (GR-15) to `hK` needs each hub's
 closed-hub-neighbourhood points independent, which the 40 742- and 166 088-shape sweeps did
-not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch:** the
-target is stated over any infinite field while the informal route is characteristic 0 (both
-briefs, §3). The briefs are committed (PI-reviewed 2026-09-15).
+not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch** —
+*resolved 2026-09-15*: neither route needs characteristic 0 (the grid needs `char ≠ 2`; S-mark
+needs algebraic closure only as stated); option C, checklist item 3. The briefs are committed
+(PI-reviewed 2026-09-15).
 
 **Standing user adjudications that bind:** 2026-07-24 the phase stays open; 2026-08-05 the
 Lean hold, and *"all of the scripts we run [are] committed"*; 2026-09-03 *"we should
@@ -105,10 +115,14 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `hbareSplit`'s hypotheses, outside the S-mark Lemma's 2-connected scope — V3, *Blockers*);
   and `w ≁ v` holds only for `m ≤ 4`, the general clause being `dist_{G−chain}(w, v) ≥ 6 − m`
   (V4). Target: new `Molecular/Induction/ForestSurgery/MaximalChain.lean`.
-- [ ] **The field hypothesis.** Decide whether the phase target scopes to characteristic 0
-  (KT work over ℝ; the grid route descends through a nonvanishing ℤ-polynomial) or someone
-  owes a positive-characteristic argument; record it in the blueprint chapter. The **field
-  mismatch** (both briefs, §3; `Escape.lean` carries only `[Infinite K]`).
+- [x] **The field hypothesis** — **SETTLED 2026-09-15 (PI, option C)**: the reduction stays
+  `[Infinite K]` (its proof uses no characteristic); kernel (K) via the grid expects
+  `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2` — the quadric and the polarity's eigen-splitting
+  collapse in characteristic 2); kernel (K-bare) via the 2-cut composition expects
+  `[Infinite K]` in witness form, interim `IsAlgClosed K`; the corollary inherits the kernels'
+  hypotheses. Record: `notes/Phase39-design.md` § *Field-hypothesis recon (2026-09-15)*;
+  chapter `fmlnote:pencil-conditional-realization-pair-field`. The char-2 probe is the (GR-10)
+  attack's (*Current state*).
 - [ ] **Deficiency laws** (BINDUC's, cited by 45 claims through (BE-22)): 3-connected ⇒
   `def₂ = 0`; the 2-cut law `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)`; the fibre-product identity
   `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)`; the welded bound `ρ_i ≤ δ_i + a_i` with
@@ -144,10 +158,6 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 - **The Lean hold (2026-08-05) is the user's**; lifting it for named items is a PI call, made
   per item. **Lifted 2026-09-15 for checklist items 1–3** (verbatim record
   `notes/pencil/adjudications.md`); items 4–10 stay parked.
-- **PI decision pending (2026-09-15): the field hypothesis** (checklist item 3) — `Escape.lean`
-  carries `[Infinite K]`, both briefs argue in characteristic 0; a read-only recon reports what
-  each informal route needs, and the PI picks between scoping the target to characteristic 0 and
-  recording a positive-characteristic debt in the chapter.
 - **PI decision pending (design pass 2026-09-15): the cut-vertex case of the consumed shape**
   (`notes/Phase39-design.md` § *Lean-track design pass*, V3). The maximal degree-2 chain through
   the split vertex can close at a *single* hub; `hbareSplit`'s hypotheses include that case, the
@@ -179,7 +189,7 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 **The phase stays OPEN.** Next concrete task: *Current state*'s first paragraph (both tracks).
 When the first attack starts, its `state.md` becomes that lemma's status surface and this note
 carries a two-line pointer to it, edited by the PI. The hold is lifted for checklist items 1–3
-(2026-09-15): Lean commits land under `/coordinate-phase 39` in forward mode against the pencil
+(2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in forward mode against the pencil
 chapter's red nodes in the design §'s *Build order* (first: G1 + G2, new
 `Molecular/Induction/Girth.lean`), with any crux as a hypothesis; a later lift for
 items 4–10 follows the same rule. **On a future HIT
@@ -195,6 +205,13 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
+- **2026-09-15 — the field hypothesis: option C (PI).** The reduction stays `[Infinite K]`; the
+  hypothesis lives on the kernel lemmas at the weakest form each proof needs — (K) via the grid
+  `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2`), (K-bare) via the 2-cut composition `[Infinite K]`
+  in witness form (interim `IsAlgClosed K`) — and the unconditional corollary inherits them.
+  Neither informal route needs characteristic 0; no landed proof uses one. Char-2 probe deferred
+  to the (GR-10) attack. Verbatim: `notes/pencil/adjudications.md`; record:
+  `notes/Phase39-design.md` § *Field-hypothesis recon*; chapter: `fmlnote:pencil-conditional-realization-pair-field`.
 - **2026-09-15 — items 1–2 PINNED (design pass, `notes/Phase39-design.md` § *Lean-track design
   pass*).** Cycle carrier `Fin m` data + predicate `Graph.GirthGE` (not the Matroid package's
   `IsCycle`/`IsCyclicWalk`, not an `ℕ∞` girth); chain carrier `WList` paths in ∃-statements (no

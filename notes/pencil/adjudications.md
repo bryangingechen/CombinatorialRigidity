@@ -496,3 +496,24 @@ characteristic 0 or merely infinite, and the PI decides on its verdict); run con
 pre-authorize fixups"**; rungs **sonnet, opus, fable, haiku** all dispatchable. **Everything else
 stands unchanged:** phase OPEN (2026-07-24), items 4–10 parked by the 2026-08-05 hold, W4 parked,
 `hK`/`hbareSplit` pinned, the attack tracks continue (S-mark session 3, (GR-10) session 1).
+
+## 2026-09-15 — the field hypothesis (checklist item 3): option C; the characteristic-2 probe deferred
+
+Recorded by the `/coordinate-phase 39` recon that landed the accepted verdict, verbatim. On the
+read-only recon's three options (A scope the target to characteristic 0; B keep `[Infinite K]`
+and record a characteristic-0 debt on the chapter node; C the hypothesis on the kernels) the
+user selected: **"C: hypothesis on the kernels (Recommended) — Reduction stays [Infinite K]. One
+docs commit records on the blueprint node: hK via the grid expects [Infinite K] [NeZero (2 : K)];
+hbareSplit expects [Infinite K] (interim IsAlgClosed K) pending the frame decision; the corollary
+inherits the kernels' hypotheses."** On the recon's proposed characteristic-2 probe the user
+selected: **"Defer to the attack track — Note it in the design record and the (GR-10) attack's
+backlog; the attack decides when to run it. No coordinator dispatch now."** Rationale, in the
+recon's one sentence: neither informal route needs characteristic 0 — the grid route to `hK`
+needs `char K ≠ 2` (the quadric `x·x = 0` and the polarity's eigen-splitting collapse in
+characteristic 2) and the S-mark route to `hbareSplit` needs algebraic closure only as stated —
+so scoping the field-general reduction would record a fact about the kernels' *methods* in the
+wrong theorem's signature (and an unused `[CharZero K]` there would fail `lake lint`). Record:
+`notes/Phase39-design.md` § *Field-hypothesis recon (2026-09-15)*; chapter:
+`fmlnote:pencil-conditional-realization-pair-field`. **Everything else stands unchanged:** phase
+OPEN (2026-07-24), items 4–10 parked, W4 parked, `hK`/`hbareSplit` pinned, the attack tracks
+continue (S-mark session 3; (GR-10) session 1, whose backlog now includes the probe).
