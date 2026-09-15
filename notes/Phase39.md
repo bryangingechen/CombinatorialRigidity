@@ -14,11 +14,11 @@ composition lemma, all that stands before `hbareSplit`) and **(GR-10)** (uniform
 the crux of `hK` on the tight stratum) are at `notes/attacks/{smark,gr10}/brief.md`,
 **PI-reviewed 2026-09-15 and committed**. *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
-hypotheses, no `sorry`; **the Lean hold is LIFTED (2026-09-15, PI) for checklist items 1–3**
-(girth lemmas **DONE** and consumed-shape normal form half-landed — **6 of the section's 8
-nodes green** — both PINNED; the field-hypothesis decision,
-**SETTLED — option C**: the reduction stays `[Infinite K]`, the kernel lemmas take what their
-proofs need); items 4–10 stay parked.
+hypotheses, no `sorry`; **the Lean hold was LIFTED (2026-09-15, PI) for checklist items 1–3 and
+all three are now DONE** — the pencil chapter's `sec:pencil-girth-chain` is fully green (all
+eight nodes, 2026-09-15) and the field hypothesis is settled (option C: the reduction stays
+`[Infinite K]`, the kernel lemmas take what their proofs need). Items 4–10 stay parked, so any
+further Lean work needs a new PI lift.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -44,34 +44,25 @@ last subsection): the census shapes' chart matrix over `F_{2^k}` and a few odd `
 full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
 misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
 the headline typeclass. The attack decides when to run it.
-**Lean track (hold lifted 2026-09-15 for items 1–3):** items 1–2 are **PINNED** (design pass
-2026-09-15, `notes/Phase39-design.md` § *Lean-track design pass*; eight red nodes in
-`blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains*, the chapter's first). **G1,
-G2, G3 and G4 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `Graph.GirthGE` +
-`.mono`/`.anti`, `Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid`, and
-`Graph.girthGE_of_noRigid_of_three_le_degree`; `Graph.ncard_closedNbhd_inter_le_two_of_girthGE` in
-`Molecule/Pencil/Motive.lean`), pinning `def:girth` / `lem:pencil-short-cycle-spanning` /
-`lem:pencil-girth-of-hub` / `lem:pencil-closed-nbhd-girth-five` — **the girth-lemmas checklist
-item (all four leaves) is now fully landed**, four of the eight red nodes green.
-**M3a/M3b, M1 and M2 landed 2026-09-15** (`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
-`Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
-`Graph.degree_deleteVerts_interior_add_one`,
-`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`,
-`Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`), pinning
-`lem:pencil-chain-side-connected`, `lem:pencil-chain-walk-extension` and
-`lem:pencil-degree-two-chain` (statement and proof each) — **seven of the eight red nodes are
-green**, one side-distance leaf left. M2's route needed no swap lemma: the trichotomy's
-conclusion mentions neither `a` nor `b`, so the WLOG (`degree a = 2` vs `degree b = 2`) is a
-private one-sided helper called twice with the roles swapped, not a symmetry rewrite.
-**Next concrete Lean commit: M4/M4′** (side distance, unblocked since G3 but wanting M1/M2's
-path shape).
-Item 3
-(the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
-`[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
-§ *Field-hypothesis recon*; chapter `fmlnote:pencil-conditional-realization-pair-field`).
-Builds need `LAKE_CACHE_DIR` set
-(`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
-`.claude/settings.local.json`).
+**Lean track — checklist items 1–3 are DONE (2026-09-15); nothing is queued under the current
+lift.** The design pass (`notes/Phase39-design.md` § *Lean-track design pass*) pinned items 1–2
+as eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains* (the
+chapter's first section), and **all eight are now green**: G1–G4 in the new
+`Molecular/Induction/Girth.lean` and in `Molecule/Pencil/Motive.lean` (`Graph.GirthGE` with
+`.mono`/`.anti`, `range_vtx_eq_vertexSet_of_cycle_of_noRigid`,
+`girthGE_of_noRigid_of_three_le_degree`, `ncard_closedNbhd_inter_le_two_of_girthGE`), then
+M3a/M3b, M1, M2 and M4/M4′ in the new `Molecular/Induction/ForestSurgery/MaximalChain.lean`
+(`connected_deleteVerts_interior_of_twoEdgeConnected`, `degree_deleteVerts_interior_add_one`,
+`exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`,
+`cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`,
+`le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid`,
+`le_length_add_eDist_deleteVerts_interior_of_noRigid`). Item 3 is **SETTLED** (PI, option C):
+the reduction stays `[Infinite K]`; the hypothesis lives on the kernel lemmas
+(`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
+`fmlnote:pencil-conditional-realization-pair-field`). **Items 4–10 stay parked by the hold**, so
+the next Lean commit needs a further PI lift — which of that and the attack sessions above comes
+next is the user's call. Builds need `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md`
+*Environment*; session-wide via the gitignored `.claude/settings.local.json`).
 
 **Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
 base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-07-24 → 07-30),
@@ -128,36 +119,19 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   note's shared pigeonhole into two direct `Set.ncard`-cardinality extractions (adjacent case:
   `Set.exists_mem_notMem_of_ncard_lt_ncard`; non-adjacent case: `v, h` provably absent from the
   intersection, so `Set.two_lt_ncard_iff`'s witnesses qualify directly).
-- [ ] **Consumed-shape normal form** — **PINNED** (same §, leaves M1–M4′; red nodes
-  `lem:pencil-chain-walk-extension`, `lem:pencil-degree-two-chain`,
-  `lem:pencil-chain-side-connected`, `lem:pencil-chain-side-distance`). Carrier: `WList` paths
-  in ∃-statements, no new record (V2); the builder is E2d-4 un-capped and 2EC-sourced. **Two
-  corrections to the review's shape:** it is a *trichotomy* — the chain can close at a
-  **single hub** (a cycle through a cut vertex; witness two 7-cycles sharing a vertex, inside
-  `hbareSplit`'s hypotheses, outside the S-mark Lemma's 2-connected scope — V3, *Blockers*);
-  and `w ≁ v` holds only for `m ≤ 4`, the general clause being `dist_{G−chain}(w, v) ≥ 6 − m`
-  (V4). Target: `Molecular/Induction/ForestSurgery/MaximalChain.lean`. **M3a/M3b landed
-  2026-09-15** (`Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
-  `Graph.degree_deleteVerts_interior_add_one`; `lem:pencil-chain-side-connected` green) — the
-  interior-vertex-neighbour classification (`isLink_interior_iff_eq`, private) is the reusable
-  core: an interior vertex's `G`-neighbours are exactly its two path-flanking vertices, via
-  `isLink_eq_of_degree_eq_two` at its two `WList.DInc_get_get_succ`-derived flanking edges.
-  **M1 landed 2026-09-15** (`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`,
-  same file, ~150 lines not the estimated ~250), with three route notes for M2/M4: the degree
-  test sits at the **newly appended** vertex, not the current endpoint, so the pinned `hlast`
-  is what the strong induction's invariant (`G.degree P.last = 2`) is seeded with; the package's
-  `Graph.IsPath.concat_isCyclicWalk` supersedes the design note's lower-level
-  `IsWalk.isCyclicWalk_of_closed_nodup` (FRICTION, top entry); and `isLink_interior_iff_eq`
-  collapses the template's ~30-line "the far end is interior" refutation to four lines.
-  **M2 landed 2026-09-15** (`Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`,
-  same file; `lem:pencil-degree-two-chain` green) — two M1 calls (`cons v eₐ (nil a)`, then its
-  own reverse) dispatched through a private one-sided helper (`degree_two_pair_aux`, taking
-  `G.degree a = 2` directly) called twice with the roles swapped; since the conclusion mentions
-  neither `a` nor `b`, no explicit swap/symmetry lemma was needed. `eₐ ≠ e_b` is unused in the
-  proof (renamed `_hne` at the public theorem per the project's unused-hypothesis convention);
-  the length-3+ bounds (`3 ≤ C.length` / `3 ≤ P.length`) each come from a strict-prefix argument
-  (`IsPrefix.eq_of_length_ge` refuted by a degree mismatch at the shared end). Remaining:
-  M4/M4′ (side-distance).
+- [x] **Consumed-shape normal form** — **DONE 2026-09-15** (design pass same §, leaves M1–M4′;
+  red nodes `lem:pencil-chain-walk-extension`, `lem:pencil-degree-two-chain`,
+  `lem:pencil-chain-side-connected`, `lem:pencil-chain-side-distance` — all four green, so
+  `sec:pencil-girth-chain` is fully green). Carrier: `WList` paths in ∃-statements, no new
+  record (V2); the builder is E2d-4 un-capped and 2EC-sourced. Two design-pass corrections to
+  the review's shape are now formal: the normal form is a *trichotomy*, since the chain can
+  close at a **single hub** (a cycle through a cut vertex — V3, *Blockers*), and `w ≁ v` holds
+  only for `m ≤ 4`, the general clause being `dist_{G−chain}(w, v) ≥ 6 − m` (V4). All six
+  declarations live in `Molecular/Induction/ForestSurgery/MaximalChain.lean`, whose module
+  docstring is the index; the reusable core is the private `isLink_interior_iff_eq` (an interior
+  vertex's `G`-neighbours are exactly its two path-flanking vertices). M4's `hdeg` is unused —
+  the deleted set is defined syntactically from `P` — and is kept only because the blueprint
+  node states it.
 - [x] **The field hypothesis** — **SETTLED 2026-09-15 (PI, option C)**: the reduction stays
   `[Infinite K]` (its proof uses no characteristic); kernel (K) via the grid expects
   `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2` — the quadric and the polarity's eigen-splitting
@@ -229,24 +203,17 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 ## Hand-off / next phase
 
-**The phase stays OPEN.** Next concrete task: *Current state*'s first paragraph (both tracks).
-When the first attack starts, its `state.md` becomes that lemma's status surface and this note
-carries a two-line pointer to it, edited by the PI. The hold is lifted for checklist items 1–3
-(2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in
-forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1–G4 all
-landed 2026-09-15** (`Molecular/Induction/Girth.lean` + `Molecule/Pencil/Motive.lean`; the girth
-lemmas checklist item is DONE), and **M3a/M3b, M1 and M2 landed 2026-09-15**
-(`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
-`Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
-`Graph.degree_deleteVerts_interior_add_one`,
-`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected` and
-`Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`, pinning
-`lem:pencil-chain-side-connected`, `lem:pencil-chain-walk-extension` and
-`lem:pencil-degree-two-chain` — seven of the eight red nodes green); next is **M4/M4′** (side
-distance) — with
-any crux as a hypothesis; a later lift for items 4–10 follows the same rule. **On a future HIT
-the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
-2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
+**The phase stays OPEN.** Next concrete task: *Current state*'s first paragraph — session 3 of
+`/attack smark` and session 1 of `/attack gr10`, each a main session in its own worktree. When
+an attack starts, its `state.md` becomes that lemma's status surface and this note carries a
+two-line pointer to it, edited by the PI. **The Lean track has no queued task under the current
+lift:** checklist items 1–3 are all done (2026-09-15 — `sec:pencil-girth-chain`'s eight nodes
+green, field hypothesis settled option C), and items 4–10 stay parked, so the next Lean commit
+is a PI call (lift another item) rather than a step already on the board; once lifted, it lands
+under `/coordinate-phase 39` in forward mode against the pencil chapter's red nodes, with any
+crux carried as a hypothesis. **On a future HIT the phase-boundary consequences are the USER's
+call** (`PHASE-BOUNDARIES.md`, against the 2026-07-24 no-split adjudication), surfaced with an
+estimate, never unilateral.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -264,12 +231,14 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   Neither informal route needs characteristic 0; no landed proof uses one. Char-2 probe deferred
   to the (GR-10) attack. Verbatim: `notes/pencil/adjudications.md`; record:
   `notes/Phase39-design.md` § *Field-hypothesis recon*; chapter: `fmlnote:pencil-conditional-realization-pair-field`.
-- **2026-09-15 — items 1–2 PINNED (design pass, `notes/Phase39-design.md` § *Lean-track design
-  pass*).** Cycle carrier `Fin m` data + predicate `Graph.GirthGE` (not the Matroid package's
-  `IsCycle`/`IsCyclicWalk`, not an `ℕ∞` girth); chain carrier `WList` paths in ∃-statements (no
-  `ChainData` variant record yet); two new files, since `Deficiency.lean`/`Operations.lean` are past
-  the tripwire. Findings: the consumed shape is a trichotomy (cut-vertex closure, V3); `w ≁ v` only
-  for `m ≤ 4` (V4); any hub ⇒ girth `≥ 7` (V5).
+- **2026-09-15 — items 1–2 PINNED, then LANDED (design pass, `notes/Phase39-design.md`
+  § *Lean-track design pass*).** Cycle carrier `Fin m` data + predicate `Graph.GirthGE` (not the
+  Matroid package's `IsCycle`/`IsCyclicWalk`, not an `ℕ∞` girth); chain carrier `WList` paths in
+  ∃-statements (no `ChainData` variant record yet); two new files, since
+  `Deficiency.lean`/`Operations.lean` are past the tripwire. Findings: the consumed shape is a
+  trichotomy (cut-vertex closure, V3); `w ≁ v` only for `m ≤ 4` (V4); any hub ⇒ girth `≥ 7` (V5).
+  All eight nodes of `sec:pencil-girth-chain` went green the same day, every pinned signature
+  typechecking as written.
 - **2026-09-15 — the Lean hold is LIFTED for checklist items 1–3 (user).** Girth lemmas,
   consumed-shape normal form, the field-hypothesis decision (recon first; the PI decides on its
   verdict). Items 4–10 stay parked. Verbatim: `notes/pencil/adjudications.md`.

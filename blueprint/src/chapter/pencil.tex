@@ -1124,6 +1124,9 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[Side paths between the chain ends are long]
   \label{lem:pencil-chain-side-distance}
+  \lean{Graph.le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid,
+    Graph.le_length_add_eDist_deleteVerts_interior_of_noRigid}
+  \leanok
   \uses{def:girth, def:rigid-subgraph}
   Let $G$ be a simple multigraph with no proper rigid subgraph,
   $D = \binom{n+1}{2} \ge 3$, and $P = w u_1 \dots u_m w'$ a path with
@@ -1133,6 +1136,7 @@ case of the induction rather than by the two-cut composition.
   when $m \le D - 2$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-girth-of-hub}
   A path $Q$ from $w$ to $w'$ avoiding $u_1, \dots, u_m$ closes with $P$
   into a cycle on $m + 1 + |E(Q)|$ vertices, which has at least $D + 1$

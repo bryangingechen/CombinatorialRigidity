@@ -9,13 +9,12 @@ import CombinatorialRigidity.Molecular.Induction.Girth
 /-!
 # The maximal degree-two chain's side graph (`sec:pencil-girth-chain`)
 
-Phase 39 (PENCIL), Lean track: leaves **M3a**, **M3b**, **M1** and **M2** of the
-girth-and-chain design pass (`notes/Phase39-design.md` § *Lean-track design pass (2026-09-15):
-checklist items 1–2*), pinning `lem:pencil-chain-side-connected`,
-`lem:pencil-chain-walk-extension` and `lem:pencil-degree-two-chain` of
-`blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains under no proper rigid
-subgraph*. The side-distance leaves (M4, M4′) are not built here; they get their own section
-below when landed.
+Phase 39 (PENCIL), Lean track: leaves **M3a**, **M3b**, **M1**, **M2**, **M4** and **M4′** of
+the girth-and-chain design pass (`notes/Phase39-design.md` § *Lean-track design pass
+(2026-09-15): checklist items 1–2*), pinning `lem:pencil-chain-side-connected`,
+`lem:pencil-chain-walk-extension`, `lem:pencil-degree-two-chain` and
+`lem:pencil-chain-side-distance` of `blueprint/src/chapter/pencil.tex` § *Girth and degree-two
+chains under no proper rigid subgraph*.
 
 * `Graph.connected_deleteVerts_interior_of_twoEdgeConnected` (M3a): deleting a path's interior
   (every vertex but the two ends) from a `2`-edge-connected graph leaves a connected side.
@@ -27,11 +26,17 @@ below when landed.
 * `Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair` (M2): the consumed-shape
   trichotomy at a degree-`2` vertex's split arm — `G` is a cycle, or the maximal degree-`2`
   chain through it closes at a single hub (a lollipop), or it runs between two distinct hubs.
+* `Graph.le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid` (M4) and
+  `Graph.le_length_add_eDist_deleteVerts_interior_of_noRigid` (M4′): with a hub at one chain
+  end and no proper rigid subgraph, a side path between the two chain ends is long —
+  `bodyBarDim n + 1 ≤ P.length + Q.length`, and its `Graph.eDist` form.
 
-All four leaves need only `TwoEdgeConnected`/`Simple`/`Loopless` plus the interior's degree-`2`
-closure, no girth; the private helpers below package the shared fact that an interior vertex's
-only `G`-neighbours are its two path-flanking vertices (`isLink_eq_of_degree_eq_two`,
-`ForestSurgery/ChainExtraction.lean`'s `chainData_of_isPath` is the template).
+M3a/M3b, M1 and M2 need only `TwoEdgeConnected`/`Simple`/`Loopless` plus the interior's
+degree-`2` closure, no girth; the private helpers below package the shared fact that an
+interior vertex's only `G`-neighbours are its two path-flanking vertices
+(`isLink_eq_of_degree_eq_two`, `ForestSurgery/ChainExtraction.lean`'s `chainData_of_isPath` is
+the template). M4/M4′ are the one pair that consumes girth, through
+`Induction/Girth.lean`'s `Graph.girthGE_of_noRigid_of_three_le_degree` (G3).
 -/
 
 namespace Graph
@@ -561,5 +566,138 @@ theorem cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair [Finite α] [Fin
     (∃ P : WList α β, G.IsPath P ∧ 3 ≤ G.degree P.first ∧ 3 ≤ G.degree P.last ∧
       (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ v ∈ P ∧ 3 ≤ P.length) :=
   hab.elim (degree_two_pair_aux h2ec hdeg hla) (degree_two_pair_aux h2ec hdeg hlb)
+
+/-! ## M4/M4′ — side paths between the chain ends are long -/
+
+/-- The cycle behind M4, stated against an arbitrary girth bound: a `G`-path `P` of length
+`≥ 2` and a path `Q` of the side `G − P.interior` sharing `P`'s two ends close into a single
+cycle on `P.length + Q.length` vertices, so any girth bound for `G` bounds that sum.
+
+Route: `P`'s two ends are distinct (`first_ne_last_iff` at `2 ≤ P.length`), so `Q` is a `cons`,
+`Q = cons P.first f Q₁`. Then `R := P ++ Q₁.reverse` is a `G`-path by `IsPath.append`: `Q₁`'s
+vertices are side vertices, hence outside `P`'s interior, and they avoid `P.first` by `Q`'s own
+`Nodup`, so `P.last` is the only vertex `P` and `Q₁.reverse` share. `R` runs from `P.first` to
+`Q₁.first` and is closed by `f`, which is no edge of `R`: not of `Q₁` by `Q.edge_nodup`, and not
+of `P` because `f`'s two endpoints are both outside `P`'s interior while every edge of `P`
+(at `2 ≤ P.length`) has an interior endpoint. `exists_cyclic_data_of_closed_path` then packages
+`R` as `Fin (R.length + 1)`-cyclic data, and `R.length + 1 = P.length + Q.length`. -/
+private lemma le_length_add_length_of_girthGE {G : Graph α β} {g : ℕ} (hg : G.GirthGE g)
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    {Q : WList α β} (hQ : (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).IsPath Q)
+    (hQf : Q.first = P.first) (hQl : Q.last = P.last) :
+    g ≤ P.length + Q.length := by
+  classical
+  set interior : Set α := {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last} with hidef
+  have hle : (G - interior) ≤ G := deleteVerts_le
+  -- `P` has two distinct ends, so the side path `Q` carries at least one edge.
+  have hPfl : P.first ≠ P.last :=
+    (WList.first_ne_last_iff hP.nodup).mpr (WList.length_pos_iff.mp (by omega))
+  obtain ⟨u, f, Q₁, rfl⟩ : ∃ u f Q₁, Q = WList.cons u f Q₁ :=
+    WList.Nonempty.exists_cons
+      ((WList.first_ne_last_iff hQ.nodup).mp (by rw [hQf, hQl]; exact hPfl))
+  have hQedge : (WList.cons u f Q₁).edge.Nodup := hQ.edge_nodup
+  rw [WList.first_cons] at hQf
+  subst hQf
+  rw [WList.last_cons] at hQl
+  rw [WList.cons_length]
+  rw [cons_isPath_iff] at hQ
+  obtain ⟨hflink, hQ₁, huQ₁⟩ := hQ
+  -- every vertex of `Q₁` is a side vertex, hence outside `P`'s interior
+  have hsideNotInt : ∀ x ∈ Q₁, x ∉ interior := fun x hx =>
+    (deleteVerts_vertexSet G interior ▸ hQ₁.isWalk.vertex_mem_of_mem hx).2
+  have hQ₁G : G.IsPath Q₁.reverse := (hQ₁.of_le hle).reverse
+  have hQ₁rf : Q₁.reverse.first = P.last := by rw [WList.reverse_first]; exact hQl
+  have hQ₁rl : Q₁.reverse.last = Q₁.first := WList.reverse_last
+  have hinter : ∀ x, x ∈ P → x ∈ Q₁.reverse → x = P.last := by
+    intro x hxP hxQ
+    rw [WList.mem_reverse] at hxQ
+    have hxnot : x ∉ interior := hsideNotInt x hxQ
+    by_contra hxne
+    exact hxnot ⟨hxP, fun heq => huQ₁ (heq ▸ hxQ), hxne⟩
+  set R : WList α β := P ++ Q₁.reverse with hRdef
+  have hRpath : G.IsPath R := hP.append hQ₁G hQ₁rf.symm hinter
+  have hRfirst : R.first = P.first := WList.append_first_of_eq hQ₁rf.symm
+  have hRlast : R.last = Q₁.first := by rw [hRdef, WList.append_last, hQ₁rl]
+  have hRlen : R.length = P.length + Q₁.length := by
+    rw [hRdef, WList.append_length, WList.reverse_length]
+  have hfG : G.IsLink f P.first Q₁.first := hflink.of_le hle
+  have hfclose : G.IsLink f R.last R.first := by rw [hRlast, hRfirst]; exact hfG.symm
+  -- `f` is no edge of `P`: both its ends avoid `P`'s interior, but every `P`-edge has one.
+  have hfnotP : f ∉ P.edge := by
+    intro hfP
+    obtain ⟨k, hk, hkeq⟩ := List.getElem_of_mem hfP
+    have hk' : k < P.length := by rwa [WList.length_edge] at hk
+    have h : G.IsLink (P.edge[k]'hk) (P.get k) (P.get (k + 1)) :=
+      hP.isWalk.isLink_of_dInc (dIncAt P k hk')
+    rw [hkeq] at h
+    rcases h.eq_and_eq_or_eq_and_eq hfG with ⟨h1, h2⟩ | ⟨_, h2⟩
+    · have hk0 : k = 0 := eq_zero_of_get_eq_first hP.nodup hk'.le h1
+      have hint : P.get (k + 1) ∈ interior :=
+        ⟨WList.get_mem P (k + 1),
+          fun heq => by
+            have := eq_zero_of_get_eq_first hP.nodup (by omega) heq; omega,
+          fun heq => by
+            have := eq_length_of_get_eq_last hP.nodup (by omega) heq; omega⟩
+      exact hsideNotInt Q₁.first WList.first_mem (h2 ▸ hint)
+    · have := eq_zero_of_get_eq_first hP.nodup (by omega : k + 1 ≤ P.length) h2
+      omega
+  have hfnotR : f ∉ R.edge := by
+    simp only [hRdef, WList.append_edge, List.mem_append, WList.reverse_edge, List.mem_reverse,
+      not_or]
+    refine ⟨hfnotP, fun hfQ₁ => ?_⟩
+    rw [WList.cons_edge, List.nodup_cons] at hQedge
+    exact hQedge.1 hfQ₁
+  obtain ⟨vtx, edge, hvtx, hedge, hlink, -, -, -⟩ :=
+    exists_cyclic_data_of_closed_path hRpath (by omega) hfclose hfnotR
+  have := hg (m := R.length + 1) (by omega) hvtx hedge hlink
+  omega
+
+/-- **M4**: a side path between the two ends of a maximal degree-`2` chain is long
+(`lem:pencil-chain-side-distance`, first pin). If `G` has no proper rigid subgraph in the
+`n`-dof regime, `P` is a path of length `≥ 2` whose first vertex is a hub (degree `≥ 3`), and
+`Q` is a path of the side `G − P.interior` joining `P`'s two ends, then
+`bodyBarDim n + 1 ≤ P.length + Q.length`. Route: the hub forces girth `≥ bodyBarDim n + 1`
+(`girthGE_of_noRigid_of_three_le_degree`, G3), and `P` together with `Q` closes into a single
+cycle on `P.length + Q.length` vertices (`le_length_add_length_of_girthGE`).
+
+At `bodyBarDim n = 6` and a chain of `m = P.length - 1` interior vertices this is the
+`dist_{G − chain}(w, v) ≥ 6 - m` bound of the consumed shape: a direct `w`–`v` edge is a side
+path with `Q.length = 1`, which the inequality refutes exactly for `m ≤ 4`. The interior's
+degree-`2` closure `_hdeg` is not needed for the bound (the deleted set is defined
+syntactically from `P`); it is kept in the signature because every consumer carries it and
+`lem:pencil-chain-side-distance` states it. -/
+theorem le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (_hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
+    (hfirst : 3 ≤ G.degree P.first)
+    {Q : WList α β} (hQ : (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).IsPath Q)
+    (hQf : Q.first = P.first) (hQl : Q.last = P.last) :
+    bodyBarDim n + 1 ≤ P.length + Q.length :=
+  le_length_add_length_of_girthGE (girthGE_of_noRigid_of_three_le_degree hD hnp hfirst)
+    hP hlen hQ hQf hQl
+
+/-- **M4′**: the `ℕ∞` form of M4 (`lem:pencil-chain-side-distance`, second pin), stated against
+the side's own `Graph.eDist` instead of a chosen side path. Route: if the two chain ends are not
+`ConnBetween` in the side the distance is `⊤` and the bound is vacuous — which is why this form
+needs no `2`-edge-connectivity; otherwise `ConnBetween.exists_isPath_length_eq_eDist` realizes
+the distance by a side path and M4 closes it. -/
+theorem le_length_add_eDist_deleteVerts_interior_of_noRigid [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
+    (hfirst : 3 ≤ G.degree P.first) :
+    ((bodyBarDim n + 1 : ℕ) : ℕ∞) ≤ (P.length : ℕ∞) +
+      (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).eDist P.first P.last := by
+  by_cases hconn :
+      (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).ConnBetween P.first P.last
+  · obtain ⟨Q, hQ, hQf, hQl, hQlen⟩ := hconn.exists_isPath_length_eq_eDist
+    rw [← hQlen]
+    exact_mod_cast le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid hD hnp hP hlen
+      hdeg hfirst hQ hQf hQl
+  · rw [eDist_eq_top_iff.mpr hconn]
+    simp
 
 end Graph
