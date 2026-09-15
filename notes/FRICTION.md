@@ -98,6 +98,33 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] A walk-surgery template older than the `Matroid` package API makes you re-derive three lemmas the package already ships
+- **Where it bit:** Phase 39 (PENCIL) M1
+  (`Molecular/Induction/ForestSurgery/MaximalChain.lean`,
+  `Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`), written line-by-line
+  against the Phase-23 template `chainWalk_trichotomy`
+  (`ForestSurgery/ChainExtraction.lean`).
+- **Friction:** three steps of the first green draft re-derived vendored-package lemmas by
+  hand — the induction cap `|V(P)| = P.length + 1` (`Set.ncard_def` +
+  `WList.encard_vxSet_of_nodup` + `simp`, where `Graph.IsPath.ncard_vertexSet` and
+  `Graph.IsPath.length_le_encard` state it outright); the `C.tail.vertex.Nodup` obligation of
+  `Graph.IsWalk.isCyclicWalk_of_closed_nodup` for the closing walk `P.concat g P.first` (a
+  six-line `cases`-on-`P` helper, where `Graph.IsPath.concat_isCyclicWalk hP hgy hgP` produces
+  the whole `IsCyclicWalk`); and unfolding `WList.IsClosed` by hand
+  (`WList.concat_isClosed_iff`, and the natural goal-changing `show` also trips
+  `linter.style.show`). The pull is structural, not carelessness: the template predates parts
+  of `Graph/Walk/{Path,Cycle}.lean`, and the design note's pinned ingredient list inherited its
+  lower-level `isCyclicWalk_of_closed_nodup` from the template.
+- **Fix:** before transcribing a template's hand-rolled walk step, grep
+  `.lake/packages/Matroid/Matroid/Graph/Walk/{Path,Cycle}.lean` and `Graph/WList/` for the
+  *result* shape (`IsPath.`, `IsCyclicWalk.`, `concat_`, `ncard_`), not for the step. Net here:
+  one private helper and ~25 lines deleted; the one surviving helper is
+  `length_lt_ncard_vertexSet`, the `ncard`/strict-`<` form of `IsPath.length_le_encard` that
+  the strong-induction measure wants.
+- **Status:** idiom.
+- **Lifted to:** TACTICS-GOLF § 3 *…and search the vendored `Matroid` package before
+  transcribing a template*.
+
 ### [idiom] No packaged "sub-arc of a `Fin m` cycle, closed by a chord, is a `Fin (a+1)` cycle"
 - **Where it bit:** Phase 39 (PENCIL) G3 (`Molecular/Induction/Girth.lean`,
   `Graph.girthGE_of_noRigid_of_three_le_degree`). The chord argument needs the arc of a

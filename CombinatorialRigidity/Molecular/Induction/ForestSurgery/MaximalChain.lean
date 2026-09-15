@@ -9,19 +9,22 @@ import CombinatorialRigidity.Molecular.Induction.Girth
 /-!
 # The maximal degree-two chain's side graph (`sec:pencil-girth-chain`)
 
-Phase 39 (PENCIL), Lean track: leaves **M3a** and **M3b** of the girth-and-chain design pass
-(`notes/Phase39-design.md` § *Lean-track design pass (2026-09-15): checklist items 1–2*),
-pinning `lem:pencil-chain-side-connected` of `blueprint/src/chapter/pencil.tex` § *Girth and
-degree-two chains under no proper rigid subgraph*. The consumed-shape normal form (M1, M2) and
-the side-distance leaves (M4, M4′) are not built here; they get their own sections below when
-landed.
+Phase 39 (PENCIL), Lean track: leaves **M3a**, **M3b** and **M1** of the girth-and-chain design
+pass (`notes/Phase39-design.md` § *Lean-track design pass (2026-09-15): checklist items 1–2*),
+pinning `lem:pencil-chain-side-connected` and `lem:pencil-chain-walk-extension` of
+`blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains under no proper rigid
+subgraph*. The trichotomy dispatch (M2) and the side-distance leaves (M4, M4′) are not built
+here; they get their own sections below when landed.
 
 * `Graph.connected_deleteVerts_interior_of_twoEdgeConnected` (M3a): deleting a path's interior
   (every vertex but the two ends) from a `2`-edge-connected graph leaves a connected side.
 * `Graph.degree_deleteVerts_interior_add_one` (M3b): the side loses exactly one edge at each
   path end — the one edge running from that end into the deleted interior.
+* `Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected` (M1): a degree-`2` chain
+  extends until it either exhausts a cycle, closes back onto its own start at a degree-`≥ 3`
+  anchor, or terminates at a degree-`≥ 3` vertex.
 
-Both leaves need only `TwoEdgeConnected`/`Simple`/`Loopless` plus the interior's degree-`2`
+All three leaves need only `TwoEdgeConnected`/`Simple`/`Loopless` plus the interior's degree-`2`
 closure, no girth; the private helpers below package the shared fact that an interior vertex's
 only `G`-neighbours are its two path-flanking vertices (`isLink_eq_of_degree_eq_two`,
 `ForestSurgery/ChainExtraction.lean`'s `chainData_of_isPath` is the template).
@@ -263,5 +266,166 @@ theorem degree_deleteVerts_interior_add_one [Finite β] {G : Graph α β} [G.Loo
     exact Set.ncard_sdiff_singleton_add_one hfirstLink.inc_left
   rw [degree_eq_ncard_inc, degree_eq_ncard_inc]
   exact hcard
+
+/-! ## M1 — the uncapped chain-walk builder -/
+
+/-- **A path is shorter than its host graph's vertex count.** Its `Nodup` vertex list has
+`P.length + 1` entries, all `G`-vertices, so `P.length < |V(G)|`. This is the natural induction
+cap for the chain-walk builder below, replacing E2d-4's externally supplied `n − P.length`
+measure (`ForestSurgery/ChainExtraction.lean`'s `chainWalk_trichotomy`); the `ncard` form of the
+Matroid package's `IsPath.length_le_encard`. -/
+private lemma length_lt_ncard_vertexSet [Finite α] {G : Graph α β} {P : WList α β}
+    (hP : G.IsPath P) : P.length < V(G).ncard := by
+  have hle := Set.ncard_le_ncard hP.vertexSet_subset (Set.toFinite _)
+  rw [hP.ncard_vertexSet] at hle
+  omega
+
+/-- **M1**: the uncapped chain-walk trichotomy (`lem:pencil-chain-walk-extension`). A path `P₀`
+of a simple `2`-edge-connected graph whose vertices after the first all have degree `2` either
+sits inside a graph that is itself a cycle, or extends to a closed walk returning to `P₀.first`
+— which then has degree `≥ 3`, every other walk vertex having degree `2` — or extends to a
+longer path whose interior vertices have degree `2` and whose last vertex has degree `≥ 3`.
+
+Template: `chainWalk_trichotomy` (`ForestSurgery/ChainExtraction.lean`, Katoh–Tanigawa 2011
+Lemma 4.6's walk-builder), with two changes. Its five minimality-sourced facts are re-sourced
+from `TwoEdgeConnected` + `G.Simple` (the min-degree floor from
+`two_le_degree_of_twoEdgeConnected`, the exit edge from
+`exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`, connectivity from
+`preconnected_of_twoEdgeConnected`), and the "lollipop" closed walk at a degree-`≥ 3` anchor is
+**kept** as the second alternative instead of being refuted against a no-proper-rigid-subgraph
+hypothesis. The external cap `n` is replaced by `length_lt_ncard_vertexSet`, so the strong
+induction runs on `|V(G)| − P.length`. -/
+theorem exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] (h2ec : G.TwoEdgeConnected)
+    {P₀ : WList α β} (hP₀ : G.IsPath P₀) (hlen : 1 ≤ P₀.length)
+    (hdeg : ∀ x ∈ P₀, x ≠ P₀.first → x ≠ P₀.last → G.degree x = 2)
+    (hlast : G.degree P₀.last = 2) :
+    Nonempty G.CycleData ∨
+    (∃ C : WList α β, G.IsCyclicWalk C ∧ P₀.IsPrefix C ∧ 3 ≤ G.degree C.first ∧
+      (∀ x ∈ C, x ≠ C.first → G.degree x = 2)) ∨
+    (∃ P : WList α β, G.IsPath P ∧ P₀.IsPrefix P ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ 3 ≤ G.degree P.last) := by
+  classical
+  have hconn : G.Preconnected := preconnected_of_twoEdgeConnected h2ec
+  -- The exit edge at a known degree-`2` vertex, sourced from `2`-edge-connectivity alone.
+  have hexit : ∀ {v w : α} {e : β}, w ≠ v → G.IsLink e v w → G.degree v = 2 →
+      ∃ y g, y ≠ v ∧ g ≠ e ∧ G.IsLink g v y := by
+    intro v w e hwv hlink hdegv
+    obtain ⟨a, b, eₐ, e_b, hav, hbv, -, -, hne, hla, hlb, hclosure⟩ :=
+      exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected h2ec hlink.left_mem
+        hlink.right_mem hwv hdegv
+    rcases hclosure e w hlink with rfl | rfl
+    · exact ⟨b, e_b, hbv, hne.symm, hlb⟩
+    · exact ⟨a, eₐ, hav, hne, hla⟩
+  -- The invariant: `P` extends `P₀`, its interior has degree `2`, and so does its last vertex.
+  have main : ∀ P : WList α β, G.IsPath P → P₀.IsPrefix P → 1 ≤ P.length →
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) → G.degree P.last = 2 →
+      Nonempty G.CycleData ∨
+      (∃ C : WList α β, G.IsCyclicWalk C ∧ P₀.IsPrefix C ∧ 3 ≤ G.degree C.first ∧
+        (∀ x ∈ C, x ≠ C.first → G.degree x = 2)) ∨
+      (∃ P' : WList α β, G.IsPath P' ∧ P₀.IsPrefix P' ∧
+        (∀ x ∈ P', x ≠ P'.first → x ≠ P'.last → G.degree x = 2) ∧ 3 ≤ G.degree P'.last) := by
+    intro P
+    induction hM : V(G).ncard - P.length using Nat.strong_induction_on generalizing P with
+    | _ M IH =>
+    intro hP hpre hPlen1 hdegP hdeg2
+    have hcap : P.length < V(G).ncard := length_lt_ncard_vertexSet hP
+    have hV2 : 2 ≤ V(G).ncard := by omega
+    set entry : β := P.edge[P.length - 1]'(by rw [WList.length_edge]; omega) with hentry_def
+    have hentry : G.IsLink entry (P.get (P.length - 1)) P.last := by
+      rw [hentry_def]
+      have h := hP.isWalk.isLink_of_dInc (dIncAt P (P.length - 1) (by omega))
+      have heq1 := Nat.sub_add_cancel (show 1 ≤ P.length by omega)
+      rwa [heq1, WList.get_length] at h
+    obtain ⟨y, g, hyne, hgne, hgy⟩ := hexit hentry.ne hentry.symm hdeg2
+    -- `g` is not already a path edge: at the last index it would coincide with `entry`, and at
+    -- any earlier index one of its two endpoints would have to be `P.last`.
+    have hgP : g ∉ P.edge := by
+      intro hgmem
+      obtain ⟨k, hk, hke⟩ := List.getElem_of_mem hgmem
+      have hk' : k < P.length := by rwa [WList.length_edge] at hk
+      have hkey : G.IsLink g (P.get k) (P.get (k + 1)) := by
+        have h := hP.isWalk.isLink_of_dInc (dIncAt P k hk')
+        rwa [hke] at h
+      by_cases hklast : k = P.length - 1
+      · apply hgne
+        subst hklast
+        have heq1 := Nat.sub_add_cancel (show 1 ≤ P.length by omega)
+        rw [heq1, WList.get_length] at hkey
+        exact hkey.unique_edge hentry
+      · have hlt1 : P.get k ≠ P.last := fun heq =>
+          absurd (eq_length_of_get_eq_last hP.nodup hk'.le heq) (by omega)
+        have hlt2 : P.get (k + 1) ≠ P.last := fun heq =>
+          absurd (eq_length_of_get_eq_last hP.nodup (by omega) heq) (by omega)
+        rcases hkey.eq_and_eq_or_eq_and_eq hgy with ⟨hk1, -⟩ | ⟨-, hk2⟩
+        · exact hlt1 hk1
+        · exact hlt2 hk2
+    by_cases hyfirst : y = P.first
+    · -- The walk closes back onto its own start.
+      subst hyfirst
+      by_cases hlen1 : P.length = 1
+      · -- A length-`1` closing is a parallel pair, excluded by `G.Simple`.
+        exfalso
+        have h0 : P.length - 1 = 0 := by omega
+        rw [h0, WList.get_zero] at hentry
+        exact hgne (hentry.unique_edge hgy.symm).symm
+      · have hlen2 : 2 ≤ P.length := by omega
+        by_cases hstart2 : G.degree P.first = 2
+        · -- Every vertex of the closed walk has degree `2`: `G` is a cycle.
+          have hdeg_all : ∀ z ∈ P, G.degree z = 2 := by
+            intro z hz
+            by_cases hzf : z = P.first
+            · rw [hzf]; exact hstart2
+            · by_cases hzl : z = P.last
+              · rw [hzl]; exact hdeg2
+              · exact hdegP z hz hzf hzl
+          obtain ⟨cy, -⟩ := cycleData_of_closed_path hP hlen2 hgy hgP hdeg_all hconn
+          exact Or.inl ⟨cy⟩
+        · -- The lollipop: the closed walk anchored at a degree-`≥ 3` start.
+          have hstart3 : 3 ≤ G.degree P.first := by
+            have := two_le_degree_of_twoEdgeConnected h2ec hP.isWalk.first_mem hV2
+            omega
+          refine Or.inr (Or.inl ⟨P.concat g P.first, hP.concat_isCyclicWalk hgy hgP,
+            hpre.concat g P.first, ?_, ?_⟩)
+          · rw [WList.concat_first]; exact hstart3
+          · intro z hz hzne
+            rw [WList.concat_first] at hzne
+            rw [WList.mem_concat] at hz
+            rcases hz with hz | rfl
+            · by_cases hzl : z = P.last
+              · rw [hzl]; exact hdeg2
+              · exact hdegP z hz hzne hzl
+            · exact absurd rfl hzne
+    · by_cases hymem : y ∈ P
+      · -- Impossible: an interior vertex's only edges are its two path edges, and `g` is not one.
+        exfalso
+        rcases isLink_interior_iff_eq hP hdegP hymem hyfirst hyne hgy.symm with
+          ⟨rfl, -⟩ | ⟨rfl, -⟩
+        · exact hgP (List.getElem_mem _)
+        · exact hgP (List.getElem_mem _)
+      · -- Extend, then test the new last vertex's degree.
+        have hP'path : G.IsPath (P.concat g y) := concat_isPath_iff.mpr ⟨hP, hgy, hymem⟩
+        have hP'deg : ∀ z ∈ P.concat g y, z ≠ (P.concat g y).first →
+            z ≠ (P.concat g y).last → G.degree z = 2 := by
+          intro z hz hzf hzl
+          rw [WList.concat_first] at hzf
+          rw [WList.concat_last] at hzl
+          rw [WList.mem_concat] at hz
+          rcases hz with hz | rfl
+          · by_cases hzP : z = P.last
+            · rw [hzP]; exact hdeg2
+            · exact hdegP z hz hzf hzP
+          · exact absurd rfl hzl
+        by_cases hydeg3 : 3 ≤ G.degree y
+        · exact Or.inr (Or.inr ⟨P.concat g y, hP'path, hpre.concat g y, hP'deg,
+            by rw [WList.concat_last]; exact hydeg3⟩)
+        · have hy2 : G.degree y = 2 := by
+            have := two_le_degree_of_twoEdgeConnected h2ec hgy.right_mem hV2
+            omega
+          exact IH (V(G).ncard - (P.concat g y).length)
+            (by rw [WList.concat_length]; omega) (P.concat g y) rfl hP'path
+            (hpre.concat g y) (by rw [WList.concat_length]; omega) hP'deg
+            (by rw [WList.concat_last]; exact hy2)
+  exact main P₀ hP₀ (WList.isPrefix_refl P₀) hlen hdeg hlast
 
 end Graph

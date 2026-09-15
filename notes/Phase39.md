@@ -15,7 +15,8 @@ the crux of `hK` on the tight stratum) are at `notes/attacks/{smark,gr10}/brief.
 **PI-reviewed 2026-09-15 and committed**. *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
 hypotheses, no `sorry`; **the Lean hold is LIFTED (2026-09-15, PI) for checklist items 1–3**
-(girth lemmas and consumed-shape normal form, both PINNED; the field-hypothesis decision,
+(girth lemmas **DONE** and consumed-shape normal form half-landed — **6 of the section's 8
+nodes green** — both PINNED; the field-hypothesis decision,
 **SETTLED — option C**: the reduction stays `[Infinite K]`, the kernel lemmas take what their
 proofs need); items 4–10 stay parked.
 
@@ -52,12 +53,16 @@ G2, G3 and G4 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `G
 `Molecule/Pencil/Motive.lean`), pinning `def:girth` / `lem:pencil-short-cycle-spanning` /
 `lem:pencil-girth-of-hub` / `lem:pencil-closed-nbhd-girth-five` — **the girth-lemmas checklist
 item (all four leaves) is now fully landed**, four of the eight red nodes green.
-**M3a/M3b landed 2026-09-15** (new file `Molecular/Induction/ForestSurgery/MaximalChain.lean`:
+**M3a/M3b and M1 landed 2026-09-15** (new file
+`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
 `Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
-`Graph.degree_deleteVerts_interior_add_one`), pinning `lem:pencil-chain-side-connected` (both
-statement and proof) — one of the four consumed-shape red nodes is now green.
-**Next concrete Lean commit: M1** (the `MaximalChain.lean` chain-walk builder, opus-rated,
-~250 lines); M4/M4′ are unblocked now that G3 is in, but wait on M1/M2 for the path shape.
+`Graph.degree_deleteVerts_interior_add_one`,
+`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`), pinning
+`lem:pencil-chain-side-connected` and `lem:pencil-chain-walk-extension` (statement and proof
+each) — **six of the eight red nodes are green**, two consumed-shape leaves left.
+**Next concrete Lean commit: M2** (the trichotomy dispatch at the split arm's hypotheses,
+sonnet-rated, ~60 lines: two M1 calls, the second on `P₁.reverse`), then M4/M4′ (side
+distance, unblocked since G3 but wanting M1/M2's path shape).
 Item 3
 (the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
 `[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
@@ -135,7 +140,14 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   interior-vertex-neighbour classification (`isLink_interior_iff_eq`, private) is the reusable
   core: an interior vertex's `G`-neighbours are exactly its two path-flanking vertices, via
   `isLink_eq_of_degree_eq_two` at its two `WList.DInc_get_get_succ`-derived flanking edges.
-  Remaining: M1 (chain-walk builder), M2 (trichotomy dispatch), M4/M4′ (side-distance).
+  **M1 landed 2026-09-15** (`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`,
+  same file, ~150 lines not the estimated ~250), with three route notes for M2/M4: the degree
+  test sits at the **newly appended** vertex, not the current endpoint, so the pinned `hlast`
+  is what the strong induction's invariant (`G.degree P.last = 2`) is seeded with; the package's
+  `Graph.IsPath.concat_isCyclicWalk` supersedes the design note's lower-level
+  `IsWalk.isCyclicWalk_of_closed_nodup` (FRICTION, top entry); and `isLink_interior_iff_eq`
+  collapses the template's ~30-line "the far end is interior" refutation to four lines.
+  Remaining: M2 (trichotomy dispatch), M4/M4′ (side-distance).
 - [x] **The field hypothesis** — **SETTLED 2026-09-15 (PI, option C)**: the reduction stays
   `[Infinite K]` (its proof uses no characteristic); kernel (K) via the grid expects
   `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2` — the quadric and the polarity's eigen-splitting
@@ -213,11 +225,14 @@ carries a two-line pointer to it, edited by the PI. The hold is lifted for check
 (2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in
 forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1–G4 all
 landed 2026-09-15** (`Molecular/Induction/Girth.lean` + `Molecule/Pencil/Motive.lean`; the girth
-lemmas checklist item is DONE), and **M3a/M3b landed 2026-09-15**
+lemmas checklist item is DONE), and **M3a/M3b + M1 landed 2026-09-15**
 (`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
-`Graph.connected_deleteVerts_interior_of_twoEdgeConnected` and
-`Graph.degree_deleteVerts_interior_add_one`, pinning `lem:pencil-chain-side-connected`); next is
-**M1** (the un-capped chain-walk builder, opus-rated, ~250 lines, needed before M2/M4/M4′) — with
+`Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
+`Graph.degree_deleteVerts_interior_add_one` and
+`Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`, pinning
+`lem:pencil-chain-side-connected` and `lem:pencil-chain-walk-extension` — six of the eight red
+nodes green); next is **M2** (the trichotomy dispatch, sonnet-rated: M1 at `cons v eₐ (nil a)`,
+then M1 again at the reversed result), then M4/M4′ — with
 any crux as a hypothesis; a later lift for items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.

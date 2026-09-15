@@ -23,7 +23,8 @@ symptom-indexed and lighter.
 2. **`Set.ncard` and the `toFinite_tac` autoparam** — never stage
    `.Finite` witnesses by hand.
 3. **Mirror-first rule** — if you needed a lemma upstream-eligible,
-   mirror it before landing the proof.
+   mirror it before landing the proof; search mathlib (and, for walk
+   surgery, the vendored `Matroid` package) before hand-rolling.
 4. **`refine ⟨?_, ?_⟩` for our `def`s** — `IsLaman`, `IsTight`,
    `IsSparse`, `IsKDof`, `IsMinimalKDof`, `edgesIn` are non-reducible;
    expose their structure manually (also blocks `linarith`).
@@ -480,6 +481,30 @@ upstream find:
 
 Rule of thumb: search by *type pattern of what you need*, not by
 your guess of what mathlib calls it — names drift, types don't.
+
+### …and search the vendored `Matroid` package before transcribing a template
+
+The same instinct bites one level down, where the "upstream" is the
+vendored `apnelson1/Matroid` walk API rather than mathlib. A walk-surgery
+proof is normally written line-by-line against an existing template in the
+tree — and a template can be **older than the package API it stands on**, so
+transcribing its hand-rolled steps re-derives lemmas the package now ships.
+Phase 39's M1 (`ForestSurgery/MaximalChain.lean`) copied three such steps
+from the Phase-23 `chainWalk_trichotomy`:
+
+- the induction cap `|V(P)| = P.length + 1` — `Graph.IsPath.ncard_vertexSet`
+  and `Graph.IsPath.length_le_encard` state it outright (the hand-rolled
+  form was `Set.ncard_def` + `WList.encard_vxSet_of_nodup` + `simp`);
+- the closing walk's `C.tail.vertex.Nodup` obligation of
+  `Graph.IsWalk.isCyclicWalk_of_closed_nodup` — `Graph.IsPath.concat_isCyclicWalk`
+  produces the whole `IsCyclicWalk (P.concat e P.first)` from `hP`, the
+  closing `G.IsLink e P.last P.first` and `e ∉ P.edge`;
+- unfolding `WList.IsClosed` by hand — `WList.concat_isClosed_iff`.
+
+Grep `.lake/packages/Matroid/Matroid/Graph/Walk/{Path,Cycle}.lean` and
+`Graph/WList/` for the **result** you want (`IsPath.`, `IsCyclicWalk.`,
+`concat_`, `ncard_`), not for the template's intermediate step. Same rule of
+thumb, one directory over.
 
 ---
 

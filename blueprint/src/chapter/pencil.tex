@@ -1033,6 +1033,8 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[Extending a degree-two chain]
   \label{lem:pencil-chain-walk-extension}
+  \lean{Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected}
+  \leanok
   \uses{def:cut-edges-2ec, def:cycle-data}
   Let $G$ be a simple two-edge-connected multigraph and
   $P = x_0 x_1 \dots x_k$ a path with $k \ge 1$ whose vertices
@@ -1045,18 +1047,22 @@ case of the induction rather than by the two-cut composition.
   has degree at least three.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:cut-edges-2ec, lem:chain-cycle-dichotomy}
-  Induction on $|V(G)| - k$. If $x_k$ has degree at least three, $P$ itself
-  is the third alternative. Otherwise $x_k$ has degree exactly two
-  (two-edge-connectivity gives degree at least two), and its second edge
-  leads to a vertex $y$. If $y$ is not on $P$, append it and continue. If
-  $y$ is on $P$ then $y = x_0$: an interior vertex of $P$ already has both
-  its edges on $P$, and $y = x_k$ would be a loop; simplicity also excludes
-  closing a single edge into a parallel pair. If $x_0$ has degree two,
-  every vertex of the closed walk has degree two and connectivity forces
-  the walk to exhaust $G$, which is then a cycle (the confinement argument
-  in the proof of \cref{lem:chain-cycle-dichotomy}); otherwise the closed
-  walk is the second alternative.
+  Induction on $|V(G)| - k$, which is a genuine measure because the
+  vertices of a path are distinct, so $k < |V(G)|$. By hypothesis $x_k$ has
+  degree exactly two, so it has a second edge, leading to a vertex $y$. If
+  $y$ is not on $P$, append it: should $y$ have degree at least three, the
+  extended path is the third alternative, and otherwise two-edge-connectivity
+  pins $y$ at degree exactly two, the hypothesis is restored for
+  $x_0 \dots x_k y$, and we continue. If $y$ is on $P$ then $y = x_0$: an
+  interior vertex of $P$ already has both its edges on $P$, and $y = x_k$
+  would be a loop; simplicity also excludes closing a single edge into a
+  parallel pair. If $x_0$ has degree two, every vertex of the closed walk
+  has degree two and connectivity forces the walk to exhaust $G$, which is
+  then a cycle (the confinement argument in the proof of
+  \cref{lem:chain-cycle-dichotomy}); otherwise the closed walk is the
+  second alternative.
 \end{proof}
 
 \begin{lemma}[The maximal degree-two chain through the split vertex]
