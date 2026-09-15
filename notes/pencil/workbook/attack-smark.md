@@ -453,7 +453,11 @@ point. ∎
 
 *Why this matters.* The Lean consumer `hbareSplit` (brief §3) supplies a degree-2 vertex
 `x` with neighbours `u ≁ v`; so **the consumed shape is exactly `H = G − x` composed with
-`ear1`**, and S9 is that instance of the Lemma with no residue: the whole of O4/O5 for it is
+`ear1`** *[review 2026-09-15: not quite — `hbareSplit` also carries
+`¬ G.PencilHub a ∨ ¬ G.PencilHub b`, so the consumed `H` has side-degree `1` at one of `u, v`,
+and after peeling the whole degree-2 chain the consumed shape is `ear_m`, `m ≥ 2`, against a
+hub-terminal side; see S10(iii). S9 stands as a theorem about the one-vertex ear between two
+hubs, which the consumer does not take.]*, and S9 is that instance of the Lemma with no residue: the whole of O4/O5 for it is
 the single statement *"`T(H; u, v) ∩ ⟨M, L⟩ = 0` (or the weaker clause at `δ ≤ 3`) and
 `A' ≠ y ∧ W`"* about the transmissible wrenches of `G − x` between the neighbours of `x`,
 at generic flags. `A' = Π_u` (i.e. `c₁(Π_u) = 2`) is the case `y = p_u` of the excluded
@@ -487,3 +491,78 @@ which is the whole of S9's dimension clause for the consumed shape (`dist ≥ 5`
 mechanism is transparent only for paths: a wrench of `⟨M, L⟩` passes every terminal hinge
 (`⟨M, L⟩ = (Π_u ⊕ Π_v)^⊥`), and two interior hinges in general position cut the 2-plane to
 `0`; for a general side `T` strictly exceeds the path-generated `Σ_P span(P)^⊥`.
+
+## S10 — Review notes (2026-09-15, `/review-attack` after session 2; the reviewer's claims, not the attack's — verify before building on them)
+
+**(i) A missing sentence in S2's generic-stratum count.** The count bounds
+`dim(P(A) ∩ S(ϕ)·y)` by `dim(P(A) ∩ Q_{I(y)})` and treats the case `P(A) ⊆ Q_{I₀}` as confined
+to one level set of `I`. If `Q₁|_A ≡ 0 ≡ Q₂|_A` (a *base-locus* subspace: `A ⊆ {x_L = 0}` or
+`{x_M = 0}` with `Q₂`-isotropic trace — e.g. `star(y)` for `y ∈ M ∪ L`, `Λ²π` for `π ⊃ M` or
+`π ⊃ L`, and every ruling plane `R_w`, `R^y`, in particular `ρ̄(ear1)`), then `P(A) ⊆ Q_I` for
+every `I`, and the level-set argument gives only `ρ₁ + ρ₂ − 1`, which is `5` at `ρ₁ + ρ₂ = 6`.
+The count still closes, because such an `A` misses `Gen` entirely — `Gen` requires `Q₁ ≠ 0` —
+so `I_Gen = ∅` by the tighter bound `(∗)`, `dim(P(A) ∩ S(ϕ)·y) ≤ dim(P(A) ∩ Σ)`; symmetrically
+for `B`. S2's statement is unaffected; its proof should say this.
+
+**(ii) The brief's §2 identities, re-derived** (S9 cites "re-derived in session 1" with no
+written record). *Gluing:* `M(G)` is the kernel of `M₁ × M₂ → (Λ²K⁴)²`,
+`(m₁, m₂) ↦ (m₁(u) − m₂(u), m₁(v) − m₂(v))`; each `M_i` contains the constant screws, so the
+image is `{(s, s + r₁ − r₂) : s ∈ Λ²K⁴, r_i ∈ ρ̄_i}`, of dimension `6 + dim(ρ̄₁ + ρ̄₂)`; hence
+`dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)`. *Deficiency:* a partition `P` of `V(G)`
+restricts to `P₁, P₂`; with `u, v` in one part, `|P| = |P₁| + |P₂| − 1` and
+`d(P) = d(P₁) + d(P₂)`, so `count(P) = count(P₁) + count(P₂)`, maximum `g₁ + g₂`; with `u, v`
+separated, `|P| = |P₁| + |P₂| − 2`, so `count(P) = count(P₁) + count(P₂) − 6`, maximum
+`f₁^sep + f₂^sep − 6`. Hence `def₃(G) = max(g₁ + g₂, f₁^sep + f₂^sep − 6) = f₁ + f₂ − min(δ₁ + δ₂, 6)`
+(when `δ_i ≥ 1`, `f_i = f_i^sep`; when `δ_i = 0` the second term is `≤` the first).
+*Attainment:* with `dim M_i = 6 + f_i + a_i` and `dim M(G) = 6 + def₃(G) + a(G)`, the two
+identities give `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6) + a₁ + a₂ − a(G)`; so `G` attains iff
+`dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6) + a₁ + a₂`.
+
+**(iii) The consumed shape, and the chain-length stratification.** `hbareSplit`
+(`Escape.lean:467`) carries `¬ G.PencilHub a ∨ ¬ G.PencilHub b` for the two neighbours `a, b` of
+the degree-2 vertex `x`; a pencil hub has degree `≥ 3` (`Motive.lean:73`) and 2-edge-connectivity
+gives degree `≥ 2`, so one neighbour has degree exactly `2`. Thus `x` lies on a maximal degree-2
+chain of `m ≥ 2` interior vertices whose ends `w, v` have degree `≥ 3` (or `G` is a cycle);
+`G = H′ ∪ ear_m` at `{w, v}`, with `w ≁ v` (else a cycle of length `m + 2 ≤ 6` on a proper vertex
+subset, i.e. a proper rigid subgraph, unless `G` is that cycle), `H′ = G − chain` connected
+(2-edge-connectivity), side-degree `≥ 2` at both ends, `dist_{H′}(w, v) ≥ 6 − m` (girth `≥ 7`).
+Also: "no proper rigid subgraph ⇒ girth `≥ 7`" fails exactly for `G ∈ {C₅, C₆}` — a spanning
+short cycle is not *proper* (`Deficiency.lean:483`); cycles are base case (b) of the brief's
+induction.
+
+Apply S5 with side 2 = `ear_m` (S8: fibre irreducible, `ρ₂ = δ₂ = min(m+1, 6)`, attains and
+welded-attains, profile from the S5 table) and side 1 = `H′` with `A = ρ̄′`, `ρ₁ = δ′`, at the hub
+cut's generic flags. Write the S3 inequality as `c′(U) ≤ dim U + max(0, δ′ + δ₂ − 6) − c₂(U)`.
+
+- **`m ≥ 5`:** `ρ̄₂ = Λ²K⁴` (S8 at `m = 5`; a longer ear contains six lines with at least that
+  freedom), so `dim(ρ̄′ + ρ̄₂) = 6 = min(δ′ + 6, 6)`: nothing to prove.
+- **`m = 4`** (`ρ₂ = 5`, no excess: `c₂(U) = dim U − 1` for `dim U ≥ 1`): the inequality reads
+  `c′(U) ≤ 1 + max(0, δ′ − 1) = max(1, δ′)`, true for every `U` since `c′(U) ≤ δ′`. Exceptions:
+  for `δ′ ≥ 2` they are checked on `(A^⊥, B^⊥)`, of dimensions `(6 − δ′, 1)` — (X1) needs two
+  3-dimensional spaces, (X3)/(X4) need `c_{B^⊥}(E) ≥ 2`, (X2) needs a `Q₂`-isotropic `A^⊥` of
+  dimension `5 > 4` (the maximum for a rank-4 form); at `δ′ = 1` (sum exactly `6`) on `(A, B)`
+  of dimensions `(1, 5)` the same four fail. **So for `m = 4` the Lemma holds whenever `H′`
+  attains and welded-attains at `(w, v)` — no condition on `H′`'s profile.**
+- **`m = 3`** (`ρ₂ = 4`; excess `1` at `Π_w`, `Π_v` only, so `c₂(Π) = 1`, otherwise
+  `c₂(U) = max(0, dim U − 2)`): for `dim U ≥ 2`, `U ∉ {Π_w, Π_v}`, the inequality is
+  `c′(U) ≤ max(2, δ′)`, trivial; for `dim U = 1` it is `c′(U) ≤ 1 + max(0, δ′ − 2)`, trivial; at
+  `U = Π_w` (and `Π_v`) it is `c′(Π_w) ≤ 1 + max(0, δ′ − 2)`, which bites only at `δ′ = 2`:
+  **`ρ̄′ ≠ Π_w, Π_v`**. Exceptions: (X4) is avoided because `ρ̄(ear3) ∩ (Π_w ⊕ Π_v) = ⟨L₀, L₃⟩`
+  (one line of each terminal pencil, `Q₂ = det[x|y] ≠ 0` generically) is not a ruling plane; (X2)
+  is avoided because `Q₂` has rank `4` on `ρ̄(ear3)` (S5 table, Gram `(2, 4, 4)`); (X3), and the
+  dual-side (X3)/(X4) at `δ′ ≥ 3`, are finite checks on `ear3`'s fixed `ρ̄` and `T` — not done here.
+- **`m = 2`** (`ρ₂ = 3`; excess `1` at `Π_w`, `Π_v`, `Π_w ⊕ Π_v`, `⟨M⟩⊕Π_w`, `⟨M⟩⊕Π_v`,
+  `Π_w⊕⟨L⟩`, `Π_v⊕⟨L⟩`, so `c₂ = 1, 1, 2, 1, 1, 1, 1` there and `max(0, dim U − 3)` elsewhere):
+  with slack `s = max(0, δ′ − 3)`, `c′(Π_w), c′(Π_v) ≤ 1 + s`; `c′(Π_w ⊕ Π_v) ≤ 2 + s`;
+  `c′(⟨M⟩⊕Π), c′(Π⊕⟨L⟩) ≤ 2 + s` at both pencils; every other block is trivial. So at `δ′ ≤ 3`:
+  **both terminal pencils met in `≤ 1` dimension, `Π_w ⊕ Π_v` in `≤ 2`, and the two 3-dimensional
+  blocks at each pencil in `≤ 2`** (the last bites only at `δ′ = 3`); at `δ′ = 4`:
+  `c′(Π_w ⊕ Π_v) ≤ 3` only; at `δ′ ≥ 5` nothing. Plus (X1)–(X4) on the pair (dual at `δ′ ≥ 4`);
+  `ρ̄(ear2)`'s trace on `Π_w ⊕ Π_v` is `⟨L₀, L₂⟩`, again not a ruling plane.
+
+*Reading.* The consumed obligation is the `m = 2` list on a side with side-degree `≥ 2` at both
+terminals — session 1's "first gap" in its weakest needed form — not the general wrench claim
+`T ∩ ⟨M, L⟩ = 0` at `dist ≥ 4`. The general 2-cut Lemma is still what the global induction on
+`H′` needs; its needed form is the induction frame's to state (state file, *Worries*).
+**Status:** reviewer's arithmetic from S3 + S8 and the S5 table, unverified by the attack and
+uncontrolled by a driver; session 3's first step is to check it (state file, *Next steps* 1).
