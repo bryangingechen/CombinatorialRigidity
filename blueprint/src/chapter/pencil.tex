@@ -1090,6 +1090,9 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[The side of a degree-two chain]
   \label{lem:pencil-chain-side-connected}
+  \lean{Graph.connected_deleteVerts_interior_of_twoEdgeConnected,
+    Graph.degree_deleteVerts_interior_add_one}
+  \leanok
   \uses{def:cut-edges-2ec}
   Let $G$ be a loopless two-edge-connected multigraph and
   $P = w u_1 \dots u_m w'$ a path with $m \ge 1$ whose interior vertices
@@ -1098,6 +1101,7 @@ case of the induction rather than by the two-cut composition.
   exactly one less in it than in $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:cut-edges-2ec}
   Every edge at an interior vertex is one of its two chain edges. Hence a
   connected component of $G - \{u_1, \dots, u_m\}$ containing neither $w$

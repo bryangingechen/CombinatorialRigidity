@@ -52,9 +52,12 @@ G2, G3 and G4 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `G
 `Molecule/Pencil/Motive.lean`), pinning `def:girth` / `lem:pencil-short-cycle-spanning` /
 `lem:pencil-girth-of-hub` / `lem:pencil-closed-nbhd-girth-five` — **the girth-lemmas checklist
 item (all four leaves) is now fully landed**, four of the eight red nodes green.
-**Next concrete Lean commit: M3a/M3b** (`MaximalChain.lean`, new file; need only 2EC +
-`Simple`/`Loopless`, no girth) or **M1** (the `MaximalChain.lean` chain-walk builder, opus-rated,
-~250 lines); M4/M4′ are also unblocked now that G3 is in, but wait on M1/M2 for the path shape.
+**M3a/M3b landed 2026-09-15** (new file `Molecular/Induction/ForestSurgery/MaximalChain.lean`:
+`Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
+`Graph.degree_deleteVerts_interior_add_one`), pinning `lem:pencil-chain-side-connected` (both
+statement and proof) — one of the four consumed-shape red nodes is now green.
+**Next concrete Lean commit: M1** (the `MaximalChain.lean` chain-walk builder, opus-rated,
+~250 lines); M4/M4′ are unblocked now that G3 is in, but wait on M1/M2 for the path shape.
 Item 3
 (the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
 `[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
@@ -126,7 +129,13 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   **single hub** (a cycle through a cut vertex; witness two 7-cycles sharing a vertex, inside
   `hbareSplit`'s hypotheses, outside the S-mark Lemma's 2-connected scope — V3, *Blockers*);
   and `w ≁ v` holds only for `m ≤ 4`, the general clause being `dist_{G−chain}(w, v) ≥ 6 − m`
-  (V4). Target: new `Molecular/Induction/ForestSurgery/MaximalChain.lean`.
+  (V4). Target: `Molecular/Induction/ForestSurgery/MaximalChain.lean`. **M3a/M3b landed
+  2026-09-15** (`Graph.connected_deleteVerts_interior_of_twoEdgeConnected`,
+  `Graph.degree_deleteVerts_interior_add_one`; `lem:pencil-chain-side-connected` green) — the
+  interior-vertex-neighbour classification (`isLink_interior_iff_eq`, private) is the reusable
+  core: an interior vertex's `G`-neighbours are exactly its two path-flanking vertices, via
+  `isLink_eq_of_degree_eq_two` at its two `WList.DInc_get_get_succ`-derived flanking edges.
+  Remaining: M1 (chain-walk builder), M2 (trichotomy dispatch), M4/M4′ (side-distance).
 - [x] **The field hypothesis** — **SETTLED 2026-09-15 (PI, option C)**: the reduction stays
   `[Infinite K]` (its proof uses no characteristic); kernel (K) via the grid expects
   `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2` — the quadric and the polarity's eigen-splitting
@@ -204,12 +213,12 @@ carries a two-line pointer to it, edited by the PI. The hold is lifted for check
 (2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in
 forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1–G4 all
 landed 2026-09-15** (`Molecular/Induction/Girth.lean` + `Molecule/Pencil/Motive.lean`; the girth
-lemmas checklist item is DONE); next is **M3a/M3b** (`MaximalChain.lean`, new file, sonnet-rated:
+lemmas checklist item is DONE), and **M3a/M3b landed 2026-09-15**
+(`Molecular/Induction/ForestSurgery/MaximalChain.lean`:
 `Graph.connected_deleteVerts_interior_of_twoEdgeConnected` and
-`Graph.degree_deleteVerts_interior_add_one`, buildable any time off 2EC +
-`Simple`/`Loopless` alone, no girth dependency) or **M1** (the un-capped chain-walk builder,
-opus-rated, ~250 lines, needed before M2/M4/M4′) — with any crux as a hypothesis; a later lift for
-items 4–10 follows the same rule. **On a future HIT
+`Graph.degree_deleteVerts_interior_add_one`, pinning `lem:pencil-chain-side-connected`); next is
+**M1** (the un-capped chain-walk builder, opus-rated, ~250 lines, needed before M2/M4/M4′) — with
+any crux as a hypothesis; a later lift for items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
 

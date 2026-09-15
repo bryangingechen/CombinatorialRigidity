@@ -2539,6 +2539,16 @@ Equivalently, `conv` into the index, or use a `getElem`-congruence lemma. The ge
 `getElem` index is load-bearing for its own bounds proof — change it by *recomputing the element*,
 not by rewriting the index in the existing term.
 
+**Variant — the goal itself is an equation/membership between two `getElem` terms.** When the
+whole *goal* (not a hypothesis you're rewriting into) is `l[k]'h₁ = l[k']'h₂` or
+`l[k]'h₁ ∈ ({l[k']'h₂} : Set _)` and you have `hidx : k = k'`, skip the "re-apply the indexing
+lemma" dance above — `simp [hidx]` (not `rw [hidx]`) closes it directly, using `simp`'s
+`getElem`-congruence support to fold the two (index, bounds-proof) pairs together and finish by
+proof irrelevance. Confirmed 2026-09-15 (Phase 39 M3a/M3b,
+`ForestSurgery/MaximalChain.lean`: `P.edge[P.idxOf a] = P.edge[P.length - 1]'_` type goals,
+`P.idxOf a = P.length - 1` in hand). Cheaper than minting a `getElem`-congruence helper lemma
+when the equation is the goal, not an in-place rewrite target.
+
 ## 62. *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` — a type-ascription `(e : T)` followed by an arithmetic operator inside a function/constructor argument needs the whole arithmetic expression re-parenthesized
 
 **Symptom.** A subterm like `Set.Iic ((i : ℕ) - 1 + 2)`, `(⟨(i : ℕ) - 1 + 1, h⟩ : Fin n)`, or

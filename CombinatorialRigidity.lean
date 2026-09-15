@@ -29,6 +29,7 @@ import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
+import CombinatorialRigidity.Molecular.Induction.ForestSurgery.MaximalChain
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Induction.Girth
 import CombinatorialRigidity.Molecular.Meet
