@@ -296,3 +296,194 @@ the gap being the per-side profile bounds (O4/O5 in the state file). **What woul
 change this:** a girth-`≥ 5` side pair at generic `ϕ` with `ρ_i = δ_i` violating a block
 inequality (a genuine shortfall, by (BE-95)(i)), or realising (X1) same-family (a
 shortfall S2 cannot see); either would refute the Lemma as stated, not S2.
+
+## S6 — Lemma (side-degree 1 at a terminal: the reduction to `H − u`)
+
+Let `(H; u, v)` be a side with `u` of side-degree 1, neighbour `w`, `L := L_{uw} = p_u ∧ p_w ∈ Π_u`.
+Then `H − u` is connected (else `u` is a cut vertex of `G`), and with `ρ̄' := ρ̄_{wv}(H − u)`,
+`f' := def₃(H − u)`, `g' := def₃((H − u)/wv)`, `δ' := f' − g'`:
+
+- **(i)** `m ↦ (m|_{H−u}, t)` with `m(w) − m(u) = t·L` is an isomorphism `M(H) ≅ M(H − u) × K`;
+  hence `ρ̄_{uv}(H) = ρ̄' + K·L` and `ρ_{uv}(H) = ρ' + 1 − [L ∈ ρ̄']`.
+- **(ii)** `f(H) = f' + 1`; `g(H) = max(g', f'_sep − 5)` where `f'_sep` is the maximum of the
+  partition count of `H − u` over partitions separating `w` from `v` (so `g(H) = max(g', f' − 5)`
+  when `δ' ≥ 1`); `δ(H) = min(δ' + 1, 6)`.
+- **(iii)** `H` attains ⟺ `H − u` attains. `H` welded-attains at `(u, v)` ⟺ `H − u`
+  welded-attains at `(w, v)` **and** (`δ' = 6` or `L ∉ ρ̄'`).
+- **(iv)** (profile transfer, assuming `L ∉ ρ̄'`) for a block sum `U`: if `Π_u ⊆ U` then
+  `c_H(U) = c'(U) + 1`; if `Π_u ∩ U = 0` then `c_H(U) = dim(ρ̄' ∩ (U ⊕ K·L))`.
+
+*Proof.* (i) Given `(m', t)`, set `m(u) := m'(w) − tL`; the only constraint on `u` is the hinge
+`uw`. Then `m(v) − m(u) = (m'(v) − m'(w)) + tL`. (ii) For a partition `P` of `V(H)`: if `{u}` is
+a part, the count is that of `P − {u}` plus `6 − 5 = 1`; otherwise deleting `u` from its part
+changes the count by `+5·[uw crosses P] ≥ 0`. So `f(H) = f' + 1`. The welded graph `H/uv` is
+`(H − u)` plus an edge `wv` (parallel if `w ∼ v`): partitions of `V(H − u)` not separating
+`w, v` count as in `(H − u)/wv`, separating ones lose `5`. For `δ` use `f' = max(f'_sep, g')`.
+(iii) `dim M(H) = dim M(H − u) + 1 = 6 + f' + 1 + a'`, so `a(H) = a'`. Welded:
+`M(H/uv) = {m : m(u) = m(v)} ≅ {(m', t) : m'(v) − m'(w) = −tL}`, the preimage of `ρ̄' ∩ KL`
+under `m' ↦ m'(v) − m'(w)`, so `dim M(H/uv) = dim M((H−u)/wv) + [L ∈ ρ̄'] = 6 + g' + a'_w + [L ∈ ρ̄']`,
+to be compared with `6 + g(H)`: for `δ' ≤ 5`, `g(H) = g'` and both terms must vanish; for
+`δ' = 6`, `g(H) = g' + 1` and `a'_w = 0` forces `ρ̄' = Λ²K⁴ ∋ L`. (iv) `L ∈ U` iff `Π_u ⊆ U`
+(a block sum meets the block `Π_u` in `0` or `Π_u`). If `L ∈ U`: `(ρ̄' ⊕ KL) ∩ U = (ρ̄' ∩ U) ⊕ KL`.
+If `L ∉ U`: `x + tL ∈ U` with `x ∈ ρ̄'` iff `x ∈ ρ̄' ∩ (U ⊕ KL)`, and `x ↦ x + tL` is injective. ∎
+
+*Reading.* The welded hypothesis at a side-degree-1 terminal is **not** inherited for free: it
+demands `L_{uw} ∉ ρ̄_{wv}(H − u)` — the hinge at `u` must not already be a relative screw of
+`v` against `w`. When it is, `ρ(H) = δ' = δ(H) − 1` and `H` has welded loss exactly `1`
+(the brief's "planted degenerate stratum" shape). In (iv) the second case involves
+`U ⊕ K·L_{uw}`, a block sum plus one line of the pencil `Π_u ∌`-block: this is *not* a block
+sum of the flag pair `(p_w, π_w; p_v, π_v)` of `H − u`, which is why the block calculus does not
+descend through a side-degree-1 terminal (state file, *Where it breaks*, third gap).
+
+## S7 — Proposition (excess is attainment loss of a bar-augmented side; the witness principle)
+
+Fix a side `(H; u, v)` at flags `ϕ`, a configuration `q`, and a subspace `U ⊆ Λ²K⁴`. Put
+`M_U(H) := {m ∈ M(H) : m(v) − m(u) ∈ U}`.
+
+- **(i)** `M_U(H)/M(H/uv) ≅ ρ̄ ∩ U`, so `c(U) = dim M_U(H) − dim M(H/uv)`.
+- **(ii)** `M_U(H)` is the motion space of the **body–bar–hinge framework** `H ∪ bars(U^⊥)`:
+  `H` plus `6 − dim U` bars between the bodies `u` and `v` along lines spanning the
+  Klein-complement `U^⊥`. (A bar along a line `ℓ` imposes `Q(m(v) − m(u), ℓ) = 0`, the
+  body–bar constraint; every block sum `U` and its complement `U^⊥` — again a block sum, S1 —
+  is spanned by lines: `⟨M⟩`, `⟨L⟩` are lines, `Π_u`, `Π_v` pencils.) Concretely: the joint
+  `U = ⟨L⟩^⊥` is one bar along `L = π_u ∩ π_v`; `U = ⟨M⟩^⊥` one bar along `M = p_u p_v`;
+  `U = Π_u ⊕ Π_v` the two bars `M`, `L`; `U = Π_u` the four bars `M`, `L` and two lines of `Π_u`.
+- **(iii)** (count) For every partition `P` of `V(H)`,
+  `dim M_U(H) ≥ 6|P| − 5 d_H(P) − (6 − dim U)·[P separates u, v]`, hence
+  `dim M_U(H) ≥ 6 + max(g, f_sep + dim U − 6)`, `= 6 + max(g, f + dim U − 6)` when `δ ≥ 1`.
+- **(iv)** (excess = loss) If `H/uv` attains at `q` and `δ ≥ 1`, then
+  `exc(U) := c(U) − max(0, δ + dim U − 6) = dim M_U(H) − [6 + max(g, f + dim U − 6)] ≥ 0`
+  is the attainment loss of `H ∪ bars(U^⊥)` against its own Tay count. **No excess at `U` ⟺
+  `H ∪ bars(U^⊥)` attains.** (The generic lower bound `c(U) ≥ max(0, ρ + dim U − 6)` is the
+  count in (iii); it does not need welded attainment when stated with `ρ`.)
+- **(v)** (Klein self-duality) `c(U) = ρ + dim U − 6 + dim(T ∩ U^⊥)` with `T := ρ̄^⊥` the space
+  of wrenches transmissible from `u` to `v` through `H`; so `exc(U)` for `(ρ̄, U)` equals the
+  excess of `(T, U^⊥)` — the pair `(ρ̄^⊥, U^⊥)` of S3.
+- **(vi)** (witness principle) `q ↦ dim M_U(H)(q)` is upper semicontinuous on the space of
+  configurations (rank of a matrix with entries polynomial in `q`, bars fixed by `ϕ`), and so
+  are `q ↦ dim M(H)(q)` and `q ↦ dim M(H/uv)(q)`. Hence for every irreducible component `Y` of
+  `Y°(H; ϕ)` and every `q₀ ∈ Ȳ` at which the hinge lines are defined: `H` attaining at `q₀`,
+  `H/uv` attaining at `q₀`, and `dim M_U(H)(q₀) ≤ D` each hold at the generic point of `Y`;
+  in particular `c(U) ≤ D − 6 − g` there. **One exact configuration certifies attainment,
+  welded attainment, and upper bounds on all sixteen `c(U)` for every component through it.**
+
+*Proof.* (i) `m ↦ m(v) − m(u)` maps `M_U(H)` onto `ρ̄ ∩ U` with kernel `M(H/uv)`. (ii) `m(v) − m(u) ∈ U`
+iff `Q(m(v) − m(u), ℓ) = 0` for `ℓ` in a spanning set of `U^⊥`, since `Q` is nondegenerate.
+(iii) Motions constant on the parts of `P` form a `6|P|`-dimensional space on which only the
+crossing constraints act: `5` per crossing hinge, `6 − dim U` for the joint if it crosses.
+The trivial partition gives `6`, non-separating ones `6 + g`, separating ones
+`6 + f_sep − 6 + dim U`; when `δ ≥ 1`, `f_sep = f`. (iv) Combine (i), (iii) and
+`dim M(H/uv) = 6 + g`: `c(U) ≥ max(0, f − g + dim U − 6)`, and the difference is the gap in
+(iii). (v) `dim(ρ̄ ∩ U) = ρ + dim U − dim(ρ̄ + U)` and `(ρ̄ + U)^⊥ = T ∩ U^⊥`. (vi) Lower
+semicontinuity of rank; on an irreducible variety an upper semicontinuous integer function
+attains its minimum on a dense open set. ∎
+
+*Reading for the attack.* Obligation **O4** ("per-side profile bounds") is, block by block,
+**an attainment statement for the side plus one, two or four bars between its terminals along
+the flag lines** — the same kind of statement as the target, for a body–bar–hinge framework
+that is not a pencil configuration. Two consequences. (a) Per side and per `ϕ` it is
+decidable by **one** exact witness (vi), which is what the S5 control table already contains:
+each row of that table is a *theorem* for the component through the draw, not a measurement —
+the README's "measurement of the sampled component at 6 draws" undersells it. (b) There is no
+prospect of reading `c(U)` off the structure of `H` at `u, v` alone: `exc(U) = 0` is a global
+rigidity statement about `H ∪ bars`.
+
+## S8 — Corollary (sides without interior hubs: the fibre is irreducible; the ear and theta profiles are theorems)
+
+If no vertex of `V(H) − {u, v}` has degree `≥ 3` in `H`, then `Y°(H; ϕ)` is a nonempty open
+subset of `∏_{x ∈ N(u)∩N(v)} L × ∏_{x ∈ N(u)∖N(v)} π_u × ∏_{x ∈ N(v)∖N(u)} π_v × ∏_{others} P³`
+(the only constraints are the flag incidences, distinctness of adjacent points, and the
+open non-degeneracy conditions), hence irreducible. By S7(vi) a single exact configuration
+then determines attainment, welded attainment and upper bounds on every `c(U)` at the generic
+point of the whole fibre; the lower bounds are the count `max(0, ρ + dim U − 6)` and the
+structural incidences (`L_{uw} ∈ ρ̄ ∩ Π_u` at side-degree 1). Applied to the S5 table
+(`drivers/sideprof.py`, any single draw of the eleven, seed `20260915`):
+
+- **Ears.** `ρ̄(ear_m) = span(L₀, …, L_m)` is `(m+1)`-dimensional for `m ≤ 5`
+  (`ρ = δ = m + 1`), attains and welded-attains, with profile: `m = 1`: `ρ̄ = w ∧ M` (a ruling
+  plane of `Π_u ⊕ Π_v`), `c(U) = dim(w∧M ∩ U)`; `m = 2`: `c(Π_u) = c(Π_v) = 1`,
+  `c(Π_u ⊕ Π_v) = 2`, `c(⟨M⟩⊕Π_u) = c(Π_u⊕⟨L⟩) = 1` (and `u ↔ v`), `c(⟨M⟩) = c(⟨L⟩) = c(⟨M⟩⊕⟨L⟩) = 0`,
+  all other blocks generic; `m = 3`: `c(Π_u) = c(Π_v) = 1`, all else generic; `m = 4, 5`:
+  generic throughout.
+- **Thetas** `theta33, theta34, theta44` (`ρ = δ = 2, 3, 4`, side-degree 2 at both ends)
+  and **`dumbbell`** (`ρ = δ = 1`): **no excess** — every `c(U)` equals `max(0, ρ + dim U − 6)`.
+  In particular `c(Π_u) = c(Π_v) = 0` at side-degree 2, the first gap of the state file, is a
+  theorem for these four sides (not for side-degree `≥ 2` in general).
+- `tail` and `cycletail` have an interior hub; their rows are theorems for the component
+  through the draw (S7(vi)) — `cycletail`'s `ρ̄` is the pencil `⟨L_{vt}, L_{c₂t}⟩` at `p_t`,
+  by S6(i) applied at `v` and then at `t` (the 5-cycle is rigid, `ρ̄_{uc₂}(C₅) = 0`).
+
+## S9 — Theorem (the `ear1` composition criterion: the consumed shape, in closed form)
+
+Let side 2 be `ear1 = u x v` (so `p_x ∈ L`, `ρ̄₂ = p_x ∧ M := ⟨p_x∧p_u, p_x∧p_v⟩`, `δ₂ = 2`,
+`a₂ = 0`, welded-attaining, fibre `Y₂ = L ≅ P¹`), and side 1 any `(H; u, v)` with a
+component `Y₁` at whose generic point `H` and `H/uv` attain, `δ := δ₁`. Write
+`A' := ρ̄₁ ∩ (Π_u ⊕ Π_v)` at the generic point of `Y₁`, and `T₁ := ρ̄₁^⊥`. In the adapted
+coordinates `Π_u ⊕ Π_v = {(x_u, x_v)} ≅ W ⊗ K²`, `Q₂ = det[x_u|x_v]`, and the Segre quadric
+`{Q₂ = 0}` has the two rulings `R_w := w ∧ M = {(αw, βw)}` (`w ∈ L`) and
+`R^y := y ∧ W = {(αw, βw) : w ∈ W}` for fixed `y = αe₁ + βe₂ ∈ M` (so `R^{p_u} = Π_u`,
+`R^{p_v} = Π_v`). Then the generic point of `Y₁ × Y₂` has `dim(ρ̄₁ + ρ̄₂) = min(δ + 2, 6)`
+— i.e. `G = H ∪ ear1` attains there — **if and only if**
+
+- `δ ≤ 4`: `dim A' ≤ 2` and `A'` is not a ruling plane `R^y`, `y ∈ M`;
+- `δ = 5`: `dim A' ≤ 3`, equivalently `T₁ ⊄ ⟨M⟩ ⊕ ⟨L⟩`;
+- `δ = 6`: always.
+
+Moreover `dim A' = δ − 2 + dim(T₁ ∩ (⟨M⟩ ⊕ ⟨L⟩))`, so the dimension clause is: `δ ≤ 2`:
+automatic; `δ = 3`: not both `M, L ∈ T₁`; `δ = 4` or `5`: `T₁ ∩ ⟨M, L⟩ = 0` — **no nonzero
+wrench `αM + βL` is transmissible from `u` to `v` through `H`**. By S7, `dim A'` is
+`dim M(H ∪ bar(M) ∪ bar(L)) − dim M(H/uv)`.
+
+*Proof.* `S(ϕ)` acts on `L = P(W)` through `C ∈ GL₂`, transitively, so "generic `p_x ∈ L`"
+is "generic `g ∈ S(ϕ)`" and the conclusion is the one S5 composes. *Case `δ ≤ 4`.* The
+conclusion is `ρ̄₁ ∩ R_w = 0` for generic `w ∈ L`; since `R_w ⊆ Π_u ⊕ Π_v`, this is
+`A' ∩ R_w = 0`. `dim A' = 0`: trivial. `dim A' = 1`: a point of `P³ = P(Π_u⊕Π_v)` lies on at
+most one line of the ruling `{P(R_w)}` (two lines of one ruling are disjoint). `dim A' = 2`:
+a line `ℓ ⊂ P³` not on the quadric meets it in `≤ 2` points, each on exactly one `P(R_w)`;
+a line on the quadric is some `P(R_{w₀})` (disjoint from every other `P(R_w)`) or some
+`P(R^y)` (meeting every `P(R_w)`, in the point `y ∧ w`). `dim A' ≥ 3`: a plane in `P³`
+meets every line. *Case `δ ≥ 5`.* The conclusion is `ρ̄₁ + R_w = Λ²K⁴`, i.e.
+`T₁ ∩ R_w^⊥ = 0`. From `Q = Q₁ − Q₂`: `Q(x, w∧e₁) ∝ det[w | x_v]` and `Q(x, w∧e₂) ∝ det[w | x_u]`,
+so `R_w^⊥ = ⟨M⟩ ⊕ ⟨L⟩ ⊕ R_w = {x : x_u, x_v ∈ Kw}`. For `δ = 6`, `T₁ = 0`. For `δ = 5`,
+`T₁ = Kt` and `t ∈ R_w^⊥` for generic `w` iff `t_u = t_v = 0` iff `t ∈ ⟨M⟩⊕⟨L⟩` iff
+`ρ̄₁ ⊇ Π_u ⊕ Π_v` iff `dim A' = 4`. *The dimension formula* is S7(v) with
+`(Π_u⊕Π_v)^⊥ = ⟨M⟩⊕⟨L⟩` and `ρ₁ = δ`. Finally `G` attains iff `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁ + a₂`
+at the configuration (brief §2, re-derived in session 1), with `a₁ = a₂ = 0` at the generic
+point. ∎
+
+*Why this matters.* The Lean consumer `hbareSplit` (brief §3) supplies a degree-2 vertex
+`x` with neighbours `u ≁ v`; so **the consumed shape is exactly `H = G − x` composed with
+`ear1`**, and S9 is that instance of the Lemma with no residue: the whole of O4/O5 for it is
+the single statement *"`T(H; u, v) ∩ ⟨M, L⟩ = 0` (or the weaker clause at `δ ≤ 3`) and
+`A' ≠ y ∧ W`"* about the transmissible wrenches of `G − x` between the neighbours of `x`,
+at generic flags. `A' = Π_u` (i.e. `c₁(Π_u) = 2`) is the case `y = p_u` of the excluded
+shape, which is why BEARCASE's "meets each terminal pencil in `≤ 1` dimension" is necessary.
+Control: `drivers/earone.py` (below) evaluates both sides of the equivalence exactly on every
+side of the battery and on the composed graph `H + x`.
+
+**Verdict.** S6–S9: *proven-informally*. **What would change this:** for S7(ii), a block sum
+not spanned by lines (there is none: each block is a line or a pencil); for S9, a side at
+which the predicted verdict and the exact rank of `H + x` disagree at a draw
+(`earone.py` checks this at every draw).
+
+**Control data (session 2) — `drivers/sideprof.py --side all2`, `drivers/earone.py --side both`
+(exact ℚ, seed `20260915`, 6 draws per side, `s = 20`; commands and caps in `drivers/README.md`).**
+Twelve sides added to the battery: `theta344`, `theta444`, `theta445`, `theta555` (both
+terminals of side-degree 3), `theta4444` (side-degree 4), `hubpend`, `hubpend2` (3 at `u`,
+1 at `v`), `hubcyc` (3 at `u`; `v` of side-degree 2 on a rigid 5-cycle), `cross44`, `cross55`
+(two interior degree-3 hubs), `theta45`, `theta55`; `δ ∈ {2, 3, 4, 5, 6}`, `dist(u, v)` up to 6,
+girth 5–12. At 72/72 draws `ρ = δ`, `H` and `H/uv` attain, and the profile is constant per
+side: **no excess on any block for the ten sides with side-degree `≥ 2` at both ends; excess
+exactly `Π_v: 1` on `hubpend`, `hubpend2`** — the side-degree-1 hinge, as S6(i) forces. By
+S7(vi) each row is a theorem for the component through the draw. `earone.py` on all 23 sides
+(138 draws, 3 points `p_x ∈ L` each): S9's predicted verdict equals the exact rank test of
+`H + x` at **138/138**, the identities `dim A' = ρ − 2 + dim(T ∩ ⟨M, L⟩)` and
+`dim A' = dim M(H + bar M + bar L) − dim M(H/uv)` hold at every draw, no `A'` is a `y ∧ W`
+plane, and `T ∩ ⟨M, L⟩ ≠ 0` occurs **only** on the four sides with `dist(u, v) ≤ 3`
+(`ear1`: 2, `ear2`: 1, `cycletail`: 1, `dumbbell`: 1), never on the 19 with `dist ≥ 4`.
+*Measured law (not a theorem):* at generic `ϕ`, on the attaining + welded-attaining component
+of a girth-`≥ 5` side with `dist(u, v) ≥ 4`, no wrench of `⟨M⟩ ⊕ ⟨L⟩` is transmissible —
+which is the whole of S9's dimension clause for the consumed shape (`dist ≥ 5` there). The
+mechanism is transparent only for paths: a wrench of `⟨M, L⟩` passes every terminal hinge
+(`⟨M, L⟩ = (Π_u ⊕ Π_v)^⊥`), and two interior hinges in general position cut the 2-plane to
+`0`; for a general side `T` strictly exceeds the path-generated `Σ_P span(P)^⊥`.

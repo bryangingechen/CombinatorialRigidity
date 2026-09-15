@@ -6,6 +6,8 @@ generic flag pair, in the ADAPTED basis (b1 = p_u, b2 = p_v, b3 b4 = pi_u cap pi
     python3 notes/attacks/smark/drivers/sideprof.py --side NAME --seed S --draws N [--verbose]
     (run from the repository root; workbook: notes/pencil/workbook/attack-smark.md S5)
     NAME in: ear1..ear5 theta33 theta34 theta44 tail cycletail dumbbell all
+            (session 2:) theta344 theta444 theta445 theta555 theta4444 hubpend
+            hubpend2 hubcyc cross44 cross55 theta45 theta55 all2 both
 
 Per draw:
   * exact pencil configuration of the side at a PRESCRIBED generic flag pair
@@ -106,6 +108,50 @@ def dumbbell_side():
             ('a2', 'b2')]
 
 
+def multitheta_side(ms, end='v'):
+    """k internally disjoint u-`end` paths with ms[i] interior vertices
+    (tags a, b, c, d)."""
+    E = []
+    for tag, m in zip('abcd', ms):
+        prev = 'u'
+        for i in range(m):
+            E.append((prev, f'{tag}{i}'))
+            prev = f'{tag}{i}'
+        E.append((prev, end))
+    return E
+
+
+def hubpend_side():
+    """theta444 between u and the hub z (deg z = 4), plus the edge z-v:
+    u of side-degree 3, v of side-degree 1."""
+    return multitheta_side((4, 4, 4), end='z') + [('z', 'v')]
+
+
+def hubpend2_side():
+    """theta344 between u and z, plus the path z-t-v: u side-degree 3,
+    v side-degree 1 through a degree-2 vertex."""
+    return multitheta_side((3, 4, 4), end='z') + [('z', 't'), ('t', 'v')]
+
+
+def hubcyc_side():
+    """theta444 between u and z, and a 5-cycle z,k1,v,k3,k4 through z with v
+    at distance 2 from z: u side-degree 3, v side-degree 2 on a rigid cycle."""
+    return multitheta_side((4, 4, 4), end='z') + [
+        ('z', 'k1'), ('k1', 'v'), ('v', 'k3'), ('k3', 'k4'), ('k4', 'z')]
+
+
+def cross_side(m, k, i):
+    """theta mm (paths u-x0..x{m-1}-v and u-y0..y{m-1}-v) plus a cross path
+    x_i - z0 .. z{k-1} - y_i: two interior hubs of degree 3."""
+    E = theta_side(m, m)
+    prev = f'x{i}'
+    for j in range(k):
+        E.append((prev, f'z{j}'))
+        prev = f'z{j}'
+    E.append((prev, f'y{i}'))
+    return E
+
+
 SIDES = {
     'ear1': lambda: path_side(1), 'ear2': lambda: path_side(2),
     'ear3': lambda: path_side(3), 'ear4': lambda: path_side(4),
@@ -113,9 +159,21 @@ SIDES = {
     'theta33': lambda: theta_side(3, 3), 'theta34': lambda: theta_side(3, 4),
     'theta44': lambda: theta_side(4, 4),
     'tail': tail_side, 'cycletail': cycletail_side, 'dumbbell': dumbbell_side,
+    # session-2 widening: hub terminals, mixed patterns, interior hubs
+    'theta344': lambda: multitheta_side((3, 4, 4)),
+    'theta444': lambda: multitheta_side((4, 4, 4)),
+    'theta445': lambda: multitheta_side((4, 4, 5)),
+    'theta555': lambda: multitheta_side((5, 5, 5)),
+    'theta4444': lambda: multitheta_side((4, 4, 4, 4)),
+    'hubpend': hubpend_side, 'hubpend2': hubpend2_side, 'hubcyc': hubcyc_side,
+    'cross44': lambda: cross_side(4, 3, 1), 'cross55': lambda: cross_side(5, 3, 2),
+    'theta45': lambda: theta_side(4, 5), 'theta55': lambda: theta_side(5, 5),
 }
 ORDER = ['ear1', 'ear2', 'ear3', 'ear4', 'ear5', 'theta33', 'theta34',
          'theta44', 'tail', 'cycletail', 'dumbbell']
+ORDER2 = ['theta344', 'theta444', 'theta445', 'theta555', 'theta4444',
+          'hubpend', 'hubpend2', 'hubcyc', 'cross44', 'cross55',
+          'theta45', 'theta55']
 
 # ------------------------------------------- block labels (task convention)
 #
@@ -482,12 +540,14 @@ def run_side(name, seed, ndraw, verbose=False):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--side', required=True,
-                    help='one of ' + ' '.join(ORDER) + ' or all')
+                    help='one of ' + ' '.join(ORDER + ORDER2)
+                    + ' or all (the session-1 eleven) / all2 (the session-2 twelve) / both')
     ap.add_argument('--seed', type=int, required=True)
     ap.add_argument('--draws', type=int, required=True)
     ap.add_argument('--verbose', action='store_true')
     a = ap.parse_args()
-    names = ORDER if a.side == 'all' else [a.side]
+    names = (ORDER if a.side == 'all' else ORDER2 if a.side == 'all2'
+             else ORDER + ORDER2 if a.side == 'both' else [a.side])
     for nm in names:
         if nm not in SIDES:
             sys.exit(f'unknown side {nm}')

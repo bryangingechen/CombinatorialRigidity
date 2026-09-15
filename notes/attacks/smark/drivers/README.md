@@ -24,7 +24,7 @@ denominators in `{1, 2, 3}`; the group sweep is 30 draws per pair, so task 4's
 inequality `dim(A ∩ gB) ≥ 1` for *every* `g` in task 4 is the parity **theorem**
 (workbook S4), not the sweep.
 
-## `sideprof.py` — block profile of a side's `ρ̄` at a prescribed generic flag pair (workbook S5)
+## `sideprof.py` — block profile of a side's `ρ̄` at a prescribed generic flag pair (workbook S5, S8)
 
 Run from the repository root. Reuses the corpus samplers and profile code
 (`bdecor.sample_by_branches` with `fixed=` flags, `bimage.sample_flags('nonadj')`,
@@ -38,8 +38,36 @@ vertices. The 16 block sums are printed in the corpus order with `L` = the line
 |---|---|
 | `timeout 900 python3 notes/attacks/smark/drivers/sideprof.py --side all --seed 20260915 --draws 6` | the S5 control table: 11 sides × 6 draws, `ρ = δ` and attaining at 66/66, one profile per side except one `theta34` draw |
 | `timeout 600 python3 notes/attacks/smark/drivers/sideprof.py --side theta34 --seed 1 --draws 24` | `theta34`: one profile at 24/24 (the seed-`20260915` deviation is draw-level) |
+| `timeout 1800 python3 notes/attacks/smark/drivers/sideprof.py --side all2 --seed 20260915 --draws 6` | the session-2 widening (workbook S8, state file *Tried*): 12 sides × 6 draws — `theta344/444/445/555` and `theta4444` (hub terminals, side-degree 3–4), `hubpend`, `hubpend2` (side-degree 3 at `u`, 1 at `v`), `hubcyc` (3 at `u`, 2 at `v` on a rigid 5-cycle), `cross44`, `cross55` (two interior hubs), `theta45`, `theta55`; `ρ = δ` and attaining at 72/72, one profile per side, **no excess anywhere except `Π_v: 1` on `hubpend`, `hubpend2`** (the side-degree-1 hinge) |
 
 Caps, disclosed: flag pair and interior points drawn with `s = 20` (numerators in
-`[−20, 20]`), 40 tries per branch draw; a "none" excess row is a measurement of the
-sampled component at 6 draws, an "excess" row is a lower bound on the generic
-`c(U)` (upper semicontinuity of `dim(ρ̄ ∩ U)` on the attaining locus, (BE-37)(i)).
+`[−20, 20]`), 40 tries per branch draw. **Reading (workbook S7(vi), S8):** every draw
+is an exact witness, so each row is a *theorem* for the irreducible component of
+`Y°(H; ϕ)` through the draw — attainment, welded attainment and the upper bounds
+`c(U) ≤ value` (upper semicontinuity); for sides without interior hubs (ears, thetas)
+the fibre is irreducible and the row is the profile of the whole fibre. The lower
+bounds are the count `max(0, ρ + dim U − 6)` and the terminal-hinge incidences. The
+population is still the 23 named sides: "no excess at a hub terminal" is *not found
+in these 23 sides*, not a theorem about hub terminals.
+
+## `earone.py` — the `ear1` composition criterion (workbook S9) and the bar count (S7)
+
+Run from the repository root; imports `sideprof.py` for sampling and coordinates.
+Per side and draw it computes `A' = ρ̄ ∩ (Π_u ⊕ Π_v)`, its `Q₂`-Gram rank and ruling
+family, `dim(T ∩ ⟨M, L⟩)` for the transmissible-wrench space `T = ρ̄^⊥`, asserts the
+S9 identity `dim A' = ρ − 2 + dim(T ∩ ⟨M, L⟩)` and S7's `dim A' = dim M(H + bar M + bar L)
+− dim M(H/uv)`, then compares S9's **predicted** verdict with the **actual** one: the exact
+rank of the composed pencil configuration `G = H + x` (`p_x` on `L = π_u ∩ π_v`) against
+`6|V(G)| − 6 − def₃(G)`, at `--px` random points of `L`; `def₃(G) = f + 2 − min(δ + 2, 6)`
+is asserted (the brief's composition formula).
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 3000 python3 notes/attacks/smark/drivers/earone.py --side both --seed 20260915 --draws 6 --px 3` | 23 sides × 6 draws × 3 `p_x`: predicted = actual at **138/138** draws (`MISMATCH at 0`), all 138 attaining and welded-attaining; `dim(T ∩ ⟨M,L⟩) ≠ 0` only on `ear1` (2), `ear2` (1), `cycletail` (1), `dumbbell` (1) — the four sides with `dist(u, v) ≤ 3` — and `0` on the 19 sides with `dist(u, v) ≥ 4`; no `A'` of the excluded family `y ∧ W` |
+
+Caps, disclosed: the same `s = 20` draws; `p_x` has coefficients in `[−20, 20]` on the
+basis of `L`. A `p_x` draw is generic with probability 1 minus a finite set, so
+"actual" is a witness per draw; "predicted = actual at 138/138" is a control on S9's
+*proof* (its "what would change this" is one mismatch), not on S9's truth, which is
+the argument in the workbook. `dist ≥ 4 ⟹ T ∩ ⟨M, L⟩ = 0` is a **measured law on 19
+sides**, not a theorem (state file, *Where it breaks*).
