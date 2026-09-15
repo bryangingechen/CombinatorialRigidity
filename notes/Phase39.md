@@ -14,7 +14,8 @@ composition lemma, all that stands before `hbareSplit`) and **(GR-10)** (uniform
 the crux of `hK` on the tight stratum) are at `notes/attacks/{smark,gr10}/brief.md`,
 **PI-reviewed 2026-09-15 and committed**. *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
-hypotheses, no `sorry`; **parked by the Lean hold** until the PI names items to lift it for.
+hypotheses, no `sorry`; **the Lean hold is LIFTED (2026-09-15, PI) for checklist items 1–3**
+(girth lemmas, consumed-shape normal form, the field-hypothesis decision); items 4–10 stay parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -34,8 +35,14 @@ coincident-flag arm; the review found the consumer's shape narrower than the bri
 (the *consumed-shape disjunct* below) and re-aimed the attack's O4 at it —
 `notes/attacks/smark/state.md` is the status surface, and session 3 verifies the review's
 arithmetic (workbook S10) before building on it. (GR-10) has not started; session 1 writes
-its `state.md` from the template. Optional in parallel: lift the Lean hold for checklist
-items 1–3 only.
+its `state.md` from the template. **Lean track (hold lifted 2026-09-15 for items 1–3):** the
+next concrete commit is a **design-pass recon** that pins items 1–2 as exact Lean statements —
+compiler-checked signatures in `notes/Phase39-design.md` § *Lean-track design pass* and red
+nodes in `blueprint/src/chapter/pencil.tex` (forward mode; the chapter is all-green today) — with
+a parallel read-only recon on item 3 (what field each informal route needs) whose options the PI
+decides. Then the first build is the leaf-most red node. Builds need `LAKE_CACHE_DIR` set
+(`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
+`.claude/settings.local.json`).
 
 **Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
 base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-07-24 → 07-30),
@@ -75,8 +82,8 @@ ultimately be driven by the math … we shouldn't lock [declined directions] out
 
 ## Lemma checklist — the Lean track
 
-*All parked by the hold; ranked cheapest and most decision-relevant first; each carries its
-crux as a HYPOTHESIS, never a `sorry`.*
+*Items 1–3 unparked 2026-09-15 (PI); items 4–10 stay parked by the hold. Ranked cheapest and
+most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 - [ ] **Girth lemmas.** No proper rigid subgraph ⇒ girth ≥ 7 **or `G` is a 5- or 6-cycle**
   (a ≤ 6-cycle of bodies is rigid, `isKDof_zero_of_cycle`; a spanning one is not *proper*,
@@ -129,8 +136,13 @@ crux as a HYPOTHESIS, never a `sorry`.*
 
 ## Blockers / open questions
 
-- **The Lean hold (2026-08-05) is the user's** and parks every checklist item above; lifting
-  it for named items is a PI call, made per item.
+- **The Lean hold (2026-08-05) is the user's**; lifting it for named items is a PI call, made
+  per item. **Lifted 2026-09-15 for checklist items 1–3** (verbatim record
+  `notes/pencil/adjudications.md`); items 4–10 stay parked.
+- **PI decision pending (2026-09-15): the field hypothesis** (checklist item 3) — `Escape.lean`
+  carries `[Infinite K]`, both briefs argue in characteristic 0; a read-only recon reports what
+  each informal route needs, and the PI picks between scoping the target to characteristic 0 and
+  recording a positive-characteristic debt in the chapter.
 - **Each attack's first move is a reading check, not a sweep:** the girth-5 restriction and
   the frame gap for S-mark; the independence proviso for (GR-10). Session 1 should settle or
   scope these before choosing a route. (S-mark's session 1 did the girth check but not a
@@ -152,11 +164,12 @@ crux as a HYPOTHESIS, never a `sorry`.*
 
 ## Hand-off / next phase
 
-**The phase stays OPEN.** Next concrete task: *Current state*'s first paragraph. When the
-first attack starts, its `state.md` becomes that lemma's status surface and this note carries
-a two-line pointer to it, edited by the PI. When the hold lifts for a checklist item, the next
-Lean commit is the first unchecked box above, landed under `/coordinate-phase 39` in forward
-mode against the pencil blueprint chapter, with the crux as a hypothesis. **On a future HIT
+**The phase stays OPEN.** Next concrete task: *Current state*'s first paragraph (both tracks).
+When the first attack starts, its `state.md` becomes that lemma's status surface and this note
+carries a two-line pointer to it, edited by the PI. The hold is lifted for checklist items 1–3
+(2026-09-15): Lean commits land under `/coordinate-phase 39` in forward mode against the pencil
+blueprint chapter, first unchecked box first, with the crux as a hypothesis; a later lift for
+items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
 
@@ -169,6 +182,9 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
+- **2026-09-15 — the Lean hold is LIFTED for checklist items 1–3 (user).** Girth lemmas,
+  consumed-shape normal form, the field-hypothesis decision (recon first; the PI decides on its
+  verdict). Items 4–10 stay parked. Verbatim: `notes/pencil/adjudications.md`.
 - **2026-09-15 — the research loop is RETIRED; attack tracks replace directions.** Six weeks
   and 127 directions moved no carried item; coordinator effort was ~55 % process; ~158
   imperatives, most single-incident. Rules: `HARNESS.md`; mechanics: `/attack`,

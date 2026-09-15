@@ -50,6 +50,12 @@ In addition to the universal Starting steps in `../CLAUDE.md`
 - `lake build CombinatorialRigidity.Laman` (or the leftmost active
   phase's file) to confirm the tree still compiles cleanly on its
   own before touching anything.
+- If that build fails with `failed to cache artifact: operation not
+  permitted`, no Lean is wrong: Lean 4.34's Lake cache defaults to the
+  read-only elan toolchain dir. Set `LAKE_CACHE_DIR` per
+  `../notes/ToolchainBumps.md` *Environment* — session-wide through the
+  gitignored `.claude/settings.local.json` `env` block, so subagents'
+  builds inherit it — and rebuild.
 
 ## Engineering conventions
 

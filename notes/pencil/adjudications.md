@@ -483,3 +483,16 @@ mathematical reason, not permission.
 - **2026-08-02, W4:** route **3, packaging (b)** — the structure-theorem-pinned dispatch
   invariant, with (K-res) carried as a sibling of the byte-identical `hK` — **recorded as a
   decision, not built; W4 stays parked** while the (K)-family research continues.
+
+## 2026-09-15 — the Lean hold lifted for checklist items 1–3
+
+Recorded by the `/coordinate-phase 39` coordinator at session start, verbatim. The user, on
+reading the two-track status: *"Let's lift the Lean hold and formalize the items that are ready
+and listed in the notes."* At the session-start check-in the user then selected: **hold scope
+"Items 1–3"** (the girth lemmas, the consumed-shape normal form, the field-hypothesis decision —
+exactly the items `notes/Phase39.md` *Current state* had marked liftable); **field scope "Recon
+first, then I present options"** (a read-only recon checks what the grid / S-mark routes need,
+characteristic 0 or merely infinite, and the PI decides on its verdict); run config **"Lift cap +
+pre-authorize fixups"**; rungs **sonnet, opus, fable, haiku** all dispatchable. **Everything else
+stands unchanged:** phase OPEN (2026-07-24), items 4–10 parked by the 2026-08-05 hold, W4 parked,
+`hK`/`hbareSplit` pinned, the attack tracks continue (S-mark session 3, (GR-10) session 1).

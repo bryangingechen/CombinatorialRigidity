@@ -122,6 +122,21 @@ Sanity check after any build: `grep -c 'failed to cache artifact' <log>`
 should be `0`, and the `Built` + `Replayed` `CombinatorialRigidity.` lines
 together should account for all 122 files.
 
+**Session-wide setting (2026-09-15).** Put the variable in the gitignored
+`.claude/settings.local.json`:
+
+```json
+{ "env": { "LAKE_CACHE_DIR": "<writable-dir>" } }
+```
+
+Claude Code injects a settings `env` block into every Bash call of the
+session, subagents included, and picks the file up without a restart
+(verified: `lake env printenv LAKE_CACHE_DIR` in a fresh shell showed the
+override), so no per-command prefix is needed and dispatched builders inherit
+it. The file is deliberately untracked (it holds a machine path); a fresh
+clone recreates it. The same `EPERM` also hits the toolchain dir with the
+sandbox disabled, so this is not a sandbox permission to grant.
+
 ### Two verification traps
 
 - ~~**Cached modules do not re-emit warnings.**~~ **Superseded — the cache
