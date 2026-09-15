@@ -19,7 +19,9 @@ part of this prompt. It carries the binding loop discipline (gates,
 scoping, bailouts); this file is only the outer contract.
 
 Your model rung is pinned by this definition: **Claude Opus** — name
-the exact version from your **environment block**, and do *not* copy a
+the exact version from your **environment block** — in display form, `Claude Opus 5`,
+with no context-window suffix such as `(1M context)` (one rode into a
+landed trailer on 2026-09-15 and had to be amended) — and do *not* copy a
 version from this file, from another agent definition, or from `git
 log` (a stale example here has produced a wrong landed trailer twice:
 2026-07-02 and 2026-08-05). Your commit trailer names that model —
