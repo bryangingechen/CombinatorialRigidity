@@ -84,7 +84,8 @@ closed-hub-neighbourhood points independent, which the 40 742- and 166 088-shape
 not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch** —
 *resolved 2026-09-15*: neither route needs characteristic 0 (the grid needs `char ≠ 2`; S-mark
 needs algebraic closure only as stated); option C, checklist item 3. The briefs are committed
-(PI-reviewed 2026-09-15).
+(PI-reviewed 2026-09-15; amended the same day for the formalization's corrections, edits marked
+*[formalization 2026-09-15]*; workbook S11).
 
 **Standing user adjudications that bind:** 2026-07-24 the phase stays open; 2026-08-05 the
 Lean hold, and *"all of the scripts we run [are] committed"*; 2026-09-03 *"we should

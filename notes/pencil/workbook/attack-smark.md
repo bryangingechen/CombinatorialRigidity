@@ -566,3 +566,124 @@ terminals — session 1's "first gap" in its weakest needed form — not the gen
 `H′` needs; its needed form is the induction frame's to state (state file, *Worries*).
 **Status:** reviewer's arithmetic from S3 + S8 and the S5 table, unverified by the attack and
 uncontrolled by a driver; session 3's first step is to check it (state file, *Next steps* 1).
+
+## S11 — Formalization corrections (2026-09-15; the Lean-track design pass, `notes/Phase39-design.md` § *Lean-track design pass* — statements compiler-checked against the tree, proofs not yet built; the brief and state file were amended for these the same day, edits marked *[formalization 2026-09-15]*)
+
+Read `hbareSplit`'s hypotheses (`Escape.lean:573–579`) against the definition bodies
+(`IsProperRigidSubgraph`, `Deficiency.lean:483`; `PencilHub`/`closedNbhd`, `Motive.lean:73,95`;
+`TwoEdgeConnected`, `Deficiency.lean:1166`; `CycleData`, `Operations.lean:3204`). Four corrections
+to S10(iii) and the brief's §3, and the field resolution. Blueprint nodes named are red
+(`pencil.tex` § *Girth and degree-two chains under no proper rigid subgraph*).
+
+**(i) Girth: a hub forces it, and the alternative is "a cycle", not "`C₅` or `C₆`".** S10(iii)'s
+"no proper rigid subgraph ⇒ girth `≥ 7` fails exactly for `G ∈ {C₅, C₆}`" is true but is not the
+split the consumer takes. Pinned (`lem:pencil-short-cycle-spanning`, `lem:pencil-girth-of-hub`):
+
+```lean
+theorem Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n) {vtx : Fin m → α} {edge : Fin m → β}
+    (hvtx : Function.Injective vtx) (hedge : Function.Injective edge)
+    (hlink : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))) :
+    Set.range vtx = V(G)
+theorem Graph.girthGE_of_noRigid_of_three_le_degree [Finite α] [Finite β] {G : Graph α β}
+    [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) {w : α} (hw : 3 ≤ G.degree w) :
+    G.GirthGE (bodyBarDim n + 1)
+```
+
+Proof shape of the second: a cycle on `m ≤ D = 6` vertices spans (first statement), so a vertex
+`w` of degree `≥ 3` lies on it with a third edge `g`; `g` is a chord (not parallel to a cycle edge,
+by simplicity), and the two cycles it cuts off have `a + 1, b + 1 ≤ m − 1 < |V|` vertices with
+`a + b = m` — non-spanning cycles on `≤ 6` vertices, contradicting the first statement. So in the
+consumer's class: **some vertex has degree `≥ 3` ⇒ girth `≥ 7`; no such vertex ⇒ `G` is a cycle
+of any length `≥ 5`** (2EC + all degrees 2, item (ii) case (i)), and on a cycle the disjunct
+`¬ PencilHub a ∨ ¬ PencilHub b` is automatic. `C₇, C₈, …` are in the habitat too.
+
+**(ii) The consumed shape is a trichotomy — the chain can close at a single hub.** S10(iii)
+says the ends `w, v` have degree `≥ 3` "or `G` is a cycle" and then treats `{w, v}` as a 2-cut.
+The maximal degree-2 chain through `x` can also return to the *same* hub. Pinned
+(`lem:pencil-degree-two-chain`; `WList` paths, the E2d ladder's carrier):
+
+```lean
+theorem Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] (h2ec : G.TwoEdgeConnected)
+    {v a b : α} {eₐ e_b : β} (hdeg : G.degree v = 2) (hne : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b) (hab : G.degree a = 2 ∨ G.degree b = 2) :
+    Nonempty G.CycleData ∨
+    (∃ C : WList α β, G.IsCyclicWalk C ∧ 3 ≤ G.degree C.first ∧
+      (∀ x ∈ C, x ≠ C.first → G.degree x = 2) ∧ v ∈ C ∧ 3 ≤ C.length) ∨
+    (∃ P : WList α β, G.IsPath P ∧ 3 ≤ G.degree P.first ∧ 3 ≤ G.degree P.last ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ v ∈ P ∧ 3 ≤ P.length)
+```
+
+*Witness for the middle case, verified:* `G` = two 7-cycles `C, C′` sharing one vertex `w`
+(`|V| = 13`, `|E| = 14`, `deg w = 4`, all other degrees `2`). Simple: yes. 2-edge-connected: for a
+nonempty proper `V′`, if `V′ ∩ V(C)` is a nonempty proper subset of `V(C)` the cycle `C` alone
+crosses it `≥ 2` times; otherwise `V′ ∩ V(C) ∈ {∅, V(C)}`, which forces `V′ ∩ V(C′)` to be a
+nonempty proper subset of `V(C′)` (if `V′ ⊇ V(C)` then `w ∈ V′` and `V′ ≠ V(G)`; if
+`V′ ∩ V(C) = ∅` then `w ∉ V′` and `V′ ≠ ∅`), so `C′` crosses it `≥ 2` times. No proper rigid
+subgraph: a proper subgraph `H` with `|V(H)| = k ≥ 2` has `|E(H)| ≤ k` if it contains one of
+the heptagons (it cannot contain both and stay proper) and `|E(H)| ≤ k − 1` otherwise; the
+all-singletons partition gives `def(H̃) ≥ 6(k − 1) − 5k = k − 6 ≥ 1` in the first case (`k ≥ 7`)
+and `≥ 6(k − 1) − 5(k − 1) = k − 1 ≥ 1` in the second, so `H` is not `0`-dof. A degree-2 vertex
+`x` at distance 2 from `w` on `C` has two degree-2 neighbours, so the disjunct holds; its
+maximal chain runs both ways to `w`: the closed walk `w u₁ … u₆ w` of length `7` — case (ii),
+not a 2-separation. The brief's Lemma is stated for a 2-separation of a **2-connected** `G`
+(§1) and does not apply; the induction's cut-vertex case (d) is the informal owner. **PI decision
+pending** on the frame's treatment of this case (`notes/Phase39.md` *Blockers*).
+
+**(iii) `w ≁ v` only for `m ≤ 4`.** What girth gives is the side-distance bound, pinned
+(`lem:pencil-chain-side-connected`, `lem:pencil-chain-side-distance`):
+
+```lean
+theorem Graph.connected_deleteVerts_interior_of_twoEdgeConnected [Finite β] {G : Graph α β}
+    [G.Loopless] (h2ec : G.TwoEdgeConnected) {P : WList α β} (hP : G.IsPath P)
+    (hlen : 1 ≤ P.length) (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) :
+    (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).Connected
+theorem Graph.degree_deleteVerts_interior_add_one [Finite β] {G : Graph α β} [G.Loopless]
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) :
+    (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).degree P.first + 1 = G.degree P.first
+theorem Graph.le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) (hfirst : 3 ≤ G.degree P.first)
+    {Q : WList α β} (hQ : (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).IsPath Q)
+    (hQf : Q.first = P.first) (hQl : Q.last = P.last) :
+    bodyBarDim n + 1 ≤ P.length + Q.length
+```
+
+With `P.length = m + 1` and `D = 6`: every `w`–`v` path in `H′` has `≥ 6 − m` edges, i.e.
+`dist_{H′}(w, v) ≥ 6 − m` as S10(iii) says; a `wv` edge is a side path of length `1`, excluded
+exactly when `6 − m ≥ 2`. **At `m ≥ 5` adjacency is allowed** — harmless, since S10 needs nothing
+at `m ≥ 5`, but the brief's unconditional `w ≁ v` was an overclaim. Side-degree `≥ 2` at both ends
+is `deg − 1 ≥ 2` (the second statement), and `H′ = G − chain` is connected without any hub
+assumption (the first).
+
+**(iv) The neighbourhood bound needs only girth `≥ 5` and `v ≠ h`.** Not hubness, not
+simplicity (`lem:pencil-closed-nbhd-girth-five`): three shared members force a triangle if
+`v ~ h` and a 4-cycle otherwise, edges distinct by their endpoint pairs.
+
+```lean
+theorem Graph.ncard_closedNbhd_inter_le_two_of_girthGE [Finite α] {G : Graph α β}
+    (hg : G.GirthGE 5) {v h : α} (hvh : v ≠ h) :
+    (G.closedNbhd v ∩ G.closedNbhd h).ncard ≤ 2
+```
+
+Here `Graph.GirthGE G g` is the pinned predicate "no cycle on `m` vertices with `3 ≤ m < g`"
+(`Fin m` data, injective vertices and edges, cyclic links; `def:girth`).
+
+**(v) The field.** Settled by the PI (option C, 2026-09-15; `notes/Phase39-design.md`
+§ *Field-hypothesis recon*, `fmlnote:pencil-conditional-realization-pair-field`): the Lean
+reduction stays `[Infinite K]`. *This route needs no characteristic at all*; S1–S9 use a factor
+`2` only cosmetically (define `Q := Q₁ − Q₂` directly) and the Klein pairing is nondegenerate in
+every characteristic. Its genuine field item is that it argues over an algebraically closed field
+(generic points of irreducible components), and descending "generic point" statements to
+`K`-points is not automatic — to be settled together with the induction-frame decision by
+restating the frame in witness form over `K` (S7(vi): one exact configuration certifies
+attainment, welded attainment and the `c(U)` bounds; `S(ϕ)` is `K`-split with dense `K`-points).
+Kernel (K-bare)'s Lean lemma is expected with `[Infinite K]` in that form, `IsAlgClosed K` in
+the interim. (For the grid route to `hK`, the same recon finds `char K ≠ 2` and nothing more;
+the characteristic-2 probe is the (GR-10) attack's, `notes/attacks/gr10/brief.md` §6 item 4.)
