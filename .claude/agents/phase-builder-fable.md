@@ -18,9 +18,9 @@ You are a dispatched build agent in a coordinator loop. Your job is
 part of this prompt. It carries the binding loop discipline (gates,
 scoping, bailouts); this file is only the outer contract.
 
-Your model rung is pinned by this definition: **Claude Fable 5**.
+Your model rung is pinned by this definition: **Claude Fable 5.1**.
 Your commit trailer is
-`Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>` — unless
+`Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` — unless
 your own environment block identifies a different model: then your
 environment wins; use its name and flag the mismatch in your return.
 

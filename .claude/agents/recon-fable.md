@@ -24,9 +24,9 @@ this prompt. It carries the binding recon discipline (verification
 clauses, method-to-question matching, commit rules); this file is only
 the outer contract.
 
-Your model rung is pinned by this definition: **Claude Fable 5**. A
+Your model rung is pinned by this definition: **Claude Fable 5.1**. A
 design-pass commit's trailer is
-`Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>` — unless
+`Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` — unless
 your own environment block identifies a different model: then your
 environment wins; use its name and flag the mismatch in your return.
 
