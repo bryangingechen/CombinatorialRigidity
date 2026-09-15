@@ -45,15 +45,15 @@ misses would be evidence the target itself fails in characteristic 2 and a re-pi
 the headline typeclass. The attack decides when to run it.
 **Lean track (hold lifted 2026-09-15 for items 1–3):** items 1–2 are **PINNED** (design pass
 2026-09-15, `notes/Phase39-design.md` § *Lean-track design pass*; eight red nodes in
-`blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains*, the chapter's first). **G1 +
-G2 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `Graph.GirthGE` +
-`.mono`/`.anti`, and `Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid`), pinning `def:girth` /
-`lem:pencil-short-cycle-spanning` (two of the eight now green). **Next concrete Lean commit:**
-either **G3** (`Graph.girthGE_of_noRigid_of_three_le_degree`, needs G2; the `Fin`-arithmetic
-re-indexing across two moduli, S1/P3/B1 — opus-recommended) or **G4**
-(`Graph.ncard_closedNbhd_inter_le_two_of_girthGE`, needs only G1, independent of G2/G3, into
-`Molecule/Pencil/Motive.lean`; S1/P2/B1 — sonnet); M3a/M3b (`MaximalChain.lean`) are also buildable
-any time (need only 2EC + `Simple`/`Loopless`, no girth). Item 3
+`blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains*, the chapter's first). **G1,
+G2 and G3 landed 2026-09-15** (new file `Molecular/Induction/Girth.lean`: `Graph.GirthGE` +
+`.mono`/`.anti`, `Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid`, and
+`Graph.girthGE_of_noRigid_of_three_le_degree`), pinning `def:girth` /
+`lem:pencil-short-cycle-spanning` / `lem:pencil-girth-of-hub` (three of the eight now green).
+**Next concrete Lean commit: G4** (`Graph.ncard_closedNbhd_inter_le_two_of_girthGE`, needs only
+G1, into `Molecule/Pencil/Motive.lean`; S1/P2/B1 — sonnet); M3a/M3b (`MaximalChain.lean`) are also
+buildable any time (need only 2EC + `Simple`/`Loopless`, no girth), and M4/M4′ are unblocked now
+that G3 is in. Item 3
 (the field hypothesis) is **SETTLED** (PI, option C, 2026-09-15): the reduction stays
 `[Infinite K]`; the hypothesis lives on the kernel lemmas (`notes/Phase39-design.md`
 § *Field-hypothesis recon*; chapter `fmlnote:pencil-conditional-realization-pair-field`).
@@ -111,8 +111,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `Graph.GirthGE` (V1). Sharpened against the review: *any* vertex of degree `≥ 3` forces girth
   `≥ 7`, and no hub + 2EC makes `G` a cycle of any length `≥ 5` (V5); `|N[v] ∩ N[h]| ≤ 2` needs
   only girth `≥ 5` and `v ≠ h` (V6). Target: new `Molecular/Induction/Girth.lean` (G1–G3) and
-  `Motive.lean` (G4). **G1 + G2 landed 2026-09-15** (`def:girth` / `lem:pencil-short-cycle-spanning`
-  now green); **remaining: G3, G4**.
+  `Motive.lean` (G4). **G1 + G2 + G3 landed 2026-09-15** (`def:girth` /
+  `lem:pencil-short-cycle-spanning` / `lem:pencil-girth-of-hub` now green); **remaining: G4**.
 - [ ] **Consumed-shape normal form** — **PINNED** (same §, leaves M1–M4′; red nodes
   `lem:pencil-chain-walk-extension`, `lem:pencil-degree-two-chain`,
   `lem:pencil-chain-side-connected`, `lem:pencil-chain-side-distance`). Carrier: `WList` paths
@@ -198,9 +198,9 @@ When the first attack starts, its `state.md` becomes that lemma's status surface
 carries a two-line pointer to it, edited by the PI. The hold is lifted for checklist items 1–3
 (2026-09-15; item 3 settled, items 1–2 pinned): Lean commits land under `/coordinate-phase 39` in
 forward mode against the pencil chapter's red nodes in the design §'s *Build order* — **G1 + G2
-landed 2026-09-15** (`Molecular/Induction/Girth.lean`); next is **G3 or G4** (either order; G3
-needs G2 and is opus-rated for its `Fin`-arithmetic, G4 needs only G1 and is sonnet-rated), then
-M3a/M3b/M1/M2/M4/M4′ — with any crux as a hypothesis; a later lift for
++ G3 landed 2026-09-15** (`Molecular/Induction/Girth.lean`); next is **G4**
+(`ncard_closedNbhd_inter_le_two_of_girthGE`, into `Molecule/Pencil/Motive.lean`, needs only G1 —
+sonnet-rated), then M3a/M3b/M1/M2/M4/M4′ — with any crux as a hypothesis; a later lift for
 items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.

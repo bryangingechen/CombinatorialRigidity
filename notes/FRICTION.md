@@ -98,6 +98,29 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] No packaged "sub-arc of a `Fin m` cycle, closed by a chord, is a `Fin (a+1)` cycle"
+- **Where it bit:** Phase 39 (PENCIL) G3 (`Molecular/Induction/Girth.lean`,
+  `Graph.girthGE_of_noRigid_of_three_le_degree`). The chord argument needs the arc of a
+  `Fin m`-indexed cycle, closed by the chord, presented as `Fin (a+1)`-indexed cycle data so
+  that `range_vtx_eq_vertexSet_of_cycle_of_noRigid` can be applied a second time.
+- **Friction:** nothing in mathlib or the tree re-indexes cyclic `Fin` data across two moduli
+  (the existing cycle producers all stay on one `Fin m`), so the arc's `vtx`/`edge`,
+  their injectivity, and the cyclic link condition are all built by hand. The delicate part is
+  that the successor `k + ⟨1, _⟩` wraps in `Fin (a+1)` but not in `Fin m`, so the two boundary
+  index identities have to be proved separately. Two smaller nuisances rode along: mathlib now
+  deprecates `if_pos`/`if_neg` in favour of `ite_eq_left`/`ite_eq_right` and `Fin.coe_castLE` in
+  favour of `Fin.val_castLE` (a fresh draft naturally reaches for the old names, and the tree's
+  only surviving mentions are in prose); and a `show` that *changes* the goal — the natural way
+  to surface a `Fin.mk` literal's `.val` — trips `linter.style.show`, so it must be `change`.
+- **Fix:** the recipe is recorded as an idiom — normalize `j = i₀ + c` with
+  `obtain ⟨c, rfl⟩ … ⟨j - i₀, by abel⟩`, bridge the moduli with `Fin.castLE` (never `Nat.cast`
+  or `Fin.ofNat`), and discharge the two boundary identities with `Fin.val_injective` +
+  `Fin.val_add` + `Nat.mod_eq_of_lt` / `Nat.mod_self`. A reusable
+  `cycleData_of_arc_of_chord`-style helper is only worth minting once a second consumer appears
+  (M4's walk concatenation is the candidate).
+- **Status:** idiom.
+- **Lifted to:** TACTICS-GOLF § 12 *Carving a sub-arc out as a shorter cycle*.
+
 ### [idiom] `induce_le hsub |>.trans restrict_le` pins the wrong graph when `hsub`'s stated type is `X ⊆ V(G)`
 - **Where it bit:** Phase 39 (PENCIL) G2 (`Molecular/Induction/Girth.lean`,
   `Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid`). Needed `H ≤ G` for

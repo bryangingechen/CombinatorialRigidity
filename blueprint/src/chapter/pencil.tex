@@ -988,12 +988,15 @@ case of the induction rather than by the two-cut composition.
 
 \begin{lemma}[Girth exceeds $D$ once some vertex has degree three]
   \label{lem:pencil-girth-of-hub}
+  \lean{Graph.girthGE_of_noRigid_of_three_le_degree}
+  \leanok
   \uses{def:girth, def:rigid-subgraph}
   Let $G$ be a simple multigraph with no proper rigid subgraph,
   $D = \binom{n+1}{2} \ge 3$, and suppose some vertex of $G$ has degree at
   least three. Then $G$ has girth at least $D + 1$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-short-cycle-spanning}
   Suppose $G$ has a cycle $C$ on $m \le D$ vertices. By
   \cref{lem:pencil-short-cycle-spanning} it passes through every vertex, so
@@ -1001,10 +1004,11 @@ case of the induction rather than by the two-cut composition.
   third edge $g$ at $w$, distinct from the two cycle edges at $w$, joins $w$
   to another vertex $z$ of $C$ (simplicity excludes a loop); $z$ is not a
   neighbour of $w$ along $C$, since $g$ would then be parallel to a cycle
-  edge. So $g$ is a chord, and the two arcs of $C$ from $w$ to $z$ together
-  with $g$ form two cycles, on $a + 1$ and $b + 1$ vertices with
-  $a + b = m$ and $a, b \ge 2$. Each has at least three and at most
-  $m - 1 < |V(G)|$ vertices, hence at most $D$, so neither is spanning,
+  edge. So $g$ is a chord, and either arc of $C$ from $w$ to $z$ together
+  with $g$ forms a cycle, on $a + 1$ vertices where $a$ is the number of
+  edges of that arc; the two arcs have $a + b = m$ and $a, b \ge 2$, so
+  $2 \le a \le m - 2$. That cycle has at least three and at most
+  $m - 1 < |V(G)|$ vertices, hence at most $D$, so it is not spanning,
   contradicting \cref{lem:pencil-short-cycle-spanning}.
 \end{proof}
 

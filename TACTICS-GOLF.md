@@ -55,7 +55,10 @@ symptom-indexed and lighter.
 12. **Iterating `+1` around a cyclic `Fin m`** — to propagate a
     consecutive-equality `f i = f (i+1)` to a global one, induct over
     `Fin.ofNat m j` on `ℕ` (not `(j : Fin m)` ascription, not
-    `Fin.induction`); `Fin.ofNat_val_eq_self` returns to `i`.
+    `Fin.induction`); `Fin.ofNat_val_eq_self` returns to `i`. To carve a
+    **sub-arc** of a `Fin m` cycle out as a cycle on `Fin (a+1)`, bridge the
+    two moduli with `Fin.castLE` — only the two boundary index identities
+    need proof.
 13. **State a ℕ count `a − b + c` as `a + c − b`** — subtraction
     last, so the single truncating `−` lands on a provably-large-enough
     quantity (otherwise the statement is off-by-one at a boundary and
@@ -1114,6 +1117,39 @@ successor fact (`Fin.ext` + `simp [Fin.add_def, Nat.add_mod]`, since
 both sides are `(p+1) % m`) are all you need. The cyclic index type
 `Fin m` *is* the cycle — no `Graph`-walk/connectivity primitive is
 required to chain the per-step equalities.
+
+### Carving a sub-arc out as a shorter cycle (two moduli, `Fin.castLE`)
+
+The reverse move — given cyclic data on `Fin m` and a chord from index `i₀`
+to index `j`, present the arc `i₀, i₀+1, …, j` closed by that chord as cyclic
+data on `Fin (a+1)` — is the shape of `girthGE_of_noRigid_of_three_le_degree`
+(`Molecular/Induction/Girth.lean`). Three moves keep it short.
+
+1. **Normalize the far endpoint first**:
+   `obtain ⟨c, rfl⟩ : ∃ c : Fin m, j = i₀ + c := ⟨j - i₀, by abel⟩`.
+   Afterwards every index fact is a statement about the single opaque `c`
+   (`c ≠ 0`, `c ≠ ⟨1, _⟩`, `c + ⟨1, _⟩ ≠ 0`), each discharged from the
+   corresponding fact about `j` by `add_left_cancel`; the arc length is
+   `c.val + 1`, and `c.val ∉ {0, 1, m-1}` is what `omega` turns into
+   `3 ≤ c.val + 1 ≤ m - 1`.
+2. **Bridge the moduli with `Fin.castLE hpm : Fin (c.val+1) → Fin m`**
+   (`hpm : c.val + 1 ≤ m`) — not `Nat.cast`, not `Fin.ofNat`. `Fin.val_castLE`
+   is simp-normal, so injectivity of the re-indexed `vtx`/`edge` collapses to
+   `Fin.val_injective (by simpa using congrArg Fin.val …)`, and `omega` still
+   sees each `Fin`'s bound.
+3. **Only the two boundary identities need work**, both
+   `Fin.val_injective` + `Fin.val_add`:
+   - interior (`k.val < c.val`):
+     `castLE hpm k + ⟨1,_⟩ = castLE hpm (k + ⟨1,_⟩)` — neither `%` wraps, so
+     `Nat.mod_eq_of_lt` on both sides;
+   - last index (`k.val = c.val`): `castLE hpm (k + ⟨1,_⟩) = 0` —
+     `Nat.mod_self`; there the closing link is the chord, not a cycle edge.
+
+   `change (k.val + 1) % (c.val + 1) = 0` is what surfaces a `Fin.mk`
+   literal's `.val` for the following `rw`/`omega` (`(⟨1, _⟩ : Fin p).val` is
+   `1` by `rfl`, but neither tactic looks through the projection on its own).
+   Use `change`, not `show`: `show` that *changes* the goal trips
+   `linter.style.show`.
 
 ## 13. State a ℕ count `a − b + c` as `a + c − b` (subtraction last)
 
