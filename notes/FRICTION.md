@@ -329,7 +329,13 @@ to be re-derived by re-reading entries later.
   call, not an agent's side errand); (3) `blueprint/CLAUDE.md` *Static checks* should say that
   `checkdecls` silence is meaningful only after a successful `inv web` (check the `lean_decls`
   mtime). Until (2), the dep-graph spot-check of `blueprint/CLAUDE.md` cannot be run locally.
-- **Status:** open (harness / environment).
+- **Status:** resolved 2026-09-15. (1) landed in `verify.sh`: it fails on the
+  `ERROR: Loading package` log line and on a `lean_decls` older than any source `.tex`; (2) done
+  by the user: the venv rebuilt on Python 3.13 (`pygraphviz` 2.0.1 against graphviz 16.0.0's
+  `libcgraph.10`; `invoke` 3.x, since 1.7.1 fails at import on Python 3.11+ — `requirements.txt`
+  now pins `invoke>=2.2`; the field-recon's same-day `inv bp` failure was that import); (3) in
+  `blueprint/CLAUDE.md` *Static checks*. Root cause: Homebrew's graphviz 16.0.0 upgrade of
+  2026-09-13 dropped `libcgraph.8`. Recipe and symptom: `SETUP-AND-PITFALLS.md` *Pitfalls*.
 
 ### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
 - **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).

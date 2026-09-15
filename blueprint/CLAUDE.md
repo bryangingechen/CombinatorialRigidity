@@ -235,7 +235,12 @@ gates that should already have been green on each commit.
 authoritative check is `checkdecls`, which loads every project import
 and looks up each name in the Lean environment. It must run against a
 freshly-regenerated `blueprint/lean_decls` (produced by `inv web` from
-the current `\lean{...}` set; the file is gitignored).
+the current `\lean{...}` set; the file is gitignored). Its silence is
+meaningful **only** after an `inv web` that actually loaded the
+`blueprint` plastex package: `verify.sh` refuses to run it when the
+plastex log shows a package-load error or `lean_decls` is older than a
+source `.tex` (a skipped package read as green from 2026-07-30 to
+2026-09-15; `SETUP-AND-PITFALLS.md` *Pitfalls*, libcgraph).
 
 The bundled command — and the one to use by default — is:
 

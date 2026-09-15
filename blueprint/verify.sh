@@ -49,7 +49,30 @@ inv bp
 
 echo
 echo "==> inv web"
-inv web
+WEB_LOG="$(mktemp)"
+trap 'rm -f "$WEB_LOG"' EXIT
+inv web 2>&1 | tee "$WEB_LOG"
+
+# plastex reports a failed plugin load as ONE log line and then carries on
+# WITHOUT the `blueprint` package: `\lean`/`\leanok`/`\uses` degrade to
+# "unrecognized command" warnings, lean_decls and the dep graph are not
+# regenerated, and the checkdecls step below passes vacuously against the
+# stale list. That read as "all gates passed" from 2026-07-30 to 2026-09-15
+# (notes/FRICTION.md, the `[blueprint] verify.sh reports "all gates passed"`
+# entry). Fail hard on the log line, and refuse a lean_decls older than any
+# source file.
+if grep -q 'ERROR: Loading package' "$WEB_LOG"; then
+    echo "verify.sh: plastex failed to load a package (the ERROR line above); lean_decls was NOT regenerated." >&2
+    echo "  Usual cause: the venv's pygraphviz is linked against a graphviz dylib Homebrew no longer ships" >&2
+    echo "  -- see blueprint/SETUP-AND-PITFALLS.md *Pitfalls* (libcgraph)." >&2
+    exit 1
+fi
+if [ ! -f "$SCRIPT_DIR/lean_decls" ] || \
+   [ -n "$(find "$SCRIPT_DIR/src" -name '*.tex' -newer "$SCRIPT_DIR/lean_decls" -print -quit)" ]; then
+    echo "verify.sh: blueprint/lean_decls is missing or older than a source .tex file -- inv web did not regenerate it;" >&2
+    echo "  refusing to run checkdecls against a stale list." >&2
+    exit 1
+fi
 
 cd "$REPO_ROOT"
 echo

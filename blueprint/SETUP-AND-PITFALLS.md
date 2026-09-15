@@ -28,11 +28,14 @@ sudo tlmgr install latexmk preview xkeyval \
   enumitem tikz-cd thmtools cleveref     # required by print.tex (inv bp)
 ```
 
-Python venv (kept under `blueprint/.venv`, gitignored):
+Python venv (kept under `blueprint/.venv`, gitignored). Use a Python
+`>= 3.11`: the Command Line Tools `python3` is 3.9, which current
+`leanblueprint`/`plastex` releases no longer support (the venv was
+rebuilt on Homebrew's 3.13 on 2026-09-15):
 
 ```sh
 cd blueprint
-python3 -m venv .venv
+python3.13 -m venv .venv
 source .venv/bin/activate
 
 # pygraphviz needs the brew-installed graphviz headers; pip won't
@@ -103,10 +106,25 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
 - **No `.md` interference.** plastex parses only what `web.tex`
   `\input{}`s. xelatex parses only what `print.tex` `\input{}`s.
   Adding `.md` files anywhere under `blueprint/` is safe.
-- **Python 3.9 quirks.** Recent `leanblueprint` releases sometimes
-  require 3.10+. If you hit `SyntaxError` or `ImportError` after a
-  `pip install -r requirements.txt`, the fix is usually
-  `python3.12 -m venv .venv` and reinstall.
+- **Python version.** The venv runs on Python 3.13 (rebuilt 2026-09-15;
+  before that on the Command Line Tools 3.9, which current
+  `leanblueprint` releases no longer support). On Python `>= 3.11`
+  `invoke` must be `>= 2.2`: `invoke` 1.x fails at import
+  (`ModuleNotFoundError: No module named 'lexicon'`, from its vendored
+  `six`/`lexicon` shims), so `requirements.txt` pins `invoke>=2.2`.
+  `inv --list` is the smoke test.
+- **`Library not loaded: …/libcgraph.N.dylib` from `import pygraphviz`**,
+  surfacing in `inv web` as `ERROR: Loading package "blueprint" raised
+  exception ImportError`, after which plastex carries on WITHOUT the
+  package (`\lean`/`\uses` become "unrecognized command" warnings and
+  `lean_decls` is not regenerated). Cause: Homebrew bumped graphviz's
+  dylib major (16.0.0, 2026-09-13, ships `libcgraph.10`) and the venv's
+  compiled `pygraphviz` still references the old one. Fix: rebuild it
+  against the current headers (the `CPPFLAGS`/`LDFLAGS` line above with
+  `pip install --force-reinstall --no-binary :all: pygraphviz`) or
+  recreate the venv. `verify.sh` fails hard on that log line and on a
+  `lean_decls` older than any source `.tex`; it reported green through
+  the skipped package from 2026-07-30 to 2026-09-15.
 - **`RecursionError` from `plastexdepgraph.ancestors` during `inv web`.**
   Symptom: `inv web` errors mid-run with
   `RecursionError: maximum recursion depth exceeded` in
