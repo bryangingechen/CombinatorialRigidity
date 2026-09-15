@@ -307,6 +307,30 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** left the 4 general-edge sites as hand-chains (14/18 collapsed). A sibling lemma stated directly on `f`'s endpoints — output `panelSupportExtensor (fun j => qρ ((ends f).1, j)) (fun j => qρ ((ends f).2, j))` with `endsσρ` explicit (no `{x y}`) — would collapse them; not worth minting for 4 one-line savings. General lesson: a fused-rewrite lemma meant to fire by `rw` should take the decomposition it reads as *explicit* args (or be stated on the un-decomposed projections) when callers can't always supply a concrete literal to pin the implicits.
 - **Status:** idiom (resolved-inline: leave-as-is, sibling-lemma noted).
 
+### [blueprint] `blueprint/verify.sh` reports "all gates passed" while `inv web` has silently skipped the `blueprint` plastex package — the local `checkdecls` has been vacuous since 2026-07-30
+- **Where it bit:** the Phase-39 Lean-track design pass (2026-09-15), running `verify.sh` on
+  the new red-node subsection of `pencil.tex`. `inv bp` was clean; `inv web` logged
+  `ERROR: Loading package "blueprint" raised exception ImportError : dlopen(…)` and went on
+  *without* the package (`\lean`/`\leanok`/`\uses` became "unrecognized command" warnings),
+  so `blueprint/lean_decls` and `web/dep_graph_document.html` were **not** regenerated — both
+  still carry a 2026-07-30 mtime — and `lake exe checkdecls` then passed against that stale
+  list. The script's final line was nevertheless `all gates passed`.
+- **Friction:** the cause is environmental — the venv's `pygraphviz` wheel is linked against
+  `libcgraph.8.dylib`, which the current Homebrew `graphviz` (16.0.0) no longer ships. The
+  `SETUP-AND-PITFALLS.md` reinstall recipe (`CPPFLAGS`/`LDFLAGS` + `pip install pygraphviz`,
+  here with `--force-reinstall --no-binary`) fails at `setup.py install` under the venv's
+  Python 3.9 / pip 21.2, leaving the old wheel in place (state unchanged). A commit that adds
+  no `\lean{}` pin is unaffected (the design pass added none); any commit that *does* pin has
+  had no local `checkdecls` since July — CI's `docgen-action` is the only real check.
+- **Proposed fix:** (1) `verify.sh` must fail hard when plastex's log contains
+  `ERROR: Loading package "blueprint"` (or when `lean_decls` is not newer than the newest
+  `src/chapter/*.tex`), so a skipped package can never read as green; (2) recreate the venv
+  with a current Python per `SETUP-AND-PITFALLS.md` (a machine-level repair — the user's
+  call, not an agent's side errand); (3) `blueprint/CLAUDE.md` *Static checks* should say that
+  `checkdecls` silence is meaningful only after a successful `inv web` (check the `lean_decls`
+  mtime). Until (2), the dep-graph spot-check of `blueprint/CLAUDE.md` cannot be run locally.
+- **Status:** open (harness / environment).
+
 ### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
 - **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).
 - **Friction:** the numbered sections index (top of the file) and the `## N.` body headers diverged. Index entry **20 = "Match the list recursor to which end the fold's base case sits on"** is **orphaned** — no such `## 20.` body section exists (grep hits only the index line). The body actually carries **§20 = "Proving a fact about an explicit small graph via iterated `⊔`-with-star `0`-extensions"** and **§21 = "`simp_all` … heartbeat multiplier"**, *neither indexed*. So the index stops at a wrong 20 and the body runs to a real 21.

@@ -35,12 +35,15 @@ coincident-flag arm; the review found the consumer's shape narrower than the bri
 (the *consumed-shape disjunct* below) and re-aimed the attack's O4 at it —
 `notes/attacks/smark/state.md` is the status surface, and session 3 verifies the review's
 arithmetic (workbook S10) before building on it. (GR-10) has not started; session 1 writes
-its `state.md` from the template. **Lean track (hold lifted 2026-09-15 for items 1–3):** the
-next concrete commit is a **design-pass recon** that pins items 1–2 as exact Lean statements —
-compiler-checked signatures in `notes/Phase39-design.md` § *Lean-track design pass* and red
-nodes in `blueprint/src/chapter/pencil.tex` (forward mode; the chapter is all-green today) — with
-a parallel read-only recon on item 3 (what field each informal route needs) whose options the PI
-decides. Then the first build is the leaf-most red node. Builds need `LAKE_CACHE_DIR` set
+its `state.md` from the template.
+**Lean track (hold lifted 2026-09-15 for items 1–3):** items 1–2 are **PINNED** (design pass
+2026-09-15, `notes/Phase39-design.md` § *Lean-track design pass*; eight red nodes in
+`blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains*, the chapter's first). **The
+next concrete Lean commit is the first build, leaf G1 + G2:** the new file
+`Molecular/Induction/Girth.lean` with `Graph.GirthGE` and the spanning-short-cycle lemma,
+pinning `def:girth` / `lem:pencil-short-cycle-spanning` (S1/P2/B1; build order in the §). The
+item-3 field-hypothesis recon runs in parallel, read-only; the PI decides on its verdict.
+Builds need `LAKE_CACHE_DIR` set
 (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
 `.claude/settings.local.json`).
 
@@ -85,21 +88,23 @@ ultimately be driven by the math … we shouldn't lock [declined directions] out
 *Items 1–3 unparked 2026-09-15 (PI); items 4–10 stay parked by the hold. Ranked cheapest and
 most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `sorry`.*
 
-- [ ] **Girth lemmas.** No proper rigid subgraph ⇒ girth ≥ 7 **or `G` is a 5- or 6-cycle**
-  (a ≤ 6-cycle of bodies is rigid, `isKDof_zero_of_cycle`; a spanning one is not *proper*,
-  `Deficiency.lean:483` — the unqualified form is false for `C₅`, `C₆`, which satisfy every
-  `hbareSplit` hypothesis; check whether the tight-stratum analysis already carries it);
-  girth ≥ 5 ⇒ `|N[v] ∩ N[h]| ≤ 2` for distinct hubs, so the coplanarity closure never forces
-  `π_u = π_v`. Decides the **girth-5 restriction** (`notes/attacks/smark/brief.md` §6 idea 1).
-- [ ] **Consumed-shape normal form** (review 2026-09-15). From `hbareSplit`'s hypotheses: the
-  degree-2 vertex and its non-hub neighbour (degree exactly 2, by
-  `two_le_degree_of_twoEdgeConnected` and `PencilHub`'s definition) lie on a maximal degree-2
-  chain of `m ≥ 2` interior vertices with hub ends `w ≁ v` (or `G` is a cycle); `G − chain` is
-  connected with side-degree `≥ 2` at both ends. Ingredients:
-  `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, `Graph.ChainData` (interior
-  degree-2 closure, pinned to length 3 — needs a maximal-chain variant),
-  `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`. Pins the form the composition
-  lemma must take (`notes/attacks/smark/brief.md` §3 *Consumed shape*).
+- [ ] **Girth lemmas** — **PINNED** (design pass 2026-09-15, `notes/Phase39-design.md`
+  § *Lean-track design pass*, leaves G1–G4; red nodes `def:girth`,
+  `lem:pencil-short-cycle-spanning`, `lem:pencil-girth-of-hub`,
+  `lem:pencil-closed-nbhd-girth-five`). Carrier: `Fin m` cycle data and the predicate
+  `Graph.GirthGE` (V1). Sharpened against the review: *any* vertex of degree `≥ 3` forces girth
+  `≥ 7`, and no hub + 2EC makes `G` a cycle of any length `≥ 5` (V5); `|N[v] ∩ N[h]| ≤ 2` needs
+  only girth `≥ 5` and `v ≠ h` (V6). Target: new `Molecular/Induction/Girth.lean` (G1–G3) and
+  `Motive.lean` (G4). **First build: G1 + G2.**
+- [ ] **Consumed-shape normal form** — **PINNED** (same §, leaves M1–M4′; red nodes
+  `lem:pencil-chain-walk-extension`, `lem:pencil-degree-two-chain`,
+  `lem:pencil-chain-side-connected`, `lem:pencil-chain-side-distance`). Carrier: `WList` paths
+  in ∃-statements, no new record (V2); the builder is E2d-4 un-capped and 2EC-sourced. **Two
+  corrections to the review's shape:** it is a *trichotomy* — the chain can close at a
+  **single hub** (a cycle through a cut vertex; witness two 7-cycles sharing a vertex, inside
+  `hbareSplit`'s hypotheses, outside the S-mark Lemma's 2-connected scope — V3, *Blockers*);
+  and `w ≁ v` holds only for `m ≤ 4`, the general clause being `dist_{G−chain}(w, v) ≥ 6 − m`
+  (V4). Target: new `Molecular/Induction/ForestSurgery/MaximalChain.lean`.
 - [ ] **The field hypothesis.** Decide whether the phase target scopes to characteristic 0
   (KT work over ℝ; the grid route descends through a nonvanishing ℤ-polynomial) or someone
   owes a positive-characteristic argument; record it in the blueprint chapter. The **field
@@ -143,6 +148,13 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   carries `[Infinite K]`, both briefs argue in characteristic 0; a read-only recon reports what
   each informal route needs, and the PI picks between scoping the target to characteristic 0 and
   recording a positive-characteristic debt in the chapter.
+- **PI decision pending (design pass 2026-09-15): the cut-vertex case of the consumed shape**
+  (`notes/Phase39-design.md` § *Lean-track design pass*, V3). The maximal degree-2 chain through
+  the split vertex can close at a *single* hub; `hbareSplit`'s hypotheses include that case, the
+  S-mark Lemma (2-connected `G`) does not, and the brief's §3 *Consumed shape* says 2-cut. Decide
+  whether the brief is amended (attack track) and which informal clause — induction case (d), cut
+  vertex — owns the composition there; the Lean normal form (`lem:pencil-degree-two-chain`) states
+  all three cases already.
 - **Each attack's first move is a reading check, not a sweep:** the girth-5 restriction and
   the frame gap for S-mark; the independence proviso for (GR-10). Session 1 should settle or
   scope these before choosing a route. (S-mark's session 1 did the girth check but not a
@@ -168,7 +180,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 When the first attack starts, its `state.md` becomes that lemma's status surface and this note
 carries a two-line pointer to it, edited by the PI. The hold is lifted for checklist items 1–3
 (2026-09-15): Lean commits land under `/coordinate-phase 39` in forward mode against the pencil
-blueprint chapter, first unchecked box first, with the crux as a hypothesis; a later lift for
+chapter's red nodes in the design §'s *Build order* (first: G1 + G2, new
+`Molecular/Induction/Girth.lean`), with any crux as a hypothesis; a later lift for
 items 4–10 follows the same rule. **On a future HIT
 the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
@@ -182,6 +195,12 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
+- **2026-09-15 — items 1–2 PINNED (design pass, `notes/Phase39-design.md` § *Lean-track design
+  pass*).** Cycle carrier `Fin m` data + predicate `Graph.GirthGE` (not the Matroid package's
+  `IsCycle`/`IsCyclicWalk`, not an `ℕ∞` girth); chain carrier `WList` paths in ∃-statements (no
+  `ChainData` variant record yet); two new files, since `Deficiency.lean`/`Operations.lean` are past
+  the tripwire. Findings: the consumed shape is a trichotomy (cut-vertex closure, V3); `w ≁ v` only
+  for `m ≤ 4` (V4); any hub ⇒ girth `≥ 7` (V5).
 - **2026-09-15 — the Lean hold is LIFTED for checklist items 1–3 (user).** Girth lemmas,
   consumed-shape normal form, the field-hypothesis decision (recon first; the PI decides on its
   verdict). Items 4–10 stay parked. Verbatim: `notes/pencil/adjudications.md`.

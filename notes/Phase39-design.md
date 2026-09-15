@@ -58,6 +58,7 @@ is load-bearing.
 | (K-bare) extension-route recon | 3590–3764 | CLOSED — NO-GO; minimal statement (K-bare-ext) | — |
 | W4 decomposition recon (2026-07-30) | 3765–3990 | **live as W4's canonical leaf list**; W4 parked | — |
 | W4-L4 identification recon (2026-07-30) | 3991–4171 | **live** with the above | — |
+| **Lean-track design pass (2026-09-15): items 1–2** | 4254–end | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
 | Higher-`d` note / Citations | 4172–4212 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -4250,3 +4251,333 @@ minimal by Lemma 3.3", feeding eq. (6.22)) — the §W5 verdict-5 finding.
   Whiteley, *Matroids and rigid structures*, in *Matroid Applications*,
   1992, for the standard treatment) — used here only as a counting
   heuristic confirmed numerically, not as a cited theorem.
+
+## Lean-track design pass (2026-09-15): checklist items 1–2 — girth lemmas and the consumed-shape normal form
+
+**Status: PINNED — red nodes landed**, `blueprint/src/chapter/pencil.tex` §*Girth and
+degree-two chains under no proper rigid subgraph* (`sec:pencil-girth-chain`, seven nodes:
+`def:girth`, `lem:pencil-short-cycle-spanning`, `lem:pencil-girth-of-hub`,
+`lem:pencil-closed-nbhd-girth-five`, `lem:pencil-chain-walk-extension`,
+`lem:pencil-degree-two-chain`, `lem:pencil-chain-side-connected`,
+`lem:pencil-chain-side-distance`). No Lean is built. Every signature below **typechecked in a
+scratch file** against HEAD `91515fd9` (`lake env lean`; imports
+`Molecule/Pencil/Motive` + `Induction/ForestSurgery/ChainExtraction`; bodies `sorry` in the
+scratch only, never committed). `GirthGE.mono` / `GirthGE.anti` were *proved* in-spike (one
+line each). **No leaf carries a crux as a hypothesis** — each is a finite combinatorial
+statement whose proof is the whole content.
+
+### The question and the consumer
+
+`hbareSplit` (`Molecule/Pencil/Escape.lean:573–579`; `hK` at `:562–572` has the same graph
+hypotheses): `G.Simple → 5 ≤ V(G).ncard → G.TwoEdgeConnected →
+(∀ H, ¬ H.IsProperRigidSubgraph G 3) → G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a →
+G.IsLink e_b v b → (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → …`. The informal consumers are the
+S-mark brief (`notes/attacks/smark/brief.md` §3 *Consumed shape*, §6 idea 1) and the
+2026-09-15 review (`notes/pencil/workbook/attack-smark.md` S10(iii)). Every claim below was
+derived from the definition **bodies** (`IsProperRigidSubgraph`, `Deficiency.lean:483`;
+`PencilHub`/`closedNbhd`, `Motive.lean:73,95`; `TwoEdgeConnected`, `Deficiency.lean:1166`;
+`CycleData`, `Operations.lean:3204`; `isKDof_zero_of_cycle`, `Deficiency.lean:743`;
+`cycle_isProperRigidSubgraph`, `Operations.lean:1073`), not from docstrings or the briefs.
+
+### Verdicts (read these first)
+
+- **V1 — cycle carrier: `Fin m` data, and a *predicate* `Graph.GirthGE G g`, not a number.**
+  Every producer and consumer of cycles in the tree is `Fin`-indexed
+  (`isKDof_zero_of_cycle`, `cycle_isProperRigidSubgraph`, `CycleData`, `ChainData`,
+  `exists_cyclic_data_of_closed_path`); the `apnelson1/Matroid` package's `Graph.IsCycle`
+  (`Minimal (¬ IsForest)`, a *graph* predicate) and `IsCyclicWalk` (on `WList`) would need a
+  circuit/walk ↔ `Fin` bridge at every use for no consumer benefit, and mathlib's
+  `SimpleGraph.girth : ℕ∞` is on the wrong carrier. Both consumed facts are about *specific*
+  short cycles, so the predicate form `g ≤ m` for every cycle is what gets used;
+  `egirth : ℕ∞` (`⨅` over cycles) is a one-line wrapper if a number is ever needed.
+  Divergence to state on the def node: only cycles on `≥ 3` vertices are counted (loops and
+  parallel pairs are not) — identical to the usual girth on the simple multigraphs every
+  consumer supplies. The walk ↔ `Fin` bridge already exists in one direction
+  (`chainData_of_isPath`, `exists_cyclic_data_of_closed_path`) for the proofs that want it.
+- **V2 — chain carrier: `WList` paths in ∃-statements; no new record.** The only chain
+  *builder* in the tree is walk-based (the E2d ladder, `ChainExtraction.lean`), the clauses the
+  consumer wants (connectivity of `G − chain`, distance inside it) are upstream *graph/walk*
+  notions (`Graph.Connected`, `Graph.eDist`, `Graph.deleteVerts` = `G - X`), and no Lean
+  consumer exists yet to dictate a record's field shape — the `ChainData.d_eq` lesson (a field
+  pinned to one consumer's need). A `HubChainData` record (a `ChainData` without `d_eq`, hub
+  ends) is deferred until the composition lemma is formalized; `chainData_of_isPath` is the
+  template for minting it then.
+- **V3 — SURPRISE: the review's normal form is missing a case.** The maximal degree-2 chain
+  through `v` can close at a *single* hub `w` — a cycle of length `m + 1 ≥ 7` hanging at a **cut
+  vertex** — and this is inside `hbareSplit`'s habitat. Witness: two 7-cycles sharing one
+  vertex (`|V| = 13`): simple, 2-edge-connected (an edge cut must cut one of the two 2EC
+  cycles), no proper rigid subgraph (every proper subgraph is a forest or has `|E| ≤ |V|`, so its
+  deficiency is `≥ |V| − 6 > 0` at `|V| ≥ 7` and `≥ |V| − 1 > 0` at `|V| ≤ 6`), and every
+  degree-2 vertex has a degree-2 neighbour. The S-mark Lemma is stated for a 2-separation of a
+  **2-connected** `G` (brief §1) and does not apply; the brief's induction case (d) (cut vertex)
+  is the informal owner, but the §3 *Consumed shape* says the ends are a 2-cut `{w, v}`. **The
+  normal form is therefore a trichotomy** (cycle / cut-vertex closure / two-hub chain) —
+  `lem:pencil-degree-two-chain` states all three, and a Lean consumer of `hbareSplit` must
+  dispatch the middle one to a cut-vertex composition. Owner of the informal amendment: the
+  attack track, on the PI's call (*Open* below).
+- **V4 — the brief's `w ≁ v` holds only for `m ≤ D − 2` (`= 4`).** What girth gives is
+  `dist_{G − chain}(w, v) ≥ D − m` (`lem:pencil-chain-side-distance`); a direct `wv` edge is a
+  side path of length `1`, excluded exactly when `D − m ≥ 2`. For `m ≥ 5` adjacency is allowed
+  — harmless for the arithmetic (S10: `m ≥ 5` needs nothing), but the pinned statement must not
+  claim it unconditionally.
+- **V5 — "girth ≥ 7 unless `G` is a 5- or 6-cycle" sharpens to a hub-or-cycle split.** *Any*
+  vertex of degree `≥ 3` forces girth `≥ D + 1 = 7` (`lem:pencil-girth-of-hub`: a spanning
+  short cycle plus a third edge at the hub has a chord, and the chord's two shorter cycles are
+  non-spanning); with no such vertex, 2EC + degree 2 everywhere makes `G` a cycle of *any*
+  length `≥ 5` (`Nonempty G.CycleData`, `CycleData.vertexSet_ncard` gives `|V| = m`), and
+  `C₇, C₈, …` are in the habitat too. The review's sentence is true but the consumer's case
+  split is *hub or cycle*, not `|V| ≤ 6 or not`; in the cycle case the disjunct
+  `¬ PencilHub a ∨ ¬ PencilHub b` is automatic.
+- **V6 — `|N[v] ∩ N[h]| ≤ 2` needs neither hubness nor `G.Simple`**: girth `≥ 5` and `v ≠ h`
+  suffice (three shared members force a triangle if `v ~ h`, a 4-cycle otherwise; edge
+  distinctness comes from distinct endpoint pairs). Stated for arbitrary distinct vertices.
+- **V7 — placement.** `Deficiency.lean` (3535 LoC) and `Operations.lean` (3334) are far past
+  the ~1500-LoC tripwire, so the honest homes are **two new files**:
+  `CombinatorialRigidity/Molecular/Induction/Girth.lean` (G1–G3; imports
+  `Induction/Operations` for `exists_isLink_not_eq_of_three_le_degree`) and
+  `CombinatorialRigidity/Molecular/Induction/ForestSurgery/MaximalChain.lean` (M1–M4′; imports
+  `ForestSurgery/ChainExtraction` and `Induction/Girth`). G4 is about `closedNbhd` and lives
+  with it in `Molecule/Pencil/Motive.lean` (1194 LoC), which gains `import …Induction.Girth`.
+  Import-cone check (spike, `Motive` alone): `cycle_isProperRigidSubgraph`,
+  `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected` and `isLink_eq_of_degree_eq_two`
+  all resolve, so the pencil cone already contains `Operations`, `Reduction` and
+  `ChainExtraction` — neither new file grows it.
+
+### Leaf decomposition (dependency order; each signature compiler-checked)
+
+Ratings are S/P/B per `.claude/commands/coordinate-phase.md` *Rate the task*; S is `1`
+everywhere below because the signatures are pinned here.
+
+**G1** (`Girth.lean`, the first build) — the definition and its two monotonicities.
+
+```lean
+/-- `G` has girth at least `g`: no cycle on `m` vertices with `3 ≤ m < g`. -/
+def Graph.GirthGE (G : Graph α β) (g : ℕ) : Prop :=
+  ∀ ⦃m : ℕ⦄ (hm : 3 ≤ m) ⦃vtx : Fin m → α⦄ ⦃edge : Fin m → β⦄,
+    Function.Injective vtx → Function.Injective edge →
+    (∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))) → g ≤ m
+
+theorem Graph.GirthGE.mono {G H : Graph α β} {g : ℕ} (hle : H ≤ G) (hG : G.GirthGE g) :
+    H.GirthGE g          -- proved in-spike: fun _ hm _ _ hv he hl => hG hm hv he fun i => (hl i).of_le hle
+theorem Graph.GirthGE.anti {G : Graph α β} {g g' : ℕ} (hgg : g' ≤ g) (hG : G.GirthGE g) :
+    G.GirthGE g'         -- proved in-spike
+```
+
+Route: the cyclic successor is the tree's `⟨1, by omega⟩` idiom (`CycleData.link`,
+`cycle_isProperRigidSubgraph`), so the def composes with those without re-indexing. Blueprint:
+`def:girth`. Rating S1/P1/B1.
+
+**G2** (`Girth.lean`) — short cycles are spanning under no proper rigid subgraph.
+
+```lean
+theorem Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
+    {vtx : Fin m → α} {edge : Fin m → β}
+    (hvtx : Function.Injective vtx) (hedge : Function.Injective edge)
+    (hlink : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))) :
+    Set.range vtx = V(G)
+```
+
+Route: `H := (G ↾ Set.range edge)[Set.range vtx]` (mathlib `Graph.restrict` then
+`Graph.induce`; `G.induce` alone is wrong — it keeps chords, and `isKDof_zero_of_cycle` needs
+`E(H) = range edge` exactly). `H ≤ G` by `(induce_le hsub).trans restrict_le`;
+`V(H) = range vtx` by `vertexSet_induce`; `E(H) = range edge` from `edgeSet_induce` + the
+restrict link characterization (`⊇` from `hlink`, `⊆` since every kept edge is some `edge i`);
+`H.IsKDof n 0` by `isKDof_zero_of_cycle hD hm hmD hedge`; `2 ≤ |V(H)|` by
+`Set.ncard_range_of_injective hvtx` + `hm`; then `hnp H` refutes `range vtx ⊂ V(G)`, and
+`range vtx ⊆ V(G)` (`(hlink i).left_mem`) closes with `ssubset_of_ne`. Template:
+`cycle_isProperRigidSubgraph`'s body (`Operations.lean:1073`), which does the same with
+`G.induce` under a degree-2 closure. Blueprint: `lem:pencil-short-cycle-spanning`. Rating
+S1/P2/B1 → sonnet.
+
+**G3** (`Girth.lean`) — a vertex of degree `≥ 3` forces girth `≥ D + 1` (the chord argument).
+
+```lean
+theorem Graph.girthGE_of_noRigid_of_three_le_degree [Finite α] [Finite β] {G : Graph α β}
+    [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {w : α} (hw : 3 ≤ G.degree w) :
+    G.GirthGE (bodyBarDim n + 1)
+```
+
+Route: `intro m hm vtx edge hv he hl`; `by_contra` gives `m ≤ D`; G2 gives `range vtx = V(G)`,
+so `w = vtx i₀`; `exists_isLink_not_eq_of_three_le_degree hw (edge i₀) (edge (i₀ - 1))` gives a
+third edge `g : w — z`, `z = vtx j` (spanning); `g` is no `edge k` (`w` is an endpoint of
+`edge k` only for `k ∈ {i₀, i₀ − 1}`, by `hv` + `IsLink.eq_and_eq_or_eq_and_eq`); `j ∉ {i₀ ± 1}`
+(else `Simple.eq_of_isLink` makes `g` a cycle edge), `j ≠ i₀` (loopless); the arc
+`vtx' k := vtx (i₀ + k)`, `k : Fin (a + 1)`, `a := (j − i₀ : Fin m).val`, with
+`edge' k := if k < a then edge (i₀ + k) else g`, is a cycle on `a + 1 ≤ m − 1 < |V(G)|` vertices
+with `3 ≤ a + 1 ≤ D`, non-spanning — G2 refutes it. **The `Fin`-arithmetic re-indexing of a
+sub-arc across two moduli is the whole difficulty** (no precedent in the tree; the WList
+alternative — `WList.cycleZip` as in upstream `circuitOn'`, rotate, `take`, close with `g`,
+back through `exists_cyclic_data_of_closed_path` — is heavier). Blueprint:
+`lem:pencil-girth-of-hub`. Rating S1/P3/B1 — the table maps this to sonnet; **recommend opus**
+for the `Fin` cast work.
+
+**G4** (`Motive.lean`, next to `ncard_closedNbhd_le_three_of_not_pencilHub`) — closed
+neighbourhoods at girth `≥ 5`.
+
+```lean
+theorem _root_.Graph.ncard_closedNbhd_inter_le_two_of_girthGE [Finite α] {G : Graph α β}
+    (hg : G.GirthGE 5) {v h : α} (hvh : v ≠ h) :
+    (G.closedNbhd v ∩ G.closedNbhd h).ncard ≤ 2
+```
+
+Route: `by_contra`; `Set.two_lt_ncard_iff` gives three distinct members; at most two of them
+are `v`, `h`, so a common neighbour `x ∉ {v, h}` exists; if `v ∈ N[h]` (i.e. `v ~ h`), the
+cycle `![v, h, x]` / its three edges (distinct by endpoint pairs) violates `hg (m := 3)`; else
+a second common neighbour `y ∉ {v, h, x}` exists and `![v, x, h, y]` violates `hg (m := 4)`
+(`fin_cases` link checks as in `CycleData.ofCardThree`). Blueprint:
+`lem:pencil-closed-nbhd-girth-five`. Rating S1/P2/B1 → sonnet. Independent of G2/G3 (needs
+only G1).
+
+**M1** (`MaximalChain.lean`) — the *uncapped* chain-walk builder, sourced from 2EC (the
+E2d-4 `chainWalk_trichotomy` re-sourced and un-capped).
+
+```lean
+theorem Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] (h2ec : G.TwoEdgeConnected)
+    {P₀ : WList α β} (hP₀ : G.IsPath P₀) (hlen : 1 ≤ P₀.length)
+    (hdeg : ∀ x ∈ P₀, x ≠ P₀.first → x ≠ P₀.last → G.degree x = 2)
+    (hlast : G.degree P₀.last = 2) :
+    Nonempty G.CycleData ∨
+    (∃ C : WList α β, G.IsCyclicWalk C ∧ P₀.IsPrefix C ∧ 3 ≤ G.degree C.first ∧
+      (∀ x ∈ C, x ≠ C.first → G.degree x = 2)) ∨
+    (∃ P : WList α β, G.IsPath P ∧ P₀.IsPrefix P ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ 3 ≤ G.degree P.last)
+```
+
+Route: strong induction on `V(G).ncard − P.length` (a path's vertices are `Nodup` and lie in
+`V(G)`, so `P.length + 1 ≤ V(G).ncard` — the natural cap replacing E2d-4's `n − P.length`);
+at `P.last`: degree `≥ 3` → third disjunct; else degree `= 2`
+(`two_le_degree_of_twoEdgeConnected` — `2 ≤ |V|` from the path's two distinct ends), exit edge
+via `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`; far end `y ∉ P` → extend
+(`cons_isPath_iff`-style append at the end, as E2d-4); `y ∈ P` → `y = P.first` (an interior
+vertex has both edges on `P` by `isLink_eq_of_degree_eq_two`; `y = P.last` is a loop): if
+`G.degree P.first = 2` then `cycleData_of_closed_path` (needs `2 ≤ P.length` — a length-1
+closing is a parallel pair, excluded by `G.Simple`; `Preconnected` from
+`preconnected_of_twoEdgeConnected`) → first disjunct; else the closed walk is the second
+(`IsWalk.isCyclicWalk_of_closed_nodup`). Template: `chainWalk_trichotomy`
+(`ChainExtraction.lean:465–727`) — the same case skeleton with the five minimality-sourced facts
+re-sourced from 2EC/`Simple` (the `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`
+precedent) and the lollipop kept instead of refuted. Blueprint:
+`lem:pencil-chain-walk-extension`. Rating S1/P3/B1 (~250 lines of walk surgery along a
+line-by-line template) → **opus**.
+
+**M2** (`MaximalChain.lean`) — the consumed-shape trichotomy at the split arm's hypotheses.
+
+```lean
+theorem Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] (h2ec : G.TwoEdgeConnected)
+    {v a b : α} {eₐ e_b : β} (hdeg : G.degree v = 2) (hne : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hab : G.degree a = 2 ∨ G.degree b = 2) :
+    Nonempty G.CycleData ∨
+    (∃ C : WList α β, G.IsCyclicWalk C ∧ 3 ≤ G.degree C.first ∧
+      (∀ x ∈ C, x ≠ C.first → G.degree x = 2) ∧ v ∈ C ∧ 3 ≤ C.length) ∨
+    (∃ P : WList α β, G.IsPath P ∧ 3 ≤ G.degree P.first ∧ 3 ≤ G.degree P.last ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ v ∈ P ∧ 3 ≤ P.length)
+```
+
+The consumer's `¬ G.PencilHub a ∨ ¬ G.PencilHub b` is `hab` by one line: `a ∈ V(G)`
+(`hla.right_mem`), `¬ PencilHub a ↔ G.degree a < 3`, and `two_le_degree_of_twoEdgeConnected`.
+`5 ≤ |V|` and `hnp` are **not** needed for the trichotomy (only for its girth consequences).
+Route: WLOG `G.degree a = 2` (swap); M1 at `P₀ := cons v eₐ (nil a)` (`hlast := ha`);
+`CycleData` → done; a closed walk through hub `v`?? impossible (`v` has degree 2) — the
+second disjunct of M1 has `C.first = v` with `3 ≤ degree v`, refuted by `hdeg`; terminated →
+`P₁ : v … w'` with hub `w'`; M1 again at `P₀ := P₁.reverse` (`IsPath.reverse`, last `= v` of
+degree 2): `CycleData` → done; closed → lollipop at `w'` with `v, a ∈ C`, `C.length ≥ 3`;
+terminated → path `w' … a v b … w` with both ends hubs, `v, a` interior, `P.length ≥ 3`.
+Blueprint: `lem:pencil-degree-two-chain`. Rating S1/P2/B1 → sonnet (after M1).
+
+**M3a / M3b** (`MaximalChain.lean`; independent of M1–M2) — the side `G − chain` is
+connected, and the ends lose exactly one edge.
+
+```lean
+theorem Graph.connected_deleteVerts_interior_of_twoEdgeConnected [Finite β] {G : Graph α β}
+    [G.Loopless] (h2ec : G.TwoEdgeConnected) {P : WList α β} (hP : G.IsPath P)
+    (hlen : 1 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) :
+    (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).Connected
+
+theorem Graph.degree_deleteVerts_interior_add_one [Finite β] {G : Graph α β} [G.Loopless]
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) :
+    (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).degree P.first + 1 = G.degree P.first
+```
+
+(`G - X` is mathlib's `Graph.deleteVerts`, `open scoped Graph`; `deleteVerts_isLink_iff`.) M3a
+route: `connected_iff` (nonempty — `P.first` survives — and `Preconnected`); for `x` in the
+side, the `G`-component argument of `preconnected_of_twoEdgeConnected` run inside the side:
+a side component `C` with `P.first ∉ C` has `G.cutEdges (C ∪ interior)` (if `P.last ∈ C`) or
+`G.cutEdges C` (if not) of size `≤ 1` — every edge at an interior vertex is one of its two
+chain edges (`isLink_eq_of_degree_eq_two`), and `C` is closed under side edges — contradicting
+`h2ec`. M3b route: `degree_eq_ncard_inc` twice; `E(G − X, P.first) = E(G, P.first) \ {first
+chain edge}` — the first chain edge is the *only* edge at `P.first` with an interior far end
+(any other lands at an interior `u_j` whose two edges are its chain edges, and `P.first ≠ u_{j±1}`
+by `Nodup`), so `Set.ncard_diff_singleton_add_one`. `2 ≤ P.length` is essential (at length `1`
+nothing is deleted). Blueprint: `lem:pencil-chain-side-connected` (both pins). Rating
+S1/P2/B1 each → sonnet.
+
+**M4 / M4′** (`MaximalChain.lean`; needs G3) — side paths between the chain ends are long.
+
+```lean
+theorem Graph.le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
+    (hfirst : 3 ≤ G.degree P.first)
+    {Q : WList α β} (hQ : (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).IsPath Q)
+    (hQf : Q.first = P.first) (hQl : Q.last = P.last) :
+    bodyBarDim n + 1 ≤ P.length + Q.length
+
+theorem Graph.le_length_add_eDist_deleteVerts_interior_of_noRigid [Finite α] [Finite β]
+    {G : Graph α β} [G.Simple] {n : ℕ} (hD : 3 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {P : WList α β} (hP : G.IsPath P) (hlen : 2 ≤ P.length)
+    (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
+    (hfirst : 3 ≤ G.degree P.first) :
+    ((bodyBarDim n + 1 : ℕ) : ℕ∞) ≤ (P.length : ℕ∞) +
+      (G - {x | x ∈ P ∧ x ≠ P.first ∧ x ≠ P.last}).eDist P.first P.last
+```
+
+M4 route: `Q.reverse` (from `P.last` to `P.first`) is a `G`-path (`IsPath.of_le`, `G − X ≤ G`)
+meeting `P` only in its ends, so `P ++ Q.reverse.dropLast`-style concatenation (`IsPath.append`
+with the disjointness side condition) is a path closed by `Q`'s last edge;
+`exists_cyclic_data_of_closed_path` packages it as a `Fin (P.length + Q.length)`-cycle; G3
+(`hfirst`) gives `D + 1 ≤ P.length + Q.length`. At `D = 6`, `m = P.length − 1`: this is the
+review's `dist_{H′}(w, v) ≥ 6 − m`, and `Q.length = 1` (a `wv` edge) is refuted exactly for
+`m ≤ 4` (V4). M4′ is the `ℕ∞` wrapper: `le_iInf` over walks + `IsWalk.exists_isPath`-shortening,
+or `ConnBetween.exists_isPath_length_eq_eDist` when the side is connected (`eDist = ⊤` makes
+it trivial otherwise — which is why the `ℕ∞` form needs no `h2ec`). Blueprint:
+`lem:pencil-chain-side-distance`. Rating S1/P3/B1 (walk concatenation + packaging) → opus;
+M4′ S1/P1/B1.
+
+**Build order.** G1 → G2 → G3 (serial, `Girth.lean`); G4 (after G1; `Motive.lean`); M3a/M3b
+(any time; `MaximalChain.lean`); M1 → M2; M4 → M4′ (after G3). First build = **G1 + G2 in one
+commit** (new file + `def:girth`/`lem:pencil-short-cycle-spanning` pins). Every blueprint pin
+is added in the commit its Lean lands (red nodes carry no `\lean{}` today; `checkdecls` green).
+
+### Which S-mark obligation each clause serves
+
+| clause (Lean) | informal use (brief §, workbook S) |
+|---|---|
+| G3 girth `≥ 7` at a hub; G4 `|N[v] ∩ N[h]| ≤ 2` | §6 idea 1 / route R1: the coplanarity closure never forces `π_u = π_v`, so the coincident-flag arm is void |
+| M2 case (iii): chain of `m ≥ 2` between hubs `w ≠ w'`, containing `v` and its degree-2 neighbour | §3 *Consumed shape*: the hub-terminal side against `ear_m`; the `m`-stratification of S10 (`m ≥ 5` free, `m = 4` attain + welded-attain, `m = 3` one profile condition, `m = 2` the core) |
+| M2 case (i): `G` is a cycle | base case (b) of the §3 induction; the kernels' disjunct is automatic |
+| M2 case (ii): the chain closes at one hub (V3) | **not covered by the brief's Lemma** (2-connected `G`); informal owner is induction case (d), cut vertex |
+| M3a `G − chain` connected; M3b side-degree `= deg − 1 ≥ 2` | `H′` is a genuine side; S6 (the side-degree-1 reduction) does *not* apply; S7/S8 read a side with degree `≥ 2` at both terminals |
+| M4 `dist_{H′}(w, v) ≥ 6 − m`; `w ≁ v` for `m ≤ 4` (V4) | §4 `ρ_i ≤ dist_i`, `δ_i ≤ dist_i`; §1 a 2-separation with `u ≁ v`; §7's counterexample shape |
+
+### Open after this pass (owner)
+
+1. **The cut-vertex case (V3)** — whether the brief's §3 *Consumed shape* is amended to the
+   trichotomy and which informal clause (case (d)) owns the composition at a single hub: the
+   PI, via the attack track (`notes/attacks/smark/state.md` is the attack's surface; this pass
+   edits nothing under `notes/attacks/`). The Lean side is already honest: M2 states all three
+   cases.
+2. Whether M2 should be sharpened to "exactly one of" — no consumer asks; not pinned.
+3. `GirthGE` predicate vs `egirth : ℕ∞` — revisit only if a consumer needs the number (V1).
+4. Nothing here touches checklist item 3 (the field hypothesis) or items 4–10.
