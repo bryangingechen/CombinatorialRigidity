@@ -1106,3 +1106,122 @@ the explicit Gram matrices above; control `drivers/splitoff.py`, session 5). (iv
 with `G₋` attaining, `H′` attaining and `G` failing (the control asserts the implication at every
 draw); or a Gram entry above disagreeing with the exact computation (`splitoff.py` prints
 expected/got for each).
+
+## S15 — Review notes (2026-09-16, `/review-attack` after session 5; the reviewer's checks, not the attack's — verify before building on them)
+
+**(i) The consumer, diffed against the source.** `Escape.lean`, `pencilPair_of_splitOff_of_habitat`:
+`hK` takes `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)` and concludes the chart form
+(hub selectors, `q`, an edge-indexed row set `s` of the target cardinality with linearly
+independent `pencilRow`s); `hbareSplit` takes `¬ PencilNondegFeasible K G → HasPencilRealization
+K 3 (G.splitOff v a b e₀)` and concludes `HasPencilRealization K 3 G`. Neither carries an
+induction hypothesis; `hIH : ∀ G', V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G'`
+is in scope at the sole call site and feeds both arms
+(`hasGenericPencilRealization_of_splitOff_of_safe … hIH`; `(hIH _ hV'ne hV'lt).2`); `hcontract`
+already takes the IH in that form. `splitOff` (`Molecular/Induction/Operations.lean:770`): vertex
+set `V(G) \\ {v}`, links = those of `G` avoiding `v` plus the fresh `e₀` joining `a, b`. So S14's
+reading stands, and the brief's §3 ("its antecedent may be discarded") and §5 first bullet were
+wrong. The call site converts `hK`'s chart-form conclusion to `HasGenericPencilRealization K 3 G`
+at once (`hasGenericPencilRealization_of_independent_pencilRow_target`) and uses nothing else of
+it — so a kernel with that weaker conclusion would serve the same call site.
+
+**(ii) S14(i), (ii), (v) re-derived.** From S10(ii), at every configuration
+`dim(ρ̄₁ + ρ̄₂) = min(δ₁+δ₂, 6) + a₁ + a₂ − a(G)`, and `ρ_i = δ_i + a_i − a_i^w` (welding removes
+exactly the relative motions: `dim M(H/uv) = dim M(H) − ρ`, with `dim M(H) = 6 + f + a` and
+`dim M(H/uv) = 6 + g + a^w`). Side 2 = `ear_{m−1}`: `δ₂ = m`, `ρ₂ = m` (`m ≤ 6`), `a₂ = 0`. `G₋`
+attains iff `ρ′ + m − dim(ρ̄′ ∩ ρ̄_{m−1}) = min(δ′+m, 6) + a′`; for `δ′ + m ≤ 6` this reads
+`dim ∩ = −a′_w`, forcing both to `0`; for `δ′ + m > 6` the right side `6 + a′` exceeds the left's
+cap `6` unless `a′ = 0` with the sum full. (ii) likewise with `m + 1`. (v):
+`dim M(G) ≥ (6 + f′ + a′) + (7 + m) − 6 − 6 = f′ + a′ + m + 1`, while
+`6 + def₃(G) = f′ + m + 7 − min(δ′+m+1, 6) = f′ + m + 1 + max(0, 5 − δ′ − m)`; at
+`δ′ + a′ = 6 − m` this is `f′ + m + a′ < dim M(G)`, so `G` fails on the whole component. Correct.
+The gap is hypothetical on a *never*-attaining side; its content is that no local argument can
+prove the pinned kernels, whose truth on the gap cells is the conjecture for `G − chain`.
+
+**(iii) S14(iii) traced against S2.** Each of (X1)–(X4) has a necessary condition on `B` alone —
+`P(B)` on a smooth pencil member (X1), `Q₂|_B ≡ 0` (X2), an isotropic trace on `⟨L⟩^⊥` or
+`⟨M⟩^⊥` (X3), a ruling-plane trace on `Π_w ⊕ Π_v` (X4) — and the Gram data of `ρ̄(ear₂)`,
+`T(ear₂)`, `ρ̄(ear₃)` contradict each (`splitoff.py` item (6), `gram_mismatches = 0`). The
+`m = 2`, `δ′ ≤ 3` step's three failure modes each put a vector into `ρ̄′ ∩ R_y` as claimed
+(`L_{wy} ∈ Π_w`; `3 + 2 > 4` inside `Π_w ⊕ Π_v`; `⟨M⟩ ⊕ Π_w ⊇ Π_w`). The degenerate-ear steps
+(`δ′ ≥ 4` at `m = 3`, `δ′ ≥ 5` at `m = 2`) are correct uses of lower semicontinuity of rank
+over the irreducible ear moduli. Wording: S14 cites S5 for "a generic ear is a generic gauge
+translate `g·ear₀`", which S5 does not say (the ear moduli, `3m − 2` dimensions, exceed the
+5-dimensional `S(ϕ)` for `m ≥ 3`); what S14 uses is S5's actual mechanism — one good pair
+`(q₁, g·q₂)` makes the generic point good by semicontinuity — and that holds. Not re-read here:
+S1's stratum list beyond S2's use of it.
+
+**(iv) Signals.** "Where it breaks" moved at every one of the five sessions (O4 → O4 general →
+O4 at `m = 2` [review 1] → (O4′) → (O4″) → S14(v) + O7), so the first signal line never fires;
+the count read `3` at every session end (7 → 3 inside session 1). By the review rule that is a
+treadmill, and sessions 3–4 were one: (O4′) and (O4″) are rigidity statements about an
+arbitrary side, of the same type as O4 and as the target (S7). Session 5 ended it by changing
+the *target*, not by discharging anything on the old one: O4–O4″ were never proved, only shown
+unconsumed. Session 3 was the one sweep-shaped session — its sketch change ((O4′), "the K4
+structure puts one screw into the pencil") was a mechanism narrated from a measured `1`,
+withdrawn by S13(i) once the vector was exhibited (`notes/harness/incidents.md` 2026-09-16).
+
+**(v) Evidence gaps.** (a) No driver population contains a hub with three hub neighbours:
+`census.py` subdivides every skeleton edge to length `≥ 2` (that is what makes S13(iv) apply),
+the battery has at most two interior hubs, and S13(iv) itself lists adjacent-hub sides as
+uncovered. So the bare arm — `¬ PencilNondegFeasible`, forced by a closed hub neighbourhood of
+size `≥ 4` — has never been sampled; the (K-bare) extension-route recon flagged the same gap on
+2026-07-30 (`notes/Phase39-design.md`). (b) S14(vii), "irreducibility on all of `hK`'s domain",
+is a paragraph sketch of the tower along hub paths and cycles, not a proof; the state file's
+"covered" overstates it. (c) The brief's "unchecked: the 5-rows-per-hinge matrix against Lean's
+`rigidityRows`" has stood since the brief was written, and every line of S14 is a rank
+statement — the Lean round's question (a). (d) `ρ̄(ear_m) = Λ²K⁴` at `m ≥ 5` is used at
+*incident* flags (`w ~ v`) and measured at generic flags only; one exact witness settles it
+(rank is lower semicontinuous), and the retirement of O6 leans on it.
+
+**(vi) O8's stratum list, from the definition body.** `IsNondegPencilRealization` (`Motive.lean`)
+= panel realization ∧ (each link's two points linearly independent) ∧ (normals linearly
+independent on every closed hub neighbourhood) ∧ (points linearly independent on every
+non-hub's closed neighbourhood). A bare witness may therefore sit on three strata: coincident
+adjacent points; dependent normals on a closed hub neighbourhood; collinear degree-2 stars. The
+second includes `π_w = π_v` for the `m = 2` antecedent `H′ ∪ ear₁`: there the fibre of
+`y ∈ π_w ∩ π_v` jumps from a line to a plane, so S14(iv)'s "fibration with irreducible fibres of
+constant dimension" fails over that locus and `Y(G₋)` may acquire a component there. On `hK`'s
+arm it is excluded — `y`'s closed hub neighbourhood is `{w, v}`, whose normals must be
+independent — so it is a bare-arm item. The state file's O8 names two strata and this locus not
+at all.
+
+**(vii) A question for the Lean round, not the attack: does a bare witness certify anything?**
+The Lean's bare motive quantifies over a `BodyHingeFramework` carrying its own hinge extensor
+per edge, constrained only to pass through both endpoint points (and lie in the panel planes).
+At coincident adjacent points the hinge is any line through the point in both planes — freedom
+the attack's `Y(G)` (hinge = the line through the two points) does not have. If such a
+degenerate witness can attain the target rank without being a limit of nondegenerate
+configurations, the bare arm's antecedent says nothing about the generic point and O8 cannot be
+written against the attack's variety. The plausible fix is a conjunct "adjacent points
+projectively distinct" on the bare motive, which costs the infeasible arm nothing (infeasibility
+comes from hub normals). Settled by a definition-body derivation on the Lean side
+(`notes/Phase39.md` checklist item 4(b)).
+
+**(viii) Revived.** (a) S9 — the `ear₁` criterion in closed form — retired at review 1 as "a
+shape the consumer does not take": at `m = 2` the antecedent graph *is* `H′ ∪ ear₁`, so S9
+states what the antecedent says about `H′`, and its measured law `T ∩ ⟨M, L⟩ = 0` at `dist ≥ 4`
+(19 sides) would make the antecedent nearly redundant there — the content would sit in the
+side's attainment and welded attainment. (b) The brief's §5 first bullet ("every placement
+fails; hence the bypass"): the observation stands, the conclusion does not — S14(v) explains the
+failures as the `a′` gap at special configurations, and S14 uses the antecedent as a
+generic-point certificate.
+
+**(ix) Verdict, decision, sequence.** Switch to R2, gated on the PI adding the induction
+hypothesis to both kernels — **decided by the PI 2026-09-16** (`notes/pencil/adjudications.md`).
+Sequence (`notes/Phase39.md` *Hand-off*): a read-only Lean recon on (v)(c), (vii), and whether
+feasibility and simplicity restrict from `G` to `G − chain` (the chain ends become non-hubs
+there, where the fourth nondegeneracy conjunct bites); the kernel-restatement slice, restating
+the design-doc and blueprint pins in the same commit; the brief rewritten from the landed
+declarations (both kernels quoted verbatim, one hypothesis per line, each operator glossed from
+its body; a justification for any unused hypothesis; a "consumed because" line per
+obligation); then session 6, whose first move is O7 with an adjacent-hub control — build a side
+with a hub of three hub neighbours, each continued by a branch of length `≥ 2` to `w` or `v` at
+girth `≥ 7`, and sample from several starts before attempting the tower extension or component
+matching. Small items for session 6: O8 with (vi)'s list against the bare space as (vii)
+settles it; the O9 descent paragraph; the `m ≥ 5` incident-flag witness of (v)(d); S14(vii) as
+a proof.
+
+**What would change this review's verdict:** a proof that the pinned kernels are locally
+provable after all (a local argument giving `a′ = 0` on the component the antecedent
+certifies); or a bare-arm instance where `G₋` and `H′` attain and `G` fails at every
+configuration — the control session 6 should run first on an adjacent-hub side.
