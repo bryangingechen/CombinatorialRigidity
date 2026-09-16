@@ -687,3 +687,87 @@ attainment, welded attainment and the `c(U)` bounds; `S(ϕ)` is `K`-split with d
 Kernel (K-bare)'s Lean lemma is expected with `[Infinite K]` in that form, `IsAlgClosed K` in
 the interim. (For the grid route to `hK`, the same recon finds `char K ≠ 2` and nothing more;
 the characteristic-2 probe is the (GR-10) attack's, `notes/attacks/gr10/brief.md` §6 item 4.)
+
+## S12 — Verification of S10, and the K4-minor adversarial frontier (session 3, 2026-09-16)
+
+Session 3's charge (state file *Next steps* 1): verify S10's chain-length arithmetic
+against S3 + S8, then push the `m = 2` profile bounds into the population S8 could not
+reach — girth-`≥ 7` sides with a **K4 minor** (not series-parallel; the state file's
+"no 3-connected chunk" gap). Two new drivers, exact ℚ, seed `20260916`, caps in
+`drivers/README.md`.
+
+**(i) S10's arithmetic is correct (checked by hand, block by block).** Writing the S3
+inequality as `c′(U) ≤ dim U + max(0, δ′ + δ₂ − 6) − c₂(U)` with `c₂` the S8 profile of
+`ear_m` (`δ₂ = min(m+1, 6)`):
+- **`m ≥ 5`** (`ρ̄₂ = Λ²K⁴`): `dim(ρ̄′ + ρ̄₂) = 6` unconditionally.
+- **`m = 4`** (`c₂(U) = dim U − 1`, `dim U ≥ 1`): every inequality is `c′(U) ≤ max(1, δ′)`,
+  true since `c′(U) ≤ δ′`; the four exceptions fail on `(A^⊥, B^⊥)` (dims `(6−δ′, 1)`) for
+  `δ′ ≥ 2` and on `(A, B)` (dims `(1, 5)`) at `δ′ = 1`. **No condition on `H′`.**
+- **`m = 3`** (`c₂(Π) = 1`, else `max(0, dim U − 2)`): the only binding inequality is
+  `c′(Π_w), c′(Π_v) ≤ 1 + max(0, δ′−2)`, which bites **only at `δ′ = 2`**: `ρ̄′ ∉ {Π_w, Π_v}`.
+  (`Π_w ⊕ Π_v` and the two 3-dim blocks are all `≤ 2 + s`, automatic since `c′ ≤ δ′`.)
+- **`m = 2`** (`c₂ = 1,1,2,1,1,1,1` at `Π_w, Π_v, Π_w⊕Π_v, ⟨M⟩⊕Π_w, ⟨M⟩⊕Π_v, Π_w⊕⟨L⟩, Π_v⊕⟨L⟩`,
+  else `max(0, dim U − 3)`; slack `s = max(0, δ′−3)`): binding are `c′(Π_w), c′(Π_v) ≤ 1+s`;
+  `c′(Π_w⊕Π_v) ≤ 2+s`; `c′(⟨M⟩⊕Π), c′(Π⊕⟨L⟩) ≤ 2+s`. So at `δ′ ≤ 3`: both terminal pencils
+  met in `≤ 1`, `Π_w⊕Π_v` in `≤ 2`, the two 3-dim blocks in `≤ 2` (last bites at `δ′ = 3`);
+  at `δ′ = 4`: `Π_w⊕Π_v ≤ 3` only; at `δ′ ≥ 5` nothing. **This confirms S10 exactly.**
+
+**(ii) S10 confirmed end-to-end — `drivers/earcompose.py`.** For side 1 in the
+14-member hub-terminal battery (`theta33..theta555`, `theta4444`, `cross44/55`, `hubcyc`,
+`dumbbell` — side-degree `≥ 2` at both terminals) and `m ∈ {2, 3, 4}`: the composed
+`G = H′ ∪ ear_m` at generic flags. Per draw the driver samples both sides, asserts the
+**2-cut deficiency law** `def₃(G) = f₁ + f₂ − min(δ₁+δ₂, 6)` (exact `d3`), computes the
+gluing prediction `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂, 6)`, evaluates the S3 block criterion, and
+compares against the **exact rank** of the combined pencil configuration
+`rk R(G) = 6|V(G)| − 6 − def₃(G)`. At **252/252 draws** (`--seed 20260916 --draws 6
+--ears 2,3,4 --side hub`): 2-cut law holds, S3 criterion `⟺` actual attainment,
+predicted `=` actual, **no side ever exceeds S10's per-block bound on `c′`**. Each draw
+is an exact witness (S7(vi)), so each row is a theorem for the component through it.
+
+**(iii) The K4-minor adversarial frontier — `drivers/adversarial.py`.** The consumed
+`H′ = G − chain` inherits girth `≥ 7` from `G`, so a genuine "3-connected chunk" means a
+**topological `K4`** (subdivided `K4`, the minimal non-series-parallel graph). Sides:
+`sk4_d2, sk4_d3, sk4_d4` = `K4` on `{u,v,p,q}` (`u, v` the terminals, `p, q` interior
+hubs) with edges `(uv,up,uq,vp,vq,pq)` subdivided to lengths `(4,3,3,3,3,4)`,
+`(3,3,3,4,4,4)`, `(4,3,3,4,4,4)` (girth 10, `|V| = 18,19,20`, `δ = 2,3,4`); `prism` =
+subdivided triangular prism (girth 9, `|V| = 24`, `δ = 3`). At 6 draws each, all attain
+and welded-attain; the terminal-pencil profile is (u ↔ w):
+
+| side | `δ′` | `c′(Π_w)` | `c′(Π_v)` | `c′(Π_w⊕Π_v)` | `c′(⟨M⟩⊕Π)`, `c′(Π⊕⟨L⟩)` | S10 `m=2` bound |
+|---|---|---|---|---|---|---|
+| `sk4_d2` | 2 | 0 | 0 | 0 | 0 | `1,1,2` — **slack** |
+| `sk4_d3`, `prism` | 3 | **1** | **1** | **2** | 1 | `1,1,2` and 3-dim `≤2` — **tight, holds** |
+| `sk4_d4` | 4 | 1 | 1 | 2 | 0 | `Π_w⊕Π_v ≤ 3` — **holds** |
+
+**Reading.** The series-parallel thetas (S8) had `c′(Π_w) = 0`; the **K4-minor sides
+saturate S10's bound at `c′(Π_w) = 1` (never exceed it)** once `δ′ ≥ 3`. So the bound
+`c′(Π_w) ≤ 1` is *tight* — the non-series-parallel structure genuinely puts one relative
+screw into the terminal pencil, which is exactly why S10 needs `≤ 1`, not `= 0` (S8's
+value). Composing these K4-minor sides with `ear_{2,3}` (`earcompose --side sk4_d*`): the
+consumed graph attains at every draw, S3 criterion `⟺` actual, no bound exceeded. These
+are the first witnesses (theorems for their components, S7(vi)) that the `m = 2`/`m = 3`
+profile bounds hold on a side with a K4 minor and three interior hubs.
+
+**Sharpened target (replaces the state file's "no proof for a side with an interior
+hub").** By S7, `c′(Π_w) = max(0, δ′−4) + exc(Π_w)`, `exc(Π_w) =` attainment loss of the
+**four-bar framework** `H′ ∪ bars(Π_w^⊥)` (bars `M`, `L`, two lines of `Π_w` between
+bodies `w, v`). The measured `c′(Π_w) ≤ 1` at `δ′ ≤ 5` is exactly `exc(Π_w) ≤ 1`. The
+open obligation O4, in its weakest consumed form, is therefore:
+
+> **(O4′)** For a girth-`≥ 7` side `H′` with side-degree `≥ 2` at both hub terminals, at
+> generic `ϕ` on the attaining + welded-attaining component: the four-bar framework
+> `H′ ∪ bars(Π_w^⊥)` loses **at most one** dof against its Tay count (`exc(Π_w) ≤ 1`),
+> and symmetrically at `v`; and `H′ ∪ bars(M) ∪ bars(L)` loses `≤ 0` beyond the count
+> forcing `c′(Π_w⊕Π_v) ≤ 2` at `δ′ ≤ 3`.
+
+Measured `= 1` on every K4-minor and prism draw at `δ′ ≥ 3`, `= 0` on every
+series-parallel draw. **Not a theorem** — the population is the four named K4/prism sides
+plus the 23 battery sides, at the caps disclosed; "`exc(Π_w) ≤ 1` never violated" is *not
+found above 1*, not proved for the class.
+
+**Verdict.** S10: *verified* (arithmetic by hand in (i); end-to-end control in (ii)). The
+adversarial probe (iii) **does not refute** the `m = 2` clean form and sharpens O4 to
+(O4′), a bar-augmented attainment-loss bound of exactly one. **What would change this:**
+a girth-`≥ 7` hub-terminal side with `c′(Π_w) ≥ 2` (or `c′(Π_w⊕Π_v) ≥ 3` at `δ′ ≤ 3`) at
+generic `ϕ` on its attaining+welded component — none found in `sk4_d*`, `prism`, or the
+23-side battery.

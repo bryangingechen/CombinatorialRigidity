@@ -71,3 +71,38 @@ basis of `L`. A `p_x` draw is generic with probability 1 minus a finite set, so
 *proof* (its "what would change this" is one mismatch), not on S9's truth, which is
 the argument in the workbook. `dist ≥ 4 ⟹ T ∩ ⟨M, L⟩ = 0` is a **measured law on 19
 sides**, not a theorem (state file, *Where it breaks*).
+
+## `earcompose.py` — S10 end-to-end: ear_m composed with a hub-terminal side (workbook S12(ii))
+
+Run from the repository root; imports `sideprof.py` (and `adversarial.py` for the K4
+sides). Composes side 1 = a battery side with side 2 = `ear_m` at the hub 2-cut `{w, v}`,
+asserts the 2-cut deficiency law `def₃(G) = f₁+f₂ − min(δ₁+δ₂,6)`, and compares S10's
+predicted verdict (gluing law + S3 block criterion) against the **exact rank** of the
+combined pencil configuration.
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 1800 python3 notes/attacks/smark/drivers/earcompose.py --seed 20260916 --draws 6 --ears 2,3,4 --side hub` | S12(ii): 14 hub-terminal sides × 3 ears × 6 draws = **252/252**; 2-cut law ok, S3 criterion ⟺ actual attainment, predicted = actual, `MISMATCH 0`, `draws with c1 over S10 bound 0` |
+| `timeout 400 python3 notes/attacks/smark/drivers/earcompose.py --seed 20260916 --draws 3 --ears 2,3 --side sk4_d3` | the K4-minor consumed shape attains: `sk4_d3 ∪ ear_{2,3}` at 6/6, S3 crit ⟺ actual |
+
+Caps, disclosed: the `s = 20` flag/interior draws of `sideprof.py`; 6 draws per (side, ear).
+`HUB_SIDES` is the 14 side-degree-`≥2`-at-both-terminals members. Each draw is an exact
+witness, so "attains" is a theorem for the component through it (S7(vi)); "no side over the
+S10 bound" is *not found over these sides/draws*, not a theorem about the class.
+
+## `adversarial.py` — the K4-minor / prism profile frontier (workbook S12(iii))
+
+Run from the repository root; imports `sideprof.py`. Samples the block profile of
+girth-`≥7` sides with a **K4 minor** (topological `K4`, `sk4_d{2,3,4}` at `δ = 2,3,4`) or a
+subdivided triangular prism (`prism`, `δ = 3`) — the "3-connected chunk" the 23-side battery
+lacked — and flags any `c′(Π_w) ≥ 2`, `c′(Π_v) ≥ 2`, or `c′(Π_w⊕Π_v) ≥ 3` (a refutation of
+S10's `m = 2` clean form).
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 1200 python3 notes/attacks/smark/drivers/adversarial.py --seed 20260916 --draws 6 --side all` | S12(iii): `sk4_d2` → `c′ = (0,0,0)`; `sk4_d3`, `prism` → `(1,1,2)` (**S10 bound, tight**); `sk4_d4` → `(1,1,2)`; **no draw exceeds the bound** |
+
+Caps, disclosed: the same `s = 20` draws, 60 flag tries; the population is the four named
+K4/prism sides. "`c′(Π_w) ≤ 1` never violated" is *not found above 1* over these sides and
+draws (each row a theorem for its component, S7(vi)) — **not** a theorem about K4-minor
+sides in general.
