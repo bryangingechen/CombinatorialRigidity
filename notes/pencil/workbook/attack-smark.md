@@ -771,3 +771,155 @@ adversarial probe (iii) **does not refute** the `m = 2` clean form and sharpens 
 a girth-`≥ 7` hub-terminal side with `c′(Π_w) ≥ 2` (or `c′(Π_w⊕Π_v) ≥ 3` at `δ′ ≤ 3`) at
 generic `ϕ` on its attaining+welded component — none found in `sk4_d*`, `prism`, or the
 23-side battery.
+
+## S13 — Composition at the cut, the ear-in-disguise diagnosis, irreducibility at hub-distance `≥ 2`, and the short-path kill (session 4, 2026-09-16)
+
+Session 4's charge (state file *Next steps* 1–2): attack `exc(Π_w) ≤ 1` (O4′) on the
+K4-minor family where it was measured tight, and widen the adversarial net. Both were
+done and the picture changed: the K4-minor "frontier" is an ear in disguise, the
+consumed obligation decomposes over the pieces of `H′` at the cut, and the genuine
+remainder is a single piece all of whose `w`–`v` paths have `≥ 6` lines. Drivers
+`pencilline.py`, `census.py`, `specialcfg.py` (exact ℚ, seed `20260916`, caps in
+`drivers/README.md`).
+
+**(i) Diagnosis — the tight `c′(Π_u) = 1` of S12(iii) is S8's ear line.** `pencilline.py`
+computes the line `ρ̄′ ∩ Π_u` on `sk4_d3`, `sk4_d4`, `prism` and the motion realising it.
+At 6/6 draws the line is the hinge `L_{ux}`, `x` the first vertex of the *direct* `u`–`v`
+branch, and in the motion every hinge of that branch except `L_{ux}` is inactive: the branch
+is welded to `v` and rotates about `L_{ux}` (symmetrically at `v`). Reason, by (ii): with
+`H″ :=` the side minus that branch, `(f, g, δ)(H″) = (6, 0, 6)` for all three
+(`d3`/`weld_d3`), so `ρ̄(H″) = Λ²K⁴` and `ρ̄′ = ρ̄(H″) ∩ span(P) = span(P)` — the `ear2`
+profile `(1,1,2,1,1,1,1)` for `sk4_d3`, `prism` and the `ear3` profile for `sk4_d4`, exactly
+the S12(iii) table. **S12(iii)'s reading ("the non-series-parallel structure puts one
+relative screw into the pencil") is withdrawn:** the K4 chunk is fully flexible and
+contributes nothing; the pencil line is the ear's. Only `sk4_d2` (`δ(H″) = 4`) is genuinely
+mixed, and it has `c′(Π_u) = 0`.
+
+**(ii) Proposition (composition of `ρ̄` at the cut).** Fix a configuration of a side `H` at
+flags `ϕ`, terminals `w ≁ v`.
+- **(a) Parallel.** If `H − {w, v}` has components `C₁, …, C_k` and `H_j := H[C_j ∪ {w, v}]`
+  (the *pieces*), then `ρ̄_{wv}(H) = ∩_j ρ̄_{wv}(H_j)`, and `δ(H₁ ∪ H₂) = max(0, δ₁ + δ₂ − 6)`.
+- **(b) Series.** If `z` is a cut vertex of `H` separating `w` from `v`, `H = H_a ∪_z H_b`
+  (`w ∈ H_a`, `v ∈ H_b`), then `ρ̄_{wv}(H) = ρ̄_{wz}(H_a) + ρ̄_{zv}(H_b)`.
+- **(c) Monotonicity.** For a subgraph `H₀ ⊆ H` containing `w, v`: `ρ̄_{wv}(H) ⊆ ρ̄_{wv}(H₀)`,
+  hence `c_H(U) ≤ c_{H₀}(U)` for every block sum `U`.
+
+*Proof.* (a) A motion of `H` is a tuple of motions of the `H_j` agreeing at `w` and at `v`
+(the pieces share no other vertex and no edge). Normalise `m(w) = 0`; then `m(v) ∈ ρ̄(H_j)` for
+all `j`. Conversely for `r` in the intersection pick `m_j ∈ M(H_j)` with `m_j(w) = 0`,
+`m_j(v) = r` and glue. For `δ`: `f = f₁ + f₂ − min(δ₁ + δ₂, 6)` (S10(ii)) and `g = g₁ + g₂`
+(a partition with `w, v` together restricts to the pieces and its count adds). (b) Motions
+of `H` are pairs agreeing at `z`; `m(v) − m(w) = (m_b(v) − m_b(z)) + (m_a(z) − m_a(w))` with
+the summands chosen independently. (c) A motion of `H` restricts to a motion of `H₀`. ∎
+
+*Reading.* `c_H(Π_w) = dim ∩_j (ρ̄_j ∩ Π_w) ≤ min_j c_j(Π_w)`: **the consumed bound
+`c′(Π_w) ≤ 1` holds as soon as one piece fails to contain `Π_w`**, and likewise for every
+block. In the SPQR tree of `H + wv`: P-nodes intersect, S-nodes add, and the content sits in
+the R-nodes (subdivided 3-connected skeletons carrying the virtual edge `wv`). The multi-piece
+case also gets the gauge for free — `S(ϕ)` acts on each piece's configuration independently,
+so `ρ̄′ = ρ̄₁ ∩ g ρ̄₂` for generic `g ∈ S(ϕ)` and S2–S3 give its *dimension* from the pieces'
+profiles; what S2 does not give is the block profile of the intersection (see (viii)).
+
+**(iii) Corollary (an ear piece discharges the `m = 2` list).** If some piece `H_j` is a
+path of length `k ≤ 5` (an ear of `H` between `w` and `v`; `k ≥ 4` in the consumed shape,
+`dist_{H′}(w, v) ≥ 4`), then at the generic point of *every* component of `Y°(H; ϕ)`:
+`c(Π_w), c(Π_v) ≤ 1`; the four 3-dimensional blocks `≤ k − 3 ≤ 2`; `c(Π_w ⊕ Π_v) ≤ k − 2`
+(`= 2` for `k = 4`; `3` for `k = 5`). *Proof.* The ear's interior vertices meet the rest of
+`H` only at `w, v` and their constraints are `p_{first} ∈ π_w`, `p_{last} ∈ π_v`, so
+`Y°(H; ϕ) = Y°(H − int(P); ϕ) × Y°(P; ϕ)` up to open conditions; `Y°(P; ϕ)` is irreducible
+(S8), so every component is `Y′ × Y°(P;ϕ)` and its generic point has a generic ear. Apply
+(ii)(c) with `H₀ = P` and S8's `ear_{k−1}` profile. ∎ So an ear piece of length 4 discharges
+the whole S10 `m = 2` list; one of length 5 discharges all but `c′(Π_w ⊕ Π_v) ≤ 2` at `δ′ = 3`.
+
+**(iv) Proposition (irreducible fibre when hubs are pairwise non-adjacent — S8 extended).**
+If no two vertices of degree `≥ 3` are adjacent in `H` (every branch has length `≥ 2`), then
+`Y°(H; ϕ)` is irreducible. *Proof.* Tower. Base `B := ∏_{interior hubs z} {(p_z, π_z) :
+p_z ∈ π_z}`, irreducible (the terminal flags are fixed by `ϕ`). Over a point of `B` the
+remaining coordinates are the branch interiors: for a branch `z, y₁, …, y_{k−1}, z′` with
+`k ≥ 2`, `p_{y₁} ∈ π_z`, `p_{y_{k−1}} ∈ π_{z′}`, the other `p_{y_i}` free (`k = 2`: the single
+point lies on `π_z ∩ π_{z′}`), and these are *all* the constraints of a pencil configuration
+— a degree-2 vertex's plane is the plane of its three points, and a hub's plane is `π_z` once
+its neighbours lie in it. Over the dense open `B° ⊆ B` on which the two end-planes of every
+length-2 branch differ, the fibre is an open subset of a product of linear spaces of constant
+dimension, so the part of `Y°` over `B°` is irreducible; a point over `B ∖ B°` (`π_z = π_{z′}`,
+`p_y` anywhere in the common plane) is a limit of points over `B°` — rotate `π_{z′}` about the
+line `p_{z′} p_y ⊆ π_z`, so that `π_z ∩ π_{z′}` contains `p_y` throughout. Hence `Y°(H; ϕ)` is
+irreducible (the auxiliary `π_z` are functions of the points on the open set where each hub's
+closed star spans a plane). ∎ *Consequences.* Every row of `census.py` (all lengths `≥ 2`) is
+a theorem for its side, not for a component (S7(vi)); and for such sides the frame's
+"attaining + welded component" is the whole fibre. Not covered: sides with adjacent hubs
+(allowed at girth `≥ 7`) — a hub with three earlier-placed hub neighbours forces a concurrency
+condition and the tower stops; the state file keeps this as a worry.
+
+**(v) Corollary (the short-path kill).** Let `H` have pairwise non-adjacent hubs, girth `≥ 7`,
+`w ≁ v`, and `k := dist_H(w, v) ∈ {4, 5}`. Then at the generic point of `Y°(H; ϕ)`:
+`c(Π_w), c(Π_v) ≤ 1`; `c(⟨M⟩⊕Π), c(Π⊕⟨L⟩) ≤ k − 3`; `c(Π_w ⊕ Π_v) ≤ k − 2`. In particular
+the consumed `m = 2` list holds except `c(Π_w ⊕ Π_v) ≤ 2` at `(k, δ) = (5, 3)`; and `δ ≤ k`.
+*Proof.* Let `P` be a shortest path; `ρ̄ ⊆ span(P)` (telescoping along `P`). Order the tower
+of (iv) with the chain of `P` first — first point in `π_w`, last in `π_v`, the rest free; a hub
+on `P` takes as plane the span of its two `P`-lines. No hub off `P` is adjacent to a vertex of
+`P` (its `P`-neighbour would have degree `≥ 3`, hence be a hub — excluded; the terminals are
+either hubs or have their planes prescribed). A degree-2 vertex off `P` adjacent to `y_i ∈ P`
+is placed afterwards in `π_{y_i}`; it cannot be adjacent to two vertices of `P` (a cycle of
+length `|i − j| + 2 ≤ k + 2 ≤ 7` forces `{y_i, y_j} = {w, v}`, a common neighbour,
+contradicting `k ≥ 4`); a longer chord path between vertices of `P` has its interior placed
+after its end-planes. So the chain moduli of `P` is a free factor at the bottom of the tower,
+the projection `Y°(H; ϕ) → (chain moduli)` is dominant, and (irreducibility) the generic point
+of `Y°` has a generic chain. Then (ii)(c) with `H₀ = P` and the `ear_{k−1}` profile of S8:
+`k = 4`: `(c(Π), c(Π⊕Π), 3-dim) = (1, 2, 1)`; `k = 5`: `(1, 3, 2)`. ∎
+
+**(vi) The census — `census.py` (each row a theorem for its side by (iv) + S7(vi)).** Girth-`≥ 7`
+sides from thirteen skeleton families, every skeleton edge subdivided with lengths in
+`{2, 3, 4}` (seeded), kept when `dist(u, v) ≥ 4`, `δ ∈ {2, 3, 4}`, `|V| ≤ 32`, three sides per
+`(skeleton, δ)`, two draws each: `K4−e`; `K4-tail`, `K4−e-tail` (a bridge `u – x` into the
+chunk: side-degree 1 at `u`); `K₃,₃`, `K₃,₃ − e`; prism with `u, v` on the same / on different
+triangles; cube at skeleton distance 2 / 3; Wagner `V8`; `K₅ − e`; wheel `W₅`; Petersen (no
+member survived the caps). **`ROWS: 200`, `FLAGGED: 0`** — no row exceeds S10's `m = 2` bound.
+Per row, with `u ↔ w`:
+- single pieces, side-degree `≥ 2` at `u`: `c(Π_u) = 0` at every row with `δ ≤ 3`; at `δ = 4`,
+  `c(Π_u) = 1` exactly when `dist = 4` (then `ρ̄ = span(P₄)` by dimension — the `ear3` profile)
+  and `0` otherwise; `c(Π_u ⊕ Π_v) = max(0, δ − 2)`, the 3-dim blocks `max(0, δ − 3)`,
+  `c(⟨M⟩) = c(⟨L⟩) = 0` — **no excess at any block**;
+- a bridge at `u` (`K4-tail`, `K4−e-tail`): `c(Π_u) = 1` (S6's `L_{ux}`), `c(Π_v) = 0`,
+  `c(Π_u ⊕ Π_v) = max(1, δ − 2)` (the same line), the rest generic;
+- the two-piece `K₃,₃ − e` rows follow the intersection of (ii)(a).
+Reading: on this population excess at a terminal pencil arises only from a bridge or from
+`δ = dist ≤ 5` (where `ρ̄` *is* a path span). Not a theorem for the class — population and
+caps as disclosed (README).
+
+**(vii) `specialcfg.py` — the pointwise form on the minimal uncovered instance.** `K4−e` with
+lengths `(4, 2, 3, 4, 2)`: `|V| = 14`, girth 8, `dist = 6`, `δ = 3`, `g = 0` (the welded side
+is rigid). Nine families of special interior-hub placements, pinned through the sampler's
+`fixed` flags: (a) `p_p ∈ π_u` and `p_u ∈ π_p`; (b) `p_p, p_q ∈ π_u`; (c) `p_u ∈ π_p`; (d) the
+four hub points coplanar; (e) `p_p ∈ L`; (f) `π_p = π_q`; (g) `p_p ∈ M`; (h) `π_p = π_u`;
+(i) `π_p = π_q = π_u`. Three draws each: at (a)–(h) `c(Π_u) = 0`, attaining and welded-attaining;
+at (i) the side stops attaining (`ρ = 4 > δ`), the welded side still attains, and `c(Π_u) = 1`.
+`Π_u` is never contained — on these loci the target holds *pointwise*, with no appeal to
+component genericity (a hint toward a structural argument, not a proof).
+
+**(viii) Sharpened target (replaces (O4′)).** By (ii)–(iii) the consumed `m = 2` bounds for
+`H′` reduce to the pieces of `H′` at the hub cut; an ear piece of length 4 discharges them all
+(length 5: all but `Π_w ⊕ Π_v ≤ 2` at `δ′ = 3`); for a single piece with pairwise non-adjacent
+hubs and `dist ≤ 5`, (v) discharges the pencil and 3-dim bounds. What remains:
+
+> **(O4″)** A single piece `H` (`H − {w, v}` connected, no cut vertex separating `w` from
+> `v`), `w ≁ v`, girth `≥ 7`, side-degree `≥ 2` at both terminals, **`dist(w, v) ≥ 6` and
+> `δ ≤ 3`**: show `ρ̄ ∩ Π_w = 0`. Measured `0` at every such census row (52 rows, 8 skeleton
+> families, `dist` 6–7) and at the nine special families of (vii). Equivalently (S7(v)):
+> among the `6 − δ ≥ 3` transmissible wrenches — the self-stresses of the welded `H/wv`
+> modulo those of `H` — one exerts a nonzero moment about some axis of `Π_w`
+> (`T ⊄ Π_w^⊥`). Every `w`–`v` path has `≥ 6` lines, so `span(P) = Λ²K⁴` and no path
+> argument applies; sub-sides of a stiff side are floppier ((ii)(c) goes the wrong way), so
+> there is no reduction to `K4 − e`; the wrench is cycle-generated. Minimal instance:
+> `K4 − e (4,2,3,4,2)`.
+
+Also open: the series case ((ii)(b): `Π_w ⊄ ρ̄_a + ρ̄_b`); `c(Π_w ⊕ Π_v) ≤ 2` at
+`(dist, δ) = (5, 3)`; irreducibility for hub-adjacent-hub sides; and, for an `H′` with two or
+more non-ear pieces, the *block profile* of `ρ̄₁ ∩ g ρ̄₂` for generic `g ∈ S(ϕ)` (S2 gives its
+dimension only) — the composition rule the SPQR view needs at P-nodes.
+
+**Verdict.** O4′ as stated in S12 is *not* the right target: its tight instances were ears.
+The consumed obligation is now (O4″) plus the listed side items; every measured instance of
+(O4″) has no excess at all, and the pointwise probe finds none either. **What would change
+this:** a single piece with `dist ≥ 6`, `δ ≤ 3`, side-degree `≥ 2` at `w` and `c(Π_w) ≥ 1` on
+its (irreducible, by (iv)) fibre — none found in the census.

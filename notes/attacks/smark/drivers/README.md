@@ -106,3 +106,50 @@ Caps, disclosed: the same `s = 20` draws, 60 flag tries; the population is the f
 K4/prism sides. "`c′(Π_w) ≤ 1` never violated" is *not found above 1* over these sides and
 draws (each row a theorem for its component, S7(vi)) — **not** a theorem about K4-minor
 sides in general.
+
+## `pencilline.py` — which pencil line, and by which motion (workbook S13(i))
+
+Run from the repository root; imports `sideprof.py` and `adversarial.py`. For the K4-minor /
+prism sides it computes the line `ρ̄′ ∩ Π_u` exactly, matches it against the hinge lines at `u`,
+and exhibits the motion `m` with `m(u) = 0`, `m(v) =` that line (inactive hinges, vertices
+co-moving with `v`); it also prints `(f, g, δ)` of the side minus its direct `u`–`v` branch.
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 600 python3 notes/attacks/smark/drivers/pencilline.py --seed 20260916 --draws 2` | S13(i): at 6/6 draws over `sk4_d3`, `sk4_d4`, `prism` the line is `L_{u x}` toward `v` along the direct branch, that branch's other hinges are inactive and its vertices co-move with `v`; the side minus the branch has `(f, g, δ) = (6, 0, 6)` — the frontier sides are ears in parallel with a fully flexible remainder |
+
+Caps, disclosed: the `s = 20` draws of `sideprof.py`, 2 draws per side. Each draw is an exact
+witness; the *explanation* is S13(ii) (`ρ̄ = ∩` over pieces), not the sweep.
+
+## `census.py` — the single-piece census (workbook S13(vi))
+
+Run from the repository root; imports `sideprof.py`. Builds girth-`≥ 7` sides from thirteen
+skeleton families (`K4-e`, `K4-tail`, `K4-e-tail`, `K33`, `K33-e`, `prism-same-tri`,
+`prism-diff-tri`, `cube-d2`, `cube-d3`, `V8`, `K5-e`, `W5`, `Pet`) by subdividing every
+skeleton edge with a seeded length in `--lens`, keeps those with girth `≥ 7`, `dist(u, v) ≥ 4`,
+`δ ∈ {2, 3, 4}`, `|V| ≤ --maxV`, at most `--per` per `(skeleton, δ)`, samples each at generic
+flags and prints the block profile; a row is `**`-flagged if it exceeds S10's `m = 2` bound.
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 1200 python3 notes/attacks/smark/drivers/census.py --seed 20260916 --draws 2 --per 3 --maxV 32` | S13(vi): `ROWS: 200`, `FLAGGED: 0`; single pieces with side-degree `≥ 2` at `u` have `c(Π_u) = 0` at every `δ ≤ 3` row and no excess at any block; `c(Π_u) = 1` only at `dist = δ = 4` (a path span) and at the bridge sides `K4-tail`, `K4-e-tail`; 52 rows (8 skeletons) are instances of (O4″) — `dist ≥ 6`, `δ ≤ 3` — all with `c(Π_u) = 0` |
+
+Caps, disclosed: lengths in `{2, 3, 4}`, 200 seeded length vectors per skeleton (enumerated
+when fewer exist), `|V| ≤ 32`, 3 sides per `(skeleton, δ)`, 2 draws each, the `s = 20` draws
+of `sideprof.py`; Petersen has no member under the caps. All lengths are `≥ 2`, so by S13(iv)
+each fibre is irreducible and **each row is a theorem for its side** (S7(vi)); "no excess" is
+*not found in this population*, not a theorem about single pieces.
+
+## `specialcfg.py` — special configurations of the minimal uncovered piece (workbook S13(vii))
+
+Run from the repository root; imports `sideprof.py` and `census.py`. On `K4-e (4,2,3,4,2)`
+(`|V| = 14`, `dist = 6`, `δ = 3`) it pins the interior hubs `p, q` to nine special incidences
+with the terminal flags and reports `c(Π_u)`, attainment and welded attainment.
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 900 python3 notes/attacks/smark/drivers/specialcfg.py --seed 20260916 --draws 3` | S13(vii): `c(Π_u) = 0`, attaining and welded at families (a)–(h); at (i) `π_p = π_q = π_u` the side stops attaining (`ρ = 4`), welded still attains, `c(Π_u) = 1`; `Π_u` is never contained |
+
+Caps, disclosed: 3 draws per family, `s = 20`, 200 flag tries per draw; special points are
+drawn inside the pinned loci with the same numerator range. Each row is an exact witness *at a
+special point*; the pointwise reading (no component genericity) is what it controls.

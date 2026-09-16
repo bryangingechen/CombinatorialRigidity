@@ -11,3 +11,9 @@ Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 - Side-induction kill (session 2): peeling the whole degree-2 chain lands back on the block lattice at the hub cut (that is S10), not a genuine reduction of `H′`; what survives is the O4′ profile bounds at side-degree ≥ 2.
 - Reading `Deficiency.lean` (`def₂ = 3(|P|−1) − 2d(P)`): rules out the flat all-coplanar witness (brief §3(a),(c)) as a substitute for the Lemma on the consumed class — `C_n` has `def₂ = n−3 > n−6 = def₃`.
 - Review reading of `Escape.lean:467` (2026-09-15): the disjunct `¬ PencilHub a ∨ ¬ PencilHub b` — rules out the one-vertex ear between two hubs as the consumed shape (S9 is about a case the consumer does not take); the consumed shape is the `ear_m` trichotomy (S11).
+
+## Session 3 (route R1, retired at session 4 as the break moved to (O4″))
+- Hand verification of S10 block-by-block against S3 + S8 (S12(i)): rules out an arithmetic slip in the reviewer's chain-length stratification — every `m`-case bound reproduced.
+- `earcompose.py`, 14 hub sides × 3 ears × 6 draws = 252/252 (seed 20260916; theorems by S7(vi)): rules out "S10 predicts attainment wrongly" and "a battery side exceeds the S10 `c′` bound" — 2-cut law holds, S3 criterion ⟺ exact rank.
+- `adversarial.py`, K4-minor + prism sides at `δ = 2,3,4` × 6 draws: rules out `c′(Π_w) ≥ 2` on those four sides; its "tight = 1" reading was an ear's `L_{wx}` (S13(i)), so it rules out nothing about hub structure.
+- `earcompose --side sk4_d*` (K4-minor ∪ `ear_{2,3}`, 6 draws): rules out "the consumed shape fails on a K4-minor side" — attains at every draw; the side is an ear composed with a `δ = 6` remainder.
