@@ -923,3 +923,186 @@ The consumed obligation is now (O4″) plus the listed side items; every measure
 (O4″) has no excess at all, and the pointwise probe finds none either. **What would change
 this:** a single piece with `dist ≥ 6`, `δ ≤ 3`, side-degree `≥ 2` at `w` and `c(Π_w) ≥ 1` on
 its (irreducible, by (iv)) fibre — none found in the census.
+
+## S14 — Theorem (the consumed step closes from the split-off antecedent: `ear_{m−1} ⟹ ear_m`; (O4″) is not consumed) (session 5, 2026-09-16)
+
+Session 5's charge was (O4″) on `K4−e (4,2,3,4,2)` by hand. Before attacking it the session
+re-read what the Lean consumer actually *gives*: `hbareSplit` and `hK` (`Escape.lean:334–430`)
+both carry the antecedent `HasPencilRealization K 3 (G.splitOff x a b e₀)` — and
+`splitOff x a b e₀` deletes the degree-2 vertex `x` and joins its two neighbours by a fresh
+edge (`Molecular/Induction/Operations.lean:770`). For `G = H′ ∪ ear_m` (the trichotomy's case
+(iii), S11; `x` any interior vertex of the chain) that graph is **`G₋ := H′ ∪ ear_{m−1}`**: the
+same side with the ear one shorter. The brief (§3, §5) had discarded this antecedent, reading it
+as "a realization of `G − x` into which `x` must be placed". Used as a *certificate for the
+generic point* instead of as a configuration to extend, it supplies every block inequality
+S10 needs, at every consumed `m`, and the welded hypothesis with it. Dispatch
+(`pencilPair_of_splitOff_of_habitat`, `Escape.lean:412–430`): `hbareSplit` fires when
+`¬ PencilNondegFeasible K G`, `hK` otherwise, fed `HasGenericPencilRealization K 3 (G.splitOff …)`
+from the IH; neither arm receives the IH itself.
+
+**Setting.** Generic flags `ϕ` at the hub cut `{w, v}`, `w ≁ v`; `Y` an irreducible component of
+`Y°(H′; ϕ)`; at its generic point `a′`, `a′_w` the attainment losses of `H′`, `H′/wv`, and
+`ρ′ = δ′ + a′ − a′_w` (brief §2). `ρ̄_k := ρ̄(ear_k)` at a generic ear: `(k+1)`-dimensional for
+`k ≤ 5`, `ear_k` attains and welded-attains, profile from S8 (`Y°(ear_k; ϕ)` irreducible, S8).
+`ear_k` has `δ = k + 1`. By S5, a generic ear is a generic gauge translate `g·ear₀`.
+
+**(i) Lemma (what `G₋` attaining says about `H′`).** `G₋` attains at the generic point of
+`Y × Y°(ear_{m−1}; ϕ)` iff
+- `δ′ + m ≤ 6`: `a′_w = 0` **and** `ρ̄′ ∩ ρ̄_{m−1} = 0` (hence `ρ′ + m ≤ 6`, i.e. `δ′ + a′ ≤ 6 − m`);
+- `δ′ + m > 6`: `a′ = 0` **and** `ρ̄′ + ρ̄_{m−1} = Λ²K⁴`.
+
+*Proof.* S10(ii): `G₋` attains iff `dim(ρ̄′ + ρ̄_{m−1}) = min(δ′ + m, 6) + a′` (`a(ear) = 0`); the
+left side is `ρ′ + m − dim(ρ̄′ ∩ ρ̄_{m−1}) ≤ min(6, ρ′ + m)`. If `δ′ + m ≤ 6` the equation reads
+`δ′ + a′ − a′_w + m − dim ∩ = δ′ + m + a′`, i.e. `dim ∩ = −a′_w`, so both vanish. If `δ′ + m > 6`
+the right side is `6 + a′ ≤ 6`, forcing `a′ = 0` and the sum full. ∎
+
+**(ii) Lemma (the same for `G`).** `G` attains at the generic point of `Y × Y°(ear_m; ϕ)` iff
+`dim(ρ̄′ + g ρ̄_m) = min(δ′ + m + 1, 6) + a′` for generic `g ∈ S(ϕ)`; so only if
+[`δ′ + m + 1 ≤ 6`: `a′_w = 0`, `ρ̄′ ∩ gρ̄_m = 0`, `δ′ + a′ ≤ 5 − m`] or [`δ′ + m + 1 > 6`: `a′ = 0`].
+
+**(iii) Theorem.** *Assume `H′` attains at the generic point of `Y` (`a′ = 0`) and `G₋` attains
+at the generic point of `Y × Y°(ear_{m−1}; ϕ)`. Then `G` attains at the generic point of
+`Y × Y°(ear_m; ϕ)`.* No further condition on `H′` — in particular no profile bound — is used.
+
+*Proof, by `m`.* Coordinates as in the header: `p_w = e₁`, `p_v = e₂`, `W = ⟨e₃, e₄⟩ = L`,
+`x = (x_M; x_u; x_v; x_L)`, `Q₁ = x_M x_L`, `Q₂ = det[x_u | x_v]`, `Q = Q₁ − Q₂`.
+
+*`m ≥ 5`.* `ρ̄_m = Λ²K⁴`, so `dim(ρ̄′ + ρ̄_m) = 6 = min(δ′ + m + 1, 6) + a′`. (The antecedent is not
+used; only `a′ = 0`.)
+
+*`m = 4`* (`ρ̄₄` 5-dimensional, `c₄(U) = dim U − 1` for `dim U ≥ 1`). If `δ′ = 0` then `ρ̄′ = 0`
+and `dim(ρ̄′ + ρ̄₄) = 5 = min(5, 6)`. If `δ′ ≥ 1` we need `ρ̄′ + gρ̄₄ = Λ²`, i.e. `T′ ∩ gT₄ = 0`
+(S3), `T₄ = ρ̄₄^⊥` a line. By (i) with `ear₃`: for `δ′ ≤ 2`, `a′_w = 0` and `ρ′ = δ′ ≥ 1`; for
+`δ′ ≥ 3`, `ρ̄′ + ρ̄₃ = Λ²` gives `ρ′ ≥ 2`. So `ρ′ ≥ 1` and S2 applies to `(T′, T₄)`, dimensions
+`(6 − ρ′, 1)`: (B) is `c′(U) + c₄(U) ≤ dim U + ρ′ − 1`, i.e. `c′(U) ≤ ρ′`, always true; (X1) needs
+two 3-dimensional spaces, (X3)/(X4) need `c_{T₄}(E) ≥ 2`, and (X2) needs `Q₂|_{T′} ≡ 0` on a
+space of dimension `6 − ρ′ ≥ 3` together with `6 − ρ′ + 1 = 6`, i.e. `dim T′ = 5 > 4`, the
+maximal dimension of a `Q₂`-isotropic subspace (radical `⟨M⟩ ⊕ ⟨L⟩` plus an isotropic 2-plane of
+the split form on `Π_w ⊕ Π_v`). Hence `G` attains. (This is S10's "`m = 4` needs only attainment
+and welded attainment", with the welded half now *supplied* by (i).)
+
+*`m = 3`* (`ρ̄₃ = span(L₀, L₁, L₂, L₃)`, `L₀ = p_w ∧ p_x ∈ Π_w`, `L₃ = p_{x'} ∧ p_v ∈ Π_v`;
+profile `c₃(Π_w) = c₃(Π_v) = 1`, otherwise `max(0, dim U − 2)`, S8). Need
+`dim(ρ̄′ + gρ̄₃) = min(δ′ + 4, 6)`. From (i) with `ear₂`: `δ′ ≤ 3` gives `a′_w = 0` and
+`ρ̄′ ∩ ρ̄₂ = 0`; `δ′ ≥ 4` gives `ρ̄′ + ρ̄₂ = Λ²`.
+- `δ′ ≥ 4`: place the middle vertex `p_y` on the line `p_x p_{x'}` (a point of the irreducible
+  ear moduli): then `L_{xy} = L_{yx'} = L_{xx'}` and `span(L₀..L₃) = ρ̄₂(p_x, p_{x'})`, so
+  `dim(ρ̄′ + ρ̄₃) = 6` there; `ear ↦ dim(ρ̄′ + span(lines))` is a matrix rank, lower
+  semicontinuous, so it is `6` at the generic ear.
+- `δ′ = 3`: need the sum full; S3 on `(T′, T₃)`, dimensions `(3, 2)`. (B) is
+  `c′(U) + c₃(U) ≤ dim U + 1`, trivial throughout (S12(i)). Exceptions on `(T′, T₃)`: (X1) needs
+  `(3, 3)`; (X2) needs sum `6`, here `5`; (X3) needs `c_{T₃}(E) ∈ {2, 3}` for `E = ⟨L⟩^⊥` or
+  `⟨M⟩^⊥`, i.e. `T₃ ⊆ E`, i.e. `L ∈ ρ̄₃` resp. `M ∈ ρ̄₃`, but `c₃(⟨L⟩) = c₃(⟨M⟩) = 0`; (X4) needs
+  `T₃ ⊆ Π_w ⊕ Π_v = ⟨M, L⟩^⊥`, i.e. `M, L ∈ ρ̄₃`, no.
+- `δ′ ≤ 2`: need `ρ̄′ ∩ gρ̄₃ = 0`, `ρ′ = δ′ ≤ 2`. S2 on `(ρ̄′, ρ̄₃)`: (B) binds only at
+  `U ∈ {Π_w, Π_v}`, `c′(Π) ≤ 1`, i.e. (at `δ′ = 2`) `ρ̄′ ≠ Π_w, Π_v` (S12(i)); if `ρ̄′ = Π_w` then
+  `L_{wx} ∈ ρ̄′ ∩ ρ̄₂`, against (i). Exceptions: (X1) needs `ρ′ = 3`; (X2) needs `Q₂|_{ρ̄₃} ≡ 0`,
+  but `ρ̄₃ ∩ (Π_w ⊕ Π_v) ⊇ span(L₀, L₃)` with `Q₂(L₀, L₃) = ½ det[s | s'] ≠ 0` (below); (X3): the
+  traces `ρ̄₃ ∩ ⟨L⟩^⊥`, `ρ̄₃ ∩ ⟨M⟩^⊥` (3-dimensional, generic profile) contain `span(L₀, L₃)`, so
+  `Q₂` does not vanish on them; (X4): `ρ̄₃ ∩ (Π_w ⊕ Π_v) = span(L₀, L₃)` (generic profile `2`),
+  not isotropic, not a ruling plane.
+
+*`m = 2`.* (Klein-orthogonals of the two lines, in coordinates: `⟨L⟩^⊥ = {x_M = 0}`, `⟨M⟩^⊥ = {x_L = 0}`, `⟨M, L⟩^⊥ = Π_w ⊕ Π_v = {x_M = x_L = 0}`.) Write `p_x = αe₁ + s`, `p_{x'} = βe₂ + s'` with `s, s' ∈ W`, `αβ ≠ 0`,
+`D := det[s | s'] ≠ 0` (open conditions on the ear moduli). The three lines in block coordinates:
+
+    L₀ = p_w ∧ p_x  = (0; s; 0; 0),   L₂ = p_{x'} ∧ p_v = (0; 0; −s'; 0),
+    L₁ = p_x ∧ p_{x'} = (αβ; αs'; −βs; D).
+
+Gram matrices on `ρ̄₂ = span(L₀, L₁, L₂)` in this basis: `Q₁ = diag(0, αβD, 0)` (rank 1);
+`Q₂ = [[0, 0, −D/2], [0, αβD, 0], [−D/2, 0, 0]]` (rank 3); `Q = Q₁ − Q₂` rank 2 — the S5
+Gram `(1, 3, 2)`. The Klein complement is `T₂ = span(L₁, P₁, P₂)` with `P₁ := p_w ∧ p_{x'} =
+(β; s'; 0; 0)`, `P₂ := p_x ∧ p_v = (α; 0; −s; 0)` (each of the three meets all of `L₀, L₁, L₂`:
+`L₁` trivially, `P₁` at `p_w`, `p_{x'}`, `P₂` at `p_x`, `p_v`; they are independent since the six
+`p_i ∧ p_j` form a basis); `Q₂` on `T₂` in the basis `(L₁, P₁, P₂)`:
+`[[αβD, βD/2, αD/2], [βD/2, 0, D/2], [αD/2, D/2, 0]]`. Need `dim(ρ̄′ + gρ̄₂) = min(δ′ + 3, 6)`.
+From (i) with `ear₁` (`ρ̄₁ = R_y := y ∧ M = span(L_{wy}, L_{yv})`, `y ∈ L` generic): `δ′ ≤ 4`
+gives `a′_w = 0` and `ρ̄′ ∩ R_y = 0`; `δ′ ≥ 5` gives `ρ̄′ + R_y = Λ²`.
+- `δ′ ≥ 5`: the degenerate ear with `p_{x'} = y ∈ L` and `p_x` on the line `p_w y ⊂ π_w` has
+  `span(L₀, L₁, L₂) = span(p_w ∧ y, y ∧ p_v) = R_y`, so `dim(ρ̄′ + ρ̄₂) = 6` there and, by lower
+  semicontinuity over the irreducible ear moduli, at the generic ear.
+- `δ′ = 4` (`ρ′ = 4`): need the sum full; S3 on `(T′, T₂)`, dimensions `(2, 3)`. (B) is
+  `c′(U) + c₂(U) ≤ dim U + 1`; with the `ear₂` profile the only binding inequality is
+  `c′(Π_w ⊕ Π_v) ≤ 3` (S12(i)), and `c′(Π_w ⊕ Π_v) = 4` would mean `ρ̄′ = Π_w ⊕ Π_v ⊇ R_y`,
+  against (i). Exceptions on `(T′, T₂)`: (X1) needs `(3, 3)`; (X2) needs sum `6`, here `5`;
+  (X3) for `E = ⟨M⟩^⊥ = {x_L = 0}`: `x_L(L₁) = D ≠ 0 = x_L(P₁) = x_L(P₂)`, so `T₂ ∩ E = span(P₁, P₂)`,
+  `c_{T₂}(E) = 2`, and `Q₂(P₁, P₂) = D/2 ≠ 0` — not isotropic; for `E = ⟨L⟩^⊥ = {x_M = 0}`:
+  `x_M = (αβ, β, α)` on the basis, so `T₂ ∩ E = {λ₁L₁ + λ₂P₁ + λ₃P₂ : αβλ₁ + βλ₂ + αλ₃ = 0}`,
+  `c_{T₂}(E) = 2`, and the vector `αP₁ − βP₂` in it has `Q₂ = −2αβ·(D/2) = −αβD ≠ 0` — not
+  isotropic; (X4): `T₂ ∩ (Π_w ⊕ Π_v)` needs `x_L = 0` (kills `λ₁`) and `x_M = 0`
+  (`βλ₂ + αλ₃ = 0`): one-dimensional, `≠ 2`.
+- `δ′ ≤ 3` (`ρ′ = δ′`): need `ρ̄′ ∩ gρ̄₂ = 0`; S2 on `(ρ̄′, ρ̄₂)`. (B) binds at (S12(i)):
+  `c′(Π_w), c′(Π_v) ≤ 1`; `c′(Π_w ⊕ Π_v) ≤ 2`; `c′(⟨M⟩ ⊕ Π), c′(Π ⊕ ⟨L⟩) ≤ 2` at both pencils.
+  Each failure produces a nonzero vector of `ρ̄′ ∩ R_y` for generic `y`, against (i):
+  `c′(Π_w) = 2` means `Π_w ⊆ ρ̄′`, so `L_{wy} ∈ ρ̄′ ∩ R_y`; `c′(Π_w ⊕ Π_v) ≥ 3` means
+  `A′ := ρ̄′ ∩ (Π_w ⊕ Π_v)` has dimension `≥ 3` inside the 4-dimensional `Π_w ⊕ Π_v ⊇ R_y`, so
+  `A′ ∩ R_y ≠ 0`; `c′(⟨M⟩ ⊕ Π_w) = 3` means `ρ̄′ = ⟨M⟩ ⊕ Π_w ⊇ Π_w`, likewise `Π_w ⊕ ⟨L⟩`.
+  Exceptions on `(ρ̄′, ρ̄₂)`, all excluded by `ρ̄₂` alone: (X1): `P(ρ̄₂) ⊆ {Q₁ = I₀Q₂}` needs
+  `Q₁ − I₀Q₂ ≡ 0` on `ρ̄₂`; the `(L₀, L₂)` entry `I₀D/2` forces `I₀ = 0`, then the `(L₁, L₁)`
+  entry is `αβD ≠ 0` — `ρ̄₂` lies on no member of the pencil; (X2): `Q₂|_{ρ̄₂}` has rank 3;
+  (X3): `ρ̄₂ ∩ ⟨L⟩^⊥ = ρ̄₂ ∩ ⟨M⟩^⊥ = span(L₀, L₂)` (only `L₁` has `x_L ≠ 0`, `x_M ≠ 0`), with
+  `Q₂(L₀, L₂) = −D/2 ≠ 0`; (X4): `ρ̄₂ ∩ (Π_w ⊕ Π_v) = span(L₀, L₂)`, not isotropic, so not a
+  ruling plane (S10 already noted this). ∎
+
+**(iv) Corollary (the consumed step, from two smaller-graph facts).** Let `G` fall in the
+trichotomy's case (iii) with `H′` such that `Y(H′)` is irreducible (S13(iv): pairwise
+non-adjacent hubs; see (vii) for the hub-adjacent case). If `H′` has an attaining configuration
+and `G₋ = G.splitOff` has one (over `K̄`), then `G` attains on a dense open subset of `Y(G)`.
+*Proof.* `Y(G₋) → Y(H′)` and `Y(G) → Y(H′)` are fibrations with irreducible fibres (ear points
+in prescribed planes), so `Y(G₋)`, `Y(G)` are irreducible; rank is lower semicontinuous, so a
+single attaining point makes the generic point attain (S7(vi)); the generic point of `Y(H′)`
+lies over a generic flag pair and is the generic point of the irreducible `Y°(H′; ϕ)`; apply
+(iii). ∎ Cases (i)–(ii) of the trichotomy: `G` a cycle (`G₋` a shorter cycle; cycles attain —
+the `k` hinge lines of a generic pencil `C_k` are independent for `k ≤ 6` and span `Λ²` for
+`k ≥ 6`, so `dim M(C_k) = 6 + max(0, k − 6)`), and `G = H″ ∪_w C_{m+1}` at a cut vertex, where
+`G₋ = H″ ∪_w C_m` attaining gives `H″` attaining (brief §3(d): additivity at a cut vertex) and
+`C_{m+1}` attains. Descent to `K`-points: the attaining locus is dense open in `Y(G)`, a tower of
+open subsets of products of projective spaces and linear spaces defined over `K`, whose
+`K`-points are dense for infinite `K` (S11(v)).
+
+**(v) The `a′` gap — the kernels need the induction hypothesis on `H′`.** By (i) and (ii),
+`G₋` attaining allows `δ′ + a′ ≤ 6 − m`, while `G` attaining needs `a′ = 0` or
+`δ′ + a′ ≤ 5 − m`. In the gap `δ′ + a′ = 6 − m`, `a′ ≥ 1`, `G₋` attains generically and `G` fails
+**at every configuration of the component**: `dim M(G) ≥ (6 + f′ + a′) + (7 + m) − 6 − 6 =
+f′ + a′ + m + 1`, while `6 + def₃(G) = f′ + m + 1 + max(0, 5 − δ′ − m) = f′ + m + a′`. So if some
+`H′` (with irreducible `Y(H′)`) never attained, the implication "`G.splitOff` attains ⟹ `G`
+attains" would be *false* at `(δ′, m)` in the gap — e.g. `(3, 2)`, `(2, 3)`, `(1, 4)` with
+`a′ = 1`. A proof of `hK` or `hbareSplit` *as stated* would therefore have to prove that `H′`
+attains, i.e. the conjecture for the smaller graph `G − chain`, inside the kernel. **The natural
+repair is to give both kernels the induction hypothesis** — `∀ G', |V(G')| < |V(G)| →
+HasPencilRealization K 3 G'` (or just for `G − chain`); `pencilPair_of_splitOff_of_habitat` has
+`hIH` in scope at both call sites (`Escape.lean:412–430`), so the Lean change is mechanical;
+`hcontract` already takes the IH in this form. A pointwise witness of the gap: `specialcfg.py`
+family (i) on `K4−e (4,2,3,4,2)` has `a′ = 1`, `a′_w = 0`, `δ′ = 3` (S13(vii)), so at those
+special configurations `H′ ∪ ear₁` attains while `H′ ∪ ear₂` does not (control:
+`drivers/splitoff.py --special`) — which is also why the antecedent must be read at the generic
+point (via irreducibility) and not extended at the given point ("every placement fails", brief §5).
+
+**(vi) What this does to the attack.** (O4″) — `ρ̄ ∩ Π_w = 0` on single pieces with `dist ≥ 6` —
+is **not consumed**: the consumer needs `Π_w ⊄ ρ̄′` and the rest of the `m = 2` list, and (iii)
+derives all of it from the split-off antecedent. The general two-sided Lemma, the frame's
+welded-attainment supply (now (i)), the SPQR/piece decomposition, the short-path kill and the
+census (S13) are not needed for `hK`/`hbareSplit`; they remain true statements about sides.
+What the consumed step still needs, beyond (iii): (α) irreducibility of `Y(H′)` (or matching of
+the attaining component of `H′` with the one `G₋` certifies); (β) that the configuration
+variety's degenerate strata (coincident adjacent points, collinear hub stars — allowed by the
+bare `HasPencilRealization`) lie in the closure of the nondegenerate locus, so a degenerate
+witness still certifies the generic point (`hK`'s antecedent is nondegenerate, so this concerns
+`hbareSplit` only); (γ) descent to `K`-points; (δ) the PI's decision on (v).
+
+**(vii) Irreducibility and the two arms.** `hK` fires when `G` is nondegeneracy-feasible, which
+forces `|closedHubNbhd z| ≤ 3` at every hub (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`;
+reason: all normals of `closedHubNbhd z` are orthogonal to `p_z`, hence lie in a 3-space) — the
+hub graph has maximum degree `≤ 2`, and the S13(iv) tower extends: along a hub path place
+`p_{z_{i+1}} ∈ π_{z_i}` and `π_{z_{i+1}} ∋ p_{z_i}, p_{z_{i+1}}` (a `P¹`); closing a hub cycle
+(length `≥ 7`) puts the last hub on the line `π_{z_{k−1}} ∩ π_{z_1}` with its plane determined
+— constant-dimensional irreducible fibres over a dense open part of the base. So (α) holds on
+`hK`'s whole domain. `hbareSplit`'s domain (some hub with `≥ 3` hub neighbours) is where the
+tower may need a 2-degenerate ordering of the hub graph that need not exist; open, and now
+the only structural residue of the consumed step.
+
+**Verdict.** S14(i)–(iii): *proven-informally* (linear algebra on S8's ear profiles, S2/S3 and
+the explicit Gram matrices above; control `drivers/splitoff.py`, session 5). (iv): true modulo
+(α)–(γ) as named. (v): a statement-level finding for the PI. **What would change this:** a draw
+with `G₋` attaining, `H′` attaining and `G` failing (the control asserts the implication at every
+draw); or a Gram entry above disagreeing with the exact computation (`splitoff.py` prints
+expected/got for each).

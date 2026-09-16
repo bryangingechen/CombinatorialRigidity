@@ -2,6 +2,15 @@
 
 Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 
+## Session 4 (route R1, retired at session 5: (O4″) is not consumed — workbook S14)
+- `pencilline.py` (6/6 draws, `sk4_d3`/`sk4_d4`/`prism`): rules out "the K4-minor / three-hub structure puts a screw into the pencil" — the line is the direct branch's `L_{wx}` and the branch co-moves with `v`; with `δ(side − branch) = 6` this is S8's ear profile via S13(ii).
+- `census.py` (200 rows, 13 skeleton families, lengths 2–4, `δ ∈ {2,3,4}`, `|V| ≤ 32`; 0 flagged): rules out any excess at any block for side-degree-`≥ 2` single pieces at `δ ≤ 3` **within the population**; the only `c(Π_w) = 1` rows are bridges (S6) and `δ = dist = 4` (a path span).
+- `specialcfg.py` (nine special loci × 3 draws on `K4−e (4,2,3,4,2)`): rules out `Π_w ⊆ ρ̄` on those loci even where the side stops attaining; family (i) (`a′ = 1`, `a′_w = 0`, `δ′ = 3`) is now the pointwise witness of S14(v)'s gap.
+- Path-span bound `ρ̄ ⊆ span(P)` for `dist ≥ 6`: rules out nothing (`span = Λ²K⁴`); it is exactly what S13(v) exhausts at `dist ≤ 5`.
+- Sub-side monotonicity toward `K4−e`: rules out that route — a `K4−e` sub-side of a `dist ≥ 8` piece has `≥ 17` edges and may have `δ = 6`.
+- Re-gluing `m` (with `m(v) − m(w) = L_{wx₁}`) into `H/wv` by `m(w) := L_{wx₁}`: fails at every other hinge at `w` — rules out a one-line contradiction from the welded framework at side-degree `≥ 2`.
+- (O4″) itself — `ρ̄ ∩ Π_w = 0` on single pieces with `dist ≥ 6`, `δ ≤ 3`: measured true at 52 census rows and 9 special families, unproved; retired because the consumer needs only `Π_w ⊄ ρ̄′`, which the split-off antecedent supplies (S14(iii)). Still a true-looking statement about sides; nobody consumes it.
+
 ## Sessions 1–2 (route R1, retired at session 3 as the break moved to O4′)
 - Incidence count over the 19 orbit strata (S2, session 1): rules out "the gauge group `S(ϕ)` is too small to attain the block cap" — only the four isotropy exceptions (X1)–(X4) escape the `dim ≤ 4 < 5` count.
 - Two-stars pair (S4, exact, 20 × 30 group draws): rules out "the 16 block inequalities are sufficient" — Klein parity forces two α-planes to meet, an obstruction outside the block list.

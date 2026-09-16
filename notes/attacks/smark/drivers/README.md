@@ -153,3 +153,30 @@ with the terminal flags and reports `c(Π_u)`, attainment and welded attainment.
 Caps, disclosed: 3 draws per family, `s = 20`, 200 flag tries per draw; special points are
 drawn inside the pinned loci with the same numerator range. Each row is an exact witness *at a
 special point*; the pointwise reading (no component genericity) is what it controls.
+
+## `splitoff.py` — the split-off antecedent supplies the consumed block list (workbook S14)
+
+Run from the repository root; imports `sideprof.py`, `earcompose.py`, `adversarial.py`,
+`census.py`. For side 1 = `H′` (the 14 hub-terminal battery sides plus `sk4_d2/d3/d4`, `prism`)
+and `m ∈ {2, 3, 4}`, at a prescribed generic flag pair it samples `H′`, `ear_{m−1}` and `ear_m`
+once each, computes the exact ranks of `G₋ = H′ ∪ ear_{m−1}` and `G = H′ ∪ ear_m` against their
+targets, `dim(ρ̄′ ∩ ρ̄(ear_k))`, the S10 block list for `m` on `H′`'s profile, and asserts
+S14(i)'s implication at every draw (`G₋` attains and `δ′ + m ≤ 6` ⟹ welded attainment,
+`ρ̄′ ∩ ρ̄(ear_{m−1}) = 0`, block list; `δ′ + m > 6` ⟹ `H′` attains, `ρ̄′ + ρ̄(ear_{m−1}) = Λ²K⁴`).
+Item (6) prints, for `B = ρ̄(ear_m)` (`m = 2, 3`) and its Klein complement `T_B`, the exact
+Gram ranks of `Q₁, Q₂, Q` and the traces on the three coordinate hyperplanes with
+`expected/got` per entry — the (X1)–(X4) avoidance computed by hand in S14(iii). **Label
+caveat:** the output labels the hyperplanes by coordinates, `'<L>^perp={x_L=0}'` and
+`'<M>^perp={x_M=0}'`; under the Klein form `{x_L = 0}` is `⟨M⟩^⊥` and `{x_M = 0}` is `⟨L⟩^⊥`
+(swapped names, same two sets; the verdict is unaffected).
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 1800 python3 notes/attacks/smark/drivers/splitoff.py --seed 20260917 --draws 3 --ears 2,3,4` | S14(iii) control: 18 sides × 3 ears × 3 draws = **162 draws**, `G₋` attains 162, `G` attains 162, `H′` attains and welded-attains 162, S10 list holds 162, **`claim_violations=0`, `gram_mismatches=0`** (every expected Gram entry met at every draw); ~200 s |
+| `timeout 900 python3 notes/attacks/smark/drivers/splitoff.py --seed 20260917 --draws 3 --special` | S14(v)'s gap witness: `K4−e (4,2,3,4,2)` at special family (i) (`π_p = π_q = π_u`), 3/3 draws: `δ′ = 3`, `ρ′ = 4`, `H′` does **not** attain (rank 74/75), welded attains, `c(Π_u) = 1`; **`H′ ∪ ear₁` attains (84/84, `ρ̄′ ∩ R_y = 0`) while `H′ ∪ ear₂` does not (89/90, `dim(ρ̄′ ∩ ρ̄₂) = 1`)** |
+
+Caps, disclosed: the `s = 20` draws of `sideprof.py`, 60 flag tries per draw (200 in `--special`),
+3 draws per `(side, m)`; the population is the 18 named sides. The implication in item (5) is a
+theorem (S14(i)); the run controls the *bookkeeping* (`a′_w`, `a′`, the `≤ 6` split) and the
+hand Gram entries, not the theorem's truth. Each draw is an exact witness (S7(vi)); the
+`--special` rows are pointwise facts at the pinned configurations.
