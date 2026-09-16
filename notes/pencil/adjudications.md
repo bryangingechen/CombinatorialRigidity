@@ -517,3 +517,19 @@ wrong theorem's signature (and an unused `[CharZero K]` there would fail `lake l
 `fmlnote:pencil-conditional-realization-pair-field`. **Everything else stands unchanged:** phase
 OPEN (2026-07-24), items 4–10 parked, W4 parked, `hK`/`hbareSplit` pinned, the attack tracks
 continue (S-mark session 3; (GR-10) session 1, whose backlog now includes the probe).
+
+## 2026-09-16 — S-mark review 2: route R2 adopted; the kernels get the induction hypothesis; the R2 Lean round approved
+
+Recorded by the `/review-attack smark` session (review 2), verbatim. On the review's verdict —
+switch to route R2, gated on adding the smaller-graph induction hypothesis to `hK`/`hbareSplit`,
+because the pinned kernels are not locally provable without the side's attainment (workbook
+S14(v)) — the user said: **"OK, I'm happy to try with a new hypothesis given your recommendation.
+I'm thinking we should edit the phase 39 notes and details to capture the findings from this
+round of attacks first, since the next thing would be a Lean round."** On the proposed sequence
+(docs now; a read-only recon, then one kernel-restatement slice; the brief rewritten from the
+landed statements; then session 6) the user said: **"OK, let's do step 1 and make sure the
+following steps are clear for future sessions."** Record: `notes/Phase39.md` *Hand-off* (the
+sequence), checklist items 4–5 (the Lean round), *Blockers* (resolved: the cut-vertex case, the
+induction frame); review notes `notes/pencil/workbook/attack-smark.md` S15. **Everything else
+stands unchanged:** phase OPEN (2026-07-24), W4 parked, checklist items 6–12 parked, (GR-10)
+session 1 pending.
