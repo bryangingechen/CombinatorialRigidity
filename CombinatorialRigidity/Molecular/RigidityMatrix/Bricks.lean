@@ -26,8 +26,9 @@ Lemma 6.1 block-triangular rank-addition argument (Katoh–Tanigawa 2011 §6.1):
 The file also carries the **vertex 2-cut layer** (`section TwoCutCarriers`, Phase 39 item 6,
 Layer B): the carriers `relScrews` (`ρ̄_{uv}`), `jointRows`, `jointMotions` (`M_U`) and
 `weldedRank` of the cut-pair rank laws, with the joint's row count `finrank_span_jointRows`, the
-welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`) and the gluing identity at a 2-cut
-`finrank_span_rigidityRows_vertexTwoCut_eq`.
+welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`), the welded codimension
+`weldedRank_add_finrank_jointMotions_bot` (`rank_w + dim M_⊥ = screwDim k·|α|`) and the gluing
+identity at a 2-cut `finrank_span_rigidityRows_vertexTwoCut_eq`.
 Its own section header is their index; these are the objects the Layer-C losses in
 `Molecule/Pencil/TwoCut.lean` are stated in.
 
@@ -975,6 +976,67 @@ theorem weldedRank_eq [Finite α] (F : BodyHingeFramework K k α β) {u v : α} 
     (Submodule.span K F.rigidityRows)
     (Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v))
   rw [weldedRank, Submodule.span_union]
+  omega
+
+/-- **The welded rank is a codimension** (Layer B7, `notes/pencil/workbook/attack-smark.md`
+§ S14(i)): at a distinct body pair,
+
+  `weldedRank u v + finrank (jointMotions ⊥ u v) = screwDim k · |α|`,
+
+so the welded row rank counts exactly the directions the welded motion space `M_⊥(H)` leaves out
+of the ambient screw-assignment space.  This is the weld's analogue of the complement brick
+`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`
+(`AlgebraicInduction/GenericityDevice.lean`), and it is what turns a *lower* bound on the welded
+motions into an *upper* bound on `weldedRank` — the pivot of the welded bound `0 ≤ a_w`
+(`BodyHingeFramework.weldedLoss_nonneg`, Layer C2ℓ in `Molecule/Pencil/TwoCut.lean`).
+
+Three annihilator identities and one dimension count.  `Submodule.span_union` splits
+`weldedRank`'s generating set into `span F.rigidityRows ⊔ span (jointRows ⊥ u v)`; the first
+factor is `Z.dualAnnihilator`
+(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`, the only place `[Finite α]` is
+needed), and the second is `(ker (screwDiff u v)).dualAnnihilator` — `span_jointRows_bot` puts it
+in range form and `LinearMap.range_dualMap_eq_dualAnnihilator_ker_of_surjective` converts, which
+is where `u ≠ v` enters (`screwDiff_surjective`).  A join of annihilators is the annihilator of
+the meet (`Subspace.dualAnnihilator_inf_eq`, used right-to-left; it lives in `namespace Subspace`,
+**not** `Submodule`, and needs no finite-dimensionality), and that meet **is** `jointMotions ⊥ u
+v`.  The count is then `Subspace.finrank_add_finrank_dualAnnihilator_eq` against
+`finrank_screwAssignment`.
+
+**The `comap ⊥` / `ker` step needs its own bridge, and `map_screwDiff_comm` does not serve
+there.**  `jointMotions` is defined with `comap (screwDiff v u)` while the weld's rows run on
+`(screwDiff u v).dualMap`; `map_screwDiff_comm` pays that orientation on the *image* side only.
+On the `comap` side the flip is `Submodule.comap_bot` followed by `sub_eq_zero` and one `.symm`
+(`hker` below) — four lines, but not skippable.
+
+No `[Finite β]`: the route never touches the edge set. -/
+theorem weldedRank_add_finrank_jointMotions_bot [Finite α]
+    (F : BodyHingeFramework K k α β) {u v : α} (huv : u ≠ v) :
+    F.weldedRank u v + Module.finrank K (F.jointMotions ⊥ u v)
+      = screwDim k * Nat.card α := by
+  have : Fintype α := Fintype.ofFinite α
+  -- The orientation flip on the `comap` side; `map_screwDiff_comm` does not reach here.
+  have hker : Submodule.comap (screwDiff (K := K) (k := k) (α := α) v u) ⊥
+      = LinearMap.ker (screwDiff (K := K) (k := k) (α := α) u v) := by
+    rw [Submodule.comap_bot]
+    ext S
+    simp only [LinearMap.mem_ker, screwDiff_apply, sub_eq_zero]
+    exact ⟨fun h => h.symm, fun h => h.symm⟩
+  have hj : F.jointMotions ⊥ u v
+      = F.infinitesimalMotions ⊓ LinearMap.ker (screwDiff (K := K) (k := k) (α := α) u v) := by
+    rw [jointMotions, hker]
+  have hspanweld :
+      Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v)
+        = (LinearMap.ker (screwDiff (K := K) (k := k) (α := α) u v)).dualAnnihilator := by
+    rw [span_jointRows_bot, LinearMap.range_dualMap_eq_dualAnnihilator_ker_of_surjective _
+      (screwDiff_surjective huv)]
+  have hsup : Submodule.span K
+        (F.rigidityRows ∪ jointRows (⊥ : Submodule K (ScrewSpace K k)) u v)
+      = (F.jointMotions ⊥ u v).dualAnnihilator := by
+    rw [Submodule.span_union, F.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+      hspanweld, ← Subspace.dualAnnihilator_inf_eq, hj]
+  rw [weldedRank, hsup]
+  have h := Subspace.finrank_add_finrank_dualAnnihilator_eq (F.jointMotions ⊥ u v)
+  rw [finrank_screwAssignment, ← Nat.card_eq_fintype_card] at h
   omega
 
 /-- **A functional killing a screw-assignment subspace that already contains the coincidence

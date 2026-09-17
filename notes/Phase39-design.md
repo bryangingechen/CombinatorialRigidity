@@ -62,7 +62,8 @@ is load-bearing.
 | **Field-hypothesis recon (2026-09-15): item 3** | 4591–4732 | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
 | **R2 recon (2026-09-16): item 4** | 4736–5098 | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) SETTLED (α)** by the user 2026-09-16 and applied by the arc below; (GR-10) scope still the user's | — |
 | **Kernel restatement (2026-09-16): item 5** | 5099–5194 | **LANDED** — the restated `hK`/`hbareSplit` (IH + (d) + (α)), the new motive `HasDistinctPencilRealization`, the arm ripple as it actually discharged, and the (c) adder's home. **Read this, not the pinned blocks, for the kernels' current form** | — |
-| **Item-6 carrier recon (2026-09-16): item 6** | 5195–end | **RECORDED** — 6a *proved* sorry-free; 6b correct as transcribed but **false without `¬ G.Adj u v`** and needing the `g` carrier; 6c's carriers proposed with sites, only C1+C4-at-`U=⊥` consumed by S14(i)–(ii); Layer A/B/C build order; D1–D5 open. **Read this for what item 6 is** | — |
+| **Item-6 carrier recon (2026-09-16): item 6** | 5195–5756 | **RECORDED** — 6a *proved* sorry-free; 6b correct as transcribed but **false without `¬ G.Adj u v`** and needing the `g` carrier; 6c's carriers proposed with sites, only C1+C4-at-`U=⊥` consumed by S14(i)–(ii); Layer A/B/C build order; D1–D5 open. **Read this for what item 6 is** | — |
+| **C2ℓ route spike (2026-09-17): item 6, Layer C2ℓ** | 5757–end | **LANDED** — the pivot is that `weldedRank` is a **codimension** (B7); the landed relative hub transfers verbatim to merged labelings; `hu`/`hv` provably necessary and `hne` dead; two dispatch claims refuted (`Subspace.` not `Submodule.dualAnnihilator_inf_eq`; the weld-graph route is redundant, not blocked) | — |
 | Higher-`d` note / Citations | 4177–4217 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -5754,3 +5755,75 @@ would move them back onto the critical path). The numerics behind each claim are
 over all set partitions (combinatorial laws, `D ∈ {3,4,6,10}`) and exact finite-field Gaussian
 elimination on the five-rows-per-hinge model (geometric laws); they were scratch-only, and the
 identities and instance counts are recorded above so a re-run is reproducible.
+
+## C2ℓ route spike (2026-09-17): `weldedRank` is a codimension, and the weld-graph route's two objections are refuted
+
+**Status: RECORDED 2026-09-17** (compiler-checked spike, read-only; landed the same day as the
+C2ℓ slice). The question the coordinator dispatched: does `0 ≤ weldedLoss` (**C2ℓ**, pinned in
+*The remaining statements* above) compose out of landed objects, and by which route? The carrier
+recon had asserted C2ℓ "is exactly `0 ≤ a_w`, which S14(i)'s proof uses" without deriving it.
+Method: a throwaway `.lean` in the project tree that BUILDS the candidate chain and reports the
+kernel's residual goals. **There were none** — the chain closed sorry-free, and it is the landed
+C2ℓ slice. Leaves, sites and hypotheses are in `notes/Phase39.md` *Lemma checklist*, item 6, the
+C2ℓ entry; this section records only what the spike **settled or refuted**, so a later reader does
+not re-derive it.
+
+### The pivot
+
+`weldedRank u v + finrank (jointMotions ⊥ u v) = screwDim k · |α|`
+(`weldedRank_add_finrank_jointMotions_bot`, B7). The welded row rank *is* a codimension, so the
+Layer-B carriers already turn any lower bound on welded motions into an upper bound on
+`weldedRank` — which is what `0 ≤ a_w` asks for. Two amendments to the dispatch's reading of it:
+
+1. **`Submodule.dualAnnihilator_inf_eq` does not exist.** The lemma is
+   `Subspace.dualAnnihilator_inf_eq` (`Mathlib/LinearAlgebra/Dual/Lemmas.lean:862`, in that file's
+   second `namespace Subspace`, opening at `:833`), direction `(W ⊓ W').dualAnnihilator =
+   W.dualAnnihilator ⊔ W'.dualAnnihilator`, hence used **right-to-left**; it needs **no**
+   `FiniteDimensional` instance. The namespace was the miss, not the existence — the same shape of
+   error as F41, and worth checking that way round next time.
+2. **The `comap`/`ker` orientation flip needs its own bridge.** `map_screwDiff_comm` pays the
+   `screwDiff v u` / `screwDiff u v` mismatch on the *image* side only; on `jointMotions`'
+   `comap` side it is `Submodule.comap_bot` + `sub_eq_zero` + one `.symm`. Recorded in B7's
+   docstring because a reader who knows `map_screwDiff_comm` will expect it to serve.
+
+### Why the counting argument transfers verbatim
+
+`IsPartitionConstant f S` is *defined* as `∀ u v, f u = f v → S u = S v`
+(`AlgebraicInduction/PanelLayer.lean:1677`) — read from the body, not a docstring. So a labeling
+keeping `u, v` together has `partitionMotions f ≤ jointMotions ⊥ u v`, and the landed relative hub
+`screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean:2187`) runs
+unchanged with the attaining labeling drawn from `{f // f u = f v}`. Exactly **two** steps differ:
+the normalization's `g u = g v`, and the final `finrank_mono` target.
+
+### `hu`/`hv` are provably necessary (derivation, not a compiled witness)
+
+With `u, v ∉ V(G)` the merge constraint is free — `partitionDef` reads only `f|_{V(G)}` — so
+`g = def(G̃)` and `δ = 0`, while the weld still adds a full `screwDim k` rows. For `G` a single
+vertex with no edges this gives `weldedLoss = −screwDim k < 0`. Also in `weldedLoss_nonneg`'s
+docstring. The pinned `hne` by contrast **is** dead: it is `⟨u, hu⟩`.
+
+### The weld-graph route (S14's `H/uv` on a contracted body set): dead by supersession ONLY
+
+Both reasons it was thought worse are **wrong**, and two sorry-free witnesses say so (spike-only,
+not landed — nothing consumes them):
+
+- **No support-extensor design decision exists.** `Graph.weldPair` is `G.map (fun x => if x = u
+  then v else x)`, which keeps the same edge type `β` and edge set, so
+  `⟨F.graph.weldPair u v, F.supportExtensor⟩` is canonical, and
+  `infinitesimalMotions (weldPair …) = comap (LinearMap.funLeft K _ c) F.infinitesimalMotions`.
+- **The guessed offset `weldedRank = rank(G/uv) + screwDim k` is right**, on the same body set:
+  `range (funLeft K _ c) = ker (screwDiff u v)` (compiled), and `ker (funLeft K _ c)` is the free
+  value at `u` (as `u ∉ range c`), of dimension `screwDim k`; the comap dimension formula then
+  gives the offset. `weldedRank`'s docstring caution about "the offset where the recon's first
+  normalization went wrong" is about the loss's `(|V|−2)` **coefficient**, a different thing.
+
+So the route is viable and merely redundant: it would additionally need the comap dimension
+lemma and `V(weldPair u v).ncard = V(G).ncard − 1`. Do not revive it to *replace* C2ℓ; the
+witnesses above are the useful residue.
+
+### What would change this
+
+A consumer that needs the welded rank *on the contracted body set* rather than as extra rows on
+`α` (that is the weld-graph route's one genuine advantage, and it would want the two witnesses
+above landed); or the general-`U` joint count coming back onto the consumed path, which would
+make `jointMotions`' motion-side `|α|` dependence visible again.
