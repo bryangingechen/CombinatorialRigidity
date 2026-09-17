@@ -50,17 +50,18 @@ is load-bearing.
 | Decomposition (W0–W5) | 447–494 | CLOSED | 1 (W0) |
 | W3–W5 route recon (2026-07-24) | 495–868 | CLOSED | 4 |
 | W5 design pass (2026-07-24) | 869–1046 | CLOSED | **12** (verdict 1/2) |
-| **W5 leaf decomposition** | 1047–2719 | CLOSED | **60** — the densest arc |
-| **W5-L7 research recon (2026-07-30)** | 2720–3238 | CLOSED (`hsplit` closed in full) | **12** |
-| (K) route-1 gate (2026-07-30) | 3239–3336 | CLOSED — locality REFUTED | — |
-| (K) non-constancy recon (2026-07-30) | 3337–3511 | CLOSED — PARTIAL, left (K-tight) | — |
-| (K) literature hunt (2026-07-30) | 3512–3589 | CLOSED — NO HIT; **canonical home of that bibliography** | — |
-| (K-bare) extension-route recon | 3590–3764 | CLOSED — NO-GO; minimal statement (K-bare-ext) | — |
-| W4 decomposition recon (2026-07-30) | 3765–3990 | **live as W4's canonical leaf list**; W4 parked | — |
-| W4-L4 identification recon (2026-07-30) | 3991–4171 | **live** with the above | — |
-| **Lean-track design pass (2026-09-15): items 1–2** | 4254–4583 | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
-| **Field-hypothesis recon (2026-09-15): item 3** | 4585–end | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
-| Higher-`d` note / Citations | 4172–4212 | orientation; citation record | — |
+| **W5 leaf decomposition** | 1047–2721 | CLOSED | **60** — the densest arc |
+| **W5-L7 research recon (2026-07-30)** | 2722–3243 | CLOSED (`hsplit` closed in full) | **12** |
+| (K) route-1 gate (2026-07-30) | 3244–3341 | CLOSED — locality REFUTED | — |
+| (K) non-constancy recon (2026-07-30) | 3342–3516 | CLOSED — PARTIAL, left (K-tight) | — |
+| (K) literature hunt (2026-07-30) | 3517–3594 | CLOSED — NO HIT; **canonical home of that bibliography** | — |
+| (K-bare) extension-route recon | 3595–3769 | CLOSED — NO-GO; minimal statement (K-bare-ext) | — |
+| W4 decomposition recon (2026-07-30) | 3770–3995 | **live as W4's canonical leaf list**; W4 parked | — |
+| W4-L4 identification recon (2026-07-30) | 3996–4176 | **live** with the above | — |
+| **Lean-track design pass (2026-09-15): items 1–2** | 4259–4588 | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
+| **Field-hypothesis recon (2026-09-15): item 3** | 4591–4732 | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
+| **R2 recon (2026-09-16): item 4** | 4733–end | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) OPEN**: (α)/(β) is the PI's call, (GR-10) scope the user's | — |
+| Higher-`d` note / Citations | 4177–4217 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
 (the workbook) and `notes/pencil/strategy.md`. This file is the dated recon
@@ -1350,6 +1351,7 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   `G.Simple`-conditioning; the landed `theorem_55_base_producer_gen`'s arm (iii) discharges the
   generic conjunct at the parallel pair by `not_simple_of_isMinimalKDof_of_ncard_two` — vacuity by
   ¬Simple, exactly the move available here.
+  → *Forward pointer (2026-09-16):* this reading is now kernel-checked — cap `≤ 5` at distinct points on two bodies — and the coincident-point slack it names is the open (α)/(β) motive decision; § *R2 recon* (b) below.
 
   **Two workable repair routes, both spike-typechecked; (b′) RECOMMENDED:**
 
@@ -1677,6 +1679,7 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   mechanisms — open research, NOT a bounded leaf; it is also *insufficient alone* for sub-case 4
   (the output gap stands regardless), which is why the chart-steering candidate above carries
   both halves.
+  → *Forward pointer (2026-09-16):* in the triangle-free habitat the `≤ 3` count is an exact criterion (`Motive.lean:410` ⇒, `Steer.lean:1344` ⇐) and feasibility passes to every subgraph by reconstruction (compiled); the triangle here is why both readings coexist — § *R2 recon* (c) below.
 
   **Successor demand check (is the full arm needed?).** `Graph.pencil_reduction` dispatches
   *every* loopless ¬2EC graph on `≥ 3` vertices to `hcut`, and the spiked
@@ -2894,6 +2897,7 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
   (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), `htf` from `hnoRigid` +
   `triangle_isProperRigidSubgraph` (`|V| ≥ 4`). The bare `HasPencilRealization K 3 G` half is the
   forgetful map *where the generic antecedents hold* — see residue (ii) below.
+  → *Forward pointer (2026-09-16):* the call site uses nothing of `hEsc` beyond this conversion, so `hK` may conclude `HasGenericPencilRealization K 3 G` directly — § *R2 recon* (d) below.
 - **Kernel (K) as carried: `hK`, realization-input + extension-shaped** (re-pinned 2026-07-30).
   The recon **rejected** carrying the bare full-family form ((K)-full, no input): given
   feasibility it is equivalent to the generic half of the conjecture itself at `G` — the
@@ -2934,6 +2938,7 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
   can still be built *inside* the discharge if that attack is chosen; route 2's opaque-`r`
   fixed-seed `M₁` linear algebra is how the discharge should do the block computation).
   *(Route 1 has since been closed NO-GO — see §"(K) route-1 gate" below.)*
+  → *Forward pointer (2026-09-16):* checklist item 5 restates this pin with the induction hypothesis ahead of the antecedent (S14(v)) and, per § *R2 recon* (d), with the conclusion weakened to `HasGenericPencilRealization K 3 G`; the pin above is history, not the live statement.
 
 **Not-buildable-now inventory (REVISED 2026-07-30, L7c assembly recon):** TWO carried kernels,
 not one — kernel **(K)** (the `hK` implication above) and the bare-half kernel **(K-bare)**
@@ -2974,6 +2979,7 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   (the 19-vertex theta / 17-vertex gadget of the L6a arc: 2EC + no-proper-rigid + simple +
   degree-2-carrying with a 4-member `closedHubNbhd`). Grounded findings (all against landed
   source, this recon):
+  → *Forward pointer (2026-09-16):* item 5 adds the induction hypothesis to `hbareSplit` (S14(v)); § *R2 recon* (b) records that its antecedent as pinned is a point of the bare space that may be coincident-pointed, and the (α)/(β) motive decision that follows. The findings below stand.
   1. **The panel precedent structurally cannot cover it.** The landed program's split arm
      produces its bare conjunct ONLY as M4-forgetful ∘ generic — the `hsplitZero` arm of
      `theorem_55_minimalKDof_k_all_k` (`Theorem55.lean:2499`): G0
@@ -4724,3 +4730,356 @@ exclude characteristic 2 (`[NeZero (2 : K)]` on the reduction as well) — the o
 which option A's direction was right. *(iii)* A witness-form restatement of the S-mark frame
 removes `IsAlgClosed K` from the (K-bare) expectation. *(iv)* Jackson–Jordán pin-collinear over
 a general infinite field, if the frame's base case (a) is kept.
+
+## R2 recon (2026-09-16): checklist item 4 — the rank bridge, the bare variety at coincident points, feasibility on the side, and `hK`'s conclusion
+
+**Status: RECORDED 2026-09-16 (read-only recon; verdict accepted by the coordinator the same
+day and transcribed here by the same agent).** Three of the four questions are settled against
+landed source. **(a)** The attack's "attains" (`dim M(G) = 6 + def₃(G)` at a configuration) and
+the Lean's `HasPencilRealization K 3 G` (`Molecule/Pencil/Statement.lean:103`) are the same rank
+statement wherever adjacent points are projectively distinct. **(c)** `G.Simple` and
+`PencilNondegFeasible K` pass to `G − chain` — to every subgraph — by *reconstruction* from the
+landed W5-L6b criterion, not by restricting the parent's witness. **(d)** The call site consumes
+nothing of `hK`'s chart-form conclusion beyond its conversion to `HasGenericPencilRealization K 3
+G`, so the kernel may conclude the latter. **(b)** is a finding with an OPEN decision: the bare
+motive admits target-rank witnesses at *coincident* adjacent points that no adjacent-distinct
+configuration matches (kernel-checked at the parallel pair), so `hbareSplit`'s antecedent as
+pinned certifies a point of the Lean bare space, not of the attack's `Y(G₋)`; the checklist's
+named fix (a distinctness conjunct on the bare motive) is REFUTED, and the viable form — a
+simple-conditioned third conjunct of `PencilPair` — is a motive change whose cost lands on the
+carried `hcontract`. **Two decisions are recorded below as open, not settled:** (b)'s (α)/(β) is
+the PI's; (GR-10)'s scope is the user's. The recon's recommendations are marked as such.
+
+Read-only recon against HEAD `e6da51e6`. Methods: definition bodies (files cited per claim;
+docstrings used as evidence for nothing), the consumer's proof body (`Escape.lean:334–428`), the
+S-mark workbook S14–S15 and `notes/attacks/smark/state.md`, and **three scratch spikes** checked
+with `lake env lean` at this HEAD, after `lake build
+CombinatorialRigidity.Molecular.Molecule.Pencil.Escape` returned as a no-op (2907 jobs, so the
+oleans match HEAD). The spikes are not in the tree; every statement quoted below compiled with no
+`sorry` and is reproducible by pasting it into a scratch file importing
+`CombinatorialRigidity.Molecular.Molecule.Pencil.Escape` (with `open
+CombinatorialRigidity.Molecular CombinatorialRigidity.Molecular.BodyHingeFramework` and
+`open scoped Graph`).
+
+### The question
+
+Route R2 (workbook S14, PI-adopted 2026-09-16) reads the kernels' own split-off antecedent
+`HasPencilRealization K 3 (G.splitOff v a b e₀)` at the generic point to supply the consumed
+block inequalities. It stands on: **(a)** the attack's rank convention agreeing with the Lean's;
+**(b)** a Lean bare witness being a point of (the closure of) the attack's configuration variety
+`Y(G₋)`; **(c)** the IH's generic half being usable for the side `H′ = G − chain`; and,
+optionally, **(d)** whether `hK`'s chart-form conclusion (`Escape.lean:340–350`) can be weakened
+to the motive the call site converts it to.
+
+### (a) The rank bridge — CONFIRMED identical, on the adjacent-distinct locus
+
+**Constants.** `screwDim k = (k+2).choose 2` (`RigidityMatrix/Basic.lean:89`), so `screwDim 2 =
+6`; `bodyBarDim 3 = 6` (`BodyBar/Framework.lean:61`); `partitionDef G n f = bodyBarDim n ·
+(numParts − 1) − (bodyBarDim n − 1) · |crossingEdges|` (`Deficiency.lean:262`) and `deficiency =
+⨆ f, partitionDef` (`:273`). Labelings `f : α → α` range over exactly the partitions of `V(G)`
+(`numParts = |f '' V(G)|`, crossing edges are edges of `G`); `≥ 0` by `partitionDef_one`.
+Compiled (spike A):
+
+```lean
+example : screwDim 2 = 6 := by decide
+example : Graph.bodyBarDim 3 = 6 := by decide
+example (G : Graph α β) (f : α → α) :
+    G.partitionDef 3 f
+      = 6 * ((G.numParts f : ℤ) - 1) - 5 * ((G.crossingEdges f).ncard : ℤ) := by
+  norm_num [Graph.partitionDef, Graph.bodyBarDim]
+```
+
+So `G.deficiency 3 = max_P [6(|P|−1) − 5 d(P)] = def₃(G)`, the brief's §1 definition.
+
+**Five rows per hinge.** `hingeRowBlock e = (span {supportExtensor e}).dualAnnihilator`
+(`Basic.lean:435`), `finrank = screwDim k − 1` when the extensor is nonzero (`:1142`); rows are
+`hingeRow u v r = r ∘ₗ screwDiff u v` with `screwDiff u v S = S u − S v` (`:474–502`);
+`rigidityRows = {hingeRow u v r | IsLink e u v, r ∈ hingeRowBlock e}` (`:654`). This is the
+body-hinge constraint `S_u − S_v ∈ ⟨C_e⟩`; both orientations span the same rows
+(`hingeRow_swap`, `:551`). Compiled (spike A):
+
+```lean
+example {K : Type*} [Field K] (F : BodyHingeFramework K 2 α β) (e : β)
+    (he : F.supportExtensor e ≠ 0) : Module.finrank K (F.hingeRowBlock e) = 5
+```
+
+**The target.** Compiled (spike A): `HasPencilRealization K 3 G ↔ ∃ F normal point,
+HasPencilPanelRealization G F normal point ∧ (finrank (span F.rigidityRows) : ℤ) = 6 * (|V(G)| −
+1) − G.deficiency 3`. The row functionals live on `α → ScrewSpace K 2` (all of `α`); bodies
+outside `V(G)` carry no rows and leave the rank unchanged, and `dim M(G) = 6|V(G)| − rank` is the
+attack's convention, so `rank = 6(|V|−1) − def₃ ⟺ dim M = 6 + def₃`.
+
+**The hinge is the line through the two points, at distinct points.** The identification every
+S14 line uses silently. Derived from the body of `ExtensorThroughPoint` (`Statement.lean:75`:
+`∃ p, C.val = extensor p ∧ q ∈ span (range p)`) with the landed Plücker lemmas
+`span_range_eq_of_extensor_eq` (`Meet.lean:937`) and `exists_smul_extensor_eq_of_mem_span_range`
+(`Meet.lean:868`). Compiled (spike C, theorem 1):
+
+```lean
+theorem smul_val_eq_extensor_of_extensorThroughPoint_pair
+    {C : ScrewSpace K 2} (hC : C ≠ 0) {pu pv : Fin 4 → K}
+    (hLI : LinearIndependent K ![pu, pv])
+    (hu : ExtensorThroughPoint C pu) (hv : ExtensorThroughPoint C pv) :
+    ∃ c : K, c ≠ 0 ∧ c • C.val = extensor ![pu, pv]
+```
+
+With the hinge forced onto `p_u ∧ p_v`, `ExtensorInPanel` at both endpoint panels
+(`Basic.lean:291`; `HasCoplanarPanelRealization`, `Theorem55.lean:3059`) says exactly `p_u, p_v ∈
+π_u ∩ π_v`, i.e. `N[v] ⊆ π_v` — the brief's coplanarity with the plane carried explicitly (free
+at a non-hub, unique at a hub). Field: the Lean is over any `[Infinite K]`; the attack argues
+over `K̄` and descends (O9) — the same rank equation.
+
+**What it changes.** S14(i)–(iii), (v), (vii) are statements about the attack's own variety and
+survive verbatim; the brief's standing "unchecked: the 5-rows-per-hinge matrix against Lean's
+`rigidityRows`" is checked. The bridge is exact *only where adjacent points are distinct*; on
+the coincident locus the Lean hinge is not the line through the points — question (b). The two
+places a Lean witness enters S14 are (iv)'s two hypotheses ("`H′` attains", "`G₋` attains").
+
+### (b) The bare variety at coincident points — YES, degenerate witnesses attain where no adjacent-distinct configuration does; the named fix is refuted; the viable fix is a motive decision
+
+**From the bodies.** `HasPencilPanelRealization` (`Statement.lean:88`) has no distinctness
+conjunct; `ExtensorThroughPoint` at `point u = point v = q` constrains the hinge only to pass
+through `q`, so with `π_u = π_v` the hinge ranges over the whole pencil (P¹) and with `π_u ≠ π_v`
+it is forced to `π_u ∩ π_v`. The conjunct `LinearIndependent K ![point u, point v]` lives only in
+`IsNondegPencilRealization` (`Motive.lean:111`, second conjunct).
+
+**Compiled positive witness (landed).** The base arm `hasPencilRealization_of_ncard_le_two`
+(`Arms.lean:1112`) realizes every parallel class at the target rank `6` with `point := fun _ =>
+q₀` — every body at the *same* point — and two independent hinges through `q₀` in one panel
+(`exists_linearIndependent_extensor_pair_through_point`, `Statement.lean:294`; the `refine ⟨F,
+fun _ => n₀, fun _ => q₀, …⟩` at `Arms.lean:1138` and again in the parallel-class case). The
+same witness is `exists_pencilPanelRealization_parallel_pair` (`Statement.lean:353`). The W5
+design pass had already read this locus as the parallel class's max-rank component (§"W5 design
+pass", *Conjecture-level reading*); the following makes that reading kernel-checked.
+
+**Compiled negative (spike C, theorem 2).** With projectively distinct points on two bodies,
+every hinge is forced onto one line and the rows span at most five dimensions:
+
+```lean
+theorem finrank_span_rigidityRows_le_five_of_two_bodies
+    [Finite α] {G : Graph α β} {x y : α} (hVG : V(G) = {x, y})
+    {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (hreal : HasPencilPanelRealization G F normal point)
+    (hLI : LinearIndependent K ![point x, point y]) :
+    Module.finrank K (Submodule.span K F.rigidityRows) ≤ 5
+```
+
+(Proof shape: theorem 1 at each link makes every `hingeRowBlock e` equal to `(span {p_x ∧
+p_y}).dualAnnihilator`, of finrank `5` by `Subspace.finrank_add_finrank_dualAnnihilator_eq` +
+`screwSpace_finrank` + `finrank_span_singleton`; every row is `hingeRow x y r` or `hingeRow y x r
+= hingeRow x y (−r)` (`hingeRow_swap`) or a vanishing loop row (`hingeRow_self`, `:512`); the span
+sits inside the image of that block under `(screwDiff x y).dualMap`.) So at every parallel class
+(target `6`) the bare motive holds *only* via coincident points, and those witnesses are not
+limits of attaining adjacent-distinct configurations of the same graph (there are none; rank is
+lower semicontinuous).
+
+**On the simple graphs the kernels quantify over.** The same freedom is in the motive. Whether
+every attaining coincident witness of a simple habitat graph lies in the closure of `Y(G)` is a
+deformation question the recon could not settle either way: the deformation `p_v ↦ q + t·r`, `r`
+on the chosen hinge `ℓ_uv`, succeeds when the coincident bodies' other neighbours are non-hubs
+(their planes are free to follow), and is locally obstructed when both coincident bodies are hubs
+each with two hub-neighbours whose planes are pinned (`r` must lie in three independent planes
+through `q`, so `r = 0`). No attaining habitat instance is exhibited; none is excluded.
+**Consequence as pinned:** `hbareSplit`'s antecedent (`Escape.lean:351–355`) certifies a point
+of the Lean bare space, not of `Y(G₋)` or its closure, so R2's bare arm is unsound at the
+statement level; the same applies to the IH's bare half for `H′` on that arm.
+
+**The checklist's named fix is REFUTED.** A conjunct "adjacent points projectively distinct" on
+`HasPencilPanelRealization` makes `HasPencilRealization K 3 G` false at every parallel class
+(theorem 2 against target `6`), and the reduction's induction runs through multigraphs (loop arm
+`Arms.lean:48`, base arm `:1112`, cut arm `:795`, `hcontract` over loopless multigraphs,
+`Escape.lean:451–455`), so `PencilPair` would be false at the base. It would also break the
+stratum self-duality on the nose (`hasPencilPanelRealization_mapExtensor_screwComplementIso`,
+`Statement.lean:257`, swaps `normal`/`point`; the dual conjunct "adjacent normals distinct" fails
+at the coincident-panel KT-Lemma-5.3 base case). That declaration has **no Lean consumers**
+(only docstring mentions) **but IS pinned by the blueprint**: `lem:pencil-self-dual`
+(`blueprint/src/chapter/pencil.tex:149–150`, `\leanok`). **Item 5's builder must therefore not
+place any conjunct on `HasPencilPanelRealization`**: the recommendation below keeps that motive
+untouched, so the pinned node stays green and the parallel-class base stays true.
+
+**The viable form.** A third, simple-conditioned conjunct in `PencilPair` (`Motive.lean:161`):
+a motive `HasDistinctPencilRealization K n G` := bare ∧ `(∀ e u v, G.IsLink e u v →
+LinearIndependent K ![point u, point v])` ∧ rank target (conjunct 2 of
+`IsNondegPencilRealization` lifted onto the bare motive), and `PencilPair := (Simple →
+Feasible → Generic) ∧ (Simple → Distinct) ∧ Bare`. Ripple through the landed arms, all under
+`G.Simple`:
+
+| arm | status of the new conjunct |
+|---|---|
+| loop (`Arms.lean:48`) | vacuous — a loop is not simple (as the generic conjunct already is) |
+| base `\|V\| ≤ 2` (`Arms.lean:1112`) | edgeless: vacuous over links; **single edge: rework** — currently `fun _ => q₀` coincident even here; put the two bodies at distinct points of the hinge line (the brick's own `![q₀, a]` LI pair), ~20 lines; parallel class: not simple, vacuous |
+| cut, `\|C\| = 0` (`Arms.lean:795`) | glue the sides' conjuncts; no cross link |
+| cut, `\|C\| = 1` (reposition `Arms.lean:321`) | **already distinct by construction**: `exists_reposition_cross_incidences` sends `pt₂v ↦ a` with `![a, pt₁u]` LI (its proof, `:315–331`); expose that LI in its conclusion and thread |
+| habitat `\|V\| = 3, 4` (`Base.lean:63`, `:570`) | already nondegenerate (`hadj` at `Base.lean:387`, `:1262`; bare half via `hasPencilRealization_of_generic` at `:535`, `:1420`) — the distinct half is the forgetful map's sibling |
+| split, `hK` arm | generic ⇒ distinct (conjunct 2) — trivial |
+| split, `hbareSplit` | the kernel concludes the distinct motive (what R2 produces anyway: a `Y(G)`-point) |
+| forgetful maps (`Motive.lean:178`) | `Generic → Distinct → Bare`, trivial |
+| **`hcontract` (W4, carried; `Escape.lean:451–455`)** | **the genuine cost**: its conclusion `PencilPair K 3 G` gains the conjunct; W4's informal closure was for the two-conjunct motive, and its contraction stage `G/H` is a multigraph whose attaining witnesses *must* be coincident at parallel classes (theorem 2) — un-contracting has to un-coincide. A new W4 obligation, to be logged in `notes/pencil/workbook/W4.md` if (α) is chosen. |
+
+**The decision (the PI's — flagged, not forced).** **(α)** adopt the third conjunct: cost above,
+concentrated in `hcontract`; deletes O8's coincident stratum outright and makes `hbareSplit`'s
+antecedent and the IH's `H′` half `Y`-points, as the attack assumes. **(β)** leave the motives:
+no Lean change; the attack must prove O8's coincident stratum lies in the closure of `Y` for
+simple habitat graphs (open; the local obstruction above is where it would fail); `hbareSplit`
+stays as pinned plus the IH. *Recon recommendation:* (α), because the compiled parallel-pair fact
+shows the motive's slack is real rather than hypothetical and every arm except `hcontract`
+discharges the conjunct nearly for free — but the `hcontract` cost needs the W4 owner's estimate.
+Item 5's IH threading does not depend on this choice (independent edits to the same kernel
+statements); doing both in one slice avoids restating the blueprint twice.
+
+### (c) Restriction of feasibility to the side — YES, by reconstruction; the restriction route is gapped exactly where feared
+
+**Answer.** `G.Simple` and `PencilNondegFeasible K G` pass to every subgraph `H ≤ G` of a
+triangle-free simple feasible `G`, in particular to `G − interior(chain)` (`Graph.deleteVerts`;
+`deleteVerts_le` as used at `MaximalChain.lean:591`). Compiled (spike B):
+
+```lean
+theorem pencilNondegFeasible_of_le_of_triangleFree
+    {K : Type*} [Field K] [Inhabited α] [Finite α] [Finite β] [Infinite K]
+    {G H : Graph α β} (hSimple : G.Simple) (hle : H ≤ G)
+    (hfeas : PencilNondegFeasible K G)
+    (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+      G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
+    H.Simple ∧ PencilNondegFeasible K H
+```
+
+Proof (15 lines, all landed API): `Graph.Simple.mono` (Matroid package `Graph/Simple.lean:219`);
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (`Motive.lean:410`) on `G`'s witness
+gives `≤ 3` at every `w` (empty off `V(G)`, the `Escape.lean:407–412` pattern);
+`Graph.closedHubNbhd_mono` (`Motive.lean:224`) and `Set.ncard_le_ncard` pass the bound to `H`;
+triangle-freeness passes to subgraphs by `IsLink.of_le`; then the landed W5-L6b criterion
+`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean:1344`)
+*constructs* a fresh nondegenerate realization of `H`. A second compiled example then reads the
+IH: `(hIH H hHne hHlt).1 hHs hHfeas : HasGenericPencilRealization K 3 H`.
+
+**Why restriction fails, from the source.** `IsNondegPencilRealization.mono` (`Motive.lean:246`)
+restricts `G`'s witness to `H ≤ G` only given `hdemote : ∀ v ∈ V(H), G.PencilHub v → ¬ H.PencilHub
+v → LinearIndepOn K point (H.closedNbhd v)`, and `PencilNondegFeasible.mono` (`:273`) discharges
+it only when every demoted hub has `H`-degree `≤ 1`; its docstring records demotion to degree
+exactly `2` as "genuinely gapped" — `G` may put the demoted body's two surviving hinges on one
+line, so conjunct 4 has no source in `G`'s witness. The chain ends drop from degree `≥ 3` to
+degree `2` (M3b, `degree_deleteVerts_interior_add_one`), so restriction fails precisely there.
+Reconstruction sidesteps it.
+
+**Diff against the refutation.** `not_pencilNondegFeasible_of_triangle_two_hubs`
+(`Motive.lean:684`) refutes the bare `≤ 3` count as a criterion; its graph contains a triangle,
+so the criterion's `htf` hypothesis fails and there is no contradiction. The `notes/Phase39.md`
+*Blockers* wording "every purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion is
+refuted" was imprecise and is restated in this commit: the count *alone* is refuted; in the
+triangle-free habitat the criterion is **exact** — `⇒` by `Motive.lean:410`, `⇐` by
+`Steer.lean:1344`, both landed since W5-L6b — and the triangle is why both readings coexist.
+
+**What it changes.** On `hK`'s arm (`G` feasible) the IH supplies `HasGenericPencilRealization
+K 3 (G − chain)`: S14(iii)'s "`H′` attains at the generic point of `Y`" is fed by a witness with
+all four conjuncts (a `Y(H′)`-point, meeting S14(vii)'s tower nondegeneracy inputs); `G₋` is
+likewise generic there (`hasGenericPencilRealization_of_splitOff_of_safe`, `Escape.lean:95`). On
+`hbareSplit`'s arm `H′`'s feasibility is decided by the same count — `G` infeasible means some
+`|closedHubNbhd_G(w)| ≥ 4` (exactness), which may or may not survive the chain ends' demotion;
+when `H′` is feasible the IH gives generic, otherwise only bare, and then (b) bites for `H′` too.
+
+### (d) Weakening `hK`'s conclusion — CONFIRMED "uses nothing else"; adopt it
+
+In `pencilPair_of_splitOff_of_habitat`, `hEsc := hK …` (`Escape.lean:419`) is consumed at
+exactly one site, `hasGenericPencilRealization_of_independent_pencilRow_target … hcard htf hEsc`
+(`:420–422`); `hcard` (`:402–412`) and `htf` (`:413–418`) exist only to feed that call; `hgen` is
+used at `:423` as `⟨fun _ _ => hgen, hasPencilRealization_of_generic hgen⟩`. The wrappers
+`pencil_conjecture_of_hcontract_hK_hbareSplit` (`:449–490`) and `_of_card` (`:555–583`) only
+thread `hK`. With the conclusion weakened to `HasGenericPencilRealization K 3 G`, lines
+`402–422` collapse to `have hgen := hK … hgenG'`.
+
+**Strictly easier.** Under `hK`'s own hypotheses the chart form implies the generic form: `G.Simple`
+is given; `htf` follows from `hnoRigid` (`Graph.triangle_isProperRigidSubgraph`, as at `:413–418`);
+`hcard` for `G` follows from the antecedent's `G₋`-witness via `Motive.lean:410` and the inclusion
+`closedHubNbhd_G(w) ⊆ closedHubNbhd_{G₋}(w)` for `w ≠ v` (a derivation, not compiled: degrees
+agree off `v` since `a ≠ b`; `a`'s neighbourhood trades the non-hub `v` for `b`; the landed
+`ncard_closedHubNbhd_splitOff_le_three_of_safe`, `Habitat.lean:90`, is the other direction). The
+converse fails (a generic realization yields no chart). The weakened form is also what R2
+naturally produces (a nondegenerate attaining configuration after descent), whereas the chart
+form is what the (GR-10) grid route produces.
+
+**Blueprint.** `thm:pencil-conditional-realization-pair` (`pencil.tex:843–845`) *already*
+states (K) in the generic form — "a generic pencil realization of `G′` extends to one of `G` at
+the deficiency rank" — so adopting (d) brings the Lean in line with the chapter; no TeX change
+for the conclusion (item 5's IH rewording still applies).
+
+### What this does to S14/S15 and to R2's two arms
+
+- **Survive verbatim:** S14(i), (ii), (iii), (v), (vii) — rank statements on the attack's own
+  `Y(·)`, identical to the Lean's rank on the adjacent-distinct locus by (a). S15(i) is confirmed
+  by (d). S15(vi)'s `π_w = π_v` stratum is a stratum *inside* `Y(G₋)` (points distinct, planes
+  equal) — O7's business, not the bridge's.
+- **Need restating:** S14(iv)'s two hypotheses must read "…has an attaining configuration **with
+  adjacent points projectively distinct** (a Lean witness of the distinct motive)"; S14(vi)(β)/O8
+  must be split — the *coincident-point* stratum is a Lean-bridge matter settled by (b) (deleted
+  under (α), open under (β) with the local obstruction noted), while the collinear-star and
+  dependent-normal strata are strata of `Y(G)` itself (O7).
+- **Feasible arm via `hK` — SOUND at the statement level** under (a)+(c)+(d): `G₋`'s witness is
+  generic (conjunct 2 gives distinctness), `H′`'s IH witness is generic (spike B), both are
+  `Y`-points with all four conjuncts, and the kernel's target is the generic motive. What remains
+  is the attack's own: S14(iii) as a proof, S14(vii) irreducibility (or component matching), O9
+  descent, and the density remark that the attaining open set meets the nondegenerate open set
+  (immediate if `Y(G)` is irreducible, which is S14(vii)'s claim on this arm).
+- **Infeasible arm via `hbareSplit` — UNSOUND as pinned** by (b): both `G₋`'s antecedent and
+  `H′`'s IH half are bare witnesses that may sit at coincident points off the closure of `Y`.
+  Sound under (α); under (β) only once O8's coincident stratum is proved for simple habitat
+  graphs.
+
+### Material for the S-mark brief's §3 (Hand-off item 3)
+
+1. *Rank bridge:* "Lean `HasPencilRealization K 3 G` = some `Y(G)`-point attains `6(|V|−1) −
+   def₃(G)`, on the adjacent-distinct locus: five rows per hinge (`hingeRowBlock`, the
+   annihilator of the hinge screw), `screwDim 2 = 6 = bodyBarDim 3`, `deficiency 3 = def₃` with
+   `6(|P|−1) − 5d(P)`, hinge = `p_u ∧ p_v` forced at distinct points (compiled). Over any
+   infinite `K`; the `K̄`-to-`K` descent is O9." Cite the spike-A/C statements above.
+2. *Bare motive:* "`HasPencilRealization` carries no distinctness conjunct; at `point u = point v`
+   with a shared panel the hinge is free over the pencil. This slack is real: every parallel
+   class attains only that way (landed base arm; compiled cap `≤ 5` at distinct points). As
+   pinned, `hbareSplit`'s antecedent is a point of the Lean bare space, not of `Y(G₋)`; the PI's
+   (α)/(β) decision determines whether O8's coincident stratum exists."
+3. *Feasibility on the side:* "In the triangle-free habitat `PencilNondegFeasible` is exactly
+   `∀ w, |closedHubNbhd w| ≤ 3` (both directions landed); it and simplicity pass to every
+   subgraph, hence to `G − chain` and to `G.splitOff`, by reconstruction (`Steer.lean:1344`), not
+   by restricting the parent's witness (gapped at hubs demoted to degree 2 — the chain ends). On
+   `hK`'s arm the IH therefore hands R2 nondegenerate `Y`-points for both `H′` and `G₋`."
+4. Quote both kernels verbatim one hypothesis per line (`Escape.lean:340–355`, plus the item-5
+   IH), with a one-line justification for hypotheses the route does not use (`e₀ ∉ E(G)`, `eₐ ≠
+   e_b`: label bookkeeping for `splitOff`'s well-formedness).
+
+### Consequences for checklist item 5 (beyond adding the IH)
+
+- **Adopt (d):** `hK` concludes `HasGenericPencilRealization K 3 G`; delete `Escape.lean:402–422`'s
+  `hcard`/`htf`/conversion; wrappers thread only; `pencil.tex:843–845` already matches.
+- **(b), on the PI's call:** under (α) — new motive `HasDistinctPencilRealization`, third
+  `PencilPair` conjunct, the arm ripple in the table (base single edge, cut-arm LI exposure,
+  `hbareSplit` concluding the distinct motive, forgetful maps), and `hcontract` restated with the
+  new W4 obligation recorded in `notes/pencil/workbook/W4.md`; **never on
+  `HasPencilPanelRealization`** (pinned by `lem:pencil-self-dual`; coincident-capable at parallel
+  classes by necessity). Under (β) — no Lean change; O8's coincident stratum is the attack's
+  obligation with the compiled parallel-pair fact as the reason it is not vacuous.
+- **(c):** land spike B's `pencilNondegFeasible_of_le_of_triangleFree` (15 lines) beside
+  `PencilNondegFeasible.mono` in `Motive.lean` (or in `Steer.lean`, where the criterion lives) as
+  the kernel-facing API; the *Blockers* sentence on the refuted criterion is fixed in this commit.
+
+### The two open decisions (recorded as decisions, not as settled)
+
+1. **(b): (α) or (β) — the PI's call**, with the `hcontract`/W4 cost estimate as input. The recon
+   recommends (α). Record the outcome verbatim in `notes/pencil/adjudications.md` and as a
+   one-liner in `notes/Phase39.md` *Decisions made*; item 5 applies it.
+2. **(GR-10)'s scope — the user's call.** R2 covers `hK`'s arm at the statement level ((a), (c),
+   (d) hold; S14(iii)/(vii) are still to be written as proofs). Under (d) `hK` no longer needs a
+   chart at all, so the **independence proviso (P)** (`notes/attacks/gr10/brief.md` §2) drops out
+   of `hK`'s *statement* and survives only as an internal step of the grid route. The recon
+   recommends **re-scoping** (GR-10) to (i) the characteristic-2 probe (about the conjecture's
+   field range, orthogonal to the route) and (ii) an optional cross-check of S14(iii) on the
+   tight stratum, and **not** running session 1 as briefed — the grid/colouring route becomes a
+   fallback unless S14(iii) or (vii) stall. The gr10 brief's PI pointer already anticipates this.
+
+### What would change this
+
+*(i)* A compiler-checked attaining bare witness at coincident points for a *simple habitat* graph
+would upgrade (b) from "the slack is real at parallel classes" to "the slack bites in the
+consumer's class" and make (α) close to forced. *(ii)* A proof that for simple triangle-free `G`
+every attaining bare witness is a limit of adjacent-distinct ones (O8's coincident stratum) would
+make (β) free. *(iii)* Any `Y`-external use of `hEsc`'s chart data at a call site (none exists at
+this HEAD) would block (d). *(iv)* A landed W4 build under the two-conjunct motive raises (α)'s
+cost from "an obligation" to "a rework".
