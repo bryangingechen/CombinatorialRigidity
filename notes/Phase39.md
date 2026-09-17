@@ -169,23 +169,13 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   hypotheses. Record: `notes/Phase39-design.md` § *Field-hypothesis recon (2026-09-15)*;
   chapter `fmlnote:pencil-conditional-realization-pair-field`. The char-2 probe is the (GR-10)
   attack's (*Current state*).
-- [x] **R2 recon (item 4) — DONE 2026-09-16** (read-only; record `notes/Phase39-design.md`
-  § *R2 recon*, with the three compiled spike statements). One-line verdicts: **(a)** the rank
-  bridge is exact on the adjacent-distinct locus — five rows per hinge (`hingeRowBlock`),
-  `screwDim 2 = 6`, `deficiency 3 = def₃`, the hinge forced onto `p_u ∧ p_v` (compiled); the only
-  divergence is (b)'s locus. **(b)** the bare motive attains at coincident adjacent points where no
-  distinct configuration does (the parallel pair: landed witness at rank 6, compiled cap `≤ 5` at
-  distinct points), so `hbareSplit`'s antecedent as pinned is a bare-space point, not a
-  `Y(G₋)`-point; the named fix (a conjunct on `HasPencilPanelRealization`) is REFUTED — it
-  falsifies `PencilPair` at every parallel class and would break the pinned `lem:pencil-self-dual`;
-  the viable form is a simple-conditioned third `PencilPair` conjunct whose cost lands on
-  `hcontract` — **(α)/(β) is the PI's call** (*Blockers*). **(c)** `G.Simple` and
-  `PencilNondegFeasible` pass to every subgraph of a triangle-free simple feasible `G`, hence to
-  `G − chain`, by reconstruction from `Steer.lean:1344` (compiled), not by restriction
-  (`PencilNondegFeasible.mono` is gapped exactly at the chain ends' degree-2 demotion); on `hK`'s
-  arm the IH's generic half is usable for the side. **(d)** CONFIRMED — `hEsc` is consumed once
-  (`Escape.lean:420–422`); `hK` may conclude `HasGenericPencilRealization K 3 G` (the blueprint
-  already states it so, `pencil.tex:843–845`).
+- [x] **R2 recon (item 4) — DONE 2026-09-16** (read-only). All four verdicts, with the three
+  compiled spike statements, are recorded in full at `notes/Phase39-design.md` § *R2 recon*
+  (subsections (a)–(d)) and are not duplicated here; item 5 consumed them the same day. In one
+  line each: **(a)** the rank bridge is exact on the adjacent-distinct locus; **(b)** the bare
+  motive attains at coincident adjacent points where no distinct configuration does, the named
+  fix REFUTED, settled **(α)** by the user; **(c)** feasibility passes to the side by
+  reconstruction, not restriction; **(d)** `hK` may conclude `HasGenericPencilRealization K 3 G`.
 - [x] **Kernel restatement (item 5) — DONE 2026-09-16**, one slice, all four pieces (user:
   *"One slice: IH + (d) + (c)-adder + whatever (b) decides"*). Both kernels take the induction
   hypothesis ahead of their antecedent (S14(v)); `hK` concludes `HasGenericPencilRealization K

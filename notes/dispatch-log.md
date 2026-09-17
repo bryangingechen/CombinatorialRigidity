@@ -934,6 +934,16 @@ At phase close, promote stable entries into the coordinator command's
   find X — check before hand-rolling it."** Corollary: hand the builder the
   verified proof *and* ask it to look for a shorter route — that pairing is
   what produced the better `map_screwDiff_comm`.
+  **Sharpening (2026-09-17, same session, second instance):** the recurring
+  mechanism is not "I searched and found nothing" but **guessing a
+  namespace-qualified name and searching only for that**. `Submodule.map_neg`
+  failed on a bad glob; `Submodule.dualAnnihilator_inf_eq` failed because the
+  lemma is `Subspace.dualAnnihilator_inf_eq` — right file, right line, wrong
+  namespace, and the spike's diagnosis was sharper than mine: *the namespace
+  was the miss, not the existence*. Search by **bare declaration name across
+  the whole dependency tree** (`grep -rn "theorem <name>" .lake/packages/`),
+  never by a guessed qualification, and prefer the declaration-level search
+  tools the Lean MCP exposes.
 
 - **F42 — a spike whose conclusion is about a CONSUMER must reproduce the
   consumer's file kind, or it measures the wrong thing twice.** Two slices
