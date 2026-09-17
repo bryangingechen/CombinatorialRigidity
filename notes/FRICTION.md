@@ -2641,6 +2641,33 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Fix:** parenthesize, `(Set.two_lt_ncard_iff).mp hcon`.
 - **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 110.
 
+### [open] `W^⊥ = (map f W)^⊥.map f.dualMap` for a surjective `f` with `ker f ≤ W` — mathlib has only the `comap`-side inclusion
+- **Where it bit:** Phase 39 item-6 Layer B5, `Molecular/RigidityMatrix/Bricks.lean`,
+  `inf_span_rigidityRows_of_vertexTwoCut` (the vertex-2-cut gluing identity). Once both sides are
+  rewritten into the annihilator picture, the whole leaf *is* this one dual-space fact at
+  `f = screwDiff u v`, `W = Z₁ ⊔ Z₂`.
+- **Friction:** mathlib's `Mathlib/LinearAlgebra/Dual/Defs.lean` carries
+  `Submodule.dualAnnihilator_map_dualMap_le` (`W.dualAnnihilator.map f.dualMap ≤ (W.comap
+  f).dualAnnihilator`) and `LinearMap.range_dualMap_le_dualAnnihilator_ker`, but not the
+  `map`-side **equality**: for `f` surjective and `ker f ≤ W`,
+  `W.dualAnnihilator = ((W.map f).dualAnnihilator).map f.dualMap`. It is ~12 lines from
+  `Submodule.dualAnnihilator_anti` + `LinearMap.range_dualMap_eq_dualAnnihilator_ker_of_surjective`
+  (`⊆`) and a two-line image computation (`⊇`, which needs neither hypothesis).
+- **Also, two one-iteration snags in the same proof:** `Submodule.mem_dualAnnihilator` takes the
+  functional as an *explicit* argument, so `Submodule.mem_dualAnnihilator.1 h` fails
+  (*"Projections cannot be used on functions"*) — write `(Submodule.mem_dualAnnihilator _).1 h`;
+  and destructuring a `Submodule.map` membership leaves the *coerced* goal `r ∈ ↑X`, which
+  `rw [Submodule.mem_dualAnnihilator]` will not match — `simp only [SetLike.mem_coe,
+  Submodule.mem_dualAnnihilator]` first (the recurring coercion-drop idiom; second occurrence in
+  this file, after B3's `inf_span_rigidityRows_span_jointRows_top`).
+- **Proposed fix:** mirror the general form under
+  `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Lemmas.lean` (that mirror file exists but is
+  not yet in the `Molecular/` import closure, so this also costs one `public import` in
+  `Bricks.lean`) and refactor B5 onto it.
+- **Status:** open — landed as the private, `screwDiff`-specialized
+  `BodyHingeFramework.dualAnnihilator_eq_map_dualMap_screwDiff` in `Bricks.lean` instead, the
+  B5/B6 dispatch being scope-pinned to `section TwoCutCarriers`. Its docstring points here.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

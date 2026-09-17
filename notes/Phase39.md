@@ -33,9 +33,9 @@ rewritten; **pending PI review**, which unblocks `/attack smark` session 6. **(G
 RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
 fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), and **Layer A is DONE
-except the deferred A6** (A1–A5, 2026-09-16/17), with **Layer B1–B4 landed 2026-09-17** — a
-Layer A/B/C leaf list with sites (*Lemma checklist*), no blueprint chapter, so the *Layer plan*
-is the to-do list. Next: Layer B5–B6. Items 7–12 stay parked.
+except the deferred A6** (A1–A5) and **Layer B is DONE (B1–B6)**, both 2026-09-17 — a
+Layer A/B/C leaf list with sites (*Lemma checklist*), no blueprint chapter, so it is the
+to-do list. Next: Layer C, the losses, in a new `Molecule/Pencil/TwoCut.lean`. Items 7–12 parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -48,14 +48,16 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Item-6 Layer A is DONE except the deferred A6, and Layer B1–B4 LAND 2026-09-17** — A1–A5 the
-pendant law, the combinatorial carriers, the vertex 2-cut law and its two corollaries; B1–B2 the
-four geometric carriers `relScrews`/`jointRows`/`jointMotions`/`weldedRank` and the joint's row
-count `finrank_span_jointRows`; B3–B4 the welded-rank identity `weldedRank_eq`
-(`rank_w = rank + ρ`) via `inf_span_rigidityRows_span_jointRows_top` — all in a new
-`section TwoCutCarriers` of `RigidityMatrix/Bricks.lean`. Sites and routes in the *Lemma
-checklist*, all sorry-free, gates green. **Next concrete step: Layer B5–B6** (C1, the
-fibre-product / gluing identity). In
+**Item-6 Layer A is DONE except the deferred A6, and Layer B is DONE — B5–B6 LAND
+2026-09-17** — A1–A5 the pendant law, the combinatorial carriers, the vertex 2-cut law and its two
+corollaries; B1–B2 the four geometric carriers `relScrews`/`jointRows`/`jointMotions`/`weldedRank`
+and the joint's row count; B3–B4 the welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`);
+B5–B6 the 2-cut gluing identity `inf_span_rigidityRows_of_vertexTwoCut` (C1′) and
+`finrank_span_rigidityRows_vertexTwoCut_eq` (C1) — all in the new `section TwoCutCarriers` of
+`RigidityMatrix/Bricks.lean`. Sites, routes and the dropped hypotheses are in the *Lemma
+checklist*; all sorry-free, gates green. **Next concrete step: Layer C1ℓ** — open
+`Molecule/Pencil/TwoCut.lean` with the two loss carriers, which must first settle how it sees
+through the Layer-B defs (they are `public` but not `@[expose]`; B1–B4 entry). In
 parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
 (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the
 grid route kept as a documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and
@@ -68,7 +70,7 @@ per-session narrative lives there, not here; the two consumer misreadings the re
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
 item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, its Layer A is DONE except the
-deferred A6, and Layer B1–B4 are DONE (2026-09-16/17).**
+deferred A6, and its whole Layer B is DONE (2026-09-16/17).**
 Items 1–2's eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two
 chains* are **all green**; that chapter is their declaration index, so the names are not
 re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive.lean`,
@@ -213,27 +215,19 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   not S7(i)'s `M_U` quotient) and the joint count **at `U = ⊥`** are; C3 is off the consumed
   path and the general-`U` joint count is keyed to (O4″), which workbook S14(vi) says is not
   consumed.
-  - [x] **A1 — 6a, the pendant law** `def₃(G) = def₃(G − u) + 1` at a degree-1 vertex.
-    `deficiency_removeVertex_of_degree_eq_one`. **LANDS 2026-09-16**, sorry-free, transcribed
-    verbatim from the recon; sites in **`Induction/SplitOffDeficiency.lean`** beside its
-    degree-2 inequality sibling `removeVertex_deficiency_ge` (`:405`) — **not** in
-    `Deficiency.lean`, which is upstream of `Graph.removeVertex`
-    (`Induction/Operations.lean:727`) and where the proof fails to elaborate.
-  - [x] **A2 — the combinatorial carriers.** `deficiencyMerged` (= `g`), `deficiencySep`
-    (= `f_sep`), `weldPair` (= `H/uv`), `pairDelta` (= `δ`), plus the general new
-    `partitionDef_map` and the bridge `deficiency_weldPair_eq_deficiencyMerged` — **LANDS
-    2026-09-16**, both proved sorry-free (so **D4**, which `g`-carrier is public, is settled by
-    a proof, not a preference), plus the `bddAbove`/`le_ciSup` helpers the bridge needs
-    (`bddAbove_range_partitionDef_merged`, `partitionDef_le_deficiencyMerged`). `deficiencySep`
-    has **no consumer in this slice** (only the deferred A6, D2, needs it) and is defined bare,
-    per the scope-pin. Site `Deficiency.lean`; `weldPair` inlines
-    `fun x => if x = u then v else x` rather than use `Graph.collapseTo`
-    (`Induction/ReducibleVertex.lean:1451`, downstream), the two being provably equal.
-  - [x] **A3** — `pairDelta_le_bodyBarDim` (`δ ≤ D`, a corollary of the private
-    `deficiency_le_deficiencyMerged_add` A4 already landed) and `deficiency_eq_max`
-    (`f = max(g, f_sep)`, needs `u ≠ v`; new small helpers `deficiencyMerged_le_deficiency`,
-    `deficiencySep_le_deficiency`, `partitionDef_le_deficiencySep`). **LANDS 2026-09-17**,
-    sorry-free. **Not needed by A5** (see A5). Site `Deficiency.lean`.
+  - [x] **A1–A3 — the pendant law, the carriers and their bounds** — **LAND 2026-09-16/17**, all
+    sorry-free. **A1** = 6a `deficiency_removeVertex_of_degree_eq_one` (`def₃(G) = def₃(G − u) + 1`
+    at a degree-1 vertex), sited in **`Induction/SplitOffDeficiency.lean`** beside its degree-2
+    sibling `removeVertex_deficiency_ge` (`:405`) — **not** `Deficiency.lean`, which is upstream of
+    `Graph.removeVertex` (`Induction/Operations.lean:727`) and where the proof fails to elaborate.
+    **A2** = the carriers `deficiencyMerged` (= `g`), `deficiencySep` (= `f_sep`), `weldPair`
+    (= `H/uv`), `pairDelta` (= `δ`), the general `partitionDef_map`, the bridge
+    `deficiency_weldPair_eq_deficiencyMerged` — which settles **D4** by a proof, not a preference —
+    and its `bddAbove`/`le_ciSup` helpers; `weldPair` inlines `fun x => if x = u then v else x`
+    rather than the downstream `Graph.collapseTo`, the two being provably equal. **A3** =
+    `pairDelta_le_bodyBarDim` (`δ ≤ D`) and `deficiency_eq_max` (`f = max(g, f_sep)`, needs
+    `u ≠ v`), with three small bound helpers; it is `deficiencySep`'s only consumer and is **not**
+    needed by A5. Site `Deficiency.lean`.
   - [x] **A4 — 6b, the vertex 2-cut law**, max form `def₃(G) = max(g₁+g₂, f₁+f₂−D)` (**D3**).
     **LANDS 2026-09-17**, sorry-free, `deficiency_eq_of_vertexTwoCut` (`Deficiency.lean`),
     depends on A2. **The route used supersedes the sketch above — no refinement lemma is
@@ -252,33 +246,41 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     side-degree ≥ 2 at both ends (S10(iii)); it is also the only law needing `deficiencySep`.
     Kept as an entry, not dropped. Site `Induction/SplitOffDeficiency.lean` (uses
     `removeVertex`).
-  - [x] **B1 — the geometric carriers** — **LAND 2026-09-17**, verbatim from the recon, in a new
-    `section TwoCutCarriers` at the tail of **`RigidityMatrix/Bricks.lean`**: `relScrews`
-    (= `ρ̄_{uv}`), `jointRows`, `jointMotions` (= `M_U`), `weldedRank`. Checked for the layers
-    above: a downstream file can `rfl` / `simp only [relScrews]` these, so the file's plain
-    `public section` needs no `@[expose]` when Layer C lands.
-  - [x] **B2 — the joint's row count** — **LAND 2026-09-17**, `finrank_span_jointRows`
-    (`= screwDim k − finrank U`, needing `u ≠ v`) through the new unfolding lemma
-    `span_jointRows_eq_map_dualAnnihilator` (the span **is** `U.dualAnnihilator.map (screwDiff u
-    v).dualMap`) and `Subspace.finrank_add_finrank_dualAnnihilator_eq`; the recon's `[Finite α]`
-    is unused by that route and was dropped (an unused instance is `unusedArguments` surface,
-    confirmed against the linter).
-  - [x] **B3–B4 — the weld-rank identity** — **LAND 2026-09-17**, sorry-free:
-    `inf_span_rigidityRows_span_jointRows_top` (the framework's rows meet the rigid weld's rows
-    exactly in `jointRows (relScrews u v) u v`) and **C2-core** `weldedRank_eq`,
-    `rank_w = rank + ρ` at `u ≠ v` — the whole linear-algebraic content of the transcribed
-    welded bound `ρ ≤ δ + a`. Two new named helpers B5/B6 and Layer C will reuse:
-    `map_screwDiff_comm` (the `relScrews`-vs-`jointRows` orientation flip, paid by closure under
-    negation) and `span_jointRows_bot` (`= range (screwDiff u v).dualMap`). B3 needs neither
-    `u ≠ v` nor the recon's `[Finite β]`; B4 is `Submodule.finrank_sup_add_finrank_inf_eq` over
-    B3 + two instances of B2, with `finrank (relScrews u v) ≤ screwDim k` handed to `omega` so the
-    `ℕ` subtraction cannot truncate.
-  - [ ] **B5–B6 — C1, the fibre-product / gluing identity**, rank form
-    `rank(G) = rank(H₁) + rank(H₂) + dim(ρ̄₁ ⊔ ρ̄₂) − screwDim k`, whose core is the new brick
-    `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`. **Genuinely new on two counts:** the landed
-    `le_finrank_span_rigidityRows_of_cut` (`RigidityMatrix/Bricks.lean:284`) has
-    vertex-**disjoint** sides *and* is an inequality, while S14 needs both directions. Unlike
-    6b this law does **not** need `¬ G.Adj u v`.
+  - [x] **B1–B4 — the carriers, the joint count and the weld-rank identity** — **LAND 2026-09-17**,
+    sorry-free, in the new `section TwoCutCarriers` at the tail of **`RigidityMatrix/Bricks.lean`**,
+    whose section header is their index: `relScrews` (= `ρ̄_{uv}`), `jointRows`, `jointMotions`
+    (= `M_U`), `weldedRank`; `finrank_span_jointRows` (`= screwDim k − finrank U`, needs `u ≠ v`)
+    through the unfolding lemma `span_jointRows_eq_map_dualAnnihilator`; and
+    `inf_span_rigidityRows_span_jointRows_top` + **C2-core** `weldedRank_eq` (`rank_w = rank + ρ`),
+    the whole linear-algebraic content of the transcribed welded bound `ρ ≤ δ + a`, with the
+    reused helpers `map_screwDiff_comm` (the orientation flip) and `span_jointRows_bot`. The
+    recon's unused instances are dropped throughout (no `[Finite β]` anywhere; B2 needs no
+    `[Finite α]`, B3 not even `u ≠ v`). **B1's exposure claim was WRONG** (checked 2026-09-17):
+    these defs are `public` but not `@[expose]`, so a *downstream* module can neither `rfl` nor
+    `simp only [relScrews]` them — *"definitions were not unfolded … not exposed"*
+    (`CombinatorialRigidity/LEAN-OPS.md`). Layer C must open by deciding between `@[expose]` on
+    the four defs and public unfolding lemmas; in-file proofs (B3/B5) are unaffected.
+  - [x] **B5–B6 — C1, the fibre-product / gluing identity** — **LAND 2026-09-17**, sorry-free:
+    `inf_span_rigidityRows_of_vertexTwoCut` (C1′, `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`) and
+    `finrank_span_rigidityRows_vertexTwoCut_eq` (C1, in `ℤ`:
+    `rank(G) = rank₁ + rank₂ + dim(ρ̄₁ ⊔ ρ̄₂) − screwDim k`). Genuinely new against
+    `le_finrank_span_rigidityRows_of_cut` (vertex-**disjoint** sides, and an inequality), and
+    needing **no** `¬ G.Adj u v` — a cut edge is charged to both sides' *deficiencies* but
+    contributes the **same rows** on either side, so it cannot disturb a row-span intersection.
+    **The route that closed it is shorter than the reconned one:** rewrite both sides into the
+    annihilator picture (`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` — the only
+    `[Finite α]` — plus `Submodule.dualAnnihilator_sup_eq` and `Submodule.map_sup`) and the goal
+    becomes one general dual fact, the new private `dualAnnihilator_eq_map_dualMap_screwDiff`
+    (`W^⊥ = (map (screwDiff u v) W)^⊥.map dualMap` whenever `ker (screwDiff u v) ≤ W`, from
+    `Submodule.dualAnnihilator_anti` + `range_dualMap_eq_dualAnnihilator_ker_of_surjective`) — no
+    per-coordinate `Pi.single` bookkeeping. Its one geometric input,
+    `mem_sup_infinitesimalMotions_induce` (dually `ker (screwDiff u v) ≤ Z₁ ⊔ Z₂`), is one
+    explicit `if`: `A a = if a ∈ V₂ then S v else S a` is constant on `V₂`, and `S − A` vanishes
+    on `V₁` because `V₁ ∩ V₂ ⊆ {u, v}` and `S u = S v`. B6 is the `weldedRank_eq` skeleton over B5
+    plus `rigidityRows_eq_union_induce`. **Three pinned hypotheses were dead and are dropped:**
+    `[Finite β]`, `hcover` (in both leaves — a vertex in neither side carries no rows) and, in B5,
+    `hsep`; of `hoverlap` only the `⊆` half is consumed. The private core's general form (any
+    surjective `f`) is a mirror candidate, filed not mirrored (`notes/FRICTION.md`).
   - [ ] **C1ℓ–C3ℓ — the losses.** `pencilLoss` (= `a`; `0 ≤ pencilLoss` is the landed
     `finrank_span_rigidityRows_add_deficiency_le`, `AlgebraicInduction/GenericityDevice.lean:564`),
     `weldedLoss` (= `a_w`, target `screwDim k·(|V|−1) − g`), `weldedLoss_nonneg` (= the joint
@@ -355,8 +357,9 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `span_jointRows_eq_map_dualAnnihilator`/`finrank_span_jointRows` (**B1/B2, 2026-09-17**),
   `inf_span_rigidityRows_span_jointRows_top`/`weldedRank_eq` plus the helpers
   `map_screwDiff_comm`/`span_jointRows_bot` (**B3/B4, 2026-09-17**),
-  `inf_span_rigidityRows_of_vertexTwoCut`,
-  `finrank_span_rigidityRows_vertexTwoCut_eq`, `pencilLoss`/`weldedLoss`, `weldedLoss_nonneg`,
+  `inf_span_rigidityRows_of_vertexTwoCut`/`finrank_span_rigidityRows_vertexTwoCut_eq` (**B5/B6,
+  2026-09-17**; their three private helpers need no pin), `pencilLoss`/`weldedLoss`,
+  `weldedLoss_nonneg`,
   `finrank_relScrews_eq`, `pencilLoss_vertexTwoCut`. **Discharge when the informal proof closes**
   (i.e. when the variety layer below is settled), or earlier if the user reverses D5. A build
   slice that lands a Layer leaf adds it to this list in the same commit.
@@ -425,16 +428,17 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 **The phase stays OPEN.** Checklist items 1–5 are DONE, item 6's carrier recon is DONE
 (2026-09-16), item 6's **D1–D5 are all SETTLED** (2026-09-16, user; *Blockers*), and item 6's
-**Layer A is DONE except the deferred A6, and its Layer B1–B4 LANDED 2026-09-17** — the carrier recon record is
-`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*; A4's and A3/A5's own routes
-(A4's supersedes the recon's sketch; A5 needs only A4, not A3 — a stale checklist claim
-corrected this slice) are recorded in the *Lemma checklist* A3–A5 entries. Read the recon arc
-before scoping any item-6 slice: it carries the exact signatures, the sites (two of which the
-recon got wrong on its first pass and fixed by compiling), and the numerics.
-Next concrete task: **(1) Layer B5–B6** — C1, the fibre-product / gluing identity, whose core
-is the new brick `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`, then its rank form
-(`RigidityMatrix/Bricks.lean`, beside the landed B1–B4; the checklist B5–B6 entry says why this
-is genuinely new against `le_finrank_span_rigidityRows_of_cut`), under `/coordinate-phase 39`.
+**Layer A is DONE except the deferred A6, and its Layer B is DONE (B1–B6) 2026-09-17** — the
+carrier recon record is `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, and the
+per-leaf routes (three of which supersede or correct it — A4's sketch, A5's dependency, B1's
+exposure claim) are in the *Lemma checklist* A3–B6 entries. Read the recon arc before scoping any
+item-6 slice: it carries the exact signatures, the sites (two of which the recon got wrong on its
+first pass and fixed by compiling), and the numerics.
+Next concrete task: **(1) Layer C1ℓ** — open `Molecule/Pencil/TwoCut.lean` with the loss carriers
+`pencilLoss` (`0 ≤ pencilLoss` is the landed `finrank_span_rigidityRows_add_deficiency_le`) and
+`weldedLoss`, settling first how that file sees the Layer-B defs: they are `public` but not
+`@[expose]`, so it can unfold none of them (checklist B1–B4) — either `@[expose]` the four or land
+public unfolding lemmas. Then C2ℓ/C3ℓ and the headline C4ℓ, under `/coordinate-phase 39`.
 **(2) The S-mark brief rewrite LANDED 2026-09-16** (agent, `notes/attacks/smark/brief.md`, from
 the *landed* declarations) — **pending PI review**, not itself a `/review-attack` pass. §§2/3/6
 rewritten against `Escape.lean`'s current kernels, one hypothesis per line, each operator glossed
@@ -477,12 +481,13 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   (α), O7 ordered ahead of O9. **Pending PI review.** `state.md` synced.
 
 - **2026-09-16/17 — item 6's Layers A and B LAND, all by transcription, no new decisions**
-  (A1–A5 in `Deficiency.lean` / `Induction/SplitOffDeficiency.lean`; B1–B4 in the new
+  (A1–A5 in `Deficiency.lean` / `Induction/SplitOffDeficiency.lean`; B1–B6 in the new
   `section TwoCutCarriers` of `RigidityMatrix/Bricks.lean`; every leaf sorry-free, gates green;
-  A6 deferred by D2). The per-leaf declaration names, sites and the four findings this arc turned
-  up — A4's route supersedes the recon sketch, A5 needs A4 alone not A3, B2/B3 drop the recon's
-  unused instances, B3 is where the `screwDiff` orientation flip is paid — are recorded **once**,
-  in the *Lemma checklist* A1–B4 entries. Blueprint debt extended per leaf (*Blockers*).
+  A6 deferred by D2). The per-leaf names, sites and the six findings this arc turned up — A4's
+  route supersedes the recon sketch, A5 needs A4 alone, B2/B3 drop unused instances, B3 pays the
+  orientation flip, B5's annihilator route replaces the reconned one, and B1's exposure claim was
+  wrong — are recorded **once**, in the *Lemma checklist* A1–B6 entries. Blueprint debt extended
+  per leaf (*Blockers*).
 
 
 - **2026-09-16 — the Lean hold is LIFTED for item 6 (user); its carrier recon RECORDED**
