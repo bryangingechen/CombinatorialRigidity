@@ -32,7 +32,9 @@ concludes `HasGenericPencilRealization K 3 G`, and `hbareSplit` takes and return
 § *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Next: the S-mark brief
 rewrite** against the landed statements, then `/attack smark` session 6; **(GR-10) is
 RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
-fallback, not the path to `hK`. Items 6–12 (the 2026-09-15 numbering's 4–10) stay parked by the hold.
+fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16) and a coordinator slot-trace
+splits it 6a/6b/6c — its load-bearing half (6c) has no Lean carrier, so its first commit is a
+carrier/decomposition recon, not a build (*Lemma checklist*). Items 7–12 stay parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -70,7 +72,8 @@ What runs is **the char-2 probe** (PI 2026-09-15, deferred to the attack track; 
 full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
 misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
 the headline typeclass. The attack decides when to run it.
-**Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16).**
+**Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
+item 6 is UNPARKED (user, 2026-09-16) and open at its recon.**
 The design pass (`notes/Phase39-design.md` § *Lean-track design pass*) pinned items 1–2
 as eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains* (the
 chapter's first section), and **all eight are now green**: G1–G4 in the new
@@ -204,16 +207,39 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `def:pencil-conditioned-pair`, `lem:pencil-cut-nondegeneracy`, `lem:pencil-cut-case`,
   `thm:pencil-conditional-realization-pair`; W4's new obligation
   `notes/pencil/workbook/W4.md`.
-- [ ] **Deficiency laws** (BINDUC's, cited by 45 claims through (BE-22)): 3-connected ⇒
-  `def₂ = 0`; the 2-cut law `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)`; the fibre-product identity
-  `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)`; the welded bound `ρ_i ≤ δ_i + a_i` with
-  equality iff `H_i/uv` attains (all three re-derived at the 2026-09-15 review, workbook
-  S10(ii)); plus (review) the two pendant laws — deleting a degree-1 vertex drops `def₃` by
-  exactly `1`, and welded `g(H) = max(g(H − u), f_sep(H − u) − 5)` — and the joint count
-  `dim M_U(H) ≥ 6 + max(g, f + dim U − 6)` (workbook S6(ii), S7(iii);
-  `partitionDef_split_of_sides`, `exists_sides_separated_partitionDef_le` are the pieces).
-  Makes the composition criterion and the chain-length arithmetic (S10) exact; under R2 they are
-  exactly what S14(i)–(ii) use, so the item backs the consumed step directly.
+- [ ] **Deficiency laws** (BINDUC's, cited by 45 claims through (BE-22)) — **UNPARKED
+  2026-09-16 (user); NOT one build slice.** A coordinator slot-trace the same day (evidence
+  below) splits the item three ways, and its load-bearing half has no Lean carrier at all, so
+  **item 6's first commit is a carrier/decomposition recon, not a build.**
+  - **6a — buildable now against landed carriers.** The pendant law: deleting a degree-`1`
+    vertex drops `def₃` by exactly `1`. Pure `deficiency`/`partitionDef` arithmetic; nothing
+    missing. (The companion "3-connected ⇒ `def₂ = 0`" is *not* in 6a — the tree has **no**
+    `ThreeConnected` predicate at all; `TwoEdgeConnected` at `Deficiency.lean:1166` is the only
+    connectivity predicate, so 6a's sibling needs a definition first.)
+  - **6b — ordinary new work, no carrier problem.** The **vertex** 2-cut law
+    `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)`. **It is not a variant of the landed cut law:**
+    `deficiency_eq_of_cutEdges_ncard_le_one` (`Deficiency.lean:1767`) is an **edge**-cut law
+    with conclusion `def(G) = def(G[V₁]) + def(G[V₂]) + D − (D−1)·|cutEdges V₁|`, whose sides
+    are *disjoint*. A vertex 2-cut's sides *overlap in the cut pair*, and the `min(·, 6)`
+    truncation has no counterpart in the landed form. The machinery to build it on is landed
+    and is the right machinery: `partitionDef_split_of_sides` (`:1468`) and
+    `exists_sides_separated_partitionDef_le` (`:1567`) — both declared `lemma`, not `theorem`
+    (a `^theorem` grep misses them).
+  - **6c — needs new mirror definitions with no upstream precedent, and is the half that
+    matters.** The fibre-product identity, the welded bound `ρ_i ≤ δ_i + a_i`, the welded
+    `g(H) = max(g(H − u), f_sep(H − u) − 5)`, and the joint count
+    `dim M_U(H) ≥ 6 + max(g, f + dim U − 6)` all quantify over `ρ̄`, `a`, `g`, `f_sep`, `M_U`.
+    **Grep evidence (2026-09-16): `fibreProduct`, `jointCount`, `sepDef`, `f_sep` have zero
+    hits in `CombinatorialRigidity/`; the three "welded" and three "fibre" hits are prose in
+    unrelated docstrings.** These are exactly the laws S14(i)–(ii) consume, so 6c — not 6a/6b —
+    is what "backs the consumed step directly" means.
+  - **Why a recon first.** 6c's laws are *transcribed* from the attack's workbook (S6(ii),
+    S7(iii), S10(ii)) and have never been read against the Lean carrier; choosing carriers for
+    `ρ̄`/`a`/`g`/`M_U` is a design decision a build agent must not make unilaterally, and the
+    `min(δ₁+δ₂, 6)` of 6b needs checking against the Lean's own `D = bodyBarDim 3 = 6`
+    normalization before anything is built on it. Deliverable: which laws are statable as
+    transcribed, exact signatures for those, carrier proposals (or an explicit deferral) for
+    the rest, and a build order.
 - [ ] **`hK` on the tight stratum from grid vanishing**, the colouring statement as
   hypothesis: decoupling, rank formula, Vandermonde, chart step, descent. Decides whether the
   **independence proviso** is a hypothesis of the crux (`notes/attacks/gr10/brief.md` §2
@@ -232,7 +258,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 - **The Lean hold (2026-08-05) is the user's**; lifting it for named items is a PI call, made
   per item. **Lifted 2026-09-15 for checklist items 1–3** (verbatim record
   `notes/pencil/adjudications.md`); **lifted 2026-09-16 for checklist items 4–5** (the R2 Lean
-  round; same record, verbatim); items 6–12 stay parked.
+  round; same record, verbatim); **lifted 2026-09-16 for checklist item 6** (the deficiency
+  laws; same record) — items 7–12 stay parked.
 - **Each attack's first move is a reading check, not a sweep:** the girth-5 restriction and
   the frame gap for S-mark; the independence proviso for (GR-10). Session 1 should settle or
   scope these before choosing a route. (S-mark's session 1 did the girth check but not a
@@ -283,8 +310,12 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 ## Hand-off / next phase
 
-**The phase stays OPEN.** Checklist items 1–5 are DONE; the Lean track has nothing queued.
-Next concrete task, in order: **(1) The S-mark brief rewrite**, drafted by an agent from the
+**The phase stays OPEN.** Checklist items 1–5 are DONE; **item 6 is unparked (user,
+2026-09-16) and its next commit is the 6a/6b/6c carrier-and-decomposition recon** described
+under *Lemma checklist* — read the slot-trace there before scoping any build, since 6c's laws
+have no Lean carrier and 6b is not a variant of the landed edge-cut law.
+Next concrete task, in order: **(1) that item-6 recon**, under `/coordinate-phase 39`.
+**(2) The S-mark brief rewrite**, drafted by an agent from the
 *landed* declarations and PI-reviewed. §2 = the kernel implication with the IH as landed; §3 =
 both kernels quoted **verbatim from `Escape.lean` as they now stand** (`notes/Phase39-design.md`
 § *Kernel restatement (2026-09-16)* has the same text — **never** the pinned blocks under
@@ -295,7 +326,7 @@ the brief's §3*), and a one-line justification for any hypothesis the route doe
 O7 first — build an adjacent-hub side (a hub with three hub neighbours, each continued by a
 branch of length `≥ 2` to `w` or `v`, girth `≥ 7`) and sample from several starts before
 attempting the tower extension or component matching — then O9. **O8's coincident stratum is
-deleted** by the (α) decision and must come out of the brief, not be re-stated. **(2)**
+deleted** by the (α) decision and must come out of the brief, not be re-stated. **(3)**
 `/attack smark` session 6, a main session in its own worktree; and, when the PI chooses to spend
 it, the **char-2 probe** as the sole live (GR-10) item (one driver leg beside `closure.py
 --char2`; spec `notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection) — a
@@ -322,6 +353,12 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   `pencilNondegFeasible_of_le_of_triangleFree` in `Steer.lean`. New informal W4 obligation.
   Record: `notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*; verbatim decisions
   `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
+
+- **2026-09-16 — the Lean hold is LIFTED for checklist item 6 (user); the item is NOT one
+  build slice.** A coordinator slot-trace split it 6a / 6b / 6c, with 6c (the half S14(i)–(ii)
+  consume) resting on `ρ̄`/`a`/`g`/`f_sep`/`M_U`, none of which has any Lean carrier, so the
+  item opens with a recon. Evidence and the split: *Lemma checklist* item 6. Verbatim:
+  `notes/pencil/adjudications.md`.
 
 - **2026-09-16 — (GR-10) RE-SCOPED (user).** R2 covers `hK`'s arm at the statement level and
   (d) drops the chart, hence proviso (P), out of `hK`'s statement, so the grid/colouring route is

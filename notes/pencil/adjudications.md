@@ -578,3 +578,22 @@ reopened only if S14(iii)/(vii) or O7 stall. The char-2 probe (brief §6 idea 4;
 the PI, since a systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass.
 **Everything else stands unchanged:** phase OPEN (2026-07-24), W4 parked, checklist items 6–12
 parked, S-mark session 6 next after the brief rewrite.
+
+## 2026-09-16 — the Lean hold is LIFTED for checklist item 6 (the deficiency laws)
+
+Asked, after items 4–5 landed and the phase note recorded "the Lean track has nothing queued",
+whether to lift the hold for item 6 (the only queued Lean work) or stop, the user said:
+**"Let's proceed to (1) and then (2), if the context permits"** — (1) being the item-6 hold lift
+and (2) the S-mark brief rewrite. Scope: **item 6 only**; items 7–12 stay parked, and the
+2026-08-05 hold otherwise stands.
+
+The coordinator's pre-dispatch slot-trace then found the item is not one build slice, and said
+so before dispatching rather than after a BLOCKED build: **6a** the pendant law (buildable now);
+**6b** the *vertex* 2-cut law, which is **not** a variant of the landed *edge*-cut law
+`deficiency_eq_of_cutEdges_ncard_le_one` (disjoint sides there, overlapping at a vertex cut, and
+no counterpart to the `min(·, 6)` truncation); **6c** the fibre-product identity, welded bound,
+welded `g` and joint count, which quantify over `ρ̄`/`a`/`g`/`f_sep`/`M_U` — **none of which has
+any Lean carrier** (`fibreProduct`, `jointCount`, `sepDef`, `f_sep`: zero hits) — and which are
+the laws S14(i)–(ii) actually consume. So item 6 opens with a carrier/decomposition recon.
+**Everything else stands unchanged:** phase OPEN (2026-07-24), W4 parked, (GR-10) re-scoped,
+S-mark session 6 after the brief rewrite.
