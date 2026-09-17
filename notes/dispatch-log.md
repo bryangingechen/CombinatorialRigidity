@@ -172,6 +172,7 @@ keeps only what git cannot show.
 | 2026-09-13 | Phase39 coordinator mutated the shared working tree mid-flight | opus (coordinator) | To re-derive a `--cited-by` count at baseline the coordinator ran `git stash -u` **while two directions were writing untracked drafts into the tree**. Nothing was lost (stash list empty afterwards, all three drafts intact at their reported sizes), but it was an avoidable risk against `RESEARCH-ARC.md` §2's shared-scratchpad rule, and the safe form costs the same: read the baseline with `git show HEAD:<file>` or a throwaway worktree, never by mutating the tree siblings are writing to. |
 | 2026-09-17 | Phase39 item-6 A4 / A3+A5 / B1-B2 (`b506b0fe`, `764acbbf`, `a56cc1bd`; re-thinned by the coordinator) | sonnet, sonnet, opus | **the ROADMAP Status cell re-bloated one landing at a time, 623 -> 1325 chars, and no gate reads it** | Second instance of one class in a single session (cf. the A4 row above, the phase note). The Phase-39 Status cell went 623 chars (slice 7's re-thin, 2026-09-09) -> 993 -> 1098 -> 1152 -> 1325 across the A4, A3/A5 and B1-B2 landings, each appending its own per-leaf narrative — the *never a phase summary* the table's own rule forbids, and exactly what slice 7 already fixed once. Nothing gates it: `check-gapmap-cells.py` guards the gap map and `check-phase-note.py` the note, but no script reads a ROADMAP row. Coordinator re-thinned to 606. See F40. |
 | 2026-09-17 | Phase39 item-6 Layer B3-B4 (`36bae977`) | opus | **the coordinator's `route` block asserted a mathlib lemma does not exist, on a malformed glob; it does** | My defect, the dispatch's catch. I told the B3/B4 prompt "no `Submodule.map_neg` found" inside a coordinator-verified `route` block; it exists, `@[simp]`, at `Mathlib/Algebra/Module/Submodule/Map.lean:483`. My search globbed `Submodule*.lean`, which does not match `Submodule/Map.lean` — the glob produced the answer, not the absence. The agent found it; its reroute beats my spiked proof (three lines via `neg_sub` + `map_neg`, and drops a non-terminal `simp`). **A negative existence claim is only as good as a search that would have found the positive.** See F41. |
+| 2026-09-17 | Phase39 item-6 Layer B5-B6 (`7eaa9b71`; corrected by the coordinator) | opus | **a spike-backed "correction" of a prior slice's finding was itself wrong, and landed as a false obligation + a spurious design decision** | The B5/B6 slice "corrected" the B1 slice's exposure finding and recorded the correction as a Layer-C obligation plus an `@[expose]`-vs-unfolding-lemmas **decision** in three surfaces (checklist, *Current state*, *Hand-off*). Both slices' spikes were right about what they ran: the carriers unfold from a **non-`module`** importer and not from a **`module`** one, and neither controlled that variable. Layer C's `TwoCut.lean` is necessarily non-`module` (it needs `bodyBarDim`), so the obligation was false and there is no decision. Coordinator ran both cases and corrected all three. See F42. |
 | 2026-09-17 | Phase39 item-6 leaf A4 (`b506b0fe`, note-trim folded in by amend) | sonnet | **docs gate never run — `lake build`/`lake lint` attested green and were, and the commit still failed `check-phase-note.py`** | First firing of this gate. The commit took `notes/Phase39.md` to 618 lines (cap 580) with a 17-line *Decisions made* entry (cap 8) — the A4 route written out **three times** (checklist, Decisions, Current state). Trap: bare `check-phase-note.py` diffs vs `HEAD`, so after a commit it reports `0 notes checked` — use `--last`. Fixed in-commit: one canonical copy plus pointers; cap NOT bumped (growth is 93 → 203 finished vs +9 forward). Lesson: a build-gate attestation says nothing about the docs gates, and no agent core mandates them. |
 
 ## Findings
@@ -933,3 +934,21 @@ At phase close, promote stable entries into the coordinator command's
   find X — check before hand-rolling it."** Corollary: hand the builder the
   verified proof *and* ask it to look for a shorter route — that pairing is
   what produced the better `map_screwDiff_comm`.
+
+- **F42 — a spike whose conclusion is about a CONSUMER must reproduce the
+  consumer's file kind, or it measures the wrong thing twice.** Two slices
+  spiked the same question — can a downstream file unfold the Layer-B
+  carriers? — and reached opposite answers, both correct for what they ran:
+  `public`-but-not-`@[expose]` definitions unfold from a **non-`module`**
+  importer and not from a **`module`** one. Neither spike named the importing
+  file's kind as a variable, so the first under-claimed and the second
+  recorded a false obligation plus an `@[expose]`-vs-unfolding-lemmas decision
+  in three status surfaces. The deciding fact was in neither spike: the
+  consumer, `Molecule/Pencil/TwoCut.lean`, **cannot** be a `module` because it
+  needs `Graph.bodyBarDim` from a non-`module` file. **Two lessons.** (i) When a
+  spike's verdict is "downstream can/cannot do X", build the scratch file the
+  way the actual downstream file will be built, and say so in the finding. (ii)
+  A *correction* of a landed finding carries the same burden as the original and
+  gets the same scrutiny — this one was more confidently worded than the claim
+  it overturned, and being a correction is what made it persuasive. The
+  coordinator's check is cheap and decisive: run **both** cases.

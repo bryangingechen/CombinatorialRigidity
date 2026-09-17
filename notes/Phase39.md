@@ -56,8 +56,9 @@ B5–B6 the 2-cut gluing identity `inf_span_rigidityRows_of_vertexTwoCut` (C1′
 `finrank_span_rigidityRows_vertexTwoCut_eq` (C1) — all in the new `section TwoCutCarriers` of
 `RigidityMatrix/Bricks.lean`. Sites, routes and the dropped hypotheses are in the *Lemma
 checklist*; all sorry-free, gates green. **Next concrete step: Layer C1ℓ** — open
-`Molecule/Pencil/TwoCut.lean` with the two loss carriers, which must first settle how it sees
-through the Layer-B defs (they are `public` but not `@[expose]`; B1–B4 entry). In
+`Molecule/Pencil/TwoCut.lean` with the two loss carriers. **No exposure obligation** (settled
+2026-09-17, B1–B4 entry): that file is necessarily non-`module`, and a non-`module` importer
+unfolds the Layer-B defs fine. In
 parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
 (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the
 grid route kept as a documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and
@@ -255,11 +256,16 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     the whole linear-algebraic content of the transcribed welded bound `ρ ≤ δ + a`, with the
     reused helpers `map_screwDiff_comm` (the orientation flip) and `span_jointRows_bot`. The
     recon's unused instances are dropped throughout (no `[Finite β]` anywhere; B2 needs no
-    `[Finite α]`, B3 not even `u ≠ v`). **B1's exposure claim was WRONG** (checked 2026-09-17):
-    these defs are `public` but not `@[expose]`, so a *downstream* module can neither `rfl` nor
-    `simp only [relScrews]` them — *"definitions were not unfolded … not exposed"*
-    (`CombinatorialRigidity/LEAN-OPS.md`). Layer C must open by deciding between `@[expose]` on
-    the four defs and public unfolding lemmas; in-file proofs (B3/B5) are unaffected.
+    `[Finite α]`, B3 not even `u ≠ v`). **Exposure: no obligation, and no decision to make**
+    (coordinator, 2026-09-17, both cases run). The four defs are `public` but not `@[expose]`, so
+    the *importer's* kind decides: from a **`module`** file they unfold neither by `rfl` nor by
+    `simp only [relScrews]` (*"definition is not exposed: relScrews"*), from a **non-`module`**
+    file they unfold by `rfl`. The B1 slice measured the second and the B5 slice the first, and
+    each over-generalized its own reading. **Layer C is necessarily non-`module`** — it needs
+    `Graph.bodyBarDim`, which lives in the non-`module` `BodyBar/Framework.lean`, and a `module`
+    file can import only `module` files (`LEAN-OPS.md`; the same constraint recorded at
+    `AlgebraicInduction/PanelLayer.lean:2019`) — so `TwoCut.lean` unfolds the carriers directly.
+    Neither `@[expose]` on landed decls nor public unfolding lemmas is needed.
   - [x] **B5–B6 — C1, the fibre-product / gluing identity** — **LAND 2026-09-17**, sorry-free:
     `inf_span_rigidityRows_of_vertexTwoCut` (C1′, `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`) and
     `finrank_span_rigidityRows_vertexTwoCut_eq` (C1, in `ℤ`:
@@ -436,9 +442,9 @@ item-6 slice: it carries the exact signatures, the sites (two of which the recon
 first pass and fixed by compiling), and the numerics.
 Next concrete task: **(1) Layer C1ℓ** — open `Molecule/Pencil/TwoCut.lean` with the loss carriers
 `pencilLoss` (`0 ≤ pencilLoss` is the landed `finrank_span_rigidityRows_add_deficiency_le`) and
-`weldedLoss`, settling first how that file sees the Layer-B defs: they are `public` but not
-`@[expose]`, so it can unfold none of them (checklist B1–B4) — either `@[expose]` the four or land
-public unfolding lemmas. Then C2ℓ/C3ℓ and the headline C4ℓ, under `/coordinate-phase 39`.
+`weldedLoss`. It can unfold the Layer-B defs directly — `TwoCut.lean` is necessarily
+non-`module`, which is the case where they unfold (checklist B1–B4), so there is no exposure
+decision to take. Then C2ℓ/C3ℓ and the headline C4ℓ, under `/coordinate-phase 39`.
 **(2) The S-mark brief rewrite LANDED 2026-09-16** (agent, `notes/attacks/smark/brief.md`, from
 the *landed* declarations) — **pending PI review**, not itself a `/review-attack` pass. §§2/3/6
 rewritten against `Escape.lean`'s current kernels, one hypothesis per line, each operator glossed
