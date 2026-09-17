@@ -60,8 +60,9 @@ is load-bearing.
 | W4-L4 identification recon (2026-07-30) | 3996–4176 | **live** with the above | — |
 | **Lean-track design pass (2026-09-15): items 1–2** | 4259–4588 | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
 | **Field-hypothesis recon (2026-09-15): item 3** | 4591–4732 | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
-| **R2 recon (2026-09-16): item 4** | 4733–5086 | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) SETTLED (α)** by the user 2026-09-16 and applied by the arc below; (GR-10) scope still the user's | — |
-| **Kernel restatement (2026-09-16): item 5** | 5087–end | **LANDED** — the restated `hK`/`hbareSplit` (IH + (d) + (α)), the new motive `HasDistinctPencilRealization`, the arm ripple as it actually discharged, and the (c) adder's home. **Read this, not the pinned blocks, for the kernels' current form** | — |
+| **R2 recon (2026-09-16): item 4** | 4736–5098 | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) SETTLED (α)** by the user 2026-09-16 and applied by the arc below; (GR-10) scope still the user's | — |
+| **Kernel restatement (2026-09-16): item 5** | 5099–5194 | **LANDED** — the restated `hK`/`hbareSplit` (IH + (d) + (α)), the new motive `HasDistinctPencilRealization`, the arm ripple as it actually discharged, and the (c) adder's home. **Read this, not the pinned blocks, for the kernels' current form** | — |
+| **Item-6 carrier recon (2026-09-16): item 6** | 5195–end | **RECORDED** — 6a *proved* sorry-free; 6b correct as transcribed but **false without `¬ G.Adj u v`** and needing the `g` carrier; 6c's carriers proposed with sites, only C1+C4-at-`U=⊥` consumed by S14(i)–(ii); Layer A/B/C build order; D1–D5 open. **Read this for what item 6 is** | — |
 | Higher-`d` note / Citations | 4177–4217 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -5008,6 +5009,10 @@ for the conclusion (item 5's IH rewording still applies).
 
 ### What this does to S14/S15 and to R2's two arms
 
+*Forward pointer (2026-09-16, same day): which item-6 laws S14(i)–(ii) actually **consume**, and
+the rank-side-vs-motion-side normalization constraint that qualifies (a), are settled in
+§ *Item-6 carrier recon (2026-09-16)* below.*
+
 - **Survive verbatim:** S14(i), (ii), (iii), (v), (vii) — rank statements on the attack's own
   `Y(·)`, identical to the Lean's rank on the adjacent-distinct locus by (a). S15(i) is confirmed
   by (d). S15(vi)'s `π_w = π_v` stratum is a stratum *inside* `Y(G₋)` (points distinct, planes
@@ -5186,3 +5191,566 @@ remains the record of why *restriction* is gapped at a hub demoted to degree 2.
   `notes/pencil/workbook/W4.md`; no Lean statement of `hcontract` changed.
 - The S-mark brief rewrite (hand-off item 3) should quote the forms in *What the kernels now are*
   verbatim, not the pinned blocks above.
+
+## Item-6 carrier recon (2026-09-16): checklist item 6 — the BINDUC deficiency laws read against the Lean carrier
+
+**Status: RECORDED 2026-09-16** (read-only recon; verdict accepted by the coordinator the same
+day and transcribed here by the same agent, under the coordinator's pre-authorized
+continuation). Read against HEAD `c41369bc`. **Headline: the item is four-sixths smaller and
+one-sixth larger than the opening slot-trace said.** 6a is *proved* (sorry-free, quoted below),
+not merely buildable; 6b needs a carrier the slot-trace assigned to 6c **and an extra
+hypothesis without which it is false**; and only one and a half of 6c's four laws are consumed
+by S14(i)–(ii).
+
+### The question
+
+`notes/Phase39.md` *Lemma checklist* item 6's laws are transcribed from the attack workbook
+(S6(ii), S7(iii), S10(ii)) and had never been read against the project's Lean carrier. Settle,
+law by law: which are statable as transcribed (with an exact typechecked signature); whether
+6b's `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)` survives translation into the Lean's normalization;
+what carrier each of `ρ̄`, `a`, `g`, `f_sep`, `M_U` should get (or an explicit deferral); and a
+build order. Method: definition bodies only (docstrings used as evidence for nothing), signature
+spikes checked with `lake env lean` at this HEAD, and exact brute-force / finite-field numerics
+as an adversarial check on every transcribed identity. Scratch spikes are not in the tree; every
+signature below compiled, and the two proofs below compiled with **zero** `sorry`.
+
+### Slot-trace verification, and three corrections
+
+Every file:line pin in the opening slot-trace **holds**: `deficiency_eq_of_cutEdges_ncard_le_one`
+(`Deficiency.lean:1767`, `theorem`, disjoint sides), `partitionDef_split_of_sides` (`:1468`) and
+`exists_sides_separated_partitionDef_le` (`:1567`) both declared `lemma`, `TwoEdgeConnected`
+(`:1166`) the only connectivity predicate (`ThreeConnected` / `kConnected` / `VertexConnect`:
+zero hits tree-wide), and `fibreProduct` / `jointCount` / `sepDef` / `f_sep` zero hits (re-run,
+plus `fSep`, `weldedDef`, `transmissible`, `wrench`, `attainmentLoss`; the `welded` / `fibre`
+hits are prose at `Theorem55.lean:2958,3364`, `Dictionary.lean:52`, `Operations.lean:3109`,
+`GenericLift.lean:75`). Corrections:
+
+1. **6a is an instance of the landed cut law and is now proved outright** — the cheapest item in
+   the checklist by a wide margin.
+2. **6b is not carrier-free.** Its `δ_i = f_i − g_i` needs `g_i = def₃(H_i/uv)`, which the
+   slot-trace listed among 6c's missing quantities. 6b and 6c share it. (6b does *not* need
+   `f_sep`; only the S6(ii) welded law does.)
+3. **6c's four laws are not "exactly the laws S14(i)–(ii) consume."** Only the fibre-product
+   identity (under the S10(ii) reading) and the joint count *at `U = ⊥`* are consumed. See
+   *Which laws S14(i)–(ii) actually consume* below. The phase note's sentence has been corrected
+   in place in the same commit.
+
+### Normalization findings
+
+**Combinatorial: the Lean's `partitionDef` is the workbook's `count(P)` on the nose.**
+`partitionDef G n f = D·(|P|−1) − (D−1)·d(P)` with `D = bodyBarDim n` (`Deficiency.lean:262`),
+`deficiency = ⨆ f, partitionDef` (`:273`), `bodyBarDim 3 = 6 = screwDim 2`. So every
+combinatorial law transcribes with `6 ↦ bodyBarDim n` and `5 ↦ bodyBarDim n − 1`, and the
+statements below are `D`-general. Numerically re-verified at `D ∈ {3, 4, 6, 10}`.
+
+**Geometric: state the laws rank-side, never motion-side.** `F.infinitesimalMotions`
+(`RigidityMatrix/Basic.lean:1025`) is a submodule of `α → ScrewSpace K 2` — over **all of `α`** —
+so the attack's `dim M(G) = 6|V(G)| − rank` and `Module.finrank K F.infinitesimalMotions` differ
+by `6·(|α| − |V(G)|)`. Stating S10(ii)'s gluing identity on the motion side makes it carry
+`|α|`; on the rank side the offsets cancel exactly and it becomes
+`rank(G) = rank(H₁) + rank(H₂) + dim(ρ̄₁ + ρ̄₂) − screwDim k`. This is also the side
+`HasPencilRealization` already uses (`Statement.lean:103`). **Every carrier below is
+rank-side**, and the one law that cannot be (the general-`U` joint count) is exactly the one
+deferred. This qualifies the R2 recon's (a): the rank bridge is exact, but only the *rank*, not
+the motion dimension, is `|α|`-free.
+
+### The `u ~ v` refutation (6b is FALSE as first stated, in **both** of its shapes)
+
+The natural Lean phrasing of a vertex 2-cut takes the sides as `G.induce V₁`, `G.induce V₂` with
+`V₁ ∩ V₂ = {u, v}` and every edge inside a side. **That is false when `u ~ v`**: the edge `uv`
+lies in *both* induced sides, so its `−(D−1)` separated-case penalty is charged twice. Brute
+force at `D = 6`: **346 failures in 2104 adjacent instances; 0 in 2500 non-adjacent ones.**
+
+Minimal counterexample — `V₁ = {u, v, a}`, `V₂ = {u, v, b}`, `E(G) = {av, bv, uv}`:
+
+| quantity | value |
+|---|---|
+| `def₃(G)` | **3** (all-singletons: `6·3 − 5·3`) |
+| `f₁ = f₂` | 2 |
+| `g₁ = g₂` | 1 |
+| `max(g₁+g₂, f₁+f₂−6)` | **2** |
+| `f₁+f₂ − min(δ₁+δ₂, 6)` | **2** |
+
+Both the `max` form and the transcribed `min` form give 2 against a true value of 3, so this is
+not an artifact of one shape (verified independently by the coordinator by hand). **The law needs
+either `¬ G.Adj u v` or an explicit edge bipartition `E(H₁) ⊎ E(H₂) = E(G)`; neither is
+optional.** With an explicit edge bipartition the law holds with no adjacency hypothesis (0
+failures in 4000). `¬ G.Adj u v` is free in the consumed shape (workbook S10(iii): `w ≁ v`, from
+girth ≥ 7) and is the recommended choice — **but see open decision D1; this is a statement-shape
+call the user owns, not the recon's.**
+
+Loops at `u` or `v` are harmless: `crossingEdges` never counts a loop. The *geometric* gluing
+identity is **not** affected — `span F.rigidityRows` is the union of the two side row sets, so it
+survives `u ~ v` (0 failures in 209 adjacent instances). That asymmetry is real and is recorded
+here so a later session does not "fix" C1 by adding a hypothesis it does not need.
+
+### Per-law dispositions
+
+**6a — pendant law `f(H) = f(H−u) + 1` (S6(ii) first clause): STATABLE AS TRANSCRIBED, PROVED.**
+It is `deficiency_eq_of_cutEdges_ncard_le_one` at `V₁ = {u}` — the cut count is 1, the singleton
+side has deficiency 0 by `deficiency_of_edgeSet_empty` (`Deficiency.lean:3182`), and
+`G.removeVertex u = G.deleteVerts {u} = G.induce (V(G) \ {u})` **definitionally** (mathlib
+`Combinatorics/Graph/Delete.lean:176`), which is literally the cut law's second side. No
+`Graph.Simple`, girth or connectivity hypothesis; `{u} ⊂ V(G)` is genuinely required. Confirmed
+new: the only landed vertex-removal deficiency lemma is the **degree-2 inequality**
+`removeVertex_deficiency_ge` (`Induction/SplitOffDeficiency.lean:405`).
+
+**6b — vertex 2-cut law: STATABLE; the transcribed arithmetic is CORRECT; needs the `g` carrier
+and the D1 hypothesis.** The `min(·, 6)` is *not* an analogue of the edge-cut law's
+`−(D−1)·|cutEdges|` term — it is a two-way max in disguise, from splitting partitions of `V(G)`
+into those keeping `u, v` together and those separating them:
+
+    def₃(G) = max(g₁ + g₂, f₁^sep + f₂^sep − D)     ← primary, D-general
+            = max(g₁ + g₂, f₁ + f₂ − D)              ← since f_i = max(g_i, f_i^sep)
+            = f₁ + f₂ − min(δ₁ + δ₂, D)              ← the transcribed form
+
+with `f_i = (G.induce V_i).deficiency n`, `g_i = (G.induce V_i).deficiencyMerged n u v`,
+`δ_i = f_i − g_i`. The second step needs `δ_i ≤ D`, a corollary of the landed
+`partitionDef_merge` (`Deficiency.lean:1978`) at `|S| = 2`. **The `max(g₁+g₂, f₁+f₂−D)` form
+needs neither `f_sep` nor the `δ ≤ D` side lemma and is the recommended primary statement**
+(decision D3). All three forms verified: 0 counterexamples in 4000 instances, at
+`D ∈ {3, 4, 6, 10}`.
+
+**C1 — "the fibre-product identity": the checklist phrase is AMBIGUOUS; under the S10(ii)
+reading, STATABLE, needs the `ρ̄` carrier.** It matches two different workbook statements.
+**S7(i)** (`M_U(H)/M(H/uv) ≅ ρ̄ ∩ U`) is profile machinery and is *not* consumed by S14(i)–(ii).
+**S10(ii)'s gluing** (`M(G)` as the kernel of `M₁ × M₂ → (Λ²K⁴)²`, i.e. a genuine fibre product;
+`dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁+ρ̄₂)`) *is*. Rank-side it is
+`rank(G) = rank(H₁) + rank(H₂) + dim(ρ̄₁ ⊔ ρ̄₂) − screwDim k`, whose load-bearing core is the new
+brick `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`, of dimension `screwDim k − dim(ρ̄₁+ρ̄₂)`.
+Derivation: `R_i = Z_i.dualAnnihilator`
+(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`, `Basic.lean:1086`); `Z_i` contains
+every assignment arbitrary off `V_i` and constant on `V_i`, so a `φ ∈ R₁ ⊓ R₂` is supported on
+`V₁ ∩ V₂ = {u,v}` with `φ_v = −φ_u`, i.e. `φ = hingeRow u v φ_u`; and `hingeRow u v r ∈ R_i ↔
+r ∈ ρ̄_i.dualAnnihilator`. **The landed `le_finrank_span_rigidityRows_of_cut`
+(`RigidityMatrix/Bricks.lean:284`) does not cover it on two counts** — its sides are
+vertex-*disjoint* (`V₁` vs `V(G) \ V₁`) and it is an *inequality*, while S14 needs both
+directions of an equality to turn `a(G) = 0` into the `ρ̄` condition. Exactness verified: 0
+failures in 400 random instances over a finite field, in a faithful model (five rows per hinge
+from the support extensor's annihilator).
+
+**C2 — welded bound `ρ ≤ δ + a`, equality iff `H/uv` attains: STATABLE AS TRANSCRIBED; needs
+`ρ̄`, `a`, `a_w`, `g`.** The workbook's identity form (S14 header) is `ρ′ = δ′ + a′ − a′_w`, and
+its entire linear-algebraic content is the single fact **`weldedRank F u v = rank F + dim ρ̄`** —
+welding adds exactly `ρ` rows. Everything else is unfolding `a`, `a_w`, `δ`, `g`. The
+*inequality* form additionally needs `0 ≤ a_w` (= C4 at `U = ⊥`) and `0 ≤ a`, and the latter is
+**already landed**: `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`
+(`AlgebraicInduction/GenericityDevice.lean:564`) is exactly `0 ≤ pencilLoss`. Verified: `rank_w =
+rank + ρ` 0/400; `ρ = δ + a − a_w` held on all 400 single-side instances; `a, a_w ≥ 0` never
+violated.
+
+**C3 — welded pendant `g(H) = max(g(H−u), f_sep(H−u) − 5)`: STATABLE AS TRANSCRIBED; needs `g`
+and `f_sep`; NOT on the consumed path.** Correct with `5 = D − 1` (0 counterexamples in 5070
+instances, at `D ∈ {3,4,6,10}`), and it **requires `w ≠ v`** — with `w = v` the right statement
+is `g(H) = def₃(H−u)`. It is purely combinatorial, so it belongs with 6a/6b rather than with the
+geometric 6c; and it is S6's side-degree-1 reduction, while S14's `H′` has side-degree ≥ 2 at
+both ends (S10(iii)). It is the **only** law in item 6 that needs an `f_sep` carrier. Its S6(ii)
+companion `δ(H) = min(δ′ + 1, D)` is in the same slot (also verified, 0/5070).
+
+**C4 — joint count `dim M_U(H) ≥ 6 + max(g, f + dim U − 6)`: needs a carrier; DEFER the general
+`U`, BUILD the `U = ⊥` instance.** The general-`U` law is the block-profile machinery
+(S7(iii)→S7(iv), "excess = attainment loss"), whose consumer is the O4/S9/S10 block lists — and
+**workbook S14(vi) states that (O4″) is not consumed**: "the consumer needs `Π_w ⊄ ρ̄′` and the
+rest of the `m = 2` list, and (iii) derives all of it from the split-off antecedent." But
+`U = ⊥` *is* consumed: it is exactly `0 ≤ a_w`, which S14(i)'s proof uses at the step "`dim ∩ =
+−a′_w`, so both vanish." The general form is also the one place a motion-side statement is
+unavoidable, so the `|α|` offset reappears there — a second reason to defer it.
+
+### Which laws S14(i)–(ii) actually consume
+
+Traced against the workbook text, not the checklist's summary of it. S14(i) reduces to:
+
+    a(G₋) = a′ + a(ear) + min(δ′+δ_ear, 6) − dim(ρ̄′ ⊔ ρ̄_ear)      [C1 + 6b]
+    dim(ρ̄′ ⊔ ρ̄_ear) = ρ′ + ρ_ear − dim(ρ̄′ ⊓ ρ̄_ear)                [mathlib]
+    ρ′ = δ′ + a′ − a′_w                                             [C2]
+    0 ≤ a′_w  [C4 at U = ⊥],  0 ≤ a′  [landed]
+
+`δ′+m ≤ 6` then forces `dim ∩ = −a′_w`, hence both zero; `δ′+m > 6` forces `a′ = 0` and a full
+sum. **Complete — no other item-6 law enters.** C3 and the general-`U` C4 do not appear. The
+composite is worth landing as one statement (`pencilLoss_vertexTwoCut` below): it *is* S10(ii)'s
+attainment criterion, and it is the most valuable single thing item 6 can produce.
+
+### The carriers, with sites
+
+Names checked free tree-wide (`relScrews`, `jointRows`, `jointMotions`, `weldPair`,
+`weldedRank`, `weldedLoss`, `deficiencyMerged`, `deficiencySep`, `pairDelta`, `pencilLoss`: zero
+hits each). "Forced" = the use in S14(i)–(ii) leaves no real choice.
+
+**Combinatorial — site `Molecular/Deficiency.lean`** (compiled against that file's own import
+surface):
+
+```lean
+noncomputable def deficiencyMerged (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=   -- g
+  ⨆ f : {f : α → α // f u = f v}, G.partitionDef n f.1
+
+noncomputable def deficiencySep (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=      -- f_sep
+  ⨆ f : {f : α → α // f u ≠ f v}, G.partitionDef n f.1
+
+noncomputable def weldPair (G : Graph α β) (u v : α) : Graph α β :=           -- H/uv
+  open Classical in G.map (fun x => if x = u then v else x)
+
+noncomputable def pairDelta (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=          -- δ
+  G.deficiency n - G.deficiencyMerged n u v
+```
+
+`deficiencySep` is junk when `u = v` (an `iSup` over an empty subtype), so every law using it
+carries `u ≠ v`; `deficiencyMerged`'s subtype is always inhabited by the constant labelings.
+
+**Geometric — site `Molecular/RigidityMatrix/Bricks.lean`, `namespace BodyHingeFramework`**
+(compiled against `RigidityMatrix/Basic.lean`'s surface, so the whole of Layer B fits there; the
+file is a `module` with a `public section`, so new declarations inherit that and need no extra
+annotation):
+
+```lean
+noncomputable def relScrews (F : BodyHingeFramework K k α β) (u v : α) :        -- ρ̄_{uv}
+    Submodule K (ScrewSpace K k) :=
+  Submodule.map (screwDiff v u) F.infinitesimalMotions
+
+noncomputable def jointRows (U : Submodule K (ScrewSpace K k)) (u v : α) :
+    Set (Module.Dual K (α → ScrewSpace K k)) :=
+  (fun r => hingeRow u v r) '' U.dualAnnihilator
+
+noncomputable def jointMotions (F : BodyHingeFramework K k α β)                 -- M_U(H)
+    (U : Submodule K (ScrewSpace K k)) (u v : α) : Submodule K (α → ScrewSpace K k) :=
+  F.infinitesimalMotions ⊓ Submodule.comap (screwDiff v u) U
+
+noncomputable def weldedRank (F : BodyHingeFramework K k α β) (u v : α) : ℕ :=
+  Module.finrank K
+    (Submodule.span K (F.rigidityRows ∪ jointRows (⊥ : Submodule K (ScrewSpace K k)) u v))
+```
+
+Answering the two questions the dispatch asked directly: **`ρ̄` is a `Submodule K (ScrewSpace K
+2)`** — the image of the landed `infinitesimalMotions` under the landed `screwDiff v u`
+(`Basic.lean:474`); **`M_U` is a `Submodule K (α → ScrewSpace K 2)`, neither a rank nor a
+`Matroid`** — its rank-side shadow is `span (rigidityRows ∪ jointRows U u v)`, and the project's
+`Matroid` layer (`matroidMG`) is the purely combinatorial count matroid, unrelated. `ρ̄`,
+`jointMotions` and `weldedRank` are **forced**. `jointRows` is mildly free (S7(ii) phrases the
+same object as bars along a spanning set of `U^⊥` via the Klein form), but the annihilator
+phrasing is the idiom the landed `hingeConstraint_iff_hingeRowBlock` already uses, and it makes
+`U = ⊥` (the weld) and general `U` (the profiles) **one** definition — so the general-`U` carrier
+costs nothing even though the general-`U` *laws* are deferred.
+
+**Loss carriers — site a new `Molecular/Molecule/Pencil/TwoCut.lean`** (these need
+`deficiency`/`bodyBarDim`, so they cannot live in a `module` file — the constraint recorded at
+`AlgebraicInduction/PanelLayer.lean:2019`; verified that `Molecule/Pencil/Arms.lean`'s import
+surface sees `finrank_span_rigidityRows_add_deficiency_le`, `Graph.deficiency`,
+`Graph.removeVertex`, `rigidityRows`, `infinitesimalMotions` and `screwDiff` simultaneously):
+
+```lean
+noncomputable def pencilLoss [Finite α] (F : BodyHingeFramework K k α β) (n : ℕ) : ℤ :=   -- a
+  (screwDim k : ℤ) * ((V(F.graph).ncard : ℤ) - 1) - F.graph.deficiency n
+    - (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+
+noncomputable def weldedLoss [Finite α] (F : BodyHingeFramework K k α β)                 -- a_w
+    (n : ℕ) (u v : α) : ℤ :=
+  (screwDim k : ℤ) * ((V(F.graph).ncard : ℤ) - 1) - F.graph.deficiencyMerged n u v
+    - (F.weldedRank u v : ℤ)
+```
+
+`pencilLoss` is forced: it is exactly the negation of `HasPencilRealization`'s rank conjunct
+(`= 0` iff `G` attains), and `0 ≤ pencilLoss` is landed. `weldedLoss`'s target is
+`screwDim k·(|V|−1) − g`, **not** `·(|V|−2)`: the welded space sits inside the `|V|`-body
+assignment space and `a_w = (6|V| − rank_w) − 6 − g`. The `(|V|−2)` shape was the recon's own
+first guess and the numerics caught it.
+
+### Two siting corrections (both found by compiling, not by reading)
+
+1. **6a does not site in `Deficiency.lean`.** `Graph.removeVertex` is defined at
+   `Induction/Operations.lean:727`, **downstream** of `Deficiency.lean` (the only `removeVertex`
+   occurrence in `Deficiency.lean` is prose, at line 2877). Compiled against `Deficiency.lean`'s
+   own import surface the proof below fails with *"The environment does not contain
+   `Graph.removeVertex`"*; compiled against **`Induction/SplitOffDeficiency.lean`**'s surface it
+   is **exit 0, zero `sorry`**, with one further edit — the `open
+   CombinatorialRigidity.Molecular` line must go, since that namespace does not exist at that
+   surface and nothing in the proof needs it (everything is `Graph.*`). **6a therefore sites in
+   `Induction/SplitOffDeficiency.lean`, immediately beside its degree-2 inequality sibling
+   `removeVertex_deficiency_ge` (`:405`)** — the natural home anyway. (The rest of Layer A —
+   `deficiencyMerged`, `deficiencySep`, `weldPair`, `pairDelta`, `partitionDef_map`, 6b — *does*
+   compile at `Deficiency.lean`'s surface; only the `removeVertex`-using leaves move.)
+2. **`weldPair` must not use `Graph.collapseTo`.** It lives at
+   `Induction/ReducibleVertex.lean:1451`, also downstream of `Deficiency.lean`. The inline `open
+   Classical in fun x => if x = u then v else x` is **provably equal** to `collapseTo v {u, v}`
+   (compiled) and keeps the definition upstream.
+
+Both are the same question — *does the site's import surface actually contain the names?* — and
+the first was missed on the recon's first pass. A build agent told "drop it into
+`Deficiency.lean`" would have lost a cycle to it.
+
+### The two proofs, sorry-free
+
+`partitionDef_map` is general, new, and is what makes the two `g`-carriers interchangeable — so
+decision D4 is settled by a proof rather than by prose. Both compiled at the sites named above
+with **zero** `sorry`.
+
+```lean
+/-- **6a — the pendant law.** Site: `Induction/SplitOffDeficiency.lean`. -/
+private lemma cutEdges_singleton_eq_setOf_isNonloopAt (G : Graph α β) (u : α) :
+    G.cutEdges {u} = {e | G.IsNonloopAt e u} := by
+  ext e
+  simp only [cutEdges, Set.mem_ofPred_eq, Set.mem_singleton_iff, Graph.IsNonloopAt]
+  constructor
+  · rintro ⟨_, x, y, hl, rfl, hy⟩
+    exact ⟨y, fun h => hy h, hl⟩
+  · rintro ⟨y, hy, hl⟩
+    exact ⟨hl.edge_mem, u, y, hl, rfl, fun h => hy h⟩
+
+theorem deficiency_removeVertex_of_degree_eq_one
+    [Finite α] [Finite β] {G : Graph α β} {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n) {u : α}
+    (hssub : ({u} : Set α) ⊂ V(G)) (hdeg : G.degree u = 1) :
+    G.deficiency n = (G.removeVertex u).deficiency n + 1 := by
+  have hsplit := G.degree_eq_ncard_add_ncard u
+  rw [hdeg] at hsplit
+  have hloopcard : {e | G.IsLoopAt e u}.ncard = 0 := by omega
+  have hnl : {e | G.IsNonloopAt e u}.ncard = 1 := by omega
+  have hcut : (G.cutEdges {u}).ncard = 1 := by
+    rw [cutEdges_singleton_eq_setOf_isNonloopAt]; exact hnl
+  have hloop : ∀ e, ¬ G.IsLoopAt e u := by
+    intro e he
+    have : ({e} : Set β) ⊆ {e | G.IsLoopAt e u} := by simpa using he
+    have := Set.ncard_le_ncard this (Set.toFinite _)
+    simp [hloopcard] at this
+  have key := deficiency_eq_of_cutEdges_ncard_le_one (G := G) (n := n) hD
+      (Set.singleton_nonempty u) hssub (by omega)
+  have hE : E(G.induce ({u} : Set α)) = ∅ := by
+    rw [Set.eq_empty_iff_forall_notMem]
+    intro e he
+    rw [Graph.edgeSet_induce] at he
+    obtain ⟨x, y, hl, hx, hy⟩ := he
+    simp only [Set.mem_singleton_iff] at hx hy
+    subst hx; subst hy
+    exact hloop e hl
+  have hV : V(G.induce ({u} : Set α)) = ({u} : Set α) := rfl
+  have h0 : (G.induce ({u} : Set α)).deficiency n = 0 := by
+    rw [deficiency_of_edgeSet_empty hE, hV, Set.ncard_singleton]
+    simp
+  rw [key, h0, hcut, removeVertex]
+  push_cast
+  rw [Graph.deleteVerts]
+  ring
+```
+
+```lean
+/-- **`partitionDef` under a vertex map**, and the `g`-carrier bridge.
+Site: `Molecular/Deficiency.lean`. -/
+theorem partitionDef_map (G : Graph α β) (n : ℕ) (c h : α → α) :
+    (G.map c).partitionDef n h = G.partitionDef n (h ∘ c) := by
+  have hnp : (G.map c).numParts h = G.numParts (h ∘ c) := by
+    show (h '' (c '' V(G))).ncard = ((h ∘ c) '' V(G)).ncard
+    rw [Set.image_comp]
+  have hce : (G.map c).crossingEdges h = G.crossingEdges (h ∘ c) := by
+    ext e
+    show (e ∈ E(G) ∧ ∃ x y, (G.map c).IsLink e x y ∧ h x ≠ h y) ↔
+      (e ∈ E(G) ∧ ∃ x y, G.IsLink e x y ∧ (h ∘ c) x ≠ (h ∘ c) y)
+    simp only [Graph.map_isLink, Function.comp_apply]
+    constructor
+    · rintro ⟨heE, x, y, ⟨x₀, y₀, hl, rfl, rfl⟩, hne⟩
+      exact ⟨heE, x₀, y₀, hl, hne⟩
+    · rintro ⟨heE, x₀, y₀, hl, hne⟩
+      exact ⟨heE, c x₀, c y₀, ⟨x₀, y₀, hl, rfl, rfl⟩, hne⟩
+  simp only [partitionDef, hnp, hce]
+
+theorem comp_collapseTo_pair_eq {f : α → α} {u v : α} (h : f u = f v) :
+    f ∘ collapseTo v {u, v} = f
+
+theorem deficiency_weldPair_eq_deficiencyMerged [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
+    (G.weldPair u v).deficiency n = G.deficiencyMerged n u v
+```
+
+(the last by `le_antisymm` + `ciSup_le` + `le_ciSup_of_le (Finite.bddAbove_range …)` +
+`comp_collapseTo_pair_eq`; all three compiled sorry-free).
+
+The enharmonic merge trap was checked against `Graph.map`'s **body** (mathlib
+`Combinatorics/Graph/Maps.lean:39`): `V(G.map c) = c '' V(G)` — the merged-away vertex **does not
+survive**, it is not a twin — `E(G.map c) = E(G)`, and edges between identified vertices become
+loops, which `crossingEdges` correctly ignores.
+
+### The remaining statements (all typechecked with `sorry`)
+
+```lean
+-- 6b, both forms; note `hnonadj` (decision D1).
+theorem deficiency_eq_of_vertexTwoCut [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ Graph.bodyBarDim n) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hnonadj : ¬ G.Adj u v)
+    (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    G.deficiency n
+      = max ((G.induce V₁).deficiencyMerged n u v + (G.induce V₂).deficiencyMerged n u v)
+          ((G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+            - (Graph.bodyBarDim n : ℤ))
+
+theorem deficiency_eq_of_vertexTwoCut' -- same hypotheses
+    G.deficiency n
+      = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+        - min ((G.induce V₁).pairDelta n u v + (G.induce V₂).pairDelta n u v)
+              (Graph.bodyBarDim n : ℤ)
+
+-- Layer B.
+theorem finrank_span_jointRows [Finite α] {k : ℕ} {u v : α} (huv : u ≠ v)
+    (U : Submodule K (ScrewSpace K k)) :
+    Module.finrank K (Submodule.span K (jointRows (α := α) U u v))
+      = screwDim k - Module.finrank K U
+
+theorem inf_span_rigidityRows_span_jointRows_top [Finite α] [Finite β] {k : ℕ}
+    (F : BodyHingeFramework K k α β) (u v : α) :
+    Submodule.span K F.rigidityRows
+        ⊓ Submodule.span K (jointRows (⊥ : Submodule K (ScrewSpace K k)) u v)
+      = Submodule.span K (jointRows (F.relScrews u v) u v)
+
+theorem weldedRank_eq [Finite α] [Finite β] {k : ℕ}
+    (F : BodyHingeFramework K k α β) {u v : α} (huv : u ≠ v) :
+    F.weldedRank u v
+      = Module.finrank K (Submodule.span K F.rigidityRows)
+        + Module.finrank K (F.relScrews u v)
+
+-- C1′ and C1. The sides are written in the project's own idiom
+-- (cf. `span_rigidityRows_eq_of_supportExtensor_agree`, `Molecule/Pencil/Arms.lean:670`),
+-- which the *statements* do not depend on, so all of Layer B fits in `Bricks.lean`.
+theorem inf_span_rigidityRows_of_vertexTwoCut [Finite α] [Finite β] {k : ℕ}
+    (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hcover : V₁ ∪ V₂ = V(F.graph)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, F.graph.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    Submodule.span K
+        (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows
+      ⊓ Submodule.span K
+        (⟨F.graph.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows
+      = Submodule.span K (jointRows
+          ((⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).relScrews u v
+            ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).relScrews u v)
+          u v)
+
+theorem finrank_span_rigidityRows_vertexTwoCut_eq -- same hypotheses
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = (Module.finrank K (Submodule.span K (side₁).rigidityRows) : ℤ)
+        + (Module.finrank K (Submodule.span K (side₂).rigidityRows) : ℤ)
+        + (Module.finrank K ↥(side₁.relScrews u v ⊔ side₂.relScrews u v) : ℤ)
+        - (screwDim k : ℤ)
+
+-- Layer C.
+theorem weldedLoss_nonneg [Finite α] [Finite β] {k n : ℕ}
+    (F : BodyHingeFramework K k α β) (hn : Graph.bodyBarDim n = screwDim k)
+    (hne : V(F.graph).Nonempty)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) {u v : α} (huv : u ≠ v)
+    (hu : u ∈ V(F.graph)) (hv : v ∈ V(F.graph)) :
+    0 ≤ F.weldedLoss n u v
+
+theorem finrank_relScrews_eq [Finite α] [Finite β] {k : ℕ}
+    (F : BodyHingeFramework K k α β) (n : ℕ) {u v : α} (huv : u ≠ v) :
+    (Module.finrank K (F.relScrews u v) : ℤ)
+      = F.graph.pairDelta n u v + F.pencilLoss n - F.weldedLoss n u v
+
+-- S10(ii)'s attainment criterion, the arc's headline target.
+theorem pencilLoss_vertexTwoCut [Finite α] [Finite β] {n : ℕ}
+    (F : BodyHingeFramework K 2 α β) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hnonadj : ¬ F.graph.Adj u v) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hcover : V₁ ∪ V₂ = V(F.graph)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, F.graph.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    F.pencilLoss n
+      = side₁.pencilLoss n + side₂.pencilLoss n
+        + min ((F.graph.induce V₁).pairDelta n u v + (F.graph.induce V₂).pairDelta n u v)
+              (screwDim 2 : ℤ)
+        - (Module.finrank K ↥(side₁.relScrews u v ⊔ side₂.relScrews u v) : ℤ)
+
+-- S6(ii)'s remaining two clauses (Layer A6, off the consumed path).
+theorem deficiencyMerged_eq_of_degree_eq_one [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    {u v w : α} (hdeg : G.degree u = 1) (hlink : G.Adj u w) (huv : u ≠ v) (hwv : w ≠ v)
+    (hv : v ∈ V(G)) :
+    G.deficiencyMerged n u v
+      = max ((G.removeVertex u).deficiencyMerged n w v)
+          ((G.removeVertex u).deficiencySep n w v - ((Graph.bodyBarDim n : ℤ) - 1))
+
+theorem pairDelta_eq_of_degree_eq_one -- same hypotheses
+    G.pairDelta n u v
+      = min ((G.removeVertex u).pairDelta n w v + 1) (Graph.bodyBarDim n : ℤ)
+```
+
+(`side_i` abbreviates `⟨F.graph.induce V_i, F.supportExtensor⟩ : BodyHingeFramework K k α β`,
+written out in full in the compiled spikes.)
+
+### Build order
+
+Layers A and B are independent; C depends on both. The order inside each layer is the
+dependency order.
+
+| # | leaf | site | depends on |
+|---|---|---|---|
+| A1 | `deficiency_removeVertex_of_degree_eq_one` (**6a**) | `Induction/SplitOffDeficiency.lean` | landed only — **proof above, sorry-free** |
+| A2 | the four combinatorial carriers + `partitionDef_map` + `deficiency_weldPair_eq_deficiencyMerged` + `bddAbove`/nonneg helpers | `Deficiency.lean` | landed only — bridge proof above, sorry-free |
+| A3 | `deficiency_eq_max` (`f = max(g, f_sep)`), `pairDelta_le_bodyBarDim` (`δ ≤ D`, via `partitionDef_merge`) | `Deficiency.lean` | A2 |
+| A4 | **6b** `deficiency_eq_of_vertexTwoCut` (max form) | `Deficiency.lean` | A2 — the substantive combinatorial leaf: free refinement + two-case exact split |
+| A5 | **6b′** the `min` form | `Deficiency.lean` | A3, A4 |
+| A6 | **C3** + `pairDelta_eq_of_degree_eq_one` | `Induction/SplitOffDeficiency.lean` (uses `removeVertex`) | A2, A3 — **optional, D2** |
+| B1 | `relScrews`, `jointRows`, `jointMotions`, `weldedRank` | `RigidityMatrix/Bricks.lean` | landed |
+| B2 | `finrank_span_jointRows` | `Bricks.lean` | B1, `linearIndependent_hingeRow` (`Basic.lean:638`) |
+| B3 | `inf_span_rigidityRows_span_jointRows_top` | `Bricks.lean` | B1, `span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` (`Basic.lean:1086`) |
+| B4 | **C2-core** `weldedRank_eq` | `Bricks.lean` | B2, B3 |
+| B5 | **C1′** `inf_span_rigidityRows_of_vertexTwoCut` | `Bricks.lean` | B1–B3 — genuinely new (the landed brick is disjoint-sided *and* an inequality) |
+| B6 | **C1** `finrank_span_rigidityRows_vertexTwoCut_eq` | `Bricks.lean` | B5 |
+| C1ℓ | `pencilLoss`, `weldedLoss`; `0 ≤ pencilLoss` | new `Molecule/Pencil/TwoCut.lean` | A2, B1, `finrank_span_rigidityRows_add_deficiency_le` |
+| C2ℓ | **L-B** `weldedLoss_nonneg` (= C4 at `U = ⊥`) | `TwoCut.lean` | C1ℓ, A2 |
+| C3ℓ | **C2** `finrank_relScrews_eq` (`ρ = δ + a − a_w`) | `TwoCut.lean` | B4, C1ℓ |
+| C4ℓ | **L-E** `pencilLoss_vertexTwoCut` — S10(ii)'s attainment criterion | `TwoCut.lean` | A4/A5, B6, C1ℓ |
+
+### Deferred, with reasons (not silence)
+
+Each is tracked as a checklist sub-item in `notes/Phase39.md`, per top-level `CLAUDE.md`
+(*assembly is not a deferral category*). All of them become cheap once B1 lands, so every
+deferral here is easy to reverse.
+
+- **The general-`U` joint count (S7(iii))** — profile machinery keyed to O4; S14(vi) says (O4″)
+  is not consumed. Only `U = ⊥` (C2ℓ) is on the path.
+- **`finrank_jointMotions_eq` (S7(i))**, the `M_U` fibre identity — same reason; also the one
+  statement that must be motion-side, hence `|α|`-laden.
+- **S7(ii)** (the bar reading of `M_U`), **S7(v)** (Klein self-duality), **S9** (the `ear1`
+  composition criterion) — the same block-profile family.
+- **A6 / C3** — combinatorial but off the consumed path (D2).
+
+### What item 6 does NOT reach
+
+Even with all of Layers A–C landed, **S14(i)–(ii) is not Lean-reachable**, and both gaps are
+outside item 6. This is the single most important thing for a later session not to re-discover.
+
+- **The S8 ear-profile facts.** S14(i)–(ii) consume that `ρ̄(ear_k)` is `(k+1)`-dimensional and
+  that `ear_k` attains and welded-attains (`a(ear) = 0`). No carrier, and not in item 6's list.
+- **No configuration-variety layer.** S14 works "at the generic point of an irreducible component
+  `Y` of `Y°(H′;ϕ)`". Read from the bodies: `HasPencilRealization` (`Statement.lean:103`),
+  `HasDistinctPencilRealization` (`:131`) and `HasGenericPencilRealization` (`Motive.lean:141`)
+  are **single-configuration existentials**, and `IsNondegPencilRealization` (`Motive.lean:111`)
+  is a nondegeneracy predicate, not a generic point; the project's genericity machinery
+  (`AlgebraicInduction/GenericityDevice.lean`) is polynomial-non-vanishing, not
+  irreducible-components. S14's (α) irreducibility, (β) closure-of-the-nondegenerate-locus and
+  (γ) descent have no Lean surface at all.
+
+So item 6's honest framing is: **it lands the pointwise combinatorial and linear-algebraic
+skeleton of S10(ii) and S14(i)–(ii)** — real, durable, and reusable — while the step itself needs
+a variety layer that is a separate and much larger decision.
+
+### Open decisions (D1–D5) — recommendations only; none is settled here
+
+Recorded as OPEN in `notes/Phase39.md` *Blockers*, where the user's answer can be transcribed
+against them.
+
+- **D1 — `¬ G.Adj u v` vs. an explicit edge bipartition in 6b.** The law is *false* without one
+  of the two (counterexample above). *Recommendation:* `¬ G.Adj u v` — free in the consumed
+  shape, much cleaner in Lean. **Statement-shape call; the user's.**
+- **D2 — is C3 (+ `δ = min(δ′+1, D)`) in item 6's scope?** It is the only law needing
+  `deficiencySep`, and it is off the consumed path. *Recommendation:* keep it as an explicitly
+  deferred checklist entry; build it only if S6's reduction becomes consumed.
+- **D3 — primary form of 6b.** *Recommendation:* `max(g₁+g₂, f₁+f₂−D)` primary, the transcribed
+  `min` form a corollary; the max form needs neither `f_sep` nor `δ ≤ D`.
+- **D4 — `g`'s public face.** Both carriers are *equal* (proved), so this is only which one
+  downstream statements read. *Recommendation:* define both, state the laws in
+  `deficiencyMerged` (what the proofs run on), keep `weldPair` as the faithful `H/uv`.
+- **D5 — does item 6 open a blueprint chapter?** Item 6 lands foundations with **no current Lean
+  consumer** (both kernels are carried hypotheses). Forward mode normally wants red nodes; a
+  coordinator/user call whether these become a blueprint section or stay a *Layer plan* in the
+  phase note.
+
+### What would change this
+
+A landed counterexample to any identity above; a 2-cut instance where `def₃(G)` disagrees with
+the max form under `¬ G.Adj u v`; a configuration where `rank(G) ≠ rank(H₁) + rank(H₂) +
+dim(ρ̄₁+ρ̄₂) − 6`; or a reading of S14(i)–(ii) that consumes C3 or the general-`U` C4 (which
+would move them back onto the critical path). The numerics behind each claim are brute-force
+over all set partitions (combinatorial laws, `D ∈ {3,4,6,10}`) and exact finite-field Gaussian
+elimination on the five-rows-per-hinge model (geometric laws); they were scratch-only, and the
+identities and instance counts are recorded above so a re-run is reproducible.
