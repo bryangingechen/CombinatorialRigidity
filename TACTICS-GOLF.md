@@ -1466,6 +1466,25 @@ terminal (reducible) `rfl` — append `Function.comp_def` to the `rw` chain to n
 the `fun`-form. Both from `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`
 (`Molecule/Pencil.lean`, Phase 39 W3-L4).
 
+**The set-image variant** (same cause, cheaper fix). When the span's generating set *is* already an
+image — `span K (f '' s)` — `Submodule.span_image` / `Submodule.map_span` still only fire when the
+image's function is syntactically the bundled coe `⇑g` of a `LinearMap`. A generating set written
+with an **unbundled** project function (a lambda `fun r => hingeRow u v r`, an `f ∘ p`, a
+`LinearEquiv` fun-coe) does not match, `rw`'s keyed matching will not look through the defeq, and the
+error is the unhelpful *"did not find pattern"*. Rewrite the function to the bundled form first:
+
+```lean
+rw [Set.image_congr' (fun r => hingeRow_eq_dualMap u v r),   -- lambda ↦ ⇑(screwDiff u v).dualMap
+  Submodule.span_image, Submodule.span_eq]                   -- span (⇑g '' ↑p) = p.map g
+```
+
+`Set.image_congr' : (∀ x, f x = g x) → f '' s = g '' s` is the whole bridge (one `rw` argument,
+supplied by the `rfl`-lemma that names the bundled form), and `Submodule.span_eq` collapses
+`span K ↑p` back to `p` when the image was taken over a submodule's coercion. This beats writing an
+`ext` + `Set.mem_image` set-equality by hand, which is what the pre-`jointRows` occurrences in
+`Molecular/RigidityMatrix/Bricks.lean` do. From `span_jointRows_eq_map_dualAnnihilator`
+(`Bricks.lean`, Phase 39 item-6 Layer B).
+
 ## 23. Build a GL automorphism mapping one independent pair to another — compose two frame maps
 
 To produce `g : (Fin (k+2) → K) ≃ₗ[K] (Fin (k+2) → K)` sending prescribed independent vectors
