@@ -597,3 +597,29 @@ any Lean carrier** (`fibreProduct`, `jointCount`, `sepDef`, `f_sep`: zero hits) 
 the laws S14(i)–(ii) actually consume. So item 6 opens with a carrier/decomposition recon.
 **Everything else stands unchanged:** phase OPEN (2026-07-24), W4 parked, (GR-10) re-scoped,
 S-mark session 6 after the brief rewrite.
+
+## 2026-09-16 — item 6's five decisions D1–D5 (the carrier recon's open calls)
+
+Recorded by the `/coordinate-phase 39` coordinator that put them, verbatim. On D1–D4 the user
+said: **"Let's go with your recommendations for D1-D4."** Those recommendations, as put:
+**D1** the vertex 2-cut law takes `¬ G.Adj u v` rather than an explicit edge bipartition (the
+law is *false* without one of the two — both the `max` and `min` forms give 2 against a true 3
+on the minimal adjacent counterexample); **D2** A6/C3, the welded pendant law, is dropped from
+item 6's scope and kept as an explicit deferred checklist entry with its reason, being the only
+law needing `deficiencySep` and off the consumed path; **D3** `max(g₁+g₂, f₁+f₂−D)` is the
+primary form of 6b and the transcribed `min` form a corollary; **D4** the laws are stated in
+`deficiencyMerged`, with `weldPair` kept as the faithful `H/uv` (the two are provably equal).
+
+*Coordinator note on D2, for the record:* the recommendation the user accepted was supplied at
+the time of the answer, not in the original presentation of the options — the coordinator had
+given explicit recommendations for D1, D3 and D4 only, and said so when answering.
+
+On **D5** — whether item 6 opens a blueprint chapter — the user said: **"let's go with no for
+now, I think it might not make sense to write a blueprint without the informal proof being
+complete?"** So item 6's to-do list is the *Layer plan* in `notes/Phase39.md`, not a chapter.
+The coordinator flagged once, before proceeding, that forward mode's usual answer to an
+incomplete argument is red nodes and that item 6's own laws are stable independent of the
+variety layer; the user's call stands, and the resulting **blueprint debt is tracked explicitly**
+in `notes/Phase39.md` *Blockers*, since `checkdecls` cannot see a decl that has no node.
+**Everything else stands unchanged:** phase OPEN (2026-07-24), W4 parked, (GR-10) re-scoped,
+items 7–12 parked, S-mark session 6 after the brief rewrite.

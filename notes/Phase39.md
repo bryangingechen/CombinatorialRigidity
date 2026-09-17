@@ -33,7 +33,8 @@ RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route 
 fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16) and its **carrier recon is DONE**
 the same day: 6a is *proved* sorry-free, 6b is correct as transcribed but **false without
 `¬ G.Adj u v`**, and only two of 6c's laws are consumed — a Layer A/B/C leaf list with sites
-(*Lemma checklist*), and **D1–D5 open for the user** (*Blockers*). Items 7–12 stay parked.
+(*Lemma checklist*), and **D1–D5 all settled by the user 2026-09-16** (*Blockers*; no blueprint chapter, so the
+*Layer plan* is the to-do list). Items 7–12 stay parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -46,7 +47,7 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next concrete step: answer D1 (*Blockers*), then build item-6 leaf A1 or A2** — the two
+**Next concrete step: build item-6 leaf A1 or A2** (D1–D5 settled 2026-09-16) — the two
 cheapest leaves, both with sorry-free proofs already banked in `notes/Phase39-design.md`
 § *Item-6 carrier recon (2026-09-16)*, and neither blocked by any open decision. In parallel,
 the **S-mark brief rewrite** against the *landed* kernel statements (*Hand-off* item 2), then
@@ -254,8 +255,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   - [ ] **A5 — 6b′**, the transcribed `min` form `f₁+f₂ − min(δ₁+δ₂, D)`. A corollary of
     A3 + A4.
   - [ ] **A6 — C3**, the welded pendant `g(H) = max(g(H−u), f_sep(H−u) − (D−1))`, and
-    `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). **DEFERRED with
-    reason (D2): off the consumed path** — S6 is the side-degree-1 reduction and S14's `H′` has
+    `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). **DEFERRED by the
+    user's D2 call (2026-09-16); reason: off the consumed path** — S6 is the side-degree-1 reduction and S14's `H′` has
     side-degree ≥ 2 at both ends (S10(iii)); it is also the only law needing `deficiencySep`.
     Kept as an entry, not dropped. Site `Induction/SplitOffDeficiency.lean` (uses
     `removeVertex`).
@@ -318,26 +319,44 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `notes/pencil/adjudications.md`); **lifted 2026-09-16 for checklist items 4–5** (the R2 Lean
   round; same record, verbatim); **lifted 2026-09-16 for checklist item 6** (the deficiency
   laws; same record) — items 7–12 stay parked.
-- **Item 6's five open decisions (D1–D5), the user's — recorded 2026-09-16 so an answer can be
-  transcribed against them.** Full statements and the recon's reasoning:
-  `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, *Open decisions*. The recon's
-  positions are **recommendations only** and nothing below is settled.
+- **Item 6's five decisions (D1–D5) — ALL SETTLED 2026-09-16 (user).** Verbatim:
+  `notes/pencil/adjudications.md`. Full statements and the recon's reasoning:
+  `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, *Open decisions*. The user
+  took the recommendations on D1–D4 and decided D5 against a chapter. **Nothing below is open**;
+  the recommendation text is kept because it carries the reasoning.
   - **D1 — the 6b hypothesis. The one that blocks a build.** With induced sides the vertex
     2-cut law is **false** when `u ~ v` (346/2104 adjacent instances; minimal counterexample in
     the *Lemma checklist*): it needs `¬ G.Adj u v` **or** an explicit edge bipartition
     `E(H₁) ⊎ E(H₂) = E(G)`. *Recommendation:* `¬ G.Adj u v` — free in the consumed shape
-    (S10(iii)'s `w ≁ v`, from girth ≥ 7) and much cleaner in Lean. **Statement-shape call.**
+    (S10(iii)'s `w ≁ v`, from girth ≥ 7) and much cleaner in Lean. **SETTLED (user): `¬ G.Adj u v`.**
   - **D2 — is A6/C3 in item 6's scope?** It is the only law needing `deficiencySep` and it is
-    off the consumed path. *Recommendation:* keep the deferred checklist entry; build only if
-    S6's reduction becomes consumed.
-  - **D3 — 6b's primary form.** *Recommendation:* `max(g₁+g₂, f₁+f₂−D)` primary, the
+    off the consumed path. **SETTLED (user): DROPPED from item 6's scope** — A6 stays an
+    explicit deferred entry with its reason, built only if S6's reduction becomes consumed. If
+    that leaves `deficiencySep` with no consumer but A5, it lands as a minor helper, not a
+    headline carrier (coordinator, same call).
+  - **D3 — 6b's primary form. SETTLED (user): `max(g₁+g₂, f₁+f₂−D)` primary**, the
     transcribed `min` form a corollary (the max form needs neither `f_sep` nor `δ ≤ D`).
   - **D4 — `g`'s public face.** Settled mathematically (the two carriers are *provably* equal),
-    so only a presentation call. *Recommendation:* state the laws in `deficiencyMerged`, keep
-    `weldPair` as the faithful `H/uv`.
-  - **D5 — does item 6 open a blueprint chapter?** It lands foundations with **no current Lean
-    consumer** (both kernels are carried hypotheses), which forward mode does not anticipate.
-    Coordinator/user call: a blueprint section, or the *Layer plan* in this note.
+    so only a presentation call. **SETTLED (user): state the laws in `deficiencyMerged`**, keep
+    `weldPair` as the faithful `H/uv`; both are defined.
+  - **D5 — does item 6 open a blueprint chapter? SETTLED (user): NO, for now.** Reason given:
+    *"it might not make sense to write a blueprint without the informal proof being complete"* —
+    which is the same conclusion the unreachability finding below reaches from the other side
+    (S14 needs a variety layer that does not exist even informally in Lean-compatible form), so
+    a chapter would pin a shape likely to be reworked. The *Layer plan* in this note is item 6's
+    to-do list instead. **This is a deliberate forward-mode deviation** (forward mode's usual
+    answer to an incomplete argument is red nodes) and it creates **blueprint debt**, tracked in
+    the next bullet.
+- **Blueprint debt from D5 (opened 2026-09-16).** Item 6's leaves land with **no blueprint
+  nodes**. Nothing catches this: `checkdecls` validates only `\lean{...}` pins that *exist*, so
+  a decl with no node fails no gate. The debt is every decl Layers A/B/C land — at minimum
+  `deficiency_removeVertex_of_degree_eq_one`, `deficiency_eq_of_vertexTwoCut`(`'`),
+  `deficiencyMerged`/`weldPair`/`pairDelta`, `relScrews`/`jointRows`/`jointMotions`/`weldedRank`,
+  `weldedRank_eq`, `inf_span_rigidityRows_of_vertexTwoCut`,
+  `finrank_span_rigidityRows_vertexTwoCut_eq`, `pencilLoss`/`weldedLoss`, `weldedLoss_nonneg`,
+  `finrank_relScrews_eq`, `pencilLoss_vertexTwoCut`. **Discharge when the informal proof closes**
+  (i.e. when the variety layer below is settled), or earlier if the user reverses D5. A build
+  slice that lands a Layer leaf adds it to this list in the same commit.
 - **Item 6 does NOT reach S14(i)–(ii), and the two gaps are outside it** (2026-09-16 recon;
   recorded here so a later session does not re-discover it). Even with Layers A–C all landed,
   S14(i)–(ii) still consumes **(a)** the **S8 ear-profile facts** — `ρ̄(ear_k)` is
@@ -450,6 +469,13 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   `pencilNondegFeasible_of_le_of_triangleFree` in `Steer.lean`. New informal W4 obligation.
   Record: `notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*; verbatim decisions
   `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
+
+- **2026-09-16 — item 6's D1–D5 SETTLED (user).** D1 `¬ G.Adj u v` (the 6b law is false
+  without it); D2 A6/C3 dropped from scope, kept as a deferred entry; D3 the `max` form primary;
+  D4 laws stated in `deficiencyMerged`, `weldPair` kept; **D5 no blueprint chapter for now** —
+  the informal proof is not complete, so a chapter would pin a shape likely to be reworked. D5
+  is a deliberate forward-mode deviation and opens tracked blueprint debt (*Blockers*).
+  Verbatim: `notes/pencil/adjudications.md`.
 
 - **2026-09-16 — the Lean hold is LIFTED for checklist item 6 (user); the item is NOT one
   build slice, and its carrier recon is now RECORDED (coordinator-accepted).** A slot-trace
