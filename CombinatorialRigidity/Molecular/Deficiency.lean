@@ -3631,4 +3631,473 @@ theorem deficiency_weldPair_eq_deficiencyMerged [Finite α] (G : Graph α β) (n
             rw [weldPair]; exact (partitionDef_map G n _ f.1).symm
       _ ≤ (G.weldPair u v).deficiency n := (G.weldPair u v).partitionDef_le_deficiency n f.1
 
+/-- **Exact split of `partitionDef` across a vertex 2-cut** (Phase 39 checklist item A4,
+the core identity behind `deficiency_eq_of_vertexTwoCut`; `notes/Phase39-design.md`
+§ *Item-6 carrier recon*). For *any* labeling `f` — no side-separation hypothesis at all —
+the `D`-deficiency of `G` under `f` splits exactly into the two sides' contributions plus a
+correction `D * (1 - |I|)`, where `I = f '' V₁ ∩ f '' V₂` is the set of labels straddling
+both sides.
+
+Two ingredients: `numParts` inclusion-exclusion (`f '' V₁ ∪ f '' V₂ = f '' V(G)` via
+`hcover`, so `|f''V(G)| + |I| = |f''V₁| + |f''V₂|`); and `crossingEdges` splitting *exactly*
+into the two sides' crossing edges with **no crossing term** at all — every edge lies
+wholly in `V₁` or wholly in `V₂` (`hsep`), unlike the edge-cut law's `partitionDef_split_of_
+sides`. The two sides' crossing-edge sets are disjoint, and this is the **only** place
+`hnonadj` is load-bearing: a crossing edge counted on both sides has both endpoints in
+`V₁ ∩ V₂ = {u, v}`, hence is a `u`-`v` link, excluded by `hnonadj`. -/
+lemma partitionDef_split_of_vertexTwoCut [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {V₁ V₂ : Set α} {u v : α} (hnonadj : ¬ G.Adj u v)
+    (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) (f : α → α) :
+    G.partitionDef n f
+      = (G.induce V₁).partitionDef n f + (G.induce V₂).partitionDef n f
+        + (bodyBarDim n : ℤ) * (1 - ((f '' V₁ ∩ f '' V₂).ncard : ℤ)) := by
+  -- Step 1: numParts inclusion-exclusion.
+  have hfV : f '' V(G) = f '' V₁ ∪ f '' V₂ := by rw [← hcover, Set.image_union]
+  have hnparts : G.numParts f + (f '' V₁ ∩ f '' V₂).ncard
+      = (G.induce V₁).numParts f + (G.induce V₂).numParts f := by
+    have hkey := Set.ncard_union_add_ncard_inter (f '' V₁) (f '' V₂)
+    unfold numParts
+    rw [hfV]
+    exact hkey
+  -- Step 2: crossingEdges splits into exactly two disjoint pieces (no crossing term).
+  have hcross_eq : G.crossingEdges f
+      = (G.induce V₁).crossingEdges f ∪ (G.induce V₂).crossingEdges f := by
+    rw [crossingEdges_induce (G := G) (X := V₁) (g := f),
+        crossingEdges_induce (G := G) (X := V₂) (g := f)]
+    ext e
+    simp only [crossingEdges, Set.mem_ofPred_eq, Set.mem_union]
+    constructor
+    · rintro ⟨heE, x, y, hlink, hne⟩
+      rcases hsep e x y hlink with ⟨hx1, hy1⟩ | ⟨hx2, hy2⟩
+      · exact Or.inl ⟨heE, x, y, hlink, hx1, hy1, hne⟩
+      · exact Or.inr ⟨heE, x, y, hlink, hx2, hy2, hne⟩
+    · rintro (⟨heE, x, y, hlink, _, _, hne⟩ | ⟨heE, x, y, hlink, _, _, hne⟩) <;>
+        exact ⟨heE, x, y, hlink, hne⟩
+  have hdisj : Disjoint ((G.induce V₁).crossingEdges f) ((G.induce V₂).crossingEdges f) := by
+    rw [Set.disjoint_left]
+    intro e he1 he2
+    simp only [crossingEdges_induce, Set.mem_ofPred_eq] at he1 he2
+    obtain ⟨_, x1, y1, hlink1, hx1V1, hy1V1, hne1⟩ := he1
+    obtain ⟨_, x2, y2, hlink2, hx2V2, hy2V2, _⟩ := he2
+    have hx1ne : x1 ≠ y1 := fun h => hne1 (h ▸ rfl)
+    have huv : x1 ∈ V₁ ∩ V₂ ∧ y1 ∈ V₁ ∩ V₂ := by
+      obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink1.eq_and_eq_or_eq_and_eq hlink2
+      · exact ⟨⟨hx1V1, hx2V2⟩, ⟨hy1V1, hy2V2⟩⟩
+      · exact ⟨⟨hx1V1, hy2V2⟩, ⟨hy1V1, hx2V2⟩⟩
+    rw [hoverlap] at huv
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at huv
+    apply hnonadj
+    obtain ⟨hx1uv, hy1uv⟩ := huv
+    rcases hx1uv with rfl | rfl <;> rcases hy1uv with rfl | rfl
+    · exact absurd rfl hx1ne
+    · exact hlink1.adj
+    · exact hlink1.adj.symm
+    · exact absurd rfl hx1ne
+  have hncross : (G.crossingEdges f).ncard
+      = ((G.induce V₁).crossingEdges f).ncard + ((G.induce V₂).crossingEdges f).ncard := by
+    rw [hcross_eq, Set.ncard_union_eq hdisj]
+  -- Step 3: assemble.
+  simp only [partitionDef]
+  rw [hncross]
+  have hnpartsZ : (G.numParts f : ℤ) + (f '' V₁ ∩ f '' V₂).ncard
+      = ((G.induce V₁).numParts f : ℤ) + ((G.induce V₂).numParts f : ℤ) := by
+    exact_mod_cast hnparts
+  have hnp' : (G.numParts f : ℤ)
+      = ((G.induce V₁).numParts f : ℤ) + ((G.induce V₂).numParts f : ℤ)
+        - (f '' V₁ ∩ f '' V₂).ncard := by linarith
+  rw [hnp']
+  push_cast
+  ring
+
+/-- **`δ ≤ D`, as a directly reusable fact** (private helper for `deficiency_eq_of_
+vertexTwoCut`'s `≥` direction — a contained instance of what checklist item A3's
+`pairDelta_le_bodyBarDim` will state in full via the same `partitionDef_merge` route; kept
+private and un-named as A3 since A3 is not part of this commit). Any tight partition `f` of
+`H` either already merges `u, v` (`deficiency ≤ deficiencyMerged` directly, no loss) or can
+be coarsened by collapsing its (necessarily two-element) `{f u, f v}` to a single label,
+costing at most `D` (`partitionDef_merge` at `S.ncard = 2`). -/
+private lemma deficiency_le_deficiencyMerged_add [Finite α] [Finite β] {H : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) {u v : α} (hu : u ∈ V(H)) (hv : v ∈ V(H)) :
+    H.deficiency n ≤ H.deficiencyMerged n u v + (bodyBarDim n : ℤ) := by
+  have hDZ : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  obtain ⟨f, hf⟩ := H.exists_isTightPartition n
+  have hfeq : H.partitionDef n f = H.deficiency n := hf
+  by_cases huv : f u = f v
+  · have hle := H.partitionDef_le_deficiencyMerged n huv
+    rw [hfeq] at hle
+    linarith
+  · classical
+    have hfu_mem : f u ∈ ({f u, f v} : Set α) := Set.mem_insert _ _
+    have hfv_mem : f v ∈ ({f u, f v} : Set α) := Set.mem_insert_iff.mpr (Or.inr rfl)
+    have hSsub : ({f u, f v} : Set α) ⊆ f '' V(H) :=
+      Set.insert_subset (Set.mem_image_of_mem f hu)
+        (Set.singleton_subset_iff.mpr (Set.mem_image_of_mem f hv))
+    have hScard : ({f u, f v} : Set α).ncard = 2 := Set.ncard_pair huv
+    have hmerge := partitionDef_merge (G := H) (n := n) (f := f)
+        (c := fun x => if x ∈ ({f u, f v} : Set α) then f u else x) hSsub hfu_mem
+        (fun y hy => ite_eq_left hy) (fun y hy => ite_eq_right hy)
+    rw [hScard] at hmerge
+    have he_nonneg : (0 : ℤ) ≤ ((bodyBarDim n : ℤ) - 1)
+        * (H.crossingEdgesWithin f {f u, f v}).ncard :=
+      mul_nonneg (by linarith) (Int.natCast_nonneg _)
+    have hmerge_le : H.deficiency n - (bodyBarDim n : ℤ)
+        ≤ H.partitionDef n ((fun x => if x ∈ ({f u, f v} : Set α) then f u else x) ∘ f) := by
+      rw [hmerge, hfeq]
+      push_cast
+      linarith [he_nonneg]
+    have hmerges : ((fun x => if x ∈ ({f u, f v} : Set α) then f u else x) ∘ f) u
+        = ((fun x => if x ∈ ({f u, f v} : Set α) then f u else x) ∘ f) v := by
+      simp only [Function.comp_apply]
+      rw [ite_eq_left hfu_mem, ite_eq_left hfv_mem]
+    have hle2 := H.partitionDef_le_deficiencyMerged n hmerges
+    linarith [hmerge_le, hle2]
+
+/-- **6b — the vertex 2-cut deficiency law** (`max` form, D3's primary statement;
+Phase 39 checklist item A4; `notes/Phase39-design.md` § *Item-6 carrier recon*). For a
+vertex 2-cut `{V₁, V₂}` of `G` overlapping in `{u, v}` with **no `u`-`v` edge**
+(decision D1 — the law is false without this: a minimal counterexample at
+`V₁ = {u,v,a}`, `V₂ = {u,v,b}`, `E(G) = {av, bv, uv}` gives `def₃(G) = 3` against
+`max(g₁+g₂, f₁+f₂−D) = 2`), the deficiency of `G` is the max of the two ways of combining
+the sides: keep `u, v` together on both sides (`g₁ + g₂`), or let them separate
+(`f₁ + f₂ − D`, paying the correction once). -/
+theorem deficiency_eq_of_vertexTwoCut [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ Graph.bodyBarDim n) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hnonadj : ¬ G.Adj u v)
+    (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    G.deficiency n
+      = max ((G.induce V₁).deficiencyMerged n u v + (G.induce V₂).deficiencyMerged n u v)
+          ((G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+            - (Graph.bodyBarDim n : ℤ)) := by
+  have hDZ : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  have hu : u ∈ V₁ ∩ V₂ := by rw [hoverlap]; exact Set.mem_insert _ _
+  have hv : v ∈ V₁ ∩ V₂ := by rw [hoverlap]; exact Set.mem_insert_iff.mpr (Or.inr rfl)
+  have hne_fn : Nonempty (α → α) := ⟨id⟩
+  have hne_alpha : Nonempty α := ⟨u⟩
+  apply le_antisymm
+  · rw [deficiency]
+    refine ciSup_le fun f => ?_
+    have hsplit := partitionDef_split_of_vertexTwoCut hnonadj hcover hoverlap hsep (n := n) f
+    by_cases hfuv : f u = f v
+    · have hmem : f u ∈ f '' V₁ ∩ f '' V₂ :=
+        ⟨Set.mem_image_of_mem f hu.1, hfuv ▸ Set.mem_image_of_mem f hv.2⟩
+      have h1I : (1 : ℤ) ≤ (f '' V₁ ∩ f '' V₂).ncard := by
+        have : 0 < (f '' V₁ ∩ f '' V₂).ncard := (Set.nonempty_of_mem hmem).ncard_pos
+        exact_mod_cast this
+      have hle1 : (G.induce V₁).partitionDef n f ≤ (G.induce V₁).deficiencyMerged n u v :=
+        (G.induce V₁).partitionDef_le_deficiencyMerged n hfuv
+      have hle2 : (G.induce V₂).partitionDef n f ≤ (G.induce V₂).deficiencyMerged n u v :=
+        (G.induce V₂).partitionDef_le_deficiencyMerged n hfuv
+      have hcorr : (bodyBarDim n : ℤ) * (1 - ((f '' V₁ ∩ f '' V₂).ncard : ℤ)) ≤ 0 := by
+        nlinarith [hDZ, h1I]
+      calc G.partitionDef n f
+          = (G.induce V₁).partitionDef n f + (G.induce V₂).partitionDef n f
+              + (bodyBarDim n : ℤ) * (1 - ((f '' V₁ ∩ f '' V₂).ncard : ℤ)) := hsplit
+        _ ≤ (G.induce V₁).deficiencyMerged n u v + (G.induce V₂).deficiencyMerged n u v := by
+            linarith [hle1, hle2, hcorr]
+        _ ≤ max _ _ := le_max_left _ _
+    · have hmemu : f u ∈ f '' V₁ ∩ f '' V₂ :=
+        ⟨Set.mem_image_of_mem f hu.1, Set.mem_image_of_mem f hu.2⟩
+      have hmemv : f v ∈ f '' V₁ ∩ f '' V₂ :=
+        ⟨Set.mem_image_of_mem f hv.1, Set.mem_image_of_mem f hv.2⟩
+      have hsub2 : ({f u, f v} : Set α) ⊆ f '' V₁ ∩ f '' V₂ :=
+        Set.insert_subset hmemu (Set.singleton_subset_iff.mpr hmemv)
+      have h2I : (2 : ℤ) ≤ (f '' V₁ ∩ f '' V₂).ncard := by
+        have hle := Set.ncard_le_ncard hsub2
+        rw [Set.ncard_pair hfuv] at hle
+        exact_mod_cast hle
+      have hle1 : (G.induce V₁).partitionDef n f ≤ (G.induce V₁).deficiency n :=
+        (G.induce V₁).partitionDef_le_deficiency n f
+      have hle2 : (G.induce V₂).partitionDef n f ≤ (G.induce V₂).deficiency n :=
+        (G.induce V₂).partitionDef_le_deficiency n f
+      have hcorr : (bodyBarDim n : ℤ) * (1 - ((f '' V₁ ∩ f '' V₂).ncard : ℤ))
+          ≤ -(bodyBarDim n : ℤ) := by nlinarith [hDZ, h2I]
+      calc G.partitionDef n f
+          = (G.induce V₁).partitionDef n f + (G.induce V₂).partitionDef n f
+              + (bodyBarDim n : ℤ) * (1 - ((f '' V₁ ∩ f '' V₂).ncard : ℤ)) := hsplit
+        _ ≤ (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+              - (bodyBarDim n : ℤ) := by linarith [hle1, hle2, hcorr]
+        _ ≤ max _ _ := le_max_right _ _
+  · -- ≥ direction: max (g₁+g₂) (f₁+f₂-D) ≤ deficiency.
+    have harm1 : (G.induce V₁).deficiencyMerged n u v + (G.induce V₂).deficiencyMerged n u v
+        ≤ G.deficiency n := by
+      classical
+      have hneS : Nonempty {f : α → α // f u = f v} := ⟨⟨fun _ => u, rfl⟩⟩
+      obtain ⟨⟨w1, hw1uv⟩, hg1⟩ :
+          ∃ w : {f : α → α // f u = f v}, (G.induce V₁).partitionDef n w.1
+            = (G.induce V₁).deficiencyMerged n u v :=
+        exists_eq_ciSup_of_finite
+          (f := fun w : {f : α → α // f u = f v} => (G.induce V₁).partitionDef n w.1)
+      obtain ⟨⟨w2, hw2uv⟩, hg2⟩ :
+          ∃ w : {f : α → α // f u = f v}, (G.induce V₂).partitionDef n w.1
+            = (G.induce V₂).deficiencyMerged n u v :=
+        exists_eq_ciSup_of_finite
+          (f := fun w : {f : α → α // f u = f v} => (G.induce V₂).partitionDef n w.1)
+      have hι1card : (w1 '' V₁).encard ≤ V₁.encard := Set.encard_image_le w1 V₁
+      obtain ⟨ι1, hι1maps, hι1inj⟩ :=
+        (Set.toFinite (w1 '' V₁)).exists_injOn_of_encard_le hι1card
+      have hS2sub : (w2 '' V₂ \ {w2 u}) ⊆ w2 '' (V₂ \ V₁) := by
+        rintro y ⟨⟨x, hxV2, rfl⟩, hyne⟩
+        refine ⟨x, ⟨hxV2, fun hxV1 => hyne ?_⟩, rfl⟩
+        have hxuv : x ∈ ({u, v} : Set α) := hoverlap ▸ Set.mem_inter hxV1 hxV2
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxuv
+        rcases hxuv with rfl | rfl
+        · simp
+        · simp [hw2uv.symm]
+      have hι2card : (w2 '' V₂ \ {w2 u}).encard ≤ (V(G) \ V₁).encard := by
+        calc (w2 '' V₂ \ {w2 u}).encard
+            ≤ (w2 '' (V₂ \ V₁)).encard := Set.encard_le_encard hS2sub
+          _ ≤ (V₂ \ V₁).encard := Set.encard_image_le w2 (V₂ \ V₁)
+          _ ≤ (V(G) \ V₁).encard := Set.encard_le_encard fun x hx =>
+              ⟨hcover ▸ Or.inr hx.1, hx.2⟩
+      obtain ⟨ι2, hι2maps, hι2inj⟩ :=
+        (Set.toFinite (w2 '' V₂ \ {w2 u})).exists_injOn_of_encard_le hι2card
+      set c2 : α → α := fun y => if y = w2 u then ι1 (w1 u) else ι2 y with hc2_def
+      set h : α → α := fun x => if x ∈ V₁ then ι1 (w1 x) else c2 (w2 x) with hh_def
+      have hh_eqV1 : Set.EqOn h (ι1 ∘ w1) V₁ := fun x hx => by
+        simp only [hh_def, ite_eq_left hx, Function.comp_apply]
+      have hh_eqV2 : Set.EqOn h (c2 ∘ w2) V₂ := by
+        intro x hxV2
+        by_cases hxV1 : x ∈ V₁
+        · have hxuv : x ∈ ({u, v} : Set α) := hoverlap ▸ ⟨hxV1, hxV2⟩
+          simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxuv
+          simp only [hh_def, ite_eq_left hxV1, Function.comp_apply, hc2_def]
+          rcases hxuv with rfl | rfl
+          · rw [ite_eq_left rfl]
+          · rw [ite_eq_left hw2uv.symm, hw1uv]
+        · simp only [hh_def, ite_eq_right hxV1, Function.comp_apply]
+      have hu1V1 : u ∈ V₁ := hu.1
+      have hf1uV1 : ι1 (w1 u) ∈ V₁ := hι1maps (Set.mem_image_of_mem w1 hu1V1)
+      have hc2inj : Set.InjOn c2 (w2 '' V₂) := by
+        rintro y1 hy1 y2 hy2 heq
+        by_cases h1 : y1 = w2 u <;> by_cases h2 : y2 = w2 u
+        · rw [h1, h2]
+        · exfalso
+          simp only [hc2_def, ite_eq_left h1, ite_eq_right h2] at heq
+          exact (hι2maps ⟨hy2, h2⟩).2 (heq ▸ hf1uV1)
+        · exfalso
+          simp only [hc2_def, ite_eq_right h1, ite_eq_left h2] at heq
+          exact (hι2maps ⟨hy1, h1⟩).2 (heq ▸ hf1uV1)
+        · simp only [hc2_def, ite_eq_right h1, ite_eq_right h2] at heq
+          exact hι2inj ⟨hy1, h1⟩ ⟨hy2, h2⟩ heq
+      have heq1 : (G.induce V₁).partitionDef n h = (G.induce V₁).deficiencyMerged n u v := by
+        rw [partitionDef_congr (G := G.induce V₁) hh_eqV1,
+            partitionDef_comp_of_injOn (G := G.induce V₁) (f := w1) (g := ι1) hι1inj, hg1]
+      have heq2 : (G.induce V₂).partitionDef n h = (G.induce V₂).deficiencyMerged n u v := by
+        rw [partitionDef_congr (G := G.induce V₂) hh_eqV2,
+            partitionDef_comp_of_injOn (G := G.induce V₂) (f := w2) (g := c2) hc2inj, hg2]
+      have hsubV1 : h '' V₁ ⊆ V₁ := by
+        rintro y ⟨x, hx, rfl⟩
+        have hy : ι1 (w1 x) ∈ V₁ := hι1maps (Set.mem_image_of_mem w1 hx)
+        simp only [hh_def, ite_eq_left hx]
+        exact hy
+      have hsubV2 : h '' V₂ ⊆ insert (ι1 (w1 u)) (V(G) \ V₁) := by
+        rintro y ⟨x, hx, rfl⟩
+        by_cases hxV1 : x ∈ V₁
+        · have hxuv : x ∈ ({u, v} : Set α) := hoverlap ▸ ⟨hxV1, hx⟩
+          simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxuv
+          simp only [hh_def, ite_eq_left hxV1]
+          rcases hxuv with rfl | rfl
+          · exact Set.mem_insert _ _
+          · rw [hw1uv]; exact Set.mem_insert _ _
+        · simp only [hh_def, ite_eq_right hxV1, hc2_def]
+          by_cases hcond : w2 x = w2 u
+          · rw [ite_eq_left hcond]; exact Set.mem_insert _ _
+          · rw [ite_eq_right hcond]
+            exact Set.mem_insert_of_mem _ (hι2maps ⟨Set.mem_image_of_mem w2 hx, hcond⟩)
+      have hIsub : (h '' V₁ ∩ h '' V₂).ncard ≤ 1 := by
+        have hsub : h '' V₁ ∩ h '' V₂ ⊆ ({ι1 (w1 u)} : Set α) := by
+          intro y hy
+          have hy1 : y ∈ V₁ := hsubV1 hy.1
+          rcases hsubV2 hy.2 with rfl | hy2'
+          · rfl
+          · exact absurd hy1 hy2'.2
+        calc (h '' V₁ ∩ h '' V₂).ncard ≤ ({ι1 (w1 u)} : Set α).ncard :=
+              Set.ncard_le_ncard hsub
+          _ = 1 := Set.ncard_singleton _
+      have hsplit_h := partitionDef_split_of_vertexTwoCut hnonadj hcover hoverlap hsep (n := n) h
+      have hIZ : ((h '' V₁ ∩ h '' V₂).ncard : ℤ) ≤ 1 := by exact_mod_cast hIsub
+      have hcorrection_nonneg : (0 : ℤ)
+          ≤ (bodyBarDim n : ℤ) * (1 - ((h '' V₁ ∩ h '' V₂).ncard : ℤ)) :=
+        mul_nonneg (by linarith) (by linarith)
+      calc (G.induce V₁).deficiencyMerged n u v + (G.induce V₂).deficiencyMerged n u v
+          = (G.induce V₁).partitionDef n h + (G.induce V₂).partitionDef n h := by
+            rw [heq1, heq2]
+        _ ≤ (G.induce V₁).partitionDef n h + (G.induce V₂).partitionDef n h
+            + (bodyBarDim n : ℤ) * (1 - ((h '' V₁ ∩ h '' V₂).ncard : ℤ)) := by
+              linarith [hcorrection_nonneg]
+        _ = G.partitionDef n h := hsplit_h.symm
+        _ ≤ G.deficiency n := G.partitionDef_le_deficiency n h
+    refine max_le harm1 ?_
+    -- Arm 2: (G.induce V₁).deficiency n + (G.induce V₂).deficiency n - D ≤ deficiency.
+    classical
+    obtain ⟨f1, hf1⟩ :
+        ∃ f1 : α → α, (G.induce V₁).partitionDef n f1 = (G.induce V₁).deficiency n :=
+      exists_eq_ciSup_of_finite (f := (G.induce V₁).partitionDef n)
+    obtain ⟨f2, hf2⟩ :
+        ∃ f2 : α → α, (G.induce V₂).partitionDef n f2 = (G.induce V₂).deficiency n :=
+      exists_eq_ciSup_of_finite (f := (G.induce V₂).partitionDef n)
+    by_cases hm1 : f1 u = f1 v
+    · -- side 1's optimum merges: f1_val ≤ g₁; general D-bound on side 2.
+      have hle1 : (G.induce V₁).partitionDef n f1 ≤ (G.induce V₁).deficiencyMerged n u v :=
+        (G.induce V₁).partitionDef_le_deficiencyMerged n hm1
+      rw [hf1] at hle1
+      have hle2 : (G.induce V₂).deficiency n
+          ≤ (G.induce V₂).deficiencyMerged n u v + (bodyBarDim n : ℤ) :=
+        deficiency_le_deficiencyMerged_add hD hu.2 hv.2
+      linarith [hle1, hle2, harm1]
+    · by_cases hm2 : f2 u = f2 v
+      · -- side 2's optimum merges: symmetric.
+        have hle2 : (G.induce V₂).partitionDef n f2 ≤ (G.induce V₂).deficiencyMerged n u v :=
+          (G.induce V₂).partitionDef_le_deficiencyMerged n hm2
+        rw [hf2] at hle2
+        have hle1 : (G.induce V₁).deficiency n
+            ≤ (G.induce V₁).deficiencyMerged n u v + (bodyBarDim n : ℤ) :=
+          deficiency_le_deficiencyMerged_add hD hu.1 hv.1
+        linarith [hle1, hle2, harm1]
+      · -- neither optimum merges: glue f1, f2 with u, v landing on two distinct points.
+        have hι1card : (f1 '' V₁).encard ≤ V₁.encard := Set.encard_image_le f1 V₁
+        obtain ⟨ι1, hι1maps, hι1inj⟩ :=
+          (Set.toFinite (f1 '' V₁)).exists_injOn_of_encard_le hι1card
+        have hS2sub : (f2 '' V₂ \ {f2 u, f2 v}) ⊆ f2 '' (V₂ \ V₁) := by
+          rintro y ⟨⟨x, hxV2, rfl⟩, hyne⟩
+          simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hyne
+          refine ⟨x, ⟨hxV2, fun hxV1 => ?_⟩, rfl⟩
+          have hxuv : x ∈ ({u, v} : Set α) := hoverlap ▸ ⟨hxV1, hxV2⟩
+          simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxuv
+          rcases hxuv with rfl | rfl
+          · exact hyne.1 rfl
+          · exact hyne.2 rfl
+        have hι2card : (f2 '' V₂ \ {f2 u, f2 v}).encard ≤ (V(G) \ V₁).encard := by
+          calc (f2 '' V₂ \ {f2 u, f2 v}).encard
+              ≤ (f2 '' (V₂ \ V₁)).encard := Set.encard_le_encard hS2sub
+            _ ≤ (V₂ \ V₁).encard := Set.encard_image_le f2 (V₂ \ V₁)
+            _ ≤ (V(G) \ V₁).encard := Set.encard_le_encard fun x hx =>
+                ⟨hcover ▸ Or.inr hx.1, hx.2⟩
+        obtain ⟨ι2, hι2maps, hι2inj⟩ :=
+          (Set.toFinite (f2 '' V₂ \ {f2 u, f2 v})).exists_injOn_of_encard_le hι2card
+        set c2 : α → α :=
+          fun y => if y = f2 u then ι1 (f1 u) else if y = f2 v then ι1 (f1 v) else ι2 y
+          with hc2_def
+        set h : α → α := fun x => if x ∈ V₁ then ι1 (f1 x) else c2 (f2 x) with hh_def
+        have hh_eqV1 : Set.EqOn h (ι1 ∘ f1) V₁ := fun x hx => by
+          simp only [hh_def, ite_eq_left hx, Function.comp_apply]
+        have hh_eqV2 : Set.EqOn h (c2 ∘ f2) V₂ := by
+          intro x hxV2
+          by_cases hxV1 : x ∈ V₁
+          · have hxuv : x ∈ ({u, v} : Set α) := hoverlap ▸ ⟨hxV1, hxV2⟩
+            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxuv
+            simp only [hh_def, ite_eq_left hxV1, Function.comp_apply, hc2_def]
+            rcases hxuv with rfl | rfl
+            · rw [ite_eq_left rfl]
+            · rw [ite_eq_right (Ne.symm hm2), ite_eq_left rfl]
+          · simp only [hh_def, ite_eq_right hxV1, Function.comp_apply]
+        have hf1uV1 : ι1 (f1 u) ∈ V₁ := hι1maps (Set.mem_image_of_mem f1 hu.1)
+        have hf1vV1 : ι1 (f1 v) ∈ V₁ := hι1maps (Set.mem_image_of_mem f1 hv.1)
+        have hf1ne : ι1 (f1 u) ≠ ι1 (f1 v) := fun heq =>
+          hm1 (hι1inj (Set.mem_image_of_mem f1 hu.1) (Set.mem_image_of_mem f1 hv.1) heq)
+        have hval : ∀ y, y ∈ f2 '' V₂ →
+            c2 y = if y = f2 u then ι1 (f1 u) else if y = f2 v then ι1 (f1 v) else ι2 y :=
+          fun _ _ => rfl
+        have hc2inj : Set.InjOn c2 (f2 '' V₂) := by
+          rintro y1 hy1 y2 hy2 heq
+          rcases eq_or_ne y1 (f2 u) with h1u | h1u
+          · rcases eq_or_ne y2 (f2 u) with h2u | h2u
+            · rw [h1u, h2u]
+            · rcases eq_or_ne y2 (f2 v) with h2v | h2v
+              · exfalso
+                rw [hval y1 hy1, ite_eq_left h1u, hval y2 hy2, ite_eq_right h2u,
+                  ite_eq_left h2v] at heq
+                exact hf1ne heq
+              · exfalso
+                rw [hval y1 hy1, ite_eq_left h1u, hval y2 hy2, ite_eq_right h2u,
+                  ite_eq_right h2v] at heq
+                exact (hι2maps ⟨hy2, not_or.mpr ⟨h2u, h2v⟩⟩).2 (heq ▸ hf1uV1)
+          · rcases eq_or_ne y1 (f2 v) with h1v | h1v
+            · rcases eq_or_ne y2 (f2 u) with h2u | h2u
+              · exfalso
+                rw [hval y1 hy1, ite_eq_right h1u, ite_eq_left h1v, hval y2 hy2,
+                  ite_eq_left h2u] at heq
+                exact hf1ne heq.symm
+              · rcases eq_or_ne y2 (f2 v) with h2v | h2v
+                · rw [h1v, h2v]
+                · exfalso
+                  rw [hval y1 hy1, ite_eq_right h1u, ite_eq_left h1v, hval y2 hy2,
+                    ite_eq_right h2u, ite_eq_right h2v] at heq
+                  exact (hι2maps ⟨hy2, not_or.mpr ⟨h2u, h2v⟩⟩).2 (heq ▸ hf1vV1)
+            · rcases eq_or_ne y2 (f2 u) with h2u | h2u
+              · exfalso
+                rw [hval y1 hy1, ite_eq_right h1u, ite_eq_right h1v, hval y2 hy2,
+                  ite_eq_left h2u] at heq
+                exact (hι2maps ⟨hy1, not_or.mpr ⟨h1u, h1v⟩⟩).2 (heq ▸ hf1uV1)
+              · rcases eq_or_ne y2 (f2 v) with h2v | h2v
+                · exfalso
+                  rw [hval y1 hy1, ite_eq_right h1u, ite_eq_right h1v, hval y2 hy2,
+                    ite_eq_right h2u, ite_eq_left h2v] at heq
+                  exact (hι2maps ⟨hy1, not_or.mpr ⟨h1u, h1v⟩⟩).2 (heq ▸ hf1vV1)
+                · rw [hval y1 hy1, ite_eq_right h1u, ite_eq_right h1v, hval y2 hy2,
+                    ite_eq_right h2u, ite_eq_right h2v] at heq
+                  exact hι2inj ⟨hy1, not_or.mpr ⟨h1u, h1v⟩⟩ ⟨hy2, not_or.mpr ⟨h2u, h2v⟩⟩ heq
+        have heq1 : (G.induce V₁).partitionDef n h = (G.induce V₁).deficiency n := by
+          rw [partitionDef_congr (G := G.induce V₁) hh_eqV1,
+              partitionDef_comp_of_injOn (G := G.induce V₁) (f := f1) (g := ι1) hι1inj, hf1]
+        have heq2 : (G.induce V₂).partitionDef n h = (G.induce V₂).deficiency n := by
+          rw [partitionDef_congr (G := G.induce V₂) hh_eqV2,
+              partitionDef_comp_of_injOn (G := G.induce V₂) (f := f2) (g := c2) hc2inj, hf2]
+        have hsubV1 : h '' V₁ ⊆ V₁ := by
+          rintro y ⟨x, hx, rfl⟩
+          have hy : ι1 (f1 x) ∈ V₁ := hι1maps (Set.mem_image_of_mem f1 hx)
+          simp only [hh_def, ite_eq_left hx]
+          exact hy
+        have hsubV2 : h '' V₂ ⊆ insert (ι1 (f1 u)) (insert (ι1 (f1 v)) (V(G) \ V₁)) := by
+          rintro y ⟨x, hx, rfl⟩
+          by_cases hxV1 : x ∈ V₁
+          · have hxuv : x ∈ ({u, v} : Set α) := hoverlap ▸ ⟨hxV1, hx⟩
+            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxuv
+            simp only [hh_def, ite_eq_left hxV1]
+            rcases hxuv with rfl | rfl
+            · exact Set.mem_insert _ _
+            · exact Set.mem_insert_of_mem _ (Set.mem_insert _ _)
+          · simp only [hh_def, ite_eq_right hxV1, hc2_def]
+            by_cases h1 : f2 x = f2 u
+            · rw [ite_eq_left h1]; exact Set.mem_insert _ _
+            · rw [ite_eq_right h1]
+              by_cases h2 : f2 x = f2 v
+              · rw [ite_eq_left h2]
+                exact Set.mem_insert_of_mem _ (Set.mem_insert _ _)
+              · rw [ite_eq_right h2]
+                exact Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _
+                  (hι2maps ⟨Set.mem_image_of_mem f2 hx, not_or.mpr ⟨h1, h2⟩⟩))
+        have hIsub : (h '' V₁ ∩ h '' V₂).ncard ≤ 2 := by
+          have hsub : h '' V₁ ∩ h '' V₂ ⊆ ({ι1 (f1 u), ι1 (f1 v)} : Set α) := by
+            intro y hy
+            have hy1 : y ∈ V₁ := hsubV1 hy.1
+            have hy2 := hsubV2 hy.2
+            simp only [Set.mem_insert_iff] at hy2
+            rcases hy2 with rfl | rfl | hy2'
+            · exact Set.mem_insert _ _
+            · exact Set.mem_insert_of_mem _ rfl
+            · exact absurd hy1 hy2'.2
+          calc (h '' V₁ ∩ h '' V₂).ncard ≤ ({ι1 (f1 u), ι1 (f1 v)} : Set α).ncard :=
+                Set.ncard_le_ncard hsub
+            _ ≤ 2 := by
+                rcases eq_or_ne (ι1 (f1 u)) (ι1 (f1 v)) with heq | hne
+                · simp [heq]
+                · rw [Set.ncard_pair hne]
+        have hsplit_h := partitionDef_split_of_vertexTwoCut hnonadj hcover hoverlap hsep (n := n) h
+        have hIZ : ((h '' V₁ ∩ h '' V₂).ncard : ℤ) ≤ 2 := by exact_mod_cast hIsub
+        have hDnn : (0 : ℤ) ≤ (bodyBarDim n : ℤ) := by linarith
+        have hcorrection : -(bodyBarDim n : ℤ)
+            ≤ (bodyBarDim n : ℤ) * (1 - ((h '' V₁ ∩ h '' V₂).ncard : ℤ)) := by
+          nlinarith [mul_le_mul_of_nonneg_left hIZ hDnn]
+        calc (G.induce V₁).deficiency n + (G.induce V₂).deficiency n - (bodyBarDim n : ℤ)
+            = (G.induce V₁).partitionDef n h + (G.induce V₂).partitionDef n h
+                - (bodyBarDim n : ℤ) := by rw [heq1, heq2]
+          _ ≤ (G.induce V₁).partitionDef n h + (G.induce V₂).partitionDef n h
+              + (bodyBarDim n : ℤ) * (1 - ((h '' V₁ ∩ h '' V₂).ncard : ℤ)) := by
+                linarith [hcorrection]
+          _ = G.partitionDef n h := hsplit_h.symm
+          _ ≤ G.deficiency n := G.partitionDef_le_deficiency n h
+
 end Graph
