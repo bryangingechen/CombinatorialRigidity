@@ -60,7 +60,8 @@ is load-bearing.
 | W4-L4 identification recon (2026-07-30) | 3996–4176 | **live** with the above | — |
 | **Lean-track design pass (2026-09-15): items 1–2** | 4259–4588 | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
 | **Field-hypothesis recon (2026-09-15): item 3** | 4591–4732 | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
-| **R2 recon (2026-09-16): item 4** | 4733–end | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) OPEN**: (α)/(β) is the PI's call, (GR-10) scope the user's | — |
+| **R2 recon (2026-09-16): item 4** | 4733–5086 | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) SETTLED (α)** by the user 2026-09-16 and applied by the arc below; (GR-10) scope still the user's | — |
+| **Kernel restatement (2026-09-16): item 5** | 5087–end | **LANDED** — the restated `hK`/`hbareSplit` (IH + (d) + (α)), the new motive `HasDistinctPencilRealization`, the arm ripple as it actually discharged, and the (c) adder's home. **Read this, not the pinned blocks, for the kernels' current form** | — |
 | Higher-`d` note / Citations | 4177–4217 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -2979,7 +2980,7 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   (the 19-vertex theta / 17-vertex gadget of the L6a arc: 2EC + no-proper-rigid + simple +
   degree-2-carrying with a 4-member `closedHubNbhd`). Grounded findings (all against landed
   source, this recon):
-  → *Forward pointer (2026-09-16):* item 5 adds the induction hypothesis to `hbareSplit` (S14(v)); § *R2 recon* (b) records that its antecedent as pinned is a point of the bare space that may be coincident-pointed, and the (α)/(β) motive decision that follows. The findings below stand.
+  → *Forward pointer (2026-09-16):* the pinned form below is **superseded** — § *Kernel restatement (2026-09-16)* carries the landed one (the induction hypothesis added per S14(v), and the motive moved to `HasDistinctPencilRealization` on both sides by the user's (α) decision on § *R2 recon* (b)). The findings below stand as written.
   1. **The panel precedent structurally cannot cover it.** The landed program's split arm
      produces its bare conjunct ONLY as M4-forgetful ∘ generic — the `hsplitZero` arm of
      `theorem_55_minimalKDof_k_all_k` (`Theorem55.lean:2499`): G0
@@ -4734,7 +4735,10 @@ a general infinite field, if the frame's base case (a) is kept.
 ## R2 recon (2026-09-16): checklist item 4 — the rank bridge, the bare variety at coincident points, feasibility on the side, and `hK`'s conclusion
 
 **Status: RECORDED 2026-09-16 (read-only recon; verdict accepted by the coordinator the same
-day and transcribed here by the same agent).** Three of the four questions are settled against
+day and transcribed here by the same agent).** *Forward pointer (same day): the open decision (b)
+was settled **(α)** by the user and every consequence below was applied in one build slice — for
+the statements as they now stand, read § *Kernel restatement (2026-09-16)* at the end of this
+file, not the candidate shapes here.* Three of the four questions are settled against
 landed source. **(a)** The attack's "attains" (`dim M(G) = 6 + def₃(G)` at a configuration) and
 the Lean's `HasPencilRealization K 3 G` (`Molecule/Pencil/Statement.lean:103`) are the same rank
 statement wherever adjacent points are projectively distinct. **(c)** `G.Simple` and
@@ -5062,6 +5066,9 @@ for the conclusion (item 5's IH rewording still applies).
 
 ### The two open decisions (recorded as decisions, not as settled)
 
+*(Decision 1 is now settled — (α), user, 2026-09-16, verbatim in `notes/pencil/adjudications.md`;
+applied in § *Kernel restatement (2026-09-16)*. Decision 2 is still open.)*
+
 1. **(b): (α) or (β) — the PI's call**, with the `hcontract`/W4 cost estimate as input. The recon
    recommends (α). Record the outcome verbatim in `notes/pencil/adjudications.md` and as a
    one-liner in `notes/Phase39.md` *Decisions made*; item 5 applies it.
@@ -5083,3 +5090,99 @@ every attaining bare witness is a limit of adjacent-distinct ones (O8's coincide
 make (β) free. *(iii)* Any `Y`-external use of `hEsc`'s chart data at a call site (none exists at
 this HEAD) would block (d). *(iv)* A landed W4 build under the two-conjunct motive raises (α)'s
 cost from "an obligation" to "a rework".
+
+## Kernel restatement (2026-09-16): checklist item 5 — the induction hypothesis on both kernels, (d), the (c) adder, and the (α) motive
+
+**Status: LANDED 2026-09-16** (one build slice; gates `lake build` full-tree warning-clean,
+`lake lint` clean, `blueprint/verify.sh` green incl. `checkdecls`). This arc records the **new**
+statement forms; it does not edit the pinned blocks above, which stay as the dated record of
+what they were. The two decisions item 4 left open were made by the user the same day and are
+verbatim in `notes/pencil/adjudications.md`: **(b) → (α)**, "*Add the third conjunct*"; and the
+sequencing, "*One slice: IH + (d) + (c)-adder + whatever (b) decides*". (GR-10)'s scope stayed
+open with the user and is **not** touched by this slice.
+
+### What the kernels now are
+
+Both kernels, in `pencilPair_of_splitOff_of_habitat` and in the two wrappers
+`pencil_conjecture_of_hcontract_hK_hbareSplit{,_of_card}` (`Molecule/Pencil/Escape.lean`):
+
+```lean
+hK : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+  G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+  G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+  (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+  (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+  HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
+  HasGenericPencilRealization K 3 G
+
+hbareSplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+  G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+  G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+  (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+  ¬ PencilNondegFeasible K G →
+  (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+  HasDistinctPencilRealization K 3 (G.splitOff v a b e₀) →
+  HasDistinctPencilRealization K 3 G
+```
+
+Three changes against the pinned forms (§ *W5-L7 research recon* residue (i)/(ii)):
+
+1. **The induction hypothesis**, in the shape `hcontract` already used, placed immediately
+   ahead of the split-off antecedent. Reason (S-mark workbook S14(v)): with `G = H′ ∪ ear_m` the
+   split-off antecedent allows `δ′ + a′ ≤ 6 − m` while `G` attaining needs `a′ = 0` or
+   `δ′ + a′ ≤ 5 − m`, so on a never-attaining side the pinned implication is *false* and a proof
+   of it as stated would have to prove the conjecture for `G − chain` inside the kernel. `hIH` is
+   in scope at the sole call site, so threading was mechanical.
+2. **(d)**: `hK` concludes `HasGenericPencilRealization K 3 G` instead of the chart-form ∃. The
+   call site's `hcard`/`htf`/conversion block (the old `Escape.lean:402–422`) is deleted; the
+   W5-L7b assembly `hasGenericPencilRealization_of_independent_pencilRow_target` now has **no
+   consumer** and is retained, with a docstring note, as the bridge a chart-producing route to
+   (K) (the grid route) would still need. The blueprint already stated (K) in the generic form.
+3. **(α)**: `hbareSplit` takes and returns the new motive `HasDistinctPencilRealization`, so its
+   antecedent certifies a point of the attack's `Y(G₋)` rather than of the bare space.
+
+### The (α) motive and its arm ripple, as landed
+
+- `HasDistinctPencilRealization K n G` (**`Molecule/Pencil/Statement.lean`**, beside
+  `HasPencilRealization`, not in `Motive.lean`: it mentions no nondegeneracy machinery, and
+  `Motive.lean` imports `Arms.lean`, where the cut arm needs it) := a pencil panel realization ∧
+  `∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v]` ∧ the rank target.
+  Forgetful maps: `hasPencilRealization_of_distinct` (same file),
+  `hasDistinctPencilRealization_of_generic` (`Motive.lean`).
+- `PencilPair K n G := (Simple → Feasible → Generic) ∧ (Simple → Distinct) ∧ Bare`. Blueprint:
+  new node `def:pencil-distinct-motive` + `fmlnote:pencil-distinct-motive`;
+  `def:pencil-conditioned-pair` restated.
+- **Arms, as they actually discharged** (against the recon's predicted table):
+  | arm | predicted | landed |
+  |---|---|---|
+  | loop (`Pair.lean`) | vacuous, not simple | as predicted (`Graph.Simple.toLoopless`) |
+  | base `\|V\| ≤ 2` (`Pair.lean`) | **single-edge rework** off `fun _ => q₀` | **no rework needed**: `pencilPair_of_ncard_le_two`'s *generic* branch already built distinct-point witnesses for the edgeless and single-edge cases and never used its feasibility hypothesis. Extracted it as `hasGenericPencilRealization_of_ncard_le_two` (simplicity only) and forgot down. The recon was reading the *bare* arm `hasPencilRealization_of_ncard_le_two` (`Arms.lean`), which is untouched and stays coincident-pointed |
+  | cut (`Pair2.lean`) | "\|C\| = 0 glues; \|C\| = 1 already distinct by construction" | correct in substance, **not** in cost: there was no distinct-level cut assembly to thread, and duplicating the ~300-line bare one was unacceptable. Resolved by a **flag**: `hasPencilRealization_of_not_twoEdgeConnected_core` carries a `D : Prop` gating the distinctness rider, with `D := False` re-deriving the (statement-unchanged) bare arm and `D := True` giving the new `hasDistinctPencilRealization_of_not_twoEdgeConnected`. Its IH also takes `G' ≤ G`, which is how the consumer passes `G`'s simplicity to the two induced sides |
+  | habitat `\|V\| = 3, 4` (`Base.lean`) | already nondegenerate | as predicted, one line each |
+  | `hK` arm | generic ⇒ distinct | as predicted |
+  | `hbareSplit` arm | kernel concludes distinct | as predicted; the antecedent is strengthened too, and `G′.Simple` comes from `Graph.splitOff_simple_of_noRigid_of_card` |
+  | forgetful maps | trivial | as predicted |
+  | **`hcontract`** (carried) | new W4 obligation | conclusion carries the conjunct automatically; obligation logged in `notes/pencil/workbook/W4.md` |
+- **Not touched, deliberately:** `HasPencilPanelRealization` (`Statement.lean`). The checklist's
+  own named fix was REFUTED by item 4 and would break `lem:pencil-self-dual`; the bare arms stay
+  coincident-capable at parallel classes.
+- One landed statement **did** change to carry (α): `exists_reposition_cross_incidences`
+  (`Arms.lean`) now also concludes `LinearIndependent K ![pt₁u, g pt₂v]`, which its own
+  construction already supplied (`hLIa` at the `exists_perp_linearIndependent` call). Blueprint
+  node `lem:pencil-cut-nondegeneracy` restated in the same commit.
+
+### The (c) adder, as landed
+
+`pencilNondegFeasible_of_le_of_triangleFree` went into **`Steer.lean`**, not `Motive.lean`: the
+lemma's last step is the W5-L6b criterion `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_
+of_triangleFree`, which lives there, and `Motive.lean` is upstream of it. Statement as the recon
+spiked it, modulo argument order. The `Motive.lean` docstring of `PencilNondegFeasible.mono`
+remains the record of why *restriction* is gapped at a hub demoted to degree 2.
+
+### Residual bookkeeping this arc creates
+
+- `hasGenericPencilRealization_of_independent_pencilRow_target` (W5-L7b) is consumer-free (above).
+- The **W4 obligation** from (α) is informal-only and now recorded in
+  `notes/pencil/workbook/W4.md`; no Lean statement of `hcontract` changed.
+- The S-mark brief rewrite (hand-off item 3) should quote the forms in *What the kernels now are*
+  verbatim, not the pinned blocks above.

@@ -98,6 +98,22 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] Two Lean style linters cost a build cycle each in one commit: a *no-op* `show`, and `haveI` on a `Prop`-valued class
+- **Where it bit:** Phase 39 checklist item 5 (`Molecule/Pencil/Arms.lean`,
+  `Molecule/Pencil/Pair.lean`). Four `show LinearIndependent K ![point u, point v]` lines
+  written purely to document the goal before a `simp only [point, …]`, and one
+  `haveI := hSimple.toLoopless` inside a term-mode `absurd`.
+- **Friction:** both are **warnings**, so `lake lint` is silent on them and only the build-log
+  `warning:` scan catches them — a second build cycle after an otherwise-green first one. The
+  `show` message reads *"The `show` tactic should only be used to indicate intermediate goal
+  states for readability"* even when the `show` changes nothing, so the existing
+  project advice ("use `change` instead") does not apply: the fix is to delete the line. The
+  `haveI` message is *"The goal is a proposition, so `have` is preferred over `haveI`"*.
+- **Resolution:** deleted the four `show` lines (the `simp only` works on the goal directly)
+  and switched to plain `have := hSimple.toLoopless`, which still registers the instance.
+  **Lifted to:** TACTICS-GOLF § 12 (the `show`-linter paragraph, both triggers plus the
+  `haveI`/`letI` sibling).
+
 ### [idiom] A walk-surgery template older than the `Matroid` package API makes you re-derive three lemmas the package already ships
 - **Where it bit:** Phase 39 (PENCIL) M1
   (`Molecular/Induction/ForestSurgery/MaximalChain.lean`,
@@ -3177,6 +3193,27 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored, axiom-clean. Pure LA, no geometry.
 - **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
   `linearIndependent_sum_smul_ne_zero`).
+
+### [mirrored] `LinearIndependent.pair_map` — an injective linear map carries an independent pair to an independent pair
+- **Where it bit:** Phase 39 checklist item 5, the cut arm's adjacent-distinct variant
+  (`hasPencilRealization_of_not_twoEdgeConnected_core`, `Molecule/Pencil/Arms.lean`). The `V₂`
+  side of the cut is transported by a repositioning automorphism `g : (Fin 4 → K) ≃ₗ[K] (Fin 4
+  → K)`, so a `V₂`-internal link's distinctness `![point₂ u, point₂ v]` has to come out as
+  `![g (point₂ u), g (point₂ v)]`.
+- **Friction:** mathlib has the general-family form `LinearIndependent.map'` (independence of
+  `f ∘ v` from independence of `v` plus `ker f = ⊥`), but the goal is a `![·, ·]` literal and
+  `Data/Fin/VecNotation.lean` carries **no** `f ∘ ![x, y] = ![f x, f y]` bridge — so the
+  general lemma cannot be pointed at the goal without hand-rolling that composition step. The
+  `pair_iff`/`pair_symm_iff`/`pair_iff'` family in `LinearIndependent/Basic.lean` has no
+  functoriality member. One build cycle, spent re-deriving it inline.
+- **Resolution:** mirrored `LinearIndependent.pair_map` over a `Ring` — four lines through
+  `LinearIndependent.pair_iff`, pulling `s • f x + t • f y = 0` back along injectivity. The
+  cut arm's `hdistg` is now a one-line `simpa using hab.pair_map (g : _ →ₗ[K] _) g.injective`
+  (the `simpa` only discharges the `LinearEquiv`-to-`LinearMap` coercion).
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
+  `linearIndependent_sum_smul_ne_zero`).
+
 
 ### [mirrored] `LinearIndependent.disjoint_span_range_ker` — the span meets a map's kernel trivially when the composite is independent
 - **Where it bit:** Phase 32 S2 (`lem:zero-extension-rowIndependent`,

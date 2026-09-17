@@ -39,20 +39,35 @@ This file also lands the companion **W5-L7b** — the rank-to-generic steering a
 `hasGenericPencilRealization_of_independent_pencilRow_target` (re-pinned 2026-07-30, after the
 `escapePoly` build BLOCKED; `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition";
 signature corrected 2026-07-30 to `[Inhabited α]`, catching a statement-level `G.endsOf` gap the
-route recon's drop to `[Nonempty α]` missed — see that section), which turns kernel (K)'s carried
+route recon's drop to `[Nonempty α]` missed — see that section), which turns a *chart-form*
 rank-increment consequence (`hEsc`: a correct hub-selector, a seed, and a deficiency-target-size
 `pencilRow` subfamily independent at that seed) — together with `≤ 3` closed hub-neighbourhoods and
 triangle-freeness — into a generic pencil realization of the *un-split* `G` at the deficiency-rank
-target. Split-data-free (no `v`/`a`/`b`/`e₀`); the L7c hsplit assembly composes L7a's output
-through (K)'s discharge into this leaf's `hEsc` (below).
+target. Split-data-free (no `v`/`a`/`b`/`e₀`). **Since the 2026-09-16 weakening (d)** kernel (K)
+concludes `HasGenericPencilRealization K 3 G` directly, so the L7c assembly no longer routes
+through this leaf; it is retained as the bridge a *chart-producing* route to (K) (the grid route
+of `notes/attacks/gr10/brief.md`) would need, the chart form being strictly stronger than the
+generic one.
 
 This file also lands **W5-L7c-5** — `pencilPair_of_splitOff_of_habitat`, the `5 ≤ |V|` hsplit
 producer (`notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"): given the
 split-arm habitat, kernel (K)'s carried `hK` implication, kernel (K-bare)'s carried `hbareSplit`
 implication, and the induction hypothesis on strictly smaller graphs, produces `PencilPair K 3 G`.
-The two carried kernels partition cleanly by `PencilNondegFeasible K G`: feasible chains L7a's
-`G′`-generic output through `hK` into L7b; infeasible discharges the bare half directly via
-`hbareSplit` fed the IH's `G′`-bare half.
+The two carried kernels partition cleanly by `PencilNondegFeasible K G`: feasible feeds L7a's
+`G′`-generic output to `hK`, which returns `G`'s own generic realization; infeasible feeds the
+IH's `G′`-*distinct* half to `hbareSplit`, which returns `G`'s.
+
+**Kernel restatement, 2026-09-16 (checklist item 5; `notes/Phase39-design.md` §"Kernel
+restatement (2026-09-16)").** Both carried kernels now take **the induction hypothesis on
+strictly smaller graphs** ahead of their split-off antecedent, the shape `hcontract` already had.
+The reason is not convenience: with `G = H′ ∪ ear_m`, the split-off antecedent admits a
+deficiency profile on the side that `G`'s own attainment forbids, so on a side that never attains
+the kernels *as previously pinned are false* — a proof of either would have had to prove the
+conjecture for `G − chain` inside the kernel (S-mark workbook S14(v)). Two further changes ride
+along: kernel (K) concludes `HasGenericPencilRealization K 3 G` rather than the chart form (recon
+verdict (d); the call site consumed nothing else), and kernel (K-bare) now takes and returns
+`HasDistinctPencilRealization` (decision (α)), so that its antecedent certifies a point of the
+configuration variety rather than merely of the Lean bare space.
 
 This file finally lands **W5-L7c-6** — `pencil_conjecture_of_hcontract_hK_hbareSplit`, the
 successor wrapper closing `hsplit` in full (`notes/Phase39-design.md` §"W5-L7 research recon" "L7c
@@ -61,9 +76,9 @@ decomposition"). It builds the `hsplit` hypothesis `pencil_conjecture_of_arms_pa
 base leaves `pencilPair_of_habitat_ncard_eq_three`/`_four` (`Base.lean`), and `5 ≤ V(G).ncard`
 goes to this file's own `pencilPair_of_splitOff_of_habitat`, fed a fresh edge from the caller's
 `∀`-form supply `hfresh`. The result carries exactly `hcontract` (unchanged, W4's obligation),
-the two open kernels `hK`/`hbareSplit` ((K)/(K-bare), both user-adjudicated to be carried this
-session), and `hfresh` (a mechanical S1 bookkeeping item) — every other hypothesis of the pencil
-reduction is now internal.
+the two open kernels `hK`/`hbareSplit` ((K)/(K-bare), both user-adjudicated to be carried, and
+both restated 2026-09-16 with the induction hypothesis), and `hfresh` (a mechanical S1
+bookkeeping item) — every other hypothesis of the pencil reduction is now internal.
 
 This file finally discharges `hfresh` mechanically (residue (iv)): `freshEdgeSupply_of_card_lt_
 of_noRigid_of_degree_two` supplies it from a `β`-cardinality headroom bound, and
@@ -309,9 +324,11 @@ theorem hasGenericPencilRealization_of_independent_pencilRow_target
 /-! ## W5-L7c-5: the `5 ≤ |V|` hsplit producer (Phase 39 PENCIL)
 
 The L7c hsplit assembly's ordered leaf (`notes/Phase39-design.md` §"W5-L7 research recon" "L7c
-decomposition") carrying both open kernels: (K)'s rank-increment implication `hK` and (K-bare)'s
-bare split-extension implication `hbareSplit` (both user-adjudicated to be carried rather than
-discharged this session — see the design doc residues (i)/(ii) and `notes/Phase39.md` *Blockers*).
+decomposition") carrying both open kernels: (K)'s generic-extension implication `hK` and
+(K-bare)'s adjacent-distinct split-extension implication `hbareSplit` (both user-adjudicated to
+be carried rather than discharged — see the design doc residues (i)/(ii), its §"Kernel
+restatement (2026-09-16)", and `notes/Phase39.md` *Blockers*; both take the induction hypothesis
+since 2026-09-16).
 Route: `G.Simple` from `hloop` + `hnoRigid` (`simple_of_loopless_of_noRigid`, the L7c-1 reuse
 pointer); a safe adjacent degree-`2` pair `(v, a₀)`
 (`exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`, closing L6a-safe-exists's rigid `k = 0`
@@ -319,17 +336,20 @@ half at this call site); split data at `v`
 (`exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`, L7c-2, using `a₀` itself as the
 extractor's distinctness witness); align the found `v`–`a₀` edge against the extractor's `eₐ`/`e_b`
 closure clause (whichever of `a`, `b` equals `a₀` is no hub, since `a₀` has degree `2 < 3` —
-`hsafe`). Then split on `PencilNondegFeasible K G`: **feasible** chains L7a's `G′`-generic output
-through `hK` (its output shape is identical to L7b's own `hEsc`) into L7b, forgetting to the bare
-half (`hasPencilRealization_of_generic`); **infeasible** discharges the generic conjunct vacuously
-and the bare half via `hbareSplit` fed the IH's `G′`-bare half. -/
+`hsafe`). Then split on `PencilNondegFeasible K G`: **feasible** feeds L7a's `G′`-generic output
+to `hK`, whose conclusion is `G`'s own generic realization, and forgets to the other two conjuncts
+(`hasDistinctPencilRealization_of_generic`, `hasPencilRealization_of_generic`); **infeasible**
+discharges the generic conjunct vacuously and gets the adjacent-distinct one from `hbareSplit`
+fed the IH's `G′`-distinct half (`G′` is simple by `Graph.splitOff_simple_of_noRigid_of_card`),
+forgetting to the bare one (`hasPencilRealization_of_distinct`). -/
 
 set_option linter.unusedDecidableInType false in
 /-- **W5-L7c-5 — the `5 ≤ |V|` hsplit producer** (Phase 39 PENCIL; `notes/Phase39-design.md`
 §"W5-L7 research recon" "L7c decomposition"). Given the split-arm habitat at `5 ≤ |V(G)|` —
 loopless, two-edge-connected, no proper rigid subgraph, some degree-`2` vertex, a fresh edge
-available — together with kernel (K)'s carried rank-increment implication `hK`, kernel (K-bare)'s
-carried bare split-extension implication `hbareSplit`, and the induction hypothesis on strictly
+available — together with kernel (K)'s carried generic-extension implication `hK`, kernel
+(K-bare)'s carried adjacent-distinct split-extension implication `hbareSplit` (both restated
+2026-09-16 to take the induction hypothesis themselves), and the induction hypothesis on strictly
 smaller graphs, produces `PencilPair K 3 G`. See the section docstring above for the route. -/
 theorem pencilPair_of_splitOff_of_habitat
     [Inhabited α] [Finite α] [Finite β] [DecidableEq β] [Infinite K] {G : Graph α β}
@@ -341,20 +361,17 @@ theorem pencilPair_of_splitOff_of_habitat
       G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
       (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
       HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
-      ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
-        (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
-        (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
-        (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
-        ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
-        LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _)))
+      HasGenericPencilRealization K 3 G)
     (hbareSplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
       G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
       (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
       ¬ PencilNondegFeasible K G →
-      HasPencilRealization K 3 (G.splitOff v a b e₀) →
-      HasPencilRealization K 3 G)
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+      HasDistinctPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasDistinctPencilRealization K 3 G)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
     PencilPair K 3 G := by
   classical
@@ -394,38 +411,24 @@ theorem pencilPair_of_splitOff_of_habitat
     rw [Graph.vertexSet_splitOff]
     exact Set.mem_sdiff_singleton.mpr ⟨hea.right_mem, hea.ne.symm⟩
   by_cases hfeas : PencilNondegFeasible K G
-  · -- Feasible: L7a's `G′`-generic output, fed through `hK` (identical shape to L7b's `hEsc`)
-    -- into L7b, forgets to the bare half.
+  · -- Feasible: L7a's `G′`-generic output, fed through `hK`, which since the 2026-09-16
+    -- weakening (d) concludes the generic motive for `G` itself; the other two conjuncts forget
+    -- from it.
     have hgenG' : HasGenericPencilRealization K 3 (G.splitOff v a b e₀) :=
       hasGenericPencilRealization_of_splitOff_of_safe hV hnoRigid hvdeg heab hea heb hsafe hfeas
         hIH
-    have hcard : ∀ w, (G.closedHubNbhd w).ncard ≤ 3 := by
-      intro w
-      by_cases hw : w ∈ V(G)
-      · obtain ⟨F, normal, point, hnd⟩ := hfeas
-        exact ncard_closedHubNbhd_le_three_of_isNondegPencilRealization hnd hw
-      · have hempty : G.closedHubNbhd w = ∅ := by
-          rw [Set.eq_empty_iff_forall_notMem]
-          rintro x ⟨hxhub, rfl | ⟨e, hlink⟩⟩
-          · exact hw hxhub.1
-          · exact hw hlink.left_mem
-        rw [hempty]; simp
-    have htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
-        G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False := by
-      intro e₁ e₂ e₃ x y z hxy hyz hxz hl₁ hl₂ hl₃
-      obtain ⟨H, hH⟩ := Graph.triangle_isProperRigidSubgraph (n := 3) (by omega) hl₁.symm hl₂
-        hl₃.symm hxz (by omega)
-      exact hnoRigid H hH
-    have hEsc := hK G v a b eₐ e_b e₀ hSimple hV h2ec hnoRigid hvdeg heab hea heb hsafe he₀ hgenG'
     have hgen : HasGenericPencilRealization K 3 G :=
-      hasGenericPencilRealization_of_independent_pencilRow_target
-        (Set.nonempty_of_ncard_ne_zero (by omega)) hcard htf hEsc
-    exact ⟨fun _ _ => hgen, hasPencilRealization_of_generic hgen⟩
-  · -- Infeasible: the generic conjunct is vacuous; the bare half comes from `hbareSplit` fed
-    -- the IH's `G′`-bare half.
-    refine ⟨fun _ hf => absurd hf hfeas, ?_⟩
-    exact hbareSplit G v a b eₐ e_b e₀ hSimple hV h2ec hnoRigid hvdeg heab hea heb hsafe he₀ hfeas
-      (hIH _ hV'ne hV'lt).2
+      hK G v a b eₐ e_b e₀ hSimple hV h2ec hnoRigid hvdeg heab hea heb hsafe he₀ hIH hgenG'
+    exact ⟨fun _ _ => hgen, fun _ => hasDistinctPencilRealization_of_generic hgen,
+      hasPencilRealization_of_generic hgen⟩
+  · -- Infeasible: the generic conjunct is vacuous; the adjacent-distinct half comes from
+    -- `hbareSplit` fed the IH's `G′`-distinct half, and the bare half forgets from it.
+    have hG'simple : (G.splitOff v a b e₀).Simple :=
+      Graph.splitOff_simple_of_noRigid_of_card (by omega) heab hea heb (by omega) hnoRigid
+    have hdist : HasDistinctPencilRealization K 3 G :=
+      hbareSplit G v a b eₐ e_b e₀ hSimple hV h2ec hnoRigid hvdeg heab hea heb hsafe he₀ hfeas
+        hIH ((hIH _ hV'ne hV'lt).2.1 hG'simple)
+    exact ⟨fun _ hf => absurd hf hfeas, fun _ => hdist, hasPencilRealization_of_distinct hdist⟩
 
 /-! ## W5-L7c-6: the successor wrapper closing `hsplit` (Phase 39 PENCIL)
 
@@ -440,9 +443,12 @@ follow-up S1 discharge, not attempted here). -/
 set_option linter.unusedDecidableInType false in
 /-- **W5-L7c-6 — the successor wrapper closing `hsplit`** (Phase 39 PENCIL;
 `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"). The pencil conjecture,
-conditional on the contraction arm (`hcontract`, unchanged from `pencil_conjecture_of_arms_pair`),
-kernel (K)'s carried rank-increment implication `hK`, kernel (K-bare)'s carried bare
-split-extension implication `hbareSplit`, and a mechanical `∀`-form fresh-edge supply `hfresh`.
+conditional on the contraction arm (`hcontract`, unchanged from `pencil_conjecture_of_arms_pair`
+— though its `PencilPair` conclusion now carries the adjacent-distinct conjunct, a new informal
+obligation on W4: `notes/pencil/workbook/W4.md`), kernel (K)'s carried generic-extension
+implication `hK`, kernel (K-bare)'s carried adjacent-distinct split-extension implication
+`hbareSplit` (both taking the induction hypothesis since 2026-09-16), and a mechanical `∀`-form
+fresh-edge supply `hfresh`.
 Builds `hsplit` internally by dispatching on `V(G).ncard`: `= 3`/`= 4` to the direct-witness base
 leaves (`Base.lean`), `5 ≤` to `pencilPair_of_splitOff_of_habitat` above, fed a fresh edge from
 `hfresh`. -/
@@ -457,20 +463,17 @@ theorem pencil_conjecture_of_hcontract_hK_hbareSplit [Inhabited α] [Finite α] 
       G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
       (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
       HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
-      ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
-        (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
-        (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
-        (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
-        ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
-        LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _)))
+      HasGenericPencilRealization K 3 G)
     (hbareSplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
       G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
       (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
       ¬ PencilNondegFeasible K G →
-      HasPencilRealization K 3 (G.splitOff v a b e₀) →
-      HasPencilRealization K 3 G)
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+      HasDistinctPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasDistinctPencilRealization K 3 G)
     (hfresh : ∀ G' : Graph α β, G'.Loopless → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G' 3) →
       (∃ v ∈ V(G'), G'.degree v = 2) → 3 ≤ V(G').ncard → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hspan : V(G) = Set.univ) :
@@ -551,7 +554,7 @@ PENCIL, residue (iv)). The repackaging of `pencil_conjecture_of_hcontract_hK_hba
 replacing the mechanical `∀`-form `hfresh` supply by the concrete headroom bound `bodyBarDim 3 *
 (|α| − 1) < |β|` (`freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two` above), mirroring the panel
 spine's own `theorem_55_minimalKDof_k`/`theorem_55_d3` split. `hcontract`/`hK`/`hbareSplit` carry
-unchanged; every other hypothesis of the pencil reduction is internal. -/
+unchanged from the wrapper above; every other hypothesis of the pencil reduction is internal. -/
 theorem pencil_conjecture_of_hcontract_hK_hbareSplit_of_card [Inhabited α] [Finite α] [Finite β]
     [DecidableEq β] [Infinite K]
     (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
@@ -563,20 +566,17 @@ theorem pencil_conjecture_of_hcontract_hK_hbareSplit_of_card [Inhabited α] [Fin
       G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
       (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
       HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
-      ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
-        (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
-        (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
-        (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
-        ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
-        LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _)))
+      HasGenericPencilRealization K 3 G)
     (hbareSplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
       G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
       (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
       ¬ PencilNondegFeasible K G →
-      HasPencilRealization K 3 (G.splitOff v a b e₀) →
-      HasPencilRealization K 3 G)
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+      HasDistinctPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasDistinctPencilRealization K 3 G)
     (hcard : Graph.bodyBarDim 3 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G :=

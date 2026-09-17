@@ -532,7 +532,8 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
     push_cast
     ring
   have hgeneric : HasGenericPencilRealization K 3 G := ⟨F, normal, point, hnd, hrank⟩
-  exact ⟨fun _ _ => hgeneric, hasPencilRealization_of_generic hgeneric⟩
+  exact ⟨fun _ _ => hgeneric, fun _ => hasDistinctPencilRealization_of_generic hgeneric,
+    hasPencilRealization_of_generic hgeneric⟩
 
 set_option maxHeartbeats 1000000 in
 -- The four-cycle identification and the four-term join-detector rank computation together make
@@ -1417,6 +1418,7 @@ theorem pencilPair_of_habitat_ncard_eq_four [Finite α] [Finite β] {G : Graph �
     push_cast
     ring
   have hgeneric : HasGenericPencilRealization K 3 G := ⟨F, normal, point, hnd, hrank⟩
-  exact ⟨fun _ _ => hgeneric, hasPencilRealization_of_generic hgeneric⟩
+  exact ⟨fun _ _ => hgeneric, fun _ => hasDistinctPencilRealization_of_generic hgeneric,
+    hasPencilRealization_of_generic hgeneric⟩
 
 end CombinatorialRigidity.Molecular

@@ -15,7 +15,7 @@ public import Mathlib.Algebra.Module.Torsion.Field
 /-!
 # Upstream candidates: independent-family facts
 
-Six facts about linearly independent families, all upstream-eligible.
+Seven facts about linearly independent families, all upstream-eligible.
 
 `LinearIndependent.disjoint_span_range_ker` is the converse companion of mathlib's
 `LinearIndependent.map`: if the composite `f ∘ v` is linearly independent, then the span of
@@ -76,6 +76,15 @@ per-index unit `w i` keeps it independent on `s`. Immediate from the mathlib lem
 to the restricted family `s.restrict v`, since `LinearIndepOn` unfolds to exactly that. The
 rigidity project's cut-arm transport (`Molecule/Pencil/Motive.lean`, Phase 39 W5-L5) uses
 it for the per-body projective-scalar congruence a chart reproduction needs.
+
+`LinearIndependent.pair_map` completes mathlib's `pair_iff`/`pair_symm_iff`/`pair_iff'` family
+with the missing functoriality step: an injective linear map carries an independent *pair* to an
+independent pair. Mathlib has the general-family form (`LinearIndependent.map'`, kernel-trivial
+`f`), but only for `f ∘ v`, and there is no `f ∘ ![x, y] = ![f x, f y]` bridge in
+`Data/Fin/VecNotation.lean`, so the general form cannot be used on a `![·, ·]` goal without
+hand-rolling that step — which is exactly the friction this lemma removes. The rigidity
+project's cut arm (`Molecule/Pencil/Arms.lean`, Phase 39) uses it to push one side's
+adjacent-point distinctness through the repositioning automorphism.
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports `linearIndependent_sum` there, `disjoint_span_singleton'` from `Span.Basic`,
@@ -242,6 +251,22 @@ theorem linearIndependent_sumElim_block_swap {ιc : Type*}
   have hrebuild := hfindep.sumElim_of_quotient cand'
     (by simpa [hπ, Function.comp_def, P.mkQ_apply] using hcand'Q)
   simpa [hf] using hrebuild
+
+/-- **An injective linear map preserves independence of a pair.** Over a ring, if
+`![x, y]` is linearly independent and `f` is an injective linear map, then `![f x, f y]` is
+too. The `![·, ·]` form of `LinearIndependent.map'`, which mathlib states only for `f ∘ v`
+(and `Data/Fin/VecNotation.lean` carries no `f ∘ ![x, y] = ![f x, f y]` bridge); proved
+directly through `LinearIndependent.pair_iff`, pulling a vanishing combination of the images
+back along injectivity. -/
+theorem LinearIndependent.pair_map {R M M' : Type*} [Ring R] [AddCommGroup M] [Module R M]
+    [AddCommGroup M'] [Module R M'] {x y : M} (h : LinearIndependent R ![x, y])
+    (f : M →ₗ[R] M') (hf : Function.Injective f) :
+    LinearIndependent R ![f x, f y] := by
+  rw [LinearIndependent.pair_iff] at h ⊢
+  intro s t hst
+  refine h s t (hf ?_)
+  rw [map_add, map_smul, map_smul, map_zero]
+  exact hst
 
 /-- **A unit-rescaling congruence for `LinearIndepOn`.** Over a ring, for a family `v : ι → M`
 independent on a set `s` and a per-index unit rescaling `w : ι → Rˣ`, the rescaled family `w • v`

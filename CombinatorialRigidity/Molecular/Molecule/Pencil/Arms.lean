@@ -308,21 +308,26 @@ PENCIL, leaf W3-L4). Given the fixed panel/point data of the two sides at a cros
 (`n₁(u), pt₁(u)` on side `V₁`, `n₂(v), pt₂(v)` on side `V₂`, both points nonzero), there is a linear
 automorphism `g` of `K⁴` with contragredient `h` (`g x ⬝ᵥ h y = x ⬝ᵥ y`) meeting the two
 cross-incidences of `exists_extensor_two_pencils_iff` after transporting the `V₂` side by `(g, h)`:
-`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0`. Feeds the cut arm
+`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0` — and, **exposed 2026-09-16** (Phase 39
+checklist item 5 (α)), with the transported point `g(pt₂(v))` projectively distinct from
+`pt₁(u)`, which the construction already delivers for free. Feeds the cut arm
 (`lem:pencil-cut-case`) together with the transport
-`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`.
+`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`; the distinctness clause is what
+the cut arm's adjacent-distinct variant needs at the crossing edge.
 
 The construction is explicit and works over *any* field (no genericity): pick `a ∈ n₁(u)^⊥` with
 `![a, pt₁(u)]` independent and `b ∈ n₂(v)^⊥` with `![b, pt₂(v)]` independent
 (`exists_perp_linearIndependent`), then take `g` to be the composite frame map sending `pt₂(v) ↦ a`
 and `b ↦ pt₁(u)` (two applications of `exists_linearEquiv_basisFun_pair`). Then `g(pt₂(v)) = a`
 gives the second incidence, and `g b = pt₁(u)` with the contragredient identity turns the first into
-`b ⬝ᵥ n₂(v) = 0`. -/
+`b ⬝ᵥ n₂(v) = 0`; the distinctness clause is `![a, pt₁(u)]`'s own independence, read through
+`g(pt₂(v)) = a` and `LinearIndependent.pair_symm_iff`. -/
 theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 → K)
     (h1 : pt₁u ≠ 0) (h2 : pt₂v ≠ 0) :
     ∃ (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)),
       (∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y) ∧
-      pt₁u ⬝ᵥ h n₂v = 0 ∧ (g pt₂v) ⬝ᵥ n₁u = 0 := by
+      pt₁u ⬝ᵥ h n₂v = 0 ∧ (g pt₂v) ⬝ᵥ n₁u = 0 ∧
+      LinearIndependent K ![pt₁u, g pt₂v] := by
   classical
   obtain ⟨a, hanu, hLIa⟩ := exists_perp_linearIndependent n₁u pt₁u h1
   obtain ⟨b, hbnv, hLIb⟩ := exists_perp_linearIndependent n₂v pt₂v h2
@@ -338,7 +343,8 @@ theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 �
   have hgpt : g pt₂v = a := by
     have hsp : g₁.symm pt₂v = Pi.basisFun K (Fin (2 + 2)) 1 := by rw [← hg₁1, g₁.symm_apply_apply]
     rw [hgdef, LinearEquiv.trans_apply, hsp, hg₂1]
-  exact ⟨g, h, hgh, by rw [← hgb, hgh b n₂v]; exact hbnv, by rw [hgpt]; exact hanu⟩
+  exact ⟨g, h, hgh, by rw [← hgb, hgh b n₂v]; exact hbnv, by rw [hgpt]; exact hanu,
+    by rw [hgpt]; exact LinearIndependent.pair_symm_iff.mp hLIa⟩
 
 /-! ## W5-L5 cut-arm repositioning, strengthened: the avoidance form (Phase 39, L5-cut-iii)
 
@@ -791,13 +797,34 @@ cross-incidences hold, then take its hinge from `exists_extensor_two_pencils` (l
 through both points). The rank closes by `finrank_span_rigidityRows_cutEdge_eq` (side spans pinned
 by `span_rigidityRows_eq_of_supportExtensor_agree`; the transported `V₂`-side rank by
 `finrank_span_rigidityRows_mapSupport`), with the deficiency split
-`deficiency_eq_of_cutEdges_ncard_le_one`. -/
-theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+`deficiency_eq_of_cutEdges_ncard_le_one`.
+
+**Flag-parametrized core (2026-09-16, Phase 39 checklist item 5, decision (α)).** The construction
+is shared verbatim by the bare cut arm and by its adjacent-distinct variant, so it is stated once
+with a `Prop` flag `D` gating an extra *adjacent-distinctness* rider on the concurrency points: at
+`D := False` the rider is vacuous and `hasPencilRealization_of_not_twoEdgeConnected` below is the
+bare arm (`lem:pencil-cut-case`) verbatim; at `D := True` it is
+`hasDistinctPencilRealization_of_not_twoEdgeConnected`, the arm `PencilPair`'s third conjunct needs
+(`Molecule/Pencil/Motive.lean`). The induction hypothesis also takes `G' ≤ G` — satisfied by both
+induced sides, and what lets the distinct instantiation pull each side's `G'.Simple` from `G`'s at
+the call site. Distinctness threads through the assembly exactly as the panel data does: inside a
+side from that side's own rider, on the `V₂` side through the repositioning automorphism `g` (a
+linear equivalence, hence independence-preserving), and at the crossing edge from
+`exists_reposition_cross_incidences`'s own `![pt₁(u_c), g pt₂(v_c)]` clause. -/
+theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β] {n : ℕ}
+    {D : Prop} (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
-    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
-      HasPencilRealization K n G') :
-    HasPencilRealization K n G := by
+    (hIH : ∀ G' : Graph α β, G' ≤ G → V(G').Nonempty → V(G').ncard < V(G).ncard →
+      ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+        HasPencilPanelRealization G' F normal point ∧
+        (D → ∀ e u v, G'.IsLink e u v → LinearIndependent K ![point u, point v]) ∧
+        (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+          = screwDim 2 * ((V(G').ncard : ℤ) - 1) - G'.deficiency n) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+      HasPencilPanelRealization G F normal point ∧
+      (D → ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v]) ∧
+      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
   classical
   -- ── Cut decomposition: unfold `¬TwoEdgeConnected` directly (no minimality). ──────────────
   simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
@@ -817,10 +844,13 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
   have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
   have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
     have hV₁pos : 0 < V₁.ncard := hne.ncard_pos; rw [hVeq₂]; omega
+  have hV₂sub : V₂ ⊆ V(G) := Set.sdiff_subset
   -- ── Induction hypothesis on each side. ───────────────────────────────────────────────────
-  obtain ⟨F₁, normal₁, point₁, hreal₁, hrank₁⟩ := hIH (G.induce V₁) hV₁ne hV₁ncard
+  obtain ⟨F₁, normal₁, point₁, hreal₁, hdist₁, hrank₁⟩ :=
+    hIH (G.induce V₁) (Graph.induce_le hssub.subset) hV₁ne hV₁ncard
   obtain ⟨⟨hF₁g, hn₁nz, hS₁nz, hpanel₁⟩, hp₁nz, hp₁inc, hthrough₁⟩ := hreal₁
-  obtain ⟨F₂, normal₂, point₂, hreal₂, hrank₂⟩ := hIH (G.induce V₂) hV₂ne hV₂ncard
+  obtain ⟨F₂, normal₂, point₂, hreal₂, hdist₂, hrank₂⟩ :=
+    hIH (G.induce V₂) (Graph.induce_le hV₂sub) hV₂ne hV₂ncard
   rw [hVeq₁] at hrank₁
   rw [hVeq₂] at hrank₂
   -- Deficiency split (minimality-free, KT Lemma 3.6).
@@ -910,6 +940,30 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
       · simp only [point, normal, h₁, ↓reduceIte]; exact hp₁inc v h₁
       · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
         simp only [point, normal, h₁, ↓reduceIte, h₂]; exact hp₂inc v h₂
+    -- Adjacent-distinctness rider: no edge crosses the cut, so every link is internal to one
+    -- side and reads off that side's own rider.
+    have hdist : D → ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
+      intro hDflag e u v hl
+      by_cases hu₁ : u ∈ V₁
+      · have hv₁ : v ∈ V₁ := by
+          by_contra hv₁
+          have hmem : e ∈ G.cutEdges V₁ := by
+            simp only [Graph.cutEdges, Set.mem_ofPred_eq]
+            exact ⟨hl.edge_mem, u, v, hl, hu₁, hv₁⟩
+          simp [hC0] at hmem
+        have hl' : (G.induce V₁).IsLink e u v := (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
+        simp only [point, hu₁, hv₁, ↓reduceIte]
+        exact hdist₁ hDflag e u v hl'
+      · have hu₂ : u ∈ V₂ := ⟨hl.left_mem, hu₁⟩
+        have hv₂ : v ∈ V₂ := by
+          refine ⟨hl.right_mem, fun hv₁ => ?_⟩
+          have hmem : e ∈ G.cutEdges V₁ := by
+            simp only [Graph.cutEdges, Set.mem_ofPred_eq]
+            exact ⟨hl.edge_mem, v, u, hl.symm, hv₁, hu₁⟩
+          simp [hC0] at hmem
+        have hl' : (G.induce V₂).IsLink e u v := (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩
+        simp only [point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂]
+        exact hdist₂ hDflag e u v hl'
     have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
       fun e u v hl => by
         simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
@@ -935,13 +989,13 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
     exact ⟨F, normal, point, ⟨⟨rfl, hnorm_nz, hextF_nz,
       fun e u v hl => ⟨(hlinks e u v hl).1, (hlinks e u v hl).2.1⟩⟩,
       hpoint_nz, hpoint_inc,
-      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩, hrank_eq⟩
+      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩, hdist, hrank_eq⟩
   · -- ── Case |C| = 1: reposition the `V₂` side and take the crossing hinge. ──────────────────
     simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he_c
     obtain ⟨-, u_c, v_c, hl_c, hu_c, hv_c⟩ := he_c
     have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
     -- Repositioning automorphism meeting the two cross-incidences.
-    obtain ⟨g, h, hgh, hcross1, hcross2⟩ := exists_reposition_cross_incidences
+    obtain ⟨g, h, hgh, hcross1, hcross2, hLIcross⟩ := exists_reposition_cross_incidences
       (normal₁ u_c) (point₁ u_c) (normal₂ v_c) (point₂ v_c)
       (hp₁nz u_c hu_c) (hreal₂.2.1 v_c hv_c₂)
     -- Transport the `V₂` side by `(g, h)`.
@@ -1055,6 +1109,51 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
       · simp only [point, normal, h₁, ↓reduceIte]; exact hp₁inc v h₁
       · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
         simp only [point, normal, h₁, ↓reduceIte, h₂]; exact hp₂'inc v h₂
+    -- Adjacent-distinctness rider: internal links read off their side's own rider (the `V₂` one
+    -- through the repositioning automorphism `g`), and the single crossing link is exactly the
+    -- pair `exists_reposition_cross_incidences` already separates.
+    have hdistg : ∀ a b : Fin 4 → K, LinearIndependent K ![a, b] →
+        LinearIndependent K ![g a, g b] := fun a b hab => by
+      simpa using hab.pair_map (g : (Fin 4 → K) →ₗ[K] (Fin 4 → K)) g.injective
+    have hdist : D → ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
+      intro hDflag e u v hl
+      by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
+      · obtain ⟨a, b, hlab⟩ := hE₁
+        have hu₁ : u ∈ V₁ := mem_of_induce_isLink_left hl hlab
+        have hv₁ : v ∈ V₁ := mem_of_induce_isLink_right hl hlab
+        have hl' : (G.induce V₁).IsLink e u v := (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
+        simp only [point, hu₁, hv₁, ↓reduceIte]
+        exact hdist₁ hDflag e u v hl'
+      · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
+        · obtain ⟨a, b, hlab⟩ := hE₂
+          have hu₂ : u ∈ V₂ := mem_of_induce_isLink_left hl hlab
+          have hv₂ : v ∈ V₂ := mem_of_induce_isLink_right hl hlab
+          have hl' : (G.induce V₂).IsLink e u v :=
+            (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩
+          simp only [point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂]
+          exact hdistg _ _ (hdist₂ hDflag e u v hl')
+        · have hu_V := hl.left_mem; have hv_V := hl.right_mem
+          have hopp : (u ∈ V₁ ∧ v ∈ V₂) ∨ (u ∈ V₂ ∧ v ∈ V₁) := by
+            by_cases hu₁ : u ∈ V₁
+            · exact Or.inl ⟨hu₁, hv_V, fun hv₁ => hE₁ ⟨u, v,
+                (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩⟩
+            · by_cases hv₁ : v ∈ V₁
+              · exact Or.inr ⟨⟨hu_V, hu₁⟩, hv₁⟩
+              · exact absurd ⟨u, v, (Graph.induce_isLink G V₂ e u v).mpr
+                  ⟨hl, ⟨hu_V, hu₁⟩, ⟨hv_V, hv₁⟩⟩⟩ hE₂
+          have hLI : LinearIndependent K ![point u_c, point v_c] := by
+            rw [hpt_uc, hpt_vc]; exact hLIcross
+          rcases hopp with ⟨hu₁, hv₂⟩ | ⟨hu₂, hv₁⟩
+          · have heq : e = e_c := hcut_uniq e u v hl hu₁ hv₂.2
+            subst heq
+            rcases hl.eq_and_eq_or_eq_and_eq hl_c with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+            · exact hLI
+            · exact LinearIndependent.pair_symm_iff.mp hLI
+          · have heq : e = e_c := hcut_uniq e v u hl.symm hv₁ hu₂.2
+            subst heq
+            rcases hl.eq_and_eq_or_eq_and_eq hl_c with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+            · exact hLI
+            · exact LinearIndependent.pair_symm_iff.mp hLI
     have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
       fun e u v hl => by
         simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
@@ -1087,7 +1186,47 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
     exact ⟨F, normal, point, ⟨⟨rfl, hnorm_nz, hextF_nz,
       fun e u v hl => ⟨(hlinks e u v hl).1, (hlinks e u v hl).2.1⟩⟩,
       hpoint_nz, hpoint_inc,
-      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩, hrank_eq⟩
+      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩, hdist, hrank_eq⟩
+
+/-- **The cut-edge arm of the pencil reduction, bare motive** (`lem:pencil-cut-case`, W3-L4;
+Phase 39; Katoh–Tanigawa 2011 §6.1). The flag-parametrized core above at `D := False`, where the
+adjacent-distinctness rider is vacuous on both sides and in the conclusion: a multigraph that is
+not `2`-edge-connected has a pencil realization at the deficiency rank as soon as both sides of a
+cut with at most one crossing edge do. Statement unchanged by the 2026-09-16 (α) restatement — the
+core carries the proof. -/
+theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
+    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+      HasPencilRealization K n G') :
+    HasPencilRealization K n G := by
+  obtain ⟨F, normal, point, hreal, -, hrank⟩ :=
+    hasPencilRealization_of_not_twoEdgeConnected_core (D := False) hD hn hntec
+      (fun G' _ hne' hlt' => by
+        obtain ⟨F', normal', point', hreal', hrank'⟩ := hIH G' hne' hlt'
+        exact ⟨F', normal', point', hreal', fun hfalse => hfalse.elim, hrank'⟩)
+  exact ⟨F, normal, point, hreal, hrank⟩
+
+/-- **The cut-edge arm of the pencil reduction, adjacent-distinct motive** (Phase 39 PENCIL,
+checklist item 5 decision (α); the `HasDistinctPencilRealization` sibling of
+`hasPencilRealization_of_not_twoEdgeConnected`). The flag-parametrized core above at `D := True`:
+if both sides of a cut with at most one crossing edge have a pencil realization at the deficiency
+rank *with adjacent concurrency points projectively distinct*, so does `G`. The induction
+hypothesis is restricted to subgraphs `G' ≤ G`, which is what the conditioned pair's consumer
+(`pencilPair_of_not_twoEdgeConnected`, `Molecule/Pencil/Pair2.lean`) needs in order to pass `G`'s
+simplicity down to the two induced sides before invoking their distinct halves. -/
+theorem hasDistinctPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
+    (hIH : ∀ G' : Graph α β, G' ≤ G → V(G').Nonempty → V(G').ncard < V(G).ncard →
+      HasDistinctPencilRealization K n G') :
+    HasDistinctPencilRealization K n G := by
+  obtain ⟨F, normal, point, hreal, hdist, hrank⟩ :=
+    hasPencilRealization_of_not_twoEdgeConnected_core (D := True) hD hn hntec
+      (fun G' hle hne' hlt' => by
+        obtain ⟨F', normal', point', hreal', hdist', hrank'⟩ := hIH G' hle hne' hlt'
+        exact ⟨F', normal', point', hreal', fun _ => hdist', hrank'⟩)
+  exact ⟨F, normal, point, hreal, hdist trivial, hrank⟩
 
 /-! ## W3-L5: the base arm (`lem:pencil-base-case`, Phase 39)
 

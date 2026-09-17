@@ -1,11 +1,13 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — the phase stays OPEN (2026-07-24 adjudication). The target is
-**`PencilPair K 3 G`**; the landed theorem
+**`PencilPair K 3 G`** — since 2026-09-16 a **three**-conjunct motive (bare; under `G.Simple` an
+adjacent-distinct one; under simplicity plus feasibility a generic one). The landed theorem
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) derives
 it from exactly **three carried hypotheses**: **`hcontract`** (W4; Lean build decomposed and
-parked by the **2026-08-05 Lean hold**; informal argument closed), **`hK`** (kernel (K)) and
-**`hbareSplit`** (kernel (K-bare)). W0–W3, W5 (L0–L7), `hsplit` and `hfresh` are Lean-closed.
+parked by the **2026-08-05 Lean hold**; informal argument closed, plus one new (α) obligation),
+**`hK`** (kernel (K)) and **`hbareSplit`** (kernel (K-bare)). W0–W3, W5 (L0–L7), `hsplit` and
+`hfresh` are Lean-closed.
 
 **Two tracks since 2026-09-15.** *(1)* **Attack track** — research on the two open kernels,
 one agent per lemma under `/attack <name>` (`HARNESS.md`); each lemma's status surface is
@@ -20,14 +22,16 @@ pinned are not locally provable** — their truth on the gap cells is the conjec
 hypothesis on smaller graphs.** *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
 hypotheses, no `sorry`. Items 1–3 DONE 2026-09-15 (`sec:pencil-girth-chain` fully green; field
-hypothesis option C). **Item 4 (the R2 recon) DONE 2026-09-16** — (a) the rank bridge is exact,
-(c) feasibility and simplicity pass to the side by reconstruction, (d) `hK` may conclude
-`HasGenericPencilRealization K 3 G`; (b) the bare motive admits coincident-point witnesses no
-distinct configuration matches (compiled), so R2's bare arm is unsound as pinned and the fix is a
-motive decision (`notes/Phase39-design.md` § *R2 recon*). **Next: two decisions, then item 5** —
-the PI's (α)/(β) call on (b) and the user's (GR-10) scope call; then the kernel-restatement slice
-(item 5), hold lifted 2026-09-16. Items 6–12 (the 2026-09-15 numbering's 4–10) stay parked by
-the hold.
+hypothesis option C). **Items 4–5 DONE 2026-09-16.** The R2 recon settled the rank bridge
+(exact), side feasibility (by reconstruction) and `hK`'s conclusion (weakenable); its one open
+finding — the bare motive attains at *coincident* adjacent points — the user settled **(α)**, a
+simple-conditioned third `PencilPair` conjunct. **Item 5 then landed in one slice:** both kernels
+take the induction hypothesis (S14(v): as pinned they are false on a never-attaining side), `hK`
+concludes `HasGenericPencilRealization K 3 G`, and `hbareSplit` takes and returns the new motive
+`HasDistinctPencilRealization`. **For the kernels' current form read `notes/Phase39-design.md`
+§ *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Next: the S-mark brief
+rewrite** against the landed statements, then `/attack smark` session 6; the user's (GR-10) scope
+call is still open. Items 6–12 (the 2026-09-15 numbering's 4–10) stay parked by the hold.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -40,10 +44,10 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next concrete step: the PI's (α)/(β) call on the bare motive (checklist item 4(b),
-*Blockers*) and the user's (GR-10) scope call; then checklist item 5 (the kernel-restatement
-slice) under `/coordinate-phase 39`, applying both; then the S-mark brief is rewritten against
-the landed statements (*Hand-off*), and `/attack smark` resumes at session 6.** S-mark has five sessions (2026-09-15/16) and two reviews. Review 1
+**Next concrete step: the S-mark brief rewrite** against the *landed* kernel statements
+(*Hand-off* item 1), then `/attack smark` session 6; in parallel the user's (GR-10) scope call
+(*Blockers*) decides whether that attack runs at all. Checklist items 4 and 5 are both DONE
+2026-09-16. S-mark has five sessions (2026-09-15/16) and two reviews. Review 1
 (2026-09-15) re-aimed the attack at the consumed shape (the `hbareSplit` disjunct the brief had
 dropped; workbook S10). Sessions 3–4 then attacked profile bounds on an arbitrary side
 ((O4′)/(O4″)) that turned out not to be consumed; session 5 re-read the consumer and found the
@@ -53,8 +57,9 @@ not a discardable "realization of `G − x`" — and route R2 (workbook S14). Re
 (2026-09-16, notes at workbook S15) verified the consumer reading against `Escape.lean` and
 the S14 arithmetic, endorsed R2, and recorded three statement-level questions for the Lean
 track — **answered by the item-4 recon 2026-09-16** (checklist item 4; record
-`notes/Phase39-design.md` § *R2 recon*). `notes/attacks/smark/state.md` is the status surface;
-session 6 waits for the brief rewrite. (GR-10) has not started — **and should wait**: the recon
+`notes/Phase39-design.md` § *R2 recon*). `notes/attacks/smark/state.md` is the status surface; session 6 waits for the brief rewrite,
+which must quote the **landed** kernels (`notes/Phase39-design.md` § *Kernel restatement
+(2026-09-16)*), not the pinned blocks the brief was written against. (GR-10) has not started — **and should wait**: the recon
 confirms R2 covers `hK`'s arm at the statement level (S14(iii), (vii); under the recon's (d) the
 chart form, hence proviso (P), drops out of `hK`'s statement), so the user decides whether the
 grid route runs as briefed, re-scoped, or retires (*Blockers*; recon recommendation: re-scope).
@@ -64,8 +69,8 @@ takes the char-2 probe** (PI 2026-09-15, deferred to the attack track; spec in
 full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
 misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
 the headline typeclass. The attack decides when to run it.
-**Lean track — checklist items 1–4 are DONE (items 1–3 2026-09-15, item 4 2026-09-16); item 5
-is queued behind the two post-recon decisions.** The design pass (`notes/Phase39-design.md` § *Lean-track design pass*) pinned items 1–2
+**Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16).**
+The design pass (`notes/Phase39-design.md` § *Lean-track design pass*) pinned items 1–2
 as eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains* (the
 chapter's first section), and **all eight are now green**: G1–G4 in the new
 `Molecular/Induction/Girth.lean` and in `Molecule/Pencil/Motive.lean` (`Graph.GirthGE` with
@@ -79,9 +84,10 @@ M3a/M3b, M1, M2 and M4/M4′ in the new `Molecular/Induction/ForestSurgery/Maxim
 `le_length_add_eDist_deleteVerts_interior_of_noRigid`). Item 3 is **SETTLED** (PI, option C):
 the reduction stays `[Infinite K]`; the hypothesis lives on the kernel lemmas
 (`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
-`fmlnote:pencil-conditional-realization-pair-field`). **Items 6–12 stay parked by the hold**;
-item 5 is the next Lean work once the two decisions land, hold lifted 2026-09-16 (*Hand-off* for the order). Builds need `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md`
-*Environment*; session-wide via the gitignored `.claude/settings.local.json`).
+`fmlnote:pencil-conditional-realization-pair-field`). **Items 6–12 stay parked by the hold**,
+and no Lean work is queued — the next task is the brief rewrite (*Hand-off*). Builds need
+`LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
+`.claude/settings.local.json`).
 
 **Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
 base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-07-24 → 07-30),
@@ -117,8 +123,9 @@ the attack's `dim M(G) = 6 + def₃(G)` is the Lean's `HasPencilRealization` ran
 adjacent points are distinct (five rows per hinge, `screwDim 2 = 6`, `deficiency 3 = def₃`;
 compiled). **Bare-motive slack** (item-4 recon): the bare motive attains at coincident adjacent
 points where no distinct configuration does (the parallel pair; compiled cap `≤ 5`), so a Lean
-bare witness is not automatically a point of the attack's `Y(G)` — the (α)/(β) decision
-(*Blockers*).
+bare witness is not automatically a point of the attack's `Y(G)` — **settled (α)** 2026-09-16
+by a third `PencilPair` conjunct, so `hbareSplit`'s antecedent is a `Y(G₋)`-point by
+construction and O8's coincident stratum is deleted.
 
 **Standing user adjudications that bind:** 2026-07-24 the phase stays open; 2026-08-05 the
 Lean hold, and *"all of the scripts we run [are] committed"*; 2026-09-03 *"we should
@@ -182,45 +189,20 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   arm the IH's generic half is usable for the side. **(d)** CONFIRMED — `hEsc` is consumed once
   (`Escape.lean:420–422`); `hK` may conclude `HasGenericPencilRealization K 3 G` (the blueprint
   already states it so, `pencil.tex:843–845`).
-- [ ] **Kernel restatement with the induction hypothesis (item 5; one build slice, after the
-  two post-recon decisions; PI decision and hold lift 2026-09-16).** Both `hK` and `hbareSplit` — in
-  `pencilPair_of_splitOff_of_habitat` and the `pencil_conjecture_of_hcontract_hK_hbareSplit*`
-  wrappers (`Escape.lean`) — gain `(∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
-  PencilPair K 3 G') →` ahead of their antecedent, the form `hcontract` already uses; `hIH` is
-  in scope at the sole call site, so threading is mechanical. Why (workbook S14(v)): with
-  `G = H′ ∪ ear_m`, the split-off antecedent allows `δ′ + a′ ≤ 6 − m` while `G` attaining needs
-  `a′ = 0` or `δ′ + a′ ≤ 5 − m`; on a never-attaining side the pinned implication is false, so
-  a proof of it as stated would have to prove the conjecture for `G − chain` inside the kernel.
-  Surfaces, all in the same commit (per-slice gate; `hbareSplit` is the grep key): **Lean** —
-  `Escape.lean` (the two statements in `pencilPair_of_splitOff_of_habitat`, the wrapper and its
-  `_of_card` successor, and the section docstrings) and the `hbareSplit` mentions in
-  `Molecular/Induction/ForestSurgery/MaximalChain.lean` docstrings; `pencil_conjecture_of_arms_pair`
-  (`Pair2.lean`) takes `hsplit`, not the kernels — confirm unaffected. **Blueprint**
-  (`pencil.tex`): `thm:pencil-conditional-realization-pair` — its statement prose ("with
-  split-off multigraph $G'$ already satisfying the conditioned pair") becomes "given that every
-  strictly smaller such graph satisfies the conditioned pair", and its proof's last paragraph
-  says how the kernels are fed; `fmlnote:pencil-conditional-realization-pair-kernels` gains the
-  S14(v) fact (as pinned, not locally provable); `fmlnote:…-field`'s (K-bare) sentence if the
-  witness-form remark shifts. **Design doc** — `notes/Phase39-design.md` is FROZEN: never edit
-  residue (ii)'s pinned block in place; append a new arc with the restated forms, add its
-  arc-index row, and add a one-line forward pointer beside the old pin. **Status surfaces** —
-  this note's header and `ROADMAP.md`'s Phase 39 cell name the kernels as carried; re-read both.
-  The `hbareSplit` mentions in `notes/scripts/{kbare,w4}/` are numerics comments, not pins —
-  leave them. **From the item-4 recon (2026-09-16), in the same slice:** *(d)* `hK` concludes
-  `HasGenericPencilRealization K 3 G` — the call site's `hcard`/`htf`/conversion
-  (`Escape.lean:402–422`) collapse to `have hgen := hK … hgenG'`; the wrappers thread only; the
-  blueprint's (K) sentence is already the generic form (`pencil.tex:843–845`). *(c)* land
-  `pencilNondegFeasible_of_le_of_triangleFree` (~15 lines; statement in the design arc) beside
-  `PencilNondegFeasible.mono` in `Motive.lean` as the kernel-facing API. *(b), conditional on the
-  PI choosing (α):* new motive `HasDistinctPencilRealization` (bare ∧ adjacent points LI ∧ rank),
-  a third `PencilPair` conjunct `G.Simple → …`, the arm ripple in the design arc's table (base
-  single edge reworked off `fun _ => q₀`; the cut arm's `exists_reposition_cross_incidences`
-  exposing its LI pair; `hbareSplit` concluding the distinct motive; forgetful maps), and
-  `hcontract` restated with its new W4 obligation logged in `notes/pencil/workbook/W4.md`.
-  **Never place the conjunct on `HasPencilPanelRealization`**: it is pinned by
-  `lem:pencil-self-dual` (`pencil.tex:149–150`) and must stay coincident-capable at parallel
-  classes. Under (β) no motive change; O8's coincident stratum becomes the attack's obligation.
-  Then the S-mark brief is rewritten (*Hand-off*).
+- [x] **Kernel restatement (item 5) — DONE 2026-09-16**, one slice, all four pieces (user:
+  *"One slice: IH + (d) + (c)-adder + whatever (b) decides"*). Both kernels take the induction
+  hypothesis ahead of their antecedent (S14(v)); `hK` concludes `HasGenericPencilRealization K
+  3 G` ((d)); `pencilNondegFeasible_of_le_of_triangleFree` landed in `Steer.lean` ((c) — the
+  W5-L6b criterion it ends on lives there, and `Motive.lean` is upstream of it); and (α) added
+  the motive `HasDistinctPencilRealization` (`Statement.lean`) as `PencilPair`'s
+  simple-conditioned third conjunct, with `hbareSplit` taking and returning it. The cut arm was
+  the one real cost — no distinct-level assembly existed — resolved by a `Prop` flag on one
+  shared core (`hasPencilRealization_of_not_twoEdgeConnected_core`) instead of duplicating
+  ~300 lines. Record, with the arm table as it actually discharged: `notes/Phase39-design.md`
+  § *Kernel restatement (2026-09-16)*; blueprint `def:pencil-distinct-motive`,
+  `def:pencil-conditioned-pair`, `lem:pencil-cut-nondegeneracy`, `lem:pencil-cut-case`,
+  `thm:pencil-conditional-realization-pair`; W4's new obligation
+  `notes/pencil/workbook/W4.md`.
 - [ ] **Deficiency laws** (BINDUC's, cited by 45 claims through (BE-22)): 3-connected ⇒
   `def₂ = 0`; the 2-cut law `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)`; the fibre-product identity
   `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)`; the welded bound `ρ_i ≤ δ_i + a_i` with
@@ -263,18 +245,14 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   line naming the Lean hypothesis that makes it necessary; a measured nonzero gets its witness
   exhibited before a mechanism is written; the reviewer's first step diffs the brief against
   the source.
-- **Item 4's three questions are ANSWERED (2026-09-16; `notes/Phase39-design.md` § *R2 recon*).**
-  What stays open from them is one decision — **(b): (α) or (β), the PI's call.** (α) a
-  simple-conditioned third `PencilPair` conjunct (adjacent points projectively distinct): every
-  landed arm discharges it nearly for free; the cost is a new W4 obligation on the carried
-  `hcontract` (its contraction stage `G/H` is a multigraph whose attaining witnesses *must* be
-  coincident at parallel classes); it makes `hbareSplit`'s antecedent a `Y(G₋)`-point and deletes
-  O8's coincident stratum. (β) motives unchanged; the attack must prove O8's coincident stratum
-  lies in the closure of `Y` for simple habitat graphs (open; a local obstruction at adjacent hubs
-  with pinned neighbour planes is where it would fail). Recon recommendation: (α). The conjunct
-  must never go on `HasPencilPanelRealization` (pinned by `lem:pencil-self-dual`; needed
-  coincident-capable at parallel classes). The attack's own structural residue is **O7** — irreducibility of
-  the side's configuration space, or matching of the component the antecedent certifies with
+- **Item 4's questions are ANSWERED and its one open decision is SETTLED (α)** (user,
+  2026-09-16, verbatim in `notes/pencil/adjudications.md`; applied by item 5 the same day).
+  `PencilPair` gained the simple-conditioned adjacent-distinct conjunct, so `hbareSplit`'s
+  antecedent is a `Y(G₋)`-point and O8's coincident stratum is gone; the price is one new
+  informal W4 obligation on the carried `hcontract` — un-coinciding at the contraction's
+  parallel classes — logged with an (unpriced, expected-cheap) estimate in
+  `notes/pencil/workbook/W4.md`. The attack's own structural residue is **O7** — irreducibility
+  of the side's configuration space, or matching of the component the antecedent certifies with
   the one the IH certifies — on the bare arm, where some hub has three hub neighbours; no
   driver population has sampled that arm (every census branch has length `≥ 2`), and the
   2026-07-30 (K-bare) recon flagged the same evidence gap.
@@ -295,7 +273,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   (`not_pencilNondegFeasible_of_triangle_two_hubs`, `Motive.lean:684` — its graph is a triangle),
   while the count **plus triangle-freeness** is landed in both directions (`Motive.lean:410` ⇒,
   `Steer.lean:1344` ⇐): in the triangle-free habitat feasibility is exactly
-  `∀ w, |closedHubNbhd w| ≤ 3` and passes to every subgraph by reconstruction (compiled). The
+  `∀ w, |closedHubNbhd w| ≤ 3` and passes to every subgraph by reconstruction — landed
+  2026-09-16 as `pencilNondegFeasible_of_le_of_triangleFree` (`Steer.lean`). The
   triangle is why both readings coexist. Restricting a parent's witness instead is gapped at hubs
   demoted to degree 2 (`PencilNondegFeasible.mono`) — the chain ends.
 - **Harness:** none open; incidents go to `notes/harness/incidents.md`, one line each, and
@@ -303,27 +282,26 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 ## Hand-off / next phase
 
-**The phase stays OPEN.** Next concrete task, in order: **(1) two decisions** — the PI's
-(α)/(β) call on the bare motive (checklist item 4(b), *Blockers*) and the user's (GR-10) scope
-call (*Blockers*), each recorded verbatim in `notes/pencil/adjudications.md` and as a one-liner
-under *Decisions made*. **(2) Checklist item 5** — the kernel-restatement slice, one build
-commit, applying the recon's verdicts and both decisions and restating the design-doc and
-blueprint pins in the same commit (surfaces under item 5). Item 4, the R2 recon, is DONE
-2026-09-16 (`notes/Phase39-design.md` § *R2 recon*). **(3) The S-mark brief rewrite**, drafted
-by an agent from the *landed* declarations and PI-reviewed: §2 = the kernel implication with
-the IH as landed; §3 = both kernels quoted verbatim, one hypothesis per line, each operator
-glossed from its definition body (`splitOff`, `PencilHub`, `PencilNondegFeasible`,
-`HasPencilRealization`), the recon's answers to (a)–(d) (the design arc's *Material for the
-brief's §3*), and a one-line justification for any hypothesis the route does not use; §6 = O7 first — build an adjacent-hub side (a hub with three
-hub neighbours, each continued by a branch of length `≥ 2` to `w` or `v`, girth `≥ 7`) and
-sample from several starts before attempting the tower extension or component matching — then
-O8 against the Lean's *actual* bare space as the (α)/(β) decision settles it, then O9; every obligation with a
-"consumed because" line. **(4)** `/attack smark` session 6 — and `/attack gr10` session 1 only if the PI keeps it after
-the recon (*Blockers*) — each a main session in its own worktree. When an attack
-starts, its `state.md` is that lemma's status surface and this note carries a two-line pointer
-to it, edited by the PI. **On a future HIT the phase-boundary consequences are the USER's
-call** (`PHASE-BOUNDARIES.md`, against the 2026-07-24 no-split adjudication), surfaced with an
-estimate, never unilateral.
+**The phase stays OPEN.** Checklist items 1–5 are DONE; the Lean track has nothing queued.
+Next concrete task, in order: **(1) The S-mark brief rewrite**, drafted by an agent from the
+*landed* declarations and PI-reviewed. §2 = the kernel implication with the IH as landed; §3 =
+both kernels quoted **verbatim from `Escape.lean` as they now stand** (`notes/Phase39-design.md`
+§ *Kernel restatement (2026-09-16)* has the same text — **never** the pinned blocks under
+§ *W5-L7 research recon*), one hypothesis per line, each operator glossed from its definition
+body (`splitOff`, `PencilHub`, `PencilNondegFeasible`, `HasDistinctPencilRealization`,
+`HasGenericPencilRealization`), the recon's answers to (a)–(d) (the design arc's *Material for
+the brief's §3*), and a one-line justification for any hypothesis the route does not use; §6 =
+O7 first — build an adjacent-hub side (a hub with three hub neighbours, each continued by a
+branch of length `≥ 2` to `w` or `v`, girth `≥ 7`) and sample from several starts before
+attempting the tower extension or component matching — then O9. **O8's coincident stratum is
+deleted** by the (α) decision and must come out of the brief, not be re-stated. **(2) The
+user's (GR-10) scope call** (*Blockers*), recorded verbatim in
+`notes/pencil/adjudications.md` and as a one-liner under *Decisions made*. **(3)**
+`/attack smark` session 6 — and `/attack gr10` session 1 only if the user keeps it — each a
+main session in its own worktree. When an attack starts, its `state.md` is that lemma's status
+surface and this note carries a two-line pointer to it, edited by the PI. **On a future HIT the
+phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
+2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -333,6 +311,15 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 ## Decisions made during this phase
 
 ### Phase-local choices
+
+- **2026-09-16 — item 5 LANDED: the kernels take the induction hypothesis, `hK` weakens to
+  the generic motive, and `PencilPair` gains an adjacent-distinct third conjunct (user: (α),
+  one slice).** New motive `HasDistinctPencilRealization` (`Statement.lean`), *never* a
+  conjunct on `HasPencilPanelRealization` (that is refuted and would break
+  `lem:pencil-self-dual`). Cut arm done once with a `Prop` flag, not duplicated. (c) adder
+  `pencilNondegFeasible_of_le_of_triangleFree` in `Steer.lean`. New informal W4 obligation.
+  Record: `notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*; verbatim decisions
+  `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
 
 - **2026-09-16 — item 4 (the R2 recon) verdict RECORDED (coordinator-accepted).** (a) rank
   bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; (b) left as
@@ -377,10 +364,15 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   `notes/pencil/arc-worklog.md` *Decisions made*; the recon verdicts R1–R3 are
   `notes/pencil/structure.md` §"The question and the opening recon".
 
-### Promoted to HARNESS / DESIGN
+### Promoted to HARNESS / DESIGN / TACTICS
 
 - *Evidence and reproducibility rules distilled from the arc* → `HARNESS.md` *Evidence*,
   *Reproducibility* (the retired manual `RESEARCH-ARC.md` is the provenance).
+- *Both triggers of `linter.style.show` (goal-changing **and** no-op), plus the
+  `haveI`-on-a-`Prop`-class sibling* → `TACTICS-GOLF.md` § 12; FRICTION entry
+  *Two Lean style linters cost a build cycle each in one commit*.
+- *`LinearIndependent.pair_map`* (injective linear map preserves pair independence)
+  → mirrored, `CombinatorialRigidity/Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`.
 
 ### The research arc's record (2026-08-05 → 09-13)
 

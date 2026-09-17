@@ -106,6 +106,40 @@ def HasPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Pro
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
+/-- **The adjacent-distinct pencil motive** (`def:pencil-distinct-motive`; Phase 39 PENCIL,
+checklist item 5 decision (α), `notes/Phase39-design.md` §"Kernel restatement"). A pencil
+realization at the deficiency rank (`HasPencilRealization`) whose adjacent concurrency points are
+*projectively distinct* — the second conjunct of `IsNondegPencilRealization`
+(`Molecule/Pencil/Motive.lean`) lifted onto the bare motive, and nothing else from nondegeneracy.
+It sits strictly between the bare motive and the generic one: `HasGenericPencilRealization →
+HasDistinctPencilRealization → HasPencilRealization`, both forgetful
+(`hasDistinctPencilRealization_of_generic`, `hasPencilRealization_of_distinct`).
+
+**Why it is a separate motive rather than a conjunct on `HasPencilPanelRealization`** (item-4
+recon, 2026-09-16, kernel-checked): the bare motive attains the target rank at a `≥ 2`-fold
+parallel class *only* with both bodies at one point (`hasPencilRealization_of_ncard_le_two`'s own
+witness there; at projectively distinct points every hinge is forced onto one line and the rows
+span at most `screwDim 2 - 1`), and the stratum self-duality
+(`hasPencilPanelRealization_mapExtensor_screwComplementIso`, `lem:pencil-self-dual`) swaps
+`normal` and `point`, so the panel realization must stay coincident-capable. The distinctness the
+kernel (K-bare) route needs — its antecedent should certify a point of the *configuration variety*
+`Y`, not merely of the Lean bare space — is therefore carried here, conditioned on `G.Simple`
+inside `PencilPair` (`Molecule/Pencil/Motive.lean`), where the parallel class is excluded
+outright. -/
+def HasDistinctPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+    HasPencilPanelRealization G F normal point ∧
+    (∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v]) ∧
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
+/-- **The forgetful map, distinct ⟹ bare** (Phase 39 PENCIL, item 5 (α)): drop the
+adjacent-distinctness conjunct. -/
+theorem hasPencilRealization_of_distinct {n : ℕ} {G : Graph α β}
+    (h : HasDistinctPencilRealization K n G) : HasPencilRealization K n G := by
+  obtain ⟨F, normal, point, hreal, -, hrank⟩ := h
+  exact ⟨F, normal, point, hreal, hrank⟩
+
 /-! ## Dot-product / span plumbing for the transport -/
 
 /-- **A vector orthogonal to a spanning family is orthogonal to everything in the span**

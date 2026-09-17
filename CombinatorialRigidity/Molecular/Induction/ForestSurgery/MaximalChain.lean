@@ -551,7 +551,10 @@ distinct hubs (a path with both ends of degree `≥ 3`, `v` interior, all other 
 vertices of degree `2`). The consumer's `¬ G.PencilHub a ∨ ¬ G.PencilHub b` is `hab` by one
 line (`a ∈ V(G)` from `hla.right_mem`, `¬ PencilHub a ↔ G.degree a < 3`, and
 `two_le_degree_of_twoEdgeConnected`) — not part of this lemma. `5 ≤ |V|` and `hnp` are not
-needed for the trichotomy itself (only for its girth consequences downstream). Route: WLOG
+needed for the trichotomy itself (only for its girth consequences downstream). (The combinatorial
+hypotheses quoted here are unchanged by the kernels' 2026-09-16 restatement — that added an
+induction hypothesis and moved the antecedent/conclusion to `HasDistinctPencilRealization`;
+see `Molecule/Pencil/Escape.lean`.) Route: WLOG
 `G.degree a = 2` (`degree_two_pair_aux`, applied with `a`/`b` and `eₐ`/`e_b` swapped in the
 other case) — the conclusion mentions neither `a` nor `b`, so no explicit swap lemma is
 needed. -/

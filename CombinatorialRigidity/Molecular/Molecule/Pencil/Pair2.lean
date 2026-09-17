@@ -1064,15 +1064,21 @@ consuming the IH at the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far
 multigraph that is not `2`-edge-connected. If every smaller graph satisfies the conditioned pair at
 rank `n` (`hIH`), then so does `G` — all four cut sub-cases discharge internally, the residual
 pendant attachment at degree exactly `3` (formerly the carried hypothesis `hcutPendant3`) via the
-inline L5-cut-v chart-steering discharge `hasGenericPencilRealization_pendant_deg3_of_IH`. -/
+inline L5-cut-v chart-steering discharge `hasGenericPencilRealization_pendant_deg3_of_IH`. The
+**adjacent-distinct conjunct** (2026-09-16, decision (α)) needs none of that machinery: it is the
+cut arm's own sibling `hasDistinctPencilRealization_of_not_twoEdgeConnected` (`Arms.lean`) fed the
+IH's distinct halves, whose `G'.Simple` antecedents come from `G`'s by `Graph.Simple.mono` along
+the `G' ≤ G` the distinct arm's induction hypothesis carries. -/
 theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     PencilPair K n G := by
   refine ⟨fun hSimple hfeas => ?_,
+    fun hSimple => hasDistinctPencilRealization_of_not_twoEdgeConnected hD hn hntec
+      (fun G' hle' hne' hlt' => (hIH G' hne' hlt').2.1 (hSimple.mono hle')),
     hasPencilRealization_of_not_twoEdgeConnected hD hn hntec
-      (fun G' hne' hlt' => (hIH G' hne' hlt').2)⟩
+      (fun G' hne' hlt' => (hIH G' hne' hlt').2.2)⟩
   classical
   have := hSimple.toLoopless
   simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec

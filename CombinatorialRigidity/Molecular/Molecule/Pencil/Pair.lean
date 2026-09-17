@@ -58,12 +58,15 @@ HasGenericPencilRealization K n G` vacuously true without consulting `hrec` or t
 hypothesis at all (`¬ G.Simple` is also available at a loop, but the feasibility discharge already
 suffices). This is exactly the design doc's "loop arm free" verdict
 (`notes/Phase39-design.md` §"W5 leaf decomposition" L5), **one-line fixed 2026-07-24** for the
-(b′) restatement of `PencilPair` (an extra, unused `G.Simple` binder). -/
+(b′) restatement of `PencilPair` (an extra, unused `G.Simple` binder). The **third conjunct**
+(adjacent-distinct, added 2026-09-16 by the (α) decision) is free for the same reason at one
+remove: a loop is not simple (`Graph.Simple.toLoopless`), so that implication is vacuous too. -/
 theorem pencilPair_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
     (hloop : G.IsLoopAt e v) (hrec : PencilPair K n (G ＼ ({e} : Set β))) :
     PencilPair K n G :=
   ⟨fun _ hfeas => absurd hfeas (not_pencilNondegFeasible_of_isLoopAt hloop),
-    hasPencilRealization_of_isLoopAt hloop hrec.2⟩
+    fun hSimple => absurd hloop (by have := hSimple.toLoopless; exact G.not_isLoopAt e v),
+    hasPencilRealization_of_isLoopAt hloop hrec.2.2⟩
 
 /-! ## W5-L5: a base-arm finding — parallel classes are NOT nondegeneracy-infeasible, resolved via
 (b′) (Phase 39 PENCIL)
@@ -200,7 +203,7 @@ theorem exists_isNondegPencilRealization_parallel_pair
 
 `pencilPair_of_ncard_le_two` mirrors the bare-motive `hasPencilRealization_of_ncard_le_two`
 (W3-L5, `Arms.lean`)'s own three-way case split (edgeless / single edge / `≥ 2`-fold parallel
-class), reusing its bare half verbatim for `PencilPair`'s second conjunct. The generic conjunct
+class), reusing its bare half verbatim for `PencilPair`'s **last** conjunct. The generic conjunct
 (`G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G`) dispatches on the same
 three cases: the parallel class is vacuous by `not_simple_of_parallel` (the case `G.Simple`
 excludes); the edgeless and single-edge cases are genuine producers, each needing a nondegenerate
@@ -210,19 +213,21 @@ collapses to `⊆ {v}`, so the bare arm's own constant `n₀`/`q₀` choice alre
 technique as `exists_isNondegPencilRealization_parallel_pair` above (one edge instead of two, so no
 edge-order dispatch), then the identical `exists_independent_rigidityRows_of_edge` rank sandwich the
 bare arm's own single-edge branch uses (it works for *any* nonzero support extensor, not a specific
-one). -/
+one). **Since 2026-09-16** that producer is split out as
+`hasGenericPencilRealization_of_ncard_le_two` (it never used the feasibility hypothesis), and
+`PencilPair`'s new adjacent-distinct conjunct forgets from it — so this arm needs no new
+construction and the *bare* arm's coincident single-edge witness stays untouched. -/
 
-/-- **The base arm of the pencil reduction, conditioned-pair motive** (Phase 39 W5-L5; the
-`PencilPair` analogue of the bare-motive `hasPencilRealization_of_ncard_le_two`, W3-L5). A loopless
-multigraph on at most two bodies satisfies the conditioned pair at rank `3`: the bare half is
-`hasPencilRealization_of_ncard_le_two` unchanged, and the generic half dispatches on `E(G)` exactly
-as the bare arm does — edgeless and single-edge are genuine nondegenerate producers (below), and any
-`≥ 2`-fold parallel class is vacuous via `not_simple_of_parallel` (`G.Simple` already excludes it,
-so the case never needs a producer). -/
-theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
-    (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
-    PencilPair K 3 G := by
-  refine ⟨fun hSimple _ => ?_, hasPencilRealization_of_ncard_le_two hloop hne hV2⟩
+/-- **A simple multigraph on at most two bodies has a generic pencil realization** (Phase 39
+W5-L5, the base arm's own producer; **extracted from `pencilPair_of_ncard_le_two` 2026-09-16** so
+that the conditioned pair's new adjacent-distinct conjunct can reuse it). The dispatch on `E(G)`
+mirrors the bare arm's: edgeless and single-edge are genuine nondegenerate producers, and any
+`≥ 2`-fold parallel class is excluded outright by `G.Simple` (`not_simple_of_parallel`). Note the
+`PencilNondegFeasible` hypothesis of `PencilPair`'s generic conjunct is *not* needed here —
+simplicity alone suffices at this arity. -/
+theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
+    (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) (hSimple : G.Simple) :
+    HasGenericPencilRealization K 3 G := by
   classical
   have := hloop
   have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
@@ -399,6 +404,21 @@ theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
       have heE : e ∈ E(G) := htE (hteq ▸ Set.mem_insert e {f})
       have hfE : f ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem e (Set.mem_singleton f))
       exact absurd hSimple (not_simple_of_parallel hef (hlinks e heE) (hlinks f hfE))
+
+/-- **The base arm of the pencil reduction, conditioned-pair motive** (Phase 39 W5-L5; the
+`PencilPair` analogue of the bare-motive `hasPencilRealization_of_ncard_le_two`, W3-L5). A loopless
+multigraph on at most two bodies satisfies the conditioned pair at rank `3`: the bare half is
+`hasPencilRealization_of_ncard_le_two` unchanged, and both conditioned halves come from the
+simple-only producer `hasGenericPencilRealization_of_ncard_le_two` above — the generic one
+directly (its feasibility hypothesis is unused at this arity), the adjacent-distinct one
+(2026-09-16, decision (α)) through `hasDistinctPencilRealization_of_generic`. -/
+theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
+    (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
+    PencilPair K 3 G :=
+  ⟨fun hSimple _ => hasGenericPencilRealization_of_ncard_le_two hloop hne hV2 hSimple,
+    fun hSimple => hasDistinctPencilRealization_of_generic
+      (hasGenericPencilRealization_of_ncard_le_two hloop hne hV2 hSimple),
+    hasPencilRealization_of_ncard_le_two hloop hne hV2⟩
 
 /-! ## W5-L5 cut arm, sub-case 2 (`|C| = 0`, disjoint union): a standalone generic producer
 (Phase 39 PENCIL)

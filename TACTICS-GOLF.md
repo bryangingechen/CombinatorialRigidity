@@ -1176,6 +1176,23 @@ data on `Fin (a+1)` — is the shape of `girthGE_of_noRigid_of_three_le_degree`
    Use `change`, not `show`: `show` that *changes* the goal trips
    `linter.style.show`.
 
+   **The linter's other trigger (2026-09-16, Phase 39): a `show` that changes
+   nothing.** Restating the goal verbatim — the "document what we are proving
+   here" habit before a `simp only` — trips the same warning, with the message
+   *"The `show` tactic should only be used to indicate intermediate goal states
+   for readability."* There is no `change` fix; delete the line (a comment
+   carries the same documentation and does not gate). Both directions are
+   warnings, so they are invisible to `lake lint` and only show up in the build
+   scan.
+
+   **Sibling style linter: `haveI` on a `Prop`-valued class.** `haveI := hSimple.toLoopless`
+   for `Graph.Loopless` (a `Prop` class) warns *"The goal is a proposition, so
+   `have` is preferred over `haveI`"* — `haveI`'s inlining is pointless under
+   proof irrelevance. Plain `have := …` still registers the instance, which is
+   what the project's own `have : G.Simple := hSimple` idiom has always done.
+   Reserve `haveI`/`letI` for data-carrying classes (`Inhabited`, `Fintype`,
+   `DecidableEq`).
+
 ## 13. State a ℕ count `a − b + c` as `a + c − b` (subtraction last)
 
 When the conclusion of a lemma is a natural-number count of the form

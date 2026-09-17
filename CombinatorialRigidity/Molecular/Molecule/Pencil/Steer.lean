@@ -1365,4 +1365,48 @@ theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree
     (exists_coord_linearIndepOn_pencilChartPoint_perBody hcard htf hubSel hHubSel)
     (exists_coord_linearIndepOn_pencilChartPoint_adjacentPair hcard htf hubSel hHubSel)
 
+/-- **Simplicity and pencil feasibility pass to every subgraph of a triangle-free simple feasible
+graph** (Phase 39 PENCIL, checklist item 5; the item-4 recon's verdict (c), 2026-09-16). This is
+the kernel-facing companion of `PencilNondegFeasible.mono` (`Molecule/Pencil/Motive.lean`), and it
+works by **reconstruction**, not by restricting the parent's witness: `G`'s own nondegenerate
+witness only supplies the *count* `∀ w, (G.closedHubNbhd w).ncard ≤ 3`
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), the count descends along `H ≤ G`
+(`Graph.closedHubNbhd_mono`), triangle-freeness descends by `Graph.IsLink.of_le`, and the W5-L6b
+criterion above then *builds* a fresh nondegenerate realization of `H`.
+
+Restriction cannot replace it. `PencilNondegFeasible.mono` discharges
+`IsNondegPencilRealization.mono`'s residual only when every demoted hub has `H`-degree `≤ 1`; at a
+hub demoted to degree exactly `2` — which is what the ends of a deleted degree-two chain are
+(`Graph.degree_deleteVerts_interior_add_one`,
+`Molecular/Induction/ForestSurgery/MaximalChain.lean`) — the parent's witness genuinely carries
+nothing, since `G` may place the body's two surviving hinges on one line. Note also that the
+count *alone* is not a feasibility criterion (`not_pencilNondegFeasible_of_triangle_two_hubs`
+refutes it on a triangle); in the triangle-free habitat the two directions are both landed, which
+is exactly the hypothesis shape here. -/
+theorem pencilNondegFeasible_of_le_of_triangleFree
+    [Inhabited α] [Finite α] [Finite β] [Infinite K] {G H : Graph α β}
+    (hSimple : G.Simple) (hle : H ≤ G) (hfeas : PencilNondegFeasible K G)
+    (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+      G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
+    H.Simple ∧ PencilNondegFeasible K H := by
+  classical
+  have hHSimple : H.Simple := hSimple.mono hle
+  have : H.Simple := hHSimple
+  obtain ⟨F, normal, point, hnd⟩ := hfeas
+  have hcardG : ∀ w, (G.closedHubNbhd w).ncard ≤ 3 := by
+    intro w
+    by_cases hw : w ∈ V(G)
+    · exact ncard_closedHubNbhd_le_three_of_isNondegPencilRealization hnd hw
+    · have hempty : G.closedHubNbhd w = ∅ := by
+        rw [Set.eq_empty_iff_forall_notMem]
+        rintro x ⟨hxhub, rfl | ⟨e, hlink⟩⟩
+        · exact hw hxhub.1
+        · exact hw hlink.left_mem
+      rw [hempty]; simp
+  have hcardH : ∀ w, (H.closedHubNbhd w).ncard ≤ 3 := fun w =>
+    le_trans (Set.ncard_le_ncard (Graph.closedHubNbhd_mono hle w) (Set.toFinite _)) (hcardG w)
+  exact ⟨hHSimple, pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree hcardH
+    (fun e₁ e₂ e₃ x y z hxy hyz hxz h₁ h₂ h₃ =>
+      htf e₁ e₂ e₃ x y z hxy hyz hxz (h₁.of_le hle) (h₂.of_le hle) (h₃.of_le hle))⟩
+
 end CombinatorialRigidity.Molecular

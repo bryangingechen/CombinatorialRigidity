@@ -544,3 +544,21 @@ hold for the items you've just added."** Scope: items 4 and 5 of the checklist a
 commit `ac50fc89`; items 6–12 stay parked; the coordinator no longer asks for this lift at its
 session-start check-in. **Everything else stands unchanged:** phase OPEN (2026-07-24), W4
 parked, (GR-10) session 1 waiting on the post-recon decision.
+
+## 2026-09-16 — the bare motive's coincident-point slack: **(α)**, the third `PencilPair` conjunct; and the slice's sequencing
+
+Recorded by the `/coordinate-phase 39` slice that applied them, verbatim. On the item-4 recon's
+open decision (b) — (α) a simple-conditioned third `PencilPair` conjunct (adjacent concurrency
+points projectively distinct), whose cost is a new informal obligation on the carried
+`hcontract`; versus (β) leave the motives and hand O8's coincident stratum to the attack — the
+user said: **"(α) Add the third conjunct"**, accepting the recorded cost including the new W4
+obligation. On sequencing, against the alternative of splitting item 5 into an IH commit and a
+motive commit, the user said: **"One slice: IH + (d) + (c)-adder + whatever (b) decides"** — so
+the blueprint nodes are restated once rather than twice. On the remaining post-recon decision
+the user said that **(GR-10)'s scope is still open and is not part of this slice**, and that the
+gr10 brief and its state file are not to be edited by it. Record: `notes/Phase39-design.md`
+§ *Kernel restatement (2026-09-16)*; chapter `def:pencil-distinct-motive`,
+`fmlnote:pencil-distinct-motive`, `def:pencil-conditioned-pair`,
+`fmlnote:pencil-conditional-realization-pair-kernels`; W4 obligation
+`notes/pencil/workbook/W4.md`. **Everything else stands unchanged:** phase OPEN (2026-07-24), W4
+parked, checklist items 6–12 parked, (GR-10) session 1 waiting on the user's scope call.

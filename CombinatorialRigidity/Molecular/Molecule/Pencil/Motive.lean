@@ -157,9 +157,27 @@ supporting line — while `PencilNondegFeasible` excludes the stratum collapses 
 conditioning misses (`K4`, verdict 1, `notes/Phase39-design.md` §"W5 design pass"). This is now the
 exact Theorem-5.5 shape `(G.Simple → HasGenericFullRankRealization K k n G) ∧
 HasPanelRealization K k n G`, with `PencilNondegFeasible` nested inside the `G.Simple` antecedent
-rather than replacing it. -/
+rather than replacing it.
+
+**Third conjunct added 2026-09-16** (Phase 39 checklist item 5, the PI's (α) decision on the
+item-4 recon's finding (b); `notes/Phase39-design.md` §"Kernel restatement"): a simple `G` also
+gets an *adjacent-distinct* realization (`HasDistinctPencilRealization`,
+`Molecule/Pencil/Statement.lean`) unconditionally on feasibility. The bare motive alone is too
+weak for kernel (K-bare)'s consumer: it attains the target rank at a parallel class only with
+both bodies at one point, so a bare witness need not be a point of the configuration variety the
+kernel's informal argument reasons about, and the infeasible split arm was unsound at the
+statement level as pinned. The conjunct must *not* be pushed down onto
+`HasPencilPanelRealization` — that would falsify the bare motive at every parallel class and
+break the stratum self-duality (`lem:pencil-self-dual`) — so it rides here, under `G.Simple`,
+where parallel classes are excluded outright. Every landed arm discharges it: vacuously at a loop
+or a parallel class (neither is simple), from the generic conjunct wherever a nondegenerate
+witness is already built (`hasDistinctPencilRealization_of_generic`), and by the cut arm's own
+adjacent-distinct sibling `hasDistinctPencilRealization_of_not_twoEdgeConnected`. The cost lands
+on the carried `hcontract` (W4), whose conclusion now carries it too
+(`notes/pencil/workbook/W4.md`). -/
 def PencilPair (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   (G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+    (G.Simple → HasDistinctPencilRealization K n G) ∧
     HasPencilRealization K n G
 
 /-- **A parallel class is never simple** (Phase 39 W5-L5, the (b′) repair's vacuity helper): two
@@ -179,6 +197,15 @@ theorem hasPencilRealization_of_generic {n : ℕ} {G : Graph α β}
     (h : HasGenericPencilRealization K n G) : HasPencilRealization K n G := by
   obtain ⟨F, normal, point, ⟨hreal, _, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hrank⟩
+
+/-- **The forgetful map, generic ⟹ adjacent-distinct** (Phase 39 PENCIL, checklist item 5 (α)):
+`HasDistinctPencilRealization` is `HasGenericPencilRealization` with only the *second*
+nondegeneracy conjunct (adjacent concurrency points projectively distinct) kept, so a generic
+pencil realization is one after dropping the hub-normal and closed-neighbourhood conjuncts. -/
+theorem hasDistinctPencilRealization_of_generic {n : ℕ} {G : Graph α β}
+    (h : HasGenericPencilRealization K n G) : HasDistinctPencilRealization K n G := by
+  obtain ⟨F, normal, point, ⟨hreal, hadj, _, _⟩, hrank⟩ := h
+  exact ⟨F, normal, point, hreal, hadj, hrank⟩
 
 /-- **The loop guard** (Phase 39 W5-L0): a loop already breaks nondegeneracy feasibility, the
 pencil analogue of `loop ⟹ ¬Simple`. A loop `e` at `v` is a link `G.IsLink e v v`, so

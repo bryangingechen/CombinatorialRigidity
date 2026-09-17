@@ -599,7 +599,9 @@ exactly two.
   y\rangle = \langle x, y\rangle$ for the standard pairing) meeting the two
   cross-incidences of \cref{lem:two-pencil-extension-iff} once the $V_2$
   side is transported by $(g, h)$: $\langle pt_1(u), h\, n_2(v)\rangle = 0$
-  and $\langle g\, pt_2(v), n_1(u)\rangle = 0$.
+  and $\langle g\, pt_2(v), n_1(u)\rangle = 0$; moreover the transported
+  point $g\, pt_2(v)$ is projectively distinct from $pt_1(u)$, which the
+  construction supplies for free.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -611,12 +613,15 @@ exactly two.
   frame automorphism sending $pt_2(v) \mapsto a$ and $b \mapsto pt_1(u)$.
   Then $g\, pt_2(v) = a \in n_1(u)^\perp$ is the second incidence, and $g\,
   b = pt_1(u)$ with the contragredient identity turns the first into $b \in
-  n_2(v)^\perp$.
+  n_2(v)^\perp$. The distinctness clause is the independence of $\{a,
+  pt_1(u)\}$ chosen at the start, read through $g\, pt_2(v) = a$.
 \end{proof}
 
 \begin{lemma}[The cut-edge case]
   \label{lem:pencil-cut-case}
-  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_not_twoEdgeConnected}
+  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_not_twoEdgeConnected,
+        CombinatorialRigidity.Molecular.hasPencilRealization_of_not_twoEdgeConnected_core,
+        CombinatorialRigidity.Molecular.hasDistinctPencilRealization_of_not_twoEdgeConnected}
   \leanok
   \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
         lem:two-pencil-extension-iff, lem:pencil-projective-transport,
@@ -628,7 +633,13 @@ exactly two.
   realization independently and, if a crossing edge remains, reposition one
   side's frame along a projective automorphism so its two prescribed points
   meet the crossing edge's two cross-incidence conditions
-  (\cref{lem:two-pencil-extension-iff}).
+  (\cref{lem:two-pencil-extension-iff}). The same assembly proves the
+  \emph{adjacent-distinct} form (\cref{def:pencil-distinct-motive}) from
+  adjacent-distinct hypotheses on the two sides: inside a side the property
+  is the side's own, on the transported side it survives a linear
+  automorphism, and at the crossing edge it is the distinctness clause of
+  \cref{lem:pencil-cut-nondegeneracy}. In Lean the two forms are one
+  theorem parametrized by a flag.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -793,16 +804,48 @@ realization's own nondegenerate-satisfiability.
   \cref{def:pencil-rank-hypothesis}.
 \end{definition}
 
+\begin{definition}[Adjacent-distinct pencil realization]
+  \label{def:pencil-distinct-motive}
+  \lean{CombinatorialRigidity.Molecular.HasDistinctPencilRealization}
+  \leanok
+  \uses{def:pencil-rank-hypothesis, def:pencil-nondegenerate}
+  A multigraph $G$ \emph{has an adjacent-distinct pencil realization}
+  when it has a pencil realization at the deficiency rank
+  (\cref{def:pencil-rank-hypothesis}) whose two concurrency points are
+  projectively distinct along every link --- the first nondegeneracy
+  conjunct of \cref{def:pencil-nondegenerate} and none of the others. It
+  sits strictly between the bare motive and the generic one, both
+  implications being forgetful.
+\end{definition}
+\begin{fmlnote}
+  \label{fmlnote:pencil-distinct-motive}
+  Why the distinctness is a separate motive rather than a conjunct of the
+  pencil realization itself (\cref{def:pencil-panel-realization}). Adding
+  it there would make the bare motive false at every parallel class: at
+  two bodies joined by two or more edges the deficiency-rank target is
+  attained only with both concurrency points equal, since at distinct
+  points every hinge through the pair is forced onto the single line they
+  span and the rows drop one short. It would also break the stratum
+  self-duality (\cref{lem:pencil-self-dual}), whose polarity exchanges the
+  normals and the points, at the coplanar-panel base case. The distinctness
+  is what the informal argument for kernel (K-bare) actually reasons
+  about --- a point of the configuration variety, not merely of the bare
+  space --- so it is carried here and imposed only under simplicity, where
+  parallel classes are excluded outright.
+\end{fmlnote}
+
 \begin{definition}[The conditioned pair]
   \label{def:pencil-conditioned-pair}
   \lean{CombinatorialRigidity.Molecular.PencilPair}
   \leanok
   \uses{def:pencil-nondegenerate, def:pencil-generic-motive,
-        def:pencil-rank-hypothesis}
+        def:pencil-distinct-motive, def:pencil-rank-hypothesis}
   A multigraph $G$ satisfies the \emph{conditioned pair} at $n$ when it
   has a pencil realization at the deficiency rank
-  (\cref{def:pencil-rank-hypothesis}) and, whenever it is simple and
-  nondegeneracy-feasible (\cref{def:pencil-nondegenerate}), a generic one
+  (\cref{def:pencil-rank-hypothesis}); when, if it is simple, it has an
+  adjacent-distinct one (\cref{def:pencil-distinct-motive}); and when, if
+  it is both simple and nondegeneracy-feasible
+  (\cref{def:pencil-nondegenerate}), it has a generic one
   (\cref{def:pencil-generic-motive}).
 \end{definition}
 \begin{fmlnote}
@@ -818,8 +861,19 @@ realization's own nondegenerate-satisfiability.
   through the same pair of bodies are forced onto a single common
   supporting line whenever their concurrency points are projectively
   distinct, contributing one row block where the target needs two
-  independent ones. Dropping the first conjunct recovers the bare
+  independent ones. Dropping the conditioned conjuncts recovers the bare
   realization of \cref{def:pencil-rank-hypothesis} directly.
+
+  The middle, adjacent-distinct conjunct was added after the bare motive
+  was found too weak for kernel (K-bare)'s consumer
+  (\cref{fmlnote:pencil-distinct-motive}). It costs the arms almost
+  nothing: it is vacuous at a loop and at a parallel class, neither being
+  simple; it is a forgetful consequence wherever an arm already builds a
+  nondegenerate realization; and the cut-edge case proves it by the same
+  assembly as the bare one (\cref{lem:pencil-cut-case}). Its real cost
+  falls on the contraction case, whose conclusion now carries it while its
+  contraction stage is a multigraph whose attaining realizations must be
+  coincident at parallel classes.
 \end{fmlnote}
 
 \begin{theorem}[Pencil realization from the contraction case and two open kernels, conditioned pair]
@@ -829,7 +883,8 @@ realization's own nondegenerate-satisfiability.
         CombinatorialRigidity.Molecular.pencil_conjecture_of_hcontract_hK_hbareSplit_of_card}
   \leanok
   \uses{thm:pencil-reduction, def:pencil-conditioned-pair, def:rigid-subgraph,
-        def:pencil-nondegenerate, def:pencil-generic-motive, def:pencil-rank-hypothesis}
+        def:pencil-nondegenerate, def:pencil-generic-motive,
+        def:pencil-distinct-motive, def:pencil-rank-hypothesis}
   Let $K$ be an infinite field. Suppose that for every loopless
   multigraph $G$ with $|V(G)| \ge 3$, if every strictly smaller such graph
   satisfies the conditioned pair (\cref{def:pencil-conditioned-pair}) at
@@ -838,12 +893,13 @@ realization's own nondegenerate-satisfiability.
   pair holds unconditionally on three or four vertices (such a multigraph is
   forced to be the spanning $3$-cycle, resp.\ $4$-cycle). On five or more
   vertices it holds given the following, at a degree-two vertex $v$ one of
-  whose two neighbours is not a pencil hub, with split-off multigraph $G'$
-  already satisfying the conditioned pair: whenever $G$ is
-  nondegeneracy-feasible, a generic pencil realization of $G'$ extends to one
-  of $G$ at the deficiency rank (kernel (K)); whenever it is not, a pencil
-  realization of $G'$ at the deficiency rank extends to one of $G$ at the
-  deficiency rank (kernel (K-bare)); and some edge outside $E(G)$ is always
+  whose two neighbours is not a pencil hub, with split-off multigraph $G'$,
+  and given that every strictly smaller such graph satisfies the conditioned
+  pair: whenever $G$ is nondegeneracy-feasible, a generic pencil realization
+  of $G'$ extends to a generic pencil realization of $G$ (kernel (K));
+  whenever it is not, an adjacent-distinct pencil realization of $G'$
+  (\cref{def:pencil-distinct-motive}) extends to an adjacent-distinct one of
+  $G$ (kernel (K-bare)); and some edge outside $E(G)$ is always
   available. Then every multigraph on the whole ambient body set satisfies
   the conditioned pair at $n = 3$.
 \end{theorem}
@@ -858,6 +914,23 @@ realization's own nondegenerate-satisfiability.
   certificates $M_1, M_2, M_3$ is always nonsingular — uses a six-dimensional
   span that the pencil condition cuts to five, so the pencil case is a
   genuinely open statement rather than an instance of their result.
+
+  Both kernels take the induction hypothesis --- that every strictly
+  smaller multigraph satisfies the conditioned pair --- and not merely
+  their own split-off antecedent. This is forced, not a convenience.
+  Writing $G$ as the union of a side $H'$ with an ear of length $m$
+  through $v$, the hypothesis that the split-off graph attains leaves the
+  side's own deficiency profile one unit slacker than $G$'s attaining
+  requires, so on a side that never attains the implication as stated
+  without the induction hypothesis is false: proving it would amount to
+  proving the conjecture for that side inside the kernel. With the
+  induction hypothesis available the side is supplied by the conjectured
+  statement one graph down, which is what the informal arguments for both
+  kernels in fact use. The same reading is why kernel (K-bare) is stated
+  at the adjacent-distinct motive (\cref{def:pencil-distinct-motive}) on
+  both sides of its implication rather than at the bare one: the bare
+  motive's coincident-point witnesses are not points of the configuration
+  variety those arguments reason about.
 \end{fmlnote}
 \begin{fmlnote}
   \label{fmlnote:pencil-conditional-realization-pair-field}
@@ -924,6 +997,18 @@ realization's own nondegenerate-satisfiability.
   subgraph, \cref{lem:pencil-min-degree-rigid}), a fresh edge, and whichever
   of kernel (K) or kernel (K-bare) applies to $G$'s own
   nondegeneracy-feasibility.
+
+  How the kernels are fed. Both are handed the split case's own induction
+  hypothesis unchanged, and then one antecedent each. If $G$ is
+  nondegeneracy-feasible, the split-off graph inherits simplicity,
+  triangle-freeness and the closed-hub-neighbourhood bound, so the
+  induction hypothesis makes it generic, and kernel (K) returns a generic
+  pencil realization of $G$; the other two conjuncts of the conditioned
+  pair follow from it forgetfully. If $G$ is not nondegeneracy-feasible,
+  the generic conjunct is vacuous, the split-off graph is still simple, so
+  the induction hypothesis makes it adjacent-distinct, and kernel (K-bare)
+  returns an adjacent-distinct pencil realization of $G$, from which the
+  bare conjunct follows forgetfully.
 \end{proof}
 
 \subsection{Girth and degree-two chains under no proper rigid subgraph}
