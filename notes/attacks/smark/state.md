@@ -5,9 +5,9 @@ never append to the old one. Budgets are lines of content per section
 (`python3 notes/harness/check.py --state <this file>`). Overflow goes to
 log.md as one line per attempt. Keep the section names exactly. -->
 
-Sessions so far: 5 · last session: 2026-09-16 · baseline HEAD: e1b66a54 · the split-off antecedent the brief discarded supplies the whole consumed block list (S14); (O4″) is not consumed; route change proposed — review due
+Sessions so far: 5 · last session: 2026-09-16 · baseline HEAD: e1b66a54 · the split-off antecedent the brief discarded supplies the whole consumed block list (S14); (O4″) is not consumed; **brief rewrite landed against the restated kernels (2026-09-16) — pending PI review before session 6**
 
-> **PI note (review 2, 2026-09-16):** (δ) decided — both kernels get the induction hypothesis; R2 adopted. Session 6 waits for the Lean round (recon → kernel restatement) and the brief rewrite (`notes/Phase39.md` *Hand-off*); its first move is then O7 with the adjacent-hub control. Review notes: workbook S15.
+> **PI note (review 2, 2026-09-16):** (δ) decided — both kernels get the induction hypothesis; R2 adopted. **The Lean round landed 2026-09-16** (checklist items 4–5: the R2 recon, then the kernel restatement — `notes/Phase39-design.md` §§ *R2 recon*, *Kernel restatement (2026-09-16)*), and **the brief rewrite is drafted** (`notes/attacks/smark/brief.md`, against the landed kernels) — session 6 waits on the PI's review of it, not on any further Lean work. Its first move is then O7 with the adjacent-hub control (brief §6). Review notes: workbook S15.
 
 ## Statement <!-- budget 10 -->
 **Proposed at session 5 (pending review; the brief's Lemma below is what the PI approved).** `G = H′ ∪ ear_m` at the hub 2-cut `{w, v}` (`m ≥ 2`, the trichotomy's case (iii), S11), `G₋ := H′ ∪ ear_{m−1} = G.splitOff x a b e₀` for any interior chain vertex `x` (`Operations.lean:770`: delete `x`, join its neighbours). **If `H′` attains and `G₋` attains (each at some configuration over `K̄`), then `G` attains** — S14(iii)–(iv), for `H′` with irreducible configuration space (S13(iv): pairwise non-adjacent hubs; S14(vii): all of `hK`'s domain). This is exactly the implication `hK`/`hbareSplit` carry (`Escape.lean:334–430`), plus the one hypothesis they lack: attainment of `H′ = G − chain` (S14(v)).

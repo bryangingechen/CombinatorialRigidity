@@ -27,8 +27,9 @@ side feasibility and `hK`'s conclusion; its open finding (the bare motive attain
 *coincident* points) the user settled **(α)**. **Item 5 landed in one slice:** both kernels
 take the induction hypothesis (S14(v)), `hK` concludes `HasGenericPencilRealization K 3 G`,
 and `hbareSplit` takes and returns the new motive `HasDistinctPencilRealization`. **For the kernels' current form read `notes/Phase39-design.md`
-§ *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Next: the S-mark brief
-rewrite** against the landed statements, then `/attack smark` session 6; **(GR-10) is
+§ *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **The S-mark brief rewrite
+LANDS 2026-09-16** (agent, against the landed kernels) — `notes/attacks/smark/brief.md` §§2, 3, 6
+rewritten; **pending PI review**, which unblocks `/attack smark` session 6. **(GR-10) is
 RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
 fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), and Layer-A leaves
@@ -54,9 +55,8 @@ combinatorial carriers `deficiencyMerged`/`deficiencySep`/`weldPair`/`pairDelta`
 (`Deficiency.lean`), all transcribed sorry-free from `notes/Phase39-design.md` § *Item-6
 carrier recon (2026-09-16)* with no new decisions. **Next concrete step: item-6 leaf A4** (the
 substantive combinatorial leaf, D3's `max` form) **or Layer B1→B5** (the geometric carriers,
-independent of A). In parallel, the **S-mark brief rewrite** against the *landed* kernel
-statements (*Hand-off* item 2), then
-`/attack smark` session 6; (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*):
+independent of A). In parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) —
+pending PI review; (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*):
 re-scoped to the char-2 probe, the grid route kept as a documented fallback. Checklist items 4
 and 5 are DONE 2026-09-16 and **item 6's carrier recon is DONE** 2026-09-16 (its build leaves
 are open; A4 and B5 are the two substantive ones). S-mark has five sessions (2026-09-15/16) and two reviews. Review 1
@@ -69,9 +69,11 @@ not a discardable "realization of `G − x`" — and route R2 (workbook S14). Re
 (2026-09-16, notes at workbook S15) verified the consumer reading against `Escape.lean` and
 the S14 arithmetic, endorsed R2, and recorded three statement-level questions for the Lean
 track — **answered by the item-4 recon 2026-09-16** (checklist item 4; record
-`notes/Phase39-design.md` § *R2 recon*). `notes/attacks/smark/state.md` is the status surface; session 6 waits for the brief rewrite,
-which must quote the **landed** kernels (`notes/Phase39-design.md` § *Kernel restatement
-(2026-09-16)*), not the pinned blocks the brief was written against. (GR-10) has not started and
+`notes/Phase39-design.md` § *R2 recon*). **The brief rewrite is drafted 2026-09-16**
+(`notes/attacks/smark/brief.md`, quoting the **landed** kernels verbatim,
+`notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*, not the pinned blocks the brief
+was written against); `notes/attacks/smark/state.md` is the status surface, updated the same
+commit; session 6 waits on the PI's review of the rewrite, not on further Lean work. (GR-10) has not started and
 is now **re-scoped** (user, 2026-09-16): the recon confirms R2 covers `hK`'s arm at the statement level (S14(iii), (vii);
 under the recon's (d) the chart form, hence proviso (P), drops out of `hK`'s statement), so the
 grid/colouring route of `notes/attacks/gr10/brief.md` is **no longer the path to `hK`** — it is a
@@ -442,20 +444,14 @@ by compiling), and the numerics.
 Next concrete task, in order: **(1) item-6 leaf A4** (the substantive combinatorial leaf,
 `deficiency_eq_of_vertexTwoCut`'s `max` form, D3's primary statement; depends on A2, done)
 **or Layer B1→B5** (the geometric carriers, independent of A), under `/coordinate-phase 39`.
-**(2) The S-mark brief rewrite**, drafted by an agent from the
-*landed* declarations and PI-reviewed. §2 = the kernel implication with the IH as landed; §3 =
-both kernels quoted **verbatim from `Escape.lean` as they now stand** (`notes/Phase39-design.md`
-§ *Kernel restatement (2026-09-16)* has the same text — **never** the pinned blocks under
-§ *W5-L7 research recon*), one hypothesis per line, each operator glossed from its definition
-body (`splitOff`, `PencilHub`, `PencilNondegFeasible`, `HasDistinctPencilRealization`,
-`HasGenericPencilRealization`), the recon's answers to (a)–(d) (the design arc's *Material for
-the brief's §3*), and a one-line justification for any hypothesis the route does not use; §6 =
-O7 first — build an adjacent-hub side (a hub with three hub neighbours, each continued by a
-branch of length `≥ 2` to `w` or `v`, girth `≥ 7`) and sample from several starts before
-attempting the tower extension or component matching — then O9. **O8's coincident stratum is
-deleted** by the (α) decision and must come out of the brief, not be re-stated. **(3)**
-`/attack smark` session 6, a main session in its own worktree; and, when the PI chooses to spend
-it, the **char-2 probe** as the sole live (GR-10) item (one driver leg beside `closure.py
+**(2) The S-mark brief rewrite LANDED 2026-09-16** (agent, `notes/attacks/smark/brief.md`, from
+the *landed* declarations) — **pending PI review**, not itself a `/review-attack` pass. §§2/3/6
+rewritten against `Escape.lean`'s current kernels, one hypothesis per line, each operator glossed
+from its body, the item-4 recon's (a)–(d), and the two unused-hypothesis justifications; §6 puts
+O7 (adjacent-hub side, several starts, before the tower/component-matching options) ahead of O9
+and deletes O8 (α). **(3)** Once reviewed, `/attack smark` session 6, a
+main session in its own worktree; and, when the PI chooses to spend it, the **char-2 probe** as
+the sole live (GR-10) item (one driver leg beside `closure.py
 --char2`; spec `notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection) — a
 systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so it reports to the
 PI, not just to the attack. When an attack starts, its `state.md` is that lemma's status
@@ -487,6 +483,11 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   the informal proof is not complete, so a chapter would pin a shape likely to be reworked. D5
   is a deliberate forward-mode deviation and opens tracked blueprint debt (*Blockers*).
   Verbatim: `notes/pencil/adjudications.md`.
+
+- **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, no new decisions; a
+  user-sanctioned exception to the usual `/review-attack` rewrite path). `brief.md` §§2, 3, 6
+  rewritten against `Escape.lean`'s current `hK`/`hbareSplit` and the item-4 recon; O8 deleted
+  (α), O7 ordered ahead of O9. **Pending PI review.** `state.md` synced.
 
 - **2026-09-16 — item 6 Layer-A leaves A1 and A2 LAND** (transcription from the recon, no new
   decisions). A1 `deficiency_removeVertex_of_degree_eq_one`
