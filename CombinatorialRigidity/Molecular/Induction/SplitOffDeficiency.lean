@@ -512,6 +512,64 @@ theorem removeVertex_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n 
     rw [partitionDef, partitionDef]
     nlinarith [Int.ofNat_le.mpr hcross, hparts]
 
+/-! ### The pendant law (`6a`, Phase 39 item 6, `notes/Phase39-design.md` § *Item-6 carrier
+recon (2026-09-16)*)
+
+Removing a degree-**1** vertex `u` drops the deficiency by exactly `1` — an instance of the
+landed edge-cut law `deficiency_eq_of_cutEdges_ncard_le_one` at the singleton side `{u}`: the
+cut count is `1` (`u`'s single non-loop edge), the singleton side has deficiency `0`
+(`deficiency_of_edgeSet_empty`), and `G.removeVertex u` is *definitionally* the cut law's other
+side, `G.induce (V(G) \ {u})`. This sites here, not in `Deficiency.lean`, because
+`Graph.removeVertex` is defined downstream of it (`Induction/Operations.lean:727`). Blueprint
+debt: this decl has no blueprint node yet (`notes/Phase39.md` *Blockers*, D5). -/
+
+private lemma cutEdges_singleton_eq_setOf_isNonloopAt (G : Graph α β) (u : α) :
+    G.cutEdges {u} = {e | G.IsNonloopAt e u} := by
+  ext e
+  simp only [cutEdges, Set.mem_ofPred_eq, Set.mem_singleton_iff, Graph.IsNonloopAt]
+  constructor
+  · rintro ⟨_, x, y, hl, rfl, hy⟩
+    exact ⟨y, fun h => hy h, hl⟩
+  · rintro ⟨y, hy, hl⟩
+    exact ⟨hl.edge_mem, u, y, hl, rfl, fun h => hy h⟩
+
+/-- **The pendant law** (`6a`, Phase 39 checklist item 6): removing a degree-`1` vertex `u`
+drops the `D`-deficiency by exactly `1`, `def(G̃) = def(G̃ᵤ) + 1`. Proved outright (not merely
+buildable) as an instance of `deficiency_eq_of_cutEdges_ncard_le_one` at `V₁ = {u}`. -/
+theorem deficiency_removeVertex_of_degree_eq_one
+    [Finite α] [Finite β] {G : Graph α β} {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n) {u : α}
+    (hssub : ({u} : Set α) ⊂ V(G)) (hdeg : G.degree u = 1) :
+    G.deficiency n = (G.removeVertex u).deficiency n + 1 := by
+  have hsplit := G.degree_eq_ncard_add_ncard u
+  rw [hdeg] at hsplit
+  have hloopcard : {e | G.IsLoopAt e u}.ncard = 0 := by omega
+  have hnl : {e | G.IsNonloopAt e u}.ncard = 1 := by omega
+  have hcut : (G.cutEdges {u}).ncard = 1 := by
+    rw [cutEdges_singleton_eq_setOf_isNonloopAt]; exact hnl
+  have hloop : ∀ e, ¬ G.IsLoopAt e u := by
+    intro e he
+    have : ({e} : Set β) ⊆ {e | G.IsLoopAt e u} := by simpa using he
+    have := Set.ncard_le_ncard this (Set.toFinite _)
+    simp [hloopcard] at this
+  have key := deficiency_eq_of_cutEdges_ncard_le_one (G := G) (n := n) hD
+      (Set.singleton_nonempty u) hssub (by omega)
+  have hE : E(G.induce ({u} : Set α)) = ∅ := by
+    rw [Set.eq_empty_iff_forall_notMem]
+    intro e he
+    rw [Graph.edgeSet_induce] at he
+    obtain ⟨x, y, hl, hx, hy⟩ := he
+    simp only [Set.mem_singleton_iff] at hx hy
+    subst hx; subst hy
+    exact hloop e hl
+  have hV : V(G.induce ({u} : Set α)) = ({u} : Set α) := rfl
+  have h0 : (G.induce ({u} : Set α)).deficiency n = 0 := by
+    rw [deficiency_of_edgeSet_empty hE, hV, Set.ncard_singleton]
+    simp
+  rw [key, h0, hcut, removeVertex]
+  push_cast
+  rw [Graph.deleteVerts]
+  ring
+
 /-! ### Degrees of freedom under vertex removal and splitting-off (`lem:dof-tracking`, KT 4.3–4.5)
 
 The local degree-of-freedom bookkeeping at a degree-2 vertex `v`, packaged from the three

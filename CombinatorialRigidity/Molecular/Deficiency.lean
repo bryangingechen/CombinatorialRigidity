@@ -3532,4 +3532,103 @@ theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n :
   have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
   linarith [hbound, hdefnn, hmul, hcardZ, hEeq]
 
+/-! ## The merged / separated deficiency at a vertex pair (`def:pencil-deficiency-pair`,
+Phase 39 checklist item 6)
+
+Phase 39 (PENCIL; `notes/Phase39.md` checklist item 6, carrier recon
+`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*). The combinatorial carriers
+the vertex-2-cut deficiency laws (6b and its consumer `pencilLoss_vertexTwoCut`) are stated
+over: `deficiencyMerged` (the workbook's `g`) restricts the labeling supremum to partitions
+keeping `u, v` together; `deficiencySep` (`f_sep`) restricts it to partitions separating them;
+`weldPair` is the graph-level weld `H/uv`, realized via `Graph.map` under an inline collapse
+map — **not** `Graph.collapseTo` (`Induction/ReducibleVertex.lean:1451`, downstream of this
+file, though the two are provably equal); `pairDelta` (`δ`) is their gap `f − g`.
+`partitionDef_map` and `deficiency_weldPair_eq_deficiencyMerged` below prove the two
+`g`-carriers (the merged-partition supremum and the weld's own `deficiency`) interchangeable,
+settling decision D4 (`notes/Phase39.md` *Blockers*) by a proof rather than a presentation
+preference. `deficiencySep` has **no consumer in this slice** — only the welded-pendant law
+(checklist item A6) needs it, and that item is dropped from scope by decision D2; it is
+defined here per the carrier recon's scope-pin and left otherwise bare. Blueprint debt: none
+of the declarations in this section has a blueprint node yet (`notes/Phase39.md` *Blockers*,
+D5). -/
+
+/-- **`g` — the merged deficiency** (Phase 39's `deficiencyMerged`): the `D`-deficiency
+supremum restricted to labelings that keep `u` and `v` together (`f u = f v`). Always
+well-defined — the subtype is inhabited by every constant labeling. -/
+noncomputable def deficiencyMerged (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=
+  ⨆ f : {f : α → α // f u = f v}, G.partitionDef n f.1
+
+/-- **`f_sep` — the separated deficiency** (Phase 39's `deficiencySep`): the `D`-deficiency
+supremum restricted to labelings that separate `u` and `v` (`f u ≠ f v`). Junk (an `iSup`
+over an empty subtype) when `u = v`; every law using it carries `u ≠ v`. -/
+noncomputable def deficiencySep (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=
+  ⨆ f : {f : α → α // f u ≠ f v}, G.partitionDef n f.1
+
+/-- **The weld `H/uv`** (Phase 39's `weldPair`): identify `u` and `v` (to `v`), realized as
+`G.map` under an inline collapse map rather than `Graph.collapseTo`
+(`Induction/ReducibleVertex.lean:1451`, downstream of this file) — the two are provably
+equal, but this keeps the definition upstream. -/
+noncomputable def weldPair (G : Graph α β) (u v : α) : Graph α β :=
+  open Classical in G.map (fun x => if x = u then v else x)
+
+/-- **`δ` — the merged/separated deficiency gap** (Phase 39's `pairDelta`). -/
+noncomputable def pairDelta (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=
+  G.deficiency n - G.deficiencyMerged n u v
+
+theorem bddAbove_range_partitionDef_merged [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
+    BddAbove (Set.range (fun f : {f : α → α // f u = f v} => G.partitionDef n f.1)) :=
+  (Set.finite_range _).bddAbove
+
+theorem partitionDef_le_deficiencyMerged [Finite α] (G : Graph α β) (n : ℕ) {u v : α}
+    {f : α → α} (hf : f u = f v) :
+    G.partitionDef n f ≤ G.deficiencyMerged n u v :=
+  le_ciSup (G.bddAbove_range_partitionDef_merged n u v) (⟨f, hf⟩ : {f : α → α // f u = f v})
+
+/-- **`partitionDef` under a vertex map**: `(G.map c).partitionDef n h = G.partitionDef n
+(h ∘ c)`. General and new — it is what makes the two `g`-carriers (the direct
+merged-partition supremum and the weld's own `deficiency`) interchangeable. -/
+theorem partitionDef_map (G : Graph α β) (n : ℕ) (c h : α → α) :
+    (G.map c).partitionDef n h = G.partitionDef n (h ∘ c) := by
+  have hnp : (G.map c).numParts h = G.numParts (h ∘ c) := by
+    change (h '' (c '' V(G))).ncard = ((h ∘ c) '' V(G)).ncard
+    rw [Set.image_comp]
+  have hce : (G.map c).crossingEdges h = G.crossingEdges (h ∘ c) := by
+    ext e
+    change (e ∈ E(G) ∧ ∃ x y, (G.map c).IsLink e x y ∧ h x ≠ h y) ↔
+      (e ∈ E(G) ∧ ∃ x y, G.IsLink e x y ∧ (h ∘ c) x ≠ (h ∘ c) y)
+    simp only [Graph.map_isLink, Function.comp_apply]
+    constructor
+    · rintro ⟨heE, x, y, ⟨x₀, y₀, hl, rfl, rfl⟩, hne⟩
+      exact ⟨heE, x₀, y₀, hl, hne⟩
+    · rintro ⟨heE, x₀, y₀, hl, hne⟩
+      exact ⟨heE, c x₀, c y₀, ⟨x₀, y₀, hl, rfl, rfl⟩, hne⟩
+  simp only [partitionDef, hnp, hce]
+
+/-- **The bridge (settles D4).** `H/uv`'s own deficiency equals the merged-partition supremum
+`g`, so `deficiencyMerged` and `weldPair.deficiency` are interchangeable public faces of the
+same quantity. -/
+theorem deficiency_weldPair_eq_deficiencyMerged [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
+    (G.weldPair u v).deficiency n = G.deficiencyMerged n u v := by
+  classical
+  have : Nonempty (α → α) := ⟨id⟩
+  apply le_antisymm
+  · rw [weldPair, deficiency]
+    refine ciSup_le fun h => ?_
+    rw [partitionDef_map]
+    have hmem : (h ∘ (fun x => if x = u then v else x)) u
+        = (h ∘ (fun x => if x = u then v else x)) v := by simp
+    exact G.partitionDef_le_deficiencyMerged n hmem
+  · have : Nonempty {f : α → α // f u = f v} := ⟨⟨fun _ => u, rfl⟩⟩
+    refine ciSup_le fun f => ?_
+    have hcomp : f.1 ∘ (fun x => if x = u then v else x) = f.1 := by
+      funext x
+      by_cases hx : x = u
+      · simp [hx, f.2]
+      · simp [hx]
+    calc G.partitionDef n f.1
+        = G.partitionDef n (f.1 ∘ (fun x => if x = u then v else x)) := by rw [hcomp]
+      _ = (G.weldPair u v).partitionDef n f.1 := by
+            rw [weldPair]; exact (partitionDef_map G n _ f.1).symm
+      _ ≤ (G.weldPair u v).deficiency n := (G.weldPair u v).partitionDef_le_deficiency n f.1
+
 end Graph
