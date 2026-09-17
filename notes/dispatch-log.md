@@ -170,6 +170,7 @@ keeps only what git cannot show.
 | 2026-09-13 | Phase39 bar *(q)* validated on its first outing | opus (directions BNEST, BSIGFOUR) | The nineteenth pass added *(q)* — **a direction's first slice is a re-read of the clause its entry stands on** — on the evidence that six landed-clause corrections in two rounds all came from reading rather than measuring. It paid immediately and twice: BNEST caught its entry's false premise at **0.0 s**, and BSIGFOUR checked the spec's specific worry (that (BE-310)(i)'s proof might assume `δ_i = 1`) and found it **false**, which was load-bearing for its whole census. Candidate, not Ready — one wave. |
 | 2026-09-13 | Phase39 reproducibility gap in a committed driver | opus (coordinator, verification) | **A committed script whose landed figure cannot be re-run is not reproducible.** `bsmark.py`'s `run_rigid` defaulted to `stride=8` with no CLI path to the **stride-1** sweep (BE-315)(ii) reports, so the 972-row table could not be reproduced from the command line — the standing 2026-08-05 requirement met in letter, not in effect. `stride` exposed as a positional argument; the stride-1 run then reproduced the clause's table exactly. Second repair in the same driver: it printed a reading in `a_i` (*"settles NOTHING"*) beside a clause stating its verdict in `ρ_i` (*"a theorem"*) — same 44 rows, opposite-sounding verdicts, both correct. → **F39** |
 | 2026-09-13 | Phase39 coordinator mutated the shared working tree mid-flight | opus (coordinator) | To re-derive a `--cited-by` count at baseline the coordinator ran `git stash -u` **while two directions were writing untracked drafts into the tree**. Nothing was lost (stash list empty afterwards, all three drafts intact at their reported sizes), but it was an avoidable risk against `RESEARCH-ARC.md` §2's shared-scratchpad rule, and the safe form costs the same: read the baseline with `git show HEAD:<file>` or a throwaway worktree, never by mutating the tree siblings are writing to. |
+| 2026-09-17 | Phase39 item-6 A4 / A3+A5 / B1-B2 (`b506b0fe`, `764acbbf`, `a56cc1bd`; re-thinned by the coordinator) | sonnet, sonnet, opus | **the ROADMAP Status cell re-bloated one landing at a time, 623 -> 1325 chars, and no gate reads it** | Second instance of one class in a single session (cf. the A4 row above, the phase note). The Phase-39 Status cell went 623 chars (slice 7's re-thin, 2026-09-09) -> 993 -> 1098 -> 1152 -> 1325 across the A4, A3/A5 and B1-B2 landings, each appending its own per-leaf narrative — the *never a phase summary* the table's own rule forbids, and exactly what slice 7 already fixed once. Nothing gates it: `check-gapmap-cells.py` guards the gap map and `check-phase-note.py` the note, but no script reads a ROADMAP row. Coordinator re-thinned to 606. See F40. |
 | 2026-09-17 | Phase39 item-6 leaf A4 (`b506b0fe`, note-trim folded in by amend) | sonnet | **docs gate never run — `lake build`/`lake lint` attested green and were, and the commit still failed `check-phase-note.py`** | First firing of this gate. The commit took `notes/Phase39.md` to 618 lines (cap 580) with a 17-line *Decisions made* entry (cap 8) — the A4 route written out **three times** (checklist, Decisions, Current state). Trap: bare `check-phase-note.py` diffs vs `HEAD`, so after a commit it reports `0 notes checked` — use `--last`. Fixed in-commit: one canonical copy plus pointers; cap NOT bumped (growth is 93 → 203 finished vs +9 forward). Lesson: a build-gate attestation says nothing about the docs gates, and no agent core mandates them. |
 
 ## Findings
@@ -897,3 +898,22 @@ At phase close, promote stable entries into the coordinator command's
   in, the same count carries opposite-sounding verdicts and a reader running the
   driver will think it contradicts the workbook — print **both quantities with
   their directions**, and name which one the clause states.
+
+- **F40 — a status surface with no script behind it drifts on a per-landing
+  cadence, and prose rules do not hold it.** Two instances in one session:
+  `notes/Phase39.md` blew its 580-line cap (618, with a 17-line *Decisions
+  made* entry) on one landing, and the ROADMAP Phase-39 Status cell grew
+  623 -> 1325 chars over three. Both surfaces had a written rule forbidding
+  exactly the growth, and both had been repaired by hand before — the note at
+  `35e9ce6e`, the cell at doc-round slice 7. The note's cap now holds because
+  `check-phase-note.py` exists; the cell's does not, because nothing reads it.
+  The asymmetry IS the finding, and it is the same one
+  `check-gapmap-cells.py`'s own source records ("two prose-only repairs were
+  abandoned in favour of this mechanical cap"). **Actionable:** the four
+  maintained "next concrete task" surfaces (the note's `**Status:**` header,
+  *Current state*, *Hand-off*, the ROADMAP row) are one artifact class with one
+  gate covering one member; a `check-roadmap-cells.py` on the Status table's
+  per-cell char count is the cheap missing half. Until it exists, the
+  coordinator re-thins the cell at verification — a landing agent updating "its"
+  row will not, because appending one clause always looks proportionate from
+  inside a single slice.
