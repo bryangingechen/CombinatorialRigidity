@@ -27,15 +27,16 @@ side feasibility and `hK`'s conclusion; its open finding (the bare motive attain
 *coincident* points) the user settled **(α)**. **Item 5 landed in one slice:** both kernels
 take the induction hypothesis (S14(v)), `hK` concludes `HasGenericPencilRealization K 3 G`,
 and `hbareSplit` takes and returns the new motive `HasDistinctPencilRealization`. **For the kernels' current form read `notes/Phase39-design.md`
-§ *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **The S-mark brief rewrite
-LANDS 2026-09-16** (agent, against the landed kernels) — `notes/attacks/smark/brief.md` §§2, 3, 6
-rewritten; **pending PI review**, which unblocks `/attack smark` session 6. **(GR-10) is
-RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
-fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
+§ *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Both attack briefs
+CHECKED 2026-09-17** (PI-directed, against `084ee4ff`, after the Lean round closed):
+`notes/attacks/smark/brief.md` (§§2, 3, 6 rewritten 2026-09-16 against the landed kernels)
+verified hypothesis by hypothesis — **session 6 may start**; `notes/attacks/gr10/brief.md`
+restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scope), Part B the
+grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **No Lean task queued**; next is the PI's (S-mark review,
-then `/attack smark` session 6). Items 7–12 parked.
+to-do list; no blueprint chapter). **No Lean task queued**; next: `/attack smark` session 6 and
+`/attack gr10` session 1, each a main session in its own worktree. Items 7–12 parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -62,15 +63,15 @@ the **one tracked factoring item** (C2ℓ's hub duplicates ~85 lines of the land
 the *Lemma checklist*; all sorry-free, gates green. **C4ℓ `pencilLoss_vertexTwoCut` LANDS
 2026-09-17**, closing item 6's Lean track (only the deferred A6 and the factoring item remain,
 both off any consumed path) — its route needed only A5+B6, not C1ℓ/C3ℓ (its own docstring).
-In parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail
-below) — pending PI review; (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*):
-re-scoped to the char-2 probe, the grid route
-kept as a documented fallback. Checklist items 4/5 and **item 6's carrier recon** are all DONE
-2026-09-16. S-mark's own status surface is
-`notes/attacks/smark/state.md` (five sessions, two reviews, route R2 adopted, the rewritten
-brief pending PI review); (GR-10)'s is its brief plus
-*Blockers*, and its one live item is the char-2 probe, spec'd in `notes/Phase39-design.md`
-§ *Field-hypothesis recon*, last subsection. Per this note's own policy (*Hand-off*) the
+**Both attack briefs are CHECKED 2026-09-17** (PI-directed docs session, against `084ee4ff`):
+the S-mark brief's 2026-09-16 rewrite verified against `Escape.lean` and repinned, item 6's
+landed laws glossed for the attack (its §4 *[Lean 2026-09-17]*), one `m ≥ 5` adjacency worry
+added (§6); the gr10 brief restructured into Part A (the live char-2 probe, `hK` quoted
+verbatim, obligations O1–O5, the certificate-is-a-proof reading through
+`hasGenericPencilRealization_of_independent_pencilRow_target`) and Part B (the grid route as
+documented fallback, §B3 restated against the landed `hK`). S-mark's own status surface is
+`notes/attacks/smark/state.md` (five sessions, two reviews, route R2 adopted; its PI note
+carries the check); (GR-10) has no state file yet — session 1 writes it from Part A. Per this note's own policy (*Hand-off*) the
 per-session narrative lives there, not here; the two consumer misreadings the reviews caught are
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
@@ -82,8 +83,8 @@ re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive
 `Molecular/Induction/ForestSurgery/MaximalChain.lean`). Item 3 is **SETTLED** (PI, option C):
 the reduction stays `[Infinite K]`, the hypothesis lives on the kernel lemmas
 (`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
-`fmlnote:pencil-conditional-realization-pair-field`). The queued Lean work is item 6's Layer B
-(*Hand-off*). Builds need
+`fmlnote:pencil-conditional-realization-pair-field`). No Lean work is queued (*Hand-off*).
+Builds need
 `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
 `.claude/settings.local.json`).
 
@@ -114,9 +115,7 @@ S15; incident logged 2026-09-16). **Independence proviso:** the chain from (GR-1
 closed-hub-neighbourhood points independent, which the 40 742- and 166 088-shape sweeps did
 not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch** —
 *resolved 2026-09-15*: neither route needs characteristic 0 (the grid needs `char ≠ 2`; S-mark
-needs algebraic closure only as stated); option C, checklist item 3. The briefs are committed
-(PI-reviewed 2026-09-15; amended the same day for the formalization's corrections, edits marked
-*[formalization 2026-09-15]*; workbook S11). **Rank bridge — CHECKED** (item-4 recon, 2026-09-16):
+needs algebraic closure only as stated); option C, checklist item 3. **Rank bridge — CHECKED** (item-4 recon, 2026-09-16):
 the attack's `dim M(G) = 6 + def₃(G)` is the Lean's `HasPencilRealization` rank equation wherever
 adjacent points are distinct (five rows per hinge, `screwDim 2 = 6`, `deficiency 3 = def₃`;
 compiled). **Bare-motive slack** (item-4 recon): the bare motive attains at coincident adjacent
@@ -389,7 +388,7 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `(k+1)`-dimensional, `ear_k` attains and welded-attains — which have no carrier and are not
   in item 6's list; and **(b)** a **configuration-variety layer**, which the tree does not have
   at all: `HasPencilRealization` (`Statement.lean:103`), `HasDistinctPencilRealization`
-  (`:131`) and `HasGenericPencilRealization` (`Motive.lean:141`) are single-configuration
+  (`:129`) and `HasGenericPencilRealization` (`Motive.lean:141`) are single-configuration
   existentials, `IsNondegPencilRealization` (`Motive.lean:111`) is a nondegeneracy predicate,
   and `AlgebraicInduction/GenericityDevice.lean` is polynomial-non-vanishing, not irreducible
   components. S14's (α) irreducibility, (β) closure of the nondegenerate locus and (γ) descent
@@ -455,17 +454,17 @@ correct it — A4's sketch, A5's dependency, B1's exposure claim, C1ℓ/C3ℓ's 
 C4ℓ's two-input route) are in the *Lemma checklist* A3–C4ℓ entries.
 **Item 6's Lean track is now closed**, except the deferred A6 and the shared-hub-normalization
 factoring item (both tracked, off any consumed path; *Lemma checklist*). **No Lean task is
-queued; the next move is the PI's.** **(1) The S-mark brief rewrite LANDED 2026-09-16** (agent,
-`notes/attacks/smark/brief.md`, from the *landed* declarations) — **pending PI review**, not
-itself a `/review-attack` pass. §§2/3/6 rewritten against `Escape.lean`'s current kernels, one
-hypothesis per line, each operator glossed from its body, the item-4 recon's (a)–(d), and the
-two unused-hypothesis justifications; §6 puts O7 (adjacent-hub side, several starts, before the
-tower/component-matching options) ahead of O9 and deletes O8 (α). **(2)** Once reviewed,
-`/attack smark` session 6, a main session in its own worktree; and, when the PI chooses to
-spend it, the **char-2 probe** as the sole live (GR-10) item (one driver leg beside
-`closure.py --char2`; spec `notes/Phase39-design.md` § *Field-hypothesis recon*, last
-subsection) — a systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so it
-reports to the PI, not just to the attack. When an attack starts, its `state.md` is that
+queued; both briefs are checked (2026-09-17), and the next concrete tasks are the two attack
+sessions.** **(1)** `/attack smark` session 6, a main session in its own worktree: first the
+one-paragraph `m ≥ 5` re-derivation (brief §6 *[Lean 2026-09-17]* — the formalized 2-cut law
+needs `w ≁ v`), then O7 with the adjacent-hub control. **(2)** `/attack gr10` session 1,
+likewise: the char-2 probe as briefed in Part A (O1–O5; driver under
+`notes/attacks/gr10/drivers/`, workbook file `notes/pencil/workbook/attack-gr10.md`); a
+systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so O5 reports to the
+PI. Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
+number results S1…/P1… in their workbook files instead; incident 2026-09-15), and
+`/harness-review`, due since five S-mark sessions (candidates in *Blockers*; one more from this
+check in `notes/harness/incidents.md`). When an attack starts, its `state.md` is that
 lemma's status surface and this note carries a two-line pointer to it, edited by the PI. **On a
 future HIT the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`,
 against the 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
@@ -479,6 +478,13 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
+- **2026-09-17 — both attack briefs CHECKED against the tree (PI-directed docs session; no new
+  mathematics).** S-mark: the session-6 review gate lifted, §3.1/§3.2 verified verbatim, §8
+  repinned, item 6's laws glossed (§4), the `m ≥ 5` adjacency worry added (§6); `state.md`'s PI
+  note updated (O8 deleted ⟹ 2 open obligations). gr10: restructured — Part A the live char-2
+  probe as a route with O1–O5, Part B the grid fallback with §B3 restated against the landed
+  `hK`. One incident filed (file:line pointers rot within days; cite by declaration name).
+
 - **2026-09-16 — item 5 LANDED: the kernels take the induction hypothesis, `hK` weakens to the
   generic motive, `PencilPair` gains an adjacent-distinct third conjunct (user: (α), one
   slice).** New motive `HasDistinctPencilRealization`, *never* a conjunct on
@@ -490,27 +496,18 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 - **2026-09-16 — item 6's D1–D5 SETTLED (user).** Verdicts and rationale: *Blockers* (the
   D1–D5 entry). Verbatim: `notes/pencil/adjudications.md`.
 
-- **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, no new decisions; a
-  user-sanctioned exception to the `/review-attack` rewrite path). `brief.md` §§2, 3, 6 rewritten
-  against `Escape.lean`'s current kernels and the item-4 recon; O8 deleted (α), O7 ahead of O9.
-  **Pending PI review.**
+- **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, a user-sanctioned
+  exception to the `/review-attack` rewrite path; §§2, 3, 6; O8 deleted (α)). Checked 2026-09-17.
 
-- **2026-09-16/17 — item 6's Layers A/B LAND, and Layer C's C1ℓ–C3ℓ, by transcription plus one
-  recon spike; no new decisions** (A1–A5 in `Deficiency.lean`/`SplitOffDeficiency.lean`; B1–B7
-  in `Bricks.lean`'s `section TwoCutCarriers`; C1ℓ–C3ℓ in the new
-  `Molecule/Pencil/TwoCut.lean`; sorry-free, gates green; A6 deferred by D2). Per-leaf names,
-  sites and findings — A4/A5's routes, B1's wrong exposure claim, the dropped instances (now
-  C2ℓ's `hne` too), B3's flip, B5's annihilator route, C2ℓ's codimension pivot and `hu`/`hv`
-  necessity, and the two coordinator claims the C2ℓ spike refuted — recorded **once** in the
-  *Lemma checklist*. Blueprint debt extended per leaf (*Blockers*).
+- **2026-09-16/17 — item 6's Layers A/B and C1ℓ–C3ℓ LAND by transcription plus one recon
+  spike; no new decisions** (A1–A5 `Deficiency.lean`/`SplitOffDeficiency.lean`; B1–B7
+  `Bricks.lean` `section TwoCutCarriers`; C1ℓ–C3ℓ `Molecule/Pencil/TwoCut.lean`; A6 deferred by
+  D2). Per-leaf routes, dropped instances and refuted claims are recorded **once** in the
+  *Lemma checklist*; blueprint debt extended per leaf (*Blockers*).
 
 - **2026-09-17 — C4ℓ `pencilLoss_vertexTwoCut` LANDS, closing Layer C and item 6's Lean track**
-  (except the deferred A6 and the factoring item). Needs only **A5+B6** by unfolding
-  `pencilLoss` directly — C1ℓ/C3ℓ, though listed as dependencies, are not consumed (shorter
-  route than the checklist implied). One non-substitution step: `|V₁|+|V₂| = |V(G)|+2` by
-  inclusion–exclusion. `hnonadj` binds only through A5 (B6 needs none) — confirms the
-  combinatorial/geometric hypothesis asymmetry flagged at C2ℓ. Sorry-free, gates green;
-  blueprint debt list (*Blockers*) fully landed, still no chapter (D5).
+  (except the deferred A6 and the factoring item): A5+B6 only, `hnonadj` binding only through
+  A5 — detail in the *Lemma checklist* C4ℓ entry; blueprint debt fully listed, no chapter (D5).
 
 - **2026-09-16 — the Lean hold is LIFTED for item 6 (user); its carrier recon RECORDED**
   (coordinator-accepted) — 6a proved, 6b false without `¬ G.Adj u v`, the slot-trace's 6c claim
