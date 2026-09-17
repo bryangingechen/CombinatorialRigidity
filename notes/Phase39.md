@@ -48,8 +48,10 @@ not a discardable "realization of `G − x`" — and route R2 (workbook S14). Re
 (2026-09-16, notes at workbook S15) verified the consumer reading against `Escape.lean` and
 the S14 arithmetic, endorsed R2, and recorded three statement-level questions for the Lean
 track (*Blockers*, checklist item 4). `notes/attacks/smark/state.md` is the status surface;
-session 6 waits for the brief rewrite. (GR-10) has not started (independent of the above;
-session 1 may run any time); it writes its `state.md` from the template — **and its backlog
+session 6 waits for the brief rewrite. (GR-10) has not started — **and should wait**: R2 covers
+`hK`'s arm too (`smark/state.md` *Statement*; S14(iii), (vii)), so after the item-4 recon the PI
+decides whether the grid route is still needed, re-scoped, or retired (*Blockers*). If it runs, it
+writes its `state.md` from the template — **and its backlog
 takes the char-2 probe** (PI 2026-09-15, deferred to the attack track; spec in
 `notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection): the census shapes' chart matrix over `F_{2^k}` and a few odd `F_p` — a
 full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
@@ -255,6 +257,14 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   the one the IH certifies — on the bare arm, where some hub has three hub neighbours; no
   driver population has sampled that arm (every census branch has length `≥ 2`), and the
   2026-07-30 (K-bare) recon flagged the same evidence gap.
+- **PI decision after the item-4 recon: (GR-10)'s scope.** R2 discharges the consumed step on
+  `hK`'s arm as well — `G` attains at the generic point from the IH and the split-off antecedent,
+  on the feasible arm where the hub graph has maximum degree `≤ 2` (S14(iii), (vii)) — so if the
+  recon's (a) and (c) hold and S14(vii) is written as a proof, the grid/colouring route of
+  `notes/attacks/gr10/brief.md` becomes a cross-check or fallback, not the path to `hK`. Decide
+  whether (GR-10) session 1 runs as briefed, re-scoped (e.g. to the char-2 probe alone, which is
+  about the conjecture's field range rather than the route), or not at all. The gr10 brief
+  carries a PI pointer saying to wait, since an attack reads only its brief and state at start.
 - **The (K-res) wave** (a kernel of `hK`'s difficulty class on the complementary habitat,
   scoped RESGRID, cheap items spent RPOOL) stays a user call; route σ is a live candidate
   that is not a route to (K-res). Detail: `notes/pencil/arc-worklog.md` *Hand-off*.
@@ -280,8 +290,8 @@ hypothesis the route does not use; §6 = O7 first — build an adjacent-hub side
 hub neighbours, each continued by a branch of length `≥ 2` to `w` or `v`, girth `≥ 7`) and
 sample from several starts before attempting the tower extension or component matching — then
 O8 against the Lean's *actual* bare space as (b) settles it, then O9; every obligation with a
-"consumed because" line. **(4)** `/attack smark` session 6, and `/attack gr10` session 1
-(independent; may run any time), each a main session in its own worktree. When an attack
+"consumed because" line. **(4)** `/attack smark` session 6 — and `/attack gr10` session 1 only if the PI keeps it after
+the recon (*Blockers*) — each a main session in its own worktree. When an attack
 starts, its `state.md` is that lemma's status surface and this note carries a two-line pointer
 to it, edited by the PI. **On a future HIT the phase-boundary consequences are the USER's
 call** (`PHASE-BOUNDARIES.md`, against the 2026-07-24 no-split adjudication), surfaced with an
