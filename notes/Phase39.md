@@ -167,12 +167,17 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   degree 2 there and become non-hubs, where `IsNondegPencilRealization`'s fourth conjunct (points
   independent on a non-hub's closed neighbourhood) bites and the parent's realization never had
   to satisfy it. Decides whether the IH's generic half is usable for the side on the feasible
-  arm. **Optional (d):** whether `hK`'s chart-form conclusion can be weakened to
+  arm; argue from the realization, not from hub counts — *Blockers* records that every purely
+  combinatorial feasibility criterion is refuted (`not_pencilNondegFeasible_of_triangle_two_hubs`).
+  **Optional (d):** whether `hK`'s chart-form conclusion can be weakened to
   `HasGenericPencilRealization K 3 G` — the call site converts to that at once
   (`hasGenericPencilRealization_of_independent_pencilRow_target`) and uses nothing else — which
   is strictly easier to prove and touches the (GR-10) attack's target. Deliverable: a verdict
-  per question plus the material for the brief's §3 (*Hand-off*). Review notes: workbook S15
-  (v)(c), (vii).
+  per question plus the material for the brief's §3 (*Hand-off*). The recon is read-only; on
+  accepting its verdict the coordinator commissions the same agent to **record it** as a
+  design-pass commit — a new arc *appended* to `notes/Phase39-design.md` (frozen: append-only,
+  plus an arc-index row) and one-line verdicts under this item — so item 5's builder reads it
+  from the tree, not from a transcript. Review notes: workbook S15 (v)(c), (vii).
 - [ ] **Kernel restatement with the induction hypothesis (item 5; one build slice, after
   item 4; PI decision 2026-09-16).** Both `hK` and `hbareSplit` — in
   `pencilPair_of_splitOff_of_habitat` and the `pencil_conjecture_of_hcontract_hK_hbareSplit*`
@@ -182,10 +187,23 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `G = H′ ∪ ear_m`, the split-off antecedent allows `δ′ + a′ ≤ 6 − m` while `G` attaining needs
   `a′ = 0` or `δ′ + a′ ≤ 5 − m`; on a never-attaining side the pinned implication is false, so
   a proof of it as stated would have to prove the conjecture for `G − chain` inside the kernel.
-  Same commit (per-slice gate): restate the pinned forms in `notes/Phase39-design.md` residue
-  (ii) and every blueprint node stating the kernels (`grep pencil.tex` for `hbareSplit`, `hK`,
-  `pencil-conditional-realization-pair`), and apply item 4's verdicts ((b)'s motive conjunct if
-  needed; (d) if adopted). Then the S-mark brief is rewritten (*Hand-off*).
+  Surfaces, all in the same commit (per-slice gate; `hbareSplit` is the grep key): **Lean** —
+  `Escape.lean` (the two statements in `pencilPair_of_splitOff_of_habitat`, the wrapper and its
+  `_of_card` successor, and the section docstrings) and the `hbareSplit` mentions in
+  `Molecular/Induction/ForestSurgery/MaximalChain.lean` docstrings; `pencil_conjecture_of_arms_pair`
+  (`Pair2.lean`) takes `hsplit`, not the kernels — confirm unaffected. **Blueprint**
+  (`pencil.tex`): `thm:pencil-conditional-realization-pair` — its statement prose ("with
+  split-off multigraph $G'$ already satisfying the conditioned pair") becomes "given that every
+  strictly smaller such graph satisfies the conditioned pair", and its proof's last paragraph
+  says how the kernels are fed; `fmlnote:pencil-conditional-realization-pair-kernels` gains the
+  S14(v) fact (as pinned, not locally provable); `fmlnote:…-field`'s (K-bare) sentence if the
+  witness-form remark shifts. **Design doc** — `notes/Phase39-design.md` is FROZEN: never edit
+  residue (ii)'s pinned block in place; append a new arc with the restated forms, add its
+  arc-index row, and add a one-line forward pointer beside the old pin. **Status surfaces** —
+  this note's header and `ROADMAP.md`'s Phase 39 cell name the kernels as carried; re-read both.
+  The `hbareSplit` mentions in `notes/scripts/{kbare,w4}/` are numerics comments, not pins —
+  leave them. Apply item 4's verdicts ((b)'s motive conjunct if needed; (d) if adopted). Then
+  the S-mark brief is rewritten (*Hand-off*).
 - [ ] **Deficiency laws** (BINDUC's, cited by 45 claims through (BE-22)): 3-connected ⇒
   `def₂ = 0`; the 2-cut law `def₃(G) = f₁ + f₂ − min(δ₁ + δ₂, 6)`; the fibre-product identity
   `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)`; the welded bound `ρ_i ≤ δ_i + a_i` with
@@ -214,7 +232,9 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 - **The Lean hold (2026-08-05) is the user's**; lifting it for named items is a PI call, made
   per item. **Lifted 2026-09-15 for checklist items 1–3** (verbatim record
   `notes/pencil/adjudications.md`); **the R2 Lean round, items 4–5, approved 2026-09-16** (same
-  record); items 6–12 stay parked.
+  record); items 6–12 stay parked. **The hold lift for items 4–5 is confirmed with the PI at
+  the coordinator's session-start check-in** (the record above says "approved as the next step";
+  a lift is per item and is the PI's word — ask, do not infer).
 - **Each attack's first move is a reading check, not a sweep:** the girth-5 restriction and
   the frame gap for S-mark; the independence proviso for (GR-10). Session 1 should settle or
   scope these before choosing a route. (S-mark's session 1 did the girth check but not a
@@ -248,7 +268,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 **The phase stays OPEN.** Next concrete task, in order (PI 2026-09-16): **(1) checklist item 4**
 — the R2 recon, read-only, under `/coordinate-phase 39` (a `recon-fable`/`recon-opus`
-dispatch), answering (a)–(c) against the Lean source with lines pinned. **(2) Checklist item 5**
+dispatch), answering (a)–(c) against the Lean source with lines pinned, its verdict then recorded in the
+tree per item 4's last sentence. **(2) Checklist item 5**
 — the kernel-restatement slice, one build commit, applying the recon's verdicts and restating
 the design-doc and blueprint pins in the same commit. **(3) The S-mark brief rewrite**, drafted
 by an agent from the *landed* declarations and PI-reviewed: §2 = the kernel implication with
