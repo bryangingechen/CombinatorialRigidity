@@ -138,6 +138,7 @@ failing pattern and the working fix.
 - `linter.overlappingInstances` reports *"There are 2 `[C α]` instances; one is sufficient"*, and deleting the duplicate breaks the build — with `cannot omit referenced section variable inst✝¹`, or `MVar does not look like a recursive call` + `Unknown constant …induct` → § 108 (a bare `omit [C]` does *not* remove `C` from the section's variable list, so a later `variable [C]` puts a **second copy in scope**; and a section `variable` instance is inserted where it is first *referenced*, which for a well-founded recursion is inside the termination measure — at the *end* of the telescope. Fix by **scoping**, never by deleting a binder: `section`/`end` the region that needs it, or move the `variable` line *below* the def whose inline binders the recursion needs. The linter counts copies *in scope*, not arguments in the signature, so the fix changes no signature — verify with `#check`)
 - `obtain ⟨a, haS, b, hbS, …⟩ := h` from `h : ∃ a b c, a ∈ s ∧ b ∈ s ∧ c ∈ s ∧ …` type-checks with no arity complaint, but a later use of `haS`/`hbS` fails with a confusing *"Application type mismatch"* — e.g. `haS` reported as having the base type `α`, not the membership `Prop` → § 109 (nested `∃`s flatten to *witnesses-then-propositions*: `⟨a, b, c, h₁, h₂, …⟩`, never interleaved to match the statement's informal per-variable reading)
 - `X.mp`/`X.mpr` on a bare, unapplied `autoParam`-guarded `Iff` lemma name fails with *"Unknown constant `X.mp`"*, not an elaboration error against the `Iff` → § 110 (dot notation on an unapplied global constant tries the whole dotted string as a namespaced declaration lookup first; wrap in parens, `(X).mp`, to force the elaborate-then-project fallback)
+- `Module.finrank K (A ⊓ B)` (or `⊔`) on two `Submodule`-typed terms that each elaborate fine alone fails with *"failed to synthesize instance of type class `Min (Type u_1)`"*, pointing at the `finrank` call and mentioning neither `Submodule` nor `Inf` → § 111 (the `Type*` argument is committed before the `↥`-coercion is inserted, so `⊓` is searched at `Type` itself; write `Module.finrank K ↥(A ⊓ B)`, or ascribe `(A ⊓ B : Submodule K M)`)
 
 ## Sections
 
@@ -4145,5 +4146,44 @@ application (e.g. a hypothesis `h := Set.two_lt_ncard_iff hs` and then `h.mp`) �
 specific to leaning on the `autoParam` default with no application in sight at all.
 
 **Worked case:** Phase 39 (PENCIL) leaf G4, same lemma as § 109.
+
+---
+
+## 111. `Module.finrank K (A ⊓ B)` reports *"failed to synthesize `Min (Type u_1)`"* — coerce the compound submodule explicitly
+
+**Symptom.** Two `Submodule K M`-typed terms `A`, `B` that each elaborate fine on their own, and
+`Module.finrank K (A ⊓ B)` (or `A ⊔ B`) fails with
+
+```
+failed to synthesize instance of type class
+  Min (Type u_1)
+```
+
+The error points at the `Module.finrank` application and mentions neither `Submodule` nor `Inf`,
+which is what makes it hard to place — nothing in the message suggests a *coercion* problem.
+
+**Cause.** `Module.finrank K` expects a `Type*`, so the elaborator commits its second argument to
+`Type` *before* the `↥`-coercion out of `Submodule K M` is inserted; `⊓` is then searched at `Type`
+itself, i.e. for a `Min (Type u_1)` instance. A single *named* submodule is unaffected (the
+coercion is inserted on the atom) — only a **compound** lattice expression trips it, which is why
+it reads as boilerplate at the sites that already carry the fix.
+
+**Fix.** Coerce or ascribe the compound explicitly; both work.
+
+```
+Module.finrank K ↥(A ⊓ B)                    -- shortest
+Module.finrank K ((A ⊓ B : Submodule K M))   -- explicit ascription
+```
+
+General: at any `Type*`-expecting position that should receive a `Submodule`'s coe-sort, write the
+`↥` yourself as soon as the argument is `⊓`/`⊔`-compound; do not rely on the operands' pinned types
+propagating through the lattice operator. Mathlib's own statements carry the coercion for exactly
+this reason (`Submodule.finrank_sup_add_finrank_inf_eq` reads `finrank K ↑(s ⊓ t)`), so a `have`
+that **restates** one of them for a concrete pair must carry it too.
+
+**Worked cases:** Phase 39 (PENCIL) W5-L5 sub-case 3 (`Molecule/Pencil/Pair2.lean`, the ascription
+form) and item-6 Layer B4 (`RigidityMatrix/Bricks.lean`, `weldedRank_eq` — the `↥` form, on a
+restatement of `finrank_sup_add_finrank_inf_eq`). Full friction entry: `notes/FRICTION.md`
+*[idiom] `Module.finrank K (A ⊓ B)` … `Min (Type u_1)`*.
 
 ---

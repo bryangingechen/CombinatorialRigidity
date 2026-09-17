@@ -33,9 +33,9 @@ rewritten; **pending PI review**, which unblocks `/attack smark` session 6. **(G
 RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
 fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), and **Layer A is DONE
-except the deferred A6** (A1–A5, 2026-09-16/17), with **Layer B1–B2 landed 2026-09-17** — a
+except the deferred A6** (A1–A5, 2026-09-16/17), with **Layer B1–B4 landed 2026-09-17** — a
 Layer A/B/C leaf list with sites (*Lemma checklist*), no blueprint chapter, so the *Layer plan*
-is the to-do list. Next: Layer B3. Items 7–12 stay parked.
+is the to-do list. Next: Layer B5–B6. Items 7–12 stay parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -48,12 +48,14 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Item-6 Layer A is DONE except the deferred A6, and Layer B1–B2 LAND 2026-09-17** — A1–A5 the
-pendant law, the combinatorial carriers, the vertex 2-cut law and its two corollaries; B1 the
-four geometric carriers `relScrews`/`jointRows`/`jointMotions`/`weldedRank` and B2 the joint's
-row count `finrank_span_jointRows`, in a new `section TwoCutCarriers` of
-`RigidityMatrix/Bricks.lean`. Sites and routes in the *Lemma checklist*, all sorry-free, gates
-green. **Next concrete step: Layer B3** (`inf_span_rigidityRows_span_jointRows_top`). In
+**Item-6 Layer A is DONE except the deferred A6, and Layer B1–B4 LAND 2026-09-17** — A1–A5 the
+pendant law, the combinatorial carriers, the vertex 2-cut law and its two corollaries; B1–B2 the
+four geometric carriers `relScrews`/`jointRows`/`jointMotions`/`weldedRank` and the joint's row
+count `finrank_span_jointRows`; B3–B4 the welded-rank identity `weldedRank_eq`
+(`rank_w = rank + ρ`) via `inf_span_rigidityRows_span_jointRows_top` — all in a new
+`section TwoCutCarriers` of `RigidityMatrix/Bricks.lean`. Sites and routes in the *Lemma
+checklist*, all sorry-free, gates green. **Next concrete step: Layer B5–B6** (C1, the
+fibre-product / gluing identity). In
 parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
 (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the
 grid route kept as a documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and
@@ -66,7 +68,7 @@ per-session narrative lives there, not here; the two consumer misreadings the re
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
 item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, its Layer A is DONE except the
-deferred A6, and Layer B1–B2 are DONE (2026-09-16/17).**
+deferred A6, and Layer B1–B4 are DONE (2026-09-16/17).**
 Items 1–2's eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two
 chains* are **all green**; that chapter is their declaration index, so the names are not
 re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive.lean`,
@@ -261,10 +263,16 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     v).dualMap`) and `Subspace.finrank_add_finrank_dualAnnihilator_eq`; the recon's `[Finite α]`
     is unused by that route and was dropped (an unused instance is `unusedArguments` surface,
     confirmed against the linter).
-  - [ ] **B3–B4 — the weld-rank identity.**
-    `inf_span_rigidityRows_span_jointRows_top`, then **C2-core** `weldedRank_eq`:
-    `rank_w = rank + ρ`. This single fact *is* the whole linear-algebraic content of the
-    transcribed welded bound `ρ ≤ δ + a`.
+  - [x] **B3–B4 — the weld-rank identity** — **LAND 2026-09-17**, sorry-free:
+    `inf_span_rigidityRows_span_jointRows_top` (the framework's rows meet the rigid weld's rows
+    exactly in `jointRows (relScrews u v) u v`) and **C2-core** `weldedRank_eq`,
+    `rank_w = rank + ρ` at `u ≠ v` — the whole linear-algebraic content of the transcribed
+    welded bound `ρ ≤ δ + a`. Two new named helpers B5/B6 and Layer C will reuse:
+    `map_screwDiff_comm` (the `relScrews`-vs-`jointRows` orientation flip, paid by closure under
+    negation) and `span_jointRows_bot` (`= range (screwDiff u v).dualMap`). B3 needs neither
+    `u ≠ v` nor the recon's `[Finite β]`; B4 is `Submodule.finrank_sup_add_finrank_inf_eq` over
+    B3 + two instances of B2, with `finrank (relScrews u v) ≤ screwDim k` handed to `omega` so the
+    `ℕ` subtraction cannot truncate.
   - [ ] **B5–B6 — C1, the fibre-product / gluing identity**, rank form
     `rank(G) = rank(H₁) + rank(H₂) + dim(ρ̄₁ ⊔ ρ̄₂) − screwDim k`, whose core is the new brick
     `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`. **Genuinely new on two counts:** the landed
@@ -345,7 +353,9 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `pairDelta_le_bodyBarDim`/`deficiency_eq_max` (**A3, 2026-09-17**; its four small `Sep`/`Merged`
   bound helpers need no pin), `relScrews`/`jointRows`/`jointMotions`/`weldedRank` plus
   `span_jointRows_eq_map_dualAnnihilator`/`finrank_span_jointRows` (**B1/B2, 2026-09-17**),
-  `weldedRank_eq`, `inf_span_rigidityRows_of_vertexTwoCut`,
+  `inf_span_rigidityRows_span_jointRows_top`/`weldedRank_eq` plus the helpers
+  `map_screwDiff_comm`/`span_jointRows_bot` (**B3/B4, 2026-09-17**),
+  `inf_span_rigidityRows_of_vertexTwoCut`,
   `finrank_span_rigidityRows_vertexTwoCut_eq`, `pencilLoss`/`weldedLoss`, `weldedLoss_nonneg`,
   `finrank_relScrews_eq`, `pencilLoss_vertexTwoCut`. **Discharge when the informal proof closes**
   (i.e. when the variety layer below is settled), or earlier if the user reverses D5. A build
@@ -415,15 +425,16 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 **The phase stays OPEN.** Checklist items 1–5 are DONE, item 6's carrier recon is DONE
 (2026-09-16), item 6's **D1–D5 are all SETTLED** (2026-09-16, user; *Blockers*), and item 6's
-**Layer A is DONE except the deferred A6, and its Layer B1–B2 LANDED 2026-09-17** — the carrier recon record is
+**Layer A is DONE except the deferred A6, and its Layer B1–B4 LANDED 2026-09-17** — the carrier recon record is
 `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*; A4's and A3/A5's own routes
 (A4's supersedes the recon's sketch; A5 needs only A4, not A3 — a stale checklist claim
 corrected this slice) are recorded in the *Lemma checklist* A3–A5 entries. Read the recon arc
 before scoping any item-6 slice: it carries the exact signatures, the sites (two of which the
 recon got wrong on its first pass and fixed by compiling), and the numerics.
-Next concrete task: **(1) Layer B3** (`inf_span_rigidityRows_span_jointRows_top`, then B4's
-`weldedRank_eq` — both in `RigidityMatrix/Bricks.lean` beside the landed B1/B2), under
-`/coordinate-phase 39`.
+Next concrete task: **(1) Layer B5–B6** — C1, the fibre-product / gluing identity, whose core
+is the new brick `R₁ ⊓ R₂ = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`, then its rank form
+(`RigidityMatrix/Bricks.lean`, beside the landed B1–B4; the checklist B5–B6 entry says why this
+is genuinely new against `le_finrank_span_rigidityRows_of_cut`), under `/coordinate-phase 39`.
 **(2) The S-mark brief rewrite LANDED 2026-09-16** (agent, `notes/attacks/smark/brief.md`, from
 the *landed* declarations) — **pending PI review**, not itself a `/review-attack` pass. §§2/3/6
 rewritten against `Escape.lean`'s current kernels, one hypothesis per line, each operator glossed
@@ -465,33 +476,14 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   rewritten against `Escape.lean`'s current `hK`/`hbareSplit` and the item-4 recon; O8 deleted
   (α), O7 ordered ahead of O9. **Pending PI review.** `state.md` synced.
 
-- **2026-09-16 — item 6 Layer-A leaves A1 and A2 LAND** (transcription from the recon, no new
-  decisions). A1 `deficiency_removeVertex_of_degree_eq_one`
-  (`Induction/SplitOffDeficiency.lean`, beside `removeVertex_deficiency_ge`). A2 the
-  combinatorial carriers `deficiencyMerged`/`deficiencySep`/`weldPair`/`pairDelta` plus
-  `partitionDef_map` and the D4-settling bridge `deficiency_weldPair_eq_deficiencyMerged`
-  (`Deficiency.lean`), with two small `bddAbove`/`le_ciSup` helpers the bridge needs.
-  `deficiencySep` has no consumer this slice (D2's A6 is deferred). Both sorry-free, gates
-  green. Blueprint debt list extended (*Blockers*).
+- **2026-09-16/17 — item 6's Layers A and B LAND, all by transcription, no new decisions**
+  (A1–A5 in `Deficiency.lean` / `Induction/SplitOffDeficiency.lean`; B1–B4 in the new
+  `section TwoCutCarriers` of `RigidityMatrix/Bricks.lean`; every leaf sorry-free, gates green;
+  A6 deferred by D2). The per-leaf declaration names, sites and the four findings this arc turned
+  up — A4's route supersedes the recon sketch, A5 needs A4 alone not A3, B2/B3 drop the recon's
+  unused instances, B3 is where the `screwDiff` orientation flip is paid — are recorded **once**,
+  in the *Lemma checklist* A1–B4 entries. Blueprint debt extended per leaf (*Blockers*).
 
-- **2026-09-17 — item 6 leaf A4 LANDS: `deficiency_eq_of_vertexTwoCut`** (the vertex 2-cut
-  law, D3's `max` form; `Deficiency.lean`; sorry-free, gates green). **No new decisions.** Its
-  one finding — the route **supersedes the carrier recon's sketch**, no refinement lemma needed
-  — is recorded once, in the *Lemma checklist* A4 entry. Blueprint debt extended (*Blockers*).
-
-- **2026-09-17 — item 6 leaves A3 and A5 LAND** (`pairDelta_le_bodyBarDim`/`deficiency_eq_max`;
-  `deficiency_eq_of_vertexTwoCut'`; `Deficiency.lean`; sorry-free, gates green). **One finding,
-  recorded once in the A5 checklist entry:** A5 is a corollary of A4 alone, not A3 — the
-  checklist's "A3 + A4" claim was stale. D2's "no consumer but A5" is corrected the same way:
-  `deficiencySep`'s only consumer is A3. Blueprint debt extended (*Blockers*).
-
-- **2026-09-17 — item 6 Layer B1–B2 LAND: the four geometric carriers and the joint's row
-  count** (`relScrews`/`jointRows`/`jointMotions`/`weldedRank`; `finrank_span_jointRows` with
-  its unfolding lemma `span_jointRows_eq_map_dualAnnihilator`; new `section TwoCutCarriers` in
-  `RigidityMatrix/Bricks.lean`; sorry-free, gates green). **No new decisions.** Two findings,
-  recorded once in the B1/B2 checklist entries: the carriers' bodies are visible downstream
-  despite the file's plain `public section`, and B2's route leaves the recon's `[Finite α]`
-  unused (dropped). Blueprint debt extended (*Blockers*).
 
 - **2026-09-16 — the Lean hold is LIFTED for item 6 (user); its carrier recon RECORDED**
   (coordinator-accepted) — not one build slice; 6a proved, 6b false without `¬ G.Adj u v`, the
