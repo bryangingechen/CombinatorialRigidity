@@ -533,3 +533,14 @@ sequence), checklist items 4–5 (the Lean round), *Blockers* (resolved: the cut
 induction frame); review notes `notes/pencil/workbook/attack-smark.md` S15. **Everything else
 stands unchanged:** phase OPEN (2026-07-24), W4 parked, checklist items 6–12 parked, (GR-10)
 session 1 pending.
+
+## 2026-09-16 — the Lean hold LIFTED for checklist items 4–5 (the R2 Lean round)
+
+Recorded by the `/review-attack smark` session (review 2), verbatim. After `notes/Phase39.md`
+gained checklist item 4 (the read-only R2 recon: the rank bridge, the bare variety at coincident
+points, feasibility restriction to the side; optional weakening of `hK`'s conclusion) and item 5
+(the kernel restatement with the induction hypothesis), the user said: **"Let's lift the Lean
+hold for the items you've just added."** Scope: items 4 and 5 of the checklist as numbered at
+commit `ac50fc89`; items 6–12 stay parked; the coordinator no longer asks for this lift at its
+session-start check-in. **Everything else stands unchanged:** phase OPEN (2026-07-24), W4
+parked, (GR-10) session 1 waiting on the post-recon decision.

@@ -21,7 +21,7 @@ hypothesis on smaller graphs.** *(2)* **Lean track** — this note and `/coordin
 formalize the reductions and foundations the attacks stand on, cruxes carried as
 hypotheses, no `sorry`. Items 1–3 DONE 2026-09-15 (`sec:pencil-girth-chain` fully green; field
 hypothesis option C). **Next: the R2 Lean round** — checklist item 4 (a read-only recon, first)
-and item 5 (the kernel-restatement slice), approved by the PI 2026-09-16 as the next step;
+and item 5 (the kernel-restatement slice), the Lean hold LIFTED for both by the PI 2026-09-16;
 items 6–12 (the 2026-09-15 numbering's 4–10) stay parked by the hold.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
@@ -73,7 +73,7 @@ M3a/M3b, M1, M2 and M4/M4′ in the new `Molecular/Induction/ForestSurgery/Maxim
 the reduction stays `[Infinite K]`; the hypothesis lives on the kernel lemmas
 (`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
 `fmlnote:pencil-conditional-realization-pair-field`). **Items 6–12 stay parked by the hold**;
-the R2 round (items 4–5) is the next Lean work, approved 2026-09-16 (*Hand-off* for the order). Builds need `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md`
+the R2 round (items 4–5) is the next Lean work, hold lifted 2026-09-16 (*Hand-off* for the order). Builds need `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md`
 *Environment*; session-wide via the gitignored `.claude/settings.local.json`).
 
 **Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
@@ -152,7 +152,7 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   hypotheses. Record: `notes/Phase39-design.md` § *Field-hypothesis recon (2026-09-15)*;
   chapter `fmlnote:pencil-conditional-realization-pair-field`. The char-2 probe is the (GR-10)
   attack's (*Current state*).
-- [ ] **R2 recon (item 4; read-only, before item 5; approved PI 2026-09-16).** Three
+- [ ] **R2 recon (item 4; read-only, before item 5; hold lifted PI 2026-09-16).** Three
   definition-body questions the S-mark route R2 depends on, each answered against the Lean
   source with the line pinned. **(a) The rank bridge** — the attack's "attains"
   (`dim M(G) = 6 + def₃(G)` at a configuration, five rows per hinge) against the Lean's
@@ -181,7 +181,7 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   plus an arc-index row) and one-line verdicts under this item — so item 5's builder reads it
   from the tree, not from a transcript. Review notes: workbook S15 (v)(c), (vii).
 - [ ] **Kernel restatement with the induction hypothesis (item 5; one build slice, after
-  item 4; PI decision 2026-09-16).** Both `hK` and `hbareSplit` — in
+  item 4; PI decision and hold lift 2026-09-16).** Both `hK` and `hbareSplit` — in
   `pencilPair_of_splitOff_of_habitat` and the `pencil_conjecture_of_hcontract_hK_hbareSplit*`
   wrappers (`Escape.lean`) — gain `(∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
   PencilPair K 3 G') →` ahead of their antecedent, the form `hcontract` already uses; `hIH` is
@@ -233,10 +233,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 - **The Lean hold (2026-08-05) is the user's**; lifting it for named items is a PI call, made
   per item. **Lifted 2026-09-15 for checklist items 1–3** (verbatim record
-  `notes/pencil/adjudications.md`); **the R2 Lean round, items 4–5, approved 2026-09-16** (same
-  record); items 6–12 stay parked. **The hold lift for items 4–5 is confirmed with the PI at
-  the coordinator's session-start check-in** (the record above says "approved as the next step";
-  a lift is per item and is the PI's word — ask, do not infer).
+  `notes/pencil/adjudications.md`); **lifted 2026-09-16 for checklist items 4–5** (the R2 Lean
+  round; same record, verbatim); items 6–12 stay parked.
 - **Each attack's first move is a reading check, not a sweep:** the girth-5 restriction and
   the frame gap for S-mark; the independence proviso for (GR-10). Session 1 should settle or
   scope these before choosing a route. (S-mark's session 1 did the girth check but not a
@@ -310,10 +308,10 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   review 2's recommendation).** R1's obligations — profile bounds on an arbitrary hub-terminal
   side — were never consumed; the kernels' split-off antecedent read at the generic point
   supplies them (S14(iii)), and the pinned kernels are not locally provable without the side's
-  attainment (S14(v)). Sequence: recon (item 4) → kernel restatement (item 5) → brief rewrite →
-  session 6. Also settled by R2: the pending cut-vertex-case and induction-frame decisions
-  (S14(iv), S14(i)); long-chain composition and the 3-block skeleton leave the checklist.
-  Verbatim: `notes/pencil/adjudications.md`; review notes: workbook S15.
+  attainment (S14(v)). Hold lifted for items 4–5 (user, same day); sequence: recon → kernel
+  restatement → brief rewrite → session 6. Also settled by R2: the pending cut-vertex-case and
+  induction-frame decisions (S14(iv), S14(i)); long-chain composition and the 3-block skeleton
+  leave the checklist. Verbatim: `notes/pencil/adjudications.md`; review notes: workbook S15.
 - **2026-09-15 — the field hypothesis: option C (PI).** The reduction stays `[Infinite K]`; the
   hypothesis lives on the kernel lemmas at the weakest form each proof needs — (K) via the grid
   `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2`), (K-bare) via the 2-cut composition `[Infinite K]`
