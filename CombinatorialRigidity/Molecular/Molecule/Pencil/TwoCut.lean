@@ -52,8 +52,13 @@ therefore welded motions (`partitionMotions_le_jointMotions_bot`), turned from a
 bound into a rank upper bound by the Layer-B codimension
 `weldedRank_add_finrank_jointMotions_bot`.
 
-The headline target `pencilLoss_vertexTwoCut` (**C4ℓ**) and the deferred general-`U` profile laws
-are not in this slice; see `notes/Phase39.md` *Lemma checklist*, item 6.
+**C4ℓ** `pencilLoss_vertexTwoCut` — S10(ii)'s attainment criterion in one statement,
+`a = a₁ + a₂ + min (δ₁+δ₂) D − dim (ρ̄₁ ⊔ ρ̄₂)` — closes item 6's headline target by unfolding
+`pencilLoss` on both sides and substituting exactly **A5**
+`Graph.deficiency_eq_of_vertexTwoCut'` and **B6** `finrank_span_rigidityRows_vertexTwoCut_eq`;
+see its own docstring for why C1ℓ/C3ℓ, though listed as dependencies in the checklist, turn out
+not to be consumed. The deferred general-`U` profile laws are not in this slice; see
+`notes/Phase39.md` *Lemma checklist*, item 6.
 
 **Two pinned instances were dead and are dropped** (`lake lint`'s `unusedArguments`, the same
 pattern already found throughout Layer B): the two `def`s need no `[Finite α]` — `Module.finrank`
@@ -346,6 +351,72 @@ theorem finrank_relScrews_le [Finite α] [Finite β] {k n : ℕ}
       ≤ F.graph.pairDelta n u v + F.pencilLoss n := by
   have h1 := F.finrank_relScrews_eq n huv (β := β)
   have h2 := F.weldedLoss_nonneg hn hC huv hu hv
+  linarith
+
+/-- **C4ℓ — item 6's headline target**: `pencilLoss` splits exactly across a vertex 2-cut, which
+*is* `notes/pencil/workbook/attack-smark.md` § S10(ii)'s attainment criterion in one statement —
+
+  `a(G) = a₁ + a₂ + min (δ₁+δ₂, D) − dim (ρ̄₁ ⊔ ρ̄₂)`,
+
+with `D = screwDim 2` and `a_i = side_i.pencilLoss n`. The checklist's "Depends on A4/A5, B6,
+C1ℓ/C3ℓ" framing overstates it: this proof needs only **two** landed laws, found by unfolding
+`pencilLoss` on both sides — **A5** `Graph.deficiency_eq_of_vertexTwoCut'`
+(`f = f₁ + f₂ − min (δ₁+δ₂) D`) and **B6** `finrank_span_rigidityRows_vertexTwoCut_eq`
+(`rank = rank₁ + rank₂ + dim (ρ̄₁ ⊔ ρ̄₂) − D`). C1ℓ (`pencilLoss_nonneg`) and C3ℓ
+(`finrank_relScrews_eq`) are **not** consumed — this route goes through `pencilLoss`'s own
+definition directly rather than through the `relScrews` identity, a shorter path than the
+checklist's dependency line suggested (dispatch-log F41's "floor, not ceiling").
+
+Both unfolded sides carry the same `D · (|V| − 1)`-shaped term, differing only in `|V|` vs.
+`|V₁| + |V₂| − 2`; the **one step that is not substitution** is the vertex count
+`|V₁| + |V₂| = |V(G)| + 2`, by inclusion–exclusion (`Set.ncard_union_add_ncard_inter` on
+`hcover : V₁ ∪ V₂ = V(G)`, `Set.ncard_pair huv` on `hoverlap : V₁ ∩ V₂ = {u, v}`) — the same
+lemma `Graph.partitionDef_split_of_vertexTwoCut` uses. `linarith` needs the `D`-multiple
+distributed across that vertex-count sum handed to it explicitly (`hDdist`); this is the same
+nonlinear-substitution trap `weldedLoss_nonneg` hit with its own `hdist`.
+
+**`hnonadj` binds only through A5, and that asymmetry is by design, not an oversight.** It is
+`Graph.deficiency_eq_of_vertexTwoCut'`'s own hypothesis: the combinatorial deficiency law is
+*false* at an adjacent cut pair without it (D1, the 346/2104-instance counterexample family,
+`notes/Phase39.md` *Lemma checklist*). B6 needs no such hypothesis — a cut edge is charged to
+both sides' rows identically regardless of which side "owns" it, so it cannot disturb a rank
+identity the way it disturbs a combinatorial count. This is the one place item 6's combinatorial
+and geometric halves' hypothesis sets genuinely differ; see the B5–B6 checklist entry. -/
+theorem pencilLoss_vertexTwoCut [Finite α] [Finite β] {n : ℕ}
+    (F : BodyHingeFramework K 2 α β) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hnonadj : ¬ F.graph.Adj u v) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hcover : V₁ ∪ V₂ = V(F.graph)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, F.graph.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    F.pencilLoss n
+      = (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).pencilLoss n
+        + (⟨F.graph.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).pencilLoss n
+        + min ((F.graph.induce V₁).pairDelta n u v + (F.graph.induce V₂).pairDelta n u v)
+              (screwDim 2 : ℤ)
+        - (Module.finrank K
+            ↥((⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews u v
+              ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
+                  BodyHingeFramework K 2 α β).relScrews u v) : ℤ) := by
+  have hD : 1 ≤ Graph.bodyBarDim n := by rw [hn]; decide
+  have hdef := Graph.deficiency_eq_of_vertexTwoCut' hD huv hnonadj hcover hoverlap hsep
+    (G := F.graph)
+  have hrank := F.finrank_span_rigidityRows_vertexTwoCut_eq huv hoverlap hsep
+  have hcardsplit : V₁.ncard + V₂.ncard = V(F.graph).ncard + 2 := by
+    have hkey := Set.ncard_union_add_ncard_inter V₁ V₂
+    rw [hcover, hoverlap, Set.ncard_pair huv] at hkey
+    omega
+  rw [hn] at hdef
+  have hgraph1 : (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).graph
+      = F.graph.induce V₁ := rfl
+  have hgraph2 : (⟨F.graph.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).graph
+      = F.graph.induce V₂ := rfl
+  have hV₁ : V(F.graph.induce V₁).ncard = V₁.ncard := rfl
+  have hV₂ : V(F.graph.induce V₂).ncard = V₂.ncard := rfl
+  unfold BodyHingeFramework.pencilLoss
+  rw [hgraph1, hgraph2, hV₁, hV₂]
+  have hDdist : (screwDim 2 : ℤ) * ((V₁.ncard : ℤ) + (V₂.ncard : ℤ))
+      = (screwDim 2 : ℤ) * (V(F.graph).ncard : ℤ) + (screwDim 2 : ℤ) * 2 := by
+    have hcast : (V₁.ncard : ℤ) + (V₂.ncard : ℤ) = (V(F.graph).ncard : ℤ) + 2 := by omega
+    rw [hcast]; ring
   linarith
 
 end BodyHingeFramework
