@@ -562,3 +562,19 @@ gr10 brief and its state file are not to be edited by it. Record: `notes/Phase39
 `fmlnote:pencil-conditional-realization-pair-kernels`; W4 obligation
 `notes/pencil/workbook/W4.md`. **Everything else stands unchanged:** phase OPEN (2026-07-24), W4
 parked, checklist items 6–12 parked, (GR-10) session 1 waiting on the user's scope call.
+
+## 2026-09-16 — (GR-10)'s scope after the item-4 recon: **re-scoped**, the char-2 probe the one live item
+
+Recorded by the `/coordinate-phase 39` coordinator that put the question, verbatim. Presented
+with the recon's finding that route R2 covers `hK`'s arm at the statement level and that adopting
+(d) drops the chart — hence *Proviso (P)* — out of `hK`'s statement, the options put to the user
+were: re-scope to the char-2 probe with the grid route kept as a documented fallback; retire the
+grid route outright keeping only the probe elsewhere; run session 1 as briefed; or defer until
+item 5 landed. The user chose: **"Re-scope: char-2 probe now, grid route as documented
+fallback"**. So the uniform-colouring statement of `notes/attacks/gr10/brief.md` §2 is not being
+attacked, `/attack gr10` session 1 does not run as briefed, and the grid/colouring route is
+reopened only if S14(iii)/(vii) or O7 stall. The char-2 probe (brief §6 idea 4; spec
+`notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection) stays live and reports to
+the PI, since a systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass.
+**Everything else stands unchanged:** phase OPEN (2026-07-24), W4 parked, checklist items 6–12
+parked, S-mark session 6 next after the brief rewrite.

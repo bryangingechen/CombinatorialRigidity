@@ -30,8 +30,9 @@ take the induction hypothesis (S14(v): as pinned they are false on a never-attai
 concludes `HasGenericPencilRealization K 3 G`, and `hbareSplit` takes and returns the new motive
 `HasDistinctPencilRealization`. **For the kernels' current form read `notes/Phase39-design.md`
 § *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Next: the S-mark brief
-rewrite** against the landed statements, then `/attack smark` session 6; the user's (GR-10) scope
-call is still open. Items 6–12 (the 2026-09-15 numbering's 4–10) stay parked by the hold.
+rewrite** against the landed statements, then `/attack smark` session 6; **(GR-10) is
+RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
+fallback, not the path to `hK`. Items 6–12 (the 2026-09-15 numbering's 4–10) stay parked by the hold.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -45,9 +46,9 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 ## Current state
 
 **Next concrete step: the S-mark brief rewrite** against the *landed* kernel statements
-(*Hand-off* item 1), then `/attack smark` session 6; in parallel the user's (GR-10) scope call
-(*Blockers*) decides whether that attack runs at all. Checklist items 4 and 5 are both DONE
-2026-09-16. S-mark has five sessions (2026-09-15/16) and two reviews. Review 1
+(*Hand-off* item 1), then `/attack smark` session 6; (GR-10)'s scope is settled (user,
+2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the grid route kept as a documented
+fallback. Checklist items 4 and 5 are both DONE 2026-09-16. S-mark has five sessions (2026-09-15/16) and two reviews. Review 1
 (2026-09-15) re-aimed the attack at the consumed shape (the `hbareSplit` disjunct the brief had
 dropped; workbook S10). Sessions 3–4 then attacked profile bounds on an arbitrary side
 ((O4′)/(O4″)) that turned out not to be consumed; session 5 re-read the consumer and found the
@@ -59,12 +60,12 @@ the S14 arithmetic, endorsed R2, and recorded three statement-level questions fo
 track — **answered by the item-4 recon 2026-09-16** (checklist item 4; record
 `notes/Phase39-design.md` § *R2 recon*). `notes/attacks/smark/state.md` is the status surface; session 6 waits for the brief rewrite,
 which must quote the **landed** kernels (`notes/Phase39-design.md` § *Kernel restatement
-(2026-09-16)*), not the pinned blocks the brief was written against. (GR-10) has not started — **and should wait**: the recon
-confirms R2 covers `hK`'s arm at the statement level (S14(iii), (vii); under the recon's (d) the
-chart form, hence proviso (P), drops out of `hK`'s statement), so the user decides whether the
-grid route runs as briefed, re-scoped, or retires (*Blockers*; recon recommendation: re-scope).
-If it runs, it writes its `state.md` from the template — **and its backlog
-takes the char-2 probe** (PI 2026-09-15, deferred to the attack track; spec in
+(2026-09-16)*), not the pinned blocks the brief was written against. (GR-10) has not started and
+is now **re-scoped** (user, 2026-09-16): the recon confirms R2 covers `hK`'s arm at the statement level (S14(iii), (vii);
+under the recon's (d) the chart form, hence proviso (P), drops out of `hK`'s statement), so the
+grid/colouring route of `notes/attacks/gr10/brief.md` is **no longer the path to `hK`** — it is a
+documented fallback if S14(iii)/(vii) or O7 stall, and session 1 does **not** run as briefed.
+What runs is **the char-2 probe** (PI 2026-09-15, deferred to the attack track; spec in
 `notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection): the census shapes' chart matrix over `F_{2^k}` and a few odd `F_p` — a
 full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
 misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
@@ -256,15 +257,15 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   the one the IH certifies — on the bare arm, where some hub has three hub neighbours; no
   driver population has sampled that arm (every census branch has length `≥ 2`), and the
   2026-07-30 (K-bare) recon flagged the same evidence gap.
-- **User decision after the item-4 recon: (GR-10)'s scope.** The recon's (a) and (c) HOLD and
+- **(GR-10)'s scope — SETTLED 2026-09-16 (user): re-scoped.** The recon's (a) and (c) HOLD and
   (d) is confirmed, so R2 covers `hK`'s arm at the statement level (S14(iii), (vii) — the latter
   still a sketch, not a proof); under (d) `hK` needs no chart, so the independence proviso (P)
-  drops out of `hK`'s *statement* and survives only inside the grid route itself. Recon
-  recommendation (not a decision): re-scope (GR-10) to the char-2 probe plus an optional
-  cross-check of S14(iii) on the tight stratum; retire the grid/colouring route of
-  `notes/attacks/gr10/brief.md` as the path to `hK` unless S14(iii)/(vii) stall. The user decides
-  whether session 1 runs as briefed, re-scoped, or not at all; the gr10 brief carries a PI
-  pointer saying to wait, since an attack reads only its brief and state at start.
+  drops out of `hK`'s *statement* and survives only inside the grid route itself. The user's
+  call: **run the char-2 probe now; keep the grid/colouring route as a documented fallback**, to
+  be revisited only if S14(iii)/(vii) or O7 stall. Session 1 does not run as briefed, and the
+  uniform-colouring statement (the weak form of `notes/attacks/gr10/brief.md` §2) is **not**
+  being attacked. Verbatim: `notes/pencil/adjudications.md`; the gr10 brief's PI pointer now
+  carries the decision, since an attack reads only its brief and state at start.
 - **The (K-res) wave** (a kernel of `hK`'s difficulty class on the complementary habitat,
   scoped RESGRID, cheap items spent RPOOL) stays a user call; route σ is a live candidate
   that is not a route to (K-res). Detail: `notes/pencil/arc-worklog.md` *Hand-off*.
@@ -294,11 +295,12 @@ the brief's §3*), and a one-line justification for any hypothesis the route doe
 O7 first — build an adjacent-hub side (a hub with three hub neighbours, each continued by a
 branch of length `≥ 2` to `w` or `v`, girth `≥ 7`) and sample from several starts before
 attempting the tower extension or component matching — then O9. **O8's coincident stratum is
-deleted** by the (α) decision and must come out of the brief, not be re-stated. **(2) The
-user's (GR-10) scope call** (*Blockers*), recorded verbatim in
-`notes/pencil/adjudications.md` and as a one-liner under *Decisions made*. **(3)**
-`/attack smark` session 6 — and `/attack gr10` session 1 only if the user keeps it — each a
-main session in its own worktree. When an attack starts, its `state.md` is that lemma's status
+deleted** by the (α) decision and must come out of the brief, not be re-stated. **(2)**
+`/attack smark` session 6, a main session in its own worktree; and, when the PI chooses to spend
+it, the **char-2 probe** as the sole live (GR-10) item (one driver leg beside `closure.py
+--char2`; spec `notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection) — a
+systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so it reports to the
+PI, not just to the attack. When an attack starts, its `state.md` is that lemma's status
 surface and this note carries a two-line pointer to it, edited by the PI. **On a future HIT the
 phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`, against the
 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
@@ -320,6 +322,13 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   `pencilNondegFeasible_of_le_of_triangleFree` in `Steer.lean`. New informal W4 obligation.
   Record: `notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*; verbatim decisions
   `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
+
+- **2026-09-16 — (GR-10) RE-SCOPED (user).** R2 covers `hK`'s arm at the statement level and
+  (d) drops the chart, hence proviso (P), out of `hK`'s statement, so the grid/colouring route is
+  no longer the path to `hK`: it stays a **documented fallback** against a stall in S14(iii)/(vii)
+  or O7, session 1 does not run as briefed, and the only live (GR-10) item is the **char-2
+  probe** (the conjecture's field range, orthogonal to the route). Verbatim:
+  `notes/pencil/adjudications.md`; brief pointer updated in place.
 
 - **2026-09-16 — item 4 (the R2 recon) verdict RECORDED (coordinator-accepted).** (a) rank
   bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; (b) left as
