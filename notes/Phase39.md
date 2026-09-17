@@ -32,10 +32,11 @@ LANDS 2026-09-16** (agent, against the landed kernels) — `notes/attacks/smark/
 rewritten; **pending PI review**, which unblocks `/attack smark` session 6. **(GR-10) is
 RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
 fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
-carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), and **Layer A is DONE
-except the deferred A6** (A1–A5) and **Layer B is DONE (B1–B6)**, both 2026-09-17 — a
-Layer A/B/C leaf list with sites (*Lemma checklist*), no blueprint chapter, so it is the
-to-do list. Next: Layer C, the losses, in a new `Molecule/Pencil/TwoCut.lean`. Items 7–12 parked.
+carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), **Layer A is DONE
+except the deferred A6** (A1–A5), **Layer B is DONE (B1–B6)**, and **Layer C's C1ℓ/C3ℓ are
+DONE**, all 2026-09-17 — a Layer A/B/C leaf list with sites (*Lemma checklist*), no blueprint
+chapter, so it is the to-do list. Next: C2ℓ (`weldedLoss_nonneg`), then the headline C4ℓ.
+Items 7–12 parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -55,11 +56,11 @@ and the joint's row count; B3–B4 the welded-rank identity `weldedRank_eq` (`ra
 B5–B6 the 2-cut gluing identity `inf_span_rigidityRows_of_vertexTwoCut` (C1′) and
 `finrank_span_rigidityRows_vertexTwoCut_eq` (C1) — all in the new `section TwoCutCarriers` of
 `RigidityMatrix/Bricks.lean`. Sites, routes and the dropped hypotheses are in the *Lemma
-checklist*; all sorry-free, gates green. **Next concrete step: Layer C1ℓ** — open
-`Molecule/Pencil/TwoCut.lean` with the two loss carriers. **No exposure obligation** (settled
-2026-09-17, B1–B4 entry): that file is necessarily non-`module`, and a non-`module` importer
-unfolds the Layer-B defs fine. In
-parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
+checklist*; all sorry-free, gates green. **Layer C's C1ℓ/C3ℓ LAND 2026-09-17** in the new
+`Molecule/Pencil/TwoCut.lean` — the two loss carriers `pencilLoss`/`weldedLoss`,
+`pencilLoss_nonneg` and `finrank_relScrews_eq`; two more dead instances dropped (same *Lemma
+checklist* entry). **Next concrete step: C2ℓ** (`weldedLoss_nonneg`), then the headline C4ℓ.
+In parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
 (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the
 grid route kept as a documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and
 **item 6's carrier recon is DONE** 2026-09-16. S-mark's own status surface is
@@ -71,7 +72,7 @@ per-session narrative lives there, not here; the two consumer misreadings the re
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
 item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, its Layer A is DONE except the
-deferred A6, and its whole Layer B is DONE (2026-09-16/17).**
+deferred A6, its whole Layer B is DONE, and Layer C's C1ℓ/C3ℓ are DONE (2026-09-16/17).**
 Items 1–2's eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two
 chains* are **all green**; that chapter is their declaration index, so the names are not
 re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive.lean`,
@@ -287,16 +288,20 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     `[Finite β]`, `hcover` (in both leaves — a vertex in neither side carries no rows) and, in B5,
     `hsep`; of `hoverlap` only the `⊆` half is consumed. The private core's general form (any
     surjective `f`) is a mirror candidate, filed not mirrored (`notes/FRICTION.md`).
-  - [ ] **C1ℓ–C3ℓ — the losses.** `pencilLoss` (= `a`; `0 ≤ pencilLoss` is the landed
-    `finrank_span_rigidityRows_add_deficiency_le`, `AlgebraicInduction/GenericityDevice.lean:564`),
-    `weldedLoss` (= `a_w`, target `screwDim k·(|V|−1) − g`), `weldedLoss_nonneg` (= the joint
-    count **at `U = ⊥`**, the one instance S14(i) consumes), and **C2** `finrank_relScrews_eq`
-    (`ρ = δ + a − a_w`). Site a new `Molecule/Pencil/TwoCut.lean` — these need `deficiency`, so
-    they cannot live in a `module` file; verified that `Molecule/Pencil/Arms.lean`'s surface
-    sees everything Layer C needs.
+  - [x] **C1ℓ, C3ℓ — the loss carriers and the pure-algebra identity** — **LAND 2026-09-17**,
+    sorry-free, new site `Molecule/Pencil/TwoCut.lean`: `pencilLoss` (= `a`), `weldedLoss`
+    (= `a_w`, target `screwDim k·(|V|−1) − g`), **C1ℓ** `pencilLoss_nonneg` (the landed
+    `finrank_span_rigidityRows_add_deficiency_le` re-expressed over the new carrier) and **C3ℓ**
+    `finrank_relScrews_eq` (`ρ = δ + a − a_w`, pure algebra over `weldedRank_eq` — no `hn`
+    needed). Imports: `RigidityMatrix.Bricks` + `AlgebraicInduction.GenericityDevice` alone
+    (`Deficiency.lean` reaches transitively). Two more pinned instances were dead and dropped
+    (`lake lint`): `[Finite α]` on both `def`s, `[Finite β]` on C3ℓ — the Layer-B pattern
+    recurring.
+  - [ ] **C2ℓ — `weldedLoss_nonneg`** (the joint count **at `U = ⊥`**, the one instance S14(i)
+    consumes). Site `TwoCut.lean`.
   - [ ] **C4ℓ — the headline target:** `pencilLoss_vertexTwoCut`, which *is* S10(ii)'s
     attainment criterion `a(G) = a₁ + a₂ + min(δ₁+δ₂, 6) − dim(ρ̄₁ ⊔ ρ̄₂)`, in one statement.
-    Depends on A4/A5, B6, C1ℓ. This is the most valuable single thing item 6 can produce.
+    Depends on A4/A5, B6, C1ℓ/C3ℓ. This is the most valuable single thing item 6 can produce.
   - [ ] **DEFERRED with reason, tracked not dropped** (all cheap once B1 lands): the
     **general-`U` joint count** (S7(iii)) and **`finrank_jointMotions_eq`** (S7(i)) — profile
     machinery keyed to (O4″), which S14(vi) says is not consumed, and the only statements that
@@ -364,9 +369,9 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `inf_span_rigidityRows_span_jointRows_top`/`weldedRank_eq` plus the helpers
   `map_screwDiff_comm`/`span_jointRows_bot` (**B3/B4, 2026-09-17**),
   `inf_span_rigidityRows_of_vertexTwoCut`/`finrank_span_rigidityRows_vertexTwoCut_eq` (**B5/B6,
-  2026-09-17**; their three private helpers need no pin), `pencilLoss`/`weldedLoss`,
-  `weldedLoss_nonneg`,
-  `finrank_relScrews_eq`, `pencilLoss_vertexTwoCut`. **Discharge when the informal proof closes**
+  2026-09-17**; their three private helpers need no pin),
+  `pencilLoss`/`weldedLoss`/`finrank_relScrews_eq` (**C1ℓ/C3ℓ, 2026-09-17**), `weldedLoss_nonneg`,
+  `pencilLoss_vertexTwoCut`. **Discharge when the informal proof closes**
   (i.e. when the variety layer below is settled), or earlier if the user reverses D5. A build
   slice that lands a Layer leaf adds it to this list in the same commit.
 - **Item 6 does NOT reach S14(i)–(ii), and the two gaps are outside it** (2026-09-16 recon;
@@ -434,17 +439,15 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 **The phase stays OPEN.** Checklist items 1–5 are DONE, item 6's carrier recon is DONE
 (2026-09-16), item 6's **D1–D5 are all SETTLED** (2026-09-16, user; *Blockers*), and item 6's
-**Layer A is DONE except the deferred A6, and its Layer B is DONE (B1–B6) 2026-09-17** — the
-carrier recon record is `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, and the
-per-leaf routes (three of which supersede or correct it — A4's sketch, A5's dependency, B1's
-exposure claim) are in the *Lemma checklist* A3–B6 entries. Read the recon arc before scoping any
-item-6 slice: it carries the exact signatures, the sites (two of which the recon got wrong on its
-first pass and fixed by compiling), and the numerics.
-Next concrete task: **(1) Layer C1ℓ** — open `Molecule/Pencil/TwoCut.lean` with the loss carriers
-`pencilLoss` (`0 ≤ pencilLoss` is the landed `finrank_span_rigidityRows_add_deficiency_le`) and
-`weldedLoss`. It can unfold the Layer-B defs directly — `TwoCut.lean` is necessarily
-non-`module`, which is the case where they unfold (checklist B1–B4), so there is no exposure
-decision to take. Then C2ℓ/C3ℓ and the headline C4ℓ, under `/coordinate-phase 39`.
+**Layer A is DONE except the deferred A6, its Layer B is DONE (B1–B6), and Layer C's C1ℓ/C3ℓ
+are DONE, all 2026-09-17** — the carrier recon record is `notes/Phase39-design.md`
+§ *Item-6 carrier recon (2026-09-16)*, and the per-leaf routes (four of which supersede or
+correct it — A4's sketch, A5's dependency, B1's exposure claim, C1ℓ/C3ℓ's dropped instances)
+are in the *Lemma checklist* A3–C3ℓ entries. Read the recon arc before scoping any item-6
+slice: it carries the exact signatures, the sites (two of which the recon got wrong on its first
+pass and fixed by compiling), and the numerics.
+Next concrete task: **(1) C2ℓ** — `weldedLoss_nonneg` (the joint count at `U = ⊥`, S14(i)'s one
+consumed instance) in `TwoCut.lean`. Then the headline C4ℓ, under `/coordinate-phase 39`.
 **(2) The S-mark brief rewrite LANDED 2026-09-16** (agent, `notes/attacks/smark/brief.md`, from
 the *landed* declarations) — **pending PI review**, not itself a `/review-attack` pass. §§2/3/6
 rewritten against `Escape.lean`'s current kernels, one hypothesis per line, each operator glossed
@@ -486,14 +489,13 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   rewritten against `Escape.lean`'s current `hK`/`hbareSplit` and the item-4 recon; O8 deleted
   (α), O7 ordered ahead of O9. **Pending PI review.** `state.md` synced.
 
-- **2026-09-16/17 — item 6's Layers A and B LAND, all by transcription, no new decisions**
-  (A1–A5 in `Deficiency.lean` / `Induction/SplitOffDeficiency.lean`; B1–B6 in the new
-  `section TwoCutCarriers` of `RigidityMatrix/Bricks.lean`; every leaf sorry-free, gates green;
-  A6 deferred by D2). The per-leaf names, sites and the six findings this arc turned up — A4's
-  route supersedes the recon sketch, A5 needs A4 alone, B2/B3 drop unused instances, B3 pays the
-  orientation flip, B5's annihilator route replaces the reconned one, and B1's exposure claim was
-  wrong — are recorded **once**, in the *Lemma checklist* A1–B6 entries. Blueprint debt extended
-  per leaf (*Blockers*).
+- **2026-09-16/17 — item 6's Layers A/B LAND, and C1ℓ/C3ℓ LAND, all by transcription, no new
+  decisions** (A1–A5 in `Deficiency.lean`/`SplitOffDeficiency.lean`; B1–B6 in `Bricks.lean`'s
+  `section TwoCutCarriers`; C1ℓ/C3ℓ in the new `Molecule/Pencil/TwoCut.lean`; sorry-free, gates
+  green; A6 deferred by D2). Per-leaf names, sites and findings — A4/A5's corrected routes, B1's
+  wrong exposure claim, B2/B3/C1ℓ/C3ℓ's dropped instances, B3's orientation flip, B5's
+  annihilator route — recorded **once** in the *Lemma checklist*. Blueprint debt extended per
+  leaf (*Blockers*).
 
 
 - **2026-09-16 — the Lean hold is LIFTED for item 6 (user); its carrier recon RECORDED**

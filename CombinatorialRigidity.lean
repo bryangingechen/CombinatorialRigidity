@@ -45,6 +45,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
+import CombinatorialRigidity.Molecular.Molecule.Pencil.TwoCut
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
 import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
