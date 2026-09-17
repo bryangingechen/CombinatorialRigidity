@@ -171,6 +171,7 @@ keeps only what git cannot show.
 | 2026-09-13 | Phase39 reproducibility gap in a committed driver | opus (coordinator, verification) | **A committed script whose landed figure cannot be re-run is not reproducible.** `bsmark.py`'s `run_rigid` defaulted to `stride=8` with no CLI path to the **stride-1** sweep (BE-315)(ii) reports, so the 972-row table could not be reproduced from the command line — the standing 2026-08-05 requirement met in letter, not in effect. `stride` exposed as a positional argument; the stride-1 run then reproduced the clause's table exactly. Second repair in the same driver: it printed a reading in `a_i` (*"settles NOTHING"*) beside a clause stating its verdict in `ρ_i` (*"a theorem"*) — same 44 rows, opposite-sounding verdicts, both correct. → **F39** |
 | 2026-09-13 | Phase39 coordinator mutated the shared working tree mid-flight | opus (coordinator) | To re-derive a `--cited-by` count at baseline the coordinator ran `git stash -u` **while two directions were writing untracked drafts into the tree**. Nothing was lost (stash list empty afterwards, all three drafts intact at their reported sizes), but it was an avoidable risk against `RESEARCH-ARC.md` §2's shared-scratchpad rule, and the safe form costs the same: read the baseline with `git show HEAD:<file>` or a throwaway worktree, never by mutating the tree siblings are writing to. |
 | 2026-09-17 | Phase39 item-6 A4 / A3+A5 / B1-B2 (`b506b0fe`, `764acbbf`, `a56cc1bd`; re-thinned by the coordinator) | sonnet, sonnet, opus | **the ROADMAP Status cell re-bloated one landing at a time, 623 -> 1325 chars, and no gate reads it** | Second instance of one class in a single session (cf. the A4 row above, the phase note). The Phase-39 Status cell went 623 chars (slice 7's re-thin, 2026-09-09) -> 993 -> 1098 -> 1152 -> 1325 across the A4, A3/A5 and B1-B2 landings, each appending its own per-leaf narrative — the *never a phase summary* the table's own rule forbids, and exactly what slice 7 already fixed once. Nothing gates it: `check-gapmap-cells.py` guards the gap map and `check-phase-note.py` the note, but no script reads a ROADMAP row. Coordinator re-thinned to 606. See F40. |
+| 2026-09-17 | Phase39 item-6 Layer B3-B4 (`36bae977`) | opus | **the coordinator's `route` block asserted a mathlib lemma does not exist, on a malformed glob; it does** | My defect, the dispatch's catch. I told the B3/B4 prompt "no `Submodule.map_neg` found" inside a coordinator-verified `route` block; it exists, `@[simp]`, at `Mathlib/Algebra/Module/Submodule/Map.lean:483`. My search globbed `Submodule*.lean`, which does not match `Submodule/Map.lean` — the glob produced the answer, not the absence. The agent found it; its reroute beats my spiked proof (three lines via `neg_sub` + `map_neg`, and drops a non-terminal `simp`). **A negative existence claim is only as good as a search that would have found the positive.** See F41. |
 | 2026-09-17 | Phase39 item-6 leaf A4 (`b506b0fe`, note-trim folded in by amend) | sonnet | **docs gate never run — `lake build`/`lake lint` attested green and were, and the commit still failed `check-phase-note.py`** | First firing of this gate. The commit took `notes/Phase39.md` to 618 lines (cap 580) with a 17-line *Decisions made* entry (cap 8) — the A4 route written out **three times** (checklist, Decisions, Current state). Trap: bare `check-phase-note.py` diffs vs `HEAD`, so after a commit it reports `0 notes checked` — use `--last`. Fixed in-commit: one canonical copy plus pointers; cap NOT bumped (growth is 93 → 203 finished vs +9 forward). Lesson: a build-gate attestation says nothing about the docs gates, and no agent core mandates them. |
 
 ## Findings
@@ -917,3 +918,18 @@ At phase close, promote stable entries into the coordinator command's
   coordinator re-thins the cell at verification — a landing agent updating "its"
   row will not, because appending one clause always looks proportionate from
   inside a single slice.
+
+- **F41 — a coordinator spike raises S, and its every wrong turn is a defect
+  the dispatch would otherwise have absorbed; but its ABSENCES are not
+  verified.** Spiking Layer B3 to a compiler-checked proof turned a P=3 leaf
+  (no informal proof written) into a transcription, over four `lake env lean`
+  iterations: a guessed lemma name (`Submodule.bot_dualAnnihilator_eq` for
+  `dualAnnihilator_bot`), a missing `SetLike.mem_coe` that `le_antisymm`'s set
+  coercion forces, and an orientation step an earlier prompt had called
+  "harmless" which in fact needs its own lemma. Each would otherwise have been
+  the builder's to find. The same pass then shipped a false negative (row
+  above). **Rule: a spike's positive results are coordinator-verified and
+  belong in the `route` block; its absences belong there only as "I did not
+  find X — check before hand-rolling it."** Corollary: hand the builder the
+  verified proof *and* ask it to look for a shorter route — that pairing is
+  what produced the better `map_screwDiff_comm`.
