@@ -56,50 +56,24 @@ Layer B1** (the geometric carriers in `RigidityMatrix/Bricks.lean`, independent 
 parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
 (GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the
 grid route kept as a documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and
-**item 6's carrier recon is DONE** 2026-09-16. S-mark has five sessions (2026-09-15/16) and two
-reviews. Review 1
-(2026-09-15) re-aimed the attack at the consumed shape (the `hbareSplit` disjunct the brief had
-dropped; workbook S10). Sessions 3–4 then attacked profile bounds on an arbitrary side
-((O4′)/(O4″)) that turned out not to be consumed; session 5 re-read the consumer and found the
-brief's second misreading — the kernels' antecedent `HasPencilRealization K 3 (G.splitOff …)`
-is `H′ ∪ ear_{m−1}` attaining (`splitOff` deletes the degree-2 vertex and re-adds the edge),
-not a discardable "realization of `G − x`" — and route R2 (workbook S14). Review 2
-(2026-09-16, notes at workbook S15) verified the consumer reading against `Escape.lean` and
-the S14 arithmetic, endorsed R2, and recorded three statement-level questions for the Lean
-track — **answered by the item-4 recon 2026-09-16** (checklist item 4; record
-`notes/Phase39-design.md` § *R2 recon*). **The brief rewrite is drafted 2026-09-16**
-(`notes/attacks/smark/brief.md`, quoting the **landed** kernels verbatim,
-`notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*, not the pinned blocks the brief
-was written against); `notes/attacks/smark/state.md` is the status surface, updated the same
-commit; session 6 waits on the PI's review of the rewrite, not on further Lean work. (GR-10) has not started and
-is now **re-scoped** (user, 2026-09-16): the recon confirms R2 covers `hK`'s arm at the statement level (S14(iii), (vii);
-under the recon's (d) the chart form, hence proviso (P), drops out of `hK`'s statement), so the
-grid/colouring route of `notes/attacks/gr10/brief.md` is **no longer the path to `hK`** — it is a
-documented fallback if S14(iii)/(vii) or O7 stall, and session 1 does **not** run as briefed.
-What runs is **the char-2 probe** (PI 2026-09-15, deferred to the attack track; spec in
-`notes/Phase39-design.md` § *Field-hypothesis recon*, last subsection): the census shapes' chart matrix over `F_{2^k}` and a few odd `F_p` — a
-full-rank hit is a proof of `hK` at that shape in that characteristic; systematic `F_{2^k}`
-misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
-the headline typeclass. The attack decides when to run it.
+**item 6's carrier recon is DONE** 2026-09-16. S-mark's own status surface is
+`notes/attacks/smark/state.md` (five sessions, two reviews, route R2 adopted, the rewritten
+brief pending PI review); (GR-10)'s is its brief plus
+*Blockers*, and its one live item is the char-2 probe, spec'd in `notes/Phase39-design.md`
+§ *Field-hypothesis recon*, last subsection. Per this note's own policy (*Hand-off*) the
+per-session narrative lives there, not here; the two consumer misreadings the reviews caught are
+in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
 item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, and its Layer A is DONE except the
 deferred A6 (2026-09-16/17).**
-The design pass (`notes/Phase39-design.md` § *Lean-track design pass*) pinned items 1–2
-as eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains* (the
-chapter's first section), and **all eight are now green**: G1–G4 in the new
-`Molecular/Induction/Girth.lean` and in `Molecule/Pencil/Motive.lean` (`Graph.GirthGE` with
-`.mono`/`.anti`, `range_vtx_eq_vertexSet_of_cycle_of_noRigid`,
-`girthGE_of_noRigid_of_three_le_degree`, `ncard_closedNbhd_inter_le_two_of_girthGE`), then
-M3a/M3b, M1, M2 and M4/M4′ in the new `Molecular/Induction/ForestSurgery/MaximalChain.lean`
-(`connected_deleteVerts_interior_of_twoEdgeConnected`, `degree_deleteVerts_interior_add_one`,
-`exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`,
-`cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`,
-`le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid`,
-`le_length_add_eDist_deleteVerts_interior_of_noRigid`). Item 3 is **SETTLED** (PI, option C):
-the reduction stays `[Infinite K]`; the hypothesis lives on the kernel lemmas
+Items 1–2's eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two
+chains* are **all green**; that chapter is their declaration index, so the names are not
+re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive.lean`,
+`Molecular/Induction/ForestSurgery/MaximalChain.lean`). Item 3 is **SETTLED** (PI, option C):
+the reduction stays `[Infinite K]`, the hypothesis lives on the kernel lemmas
 (`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
-`fmlnote:pencil-conditional-realization-pair-field`). **Items 6–12 stay parked by the hold**,
-and no Lean work is queued — the next task is the brief rewrite (*Hand-off*). Builds need
+`fmlnote:pencil-conditional-realization-pair-field`). The queued Lean work is item 6's Layer B
+(*Hand-off*). Builds need
 `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
 `.claude/settings.local.json`).
 
