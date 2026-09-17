@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Instrument /coordinate-research coordinator sessions.
+"""Instrument research-side sessions: the /attack track (2026-09-17 on) and, before it,
+/coordinate-research coordinator sessions.
 
 Usage: python3 notes/harness/instrument/analyze.py [--logs-root DIR] <session-id> [<session-id> ...] > all.json
-       python3 notes/harness/instrument/report.py all.json
+       python3 notes/harness/instrument/report.py --attack all.json      # per-session table for /harness-review
+       python3 notes/harness/instrument/report.py all.json               # the coordinator-era long report
+Session ids come from sessions.py:
+       analyze.py $(python3 notes/harness/instrument/sessions.py --since-review --select attack --ids) > all.json
 
 Logs root: by default <config dir>/projects/<project dir>, where the config
 dir is $CLAUDE_CONFIG_DIR (else the standard Claude Code config dir) and the
@@ -16,14 +20,39 @@ first block undercounts subagent output ~4x -- notes/harness/incidents.md).
 """
 import json, os, sys, re, collections, datetime, glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from classify import classify_tool, BUCKET_NAMES, file_class, paths_in, classify_bash
+from classify import classify_tool, BUCKET_NAMES, file_class, paths_in, classify_bash, CMD, kind_of
 
 def default_root():
     cfg = os.environ.get('CLAUDE_CONFIG_DIR') or os.path.join(os.path.expanduser('~'), '.claude')
     proj = os.getcwd().replace('/', '-')
     return os.path.join(cfg, 'projects', proj)
 ROOT = os.environ.get('CLAUDE_LOGS_ROOT') or default_root()
-PRICE = dict(inp=15.0, cr=1.5, cw=18.75, out=75.0)  # USD per 1M
+# USD per MTok: (input, cache read, 5-minute cache write, 1-hour cache write, output), from
+# platform.claude.com/docs/en/about-claude/pricing as read 2026-09-17 (first /harness-review).
+# Before that date every token was priced at Opus 4.1's rates (15 / 1.5 / 18.75 / 75) whatever the
+# model -- notes/harness/incidents.md 2026-09-17. A model id is matched by its longest key prefix;
+# an unknown model is priced as FALLBACK_MODEL and listed under session['unpriced_models'].
+PRICES = {
+    'claude-fable-5-1':  (10.0, 0.25, 12.5, 20.0, 50.0),
+    'claude-fable-5':    (10.0, 1.0, 12.5, 20.0, 50.0),
+    'claude-opus-5':     (5.0, 0.5, 6.25, 10.0, 25.0),
+    'claude-opus-4-8':   (5.0, 0.5, 6.25, 10.0, 25.0),
+    'claude-opus-4-7':   (5.0, 0.5, 6.25, 10.0, 25.0),
+    'claude-opus-4-6':   (5.0, 0.5, 6.25, 10.0, 25.0),
+    'claude-opus-4-5':   (5.0, 0.5, 6.25, 10.0, 25.0),
+    'claude-sonnet-5':   (2.0, 0.2, 2.5, 4.0, 10.0),
+    'claude-sonnet-4-6': (3.0, 0.3, 3.75, 6.0, 15.0),
+    'claude-sonnet-4-5': (3.0, 0.3, 3.75, 6.0, 15.0),
+    'claude-haiku-4-5':  (1.0, 0.1, 1.25, 2.0, 5.0),
+}
+FALLBACK_MODEL = 'claude-opus-5'
+
+def rates(model):
+    """(rates tuple, known?) for a model id, by longest key prefix."""
+    best = None
+    for k in PRICES:
+        if model and model.startswith(k) and (best is None or len(k) > len(best)): best = k
+    return (PRICES[best], True) if best else (PRICES[FALLBACK_MODEL], False)
 
 def ts(s):
     if not s: return None
@@ -43,8 +72,17 @@ def usage_of(d):
     return (u.get('input_tokens',0), u.get('cache_read_input_tokens',0),
             u.get('cache_creation_input_tokens',0), u.get('output_tokens',0))
 
-def cost(i,cr,cw,o):
-    return i*PRICE['inp']/1e6 + cr*PRICE['cr']/1e6 + cw*PRICE['cw']/1e6 + o*PRICE['out']/1e6
+def cost(i, cr, cw5, cw1, o, model=None):
+    r, _ = rates(model)
+    return (i*r[0] + cr*r[1] + cw5*r[2] + cw1*r[3] + o*r[4]) / 1e6
+
+def cache_writes(u, cw_total):
+    """(5-minute, 1-hour) cache-write tokens. usage.cache_creation carries the split; without
+    it the total is taken as 1-hour, which is what every session of this project has used."""
+    cc = u.get('cache_creation') or {}
+    cw5 = cc.get('ephemeral_5m_input_tokens') or 0; cw1 = cc.get('ephemeral_1h_input_tokens') or 0
+    if not (cw5 or cw1): cw1 = cw_total
+    return cw5, cw1
 
 def scan_transcript(path):
     """Normalized events.
@@ -56,13 +94,18 @@ def scan_transcript(path):
     text / thinking content.
     """
     ev = []
-    tok = dict(inp=0, cr=0, cw=0, out=0)
+    tok = dict(inp=0, cr=0, cw=0, out=0, cost=0.0)
     models = collections.Counter()
     blocks = collections.OrderedDict()   # requestId -> list of records
     users = []
+    # per-session facts the attack rules make claims about, plus the session's kind
+    meta = dict(compact_markers=0, stopped_by_user=0, idle_notifications=0, cmds=[], prompt=None,
+                unpriced=set(), bymodel=collections.defaultdict(lambda: dict(inp=0, cr=0, cw=0, out=0, cost=0.0, requests=0)))
     for d in load(path):
         t = d.get('type')
         tstamp = ts(d.get('timestamp'))
+        if any('compact' in k.lower() for k in d.keys()) or 'compact' in str(d.get('subtype', '')).lower():
+            meta['compact_markers'] += 1
         if t == 'assistant':
             m = d.get('message',{})
             rid = d.get('requestId') or m.get('id')
@@ -81,6 +124,13 @@ def scan_transcript(path):
                     elif b.get('type')=='text': text+=b.get('text','')
             users.append(dict(kind='user', t=tstamp, text=text, tool_result=has_tr,
                               okind=okind, tr_ids=tr_ids))
+            if text and not d.get('isMeta'):
+                tl = text.lower()
+                if 'stopped by the user' in tl: meta['stopped_by_user'] += 1
+                if 'idle_notification' in tl: meta['idle_notifications'] += 1
+                for m in CMD.finditer(text): meta['cmds'].append((m.group(1).strip(), (m.group(2) or '').strip()))
+                if meta['prompt'] is None and not text.lstrip().startswith('<'):
+                    meta['prompt'] = text.strip()[:60].replace('\n', ' ')
     turns=[]
     for rid, recs in blocks.items():
         recs.sort(key=lambda x:x[0])
@@ -88,7 +138,14 @@ def scan_transcript(path):
         outs=[usage_of(r[1])[3] for r in recs]
         total_out=max(outs) if outs else 0
         tok['inp']+=i0; tok['cr']+=cr0; tok['cw']+=cw0; tok['out']+=total_out
-        models[recs[0][1]['message'].get('model','?')]+=1
+        model = recs[0][1]['message'].get('model','?')
+        models[model]+=1
+        cw5, cw1 = cache_writes(recs[0][1]['message'].get('usage', {}) or {}, cw0)
+        c = cost(i0, cr0, cw5, cw1, total_out, model)
+        tok['cost'] += c
+        if not rates(model)[1]: meta['unpriced'].add(model)
+        bm = meta['bymodel'][model]
+        bm['inp']+=i0; bm['cr']+=cr0; bm['cw']+=cw0; bm['out']+=total_out; bm['cost']+=c; bm['requests']+=1
         T=dict(kind='assistant', t=recs[0][2], ctx=i0+cr0+cw0, out=total_out,
                txtw=0, thinkw=0, tools=[], text_out=0, think_out=0,
                model=recs[0][1]['message'].get('model'), rid=rid)
@@ -114,7 +171,8 @@ def scan_transcript(path):
                 T['tools'].append((b.get('name'), b.get('input',{}) or {}, b.get('id'), share, tstamp))
         turns.append(T)
     turns.sort(key=lambda x: (x['t'] or datetime.datetime.min))
-    return turns, users, tok, models
+    meta['unpriced'] = sorted(meta['unpriced']); meta['bymodel'] = dict(meta['bymodel'])
+    return turns, users, tok, models, meta
 
 def human_user_turns(users):
     cnt = collections.Counter(); samples=collections.defaultdict(list)
@@ -133,15 +191,25 @@ def human_user_turns(users):
 
 def analyze_session(sid):
     path = os.path.join(ROOT, sid+'.jsonl')
-    turns, users, tok, models = scan_transcript(path)
+    turns, users, tok, models, meta = scan_transcript(path)
     times=[x['t'] for x in turns if x['t']]+[u['t'] for u in users if u['t']]
     R = dict(sid=sid)
+    R['label'], R['group'] = kind_of(meta['cmds'], meta['prompt'])
     R['start']=min(times); R['end']=max(times)
     R['span_h']=(R['end']-R['start']).total_seconds()/3600
     R['assistant_turns']=len(turns)
     R['user_cnt'], R['user_samples']=human_user_turns(users)
     R['models']=models; R['tok']=tok
-    R['cost']=cost(tok['inp'],tok['cr'],tok['cw'],tok['out'])
+    R['cost']=tok['cost']; R['bymodel']=meta['bymodel']; R['unpriced_models']=meta['unpriced']
+    R['peak_ctx']=max((e['ctx'] for e in turns), default=0)
+    # compaction: a record carrying a compact marker, or the context falling by more than 40%
+    # from above 50k between consecutive requests (no marker has been seen in this project yet)
+    drops=0; prev=None
+    for e in turns:
+        if e['ctx']:
+            if prev and prev>50000 and e['ctx']<0.6*prev: drops+=1
+            prev=e['ctx']
+    R['compactions']=dict(markers=meta['compact_markers'], ctx_drops=drops)
 
     buckets=collections.Counter(); bucket_out=collections.Counter()
     calls=[]
@@ -176,6 +244,14 @@ def analyze_session(sid):
                           prompt_w=words(c['inp'].get('prompt','')))
                      for c in calls if c['name']=='Agent']
     R['sendmessages']=len([c for c in calls if c['name']=='SendMessage'])
+    # what the attack rules make claims about: reference PDFs opened, Lean read, helpers' fate
+    def mentions(c, pat): return re.search(pat, json.dumps(c['inp']), re.I) is not None
+    R['pdf_reads']=sum(1 for c in calls if mentions(c, r'\.pdf\b|\.refs/'))
+    R['lean_reads']=sum(1 for c in calls if c['name'].startswith('mcp__lean') or mentions(c, r'\.lean\b'))
+    R['helpers']=dict(spawned=len(R['dispatches']), stopped_by_user=meta['stopped_by_user'],
+                      idle_notifications=meta['idle_notifications'])
+    proc=sum(buckets[b] for b in ('a','c','e','f_proc','h','j')); math=sum(buckets[b] for b in ('b','d','f_math'))
+    R['shares']=dict(process=proc, math=math, other=R['total_calls']-proc-math)
     R['crons']=[dict(t=c['t'],name=c['name']) for c in calls if c['name'] in ('CronCreate','CronDelete')]
 
     # last Agent return = timestamp of the user record carrying the last Agent tool_use_id
@@ -206,7 +282,7 @@ def subagent_files(sid):
     return out
 
 def analyze_direction(path, meta):
-    turns, users, tok, models = scan_transcript(path)
+    turns, users, tok, models, meta = scan_transcript(path)
     times=[x['t'] for x in turns if x['t']]+[u['t'] for u in users if u['t']]
     if not times: return None
     calls=[]
@@ -232,7 +308,7 @@ def analyze_direction(path, meta):
                 start=min(times), end=max(times),
                 wall_min=(max(times)-min(times)).total_seconds()/60,
                 turns=len(turns), calls=len(calls), peak_ctx=peak,
-                tok=tok, cost=cost(tok['inp'],tok['cr'],tok['cw'],tok['out']),
+                tok=tok, cost=tok['cost'],
                 buckets=collections.Counter(x['b'] for x in calls), first20=first20,
                 f20_harness=first20['a']+first20['c']+first20['f_proc'],
                 f20_math=first20['b']+first20['d']+first20['f_math'],

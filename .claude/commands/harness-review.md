@@ -2,16 +2,26 @@ Harness review. Runs in its own session with the PI, never inside research
 or attack work. Its job is to keep `HARNESS.md` small and true.
 
 **Inputs.**
-- `HARNESS.md`, and `python3 notes/harness/check.py` (budget, tags, trial age).
+- `HARNESS.md`, and `python3 notes/harness/check.py` (budget, tags, the last
+  review's date, and each trial rule's age in attack sessions).
 - `notes/harness/incidents.md` since the last `## review` line.
 - `git log --since=<last review> -- HARNESS.md .claude/` — any edit made
   outside a harness-review session is itself an incident; log it.
-- The instrumentation over the attack sessions since the last review:
-  `python3 notes/harness/instrument/analyze.py <session-id> … > all.json`
-  then `python3 notes/harness/instrument/report.py all.json`
-  (`--logs-root` or `CLAUDE_LOGS_ROOT` if the transcripts are not under the
-  default config dir).
-- The status of the crux statements at the head of each attack's `state.md`.
+- The instrumentation over the attack-track sessions since the last review.
+  `python3 notes/harness/instrument/sessions.py --since-review` lists them
+  with the logs root it read (`--logs-root` or `CLAUDE_LOGS_ROOT` override
+  it); then
+  `python3 notes/harness/instrument/analyze.py $(python3 notes/harness/instrument/sessions.py --since-review --select attack --ids) > all.json`
+  and `python3 notes/harness/instrument/report.py --attack all.json` — one
+  row per session: process against mathematics, thinking share, compactions,
+  peak context, PDFs opened, Lean read, helpers and their fate, cost at
+  per-model rates.
+- The status of the crux statements at the head of each attack's `state.md`,
+  and their history:
+  `python3 notes/harness/check.py --state notes/attacks/<name>/state.md --history`
+  prints, per commit, the obligation count and whether "Where it breaks"
+  changed — a break that moves every session over a flat count is a rename
+  treadmill, not progress.
 
 **Defaults, applied in this order.**
 1. A `trial` rule past three attack sessions is deleted unless a second,

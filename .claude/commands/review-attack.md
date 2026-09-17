@@ -6,13 +6,20 @@ this lemma; your job is to check, not to continue the work.
 Open other files only when a check below needs them.
 
 **Check, adversarially:**
+0. *Consumer.* Before reading anything the attack wrote, diff the brief's
+   statement against the consuming declaration hypothesis by hypothesis,
+   both sides of the implication, following its definitions wherever they
+   live. A paraphrase that survived is the first finding.
 1. *Signals.* Do the two signal lines agree with the state file's git
    history — sessions since "Where it breaks" last changed, and the trend
-   of the open-obligation count? Three unchanged sessions is a stuck route;
-   a flat or rising count is a treadmill, however many lines moved.
+   of the open-obligation count? (`python3 notes/harness/check.py --state
+   notes/attacks/$ARGUMENTS/state.md --history` prints both per commit.)
+   Three unchanged sessions is a stuck route; a flat or rising count is a
+   treadmill, however many lines moved.
 2. *Honesty.* Is "Where it breaks" specific enough that you could attack it
-   tomorrow? Does each session shrink the obligation list, or mint a
-   successor of equal difficulty?
+   tomorrow? Does each session shrink the obligation list, or rename an
+   obligation into a successor of equal difficulty? Does every open
+   obligation name the consumer hypothesis that makes it necessary?
 3. *Evidence.* For each claim the sketch rests on: proved at its owning
    section, or measured on a named population with caps? Any `PROVED` tag
    consumed without the proof being read? Any figure quoted without its
@@ -25,6 +32,7 @@ Open other files only when a check below needs them.
 
 **Report to the PI in at most one page:** a verdict — continue, switch to a
 named route, or stop — the evidence for it, and at most three concrete
-next moves. Commit nothing; edit nothing; if `HARNESS.md` or the attack
-command cost the attack time, add one line to `notes/harness/incidents.md`
-and say so.
+next moves. Commit nothing on your own: edits to the brief, the state file
+or the phase note happen only on the PI's word, after the report. If
+`HARNESS.md` or the attack command cost the attack time, add one line to
+`notes/harness/incidents.md` and say so.

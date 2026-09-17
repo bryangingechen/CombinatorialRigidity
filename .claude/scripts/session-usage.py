@@ -11,8 +11,11 @@ Two subcommands:
 
   tokens   Sum token usage from local Claude Code transcripts, per model,
            over a trailing window (default 5 h). Covers main sessions AND
-           subagent transcripts; dedupes by API message id (a message is
-           logged once per content block, so raw line sums overcount).
+           subagent transcripts; dedupes by API message id, taking the MAX
+           over a message's blocks (a message is logged once per content
+           block with CUMULATIVE usage, so raw line sums overcount and the
+           first block undercounts subagent output ~4x — see
+           notes/harness/incidents.md 2026-09-15).
 
 Config-dir resolution (both subcommands): --config-dir, else
 $CLAUDE_CONFIG_DIR, else ~/.claude. The OAuth token for `limits` is read
@@ -127,7 +130,7 @@ def collect(cfg: Path, since: datetime):
     if not projects_dir.is_dir():
         sys.exit(f"no projects dir under {cfg}")
     since_ts = since.timestamp()
-    seen_ids = set()
+    seen = {}  # message id -> index into rows; usage is cumulative across blocks, keep the max
     rows = []
     for proj, kind, f in iter_transcripts(projects_dir):
         try:
@@ -156,10 +159,14 @@ def collect(cfg: Path, since: datetime):
                     if not u:
                         continue
                     mid = m.get("id") or d.get("uuid")
-                    if mid in seen_ids:
+                    if mid in seen:
+                        prev = rows[seen[mid]][4]
+                        for k in ("input_tokens", "cache_creation_input_tokens",
+                                  "cache_read_input_tokens", "output_tokens"):
+                            prev[k] = max(prev.get(k) or 0, u.get(k) or 0)
                         continue
-                    seen_ids.add(mid)
-                    rows.append((proj, kind, f.name, m.get("model", "?"), u))
+                    seen[mid] = len(rows)
+                    rows.append((proj, kind, f.name, m.get("model", "?"), dict(u)))
         except OSError:
             continue
     return rows
