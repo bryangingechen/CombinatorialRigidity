@@ -32,10 +32,10 @@ LANDS 2026-09-16** (agent, against the landed kernels) — `notes/attacks/smark/
 rewritten; **pending PI review**, which unblocks `/attack smark` session 6. **(GR-10) is
 RE-SCOPED** (user, 2026-09-16): the char-2 probe runs; the grid/colouring route is a documented
 fallback, not the path to `hK`. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
-carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), and Layer-A leaves
-**A1/A2/A4 LAND** (pendant law, combinatorial carriers, the vertex 2-cut law itself, all
-sorry-free) — a Layer A/B/C leaf list with sites (*Lemma checklist*), no blueprint chapter, so
-the *Layer plan* is the to-do list. Next: Layer B1→B5 or A3. Items 7–12 stay parked.
+carrier recon DONE, **D1–D5 all SETTLED** (user, same day; *Blockers*), and **Layer A is DONE
+except the deferred A6** (A1–A5 all sorry-free, 2026-09-16/17) — a Layer A/B/C leaf list with
+sites (*Lemma checklist*), no blueprint chapter, so the *Layer plan* is the to-do list. Next:
+Layer B1. Items 7–12 stay parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -48,18 +48,16 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Item-6 Layer-A leaves A1, A2 and A4 LAND (2026-09-16/17)** — the pendant law, the four
-combinatorial carriers with `partitionDef_map` and the D4-settling bridge, and the vertex 2-cut
-law `deficiency_eq_of_vertexTwoCut` with its split identity
-`partitionDef_split_of_vertexTwoCut`; all sorry-free, gates green, sites and routes in the
-*Lemma checklist* (A1/A2 transcribed from `notes/Phase39-design.md` § *Item-6 carrier recon
-(2026-09-16)*; A4 by a route that supersedes that recon's sketch). **Next concrete step: Layer
-B1→B5** (the geometric carriers, independent of A) **or A3** (A5's prerequisite, A5 itself then
-a corollary); **B5 is the one remaining substantive item-6 leaf.** In parallel, the **S-mark
-brief rewrite LANDS 2026-09-16** (detail below) — pending PI review; (GR-10)'s scope is settled
-(user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the grid route kept as a
-documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and **item 6's carrier recon
-is DONE** 2026-09-16. S-mark has five sessions (2026-09-15/16) and two reviews. Review 1
+**Item-6 Layer A is DONE except the deferred A6 (2026-09-16/17)** — A1 the pendant law, A2 the
+combinatorial carriers, A4 the vertex 2-cut law and its split identity, A3 (`deficiency_eq_max`
+plus the promoted `pairDelta_le_bodyBarDim`) and A5 (the `min`-form corollary of A4 alone) —
+sites and routes in the *Lemma checklist*, all sorry-free, gates green. **Next concrete step:
+Layer B1** (the geometric carriers in `RigidityMatrix/Bricks.lean`, independent of A). In
+parallel, the **S-mark brief rewrite LANDS 2026-09-16** (detail below) — pending PI review;
+(GR-10)'s scope is settled (user, 2026-09-16 — *Blockers*): re-scoped to the char-2 probe, the
+grid route kept as a documented fallback. Checklist items 4 and 5 are DONE 2026-09-16 and
+**item 6's carrier recon is DONE** 2026-09-16. S-mark has five sessions (2026-09-15/16) and two
+reviews. Review 1
 (2026-09-15) re-aimed the attack at the consumed shape (the `hbareSplit` disjunct the brief had
 dropped; workbook S10). Sessions 3–4 then attacked profile bounds on an arbitrary side
 ((O4′)/(O4″)) that turned out not to be consumed; session 5 re-read the consumer and found the
@@ -84,8 +82,8 @@ full-rank hit is a proof of `hK` at that shape in that characteristic; systemati
 misses would be evidence the target itself fails in characteristic 2 and a re-pin trigger for
 the headline typeclass. The attack decides when to run it.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
-item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, and its Layer-A leaves A1/A2 (2026-09-16)
-and A4 (2026-09-17) LAND.**
+item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, and its Layer A is DONE except the
+deferred A6 (2026-09-16/17).**
 The design pass (`notes/Phase39-design.md` § *Lean-track design pass*) pinned items 1–2
 as eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two chains* (the
 chapter's first section), and **all eight are now green**: G1–G4 in the new
@@ -254,9 +252,11 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     per the scope-pin. Site `Deficiency.lean`; `weldPair` inlines
     `fun x => if x = u then v else x` rather than use `Graph.collapseTo`
     (`Induction/ReducibleVertex.lean:1451`, downstream), the two being provably equal.
-  - [ ] **A3** — `deficiency_eq_max` (`f = max(g, f_sep)`) and `pairDelta_le_bodyBarDim`
-    (`δ ≤ D`, from the landed `partitionDef_merge`, `Deficiency.lean:1978`). Needed only for
-    A5. Site `Deficiency.lean`.
+  - [x] **A3** — `pairDelta_le_bodyBarDim` (`δ ≤ D`, a corollary of the private
+    `deficiency_le_deficiencyMerged_add` A4 already landed) and `deficiency_eq_max`
+    (`f = max(g, f_sep)`, needs `u ≠ v`; new small helpers `deficiencyMerged_le_deficiency`,
+    `deficiencySep_le_deficiency`, `partitionDef_le_deficiencySep`). **LANDS 2026-09-17**,
+    sorry-free. **Not needed by A5** (see A5). Site `Deficiency.lean`.
   - [x] **A4 — 6b, the vertex 2-cut law**, max form `def₃(G) = max(g₁+g₂, f₁+f₂−D)` (**D3**).
     **LANDS 2026-09-17**, sorry-free, `deficiency_eq_of_vertexTwoCut` (`Deficiency.lean`),
     depends on A2. **The route used supersedes the sketch above — no refinement lemma is
@@ -264,8 +264,11 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     side-separation hypothesis, `partitionDef_split_of_vertexTwoCut`: `partitionDef G f =
     partitionDef (induce V₁) f + partitionDef (induce V₂) f + D*(1 − |f''V₁ ∩ f''V₂|)`, with
     `hnonadj` load-bearing *only* for crossing-edge disjointness; `≤`/`≥` then case-split on `f u = f v`.
-  - [ ] **A5 — 6b′**, the transcribed `min` form `f₁+f₂ − min(δ₁+δ₂, D)`. A corollary of
-    A3 + A4.
+  - [x] **A5 — 6b′**, the transcribed `min` form `f₁+f₂ − min(δ₁+δ₂, D)`. **LANDS 2026-09-17**,
+    `deficiency_eq_of_vertexTwoCut'`, sorry-free. **A corollary of A4 alone, NOT A3** (the
+    "A3 + A4" claim above was stale) — `pairDelta` is *definitionally* `deficiency −
+    deficiencyMerged`, so `gᵢ = fᵢ − δᵢ` by `unfold`, and the `max`/`min` identity closes A4's
+    statement into this one by pure arithmetic (`le_total (δ₁+δ₂) D`).
   - [ ] **A6 — C3**, the welded pendant `g(H) = max(g(H−u), f_sep(H−u) − (D−1))`, and
     `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). **DEFERRED by the
     user's D2 call (2026-09-16); reason: off the consumed path** — S6 is the side-degree-1 reduction and S14's `H′` has
@@ -340,8 +343,9 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
     induced sides the law is *false* when `u ~ v` (346/2104 adjacent instances; minimal
     counterexample in the *Lemma checklist*); an explicit edge bipartition was the alternative.
   - **D2 — A6/C3 DROPPED from item 6's scope** (off the consumed path; kept as an explicit
-    deferred entry with its reason, built only if S6's reduction becomes consumed). If that
-    leaves `deficiencySep` with no consumer but A5 it lands as a minor helper (coordinator).
+    deferred entry with its reason, built only if S6's reduction becomes consumed).
+    `deficiencySep`'s only consumer turned out to be A3's `deficiency_eq_max` (A5 needs only
+    A4) — landed as the minor helper the coordinator called it.
   - **D3 — 6b's primary form: `max(g₁+g₂, f₁+f₂−D)`**, the transcribed `min` form a corollary.
   - **D4 — state the laws in `deficiencyMerged`**, keeping `weldPair` as the faithful `H/uv`;
     both are defined, and the two carriers are *provably* equal, so this was presentation only.
@@ -359,7 +363,8 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   `deficiency_weldPair_eq_deficiencyMerged`, `bddAbove_range_partitionDef_merged`,
   `partitionDef_le_deficiencyMerged` (**A1/A2, landed 2026-09-16**),
   `partitionDef_split_of_vertexTwoCut` (**A4, 2026-09-17**; its private sibling needs no pin),
-  `relScrews`/`jointRows`/`jointMotions`/`weldedRank`,
+  `pairDelta_le_bodyBarDim`/`deficiency_eq_max` (**A3, 2026-09-17**; its four small `Sep`/`Merged`
+  bound helpers need no pin), `relScrews`/`jointRows`/`jointMotions`/`weldedRank`,
   `weldedRank_eq`, `inf_span_rigidityRows_of_vertexTwoCut`,
   `finrank_span_rigidityRows_vertexTwoCut_eq`, `pencilLoss`/`weldedLoss`, `weldedLoss_nonneg`,
   `finrank_relScrews_eq`, `pencilLoss_vertexTwoCut`. **Discharge when the informal proof closes**
@@ -430,15 +435,14 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 
 **The phase stays OPEN.** Checklist items 1–5 are DONE, item 6's carrier recon is DONE
 (2026-09-16), item 6's **D1–D5 are all SETTLED** (2026-09-16, user; *Blockers*), and item 6's
-**Layer-A leaves A1, A2 and A4 LAND (2026-09-16/17)** — the carrier recon record is
-`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*; A4's own route (which
-supersedes that recon's sketch) is recorded in this note's *Lemma checklist* A4 entry. The
-remaining buildable leaves are the A3/A5/A6/B/C sub-items under *Lemma checklist*. Read the
-recon arc before scoping any item-6 slice: it carries the exact signatures, the sites (two of
-which the recon got wrong on its first pass and fixed by compiling), and the numerics.
-Next concrete task, in order: **(1) Layer B1→B5** (the geometric carriers, independent of A)
-**or A3** (`deficiency_eq_max`/`pairDelta_le_bodyBarDim`, needed only for A5), under
-`/coordinate-phase 39`.
+**Layer A is DONE except the deferred A6 (2026-09-16/17)** — the carrier recon record is
+`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*; A4's and A3/A5's own routes
+(A4's supersedes the recon's sketch; A5 needs only A4, not A3 — a stale checklist claim
+corrected this slice) are recorded in the *Lemma checklist* A3–A5 entries. Read the recon arc
+before scoping any item-6 slice: it carries the exact signatures, the sites (two of which the
+recon got wrong on its first pass and fixed by compiling), and the numerics.
+Next concrete task: **(1) Layer B1** (the geometric carriers in `RigidityMatrix/Bricks.lean`),
+under `/coordinate-phase 39`.
 **(2) The S-mark brief rewrite LANDED 2026-09-16** (agent, `notes/attacks/smark/brief.md`, from
 the *landed* declarations) — **pending PI review**, not itself a `/review-attack` pass. §§2/3/6
 rewritten against `Escape.lean`'s current kernels, one hypothesis per line, each operator glossed
@@ -472,12 +476,8 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   Record: `notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*; verbatim decisions
   `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
 
-- **2026-09-16 — item 6's D1–D5 SETTLED (user).** D1 `¬ G.Adj u v` (the 6b law is false
-  without it); D2 A6/C3 dropped from scope, kept as a deferred entry; D3 the `max` form primary;
-  D4 laws stated in `deficiencyMerged`, `weldPair` kept; **D5 no blueprint chapter for now** —
-  the informal proof is not complete, so a chapter would pin a shape likely to be reworked. D5
-  is a deliberate forward-mode deviation and opens tracked blueprint debt (*Blockers*).
-  Verbatim: `notes/pencil/adjudications.md`.
+- **2026-09-16 — item 6's D1–D5 SETTLED (user).** Verdicts and rationale: *Blockers* (the
+  D1–D5 entry). Verbatim: `notes/pencil/adjudications.md`.
 
 - **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, no new decisions; a
   user-sanctioned exception to the usual `/review-attack` rewrite path). `brief.md` §§2, 3, 6
@@ -498,14 +498,16 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   one finding — the route **supersedes the carrier recon's sketch**, no refinement lemma needed
   — is recorded once, in the *Lemma checklist* A4 entry. Blueprint debt extended (*Blockers*).
 
-- **2026-09-16 — the Lean hold is LIFTED for checklist item 6 (user); the item is NOT one
-  build slice, and its carrier recon is now RECORDED (coordinator-accepted).** A slot-trace
-  split it 6a / 6b / 6c; the recon then *proved* 6a, found 6b **false** without
-  `¬ G.Adj u v`, moved the `g` carrier from 6c to 6b, and **corrected this note's earlier
-  claim that 6c's four laws are "exactly the laws S14(i)–(ii) consume"** — only the S10(ii)
-  gluing identity and the joint count at `U = ⊥` are. Leaves, sites and D1–D5: *Lemma
-  checklist* item 6 and *Blockers*. Record: `notes/Phase39-design.md` § *Item-6 carrier recon
-  (2026-09-16)*. Verbatim: `notes/pencil/adjudications.md`.
+- **2026-09-17 — item 6 leaves A3 and A5 LAND** (`pairDelta_le_bodyBarDim`/`deficiency_eq_max`;
+  `deficiency_eq_of_vertexTwoCut'`; `Deficiency.lean`; sorry-free, gates green). **One finding,
+  recorded once in the A5 checklist entry:** A5 is a corollary of A4 alone, not A3 — the
+  checklist's "A3 + A4" claim was stale. D2's "no consumer but A5" is corrected the same way:
+  `deficiencySep`'s only consumer is A3. Blueprint debt extended (*Blockers*).
+
+- **2026-09-16 — the Lean hold is LIFTED for item 6 (user); its carrier recon RECORDED**
+  (coordinator-accepted) — not one build slice; 6a proved, 6b false without `¬ G.Adj u v`, the
+  slot-trace's 6c claim corrected. Leaves/sites: *Lemma checklist*; record:
+  `notes/Phase39-design.md` § *Item-6 carrier recon*. Verbatim: `notes/pencil/adjudications.md`.
 
 - **2026-09-16 — (GR-10) RE-SCOPED (user).** R2 covers `hK`'s arm at the statement level and
   (d) drops the chart, hence proviso (P), out of `hK`'s statement, so the grid/colouring route is
@@ -518,14 +520,10 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; (b) left as
   the PI's (α)/(β) motive call; (GR-10) scope left as the user's. Record:
   `notes/Phase39-design.md` § *R2 recon*.
-- **2026-09-16 — S-mark route R2 adopted; both kernels get the induction hypothesis (PI, on
-  review 2's recommendation).** R1's obligations — profile bounds on an arbitrary hub-terminal
-  side — were never consumed; the kernels' split-off antecedent read at the generic point
-  supplies them (S14(iii)), and the pinned kernels are not locally provable without the side's
-  attainment (S14(v)). Hold lifted for items 4–5 (user, same day); sequence: recon → kernel
-  restatement → brief rewrite → session 6. Also settled by R2: the pending cut-vertex-case and
-  induction-frame decisions (S14(iv), S14(i)); long-chain composition and the 3-block skeleton
-  leave the checklist. Verbatim: `notes/pencil/adjudications.md`; review notes: workbook S15.
+- **2026-09-16 — S-mark route R2 adopted; both kernels get the induction hypothesis** (PI, on
+  review 2's recommendation) — R1's obligations were never consumed; the split-off antecedent
+  read at the generic point supplies them (S14(iii, v)). Verbatim:
+  `notes/pencil/adjudications.md`; review notes: workbook S15.
 - **2026-09-15 — the field hypothesis: option C (PI).** The reduction stays `[Infinite K]`; the
   hypothesis lives on the kernel lemmas at the weakest form each proof needs — (K) via the grid
   `[Infinite K] [NeZero (2 : K)]` (`char ≠ 2`), (K-bare) via the 2-cut composition `[Infinite K]`

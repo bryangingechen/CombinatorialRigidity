@@ -4100,4 +4100,88 @@ theorem deficiency_eq_of_vertexTwoCut [Finite α] [Finite β] {G : Graph α β} 
           _ = G.partitionDef n h := hsplit_h.symm
           _ ≤ G.deficiency n := G.partitionDef_le_deficiency n h
 
+/-- **A3, part 1 — `δ ≤ D`** (Phase 39 checklist item A3; `notes/Phase39-design.md`
+§ *Item-6 carrier recon*). The merged/full deficiency gap `pairDelta` is at most `D =
+bodyBarDim n` — a one-line corollary of `deficiency_le_deficiencyMerged_add` (the actual
+`partitionDef_merge`-based argument, kept as the sole workhorse proof). -/
+theorem pairDelta_le_bodyBarDim [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ Graph.bodyBarDim n) {u v : α} (hu : u ∈ V(G)) (hv : v ∈ V(G)) :
+    G.pairDelta n u v ≤ (bodyBarDim n : ℤ) := by
+  have h := deficiency_le_deficiencyMerged_add hD hu hv
+  unfold pairDelta
+  linarith
+
+/-- Bounded range for `deficiencySep`'s supremum, mirroring
+`bddAbove_range_partitionDef_merged`. -/
+theorem bddAbove_range_partitionDef_sep [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
+    BddAbove (Set.range (fun f : {f : α → α // f u ≠ f v} => G.partitionDef n f.1)) :=
+  (Set.finite_range _).bddAbove
+
+/-- A separating labeling's `partitionDef` is a lower bound for `deficiencySep`, mirroring
+`partitionDef_le_deficiencyMerged`. -/
+theorem partitionDef_le_deficiencySep [Finite α] (G : Graph α β) (n : ℕ) {u v : α}
+    {f : α → α} (hf : f u ≠ f v) :
+    G.partitionDef n f ≤ G.deficiencySep n u v :=
+  le_ciSup (G.bddAbove_range_partitionDef_sep n u v) (⟨f, hf⟩ : {f : α → α // f u ≠ f v})
+
+/-- `deficiencyMerged`'s sup ranges over a subset of all labelings, so it is `≤ deficiency`. -/
+theorem deficiencyMerged_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
+    G.deficiencyMerged n u v ≤ G.deficiency n := by
+  have : Nonempty {f : α → α // f u = f v} := ⟨⟨fun _ => u, rfl⟩⟩
+  exact ciSup_le fun w => G.partitionDef_le_deficiency n w.1
+
+/-- `deficiencySep`'s sup ranges over a subset of all labelings, so it is `≤ deficiency`.
+Needs `u ≠ v` — else the defining subtype is empty and `deficiencySep` is junk; `id`
+witnesses non-emptiness when `u ≠ v`. -/
+theorem deficiencySep_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) {u v : α}
+    (huv : u ≠ v) :
+    G.deficiencySep n u v ≤ G.deficiency n := by
+  have : Nonempty {f : α → α // f u ≠ f v} := ⟨⟨id, huv⟩⟩
+  exact ciSup_le fun w => G.partitionDef_le_deficiency n w.1
+
+/-- **A3, part 2 — `f = max(g, f_sep)`** (Phase 39 checklist item A3). Every labeling either
+merges `u, v` or separates them, so the full deficiency supremum is the max of the two
+restricted suprema. Needs `u ≠ v` (else `deficiencySep` is junk, `deficiencySep_le_deficiency`).
+This is the lemma that gives `deficiencySep` its meaning; per decision D2 it is a minor
+helper, not a headline carrier. -/
+theorem deficiency_eq_max [Finite α] (G : Graph α β) (n : ℕ) {u v : α}
+    (huv : u ≠ v) :
+    G.deficiency n = max (G.deficiencyMerged n u v) (G.deficiencySep n u v) := by
+  have hne_fn : Nonempty (α → α) := ⟨id⟩
+  apply le_antisymm
+  · rw [deficiency]
+    refine ciSup_le fun f => ?_
+    by_cases hf : f u = f v
+    · exact (G.partitionDef_le_deficiencyMerged n hf).trans (le_max_left _ _)
+    · exact (G.partitionDef_le_deficiencySep n hf).trans (le_max_right _ _)
+  · exact max_le (G.deficiencyMerged_le_deficiency n u v) (G.deficiencySep_le_deficiency n huv)
+
+/-- **A5 — 6b′, the transcribed `min` form** (Phase 39 checklist item A5; `notes/Phase39-design.md`
+§ *The remaining statements*). A corollary of A4 alone (**not** A3 — the *Lemma checklist*'s
+"A corollary of A3 + A4" was imprecise): `pairDelta` is *definitionally* `deficiency -
+deficiencyMerged`, so `gᵢ = fᵢ − δᵢ` by `unfold`, and the `max`/`min` identity closes A4's
+statement into this one by pure arithmetic, case-splitting on `le_total (δ₁+δ₂) D`. -/
+theorem deficiency_eq_of_vertexTwoCut' [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ Graph.bodyBarDim n) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hnonadj : ¬ G.Adj u v)
+    (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {u, v})
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    G.deficiency n
+      = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+        - min ((G.induce V₁).pairDelta n u v + (G.induce V₂).pairDelta n u v)
+              (Graph.bodyBarDim n : ℤ) := by
+  have hkey := deficiency_eq_of_vertexTwoCut hD huv hnonadj hcover hoverlap hsep
+  have hg1 : (G.induce V₁).deficiencyMerged n u v
+      = (G.induce V₁).deficiency n - (G.induce V₁).pairDelta n u v := by
+    unfold pairDelta; ring
+  have hg2 : (G.induce V₂).deficiencyMerged n u v
+      = (G.induce V₂).deficiency n - (G.induce V₂).pairDelta n u v := by
+    unfold pairDelta; ring
+  rw [hg1, hg2] at hkey
+  rw [hkey]
+  rcases le_total ((G.induce V₁).pairDelta n u v + (G.induce V₂).pairDelta n u v)
+      (Graph.bodyBarDim n : ℤ) with h | h
+  · rw [min_eq_left h, max_eq_left (by linarith)]; ring
+  · rw [min_eq_right h, max_eq_right (by linarith)]
+
 end Graph
