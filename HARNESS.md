@@ -41,11 +41,14 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
 - [2026-09-15, standing] Before attacking a statement, open the declaration
   that consumes it and diff the brief against it hypothesis by hypothesis,
   both sides of the implication, following its definitions wherever they
-  live; this binds the brief's author, the attack at session 1 and the
-  reviewer first. A reformulation that is the target at one end is not a
-  reduction. ← F26; §(K-grid); smark's brief paraphrased the consumer twice
-  (a dropped disjunct, sessions 1–2; the antecedent read as `G − x`,
-  sessions 1–4, surviving review 1).
+  live — then diff the brief's case decomposition against the domain those
+  hypotheses admit: every case is in the sketch or is an obligation. This
+  binds the brief's author, the attack at session 1 and the reviewer first.
+  A reformulation that is the target at one end is not a reduction. ← F26;
+  §(K-grid); smark's brief paraphrased the consumer three times (a dropped
+  disjunct, sessions 1–2; the antecedent read as `G − x`, sessions 1–4,
+  surviving review 1; case (ii) sent to a cut-vertex arm the Lean does not
+  have, surviving reviews 1–2 and a CHECKED pass — review 3).
 - [2026-09-15, standing] Retrieve claims with `python3 notes/ledger.py
   --label | --brief | --cited-by`; read the gap map with `notes/gapmap.py`,
   never `sed`/`grep`. ← D2: ~137k tokens on ~35 grep probes for 18 claims.
@@ -91,6 +94,14 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
   alone decides route and brief changes. ← routes declared spent on false
   premises in the arc; smark reviews 1 and 2 (after sessions 2 and 5) each
   re-aimed the brief only on the PI's word.
+- [2026-09-23, trial] A derivation that is not in a file does not exist:
+  before a case analysis of more than three branches, and first thing on a
+  resume after an output-cap cut, write what is established so far to a
+  scratch file with a tool call, then reason on. ← smark s7: twelve
+  consecutive thinking turns cut at the output cap (73k–160k characters
+  each, no tool call between them), ~4.1h, ≈$66, nothing committed; s6 was
+  cut twice and the recovery session once more; `report.py --attack`'s
+  `cap` column counts these.
 
 ## Retired
 

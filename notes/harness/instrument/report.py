@@ -9,7 +9,8 @@ mathematics shares of tool calls (process = read harness docs, run tooling, git,
 surfaces, crons, polling; math = read corpus, run drivers, edit math prose), output split into
 thinking, compactions (marker records + context drops), peak context, reference PDFs opened,
 Lean read, helpers spawned / stopped by the user / idle notifications, commits, gaps > 20 min,
-and cost at per-model rates (analyze.PRICES).
+requests stopped at the output cap (`cap`, added 2026-09-23), and cost at per-model rates
+(analyze.PRICES).
 """
 import json, sys, collections, datetime
 from classify import BUCKET_NAMES
@@ -21,7 +22,7 @@ def attack_table(path):
     rows = [json.loads(l) for l in open(path) if l.strip()]
     hdr = (f"{'session':8} {'kind':13} {'start (local)':16} {'h':>5} {'req':>4} {'calls':>5} "
            f"{'proc%':>5} {'math%':>5} {'out_k':>6} {'thk%':>4} {'cost$':>6} {'cmp':>3} {'peak_k':>6} "
-           f"{'pdf':>3} {'lean':>4} {'help':>4} {'stop':>4} {'idle':>4} {'cmt':>3} {'gap':>3}")
+           f"{'pdf':>3} {'lean':>4} {'help':>4} {'stop':>4} {'idle':>4} {'cmt':>3} {'gap':>3} {'cap':>3}")
     print(hdr); print('-' * len(hdr))
     T = collections.Counter(); bym = collections.defaultdict(lambda: collections.Counter()); unpriced = set()
     for o in rows:
@@ -32,11 +33,11 @@ def attack_table(path):
               f"{100*sh['process']/tot:5.0f} {100*sh['math']/tot:5.0f} {R['tok']['out']/1000:6.0f} {thk:4.0f} {R['cost']:6.2f} "
               f"{cmp_['markers']+cmp_['ctx_drops']:3d} {R['peak_ctx']/1000:6.0f} "
               f"{R['pdf_reads']:3d} {R['lean_reads']:4d} {h['spawned']:4d} {h['stopped_by_user']:4d} {h['idle_notifications']:4d} "
-              f"{len(R.get('commits', [])):3d} {len(R['gaps']):3d}")
+              f"{len(R.get('commits', [])):3d} {len(R['gaps']):3d} {R.get('cap_hits', 0):3d}")
         for k in ('span_h', 'assistant_turns', 'total_calls', 'cost', 'pdf_reads', 'lean_reads'): T[k] += R[k]
         T['process'] += sh['process']; T['math'] += sh['math']; T['out'] += R['tok']['out']; T['think'] += R['think_out']
         T['cmp'] += cmp_['markers'] + cmp_['ctx_drops']; T['spawned'] += h['spawned']; T['stopped'] += h['stopped_by_user']; T['idle'] += h['idle_notifications']
-        T['commits'] += len(R.get('commits', [])); T['gaps'] += len(R['gaps'])
+        T['commits'] += len(R.get('commits', [])); T['gaps'] += len(R['gaps']); T['cap'] += R.get('cap_hits', 0)
         for m, v in R['bymodel'].items():
             for k in ('inp', 'cr', 'cw', 'out', 'cost', 'requests'): bym[m][k] += v[k]
         unpriced.update(R.get('unpriced_models', []))
@@ -44,7 +45,7 @@ def attack_table(path):
     print('-' * len(hdr))
     print(f"{'TOTAL':8} {len(rows):>3d} sessions{'':13} {T['span_h']:5.2f} {T['assistant_turns']:4d} {T['total_calls']:5d} "
           f"{100*T['process']/tot:5.0f} {100*T['math']/tot:5.0f} {T['out']/1000:6.0f} {100*T['think']/max(1,T['out']):4.0f} {T['cost']:6.2f} "
-          f"{T['cmp']:3d} {'':6} {T['pdf_reads']:3d} {T['lean_reads']:4d} {T['spawned']:4d} {T['stopped']:4d} {T['idle']:4d} {T['commits']:3d} {T['gaps']:3d}")
+          f"{T['cmp']:3d} {'':6} {T['pdf_reads']:3d} {T['lean_reads']:4d} {T['spawned']:4d} {T['stopped']:4d} {T['idle']:4d} {T['commits']:3d} {T['gaps']:3d} {T['cap']:3d}")
     print("\nby model (requests, input, cache-read, cache-write, output tokens; cost at analyze.PRICES):")
     for m, v in sorted(bym.items(), key=lambda kv: -kv[1]['cost']):
         print(f"  {m:<20} {v['requests']:5d} req  in {v['inp']:>8,}  cr {v['cr']:>12,}  cw {v['cw']:>10,}  out {v['out']:>10,}  ${v['cost']:.2f}")
@@ -52,7 +53,8 @@ def attack_table(path):
         print(f"\nWARNING: priced at the fallback rate (no PRICES entry): {', '.join(sorted(unpriced))}")
     print("\ncolumns: proc%/math% = share of tool calls; out_k = output tokens (k), thk% = thinking share of output; "
           "cmp = compactions (markers + context drops >40%); peak_k = peak context (k); pdf/lean = calls touching reference PDFs / Lean; "
-          "help/stop/idle = helper agents spawned / 'stopped by the user' messages / idle notifications; cmt = git commits; gap = gaps >20 min")
+          "help/stop/idle = helper agents spawned / 'stopped by the user' messages / idle notifications; cmt = git commits; gap = gaps >20 min; "
+          "cap = requests stopped at the output cap (max_tokens)")
 
 def coordinator_report(path):
     for line in open(path):

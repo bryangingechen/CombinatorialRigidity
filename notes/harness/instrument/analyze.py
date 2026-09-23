@@ -148,7 +148,8 @@ def scan_transcript(path):
         bm['inp']+=i0; bm['cr']+=cr0; bm['cw']+=cw0; bm['out']+=total_out; bm['cost']+=c; bm['requests']+=1
         T=dict(kind='assistant', t=recs[0][2], ctx=i0+cr0+cw0, out=total_out,
                txtw=0, thinkw=0, tools=[], text_out=0, think_out=0,
-               model=recs[0][1]['message'].get('model'), rid=rid)
+               model=recs[0][1]['message'].get('model'), rid=rid,
+               cap=any(d['message'].get('stop_reason') == 'max_tokens' for (_, d, _) in recs))
         # main-session records repeat the request total on every block while subagent
         # records carry it cumulatively, so neither is a reliable per-block cost.
         # Split the request's output tokens across its blocks by serialized length.
@@ -222,6 +223,9 @@ def analyze_session(sid):
     R['buckets']=buckets; R['bucket_out']=bucket_out; R['calls']=calls
     R['total_calls']=sum(buckets.values())
     R['out_no_tool']=sum(e['out'] for e in turns if not e['tools'])
+    # requests stopped at the output cap (stop_reason max_tokens): smark s7 ran twelve in a row
+    # with no tool call between them, invisible to this table until 2026-09-23
+    R['cap_hits']=sum(1 for e in turns if e.get('cap'))
     R['text_words']=sum(e['txtw'] for e in turns)
     R['text_out']=sum(e['text_out'] for e in turns)
     R['think_out']=sum(e['think_out'] for e in turns)

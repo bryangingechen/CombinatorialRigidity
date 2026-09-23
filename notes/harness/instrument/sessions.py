@@ -47,11 +47,13 @@ def scan(path):
     for line in open(path, errors='replace'):
         try: d = json.loads(line)
         except Exception: continue
+        typ = d.get('type')
         ts = d.get('timestamp')
-        if ts:
+        if ts and typ in ('assistant', 'user'):
+            # not 'system' / 'queue-operation': a terminal left open after the last turn is
+            # not work (the 2026-09-23 recovery session listed at 4.70h for 0.97h of turns)
             t = datetime.datetime.fromisoformat(ts.replace('Z', '+00:00'))
             first = first or t; last = t
-        typ = d.get('type')
         if typ == 'assistant':
             m = d.get('message', {}) or {}
             rid = d.get('requestId') or m.get('id')

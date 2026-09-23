@@ -3,14 +3,12 @@ is one working day on it. Rules: `HARNESS.md` (*Evidence*,
 *Reproducibility*, *Attack track*). Files: `notes/attacks/$ARGUMENTS/`.
 
 **Start.** Read `HARNESS.md`, then `notes/attacks/$ARGUMENTS/brief.md` and
-`notes/attacks/$ARGUMENTS/state.md`. Then open the consuming declaration
-the brief names, in the Lean, and diff the brief's statement against it
-hypothesis by hypothesis, both sides of the implication, following every
-definition it names wherever it lives; a mismatch is reported to the PI
-before any route work. Read nothing else unless the state file points you
-there. If `state.md` is absent this is session 1: choose a route from the
-brief, enumerate its obligations — each with the consumer hypothesis that
-makes it necessary — and write `state.md` from
+`notes/attacks/$ARGUMENTS/state.md`. Then run the consumer diff of
+`HARNESS.md` *Evidence* on the brief, in the Lean; a mismatch is reported
+to the PI before any route work. Read nothing else unless the state file
+points you there. If `state.md` is absent this is session 1: choose a route
+from the brief, enumerate its obligations — each with the consumer
+hypothesis that makes it necessary — and write `state.md` from
 `notes/attacks/TEMPLATE-state.md` before doing anything else.
 
 **Work.** Attempt a proof of the brief's statement along the current

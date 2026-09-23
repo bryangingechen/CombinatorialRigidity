@@ -6,10 +6,9 @@ this lemma; your job is to check, not to continue the work.
 Open other files only when a check below needs them.
 
 **Check, adversarially:**
-0. *Consumer.* Before reading anything the attack wrote, diff the brief's
-   statement against the consuming declaration hypothesis by hypothesis,
-   both sides of the implication, following its definitions wherever they
-   live. A paraphrase that survived is the first finding.
+0. *Consumer.* Before reading anything the attack wrote, run the consumer
+   diff of `HARNESS.md` *Evidence* on the brief. A paraphrase that survived,
+   in a hypothesis or in the case decomposition, is the first finding.
 1. *Signals.* Do the two signal lines agree with the state file's git
    history — sessions since "Where it breaks" last changed, and the trend
    of the open-obligation count? (`python3 notes/harness/check.py --state
