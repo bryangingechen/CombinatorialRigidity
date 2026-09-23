@@ -2324,7 +2324,7 @@ exactly as written; the only addition is the fixed-plane split in the second sen
 stratum `q_u = q_v` of `state.md` *Where it breaks* has no plane seeing both points. **`D3` PASS**: one minimal prime of
 the expected dimension `21` over `F_{32003}`, `28.9` s. Since the Macaulay2 count is of the *whole* reduced variety, a
 PASS covers every stratum of the tower, degenerate `q` included, on that graph (evidence over one prime, not a proof).
-`D3c`, `D4`, `T10`, `T11` are running at the time of writing; their figures follow in S25.
+`D3c`, `D4`, `T10`, `T11` are running at the time of writing; their figures follow in S27.
 
 **(vii) Verdict.** S19(i), S21(v), S22(iv)(c), S22(vi)(4b) *confirmed*; S22(ii)(e) *restated* as (iii), with S22's
 downstream use unaffected. The one substantive finding is that S22(v)'s third fact and (ii)(e) both silently assume
@@ -2355,13 +2355,17 @@ class sees both labels of `q*`), so `cost(A) − J₃_A = σ_A − disc_A`, and 
 through three sums each `≥ 0` plus a tightness argument; here only the three sums are used, and a *damage* of at most
 `2` is allowed. Define `δ_ℓ := #{β = 2 flat singletons on ℓ}` (S22 had `[w_{ab} ∈ ℓ]`; two are now possible, (ii)),
 `Δ_A`, `Δ′_A` the *normal* and *twin* deficit charges on `A` ((ii)), `D_C := ½ Σ_{x ∈ X_C} s_C(x)` with
-`s_C(x) := #{flat singletons w_{bx} : b ∈ C ∩ Big}`, and `T_A := σ_A − F_A − disc_A − (Δ_A + Δ′_A)/2`. Since every
-`β = 2` flat's two incidences are each natural (a charge on the class) or an extra (counted in `D`),
-`Σ_ℓ δ_ℓ ≤ Σ_A (Δ_A + Δ′_A)/2 + Σ_C D_C`, and the ledger reads
+`s_C(x) := #{flat singletons w_{bx} : b ∈ C ∩ Big}`, and `T_A := σ_A − F_A − disc_A − (Δ_A + Δ′_A)/2`. Every
+`β = 2` flat's two incidences are each natural through a *nontrivial* class (a charge on it), an extra (counted in
+`D`), or — the one case S22 could not have — natural through a **singleton** class (`k₆` of them, (L6) below), so
+`Σ_ℓ δ_ℓ ≤ Σ_A (Δ_A + Δ′_A)/2 + Σ_C D_C + k₆/2`, and the ledger reads
 
-> `cost − J₃ ≥ Σ_A T_A + Σ_ℓ (N_ℓ + δ_ℓ) + Σ_{C ∈ 𝒰} (cost_C − D_C)`.
+> `cost − J₃ ≥ Σ_A T_A + Σ_ℓ (N_ℓ + δ_ℓ) + Σ_{C ∈ 𝒰} (cost_C − D_C) − k₆/2`.
 
-**(ii) What is label-sensitive.** Exactly five things in S22 read labels rather than points. **(L1)** the class
+*(Corrected the same session after a fresh-reader audit, S27(i): the first draft omitted the `k₆/2` term and listed
+five spots; the configuration `u — a — w — u′` below has ledger right side `½` against `cost − J₃ = 0`.)*
+
+**(ii) What is label-sensitive.** Six things in S22 read labels rather than points. **(L1)** the class
 discount `disc_A`. **(L2)** *Twin-naturality:* for a `β = 2` flat `w = w_{a₀ b}` with `b ∈ {u, u′}`, the incidence
 `π_{[a₀]} ∋ q_b = q*` is natural through `[a₀] ∩ N_Γ[b]` (a *normal* charge `(w, b)`, S22(iii)) **or** through
 `[a₀] ∩ N_Γ[b̄]` with `[a₀] ∩ N_Γ[b] = ∅` (a *twin* charge). A twin charge on `A` forces `disc_A = 0` (`A` sees
@@ -2371,13 +2375,19 @@ discount `disc_A`. **(L2)** *Twin-naturality:* for a `β = 2` flat `w = w_{a₀ 
 `k − 2`, zero exactly for `u — w₁ — w₂ — u′`. **(L4)** two `β = 2` flat singletons on one line: `w_{au}` and
 `w_{au′}` share the point pair `{q_a, q*}`. **(L5)** an extra `x ∈ X_C` may serve more than two flats:
 `s_C(q*) ≤ 4` (two big `a, a′ ∈ C`, flats `w_{au}, w_{au′}, w_{a′u}, w_{a′u′}`; `C ∌ u, u′` since `q*` is an extra)
-and, for `x = q_a ≠ q*`, `s_C(x) ≤ 3` (needs `u, u′ ∈ C` and a third big `b ∈ C`). Everything else in S22(ii)–(v)
+and, for `x = q_a ≠ q*`, `s_C(x) ≤ 3` (needs `u, u′ ∈ C` and a third big `b ∈ C`). **(L6)** *a natural incidence
+on a singleton class:* for `w = w_{a b}` with `b ∈ {u, u′}`, `q_b = q* ∈ U_a` **itself** when `a ~ b̄` — S22(ii)(b)'s
+"`b′ ≠ a`, so `[a]` is nontrivial" fails, `[a] = {a}` pays nothing and has no `T`-term, and the flat's half-charge
+is unpaid. This is the only natural incidence a singleton can carry (`q_b ∈ U_a` with `b ≁ a` forces `q_b = q_c`,
+`c ∈ N[a]`, so `{b, c} = {u, u′}`), and it needs `dist(u, u′) = 3`: the shape is **O6**, a `u–u′` path of length `3`
+through the big `a` and the flat singleton `w` (`u — a — w — u′` or its mirror), `k₆ ≤ 1` since two close a 6-cycle.
+Everything else in S22(ii)–(v)
 — (ii)(a),(b),(c),(d), S24(iii)'s form of (ii)(e), Lemma D′ for normal charges (the augmentation adds `w` with two
 edges and the *label* `b` with one edge to its neighbour in `A`), (iv)(a),(b),(d),(e), the three facts of (v) — is
-linear algebra of distinct points or combinatorics of `Γ`, and holds verbatim. Three named path shapes carry the
+linear algebra of distinct points or combinatorics of `Γ`, and holds verbatim. Four named path shapes carry the
 damage: **O1** `u — c — z — c′ — u′` with `{c, c′}` a bad pair (`k₁` of them); **O3** `u — w₁ — w₂ — u′` with
 `w₁, w₂` flat singletons and `[u] = [u′]` (`k₃`); **O5** `u — w — a — w′ — u′` with `a` big and `w, w′` flat
-singletons (`k₅`).
+singletons (`k₅`); **O6** `u — a — w — u′` with `a` big and `w` a flat singleton in a singleton class (`k₆`).
 
 **(iii) Lemma (lines).** `Σ_ℓ (N_ℓ + δ_ℓ) ≥ −k₃`, and `k₃ ≤ 1`. *Proof.* (a) `u_ℓ ≥ 2`: every flat is after
 `λ`, `N_ℓ + δ_ℓ = Σ_w (1 − β_w) + #{β_w = 2} = Σ_{β_w ≤ 1} (1 − β_w) ≥ 0`. (b) `I = ∅`, (d) `|I| = 2` with `u_ℓ = 1`
@@ -2406,23 +2416,26 @@ single class `D ⊇ {u, u′}` (its `P_D = {q*, q_a, q_b}` leaves no room for a 
 exclude each other: a class `C ∌ u, u′` serving `≥ 3` flats through big `a, a′ ∈ C` puts `q_a, q_{a′}` on every
 plane of `D = [u] = [u′]` (each flat's line carries `D`), so `P_D ⊇ {q*, q_a, q_{a′}, q_b}` — four points. ∎
 
-**(vi) Lemma (count).** `2k₁ + 3k₃ + 2k₅ ≤ 5`. *Proof.* Distinct O1 pairs have distinct `c`, `z`, `c′` (`z = z′`
-closes `u c z c″ u`); the O5 vertices `a` are distinct big vertices with distinct `w, w′`; the interiors of the
-three shapes are pairwise disjoint (`z = a` closes the 4-cycle `u c a w`; a flat singleton is in no bad pair; `a` is
-big). Their union with `{u, u′}` is a subgraph with `2 + 3k₁ + 2k₃ + 3k₅` vertices and `4k₁ + 3k₃ + 4k₅` edges,
-and the strict count `5|E| ≤ 6(|V| − 1) − 1` reads `2k₁ + 3k₃ + 2k₅ ≤ 5`. ∎
+**(vi) Lemma (count).** `2k₁ + 3k₃ + 2k₅ + 3k₆ ≤ 5`. *Proof.* Distinct O1 pairs have distinct `c`, `z`, `c′`
+(`z = z′` closes `u c z c″ u`); the O5 vertices `a` are distinct big vertices with distinct `w, w′`; the interiors of
+the four shapes are pairwise disjoint (O1/O5: `z = a` closes the 4-cycle `u c a w`; a flat singleton is in no bad
+pair; `a` is big; O6's `a` against O1's `z` is the triangle `u c z`, against O5's `a₅` the triangle `u a w₅`, and
+O6's `w` against O3's `w₂` would make `w₁ = a` big, against O5's `w₅′` would make `a = a₅`). Their union with
+`{u, u′}` is a subgraph with `2 + 3k₁ + 2k₃ + 3k₅ + 2k₆` vertices and `4k₁ + 3k₃ + 4k₅ + 3k₆` edges, and the strict
+count `5|E| ≤ 6(|V| − 1) − 1` reads `2k₁ + 3k₃ + 2k₅ + 3k₆ ≤ 5`. ∎
 
 **(vii) Theorem.** *On the stratum `q_u = q_{u′}`, `dist_Γ(u, u′) ≥ 3`, `k_c ≤ 3`: every plane pattern has
 `cost − J₃ ≥ −2`; hence `codim_T Σ ≥ J₃ + 1 = J₂ + J₃ + 1`, and (★₂) holds on every such stratum.* *Proof.* By
-(i) and (iii)–(v), `cost − J₃ ≥ −k₁ − k₃ − ov`. By (v), `ov ≤ min(1, k₅)`. By (vi): `k₅ = 0` gives `k₁ + k₃ ≤ 2`;
-`k₅ = 1` gives `2k₁ + 3k₃ ≤ 3`, so `k₁ + k₃ ≤ 1` and the total is `≤ 2`; `k₅ = 2` gives `k₁ = k₃ = 0` and the total
-`≤ 1`. ∎ Note that the three sums of (i) are used only at `≥ 0` minus damage; S22(vi)'s tightness argument is not
+(i) and (iii)–(v), `cost − J₃ ≥ −k₁ − k₃ − ov − k₆/2`, with `ov ≤ min(1, k₅)` by (v). By (vi): if `k₆ = 0`, then
+`k₅ = 0` gives `k₁ + k₃ ≤ 2`; `k₅ = 1` gives `2k₁ + 3k₃ ≤ 3`, so `k₁ + k₃ ≤ 1` and the total is `≤ 2`; `k₅ = 2` gives
+`k₁ = k₃ = 0` and the total `≤ 1`. If `k₆ = 1`, then `2k₁ + 3k₃ + 2k₅ ≤ 2` forces `k₃ = 0` and `k₁ + k₅ ≤ 1`, so the
+damage is `≤ 1 + ½` and `cost − J₃ ≥ −1` because `cost` and `J₃` are integers. ∎ Note that the three sums of (i) are used only at `≥ 0` minus damage; S22(vi)'s tightness argument is not
 needed, which is what the level-1 slack of `3` buys.
 
 **(viii) Controls.** *Macaulay2:* `case2m2.py` gained `D3`, `D3c`, `D4` (two big hubs at distance `3`, `3` with a
 7-cycle-closing connector, `4`; two leaves each) — the smallest graphs on which this stratum is non-empty. `D3` PASS
 (one minimal prime, dimension `21`, `28.9` s); `D3c`, `D4` and the cycle cases `T10`, `T11` were still running when
-this section was written (figures in S26). A single prime covers *all* tower strata of the graph, this one included.
+this section was written (figures in S27). A single prime covers *all* tower strata of the graph, this one included.
 *Geometric, at the stratum:* the helper-written `case2deg.py` (drivers; caps in the README) repeats `case2geo.py`'s
 enumeration at a fixed exact `q` with `q_v := q_u` on `D3` and reports `slack := 3 + M_q + ρ − J₂ − J₃ − 1 ≥ 0` for
 every realised pattern: `3 653` patterns, `3 629` realised over ℚ, minimum slack `2` at one shape — the two flats
@@ -2434,10 +2447,148 @@ of `cost − J₃` is `0`, two above the theorem's `−2`; the damage shapes O1,
 **(ix) What this does to O7e-b, and what would change it.** The single coincidence at distance `≥ 3` is closed. Left
 in O7e-b: coincidence at distance `≤ 2` (then some `U_c` sees both labels, `J₂ ≥ 1`, and the level-1 slack is
 `3 − J₂ − 1`); three collinear big points (codimension `2`, `J₂ = [a plane sees all three]`); four coplanar
-(codimension `1`, `J₂ = 0`, so the slack is **`0`** and S22's tightness argument must be redone — the hardest
-relation, and where S21(v)'s forced-equal-planes caveat lives); and strata with several relations. The same ledger
-applies: identify the label-sensitive spots, bound each damage by a habitat count against the level-1 slack. **What
-would change (vii):** a sixth label-sensitive spot in S22 (the audit of (ii) is a reading of S22, not a mechanical
-check — a helper re-read is the cheap control); an O1/O3/O5 shape whose interiors overlap (excluded by girth in (vi));
+(codimension `1`, `J₂ = 0`, slack **`0`** — zero damage required, and where S21(v)'s forced-equal-planes caveat
+lives); and strata with several relations. The same ledger applies: identify the label-sensitive spots, bound
+their damage by a habitat count against the level-1 slack `s = c₁ − J₂ − 1`; S22(vi)'s tightness step is never
+needed at a degenerate stratum (S26(i)) — distance `2` and the adjacent coincidence close in S26 with damage `0`. **What
+would change (vii):** a seventh label-sensitive spot in S22 (the audit of (ii) is a reading of S22, not a mechanical
+check; the fresh-reader audit of S27(i) found the sixth, (L6), and S25 was corrected the same session); an
+O1/O3/O5/O6 shape whose interiors overlap (excluded by girth in (vi));
 or a pattern with `slack < 0` in `case2deg.py` on a graph carrying O1/O3/O5 shapes — none of `D3`, `D3c`, `D4` has a
-bad pair seeing both, so the count lemma (vi) is *not* exercised by today's controls.
+bad pair seeing both, so the count lemma (vi) is exercised only by `E13`, `E15`, `E55` and, for O6, by `D3r` (S27).
+
+## S26 — O7e-b, second and third relations: the coincidence at Γ-distance `2` and the adjacent coincidence close with zero damage from S25's lemmas — no tightness argument is needed at any degenerate stratum; the remaining single relations listed with their slack and label-sensitive spots (session 11, 2026-09-23)
+
+**(i) The slack of a point relation, and what S22 must supply.** For a tower stratum whose big points satisfy one
+relation of level-1 codimension `c₁` with `J₂` forced plane-level jumps, (★₂) reads `c₁ + cost ≥ J₂ + J₃ + 1`, i.e.
+`cost − J₃ ≥ −s` with **`s := c₁ − J₂ − 1 ≥ 0`** (S21(v)). S22's three sums give `cost − J₃ ≥ 0` at generic `q`, and
+S22(vi)'s tightness argument supplies the extra `+1` needed there because `c₁ = J₂ = 0`. **At a degenerate stratum
+that `+1` is never needed**: the requirement is exactly that the three sums, rerun on points, lose at most `s` —
+*damage `≤ s`*. So each relation is closed by (1) listing the label-sensitive spots of S22 at that relation, (2)
+bounding their damage by a habitat / girth count, as S25 did with `s = 2`, damage `≤ 2`. The single relations, with
+`k_c ≤ 3`: coincidence `q_u = q_{u′}` at distance `≥ 3`: `c₁ = 3`, `J₂ = 0`, `s = 2` (S25); at distance `2` through
+`x`: `J₂ = 1` (`U_x ∋ u, u′`; a second common neighbour is a 4-cycle), `s = 1`; adjacent, `u ~ u′`: `J₂ = 2` (`U_u`
+and `U_{u′}` each carry both labels), `s = 0`. Three collinear `a, b, d`: `c₁ = 2`; `J₂ = 1` iff some `U_c ⊇ {a, b, d}`,
+which with `k_c ≤ 3` means `c ∈ {a, b, d}` adjacent to the other two (a *star*), else `J₂ = 0`: `s = 0` or `1`. Four
+coplanar: `c₁ = 1`, `J₂ = 0` (`|U_c| ≤ 3`), `s = 0`. Several relations: `s = cost₁ − J₂ − 1 ≥ 0` by S21(v).
+
+**(ii) Theorem (distance `2`).** *On the stratum `q_u = q_{u′}` with `dist_Γ(u, u′) = 2`, common neighbour `x`,
+`k_c ≤ 3`: `cost − J₃ ≥ 0 > −1 = −s`, so (★₂) holds.* *Proof.* S25's ledger applies verbatim with `r_x = k_x − 1`:
+the merge cost is `3(|A| − 1) − ov_A − disc_A` with `disc_A := def_q(U_A) − Σ_{c ∈ A} def_q(U_c)` (S21(iv)), which is
+`0` for every class containing `x` (`def_q(U_x) = 1` is already in `J₂`) and `[A sees both labels]` otherwise;
+`x = w_{uu′}` is, as a point pattern, a `β = 1` flat (`U_x = {q*}`), and S22(ii)(d)'s cost `2 − β` and jump `1`
+give it net `0`. The three damage shapes are excluded by girth through `x`: O1 `u c z c′ u′ x` is a 6-cycle, O3
+`u w₁ w₂ u′ x` a 5-cycle, O5 `u w a w′ u′ x` a 6-cycle — so `k₁ = k₃ = k₅ = 0`, and S25(iii)–(v) give each of the
+three sums `≥ 0`; S25(iv)'s twin-charge case is unchanged (a class containing `x` sees both labels and carries no
+twin charge). In S25(iii)(c) a `u → u′` path of `Γ[W_ℓ]` closes a cycle through `x` and has `≥ 4` flats, hence `≥ 2`
+interior `W₀` vertices; an isolated `x ∈ W_ℓ` has both neighbours in the U-class and is not flat. ∎
+
+**(iii) Theorem (adjacent).** *On the stratum `q_u = q_{u′}` with `u ~ u′`, `k_c ≤ 3`: `cost − J₃ ≥ 0 = −s`, so (★₂)
+holds.* *Proof.* Same ledger, `r_u = k_u − 1`, `r_{u′} = k_{u′} − 1`, no other `U_c` sees both (a common neighbour
+of adjacent vertices is a triangle). `disc_A ∈ {−1, 0, 1}`: `−1` for a class containing both `u, u′` (one
+coincidence among its labels against two `J₂` drops), `0` for a class containing exactly one of them or seeing exactly
+one label, `1` for a class avoiding both but seeing both. The damage shapes close cycles through the edge `uu′`: O1 a
+5-cycle, O3 a 4-cycle, O5 a 5-cycle; a bad pair with `disc = 1` is an O1 shape. So `k₁ = k₃ = k₅ = 0` and S25(iii)–(v)
+give `cost − J₃ ≥ 0`. A `u → u′` path of `Γ[W_ℓ]` has `≥ 5` flats (girth), hence `≥ 3` interior `W₀`; a flat adjacent
+to both `u, u′` is a triangle; a class with a twin charge sees exactly one label (`u ∈ A` sees both, since
+`u′ ∈ N[u]`), so S25(iv) applies as written. ∎ (S22(ii)(b)'s `a ≁ b` and "unique common neighbour" are combinatorial
+and hold for the label pairs `{u, b}`, `{u′, b}`, two flats on the point pair `{q*, q_b}` being (L4).)
+
+**(iv) Collinear triples and the coplanar quadruple — the spots, not yet the counts.** *Collinear `a, b, d` without a
+star (`s = 1`, damage `≤ 1` allowed):* a class with `U_A ⊆ {a, b, d}` of rank `2` gets a discount `1`
+(`disc_A = def_q(U_A) − Σ def_q(U_c)`, the `U_c` having rank `≤ 2` labels each), so a **bad pair whose three big
+neighbours are the triple** (`N(c) = {z, b}`, `N(c′) = {z, b′}`, `{z, b, b′} = {a, b, d}`) has `T = −1`; at most one
+such pair exists (the three flats `w_{ab}, w_{ad}, w_{bd}` cannot all exist — a 6-cycle — and a flat lies in one
+class), and a star is excluded there (`z ~ b` is a triangle through `c`). Lines through two of the three points carry
+the third: `|I(ℓ)| = 3` as labels but `λ` is still determined by two, so S22(i)'s `|I| ≤ 2` becomes "`I(ℓ) ⊆ λ` spans
+`λ`" and a flat between two of them has `λ` through the third — the analogue of (L4)/(L5) for three labels on one
+line. Two structural changes go deeper than relabelling: S22(i)'s costs read `|U_A|` where they must read
+`rank_q U_A` (a class with `U_A = {a, b, d}` is a *pencil*, not a fixed plane, and "`m_A ≥ 2` ⟹ fixed plane" in
+S24(iii) fails when the off-line points are collinear with `I`); and every class whose natural points include two of
+the triple has `π_A ⊇ λ₀` for free, so those classes form a line `ℓ₀` at no cost and with *collinearity-natural*
+incidences with the third point (the analogue of (L2)). *With a star `U_a = {a, b, d}` (`s = 0`):* `π_a` is a pencil plane, its drop paid in `J₂`; every class
+through `a` inherits `def_q(U_a) = 1` in its `Σ_c def_q(U_c)`, so its `disc` is not raised. *Coplanar `{a, b, c, d}`
+(`s = 0`, damage `0` required):* (C1) a class with all four labels is realisable, `π_A = Π` fixed, discount `1` — a
+bad pair cannot carry it (its members have degree `2`, so `|U_A| ≤ 3` labels); (C2) two classes with `|U| = 3 ⊆ Π`
+are *forced* equal (S21(v)'s caveat) — the only habitat shape is the path `a c d b` with `U_c = {a, c, d}`,
+`U_d = {c, d, b}`, adjacent `c, d` with no common non-big neighbour, so the forced merge costs `0` and jumps `0`;
+(C3) `|P_A| = 4` when `π_A = Π`, so the `|P_A| ≤ 3` bookkeeping (extras serving `≤ 2` flats, S24(iii)) needs the case
+`π_A = Π`; (C4) a *coplanarity-natural* incidence — `π_{[a]} = Π` through `U_{[a]} = {a, c, d}` contains `q_b` for
+free — is the analogue of twin-naturality and is charged like S25(iv)'s `Δ′`. Each spot needs its damage shown `0`
+(quadruple) or the total `≤ 1` (star-free triple) by a girth or habitat count.
+
+**(v) Order of attack.** The star-free collinear triple (one damage shape already identified, `s = 1`); then the
+star; then the quadruple; then several relations, where `s = cost₁ − J₂ − 1` from S21(v) and the spots of the
+constituent relations combine — a coincidence together with a coplanarity is the first mixed case. **What would
+change (ii)–(iii):** a fourth damage shape at distance `≤ 2` that S25(ii)'s audit missed (a fresh-reader audit of that
+list is S27's first item); the controls for (ii) are `case2deg.py` on `T6`, `T7`, `T8` (pairs at distance `2`,
+minimum slack exactly `1 = s`, attained by the trivial pattern and by the common-neighbour flat — S27).
+
+## S27 — Session-11 controls: the fresh-reader audit of S25(ii) (one miss, repaired), the coincidence-stratum check `case2deg.py` on nine graphs, and the Macaulay2 component counts on the new graphs (session 11, 2026-09-23)
+
+**(i) Audit of S25(ii) — one spot missed, S25 corrected.** A helper read S22 sentence by sentence against the
+coincidence stratum with the one question "does this step use that distinct labels give distinct points, and is the
+change among (L1)–(L5)?" Twelve candidate steps were listed; eleven were covered or harmless (among them: `disc_A`
+lives only on nontrivial classes, since a singleton at distance `≥ 3` cannot see both labels; a 4-label / 3-point class
+is a fixed plane and costs `0`; S24(iii)'s "six generic points" needs `Q` generic *within* the coincidence locus, which
+S25's header states only as 3-/4-wise general position — harmless because the ledger never invokes that cut, fixed
+planes costing `0` in every position by S22(i)'s table; S22(v)'s second and third facts are not used by S25 at all).
+**The miss:** S22(ii)(b)'s "`[a]` contains a Γ-neighbour `b′` of `b`, `b′ ≠ a`, so `[a]` is nontrivial" fails on the
+stratum — for `w = w_{a u′}` with `a ~ u`, `q* ∈ U_a` itself, `[a] = {a}` is natural for `q*` and carries no
+`T`-term, so the flat's half-charge is paid by nobody. Exhibited: `u — a — w — u′`, `[a] = [u] = {u}` singletons,
+line `{[w], [a], [u]}` on `λ = q_a q*`, `q_a ∈ X_{[u]}`: `cost = 1` (the extra, in every placement order), `J₃ = 1`,
+`cost − J₃ = 0`, against S25(i)'s displayed right side `½`; realisable (three distinct planes through `λ`), and
+`codim_T = 4 ≥ J₃ + 1 = 2`, so the *theorem* holds there. The auditor also supplied the repair adopted in S25: this
+is the only natural incidence a singleton can carry (`q_b ∈ U_a` with `b ≁ a` forces `{b, c} = {u, u′}` for some
+`c ∈ N[a]`), the shape O6 is a `u–u′` path of length `3` (`k₆ ≤ 1`, a 6-cycle otherwise), its interior is disjoint
+from O1/O3/O5's (triangles `u c z`, `u a w₅`; `w₁ = a` big; `a = a₅`), the count becomes `2k₁ + 3k₃ + 2k₅ + 3k₆ ≤ 5`,
+and with `k₆ = 1` the damage is `≤ 1½`, so `cost − J₃ ≥ −1` by integrality. S26(ii)–(iii) are unaffected (O6 closes a
+5-cycle at distance `2`, a 4-cycle when adjacent). The audit checked S25(iv)'s twin-charge claims (`disc_A = 0`,
+`Δ′_A ≤ g_A`, the `½ℤ` arithmetic), S25(v)'s `n_u ≤ 2`, `s_C(q_a) ≤ 3` and the mutual exclusion (also when the
+`q_a`-kind's vertex `a` lies in `C`), and S25(vi)'s nine interior disjointness pairs. **Lesson for S28:** one careful
+author's reading of S22 missed one of six spots; the next relation's spot list gets the same fresh-reader audit before
+its theorem is claimed, and the audit's per-step method (quote the phrase, ask the one question) is the template.
+
+**(ii) `case2deg.py` — the coincidence stratum drawn, on nine graphs (helper-written; adopted into the drivers with the
+README's caps).** The driver imports `case2geo.py` and `case2m2.CASES`, fixes exact integer big points with
+`q_{u′} := q_u` (seed `20260923`, the coincidence verified to be the *only* relation), enumerates every pattern
+`(𝒞, ℒ, I)` on **points**, realises over ℚ each pattern whose sound lower bound allows `slack ≤ N` (`--slack-cap N`,
+default `1`; the rest have `slack ≥ N + 1` by five shortcuts stated in its docstring — partition-level `J₃_max`,
+per-structure `K + M_q − J₃`, the extras' constant Jacobian rows, a matching bound `ρ ≥ ν` on class-disjoint non-auto
+lines, and (R2)), and reports `slack := 3 + M_q + ρ − J₂ − J₃ − 1 = K + M_q + ρ − J₃`, `K := 2 − J₂`. Every pattern
+counts (the stratum is non-generic already); `slack ≥ 0` is (★₂). **Figures (all PASS, no negative slack):**
+
+| graph | pair, distance | `J₂`, `K` | patterns / realised | min slack (shape) |
+|---|---|---|---|---|
+| D3 | `u, v`, 3 | 0, 2 | 3 653 / 3 629 (24 Fano-type unrealised) | **2**: flats `p, r` on the line through `q*`, `[u]`, `[v]` singletons (`ρ = 2`, `J₃ = 2`) |
+| D3c | `u, v`, 3 | 0, 2 | 3 653 / 3 629 | **2**, same shape |
+| D4 | `u, v`, 4 | 0, 2 | 21 147 partitions, none needed realising at cap 1 (a cap-0 run: 1 237 671 structures, capped at 600 s, min `3`) | **3** |
+| D3r | `u, v`, 3 (O6) | 0, 2 | cap 3: 40 patterns of the O6 family realised | **2**: the O6 pattern (`[p]` flat, line `{[p],[r],[u],[v]}`, `q_r ∈ X_{[u]}`; `M_q = 0`, `ρ = 1`, `J₃ = 1`) and `{p, r}` merged (`M_q = 1`, `D = 1`) |
+| T6, T7 | `u, v`, 2 | 1, 1 | 861 / 855 (6 unrealised) | **1**: the trivial pattern and the common-neighbour flat `x` (resp. `e`) on the line `{[u],[v],[x]}` |
+| T8 | `u, w`, 2 | 1, 1 | (cap-0 run capped at 600 s; cap-1 run: 1 pattern) | **1**: trivial and `{[u],[v],[w]}` with `I = {q*, q_v}` |
+| T8 | `u, v`, **adjacent** | 2, 0 | capped at 600 s, nothing realised | — (outside the adjacent-distinct locus; S26(iii)'s stratum, no figure) |
+| E13 | `u, v`, 3 | 0, 2 | 21 147 partitions, all `≥ 2` by the shortcuts | **2**: trivial; `{w1, w2}` merged (`D = 1`) |
+| E15 | `u, v`, 4 | 0, 2 | pruned search, 666 of Bell(11) partitions visited; cap 2: 879 structures, 1 realised | **2** (`D ≥ 1`: `3`) |
+| E55 | `u, v`, 4 | 0, 2 | pruned search, 266 of Bell(12) visited; 1 743 structures, 1 742 closure-unrealisable | **2** (`D ≥ 1`: `3`) |
+
+Two families were probed by name: on E13/E15 "a class `{y₁, y₂}` non-adjacent, one common neighbour, both flat" (a
+bad pair) — no such pattern needs realising, all `≥ 2`; on E55 "`q*` an extra on `[a]` with `w, w2` both flat" (the
+O5 overflow) — none below `2`. **Sanity control:** `--generic` on D3 (no coincidence, `K = −1`) reproduces
+`case2geo.py`'s minimum slack `0` (101 realised, min `0`; `case2geo.py --graph D3`: 7 443 realised, min `0`, four
+tight shapes). **Reading against S25–S26:** the minimum of `cost − J₃` is `0` on every graph, attained by S22's own
+tight shapes placed through `q*`; the theorems' bounds (`−2` at distance `≥ 3`, `0` at distance `2`) are met with
+room `2` and `1`; the O6 pattern realises at exactly the value the corrected ledger predicts (S27(i)); the damage
+shapes O1, O3, O5 are *admitted* by E13/E15/E55 but the driver proves every pattern there `≥ 2` without realising
+one, so the count lemma S25(vi) is confirmed only in the weak sense that no pattern on those graphs comes within `2`
+of the bound. **Caps:** nine hand-built graphs, `|Z| ≤ 12`, one coincident pair per graph, over ℚ, Jacobian rank mod
+`2⁶¹ − 1` (a lower bound on the ℚ-rank), placement orders capped at `120`; the pruned partition search (`|Z| ≥ 10`)
+visits only partitions whose completions can reach `slack ≤ N`; `--realise-all` and `--full-partitions` are the
+cross-checks (run on E15/E55 at cap 1, same minima). Evidence under these caps, not a proof.
+
+**(iii) Macaulay2 — one figure, seven jobs stopped.** `D3` PASS (one minimal prime, dimension `21`, `28.9` s). The
+seven other new or re-run cases — `D3c`, `D4`, `T10` and `T11` (at `7 200` s), `E13`, `E15`, `E55`, `D3r` — were
+started concurrently as seven `M2` processes and **all were stopped by the harness after about fifty-five minutes for
+system memory pressure**, before any wrote a result: *attempted, no figure*. They are not restarted in this session
+(the harness asks that a stopped job be restarted only on request); the next session runs them **one at a time**
+(`--case X` singly, `--timeout 3600`), cycle cases last. So the Case-2 cycle shapes still have no completed
+component count, and S25(viii)'s "figures in S27" for `D3c`, `D4`, `T10`, `T11` is: none.

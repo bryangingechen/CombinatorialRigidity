@@ -308,8 +308,8 @@ characteristic; primes over `F_{32003}`, not its closure. A single prime is evid
 **Session 11 (workbook S25(viii), S26):** six more cases for O7e-b's single-coincidence stratum — `D3`, `D3c`, `D4` (two big hubs
 `u, v` at Γ-distance `3`, `3` with a connector `a–c` closing a 7-cycle, `4`; two leaves each) and `E13`, `E15`, `E55` (the graphs
 carrying S25(ii)'s damage shapes: `u–w1–w2–v` with a bad-pair path `u–c–z–c2–v`; that bad-pair path with a 4-path through a third
-big hub `a`; two 4-paths through big hubs `a, b`). Run `--case D3 --case D3c --case D4 --timeout 3600` and each `E` case alone with
-`--timeout 5400`. **Figure:** `D3` PASS (`28.9` s); the rest are recorded in workbook S26 with their wall-clock times or timeouts.
+big hub `a`; two 4-paths through big hubs `a, b`), plus `D3r` (D3 with a leaf at `r`, so `u–p–r–v` is S25(ii)'s O6 path). Run
+`--case D3 --case D3c --case D4 --timeout 3600`, each `E` case alone with `--timeout 5400`, and `--case D3r --timeout 1800`. **Figure:** `D3` PASS (`28.9` s); the rest are recorded in workbook S27 with their wall-clock times or timeouts.
 Because the count is of the whole reduced variety, a PASS covers every tower stratum of that graph, degenerate big points included.
 
 ## `case2geo.py` — Case-2 geometric control of (★₂) at generic big points (session 10, 2026-09-23; workbook S22(viii), O7e (a); helper-written)
@@ -346,3 +346,24 @@ candidates not reached; the pass-2 figures for T10/T11 depend on machine speed. 
 placement orders up to `120` (`60` for T10/T11) then exhaustive for `≤ 6` classes; over ℚ, characteristic 0 only.
 Note: T11's `c₁` is non-big under `deg_Γ ≥ 3` (its connector edge does not count), although `case2m2.py`'s comment
 calls it big. A PASS is a check on these graphs over ℚ, not a proof of S22(vi).
+
+## `case2deg.py` — the coincidence stratum `q_u = q_{u′}` drawn exactly: (★₂) on a degenerate big-point stratum (session 11, 2026-09-23; workbook S27(ii), O7e-b; helper-written)
+
+Run from the repository root: `timeout 900 python3 -u notes/attacks/smark/drivers/case2deg.py --graph D3 --pair u v --budget 600`
+(graphs: any `case2m2.CASES` key; pairs used in S27: `D3`, `D3c`, `D4`, `D3r`, `E13`, `E15`, `E55` with `u v`; `T6`, `T7` with `u v`;
+`T8` with `u w` and, adjacent, `u v`); `--generic` is the sanity control against `case2geo.py` (D3: both give minimum slack `0`);
+`--slack-cap N` realises every pattern whose sound lower bound allows `slack ≤ N` (default `1`; S27's D3r/E15 runs also used `2`, `3`);
+`--fam` probes a named family (`merge=…;flat=…;extra=a:x;badpair`), `--probe` realises one pattern; `--realise-all` and
+`--full-partitions` disable the shortcuts (cross-checks). Imports `case2geo.py`, `starcheck.py`, `case2m2.py` from this directory. For a hub
+graph and a pair of big vertices it fixes exact integer big points (seed `20260923`, coordinates in `[−30, 30]`) with `q_{u′} := q_u`, checks
+that this is the *only* relation (all ≤ 4-subsets of distinct points independent), enumerates every pattern `(𝒞, ℒ, I)` on **points** (a
+class may have four labels on three points), realises the candidates exactly over ℚ (verified to carry exactly their classes, lines and
+incidences) and reports `slack := lev1 + M_q + ρ − J₂ − J₃ − 1` with `lev1 = 3`, `M_q = Σ_c (3 − r_c) − Σ_A (3 − rank_q U_A)`, `ρ` the Jacobian
+rank (mod `2⁶¹ − 1`) of the collinearity minors and extra incidences, `J₂ = Σ_c (k_c − r_c)`; every pattern counts. Five sound shortcuts
+(docstring: partition-level `J₃_max`, per-structure bound, extras' constant rows, a matching bound `ρ ≥ ν` on class-disjoint non-auto lines,
+(R2)) let most patterns be classified as `slack ≥ N + 1` without realisation. **Figure (S27(ii) table):** no negative slack on nine graphs;
+minimum `2` at distance `≥ 3` (D3, D3c, D3r, E13, E15, E55; `3` on D4), `1` at distance `2` (T6, T7, T8), each attained by S22's tight shapes
+through the merged point; on D3r the O6 pattern of S25(ii)(L6) realises at slack exactly `2`. **Caps:** nine hand-built graphs, `|Z| ≤ 12`,
+one coincident pair each, over ℚ, placement orders `≤ 120`, per-graph budgets `600–900` s (T8's adjacent pair and its cap-0 run capped);
+the pruned partition search for `|Z| ≥ 10` visits only partitions that can reach `slack ≤ N`; the D3/D3c runs leave `24` Fano-type line
+structures unrealised (unverified). Evidence for (★₂) on these strata, not a proof of S25–S26.

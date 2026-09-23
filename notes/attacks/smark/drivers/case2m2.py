@@ -66,6 +66,9 @@ CASES = {
     "E55": (["u", "v", "w", "a", "w2", "w3", "b", "w4", "la", "lb", "x", "y"],
             [("u", "w"), ("w", "a"), ("a", "w2"), ("w2", "v"), ("u", "w3"), ("w3", "b"), ("b", "w4"), ("w4", "v"), ("a", "la"), ("b", "lb"), ("u", "x"), ("v", "y")], [],
             "O5 + O5: big u, v joined by two 4-paths through big hubs a, b (girth 8)"),
+    # S27(i): the O6 shape (a length-3 u-v path through a big vertex r and a flat singleton p) -- D3 with a leaf at r.
+    "D3r": (["u", "p", "r", "v", "a", "b", "c", "d", "lr"], [("u", "p"), ("p", "r"), ("r", "v")] + star("u", "ab") + star("v", "cd") + [("r", "lr")], [],
+            "D3 with r made big by a leaf: u-p-r-v is an O6 path (S25(ii)(L6))"),
 }
 
 def m2_script(Z, E, conn, seed):

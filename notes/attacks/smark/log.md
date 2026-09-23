@@ -2,6 +2,11 @@
 
 Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 
+## Session 11 (route R2; O7e-b's three coincidence relations closed, workbook S24–S27)
+- Treating twin-natural incidences (a class natural for the merged point through the *other* label) as unpaid half-damage: rules out that bookkeeping — their number is bounded by no habitat count (one per big member of every class seeing exactly one label); S25(iv) absorbs them per class instead (`Δ′_A ≤ g_A` with `disc_A = 0`, and `T_A ≥ 0.25 ⟹ T_A ≥ 0`).
+- Reading the `s = 0` relations (adjacent coincidence, star, coplanar quadruple) as needing S22(vi)'s tightness step redone on points (first draft of S26): rules out nothing and was a misreading — the requirement at a degenerate stratum is `cost − J₃ ≥ −s`, one less than S22's generic `+1`, so S22's three nonnegative sums suffice whenever the damage is `≤ s`; withdrawn the same session (S26(i)).
+- Counting two `β = 2` flats on one line as a per-line loss (first draft of S25(iii)): rules out nothing — with `δ_ℓ` counting flats rather than lines the balance `N_ℓ + δ_ℓ ≥ 0` holds verbatim; the only new loss is an extra serving more than two flats (S25(v)).
+
 ## Session 10 (route R2; O7e piece (a) closed, workbook S22)
 - S16(ii)'s 2-degenerate hub tower for Case 2 (carried in *Tried* through session 9): rules out nothing S21(i)'s 3-degeneracy of `𝔅` does not; retired as superseded.
 - `planefirst.py` (135 sides, session 7): no Case-2 side in its library, so it says nothing about O7e; retired from *Tried*.
