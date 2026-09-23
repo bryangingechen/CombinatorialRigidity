@@ -2167,3 +2167,79 @@ So the control's tight shapes are exactly the ones (vi)'s proof leaves at value 
 (T8), T10/T11 capped in pass 2, T9 (`k_c = 4`) skipped, over ℚ; `2 238 + 2 927 + 14` patterns not realised (Fano-type
 and forced-line configurations) and not verified. **Verdict.** (i)–(vi) *proven-informally*; (vii) the reduction of
 the residue; (viii) *evidence under its caps*. O7e (a) closes; O7e stays open as (b)–(c), count `1`.
+
+## S23 — Review notes (2026-09-23, `/review-attack` after session 10; the reviewer's checks, not the attack's — verify before building on them)
+
+Tree at `29a4a99b`. Consumer: the §3.1 kernel quotes are **token-identical** to `pencilPair_of_splitOff_of_habitat`
+(`Escape.lean`, whitespace-normalised diff, empty); `git log 084ee4ff..HEAD -- CombinatorialRigidity/` is empty, so
+no Lean file the kernels name has changed since the checked sha; the nine definition bodies of brief §3.2
+(`splitOff`, `PencilHub`, `closedHubNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`,
+`HasGenericPencilRealization`, `PencilPair`, `HasDistinctPencilRealization`, `HasPencilRealization`) and
+`TwoEdgeConnected`, `IsProperRigidSubgraph` read from source match their glosses; the trichotomy is
+`cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair` (`MaximalChain.lean`), whose hypothesis
+`G.degree a = 2 ∨ G.degree b = 2` follows from the kernels' `¬ PencilHub a ∨ ¬ PencilHub b` because a vertex of a
+2-edge-connected graph on `≥ 5` vertices has degree `≥ 2` (its edge set is `cutEdges {a}`). Verdict to the PI:
+**continue on R2**; the edits below were applied on the PI's word the same day (brief §§1, 2, 3.5, 4, 6, 7, 8;
+`state.md`; `log.md`; this entry; the Phase 39 pointer).
+
+**(i) Signals.** `check.py --history`: count `4 → 3 → 3 → 1` inside session 8, then `1`, `1`; "Where it breaks"
+changed at every session (O7e → O7e(a) → O7e(b)), so the treadmill warning fires. It is a false positive here:
+session 9 *split* O7e into pieces (a)–(c) (S21(vii)) and session 10 *proved* (a) (S22, with the control S22(viii));
+counted by piece the trend is `1 → 3 → 2`. From this review the pieces are counted separately (O7e-b, O7e-c) so the
+count signal works again. The break itself is specific enough to attack tomorrow (a first relation, `q_u = q_{u′}` at
+Γ-distance `≥ 3`, with the discount it induces).
+
+**(ii) The domain contains rigid graphs — a gap in the sketch, not a paraphrase.** Neither kernel carries
+`0 < deficiency G 3`, and `IsProperRigidSubgraph H G n` (`Deficiency.lean`) is `H.IsRigidSubgraph G n ∧ 2 ≤ |V(H)| ∧
+V(H) ⊂ V(G)` — a *proper vertex subset* — so spanning subgraphs and `G` itself are unconstrained. S20(iii) already
+notes `C₅`, `C₆`. In case (iii): `θ(5,3,4)` (two hubs joined by paths of lengths `5, 3, 4`; 11 vertices, 12 edges) has
+`6(|V| − 1) − 5|E| = 0`, girth `7`, and `def₃ = 0` — the maximum of `6(|P| − 1) − 5d(P)` over all `678 570` set
+partitions, computed exactly at review — with no proper rigid subgraph (a proper induced subgraph of a theta is a forest
+or unicyclic; a cycle has `≥ 7` vertices, so `5|E| ≤ 5|V| < 6(|V| − 1)`), simple, 2-connected, degree-2 chains of
+interior lengths `4, 2, 3`; feasible (`closedHubNbhd(w) = {w}`), so it reaches `hK` at `m ∈ {2, 3, 4}`. Brief §3.5's
+five-arm induction read as if rigid graphs go to arm (a). The route is unaffected: S14(iii) carries no positivity
+hypothesis and rigid `G` is its cell `δ′ = f′ = 5 − m`, `g′ = 0` (from `def₃(G) = f′ + m + 1 − min(δ′ + m + 1, 6) = 0`,
+which forces `δ′ = f′` and `f′ + m + 1 ≤ 6`). Brief §2 now says so.
+
+**(iii) A misworded kill (check 4).** `log.md`'s session-6 line said S16(ii) rules out "a hub with three hub
+neighbours each of hub-degree `≥ 3`" as a habitat member. The count gives only that the hub graph has no *subgraph* of
+minimum degree `≥ 3` (2-degeneracy); the local shape is habitat-legal with long paths — S21(vii)(c), and the spider T9
+of `case2m2.py` is one such side. Nothing to revive: the shape is live as O7e-c. The line is reworded.
+
+**(iv) Evidence read.** Re-derived and found sound as written: S19 end to end (in particular the relaxation step of
+S19(i): the sequential fibre dimensions `3 / 1 / 0` bound the *closed* locus of the imposed equalities and
+collinearities, which contains the exact stratum, so dropping conditions only weakens the bound); S21(iii)'s Lemma P
+from the strict count; S22(ii)(b) (a `β = 2` flat is the unique common neighbour of two non-adjacent big vertices; its
+flatness is exactly the two cross-incidences, each natural only through a nontrivial class); Lemma D′'s arithmetic
+(`J_A ≤ 0.75e + 1.5a − 1.75 − 0.75Δ`, both branches); S16(vi) (descent, given irreducibility); S18(iii) (the ear
+fibration and the `m = 2` parallel stratum); S20(ii)–(iv). **Certificate (A)** recomputed independently: the six
+Plücker vectors of `p x₁, x₁x₂, …, x₅ p` at `p = (1,0,0,0)`, `π = {x₄ = 0}` have determinant **`−1`**, and `x₁, x₅ ∈ π`.
+Caps are disclosed for `starcomb.py`, `unitcert.py`, `case2m2.py`, `case2geo.py` (README), with the semicontinuity
+direction stated correctly. **Not verified, now load-bearing:** S22(ii)(e) (at most two fixed planes on a line; a pencil
+plane cannot join them), S22(iv)(c) (the `u_ℓ = 1`, `|I(ℓ)| = 1` path analysis), S22(vi)(4b) (the bad pair on a 2-point
+line) — hand case analyses that `case2geo.py`'s graphs are too small to exercise, as the attack's own *Worries* say;
+and the duality transfer S21(v) (connectors and unmarked degree in `(Γ, Big)`), checked in prose only. Session 11
+should open by re-deriving these four and landing the result as S24 before building O7e-b on them. Sessions 8–10
+landed ~530 workbook lines in one morning; this is their first outside reading.
+
+**(v) The marked-set convention.** S19(vii)(c)'s "on `hbareSplit`'s arm `H′` is always Case 2" is true only with
+`Z = hubs(G)` as the marked set on the side (S19(i)): a chain end of `G`-degree `3` has `H′`-degree `2` and is not an
+`H′`-hub, yet carries a plane in the composition. The brief never stated the convention; §1 now does. With it the
+equivalence is exact: the infeasible witness `y` is a `G`-hub with `≥ 3` `G`-hub neighbours, none of them a chain
+vertex, all in `H′`. The IH's Lean witness is a `HasPencilPanelRealization`, a plane at every vertex, so it is a point
+of `X̄(H′, Z)` with no choice to make, and rank is a function of the points alone.
+
+**(vi) Reach, and the named alternative.** The route still discharges exactly `hK` and `hbareSplit`; the open cell is
+`hbareSplit` at `m ≤ 4`, precisely where `¬ PencilNondegFeasible K G` bites. Everything "closed" is closed informally
+(the Lean has no irreducibility surface, S20(v)). If O7e-b/-c stall for two sessions, the alternative is not another
+route on the same statement — irreducibility is genuinely needed to transfer the IH's `a′ = 0` and the antecedent's
+block data to a common generic point (S14(i)–(ii): `G₋` attaining says nothing about `a′` when `δ′ + m ≤ 5`) — but a
+PI-level change of the induction motive so that the hypothesis hands the route a generic-point statement directly,
+which trades O7 for a stronger conclusion at every arm and is the PI's call.
+
+**(vii) Next moves given to the PI.** (1) Count O7e by piece; patch the brief for S19–S22, the marked set and the rigid
+members; reword the session-6 kill — all applied. (2) Session 11 opens with verification (the four items of (iv)) landed
+as S24. (3) O7e-b control-first: finish one cycle case (T10/T11) in `case2m2.py` at a larger timeout and draw `q` on the
+single-relation stratum in `case2geo.py` before the labelled-point calculus; cycles through a big vertex are the one
+Case-2 shape with no completed control. Review 5 after session 13 or on a route change. No incident line: neither
+`HARNESS.md` nor the review command cost this review time.
