@@ -2674,3 +2674,8 @@ all have degree `≥ 3`, a shape the strict count should bound (next session: co
 The spider T9's core is a tree, so T9 was never an O7e-c instance. **What would change this:** a leaf whose fibre is
 not the same variety at every base point (it is: `p_c ∈ π_c` is the only datum it sees), or a Case-2 side whose core
 has maximum degree `≤ 2` but is not a habitat side (impossible: subgraphs inherit girth and the count).
+*Final tally of the `--jumpdims` runs (one M2 at a time, `600–900` s caps):* T10 PASS (`33` s); T11, D3c, E13, E15,
+E55 and the **tree** D3r TIMEOUT — D3r hangs on the same `pl_r` locus as D3c, and E13's `dim I` alone exceeds `900` s
+while T10's took `0.1` s, so the Gröbner cost is sharply graph-dependent and not a matter of cycles; D4 was not
+reached (the batch's outer cap). None of these timeouts leaves an irreducibility question open: D3r, D4 are trees and
+the rest have cycle cores.
