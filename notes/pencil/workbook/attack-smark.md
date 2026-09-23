@@ -1765,3 +1765,13 @@ are open. (d) The count is `3`: O7e, O10, O11. **What would change this:** a pat
 `cost ≤ J` (none among `64 325 + 73 969 + 55 831` on `229` sides); a gap in the relaxation
 argument of (i) — the one place the proof touches geometry; or a habitat side violating the
 count `5e(K) ≤ 6(v(K) − 1)` on a subgraph (S16(ii)), which every step leans on.
+
+**(viii) Addendum — Case 2 is non-vacuous, and the count is strict.** `starcomb.py --case2 6` builds the
+hub star `K_{1,3}` (centre `z`, leaves `a, b, c`, each pair of leaves joined by a path of length `6`):
+`|V| = 19`, `|E| = 21`, girth `8`, every unmarked vertex of degree `2`, `z` with `E_z = {z, a, b, c}`
+(`s_z = 4`), and `5e(S) ≤ 6(|S| − 1) − 1` on every vertex subset carrying an edge. So O7e is a genuine
+obligation, not an empty case. The length-`5` variant is *tight* (`5 · 18 = 90 = 6 · 15`): tight and sparse
+below means six edge-disjoint spanning trees of `5K` (Tutte–Nash-Williams), i.e. `def₃ = 0`, a rigid graph —
+which no `H′ ⊊ G` may contain. The habitat count a legal side satisfies is therefore the **strict**
+`5e(K) ≤ 6(v(K) − 1) − 1` for every subgraph `K` with an edge; S16(ii) and S19 use only the non-strict
+form, so `starcomb.py`'s random population (non-strict) is a superset of the legal sides and its PASS stands.

@@ -34,6 +34,7 @@ count 5 e(S) <= 6(|S| - 1) on EVERY nonempty vertex subset S (exact, via the 2-c
 
 Run from the repository root:
     timeout 900 python3 notes/attacks/smark/drivers/starcomb.py [--seed 20260923] [--graphs 40] [--maxZ 7]
+    timeout 60  python3 notes/attacks/smark/drivers/starcomb.py --case2 6     # a Case-2 habitat side (O7e non-vacuous)
 
 Caps, disclosed: |Z| <= maxZ (default 7: Bell(7) = 877 partitions x all partial linear spaces);
 random sides with |V| <= 24; total 600 s.  A PASS is a check of the four links on these graphs,
@@ -68,7 +69,7 @@ def habitat_count_ok(G):
             if len(core[v]) <= 1:
                 for w in core[v]: core[w].discard(v)
                 del core[v]; changed = True
-    if not core: return True, 0
+    if not core: return True, None                    # a forest: 5(n-1) < 6(n-1), strict
     branch = [v for v in core if len(core[v]) >= 3]
     if not branch:                                     # core is a disjoint union of cycles
         n = len(core); return (6 - n <= 0 and n >= 7), 6 - n
@@ -85,11 +86,13 @@ def habitat_count_ok(G):
                 prev, cur = cur, nxt; L += 1; path.append((prev, cur))
             seen.add((b, w)); seen.add((cur, prev))
             chains.append((bidx[b], bidx[cur], L))
-    worst = 0
+    worst = None                                       # max excess over subsets carrying >= 1 edge
     for T in range(1, 1 << len(branch)):
         k = bin(T).count("1")
-        exc = -6 * (k - 1) + sum(6 - L for i, j, L in chains if (T >> i & 1) and (T >> j & 1) and L <= 6)
-        if exc > worst: worst = exc
+        inside = [L for i, j, L in chains if (T >> i & 1) and (T >> j & 1)]
+        if k == 1 and not inside: continue             # a single vertex, no edge: excess 0 trivially
+        exc = -6 * (k - 1) + sum(6 - L for L in inside if L <= 6)
+        if worst is None or exc > worst: worst = exc
         if exc > 0: return False, exc
     return True, worst
 
@@ -157,6 +160,31 @@ def random_side(rng, maxZ, maxV=24, tries=400):
         if all(len(e) <= 1 for e in E.values()): continue          # J == 0 identically, vacuous
         return G, sorted(Z, key=str)
     return None, None
+
+# --------------------------------------------------------------------------- a Case-2 side (O7e is non-vacuous)
+def case2_example(L=6):
+    """hub star K_{1,3} (centre z, leaves a, b, c) with the three leaf pairs joined by paths of
+    length L (>= 5 for girth 7; L = 5 makes the graph tight, 5e = 6(v-1), i.e. rigid, so L >= 6)."""
+    G = Graph()
+    for x in "abc": G.add_edge("z", x)
+    cnt = 0
+    for x, y in (("a", "b"), ("b", "c"), ("a", "c")):
+        cnt += 1; end = G.add_path(x, L - 1, f"r{cnt}_"); G.add_edge(end, y)
+    return G, ["z", "a", "b", "c"]
+
+def report_case2(L):
+    G, Z = case2_example(L)
+    Zs = set(Z); V = sorted(G.adj); nE = sum(len(a) for a in G.adj.values()) // 2
+    g = G.girth(); ok, exc = habitat_count_ok(G)
+    E = hyperedges(G, Z)
+    big = [z for z in Z if len(E[z]) >= 4]
+    print(f"Case-2 side, hub star K_1,3 with leaf-to-leaf paths of length {L}: |V|={len(V)} |E|={nE} "
+          f"5|E|={5*nE} vs 6(|V|-1)={6*(len(V)-1)}; girth={g}; habitat count on all subsets: "
+          f"{'OK' if ok else 'FAIL'} (max excess over edge-carrying subsets {exc}; 0 = a tight, hence rigid, subgraph; "
+          f"a legal H' needs <= -1); unmarked degree <= 2: "
+          f"{all(len(G.adj[v]) <= 2 for v in V if v not in Zs)}; big hubs (s_z >= 4): {big} "
+          f"with E_z = {[sorted(E[z]) for z in big]}")
+    return ok and (exc is not None and exc <= -1) and (g is None or g >= 7) and bool(big)
 
 # --------------------------------------------------------------------------- the check
 def lc_dp(q, lines):
@@ -281,7 +309,10 @@ def main():
     ap.add_argument("--seed", type=int, default=20260923)
     ap.add_argument("--graphs", type=int, default=40)
     ap.add_argument("--maxZ", type=int, default=7)
+    ap.add_argument("--case2", type=int, metavar="L", help="only report the Case-2 example side with leaf paths of length L")
     args = ap.parse_args()
+    if args.case2 is not None:
+        return 0 if report_case2(args.case2) else 1
     print(f"starcomb.py  seed {args.seed}  random sides {args.graphs}  |Z| <= {args.maxZ}  cap {TOTAL_CAP:.0f}s")
     for q in range(1, args.maxZ + 1): print(f"#PLS({q})={len(PLS(q))}", end="  ")
     print()

@@ -270,4 +270,8 @@ extremals and their unions); `831` type-(3) lines, `447` bad pairs seen; `8.8` s
 each): `73 969` / `55 831` patterns with `J ≥ 1`, PASS.** Caps: `|Z| ≤ 7`; the generator's shapes above (its
 fenced constants: `TOTAL_CAP = 600`, `maxV = 24`, `tries = 400`, the length menus `[1,1,2,3,4]` / `[2,3,4,5]`);
 `cost` is the sequential lower bound on codimension, not the codimension itself (`starcheck.py`'s Jacobian is
-the geometric control). Pure integer combinatorics, no geometry, no characteristic.
+the geometric control). Pure integer combinatorics, no geometry, no characteristic. **`--case2 L`** (S19(viii)) builds
+the Case-2 side `K_{1,3}` of hubs with leaf-to-leaf paths of length `L` and reports girth, the count (max excess over
+edge-carrying subsets; `0` = a tight, hence rigid, subgraph, so a legal `H′` needs `≤ −1`), and the big hub: `L = 6` gives
+`|V| = 19`, `|E| = 21`, girth `8`, excess `−1` — O7e is non-vacuous; `L = 5` is tight (`90 = 90`), exit `1`.
+The random population is checked against the **non-strict** count (what S19 uses), so it is a superset of the legal sides.
