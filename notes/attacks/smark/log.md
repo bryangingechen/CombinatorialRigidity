@@ -2,6 +2,10 @@
 
 Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 
+## Session 10 (route R2; O7e piece (a) closed, workbook S22)
+- S16(ii)'s 2-degenerate hub tower for Case 2 (carried in *Tried* through session 9): rules out nothing S21(i)'s 3-degeneracy of `𝔅` does not; retired as superseded.
+- `planefirst.py` (135 sides, session 7): no Case-2 side in its library, so it says nothing about O7e; retired from *Tried*.
+
 ## Session 9 (route R2; O7e reduced to pieces (a)–(c), workbook S21)
 - Plane-first rank stratum `{rk_y = min(s_y, 3)}` as Case 2's main stratum (first draft of S21(ii)): rules out stating (★₂) on rank strata of `B` — that set contains tower strata such as `q_u = q_{u′}` for far-apart big `u, u′` (codimension 3, no jump), so its irreducibility is not automatic; (★₂) is stated on the tower `T`.
 

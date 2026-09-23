@@ -1992,3 +1992,160 @@ Not needed anywhere: S16(ii)'s 2-degenerate hub order, O7c.
 reduced variety has a second component (the control would show it; none among ten); a stratum with `codim_T ≤ J₂ + J₃`
 (a counterexample to (★₂) — the sequential costs of (vii)(a) are the place to look first); or an error in (i)'s
 reduction of "generic position at each step" for the three-level order (the Hall check in (ii)).
+
+## S22 — O7e (a): the line charging at generic big points — the Case-2 pattern calculus, the flat-vertex geometry, and the per-line surplus with big points (session 10, 2026-09-23)
+
+Tree at `d3d0bac0`. Consumer re-diffed at HEAD: no Lean file changed since `084ee4ff` (`git log 084ee4ff..HEAD --
+'**/*.lean'` is empty), both kernels of `pencilPair_of_splitOff_of_habitat` match brief §3.1 hypothesis by hypothesis,
+the case decomposition is S19's. Setting: S21(ii)'s three-level tower (`k_c ≤ 3` for all `c`; piece (c) excluded), the
+fibre over a **generic** `q ∈ (P³)^Big` — any three big points non-collinear, any four non-coplanar. Written in small
+results per the 2026-09-23 trial rule; each sub-result is proven-informally unless it says otherwise.
+
+**(i) The pattern calculus at generic `q`.** The fibre of `T` over `q` is `A_q := ∏_{c ∈ Z} P(U_c^⊥)`, `dim A_q = Σ_c
+(3 − k_c)`; a point is a plane `π_c ∋ U_c` per `c`. A *pattern* is `P = (𝒞, ℒ, (P_A)_A)`: the classes `𝒞` (equal
+planes, `π_A ∋ U_A := ⋃_{c ∈ A} U_c`, so `|U_A| ≤ 3`), the lines `ℒ` (≥ 3 classes sharing a line `λ_ℓ`, two lines
+sharing ≤ 1 class), and for each class its *incidence set* `P_A ⊇ U_A` of big points on `π_A`, `|P_A| ≤ 3`; `X_A :=
+P_A ∖ U_A` are the *extras*. `S_P ⊆ A_q` is the exact stratum (equalities, collinearities and incidences exactly as
+listed). *Consistency:* for two distinct classes `B, C` on a line, `P_B ∩ P_C = I(ℓ) := ⋂_{A ∈ ℓ} P_A` — two distinct
+planes through `λ` containing `q_u` force `q_u ∈ λ`, hence into every plane on `λ`; and `|I(ℓ)| ≤ 2`. The jump is
+`J₃(P) = Σ_{y ∉ Big} (s_y − rk_y)` with `rk_y` read off the pattern as in S19(i); `J₃ = Σ_A J₃_A + F₃`, `F₃` the flat
+non-big vertices (three distinct classes on a line), and `cost(A) − J₃_A = σ_A` for the merge cost of a class
+(S21(iii)). *Sequential codimension:* place the classes in some order; the class `A` costs `(3 − |U_A|) − dim{planes ⊇
+W_A}`, `W_A := span(P_A ∪ ⋃ determined lines through A)` — an upper bound on its fibre dimension valid on all of
+`S_P`, so with `LC(P) := max` over orders of the sum, `cost(P) := Σ_A [3(|A| − 1) − ov_A] + LC(P) ≤ codim_{A_q} S_P`.
+The values: a class placed before all its lines (or on none) costs `|X_A|`; after one determined line `λ` with `I =
+I(ℓ)`, `c_A(ℓ) = (2 − |I|) + |X_A ∩ I| + [P_A ⊄ λ] − |U_A ∖ I|`; after two or more, `3 − |U_A|`. *Relaxation:* dropping
+a line, a class from a line, or an incidence `u ∈ X_A` gives `P′` whose closed conditions (with the classes'
+distinctness) contain `S_P`, so `cost(P′) ≤ codim S_P` as well (S19(i)). Two normalisations are free: **(R1)** keep only
+the lines carrying a flat vertex, each reduced to the classes of its flat vertices (S19 Step 2) — `I(ℓ)` is unchanged,
+being `P_B ∩ P_C` for any two of its classes; **(R2)** drop every extra of a class that lies on none of the class's
+remaining lines — no `I(ℓ)` changes. After (R1)–(R2): `X_A ⊆ ⋃_{ℓ ∋ A} I(ℓ)`, a lineless class has `X_A = ∅`, and for
+a class on exactly one line placed after it, `[P_A ⊄ λ] = [U_A ⊄ I]`, so
+
+> `c_A(ℓ) = 2 − |U_A ∩ I(ℓ)| − (|U_A ∖ I(ℓ)| − 1)⁺ ≥ 0`;  `c_A(ℓ) = 0` iff `U_A ⊇ I(ℓ)` and `|U_A| = 3 − [|I(ℓ)| = 2]`,
+
+and `cost − J₃ = Σ_{A nontrivial} (σ_A − F_A) + LC − F_sing` exactly as in S19(ii). The Case-1 values are `2` (one
+line) and `3` (two lines); the big points on the line and the natural points of the class are the discounts, and the
+extras the surcharges. (The discount `(|U_A ∖ I| − 1)⁺` is where the sequential bound is lossy: a plane with two natural
+points off `λ` is a pencil or fixed, and "`λ ⊆ π_A`" is then a condition on the classes that determined `λ`, which no
+order charges to `A`. The bound stays a lower bound; realisability at generic `q` cuts the cases where it bites, see (iv).)
+
+**(ii) Flat vertices at generic `q`.** Let `y` be flat: `y ∉ Big`, `N_Γ(y) = {a, b}`, `[y], [a], [b]` distinct, on
+`λ_y`; `β_y := |Big ∩ {a, b}|`. (a) `Big ∩ {a, b} ⊆ I(ℓ_y)`: if `a` is big, `q_a ∈ π_{[y]} ∩ π_{[a]}` (both natural),
+two distinct planes, so `q_a ∈ λ_y`. Hence `β_y ≤ |I(ℓ_y)|`. (b) If `β_y = 2`: `a ≁ b` (triangle), `y` is the **unique**
+common neighbour of `a, b` (4-cycle), `λ_y = q_a q_b` is a fixed line, `I(ℓ_y) = {a, b}`, and the flatness of `y` is
+*exactly* the two incidences `π_{[a]} ∋ q_b`, `π_{[b]} ∋ q_a` (given them the three planes contain `λ_y`; conversely
+the common line must contain `q_a`, `q_b` by (a)). Each incidence is natural — `b ∈ U_{[a]}`, i.e. `[a]` contains a
+Γ-neighbour `b′` of `b`, `b′ ≠ a`, so `[a]` is **nontrivial**, and `a ≁ b′`, `N(a) ∩ N(b′) = ∅` (a 4- or 5-cycle through
+`y`) — or an extra, costing `1`. (c) S19(iii)'s two facts are combinatorial and survive: a flat vertex is flat on exactly
+one line, and a flat singleton lies on exactly one reduced line and is never a neighbour class on another. (d) A flat
+singleton `y` placed after its line costs `c_y = 2 − β_y` (by (i): `U_y = Big ∩ {a, b} ⊆ I`, `|U_y ∖ I| = 0`), and its
+jump is `1`: net `1 − β_y ∈ {1, 0, −1}`. So the Case-1 surplus `2` per flat singleton drops to `1` when one neighbour
+is big and to `0` when both are — the `β = 2` flat is paid for by the two incidences of (b), each costing `1` as an
+extra or nothing when natural through a nontrivial class. (e) Big points off the line: a class `A` on `ℓ` with `|U_A ∖
+I(ℓ)| ≥ 2` and `|I(ℓ)| = 2` is unrealisable (`|P_A| ≥ 4`); with `|I(ℓ)| = 1` it has `|U_A| = 3` and a fixed plane;
+with `I(ℓ) = ∅`, `|U_A| ∈ {2, 3}`. Two fixed planes on one line fix `λ`; a third class then containing `λ` needs, if
+`|U_C ∖ I| ≥ 2`, `λ` to meet a fixed line (`|U_C| = 2`) or lie in a fixed plane (`|U_C| = 3`) — false at generic `q`, except when that fixed line lies in a fixed plane of
+`ℓ`, and then the pencil plane through `λ` is that fixed plane (or the line is `λ` and `|I(ℓ)| = 2`), both excluded.
+So **on a realisable line** at most two classes have `|U_A| = 3`, and if two do, no other class on it has
+`|U_A ∖ I(ℓ)| ≥ 2`.
+
+**(iii) Lemma D′ — the class surplus pays for the `β = 2` flats it makes natural.** For a nontrivial class `A`
+call `(w, b)` a *deficit charge on `A`* when `w` is a flat singleton with `N_Γ(w) = {a₀, b}`, `a₀ ∈ A ∩ Big`, `b ∈ Big
+∖ A`, and `b ∈ U_A` (some `b′ ∈ A` is a Γ-neighbour of `b`); let `Δ_A` be their number. *Claim:* if `Δ_A ≥ 1` then
+`σ_A − F_A − Δ_A/2 ≥ 1`. *Proof.* Write `a := |A|`, `e := e(A)`, `Y := |Y_A|`, `N := Σ_{y ∈ Y_A} n_y`, so `J_A = 2e + N −
+Y` and S21(iii)'s strict count on `Γ_A = (A ∪ Y_A, E(A) ∪ E(A, Y_A))` is `5(e + N) ≤ 6(a + Y − 1) − 1`. Augment
+`Γ_A`: for each charge add `w` with its two edges `w a₀`, `w b`, and add `b` with one edge to a neighbour in `A` when `b`
+is not already a vertex (`b ∉ Y_A` and not added by an earlier charge). The `w` are pairwise distinct (`w = w′` forces
+`{a₀, b} = {a₀′, b′}`, and the `a`'s lie in `A`, the `b`'s outside) and none lies in `A ∪ Y_A` (one neighbour in `A`);
+the added edges are new. So `Γ_A⁺ ⊆ H′` has `Δ + β` new vertices and `2Δ + β` new edges with `β ≤ Δ` the number of
+added `b`'s, and the strict count on it gives `5(e + N) ≤ 6(a + Y − 1) − 1 − (4Δ − β) ≤ 6(a + Y − 1) − 1 − 3Δ`.
+Running S21(iii)'s derivation with the extra `−3Δ` (`2Y ≤ N` gives `4Y ≤ 6a − 7 − 3Δ − 5e`, then `J_A ≤ e + (6a − 7
+− 3Δ + Y)/5`):
+
+> `J_A ≤ 0.75e + 1.5a − 1.75 − 0.75Δ`,  so  `σ_A ≥ 1.5a − 1.25 − 0.75e + 0.75Δ`.
+
+Flat members are non-big and isolated in `Γ[A]` (S21(iii)), and `A` has the big member `a₀`. If `e = 0`: `F_A ≤ a − 1`
+and `σ_A − F_A − Δ/2 ≥ 0.5a − 0.25 + 0.25Δ ≥ 1` for `a ≥ 2`, `Δ ≥ 1`. If `e ≥ 1`: the non-isolated set `W` of `Γ[A]`
+has `|W| ≥ (5e + 7)/6` (strict count on `Γ[W]`), `F_A ≤ a − |W|`, and `σ_A − F_A − Δ/2 ≥ 0.5a − 1/12 + e/12 + 0.25Δ >
+1`. ∎ Since a class with a charge has a big member, it is not S19's bad pair; so with
+
+> `S′ := Σ_{A nontrivial} (σ_A − F_A − Δ_A/2)`,  `S′ ≥ #{nontrivial classes that are not bad pairs} ≥ 0`
+
+(S21(iii) for `Δ_A = 0`, the Lemma for `Δ_A ≥ 1`). *Use.* By (ii)(b) a `β = 2` flat singleton `w = w_{ab}` costs `0`
+and jumps `1`; its line needs `π_{[a]} ∋ q_b` and `π_{[b]} ∋ q_a`. Charge `1/2` to each of `[a]`, `[b]`: when the
+incidence is natural, `(w, b)` is a deficit charge on `[a]` (resp. `(w, a)` on `[b]`) and the Lemma pays it; when it is
+an extra, the class pays `1` for it (every class pays at least its extras, (v)), and one extra `u ∈ X_C` serves at most
+two such flats (`w_{a u}`, `w_{a′ u}` with `a, a′ ∈ C ∩ Big`; a third would give `|P_C| ≥ 4`), so the halves it serves
+sum to at most its cost. Define `D_C := ½·#{(u, w) : u ∈ X_C, w = w_{a u} a flat singleton, a ∈ C ∩ Big} ≤ |X_C|`.
+
+**(iv) The order, and the flat balance of a line.** Fix the order: **fixed planes** (`|U_C| = 3`) first, then the
+other non-flat-singleton classes (the *U-classes*, in any order), then the flat singletons. Every class pays its
+actual sequential cost `cost_C` of (i). For a reduced line `ℓ` write `W_ℓ` for its flat singletons (`f_ℓ = |W_ℓ|`),
+`u_ℓ` for its other classes, `W₁, W₀ ⊆ W_ℓ` for the flats with `β = 1`, `β = 0`, and `w_{ab}` for a `β = 2` flat; put
+`δ_ℓ := [w_{ab} ∈ W_ℓ]` and the **flat balance** `N_ℓ := Σ_{w ∈ W_ℓ} (cost_w − 1)`. A flat placed after its line
+costs `2 − β_w` (ii)(d); placed first or second (only when `u_ℓ ≤ 1`) it costs its extras `|I(ℓ)| − β_w`.
+*Claim:* `N_ℓ + δ_ℓ ≥ 0` for every reduced line, with the equality cases listed. *Proof.*
+(a) `u_ℓ ≥ 2`: every flat is after, `N_ℓ = Σ_w (1 − β_w)`; `β_w ≤ 2` with `β_w = 2` only for `w_{ab}`, unique by (ii)(b).
+So `N_ℓ + δ_ℓ = Σ_{w ≠ w_{ab}} (1 − β_w) ≥ 0`, zero iff every other flat singleton on `ℓ` has `β = 1`.
+(b) `u_ℓ = 1`, `I(ℓ) = ∅`: all `β = 0`; S19(iii)'s argument verbatim — `Γ[W_ℓ]` is a path forest, each path has ≥ 2
+vertices, `f ≥ 2`; one flat is second (cost `0`), the rest cost `2`: `N_ℓ = f − 2 ≥ 0`, zero iff type (3), whose class
+`A` is nontrivial and not bad (S19(iii)).
+(c) `u_ℓ = 1`, `I(ℓ) = {a}`: the U-class is `[a]` (a `W₁` flat has `[a]` as a neighbour class; if `W₁ = ∅` every
+flat is `W₀`, costing `2` after and `1` second, so `N_ℓ = f − 1 ≥ 1`). With `W₁ ≠ ∅`: `Γ[W_ℓ]` is a
+path forest whose path ends are adjacent to members of `[a]`; a path with one vertex has both neighbours in `[a]` and
+is not flat; a path with an end at `a` has its other end at `a′ ∈ [a] ∖ {a}` (`a′ ∉ Big`: a big `a′` would put `q_{a′} ∈ I(ℓ)` by (ii)(a)) or both ends at `a` (a cycle through `a`, `≥ 6` path vertices); so every path carries `≥ 1` `W₀`
+vertex, and a `W₀` vertex after its line nets `+1`, a `W₁` one `0`, the second class nets `−β`. Hence `N_ℓ ≥ #paths
+− 1 ≥ 0`, zero iff a single path `a — w₁ — w₂ — a′` with `w₁ ∈ W₁`, `w₂ ∈ W₀`, `a′ ∈ [a] ∖ {a}`: `[a]` nontrivial with
+a big member, not bad.
+(d) `u_ℓ = 1`, `|I(ℓ)| = 2`: `w_{ab} ∉ W_ℓ` (its two neighbour classes are distinct U-classes), so `β ≤ 1` and every
+flat costs `2 − β_w` in either position: `N_ℓ = Σ (1 − β_w) ≥ 0`, zero iff all `β = 1`; then a flat `w ~ a` has its
+other neighbour `x` flat with `x ~ b` (`x ≁ a`), `a ≁ b` (else a 4-cycle), and `[b]` is a neighbour class of `x`, a
+U-class, hence `[b] = [a]`: nontrivial with a big member.
+(e) `u_ℓ = 0`: `Γ[W_ℓ]` is 2-regular, a cycle of `≥ 7` flats all with `β = 0`; `N_ℓ ≥ (f − 2)·1 + 2(|I| − 1) ≥ 3`. ∎
+So `N_ℓ + δ_ℓ = 0` forces either a nontrivial class with a big member on `ℓ` (cases (b)–(d)) or `u_ℓ ≥ 2` with every
+flat singleton other than `w_{ab}` of type `β = 1` (case (a)).
+
+**(v) Assembly.** With the order of (iv), `LC = Σ_{C ∈ 𝒰} cost_C + Σ_w cost_w` (a lineless class costs `0` after (R2)),
+so `cost − J₃ = S + Σ_ℓ N_ℓ + Σ_{C ∈ 𝒰} cost_C` with `S = Σ_{A nontrivial} (σ_A − F_A)`. Three facts about a U-class
+`C`: **every class pays at least its extras** — first on all its lines: `|X_C|`; after two or more: `3 − |U_C| ≥
+|X_C|`; after exactly one, `ℓ`: `c_C(ℓ) = (2 − |I|) + |X_C ∩ I| + [P_C ⊄ λ] − |U_C ∖ I| ≥ |X_C|`, because `|U_C ∖ I| +
+|X_C ∖ I| ≤ 3 − |I|` and `P_C ⊄ λ` as soon as that sum is positive. **A class after a line with `|I(ℓ)| ≤ 1` pays
+`≥ 1`:** a fixed plane is never after a line (two classes precede it on `ℓ` and, being earlier in the order, are fixed
+planes too — three on one line, against (ii)(e)); a non-fixed class has `|U_C| ≤ 2` and `c_C(ℓ) ≥ 1` in every case of
+(i)'s table. **A class after a 2-point line pays `|I ∖ U_C| + [P_C ⊄ λ]`,** which is `0` iff `P_C = U_C = I(ℓ)`
+(natural for both points, no extras). Paying the `β = 2` flats by (iii): `Σ_ℓ δ_ℓ ≤ Σ_A Δ_A/2 + Σ_C D_C`, hence
+
+> `cost − J₃ ≥ S′ + Σ_ℓ (N_ℓ + δ_ℓ) + Σ_{C ∈ 𝒰} (cost_C − D_C)`, each of the three sums `≥ 0` ((iii), (iv), `D_C ≤ |X_C| ≤ cost_C`).
+
+**(vi) Theorem (O7e (a)).** *For every realisable pattern at generic `q` with `J₃ ≥ 1`, `cost(P) ≥ J₃(P) + 1`. Hence
+(★₂) holds for every stratum of `T` over the generic locus of `(P³)^Big`.* *Proof.* Suppose the right side of (v) is
+`0`. Then `S′ = 0`: no class carries a deficit charge and every nontrivial class is a bad pair (S21(iii)); every `N_ℓ +
+δ_ℓ = 0`; every U-class has `cost_C = D_C`. (1) *No extras, no `w_{ab}` flat singleton.* If `X_C ≠ ∅` then `cost_C ≥
+|X_C| ≥ D_C` forces `D_C = |X_C|`: each extra serves two flats `w_{au}, w_{a′u}`, so `C` has two big members and is not a
+bad pair. So `X_C = ∅`, `D_C = 0`, `cost_C = 0` for every U-class, and a `w_{ab}` flat singleton would need a natural
+incidence, a deficit charge. (2) By (v), no U-class is after a line with `|I| ≤ 1`, and one after a 2-point line has
+`U_C = I(ℓ)`. (3) *There is a line:* otherwise `F₃ = 0`, `J₃ ≥ 1` gives a nontrivial `A` with `J₃_A ≥ 1`, `F_A = 0`, and
+`σ_A ≥ 1` (Lemma P), against `S′ = 0`. (4) Take a reduced line `ℓ`. By (iv), `N_ℓ + δ_ℓ = 0` gives a nontrivial class
+with a big member (not bad — contradiction) or `u_ℓ ≥ 2` with every flat singleton of type `β = 1`. (4a) *A flat
+singleton `w` on `ℓ`,* `N_Γ(w) = {a, x}`, `a ∈ I(ℓ)`, `x ∉ Big`: `[x]` is on `ℓ`, contains `q_a`, naturally by (1), so
+`[x] ∋ a′` with `a′ ~ a` (`a′ = a` would make `[x] = [a]`), nontrivial; `x ≁ a′` (4-cycle) and a common neighbour of
+`x, a′` closes a 5-cycle through `a, w` — not a bad pair. Contradiction. (4b) *No flat singleton on `ℓ`:* its flat
+vertex `y` has class `{y, y′}`, a bad pair with common neighbour `z`, `N(y) = {z, b}`, `N(y′) = {z, x′}`, `y′` flat
+on `ℓ` as well (ii)(c). The classes `[y], [z], [b], [x′]` are distinct (`b = x′` is a 4-cycle; `{b, x′}` a class would be
+a bad pair whose common neighbour closes the 6-cycle `y b c x′ y′ z`), so `u_ℓ ≥ 4` and at least two U-classes are
+after `λ` with cost `0`: by (2) `|I(ℓ)| = 2`, `I = {a, b₀}`, and every class on `ℓ` — extras being absent — is natural
+for both: `[y] ∩ N_Γ[a] ≠ ∅ ≠ [y] ∩ N_Γ[b₀]`. If `z ∈ {a, b₀}`, say `z = a`: `b₀ ∈ {b, x′}`, say `b₀ = b`, so `y =
+w_{ab}` and `[a] = [z]` on `ℓ` is natural for `b`: `[a] ∋ b′ ~ b`, `b′ ≠ a`, nontrivial with a big member. If `z ∉ {a,
+b₀}`: `{a, b₀} = {b, x′}`, and `[z]` natural for `a` contains `a″ ∈ N_Γ[a] ∖ {z}` (`z ~ a` is a triangle): `a″ = a`
+is a big member, `a″ ~ a` gives `z ≁ a″` and no common neighbour (4- and 5-cycles through `y`) — not a bad pair.
+Contradiction in every case. ∎
+
+**(vii) What this does to O7e.** Piece (a) of S21(vii) is closed: (★₂) holds on every stratum over generic big points,
+by (i)–(vi). The break moves to piece **(b)** — degenerate `q` (a rank drop among the big points: `q_u = q_{u′}`,
+three collinear, four coplanar) with nontrivial plane classes, lines or extras — where S21(iv)–(v) give the pure-point
+and pure-class cases and the mixed residue is: pay the discount `def_q(U_A) − Σ_{c ∈ A} def_q(U_c)` and S21(v)'s
+forced-`J₃` caveat out of `cost₁(q) − J₂` (S19 on `(Γ, Big)`) and the surplus of (v). Piece (c) (`k_c ≥ 4`) is
+untouched. **What would change (vi):** a realisable pattern at generic `q` with `cost ≤ J₃` (the driver of (viii) looks
+for one); an error in (ii)(e)'s realisability cuts, the one place the proof leans on geometry beyond linear algebra; or
+a gap in (iv)(c)'s path analysis, which is the Case-2 analogue of S19's type (3) and was checked by hand only.
