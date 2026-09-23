@@ -62,3 +62,8 @@ Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 ## Session 12 (2026-09-23; S28–S31)
 - Planning a separate charge for the line `ℓ₀` of classes through `λ₀` (state, session 11): rules out its necessity — S28(i)'s rank values price those classes at their true cost `0`.
 - S22(iii)'s "an extra serves at most two flats" as the working bound: superseded by S28(iii) (at most one, any `q`), which removes the extras overflow at the collinear and coplanar strata.
+
+## Session 13 (2026-09-23; S32–S35)
+- Per-label budgets (charge each damage unit to the last label of its circuit in a fixed order): rules out label-local budgets — on a big path of five collinear labels the centre label has `κ − j = 2 − 3 = −1` in a natural order, and bad pairs through a common `z` overload one label; replaced by relation components (S32), where budgets add exactly.
+- One uniform price ratio `⅛` for every non-twin damage unit against `6n − 7` of slack: rules out a type-blind count for coplanar clusters of `≤ 10` labels (`(6n − 7)/8 > n − 7/2`); the coplanar free incidence must carry its hub's fixed price `10` (S35(ii)).
+- Per-triple bounds summed over a cluster (S28(vi)'s `k₁ ≤ 1` per triple): rules out cluster-level `k₁ ≤ 1` — two collinear bad pairs coexist on the test cluster (an 8-cycle, S35(iii)); only the joint slack bounds them.

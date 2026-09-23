@@ -2892,24 +2892,26 @@ dependent `D ⊆ B` with `|D| ≤ 4` contains a circuit `C`, `|C| ≤ 4` — a r
 but `C ⊆ D ∩ R ⊆ B_R` is independent. So every `≤ 4`-subset of `B` is independent and `rk S ≥ min(4, |B|)`. ∎
 
 **(ii) The budget is additive.** For a component `R` and an order of `R`, put `κ_p^R := 4 − min{rk S : S ⊆ R` earlier
-than `p`, `p ∈ cl S}` (`0` if no such `S`), `c₁^seq(R) := max` over orders of `Σ_{p ∈ R} κ_p^R`, and `J₂(R) :=
-Σ_c def(U_c ∩ R)`, `def(U) := |U| − rk U`. **Lemma.** `c₁ ≥ Σ_R c₁^seq(R)` and `J₂ = Σ_R J₂(R)`, so with the
-component budget **`b_R := c₁^seq(R) − J₂(R)`**, `s = c₁ − J₂ − 1 ≥ Σ_R b_R − 1`. *Proof.* Order `Big` component by
-component, each in its maximising order, free labels anywhere. Project the level-1 stratum `S_M ⊆ (P³)^Big` onto the
-coordinates in this order: over any point of the image, `q_p` lies in `span{q_s : s ∈ S}` for the `S` realising
-`κ_p^R`, of dimension `rk S − 1 = 3 − κ_p^R`; so `dim S_M ≤ Σ_p (3 − κ_p^R)` and `c₁ = 3|Big| − dim S_M ≥ Σ_R
-c₁^seq(R)`. (Allowing `S` from other components only lowers `min rk S`, so the global sequential bound is at least this.)
+than `p`, `p ∈ cl S}` (`0` if no such `S`), `c₁^seq(R) := max` over orders of `Σ_{p ∈ R} κ_p^R`, `c₁(R)` the codimension
+of the stratum `S_{M|_R}` in `(P³)^R`, and `J₂(R) := Σ_c def(U_c ∩ R)`, `def(U) := |U| − rk U`. **Lemma.** `c₁ ≥ Σ_R
+c₁(R)`, `c₁(R) ≥ c₁^seq(R)`, and `J₂ = Σ_R J₂(R)`; so with the component budget **`b_R := c₁(R) − J₂(R)`**, `s = c₁ −
+J₂ − 1 ≥ Σ_R b_R − 1`. Moreover **`b_R ≥ 1`** for every component: S21(v) applied to the stratum of `M|_R` alone (a
+degenerate `q` in its own right; S21(v) rests on S19, unreviewed). *Proof.* A point of `S_M` restricts on each `R` to a
+realisation of `M|_R`, so `S_M ⊆ ∏_R S_{M|_R} × (P³)^{free}` and `c₁ ≥ Σ_R c₁(R)`. For `c₁(R) ≥ c₁^seq(R)`, project
+`S_{M|_R}` onto the coordinates in a maximising order: over any point of the image, `q_p` lies in `span{q_s : s ∈ S}`
+for the `S` realising `κ_p^R`, of dimension `rk S − 1 = 3 − κ_p^R`, so `dim S_{M|_R} ≤ Σ_p (3 − κ_p^R)`.
 `|U_c| ≤ 3`, so by (i) `rk U_c = Σ_R rk(U_c ∩ R) + |U_c ∩ free|` exactly and `def(U_c) = Σ_R def(U_c ∩ R)`. ∎
 *Check against the closed single relations* (each is one component): far coincidence `b = 3`, distance 2 `b = 2`,
 adjacent `b = 1` (S26(i): `J₂ = 1, 2`), star-free collinear `b = 2`, star `b = 1`, coplanar quadruple `b = 1` —
 and S25–S30 proved damage `≤ 2, 0, 0, 3/2, 0, 1/2` respectively, i.e. **damage `≤ b_R − ½` in every closed case.**
 
-**(iii) Reduction.** *If the ledger's damage splits as `Σ_R damage_R` with `damage_R ≤ b_R − ½` for every component,
-then `cost − J₃ ≥ −s` on the stratum.* *Proof.* `cost − J₃ ≥ −Σ_R damage_R ≥ −Σ_R b_R + k/2 ≥ −(s + 1) + ½`, and
+**(iii) Reduction.** *If the ledger's damage is at most `Σ_{R ∈ 𝒯} b_R − ½` for some set `𝒯` of components — in
+particular if it splits as `Σ_R damage_R` with `damage_R ≤ b_R − ½` for each `R` it touches — then `cost − J₃ ≥ −s`.*
+*Proof.* Components outside `𝒯` have `b_R ≥ 1`, so `cost − J₃ ≥ −(Σ_R b_R − ½) ≥ −(s + 1) + ½`, and
 `cost − J₃ ∈ ℤ`, `s ∈ ℤ`, so `cost − J₃ ≥ −s`. ∎ (The `k ≥ 1` components are the degenerate stratum; `k = 0` is S22.)
 This is the "local slack budgets" argument of the state file, with the clusters taken to be matroid components — which
 answers its objection (a): `c₁` is not additive over *dependent* relations, but relations in one component are never
-split, and across components the lemma of (i) makes the ranks, hence `c₁^seq` and `J₂`, add exactly.
+split, and across components the lemma of (i) makes the ranks add, hence `J₂` exactly and `c₁` superadditively.
 
 **(iv) Which ledger terms are local.** (a) `disc_A = def(U_A) − Σ_{c ∈ A} def(U_c)` is additive over components on
 every realisable class: `rk U_A ≤ 3` (a common plane), so (i) applies without the `min`. So `disc_A = Σ_R disc_A^R`.
@@ -3041,3 +3043,104 @@ class of `m` labels (budget `3(m − 1)`, slack `6m − 7` on its own) a family 
 unit of damage has `Dmg ≤ (6m − 7)/2 = 3(m − 1) − ½` — the budget with exactly the `½` the reduction needs, which is
 S25(vi)'s equality case at `m = 2`. The next step is to make this a lemma: one weighted strict count
 per cluster, with the twin shapes at weight `½`, all others at `⅛`.
+
+## S35 — The strict count in path-graph form, the price of every damage unit, and the test cluster (coincidence + collinear triple through `q*`) reduced to one class lemma (session 13, 2026-09-23)
+
+*Proven-informally* for (i)–(ii); (iii) is a reduction, (iv) the open lemma.
+
+**(i) Path-graph form of the strict count.** Let `K ⊆ H′` be connected with an edge and `B ⊆ V(K)` contain every vertex
+of `K`-degree `≠ 2` and one vertex of each cycle component. Then `K` is `B` plus internally disjoint `B`–`B` paths `p`
+of lengths `ℓ_p ≥ 1`, and the strict count `5|E(K)| ≤ 6|V(K)| − 7` (S19(viii)) reads, with `|V| = |B| + Σ_p (ℓ_p − 1)`,
+`|E| = Σ_p ℓ_p`:
+
+> **`Σ_p (6 − ℓ_p) ≤ 6|B| − 7`.**
+
+A path of length `≥ 6` is free, a length-`ℓ ≤ 5` path costs `6 − ℓ`, a branch vertex brings `6`. Girth `≥ 7`: two
+paths on the same pair of branch vertices have `ℓ_p + ℓ_q ≥ 7`. Every count in S19–S31 is an instance (S25(vi) is `B =
+{u, u′}` plus the shapes' big vertices).
+
+**(ii) Prices.** Relative to a fixed branch set `B₀` (the component's labels), a damage unit's *price* is the slack it
+consumes: its paths' costs minus `6` per branch vertex it adds to `B₀`. From the shapes of S25–S30 (the witness
+subgraphs there are exactly these):
+
+| unit | witness | price | damage | damage / price |
+|---|---|---|---|---|
+| O1, twin bad pair, `z ∉ Big` | `u — c — z — c′ — u′` | `2` | `1` | `½` |
+| O3 | `u — w₁ — w₂ — u′` | `3` | `1` | `⅓` |
+| O5 (overflow) | `u — w — a — w′ — u′`, `a` new big | `8 − 6 = 2` | `≤ ½` | `¼` |
+| O6 (free twin incidence) | `u — a`, `a — w — u′`, `a` new | `9 − 6 = 3` | `½` | `⅙` |
+| collinear bad pair | `x — c — z`, `z — c′ — x′`, `{x, z, x′} = T` | `8` | `1` | `⅛` |
+| collinear free incidence (S-i) | `x — t`, `x — w — y` | `9` | `½` | `1/18` |
+| collinear free incidence (S-ii) | `x — t₁`, `x — t₂`, `x — w — y`, `x` new | `8` | `½` | `1/16` |
+| coplanar free incidence | `x — t₁`, `x — t₂`, `x — w — y`; each further `w` at the same `x` | `14`; `4` | `½` | `≤ ⅛` |
+
+So **twin units have ratio `≤ ½` and every other listed unit `≤ ⅛`**. Sanity: on a parallel pair (`6|B₀| − 7 = 5`) the
+twin units give `Dmg ≤ 5/2 = b − ½` — S25(vi)'s equality; on a collinear triple (`11`) they give `Dmg ≤ 11/8`, so `≤ 1`
+in `½ℤ`, sharper than S28(vi)'s `3/2`; on a coplanar quadruple (`17`) `Dmg ≤ 17/28`, i.e. `≤ ½`, S30.
+
+**(iii) The test cluster.** `R = {u, u′, b, d}`: `q_u = q_{u′} = q*`, `q*, q_b, q_d` distinct and collinear on `λ₀`,
+`dist_Γ(u, u′) ≥ 3`, no star, otherwise general. `c₁(R) = 5`, `J₂(R) = 0` (no `U_c` sees both twins or a whole
+collinear triple), **`b_R = 5`**, target `Dmg ≤ 9/2`. Planes carry `≤ 4` points and only `λ₀` carries three. The four
+terms of S34(ii): *lines* — `k₃ ≤ 1` (S33(i)); *free incidences* — `y ∈ cl(U_x) ∖ U_x` needs `U_x` to contain a twin of `y`
+(O6) or two of the three points of `λ₀` (S-i/S-ii for `T = {u, b, d}` or `T′ = {u′, b, d}`), all in the table; *extras*
+— by S33(ii) a label is served once unless both twins lie in the class, so a point is served `≤ 2` times, and with
+`cost_C ≥ #extras − τ_C` (S28(i)'s `τ`, the plane `⊇ λ₀` with `≤ 1` natural point of `λ₀`): `τ_C = 0` gives no
+overflow; `τ_C = 1` with `U_C ∩ λ₀ = {q*}` needs `u, u′ ∈ C` and O5 paths through `b`/`d`/the fourth point (price `2`
+each, overflow `≤ ½` each); with `U_C ∩ λ₀ = {q_b}`, `U_C = {q_b, q_e}`, overflow `≤ ½` needs three served labels `u, u′,
+d` by length-2 paths from `{b, e}` (price `≥ 12 − 6`); `U_C ∩ λ₀ = ∅` gives none. So every line, free-incidence and
+extras unit is a table entry. *If the class term is priced the same way* (twin-type class damage at ratio `≤ ½` inside
+the twin pair's own count, all other class damage at `≤ ⅛`), then with `P_tw ≤ 5` (the twin units' own count on `{u,
+u′}`, S25(vi)) and `P_tw + P_oth ≤ 6 · 4 − 7 = 17` (the other units always contain `b` and `d` and a twin, so the union
+is connected): `Dmg ≤ P_tw/2 + P_oth/8 ≤ 5/2 + 12/8 = 4 < 9/2`. Two collinear bad pairs **do** coexist here (`b — c —
+u — c′ — d` and `d — e′ — u′ — e — b`, an 8-cycle — so S28(vi)'s `k₁ ≤ 1` is per triple, not per cluster), at price `16`,
+after which the slack left is `1` and no twin unit fits: `Dmg = 2`. **Caveat:** prices add only over units whose
+witnesses share no path; S25(vi)'s girth argument gives that for the twin units, and S28(vi)/S30(ii)'s for the
+collinear and coplanar ones within one relation, but across relations of one cluster (a free incidence at `x` for `T`
+and another for `T′` sharing the edge `x — t`) it is an obligation of the counting lemma, not yet checked.
+
+**(iv) The open class lemma.** *Price the class term: for a nontrivial class `A`, `(disc_A + Δᴹ_A/2 − S_A)⁺ ≤ ⅛ ·`
+(the price of the paths attaching `A`'s members to the labels of `U_A`), except bad pairs over a twin pair (O1, ratio
+`½`).* Evidence it is the right statement: the cluster's two new class shapes price correctly — `A = {c, c′}`, `c` sees
+`{u, b}`, `c′` sees `{u′, d}`, `disc_A = 2`, `S_A = 1`, damage `1` at price `4 + 4 = 8`; and at generic `q` the lemma is
+S21(iii)/S22(iii). The tool is S34(i)'s identity `−T_A = (3 − rk U_A) + J^{nb}_A + F_A + (Δ_A + Δᴹ_A)/2 − Σ_c (3 − r_c)`:
+each member with `3 − r_c ≥ 1 + [c flat]` pays for itself, so the damage is carried by members with `r_c = 2` (flat)
+or `3` (big), whose label attachments are paths of length `≤ 2` — price `≥ 4` each. What would refute the lemma: a
+class with `disc_A ≥ 2` whose members see the labels through long paths only — impossible, since `U_c ⊆ N_Γ[c]` puts
+every attachment at length `≤ 1` from a member — or a large `J^{nb}_A` (members sharing non-big neighbours) not paid
+by `S_A`, which Lemma P's strict count on `Γ_A` controls.
+
+## S36 — The class lemma, first case: no charges and no shared non-big neighbours — the class damage is `≤ 1`, only on an all-tight rank-2 class, and it prices at ratio `⅛` (collinear) or `½` (twin) (session 13, 2026-09-23)
+
+Setting of S34–S35. For a member `c` of a nontrivial class `A` put `ε_c := 3 − r_c − [c ∈ F_A] ≥ 0` (a flat member is
+non-big with `r_c ≤ 2`; a big member is never flat); S34(i) reads
+
+> `damage_A := −T_A = (3 − rk U_A) + J^{nb}_A + (Δ_A + Δᴹ_A)/2 − Σ_{c ∈ A} ε_c`.
+
+Call `c` *tight* when `ε_c = 0`: big with `r_c = 3`, or flat non-big with `r_c = 2` (two big neighbours at distinct
+points). *Proven-informally.*
+
+**(i) Lemma.** *If `Δ_A = Δᴹ_A = 0` and `J^{nb}_A = 0`, then `damage_A ≤ 1`, with equality only when `rk U_A = 2` and every
+member is tight, flat and non-big.* *Proof.* By `rk U_A`. `= 3`: `damage_A = −Σ ε_c ≤ 0`. `= 2`: `r_c ≤ 2` for every
+member, so a big member has `ε ≥ 1` and a tight member is flat non-big; `damage_A = 1 − Σ ε_c`. `= 1`: `r_c ≤ 1`, so no
+member is tight and `Σ ε_c ≥ |A| ≥ 2`: `damage_A ≤ 0`. `= 0`: every member has `r_c = 0`, `ε_c ≥ 2`. ∎
+
+**(ii) Pricing.** In the equality case each member `c` is a path `t — c — t′` between big vertices at distinct points
+of the line `λ_A := span U_A`, the paths of distinct members internally disjoint. Two members cannot share both ends (a
+4-cycle), so `|U_A| ≥ 3` labels on `λ_A`, and `M` has a relation there. *Either* `λ_A` carries `≥ 3` distinct points —
+they form one component (S32(iv)(c)), all ends lie in its label set `B₀`, and `price(A) ≥ 4|A| ≥ 8`: **ratio `≤ ⅛`**;
+*or* `λ_A` carries exactly two points, one of them a parallel class — the ends lie in `B₀` up to at most one free label
+per point, and `price(A) ≥ 4|A| − 6 ≥ 2`: **ratio `≤ ½`**, a twin unit; at `|A| = 2` this is O1 with its common
+neighbour `z` big (`u — c — z — c′ — u′`, price `8 − 6`). So in this case the class term prices exactly as S35's table
+needs. A bad pair with big common neighbour `z` is an instance (`J^{nb}_A = 0`); one with non-big `z` has `J^{nb}_A = 1` and
+belongs to (iii)(a).
+
+**(iii) What is left of the class lemma.** (a) `J^{nb}_A ≥ 1`: members sharing non-big neighbours — each shared `y` is a
+path `c — y — c′` of length 2 between members, and a member is a branch vertex only through its label edges; the
+strict count on `Γ_A` (Lemma P) has to pay `J^{nb}_A` from `Σ ε_c` and the paths' prices. The bad pair with non-big `z`
+over a twin pair is the case `J^{nb} = 1`, `rk U_A = 1`, `Σ ε = 2`: `damage = 2 + 1 − 2 = 1`, price `2`, ratio `½` — O1.
+(b) Charges: a normal charge is paid at generic `q` by Lemma D′ inside `S_A`, so only `Δᴹ_A` is new; each `M`-natural
+charge `(w, y)` has its own witness path `x — w — y` (length 2) from a big member `x` to a label `y ∈ cl(U_A) ∖ U_A`,
+price `4` when `x ∈ B₀` — ratio `⅛` for its `½` — but price `4 − 6 < 0` when `x` is a free big vertex, so the charge
+must then be paid by `S_A`, as S25(iv)/S28(v) did (`Δᴹ_A ≤ g_A` there; at arbitrary `M` a big member can carry several).
+The corrected statement to prove next is therefore: *`damage_A ≤ ⅛ · price(A)` (twin: `½`) with `price(A)` counted
+relative to `B₀ ∪ (A ∩ Big)`, and `S_A` pays `½` per charge from a big member outside `B₀`.*
