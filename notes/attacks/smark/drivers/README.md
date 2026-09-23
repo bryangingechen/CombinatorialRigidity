@@ -305,3 +305,38 @@ dimension `5|Z| − 2|E(Γ)| + #conn − 5`. **Figure:** C1, C1c (Case-1 control
 `3`, `2`, `3` primes; T10, T11 (cycles through a big vertex) time out at `280` s; T9 (spider, `k_c = 4`, `|Z| = 10`) PASS in `1098` s
 (`--case T9 --timeout 1650`). Caps: ten hand-built Case-2 graphs with `|Z| ≤ 9` — *not* a population, no cycle case finished; one
 characteristic; primes over `F_{32003}`, not its closure. A single prime is evidence for, not a proof of, irreducibility.
+
+## `case2geo.py` — Case-2 geometric control of (★₂) at generic big points (session 10, 2026-09-23; workbook S22(viii), O7e (a); helper-written)
+
+Run from the repository root: `timeout 900 python3 -u notes/attacks/smark/drivers/case2geo.py --graph T1 --graph T1c
+--graph T3 --graph T2 --graph H3 --graph T6 --graph T7 --graph H1 --graph H2 --graph H2c --graph T8 --graph T9 --budget
+850`; the two `|Z| = 8` cycle cases separately, `--graph T10` and `--graph T11`, each with `--budget 850 --nsucc 1
+--order-cap 60`; `--realise-all` disables the rank-argument shortcut (cross-check). Imports `starcheck.py` (exact
+ranks, set partitions) and `case2m2.py` (the T-graphs) from this directory. For a hub graph with marked set `Z`,
+`Big = {deg_Γ ≥ 3}`, `k_c = |Big ∩ N_Γ[c]| ≤ 3`, it fixes one exact random point `q_u ∈ P³` per big `u` (seed
+`20260923`, integer coordinates in `[−30, 30]`, general position checked), takes the plane normals in `U_c^⊥`, and
+enumerates every pattern `(𝒞, ℒ, I)` — set partition, partial linear space, and the big points `I(ℓ) ⊆ Big`
+(`|I(ℓ)| ≤ 2`) on each line, under the consistency rules of S22(i) plus four closure rules that discard only
+combinatorially unrealisable assignments. Each pattern that can be tight is realised **exactly over ℚ** (verified
+to carry exactly its classes, lines and incidences), and its codimension is lower-bounded soundly by `M + ρ`: `M` the
+merge codimension `Σ_c (3 − k_c) − Σ_A (3 − |U_A|)`, `ρ` the rank mod `2⁶¹ − 1` of the Jacobian of the collinearity
+minors and the extra-incidence equations in coordinates on `∏ P(U_A^⊥)`. Checked: `slack := M + ρ − (J₃ + 1) ≥ 0`
+for every realised pattern with `J₃ ≥ 1`, `J₃` over non-big marked vertices and connectors. Sound shortcuts: a
+partition with `M ≥ J₃_max + 2` has slack `≥ 1` for every line structure; a `need = 0` pattern (`M = J₃ + 1`) has
+`ρ ≥ 1`, hence slack `≥ 1`, unless every extra is absent and every line has `|I| = 2 ⊆ U_A` for all its classes
+(proof in the docstring) — only those are realised. **Figure:** NO negative slack on any graph; minimum slack `0` on
+every graph with a big vertex, attained only at (a) a non-big `y` merged with an adjacent big `u`, no lines (`M = 2`,
+`J₃ = 1`); (b) the Case-1 adjacent non-big pair merged (`M = 3`, `J₃ = 2`); (c) a flat non-big `y` with three
+singleton classes on one line, `I = ∅`, `{u}` (one big neighbour) or `{u, v}` (between two big vertices), all with
+`M = 0`, `ρ = 2`, `J₃ = 1`. Per graph (realised / slack-0 patterns): T1 3/3, T1c 3/3, T3 4/4, T2 = H3 4/4, T6
+123/7, T7 123/7, H1 3793/9 (14 not realised: labelled Fano planes in `P(u^⊥)`, unrealisable over ℚ), H2 123/7
+(`≅ T7`; H2c with a connector is girth 6, outside the habitat, 123/7), T8 (`|Z| = 9`, `|Big| = 3`, `3 821 711`
+patterns with `J₃ ≥ 1`, all `need ≤ 0`) 5/5 in `19` s; `--realise-all` reproduces the same slack-0 sets on nine
+graphs. **Caps:** T9 skipped (`k_c = 4`); T10 and T11 (`|Z| = 8`) completed pass 1 (`550 034` / `456 238` line
+patterns with `J₃ ≥ 1`) and were **capped at 850 s in pass 2**: `100 207` of `310 160` and `81 747` of `214 877`
+`need ≥ 1` patterns processed, most demanding first, one slack-0 pattern each (shape (c) with `I = {c₁}`, resp.
+`I = ∅`), `2 238` / `2 927` not realised (Fano-type and forced-fourth-line configurations, unverified), census
+candidates not reached; the pass-2 figures for T10/T11 depend on machine speed. Coordinates in `[−30, 30]`;
+placement orders up to `120` (`60` for T10/T11) then exhaustive for `≤ 6` classes; over ℚ, characteristic 0 only.
+Note: T11's `c₁` is non-big under `deg_Γ ≥ 3` (its connector edge does not count), although `case2m2.py`'s comment
+calls it big. A PASS is a check on these graphs over ℚ, not a proof of S22(vi).

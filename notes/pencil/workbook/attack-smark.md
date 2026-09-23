@@ -2149,3 +2149,21 @@ forced-`J₃` caveat out of `cost₁(q) − J₂` (S19 on `(Γ, Big)`) and the s
 untouched. **What would change (vi):** a realisable pattern at generic `q` with `cost ≤ J₃` (the driver of (viii) looks
 for one); an error in (ii)(e)'s realisability cuts, the one place the proof leans on geometry beyond linear algebra; or
 a gap in (iv)(c)'s path analysis, which is the Case-2 analogue of S19's type (3) and was checked by hand only.
+
+**(viii) Control — `case2geo.py` (helper-written, session 10; caps in `drivers/README.md`).** The geometric
+counterpart of (vi), in `starcheck.py`'s style: fixed exact random big points (seed `20260923`), plane normals in
+`U_c^⊥`, every pattern `(𝒞, ℒ, I)` enumerated with the consistency rules of (i), each potentially tight pattern
+realised exactly over ℚ and its codimension lower-bounded soundly by the merge codimension plus the Jacobian rank of
+the collinearity minors and extra incidences. **Figure:** no pattern with `J₃ ≥ 1` has `M + ρ ≤ J₃` on any of twelve
+graphs — the `--case2 6` star T1 and its variants, adjacent big hubs (T2), big hubs at distance 2 (T6, T7 ≅ H2), the
+subdivided star H1, the big path T8 (`|Big| = 3`, `3 821 711` patterns with `J₃ ≥ 1`), and the capped cycle cases T10,
+T11; the minimum of `M + ρ − (J₃ + 1)` is `0`, attained only at three shapes: a non-big vertex merged with an adjacent
+big neighbour (no lines), the Case-1 adjacent pair, and a flat singleton on a line through `0`, `1` or `2` big points.
+Each is a case where (v)'s bound is attained with value exactly `1`: the merge is `σ_A − F_A = 1` (an adjacent pair,
+`σ = 1`, `F = 0`; the big member's overlap `ov_A = 1` makes the merge cost `2` against `J₃_A = 1`); the flat singleton
+on a 1-point line pays `1` and its non-big neighbour's class pays `2` for the line and the extra (`cost_C − D_C = 2`,
+`N_ℓ = 0`); the `β = 2` flat pays nothing and each neighbour class pays `1` for its extra, `cost_C − D_C = ½` each.
+So the control's tight shapes are exactly the ones (vi)'s proof leaves at value `1`, and none below. Caps: `|Z| ≤ 9`
+(T8), T10/T11 capped in pass 2, T9 (`k_c = 4`) skipped, over ℚ; `2 238 + 2 927 + 14` patterns not realised (Fano-type
+and forced-line configurations) and not verified. **Verdict.** (i)–(vi) *proven-informally*; (vii) the reduction of
+the residue; (viii) *evidence under its caps*. O7e (a) closes; O7e stays open as (b)–(c), count `1`.
