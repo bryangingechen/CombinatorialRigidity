@@ -2875,3 +2875,169 @@ Minimum-attaining shapes: the trivial pattern and the forced line through `λ₀
 `0`; no pattern with a jump comes near `−1`, and the damage shapes of S28(vi) do not occur on these graphs (as with
 S27(ii), the count lemma is confirmed only in that weak sense). Re-run from the repo path this session: D3r cap 1
 (63 `(C, L, I)`, 3 realised, min slack 1) and T8 cap 1 (229, 20, min 0), PASS. Caps as in the README; evidence, not proof.
+
+## S32 — O7e-b, several relations: the point matroid splits into relation components; the level-1 budget and `J₂` are additive over them, and a class is shared only by rank-≤ 2 dependencies (session 13, 2026-09-23)
+
+Tree at `411c028e`; consumer re-diffed at session start (`git diff 084ee4ff HEAD -- CombinatorialRigidity` empty;
+both kernels of `pencilPair_of_splitOff_of_habitat` token-identical to brief §3.1). Setting as S21(ii)/S22/S28:
+`k_c ≤ 3` for all `c`; an arbitrary tower stratum, the big points realising a matroid `M` on the **labels** `Big`
+(`rk S := dim span{q_u : u ∈ S}` as a vector rank, `≤ 4`; twins are parallel labels). *Proven-informally.*
+
+**(i) Relation components.** A *relation* is a circuit of `M` of size `≤ 4` (a twin pair, three distinct collinear
+points, four coplanar points with no three collinear); circuits of size 5 are the generic ones. The *relation
+components* `R₁, …, R_k` are the connected components of the hypergraph of relations on the labels lying in one; a
+label in no relation is *free*. **Lemma.** For every `S ⊆ Big`, `rk S = min(4, Σ_R rk(S ∩ R) + |S ∩ free|)`. *Proof.*
+`≤` is subadditivity and `rk ≤ 4`. For `≥`, take bases `B_R` of the `S ∩ R` and `B := ⋃ B_R ∪ (S ∩ free)`. A
+dependent `D ⊆ B` with `|D| ≤ 4` contains a circuit `C`, `|C| ≤ 4` — a relation — which lies inside one component;
+but `C ⊆ D ∩ R ⊆ B_R` is independent. So every `≤ 4`-subset of `B` is independent and `rk S ≥ min(4, |B|)`. ∎
+
+**(ii) The budget is additive.** For a component `R` and an order of `R`, put `κ_p^R := 4 − min{rk S : S ⊆ R` earlier
+than `p`, `p ∈ cl S}` (`0` if no such `S`), `c₁^seq(R) := max` over orders of `Σ_{p ∈ R} κ_p^R`, and `J₂(R) :=
+Σ_c def(U_c ∩ R)`, `def(U) := |U| − rk U`. **Lemma.** `c₁ ≥ Σ_R c₁^seq(R)` and `J₂ = Σ_R J₂(R)`, so with the
+component budget **`b_R := c₁^seq(R) − J₂(R)`**, `s = c₁ − J₂ − 1 ≥ Σ_R b_R − 1`. *Proof.* Order `Big` component by
+component, each in its maximising order, free labels anywhere. Project the level-1 stratum `S_M ⊆ (P³)^Big` onto the
+coordinates in this order: over any point of the image, `q_p` lies in `span{q_s : s ∈ S}` for the `S` realising
+`κ_p^R`, of dimension `rk S − 1 = 3 − κ_p^R`; so `dim S_M ≤ Σ_p (3 − κ_p^R)` and `c₁ = 3|Big| − dim S_M ≥ Σ_R
+c₁^seq(R)`. (Allowing `S` from other components only lowers `min rk S`, so the global sequential bound is at least this.)
+`|U_c| ≤ 3`, so by (i) `rk U_c = Σ_R rk(U_c ∩ R) + |U_c ∩ free|` exactly and `def(U_c) = Σ_R def(U_c ∩ R)`. ∎
+*Check against the closed single relations* (each is one component): far coincidence `b = 3`, distance 2 `b = 2`,
+adjacent `b = 1` (S26(i): `J₂ = 1, 2`), star-free collinear `b = 2`, star `b = 1`, coplanar quadruple `b = 1` —
+and S25–S30 proved damage `≤ 2, 0, 0, 3/2, 0, 1/2` respectively, i.e. **damage `≤ b_R − ½` in every closed case.**
+
+**(iii) Reduction.** *If the ledger's damage splits as `Σ_R damage_R` with `damage_R ≤ b_R − ½` for every component,
+then `cost − J₃ ≥ −s` on the stratum.* *Proof.* `cost − J₃ ≥ −Σ_R damage_R ≥ −Σ_R b_R + k/2 ≥ −(s + 1) + ½`, and
+`cost − J₃ ∈ ℤ`, `s ∈ ℤ`, so `cost − J₃ ≥ −s`. ∎ (The `k ≥ 1` components are the degenerate stratum; `k = 0` is S22.)
+This is the "local slack budgets" argument of the state file, with the clusters taken to be matroid components — which
+answers its objection (a): `c₁` is not additive over *dependent* relations, but relations in one component are never
+split, and across components the lemma of (i) makes the ranks, hence `c₁^seq` and `J₂`, add exactly.
+
+**(iv) Which ledger terms are local.** (a) `disc_A = def(U_A) − Σ_{c ∈ A} def(U_c)` is additive over components on
+every realisable class: `rk U_A ≤ 3` (a common plane), so (i) applies without the `min`. So `disc_A = Σ_R disc_A^R`.
+(b) `σ_A`, `F_A`, `ov_A`, `J₃` and every `Γ`-count are component-free. (c) A line's big points `I(ℓ) = Q ∩ λ`: three
+distinct points on `λ` are a relation, so the labels on a determined line are `∅`, one parallel class, two parallel
+classes (possibly from two components or free), or `≥ 3` distinct points all in one component. (d) An `M`-natural
+incidence `π_A ∋ q_y`, `y ∈ cl(U_A) ∖ U_A`: by (i), `y ∈ cl(U_A ∩ R_y)`, `R_y` the component of `y` — it is owned by
+one component. **Non-local:** the class surplus `S_A := σ_A − F_A − Δ_A/2` is one number per class, and S25(iv)/S28(v)
+spend it once, against the one relation's `disc_A` and `M`-natural charges.
+
+**(v) Shared classes are rank-constrained.** Call `A` *touched* by `R` when `disc_A^R ≥ 1` or `A` carries an `M`-natural
+charge owned by `R`. If `R` touches `A` then `U_A ∩ R` contains a dependent set, or spans the charged `y` with a
+further label: `|U_A ∩ R| ≥ rk(U_A ∩ R) + 1` in the first case and `rk(U_A ∩ R) ≥ 1` with `|U_A ∩ R| ≥ 1` in the second.
+With `Σ_R rk(U_A ∩ R) ≤ 3`: **a rank-3 dependency (a coplanar quadruple in `U_A`, S30's (C1), or a coplanarity-natural
+charge, (C4), which needs `|U_A ∩ Q′| = 3`) touches only classes no other component meets**, since any other label
+of `U_A` would raise the rank to 4. A rank-2 dependency (a collinear triple `⊆ U_A`, or a line charge needing
+`|U_A ∩ T| = 2`) leaves rank `1` for everything else in `U_A`: at most one further component, through one parallel
+class. A class touched by `j ≥ 2` components therefore has `U_A` of rank `≤ 3` carrying `j` dependencies of total rank
+`≤ 3` — rank patterns `2 + 1` or `1 + 1 (+ 1)`: every other touching component touches it through a **parallel
+class** (a coincidence of labels) or a collinear triple plus one parallel class.
+
+**(vi) What is left.** Two obligations replace "several relations": **(P1) shared classes** — a class touched by `j ≥ 2`
+components with rank patterns `1 + 1 (+ 1)` or `2 + 1` must have its surplus `S_A` pay for the extra `disc`/charges, or
+the excess must fit inside the touching components' spare budgets (`b_R − ½ − damage_R`: `½` for the far
+coincidence, `3/2` at distance 2, `½` adjacent, `0` star-free collinear, `½` star, `0` coplanar); **(P2) connected
+multi-relation components** — `damage_R ≤ b_R − ½` for a component with two or more relations (a parallel class of
+`≥ 3` labels, a coincidence and a collinearity sharing a label, two collinear triples through one point, a line in a
+coplanar set, …). The state file's test case (coincidence plus a collinear triple through `q*`) is (P2)'s first
+instance. **What would change (ii)–(iii):** a component whose true level-1 codimension is *below* the sequential
+`c₁^seq` — impossible, (ii) is a dimension bound — or a damage unit that no component owns; the ones listed in (iv)
+are the ledger's four terms (class, `M`-natural incidence, line, extras), and the extras term (S28(iii)) is re-read in
+S33 for components with more than one relation.
+
+## S33 — The line and extras terms of the ledger at an arbitrary point matroid: lines lose only at O3 paths between parallel labels, and an extra is served only by pairwise parallel labels (session 13, 2026-09-23)
+
+Setting of S32. Read S22's pattern calculus in ranks as S28(i) does, for an arbitrary `M`: incidence sets `P_A` are
+flats of `M` containing `cl(U_A)`, `I(ℓ) := ⋂_{A ∈ ℓ} P_A` (the labels whose points lie on `λ_ℓ`), a class costs `rk P_A −
+rk U_A` before its lines, `2 + [P_A ⊄ λ] − rk U_A` after one, `3 − rk U_A` after two, and a flat singleton `w` has
+**`β_w := rk U_w`** (its big neighbours counted as points; a flat between two twins has `β = 1`, S26(ii)). S22(iv)'s
+order (U-classes, then flat singletons) is kept; the flats' mutual order is free (LC is a maximum over orders).
+*Proven-informally.*
+
+**(i) Lemma (lines, any `M`).** `Σ_ℓ (N_ℓ + δ_ℓ) ≥ −k₃`, where `δ_ℓ := #{β = 2 flat singletons on ℓ}` and `k₃` is the
+number of **O3 paths**: `p — w₁ — w₂ — p′` with `p ≠ p′` parallel labels in one class and `w₁, w₂` flat singletons.
+*Proof.* A class after one determined line pays `2 + [P ⊄ λ] − rk U ≥ 2 − rk U`, after two `3 − rk U`; so every flat
+after its line pays `≥ 2 − β_w`. (a) `u_ℓ ≥ 2`: every flat is after, `N_ℓ + δ_ℓ ≥ Σ_{β_w ≤ 1} (1 − β_w) ≥ 0`. (b) `u_ℓ
+≤ 1`: a `β = 2` flat's neighbours are big with distinct points, their classes are distinct U-classes on `ℓ` (big
+vertices are never flat), so `δ_ℓ = 0`. Every class on `ℓ` has `P ⊇ I(ℓ)`, so a flat placed first or second pays `rk P_w
+− rk U_w ≥ rk I(ℓ) − β_w`. By `rk I(ℓ)`: **`= 2`** — every flat pays `≥ 2 − β_w` in every position, `N_ℓ ≥ Σ (1 − β_w) ≥
+0`; **`= 0`** — S22(iv)(b),(e) verbatim (no big point on `λ`, all `β = 0`, a path-forest or cycle count); **`= 1`**, `I(ℓ)`
+one point carrying a parallel class `P`: if `u_ℓ = 0`, S22(iv)(e) gives `N_ℓ ≥ f − 2 ≥ 5`. If `u_ℓ = 1` with U-class `A`, a
+big neighbour of a flat on `ℓ` lies in `A` and has its point on `λ` (two distinct planes through it, S22(ii)(a)), so it
+is a label of `P`. `Γ[W_ℓ]` is a path forest whose ends attach to members of `A`; a one-vertex path has both neighbours
+in `A` and is not flat; an end attached to a non-big member is `W₀` (`β = 0`); a path with both ends at one label `p`
+closes a cycle through `p`, so has `≥ 6` flats and `≥ 4` interior `W₀`; a path between distinct `p, p′ ∈ P` with `k`
+flats has `k − 2` interior `W₀`, zero exactly for an O3 path. After the line a `W₀` nets `+1` and a `W₁` nets `0`; the
+flat placed second nets `≥ −β_w`. Place a `W₀` second when one exists: then `N_ℓ ≥ #W₀ − 1 ≥ 0`. If `W_ℓ` has no `W₀`,
+every path is an O3 path and `N_ℓ ≥ −1`. So `N_ℓ + δ_ℓ ≥ −[ℓ carries an O3 path]`, and distinct lines have disjoint
+flats. ∎ *Count.* Two O3 paths on one pair `{p, p′}` close a 6-cycle, so the O3 paths are a simple graph on each
+parallel class; with `m` labels in the class, the strict count on the union of the class and its O3 interiors (`m + 2k₃`
+vertices, `3k₃` edges, connected per component of that graph) gives `k₃ ≤ 2m − 3` (a forest gives `k₃ ≤ m − 1`). At
+`m = 2` this is S25(iii)'s `k₃ ≤ 1`.
+
+**(ii) Lemma (an extra is served only by parallel labels, any `M`).** For a U-class `C`, a label `y` whose point is an
+extra of `C` (`q_y ∈ π_C`, `y ∉ cl(U_C)`), and flat singletons `w_{xy}, w_{x′y}` with `x, x′ ∈ C ∩ Big`, `x ≠ x′`: `x ∥
+x′`. *Proof.* Flatness of each gives `π_{[y]} ∋ q_x, q_{x′}` (S22(ii)(a),(b)); `π_C ∋ q_x, q_{x′}, q_y` as well. If
+`rk{x, x′, y} = 3`, `π_{[y]} = π_C`, so `[y] = C = [x]` and `w_{xy}` is not flat. If `≤ 2`: either `y ∈ cl{x, x′} ⊆
+cl(U_C)`, not an extra, or `rk{x, x′} = 1`. ∎ So with `D_C := ½ #{(y, w)}` over served extras (S22(iii)), a label `y`
+contributes `½ · #{x ∈ C ∩ Big : w_{xy} exists}` and those `x` are pairwise parallel: **away from parallel classes
+every served label is served once** (S28(iii)'s bound), and the overflow `D_C − ½#{served labels}` is carried by paths
+`x — w — y — w′ — x′` with `x ∥ x′` (S25(v)'s O5 shape, now through any parallel class). Distinct labels `y, ȳ` at one
+extra point are distinct servings (S25(v)'s `s_C(q*) ≤ 4`).
+
+**(iii) What the extras term still needs at arbitrary `M`.** `cost_C ≥ rk P_C − rk U_C`, and S28(iii) closed the term
+by `|P_C| ≤ 4` points (so `rk P_C − rk U_C ≥ ½ ·` #extra points). At an arbitrary `M` a plane can carry many points: a
+class `C` whose plane holds `t` extra points pays only `rk P_C − rk U_C ≤ 3 − rk U_C`, and `D_C` can reach `t/2`. The
+excess `(½#served − (rk P_C − rk U_C))⁺` needs `≥ 2(3 − rk U_C) + 1` served extra points on `π_C`, all in the flat `P_C`
+of rank `≤ 3` — a rank-3 flat with `≥ 4` points beyond `cl(U_C)`, i.e. coplanarities of `M` — so it is owned by the
+components meeting `P_C` and must be paid from their `κ`s (each point of a rank-3 flat beyond its third carries `κ ≥
+1`). Stated, not proved; it is one of the damage units the weighted count of the next step must price.
+
+## S34 — The class term at an arbitrary point matroid: an exact identity for `T_A`, the full damage list, and O7e-b restated as one counting statement (session 13, 2026-09-23)
+
+Setting of S32–S33. *Proven-informally* except (iv), which is the open statement.
+
+**(i) The class identity.** For a nontrivial class `A` put `S_A := σ_A − F_A − Δ_A/2` (Δ_A the *normal* deficit
+charges, S22(iii)), `Δᴹ_A` the *`M`-natural* charges (a `β = 2` flat `w_{xy}`, `x ∈ A ∩ Big`, `y ∉ U_A`, `y ∈
+cl(U_A)` — twin, line and coplanarity charges of S25/S28/S30 are the special cases), and `T_A := S_A − disc_A −
+Δᴹ_A/2`. With `J^{nb}_A := Σ_{y ∉ Big} (|E_y ∩ A| − 1)⁺` (so `J_A = J^{big}_A + J^{nb}_A`) and `r_c := rk U_c`:
+
+> **`−T_A = (3 − rk U_A) + J^{nb}_A + F_A + (Δ_A + Δᴹ_A)/2 − Σ_{c ∈ A} (3 − r_c)`**, exactly.
+
+*Proof.* `|U_A| = #{y ∈ Big : E_y ∩ A ≠ ∅} = Σ_{y ∈ Big} |E_y ∩ A| − J^{big}_A = Σ_{c ∈ A} k_c − J^{big}_A` (`k_c =
+|Big ∩ N[c]|`, and `y ∈ N[c] ⟺ c ∈ E_y`). So `disc_A = (|U_A| − rk U_A) − Σ_c (k_c − r_c) = Σ_c r_c − J^{big}_A − rk
+U_A`, and `σ_A = 3(|A| − 1) − J^{big}_A − J^{nb}_A`; subtract. ∎ The identity is S21(iii)'s "merge cost minus its level-3
+jump", `[Σ_c (3 − r_c) − (3 − rk U_A)] − J₃_A`, minus the flat and charge terms: `M` enters only through `rk U_A`
+(damage when it drops), the `r_c` (relief when they drop — the `J₂` drops) and `Δᴹ` (charges that no longer cost an
+extra). At generic `q` it reads `T_A = S_A`, which S21(iii)/S22(iii) bound below by `1` (non-bad) and `0` (bad pair).
+So **the class damage is `(disc_A + Δᴹ_A/2 − S_A)⁺`** with `S_A ≥ 1` off bad pairs, and `disc_A` is additive over
+components (S32(iv)).
+
+**(ii) The ledger at arbitrary `M`.** Every `β = 2` flat singleton's two incidences are each normal on a nontrivial
+class (in `Δ`), `M`-natural on a nontrivial class (in `Δᴹ`), an extra (in `D`), or `M`-natural on a singleton (`k₆`,
+the free incidences; a normal incidence on a singleton `{x}` needs `y ∈ N[x]`, a triangle through the flat). So `Σ_ℓ
+δ_ℓ ≤ Σ_A (Δ_A + Δᴹ_A)/2 + Σ_C D_C + k₆/2`, and with S28(i)'s identity (`cost − J₃ = Σ_A (σ_A − F_A − disc_A) + Σ_ℓ
+N_ℓ + Σ_C cost_C`, whose derivation is rank-linear and holds at every `M`) and S33(i):
+
+> `cost − J₃ ≥ −Dmg`, **`Dmg := Σ_A (disc_A + Δᴹ_A/2 − S_A)⁺ + k₃ + Σ_C (D_C − cost_C)⁺ + k₆/2`**.
+
+The four terms are the complete damage list at every `M`: class (`disc` and `M`-natural charges against the class
+surplus), O3 paths at parallel classes (S33(i)), extras overflow (S33(ii)–(iii): parallel servings, or a plane
+carrying `> 2(3 − rk U_C)` served extras), free singleton incidences.
+
+**(iii) Checked against the closed relations.** S25 (far coincidence): class term `k₁` (bad pairs with `disc = 1`; S25(iv)
+shows `(·)⁺ = 0` elsewhere, twin charges included), `k₃`, `ov`, `k₆` — the same four. S26: all zero by girth. S28/S29:
+`k₁`, `k₆`; extras and lines zero (S28(iii)–(iv)). S30: `k₆`. So (ii) specialises to every closed case, and S32(iii)
+turns O7e-b into:
+
+**(iv) The counting statement (open).** *For every stratum (point matroid `M` with `k_c ≤ 3`) and every realisable
+pattern, `Dmg ≤ Σ_R b_R − ½`, the sum over the relation components that the damage units touch, with each damage
+unit charged to the components owning its labels (S32(iv)).* Equivalently, by S32(iii), `Dmg < s + 1`. The closed cases
+have `Dmg ≤ b − ½` with equality at the far coincidence (fractionally, S25(vi): `2k₁ + 3k₃ + 2k₅ + 3k₆ ≤ 5`), the
+star-free triple (`k₁ + k₆/2 ≤ 3/2`) and the quadruple (`k₆/2 ≤ ½`) — so the statement has no slack to spare at single
+relations, and a proof must price each damage unit against the habitat count exactly as those did. **Heuristic for
+why it should hold** (not a proof): the separate strict counts of S25(vi) and S28(vi) price a twin-pair damage unit at
+`2`–`3` units of habitat slack (`6(V − 1) − 1 − 5E`), a collinear-triple unit at `8`–`9` and a coplanar free incidence at
+`4` plus its share of two label edges; a dependent label brings `κ = 3, 2, 1` of budget and `6` of slack. On a parallel
+class of `m` labels (budget `3(m − 1)`, slack `6m − 7` on its own) a family of twin shapes priced at `≥ 2` slack per
+unit of damage has `Dmg ≤ (6m − 7)/2 = 3(m − 1) − ½` — the budget with exactly the `½` the reduction needs, which is
+S25(vi)'s equality case at `m = 2`. The next step is to make this a lemma: one weighted strict count
+per cluster, with the twin shapes at weight `½`, all others at `⅛`.
