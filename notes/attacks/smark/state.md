@@ -51,7 +51,7 @@ Closed: O7d (S19); O10, O11 (S20); O7c (S17); O7e-a (S22); O7e-b at the three co
 ## Worries <!-- budget 5 -->
 - S25(ii)'s list of label-sensitive spots is a *reading* of S22, not a mechanical check; S25(vii) rests on its completeness. The session-11 fresh-reader audit (S27(i)) found a sixth spot the first draft missed (a natural incidence on a singleton class, damage `½`, one instance by girth) — S25 was corrected in-session and the theorem survives, but one audit found one miss; a second independent reading of S25(ii) is worth its cost before S28 builds the collinear case on the same method.
 - S25(iv)'s per-class bound with twin charges uses Lemma D′'s count on `Γ_A⁺` with the normal charges only and `F_A ≤ a − max(|W|, g_A)`; the fractional arithmetic (`T_A ≥ 0.25 ⟹ T_A ≥ 0` because `T_A ∈ ½ℤ`) is delicate and was checked by one reader.
-- `case2m2.py` counts primes over `F_{32003}`: evidence only; T10, T11 (the cycle cases) had not finished at 280 s in session 9 and were re-run at 7 200 s this session (S27).
+- `case2m2.py`'s PASSes are all on **tree** hub graphs, which are irreducible by an elementary fibration (S27(iv)); the cyclic cases — the only ones where a component could hide — have never finished (`D3c` timed out at `3 600` s this session, T10/T11 at `280` s in session 9). Treat the Macaulay2 record as a method control until a cyclic case terminates; a cheaper formulation is sketched in S27(iv).
 - The strict habitat count (S19(viii)) is load-bearing everywhere (S21(iii), Lemma D′, S25(vi)); it rests on "tight and sparse ⟹ six edge-disjoint spanning trees of `5K` ⟹ rigid", re-derived, not checked against a source.
 - Sessions 8–11 have landed ~800 workbook lines with one outside reading (review 4, of S19–S22); S25–S26 are unreviewed.
 

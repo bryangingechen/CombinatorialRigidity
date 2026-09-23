@@ -2592,3 +2592,25 @@ system memory pressure**, before any wrote a result: *attempted, no figure*. The
 (the harness asks that a stopped job be restarted only on request); the next session runs them **one at a time**
 (`--case X` singly, `--timeout 3600`), cycle cases last. So the Case-2 cycle shapes still have no completed
 component count, and S25(viii)'s "figures in S27" for `D3c`, `D4`, `T10`, `T11` is: none.
+
+**(iv) Addendum (same afternoon, on the PI's question whether the stopped Macaulay2 jobs are worth re-running).** Two
+facts change how `case2m2.py`'s record should be read. *(a) The reaped launchers left their M2 children alive*
+(load average `17.8`, eight orphaned processes, invisible to the sandbox), and the D-job's own wrapper reported
+**`D3c` TIMEOUT at `3 600` s** — the connector-closed 7-cycle on `|Z| = 8` does not finish in an hour even before
+the larger cases are tried (under 7-way contention, so an upper bound on speed, not a clean measurement). *(b) Every
+positive PASS `case2m2.py` has ever produced is a **tree** (C1, C1c, T1, T1c, T2, T3, T6, T7, T8, T9, D3 — the
+connectors of C1c/T1c close no cycle), and a tree hub graph's reduced incidence variety is irreducible by an
+elementary fibration: root the tree at the fixed flag and add vertices in BFS order; the new `p_c` ranges over the
+plane `π_d` (a `P²`) and `π_c` over the pencil through `p_c, p_d` (a `P¹`, a `P²` only on the codimension-2 locus
+`p_c = p_d`, which by Krull cannot carry a component); connectors that close no cycle add a `P¹` of points on a
+line likewise. So the tree PASSes confirm the *method* (charts, gauge fixing, `minimalPrimes`) and nothing about
+(★₂); the informative cases are exactly the cyclic ones — T10, T11, D3c, E13, E15, E55 — and **none has ever
+finished** (T10/T11 exceeded `280` s in session 9 and `7 200` s here is still running at the time of writing). The
+negative controls N3/N4/NK4 are the only cyclic cases that terminated, because their components are few and small.
+Consequence for the record: S21(vi)'s table and S25(viii)/S27(iii) should be read as *method* controls plus the
+short-cycle detections, not as component counts on the shapes where a component could hide. Next step if the counts
+are wanted: a feasibility probe on `T10` alone (timed `gb`, `dim`, `degree`, then `minimalPrimes`, one process,
+`900` s cap — script prepared), and if `gb` alone does not finish, a cheaper formulation — parametrise the spanning
+tree's tower rationally so that only the cycle-closing equations remain, run on the open chart *and* on each
+degenerate stratum (`p_c = p_d`, `π_c = π_d`) separately, or slice by a random linear space of complementary
+dimension down to a curve before decomposing.
