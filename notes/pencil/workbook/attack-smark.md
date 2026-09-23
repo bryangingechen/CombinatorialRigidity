@@ -1638,3 +1638,130 @@ With (i)–(ii) the count is **4** (O7d, O7e, O10, O11): two consumed requiremen
 difficulty. **What would change this review's verdict:** a connected mixed pattern with `cost ≤ J` (O7d); a prime at
 which no `ear₅` at equal flags spans (none for `p ≤ 13`); a case-(ii) graph on which cut-vertex additivity of `def₃`
 fails (it should not — the corpus proof is a partition count).
+
+## S19 — Theorem: (★) holds in Case 1 — O7d closes; the sequential-codimension form of (★) is a theorem on every habitat side (session 8, 2026-09-23)
+
+Tree at `08d47c72` (no Lean file the kernels name has changed since `ac3fbef6`; consumer re-diffed
+against every definition body, including the trichotomy's exhaustiveness over the domain — a
+non-hub neighbour of the split vertex has degree exactly `2` under `TwoEdgeConnected`, so the
+maximal degree-2 chain through it is the whole graph, closes at one hub, or joins two distinct
+hubs). Driver `starcomb.py` (new), caps in `drivers/README.md`. This section proves S17(iv)'s
+residue in full: **(★) `codim_B {J ≥ j} ≥ j + 1` for all `j ≥ 1` holds in Case 1 on every habitat
+side**, by a global charging argument over all rank patterns at once — no case split on the
+shape of the mixed pattern. The proof uses exactly: girth `≥ 7`, the habitat count on subgraphs
+of `H′` (S16(ii)), Case 1 (each marked vertex has `≤ 2` marked neighbours), and unmarked degree `≤ 2`.
+
+**(i) Setting and the sequential codimension.** `H′ ⊊ G`, `Z = hubs(G) = hubs(H′) ∪ {w, v}`,
+`Γ := H′[Z]` the hub graph (max degree `≤ 2` in Case 1: paths and cycles of length `≥ 7`);
+unmarked vertices have degree `≤ 2`, so the only unmarked hyperedges of size `2` are the
+*connectors* (unmarked `y` with `N(y) = {a, b} ⊆ Z`). A *rank pattern* `P = (𝒞, ℒ)` is a set
+partition `𝒞` of `Z` into classes (equal normals) and a set `ℒ` of *lines*, each a set of `≥ 3`
+classes (distinct collinear normals), two lines sharing `≤ 1` class. `J` depends only on the
+pattern: for `y ∈ Z` with `N_Γ(y) = {a, b}`, drop `2` if `[a] = [y] = [b]`, drop `1` if exactly two
+of the three classes coincide **or** the three are distinct and on a line (`y` is *flat*), else
+`0`; for `y ∈ Z` with one marked neighbour `a`, drop `1` iff `[a] = [y]`; for a connector, `1`
+iff `[a] = [b]`. Writing `e(A)` for the Γ-edges inside a class `A` and `Y_A` for the vertices
+outside `A` (marked or connectors) with both neighbours in `A`,
+
+> `J = Σ_A J_A + F`,  `J_A = 2e(A) + |Y_A|`,  `F = #{flat vertices}` (S17(iii)'s decomposition).
+
+The *sequential codimension* of `P` is `cost(P) := 3(|Z| − q) + LC(P)`, `q = |𝒞|`, where
+`LC(P) := max` over placement orders of the classes of `Σ_C min(2d_C, 3)`, `d_C` the number of
+lines through `C` already *determined* (two earlier classes) when `C` is placed. `cost(P) ≤
+codim_B S_P` for the exact stratum `S_P` of `P`: `S_P` lies in the locus where distinct classes
+are distinct points and distinct lines distinct geometric lines, which fibres sequentially with
+fibre dimension `3`, `1` (one determined line) or `0` (two distinct determined lines meet in `≤ 1`
+point), and every component of `{J ≥ j}` is the closure of some `S_P` with `J(P) ≥ j`. Dropping
+lines from `ℒ`, or classes from a line, is a *relaxation*: it can only enlarge the locus, so
+`cost(P′) ≤ codim S_P` for every such `P′` too — the proof below spends this freedom. **Theorem.**
+*For every pattern with `J ≥ 1`, `cost(P) ≥ J + 1`. Hence (★) holds in Case 1.*
+
+**(ii) Step 1 — the class surplus (sharpening Lemma P).** For a nontrivial class `A`, `m := |A|
+≥ 2`, put `σ_A := 3(m − 1) − J_A` and `F_A := #{flat members of A}`. The habitat count on
+`Γ_A := (A ∪ Y_A, E(A) ∪ E(A, Y_A))` — every `y ∈ Y_A` has exactly two neighbours in `A`, by Case 1
+for marked `y` and by definition for connectors — reads `5(e(A) + 2|Y_A|) ≤ 6(m + |Y_A| − 1)`, i.e.
+`|Y_A| ≤ 1.5(m − 1) − 1.25 e(A)`, so `σ_A ≥ 1.5(m − 1) − 0.75 e(A)`. A member on an internal
+edge is not flat (its triple sees `A` twice), and in a graph of maximum degree `2` the `e(A)`
+internal edges cover `≥ e(A)` members, so `F_A ≤ m − e(A)`. Hence
+`σ_A − F_A ≥ 0.5m − 1.5 + 0.25e(A)`, which is `≥ 0.5`, hence `≥ 1`, for `m ≥ 4`. Small classes by
+hand, with girth: `m = 3`, `e = 0`: three pairwise common neighbours would close a 6-cycle, so
+`|Y_A| ≤ 2`, `σ ≥ 4 > 3 ≥ F_A`; `e = 1`: `|Y_A| ≤ 1`, `σ ≥ 3`, `F_A ≤ 1`; `e = 2`: `Y_A = ∅`, `σ = 2`,
+`F_A = 0`. `m = 2` adjacent: `Y_A = ∅` (triangle), `σ = 1`, `F_A = 0`. `m = 2` non-adjacent:
+`|Y_A| ≤ 1` (4-cycle); `σ − F_A ≥ 1` unless `|Y_A| = 1` **and** both members are flat. Call that
+one shape a **bad pair**. So
+
+> `S := Σ_{A nontrivial} (σ_A − F_A) ≥ #{nontrivial classes that are not bad pairs} ≥ 0`, and
+> `cost − J = S + LC − F_sing`, `F_sing := #{flat vertices whose class is a singleton}`.
+
+**(iii) Step 2 — reduce the lines; the per-line surplus.** Relax: drop every line carrying no
+flat vertex and, on each remaining line `ℓ`, keep only the classes `{[y], [a], [b]}` of the flat
+`y` on it (its *reduced* class set `R_ℓ`, `t_ℓ := |R_ℓ| ≥ 3`). Two facts: a flat vertex is flat on
+exactly one line (its three classes determine it), and a flat *singleton* `{y}` lies on exactly
+one reduced line and is never a neighbour class on another — if `y ~ y′` with `y′` flat on
+`ℓ′ ≠ ℓ_y`, then `{y}, {y′}` lie on both, two classes shared. Write `f_ℓ` for the flat singleton
+classes on `ℓ`, `U_ℓ` for the other classes of `R_ℓ`, `u_ℓ := |U_ℓ|`, and
+`surplus_ℓ := 2(t_ℓ − 2) − f_ℓ = f_ℓ + 2u_ℓ − 4`. Then `surplus_ℓ ≥ 0`, and `surplus_ℓ = 0` only
+for a line of **type (3)**: `f_ℓ = 2`, `u_ℓ = 1`, `R_ℓ = {A, {y₁}, {y₂}}` with `a — y₁ — y₂ — a′` in
+`Γ`, `a ≠ a′ ∈ A`. *Proof.* If `f_ℓ = 0`, `surplus = 2(t_ℓ − 2) ≥ 2`. Otherwise let `W` be the flat
+singletons of `ℓ`; `Γ[W]` has maximum degree `2`. A cycle component has `≥ 7` vertices, so
+`f ≥ 7` and `surplus ≥ 3`. Else `Γ[W]` is a forest of paths, each `W`-vertex has two Γ-neighbours,
+so path ends have neighbours in `∪U_ℓ` and `u ≥ 1`; `u ≥ 2` gives `surplus ≥ f ≥ 1`. For `u = 1`,
+`U = {A}`: an isolated `W`-vertex would have both neighbours in `A` and not be flat, so every path
+has `≥ 2` vertices, `f ≥ 2π` for `π ≥ 1` components, `surplus = f − 2 ≥ 0`, with equality iff
+`π = 1`, `f = 2`; the ends `a, a′ ∈ A` are distinct (a triangle otherwise). ∎ On a type-(3) line
+`A` is nontrivial and **not bad**: `a, a′` are at distance `3`, so a common neighbour would close
+a 5-cycle, `Y_A = ∅` for `|A| = 2`, and `σ_A − F_A ≥ 1` in every case of Step 1.
+
+**(iv) Step 3 — the loss.** Place all `U`-classes first (any order), then the flat singletons.
+For any order `Σ_C d_C = Σ_ℓ (t_ℓ − 2)`, so `LC ≥ Σ_ℓ 2(t_ℓ − 2) − loss`, `loss := Σ_{d_C ≥ 2}
+(2d_C − 3)`. Flat singletons have `d ≤ 1`. A lossy `U`-class `C` is, on each of its `d_C`
+determined lines, at least the third `U`-class placed, so those lines have `u_ℓ ≥ 3` and
+`Σ_{C lossy} d_C ≤ Σ_{u_ℓ ≥ 3} (u_ℓ − 2)`. Therefore
+`Σ_{u_ℓ ≥ 3} surplus_ℓ − loss ≥ Σ_{u_ℓ ≥ 3} f_ℓ + 2Σ_{u_ℓ ≥ 3}(u_ℓ − 2) − Σ_{lossy}(2d_C − 3) ≥ 3·#lossy`,
+and, whether or not any loss occurs, this bracket is `≥ 2` as soon as some line has `u_ℓ ≥ 3`
+(no loss: each such line alone has `surplus ≥ 2u − 4 ≥ 2`). With `F_sing = Σ_ℓ f_ℓ`:
+
+> `LC − F_sing ≥ Σ_{u_ℓ ≤ 2} surplus_ℓ + 2·[∃ ℓ : u_ℓ ≥ 3]`.
+
+**(v) Step 4 — conclusion.** `cost − J ≥ S + Σ_{u_ℓ ≤ 2} surplus_ℓ + 2·[∃ ℓ : u_ℓ ≥ 3]`, every
+term `≥ 0`. Suppose the right side is `0` with `J ≥ 1`. No line has `u ≥ 3`; every remaining
+line is type (3); `S = 0`. If there are no lines, `F = 0` and `J ≥ 1` forces a nontrivial class
+with `J_A ≥ 1`; it has `F_A = 0`, so it is not bad and `S ≥ 1` — contradiction. If there is a
+line, it is type (3), whose class `A` is nontrivial and not bad — `S ≥ 1`, contradiction. ∎
+The two tight shapes of Lemmas P and L are recovered as the only equality cases at `J = 1, 2`
+(an adjacent parallel pair: `S = 1`, no lines; a flat singleton path `a — z — b`: `surplus = 1`).
+
+**(vi) Control — `starcomb.py`.** The driver enumerates *every* rank pattern (set partition
+`×` partial linear space, as `starcheck.py`) on `starcheck.py`'s nine graphs and on `60` random
+habitat sides (seed `20260923`; hub skeletons of maximum degree `≤ 2` with edges subdivided into
+paths of length `1..5`, pendant paths, up to two extra marked degree-2 vertices modelling `w, v`;
+each side verified for girth `≥ 7`, Case 1, unmarked degree `≤ 2`, and the habitat count on
+**every** vertex subset, computed exactly through the 2-core's chains), computes `LC` by an exact
+subset DP over all placement orders, and checks the **four links** of the proof separately —
+Step 1's `σ_A − F_A ≥ [not bad]` and the `|Y_A|` bound, Step 2's `surplus_ℓ ≥ 0` with the
+equality cases exactly the type-(3) lines, Step 3's loss inequality, Step 4's final bound — plus
+the headline `cost ≥ J + 1` on the full line set and the two structural facts of (iii).
+**Figure:** `112 261` patterns, `64 325` with `J ≥ 1`, every link holds on every pattern; minimum
+of `cost − J − 1` is `0` (full and reduced), attained at `197` patterns of the full form — the
+Lemma P/L extremal shapes and their disjoint unions — `831` type-(3) reduced lines and `447` bad
+pairs exercised; `8.8` s. Seeds `1`, `2` with `80` sides each: `73 969` and `55 831` patterns with
+`J ≥ 1`, PASS. Caps: `|Z| ≤ 7`, `|V| ≤ 24`, the generator's shapes (README). The `cost` the
+driver checks is the sequential codimension, a lower bound on the geometric one; `starcheck.py`'s
+Jacobian bound is the independent geometric control (PASS, S17).
+
+**(vii) What this does to the route.** (a) **O7d is closed**: `X̄(H′)` is irreducible whenever
+`H′` is in Case 1, by S17(i) and the Theorem; `X̄(G₋)` follows by S18(iii). (b) **`hK`'s arm
+needs nothing more of O7.** On `hK`'s arm `G` is feasible (derived, S16(v)), which is exactly
+Case 1 for `H′` (`Z = hubs(G)`, and a chain vertex adds no hub to any closed hub neighbourhood);
+so at `m ≤ 5` the IH's witness and the antecedent's lie on the main component and S14(iii) applies
+at the generic point, with descent O9 (S16(vi)); at `m ≥ 6` S17(v)(b) is pointwise. (c) **On
+`hbareSplit`'s arm `H′` is always Case 2.** `¬ PencilNondegFeasible K G` gives a vertex `y` with
+`|closedHubNbhd_G y| ≥ 4`; `y` is not a chain vertex (those see `≤ 2` hubs), and its closed hub
+neighbourhood is the same in `H′`. So the brief's "O7d at `m ≤ 4` on both arms" was Case 1 on one
+arm only; what `hbareSplit` needs at `m ≤ 4` is entirely **O7e**, restated: irreducibility of
+`X̄(H′)` when some marked vertex has `≥ 3` marked neighbours — the image of `X̄ → B` is the
+concurrency locus of the big hyperedges, and both its irreducibility and a (★)-type bound over it
+are open. (d) The count is `3`: O7e, O10, O11. **What would change this:** a pattern with
+`cost ≤ J` (none among `64 325 + 73 969 + 55 831` on `229` sides); a gap in the relaxation
+argument of (i) — the one place the proof touches geometry; or a habitat side violating the
+count `5e(K) ≤ 6(v(K) − 1)` on a subgraph (S16(ii)), which every step leans on.

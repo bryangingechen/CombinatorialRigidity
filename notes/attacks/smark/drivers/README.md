@@ -249,3 +249,25 @@ degenerate ones, S17(v)). **Reading:** a ℚ-certificate proves the spanning in 
 not dividing its `6 × 6` minor, nothing more; the S16(iii)(c)/S17(v) certificates therefore do not travel to small
 characteristics by themselves, but every cell has at least one `F₂`- and one `F₃`-certificate among its 20 draws, so
 O11 is one exhibited draw per prime dividing the chosen ℚ-certificate's minor, at the equal-flags cell.
+
+## `starcomb.py` — link-by-link check of the S19 proof of (★) in Case 1 (session 8, 2026-09-23; workbook S19, O7d)
+
+Run from the repository root: `timeout 900 python3 notes/attacks/smark/drivers/starcomb.py` (options
+`--seed 20260923 --graphs 60 --maxZ 7`). Imports `starcheck.py`'s pattern enumeration and nine graphs, adds
+random habitat sides (hub skeleton of maximum degree `≤ 2` with edges subdivided into paths of length `1..5`,
+`≤ 3` extra hub–hub paths of length `2..5`, a cycle closure only at `|Z| ≥ 7`, pendant paths of length `2` to
+hub degree `3`, up to two extra marked degree-2 vertices modelling `w, v`; `|Z| ∈ [3, 7]`, `|V| ≤ 24`, 400 tries
+per side), and **verifies every side** for girth `≥ 7`, Case 1, unmarked degree `≤ 2` and the habitat count
+`5e(S) ≤ 6(|S| − 1)` on every vertex subset (exact: the maximum excess sits on the 2-core and is a sum over
+its chains, `6 − L` per chain of length `L`). For every rank pattern with `J ≥ 1` it computes the sequential
+codimension `cost = 3(|Z| − q) + LC` with `LC` an exact subset DP over all placement orders, and checks the
+four links of S19 separately — class surplus `σ_A − F_A ≥ [not a bad pair]` and the `|Y_A|` bound; per-line
+surplus `≥ 0` with equality exactly at type-(3) lines; the loss inequality; the final bound — plus `cost ≥ J + 1`
+on the full line set and the two structural facts (a flat vertex on one line; a flat singleton never a
+neighbour class elsewhere). **Figure (seed `20260923`, 9 + 60 graphs): `112 261` patterns, `64 325` with
+`J ≥ 1`, all links hold everywhere; `min(cost − J − 1) = 0` at `197` full-pattern shapes (the Lemma P/L
+extremals and their unions); `831` type-(3) lines, `447` bad pairs seen; `8.8` s. Seeds `1`, `2` (80 sides
+each): `73 969` / `55 831` patterns with `J ≥ 1`, PASS.** Caps: `|Z| ≤ 7`; the generator's shapes above (its
+fenced constants: `TOTAL_CAP = 600`, `maxV = 24`, `tries = 400`, the length menus `[1,1,2,3,4]` / `[2,3,4,5]`);
+`cost` is the sequential lower bound on codimension, not the codimension itself (`starcheck.py`'s Jacobian is
+the geometric control). Pure integer combinatorics, no geometry, no characteristic.
