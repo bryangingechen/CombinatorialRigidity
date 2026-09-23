@@ -275,3 +275,18 @@ the Case-2 side `K_{1,3}` of hubs with leaf-to-leaf paths of length `L` and repo
 edge-carrying subsets; `0` = a tight, hence rigid, subgraph, so a legal `H′` needs `≤ −1`), and the big hub: `L = 6` gives
 `|V| = 19`, `|E| = 21`, girth `8`, excess `−1` — O7e is non-vacuous; `L = 5` is tight (`90 = 90`), exit `1`.
 The random population is checked against the **non-strict** count (what S19 uses), so it is a superset of the legal sides.
+
+## `unitcert.py` — unit-minor integer certificates: spanning and independence in every characteristic (session 8, 2026-09-23; workbook S20, O11 and O10(i))
+
+Run from the repository root: `timeout 120 python3 notes/attacks/smark/drivers/unitcert.py` (options `--seed 20260923
+--tries 200000`). Seeded random integer points with coordinates in `[−2, 2]`, exact integer arithmetic (Bareiss
+determinant), first hit reported. **(A)** an `ear₅` at *equal flags* (`p = e₁`, `π = {x₄ = 0}`, `x₁, x₅ ∈ π`): the `6 × 6`
+Plücker determinant of its six lines is `−1` — found at try 1794, points `(1,0,0,0), (2,1,1,0), (2,−2,−2,−1),
+(−2,1,−2,1), (−1,0,1,0), (−2,−1,0,0)`; **(B)** a pentagon whose `6 × 5` Plücker matrix has a `5 × 5` minor `−1` (rows
+`0,1,2,4,5`; try 313); **(C)** an unconstrained hexagon with determinant `+1` (try 1184). At every witness all
+consecutive point triples have `gcd` of `3 × 3` minors `1` and all adjacent pairs `gcd` of `2 × 2` minors `1`. **Reading:**
+a unit determinant is nonzero in every field, so (A) proves *the six lines of this ear span `Λ²K⁴` over every field*,
+(B) *five independent lines over every field*; with S20(i)'s semicontinuity and orbit-closure steps, (A) covers every
+`ear_{m ≥ 5}` at every flag pair and every cycle through a flag — the whole of O11 — and (A)/(B) the cycle base cases
+of O10(i). Caps: the search alphabet and try count (a found witness is a proof; only a *failure* would be capped).
+Independent re-check of (A)'s determinant by Fraction elimination: `−1`.

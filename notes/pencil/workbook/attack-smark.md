@@ -1775,3 +1775,97 @@ below means six edge-disjoint spanning trees of `5K` (Tutte–Nash-Williams), i.
 which no `H′ ⊊ G` may contain. The habitat count a legal side satisfies is therefore the **strict**
 `5e(K) ≤ 6(v(K) − 1) − 1` for every subgraph `K` with an edge; S16(ii) and S19 use only the non-strict
 form, so `starcomb.py`'s random population (non-strict) is a superset of the legal sides and its PASS stands.
+
+## S20 — O11 and O10 closed: one unit-determinant ear certifies every characteristic, every flag pair and every `m ≥ 5`; the trichotomy's cases (i)–(ii) are pointwise through cut-vertex additivity (session 8, 2026-09-23)
+
+Tree at `bbae9dd2`; `HasCoplanarPanelRealization` (`Theorem55.lean`), `ExtensorInPanel` (`RigidityMatrix/Basic.lean`)
+and `ExtensorThroughPoint` (`Statement.lean`) read from their bodies for (iii): a hinge is a 2-extensor `p₁ ∧ p₂`,
+*in the panel of `v`* iff both `p_i ⊥ normal v`, *through `q`* iff `q ∈ span(p₁, p₂)`; so a pencil configuration
+(each `N[v]` in `π_v`, adjacent points distinct, all points and normals nonzero) is a `HasPencilPanelRealization` with
+the hinge of `uv` the line `p_u p_v`. Driver `unitcert.py` (new), caps in `drivers/README.md`.
+
+**(i) O11 — the certificates travel to every characteristic, and one suffices.** Let `E_m(φ)` be the *closed*
+ear moduli at a flag pair `φ = (p_w, π_w, p_v, π_v)`: `x₁ ∈ P(π_w)`, `x_m ∈ P(π_v)`, `x₂, …, x_{m−1} ∈ P³`, points
+allowed to coincide — a product of projective spaces, irreducible; the `m + 1` Plücker vectors `p_w x₁, x₁x₂, …,
+x_m p_v` are bilinear in the coordinates (zero at a coincident pair), and `rank = 6` is an open condition (some
+`6 × 6` minor `≠ 0`). Three reductions, all over an algebraically closed field of any characteristic:
+(a) *`m = 5` gives every `m ≥ 5`.* If some `ear₅` at `φ` spans, put `x₆ = ⋯ = x_m := x₅` in `E_m(φ)` (legal:
+`x₅ ∈ π_v`): the lines `x₅x₆, …, x_{m−1}x_m` vanish, `x_m p_v = x₅ p_v`, the nonzero lines are the `ear₅`'s six, rank
+`6`; by semicontinuity the generic `ear_m` at `φ` spans. (S16(iii)(c)'s and `earspan.py`'s `m = 6, 7` cells were
+confirmation, not evidence needed.) (b) *Equal flags give every flag pair.* `U := {φ : the generic ear at φ spans}`
+is the image of the open `{rank 6}` of the total space under the projection to the flag-pair variety, a locally
+trivial fibration (fibre `E_5(φ)`), so `U` is open; it is `PGL₄`-invariant; and the equal-flags orbit `φ₀`
+(`p_w = p_v`, `π_w = π_v`) lies in the closure of each of the seven orbit types of S17(v) — from `p_w = p_v` rotate
+`π_v` onto `π_w`; from `π_w = π_v` slide `p_v` onto `p_w` inside the plane; from the both-incident orbit slide `p_v`
+to `p_w` along `π_w ∩ π_v` then rotate; the single-incidence and generic orbits contain those in their closures.
+An open set meeting an orbit's closure meets the orbit, an invariant one contains it: `φ₀ ∈ U ⟹ U = everything`.
+(c) *`K`-points.* For a `K`-flag pair (`[Infinite K]`), `E_m(φ)` is a product of projective spaces over `K` and the
+good locus (spanning `∧` adjacent points distinct `∧` consecutive triples independent) is a nonempty
+(by (a)–(b) and irreducibility) `K`-defined open subset; over an infinite field the `K`-points of such a product are
+Zariski dense, so it has a `K`-point — an ear over `K` with the properties S17(v) uses.
+**Certificate (A)** (`unitcert.py`, seed `20260923`, try 1794): `p = (1,0,0,0)`, `π = {x₄ = 0}`, `x₁ = (2,1,1,0)`,
+`x₂ = (2,−2,−2,−1)`, `x₃ = (−2,1,−2,1)`, `x₄ = (−1,0,1,0)`, `x₅ = (−2,−1,0,0)`; the `6 × 6` determinant of the
+Plücker vectors of `p x₁, x₁x₂, x₂x₃, x₃x₄, x₄x₅, x₅ p` is `−1` (re-checked by exact elimination). A unit is
+nonzero in every field: this one integer configuration is an `ear₅` at equal flags spanning `Λ²K⁴` over **every**
+field, and by (a)–(c) the generic `ear_m`, `m ≥ 5`, spans at every flag pair over every infinite `K`. **O11 is
+closed**; S16(iii)(c), S17(v) and the `m ≥ 5` / `m ≥ 6` arms hold with no characteristic hypothesis, as the kernels
+are stated. (`earspan_modp.py`'s per-prime draws are superseded: nothing per prime is needed.)
+
+**(ii) O10, the two cut-vertex laws.** Let `G = H″ ∪_w C` with `V(H″) ∩ V(C) = {w}` and no other edges between
+the sides. *Rank.* A motion is `m : V → K⁶` with `m(v) − m(u) ∈ ⟨L_{uv}⟩` on every edge; `M(G) ≅ {(m₁, m₂) ∈ M(H″) ×
+M(C) : m₁(w) = m₂(w)}`, and evaluation at `w` is onto `K⁶` on each side (constant screws are motions), so
+`dim M(G) = dim M(H″) + dim M(C) − 6` and `rank(G) = 6|V(G)| − dim M(G) = rank(H″) + rank(C)`, pointwise at every
+configuration. *Deficiency.* `≥`: glue partitions `P₁`, `P₂` of the sides by merging the two parts containing `w`:
+`|P| = |P₁| + |P₂| − 1`, `d(P) = d(P₁) + d(P₂)`, so `def(P) = def(P₁) + def(P₂)`. `≤`: restrict a partition `P` of
+`V(G)` to each side; `d(P₁) + d(P₂) = d(P)` (every edge lies in one side) and `|P₁| + |P₂| ≥ |P| + 1` (the part of `w`
+meets both sides), so `def(P₁) + def(P₂) ≥ def(P)`. Hence `def₃(G) = def₃(H″) + def₃(C)`. (Both laws fail at a
+two-vertex cut, where merging two pairs of parts costs `6` against one crossing edge saved — that is the 2-cut law's
+`min(δ₁ + δ₂, 6)`; brief §3.5(d) claimed exactly the one-vertex law.) Both are pointwise identities with no Lean
+surface — the Lean round's first two targets.
+
+**(iii) O10, case (i): `G = C_n`, `n ≥ 5`.** *Feasible*, so `hbareSplit` is vacuous: a skew polygon with
+consecutive triples independent is a pencil configuration (`π_i ∋ p_{i−1}, p_i, p_{i+1}`); conjunct (3) of
+`IsNondegPencilRealization` is vacuous (no hubs, every `closedHubNbhd` empty) and conjunct (4) is the triple
+condition. *`hK`, directly:* `def₃(C_n) = max(0, n − 6)` (a partition into `k ≥ 2` parts crosses `≥ k` edges, so
+`def(P) ≤ k − 6 ≤ n − 6`, attained by singletons), so `target = 6(n − 1)` for `n ≤ 6` and `5n` for `n ≥ 6`; and
+`rank(C_n) = 5n − 6 + rank(L₁, …, L_n)` (fix `m(1)`, then `m(i+1) − m(i) = c_i L_i` with the single closing relation
+`Σ c_i L_i = 0`). So `C_n` attains iff its lines are independent (`n ≤ 6`) or span (`n ≥ 6`). Certificates over every
+field: **(B)** a pentagon with a unit `5 × 5` minor (`unitcert.py`; `n = 5`); **(A)** or **(C)** a hexagon with unit
+determinant (`n = 6`); for `n ≥ 7`, `p₇ = ⋯ = p_n := p₆` in the closed polygon moduli leaves the hexagon's six lines,
+so the generic `n`-gon spans, and distinctness and the triple condition are open and nonempty; a `K`-point as in
+(i)(c). `C₅` and `C₆` are rigid (`def₃ = 0`) and in the kernels' domain (no proper subgraph of a cycle is rigid).
+
+**(iv) O10, case (ii): `G = H″ ∪_w C_{m+1}`, `m + 1 ≥ 7`.** `H″ := G − {u₁, …, u_m}` (the cycle's interior),
+simple, nonempty, `|V(H″)| < |V(G)|`, so the IH gives `PencilPair K 3 H″`; `w` is a hub of `G` (degree `≥ 3`) and
+of `G₋ = G.splitOff = H″ ∪_w C_m` (`m ≥ 6`); the cycle's vertices are non-hubs whose closed hub neighbourhoods are
+`⊆ {w}`. *`hbareSplit`:* take the IH's Distinct witness `x″` of `H″` (its plane `π_w` contains `p_w` and the
+`H″`-neighbours' points) and a cycle `C_{m+1}` through the flag `(p_w, π_w)` over `K` whose lines span and whose
+points are pairwise distinct along the cycle with independent consecutive triples — an ear at *equal* flags, so
+certificate (A) transported by an element of `PGL₄(K)` (transitive on `K`-flags) gives `m + 1 = 6`, and (i)(a)–(c)
+give every `m + 1 ≥ 7`. Then `rank(G) = rank(H″) + 5(m + 1)` by (ii) (`rank(C_{m+1}) = 5(m + 1) − 6 + 6`),
+`def₃(G) = f″ + (m + 1) − 6` by (ii), and `target(G) = 6(|V(H″)| + m − 1) − f″ − m + 5 = target(H″) + 5(m + 1)`:
+`G` attains at an adjacent-distinct panel realization — `HasDistinctPencilRealization K 3 G`. *`hK`:* the
+antecedent's witness `x₋` of `G₋` attains, and by (ii) `rank(G₋) = rank(H″ at x₋) + rank(C_m) ≤ target(H″) + 5m =
+target(G₋)`, so `H″` attains at `x₋|_{H″}`; discard the cycle and add a fresh spanning `C_{m+1}` through `(p_w, π_w)`
+as above: `rank(G) = target(G)`. Nondegeneracy at the new point: (1)–(2) as before; (3) at every vertex of `H″`
+is the antecedent's own (the hub set is `hubs(H″) ∪ {w}` in `G` and in `G₋` alike, normals at `H″`-vertices
+unchanged) and at cycle vertices is one nonzero normal; (4) at non-hubs of `H″` is the antecedent's, at cycle
+vertices the triple condition. That is `HasGenericPencilRealization K 3 G`. ∎ **O10 is closed.**
+
+**(v) What the Lean round takes from S16(iii), S17(v), S20 — statements, all pointwise, none touching irreducibility:**
+(1) the two cut-vertex laws of (ii), rank and `def₃`; (2) `def₃(H′ ∪ ear_m) = def₃(H′) + m − 5` at `m ≥ 5`
+(S16(iii)(a)) and `def₃(C_n) = max(0, n − 6)`; (3) *existence over any infinite `K`* of an ear at given `K`-flags
+with spanning lines, distinct adjacent points and independent consecutive triples — certificate (A) is the integer
+witness a formal proof would transport (a direct construction at arbitrary flags is the Lean-friendly form of
+(i)(b), which the informal proof takes through orbit closures); (4) the long-chain arms `hK` at `m ≥ 6`,
+`hbareSplit` at `m ≥ 5` (S17(v)) and the cases (i)–(ii) above as lemmas about `G.splitOff`; (5) the identification
+of `G.splitOff v a b e₀` with the side plus a shorter ear (case (iii)) or a shorter cycle (cases (i)–(ii)), the one
+piece of graph surgery the round must build.
+
+**(vi) Verdict.** O11 closed by an exhibited certificate valid in every field (i); O10 closed (ii)–(iv). Open:
+**O7e only** — `hbareSplit` at `m ≤ 4` in case (iii), where `H′` is in Case 2 (S19(vii)(c)); every other cell of both
+kernels is now either pointwise (S17(v), S20) or closed through (★) in Case 1 (S19) plus descent (S16(vi)).
+**What would change this:** an error in the closure relations of (i)(b) (which orbit types have equal flags in their
+closure — re-derive from the seven-orbit list of S17(v)); a reading of `TwoEdgeConnected` under which case (ii)
+graphs need `H″` two-edge-connected for the IH (they do not: the IH is unconditional on `G′`); or a definition in
+`IsNondegPencilRealization` quantifying `closedHubNbhd` over `G.splitOff` differently (not at `bbae9dd2`).
