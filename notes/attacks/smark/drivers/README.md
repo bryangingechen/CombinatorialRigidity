@@ -290,3 +290,18 @@ a unit determinant is nonzero in every field, so (A) proves *the six lines of th
 `ear_{m ≥ 5}` at every flag pair and every cycle through a flag — the whole of O11 — and (A)/(B) the cycle base cases
 of O10(i). Caps: the search alphabet and try count (a found witness is a proof; only a *failure* would be capped).
 Independent re-check of (A)'s determinant by Fraction elimination: `−1`.
+
+## `case2m2.py` — Macaulay2 component count of the reduced incidence variety on Case-2 hub graphs (session 9, 2026-09-23; workbook S21(vi), O7e)
+
+Run from the repository root: `timeout 900 python3 notes/attacks/smark/drivers/case2m2.py --timeout 280` (one case:
+`--case T2`). Needs `M2` on the path. For each named hub graph `Γ` (marked set `Z`) with connectors, builds the reduced
+closed incidence variety — a flag `(p_c, π_c)` per marked vertex, `p_d ∈ π_c` and `p_c ∈ π_d` per Γ-edge, one point on
+`π_a ∩ π_b` per connector — fixes the flag of the first marked vertex and uses standard charts (points `x₀ = 1`, normals
+`n₃ = 1`) on the other blocks, and prints the number and dimensions of the minimal primes over `ZZ/32003` (exact; no
+randomness — `--seed` is unused). Faithfulness of the charts: every component is `PGL₄`-invariant, the flag stabiliser is
+connected, and each of its invariant closed subsets of `P³` / `P³*` meets the chart. PASS = one prime of the expected
+dimension `5|Z| − 2|E(Γ)| + #conn − 5`. **Figure:** C1, C1c (Case-1 controls), T1, T1c, T3, T2, T6, T7, T8 PASS (T8 in
+`39` s, the others `< 2` s); the negative controls N3, N4, NK4 (hub triangle, 4-cycle, `K₄`: outside the habitat) show
+`3`, `2`, `3` primes; T10, T11 (cycles through a big vertex) time out at `280` s; T9 (spider, `k_c = 4`, `|Z| = 10`) PASS in `1098` s
+(`--case T9 --timeout 1650`). Caps: ten hand-built Case-2 graphs with `|Z| ≤ 9` — *not* a population, no cycle case finished; one
+characteristic; primes over `F_{32003}`, not its closure. A single prime is evidence for, not a proof of, irreducibility.

@@ -2,6 +2,14 @@
 
 Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 
+## Session 9 (route R2; O7e reduced to pieces (a)–(c), workbook S21)
+- Plane-first rank stratum `{rk_y = min(s_y, 3)}` as Case 2's main stratum (first draft of S21(ii)): rules out stating (★₂) on rank strata of `B` — that set contains tower strata such as `q_u = q_{u′}` for far-apart big `u, u′` (codimension 3, no jump), so its irreducibility is not automatic; (★₂) is stated on the tower `T`.
+
+## Session 8 (route R2; O7d, O10, O11 closed, workbook S19–S20)
+- `earspan.py` / `earspan_modp.py` (ℚ- and `F_p`-draws of the ear span at `m = 5, 6, 7`): superseded by certificate (A) of `unitcert.py`; they rule out nothing the certificate does not, and stay as the record of how O11 was found.
+- Reading S18(iv) after S19: rules out any need for it — `hK`'s arm is Case 1 at every `m ≤ 5`; not consumed.
+- Brief §3.5(d)'s "cut-vertex additivity, corpus-proved": re-derived for a one-vertex cut only (S20(ii)); rules out the two-vertex analogue (it is the 2-cut law's `min(δ₁ + δ₂, 6)`).
+
 ## Session 4 (route R1, retired at session 5: (O4″) is not consumed — workbook S14)
 - `pencilline.py` (6/6 draws, `sk4_d3`/`sk4_d4`/`prism`): rules out "the K4-minor / three-hub structure puts a screw into the pencil" — the line is the direct branch's `L_{wx}` and the branch co-moves with `v`; with `δ(side − branch) = 6` this is S8's ear profile via S13(ii).
 - `census.py` (200 rows, 13 skeleton families, lengths 2–4, `δ ∈ {2,3,4}`, `|V| ≤ 32`; 0 flagged): rules out any excess at any block for side-degree-`≥ 2` single pieces at `δ ≤ 3` **within the population**; the only `c(Π_w) = 1` rows are bridges (S6) and `δ = dist = 4` (a path span).

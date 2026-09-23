@@ -1869,3 +1869,126 @@ kernels is now either pointwise (S17(v), S20) or closed through (★) in Case 1 
 closure — re-derive from the seven-orbit list of S17(v)); a reading of `TwoEdgeConnected` under which case (ii)
 graphs need `H″` two-edge-connected for the IH (they do not: the IH is unconditional on `G′`); or a definition in
 `IsNondegPencilRealization` quantifying `closedHubNbhd` over `G.splitOff` differently (not at `bbae9dd2`).
+
+## S21 — O7e reduced: the incidence structure is 3-degenerate, (★) restated for Case 2, the class surplus is Case-free, pure point patterns are S19 by duality; a Macaulay2 control (session 9, 2026-09-23)
+
+Tree at `dc846bf2`. Consumer re-diffed against every definition body the kernels name (`splitOff`, `PencilHub`,
+`closedHubNbhd`, `closedNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`, `HasPencilPanelRealization`,
+`HasPencilRealization`, `HasDistinctPencilRealization`, `HasGenericPencilRealization`, `PencilPair`,
+`TwoEdgeConnected`, `IsProperRigidSubgraph`): no Lean file changed since `084ee4ff`, both kernels match brief §3.1
+hypothesis by hypothesis, and the case decomposition is S19's (exhaustive). Driver `case2m2.py` (new), caps in
+`drivers/README.md`. Setting: `H′` on `hbareSplit`'s arm at `m ≤ 4`, Case 2 (S19(vii)(c)); `Z` the marked set, `Γ`
+the hub graph (`H′[Z]`), `Big := {u ∈ Z : deg_Γ u ≥ 3}` (exactly the `y` with `s_y ≥ 4`: unmarked vertices have
+`s ≤ 2`), `k_c := |Big ∩ N_Γ[c]|`. The habitat count is the **strict** one of S19(viii).
+
+**(i) The incidence structure is 3-degenerate.** Let `𝔅(H′)` be the bipartite graph between the points `p_y`
+(`y ∈ V(H′)`) and the planes `π_c` (`c ∈ Z`), `y — c` iff `y ∈ N[c]`; `X̄(H′)` is its closed (weak) realisation space
+in `P³`. *Claim:* some order of the `|V| + |Z|` elements gives each at most three earlier neighbours. *Proof.* A
+subconfiguration `(P′, Q′)` of minimum degree `≥ 4`: a point of `P′` lies on `≥ 4` planes of `Q′`, so it is marked with
+`≥ 3` Γ-neighbours in `Q′`; a plane of `Q′` carries `≥ 4` points of `P′`, so `≥ 3` Γ-neighbours in `P′`; the subgraph of
+`Γ` on the indices of `P′ ∪ Q′` has minimum degree `≥ 3`, against average degree `< 2.4` (S16(ii)). ∎ *Consequence.*
+In any such order the tower (element by element, generic position at each step — nonemptiness of that stratum is a
+check per order, done for the order of (ii) below) has fibre dimensions `3 − #earlier`,
+summing to `3(|V| + |Z|) − |E(𝔅)| = dim A − e`, the expected dimension; so S16(iv)'s reduction holds verbatim in every
+3-degenerate order: `X̄(H′)` is irreducible iff every jump stratum of the tower has codimension `>` its jump.
+Case 1's plane-first order is the order "all planes, then points"; Case 2 has points on `≥ 4` planes, so it needs
+another order.
+
+**(ii) The three-level order, and (★) for Case 2.** If `k_c ≤ 3` for every `c` (every big vertex has `≤ 2` big
+Γ-neighbours), the order *big points, then all planes, then the other points* is 3-degenerate: level 1 `q_u := p_u ∈ P³`
+free (`u ∈ Big`); level 2 `π_c ∈ P(U_c^⊥)`, `U_c := {q_u : u ∈ Big ∩ N[c]}`, dimension `3 − r_c` (`r_c` the rank of
+`U_c`); level 3 `p_y ∈ P(⋂_{c ∈ E_y} π_c)` for `y ∉ Big` (`s_y ≤ 3`). Jumps: `J₂ := Σ_c (k_c − r_c)` and
+`J₃ := Σ_{y ∉ Big} (s_y − rk_y)`; **the big hyperedges do not appear in `J₃`**. The generic stratum is nonempty: at
+generic `q`, `|U_c ∩ U_{c′}| ≤ |Big ∩ N[c] ∩ N[c′]| ≤ 1` for the members of a non-big `E_y` and `⋂_{c ∈ E_y} N[c] = {y}`,
+so the Hall condition for picking independent normals in the `U_c^⊥` holds. Equivalently, plane-first: over a rank
+stratum `S` of `B = ∏ P³*` the fibre has dimension `Σ_y (3 − rk_y)` (nonempty iff every `rk_y ≤ 3`), so the excess
+over the expected dimension is `J(S) − codim_B S` with `J := Σ_y (s_y − rk_y)` over **all** `y`, big ones included.
+The operative statement is the tower form, strata of `T` taken by the combinatorial type of `(q, π)`:
+
+> **(★₂)** `X̄(H′)` is irreducible as soon as `codim_T Σ ≥ J₂(Σ) + J₃(Σ) + 1` for every stratum `Σ` of `T` other
+> than the generic one.
+
+It matches the plane-first count: `T → B` (forget `q`) has fibre `∏_{u ∈ Big} P(⋂_{c ∈ E_u} π_c)`, so over a stratum
+where every big hyperedge has rank 3 (the `q_u` then determined) `codim_B = codim_T + Σ_{Big}(s_u − 3)`, and the big
+hyperedges' forced jumps `s_u − 3` cancel. The plane-first rank stratum `{rk_y = min(s_y, 3) ∀ y}` is *not* a single
+tower stratum (it contains, e.g., `q_u = q_{u′}` for far-apart big `u, u′`, a codimension-3 tower stratum with no jump),
+which is why (★₂) is stated on `T`.
+
+**(iii) The class surplus is the Case-1 surplus, and Lemma P holds in every case.** At generic `q` let a plane class
+`A` (equal planes) have `U_A := ⋃_{c ∈ A} U_c` (the common plane must contain it; possible iff `|U_A| ≤ 3`). Its cost
+in `T` is `Σ_{c ∈ A}(3 − k_c) − (3 − |U_A|) = 3(|A| − 1) − ov_A`, `ov_A := Σ_{u ∈ Big}(|E_u ∩ A| − 1)⁺` (a big point
+seen by `j` members is counted `j` times in `Σ k_c`, once in `U_A`), and its level-3 jump is `J₃_A := Σ_{y ∉ Big}
+(|E_y ∩ A| − 1)⁺`. So
+
+> `cost(A) − J₃_A = 3(|A| − 1) − J_A`, with `J_A := Σ_{all y} (|E_y ∩ A| − 1)⁺` — S19's `σ_A`, computed on the full
+> hypergraph: the big hyperedges' discount on the cost is exactly their share of the jump.
+
+*Lemma P, general form.* For every `A ⊆ Z` with `a := |A| ≥ 2` in any habitat side (Case 1 or 2), `J_A ≤ 2.4a − 2.8 ≤
+3a − 4`, i.e. `σ_A ≥ 1`. *Proof.* `e := e_Γ(A)`, `Y_A := {y ∉ A : n_y := |N(y) ∩ A| ≥ 2}`, `N := Σ n_y`, `Y := |Y_A|`;
+`J_A = 2e + N − Y`. The strict count on `Γ_A` (`A ∪ Y_A`, the edges inside `A` and from `Y_A` to `A`) gives
+`5(e + N) ≤ 6(a + Y − 1) − 1`; with `2Y ≤ N`, `4Y ≤ 6a − 7 − 5e`; so `J_A ≤ e + (6a − 7 + Y)/5 ≤ 0.75e + 1.5a − 1.75`,
+and `e ≤ (6a − 7)/5`. ∎ (S17(iii)'s Case-1 proof needed small cases by hand because it used the non-strict count.)
+*Flats.* With `F_A` the flat non-big members of `A` (a flat member is isolated in `Γ[A]`), `σ_A − F_A ≥ 1` except at
+S19's bad pair (`A = {c, c′}` non-adjacent, one common neighbour, both flat): if `e = 0`, `σ_A − F_A ≥ 0.5a − 1.25`;
+if `e ≥ 1`, the non-isolated set `W` of `Γ[A]` has `|W| ≥ (5e + 7)/6` by the strict count, so `σ_A − F_A ≥ 0.5a −
+0.08 + 0.08e > 0`. So S19 Step 1 holds without Case 1.
+
+**(iv) Degenerate `q`, classes only: the level-2 jump cancels.** At arbitrary `q` the class cost is `3(|A| − 1) −
+[Σ_{c ∈ A} r_c − rank U_A]`. Summing over all classes (singletons cost `0`) and subtracting `J₂ = Σ_c (k_c − r_c)`:
+
+> `cost − J₂ − J₃ = cost₁(q) − Σ_{A} def_q(U_A) + Σ_{A nontrivial} σ_A` (no lines), `def_q(U) := |U| − rank_q U`,
+
+the sum over *all* classes, singletons included (for which `def_q(U_c) = k_c − r_c`). With every plane class a singleton
+this is `cost₁(q) − J₂`, a (★) for *points* free in `P³` against the hyperedges `U_c`.
+
+**(v) Pure point patterns are S19, by duality.** `(Γ, Big)` with hyperedges `U_c = Big ∩ N_Γ[c]` (`c ∈ Z`) is S19's
+setting with graph `Γ` and marked set `Big`: girth `≥ 7`; the habitat count on subgraphs of `Γ ⊆ H′`; the unmarked
+`c ∈ Z ∖ Big` have Γ-degree `≤ 2`; and S19's Case 1 for `(Γ, Big)` is exactly `k_c ≤ 3` for all `c`. S19 is linear
+algebra of free elements of `P³` and rank drops, invariant under `P³ ↔ P³*`, so it gives `cost₁(q) ≥ J₂(q) + 1` for every
+degenerate `q`. **Caveat:** a stratum with degenerate `q` and generic planes may still carry `J₃ > 0` when two planes
+with `r_c = 3` have the same span of points (forced equal) — not covered by (v); it lies in the mixed residue (vii).
+
+**(vi) The `--case2 6` side, by hand, and the Macaulay2 control.** On `starcomb.py --case2 6` (`Big = {z}`, `E_z =
+{z, a, b, c}`, `k_c = 1` for all four marked vertices) the three-level tower is: `q_z` free; each `π_c` free in the `P²`
+of planes through `q_z`; the path points free or on one plane. `J₂ = 0`; the only non-big hyperedges of size `≥ 2` are
+`E_x = {x, z}`, `x ∈ {a, b, c}` (no connectors: the paths have length 6), so `J₃ = #{x : π_x = π_z}`; the stratum with
+`t` such equalities has codimension `2t > t`, and `π_a = π_b` buys nothing (their only common hyperedge is the big one).
+So `X̄` of that side is irreducible. **`case2m2.py`** (exact, `ZZ/32003`, gauge-fixed standard charts — faithful because
+every component is `PGL₄`-invariant and the flag stabiliser is connected) computes the minimal primes of the *reduced*
+variety (flags on `Z`, the Γ-incidences, one point per connector; longer unmarked paths add constant free fibres):
+
+| case | hub graph | primes | dims (expected) |
+|---|---|---|---|
+| C1, C1c | Case-1 controls | 1, 1 | 6 (6), 12 (12) |
+| T1, T1c | `K_{1,3}` (the `--case2 6` side), plus a connector | 1, 1 | 9 (9), 15 (15) |
+| T3 | `K_{1,4}` (`s = 5`) | 1 | 12 (12) |
+| T2 | two **adjacent** big hubs, two more neighbours each | 1 | 15 (15) |
+| T6, T7 | two big hubs at distance 2 (through a hub; through a shared non-big neighbour) | 1, 1 | 18 (18) |
+| T8 | path of three big hubs (`k = 3` at the middle one) | 1 | 26 (26) |
+| T9 | spider: big `c` with three big neighbours (`k_c = 4`, the three-level order fails) | 1 | 27 (27), `1098` s |
+| N3, N4, NK4 | **negative controls**: hub triangle, 4-cycle, `K₄` | 3, 2, 3 | extra components, as expected |
+
+Timeouts (`280` s): T10 (a hub 7-cycle with one big vertex), T11 (an 8-cycle through a connector, two big vertices).
+Caps: ten hand-built hub graphs, `|Z| ≤ 10`, no
+cycle case finished; characteristic `32003` only; component count over `F_{32003}`, not its algebraic closure (a
+count of `1` does not exclude a component splitting over an extension). Evidence, not proof.
+
+**(vii) What is left of O7e — three pieces, each a charging statement in the tower.**
+(a) *Lines at generic `q`.* A class `C` placed on a determined line `λ` costs `min(2 − |I(λ)|, 3 − |Ū_C|)`, where `Ū_C`
+is `U_C` plus the extra incidences `π_C ∋ q_u` the pattern imposes (each costs exactly `1`) and `I(λ) = ⋂_{A ∈ ℓ} Ū_A`
+the big points on `λ`; on two determined lines it costs `3 − |Ū_C|`. S19 Steps 2–4 (per-line surplus `f + 2u − 4`,
+the loss bound) must be redone with these costs. Worked instance: a flat non-big `y` between big `a, b` on
+`λ = q_a q_b` — every placement on `λ` is free, but the three planes need `2` extra incidences: cost `2`, jump `1`.
+(b) *Mixed patterns, degenerate `q` with nontrivial plane classes or lines:* by (iv) the class `A` gets the discount
+`def_q(U_A) − Σ_{c ∈ A} def_q(U_c)`, which can be positive (`q_u = q_{u′}` with `u ∈ U_c`, `u′ ∈ U_{c′}` far apart:
+discount `1` on `A = {c, c′}`, against `cost₁ = 3`, `J₂ = 0`); the surplus of (v) and `σ_A` must pay it, plus (v)'s caveat.
+(c) *`k_c ≥ 4` somewhere* (a big vertex with `≥ 3` big Γ-neighbours; habitat-legal with long paths): the three-level order
+fails; (i) guarantees another order, whose strata need their own count (the spider T9 is such a side, and the control finds one component there).
+Not needed anywhere: S16(ii)'s 2-degenerate hub order, O7c.
+
+**(viii) Verdict.** (i), (iii), (iv) *proven-informally*; (ii) the reduction *proven-informally*, (★₂) itself open;
+(v) *proven-informally* modulo S19 (unreviewed) and its caveat; (vi) the `--case2 6` side *proven-informally*, the table
+*evidence under its caps*. O7e stays open, now as (vii)(a)–(c). **What would change this:** a Case-2 hub graph whose
+reduced variety has a second component (the control would show it; none among ten); a stratum with `codim_T ≤ J₂ + J₃`
+(a counterexample to (★₂) — the sequential costs of (vii)(a) are the place to look first); or an error in (i)'s
+reduction of "generic position at each step" for the three-level order (the Hall check in (ii)).
