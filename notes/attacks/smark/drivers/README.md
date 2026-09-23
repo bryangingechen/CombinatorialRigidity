@@ -311,6 +311,22 @@ carrying S25(ii)'s damage shapes: `u–w1–w2–v` with a bad-pair path `u–c�
 big hub `a`; two 4-paths through big hubs `a, b`), plus `D3r` (D3 with a leaf at `r`, so `u–p–r–v` is S25(ii)'s O6 path). Run
 `--case D3 --case D3c --case D4 --timeout 3600`, each `E` case alone with `--timeout 5400`, and `--case D3r --timeout 1800`. **Figure:** `D3` PASS (`28.9` s); the rest are recorded in workbook S27 with their wall-clock times or timeouts.
 Because the count is of the whole reduced variety, a PASS covers every tower stratum of that graph, degenerate big points included.
+**Read the `minimalPrimes` record with S27(iv):** every PASS it produced is on a tree hub graph (irreducible by an elementary fibration), and
+no cyclic case ever finished (`D3c` TIMEOUT at `3600` s; T10 `minimalPrimes` `> 900` s alone, Gröbner basis `0.5` s).
+**`--jumpdims` (S27(v)) — irreducibility as a dimension test, no decomposition:** `timeout 4000 python3 -u notes/attacks/smark/drivers/case2m2.py
+--jumpdims --case T10 --timeout 600` (any cases). The tower's generic stratum (all `U_c` independent, all non-big hyperedges' planes
+independent) is an irreducible open dense subset of the main component, so `X̄` is irreducible iff every jump locus `X̄ ∩ {rank drop at one
+hyperedge}` has dimension `≤ expdim − 1`; the driver computes `dim(I + minors)` per hyperedge in the original chart coordinates and prints
+`JUMP <h> <s> <dim>` lines and `MAXJUMP`; PASS iff `dim I = expected` and `MAXJUMP ≤ expected − 1`. Connector points are eliminated
+(a connector is a `P(π_a ∩ π_b)`-bundle; its degeneracy `π_a = π_b` is tested as `CONN <S> <|S|> <dim> <bound>` with bound `expdim′ − 1 − |S|`,
+S27(v) docstring); with them kept, `dim I` itself does not return (T11, `25` min). **Figure:** T10 PASS in `32.9` s, all seven jump loci of
+dimension exactly `18 = expdim − 1`; D3c, T11, E13, E15 TIMEOUT at `300–900` s, each on one jump locus whose three normals are all variable
+(D3c: `dim I` `4` s, `pl_p` `3` s, `pl_r` `> 6` min; a linearised form of the rank condition hangs the same way). **Read with S27(vi):** leaves
+and pendant paths are free bundles, so every case here reduces to its 2-core, and every core to date is a tree or a hub cycle (T10 = `C₇`,
+Case 1, S19) — no run has tested a Case-2 core, whose smallest habitat-legal instance (`θ(4,4,5)`, `|Z| = 12`) is out of reach. `--reduced`
+(spanning-tree elimination, 28 instead of 42 variables on T10) and `--timed` exist for probing; the reduced coordinates make the minors
+high-degree and are *slower* for `--jumpdims`. Caps: one characteristic (`32003`), chart variety with the first flag fixed; a dimension
+equality over `F_p` is evidence.
 
 ## `case2geo.py` — Case-2 geometric control of (★₂) at generic big points (session 10, 2026-09-23; workbook S22(viii), O7e (a); helper-written)
 

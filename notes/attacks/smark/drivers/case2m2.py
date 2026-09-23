@@ -110,10 +110,248 @@ def m2_script(Z, E, conn, seed):
     s += "exit 0\n"
     return s
 
-def run_case(key, seed, tmo):
+def m2_script_reduced(Z, E, conn, seed, timed=False):
+    """The SAME chart variety as m2_script, with the two linear-in-one-variable incidences of every spanning-tree
+    edge solved exactly (session 11, S27(iv)).  Root the tree at Z[0] (flag fixed as in m2_script).  For a vertex c
+    with tree parent d: p_c = (1, x1, x2, X3) with X3 := -(n_d0 + n_d1 x1 + n_d2 x2) (p_c in pi_d; the chart n_d3 = 1
+    makes this exact), and n_c = (N0, y1, y2, 1) with N0 := -(y1 x1 + y2 x2 + X3) (p_c in pi_c; the chart p_c0 = 1
+    makes this exact); the tree edge leaves ONE equation n_c . p_d = 0.  A non-tree edge keeps its two bilinear
+    equations; a connector q between x, y is (1, q1, q2, Q3) with Q3 from q in pi_x and one equation q in pi_y.
+    Variables 4 per non-root vertex + 2 per connector (m2_script: 6 and 3); equations |E| + #conn + #(non-tree
+    edges) (m2_script: 2|E| + 2#conn).  Isomorphic to m2_script's chart variety, so the expected dimension and the
+    faithfulness argument are unchanged."""
+    from collections import deque
+    a0 = Z[0]
+    adj = {c: [] for c in Z}
+    for c, d in E: adj[c].append(d); adj[d].append(c)
+    parent, order, seen = {}, [a0], {a0}
+    dq = deque([a0])
+    while dq:
+        d = dq.popleft()
+        for c in adj[d]:
+            if c not in seen: seen.add(c); parent[c] = d; order.append(c); dq.append(c)
+    assert len(order) == len(Z), "hub graph must be connected"
+    tree_edges = {frozenset((c, parent[c])) for c in parent}
+    allv, P, N = [], {}, {}
+    P[a0] = ["1", "0", "0", "0"]; N[a0] = ["0", "0", "0", "1"]
+    def dot(x, y):
+        terms = [f"({u})*({v})" for u, v in zip(x, y) if u != "0" and v != "0"]
+        return " + ".join(terms) if terms else "0"
+    gens = []
+    for c in order[1:]:
+        d = parent[c]
+        x1, x2, y1, y2 = f"p{c}t1", f"p{c}t2", f"n{c}t1", f"n{c}t2"
+        allv += [x1, x2, y1, y2]
+        nd = N[d]
+        X3 = f"-(({nd[0]}) + ({nd[1]})*{x1} + ({nd[2]})*{x2})"
+        P[c] = ["1", x1, x2, X3]
+        N0 = f"-({y1}*{x1} + {y2}*{x2} + ({X3}))"
+        N[c] = [N0, y1, y2, "1"]
+        gens.append(dot(N[c], P[d]))                       # p_d in pi_c
+    for c, d in E:
+        if frozenset((c, d)) in tree_edges: continue
+        gens.append(dot(N[c], P[d])); gens.append(dot(N[d], P[c]))
+    for i, (x, y) in enumerate(conn):
+        q1, q2 = f"q{i}t1", f"q{i}t2"; allv += [q1, q2]
+        nx = N[x]
+        Q3 = f"-(({nx[0]}) + ({nx[1]})*{q1} + ({nx[2]})*{q2})"
+        gens.append(dot(N[y], ["1", q1, q2, Q3]))
+    gens = [g for g in gens if g != "0"]
+    s = f"R = ZZ/32003[{', '.join(allv)}];\n"
+    s += "I = ideal(" + ",\n  ".join(gens) + ");\n"
+    et = "elapsedTime " if timed else ""
+    if timed:
+        s += 'elapsedTime G = gb I;\nprint("GBDONE " | toString(numgens source gens G));\n'
+    s += f'{et}print("DIMI " | toString(dim I));\n'
+    s += f"{et}P = minimalPrimes I;\n"
+    s += 'print("NPRIMES " | toString(#P));\n'
+    s += 'scan(P, Q -> print("DIM " | toString(dim Q)));\n'
+    s += "exit 0\n"
+    return s
+
+def m2_script_jumpdims(Z, E, conn, seed):
+    """Irreducibility as a dimension test, no primary decomposition (session 11, S27(v)).  The tower's generic
+    stratum G -- every point set U_c independent (r_c = k_c) and every non-big hyperedge's planes independent
+    (rk_y = s_y) -- is an open dense irreducible subset of the main component (a tower of projective bundles over an
+    open subset of (P^3)^Big), so every other component of X lies in the union of the JUMP loci and has dimension
+    >= expdim by Krull; hence X is irreducible iff dim(X cap {rank drop at h}) <= expdim - 1 for every hyperedge h.
+    Each such locus is I plus the s x s minors of the s coordinate vectors of h (points of U_c for a marked c with
+    k_c >= 2; normals at a non-big marked y with s_y = |N_Gamma[y]| >= 2; the two normals of a connector).  Prints
+    "JUMP <h> <s> <dim>" per hyperedge in the reduced chart coordinates of m2_script_reduced (expdim - 5 there), and
+    "MAXJUMP <max>".  PASS iff MAXJUMP <= expected - 1."""
+    from collections import deque
+    from itertools import combinations
+    a0 = Z[0]
+    adj = {c: [] for c in Z}
+    for c, d in E: adj[c].append(d); adj[d].append(c)
+    deg = {c: len(adj[c]) for c in Z}
+    big = {c for c in Z if deg[c] >= 3}
+    parent, order, seen = {}, [a0], {a0}
+    dq = deque([a0])
+    while dq:
+        d = dq.popleft()
+        for c in adj[d]:
+            if c not in seen: seen.add(c); parent[c] = d; order.append(c); dq.append(c)
+    tree_edges = {frozenset((c, parent[c])) for c in parent}
+    allv, P, N = [], {}, {}
+    P[a0] = ["1", "0", "0", "0"]; N[a0] = ["0", "0", "0", "1"]
+    def dot(x, y):
+        terms = [f"({u})*({v})" for u, v in zip(x, y) if u != "0" and v != "0"]
+        return " + ".join(terms) if terms else "0"
+    gens = []
+    for c in order[1:]:
+        d = parent[c]
+        x1, x2, y1, y2 = f"p{c}t1", f"p{c}t2", f"n{c}t1", f"n{c}t2"
+        allv += [x1, x2, y1, y2]
+        nd = N[d]
+        X3 = f"-(({nd[0]}) + ({nd[1]})*{x1} + ({nd[2]})*{x2})"
+        P[c] = ["1", x1, x2, X3]
+        N[c] = [f"-({y1}*{x1} + {y2}*{x2} + ({X3}))", y1, y2, "1"]
+        gens.append(dot(N[c], P[d]))
+    for c, d in E:
+        if frozenset((c, d)) in tree_edges: continue
+        gens.append(dot(N[c], P[d])); gens.append(dot(N[d], P[c]))
+    Q = {}
+    for i, (x, y) in enumerate(conn):
+        q1, q2 = f"q{i}t1", f"q{i}t2"; allv += [q1, q2]
+        nx = N[x]
+        Q[i] = ["1", q1, q2, f"-(({nx[0]}) + ({nx[1]})*{q1} + ({nx[2]})*{q2})"]
+        gens.append(dot(N[y], Q[i]))
+    gens = [g for g in gens if g != "0"]
+    # hyperedges: (name, list of coordinate vectors)
+    hyper = []
+    for c in Z:
+        U = [u for u in [c] + adj[c] if u in big]
+        if len(U) >= 2: hyper.append((f"pts_{c}", [P[u] for u in U]))
+    for y in Z:
+        if y in big: continue
+        Ey = [y] + adj[y]
+        if len(Ey) >= 2: hyper.append((f"pl_{y}", [N[c] for c in Ey]))
+    for i, (x, y) in enumerate(conn):
+        hyper.append((f"conn{i}_{x}{y}", [N[x], N[y]]))
+    s = f"R = ZZ/32003[{', '.join(allv)}];\n"
+    s += "I = ideal(" + ",\n  ".join(gens) + ");\n"
+    s += 'stderr << "DIMI " << dim I << endl;\n'
+    s += "jmax = -1;\n"
+    for name, vecs in hyper:
+        rows = ", ".join("{" + ", ".join(v) + "}" for v in vecs)
+        k = len(vecs)
+        s += f"MM = matrix {{{rows}}};\n"
+        s += f"JJ = I + minors({k}, MM);\n"
+        s += f'jdim = dim JJ; stderr << "JUMP {name} {k} " << jdim << endl; jmax = max(jmax, jdim);\n'
+    s += 'stderr << "MAXJUMP " << jmax << endl;\n'
+    s += "exit 0\n"
+    return s
+
+def m2_script_jumpdims_full(Z, E, conn, seed, elim_conn=True):
+    """As m2_script_jumpdims but in m2_script's original chart coordinates (points (1, t1, t2, t3), normals
+    (t1, t2, t3, 1), the root flag fixed): the minors stay of degree <= 3, where the reduced coordinates nest the
+    tree substitutions and blow the degrees up (T10 timed out at 360 s reduced).
+    Connectors (elim_conn, default): a connector y between a, b is a point on the line pi_a cap pi_b, so X(Gamma +
+    connectors) is a tower of P(pi_a cap pi_b)-bundles over X(Gamma) with fibre dimension 1 + [pi_a = pi_b].  A
+    component over a locus L cap {S degenerate} (L a hyperedge jump locus or all of X(Gamma), S a set of connectors
+    with pi_a = pi_b) has dimension dim(L cap D_S) + #conn + |S|, which reaches expdim(Gamma) + #conn iff
+    dim(L cap D_S) >= expdim(Gamma) - |S|; so irreducibility of X(Gamma + conn) <=> (i) every hyperedge jump locus
+    of X(Gamma) has dim <= expdim(Gamma) - 1 and (ii) every nonempty connector set S has dim D_S <= expdim(Gamma) -
+    1 - |S| (with (ii), the joint loci L cap D_S are bounded by D_S).  The connector points are dropped from the
+    ideal and (ii) is printed as "CONN <S> <size> <dim> <bound>"; PASS needs every JUMP <= expdim' - 1 and every
+    CONN <= its bound.  With elim_conn=False the connector points stay and their planes form an ordinary hyperedge
+    (T11 and D3c then time out at 600 s on the dimension of the full ideal)."""
+    a0 = Z[0]
+    adj = {c: [] for c in Z}
+    for c, d in E: adj[c].append(d); adj[d].append(c)
+    big = {c for c in Z if len(adj[c]) >= 3}
+    blocks = []
+    for c in Z: blocks += ["p" + c, "n" + c]
+    if not elim_conn:
+        for i, _ in enumerate(conn): blocks.append(f"q{i}")
+    coord, allv = {}, []
+    for b in blocks:
+        if b == "p" + a0: coord[b] = ["1", "0", "0", "0"]; continue
+        if b == "n" + a0: coord[b] = ["0", "0", "0", "1"]; continue
+        t = [f"{b}t{j}" for j in range(1, 4)]; allv += t
+        coord[b] = ["1"] + t if b[0] in "pq" else t + ["1"]
+    def dot(x, y):
+        terms = []
+        for u, v in zip(coord[x], coord[y]):
+            if u == "0" or v == "0": continue
+            terms.append(u if v == "1" else v if u == "1" else f"{u}*{v}")
+        return " + ".join(terms) if terms else "0"
+    gens = []
+    for c in Z: gens.append(dot("p" + c, "n" + c))
+    for c, d in E: gens.append(dot("p" + d, "n" + c)); gens.append(dot("p" + c, "n" + d))
+    if not elim_conn:
+        for i, (x, y) in enumerate(conn): gens.append(dot(f"q{i}", "n" + x)); gens.append(dot(f"q{i}", "n" + y))
+    gens = [g for g in gens if g != "0"]
+    hyper = []
+    for c in Z:
+        U = [u for u in [c] + adj[c] if u in big]
+        if len(U) >= 2: hyper.append((f"pts_{c}", [coord["p" + u] for u in U]))
+    for y in Z:
+        if y in big: continue
+        Ey = [y] + adj[y]
+        if len(Ey) >= 2: hyper.append((f"pl_{y}", [coord["n" + c] for c in Ey]))
+    if not elim_conn:
+        for i, (x, y) in enumerate(conn): hyper.append((f"conn{i}_{x}{y}", [coord["n" + x], coord["n" + y]]))
+    s = f"R = ZZ/32003[{', '.join(allv)}];\n"
+    s += "I = ideal(" + ",\n  ".join(gens) + ");\n"
+    s += 'stderr << "DIMI " << dim I << endl;\n'
+    s += "jmax = -1;\n"
+    for name, vecs in hyper:
+        rows = ", ".join("{" + ", ".join(v) + "}" for v in vecs)
+        k = len(vecs)
+        s += f"MM = matrix {{{rows}}};\nJJ = I + minors({k}, MM);\n"
+        s += f'jdim = dim JJ; stderr << "JUMP {name} {k} " << jdim << endl; jmax = max(jmax, jdim);\n'
+    s += 'stderr << "MAXJUMP " << jmax << endl;\n'
+    if elim_conn and conn:
+        from itertools import combinations
+        expd = 5 * len(Z) - 2 * len(E) - 5
+        for r in range(1, len(conn) + 1):
+            for Sset in combinations(range(len(conn)), r):
+                s += "JJ = I"
+                for i in Sset:
+                    x, y = conn[i]
+                    rows = "{" + ", ".join(coord["n" + x]) + "}, {" + ", ".join(coord["n" + y]) + "}"
+                    s += f" + minors(2, matrix {{{rows}}})"
+                s += ";\n"
+                label = "+".join(f"{conn[i][0]}{conn[i][1]}" for i in Sset)
+                s += f'stderr << "CONN {label} {r} " << dim JJ << " {expd - 1 - r}" << endl;\n'
+    s += "exit 0\n"
+    return s
+
+def run_jumpdims(key, tmo, full=True):
+    Z, E, conn, comment = CASES[key]
+    expected = 5 * len(Z) - 2 * len(E) + len(conn) - 5
+    src = (m2_script_jumpdims_full if full else m2_script_jumpdims)(Z, E, conn, 0)
+    with tempfile.NamedTemporaryFile("w", suffix=".m2", delete=False) as f:
+        f.write(src); path = f.name
+    t0 = time.time()
+    try:
+        out = subprocess.run(["M2", "--script", path], capture_output=True, text=True, timeout=tmo)
+        txt = out.stdout + out.stderr
+    except subprocess.TimeoutExpired:
+        os.unlink(path); print(f"{key:4s} TIMEOUT after {tmo}s  ({comment})"); return None
+    os.unlink(path)
+    jumps = [l for l in txt.splitlines() if l.startswith("JUMP")]
+    conns = [l for l in txt.splitlines() if l.startswith("CONN")]
+    mx = [l for l in txt.splitlines() if l.startswith("MAXJUMP")]
+    dimi = [l for l in txt.splitlines() if l.startswith("DIMI")]
+    if not mx:
+        print(f"{key:4s} ERROR\n{txt[-2000:]}"); return False
+    expd = 5 * len(Z) - 2 * len(E) - 5 if full else expected   # connector points eliminated in the full test
+    m = int(mx[0].split()[1])
+    conn_ok = all(int(l.split()[3]) <= int(l.split()[4]) for l in conns) and (not full or len(conns) == 2 ** len(conn) - 1)
+    ok = (m <= expd - 1) and dimi and int(dimi[0].split()[1]) == expd and conn_ok
+    print(f"{key:4s} {'PASS' if ok else 'FAIL'}  |Z|={len(Z)} |E|={len(E)} conn={len(conn)}  {dimi[0] if dimi else ''} expected {expd}"
+          f"{' (connector points eliminated; full expected ' + str(expected) + ')' if full and conn else ''}; "
+          f"max jump-locus dim {m} (need <= {expd - 1}); {len(jumps)} hyperedges, {len(conns)} connector sets  [{time.time() - t0:.1f}s]  ({comment})")
+    for l in jumps + conns: print("      " + l)
+    return ok
+
+def run_case(key, seed, tmo, reduced=False, timed=False):
     Z, E, conn, comment = CASES[key]
     expected = 5 * len(Z) - 2 * len(E) + len(conn) - 5   # fibre over the fixed flag
-    src = m2_script(Z, E, conn, seed)
+    src = m2_script_reduced(Z, E, conn, seed, timed) if reduced else m2_script(Z, E, conn, seed)
     with tempfile.NamedTemporaryFile("w", suffix=".m2", delete=False) as f:
         f.write(src); path = f.name
     t0 = time.time()
@@ -124,6 +362,9 @@ def run_case(key, seed, tmo):
         os.unlink(path)
         print(f"{key:4s} TIMEOUT after {tmo}s  ({comment})"); return None
     os.unlink(path)
+    if timed:
+        for l in txt.splitlines():
+            if l.startswith(("GBDONE", "DIMI")) or "seconds" in l: print(f"{key:4s} {l}")
     np = [l for l in txt.splitlines() if l.startswith("NPRIMES")]
     dims = [int(l.split()[1]) for l in txt.splitlines() if l.startswith("DIM ")]
     if not np:
@@ -139,9 +380,15 @@ def main():
     ap.add_argument("--case", action="append")
     ap.add_argument("--seed", type=int, default=20260923)
     ap.add_argument("--timeout", type=int, default=600)
+    ap.add_argument("--reduced", action="store_true", help="spanning-tree-eliminated chart variety (S27(iv)); same components")
+    ap.add_argument("--timed", action="store_true", help="with --reduced: print elapsed times of gb / dim / minimalPrimes")
+    ap.add_argument("--jumpdims", action="store_true", help="irreducibility as a dimension test on the jump loci (S27(v)); no minimalPrimes")
     a = ap.parse_args()
     keys = a.case or list(CASES)
-    res = [run_case(k, a.seed, a.timeout) for k in keys]
+    if a.jumpdims:
+        res = [run_jumpdims(k, a.timeout) for k in keys]
+    else:
+        res = [run_case(k, a.seed, a.timeout, a.reduced, a.timed) for k in keys]
     bad = [k for k, r in zip(keys, res) if r is False and not k.startswith("N")]
     negpass = [k for k, r in zip(keys, res) if r is True and k.startswith("N")]
     if negpass: print("NOTE: negative controls that passed (irreducible despite short cycles):", negpass)

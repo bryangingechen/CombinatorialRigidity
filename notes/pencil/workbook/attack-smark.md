@@ -2614,3 +2614,63 @@ are wanted: a feasibility probe on `T10` alone (timed `gb`, `dim`, `degree`, the
 tree's tower rationally so that only the cycle-closing equations remain, run on the open chart *and* on each
 degenerate stratum (`p_c = p_d`, `π_c = π_d`) separately, or slice by a random linear space of complementary
 dimension down to a curve before decomposing.
+
+**(v) Irreducibility without primary decomposition — the jump-locus dimension test (`case2m2.py --jumpdims`), and
+the first cyclic Case-2 graph with a completed control.** *Diagnosis (the PI's question, this afternoon):* on T10
+alone, with the machine cleared, the Gröbner basis of the chart ideal takes `0.5` s, `dim` and `degree` `0.1` s each,
+and `minimalPrimes` does not return in `900` s; a random linear slice down to a curve (`dim 1`, `167` s for its
+Gröbner basis in the 28-variable spanning-tree-reduced coordinates) does not decompose in the remaining `430` s
+either. The wall is the decomposition algorithm, not the ideal. *The test.* Let `G` be the tower's generic stratum:
+every point set `U_c` independent (`r_c = k_c`) and every non-big hyperedge's planes independent (`rk_y = s_y`). `G`
+is an open subset of a tower of projective bundles over an open subset of `(P³)^Big` (the `π_c` over `∏ P(U_c^⊥)`
+with constant fibre dimension where `r_c = k_c`; the `p_y` over `P(⋂ π_c)` with constant dimension where
+`rk_y = s_y`), hence **irreducible of the expected dimension**, and it is dense in the main component. Every other
+component of `X̄` therefore lies in the union of the *jump loci* `X̄ ∩ {rank drop at one hyperedge h}` and has
+dimension `≥ expdim` by Krull's bound (S16(iv)). Conversely a jump locus of dimension `≥ expdim` contains a
+component of that dimension, which cannot be the main one (whose intersection with any jump locus is a proper closed
+subset). So
+
+> `X̄` is irreducible ⟺ `dim(X̄ ∩ {rank drop at h}) ≤ expdim − 1` for every hyperedge `h`,
+
+and each right-hand side is `dim(I + minors_s(M_h))`, `M_h` the `s × 4` matrix of the `s` coordinate vectors of `h`
+(the points of `U_c` for a marked `c` with `k_c ≥ 2`; the normals `n_y, n_c (c ~ y)` for a non-big marked `y`; the
+two normals of a connector) — a Gröbner basis and a dimension, no decomposition. This is (★₂) in global form: the
+tower's strata are exactly the loci where some hyperedge drops rank, and the test asks that none reaches the main
+component's dimension. It is run in `m2_script`'s original chart coordinates (bilinear generators, minors of degree
+`≤ 3`); in the spanning-tree-reduced coordinates the minors nest the tree substitutions and T10 timed out at `360` s.
+Charts and faithfulness as in S21(vi) (`PGL₄`-invariance, connected stabiliser). **Figure — T10 PASS, `32.9` s:**
+`dim I = 19 = expdim`, and all seven jump loci (`pl_c2 … pl_c7` with `s = 3`, `pl_x` with `s = 2`) have dimension
+**exactly `18`** — each jump stratum sits precisely one codimension above the bound, the global counterpart of
+S22(viii)'s tight shapes at value `1`. The 7-cycle with a pendant big hub is the first cyclic Case-2 hub graph with a
+completed component control. T11, D3c, E13, E15, E55 (and the trees D3r, D4 as method checks) follow below.
+
+**(vi) The core reduction — leaves and pendant paths are free bundles, so every Macaulay2 case so far reduces to a
+Case-1 cycle; O7e lives on the 2-core.** *What the further runs showed.* With the connector-eliminated dimension test,
+D3c gets `dim I = 21` in `4` s and its first jump locus (`pl_p`, the hyperedge containing the fixed root normal) in
+`3` s, then hangs on `pl_r` (three variable normals) for `> 6` min; the same locus written linearly in the chart
+(`n_r = a·n_p + (1 − a)·n_v`, plus the separate locus `n_p = n_v`) hangs the same way; E13 and E15 time out at
+`600` s; keeping a connector's point in the ideal makes even `dim I` fail (T11, `25` min). Only T10 passes. *The
+reduction.* Let `ℓ` be a leaf of `Γ` attached to `c`. The projection `X̄(Γ) → X̄(Γ − ℓ)` forgetting `(p_ℓ, π_ℓ)` has
+fibre `F = {(p, π) : p ∈ π_c, p_c, p ∈ π}` over every base point — a variety independent of the base point up to
+projective equivalence (a point on a fixed plane and a plane through two points), irreducible of dimension `3`
+(its strata `p = p_c`, `π = π_c` have dimension `2`). So `X̄(Γ)` is a fibre bundle with irreducible fibres over
+`X̄(Γ − ℓ)` and their components correspond bijectively; by induction the same holds for pendant paths, and S21(vi)'s
+long unmarked chains are constant free fibres. Hence **`X̄(H′)` is irreducible iff `X̄(core)` is**, `core` the 2-core of
+the hub graph with its connectors (connector vertices as degree-2 vertices). If the core has maximum degree `≤ 2` it
+is a habitat side in **Case 1** (girth and count inherited, connectors of degree `2`), and S19 makes it irreducible.
+*Consequences.* (a) T10's PASS is the 7-cycle `C₇` of hubs — S19's theorem on a Case-1 side, checked by Macaulay2 for
+the first time on a cyclic graph; it says nothing about Case 2. (b) Every cyclic Case-2 graph the driver has (T10,
+T11, D3c, E13, E15, E55) has a **cycle** as its core (`C₇`, a connector-closed `C₈`, a connector-closed `C₇`, `C₇`,
+`C₈`, `C₈`): all irreducible by S19 plus this reduction, no Macaulay2 needed — and every tree case (T1–T9, D3, D3r,
+D4) is trivially so. **No control to date has tested a Case-2 core.** (c) A Case-2 core is a 2-core with a vertex of
+degree `≥ 3`, i.e. it contains a theta graph `θ(l₁, l₂, l₃)`; with girth `≥ 7` and the strict count the smallest
+habitat-legal thetas are `θ(4, 4, 5)` (`12` hubs, `13` edges, `65 ≤ 65`) or `θ(2c, 5, 6)` with one branch a connector
+(`11` hubs + `1`, `13` edges) — beyond today's Macaulay2 reach (`|Z| = 8` cycles already fail), so the M2 line stops
+here; the stratum drivers (`case2geo.py`, `case2deg.py`) remain the controls that target Case-2 shapes, and their
+graphs' variety-level irreducibility was never in doubt — they test the *counting* (★₂), which is what the proofs
+use. (d) For the attack: **O7e may assume `Γ` is its own 2-core** with `Big = {deg_core ≥ 3} ≠ ∅` — a theta-containing
+core; a big vertex with three big neighbours (O7e-c's `k_c ≥ 4`) then needs a core in which four adjacent vertices
+all have degree `≥ 3`, a shape the strict count should bound (next session: count it, as S19(viii) did for the star).
+The spider T9's core is a tree, so T9 was never an O7e-c instance. **What would change this:** a leaf whose fibre is
+not the same variety at every base point (it is: `p_c ∈ π_c` is the only datum it sees), or a Case-2 side whose core
+has maximum degree `≤ 2` but is not a habitat side (impossible: subgraphs inherit girth and the count).
