@@ -234,3 +234,18 @@ attained only at one collinear size-3 hyperedge (`J = 1`, `ρ = 2`) and one adja
 pair (`J = 2`, codim `3`); total 12.9 s.** Caps: `|Z| ≤ 7`, coordinates in `[−30, 30]`, up to
 120 then 720 placement orders per line-structure, 600 s. A PASS is a check on these graphs
 over `ℚ`, not a proof of (★); `K₄`/`K_{3,3}` subdivided are vacuous (`J ≡ 0`).
+
+## `earspan_modp.py` — the ear-span certificates in characteristic `p` (review 3, 2026-09-23; workbook S18(ii), O11)
+
+Run from the repository root: `timeout 300 python3 notes/attacks/smark/drivers/earspan_modp.py`. Re-draws
+`earspan.py`'s cells (seed `20260922` for `generic`/`incident` at `m = 5, 6`; seed `20260923` for the three
+coincidence regimes at `m = 5, 6, 7`; same rng sequence, same `s = 20`), clears denominators from each Plücker
+vector, and ranks the `m + 1` integer vectors over `F_p`, `p ∈ {2, 3, 5, 7, 11, 13}`, next to the exact ℚ-rank.
+**Figure (2026-09-23):** ℚ-rank `6` at 20/20 in every cell; `F₂`-rank `6` at between **2/20** (`m = 5`: `incident`,
+`coinc-pt`, `coinc-pl`) and **11/20** (`m = 7`, `coinc-pt`); `F₃` between 4/20 and 16/20; `F₁₃` between 14/20 and
+20/20. Caps: the same integer draws; six primes; a reduced draw's flag pair may lie in a more degenerate
+`PGL₄`-orbit than the cell's name (not classified — a certificate at a more degenerate orbit covers the less
+degenerate ones, S17(v)). **Reading:** a ℚ-certificate proves the spanning in characteristic 0 and at every prime
+not dividing its `6 × 6` minor, nothing more; the S16(iii)(c)/S17(v) certificates therefore do not travel to small
+characteristics by themselves, but every cell has at least one `F₂`- and one `F₃`-certificate among its 20 draws, so
+O11 is one exhibited draw per prime dividing the chosen ℚ-certificate's minor, at the equal-flags cell.

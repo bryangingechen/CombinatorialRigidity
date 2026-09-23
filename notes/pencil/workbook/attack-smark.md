@@ -1392,8 +1392,8 @@ component of `X̄(H′)` of dimension `≥ dim A − e` over a jump stratum.
 
 Session 7 (2026-09-22/23) committed nothing: it spent ~4 h on O7c in twelve reasoning turns
 that each hit the output-token cap, and its content was recovered from the local transcript
-(`notes/attacks/smark/session7-recovery.md`, an aid the PI may delete once this section is
-accepted). This section re-derives, by a different route, the one claim that recovery note
+(a recovery note and twelve raw transcript blocks, kept under `notes/attacks/smark/` until
+review 3 accepted this section; the PI deleted them on 2026-09-23, holding a backup). This section re-derives, by a different route, the one claim that recovery note
 marks as found twice independently — S16(iv)'s stratum (a′) "jump 2" is an overcount — and
 replaces the hub-by-hub tower of S16(iv) with a fibration in which O7c does not occur. Tree at
 `ac3fbef6`; the consumer diff of S16(i) was re-run by session 7 with no change and is not
@@ -1558,3 +1558,83 @@ pattern on some habitat `(G, Z)` with `cost ≤ J` (a violation the commissioned
 exhibit); a flag orbit at which the `m + 1` lines of a generic `ear_{m ≥ 5}` fail to span `Λ²`
 (none among the seven); or a `HasDistinctPencilRealization` witness of a habitat `H′` at `m ≤ 4`
 isolated from `X̄°(H′)`.
+
+## S18 — Review notes (2026-09-23, `/review-attack` after session 7; the reviewer's checks, not the attack's — verify before building on them)
+
+Tree at `e1cd14f3`. The kernels match brief §3.1 (`Escape.lean`, `pencilPair_of_splitOff_of_habitat`, re-read);
+`Escape.lean` last changed at `5c8ceb81` (item 5), before the checked sha `084ee4ff`. Verdict to the PI: **continue
+on R2 in its plane-first form**; four corrections, applied on the PI's word the same day (brief §§2, 3.5, 4, 6, 7, 8;
+`state.md`; this entry).
+
+**(i) The consumer's domain includes the trichotomy's cases (i)–(ii).** Brief §3.5 read case (ii) — the chain closing
+at a single hub `w` — as "owned by the cut-vertex case of the induction, not by these kernels". The consumer has no
+such arm. `TwoEdgeConnected` (`Deficiency.lean`) is "every nonempty proper vertex set is crossed by `≥ 2` edges" and
+admits cut vertices; the reduction's cut arm (`Arms.lean`, `pencil_reduction`'s `hcut_arm`, discharged by
+`hasDistinctPencilRealization_of_not_twoEdgeConnected`) fires only on `¬ TwoEdgeConnected`; `hsplit` takes
+`TwoEdgeConnected`; and `pencilPair_of_splitOff_of_habitat` applies `hK`/`hbareSplit` at whatever safe degree-2 vertex
+`exists_adjacent_degree_two_pair_of_noRigid_of_degree_two` returns. Two 7-cycles sharing a hub `w` (simple,
+2-edge-connected, no proper rigid subgraph — a 7-cycle has `def₃ = 1`, a path `def₃ =` its length) is in the domain and
+is case (ii); a cycle on `≥ 5` vertices is case (i). Both must be proved inside the kernels. *Pointwise discharge
+(sketch; O10):* case (i) directly — a generic skew `n`-gon's edge lines are independent for `n ≤ 6` and span `Λ²` for
+`n ≥ 6` (S14(iv)), consecutive triples are non-collinear, so `C_n` has a `K`-point of `HasGenericPencilRealization`
+(target `5n` at `n ≥ 6`, `6(n − 1)` below). Case (ii), `G = H″ ∪_w C_{m+1}` with `m + 1 ≥ 7` (girth, `lem:pencil-girth-of-hub`):
+`hbareSplit` from the IH's Distinct witness of `H″ := G − {u₁, …, u_m}` plus a generic cycle through the flag
+`(p_w, π_w)` — `earspan.py`'s `coinc-both` cell *is* a cycle through one flag, so its lines span; `hK` from the
+antecedent's witness of `G₋ = H″ ∪_w C_m` (`m ≥ 6`): drop the cycle, add a fresh one — S17(v)(b) verbatim with `v = w`
+(conjunct (3) at `w` is the antecedent's, since `w` is a hub in `G₋` as in `G`). Both need **cut-vertex additivity**:
+`rank(G) = rank(H″) + rank(C)` (the motion spaces glue along `w`; each restricts onto `K⁶` at `w` through the trivial
+motions, so `dim M(G) = dim M(H″) + dim M(C) − 6`) and `def₃(G) = def₃(H″) + def₃(C)` (brief §3.5(d), "[proved]" in
+the corpus; **no Lean surface** — `Deficiency.lean` has the cut-*edge* law `deficiency_eq_of_cutEdges_ncard_le_one`
+only). This is the brief's third consumer paraphrase; reviews 1–2 and the 2026-09-17 CHECKED pass diffed the §3.1
+quote and the §3.2 glosses, not §2/§3.5's decomposition of the domain (incident line 2026-09-23).
+
+**(ii) The certificates are characteristic-0 evidence.** Both kernels are over `[Infinite K]` with no characteristic
+(brief §2, option C), so `K = F̄₂`, `F₂(t)`, … are in scope. S16(iii)(c) and S17(v) rest on exact ℚ-ranks of integer
+Plücker vectors: a ℚ-certificate with `6 × 6` minor `D` proves the spanning in characteristic 0 and at every `p ∤ D`.
+`earspan_modp.py` (new driver; the same draws, denominators cleared, ranks over `F_p`, `p ∈ {2, 3, 5, 7, 11, 13}`):
+ℚ-rank 6 at 20/20 in all thirteen cells, but `F₂`-rank 6 at only **2–11 of 20** and `F₃`-rank 6 at **4–16 of 20** per
+cell (`F₁₃`: 14–20 of 20). So the certificates do not travel by themselves — brief §2's "no characteristic" currently
+rests on characteristic-0 evidence for the pointwise arms — but every cell has an `F₂`- and an `F₃`-certificate among
+its 20 draws, and the closure argument of S17(v) makes **one certificate at equal flags per prime** sufficient for all
+seven orbits (equal flags lie in every orbit's closure; a reduced draw's flags may land in a more degenerate orbit than
+the cell's name, which only helps). **O11:** for each prime `p` dividing the chosen ℚ-certificate's minor, exhibit an
+`F_p`-draw at rank 6 in the equal-flags cell — or a symbolic minor with a unit coefficient (for the *unconstrained*
+skew hexagon `p₁..p₄ = e₁..e₄`, `p₅ = Σ aᵢeᵢ`, `p₆ = Σ bᵢeᵢ`, the `6 × 6` Plücker minor reduces to
+`−a₁a₂b₃b₄ + a₁a₄b₂b₃ − a₂a₄b₁b₃ + a₂a₃b₁b₄`, unit coefficients, nonzero in every characteristic; the ear's
+end-plane constraints need the same computation). The same cap applies to `starcheck.py`: its Jacobian ranks are
+over ℚ (mod `2⁶¹ − 1`, a lower bound), and its 28 "unrealisable over ℚ" patterns are labelled Fano planes, realisable
+in characteristic 2 — a control, so no obligation, but the cap travels with the PASS.
+
+**(iii) (★) is proved on subgraphs of `G` and was consumed for `G₋` too.** Lemmas P and L (S17(iii)) use the habitat
+count on `Γ_A ⊆ H′ ⊊ G` and girth `≥ 7`; O7d's "consumed because" named `X̄(G.splitOff)` alongside `X̄(H′)`.
+`G₋ = G.splitOff` is not a subgraph of `G`: its girth can be 6, and it can contain a proper rigid subgraph — a 7-cycle
+of `G` through the chain shortens to a 6-cycle (`def₃(C₆) = 0`, proper when `|V(G₋)| > 6`). So (★) is claimed for
+`H′` only, and `X̄(G₋)` is derived: `X̄(G₋) → X̄(H′)` has fibre `P(π_w) × (P³)^{m−3} × P(π_v)` for `m ≥ 3` (the two end
+ear points in the end planes, the rest free) — irreducible of constant dimension — and, at `m = 2`, `P(π_w ∩ π_v)`,
+which jumps from `P¹` to `P²` over `{π_w = π_v}`. That locus is the parallel pair `{w, v}` in `H′`'s own plane-first
+base, cost `3`, jump `J_{w,v} = #{y : E_y ∋ w, v} = 0` at `m = 2` (`dist_{H′}(w, v) ≥ 4`), so it has codimension `3`
+in the irreducible `X̄(H′)`; Krull excludes a component of `X̄(G₋)` over it exactly as in S17(i). One paragraph;
+folded into O7d's statement.
+
+**(iv) A narrowing to verify: `hK` at `m = 5` is pointwise from the antecedent when `δ′ ≥ 1`.** The S16(iii)(a) count
+run at `m = 4` (the ear of `G₋`) gives `def₃(H′ ∪ ear₄) = f′ − min(δ′, 1)`: `j ≥ 1` ear-only parts contribute
+`6j − 5c ≤ j − 5 ≤ −1`; `j = 0` with `w, v` in different parts `≤ −5`; `j = 0` with `w, v` together `≤ g′ − f′ = −δ′`
+— no adjacency assumption. So at `δ′ ≥ 1`, `target(G₋) = target(H′) + 25`, while the gluing identity gives
+`rank(G₋) ≤ rank(H′ at x₋) + 25` (`w ≁ v`: side 2 the path `ear₄`, rank `25`, `dim(ρ̄′ + ρ̄₂) ≤ 6`; `w ~ v`: side 2
+the 6-cycle, rank `≤ 30`, `ρ̄′, ρ̄₂ ⊆ ⟨L_{wv}⟩`). The antecedent attaining therefore forces `H′` to attain at
+`x₋|_{H′}`, with `w, v` hubs in `G₋` as in `G` so conjunct (3) is the antecedent's; then S17(v)(b)'s ear swap gives
+`hK` (a fresh `ear₅` spans, `def₃(G) = f′` by S16(iii)(a)). At `δ′ = 0` the count gives `target(G₋) = target(H′) + 24`
+and the antecedent allows `a′ = 1` (`ρ′ = 1`, `a′_w = 0`, `ρ̄′ ⊄ ρ̄₂` — the `(0, 5)` cell of S14(v)'s gap), so only
+`δ′ = 0` would stay on O7 at `m = 5`. Reviewer's derivation, unverified by driver; `splitoff.py` at `--ears 5` would
+control the bookkeeping.
+
+**(v) Signals and the rest.** `check.py --history`: the count ran **3 → 1 → 2** over sessions 5–7 (the state file's
+"2 → 1 → 2" was wrong); the break moved at sessions 6 and 7. The 1 → 2 rise is Case 2 made explicit, not a rename;
+O7c → (★) is a genuine reduction (O7c's statement is consumed by nothing now). S17(v)(a)–(b) and S16(iii)(a)
+re-derived: they hold, with the cap of (ii). No premature kill: Route B's kill reason is Case-2 specific and
+plane-first supersedes it. Session 7 proper landed nothing (twelve output-cap cuts; incident line 2026-09-23); its
+recovery aids were deleted after this review on the PI's word, the PI holding a backup — S17 is the durable record.
+With (i)–(ii) the count is **4** (O7d, O7e, O10, O11): two consumed requirements the count had omitted, not new
+difficulty. **What would change this review's verdict:** a connected mixed pattern with `cost ≤ J` (O7d); a prime at
+which no `ear₅` at equal flags spans (none for `p ≤ 13`); a case-(ii) graph on which cut-vertex additivity of `def₃`
+fails (it should not — the corpus proof is a partition count).

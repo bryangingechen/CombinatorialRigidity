@@ -33,7 +33,7 @@ Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 - `earspan.py` (seed 20260922, 20 draws per cell): rules out "`ρ̄(ear_m) = Λ²` fails at incident flags" for `m = 5, 6` — rank 6 at every draw, one being a certificate (S16(iii)(c)).
 - The direct deficiency count `def₃(H′ ∪ ear_m) = f′ + m − 5` (S16(iii)(a)): rules out any need for the edge-bipartition 2-cut law at `m ≥ 5`, and the `m ≥ 5` step's use of S14(i).
 
-## Session 7 (route R2; crashed uncommitted 2026-09-22/23, recovered 2026-09-23 — nothing here was verified in-session, see `session7-recovery.md`)
+## Session 7 (route R2; crashed uncommitted 2026-09-22/23, recovered 2026-09-23 from the local transcript — nothing here was verified in-session; the recovery aids were deleted after review 3, the durable record is workbook S17)
 - Route A, ear decompositions of the hub graph with ears of interior length `≥ 4` (excess function over the Krull floor, 7 `PGL₄`-orbits of flag pairs, `C(3)` fails only at equal flags): rules out nothing — girth `≥ 7` admits length-1 chords and the `K₄`/`K_{3,3}` subdivided into length-3 branches; abandoned.
 - Route B, hub-edge graph vs length-2 branches, forest case via Shafarevich, peeling induction `T2 → T7`: rules out the one-hub-at-a-time peel — the `(3,3,3,3,1,1)`-type core leaves every remaining hub with hub-edge-degree `≥ 3` after a pinned pair; abandoned at the output cap.
 - Direct fibre recount over `{π_{z₁} = π_{z₂}}`: rules out S16(iv)'s "(a′) jump 2" — both sub-cases jump 1 (confirmed plane-first, S17(vi)).

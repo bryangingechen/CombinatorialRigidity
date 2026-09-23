@@ -13,13 +13,10 @@ parked by the **2026-08-05 Lean hold**; informal argument closed, plus one new (
 one agent per lemma under `/attack <name>` (`HARNESS.md`); each lemma's status surface is
 `notes/attacks/<name>/state.md`. Briefs for **S-mark** (`hbareSplit`, and the split step of
 `hK`) and **(GR-10)** (uniform colouring, the crux of `hK` on the tight stratum) are at
-`notes/attacks/{smark,gr10}/brief.md` (PI-reviewed 2026-09-15). **S-mark: five sessions and
-two reviews (2026-09-15/16).** Review 2 retired route R1 — its obligations were never consumed
-— and endorsed **route R2**: the kernels' own antecedent, read at the generic point, supplies
-every block inequality the consumed step needs (workbook S14); and **`hK`/`hbareSplit` as
-pinned are not locally provable** — their truth on the gap cells is the conjecture for the side
-`G − chain` (the `a′` gap, S14(v)). **PI decision 2026-09-16: both kernels get the induction
-hypothesis on smaller graphs.** *(2)* **Lean track** — this note and `/coordinate-phase 39`:
+`notes/attacks/{smark,gr10}/brief.md` (PI-reviewed 2026-09-15). **S-mark: seven sessions, three reviews (2026-09-15/16/23) — route R2 (the split-off antecedent and the IH as
+certificates for the generic point, S14; both kernels take the IH by the PI's 2026-09-16 decision) in its
+plane-first form since session 7; four obligations open; status surface `notes/attacks/smark/state.md`,
+review notes S18.** *(2)* **Lean track** — this note and `/coordinate-phase 39`:
 formalize the reductions and foundations the attacks stand on, cruxes carried as
 hypotheses, no `sorry`. Items 1–3 DONE 2026-09-15 (`sec:pencil-girth-chain` fully green; field
 hypothesis option C). **Items 4–5 DONE 2026-09-16.** The R2 recon settled the rank bridge,
@@ -30,12 +27,12 @@ and `hbareSplit` takes and returns the new motive `HasDistinctPencilRealization`
 § *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Both attack briefs
 CHECKED 2026-09-17** (PI-directed, against `084ee4ff`, after the Lean round closed):
 `notes/attacks/smark/brief.md` (§§2, 3, 6 rewritten 2026-09-16 against the landed kernels)
-verified hypothesis by hypothesis — **session 6 may start**; `notes/attacks/gr10/brief.md`
+verified hypothesis by hypothesis, patched again 2026-09-23 at review 3; `notes/attacks/gr10/brief.md`
 restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scope), Part B the
 grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **No Lean task queued**; next: `/attack smark` session 6 and
+to-do list; no blueprint chapter). **No Lean task queued**; next: `/attack smark` session 8 (O7d, then O10/O11 — `state.md` *Next steps*) and
 `/attack gr10` session 1, each a main session in its own worktree. Items 7–12 parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
@@ -70,8 +67,8 @@ added (§6); the gr10 brief restructured into Part A (the live char-2 probe, `hK
 verbatim, obligations O1–O5, the certificate-is-a-proof reading through
 `hasGenericPencilRealization_of_independent_pencilRow_target`) and Part B (the grid route as
 documented fallback, §B3 restated against the landed `hK`). S-mark's own status surface is
-`notes/attacks/smark/state.md` (five sessions, two reviews, route R2 adopted; its PI note
-carries the check); (GR-10) has no state file yet — session 1 writes it from Part A. Per this note's own policy (*Hand-off*) the
+`notes/attacks/smark/state.md` (seven sessions, three reviews, route R2 in its plane-first form; review 3
+notes S18, brief patched 2026-09-23); (GR-10) has no state file yet — session 1 writes it from Part A. Per this note's own policy (*Hand-off*) the
 per-session narrative lives there, not here; the two consumer misreadings the reviews caught are
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
@@ -455,9 +452,9 @@ C4ℓ's two-input route) are in the *Lemma checklist* A3–C4ℓ entries.
 **Item 6's Lean track is now closed**, except the deferred A6 and the shared-hub-normalization
 factoring item (both tracked, off any consumed path; *Lemma checklist*). **No Lean task is
 queued; both briefs are checked (2026-09-17), and the next concrete tasks are the two attack
-sessions.** **(1)** `/attack smark` session 6, a main session in its own worktree: first the
-one-paragraph `m ≥ 5` re-derivation (brief §6 *[Lean 2026-09-17]* — the formalized 2-cut law
-needs `w ≁ v`), then O7 with the adjacent-hub control. **(2)** `/attack gr10` session 1,
+sessions.** **(1)** `/attack smark` session 8, a main session in its own worktree: O7d (the
+connected-mixed-pattern codimension count, stated for `H′`), then O10/O11 (the trichotomy's cases (i)–(ii)
+and the characteristic-`p` certificates) — `notes/attacks/smark/state.md` *Next steps*; brief patched at review 3. **(2)** `/attack gr10` session 1,
 likewise: the char-2 probe as briefed in Part A (O1–O5; driver under
 `notes/attacks/gr10/drivers/`, workbook file `notes/pencil/workbook/attack-gr10.md`); a
 systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so O5 reports to the
