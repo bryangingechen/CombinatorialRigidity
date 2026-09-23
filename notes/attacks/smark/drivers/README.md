@@ -216,3 +216,21 @@ the lemmas' proofs are in S17(iii). The four `s_max = 4` rows all fail the habit
 `coinc-both` (equal flags). `timeout 120 python3 notes/attacks/smark/drivers/earspan.py --seed
 20260923 --draws 20 --ms 5,6,7 --regimes coinc-pt,coinc-pl,coinc-both` prints rank `6` at
 `20/20` draws in all nine cells; the original two regimes at seed `20260922` are unchanged.
+
+## `starcheck.py` — exhaustive small-case check of (★) (workbook S17(iv), O7d; helper-written, 2026-09-23)
+
+Run from the repository root: `timeout 900 python3 notes/attacks/smark/drivers/starcheck.py`.
+For nine built-in girth-`≥ 7` graphs (hub paths `P₃..P₆`, a hub 7-cycle, two hub paths joined
+by a length-4 path, a theta with an extra hub, `K₄` and `K_{3,3}` subdivided into length-3
+branches) it enumerates every rank pattern on the marked set `Z` (set partition × partial
+linear space on the classes), computes the total jump `J` combinatorially, and lower-bounds
+each pattern's codimension soundly by `3(|Z| − q) + ρ`, `ρ` the Jacobian rank of the
+collinearity minors at an exact random realisation (tangent dimension `≥` local dimension;
+`ρ` taken mod `2⁶¹ − 1`, `≤` the rational rank). **Figure (base seed `20260923`): PASS on every
+non-vacuous graph, all patterns processed; hub 7-cycle: 877 partitions, 19 217 patterns with
+`J ≥ 1`, 11 159 realised and checked, 28 not realised (the labelled Fano planes, unrealisable
+over `ℚ`); the maximum of `(J + 1) − (3(|Z| − q) + ρ)` over realised patterns is exactly `0`,
+attained only at one collinear size-3 hyperedge (`J = 1`, `ρ = 2`) and one adjacent parallel
+pair (`J = 2`, codim `3`); total 12.9 s.** Caps: `|Z| ≤ 7`, coordinates in `[−30, 30]`, up to
+120 then 720 placement orders per line-structure, 600 s. A PASS is a check on these graphs
+over `ℚ`, not a proof of (★); `K₄`/`K_{3,3}` subdivided are vacuous (`J ≡ 0`).
