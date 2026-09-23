@@ -453,19 +453,78 @@ def draw_collinear(BigP, trip, seed):
                  for kk in range(1, min(5, len(BigP)) + 1) for S in itertools.combinations(BigP, kk))
         if ok: return [pts[x] for x in BigP], (s_, t_)
 
-def analyse(name, pair, args, coll=None):
+def parse_relations(spec, Big):
+    """'X=Y;X=Y+Z;X=Y+Z+W' -> list of (target, sources) in order; checks each target is a big vertex that is otherwise
+    free (not yet used as a target or as a source) and each source is a big label already present."""
+    rels = []; used = set()
+    for item in spec.split(";"):
+        item = item.strip()
+        if not item: continue
+        t, _, rhs = item.partition("=")
+        t = t.strip(); srcs = [x.strip() for x in rhs.split("+")]
+        if not 1 <= len(srcs) <= 3: sys.exit(f"bad relation {item}")
+        for x in [t] + srcs:
+            if x not in Big: sys.exit(f"relation {item}: {x} is not a big vertex (Big = {Big})")
+        if t in used: sys.exit(f"relation {item}: target {t} already constrained or used as a source (not otherwise free)")
+        if t in srcs or len(set(srcs)) != len(srcs): sys.exit(f"relation {item}: repeated label")
+        rels.append((t, tuple(srcs))); used.add(t); used |= set(srcs)
+    return rels
+
+def draw_relations(Big, rels, seed, salt):
+    """exact integer big points: the labels not targeted random in [-30, 30]; then, in order, q_X := q_Y (coincidence),
+    s q_Y + t q_Z or s q_Y + t q_Z + w q_W with seeded nonzero integers in [-5, 5].  Returns (rep, BigP, pts dict on
+    BigP, coefficient list).  Redrawn only if a constructed point is zero, the sources of a construction are
+    dependent (rank < number of sources: the construction would not be the stated one), or two distinct labels coincide."""
+    rng = random.Random(f"{seed}:relations:{salt}:" + ";".join(f"{t}={'+'.join(ss)}" for t, ss in rels))
+    nz = [x for x in range(-5, 6) if x]
+    rep = {x: x for x in Big}
+    for t, ss in rels:
+        if len(ss) == 1: rep[t] = rep[ss[0]]
+    BigP = [x for x in Big if rep[x] == x]
+    while True:
+        pts = {x: [rng.randint(-30, 30) for _ in range(4)] for x in Big}
+        coefs = []; ok = True
+        for t, ss in rels:
+            src = [pts[rep[x]] for x in ss]
+            if len(ss) == 1: pts[t] = list(src[0]); coefs.append(()); continue
+            if rank_exact(src) != len(ss): ok = False; break
+            cs = [rng.choice(nz) for _ in ss]; coefs.append(tuple(cs))
+            pts[t] = [sum(c * p[i] for c, p in zip(cs, src)) for i in range(4)]
+        if not ok: continue
+        if any(not any(pts[x]) for x in BigP): continue
+        if any(rank_exact([pts[a], pts[b]]) != 2 for a, b in itertools.combinations(BigP, 2)): continue
+        return rep, BigP, {x: pts[x] for x in BigP}, coefs
+
+def analyse(name, pair, args, coll=None, rels=None):
     t0 = time.time(); deadline = t0 + args.budget
     if name in G.HAND: Z, E, conn, comment = G.HAND[name]
     else: Z, E, conn, comment = CASES[name]
-    generic = pair is None and coll is None
-    tag = "GENERIC (control)" if generic else (f"q_{coll[0]}, q_{coll[1]}, q_{coll[2]} collinear" if coll else f"q_{pair[0]} = q_{pair[1]}")
+    generic = pair is None and coll is None and rels is None
+    flat = bool(coll or rels)          # rank / flat machinery of --collinear (also used by --relations)
+    tag = "GENERIC (control)" if generic else (f"relations {args.relations}" if rels else (f"q_{coll[0]}, q_{coll[1]}, q_{coll[2]} collinear" if coll else f"q_{pair[0]} = q_{pair[1]}"))
     print(f"\n=== {name}  [{tag}] ===  {comment}")
     adj = G.build_graph(Z, E, conn)
     deg = {z: len(adj[z]) for z in Z}
     Big = sorted(z for z in Z if deg[z] >= 3)
     print(f"|Z|={len(Z)} |E(Gamma)|={len(E)} connectors={len(conn)} girth={G.girth(Z, E, conn)}  Big={Big}" +
           (f"  (isolated marked vertices: {[z for z in Z if deg[z] == 0]})" if any(deg[z] == 0 for z in Z) else ""))
-    if generic or coll:
+    if rels:
+        u = u2 = None; adjacent = False
+        rel_list = parse_relations(args.relations, Big)
+        rep, BigP, qd, coefs = draw_relations(Big, rel_list, args.seed, "draw1")
+        _, _, qd2, coefs2 = draw_relations(Big, rel_list, args.seed + 1, "draw2")
+        for t, ss in rel_list:
+            if len(ss) == 1:
+                dist = {ss[0]: 0}; fr = [ss[0]]
+                while fr:
+                    nf = []
+                    for x in fr:
+                        for w in adj[x]:
+                            if w not in dist: dist[w] = dist[x] + 1; nf.append(w)
+                    fr = nf
+                print(f"coincidence q_{t} = q_{ss[0]}: Gamma-distance {dist.get(t, 'inf')}" + ("  ** ADJACENT **" if t in adj[ss[0]] else ""))
+                adjacent = adjacent or t in adj[ss[0]]
+    elif generic or coll:
         u = u2 = None; rep = {x: x for x in Big}; BigP = list(Big); adjacent = False
         if coll and (len(set(coll)) != 3 or any(x not in Big for x in coll)):
             print(f"SKIPPED: {coll} is not a triple of distinct big vertices"); return None
@@ -487,9 +546,11 @@ def analyse(name, pair, args, coll=None):
     k = {c: len(Ulab[c]) for c in Z}
     if max(k.values()) > 3:
         print(f"SKIPPED: k_c > 3 at {[c for c in Z if k[c] > 3]}"); return None
-    if len(BigP) > 3 and not args.realise_all and not coll:
+    if len(BigP) > 3 and not args.realise_all and not flat:
         print("NOTE: |Big'| > 3: the auto-line criterion assumes |Big'| <= 3; forcing --realise-all"); args.realise_all = True
-    if coll:
+    if rels:
+        qpts = [qd[x] for x in BigP]
+    elif coll:
         qpts, st = draw_collinear(BigP, coll, args.seed)
     else:
         qpts = G.draw_points(len(BigP), args.seed)
@@ -506,7 +567,22 @@ def analyse(name, pair, args, coll=None):
             rS = rank_pts(S); _cl[S] = frozenset(x for x in BigP if x in S or rank_pts(S | {x}) == rS)
         return _cl[S]
     flats2 = sorted({cl(P) for P in itertools.combinations(BigP, 2)}, key=sorted)
-    if coll:
+    if rels:
+        print("big points: " + ", ".join(f"q_{x}={qpts[idx[rep[x]]]}" for x in Big) + "   constructions: " +
+              "; ".join(f"q_{t} := " + (f"q_{ss[0]}" if len(ss) == 1 else " + ".join(f"{c} q_{x}" for c, x in zip(cs, ss))) for (t, ss), cs in zip(rel_list, coefs)))
+        # matroid check: ranks of all subsets of the distinct points of size <= 5, this draw vs an independent draw
+        idx2 = {x: i for i, x in enumerate(BigP)}; q2 = [qd2[x] for x in BigP]
+        mism = []; rkprof = defaultdict(int)
+        for kk in range(1, min(5, len(BigP)) + 1):
+            for S in itertools.combinations(BigP, kk):
+                r1 = rank_pts(S); r2 = rank_exact([q2[idx2[x]] for x in S])
+                rkprof[(kk, r1)] += 1
+                if r1 != r2: mism.append((S, r1, r2))
+        rel_ok = not mism
+        print(f"matroid check (ranks of all subsets of the {len(BigP)} distinct points of size <= 5, draw seed {args.seed} vs an independent draw seed {args.seed + 1}): "
+              f"{'AGREE' if rel_ok else 'DISAGREE ' + str(mism)};  (size, rank) counts: {dict(sorted(rkprof.items()))};  "
+              f"dependent subsets: {[''.join(S) for kk in range(1, min(5, len(BigP)) + 1) for S in itertools.combinations(BigP, kk) if rank_pts(S) < min(4, kk)]};  rank-2 flats: {[sorted(f) for f in flats2]}")
+    elif coll:
         print("big points: " + ", ".join(f"q_{x}={qpts[idx[x]]}" for x in Big) + f"   (q_{coll[2]} := {st[0]} q_{coll[0]} + {st[1]} q_{coll[1]})")
         rel_ok = all(rank_pts(S) == min(4, len(S) - (1 if set(coll) <= set(S) else 0))
                      for kk in range(1, min(5, len(BigP)) + 1) for S in itertools.combinations(BigP, kk))
@@ -520,7 +596,10 @@ def analyse(name, pair, args, coll=None):
     assert rel_ok
     r = {c: rank_pts(Upt[c]) for c in Z}
     J2 = sum(k[c] - r[c] for c in Z)
-    lev1 = 0 if generic else (2 if coll else 3)
+    lev1 = 0 if generic else (sum({1: 3, 2: 2, 3: 1}[len(ss)] for _, ss in rel_list) if rels else (2 if coll else 3))
+    if rels:
+        print(f"J2 contributors (k_c > r_c): {[(c, sorted(Ulab[c]), k[c], r[c]) for c in Z if k[c] > r[c]] or 'none'}")
+        rel_labs = [frozenset([t, *ss]) for t, ss in rel_list]
     if coll:
         stars = [c for c in Z if set(coll) <= Ulab[c]]
         print(f"STAR check: centres c with {{{','.join(coll)}}} inside N_Gamma[c]: {stars or 'none'} ({'STAR' if stars else 'star-free'} triple)")
@@ -534,14 +613,15 @@ def analyse(name, pair, args, coll=None):
     ident = {z: z for z in Z}
     def Ynames(y, s): return f"conn({','.join(sorted((s[y[1]], s[y[2]])))})" if isinstance(y, tuple) else s[y]
     print("non-big hyperedges: " + ", ".join(f"E_{Ynames(y, ident)}={list(Ey)}" for y, Ey in Y) + f";  J3_max over all patterns <= {sum(len(Ey) - 1 for _, Ey in Y)}")
-    auts = [s for s in G.automorphisms(Z, adj, conn) if generic or (coll and {s[x] for x in coll} == set(coll)) or (not coll and {s[u], s[u2]} == {u, u2})]
+    def lab_rank(S): return rank_pts({rep[x] for x in S})
+    auts = [s for s in G.automorphisms(Z, adj, conn) if (all(lab_rank(S) == lab_rank([s[x] for x in S]) for kk in range(1, min(5, len(Big)) + 1) for S in itertools.combinations(Big, kk)) if rels else generic or (coll and {s[x] for x in coll} == set(coll)) or (not coll and {s[u], s[u2]} == {u, u2}))]
     print(f"|Aut(Gamma, connectors{'' if generic else ', fixing the pair setwise'})| = {len(auts)}")
     N = args.slack_cap
     Zs = list(Z)
     lcrng = random.Random(f"{args.seed}:lc")
     fams = family_predicates(args.fam, Z, adj, Big, rep)
     if args.probe is not None:
-        if coll: sys.exit("--probe is not supported in --collinear mode")
+        if flat: sys.exit("--probe is not supported in --collinear / --relations mode")
         return probe(args.probe, name, tag, Z, adj, Big, BigP, rep, Ulab, Upt, r, k, K, J2, Y, Ynames, ident, qpts, idx, rank_pts, args, lcrng)
     # ---- pass 1
     cnt = defaultdict(int)
@@ -563,11 +643,13 @@ def analyse(name, pair, args, coll=None):
         UAlab = [frozenset().union(*(Ulab[c] for c in b)) for b in part]
         rkA = [rank_pts(uA) for uA in UA]
         if any(x > 3 for x in rkA): cnt["partitions with rank_q(U_A) = 4 (unrealisable)"] += 1; continue
-        if coll: UA = [cl(uA) for uA in UA]          # the flat spanned: pi_A contains all of it automatically
+        if flat: UA = [cl(uA) for uA in UA]          # the flat spanned: pi_A contains all of it automatically
         M = sum(3 - r[c] for c in Zs) - sum(3 - x for x in rkA)
-        if coll: defA = [int(set(coll) <= lab) for lab in UAlab]     # = |U_A^lab| - rank U_A (rank <= 3 here)
+        if rels: defA = [len(lab) - x for lab, x in zip(UAlab, rkA)]     # def_q(U_A) = |U_A^lab| - rank U_A
+        elif coll: defA = [int(set(coll) <= lab) for lab in UAlab]     # = |U_A^lab| - rank U_A (rank <= 3 here)
         else: defA = [0 if generic else int(u in lab and u2 in lab) for lab in UAlab]
         D = sum(defA) - J2; sees = any(defA)
+        if rels: sees = any(R <= lab for lab in UAlab for R in rel_labs)   # a class whose labels contain some relation's labels
         hc = [(len(Ey), frozenset(cls[z] for z in Ey)) for _, Ey in Y]
         Jfix = sum(s - (1 if len(C) == 1 else 2) for s, C in hc if len(C) <= 2)
         trip = [C for s, C in hc if len(C) == 3]
@@ -579,7 +661,7 @@ def analyse(name, pair, args, coll=None):
             for P in itertools.combinations(sorted(uA), 2): pairs_cnt[P] += 1
         fixed = [uA for uA in UA if len(uA) == 3]
         forced = any(v >= 3 for v in pairs_cnt.values()) or len(fixed) != len(set(fixed))
-        if coll:
+        if flat:
             fl_cnt = defaultdict(int)
             for uA in UA:
                 for P in flats2:
@@ -596,7 +678,7 @@ def analyse(name, pair, args, coll=None):
                 if ll_best[grp] is None or sl < ll_best[grp]: ll_best[grp] = sl; ll_attain[grp].clear()
                 if sl == ll_best[grp]: ll_attain[grp][min(tuple(sorted(tuple(sorted(s[z] for z in b)) for b in part)) for s in auts)] += 1
         def is_auto(L):
-            if coll:            # rank form of S3: "possibly rho-free" iff no class of rank <= 1 and <= 1 distinct rank-2 flat
+            if flat:            # rank form of S3: "possibly rho-free" iff no class of rank <= 1 and <= 1 distinct rank-2 flat
                 low = [A for A in L if rkA[A] <= 2]
                 return all(rkA[A] == 2 for A in low) and len({UA[A] for A in low}) <= 1
             return len(frozenset.intersection(*(UA[A] for A in L))) >= 2
@@ -615,23 +697,23 @@ def analyse(name, pair, args, coll=None):
             continue
         cnt["partitions enumerated"] += 1
         include_empty = (K + M - Jfix <= N) and not (generic and Jfix == 0) and not forced
-        usize = list(rkA) if coll else [len(uA) for uA in UA]
-        for lines, ncov, nu in pls_iter_bounded(q, trip, K + M - Jfix, N, is_auto, include_empty, use_nu=not args.realise_all, usize=usize, rng=lcrng, early_cut=bool(coll)):
+        usize = list(rkA) if flat else [len(uA) for uA in UA]
+        for lines, ncov, nu in pls_iter_bounded(q, trip, K + M - Jfix, N, is_auto, include_empty, use_nu=not args.realise_all, usize=usize, rng=lcrng, early_cut=flat):
             nCL += 1
             if (nCL & 1023) == 0 and time.time() > deadline: capped = True; break
             jumps = jumps_of(lines); J3 = sum(jumps)
             assert J3 == Jfix + ncov
             if generic and J3 == 0: cnt["(C,L) enumerated with J3 == 0 (generic mode: skipped)"] += 1; continue
             lb = K + M - J3
-            Ilist, pruned = enumerate_I_flat(UA, lines, BigP, rank_pts, cl, flats2) if coll else G.enumerate_I(UA, lines, BigP)
+            Ilist, pruned = enumerate_I_flat(UA, lines, BigP, rank_pts, cl, flats2) if flat else G.enumerate_I(UA, lines, BigP)
             nCLI += len(Ilist) + pruned; nCLI_pruned += pruned
             if not Ilist:
                 cnt["(C,L) with every I unrealisable by a closure rule or none meeting the basic constraints"] += 1; continue
             for I, X, F in Ilist:
-                xr = sum(rank_pts(F[A]) - rkA[A] for A in range(q)) if coll else sum(len(x) for x in X)
+                xr = sum(rank_pts(F[A]) - rkA[A] for A in range(q)) if flat else sum(len(x) for x in X)
                 rho_lb = max(xr, nu)
                 if lb + rho_lb <= N and not args.realise_all:
-                    rho_lb = max(rho_lb, lc_pattern(q, lines, I, UA, F, lcrng, rk=rank_pts if coll else len))
+                    rho_lb = max(rho_lb, lc_pattern(q, lines, I, UA, F, lcrng, rk=rank_pts if flat else len))
                 if lb + rho_lb >= N + 1 and not args.realise_all:
                     nCLI_rank += 1; continue
                 cands.append((lb, part, UA, lines, J3, jumps, I, X, F, M, D, sees, rho_lb))
@@ -704,7 +786,7 @@ def analyse(name, pair, args, coll=None):
     print(f"pass 2: realised {stats['realised']}, not realised {stats['not realised']} (patterns processed {n_done}/{len(cands)}{' CAPPED' if proc_capped else ''}); special-point false alarms resolved by reseeding: {false_alarms}")
     if hist: print("  slack histogram over realised: " + ", ".join(f"{s}: {hist[s]}" for s in sorted(hist)))
     final = {}
-    for grp, label in (("all", "ALL patterns"), ("D", "patterns with D >= 1"), ("sees", "patterns with a class whose labels contain all three" if coll else "patterns that see both")):
+    for grp, label in (("all", "ALL patterns"), ("D", "patterns with D >= 1"), ("sees", "patterns with a class whose labels contain all three" if coll else "patterns with a class whose labels contain some relation's labels" if rels else "patterns that see both")):
         b = best[grp]; lb_ll = ll_best[grp]
         cands_min = [x for x in (b, lb_ll) if x is not None]
         if not cands_min:
@@ -752,10 +834,10 @@ def analyse(name, pair, args, coll=None):
     if stats["not realised"]: verdict += f" [{stats['not realised']} not realised, unverified]"
     if adjacent: verdict += " [adjacent pair: stratum outside the adjacent-distinct locus]"
     print(f"VERDICT ({name}, {tag}): {verdict}   ({t2:.1f}s)")
-    if coll:
+    if flat:
         fa, fs_ = final.get("all"), final.get("sees")
         print(f"COST - J3 := M_q + rho - J3 = slack - K (K = {K}): minimum over all patterns {None if fa is None else fa - K}"
-              f";  over patterns with a class whose labels contain all of {{{','.join(coll)}}}: {None if fs_ is None else fs_ - K}"
+              f";  over patterns with a class whose labels contain {'some relation' if rels else 'all of {' + ','.join(coll) + '}'}: {None if fs_ is None else fs_ - K}"
               f"   (patterns not realised have cost - J3 >= {N + 1 - K})")
     return dict(name=name, tag=tag, J2=J2, K=K, nCL=nCL, nCLI=nCLI, torealise=len(cands), realised=stats["realised"], unreal=stats["not realised"],
                 final=final, neg=len(neg), time=t2, capped=anycap, verdict=verdict, N=N)
@@ -766,6 +848,7 @@ def main():
     ap.add_argument("--pair", nargs=2, metavar=("U", "U2"), help="the two big vertices with q_U = q_U2")
     ap.add_argument("--generic", action="store_true", help="no coincidence; case2geo's check (patterns with J3 >= 1)")
     ap.add_argument("--collinear", nargs=3, metavar=("A", "B", "D"), help="stratum: q_A, q_B, q_D distinct and collinear, no other relation")
+    ap.add_argument("--relations", metavar="SPEC", help="stratum built by constructions 'X=Y;X=Y+Z;X=Y+Z+W' applied in order (coincidence / collinear / coplanar)")
     ap.add_argument("--budget", type=float, default=600.0, help="seconds for this graph")
     ap.add_argument("--seed", type=int, default=G.BASE_SEED)
     ap.add_argument("--order-cap", type=int, default=120)
@@ -776,11 +859,11 @@ def main():
     ap.add_argument("--fam", action="append", help="family spec (repeatable): 'merge=a,b;flat=y1,y2;singleton;extra=a:x;badpair'")
     ap.add_argument("--probe", help="realise one pattern: 'merge=u,v;line=u,w1,w2:u;extra=a:u'")
     args = ap.parse_args()
-    if not args.generic and not args.pair and not args.collinear: sys.exit("--pair U U2, --collinear A B D or --generic required")
+    if not args.generic and not args.pair and not args.collinear and not args.relations: sys.exit("--pair U U2, --collinear A B D, --relations SPEC or --generic required")
     print(f"case2deg.py  seed {args.seed}  budget {args.budget:.0f}s  order_cap {args.order_cap}  nsucc {args.nsucc}  slack_cap {args.slack_cap}"
           f"  realise_all={args.realise_all}  realisations exact over Q, rho mod 2^61-1;  command: {' '.join(sys.argv)}")
-    res = analyse(args.graph, None if (args.generic or args.collinear) else tuple(args.pair), args,
-                  coll=None if args.generic or not args.collinear else tuple(args.collinear))
+    res = analyse(args.graph, None if (args.generic or args.collinear or args.relations) else tuple(args.pair), args,
+                  coll=None if args.generic or not args.collinear else tuple(args.collinear), rels=args.relations or None)
     if res and args.probe is None:
         f = res["final"]
         print(f"\nSUMMARY {res['name']} [{res['tag']}]: J2={res['J2']} K={res['K']} (C,L)={res['nCL']} (C,L,I)={res['nCLI']} to_realise={res['torealise']} realised={res['realised']} "

@@ -3144,3 +3144,25 @@ price `4` when `x ∈ B₀` — ratio `⅛` for its `½` — but price `4 − 6 
 must then be paid by `S_A`, as S25(iv)/S28(v) did (`Δᴹ_A ≤ g_A` there; at arbitrary `M` a big member can carry several).
 The corrected statement to prove next is therefore: *`damage_A ≤ ⅛ · price(A)` (twin: `½`) with `price(A)` counted
 relative to `B₀ ∪ (A ∩ Big)`, and `S_A` pays `½` per charge from a big member outside `B₀`.*
+
+## S37 — Control: `case2deg.py --relations` on two-relation strata (session 13, 2026-09-23; helper-written, adopted)
+
+The mode is in `drivers/README.md`; it reproduces the `--pair` and `--collinear` modes on D3r, and the old
+`--collinear` run (D3r cap 1: 63 `(C, L, I)`, 3 realised, min slack 1) was re-run from the repo path unchanged.
+`slack := lev1 + M_q + ρ − J₂ − J₃ − 1`, so `slack ≥ 0` ⟺ `cost − J₃ ≥ −s`; S32–S35 predict `slack ≥ ½`-rounded margins.
+
+| graph, spec | relations | `lev1` | `J₂` | result |
+|---|---|---|---|---|
+| E15 `v=u;a=u` | triple coincidence (`d(a, u) = 2`) | 6 | 2 | **min slack 3, exact** (all-singleton, lineless); PASS, re-run from the repo path |
+| E55 `v=u;a=u+b` | coincidence (`d = 4`) + collinear through `q*` — S35(iii)'s test cluster | 5 | 0 | slack `≥ 4` (cap 3, 306 `(C,L,I)` all cut by shortcuts) |
+| E55 `b=a;u=a+v` | the mirror | 5 | 0 | slack `≥ 3` (cap 2) |
+| E55 `v=u;b=a` | two coincidences (`d = 4`) | 6 | 0 | slack `≥ 5` (cap 4) |
+| E55 `b=u+v;a=u+v` | four collinear points | 4 | 0 | slack `≥ 3` (cap 2) |
+
+*Evidence, under caps:* one graph with four big vertices (E55), bounds not minima there (the cap-`K` runs time out at
+900 s; the all-singleton pattern, which by hand has slack exactly `K = s`, is the expected minimiser), over ℚ, one
+draw per spec with its matroid checked against a second. No negative slack; on the test cluster (`s = 4`) slack `≥ 4` means
+`cost − J₃ ≥ 0`, i.e. no damage at all on E55, well inside S35(iii)'s `Dmg ≤ 4`. The
+damage shapes of S35 do not occur on E55 (its big vertices are pairwise far), so this tests the ledger's bookkeeping
+at several relations, not the counting lemma. Not run (no qualifying graph): coincidence + coplanarity, two
+collinearities through one point.

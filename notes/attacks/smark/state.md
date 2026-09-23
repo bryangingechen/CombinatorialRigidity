@@ -5,7 +5,7 @@ never append to the old one. Budgets are lines of content per section
 (`python3 notes/harness/check.py --state <this file>`). Overflow goes to
 log.md as one line per attempt. Keep the section names exactly. -->
 
-Sessions so far: 13 · last session: 2026-09-23 (session 13; S32–S36) · review 4: 2026-09-23 (S23; *continue on R2*) · baseline HEAD: 907f521a · **count 2: O7e-b (now one counting statement, S34(iv)), O7e-c** · consumer unchanged (`git diff 084ee4ff HEAD -- CombinatorialRigidity` empty; kernels token-identical to brief §3.1) · **review 5 due** · **next: the class-pricing lemma S35(iv), cases S36(iii)(a)–(b)**
+Sessions so far: 13 · last session: 2026-09-23 (session 13; S32–S37) · review 4: 2026-09-23 (S23; *continue on R2*) · baseline HEAD: 907f521a · **count 2: O7e-b (now one counting statement, S34(iv)), O7e-c** · consumer unchanged (`git diff 084ee4ff HEAD -- CombinatorialRigidity` empty; kernels token-identical to brief §3.1) · **review 5 due** · **next: the class-pricing lemma S35(iv), cases S36(iii)(a)–(b)**
 
 ## Statement <!-- budget 10 -->
 The two kernels of `pencilPair_of_splitOff_of_habitat` (`Escape.lean`, verbatim in brief §3.1; re-diffed at session 13, no Lean change since `084ee4ff`). For `G : Graph α β` and `v a b`, `eₐ e_b e₀` with `G.Simple`, `5 ≤ |V(G)|`, `G.TwoEdgeConnected`, no proper rigid subgraph (`IsProperRigidSubgraph _ G 3` — a *proper vertex subset*), `G.degree v = 2`, `eₐ ≠ e_b`, `G.IsLink eₐ v a`, `G.IsLink e_b v b`, `¬ PencilHub a ∨ ¬ PencilHub b`, `e₀ ∉ E(G)`, and the IH `∀ G', V(G').Nonempty → |V(G')| < |V(G)| → PencilPair K 3 G'`:
@@ -38,6 +38,7 @@ Closed: O7d (S19); O10, O11 (S20); O7c (S17); O7e-a (S22); O7e-b's six single re
 - One uniform ratio `⅛` for non-twin units (session 13): rules out a type-blind count on coplanar clusters of `≤ 10` labels; the hub's fixed price `10` is needed (S35(ii)).
 - Summing S28(vi)'s per-triple `k₁ ≤ 1` over a cluster (session 13): rules out cluster-level `k₁ ≤ 1` (two collinear bad pairs on an 8-cycle, S35(iii)).
 - S28's rank reading (session 12): rules out a separate charging of the line through `λ₀`; now used at every `M` (S33).
+- `case2deg.py --relations` (session 13, helper-written, adopted): two-relation strata on E55 (incl. the test cluster) slack `≥ 3`–`5`, lower bounds under caps; E15 triple coincidence exact min 3 (S37); tests bookkeeping, not the counting lemma.
 - `case2deg.py --collinear` / `--pair` (sessions 11–12): no negative slack on thirteen single-relation runs, exact below caps (S27(ii), S31(ii)); damage shapes never occurred on those graphs.
 - `case2m2.py` (sessions 9, 11): every PASS is a tree or a `C₇` core; no Case-2 core is within reach (S27(vi)); rules out nothing about Case 2.
 - `case2geo.py` (session 10): no pattern with `M + ρ ≤ J₃` at generic `q` on twelve graphs.

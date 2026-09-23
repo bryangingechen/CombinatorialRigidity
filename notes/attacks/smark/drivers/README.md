@@ -401,3 +401,22 @@ this mode. `--generic` and `--pair` output is unchanged (re-run on D3: identical
 
 Caps: four graphs (qualifying: `≥ 3` big vertices, all `k_c ≤ 3`; E13 has two, NK4/T9 have `k_c = 4`), one triple per
 run (E55 two), over ℚ, Jacobian rank mod `2⁶¹ − 1`; E55 at cap 1 exceeds 570 s and was run at cap 0 only.
+
+### `case2deg.py --relations SPEC` — several relations at once (session 13, 2026-09-23; workbook S37; helper-written, adopted)
+
+SPEC is a `;`-list applied in order to otherwise random exact points (seed string `"{seed}:relations:{salt}:{spec}"`):
+`X=Y` (coincidence, `lev1 += 3`), `X=Y+Z` (collinear, `+2`), `X=Y+Z+W` (coplanar, `+1`), coefficients nonzero in
+`[−5, 5]`, targets distinct and never reused as sources; `lev1` is exact (each target free but for its construction,
+sources fixed and independent: an iterated point/line/plane bundle). The matroid of every `≤ 5`-subset of distinct
+points is asserted equal on a second independent draw. Everything else is the `--collinear` machinery (flats,
+`X_A := P_A ∖ cl(U_A)`, the same shortcuts), with `def_A = |U_A| − rk U_A` on labels and automorphisms restricted to
+rank-preserving ones. `D3r v=r+u` reproduces `--collinear r u v` and `D3r v=u` reproduces `--pair u v`.
+
+    timeout 300 python3 -u notes/attacks/smark/drivers/case2deg.py --graph E15 --relations "v=u;a=u" --budget 250 --slack-cap 2
+    timeout 900 python3 -u notes/attacks/smark/drivers/case2deg.py --graph E55 --relations "v=u;a=u+b" --budget 850 --slack-cap 3
+    # also E55 "b=a;u=a+v" (cap 2), "v=u;b=a" (cap 4), "b=u+v;a=u+v" (cap 2)
+
+Caps: E55 is the only qualifying graph with four big vertices, so two-relation strata are E55 only (plus a triple
+coincidence on E15); no graph has five, so coincidence + coplanarity and two collinearities through one point were not
+run. Every E55 run ended as a **lower bound** (`slack ≥ cap + 1` by the sound shortcuts; the cap-`K` run that would
+realise the all-singleton pattern timed out at 900 s); E15 is exact.
