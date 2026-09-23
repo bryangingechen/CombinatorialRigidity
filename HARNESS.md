@@ -94,14 +94,14 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
   alone decides route and brief changes. ← routes declared spent on false
   premises in the arc; smark reviews 1 and 2 (after sessions 2 and 5) each
   re-aimed the brief only on the PI's word.
-- [2026-09-23, trial] A derivation that is not in a file does not exist:
-  before a case analysis of more than three branches, and first thing on a
-  resume after an output-cap cut, write what is established so far to a
-  scratch file with a tool call, then reason on. ← smark s7: twelve
-  consecutive thinking turns cut at the output cap (73k–160k characters
-  each, no tool call between them), ~4.1h, ≈$66, nothing committed; s6 was
-  cut twice and the recovery session once more; `report.py --attack`'s
-  `cap` column counts these.
+- [2026-09-23, trial] Work in small results, each landed in the workbook
+  as soon as it holds: state one sub-claim, prove it, write its statement
+  and proof as the next S-number, then take the next. A case analysis of
+  more than three cases is one sub-claim per case; on a resume, re-read the
+  workbook's last S-number and continue from it. ← smark s7: twelve
+  consecutive turns cut at the output cap with no file write between them,
+  ~4.1h, ≈$66, nothing committed; `report.py --attack`'s `cap` column
+  counts these.
 
 ## Retired
 
