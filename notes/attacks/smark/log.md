@@ -32,3 +32,12 @@ Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 - The habitat count on the hub graph (S16(ii)): rules out the brief's O7 "first instance" (a hub with three hub neighbours each of hub-degree `≥ 3`) as a habitat member — every subgraph has `5|E| ≤ 6|V| − 6`, so the hub graph is 2-degenerate; the planned adjacent-hub control was not run (nothing it could refute survives).
 - `earspan.py` (seed 20260922, 20 draws per cell): rules out "`ρ̄(ear_m) = Λ²` fails at incident flags" for `m = 5, 6` — rank 6 at every draw, one being a certificate (S16(iii)(c)).
 - The direct deficiency count `def₃(H′ ∪ ear_m) = f′ + m − 5` (S16(iii)(a)): rules out any need for the edge-bipartition 2-cut law at `m ≥ 5`, and the `m ≥ 5` step's use of S14(i).
+
+## Session 7 (route R2; crashed uncommitted 2026-09-22/23, recovered 2026-09-23 — nothing here was verified in-session, see `session7-recovery.md`)
+- Route A, ear decompositions of the hub graph with ears of interior length `≥ 4` (excess function over the Krull floor, 7 `PGL₄`-orbits of flag pairs, `C(3)` fails only at equal flags): rules out nothing — girth `≥ 7` admits length-1 chords and the `K₄`/`K_{3,3}` subdivided into length-3 branches; abandoned.
+- Route B, hub-edge graph vs length-2 branches, forest case via Shafarevich, peeling induction `T2 → T7`: rules out the one-hub-at-a-time peel — the `(3,3,3,3,1,1)`-type core leaves every remaining hub with hub-edge-degree `≥ 3` after a pinned pair; abandoned at the output cap.
+- Direct fibre recount over `{π_{z₁} = π_{z₂}}`: rules out S16(iv)'s "(a′) jump 2" — both sub-cases jump 1 (confirmed plane-first, S17(vi)).
+
+## Session 7-recovery (2026-09-23; route R2 restated plane-first, S17)
+- Peel induction on a marked vertex in the plane-first base: rules out a naive induction on `|Z|` — concurrent-line conditions on the earlier planes are invisible to `J′`; replaced by global charging (Lemmas P, L).
+- Reading S14(iii) pointwise for `hK` at `m = 5` from the IH: rules out that shortcut — the hub-neighbourhood conjunct at a `G`-degree-3 chain end is not imposed on `H′`'s witness.

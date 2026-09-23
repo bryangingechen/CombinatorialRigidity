@@ -1387,3 +1387,174 @@ would change this:** a habitat side whose tower has a jump stratum of codimensio
 (the invariant failing: a hub plane forced through a non-neighbour's point by the incidences alone);
 or a `HasDistinctPencilRealization` witness of some habitat `H′` isolated from `X̄°(H′)` — a
 component of `X̄(H′)` of dimension `≥ dim A − e` over a jump stratum.
+
+## S17 — The plane-first fibration: O7 as a codimension statement about free hub planes; two combinatorial lemmas; the kernels are pointwise at `m ≥ 6` (`hK`) and `m ≥ 5` (`hbareSplit`) (session 7 recovery, 2026-09-23)
+
+Session 7 (2026-09-22/23) committed nothing: it spent ~4 h on O7c in twelve reasoning turns
+that each hit the output-token cap, and its content was recovered from the local transcript
+(`notes/attacks/smark/session7-recovery.md`, an aid the PI may delete once this section is
+accepted). This section re-derives, by a different route, the one claim that recovery note
+marks as found twice independently — S16(iv)'s stratum (a′) "jump 2" is an overcount — and
+replaces the hub-by-hub tower of S16(iv) with a fibration in which O7c does not occur. Tree at
+`ac3fbef6`; the consumer diff of S16(i) was re-run by session 7 with no change and is not
+repeated. Drivers `planefirst.py` (new; pure combinatorics) and `earspan.py` (three regimes
+added), caps in `drivers/README.md`.
+
+**(i) The plane-first fibration.** Setting of S16(iv): `H` a habitat side or graph, `Z` its hub
+set (for `H′` including `w, v`), `X̄(H) ⊆ A` the closed incidence variety. For a vertex `y` let
+`E_y := N[y] ∩ Z` (a hub's own hyperedge contains itself) and `s_y := |E_y|`. Project
+`X̄(H) → B := ∏_{z ∈ Z} P³*`, **planes only**. The fibre over `π ∈ B` is
+`∏_y P(⋂_{c ∈ E_y} π_c)`, a product of projective linear spaces, of dimension
+`Σ_y (3 − rk_y(π))` with `rk_y(π)` the rank of the normals `{n_c : c ∈ E_y}`; it is nonempty iff
+`rk_y ≤ 3` for every `y`. `Σ_y s_y = |Z| + e`, so at `rk_y = s_y` the total is
+`3|Z| + 3|V| − |Z| − e = dim A − e` — the expected dimension of S16(iv). The base is a
+**product of projective spaces**: irreducible, with no hub order, no 2-degeneracy (S16(ii) is
+not needed here) and no induction along the graph; degeneracy is *linear dependence among the
+normals of one hyperedge*, a determinantal condition on `B`.
+
+*Case 1 (`s_y ≤ 3` for all `y`).* This is exactly `|closedHubNbhd| ≤ 3` at every vertex, i.e.
+`PencilNondegFeasible` (S16(v)) — `hK`'s whole domain — and it forces the hub graph to have
+maximum degree `≤ 2` (a hub with three hub neighbours has `s = 4`). Every fibre is nonempty, so
+`X̄ → B` is surjective; over the dense open `B° := {rk_y = s_y ∀ y}` (≤ 3 distinct free vectors
+of `K⁴` are generically independent) the fibres are irreducible of constant dimension, so
+`X̄° := X̄|_{B°}` is irreducible of dimension `dim A − e`. Let `J(π) := Σ_y (s_y − rk_y(π)) ≥ 0`
+be the **total jump** and `D_j := {J ≥ j}` (closed, by upper semicontinuity of the fibre
+dimension). Then `dim X̄|_{D_j ∖ D_{j+1}} ≤ dim D_j + (dim A − e − 3|Z|) + j = dim X̄° − codim D_j + j`,
+and Krull (S16(iv)) bounds every component of `X̄` below by `dim X̄°`. Hence
+
+> **(★)** `X̄(H)` is irreducible as soon as `codim_B D_j ≥ j + 1` for every `j ≥ 1`.
+
+(★) is a statement about `|Z|` free planes in `P³` and the hypergraph `{E_y}`; it is the
+plane-first form of S16(iv)'s "codim > jump", with **O7c gone**: no incidence between a plane
+and a point ever has to be shown non-forced, because the points are not in the base.
+*Case 2 (`hbareSplit`'s domain, some `s_y ≥ 4`)*: the image of `X̄ → B` is the closed set where
+every hyperedge with `s_y ≥ 4` has `rk_y ≤ 3` (its `≥ 4` planes concurrent); (★) is then to be
+read with `B` replaced by that image, whose irreducibility is a separate (determinantal) question
+— see (vii).
+
+**(ii) The hypergraph at girth `≥ 7`.** `|E_y ∩ E_{y′}| ≤ 1` for non-adjacent `y, y′` (a common
+neighbour is unique: no 4-cycle) and `E_y ∩ E_{y′} = {y, y′}` for adjacent hubs (no triangle); a
+pair `{c, c′} ⊆ Z` lies in `E_y` for `y ∈ {c, c′}` only when `c ~ c′` and for at most one `y`
+otherwise. Checked on 132 girth-`≥ 7` sides by `planefirst.py` (0 violations). The abstract
+setting for everything below: `G` in the habitat, `Z ⊆ V(G)` *any* marked set, `E_y := N[y] ∩ Z`
+with `s_y ≤ 3` — deleting marked vertices stays in the class, and "hub" is never used.
+
+**(iii) Two combinatorial lemmas (the cost of a degeneracy against the jump it buys).** The rank
+pattern of `π` is determined by its *parallel classes* (sets of equal planes) and its *lines*
+(sets of `≥ 3` distinct planes through a common line of `P³`, i.e. collinear normals in `P³*`);
+only these matter for `J` since `s_y ≤ 3`. Placing the normals one class at a time, a
+non-representative member of a class costs codimension `3` and a class lying on a line through
+two earlier classes costs `2` — a valid *lower* bound on the codimension of the pattern's locus
+(sequential upper bound on its dimension). Writing `J = Σ_A J_A + J_line` with
+`J_A := Σ_y (|E_y ∩ A| − 1)⁺` for a parallel class `A` and `J_line := #{y : E_y = three distinct
+collinear classes}`:
+
+- **Lemma P.** For every `A ⊆ Z` with `|A| ≥ 2`: `J_A ≤ 3|A| − 4` (one less than the cost
+  `3(|A| − 1)`). *Proof.* Let `Y_A := {y ∉ A : |N(y) ∩ A| ≥ 2}` and `Γ_A` the subgraph on
+  `A ∪ Y_A` with the edges inside `A` and between `A` and `Y_A`; `Γ_A ⊆ H′ ⊊ G` (an ear-interior
+  vertex has one hub neighbour at most, `m ≥ 2`), so `5e(Γ_A) ≤ 6(|A| + |Y_A| − 1)` (S16(ii)).
+  `J_A = Σ_{a ∈ A} deg_A(a) + Σ_{y ∈ Y_A} (|N(y) ∩ A| − 1) = e(Γ_A) + e(A) − |Y_A|`. From
+  `2|Y_A| ≤ e(A, Y_A) ≤ e(Γ_A)`: `|Y_A| ≤ 1.5(|A| − 1)`; and `e(A) ≤ 1.2(|A| − 1)`; so
+  `J_A ≤ (6|A| − 6 + |Y_A|)/5 + 1.2(|A| − 1) ≤ 2.7(|A| − 1) ≤ 3|A| − 4` for `|A| ≥ 5`.
+  `|A| = 2`: `J_A ≤ 2` by pair visibility. `|A| = 3`: `Γ_A` has `≤ 6` vertices and girth `≥ 7`,
+  a forest, `e(Γ_A) ≤ 2 + |Y_A|`, `e(A) ≤ 2`, `J_A ≤ 4 ≤ 5`. `|A| = 4` (`|Y_A| ≤ 4`): by
+  `|Y_A|`: `0 → 2e(A) ≤ 6`; `1 → e(Γ) ≤ 4, e(A) ≤ 2, J ≤ 5`; `2 → e(Γ) ≤ 6, e(A) ≤ 2, J ≤ 6`;
+  `3 → e(Γ) ≤ 7, e(A) ≤ 3, J ≤ 7`; `4 → e(Γ) ≤ 8, e(A) ≤ 3, J ≤ 7`; all `≤ 8`. ∎ Tight at an
+  adjacent pair (`J_A = 2`, cost `3`): `planefirst.py` finds slack `0` there and nowhere below.
+- **Lemma L.** For every `L ⊆ Z` of `t ≥ 3` marked vertices with distinct collinear normals:
+  `J_line(L) := #{y : E_y ⊆ L, |E_y| = 3} ≤ 2(t − 2) − 1`. *Proof.* In Case 1 a marked vertex
+  has `≤ 2` marked neighbours, so `G[L]` has maximum degree `≤ 2`; a hyperedge `E_y ⊆ L` of size 3
+  is either `y ∈ L` with both marked neighbours in `L` (`deg_L y = 2`; at most `e(L)` such `y`)
+  or `y ∉ L` with three neighbours in `L` (impossible in Case 1: a non-hub has degree 2 and a
+  hub `y ∉ L` with three marked neighbours has `s_y = 4`). So `J_line(L) ≤ #{y ∈ L : deg_L y = 2}
+  ≤ e(L) ≤ 1.2(t − 1)`, and `1.2(t − 1) ≤ 2(t − 2) − 1` for `t ≥ 5`; `t = 3`: one hyperedge at
+  most (two would overlap in 3); `t = 4`: `G[L]` a forest of maximum degree `≤ 2` on 4 vertices,
+  `≤ 2` interior vertices, `J ≤ 2 ≤ 3`. ∎ (The general-`s_y` version, allowing outside `y` with
+  three neighbours in `L`, goes through the habitat count on `L ∪ Y_L` exactly as Lemma P and
+  gives the same bound; written in the recovery scratch, not needed in Case 1.) Tight at a hub
+  path `a — z — b` (`J = 1`, cost `2`); `planefirst.py` slack `0` there, never negative.
+
+*Consequences.* (★) holds when the degeneracies of `π` are parallelisms only (cost
+`Σ_A 3(|A| − 1) ≥ Σ_A (J_A + 1) ≥ J + 1`), or a single line of distinct planes (Lemma L), and for
+every `j ≤ 2` outright (a first degeneracy costs at least `J + 1`: `3 ≥ 2 + 1` for a parallel
+pair, `2 ≥ 1 + 1` for a collinear triple). The locus of a pattern is a product over the
+hub-disjoint connected components of its defective hyperedges, so codimensions add and (★)
+reduces to **connected** patterns.
+
+**(iv) The residue — O7d, replacing O7c.** What (★) still needs in Case 1: for every *connected*
+pattern that mixes parallel classes with at least one line, or has two lines meeting, or a
+class that is the third point of several lines, `cost ≥ J + 1`, where `cost` is the maximum over
+placement orders of the sequential codimension (a class forced onto two already-determined
+lines costs `3`, onto one costs `2`, a non-representative class member costs `3`). This is finite
+combinatorics on `(G, Z)` with girth `≥ 7`, the habitat count and `s_y ≤ 3` — no algebraic
+geometry is left in it, and no "generic point of a partial tower". The two lemmas cover its
+two pure cases with slack exactly `1` each, which is why the mixed case is not automatic: the
+surplus must be shown not to cancel when a class both carries parallel members and sits on a
+line. A checker that enumerates all rank patterns on `|Z| ≤ 6` marked vertices and lower-bounds
+each pattern's codimension by the Jacobian rank of its defining minors at a random exact
+realisation is the natural control; it was commissioned in this session and its figure, if it
+lands, is recorded in the state file's *Tried* section, not here.
+
+**(v) Theorem (the kernels are pointwise at long chains).** Let `G = H′ ∪ ear_m` at the hub cut
+`{w, v}` (trichotomy case (iii)). (a) *`hbareSplit`, `m ≥ 5`:* from the IH's second conjunct
+alone. (b) *`hK`, `m ≥ 6`:* from the antecedent alone. Neither uses irreducibility, S14(i)–(iii),
+or the 2-cut law; both produce a `K`-point directly.
+*Proof.* Certificate first: `earspan.py` (seeds `20260922`, `20260923`; `s = 20`; 20 draws per
+cell) finds the `m + 1` hinge lines of a random ear at rank `6` in every cell `m ∈ {5, 6, 7}` ×
+{generic, incident, `p_w = p_v`, `π_w = π_v`, equal flags}; one exact draw per cell is a
+certificate, and rank is lower semicontinuous on the ear moduli at fixed flags (irreducible), so
+the lines of a **generic ear span `Λ²K⁴` at every flag pair of these five orbit types**; the two
+single-incidence orbits (`p_v ∈ π_w` only, and its mirror) contain the both-incident orbit in
+their closure, so semicontinuity on the total space (flags × ear) covers them too — all seven
+`PGL₄`-orbits of flag pairs (S16(iv)'s ambient; the count `10, 9, 9, 8, 7, 7, 5` is the recovery
+note's, re-derived: a flag has 5 parameters, the diagonal `PGL₄` has 15, the generic stabiliser
+of a flag pair has 5 = the gauge group `S(ϕ)` of S1). (a) The IH gives an attaining,
+adjacent-distinct panel realization `x′` of `H′` over `K`; its normals at `w, v` are planes
+through `p_w, p_v` containing the neighbours' points, so `(p_w, π_w, p_v, π_v)` is a flag pair of
+some orbit type. Add an ear over `K` at these flags with its `m + 1` lines spanning `Λ²` and its
+points distinct from their neighbours (nonempty open in the `K`-linear ear moduli, so it has a
+`K`-point). The result is a panel realization of `G` (`N_G[w] = N_{H′}[w] ∪ {x₁} ⊆ π_w`) with
+adjacent points distinct, and by S16(iii)(a)–(b) — both pointwise identities: the deficiency
+count and the gluing identity `finrank_span_rigidityRows_vertexTwoCut_eq`, with the cycle trick
+at `w ~ v` — `rank(G) = rank(H′) + 5(m + 1) = 6(|V(G)| − 1) − def₃(G)`. That is
+`HasDistinctPencilRealization K 3 G`. (b) The antecedent gives `x₋`, nondegenerate and attaining
+for `G₋ = H′ ∪ ear_{m−1}`, over `K`. Discard its ear, keep `x′ := x₋|_{H′}` (all planes
+included), and add a new ear as in (a). Nondegeneracy of `G` at the new point: conjunct (3) at
+every hub is the *same* condition as in `G₋` (ear vertices are non-hubs, so `closedHubNbhd` is
+unchanged at `w, v` and their neighbours); conjunct (4) at the non-hubs of `H′` is unchanged and
+at the ear vertices is generic; (1)–(2) as in (a). Rank: with `m − 1 ≥ 5`, `rank(G₋) = rank(H′ at
+x′) + 5m` and `def₃(G₋) = f′ + (m − 1) − 5` by S16(iii) applied to `G₋`, so `G₋` attaining gives
+`rank(H′ at x′) = 6(|V(H′)| − 1) − f′`; then `rank(G) = rank(H′ at x′) + 5(m + 1) = target(G)`
+as in (a). That is `HasGenericPencilRealization K 3 G`. ∎
+*Reading.* The IH is not used in (b) and the antecedent not in (a); at `m ≥ 6` each kernel
+follows from **one** of its two smaller-graph hypotheses. O7 (irreducibility of `X̄(H′)`,
+`X̄(G.splitOff)`) is load-bearing only for `m ≤ 4` on both arms and for `m = 5` on `hK`'s arm
+(where `G₋ = H′ ∪ ear₄` has five ear lines and the `δ′`-dependent gluing of S14(iii) enters).
+This settles the scope question the recovery note lists as re-litigated five times: the
+"`m ≥ 5` requires only descent and nondegeneracy" reading was right for `hbareSplit` and one
+step short for `hK` (the closed-hub-neighbourhood conjunct at a chain end of `G`-degree 3 is
+*not* implied by the IH witness of `H′`, where that end is a non-hub — hence the antecedent).
+
+**(vi) What this does to S16(iv)'s stratum list.** The plane-first base has no point
+coordinates, so S16(iv)'s stratum (a′) — `π_{z₁} = π_{z₂}` *and* `p, p_{z₁}, p_{z₂}` collinear —
+is not a base stratum at all: over `{π_{z₁} = π_{z₂}}` (codimension 3 in `B`) the fibre of the
+hub `z` is the whole `P(π_{z₁})` whether or not the points are collinear, and the jump is
+`Σ_y (s_y − rk_y)` over the hyperedges containing both, i.e. `1` if `z₁ ≁ z₂` (only `E_z`) and
+`2` if `z₁ ~ z₂` — the recovery note's "(a′) is an overcount" (found twice there) is confirmed,
+and the jump-2 loci of the base are exactly *three equal planes on one hyperedge* (codimension
+6) and the adjacent parallel pair (codimension 3, jump 2, the tight case of Lemma P). The
+strata (a), (b), (d) of S16(iv) become: (a)/(d) a parallel pair, (b) — `p_{z₁}, p_{z₂} ∈ π_{z₁} ∩
+π_{z₂}` — is a *fibre* condition and is no stratum of `B`; nothing needs counting for it. The
+S16(iv) reduction "codim > jump" stands; only its stratum bookkeeping is superseded by (★).
+
+**(vii) Verdict.** (i)–(ii) *proven-informally*; (iii) *proven-informally* (Lemmas P and L), with
+`planefirst.py` as the control (slack `≥ 0` at 132 rows, tight at the predicted shapes); (v)
+*proven-informally* with an exhibited certificate (`earspan.py`, nine new cells); (vi) a
+correction of S16(iv)'s prose, no claim changes. Open: **O7d** (iv), the connected mixed
+patterns, for Case 1; and, for Case 2 (`hbareSplit`'s domain, `m ≤ 4` only now), the
+irreducibility of the image of `X̄ → B` — the locus where every hyperedge of size `≥ 4` is
+concurrent — before (★) can even be stated there. **What would change this:** a connected mixed
+pattern on some habitat `(G, Z)` with `cost ≤ J` (a violation the commissioned checker could
+exhibit); a flag orbit at which the `m + 1` lines of a generic `ear_{m ≥ 5}` fail to span `Λ²`
+(none among the seven); or a `HasDistinctPencilRealization` witness of a habitat `H′` at `m ≤ 4`
+isolated from `X̄°(H′)`.

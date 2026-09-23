@@ -17,6 +17,8 @@ subset of a product of a plane, a plane and P^3's -- irreducible).  The run prin
 is printed as a control and must show rank 5.
 
     timeout 120 python3 notes/attacks/smark/drivers/earspan.py --seed 20260922 --draws 20
+    timeout 120 python3 notes/attacks/smark/drivers/earspan.py --seed 20260923 --draws 20 \\
+        --ms 5,6,7 --regimes coinc-pt,coinc-pl,coinc-both   # S17(v), the degenerate flags
 
 Caps, disclosed: coordinates are integers in [-20, 20]; 20 draws per cell; the flag regimes
 are the two named.  Exact arithmetic; no floating point anywhere.
@@ -111,19 +113,35 @@ def pluecker(p, q):
 
 
 def draw_flags(rng, s, regime):
+    """Flag pair by regime.  generic / incident as before (S16(iii)); the three
+    degenerate regimes (S17(v)) are the flag types a HasDistinctPencilRealization
+    witness of H' may carry at a NON-adjacent hub pair {w, v}:
+      coinc-pt   -- p_w = p_v, pi_w != pi_v (both through the point);
+      coinc-pl   -- pi_w = pi_v, p_w != p_v (both in the plane);
+      coinc-both -- p_w = p_v and pi_w = pi_v."""
+    pw = v4(rng, s)
+    pv = pw if regime in ('coinc-pt', 'coinc-both') else v4(rng, s)
     if regime == 'generic':
-        pw, pv = v4(rng, s), v4(rng, s)
         nw, nv = plane_through(rng, s, [pw]), plane_through(rng, s, [pv])
-    else:  # incident: p_v in pi_w, p_w in pi_v
-        pw, pv = v4(rng, s), v4(rng, s)
+    elif regime == 'incident':
         nw = plane_through(rng, s, [pw, pv])
         nv = plane_through(rng, s, [pw, pv])
-    ok = (rank([pw, pv]) == 2 and rank([nw, nv]) == 2
-          and dot(nw, pw) == 0 and dot(nv, pv) == 0)
+    elif regime == 'coinc-pt':
+        nw, nv = plane_through(rng, s, [pw]), plane_through(rng, s, [pw])
+    else:  # coinc-pl, coinc-both
+        nw = plane_through(rng, s, [pw, pv])
+        nv = nw
+    ok = dot(nw, pw) == 0 and dot(nv, pv) == 0
     if regime == 'generic':
-        ok = ok and dot(nw, pv) != 0 and dot(nv, pw) != 0
-    else:
-        ok = ok and dot(nw, pv) == 0 and dot(nv, pw) == 0
+        ok = ok and rank([pw, pv]) == 2 and rank([nw, nv]) == 2 \
+            and dot(nw, pv) != 0 and dot(nv, pw) != 0
+    elif regime == 'incident':
+        ok = ok and rank([pw, pv]) == 2 and rank([nw, nv]) == 2 \
+            and dot(nw, pv) == 0 and dot(nv, pw) == 0
+    elif regime == 'coinc-pt':
+        ok = ok and rank([nw, nv]) == 2
+    elif regime == 'coinc-pl':
+        ok = ok and rank([pw, pv]) == 2
     return (pw, nw, pv, nv) if ok else None
 
 
@@ -143,12 +161,13 @@ def main():
     ap.add_argument('--draws', type=int, default=20)
     ap.add_argument('--s', type=int, default=20)
     ap.add_argument('--ms', default='4,5,6')
+    ap.add_argument('--regimes', default='generic,incident')
     a = ap.parse_args()
     rng = random.Random(a.seed)
     ms = [int(t) for t in a.ms.split(',')]
     print(f'earspan.py seed={a.seed} draws={a.draws} s={a.s}')
     for m in ms:
-        for regime in ('generic', 'incident'):
+        for regime in a.regimes.split(','):
             got, made = 0, 0
             while made < a.draws:
                 flags = draw_flags(rng, a.s, regime)

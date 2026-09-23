@@ -196,3 +196,23 @@ over the irreducible ear moduli).
 Caps, disclosed: integer coordinates in `[−20, 20]`, 20 draws per `(m, regime)`, the two named
 regimes. The population is one ear at prescribed flags; the statement certified is about the
 generic ear at each regime, nothing about sides.
+
+## `planefirst.py` — the hub hypergraph and the two combinatorial lemmas of S17 (pure combinatorics)
+
+Run from the repository root: `timeout 900 python3 notes/attacks/smark/drivers/planefirst.py`.
+For each side (`Z :=` degree-`≥ 3` vertices plus the terminals, `E_y := N[y] ∩ Z`) it prints
+`s_max`, the hub-graph maximum degree, girth, the habitat count on the side, the girth-7
+overlap facts, and the minimum slack of Lemma P (`3|A| − 4 − J_A` over all `A ⊆ Z`, `|A| ≤ 6`)
+and Lemma L (`2(|L| − 2) − 1 − J_line(L)` over all `L ⊆ Z`, `|L| ≤ 6`). Population: the 23
+`sideprof` sides; the 13 `census` skeletons subdivided into 3 and, seeded `20260923`, three
+length tuples in `{2,3,4}` and four in `{1,2,3,4}` containing a length-1 (hub–hub) edge, each
+kept at girth `≥ 7`; hub paths `P₃..P₆` and a hub 7-cycle with pendant paths; three `sk4` sides.
+**Figure (2026-09-23): `ROWS: 135`, girth-`≥ 7` rows `132`, overlap violations `0`, min Lemma-P
+slack `0`, min Lemma-L slack `0`, Case-1 rows `131/135`.** Caps: subsets of `Z` of size `≤ 6`
+only; the population is the named one — "never negative" is a statement about these 132 rows,
+the lemmas' proofs are in S17(iii). The four `s_max = 4` rows all fail the habitat count.
+
+`earspan.py` gained three regimes (S17(v)): `coinc-pt` (`p_w = p_v`), `coinc-pl` (`π_w = π_v`),
+`coinc-both` (equal flags). `timeout 120 python3 notes/attacks/smark/drivers/earspan.py --seed
+20260923 --draws 20 --ms 5,6,7 --regimes coinc-pt,coinc-pl,coinc-both` prints rank `6` at
+`20/20` draws in all nine cells; the original two regimes at seed `20260922` are unchanged.
