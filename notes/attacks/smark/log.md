@@ -26,3 +26,9 @@ Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 - `earcompose.py`, 14 hub sides × 3 ears × 6 draws = 252/252 (seed 20260916; theorems by S7(vi)): rules out "S10 predicts attainment wrongly" and "a battery side exceeds the S10 `c′` bound" — 2-cut law holds, S3 criterion ⟺ exact rank.
 - `adversarial.py`, K4-minor + prism sides at `δ = 2,3,4` × 6 draws: rules out `c′(Π_w) ≥ 2` on those four sides; its "tight = 1" reading was an ear's `L_{wx}` (S13(i)), so it rules out nothing about hub structure.
 - `earcompose --side sk4_d*` (K4-minor ∪ `ear_{2,3}`, 6 draws): rules out "the consumed shape fails on a K4-minor side" — attains at every draw; the side is an ear composed with a `δ = 6` remainder.
+
+## Session 6 (route R2; the break moved from "the tower needs a hub order that need not exist" to O7c)
+- Re-diff of the consumer at `c9dd58ca` against every definition body: rules out the brief's "`hK`'s domain is the feasible case" as a *given* (S16(i) D1 — feasibility of `G` must be derived from the antecedent; done in S16(v)) and its "(α) deletes O8" (D2 — `HasDistinctPencilRealization` still admits collinear hub stars and coincident hub planes; absorbed by S16(iv)).
+- The habitat count on the hub graph (S16(ii)): rules out the brief's O7 "first instance" (a hub with three hub neighbours each of hub-degree `≥ 3`) as a habitat member — every subgraph has `5|E| ≤ 6|V| − 6`, so the hub graph is 2-degenerate; the planned adjacent-hub control was not run (nothing it could refute survives).
+- `earspan.py` (seed 20260922, 20 draws per cell): rules out "`ρ̄(ear_m) = Λ²` fails at incident flags" for `m = 5, 6` — rank 6 at every draw, one being a certificate (S16(iii)(c)).
+- The direct deficiency count `def₃(H′ ∪ ear_m) = f′ + m − 5` (S16(iii)(a)): rules out any need for the edge-bipartition 2-cut law at `m ≥ 5`, and the `m ≥ 5` step's use of S14(i).

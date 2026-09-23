@@ -1225,3 +1225,165 @@ a proof.
 provable after all (a local argument giving `a′ = 0` on the component the antecedent
 certifies); or a bare-arm instance where `G₋` and `H′` attain and `G` fails at every
 configuration — the control session 6 should run first on an adjacent-hub side.
+
+## S16 — The hub order is forced by the habitat count; `m ≥ 5` without the 2-cut law; the irreducibility tower restated as a codimension check; descent (session 6, 2026-09-22)
+
+Session 6's charges (state file, PI note of 2026-09-17): the `m ≥ 5` re-derivation, then O7 with
+an adjacent-hub control, then O9. Tree at `c9dd58ca`. Driver `earspan.py` (exact ℚ, seed
+`20260922`, caps in `drivers/README.md`).
+
+**(i) The consumer, re-diffed at `c9dd58ca`.** `pencilPair_of_splitOff_of_habitat`
+(`Escape.lean`): both kernels match the brief's §3.1 quote byte for byte, and every operator's
+body matches its §3.2 gloss (`splitOff`, `PencilHub`, `closedHubNbhd`, `IsNondegPencilRealization`,
+`PencilNondegFeasible`, `HasDistinctPencilRealization`, `HasGenericPencilRealization`,
+`PencilPair`, `IsProperRigidSubgraph`, `TwoEdgeConnected`, `Simple`, `HasPencilPanelRealization`).
+Two things the brief infers from those bodies do not follow from them:
+- **(D1) `hK` carries no feasibility hypothesis.** Its list is `Simple`, `5 ≤ |V|`,
+  `TwoEdgeConnected`, no proper rigid subgraph, `degree v = 2`, `eₐ ≠ e_b`, the two links, the
+  disjunct, `e₀ ∉ E(G)`, the IH, and the antecedent `HasGenericPencilRealization K 3 (G.splitOff …)`
+  — `PencilNondegFeasible K G` is a hypothesis of `hbareSplit`'s negation only. The brief's "`hK`'s
+  domain — hub graphs of max degree `≤ 2`" (§6, S14(vii)) is therefore *derived*, not given: a proof
+  of `hK` must first show `G` feasible from its antecedent. That is the upward transfer (v) below —
+  true in the habitat, but an obligation the brief did not list.
+- **(D2) "(α) deletes O8" is over-stated.** `HasDistinctPencilRealization` (`Statement.lean`) adds to
+  the bare panel motive exactly one conjunct, `LinearIndependent K ![point u, point v]` at every
+  link; it does **not** carry `IsNondegPencilRealization`'s third and fourth conjuncts. So a witness
+  of `hbareSplit`'s antecedent, or of the IH's second conjunct, may still sit where a hub's closed
+  star is collinear (its plane then one of a `P¹`) or where two hub planes coincide — strata outside
+  S13(iv)'s `Y°` ("each hub's closed star spans a plane"). What (α) removes is the coincident-point
+  stratum alone. The surviving residue is not a separate obligation: (iv) below proves
+  irreducibility of the *closed* incidence variety, strata included, so it is absorbed into O7.
+
+**(ii) Proposition (the habitat forces a 2-degenerate hub order — O7a).** Let `G` satisfy the
+kernels' hypotheses and `K ⊆ G` be any subgraph with `V(K) ⊊ V(G)`, `|V(K)| ≥ 2`. Then
+`5|E(K)| ≤ 6(|V(K)| − 1)`. Consequently the *hub graph* of `G − chain` (vertices: the hubs of `G`
+lying in `H′`; edges: the hub–hub edges) — and every subgraph of it — has average degree
+`< 2.4`, hence a vertex of degree `≤ 2`; i.e. the hub graph is 2-degenerate, and its hubs admit an
+order in which every hub has at most two earlier hub neighbours.
+*Proof.* If `5|E(K)| > 6(|V(K)| − 1)`, the 5-fold fibre of `E(K)` in `G̃` is dependent in the
+tree-packing matroid `M(G̃)` (six copies of the cycle matroid; rank of any set on `t` vertices is
+`≤ 6(t − 1)`), so it contains a circuit `C`; every vertex met by `C` has degree `≥ 2` in `C`
+(deleting a degree-1 fibre edge would leave a dependent set on fewer vertices), so
+`|C| = 6(|V(C)| − 1) + 1` with `C − e` independent, i.e. six edge-disjoint spanning trees of
+`V(C)` (Nash-Williams–Tutte), i.e. `def₃(G[V(C)]) = 0`; and `V(C) ⊆ V(K) ⊊ V(G)`, `|V(C)| ≥ 2`,
+so `G[V(C)]` is a proper rigid subgraph — against the habitat. The Lean already carries this
+route: `circuit_induces_isRigidSubgraph` (`Induction/Operations.lean`), `matroidMG_indep_iff`
+(`Deficiency.lean`), and the same argument at `k > 0` in `indep_edgeSet_mulTilde_of_noRigid_of_pos`
+and `edgeBound_of_noRigid_of_degree_two` (`ReducibleVertex.lean`, KT Lemma 4.5). For the hub
+graph: a subgraph `J` on `t ≥ 2` hubs has `|E(J)| ≤ (6t − 6)/5 < 1.2t`, so `2|E(J)| < 2.4t` and some
+hub has `J`-degree `≤ 2`; peel it and recurse. ∎
+*Reading.* The brief's O7 "first instance" — a hub `z` with three hub neighbours each continued by
+a branch of length `≥ 2` to `w` or `v`, side-degree `≥ 2` at both — is **not in the habitat** unless
+the branches are long: with `z`'s three hub neighbours each carrying two branches of length `k` to
+`{w, v}` the count is `5(3 + 6k) − 6(4 + 6(k − 1)) = 27 − 6k ≤ −6` only for `k ≥ 6` (`|V| = 34`);
+and in every habitat instance the hub graph is a tree or has a degree-`≤ 2` peeling. The control
+the brief asked for is therefore replaced by this count; no adjacent-hub side was sampled
+("attempted, no figure; script not retained" does not apply — nothing was attempted).
+
+**(iii) Theorem (`m ≥ 5`, from the IH alone; `w ~ v` allowed).** Let `G = H′ ∪ ear_m` at the hub
+cut `{w, v}` with `m ≥ 5` (the ear `w x₁ … x_m v`; `w ~ v` in `H′` is possible exactly here,
+`lem:pencil-chain-side-distance`). Then (a) `def₃(G) = def₃(H′) + m − 5`; (b) at any configuration
+at which `H′` attains and the `m + 1` ear lines span `Λ²K⁴`, `G` attains; (c) the `m + 1` lines of a
+generic ear span `Λ²K⁴` at generic flags and at incident flags (`p_v ∈ π_w`, `p_w ∈ π_v`). Hence
+`a′ = 0` at the generic point of `H′`'s configuration variety gives `G` attaining at the generic
+point of `G`'s — the antecedent `G₋` is not used, and neither S14(i) nor the 2-cut deficiency law
+(`deficiency_eq_of_vertexTwoCut`, which needs `w ≁ v`) enters.
+*Proof.* (a) `≥`: extend an optimal partition of `V(H′)` by the `m` ear vertices as singletons:
+`6m − 5(m + 1) = m − 5` more. `≤`: for a partition `P` of `V(G)` let `P′` be its trace on `V(H′)`,
+`j` the number of parts inside the ear interior, `c` the number of ear edges crossing `P`; then
+`|P| = |P′| + j`, `d(P) = d_{H′}(P′) + c`, so `6(|P| − 1) − 5d(P) ≤ f′ + 6j − 5c`. If `j = 0`,
+`6j − 5c ≤ 0 ≤ m − 5`. If `j ≥ 1`, the path `w x₁ … x_m v` starts and ends outside the ear-only
+parts, so it changes part at least `(number of ear-only runs) + 1 ≥ j + 1` times: `6j − 5c ≤ j − 5
+≤ m − 5` (`j ≤ m`). (b) Gluing identity `finrank_span_rigidityRows_vertexTwoCut_eq` (no
+non-adjacency needed) with `V₁ = V(H′)`, `V₂ = V(ear) ∪ {w, v}`: `rank(G) = rank(H′) + rank(G[V₂])
++ dim(ρ̄′ + ρ̄₂) − 6`. If `w ≁ v`: `G[V₂] = ear_m`, `rank = 5(m + 1)` (a path's rows are always
+independent), `ρ̄₂ = span` of its `m + 1` lines `= Λ²`, so `rank(G) = rank(H′) + 5(m + 1)`. If `w ~ v`:
+`G[V₂] = C_{m+2}` (ear plus the edge `wv`), whose `m + 2` lines span `Λ²` (they contain the ear's),
+so `rank(C_{m+2}) = 6(m + 2) − (6 + (m + 2) − 6) = 5(m + 2)`; and `ρ̄(C_{m+2}) = ⟨L_{wv}⟩ ⊇ ρ̄′`
+(the hinge `wv` constrains `m(v) − m(w)` to its line), so `dim(ρ̄′ + ρ̄₂) = 1` and again `rank(G) =
+rank(H′) + 5(m + 1)`. With `rank(H′) = 6(|V(H′)| − 1) − f′` and (a), `rank(G) = 6(|V(G)| − 1) −
+def₃(G)`. (c) `earspan.py`: at seed `20260922`, `m = 5, 6`, both flag regimes, rank `6` at 20/20
+draws (control `m = 4`: rank `5` at 20/20); one exact draw is a certificate, and "generic ear"
+follows by lower semicontinuity over the irreducible ear moduli at fixed flags. ∎
+*Consequences.* S15(v)(d) is settled; the state file's `m ≥ 5` worry and the brief's §6 "worry the
+Lean round surfaced" close; (a) is the edge-bipartition form of the 2-cut law at `m ≥ 5`, proved
+directly (it is what `deficiency_eq_of_vertexTwoCut'`'s `¬ Adj` case cannot state).
+
+**(iv) The irreducibility tower, restated as a codimension check (O7b, O7c).** For a side or
+graph `H` in the habitat with hub set `Z` (the vertices of degree `≥ 3` in `G`; for `H′` include
+`w, v`), let `X̄(H) ⊆ A := ∏_{z ∈ Z} Fl(P³) × ∏_{y ∉ Z} P³` (a hub carries a flag `(p_z, π_z)`,
+`p_z ∈ π_z`; a non-hub a point) be the closed set cut out by the **incidences**: for every edge `zy`
+with `z ∈ Z`, `p_y ∈ π_z` — one equation per (hub, neighbour) pair, `e := Σ_{z ∈ Z} deg z`
+equations in all. A `HasDistinctPencilRealization` witness of `H` projects to a point of `X̄(H)`
+(its hinges are `p_u ∧ p_v`, its normals at hubs are the `π_z`; the non-hub normals are dropped) and
+rank depends only on the point coordinates, so **the attaining locus is an open subset of `X̄(H)`**
+and a single witness certifies the generic point of every component through it. `Y°` of S13(iv)
+is the open subset where each hub's closed star spans a plane; `X̄ ∖ Y°` is the collinear-star
+stratum of (D2).
+- **Krull.** `A` is smooth and irreducible, so every irreducible component of `X̄(H)` has dimension
+  `≥ dim A − e` (height of a minimal prime over `e` generators is `≤ e`; `dim R/P + ht P = dim R`
+  for a domain finitely generated over a field).
+- **The tower.** Order the hubs `z¹, …, z^r` 2-degenerately ((ii)) and then the branch interiors.
+  Step `k` places `(p_{z^k}, π_{z^k})` with `p ∈ ⋂_{earlier hub nbrs} π` and `π ⊇ ⟨p, earlier hub
+  nbrs' points⟩`: fibre dimension `5, 3, 1` for `0, 1, 2` earlier neighbours (generic). A branch of
+  length `k ≥ 2` between placed hubs adds `3(k − 1) − 2` (first point in one plane, last in the
+  other, the rest free); length 1 is a hub adjacency, already counted. The sum is `dim A − e`. Over
+  the locus `T_k°` where every step so far has generic fibre dimension, the fibre is the
+  projectivisation of the kernel of a matrix of constant rank — a Zariski-locally-trivial bundle —
+  so `X̄°` (all steps generic) is irreducible of dimension exactly `dim A − e`.
+- **Reduction.** Inductively, `T_k` irreducible; `T_{k+1} = T°_{k+1} ∪ (part over the jump locus
+  `J ⊆ T_k`)`. If a component `Z` of `T_{k+1}` misses `T°_{k+1}` then `Z` lies over some jump
+  stratum `S ⊆ J` and `dim Z ≤ dim S + φ + j_S` (`φ` the generic fibre dimension, `j_S` the jump on
+  `S`); Krull gives `dim Z ≥ dim T_k + φ`; so `codim_{T_k} S ≤ j_S`. **Hence `X̄(H)` is irreducible
+  as soon as every jump stratum satisfies `codim > jump`.** The strata, all at a step with two
+  earlier hub neighbours `z₁, z₂` or a length-2 branch `z — y — z′`:
+  (a) `π_{z₁} = π_{z₂}` with `p_{z₁}, p_{z₂}, p` not collinear — jump `1` (`p` in a plane, `π` fixed);
+  (a′) `π_{z₁} = π_{z₂}` and `p, p_{z₁}, p_{z₂}` collinear — jump `2`;
+  (b) `π_{z₁} ≠ π_{z₂}`, `p_{z₁}, p_{z₂} ∈ π_{z₁} ∩ π_{z₂}` — jump `1` (`π` runs over a `P¹`);
+  (d) `π_z = π_{z′}` at a length-2 branch — jump `1` (`p_y` in a plane, not a line).
+  Codimension of each in the irreducible `T_k`, by imposing it at the step where the later of the
+  two hubs is placed and counting: (a) costs `p_{z₂}`'s (or its earlier neighbours' points')
+  incidence with `π_{z₁}` (`1` or `2` base conditions) plus the plane (`≥ 1`): `3` in each of the
+  three sub-cases (`z₂` with `0, 1, 2` earlier neighbours); (a′) `≥ 3 > 2`; (b) two incidences
+  `p_{z₁} ∈ π_{z₂}`, `p_{z₂} ∈ π_{z₁}`: `2 > 1`; (d) as (a): `3 > 1`. **What these counts assume
+  (the open step, O7c):** that each such incidence between a hub plane and a *non-adjacent*
+  vertex's point is a non-trivial condition on `T_k` — equivalently, the generic-incidence
+  invariant *at the generic point of `T_k`, `p_b ∉ π_a` for every hub `a` and vertex `b ≁ a`, and
+  `π_a ≠ π_{a′}` for distinct hubs* — proved by induction along the tower using girth `≥ 7` (no two
+  hubs share two hub neighbours; no hub is adjacent to two vertices of a placed branch), which is
+  the same pattern as S13(v)'s ordering argument. S13(iv)'s rotation limit for (d) is the special
+  case of the reduction where the stratum's preimage is shown to lie in the closure directly.
+- Two corollaries once (iv) closes: `X̄(G) → X̄(H′; w, v hubs)` is surjective with irreducible ear
+  fibres, so the generic point of `X̄(G)` lies over the generic point of the base (S14(iv)'s
+  fibration, now over the whole closed base); and the generic point of `X̄(H′)` has non-incident
+  flags when `w ≁ v` (the invariant), so S14(iii)'s generic-`ϕ` setting is reached.
+
+**(v) Upward feasibility (the obligation (D1) adds; closes).** In the habitat, `G.splitOff v a b e₀`
+feasible ⟹ `G` feasible. *Proof.* `G₋ := G.splitOff …` is simple (`splitOff_simple_of_noRigid_of_card`),
+so `a ≁ b` in `G` and degrees agree off `v`: `deg_{G₋} a = deg_G a − 1 + 1`, likewise `b`, all
+others unchanged; hence the hub sets agree off `v`, and `v` is no hub. For `z ≠ v`,
+`N_G(z) ∖ {v} ⊆ N_{G₋}(z)`, so `closedHubNbhd_G(z) ⊆ closedHubNbhd_{G₋}(z)` (`v` contributes to
+neither); `|closedHubNbhd_G(v)| ≤ 2`. Feasible `G₋` has all closed hub neighbourhoods `≤ 3`
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), hence so does `G`, and `G` is simple
+and triangle-free (`lem:pencil-girth-of-hub`; a hub-free `G` in the habitat is a cycle on `≥ 5`
+vertices), so `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` gives the
+witness. ∎ So on `hK` the antecedent's nondegenerate witness makes `G` feasible, `H′` feasible by
+(c), and the IH's first conjunct applies to `H′`.
+
+**(vi) Descent (O9; closes modulo (iv)).** All of `X̄(G)`, its tower and the incidences are defined
+over `K`. Over a `K`-point of `T_k°` the fibre is a projective `K`-linear space, whose `K`-points are
+dense (`K` infinite); inductively the `K`-points of `X̄°(G)` are dense in it, hence in the irreducible
+`X̄(G)`. The locus `U` of configurations that attain *and* meet the conclusion's open
+nondegeneracy (`hK`: `IsNondegPencilRealization`, nonempty because `G` is feasible by (v); `hbareSplit`:
+adjacent points distinct, nonempty) is open and nonempty in `X̄(G)`, so dense, so it contains a
+`K`-point; its points, hub planes and (for non-hubs) any `K`-plane through the `≤ 3` points form
+the Lean witness `(F, normal, point)` over `K`. ∎
+
+**(vii) Verdict.** (ii) *proven-informally* (a count; Lean surfaces named). (iii) *proven-informally*
+with (c) an exhibited certificate (`earspan.py`). (v), (vi) *proven-informally*, (vi) resting on (iv).
+(iv): the reduction to `codim > jump` is proved; the codimension counts are stated with the one
+assumption they rest on — the generic-incidence invariant — which is **the open step**. **What
+would change this:** a habitat side whose tower has a jump stratum of codimension `≤` its jump
+(the invariant failing: a hub plane forced through a non-neighbour's point by the incidences alone);
+or a `HasDistinctPencilRealization` witness of some habitat `H′` isolated from `X̄°(H′)` — a
+component of `X̄(H′)` of dimension `≥ dim A − e` over a jump stratum.

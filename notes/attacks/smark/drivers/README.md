@@ -180,3 +180,19 @@ Caps, disclosed: the `s = 20` draws of `sideprof.py`, 60 flag tries per draw (20
 theorem (S14(i)); the run controls the *bookkeeping* (`a′_w`, `a′`, the `≤ 6` split) and the
 hand Gram entries, not the theorem's truth. Each draw is an exact witness (S7(vi)); the
 `--special` rows are pointwise facts at the pinned configurations.
+
+## `earspan.py` — the hinge lines of a long ear span `Λ²K⁴`, at incident flags too (workbook S16(iii)(c))
+
+Standalone (stdlib `fractions` only). For `ear_m` with `x₁ ∈ π_w`, `x_m ∈ π_v`, interior points free,
+it takes the exact rank of the `m + 1` Plücker vectors at two flag regimes — `generic` (the `w ≁ v`
+case) and `incident` (`p_v ∈ π_w`, `p_w ∈ π_v`, `π_w ≠ π_v`: the flags forced when `w ~ v`, possible at
+`m ≥ 5`). One rank-6 draw is a certificate for the generic ear at that regime (lower semicontinuity
+over the irreducible ear moduli).
+
+| command | figure it reproduces |
+|---|---|
+| `timeout 120 python3 notes/attacks/smark/drivers/earspan.py --seed 20260922 --draws 20` | S16(iii)(c): `m = 5` (6 lines) and `m = 6` (7 lines) at rank `6` at **20/20** draws in both regimes; control `m = 4` (5 lines) at rank `5` at 20/20 |
+
+Caps, disclosed: integer coordinates in `[−20, 20]`, 20 draws per `(m, regime)`, the two named
+regimes. The population is one ear at prescribed flags; the statement certified is about the
+generic ear at each regime, nothing about sides.
