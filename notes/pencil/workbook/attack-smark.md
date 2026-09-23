@@ -2679,3 +2679,199 @@ E55 and the **tree** D3r TIMEOUT — D3r hangs on the same `pl_r` locus as D3c, 
 while T10's took `0.1` s, so the Gröbner cost is sharply graph-dependent and not a matter of cycles; D4 was not
 reached (the batch's outer cap). None of these timeouts leaves an irreducibility question open: D3r, D4 are trees and
 the rest have cycle cores.
+
+## S28 — O7e-b, fourth relation: (★₂) holds on the star-free collinear stratum — the ledger read in ranks, an extra serves at most one flat, and the damage is one bad pair plus one free singleton incidence, `≤ 3/2 < 2 = s + 1` (session 12, 2026-09-23)
+
+Tree at `9b93f770`; consumer re-diffed at session start (no Lean change since `084ee4ff`, both kernels match brief §3.1
+token for token). Setting as S21(ii)/S22: `k_c ≤ 3` for all `c`; the tower stratum where the big points satisfy
+exactly one relation, `q_a, q_b, q_d` distinct and collinear on `λ₀` for a triple `T := {a, b, d} ⊆ Big`, **no star**
+(no `c` with `T ⊆ U_c`), and otherwise general: the point matroid `M` on `Q` has rank `rk S = |S| − [T ⊆ S]` for
+every `S` of rank `≤ 3`. Level-1 codimension `c₁ = 2`, `J₂ = 0`, slack `s = 1` (S26(i)): the target is
+**`cost − J₃ ≥ −1`**. Everything below is *proven-informally*.
+
+**(i) The ledger in ranks.** The fibre over `q` is `∏_c P(U_c^⊥)`, `dim = 3 − k_c` (`r_c = k_c`, no star). A plane
+meets `Q` in a flat of `M` of rank `≤ 3`: `|P| ≤ 3`, `P = T`, or `P = T ∪ {e}`; a line meets `Q` in `∅`, a point, a
+pair `⊄ T`, or `T` (the line `λ₀`). So a pattern's incidence sets `P_A` are flats `⊇ cl(U_A)`, and every incidence
+`π_A ∋ q_y` (`y ∈ P_A`) is exactly one of: *normal* (`y ∈ U_A`), *collinearity-natural* (`y ∈ cl(U_A) ∖ U_A`, which
+forces `y ∈ T` and `|U_A ∩ T| = 2`), or an *extra* (`y ∈ X_A := P_A ∖ cl(U_A)`). Every S22(i) value is
+`rk W_A − rk U_A` with `W_A := span(P_A ∪ determined lines)`: `rk P_A − rk U_A` before its lines, `2 + [P_A ⊄ λ] −
+rk U_A` after one, `3 − rk U_A` after two. (R1)–(R2) are relaxations as before, and after them `P_A = cl(U_A ∪
+⋃_{ℓ ∋ A} I(ℓ))`. The merge cost is `3(|A| − 1) − ov_A − disc_A` with **`disc_A := |U_A| − rk U_A = [T ⊆ U_A]`**
+(zero on singletons, since there is no star). So with S22(iv)'s order (U-classes first, then the flat singletons),
+
+> `cost − J₃ = Σ_{A nontrivial} (σ_A − F_A − disc_A) + Σ_ℓ N_ℓ + Σ_{C ∈ 𝒰} cost_C`,
+
+which is S25(i)'s identity with this `disc`. A flat singleton `w` after its line costs `2 + [P_w ⊄ λ] − β_w =
+2 − β_w` (`U_w ⊆ I`, so `P_w = I ⊆ λ`); if it is placed second it costs `rk I − β_w`.
+
+**(ii) The label-sensitive spots, listed.** S22 reads `|·|` where the stratum needs `rk`, or uses general position,
+in exactly these places. **(K1)** `disc_A`. **(K2)** Collinearity-naturality of a `β = 2` flat's incidence: for
+`w = w_{xy}` (flat singleton, `N_Γ(w) = {x, y}`, both big), `π_{[x]} ∋ q_y` may be collinearity-natural. On a
+nontrivial `[x]` this is a **line charge** `(w, y)` on `[x]` (`y ∈ T ∖ U_{[x]}`, `|U_{[x]} ∩ T| = 2`); on a singleton
+`[x] = {x}` it is **free and unpaid** (a normal incidence on a singleton would need `x ~ y`, a triangle through `w`).
+**(K3)** Several `β = 2` flats on one line: `w_{ab}, w_{ad}, w_{bd}` all have line `λ₀` (at most two exist — three
+close a 6-cycle). **(K4)** `|I(ℓ)| = 3` on `λ₀`, `rk I = 2`. **(K5)** `|P_A| = 4` (`P_A = T ∪ {e}`) and the rank
+deficit of extras: `rk P_A − rk U_A = |X_A| − τ_A`, `τ_A := [T ⊆ P_A, |cl(U_A) ∩ T| ≤ 1]`, and `τ_A = 1` forces
+`|X_A| ≥ 2`. Everything else S22–S25 use is combinatorics of `Γ` (Lemma D′'s augmentation, S21(iii), S22(ii)(a)–(c),
+(iv)'s path analysis) or the geometric fact that two distinct planes through `q_x` meet in a line through `q_x`.
+S22(ii)(e) and S22(v)'s second and third facts — where S24(iii)'s "`m_A ≥ 2` ⟹ fixed plane" lives — feed only
+S22(vi)'s tightness step, which a degenerate stratum does not need (S26(i)); they are not used here.
+
+**(iii) Lemma (an extra serves at most one flat).** For a U-class `C` and `y ∈ X_C`, at most one flat singleton
+`w_{xy}` with `x ∈ C ∩ Big` exists in the pattern. *Proof.* Two, `w_{xy}` and `w_{x′y}`, `x ≠ x′`: flatness of each
+needs `π_{[y]} ∋ q_x, q_{x′}` (S22(ii)(a),(b)), so `π_{[y]}` and `π_C` both contain `q_x, q_{x′}, q_y`. If these are
+independent, `π_{[y]} = π_C`, so `[y] = C = [x]` and `w_{xy}` is not flat. If dependent, `{x, x′, y} = T` and `y ∈
+cl{q_x, q_{x′}} ⊆ cl(U_C)` is not an extra. ∎ (At generic `q` the same argument gives one, where S22(iii) allowed
+two; S22's bound is only weakened by this, never contradicted.) **Consequence.** With `D_C := ½ #{(y, w)}` as in
+S22(iii), `D_C ≤ ½|X_C|`; and `cost_C ≥ rk P_C − rk U_C = |X_C| − τ_C`, which is `≥ ½|X_C|` in every case (`|X_C|
+≤ 1` has `τ_C = 0`). So **`Σ_C (cost_C − D_C) ≥ 0`** — no damage from extras (K5).
+
+**(iv) Lemma (lines).** `N_ℓ + δ_ℓ ≥ 0` for every reduced line, `δ_ℓ := #{β = 2 flat singletons on ℓ}`. *Proof.*
+`u_ℓ ≥ 2`: every flat is after, `N_ℓ + δ_ℓ = Σ_{β_w ≤ 1} (1 − β_w) ≥ 0` (K3 included). `u_ℓ ≤ 1`: a `β = 2` flat
+needs its two neighbours' classes, distinct and not flat singletons (big vertices are never flat), so `δ_ℓ = 0`;
+`I = ∅`, `|I| = 1`, `|I| = 2` (a pair `⊄ T`) and `u_ℓ = 0` are S22(iv)(b)–(e) verbatim — the path analysis of (c)
+uses only that a big member of the U-class adjacent to a flat on `ℓ` has its point in `I`, and distinct labels have
+distinct points here; the new case `I = T` (K4): every flat has `β ≤ 1` and costs `2 − β` both after the line and
+second (`rk T = 2`), so `N_ℓ = Σ (1 − β_w) ≥ 0`; this clause also covers `u_ℓ = 0` at `I = T` (S22(iv)(e)'s `2(|I| − 1)` reads
+`2(rk I − 1)`). ∎
+
+**(v) Lemma (classes).** With `T_A := σ_A − F_A − disc_A − (Δ_A + Δ″_A)/2`, `Δ_A` the normal deficit charges
+(S22(iii)) and `Δ″_A` the line charges on `A`: `T_A ≥ −[A is a bad pair with disc_A = 1]`. *Proof.* A line charge
+`(w, y)` on `A` has `y ∉ U_A`, so `T ⊄ U_A` and `disc_A = 0`; given `A`, `y` is the one point of `T ∖ U_A`, and for
+each big `x ∈ A` the flat `w_{xy}` is unique, so `Δ″_A ≤ g_A := |A ∩ Big|`. These are exactly the two properties
+S25(iv) uses of its twin charges `Δ′_A`, and S25(iv)'s arithmetic (Lemma D′ with the normal charges, `F_A ≤ a −
+max(|W|, g_A)`, `T_A ∈ ½ℤ`) gives `T_A ≥ 0` when `Δ″_A ≥ 1`. When `Δ″_A = 0` and `A` has a big member, Lemma D′ or
+S21(iii) gives `σ_A − F_A − Δ_A/2 ≥ 1 ≥ disc_A`; a class with no big member carries no charge and is S21(iii):
+`σ_A − F_A ≥ 1 ≥ disc_A` unless it is a bad pair, where `σ_A − F_A = 0`. ∎
+
+**(vi) Lemma (count).** Let `k₁` be the number of bad pairs with `disc = 1` and `k₆` the number of free singleton
+incidences (K2). Then `k₁ ≤ 1` and `k₆ ≤ 1`. *Proof.* A bad pair `{c, c′}` has no big member, `N_Γ(c) = {z, x}`,
+`N_Γ(c′) = {z, x′}`, and `U_A = Big ∩ {z, x, x′}`, so `disc_A = 1` iff `{z, x, x′} = T`: a path `x — c — z — c′ — x′`
+through `T`. Two such pairs with the same `z` give two common neighbours of `z` and some `x` (a 4-cycle); with `z₁ ≠
+z₂` both in `T`, `z₁` and `z₂` have two distinct common neighbours (a 4-cycle). For `k₆`: a free singleton incidence
+is `π_x ∋ q_y` for a flat `w_{xy}`, `y ∈ T`, with `U_x ⊇ T ∖ {y}`. **(S-i)** `x ∈ T`: then `x ~ t`, `T = {x, y, t}`.
+**(S-ii)** `x ∉ T`: `x` adjacent to both points of `T ∖ {y}`. `T` spans at most one Γ-edge (two share a vertex that is
+then a star). If `T` has the edge `a ~ d`: (S-i) instances are `w_{ab}` with `x = a` or `w_{db}` with `x = d`, not both
+(the 5-cycle `a w b w′ d`); an (S-ii) `x` adjacent to `{a, d}` is a triangle, to `{a, b}` or `{b, d}` with its flat to
+the third point a 4-cycle through the edge `ad`. If `T` has no edge, (S-i) is empty; two (S-ii) vertices `x ≠ x′`
+have distinct pairs (a 4-cycle otherwise), `x = x′` would be a star, so the pairs are `{a, b}`, `{b, d}` up to
+relabelling, and the flats `w ~ x, d`, `w′ ~ x′, a` close the 5-cycle `x b x′ d w`. Each `x` determines `y` and `w`. ∎
+
+**(vii) Theorem.** *On the star-free collinear stratum with `k_c ≤ 3`, every plane pattern has `cost − J₃ ≥ −1`;
+hence `codim_T Σ = 2 + codim_{A_q} Σ_q ≥ J₃ + 1 = J₂ + J₃ + 1`, and (★₂) holds on every such stratum.* *Proof.* Each
+`β = 2` flat singleton's two incidences are normal on a nontrivial class (a charge in `Δ`), collinearity-natural on a
+nontrivial class (in `Δ″`), extras (in `D`), or free on a singleton (in `k₆`), so `Σ_ℓ δ_ℓ ≤ Σ_A (Δ_A + Δ″_A)/2 +
+Σ_C D_C + k₆/2`, and by (i), (iii)–(v):
+
+> `cost − J₃ ≥ Σ_A T_A + Σ_ℓ (N_ℓ + δ_ℓ) + Σ_C (cost_C − D_C) − k₆/2 ≥ −k₁ − k₆/2 ≥ −3/2`,
+
+by (vi); `cost` and `J₃` are integers, so `cost − J₃ ≥ −1`. ∎ The shapes the state file expected to need (the line
+`ℓ₀` of classes through `λ₀`, costing nothing) are absorbed by the rank values of (i) with no separate charging: a
+class with two natural points of `T` placed on `λ₀` costs `2 + [P ⊄ λ₀] − rk U_A = 0`, which is its true cost.
+
+**(viii) What would change this.** A sixth spot in (ii) — this list is a reading of S22, and S27(i)'s lesson applies:
+it gets a fresh-reader audit before it is relied on (S29); a flat `w_{xy}` whose flatness does not force `π_{[y]} ∋
+q_x` (it does: S22(ii)(a) is two planes through one point); or a pattern with `slack < 0` in the collinear mode of
+`case2deg.py` (S29). The star (`s = 0`) and the coplanar quadruple (`s = 0`) are next: (iii)–(iv) carry over, and what
+is left is whether their `k₁`- and `k₆`-type shapes vanish.
+
+## S29 — O7e-b, fifth relation: (★₂) holds on the collinear stratum with a star — `J₂ = 1` is absorbed into the merge cost, and girth leaves no damage shape (session 12, 2026-09-23)
+
+Setting of S28 except that `T = {a, b, d}` has a **star**: some `c` with `T ⊆ U_c`. With `k_c ≤ 3` and non-big
+vertices of Γ-degree `≤ 2`, `c ∈ T`, say `c = a`, `a ~ b`, `a ~ d`, `b ≁ d` (triangle); the centre is unique (a
+second centre `b` would need `b ~ d`). `c₁ = 2`, `J₂ = k_a − r_a = 1`, **`s = 0`**: the target is `cost − J₃ ≥ 0`.
+*Proven-informally.*
+
+**(i) The ledger.** The fibre is `∏_c P(U_c^⊥)` with `dim P(U_a^⊥) = 1` (the pencil of planes through `λ₀`) and
+`3 − k_c` elsewhere. Since `Σ_{c ∈ A} r_c = Σ_{c ∈ A} k_c − [a ∈ A]`, the merge cost is `3(|A| − 1) − ov_A − disc_A`
+with **`disc_A := [T ⊆ U_A] − [a ∈ A]`** (S21(iv)'s `def_q(U_A) − Σ_{c ∈ A} def_q(U_c)`), so `disc = 0` on every class
+containing `a` and on every singleton, and `disc_A = [T ⊆ U_A]` on the others. (★₂) reads `c₁ + cost ≥ J₂ + J₃ + 1`,
+i.e. `cost − J₃ ≥ 0`, and S28(i)'s identity holds with this `disc`. The point matroid is S28's, so S28(ii)'s spots,
+S28(iii) (an extra serves at most one flat; `cost_C ≥ ½|X_C| ≥ D_C` — for `C ∋ a`, `cl(U_C) ⊇ T` and `τ_C = 0`) and
+S28(iv) (lines) hold verbatim; the pencil plane `π_a` is a U-class whose value `rk W − 2` is `≥ 0` in every
+position. S28(v) holds: a line charge on `A` needs `|U_A ∩ T| = 2`, so `a ∉ A` and `disc_A = 0`.
+
+**(ii) No damage shape.** *Bad pairs with `disc = 1`:* S28(vi) needs a path `x — c — z — c′ — x′` with `{z, x, x′} =
+T`; `z = a` gives `c ~ a, x` with `a ~ x` (a triangle), and `z ∈ {b, d}` gives `c ~ z, a` with `z ~ a` (a triangle).
+So `k₁ = 0`. *Free singleton incidences:* (S-i) `x ∈ T`, `x ~ t`, flat `w_{xy}`, `{x, y, t} = T`: `x = a` makes `w`
+adjacent to `a` and a neighbour `y ∈ {b, d}` of `a` (a triangle); `x ∈ {b, d}` forces `t = a`, `y` the other of `b,
+d`, and `a b w d` is a 4-cycle. (S-ii) `x ∉ T` adjacent to two points of `T`: `{a, b}` or `{a, d}` is a triangle,
+`{b, d}` the 4-cycle `a b x d`. So `k₆ = 0`.
+
+**(iii) Theorem.** *On the collinear stratum with a star and `k_c ≤ 3`, every plane pattern has `cost − J₃ ≥ 0`, so
+(★₂) holds.* *Proof.* S28(vii)'s chain with `k₁ = k₆ = 0`. ∎ **What would change this:** a spot missing from S28(ii)
+(the S28 audit covers this section too), or a second star centre (excluded above by the triangle).
+
+## S30 — O7e-b, sixth relation: (★₂) holds on the coplanar-quadruple stratum — one free singleton incidence at most, `½ < 1`; S26(iv)'s (C1)–(C4) resolved (session 12, 2026-09-23)
+
+Setting: `k_c ≤ 3`; the big points satisfy exactly one relation, `Q′ := {a, b, c, d} ⊆ Big` coplanar in `Π`, no three
+collinear, otherwise general. `c₁ = 1`, `J₂ = 0` (`|U_c| ≤ 3` and any three points of `Q′` are independent), **`s =
+0`**: target `cost − J₃ ≥ 0`. *Proven-informally.*
+
+**(i) The ledger.** The matroid: `rk S = |S| − [Q′ ⊆ S]` on sets of rank `≤ 3`; rank-3 flats are `Q′` and the triples
+meeting `Q′` in `≤ 2` points; every line meets `Q` in `≤ 2` points, so `|I(ℓ)| ≤ 2` and `rk I = |I|` as at generic
+`q`. `disc_A = [Q′ ⊆ U_A]` (zero on singletons: `|U_c| ≤ 3`); an incidence `π_A ∋ q_y` is *coplanarity-natural* iff
+`y ∈ Q′`, `|U_A ∩ Q′| = 3`, `y ∉ U_A`. S28(i)'s identity holds with this `disc`. **(C3)** S28(iii) holds verbatim:
+two flats `w_{xy}, w_{x′y}` served by one extra give `π_{[y]} ⊇ {q_x, q_{x′}, q_y}`, three independent points (no
+three collinear), so `π_{[y]} = π_C`; and `rk P_C − rk U_C = |X_C| − τ_C` with `τ_C := [Q′ ⊆ P_C, |U_C ∩ Q′| ≤ 2]`,
+`τ_C = 1 ⟹ |X_C| ≥ 2`, so `cost_C ≥ ½|X_C| ≥ D_C`. S28(iv) is S22(iv) verbatim (`|I| ≤ 2`, `δ_ℓ ≤ 1`: two `β = 2`
+flats on one line need the same pair of points, hence the same common neighbour). **(C4)** A coplanarity-natural
+incidence on a nontrivial class is a line charge in S28(v)'s sense — it forces `U_A ⊉ Q′`, `disc_A = 0`, and `y`
+(the one point of `Q′ ∖ U_A`) is determined by `A`, so `Δ″_A ≤ g_A` — and S28(v) gives `T_A ≥ −[A is a bad pair
+with disc_A = 1]`. **(C2)** The forced-equal planes of S21(v)'s caveat — `c ~ d` with `U_c = {a, c, d}`, `U_d = {c,
+d, b}`, both spanning `Π` — are the class `A = {c, d}` present in every pattern over this `q`; its merge cost is `3 −
+ov_A − disc_A = 3 − 2 − 1 = 0` and its jump `0` (a common neighbour of `c, d` is a triangle), and `T_A = σ_A − F_A −
+disc_A = 1 − 0 − 1 = 0` is inside the Lemma's bound; the caveat needs nothing further.
+
+**(ii) The damage shapes.** **(C1)** A bad pair has `|U_A| ≤ |Big ∩ {z, x, x′}| ≤ 3`, so `disc = 0` on it: `k₁ = 0`.
+*Free singleton incidences:* `π_x ∋ q_y` coplanarity-natural on `{x}` for a flat `w_{xy}` needs `U_x ⊇ Q′ ∖ {y}`,
+three points; `x ∉ Q′` would give `k_x = 4`, so `x ∈ Q′` and `x ~ t₁, t₂`, `Q′ = {x, y, t₁, t₂}`: the shape `t₁ — x —
+t₂`, `x — w — y` (a tree; habitat-legal). *At most one:* `x` determines `y` (the point of `Q′ ∖ {x}` it is not adjacent
+to; adjacent to all three is `k_x = 4`) and `w`. A second instance `x′ ∈ Q′ ∖ {x}`: `x′ = y` needs `y` adjacent to
+two of `{x, t₁, t₂}` — `x` is a triangle through `w`, `{t₁, t₂}` the 4-cycle `x t₁ y t₂`; `x′ = t₁` needs `t₁`
+adjacent to two of `{x, y, t₂}` other than its own `y′` — `t₂` is the triangle `x t₁ t₂`, so `t₁ ~ x, y` with
+`y′ = t₂`, and `w′ ~ t₁, t₂` closes the 4-cycle `t₁ w′ t₂ x`. So `k₆ ≤ 1`.
+
+**(iii) Theorem.** *On the coplanar-quadruple stratum with `k_c ≤ 3`, every plane pattern has `cost − J₃ ≥ 0`; (★₂)
+holds.* *Proof.* S28(vii)'s chain gives `cost − J₃ ≥ −k₁ − k₆/2 ≥ −½`, and `cost − J₃ ∈ ℤ`. ∎ **What would change
+this:** a spot missing from S28(ii), or a fourth free incidence type on singletons (none: a normal incidence on a
+singleton is a triangle, and coplanarity-naturality needs three points of `Q′` in `U_x`).
+
+**(iv) Where O7e-b now stands.** Every *single* relation among big points is closed: coincidence at distance `≥ 3`
+(S25), `2`, adjacent (S26), the collinear triple without (S28) and with (S29) a star, the coplanar quadruple (S30) —
+all at `k_c ≤ 3`, all modulo the S28 audit. What is left of O7e-b is **several relations at once**, `s = c₁ − J₂ − 1`
+with `c₁` the codimension of the point matroid's realisation space. The per-relation proofs share one shape — the
+three sums of S22 are robust once read in ranks, and the damage is only (a) `disc` on a bad pair and (b) free
+singleton incidences, `½` each — which suggests a single argument over an arbitrary point matroid `M` (next section)
+rather than a relation-by-relation list.
+
+## S31 — Session-12 controls: the fresh-reader audit of S28 (no miss), and the collinear-stratum run of `case2deg.py` (session 12, 2026-09-23)
+
+**(i) Audit of S28 (helper, S27(i)'s method: quote each S22/S25 step S28 uses, ask whether it reads general position
+or `|·|` for `rk`).** Seventeen steps examined: every one covered by (K1)–(K5) or S28(iii)–(vi), or harmless; **no
+miss**. Independently re-derived: the merge identity with `disc_A = [T ⊆ U_A]` at `|U_A| = 4` (the forced merge `{e, b}`
+on a big path `a–e–b–d`: cost `0`, `T_A = 0`); `τ_A` by cases on `|U_A ∩ T|`; both branches of S28(iii) (tight at
+`U_C = {a}`, `X_C = {b, d}`, flats `w_{ab}, w_{ad}`); that a flat's `P_w ⊇ I(ℓ)` in every position, so no placement is
+cheaper than `rk I − β`; line charges have exactly S25(iv)'s two properties and cannot coexist with `disc = 1`; and
+`k₁ ≤ 1`, `k₆ ≤ 1` — the auditor could not build a girth-`≥ 7` star-free configuration with two of either. The one new
+jump-shaped phenomenon, forced equality of two rank-3 planes inside `span(λ₀, q_e)`, sits in the class ledger with
+`T_A ≥ 0`. Two slips repaired in S28(i) (the flat's cost term) and S28(iv) (the `u_ℓ = 0` case at `I = T`). The audit
+did not cover S29–S30 separately; they reuse S28's lemmas and add only the girth counts of S29(ii) and S30(ii).
+
+**(ii) `case2deg.py --collinear` (helper-written, adopted; README).** Slack `:= 2 + M_q + ρ − J₂ − J₃ − 1`, so
+`slack ≥ 0` ⟺ `cost − J₃ ≥ J₂ − 1`. Every pattern with slack `≤` the cap was realised over ℚ (none left unrealised);
+the assertion `ρ ≥ ρ_lb` held on every realised pattern.
+
+| graph, triple | star | cap | realised | min slack | min `cost − J₃` (all / some class with all three labels) |
+|---|---|---|---|---|---|
+| D3r `(r, u, v)` | no | 1 / 3 | 3 / 736 | **1** | 0 / 0 |
+| E15 `(a, u, v)` | no | 1 / 2 | 1 / 46 | **1** | 0 / 1 |
+| E55 `(a, u, v)`, `(a, b, u)` | no | 0 | 0 | **1** (exact: the trivial pattern) | 0 / `≥ 0` |
+| T8 `(u, v, w)` | centre `v`, `J₂ = 1` | 1 / 3 | 20 / 1 282 | **0** | 0 / 0 |
+
+Minimum-attaining shapes: the trivial pattern and the forced line through `λ₀` (D3r, T8: all singletons, `I = T`,
+`M_q = ρ = J₃ = 0`); on D3r also `{u}` on that line with `X_{u} = {r, v}` (`ρ = 1`, `J₃ = 1`) and the class `{p, r}`
+(`D = 1`, `M_q = 1`, `J₃ = 1`). So the theorems' bounds (`−1` star-free, `0` with a star) are met with room `1` and
+`0`; no pattern with a jump comes near `−1`, and the damage shapes of S28(vi) do not occur on these graphs (as with
+S27(ii), the count lemma is confirmed only in that weak sense). Re-run from the repo path this session: D3r cap 1
+(63 `(C, L, I)`, 3 realised, min slack 1) and T8 cap 1 (229, 20, min 0), PASS. Caps as in the README; evidence, not proof.

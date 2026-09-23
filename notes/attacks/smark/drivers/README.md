@@ -383,3 +383,21 @@ through the merged point; on D3r the O6 pattern of S25(ii)(L6) realises at slack
 one coincident pair each, over ℚ, placement orders `≤ 120`, per-graph budgets `600–900` s (T8's adjacent pair and its cap-0 run capped);
 the pruned partition search for `|Z| ≥ 10` visits only partitions that can reach `slack ≤ N`; the D3/D3c runs leave `24` Fano-type line
 structures unrealised (unverified). Evidence for (★₂) on these strata, not a proof of S25–S26.
+
+### `case2deg.py --collinear A B D` — the collinear stratum (session 12, 2026-09-23; workbook S31(ii), S28–S29; helper-written)
+
+`q_D := s·q_A + t·q_B` (seeded nonzero integers), other big points random, and the script checks exactly that the
+collinearity is the only relation (`rank S = min(4, |S| − [A, B, D ∈ S])` for every `|S| ≤ 5`); `lev1 = 2`, stars listed,
+`K = 1 − J₂`. Class point sets are replaced by the flats they span, `I(ℓ)` ranges over flats of rank `≤ 2` (one is
+`{A, B, D}`), `P_A` is a closure of rank `≤ 3`, `X_A := P_A ∖ cl(U_A)`. Shortcuts S1, S2, S6, R2 unchanged; S3's extras
+bound is `Σ (rk P_A − rk U_A)`; S3's auto-line test (no rank-`≤ 1` class, at most one distinct rank-2 flat among the
+rank-`≤ 2` classes) errs toward "auto", so stays sound for any `|Big|`; S5 reads ranks. `--probe` is not supported in
+this mode. `--generic` and `--pair` output is unchanged (re-run on D3: identical but for the command line).
+
+    timeout 595 python3 -u notes/attacks/smark/drivers/case2deg.py --graph D3r --collinear r u v --budget 570 [--slack-cap 3]
+    timeout 595 python3 -u notes/attacks/smark/drivers/case2deg.py --graph E15 --collinear a u v --budget 570 [--slack-cap 2]
+    timeout 595 python3 -u notes/attacks/smark/drivers/case2deg.py --graph E55 --collinear a u v --budget 570 --slack-cap 0   # also a b u
+    timeout 595 python3 -u notes/attacks/smark/drivers/case2deg.py --graph T8 --collinear u v w --budget 570 [--slack-cap 3]
+
+Caps: four graphs (qualifying: `≥ 3` big vertices, all `k_c ≤ 3`; E13 has two, NK4/T9 have `k_c = 4`), one triple per
+run (E55 two), over ℚ, Jacobian rank mod `2⁶¹ − 1`; E55 at cap 1 exceeds 570 s and was run at cap 0 only.

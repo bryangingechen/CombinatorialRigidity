@@ -58,3 +58,7 @@ Overflow from `state.md`'s *Tried* section as the route narrows. Newest first.
 ## Session 7-recovery (2026-09-23; route R2 restated plane-first, S17)
 - Peel induction on a marked vertex in the plane-first base: rules out a naive induction on `|Z|` — concurrent-line conditions on the earlier planes are invisible to `J′`; replaced by global charging (Lemmas P, L).
 - Reading S14(iii) pointwise for `hK` at `m = 5` from the IH: rules out that shortcut — the hub-neighbourhood conjunct at a `G`-degree-3 chain end is not imposed on `H′`'s witness.
+
+## Session 12 (2026-09-23; S28–S31)
+- Planning a separate charge for the line `ℓ₀` of classes through `λ₀` (state, session 11): rules out its necessity — S28(i)'s rank values price those classes at their true cost `0`.
+- S22(iii)'s "an extra serves at most two flats" as the working bound: superseded by S28(iii) (at most one, any `q`), which removes the extras overflow at the collinear and coplanar strata.
