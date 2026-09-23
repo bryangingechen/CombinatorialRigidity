@@ -47,6 +47,25 @@ CASES = {
             "hub 7-cycle with a pendant hub: one big vertex on a cycle"),
     "T11": ([f"c{i}" for i in range(1, 7)] + ["x", "y"], [(f"c{i}", f"c{i + 1}") for i in range(1, 6)] + [("c1", "x"), ("c4", "y")],
             [("c1", "c6")], "hub path closed by a connector into an 8-cycle, two big vertices c1, c4 on it"),
+    # session 11 (O7e-b control): two big hubs at Gamma-distance >= 3, so no plane sees both -- the
+    # single-relation stratum q_u = q_v of state.md *Where it breaks* lives inside these varieties.
+    "D3": (["u", "p", "r", "v", "a", "b", "c", "d"], [("u", "p"), ("p", "r"), ("r", "v")] + star("u", "ab") + star("v", "cd"), [],
+           "two big hubs u, v at distance 3 (path u-p-r-v), two leaves each"),
+    "D3c": (["u", "p", "r", "v", "a", "b", "c", "d"], [("u", "p"), ("p", "r"), ("r", "v")] + star("u", "ab") + star("v", "cd"), [("a", "c")],
+            "D3 plus a connector a-c closing a 7-cycle through both big hubs"),
+    "D4": (["u", "p", "r", "s", "v", "a", "b", "c", "d"], [("u", "p"), ("p", "r"), ("r", "s"), ("s", "v")] + star("u", "ab") + star("v", "cd"), [],
+           "two big hubs u, v at distance 4 (path u-p-r-s-v), two leaves each"),
+    # session 11 (S25(vi)): graphs carrying the damage shapes of the single-coincidence ledger --
+    # O3 = u-w1-w2-v (two degree-2 hubs), O1 = u-c-z-c2-v (a bad-pair candidate), O5 = u-w-a-w2-v (a big).
+    "E13": (["u", "v", "w1", "w2", "c", "z", "c2", "x", "y"],
+            [("u", "w1"), ("w1", "w2"), ("w2", "v"), ("u", "c"), ("c", "z"), ("z", "c2"), ("c2", "v"), ("u", "x"), ("v", "y")], [],
+            "O3 + O1: big u, v joined by a 3-path and a 4-path, one leaf each (girth 7)"),
+    "E15": (["u", "v", "c", "z", "c2", "w", "a", "w2", "la", "x", "y"],
+            [("u", "c"), ("c", "z"), ("z", "c2"), ("c2", "v"), ("u", "w"), ("w", "a"), ("a", "w2"), ("w2", "v"), ("a", "la"), ("u", "x"), ("v", "y")], [],
+            "O1 + O5: big u, v joined by a 4-path and a 4-path through a third big hub a (girth 8)"),
+    "E55": (["u", "v", "w", "a", "w2", "w3", "b", "w4", "la", "lb", "x", "y"],
+            [("u", "w"), ("w", "a"), ("a", "w2"), ("w2", "v"), ("u", "w3"), ("w3", "b"), ("b", "w4"), ("w4", "v"), ("a", "la"), ("b", "lb"), ("u", "x"), ("v", "y")], [],
+            "O5 + O5: big u, v joined by two 4-paths through big hubs a, b (girth 8)"),
 }
 
 def m2_script(Z, E, conn, seed):

@@ -305,6 +305,12 @@ dimension `5|Z| − 2|E(Γ)| + #conn − 5`. **Figure:** C1, C1c (Case-1 control
 `3`, `2`, `3` primes; T10, T11 (cycles through a big vertex) time out at `280` s; T9 (spider, `k_c = 4`, `|Z| = 10`) PASS in `1098` s
 (`--case T9 --timeout 1650`). Caps: ten hand-built Case-2 graphs with `|Z| ≤ 9` — *not* a population, no cycle case finished; one
 characteristic; primes over `F_{32003}`, not its closure. A single prime is evidence for, not a proof of, irreducibility.
+**Session 11 (workbook S25(viii), S26):** six more cases for O7e-b's single-coincidence stratum — `D3`, `D3c`, `D4` (two big hubs
+`u, v` at Γ-distance `3`, `3` with a connector `a–c` closing a 7-cycle, `4`; two leaves each) and `E13`, `E15`, `E55` (the graphs
+carrying S25(ii)'s damage shapes: `u–w1–w2–v` with a bad-pair path `u–c–z–c2–v`; that bad-pair path with a 4-path through a third
+big hub `a`; two 4-paths through big hubs `a, b`). Run `--case D3 --case D3c --case D4 --timeout 3600` and each `E` case alone with
+`--timeout 5400`. **Figure:** `D3` PASS (`28.9` s); the rest are recorded in workbook S26 with their wall-clock times or timeouts.
+Because the count is of the whole reduced variety, a PASS covers every tower stratum of that graph, degenerate big points included.
 
 ## `case2geo.py` — Case-2 geometric control of (★₂) at generic big points (session 10, 2026-09-23; workbook S22(viii), O7e (a); helper-written)
 

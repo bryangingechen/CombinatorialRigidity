@@ -2243,3 +2243,201 @@ as S24. (3) O7e-b control-first: finish one cycle case (T10/T11) in `case2m2.py`
 single-relation stratum in `case2geo.py` before the labelled-point calculus; cycles through a big vertex are the one
 Case-2 shape with no completed control. Review 5 after session 13 or on a route change. No incident line: neither
 `HARNESS.md` nor the review command cost this review time.
+
+## S24 — Verification of S23(iv)'s four load-bearing steps: S19(i), S21(v), S22(ii)(e), S22(iv)(c), S22(vi)(4b) — three confirmed, one restated (session 11, 2026-09-23)
+
+Tree at `4ce33cd6`. Consumer re-diffed: the §3.1 kernel quotes are token-identical to `pencilPair_of_splitOff_of_habitat`
+(`Escape.lean`; whitespace-normalised diff empty), `git log 084ee4ff..HEAD -- '*.lean'` is empty, and the bodies of
+`splitOff`, `PencilHub`, `closedHubNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`,
+`HasDistinctPencilRealization`, `HasGenericPencilRealization`, `PencilPair` match brief §3.2. Each item below was
+re-derived from the definitions in S19(i), S21(ii) and S22(i), not from the prose that cites them.
+
+**(i) S19(i), the relaxation step — CONFIRMED.** For a pattern `P` let `L_P°` be the locus where planes are equal
+within classes, distinct classes are distinct, each line's classes are collinear, and distinct lines are distinct
+geometric lines. `S_P ⊆ L_P°`. Placing the `q` class-planes in any order, a class's fibre lies in `P³*` (`3`), in a
+determined line (`1`), or in the meet of two distinct determined lines (`≤ 0`) — two lines of `ℒ` share `≤ 1` class,
+so on `L_P°` they are distinct geometric lines. Hence `dim S_P ≤ dim L_P° ≤ 3q − Σ_C min(2d_C, 3)` for every order, and
+`codim_B S_P ≥ 3(|Z| − q) + LC(P) = cost(P)`. Relaxing to `P′` (drop a line, a class from a line, an extra) keeps
+`S_P ⊆ L_{P′}°`: the surviving lines are collinear on `S_P`, and two reduced lines come from two distinct lines of
+`ℒ`, so they are distinct geometric lines there. Dropping a line with no flat vertex, or reducing a line to its flat
+vertices' classes, changes no `rk_y` (a collinearity jump at `y` *is* `y` flat on that line), so `J` is unchanged and
+`cost(P′) ≥ J + 1` still bounds `codim S_P`. In S22(i) the same argument runs in the fibre `A_q = ∏ P(U_c^⊥)`.
+
+**(ii) S21(v), the duality transfer — CONFIRMED.** S19 uses exactly four inputs, each checked on `(Γ, Big)`: *girth*
+`≥ 7` (Γ ⊆ H′); the *habitat count* on subgraphs (every `Γ_A`, `Γ[W]` built by S19 is a subgraph of `Γ ⊆ H′`);
+*Case 1* — every marked vertex has `≤ 2` marked neighbours — reads `k_u = |Big ∩ N_Γ[u]| ≤ 3` for `u ∈ Big`, and
+`k_c ≤ 2` is automatic for `c ∈ Z ∖ Big` (`deg_Γ c ≤ 2`); *unmarked degree* `≤ 2` — the unmarked vertices are
+`Z ∖ Big`, of Γ-degree `≤ 2` by definition, so their hyperedges `U_c = Big ∩ N_Γ(c)` have size `≤ 2` and the size-2
+ones are S19's connectors (an unmarked `c` between two big vertices). The hyperedge of `u ∈ Big` is `U_u = Big ∩ N_Γ[u]`
+(closed), matching S19's `N[y] ∩ Z` for marked `y`. The jump `J₂ = Σ_c (k_c − r_c)` is S19's `J` for the point pattern
+(`J_A = 2e(A) + |Y_A|`: an adjacent coincident pair drops `1` at each of its two closed neighbourhoods; a `c ∉ A` with
+two neighbours in `A` drops `1`, whether `c` is big or not). Free points of `P³` with coincidence / collinearity strata
+are the `P³ ↔ P³*` dual of free planes, and S19's sequential fibre dimensions `3 / 1 / 0` are self-dual. So
+`cost₁(q) ≥ J₂(q) + 1` for every degenerate `q` with `J₂ ≥ 1` — and, by S19's proof, for every non-generic `q`
+with `J₂ = 0` the codimension is `≥ 1` trivially. The caveat of S21(v) stands as stated.
+
+**(iii) S22(ii)(e) — RESTATED; correct as used.** At generic `q`, for a class `A` on `ℓ` write `m_A := |P_A ∖ λ|`
+(big points of `π_A` off the line; natural or extra). *Realisability:* `m_A ≥ 2` forces `|I(ℓ)| ≤ 1` (`|P_A| ≤ 3`)
+and `π_A = span(P_A)`, a **fixed plane** in the geometric sense, with `λ ⊆ span(P_A)`; when `|P_A| = 2`, `|I| = 0`,
+`λ` must meet the fixed line `P_A`. Off-line points of distinct classes on `ℓ` are distinct (a shared one lies in
+`P_B ∩ P_C = I(ℓ) ⊆ λ`). *Claim (corrected):* **on a line with `|I(ℓ)| ≤ 1`, at most two classes have `m_A ≥ 2`**
+— three fixed planes through `λ` with `|I| = 1` project from `q_I` to three lines of `P²` through disjoint pairs of
+six generic points, concurrent only on a proper closed set; with `|I| = 0` the three normals, each spanned by a
+disjoint generic triple, are dependent only on a proper closed set; and two fixed planes plus a class with
+`|P_C| = 2` need the fixed line `λ` to meet a generic line `P_C` disjoint from the eight points defining `λ`.
+*What was overstated:* the sentence "at most two classes have `|U_A| = 3`" fails on a **2-point line**: there every
+class has `m_A ≤ 1`, a class with `U_A = I ∪ {p}` is a fixed plane through `λ` costing `0` after the line
+(`c_A = 0 + 0 + 1 − 1` by (i)'s formula), and any number of such classes may share `λ` — realisable (planes
+`span(λ, p)` for distinct `p`). *Use audit:* S22(v)'s "a fixed plane is never after a line" is invoked only inside
+the claim "a class after a line with `|I(ℓ)| ≤ 1` pays `≥ 1`", where the corrected form applies (a `|U_C| = 3` class
+has `m_C ≥ 2` when `|I| ≤ 1`); S22(v)'s third fact — a class after a 2-point line pays `|I ∖ U_C| + [P_C ⊄ λ]` —
+holds for **U-classes** (`|U_C| ≤ 2`, the only classes placed after lines in (iv)'s order) and is false for a
+`|U_C| = 3` class, which pays `0` there but is placed first. So S22(iv)–(vi) are unaffected; (ii)(e) should be read
+as the corrected claim. Fixed planes cost `0` in every position on every line (`X_C = ∅` since `|P_C| ≤ 3 = |U_C|`;
+after a 2-point line, `0` as computed), consistent with (v)'s `LC = Σ_𝒰 cost_C + Σ_w cost_w`.
+
+**(iv) S22(iv)(c) — CONFIRMED**, one omission harmless. Re-derived: `u_ℓ = 1`, `I(ℓ) = {a}`, `W₁ ≠ ∅` gives the U-class
+`[a]` (a `W₁` flat is adjacent to its big neighbour `a ∈ I`, whose class is on `ℓ` and is not a flat singleton). Every
+component of `Γ[W_ℓ]` (maximum degree `2`) is a path or a cycle; an isolated `W`-vertex has both neighbours in `[a]`
+and is not flat; a path's two outside neighbours lie in `[a]`, and an end adjacent to a non-big member of `[a]` is
+`W₀`; a path from `a` back to `a` has `≥ 6` vertices, `≥ 4` of them `W₀`; a big `a′ ∈ [a] ∖ {a}` adjacent to a path
+end is excluded by (ii)(a) (`q_{a′} ∈ I`). So every path carries a `W₀` vertex. The second-placed flat nets `−β`
+(cost `|I| − β`, jump `1`), a later `W₀` nets `+1`, a later `W₁` nets `0`: `N_ℓ = −β_second + #(W₀ after) ≥ #paths − 1`
+whichever flat is second. Equality: one path, exactly one `W₀`, hence `a — w₁ — w₂ — a′` with `a′ ∈ [a] ∖ {a}` non-big,
+so `[a]` is nontrivial with the big member `a` and not a bad pair (bad pairs are two flat, hence non-big, vertices).
+*Omitted in S22:* cycle components of `Γ[W_ℓ]` (`≥ 7` vertices, all `W₀`) — they only raise `N_ℓ`.
+
+**(v) S22(vi)(4b) — CONFIRMED**, with the fixed-plane sub-case routed through (iii). The flat vertex `y` of a reduced
+line `ℓ` with no flat singleton lies in a bad pair `{y, y′}` (`S′ = 0`), and `y′` is flat on the same line: the two
+lines share the distinct classes `[y]`, `[z]`. The four classes `[y], [z], [b], [x′]` are distinct (`b = x′`: a 4-cycle;
+`[b] = [x′]` nontrivial ⟹ a bad pair `{b, x′}` with a common neighbour `c ∉ {z, y, y′}`, closing the 6-cycle
+`y b c x′ y′ z`). So `ℓ` carries `≥ 4` non-flat-singleton classes. If `≤ 2` of them are fixed planes, `≥ 2` U-classes
+are placed after `λ`, and (vi)(2) gives `|I(ℓ)| = 2`; if `≥ 3` are fixed planes, (iii) gives `|I(ℓ)| = 2` directly.
+With `I = {a, b₀}` and no extras, every class on `ℓ` is natural for both points; the two cases `z ∈ I` (then `y = w_{ab}`
+and `[a] = [z]` contains a `b′ ∈ N_Γ(b) ∖ {a}`, nontrivial with a big member) and `z ∉ I` (then `{a, b₀} = {b, x′}` and
+`[z] ∋ a″ ∈ N_Γ[a] ∖ {z}`: `a″ = a` is big, and `a″ ~ a` gives `z ≁ a″` with no common neighbour — a 4-cycle through
+`a` or a 5-cycle `c z y a a″`) each produce a nontrivial class that is not a bad pair, against `S′ = 0`. Re-derived
+exactly as written; the only addition is the fixed-plane split in the second sentence.
+
+**(vi) First control on the O7e-b shape.** `case2m2.py` gained `D3`, `D3c`, `D4` (two big hubs `u, v` at Γ-distance
+`3`, `3` with a connector closing a 7-cycle, and `4`; two leaves each) — the graphs on which the single-relation
+stratum `q_u = q_v` of `state.md` *Where it breaks* has no plane seeing both points. **`D3` PASS**: one minimal prime of
+the expected dimension `21` over `F_{32003}`, `28.9` s. Since the Macaulay2 count is of the *whole* reduced variety, a
+PASS covers every stratum of the tower, degenerate `q` included, on that graph (evidence over one prime, not a proof).
+`D3c`, `D4`, `T10`, `T11` are running at the time of writing; their figures follow in S25.
+
+**(vii) Verdict.** S19(i), S21(v), S22(iv)(c), S22(vi)(4b) *confirmed*; S22(ii)(e) *restated* as (iii), with S22's
+downstream use unaffected. The one substantive finding is that S22(v)'s third fact and (ii)(e) both silently assume
+`|U_C| ≤ 2` where they are applied to classes after a line — true in (iv)'s order, and now said. Nothing in S22's
+theorem changes; O7e-a stays closed. **What would change this:** a realisable pattern at generic `q` with three
+`m_A ≥ 2` classes on a line with `|I| ≤ 1` (excluded above by genericity of the disjoint point sets), or a flat
+singleton whose big neighbour is *not* on its line (excluded by (ii)(a): two distinct natural planes through `q_a`
+meet in `λ`).
+
+## S25 — O7e-b, first relation: (★₂) holds on the stratum `q_u = q_{u′}` for big `u, u′` at Γ-distance `≥ 3` — the labelled-point ledger, five label-sensitive spots, and a joint habitat count that bounds their damage by `2` against a slack of `3` (session 11, 2026-09-23)
+
+Setting as S21(ii)/S22: `k_c ≤ 3` for all `c`; the tower stratum where the big points satisfy exactly one relation,
+`q_u = q_{u′} =: q*` for `u, u′ ∈ Big` with `dist_Γ(u, u′) ≥ 3`, all other distinct big points in general position
+(any three non-collinear, any four non-coplanar). Level-1 codimension `3`. No `c` has both `u, u′ ∈ N_Γ[c]`, so every
+`U_c` consists of `k_c` distinct points, `r_c = k_c`, `J₂ = 0`. Write `Q` for the set of big **points**; `ū` for the
+twin of `u ∈ {u, u′}`. Everything below is *proven-informally*; (viii) is evidence under its caps.
+
+**(i) The ledger.** Run S22(i)–(v) with every big-point set read as a set of **points** of `Q`: `U_c ⊆ Q`,
+`U_A := ⋃_{c ∈ A} U_c`, `P_A ⊇ U_A`, `X_A := P_A ∖ U_A`, `I(ℓ) := ⋂_{A ∈ ℓ} P_A = Q ∩ λ_ℓ`. All linear algebra of
+S22(i) is unchanged (distinct points of `Q` are in general position): `|P_A| ≤ 3`, `|I(ℓ)| ≤ 2`, the class cost
+`(3 − |U_A|) − dim{planes ⊇ W_A}`, its values, the relaxations (R1)–(R2), and `cost_C ≥ |X_C|`. The one new term
+is in the merge cost: `Σ_{c ∈ A} k_c − |U_A| = ov_A + disc_A` with `disc_A := [A ∩ N_Γ[u] ≠ ∅ ≠ A ∩ N_Γ[u′]]` (the
+class sees both labels of `q*`), so `cost(A) − J₃_A = σ_A − disc_A`, and with S22(iv)'s order
+
+> `cost − J₃ = Σ_{A nontrivial} (σ_A − F_A − disc_A) + Σ_ℓ N_ℓ + Σ_{C ∈ 𝒰} cost_C`.
+
+**Target.** `codim_T Σ = 3 + cost ≥ J₃ + 1` ⟸ **`cost − J₃ ≥ −2`**. S22 proved `cost − J₃ ≥ 1` at generic `q`
+through three sums each `≥ 0` plus a tightness argument; here only the three sums are used, and a *damage* of at most
+`2` is allowed. Define `δ_ℓ := #{β = 2 flat singletons on ℓ}` (S22 had `[w_{ab} ∈ ℓ]`; two are now possible, (ii)),
+`Δ_A`, `Δ′_A` the *normal* and *twin* deficit charges on `A` ((ii)), `D_C := ½ Σ_{x ∈ X_C} s_C(x)` with
+`s_C(x) := #{flat singletons w_{bx} : b ∈ C ∩ Big}`, and `T_A := σ_A − F_A − disc_A − (Δ_A + Δ′_A)/2`. Since every
+`β = 2` flat's two incidences are each natural (a charge on the class) or an extra (counted in `D`),
+`Σ_ℓ δ_ℓ ≤ Σ_A (Δ_A + Δ′_A)/2 + Σ_C D_C`, and the ledger reads
+
+> `cost − J₃ ≥ Σ_A T_A + Σ_ℓ (N_ℓ + δ_ℓ) + Σ_{C ∈ 𝒰} (cost_C − D_C)`.
+
+**(ii) What is label-sensitive.** Exactly five things in S22 read labels rather than points. **(L1)** the class
+discount `disc_A`. **(L2)** *Twin-naturality:* for a `β = 2` flat `w = w_{a₀ b}` with `b ∈ {u, u′}`, the incidence
+`π_{[a₀]} ∋ q_b = q*` is natural through `[a₀] ∩ N_Γ[b]` (a *normal* charge `(w, b)`, S22(iii)) **or** through
+`[a₀] ∩ N_Γ[b̄]` with `[a₀] ∩ N_Γ[b] = ∅` (a *twin* charge). A twin charge on `A` forces `disc_A = 0` (`A` sees
+`b̄` only), and each big `a₀ ∈ A` carries at most one (`b` is then the unseen twin and `w_{a₀ b}` is unique), so
+`Δ′_A ≤ g_A := |A ∩ Big|`. **(L3)** S22(iv)(c)'s path-end argument: with `I(ℓ) = {q*}` the U-class is `A ∋ u`
+(and `u′` if any flat on `ℓ` is adjacent to it), and a path of `Γ[W_ℓ]` may run from `u` to `u′`; its `W₀` count is
+`k − 2`, zero exactly for `u — w₁ — w₂ — u′`. **(L4)** two `β = 2` flat singletons on one line: `w_{au}` and
+`w_{au′}` share the point pair `{q_a, q*}`. **(L5)** an extra `x ∈ X_C` may serve more than two flats:
+`s_C(q*) ≤ 4` (two big `a, a′ ∈ C`, flats `w_{au}, w_{au′}, w_{a′u}, w_{a′u′}`; `C ∌ u, u′` since `q*` is an extra)
+and, for `x = q_a ≠ q*`, `s_C(x) ≤ 3` (needs `u, u′ ∈ C` and a third big `b ∈ C`). Everything else in S22(ii)–(v)
+— (ii)(a),(b),(c),(d), S24(iii)'s form of (ii)(e), Lemma D′ for normal charges (the augmentation adds `w` with two
+edges and the *label* `b` with one edge to its neighbour in `A`), (iv)(a),(b),(d),(e), the three facts of (v) — is
+linear algebra of distinct points or combinatorics of `Γ`, and holds verbatim. Three named path shapes carry the
+damage: **O1** `u — c — z — c′ — u′` with `{c, c′}` a bad pair (`k₁` of them); **O3** `u — w₁ — w₂ — u′` with
+`w₁, w₂` flat singletons and `[u] = [u′]` (`k₃`); **O5** `u — w — a — w′ — u′` with `a` big and `w, w′` flat
+singletons (`k₅`).
+
+**(iii) Lemma (lines).** `Σ_ℓ (N_ℓ + δ_ℓ) ≥ −k₃`, and `k₃ ≤ 1`. *Proof.* (a) `u_ℓ ≥ 2`: every flat is after
+`λ`, `N_ℓ + δ_ℓ = Σ_w (1 − β_w) + #{β_w = 2} = Σ_{β_w ≤ 1} (1 − β_w) ≥ 0`. (b) `I = ∅`, (d) `|I| = 2` with `u_ℓ = 1`
+(a `β = 2` flat's neighbour classes are two distinct U-classes, so none is on such a line), (e) `u_ℓ = 0`: as S22.
+(c) `|I| = 1`, `I = {q_a}`: if `q_a ≠ q*`, S22/S24(iv) verbatim. If `q_a = q*`: the ends of a path of `Γ[W_ℓ]` are
+adjacent to members of the single U-class `A`, and a big such member has its point in `I`, so it is `u` or `u′`
+(both in `A`). Paths `u → u`, `u′ → u′` have `≥ 6` flats, `≥ 4` of them `W₀`; a path to a non-big member has a `W₀`
+end; a path `u → u′` through `k` flats has `k − 2` interior `W₀` vertices. So `N_ℓ ≥ #paths − 1 − #{u → u′ paths
+with k = 2}`, and two such paths (on any lines) close a 6-cycle: `k₃ ≤ 1`. ∎
+
+**(iv) Lemma (classes).** `T_A ≥ −[A is a bad pair with disc_A = 1]` for every nontrivial `A`. *Proof.* A bad pair
+has no big member, hence no charge, `σ_A = F_A = 2`, `T_A = −disc_A`. Otherwise `A` has a big member. If `Δ′_A = 0`:
+`σ_A − F_A − Δ_A/2 ≥ 1 ≥ disc_A` by Lemma D′ (`Δ_A ≥ 1`) or S21(iii) (`Δ_A = 0`). If `Δ′_A ≥ 1`: `disc_A = 0` and
+`Δ′_A ≤ g_A` (L2); Lemma D′'s count with the normal charges gives `σ_A ≥ 1.5a − 1.25 − 0.75e + 0.75Δ_A`. For
+`e = 0`, `F_A ≤ a − g_A`, so `T_A ≥ 0.5a − 1.25 + g_A/2 + 0.25Δ_A ≥ 0.25`, hence `≥ 0` (`T_A ∈ ½ℤ`). For `e ≥ 1`
+the non-isolated set `W` has `|W| ≥ (5e + 7)/6` and `F_A ≤ a − max(|W|, g_A) ≤ a − (|W| + g_A)/2`, so
+`T_A ≥ 0.5a − 1.25 − 0.75e + |W|/2 ≥ 0.5a − 2/3 − e/3 ≥ 0.1a − 0.2 ≥ 0`, using `5e ≤ 6(a − 1) − 1`. ∎
+
+**(v) Lemma (extras).** `Σ_C (cost_C − D_C) ≥ −ov`, where `ov := ½ Σ_{C, x} (s_C(x) − 2)⁺ ≤ 1`; `ov ≥ ½` forces
+`k₅ ≥ 1` and `ov = 1` forces `k₅ = 2`. *Proof.* `cost_C ≥ |X_C|` gives the first inequality. `s_C(x) ≥ 3` needs
+(L5): either `x = q*` and a big `a ∈ C` has both `w_{au}, w_{au′}` (an O5 path through `a`), or `x = q_a` and
+`u, u′, b ∈ C` with `w_{ua}, w_{u′a}` (an O5 path through `a`). The flats `w_{au}` (`a` big) number `n_u ≤ 2`, since
+every such line carries `[u]` and `P_{[u]} ⊇ {q*} ∪ {q_a}`, `|P_{[u]}| ≤ 3`; likewise `n_{u′} ≤ 2`. Hence
+`Σ_C (s_C(q*) − 2)⁺ ≤ 2` (`= 2` only when one class serves all four, `k₅ = 2`), and `(s_C(q_a) − 2)⁺ ≤ 1` at the
+single class `D ⊇ {u, u′}` (its `P_D = {q*, q_a, q_b}` leaves no room for a second such extra). The two kinds
+exclude each other: a class `C ∌ u, u′` serving `≥ 3` flats through big `a, a′ ∈ C` puts `q_a, q_{a′}` on every
+plane of `D = [u] = [u′]` (each flat's line carries `D`), so `P_D ⊇ {q*, q_a, q_{a′}, q_b}` — four points. ∎
+
+**(vi) Lemma (count).** `2k₁ + 3k₃ + 2k₅ ≤ 5`. *Proof.* Distinct O1 pairs have distinct `c`, `z`, `c′` (`z = z′`
+closes `u c z c″ u`); the O5 vertices `a` are distinct big vertices with distinct `w, w′`; the interiors of the
+three shapes are pairwise disjoint (`z = a` closes the 4-cycle `u c a w`; a flat singleton is in no bad pair; `a` is
+big). Their union with `{u, u′}` is a subgraph with `2 + 3k₁ + 2k₃ + 3k₅` vertices and `4k₁ + 3k₃ + 4k₅` edges,
+and the strict count `5|E| ≤ 6(|V| − 1) − 1` reads `2k₁ + 3k₃ + 2k₅ ≤ 5`. ∎
+
+**(vii) Theorem.** *On the stratum `q_u = q_{u′}`, `dist_Γ(u, u′) ≥ 3`, `k_c ≤ 3`: every plane pattern has
+`cost − J₃ ≥ −2`; hence `codim_T Σ ≥ J₃ + 1 = J₂ + J₃ + 1`, and (★₂) holds on every such stratum.* *Proof.* By
+(i) and (iii)–(v), `cost − J₃ ≥ −k₁ − k₃ − ov`. By (v), `ov ≤ min(1, k₅)`. By (vi): `k₅ = 0` gives `k₁ + k₃ ≤ 2`;
+`k₅ = 1` gives `2k₁ + 3k₃ ≤ 3`, so `k₁ + k₃ ≤ 1` and the total is `≤ 2`; `k₅ = 2` gives `k₁ = k₃ = 0` and the total
+`≤ 1`. ∎ Note that the three sums of (i) are used only at `≥ 0` minus damage; S22(vi)'s tightness argument is not
+needed, which is what the level-1 slack of `3` buys.
+
+**(viii) Controls.** *Macaulay2:* `case2m2.py` gained `D3`, `D3c`, `D4` (two big hubs at distance `3`, `3` with a
+7-cycle-closing connector, `4`; two leaves each) — the smallest graphs on which this stratum is non-empty. `D3` PASS
+(one minimal prime, dimension `21`, `28.9` s); `D3c`, `D4` and the cycle cases `T10`, `T11` were still running when
+this section was written (figures in S26). A single prime covers *all* tower strata of the graph, this one included.
+*Geometric, at the stratum:* the helper-written `case2deg.py` (drivers; caps in the README) repeats `case2geo.py`'s
+enumeration at a fixed exact `q` with `q_v := q_u` on `D3` and reports `slack := 3 + M_q + ρ − J₂ − J₃ − 1 ≥ 0` for
+every realised pattern: `3 653` patterns, `3 629` realised over ℚ, minimum slack `2` at one shape — the two flats
+`p, r` on the line through `q*` with `[u], [v]` singletons (`M_q = 0`, `ρ = 2`, `J₃ = 2`), which is exactly the
+ledger's `Σ(N_ℓ + δ_ℓ) = 0` case (a) with `β = 1` flats — and no pattern with `D ≥ 1` needed realising (all have
+slack `≥ 2` by the shortcut). `24` Fano-type line structures not realised (unverified). So on `D3` the actual minimum
+of `cost − J₃` is `0`, two above the theorem's `−2`; the damage shapes O1, O3, O5 do not occur on `D3`.
+
+**(ix) What this does to O7e-b, and what would change it.** The single coincidence at distance `≥ 3` is closed. Left
+in O7e-b: coincidence at distance `≤ 2` (then some `U_c` sees both labels, `J₂ ≥ 1`, and the level-1 slack is
+`3 − J₂ − 1`); three collinear big points (codimension `2`, `J₂ = [a plane sees all three]`); four coplanar
+(codimension `1`, `J₂ = 0`, so the slack is **`0`** and S22's tightness argument must be redone — the hardest
+relation, and where S21(v)'s forced-equal-planes caveat lives); and strata with several relations. The same ledger
+applies: identify the label-sensitive spots, bound each damage by a habitat count against the level-1 slack. **What
+would change (vii):** a sixth label-sensitive spot in S22 (the audit of (ii) is a reading of S22, not a mechanical
+check — a helper re-read is the cheap control); an O1/O3/O5 shape whose interiors overlap (excluded by girth in (vi));
+or a pattern with `slack < 0` in `case2deg.py` on a graph carrying O1/O3/O5 shapes — none of `D3`, `D3c`, `D4` has a
+bad pair seeing both, so the count lemma (vi) is *not* exercised by today's controls.
