@@ -5,7 +5,7 @@ never append to the old one. Budgets are lines of content per section
 (`python3 notes/harness/check.py --state <this file>`). Overflow goes to
 log.md as one line per attempt. Keep the section names exactly. -->
 
-Sessions so far: 6 · last session: 2026-09-22 · baseline HEAD: c9dd58ca · the habitat count forces the hub order the tower needs (S16(ii)); `m ≥ 5` closes from the IH alone (S16(iii)); the irreducibility residue is one codimension invariant (O7c, S16(iv)); descent and the `hK` feasibility transfer written (S16(v)–(vi)) · **two brief corrections for the PI: (D1) `hK` has no feasibility hypothesis; (D2) (α) deletes the coincident-point stratum only — S16(i)**
+Sessions so far: 6 · last session: 2026-09-22 · baseline HEAD: c9dd58ca · the habitat count forces the hub order the tower needs (S16(ii)); `m ≥ 5` closes from the IH alone (S16(iii)); the irreducibility residue is one codimension invariant (O7c, S16(iv)); descent and the `hK` feasibility transfer written (S16(v)–(vi)) · **brief patched 2026-09-22 (PI-approved) for S16: (D1) `hK` has no feasibility hypothesis; (D2) (α) deletes the coincident-point stratum only — §§3.3(c), 3.4, 4, 6, 7, 8**
 
 ## Statement <!-- budget 10 -->
 The two kernels of `pencilPair_of_splitOff_of_habitat` (`Escape.lean`, verbatim in brief §3.1; re-diffed against the tree at `c9dd58ca`, S16(i)). For `G : Graph α β` and `v a b`, `eₐ e_b e₀` with `G.Simple`, `5 ≤ |V(G)|`, `G.TwoEdgeConnected`, no proper rigid subgraph (`IsProperRigidSubgraph _ G 3`), `G.degree v = 2`, `eₐ ≠ e_b`, `G.IsLink eₐ v a`, `G.IsLink e_b v b`, `¬ PencilHub a ∨ ¬ PencilHub b`, `e₀ ∉ E(G)`, and the IH `∀ G', V(G').Nonempty → |V(G')| < |V(G)| → PencilPair K 3 G'`:
@@ -40,7 +40,7 @@ The codimension counts of S16(iv) assume that an incidence `p_b ∈ π_a` betwee
 ## Next steps <!-- budget 5 -->
 1. **O7c:** prove the generic-incidence invariant by induction along the 2-degenerate tower (girth `≥ 7`), or exhibit one exact configuration per stratum type on a habitat side with adjacent hubs (a legal one: a hub with three hub neighbours of hub-degree 1, branches of length 6) showing the incidence is not forced; then S16(iv) closes and with it O7.
 2. Write S16(iv)'s codimension counts case by case (`z₂` with 0/1/2 earlier neighbours; `z′`'s plane free / determined) once the invariant is in hand; the reviewer should check them against the counts in S16(iv).
-3. For the PI (brief pointers, not the attack's to edit): §6's "O8 is DELETED" → "(α) deletes the coincident-point stratum; the rest is O7 on the closed variety `X̄`"; §3.4/§6's "`hK`'s domain" → derived via S16(v); §6's `m ≥ 5` worry → closed (S16(iii)).
+3. Brief patched 2026-09-22 on the PI's approval (§6 restated around O7c; D1 in §3.4; §4/§7/§8 pointers); the next CHECK against the tree should re-derive §6's inferences from the definition bodies, not only §3.2's glosses — that is where both slips lived.
 4. Optional control: sample the legal adjacent-hub side above with `sideprof.py`'s sampler (which handles a hub with three hub neighbours) to see one profile across starts — consistent with, not proof of, irreducibility.
 
 ## Worries <!-- budget 5 -->
