@@ -679,3 +679,16 @@ on the PI's word. **Still open from the same session:** T1's scope question (ful
 wrapper, residual-branch producer only, or design doc only) — asked, discussed, not answered.
 **Everything else stands unchanged:** phase OPEN; W4 reopened with the hold lifted (staged) as
 recorded above; smark continues in the main checkout.
+
+## 2026-09-24 — P3 run without the adversarial census; the shared-checkout commit rule retired
+
+Continuing W4-reopen P1, the user: **"Let's continue work on P1 in @notes/pencil/W4-reopen.md,
+however, let's see if we can make progress on the math without a new census first. Feel free to
+dispatch subagents to help."** The census is deferred, not cancelled. The math pass is §(K-main)
+Steps MC7–MC10, (MC-11)–(MC-27) (`notes/pencil/W4-reopen.md` P1, the 2026-09-24 paragraph).
+
+Asked whether smark was idle before committing, the user: **"smark is idle, let's retire that
+part of the harness and then commit."** The rule "never commit while a smark session is running"
+(`W4-reopen.md` *Where you are working*; it was never in `HARNESS.md`) is retired. smark's file
+ownership stands, and a resumed smark runs in its own worktree. **Nothing else is commissioned by
+this entry**; the next step is the PI's call among the options W4-reopen P1 lists.

@@ -806,4 +806,26 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `peels`, `exh8` (every isomorphism class of simple 2EC graphs on ≤ 8 vertices,
   from a stdlib canonical-form enumerator checked against OEIS in `--selftest`).
   **The `-- pool … built in N s` line is wall-clock and is the one line exempt
-  from byte-identity.** A leaf: nothing imports it.
+  from byte-identity.** Imported by `exactgain.py`, `nondegx0.py` and `earstep.py`
+  (below); nothing else imports it.
+
+- `exactgain.py (--battery | --exh N | --thetas SMAX) [--jump N] [--molecular]
+  [--scales LIST]` — **the exact-gain identity** (MC-11) of §(K-main) *After the census*.
+  Default mode: at admissible `q` (scales 2, 3, 30; `--jump N` adds a jump point
+  `dim L > 3 + def₂` found at scale 2) and each basis vector, a two-vector sum and a
+  random combination `z ∈ L(q)`, it asserts `rank R(q,z) = rank R(q,0) + rank
+  β(Ψz,·)` in exact ℚ. `--molecular`: at arbitrary `z ∈ K^V` and edge-injective `q`,
+  it asserts `rank R = 6(|V|−1) − dim(H(ℓ) ∩ H(a(z)))`. Prints one summary line per
+  population. A leaf.
+- `nondegx0.py (--battery | --exh N | --thetas SMAX) [--list]` — **nondegeneracy on
+  `X₀`** (MC-12)–(MC-14). Per graph, at one admissible `q`, it asserts edge by edge that
+  "the planes of `u`, `w` coincide on all of `L(q)`" equals "`def₂(G_e) = def₂(G)`",
+  wherever Jackson–Jordán's equality is exhibited at `G` and `G_e`. It then asserts that
+  the combinatorial nondegeneracy prediction equals `flanks.nondeg_conjuncts` at a drawn
+  point of the fibre (up to 4 draws). A leaf.
+- `earstep.py (--chains | --thetas N | --lamcap | --rdelta N [--draws D])` — **the ear
+  step on `X₀`** (§(K-main) Step MC10, (MC-16)–(MC-27)). `--chains`: the chain-span
+  certificates (MC-19). `--thetas`: attaining `X₀` points for the θ-graphs with
+  `p₃ ≤ N`. `--lamcap`: `dim Λ_ear` and its intersection over placements per flag
+  orbit. `--rdelta`: `r` against `δ` and `dim U` at every vertex pair (a measurement;
+  equality at an attaining draw is a certificate). A leaf.

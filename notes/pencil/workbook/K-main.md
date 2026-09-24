@@ -17,6 +17,22 @@ at most 8 vertices; there are 0 `SHORT`s. At every drawn point the first-order t
 the target ((MC-7), (MC-8)). The exception is nondegeneracy: at 28 distinct certified-feasible graphs, all
 with a proper rigid subgraph, `X₀` supplies the distinct motive but not the generic one ((MC-9)).
 The class statements (MC-10) are *open*. What follows is the PI's call.
+**2026-09-24 (no census re-run), *After the census*.**
+- (MC-11): the gain is **exact** at every admissible point. So (MC-8) is a theorem, and
+  (MC-10)(a) ⟺ (MC-10)(b), a plane-framework statement.
+- (MC-14): settles (MC-10)(c), with its converse. `X₀` is nondegenerate iff `hcard` holds and no
+  `def₂`-rigid subgraph holds two hubs of a common `closedHubNbhd`. This is modulo Jackson–Jordán,
+  and it is checked on all of `exh8`.
+- (MC-15): `hK`'s habitat has no `def₂`-rigid subgraph at all. So there (MC-10)(a) alone would give
+  `hK`'s conclusion.
+- Step MC10, the ear step on `X₀`:
+  - Closed ears and open ears with `k ≥ 5` are unconditional (MC-20).
+  - `k = 4` is proved under strong induction (MC-24)/(MC-25).
+  - So **every θ-graph attains on `X₀`** (MC-21), the first infinite class.
+  - Open ears with `k ≤ 3` are open (MC-27). So is the relative-dof conjecture (MC-23), which is
+    certified on ≤ 7 vertices.
+  - A second reader re-derived Steps MC7–MC9; its fixes are applied.
+  - The ear-step claims were checked by the coordinator, not by a second reader.
 **What would change this:** an admissible `q` where `maincomp.py`'s (MC-4) assert fires (the
 identity is false), an error in the Plücker bookkeeping of *Step MC3* (checked per instance by the
 (MC-3) assert), or a `SHORT` in an extended population.
@@ -405,6 +421,9 @@ architecture change are:
 > suggests ((MC-9)); it is **not tested**, because the driver records only whether a proper rigid
 > subgraph exists.
 
+*(2026-09-24: (a) ⟺ (b) by (MC-11). (c) and its converse are (MC-14), `[INFORMAL]` modulo
+Jackson–Jordán, so (c) is no longer a guess.)*
+
 (b) ⟹ (a) by *Step MC6*. (a) would prove `HasDistinctPencilRealization K 3 G` for every simple
 connected `G` of minimum degree `≥ 2`, **with no induction**. Jackson–Jordán is not needed for
 that implication; the census uses it only to certify that a drawn `q` lies in `U`. With
@@ -431,3 +450,482 @@ distinct motive no longer needs smark's O7e programme, `hbareSplit` or (K-bare-c
 habitat the same goes for `hK`, given nondegeneracy there. `kres` and (K-c) become unnecessary
 wherever `X₀` is nondegenerate, which is all 260 residuals measured. P3 must also supply
 nondegenerate points at A′ graphs, whose generic motive lives off `X₀` (as at `K_{2,3}`).
+
+---
+
+### After the census (2026-09-24): the gain is exact, and nondegeneracy on `X₀` is combinatorial
+
+*Written 2026-09-24, continuing W4-reopen P1 at the PI's direction ("see if we can make progress
+on the math without a new census first"). No census population was re-run, and no row of the
+decision table moves. Two new drivers each check one identity or one equivalence per instance:
+`w4/exactgain.py` checks (MC-11), `w4/nondegx0.py` checks (MC-12)/(MC-13).*
+
+#### Step MC7 — the gain is exact
+
+Step MC4 split the motion equations into a `W_Π`-block and a `W′`-block at `z = 0`. **The split
+holds at every `z`.** The `W_Π`-coordinates of `C_e` are (MC-3)'s first summand, which does not
+involve `z`. The `W′`-coordinates are `C′_e = J a_e(z)` with `a_e(z) := z_w p̂_u − z_u p̂_w`; this is
+Step MC6's computation, which uses (MC-3)'s formula and not `z ∈ L(q)`. For `r : E → K³` write
+`H(r) := {ω ∈ K^E : Σ_{e ∈ C} σ_C(e) ω_e r_e = 0 for every cycle C}`. This is the angular-velocity
+space of the planar body-and-pin framework with pin `r_e` on edge `e`. Write `ℓ_e := p̂_u × p̂_w`, as
+in Step MC6.
+
+> **(MC-11)** `[PROVED]` *(the gain is exact)* Let `G` be connected, and let `q` have `q_u ≠ q_w` on
+> every edge. Let `z ∈ K^V` be arbitrary: the framework at `p = (q, z)` is molecular (hinges
+> concurrent at each `p_v`), not necessarily a pencil framework.
+> **(i)** Its motion space is `{(h, m′) : h ∈ F(q), m′_u − m′_w = ω_e(h) J a_e(z) for every e = (u, w)}`.
+> Hence its flexes modulo the six trivial ones are `H(ℓ) ∩ H(a(z))`, and
+> `rank R(q, z) = 6(|V| − 1) − dim(H(ℓ) ∩ H(a(z)))`. The first factor depends on `q` alone (the
+> flat, pin-collinear framework of Step MC4). The heights enter only through the trace pins
+> `a_e(z)`, which are linear in `z`. `a_e` is the homogeneous point where the hinge line crosses
+> `Π`, with last coordinate `z_w − z_u`. At a horizontal hinge it is the direction's point at
+> infinity, scaled by the common height.
+> **(ii)** If `q` is admissible and `z ∈ L(q)`, then **exactly**
+> `rank R(q, z) = rank R(q, 0) + rank β(Ψz, ·) = 6|V| − 3 − dim ker_{F(q)} β(Ψz, ·)`, at every such
+> point, with no genericity.
+
+*Proof.* (i) The six equations `m_u − m_w − ω_e C_e = 0` of edge `e` separate into three
+`W_Π`-coordinates and three `W′`-coordinates. The `W_Π`-block does not involve `z`. By Step MC4
+its solutions `(m^Π, ω)` are the flat flexes `h ∈ F(q)`, with `ω = ω(h)` because `C_e|_{W_Π} ≠ 0`.
+The `W′`-block, `m′_u − m′_w = ω_e J a_e`, is a coboundary equation for `m′ : V → K³`. It is
+solvable iff the edge vector `(ω_e J a_e)_e` is orthogonal to `Z₁(G) ⊗ K³`, because over any field
+the cut space of `K^E` is the orthogonal complement of the cycle space. Since `J` is invertible,
+that is `ω ∈ H(a)`, and then `m′` is unique up to a constant. The constant `h` (3 dimensions) and
+the constant `m′` (3 more) are the six trivial motions, and `F(q)/constants ≅ H(ℓ)` by
+`h ↦ ω(h)`. Hence `dim ker R = 6 + dim(H(ℓ) ∩ H(a))`. (ii) Step MC6's proof identifies the pairing
+of `(ω_e(h) J a_e)_e` with `λ′ ∈ Z₁ ⊗ K³` as `β(Ψz, h)(Jλ′)`, when `z ∈ L(q)` at admissible `q`.
+Step MC6's `μ := −Jλ′` carries the opposite sign, which comes from `A₁ = −C′`; vanishing is
+unaffected. So
+the solvability condition is `β(Ψz, h) = 0` and `dim ker A(q, z) = 3 + dim ker_{F(q)} β(Ψz, ·)`. At
+`z = 0` this is `3 + dim F(q)`, and (MC-3)'s `rank A = |E| + rank R` finishes. ∎
+
+**Checked** in exact ℚ at every point drawn. (i) is checked by `exactgain.py --molecular`: 204
+points on the battery, every simple 2EC graph on ≤ 5 vertices, and `θ` with sum ≤ 8. The heights
+`z` are arbitrary and the pictures are only edge-injective, with scale 1 forcing degenerate
+positions; the run takes about 4 s, first as the second reader's scratch check and then committed.
+(ii) is checked by `exactgain.py`: 1 830 points over the battery,
+every simple 2EC graph on ≤ 6 vertices, and `θ(a, b, c)` with `a + b + c ≤ 9`. The points include
+131 jump points `q` (`dim L(q) > 3 + def₂`, found by `--jump 200` at scale 2) and special `z`
+(each basis vector of `L(q)`, and a sum of two). The run takes about 50 s. Command:
+`python3 notes/scripts/w4/exactgain.py --battery --exh 6 --thetas 9 --jump 200`.
+
+> **(MC-11)(iii)** `[PROVED]` *(what (MC-11) does to the census)* The first-order gain of Step MC6
+> *is* the gain, at every admissible point. So **(MC-8) at a draw is equivalent to (MC-7)'s
+> attainment at that draw**, and carries no further information. **(MC-10)(a) ⟺ (MC-10)(b).** Two
+> further forms are plane-framework statements too. The existence form of the conjecture at `G`
+> (one witness, which the Lean motive needs) is: *some admissible `q` and some `z ∈ L(q)` have
+> `dim ker_{F(q)} β(Ψz, ·) = 3 + def₃`.* (MC-10)(a) asks for this with `q ∈ U`.
+> **(iv)** `[PROVED]` *(reciprocity)* For `z, z′ ∈ L(q)`: `Ψz′` is the vertical part of a motion of the
+> framework at `(q, z)` iff `Ψz` is the vertical part of a motion at `(q, z′)`. This is (MC-11)(ii)
+> with (MC-6)(i).
+> **(v)** `[PROVED]` *(the gain as the image of a quadratic map)* With `P = Ψz`,
+> `β(P, P)(μ) = Σ_e det(μ_e, P_w, P_u) = Σ_e μ_e · (P_w × P_u)`. So
+> `Q_q : L(q)/Aff(q) → (K³)^E / (B¹ ⊗ K³) ≅ (Z₁ ⊗ K³)^∨`, `z ↦ [e ↦ P_w × P_u]`, is a quadratic map
+> with differential `2β(Ψz, ·)`. In characteristic 0 the gain at generic `z ∈ L(q)` equals the
+> dimension of the closure of `Q_q`'s image (generic smoothness). So (MC-10)(b) at `q` says: that
+> image has dimension `dim L(q) − 3 − def₃`.
+> **(vi)** `[PROVED]` *(what the pencil constraint adds to the molecular theorem)* By (i), for fixed
+> `q` the heights enter only through the linear family `T_q(z) : H(ℓ(q)) → (K³)^{cycles}`,
+> `ω ↦ (Σ_{e ∈ C} σ_C(e) ω_e a_e(z))_C`, with `rank R(q, z) = 6(|V| − 1) − dim ker T_q(z)`. The
+> molecular theorem (Katoh–Tanigawa 2011, attaining at generic `p`) says `T_q` reaches kernel
+> dimension `def₃` at generic `z ∈ K^V`, for generic `q`. It is formalized in this project over any
+> infinite field (ROADMAP §33), and the hinge-concurrent case follows from the panel case by the
+> Phase 25 duality; the generic form follows from the existential one by semicontinuity.
+> **(MC-10)(a) says exactly that `T_q` keeps that generic rank on the linear subspace
+> `L(q) ⊆ K^V`**, where `T_q(z)` is the symmetric `β(Ψz, ·)`. It is a rank question about one
+> linear matrix family restricted to one linear subspace.
+> **(vii)** `[PROVED]` *(the obstruction is a vector area)* `F(q)` is the space of **parallel drawings**
+> of `G` in `K³` with prescribed edge directions: maps `P : V → K³` with `P_u − P_w ∈ K ℓ_e`. For a
+> cycle `C` and `c ∈ K³`, `β(P, P)(1_C ⊗ c) = −2 c · A_C(P)`, where
+> `A_C(P) := ½ Σ_{(a → b) along C} P_a × P_b` is the **vector area** of the closed spatial polygon
+> that `P` traces around `C`. It is translation-invariant, as `β` is on constants. So the 3D
+> pencil framework at `(q, z)` has, beyond the trivial ones, exactly the flat flexes `h` whose
+> **mixed** vector area with `P = Ψz` vanishes around every cycle. In characteristic 0, by (v),
+> (MC-10)(b) says: *for generic `q`, the map `P ↦ (A_C(P))_C` on parallel drawings has generic
+> fibre dimension `3 + def₃`.* In
+> the edge coordinates `ω` of a parallel drawing, this is
+> `A_C = ½ Σ_{i < j along C} (σω ℓ)_i × (σω ℓ)_j`. Its coefficients `ℓ_i × ℓ_j` are the intersection
+> points of pairs of edge-lines of the picture `q`, and consecutive edges at `v` meet at `q_v`
+> itself.
+
+#### Step MC8 — nondegeneracy on `X₀` is combinatorial
+
+Planes are written in the chart as `π_w : z = α_w x + β_w y + γ_w`, with `P_w := (α_w, β_w, γ_w)`
+(so `P = Ψz` on `B`). The normal of `π_w` in `K⁴` is `(α_w, β_w, −1, γ_w)`, up to scale. Linear
+independence of such normals is therefore **affine** independence of the points `P_w ∈ K³`. For
+`w ∈ N(v)`, `P_w − P_v = ±ω_{vw}(P) ℓ_{vw}`.
+
+> **(MC-12)** `[PROVED]` Under (H), let `q` be in **general position**: admissible, with no three
+> points of any `q(N[v])` collinear (a nonempty Zariski-open condition). General position is
+> sufficient, not necessary. The proof uses it only for the triple `{q_v, q_{w₁}, q_{w₂}}` at a hub
+> `v` with two hub neighbours; at such a collinear triple conjunct 3 fails for every `z`. Let `z ∈ L(q)` and
+> `P = Ψz`. Then conjuncts 1, 2 and 4 of `IsNondegPencilRealization` hold at `(q, z)` (Step MC2),
+> and **conjunct 3 holds iff**
+> **(i)** `|closedHubNbhd v| ≤ 3` for every `v`;
+> **(ii)** `P_u ≠ P_w` (that is, `π_u ≠ π_w`, that is, `ω_{uw}(P) ≠ 0`) for every edge `uw` joining two
+> hubs;
+> **(iii)** `P_a ≠ P_b` (that is, `(ω_{va}(P), ω_{vb}(P)) ≠ (0, 0)`) for every degree-2 vertex `v`
+> whose two neighbours `a, b` are both hubs.
+
+*Proof.* Put `S = closedHubNbhd v ⊆ N[v]`. Every plane `π_w`, `w ∈ S`, contains `p_v`, so the
+normals lie in the 3-dimensional `p_v^⊥`. So `|S| ≥ 4` fails conjunct 3, which gives (i). `|S| ≤ 1`
+is automatic. For `|S| ∈ {2, 3}` there are two cases. If `v` is a hub, `S = {v, w₁(, w₂)}` with
+`P_{w_i} − P_v = ±ω_i ℓ_i`. The `ℓ_i` are independent by general position, so the `P`'s are
+affinely independent iff every `ω_i ≠ 0`. Each `vw_i` is a hub–hub edge, and every hub–hub edge
+`uw` arises this way (in `closedHubNbhd u`); this gives (ii). If `v` is not a hub, then
+`deg v = 2` and `S ⊆ {a, b}`. Then `P_a − P_b = ±ω_{va} ℓ_{va} ∓ ω_{vb} ℓ_{vb}`, which is nonzero iff
+the pair `(ω_{va}, ω_{vb})` is not zero; this gives (iii). ∎
+
+A `def₂`-**rigid subgraph** is `H ⊆ G` with `|V(H)| ≥ 2` and `def₂(H) = 0`. It is connected, and
+by (MC-5)(i) it is also `def₃`-rigid. In a simple graph it has at least 3 vertices. Triangles
+and `K_{2,3}` are examples. For an edge `e = uw` let `G_e` be `G` plus one new vertex `x` adjacent
+to exactly `u` and `w`.
+
+> **(MC-13)(a)** `[PROVED]` For `(q, q_x)` admissible for `G_e` with `q_x` off the line `q_u q_w`,
+> `F(G_e) ≅ {P ∈ F(G, q) : P_u = P_w}`, with `P_x := P_u`.
+> **(MC-13)(b)** `[PROVED]` `def₂(G_e) = def₂(G)` if `u` and `w` lie in a common `def₂`-rigid
+> subgraph of `G`, and `def₂(G_e) = def₂(G) − 1` otherwise. The first case holds iff some
+> `def₂`-maximizing partition of `V(G)` has `u` and `w` in one part.
+> **(MC-13)(c)** `[INFORMAL]` *(not argued here: Jackson–Jordán's pin-collinear theorem, at `G_e` and at a rigid subgraph)*
+> At generic `q`, **the planes of `u` and `w` coincide on the whole fibre `L(q)`** (`ω_e ≡ 0` on
+> `F(G, q)`) **iff `u` and `w` lie in a common `def₂`-rigid subgraph of `G`.** The "only if"
+> direction uses Jackson–Jordán at `G_e` only, together with the elementary (MC-4)(b) at `G`. The
+> "if" direction uses it at the rigid subgraph. Only the hard direction of Jackson–Jordán's
+> Thm 7.1 (TR p.21) is used: generic `dim F ≤ 3 + def₂`, for simple graphs. Their theorem is over
+> `ℝ` with genericity over `ℚ`, so (c) is claimed in **characteristic 0**.
+
+*Proof.* (a) A flex of `G_e` has `P_x − P_u ∥ ℓ_{xu}` and `P_x − P_w ∥ ℓ_{xw}`, and `P_u − P_w = ω_e ℓ_e`.
+So `ω_e ℓ_e + ω_{wx} ℓ_{wx} + ω_{xu} ℓ_{xu} = 0`, where the three `ℓ`'s are the sides of the
+non-degenerate triangle `q_u q_w q_x`. That forces every `ω` to vanish, so `P_x = P_u = P_w`.
+Conversely, any `P ∈ F(G)` with `P_u = P_w` extends by `P_x := P_u`. The closed neighbourhoods
+`N[x] = {x, u, w}` and `N[u] ∪ {x}` are non-collinear.
+(b) Write `val(P) := 3(|P| − 1) − 2d(P)`. Take a partition of `V(G_e)` and look at where `x` goes.
+If `x` is alone, the value is `val_G(P) − 1`. If `x` sits in `u`'s part (or `w`'s), the value is
+`val_G(P) − 2·[u, w separated by P]`. If `x` sits in any other part, it is `val_G(P) − 4`. Hence
+`def₂(G_e) = max(max_{P : u ∼ w} val_G(P), def₂(G) − 1)`, which is the dichotomy.
+Parts of maximizing partitions are rigid. Refining a part `X` by a partition `Q` of `X` changes
+`val` by `3(|Q| − 1) − 2d_{G[X]}(Q) ≤ 0`, so `def₂(G[X]) = 0`. Conversely, let `H ∋ u, w` be
+rigid and `P` maximizing. Merge the `t` parts that meet `V(H)`. This changes `val` by
+`−3(t − 1) + 2·(edges of G between the merged parts)`, which is `≥ −3(t − 1) + 2d_H(P|_H) ≥ 0`. So
+the merged partition is still maximizing, and `u ∼ w` in it.
+(c) *Only if.* Suppose no rigid subgraph contains `u, w`. By (a), (b), Jackson–Jordán at `G_e`
+(generic `(q, q_x)`, so generic `q` for `G`) and (MC-4)(b) at `G`:
+`dim{P ∈ F(G, q) : P_u = P_w} = dim F(G_e) = 3 + def₂(G_e) = 2 + def₂(G) < 3 + def₂(G) ≤ dim F(G, q)`.
+*If.* Suppose `u, w ∈ V(H)` with `H` rigid. Every `P ∈ F(G, q)` restricts to a flex of `H` at `q|_H`
+(generic for `H`). By Jackson–Jordán at `H`, `dim F(H) = 3 + def₂(H) = 3`, so the restriction is
+constant and `P_u = P_w`. ∎
+
+> **(MC-14)** `[INFORMAL]` *(not argued here: Jackson–Jordán's pin-collinear theorem, at the `G_e` and at rigid subgraphs)*
+> *(settles (MC-10)(c) and adds its converse; characteristic 0)* Under (H), at generic `q`, **`X₀`'s generic point
+> satisfies `IsNondegPencilRealization` iff every `|closedHubNbhd v| ≤ 3` and no `def₂`-rigid
+> subgraph of `G` contains two members of a common `closedHubNbhd`.** The "if" direction uses
+> Jackson–Jordán only at the graphs `G_e`, for `e` a hub–hub edge or an edge at a degree-2 vertex
+> with two hub neighbours. On the A′ graphs this is exactly the `K_{2,3}` mechanism of (MC-9).
+
+*Proof.* **If.** Fix a hub–hub edge `e`. It lies in no rigid subgraph, so `ω_e ≢ 0` on `F(q)` by
+(MC-13)(c). Now take a degree-2 vertex `v` with hub neighbours `a, b`. Suppose both `ω_{va} ≡ 0` and
+`ω_{vb} ≡ 0`. By (MC-13)(c) there are rigid `H₁ ∋ v, a` and `H₂ ∋ v, b`. Their union is rigid.
+*Proof of the union lemma* (the second reader's):
+- Let `P` partition `V₁ ∪ V₂` into `k` parts. Let `P₁ = P|_{V₁}`, with `t₁` parts.
+- Let `P₂′` be `P|_{V₂}` with every part that meets `V₁` merged into one; it has `k − t₁ + 1`
+  parts.
+- An `H₂`-edge crossing `P₂′` has an endpoint outside `V₁`, so it is not an `H₁`-edge. Hence
+  `d(P) ≥ d_{H₁}(P₁) + d_{H₂}(P₂′)`.
+- So `val(P) ≤ val_{H₁}(P₁) + val_{H₂}(P₂′) ≤ 0`. One shared vertex suffices.
+So the union contains `a` and `b`, which is excluded.
+(The edge form checked by the driver is equivalent to the pair form stated. Use the union lemma,
+and note that adding a degree-2 vertex to a rigid graph keeps it rigid.) Hence at least one of `ω_{va}`, `ω_{vb}` is not
+identically zero. Only finitely many nonzero linear functionals on `F(q)` are involved, so
+generic `z` avoids all their kernels, and (MC-12) gives conjunct 3.
+**Only if.** If some `|closedHubNbhd v| ≥ 4`, (MC-12)(i) fails everywhere. Suppose instead that
+`w₁, w₂ ∈ closedHubNbhd v` lie in a rigid `H`. Then `P_{w₁} = P_{w₂}` on all of `F(q)`, as in the
+"if" half of (MC-13)(c). So their normals coincide, and conjunct 3 fails on all of `B`. (Linear dependence is a closed
+condition holding on a dense subset of `B`.) ∎
+
+**Checked** by `nondegx0.py` over every simple 2EC graph on ≤ 8 vertices (7 980 graphs, 121 208
+edge checks), the battery and `θ(a, b, c)` with `a + b + c ≤ 10`. It uses one scale-30 admissible
+`q` per graph. The (MC-13) equivalence is asserted edge by edge wherever that `q` and a drawn
+`q_x` exhibit Jackson–Jordán's equality at `G` and at `G_e`; 12 edge checks at 1 graph were skipped
+for that reason. The (MC-12)/(MC-14) prediction is asserted against `flanks.nondeg_conjuncts`, with
+up to 4 drawn `z` per graph. On `exh8` the prediction and the observation agree at all 7 980
+graphs: **7 934 predicted = 7 934 observed conjunct-3-degenerate on `X₀`**, which is the census's
+own count in (MC-7)'s `exh8` row. Of these, 7 701 fail `hcard` and 233 pass `hcard` but have a rigid
+hub pair (the census's 28 feasible A′ graphs are among the 233). Runs: `exh8` about 170 s;
+`python3 notes/scripts/w4/nondegx0.py --battery --thetas 10 --exh 6 --list` about 1 s.
+
+#### Step MC9 — kernel (K)'s habitat has no `def₂`-rigid subgraph
+
+> **(MC-15)(i)** `[PROVED]` Let `G` be simple and 2-edge-connected, with `|V| ≥ 4`, a vertex of
+> degree 2, and **no proper rigid subgraph**: no `H ≤ G` with `2 ≤ |V(H)|`, `V(H) ⊊ V(G)` and
+> `deficiency H 3 = 0` (Lean `IsProperRigidSubgraph`, `n = 3`). Then **no subgraph of `G` on at least
+> two vertices is `def₂`-rigid, `G` itself included.**
+> **(ii)** `[INFORMAL]` *(not argued here: Jackson–Jordán's pin-collinear theorem, at the `G_e`)* Hence, on `hK`'s habitat
+> (`Escape.lean`'s `hK` assumes `G.Simple`, `5 ≤ |V(G)|`, `G.TwoEdgeConnected`, no proper rigid
+> subgraph, and a degree-2 vertex), wherever every `|closedHubNbhd v| ≤ 3`, `X₀`'s generic point
+> is **nondegenerate** (MC-14). On that habitat **(MC-10)(a) alone would give `hK`'s conclusion
+> `HasGenericPencilRealization K 3 G` outright, without its split-off antecedent or its induction
+> hypothesis**, over the fields where (MC-10)(a) and Jackson–Jordán hold.
+
+*Proof of (i).* A `def₂`-rigid subgraph `H` with `V(H) ⊊ V(G)` is connected and `def₃`-rigid by
+(MC-5)(i), so it is excluded. A subgraph spanning all of `V(G)` is **not** excluded by
+`IsProperRigidSubgraph`, but it has `def₂(H) ≥ def₂(G)`, having fewer edges. So it suffices to
+show `def₂(G) > 0`. Suppose `def₂(G) = 0`. For `X ⊊ V` let `c(X)` be
+the number of edges leaving `X`.
+- *Step 1.* `def₂(G[X]) ≤ 2c(X) − 3`. Add the single part `V ∖ X` to a partition of `X`.
+- *Step 2.* If `def₂(H) ≤ 1`, then `H` is connected, and `def₃(H) = 0` iff `H` is bridgeless. From
+  `2d(P) ≥ 3|P| − 4`: `6(|P| − 1) − 5d(P) ≤ (8 − 3|P|)/2 < 0` for `|P| ≥ 3`, and `|P| = 2` needs
+  `d ≥ 2`.
+- *Step 3.* Let `c(X) = 2` and `|X| ≥ 2`. Then `G[X]` has a bridge, else it would be a proper rigid
+  subgraph. The bridge splits `X` into `X₁`, `X₂`. Since `G` is 2EC and
+  `c(X₁) + c(X₂) = 2 + c(X) = 4`, both have `c(X_i) = 2`.
+- *Step 4.* By induction on `|X|`, every vertex of such an `X` has degree 2 in `G`.
+- *Step 5.* Apply this to `X = V ∖ {v}`, `v` of degree 2: `c(X) = 2`. So `G` is a cycle, and
+  `def₂(C_n) = n − 3 = 0` forces `n = 3`, against `|V| ≥ 4`. ∎
+
+(ii) is (i) with (MC-14): no rigid subgraph exists at all.
+
+**Where this leaves the A′ exposure.** Under Jackson–Jordán it is now exactly the graphs with a
+`def₂`-rigid subgraph containing two hubs of a common `closedHubNbhd` (MC-14). By (MC-15) that
+set is disjoint from `hK`'s habitat; the census's "no A′ graph in `hK`'s habitat" is now a theorem
+(mod Jackson–Jordán). **Residuals** (packaging (b)'s (K-res) habitat) have proper rigid subgraphs,
+so (MC-15) does not reach them. For each residual, (MC-14) turns "nondegenerate on `X₀`" into a
+finite check of `def₂`-rigid subgraphs; the census found all 260 nondegenerate.
+
+#### Step MC10 — the ear step on `X₀` (P3 Track 1)
+
+*Worked by a forked agent (2026-09-24) and checked by the coordinator; driver `w4/earstep.py`
+(new). The question: does the `X₀` motive, "`X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)`",
+propagate along an ear addition `G = G′ + ear_k`? Here `G′` satisfies (H). The ear has `k ≥ 1` new
+vertices on a path `a − x₁ − ⋯ − x_k − b`. It is **open** if `a ≠ b`; **closed** if `a = b`, and then
+`k ≥ 2`.*
+
+**Notation.**
+- `M_H`: the motion space of `H`'s body-hinge framework at the configuration in hand.
+- `f := def₃(G′)` and `g := def₃(G′/ab)`, the maximum over partitions with `a, b` in one part.
+- `δ := f − g ∈ [0, 6]`: smark's `δ_i`, smark brief §1.
+- `ρ := {X_b − X_a : X ∈ M_{G′}}`, with `r := dim ρ`.
+- `Λ`: the span of the ear's `k + 1` hinge lines, with `λ := dim Λ`.
+- `U := {P_a − P_b : P ∈ F(G′, q′)}`: the 2D relative motion of `a, b` in the vertical block.
+- The flag pair `(p_a, π_a; p_b, π_b)` with `p_a ≠ p_b` lies in one of four projective orbits:
+  **(i)** `p_a ∉ π_b` and `p_b ∉ π_a`; **(ii)** exactly one of these incidences holds;
+  **(iii)** both hold and `π_a ≠ π_b`, so `π_a ∩ π_b = p_a p_b`; **(iv)** `π_a = π_b`.
+
+> **(MC-16)** `[PROVED]` *(the dimension formula, at every configuration)* For an open ear,
+> `dim M_G = dim M_{G′} − r + dim(ρ ∩ Λ) + (k + 1) − λ`. For a closed ear,
+> `dim M_G = dim M_{G′} + (k + 1) − λ`. Moreover `r ≤ δ` wherever `G′` attains.
+
+*Proof.* Solving along the chain gives `X_{x_{i+1}} = X_{x_i} − ω_i C_i`, so the ear closes iff
+`X_b − X_a ∈ Λ`. Given that, the ear's `ω` form an affine space of dimension `(k + 1) − λ`, and they
+determine the ear bodies. The admissible `X` are the preimage of `ρ ∩ Λ` under the surjection
+`M_{G′} → ρ`. For a closed ear, `X_b − X_a = 0`. For the bound, `r = dim M_{G′} − dim M_{G′,weld}`,
+where `M_{G′,weld} = {X ∈ M_{G′} : X_a = X_b}` is the motion space of the framework on `G′/ab` with
+the same hinge lines. Its dimension is at least `6 + g` by the partition bound. ∎
+
+> **(MC-17)** `[PROVED]` *(the target)* `def₃(G) = f + k − 5` for an open ear with `k ≥ 5`;
+> `f − min(δ, 5 − k)` for an open ear with `k ≤ 4`; and `f + max(0, k − 5)` for a closed ear.
+
+*Proof.* Restrict a partition of `V(G)` to `V(G′)`. Suppose the ear path has `c` crossing edges.
+Its middle segments are best made new parts, so the ear contributes `6(c − 1) − 5c = c − 6`.
+- If `a, b` are separated, then `c ≥ 1`, and the best is `c = k + 1`, contributing `k − 5`.
+- If `a, b` share a part, then `c = 0` or `c ≥ 2`, and the best is `max(0, k − 5)`.
+So `def₃(G) = max(f_sep + k − 5, g + max(0, k − 5))`, where `f_sep` is the maximum over separating
+partitions and `f = max(f_sep, g)`. Then split into cases:
+- For `k ≥ 5` this is `f + k − 5`.
+- For `k ≤ 4` with `f_sep ≥ g`, it is `f − min(δ, 5 − k)`.
+- For `k ≤ 4` with `f_sep < g`, `δ = 0` and it is `f`.
+- For a closed ear only the "same part" case occurs. ∎
+
+In Tay's generic model, `λ = min(k + 1, 6)`, `r = δ` and `dim ρ ∩ Λ = max(0, r + λ − 6)`. With
+these, (MC-16) reproduces (MC-17).
+
+> **(MC-18)** `[PROVED]` *(dominance, corrected at `k = 1`)* **(a)** For `k ≥ 2`, and for closed ears,
+> `L_G(q) ≅ L_{G′}(q′) × K^{k−2}` by `z_{x₁} = h_a(q_{x₁})`, `z_{x_k} = h_b(q_{x_k})`, with the middle
+> heights free. So restriction `X₀(G) → X₀(G′)` is dominant, and the fibre is exactly the set of
+> **placements**: `p_{x₁} ∈ π_a`, `p_{x_k} ∈ π_b`, middle points free. **(b)** For `k = 1`,
+> `L_G(q) ≅ {z′ ∈ L_{G′}(q′) : (h_a − h_b)(q_x) = 0}`, and restriction is dominant **iff
+> `dim U ≠ 1`** at generic `q′`.
+
+*Proof of (b).* The incidence `{(z′, q_x) : (h_a − h_b)(q_x) = 0}` is the zero set of a form that is
+linear in `z′` and affine in `q_x`. Its rank as a bilinear form is `dim U`.
+- `U = 0`: the condition is vacuous.
+- `dim U ≥ 2`: the form does not factor. Its zero set is then irreducible, has generic `q_x`, and
+  dominates `L_{G′}`.
+- `dim U = 1`, say `U = K·φ₀`: the zero set has two components of equal dimension,
+  `K² × {P_a = P_b}` and `{φ₀ = 0} × L_{G′}`. `X₀(G)`, which has generic `q_x`, is the first, and
+  lies over the proper locus `{P_a = P_b}`. ∎
+
+Two instances of `dim U = 1`:
+- `φ₀ ∝ ℓ_{ab}`: an edge or implied edge `ab`, the triangle case.
+- `C₄ = a c b d` with `a, b` opposite: `P_a − P_b ∈ N_c^⊥ ∩ N_d^⊥ = K ℓ_{cd}`, and `G = K_{2,3}`.
+  This is (MC-9)'s mechanism.
+
+`[MEASURED earstep.py --rdelta 7]` `dim U = 1` occurs at 241 of the 11 573 vertex pairs of simple
+2EC graphs on `≤ 7` vertices: 114 adjacent, 127 not. Each is at one draw, a lower bound on `dim U`.
+
+> **(MC-19)** `[PROVED]` *(chain spans; `earstep.py --chains`, 16/16 certificates)* **(a)** A generic
+> closed polygon with `n` edges has hinge span `min(n, 6)`. **(b)** For any flag pair with
+> `p_a ≠ p_b`, a generic open-ear placement with `k ≥ 2` has `λ = min(k + 1, 6)`. At `k = 1`,
+> `λ = 2` in orbits (i), (ii), (iv), and `λ = 1` in (iii), where `p_x ∈ p_a p_b`. **(c)** For any
+> flag, a generic closed-ear placement with `k ≥ 2` has `λ = min(k + 1, 6)`.
+
+*Proof.* The placement space is irreducible (a product of planes and copies of `P³`), and rank is
+lower semicontinuous on it. So one exhibited placement per projective orbit proves the generic
+value.
+- (b) with `π_a ≠ π_b`: choose `x₁ ∈ π_a` and `x_k ∈ π_b` with `p_a, x₁, x_k, p_b` not coplanar, and
+  send them to `e₂, e₀, e₁, e₃`. The span then depends only on the free middle points, and one
+  random choice has full rank.
+- (b) with `π_a = π_b`: `p_a, x₁, x_k, p_b` are four general points of the common plane.
+- (c): `p_a, x₁, x_k` are three general points of `π_a`.
+- `n ≥ 7` and `k ≥ 6`: put the extra points on an existing hinge line of a spanning `n = 6` or
+  `k = 5` configuration. The line set, and so the span, is unchanged, at a point of the closure. ∎
+
+> **(MC-20)** `[PROVED]` *(the unconditional ear steps)* If `X₀(G′)` attains, then `X₀(G)` attains
+> when the ear is **closed**, or **open with `k ≥ 5`**.
+
+*Proof.* By (MC-18)(a), `X₀(G)`'s generic point lies over `X₀(G′)`'s, with a generic placement.
+- Closed: by (MC-16) and (MC-19)(c), `dim M_G = 6 + f + (k + 1) − min(k + 1, 6)`, which is the
+  target (MC-17).
+- Open with `k ≥ 5`: `Λ = K⁶` by (MC-19)(b), so `ρ ∩ Λ = ρ` and `dim M_G = 6 + f + k − 5`.
+Neither case uses `r`, `δ` or a placement condition. ∎
+
+> **(MC-21)** `[PROVED]` *(class theorems; the first infinite families attaining on `X₀`)* **(a)**
+> Every graph obtained from a cycle by successively adding closed ears and open ears with at least 5
+> interior vertices attains on `X₀`. **(b)** **Every simple θ-graph `θ(p₁, p₂, p₃)` attains on
+> `X₀`.**
+
+*Proof.* `X₀(C_n)` has no hubs, so `L = K^V`, and by (MC-19)(a)
+`dim M = 6 + n − min(n, 6) = 6 + def₃(C_n)`. Then (a) follows by induction with (MC-20). For (b):
+if `p₃ ≥ 6`, the θ-graph is `C_{p₁+p₂}` plus an open ear with `p₃ − 1 ≥ 5` interior vertices. If
+`p₃ ≤ 5`, it is one of 30 graphs, each with an exhibited attaining `X₀` point
+(`earstep.py --thetas 5`, mod-`2⁶¹ − 1` rank equal to the target). ∎
+
+This extends (MC-7)'s finite `a + b + c ≤ 16` to every θ-graph. It is **characteristic-free
+wherever (MC-19)'s certificates are**: they are exact over ℚ, so every prime not dividing their
+minors is covered, and the remaining primes are not checked. Nondegeneracy is not claimed:
+`θ(2,2,2) = K_{2,3}` stays A′ (MC-9), (MC-14).
+
+> **(MC-22)** `[PROVED]` *(the reduction for open ears with `k ≤ 4`)* Assume dominance (MC-18) and
+> `λ = k + 1`; the latter excludes orbit (iii) at `k = 1`. Then `G` attains at `X₀(G)`'s generic
+> point **iff** both of the following hold at `X₀(G′)`'s generic point:
+> **(R_k)** `r ≥ min(δ, 5 − k)`;
+> **(P_k)** the generic placement has `dim(ρ ∩ Λ) = max(0, r + k − 5)`.
+
+*Proof.* By (MC-16) and (MC-17) we need `r − dim(ρ ∩ Λ) = min(δ, 5 − k)`. The left side is at most
+`min(r, 5 − k)` and `r ≤ δ`, so equality forces (R_k). Given (R_k), equality holds iff
+`dim(ρ ∩ Λ)` takes its least possible value, which is (P_k). ∎
+
+**`r = δ` is a separate statement from "`G′` attains".** By (MC-16), `r = δ` iff the welded
+framework on `G′/ab` attains at the pencil point. That framework's merged body carries two points
+and two planes, so it is not a pencil framework.
+
+> **(MC-23)** `[CONJECTURED]` *(the relative-dof conjecture (R); `earstep.py --rdelta 7` finds it at
+> every one of 11 573 pairs)* At `X₀(G′)`'s generic point, `r = δ` for every `G′` satisfying (H) and
+> every pair `a, b`. This is (K-c)'s genericity question in `X₀` form. On `≤ 7` vertices, at a draw
+> where `G′` attains, `r_draw ≤ r_generic ≤ δ`, so each observed equality **certifies** the generic
+> value; that is a finite theorem on `≤ 7` vertices, 9 min 32 s.
+
+> **(MC-24)** `[PROVED]` *(the gadgets: (R₃), (R₄), and conditionally (R₂), come from a strong
+> induction on `|V|`)* Suppose `X₀(G′ + E′)` attains, where `E′` is an open `a–b` ear with `k′`
+> interior vertices and restriction is dominant. Then (MC-22) at `G′ + E′` gives
+> `r ≥ min(δ, 5 − k′)` at `X₀(G′)`'s generic point.
+> - `k′ = 2` is always dominant. It gives `r ≥ min(δ, 3)`, hence **(R₃) and (R₄)**, and `G′ + E′` has
+>   fewer vertices than `G` whenever `k ≥ 3`.
+> - `k′ = 1` gives **(R₂)**, but only where `dim U ≠ 1`.
+> - **(R₁) is not reachable this way**: the only smaller gadget is a chord, and a chord is not
+>   dominant.
+
+> **(MC-25)** `[PROVED]` *(`k = 4`: (P₄) holds for every `ρ`; `earstep.py --lamcap`)* The intersection
+> of `Λ` over all placements is `0` in all four orbits at `k = 4`. Hence, **under strong induction on
+> `|V|`, the `k = 4` open-ear step holds**: (P₄) from this, (R₄) from (MC-24).
+
+*Proof.* Here `λ = 5`. For `r ≥ 1`, (P₄) says that `ρ ⊄ Λ` for some placement, and that fails only
+if `ρ ⊆ ⋂ Λ`. The exhibited intersection over 12 placements per orbit frame is already `0`, and
+intersecting over more placements only shrinks it. ∎
+
+> **(MC-26)** `[PROVED]` *(degeneration links)* For a given `ρ`: (P₁) ⟹ (P₂) at `r ≥ 4`, and
+> (P₂) ⟹ (P₃) at `r ≥ 3`. (P_k) holds at `r = 1` for every `k ≤ 4`, except in the two cells where
+> `⋂Λ ≠ 0`: orbit (iii) at `k = 1`, and orbit (iv) at `k = 2`.
+
+*Proof.* For the first implication, degenerate the 2-ear to `x₁ ∈ π_a ∩ π_b` with `x₂` on the line
+`x₁ p_b ⊆ π_b`. Its line set is then a 1-ear's, so the limit of `Λ₂` contains `Λ₁` plus one
+dimension. Upper semicontinuity gives `dim ρ ∩ Λ₂ ≤ max(0, r − 4) + 1`, which is the (P₂) value
+iff `r ≥ 4`. The second implication is the same, with `x₂` on the line `p_a x₁`. At `r = 1`,
+(P_k) means `ρ ⊄ ⋂Λ` (`--lamcap`). ∎
+
+Orbit (iv) is harmless on `X₀`. It is `P_a = P_b` at the generic point, i.e. `U = 0`. By the
+argument of (MC-13), applied to `G′ + ab + x` with `x` adjacent to `a` and `b`, and assuming
+Jackson–Jordán, `a` and `b` then lie in a common `def₂`-rigid subgraph. That subgraph is also
+`def₃`-rigid, so `δ = 0` and `r = 0`.
+
+> **(MC-27)** `[OPEN]` *(the open ear steps, `k = 1, 2, 3`)* At `X₀(G′)`'s generic point, `ρ` avoids
+> the placement bad set `B_k(r) = {ρ : dim(ρ ∩ Λ) > max(0, r + k − 5) at every placement}`.
+> **The universal form is false.** `Λ` always contains the line `p_a x₁`, which lies in the pencil
+> `Pen(p_a, π_a)`. So every `ρ ⊇ Pen(p_a, π_a)` is bad when `r ≤ 5 − k`, and likewise for
+> `Pen(p_b, π_b)`. Whether such `ρ` occur on `X₀` is open. They do not occur on `≤ 8` vertices:
+> `exh8` attains everywhere (MC-7), which by (MC-22) forces (R_k) and (P_k).
+> *`k = 1` in orbit (i), an exact criterion* `[PROVED]`. Put `m := π_a ∩ π_b` and `n := p_a p_b`,
+> which are skew. Then `Λ(x) = x ⊗ n̂` inside `W₄ := m̂ ⊗ n̂`, the lines meeting both `m` and `n`. Put
+> `ρ₄ := ρ ∩ W₄`. The 2-planes of `m̂ ⊗ n̂` meeting every `x ⊗ n̂` are exactly the `m̂ ⊗ y₀`. So (P₁)
+> fails iff either `r ≤ 4` and (`dim ρ₄ ≥ 3`, or `ρ ⊇ m̂ ⊗ y₀` for some `y₀ ∈ n`), or `r = 5` and
+> `ρ ⊇ W₄`.
+> **Stop rule fired** (W4-reopen): the remaining cells split by `k` × orbit × `r`.
+
+**What an ear-only induction on `X₀` still lacks.**
+- Open ears with `k = 2, 3` need (P_k).
+- (R₂) needs `dim U ≠ 1`.
+- Open 1-ears need dominance, (R₁) and (P₁).
+- Graphs of minimum degree `≥ 3` have no removable ear with an interior vertex, so they need a
+  chord or contraction step, which the ear step does not supply.
+
+**Drivers** (all at `PYTHONHASHSEED=0`, seed `20260924`, exact ℚ except the `--thetas` rank mod
+`2⁶¹ − 1`, which is still a certificate; sampler support is in the docstring):
+
+| command | output | time |
+|---|---|---|
+| `python3 notes/scripts/w4/earstep.py --chains` | 16/16 | 0.2 s |
+| `python3 notes/scripts/w4/earstep.py --thetas 5` | 30/30 | 0.6 s |
+| `python3 notes/scripts/w4/earstep.py --lamcap` | span and intersection per orbit and `k` | < 1 s |
+| `python3 notes/scripts/w4/earstep.py --rdelta 6` | 1 031 pairs | 31 s |
+| `python3 notes/scripts/w4/earstep.py --rdelta 7` | 11 573 pairs | 9 min 32 s |
+
+#### Literature, checked 2026-09-24 (a read-only agent over `.refs/` plus the web; bibliographic data from Crossref)
+
+- **Jackson–Jordán**, "Pin-collinear body-and-pin frameworks and the molecular conjecture",
+  *Discrete Comput. Geom.* 40(2) (2008) 258–278, doi:10.1007/s00454-008-9100-z. Read in its
+  report form, EGRES TR-2006-06 (`.refs/`).
+  - Thm 6.1 (TR p.14) and Thm 7.1 (p.21): simple graphs; the generic rank is
+    `3|V| − 3 − def(G)`, with `def` exactly our `def₂` (p.7).
+  - Thm 7.3: rigidity is equivalent to 2G packing 3 spanning trees.
+  - p.21: the rod-and-pin 2-polymatroid **equals** the body-and-pin one, so the formula gives the
+    rank of **every edge subset**. That is the form (MC-13)(c) and (MC-14) use, at `G_e` and at
+    rigid subgraphs.
+  - Setting: `ℝ²`, generic meaning algebraically independent over `ℚ`, with the genericity placed on
+    the pin-lines, each pin being `L_u ∩ L_v`. This is exactly our dual picture: pin-line `L_v`
+    dual to `q_v`, pin `ℓ_e`. The rank statement therefore transfers to generic points over any
+    field of characteristic 0. Positive characteristic is not covered.
+  - Proof technique: a minimal counterexample. The geometric steps are bar-joint 0-extensions,
+    1-extensions and vertex splits on the body-and-pin graph; the combinatorics is the theory of
+    bricks and superbricks.
+- **The flat correspondence of Step MC4** (`F(q) ≅ L(q)`).
+  - Crapo–Whiteley, "Statics of frameworks and motions of panel structures: a projective geometric
+    introduction", *Structural Topology* 6 (1982) 43–82. Example 4.4 (pp. 72–73) is the flat
+    tetrahedron: motions of the flat panel structure ↔ polyhedra over it, "true in great
+    generality, as we shall see in the sequel".
+  - Whiteley, "A correspondence between scene analysis and motions of frameworks", *Discrete Appl.
+    Math.* 9(3) (1984) 269–295, doi:10.1016/0166-218X(84)90027-1. By its abstract this is the
+    general isomorphism between scenes over a picture and motions of a plane framework. **Not read
+    in full; read it before citing it for Step MC4.**
+  - The scene-analysis count is Whiteley, "A matroid on hypergraphs, with applications in scene
+    analysis and geometry", *Discrete Comput. Geom.* 4 (1989) 75–95, doi:10.1007/BF02187716
+    (Sugihara's conjecture; Whiteley 1996 §8.3).
+- **Vertical/horizontal split, (MC-11)(i): not found.** Searched Crapo–Whiteley 1982; the
+  nearest is its Prop. 5.1 on cross-sections of panel structures. Also searched Whiteley 1988,
+  1996, 1999, 2005, Katoh–Tanigawa 2011 and Jordán 2016.
+- **The pencil statement itself: not found**, in any local source or by web search. The hinge
+  coplanar and hinge concurrent cases always appear separately. Whiteley 1999 p.25 notes only that
+  three coplanar concurrent hinges are dependent. One place could not be checked: Whiteley 1989
+  p.93, cited by Jackson–Jordán §8 for "a similar conjecture for 3-dimensional frameworks". The
+  download was blocked.
+- Also verified, for P3's Edmonds-problem idea: Lovász, "Singular spaces of matrices and their
+  application in combinatorics", *Bol. Soc. Brasil. Mat.* 20(1) (1989) 87–99,
+  doi:10.1007/BF02585470. Sugihara, *Machine Interpretation of Line Drawings*, MIT Press, 1986.

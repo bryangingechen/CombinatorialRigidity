@@ -109,6 +109,43 @@ agent's suggestion is an adversarial census first (larger random graphs, n = 9�
 the plane-framework form. Track 2 is nondegeneracy on `hK`'s habitat. Stop and report if either
 needs more than about three structural cases. The by-product below needs Jackson–Jordán at `G`
 (§(K-main) *Step MC5*).
+
+**2026-09-24 — P3 run without the adversarial census, at the PI's direction.** The PI (verbatim):
+*"Let's continue work on P1 in @notes/pencil/W4-reopen.md, however, let's see if we can make
+progress on the math without a new census first. Feel free to dispatch subagents to help."* The
+census is deferred, not cancelled. Everything is written up in §(K-main), *After the census*,
+Steps MC7–MC10, (MC-11)–(MC-27).
+- **Track 1 reformulated.** (MC-11): the gain is exact, not first-order. So (MC-10)(a) ⟺ (b),
+  and the conjecture at an admissible chart is a plane-framework statement. The 3D flexes of the
+  molecular framework at `(q, z)` are `H(ℓ(q)) ∩ H(a(z))`: two planar pin frameworks sharing their
+  angular velocities, with the heights entering linearly. **(MC-10)(a) is exactly: the linear
+  family `T_q(z)`, which attains on `K^V` by the molecular theorem, keeps its generic rank on the
+  subspace `L(q)`** ((MC-11)(vi)). The obstruction is a vector area ((vii)).
+- **Track 2 done, modulo Jackson–Jordán.** (MC-14): `X₀` is nondegenerate iff `hcard` holds and no
+  `def₂`-rigid subgraph holds two hubs of a common `closedHubNbhd`. That settles (MC-10)(c), with
+  its converse, and agrees with the census on all of `exh8`. (MC-15): `hK`'s habitat has no
+  `def₂`-rigid subgraph. So **on `hK`'s habitat (MC-10)(a) alone would give `hK`'s conclusion**,
+  with no antecedent and no IH.
+- **The ear step on `X₀`** (Step MC10, a forked agent's work, checked by the coordinator; not yet
+  second-read).
+  - Closed ears and open ears with `k ≥ 5` are unconditional. `k = 4` is proved under strong
+    induction.
+  - **Every θ-graph attains on `X₀`** ((MC-21)), the first infinite class.
+  - Open ears with `k ≤ 3` are open ((MC-27); the stop rule fired). So is the relative-dof
+    conjecture (MC-23), `r = δ`, which is (K-c)'s question in `X₀` form, certified on ≤ 7 vertices.
+- **Literature.** The pencil statement is not found anywhere; Jackson–Jordán is verified (the full
+  rank function, over `ℝ`, generic over `ℚ`); citations are recorded in §(K-main).
+- **The honest limit.** Pencil ⊆ panel, so (MC-10)(a) implies the molecular theorem for simple
+  graphs of minimum degree ≥ 2; no short proof should be expected. An ear-only induction can
+  never reach graphs of minimum degree ≥ 3. Those need a chord or contraction step on `X₀`, and
+  that step is where "the pencil pin destroys the combinatorial ingredient" bites.
+
+**Next (PI's call).** The smallest useful commits, in the agent's order:
+1. A second reader on Step MC10.
+2. Either (MC-27) at `k = 2, 3` (the placement lemma, bounded by the stop rule), or a design recon
+   of the chord/contraction step on `X₀` — whether `X₀(G)` relates to `X₀(G − e)` or `X₀(G/H)`
+   at all.
+3. The adversarial census, once there is a statement for it to test.
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
@@ -178,11 +215,12 @@ first outcome, smark's O7e programme is unnecessary in principle for the Lean ta
   review-1 close `3d769296`, T0 and the strategy re-think) was **merged 2026-09-23** as a merge
   commit (`03f73e61`; PI: *"OK, smark is idle, let's merge and move to the main worktree."*), so the branch SHAs this file cites stay
   valid. The gr10 worktree is still on disk, merged and idle; removing it is the PI's call.
-- **smark shares this checkout** and runs in it too. Never touch `notes/attacks/smark/` or
-  `notes/pencil/workbook/attack-smark.md`, and never commit while a smark session is running.
-  Files both lines edit: `notes/Phase39.md`, `ROADMAP.md`, `notes/harness/incidents.md` — keep
-  edits there small and anchored. (Or run P1 in a fresh worktree off `master`, and merge the same
-  way.)
+- **The shared-checkout commit rule is RETIRED (PI, 2026-09-24).** The PI (verbatim): *"smark is
+  idle, let's retire that part of the harness and then commit."* This session may commit without
+  first checking whether a smark session is running. File ownership is unchanged: never touch
+  `notes/attacks/smark/` or `notes/pencil/workbook/attack-smark.md`. If smark resumes, it runs in
+  its own worktree (`notes/Phase39.md` *Status*). Keep edits to the files both lines touch
+  (`notes/Phase39.md`, `ROADMAP.md`, `notes/harness/incidents.md`) small and anchored.
 - Commit rules: `CLAUDE.md` *Working* (author identity, `-F` for messages with backticks,
   no local paths).
 - P1 needs no Lean. (The gr10 worktree has a working Lean build of `Escape.lean`, with
