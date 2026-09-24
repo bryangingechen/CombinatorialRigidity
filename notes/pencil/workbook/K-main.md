@@ -914,6 +914,11 @@ Orbit (iv) is harmless on `X₀`. It is `P_a = P_b` at the generic point, i.e. `
 argument of (MC-13), applied to `G′ + ab + x` with `x` adjacent to `a` and `b`, and assuming
 Jackson–Jordán, `a` and `b` then lie in a common `def₂`-rigid subgraph. That subgraph is also
 `def₃`-rigid, so `δ = 0` and `r = 0`.
+*Repair (2026-09-24, the second reader of Step MC16):* read literally, (MC-13)(c) at `G′ + ab` gives
+a common `def₂`-rigid subgraph of `G′ + ab`, not of `G′`. That does not give `δ = 0`: take
+`G′ = C₇` with `a, b` at distance 2, where the triangle `acb` is rigid in `C₇ + ab` but `δ₂ = 2` and
+`δ = 1`. The conclusion stands by another route: (MC-62)'s count, `dim U ≥ min(δ₂, 3)` (JJ at
+`G′ + ab + x`), gives `U = 0 ⟹ δ₂ = 0`, and then `δ = 0` and `r = 0`.
 
 > **(MC-27)** `[OPEN]` *(the open ear steps, `k = 1, 2, 3`)* At `X₀(G′)`'s generic point, `ρ` avoids
 > the placement bad set `B_k(r) = {ρ : dim(ρ ∩ Λ) > max(0, r + k − 5) at every placement}`.
@@ -2885,9 +2890,12 @@ contraction runs; sampler support in each docstring):
 session's Track A), starting from the coordinator's observations (O1), (O2). Its §6 was written
 after Step MC15 and the second reading of Steps MC12/MC14 had reported. The coordinator re-derived
 (MC-75), (MC-87) (both cases) and (MC-80)'s choice of cores at the level of the written proofs.
-**Two second readers were dispatched on 2026-09-24 and have not reported**: one on (MC-75)–(MC-79)
-and (MC-82), one on (MC-80), (MC-87)–(MC-89) together with Step MC15's (MC-68), (MC-69), (MC-71).
-Until they report, **the coverage theorem (MC-89) is a claim by its author.** Driver
+**Two second readers were dispatched on 2026-09-24.** The first, on (MC-75)–(MC-79) and (MC-82),
+has reported: nothing wrong, no open gap. It re-derived every claim, filled small steps in (MC-76),
+(MC-77), (MC-78) and (MC-79)(i), (ii), and made three repairs, marked where they sit: (MC-79)(i)'s
+sketch, (MC-79)(vi)'s citation, and (MC-82)(iii)'s missing cycles. It also repaired Step MC10's
+remark after (MC-26). The second, on (MC-80), (MC-87)–(MC-89) with Step MC15's (MC-68), (MC-69) and
+(MC-71), has not reported. Until it does, **the coverage theorem (MC-89) is a claim by its author.** Driver
 `w4/coverstruct.py` (new).*
 
 **Verdict.**
@@ -3067,8 +3075,10 @@ property. Its proper subsets satisfy (S), so `def₂(G[Y]) = max(0, s′(Y)) = 0
 > - (a′) is in orbit (iii) with `dim U = 1`.
 
 *Proof.*
-- **(i)** Merge the maximal rigid sets as in (MC-77). A part of a maximizing partition of `G′/ab` is
-  rigid, and conversely a common rigid subgraph can be merged in without loss. The value
+- **(i)** Merge the maximal rigid sets as in (MC-77). *(Repaired by the second reader: "a part of a
+  maximizing partition of `G′/ab` is rigid" holds only in the `δ = 0` direction; in general, coarsen
+  the constrained maximizer to `P*(G′)`, which does not lower its value.)* Conversely a common rigid
+  subgraph can be merged in without loss. The value
   identity `val = val(sing) − Σ c(parts)` then gives the formula, with parts not containing both
   contributing `≥ 0`.
 - **(ii)**
@@ -3106,9 +3116,10 @@ property. Its proper subsets satisfy (S), so `def₂(G[Y]) = max(0, s′(Y)) = 0
   `k = 2`, `a ∼ b`: `δ ∈ {0, 1}` by (iii), and `δ = 0` is (MC-54). `k = 1`: `δ₂ ≥ 2` gives
   `dim U ≥ 2` as above, so `δ = 0` is (MC-54) and `δ ≥ 5` is SPLITOFF (`a ≁ b`).
 - **(vi)** `δ₂ ≥ 1` always in 𝒮: `s ≥ 0` gives `δ₂ = 1 + min s(X) ≥ 1`. `U = 0` would force
-  `δ₂ = 0` (mod JJ: the remark after (MC-26)). For (a′): `a ∼ b` puts `π_a ∋ p_b` and `π_b ∋ p_a`,
-  so the orbit is (iii) or (iv), and `dim U = 1` by (MC-13)(a),(b) at `G′_{ab}` (mod JJ at `G′`,
-  `G′_{ab}`). ∎
+  `δ₂ = 0`, by (MC-62)'s `dim U ≥ min(δ₂, 3)` (JJ at `G′ + ab + x`). *(Repaired by the second reader:
+  this first cited the remark after (MC-26), whose argument as written does not give it.)* For
+  (a′): `a ∼ b` puts `π_a ∋ p_b` and `π_b ∋ p_a`, so the orbit is (iii) or (iv), and `dim U = 1` by
+  the same count at `G′_{ab}`, `def₂(G′_{ab}) = def₂(G′) − min(δ₂, 1)` (JJ at `G′_{ab}` only). ∎
 
 `coverstruct.py --exh 8` and `--witness 16 --smax 4 --cores K4,dC4` assert (MC-77), (MC-78) and
 (MC-79)(ii),(iii) at every member tested:
@@ -3196,7 +3207,8 @@ reading); Step MC15 and this step have not been.
 > `def₂`-rigid subgraph (MC-76), so (MC-75)(iii) applies. Together with (i), this closes both
 > candidate gaps named in (MC-61)'s structural half.
 > **(iii)** *hK's habitat needs no open cell at its first step.* Every 2-connected habitat member
-> other than a θ-graph has a usable chain:
+> other than a cycle or a θ-graph has a usable chain *(cycles added by the second reader: `C_n`,
+> `n ≥ 5`, lies in the habitat, has no chain, and is BASE; (MC-89) does not use this item)*:
 > - if it is non-rigid, every chain is usable;
 > - if it is rigid, it has a chain with `k ≥ 2`, and every such chain is usable.
 >

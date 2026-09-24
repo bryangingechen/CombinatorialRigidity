@@ -240,13 +240,14 @@ coordinator:
 
   (MC-89) is a claim by its author until the second readings report.
 - In flight, **not in the tree until landed**:
-  - G and H, the two second readings of the coverage proof: G on (MC-80), (MC-87)–(MC-89) with
-    (MC-68), (MC-69), (MC-71); H on (MC-75)–(MC-79) and (MC-82);
+  - G, the second reading of (MC-80), (MC-87)–(MC-89) with (MC-68), (MC-69), (MC-71). The other
+    half, H on (MC-75)–(MC-79) and (MC-82), has **landed**: nothing wrong, three minor repairs, plus
+    a repair of Step MC10's remark after (MC-26);
   - B, cell (MC-51)(c) (item 4), no longer on the coverage theorem's critical path;
   - E, the generic motive at A′ graphs (item 5);
   - F, cell (a′) (`k = 2`, `a ∼ b`), no longer on the critical path.
 
-  A fresh session **re-dispatches G and H first** if they have not landed, then E.
+  A fresh session **re-dispatches G first** if it has not landed, then E.
 
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
