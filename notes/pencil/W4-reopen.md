@@ -8,11 +8,34 @@ pointers are by declaration name; Lean unchanged since `084ee4ff`. Revised after
 **Revised a third time at the end of the same session (2026-09-23): the START HERE section (a
 prioritized direction list, which now sets the order), T1's partial findings, the corrected
 *Open on W4*, T2 re-aimed, T3 held.**
-**Current next-task source (2026-09-24, third session): P1's *third session* paragraph.** The
-coverage theorem is **claimed proved modulo Jackson–Jordán**: §(K-main) Step MC16 (MC-89), resting on
-Step MC15 (MC-71). So (MC-10)(a) holds modulo Jackson–Jordán, but only once its second readings
-confirm it. Those readings are the first thing to settle. The paragraph lists what landed and what
-is in flight.
+**Current next-task source (end of the third 2026-09-24 session): *Next session* below, then P1's
+*third session* paragraph.**
+
+**Where things stand.** The **coverage theorem (MC-89) is proved modulo Jackson–Jordán, in
+characteristic 0, and both halves are second-read**. Every finite simple connected graph of minimum
+degree ≥ 2 has `X₀` attaining, so (MC-10)(a) holds. With Step MC19's (MC-133), not yet second-read,
+every *feasible* such graph has `HasGenericPencilRealization`. Both statements are
+§(K-main) Steps MC15–MC19.
+
+**Next session, in order.**
+1. **Land Tracks I and J** if the P1 paragraph below says they are still in flight. Each has a
+   write-up in the session scratch directory (`trackI/`, `trackJ/`); if that is gone, re-dispatch.
+   - I makes (MC-89)'s computational leaves human-checkable (field-free where possible), prompted
+     by the (MC-26) erratum.
+   - J works on the last ear cell (MC-117), whose closure would give a second, EAR-only proof of
+     (MC-89).
+2. **Second readers**, one dispatch each:
+   - Step MC19, first (MC-123), (MC-129), (MC-130) and (MC-133);
+   - Step MC15's (MC-62)–(MC-67), the part the coverage proof does not use;
+   - Steps MC17–MC18.
+3. **PI calls, now ripe.**
+   - *Architecture.* The census's A′ row said "P3 becomes 'prove the rank on `X₀`', an architecture
+     change". That proof now exists, modulo Jackson–Jordán. Should the W4/`hK` Lean plan move to
+     the `X₀` induction? What stops: `kres` (held), the contraction kernels, smark's O7e?
+   - *Jackson–Jordán.* Cite it or formalize it; the project formalizes everything it uses.
+   - *Characteristic.* The Lean target is over any infinite field. The theorem is characteristic 0
+     because of Jackson–Jordán and the exact-ℚ certificates ((MC-33); Track I).
+4. *Structural chore:* `K-main.md` is about 4 900 lines, one section. Consider splitting it by step.
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
 run it: *"I'll probably run it in this same worktree as the smark agent is still proceeding in
