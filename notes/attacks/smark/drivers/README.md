@@ -420,3 +420,16 @@ Caps: E55 is the only qualifying graph with four big vertices, so two-relation s
 coincidence on E15); no graph has five, so coincidence + coplanarity and two collinearities through one point were not
 run. Every E55 run ended as a **lower bound** (`slack ≥ cap + 1` by the sound shortcuts; the cap-`K` run that would
 realise the all-singleton pattern timed out at 900 s); E15 is exact.
+
+## `k4core.py` — an O7e-c core exists: the subdivided `K₄` with unit spokes (review 5, 2026-09-23; workbook S38(iv), O7e-c)
+
+Exhaustive over all `2^|V|` vertex subsets, exact integers, stdlib only, no randomness. Builds the 2-core whose centre
+`c` has spokes of length 1 to `x₁, x₂, x₃` and whose three rim paths `x_i — x_j` have length `L`; every vertex of
+degree `3` is big, so `k_c = 4`. Prints `|V|`, `|E|`, the girth, and the minimum strict slack `6|S| − 7 − 5|E(S)|` over
+connected `S` (S19(viii) / S35(i)).
+
+    timeout 600 python3 notes/attacks/smark/drivers/k4core.py 6   # |V|=19 |E|=21 girth=8, min slack 0 -> LEGAL
+    timeout 600 python3 notes/attacks/smark/drivers/k4core.py 5   # |V|=16 |E|=18 girth=7, min slack -1 -> VIOLATED
+
+Caps: one family (equal rim lengths `L ∈ {5, 6}`); checks girth and the strict count on the core alone, not that the
+core embeds as a side `H′` of a habitat `G = H′ ∪ ear_m` (the chain and the rest of `H′` must also pass the count).

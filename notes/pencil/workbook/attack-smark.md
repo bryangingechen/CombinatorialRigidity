@@ -2896,7 +2896,8 @@ than `p`, `p ∈ cl S}` (`0` if no such `S`), `c₁^seq(R) := max` over orders o
 of the stratum `S_{M|_R}` in `(P³)^R`, and `J₂(R) := Σ_c def(U_c ∩ R)`, `def(U) := |U| − rk U`. **Lemma.** `c₁ ≥ Σ_R
 c₁(R)`, `c₁(R) ≥ c₁^seq(R)`, and `J₂ = Σ_R J₂(R)`; so with the component budget **`b_R := c₁(R) − J₂(R)`**, `s = c₁ −
 J₂ − 1 ≥ Σ_R b_R − 1`. Moreover **`b_R ≥ 1`** for every component: S21(v) applied to the stratum of `M|_R` alone (a
-degenerate `q` in its own right; S21(v) rests on S19, unreviewed). *Proof.* A point of `S_M` restricts on each `R` to a
+degenerate `q` in its own right; S21(v) rests on S19, unreviewed — *[review 5, S38(ii)] stale: S19 was re-derived at
+S23(iv) and S21(v) confirmed at S24(ii)*). *Proof.* A point of `S_M` restricts on each `R` to a
 realisation of `M|_R`, so `S_M ⊆ ∏_R S_{M|_R} × (P³)^{free}` and `c₁ ≥ Σ_R c₁(R)`. For `c₁(R) ≥ c₁^seq(R)`, project
 `S_{M|_R}` onto the coordinates in a maximising order: over any point of the image, `q_p` lies in `span{q_s : s ∈ S}`
 for the `S` realising `κ_p^R`, of dimension `rk S − 1 = 3 − κ_p^R`, so `dim S_{M|_R} ≤ Σ_p (3 − κ_p^R)`.
@@ -2989,7 +2990,8 @@ extra point are distinct servings (S25(v)'s `s_C(q*) ≤ 4`).
 by `|P_C| ≤ 4` points (so `rk P_C − rk U_C ≥ ½ ·` #extra points). At an arbitrary `M` a plane can carry many points: a
 class `C` whose plane holds `t` extra points pays only `rk P_C − rk U_C ≤ 3 − rk U_C`, and `D_C` can reach `t/2`. The
 excess `(½#served − (rk P_C − rk U_C))⁺` needs `≥ 2(3 − rk U_C) + 1` served extra points on `π_C`, all in the flat `P_C`
-of rank `≤ 3` — a rank-3 flat with `≥ 4` points beyond `cl(U_C)`, i.e. coplanarities of `M` — so it is owned by the
+of rank `≤ 3` — a rank-3 flat with `≥ 4` points beyond `cl(U_C)` *[review 5, S38(ii): `≥ 3` extra labels, `≥ 5`
+labels on `π_C`]*, i.e. coplanarities of `M` — so it is owned by the
 components meeting `P_C` and must be paid from their `κ`s (each point of a rank-3 flat beyond its third carries `κ ≥
 1`). Stated, not proved; it is one of the damage units the weighted count of the next step must price.
 
@@ -3166,3 +3168,76 @@ draw per spec with its matroid checked against a second. No negative slack; on t
 damage shapes of S35 do not occur on E55 (its big vertices are pairwise far), so this tests the ledger's bookkeeping
 at several relations, not the counting lemma. Not run (no qualifying graph): coincidence + coplanarity, two
 collinearities through one point.
+
+## S38 — Review notes (2026-09-23, `/review-attack` after session 13; the reviewer's checks, not the attack's — verify before building on them)
+
+Tree at `84f60e2d`. Consumer: the two kernels of `pencilPair_of_splitOff_of_habitat` (`Escape.lean`) read at HEAD match
+brief §3.1 hypothesis by hypothesis, and `git diff 084ee4ff HEAD -- CombinatorialRigidity` is empty. The body of
+`closedHubNbhd` (hubs among `v` and its neighbours, for *every* `v`) was re-read: infeasibility means some hub has `≥ 3`
+hub neighbours, which is §1's Case 2 for `(H′, hubs(G))`. No paraphrase found. Verdict to the PI: **continue on R2,
+re-aimed** — control first, then O7e-c, then the class lemma. The edits of (vi) were applied on the PI's word the same day.
+
+**(i) Signals, and the count by piece.** `check.py --history`: "Where it breaks" changed at sessions 11, 12 and 13, and
+the count was `2 → 2 → 2`, so the treadmill warning fires. Sessions 11–12 were not a treadmill: six single-relation
+strata closed with proofs (S25–S30, audits S27(i), S31). Session 13 was one. It replaced "several relations" by S34(iv),
+a universal inequality with **no slack** at three closed cases (S34(iv) says so) and only a heuristic behind it, then
+split it into three pieces, the first with two open subcases, and corrected the class lemma's statement within the same
+session (S35(iv) → S36(iii)). On the PI's word **O7e-b is counted by piece from this review**: O7e-b(a) the class
+lemma, O7e-b(b) price additivity across relations, O7e-b(c) the per-cluster inequality, and O7e-c: **count 4**.
+
+**(ii) Audit of S32–S36 (fresh reader).** Re-derived and found sound as written:
+- **S32(i)–(iii).** The component rank lemma (a dependent `≤ 4`-subset of the union of bases contains a relation,
+  which lies in one component). `J₂` and `disc_A` add exactly because `|U_c| ≤ 3` and `rk U_A ≤ 3`. The reduction
+  needs only `b_R ≥ 0` outside `𝒯`. `b_R ≥ 1` holds: S21(v) gives `cost₁ ≥ J₂ + 1` on the stratum of `M|_R` alone, and
+  `c₁(R) ≥ cost₁`, the right direction.
+- **S33(i)–(ii).** Every case of the line lemma. In the `rk I(ℓ) = 1`, `u_ℓ = 1` case, a big neighbour of a flat
+  lies in the U-class at the `I`-point. A flat with both neighbours in `A` is not flat. O3 paths are disjoint, since a
+  flat has Γ-degree 2. The count `3k ≤ 6m′ − 7` gives `k₃ ≤ 2m − 3`. The extras lemma checks out as well.
+- **S34(i)–(ii).** The class identity, recomputed. The merge codimension at arbitrary `M` is
+  `Σ_c (3 − r_c) − (3 − rk U_A) = 3(|A| − 1) − ov_A − disc_A`, with `r_c ≤ k_c ≤ 3` and `rk U_A ≤ 3` on realisable
+  classes. The class costs are `rk W_A − rk U_A`. The completeness of the damage list holds. Each incidence
+  `π_{[a]} ∋ q_b` of a `β = 2` flat has `b ∈ U_{[a]}`, `cl(U_{[a]}) ∖ U_{[a]}` or `P_{[a]} ∖ cl(U_{[a]})`: an exact
+  trichotomy. A normal incidence on a singleton is a triangle. A normal incidence on a nontrivial class is a Lemma-D′
+  charge, since `b ∉ [a]` (else `[a] = [b]`). Lemma D′ and S21(iii) are Γ-counts, so they hold at every `M`.
+- **S35(ii).** Every table price recomputed from its witness: `2, 3, 8 − 6, 9 − 6, 8, 9, 14 − 6, 14`.
+- **S36(i)–(ii).** All four `rk U_A` cases, and both pricing branches. On a line with `≥ 3` distinct points every label
+  is in a collinear circuit, so all ends lie in `B₀`. On two points, only a single-label point can be free.
+
+*One slip, S33(iii)* ("stated, not proved"). Overflow needs `#served > 2(rk P_C − rk U_C)`. Extras exist only when
+`rk U_C ≤ 2` (at `rk U_C = 3`, `cl(U_C)` is the whole plane). So the minimal overflow shape is `3` served extra labels on
+a plane through a line `cl(U_C)` — at least `5` labels on `π_C` — not "`≥ 4` points beyond `cl(U_C)`". This only makes
+piece (c)'s smallest extras unit smaller.
+
+*A stale caveat.* S32(ii)'s "S21(v) rests on S19, unreviewed" and the state's first Worry are out of date: S19 was
+re-derived end to end at review 4 (S23(iv)), and S21(v) was confirmed at S24(ii).
+
+**(iii) Evidence for the open statement.** No control has reached a damage shape at two relations. S37 says so: E55's
+big vertices are pairwise far. And no variety-level control of a Case-2 core is within Macaulay2's reach (S27(vi)(c)).
+S34(iv) is a sufficient condition for (★₂) with zero slack at its base cases, so it could fail while (★₂) holds, and no
+computation today tells the two apart. **Next move 1:** build a habitat graph that carries S35(iii)'s test cluster,
+including its two collinear bad pairs (the 8-cycle `b — c — u — c′ — d — e′ — u′ — e — b`). Run
+`case2deg.py --relations` on it, and compute S34(ii)'s `Dmg` against `Σ b_R` pattern by pattern. If `Dmg ≥ Σ b_R`
+anywhere, S34(iv) is false as stated and the class-lemma programme stops there.
+
+**(iv) O7e-c: untouched for four sessions, and T9 was never an instance.** Nothing after S21 works on it. S27(vi)(d)'s
+plan ("next session: count it") was not carried out. The brief (§6, §7) and the state cite the spider T9 as an O7e-c
+side, but S27(vi) shows T9's core is a tree. After the core reduction T9 is no instance, and its Macaulay2 component
+count says nothing about O7e-c. **A genuine core exists** (`k4core.py`, exhaustive):
+- `L = 6`: the subdivided `K₄` with three unit spokes `c — x_i` and rim paths `x_i — x_j` of length 6 has 19 vertices,
+  21 edges, girth `8` and `k_c = 4`, and it passes the strict count on every connected subset (min slack `0`).
+- `L = 5`: the same shape with rim paths of length 5 has 16 vertices and girth `7`, and fails the strict count (slack
+  `−1`, on the whole core).
+
+Caps: that one family; the core only, not an embedding as a side of a habitat `G`. So O7e-c is not vacuous, and its
+smallest instance is near the S35(i) budget. Doing the count S27(vi)(d) planned — which 2-cores admit `k_c ≥ 4` — is the
+next O7e-c step. If this piece fails, the case fails whatever O7e-b does.
+
+**(v) Kills.** None is contradicted by the current state. One revival candidate: session 7's Route B (a one-hub-at-a-time
+peel) was abandoned at the output cap, not for a mathematical reason. S21(i)'s 3-degeneracy of `𝔅(H′)` now supplies the
+peel order it lacked, and O7e-c is exactly where the three-level order fails and another degeneracy order is needed. The
+session-7-recovery caveat stands: conditions imposed on earlier planes are invisible to a naive peel.
+
+**(vi) Edits applied (PI-approved).** `state.md`: the count by piece (4), next steps reordered (control → O7e-c → class
+lemma), the stale Worry replaced, T9 removed as an O7e-c witness, the next result number set to S39. Brief: header patch
+line, §6 (O7e-b by piece; O7e-c's witness), §7, §8. `drivers/k4core.py` with its README entry. `log.md`: no kill to
+reword.

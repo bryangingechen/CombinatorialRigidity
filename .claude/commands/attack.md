@@ -39,7 +39,9 @@ closing sentence and the PI does it.
    attribution rules in `CLAUDE.md` *Working* (author identity, `-F` for a
    message with backticks, no local paths).
 5. One sentence to the PI: where the lemma stands, and whether a review is
-   due (three sessions since the break moved, or a route change proposed).
+   due (`HARNESS.md` *Attack track*: three sessions since the last review, a
+   route change proposed, or the obligation count flat for three sessions —
+   the last whether or not "Where it breaks" moved).
 
 If something in these instructions or in `HARNESS.md` cost you time, add
 one line to `notes/harness/incidents.md`; do not fix the harness yourself.
