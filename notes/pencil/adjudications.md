@@ -692,3 +692,16 @@ part of the harness and then commit."** The rule "never commit while a smark ses
 (`W4-reopen.md` *Where you are working*; it was never in `HARNESS.md`) is retired. smark's file
 ownership stands, and a resumed smark runs in its own worktree. **Nothing else is commissioned by
 this entry**; the next step is the PI's call among the options W4-reopen P1 lists.
+
+## 2026-09-24 (later) — the unranked W4-reopen directions assessed; their findings landed step by step
+
+The user, in a separate session while P3 ran here: **"I'd like to explore the feasibility of the
+unranked directions below P5 in @notes/pencil/W4-reopen.md. Feel free to spin up subagents if they
+could help."**, with the standing condition **"don't write to this repo yet and only work in
+scratch directories"**. Three read-only recons ran, one per direction. After the P3 commit
+landed: **"Please take a look and then plan how to incorporate the findings from this session into
+the repo."** On the five-step plan (`notes/pencil/W4-reopen.md` P1, the *later* 2026-09-24
+paragraph): **"Sure, please proceed through each of these. Feel free to stop when you think we
+should proceed in a fresh session (and make sure that we're prepared to handoff what we have
+then)."** Nothing beyond that plan is commissioned; its step 3 lands first (Step MC11 and (MC-33) of
+§(K-main)), because steps 2–4 do not depend on step 0.

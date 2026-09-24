@@ -806,8 +806,8 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `peels`, `exh8` (every isomorphism class of simple 2EC graphs on ≤ 8 vertices,
   from a stdlib canonical-form enumerator checked against OEIS in `--selftest`).
   **The `-- pool … built in N s` line is wall-clock and is the one line exempt
-  from byte-identity.** Imported by `exactgain.py`, `nondegx0.py` and `earstep.py`
-  (below); nothing else imports it.
+  from byte-identity.** Imported by `exactgain.py`, `nondegx0.py`, `earstep.py`,
+  `splitext.py` and `jjchar.py` (below); nothing else imports it.
 
 - `exactgain.py (--battery | --exh N | --thetas SMAX) [--jump N] [--molecular]
   [--scales LIST]` — **the exact-gain identity** (MC-11) of §(K-main) *After the census*.
@@ -829,3 +829,20 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `p₃ ≤ N`. `--lamcap`: `dim Λ_ear` and its intersection over placements per flag
   orbit. `--rdelta`: `r` against `δ` and `dim U` at every vertex pair (a measurement;
   equality at an attaining draw is a certificate). A leaf.
+- `splitext.py (--exh N | --thetas SMAX [--smin S] [--perg P]) [--control] [--jets J]
+  [--list]` — **the split-off step on `X₀`** (§(K-main) Step MC11, (MC-28)–(MC-32)). Per
+  degree-2 `x` with non-adjacent neighbours, it takes a certified `X₀(G″)` point
+  (`G″ = G.splitOff x a b`) and the special point `p_x ∈ p_a p_b`, and asserts rank `+5`.
+  It certifies `X₀`-membership in exact ℚ by (MC-30)'s criterion, asserts the (MC-29)
+  counts and (MC-30)(i)/(iii), and measures the first-order gain along the exact curve
+  that moves `x` off the line. `--thetas` caps eligible `x` per graph at `--perg`
+  (default 3), disclosed in the output. `--control` adds the along-line curve, whose gain
+  is asserted to be 0. A leaf.
+- `jjchar.py (--selftest | --exh N | --battery | --thetas SMAX) [--fields LIST] [--tries T]`
+  — **Jackson–Jordán's equality in positive characteristic** (§(K-main) (MC-33)(ii)). Per
+  graph and field, it tries up to `T` admissible pictures `q` over GF(2¹⁶), GF(3¹⁰),
+  GF(101) or GF(10 007) and reports whether `dim L(q) = 3 + def₂` is exhibited — a finite
+  theorem for every infinite field of that characteristic. Asserted at every draw:
+  (MC-4)(b), and Step MC4's `F(q) = L(q)` in rank form. The field constructors assert
+  primitivity and check table arithmetic against slow polynomial arithmetic;
+  `--selftest` holds their adversarial non-field witnesses. A leaf.

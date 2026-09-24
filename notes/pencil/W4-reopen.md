@@ -146,6 +146,38 @@ Steps MC7–MC10, (MC-11)–(MC-27).
    of the chord/contraction step on `X₀` — whether `X₀(G)` relates to `X₀(G − e)` or `X₀(G/H)`
    at all.
 3. The adversarial census, once there is a statement for it to test.
+
+**2026-09-24 (later) — the three unranked directions assessed; their findings being landed.** The
+PI (verbatim): *"I'd like to explore the feasibility of the unranked directions below P5 in
+@notes/pencil/W4-reopen.md. Feel free to spin up subagents if they could help."* Three read-only
+recons ran in scratch (one per direction; verdicts in *Unranked* below). Then, after this
+session's P3 commit landed: *"Please take a look and then plan how to incorporate the findings from
+this session into the repo."* and, on the plan: *"Sure, please proceed through each of these. Feel
+free to stop when you think we should proceed in a fresh session (and make sure that we're
+prepared to handoff what we have then)."* The plan, one commit per step, each driver ported to
+`notes/scripts/w4/`:
+- **Step 0** — a second reader, read-only, of the hybrid recon's ear step *with the antecedent*:
+  under strong induction `X₀(G′ + ear_{k−1})` attains, and by (MC-22)'s "iff" that gives both
+  (R_{k−1}) and (P_{k−1}) at `X₀(G′)`'s generic point ((MC-24) extracts only (R)). Every
+  `ρ ⊇ Pen(p_a, π_a)` that (MC-27) names as bad at `k` is bad at `k − 1` too, so the antecedent
+  excludes it. Question: which (MC-27) cells (`k` × orbit × `r`) close.
+- **Step 1** — land step 0's verdict: new labels continuing Step MC10, (MC-27) restated to the
+  cells that remain.
+- **Step 2** — the contraction step on `X₀` (the multi-scale recon): a rigid core shrunk at scale `t`
+  inside `X₀` is Katoh–Tanigawa's Lemma 6.3 / Claim 6.4 in `X₀` form, certified on `W19` and
+  `R20`; the core's boundary-constrained attainment stays OPEN; the multi-scale durable
+  negatives. Driver `w4/coreshrink.py`.
+- **Step 3 — LANDED:** Step MC11, the split-off step on `X₀` ((MC-28)–(MC-32), `w4/splitext.py`),
+  and *Jackson–Jordán beyond ℝ* ((MC-33), `w4/jjchar.py`), from the Jackson–Jordán recon, each
+  re-derived by a second agent.
+- **Step 4** — the coverage of an `X₀` induction: which simple 2EC graphs no landed step reaches.
+  The hybrid recon's count, with its own step set, left 48 of the 7 980 graphs on ≤ 8 vertices,
+  all with a proper rigid subgraph; the ear recursion from `hK`'s habitat reaches them from 887 of
+  888 members; the `K₄` necklaces make the set infinite (`X₀` attains there for `k = 4..8`).
+  Recount against the landed steps (driver `w4/x0arms.py`), then the *Unranked* verdicts and the
+  next task: the uncovered graphs, one named step each, under the stop rule.
+
+**Next:** step 0, then steps 1, 2, 4 in that order.
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
@@ -194,7 +226,7 @@ G0-authorized, but it pays only if the split/contract architecture continues. T1
 runs, session 1 checks the R2 transfer, tests the girth prediction first, and stops at the first
 break rather than characterizing residual subfamilies.
 
-**Unranked, revisit after P1:** a multi-scale (tropical) explicit construction along an SPQR tree
+**Unranked, revisit after P1:** *(assessed 2026-09-24 — P1's later 2026-09-24 paragraph; the verdicts land with its step 4)* a multi-scale (tropical) explicit construction along an SPQR tree
 or tree packing, with a rank lower bound from leading terms; transferring Jackson–Jordán's *proof
 technique* (their pin-collinear theorem is the unconstrained 2D member of the same family); a
 hybrid keeping smark's 2-cut composition with the motive "attains at the generic point of `X₀`".

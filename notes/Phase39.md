@@ -33,7 +33,7 @@ grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNP
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
 to-do list; no blueprint chapter). **Next: the PI's call on the main-component census** (DONE 2026-09-23, outcome A′ —
-`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; T1's Lean deferred, `kres` held; 2026-09-24 math pass (MC-11)–(MC-27), no census); `/attack smark` continues in its own worktree.
+`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; T1's Lean deferred, `kres` held; 2026-09-24 math pass (MC-11)–(MC-27), no census; the unranked directions' findings landing, (MC-28)–(MC-33) so far); `/attack smark` continues in its own worktree.
 **gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only). Other items
 parked.
 
@@ -48,7 +48,7 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next: the PI's call on the main-component census** — DONE 2026-09-23, outcome **A′**: `X₀` attains at all 10 252 members, degenerate only at feasible graphs with a rigid subgraph (`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*). 2026-09-24: a math pass without a new census (PI) — (MC-11) the gain is exact, (MC-14) `X₀` nondegeneracy combinatorial mod Jackson–Jordán, (MC-15) `hK`'s habitat never A′, Step MC10 the ear step (every θ-graph attains); next per W4-reopen P1's 2026-09-24 paragraph.
+**Next: the PI's call on the main-component census** — DONE 2026-09-23, outcome **A′**: `X₀` attains at all 10 252 members, degenerate only at feasible graphs with a rigid subgraph (`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*). 2026-09-24: a math pass without a new census (PI) — (MC-11) the gain is exact, (MC-14) `X₀` nondegeneracy combinatorial mod Jackson–Jordán, (MC-15) `hK`'s habitat never A′, Step MC10 the ear step (every θ-graph attains). Later that day the three unranked W4-reopen directions were assessed and their findings are being landed step by step (Step MC11 the split-off step and (MC-33) Jackson–Jordán beyond ℝ so far); next per W4-reopen P1's *later* 2026-09-24 paragraph.
 **Item 6 is DONE except the deferred A6 — Layer C (C1ℓ–C4ℓ) LANDS 2026-09-17** — A1–A5 the
 pendant law, the combinatorial carriers,
 the vertex 2-cut law and its two corollaries; B1–B6 the four geometric carriers, the joint's row
