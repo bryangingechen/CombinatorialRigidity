@@ -32,8 +32,9 @@ restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scop
 grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **Next: the PI's call on the main-component census** (DONE 2026-09-23, outcome A′ —
-`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; T1's Lean deferred, `kres` held; 2026-09-24 math pass (MC-11)–(MC-27), no census; the unranked directions' findings landing, (MC-28)–(MC-51) so far); `/attack smark` continues in its own worktree.
+to-do list; no blueprint chapter). **Next: the PI's call, per `notes/pencil/W4-reopen.md` P1's final *Next* list** (census DONE
+2026-09-23, outcome A′; 2026-09-24 math pass and the unranked directions, (MC-11)–(MC-61), in
+`notes/pencil/workbook/K-main.md` §(K-main); T1's Lean deferred, `kres` held); `/attack smark` continues in its own worktree.
 **gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only). Other items
 parked.
 
@@ -48,7 +49,7 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next: the PI's call on the main-component census** — DONE 2026-09-23, outcome **A′**: `X₀` attains at all 10 252 members, degenerate only at feasible graphs with a rigid subgraph (`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*). 2026-09-24: a math pass without a new census (PI) — (MC-11) the gain is exact, (MC-14) `X₀` nondegeneracy combinatorial mod Jackson–Jordán, (MC-15) `hK`'s habitat never A′, Step MC10 the ear step (every θ-graph attains). Later that day the three unranked W4-reopen directions were assessed and their findings are being landed step by step (Step MC11 the split-off step, (MC-33) Jackson–Jordán beyond ℝ, Step MC12 the contraction step, Step MC13 most of (MC-27) closed; step 4, the coverage count, remains); next per W4-reopen P1's *later* 2026-09-24 paragraph.
+**Next: the PI's call on the main-component census** — DONE 2026-09-23, outcome **A′**: `X₀` attains at all 10 252 members, degenerate only at feasible graphs with a rigid subgraph (`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*). 2026-09-24: a math pass without a new census (PI) — (MC-11) the gain is exact, (MC-14) `X₀` nondegeneracy combinatorial mod Jackson–Jordán, (MC-15) `hK`'s habitat never A′, Step MC10 the ear step (every θ-graph attains). Later that day the three unranked W4-reopen directions were assessed and their findings are being landed step by step (Step MC11 the split-off step, (MC-33) Jackson–Jordán beyond ℝ, Step MC12 the contraction step, Step MC13 most of (MC-27) closed, Step MC14 the coverage count: every tested graph is covered by the `X₀` induction; open are class statements, (MC-61)); next per W4-reopen P1's *later* 2026-09-24 paragraph.
 **Item 6 is DONE except the deferred A6 — Layer C (C1ℓ–C4ℓ) LANDS 2026-09-17** — A1–A5 the
 pendant law, the combinatorial carriers,
 the vertex 2-cut law and its two corollaries; B1–B6 the four geometric carriers, the joint's row

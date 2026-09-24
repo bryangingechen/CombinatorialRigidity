@@ -8,6 +8,9 @@ pointers are by declaration name; Lean unchanged since `084ee4ff`. Revised after
 **Revised a third time at the end of the same session (2026-09-23): the START HERE section (a
 prioritized direction list, which now sets the order), T1's partial findings, the corrected
 *Open on W4*, T2 re-aimed, T3 held.**
+**Current next-task source (2026-09-24): P1's *later* 2026-09-24 paragraph and its final *Next*
+list** — the unranked directions assessed and landed as §(K-main) Steps MC11–MC14; every tested
+graph is covered by the `X₀` induction, and the open items are class statements.
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
 run it: *"I'll probably run it in this same worktree as the smark agent is still proceeding in
@@ -175,14 +178,29 @@ prepared to handoff what we have then)."* The plan, one commit per step, each dr
 - **Step 3 — LANDED:** Step MC11, the split-off step on `X₀` ((MC-28)–(MC-32), `w4/splitext.py`),
   and *Jackson–Jordán beyond ℝ* ((MC-33), `w4/jjchar.py`), from the Jackson–Jordán recon, each
   re-derived by a second agent.
-- **Step 4** — the coverage of an `X₀` induction: which simple 2EC graphs no landed step reaches.
-  The hybrid recon's count, with its own step set, left 48 of the 7 980 graphs on ≤ 8 vertices,
-  all with a proper rigid subgraph; the ear recursion from `hK`'s habitat reaches them from 887 of
-  888 members; the `K₄` necklaces make the set infinite (`X₀` attains there for `k = 4..8`).
-  Recount against the landed steps (driver `w4/x0arms.py`), then the *Unranked* verdicts and the
-  next task: the uncovered graphs, one named step each, under the stop rule.
+- **Step 4 — LANDED:** Step MC14 ((MC-52)–(MC-61), `w4/x0arms.py`), which counts what an induction
+  with motive (MC-10)(a) reaches using only landed steps: cut vertices and bridge chains are fibre
+  products (MC-52), (MC-53); the open 1-ear at `δ = 0` is a corollary of Step MC10 (MC-54); a
+  `def₂`-rigid core needs no per-graph contraction certificate, modulo Jackson–Jordán (MC-59), so
+  every `K₄` necklace attains on `X₀` (MC-60). **Every tested graph is covered**: all 7 980 simple
+  2EC graphs on ≤ 8 vertices ((MC-57), exhaustive), every member of every census population with
+  Step MC13's cells ((MC-58)), and `N(3..8)`. What remains is class statements, not graphs (MC-61).
+  The hybrid recon's 48-graph "REST" and "887/888" were artifacts of its step set and of a
+  first-arm-only recursion.
 
-**Next:** step 4.
+**Next (PI's call).** All five steps have landed. Every tested graph is covered, and what is open is
+the class form of the per-graph certificates (MC-61). The smallest commits, in the agent's order:
+1. **Second readers** on the new load-bearing claims — (MC-37)/(MC-39) (the contraction step),
+   (MC-45)/(MC-46) (the short ears), (MC-59) (the flat core), (MC-52)/(MC-53) — read-only, one
+   dispatch each. Every one of these was derived by one agent and checked by one more at most.
+2. **The adversarial census**, run through both `maincomp.py` (does `X₀` attain?) and `x0arms.py`
+   (does the induction reach it?): `n = 9–14`, biased to 2-edge-cuts and large `def₂ − def₃`. A
+   `SHORT`, or a second structural class of uncovered graphs, is the stop-rule trigger.
+3. **The class statements**, each as a bounded attempt under the stop rule: (MC-39)'s (i)/(ii) at a
+   core with `def₂(H) > 0` (lifting-space linear algebra, where scene-analysis counts may apply);
+   the open 1-ear at `1 ≤ δ ≤ 4` ((MC-51)(c), reduced to one condition at the chord point, (MC-50));
+   (MC-51)(a).
+
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
@@ -231,10 +249,33 @@ G0-authorized, but it pays only if the split/contract architecture continues. T1
 runs, session 1 checks the R2 transfer, tests the girth prediction first, and stops at the first
 break rather than characterizing residual subfamilies.
 
-**Unranked, revisit after P1:** *(assessed 2026-09-24 — P1's later 2026-09-24 paragraph; the verdicts land with its step 4)* a multi-scale (tropical) explicit construction along an SPQR tree
-or tree packing, with a rank lower bound from leading terms; transferring Jackson–Jordán's *proof
-technique* (their pin-collinear theorem is the unconstrained 2D member of the same family); a
-hybrid keeping smark's 2-cut composition with the motive "attains at the generic point of `X₀`".
+**Unranked — assessed 2026-09-24** (P1's later 2026-09-24 paragraph: three read-only recons, then
+steps 0–4 of its plan). The line listed three directions: a multi-scale (tropical) construction
+along an SPQR tree or tree packing; transferring Jackson–Jordán's proof technique; and a hybrid
+keeping smark's 2-cut composition with the motive "attains at the generic point of `X₀`".
+- **Multi-scale construction — it survives only as the contraction step.** Its one live form is the
+  two-scale contraction of a proper rigid core: Katoh–Tanigawa's contraction case in `X₀` form
+  (§(K-main) Step MC12, (MC-34)–(MC-42), `w4/coreshrink.py`). For a proper rigid `W` with `G/H`
+  simple, `X₀(H)` and `X₀(G/H)` attaining give `X₀(G)` attaining under (i) core-free and (ii)
+  no-jump (MC-39); at a `def₂`-rigid core both hold modulo Jackson–Jordán (MC-59), so every `K₄`
+  necklace attains (MC-60). Durable negatives (MC-42): collapsing a flexible 2-cut side is lossy at
+  leading order; gauge families at a 2-cut reduce to smark's S2; tree packing is (K-slide-comb)'s
+  refuted route. Not a stand-alone strategy.
+- **Jackson–Jordán's technique — a lemma source, not a route.** It gave the split-off step on `X₀`
+  (Step MC11, (MC-28)–(MC-32), `w4/splitext.py`: rank exactly `+5` at the special point, which lies
+  on `X₀`, so attaining when `δ ≥ 5` and within one otherwise) and the field-free reading of their
+  theorem ((MC-33), `w4/jjchar.py`). The transfer fails at the two moves that carry their induction
+  past degree-2 vertices: contraction-and-vertex-split (Claim 6.5 Case 2; `X₀`'s contraction comes
+  from Katoh–Tanigawa instead, Step MC12) and the final 2-edge-cut gluing.
+- **The `X₀` hybrid — it became the ear step with the antecedent, and the coverage count.** Under
+  strong induction the gadget `X₀(G′ + ear_{k−1})` supplies (R_{k−1}) and (P_{k−1}) (Step MC13,
+  (MC-43)–(MC-51), `w4/earante.py`, `m2/earbad.m2`): `k = 3` in every orbit, `k = 2` in orbits
+  (i)/(ii) with `dim U ≠ 1`, and every (R_k) from the chord. smark's O7e is not needed in this
+  induction. With cut vertices and bridge chains (fibre products), ears, split-off, the flat point
+  and contraction, **every tested graph is covered** (Step MC14, (MC-52)–(MC-61), `w4/x0arms.py`):
+  all 7 980 simple 2EC graphs on ≤ 8 vertices, every member of every census population, `N(3..8)`.
+  The recon's "the uncovered class is infinite" and "887/888 habitat members reach it" were
+  artifacts of its step set and of a first-arm-only recursion.
 
 **Counterexample-candidate sources:** `X₀` failures, then the special components; and a dichotomy
 worth trying to prove — *if `X₀` is forced flat then `def₂ = def₃`* (smark's hunt found no

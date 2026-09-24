@@ -807,7 +807,8 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   from a stdlib canonical-form enumerator checked against OEIS in `--selftest`).
   **The `-- pool … built in N s` line is wall-clock and is the one line exempt
   from byte-identity.** Imported by `exactgain.py`, `nondegx0.py`, `earstep.py`,
-  `splitext.py`, `jjchar.py` and `coreshrink.py` (below); nothing else imports it.
+  `splitext.py`, `jjchar.py`, `coreshrink.py`, `earante.py` and `x0arms.py` (below);
+  nothing else imports it.
 
 - `exactgain.py (--battery | --exh N | --thetas SMAX) [--jump N] [--molecular]
   [--scales LIST]` — **the exact-gain identity** (MC-11) of §(K-main) *After the census*.
@@ -837,7 +838,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   counts and (MC-30)(i)/(iii), and measures the first-order gain along the exact curve
   that moves `x` off the line. `--thetas` caps eligible `x` per graph at `--perg`
   (default 3), disclosed in the output. `--control` adds the along-line curve, whose gain
-  is asserted to be 0. A leaf.
+  is asserted to be 0. Imported by `x0arms.py` (`flex_space`, `contract`).
 - `jjchar.py (--selftest | --exh N | --battery | --thetas SMAX) [--fields LIST] [--tries T]`
   — **Jackson–Jordán's equality in positive characteristic** (§(K-main) (MC-33)(ii)). Per
   graph and field, it tries up to `T` admissible pictures `q` over GF(2¹⁶), GF(3¹⁰),
@@ -857,7 +858,8 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   with `G/H` simple) it reports `U`, the core rank, `G`'s rank, the limit's rank, the
   containment `L0in`, and (MC-39)'s hypotheses (i) core-free / (ii) no-jump, with the boundary
   pattern of each failure. Imports `maincomp`, `exactcore`, `kbare_common`, `nogood_subdiv`,
-  `repin`, `pitch` (`--collapse`), `widened`/`rpool` (`--pool named`). A leaf.
+  `repin`, `pitch` (`--collapse`), `widened`/`rpool` (`--pool named`). Imported by
+  `x0arms.py` (`run_member`, `recipe`, `admissible`).
 - `earante.py (--orbits | --frames | --exh N [--draws D] | --thetas S | --habitats [--stride S]
   [--limit N] | --chord N | --chord-thetas S | --chord-habitats [--stride S] [--limit N])` —
   **the short ear step with the antecedent** (§(K-main) Step MC13, (MC-43)–(MC-51)).
@@ -870,3 +872,19 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   and that (MC-50)'s first-order limit is a pencil through `y₀` containing `n`. Imports
   `earstep.py`'s `weld_rows`/`contract`/`pt_in`, `maincomp`, `repin.hodge_star`,
   `nogood_subdiv.count_matroid_rank`/`is_simple`. A leaf.
+- `x0arms.py (--lemmas | --exh N | --pool NAME[,NAME] | --necklace KMAX | --round1 | --tree NAMES
+  [--depth D] | --flatcore N) [--ear23 {none,landed,landed+u1}] [--ear1 {delta0,none}]
+  [--jj {cert,cite}] [--contract {cert,cert-core,struct,off}] [--cert-nmax N] [--stride K]
+  [--show S] [--list]` — **the reach of the `X₀` induction** (§(K-main) Step MC14,
+  (MC-52)–(MC-61)). A graph is covered if a step applies and every smaller graph it consumes is
+  covered. Steps: BASE, THETA, CUT, BRIDGE, EAR (closed, `k ≥ 5`, `k = 4`; `k = 2, 3` only under
+  `--ear23`: `landed` is Step MC13's cells, `landed+u1` also admits the open (MC-51)(a) cell as a
+  sensitivity check; `k = 1` at `δ = 0`), SPLITOFF, FLAT and CONTRACT. Per-graph certificates are
+  exact: JJ by an exhibited `q` with `dim L(q) = 3 + def₂`; the flag orbit and `dim U` in exact ℚ at
+  such a `q`; (MC-39)'s (i)/(ii) through `coreshrink.run_member`. `--exh`: exhaustive coverage by
+  first step. `--pool`: the census populations, with terminal uncovered graphs and their profile.
+  `--necklace`: `K₄` necklaces with census certificates. `--flatcore`: (MC-59)(c)'s kernel identity.
+  `--lemmas`: (MC-52), (MC-53), (MC-55)(iv) on glued instances. `--round1`: the hybrid recon's 48
+  no-arm graphs. It replaces that recon's scratch classifier, recursion, necklace and gluing probes
+  (not retained). Imports `maincomp`, `exactcore`, `kbare_common`, `nogood_subdiv`, `splitext`,
+  `coreshrink`, `pitch` (`--lemmas`). A leaf.
