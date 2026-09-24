@@ -260,3 +260,15 @@ output unchanged.
   `lambda1.m2` measured.
 
   Reproduce: `M2 --script notes/scripts/m2/lambda0.m2` (~0.1 s).
+
+- **`earbad.m2`** — the placement bad sets of the short open ear step,
+  `notes/pencil/workbook/K-main.md` §(K-main) Step MC13. `B_j(r)` is `Gr(r, 6)` cut by a linear
+  space whose equations are the coefficients, in the symbolic placement coordinates, of
+  `∧^r ρ ∧ ∧^{j+1} Λ_j`, so the computation is an identity over the whole orbit. Checks: (B0) pins
+  the Plücker order against `exactcore.PL` and M2's `Grassmannian` variable order; (B1)
+  `B₃(2) ⊆ B₂(2)` in orbits (i)–(iv); (B2) orbits (i), (ii): `B₂(2)`, `B₂(3)` equal (MC-46)'s
+  families and lie inside `B₁`; (B3) the orbit-(iii) classification (MC-47)(ii); (B4) orbit (iv):
+  `Λ₂` is constant, and `B₂ ⊄ B₁`. Additive (convention 4): it confirms (MC-45)/(MC-46), whose
+  proofs are by hand, and is the sole evidence for (MC-47)(ii).
+
+  Reproduce: `M2 --script notes/scripts/m2/earbad.m2` (~2 s).

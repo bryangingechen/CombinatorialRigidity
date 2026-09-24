@@ -133,6 +133,7 @@ Steps MC7–MC10, (MC-11)–(MC-27).
   - **Every θ-graph attains on `X₀`** ((MC-21)), the first infinite class.
   - Open ears with `k ≤ 3` are open ((MC-27); the stop rule fired). So is the relative-dof
     conjecture (MC-23), `r = δ`, which is (K-c)'s question in `X₀` form, certified on ≤ 7 vertices.
+    *Later that day most of (MC-27) closed (Step MC13, below).*
 - **Literature.** The pencil statement is not found anywhere; Jackson–Jordán is verified (the full
   rank function, over `ℝ`, generic over `ℚ`); citations are recorded in §(K-main).
 - **The honest limit.** Pencil ⊆ panel, so (MC-10)(a) implies the molecular theorem for simple
@@ -141,10 +142,11 @@ Steps MC7–MC10, (MC-11)–(MC-27).
   that step is where "the pencil pin destroys the combinatorial ingredient" bites.
 
 **Next (PI's call).** The smallest useful commits, in the agent's order:
-1. A second reader on Step MC10.
+1. A second reader on Step MC10. *(Done in part 2026-09-24: Step MC13's reader re-read (MC-16),
+   (MC-17), (MC-22), (MC-26).)*
 2. Either (MC-27) at `k = 2, 3` (the placement lemma, bounded by the stop rule), or a design recon
    of the chord/contraction step on `X₀` — whether `X₀(G)` relates to `X₀(G − e)` or `X₀(G/H)`
-   at all.
+   at all. *(Both done 2026-09-24: Step MC13 and Step MC12, below.)*
 3. The adversarial census, once there is a statement for it to test.
 
 **2026-09-24 (later) — the three unranked directions assessed; their findings being landed.** The
@@ -156,13 +158,15 @@ this session into the repo."* and, on the plan: *"Sure, please proceed through e
 free to stop when you think we should proceed in a fresh session (and make sure that we're
 prepared to handoff what we have then)."* The plan, one commit per step, each driver ported to
 `notes/scripts/w4/`:
-- **Step 0** — a second reader, read-only, of the hybrid recon's ear step *with the antecedent*:
-  under strong induction `X₀(G′ + ear_{k−1})` attains, and by (MC-22)'s "iff" that gives both
+- **Steps 0 and 1 — LANDED:** Step MC13 ((MC-43)–(MC-51), `w4/earante.py`, `m2/earbad.m2`). A
+  second reader of the hybrid recon's ear step *with the antecedent*: under strong induction `X₀(G′ + ear_{k−1})` attains, and by (MC-22)'s "iff" that gives both
   (R_{k−1}) and (P_{k−1}) at `X₀(G′)`'s generic point ((MC-24) extracts only (R)). Every
   `ρ ⊇ Pen(p_a, π_a)` that (MC-27) names as bad at `k` is bad at `k − 1` too, so the antecedent
-  excludes it. Question: which (MC-27) cells (`k` × orbit × `r`) close.
-- **Step 1** — land step 0's verdict: new labels continuing Step MC10, (MC-27) restated to the
-  cells that remain.
+  excludes it. Verdict: `k = 3` closes in every orbit (MC-45); `k = 2` where the generic flags are in
+  orbit (i)/(ii) and `dim U ≠ 1` (MC-46); the chord `G′ + ab` gives every (R_k) (MC-44), superseding
+  (MC-24)'s last bullets; `k = 1` at `δ ≥ 5` (MC-49), (MC-31). Open: (MC-51)(a) `k = 2`, `dim U = 1`;
+  (b) `k = 2`, orbit (iv), mod Jackson–Jordán; (c) `k = 1`, `δ ≤ 4`, reduced to one condition at the
+  chord point (MC-50), met at every tested instance. On `hK`'s habitat only (c) remains (MC-48).
 - **Step 2 — LANDED:** Step MC12, the contraction step on `X₀` ((MC-34)–(MC-42),
   `w4/coreshrink.py`), from the multi-scale recon: for a proper rigid `W` with `G/H` simple,
   `X₀(H)` and `X₀(G/H)` attaining give `X₀(G)` attaining under two per-graph linear-algebra
@@ -178,7 +182,7 @@ prepared to handoff what we have then)."* The plan, one commit per step, each dr
   Recount against the landed steps (driver `w4/x0arms.py`), then the *Unranked* verdicts and the
   next task: the uncovered graphs, one named step each, under the stop rule.
 
-**Next:** step 0, then steps 1 and 4 in that order.
+**Next:** step 4.
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)

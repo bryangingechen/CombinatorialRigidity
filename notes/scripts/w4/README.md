@@ -828,7 +828,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   certificates (MC-19). `--thetas`: attaining `X₀` points for the θ-graphs with
   `p₃ ≤ N`. `--lamcap`: `dim Λ_ear` and its intersection over placements per flag
   orbit. `--rdelta`: `r` against `δ` and `dim U` at every vertex pair (a measurement;
-  equality at an attaining draw is a certificate). A leaf.
+  equality at an attaining draw is a certificate). Imported by `earante.py` (below).
 - `splitext.py (--exh N | --thetas SMAX [--smin S] [--perg P]) [--control] [--jets J]
   [--list]` — **the split-off step on `X₀`** (§(K-main) Step MC11, (MC-28)–(MC-32)). Per
   degree-2 `x` with non-adjacent neighbours, it takes a certified `X₀(G″)` point
@@ -858,3 +858,15 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   containment `L0in`, and (MC-39)'s hypotheses (i) core-free / (ii) no-jump, with the boundary
   pattern of each failure. Imports `maincomp`, `exactcore`, `kbare_common`, `nogood_subdiv`,
   `repin`, `pitch` (`--collapse`), `widened`/`rpool` (`--pool named`). A leaf.
+- `earante.py (--orbits | --frames | --exh N [--draws D] | --thetas S | --habitats [--stride S]
+  [--limit N] | --chord N | --chord-thetas S | --chord-habitats [--stride S] [--limit N])` —
+  **the short ear step with the antecedent** (§(K-main) Step MC13, (MC-43)–(MC-51)).
+  `--orbits`: the orbit-dimension table behind (MC-46)'s count (exact symbolic minors).
+  `--frames`: the named bad families in a standard frame of each orbit. `--exh` / `--thetas` /
+  `--habitats`: per instance `G′ + ear_k` (`k = 2, 3`), one attaining `X₀(G′)` point; reports
+  orbit, `r`, `δ`, `dim U`, flag genericity, and `(P_{k−1})`, `(P_k)` at random placements;
+  asserts (MC-16) and (MC-22) pointwise, (MC-45), (MC-46) and (MC-48)(i). `--chord*`: `k = 1` at
+  the chord point `z₀` of `X₀(G′ + ab)`; asserts (MC-44)'s and (MC-49)'s pointwise identities,
+  and that (MC-50)'s first-order limit is a pencil through `y₀` containing `n`. Imports
+  `earstep.py`'s `weld_rows`/`contract`/`pt_in`, `maincomp`, `repin.hodge_star`,
+  `nogood_subdiv.count_matroid_rank`/`is_simple`. A leaf.
