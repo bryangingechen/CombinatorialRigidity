@@ -3449,3 +3449,81 @@ neighbours have a further big neighbour, and depth `≥ 3`. **What would change 
 containing a big vertex is nontrivial and costs nothing beyond its merge — excluded by Lemma D′/S21(iii), which are
 Γ-counts; or a reduced line through `π_c` — impossible here because every neighbour of `c` is big, and possible as soon
 as the centre has a non-big neighbour (a centre of degree `≥ 4`), which is where the next general step must look.
+
+## S42 — Review notes (2026-09-23, `/review-attack` after session 14; the reviewer's checks, not the attack's — verify before building on them)
+
+Tree at `0c9008f2`. Consumer: the two kernels of `pencilPair_of_splitOff_of_habitat` (`Escape.lean`) read at HEAD match
+brief §3.1 token for token, `git diff 084ee4ff HEAD -- CombinatorialRigidity` is empty, and the trichotomy (i)–(iii) covers
+the domain. No paraphrase found. Verdict to the PI: **continue on R2, re-aimed and gated** (a control that can fail
+first; O7e-b and O7e-c's `M ≠ M₀` part as one statement; a checkpoint at the next review). On the PI's word the
+unaudited results were then audited — (iv), (v) — by two fresh-reader agents, and genuine cores were run — (vii).
+
+**(i) Signals.** `check.py --history` agrees with the state's two lines (break moved at session 14; count 4). At the level
+of O7e, open since session 8, the count by piece went `1 → 2 → 4` by re-counting and never fell; sessions 13 and 14 each
+closed one special case (S36's no-charge case; S41) and restated the rest as a broader successor (S34(iv), zero slack at
+three base cases; (★₂) at every depth, whose `M ≠ M₀` part is O7e-b's statement with forced circuits). One overstatement:
+S40(iii)'s and the state's "O7e ⟺ (★₂) at every depth" is only **⟸** — `cost(P)` is a lower bound on the codimension —
+and S34(iv) ⟹ (★₂) likewise, so each link can fail while irreducibility holds.
+
+**(ii) S40 re-derived (reviewer).** (i) the onion lemma, all three counts. (ii)–(iii): the fibration `X̄ → W` with fibre
+`∏_{y ∉ Big} P(⋂_{E_y} π_c)` (onto, since `s_y ≤ 3`), the bound `exp − 1` over `{J₃ ≥ 1}`, the projective bundle over
+`U = {J₃ = 0}`, Krull (`e` bilinear equations in `A`), and `W ≅ X̄(Γ[Z], Big)*` (the incidence read backwards; the pair
+inherits girth, the strict count and unmarked degree `≤ 2`; its onion is `S_{i+1}`). The Worry "S19 applied to abstract
+pairs" is discharged by S19's own statement of what its proof uses — girth, the habitat count on subgraphs, Case 1,
+unmarked degree `≤ 2` — all inherited by `(Γ[Z], Big)`. S40(iv)'s two "unchecked" items remain unchecked.
+
+**(iii) S29 read (reviewer):** holds given S28 (audited S31); every girth step re-checked. Its setting has `U_c = T`
+(`k_c = 3`, `π_c` a pencil); at `k_c = 4` — S41(iv)'s next stratum — `π_c` is fixed by four labels, so S29's ledger must
+be re-derived there, not reused.
+
+**(iv) S26 audited (fresh-reader agent; not re-derived by the reviewer): holds, with S27(i)'s O6 line.** S26's proofs list
+O1, O3, O5 only; S27(i)'s one-line treatment of O6 (a 5-cycle at distance 2, a 4-cycle with the edge `uu′` when adjacent;
+the alternative `a = ū` is `x` itself, point-`β = 1`, or a triangle) was re-derived, and with it all four terms of
+S34(ii) vanish on both strata. The criterion `cost − J₃ ≥ −s` (`s = 1` at distance 2, `J₂ = 1` from `U_x` alone; `s = 0`
+adjacent, `J₂ = 2`) has the right direction. Wording slip: "`U_x = {q*}`, a `β = 1` flat" holds only for non-big `x` (big
+`x`, T8's shape, is never flat; nothing else changes). S21(v)'s forced-equal-planes caveat is absent on both strata (two
+rank-3 `U_c` with one span share two labels: a 4-cycle or a triangle), which S26 does not say.
+
+**(v) S41 audited (fresh-reader agent): holds, with two repairs and one convention.**
+- *(iii)(4a), a gap inherited from S22(vi)(4a)* (re-checked by the reviewer). "`[x]` … contains `q_a`, naturally by (1)"
+  covers a U-class only; `[x]` may be a flat singleton on `ℓ`, whose extra (1) does not exclude. *Repair:* `x` is then
+  flat on `ℓ` (its flat line and `ℓ` share `[w], [x]`), of type `β = 1` by (4), so `N(x) = {w, a″}` with `a″` big and
+  `a″ ≠ a` (triangle `a w x`); `[a]` is a singleton (nontrivial classes are bad pairs, with no big member), a U-class, on
+  `ℓ`, so `π_{[a]} ∋ q_{a″}` naturally by (1): `a″ ~ a`, and `a w x a″` is a 4-cycle. The repair holds at generic `q`, so
+  **S22(vi) (O7e-a) stands with this line added**; S24's audit of S22(vi) missed the case.
+- *S24(iii) at `M₀`:* the conclusion holds; S41's reason ("only a Γ-configuration forcing three of them onto `Q_c`") is
+  not an argument. The correct one: at tightness no fixed plane on a reduced line has `c` among its labels (`[c]` is on
+  no reduced line; `U_{x_i} = {x_i, c}` spans a pencil, not a fixed plane; there are no extras), so all defining labels
+  lie in `Big ∖ {c}`, and `{Q_c coplanar} → (P³)^{Big ∖ {c}}` is onto.
+- *Convention to state:* like S22, the tightness step holds at the generic point of `{Q_c coplanar}`; a pattern
+  realisable only on a proper closed subset of the `M₀`-locus has level-1 codimension `≥ 2`, and (ii)'s sums (valid at
+  every point) give S40(iii) what it needs there — not the literal (★₂) at `M₀`.
+- (iii)(3) reads `N_Γ(c)` with Γ containing the unmarked vertices: a connector neighbour of `c` breaks it — S41(iv)'s "a
+  centre with a non-big neighbour". The review's incidence (planes `⟨x₀, c, e⟩`, `⟨x₁, x₂, f⟩` meeting on `π_c`) occurs
+  only in patterns where (ii)'s rank sums alone are used, and is excluded at tightness.
+
+**(vi) Where the open pieces live (reviewer).** On a connected core (a connected subgraph, so the strict count applies)
+`Σ_v (deg v − 2) = 2|E| − 2|V| ≤ (2|V| − 14)/5`, an even number. So a core with `≤ 16` vertices has at most two vertices
+of degree `≥ 3`, hence at most two big vertices, and its only degenerate big-point strata are coincidences — S22, S25,
+S26 (audited, with S27(i) and (v)'s repair). Every open piece — O7e-b(a)–(c) needs `≥ 3` big labels in one relation
+component, O7e-c a centre with three big neighbours — needs `≥ 17` core vertices in one component (components separate:
+`X̄` of a disjoint union is a product). The smallest Case-2 cores are the five all-marked thetas on 12 vertices,
+`θ(1,6,6), θ(2,5,6), θ(3,4,6), θ(3,5,5), θ(4,4,5)` (every `l₁ + l₂ + l₃ = 13` with girth `≥ 7`; strict count tight;
+`thetacores.py check`), plus S27(vi)(c)'s connector variant — S27(vi)(c) named only `θ(4,4,5)` and `θ(2c,5,6)`.
+
+**(vii) Controls on genuine cores** (`drivers/thetacores.py`: registers the thetas in `case2m2.CASES` in memory only — the
+README's no-argument `case2m2.py` run iterates over the landed table, so adding keys there would move its figure).
+`dmgmax.py`: *attempted, no figure* — `TH166` timed out at `600` s (the enumeration is Bell(12) partitions × `2¹⁰` flat
+sets on an all-marked theta, against E55's `2⁴`); the other two runs were stopped. `case2deg.py --pair b1 b2 --budget 850
+--slack-cap 2`: all three CAPPED — `25 563 / 25 889 / 23 757` of Bell(12) = `4 213 597` partitions visited, no line
+structure realised — with no negative slack on the processed subset (minima `3 / 2 / 4` on `TH166 / TH256 / TH445`),
+which is evidence under a ~0.6 % cap, not a control of S25–S26. Macaulay2 `--jumpdims` (one process, `900` s):
+*attempted, no figure* — TIMEOUT on all three, the same wall as S27(iv)–(vi). *What these can show:* on a two-big-vertex core the damage vanishes for a structural reason (no third big
+vertex; no `β = 2` flat at a coincidence), so even a complete run tests only the ledger's bookkeeping; where the open
+pieces live (`≥ 17` core vertices) no driver as written reaches. **The open statement still has no evidence where it can
+fail.**
+
+**(viii) Edits proposed to the PI.** `state.md`: S26 and S41 audited (with (iv)–(v)'s repairs), S22(vi)(4a) repaired;
+"⟺" → "⟸"; the Worry on S19 for abstract pairs removed; a Worry "no control reaches a core of `≥ 17` vertices"; next
+result number S43. Brief §6/§7: the "⟸" wording and (vi)'s core-size bound. `drivers/README.md`: the `thetacores.py`
+entry.

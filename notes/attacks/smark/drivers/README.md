@@ -468,3 +468,22 @@ that every element's earlier neighbours are independent (a witness that the gene
     # also: k4core 5 (violated, -1), tree2 4 (violated, -4), tree2 6 (legal)
 
 Caps: two families (`k4core L`, `tree2 L`); the strict count on the core alone, not its embedding as a side `H′` of a habitat.
+
+## `thetacores.py` — the smallest genuine Case-2 cores through the existing drivers (review 6, 2026-09-23; workbook S42(vii))
+
+Run from the repository root. Registers the five all-marked 12-vertex theta cores of girth `≥ 7` in `case2m2.CASES` **in memory only** (the landed
+table, and the no-argument `case2m2.py` run above that iterates over it, are untouched) and passes the rest of the
+command line to `dmgmax.py`, `case2deg.py` or `case2m2.py` unchanged. `θ(l₁,l₂,l₃)`: branch vertices `b1, b2` joined by
+internally disjoint paths of lengths `l₁, l₂, l₃`, every vertex marked, no connectors, `Big = {b1, b2}`; `TH166 = θ(1,6,6)`
+(`b1 ~ b2`, S26 adjacent), `TH256 = θ(2,5,6)` (distance 2, S26), `TH445 = θ(4,4,5)` (distance 4, S25), and `TH346`, `TH355` (distance 3, S25). `check` verifies
+girth, `Big`, the distance and the strict count exhaustively over connected vertex subsets.
+
+    timeout 60   python3 notes/attacks/smark/drivers/thetacores.py check                  # girth 7/7/8/7/8, min strict slack 0 on all five
+    timeout 900  python3 -u notes/attacks/smark/drivers/thetacores.py case2deg --graph TH166 --pair b1 b2 --budget 850 --slack-cap 2
+    timeout 1000 python3 -u notes/attacks/smark/drivers/thetacores.py case2m2 --case TH166 --jumpdims --timeout 900
+
+**Figures (S42(vii)):** `case2deg` CAPPED on all three (partitions visited `25 563 / 25 889 / 23 757` of Bell(12) =
+`4 213 597`, no line structure realised), no negative slack on the processed subset (minima `3 / 2 / 4`); `dmgmax`
+attempted, no figure (`TH166` timed out at `600` s: `Bell(12) × 2¹⁰` flat sets against E55's `2⁴`); Macaulay2 `--jumpdims`
+TIMEOUT on all three at `900` s (attempted, no figure). **Caps:** three graphs run (TH166, TH256, TH445), each with two big vertices, so the damage terms that need a third big vertex cannot
+occur; evidence about the ledger's bookkeeping on genuine cores, not a control of the open pieces (S42(vi)).
