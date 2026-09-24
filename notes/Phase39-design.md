@@ -56,7 +56,7 @@ is load-bearing.
 | (K) non-constancy recon (2026-07-30) | 3342–3516 | CLOSED — PARTIAL, left (K-tight) | — |
 | (K) literature hunt (2026-07-30) | 3517–3594 | CLOSED — NO HIT; **canonical home of that bibliography** | — |
 | (K-bare) extension-route recon | 3595–3769 | CLOSED — NO-GO; minimal statement (K-bare-ext) | — |
-| W4 decomposition recon (2026-07-30) | 3770–3995 | **live as W4's canonical leaf list**; W4 parked | — |
+| W4 decomposition recon (2026-07-30) | 3770–3995 | **live as W4's canonical leaf list**; W4 reopened 2026-09-23 (`notes/pencil/W4-reopen.md`) | — |
 | W4-L4 identification recon (2026-07-30) | 3996–4176 | **live** with the above | — |
 | **Lean-track design pass (2026-09-15): items 1–2** | 4259–4588 | **PINNED** — red nodes in `pencil.tex`; first build G1+G2 | — |
 | **Field-hypothesis recon (2026-09-15): item 3** | 4591–4732 | **SETTLED** — option C (PI): reduction stays `[Infinite K]`, hypothesis on the kernels; char-2 probe handed to the (GR-10) attack | — |
