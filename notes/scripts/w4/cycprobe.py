@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""cycprobe.py -- Track J: ringprobe.probe (chord point, class level, rhobar, truth) at the
+"""cycprobe.py -- Step MC21 (Track J): ringprobe.probe (chord point, class level, rhobar, truth) at the
 C'-II-cyclic chains found by findcyc.py on 13 vertices (graph6 + chain vertex y hard-coded below).
 PYTHONHASHSEED=0, seed 20260924, repository root."""
 import os, sys, random
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import scriptpath  # noqa
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import coverstruct as cs
 import earcover as ec
 import ringprobe as rp

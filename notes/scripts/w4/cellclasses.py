@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-classes.py -- Track J (W4-reopen P1, cell (MC-51)(c) at delta2 = 3, delta in {3,4}).
+cellclasses.py -- Step MC21 (Track J) (W4-reopen P1, cell (MC-51)(c) at delta2 = 3, delta in {3,4}).
 
 Pure combinatorics (partition counts, maincomp.def_k); deterministic; writes nothing.
 For every k = 1 chain a - y - b (y of degree 2, a, b of degree >= 3, a !~ b) of every
@@ -10,11 +10,12 @@ keep delta2 = 3 and delta in {3, 4}.  Then report:
   * the def3-classes of G' (maximal rigid sets, singletons otherwise) and the class
     quotient Gamma3 (asserted simple);
   * the minimisers X of c(X) = 6(|X|-1) - 5 e(X) over class sets X containing A, B
-    (asserted min = delta, (F-1)/(MC-79)(i)); whether SOME minimiser is a tree
-    (then a path A..B, (F-13)) or ALL are cyclic;
-  * whether G is in the class S of (MC-76) (2-connected, not cycle/theta, (S)),
+    (asserted min = delta, (MC-90)/(MC-79)(i)); whether SOME minimiser is a tree
+    (then a path A..B, (MC-102)) or ALL are cyclic;
+  * whether G is in the class S of Step MC16 (coverstruct.in_class_S: 2-connected, not a cycle or
+    a theta-graph, (S); the staged version tested (S) and 2-connectivity only),
     whether G is rigid, and whether y lies in a maximal rigid set R of G (and R = V?).
-    python3 classes.py --exh 8
+    python3 cellclasses.py --exh 8
 """
 import argparse
 import itertools
@@ -22,12 +23,12 @@ import os
 import sys
 from collections import Counter
 
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-import scriptpath  # noqa: F401,E402
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from maincomp import def_k, two_ec_graphs  # noqa: E402
 from kbare_common import verts_of  # noqa: E402
 from earstep import contract  # noqa: E402
+from coverstruct import in_class_S  # noqa: E402
 
 
 def nbrs(E):
@@ -83,31 +84,6 @@ def cval(Y, QE):
     return 6 * (len(Y) - 1) - 5 * e, e
 
 
-def is_S(E, V):
-    for k in range(2, len(V) + 1):
-        for S in itertools.combinations(V, k):
-            if 2 * len(induced(E, S)) > 3 * k - 4:
-                return False
-    return True
-
-
-def two_connected(E, V):
-    for v in V:
-        rest = [x for x in V if x != v]
-        Ei = [(a, b) for (a, b) in E if v not in (a, b)]
-        nb = nbrs(Ei)
-        seen, st = {rest[0]}, [rest[0]]
-        while st:
-            x = st.pop()
-            for y in nb.get(x, ()):
-                if y not in seen:
-                    seen.add(y)
-                    st.append(y)
-        if len(seen) != len(rest):
-            return False
-    return True
-
-
 def analyse(name, E):
     V = verts_of(E)
     nb = nbrs(E)
@@ -141,7 +117,7 @@ def analyse(name, E):
                     mins.append((Y, e))
         assert best == d3, (name, y, best, d3)
         tree = any(e == len(Y) - 1 for (Y, e) in mins)
-        inS = two_connected(E, V) and is_S(E, V)
+        inS = in_class_S(E, V)
         Grig = def_k(E, 6, V) == 0
         RG = [R for R in max_rigid_sets(E, V) if y in R]
         sizes = sorted(len(C) for C in cls)

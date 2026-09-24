@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""j2check.py -- Track J, (J-2)'s mechanism checked at the stuck necklaces of (MC-83)/(MC-84).
-For each necklace G and each C'-I chain w (earcover.py), with W the (J-1) witness (or the bead):
+"""rigidclose.py -- Step MC21 (Track J), (MC-143)'s mechanism checked at the stuck necklaces of (MC-83)/(MC-84).
+For each necklace G and each C'-I chain w (earcover.py), with W the (MC-142) witness (or the bead):
   * q certified in U(G) (dim L_G = 3 + def2(G)), exact;
   * restriction onto ((MC-68)(d)): dim of the image of L_G(q) in K^W equals dim L_{G[W]}(q|W);
   * at a random z in L_G(q): rank of G[W]'s rigidity matrix mod 2^61-1 against 6(|W|-1) (rigid),
     and rank of G's against its target (attains) -- equalities are certificates.
 PYTHONHASHSEED=0, seed 20260924, repository root."""
 import os, sys, random
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import scriptpath  # noqa
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from fractions import Fraction as F
 import coverstruct as cs
 import earcover as ec

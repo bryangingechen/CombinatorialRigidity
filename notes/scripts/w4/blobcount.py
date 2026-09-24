@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""countlemma.py -- Track J, (J-6a) and (J-5) checked: in a class-S member all of whose chains have k = 1, for
+"""blobcount.py -- Step MC21 (Track J), (MC-147) and (MC-146) checked: in a class-S member all of whose chains have k = 1, for
 every chain y with delta >= 1, some degree-2 vertex w != y lies in a non-singleton def3-class of
 G - y.  (graph6 on stdin, or --necklaces.)  Pure counts; deterministic; asserts; prints a tally."""
 import os, sys
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import scriptpath  # noqa
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import coverstruct as cs
 import earcover as ec
 from exactcore import neighbors
@@ -28,17 +26,17 @@ def check(E, V, tally):
             tally['delta0'] += 1
             continue
         inblob = [w for w in deg2 if w != y and len(cls[of[w]]) > 1]
-        assert inblob, ('J-6a fails', E, y)
+        assert inblob, ('MC-147 fails', E, y)
         tally['chains'] += 1
-        # (J-5): every non-singleton class X of G - y is rigid in G, with G/G[X] simple and additive
+        # (MC-146): every non-singleton class X of G - y is rigid in G, with G/G[X] simple and additive
         D2 = cs.d2(E, V)
         for X in cls:
             if len(X) < 2:
                 continue
             W = sorted(X, key=str)
             H = cs.induced(E, W)
-            assert cs.d3(H, W) == 0 and cs.simple_quotient(E, W), ('J-5', W)
-            assert D2 == cs.d2(H, W) + cs.quotient_def2(E, W), ('J-5 additivity', W)
+            assert cs.d3(H, W) == 0 and cs.simple_quotient(E, W), ('MC-146', W)
+            assert D2 == cs.d2(H, W) + cs.quotient_def2(E, W), ('MC-146 additivity', W)
             tally['blobs'] += 1
 
 
@@ -56,4 +54,4 @@ else:
                 check(E, V, tally)
 print('class-S members with every chain k = 1:', tally['allk1'], '; chains with delta >= 1 checked:',
       tally['chains'], '(each has a degree-2 vertex inside a blob of G - y); delta = 0 chains:',
-      tally['delta0'], '; blobs checked for (J-5):', tally['blobs'])
+      tally['delta0'], '; blobs checked for (MC-146):', tally['blobs'])

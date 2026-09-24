@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""findcyc.py -- Track J: print the class-S members (graph6 on stdin) that have a C'-II-cyclic chain
+"""findcyc.py -- Step MC21 (Track J): print the class-S members (graph6 on stdin) that have a C'-II-cyclic chain
 (earcover.py's cells), with the chain, its classes and the class quotient.  Deterministic."""
 import os, sys
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import scriptpath  # noqa
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import coverstruct as cs
 import earcover as ec
 for line in sys.stdin:

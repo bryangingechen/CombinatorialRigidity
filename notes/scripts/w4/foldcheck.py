@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""foldcheck.py -- Track J, the folded-ring point of (J-4), computed exactly.
+"""foldcheck.py -- Step MC21 (Track J), the folded-ring point of (MC-151), computed exactly.
 For a Case II-tree instance (G' = path of classes R0..R_delta, G'' = G' + ab the closed ring), at a
 random picture q certified in U(G'') (dim L = 3 + def2):
   * the folded flex P: constant sigma_j on each class, sigma_j - sigma_{j-1} = t_j l_j across bridge j,
@@ -9,12 +9,8 @@ random picture q certified in U(G'') (dim L = 3 + def2):
   * delta = 3: the same at z = 0 (the flat point).
 Exact Q.  PYTHONHASHSEED=0, seed 20260924, repository root."""
 import os, sys, random
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(os.path.dirname(HERE), 'trackB'))
-import scriptpath  # noqa
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from fractions import Fraction as F
 from exactcore import nullspace, wedge2, dot
 from kbare_common import verts_of

@@ -1,6 +1,0 @@
-{'label': 'T3:C4-v-v-C4', 'delta': 3, 'rank_L': 3, 'rank_Ln': 4, 'meets_n': [True, False, True], 'flat_rank_L': 3}
-{'label': 'T4:C4-v-v-v-C4', 'delta': 4, 'rank_L': 4, 'rank_Ln': 5, 'meets_n': [True, False, False, True]}
-{'label': 'T4:C4-C4-v-C4-C4', 'delta': 4, 'rank_L': 4, 'rank_Ln': 5, 'meets_n': [True, False, False, True]}
-{'label': 'T4:C5-v-C4-v-C4', 'delta': 4, 'rank_L': 4, 'rank_Ln': 5, 'meets_n': [True, False, False, True]}
-{'label': 'T3:C4-C4-C4-C4', 'delta': 3, 'rank_L': 3, 'rank_Ln': 4, 'meets_n': [True, False, True], 'flat_rank_L': 3}
-{'label': 'T4:C4a-v-v-v-C4b', 'delta': 4, 'rank_L': 4, 'rank_Ln': 5, 'meets_n': [True, False, False, True]}

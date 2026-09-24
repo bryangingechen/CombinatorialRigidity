@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 """
-ringprobe.py -- Track J (W4-reopen P1, cell (MC-51)(c): k = 1, delta2 = 3, delta in {3, 4}).
+ringprobe.py -- Step MC21 (Track J) (W4-reopen P1, cell (MC-51)(c): k = 1, delta2 = 3, delta in {3, 4}).
 
 Built instances G = G' + (a - y - b) from a CLASS GRAPH: each class is a small rigid blob (C4, C5,
 C6) or a singleton; class-graph edges become single bridge edges between chosen blob vertices.
 Per instance, exact over Q except the mod-(2^61-1) attainment screens (certificates only):
   * combinatorics: delta, delta2, the def3-classes of G' recomputed from scratch (asserted to be the
-    built blobs), the minimisers of c over class sets through A, B, and the (J-1) case split:
+    built blobs), the minimisers of c over class sets through A, B, and the (MC-144)/(MC-145) case split:
     CASE I if some locally minimal Y (c(Y) <= 4, minimal among its subsets through A, B) has
-    union(Y) + y != V(G); CASE II otherwise;  whether G is in S (2-connected, (S), not cycle/theta);
-  * the chord point (Track B's): q certified in U(G') and U(G'+ab), z0 random in L_{G'+ab}(q) at
+    union(Y) + y != V(G); CASE II otherwise;  whether G is in S (coverstruct.in_class_S: 2-connected,
+    (S), not a cycle or theta-graph; the staged version omitted the last two tests);
+  * the chord point (Step MC18's): q certified in U(G') and U(G'+ab), z0 random in L_{G'+ab}(q) at
     which G'+ab attains;
   * CLASS LEVEL at z0 (bodies = classes, hinges = bridge lines p_u ^ p_v): whether the class-level
     G' is independent (rank 5|E_Gamma|), whether the welded class-level G'/AB is rigid, dim of the
     class-level relative space rhoG(z0), dim(rhoG(z0) cap n^perp);
-  * VERTEX LEVEL at z0: a'(z0), r(z0), dim(rho(z0) cap n^perp) (Track B's quantities);
-  * rhobar(z1) (Track B's series limit) for two random z1: its dimension, whether it EQUALS
-    rhoG(z0) (the constancy that (J-3) uses), dim(rhobar cap n^perp);
+  * VERTEX LEVEL at z0: a'(z0), r(z0), dim(rho(z0) cap n^perp) (Step MC18's quantities);
+  * rhobar(z1) (Step MC18's series limit) for two random z1: its dimension, whether it EQUALS
+    rhoG(z0) (the constancy that (MC-150) uses), dim(rhobar cap n^perp);
   * ground truth: X0(G) attains at one certified draw (mod p rank = target certifies).
 Reading: at z0, "independent", "welded rigid", "dim(rhoG cap n^perp) = 3" are open conditions, so a
 draw showing them certifies them at the generic chord point; a draw failing them only bounds.
@@ -28,19 +29,16 @@ import os
 import random
 import sys
 
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(os.path.dirname(HERE), 'trackB'))
-import scriptpath  # noqa: F401,E402
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from fractions import Fraction as F  # noqa: E402
 from exactcore import nullspace, wedge2  # noqa: E402
 from kbare_common import build_rigidity, verts_of, rank_modp  # noqa: E402
 from maincomp import sample_q, lifting_space, _interp, def_k, aug_matrix  # noqa: E402
 from earstep import contract  # noqa: E402
+from coverstruct import in_class_S  # noqa: E402
 import chordprobe as cp  # noqa: E402
-import classes as cl  # noqa: E402
+import cellclasses as cl  # noqa: E402
 
 SEED = 20260924
 
@@ -77,7 +75,7 @@ def bh_matrix(nb, hinges, lines):
 
 
 def classify(E, a, b, y='y'):
-    """(J-1) case split and S-membership, from scratch."""
+    """(MC-144)/(MC-145) case split and S-membership, from scratch."""
     V = verts_of(E)
     Vp = [v for v in V]
     cls, of, QE = cl.class_quotient(E, Vp)
@@ -99,7 +97,7 @@ def classify(E, a, b, y='y'):
     tree = any(cl.cval(Y, QE)[1] == len(Y) - 1 for Y in mins)
     G = E + [(a, y), (y, b)]
     VG = verts_of(G)
-    inS = cl.two_connected(G, VG) and cl.is_S(G, VG)
+    inS = in_class_S(G, VG)
     return dict(cls=cls, of=of, QE=QE, delta=delta, caseI=caseI, tree=tree, inS=inS,
                 nmin=len(mins), nloc=len(locmin))
 

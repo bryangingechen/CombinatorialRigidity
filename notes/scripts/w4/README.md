@@ -943,3 +943,14 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   (MC-46)'s strata); `certguard.py (--lamcap | --replay | --thetas S)` is the guarded re-run of
   `earstep.py --lamcap` / `--thetas`; `orbitaudit.py` audits `earante.py --orbits`' certifying
   coefficients; `certsearch.py` is the 0/1-point search behind `certhand.py`'s configurations.
+- **Step MC21's drivers** (§(K-main), (MC-142)–(MC-156); combinatorics exact and deterministic; the
+  geometric probes exact over ℚ at seed `20260924`, ranks mod `2⁶¹ − 1` only as certificates):
+  `earcover.py (--necklaces | --hunt FILE|- [--full] | --witness N ...)` puts every chain of every
+  𝒮-member in USABLE / A′ / C′-I / C′-II-tree / C′-II-cyclic and asserts (MC-142)'s witnesses and
+  (MC-145)'s dichotomy; `blobcount.py [--necklaces]` (graph6 on stdin otherwise) asserts (MC-147) and
+  (MC-146); `rigidclose.py` checks (MC-143)'s mechanism at three stuck necklaces; `ringprobe.py` probes
+  15 built class rings at the chord point (class level, `ρ̄`, truth); `foldcheck.py` computes
+  (MC-151)'s folded point; `findcyc.py` (graph6 on stdin) lists the C′-II-cyclic chains and
+  `cycprobe.py` probes the six on 13 vertices; `cellclasses.py --exh N` is the cell's class census on
+  small graphs. `earcover`/`blobcount`/`findcyc`/`rigidclose` import `coverstruct`; `ringprobe` imports
+  `chordprobe` and `cellclasses`; `foldcheck` and `cycprobe` import `ringprobe`.

@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 """
-earcover.py -- Track J (W4-reopen P1): does the EAR step alone reach every graph of the class S?
+earcover.py -- Step MC21 (Track J) (W4-reopen P1): does the EAR step alone reach every graph of the class S?
 
 Pure combinatorics (count-matroid deficiencies, exact integers); deterministic; writes nothing.
 For every class-S member G (Step MC16's definition, coverstruct.in_class_S), every chain is put in
 one of the cells
   USABLE   a landed step applies (coverstruct.chain_data's rule: k >= 3; k = 2 with delta = 0 or
            (a !~ b and delta2 >= 2); k = 1 with delta = 0 or delta >= 5);
-  A'       k = 2, a ~ b, delta = 1                                   (closed by Track F's (F-16));
-  C'-I     k = 1, 1 <= delta <= 4, and (J-1)'s witness exists: a set Y of def3-classes of G' = G - y
+  A'       k = 2, a ~ b, delta = 1                                   (closed by Step MC17's (MC-105));
+  C'-I     k = 1, 1 <= delta <= 4, and (MC-142)'s witness exists: a set Y of def3-classes of G' = G - y
            through [a], [b] with c(Y) <= 4, c(Y) minimal among the subsets of Y through [a], [b],
            and union(Y) + y != V(G).  Then W = union(Y) + y is ASSERTED to be rigid in G, with G/G[W]
-           simple and def2(G) = def2(G[W]) + def2(G/G[W])                (closed by (J-2));
+           simple and def2(G) = def2(G[W]) + def2(G/G[W])                (closed by (MC-143));
   C'-II    k = 1, 1 <= delta <= 4, no such Y; split into -tree / -cyclic by whether the class
            quotient of G' is a tree.
-The claim under test ((J-6)): EVERY class-S member has a chain in USABLE, A' or C'-I.  Also ASSERTED
-at every C'-II chain: G is rigid, and V(Gamma3) is the unique minimiser (the (J-1) dichotomy).
-Classes of G' are computed as: u ~ v iff def3(G') = def3(G'/uv) ((F-1): a common rigid subgraph).
+The claim under test ((MC-148)): EVERY class-S member has a chain in USABLE, A' or C'-I.  Also ASSERTED
+at every C'-II chain: G is rigid, and V(Gamma3) is the unique minimiser (the (MC-145) dichotomy).
+Classes of G' are computed as: u ~ v iff def3(G') = def3(G'/uv) ((MC-90): a common rigid subgraph).
 Modes:  --necklaces | --hunt FILE|-  (graph6, e.g. geng -C -d2 -t -q n 0:floor((3n-4)/2)) |
         --witness N --smax S [--cores K4,dC4]   (coverstruct's subdivision witness set)
 PYTHONHASHSEED=0, repository root.
@@ -27,9 +27,8 @@ import os
 import sys
 from collections import Counter
 
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts'))
-sys.path.insert(0, os.path.join(os.getcwd(), 'notes', 'scripts', 'w4'))
-import scriptpath  # noqa: F401,E402
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import coverstruct as cs  # noqa: E402
 from exactcore import neighbors  # noqa: E402
 
@@ -70,8 +69,9 @@ def cval(Y, QE):
     return 6 * (len(Y) - 1) - 5 * e, e
 
 
-def cprime_case(E, V, y, a, b):
-    """(J-1) for the k = 1 chain a - y - b.  Returns ('I', W) or ('II-tree'|'II-cyclic', None)."""
+def cprime_case(E, V, y, a, b, delta=None):
+    """(MC-142) for the k = 1 chain a - y - b.  Returns ('I', W) or ('II-tree'|'II-cyclic', None).
+    If delta (chain_data's) is given, ASSERT it equals min c(Y) over class sets through A, B ((MC-79)(i))."""
     Ep = [e for e in E if y not in e]
     Vp = [v for v in V if v != y]
     cls, of, QE = classes_of(Ep, Vp)
@@ -83,6 +83,7 @@ def cprime_case(E, V, y, a, b):
         for S in itertools.combinations(others, k):
             Y = frozenset((A, B) + S)
             cv[Y] = cval(Y, QE)[0]
+    assert delta is None or min(cv.values()) == delta, ('(MC-79)(i)', delta, min(cv.values()))
     full = frozenset(range(len(cls)))
     for Y, c in sorted(cv.items(), key=lambda t: len(t[0])):
         if c > 4 or Y == full:
@@ -93,9 +94,9 @@ def cprime_case(E, V, y, a, b):
                 W |= cls[i]
             W = sorted(W, key=str)
             H = cs.induced(E, W)
-            assert cs.d3(H, W) == 0, ('J-1 rigid', W)
-            assert cs.simple_quotient(E, W), ('J-1 simple', W)
-            assert cs.d2(E, V) == cs.d2(H, W) + cs.quotient_def2(E, W), ('J-1 additive', W)
+            assert cs.d3(H, W) == 0, ('MC-142 rigid', W)
+            assert cs.simple_quotient(E, W), ('MC-142 simple', W)
+            assert cs.d2(E, V) == cs.d2(H, W) + cs.quotient_def2(E, W), ('MC-142 additive', W)
             nbH = neighbors(H)
             assert min(len(nbH[v]) for v in W) >= 2
             return 'I', W
@@ -121,7 +122,7 @@ def classify_graph(E, V, full=False):
             closable = True
         else:
             assert c['k'] == 1 and 1 <= c['delta'] <= 4, c
-            kind, W = cprime_case(E, V, I[0], a, b)
+            kind, W = cprime_case(E, V, I[0], a, b, c['delta'])
             cells.append(("C'-" + kind, 1, c['delta']))
             if kind == 'I':
                 closable = True

@@ -8,7 +8,7 @@ pointers are by declaration name; Lean unchanged since `084ee4ff`. Revised after
 **Revised a third time at the end of the same session (2026-09-23): the START HERE section (a
 prioritized direction list, which now sets the order), T1's partial findings, the corrected
 *Open on W4*, T2 re-aimed, T3 held.**
-**Current next-task source (end of the third 2026-09-24 session): *Next session* below, then P1's
+**Current next-task source (2026-09-24, after Step MC21 landed): *Next session* below, then P1's
 *third session* paragraph.**
 
 **Where things stand.** The **coverage theorem (MC-89) is proved modulo Jackson–Jordán, and both
@@ -16,20 +16,18 @@ halves are second-read**. It holds in characteristic 0, and over any infinite fi
 (MC-33)(i), since Step MC20 removed every computational certificate. Every finite simple connected
 graph of minimum degree ≥ 2 has `X₀` attaining, so (MC-10)(a) holds. With Step MC19's (MC-133),
 not yet second-read, every *feasible* such graph has `HasGenericPencilRealization`. Both statements
-are in §(K-main) Steps MC15–MC20.
+are in §(K-main) Steps MC15–MC20. Step MC21 (not yet second-read) adds a second proof of (MC-89)'s
+in-𝒮 half by EAR alone (MC-148), and narrows the last ear cell to "Case II-cyclic" (MC-154), which
+coverage does not need.
 
 **Next session, in order.**
-1. **Land Track J as Step MC21**, from `notes/w4-pending/trackJ/`: its write-up, scripts and
-   outputs are committed verbatim there, with landing instructions in `notes/w4-pending/README.md`.
-   It claims a **second proof of (MC-89) inside 𝒮 by the EAR route** (every 𝒮 graph has a closable
-   chain, (J-6)), without Theorem S or additivity but still using (MC-68)(d). It also claims that
-   (c′) closes except "Case II-cyclic" (J-10), which (MC-89) does not need. Neither claim is checked
-   or second-read yet. Tracks A–I have all landed (Steps MC15–MC20).
-2. **Second readers**, one dispatch each:
+1. **Second readers**, one dispatch each. Tracks A–J have all landed (Steps MC15–MC21).
    - Step MC19, first (MC-123), (MC-129), (MC-130) and (MC-133);
    - Step MC15's (MC-62)–(MC-67), the part the coverage proof does not use;
-   - Steps MC17–MC18 and Step MC20.
-3. **PI calls, now ripe.**
+   - Steps MC17–MC18 and Step MC20;
+   - Step MC21: first the second route (MC-143), (MC-146)–(MC-148), then (MC-150)–(MC-153). That
+     route also rests on Step MC17's (MC-105): read Step MC17 first, or in the same dispatch.
+2. **PI calls, now ripe.**
    - *Architecture.* The census's A′ row said "P3 becomes 'prove the rank on `X₀`', an architecture
      change". That proof now exists, modulo Jackson–Jordán. Should the W4/`hK` Lean plan move to
      the `X₀` induction? What stops: `kres` (held), the contraction kernels, smark's O7e?
@@ -37,7 +35,7 @@ are in §(K-main) Steps MC15–MC20.
    - *Characteristic.* The Lean target is over any infinite field. Since Step MC20, the only
      characteristic-0 dependence is Jackson–Jordán, whose field-general proof is `[INFORMAL]`
      (MC-33)(i).
-4. *Structural chore:* `K-main.md` is about 4 900 lines, one section. Consider splitting it by step.
+3. *Structural chore:* `K-main.md` is about 6 000 lines, one section. Consider splitting it by step.
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
 run it: *"I'll probably run it in this same worktree as the smark agent is still proceeding in
@@ -267,13 +265,11 @@ coordinator:
   G read (MC-80), (MC-87)–(MC-89) with (MC-68), (MC-69) and (MC-71). The repairs are minor; the
   largest is that (MC-81)'s (β′) bullet was false as worded (MC-121). G also gave an independent
   proof of (MC-87) (MC-119). **(MC-89) stands modulo Jackson–Jordán, in characteristic 0.**
-- In flight, **not in the tree until landed**:
-
-  - J, the one open ear cell (MC-117): **returned** after the session stopped for context. It is
-    committed verbatim, unlanded, in `notes/w4-pending/trackJ/`, and landing it is *Next session*
-    item 1.
-
-  No agent is in flight.
+- **J**, the one open ear cell (MC-117): returned after the session stopped for context, was staged
+  verbatim (`e2ec9927`), and landed the next session as §(K-main) **Step MC21**, (MC-142)–(MC-156),
+  not yet second-read. EAR alone covers 𝒮 (MC-148), a second proof of (MC-89)'s in-𝒮 half, still
+  using (MC-68)(d) and Jackson–Jordán. The cell narrows to "Case II-cyclic" (MC-154), which coverage
+  does not need. No agent is in flight.
 - **I**, the certificate leaves: landed as §(K-main) **Step MC20**, (MC-134)–(MC-141), not yet
   second-read. Every computational certificate under (MC-89) has a hand proof over every infinite
   field, so (MC-89) rests on arguments and Jackson–Jordán alone. Guarding `--lamcap` and `--thetas`
