@@ -5,6 +5,9 @@ header and the sections named below.** Written at the end of attack gr10 session
 request, against the tree at `b0d76407` (master) + `3773c022` (branch `attack-gr10`). Lean
 pointers are by declaration name; Lean unchanged since `084ee4ff`. Revised after
 `/review-attack gr10` and its close commit `3d769296` (2026-09-23): the worktree and merge notes, T0's gr10 items (done), and T2's optional char-2 leg. Revised again by the T0 commit (T0 marked DONE; the worktree bullet made path-free).
+**Revised a third time at the end of the same session (2026-09-23): the START HERE section (a
+prioritized direction list, which now sets the order), T1's partial findings, the corrected
+*Open on W4*, T2 re-aimed, T3 held.**
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
 run it: *"I'll probably run it in this same worktree as the smark agent is still proceeding in
@@ -19,6 +22,134 @@ hypotheses; no `sorry`; no edit to smark's consumer) and (ii) **W4-L4b**
 sibling re-traced against the 2026-09-16 `hK`) and T2 (placement step or kernel) report, then
 one more call. The user said: *"OK, sounds good."* Record this verbatim in T0's adjudication entry
 and in `notes/Phase39.md` *Blockers* (hold lifts are recorded per item).
+
+## START HERE — directions after the 2026-09-23 strategy discussion, prioritized
+
+**Why this section exists (user, 2026-09-23, verbatim).** After the T1 findings below, the PI
+asked: *"I get the sense that often times we try narrowing down what's going on on some family of
+graphs but then we find exceptions that we try to characterize, which then lead to more
+complicated exceptions, and the results don't seem to be closing in on the proof. For the attacks
+that we're thinking about in this session, do those also seem likely to spiral out more
+attacks?"* — then *"Are there other potential high-level proof strategies we should try pursuing
+(even if we have to give up our work in progress)? Alternatively: ways to find counterexample
+candidates that could narrow the viable approaches."* — then *"OK, let's write these up as
+potential directions in the handoff doc and prioritize them according to your judgment. I guess
+we'll want to kick this off in a fresh session?"* The ranking below is the agent's judgment,
+delegated; **nothing below is commissioned** beyond that. **It supersedes the order of *Tasks, in
+order* further down**, which is kept for each task's scope.
+
+**The diagnosis (the agent's reading; the PI should check it).**
+- *The pattern is in the record.* The W4 residual arc: each successor conjecture fell to a larger,
+  more specific witness (`W19` → `S29` → `T32` → `R20`) and was replaced by a weaker one. smark's
+  obligation count across sessions ran 4 → 3 → 1 → 2 → 4 → 4 (the last rise partly a counting
+  change at review 5), and its latest state says the stratification depth is unbounded (workbook
+  S40(v)). The retired arc: 127 directions, "`hK` is not closer".
+- *The mechanism (a reading, not a theorem).* Every motive is existential. Carrying "some good
+  point" across an induction step needs an explicit construction, or irreducibility/density of
+  the right configuration space. Where that is unknown, attacks fall back on stratum-by-stratum
+  ledgers over infinite families, and each classification exposes a new stratum.
+- *Forecast for the queued work.* The Lean wrapper and W4-L4b: no spiral risk (engineering from
+  landed bricks). The (α) recon: low as a recon. **`kres`: high, with a predictable failure
+  point** — smark's route rests on girth `≥ 7` (short cycles are rigid, so the no-rigid habitat
+  excludes them), while a residual has a proper rigid subgraph by definition and every residual
+  examined has a short-cycle core (`W19`/`S29` `C₄`, `R20` `C₅`, `NT21c3` `C₆`); R2 most likely does not transfer verbatim, and its natural
+  repair re-enters the coplanarity/coincident-flag arm the girth restriction deleted. The
+  contraction pair (K-c)/(K-bare-c): medium-high — the 2026-07-30 plan for (K-c) is
+  "per-boundary-pattern witnesses", classification-shaped.
+- *Hypothesis, unverified:* smark's O7, (K-res) via R2, (K-c) via specialization, and (α)'s
+  un-coinciding each reduce to one closure/irreducibility statement about the nondegenerate
+  pencil locus — the same geometric question attacked four times by combinatorial stratification.
+
+**The reformulation behind P1 — derived in-session 2026-09-23; elementary, NOT yet written up or
+checked by a second reader or a driver.** The pencil configuration is the smark brief's §1 object
+(`p : V → P³`, adjacent points distinct, every closed neighbourhood `N[v]` coplanar). In an affine
+chart write `p_v = (q_v, z_v)`, a planar position and a height.
+- **(F1)** For fixed `q`, "every `N[v]` coplanar" is **linear in `z`**: `z` restricted to `N[v]` is
+  the restriction of an affine function of the `q`-positions, wherever `q(N[v])` is not collinear.
+  So the configuration space is `X(G) = {(q, z) : z ∈ L(q)}` with `L(q)` a linear space — the
+  scene-analysis lifting space of the planar picture `q` with the closed stars as faces.
+- **(F2)** The **main component** `X₀` (the closure of the part over generic `q`) is irreducible —
+  a vector bundle over an open subset of `(K²)^V` — and contains the **flat configurations**
+  `z = 0`, where the smark brief's §3(a) gives rank `6(|V|−1) − def₂` by Jackson–Jordán's
+  pin-collinear theorem (published, unformalized; unverified beyond `ℝ`, `notes/Phase39-design.md`
+  field-hypothesis recon, row S5).
+- **(F3)** Hinge Plücker vectors `p_u ∧ p_v` are **affine in `z`** (no `z_u z_v` term), so over a
+  fixed `q` the rigidity matrix is `A₀(q) + A₁(z)`, `z ∈ L(q)`: the Klein quadric is absorbed by
+  the parametrization.
+- *So:* the conjecture on `X₀` says **the linear subspace `L(q)` is not contained in the
+  rank-deficient locus of the molecular (Katoh–Tanigawa) rigidity matrix**. The Lean motive is
+  existential, so attaining at `X₀`'s generic point proves the whole conjecture — with **no**
+  irreducibility of `X(G)`, no IH-as-certificate, no jump-locus analysis. Not in the corpus as far
+  as grep shows (smark's S17 fibres over the hub planes, a different base). The difficulty moves
+  to the generic rank of an affine matrix family, gap `def₂ − def₃` from the flat point — and the
+  flat point is maximally degenerate (`strategy.md` §2.4: *"degenerate enough to compute, and you
+  break the thing you are computing"*).
+- *A by-product for (α):* wherever `def₂ = def₃` the flat configuration already attains **with
+  adjacent points distinct** (generic `q`), so it supplies the distinct motive there — `K4`
+  included (3-connected; smark brief §3(a)/(c)) — under the Jackson–Jordán caveat above.
+
+**P1 — the main-component census. FIRST; docs + driver, bounded; can run in this worktree,
+independent of smark.**
+1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
+   first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
+2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
+   sampling `X₀`: random `q`, a basis of `L(q)`, random `z ∈ L(q)`; report rank against
+   `6(|V|−1) − def₃` (existing oracles), plus the rank at `z = 0` (must equal `6(|V|−1) − def₂`;
+   the Jackson–Jordán sanity check), `dim L(q)`, and as a diagnostic the first-order gain at the
+   flat point (flat-framework flexes paired with flat stresses through `A₁(z)`). Assert (F1)/(F3)
+   per instance (coplanarity of every `N[v]` at the sampled point; affineness by interpolation).
+3. Populations: smark's sweep populations; both kernels' habitats incl. θ-graphs; the residual
+   pool (255; `W19`, `S29`, `T32`, `R20`); smark's Case-2 hub graphs (D3, E13, E15, E55, T10, …);
+   W4 branch-2 graphs (`K4`, gate N8); the forced-coincident-flag peels.
+4. **Decision table, written into the spec before any run:**
+   - *`X₀` attains on every instance* → P3 becomes "prove the rank on `X₀`" (an architecture
+     change); the `kres`, contraction and O7 programmes become unnecessary in principle; a PI call
+     on what to stop.
+   - *`X₀` fails at some `G` where the project's own charts attain* → witnesses live off the main
+     component; every generic-point strategy dies; those `G` are the hard core, and P3 asks which
+     component attains and why.
+   - *`X₀` fails and no chart attains* → a counterexample candidate, checked on the special
+     components (the planar positions `q` where `L(q)` jumps — a finite enumeration per graph).
+   The census ends at the table: nothing follows without a PI call.
+
+**P2 — the (α) recon, re-aimed and folded into P1's driver.** Population: **W4 branch 2** —
+simple, 2-edge-connected, infeasible, with a proper rigid subgraph. By the by-product above, those
+with `def₂ = def₃` are settled by the flat configuration; P1's driver lists the rest
+(`def₂ > def₃`), which are (α)'s whole content. If that list is empty on the library, (α) is
+probably a lemma, not a kernel. **The residual pool is the wrong population** (T1 finding 3).
+
+**P3 — the follow-up recon, shaped by P1's outcome.** Either a direct rank argument on `X₀` —
+perturbation from the flat point (the first-order term pairs flat-framework flexes with flat
+stresses through the lifting), or an Edmonds-problem argument if `A₁` splits into rank-one pieces
+(a matroid-intersection min-max would restore the combinatorial ingredient `strategy.md` §2.2 says
+the pencil pin destroys) — or, on the second outcome, which component attains. Fold in the
+common-crux question (do O7, (K-res), (K-c) and (α) reduce to one statement?). Literature to check
+first, **citations unverified**: scene analysis (Whiteley's hypergraph matroid; Sugihara), Maxwell–
+Cremona liftings, Lovász on singular spaces of matrices / Edmonds' problem. The 2026-07-30 hunt
+(`notes/Phase39-design.md` § *(K) literature hunt*) targeted the stress crux, not this.
+
+**P4 — T1's Lean (the residual-branch producer, W4-L4b): DEFERRED until P1 reports.** Cheap and
+G0-authorized, but it pays only if the split/contract architecture continues. T1's scope question
+(below, finding 6) stays open.
+
+**P5 — T3 (`kres`) and a contraction attack ((K-c) + (K-bare-c)′): HELD until P1/P3.** If `kres`
+runs, session 1 checks the R2 transfer, tests the girth prediction first, and stops at the first
+break rather than characterizing residual subfamilies.
+
+**Unranked, revisit after P1:** a multi-scale (tropical) explicit construction along an SPQR tree
+or tree packing, with a rank lower bound from leading terms; transferring Jackson–Jordán's *proof
+technique* (their pin-collinear theorem is the unconstrained 2D member of the same family); a
+hybrid keeping smark's 2-cut composition with the motive "attains at the generic point of `X₀`".
+
+**Counterexample-candidate sources:** `X₀` failures, then the special components; and a dichotomy
+worth trying to prove — *if `X₀` is forced flat then `def₂ = def₃`* (smark's hunt found no
+forced-flat graph with `def₂ > def₃` to `n = 6`; flatness needs density, the gap needs 2-edge-cuts).
+
+**For `/harness-review`, not for a research session:** make "getting in a rut" measurable — a
+session either closes an obligation outright or shows its successors smaller in a stated measure;
+a flat or rising count over a set number of sessions triggers the 2026-09-03 reprioritization.
+(Incident line 2026-09-23.) **Bearing on smark, for the PI (no edit to smark's files):** on P1's
+first outcome, smark's O7e programme is unnecessary in principle for the Lean target.
 
 ## Where you are working
 
@@ -39,6 +170,10 @@ and in `notes/Phase39.md` *Blockers* (hold lifts are recorded per item).
   repoint them in the same step.
 - Commit rules: `CLAUDE.md` *Working* (author identity, `-F` for messages with backticks,
   no local paths).
+- **Lean in this worktree** (set up 2026-09-23): `.lake/packages` is a symlink to the main
+  checkout's (gitignored; the two checkouts share one manifest), and `.lake/build` is this
+  worktree's own. `lake build CombinatorialRigidity.Molecular.Molecule.Pencil.Escape` passes;
+  cold, it took ~22 min. P1 needs no Lean.
 
 ## Why reopen (the mathematical reason the 2026-09-03 directive asks for)
 
@@ -76,15 +211,24 @@ carry `hnoGood'`, non-vacuous by a `|V| = 19` witness, so branch 4 needs content
 
 ## Open on W4
 
-- **(K-res)** — the kernel, restated (T1) and then attacked (T3).
+*Corrected 2026-09-23 (T1 finding 1): this list first named only (K-res) and (α).*
+
+- **Three research kernels, not one.** **(K-res)** — restated (T1), attack held (P5). **(K-c)
+  `hKc`** and **(K-bare-c) `hbareContract`** — carried by the L3′ skeleton since 2026-07-30
+  (`notes/Phase39-design.md` §§ *W4 decomposition recon*, *W4-L4 identification recon*), **never
+  attacked**, and pinned in the pre-2026-09-16 shape (T1 finding 2). The three are logically
+  independent (disjoint habitats); (K-c) and (K-bare-c) are one un-contraction problem at two
+  genericity levels, (K-res) a split-arm problem whose nearest relative is `hK`.
 - **The (α) obligation** — `W4.md` § *The (α) obligation — `hcontract` must un-coincide at
-  parallel classes (2026-09-16, OPEN)*: under the third `PencilPair` conjunct the contraction
-  assembly must deliver adjacent-distinct points when `G` is simple, but the IH at `G/H` is
-  necessarily coincident at parallel classes. Expected a placement step; "nothing has been
-  checked"; cost not priced.
-- **The build** itself (T4).
+  parallel classes (2026-09-16, OPEN)*. It lands **entirely on (K-bare-c)**, in branch 2 (T1
+  finding 3); re-aimed as P2.
+- **The build** itself (T4), carrying W4-A (W4-L1) and `hremove` (W4-L5) as well.
 
 ## Tasks, in order
+
+*Priority is now the P-list at the top (START HERE); this section keeps each task's scope. T0 is
+done; T1 is a partial design pass whose Lean is deferred (P4); T2 is re-aimed (P2); T3 is held
+(P5).*
 
 **T0 — record the reopening — DONE (2026-09-23, the T0 commit).** `notes/pencil/adjudications.md`
 § *2026-09-23* (the decision, the three reasons, G0 and the three further calls, verbatim where
@@ -130,7 +274,58 @@ from prose:
 - (d) **Blueprint.** Forward mode: a red node for (K-res) and the wrapper in `pencil.tex`, pinned
   by `\lean{...}` in the same commit (`blueprint/CLAUDE.md`).
 
-**T2 — (α) recon (read-only, or a docs + driver commit).** Question: at the contracted witness
+**T1 findings so far (2026-09-23; the design pass is PARTIAL — no design commit, no Lean).**
+Read from the landed Lean (`Escape.lean`, `Pair2.lean`, `Habitat.lean`, `Motive.lean`,
+`Statement.lean`) and `notes/Phase39-design.md` §§ *W4 decomposition recon* / *W4-L4
+identification recon*.
+1. **The L3′ skeleton's branches and what each carries** (`hcontract` must give all three
+   `PencilPair` conjuncts):
+   0 — `¬ TwoEdgeConnected`: the landed cut arm `pencilPair_of_not_twoEdgeConnected`. 1 — `¬ Simple`:
+   bare only, W4-A (W4-L1, buildable, parked). 2 — simple, **infeasible**: distinct + bare,
+   **`hbareContract`** (K-bare-c). 3a — simple, feasible, co-1: generic, W4-L4b + `hremove`
+   (W4-L5). 3b — …, a good contraction: generic, **`hKc`** (K-c) + W4-B (W4-L2). 3c — residual:
+   generic, packaging (b)'s (SAFE-RES′) + the L7a residual sibling + **(K-res)**. W4's lane closed
+   only 3c's non-kernel costs ((T), (E-pair), (V)); branches 2 and 3b were never touched.
+2. **`hKc` and `hbareContract` are stale in the two ways the 2026-09-16 restatement fixed for
+   `hK`/`hbareSplit`:** no IH (un-contraction glues a realization of `H` onto one of `G/H`, and
+   only the IH supplies `H`'s), and the conclusion shape — `hKc` concludes the chart form (needing
+   W4-B), `hbareContract` only the bare motive though branch 2's `G` is simple. *Recommended, not
+   decided:* restate both — take the IH; `hKc′` concludes `HasGenericPencilRealization K 3 G`
+   (retiring W4-B from the consumed path, as (d) retired L7b); `hbareContract′` concludes
+   `HasDistinctPencilRealization K 3 G`; each carries its branch conditions, so the carried
+   kernels' habitats partition (`hK` no rigid, `hremove` co-1, `hKc′` good contraction and no
+   co-1, `hKres` residual, `hbareContract′` infeasible). A kernel-shape decision of the kind item 5
+   was: the PI's.
+3. **(α) lands entirely on `hbareContract`.** Branch 2 is the only branch with `G` simple that
+   consumes the IH at a possibly non-simple `G/H`; at 3a–3c the distinct conjunct comes free from
+   the generic one (`hasDistinctPencilRealization_of_generic`). Residuals are feasible, so the
+   residual pool cannot show (α)'s friction — T2's original population was the wrong one.
+4. **(a) the habitat antecedent — the pass's answer: residuals only.** `hKres` = `hK` token for
+   token, with `hnoRigid` replaced by the full residual bundle (`∃` proper rigid, no co-1, no good
+   contraction) plus `PencilNondegFeasible K G`, and (SAFE-RES′)'s outputs G triangle-free and
+   `N(a) ∩ N(b) = {v}` — all free at the only call site; weakest precondition, and the partition
+   of finding 2.
+5. **(b) the antecedent's source, re-traced.** L7a (`hasGenericPencilRealization_of_splitOff_of_safe`)
+   consumes `hnoRigid` at exactly two calls — `Graph.splitOff_triangleFree_of_noRigid` ((S4) +
+   (S5)) and `Graph.splitOff_simple_of_noRigid_of_card` ((S3)); the 2026-09-16 change touched
+   `hK`/`hbareSplit` only. The residual sibling replaces `hnoRigid` by (T) and `N(a) ∩ N(b) = {v}`;
+   **(S3) `a ≁ b` follows from (T)** (an `ab`-edge closes `{v, a, b}`), so it is not a separate
+   input. L6a-transfer (`ncard_closedHubNbhd_splitOff_le_three_of_safe`) and L6b are already
+   `hnoRigid`-free: the sibling needs two small graph lemmas. At a residual the wrapper must also
+   supply the split data from (SAFE-RES′) (informal theorem, Lean-unbuilt: carried), `5 ≤ |V|`
+   (a small brick: a proper rigid subgraph of a simple graph has `≥ 3` vertices, and no co-1 adds
+   two), and a fresh `e₀` (a simple-graph fresh-edge supply with larger `β` headroom, (EL-6)).
+6. **(c) scope — OPEN, put to the PI 2026-09-23 and not answered:** a full L3′-successor wrapper
+   producing `hcontract`'s statement (restating `hKc`/`hbareContract`; seven carried pieces), the
+   residual-branch producer only (enough of a consumer for `kres`; respects G0's "L3′ parked"
+   literally), or a design doc only. The agent's suggestion was staged: the residual producer
+   first. Now deferred under P4.
+
+**T2 — (α) recon (read-only, or a docs + driver commit).** *RE-AIMED 2026-09-23 (T1 finding 3;
+now P2): the population below is the wrong one — residuals are feasible and get the distinct
+conjunct free; (α)'s population is W4 branch 2 (simple, 2EC, infeasible, a proper rigid
+subgraph), starting from `K4`/gate N8, and only its `def₂ > def₃` members are open.*
+Question: at the contracted witness
 the assembly starts from, which pairs coincide (exactly the parallel classes of `G/H`?), and can
 un-contracting separate them while holding the rank? Deliverable: a verdict "placement step" or
 "kernel", with a committed, seeded, exact driver (`HARNESS.md` *Reproducibility*) over a named
@@ -145,7 +340,9 @@ characteristic-2 evidence. If the field binder matters to T1, run
 `6(|V|−1) − def₃` in place of the hard-coded `6(|V|−1)`: a new mode, committed and seeded, where
 the driver asserts the bridge's shape hypotheses per shape and reports failures.
 
-**T3 — the (K-res) attack, after T1 lands the Lean declaration.** Create `notes/attacks/kres/`
+**T3 — the (K-res) attack, after T1 lands the Lean declaration.** *HELD 2026-09-23 (P5): the
+predicted break is girth — every residual examined has a rigid `C₄`–`C₆` core, smark's route
+needs girth `≥ 7`; if it runs, session 1 tests that first and stops at the first break.* Create `notes/attacks/kres/`
 per `notes/attacks/README.md`: a brief transcribing the T1 declaration's hypotheses one per line,
 both sides, diffed against it (`HARNESS.md` *Evidence*, the consumer-diff rule — the reason to
 wait for T1). Session-1 question: **does R2's proof of `hK` transfer to residuals, and if not, at
@@ -165,6 +362,8 @@ carries as a hypothesis.
 
 - Edit `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` or the headline theorem.
 - Write the (K-res) brief before T1's Lean declaration exists.
+- Launch `kres` or a contraction attack before P1 reports (P5); treat (F1)–(F3) as checked before
+  P1's write-up and driver check them.
 - Treat `W4.md`'s (K-res) statement or its cost estimates as current; both predate 2026-09-16.
 - Ask smark for anything; the only optional request is a wording fix in its state line ("`hK`
   closed; O9 written, re-derived at review 4"), at its own pace, via the PI.

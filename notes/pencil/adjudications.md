@@ -662,3 +662,20 @@ under a running smark session; rebase or merge commit is the PI's call at that m
 packaging-(b) adjudication, which the reopening builds rather than re-decides; `hK`,
 `hbareSplit`, `pencilPair_of_splitOff_of_habitat` and the headline theorem are not edited; the
 other parked checklist items stay parked; smark continues in the main checkout.
+
+## 2026-09-23 — strategy re-think requested; the directions' ranking delegated to the agent
+
+Later the same session, after the T1 design pass surfaced two further W4 kernels, the user asked
+whether the queued attacks would "spiral out more attacks" and then: **"Are there other potential
+high-level proof strategies we should try pursuing (even if we have to give up our work in
+progress)? Alternatively: ways to find counterexample candidates that could narrow the viable
+approaches."** — and, on the answer: **"OK, let's write these up as potential directions in the
+handoff doc and prioritize them according to your judgment. I guess we'll want to kick this off
+in a fresh session?"** The ranking is the agent's (`notes/pencil/W4-reopen.md` *START HERE*:
+P1 a census of the main component of the configuration space, docs + driver; P2 the (α) recon
+re-aimed and folded into it; P3 a follow-up shaped by P1; P4 T1's Lean deferred; P5 `kres` and a
+contraction attack held). **Nothing is commissioned by this entry**; the fresh session starts P1
+on the PI's word. **Still open from the same session:** T1's scope question (full L3′-successor
+wrapper, residual-branch producer only, or design doc only) — asked, discussed, not answered.
+**Everything else stands unchanged:** phase OPEN; W4 reopened with the hold lifted (staged) as
+recorded above; smark continues in the main checkout.
