@@ -915,3 +915,16 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   additivity, the stuck necklace families. `--hunt`/`--beads` read graph6 from a file or stdin; the
   populations come from nauty's `geng` (external). Imports `exactcore`, `kbare_common`, `maincomp`,
   `nogood_subdiv`, `splitext`. A leaf.
+- **Step MC17's drivers** (§(K-main), (MC-90)–(MC-107); exact, stdlib): `deltapairs.py (--witness |
+  --exh N [--minY] [--brute] | --akb)` — relative deficiency as a minimum over induced subgraphs, the
+  `(δ, δ₂)` pairs and their witnesses; `splitcells.py --exh N` / `splitdu.py --exh N` — Step MC11's
+  instances by `(δ₂, δ)`, and the pictures that jump for `G′`; `lamguard.py [--replay | --hand]` — the
+  guarded re-run of `earstep.py --lamcap` (the (MC-26) erratum); `cellwit.py` — two attainment
+  certificates above the census range; `aprime.py [--u U ...]` — cell (a′) on the `Aᵘ` necklaces
+  (imports `coverstruct.necklace`). Leaves, except that `cellwit`/`aprime` import `deltapairs`.
+- **Step MC18's drivers** (§(K-main), (MC-108)–(MC-118); exact ℚ, seed `20260924`):
+  `chordprobe.py (--thetas S | --habitats [--stride K] | --subdiv BASE | --exh N [--nmin M] | --random
+  K ...)` — chord-point profiles (`δ`, `δ₂`, `dim U`, case A/B, `a′(z₀)`, `r(z₀)`,
+  `dim(ρ(z₀) ∩ n^⊥)`, the `δ`-dimensional limit, and a ground-truth attainment certificate);
+  `thetapairs.py S MIND`, `apredraw.py`, `limitcheck.py`, `deltacount.py N R`, `starcap.py`, `lamab.py`
+  import `chordprobe`; `lamcap_recount.py` replays `earstep.py --lamcap`'s draws.

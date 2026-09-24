@@ -243,11 +243,20 @@ coordinator:
   - G, the second reading of (MC-80), (MC-87)–(MC-89) with (MC-68), (MC-69), (MC-71). The other
     half, H on (MC-75)–(MC-79) and (MC-82), has **landed**: nothing wrong, three minor repairs, plus
     a repair of Step MC10's remark after (MC-26);
-  - B, cell (MC-51)(c) (item 4), no longer on the coverage theorem's critical path;
   - E, the generic motive at A′ graphs (item 5);
-  - F, cell (a′) (`k = 2`, `a ∼ b`), no longer on the critical path.
+  - I, making (MC-89)'s computational leaves human-checkable, prompted by F's erratum below;
+  - J, the one open ear cell (MC-117), which would give a second proof of (MC-89) by the EAR route.
 
   A fresh session **re-dispatches G first** if it has not landed, then E.
+- **F** and **B**, the ear cells (off the critical path): landed as §(K-main) **Steps MC17** and
+  **MC18**, (MC-90)–(MC-118), not yet second-read.
+  - Relative deficiency is a minimum over induced subgraphs, so `δ₂ ≤ 2 ⟹ δ ≤ δ₂`.
+  - For `a ∼ b` the triangle is the chord gadget, which closes Step MC16's cell (a′).
+  - (MC-50)'s gap is closed, and its reduction is the theorem (MC-110).
+  - Every ear cell closes except (MC-117): `k = 1`, `δ₂ = 3`, `δ ∈ {3, 4}`.
+  - An **erratum to (MC-26)**: its `--lamcap` certificate was unguarded, but no landed claim uses the
+    wrong cell.
+- The PI, midway (verbatim): *"Let's drop the number of subagents to 2 as they come in."*
 
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
