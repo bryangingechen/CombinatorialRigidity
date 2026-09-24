@@ -199,7 +199,10 @@ in general. The smallest commits first:
    (the contraction step), (MC-45)/(MC-46) (the short ears), (MC-54), (MC-59) (the flat core),
    (MC-52)/(MC-53) (cut vertices and bridges), and Step MC14's reading that (MC-22)–(MC-25) need no
    `a ≁ b` (three `k = 4` covers rest on it). Each was derived by one agent and checked by one more at
-   most.
+   most. *(Done 2026-09-24 except (MC-45)/(MC-46): one reader re-derived (MC-34)–(MC-39), (MC-52)–(MC-55),
+   (MC-59) and the `a ≁ b` reading. Nothing was wrong. It repaired (MC-22)'s statement and (MC-55)(iii)'s
+   proof, and sharpened (MC-59)(c): at a `def₂`-rigid core Jackson–Jordán is needed only at `H` and
+   `G/H`, so the `K₄` necklaces (MC-60)(b) need no citation.)*
 2. **The adversarial census** — the cheapest test of the structural half — run through both `maincomp.py` (does `X₀`
    attain?) and `x0arms.py --ear23 antecedent` (does the induction reach it?): `n = 9–14`, biased to
    2-edge-cuts and large `def₂ − def₃`. A `SHORT`, or an uncovered graph, triggers the stop rule.
@@ -212,6 +215,14 @@ in general. The smallest commits first:
    `δ ≥ 1`; and Jackson–Jordán, cited or formalized.
 5. **Outside `X₀`:** the generic motive at A′ graphs, where `X₀` gives only the distinct motive
    ((MC-9), (MC-14)); none of Steps MC11–MC14 addresses it.
+
+**2026-09-24 (third session) — the open directions, worked in parallel.** The PI (verbatim): *"Let's
+work on the open directions for P1 there with up to 4 parallel subagents. I'd like to prioritize
+proving theorems (even if informally) over collecting more numerical evidence for existing
+conjectures."* Four read-only agents: A, the structural half (item 3); B, cell (MC-51)(c) (item 4);
+C, the certificates as partition counts modulo Jackson–Jordán (item 4); D, the second reading
+(item 1, landed above). A–C work in scratch. **Until their results are landed, nothing of theirs is
+in the tree**, and a fresh session re-dispatches from items 3–4.
 
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).

@@ -884,9 +884,13 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `q`; (MC-39)'s (i)/(ii) through `coreshrink.run_member`. `--exh`: exhaustive coverage by first
   step, with every uncovered graph described and the (MC-51) cell of each of its short open chains.
   `--pool`: maincomp's populations, with the terminal uncovered graphs and their profile.
-  `--necklace`: `K₄` necklaces with census certificates. `--flatcore`: (MC-59)(c)'s kernel identity.
+  `--necklace`: `K₄` necklaces with census certificates. `--flatcore`: (MC-59)(c2)'s kernel identity.
   `--lemmas`: (MC-52), (MC-53), (MC-55)(iv) on glued instances. `--round1`: the hybrid recon's 48
   no-arm graphs. Coverage figures are measurements, not a coverage theorem ((MC-61)). It replaces
   that recon's scratch classifier, recursion, necklace and gluing probes (not retained). Imports
   `maincomp`, `exactcore`, `kbare_common`, `nogood_subdiv`, `splitext`, `coreshrink`, `pitch`
   (`--lemmas`). A leaf.
+- `earspan.py` (no flags) — **open-ear hinge spans per flag orbit**, an independent re-check by the
+  2026-09-24 second reader of Steps MC12/MC14 (§(K-main) Step MC14, the `a ≁ b` reading; (MC-54)):
+  generic `λ` at `k = 1..4` and `dim ⋂Λ₄` over 12 placements in each of the orbit frames (i), (ii),
+  (ii′), (iii), (iv). Stdlib only; shares no code with `earstep.py`. A leaf.

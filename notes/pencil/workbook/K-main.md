@@ -47,16 +47,18 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
 - Step MC12, the contraction step on `X₀`: Katoh–Tanigawa's contraction case in `X₀` form. For a
   proper rigid `W` with `G/H` simple, **`X₀(H)` and `X₀(G/H)` attaining give `X₀(G)` attaining**,
   under two linear-algebra conditions checked per graph at one exact picture (MC-39); OPEN as class
-  statements (MC-41). Every sampled run where they are certified attains (MC-40). A second reader
-  is owed.
+  statements (MC-41). Every sampled run where they are certified attains (MC-40). **Second-read
+  2026-09-24**: confirmed, (MC-37) steps 3–4 filled in, and at a `def₂`-rigid core Jackson–Jordán is
+  needed only at `H` and `G/H` ((MC-59)(c3)), which makes the `K₄` necklaces citation-free (MC-60)(b).
 - Step MC14, the reach of the `X₀` induction (`w4/x0arms.py`): cut vertices and bridge chains are
   fibre products (MC-52), (MC-53); an open ear with `k ≤ 4` at `δ = 0` needs no antecedent (MC-54),
   closing (MC-51)'s cells there; a `def₂`-rigid core needs no contraction certificate, modulo
-  Jackson–Jordán (MC-59), so **every `K₄` necklace attains on `X₀`** (MC-60). **Every tested graph is
+  Jackson–Jordán (MC-59), so **every `K₄` necklace attains on `X₀`** (MC-60), with no citation at all
+  since the second reading. **Every tested graph is
   covered** — all 7 980 simple 2EC graphs on ≤ 8 vertices (MC-57), every census population (MC-58),
   `N(3..8)` — **but that is a measurement: there is no coverage theorem** (MC-61). Proving one, both
-  its structural and its certificate half, is the remaining problem for this strategy. A second
-  reader is owed.
+  its structural and its certificate half, is the remaining problem for this strategy. Second-read
+  2026-09-24: (MC-52)–(MC-55) and the `a ≁ b` reading confirmed; (MC-22) and (MC-55)(iii) repaired.
 - *Jackson–Jordán beyond `ℝ`* (MC-33): a second reading finds every step of their proof field-free
   after two small repairs and one bypass (`INFORMAL`), and `jjchar.py` exhibits (MC-4)(b)'s
   equality in characteristics 2, 3, 101 and 10 007 at every simple 2EC graph on ≤ 8 vertices.
@@ -833,7 +835,8 @@ wherever (MC-19)'s certificates are**: they are exact over ℚ, so every prime n
 minors is covered, and the remaining primes are not checked. Nondegeneracy is not claimed:
 `θ(2,2,2) = K_{2,3}` stays A′ (MC-9), (MC-14).
 
-> **(MC-22)** `[PROVED]` *(the reduction for open ears with `k ≤ 4`)* Assume dominance (MC-18) and
+> **(MC-22)** `[PROVED]` *(the reduction for open ears with `k ≤ 4`)* Let `X₀(G′)` attain *(added by
+> the 2026-09-24 second reading: the proof uses it)*. Assume dominance (MC-18) and
 > `λ = k + 1`; the latter excludes orbit (iii) at `k = 1`. Then `G` attains at `X₀(G)`'s generic
 > point **iff** both of the following hold at `X₀(G′)`'s generic point:
 > **(R_k)** `r ≥ min(δ, 5 − k)`;
@@ -842,6 +845,12 @@ minors is covered, and the remaining primes are not checked. Nondegeneracy is no
 *Proof.* By (MC-16) and (MC-17) we need `r − dim(ρ ∩ Λ) = min(δ, 5 − k)`. The left side is at most
 `min(r, 5 − k)` and `r ≤ δ`, so equality forces (R_k). Given (R_k), equality holds iff
 `dim(ρ ∩ Λ)` takes its least possible value, which is (P_k). ∎
+
+*Second reading (2026-09-24).* "We need" uses `dim M_{G′} = 6 + f`, that is, `X₀(G′)` attains; hence
+the added hypothesis. The `(R_k)` half of "⟹" holds without it: with `dim M_{G′} = 6 + f + e`,
+`e ≥ 0`, attainment of `G` reads `r − dim(ρ ∩ Λ) = e + min(δ, 5 − k) ≤ min(r, 5 − k)`, so still
+`r ≥ min(δ, 5 − k)`. That half is all (MC-24) extracts, and every other use is inside an ear step
+where `X₀(G′)` attains, so nothing downstream moves. No step of the proof uses `a ≁ b`.
 
 **`r = δ` is a separate statement from "`G′` attains".** By (MC-16), `r = δ` iff the welded
 framework on `G′/ab` attains at the pencil point. That framework's merged body carries two points
@@ -1230,7 +1239,9 @@ quotient a field. They also check the table arithmetic against slow polynomial a
 *Worked 2026-09-24 by a forked agent, porting the device and scratch probes of the feasibility recon
 of W4-reopen's first unranked direction (the multi-scale construction; its claims were
 unreviewed). Every claim marked `PROVED` below was re-derived by that agent and checked by the
-coordinator at sketch level, none by a second reader: **a second reader is owed**, first on (MC-37). The driver is `w4/coreshrink.py` (new).
+coordinator at sketch level. **A second reader (2026-09-24) re-derived (MC-34)–(MC-39) and (MC-59)**
+against the driver's row structure and KT 2011 §6.2: nothing wrong, no gap left open; its fills and
+sharpenings are recorded at the claims they touch. The driver is `w4/coreshrink.py` (new).
 The question is Step MC10's last "still lacks" bullet, W4-reopen P1 (2026-09-24) option 2: does
 `X₀(G)` relate to `X₀(G/H)` at all? **Yes, for a proper rigid `H` whose contraction `G/H` is
 simple.** Katoh–Tanigawa's contraction case (KT 2011 §6.2, Lemma 6.3) has an `X₀` form. The
@@ -1352,6 +1363,33 @@ At `t = 0` the rows say three things:
    inequality holds on a nonempty open set of parameters, hence on a dense subset of `B`, hence
    at `X₀(G)`'s generic point. ∎
 
+*Second reading (2026-09-24): steps 3 and 4 filled in.*
+- *Implicit hypothesis.* `G/H` satisfies (H), in particular `|δ(W)| ≥ 2`. Otherwise
+  `N_{G/H}[v*]` has two points, no `q′` is admissible, and `X₀(G/H)` is undefined. (MC-39) supplies
+  it through 2EC, which it uses for nothing else.
+- *The row types of `M₀`* (read off `coreshrink.py`'s `recipe`, not the prose). There are five:
+  1. core rows `ζ_w = a_c·δ_w + γ̃_c`, `w ∈ N_H[c]`;
+  2. `z_w = a_c·q_w`, `w ∈ A_c`;
+  3. `ζ_{c(u)} = a_u·δ_{c(u)} + γ̃_u` at each attachment `u`;
+  4. `z_w = a_u·q_w`, `w ∈ N_O[u]`;
+  5. the unchanged far rows.
+
+  `γ̃_u` occurs in `M₀` only in type 3, once per `u` when `G/H` is simple. So type 3 only fixes `γ̃_u`,
+  and this is the one place step 2 uses simplicity. The flat core of step 2 is KT's specialization in
+  their proof of Claim 6.4 (p. 675): every core panel is set to the `v*` panel.
+- *Step 3, joint genericity.* On the open set of parameters `(q_O, δ, R, b)` where (ii) holds and
+  `R|_{ker M₀}` is invertible, `ker M₀` is a vector bundle over the pictures. The map to `x(0)` is
+  onto its total space, so the limit heights are a generic point of `proj_z ker M₀`.
+- *Step 3, `q′` is generic enough.* Translations of the plane preserve admissibility, `L` and the
+  rank, so the maximal-rank locus `B°(G/H)` is translation-invariant. The slice
+  `B(G/H) ∩ {q_{v*} = Q}` is a vector bundle over a nonempty open set, hence irreducible, and `B°`
+  meets it (translate any point of `B°`). So for `q_O` in a nonempty open set the generic rank on
+  `L_{G/H}(q′)` is the generic rank of `X₀(G/H)`.
+- *Step 4.* For each fixed `t ≠ 0` the parametrization is onto `B(G)`, not just dominant. And one
+  parameter in the good open set suffices: by (MC-36) it gives cofinitely many `t` with `p(t) ∈ B(G)`
+  and the rank inequality. That inequality is lower semicontinuous on the irreducible `B(G)`, so it
+  holds on a dense open subset.
+
 What the recon called "the Claim-6.4 inequality comes free from linearity
 (`L(G/H) ⊆ L_relaxed`)" is step 3. But containment in the relaxed space alone is not enough: the
 limit must be *generic* in a space containing `L⁰_{G/H}(q')`. That is step 2 together with (ii).
@@ -1370,6 +1408,10 @@ limit must be *generic* in a space containing `L⁰_{G/H}(q')`. That is step 2 t
   generic `q`.
 - Hence restriction `B_G → B_H` is dominant. `H` is rigid at `X₀(H)`'s generic point, which is
   therefore the image of a generic point of `B_G`. Rigidity is an open condition. ∎
+
+*Second reading:* the claim's first sentence holds only for generic parameters, and nothing uses
+it. (MC-39) needs only that the two dense open subsets of `B(G)` given by (MC-37) and by this claim
+meet.
 
 The two-scale limit is **not** where the core's rigidity comes from. In the `pencil` variant
 below, W19's rescaled limit core is flat, with rank `17 = 18 − def₂(C₄)`, while at every `t ≠ 0`
@@ -2050,7 +2092,11 @@ non-adjacent pairs, so on small graphs this is the typical case.
   vertex `v`, then every component `C` of `G − v` sends `≥ 2` edges to `v`. So `G[C ∪ v]` and
   `G − C` satisfy (H).
 - (iii) Take a partition with `p ≥ 2` parts. Each part has `≥ 3` crossing edges, so `2d ≥ 3p` and
-  `3(p − 1) − 2d ≤ −3`. Hence `def₂ = 0`, and `def₃ ≤ def₂` (MC-5)(i).
+  `3(p − 1) − 2d ≤ −3`. Hence `def₂ = 0`, and `def₃ ≤ def₂` (MC-5)(i). *Repair (second reading):*
+  this covers "`def₂ > def₃` forces a 2-edge-cut" only for 2EC `G`. If `G` has a bridge, the
+  one-bridge lemma of (MC-53)(i), valid for any graph and both `D`, makes `def₂` and `def₃` each the
+  sum over the 2-edge-connected components plus the number of bridges. So some component has
+  `def₂ > def₃`, is not 3EC, and has a minimal 2-edge-cut, which is one of `G`.
 - (iv) `u`'s plane is fixed by `N_{G−v}[u]`, which has `≥ 3` non-collinear points, and it fixes
   `z_v`. Rank and counts are (MC-53)'s one-bridge computations, with `{v}` as one side. ∎
 
@@ -2068,8 +2114,9 @@ certificate a step uses is exact:
 
 A covered graph is therefore proved to attain to exactly the standard of the steps it uses. The
 exception is the orbit-(iv) cell (MC-47)(i), which is modulo JJ; it is reported apart and is never
-needed below. Second readings are owed on Step MC10's `k ≥ 4` ear claims, on (MC-37), and on this
-step. On `≤ 8` vertices, and in every census population, attainment is already certified graph by
+needed below. The 2026-09-24 second reading confirmed (MC-37)–(MC-39), (MC-52)–(MC-55) and the
+`a ≁ b` reading of (MC-19)(b), (MC-22), (MC-24), (MC-25); Step MC10's `k ≥ 4` claims have not had
+an independent re-derivation beyond that reading. On `≤ 8` vertices, and in every census population, attainment is already certified graph by
 graph (MC-7). What the coverage adds there is the **reach of a proof strategy**.
 
 > **(MC-57)** `[MEASURED]` *(`x0arms.py --exh 8`; exhaustive: every simple 2EC graph on ≤ 8
@@ -2133,6 +2180,9 @@ excluded chains with adjacent ends at `k ≤ 4`. Under the steps above (`x0arms.
   any flag pair, (MC-22), (MC-24) and (MC-25) carry no `a ≁ b` hypothesis, and (MC-25) is stated in
   all four orbits. (MC-51)'s closing paragraph says the same for `k ≥ 3` with `a ∼ b`. The recon's
   exclusion came from its own ear theorem, which went through `pencilLoss_vertexTwoCut`.
+  *Confirmed by the 2026-09-24 second reading:* `a ∼ b` puts the generic flags in orbit (iii) or
+  (iv), and each of the four claims covers all four orbits. `w4/earspan.py`, which shares no code
+  with `earstep.py`, re-certifies `λ = 3, 4, 5` at `k = 2, 3, 4` and `⋂Λ₄ = 0` in every orbit.
 - **The recon's "REST is reached from 887/888 habitat members"** counted a recursion that followed
   **only the first applicable arm** at each graph. So "reached" there did not mean "uncovered". The
   landed figure is (MC-58).
@@ -2173,12 +2223,17 @@ uncovered** — a measurement on finite populations, not a coverage theorem ((MC
 > **(a)** `[PROVED]` If (i) holds at `q`, then `ℓ₀(H) ≤ ℓ₀(G)`. At certified pictures this reads
 > `def₂(H) ≤ def₂(G)`.
 > **(b)** `[PROVED]` If `def₂(H) = 0` and `dim L_H(q|_W) = 3`, then (i) holds at `q`.
-> **(c)** `[PROVED-MOD]` *((MC-33): Jackson–Jordán at `H`, `G` and `G/H`)* If `def₂(H) = 0`, then `def₂(G/H) = def₂(G)`.
-> At any picture of `coreshrink.py`'s construction whose rescaled core `δ` has
-> `dim L_H(δ) = 3`, `ker M₀ ≅ L⁰_{G/H}(q′) ⊕ K`, so `dim ker M₀ = dim L_{G/H}(q′)`. Hence (ii) holds
-> wherever `ℓ₀(G) = ℓ₀(G/H)`, and JJ at `G` and at `G/H` gives that.
-> **(d)** Consequently, **at a `def₂`-rigid core, (MC-39) needs no per-graph certificate**, modulo
-> JJ at `H`, `G` and `G/H`. If `X₀(G/H)` attains, then `X₀(G)` attains, because `X₀(H)` attains by
+> **(c)** *(the flat core, `def₂(H) = 0`; three parts since the 2026-09-24 second reading)*
+> **(c1)** `[PROVED]` *(no citation)* If `def₂(H) = 0`, then `def₂(G/H) = def₂(G)`.
+> **(c2)** `[PROVED]` *(no citation)* At any picture of `coreshrink.py`'s construction with `δ`
+> admissible for `H`, `q′` admissible for `G/H` and `dim L_H(δ) = 3`:
+> `ker M₀ ≅ L⁰_{G/H}(q′) ⊕ K`, so `dim ker M₀ = dim L_{G/H}(q′)`.
+> **(c3)** `[PROVED-MOD]` *((MC-33): Jackson–Jordán at `H` and at `G/H` only; sharpened by the
+> 2026-09-24 second reading, which dropped `G`)* If `def₂(H) = 0`, then (ii) holds at a generic
+> picture, **and `ℓ₀(G) = 3 + def₂(G)` follows**: Jackson–Jordán at `G` is a consequence, not a
+> hypothesis.
+> **(d)** `[PROVED-MOD]` *((MC-33): Jackson–Jordán at `H` and `G/H`)* Consequently, **at a
+> `def₂`-rigid core, (MC-39) needs no per-graph certificate**. If `X₀(G/H)` attains, then `X₀(G)` attains, because `X₀(H)` attains by
 > FLAT.
 
 *Proof.*
@@ -2186,9 +2241,9 @@ uncovered** — a measurement on finite populations, not a coverage theorem ((MC
   `dim L_G(q) = ℓ₀(G)`.
 - (b) `Aff(q) ⊆ L_G(q)` projects onto `Aff(q|_W)`. That space is 3-dimensional because `q|_W` is
   not collinear, and it equals `L_H(q|_W)`, which has dimension 3.
-- (c) The count: merge the parts meeting `W` in a `def₂`-maximizing partition. This is (MC-35)'s
-  proof with `(3, 2)` for `(6, 5)`. For the kernel, read off the rows of `M₀` (*the construction*
-  in Step MC12).
+- (c1) Merge the parts meeting `W` in a `def₂`-maximizing partition. This is (MC-35)'s proof with
+  `(3, 2)` for `(6, 5)`.
+- (c2) Read off the five row types of `M₀` (listed after (MC-37)'s proof).
   - The core rows say that `ζ` lies in `L_H(δ)`, with the core plane slopes `a_c`. When
     `dim L_H(δ) = 3`, that space is `Aff(δ)`: `ζ = a*·δ + γ`, every `a_c = a*`, and every
     `γ̃_c = γ`.
@@ -2200,12 +2255,19 @@ uncovered** — a measurement on finite populations, not a coverage theorem ((MC
   - The far rows are unchanged.
 
   So the outside data range over `L⁰_{G/H}(q′)`, the slope `a*` is fixed by them (`N_{G/H}[v*]` is
-  not collinear), and `γ` is free. `dim L⁰ = dim L_{G/H}(q′) − 1`, since the constants have
-  `z_{v*} ≠ 0`. Finally, (ii) says `dim ker M₀ = dim L(q(t)) = ℓ₀(G)`, so it is
-  `ℓ₀(G) = dim L_{G/H}(q′)`. With JJ both sides equal `3 + def₂`, and those are equal by the count.
-- (d) (b) gives (i), and (c) gives (ii). FLAT at `H` (`def₂ = def₃ = 0`) gives `X₀(H)`. ∎
+  not collinear), and `γ` is free. Given `(z_O, γ)`, every other unknown is determined.
+  `dim L⁰ = dim L_{G/H}(q′) − 1`, since the constants have `z_{v*} ≠ 0`.
+- (c3) Take a generic picture: `dim L_H(δ) = ℓ₀(H) = 3` (JJ at `H`), `q′ ∈ U(G/H)` (the translation
+  argument after (MC-37)'s proof), and `q(t) ∈ U(G)` for cofinitely many `t`. Then
+  `ℓ₀(G) = dim W₀ ≤ dim ker M₀ = ℓ₀(G/H)`, by `W₀ ⊆ ker M₀` and (c2), with no citation. And
+  `ℓ₀(G/H) = 3 + def₂(G/H) = 3 + def₂(G) ≤ ℓ₀(G)`, by JJ at `G/H`, (c1) and the elementary
+  (MC-4)(b) at `G`. So every inequality is an equality: `dim ker M₀ = ℓ₀(G)`, which is (ii), and
+  `ℓ₀(G) = 3 + def₂(G)`. JJ at `G` alone would not do: it bounds `ℓ₀(G/H)` from the same side as
+  the degeneration does. The hard direction is needed at `G/H`.
+- (d) (b) gives (i), and (c3) gives (ii). FLAT at `H` (`def₂ = def₃ = 0`) gives `X₀(H)`. JJ at `H`
+  is used three times: for (b) at a generic picture, for (c2) at a generic `δ`, and for FLAT at `H`. ∎
 
-`[MEASURED x0arms.py --flatcore 8]` The kernel identity of (c) is asserted exactly at 2 080
+`[MEASURED x0arms.py --flatcore 8]` The kernel identity of (c2) is asserted exactly at 2 080
 pictures. That is one per graph: the largest `def₂`-rigid `W` with `G/H` simple. The graphs are
 every simple 2EC graph on `≤ 8` vertices that has such a `W`, plus `N(3..6)`: 2 083 graphs, 3 skipped
 because the drawn `δ` was not in `U(H)`. Also asserted at all 2 080: the count
@@ -2217,7 +2279,8 @@ because the drawn `δ` was not in `U(H)`. Also asserted at all 2 080: the count
 > **(a)** `[CONSTRUCTED]` *(`x0arms.py --necklace 8`)* For `k = 3..8`, `N(k)` is covered: `N(3)` by
 > FLAT, and `N(4..8)` by CONTRACT, with (i) and (ii) certified at every bead. `X₀(N(k))` attains at
 > each: `maincomp.census` gives ranks 66/66, 90/90, 114/114, 138/138, 161/161 and 184/184.
-> **(b)** `[PROVED-MOD]` *((MC-59)(c) and Jackson–Jordán)* **Every `N(k)`, `k ≥ 3`, attains on `X₀`.**
+> **(b)** `[PROVED]` *(no citation since the 2026-09-24 second reading, via (MC-59)(c3); first
+> written modulo Jackson–Jordán)* **Every `N(k)`, `k ≥ 3`, attains on `X₀`.**
 
 *Proof of (b).* Call a *unit cycle* a cycle of `j ≥ 3` units, each a `K₄` bead or a single vertex,
 with consecutive units joined by one edge and a bead's two outside edges at distinct bead vertices.
@@ -2227,17 +2290,34 @@ with consecutive units joined by one edge and a bead's two outside edges at dist
   distinct since `j ≥ 3`.
 - `G/H` is again a unit cycle, with one fewer bead.
 
-By (MC-59)(d), `X₀(G)` attains if `X₀(G/H)` does. After `k` contractions we reach `C_k` (BASE).
-`L_{K₄}(q) = Aff(q)` at every admissible `q`, so JJ at the core is trivial. ∎
+Induct on the number of beads, with the **strengthened motive** "`X₀(Γ)` attains **and**
+`ℓ₀(Γ) = 3 + def₂(Γ)`" (the second reader's device).
+- *Base.* `C_j` has no hubs, so `L = K^V` and `ℓ₀ = j = 3 + def₂(C_j)`; `X₀` attains by (MC-21)(a).
+- *Step.* `L_{K₄}(q) = Aff(q)` at every admissible `q`, since every `N[v]` is all of `V(K₄)`. So JJ at
+  the bead holds outright, and so does FLAT there (flat rank `24 − 6 = 18`). The induction
+  hypothesis at the smaller unit cycle `G/H` gives both halves of the motive there. Then (MC-59)(b)
+  gives (i), (MC-59)(c3) gives (ii) **and** `ℓ₀(G) = 3 + def₂(G)`, and (MC-39) gives attainment.
 
-It is the corpus's first infinite family of minimum degree 3 shown to attain on `X₀`, modulo
-Jackson–Jordán and the owed second readings. The hybrid recon's "REST is infinite" was an artifact
+After `k` contractions we reach `C_k`. No step cites Jackson–Jordán. ∎
+
+It is the corpus's first infinite family of minimum degree 3 shown to attain on `X₀`, to the
+standard of (MC-19)(a)'s certificates, (MC-39) and (MC-59)(b), (c1)–(c3).
+
+*Remark (the second reader's, not itself second-read): the equality `ℓ₀ = 3 + def₂` propagates.*
+`[INFORMAL]` *(gap: SPLITOFF not checked; no second reader)* It passes from the consumed graphs to
+`G` through CUT and BRIDGE ((MC-52)(iii), (MC-53)(iii) with the matching deficiency sums), EAR with
+`k ≥ 2` (`ℓ₀` and `def₂` both rise by `k − 2`), EAR with `k = 1` and `U ≠ 0` (both fall by one,
+since (MC-4)(b) at `G` forces `δ₂ ≥ 1`), and CONTRACT at a `def₂`-rigid core ((MC-59)(c3)). So under
+the strengthened motive of (MC-60)(b)'s proof the citation is consumed only at FLAT (where `G`
+itself is not consumed), at (MC-47)(i), and wherever SPLITOFF fails to propagate. FLAT covers most
+small graphs (7 568 of 7 980 in (MC-57)), so this does not remove the citation from the strategy.
+It says where a proof of Jackson–Jordán by the same induction would have to do its work. The hybrid recon's "REST is infinite" was an artifact
 of a step set with no contraction.
 
 > **(MC-61)** `[OPEN]` *(the coverage theorem — not proved)* **Coverage is measured, not proved.**
 > (MC-57) is exhaustive only on ≤ 8 vertices, and those graphs were already certified to attain
 > directly (MC-7). (MC-58) is sampled populations. The one infinite family proved is the `K₄`
-> necklaces (MC-60), modulo Jackson–Jordán. By (MC-56), a theorem that **every** simple 2EC graph
+> necklaces (MC-60), with no citation. By (MC-56), a theorem that **every** simple 2EC graph
 > satisfying (H) is covered would prove (MC-10)(a) by this strategy. So the coverage theorem is the
 > whole remaining problem here, not a side item. It has two halves, both open:
 > - **The structural half:** that every such graph admits some step (a cut vertex, a bridge
@@ -2247,7 +2327,8 @@ of a step set with no contraction.
 >   (MC-55)(iii) shows only that `def₂ > def₃` forces a 2-edge-cut.
 > - **The certificate half:** that each step's per-graph conditions hold in general, where the
 >   driver checks them at one exact picture per graph:
->   - Jackson–Jordán's equality, wherever FLAT, SPLITOFF or (MC-59)(d) is used;
+>   - Jackson–Jordán's equality, wherever FLAT or SPLITOFF is used, and at `H` and `G/H` where
+>     (MC-59)(d) is used;
 >   - `dim U ≥ 2` (and the orbit) for (MC-46), and for (MC-54) at `k = 1`;
 >   - (MC-39)'s (i) and (ii) at a core with `def₂(H) > 0` ((MC-41)'s (∂1), (∂2)); (MC-59) settles
 >     the `def₂`-rigid case modulo Jackson–Jordán, and (MC-59)(a) shows (i) impossible when
