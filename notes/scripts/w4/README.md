@@ -807,7 +807,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   from a stdlib canonical-form enumerator checked against OEIS in `--selftest`).
   **The `-- pool … built in N s` line is wall-clock and is the one line exempt
   from byte-identity.** Imported by `exactgain.py`, `nondegx0.py`, `earstep.py`,
-  `splitext.py` and `jjchar.py` (below); nothing else imports it.
+  `splitext.py`, `jjchar.py` and `coreshrink.py` (below); nothing else imports it.
 
 - `exactgain.py (--battery | --exh N | --thetas SMAX) [--jump N] [--molecular]
   [--scales LIST]` — **the exact-gain identity** (MC-11) of §(K-main) *After the census*.
@@ -846,3 +846,15 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   (MC-4)(b), and Step MC4's `F(q) = L(q)` in rank form. The field constructors assert
   primitivity and check table arithmetic against slow polynomial arithmetic;
   `--selftest` holds their adversarial non-field witnesses. A leaf.
+- `coreshrink.py (--family | --collapse | --pool NAME[,NAME] [--stride K] [--first N]
+  [--draws D] [--verbose] [--classify])` — **the contraction step on `X₀`** (§(K-main)
+  Step MC12, (MC-34)–(MC-42)). `--family`: the multi-scale recon's two-scale recipe on
+  W19/R20 (outside fixed, every star exact), with `q(t) ∈ U`, the core's rank, `G/H` with the
+  actual lines and the (MC-34) identity per row. `--collapse`: the `θ(3,4,5)` point-collapse
+  negative control (leading-order vs refined Grassmannian limit) against the slide-in.
+  `--pool`: the general construction, a homogeneous system `M₀ + tM₁` whose kernel is
+  `L(q(t))` for `t ≠ 0`, its limit computed exactly from jets. Per (member, maximal rigid `W`
+  with `G/H` simple) it reports `U`, the core rank, `G`'s rank, the limit's rank, the
+  containment `L0in`, and (MC-39)'s hypotheses (i) core-free / (ii) no-jump, with the boundary
+  pattern of each failure. Imports `maincomp`, `exactcore`, `kbare_common`, `nogood_subdiv`,
+  `repin`, `pitch` (`--collapse`), `widened`/`rpool` (`--pool named`). A leaf.

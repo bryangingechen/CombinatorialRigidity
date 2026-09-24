@@ -163,10 +163,11 @@ prepared to handoff what we have then)."* The plan, one commit per step, each dr
   excludes it. Question: which (MC-27) cells (`k` × orbit × `r`) close.
 - **Step 1** — land step 0's verdict: new labels continuing Step MC10, (MC-27) restated to the
   cells that remain.
-- **Step 2** — the contraction step on `X₀` (the multi-scale recon): a rigid core shrunk at scale `t`
-  inside `X₀` is Katoh–Tanigawa's Lemma 6.3 / Claim 6.4 in `X₀` form, certified on `W19` and
-  `R20`; the core's boundary-constrained attainment stays OPEN; the multi-scale durable
-  negatives. Driver `w4/coreshrink.py`.
+- **Step 2 — LANDED:** Step MC12, the contraction step on `X₀` ((MC-34)–(MC-42),
+  `w4/coreshrink.py`), from the multi-scale recon: for a proper rigid `W` with `G/H` simple,
+  `X₀(H)` and `X₀(G/H)` attaining give `X₀(G)` attaining under two per-graph linear-algebra
+  conditions (MC-39), open as class statements (MC-41); the multi-scale durable negatives (MC-42).
+  Re-derived by a second agent; a second reader of (MC-37) is owed.
 - **Step 3 — LANDED:** Step MC11, the split-off step on `X₀` ((MC-28)–(MC-32), `w4/splitext.py`),
   and *Jackson–Jordán beyond ℝ* ((MC-33), `w4/jjchar.py`), from the Jackson–Jordán recon, each
   re-derived by a second agent.
@@ -177,7 +178,7 @@ prepared to handoff what we have then)."* The plan, one commit per step, each dr
   Recount against the landed steps (driver `w4/x0arms.py`), then the *Unranked* verdicts and the
   next task: the uncovered graphs, one named step each, under the stop rule.
 
-**Next:** step 0, then steps 1, 2, 4 in that order.
+**Next:** step 0, then steps 1 and 4 in that order.
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
