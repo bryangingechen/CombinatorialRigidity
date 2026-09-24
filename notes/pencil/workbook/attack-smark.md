@@ -3241,3 +3241,211 @@ session-7-recovery caveat stands: conditions imposed on earlier planes are invis
 lemma), the stale Worry replaced, T9 removed as an O7e-c witness, the next result number set to S39. Brief: header patch
 line, §6 (O7e-b by piece; O7e-c's witness), §7, §8. `drivers/k4core.py` with its README entry. `log.md`: no kill to
 reword.
+
+## S39 — The damage-shape control (S38(iii)): E55 already carries the test cluster; the maximum of S34(ii)'s `Dmg` computed exhaustively (session 14, 2026-09-23)
+
+Tree at `b0d76407`; consumer re-diffed at session start (`git diff 084ee4ff HEAD -- CombinatorialRigidity` empty; both
+kernels of `pencilPair_of_splitOff_of_habitat` token-identical to brief §3.1).
+
+**(i) E55 at `v=u;a=u+b` is S35(iii)'s test cluster.** E55 (`case2m2.CASES`) is the 8-cycle `u — w — a — w2 — v — w4 —
+b — w3 — u` with one leaf at each of `u, a, v, b` (so `Big = {u, a, v, b}`, the four `w`'s non-big of Γ-degree 2). The
+map `u ↦ u`, `u′ ↦ v`, `b ↦ a`, `d ↦ b`, `c ↦ w`, `c′ ↦ w3`, `e′ ↦ w4`, `e ↦ w2` carries S35(iii)'s 8-cycle `b — c —
+u — c′ — d — e′ — u′ — e — b` onto E55's cycle, and the spec `v=u;a=u+b` (`q_v := q_u`, `q_a := s q_u + t q_b`) is its
+point matroid: `R = {u, v, a, b}` one component, `c₁(R) = 5`, `J₂ = 0` (every `U_c` has `≤ 2` labels, at distinct
+points), `b_R = 5`. E55 carries **both** collinear bad pairs (`{w, w3}` over `u`, `{w2, w4}` over `v`), the class shape
+of S35(iv) (`{w, w4}`, `{w3, w2}`: `disc = 2`), and two O5 paths (`u — w — a — w2 — v`, `u — w3 — b — w4 — v`); it has no
+O1, O3 or O6 (every `u`–`v` path of length `≤ 4` runs through a big vertex) and no collinear free incidence (no big
+vertex is adjacent to another). So S37's sentence "the damage shapes of S35 do not occur on E55 (its big vertices are
+pairwise far)" is wrong: they occur, and S37's measured `slack ≥ 4` (cap 3) — i.e. `M_q + ρ − J₃ ≥ 0` on every pattern —
+says the ledger's damage never becomes an actual deficit there. Two caveats travel with E55: its core is `C₈` (S27(vi)(b)),
+so irreducibility there was never in question; but S34(iv) is quantified over every side and stratum, so E55 is a
+legitimate test of **S34(iv) itself**, which is what S38(iii) asks for.
+
+**(ii) The driver `dmgmax.py`, and its check against S25.** For a hub graph and a relation spec (case2deg's `--relations`
+syntax, same seeded exact drawing, matroid asserted equal on a second draw) it enumerates **every** set partition of
+`Z` with `rk U_A ≤ 3` and every flat set `F`, and evaluates S34(ii)'s four terms from their definitions — the class term
+through S36's form `−T_A = (3 − rk U_A) + J^{nb}_A + (Δ_A + Δᴹ_A)/2 − Σ_c ε_c`, `k₃`, the extras overflow `(D_C − cost_C)⁺`,
+`k₆/2` — no realisation, no Jacobian. Four relaxations, each of which can only raise the maximum: (a) a flat needs only
+`[y], [a], [b]` pairwise distinct (no line structure); (b) `P_A` is the closure of `U_A` and the big points that flats
+force onto `π_A` (S22(ii)(a)) — a subset of the true `P_A`; (c) `cost_C ≥ rk P_C − rk U_C` with that `P_C`; (d) `k₃`
+counts O3 paths, not lines. So its maximum is an **upper bound** on the maximum of S34(ii)'s `Dmg` over realisable
+patterns, and `max ≤ s + ½` proves S34(iv) on that stratum (S32(iii)). *Check against S25 (single far coincidence,
+`s = 2`, bound `5/2`):* D3 max `1` (the O3 path `u — p — r — v`), D3r max `½` (the O6 incidence), E13 max `2` (the bad
+pair `{c, c2}` plus the O3 path), E15 max `2` — two class units, `{c, c2}` over the non-big `z` and `{w, w2}` over the
+**big** `a`: the O5 path `u — w — a — w2 — v` doubles as a twin bad pair with a big common neighbour (S36(ii)'s last case;
+S25's `k₁` counts it, since a bad pair has no big member but its common neighbour may be big). Each equals the maximum
+S25(vi)'s count `2k₁ + 3k₃ + 2k₅ + 3k₆ ≤ 5` allows on that graph, so on these four graphs relaxations (a)–(d) created no
+spurious damage. (21 147 / 21 147 / 21 147 / 678 570 partitions; `< 30` s each.)
+
+**(iii) Figure: the test cluster.** `dmgmax.py --graph E55 --relations "v=u;a=u+b"`: `4 213 597` partitions, `26 223 923`
+patterns, none dropped by `rk P_A ≥ 4`; **max `Dmg = 2`** (upper bound) against `s + ½ = 9/2` — margin `5/2`. Attained by
+`5 082` patterns, all of one kind: two disjoint pairs of the four non-big cycle vertices as classes, all four flat, each
+class of damage exactly `1` (e.g. `{w, w2}` and `{w3, w4}`, twin bad pairs over `a` and `b`; or the two collinear bad pairs
+`{w, w3}`, `{w2, w4}`; or S35(iv)'s `{w, w4}`, `{w3, w2}`). Every class of damage `> 0` is supported on `{w, w2, w3, w4}`
+(all eleven subsets of size `≥ 2`), each at exactly `1` — S36(i)'s equality case (all members tight, flat, `r = 2`,
+`rk U_A = 2`, no charges, `J^{nb} = 0`), so on this graph the class lemma's open subcases (S36(iii)(a)–(b)) never carry
+damage. Extras overflow reaches `1` (both O5 paths served through one class `⊇ {u, v}`) but never alongside two class
+units. So S35(iii)'s hand bound `Dmg ≤ 4` is loose by `2` here, and S35(iii)'s "two collinear bad pairs, `Dmg = 2`" is
+the maximum. *Caps:* one graph (E55 — its core is `C₈`), one draw of the matroid; relaxations (a)–(d) make the figure a
+bound, which is the direction the claim needs.
+
+
+**(iv) Widening, one correction, and the verdict.** The same driver on S37's other multi-relation strata: E55 mirror
+`b=a;u=a+v` max `2` (`s + ½ = 9/2`); two coincidences `v=u;b=a` max `2` (`11/2`; `52` maximisers are pure extras overflow —
+both O5 paths served through one class `⊇ {u, v}` — and `5 082` are two class units); four collinear `b=u+v;a=u+v` max `2`
+(`7/2`); E15 triple coincidence `v=u;a=u` max `1` (`7/2`, the bad pair `{c, c2}`). *Correction made during the session:* a
+first version generated charges, extras and free incidences from every flat with two big neighbours; S33 defines
+`β_w := rk U_w`, and a flat between two **parallel** labels has `β = 1` and forces no incidence (S26(ii)). The first version
+therefore reported E15-triple at `3` (`k₆/2 = 2` from `w, w2`, whose neighbours `u, a` and `a, v` are parallel there); the
+landed driver restricts to `β = 2` and all nine figures above were re-run with it (the other eight are unchanged: no flat
+there sits between parallel labels). **Verdict on S38(iii):** S34(iv) is **not** refuted at any stratum tested — every
+maximum is `≤ s − 1`, i.e. at least `3/2` below `s + ½` (four collinear points attain `s − 1`), on four multi-relation strata of the test-cluster graph and one on E15; the
+zero-slack cases stay the single relations S25/S28/S30 already proved. The class-lemma programme continues. What the
+control does *not* reach: a genuine Case-2 core (E55's core is `C₈`; the test cluster on a core needs the subdivided `K₄`
+with direct paths `5` and `6`, 17 vertices, beyond exhaustive partition search), and the class lemma's charge subcase: `M`-natural charges do
+occur on E55 (e.g. `(w3, b)` on `{u, la}`, `U = {u, a}`, `b ∈ cl(U)`), but no class containing a big vertex ever has a
+positive class term there, so S36(iii)(b) is exercised only trivially.
+
+## S40 — O7e-c: the onion order (an explicit 3-degenerate order at every depth), tower-independence of the jump count, and O7e reduced to the three-level (★₂) plus an induction on depth (session 14, 2026-09-23)
+
+Setting: `hbareSplit` at `m ≤ 4`, Case 2, after the core reduction (S27(vi)(d)): `Γ` is its own 2-core, connectors are
+unmarked degree-2 vertices. More generally a **pair** `(Γ, Z)`: a graph of girth `≥ 7` satisfying the strict count
+(`5|E(K)| ≤ 6|V(K)| − 7` on every connected subgraph with an edge), marked set `Z`, every unmarked vertex of degree `≤ 2`;
+`X̄(Γ, Z)` has a point per vertex, a plane per marked vertex, `p_y ∈ π_c` for `y ∈ N[c]`. Write `𝒫(Γ, Z)` for "`X̄(Γ, Z)`
+is irreducible of the expected dimension". *Proven-informally* except where marked.
+
+**(i) The onion order.** Put `S₀ := Z`, `S_{i+1} := {v ∈ S_i : deg_{Γ[S_i]} v ≥ 3}`; so `S₁ = Big`, `S₂ = {c : k_c ≥ 4}`
+(O7e-c's vertices). *Finite depth:* `S_{i+1} = S_i ≠ ∅` would make `Γ[S_i]` of minimum degree `≥ 3`, against average degree
+`< 12/5` on every subgraph (S16(ii)); so `S_{D+1} = ∅` for some `D`, the **depth**. *Order:* for `j = D, D − 1, …, 0` place
+the points `p_v` (`j` odd) or the planes `π_v` (`j` even) of `v ∈ S_j ∖ S_{j+2}`; then the points of every vertex outside
+`S₁` (connectors included). Every element appears once (`S₁ = ⊔_{j odd} (S_j ∖ S_{j+2})`, `Z = ⊔_{j even} (S_j ∖ S_{j+2})`).
+**Lemma.** *Every element has at most three incident elements placed before it.* *Proof.* (a) `p_v`, `v ∈ S_j ∖ S_{j+2}`,
+`j` odd: the planes placed earlier are exactly those of `⊔_{j′ even > j} (S_{j′} ∖ S_{j′+2}) = S_{j+1}`, so the count is
+`|N[v] ∩ S_{j+1}|`; if `v ∈ S_{j+1}`, then `v ∉ S_{j+2}` gives `≤ 2` neighbours in `S_{j+1}`, total `≤ 3`; if `v ∉ S_{j+1}`,
+it has `≤ 2` neighbours in `S_j ⊇ S_{j+1}`. (b) `π_c`, `c ∈ S_j ∖ S_{j+2}`, `j` even: the earlier points are those of
+`S_{j+1}`, the same count. (c) `p_y`, `y ∉ S₁`: `deg_Γ y ≤ 2`, so `|N[y] ∩ Z| ≤ 3`. ∎ `D = 1` is S21(ii)'s three-level order;
+`D = 2` is *planes of `S₂`; points of `S₁`; the other planes; the other points*. This is S21(i)'s existence claim made
+explicit, with no case analysis.
+
+**(ii) The jump count is tower-independent.** For a locally closed stratum `Σ ⊆ X̄` on which every level's rank data is
+constant, `exp − dim Σ` (with `exp := dim A − e`, `A` the product of all `P³`, `P³*`, `e` the number of incidences) is
+intrinsic, and **any** description of `Σ` by successive linear fibres computes it as `codim_T Σ − J_T(Σ)`: the three-level
+description (big points in `(P³)^{Big}`, planes in `∏ P(U_c^⊥)`, other points in `∏ P(⋂ π)`) is valid at **every** point
+of `X̄`, `k_c ≥ 4` included, because a point of `X̄` has `r_c = rk U_c ≤ 3`; only its *generic* stratum is empty when some
+`k_c ≥ 4`. With `W` the image of `X̄` in (big points, all planes) and a `W`-stratum given by the big-point matroid `M` and
+the plane pattern `P`, `exp W − dim Σ_W ≥ c₁(M) − J₂(M) + cost(P)`, `exp W := 3|Big| + Σ_c (3 − k_c)`, with `c₁(M)` the
+codimension of the `M`-locus in `(P³)^{Big}`, `J₂(M) = Σ_c (k_c − r_c)` (terms `≥ 1` at every `c ∈ S₂`) and `cost(P)` the
+sequential lower bound of S22(i)/S33 (a lower bound on the codimension at every point of the `M`-locus, so the direction
+is the one needed). *Proof:* `dim Σ_W ≤ dim(M-locus) + Σ_c (3 − r_c) − cost(P)` and `3|Big| − dim(M-locus) = c₁(M)`. ∎
+
+**(iii) Theorem (O7e reduced to the three-level count and an induction on depth).** *Let `W ⊆ ∏_{Big} P³ × ∏_Z P³*` be
+`{q_u ∈ π_c : u ∈ N[c] ∩ Big}`. If `W` is irreducible of dimension `exp W`, and*
+
+> **(★₂)** *`c₁(M) − J₂(M) + cost(P) ≥ J₃(P) + 1` for every realisable `(M, P)` with `J₃(P) ≥ 1`*
+
+*(`J₃ = Σ_{y ∉ Big} (s_y − rk_y)`, S21(ii)), then `𝒫(Γ, Z)`. And `W` is the dual (`P³ ↔ P³*`) of `X̄(Γ[Z], Big)`, the
+incidence variety of the pair `(Γ[Z], Big)`, which has depth `D − 1`.* *Proof.* `X̄ → W` (forget the points outside `Big`)
+is onto with fibre `∏_{y ∉ Big} P(⋂_{c ∈ E_y} π_c)`, of dimension `Σ_y (3 − s_y) + J₃`. Over a `W`-stratum with `J₃ ≥ 1`
+the preimage has dimension `≤ exp W − J₃ − 1 + Σ_y (3 − s_y) + J₃ = exp − 1` by (★₂) and (ii). The locus `{J₃ ≥ 1}` has
+dimension `≤ dim W − 2`, so `U := {J₃ = 0}` is a dense open subset of the irreducible `W`, and over `U` the fibre is a
+projective bundle of constant dimension (`P` of the kernel of a constant-rank map): its preimage is irreducible of
+dimension `exp`. Every component of `X̄` has dimension `≥ exp` (Krull: `e` bilinear equations in `A`), so every component
+lies in the closure of that preimage. For the duality: `W* = {p*_c ∈ π*_u : c ∈ N_Γ[u], u ∈ Big}`, a point per vertex of
+`Γ[Z]` and a plane per vertex of `Big`, which is `X̄(Γ[Z], Big)`. The pair `(Γ[Z], Big)` inherits girth and the strict
+count, its unmarked vertices `Z ∖ Big` have degree `≤ 2`, and its onion is `S′_i = S_{i+1}`. ∎
+
+*Unrolled:* `𝒫` at depth `D` ⟸ `𝒫` at depth `D − 1` + (★₂) at depth `D`. Depth `0` (Case 1 for the pair) is **S19**. So
+**O7e ⟺ (★₂) at every depth `D ≥ 1`**, and the onion order (i) is exactly this induction written as one tower: the
+nonemptiness of each level's generic stratum (S21(i)'s "check per order") needs no separate argument, since (★₂) puts
+`{J₃ ≥ 1}` in codimension `≥ 2` of an irreducible `W`. At `D = 1`, `W = X̄(Γ, Big)*` is S19 by duality (S21(v)), and
+(★₂) is O7e-a (S22, `M` free) plus O7e-b (degenerate `M`).
+
+**(iv) What (★₂) asks at depth `D ≥ 2` — O7e-c restated.** Let `M₀` be the matroid of the big points at the generic
+point of `W` (well defined, `W` irreducible). Every `c ∈ S₂` forces its `k_c ≥ 4` labels `Q_c := Big ∩ N[c]` onto `π_c`:
+each `Q_c` is coplanar in `M₀`, and `c₁(M₀) = J₂(M₀) = Σ_{c ∈ S₂} (k_c − 3)` (the generic `W`-stratum has `exp W − dim = 0`).
+Write `s(M) := c₁(M) − J₂(M) − 1`, so that (★₂) reads `cost − J₃ ≥ −s(M)`, S21(v)'s form. Then:
+- **at `M₀`, `s = −1`:** (★₂) asks `cost(P) ≥ J₃(P) + 1` for every realisable pattern with `J₃ ≥ 1` — S22's theorem, but at
+  `M₀` instead of generic `q`, with the planes `π_c` (`c ∈ S₂`) fixed by `≥ 4` labels. S22's proof has three sums `≥ 0` and
+  a tightness step (S22(vi)); at `M₀` the sums are S34(ii)'s ledger, and its damage is **zero** if the `Q_c` are the only
+  circuits of size `≤ 4` in `M₀`: (a) `disc_A = 0` for every class — a class `A ∌ c` with `U_A ⊇ Q_c` would have `π_A =
+  π_c`, so `c ∈ A`, and `U_A = Q_c` then; (b) no `M`-natural charge or free incidence — `|U_x ∩ Q_c| ≤ 2` for every `x ∉
+  S₂` by girth (`U_x = {x, a, b}` inside `N[c]` is a triangle or a 4-cycle), so `cl(U_x) = U_x`; (c) no O3 path and no
+  parallel serving (no parallel labels). *The residue at `M₀` is S22(vi)'s tightness step* with fixed planes carrying
+  `≥ 4` labels, where S22(ii)(e)'s realisability cuts and S22(v)'s "a fixed plane is never after a line" were proved at
+  generic `q` only. That the `Q_c` are the only small circuits of `M₀` is *claimed, not proved*: two forced planes
+  share at most two labels (`Q_c ∩ Q_{c′} = {c, c′}` when `c ~ c′`, else `≤ 1` by girth), and no further coincidence is
+  visible.
+- **at `M ≠ M₀`, `s(M) ≥ 0`, by the induction hypothesis:** the `W`-stratum `(M, generic planes)` is not the generic one,
+  so `exp W − dim = c₁(M) − J₂(M) ≥ 1` (ii) — `𝒫` at depth `D − 1` replaces S21(v). (★₂) there is O7e-b's counting
+  statement S34(iv) with forced circuits present: a component made of forced circuits alone has `b_R = 0`, so a damage unit
+  touching only such components must be zero (the `M₀` statement again), and S32(ii)'s rank additivity, which used
+  `|U_c| ≤ 3`, must be re-read with `U_c = Q_c` a whole circuit (it lies in one component, so the additivity should
+  survive — *unchecked*). Also unchecked: that `M₀` with only `R`'s relations added is realisable inside `W`, which is how
+  S32(ii) got `b_R ≥ 1` per component at depth 1.
+
+**(v) Depth is unbounded, so the induction is needed.** `drivers/onion.py` (exact, exhaustive over unions of whole branch
+paths): `k4core 6` (review 5's core) has depth `2` (`S₂ = {c}`); `tree2 5` — a cubic tree of radius 2 (`c`; `x₀, x₁, x₂`;
+two `y`'s under each `x_i`) whose six `y`'s are joined in a 6-cycle pattern by paths of length 5 — has `34` vertices, `39`
+edges, girth `9`, min strict slack `0` (legal), and depth **3** (`S₂ = {c, x₀, x₁, x₂}`, `S₃ = {c}`); `tree2 4` fails the
+count (slack `−4`), `tree2 6` passes. Deeper trees with long enough paths pass the same way (a tree costs `5` per edge against
+`6` per vertex). On both legal cores the onion order is 3-degenerate (max `3` earlier neighbours) and an exact random
+realisation along it (seed `20260923`) has every step independent — a witness that the generic stratum is non-empty
+there, consistent with (iii)'s argument that no separate check is needed.
+
+**(vi) What this does to O7e-c.** Before: "the three-level order fails; another 3-degenerate order needs its own count"
+(S21(vii)(c)), untouched for five sessions. Now: the order is explicit at every depth (i), and **O7e-c is (★₂) at depth
+`≥ 2`** (iii), whose `M ≠ M₀` part is O7e-b's counting statement with forced circuits of `b_R = 0` (iv) and whose `M₀` part
+is S22's tightness step with fixed planes carrying `≥ 4` labels. The smallest next step for O7e-c is that tightness step
+on the one-centre shape `k_c = 4` (`k4core 6`): three big neighbours `x_i` whose own `U_{x_i} = {x_i, c}`. **What would
+change this:** a pair whose `M₀` has a circuit other than the `Q_c` (then (iv)'s damage list at `M₀` is not empty); a
+failure of Krull's bound in (iii) (it needs only that `X̄` is cut by `e` bilinear equations in `A`); or an error in the
+duality `W ≅ X̄(Γ[Z], Big)*`, which is the incidence relation read backwards.
+
+## S41 — O7e-c at `M₀` on the one-centre shape: S22's theorem holds at the generic point of `W` (session 14, 2026-09-23)
+
+Setting: S40 at depth `2` with **one centre**: `S₂ = {c}`, `N_Γ(c) = {x₀, x₁, x₂}` (all big), and `U_{x_i} = {x_i, c}` (no
+`x_i` has a second big neighbour) — `k4core 6` is an instance; other big vertices have `k ≤ 3`. *Proven-informally.*
+
+**(i) `M₀`.** The image of `W` in `(P³)^{Big}` is `{r_c ≤ 3} = {Q_c coplanar}` (only `c` has `k ≥ 4`), irreducible; the
+generic point of `W` maps to its generic point, so `M₀` is "`Q_c = {c, x₀, x₁, x₂}` coplanar, no three of them collinear,
+everything else general". S40(iv)'s claim about `M₀` is therefore true here: the 4-subsets of `Q_c` are its only circuits of
+size `≤ 4`. Consequences at `M₀`: (a) every label set of rank `≤ 3` with `≥ 4` labels is `Q_c`, so a class whose plane holds
+`≥ 4` labels, or three labels of `Q_c`, has plane `π_c` and contains `c`; (b) `|I(ℓ)| ≤ 2` and `rk I = |I|` on every line
+(no three collinear); (c) `disc_A = 0` for every class (S40(iv)(a)); (d) an incidence `π_A ∋ q_y` is `M`-natural only when
+`cl(U_A) ⊋ U_A`, i.e. `U_A ⊇` three labels of `Q_c`, i.e. `A ∋ c` and then `U_A = Q_c = cl(U_A)` — so there are none.
+
+**(ii) The three sums are `≥ 0` at `M₀`.** With S28(i)'s identity (rank form, valid at every `M`) and (c), `cost − J₃ =
+Σ_A (σ_A − F_A) + Σ_ℓ N_ℓ + Σ_C cost_C`, S22(v)'s shape; with no `M`-natural charges and no free incidences ((d)),
+`Σ_ℓ δ_ℓ ≤ Σ_A Δ_A/2 + Σ_C D_C`, so `cost − J₃ ≥ S′ + Σ_ℓ (N_ℓ + δ_ℓ) + Σ_C (cost_C − D_C)`. *`S′ ≥ #(nontrivial classes that
+are not bad pairs)`*: Lemma D′ and S21(iii) are Γ-counts. *`N_ℓ + δ_ℓ ≥ 0`*: S33(i) with `k₃ = 0` (no parallel labels).
+*`cost_C ≥ 2D_C`*: for `C ∌ c`, `P_C` has `≤ 3` labels by (a), independent, so `cost_C ≥ rk P_C − rk U_C = |X_C|`, and
+each extra label is served at most once (S33(ii), no parallel labels), `D_C ≤ ½|X_C|`; for `C = [c]`, `U_C = Q_c` is
+closed and a further label on `π_c` would be a relation outside `M₀`, so `X_C = ∅`.
+
+**(iii) Tightness: `cost − J₃ ≥ 1` for every realisable pattern at `M₀` with `J₃ ≥ 1`.** Suppose `cost − J₃ = 0`; then
+every sum in (ii) is `0`. (1) Every nontrivial class is a bad pair (`S′ = 0`), so it has no big member: **every class
+containing a big vertex is a singleton**, in particular `[c] = {c}`. (2) `cost_C = D_C ≤ ½ cost_C` gives `cost_C = 0`,
+`X_C = ∅` for every U-class; a `β = 2` flat singleton would need a normal incidence, i.e. a deficit charge on a nontrivial
+class with a big member — none by (1); so there is no `β = 2` flat singleton. (3) `[c] = {c}` lies on no reduced line:
+a reduced line carries only the classes of flat vertices and their neighbours, a flat vertex is non-big of degree `2`,
+and every neighbour of `c` is big. So `c`'s plane — the one element of this shape that S22 never met — is absent from
+every line, and the fixed planes that remain on lines have `≤ 3` labels, as at generic `q`. (4) From here S22(vi)'s steps
+(2)–(4b) run verbatim, with the checks: S22(v)'s facts are needed only for U-classes (S24(iii)); "a class after a line with
+`|I| ≤ 1` pays `≥ 1`" and "one after a 2-point line pays `|I ∖ U_C| + [P_C ⊄ λ]`" are rank computations (`2 + [P_C ⊄ λ] −
+rk U_C` after one line, (i)(b)); S24(iii)'s corrected claim (at most two classes with `m_A ≥ 2` on a line with `|I| ≤ 1`)
+uses general position of the six (resp. nine) points defining those planes, none of them `π_c` by (3), and only a
+Γ-configuration forcing three of them onto `Q_c` could break it — which would put their plane equal to `π_c`; S22(iv)'s
+line lemma needs `|I| ≤ 2`, `rk I = |I|` ((i)(b)) and S22(ii)(a); steps (4a) and (4b) use "the incidence `π_{[x]} ∋ q_a`
+is natural", which holds because no incidence is `M`-natural ((i)(d)) and none is an extra ((2)). ∎
+
+**(iv) What this does to O7e-c, and what is left.** On the one-centre shape the `M₀` part of (★₂) at depth 2 holds, so
+there the whole of O7e-c is the strata `M ⊋ M₀`: O7e-b's counting with the forced circuit `Q_c` as a `b_R = 0` component.
+Its first new stratum is the degeneration of `Q_c` itself — e.g. `q_c, q_{x₀}, q_{x₁}` collinear inside `π_c` — where
+`c₁` rises by `2 − 1 = 1` and `J₂` is unchanged (`r_c = 3` through `q_{x₂}`), so `s = 0` and `c` is a **star** of that
+collinear triple in S29's sense (`T ⊆ U_c`); S29 closed its star case with no damage shape by girth, and the same count is
+the next thing to check. Still open beyond the one-centre shape: `M₀` with several centres (adjacent centres share two
+labels, `Q_c ∩ Q_{c′} = {c, c′}`; that the `Q_c` are then the only small circuits of `M₀` is unproved), centres whose big
+neighbours have a further big neighbour, and depth `≥ 3`. **What would change (iii):** a pattern at `M₀` in which a class
+containing a big vertex is nontrivial and costs nothing beyond its merge — excluded by Lemma D′/S21(iii), which are
+Γ-counts; or a reduced line through `π_c` — impossible here because every neighbour of `c` is big, and possible as soon
+as the centre has a non-big neighbour (a centre of degree `≥ 4`), which is where the next general step must look.

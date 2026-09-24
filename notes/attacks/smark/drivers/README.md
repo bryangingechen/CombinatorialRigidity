@@ -433,3 +433,38 @@ connected `S` (S19(viii) / S35(i)).
 
 Caps: one family (equal rim lengths `L ∈ {5, 6}`); checks girth and the strict count on the core alone, not that the
 core embeds as a side `H′` of a habitat `G = H′ ∪ ear_m` (the chain and the rest of `H′` must also pass the count).
+
+## `dmgmax.py` — the maximum of S34(ii)'s ledger damage over all patterns of a stratum (session 14, 2026-09-23; workbook S39)
+
+Run from the repository root. Pure combinatorics plus exact ranks: for a hub graph (`case2m2.CASES` / `case2geo.HAND`) and a
+point matroid drawn by `case2deg.py`'s `--relations` rule (same syntax and seed; the matroid of every `≤ 5`-subset of labels is
+asserted equal on a second draw), it enumerates **every** set partition of `Z` with `rk U_A ≤ 3` and every flat set `F`, and
+evaluates `Dmg = Σ_A (−T_A)⁺ + k₃ + Σ_C (D_C − cost_C)⁺ + k₆/2` from the definitions (S34(i)–(ii), S36's form of the class term;
+charges, extras and free incidences only from `β = 2` flats, `β_w = rk U_w`, S33). Four relaxations (docstring), each raising the
+maximum: flats need only three distinct classes; `P_A` is the closure of `U_A` and the flat-forced points; `cost_C ≥ rk P_C −
+rk U_C`; `k₃` counts O3 paths. So `MAX Dmg` is an **upper bound**, and `MAX ≤ s + ½` proves S34(iv) on that stratum.
+
+    timeout 300 python3 notes/attacks/smark/drivers/dmgmax.py --graph E13 --relations "v=u"             # also D3, D3r, E15
+    timeout 300 python3 notes/attacks/smark/drivers/dmgmax.py --graph E15 --relations "v=u;a=u"
+    timeout 900 python3 -u notes/attacks/smark/drivers/dmgmax.py --graph E55 --relations "v=u;a=u+b"    # the test cluster, ~105 s
+    # also E55 "b=a;u=a+v", "v=u;b=a", "b=u+v;a=u+v"
+
+**Figures (S39(ii)–(iv)):** single far coincidence (`s + ½ = 5/2`): D3 `1`, D3r `½`, E13 `2`, E15 `2` — each S25(vi)'s maximum
+for its graph. E15 triple coincidence `1` (bound `7/2`). E55: test cluster `2` (bound `9/2`; `4 213 597` partitions, `26 223 923`
+patterns, all `5 082` maximisers two class units), mirror `2` (`9/2`), two coincidences `2` (`11/2`), four collinear `2` (`7/2`).
+**Caps:** six hand-built graphs, none a genuine Case-2 core (E55's core is `C₈`); one matroid draw per spec; partitions of
+`|Z| ≤ 12` only (Bell(12) = 4.2M; a 17-vertex core is out of reach).
+
+## `onion.py` — O7e-c cores: onion depths, girth, the strict count, and the onion order (session 14, 2026-09-23; workbook S40)
+
+Run from the repository root; exact integers and `fractions`, stdlib only; the one random draw is seeded (`20260923`). Builds a
+core, computes `S_{i+1} = {v ∈ S_i : deg_{Γ[S_i]} v ≥ 3}` and the depth, the girth, the minimum strict slack `6|V| − 7 − 5|E|`
+over every connected union of whole branch paths (exact: a partial path only adds slack), checks that the onion order of S40(i)
+gives every element `≤ 3` earlier incident elements, and realises the order exactly with random rational elements, checking
+that every element's earlier neighbours are independent (a witness that the generic stratum is non-empty).
+
+    timeout 600 python3 notes/attacks/smark/drivers/onion.py k4core 6   # depth 2, 19 vertices, legal (review 5's core)
+    timeout 600 python3 notes/attacks/smark/drivers/onion.py tree2 5    # depth 3, 34 vertices, girth 9, legal
+    # also: k4core 5 (violated, -1), tree2 4 (violated, -4), tree2 6 (legal)
+
+Caps: two families (`k4core L`, `tree2 L`); the strict count on the core alone, not its embedding as a side `H′` of a habitat.
