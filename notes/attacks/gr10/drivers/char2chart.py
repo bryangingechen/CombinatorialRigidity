@@ -36,6 +36,7 @@ Reproduce (all seeded; PYTHONHASHSEED=0 for the census enumeration):
   PYTHONHASHSEED=0 python3 notes/attacks/gr10/drivers/char2chart.py --sweep
   PYTHONHASHSEED=0 python3 notes/attacks/gr10/drivers/char2chart.py --cubic
   PYTHONHASHSEED=0 python3 notes/attacks/gr10/drivers/char2chart.py --cert 'theta(2, 5, 5)'
+  PYTHONHASHSEED=0 python3 notes/attacks/gr10/drivers/char2chart.py --small
 """
 import argparse
 import itertools
@@ -359,6 +360,68 @@ def mode_cubic(args):
     print(f"[cubic] {Fd.name}, seed {SEED + 1}, <= {args.seeds} seeds/class")
 
 
+def partition_def(edges, part):
+    """`partitionDef G 3 f` (Deficiency.lean) at the labelling `part`:
+    6(|P| - 1) - 5 |crossing edges|."""
+    return 6 * (len(set(part.values())) - 1) - 5 * sum(part[u] != part[w] for u, w in edges)
+
+
+def small_graphs():
+    """Named graphs outside both populations (workbook S5): P3 (outside hK's
+    domain, |V| < 5), the cycles C5, C6, C8 and theta(3, 4, 4).  Each carries a
+    labelling exhibiting its deficiency from below (one part, or singletons)."""
+    def cyc(n):
+        return [(i, (i + 1) % n) for i in range(n)]
+
+    def theta(*lens):
+        edges, nxt = [], 2
+        for l in lens:
+            path = [0] + list(range(nxt, nxt + l - 1)) + [1]
+            nxt += l - 1
+            edges += list(zip(path, path[1:]))
+        return edges
+    return [('P3', [(0, 1), (1, 2)]), ('C5', cyc(5)), ('C6', cyc(6)),
+            ('C8', cyc(8)), ('theta(3, 4, 4)', theta(3, 4, 4))]
+
+
+def mode_small(args):
+    """Target `6(|V|-1) - def_3` (the bridge's card conjunct), not the
+    hard-coded `6(|V|-1)` of the census modes.  def_3 is certified two ways:
+    `nogood_subdiv.deficiency`, and from below by the better of the one-part
+    and singleton labellings (asserted equal); from above a hit certifies it
+    (workbook S5(a))."""
+    Fd = GF2k()
+    rng = random.Random(SEED + 2)
+    print(f"[small] {Fd.name}, seed {SEED + 2}, <= {args.seeds} seeds/graph; "
+          f"target 6(|V|-1) - def_3")
+    for lab, edges in small_graphs():
+        verts = sorted(verts_of(edges), key=str)
+        assert all(u != w for u, w in edges), "loop"
+        assert len({frozenset(e) for e in edges}) == len(edges), "parallel edge"
+        nb = neighbours(edges)
+        assert hcard_ok(edges), "hcard"
+        assert all(not (nb[u] & nb[w]) for u, w in edges), "triangle"
+        d = deficiency(edges)
+        lower = max(partition_def(edges, {v: 0 for v in verts}),
+                    partition_def(edges, {v: v for v in verts}))
+        assert d == lower, "def_3 not exhibited by a one-part/singleton labelling"
+        target = 6 * (len(verts) - 1) - d
+        best = -1
+        for used in range(1, args.seeds + 1):
+            q = {(v, role): [Fd.rand(rng) for _ in range(4)]
+                 for v in verts for role in range(4)}
+            pts, _sel = chart_points(Fd, verts, nb, q)
+            rk, chosen = greedy_rank(Fd, pencil_rows(Fd, verts, edges, pts), target,
+                                     6 * len(verts))
+            best = max(best, rk)
+            if rk == target:
+                assert verify_cert(Fd, verts, edges, pts, chosen), "certificate re-check failed"
+                break
+        print(f"  {lab}: |V| {len(verts)}, |E| {len(edges)}, "
+              f"5|E| - 6(|V|-1) = {5 * len(edges) - 6 * (len(verts) - 1)}, def_3 {d}, "
+              f"target {target}, rank {best}: {'HIT' if best == target else 'MISS'} (seeds used {used})")
+
+
 def mode_cert(args):
     Fd = GF2k()
     rng = random.Random(SEED)
@@ -382,6 +445,7 @@ def main():
     g.add_argument('--sweep', action='store_true')
     g.add_argument('--cubic', action='store_true')
     g.add_argument('--cert', metavar='LABEL')
+    g.add_argument('--small', action='store_true')
     ap.add_argument('--cap', type=int, default=None)
     ap.add_argument('--seeds', type=int, default=3)
     args = ap.parse_args()
@@ -392,6 +456,8 @@ def main():
         mode_sweep(args)
     elif args.cubic:
         mode_cubic(args)
+    elif args.small:
+        mode_small(args)
     else:
         mode_cert(args)
 

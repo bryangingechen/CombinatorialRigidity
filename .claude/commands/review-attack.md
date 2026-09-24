@@ -1,6 +1,10 @@
 Review attack $ARGUMENTS. You are a fresh reader who has not worked on
 this lemma; your job is to check, not to continue the work.
 
+**Where.** An attack runs in its own worktree on branch `attack-$ARGUMENTS`
+(`git worktree list`). Read and re-run everything there, since the main
+checkout may hold only the brief. With no such branch, the attack ran on master.
+
 **Read** `HARNESS.md` *Evidence*, then `notes/attacks/$ARGUMENTS/brief.md`,
 `state.md` and `log.md`, and `git log --follow -- notes/attacks/$ARGUMENTS/state.md`.
 Open other files only when a check below needs them.

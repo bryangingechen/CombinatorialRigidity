@@ -2,7 +2,10 @@ Attack $ARGUMENTS. You own one lemma for as long as it takes; this session
 is one working day on it. Rules: `HARNESS.md` (*Evidence*,
 *Reproducibility*, *Attack track*). Files: `notes/attacks/$ARGUMENTS/`.
 
-**Start.** Read `HARNESS.md`, then `notes/attacks/$ARGUMENTS/brief.md` and
+**Start.** Work in the attack's own worktree on branch `attack-$ARGUMENTS`
+(`git worktree list`; if none exists, `git worktree add` one from `HEAD`),
+never in the main checkout, where another attack may be running.
+Read `HARNESS.md`, then `notes/attacks/$ARGUMENTS/brief.md` and
 `notes/attacks/$ARGUMENTS/state.md`. Then run the consumer diff of
 `HARNESS.md` *Evidence* on the brief, in the Lean; a mismatch is reported
 to the PI before any route work. Read nothing else unless the state file

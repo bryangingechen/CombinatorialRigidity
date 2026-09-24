@@ -12,7 +12,7 @@ parked by the **2026-08-05 Lean hold**; informal argument closed, plus one new (
 **Two tracks since 2026-09-15.** *(1)* **Attack track** — research on the two open kernels,
 one agent per lemma under `/attack <name>` (`HARNESS.md`); each lemma's status surface is
 `notes/attacks/<name>/state.md`. Briefs for **S-mark** (`hbareSplit`, and the split step of
-`hK`) and **(GR-10)** (uniform colouring, the crux of `hK` on the tight stratum) are at
+`hK`) and **(GR-10)** (since the 2026-09-16 re-scope, the char-2 probe of `hK`'s conclusion) are at
 `notes/attacks/{smark,gr10}/brief.md` (PI-reviewed 2026-09-15). **S-mark: route R2 (the split-off antecedent and the IH as
 certificates for the generic point, S14; both kernels take the IH by the PI's 2026-09-16 decision); what is open is
 `hbareSplit` at `m ≤ 4`. Session count, obligation count and next step live only in `notes/attacks/smark/state.md`
@@ -32,8 +32,9 @@ restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scop
 grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **No Lean task queued**; next: `/attack smark` (from its `state.md` *Next steps*) and
-`/attack gr10` session 1, each a main session in its own worktree. Items 7–12 parked.
+to-do list; no blueprint chapter). **No Lean task queued**; next: `/attack smark` (from its `state.md` *Next steps*) in its own
+worktree. **gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only).
+Items 7–12 parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -67,7 +68,7 @@ added (§6); the gr10 brief restructured into Part A (the live char-2 probe, `hK
 verbatim, obligations O1–O5, the certificate-is-a-proof reading through
 `hasGenericPencilRealization_of_independent_pencilRow_target`) and Part B (the grid route as
 documented fallback, §B3 restated against the landed `hK`). S-mark's own status surface is
-`notes/attacks/smark/state.md` (its only status surface; counts and next step are kept there, not here); (GR-10) has no state file yet — session 1 writes it from Part A. Per this note's own policy (*Hand-off*) the
+`notes/attacks/smark/state.md` (its only status surface; counts and next step are kept there, not here); (GR-10)'s is `notes/attacks/gr10/state.md` — CLOSED 2026-09-23 after one session and review 1 (workbook `attack-gr10.md` S4, S5). Per this note's own policy (*Hand-off*) the
 per-session narrative lives there, not here; the two consumer misreadings the reviews caught are
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
@@ -450,13 +451,11 @@ correct it — A4's sketch, A5's dependency, B1's exposure claim, C1ℓ/C3ℓ's 
 C4ℓ's two-input route) are in the *Lemma checklist* A3–C4ℓ entries.
 **Item 6's Lean track is now closed**, except the deferred A6 and the shared-hub-normalization
 factoring item (both tracked, off any consumed path; *Lemma checklist*). **No Lean task is
-queued; both briefs are checked (2026-09-17), and the next concrete tasks are the two attack
-sessions.** **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
-(brief last patched at review 5, workbook S38). **(2)** `/attack gr10` session 1,
-likewise: the char-2 probe as briefed in Part A (O1–O5; driver under
-`notes/attacks/gr10/drivers/`, workbook file `notes/pencil/workbook/attack-gr10.md`); a
-systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so O5 reports to the
-PI. Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
+queued; the next concrete task is the smark attack session (gr10 is closed).** **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
+(brief last patched at review 5, workbook S38). **(2)** gr10 is CLOSED
+(2026-09-23, PI, after review 1): no characteristic-2 miss at any shape tested (workbook
+`attack-gr10.md` S4, S5), so no `[NeZero (2 : K)]` re-pin. Merge branch `attack-gr10`
+when smark is between sessions. Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
 number results S1…/P1… in their workbook files instead; incident 2026-09-15), and
 `/harness-review`, due since five S-mark sessions (candidates in *Blockers*; one more from this
 check in `notes/harness/incidents.md`). When an attack starts, its `state.md` is that

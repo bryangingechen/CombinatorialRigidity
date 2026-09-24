@@ -64,8 +64,12 @@ not depend on which is chosen and the driver's stored orientation suffices.
 iff `5G` has six edge-disjoint spanning trees iff (Nash-Williams 1961, Tutte 1961)
 every partition `P` has `5·|crossing(P)| ≥ 6(|P| − 1)`, i.e. every `partitionDef`
 `≤ 0`, i.e. `G.deficiency 3 = 0` (`deficiency`, `partitionDef` in
-`Molecular/Deficiency.lean`). (iii) S1 uses nothing about `hK`'s antecedents; it
-is a statement about `hK`'s conclusion only (brief §A4).
+`Molecular/Deficiency.lean`). Independently, a hit certifies `def₃ ≤ 0` in any
+characteristic (S5(a)), and `def₃ ≥ 0` holds by the one-part labelling
+(`partitionDef_one`), so (ii) is a cross-check, not a load-bearing input. (iii) S1 uses nothing about `hK`'s antecedents; it is a statement about `hK`'s
+conclusion only (brief §A4). (iv) `def₃ = 0` enters only step (d)'s card conjunct:
+the same proof with `|s| = 6(|V| − 1) − d` and `G.deficiency 3 = d` gives the
+conclusion at any deficiency `d` (used in S5).
 
 ---
 
@@ -91,10 +95,13 @@ exhibited certificate, so no Schwartz–Zippel bound is needed for the figure. �
 
 **Controls.** `--control --cap 907`: the same matrix over `GF(2^31 − 1)` and
 `GF(10007)` has rank `6(|V| − 1)` at 907/907 shapes (O1's control: the matrix is
-the one whose ℚ-rank is the landed exact-point rank). Negative controls (probe,
-script not retained beyond the driver's functions): at a random `GF(2^20)` seed
-the same code gives rank 10 of 12 on `P₃`, 40 of 42 on `C₈`, 24 on `C₅`, and never
-more than `6(|V| − 1)` without early stopping on the three thetas.
+the one whose ℚ-rank is the landed exact-point rank). These controls rule out a
+transcription error that lowers the rank; they cannot rule out a wrong transcription
+that is still full rank. That half of O1 is the reading of the driver against the Lean
+listed in the driver's docstring (the sharing pattern: a selected hub's normal
+`q(w, 0)` is shared by every body whose selector names `w`, fills `q(v, i + 1)` are
+private), which review 1 re-did independently. The small graphs `P₃`, `C₅`, `C₆`,
+`C₈`, θ(3, 4, 4) are S5 (`--small`), at the bridge's target `6(|V| − 1) − def₃`.
 
 **Certificate for one hit** (`--cert 'theta(2, 5, 5)'`): edges
 `[(0,10),(10,1),(0,12),(12,13),(13,14),(14,15),(15,1),(0,17),(17,18),(18,19),(19,20),(20,1)]`
@@ -137,8 +144,11 @@ also carries non-cubic `K4`-stratum and seeded `|V°| ≤ 6` shapes.
 (GR-26) cubic stratum, 40 742 labelled shapes in 1 967 isomorphism classes, caps as in
 S3. Field `GF(2^20)` (modulus `x^20 + x^3 + 1`); seeds `20260923` (a) and `20260924` (b);
 at most 3 seeds per shape, and never more than 1 used. Controls: the same matrix over
-`GF(2^31 − 1)` and `GF(10007)` at rank `6(|V| − 1)` on all 907 census shapes; negative
-controls `P₃`, `C₈` short as expected (S2).
+`GF(2^31 − 1)` and `GF(10007)` at rank `6(|V| − 1)` on all 907 census shapes (S2).
+**Both populations are exactly tight** (`5|E| = 6(|V| − 1)` at every shape): neither
+contains an over-counted def₃ = 0 graph, the hubless `C₆`, or a def₃ > 0 graph, all
+of which are in `hK`'s domain. (c) S5 covers named instances of each of the three
+(`--small`, seed `20260925`), not populations.
 
 **Hit/miss table.**
 
@@ -146,6 +156,7 @@ controls `P₃`, `C₈` short as expected (S2).
 |---|---|---|---|
 | census (S2) | 907 | 907 | 0 |
 | (GR-26) cubic, isomorphism classes (S3) | 1 967 (40 742 labelled) | 1 967 | 0 |
+| named `hK`-habitat graphs outside (a), (b) (S5): `C₅`, `C₆`, θ(3, 4, 4) at def₃ = 0, `C₈` at def₃ = 2 | 4 | 4 | 0 |
 
 **Certificate for one hit.** `theta(2, 5, 5)`, S2's last paragraph;
 `PYTHONHASHSEED=0 python3 notes/attacks/gr10/drivers/char2chart.py --cert 'theta(2, 5, 5)'`
@@ -159,7 +170,64 @@ of that route, not of the target, at these shapes.
 
 **What this does not settle** (brief §A4). It is per-shape: no uniform statement over the
 infinitely many tight shapes, so it does not decide the field range of `hK`'s conclusion at
-def = 0 in general — only that the probe found no evidence for a restriction. It says nothing
-about `hK` as an implication, about `hbareSplit`, or about def > 0. It moves no gap-map row.
+def = 0 in general — only that the probe found no evidence for a restriction. The
+over-counted def = 0 corner, the hubless `C₆` and the def > 0 stratum are covered only at
+S5's four named graphs. No residual of W4's (K-res) is in any population, since every graph
+tested has no proper rigid subgraph. It says nothing about `hK` as an implication or about
+`hbareSplit`. It moves no gap-map row.
+
+**Review and close.** `/review-attack gr10` (review 1, 2026-09-23) read S1's proof, checked
+the driver's transcription against the Lean definitions, and re-ran S2, S3, the controls and
+the certificate at the committed seeds with identical output. Its fixes are in this revision:
+S2's controls, S1 Remark (ii)/(iv), S5, and the population caps above. On the PI's word
+(2026-09-23), **Part A is closed** with this verdict; N1 (def > 0 as a population) is not
+commissioned.
 It agrees with smark's record that route R2 uses no characteristic (smark state, S20(i)),
 which it does not check.
+
+---
+
+## S5 — four named `hK`-habitat graphs outside both populations: the over-counted and hubless def₃ = 0 cases, and one def₃ > 0 case
+
+**Statement.** (a) *The counting bound, any field.* For every graph `G`, selector `hubSel`,
+seed `q` and labelling `f` of `V(G)`, the `pencilRow hubSel G.endsOf q` rows at genuine
+edges span at most `6(|V(G)| − 1) − partitionDef G 3 f` dimensions. Hence if `6(|V| − 1) − d`
+of them are independent at some seed and some labelling has `partitionDef G 3 f = d`, then
+`G.deficiency 3 = d`.
+(b) For `G` ∈ {`C₅`, `C₆`, θ(3, 4, 4)} (def₃ = 0; `5|E| − 6(|V| − 1)` = 1, 0, 1) and `G = C₈`
+(def₃ = 2), and every infinite field `K` of characteristic 2,
+`HasGenericPencilRealization K 3 G`.
+(c) Each of the four satisfies every antecedent of `hK` that concerns `G` alone: `G.Simple`,
+`5 ≤ |V(G)|`, `G.TwoEdgeConnected`, no proper rigid subgraph, and a degree-2 vertex `v`
+whose neighbours `a`, `b` are not both hubs.
+
+**Proof.** (a) An edge with ends `u, w` contributes the rows `S ↦ annihRow C t₁ t₂ (S u − S w)`,
+where `C` is the join of the two chart points. Each vanishes at `C` (`annihRow_apply_self`),
+so they span at most the 5-dimensional annihilator of `C` when `C ≠ 0`, and are all `0` when
+`C = 0`. The rows of edges inside a part of `f` vanish on the `6|P|`-dimensional space of
+assignments constant on each part (`P = f '' V(G)`), so they span at most `6|V| − 6|P|`
+dimensions. Adding gives `≤ 5·|crossingEdges G f| + 6|V| − 6|P| = 6(|V| − 1) − partitionDef G 3 f`.
+For the second sentence, the independent family forces every `partitionDef ≤ d`, so
+`G.deficiency 3 ≤ d`, and the labelling gives `≥ d` (`deficiency`, `partitionDef`,
+`Molecular/Deficiency.lean`). Nothing here uses the characteristic.
+(b) `char2chart.py --small` (`GF(2^20)`, seed `20260925`, ≤ 3 seeds per graph, 1 used at
+each) reaches rank `6(|V| − 1) − d` at each graph, with `d` = `nogood_subdiv.deficiency`
+asserted equal to the one-part labelling (`C₅`, `C₆`, θ) or the singleton labelling (`C₈`);
+`verify_cert` re-ranks each certificate. By (a), `d = G.deficiency 3`. S1 then applies with
+its Remark (iv) (`|s| = 6(|V| − 1) − d`). The driver asserts simplicity, `hcard` and
+triangle-freeness.
+(c) Cycles and thetas are simple and 2-edge-connected, with `|V|` = 5, 6, 8, 10. A cycle has
+no hub. θ(3, 4, 4)'s hubs are the two branch ends, and the middle vertex of a length-4
+branch has two non-hub neighbours. For a proper rigid subgraph `H` (`IsProperRigidSubgraph`:
+deficiency 0, `2 ≤ |V(H)|`, `V(H) ⊊ V(G)`): in a cycle `H` is a forest; in θ(3, 4, 4),
+`G[V(H)]` is unicyclic when the removed vertices are all interior to one branch (the other
+two branches form a cycle of length 7 or 8), and a forest otherwise, so `H` is a forest or
+unicyclic. The singleton labelling
+gives `partitionDef ≥ |V(H)| − 1 ≥ 1` for a forest and `≥ |V(H)| − 6 ≥ 1` for a unicyclic `H`.
+So no `H` is rigid. ∎
+
+**Remarks.** (i) `P₃` (in `--small` as a control; `|V| < 5`, not 2-edge-connected, outside
+`hK`'s domain) also reaches its target 10 = 6·2 − 2. (ii) These are named instances, not
+populations: S4's caps stand. They are the graphs S2's controls paragraph quoted before
+review 1, from a probe that was not retained. At the bridge's target they are hits, not
+shortfalls.
