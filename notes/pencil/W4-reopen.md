@@ -8,10 +8,11 @@ pointers are by declaration name; Lean unchanged since `084ee4ff`. Revised after
 **Revised a third time at the end of the same session (2026-09-23): the START HERE section (a
 prioritized direction list, which now sets the order), T1's partial findings, the corrected
 *Open on W4*, T2 re-aimed, T3 held.**
-**Current next-task source (2026-09-24): P1's *later* 2026-09-24 paragraph and its final *Next*
-list** — the unranked directions assessed and landed as §(K-main) Steps MC11–MC14. The `X₀`
-induction covers every tested graph, but **coverage is measured, not proved**: the open problem is
-the coverage theorem, its structural and certificate halves ((MC-61)).
+**Current next-task source (2026-09-24, third session): P1's *third session* paragraph.** The
+coverage theorem is **claimed proved modulo Jackson–Jordán**: §(K-main) Step MC16 (MC-89), resting on
+Step MC15 (MC-71). So (MC-10)(a) holds modulo Jackson–Jordán, but only once its second readings
+confirm it. Those readings are the first thing to settle. The paragraph lists what landed and what
+is in flight.
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
 run it: *"I'll probably run it in this same worktree as the smark agent is still proceeding in
@@ -228,10 +229,24 @@ coordinator:
   and CONTRACT needs no certificate at a core with `def₂(G) = def₂(H) + def₂(G/H)`, which is automatic
   at a maximal proper rigid set with a simple quotient outside one exceptional case. A second reader
   is owed.
-- Still in scratch, **not in the tree until landed**: A, the structural half (item 3); B, cell
-  (MC-51)(c) (item 4); E, the generic motive at A′ graphs (item 5); F, the lemma "`δ₂ = 1 ⟹ δ ≤ 1`",
-  which with (MC-44) and (MC-26) at `r = 1` would close (MC-51)(a) for `a ≁ b`. A fresh session
-  re-dispatches whichever of these has not landed.
+- **A**, the structural half (item 3): landed as §(K-main) **Step MC16**, (MC-75)–(MC-89), including
+  the **coverage theorem (MC-89)** modulo Jackson–Jordán. The pieces:
+  - a maximal `def₂`-rigid set has a simple quotient, which leaves the sparse class 𝒮;
+  - in 𝒮, Theorem S gives a usable chain or a proper rigid core with a simple quotient, and every
+    such core is additive, so (MC-71) applies;
+  - `δ₂ = 1 ⟹ δ ≤ 1` (MC-88), which closes (MC-51)(a) for `a ≁ b`;
+  - stuck necklace families exist (MC-83), (MC-84), so CONTRACT at cores with `def₂(H) > 0` is
+    necessary.
+
+  (MC-89) is a claim by its author until the second readings report.
+- In flight, **not in the tree until landed**:
+  - G and H, the two second readings of the coverage proof: G on (MC-80), (MC-87)–(MC-89) with
+    (MC-68), (MC-69), (MC-71); H on (MC-75)–(MC-79) and (MC-82);
+  - B, cell (MC-51)(c) (item 4), no longer on the coverage theorem's critical path;
+  - E, the generic motive at A′ graphs (item 5);
+  - F, cell (a′) (`k = 2`, `a ∼ b`), no longer on the critical path.
+
+  A fresh session **re-dispatches G and H first** if they have not landed, then E.
 
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).

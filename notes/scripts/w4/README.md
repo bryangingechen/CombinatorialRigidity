@@ -908,3 +908,10 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 - `kerm0.py` (no flags) — **(MC-69)(a)'s kernel identity** asserted exactly against
   `coreshrink`'s `dim ker M₀` at 287 instances, with `ε` and the jet order. Imports `splitext`,
   `coreshrink`, `x0arms`. A leaf.
+- `coverstruct.py (--necklaces | --exh N | --witness N [--smax S --cores ...] | --additivity | --pairs N
+  | --hunt FILE|- | --beads FILE|- [--tmax T])` — **the structural half of the coverage theorem**
+  (§(K-main) Step MC16, (MC-75)–(MC-89)). Purely combinatorial (count-matroid deficiencies, no
+  randomness): the class 𝒮, chains and their `(δ, δ₂)`, usability, Theorem S's cores and their
+  additivity, the stuck necklace families. `--hunt`/`--beads` read graph6 from a file or stdin; the
+  populations come from nauty's `geng` (external). Imports `exactcore`, `kbare_common`, `maincomp`,
+  `nogood_subdiv`, `splitext`. A leaf.
