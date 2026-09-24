@@ -244,11 +244,15 @@ coordinator:
   proof of (MC-87) (MC-119). **(MC-89) stands modulo Jackson–Jordán, in characteristic 0.**
 - In flight, **not in the tree until landed**:
 
-  - E, the generic motive at A′ graphs (item 5);
   - I, making (MC-89)'s computational leaves human-checkable, prompted by F's erratum below;
   - J, the one open ear cell (MC-117), which would give a second proof of (MC-89) by the EAR route.
 
   A fresh session re-dispatches whichever of I, J has not landed.
+- **E**, the generic motive (item 5): landed as §(K-main) **Step MC19**, (MC-123)–(MC-133), not yet
+  second-read. The A′ graphs add nothing. Feasibility is (F1) and (F2) (MC-123). The generic motive
+  reduces to feasible graphs with no `def₂`-rigid subgraph (MC-130), so with (MC-89): **every
+  feasible simple connected graph of minimum degree `≥ 2` has `HasGenericPencilRealization`, modulo
+  Jackson–Jordán, in characteristic 0 (MC-133).**
 - **F** and **B**, the ear cells (off the critical path): landed as §(K-main) **Steps MC17** and
   **MC18**, (MC-90)–(MC-118), not yet second-read.
   - Relative deficiency is a minimum over induced subgraphs, so `δ₂ ≤ 2 ⟹ δ ≤ δ₂`.

@@ -934,3 +934,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   and witness set, plus (MC-88) at random pairs; `--cert` runs `contractcheck.run`. `betaprime.py
   [--cert]` — the `C6pend` witness that (MC-81)'s original (β′) wording is false. Import
   `coverstruct`, `contractcheck`.
+- **Step MC19's drivers** (§(K-main), (MC-123)–(MC-133); exact ℚ, ranks mod `2⁶¹ − 1` only as
+  certificates): `zcore.py` (the hub-plane chart `Z(G)`: draws, nondegeneracy, rank; shared core);
+  `zsurvey.py --exh N [--list]`, `e3check.py --exh N`, `zears.py --exh N`, `zlemma.py --exh N --stuck D`,
+  `zdirect.py --draws D`, `zk2k.py`, `zrand.py --seed S`, `zstuck.py --seed S`, all importing `zcore`.
