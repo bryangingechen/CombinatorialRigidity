@@ -471,8 +471,8 @@ shape library, with its decision table fixed before any run (P1; (α)'s re-aimed
 the same driver, P2). T1's Lean is deferred (P4), `kres` and a contraction attack held (P5). **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
 (brief last patched at review 5, workbook S38). **(2)** gr10 is CLOSED
 (2026-09-23, PI, after review 1): no characteristic-2 miss at any shape tested (workbook
-`attack-gr10.md` S4, S5), so no `[NeZero (2 : K)]` re-pin. Merge branch `attack-gr10`
-when smark is between sessions. Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
+`attack-gr10.md` S4, S5), so no `[NeZero (2 : K)]` re-pin. Branch `attack-gr10` merged
+2026-09-23 (`03f73e61`). Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
 number results S1…/P1… in their workbook files instead; incident 2026-09-15), and
 `/harness-review`, due since five S-mark sessions (candidates in *Blockers*; one more from this
 check in `notes/harness/incidents.md`). When an attack starts, its `state.md` is that

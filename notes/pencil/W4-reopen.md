@@ -153,27 +153,19 @@ first outcome, smark's O7e programme is unnecessary in principle for the Lean ta
 
 ## Where you are working
 
-- The gr10 worktree, branch `attack-gr10` (branched at `b0d76407`; the gr10
-  session-1 commits plus `3d769296`, the review-1 close).
-  The **smark attack is running in the main checkout** on `master`. Never touch
-  `notes/attacks/smark/` or `notes/pencil/workbook/attack-smark.md`.
-- Files both lines are likely to edit: `notes/Phase39.md`, `ROADMAP.md`,
-  `notes/harness/incidents.md`. Keep edits there small and anchored; expect a trivial merge.
-  Before starting, `git log --oneline master -5`: at T0 master was two smark-only commits (s14)
-  ahead and the branch was **not** rebased (rebase vs merge commit is the PI's call, below).
-- **Merge (user, 2026-09-23):** `attack-gr10` merges into master at a moment when the smark
-  agent is between sessions (e.g. after this session's T0/T1 commits) — never under a running
-  smark session. Master has since moved (smark s14), so this is **no longer a fast-forward**.
-  Master's new commits touch only smark files, so the merge is textually clean. Either
-  `git rebase master` in this worktree first (the branch is unpushed), or merge with a merge
-  commit: the PI's call. A rebase rewrites the SHAs this file cites (`3773c022`, `3d769296`):
-  repoint them in the same step.
+- **The main checkout, on `master`.** Branch `attack-gr10` (the gr10 session-1 commits, the
+  review-1 close `3d769296`, T0 and the strategy re-think) was **merged 2026-09-23** as a merge
+  commit (`03f73e61`; PI: *"OK, smark is idle, let's merge and move to the main worktree."*), so the branch SHAs this file cites stay
+  valid. The gr10 worktree is still on disk, merged and idle; removing it is the PI's call.
+- **smark shares this checkout** and runs in it too. Never touch `notes/attacks/smark/` or
+  `notes/pencil/workbook/attack-smark.md`, and never commit while a smark session is running.
+  Files both lines edit: `notes/Phase39.md`, `ROADMAP.md`, `notes/harness/incidents.md` — keep
+  edits there small and anchored. (Or run P1 in a fresh worktree off `master`, and merge the same
+  way.)
 - Commit rules: `CLAUDE.md` *Working* (author identity, `-F` for messages with backticks,
   no local paths).
-- **Lean in this worktree** (set up 2026-09-23): `.lake/packages` is a symlink to the main
-  checkout's (gitignored; the two checkouts share one manifest), and `.lake/build` is this
-  worktree's own. `lake build CombinatorialRigidity.Molecular.Molecule.Pencil.Escape` passes;
-  cold, it took ~22 min. P1 needs no Lean.
+- P1 needs no Lean. (The gr10 worktree has a working Lean build of `Escape.lean`, with
+  `.lake/packages` symlinked to the main checkout's; the main checkout has its own `.lake`.)
 
 ## Why reopen (the mathematical reason the 2026-09-03 directive asks for)
 
