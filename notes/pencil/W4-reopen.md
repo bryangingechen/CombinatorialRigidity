@@ -11,17 +11,20 @@ prioritized direction list, which now sets the order), T1's partial findings, th
 **Current next-task source (end of the third 2026-09-24 session): *Next session* below, then P1's
 *third session* paragraph.**
 
-**Where things stand.** The **coverage theorem (MC-89) is proved modulo Jackson–Jordán, in
-characteristic 0, and both halves are second-read**. Every finite simple connected graph of minimum
-degree ≥ 2 has `X₀` attaining, so (MC-10)(a) holds. With Step MC19's (MC-133), not yet second-read,
-every *feasible* such graph has `HasGenericPencilRealization`. Both statements are
-§(K-main) Steps MC15–MC19.
+**Where things stand.** The **coverage theorem (MC-89) is proved modulo Jackson–Jordán, and both
+halves are second-read**. It holds in characteristic 0, and over any infinite field modulo
+(MC-33)(i), since Step MC20 removed every computational certificate. Every finite simple connected
+graph of minimum degree ≥ 2 has `X₀` attaining, so (MC-10)(a) holds. With Step MC19's (MC-133),
+not yet second-read, every *feasible* such graph has `HasGenericPencilRealization`. Both statements
+are in §(K-main) Steps MC15–MC20.
 
 **Next session, in order.**
-1. **Land Track J** if the P1 paragraph below says it is still in flight. Its write-up is in the
-   session scratch directory (`trackJ/`); if that is gone, re-dispatch. J works on the last ear cell
-   (MC-117), whose closure would give a second, EAR-only proof of (MC-89). Track I landed as Step
-   MC20.
+1. **Land Track J as Step MC21**, from `notes/w4-pending/trackJ/`: its write-up, scripts and
+   outputs are committed verbatim there, with landing instructions in `notes/w4-pending/README.md`.
+   It claims a **second proof of (MC-89) inside 𝒮 by the EAR route** (every 𝒮 graph has a closable
+   chain, (J-6)), without Theorem S or additivity but still using (MC-68)(d). It also claims that
+   (c′) closes except "Case II-cyclic" (J-10), which (MC-89) does not need. Neither claim is checked
+   or second-read yet. Tracks A–I have all landed (Steps MC15–MC20).
 2. **Second readers**, one dispatch each:
    - Step MC19, first (MC-123), (MC-129), (MC-130) and (MC-133);
    - Step MC15's (MC-62)–(MC-67), the part the coverage proof does not use;
@@ -266,9 +269,11 @@ coordinator:
   proof of (MC-87) (MC-119). **(MC-89) stands modulo Jackson–Jordán, in characteristic 0.**
 - In flight, **not in the tree until landed**:
 
-  - J, the one open ear cell (MC-117), which would give a second proof of (MC-89) by the EAR route.
+  - J, the one open ear cell (MC-117): **returned** after the session stopped for context. It is
+    committed verbatim, unlanded, in `notes/w4-pending/trackJ/`, and landing it is *Next session*
+    item 1.
 
-  A fresh session re-dispatches whichever of I, J has not landed.
+  No agent is in flight.
 - **I**, the certificate leaves: landed as §(K-main) **Step MC20**, (MC-134)–(MC-141), not yet
   second-read. Every computational certificate under (MC-89) has a hand proof over every infinite
   field, so (MC-89) rests on arguments and Jackson–Jordán alone. Guarding `--lamcap` and `--thetas`

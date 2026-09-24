@@ -1,0 +1,1 @@
+class-S members with every chain k = 1: 8 ; chains with delta >= 1 checked: 101 (each has a degree-2 vertex inside a blob of G - y); delta = 0 chains: 0 ; blobs checked for (J-5): 431
