@@ -790,3 +790,20 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   the bad locus is nonempty on every class shape's chart, so no counting
   argument can ever deliver (OUT)'s hypothesis; what the pools establish is
   availability, MEASURED, not proven.**
+
+- `maincomp.py [--selftest | --battery | --exh N | --pool NAME[,NAME] | --jjprobe | --k23]
+  [--gain] [--list-b2 N] | --draw0` — **the main-component census** (W4-reopen P1;
+  `notes/pencil/workbook/K-main.md` §(K-main)). Per member it samples one point
+  of `X₀` per draw: an admissible planar picture `q`, an exact basis of the lifting
+  space `L(q)`, and `z` in it. It reports the mod-p molecular rank against
+  `6(|V|−1) − def₃`; `rank_p = target` is a certificate. Also reported: `def₂`,
+  `dim L(q)`, the flat rank, `JJ`, the four `IsNondegPencilRealization`
+  conjuncts, `repin.star_generic`, and, with `--gain`, the first-order gain.
+  Asserted per draw: (MC-1) forward, (MC-3) affineness (first draw), (MC-4)(a)/(b),
+  and, with `--gain`, (MC-6) (the symmetric form `β`: its exact rank equals the
+  Schur-pairing gain, symmetry, vanishing on `Aff`). Populations: `battery`,
+  `thetas`, `habitats`, `smark` (imports smark's drivers read-only), `residuals`,
+  `peels`, `exh8` (every isomorphism class of simple 2EC graphs on ≤ 8 vertices,
+  from a stdlib canonical-form enumerator checked against OEIS in `--selftest`).
+  **The `-- pool … built in N s` line is wall-clock and is the one line exempt
+  from byte-identity.** A leaf: nothing imports it.

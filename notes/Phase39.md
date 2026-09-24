@@ -32,8 +32,8 @@ restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scop
 grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **Next: the main-component census** (`notes/pencil/W4-reopen.md` P1, docs + driver; T1's Lean
-deferred, `kres` held); `/attack smark` continues in its own worktree.
+to-do list; no blueprint chapter). **Next: the PI's call on the main-component census** (DONE 2026-09-23, outcome A′ —
+`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; T1's Lean deferred, `kres` held); `/attack smark` continues in its own worktree.
 **gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only). Other items
 parked.
 
@@ -48,7 +48,7 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next: the main-component census** (`notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*).
+**Next: the PI's call on the main-component census** — DONE 2026-09-23, outcome **A′**: `X₀` attains at all 10 252 members, degenerate only at feasible graphs with a rigid subgraph (`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*).
 **Item 6 is DONE except the deferred A6 — Layer C (C1ℓ–C4ℓ) LANDS 2026-09-17** — A1–A5 the
 pendant law, the combinatorial carriers,
 the vertex 2-cut law and its two corollaries; B1–B6 the four geometric carriers, the joint's row
@@ -464,11 +464,9 @@ correct it — A4's sketch, A5's dependency, B1's exposure claim, C1ℓ/C3ℓ's 
 C4ℓ's two-input route) are in the *Lemma checklist* A3–C4ℓ entries.
 **Item 6's Lean track is now closed**, except the deferred A6 and the shared-hub-normalization
 factoring item (both tracked, off any consumed path; *Lemma checklist*). **W4 is REOPENED
-(2026-09-23); the next concrete commit is the main-component census** — a fresh session reads
-`notes/pencil/W4-reopen.md` *START HERE* first: write up the vertical-projection reformulation
-(F1)–(F3), then a seeded exact driver ranking the main component `X₀` against the target on the
-shape library, with its decision table fixed before any run (P1; (α)'s re-aimed recon rides in
-the same driver, P2). T1's Lean is deferred (P4), `kres` and a contraction attack held (P5). **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
+(2026-09-23); the main-component census (P1, with P2 folded in) is DONE — outcome A′ of its pre-fixed decision table**
+(`notes/pencil/workbook/K-main.md` §(K-main)). The next step is **the PI's call** on that row. A fresh session reads
+`notes/pencil/W4-reopen.md` P1 for the agent's suggestion: an adversarial census, then P3 in two stop-ruled tracks. T1's Lean is deferred (P4), `kres` and a contraction attack held (P5). **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
 (brief last patched at review 5, workbook S38). **(2)** gr10 is CLOSED
 (2026-09-23, PI, after review 1): no characteristic-2 miss at any shape tested (workbook
 `attack-gr10.md` S4, S5), so no `[NeZero (2 : K)]` re-pin. Branch `attack-gr10` merged

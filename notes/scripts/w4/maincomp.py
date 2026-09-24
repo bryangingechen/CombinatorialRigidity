@@ -63,7 +63,19 @@ Modes (run from the repository root; exact arithmetic; seeded; writes nothing):
     python3 notes/scripts/w4/maincomp.py --selftest
     python3 notes/scripts/w4/maincomp.py --battery [--gain]
     python3 notes/scripts/w4/maincomp.py --exh 7 [--gain]
-    python3 notes/scripts/w4/maincomp.py --pool NAME [--gain]   (NAME: --list)
+    python3 notes/scripts/w4/maincomp.py --pool NAME[,NAME] [--gain] [--list-b2 N]
+    python3 notes/scripts/w4/maincomp.py --pool NAME[,NAME] --jjprobe
+    python3 notes/scripts/w4/maincomp.py --pool NAME[,NAME] --draw0
+    python3 notes/scripts/w4/maincomp.py --k23 [--draws N]
+
+(`--list` names the pools.)  `--gain` also runs (MC-6)'s check (`beta_check`):
+the exact rank of the symmetric form beta(Psi z, .) equals the Schur-pairing
+gain, beta is symmetric on two basis pairs and vanishes on the constant flex.
+`--jjprobe` re-tests JJ, with fresh `q`, at every member where the census draw
+fails it.  `--draw0` lists the members whose FIRST census draw falls short (the
+draw-level shortfalls that the retries absorbed).  `--k23` checks the two components of K_{2,3} ((MC-9)).  The line
+`-- pool NAME: ... built in N s` is wall-clock, the one line exempt from
+byte-identity.
 
 `--exh N` is every isomorphism class of simple 2-edge-connected graphs on
 3..N vertices, generated here by vertex augmentation of connected graphs with
@@ -92,7 +104,7 @@ import os, sys  # noqa: F811
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
-from exactcore import rank as rank_exact, nullspace, wedge2, hat, neighbors  # noqa: E402
+from exactcore import rank as rank_exact, rref, nullspace, wedge2, hat, neighbors  # noqa: E402
 from kbare_common import (rank_modp, build_rigidity, verts_of, is_2ec,       # noqa: E402
                           verify_pencil_witness, exact_deficiency, P61)
 from nogood_subdiv import count_matroid_rank, deficiency as def3_pebble       # noqa: E402
@@ -303,7 +315,116 @@ def gain1(edges, V, q, zvec, L, dimL):
         return len(rref_p(B)[1]) if B and B[0] else 0
     for triv in ([F(1)] * n, [q[v][0] for v in V], [q[v][1] for v in V]):
         assert g(triv) == 0, 'trivial lifting has first-order gain'
-    return g(zvec)
+    gz = g(zvec)
+    beta_check(edges, V, q, zvec, L, gz)
+    return gz
+
+
+# ---------------------------------------------------------------- (MC-6): the form beta
+
+def _interp(edges, V, q, z):
+    """Psi(z): per vertex the affine interpolant (alpha, beta, gamma) of z on
+    q(N[v]), from three non-collinear points of N[v] (exact)."""
+    nb = neighbors(edges)
+    idx = {v: i for i, v in enumerate(V)}
+    out = {}
+    for v in V:
+        N = [v] + sorted(nb.get(v, ()), key=str)
+        pick = None
+        for i in range(len(N)):
+            for j in range(i + 1, len(N)):
+                for k in range(j + 1, len(N)):
+                    T = [[q[w][0], q[w][1], F(1)] for w in (N[i], N[j], N[k])]
+                    if rank_exact(T) == 3:
+                        pick = (N[i], N[j], N[k])
+                        break
+                if pick:
+                    break
+            if pick:
+                break
+        T = [[q[w][0], q[w][1], F(1), z[idx[w]]] for w in pick]
+        R, _ = rref(T)
+        h = (R[0][3], R[1][3], R[2][3])
+        for w in N:                              # z|N[v] is affine: (MC-1)
+            assert h[0] * q[w][0] + h[1] * q[w][1] + h[2] == z[idx[w]]
+        out[v] = h
+    return out
+
+
+def _cycle_basis(edges, V):
+    """Fundamental cycles of a spanning tree, as signed edge-incidence vectors
+    (sign +1 when the cycle traverses edge (u, w) from u to w)."""
+    parent = {V[0]: None}
+    order = [V[0]]
+    nb = {}
+    for ei, (u, w) in enumerate(edges):
+        nb.setdefault(u, []).append((w, ei, 1))
+        nb.setdefault(w, []).append((u, ei, -1))
+    tree = set()
+    for x in order:
+        for (y, ei, s) in nb.get(x, ()):
+            if y not in parent:
+                parent[y] = (x, ei, s)
+                tree.add(ei)
+                order.append(y)
+
+    def root_path(x):                    # signed edges from x up to the root
+        out = {}
+        while parent[x] is not None:
+            (px, ei, s) = parent[x]
+            out[ei] = out.get(ei, 0) - s   # traverse x -> px
+            x = px
+        return out
+    cyc = []
+    for ei, (u, w) in enumerate(edges):
+        if ei in tree:
+            continue
+        c = {ei: 1}                      # u -> w, then w -> root -> u
+        for k, s in root_path(w).items():
+            c[k] = c.get(k, 0) + s
+        for k, s in root_path(u).items():
+            c[k] = c.get(k, 0) - s
+        cyc.append({k: s for k, s in c.items() if s})
+    return cyc
+
+
+def _det3(a, b, c):
+    return (a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0])
+            + a[2] * (b[0] * c[1] - b[1] * c[0]))
+
+
+def beta_form(edges, cyc, k, h):
+    """beta(k, h) as the vector (mu -> sum_e mu_e . k_w x (h_u - h_w)) over the
+    basis {cycle (x) e_i} of Z_1 (x) K^3; e = (u, w)."""
+    out = []
+    for c in cyc:
+        for i in range(3):
+            ei_vec = [F(int(t == i)) for t in range(3)]
+            s = F(0)
+            for ei, sg in c.items():
+                u, w = edges[ei]
+                d = tuple(a - b for a, b in zip(h[u], h[w]))
+                s += sg * _det3(ei_vec, k[w], d)
+            out.append(s)
+    return out
+
+
+def beta_check(edges, V, q, zvec, L, gz):
+    """(MC-6): beta is symmetric, vanishes on Aff(q), and its rank in the
+    direction z equals the Schur-pairing gain `gz` (exact Q rank vs the mod-p
+    lower bound; asserted equal)."""
+    cyc = _cycle_basis(edges, V)
+    assert len(cyc) == len(edges) - len(V) + 1
+    k = _interp(edges, V, q, zvec)
+    Hs = [_interp(edges, V, q, b) for b in L]
+    M = [beta_form(edges, cyc, k, h) for h in Hs]
+    r = rank_exact(M) if M and M[0] else 0
+    assert r == gz, ('(MC-6) beta rank != Schur gain', r, gz)
+    for j in (0, len(Hs) - 1):
+        assert beta_form(edges, cyc, k, Hs[j]) == beta_form(edges, cyc, Hs[j], k), \
+            '(MC-6) beta not symmetric'
+    one = _interp(edges, V, q, [F(1)] * len(V))
+    assert all(x == 0 for x in beta_form(edges, cyc, k, one)), '(MC-6) beta on Aff'
 
 
 # ---------------------------------------------------------------- one instance
@@ -362,6 +483,10 @@ def census(name, edges, seed, draws=1, retry=4, S=30, want_gain=False,
            'target': tgt, 'rank': best['rank'], 'flat': best['flat'],
            'dimL': best['dimL'], 'JJ': best['dimL'] == 3 + d2,
            'attains': best['rank'] == tgt, 'draws': tries}
+    # the directory's composite genericity guard (w4/README.md): recorded for
+    # the best draw; a SHORT at a draw failing it is flagged in `fmt`
+    from repin import star_generic
+    res['sg'] = star_generic(edges, best['pt'])
     if want_gain:
         res['gain1'] = best['gain1']
     if want_nondeg:
@@ -386,11 +511,13 @@ def fmt(r):
          f"flat={r['flat']:>3} rank={r['rank']:>3}/{r['target']:<3} "
          f"{'ATTAINS' if r['attains'] else 'SHORT  '} draws={r['draws']}")
     if 'gain1' in r:
-        s += f" gain1={r['gain1']}/{r['def2'] - r['def3']}"
+        s += f" gain1={r['gain1']}/{r['target'] - r['flat']}"
     if 'nondeg' in r:
         s += f" nondeg={r['nondeg']}"
     if 'feas' in r:
         s += f" {r['feas']},{r['rig']}"
+    if not r.get('sg', True):
+        s += ' star_generic=NO'
     return s
 
 
@@ -644,16 +771,24 @@ def summary(rows, label):
     print(f'== {label}: {tot} graphs; def2 > def3 at {len(gap)}; '
           f'X0 ATTAINS at {tot - len(short)}/{tot}; SHORT at {len(short)}; '
           f'JJ fails at the drawn q at {len(jj)}')
+    print(f"   repin.star_generic fails at the best draw at {sum(not r['sg'] for r in rows)} "
+          f"(SHORT among them: {sum(not r['sg'] and not r['attains'] for r in rows)})")
     if rows and 'gain1' in rows[0]:
-        full = sum(1 for r in gap if r['gain1'] == r['def2'] - r['def3'])
-        print(f'   first-order gain reaches def2 - def3 at {full}/{len(gap)} of the gap graphs')
+        # the gain needed at the drawn q is target - flat = dim L(q) - 3 - def3
+        # ((MC-4)(a)); it equals def2 - def3 exactly when JJ holds at q
+        need = [r for r in rows if r['target'] > r['flat']]
+        full = sum(1 for r in need if r['gain1'] == r['target'] - r['flat'])
+        print(f'   first-order gain reaches the needed gain (target - flat) at {full}/{len(need)} '
+              f'of the graphs where the flat point misses')
     from collections import Counter
     if rows and 'nondeg' in rows[0]:
         c = Counter(r['nondeg'] for r in rows)
         print('   nondeg at the drawn X0 point: ' +
               ', '.join(f'{k} {v}' for k, v in sorted(c.items())))
         ap = [r for r in rows if r['feas'] == 'feas' and r['attains'] and r['nondeg'] != 'yes']
-        print(f'   A-prime watch (certified-feasible, attains, drawn point degenerate): {len(ap)}')
+        print(f'   A-prime watch (certified-feasible, attains, drawn point degenerate): {len(ap)} '
+              f"(norigid {sum(r['rig'] == 'norigid' for r in ap)}, "
+              f"rigid {sum(r['rig'] == 'rigid' for r in ap)})")
         for r in ap[:20]:
             print('     ' + fmt(r))
     if rows and 'feas' in rows[0]:
@@ -669,6 +804,121 @@ def summary(rows, label):
 
 
 a_list = 0
+
+
+def jjprobe(pop, a):
+    """For every member whose census draw (draw 0) has dim L(q) > 3 + def2,
+    redraw q (seeds `<seed>:<name>:jj<i>`, i < --jjdraws) until dim L(q) =
+    3 + def2.  An exhibited such q proves the flat law (MC-4)(c) with equality
+    at G's generic q (semicontinuity), i.e. Jackson--Jordan's formula at G."""
+    from nogood_subdiv import is_simple
+    hit = []
+    for name, E in pop:
+        if not (is_simple(E) and is_2ec(E)):
+            continue
+        V = verts_of(E)
+        d2 = def_k(E, 3)
+        q = sample_q(random.Random(f'{a.seed}:{name}:0'), V, E, a.scale)
+        if len(lifting_space(E, V, q)) == 3 + d2:
+            continue
+        seen = []
+        ok = None
+        att = False
+        tgt = 6 * (len(V) - 1) - def3_pebble(E)
+        for i in range(a.jjdraws):
+            rng = random.Random(f'{a.seed}:{name}:jj{i}')
+            q = sample_q(rng, V, E, a.scale)
+            L = lifting_space(E, V, q)
+            seen.append(len(L) - 3 - d2)
+            if len(L) == 3 + d2:
+                ok = i
+                # a point of B over this certified q (q in U): does it attain?
+                coeff = [rng.randint(-a.scale, a.scale) for _ in L]
+                zv = [sum(c * b[j] for c, b in zip(coeff, L)) for j in range(len(V))]
+                pt = {v: (q[v][0], q[v][1], zv[j]) for j, v in enumerate(V)}
+                assert verify_pencil_witness(E, pt)[0]
+                att = rank_modp(build_rigidity(E, pt)[0]) == tgt
+                break
+        hit.append((name, ok, att))
+        print(f'   {name}: dim L - 3 - def2 at the census draw > 0; redraws {seen}; '
+              + (f'JJ equality exhibited at redraw {ok}; the point of B there '
+                 + ('ATTAINS' if att else 'falls short') if ok is not None
+                 else f'NOT exhibited in {a.jjdraws} redraws'))
+    print(f'== jjprobe: {len(hit)} members with JJ failing at the census draw; '
+          f'{sum(o is not None for _, o, _ in hit)} of them resolved by a redraw, '
+          f'{sum(t for _, _, t in hit)} attaining there')
+
+
+def draw0(pop, a):
+    """Re-derive the census's FIRST draw (seed `<seed>:<name>:0`) at every
+    member and list those where it falls short -- the draw-level shortfalls
+    the census's retries absorbed.  Reports, per such member, whether the
+    drawn q was a jump point (dim L(q) > 3 + def2)."""
+    from nogood_subdiv import is_simple
+    bad = []
+    for name, E in pop:
+        if not (is_simple(E) and is_2ec(E)):
+            continue
+        V = verts_of(E)
+        tgt = 6 * (len(V) - 1) - def3_pebble(E)
+        d2 = def_k(E, 3)
+        r = probe(E, random.Random(f'{a.seed}:{name}:0'), a.scale)
+        if r['rank'] < tgt:
+            rows, _ = build_rigidity(E, r['pt'])
+            rk = rank_exact(rows)
+            if rk < tgt:
+                bad.append(name)
+                print(f'   {name}: first draw rank {rk}/{tgt}; dim L(q) - 3 - def2 = '
+                      f'{r["dimL"] - 3 - d2}')
+    print(f'== draw0: {len(bad)} members whose first census draw falls short')
+
+
+def k23(a):
+    """The A-prime mechanism at K_{2,3} = theta(2,2,2), both components.
+    On X0 (generic q) the two hub planes both contain the three non-collinear
+    points p_x, p_y, p_z, so they coincide and conjunct 3 fails at the
+    non-hubs.  On the jump stratum q_x, q_y, q_z COLLINEAR (hubs off the line)
+    dim L(q) = 4 > 3 = l0; that stratum has dimension 2|V| - 1 + 4 = 2|V| + 3
+    = dim X0, so it is another component, and its points are nondegenerate
+    and attain.  Asserted at `--draws` seeded draws of each."""
+    from pitch import theta_edges
+    from flanks import nondeg_conjuncts
+    E = theta_edges([2, 2, 2])
+    V = verts_of(E)
+    hubs = [0, 1]
+    mids = [v for v in V if v not in hubs]
+    tgt = 6 * (len(V) - 1) - def3_pebble(E)
+    for dr in range(a.draws):
+        rng = random.Random(f'{a.seed}:k23:{dr}')
+        # X0
+        r = probe(E, rng, a.scale)
+        ok, info = nondeg_conjuncts(E, r['pt'])
+        assert r['dimL'] == 3 and r['rank'] == tgt and not ok and 'conjunct 3' in info[0]
+        # the collinear stratum: q_mid on a random line, hubs off it
+        for _ in range(200):
+            P0 = (F(rng.randint(-a.scale, a.scale)), F(rng.randint(-a.scale, a.scale)))
+            D = (F(rng.randint(1, a.scale)), F(rng.randint(-a.scale, a.scale)))
+            q = {v: (P0[0] + t * D[0], P0[1] + t * D[1])
+                 for v, t in zip(mids, rng.sample(range(-a.scale, a.scale), 3))}
+            for h in hubs:
+                q[h] = (F(rng.randint(-a.scale, a.scale)), F(rng.randint(-a.scale, a.scale)))
+            try:
+                L = lifting_space(E, V, q)
+            except AssertionError:
+                continue
+            if any(q[u] == q[w] for (u, w) in E):
+                continue
+            break
+        assert len(L) == 4, len(L)
+        coeff = [rng.randint(-a.scale, a.scale) for _ in L]
+        zv = [sum(c * b[i] for c, b in zip(coeff, L)) for i in range(len(V))]
+        pt = {v: (q[v][0], q[v][1], zv[i]) for i, v in enumerate(V)}
+        rows, _ = build_rigidity(E, pt)
+        rk = rank_exact(rows)
+        ok, info = nondeg_conjuncts(E, pt)
+        assert rk == tgt and ok, (rk, info)
+    print(f'k23: {a.draws}/{a.draws} draws -- on X0 dim L = 3, rank {tgt}/{tgt}, conjunct 3 FAILS; '
+          f'on the collinear stratum dim L = 4, rank {tgt}/{tgt}, all four conjuncts hold; PASS')
 
 
 def selftest():
@@ -705,6 +955,12 @@ def main():
     ap.add_argument('--gain', action='store_true')
     ap.add_argument('--no-nondeg', action='store_true')
     ap.add_argument('--verbose', '-v', action='store_true')
+    ap.add_argument('--k23', action='store_true')
+    ap.add_argument('--draw0', action='store_true',
+                    help='with --pool: list members whose first census draw falls short')
+    ap.add_argument('--jjprobe', action='store_true',
+                    help='with --pool: re-test JJ at members where the census draw fails it')
+    ap.add_argument('--jjdraws', type=int, default=10)
     ap.add_argument('--list-b2', type=int, default=0,
                     help='print up to N W4-branch-2 gap members in the summary')
     a = ap.parse_args()
@@ -715,6 +971,9 @@ def main():
         return
     if a.selftest:
         selftest()
+        return
+    if a.k23:
+        k23(a)
         return
     print(f'maincomp: seed={a.seed} draws={a.draws} retry={a.retry} scale={a.scale} '
           f'gain={a.gain}')
@@ -733,6 +992,12 @@ def main():
             t0 = time.time()
             pop = POOLS[nm]()
             print(f'-- pool {nm}: {len(pop)} members, built in {time.time() - t0:.0f} s')
+            if a.jjprobe:
+                jjprobe(pop, a)
+                continue
+            if a.draw0:
+                draw0(pop, a)
+                continue
             rows, dt = run(pop, a)
             if nm == 'exh8':
                 for n in range(3, 9):

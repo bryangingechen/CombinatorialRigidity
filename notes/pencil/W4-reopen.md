@@ -89,13 +89,26 @@ chart write `p_v = (q_v, z_v)`, a planar position and a height.
   included (3-connected; smark brief §3(a)/(c)) — under the Jackson–Jordán caveat above.
 
 **P1 — the main-component census. FIRST; docs + driver, bounded; can run in this worktree,
-independent of smark.** *In progress, 2026-09-23.* Steps 1, 2 and 4 are done: the write-up is
+independent of smark.** **DONE 2026-09-23 — outcome A′, awaiting the PI's call.** The write-up is
 `notes/pencil/workbook/K-main.md` §(K-main), tag `MC-`, and the driver is
-`notes/scripts/w4/maincomp.py`. (F1)–(F3) are (MC-1)–(MC-3), checked. A new identity, (MC-4), makes
-the flat rank exact: it equals `6|V| − 3 − dim L(q)`, with `dim L(q) ≥ 3 + def₂`. So "`X₀` flat ⇒
-`def₂ = def₃`" is proved without Jackson–Jordán ((MC-5)(iii)). The populations and the decision
-table were fixed in that section before any census run. **Next: step 3, the census run.** The
-by-product below needs Jackson–Jordán at `G` (§(K-main) *Step MC5*).
+`notes/scripts/w4/maincomp.py`. (F1)–(F3) are (MC-1)–(MC-3), checked. Four results go beyond the
+hand-off:
+- (MC-4), the flat rank is exact: `6|V| − 3 − dim L(q)`, with `dim L(q) ≥ 3 + def₂`. So "`X₀` flat
+  ⇒ `def₂ = def₃`" is proved without Jackson–Jordán ((MC-5)(iii)).
+- (MC-6), the first-order term at the flat point is a symmetric form `β` on the lifting space.
+- (MC-7)/(MC-8), the census, spec committed first (`9e8aaec2`): `X₀` attains at all 10 252 members,
+  every simple 2EC graph on ≤ 8 vertices included, with 0 `SHORT`s, and first order alone suffices
+  at every drawn point.
+- (MC-9), the exception, which decides row A′ over row A: `K_{2,3}` and 27 other small feasible
+  graphs, all with a proper rigid subgraph, where `X₀` is degenerate (conjunct 3). There the
+  generic motive lives on a jump component.
+
+The class statements are (MC-10), conjectured. **Next: the PI's call on the table's A′ row.** The
+agent's suggestion is an adversarial census first (larger random graphs, n = 9–14, biased to
+2-cuts and large `def₂ − def₃`), then P3 in two tracks with a stop rule. Track 1 is (MC-10)(b),
+the plane-framework form. Track 2 is nondegeneracy on `hK`'s habitat. Stop and report if either
+needs more than about three structural cases. The by-product below needs Jackson–Jordán at `G`
+(§(K-main) *Step MC5*).
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
@@ -118,7 +131,9 @@ by-product below needs Jackson–Jordán at `G` (§(K-main) *Step MC5*).
      components (the planar positions `q` where `L(q)` jumps — a finite enumeration per graph).
    The census ends at the table: nothing follows without a PI call.
 
-**P2 — the (α) recon, re-aimed and folded into P1's driver.** Population: **W4 branch 2** —
+**P2 — the (α) recon, re-aimed and folded into P1's driver.** *Answered by P1 (2026-09-23): the
+`def₂ > def₃` branch-2 list is NOT empty (928 peels, 10 `θ(1,2,k)`, 86 graphs on ≤ 8 vertices),
+but `X₀` gives the distinct motive at every one — §(K-main) *The census — results*.* Population: **W4 branch 2** —
 simple, 2-edge-connected, infeasible, with a proper rigid subgraph. By the by-product above, those
 with `def₂ = def₃` are settled by the flat configuration; P1's driver lists the rest
 (`def₂ > def₃`), which are (α)'s whole content. If that list is empty on the library, (α) is
