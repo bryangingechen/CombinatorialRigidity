@@ -928,3 +928,9 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `dim(ρ(z₀) ∩ n^⊥)`, the `δ`-dimensional limit, and a ground-truth attainment certificate);
   `thetapairs.py S MIND`, `apredraw.py`, `limitcheck.py`, `deltacount.py N R`, `starcap.py`, `lamab.py`
   import `chordprobe`; `lamcap_recount.py` replays `earstep.py --lamcap`'s draws.
+- **Step MC16's second-reading drivers** (§(K-main), (MC-119)–(MC-122); exact, stdlib):
+  `relmax.py (--lemma N | --families | --witness N [--smax S --cores ...] | --pairs88 R | --cert)` —
+  additivity at maximal rigid subsets of `V − x` (relative maximality), at Step MC16's stuck families
+  and witness set, plus (MC-88) at random pairs; `--cert` runs `contractcheck.run`. `betaprime.py
+  [--cert]` — the `C6pend` witness that (MC-81)'s original (β′) wording is false. Import
+  `coverstruct`, `contractcheck`.

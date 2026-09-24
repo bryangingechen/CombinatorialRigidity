@@ -65,8 +65,8 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   **CONTRACT needs no per-graph certificate** at an additive core (MC-71), and additivity is automatic
   at a maximal proper rigid `W` with `G/H` simple outside one exceptional case (MC-70). A second reader
   is owed.
-- **Step MC16, the structural half and the coverage theorem, modulo Jackson–Jordán** (a claim by
-  its author; two second readers dispatched, not yet reported). Maximal `def₂`-rigid sets have simple
+- **Step MC16, the structural half and the coverage theorem, modulo Jackson–Jordán** (second-read
+  2026-09-24 by two readers; confirmed, with minor repairs). Maximal `def₂`-rigid sets have simple
   quotients (MC-75), which leaves the sparse class 𝒮 (MC-76). There every chain is usable except in
   two cells (MC-79), and Theorem S (MC-80) supplies a proper rigid core with a simple quotient
   wherever no chain is usable. Every such core is additive (MC-87), so (MC-71) applies. Hence
@@ -472,7 +472,7 @@ architecture change are:
 
 *(2026-09-24: (a) ⟺ (b) by (MC-11). (c) and its converse are (MC-14), `[INFORMAL]` modulo
 Jackson–Jordán, so (c) is no longer a guess. (a) is claimed proved modulo Jackson–Jordán by
-(MC-89), Step MC16; second readings pending.)*
+(MC-89), Step MC16, second-read 2026-09-24.)*
 
 (b) ⟹ (a) by *Step MC6*. (a) would prove `HasDistinctPencilRealization K 3 G` for every simple
 connected `G` of minimum degree `≥ 2`, **with no induction**. Jackson–Jordán is not needed for
@@ -2385,7 +2385,7 @@ of a step set with no contraction.
 >
 > *(2026-09-24, Step MC16: both halves are claimed closed modulo Jackson–Jordán, (MC-89), with no
 > ear cell needed: the structural half by (MC-75), (MC-76), (MC-80); the remaining certificates by
-> (MC-87) with (MC-71). Second readings pending.)*
+> (MC-87) with (MC-71). Second-read 2026-09-24.)*
 >
 > What was tested: with the default steps and `--ear23 antecedent`, nothing is uncovered — 7 980 /
 > 7 980 on `≤ 8` vertices and every member of every population. Without (MC-54), one graph
@@ -2913,12 +2913,15 @@ contraction runs; sampler support in each docstring):
 session's Track A), starting from the coordinator's observations (O1), (O2). Its §6 was written
 after Step MC15 and the second reading of Steps MC12/MC14 had reported. The coordinator re-derived
 (MC-75), (MC-87) (both cases) and (MC-80)'s choice of cores at the level of the written proofs.
-**Two second readers were dispatched on 2026-09-24.** The first, on (MC-75)–(MC-79) and (MC-82),
-has reported: nothing wrong, no open gap. It re-derived every claim, filled small steps in (MC-76),
-(MC-77), (MC-78) and (MC-79)(i), (ii), and made three repairs, marked where they sit: (MC-79)(i)'s
-sketch, (MC-79)(vi)'s citation, and (MC-82)(iii)'s missing cycles. It also repaired Step MC10's
-remark after (MC-26). The second, on (MC-80), (MC-87)–(MC-89) with Step MC15's (MC-68), (MC-69) and
-(MC-71), has not reported. Until it does, **the coverage theorem (MC-89) is a claim by its author.** Driver
+**Two second readers re-derived this step on 2026-09-24, and neither found a gap.** The first
+read (MC-75)–(MC-79) and (MC-82). It filled small steps in (MC-76), (MC-77), (MC-78) and
+(MC-79)(i), (ii), and made three repairs, marked where they sit: (MC-79)(i)'s sketch, (MC-79)(vi)'s
+citation, and (MC-82)(iii)'s missing cycles. It also repaired Step MC10's remark after (MC-26).
+The second read (MC-80), (MC-87)–(MC-89) together with Step MC15's (MC-68), (MC-69) and (MC-71).
+It confirmed each of them and made two wording repairs, to (MC-88) and (MC-89). It found
+(MC-81)'s (β′) bullet false as worded (MC-121), which (MC-89) does not use. It also gave an
+independent proof of (MC-87) by relative maximality, (MC-119) and (MC-120). **So the coverage
+theorem (MC-89) stands, modulo Jackson–Jordán, in characteristic 0.** Driver
 `w4/coverstruct.py` (new).*
 
 **Verdict.**
@@ -3205,8 +3208,9 @@ blocked; then every `k ≤ 2`.
 > Then **every graph satisfying (H) is covered**, so (MC-10)(a) holds. In particular, either of
 > the following suffices:
 > - **(α′)** close the two cells (c′) and (a′);
-> - **(β′)** prove (i)/(ii) at every proper rigid `W` with simple quotient and
->   `1 ≤ def₂(G[W]) < def₂(G)`, in 𝒮.
+> - **(β′)** prove (i)/(ii) at every core of (MC-80). *(Repaired by the second reader. As first
+>   written, "at every proper rigid `W` with simple quotient and `1 ≤ def₂(G[W]) < def₂(G)`, in 𝒮", it
+>   is false: (MC-121). The inequality is not needed by (MC-71).)*
 
 *Proof.* By strong induction on `|V|`, using §1's reduction, (MC-79)(v) and (MC-80).
 - Every step consumes smaller graphs satisfying (H) (MC-55)(i).
@@ -3438,7 +3442,10 @@ additivity. The runs covered:
 
 These check a proved identity at witnesses.
 
-> **(MC-88)** `[PROVED]` *(the lemma `δ₂ = 1 ⟹ δ ≤ 1`, conjectured from Step MC11's histogram)* Let `G′` be any finite simple graph and `a ≠ b`. Then
+> **(MC-88)** `[PROVED]` *(the lemma `δ₂ = 1 ⟹ δ ≤ 1`, conjectured from Step MC11's histogram;
+> second reading: its proof applies (MC-79)(i)'s formula to an arbitrary graph and pair, which is
+> sound because that formula's repaired proof uses nothing specific to 𝒮. (MC-91) is a stronger,
+> independent proof)* Let `G′` be any finite simple graph and `a ≠ b`. Then
 > `δ₂ = 0 ⟹ δ = 0`, and **`δ₂ = 1 ⟹ δ ≤ 1`**.
 > Consequently `[PROVED-MOD]` *((MC-33))*, under the strong induction, **(MC-51)(a) holds whenever
 > `a ≁ b`**: an open `k = 2` ear with `δ₂ = 1` and `a ≁ b`.
@@ -3487,8 +3494,16 @@ needed, and not attempted.
 > point attains `6(|V| − 1) − def₃(G)` for every finite simple connected `G` with minimum degree
 > `≥ 2`. This is modulo:
 > - Jackson–Jordán's equality at the named graphs (list below);
-> - the second readings still owed on (MC-80), (MC-87), (MC-89) and on Step MC15's (MC-68), (MC-69)(a),
->   (MC-71) (two readers dispatched 2026-09-24, not yet reported).
+> - nothing else: (MC-80), (MC-87), (MC-89) and Step MC15's (MC-68), (MC-69)(a), (MC-71) were
+>   second-read on 2026-09-24 and confirmed.
+>
+> *Repairs (second reading):*
+> - From step 3 of the proof on, `G` is 2-connected, hence 2EC. That is what CONTRACT's
+>   `|δ(W)| ≥ 2` uses.
+> - "No per-graph certificate" is true, but the proof consumes a fixed set of exact computations
+>   inside landed proofs: `earstep.py --chains` (MC-19), `--thetas 5` (MC-21)(b), `--lamcap` (MC-25),
+>   and `earante.py --orbits` with `m2/earbad.m2` (MC-46). These are exact over ℚ, so in
+>   characteristic `p` the theorem also depends on them at `p`. Characteristic 0 is unaffected.
 >
 > Beyond characteristic 0, read "mod JJ" as mod (MC-33)(i).
 
@@ -3533,6 +3548,167 @@ agrees at `QsQsQ`, `AsAsAs`, `TsTsTs` (CONTRACT at a bead, certified per graph).
 ---
 
 
+**7. The second reading's own proof of (MC-87): relative maximality.** *(Written by the second
+reader of (MC-80), (MC-87)–(MC-89), the third 2026-09-24 session's Track G, as an independent
+cross-check. It needs no (S): it is (MC-70)'s maximality argument, run inside `V − x` for a vertex
+`x` of degree `≤ 2`.)*
+
+> **(MC-119)** `[PROVED]` *(relative maximality)* Let `G` be a simple graph. Let `X` be either empty
+> or a single vertex `x` with `deg_G x ≤ 2`. Let `W` be maximal under inclusion among the rigid
+> subsets of `V ∖ X`, with `W ≠ V` and `G/H` simple. Then **`W` is additive**.
+> - If `X = ∅`, the hypothesis `W ≠ V` says that `G` is non-rigid.
+> - If `X = {x}`, it is automatic.
+
+*Proof.* Let `ℱ` be the **finest** `def₂`-optimal partition of `G/H` ((MC-67)(c)'s `𝒮`, renamed here to avoid a clash with the class 𝒮). It exists because the
+optimal partitions are closed under meets ((MC-67)(a), re-derived below). Let `ℱ* ∋ v*` be the
+part of `ℱ` containing `v*`, and put `T := ℱ* ∖ {v*}`. If `T = ∅`, additivity holds by
+(MC-67)(c), "⟸". So suppose `T ≠ ∅`, and let `Γ := (G/H)[ℱ*]`.
+
+1. **`Γ` is `def₂`-rigid, and its trivial partition is its *only* optimal partition.** Refining
+   the part `ℱ*` of `ℱ` by a partition `𝒬` of `ℱ*` changes `val` by exactly `val_Γ(𝒬)`. The
+   refinement adds `|𝒬| − 1` parts, and adds as crossing edges exactly the edges of `Γ` that
+   cross `𝒬`. Since `ℱ` is optimal, `val_Γ(𝒬) ≤ 0`, so `def₂(Γ) = 0`. If `val_Γ(𝒬) = 0` for a
+   nontrivial `𝒬`, the refinement is optimal and strictly finer than `ℱ`, a contradiction.
+2. **Removing `x` from `T`.** If `X = ∅`, or `x ∉ T`, put `T′ := T`. Suppose `x ∈ T`.
+   - *`x` has degree exactly 2 in `Γ`.* If `deg_Γ x ≤ 1`, the partition `{{x}, ℱ* − x}` has
+     value `3 − 2 deg_Γ x ≥ 1 > 0`, against step 1.
+   - *`T ≠ {x}`.* Since `G/H` is simple, `x` has at most one edge to `v*`. So `T = {x}` would give
+     `deg_Γ x ≤ 1`.
+   - *`Γ − x` is `def₂`-rigid.* For any partition `𝒫` of `ℱ* − x`, the partition `𝒫 + {x}` of
+     `ℱ*` is nontrivial. Both edges of `x` cross it, so
+     `val_Γ(𝒫 + {x}) = val_{Γ−x}(𝒫) + 3 − 4`. By step 1 the left side is `≤ −1`, so
+     `val_{Γ−x}(𝒫) ≤ 0`.
+   - Put `T′ := T − x`.
+
+   In every case `T′ ≠ ∅`, `T′ ∩ X = ∅`, and `Γ′ := (G/H)[{v*} ∪ T′]` is `def₂`-rigid.
+   (**Uniqueness in step 1 is essential.** A triangle is `def₂`-rigid, but deleting a vertex
+   leaves an edge, with `def₂ = 1`. It cannot occur as `ℱ*`, because its singleton refinement
+   is also optimal.)
+3. **The lift.** `Γ′` is `def₂`-rigid, hence connected (`c` components give value `3(c − 1)`).
+   Hence `Γ′` is `def₃`-rigid: `val₃ − val₂ = 3(|𝒫| − 1 − d(𝒫)) ≤ 0` partition by partition,
+   which is (MC-5)(i)'s one line. Also `Γ′ = G[W ∪ T′]/H`. (MC-67)(b) with `(6, 5)` gives
+   `def₃(G[W ∪ T′]) ≤ def₃(H) + def₃(Γ′) = 0`. So `W ∪ T′` is a rigid subset of `V ∖ X`
+   strictly containing `W`, against maximality. ∎
+
+*The pieces re-derived for this proof.*
+- **(MC-67)(a).** `|𝒫 ∧ 𝒫′| + |𝒫 ∨ 𝒫′| ≥ |𝒫| + |𝒫′|`: in the bipartite
+  intersection graph of the two partitions, edges count the blocks of the meet, and components
+  count the blocks of the join. Edge by edge, `[crosses ∧] + [crosses ∨] ≤ [crosses 𝒫] + [crosses 𝒫′]`.
+  So `val` is supermodular, and the meet of two maximizers is a maximizer.
+- **(MC-67)(b)**, for `def₃`. Let `t` parts of `𝒫` meet `W`. Then
+  `d_G(𝒫) ≥ d_H(𝒫|_W) + d_{G/H}(𝒫/W)`: a non-core edge between two distinct `W`-meeting parts
+  crosses `𝒫` but not `𝒫/W`. The part counts add exactly.
+- **(MC-67)(c), "⟸" at `T = ∅`.** Take the class partition `𝒬` of `H` and add the parts of `ℱ`
+  other than `{v*}`. The part counts add, and the crossing edges add: a boundary edge crosses on
+  both sides. So `val_G = def₂(H) + def₂(G/H)`. Together with (b), that is additivity.
+
+> **(MC-120)** `[PROVED]` Let `G ∈ 𝒮` have every chain in (c′) ∪ (a′).
+> **(i)** If `G` is non-rigid, it has a non-singleton maximal rigid set. Every such `R` is
+> proper, has `G/G[R]` simple, and is additive.
+> **(ii)** If `G` is rigid, some vertex `x` of a chain has a non-singleton rigid subset of
+> `V − x`. Every maximal such `W` is proper and rigid, has `G/H` simple, and is additive.
+>
+> In both cases:
+> - `G` is 2EC (2-connected on `≥ 3` vertices), so `|δ(W)| ≥ 2`;
+> - `H` and `G/H` satisfy (H) and are smaller;
+> - **so (MC-71) applies**: `X₀(H)` and `X₀(G/H)` attaining give `X₀(G)` attaining, modulo JJ
+>   at `H` and `G/H`.
+>
+> The `W` of (ii) are exactly the cores `B` of Theorem S (MC-80), rigid case. The
+> maximal rigid sets of `G − C` are the maximal rigid subsets of `V − x` for `x ∈ C`, since the
+> other vertex of a `k = 2` chain is a leaf of `G − x`.
+
+*Proof.*
+
+**(i)**
+- *Existence.* Take any chain. A blocked `k = 2` chain has `a ∼ b`, so `C ∪ {a, b}` is an
+  induced 4-cycle, and `C₄` is rigid. A blocked `k = 1` chain has `δ ≤ 4`, so `x` lies in a
+  rigid set. This is (MC-79)(ii), re-derived:
+  - if `x` lies in no rigid set, then `x` is a vertex of `Γ̂(G)`;
+  - for `Y ∋ [a], [b]` in `Γ̂(G) − x = Γ̂(G′)`, rigid-freeness gives `1 ≤ c(Y ∪ x) = c(Y) − 4`;
+  - by (MC-79)(i) the minimum of `c(Y)` is `δ`, so `δ ≥ 5`.
+- *Simplicity.* An outside vertex with two neighbours in a maximal `R` would enlarge it, by
+  (MC-75)(i) with `(6, 5)`.
+- *Additivity.* (MC-119) with `X = ∅`.
+
+**(ii) Existence of `x`.** This is Step MC16's argument, re-derived. `G` has
+`Σ(3 − deg) = def₂(G) + 3 ≥ 4` (MC-76), so it has `≥ 4` degree-2 vertices. Every chain has
+`k ≤ 2`, so there are `≥ 2` chains. For a chain `C` with `k ≤ 4` in a rigid `G`, (MC-17) with
+`δ ≤ def₃(G′)` gives `δ = def₃(G − C)`. So blocked means `G − C` is non-rigid.
+- *Some chain `C` has `k = 2`.* Then it is (a′), so `a ∼ b`. Take a chain `C′ ≠ C` and
+  `x ∈ C′`. The induced 4-cycle `C ∪ {a, b}` avoids `x`, since `a, b` are hubs.
+- *Every chain has `k = 1`.* Let `d` be the number of degree-2 vertices and `𝐻` the set of hubs.
+  Each degree-2 vertex has two hub neighbours, so `Σ_𝐻 deg ≥ 2d` and `Σ_𝐻 deg ≥ 3|𝐻|`. Hence
+  `5|E| − 6|V| = (5/2)Σ_𝐻 deg − d − 6|𝐻| ≥ 0`.
+  - For any chain vertex `x`, the all-singletons partition of `G − x` has
+    `val₃ = 6|V| − 5|E| − 2 ≤ −2`.
+  - But `def₃(G − x) = δ ≥ 1`, and `P*(G − x)` is a maximizing partition (MC-77).
+  - So `P*(G − x)` has a non-singleton part.
+
+**(ii) Simplicity.** Let `x` lie on the chain `C = a − ⋯ − b`, and let `W` be maximal rigid in
+`V − x`.
+- *Other outside vertices.* A vertex `u ≠ x` with two neighbours in `W` would make `W ∪ u` rigid
+  inside `V − x` ((MC-75)(i)), against maximality.
+- *`x` itself, `k = 2`.* The other chain vertex has degree 1 in `G − x`, so it is not in `W`.
+  (A rigid set has minimum degree `≥ 2` in itself.) So `x` has at most one neighbour in `W`.
+- *`x` itself, `k = 1`.* If `a, b ∈ W`, then `a, b` lie in a common rigid subgraph of `G′ = G − x`.
+  Merging it into a maximizing partition of `G′` gives `def₃(G′/ab) = def₃(G′)`, so `δ = 0`. That
+  contradicts (c′), where `δ ≥ 1`.
+
+**(ii) Additivity.** (MC-119) with `X = {x}`. `W` is proper since `x ∉ W`, and it is rigid with
+`|W| ≥ 3`. ∎
+
+> **(MC-121)** `[REFUTED]` *(witness `C6pend`: the "every" in (MC-81)(β′) as first written)* Let `C6pend` be:
+> - the cycle `c₀ ⋯ c₅`;
+> - a path `z₁ − z₂ − z₃` with `z₁c₀`, `z₂c₂`, `z₃c₄`;
+> - a 4-vertex ear `c₁ − e₁ − e₂ − e₃ − e₄ − c₃`.
+>
+> This graph has `n = 13` and `m = 16`, is in 𝒮, and is rigid (`def₂ = 4`, `def₃ = 0`).
+> `W = {c₀, …, c₅}` is a proper rigid set with `G/H` simple and `1 ≤ def₂(H) = 3 < 4 = def₂(G)`.
+> But `def₂(G/H) = 2`, and `4 ≠ 3 + 2`, so **`W` is not additive**. By (MC-68)(c), mod JJ at `G`,
+> (i) fails there.
+> `[CONSTRUCTED]` *(`betaprime.py`)* The counts are exact. `--cert`: coreshrink finds (i) failing
+> and (ii) holding, at 2 / 2 draws.
+
+*Why.* In 𝒮-terms, `Z′ = {z₁, z₂, z₃}` has 5 edges into `W ∪ Z′`, so
+`s′(W ∪ Z′) = s′(W) + 9 − 10 < s′(W)` ((MC-119)'s *Reading in 𝒮*). The ear raises `s′(V)` by 2 without
+touching `W`. `W` sits strictly inside the rigid set `V`, and nothing about it is maximal.
+
+*Consequence.* This is not a gap in (MC-89), which uses (β) only at the cores of (MC-80), and those
+are additive ((MC-87), (MC-120)). It is why (MC-81)'s (β′) bullet was repaired.
+
+> **(MC-122)** `[MEASURED]` *(`relmax.py`; checks of proved statements at witnesses)*
+> - **`--lemma 8`**: every simple 2EC graph on `≤ 8` vertices, every degree-2 `x`, every maximal
+>   rigid subset `W` of `V − x`. `P*` is computed by the merge criterion and cross-checked
+>   against brute force at every instance.
+>   - 1 812 have `G/H` simple, and **all are additive**.
+>   - 7 981 are not simple. In every one the only heavy vertex is `x` itself, on a `k = 1` chain
+>     (asserted).
+>   - Non-rigid `G` with a rigid set do not occur on `≤ 8` vertices; the `X = ∅` case is
+>     exercised below.
+> - **`--witness 16 --smax 4 --cores K4,dC4`** (Step MC16's witness set: 1 061 𝒮-members):
+>   - 8 840 simple `(x, W)`, all additive;
+>   - 266 maximal rigid sets of non-rigid members, all additive;
+>   - 315 non-simple, all heavy at `x` only.
+>
+>   **`--witness 14`**: 990 𝒮-members and 4 134 simple `(x, W)`, all additive. The one stuck
+>   member (`dC6111111011` = `QsQsQ`) gets a (MC-120) core `C₄` with counts `5 = 1 + 4`.
+> - **`--families`**: Step MC16's stuck families and three mixed ones:
+>   - the families: `QsQsQ`, `QQQQs`, `Q⁵`, `QsQsQs`, `Q⁶`, `Q⁷`, `AsAsAs`, `A⁶`, `A⁷`,
+>     `TsTsTs`, `T⁶`, `T⁷`, `QsAsTs`, `QAQAQA`;
+>   - each is asserted to be in 𝒮 with 0 usable chains;
+>   - at every blocked chain vertex `x` and every maximal rigid `W` of `G − x`, `G/H` is simple and
+>     `W` is additive (18–189 pairs per graph);
+>   - the (MC-120) cores are `C₄` beads, except at `TsTsTs` and `T⁶`, where `x` on a bead's 4-path
+>     leaves the 5-cycle `h y h′ w t₁` (counts `12 = 2 + 10`), and at `T⁷` (non-rigid), where it
+>     is a whole `θ(2,3,4)` bead (`25 = 3 + 22`).
+> - **`--cert`** (coreshrink, relaxed, exact, seeded through `contractcheck.run`): (MC-39)'s (i)
+>   and (ii) are certified at one exact picture, verdict `OK`, at the (MC-120) core of **12 of the 14
+>   families**, including `TsTsTs`'s `C₅` core. `T⁶` and `T⁷` (60 and 70 edges) are skipped by
+>   the script's cap. This agrees with (MC-68)(d) and (MC-69)(b) at these cores. It is a
+>   cross-check of (MC-71), not a proof of it.
+
+
 **Drivers** (all at `PYTHONHASHSEED=0` from the repository root; exact integer deficiencies
 (count-matroid ranks), no randomness; the `--hunt` populations are generated by nauty's `geng`, an
 external deterministic generator, nauty 2.9.3):
@@ -3547,6 +3723,8 @@ external deterministic generator, nauty 2.9.3):
 | `geng -C -d2 -t -q n 0:⌊(3n−4)/2⌋ \| python3 notes/scripts/w4/coverstruct.py --hunt -`, `n = 9..14` | (MC-83): 0 stuck at `n ≤ 13` (35 / 304 / 879 / 9 030 / 32 177 in 𝒮); at `n = 14`, 1 stuck (`QsQsQ`) of 411 045 in 𝒮 (736 012 candidates) | `n = 14`: ~140 s |
 | `geng -C -d2 -tf -q n 0:⌊(3n−4)/2⌋ \| … --hunt -`, `n = 14, 15, 16`; `geng -C -d2 -D3 -tf -q n … \| … --hunt -`, `n = 17, 18` | no stuck graph without a 4-cycle: girth `≥ 5` on `n = 14–16` (24 773 / 129 911 / 1 365 792 in 𝒮), subcubic girth `≥ 5` on `17–18` (166 907 / 756 629 in 𝒮) | ~0.5 / ~1 / ~8 / ~1 / ~5 min |
 | `python3 notes/scripts/w4/x0arms.py --tree <QsQsQ / AsAsAs / TsTsTs> --ear23 antecedent [--contract off] [--depth 0 \| 1]` | UNCOVERED without CONTRACT; CONTRACT at a bead with the default `--contract cert` | < 3 s each |
+| `python3 notes/scripts/w4/relmax.py --lemma 8` / `--families` / `--witness 14` / `--witness 16 --smax 4 --cores K4,dC4` / `--pairs88 400` / `--cert` | (MC-122): (MC-119) at 1 812 / every blocked `x` of 14 families / 4 134 / 8 840 + 266 instances, all additive; (MC-88) at 47 883 pairs; coreshrink (i), (ii) at 12 of 14 family cores | ~52 s / ~31 s / ~11 s / ~47 s / ~13 s / ~57 s |
+| `python3 notes/scripts/w4/betaprime.py --cert` | (MC-121): `C6pend` in 𝒮, `W = C₆` with `4 / 3 / 2`, not additive; coreshrink (i) = 0, (ii) = 1 at 2 / 2 draws | ~1 s |
 
 `--beads` (the framing search behind (MC-84)) takes `geng -c -d2 -tf -q n ⌈6(n−1)/5⌉:⌊(3n−4)/2⌋` on
 stdin, `n = 5..13`, with `--tmax 3`; the two histograms quoted in (MC-84) (`n = 8` and `n = 13`)

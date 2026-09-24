@@ -238,16 +238,17 @@ coordinator:
   - stuck necklace families exist (MC-83), (MC-84), so CONTRACT at cores with `def₂(H) > 0` is
     necessary.
 
-  (MC-89) is a claim by its author until the second readings report.
+  **Both second readings have landed, and neither found a gap.** H read (MC-75)–(MC-79) and (MC-82),
+  G read (MC-80), (MC-87)–(MC-89) with (MC-68), (MC-69) and (MC-71). The repairs are minor; the
+  largest is that (MC-81)'s (β′) bullet was false as worded (MC-121). G also gave an independent
+  proof of (MC-87) (MC-119). **(MC-89) stands modulo Jackson–Jordán, in characteristic 0.**
 - In flight, **not in the tree until landed**:
-  - G, the second reading of (MC-80), (MC-87)–(MC-89) with (MC-68), (MC-69), (MC-71). The other
-    half, H on (MC-75)–(MC-79) and (MC-82), has **landed**: nothing wrong, three minor repairs, plus
-    a repair of Step MC10's remark after (MC-26);
+
   - E, the generic motive at A′ graphs (item 5);
   - I, making (MC-89)'s computational leaves human-checkable, prompted by F's erratum below;
   - J, the one open ear cell (MC-117), which would give a second proof of (MC-89) by the EAR route.
 
-  A fresh session **re-dispatches G first** if it has not landed, then E.
+  A fresh session re-dispatches whichever of I, J has not landed.
 - **F** and **B**, the ear cells (off the critical path): landed as §(K-main) **Steps MC17** and
   **MC18**, (MC-90)–(MC-118), not yet second-read.
   - Relative deficiency is a minimum over induced subgraphs, so `δ₂ ≤ 2 ⟹ δ ≤ δ₂`.
