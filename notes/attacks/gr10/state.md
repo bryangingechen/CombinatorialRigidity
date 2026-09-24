@@ -33,7 +33,7 @@ Nothing on the brief's route breaks: every census shape and every class of the c
 - `blindaxes.py --imports --population` on the driver: fences 6 (Plücker indices) and 3 (selector slots), both structural; population comes from `grid.census_shapes` / `gisland.stratum`, imported unmodified.
 
 ## Next steps <!-- budget 5 -->
-1. PI: read S4 and decide — close Part A ("method only"), and whether N1 (def > 0) is worth one more session.
+1. PI read S4 (2026-09-23) and chose **`/review-attack gr10` on S1–S4 before closing Part A**; N1 not commissioned.
 2. If N1: pick a named def > 0 habitat population, add `--defpos` to the driver with target `6(|V|−1) − def₃`, land as S5.
 3. Merge branch `attack-gr10` at the PI's milestone (worktree per `notes/attacks/README.md`).
 
