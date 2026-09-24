@@ -18,23 +18,22 @@ every *feasible* such graph has `HasGenericPencilRealization`. Both statements a
 §(K-main) Steps MC15–MC19.
 
 **Next session, in order.**
-1. **Land Tracks I and J** if the P1 paragraph below says they are still in flight. Each has a
-   write-up in the session scratch directory (`trackI/`, `trackJ/`); if that is gone, re-dispatch.
-   - I makes (MC-89)'s computational leaves human-checkable (field-free where possible), prompted
-     by the (MC-26) erratum.
-   - J works on the last ear cell (MC-117), whose closure would give a second, EAR-only proof of
-     (MC-89).
+1. **Land Track J** if the P1 paragraph below says it is still in flight. Its write-up is in the
+   session scratch directory (`trackJ/`); if that is gone, re-dispatch. J works on the last ear cell
+   (MC-117), whose closure would give a second, EAR-only proof of (MC-89). Track I landed as Step
+   MC20.
 2. **Second readers**, one dispatch each:
    - Step MC19, first (MC-123), (MC-129), (MC-130) and (MC-133);
    - Step MC15's (MC-62)–(MC-67), the part the coverage proof does not use;
-   - Steps MC17–MC18.
+   - Steps MC17–MC18 and Step MC20.
 3. **PI calls, now ripe.**
    - *Architecture.* The census's A′ row said "P3 becomes 'prove the rank on `X₀`', an architecture
      change". That proof now exists, modulo Jackson–Jordán. Should the W4/`hK` Lean plan move to
      the `X₀` induction? What stops: `kres` (held), the contraction kernels, smark's O7e?
    - *Jackson–Jordán.* Cite it or formalize it; the project formalizes everything it uses.
-   - *Characteristic.* The Lean target is over any infinite field. The theorem is characteristic 0
-     because of Jackson–Jordán and the exact-ℚ certificates ((MC-33); Track I).
+   - *Characteristic.* The Lean target is over any infinite field. Since Step MC20, the only
+     characteristic-0 dependence is Jackson–Jordán, whose field-general proof is `[INFORMAL]`
+     (MC-33)(i).
 4. *Structural chore:* `K-main.md` is about 4 900 lines, one section. Consider splitting it by step.
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
@@ -267,10 +266,13 @@ coordinator:
   proof of (MC-87) (MC-119). **(MC-89) stands modulo Jackson–Jordán, in characteristic 0.**
 - In flight, **not in the tree until landed**:
 
-  - I, making (MC-89)'s computational leaves human-checkable, prompted by F's erratum below;
   - J, the one open ear cell (MC-117), which would give a second proof of (MC-89) by the EAR route.
 
   A fresh session re-dispatches whichever of I, J has not landed.
+- **I**, the certificate leaves: landed as §(K-main) **Step MC20**, (MC-134)–(MC-141), not yet
+  second-read. Every computational certificate under (MC-89) has a hand proof over every infinite
+  field, so (MC-89) rests on arguments and Jackson–Jordán alone. Guarding `--lamcap` and `--thetas`
+  is harness debt, left for a deliberate driver-edit commit.
 - **E**, the generic motive (item 5): landed as §(K-main) **Step MC19**, (MC-123)–(MC-133), not yet
   second-read. The A′ graphs add nothing. Feasibility is (F1) and (F2) (MC-123). The generic motive
   reduces to feasible graphs with no `def₂`-rigid subgraph (MC-130), so with (MC-89): **every

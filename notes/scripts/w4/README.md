@@ -938,3 +938,8 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   certificates): `zcore.py` (the hub-plane chart `Z(G)`: draws, nondegeneracy, rank; shared core);
   `zsurvey.py --exh N [--list]`, `e3check.py --exh N`, `zears.py --exh N`, `zlemma.py --exh N --stuck D`,
   `zdirect.py --draws D`, `zk2k.py`, `zrand.py --seed S`, `zstuck.py --seed S`, all importing `zcore`.
+- **Step MC20's drivers** (§(K-main), (MC-134)–(MC-141); exact, deterministic): `certhand.py` asserts the
+  hand proofs of (MC-89)'s former certificate leaves (±1 minors, transversal and collision lemmas,
+  (MC-46)'s strata); `certguard.py (--lamcap | --replay | --thetas S)` is the guarded re-run of
+  `earstep.py --lamcap` / `--thetas`; `orbitaudit.py` audits `earante.py --orbits`' certifying
+  coefficients; `certsearch.py` is the 0/1-point search behind `certhand.py`'s configurations.
