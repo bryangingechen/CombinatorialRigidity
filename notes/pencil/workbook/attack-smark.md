@@ -3275,7 +3275,7 @@ pair `{c, c2}` plus the O3 path), E15 max `2` — two class units, `{c, c2}` ove
 **big** `a`: the O5 path `u — w — a — w2 — v` doubles as a twin bad pair with a big common neighbour (S36(ii)'s last case;
 S25's `k₁` counts it, since a bad pair has no big member but its common neighbour may be big). Each equals the maximum
 S25(vi)'s count `2k₁ + 3k₃ + 2k₅ + 3k₆ ≤ 5` allows on that graph, so on these four graphs relaxations (a)–(d) created no
-spurious damage. (21 147 / 21 147 / 21 147 / 678 570 partitions; `< 30` s each.)
+spurious damage. (4 140 / 21 147 / 21 147 / 678 570 partitions; `< 30` s each.)
 
 **(iii) Figure: the test cluster.** `dmgmax.py --graph E55 --relations "v=u;a=u+b"`: `4 213 597` partitions, `26 223 923`
 patterns, none dropped by `rk P_A ≥ 4`; **max `Dmg = 2`** (upper bound) against `s + ½ = 9/2` — margin `5/2`. Attained by
