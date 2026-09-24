@@ -4,15 +4,15 @@
 **`PencilPair K 3 G`** — since 2026-09-16 a **three**-conjunct motive (bare; under `G.Simple` an
 adjacent-distinct one; under simplicity plus feasibility a generic one). The landed theorem
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) derives
-it from exactly **three carried hypotheses**: **`hcontract`** (W4; Lean build decomposed and
-parked by the **2026-08-05 Lean hold**; informal argument closed, plus one new (α) obligation),
+it from exactly **three carried hypotheses**: **`hcontract`** (W4; **REOPENED 2026-09-23**,
+`notes/pencil/W4-reopen.md`; carries three kernels, (K-c), (K-bare-c), (K-res); (α) sits on (K-bare-c)),
 **`hK`** (kernel (K)) and **`hbareSplit`** (kernel (K-bare)). W0–W3, W5 (L0–L7), `hsplit` and
 `hfresh` are Lean-closed.
 
 **Two tracks since 2026-09-15.** *(1)* **Attack track** — research on the two open kernels,
 one agent per lemma under `/attack <name>` (`HARNESS.md`); each lemma's status surface is
 `notes/attacks/<name>/state.md`. Briefs for **S-mark** (`hbareSplit`, and the split step of
-`hK`) and **(GR-10)** (uniform colouring, the crux of `hK` on the tight stratum) are at
+`hK`) and **(GR-10)** (since the 2026-09-16 re-scope, the char-2 probe of `hK`'s conclusion) are at
 `notes/attacks/{smark,gr10}/brief.md` (PI-reviewed 2026-09-15). **S-mark: route R2 (the split-off antecedent and the IH as
 certificates for the generic point, S14; both kernels take the IH by the PI's 2026-09-16 decision); what is open is
 `hbareSplit` at `m ≤ 4`. Session count, obligation count and next step live only in `notes/attacks/smark/state.md`
@@ -32,8 +32,10 @@ restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scop
 grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **No Lean task queued**; next: `/attack smark` (from its `state.md` *Next steps*) and
-`/attack gr10` session 1, each a main session in its own worktree. Items 7–12 parked.
+to-do list; no blueprint chapter). **Next: the main-component census** (`notes/pencil/W4-reopen.md` P1, docs + driver; T1's Lean
+deferred, `kres` held); `/attack smark` continues in its own worktree.
+**gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only). Other items
+parked.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -46,6 +48,7 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
+**Next: the main-component census** (`notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*).
 **Item 6 is DONE except the deferred A6 — Layer C (C1ℓ–C4ℓ) LANDS 2026-09-17** — A1–A5 the
 pendant law, the combinatorial carriers,
 the vertex 2-cut law and its two corollaries; B1–B6 the four geometric carriers, the joint's row
@@ -67,7 +70,7 @@ added (§6); the gr10 brief restructured into Part A (the live char-2 probe, `hK
 verbatim, obligations O1–O5, the certificate-is-a-proof reading through
 `hasGenericPencilRealization_of_independent_pencilRow_target`) and Part B (the grid route as
 documented fallback, §B3 restated against the landed `hK`). S-mark's own status surface is
-`notes/attacks/smark/state.md` (its only status surface; counts and next step are kept there, not here); (GR-10) has no state file yet — session 1 writes it from Part A. Per this note's own policy (*Hand-off*) the
+`notes/attacks/smark/state.md` (its only status surface; counts and next step are kept there, not here); (GR-10)'s is `notes/attacks/gr10/state.md` — CLOSED 2026-09-23 after one session and review 1 (workbook `attack-gr10.md` S4, S5). Per this note's own policy (*Hand-off*) the
 per-session narrative lives there, not here; the two consumer misreadings the reviews caught are
 in the foundations paragraph below.
 **Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
@@ -79,17 +82,18 @@ re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive
 `Molecular/Induction/ForestSurgery/MaximalChain.lean`). Item 3 is **SETTLED** (PI, option C):
 the reduction stays `[Infinite K]`, the hypothesis lives on the kernel lemmas
 (`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
-`fmlnote:pencil-conditional-realization-pair-field`). No Lean work is queued (*Hand-off*).
+`fmlnote:pencil-conditional-realization-pair-field`). Queued Lean work: none before P1 reports (*Hand-off*).
 Builds need
 `LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
 `.claude/settings.local.json`).
 
 **Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
 base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-07-24 → 07-30),
-`hsplit` in full and `hfresh`'s mechanical discharge (W5-L7c). **Lean, parked:** the W4 build
-(route 3, packaging (b), adjudicated 2026-08-02; fully decomposed, gates N8/N9/N10/N10b
+`hsplit` in full and `hfresh`'s mechanical discharge (W5-L7c). **W4 — REOPENED 2026-09-23** (user;
+route 3, packaging (b), adjudicated 2026-08-02; fully decomposed, gates N8/N9/N10/N10b
 passed; canonical homes `notes/Phase39-design.md` §§ *W4 decomposition recon* / *W4-L4
-identification recon* and `notes/pencil/workbook/W4.md`).
+identification recon* and `notes/pencil/workbook/W4.md`). Task list T0–T4 and the do-not list:
+`notes/pencil/W4-reopen.md`; hold lifted for the wrapper and W4-L4b only (*Blockers*).
 
 **Eight foundations findings from the briefs, the two reviews and the item-4 recon** (the
 writers' readings, to be checked by the PI; this paragraph is a summary — the owning text is the brief or workbook
@@ -129,8 +133,9 @@ ultimately be driven by the math … we shouldn't lock [declined directions] out
 
 ## Lemma checklist — the Lean track
 
-*Items 1–3 unparked 2026-09-15 (PI); items 4–10 stay parked by the hold. Ranked cheapest and
-most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `sorry`.*
+*Items 1–6 unparked 2026-09-15/16 (PI), the **W4 build** item in part 2026-09-23 (*Blockers*);
+the rest stay parked by the hold. Ranked cheapest and most decision-relevant first; each
+carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 - [x] **Girth lemmas** — **DONE 2026-09-15** (design pass same day, `notes/Phase39-design.md`
   § *Lean-track design pass*, leaves G1–G4; red nodes `def:girth`,
@@ -322,9 +327,14 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   machinery (`IsFin3SelectorOf`, `cross₃`, `pencilRow`) exists; the grid geometry does not.
 - [ ] **Tree-triple ⇒ `dim Z = 0`**, and the circular-ladder family (GUNIZERO's uniform
   instance) as a formal witness.
-- [ ] **W4 build**, when commissioned: W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and
-  spike-elaborated), then order-flexibly W4-L1/L2/L3′/L5; residual carry `hnoGood'`
-  (non-vacuous — `|V| = 19` witness — so branch 4 needs content).
+- [ ] **W4 build — REOPENED 2026-09-23, staged; Lean DEFERRED until the census reports**
+  (`notes/pencil/W4-reopen.md` P4, T1–T4). **Unparked:**
+  **T1**, the W4 wrapper — a new declaration producing `hcontract`'s statement with (K-res)
+  (restated against the 2026-09-16 `hK`) and any other unsettled piece as hypotheses, no edit
+  to smark's consumer, red nodes in `pencil.tex`; and **W4-L4b** (`exists_degree_two_of_co1_rigid`,
+  pinned and spike-elaborated). **Parked** until T1 and the (α) recon T2 report, then a PI call:
+  W4-L1/L2/L3′/L5; residual carry `hnoGood'` (non-vacuous — `|V| = 19` witness — so branch 4
+  needs content).
 - [ ] **Reverse arms of the W0 transport** (need a `complementIso` involution lemma) — off
   every critical path (§(K-σ) *Step σ6*).
 
@@ -334,7 +344,9 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   per item. **Lifted 2026-09-15 for checklist items 1–3** (verbatim record
   `notes/pencil/adjudications.md`); **lifted 2026-09-16 for checklist items 4–5** (the R2 Lean
   round; same record, verbatim); **lifted 2026-09-16 for checklist item 6** (the deficiency
-  laws; same record) — items 7–12 stay parked.
+  laws; same record); **lifted 2026-09-23, staged, for the W4 wrapper and W4-L4b only** (user:
+  *"OK, sounds good."* to that recommendation; W4-L1/L2/L3′/L5 await T1 + T2 and one more call;
+  same record) — the other items stay parked.
 - **Item 6's five decisions (D1–D5) — ALL SETTLED 2026-09-16 (user).** Verbatim:
   `notes/pencil/adjudications.md`. Full statements and the recon's reasoning:
   `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, *Open decisions*. The user
@@ -424,9 +436,11 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
   uniform-colouring statement (the weak form of `notes/attacks/gr10/brief.md` §2) is **not**
   being attacked. Verbatim: `notes/pencil/adjudications.md`; the gr10 brief's PI pointer now
   carries the decision, since an attack reads only its brief and state at start.
-- **The (K-res) wave** (a kernel of `hK`'s difficulty class on the complementary habitat,
-  scoped RESGRID, cheap items spent RPOOL) stays a user call; route σ is a live candidate
-  that is not a route to (K-res). Detail: `notes/pencil/arc-worklog.md` *Hand-off*.
+- **(K-res)** (a kernel of `hK`'s difficulty class on the complementary habitat) — **taken
+  up by the 2026-09-23 reopening**: T1's partial pass restated it (residuals only); its Lean is
+  deferred and the `kres` attack held until the census reports (`notes/pencil/W4-reopen.md` P4,
+  P5; the predicted break is girth). W4 also carries (K-c) and (K-bare-c), never attacked.
+  The grid route's (RS-5) is refuted at `R20` (method, not target); route σ is not a route to it.
 - **One L5 residual constrains statements — restated per the item-4 recon (c):** the bare
   `≤ 3`-closedHubNbhd count *alone* is refuted as a feasibility criterion
   (`not_pencilNondegFeasible_of_triangle_two_hubs`, `Motive.lean:684` — its graph is a triangle),
@@ -449,14 +463,16 @@ most decision-relevant first; each carries its crux as a HYPOTHESIS, never a `so
 correct it — A4's sketch, A5's dependency, B1's exposure claim, C1ℓ/C3ℓ's dropped instances,
 C4ℓ's two-input route) are in the *Lemma checklist* A3–C4ℓ entries.
 **Item 6's Lean track is now closed**, except the deferred A6 and the shared-hub-normalization
-factoring item (both tracked, off any consumed path; *Lemma checklist*). **No Lean task is
-queued; both briefs are checked (2026-09-17), and the next concrete tasks are the two attack
-sessions.** **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
-(brief last patched at review 5, workbook S38). **(2)** `/attack gr10` session 1,
-likewise: the char-2 probe as briefed in Part A (O1–O5; driver under
-`notes/attacks/gr10/drivers/`, workbook file `notes/pencil/workbook/attack-gr10.md`); a
-systematic `F_{2^k}` miss is a re-pin trigger for the headline typeclass, so O5 reports to the
-PI. Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
+factoring item (both tracked, off any consumed path; *Lemma checklist*). **W4 is REOPENED
+(2026-09-23); the next concrete commit is the main-component census** — a fresh session reads
+`notes/pencil/W4-reopen.md` *START HERE* first: write up the vertical-projection reformulation
+(F1)–(F3), then a seeded exact driver ranking the main component `X₀` against the target on the
+shape library, with its decision table fixed before any run (P1; (α)'s re-aimed recon rides in
+the same driver, P2). T1's Lean is deferred (P4), `kres` and a contraction attack held (P5). **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
+(brief last patched at review 5, workbook S38). **(2)** gr10 is CLOSED
+(2026-09-23, PI, after review 1): no characteristic-2 miss at any shape tested (workbook
+`attack-gr10.md` S4, S5), so no `[NeZero (2 : K)]` re-pin. Merge branch `attack-gr10`
+when smark is between sessions. Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
 number results S1…/P1… in their workbook files instead; incident 2026-09-15), and
 `/harness-review`, due since five S-mark sessions (candidates in *Blockers*; one more from this
 check in `notes/harness/incidents.md`). When an attack starts, its `state.md` is that
@@ -473,13 +489,12 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
-- **2026-09-17 — both attack briefs CHECKED against the tree (PI-directed docs session; no new
-  mathematics).** S-mark: the session-6 review gate lifted, §3.1/§3.2 verified verbatim, §8
-  repinned, item 6's laws glossed (§4), the `m ≥ 5` adjacency worry added (§6); `state.md`'s PI
-  note updated (O8 deleted ⟹ 2 open obligations). gr10: restructured — Part A the live char-2
-  probe as a route with O1–O5, Part B the grid fallback with §B3 restated against the landed
-  `hK`. One incident filed (file:line pointers rot within days; cite by declaration name).
-
+- **2026-09-23 — W4 REOPENED (user); the hold lifted, staged, for the W4 wrapper and W4-L4b.**
+  Tasks T0–T4: `notes/pencil/W4-reopen.md`; verbatim `notes/pencil/adjudications.md`.
+- **2026-09-23 — strategy re-think (PI-requested; ranking delegated):** census of the main component
+  first, T1's Lean deferred, `kres` held; W4 carries three kernels. `notes/pencil/W4-reopen.md` *START HERE*.
+- **2026-09-17 — both attack briefs CHECKED against the tree** (PI-directed; no new mathematics;
+  one incident: file:line pointers rot within days, cite by declaration name).
 - **2026-09-16 — item 5 LANDED: the kernels take the induction hypothesis, `hK` weakens to the
   generic motive, `PencilPair` gains an adjacent-distinct third conjunct (user: (α), one
   slice).** New motive `HasDistinctPencilRealization`, *never* a conjunct on
@@ -487,33 +502,25 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   `Prop` flag. (c) adder `pencilNondegFeasible_of_le_of_triangleFree`. New informal W4
   obligation. Record: `notes/Phase39-design.md` § *Kernel restatement*; verbatim
   `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
-
 - **2026-09-16 — item 6's D1–D5 SETTLED (user).** Verdicts and rationale: *Blockers* (the
   D1–D5 entry). Verbatim: `notes/pencil/adjudications.md`.
-
 - **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, a user-sanctioned
   exception to the `/review-attack` rewrite path; §§2, 3, 6; O8 deleted (α)). Checked 2026-09-17.
-
 - **2026-09-16/17 — item 6's Layers A/B and C1ℓ–C3ℓ LAND by transcription plus one recon
   spike; no new decisions** (A1–A5 `Deficiency.lean`/`SplitOffDeficiency.lean`; B1–B7
   `Bricks.lean` `section TwoCutCarriers`; C1ℓ–C3ℓ `Molecule/Pencil/TwoCut.lean`; A6 deferred by
   D2). Per-leaf routes, dropped instances and refuted claims are recorded **once** in the
   *Lemma checklist*; blueprint debt extended per leaf (*Blockers*).
-
 - **2026-09-17 — C4ℓ `pencilLoss_vertexTwoCut` LANDS, closing Layer C and item 6's Lean track**
   (except the deferred A6 and the factoring item): A5+B6 only, `hnonadj` binding only through
   A5 — detail in the *Lemma checklist* C4ℓ entry; blueprint debt fully listed, no chapter (D5).
-
 - **2026-09-16 — the Lean hold is LIFTED for item 6 (user); its carrier recon RECORDED**
   (coordinator-accepted) — 6a proved, 6b false without `¬ G.Adj u v`, the slot-trace's 6c claim
   corrected. Leaves/sites *Lemma checklist*; record `notes/Phase39-design.md` § *Item-6 carrier
   recon*; verbatim `notes/pencil/adjudications.md`.
-
-- **2026-09-16 — (GR-10) RE-SCOPED (user).** R2 covers `hK`'s arm at the statement level and (d)
-  drops the chart, hence proviso (P), so the grid/colouring route is no longer the path to `hK`:
-  it stays a **documented fallback** against a stall in S14(iii)/(vii) or O7, and the only live
-  (GR-10) item is the **char-2 probe**. Verbatim: `notes/pencil/adjudications.md`.
-
+- **2026-09-16 — (GR-10) RE-SCOPED (user)** to the char-2 probe, the grid route a documented
+  fallback (R2 plus (d) drop proviso (P) from `hK`); the probe CLOSED 2026-09-23. Verbatim
+  `notes/pencil/adjudications.md`.
 - **2026-09-16 — item 4 (the R2 recon) verdict RECORDED (coordinator-accepted).** (a) rank
   bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; (b) left as
   the PI's (α)/(β) call, (GR-10) scope as the user's. Record `notes/Phase39-design.md` § *R2
@@ -533,15 +540,15 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   two new files. Findings: the consumed shape is a trichotomy (V3); `w ≁ v` only for `m ≤ 4`
   (V4); any hub ⇒ girth `≥ 7` (V5). All eight `sec:pencil-girth-chain` nodes green that day.
 - **2026-09-15 — the Lean hold is LIFTED for checklist items 1–3 (user).** Girth lemmas,
-  consumed-shape normal form, the field-hypothesis decision (recon first, PI decides). Items
-  4–10 stay parked. Verbatim `notes/pencil/adjudications.md`.
+  consumed-shape normal form, the field-hypothesis decision (recon first, PI decides). Verbatim
+  `notes/pencil/adjudications.md`.
 - **2026-09-15 — the research loop is RETIRED; attack tracks replace directions.** Six weeks and
   127 directions moved no carried item; coordinator effort ~55 % process. Rules: `HARNESS.md`;
   mechanics `/attack`, `/review-attack`, `/harness-review`; record `notes/harness/incidents.md`.
 - **2026-08-05 — Lean hold (user).** Lean parked while ideas are sought; every script the
   project runs is committed (`notes/scripts/README.md`).
 - **2026-08-02 — W4 route 3, packaging (b)** adjudicated; (K-res) a byte-identical sibling of
-  `hK`; the build decomposed, then parked by the hold.
+  `hK`; the build decomposed, then parked by the hold (reopened 2026-09-23, above).
 - **2026-07-24 — the phase stays open** rather than splitting at the three carried items.
 - **Pre-arc Lean decisions (W0–W5, 2026-07-23 → 08-04)** — `notes/Phase39-design.md` and
   `notes/pencil/arc-worklog.md` *Decisions made*; the R1–R3 recon verdicts are

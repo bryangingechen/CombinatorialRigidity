@@ -74,11 +74,13 @@ in, so it cannot drift from the prose (`notes/Harness-structure.md` slice 8).
 | label registry + the minting rule | `labels.md` — **read before minting any label** |
 | dispatch specs and landing write-ups | `fanout.md` (ordinals 1–19: `fanout-archive.md`) |
 | archived verbatim user calls | `adjudications.md` |
+| **W4 reopened (2026-09-23)**: hand-off, task list T0–T4, the do-not list | `W4-reopen.md` |
 | the retired loop's final work log, verbatim (2026-09-15) | `arc-worklog.md` — not maintained; live status is `notes/attacks/<name>/state.md` |
 | structural-round work logs | `structure.md`, `cleanup.md` |
 
 `grid.md` and `W4.md` keep several sections each rather than one: `grid.md` is
-97% a single `§(K-grid)` section, and `W4.md`'s arc is closed and parked, so
+97% a single `§(K-grid)` section, and `W4.md`'s arc is closed as argument (the build
+reopened 2026-09-23, `W4-reopen.md`), so
 splitting them further would restructure sections rather than move them.
 
 ## Writing a claim

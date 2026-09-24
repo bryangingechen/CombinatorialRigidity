@@ -623,3 +623,59 @@ variety layer; the user's call stands, and the resulting **blueprint debt is tra
 in `notes/Phase39.md` *Blockers*, since `checkdecls` cannot see a decl that has no node.
 **Everything else stands unchanged:** phase OPEN (2026-07-24), W4 parked, (GR-10) re-scoped,
 items 7–12 parked, S-mark session 6 after the brief rewrite.
+
+## 2026-09-23 — W4 REOPENED; the Lean hold lifted, staged, for the W4 wrapper and W4-L4b
+
+Recorded from the hand-off `notes/pencil/W4-reopen.md`, written at the end of attack gr10
+session 1 at the PI's request and revised after `/review-attack gr10`. After gr10 closed, the
+user said: **"OK, I'd like to reopen W4."** — and, on where to run it: **"I'll probably run it
+in this same worktree as the smark agent is still proceeding in the main one."**
+
+**The mathematical reason** (the 2026-09-03 directive re-opens a declined direction on a
+mathematical reason, not on permission; the 2026-08-02 park rested on (K-res) and the pinned
+`hK` sharing their crux). These are the agent's reasons as put; the user's call was the
+reopening. *(1)* smark's `hK` side is closed informally — `notes/attacks/smark/state.md`:
+"Case (iii), `hK`, all `m` — closed modulo O9 (written, S16(vi))", with S19 and S16(vi)
+re-derived at review 4 (workbook S23(iv)) and S21(v) confirmed at S24(ii); smark's open pieces
+are all `hbareSplit` on the infeasible arm, which a residual never reaches. *(2)* (K-res) as
+written (`notes/pencil/workbook/W4.md` § *widened kernels*, *Step 4*) predates the 2026-09-16
+kernel restatement (no induction hypothesis, chart-form conclusion), so it cannot receive R2's
+argument. *(3)* The grid route's residual criterion (RS-5) is refuted at `R20` — a verdict on the
+method, not the target.
+
+**Gate G0 — the hold's scope.** Asked whether the 2026-08-05 hold lifts for the whole W4 build
+item or only for the (K-res) design pass's wrapper, the agent recommended a **staged lift**:
+lift now for (i) the **W4 wrapper** — a new declaration carrying (K-res), and any other
+unsettled piece, as hypotheses; no `sorry`; no edit to smark's consumer — and (ii) **W4-L4b**
+(`exists_degree_two_of_co1_rigid`, a pure graph lemma, pinned and spike-elaborated, independent
+of (K-res) and (α)); keep **W4-L1/L2/L3′/L5 parked** until the (K-res) design pass (T1) and the
+(α) recon (T2) report, then one more call. The user said: **"OK, sounds good."**
+
+**Three further calls the same day.** *(a)* (K-res)'s habitat antecedent (residuals only, or
+also `hK`'s feasible habitat): **"design pass decides"** (the agent's suggested default was
+residuals only, matching packaging (b)). *(b)* The (K-res) attack's name: **`kres`** (the
+hand-off's record; not a verbatim quote). *(c)* Merging (the hand-off's record, not verbatim):
+branch `attack-gr10` merges into master only while the smark agent is between sessions, never
+under a running smark session; rebase or merge commit is the PI's call at that moment.
+
+**Everything else stands unchanged:** phase OPEN (2026-07-24); the 2026-08-02 route-3
+packaging-(b) adjudication, which the reopening builds rather than re-decides; `hK`,
+`hbareSplit`, `pencilPair_of_splitOff_of_habitat` and the headline theorem are not edited; the
+other parked checklist items stay parked; smark continues in the main checkout.
+
+## 2026-09-23 — strategy re-think requested; the directions' ranking delegated to the agent
+
+Later the same session, after the T1 design pass surfaced two further W4 kernels, the user asked
+whether the queued attacks would "spiral out more attacks" and then: **"Are there other potential
+high-level proof strategies we should try pursuing (even if we have to give up our work in
+progress)? Alternatively: ways to find counterexample candidates that could narrow the viable
+approaches."** — and, on the answer: **"OK, let's write these up as potential directions in the
+handoff doc and prioritize them according to your judgment. I guess we'll want to kick this off
+in a fresh session?"** The ranking is the agent's (`notes/pencil/W4-reopen.md` *START HERE*:
+P1 a census of the main component of the configuration space, docs + driver; P2 the (α) recon
+re-aimed and folded into it; P3 a follow-up shaped by P1; P4 T1's Lean deferred; P5 `kres` and a
+contraction attack held). **Nothing is commissioned by this entry**; the fresh session starts P1
+on the PI's word. **Still open from the same session:** T1's scope question (full L3′-successor
+wrapper, residual-branch producer only, or design doc only) — asked, discussed, not answered.
+**Everything else stands unchanged:** phase OPEN; W4 reopened with the hold lifted (staged) as
+recorded above; smark continues in the main checkout.
