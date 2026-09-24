@@ -89,7 +89,13 @@ chart write `p_v = (q_v, z_v)`, a planar position and a height.
   included (3-connected; smark brief §3(a)/(c)) — under the Jackson–Jordán caveat above.
 
 **P1 — the main-component census. FIRST; docs + driver, bounded; can run in this worktree,
-independent of smark.**
+independent of smark.** *In progress, 2026-09-23.* Steps 1, 2 and 4 are done: the write-up is
+`notes/pencil/workbook/K-main.md` §(K-main), tag `MC-`, and the driver is
+`notes/scripts/w4/maincomp.py`. (F1)–(F3) are (MC-1)–(MC-3), checked. A new identity, (MC-4), makes
+the flat rank exact: it equals `6|V| − 3 − dim L(q)`, with `dim L(q) ≥ 3 + def₂`. So "`X₀` flat ⇒
+`def₂ = def₃`" is proved without Jackson–Jordán ((MC-5)(iii)). The populations and the decision
+table were fixed in that section before any census run. **Next: step 3, the census run.** The
+by-product below needs Jackson–Jordán at `G` (§(K-main) *Step MC5*).
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
 2. A seeded, exact driver (`notes/scripts/README.md` rules; `HARNESS.md` *Reproducibility*)
