@@ -9,8 +9,9 @@ pointers are by declaration name; Lean unchanged since `084ee4ff`. Revised after
 prioritized direction list, which now sets the order), T1's partial findings, the corrected
 *Open on W4*, T2 re-aimed, T3 held.**
 **Current next-task source (2026-09-24): P1's *later* 2026-09-24 paragraph and its final *Next*
-list** — the unranked directions assessed and landed as §(K-main) Steps MC11–MC14; every tested
-graph is covered by the `X₀` induction, and the open items are class statements.
+list** — the unranked directions assessed and landed as §(K-main) Steps MC11–MC14. The `X₀`
+induction covers every tested graph, but **coverage is measured, not proved**: the open problem is
+the coverage theorem, its structural and certificate halves ((MC-61)).
 
 **The decision (user, 2026-09-23, verbatim):** *"OK, I'd like to reopen W4."* — and on where to
 run it: *"I'll probably run it in this same worktree as the smark agent is still proceeding in
@@ -180,26 +181,37 @@ prepared to handoff what we have then)."* The plan, one commit per step, each dr
   re-derived by a second agent.
 - **Step 4 — LANDED:** Step MC14 ((MC-52)–(MC-61), `w4/x0arms.py`), which counts what an induction
   with motive (MC-10)(a) reaches using only landed steps: cut vertices and bridge chains are fibre
-  products (MC-52), (MC-53); the open 1-ear at `δ = 0` is a corollary of Step MC10 (MC-54); a
-  `def₂`-rigid core needs no per-graph contraction certificate, modulo Jackson–Jordán (MC-59), so
-  every `K₄` necklace attains on `X₀` (MC-60). **Every tested graph is covered**: all 7 980 simple
-  2EC graphs on ≤ 8 vertices ((MC-57), exhaustive), every member of every census population with
-  Step MC13's cells ((MC-58)), and `N(3..8)`. What remains is class statements, not graphs (MC-61).
-  The hybrid recon's 48-graph "REST" and "887/888" were artifacts of its step set and of a
-  first-arm-only recursion.
+  products (MC-52), (MC-53); an open ear with `k ≤ 4` at `δ = 0` needs no antecedent (MC-54), which
+  closes (MC-51)'s cells there; a `def₂`-rigid core needs no per-graph contraction certificate,
+  modulo Jackson–Jordán (MC-59), so every `K₄` necklace attains on `X₀` (MC-60). **Every tested
+  graph is covered** — all 7 980 simple 2EC graphs on ≤ 8 vertices ((MC-57), exhaustive), every
+  member of every census population with Step MC13's cells ((MC-58)), `N(3..8)` — **but this is a
+  measurement, not a coverage theorem** (MC-61). The hybrid recon's 48-graph "REST" and "887/888"
+  were artifacts of its step set and of a first-arm-only recursion.
 
-**Next (PI's call).** All five steps have landed. Every tested graph is covered, and what is open is
-the class form of the per-graph certificates (MC-61). The smallest commits, in the agent's order:
-1. **Second readers** on the new load-bearing claims — (MC-37)/(MC-39) (the contraction step),
-   (MC-45)/(MC-46) (the short ears), (MC-59) (the flat core), (MC-52)/(MC-53) — read-only, one
-   dispatch each. Every one of these was derived by one agent and checked by one more at most.
-2. **The adversarial census**, run through both `maincomp.py` (does `X₀` attain?) and `x0arms.py`
-   (does the induction reach it?): `n = 9–14`, biased to 2-edge-cuts and large `def₂ − def₃`. A
-   `SHORT`, or a second structural class of uncovered graphs, is the stop-rule trigger.
-3. **The class statements**, each as a bounded attempt under the stop rule: (MC-39)'s (i)/(ii) at a
-   core with `def₂(H) > 0` (lifting-space linear algebra, where scene-analysis counts may apply);
-   the open 1-ear at `1 ≤ δ ≤ 4` ((MC-51)(c), reduced to one condition at the chord point, (MC-50));
-   (MC-51)(a).
+**Next (PI's call) — the open directions, for a fresh session.** All five steps have landed. The
+`X₀` induction covers every tested graph, but **there is no coverage theorem** (MC-61). By (MC-56), a
+theorem that every simple 2EC graph satisfying (H) is covered proves (MC-10)(a) by this strategy, so
+it is the whole remaining problem here. Its two halves: the **structural half**, that every such
+graph admits some step; and the **certificate half**, that each step's per-graph certificates hold
+in general. The smallest commits first:
+1. **Second readers**, read-only, one dispatch each, on the new load-bearing claims: (MC-37)/(MC-39)
+   (the contraction step), (MC-45)/(MC-46) (the short ears), (MC-54), (MC-59) (the flat core),
+   (MC-52)/(MC-53) (cut vertices and bridges), and Step MC14's reading that (MC-22)–(MC-25) need no
+   `a ≁ b` (three `k = 4` covers rest on it). Each was derived by one agent and checked by one more at
+   most.
+2. **The adversarial census** — the cheapest test of the structural half — run through both `maincomp.py` (does `X₀`
+   attain?) and `x0arms.py --ear23 antecedent` (does the induction reach it?): `n = 9–14`, biased to
+   2-edge-cuts and large `def₂ − def₃`. A `SHORT`, or an uncovered graph, triggers the stop rule.
+3. **The structural half, a recon on the combinatorics:** which simple 2EC graphs with `def₂ > def₃` admit no step?
+   Candidates: a proper rigid set but none with a simple quotient (Katoh–Tanigawa's Lemma 6.5 case),
+   and 2-edge-cuts with no degree-2 chain.
+4. **The certificate half, as bounded attempts under the stop rule:** (MC-39)'s (i)/(ii) at a core with `def₂(H) > 0`
+   (lifting-space linear algebra, where scene-analysis counts may apply); the open 1-ear at
+   `1 ≤ δ ≤ 4` ((MC-51)(c), reduced to one condition at the chord point, (MC-50)); (MC-51)(a) at
+   `δ ≥ 1`; and Jackson–Jordán, cited or formalized.
+5. **Outside `X₀`:** the generic motive at A′ graphs, where `X₀` gives only the distinct motive
+   ((MC-9), (MC-14)); none of Steps MC11–MC14 addresses it.
 
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).
@@ -272,7 +284,8 @@ keeping smark's 2-cut composition with the motive "attains at the generic point 
   (MC-43)–(MC-51), `w4/earante.py`, `m2/earbad.m2`): `k = 3` in every orbit, `k = 2` in orbits
   (i)/(ii) with `dim U ≠ 1`, and every (R_k) from the chord. smark's O7e is not needed in this
   induction. With cut vertices and bridge chains (fibre products), ears, split-off, the flat point
-  and contraction, **every tested graph is covered** (Step MC14, (MC-52)–(MC-61), `w4/x0arms.py`):
+  and contraction, **every tested graph is covered** — measured, with no coverage theorem yet
+  (Step MC14, (MC-52)–(MC-61), `w4/x0arms.py`):
   all 7 980 simple 2EC graphs on ≤ 8 vertices, every member of every census population, `N(3..8)`.
   The recon's "the uncovered class is infinite" and "887/888 habitat members reach it" were
   artifacts of its step set and of a first-arm-only recursion.

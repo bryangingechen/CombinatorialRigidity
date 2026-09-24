@@ -32,7 +32,7 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   - Open ears with `k ≤ 3` were left open (MC-27). **Step MC13** (a second reading, 2026-09-24)
     closes most of them with the antecedent `X₀(G′ + ear_{k−1})`: `k = 3` in every orbit (MC-45);
     `k = 2` when the generic flags are in orbit (i)/(ii) and `dim U ≠ 1` (MC-46); the chord gives
-    every (R_k) (MC-44); `k = 1` at `δ ≥ 5` (MC-49), (MC-31), and at `δ = 0` (MC-54). Open: (MC-51)(a)–(c). On `hK`'s
+    every (R_k) (MC-44); `k = 1` at `δ ≥ 5` (MC-49), (MC-31); every short ear at `δ = 0` (MC-54). Open: (MC-51)(a)–(c) at `δ ≥ 1`. On `hK`'s
     habitat only `k = 1`, `δ ≤ 4` remains, modulo Jackson–Jordán (MC-48).
   - The relative-dof conjecture (MC-23) is certified on ≤ 7 vertices, and reduced to (MC-10)(a)
     at `G′` and `G′ + ab` when `a ≁ b` and `δ ≤ 5` (MC-44).
@@ -50,11 +50,13 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   statements (MC-41). Every sampled run where they are certified attains (MC-40). A second reader
   is owed.
 - Step MC14, the reach of the `X₀` induction (`w4/x0arms.py`): cut vertices and bridge chains are
-  fibre products (MC-52), (MC-53); the open 1-ear at `δ = 0` is a corollary of Step MC10 (MC-54); a
-  `def₂`-rigid core needs no contraction certificate, modulo Jackson–Jordán (MC-59), so **every `K₄`
-  necklace attains on `X₀`** (MC-60). With every landed step, **every tested graph is covered**: all
-  7 980 simple 2EC graphs on ≤ 8 vertices (MC-57), every census population (MC-58), `N(3..8)`. What
-  remains are class statements, not graphs (MC-61). A second reader is owed.
+  fibre products (MC-52), (MC-53); an open ear with `k ≤ 4` at `δ = 0` needs no antecedent (MC-54),
+  closing (MC-51)'s cells there; a `def₂`-rigid core needs no contraction certificate, modulo
+  Jackson–Jordán (MC-59), so **every `K₄` necklace attains on `X₀`** (MC-60). **Every tested graph is
+  covered** — all 7 980 simple 2EC graphs on ≤ 8 vertices (MC-57), every census population (MC-58),
+  `N(3..8)` — **but that is a measurement: there is no coverage theorem** (MC-61). Proving one, both
+  its structural and its certificate half, is the remaining problem for this strategy. A second
+  reader is owed.
 - *Jackson–Jordán beyond `ℝ`* (MC-33): a second reading finds every step of their proof field-free
   after two small repairs and one bypass (`INFORMAL`), and `jjchar.py` exhibits (MC-4)(b)'s
   equality in characteristics 2, 3, 101 and 10 007 at every simple 2EC graph on ≤ 8 vertices.
@@ -905,9 +907,10 @@ Jackson–Jordán, `a` and `b` then lie in a common `def₂`-rigid subgraph. Tha
 > (MC-51).)*
 
 **What an ear-only induction on `X₀` still lacks** *(as updated by Step MC13)*.
-- The open-ear cells of (MC-51)(a)–(c): `k = 2` with `dim U = 1`; `k = 2` in orbit (iv), modulo
-  Jackson–Jordán; `k = 1` with `1 ≤ δ ≤ 4` (`δ = 0` is (MC-54)). Step MC14 counts what the steps
-  reach: every tested graph.
+- The open-ear cells of (MC-51)(a)–(c) at `δ ≥ 1` (at `δ = 0` all three close, (MC-54)): `k = 2`
+  with `dim U = 1`; `k = 2` in orbit (iv), modulo Jackson–Jordán; `k = 1` with `1 ≤ δ ≤ 4`. Step
+  MC14 counts what the steps reach on tested graphs — every one — but there is no coverage
+  theorem (MC-61).
 - Graphs of minimum degree `≥ 3` have no removable ear with an interior vertex, so they need a
   chord or contraction step, which the ear step does not supply. The contraction step is Step MC12, conditional on (MC-39)'s
   (i) and (ii).
@@ -1811,7 +1814,9 @@ instance on ≤ 8 vertices.
 > **Open:**
 > - **(a)** `k = 2` with `dim U = 1`, in orbits (i)–(iii). The 1-ear antecedent is not dominant, and
 >   in orbit (iii) `λ = 1` besides. The bad sets are (MC-46) in (i)–(ii) and (MC-47)(ii) in (iii).
+>   *(Closed wherever `δ = 0`: (MC-54), Step MC14.)*
 > - **(b)** `k = 2` in orbit (iv) (`U = 0`): closed only modulo Jackson–Jordán (MC-47)(i).
+>   *(Closed wherever `δ = 0` without Jackson–Jordán: (MC-54), Step MC14.)*
 > - **(c)** `k = 1` with `dim U ≥ 2` and `δ ≤ 4`: `(P₁)`. *(At `δ = 0` it holds: (MC-54), Step MC14;
 >   the open cell is `1 ≤ δ ≤ 4`.)* (MC-50) reduces it to one condition at
 >   the chord point. `k = 1` with `dim U = 1` (dominance fails, and in orbit (iii) `λ = 1`) is open
@@ -1877,17 +1882,18 @@ attainment screen of `G′`, which is a certificate and is re-derived exactly; `
 `w4/x0arms.py` (new). It replaces four scratch probes of the feasibility recon of W4-reopen's
 third unranked direction (the `X₀` hybrid): a first-arm classifier, a recursion, a necklace check
 and a gluing check. The question: take an induction on `|V|` whose motive is (MC-10)(a),
-"`X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)`". Which graphs does it reach, using only
-the landed steps and the lemmas proved here? Every `PROVED` claim below was derived by that agent
-end to end. None has had a second reader. Written against Steps MC10–MC12; the coordinator folded in
-Step MC13's `k = 2, 3` cells, which landed while it ran.*
+"`X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)`". Which graphs does it reach, using the
+landed steps and the lemmas proved here? Every `PROVED` claim below was derived by that agent end
+to end. None has had a second reader. **Coverage is measured here, not proved:** there is no theorem
+that every graph is covered ((MC-61)).*
 
 **Covered.** A graph `G` satisfying (H) is **covered** if some step below applies at `G` and every
 graph the step consumes is covered.
 - Every step consumes graphs with fewer vertices (MC-55)(i). So "covered" is well defined by strong
-  induction on `|V|`.
-- It does not depend on the order in which steps are tried.
+  induction on `|V|`, and it does not depend on the order in which steps are tried.
 - The driver reports the *first* covering step in the order of the table.
+- Two switches: `--ear23 antecedent` turns on Step MC13's cells; `--delta0 off` drops (MC-54).
+  The default is `--ear23 none --delta0 on`.
 
 | step | claim | consumes | applicability |
 |---|---|---|---|
@@ -1897,16 +1903,31 @@ graph the step consumes is covered.
 | BRIDGE | (MC-53): a chain of bridges | the two pieces | structural |
 | EAR, closed or open `k ≥ 5` | (MC-20) | `G′` | structural |
 | EAR, open `k = 4` | (MC-24), (MC-25) | `G′`, `G′ + ear₂` | structural |
-| EAR, open `k = 2, 3` | (MC-45), (MC-46) (Step MC13); driver switch `--ear23 landed` | `G′`, `G′ + ear_{k−1}` | at `k = 2`: orbit (i) and `dim U ≥ 2` certified at one `q ∈ U(G′)` |
-| SPLITOFF | (MC-31): `δ ≥ 5` | `G″ = G.splitOff x a b` | structural, plus JJ at `G″` |
+| EAR, open `k = 3` (`--ear23`) | (MC-45), every orbit | `G′`, `G′ + ear₂` | structural |
+| EAR, open `k = 2` (`--ear23`) | (MC-46): orbit (i) or (ii), `dim U ≠ 1` | `G′`, `G′ + ear₁` | `dim U ≥ 2` certified at `q ∈ U(G′)` |
+| SPLITOFF | (MC-31): `δ ≥ 5` | `G″ = G′ + ab` | structural, plus JJ at `G″` |
 | FLAT | (MC-5)(ii): `def₂ = def₃` | — | structural, plus JJ at `G` |
-| EAR, open `k = 1`, `δ = 0` | (MC-54) | `G′` | `dim U ≥ 2` certified at one `q ∈ U(G′)` |
+| EAR, open `k = 2, 3` at `δ = 0` | (MC-54) | `G′` | structural |
+| EAR, open `k = 1` at `δ = 0` | (MC-54) | `G′` | `dim U ≥ 2` certified at `q ∈ U(G′)` |
+| EAR, open `k = 2`, orbit (iv) (`--ear23`) | (MC-47)(i), modulo JJ | `G′` | `δ₂ = 0` (combinatorial) |
 | CONTRACT | (MC-39) | `H = G[W]`, `G/H` | structural (`W`, `G/H` simple), plus (i) and (ii) certified at one exact picture |
 
-"JJ at `G`" is the equality `ℓ₀(G) = 3 + def₂(G)`. It is Jackson–Jordán's theorem in
-characteristic 0, and (MC-33) beyond. The driver does not cite it: it **exhibits** one admissible `q`
-with `dim L(q) = 3 + def₂` at every graph where a step needs it. Such a `q` lies in `U`. So on the
-tested graphs no step uses the citation. A class statement built from these steps does use it.
+- **JJ at `G`** is the equality `ℓ₀(G) = 3 + def₂(G)`. It is Jackson–Jordán's theorem in
+  characteristic 0, and (MC-33) beyond. The driver does not cite it: it **exhibits** one admissible
+  `q` with `dim L(q) = 3 + def₂` at every graph where a step needs it. Such a `q` lies in `U`, so on
+  the tested graphs no step uses the citation. A class statement built from these steps does.
+- **The flag orbit and `dim U`** are read in exact ℚ over the whole fibre `L(q)`, at up to three
+  pictures `q` certified in `U(G′)`. "`p_b ∉ π_a`", "`p_a ∉ π_b`" and "`dim U ≥ d`" are open
+  conditions on the irreducible `B(G′)`. So what one certified `q` shows holds at `X₀(G′)`'s generic
+  point, and conditions shown at different `q` combine. `dim U ≥ 2` also excludes orbits (iii) and
+  (iv). This is the coordinator's "read at an attaining draw", in fibre form: attainment of `G′` is
+  not needed for it; the induction supplies that separately.
+- **Orbit (iv)** is recognised by `δ₂ := def₂(G′) − def₂(G′/ab) = 0`, that is, `a` and `b` lie in a
+  common `def₂`-rigid subgraph ((MC-13)(b)'s argument, which does not use `a ∼ b`). That gives
+  `U = 0` modulo JJ.
+- **(MC-44)** is not a step. Where `a ≁ b`, it supplies `(R_k)` from the chord gadget and so
+  removes (MC-24)'s dominance requirement for `(R₁)`, `(R₂)`. (MC-46) and (MC-49) use it; the table
+  records their conditions as landed.
 
 > **(MC-52)** `[PROVED]` *(a cut vertex; the hybrid recon's "Aff-gauge fibre product", re-derived)*
 > Let `G = G₁ ∪ G₂` with `V(G₁) ∩ V(G₂) = {v}` and disjoint edge sets, where `G₁` and `G₂` satisfy
@@ -1922,20 +1943,19 @@ tested graphs no step uses the citation. A class statement built from these step
 *Proof.* Write `val(𝒫) = D(|𝒫| − 1) − (D − 1)d(𝒫)`, with `D = 3` for `def₂` and `D = 6` for `def₃`.
 - (i) Restrict a partition `𝒫` of `V` to `𝒫ᵢ` on `V(Gᵢ)`. Every edge lies in one `Gᵢ`, and it
   crosses `𝒫` iff it crosses `𝒫ᵢ`, so `d(𝒫) = d(𝒫₁) + d(𝒫₂)`. A part meeting both sides is counted
-  twice, and `v`'s part does meet both, so `|𝒫| − 1 ≤ (|𝒫₁| − 1) + (|𝒫₂| − 1)`. Hence
+  twice, and `v`'s part does, so `|𝒫| − 1 ≤ (|𝒫₁| − 1) + (|𝒫₂| − 1)`. Hence
   `val(𝒫) ≤ val(𝒫₁) + val(𝒫₂)`. Conversely, two partitions glued along `v`'s parts give equality.
 - (ii) A motion of `G` is a pair of motions of `G₁` and `G₂` that agree at `v`. Evaluation at `v`
-  maps each motion space onto `K⁶` (constant motions), so
-  `dim M_G = dim M_{G₁} + dim M_{G₂} − 6`. Then use `rank R = 6|V| − dim M` and
-  `|V| = |V₁| + |V₂| − 1`. Nothing divides.
+  maps each motion space onto `K⁶` (constant motions), so `dim M_G = dim M_{G₁} + dim M_{G₂} − 6`.
+  Then use `rank R = 6|V| − dim M` and `|V| = |V₁| + |V₂| − 1`. Nothing divides.
 - (iii) Only `v`'s condition changes. `N_G[v] = N₁[v] ∪ N₂[v]`, and each `Nᵢ[v]` has at least 3
   non-collinear points. So `z|N_G[v]` is affine iff the two interpolants `h¹_v`, `h²_v` coincide.
-  Given any `z¹ ∈ L_{G₁}` and `z² ∈ L_{G₂}`, put `g := h¹_v − h²_v ∈ Aff`. Then `(z¹, z² + g)` lies
-  in `L_G(q)`, since `z²_v + g(q_v) = z¹_v`, and `g` is the only such correction. This gives the
+  Given any `z¹ ∈ L_{G₁}` and `z² ∈ L_{G₂}`, put `g := h¹_v − h²_v ∈ Aff`. Then `(z¹, z² + g)` lies in
+  `L_G(q)`, since `z²_v + g(q_v) = z¹_v`, and `g` is the only such correction. This gives the
   dimension and ontoness onto `L_{G₁}`, and onto `L_{G₂}` by symmetry.
 - (iv) By (iii), the minimum `ℓ₀(G)` is attained where both restrictions of `q` lie in `U(Gᵢ)`.
   There the restriction `B(G) → B(Gᵢ)` is dominant: the planar picture restricts onto an open set,
-  and the fibres map onto by (iii). `B(G)` is irreducible. So a nonempty open set of its points maps
+  and the fibres map onto by (iii). `B(G)` is irreducible, so a nonempty open set of its points maps
   into both of the open sets where `G₁` and `G₂` have their generic ranks. There (ii) and (i) give
   `rank R_G = tgt(G)` iff both pieces attain, since each rank is at most its target. ∎
 
@@ -1973,20 +1993,33 @@ tested graphs no step uses the citation. A class statement built from these step
   In each case a suitable `g` exists for every pair `(z¹, z²)`, so both restrictions are onto.
 - (iv) As in (MC-52)(iv). ∎
 
-> **(MC-54)** `[PROVED]` *(the open 1-ear at `δ = 0`; a corollary of (MC-16)–(MC-22))* Let
-> `G = G′ + (a − x − b)` with `a ≠ b` hubs, `G′` satisfying (H), and
-> `δ = def₃(G′) − def₃(G′/ab) = 0`. Suppose `dim U ≥ 2` at `X₀(G′)`'s generic point. If `X₀(G′)`
-> attains, then `X₀(G)` attains.
+> **(MC-54)** `[PROVED]` *(the short open ear at `δ = 0`: no antecedent, no orbit condition, no
+> Jackson–Jordán)* Let `G = G′ + ear_k` be an open ear with `1 ≤ k ≤ 4`, `G′` satisfying (H), and
+> `δ = def₃(G′) − def₃(G′/ab) = 0`. For `k = 1` suppose also that `dim U ≥ 2` at `X₀(G′)`'s generic
+> point. If `X₀(G′)` attains, then `X₀(G)` attains.
 
-*Proof.* `dim U ≥ 2` gives dominance (MC-18)(b). It also excludes orbit (iii), where
-`U ⊆ p̂_a^⊥ ∩ p̂_b^⊥ = Kℓ_ab`. So `λ = 2` (MC-19)(b). Where `G′` attains, `r ≤ δ = 0` (MC-16), so
-`ρ = 0`, and (R₁) and (P₁) of (MC-22) hold with nothing to check. (MC-22) concludes. Directly,
-(MC-16) gives `dim M_G = dim M_{G′} + 2 − 2 = 6 + def₃(G′)`, and `def₃(G) = def₃(G′)` by (MC-17). ∎
+*Proof.* Where `G′` attains, `r ≤ δ = 0` (MC-16). So `ρ = 0`, and (MC-22)'s `(R_k)` and `(P_k)`
+hold with nothing to check. (MC-22) needs two more things:
+- dominance: (MC-18)(a) for `k ≥ 2`; for `k = 1`, (MC-18)(b) with `dim U ≥ 2`;
+- `λ = k + 1`: (MC-19)(b) for `k ≥ 2`, in every orbit. For `k = 1`, `dim U ≥ 2` excludes orbit
+  (iii), where `U ⊆ p̂_a^⊥ ∩ p̂_b^⊥ = Kℓ_ab`.
 
-(MC-27) stays open as stated: its content is `r ≥ 1`. The driver certifies `dim U ≥ 2` at one
-`q ∈ U(G′)`. That is a lower bound for the generic `dim U`, by semicontinuity on the bundle
-`B(G′)`. Orbit (iv) at `δ = 0` (`U = 0`) is also harmless, by the remark after (MC-26), but only
-modulo Jackson–Jordán, and the driver does not use it.
+Directly, (MC-16) gives `dim M_G = dim M_{G′} = 6 + def₃(G′)`, and `def₃(G) = def₃(G′)` by
+(MC-17). ∎
+
+What this does to (MC-51)'s open cells:
+- (a) (`k = 2`, `dim U = 1`, orbits (i)–(iii), including `a ∼ b`) is closed wherever `δ = 0`.
+- (b) (`k = 2`, orbit (iv)) is closed wherever `δ = 0`, **without** Jackson–Jordán.
+  - (MC-47)(i) needs JJ only to get from `U = 0` to `r = 0`. The step itself needs only `r = 0`,
+    and `δ = 0` gives that.
+  - `δ = 0` is combinatorial. It holds whenever `δ₂ = 0`, since a common `def₂`-rigid subgraph is
+    `def₃`-rigid, and merging it into a maximizing partition gives `def₃(G′/ab) = def₃(G′)`. The
+    driver asserts this at every `δ₂ = 0` pair it meets.
+- (c) (`k = 1`, `δ ≤ 4`) is closed at `δ = 0` when `dim U ≥ 2`.
+
+(MC-45)'s proof already notes that "at `r = 0` there is nothing to prove". (MC-54) makes that
+remark a step, keyed to the combinatorial `δ`. `earante.py --exh 6` finds `r = 0` at all 354 of its
+non-adjacent pairs, so on small graphs this is the typical case.
 
 > **(MC-55)** `[PROVED]` *(the induction stays inside (H))*
 > **(i)** Every graph a step consumes satisfies (H) and has fewer vertices. In particular, the
@@ -2021,8 +2054,8 @@ modulo Jackson–Jordán, and the driver does not use it.
 - (iv) `u`'s plane is fixed by `N_{G−v}[u]`, which has `≥ 3` non-collinear points, and it fixes
   `z_v`. Rank and counts are (MC-53)'s one-bridge computations, with `{v}` as one side. ∎
 
-**How the induction treats graphs that fail (H): they never arise**, by (i). The driver asserts,
-for every step it takes, that each consumed graph is smaller and satisfies (H). The recon's leaf
+**How the induction treats graphs that fail (H): they never arise**, by (i). For every step it
+takes, the driver asserts that each consumed graph is smaller and satisfies (H). The recon's leaf
 lemma is (iv), recorded but unused.
 
 > **(MC-56)** `[PROVED]` *(covered graphs attain)* If `G` is covered, then `X₀(G)` attains.
@@ -2033,94 +2066,107 @@ certificate a step uses is exact:
 - the flag orbit and `dim U`: exact ℚ at such a `q`;
 - (MC-39)'s (i) and (ii): as `coreshrink.py` certifies them, exact ℚ at certified pictures. ∎
 
-A covered graph is therefore proved to attain to exactly the standard of the steps it uses.
-Second readings are owed on Step MC10's ear claims (checked by the coordinator only), on (MC-37),
-and on this step. On `≤ 8` vertices, and in every census population, attainment is already
-certified graph by graph (MC-7). What the coverage adds there is the **reach of a proof strategy**.
+A covered graph is therefore proved to attain to exactly the standard of the steps it uses. The
+exception is the orbit-(iv) cell (MC-47)(i), which is modulo JJ; it is reported apart and is never
+needed below. Second readings are owed on Step MC10's `k ≥ 4` ear claims, on (MC-37), and on this
+step. On `≤ 8` vertices, and in every census population, attainment is already certified graph by
+graph (MC-7). What the coverage adds there is the **reach of a proof strategy**.
 
-> **(MC-57)** `[MEASURED]` *(`x0arms.py --exh 8`; exhaustive: every simple 2EC graph on ≤ 8 vertices,
-> 7 980)* **The steps above cover all 7 980.** By first covering step:
+> **(MC-57)** `[MEASURED]` *(`x0arms.py --exh 8`; exhaustive: every simple 2EC graph on ≤ 8
+> vertices, 7 980)* **The default steps cover all 7 980, and so do the default steps plus Step MC13's cells.**
+> By first covering step:
 >
-> | | BASE | THETA | CUT | EAR `k = 4` | FLAT | EAR `k = 1`, `δ = 0` | CONTRACT | uncovered |
-> |---|---|---|---|---|---|---|---|---|
-> | all 7 980 | 6 | 16 | 319 | 4 | 7 568 | 18 | 49 | 0 |
-> | the 134 with `def₂ > def₃` | 5 | 13 | 45 | 4 | — | 18 | 49 | 0 |
+> | | BASE | THETA | CUT | EAR `k = 4` | EAR `k = 3` (MC-45) | FLAT | EAR `δ = 0`, `k = 2, 3` | EAR `δ = 0`, `k = 1` | CONTRACT | uncovered |
+> |---|---|---|---|---|---|---|---|---|---|---|
+> | `--ear23 none` | 6 | 16 | 319 | 4 | — | 7 568 | 58 | 7 | 2 | 0 |
+> | `--ear23 antecedent` | 6 | 16 | 319 | 4 | 40 | 7 568 | 18 | 7 | 2 | 0 |
 >
-> - JJ is exhibited at all 7 568 FLAT graphs.
-> - CONTRACT certified (i) and (ii) at 49 runs. 40 of these have a `def₂`-rigid core, and 9 have
->   `0 < def₂(H) ≤ def₂(G)`. The 4 runs that failed all have `def₂(H) > def₂(G)`, which forces (i)
->   to fail (MC-59)(a).
-> - (MC-54) accepted 18 one-vertex ears, all in orbit (i) with `dim U = 2`. It rejected 44: 22 with
->   `U = 0` at the drawn `q`, and 22 with `dim U = 1`.
-> - No graph is without an applicable step.
+> - The 134 graphs with `def₂ > def₃` are the non-FLAT entries: BASE 5, THETA 13, CUT 45, and every
+>   entry to the right of CUT except FLAT.
+> - (MC-46) (`k = 2`) never fires here. All 31 of its orbit-(i)–(iii) cells have `dim U = 1` at the
+>   certified pictures (14 in (i), 5 in (ii), 12 in (iii)). The remaining 419 show `U = 0`.
+>   (MC-47)(i) is never the first covering step.
+> - JJ is exhibited at all 7 568 FLAT graphs. Both CONTRACT runs have a `def₂`-rigid core. No graph
+>   is without an applicable step.
 >
-> Variants, each over the same 7 980 graphs:
-> - **Without (MC-54)** (`--ear1 none`): CONTRACT takes 66, and exactly one graph is uncovered,
->   `x8_60101824`. This is the 8-cycle `4 0 5 2 7 3 6 1` with the two antipodal chords `4–7` and
->   `5–6`, i.e. `K₄` with the four edges of a 4-cycle subdivided once.
->   - It has `def₂ = 1`, `def₃ = 0` and four 2-edge-cuts.
->   - Every `W` with `G/H` simple is a 5-cycle, with `def₂ = 2 > 1`, so (i) cannot hold.
->   - Its four one-vertex ears all have `δ = 0`, and `dim U = 2` in orbit (i). (MC-54) closes it,
->     consuming `G′ = θ(2, 3, 3)`.
->   - (MC-39)'s last sentence (the core rigid at a point of `B(G)`, in place of (i)) also closes it
->     (`--contract cert-core`), with a rank certificate.
-> - **Without CONTRACT** (`--contract off`): 49 uncovered. With `--ear1 none` as well, 67 are
->   uncovered, none of them with an applicable step. All 67 have `def₂ = 1`, `def₃ = 0` and a proper
->   rigid set.
-> - **With Step MC13's cells** (`--ear23 landed`): EAR `k = 3` takes 40 graphs first (their chains'
->   flags are not in orbit (i); (MC-45) holds in every orbit), CONTRACT 9, and nothing is uncovered.
->   With the open cell (MC-51)(a) admitted as well (`--ear23 landed+u1`, a sensitivity check only):
->   EAR `k = 3` 40, `k = 2` 12 (all at `dim U = 1`), (MC-54) 8, CONTRACT 7; nothing uncovered.
+> **Without (MC-54)** (`--delta0 off`, i.e. only landed ear steps):
+> - `--ear23 none`: CONTRACT takes 66, and 1 graph is uncovered.
+> - `--ear23 antecedent`: EAR `k = 3` takes 40, CONTRACT 26, and the same 1 graph is uncovered.
+>
+> That graph is `x8_60101824`: the 8-cycle `4 0 5 2 7 3 6 1` with the two antipodal chords `4–7` and
+> `5–6`, i.e. `K₄` with the four edges of a 4-cycle subdivided once.
+> - It has `def₂ = 1`, `def₃ = 0` and four 2-edge-cuts.
+> - **Stuck cell:** all four of its ears are `k = 1`, in (MC-51)(c), at `δ = 0`, orbit (i),
+>   `dim U = 2`. (MC-54) closes each, consuming `G′ = θ(2, 3, 3)`.
+> - CONTRACT cannot reach it. Every `W` with `G/H` simple is a 5-cycle, with `def₂ = 2 > 1`, so (i)
+>   fails (MC-59)(a). (MC-39)'s last sentence (the core rigid at a point of `B(G)`, in place of (i))
+>   does cover it (`--contract cert-core`), but with a rank certificate.
+> - Of the 76 CONTRACT runs in the `--delta0 off` table, the 10 that failed all have
+>   `def₂(H) > def₂(G)`.
+>
+> **Without CONTRACT** (`--contract off`), uncovered:
+>
+> | | `--delta0 on` | `--delta0 off` |
+> |---|---|---|
+> | `--ear23 none` | 2 | 67 |
+> | `--ear23 antecedent` | 2 | 27 |
+>
+> The 27 with only the landed ear cells are stuck in (MC-51)(a) and (c). (MC-54) closes 25 of them at
+> `δ = 0`. The 2 that need CONTRACT in any case are:
+> - `x8_93131968`: `k = 1` at `δ = 2`, orbit (i), `dim U = 2`, which is (MC-51)(c); and `k = 1` with
+>   `a ∼ b`;
+> - `x8_218769729`: `k = 2` at `δ = 1`, orbit (i), `dim U = 1`, which is (MC-51)(a); and `k = 1` with
+>   `a ∼ b`.
 
 **The hybrid recon's count, re-done.** Its classifier left 48 graphs on `≤ 8` vertices with no
 applicable arm (its "REST"). Its step set had no contraction and no θ-class, and its own ear rule
-excluded chains with adjacent ends at `k ≤ 4`. Under the steps above (`x0arms.py --round1`), the 48
-split into THETA 6, EAR `k = 4` 3, (MC-54) 8 and CONTRACT 31. Without (MC-54): THETA 6, EAR `k = 4` 3,
-CONTRACT 38, and `x8_60101824`. Without CONTRACT as well, 39 stay uncovered.
+excluded chains with adjacent ends at `k ≤ 4`. Under the steps above (`x0arms.py --round1`):
+
+| | THETA | EAR `k = 4` | EAR `k = 3` | EAR `δ = 0` | CONTRACT | uncovered |
+|---|---|---|---|---|---|---|
+| default | 6 | 3 | — | 37 | 2 | 0 |
+| `--ear23 antecedent` | 6 | 3 | 26 | 11 | 2 | 0 |
+| `--delta0 off` | 6 | 3 | — | — | 38 | 1 |
+| `--delta0 off --contract off` | 6 | 3 | — | — | — | 39 |
+
 - **The 3 EAR `k = 4` covers are all at chains with adjacent ends.** As landed, (MC-19)(b) holds for
-  any flag pair, and (MC-22), (MC-24) and (MC-25) carry no `a ≁ b` hypothesis; (MC-25) is stated in
-  all four orbits. The recon's exclusion came from its own ear theorem, which went through
-  `pencilLoss_vertexTwoCut`, not from Step MC10. *The second reader owed on Step MC10 should confirm
-  this reading.*
+  any flag pair, (MC-22), (MC-24) and (MC-25) carry no `a ≁ b` hypothesis, and (MC-25) is stated in
+  all four orbits. (MC-51)'s closing paragraph says the same for `k ≥ 3` with `a ∼ b`. The recon's
+  exclusion came from its own ear theorem, which went through `pencilLoss_vertexTwoCut`.
 - **The recon's "REST is reached from 887/888 habitat members"** counted a recursion that followed
-  **only the first applicable arm** at each graph. So "reached" there did not mean "uncovered". Without
-  Step MC13, 377 of 888 are uncovered; with it, 0 (MC-58).
+  **only the first applicable arm** at each graph. So "reached" there did not mean "uncovered". The
+  landed figure is (MC-58).
 - **The recon's "REST is infinite"** (the `K₄` necklaces) was true of its own step set. CONTRACT
   supersedes it (MC-60).
-- **The recon's predicted first failure**, `K₄` with every edge subdivided once, is covered: by (MC-54),
-  consuming the θ-graph `θ(2, 4, 4)` (`--tree x10_3584739737600`).
+- **The recon's predicted first failure**, `K₄` with every edge subdivided once, is covered. (MC-54)
+  closes it with `k = 1` at `δ = 0`, consuming `θ(2, 4, 4)` (`--tree x10_3584739737600`).
 
 > **(MC-58)** `[MEASURED]` *(`x0arms.py --pool`; the census populations; counts of labelled members)*
 >
-> | population | members | covered without Step MC13 | covered with Step MC13 (`--ear23 landed`) |
+> | population | members | `--ear23 none` | `--ear23 antecedent` |
 > |---|---|---|---|
 > | `battery` | 9 | 9 (BASE 3, THETA 3, EAR `k = 4` 1, FLAT 2) | 9 |
 > | `thetas` | 109 | 109 (THETA) | 109 |
-> | `smark` | 78 | 63 (BASE 15, THETA 18, EAR `k ≥ 5` 3, EAR `k = 4` 22, SPLITOFF 3, CONTRACT 2) | 78 (… EAR `k = 4` 19, `k = 3` 14, `k = 2` 9) |
+> | `smark` | 78 | 63 (BASE 15, THETA 18, EAR `k ≥ 5` 3, `k = 4` 22, SPLITOFF 3, `δ = 0` 1, CONTRACT 1) | 78 (… EAR `k = 4` 19, `k = 3` 14, `k = 2` 9) |
 > | `habitats` | 888 | 511 (THETA 1, EAR `k = 4` 510) | 888 (THETA 1, EAR `k = 4` 480, `k = 3` 353, `k = 2` 54) |
-> | `peels` | 928 | 928 (EAR `k ≥ 5` 320, `k = 4` 304, (MC-54) 72, CONTRACT 232) | 928 |
+> | `peels` | 928 | 928 (EAR `k ≥ 5` 320, `k = 4` 304, `δ = 0` 304) | 928 (… EAR `k = 3` 268, `k = 2` 36) |
 > | `residuals` | 260 | 208 (EAR `k ≥ 5` 144, `k = 4` 63, CONTRACT 1) | 260 (… EAR `k = 3` 1, `k = 2` 52) |
 >
-> `--ear23 landed+u1` gives the same counts as `landed` in every row. A **terminal** graph
-> is one where no step applies, or where every applicable step fails only a certificate. It is
-> reached from an uncovered member through consumed graphs that are themselves uncovered. The
-> uncovered members reach:
-> - `habitats`: 377 members reach 25 terminal graphs (`n` 14–26);
-> - `smark`: 15 members reach 63;
-> - `residuals`: 52 members reach one (`n = 26`, `m = 30`, `def₂ = 15`, `def₃ = 0`, nine chains of
->   `k = 2`).
->
-> **Every one of these terminal graphs (25, 63 and 1) has the same profile** (the driver's `by
-> structure` line; the largest chain has `k = 3` at 19, 33 and 0 of them, and `k = 2` at the rest):
-> - no applicable step at all;
-> - no proper rigid set;
-> - every maximal chain with `k ≤ 3`;
-> - `def₃ = 0 < def₂`;
-> - `δ ≤ 4` at every degree-2 vertex.
+> - With `--delta0 off` the `antecedent` column is unchanged (888, 78, 928, 260).
+> - A **terminal** graph is one where no step applies, or where every applicable step fails only a
+>   certificate. It is reached from an uncovered member through consumed graphs that are themselves
+>   uncovered.
+> - Under `--ear23 none`, the uncovered members reach 25 terminal graphs (habitats), 63 (smark) and 1
+>   (residuals). Every one has the same profile (the driver's `by structure` line): no applicable
+>   step, no proper rigid set, every maximal chain with `k ≤ 3`, `def₃ = 0 < def₂`, and `δ ≤ 4` at
+>   every degree-2 vertex.
+> - **Stuck cells**, read at the listed terminal graphs: every `k = 2` chain is (MC-46)'s cell
+>   (orbit (i), `dim U = 3`); every `k = 3` chain is (MC-45)'s; every `k = 1` chain is (MC-51)(c) at
+>   `δ = 2` or `4`. So they are stuck exactly at Step MC13's cells, and `--ear23 antecedent` covers
+>   every member.
 
-So without Step MC13 there is exactly **one structural class of failure** on these populations.
-Its members are 2-connected, with no proper rigid set, every chain `k ≤ 3`, and no one-vertex chain
-at `δ = 0` or `δ ≥ 5`. Step MC13's `k = 2, 3` cells cover every one of them.
+**So, on everything tested, Step MC13's landed cells together with (MC-54) leave nothing
+uncovered** — a measurement on finite populations, not a coverage theorem ((MC-61)). Without (MC-54), exactly one graph is left, and it sits in (MC-51)(c) at `δ = 0`.
 
 > **(MC-59)** *(what hypothesis (i) of (MC-39) can and cannot do, and the flat core)* Let `W` be a
 > proper rigid set with `G/H` simple, and let `q ∈ U(G)` with `q|_W ∈ U(H)`.
@@ -2129,8 +2175,8 @@ at `δ = 0` or `δ ≥ 5`. Step MC13's `k = 2, 3` cells cover every one of them.
 > **(b)** `[PROVED]` If `def₂(H) = 0` and `dim L_H(q|_W) = 3`, then (i) holds at `q`.
 > **(c)** `[PROVED-MOD]` *((MC-33): Jackson–Jordán at `H`, `G` and `G/H`)* If `def₂(H) = 0`, then `def₂(G/H) = def₂(G)`.
 > At any picture of `coreshrink.py`'s construction whose rescaled core `δ` has
-> `dim L_H(δ) = 3`, we have `ker M₀ ≅ L⁰_{G/H}(q′) ⊕ K`, so `dim ker M₀ = dim L_{G/H}(q′)`. Hence
-> (ii) holds wherever `ℓ₀(G) = ℓ₀(G/H)`, and JJ at `G` and at `G/H` gives that.
+> `dim L_H(δ) = 3`, `ker M₀ ≅ L⁰_{G/H}(q′) ⊕ K`, so `dim ker M₀ = dim L_{G/H}(q′)`. Hence (ii) holds
+> wherever `ℓ₀(G) = ℓ₀(G/H)`, and JJ at `G` and at `G/H` gives that.
 > **(d)** Consequently, **at a `def₂`-rigid core, (MC-39) needs no per-graph certificate**, modulo
 > JJ at `H`, `G` and `G/H`. If `X₀(G/H)` attains, then `X₀(G)` attains, because `X₀(H)` attains by
 > FLAT.
@@ -2184,40 +2230,49 @@ with consecutive units joined by one edge and a bead's two outside edges at dist
 By (MC-59)(d), `X₀(G)` attains if `X₀(G/H)` does. After `k` contractions we reach `C_k` (BASE).
 `L_{K₄}(q) = Aff(q)` at every admissible `q`, so JJ at the core is trivial. ∎
 
-It is the corpus's first infinite family of minimum degree 3 shown to attain on `X₀` (modulo
-Jackson–Jordán and the owed second readings). The hybrid recon's "REST is infinite" was an artifact
+It is the corpus's first infinite family of minimum degree 3 shown to attain on `X₀`, modulo
+Jackson–Jordán and the owed second readings. The hybrid recon's "REST is infinite" was an artifact
 of a step set with no contraction.
 
-> **(MC-61)** `[OPEN]` *(what remains: class statements, not graphs)* With every landed step,
-> Step MC13's cells included (`--ear23 landed`), **nothing tested is uncovered**: 7 980 / 7 980 on
-> `≤ 8` vertices, every member of every census population, and every `K₄` necklace `N(3..8)`. Without
-> Step MC13 the uncovered graphs form one structural class (MC-58), which its cells close. What a
-> proof of (MC-10)(a) still needs is the class form of the certificates the steps take per graph:
-> - (MC-39)'s (i) and (ii) at a core with `def₂(H) > 0` (the (∂1), (∂2) of (MC-41)). (MC-59) settles
->   the `def₂`-rigid case modulo Jackson–Jordán, and (MC-59)(a) shows (i) impossible when
->   `def₂(H) > def₂(G)`.
-> - The open ear cells (MC-51)(a)–(c), with (c) narrowed to `1 ≤ δ ≤ 4` by (MC-54). None is reached
->   by a tested graph that no other step covers, but a class statement may need them.
-> - (MC-54) with `dim U = 1`, or in orbit (iii).
-> - Jackson–Jordán itself, wherever a class statement uses FLAT, SPLITOFF or (MC-59)(d).
-> - A second structural class of uncovered graphs in a larger population, if there is one: the
->   deferred adversarial census (`n = 9–14`, biased to 2-edge-cuts and large `def₂ − def₃`) is the
->   place to look.
+> **(MC-61)** `[OPEN]` *(the coverage theorem — not proved)* **Coverage is measured, not proved.**
+> (MC-57) is exhaustive only on ≤ 8 vertices, and those graphs were already certified to attain
+> directly (MC-7). (MC-58) is sampled populations. The one infinite family proved is the `K₄`
+> necklaces (MC-60), modulo Jackson–Jordán. By (MC-56), a theorem that **every** simple 2EC graph
+> satisfying (H) is covered would prove (MC-10)(a) by this strategy. So the coverage theorem is the
+> whole remaining problem here, not a side item. It has two halves, both open:
+> - **The structural half:** that every such graph admits some step (a cut vertex, a bridge
+>   chain, a usable ear, a split-off at `δ ≥ 5`, `def₂ = def₃`, or a proper rigid `W` with `G/H`
+>   simple). There is no theorem. The candidate gaps are graphs with a proper rigid set but none with
+>   a simple quotient (Katoh–Tanigawa's Lemma 6.5 case) and 2-edge-cut graphs with no degree-2 chain.
+>   (MC-55)(iii) shows only that `def₂ > def₃` forces a 2-edge-cut.
+> - **The certificate half:** that each step's per-graph conditions hold in general, where the
+>   driver checks them at one exact picture per graph:
+>   - Jackson–Jordán's equality, wherever FLAT, SPLITOFF or (MC-59)(d) is used;
+>   - `dim U ≥ 2` (and the orbit) for (MC-46), and for (MC-54) at `k = 1`;
+>   - (MC-39)'s (i) and (ii) at a core with `def₂(H) > 0` ((MC-41)'s (∂1), (∂2)); (MC-59) settles
+>     the `def₂`-rigid case modulo Jackson–Jordán, and (MC-59)(a) shows (i) impossible when
+>     `def₂(H) > def₂(G)`;
+>   - and the ear cells that are not steps at all: (MC-51)(a) and (c) at `δ ≥ 1`, and (b) where
+>     Jackson–Jordán is not assumed.
 >
-> The stop rule (more than 3 structurally distinct failures, or a graph with no candidate step) does
-> not fire.
+> What was tested: with the default steps and `--ear23 antecedent`, nothing is uncovered — 7 980 /
+> 7 980 on `≤ 8` vertices and every member of every population. Without (MC-54), one graph
+> (`x8_60101824`) is uncovered, stuck in (MC-51)(c) at `δ = 0`; with `--ear23 none`, the uncovered pool
+> members are stuck at (MC-45)/(MC-46), which have landed. The 2 graphs of (MC-57) that need
+> CONTRACT are the tested instances of (MC-51)(a)/(c) at `δ ≥ 1`. The stop rule (more than 3
+> structurally distinct failures, or a graph with no candidate step) does not fire on the tested
+> populations. The deferred adversarial census (`n = 9–14`) is the natural test of the structural half.
 
 **What would change this.**
 - A consumed graph that is not smaller, or that fails (H). The driver asserts both.
 - A covered graph where `X₀` falls short. A `maincomp.py` SHORT at a covered member would refute
   the step it used.
 - A glued instance failing an (MC-52) or (MC-53) identity (`--lemmas` asserts them).
+- A pair with `δ₂ = 0` and `δ > 0` (asserted never to occur).
 - A `def₂`-rigid core where `dim ker M₀ ≠ dim L_{G/H}(q′)`, or where (ii) fails with JJ exhibited at
   `G` and `G/H` (`--flatcore` asserts both).
-- A second structural class of uncovered graphs in a larger population. The adversarial census of
-  P1's first hand-off (`n = 9–14`) is the natural place to look.
-- A tested graph covered only through an `--ear23 landed` cell whose certificate is wrong: the
-  driver certifies orbit (i) and `dim U ≥ 2` exactly, so this would be a bug.
+- A structural class of uncovered graphs in a larger population. The adversarial census of P1's
+  first hand-off (`n = 9–14`) is the natural place to look.
 
 **Driver** (all at `PYTHONHASHSEED=0`, seed `20260924`; certificates in exact ℚ, ranks mod
 `2⁶¹ − 1` only as certificates; sampler support in the docstring; re-runs byte-identical apart from
@@ -2227,18 +2282,17 @@ the timing lines, checked on `--exh 7` and `--pool habitats`):
 |---|---|---|
 | `python3 notes/scripts/w4/x0arms.py --lemmas` | cut vertex 21/21, bridge path (`k = 0..3`) 84/84, leaf 6/6 glued instances; every identity asserted | 4 s |
 | `python3 notes/scripts/w4/x0arms.py --exh 7` | 577/577 covered | 2 s |
-| `python3 notes/scripts/w4/x0arms.py --exh 8` | 7 980/7 980 covered ((MC-57)'s table) | 24 s |
-| `python3 notes/scripts/w4/x0arms.py --exh 8 --ear1 none` | CONTRACT 66; 1 uncovered, `x8_60101824` | 24 s |
-| `python3 notes/scripts/w4/x0arms.py --exh 8 --contract off` / `--contract off --ear1 none` | 49 / 67 uncovered | 18 s / 17 s |
-| `python3 notes/scripts/w4/x0arms.py --exh 8 --contract cert-core --ear1 none` | CONTRACT 66, CONTRACT* 1 (`x8_60101824`), 0 uncovered | 27 s |
-| `python3 notes/scripts/w4/x0arms.py --exh 8 --ear23 landed` / `--ear23 landed+u1` | EAR `k = 3` 40, CONTRACT 9 / EAR `k = 3` 40, `k = 2` 12, (MC-54) 8, CONTRACT 7; 0 uncovered | 21 s / 21 s |
-| `python3 notes/scripts/w4/x0arms.py --round1` / `--round1 --ear1 none` / `--round1 --contract off --ear1 none` | THETA 6, EAR `k = 4` 3, (MC-54) 8, CONTRACT 31 / THETA 6, EAR `k = 4` 3, CONTRACT 38, 1 uncovered / 39 uncovered | 4 s / 6 s / < 1 s |
-| `python3 notes/scripts/w4/x0arms.py --pool habitats` (and with `--ear23 landed`, `landed+u1`) | 511/888, 25 terminal graphs / 888 / 888 | 7 s / 3 s / 3 s |
-| `python3 notes/scripts/w4/x0arms.py --pool battery,thetas,smark` (and with `--ear23 landed`, `landed+u1`) | 9, 109, 63/78 with 63 terminal graphs / 9, 109, 78 / the same | 21 s / 3 s / 3 s |
-| `python3 notes/scripts/w4/x0arms.py --pool peels,residuals` (and with `--ear23 landed`, `landed+u1`) | 928, 208/260 with 1 terminal graph / 928, 260 / the same | 60 s / 62 s / 63 s |
-| `python3 notes/scripts/w4/x0arms.py --necklace 8` (and with `--ear23 landed`) | `N(3..8)` covered, `X₀` attains at each; 14 flat-core certifications | 20 s / 17 s |
-| `python3 notes/scripts/w4/x0arms.py --flatcore 8` | the kernel identity at 2 080 / 2 080; no jump at 2 080 / 2 080 | 176 s |
-| `python3 notes/scripts/w4/x0arms.py --tree x8_60101824` (and with `--ear1 none`) | EAR `k = 1` → `θ(2,3,3)` (THETA) / uncovered, the four C₅ cores failing (i) | < 1 s |
+| `python3 notes/scripts/w4/x0arms.py --exh 8` / `--ear23 antecedent` | 7 980/7 980 covered ((MC-57)'s table) | 17 s / 20 s |
+| `python3 notes/scripts/w4/x0arms.py --exh 8 --delta0 off` / `--ear23 antecedent --delta0 off` | 1 uncovered, `x8_60101824`, in (MC-51)(c) at `δ = 0` | 24 s / 23 s |
+| `python3 notes/scripts/w4/x0arms.py --exh 8 --contract off` (with `--ear23 antecedent`, `--delta0 off`) | 2 / 2 / 67 / 27 uncovered, each with its cells | 17–20 s |
+| `python3 notes/scripts/w4/x0arms.py --exh 8 --contract cert-core --delta0 off` | CONTRACT 66, CONTRACT* 1 (`x8_60101824`), 0 uncovered | 27 s |
+| `python3 notes/scripts/w4/x0arms.py --round1` (and `--ear23 antecedent`, `--delta0 off`, `--delta0 off --contract off`) | the recon's 48: 0 / 0 / 1 / 39 uncovered | ≤ 6 s |
+| `python3 notes/scripts/w4/x0arms.py --pool habitats` (and `--ear23 antecedent`, each with `--delta0 off`) | 511 / 888; 25 terminal graphs under `none` | 3–9 s |
+| `python3 notes/scripts/w4/x0arms.py --pool battery,thetas,smark` (and `--ear23 antecedent [--delta0 off]`) | 9, 109, 63 / 9, 109, 78 | 9 s / 2 s / 6 s |
+| `python3 notes/scripts/w4/x0arms.py --pool peels,residuals` (and `--ear23 antecedent [--delta0 off]`) | 928, 208 / 928, 260 | 51 s / 56 s / 142 s |
+| `python3 notes/scripts/w4/x0arms.py --necklace 8` (and `--ear23 antecedent`) | `N(3..8)` covered, `X₀` attains at each | 18 s / 15 s |
+| `python3 notes/scripts/w4/x0arms.py --flatcore 8` | the kernel identity at 2 080 / 2 080; no jump at 2 080 / 2 080 | 171 s |
+| `python3 notes/scripts/w4/x0arms.py --tree x8_60101824,x10_3584739737600` (and `x8_60101824 --ear23 antecedent --delta0 off`) | both (MC-54) → THETA / uncovered, with its cells | < 1 s |
 
 #### Literature, checked 2026-09-24 (a read-only agent over `.refs/` plus the web; bibliographic data from Crossref)
 

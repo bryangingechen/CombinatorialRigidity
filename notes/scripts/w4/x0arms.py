@@ -5,18 +5,17 @@ workbook §(K-main) Step MC14, claims (MC-52)-(MC-61)).
 
 The motive (§(K-main) (MC-10)(a)): "the generic point of the main component
 X0(G) attains 6(|V|-1) - def3(G)", for G satisfying (H) (finite, simple,
-connected, minimum degree >= 2).  A graph G is COVERED if some landed step
-applies at G and every smaller graph the step consumes is covered.  Every step
-consumes graphs with fewer vertices, so "covered" is a least fixed point on
-|V| and does not depend on the order in which steps are tried.  The order
-below is only the order in which the FIRST covering step is reported.
+connected, minimum degree >= 2).  A graph G is COVERED if some step applies at
+G and every smaller graph the step consumes is covered.  Every step consumes
+graphs with fewer vertices, so "covered" is a least fixed point on |V| and
+does not depend on the order in which steps are tried.  The order below is
+only the order in which the FIRST covering step is reported.
 
 The steps (what each consumes; whether its applicability is structural or
 needs a per-graph certificate):
   BASE      G a cycle.  (MC-21)(a)'s base.  Structural.  Consumes nothing.
   THETA     G a theta graph (exactly two vertices of degree 3, the others of
-            degree 2, 2-edge-connected).
-            (MC-21)(b).  Structural.  Consumes nothing.
+            degree 2, 2-edge-connected).  (MC-21)(b).  Structural.
   CUT       a cut vertex z and a split G = G1 u_z G2 with deg_{Gi}(z) >= 2.
             (MC-52).  Structural.  Consumes G1, G2.
   BRIDGE    a maximal chain (possibly one edge) all of whose edges are
@@ -25,34 +24,34 @@ needs a per-graph certificate):
   EAR       a maximal chain with k interior vertices, ends a, b, G' = G -
             interior satisfying (H):  closed (a = b) or open with k >= 5
             ((MC-20); consumes G');  open k = 4 ((MC-24)/(MC-25); consumes G'
-            and the gadget G' + ear_2);  open k = 2, 3 only under `--ear23`
-            (Step MC13): consumes G' and G' + ear_{k-1}.  `--ear23 landed` is
-            the landed cells: k = 3 in every orbit ((MC-45)); k = 2 when
-            X0(G')'s generic flag pair is in orbit (i), CERTIFIED at one q with
-            dim L(q) = 3 + def2(G') (exact Q; both incidence functionals
-            nonzero on F(G', q)), and dim U >= 2 at that q (a lower bound for
-            the generic dim U, so a certificate of dim U != 1: (MC-46), whose
-            orbit (ii) half the driver does not certify, and (MC-18)(b)'s
-            dominance of the 1-ear gadget).  `--ear23 landed+u1` also admits
-            k = 2 at dim U = 1 in orbit (i): the OPEN cell (MC-51)(a), kept only
-            as a sensitivity check.  Every evaluated
-            (k, orbit, dim U) cell is tallied in the certificates line.
-            Open k = 1 ((MC-27) is OPEN at r >= 1): only at delta = 0, where
-            r <= delta forces rho = 0 so (R_1) and (P_1) are empty, and (MC-22)
-            closes the step given dominance and lambda = 2 -- certified by dim U
-            >= 2 at one q in U(G') (a lower bound for the generic dim U, so
-            dim U != 1, and dim U >= 2 excludes orbit (iii)).  (MC-54).
-            Consumes G'.  `--ear1 none` drops it.
+            and the gadget G' + ear_2).  Under `--ear23 antecedent`, Step
+            MC13's cells: open k = 3 in every orbit ((MC-45); consumes G' and
+            G' + ear_2; structural), and open k = 2 when X0(G')'s generic flag
+            pair is in orbit (i) or (ii) with dim U != 1 ((MC-46); consumes G'
+            and G' + ear_1), CERTIFIED by dim U >= 2 at pictures q certified in
+            U(G') (exact Q over the whole fibre; dim U >= 2 excludes orbits
+            (iii) and (iv)).  Also under `antecedent`, EAR-k2(iv): the k = 2
+            orbit-(iv) cell ((MC-47)(i), closed modulo Jackson-Jordan, r = 0),
+            recognised combinatorially by delta2 = def2(G') - def2(G'/ab) = 0
+            (a, b in a common def2-rigid subgraph), consuming G'; reported
+            apart.  Every evaluated (k, orbit, dim U) cell is tallied.
   SPLITOFF  a degree-2 x with non-adjacent neighbours a, b and delta =
             def3(G-x) - def3((G-x)/ab) >= 5.  (MC-31).  Structural, plus
             Jackson-Jordan at G'' = G.splitOff x a b (see `--jj`).  Consumes G''.
   FLAT      def2(G) = def3(G).  (MC-5)(ii) plus Jackson-Jordan at G (see
             `--jj`).  Consumes nothing.
+  EAR-d0,   `--delta0 on` (default; (MC-54)): an open ear with 1 <= k <= 3 at
+  EAR-k1    delta = 0.  Where G' attains, r <= delta = 0, so rho = 0 and
+            (MC-22)'s (R_k), (P_k) are empty.  For k = 2, 3 dominance and
+            lambda = k + 1 hold in every orbit, so EAR-d0 is structural; for
+            k = 1 (EAR-k1) dominance and lambda = 2 are certified by dim U >= 2
+            as above.  Consumes G' only.
   CONTRACT  G 2-edge-connected, W a proper rigid vertex set (def3(G[W]) = 0)
             with G/H simple, and (MC-39)'s (i) core-free and (ii) no-jump
             CERTIFIED at one exact picture (`coreshrink.run_member`, relaxed
             variant: q in U(G), q|W in U(H) and q(t) in U certified).
             Consumes H = G[W] and G/H.
+Open k = 1 at 1 <= delta <= 4, and the other cells of (MC-51), are not steps.
 Jackson-Jordan (`--jj`): `cert` (default) exhibits, per graph, one admissible q
 with dim L(q) = 3 + def2 (up to 3 draws, exact Q); that q is in U, so ell0 =
 3 + def2 there and the step needs no citation.  `cite` accepts the equality
@@ -61,16 +60,17 @@ as the cited theorem (characteristic 0; (MC-33) beyond).
 Modes (run from the repository root; seed 20260924; writes nothing):
 
     python3 notes/scripts/w4/x0arms.py --lemmas
-    python3 notes/scripts/w4/x0arms.py --exh N [--ear23 {none,landed,landed+u1}] [--list]
+    python3 notes/scripts/w4/x0arms.py --exh N [--ear23 {none,antecedent}] [--list]
     python3 notes/scripts/w4/x0arms.py --pool NAME[,NAME] [--ear23 ...] [--stride K]
     python3 notes/scripts/w4/x0arms.py --necklace KMAX [--ear23 ...]
     python3 notes/scripts/w4/x0arms.py --round1 [--ear23 ...]
     python3 notes/scripts/w4/x0arms.py --tree NAME[,NAME] [--depth D]
-  common: [--ear1 {delta0,none}] [--jj {cert,cite}] [--contract {cert,cert-core,struct,off}]
+    python3 notes/scripts/w4/x0arms.py --flatcore N
+  common: [--delta0 {on,off}] [--jj {cert,cite}] [--contract {cert,cert-core,struct,off}]
           [--cert-nmax N] [--show S]
 
 `--lemmas` checks the cut-vertex, bridge-path and leaf lemmas ((MC-52), (MC-53),
-(MC-54)) at 2 drawn points of B(G) per glued instance: the deficiency counts
+(MC-55)(iv)) at 2 drawn points of B(G) per glued instance: the deficiency counts
 (def3 and def2 additive; + (k+1) along a bridge path of k interior vertices;
 + 1 at a leaf), dim L_G(q) against the pieces (- 3; - 2, - 1, + (k-2) for
 k = 0, 1, >= 2; equal at a leaf), both restriction maps surjective, and the
@@ -79,8 +79,9 @@ identity is field-free, so it holds mod p exactly).  All ASSERTED.
 `--exh N`: every simple 2EC graph on 3..N vertices (`maincomp.two_ec_graphs`),
 EXHAUSTIVE.  Per n, the count by first covering step; then every uncovered
 graph with n, m, def2, def3, whether a proper rigid set exists, whether a
-degree-2 vertex exists, the number of 2-edge-cuts, its chains, and what
-blocks each applicable step.  `--pool NAME`: maincomp's populations (members
+degree-2 vertex exists, the number of 2-edge-cuts, its chains, what blocks
+each applicable step, and (`cells:`) the (MC-51) cell of each open chain with
+k <= 3 (delta, delta2, a ~ b, and the orbit and dim U as read above).  `--pool NAME`: maincomp's populations (members
 kept iff simple and 2EC); per member covered or not, and for an uncovered one
 the TERMINAL uncovered graphs its steps reach (graphs where a step applies but
 a consumed graph is uncovered are followed; a graph with no applicable step,
@@ -95,6 +96,11 @@ not retained) left with no applicable arm (`ROUND1_REST`, canonical names),
 tallied by first covering step.  `--tree NAME`: the covering tree of a
 canonical name `x<n>_<code>` (`maincomp`'s naming), or what blocks it; `--depth
 0` prints the root line only.  `--show S` (pools): list S uncovered members.
+`--flatcore N`: (MC-59)(c)'s kernel identity dim ker M0 = dim L_{G/H}(q') at
+the largest proper def2-rigid W with G/H simple of every simple 2EC graph on
+<= N vertices that has one, and of N(3..6) (a cap of one W per graph), at a
+`coreshrink.recipe` picture; also def2(G) = def2(G/H), and no jump wherever
+Jackson-Jordan is exhibited at G and G/H.  All ASSERTED, exact Q.
 A graph's SPLITOFF assert: def3 rises by exactly 1 when delta >= 5 ((MC-29)(a)).
 
 `--contract`: `cert` (default) requires (i)/(ii) certified, for graphs with at
@@ -148,11 +154,13 @@ SEED = 20260924
 SCALE = 30
 JJ_DRAWS = 3
 ORDER = ('BASE', 'THETA', 'CUT', 'BRIDGE', 'EAR-closed', 'EAR-k5+', 'EAR-k4',
-         'EAR-k3', 'EAR-k2', 'SPLITOFF', 'FLAT', 'EAR-k1', 'CONTRACT', 'CONTRACT*', 'CONTRACT?')
-# the k = 2, 3 open-ear cells, per `--ear23` value: (k, orbit, dim U) -> applies
+         'EAR-k3', 'EAR-k2', 'SPLITOFF', 'FLAT', 'EAR-d0', 'EAR-k1', 'EAR-k2(iv)',
+         'CONTRACT', 'CONTRACT*', 'CONTRACT?')
+# the k = 2, 3 open-ear cells of Step MC13, per `--ear23` value: (k, orbit, dim U) -> applies.
+# k = 3 needs no cell ((MC-45): every orbit); k = 2 needs orbit (i)/(ii) and dim U != 1
+# ((MC-46)), certified by dim U >= 2 at a q in U(G'), which also excludes (iii) and (iv).
 EAR23 = {'none': None,
-         'landed': lambda k, orb, dU: k == 3 or (orb == 'i' and dU >= 2),
-         'landed+u1': lambda k, orb, dU: k == 3 or orb == 'i'}
+         'antecedent': lambda k, orb, dU: k == 3 or dU >= 2}
 
 
 # ---------------------------------------------------------------- graphs
@@ -346,10 +354,14 @@ class Coverage:
         return res
 
     def orbit(self, Ep, a, b, tag):
-        """(orbit, dim U) of X0(G')'s flag pair (a, b) at a certified q in U(G'),
-        exact; (None, None) if no q certified in JJ_DRAWS draws."""
+        """(orbit, dim U) of X0(G')'s generic flag pair (a, b), exact, read over the whole
+        fibre L(q) at up to JJ_DRAWS pictures q certified in U(G') (dim L(q) = 3 + def2).
+        Each of "p_b not in pi_a", "p_a not in pi_b" and "dim U >= d" is an open condition
+        on the irreducible B(G'), so what one certified q shows holds at the generic point,
+        and conditions shown at different q combine.  (None, None) if no q is certified."""
         V = verts_of(Ep)
         d2 = def_k(Ep, 3)
+        best = None
         for t in range(JJ_DRAWS):
             rng = random.Random(f'{SEED}:orb:{tag}:{t}')
             q = sample_q(rng, V, Ep, SCALE)
@@ -364,10 +376,16 @@ class Coverage:
             hb = (q[b][0], q[b][1], F(1))
             pb_off = any(sum(x * y for x, y in zip(u, hb)) for u in U)   # p_b not in pi_a
             pa_off = any(sum(x * y for x, y in zip(u, ha)) for u in U)   # p_a not in pi_b
-            orb = ('iv' if dU == 0 else 'i' if (pa_off and pb_off)
-                   else 'ii' if (pa_off or pb_off) else 'iii')
-            return orb, dU
-        return None, None
+            cur = (dU, pa_off, pb_off)
+            best = cur if best is None else (max(best[0], dU), best[1] or pa_off, best[2] or pb_off)
+            if best[0] >= 2 and best[1] and best[2]:
+                break
+        if best is None:
+            return None, None
+        dU, pa_off, pb_off = best
+        orb = ('iv' if dU == 0 else 'i' if (pa_off and pb_off)
+               else 'ii' if (pa_off or pb_off) else 'iii')
+        return orb, dU
 
     def contract_run(self, E, W, tag):
         """One coreshrink run (relaxed) at (G, W), memoized: (verdict, feats)."""
@@ -473,16 +491,18 @@ class Coverage:
                 yield 'EAR-k5+', [key_of(Ep)], None
             elif k == 4:
                 yield 'EAR-k4', [key_of(Ep), key_of(Ep + ear_edges(h1, h2, 2, n))], None
-            elif k in (2, 3) and mode is not None:
-                def cert(Ep=Ep, h1=h1, h2=h2, k=k, bi=bi):
+            elif k == 3 and mode is not None:                  # (MC-45): every orbit
+                yield 'EAR-k3', [key_of(Ep), key_of(Ep + ear_edges(h1, h2, 2, n))], None
+            elif k == 2 and mode is not None:                  # (MC-46)
+                def cert(Ep=Ep, h1=h1, h2=h2, bi=bi):
                     orb, dU = self.orbit(Ep, h1, h2, f'{name_of(key)}:{bi}')
                     if orb is None:
                         return False, 'no certified q in U(G\')'
-                    ok = mode(k, orb, dU)
-                    self.stats[f'EAR-k{k} cell (orbit {orb}, dim U {dU}) '
+                    ok = mode(2, orb, dU)
+                    self.stats[f'EAR-k2 cell (orbit {orb}, dim U {dU}) '
                                f'{"accepted" if ok else "rejected"}'] += 1
                     return ok, f'orbit {orb}, dim U = {dU}'
-                yield f'EAR-k{k}', [key_of(Ep), key_of(Ep + ear_edges(h1, h2, k - 1, n))], cert
+                yield 'EAR-k2', [key_of(Ep), key_of(Ep + ear_edges(h1, h2, 1, n))], cert
         # SPLITOFF
         for x in V:
             if len(nb[x]) != 2:
@@ -506,20 +526,22 @@ class Coverage:
         gi = self.ginfo(key)
         if gi['d2'] == gi['d3']:
             yield 'FLAT', [], lambda: ((self.jj(key) is not None), 'JJ at G')
-        # EAR-k1 at delta = 0 (after FLAT: its certificate costs a flex space)
-        if self.a.ear1 == 'delta0':
-            for bi, (h1, h2, I) in enumerate(br):
-                if len(I) != 1 or h1 == h2:
-                    continue
-                Ws = set(I)
-                Ep = [e for e in E if e[0] not in Ws and e[1] not in Ws]
-                if len(components(Ep)) > 1:
-                    continue
-                dlt = (def_k(Ep, 6, [v for v in V if v not in Ws])
-                       - def_k(merge_pair(Ep, h1, h2), 6, [v for v in V if v not in Ws and v != h2]))
-                if dlt != 0:
-                    continue
-
+        # open ears at delta = 0 ((MC-54)) and the k = 2 orbit-(iv) cell ((MC-47)(i), mod JJ);
+        # after FLAT: the k = 1 certificate costs a flex space
+        for bi, (h1, h2, I) in enumerate(br):
+            k = len(I)
+            if not 1 <= k <= 3 or h1 == h2:
+                continue
+            Ws = set(I)
+            Ep = [e for e in E if e[0] not in Ws and e[1] not in Ws]
+            if len(components(Ep)) > 1:
+                continue
+            Vp = [v for v in V if v not in Ws]
+            mp = merge_pair(Ep, h1, h2)
+            dlt = def_k(Ep, 6, Vp) - def_k(mp, 6, [v for v in Vp if v != h2])
+            if self.a.delta0 == 'on' and dlt == 0 and k >= 2:
+                yield 'EAR-d0', [key_of(Ep)], None             # r = 0: nothing to check
+            elif self.a.delta0 == 'on' and dlt == 0:
                 def cert(Ep=Ep, h1=h1, h2=h2, bi=bi):
                     orb, dU = self.orbit(Ep, h1, h2, f'{name_of(key)}:{bi}')
                     if orb is None:
@@ -529,6 +551,10 @@ class Coverage:
                                f'{"accepted" if ok else "rejected"}'] += 1
                     return ok, f'delta 0, orbit {orb}, dim U = {dU}'
                 yield 'EAR-k1', [key_of(Ep)], cert
+            if (k == 2 and mode is not None and
+                    def_k(Ep, 3, Vp) == def_k(mp, 3, [v for v in Vp if v != h2])):
+                assert dlt == 0, 'delta2 = 0 must force delta = 0 (a common def2-rigid subgraph)'
+                yield 'EAR-k2(iv)', [key_of(Ep)], None          # U = 0 generically, mod JJ
         # CONTRACT
         if self.a.contract == 'off' or not is_2ec(E):
             return
@@ -612,6 +638,51 @@ def split_deltas(E):
     return sorted(out)
 
 
+def ear_cells(cov, key):
+    """The open-ear cell of every maximal open chain with k <= 3 interior vertices (the
+    cells of (MC-51)); orbit and dim U as `Coverage.orbit` reads them.  Only (i)/(ii) and
+    dim U >= 2 are certificates; a reading of (iii), (iv) or dim U <= 1 is draw-level."""
+    E = graph(key)
+    nb = neighbors(E)
+    V = list(range(key[0]))
+    _, br = branch_decomposition(E)
+    out = []
+    for bi, (h1, h2, I) in enumerate(br or []):
+        k = len(I)
+        if not 1 <= k <= 3 or h1 == h2:
+            continue
+        Ws = set(I)
+        Ep = [e for e in E if e[0] not in Ws and e[1] not in Ws]
+        if len(components(Ep)) > 1:
+            continue
+        Vp = [v for v in V if v not in Ws]
+        mp = merge_pair(Ep, h1, h2)
+        dlt = def_k(Ep, 6, Vp) - def_k(mp, 6, [v for v in Vp if v != h2])
+        d2t = def_k(Ep, 3, Vp) - def_k(mp, 3, [v for v in Vp if v != h2])
+        adj = h2 in nb[h1]
+        close = '; closed by (MC-54), delta = 0' if dlt == 0 else ''
+        if k == 3:
+            cell = '(MC-45)'
+        else:
+            orb, dU = cov.orbit(Ep, h1, h2, f'{name_of(key)}:{bi}')
+            dU = dU or 0
+            where = f' [orbit {orb}, dim U {dU}]'
+            if k == 2 and dU >= 2:
+                cell = '(MC-46)' + where
+            elif k == 2 and d2t == 0:
+                cell = '(MC-47)(i), mod JJ' + where
+            elif k == 2:
+                cell = 'OPEN (MC-51)(a)' + (', a ~ b' if adj else '') + where
+            elif dlt >= 5:
+                cell = '(MC-31)/(MC-49), delta >= 5' + where
+            else:
+                cell = 'OPEN (MC-51)(c)' + (', a ~ b' if adj else '') + where
+                if dU < 2:
+                    close = ''
+        out.append(f'k={k} delta={dlt} delta2={d2t}{" a~b" if adj else ""}: {cell}{close}')
+    return out
+
+
 def describe(cov, key):
     E = graph(key)
     gi = cov.ginfo(key)
@@ -622,6 +693,7 @@ def describe(cov, key):
     for (h1, h2, I) in (br or []):
         if I:
             ch.append(f'{len(I)}{"c" if h1 == h2 else "a" if h2 in nb[h1] else ""}')
+    cells = ear_cells(cov, key)
     blocks = []
     for st, s, d in cov.why.get(key, []):
         blocks.append(f'{st}:' + (','.join(name_of(c) for c in d) if s == 'child' else d))
@@ -630,7 +702,8 @@ def describe(cov, key):
             f'deg2={"Y" if any(len(s) == 2 for s in nb.values()) else "N"} '
             f'mindeg={min(len(s) for s in nb.values())} 2cuts={two_edge_cuts(E)} '
             f'chains=[{" ".join(sorted(ch)) or "-"}] splitoff-delta={split_deltas(E) or "-"} | '
-            + ('; '.join(blocks) or 'no step applies'))
+            + ('; '.join(blocks) or 'no step applies')
+            + (' | cells: ' + '; '.join(cells) if cells else ''))
 
 
 def run_exh(a, cov):
@@ -652,7 +725,7 @@ def run_exh(a, cov):
             unc.append(key)
             napp0 += not cov.why[key]
     steps = [s for s in ORDER if any(tally[(n, s)] for n in range(3, a.exh + 1))] + ['UNCOVERED']
-    print(f'-- exh {a.exh} (ear23={a.ear23}, ear1={a.ear1}, jj={a.jj}, contract={a.contract}): '
+    print(f'-- exh {a.exh} (ear23={a.ear23}, delta0={a.delta0}, jj={a.jj}, contract={a.contract}): '
           f'first covering step, per n')
     for n in range(3, a.exh + 1):
         print(f'   n={n}: ' + ', '.join(f'{s} {tally[(n, s)]}' for s in steps))
@@ -695,7 +768,7 @@ def run_pool(a, cov, pname):
             term_all[t] += 1
     cap = f' [every {a.stride}th member]' if a.stride > 1 else ''
     ncov = sum(first.values())
-    print(f'-- pool {pname}{cap} (ear23={a.ear23}, ear1={a.ear1}, jj={a.jj}, contract={a.contract}): '
+    print(f'-- pool {pname}{cap} (ear23={a.ear23}, delta0={a.delta0}, jj={a.jj}, contract={a.contract}): '
           f'{ncov + len(unc)} simple 2EC members; covered {ncov} ('
           + ', '.join(f'{s} {first[s]}' for s in ORDER if first[s]) + f'); uncovered {len(unc)}')
     if unc:
@@ -741,7 +814,7 @@ def run_tree(a, cov, names):
         n, code = nm[1:].split('_')
         key = (int(n), int(code))
         assert key_of(graph(key)) == key, ('not a canonical name', nm)
-        print(f'-- tree {nm} (ear23={a.ear23}, ear1={a.ear1}, jj={a.jj}, contract={a.contract}):')
+        print(f'-- tree {nm} (ear23={a.ear23}, delta0={a.delta0}, jj={a.jj}, contract={a.contract}):')
         show(key, 0)
 
 
@@ -856,7 +929,7 @@ def run_round1(a, cov):
         tally[cov.memo[key][0] if ok else 'UNCOVERED'] += 1
         if not ok:
             print('   uncovered: ' + describe(cov, key))
-    print(f'-- the hybrid recon\'s 48 no-arm graphs (ear23={a.ear23}, ear1={a.ear1}, jj={a.jj}, contract={a.contract}), '
+    print(f'-- the hybrid recon\'s 48 no-arm graphs (ear23={a.ear23}, delta0={a.delta0}, jj={a.jj}, contract={a.contract}), '
           'first covering step: ' + ', '.join(f'{s} {tally[s]}' for s in ORDER + ('UNCOVERED',)
                                                if tally[s]))
     print(f'-- round1: {time.time() - t0:.0f} s')
@@ -959,7 +1032,7 @@ def main():
     ap.add_argument('--pool', type=str, default='')
     ap.add_argument('--necklace', type=int, default=0)
     ap.add_argument('--ear23', choices=sorted(EAR23), default='none')
-    ap.add_argument('--ear1', choices=('delta0', 'none'), default='delta0')
+    ap.add_argument('--delta0', choices=('on', 'off'), default='on')
     ap.add_argument('--jj', choices=('cert', 'cite'), default='cert')
     ap.add_argument('--contract', choices=('cert', 'cert-core', 'struct', 'off'), default='cert')
     ap.add_argument('--cert-nmax', type=int, default=40)
