@@ -219,10 +219,19 @@ in general. The smallest commits first:
 **2026-09-24 (third session) — the open directions, worked in parallel.** The PI (verbatim): *"Let's
 work on the open directions for P1 there with up to 4 parallel subagents. I'd like to prioritize
 proving theorems (even if informally) over collecting more numerical evidence for existing
-conjectures."* Four read-only agents: A, the structural half (item 3); B, cell (MC-51)(c) (item 4);
-C, the certificates as partition counts modulo Jackson–Jordán (item 4); D, the second reading
-(item 1, landed above). A–C work in scratch. **Until their results are landed, nothing of theirs is
-in the tree**, and a fresh session re-dispatches from items 3–4.
+conjectures."* Then: *"Let's keep launching subagents as they return until we hit a point where we
+should start a fresh session."* Read-only agents, up to four at a time, each landed by the
+coordinator:
+- **D**, the second reading (item 1): landed (`e2c234c9`).
+- **C**, the certificates as partition counts (item 4): landed as §(K-main) **Step MC15**,
+  (MC-62)–(MC-74). Modulo Jackson–Jordán, `dim U = min(δ₂, 3)` and the flag orbit are combinatorial,
+  and CONTRACT needs no certificate at a core with `def₂(G) = def₂(H) + def₂(G/H)`, which is automatic
+  at a maximal proper rigid set with a simple quotient outside one exceptional case. A second reader
+  is owed.
+- Still in scratch, **not in the tree until landed**: A, the structural half (item 3); B, cell
+  (MC-51)(c) (item 4); E, the generic motive at A′ graphs (item 5); F, the lemma "`δ₂ = 1 ⟹ δ ≤ 1`",
+  which with (MC-44) and (MC-26) at `r = 1` would close (MC-51)(a) for `a ≁ b`. A fresh session
+  re-dispatches whichever of these has not landed.
 
 1. Write (F1)–(F3) up as a new workbook section with the derivation (reserve a label prefix
    first: `python3 notes/ledger.py --reserve`, `notes/pencil/labels.md`).

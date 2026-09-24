@@ -894,3 +894,17 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   2026-09-24 second reader of Steps MC12/MC14 (§(K-main) Step MC14, the `a ≁ b` reading; (MC-54)):
   generic `λ` at `k = 1..4` and `dim ⋂Λ₄` over 12 placements in each of the orbit frames (i), (ii),
   (ii′), (iii), (iv). Stdlib only; shares no code with `earstep.py`. A leaf.
+- `orbitrule.py (--cells8 | --split7 N | --sparse N)` — **`dim U` and the flag orbit as partition
+  counts** (§(K-main) Step MC15, (MC-62)–(MC-65), (MC-73)). At pictures certified by
+  `dim F(G′, q) = 3 + def₂(G′)`, a drawn `dim U = min(δ₂, 3)` certifies the generic value. `--cells8`:
+  every `k = 2` chain on ≤ 8 vertices; `--split7`: Step MC11's instances; `--sparse`: (MC-65) on
+  every tight graph (`2|E| = 3n − 4`, no `def₂`-rigid subgraph). Imports `exactcore`, `kbare_common`,
+  `maincomp`, `splitext`, `nogood_subdiv`. A leaf.
+- `contractcheck.py (--named | --extra | --hunt N [--runs R] | --maximal N)` — **CONTRACT's
+  certificates against additivity** (§(K-main) Step MC15, (MC-67)–(MC-71), (MC-74)): per proper rigid
+  `W` with `G/H` simple, `def₂(G)`, `def₂(H)`, `def₂(G/H)`, (MC-67)(c)'s partition form (asserted equal
+  to the count), and `coreshrink.run_member`'s (i)/(ii). Imports `maincomp`, `nogood_subdiv`,
+  `coreshrink`, `x0arms`. A leaf.
+- `kerm0.py` (no flags) — **(MC-69)(a)'s kernel identity** asserted exactly against
+  `coreshrink`'s `dim ker M₀` at 287 instances, with `ε` and the jet order. Imports `splitext`,
+  `coreshrink`, `x0arms`. A leaf.
