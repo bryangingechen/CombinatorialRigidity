@@ -63,7 +63,8 @@ is load-bearing.
 | **R2 recon (2026-09-16): item 4** | 4736–5098 | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) SETTLED (α)** by the user 2026-09-16 and applied by the arc below; (GR-10) scope still the user's | — |
 | **Kernel restatement (2026-09-16): item 5** | 5099–5194 | **LANDED** — the restated `hK`/`hbareSplit` (IH + (d) + (α)), the new motive `HasDistinctPencilRealization`, the arm ripple as it actually discharged, and the (c) adder's home. **Read this, not the pinned blocks, for the kernels' current form** | — |
 | **Item-6 carrier recon (2026-09-16): item 6** | 5195–5756 | **RECORDED** — 6a *proved* sorry-free; 6b correct as transcribed but **false without `¬ G.Adj u v`** and needing the `g` carrier; 6c's carriers proposed with sites, only C1+C4-at-`U=⊥` consumed by S14(i)–(ii); Layer A/B/C build order; D1–D5 open. **Read this for what item 6 is** | — |
-| **C2ℓ route spike (2026-09-17): item 6, Layer C2ℓ** | 5757–end | **LANDED** — the pivot is that `weldedRank` is a **codimension** (B7); the landed relative hub transfers verbatim to merged labelings; `hu`/`hv` provably necessary and `hne` dead; two dispatch claims refuted (`Subspace.` not `Submodule.dualAnnihilator_inf_eq`; the weld-graph route is redundant, not blocked) | — |
+| **C2ℓ route spike (2026-09-17): item 6, Layer C2ℓ** | 5760–5830 | **LANDED** — the pivot is that `weldedRank` is a **codimension** (B7); the landed relative hub transfers verbatim to merged labelings; `hu`/`hv` provably necessary and `hne` dead; two dispatch claims refuted (`Subspace.` not `Submodule.dualAnnihilator_inf_eq`; the weld-graph route is redundant, not blocked) | — |
+| **X₀ architecture recon (2026-09-25)** | 5832–end | **RECORDED, for the PI** — the `X₀` theorems discharge `hK`, `hbareSplit` and `hcontract` except W4-A; a simpler `pencil_conjecture_of_arms_pair` route compiles (spike, two `sorry`s); no landed theorem replaces Jackson–Jordán (the candidate is the KT spine at `n = 2`) | — |
 | Higher-`d` note / Citations | 4177–4217 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -5827,3 +5828,264 @@ A consumer that needs the welded rank *on the contracted body set* rather than a
 `α` (that is the weld-graph route's one genuine advantage, and it would want the two witnesses
 above landed); or the general-`U` joint count coming back onto the consumed path, which would
 make `jointMotions`' motion-side `|α|` dependence visible again.
+
+## X₀ architecture recon (2026-09-25): the `X₀` theorems against the Lean consumer
+
+*A read-only recon (W4-reopen, *Next* item 3), against `4aea6913`, for the PI's pending
+architecture call. The question: if §(K-main)'s (MC-89), (MC-133)(ii) and (MC-157) hold, which of
+the headline's carried hypotheses do they discharge, what route would the Lean take, what would it
+cost, and can a landed theorem stand in for Jackson–Jordán? Every Lean claim below was read from
+definition bodies. The spike at the end was elaborated by the recon and re-elaborated by the
+coordinator: `lake env lean` on the built tree, ~32 s. It has exactly two `sorry`s. **Nothing here
+is a decision**; the calls are listed at the end.*
+
+**Verdict.**
+1. **The `X₀` theorems discharge `hK` and `hbareSplit` in full, and `hcontract` except the bare
+   motive at a loopless, non-simple, 2EC `G`.** That piece is **W4-A (W4-L1)**: parked, buildable,
+   no kernel (§ *W4 decomposition recon*, "W4-A — the non-simple bare producer"; KT Lemma 6.2
+   mirror, about 2–3 commits). It lies structurally outside `X₀`: at projectively distinct points
+   parallel hinges fall on one line and the rank is capped (`HasDistinctPencilRealization`'s
+   docstring).
+2. **A simpler top-level route compiles**: `pencil_conjecture_of_arms_pair`, with one arm serving as
+   both `hcontract` and `hsplit`. Not 2EC goes to the landed `pencilPair_of_not_twoEdgeConnected`.
+   2EC and simple goes to (MC-157) and (MC-133)(ii). 2EC and non-simple goes to W4-A. It needs no
+   `hK`, `hbareSplit`, `hcard`, `hfresh` or feasibility back-transfer, and edits no protected
+   declaration. W5-L7 (`hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat`, the `|V| = 3, 4`
+   leaves, `hfresh`) goes off the consumed path and stays landed, unedited.
+3. **No landed theorem replaces Jackson–Jordán.** What `X₀` takes from it is exactly KT Theorem 5.6
+   at `d = 2`: the meet model, simple graphs. At `z = 0` the flex space `F(q)` is a
+   `PanelHingeFramework K 1` with normals `(x_v, y_v, 1)`, and Jackson–Jordán's equality is its
+   `RankHypothesis (G.deficiency 2)` at generic normals. Every Jackson–Jordán use in (MC-89)
+   ((MC-141)'s list) is at a simple graph. The landed form,
+   `PanelHingeFramework.rankHypothesis_of_theorem_55_gen` (`Theorem55.lean`), takes `hd : 3 ≤ n` and
+   derives `6 ≤ Graph.bodyBarDim n` at once. The landed 3D theorem is no substitute: it gives the
+   rank at generic panel-hinge points, and `X₀`'s flat points are special. **The one candidate is
+   extending the landed spine to `n = 2`**, which would be field-general for free (Phase 33).
+4. **Cost.** The route is a multi-phase formalization, comparable in kind to KT Cases I–III
+   (Phases 21–23). It has roughly 60–70 load-bearing claims, a judgement: the explicit citation
+   closure is 40 labels for (MC-89) and 44 with (MC-133), (MC-157), and proofs lean on more.
+   Jackson–Jordán, or its `n = 2` replacement, is a second programme on top.
+
+**The consumer map** (from the bodies).
+- `G.deficiency 3` is the corpus's `def₃`, and `deficiency 2` its `def₂`.
+- `IsProperRigidSubgraph H G 3` is `H ≤ G ∧ H.IsKDof 3 0 ∧ 2 ≤ |V(H)| ∧ V(H) ⊊ V(G)`, i.e.
+  `def₃`-rigidity; the `X₀` route never uses it.
+- `screwDim 2 = 6` and `bodyBarDim 2 = screwDim 1 = 3` (by `decide`).
+- `HasCoplanarPanelRealization` needs `supportExtensor e ≠ 0` at every `e : β`. That is trivial off
+  `E(G)`, as (MC-157)'s proof does.
+
+| carried piece | discharged by | left over |
+|---|---|---|
+| `hK` | (MC-133)(ii) at `G`: 2EC gives connected and min degree `≥ 2` (`two_le_degree_of_twoEdgeConnected`) | characteristic 0 or Jackson–Jordán; plus a small back-transfer lemma, since feasibility is forced through the split-off antecedent (below) |
+| `hbareSplit` | (MC-157) at `G`; infeasibility, IH and antecedent unused | characteristic 0 or Jackson–Jordán |
+| `hcontract`, generic / distinct | (MC-133)(ii) / (MC-157) when 2EC; the landed cut arm otherwise (`hcontract` carries no 2EC hypothesis) | characteristic 0 or Jackson–Jordán |
+| `hcontract`, bare | simple and 2EC: forget from (MC-157); not 2EC: cut arm; **non-simple and 2EC: nothing in `X₀`** | **W4-A** |
+
+*`hK`'s `G` is forced feasible.* From `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)`:
+- `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` bounds `closedHubNbhd` in `G′`;
+- `splitOff` keeps every degree and so the hub set, since `a` and `b` trade their edge to `v` for
+  `e₀`; hence `closedHubNbhd_G w ⊆ closedHubNbhd_{G′} w` for `w ≠ v`, and `⊆ {a, b}` at `v`;
+- `triangle_isProperRigidSubgraph` against `hnoRigid` makes `G` triangle-free;
+- L6b (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`) finishes.
+
+The reverse degree bound is not landed, so this is one small commit, needed only on the carried
+route (A).
+
+**Cost sketch** (reuse by declaration name).
+1. *Carrier*, (MC-1)–(MC-3): "the generic point of `X₀` attains" as a nonzero rank polynomial over a
+   rational parametrization. Reuses `MvPolynomial.exists_eval_ne_zero` and its variants
+   (`Mathlib/Algebra/MvPolynomial/Funext.lean`), the `PanelHingeFramework.exists_rankPolynomial_of_*`
+   family (`GenericityDevice.lean`, `CaseI.lean`), and the pencil layer. Medium.
+2. *(MC-4)*: (b)'s inequality is landed at grade 1,
+   `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean`, general in
+   `k`, `n`). The upper bound `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` is
+   general. New: the split `Λ²K⁴ = W_Π ⊕ W′` against the opaque `ScrewSpace` carrier, and
+   `F(q) ≅ L(q)`. Medium.
+3. *Jackson–Jordán*: large, a separate programme (below).
+4. *Induction steps*: ear, short ears, split-off, contraction, cut/bridge fibre products, THETA, the
+   certificate leaves. All new; each is a rank computation on a parametrized family plus a
+   genericity combination. Deficiency bookkeeping reuses `rigidContract_deficiency_eq`,
+   `deficiency_eq_of_cutEdges_ncard_le_one`, `removeVertex_deficiency_ge`,
+   `deficiency_le_deficiency_of_le_vertexSet_eq` and item 6's Layers A–C. There is no landed
+   cut-vertex deficiency law. Large, the bulk.
+5. *Structural half*, (MC-62)–(MC-88) as cited: pure combinatorics on two deficiency functions.
+   Reuses `exists_maximal_induced_isProperRigidSubgraph`, `triangle_isProperRigidSubgraph`,
+   `c4_isProperRigidSubgraph`. Medium–large.
+6. *Generic motive*, (MC-123)–(MC-133): partly reuses `pencilChartFramework`/`PencilSeed`,
+   `exists_pencilSeed_of_nondeg`, L6b, and
+   `hasGenericPencilRealization_of_independent_pencilRow_target`. Medium–large.
+7. *Consumer wrapper and W4-A*: small.
+
+Statement-shape notes. The consumer needs only the 2EC form (`X0Dist`, `X0Gen` below), but the proof
+needs all of (H), because CUT and BRIDGE pass through non-2EC graphs. The induction builds
+`G′ + ab` and `G″` inside a fixed `β`, so it needs fresh labels: a `β`-headroom hypothesis like
+`hcard`, or a type-changing formulation.
+
+**Jackson–Jordán: the options.**
+- **(a) Extend the landed spine to `n = 2`** (KT's own `d = 2` case). It would replace every
+  Jackson–Jordán use, over any infinite field.
+  - `theorem_55_minimalKDof_k_all_k` takes `hD : 6 ≤ Graph.bodyBarDim n`. The genuine use is
+    `exists_adjacent_degree_two_pair` (`Molecular/Induction/ReducibleVertex.lean`), whose docstring
+    calls it "KT Lemma 4.6 at d = 3 (D ≥ 6) … by a cheaper double-count than KT's maximal-chain
+    argument".
+  - Further `6 ≤ bodyBarDim n` sites to audit: `ReducibleVertex.lean` (5),
+    `ForestSurgery/ChainExtraction.lean` (1), `CaseIII/Arms.lean` (1), `CaseIII/Realization.lean`
+    (2), `GenericLift/HingeGeneric.lean` (4), `GenericLift/PanelGeneric.lean` (2), `Theorem55.lean`
+    (~20), `ForestSurgery/Reduction.lean` (3). The non-spanning uses (at `H`, `G/H`) need a
+    transport wrapper around the spanning, `hcard`-headroom statement.
+  - **The 2026-07-10 Prospect G2 sizing recon dropped this track by a pre-registered rule, not by
+    proof** (`notes/Prospect.md`: the G2 tier entry, *Open recon questions*, and the *Survey
+    record*'s flags (b), (c), which left the chain-extractor floor inferred from docstrings and
+    "the `D ≥ 6` tightness question … explicitly not settled"). `K_{2,3}` refutes the Lean's
+    adjacent-pair shortcut at `D = 3`. But KT itself works at `d ≥ 2`, per the recon's reading of
+    KT 2011 (printed page = pdf + 646):
+    - p. 651, "Throughout the paper, d denotes a fixed integer with d ≥ 2";
+    - Lemma 4.6, p. 664, is a chain of length `d`, which at `d = 2` is one degree-2 vertex;
+    - Lemma 6.13, pp. 692–693, is stated at general `d`;
+    - p. 686: "In d = 2 we can show that the corresponding top-left submatrix has full rank in at
+      least one of (6.29) and (6.30)".
+
+    The recon did not verify Lemma 6.13 end to end at `d = 2`. **It needs a sizing recon.**
+- **(b) Formalize Jackson–Jordán's TR-2006-06**: bar-joint 2D, 0-/1-extensions, vertex split,
+  bricks and superbricks, Claims 6.2–6.10. Its field-general form is `[INFORMAL]` ((MC-33)(i)). It
+  partly reuses Laman (Phases 1–8) and `Framework V d`, and is also a new programme.
+- *(c) Speculative:* a motive "attains ∧ `ℓ₀ = 3 + def₂`" would need Jackson–Jordán only at FLAT
+  leaves. That is unverified, and at FLAT leaves it *is* Jackson–Jordán's content.
+
+**What would stop, in principle** (for the Lean target, if the route moves): `kres` / (K-res) (L3′
+branch 3c); (K-c) and W4-B (W4-L2), branch 3b; (K-bare-c), branch 2, with (α); W4-L3′, W4-L4b,
+W4-L5, `hnoGood′`, (SAFE-RES′), the L7a residual sibling, and T1's scope question; smark's O7e
+programme on `hbareSplit` at `m ≤ 4`, since (MC-157) discharges `hbareSplit` pointwise. **Not
+stopped: W4-A**, needed on every route. Until the `X₀` formalization is actually undertaken the
+kernels are the fallback, so *hold* rather than *cancel* is the conservative reading.
+
+**Open calls, the PI's.**
+1. *Architecture:* move the Lean target to a headline shaped like `spike_pencil_conjecture_of_X0`,
+   carrying `X0Dist`/`X0Gen`? If so, now, or after the remaining second readings?
+2. *Jackson–Jordán route:* a sizing recon for (a), or formalize (b)?
+3. *Characteristic:* accept a `CharZero K` headline (a statement change), make Jackson–Jordán
+   field-general, or take (a), which is field-general for free.
+4. *Kernel research:* hold or cancel `kres`, (K-c), (K-bare-c) and smark's O7e.
+5. *W4-A:* unpark W4-L1 now? It is needed on both routes and carries no kernel.
+6. *Statement shape:* prove on (H) and consume the 2EC form; fresh labels via `β`-headroom or a
+   type-changing induction.
+
+**The spike** (verbatim; save as a `.lean` file anywhere and run `lake env lean <file>` from the
+repository root, ~32 s; `#print axioms` shows `sorryAx` from exactly `spike_W4A` and, on route (A)
+only, `spike_feasible_of_splitOff_generic`):
+
+```lean
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Escape
+
+/-!
+Recon G spike (read-only; scratch, not in the tree). Two compositions:
+
+1. `spike_hK`, `spike_hbareSplit`, `spike_hcontract`: the three carried hypotheses of the landed
+   headline, discharged from two X₀-shaped hypotheses (`hX0dist`, `hX0gen`), one small
+   combinatorial lemma (`spike_feasible_of_splitOff_generic`, sorried) and the parked W4-A leaf
+   (`spike_W4A`, sorried). Fed into `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`.
+2. `spike_pencil_conjecture_of_X0`: the simpler top-level route, straight through
+   `pencil_conjecture_of_arms_pair` (hence `Graph.pencil_reduction`) with the same inputs.
+-/
+
+open scoped Graph
+
+namespace CombinatorialRigidity.Molecular
+
+variable {K : Type*} [Field K] {α β : Type*}
+
+/-- The X₀ distinct theorem, consumer shape: (MC-157) restricted to 2EC graphs on ≥ 3 vertices. -/
+def X0Dist (K : Type*) [Field K] (α β : Type*) : Prop :=
+  ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+    HasDistinctPencilRealization K 3 G
+
+/-- The X₀ generic theorem, consumer shape: (MC-133)(ii) restricted to 2EC graphs on ≥ 3 vertices. -/
+def X0Gen (K : Type*) [Field K] (α β : Type*) : Prop :=
+  ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+    PencilNondegFeasible K G → HasGenericPencilRealization K 3 G
+
+/-- Parked leaf W4-L1 (W4-A): the non-simple bare producer. Sorried here. -/
+theorem spike_W4A [Inhabited α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+    {G : Graph α β} (_hloop : G.Loopless) (_hV : 3 ≤ V(G).ncard) (_h2ec : G.TwoEdgeConnected)
+    (_hns : ¬ G.Simple)
+    (_hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
+    HasPencilRealization K 3 G := sorry
+
+/-- New small lemma: on `hK`'s habitat, a generic split-off forces `G` feasible (F1 transfers back
+across a safe split, F2 from triangle-freeness under `hnoRigid`). Sorried here. -/
+theorem spike_feasible_of_splitOff_generic [Inhabited α] [Finite α] [Finite β] [Infinite K]
+    {G : Graph α β} {v a b : α} {eₐ e_b e₀ : β} (_hs : G.Simple) (_hV : 5 ≤ V(G).ncard)
+    (_hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) (_hdeg : G.degree v = 2)
+    (_heab : eₐ ≠ e_b) (_hea : G.IsLink eₐ v a) (_heb : G.IsLink e_b v b)
+    (_hgen' : HasGenericPencilRealization K 3 (G.splitOff v a b e₀)) :
+    PencilNondegFeasible K G := sorry
+
+theorem spike_hK [Inhabited α] [Finite α] [Finite β] [Infinite K] (hgen : X0Gen K α β) :
+    ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+      (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+      HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasGenericPencilRealization K 3 G :=
+  fun G _v _a _b _eₐ _e_b _e₀ hs hV h2ec hnoRigid hdeg heab hea heb _ _ _ hgen' =>
+    hgen G hs (by omega) h2ec
+      (spike_feasible_of_splitOff_generic hs hV hnoRigid hdeg heab hea heb hgen')
+
+theorem spike_hbareSplit (hdist : X0Dist K α β) :
+    ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+      (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      ¬ PencilNondegFeasible K G →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+      HasDistinctPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasDistinctPencilRealization K 3 G :=
+  fun G _ _ _ _ _ _ hs hV h2ec _ _ _ _ _ _ _ _ _ _ => hdist G hs (by omega) h2ec
+
+/-- The shared arm: any loopless `G` on `≥ 3` vertices with the IH. -/
+theorem spike_pair_arm [Inhabited α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+    (hdist : X0Dist K α β) (hgen : X0Gen K α β) (G : Graph α β) (hloop : G.Loopless)
+    (hV : 3 ≤ V(G).ncard)
+    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
+    PencilPair K 3 G := by
+  have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by
+    have := Graph.six_le_bodyBarDim (n := 3) (by norm_num); omega
+  have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
+  by_cases h2ec : G.TwoEdgeConnected
+  · by_cases hs : G.Simple
+    · have hd := hdist G hs hV h2ec
+      exact ⟨fun _ hf => hgen G hs hV h2ec hf, fun _ => hd, hasPencilRealization_of_distinct hd⟩
+    · exact ⟨fun h => absurd h hs, fun h => absurd h hs, spike_W4A hloop hV h2ec hs hIH⟩
+  · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
+
+theorem spike_hcontract [Inhabited α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+    (hdist : X0Dist K α β) (hgen : X0Gen K α β) :
+    ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        PencilPair K 3 G') →
+      PencilPair K 3 G :=
+  fun G hloop hV _ hIH => spike_pair_arm hdist hgen G hloop hV hIH
+
+/-- Composition 1: the landed headline, its three carried hypotheses discharged. -/
+theorem spike_headline_via_carried [Inhabited α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+    (hdist : X0Dist K α β) (hgen : X0Gen K α β)
+    (hcard : Graph.bodyBarDim 3 * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hspan : V(G) = Set.univ) : PencilPair K 3 G :=
+  pencil_conjecture_of_hcontract_hK_hbareSplit_of_card (spike_hcontract hdist hgen)
+    (spike_hK hgen) (spike_hbareSplit hdist) hcard G hspan
+
+/-- Composition 2: the simpler route, no `hK`/`hbareSplit`, no `hcard`, no `hfresh`. -/
+theorem spike_pencil_conjecture_of_X0 [Inhabited α] [Finite α] [Finite β] [DecidableEq β]
+    [Infinite K] (hdist : X0Dist K α β) (hgen : X0Gen K α β)
+    (G : Graph α β) (hspan : V(G) = Set.univ) : PencilPair K 3 G :=
+  pencil_conjecture_of_arms_pair
+    (fun G hloop hV _ hIH => spike_pair_arm hdist hgen G hloop hV hIH)
+    (fun G hloop hV _ _ _ hIH => spike_pair_arm hdist hgen G hloop hV hIH) G hspan
+
+end CombinatorialRigidity.Molecular
+
+#print axioms CombinatorialRigidity.Molecular.spike_pencil_conjecture_of_X0
+#print axioms CombinatorialRigidity.Molecular.spike_headline_via_carried
+```

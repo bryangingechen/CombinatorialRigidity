@@ -26,6 +26,9 @@ contraction and cut steps on `X₀`.
 - **The generic motive (MC-133).** Every *feasible* such graph has `HasGenericPencilRealization K 3 G`,
   mod Jackson–Jordán, in characteristic 0 (Step MC19, second-read 2026-09-25). And every such graph,
   feasible or not, has `HasDistinctPencilRealization K 3 G` (MC-157), with the same caveats.
+- **Against the Lean** (the 2026-09-25 architecture recon, below): these theorems discharge `hK`,
+  `hbareSplit`, and all of `hcontract` except W4-A. A simpler top-level route compiles with only W4-A
+  left.
 - **A second proof** of (MC-89)'s in-𝒮 half, by the ear route alone (MC-148), Step MC21. The last ear
   cell narrows to "Case II-cyclic" (MC-154), which coverage does not need.
 
@@ -58,38 +61,54 @@ can lean on more than it cites.
    (MC-26)'s tag should point to (MC-137)(c). The sentence after (MC-21) should read "It is
    characteristic-free: (MC-19) holds over every field (MC-134), and (b) needs no per-graph
    computation (MC-139)."
-2. *(Folded into 1.)*
-3. **An architecture recon** (read-only, for the PI's call below; dispatched 2026-09-25, in flight).
-   Map (MC-89) and (MC-133) onto the Lean consumer, `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
-   and `PencilPair`'s three conjuncts, working from the Lean rather than from prose. Which carried
-   hypotheses would they discharge (`hK`, parts of `hcontract`, `hbareSplit`?) and which would stay?
-   What Lean statement would the `X₀` route formalize, and what would it cost: Jackson–Jordán,
-   the `X₀` steps, and reuse of the molecular programme (pencil ⊆ panel, so (MC-10)(a) implies the
-   molecular theorem for these graphs)? In particular, can a stronger *landed* theorem replace
-   each Jackson–Jordán use? That is a statement-shape choice, and Phase 25 made one to avoid two
-   Jackson–Jordán papers (`DESIGN.md` *Formalize everything the argument uses*).
+2. **The PI's calls below.** The architecture recon has reported (below), and its inputs are ready.
+   Only readers E and F are still owed.
+
+**The architecture recon (2026-09-25)** is recorded in full in `notes/Phase39-design.md`
+§ *X₀ architecture recon (2026-09-25)*, with its Lean spike verbatim. The coordinator
+re-elaborated the spike: `lake env lean` on the built tree, exactly two `sorry`s. Its verdict:
+- **(MC-89), (MC-133)(ii) and (MC-157) discharge `hK` and `hbareSplit` in full**, and `hcontract`
+  except for one piece: the bare motive at a loopless, non-simple, 2EC `G`. That piece is **W4-A
+  (W4-L1)**, parked, buildable and carrying no kernel. `X₀` cannot reach multigraphs.
+- **A simpler route compiles**: `pencil_conjecture_of_arms_pair`, with one arm for both `hcontract`
+  and `hsplit`: the landed cut arm when not 2EC, the `X₀` theorems when simple and 2EC, and W4-A
+  otherwise. It needs no `hK`, `hbareSplit`, `hcard` or `hfresh`, and edits nothing protected.
+- **No landed theorem replaces Jackson–Jordán.** What `X₀` uses is KT Theorem 5.6 at `d = 2` (the
+  meet model, simple graphs). The landed form, `rankHypothesis_of_theorem_55_gen`, is pinned at
+  `3 ≤ n`, via `exists_adjacent_degree_two_pair`'s `D ≥ 6` count. Extending the spine to `n = 2` is
+  the one candidate, and it would be field-general for free. The 2026-07-10 Prospect G2 recon dropped
+  that track by a pre-registered rule, not by proof. KT's own text works at `d ≥ 2`, but that was not
+  verified end to end.
+- **Cost:** a multi-phase formalization, comparable in kind to KT Cases I–III, with roughly 60–70
+  load-bearing claims. Jackson–Jordán, or its `n = 2` replacement, is a second programme on top.
 
 ## PI calls pending
 
-- **Architecture.** Should the W4/`hK` Lean plan move to the `X₀` induction? What would stop: the
-  `kres` attack (held), the contraction kernels (K-c)/(K-bare-c) (never attacked), and smark's O7e
-  programme, which is unnecessary in principle for the Lean target if `X₀` suffices (no edit to
-  smark's files; the PI decides). Task 3 above is the input.
-- **Jackson–Jordán: when and how to formalize it, not whether.** The project formalizes every
-  result it uses (`DESIGN.md` *Formalize everything the argument uses*); citing it is not an option.
-  The call is the scope: over `ℝ`, or field-general following (MC-33)'s second reading. Or it
-  is the route: task 3 asks whether a landed theorem can stand in for it.
-- **Characteristic.** The Lean target is over any infinite field. Since Step MC20 and the audit (MC-166), the
-  only characteristic-0 dependence is Jackson–Jordán's field-general proof, `[INFORMAL]` (MC-33)(i).
-- **T1's scope question**, open since 2026-09-23 and moot if the architecture moves: a full
-  L3′-successor wrapper, the residual-branch producer only, or a design doc only (archive, T1
-  finding 6).
+- **Architecture.** Should the Lean target move to a headline shaped like the spike's
+  `spike_pencil_conjecture_of_X0`, carrying the two `X₀` theorems as hypotheses? If so, now, or
+  after readers E and F? In principle this stops the following for the Lean target: `kres`/(K-res),
+  (K-c) and W4-B, (K-bare-c) with (α), W4-L3′/L4b/L5 and the residual machinery, T1's scope
+  question, and smark's O7e programme. It does not stop W4-A. Until the `X₀` formalization is
+  actually undertaken, the kernels are the fallback, so the recon reads *hold*, not *cancel*.
+- **W4-A (W4-L1): unpark it now?** It is needed on every route, carries no kernel, and is about 2–3
+  commits.
+- **Jackson–Jordán: the route, not whether.** The project formalizes every result it uses
+  (`DESIGN.md` *Formalize everything the argument uses*). The options:
+  - **(a)** a sizing recon for extending the landed KT spine to `n = 2`, which is field-general;
+  - **(b)** formalizing Jackson–Jordán's TR, whose field-general form is `[INFORMAL]` (MC-33)(i).
+- **Characteristic.** The Lean target is over any infinite field, and the `X₀` theorems are
+  characteristic-0 only modulo (MC-33)(i) (Steps MC20, (MC-166)). The options are a `CharZero K`
+  headline (a statement change), a field-general Jackson–Jordán, or route (a), which is field-general
+  for free.
+- **Statement shape**, if the architecture moves: prove on (H) and consume the 2EC form. Fresh edge
+  labels inside the induction come either from a `β`-headroom hypothesis like `hcard`, or from a
+  type-changing induction.
 - *Deferred, not cancelled:* the adversarial census (`n = 9–14`, biased to 2-edge-cuts and large
   `def₂ − def₃`). With (MC-89) claimed proved, it would now be a falsification test of it.
 - *Structural chore:* split `K-main.md` by step. It costs repointing the drivers' docstrings and
   `labels.md`, so do it in a deliberate commit.
 
-## The Lean-side picture, if the split/contract architecture stays
+## The Lean-side picture, if the split/contract architecture stays (the fallback)
 
 `hcontract`'s L3′ skeleton has these branches; T1's findings are in the archive.
 - **0** — `¬ TwoEdgeConnected`: the landed cut arm.
