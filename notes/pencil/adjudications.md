@@ -751,3 +751,51 @@ architecture and characteristic calls. The user:
 **Everything else stands unchanged:** phase OPEN; `hK`, `hbareSplit`,
 `pencilPair_of_splitOff_of_habitat` and the headline theorem are not edited (the new route adds a
 headline beside them); G0's staged lift as recorded 2026-09-23.
+
+## 2026-09-25 (later) — the `X₀` formalization opens as Phase 40; Phase 39 closes on L0; the kernels held, smark paused
+
+The session opened on the planning note: **"Let's start on the work in
+notes/pencil/X0-formalization.md."** The agent put the four open calls of that note's §5 as one
+question set. The user took the agent's recommended option on each. The selected option labels,
+verbatim:
+
+- *Phase structure:* **"New Phase 40; 39 closes (Recommended)"**, whose description read: mint
+  Phase 40, sub-lettered with codes until each opens, plus `notes/Phase40-design.md`; Phase 39
+  closes once its last item, L0 (the new headline carrying `X0Dist`/`X0Gen`), lands; the attack
+  tracks keep their own state files.
+- *Hold lift:* **"Lift for both (Recommended)"**, i.e. the Lean hold is lifted for L0's wrapper and
+  for W4-A (W4-L1, the non-simple bare producer).
+- *The `n = 2` spine:* **"First sub-phase of X₀ (Recommended)"**, i.e. sub-phase 40a, a
+  structural edit of the landed KT chapters with its own row and work log; the planar molecular
+  theorem is noted on the public surfaces, and what happens to the queued PIN item is decided at
+  its close.
+- *Kernels and smark:* **"Hold all; pause smark (Recommended)"**, i.e. `kres`/(K-res), (K-c),
+  (K-bare-c) with (α), and smark's O7e programme stay as the fallback until the `X₀` motives land in
+  Lean (the MOTIVES layer); no new smark sessions meanwhile. smark's `state.md` is untouched and
+  records where it stopped.
+
+Then, mid-turn: **"Let's do the planning in this session only; don't launch any work, just open the
+phase and make sure everything will be ready for a coordinate-phase session afterwards."**, and
+**"You can do Lean work if it will help with opening the phase."** (read as scratch spikes pinning
+signatures, nothing landed), and **"I think the results are spread out in a bunch of different
+files, maybe we could organize those a bit before seeding the new phase notes? Things that make the
+phase more efficient like this can be tackled here too."** Asked whether the deferred `K-main.md`
+split should run as part of that (the agent recommended skipping it): **"Let's split it, but you
+can use a subagent for this mostly mechanical work while you proceed."**
+
+**Decided.**
+- *(a)* Phase 40 is minted for the `X₀` formalization, sub-lettered, codes until open, with
+  `notes/Phase40-design.md` as its plan. Phase 39 closes on L0: the carried `X₀` headline, then
+  W4-A discharging its W4-A hypothesis.
+- *(b)* The Lean hold is lifted for L0's wrapper and for W4-L1 (W4-A). W4-L2/L3′/L5 stay parked,
+  and on the adopted route they are not needed.
+- *(c)* The `n = 2` spine extension is sub-phase 40a, weakening the landed statements in place (the
+  2026-09-25 default).
+- *(d)* The kernels and smark's O7e are held, not cancelled, until the MOTIVES layer lands. smark
+  is paused.
+- *(e)* The `K-main.md` split runs now, by a subagent, to the recorded design.
+- *(f)* This session only plans: it lands docs, and does Lean only as scratch spikes.
+
+**Everything else stands unchanged:** `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` and
+the landed headline are not edited (the new headline sits beside them); gr10 CLOSED; the adversarial
+census deferred, not cancelled.

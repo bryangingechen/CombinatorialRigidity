@@ -1,42 +1,18 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — the phase stays OPEN (2026-07-24 adjudication). The target is
-**`PencilPair K 3 G`** — since 2026-09-16 a **three**-conjunct motive (bare; under `G.Simple` an
-adjacent-distinct one; under simplicity plus feasibility a generic one). The landed theorem
-`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) derives
-it from exactly **three carried hypotheses**: **`hcontract`** (W4; **REOPENED 2026-09-23**,
-`notes/pencil/W4-reopen.md`; carries three kernels, (K-c), (K-bare-c), (K-res); (α) sits on (K-bare-c)),
-**`hK`** (kernel (K)) and **`hbareSplit`** (kernel (K-bare)). W0–W3, W5 (L0–L7), `hsplit` and
-`hfresh` are Lean-closed.
-
-**Two tracks since 2026-09-15.** *(1)* **Attack track** — research on the two open kernels,
-one agent per lemma under `/attack <name>` (`HARNESS.md`); each lemma's status surface is
-`notes/attacks/<name>/state.md`. Briefs for **S-mark** (`hbareSplit`, and the split step of
-`hK`) and **(GR-10)** (since the 2026-09-16 re-scope, the char-2 probe of `hK`'s conclusion) are at
-`notes/attacks/{smark,gr10}/brief.md` (PI-reviewed 2026-09-15). **S-mark: route R2 (the split-off antecedent and the IH as
-certificates for the generic point, S14; both kernels take the IH by the PI's 2026-09-16 decision); what is open is
-`hbareSplit` at `m ≤ 4`. Session count, obligation count and next step live only in `notes/attacks/smark/state.md`
-(latest review: workbook S38, 2026-09-23).** *(2)* **Lean track** — this note and `/coordinate-phase 39`:
-formalize the reductions and foundations the attacks stand on, cruxes carried as
-hypotheses, no `sorry`. Items 1–3 DONE 2026-09-15 (`sec:pencil-girth-chain` fully green; field
-hypothesis option C). **Items 4–5 DONE 2026-09-16.** The R2 recon settled the rank bridge,
-side feasibility and `hK`'s conclusion; its open finding (the bare motive attains at
-*coincident* points) the user settled **(α)**. **Item 5 landed in one slice:** both kernels
-take the induction hypothesis (S14(v)), `hK` concludes `HasGenericPencilRealization K 3 G`,
-and `hbareSplit` takes and returns the new motive `HasDistinctPencilRealization`. **For the kernels' current form read `notes/Phase39-design.md`
-§ *Kernel restatement (2026-09-16)*, not the older pinned blocks.** **Both attack briefs
-CHECKED 2026-09-17** (PI-directed, against `084ee4ff`, after the Lean round closed):
-`notes/attacks/smark/brief.md` (§§2, 3, 6 rewritten 2026-09-16 against the landed kernels)
-verified hypothesis by hypothesis, patched again 2026-09-23 at review 3; `notes/attacks/gr10/brief.md`
-restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scope), Part B the
-grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
-carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
-deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **Next: open the `X₀` formalization, `notes/pencil/X0-formalization.md`** (architecture ADOPTED 2026-09-25,
-every infinite field). §(K-main)'s (MC-89), (MC-133), (MC-157) discharge all three carried hypotheses except W4-A
-(`notes/Phase39-design.md` § *X₀ architecture recon*); `kres` held; `/attack smark` continues in its own worktree.
-**gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only). Other items
-parked.
+**Status:** in progress — **closing on L0** (PI, 2026-09-25: the `X₀` formalization opens as
+**Phase 40**, and Phase 39 closes once L0 lands; verbatim `notes/pencil/adjudications.md`). The
+target is **`PencilPair K 3 G`**, a three-conjunct motive: bare; adjacent-distinct under
+`G.Simple`; generic under simplicity plus feasibility. The landed
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) reduces it
+to three carried hypotheses (`hcontract`, `hK`, `hbareSplit`). The adopted `X₀` route replaces
+them with two statements, `X0Dist` and `X0Gen` (Phase 40 discharges them), plus W4-A, which L0
+builds. **L0** (*Lemma checklist* item 0) has three steps: the new headline
+`pencil_conjecture_of_X0` beside the landed one (spike-compiled, signature pinned there); W4-A,
+the non-simple bare case; and the phase-close commit. The Lean hold is lifted for both builds.
+**Held until Phase 40's MOTIVES layer lands** (PI, 2026-09-25): the kernels (K-res)/`kres`,
+(K-c), (K-bare-c) with (α), and the smark attack, which is paused; its `state.md` records where it
+stopped. gr10 CLOSED 2026-09-23. Item 6 is DONE except the deferred A6 and one factoring item.
 
 **The retired research arc** (2026-08-05 → 09-13: 127 directions, nineteen strategy passes,
 under a coordinator loop retired 2026-09-15 — `notes/harness/incidents.md`). Its final
@@ -49,94 +25,121 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next: the PI's call on the main-component census** — DONE 2026-09-23, outcome **A′**: `X₀` attains at all 10 252 members, degenerate only at feasible graphs with a rigid subgraph (`notes/pencil/workbook/K-main.md` §(K-main); `notes/pencil/W4-reopen.md` P1; W4 REOPENED 2026-09-23; *Hand-off*). 2026-09-24: a math pass without a new census (PI) — (MC-11) the gain is exact, (MC-14) `X₀` nondegeneracy combinatorial mod Jackson–Jordán, (MC-15) `hK`'s habitat never A′, Step MC10 the ear step (every θ-graph attains). Later that day the three unranked W4-reopen directions were assessed and their findings are being landed step by step (Step MC11 the split-off step, (MC-33) Jackson–Jordán beyond ℝ, Step MC12 the contraction step, Step MC13 most of (MC-27) closed, Step MC14 the coverage count, measured). A third 2026-09-24 session (parallel read-only agents) proved the coverage theorem (MC-89), modulo Jackson–Jordán, and it was second-read (Steps MC15–MC16). It also closed every ear cell but one (Steps MC17–MC18) and reduced the generic motive to (MC-10)(a) (Step MC19, (MC-133)). Next per W4-reopen *START HERE*.
-**Item 6 is DONE except the deferred A6 — Layer C (C1ℓ–C4ℓ) LANDS 2026-09-17** — A1–A5 the
-pendant law, the combinatorial carriers,
-the vertex 2-cut law and its two corollaries; B1–B6 the four geometric carriers, the joint's row
-count, the welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`) and the 2-cut gluing
-identity; B7 the welded **codimension** `weldedRank_add_finrank_jointMotions_bot` — all in
-`section TwoCutCarriers` of `RigidityMatrix/Bricks.lean`. In `Molecule/Pencil/TwoCut.lean`: the
-loss carriers `pencilLoss`/`weldedLoss` with C1ℓ `pencilLoss_nonneg` and C3ℓ
-`finrank_relScrews_eq`, and **C2ℓ `weldedLoss_nonneg`** off the merged relative hub
-`screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions`, with the workbook's own
-`ρ ≤ δ + a` (`finrank_relScrews_le`) as a corollary. Sites, routes, the dropped hypotheses and
-the **one tracked factoring item** (C2ℓ's hub duplicates ~85 lines of the landed hub) are in
-the *Lemma checklist*; all sorry-free, gates green. **C4ℓ `pencilLoss_vertexTwoCut` LANDS
-2026-09-17**, closing item 6's Lean track (only the deferred A6 and the factoring item remain,
-both off any consumed path) — its route needed only A5+B6, not C1ℓ/C3ℓ (its own docstring).
-**Both attack briefs are CHECKED 2026-09-17** (PI-directed docs session, against `084ee4ff`):
-the S-mark brief's 2026-09-16 rewrite verified against `Escape.lean` and repinned, item 6's
-landed laws glossed for the attack (its §4 *[Lean 2026-09-17]*), one `m ≥ 5` adjacency worry
-added (§6); the gr10 brief restructured into Part A (the live char-2 probe, `hK` quoted
-verbatim, obligations O1–O5, the certificate-is-a-proof reading through
-`hasGenericPencilRealization_of_independent_pencilRow_target`) and Part B (the grid route as
-documented fallback, §B3 restated against the landed `hK`). S-mark's own status surface is
-`notes/attacks/smark/state.md` (its only status surface; counts and next step are kept there, not here); (GR-10)'s is `notes/attacks/gr10/state.md` — CLOSED 2026-09-23 after one session and review 1 (workbook `attack-gr10.md` S4, S5). Per this note's own policy (*Hand-off*) the
-per-session narrative lives there, not here; the two consumer misreadings the reviews caught are
-in the foundations paragraph below.
-**Lean track — checklist items 1–5 are DONE (items 1–3 2026-09-15, items 4–5 2026-09-16);
-item 6 is UNPARKED (user, 2026-09-16), its recon is DONE, its Layer A is DONE except the
-deferred A6, and its Layer B and Layer C (C1ℓ–C4ℓ) are DONE (2026-09-16/17).**
-Items 1–2's eight red nodes in `blueprint/src/chapter/pencil.tex` § *Girth and degree-two
-chains* are **all green**; that chapter is their declaration index, so the names are not
-re-listed here (files: `Molecular/Induction/Girth.lean`, `Molecule/Pencil/Motive.lean`,
-`Molecular/Induction/ForestSurgery/MaximalChain.lean`). Item 3 is **SETTLED** (PI, option C):
-the reduction stays `[Infinite K]`, the hypothesis lives on the kernel lemmas
-(`notes/Phase39-design.md` § *Field-hypothesis recon*; chapter
-`fmlnote:pencil-conditional-realization-pair-field`). Queued Lean work: none before P1 reports (*Hand-off*).
-Builds need
-`LAKE_CACHE_DIR` set (`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
+**Next: L0a, the carried `X₀` headline** (*Lemma checklist* item 0, where the statement is pinned
+verbatim and spike-compiled). Then L0b (W4-A), then L0c, the phase close (*Hand-off*). The
+mathematics behind the `X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all
+second-read, in `notes/pencil/workbook/K-main.md` §(K-main). Its formalization plan is
+`notes/pencil/X0-formalization.md`. Nothing in L0 depends on it.
+
+**Lean, landed:** W0–W3, the whole of W5 (L0–L7), `hsplit` and `hfresh`'s discharge (W5-L7c);
+checklist items 1–5 (2026-09-15/16); item 6's Layers A–C (2026-09-16/17). The declaration index is
+`blueprint/src/chapter/pencil.tex`. Builds need `LAKE_CACHE_DIR` set
+(`notes/ToolchainBumps.md` *Environment*; session-wide via the gitignored
 `.claude/settings.local.json`).
 
-**Lean, landed:** the statement layer and stratum self-duality (W0), the KT Lemma 5.3/5.4
-base cases (W1), the two-pencil layer (W2), W3, the whole of W5 (L0–L7, 2026-07-24 → 07-30),
-`hsplit` in full and `hfresh`'s mechanical discharge (W5-L7c). **W4 — REOPENED 2026-09-23** (user;
-route 3, packaging (b), adjudicated 2026-08-02; fully decomposed, gates N8/N9/N10/N10b
-passed; canonical homes `notes/Phase39-design.md` §§ *W4 decomposition recon* / *W4-L4
-identification recon* and `notes/pencil/workbook/W4.md`). Task list T0–T4 and the do-not list:
-`notes/pencil/W4-reopen.md`; hold lifted for the wrapper and W4-L4b only (*Blockers*).
+**The kernel line, held.** W4 was reopened on 2026-09-23. Its decomposition is in
+`notes/Phase39-design.md` §§ *W4 decomposition recon*, *W4-L4 identification recon* and
+`notes/pencil/workbook/W4.md`, and its hand-off is `notes/pencil/W4-reopen.md`. The attack tracks'
+eight foundations findings are recorded where they arose, in the two attack briefs,
+`notes/Phase39-design.md` § *R2 recon* and the smark workbook. They are:
+- the frame gap, closed under R2;
+- the girth-5 restriction;
+- the consumed-shape disjunct and antecedent;
+- the independence proviso;
+- the field mismatch, resolved;
+- the rank bridge, checked;
+- the bare-motive slack, settled (α).
 
-**Eight foundations findings from the briefs, the two reviews and the item-4 recon** (the
-writers' readings, to be checked by the PI; this paragraph is a summary — the owning text is the brief or workbook
-section named). **Frame gap — closed under R2** (review 2, 2026-09-16): the Lean's own induction composes only across the hub cut of a degree-2 chain, where the split-off antecedent supplies welded attainment (workbook S14(i)); no 3-block skeleton is consumed.
-**Girth-5 restriction:** at girth ≥ 5 the coplanarity closure never fires, so the
-coincident-flag arm the last six rounds worked is deleted by inducting inside girth-5 graphs
-(`smark/brief.md` §6 idea 1, §7; adopted in session 1). Girth is `≥ 7` in the consumer's class
-*unless `G` is itself a 5- or 6-cycle* — a spanning short cycle is not a *proper* rigid
-subgraph. **Consumed-shape disjunct** (review 2026-09-15): `hbareSplit` carries
-`¬ PencilHub a ∨ ¬ PencilHub b` — the blueprint's *"one of whose two neighbours is not a
-pencil hub"* — which the S-mark brief dropped; the consumed instance is a hub-terminal side
-against a degree-2 chain of length `≥ 2`, never a single degree-2 vertex between two hubs, and
-the chain length stratifies the obligation: `≥ 4` closes from the attack's S3 + S8, `2` is the
-core (`smark/brief.md` §3 *Consumed shape*; workbook S10, reviewer's arithmetic).
-**Consumed-shape antecedent** (session 5 / review 2, 2026-09-16): the brief also misread the
-kernels' antecedent as discardable; it is the split-off graph `H′ ∪ ear_{m−1}` attaining — the
-certificate R2 reads at the generic point (S14; verified against `Escape.lean` at review 2,
-S15; incident logged 2026-09-16). **Independence proviso:** the chain from (GR-15) to `hK` needs each hub's
-closed-hub-neighbourhood points independent, which the 40 742- and 166 088-shape sweeps did
-not certify (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*, §3). **Field mismatch** —
-*resolved 2026-09-15*: neither route needs characteristic 0 (the grid needs `char ≠ 2`; S-mark
-needs algebraic closure only as stated); option C, checklist item 3. **Rank bridge — CHECKED** (item-4 recon, 2026-09-16):
-the attack's `dim M(G) = 6 + def₃(G)` is the Lean's `HasPencilRealization` rank equation wherever
-adjacent points are distinct (five rows per hinge, `screwDim 2 = 6`, `deficiency 3 = def₃`;
-compiled). **Bare-motive slack** (item-4 recon): the bare motive attains at coincident adjacent
-points where no distinct configuration does (the parallel pair; compiled cap `≤ 5`), so a Lean
-bare witness is not automatically a point of the attack's `Y(G)` — **settled (α)** 2026-09-16
-by a third `PencilPair` conjunct, so `hbareSplit`'s antecedent is a `Y(G₋)`-point by
-construction and O8's coincident stratum is deleted.
+The summary paragraph that listed them stands verbatim in this note at `22d0f8f8`. All of it is
+fallback while the kernels are held.
 
 **Standing user adjudications that bind:** 2026-07-24 the phase stays open; 2026-08-05 the
 Lean hold, and *"all of the scripts we run [are] committed"*; 2026-09-03 *"we should
 ultimately be driven by the math … we shouldn't lock [declined directions] out forever"* and
 *"if the current approach seems to be getting in a rut then it's time to reprioritize"*;
-2026-09-15 the coordinator loop retired in favour of attack tracks. Verbatim record:
-`notes/pencil/adjudications.md`.
+2026-09-15 the coordinator loop retired in favour of attack tracks; 2026-09-25 the `X₀` route
+adopted over every infinite field, then Phase 40 minted, the hold lifted for L0 and W4-A, and the
+kernels and smark held. Verbatim record: `notes/pencil/adjudications.md`.
 
 ## Lemma checklist — the Lean track
 
-*Items 1–6 unparked 2026-09-15/16 (PI), the **W4 build** item in part 2026-09-23 (*Blockers*);
-the rest stay parked by the hold. Ranked cheapest and most decision-relevant first; each
-carries its crux as a HYPOTHESIS, never a `sorry`.*
+*Item 0 is the live work (PI, 2026-09-25): the hold is lifted for L0a and L0b, and Phase 39
+closes when item 0 is done. Items 1–6 were unparked 2026-09-15/16 (PI). The items after 6 are HELD
+with the kernels, off the adopted route; the phase close moves them to Phase 40's design doc as
+the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
+
+- [ ] **0. L0 — the `X₀` headline and W4-A** (plan: `notes/pencil/X0-formalization.md` §3 L0;
+  record: `notes/Phase39-design.md` § *X₀ architecture recon*, whose spike this transcribes).
+  - [ ] **L0a — the carried headline.** Rated S1/P1/B1. Put it in a new file
+    `Molecule/Pencil/X0.lean`: header `import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2`,
+    `open scoped Graph`, `namespace CombinatorialRigidity.Molecular`,
+    `variable {K : Type*} [Field K] {α β : Type*}`. Add the file to `CombinatorialRigidity.lean`.
+    Spike-compiled 2026-09-25 against `22d0f8f8` (`lake env lean`, 26 s, axioms `[propext,
+    Classical.choice, Quot.sound]`, no `sorry`). Transcribe it verbatim and add docstrings. If
+    `unusedDecidableInType` fires on the headline, copy `pencil_conjecture_of_arms_pair`'s
+    `set_option … in` together with its justification.
+    ```lean
+    def X0Dist (K : Type*) [Field K] (α β : Type*) : Prop :=
+      ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+        HasDistinctPencilRealization K 3 G
+    def X0Gen (K : Type*) [Field K] (α β : Type*) : Prop :=
+      ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+        PencilNondegFeasible K G → HasGenericPencilRealization K 3 G
+    theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
+        (hdist : X0Dist K α β) (hgen : X0Gen K α β)
+        (hW4A : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected → ¬ G.Simple →
+          (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+          HasPencilRealization K 3 G)
+        (G : Graph α β) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
+        (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
+        PencilPair K 3 G := by
+      have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by
+        have := Graph.six_le_bodyBarDim (n := 3) (by norm_num); omega
+      have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
+      by_cases h2ec : G.TwoEdgeConnected
+      · by_cases hs : G.Simple
+        · have hd := hdist G hs hV h2ec
+          exact ⟨fun _ hf => hgen G hs hV h2ec hf, fun _ => hd, hasPencilRealization_of_distinct hd⟩
+        · exact ⟨fun h => absurd h hs, fun h => absurd h hs, hW4A G hloop hV h2ec hs hIH⟩
+      · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
+    theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+        (hdist : X0Dist K α β) (hgen : X0Gen K α β)
+        (hW4A : <as in pencilPair_of_X0>) (G : Graph α β) (hspan : V(G) = Set.univ) :
+        PencilPair K 3 G :=
+      pencil_conjecture_of_arms_pair
+        (fun G hloop hV _ hIH => pencilPair_of_X0 hdist hgen hW4A G hloop hV hIH)
+        (fun G hloop hV _ _ _ hIH => pencilPair_of_X0 hdist hgen hW4A G hloop hV hIH) G hspan
+    ```
+    Blueprint (`pencil.tex` § *The route through the main component*, red nodes seeded
+    2026-09-25): pin and green `def:pencil-main-component-statements` (`X0Dist`, `X0Gen`). Pin
+    `thm:pencil-conditional-realization-main-component` (both decls) but **leave it red**: it
+    still carries `hW4A`, and its `\uses` names the red `lem:pencil-nonsimple-case`.
+  - [ ] **L0b — W4-A, the non-simple bare case** (W4-L1; KT Lemma 6.2 mirror, minimality-free).
+    Rated S2/P2/B1, 1–2 commits. Prove `hW4A`'s statement as a theorem (suggested name
+    `hasPencilRealization_of_not_simple`, in `X0.lean` or its own file). Then drop `hW4A` from
+    both L0a decls: a statement change, so restate and green
+    `thm:pencil-conditional-realization-main-component` and green `lem:pencil-nonsimple-case`
+    in the same commit.
+    - **Template:** `case_I_realization_nonsimple_gen` (`AlgebraicInduction/Theorem55.lean`).
+      Its Steps 1–4 transfer: the parallel pair, `H′ := G.induce {a, b} ↾ {e, f}` proper rigid by
+      `isKDof_zero_of_parallel_pair`, and the contraction measure.
+    - **The changes:**
+      - (i) the IH is `PencilPair`'s **bare** conjunct at `G.rigidContract H′ a`, with no
+        minimality; the deficiency transfers by `rigidContract_deficiency_eq`, which needs
+        `[NeZero (bodyHingeMult 3)]`;
+      - (ii) the points follow the normals: `point := Fc_point ∘ collapseTo a V(H′)`;
+      - (iii) the two hinges at `e, f` must be linearly independent **through the prescribed
+        `point a`** in `normal a`'s panel. The landed
+        `exists_linearIndependent_extensor_pair_through_point` (`Pencil/Statement.lean`) chooses
+        its own point, so add a sibling taking `q ≠ 0`, `q ⬝ᵥ n = 0` (extend `q` to a basis of
+        `n^⊥`, then `q ∧ v₁`, `q ∧ v₂`). This is the one new brick;
+      - (iv) every other edge keeps `Fc`'s extensor, since both endpoints carry shared data.
+    - **Rank:** as in the template, `D + rank(G/H′) ≤ rank(G)` from its splice bricks
+      (`theorem_55_base` for `FH`), and `≤ target` from B2.
+    - If the splice bricks do not accept pencil data, stop and dispatch a compiler-checked spike
+      recon.
+  - [ ] **L0c — close Phase 39.** A docs commit: `PHASE-BOUNDARIES.md` *When this commit closes a
+    phase*, plus the phase-specific list in *Hand-off*.
 
 - [x] **Girth lemmas** — **DONE 2026-09-15** (design pass same day, `notes/Phase39-design.md`
   § *Lean-track design pass*, leaves G1–G4; red nodes `def:girth`,
@@ -321,21 +324,17 @@ carries its crux as a HYPOTHESIS, never a `sorry`.*
     `6·(|α| − |V(G)|)`: **state the geometric laws rank-side**, as `HasPencilRealization`
     already does. That is why every carrier above is rank-side and the one law that cannot be
     is the one deferred.
-- [ ] **`hK` on the tight stratum from grid vanishing**, the colouring statement as
+- [ ] **HELD — `hK` on the tight stratum from grid vanishing**, the colouring statement as
   hypothesis: decoupling, rank formula, Vandermonde, chart step, descent. Decides whether the
   **independence proviso** is a hypothesis of the crux (`notes/attacks/gr10/brief.md` §2
   *Proviso (P)*). Substantial: the chart
   machinery (`IsFin3SelectorOf`, `cross₃`, `pencilRow`) exists; the grid geometry does not.
-- [ ] **Tree-triple ⇒ `dim Z = 0`**, and the circular-ladder family (GUNIZERO's uniform
+- [ ] **HELD — Tree-triple ⇒ `dim Z = 0`**, and the circular-ladder family (GUNIZERO's uniform
   instance) as a formal witness.
-- [ ] **W4 build — REOPENED 2026-09-23, staged; Lean DEFERRED until the census reports**
-  (`notes/pencil/W4-reopen.md` P4, T1–T4). **Unparked:**
-  **T1**, the W4 wrapper — a new declaration producing `hcontract`'s statement with (K-res)
-  (restated against the 2026-09-16 `hK`) and any other unsettled piece as hypotheses, no edit
-  to smark's consumer, red nodes in `pencil.tex`; and **W4-L4b** (`exists_degree_two_of_co1_rigid`,
-  pinned and spike-elaborated). **Parked** until T1 and the (α) recon T2 report, then a PI call:
-  W4-L1/L2/L3′/L5; residual carry `hnoGood'` (non-vacuous — `|V| = 19` witness — so branch 4
-  needs content).
+- [ ] **HELD — the rest of the W4 build** (reopened 2026-09-23; `notes/pencil/W4-reopen.md`). W4-L1
+  (W4-A) moved to item 0 as L0b (PI, 2026-09-25). HELD with the kernels, off the adopted route:
+  T1, the W4 wrapper carrying (K-res); W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and
+  spike-elaborated); W4-L2/L3′/L5; the residual carry `hnoGood'`.
 - [ ] **Reverse arms of the W0 transport** (need a `complementIso` involution lemma) — off
   every critical path (§(K-σ) *Step σ6*).
 
@@ -347,7 +346,8 @@ carries its crux as a HYPOTHESIS, never a `sorry`.*
   round; same record, verbatim); **lifted 2026-09-16 for checklist item 6** (the deficiency
   laws; same record); **lifted 2026-09-23, staged, for the W4 wrapper and W4-L4b only** (user:
   *"OK, sounds good."* to that recommendation; W4-L1/L2/L3′/L5 await T1 + T2 and one more call;
-  same record) — the other items stay parked.
+  same record); **lifted 2026-09-25 for L0a and W4-L1 (W4-A, now L0b)** (PI, same record) —
+  the other items stay parked, and W4-L2/L3′/L5 are held with the kernels.
 - **Item 6's five decisions (D1–D5) — ALL SETTLED 2026-09-16 (user).** Verbatim:
   `notes/pencil/adjudications.md`. Full statements and the recon's reasoning:
   `notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, *Open decisions*. The user
@@ -437,11 +437,9 @@ carries its crux as a HYPOTHESIS, never a `sorry`.*
   uniform-colouring statement (the weak form of `notes/attacks/gr10/brief.md` §2) is **not**
   being attacked. Verbatim: `notes/pencil/adjudications.md`; the gr10 brief's PI pointer now
   carries the decision, since an attack reads only its brief and state at start.
-- **(K-res)** (a kernel of `hK`'s difficulty class on the complementary habitat) — **taken
-  up by the 2026-09-23 reopening**: T1's partial pass restated it (residuals only); its Lean is
-  deferred and the `kres` attack held until the census reports (`notes/pencil/W4-reopen.md` P4,
-  P5; the predicted break is girth). W4 also carries (K-c) and (K-bare-c), never attacked.
-  The grid route's (RS-5) is refuted at `R20` (method, not target); route σ is not a route to it.
+- **(K-res), (K-c), (K-bare-c)**, the three W4 kernels, are **HELD** (PI, 2026-09-25) with
+  `kres` and smark's O7e, as the fallback until Phase 40's MOTIVES layer lands. The grid
+  route's (RS-5) is refuted at `R20` (a verdict on the method, not the target).
 - **One L5 residual constrains statements — restated per the item-4 recon (c):** the bare
   `≤ 3`-closedHubNbhd count *alone* is refuted as a feasibility criterion
   (`not_pencilNondegFeasible_of_triangle_two_hubs`, `Motive.lean:684` — its graph is a triangle),
@@ -456,28 +454,36 @@ carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 ## Hand-off / next phase
 
-**The phase stays OPEN.** Checklist items 1–5 are DONE, item 6's carrier recon is DONE
-(2026-09-16), item 6's **D1–D5 are all SETTLED** (2026-09-16, user; *Blockers*), and item 6's
-**Layer A is DONE except the deferred A6, and its Layer B and Layer C (C1ℓ–C4ℓ) are DONE, all
-2026-09-16/17** — the carrier recon record is `notes/Phase39-design.md`
-§ *Item-6 carrier recon (2026-09-16)*, and the per-leaf routes (five of which supersede or
-correct it — A4's sketch, A5's dependency, B1's exposure claim, C1ℓ/C3ℓ's dropped instances,
-C4ℓ's two-input route) are in the *Lemma checklist* A3–C4ℓ entries.
-**Item 6's Lean track is now closed**, except the deferred A6 and the shared-hub-normalization
-factoring item (both tracked, off any consumed path; *Lemma checklist*). **W4 is REOPENED
-(2026-09-23); the main-component census (P1, with P2 folded in) is DONE — outcome A′ of its pre-fixed decision table**
-(`notes/pencil/workbook/K-main.md` §(K-main)). The next step is **the PI's call** on that row. A fresh session reads
-`notes/pencil/W4-reopen.md` P1 for the agent's suggestion: an adversarial census, then P3 in two stop-ruled tracks. T1's Lean is deferred (P4), `kres` and a contraction attack held (P5). **(1)** `/attack smark`, a main session in its own worktree, from `notes/attacks/smark/state.md` *Next steps*
-(brief last patched at review 5, workbook S38). **(2)** gr10 is CLOSED
-(2026-09-23, PI, after review 1): no characteristic-2 miss at any shape tested (workbook
-`attack-gr10.md` S4, S5), so no `[NeZero (2 : K)]` re-pin. Branch `attack-gr10` merged
-2026-09-23 (`03f73e61`). Two PI calls stay open and block nothing: a registered label prefix for the attacks (both
-number results S1…/P1… in their workbook files instead; incident 2026-09-15), and
-`/harness-review`, due since five S-mark sessions (candidates in *Blockers*; one more from this
-check in `notes/harness/incidents.md`). When an attack starts, its `state.md` is that
-lemma's status surface and this note carries a two-line pointer to it, edited by the PI. **On a
-future HIT the phase-boundary consequences are the USER's call** (`PHASE-BOUNDARIES.md`,
-against the 2026-07-24 no-split adjudication), surfaced with an estimate, never unilateral.
+**Next concrete commit: L0a** (*Lemma checklist* item 0). It is rated S1: transcribe the pinned
+spike into `Molecule/Pencil/X0.lean`, then pin and green `def:pencil-main-component-statements`
+and pin `thm:pencil-conditional-realization-main-component`, which stays red. **Then L0b**
+(W4-A; the template and the one new brick are in the item), **then L0c, the close.** Run it with
+`/coordinate-phase 39`. It is independent of Phase 40's sub-phase 40a (the `n = 2` spine,
+`notes/Phase40a.md`): the two touch disjoint files and may run in either order, but not
+concurrently in one checkout.
+
+**L0c's phase-specific list** (on top of `PHASE-BOUNDARIES.md` *When this commit closes a phase*):
+- **ROADMAP.** Flip row 39 to ✓ Complete. It closes on the reduction: `pencil_conjecture_of_X0`
+  carrying only `X0Dist`/`X0Gen`, which Phase 40 discharges. Compress §39.
+- **Move deferred items to where they land.**
+  - A6 and the hub-normalization factoring item go to Phase 40's design doc (*Deferred from
+    Phase 39*), or to a cleanup round.
+  - The HELD items after item 6, and W4-reopen's held kernels, go to Phase 40's fallback section.
+  - Item 6's blueprint debt (*Blockers*, the D5 entry) moves to Phase 40, whose STEPS layer
+    consumes those laws and will pin them.
+- **The attack tracks.** smark is paused (PI, 2026-09-25) and gr10 is CLOSED; `HARNESS.md`
+  governs both, outside any phase. Confirm that `notes/attacks/smark/state.md` stays untouched and
+  that ROADMAP's cell no longer names a live attack. `/harness-review` is still due (the PI's
+  call).
+- **Design docs and chapter.** `notes/Phase39-design.md` is frozen (119 anchors, `notes/CLAUDE.md`),
+  so check its header says so. The chapter re-read and the exposition ledger cover `pencil.tex`.
+  `blueprint/lint.sh`'s vocabulary gate fails **at baseline** on seven older `pencil.tex` lines
+  ("motive", "stratum", in the conditioned-pair prose); fix them in that re-read.
+- **Status surfaces.** The Phase-40 open (2026-09-25) already synced them for Phase 40. Update
+  Phase 39's line on each.
+
+**On a future HIT on a held kernel, the phase-boundary consequences are the USER's call**
+(`PHASE-BOUNDARIES.md`), surfaced with an estimate, never unilateral.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -488,11 +494,9 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
-- **2026-09-25 — the `X₀` architecture ADOPTED (user); the characteristic target is every infinite
-  field.** The Lean target moves to a `pencil_conjecture_of_arms_pair` headline carrying the `X₀`
-  theorems plus W4-A (`notes/Phase39-design.md` § *X₀ architecture recon*). The kernels' cancel/hold,
-  the W4-L1 hold lift and the Jackson–Jordán route are not yet decided. Verbatim:
-  `notes/pencil/adjudications.md`. Plan: `notes/pencil/X0-formalization.md`.
+- **2026-09-25 — the `X₀` architecture ADOPTED (user), over every infinite field; later the same day
+  Phase 40 minted for its formalization, Phase 39 to close on L0, the hold lifted for L0 and W4-A,
+  the kernels and smark held (user).** Verbatim `notes/pencil/adjudications.md`.
 - **2026-09-23 — W4 REOPENED (user), hold lifted (staged); a strategy re-think put the `X₀` census first.** `notes/pencil/W4-reopen-archive.md`; verbatim `adjudications.md`.
 - **2026-09-17 — both attack briefs CHECKED against the tree** (PI-directed; no new mathematics;
   one incident: file:line pointers rot within days, cite by declaration name).
@@ -505,8 +509,7 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   `notes/pencil/adjudications.md`; W4 `notes/pencil/workbook/W4.md`.
 - **2026-09-16 — item 6's D1–D5 SETTLED (user).** Verdicts and rationale: *Blockers* (the
   D1–D5 entry). Verbatim: `notes/pencil/adjudications.md`.
-- **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, a user-sanctioned
-  exception to the `/review-attack` rewrite path; §§2, 3, 6; O8 deleted (α)). Checked 2026-09-17.
+- **2026-09-16 — the S-mark brief rewrite LANDS** (agent transcription, user-sanctioned; checked 2026-09-17).
 - **2026-09-16/17 — item 6's Layers A/B and C1ℓ–C3ℓ LAND by transcription plus one recon
   spike; no new decisions** (A1–A5 `Deficiency.lean`/`SplitOffDeficiency.lean`; B1–B7
   `Bricks.lean` `section TwoCutCarriers`; C1ℓ–C3ℓ `Molecule/Pencil/TwoCut.lean`; A6 deferred by
@@ -519,13 +522,8 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
   (coordinator-accepted) — 6a proved, 6b false without `¬ G.Adj u v`, the slot-trace's 6c claim
   corrected. Leaves/sites *Lemma checklist*; record `notes/Phase39-design.md` § *Item-6 carrier
   recon*; verbatim `notes/pencil/adjudications.md`.
-- **2026-09-16 — (GR-10) RE-SCOPED (user)** to the char-2 probe, the grid route a documented
-  fallback (R2 plus (d) drop proviso (P) from `hK`); the probe CLOSED 2026-09-23. Verbatim
-  `notes/pencil/adjudications.md`.
-- **2026-09-16 — item 4 (the R2 recon) verdict RECORDED (coordinator-accepted).** (a) rank
-  bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; (b) left as
-  the PI's (α)/(β) call, (GR-10) scope as the user's. Record `notes/Phase39-design.md` § *R2
-  recon*.
+- **2026-09-16 — (GR-10) RE-SCOPED (user)** to the char-2 probe; CLOSED 2026-09-23. Verbatim `adjudications.md`.
+- **2026-09-16 — item 4 (the R2 recon) RECORDED** (coordinator-accepted); `notes/Phase39-design.md` § *R2 recon*.
 - **2026-09-16 — S-mark route R2 adopted; both kernels get the induction hypothesis** (PI, on
   review 2's recommendation) — R1's obligations were never consumed; the split-off antecedent at
   the generic point supplies them (S14(iii, v)). Verbatim `notes/pencil/adjudications.md`.

@@ -1011,6 +1011,109 @@ realization's own nondegenerate-satisfiability.
   bare conjunct follows forgetfully.
 \end{proof}
 
+\subsection{The route through the main component}
+\label{sec:pencil-main-component-route}
+
+The two open kernels of \cref{thm:pencil-conditional-realization-pair}
+can be bypassed. Fix a planar picture of the bodies. Over it, the pencil
+condition is linear in the heights, so the configuration space of pencil
+realizations has a distinguished main component. A separate induction on
+that component yields the adjacent-distinct and generic conclusions
+directly, at every simple two-edge-connected multigraph. This subsection
+states those two conclusions in the form the reduction consumes. It adds the
+one case they do not reach, a two-edge-connected multigraph with a parallel
+class, and assembles the conditioned pair from these pieces.
+
+\begin{definition}[The two main-component statements]
+  \label{def:pencil-main-component-statements}
+  \uses{def:pencil-distinct-motive, def:pencil-generic-motive,
+        def:pencil-nondegenerate}
+  Let $K$ be a field. The \emph{distinct main-component statement}
+  asserts that every simple two-edge-connected multigraph on at least
+  three bodies has an adjacent-distinct pencil realization at the
+  deficiency rank at $n = 3$ (\cref{def:pencil-distinct-motive}). The
+  \emph{generic main-component statement} asserts that every such
+  multigraph that is nondegeneracy-feasible
+  (\cref{def:pencil-nondegenerate}) has a generic pencil realization at
+  $n = 3$ (\cref{def:pencil-generic-motive}).
+\end{definition}
+\begin{fmlnote}
+  \label{fmlnote:pencil-main-component-statements}
+  Both statements are hypotheses of
+  \cref{thm:pencil-conditional-realization-main-component}; they are not
+  yet formalized. Informally, both follow from one strong induction on
+  the main component, over an arbitrary infinite field. The main component
+  is a vector bundle over the admissible planar pictures. Its generic
+  point attains the target rank at every simple connected multigraph of
+  minimum degree at least two. The induction runs through ear, split-off,
+  contraction and cut steps.
+
+  At its flat points the induction consumes the planar rank theorem for
+  simple graphs, Jackson and Jord\'an's pin-collinear
+  theorem~\cite{jacksonJordan2008pin}. Their proof is written in
+  characteristic zero. The formalization instead obtains the planar rank
+  theorem over every infinite field, as the $n = 2$ case of
+  \cref{thm:theorem-55-6}.
+\end{fmlnote}
+
+\begin{lemma}[The parallel-class case]
+  \label{lem:pencil-nonsimple-case}
+  \uses{def:pencil-rank-hypothesis, def:pencil-conditioned-pair,
+        def:rigid-subgraph}
+  Let $K$ be an infinite field and $G$ a loopless multigraph on at least
+  three bodies that is not simple. If every multigraph on strictly fewer
+  bodies satisfies the conditioned pair at $n = 3$
+  (\cref{def:pencil-conditioned-pair}), then $G$ has a pencil realization
+  at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-I-realization-nonsimple}
+  This is Katoh and Tanigawa's parallel-edge
+  contraction~\cite[Lemma~6.2]{katohTanigawa2011}, in the form of
+  \cref{lem:case-I-realization-nonsimple}, run at the pencil condition and
+  without minimality.
+
+  Let $e$ and $f$ be parallel edges joining bodies $a$ and $b$. They span
+  a proper rigid subgraph on $\{a, b\}$. Contracting it preserves the
+  deficiency and removes one body, and by the induction hypothesis the
+  contraction has a pencil realization at the deficiency rank. Now give
+  $a$ and $b$ the panel and the point of the contracted body, and keep
+  every other hinge. Realize $e$ and $f$ by two independent lines through
+  that point, inside that panel.
+
+  These two hinges force $a$ and $b$ to move alike. The rank therefore
+  rises by exactly $D = 6$, the difference between the two targets.
+\end{proof}
+
+\begin{theorem}[Pencil realization from the two main-component statements]
+  \label{thm:pencil-conditional-realization-main-component}
+  \uses{thm:pencil-reduction, def:pencil-conditioned-pair,
+        def:pencil-main-component-statements}
+  Let $K$ be an infinite field. If the distinct and the generic
+  main-component statements (\cref{def:pencil-main-component-statements})
+  hold, then every multigraph on the whole ambient body set satisfies the
+  conditioned pair at $n = 3$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-cut-case, lem:pencil-nonsimple-case}
+  Apply \cref{thm:pencil-reduction} as in
+  \cref{thm:pencil-conditional-realization-pair}. One argument serves
+  both the contraction case and the split case. It takes a loopless
+  multigraph $G$ on at least three bodies, together with the induction
+  hypothesis, and splits into three cases.
+  \begin{itemize}
+    \item If $G$ is not two-edge-connected, the cut-edge case
+      (\cref{lem:pencil-cut-case}) applies.
+    \item If $G$ is two-edge-connected and simple, the two statements
+      give its generic and adjacent-distinct conjuncts, and the bare
+      conjunct follows forgetfully.
+    \item If $G$ is two-edge-connected and not simple, its generic and
+      adjacent-distinct conjuncts are vacuous, and
+      \cref{lem:pencil-nonsimple-case} gives the bare one.
+  \end{itemize}
+  Neither open kernel is used, and no fresh edge.
+\end{proof}
+
 \subsection{Girth and degree-two chains under no proper rigid subgraph}
 \label{sec:pencil-girth-chain}
 
