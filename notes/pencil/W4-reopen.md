@@ -33,27 +33,27 @@ can lean on more than it cites.
 
 | Step | on (MC-89)'s path | status |
 |---|---|---|
-| MC1–MC6, foundations and the flat rank | (MC-4)–(MC-6) | coordinator-checked, with per-instance driver asserts; **never independently re-derived** |
+| MC1–MC6, foundations and the flat rank | (MC-4)–(MC-6) | coordinator-checked, with per-instance driver asserts; **reader F in flight** |
 | MC7–MC9, exact gain, nondegeneracy | (MC-9) | second-read |
-| MC10, the ear step | (MC-16), (MC-18)–(MC-22), (MC-24)–(MC-26) | coordinator-checked; (MC-16), (MC-17), (MC-22), (MC-26) re-read but not re-derived; (MC-22) repaired by a reader. **Not independently re-derived** |
+| MC10, the ear step | (MC-16), (MC-18)–(MC-22), (MC-24)–(MC-26) | coordinator-checked; (MC-16), (MC-17), (MC-22), (MC-26) re-read but not re-derived; (MC-22) repaired by a reader. **Reader F in flight** |
 | MC11 and (MC-33), split-off and Jackson–Jordán beyond ℝ | (MC-33) | re-derived by a second agent |
 | MC12, contraction | (MC-34), (MC-37)–(MC-39) | second-read |
 | MC13, short ears with the antecedent | (MC-45), (MC-46) | itself a second reading, which re-derived them |
 | MC14, the reach | (MC-54), (MC-59) | second-read |
-| MC15, partition counts | (MC-67)–(MC-71) | (MC-68)–(MC-71) second-read; (MC-62)–(MC-67): **reader D in flight** |
+| MC15, partition counts | (MC-67)–(MC-71) | second-read in full (2026-09-25 for (MC-62)–(MC-67): no gap; one missing merge step supplied) |
 | MC16, the coverage theorem | (MC-80), (MC-87), (MC-89) | second-read, by two readers |
-| MC17–MC18, the ear cells | (MC-97), (MC-115) | not second-read |
+| MC17–MC18, the ear cells | (MC-97), (MC-115) | (MC-105) and its supports second-read 2026-09-25; the rest: **reader E in flight** |
 | MC19, the generic motive | — | second-read 2026-09-25; (MC-130)'s cycle citation repaired; (MC-157), (MC-158) added |
 | MC20, the certificate leaves | (MC-134), (MC-139), (MC-141) | **reader B in flight** |
-| MC21, EAR covers 𝒮 | — | **reader C in flight** (with Step MC17's (MC-105)) |
+| MC21, EAR covers 𝒮 | — | second-read 2026-09-25; accounting repaired (a second proof inside 𝒮 only); (MC-162)–(MC-165) added |
 
 ## Next, in order
 
-1. **Land the second readings in flight** (dispatched 2026-09-25, read-only, reports in the
-   session's scratch): B on Step MC20 (and whether its certificate list is complete); C on Step MC21
-   with (MC-105); D on Step MC15's (MC-62)–(MC-67). A, on Step MC19, has landed.
-2. **Second wave, one dispatch each:** Steps MC17–MC18; and the path claims never independently
-   re-derived, Step MC10's ear step with Steps MC1–MC6's (MC-4)–(MC-6).
+1. **Land the second readings in flight** (dispatched 2026-09-25, read-only; reports come back as
+   messages, since the harness refuses subagent report files). B on Step MC20, including whether
+   its certificate list is complete. E on Steps MC17–MC18, minus (MC-105). F on Steps MC1–MC6 and
+   Step MC10, the path claims never independently re-derived. A, C and D have landed.
+2. *(Folded into 1.)*
 3. **An architecture recon** (read-only, for the PI's call below; dispatched 2026-09-25, in flight).
    Map (MC-89) and (MC-133) onto the Lean consumer, `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
    and `PencilPair`'s three conjuncts, working from the Lean rather than from prose. Which carried

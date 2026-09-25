@@ -942,6 +942,9 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   non-2EC populations the others exclude — (MC-123)(⇐) on every connected simple graph on `≤ N1`
   vertices, (MC-129)/(MC-130)'s bookkeeping and a direct certificate on every non-2EC (H) graph on
   `≤ N2`, and `zrand.build`'s sampler without its `is_2ec` filter.
+- **Step MC15's second-reading driver** (§(K-main), (MC-161); stdlib only, exact, string seeds, no
+  shared code): `mc15check.py (--exh N | --allgraphs N | --mc66 N | --blowup S | --tight n S |
+  --mc67 N M)` — independent checks of (MC-62)–(MC-67).
 - **Step MC20's drivers** (§(K-main), (MC-134)–(MC-141); exact, deterministic): `certhand.py` asserts the
   hand proofs of (MC-89)'s former certificate leaves (±1 minors, transversal and collision lemmas,
   (MC-46)'s strata); `certguard.py (--lamcap | --replay | --thetas S)` is the guarded re-run of
@@ -958,3 +961,8 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `cycprobe.py` probes the six on 13 vertices; `cellclasses.py --exh N` is the cell's class census on
   small graphs. `earcover`/`blobcount`/`findcyc`/`rigidclose` import `coverstruct`; `ringprobe` imports
   `chordprobe` and `cellclasses`; `foldcheck` and `cycprobe` import `ringprobe`.
+
+- **Step MC21's second-reading drivers** (§(K-main), (MC-162)–(MC-165)): `wsearch.py` — every `W ∋ y`
+  at the Case II-cyclic chains against (MC-143)'s hypotheses (exhaustive, combinatorial);
+  `c1check.py` (graph6 on stdin) — (MC-143)'s mechanism at every C′-I chain in (MC-117)'s cell;
+  `cycshape.py` (`findcyc.py` output on stdin) — the class-quotient shapes, a check of (MC-155).

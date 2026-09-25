@@ -63,8 +63,9 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   (`a ≁ b`) and the generic flag orbit is combinatorial (MC-62)–(MC-64); CONTRACT's (i) core-free is
   exactly the additivity `def₂(G) = def₂(H) + def₂(G/H)`, which also gives (ii) (MC-68), (MC-69), so
   **CONTRACT needs no per-graph certificate** at an additive core (MC-71), and additivity is automatic
-  at a maximal proper rigid `W` with `G/H` simple outside one exceptional case (MC-70). A second reader
-  is owed.
+  at a maximal proper rigid `W` with `G/H` simple outside one exceptional case (MC-70). Second-read in
+  full (2026-09-24 and 2026-09-25): no gap; (MC-64)'s Case 2 gained a missing merge step; (MC-159)–(MC-161)
+  added.
 - **Step MC16, the structural half and the coverage theorem, modulo Jackson–Jordán** (second-read
   2026-09-24 by two readers; confirmed, with minor repairs). Maximal `def₂`-rigid sets have simple
   quotients (MC-75), which leaves the sparse class 𝒮 (MC-76). There every chain is usable except in
@@ -90,9 +91,9 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
 - **Step MC20** (not yet second-read): every computational certificate under (MC-89) has a hand proof
   over every infinite field (MC-134)–(MC-139), so (MC-89) rests on arguments and Jackson–Jordán
   alone (MC-141).
-- **Step MC21** (not yet second-read; off (MC-89)'s critical path): **EAR alone covers 𝒮** (MC-148),
+- **Step MC21** (second-read 2026-09-25, confirmed with repairs; (MC-162)–(MC-165) added; off (MC-89)'s critical path): **EAR alone covers 𝒮** (MC-148),
   a second proof of (MC-89)'s in-𝒮 half without Theorem S, (MC-87) or CONTRACT at cores with
-  `def₂(H) ≥ 1`. It still uses (MC-68)(d) and Jackson–Jordán, and (MC-105) (Step MC17). The engine
+  `def₂(H) ≥ 1`. It still uses the reduction to 𝒮, the landed usable steps, (MC-68)(d) and Jackson–Jordán, and (MC-105) (Step MC17). The engine
   is the rigid-set closure (MC-143), fed by a count (MC-146), (MC-147). The last ear cell (MC-117)
   narrows to "Case II-cyclic" (MC-154), which coverage does not need.
 - *Jackson–Jordán beyond `ℝ`* (MC-33): a second reading finds every step of their proof field-free
@@ -2448,8 +2449,18 @@ the timing lines, checked on `--exh 7` and `--pool habitats`):
 *Worked 2026-09-24 by a read-only agent (W4-reopen P1, open direction 4, "the certificate half";
 the third 2026-09-24 session's Track C), from the coordinator's derivation of `dim U`. The
 coordinator re-derived (MC-62), (MC-65), (MC-68) and (MC-70) at the level of their written proofs.
-**A second reader is owed on all of it**, first on (MC-64)'s "only if" (through (MC-65) and the
-flat-limit transfer (MC-66)) and on (MC-69)(a)'s row reading. Drivers `w4/orbitrule.py`,
+**Second-read in full.** (MC-68)–(MC-71) on 2026-09-24. (MC-62)–(MC-67) on 2026-09-25, by a fresh
+reader who re-derived each and ran independent exact checks (MC-161). All six hold; there is no
+mathematical gap. One proof step was asserted without justification: (MC-64)'s Case 2 applies
+(MC-66) after the first contraction. The reader supplied the missing merge lemma, now in place.
+Its other notes:
+- the converse of (MC-66) is false (MC-160), and (MC-64) uses only the sound direction;
+- Jackson–Jordán in flex form reduces to graphs satisfying (H) (MC-159);
+- (MC-64)'s "on all of `X₀(G′)`" presupposes (H); for a general simple `G′` read it in flex form;
+- every graph at which (MC-62)–(MC-64) invoke Jackson–Jordán has at most `|V(G′ + ab + x)|` vertices;
+- (MC-67)(c)'s clause about "any one part" is vacuous, because `(G/H)[𝒮*]` is rigid, hence connected;
+- (MC-89)'s proof text mentions (MC-62), and Step MC20's table lists (MC-67), but neither is
+  logically needed: (MC-79)(v) uses (MC-48)(ii)'s count, and (MC-87) gives additivity directly. Drivers `w4/orbitrule.py`,
 `w4/contractcheck.py`, `w4/kerm0.py` (new). The question is (MC-61)'s certificate half: replace each
 step's per-graph linear-algebra certificate by a condition on the graph's partitions, as (MC-13)(c)
 and (MC-48)(ii) did for flag coincidences.*
@@ -2592,10 +2603,16 @@ gives `P_a = P_c` on `F(G′)` ((MC-13)(c), "if"). So `u = P_c − P_b ∈ Kℓ_
 *"Only if".* Suppose `b` has no neighbour in `A := R(a)`, and put `B := R(b)`.
 - *Case 1: some edge `a′b′` joins `A` to `B`.* Then `b′ ≠ b`. As above, `u ∈ Kℓ_{a′b′}`, and
   `ℓ_{a′b′} · p̂_b = det(p̂_{a′}, p̂_{b′}, p̂_b) ≠ 0` at generic `q`, since `b ∉ {a′, b′}`.
-- *Case 2: no edge joins `A` to `B`.* Contract the classes of size `≥ 2` one at a time. By (MC-66),
-  which applies at each step, `U ⊆ p̂_b^⊥` would pass to `U_{a*b*}(Γ) ⊆ p̂_{b*}^⊥` in the fully
-  contracted `Γ` of (MC-63)(a). Contraction keeps `def₂` and the constrained maximum `g`, so it keeps
-  `δ₂ = 1`, and `a* ≁ b*`.
+- *Case 2: no edge joins `A` to `B`.* Contract the classes of size `≥ 2` one at a time. (MC-66)
+  applies at each step. *(Second reading, 2026-09-25: why.)* For a `def₂`-rigid `R`, a set `S ∋ v*`
+  of `G′/R` is `def₂`-rigid iff `(S − v*) ∪ R` is `def₂`-rigid in `G′`, because merging the parts
+  that meet `R` never lowers `val`; a set avoiding `v*` spans the same graph in both. So the classes
+  of `G′/R` are `{v*}` and the other classes of `G′`, each still a maximal `def₂`-rigid set on `≥ 3`
+  vertices; `G′/R` is simple (the first bullet of (MC-66)'s proof); and the images of `a`, `b` never
+  lie in one class, since `A ≠ B`. Hence `U ⊆ p̂_b^⊥` would pass to `U_{a*b*}(Γ) ⊆ p̂_{b*}^⊥` in the
+  fully contracted `Γ` of (MC-63)(a). Contraction keeps `def₂` and the constrained maximum `g`, so it
+  keeps `δ₂ = 1`; and `a* ≁ b*`, since no edge joins `A` to `B`. (MC-66) is used in this direction
+  only: its converse is false (MC-160).
   - (MC-63)(a) gives a tight `X ∋ a*, b*` in `Γ`.
   - `U_{a*b*}(Γ) ⊆ U_{a*b*}(Γ[X])` by restriction of flexes. Both are 1-dimensional by (MC-62), since
     `δ₂` is `1` in both.
@@ -2633,7 +2650,8 @@ gives `P_a = P_c` on `F(G′)` ((MC-13)(c), "if"). So `u = P_c − P_b ∈ Kℓ_
   Then `U_{ab}(Γ[X]) ⊆ p̂_b^⊥` at generic `q_X`, against the induction hypothesis, since
   `|X| < |V|`.
 
-No base case is needed: the smallest tight graph, `C₄`, falls under `δ = 2` in Step 2. There
+No base case is needed: the smallest tight graph with a non-adjacent pair, `C₄` (`K₂` is tight
+too, but has no such pair; second reading), falls under `δ = 2` in Step 2. There
 `Γ − w` is a path, and `loss({a, d, b}) = 2`. Equivalently, directly: `U = Kℓ_cd` and
 `det(p̂_c, p̂_d, p̂_b) ≠ 0`. ∎
 
@@ -2670,12 +2688,14 @@ No base case is needed: the smallest tight graph, `C₄`, falls under `δ = 2` i
 
 **Part II — the contraction step without certificates.**
 
-> **(MC-67)** `[PROVED]` *(combinatorics; multigraphs allowed)*
-> **(a)** `val` is supermodular on the partition lattice, so the `def₂`-optimal partitions of any
+> **(MC-67)** `[PROVED]` *(combinatorics; multigraphs allowed; (a)–(c) each re-derived at the second
+> reading, 2026-09-25, which found (b) to be an identity, `val_G = val_H + val_{G/H} − 2N` for the
+> induced partitions)*
+> **(a)** `[PROVED]` `val` is supermodular on the partition lattice, so the `def₂`-optimal partitions of any
 > multigraph form a sublattice. There is a finest and a coarsest optimal partition, and the
 > coarsest is the class partition.
-> **(b)** For every `W ⊆ V`: `def₂(G) ≤ def₂(H) + def₂(G/H)`, and likewise for `def₃`.
-> **(c)** *(additivity is a partition condition)* Let `𝒮` be the finest optimal partition of
+> **(b)** `[PROVED]` For every `W ⊆ V`: `def₂(G) ≤ def₂(H) + def₂(G/H)`, and likewise for `def₃`.
+> **(c)** `[PROVED]` *(additivity is a partition condition)* Let `𝒮` be the finest optimal partition of
 > `G/H`, `𝒮* ∋ v*` its part, and `T := 𝒮* ∖ {v*}`. Let `Φ` be the graph on `T ∪ W` whose edges are
 > the edges of `G` inside `T` or between `T` and `W`. Then **additivity holds iff every connected
 > component of `Φ` meets at most one class of `H`.**
@@ -2717,6 +2737,44 @@ there) has `|𝒫| − t + 1` parts.
   Each component of `Φ_{T′}` lies in one `W`-meeting part, so it meets one part of `𝒫|_W`. That
   part lies in one class, because `𝒫|_W` refines the class partition.
 - *Back to `T`.* `𝒮` refines `𝒫/W`, so `T ⊆ T′` and `Φ_T ⊆ Φ_{T′}`. ∎
+
+**Added at the second reading (2026-09-25).**
+
+> **(MC-159)** `[PROVED]` *(Jackson–Jordán's flex form reduces to (H))* If `dim F(G, q) = 3 + def₂(G)`
+> at generic `q` holds at every graph satisfying (H), it holds at every finite simple graph.
+
+*Proof.* A degree-1 vertex adds 1 to both sides: 3 new coordinates and 2 constraints, and in the
+partition count it is best as a singleton (`+3 − 2`), while any partition of `G` restricts to one of
+`G − v` losing at most 1. An isolated vertex adds 3 to both sides. A disjoint union adds the flex
+spaces, and `def₂(G₁ ⊔ G₂) = def₂(G₁) + def₂(G₂) + 3`. Removing degree-`≤ 1` vertices and splitting
+components ends at graphs satisfying (H) or at single vertices. ∎
+
+> **(MC-160)** `[PROVED]` *(the converse of (MC-66) is false)* Let `G′` be two triangles `{0, 2, 4}`
+> and `{1, 3, 5}` joined by the edge `05`, `R = {0, 2, 4}`, and `(x, y) = (1, 2)`. In `G′`,
+> `U_{12} = Kℓ_{05} ⊄ p̂_2^⊥` at generic `q`. In `G′/R`, `ȳ = v*` is adjacent to `5 ∈ R(1)`, so by
+> (MC-64)'s "if" `U_{x̄ȳ}(G′/R) ⊆ p̂_{v*}^⊥`. (MC-64)'s proof uses (MC-66) only in the stated
+> direction.
+
+> **(MC-161)** `[MEASURED]` *(`mc15check.py`; stdlib only, exact `Fraction`s, string seeds, so the
+> output is independent of `PYTHONHASHSEED`; shares no code with the other drivers)* Independent
+> checks of (MC-62)–(MC-67), 0 failures in every mode:
+> - `--allgraphs 7` (every simple graph on 2..7 vertices, counts asserted against OEIS A000088;
+>   24 684 pairs): (MC-62) certified at 24 684/24 684; (MC-63)(a) exact at 24 684/24 684 and (b) at
+>   12 342/12 342; (MC-64)'s orbits agree at 24 684/24 684, and its `δ₂ = 1` "only if" pairs are
+>   certified off at 2 827 (Case 1: 2 381; Case 2, trivial: 272; Case 2, contracting: 174).
+> - `--mc66 7`: 1 590 non-vacuous pairs. "On in `G′`" implies "on in `G′/R`" at 39/39, with 0
+>   candidate counterexamples; the converse fails at 60 pairs ((MC-160)).
+> - `--blowup 60`: 60 seeded blow-ups of tight graphs by rigid blobs, 7 to 31 vertices. (MC-64)
+>   holds at 1 962 "if" pairs, 6 052 Case-1 pairs and 12 664 Case-2 pairs (1–8 contractions);
+>   (MC-66) blob by blob at 5 054 pairs, 0 counterexamples.
+> - `--tight 10 60`, `--tight 12 20`: (MC-65) certified at 3 840/3 840 and 2 000/2 000 pairs.
+> - `--mc67 6 300`: (MC-67)(c)'s equivalence at every `W` of every connected simple graph on `≤ 6`
+>   vertices and 300 seeded multigraphs, 15 632/15 632; (a) and (b) throughout.
+>
+> Support: the populations named. A draw that certifies `U ⊄ p̂_b^⊥` is a certificate; "on at every
+> draw" is draw-level only (the script's docstring).
+> `python3 notes/scripts/w4/mc15check.py --allgraphs 7` (~41 s), `--exh 7` (~33 s), `--mc66 7`,
+> `--blowup 60`, `--tight 10 60`, `--tight 12 20`, `--mc67 6 300` (each ≤ 5 s).
 
 > **(MC-68)** `[PROVED-MOD]` *((MC-33); (MC-39)(i) is additivity)* Let `G` be simple and
 > `W ⊊ V` with `|W| ≥ 2`. Let `ρ_W : F(G, q) → F(H, q|_W)` be restriction, and
@@ -3753,7 +3811,10 @@ were re-run at landing and reproduce.
 
 *Worked 2026-09-24 by a read-only agent (the third 2026-09-24 session's Track F), commissioned on
 the lemma "`δ₂ = 1 ⟹ δ ≤ 1`" and then refocused on the cell (a′). The coordinator checked (MC-90),
-(MC-91)(a), (MC-94) and (MC-97) at the level of the written proofs. **No second reader yet.** None of
+(MC-91)(a), (MC-94) and (MC-97) at the level of the written proofs. **Second-read 2026-09-25 for
+(MC-105) only** (by Step MC21's reader): (MC-85), (MC-90), (MC-91)(a), (c), (MC-92)(iii), (MC-94),
+(MC-95)(ii), (iii) and (MC-105) were re-derived and confirmed. The rest of the step has a second
+reader in flight. None of
 it is on (MC-89)'s critical path. It closes ear cells that the coverage theorem routes around, and so
 feeds the EAR-only route of Step MC18. Drivers `w4/deltapairs.py`, `w4/splitcells.py`,
 `w4/splitdu.py`, `w4/lamguard.py`, `w4/cellwit.py`, `w4/aprime.py` (new).*
@@ -5548,7 +5609,11 @@ open ear cell. It returned after that session had stopped, was committed verbati
 (J-1)–(J-10) are renumbered (MC-142)–(MC-156) in order of appearance, with the measurement blocks
 given labels of their own. The coordinator checked (MC-142)–(MC-148), (MC-150), (MC-151) and (MC-153)
 at the level of the written proofs, and repaired two statements in place
-(marked *Coordinator's repair*); nothing else was wrong. **No second reader yet.** None of it is on
+(marked *Coordinator's repair*); nothing else was wrong. **Second-read 2026-09-25** by a fresh
+reader, together with Step MC17's (MC-105) and what it rests on. No mathematical error. The repairs
+are to dependency accounting, to two over-statements in this Verdict, and to (MC-143)'s first step
+and first remark, each marked *second reading*. The reader added (MC-162)–(MC-165), a further
+narrowing of (MC-154) (drivers `w4/wsearch.py`, `w4/c1check.py`, `w4/cycshape.py`). None of it is on
 (MC-89)'s critical path: (MC-148) is a second route to (MC-89)'s in-𝒮 half. Drivers
 `w4/earcover.py`, `w4/blobcount.py`, `w4/rigidclose.py`, `w4/ringprobe.py`, `w4/cycprobe.py`,
 `w4/findcyc.py`, `w4/foldcheck.py`, `w4/cellclasses.py` (new).*
@@ -5565,9 +5630,11 @@ at the level of the written proofs, and repaired two statements in place
   - **(MC-142), the combinatorial supply of `W`.** Every *locally minimal* set of `def₃`-classes
     through `[a]`, `[b]` gives such a `W` whenever that `W` is proper (MC-144). This includes every
     non-rigid `G`.
-  - **(MC-145), what is left over (Case II).** When no such `W` exists, `G` is rigid, the class
-    quotient `Γ₃` of `G − y` is the unique minimiser, and every proper set of classes through `[a]`,
-    `[b]` has `c ≥ 5`.
+  - **(MC-145), what is left over (Case II).** When every locally minimal `Y` has `W_Y = V(G)`, `G`
+    is rigid, the class quotient `Γ₃` of `G − y` is the unique minimiser, and every proper set of
+    classes through `[a]`, `[b]` has `c ≥ 5`. (A `W` of another shape can still exist in Case II, and
+    then (MC-143) still applies: (MC-162), (MC-163).) *(Repaired at the second reading, 2026-09-25:
+    first written "When no such `W` exists".)*
   - **(MC-151), Case II with `Γ₃` a path (the class ring).** This closes by the chord route: at
     `δ = 3` from the flat point, and at `δ = 4` from a "folded" point whose dual is a skew pentagon.
     The `δ = 3` half holds for **every** `G′` whose minimiser is a path, not only in 𝒮.
@@ -5578,11 +5645,21 @@ at the level of the written proofs, and repaired two statements in place
   that chain.
   - So **a second proof of (MC-89)** goes through with EAR in place of Theorem S (MC-80), (MC-87)
     and CONTRACT at cores with `def₂(H) ≥ 1`.
-  - **It is not fully independent.** It shares (MC-68)(d) and JJ with the first proof. It also rests
-    on (MC-105) (Step MC17, not yet second-read), and so on (MC-85).
-- **What remains open is the sub-cell (MC-154), "Case II-cyclic":** the chain `y` itself, when `G`
-  is rigid and `Γ₃` has a cycle.
-  - The chord route reduces it exactly to two conditions at the generic point of `X₀(G′ + ab)`:
+  - **It is not fully independent.** It shares with the first proof:
+    - the reduction to 𝒮, including CONTRACT at `def₂`-rigid cores;
+    - the chain calculus (MC-76)–(MC-79);
+    - the landed usable steps;
+    - (MC-68)(d);
+    - JJ.
+
+    It also rests on (MC-105) (Step MC17; with (MC-85) and (MC-94), second-read 2026-09-25).
+    *(Repaired at the second reading: the first wording listed only (MC-68)(d) and JJ.)*
+- **What remains open is the sub-cell (MC-154), "Case II-cyclic":** the chain `y` itself, in
+  Case II (so `G` is rigid and `V(Γ₃)` is the only locally minimal class set) with `Γ₃` cyclic, and
+  with no `W` of (MC-162)'s kind.
+  - The chord route closes it under two sufficient conditions at the generic point of `X₀(G′ + ab)`
+    (a class-level stress blocks (MC-150), but (MC-110) can still close the step; *second reading*:
+    first written "reduces it exactly to two conditions"):
     the class-level framework of `G′` carries no self-stress there, and, at `δ = 4`,
     `ρ_Γ ⊄ n^⊥` ((MC-150), (MC-153)).
   - In 𝒮, `a′(z₀)` *equals* the number of those class-level stresses (MC-153). That proves (MC-118)'s
@@ -5690,10 +5767,11 @@ So (A) holds. ∎
 > **Then `X₀(G)` attains.**
 
 *Proof.*
-1. *The chain.* In 𝒮, `a ≁ b` and `δ₂ ≥ 2` ((MC-79)(ii)). So `dim U ≥ 2` (JJ at `G″`),
-   restriction `X₀(G) → X₀(G′)` is dominant, and the generic flags are in orbit (i) ((MC-99); in 𝒮 this is also
-   (MC-79)(vi)).
-   `λ = 2` at a generic `p_y ∈ m`.
+1. *The chain.* In 𝒮, `a ≁ b` and `δ₂ ≥ 2` ((MC-79)(ii)). So `dim U ≥ 2` (JJ at `G″`), and
+   restriction `X₀(G) → X₀(G′)` is dominant ((MC-18)(b)). `dim U ≥ 2` also excludes orbits (iii) and
+   (iv), so `λ = 2` ((MC-19)(b)). Directly: the generic point of `X₀(G)` has `q_y` off `q_aq_b`, so
+   `p_y ∉ n`. No finer orbit claim is used. (In 𝒮 the orbit is (i), by (MC-99) or (MC-79)(vi).)
+   *(Simplified at the second reading, 2026-09-25: the first version cited the orbit-(i) claim.)*
 2. *The count at `G′`.* (MC-44), with IH at `G′` and `G″`, gives `r = δ` at `X₀(G′)`'s generic
    point.
 3. *Restriction to `W`.* (MC-68)(d) makes `F(G, q) → F(G[W], q|_W)` onto at generic `q`. Through
@@ -5709,9 +5787,62 @@ So (A) holds. ∎
 
 *Remarks.*
 - This is the geometric twin of (MC-79)(iv) (locality). It closes the chain in any cell with
-  `δ ∈ [1, 4]`. That includes (MC-103)'s open "`δ = 2`, cyclic class quotient" wherever such a `W`
-  exists.
+  `δ ∈ [1, 4]`. The proof uses 𝒮 only for `a ≁ b` and `δ₂ ≥ 2` (MC-164). So it also covers
+  (MC-103)'s open "`δ = 2`, cyclic class quotient" wherever such a `W` exists, with additivity read
+  as `def₂(G) = def₂(G[W]) + def₂(G/G[W])`. *(Repaired at the second reading, 2026-09-25: outside 𝒮
+  the claim needed (MC-164).)*
 - It does not need the chord point, class rigidity at `X₀(G′)`, (MC-69), (MC-70), or `X₀(G/H)`.
+
+**Added at the second reading (2026-09-25).**
+
+> **(MC-162)** `[PROVED-MOD]` *((MC-33); a supply of `W` that (MC-142) misses)* Let `G ∈ 𝒮` satisfy IH,
+> and let `y` be a `k = 1` chain with `1 ≤ δ ≤ 4`. Suppose `G` has another chain
+> `C = a_C − x₁ − ⋯ − x_m − b_C` with `m ≥ 2` and `G[V ∖ C]` rigid. (For `m ≤ 4` and `G` rigid, this
+> is `δ_C = 0`, by (MC-80)'s count.) Then `W := V ∖ C` satisfies (MC-143)'s hypotheses, so
+> **`X₀(G)` attains**.
+
+*Proof.*
+- `W` is proper and contains `y`: chains are disjoint, and `y`'s neighbours are hubs.
+- `G[W]` is rigid, hence connected with minimum degree `≥ 2`, so (H) holds.
+- The quotient is simple: `x₁ ≠ x_m` since `m ≥ 2`, and each has exactly one neighbour in `W`;
+  interior `x_i` have none.
+- (A): split `Z′ ⊆ C` into maximal runs. A run of `j` vertices has `j − 1` inner edges and at most
+  one edge to `W`, unless it is all of `C` (then two). Runs are not adjacent. So
+  `e(Z′) + e(Z′, W) ≤ |Z′|`, or `m + 1` when `Z′ = C`, and `2(m + 1) ≤ 3m` for `m ≥ 2`. (S) holds in
+  𝒮, so (A) is additivity.
+- (MC-143) applies. ∎
+
+Such a `C` is itself usable, so this adds nothing to coverage, but it removes such `y` from
+(MC-154)'s residue.
+
+> **(MC-163)** `[MEASURED]` *(`wsearch.py`; exhaustive over every `W` with `y ∈ W ≠ V`)*
+> - Of the six Case II-cyclic chains of 𝒮 on 13 vertices (1 023 candidate sets each), three have a
+>   `W` satisfying (MC-143)'s hypotheses: `L??CAA_EAgDG@g` at `y = 5` and `y = 2` (`L = 7`, `(3, 4)`,
+>   `p + p′ = 2`), and `L??CB@Oa@GB_?s` at `y = 4` (`L = 8`, `(4, 4)`, `p + p′ = 1`). **This shape is
+>   in (MC-154)'s list.**
+> - In each, the unique `W` is `V ∖ {0, 6}`, the complement of a `k = 2` chain with `δ = 0`:
+>   (MC-162)'s `W`.
+> - None was found in the other three, or in `ringprobe.py`'s in-𝒮 `C₁₀` rings `@2`, `@A` and `@A,B`
+>   (2 047, 2 047 and 16 383 sets). `C10(v)` is not in 𝒮; `C10+C4x3` (`n = 23`) is past the
+>   `n ≤ 17` cap.
+>
+> So "Case II" is not the same as "(MC-143) does not apply".
+> `PYTHONHASHSEED=0 python3 notes/scripts/w4/wsearch.py` (< 1 s).
+
+> **(MC-164)** `[PROVED-MOD]` *((MC-33))* (MC-143) holds for any `G` satisfying (H), in place of
+> `G ∈ 𝒮`, if `a ≁ b` and `δ₂ ≥ 2`. Additivity is read as `def₂(G) = def₂(G[W]) + def₂(G/G[W])`; JJ
+> at `G″`, `G[W]` and `G/G[W]`.
+
+*Proof.* 𝒮 enters only in step 1. `def₂(G″) = f₂ − min(δ₂, 2)` is the general count ((MC-63)(b)'s
+proof), (MC-68)(d) holds for any simple `G`, and steps 2–5 use only (MC-44), (MC-16), (MC-17) and
+IH. `G[W]` rigid implies (H). ∎
+
+> **(MC-165)** `[MEASURED]` *(`c1check.py`; exact ℚ at seed `20260924`, ranks mod `2⁶¹ − 1` only as
+> certificates)* (MC-143)'s mechanism at every C′-I chain in (MC-117)'s open cell (`k = 1`,
+> `δ₂ = 3`, `δ ≥ 3`) of every 𝒮-member on 13 vertices: 41 099 graphs, 32 177 in 𝒮, 46 chains, all
+> 46 certified. At one exact certified `X₀(G)` picture per chain, restriction `L_G → L_{G[W]}` is
+> onto, `G[W]` is rigid, and `G` attains.
+> `geng -C -d2 -t -q 13 0:17 | PYTHONHASHSEED=0 python3 notes/scripts/w4/c1check.py` (~24 s).
 
 > **(MC-144)** `[PROVED-MOD]` *((MC-33); Case I, a corollary of (MC-142) and (MC-143))* In the setting
 > of (MC-142), suppose some locally minimal `Y` has `W_Y ≠ V(G)`. Then `X₀(G)` attains. This holds
@@ -5802,17 +5933,30 @@ Multicyclic shapes exist too, for example a `θ(5,5,6)` of classes with `A`, `B`
 Inside 𝒮, (MC-148) replaces Theorem S (MC-80) and its cores, (MC-87), and CONTRACT at cores with
 `def₂(H) ≥ 1`.
 
-The citations it consumes:
+*(Rewritten at the second reading, 2026-09-25: the first version understated what the two proofs
+share.)* The citations it consumes inside 𝒮:
 - (MC-68)(d), with JJ at `G[W]` and `G/G[W]`;
-- (MC-44) (IH at `G′`, `G″`), and JJ at `G″`;
-- (MC-105), with (MC-85);
-- the landed steps.
+- (MC-44) (IH at `G′`, `G″`), and JJ at `G″` (with (MC-4)(b) at `G′`, for `dim U ≥ 2`);
+- (MC-105), with (MC-85), and JJ at `G′ + x` for the (a′) orbit ((MC-95)(iii) or (MC-79)(vi));
+- (MC-16)–(MC-19), (MC-76), (MC-77) and (MC-79)(i), (ii), (v);
+- the landed steps behind "usable".
 
-It does **not** consume (MC-69) (no-jump), (MC-39)'s (ii), (MC-70), (MC-71) at `def₂(H) ≥ 1`, or
-`X₀(G/H)`. The shared citations with the first proof are (MC-68)(d) and JJ. So this is a second
-proof of the structural half, not a JJ-independent one. Of its citations only (MC-105) (Step MC17)
-lacks a second reader: (MC-143)'s orbit claim, cited from Step MC17's (MC-99), is also (MC-79)(vi),
-which has one.
+Inside 𝒮 it does **not** consume (MC-69) (no-jump), (MC-39)'s (ii), (MC-70), (MC-71) at
+`def₂(H) ≥ 1`, or `X₀(G/H)`. The unchanged reduction to 𝒮 still does, at `def₂`-rigid cores:
+(MC-59)(d) is (MC-39) with (i) from (MC-59)(b), (ii) from (MC-59)(c3), and `X₀(G/H)`.
+
+What the two proofs share:
+- the whole reduction to 𝒮;
+- the chain calculus (MC-76)–(MC-79);
+- every landed step behind "usable";
+- (MC-68)(d), the restriction half of CONTRACT's certificate;
+- JJ.
+
+So inside 𝒮 this is a second proof of both halves, structural and certificate, of (MC-89). It is not
+a JJ-independent proof, and it is not a second proof of (MC-89) outside 𝒮. Its new dependencies are
+(MC-105), (MC-85) and (MC-94), which a second reader re-derived on 2026-09-25, together with (MC-44),
+(MC-146) and (MC-147). The orbit-(i) claim that (MC-143) first cited is not needed ((MC-143),
+step 1).
 
 > **(MC-149)** `[CONSTRUCTED]` *(`earcover.py --necklaces`, `rigidclose.py`; the stuck families)*
 > - The stuck families of (MC-83)/(MC-84) (`QsQsQ`, `QQQQs`, `Q⁵`, `QsQsQs`, `Q⁶`, `Q⁷`, `AsAsAs`,
