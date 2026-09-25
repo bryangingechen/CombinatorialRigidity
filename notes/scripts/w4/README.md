@@ -942,6 +942,11 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   non-2EC populations the others exclude — (MC-123)(⇐) on every connected simple graph on `≤ N1`
   vertices, (MC-129)/(MC-130)'s bookkeeping and a direct certificate on every non-2EC (H) graph on
   `≤ N2`, and `zrand.build`'s sampler without its `is_2ec` filter.
+- **Step MC10's second-reading drivers** (§(K-main), (MC-169), (MC-170)): `mc10indep.py all` —
+  independent exact re-checks of Steps MC1–MC6 and MC10 (stdlib only, no shared code); `bkwit.py` —
+  the witness that (MC-27)'s literal bad set is wrong (imports `mc10indep`); `rdreplay.py N`,
+  `dUreplay.py N` — replays of `earstep.py --rdelta N`'s own stream: `q ∈ U` at every accepted
+  draw, and the drawn `dim U` equal to (MC-62)'s bound.
 - **Step MC15's second-reading driver** (§(K-main), (MC-161); stdlib only, exact, string seeds, no
   shared code): `mc15check.py (--exh N | --allgraphs N | --mc66 N | --blowup S | --tight n S |
   --mc67 N M)` — independent checks of (MC-62)–(MC-67).

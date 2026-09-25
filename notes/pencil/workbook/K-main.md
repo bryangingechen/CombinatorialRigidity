@@ -7,7 +7,8 @@ Answering `notes/pencil/W4-reopen.md` **P1** (the main-component census, ranked 
 derivation is the hand-off's (F1)–(F3), written out and checked. **(MC-4)** was not in the
 hand-off: it makes the flat rank an exact identity rather than a citation.
 
-**Verdict.** (MC-1)–(MC-6) and (MC-9) are *proven-informally* and elementary. The one citation
+**Verdict.** (MC-1)–(MC-6) and (MC-9) are *proven-informally* and elementary; (MC-1)–(MC-6) were
+second-read on 2026-09-25 (with Step MC10), and the Plücker bookkeeping was checked by hand. The one citation
 any of them uses, Jackson–Jordán's pin-collinear theorem (the smark brief §3(a); published, not
 formalized, checked only over `ℝ` — `notes/Phase39-design.md` field-hypothesis recon, row S5; beyond `ℝ`, (MC-33)), is
 needed only for the *equality* case of (MC-4)(b), and every use of it below is flagged.
@@ -37,8 +38,9 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   - The relative-dof conjecture (MC-23) is certified on ≤ 7 vertices, and reduced to (MC-10)(a)
     at `G′` and `G′ + ab` when `a ≁ b` and `δ ≤ 5` (MC-44).
   - A second reader re-derived Steps MC7–MC9; its fixes are applied.
-  - The ear-step claims (MC-16)–(MC-27) were checked by the coordinator; Step MC13's second reader
-    re-read (MC-16), (MC-17), (MC-22) and (MC-26), without re-deriving them.
+  - The ear-step claims (MC-16)–(MC-27) were **re-derived by a second reader on 2026-09-25**,
+    with Steps MC1–MC6: nothing on (MC-89)'s path refuted; (MC-25), (MC-26) repaired in scope;
+    (MC-27)'s bad set repaired; (MC-169), (MC-170) added.
 - Step MC11 (from the 2026-09-24 feasibility recons of W4-reopen's unranked directions), the
   split-off step on `X₀`: putting the split vertex on the line of its neighbours gives rank exactly
   `+5` and a point of `X₀` (MC-28)–(MC-30), so **`X₀(G.splitOff)` attaining puts `X₀(G)` within one of
@@ -177,7 +179,8 @@ instance.
 > supported on the `ω` columns. If every `C_e ≠ 0`, then `rank A = |E| + rank R`, where `R` is the
 > 5-rows-per-hinge rigidity matrix (the landed `rigidityRows` model, `kbare_common.build_rigidity`).
 > The rank at `(q, z)` is invariant under `z ↦ tz + a` for `t ≠ 0` and `a ∈ Aff(q)`, so on the fibre
-> it depends only on the class of `z` in `P(L(q)/Aff(q))`.
+> it depends only on the class of `z` in `P(L(q)/Aff(q))` when `z ∉ Aff(q)`; at `z ∈ Aff(q)` it is the
+> flat rank. *(Scope added at the second reading, 2026-09-25.)*
 
 *Proof.* `p = (x, y, z, 1)`. Each Plücker coordinate `p_u[i] p_v[j] − p_u[j] p_v[i]` has at most one
 of `i, j` equal to `2` (the `z` index), so it has no `z_u z_v` term. On `ker A`, `ω_e` is determined
@@ -287,7 +290,7 @@ needed gain is `def₂ − def₃`. The step below computes it.
 > **(i)** `β` is **symmetric**. **(ii)** `β(k, h) = 0` whenever `k` or `h` is a trivial (constant)
 > flex, so `β` descends to `Sym²(L(q)/Aff(q)) → (Z₁ ⊗ K³)^∨`. **(iii)** For `z ∈ L(q)`, the
 > first-order gain in direction `z` equals `rank β(Ψz, ·)`, with `Ψ` the bijection of *Step MC4*.
-> So `X₀` attains **to first order** iff some `z ∈ L(q)` has
+> So, at `q ∈ U`, `X₀` attains **to first order** iff some `z ∈ L(q)` has
 > `dim ker β(Ψz, ·) = 3 + def₃` on `F(q)`, i.e. `def₃` beyond the trivial flexes.
 
 *Proof.* (iii) first. By the block split of *Step MC4*, the left kernel of `A₀` is the direct sum
@@ -764,7 +767,12 @@ finite check of `def₂`-rigid subgraphs; the census found all 260 nondegenerate
 #### Step MC10 — the ear step on `X₀` (P3 Track 1)
 
 *Worked by a forked agent (2026-09-24) and checked by the coordinator; driver `w4/earstep.py`
-(new). The question: does the `X₀` motive, "`X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)`",
+(new). **Second-read 2026-09-25** by a fresh reader, together with Steps MC1–MC6: every claim
+re-derived by hand, independent exact checks (`w4/mc10indep.py`), every driver re-run. Nothing on
+(MC-89)'s path is refuted. (MC-25) and (MC-26) are repaired in scope (span-generic placements;
+(MC-26)'s first link excludes orbit (iii)). (MC-27)'s bad set was wrong as worded (`bkwit.py`), and
+(MC-27) is off the path. (MC-169) supplies the missing proof of (MC-19)(b) at `k = 1`, and (MC-170)
+upgrades (MC-18)'s count to certified. The question: does the `X₀` motive, "`X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)`",
 propagate along an ear addition `G = G′ + ear_k`? Here `G′` satisfies (H). The ear has `k ≥ 1` new
 vertices on a path `a − x₁ − ⋯ − x_k − b`. It is **open** if `a ≠ b`; **closed** if `a = b`, and then
 `k ≥ 2`.*
@@ -822,7 +830,8 @@ linear in `z′` and affine in `q_x`. Its rank as a bilinear form is `dim U`.
   dominates `L_{G′}`.
 - `dim U = 1`, say `U = K·φ₀`: the zero set has two components of equal dimension,
   `K² × {P_a = P_b}` and `{φ₀ = 0} × L_{G′}`. `X₀(G)`, which has generic `q_x`, is the first, and
-  lies over the proper locus `{P_a = P_b}`. ∎
+  lies over the proper locus `{P_a = P_b}`. (If `φ₀` is a nonzero constant, the second component is
+  empty; the conclusion is the same.) ∎
 
 Two instances of `dim U = 1`:
 - `φ₀ ∝ ℓ_{ab}`: an edge or implied edge `ab`, the triangle case.
@@ -830,7 +839,10 @@ Two instances of `dim U = 1`:
   This is (MC-9)'s mechanism.
 
 `[MEASURED earstep.py --rdelta 7]` `dim U = 1` occurs at 241 of the 11 573 vertex pairs of simple
-2EC graphs on `≤ 7` vertices: 114 adjacent, 127 not. Each is at one draw, a lower bound on `dim U`.
+2EC graphs on `≤ 7` vertices: 114 adjacent, 127 not. Each is at one draw. Every accepted draw has
+`q ∈ U` (`rdreplay.py`, the second reading: 577/577 graphs). At such a `q`, `dim U(q) ≤ min(δ₂, 3)`
+(`a ≁ b`) or `≤ min(δ₂, 1)` (`a ∼ b`) with no citation ((MC-62)). The drawn value equals that bound
+at all 11 573 pairs, so the 241 are **certified** generic values (MC-170).
 
 > **(MC-19)** `[PROVED]` *(chain spans; `earstep.py --chains`, 16/16 certificates; hand proof over every field: (MC-134))* **(a)** A generic
 > closed polygon with `n` edges has hinge span `min(n, 6)`. **(b)** For any flag pair with
@@ -870,9 +882,10 @@ if `p₃ ≥ 6`, the θ-graph is `C_{p₁+p₂}` plus an open ear with `p₃ −
 `p₃ ≤ 5`, it is one of 30 graphs, each with an exhibited attaining `X₀` point
 (`earstep.py --thetas 5`, mod-`2⁶¹ − 1` rank equal to the target). ∎
 
-This extends (MC-7)'s finite `a + b + c ≤ 16` to every θ-graph. It is **characteristic-free
-wherever (MC-19)'s certificates are**: they are exact over ℚ, so every prime not dividing their
-minors is covered, and the remaining primes are not checked. Nondegeneracy is not claimed:
+This extends (MC-7)'s finite `a + b + c ≤ 16` to every θ-graph. It is characteristic-free: (MC-19)
+holds over every infinite field (MC-134), and (b) needs no per-graph computation (MC-139). (Over ℚ
+the landed `--thetas` points are certificates only at `q ∈ U`, which holds at 30/30, (MC-140).)
+*(Repaired at the second readings of Steps MC20 and MC10, 2026-09-25.)* Nondegeneracy is not claimed:
 `θ(2,2,2) = K_{2,3}` stays A′ (MC-9), (MC-14).
 
 > **(MC-22)** `[PROVED]` *(the reduction for open ears with `k ≤ 4`)* Let `X₀(G′)` attain *(added by
@@ -899,7 +912,8 @@ and two planes, so it is not a pencil framework.
 > **(MC-23)** `[CONJECTURED]` *(the relative-dof conjecture (R); `earstep.py --rdelta 7` finds it at
 > every one of 11 573 pairs)* At `X₀(G′)`'s generic point, `r = δ` for every `G′` satisfying (H) and
 > every pair `a, b`. This is (K-c)'s genericity question in `X₀` form. On `≤ 7` vertices, at a draw
-> where `G′` attains, `r_draw ≤ r_generic ≤ δ`, so each observed equality **certifies** the generic
+> where `G′` attains and `q ∈ U` (`dim L(q) = 3 + def₂`; not asserted by the driver, but true at all
+> 577 accepted draws, `rdreplay.py`), `r_draw ≤ r_generic ≤ δ`, so each observed equality **certifies** the generic
 > value; that is a finite theorem on `≤ 7` vertices, 9 min 32 s. *(2026-09-24: under (MC-10)(a)
 > at `G′` and at `G′ + ab`, (MC-44) proves it for `a ≁ b` and `δ ≤ 5`.)*
 
@@ -918,18 +932,24 @@ and two planes, so it is not a pencil framework.
 > dominance; so `(R₁)` is reachable and `(R₂)` does not need `dim U ≠ 1`.)*
 
 > **(MC-25)** `[PROVED]` *(`k = 4`: (P₄) holds for every `ρ`; `earstep.py --lamcap`; hand proof over every field: (MC-136))* The intersection
-> of `Λ` over all placements is `0` in all four orbits at `k = 4`. Hence, **under strong induction on
+> of `Λ` over the placements of generic span (`λ = 5`) is `0` in all four orbits at `k = 4`. Hence, **under strong induction on
 > `|V|`, the `k = 4` open-ear step holds**: (P₄) from this, (R₄) from (MC-24).
 
 *Proof.* Here `λ = 5`. For `r ≥ 1`, (P₄) says that `ρ ⊄ Λ` for some placement, and that fails only
-if `ρ ⊆ ⋂ Λ`. The exhibited intersection over 12 placements per orbit frame is already `0`, and
-intersecting over more placements only shrinks it. ∎
+if `ρ ⊆ ⋂ Λ`. The exhibited intersection over 12 placements per orbit frame is already `0`, and all
+48 of those placements have `λ = 5` (`lamguard.py --replay`). So it contains the intersection over
+the dense open set of span-generic placements, which is therefore `0`. (The span guard is needed: a
+deficient draw can make an intersection `0` spuriously, (MC-97). Hand proof over every field:
+(MC-136).) *(Repaired at the second reading, 2026-09-25: "over all placements".)* ∎
 
-> **(MC-26)** `[PROVED]` *(degeneration links)* For a given `ρ`: (P₁) ⟹ (P₂) at `r ≥ 4`, and
+> **(MC-26)** `[PROVED]` *(degeneration links; the `r = 1` sentence, corrected, proved over every
+> field: (MC-137)(c))* For a given `ρ`: (P₁) ⟹ (P₂) at `r ≥ 4` in orbits (i), (ii), (iv) (where
+> `λ₁ = 2`; in (iii) the degenerate 1-ear spans only `⟨m⟩` and the argument gives nothing; *scope
+> added at the second reading, 2026-09-25*), and
 > (P₂) ⟹ (P₃) at `r ≥ 3`. (P_k) holds at `r = 1` for every `k ≤ 4`, except in the two cells where
 > `⋂Λ ≠ 0`: orbit (iii) at `k = 1`, and orbit (iv) at `k = 2`.
 > *Erratum (2026-09-24, found independently as (MC-97) and (MC-115)): orbit (ii) at `k = 1` is a
-> third such cell, `⋂Λ₁ = ⟨π_a ∩ π_b⟩`, since `p_b ∈ π_a ∩ π_b` puts that line in every 1-ear span.
+> third such cell (in both mirror forms, `p_b ∈ π_a` or `p_a ∈ π_b`), `⋂Λ₁ = ⟨π_a ∩ π_b⟩`, since `p_b ∈ π_a ∩ π_b` puts that line in every 1-ear span.
 > `--lamcap`'s `0` there came from one span-deficient random draw, which the driver did not guard
 > against. `lamguard.py`'s guarded re-run confirms every other cell, and no landed claim uses the
 > orbit-(ii), `k = 1` cell.*
@@ -947,15 +967,23 @@ Jackson–Jordán, `a` and `b` then lie in a common `def₂`-rigid subgraph. Tha
 *Repair (2026-09-24, the second reader of Step MC16):* read literally, (MC-13)(c) at `G′ + ab` gives
 a common `def₂`-rigid subgraph of `G′ + ab`, not of `G′`. That does not give `δ = 0`: take
 `G′ = C₇` with `a, b` at distance 2, where the triangle `acb` is rigid in `C₇ + ab` but `δ₂ = 2` and
-`δ = 1`. The conclusion stands by another route: (MC-62)'s count, `dim U ≥ min(δ₂, 3)` (JJ at
-`G′ + ab + x`), gives `U = 0 ⟹ δ₂ = 0`, and then `δ = 0` and `r = 0`.
+`δ = 1`. The conclusion stands by another route: (MC-62)'s count, `dim U ≥ min(δ₂, 3)` for `a ≁ b`
+(JJ at `G′ + ab + x`) and `dim U ≥ min(δ₂, 1)` for `a ∼ b` (JJ at `G′ + x`), gives
+`U = 0 ⟹ δ₂ = 0`. Then `δ = 0` by (MC-88), and `r = 0` by (MC-16)'s `r ≤ δ`. *(Both adjacency cases
+and the (MC-88) step added at the second reading, 2026-09-25.)*
 
 > **(MC-27)** `[OPEN]` *(the open ear steps, `k = 1, 2, 3`)* At `X₀(G′)`'s generic point, `ρ` avoids
-> the placement bad set `B_k(r) = {ρ : dim(ρ ∩ Λ) > max(0, r + k − 5) at every placement}`.
+> the placement bad set `B_k(r) = {ρ : dim(ρ ∩ Λ) > max(0, r + k − 5) at every placement of generic
+> span λ = k + 1}` (equivalently, at the generic placement: `(P_k)` fails).
+> *(2026-09-25, the second reading: "at every placement" alone is wrong. At orbit (iv), `k = 2`,
+> `ρ = ⟨ℓ⟩` with `ℓ ⊂ π`, `(P₂)` fails, yet the valid placement with `x₂ ∈ p_a x₁` has `λ = 2` and
+> `ℓ ∉ Λ` (`bkwit.py`). (MC-43), (MC-46) and (MC-47) already use the generic reading.)*
 > **The universal form is false.** `Λ` always contains the line `p_a x₁`, which lies in the pencil
 > `Pen(p_a, π_a)`. So every `ρ ⊇ Pen(p_a, π_a)` is bad when `r ≤ 5 − k`, and likewise for
-> `Pen(p_b, π_b)`. Whether such `ρ` occur on `X₀` is open. They do not occur on `≤ 8` vertices:
-> `exh8` attains everywhere (MC-7), which by (MC-22) forces (R_k) and (P_k).
+> `Pen(p_b, π_b)`. Whether such `ρ` occur on `X₀` is open. They do not occur at any `(G′, a, b, k)`
+> with `|V(G′)| + k ≤ 8` where (MC-22) applies (dominance, `λ = k + 1`, and `X₀(G′)` and `X₀(G)` both
+> attaining: (MC-7) for 2EC graphs, (MC-52)/(MC-53) otherwise), since (MC-22)'s "⟹" then forces
+> (R_k) and (P_k). *(Scope repaired at the second reading: `exh8` holds only 2EC graphs.)*
 > *`k = 1` in orbit (i), an exact criterion* `[PROVED]`. Put `m := π_a ∩ π_b` and `n := p_a p_b`,
 > which are skew. Then `Λ(x) = x ⊗ n̂` inside `W₄ := m̂ ⊗ n̂`, the lines meeting both `m` and `n`. Put
 > `ρ₄ := ρ ∩ W₄`. The 2-planes of `m̂ ⊗ n̂` meeting every `x ⊗ n̂` are exactly the `m̂ ⊗ y₀`. So (P₁)
@@ -965,7 +993,46 @@ a common `def₂`-rigid subgraph of `G′ + ab`, not of `G′`. That does not gi
 > *(2026-09-24: answered in part by Step MC13, (MC-43)–(MC-50); the cells that remain are
 > (MC-51).)*
 
+**Added at the second reading (2026-09-25).**
+
+> **(MC-169)** `[PROVED]` *((MC-19)(b) at `k = 1`, by hand, over any field; agrees with (MC-134)(b))*
+> Let `x ∈ m = π_a ∩ π_b` (in orbit (iv), `x ∈ π`), `x ≠ p_a, p_b`. Then `Λ₁(x) = span(p_a ∧ x, x ∧ p_b)`,
+> and `λ = 2` unless `x ∈ n = p_a p_b`. So `λ = 2` at every valid placement in orbits (i) and (ii),
+> `λ = 2` at `x ∉ n` in (iv), and `λ = 1` at every placement in (iii).
+
+*Proof.* Two distinct lines have non-proportional Plücker vectors, so `λ = 2` unless the lines
+`p_a x` and `x p_b` coincide, i.e. unless `x ∈ n`.
+- Orbit (i): `n ∩ m = ∅`, since a common point `c` would put the line `p_a c` in `π_a`, and then
+  `p_b ∈ π_a`.
+- Orbit (ii): `n ∩ m` is the single point `p_b` (resp. `p_a`).
+- Orbit (iii): `n = m`.
+- Orbit (iv): `n` is a proper line of `π`. ∎
+
+> **(MC-170)** `[CONSTRUCTED]` *(`earstep.py --rdelta 7`'s own draws, replayed by `rdreplay.py` and
+> `dUreplay.py`)* On every vertex pair of every simple 2EC graph on 3–7 vertices (11 573 pairs), the
+> generic `dim U` is exactly (MC-62)'s no-citation bound: `min(δ₂, 3)` for `a ≁ b` and `min(δ₂, 1)` for
+> `a ∼ b`. This is a finite theorem, with no Jackson–Jordán.
+> - The driver's accepted draw has `q ∈ U` at 577/577 graphs.
+> - At such a draw `dim U(q) ≤ dim U_generic` (lower semicontinuity on the bundle), and
+>   `dim U ≤ dim F − dim F_weld ≤ δ₂`.
+> - The drawn value meets the bound at every pair. The histogram of (adjacent, `dim U`, bound) is
+>   (F,0,0) 4 479; (F,1,1) 127; (F,2,2) 80; (F,3,3) 10; (T,0,0) 6 763; (T,1,1) 114.
+>
+> `PYTHONHASHSEED=0 python3 notes/scripts/w4/rdreplay.py 7` (~6 s); `… dUreplay.py 7` (~7 s).
+
+`[CONSTRUCTED]` *(`mc10indep.py`; stdlib only, exact, string seeds, no code shared with the other
+drivers)* `python3 notes/scripts/w4/mc10indep.py all` (~35 s, exit 0) re-checks (MC-3)'s Plücker
+split, (MC-4)(a)–(b) and (MC-5)(i) at 474 `(G, q)` pairs (2 at jump strata), (MC-6)'s form at 30
+`(G, q, z)`, (MC-16)'s dimension formula at 80 configurations (9 span-deficient), (MC-17)'s count at
+606 random ears, (MC-18) at 159 draws, (MC-19)'s spans in every orbit, the guarded intersections, and
+(MC-26)'s links and (MC-27)'s criterion at structured `ρ`. There are 0 failures; the populations and
+caps are in its docstring. `python3 notes/scripts/w4/bkwit.py` (< 1 s) is the (MC-27) witness.
+
 **What an ear-only induction on `X₀` still lacks** *(as updated by Step MC13)*.
+*(Superseded 2026-09-24/25: (MC-89) is a coverage theorem modulo Jackson–Jordán that uses no open ear
+cell. CONTRACT needs no per-graph certificate at additive cores ((MC-71)). Of (MC-51)'s cells, Steps
+MC16–MC18 close all but (MC-117), which Step MC21 narrows to Case II-cyclic (MC-154). The bullets
+below are the 2026-09-24 Step-MC13 state.)*
 - The open-ear cells of (MC-51)(a)–(c) at `δ ≥ 1` (at `δ = 0` all three close, (MC-54)): `k = 2`
   with `dim U = 1`; `k = 2` in orbit (iv), modulo Jackson–Jordán; `k = 1` with `1 ≤ δ ≤ 4`. Step
   MC14 counts what the steps reach on tested graphs — every one — but there is no coverage

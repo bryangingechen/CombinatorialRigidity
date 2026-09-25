@@ -39,9 +39,9 @@ can lean on more than it cites.
 
 | Step | on (MC-89)'s path | status |
 |---|---|---|
-| MC1–MC6, foundations and the flat rank | (MC-4)–(MC-6) | coordinator-checked, with per-instance driver asserts; **reader F in flight** |
+| MC1–MC6, foundations and the flat rank | (MC-4)–(MC-6) | second-read 2026-09-25; the Plücker bookkeeping checked by hand |
 | MC7–MC9, exact gain, nondegeneracy | (MC-9) | second-read |
-| MC10, the ear step | (MC-16), (MC-18)–(MC-22), (MC-24)–(MC-26) | coordinator-checked; (MC-16), (MC-17), (MC-22), (MC-26) re-read but not re-derived; (MC-22) repaired by a reader. **Reader F in flight** |
+| MC10, the ear step | (MC-16), (MC-18)–(MC-22), (MC-24)–(MC-26) | second-read 2026-09-25; (MC-25), (MC-26) scope-repaired; (MC-27)'s bad set repaired; (MC-169), (MC-170) added |
 | MC11 and (MC-33), split-off and Jackson–Jordán beyond ℝ | (MC-33) | re-derived by a second agent |
 | MC12, contraction | (MC-34), (MC-37)–(MC-39) | second-read |
 | MC13, short ears with the antecedent | (MC-45), (MC-46) | itself a second reading, which re-derived them |
@@ -55,13 +55,9 @@ can lean on more than it cites.
 
 ## Next, in order
 
-1. **Land the second readings in flight** (dispatched 2026-09-25, read-only; reports come back as
-   messages, since the harness refuses subagent report files). E on Steps MC17–MC18, minus (MC-105).
-   F on Steps MC1–MC6 and Step MC10, the path claims never independently re-derived. A, B, C and D
-   have landed. **Held for F:** reader B's two Step MC10 repairs, which R9 and R12 left unapplied.
-   (MC-26)'s tag should point to (MC-137)(c). The sentence after (MC-21) should read "It is
-   characteristic-free: (MC-19) holds over every field (MC-134), and (b) needs no per-graph
-   computation (MC-139)."
+1. **Land reader E** (Steps MC17–MC18, excluding (MC-105)): its report has come back, but the full text is still owed. Readers A, B, C, D and F
+   have landed. Also land recon H (`n = 2` sizing) and writer I (Jackson–Jordán over any field)
+   when they return (`X0-formalization.md` §6).
 2. **Then open the formalization from `X0-formalization.md`**, the planning note. It holds the
    target, the index of everything already done, the proposed blueprint layers, the risk points,
    the open calls in gating order, and one-line briefs for re-dispatching anything still in flight.
