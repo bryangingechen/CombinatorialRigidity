@@ -967,8 +967,9 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   (MC-134)–(MC-138) and (MC-45)/(MC-46) over GF(2), GF(3), GF(5), GF(7), GF(2⁸), written from the
   prose, not from `certhand.py`; `thetareplay.py`, `lamreplay.py` — replays of `earstep.py
   --thetas 5` / `--lamcap`'s own streams, importing them unchanged; `rowcheck.py` — (MC-134)'s table
-  in listed order; `treegrep.py K-MAIN-FILE` — the completeness trace's grep over (MC-89)'s tree
-  (run it on `git show 73ea85a3:notes/pencil/workbook/K-main.md`). `m2/earbad_p{2,3,5}.m2` are
+  in listed order; `treegrep.py K-MAIN-FILE…` — the completeness trace's grep over (MC-89)'s tree
+  (run it on `git show 73ea85a3:notes/pencil/workbook/K-main.md`; since the 2026-09-25 split, on
+  `K-main.md K-main-MC{10..21}.md` in step order, which gives the same hit sets, checked). `m2/earbad_p{2,3,5}.m2` are
   `earbad.m2` over `ZZ/p`, the coefficient field the only change.
 - **Step MC21's drivers** (§(K-main), (MC-142)–(MC-156); combinatorics exact and deterministic; the
   geometric probes exact over ℚ at seed `20260924`, ranks mod `2⁶¹ − 1` only as certificates):

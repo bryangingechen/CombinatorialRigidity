@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """treegrep.py (§(K-main) Step MC20's second reading, 2026-09-25; ported from the reader's scratch): for each claim on (MC-89)'s proof path, extract its owning passage (claim block
 + proof, up to the next claim or heading) from K-main.md at HEAD and list every sentence that
-names a driver or a computation word.  Deterministic; no randomness."""
+names a driver or a computation word.  Deterministic; no randomness.
+
+Since the 2026-09-25 split of K-main.md by step, pass every file of the section in step order:
+`treegrep.py notes/pencil/workbook/K-main.md notes/pencil/workbook/K-main-MC{10..21}.md`
+(zsh/bash brace expansion). They are read as one concatenated text, so the per-claim hit sets
+equal the pre-split single-file run's; the printed line numbers are positions in the
+concatenation, not in any one file."""
 import re, sys
-TXT = open(sys.argv[1], encoding='utf-8').read().split('\n')
+TXT = [l for f in sys.argv[1:] for l in open(f, encoding='utf-8').read().split('\n')]
 TREE = [2,3,4,5,13,14,16,17,18,19,20,21,22,24,25,26,28,29,30,31,34,35,36,37,38,39,
         45,46,48,52,53,54,55,56,59,62,63,67,68,69,71,75,76,77,78,79,80,87,89]
 starts = {}
