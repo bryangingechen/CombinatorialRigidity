@@ -135,11 +135,18 @@ carried-hypothesis idiom, which is a sequencing device and not a citation (`DESI
    declaration carrying … any other unsettled piece as hypotheses", which arguably includes it, but
    confirm.
 3. **The Jackson–Jordán route.** The `n = 2` recon makes (a) the clear choice: about 3–6 commits,
-   field-general, compiler-checked. The PI's call is only its shape. Either weaken the landed
-   molecular-programme statements in place (`hd : 3 ≤ n` → `2 ≤ n`; this touches
-   `rankHypothesis_of_theorem_55_gen`, `molecular_conjecture` and their siblings), or add `n = 2`
-   siblings. Also where the commits land: a slice of the new phase, or a short standalone phase
-   first.
+   field-general, compiler-checked.
+   - **The default shape is to weaken the landed statements in place** (`hd : 3 ≤ n` → `2 ≤ n`,
+     `6 ≤ bodyBarDim n` → `3 ≤ bodyBarDim n`). A weaker hypothesis gives a stronger theorem, and
+     every existing use is an instance, so `n = 2` siblings would only duplicate the spine.
+   - The costs are mechanical. Each call site passing a `6 ≤ …` proof needs a one-line fix, since
+     the hypothesis type changes. `exists_adjacent_degree_two_pair` keeps `6 ≤ D`, because it is
+     false at `D = 3`. The statement-change gate applies: every blueprint node and docstring
+     stating the `3 ≤ n` / "d = 3 (D ≥ 6)" form is restated in the same commit
+     (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
+   - `molecular_conjecture` at `n = 2`, the planar molecular theorem, comes free.
+   - **The PI's call is only where the commits land:** a slice of the new phase, or a short
+     standalone phase first.
 4. **The kernels and smark:** cancel or hold. The recon reads *hold* until L6 lands.
 
 ## 6. Dispatches in flight at the end of the 2026-09-25 session

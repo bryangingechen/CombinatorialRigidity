@@ -84,8 +84,9 @@ The gating order is in `X0-formalization.md` §5.
 - **The W4-L1 (W4-A) hold lift.** W4-A is on the adopted route.
 - **The Jackson–Jordán route's shape.** The `n = 2` sizing recon (2026-09-25, `notes/Phase39-design.md`)
   shows (a) the landed KT spine extends to `n = 2` over every infinite field, compiler-checked,
-  about 3–6 commits. So (b) the TR is only a fallback. The open part is whether to weaken the landed
-  statements in place or add `n = 2` siblings, and where the commits land.
+  about 3–6 commits. So (b) the TR is only a fallback. Weakening the landed statements in place is the
+  default: a weaker hypothesis gives a stronger theorem, and siblings would only duplicate. The
+  open part is where the commits land (`X0-formalization.md` §5).
 - **The kernels and smark's O7e:** cancel or hold. The recon reads *hold* until the `X₀` motives
   land in Lean.
 - *Deferred, not cancelled:* the adversarial census (`n = 9–14`, biased to 2-edge-cuts and large
