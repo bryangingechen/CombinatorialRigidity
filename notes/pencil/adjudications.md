@@ -705,3 +705,49 @@ paragraph): **"Sure, please proceed through each of these. Feel free to stop whe
 should proceed in a fresh session (and make sure that we're prepared to handoff what we have
 then)."** Nothing beyond that plan is commissioned; its step 3 lands first (Step MC11 and (MC-33) of
 §(K-main)), because steps 2–4 do not depend on step 0.
+
+## 2026-09-25 — the `X₀` architecture adopted; the characteristic target is every infinite field
+
+The session opened on `notes/pencil/W4-reopen.md`: **"Let's work on @notes/pencil/W4-reopen.md. You
+may dispatch up to 4 subagents at a time, please work until you feel it would be better to open a
+fresh session."** It dispatched second readers on Steps MC15, MC19, MC20 and MC21, and then an
+architecture recon (`notes/Phase39-design.md` § *X₀ architecture recon (2026-09-25)*). The recon
+found that §(K-main)'s (MC-89), (MC-133)(ii) and (MC-157) discharge `hK` and `hbareSplit`, and all
+of `hcontract` except W4-A, and that a simpler top-level route through
+`pencil_conjecture_of_arms_pair` compiles with only W4-A left.
+
+Asked what still needed even an informal proof, the agent answered: only Jackson–Jordán beyond
+characteristic 0, with checks in flight. The user then asked: **"OK, it seems like maybe the next
+stage is to start writing up a detailed blueprint so we can switch over to a formalization phase?
+Not sure if we want to start that in this session or point a new session to it after some prep
+work."** The agent recommended prep here and the blueprint in a fresh session, and asked for the
+architecture and characteristic calls. The user:
+
+> **"For the architecture, yes, we'll definitely go the simpler route. For the characteristic, it
+> seems there's a plausible route to any infinite field, so let's shoot for that. Not sure if you want
+> to have a recon agent aim for the bypass writeup in this session or have it at the start of the
+> next, either way seems fine for me. One point regarding the handoff you'll write: let's make sure we
+> make the work we've already done accessible so that future agents don't end up having to redo work
+> we've already done. Please start the prep now, unless you want to dispatch / wait for more
+> subagents."**
+
+**Decided.**
+- *(a) Architecture:* the Lean target moves to the simpler route, a headline shaped like the
+  recon's `spike_pencil_conjecture_of_X0`: `pencil_conjecture_of_arms_pair` with one arm, running
+  the cut arm, then the `X₀` theorems, then W4-A.
+- *(b) Characteristic:* aim for every infinite field. The headline keeps `[Infinite K]`, with no
+  `CharZero`. That makes Jackson–Jordán's field-general form, or its `n = 2` replacement, a
+  required input.
+
+**Not decided in these words.**
+- Whether the research kernels the route makes unnecessary — `kres`/(K-res), (K-c), (K-bare-c) with
+  (α), and smark's O7e programme — are *cancelled* or *held*. The recon's conservative reading is
+  hold until the `X₀` formalization is undertaken, and smark is the PI's to direct.
+- Lifting the Lean hold on W4-L1 (W4-A). It is on the adopted route, but hold lifts are recorded
+  per item, and this one waits for the phase open.
+- The Jackson–Jordán route: the `n = 2` spine extension, or formalizing the TR. A sizing recon is
+  in flight; the field-general write-up of the TR (bypass R2) was dispatched in the same session.
+
+**Everything else stands unchanged:** phase OPEN; `hK`, `hbareSplit`,
+`pencilPair_of_splitOff_of_habitat` and the headline theorem are not edited (the new route adds a
+headline beside them); G0's staged lift as recorded 2026-09-23.

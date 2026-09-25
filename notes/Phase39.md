@@ -32,8 +32,8 @@ restructured — **Part A the live char-2 probe** (the user's 2026-09-16 re-scop
 grid/colouring route as a documented fallback. **Item 6 (deficiency laws) is UNPARKED** (user, 2026-09-16):
 carrier recon DONE, **D1–D5 SETTLED** (user; *Blockers*), and item 6 **DONE except the
 deferred A6** — Layers A–C (A1–A5, B1–B7, C1ℓ–C4ℓ) all LAND 2026-09-17 (*Lemma checklist*, the
-to-do list; no blueprint chapter). **Next: the PI's architecture call, `notes/pencil/W4-reopen.md`.** §(K-main)'s (MC-89), (MC-133), (MC-157),
-second-read, mod Jackson–Jordán, discharge all three carried hypotheses except W4-A
+to-do list; no blueprint chapter). **Next: open the `X₀` formalization, `notes/pencil/X0-formalization.md`** (architecture ADOPTED 2026-09-25,
+every infinite field). §(K-main)'s (MC-89), (MC-133), (MC-157) discharge all three carried hypotheses except W4-A
 (`notes/Phase39-design.md` § *X₀ architecture recon*); `kres` held; `/attack smark` continues in its own worktree.
 **gr10 CLOSED 2026-09-23** (PI, after review 1: char 2 limits the grid method only). Other items
 parked.
@@ -488,10 +488,12 @@ bar-joint-side analog, is next; the unqueued survey, incl. IDENT-PANEL, is `note
 
 ### Phase-local choices
 
-- **2026-09-23 — W4 REOPENED (user); the hold lifted, staged, for the W4 wrapper and W4-L4b.**
-  Tasks T0–T4: `notes/pencil/W4-reopen.md`; verbatim `notes/pencil/adjudications.md`.
-- **2026-09-23 — strategy re-think (PI-requested; ranking delegated):** census of the main component
-  first, T1's Lean deferred, `kres` held; W4 carries three kernels. `notes/pencil/W4-reopen.md` *START HERE*.
+- **2026-09-25 — the `X₀` architecture ADOPTED (user); the characteristic target is every infinite
+  field.** The Lean target moves to a `pencil_conjecture_of_arms_pair` headline carrying the `X₀`
+  theorems plus W4-A (`notes/Phase39-design.md` § *X₀ architecture recon*). The kernels' cancel/hold,
+  the W4-L1 hold lift and the Jackson–Jordán route are not yet decided. Verbatim:
+  `notes/pencil/adjudications.md`. Plan: `notes/pencil/X0-formalization.md`.
+- **2026-09-23 — W4 REOPENED (user), hold lifted (staged); a strategy re-think put the `X₀` census first.** `notes/pencil/W4-reopen-archive.md`; verbatim `adjudications.md`.
 - **2026-09-17 — both attack briefs CHECKED against the tree** (PI-directed; no new mathematics;
   one incident: file:line pointers rot within days, cite by declaration name).
 - **2026-09-16 — item 5 LANDED: the kernels take the induction hypothesis, `hK` weakens to the
