@@ -8,8 +8,9 @@ target is **`PencilPair K 3 G`**, a three-conjunct motive: bare; adjacent-distin
 to three carried hypotheses (`hcontract`, `hK`, `hbareSplit`). The adopted `X₀` route replaces
 them with two statements, `X0Dist` and `X0Gen` (Phase 40 discharges them), plus W4-A, which L0
 builds. **L0** (*Lemma checklist* item 0) has three steps: the new headline
-`pencil_conjecture_of_X0` beside the landed one (spike-compiled, signature pinned there); W4-A,
-the non-simple bare case; and the phase-close commit. The Lean hold is lifted for both builds.
+`pencil_conjecture_of_X0` beside the landed one — **L0a LANDED 2026-09-25**
+(`Molecule/Pencil/X0.lean`); next, W4-A, the non-simple bare case (L0b); and the phase-close
+commit (L0c). The Lean hold is lifted for both remaining builds.
 **Held until Phase 40's MOTIVES layer lands** (PI, 2026-09-25): the kernels (K-res)/`kres`,
 (K-c), (K-bare-c) with (α), and the smark attack, which is paused; its `state.md` records where it
 stopped. gr10 CLOSED 2026-09-23. Item 6 is DONE except the deferred A6 and one factoring item.
@@ -25,11 +26,15 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 ## Current state
 
-**Next: L0a, the carried `X₀` headline** (*Lemma checklist* item 0, where the statement is pinned
-verbatim and spike-compiled). Then L0b (W4-A), then L0c, the phase close (*Hand-off*). The
-mathematics behind the `X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all
-second-read, in `notes/pencil/workbook/K-main*.md` §(K-main). Its formalization plan is
-`notes/Phase40-design.md`. Nothing in L0 depends on it.
+**L0a LANDED 2026-09-25:** `X0Dist`, `X0Gen`, `pencilPair_of_X0`, `pencil_conjecture_of_X0` in the
+new `Molecule/Pencil/X0.lean` (sorry-free, axioms `[propext, Classical.choice, Quot.sound]`);
+`def:pencil-main-component-statements` pinned and green,
+`thm:pencil-conditional-realization-main-component` pinned to both theorems and left red (carries
+`hW4A`). **Next: L0b, W4-A** (*Lemma checklist* item 0, the non-simple bare case; template and the
+one new brick are in the item). Then L0c, the phase close (*Hand-off*). The mathematics behind the
+`X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all second-read, in
+`notes/pencil/workbook/K-main*.md` §(K-main). Its formalization plan is `notes/Phase40-design.md`.
+Nothing in L0b depends on it.
 
 **Lean, landed:** W0–W3, the whole of W5 (L0–L7), `hsplit` and `hfresh`'s discharge (W5-L7c);
 checklist items 1–5 (2026-09-15/16); item 6's Layers A–C (2026-09-16/17). The declaration index is
@@ -70,50 +75,17 @@ the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 - [ ] **0. L0 — the `X₀` headline and W4-A** (plan: `notes/Phase40-design.md` §1;
   record: `notes/Phase39-design.md` § *X₀ architecture recon*, whose spike this transcribes).
-  - [ ] **L0a — the carried headline.** Rated S1/P1/B1. Put it in a new file
-    `Molecule/Pencil/X0.lean`: header `import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2`,
-    `open scoped Graph`, `namespace CombinatorialRigidity.Molecular`,
-    `variable {K : Type*} [Field K] {α β : Type*}`. Add the file to `CombinatorialRigidity.lean`.
-    Spike-compiled 2026-09-25 against `22d0f8f8` (`lake env lean`, 26 s, axioms `[propext,
-    Classical.choice, Quot.sound]`, no `sorry`). Transcribe it verbatim and add docstrings. If
-    `unusedDecidableInType` fires on the headline, copy `pencil_conjecture_of_arms_pair`'s
-    `set_option … in` together with its justification.
-    ```lean
-    def X0Dist (K : Type*) [Field K] (α β : Type*) : Prop :=
-      ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
-        HasDistinctPencilRealization K 3 G
-    def X0Gen (K : Type*) [Field K] (α β : Type*) : Prop :=
-      ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
-        PencilNondegFeasible K G → HasGenericPencilRealization K 3 G
-    theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
-        (hdist : X0Dist K α β) (hgen : X0Gen K α β)
-        (hW4A : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected → ¬ G.Simple →
-          (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
-          HasPencilRealization K 3 G)
-        (G : Graph α β) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
-        (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
-        PencilPair K 3 G := by
-      have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by
-        have := Graph.six_le_bodyBarDim (n := 3) (by norm_num); omega
-      have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
-      by_cases h2ec : G.TwoEdgeConnected
-      · by_cases hs : G.Simple
-        · have hd := hdist G hs hV h2ec
-          exact ⟨fun _ hf => hgen G hs hV h2ec hf, fun _ => hd, hasPencilRealization_of_distinct hd⟩
-        · exact ⟨fun h => absurd h hs, fun h => absurd h hs, hW4A G hloop hV h2ec hs hIH⟩
-      · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
-    theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
-        (hdist : X0Dist K α β) (hgen : X0Gen K α β)
-        (hW4A : <as in pencilPair_of_X0>) (G : Graph α β) (hspan : V(G) = Set.univ) :
-        PencilPair K 3 G :=
-      pencil_conjecture_of_arms_pair
-        (fun G hloop hV _ hIH => pencilPair_of_X0 hdist hgen hW4A G hloop hV hIH)
-        (fun G hloop hV _ _ _ hIH => pencilPair_of_X0 hdist hgen hW4A G hloop hV hIH) G hspan
-    ```
-    Blueprint (`pencil.tex` § *The route through the main component*, red nodes seeded
-    2026-09-25): pin and green `def:pencil-main-component-statements` (`X0Dist`, `X0Gen`). Pin
-    `thm:pencil-conditional-realization-main-component` (both decls) but **leave it red**: it
-    still carries `hW4A`, and its `\uses` names the red `lem:pencil-nonsimple-case`.
+  - [x] **L0a — the carried headline — LANDS 2026-09-25**, sorry-free (axioms `[propext,
+    Classical.choice, Quot.sound]`), transcribed verbatim from the pinned spike into the new
+    `Molecule/Pencil/X0.lean` (registered in `CombinatorialRigidity.lean`): `X0Dist`, `X0Gen`,
+    `pencilPair_of_X0`, `pencil_conjecture_of_X0`. `unusedDecidableInType` did fire on
+    `pencil_conjecture_of_X0`'s `[DecidableEq β]`; empirically load-bearing (removing it breaks the
+    `pencil_conjecture_of_arms_pair` call — FRICTION.md's verify-before-deleting idiom), so
+    suppressed with `pencil_conjecture_of_arms_pair`'s own `set_option … in` plus a comment
+    recording the check. Blueprint: `def:pencil-main-component-statements` pinned and green
+    (`X0Dist`/`X0Gen`); `thm:pencil-conditional-realization-main-component` pinned to both
+    theorems, left **red** — it still carries `hW4A`, and its `\uses` names the red
+    `lem:pencil-nonsimple-case`.
   - [ ] **L0b — W4-A, the non-simple bare case** (W4-L1; KT Lemma 6.2 mirror, minimality-free).
     Rated S2/P2/B1, 1–2 commits. Prove `hW4A`'s statement as a theorem (suggested name
     `hasPencilRealization_of_not_simple`, in `X0.lean` or its own file). Then drop `hW4A` from
@@ -454,13 +426,14 @@ the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 ## Hand-off / next phase
 
-**Next concrete commit: L0a** (*Lemma checklist* item 0). It is rated S1: transcribe the pinned
-spike into `Molecule/Pencil/X0.lean`, then pin and green `def:pencil-main-component-statements`
-and pin `thm:pencil-conditional-realization-main-component`, which stays red. **Then L0b**
-(W4-A; the template and the one new brick are in the item), **then L0c, the close.** Run it with
-`/coordinate-phase 39`. It is independent of Phase 40's sub-phase 40a (the `n = 2` spine,
-`notes/Phase40a.md`): the two touch disjoint files and may run in either order, but not
-concurrently in one checkout.
+**L0a landed 2026-09-25** (checklist item 0 entry). **Next concrete commit: L0b, W4-A** (*Lemma
+checklist* item 0), rated S2/P2/B1: prove `hW4A`'s statement as a theorem
+(`hasPencilRealization_of_not_simple`, template + the one new brick are in the item), then drop
+`hW4A` from both `pencilPair_of_X0` and `pencil_conjecture_of_X0` and green
+`thm:pencil-conditional-realization-main-component` and `lem:pencil-nonsimple-case` in the same
+commit. **Then L0c, the close.** Run it with `/coordinate-phase 39`. It is independent of Phase
+40's sub-phase 40a (the `n = 2` spine, `notes/Phase40a.md`): the two touch disjoint files and may
+run in either order, but not concurrently in one checkout.
 
 **L0c's phase-specific list** (on top of `PHASE-BOUNDARIES.md` *When this commit closes a phase*):
 - **ROADMAP.** Flip row 39 to ✓ Complete. It closes on the reduction: `pencil_conjecture_of_X0`
