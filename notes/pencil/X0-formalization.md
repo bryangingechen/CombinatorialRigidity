@@ -22,8 +22,9 @@ written, second-read form. The job now is transcription and formalization, not r
 - **Carried until discharged:** `X0Dist`, `X0Gen` and W4-A. The spike states them in consumer shape
   (simple, 2EC, `3 ≤ |V|`). Nothing else is needed: no `hK`, `hbareSplit`, `hcard` or `hfresh`.
 - **Field:** `[Infinite K]`. `X0Dist`/`X0Gen` are proved informally in characteristic 0 modulo
-  Jackson–Jordán, and over any infinite field modulo (MC-33)(i). Hence the Jackson–Jordán layer (§3,
-  L3) must be field-general.
+  Jackson–Jordán, and over any infinite field modulo (MC-33)(i). The Jackson–Jordán layer (§3, L3)
+  must therefore be field-general. **The 2026-09-25 `n = 2` recon shows it can be, at low cost:**
+  the landed KT spine extends to `n = 2` over every infinite field (compiler-checked).
 - **Protected:** `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` and the landed headline
   `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` are not edited. The new headline sits
   beside them.
@@ -38,8 +39,8 @@ written, second-read form. The job now is transcription and formalization, not r
 | the generic and distinct motives | K-main Step MC19: (MC-123)–(MC-130), (MC-133), (MC-157); nondegeneracy (MC-13)(c), (MC-14) (Step MC8) | second-read 2026-09-25 |
 | the certificate leaves as hand proofs over every field | K-main Step MC20, (MC-134)–(MC-139) | second-read; characteristic-2/3/5 certificates (MC-168) |
 | the consumer map and the spike | `notes/Phase39-design.md` § *X₀ architecture recon (2026-09-25)*, spike verbatim at its end | re-elaborated by the coordinator: two `sorry`s |
-| Jackson–Jordán beyond ℝ | K-main *Jackson–Jordán beyond ℝ*, (MC-33): the step table, repairs R0/R1, bypass R2 | `[INFORMAL]`; a full write-up is in flight (§6) |
-| the `n = 2` alternative to Jackson–Jordán | the recon above, *Jackson–Jordán: the options* (a); `notes/Prospect.md`, the G2 entries (dropped 2026-07-10 by rule, not by proof) | a sizing recon is in flight (§6) |
+| **the `n = 2` spine, the replacement for Jackson–Jordán** | `notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)*: the diffs verbatim, the one new lemma, the witness statements, the reproduction recipe | **compiler-checked in scratch copies** (no `sorry`, `[Field K] [Infinite K]`); about 3–6 commits; Prospect G2's two obstructions do not hold on this path |
+| Jackson–Jordán beyond ℝ (the fallback) | K-main *Jackson–Jordán beyond ℝ*, (MC-33): the step table, repairs R0/R1, bypass R2 | `[INFORMAL]`; no longer needed on the route |
 | W4-A | `notes/Phase39-design.md` § *W4 decomposition recon*, "W4-A — the non-simple bare producer" (KT Lemma 6.2 mirror; the motions-collapse rank brick) | sketch; bricks landed; about 2–3 commits |
 | drivers behind every figure | `notes/scripts/w4/README.md`, the *Step MCnn's drivers* bullets; commands in `notes/scripts/README.md`'s invocation table | the unguarded ones are listed in *Harness debt* (the 2026-09-25 item) |
 | Lean bricks to reuse | the recon's *Cost sketch*, by declaration name | — |
@@ -68,9 +69,14 @@ Lean, and whether it waits on the Jackson–Jordán route.
   (`screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`). New: `F(q) ≅ L(q)`, and the
   split `Λ²K⁴ = W_Π ⊕ W′` against the opaque `ScrewSpace` carrier.
 - **L3 — Jackson–Jordán's equality**, field-general. It is consumed at FLAT (`G`), CONTRACT (`H`,
-  `G/H`), `G′ + ab` and SPLITOFF (`G″`) ((MC-141)'s list), all at simple graphs. Two options, per
-  §5: the landed KT spine extended to `n = 2`, or the TR (bar-joint 2D, extensions, vertex split,
-  bricks). **This is the only layer that waits on the route call.**
+  `G/H`), `G′ + ab` and SPLITOFF (`G″`) ((MC-141)'s list), all at simple graphs.
+  - **Route (a), compiler-checked:** the landed KT spine at `n = 2`. Weaken the floor
+    `6 ≤ bodyBarDim n` to `3 ≤ bodyBarDim n` at ten declarations and repair one triangle case (the
+    `n = 2` recon's diffs); about 3–6 commits, with no new mathematics.
+  - On top of that: the bridge from (MC-4)'s `F(q)` to the motion space of
+    `PanelHingeFramework.ofNormals` at normals `(x_v, y_v, 1)`, and the non-spanning form at `H`,
+    `G/H`, `G′ + ab` (spiked, with a `hfresh` hypothesis).
+  - Route (b), the TR, is the fallback only.
 - **L4 — the local steps.**
   - cut and bridge fibre products (MC-52), (MC-53), (MC-55), (MC-56);
   - the ear step (MC-16)–(MC-22), (MC-24)–(MC-26), with the chain spans (MC-134) and the
@@ -96,8 +102,8 @@ Lean, and whether it waits on the Jackson–Jordán route.
 **Before transcription:** consider splitting `K-main.md` by step (`W4-reopen.md` *PI calls pending*,
 the structural chore, which records the design and its open convention question).
 
-**What can start before the Jackson–Jordán call:** L0, L1, L2's inequality, L4's combinatorics,
-and all of L5. L3's consumers can carry its equality as a hypothesis meanwhile. That uses the
+**What can start before the Jackson–Jordán call** (now nearly moot, given route (a)): L0, L1, L2's
+inequality, L4's combinatorics, and all of L5. L3's consumers can carry its equality as a hypothesis meanwhile. That uses the
 carried-hypothesis idiom, which is a sequencing device and not a citation (`DESIGN.md`
 *Formalize everything the argument uses*).
 
@@ -128,21 +134,23 @@ carried-hypothesis idiom, which is a sequencing device and not a citation (`DESI
    (`notes/Phase39.md` *Blockers*). So is L0's wrapper; G0's 2026-09-23 lift covers "a new
    declaration carrying … any other unsettled piece as hypotheses", which arguably includes it, but
    confirm.
-3. **The Jackson–Jordán route**, (a) or (b) of the recon, once the two in-flight dispatches (§6)
-   report.
+3. **The Jackson–Jordán route.** The `n = 2` recon makes (a) the clear choice: about 3–6 commits,
+   field-general, compiler-checked. The PI's call is only its shape. Either weaken the landed
+   molecular-programme statements in place (`hd : 3 ≤ n` → `2 ≤ n`; this touches
+   `rankHypothesis_of_theorem_55_gen`, `molecular_conjecture` and their siblings), or add `n = 2`
+   siblings. Also where the commits land: a slice of the new phase, or a short standalone phase
+   first.
 4. **The kernels and smark:** cancel or hold. The recon reads *hold* until L6 lands.
 
 ## 6. Dispatches in flight at the end of the 2026-09-25 session
 
 *(Readers E and F, Steps MC17–MC18 and MC1–MC6/MC10, landed the same session: nothing on (MC-89)'s path refuted.)*
 
-If the session ended before they landed, their results are lost. Re-dispatch from these one-line
-briefs with the appendix's reusable brief.
-- **Recon H** — sizing the KT spine at `n = 2`. Which `6 ≤ bodyBarDim n` sites are essential; KT
-  Lemma 4.6 and Case III (Lemma 6.13, p. 686's remark) at `d = 2`; `ChainData`'s real floor; the
-  wrappers; a commit count against option (b).
-- **Writer I** — (MC-33)(i) as a full proof: bypass R2 written out construction by construction;
-  the field-general induction for TR Thm 6.1/7.1; the brick lemmas 3.2, 3.3 re-proved.
+- **Recon H** (`n = 2` sizing) landed the same session: `notes/Phase39-design.md` § *`n = 2` sizing
+  recon (2026-09-25)*.
+- **Writer I** ((MC-33)(i) as a full proof) was asked to wrap up early once route (a) made it
+  unnecessary for the route. Whatever it returned is landed as a fallback. If nothing landed, do
+  not re-dispatch it unless route (a) fails.
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 

@@ -63,8 +63,9 @@ is load-bearing.
 | **R2 recon (2026-09-16): item 4** | 4736–5098 | **RECORDED** — (a) rank bridge exact, (c) side feasibility by reconstruction, (d) `hK` weakening confirmed; **(b) SETTLED (α)** by the user 2026-09-16 and applied by the arc below; (GR-10) scope still the user's | — |
 | **Kernel restatement (2026-09-16): item 5** | 5099–5194 | **LANDED** — the restated `hK`/`hbareSplit` (IH + (d) + (α)), the new motive `HasDistinctPencilRealization`, the arm ripple as it actually discharged, and the (c) adder's home. **Read this, not the pinned blocks, for the kernels' current form** | — |
 | **Item-6 carrier recon (2026-09-16): item 6** | 5195–5756 | **RECORDED** — 6a *proved* sorry-free; 6b correct as transcribed but **false without `¬ G.Adj u v`** and needing the `g` carrier; 6c's carriers proposed with sites, only C1+C4-at-`U=⊥` consumed by S14(i)–(ii); Layer A/B/C build order; D1–D5 open. **Read this for what item 6 is** | — |
-| **C2ℓ route spike (2026-09-17): item 6, Layer C2ℓ** | 5760–5830 | **LANDED** — the pivot is that `weldedRank` is a **codimension** (B7); the landed relative hub transfers verbatim to merged labelings; `hu`/`hv` provably necessary and `hne` dead; two dispatch claims refuted (`Subspace.` not `Submodule.dualAnnihilator_inf_eq`; the weld-graph route is redundant, not blocked) | — |
-| **X₀ architecture recon (2026-09-25)** | 5832–end | **RECORDED, for the PI** — the `X₀` theorems discharge `hK`, `hbareSplit` and `hcontract` except W4-A; a simpler `pencil_conjecture_of_arms_pair` route compiles (spike, two `sorry`s); no landed theorem replaces Jackson–Jordán (the candidate is the KT spine at `n = 2`) | — |
+| **C2ℓ route spike (2026-09-17): item 6, Layer C2ℓ** | 5761–5831 | **LANDED** — the pivot is that `weldedRank` is a **codimension** (B7); the landed relative hub transfers verbatim to merged labelings; `hu`/`hv` provably necessary and `hne` dead; two dispatch claims refuted (`Subspace.` not `Submodule.dualAnnihilator_inf_eq`; the weld-graph route is redundant, not blocked) | — |
+| **X₀ architecture recon (2026-09-25)** | 5833–6092 | **RECORDED, for the PI** — the `X₀` theorems discharge `hK`, `hbareSplit` and `hcontract` except W4-A; a simpler `pencil_conjecture_of_arms_pair` route compiles (spike, two `sorry`s); no landed theorem replaces Jackson–Jordán (the candidate is the KT spine at `n = 2`) | — |
+| **`n = 2` sizing recon (2026-09-25)** | 6094–end | **RECORDED, for the PI** — the landed KT spine extends to `n = 2` over every infinite field (compiler-checked: floor `6 ≤ D` → `3 ≤ D`, one triangle case repaired); replaces every Jackson–Jordán use; ~3–6 commits; diffs verbatim | — |
 | Higher-`d` note / Citations | 4177–4217 | orientation; citation record | — |
 
 The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
@@ -6088,4 +6089,282 @@ end CombinatorialRigidity.Molecular
 
 #print axioms CombinatorialRigidity.Molecular.spike_pencil_conjecture_of_X0
 #print axioms CombinatorialRigidity.Molecular.spike_headline_via_carried
+```
+
+## `n = 2` sizing recon (2026-09-25): the landed KT spine extends to `n = 2`, replacing Jackson–Jordán
+
+*A read-only recon, dispatched after § X₀ architecture recon found that what the `X₀` route takes from
+Jackson–Jordán is exactly KT Theorem 5.6 at `d = 2` (meet model, simple graphs). The question: can
+the landed spine, pinned at `3 ≤ n`, be extended to `n = 2`, and at what cost? The recon answered
+with the compiler, not with prose. It copied the landed proofs into scratch files, weakened the
+floor, and elaborated them against the built tree with `lake env lean` (~28–36 s each, exit 0). The
+coordinator re-elaborated `SpikeN2.lean` (57 s): `spike_rankHypothesis_n2` depends on
+`[propext, Classical.choice, Quot.sound]` only.*
+
+**Verdict.**
+- **The spine extends to `n = 2`, over every infinite field, with no new mathematics.** Weaken
+  `6 ≤ Graph.bodyBarDim n` to `3 ≤ Graph.bodyBarDim n` (and `hd : 3 ≤ n` to `2 ≤ n`) throughout.
+  Exactly one proof needs a real edit: the `|V| = 3` triangle case of
+  `case_III_hsplit_producer_all_k`, which used `exists_adjacent_degree_two_pair`. It now takes a
+  single degree-2 vertex from the landed `Graph.exists_degree_eq_two_of_noRigid` and any neighbour.
+  One new lemma is needed, `three_le_bodyBarDim_of_two_le`. `cycle_realization`'s `hm : cy.m ≤ n`
+  weakens to `cy.m ≤ n + 1`, because it uses `hm` only as `cy.m ≤ k + 2`.
+- **With the primed copies, these elaborate with no `sorry` and only `[Field K] [Infinite K]`:**
+  - `rankHypothesis_of_theorem_55_gen` at `n = 2`, i.e. a `PanelHingeFramework K 1` with
+    `RankHypothesis (G.deficiency 2)`;
+  - `molecular_conjecture` at `n = 2`;
+  - the every-generic-normals row rank (`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`,
+    `PanelGeneric.lean`) at `(n, k) = (2, 1)`;
+  - a new non-spanning, row-rank, link-recording form at `n = 2` (`spike_nonspanning_rows_n2`,
+    about 40 lines, first try).
+- **Prospect G2's two obstructions (2026-07-10) do not hold on this path.**
+  - `K_{2,3}` does refute `exists_adjacent_degree_two_pair` at `D = 3`. But at `n = 2` the spine
+    uses that lemma only in the triangle case, and there adjacency is never used.
+  - "`chainData_extract` separately needs n ≥ 3" is an off-by-one. `vtx : Fin (cd.d + 1)`, so
+    reaching index 2 needs `cd.d ≥ 2`, i.e. `n ≥ 2`, and the proof uses `hD` only for `3 ≤ D`,
+    `2 ≤ D` and `2 ≤ n`.
+- **The site list, compiler-computed.** A closure metaprogram over the landed
+  `rankHypothesis_of_theorem_55_gen` finds exactly ten declarations with a `6 ≤ Graph.bodyBarDim`
+  hypothesis, plus the converter `six_le_bodyBarDim`. Among them are `case_III_realization_all_k`,
+  `case_III_hsplit_producer_all_k`, `chainData_extract`, `exists_adjacent_degree_two_pair`,
+  `case_I_realization_h65_gen`, `case_I_dispatch_gen`, `case_I_hcontract_gen`,
+  `theorem_55_minimalKDof_k_all_k` and `theorem_55_minimalKDof_gen` (the recon's return was
+  truncated at the tenth). Only the triangle case is essential; the rest are incidental.
+- **Sizing:** option (a) is about 3–6 commits of mechanical work. Option (b), formalizing
+  Jackson–Jordán's TR, is a multi-phase programme whose field-general form is only `[INFORMAL]`
+  ((MC-33)(i)), so it clashes with the adopted every-field requirement. **The PI decides whether to
+  weaken the landed statements in place or to add `n = 2` siblings, and where the work lands.**
+
+**What the `X₀` route still needs on top** (the recon's list, plus § X₀ architecture recon):
+- the bridge from `F(q)`, the flex space of (MC-4), to the motion space of
+  `PanelHingeFramework.ofNormals G ends q` at normals `(x_v, y_v, 1)`, with generic normals moved
+  into the chart by per-body rescaling and open admissibility;
+- the non-spanning uses at `H`, `G/H` and `G′ + ab`. The non-spanning spike carries a `hfresh`
+  fresh-edge hypothesis.
+
+**Reproducing the spikes from the tree.** Make one scratch file with these parts, in order:
+- **Header:** `import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Realization` and
+  `import CombinatorialRigidity.Mathlib.Data.Countable.Defs`.
+- **In `namespace Graph`:** a primed copy of `chainData_extract` (from
+  `Induction/ForestSurgery/ChainExtraction.lean`).
+- **In `namespace CombinatorialRigidity.Molecular`:**
+  - primed copies of `PanelHingeFramework.cycle_realization` and
+    `case_III_hsplit_producer_all_k` (from `AlgebraicInduction/CaseIII/Arms.lean`), and of
+    `case_III_realization_all_k` (from `CaseIII/Realization.lean`);
+  - the lemma below;
+  - then the body of `AlgebraicInduction/Theorem55.lean`.
+
+Apply the diffs below, and end with the witness. For the generic form, append `PanelGeneric.lean`
+and `HingeGeneric.lean` with their diffs, and add `import …GenericityDevice`. For the non-spanning
+form, put the witness inside the namespace, so that the private `reaimSubLink` helpers are
+visible. Primed names replace the originals at their call sites, as the diffs show.
+
+```lean
+theorem three_le_bodyBarDim_of_two_le {n : ℕ} (hn : 2 ≤ n) : 3 ≤ Graph.bodyBarDim n := by
+  have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+    rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  nlinarith
+
+theorem spike_rankHypothesis_n2 {K α β : Type*} [Field K] [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (hcard : Graph.bodyBarDim 2 * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework K 1 α β, Q.graph = G ∧
+      Q.toBodyHinge.RankHypothesis (G.deficiency 2) :=
+  PanelHingeFramework.rankHypothesis_of_theorem_55_gen (n := 2) (by norm_num) hcard G hne hspan
+    hSimple
+
+theorem spike_generic_n2 {K α β : Type*} [Field K] [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (hcard : Graph.bodyBarDim 2 * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {q : α × Fin (1 + 2) → K} (hq : PanelHingeFramework.IsGenericNormals ends q) :
+    (Module.finrank K (Submodule.span K
+        (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) : ℤ)
+      = screwDim 1 * (V(G).ncard - 1 : ℤ) - G.deficiency 2 :=
+  PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals (n := 2) (k := 1)
+    le_rfl (by decide) (by decide) (Graph.freshEdgeSupply_of_card_lt (by decide) hcard)
+    G hV hspan hSimple ends hends hq
+
+-- statement only; ~40-line proof via `exists_isMinimalKDof_spanning_subgraph`
+theorem spike_nonspanning_rows_n2 [Infinite K] [Finite α] [Finite β] [DecidableEq β]
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 2 c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework K 1 α β, Q.graph = G ∧ Q.IsGeneralPosition ∧
+      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
+      (Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 1 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2
+```
+
+The diffs (landed original → primed copy; Theorem55/PanelGeneric/HingeGeneric hunks by line number at `c05f7df7`):
+
+```diff
+--- Induction/ForestSurgery/ChainExtraction.lean (chainData_extract)
++++ spike (chainData_extract')
+@@ -1,3 +1,3 @@
+-theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
+-    {G : Graph α β} {n : ℕ} (hD : 6 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
++theorem chainData_extract' [DecidableEq β] [Finite α] [Finite β]
++    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+     (hG : G.IsMinimalKDof n 0) [G.Simple]
+--- AlgebraicInduction/CaseIII/Arms.lean (cycle_realization)
++++ spike (cycle_realization')
+@@ -1,2 +1,2 @@
+-theorem PanelHingeFramework.cycle_realization [Infinite K]
++theorem PanelHingeFramework.cycle_realization' [Infinite K]
+     [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+@@ -4,3 +4,3 @@
+     {G : Graph α β} (hG : G.IsMinimalKDof n 0)
+-    (cy : G.CycleData) (hm : cy.m ≤ n) :
++    (cy : G.CycleData) (hm : cy.m ≤ n + 1) :
+     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
+--- AlgebraicInduction/CaseIII/Arms.lean (case_III_hsplit_producer_all_k)
++++ spike (case_III_hsplit_producer_all_k')
+@@ -1,4 +1,4 @@
+-theorem PanelHingeFramework.case_III_hsplit_producer_all_k
++theorem PanelHingeFramework.case_III_hsplit_producer_all_k'
+     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
+-    {n : ℕ} (_hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
++    {n : ℕ} (_hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
+     (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
+@@ -41,13 +41,17 @@
+     have hcard3 : V(G).ncard = 3 := hV3eq.symm
+-    obtain ⟨v, a, hvG, haG, hdegv, _, eₐ, hlea⟩ :=
+-      Graph.exists_adjacent_degree_two_pair hD hV3 hG hnoRigid
+-    have hav : a ≠ v := hlea.ne.symm
++    -- n = 2 repair: a single degree-2 vertex (D ≥ 3) replaces the adjacent pair; any neighbour.
++    obtain ⟨v, hvG, hdegv⟩ := Graph.exists_degree_eq_two_of_noRigid hD hV3 hG hnoRigid
++    obtain ⟨a, haG, hav⟩ : ∃ a ∈ V(G), a ≠ v := by
++      by_contra hcon
++      push Not at hcon
++      have : V(G) ⊆ {v} := fun x hx => hcon x hx
++      have := Set.ncard_le_ncard this (Set.finite_singleton v)
++      rw [Set.ncard_singleton] at this
++      omega
+     obtain ⟨a', b, eₐ', e_b, ha'v, hbv, ha'G, hbG, heab', hlea', hleb, _⟩ :=
+       Graph.exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
+-    -- The splitOff data at `v` supplies two distinct `v`-edges `eₐ'`, `e_b` with distinct far
+-    -- endpoints `a'`, `b`; `ofCardThree` forces `G = C₃` from these. `6 ≤ D = bodyBarDim n` forces
+-    -- `3 ≤ n` (`bodyBarDim 2 = 3 < 6`), so `cy.m = 3 ≤ n`.
+-    have hn3 : 3 ≤ n := by
++    -- `cy.m = 3 ≤ n + 1` since `n ≥ 2` (from `3 ≤ bodyBarDim n`).
++    have hn2 : 3 ≤ n + 1 := by
+       by_contra h
+-      rw [not_le] at h
++      have h' : n < 2 := by omega
+       have hb := hD
+@@ -55,4 +59,4 @@
+       interval_cases n <;> omega
+-    exact PanelHingeFramework.cycle_realization hn hG
+-      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn3
++    exact PanelHingeFramework.cycle_realization' hn hG
++      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn2
+   · -- **Chain arm (`|V(G)| ≥ 4`).** Run the ENTRY dichotomy (`Graph.chainData_extract`, E3):
+@@ -61,3 +65,3 @@
+     have hV4' : 4 ≤ V(G).ncard := hV4
+-    rcases Graph.chainData_extract hD hV3 hG hfresh hV4' hnoRigid with
++    rcases Graph.chainData_extract' hD hV3 hG hfresh hV4' hnoRigid with
+       ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ | ⟨cy, hcym⟩
+@@ -73,2 +77,2 @@
+       -- `G` directly.
+-      exact PanelHingeFramework.cycle_realization hn hG cy hcym
++      exact PanelHingeFramework.cycle_realization' hn hG cy (by omega)
+--- AlgebraicInduction/CaseIII/Realization.lean (case_III_realization_all_k)
++++ spike (case_III_realization_all_k')
+@@ -1,4 +1,4 @@
+-theorem PanelHingeFramework.case_III_realization_all_k
++theorem PanelHingeFramework.case_III_realization_all_k'
+     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
+-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
++    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
+     (hn : Graph.bodyBarDim n = screwDim k)
+@@ -20,3 +20,3 @@
+   -- (`Graph.chainData_extract` / `cycle_realization`) directly, so no `hextract`/`hcycle` carry.
+-  PanelHingeFramework.case_III_hsplit_producer_all_k hk1 hD hn G hG hV3 hnoRigid hSimple
++  PanelHingeFramework.case_III_hsplit_producer_all_k' hk1 hD hn G hG hV3 hnoRigid hSimple
+     (fun G' hG' hV2 hlt =>
+--- AlgebraicInduction/Theorem55.lean
++++ SpikeN2Full.lean (Theorem55 copy)
+@@ -700 +700 @@
+-    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -954 +954 @@
+-    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
++    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+@@ -2319 +2319 @@
+-    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -2361 +2361 @@
+-    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -2441 +2441 @@
+-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -2496 +2496 @@
+-      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn G (hfresh 0 G hG) hG hV3
++      have hGP := PanelHingeFramework.case_III_realization_all_k' hk1 hD hn G (hfresh 0 G hG) hG hV3
+@@ -2521 +2521 @@
+-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -2565 +2565 @@
+-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
++    {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+@@ -2617 +2617 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -2710 +2710 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -2841 +2841 @@
+-    (hd : 3 ≤ n)
++    (hd : 2 ≤ n)
+@@ -2847 +2847 @@
+-  have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
++  have hD : 3 ≤ Graph.bodyBarDim n := three_le_bodyBarDim_of_two_le hd
+@@ -2982 +2982 @@
+-    (hd : 3 ≤ n)
++    (hd : 2 ≤ n)
+@@ -2992 +2992 @@
+-  have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
++  have hD : 3 ≤ Graph.bodyBarDim n := three_le_bodyBarDim_of_two_le hd
+@@ -3099 +3099 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -3222 +3222 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -3303 +3303 @@
+-    (hd : 3 ≤ n)
++    (hd : 2 ≤ n)
+@@ -3308 +3308 @@
+-  have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
++  have hD : 3 ≤ Graph.bodyBarDim n := three_le_bodyBarDim_of_two_le hd
+@@ -3379 +3379 @@
+-    (hd : 3 ≤ n)
++    (hd : 2 ≤ n)
+--- GenericLift/PanelGeneric.lean
++++ SpikeN2Gen.lean copy
+@@ -1 +0,0 @@
+-
+@@ -395 +394 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -479 +478 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+--- GenericLift/HingeGeneric.lean
++++ SpikeN2Gen.lean copy
+@@ -760 +760 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -902 +902 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -971 +971 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+@@ -1014 +1014 @@
+-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
++    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
 ```

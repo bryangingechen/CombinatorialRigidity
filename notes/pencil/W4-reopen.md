@@ -56,8 +56,9 @@ can lean on more than it cites.
 ## Next, in order
 
 1. **All second readings have landed** (readers A–F, 2026-09-25): every claim on (MC-89)'s path is
-   independently re-derived at least once. Still to land: recon H (`n = 2` sizing) and writer I
-   (Jackson–Jordán over any field), when they return (`X0-formalization.md` §6).
+   independently re-derived at least once. Recon H (`n = 2` sizing) has landed too. Writer I
+   (Jackson–Jordán over any field) was asked to wrap up early; land whatever it returns as a
+   fallback (`X0-formalization.md` §6).
 2. **Then open the formalization from `X0-formalization.md`**, the planning note. It holds the
    target, the index of everything already done, the proposed blueprint layers, the risk points,
    the open calls in gating order, and one-line briefs for re-dispatching anything still in flight.
@@ -73,15 +74,18 @@ route compiles with only W4-A left, and no landed theorem replaces Jackson–Jor
 
 - **Architecture: the simpler route.** The Lean target is a headline shaped like the spike's
   `spike_pencil_conjecture_of_X0`.
-- **Characteristic: every infinite field.** So Jackson–Jordán's equality is needed field-general,
-  either from the TR (writer I in flight) or from the KT spine at `n = 2` (recon H in flight).
+- **Characteristic: every infinite field.** So Jackson–Jordán's equality is needed field-general.
+  The `n = 2` recon shows the landed KT spine supplies it over every infinite field.
 
 ## PI calls pending
 
 The gating order is in `X0-formalization.md` §5.
 - **Phase structure** for the formalization: a new, sub-lettered phase, or new items inside Phase 39.
 - **The W4-L1 (W4-A) hold lift.** W4-A is on the adopted route.
-- **The Jackson–Jordán route:** (a) the `n = 2` spine, or (b) the TR. Recons H and I report into it.
+- **The Jackson–Jordán route's shape.** The `n = 2` sizing recon (2026-09-25, `notes/Phase39-design.md`)
+  shows (a) the landed KT spine extends to `n = 2` over every infinite field, compiler-checked,
+  about 3–6 commits. So (b) the TR is only a fallback. The open part is whether to weaken the landed
+  statements in place or add `n = 2` siblings, and where the commits land.
 - **The kernels and smark's O7e:** cancel or hold. The recon reads *hold* until the `X₀` motives
   land in Lean.
 - *Deferred, not cancelled:* the adversarial census (`n = 9–14`, biased to 2-edge-cuts and large
