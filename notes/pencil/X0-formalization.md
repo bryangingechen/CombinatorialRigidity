@@ -93,6 +93,9 @@ Lean, and whether it waits on the Jackson–Jordán route.
   `exists_pencilSeed_of_nondeg`, L6b, and
   `hasGenericPencilRealization_of_independent_pencilRow_target`.
 
+**Before transcription:** consider splitting `K-main.md` by step (`W4-reopen.md` *PI calls pending*,
+the structural chore, which records the design and its open convention question).
+
 **What can start before the Jackson–Jordán call:** L0, L1, L2's inequality, L4's combinatorics,
 and all of L5. L3's consumers can carry its equality as a hypothesis meanwhile. That uses the
 carried-hypothesis idiom, which is a sequencing device and not a citation (`DESIGN.md`

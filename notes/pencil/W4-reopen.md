@@ -86,8 +86,21 @@ The gating order is in `X0-formalization.md` §5.
   land in Lean.
 - *Deferred, not cancelled:* the adversarial census (`n = 9–14`, biased to 2-edge-cuts and large
   `def₂ − def₃`), now a falsification test of (MC-89).
-- *Structural chore:* split `K-main.md` by step before blueprint transcription. It costs repointing
-  the drivers' docstrings and `labels.md`, so do it in a deliberate commit.
+- *Structural chore (deferred 2026-09-25):* split `K-main.md` by step before blueprint transcription.
+  The design as scoped:
+  - `K-main.md` keeps the header, a file index, and Steps MC1–MC9.
+  - Each later step moves to `workbook/K-main-MCnn.md`, which the ledger's `workbook/*.md` glob
+    picks up.
+  - Each file opens with a `## §(K-main) — Step MCnn …` heading. The ledger keys sections on the
+    `§(…)` token (`section_key`), and `DIRECTION` matches only "direction XXX", so every claim keeps
+    seckey `§(K-main)` and `--delta` reports it RELOCATED.
+  - Existing "`K-main.md` Step MCnn" pointers resolve through the index, so no driver docstring
+    changes.
+  - Open: this breaks the workbook's "one section per file". The precedent is `bare-ext/`, one
+    section over many files, told apart by direction codes. Check `workbook/README.md`'s index,
+    `check-gapmap-cells.py` and `gapdiff.py` before splitting.
+  Deferred because of that open convention question, and because writer I was still reading the
+  file.
 
 ## The Lean-side picture, if the split/contract architecture stays (the fallback)
 
