@@ -40,7 +40,7 @@ written, second-read form. The job now is transcription and formalization, not r
 | the certificate leaves as hand proofs over every field | K-main Step MC20, (MC-134)–(MC-139) | second-read; characteristic-2/3/5 certificates (MC-168) |
 | the consumer map and the spike | `notes/Phase39-design.md` § *X₀ architecture recon (2026-09-25)*, spike verbatim at its end | re-elaborated by the coordinator: two `sorry`s |
 | **the `n = 2` spine, the replacement for Jackson–Jordán** | `notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)*: the diffs verbatim, the one new lemma, the witness statements, the reproduction recipe | **compiler-checked in scratch copies** (no `sorry`, `[Field K] [Infinite K]`); about 3–6 commits; Prospect G2's two obstructions do not hold on this path |
-| Jackson–Jordán beyond ℝ (the fallback) | K-main *Jackson–Jordán beyond ℝ*, (MC-33): the step table, repairs R0/R1, bypass R2 | `[INFORMAL]`; no longer needed on the route |
+| Jackson–Jordán beyond ℝ (the fallback) | K-main *Jackson–Jordán beyond ℝ*, (MC-33): the step table, repairs R0/R1, bypass R2; **a complete written field-general proof**, staged unlanded in `notes/w4-pending/JJ-field-general/` (driver `w4/jjbuild.py`) | one-writer proof, not second-read; no longer needed on the route |
 | W4-A | `notes/Phase39-design.md` § *W4 decomposition recon*, "W4-A — the non-simple bare producer" (KT Lemma 6.2 mirror; the motions-collapse rank brick) | sketch; bricks landed; about 2–3 commits |
 | drivers behind every figure | `notes/scripts/w4/README.md`, the *Step MCnn's drivers* bullets; commands in `notes/scripts/README.md`'s invocation table | the unguarded ones are listed in *Harness debt* (the 2026-09-25 item) |
 | Lean bricks to reuse | the recon's *Cost sketch*, by declaration name | — |
@@ -155,9 +155,10 @@ carried-hypothesis idiom, which is a sequencing device and not a citation (`DESI
 
 - **Recon H** (`n = 2` sizing) landed the same session: `notes/Phase39-design.md` § *`n = 2` sizing
   recon (2026-09-25)*.
-- **Writer I** ((MC-33)(i) as a full proof) was asked to wrap up early once route (a) made it
-  unnecessary for the route. Whatever it returned is landed as a fallback. If nothing landed, do
-  not re-dispatch it unless route (a) fails.
+- **Writer I** ((MC-33)(i) as a full proof) had finished before route (a) made it unnecessary. Its
+  complete write-up, (NEW-I1)–(NEW-I27), is staged verbatim in `notes/w4-pending/JJ-field-general/`,
+  with a landing procedure in its `README.md`. The driver is ported (`w4/jjbuild.py`, reproducing
+  75/75). It is a fallback; land it only if wanted.
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 

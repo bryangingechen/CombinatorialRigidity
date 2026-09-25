@@ -942,6 +942,9 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   non-2EC populations the others exclude — (MC-123)(⇐) on every connected simple graph on `≤ N1`
   vertices, (MC-129)/(MC-130)'s bookkeeping and a direct certificate on every non-2EC (H) graph on
   `≤ N2`, and `zrand.build`'s sampler without its `is_2ec` filter.
+- **The field-general Jackson–Jordán write-up's driver** (staged, unlanded: `notes/w4-pending/JJ-field-general/`):
+  `jjbuild.py (--run | --selftest) [--fields F]` — every construction of TR Thm 6.1's proof, run exactly
+  over GF(2¹⁶), GF(3¹⁰), GF(10 007) (reuses `jjchar.make_field`, `maincomp.def_k`).
 - **Step MC10's second-reading drivers** (§(K-main), (MC-169), (MC-170)): `mc10indep.py all` —
   independent exact re-checks of Steps MC1–MC6 and MC10 (stdlib only, no shared code); `bkwit.py` —
   the witness that (MC-27)'s literal bad set is wrong (imports `mc10indep`); `rdreplay.py N`,
