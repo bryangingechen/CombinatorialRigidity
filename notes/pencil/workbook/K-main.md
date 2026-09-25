@@ -79,12 +79,14 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   and its reduction is a theorem (MC-108)–(MC-110). Every ear cell closes except (MC-117): `k = 1`,
   `δ₂ = 3`, `δ ∈ {3, 4}`, where the chord criterion fails. Closing it would give a second proof of
   (MC-89), by the EAR route in 𝒮. The (MC-26) erratum is (MC-97).
-- **Step MC19, the generic motive** (not yet second-read). Feasibility means (F1) every hub has
+- **Step MC19, the generic motive** (second-read 2026-09-25; repaired in place, (MC-157), (MC-158) added). Feasibility means (F1) every hub has
   `≤ 2` hub neighbours and (F2) no triangle holds two hubs (MC-123). The hub-plane chart `Z(G)`
   carries every nondegenerate realization (MC-124). The generic motive reduces, with no
   hypothesis, to feasible graphs with no `def₂`-rigid subgraph (MC-130), where it is (MC-10)(a).
   With (MC-89): **every feasible simple connected graph of minimum degree `≥ 2` has the generic
-  pencil motive, modulo Jackson–Jordán, in characteristic 0 (MC-133).**
+  pencil motive, modulo Jackson–Jordán, in characteristic 0 (MC-133).** And every simple graph
+  satisfying (H), feasible or not, has `HasDistinctPencilRealization`, modulo Jackson–Jordán, in
+  characteristic 0 (MC-157).
 - **Step MC20** (not yet second-read): every computational certificate under (MC-89) has a hand proof
   over every infinite field (MC-134)–(MC-139), so (MC-89) rests on arguments and Jackson–Jordán
   alone (MC-141).
@@ -4622,7 +4624,15 @@ their generic values):
 #### Step MC19 — the generic motive: feasibility, the hub-plane chart, and the reduction to (MC-10)(a)
 
 *Worked 2026-09-24 by a read-only agent (W4-reopen P1, open direction 5, "outside `X₀`"; the third
-2026-09-24 session's Track E). **No second reader yet.** Drivers `w4/zcore.py` (shared core),
+2026-09-24 session's Track E). **Second-read 2026-09-25** by a fresh reader, who re-derived every
+claim and opened every Lean predicate's definition body (the readings match). No refutation. One
+real gap: (MC-130)'s proof sent cycles to (MC-128)(b), whose base is a ℚ-exact certificate, so the
+reduction was not hypothesis-free as stated; it is repaired in place (cycles `C_n`, `n ≥ 4`, are base
+graphs). The other repairs are precision and scope, each marked where it sits. The reader added
+(MC-157), `HasDistinctPencilRealization` at every graph satisfying (H) with no feasibility
+hypothesis, and (MC-158), the bridged populations the other drivers exclude (`w4/zbridged.py`).
+Two different 46s: (MC-125)'s 46 is the feasible non-A′ graphs of `exh8`; (MC-130)'s is the
+feasible `exh8` graphs with a `def₂`-rigid subgraph, the 33 A′ ones plus 13 non-A′. Drivers `w4/zcore.py` (shared core),
 `w4/zsurvey.py`, `w4/e3check.py`, `w4/zears.py`, `w4/zlemma.py`, `w4/zdirect.py`, `w4/zk2k.py`,
 `w4/zrand.py`, `w4/zstuck.py` (new). The Lean objects are read from their definition bodies in
 `Motive.lean`: `IsNondegPencilRealization`, `PencilNondegFeasible`, `HasGenericPencilRealization`,
@@ -4645,7 +4655,7 @@ their generic values):
   minimum degree `≥ 2` has the generic pencil motive, modulo Jackson–Jordán, in characteristic 0.
 
 > **(MC-133)** `[PROVED-MOD]` *((MC-33); the coordinator's combination of (MC-130) with (MC-89) and
-> (MC-14); rests on Step MC19, which has not been second-read)* Let `K` have characteristic 0 and let
+> (MC-14); Step MC19 second-read 2026-09-25, confirmed with repairs)* Let `K` have characteristic 0 and let
 > `G` be finite, simple and connected, with minimum degree `≥ 2`.
 > **(i)** `X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)` ((MC-89)). It gives a
 > rank-attaining pencil configuration with adjacent points distinct ((MC-2)): the rank and
@@ -4657,7 +4667,34 @@ their generic values):
 subgraph. There (F1) holds and no `def₂`-rigid subgraph contains two hubs of a common
 `closedHubNbhd`, so `X₀(G°)`'s generic point is nondegenerate ((MC-14), mod JJ). By (MC-89) it
 attains. Both are dense open conditions on the irreducible `X₀(G°)`, so one point has both, and
-(MC-124)(ii) applies (`X₀(G°) = Z(G°)` by (MC-125)(ii)). ∎
+(MC-124)(ii) applies (`X₀(G°) = Z(G°)` by (MC-125)(ii)). ∎ *(Second reading: the final appeal to
+(MC-124)(ii)/(MC-125)(ii) is unnecessary, since the `X₀` point is already a Lean witness.)*
+
+*Scope (second reading, 2026-09-25).* (ii) supplies `PencilPair`'s generic conjunct
+`G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G` only at `n = 3`, only at
+graphs satisfying (H), and only for `K` of characteristic 0. The Lean predicates carry no
+connectivity, minimum-degree or vertex-count condition, and the consumers (`Escape.lean`) take
+`[Infinite K]`. Beyond characteristic 0, each input is available modulo (MC-33)(i): (MC-130) is
+characteristic-free (after its cycle bullet's repair), (MC-89) holds via (MC-141), and (MC-14) holds
+via (MC-13)(c)'s own field note.
+
+> **(MC-157)** `[PROVED-MOD]` *((MC-33); from (MC-89); the second reader's, 2026-09-25; strengthens
+> (MC-133)(i))* Let `K` have characteristic 0, let `G` satisfy (H), and let `α`, `β` be finite. Then
+> **`HasDistinctPencilRealization K 3 G`**. Feasibility is not needed. This is `PencilPair`'s second
+> conjunct at the graphs satisfying (H).
+
+*Proof.*
+- Take a `K`-point `(q, z)` of `X₀(G)` at which the rank attains. It exists by (MC-89): the attaining
+  points are a dense open subset of `X₀`, and `K`-points are dense.
+- Put `point v := (x_v, y_v, z_v, 1)`, and let `normal v` be the normal of the plane `π_v ⊇ p(N[v])`,
+  which exists and is unique by (MC-1).
+- Put `supportExtensor e := extensor ![p_u, p_v]` for a fixed orientation of each link, and any
+  nonzero value off `E(G)`.
+- `HasPencilPanelRealization` holds: `p_u, p_v ∈ π_u ∩ π_v` for every edge; `p_v ∈ π_v`; points and
+  normals are nonzero; the extensor is nonzero because `q_u ≠ q_v`.
+- Adjacent points are independent, for the same reason.
+- The rank is `≥` the target at the chosen point, and `≤` it by the landed
+  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`. ∎
 
 **The hub-plane chart.**
 
@@ -4683,8 +4720,11 @@ independent, together with an arbitrary choice of non-hub normals.
 > Then `PencilNondegFeasible K G` **iff (F1)** every hub has at most 2 hub neighbours (equivalently,
 > every `|closedHubNbhd v| ≤ 3`) **and (F2)** no triangle contains two hubs.
 
-*Proof.* (⇒) (F1) is `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, and (F2) is
-`not_pencilNondegFeasible_of_triangle_two_hubs`. Both are landed Lean theorems.
+*Proof.* (⇒) (F1) is `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`. It is stated
+under `[Finite α]`; for a finite `G` in a larger `α` the same argument runs on the finite set
+`closedHubNbhd v ⊆ V(G)`. (F2) is `not_pencilNondegFeasible_of_triangle_two_hubs`: any two vertices
+of a triangle are adjacent, so its hubs `y`, `z` can be any two hubs of the triangle. Both are landed
+Lean theorems, and neither has a hypothesis on `K`. *(Precision repair, second reading 2026-09-25.)*
 
 (⇐) Take hub normals on the moment curve, `n_h = (1, t_h, t_h², t_h³)`, with distinct `t_h`, so that
 any four of them are independent. This gives three facts:
@@ -4710,6 +4750,9 @@ holds somewhere.
     `dim F_v ≥ 3`.
   - If `C(v) = {a, b}`, then `a ≁ b` by (F2). Inclusion would force `F_v = span(p_a, p_b)`, hence
     `p_a ∈ n_b^⊥`. By (g3) we may take `p_a ∉ n_b^⊥`, since `b ∉ C(a)`.
+- **Conjunct 4 at a vertex of degree `≤ 1`.** Here `closedNbhd v` is `{v}` or `{v, u}`, so the
+  conjunct is `p_v ≠ 0` or conjunct 2 at `vu`. (The claim is stated without (H). *Added at the
+  second reading, 2026-09-25.*)
 - **Conjunct 3.** Holds by the choice of normals.
 
 Complete with non-hub normals as in the Observation. The Lean-level conjunct 1 needs a nonzero
@@ -4732,8 +4775,11 @@ extensor at every `e : β`; take `p_u ∧ p_v` on the links and anything nonzero
 > realizations, with non-hub normals forgotten, form a nonempty open dense subset of `Y′_3(G)`.
 > **(ii)** `HasGenericPencilRealization K 3 G` holds **iff** some point of `Z(G)` with adjacent
 > points independent has rank `≥ 6(|V| − 1) − def₃(G)`. In particular it suffices that one point of
-> `Y′_3(G)`, or a limit of such points along a polynomial curve (after rescaling each point by a
-> power of `t`), attains; conjuncts 3 and 4 need not hold there.
+> `Y′_3(G)` with adjacent points independent attains. It also suffices that a limit of points of
+> `Y′_3(G)` along a polynomial curve (after rescaling each point by a power of `t`) has adjacent
+> points independent and attains. Conjunct 4 need not hold at the point, and conjunct 3 need not hold
+> at the limit. *(Repaired at the second reading, 2026-09-25: the first wording dropped adjacent
+> independence and said conjunct 3 "need not hold" on `Y′_3(G)`, where it holds by definition.)*
 
 *Proof.*
 - (i), the map `Ψ`. For `C(v) = {h₁, …, h_s}`, put `p_v := c_v · ⋆(n_{h₁} ∧ … ∧ n_{h_s} ∧ y_{v,1} ∧ … ∧ y_{v,3−s})`,
@@ -4748,13 +4794,21 @@ extensor at every `e : β`; take `p_u ∧ p_v` on the links and anything nonzero
   So `Ψ(Ω) = Y′_3(G)` for the nonempty open set `Ω = {n ∈ O′}`. Nondegeneracy is a finite
   conjunction of nonvanishing minors, and it is nonempty by (MC-123).
 - (ii) ⇒: a nondegenerate attaining realization is such a point.
-- (ii) ⇐: let `M` be a target-size minor of the rigidity matrix that is nonzero at the given
-  point. The rigidity matrix is polynomial in the points, since the hinge is `p_u ∧ p_v`. So `M ∘ Ψ`
-  is not identically zero; otherwise `M` would vanish on `Ψ(K^N) ⊇ Y′_3`, hence on its closure.
+- (ii) ⇐: the Lean rows (`hingeRowBlock e`, the dual annihilator of `span{C_e}`) have no basis
+  polynomial in `C_e`. So use (MC-3)'s augmented motion matrix `A` instead. Its entries are linear in
+  the `C_e = p_u ∧ p_v`, hence polynomial in the points, and `rank A = |E| + rank R` wherever every
+  `C_e ≠ 0`. At the given point adjacent points are independent, so every `C_e ≠ 0`. Let `M` be an
+  `(|E| + target)`-minor of `A` that is nonzero there. Then `M ∘ Ψ` is not identically zero;
+  otherwise `M` would vanish on `Ψ(K^N) ⊇ Y′_3`, hence on its closure. *(Repaired at the second
+  reading, 2026-09-25: the first wording took a minor of "the rigidity matrix", which the Lean rows
+  do not make polynomial.)*
 - Let `D` be the product of the finitely many minors certifying conjuncts 2–4 and `p_v ≠ 0` at
   (MC-123)'s witness. Then `D ∘ Ψ ≢ 0`. Since `K` is infinite, some `θ` has `(M D)(Ψ(θ)) ≠ 0`. There
   the realization is nondegenerate, after completing the non-hub normals.
-- Its rank is `≥` the target, and `≤` it at every realization (the partition bound). A curve
+- There every `C_e ≠ 0` (conjunct 2), so its rank `rank A − |E|` is `≥` the target. It is `≤` the
+  target at every realization by the partition bound, landed as
+  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` (under `[Finite α] [Finite β]`,
+  `bodyBarDim 3 = screwDim 2`, `V(G)` nonempty and nonzero hinges at links). A curve
   `p(t)` in `Y′_3` for `t ≠ 0` has its limit in the closure, and rescaling `p_v` preserves the
   incidences and the lines. ∎
 
@@ -4764,7 +4818,10 @@ At `K_{2,3}` it is (MC-9)'s collinear jump stratum.
 > **(MC-125)** `[PROVED]` *(dimension; where `X₀` and `Z` coincide)* Under (H) and (F1), (F2):
 > **(i)** `dim Z(G) = 3|Hub| + Σ_v (3 − |C(v)|) = 3|V| − Σ_{h ∈ Hub}(deg h − 2) = 5|V| − 2|E|`, the
 > expected dimension. `X₀` has `dim X₀ = 2|V| + ℓ₀ ≥ 2|V| + 3 + def₂ ≥ 5|V| − 2|E|`, where the last
-> step is the all-singletons partition.
+> step is the all-singletons partition. *(Second reading, 2026-09-25: dimensions here are projective.
+> `Y′_3` and `Z` are read in `(P³)^{Hub} × (P³)^V`, each normal and each point up to scale, which is
+> how the count `3|Hub| + Σ_v (3 − |C(v)|)` is taken. `X₀` embeds there through
+> `p_v = (x_v, y_v, z_v, 1)` and its hub planes, with the same dimension `2|V| + ℓ₀`.)*
 > **(ii)** If `X₀`'s generic point is nondegenerate (`G` is not A′), then **`X₀ = Z(G)`**. In
 > particular `ℓ₀ = 3 + def₂(G)`, which is Jackson–Jordán's equality at `G`, obtained here from
 > dimensions alone, and `def₂(G) = 3|V| − 3 − 2|E|`. Moreover, **the hub planes at `X₀`'s generic
@@ -4796,7 +4853,11 @@ Put `Hub⁺ := Hub(G) ∩ V(G′)` and `C⁺(v) := Hub⁺ ∩ N_{G′}[v]`.
   the plane of the 3 points of `N_{G′}[a]`.
 - The **placement** space is `p_{x₁} ∈ π_a`, `p_{x_k} ∈ π_b`, the middle points free; for `k = 1`,
   `p_x ∈ π_a ∩ π_b`.
-- `Y := closure{(C′, placement) : C′ ∈ Y′_3(G′)}`.
+- `Y := closure{(C′, placement) : C′ ∈ Y′_3(G′) satisfying (MC-126)(i)}`. By (i) this is a closure
+  over a nonempty open subset of `Y′_3(G′)`. There `π_a ≠ π_b`, so every placement space has the
+  dimension counted in (iv). (Over all of `Y′_3(G′)`, the `k = 1` placement space jumps to a plane
+  where `π_a = π_b`, and (iii) does not cover those points.) *(Repaired at the second reading,
+  2026-09-25.)*
 
 > **(MC-126)** `[PROVED]` *(the ear transfer)* In this setting:
 > **(i)** *(formal hubs)* At a generic point of `Y′_3(G′)`, the planes `π_h` for `h ∈ Hub⁺`
@@ -4850,8 +4911,12 @@ which is irreducible, so they hold simultaneously. `n_a ∦ n_b` holds on the mo
 placement dimension: `2 + 2 + 3(k − 2)` for `k ≥ 2`, and `1` for `k = 1`. Then use (iii) and
 irreducibility.
 
-(v) Combine (MC-18)(b)'s proof with (iv): both components are `{(z′, q_x) : (h_a − h_b)(q_x) = 0}`
-in the case where the form factors. ∎
+(v) Over `X₀(G′) = Z(G′)`, the pairs `(C′, placement)` are exactly (MC-18)(b)'s incidence
+`{(z′, q_x) : (h_a − h_b)(q_x) = 0}`, because `p_x ∈ π_a ∩ π_b` reads `z_x = h_a(q_x) = h_b(q_x)`. If
+`dim U ≥ 2`, the incidence is irreducible and equals `X₀(G)`. If `dim U = 1`, it factors, and `Y` is
+the component `{φ₀ = 0} × L_{G′}`: its generic point lies over a generic `z′`, where `P_a ≠ P_b`.
+Then use (iv). ∎ *(Rewritten at the second reading, 2026-09-25; the first sentence was garbled, its
+content unchanged.)*
 
 *Consequence* `[INFORMAL]` *(gap: not re-derived lemma by lemma)*. By (iv), Step MC10/MC13's ear-step
 lemmas (MC-16)–(MC-26) and (MC-43)–(MC-47), (MC-54), (MC-44) and (MC-49) hold with `X₀` replaced
@@ -4894,8 +4959,12 @@ is in `Y′_3(G)` by (MC-126)(iii).
 independent, so `sL₁ + tL₂ + uL₃ = 0` forces `s = t = u = 0` and `dim M_G = dim M_{G′}`. Also
 `def₃(G) = f`. Membership in `Y′_3(G)` is (MC-126)(iii), with `a` possibly a new hub.
 
-(c) This is (MC-53)'s one-bridge count. Every bridge hinge adds exactly 1 to `dim M` and to
-`def₃`, and the triangle adds 0 as in (b). So `G` attains iff `G₂` does. Membership:
+(c) This is (MC-53)(i)–(ii), with `G₁` the triangle `a y₁ y₂` (which satisfies (H)), `G₂`, and the
+path `a − x₁ − ⋯ − x_j − b`: `def₃` and the rank each gain `j + 1` over `G₁ ⊔ G₂`, and `C₃` attains at
+three independent points. Every bridge hinge adds exactly 1 to `dim M` and to `def₃`, and the
+triangle adds 0 as in (b). So `G` attains iff `G₂` does. If `b` is a new hub of `G`
+(`deg_{G₂} b = 2`), (MC-126)(i)'s case analysis at `b` makes `N_{G₂}[b]` non-collinear at the generic
+point of `Y′_3(G₂)`. *(Precision added at the second reading, 2026-09-25.)* Membership:
 - place the chain as an ear placement at `b` (formal hub if new);
 - `π_a` is generic, through `p_b` when `j = 0`;
 - conjunct 3 at `a` and `b` holds generically, since at most 3 generic planes pass through a
@@ -4903,16 +4972,20 @@ independent, so `sL₁ + tL₂ + uL₃ = 0` forces `s = t = u = 0` and `dim M_G 
 
 > **(MC-128)** `[PROVED]` *(class theorems, no hypothesis)* **(a)** Every `K_{2,k}`, `k ≥ 3`, has the
 > generic pencil motive over every infinite field. **(b)** So does every feasible graph that reduces
-> to a cycle by steps (MC-127)(a)–(c).
+> to a cycle by steps (MC-127)(a)–(c): in characteristic 0 by (MC-19)(a)'s certificates, and over
+> every infinite field by (MC-134)(a) (Step MC20). *(Scope made explicit at the second reading,
+> 2026-09-25.)*
 
 *Proof.* (a) `K_{2,3} = C₄ + x` at the opposite, new-hub pair `a`, `b`. `C₄` is `def₃`-rigid, so
 `δ = 0`. `Y′_3(C₄)` is every configuration. At four points in general position the hinges
 `e₀₁, e₁₂, e₂₃, e₀₃` are independent, so `C₄` is rigid and `ρ = 0` literally. Then
 `K_{2,k} = K_{2,k−1} + x`, with `K_{2,k−1}` rigid and `δ = 0`. Apply (MC-127)(a) at each step.
 
-(b) Induction, with the base `Y′_3(C_n)` = every configuration. It attains by (MC-19)(a)'s
-certificates, which are exact over ℚ. For `K_{2,k}` those certificates are not needed, and the
-argument is characteristic-free. ∎
+(b) Induction, with the base `Y′_3(C_n)` = every configuration. It attains by (MC-19)(a). Its
+certificates are exact over ℚ, which covers characteristic 0 and every prime not dividing their
+minors; (MC-134)(a) is the hand proof over every infinite field. `C₃` attains over every field: its
+three sides are independent at three independent points. For `K_{2,k}` those certificates are not
+needed, and the argument is characteristic-free. ∎
 
 `[CONSTRUCTED]` *(`zk2k.py`)* `K_{2,3..10}`: a nondegenerate point at the target, 24/24, …, 66/66.
 
@@ -4950,7 +5023,8 @@ argument is characteristic-free. ∎
 > feasible, satisfying (H). **`HasGenericPencilRealization K 3 G` follows from the same statement at
 > every feasible simple graph `G°` satisfying (H), with `|V(G°)| ≤ |V(G)|`, that has no
 > `def₂`-rigid subgraph on ≥ 2 vertices.** At such a `G°`, X₀'s generic point is nondegenerate
-> ((MC-14), `[PROVED-MOD]` *((MC-33))*). So there the generic motive is exactly (MC-10)(a).
+> ((MC-14); its own tag is `[INFORMAL]`, the gap being Jackson–Jordán's pin-collinear theorem, (MC-33);
+> characteristic 0). So there the generic motive is exactly (MC-10)(a).
 > **Corollary.** Every feasible simple graph satisfying (H) has the generic motive, **modulo
 > (MC-10)(a) on the feasible graphs without a `def₂`-rigid subgraph** (supplied by (MC-89); see
 > (MC-133)). In characteristic 0 this
@@ -4958,7 +5032,15 @@ argument is characteristic-free. ∎
 > inside that base class ((MC-15)(i)).
 
 *Proof.* Strong induction on `|V|`.
-- Cycles are handled by (MC-128)(b). `C₃` is rigid and handled directly.
+- A cycle `C_n` with `n ≥ 4` is a base graph. It has no `def₂`-rigid subgraph on `≥ 2` vertices: by
+  all-singletons partitions, a path on `j ≥ 2` vertices has `def₂ ≥ j − 1`, and `C_n` itself has
+  `def₂ ≥ n − 3`; a disconnected subgraph has `def₂ ≥ 3`. So no certificate is used, and the
+  reduction stays characteristic-free. `C₃` is `def₂`-rigid and is handled directly, over every
+  field. At three independent points its hinges `p₁ ∧ p₂`, `p₂ ∧ p₃`, `p₃ ∧ p₁` are independent, so
+  `dim M = 6` and the rank is `12 = 6(3 − 1) − def₃(C₃)`. The point is nondegenerate: there are no
+  hubs, and conjunct 4 is the independence of the three points. *(Repaired at the second reading,
+  2026-09-25: this bullet first sent cycles to (MC-128)(b), whose base is (MC-19)(a)'s ℚ-exact
+  certificates, so the reduction was not hypothesis-free as stated.)*
 - If `G` has a `def₂`-rigid subgraph, (MC-129) gives either a 1-ear at `δ = 0` (MC-127)(a), or a pendant
   triangle (MC-127)(b)/(c).
 - Each step consumes one feasible simple graph satisfying (H) with fewer vertices:
@@ -4977,15 +5059,39 @@ graph in two populations:
 - 555 zstuck-shaped random graphs on ≤ 13 vertices (sampler support: `zstuck.build` only; the count
   includes repeats), 176 with a `def₂`-rigid subgraph.
 
-No lollipop step occurred.
+No lollipop step occurred. Both populations are 2EC, so no bridge, and hence no lollipop, can
+occur. For the bridged populations, see (MC-158).
+
+> **(MC-158)** `[MEASURED]` *(`zbridged.py`; the second reading, 2026-09-25)* The bridged
+> populations, which every other Step MC19 driver excludes:
+> - *Exhaustive:* every connected simple non-2EC graph with minimum degree `≥ 2` on `≤ 8` vertices.
+>   There are 45; 9 are feasible.
+> - *Sampled:* `zrand.build`'s sampler without its `is_2ec` filter. Seeds 1/2/3, 3 000 draws each,
+>   `≤ 14` vertices: 151 + 114 + 133 distinct feasible non-2EC samples satisfying (H). Support: that
+>   sampler only.
+> - *Results:* (MC-129) and (MC-130)'s bookkeeping hold at every graph (`zlemma.reduce_to_base`'s
+>   asserts). That includes 8 + 124 + 92 + 103 lollipop steps (MC-127)(c) and 1 + 4 + 1 + 3 steps
+>   (MC-127)(a). A nondegenerate hub-plane-chart draw at the target rank is exhibited at 9/9 and at
+>   151/151, 114/114, 133/133 (exact certificates over ℚ). The (MC-125)(ii) corollary holds at 8/8
+>   feasible non-A′ graphs.
+> - *(MC-123)(⇐):* at all 376 graphs satisfying (F1) and (F2) among the 12 112 connected simple
+>   graphs on 2..8 vertices (degree-1 vertices and trees included), a draw satisfies all four
+>   conjuncts with explicit normals. Among the infeasible graphs, 0 draws passed.
+>
+> `PYTHONHASHSEED=0 python3 notes/scripts/w4/zbridged.py --n1 8 --n2 8 --p3 3000 --seed 1` (~12 s);
+> `--n1 2 --n2 3 --p3 3000 --seed S`, `S = 2, 3` (~2 s each, Part 3 only).
 
 > **(MC-131)** `[CONSTRUCTED]` *(exhibited certificates)*
 > - `zsurvey.py --exh 8`: on `exh8`, each of the **79** graphs satisfying (F1) and (F2) has a
->   nondegenerate hub-plane-chart point at the target. That is 61 `feas` + 18 `middle`, **33**
+>   nondegenerate hub-plane-chart point at the target. That is 61 `feas` (`feas` = 60 triangle-free
+>   graphs + `C₃`) + 18 `middle`, **33**
 >   A′ (the census's 28, plus 5 from the middle zone).
 > - `zdirect.py`: 176/176 A′ graphs of the zstuck shape, with repeats.
 > - `zears.py`: the Z-ear steps with closed cells reduce all 33 `exh8` A′ graphs to non-A′
->   graphs. The rank at each certified `Y`-draw equals the target at 34/34 placements.
+>   graphs. The rank at each certified `Y`-draw equals the target at 34/34 placements. The `k = 2`
+>   and `k = 3` first steps (6 of 33) are the Z-forms of (MC-46) and (MC-45). They rest on the
+>   `[INFORMAL]` *Consequence* paragraph after (MC-126), so "Z-ear covered" is a reach statement. The
+>   34/34 ranks (and `zsurvey`'s 79/79) are the certificates.
 >
 > Each certificate is exact over ℚ, since mod-`2⁶¹ − 1` rank equal to the target certifies. These
 > are not needed for (MC-130); they check it.
@@ -5006,8 +5112,8 @@ No lollipop step occurred.
   That would be an error in the motion count, which `zears.py` cross-checks.
 - A simple graph satisfying (F1) and (F2) where `zdraw` cannot find a nondegenerate point in many
   draws. That would put (MC-123)'s genericity argument in doubt.
-- The upper bound "rank ≤ target at every realization" failing in the Lean `rigidityRows` model.
-  (MC-124) cites it.
+- *(Closed at the second reading.)* The upper bound "rank ≤ target at every realization" that
+  (MC-124) cites is the landed `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`.
 
 **Drivers** (`notes/scripts/w4/`, run from the repository root; `PYTHONHASHSEED=0`, seeds `20260924` / `1`; exact ℚ, ranks mod
 `2⁶¹ − 1` only as certificates; `zcore.py` is the shared core):

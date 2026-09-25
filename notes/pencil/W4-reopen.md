@@ -22,7 +22,8 @@ contraction and cut steps on `X₀`.
   only `[INFORMAL]`, (MC-33)(i)). Step MC16's argument is second-read. Step MC20 claims to replace
   every exact-over-ℚ certificate it consumed by a hand proof over every infinite field.
 - **The generic motive (MC-133).** Every *feasible* such graph has `HasGenericPencilRealization K 3 G`,
-  mod Jackson–Jordán, in characteristic 0 (Step MC19).
+  mod Jackson–Jordán, in characteristic 0 (Step MC19, second-read 2026-09-25). And every such graph,
+  feasible or not, has `HasDistinctPencilRealization K 3 G` (MC-157), with the same caveats.
 - **A second proof** of (MC-89)'s in-𝒮 half, by the ear route alone (MC-148), Step MC21. The last ear
   cell narrows to "Case II-cyclic" (MC-154), which coverage does not need.
 
@@ -42,19 +43,18 @@ can lean on more than it cites.
 | MC15, partition counts | (MC-67)–(MC-71) | (MC-68)–(MC-71) second-read; (MC-62)–(MC-67): **reader D in flight** |
 | MC16, the coverage theorem | (MC-80), (MC-87), (MC-89) | second-read, by two readers |
 | MC17–MC18, the ear cells | (MC-97), (MC-115) | not second-read |
-| MC19, the generic motive | — | **reader A in flight** |
+| MC19, the generic motive | — | second-read 2026-09-25; (MC-130)'s cycle citation repaired; (MC-157), (MC-158) added |
 | MC20, the certificate leaves | (MC-134), (MC-139), (MC-141) | **reader B in flight** |
 | MC21, EAR covers 𝒮 | — | **reader C in flight** (with Step MC17's (MC-105)) |
 
 ## Next, in order
 
-1. **Land the four second readings in flight** (dispatched 2026-09-25, read-only, reports in the
-   session's scratch): A on Step MC19 ((MC-123), (MC-129), (MC-130), (MC-133) first, plus a check of
-   the Lean predicates' definitions); B on Step MC20 (and whether its certificate list is complete);
-   C on Step MC21 with (MC-105); D on Step MC15's (MC-62)–(MC-67).
+1. **Land the second readings in flight** (dispatched 2026-09-25, read-only, reports in the
+   session's scratch): B on Step MC20 (and whether its certificate list is complete); C on Step MC21
+   with (MC-105); D on Step MC15's (MC-62)–(MC-67). A, on Step MC19, has landed.
 2. **Second wave, one dispatch each:** Steps MC17–MC18; and the path claims never independently
    re-derived, Step MC10's ear step with Steps MC1–MC6's (MC-4)–(MC-6).
-3. **An architecture recon** (read-only, for the PI's call below), best run after reader A lands.
+3. **An architecture recon** (read-only, for the PI's call below; dispatched 2026-09-25, in flight).
    Map (MC-89) and (MC-133) onto the Lean consumer, `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
    and `PencilPair`'s three conjuncts, working from the Lean rather than from prose. Which carried
    hypotheses would they discharge (`hK`, parts of `hcontract`, `hbareSplit`?) and which would stay?

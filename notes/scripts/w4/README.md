@@ -938,6 +938,10 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   certificates): `zcore.py` (the hub-plane chart `Z(G)`: draws, nondegeneracy, rank; shared core);
   `zsurvey.py --exh N [--list]`, `e3check.py --exh N`, `zears.py --exh N`, `zlemma.py --exh N --stuck D`,
   `zdirect.py --draws D`, `zk2k.py`, `zrand.py --seed S`, `zstuck.py --seed S`, all importing `zcore`.
+  `zbridged.py [--n1 N1] [--n2 N2] [--p3 D --seed S]` (the 2026-09-25 second reading, (MC-158)): the
+  non-2EC populations the others exclude — (MC-123)(⇐) on every connected simple graph on `≤ N1`
+  vertices, (MC-129)/(MC-130)'s bookkeeping and a direct certificate on every non-2EC (H) graph on
+  `≤ N2`, and `zrand.build`'s sampler without its `is_2ec` filter.
 - **Step MC20's drivers** (§(K-main), (MC-134)–(MC-141); exact, deterministic): `certhand.py` asserts the
   hand proofs of (MC-89)'s former certificate leaves (±1 minors, transversal and collision lemmas,
   (MC-46)'s strata); `certguard.py (--lamcap | --replay | --thetas S)` is the guarded re-run of
