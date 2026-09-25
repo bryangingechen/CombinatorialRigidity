@@ -32,7 +32,7 @@ upper semicontinuous: a draw OVER-estimates the generic a' (apredraw.py
 re-measures at several draws; a draw with a' = 0 certifies generic a' = 0
 because a' >= 0).  Where the draw has a' = 0, "dim(rho cap n^perp) = 3" is
 an open condition on the open set r(z0) = delta, so it certifies the chord
-criterion (MC-112) at that instance.  "case B" (pi_a = pi_b at the draw) is a
+criterion (MC-110) at that instance.  "case B" (pi_a = pi_b at the draw) is a
 closed condition: a draw with pi_a != pi_b certifies case A.
 Modes: --thetas S | --habitats [--stride] | --subdiv BASE | --exh N [--nmin]
 | --random K (random sparse G', see randmain).

@@ -131,13 +131,10 @@ carried-hypothesis idiom, which is a sequencing device and not a citation (`DESI
 
 ## 6. Dispatches in flight at the end of the 2026-09-25 session
 
-*(Reader F, Steps MC1–MC6 and MC10, landed the same session: nothing on (MC-89)'s path refuted.)*
+*(Readers E and F, Steps MC17–MC18 and MC1–MC6/MC10, landed the same session: nothing on (MC-89)'s path refuted.)*
 
 If the session ended before they landed, their results are lost. Re-dispatch from these one-line
 briefs with the appendix's reusable brief.
-- **Reader E** — Steps MC17–MC18, excluding (MC-85), (MC-90), (MC-91)(a), (c), (MC-92)(iii),
-  (MC-94), (MC-95)(ii), (iii), (MC-105), which were already re-read. (MC-97) and (MC-115) matter
-  most, since they are on (MC-89)'s path.
 - **Recon H** — sizing the KT spine at `n = 2`. Which `6 ≤ bodyBarDim n` sites are essential; KT
   Lemma 4.6 and Case III (Lemma 6.13, p. 686's remark) at `d = 2`; `ChainData`'s real floor; the
   wrappers; a commit count against option (b).

@@ -947,6 +947,11 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   the witness that (MC-27)'s literal bad set is wrong (imports `mc10indep`); `rdreplay.py N`,
   `dUreplay.py N` — replays of `earstep.py --rdelta N`'s own stream: `q ∈ U` at every accepted
   draw, and the drawn `dim U` equal to (MC-62)'s bound.
+- **Steps MC17–MC18's second-reading drivers** (§(K-main), (MC-171)): `capcheck.py` — the guarded
+  ear-span intersections per orbit and `k`, independent of `earstep`/`lamguard`; `nbarcheck.py` —
+  the `W̄₄` limit formula of (MC-171), exact at 20 instances; `iffwit.py` — the `K_{2,3}` witness
+  against (MC-111)(d)'s old wording; `replay_odd.py` — `--lamcap`'s own draws, showing that
+  `lamcap_recount.py`'s hinge filter keeps two span-deficient draws. All stdlib and exact.
 - **Step MC15's second-reading driver** (§(K-main), (MC-161); stdlib only, exact, string seeds, no
   shared code): `mc15check.py (--exh N | --allgraphs N | --mc66 N | --blowup S | --tight n S |
   --mc67 N M)` — independent checks of (MC-62)–(MC-67).

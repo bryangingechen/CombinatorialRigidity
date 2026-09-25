@@ -48,16 +48,16 @@ can lean on more than it cites.
 | MC14, the reach | (MC-54), (MC-59) | second-read |
 | MC15, partition counts | (MC-67)–(MC-71) | second-read in full (2026-09-25 for (MC-62)–(MC-67): no gap; one missing merge step supplied) |
 | MC16, the coverage theorem | (MC-80), (MC-87), (MC-89) | second-read, by two readers |
-| MC17–MC18, the ear cells | (MC-97), (MC-115) | (MC-105) and its supports second-read 2026-09-25; the rest: **reader E in flight** |
+| MC17–MC18, the ear cells | (MC-97), (MC-115) | second-read 2026-09-25; nothing refuted; (MC-89) never used a false value; (MC-171) added |
 | MC19, the generic motive | — | second-read 2026-09-25; (MC-130)'s cycle citation repaired; (MC-157), (MC-158) added |
 | MC20, the certificate leaves | (MC-134), (MC-139), (MC-141) | second-read 2026-09-25; the argument leaves audited for characteristic (MC-166); the certificate list is complete |
 | MC21, EAR covers 𝒮 | — | second-read 2026-09-25; accounting repaired (a second proof inside 𝒮 only); (MC-162)–(MC-165) added |
 
 ## Next, in order
 
-1. **Land reader E** (Steps MC17–MC18, excluding (MC-105)): its report has come back, but the full text is still owed. Readers A, B, C, D and F
-   have landed. Also land recon H (`n = 2` sizing) and writer I (Jackson–Jordán over any field)
-   when they return (`X0-formalization.md` §6).
+1. **All second readings have landed** (readers A–F, 2026-09-25): every claim on (MC-89)'s path is
+   independently re-derived at least once. Still to land: recon H (`n = 2` sizing) and writer I
+   (Jackson–Jordán over any field), when they return (`X0-formalization.md` §6).
 2. **Then open the formalization from `X0-formalization.md`**, the planning note. It holds the
    target, the index of everything already done, the proposed blueprint layers, the risk points,
    the open calls in gating order, and one-line briefs for re-dispatching anything still in flight.

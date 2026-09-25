@@ -3630,8 +3630,8 @@ satisfies both implications. The `(δ₂, δ)` histogram:
 `{(0,0): 15390, (1,0): 526, (1,1): 2759, (2,0): 104, (2,1): 175, (2,2): 639, (3,0): 6, (3,1): 26,
 (3,2): 38, (3,3): 141, (3,4): 35, (3,5): 6, (3,6): 1}`
 
-It also suggests `δ₂ ≥ min(δ, 3)` in general (`δ₂ = 2 ⟹ δ ≤ 2`). That is `[CONJECTURED]`, not
-needed, and not attempted.
+It also suggests `δ₂ ≥ min(δ, 3)` in general (`δ₂ = 2 ⟹ δ ≤ 2`). It is proved by (MC-91)(a),
+Step MC17: `δ₂ ≤ 2 ⟹ δ ≤ δ₂`, and `δ₂ = 3` is trivial.
 
 > **(MC-89)** `[PROVED-MOD]` *((MC-33); the coverage theorem)* **Every graph satisfying (H) is
 > covered by the landed steps together with (MC-71).** Hence (MC-10)(a) holds: `X₀(G)`'s generic
@@ -3883,8 +3883,9 @@ were re-run at landing and reproduce.
 the lemma "`δ₂ = 1 ⟹ δ ≤ 1`" and then refocused on the cell (a′). The coordinator checked (MC-90),
 (MC-91)(a), (MC-94) and (MC-97) at the level of the written proofs. **Second-read 2026-09-25 for
 (MC-105) only** (by Step MC21's reader): (MC-85), (MC-90), (MC-91)(a), (c), (MC-92)(iii), (MC-94),
-(MC-95)(ii), (iii) and (MC-105) were re-derived and confirmed. The rest of the step has a second
-reader in flight. None of
+(MC-95)(ii), (iii) and (MC-105) were re-derived and confirmed. The rest of the step, with Step MC18,
+was second-read the same day by another reader: nothing refuted, and the repairs are to hypotheses,
+tags and wording, each marked. None of
 it is on (MC-89)'s critical path. It closes ear cells that the coverage theorem routes around, and so
 feeds the EAR-only route of Step MC18. Drivers `w4/deltapairs.py`, `w4/splitcells.py`,
 `w4/splitdu.py`, `w4/lamguard.py`, `w4/cellwit.py`, `w4/aprime.py` (new).*
@@ -4105,7 +4106,8 @@ Every placement listed has `λ = 3`, asserted exactly by `lamguard.py --hand`. �
 fall short.
 
 > **(MC-96)** *(the `k = 1`, `a ∼ b` cell, and whether the structural half needs these cells)*
-> **(i)** `[PROVED]` At `k = 1` with `a ∼ b` and `dim U = 1` (orbit (iii)), the ear route has no entry.
+> **(i)** `[PROVED]` *(the `U = 0`, `δ = 1` exclusion is modulo (MC-33), JJ at `G′ + x = G`; second
+> reading, 2026-09-25)* At `k = 1` with `a ∼ b` and `dim U = 1` (orbit (iii)), the ear route has no entry.
 > Restriction is not dominant ((MC-18)(b)), `λ = 1` ((MC-19)(b)), and the only smaller gadget would be
 > `G′ + x = G`. At `U = 0` (orbit (iv)) and `δ = 0`, (MC-54)'s proof goes through verbatim: dominance
 > holds because `U = 0`, and `λ = 2`. `U = 0` with `δ = 1` is excluded modulo JJ at `G′ + x`, as in (MC-95)(iii).
@@ -4146,8 +4148,15 @@ rejected and counted. Apart from (ii) at `k = 1`, every cell's intersection is `
 recorded ones: (iii) at `k = 1` (`⟨n⟩`) and (iv) at `k = 2` (`Λ²π`). So (MC-25) (`k = 4`, every orbit), (MC-45) (`k = 3` at `r = 1`) and
 (MC-46)'s `B₂(1) = ∅` stand.
 
-*Downstream.* The orbit-(ii), `k = 1` cell is used by no landed claim: grep shows (MC-26) cited only at
-`k ≥ 2` and at the orbit-(iv) remark.
+*Downstream.* The orbit-(ii), `k = 1` cell is used by no landed claim. At `k = 1`, (MC-26)'s `r = 1`
+sentence is cited only by (MC-100), in orbit (i), where it is correct. The only `k = 1` leaves of
+(MC-89) are (MC-54) at `δ = 0` (`r = 0`) and SPLITOFF (MC-31), which uses no `(P₁)`. Of the
+span-deficient draws, the one at (ii) `k = 3` (draw 8: `λ = 3`, every hinge nonzero) **is** on
+(MC-89)'s path, through (MC-45) at `r = 1`. There the as-run `--lamcap` certificate was invalid,
+though its value `0` is right. The cell is certified by `lamguard.py`'s guarded run and proved by
+hand in (MC-135)/(MC-137)(b). The (ii) `k = 2` draw sits under (MC-85) and (MC-88)'s corollary only,
+now covered by (MC-92). The (iv) `k = 1` draw sits under no landed claim. *(Rewritten at the second
+reading, 2026-09-25, `replay_odd.py`.)*
 
 *Suggested fix.* Add a per-draw `λ` guard to `--lamcap`, and add orbit (ii) at `k = 1` to (MC-26)'s
 exceptions.
@@ -4156,7 +4165,9 @@ exceptions.
 
 Cell (c) is `k = 1`, `a ≁ b`, `dim U ≥ 2`, `1 ≤ δ ≤ 4`.
 
-> **(MC-98)** `[PROVED]` *(the pairs in cell (c))* Modulo (MC-62), `dim U ≥ 2` is `δ₂ ≥ 2`. By (MC-91), the
+> **(MC-98)** `[PROVED]` *(the pairs in cell (c); the pair list is combinatorial, while "`dim U ≥ 2` is
+> `δ₂ ≥ 2`" is modulo (MC-33): JJ at `G′` for `⟹` ((MC-62)'s `≤` half) and at `G′ + ab` for `⟸`
+> ((MC-48)(ii)'s argument); second reading, 2026-09-25)* Modulo (MC-62), `dim U ≥ 2` is `δ₂ ≥ 2`. By (MC-91), the
 > cell holds exactly the pairs `(δ, δ₂) ∈ {(1,2), (2,2), (1,3), (2,3), (3,3), (4,3)}`, and all occur (the
 > (MC-91)(b) witnesses). **`δ ∈ {3, 4}` forces `δ₂ = 3`** (`U = K³` modulo JJ), and **`δ₂ = 2` forces
 > `δ ≤ 2`**.
@@ -4256,7 +4267,10 @@ blobs are singletons, and `L₁ ∩ L₂ = p_c`. Then no blob needs JJ.
 `(δ, δ₂) = (2, 3)` with a class path does occur: `W2` below, a `C₆` class, a vertex, then a triangle. So
 (MC-102) is not subsumed by (MC-101).
 
-> **(MC-103)** `[OPEN]` *(what remains of (MC-51)(c), the rest of the cell)*
+> **(MC-103)** `[OPEN]` *(what remains of (MC-51)(c), the rest of the cell. Superseded: the `δ = 2`
+> bullet is closed by (MC-112), for cyclic class quotients too. The `δ ∈ {3, 4}` bullets are (MC-117),
+> narrowed in 𝒮 by (MC-154). "asks each `L_j` to meet `m` and `n`" is the `δ = 3` case; at `δ = 4`
+> only `dim(ρ ∩ W₄) ≥ 3` is asked. Second reading, 2026-09-25.)*
 > - **`δ = 2` with a cyclic class quotient.** Then `|X| − 1 = 2 + 5c` with `c ≥ 1`, so at least 8 classes;
 >   for example `C₈` with `a, b` at distance 4. Here `ρ` is an intersection of two path spans, not a span
 >   of bridge lines.
@@ -4314,7 +4328,8 @@ triangle playing the chord. **So the hinge `ab` is never locked at an (a′) cha
 > **(MC-107)** *(cross-check of (MC-88))* **(MC-91) is an independent proof of (MC-88)'s statement, and it is
 > stronger.** It uses no class quotient and no Lemma T (MC-78). (MC-90)'s one-merge-one-refine formula
 > `δ_D = min_Y def_D(G′[Y])` and connectivity give `δ ≤ δ₂` whenever `δ₂ ≤ 2`, including
-> `δ₂ = 2 ⟹ δ ≤ 2`, which (MC-88) does not state. The author also read (MC-88)'s own proof.
+> `δ₂ = 2 ⟹ δ ≤ 2`, which (MC-88) records only as `[CONJECTURED]` (`δ₂ ≥ min(δ, 3)`). (MC-91)(a) proves that conjecture for
+every finite graph and pair. The author also read (MC-88)'s own proof.
 > - Its second case holds: at most one edge joins two `def₂`-classes, and merging along
 >   `def₃`-rigid classes does not lower `val₃`, so the union of the classes in `R` is `def₃`-rigid.
 > - Its first case holds: two classes joined by one edge have `def₃ = 1`, which is (MC-90) at
@@ -4328,6 +4343,8 @@ triangle playing the chord. **So the hinge `ab` is never locked at an (a′) cha
 Every JJ use above is at a named graph with fewer vertices than `G`:
 - `G′ + ab + x` for (MC-93), with `k = 2`;
 - `G′ + x` for (MC-95);
+- `G′ + x` again in (MC-96)(i)'s `U = 0`, `δ = 1` exclusion. At `k = 1` that graph is `G` itself,
+  not a smaller one, so there it is a citation of the theorem, not an induction hypothesis;
 - `G′` and `G′ + ab` for (MC-99)–(MC-102);
 - the blobs of (MC-101) and the classes of (MC-102), which satisfy (H);
 - the quotients `G′/R_j` of (MC-102), which are simple but may have a degree-1 vertex `v*` when `G′` has a
@@ -4354,7 +4371,16 @@ mod `2⁶¹ − 1` only as certificates):
 #### Step MC18 — the chord point, and the ear route's last open cell (modulo Jackson–Jordán)
 
 *Worked 2026-09-24 by a read-only agent (the third 2026-09-24 session's Track B) on cell (MC-51)(c)
-and the split-off step's missing `+1`, which sit at the same chord point. **No second reader yet.**
+and the split-off step's missing `+1`, which sit at the same chord point. **Second-read 2026-09-25**,
+together with Step MC17: nothing refuted.
+- (MC-89) never used a false value. But the as-run `--lamcap` certificate was invalid at orbit (ii),
+  `k = 3`, which lies on (MC-89)'s path through (MC-45); (MC-97) now says so.
+- The chord criterion (MC-108)–(MC-110) is confirmed, with `dim U ≥ 2` made explicit.
+- (MC-115)'s "every placement" is repaired, and `lamcap_recount.py`'s hinge filter is recorded as
+  weaker than the span guard.
+- (MC-117) states the open cell correctly; (MC-171) narrows it.
+
+Drivers of the reading: `w4/capcheck.py`, `w4/nbarcheck.py`, `w4/iffwit.py`, `w4/replay_odd.py`.
 None of it is on (MC-89)'s critical path. Drivers `w4/chordprobe.py`, `w4/thetapairs.py`,
 `w4/apredraw.py`, `w4/limitcheck.py`, `w4/lamcap_recount.py`, `w4/deltacount.py`, `w4/starcap.py`,
 `w4/lamab.py` (new).*
@@ -4413,7 +4439,8 @@ Hence **`M_weld(z₀) = M_{G″}(z₀)` has dimension `6 + g`**. By (MC-16) at `
 the coordinator's arithmetic, confirmed.
 
 
-> **(MC-108)** `[PROVED]` *(the first-order limit pencil; closes (MC-50)'s gap)* Fix `q′` and a
+> **(MC-108)** `[PROVED]` *(the first-order limit pencil; closes (MC-50)'s gap)* Fix `q′` with
+> `dim U ≥ 2` (for example under FG; *hypothesis added at the second reading, 2026-09-25*) and a
 > chord point `z₀` in case A, a direction `z₁ ∈ L_{G′}(q′)`, and `t ∈ K ∖ {0, 1}`. Put
 > `y₀ := (1−t)p_a + tp_b`, and let `α, β ∈ (K⁴)^∨` be the functionals of `π_a, π_b` at `z₀`. In the
 > chart, `α(x, y, z, w) = z − h_a(x, y)w`, and `β` likewise.
@@ -4432,7 +4459,8 @@ that line and put `q_y(s) := q_{y₀} + τ(s)η`, with
 `τ(s) := −s·u(z₁)(q_{y₀}) / (c₀dλ_{ab}(η) + s·du(z₁)(η))`. This is rational and regular at `0`, and
 it solves `u(z₀ + sz₁)(q_y(s)) = 0`. So the point lies in the incidence
 `I := {(z′, q_y) : u(z′)(q_y) = 0}` over `q′`, with `z_y := h_a(q_y)`. With `dim U ≥ 2`, `I` is
-irreducible, and `B(G)` is dense in it, as in (MC-18)(b)'s proof. So `I ⊆ X₀(G)`.
+irreducible, and `B(G)` is dense in it, as in (MC-18)(b)'s proof. So `I ⊆ X₀(G)`. (Case A alone gives only `ℓ_ab ∈ U`. `dim U = 1` in case A would be `U = Kℓ_ab`,
+which (MC-30)(i) excludes only modulo JJ at `G″`.)
 
 (ii) Write `C₁ = p_a ∧ p_y` and `C₂ = p_y ∧ p_b`. At `s = 0` they are `tn` and `(1−t)n`. Put
 `w(s) := (1−t)p_a(s) + tp_b(s)`. Then `(1−t)C₁ − tC₂ = w ∧ p_y`, and `w(0) = p_y(0) = y₀`. So
@@ -4466,7 +4494,7 @@ script also asserts that the curve lies in `I` to first order.
 > **(MC-109)** `[PROVED]` *(the `δ`-dimensional limit)* Assume (IH) and `δ ≤ 5`, and take a chord
 > point `z₀` and a generic `z₁ ∈ L_{G′}(q′)`. Put `ρ̄(z₁) := lim_{s→0} ρ(z₀ + sz₁)`, a limit in the
 > Grassmannian. It exists, it is `δ`-dimensional, and **`ρ̄(z₁) ⊆ ρ(z₀)`**. In particular
-> `ρ̄ ∩ ⟨n⟩ = 0`. The bound of (MC-108)(iv) improves to
+> `ρ̄ ∩ ⟨n⟩ = 0`. Under (MC-108)'s hypotheses (case A, `dim U ≥ 2`), the bound of (MC-108)(iv) improves to
 > `dim M_G ≤ 6 + g + dim(ρ̄(z₁) ∩ Pen(y₀, σ̄))`.
 
 *Proof.*
@@ -4524,12 +4552,15 @@ script also asserts that the curve lies in `I` to first order.
   `{φ₂c_{aα} = φ₁c_{bβ}}` of `n^⊥/n`, in coordinates dual to `α, β`. They all contain
   `N⁰ = Pen_a + Pen_b`, and any two of them span `n^⊥`. So `ρ(z₀) + ⟨n⟩ ⊇ n^⊥`. ∎
 
-> **(MC-111)** `[PROVED]` *(combinatorics; no JJ)* Let `G′` satisfy (H), with `a ≁ b`.
+> **(MC-111)** `[PROVED]` *(combinatorics; no JJ in (a)–(c) or in (d)'s first sentence; (d)'s geometric sentences are modulo
+(MC-33), JJ at `H` and at `(G″)_ab`: second reading, 2026-09-25)* Let `G′` satisfy (H), with `a ≁ b`.
 > **(a)** `δ₂ ≤ 3` always.
 > **(b)** If `δ₂ ≤ 2`, then `δ ≤ 2`.
 > **(c)** If `δ₂ ≤ 1`, then `δ ≤ 1`.
-> **(d)** Case split. `δ₂ ∈ {1, 2}` iff `a` and `b` lie in a common `def₂`-rigid subgraph `H` of
-> `G″` containing the edge `ab`. Mod JJ at `H`, every `P ∈ F(G″, q′)` is constant on `V(H)`. So
+> **(d)** Case split. `δ₂ ≤ 2` iff `a` and `b` lie in a common `def₂`-rigid subgraph `H` of `G″`
+> (then `G″[V(H)]` contains the edge `ab`). `δ₂ ∈ {1, 2}` iff moreover `a` and `b` lie in no common
+> `def₂`-rigid subgraph of `G′`. (At `δ₂ = 0`, for example `G′ = K_{2,3}` at its hubs, `G″` itself is
+> such an `H`: `iffwit.py`; *repaired at the second reading, 2026-09-25*.) Mod JJ at `H`, every `P ∈ F(G″, q′)` is constant on `V(H)`. So
 > `π_a = π_b =: π` at every point of `X₀(G″)`, all of `H′ := H − ab` lies in `π`, and
 > **`ρ(z₀) ⊆ Λ²π`** (case B, with `r(z₀) ≤ 2`). If `δ₂ = 3`, then mod JJ at `(G″)_ab` ((MC-13)(c))
 > `π_a ≠ π_b` at `z₀` (case A).
@@ -4579,7 +4610,7 @@ the observed `(δ₂, δ)` table, `δ ≤ δ₂` whenever `δ₂ ≤ 2`, and `δ
 `chordprobe.py`'s runs, every case-B draw has `ρ(z₀) ⊆ Λ²π` and `r ≤ 2`, and every case-A draw has
 `δ₂ = 3`.
 
-> **(MC-112)** `[PROVED-MOD]` *((MC-33); `k = 1`, `δ ≤ 2`)* Assume (IH), `a ≁ b`, `δ₂ ≥ 2` (FG mod JJ
+> **(MC-112)** `[PROVED-MOD]` *((MC-33); `k = 1`, `δ ≤ 2`; JJ at `G″` for FG and, in case B (`δ₂ = 2`), at the `H` of (MC-111)(d))* Assume (IH), `a ≁ b`, `δ₂ ≥ 2` (FG mod JJ
 > at `G″`) and `δ ≤ 2`. **Then `X₀(G) = X₀(G′ + ear₁)` attains.** This settles (MC-51)(c) at
 > `δ ∈ {1, 2}` whenever `δ₂ ≥ 2`. Mod (MC-62)'s `dim U = min(δ₂, 3)`, that is the whole dominant
 > (`dim U ≥ 2`) part of the cell.
@@ -4647,23 +4678,30 @@ has dimension at most `δ ≤ 2`, so it meets the conic in at most two points.
 > **(MC-114)** `[PROVED-MOD]` *((MC-33); (MC-51)(a) with `a ≁ b`)* Assume (IH), `a ≁ b` and
 > `dim U = 1`, or more generally `δ₂ ≤ 1` with `U ≠ 0`. **Then `X₀(G′ + ear₂)` attains.**
 
-*Proof.* `δ ≤ 1` by (MC-111)(c), and (MC-44) gives `r = δ`, hence `(R₂)`. `(MC-18)(a)` gives dominance,
+*Proof.* Under `dim U = 1`, (MC-48)(ii)'s argument (`δ₂ ≥ 2 ⟹ dim U ≥ 2`, JJ at `G″`) gives `δ₂ ≤ 1`. Then `δ ≤ 1` by (MC-111)(c), and (MC-44) gives `r = δ`, hence `(R₂)`. `(MC-18)(a)` gives dominance,
 and `(MC-19)(b)` gives `λ = 3`. `(P₂)` at `r ≤ 1` needs only `⋂Λ₂ = 0`, which holds in orbits
-(i)–(iii) (`lamcap_recount.py`, non-degenerate draws: 0, 0, 0). Orbit (iv) is `U = 0`. Then (MC-22)
+(i)–(iii) (`lamcap_recount.py`: 0, 0, 0; the proof is (MC-92), by hand, and `lamguard.py`'s guarded run agrees). Orbit (iv) is `U = 0`. Then (MC-22)
 concludes. ∎
 
 With (MC-46), which needs `dim U ≠ 1`, and (MC-54) at `δ = 0`: **every open `k = 2` ear step with
 `a ≁ b` is proved, mod JJ.** Orbit (iii) needs `U ⊆ Kℓ_ab`, which (MC-30)(i) excludes when `a ≁ b`.
 
 > **(MC-115)** `[PROVED]` *(a correction to (MC-26))* In orbit (ii) at `k = 1`, with `p_b ∈ π_a`,
-> `⋂_y Λ(y) = ⟨m⟩`. Every placement `y ∈ m ∋ p_b` has `y ∧ p_b = m`. So `(P₁)` fails at `r = 1`
-> for `ρ = ⟨m⟩`. (MC-26)'s list of `r = 1` exceptions, "orbit (iii) at `k = 1`, orbit (iv) at
+> `⋂_y Λ(y) = ⟨m⟩`, the intersection taken over the placements `y ∈ m ∖ {p_b}`, which are those of
+> generic span `λ = 2`. Each such `y` has `y ∧ p_b ∈ K^×·m`, so `⟨m⟩ ⊆ Λ(y)`. Equality is (MC-97)'s
+> pencil argument: `Λ(y) = Pen(y, π_a)`, and two such pencils meet in `⟨m⟩`. So `(P₁)` fails at
+> `r = 1` for `ρ = ⟨m⟩`. *(Repaired at the second reading, 2026-09-25: as first written, "every
+> placement `y ∈ m`" was false at `y = p_b`, the very placement behind the bug.)* (MC-26)'s list of `r = 1` exceptions, "orbit (iii) at `k = 1`, orbit (iv) at
 > `k = 2`", misses this cell.
 
 `earstep.py --lamcap`'s "0" in this cell comes from one degenerate draw, with `x = p_b`, among its
-12. `lamcap_recount.py` replays the same draws. Over non-degenerate draws only, orbit (ii) at `k = 1`
-gives `1`, and it gives `1` in a direct frame computation. Every other cell is unchanged: every
-`k = 4` cell is `0`, so (MC-25) stands. The docstring's "an intersection of 0 is a proof that the
+12. `lamcap_recount.py` replays the same draws. Over draws with every hinge nonzero, orbit (ii) at
+`k = 1` gives `1`, and a direct frame computation gives `1`. That filter is weaker than the span
+guard. It keeps one span-deficient draw at (ii) `k = 3` (`λ = 3`) and one at (iv) `k = 1` (`λ = 1`),
+so its figures in those two cells are not certificates. They agree in value with `lamguard.py`,
+whose span-guarded run is the certificate for "every other cell unchanged". At `k = 2` and `k = 4`
+the kept draws all have generic span, so "every `k = 4` cell is `0`, and (MC-25) stands" holds as
+stated. *(Second reading, 2026-09-25.)* The docstring's "an intersection of 0 is a proof that the
 intersection over ALL placements is 0" is true as stated, but "all" includes degenerate
 placements, which `(P_k)` does not. No landed step uses `(P₁)` at `r = 1` in orbit (ii): (MC-54)
 has `r = 0`, and (MC-112) is in orbit (i).
@@ -4673,9 +4711,9 @@ has `r = 0`, and (MC-112) is in orbit (i).
 > `z₀` the hinges at `a` lie in `Pen_a⁰ ∋ n`, and those at `b` in `Pen_b⁰ ∋ n`. So the four hinges
 > at `a` and `b` span at most `dim(Pen_a⁰ + Pen_b⁰) = 3`, the six hinges span at most 5, and
 > `dim M_{C₆}(z₀) ≥ 7 = 6 + f + 1`. `[MEASURED]` *(`apredraw.py`)* Case-B examples with `δ = 1` and
-> `a′ = 1` at 6 of 6 independent draws: `θ(1,3,7)` with pairs `11–19` and `12–14`;
+> `a′ = 1` at each of 6 independent draws (an upper bound: generic `a′ ≤ 1`): `θ(1,3,7)` with pairs `11–19` and `12–14`;
 > `x8_174485505`, `x8_194069537`, `x8_218500544`. A draw only over-estimates `a′`, so the generic
-> value there is `≤ 1`. (MC-111)(d)'s flat `H′` accounts for it: `r(z₀) ≤ def₂(H′)`, which can exceed
+> value there is `≤ 1`. (MC-111)(d)'s flat `H′` is the heuristic reason, since it allows it (an upper bound, mod JJ): `r(z₀) ≤ def₂(H′)`, which can exceed
 > `δ`.
 
 So no argument that bounds `a′` to 0 can be right in general. (MC-110), (MC-112) and (MC-113) do not use it.
@@ -4683,8 +4721,10 @@ Single-draw readings of `a′ > 0` with `δ ≥ 1` in case A were draw artifacts
 examples (`θ(2,2,7):14–19`, `θ(2,3,8):1–16`, `r10n11:3–4`) give `a′ = 0` at 6 of 6 fresh draws.
 
 > **(MC-117)** `[OPEN]` *(what remains of (MC-51)(c))* The `k = 1` step with `a ≁ b`, `δ₂ = 3`
-> (case A; `dim U = 3` mod (MC-62)) and `δ ∈ {3, 4}`. Here (MC-110)'s criterion fails, i.e.
-> `dim(ρ(z₀) ∩ n^⊥) = 4`. Given (MC-111)(b), this is the only cell of the `k = 1` step not covered by
+> (case A; `dim U = 3` mod (MC-62)) and `δ ∈ {3, 4}`, at those `(G′, a, b)` where (MC-110)'s criterion
+> fails, i.e. `dim(ρ(z₀) ∩ n^⊥) = 4` at the generic chord point. Where it holds, (MC-110) proves the
+> step. *(Wording repaired at the second reading, 2026-09-25; (MC-171)(iii) adds a further necessary
+> condition for failure.)* Given (MC-111)(b), this is the only cell of the `k = 1` step not covered by
 > (MC-110), (MC-112), (MC-113), (MC-49), (MC-54) and the `U = 0` remark. By (MC-110), a failing instance needs
 > one of:
 > - `δ = 3` and `a′(z₀) ≥ 1`;
@@ -4707,12 +4747,68 @@ examples (`θ(2,2,7):14–19`, `θ(2,3,8):1–16`, `r10n11:3–4`) give `a′ = 
 > `earante.py --chord-habitats` adds its 1 075 `δ = 4` instances.
 >
 > At `δ = 4`, `starcap.py` finds `dim(ρ(z₀) ∩ star(p_a)) = dim(ρ(z₀) ∩ star(p_b)) = 1` at 56 of
-> 56 instances. The ball joint needs both to be 2. `lamab.py` (default stride 8) finds the `ab`-stress
-> component `λ_ab` non-decomposable, and so not `n`, at 146 of 146. (The agent's recorded run, 79 of
+> 56 `δ = 4` instances (θ-graphs with sum ≤ 14 and the habitat sample at stride 24). The ball joint needs both to be 2. `lamab.py` (default stride 8) finds the `ab`-stress
+> component `λ_ab` non-decomposable, and so not `n`, at 146 of 146 `δ = 4`, `a′ = 0` instances (the
+> habitat sample at stride 8 and θ-graphs with sum ≤ 14). (The agent's recorded run, 79 of
 > 79, used a stride it did not record.)
 >
 > *Step MC21 (2026-09-24): in 𝒮 the cell closes except "Case II-cyclic" (MC-154), which coverage
 > does not need; the rigid-set closure (MC-143) and the class ring (MC-151) do the rest.*
+
+> **(MC-171)** `[PROVED]` *(the chord criterion at the limit; sharpens (MC-110); the second reader's,
+> 2026-09-25)* Assume (IH), FG, case A and `δ ≤ 4`. Take a chord point `z₀` and a generic
+> `z₁ ∈ L_{G′}(q′)`, and put `θ := [φ₁(z₁) : φ₂(z₁)]`. Choose `e_α, e_β ∈ K⁴` with `α(e_α) = β(e_β) = 1`
+> and `α(e_β) = β(e_α) = 0` (possible in case A), and set
+> `W̄₄(θ) := N⁰ + ⟨φ₁(z₁)·p_a∧e_α + φ₂(z₁)·p_b∧e_β⟩` with `N⁰ := Pen(p_a, π_a) + Pen(p_b, π_b)` at `z₀`.
+> `W̄₄(θ)` does not depend on the choice of `e_α, e_β`, and it is the limit of `W₄ = N` along `z₀ + sz₁`.
+> - **(i)** For fixed `z₁`, the reachable limit pencils `Pen(y₀(t), σ̄(t))` of (MC-108),
+>   `t ∈ K ∖ {0, 1}`, taken modulo `n`, form a smooth conic spanning the plane `P(W̄₄(θ)/⟨n⟩)`.
+> - **(ii)** If `dim(ρ̄(z₁) ∩ W̄₄(θ)) ≤ 2` for one generic `z₁`, then `X₀(G)` attains.
+> - **(iii)** Hence a failing instance of (MC-117) needs `dim(ρ̄(z₁) ∩ W̄₄(θ(z₁))) = 3` for generic
+>   `z₁`. At `δ = 3` this is `ρ̄(z₁) ⊆ W̄₄(θ(z₁))`, in addition to `a′(z₀) ≥ 1`.
+> - **(iv)** If `ρ̄(z₁)` does not depend on `z₁`, the step closes at `δ = 3`, and at `δ = 4` unless
+>   `ρ̄ ⊆ n^⊥`. That is (MC-150)'s conclusion, from (MC-109) alone.
+
+*Proof.*
+- *Well defined.* Changing `e_α` by `u ∈ n̂` changes `p_a∧e_α` by `p_a∧u ∈ ⟨n⟩ ⊆ N⁰`.
+- *The limit of `N`.* Along `z(s) = z₀ + sz₁` we have `α(s)(p_b(s)) = sφ₁(z₁)` and
+  `β(s)(p_a(s)) = sφ₂(z₁)`. Then `p_a(s)∧(p_b(s) − sφ₁e_α/α(s)(e_α))` lies in `Pen_a(s)`, and
+  `p_b(s)∧(p_a(s) − sφ₂e_β/β(s)(e_β))` lies in `Pen_b(s)`. Their sum is
+  `−s(φ₁ p_a∧e_α + φ₂ p_b∧e_β) + O(s²)`, because `n(s)` cancels exactly. So `lim N(s)` contains
+  `N⁰ + ⟨φ₁ p_a∧e_α + φ₂ p_b∧e_β⟩`. That space is 4-dimensional, since FG gives `(φ₁, φ₂) ≠ 0`, and
+  `N(s)` is 4-dimensional in orbit (i). So they are equal.
+- *(i).*
+  - Use coordinates `c_{iγ}` on `n^⊥/⟨n⟩ = n̂ ⊗ K⁴/n̂`, with `i ∈ {a, b}` along `p_a, p_b` and
+    `γ ∈ {α, β}`. Then `N⁰/⟨n⟩ = {c_{aα} = c_{bβ} = 0}`, and `W̄₄(θ)/⟨n⟩ = {φ₂c_{aα} = φ₁c_{bβ}}`.
+  - By (MC-108)(ii) the pencil at `t` is `⟨n, y₀ ∧ v⟩`, with `y₀ = (1−t)p_a + tp_b`, `α(v) = −tφ₁` and
+    `β(v) = −(1−t)φ₂`.
+  - Modulo `n` it is `κ(t) = [(1−t)tφ₁ : (1−t)²φ₂ : t²φ₁ : t(1−t)φ₂]` in the order
+    `(c_{aα}, c_{aβ}, c_{bα}, c_{bβ})`, up to one common sign. `κ(t)` satisfies `φ₂c_{aα} = φ₁c_{bβ}`.
+  - For generic `z₁`, `φ₁φ₂ ≠ 0` (FG), and `t ↦ κ(t)` is the Veronese conic in that plane: smooth,
+    and spanning it.
+- *(ii).*
+  - By (MC-109) with the same `z₁`: `dim M_G ≤ 6 + g + dim(ρ̄ ∩ Pen(y₀(t), σ̄(t)))` for every `t`.
+  - Since `ρ̄ ∩ ⟨n⟩ = 0`, the intersection is nonzero iff `κ(t) ∈ P(R̄)`, where `R̄` is the image of
+    `ρ̄ ∩ n^⊥` in `n^⊥/⟨n⟩`. This is (MC-110)'s argument with `ρ̄` in place of `ρ(z₀)`.
+  - `R̄ ⊇ W̄₄(θ)/⟨n⟩` iff `dim(ρ̄ ∩ W̄₄(θ)) = 3`, since `ρ̄ ∩ W̄₄` injects into `W̄₄/⟨n⟩`. Otherwise
+    `P(R̄) ∩ P(W̄₄/⟨n⟩)` is a proper linear subspace of the plane, and it meets the smooth conic in at
+    most 2 points.
+  - So all but finitely many `t` give `dim M_G ≤ 6 + g = 6 + def₃(G)` ((MC-17), `k = 1`, `δ ≤ 4`).
+- *(iii)* is the contrapositive of (ii). At `δ = 3`, a 3-dimensional `ρ̄ ∩ W̄₄` means `ρ̄ ⊆ W̄₄`. The
+  `a′ ≥ 1` is from (MC-117)'s list.
+- *(iv).*
+  - At `δ = 3`: `ρ̄ ⊆ W̄₄(θ) ∩ W̄₄(θ′) = N⁰` for two generic `θ ≠ θ′`. `N⁰` is 3-dimensional and
+    contains `n`, so `ρ̄ = N⁰ ∋ n`, against `ρ̄ ∩ ⟨n⟩ = 0`.
+  - At `δ = 4`: `R̄ ⊇ W̄₄(θ)/n + W̄₄(θ′)/n = n^⊥/⟨n⟩` forces `dim(ρ̄ ∩ n^⊥) = 4`, i.e. `ρ̄ ⊆ n^⊥`. ∎
+
+*Relation to what is landed.* It extends (MC-112)'s "Case A alternatively" remark from `δ ≤ 2` to
+`δ ≤ 4`, and identifies the conic's plane as `W̄₄(θ)`. It sits between (MC-110)'s criterion and the
+truth: failure of the step implies (iii), which implies, using two `z₁`, (MC-110)'s failure
+`dim(ρ(z₀) ∩ n^⊥) = 4`. `chordprobe.py`'s "min dim(ρ̄ ∩ limit pencil)" column is the per-instance
+form of (ii). It narrows (MC-117) but does not close it. `[CONSTRUCTED]` *(`nbarcheck.py`)*: the
+limit formula for `W̄₄`, exact at 20 random instances, with `p_a`, `p_b` held fixed and only `α(s)`,
+`β(s)` moving; the moving-point case is the hand computation above.
+`python3 notes/scripts/w4/nbarcheck.py` (< 1 s).
 
 > **(MC-118)** `[CONJECTURED]` In case A with `δ ≥ 1`, `a′(z₀) = 0`, and at `δ = 4`,
 > `ρ(z₀) ⊄ n^⊥`. It would close (MC-117), and with it the `k = 1` step for `a ≁ b`. The same flat-`H′`
