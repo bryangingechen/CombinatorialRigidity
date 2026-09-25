@@ -28,8 +28,8 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 **Next: L0a, the carried `X₀` headline** (*Lemma checklist* item 0, where the statement is pinned
 verbatim and spike-compiled). Then L0b (W4-A), then L0c, the phase close (*Hand-off*). The
 mathematics behind the `X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all
-second-read, in `notes/pencil/workbook/K-main.md` §(K-main). Its formalization plan is
-`notes/pencil/X0-formalization.md`. Nothing in L0 depends on it.
+second-read, in `notes/pencil/workbook/K-main*.md` §(K-main). Its formalization plan is
+`notes/Phase40-design.md`. Nothing in L0 depends on it.
 
 **Lean, landed:** W0–W3, the whole of W5 (L0–L7), `hsplit` and `hfresh`'s discharge (W5-L7c);
 checklist items 1–5 (2026-09-15/16); item 6's Layers A–C (2026-09-16/17). The declaration index is
@@ -68,7 +68,7 @@ closes when item 0 is done. Items 1–6 were unparked 2026-09-15/16 (PI). The it
 with the kernels, off the adopted route; the phase close moves them to Phase 40's design doc as
 the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
 
-- [ ] **0. L0 — the `X₀` headline and W4-A** (plan: `notes/pencil/X0-formalization.md` §3 L0;
+- [ ] **0. L0 — the `X₀` headline and W4-A** (plan: `notes/Phase40-design.md` §1;
   record: `notes/Phase39-design.md` § *X₀ architecture recon*, whose spike this transcribes).
   - [ ] **L0a — the carried headline.** Rated S1/P1/B1. Put it in a new file
     `Molecule/Pencil/X0.lean`: header `import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2`,

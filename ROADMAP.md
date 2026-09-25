@@ -154,10 +154,11 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress — the reduction is Lean-closed down to **three carried hypotheses** (`hcontract` / W4, `hK` / kernel (K), `hbareSplit` / kernel (K-bare)); research on the two kernels runs as **attack tracks** (`HARNESS.md`, `/attack <name>`) since 2026-09-15, standing result **`hK` is not closer**. The Lean track formalizes the foundations they stand on: checklist items 1–6 done bar the deferred A6; **W4 (`hcontract`) REOPENED 2026-09-23** — hold lifted for its wrapper and W4-L4b only, the other items parked by the 2026-08-05 hold. W4 carries three kernels ((K-c), (K-bare-c), (K-res)). Next: the PI's call on the census of the pencil configuration space's main component (DONE 2026-09-23, outcome A′: attains at all 10 252 members; 2026-09-24 math pass: gain exact, nondegeneracy combinatorial, θ-graphs attain; Steps MC11–MC14; 2026-09-24, third session: **the coverage theorem is proved modulo Jackson–Jordán and second-read** (MC-89): `X₀` attains at every simple connected graph of minimum degree ≥ 2; with (MC-133), second-read 2026-09-25, the generic motive holds at every feasible such graph; a 2026-09-25 recon finds these discharge all three carried hypotheses except W4-A, and the PI adopted that route over every infinite field (`notes/pencil/X0-formalization.md`, the plan); `notes/pencil/workbook/K-main.md`; `notes/pencil/W4-reopen.md`; W4's Lean deferred, `kres` held); `/attack smark` continues (next step and counts in `notes/attacks/smark/state.md`, the attack's only status surface) (smark's brief patched at review 5, 2026-09-23); the gr10 char-2 probe is CLOSED (2026-09-23, after review 1: characteristic 2 limits the grid method only, `notes/attacks/gr10/state.md`). Work log `notes/Phase39.md`; §39 for the mathematics. |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress — closing on L0: the `X₀` headline carrying two main-component statements, plus the non-simple case (W4-A); kernels and the smark attack held (see `notes/Phase39.md`) |
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
+| 40a. The Katoh–Tanigawa spine at `n = 2` — the planar molecular theorem (post-program) — PENCIL-X0 | `Molecular/{AlgebraicInduction,GenericLift}/`, `Induction/ForestSurgery/ChainExtraction.lean`, `BodyBar/Framework.lean` (structural edit, in place) | ◐ In progress — opened 2026-09-25; first sub-phase of Phase 40, the `X₀` formalization (see `notes/Phase40a.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1180,6 +1181,44 @@ rounds — a structural doc-split and a discipline distillation into the
 new read-on-demand root manual `RESEARCH-ARC.md` — are the ⋮ Status
 rows. Hand-off → `notes/Phase39.md`.
 
+**2026-09-23 → 09-25: W4 reopened, and the `X₀` route.** The census of the pencil configuration
+space's main component `X₀` (over a fixed planar picture the pencil condition is linear in the
+heights) found that `X₀`'s generic point attains the target rank at every graph tested. An informal
+proof followed, second-read: the coverage theorem (MC-89), with the generic and adjacent-distinct
+consequences (MC-133), (MC-157) (`notes/pencil/workbook/K-main*.md` §(K-main)). A recon showed these
+bypass all three carried hypotheses except the non-simple bare case (W4-A). The PI adopted that
+route over every infinite field, minted **Phase 40** for its formalization, and set Phase 39 to
+**close on L0**: the new headline `pencil_conjecture_of_X0` carrying the two main-component
+statements, plus W4-A (`notes/Phase39.md` item 0). The kernels and the smark attack are held as
+the fallback until Phase 40's last layer lands.
+
+### Phase 40 — The `X₀` formalization of the pencil conjecture (PENCIL-X0, post-program; sub-lettered)
+
+**◐ In progress** (opened 2026-09-25 at the user's initiative, ahead of the queue; plan
+`notes/Phase40-design.md`). It formalizes §(K-main)'s proof that the main component of the pencil
+configuration space attains the generic rank. It discharges the two statements Phase 39's
+headline carries (`X0Dist`, `X0Gen`), and so proves the pencil conjecture outright over every
+infinite field. Layers by stable code, lettered only as each opens:
+- **SPINE2**: the Katoh–Tanigawa spine at `n = 2`. This replaces Jackson–Jordán's pin-collinear
+  theorem, which the informal proof cites, field-generally;
+- **CARRIER**: planar pictures, the lifting space, `X₀`;
+- **FLAT**: the flat rank;
+- **BRIDGE**: Jackson–Jordán's equality as consumed;
+- **STEPS**: ear, split-off, contraction, cut and bridge steps;
+- **COVERAGE**: the structural half and the assembly;
+- **MOTIVES**: the two statements.
+
+The design doc carries the proof map, label by label.
+
+#### Phase 40a — the Katoh–Tanigawa spine at `n = 2` (SPINE2) — ◐ In progress
+
+A structural edit. The landed Theorem 5.5/5.6 chain and the molecular conjecture weaken their
+dimension floor from `n ≥ 3` (`D ≥ 6`) to `n ≥ 2` (`D ≥ 3`) in place, and one triangle case is
+repaired. This was compiler-checked by the 2026-09-25 sizing recon (`notes/Phase39-design.md`
+§ *`n = 2` sizing recon*), and it overturns Prospect G2's 2026-07-10 drop. The planar case is
+Jackson–Jordán's pin-collinear theorem, now over every infinite field, which bears on the queued
+PIN item (the PI decides at 40a's close). Work log `notes/Phase40a.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 35 the remaining deferred work is queued under stable codenames;
@@ -1196,8 +1235,9 @@ of the queue at the user's initiative (§37 above). **FACTOR** — the long-proo
 de-duplication / missing-abstraction round — then opened as Phase 38 ahead of
 the queue at the user's initiative (§38 above), and opened and closed as
 Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
-2026-07-23; PENCIL then opened as Phase 39 (§39 above), so **ORIGAMI is
-the next queued phase to open**.) A longer **unqueued**
+2026-07-23; PENCIL then opened as Phase 39 (§39 above), and its formalization
+sequel **PENCIL-X0** opened as Phase 40 at the user's initiative on 2026-09-25 (§40 above), so
+**ORIGAMI is the next queued phase to open**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`.
@@ -1217,7 +1257,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   Lemma 4.6 at `D = 3` (`K_{2,3}`; `notes/Prospect.md` G2), so none of
   the formalized induction's Case-III machinery transfers. Placeholder
   (user-queued 2026-07-18); unplanned — opening it starts with its own
-  survey/planning note.
+  survey/planning note. **Re-scope pending:** Phase 40a delivers the 2-d molecular theorem by
+  Katoh–Tanigawa's own route at `d = 2` (the sizing recon refutes G2's drop), so PIN's target
+  may already be met; the PI decides at 40a's close.
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

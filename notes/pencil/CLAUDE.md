@@ -64,16 +64,17 @@ in, so it cannot drift from the prose (`notes/Harness-structure.md` slice 8).
 
 ## Layout
 
-**Live status surfaces:** `X0-formalization.md` and `W4-reopen.md` (the `X₀` line), and
-`notes/attacks/<name>/state.md` (each attack). The gap map, `fanout.md` and
+**Live status surfaces:** the `X₀` line is now a formalization, Phase 40
+(`notes/Phase40-design.md`, `notes/Phase40a.md`); `W4-reopen.md` is its HELD predecessor, and
+`notes/attacks/<name>/state.md` covers each attack. The gap map, `fanout.md` and
 `strategy.md` belong to the coordinator loop retired on 2026-09-15 and have not
 moved since 2026-09-13. Read them as the arc's record, not as current status.
 
 | what | where |
 |---|---|
 | the (K) workbook, **one file per section** | `workbook/`: 20 topical gaps, `K-bare-ext.md`, 36 direction continuations in `bare-ext/`, `grid.md`, `W4.md`, and **`K-main.md`** (+ Steps MC10–MC21 one file each, `K-main-MC10.md`–`K-main-MC21.md`), §(K-main), the live `X₀` programme (tag `MC-`) |
-| **the `X₀` formalization plan** (target, the index of done work, blueprint layers, open calls) | `X0-formalization.md` |
-| **W4 reopened**: the live hand-off (status, next tasks, PI calls, constraints) | `W4-reopen.md`; its frozen earlier text (P1–P5, T0–T4) is `W4-reopen-archive.md`, not read on load |
+| **the `X₀` formalization plan** (target, the index of done work, layers, proof map) | `notes/Phase40-design.md` (the planning note `X0-formalization.md` is a pointer since 2026-09-25) |
+| **W4 reopened, HELD 2026-09-25**: what is held, and the constraints that bind meanwhile | `W4-reopen.md`; its frozen earlier text (two freezes, `73ea85a3` and `d90bae12`) is `W4-reopen-archive.md`, not read on load |
 | *State of (K)* gap map, the retired loop's status object | `workbook/gapmap.md`; read with `python3 notes/gapmap.py`, **never `sed`/`grep`** (one row is one 22 000-character line) |
 | shared dictionary + test shapes `W19`/`S29` | `workbook/dictionary.md` |
 | section index (paths, not line numbers) | `workbook/README.md` |

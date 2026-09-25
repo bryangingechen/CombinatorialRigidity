@@ -19,10 +19,10 @@ It is copied verbatim from the writer's message. Its driver is already ported:
 **Why it is staged, not landed.** The 2026-09-25 `n = 2` sizing recon (`notes/Phase39-design.md`)
 showed the landed KT spine extends to `n = 2` over every infinite field. That replaces every
 Jackson–Jordán use on the `X₀` route. So this proof is a **fallback**, not on the route
-(`notes/pencil/X0-formalization.md` §2, §3 L3). It is also a one-writer proof, not yet second-read.
+(`notes/Phase40-design.md` §2, §3 BRIDGE). It is also a one-writer proof, not yet second-read.
 
 **To land it, if ever wanted** (the procedure the 2026-09-25 readers' landings followed):
-1. Dispatch a second reader on `write-up.md` (brief: `X0-formalization.md`, appendix).
+1. Dispatch a second reader on `write-up.md` (brief: `notes/Phase40-design.md`, Appendix).
 2. Land the result as a sub-section of K-main's *Jackson–Jordán beyond ℝ*. Renumber
    `(NEW-I…)` to the next free `MC-` labels (`ledger.py --reserve`), with a `labels.md` row.
 3. Move (MC-33)(i)'s tag from `[INFORMAL]` to `[PROVED]` only after the second reading.

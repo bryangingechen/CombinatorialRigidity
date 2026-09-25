@@ -213,13 +213,18 @@ status:
     place of R, multigraphs, "every generic realization" in place of "some realization")
     and drew further consequences of the rank formula. See status.main_results for the
     headline statements and fidelity.divergences for how they differ from their sources.
+    In progress (phases 39-40): the hinge-pencil conjecture, a further strengthening in which
+    each body's hinges are also concurrent through a common point of its panel. Its open steps
+    are carried as explicit hypotheses on red blueprint nodes, never as sorry. The first step of
+    phase 40 extends Theorems 5.5/5.6 and the molecular conjecture to dimension 2.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
   policy: >-
     The project carries no `sorry` and no project-specific `axiom`. During development,
     incomplete obligations were pinned as explicit hypotheses on red blueprint dep-graph
-    nodes (never as `sorry` or `axiom`); with the development complete, none remain.
+    nodes (never as `sorry` or `axiom`); none remain in the completed results below, and the
+    in-progress pencil work carries its open steps the same way.
     `warn.sorry = true` in the lakefile is a backstop. Every main result below was checked
     with `#print axioms` and uses only the three standard axioms.
   main_results:                                                  # the completed headline theorems (four arcs + post-program phases)

@@ -118,8 +118,19 @@ each endpoint body, rather than being the intersection of the two
 panels — both results hold with parallel edges admitted
 (`Molecular.molecular_conjecture_multigraph`), while the multigraph
 equivalence is provably false for the intersection-based panel-hinge
-frameworks the simple-graph statements use. The blueprint dependency
-graph is fully green.
+frameworks the simple-graph statements use. Apart from the in-progress
+pencil chapter below, the blueprint dependency graph is fully green.
+
+**In progress (phases 39–40): the hinge-pencil conjecture.** A further strengthening of the
+hinge-coplanar model asks that each body's hinges also pass through a common point of its panel:
+a pencil of lines through a point in a plane, or, in the molecular reading, a bond-star lying in a
+plane through the atom. Does every multigraph still attain the generic rank this way? Phase 39
+reduced that question, in Lean, to a few explicitly carried statements. A route to proving them,
+through the main component of the space of such realizations, has since been worked out
+informally and independently checked. Phase 40 (opened 2026-09-25) is formalizing it. Its first
+step extends Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to the
+plane. There the molecular conjecture becomes Jackson–Jordán's theorem on pin-collinear
+body-and-pin frameworks (2008), which would then hold over every infinite field.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
