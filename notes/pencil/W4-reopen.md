@@ -19,8 +19,10 @@ contraction and cut steps on `X₀`.
 
 - **The coverage theorem (MC-89).** Every finite simple connected graph of minimum degree ≥ 2
   satisfies (MC-10)(a), **modulo Jackson–Jordán** (their pin-collinear rank theorem; field-general
-  only `[INFORMAL]`, (MC-33)(i)). Step MC16's argument is second-read. Step MC20 claims to replace
-  every exact-over-ℚ certificate it consumed by a hand proof over every infinite field.
+  only `[INFORMAL]`, (MC-33)(i)). Step MC16's argument is second-read. So is Step MC20, which
+  replaces every exact-over-ℚ certificate it consumed by a hand proof over every infinite field. A
+  reading-level audit (MC-166) finds no other characteristic dependence, so over any infinite field
+  (MC-89) holds modulo (MC-33)(i).
 - **The generic motive (MC-133).** Every *feasible* such graph has `HasGenericPencilRealization K 3 G`,
   mod Jackson–Jordán, in characteristic 0 (Step MC19, second-read 2026-09-25). And every such graph,
   feasible or not, has `HasDistinctPencilRealization K 3 G` (MC-157), with the same caveats.
@@ -44,15 +46,18 @@ can lean on more than it cites.
 | MC16, the coverage theorem | (MC-80), (MC-87), (MC-89) | second-read, by two readers |
 | MC17–MC18, the ear cells | (MC-97), (MC-115) | (MC-105) and its supports second-read 2026-09-25; the rest: **reader E in flight** |
 | MC19, the generic motive | — | second-read 2026-09-25; (MC-130)'s cycle citation repaired; (MC-157), (MC-158) added |
-| MC20, the certificate leaves | (MC-134), (MC-139), (MC-141) | **reader B in flight** |
+| MC20, the certificate leaves | (MC-134), (MC-139), (MC-141) | second-read 2026-09-25; the argument leaves audited for characteristic (MC-166); the certificate list is complete |
 | MC21, EAR covers 𝒮 | — | second-read 2026-09-25; accounting repaired (a second proof inside 𝒮 only); (MC-162)–(MC-165) added |
 
 ## Next, in order
 
 1. **Land the second readings in flight** (dispatched 2026-09-25, read-only; reports come back as
-   messages, since the harness refuses subagent report files). B on Step MC20, including whether
-   its certificate list is complete. E on Steps MC17–MC18, minus (MC-105). F on Steps MC1–MC6 and
-   Step MC10, the path claims never independently re-derived. A, C and D have landed.
+   messages, since the harness refuses subagent report files). E on Steps MC17–MC18, minus (MC-105).
+   F on Steps MC1–MC6 and Step MC10, the path claims never independently re-derived. A, B, C and D
+   have landed. **Held for F:** reader B's two Step MC10 repairs, which R9 and R12 left unapplied.
+   (MC-26)'s tag should point to (MC-137)(c). The sentence after (MC-21) should read "It is
+   characteristic-free: (MC-19) holds over every field (MC-134), and (b) needs no per-graph
+   computation (MC-139)."
 2. *(Folded into 1.)*
 3. **An architecture recon** (read-only, for the PI's call below; dispatched 2026-09-25, in flight).
    Map (MC-89) and (MC-133) onto the Lean consumer, `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
@@ -74,7 +79,7 @@ can lean on more than it cites.
   result it uses (`DESIGN.md` *Formalize everything the argument uses*); citing it is not an option.
   The call is the scope: over `ℝ`, or field-general following (MC-33)'s second reading. Or it
   is the route: task 3 asks whether a landed theorem can stand in for it.
-- **Characteristic.** The Lean target is over any infinite field. Since Step MC20 (if confirmed), the
+- **Characteristic.** The Lean target is over any infinite field. Since Step MC20 and the audit (MC-166), the
   only characteristic-0 dependence is Jackson–Jordán's field-general proof, `[INFORMAL]` (MC-33)(i).
 - **T1's scope question**, open since 2026-09-23 and moot if the architecture moves: a full
   L3′-successor wrapper, the residual-branch producer only, or a design doc only (archive, T1

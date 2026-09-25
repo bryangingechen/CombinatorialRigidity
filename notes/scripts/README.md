@@ -1472,6 +1472,7 @@ line and treated as part of the figure.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/zbridged.py --n1 8 --n2 8 --p3 3000 --seed 1`; `--n1 2 --n2 3 --p3 3000 --seed S`, `S = 2, 3` | ~12 s; ~2 s each | ibid. Step MC19's second reading, (MC-158): (MC-123)(⇐) at 376/376 feasible connected simple graphs on ≤ 8 vertices; 9/9 feasible non-2EC (H) graphs on ≤ 8 and 151/114/133 sampled, reduced and certified |
 | `python3 notes/scripts/w4/mc15check.py --allgraphs 7`; `--exh 7`; `--mc66 7`; `--blowup 60`; `--tight 10 60`; `--tight 12 20`; `--mc67 6 300` | ~41 s; ~33 s; ≤ 5 s each | ibid. Step MC15's second reading, (MC-161): (MC-62)–(MC-67) at every simple graph on ≤ 7 vertices, seeded blow-ups to 31 vertices, tight graphs; 0 failures |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/wsearch.py`; `geng -C -d2 -t -q 13 0:17 \| PYTHONHASHSEED=0 python3 notes/scripts/w4/c1check.py` | < 1 s; ~24 s | ibid. Step MC21's second reading, (MC-163), (MC-165): 3 of 6 Case II-cyclic chains have an (MC-143) `W`; 46/46 C′-I chains certified |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/charcheck.py`; `thetareplay.py`; `lamreplay.py`; `rowcheck.py`; `M2 --script notes/scripts/m2/earbad_p{2,3,5}.m2` | ~35 s; < 1 s each; ~1.3 s each | ibid. Step MC20's second reading, (MC-167), (MC-168): characteristic-2/3/5 certificates, 123 OK; the `--thetas` draws were in `U`; `--lamcap`'s span-generic draws give the hand values |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/certhand.py`; `certguard.py --lamcap` / `--replay` / `--thetas 5`; `orbitaudit.py`; `certsearch.py` | < 1 s; < 5 s / < 2 s / ~2 s; < 5 s; ~10 s | ibid. Step MC20, (MC-134)–(MC-141): (MC-89)'s certificate leaves by hand; the guarded `--lamcap` (all 16 cells equal the hand values) and `--thetas 5` (30/30 at certified `q ∈ U`); `--orbits`' characteristic-2 blind spot |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/earcover.py --necklaces`; `geng -C -d2 -t -q n 0:⌊(3n−4)/2⌋ \| … earcover.py --hunt - --full`, `n = 9..13`; `blobcount.py --necklaces` and with `geng` input, `n = 11..13`; `rigidclose.py`; `ringprobe.py`; `foldcheck.py`; `geng -C -d2 -t -q 13 0:17 \| … findcyc.py`; `cycprobe.py`; `cellclasses.py --exh 8` | ~20 s; 0.2–33 s; 8 s, < 1 min; ~1 s; ~85 s; < 1 s; < 1 min; ~2 s; < 1 min | ibid. Step MC21, (MC-142)–(MC-156): EAR covers 𝒮 at the stuck necklaces; the (c′) chain cells on 9–13 vertices; the class ring's folded point; the six Case II-cyclic chains certified |
 | `M2 --script notes/scripts/m2/lambda0.m2` | 0.1 s | workbook §(K-Λ) *Standing notation* + *Step 3* ((Λ0) and the `a`-line spans at the generic point; the widened span criterion) |
@@ -3567,6 +3568,21 @@ reason BLONGARC did not fix it: editing a tracked driver forfeits the
 figure-invariance gate's one-line *No tracked driver modified* discharge and
 would force baselining `brankv.py`'s whole import closure. It stays a
 harness-debt doc item.
+
+### New item (2026-09-25, W4-reopen P1, Step MC20's second reading) — three certificate drivers behind §(K-main) (MC-89) are unguarded; **UNPAID, superseded for proof purposes**
+
+The figures of these drivers must not move, so the fixes belong in a deliberate driver-edit
+commit. Each landed claim they certified now has a hand proof over every infinite field
+(§(K-main) (MC-134)–(MC-139)), so none of them is a proof input any more.
+- `earstep.py --lamcap` has no span guard. Its docstring's "an intersection of 0 is a proof" is
+  false without one, and it prints a wrong `0` at orbit (ii), `k = 1` ((MC-97), (MC-140)). Guarded
+  re-runs: `lamguard.py` (Step MC17) and `certguard.py --lamcap` (Step MC20).
+- `earstep.py --thetas` has no `q ∈ U` assert. `certguard.py --thetas 5` and `thetareplay.py`
+  show the 30 accepted draws were in `U` anyway ((MC-167)).
+- `earante.py --orbits` is silent in characteristic 2 at one stratum, and checks semi-invariance at
+  only 5 group elements; (MC-138) proves all three of its outputs in every characteristic.
+
+The invocation-table rows for these three modes stay as figures, not as proofs.
 
 ## Deliberate non-goals
 

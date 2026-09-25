@@ -88,7 +88,8 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   pencil motive, modulo Jackson–Jordán, in characteristic 0 (MC-133).** And every simple graph
   satisfying (H), feasible or not, has `HasDistinctPencilRealization`, modulo Jackson–Jordán, in
   characteristic 0 (MC-157).
-- **Step MC20** (not yet second-read): every computational certificate under (MC-89) has a hand proof
+- **Step MC20** (second-read 2026-09-25, confirmed with repairs; the argument leaves audited for
+  characteristic, (MC-166); (MC-167), (MC-168) added): every computational certificate under (MC-89) has a hand proof
   over every infinite field (MC-134)–(MC-139), so (MC-89) rests on arguments and Jackson–Jordán
   alone (MC-141).
 - **Step MC21** (second-read 2026-09-25, confirmed with repairs; (MC-162)–(MC-165) added; off (MC-89)'s critical path): **EAR alone covers 𝒮** (MC-148),
@@ -1745,7 +1746,7 @@ Stratify `P(B)` by `S`-orbit type. Write `B = span(L₀, L₁, L₂)` for `L₀ 
 `L₂ = x₂ p_b`, and `y = [l₀L₀ + l₁L₁ + l₂L₂]`. The fibre of `I` over `y` has dimension
 `dim(P(ρ) ∩ S·y) + dim S − d_y`, where `d_y := dim S·y`. `--orbits` certifies the `d_y`:
 - orbit (i): `d_y = 4` where `l₁ ≠ 0`; `3` on the line `l₁ = 0`; `1` at `L₀` and at `L₂`;
-- orbit (ii): `d_y = 5` where `l₀l₁l₂ ≠ 0`; `4` where `l₀l₂ = 0 ≠ l₁`; `3` on `l₁ = 0`; `1` at `L₀`
+- orbit (ii): `d_y = 5` where `l₀l₁l₂ ≠ 0`; `4` where `l₀l₂ = 0 ≠ l₁`; `3` on `l₁ = 0 ≠ l₀l₂`; `1` at `L₀`
   and at `L₂`.
 
 `S` preserves `Pen_a`, `Pen_b` and `N`. The line `l₁ = 0` is `span(L₀, L₂) ⊆ N`, and its orbit is
@@ -1782,7 +1783,8 @@ that partner `P(B)` meets only five orbit strata, so none of S2's exceptions (X1
 The specialisation adds orbit (ii), which S14 does not treat.
 
 > **(MC-47)** *(`k = 2` in orbits (iii) and (iv): what the antecedent cannot kill)*
-> **(i)** `[PROVED]` In orbit (iv), `Λ₂ = Λ²π` at **every** 2-ear placement. So
+> **(i)** `[PROVED]` In orbit (iv), `Λ₂ = Λ²π` at every 2-ear placement of generic span (the span drops to `⟨n⟩` when `x₁, x₂ ∈ n`; *second
+reading, 2026-09-25*). So
 > `B₂(r) = {ρ : ρ ∩ Λ²π ≠ 0}` for `r ≤ 3`, and it is **not** contained in `B₁(r)`: `ρ = ⟨ℓ⟩ + (generic)`,
 > with `ℓ` a generic line of `π`, has `(P₁)` but not `(P₂)`. On `X₀` orbit (iv) is `U = 0`. So
 > `r = 0` modulo Jackson–Jordán (Step MC10's remark after (MC-26)), and the step is closed only
@@ -3614,7 +3616,8 @@ not verified, and (MC-89) is stated mod JJ throughout.
 
 **What (MC-89) does not use.**
 - The open cells (MC-51)(c) at `1 ≤ δ ≤ 4` and (a′) at `a ∼ b`;
-- (MC-47)(i);
+- (MC-47)(i)'s ear step (only its span identity `Λ₂ = Λ²π` is used, inside (MC-45)'s orbit-(iv)
+  branch; *repaired at Step MC20's second reading, 2026-09-25*);
 - any per-graph picture certificate;
 - (MC-70)'s exceptional case (the cores come from (MC-80), not from maximality among all proper rigid
   sets).
@@ -5193,8 +5196,21 @@ occur. For the bridged populations, see (MC-158).
 #### Step MC20 — the coverage theorem's certificate leaves, proved by hand over every field
 
 *Worked 2026-09-24 by a read-only agent (the third 2026-09-24 session's Track I), prompted by the
-(MC-26) erratum. **No second reader yet.** Drivers `w4/certhand.py`, `w4/certguard.py`,
-`w4/orbitaudit.py`, `w4/certsearch.py` (new).*
+(MC-26) erratum. **Second-read 2026-09-25** by a fresh reader, who re-derived (MC-134)–(MC-141) and
+re-ran every driver. No refutation and no gap. The repairs, each marked where it sits:
+- (MC-134)'s table justification was false in listed order in three rows, though the ranks were right;
+- its `k ≥ 6` insertion collided adjacent points in characteristic `p ∣ J`;
+- (MC-141) drew its "exactly mod (MC-33)(i)" conclusion while disclaiming an audit of the argument
+  leaves for characteristic. The reader did that audit, (MC-166), and found no dependence, so the
+  conclusion stands.
+
+The reader also traced (MC-89)'s tree for completeness. Every computation it consumes is replaced;
+the one uncredited *argument* leaf is (MC-47)(i)'s span identity, inside (MC-45)'s orbit-(iv)
+branch, now credited. It added (MC-167), replays of the landed drivers' own streams, and (MC-168),
+independent certificates in characteristics 2, 3 and 5 (`w4/charcheck.py`, `w4/thetareplay.py`,
+`w4/lamreplay.py`, `w4/rowcheck.py`, `w4/treegrep.py`, `m2/earbad_p{2,3,5}.m2`). Hygiene:
+`certhand.py`'s "Klein quadric = Q1 + Q2" line prints OK from a check that cannot fail. Drivers
+`w4/certhand.py`, `w4/certguard.py`, `w4/orbitaudit.py`, `w4/certsearch.py` (new).*
 
 **Verdict.**
 - (MC-89) had four certificate leaves: `earstep.py --chains` (MC-19), `--thetas 5` (MC-21)(b),
@@ -5260,7 +5276,7 @@ Read from (MC-89)'s proof, (MC-79)(v)'s list of usable chains, and the owning cl
 | 5b. 𝒮 | (MC-76), (MC-80) ← (MC-77), (MC-78), (MC-79)(i)–(iv) | argument |
 | — chain `k ≥ 5` | (MC-20) ← (MC-18)(a), (MC-16), (MC-17), **(MC-19)(b)** `k ≥ 5` | **cert.** CH-2a/2b → (MC-134) |
 | — chain `k = 4` | (MC-24), (MC-25) ← (MC-22), (MC-19)(b) `k = 2, 4`, **`⋂Λ₄ = 0`, four orbits** | **cert.** `--lamcap` → (MC-136) |
-| — chain `k = 3` | (MC-45) ← (MC-22) twice, (MC-19)(b) `k = 2, 3`; `r = 1`: **`⋂Λ₃ = 0`, four orbits** (via (MC-26)); `r = 2`: splitting degeneration; `r ≥ 3`: (MC-26)'s link | **cert.** `--lamcap` → (MC-135); rest argument |
+| — chain `k = 3` | (MC-45) ← (MC-22) twice, (MC-19)(b) `k = 2, 3`; `r = 1`: **`⋂Λ₃ = 0`, four orbits** (via (MC-26)); `r = 2`: splitting degeneration, and (MC-47)(i)'s span identity (orbit (iv)); `r ≥ 3`: (MC-26)'s link | **cert.** `--lamcap` → (MC-135); rest argument |
 | — chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-46) ← **orbit table + semi-invariance**, (MC-26)'s link (`r ≥ 4`), (MC-18)(b), **(MC-19)(b) `k = 1`**, (MC-22); `dim U ≥ 2` by (MC-48)(ii)'s argument | **cert.** `--orbits` → (MC-138); JJ at `G′ + ab` |
 | — chain `k = 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a), (MC-16) | argument (+ (MC-134)) |
 | — chain `k = 1`, `δ = 0` | (MC-54) ← (MC-18)(b), (MC-19)(b) `k = 1`; `dim U ≥ 2` | argument + JJ at `G′ + ab` |
@@ -5277,8 +5293,9 @@ Remarks on the tree:
 - **(MC-26) at `k = 2`, `r = 1`** is used by (MC-85) and by (MC-88)'s corollary, neither of which
   (MC-89) uses. (MC-46)'s own count covers `r = 1` ("`B₂(1) = ∅`"). The cell is proved anyway in
   (MC-135), agreeing with (MC-92).
-- **(MC-69)(a)** is an argument leaf. The (MC-89) author did not re-derive it; the only
-  independent check is `kerm0.py` (287 assertions). The second reader of (MC-89) re-derived it (commit `b0bc1341`).
+- **(MC-69)(a)** is an argument leaf. The (MC-89) author did not re-derive it; the second reader
+  of (MC-89) did (commit `b0bc1341`), and `kerm0.py` (287 assertions) is the one computational
+  cross-check.
 - **`m2/earbad.m2`** is an independent symbolic re-check of (MC-46)'s classification (B2), not a
   leaf of its proof. Its (B3) supports (MC-47)(ii), which (MC-89) does not use.
 - **No other computation hides in the tree.** `x0arms.py` and `coverstruct.py` assert proved
@@ -5312,7 +5329,7 @@ Write `f := e₀ + e₁ + e₂`.
 - *(c).* `p_a, x₁, x_k` are three non-collinear points of `π_a`. They go to `e₀, e₁, e₂`.
 
 Configurations (Plücker order `01,02,03,12,13,23`). Each row lists the resulting line vectors,
-already reduced to a unitriangular set:
+in chain order:
 
 | case | points | line vectors |
 |---|---|---|
@@ -5333,15 +5350,22 @@ already reduced to a unitriangular set:
 | (c) `k = 4` | `e₀, e₁, e₃, e₁+e₂, e₂` | `e₀₁, e₁₃, e₁₃+e₂₃, e₁₂, e₀₂` |
 | (c) `k = 5` | `e₀, e₁, e₁+e₂, e₃, e₀+e₃, e₂` | `e₀₁, e₁₂, e₁₃+e₂₃, e₀₃, e₀₂−e₂₃, e₀₂` |
 
-(Signs are dropped where a vector is a basis vector up to sign.) In each row every listed vector
-brings in a coordinate the earlier ones lack, so the rank is the row length, with a `±1` minor.
+(Signs are dropped where a vector is a basis vector up to sign.) In each row, in a suitable order,
+every vector brings in a coordinate the earlier ones lack, so the rank is the row length, with a
+`±1` minor. The chain order already works except in three rows, where one basis vector moves ahead
+of the vector it occurs in: `e₂₃` in (b) `k = 3`, `π_a ≠ π_b`; `e₀₂` in (b) `k = 5`, `π_a = π_b`;
+`e₀₂` in (c) `k = 5`. *(Repaired at the second reading, 2026-09-25, `rowcheck.py`: as first
+written, the listed-order claim was false in those three rows.)*
 `certhand.py` (MC-134) asserts each rank and finds a `±1` maximal minor. A middle point may coincide with
 a terminal point (`k = 4, 5`); that is a legitimate point of the free factor `P³`, and adjacent
 points are distinct.
 
 - *`n ≥ 7`, `k ≥ 6`.* Insert the extra points on an existing hinge line between two middle points
-  of the `n = 6` or `k = 5` configuration (for (b), on `e₃e₀`: the points `e₀ + j e₃`). The new
-  lines are multiples of an old one, so the span stays `K⁶`.
+  of the `n = 6` or `k = 5` configuration: for (b) with `π_a ≠ π_b`, on `e₃e₀`, the points
+  `e₀ + t_j e₃` with `t_j ∈ K` distinct and nonzero; with `π_a = π_b`, on `e₃(e₂ + e₃)`. The new
+  lines are multiples of an old one, so the span stays `K⁶`. (`t_j = j` would put two adjacent
+  points together in characteristic `p ∣ J`; the span would not change. *Repaired at the second
+  reading, 2026-09-25*; the same choice serves (a).)
 - *`k = 1`.* `λ = 2` iff `x ∉ n`.
   - Orbit (i): `m ∩ n ⊆ n ∩ π_b = {p_b}` (as `p_a ∉ π_b`), and `p_b ∉ m` (as `p_b ∉ π_a ⊇ m`).
     So `m ∩ n = ∅`.
@@ -5374,8 +5398,8 @@ orbit (iv), `x₂z` meets `p_a x₁` and `x₃ p_b` at `z`, and `x₁x₂`, `x�
   Every `z ∈ π ∖ n` arises (take `x₁ ∈ p_a z`, `x₃ ∈ p_b z`), and `x₂ ∈ P³` is free. So
   `c ⊥ K⁴ ∧ π̂ = Λ²K⁴`, and `c = 0`.
 - **`k = 2`.** The same argument with `x₁ ∧ x₂` gives `c ⊥ π̂_a ∧ π̂_b`. That is `c = 0` in orbits
-  (i)–(iii), and `c ∈ (Λ²π)^⊥ = Λ²π` in orbit (iv). There `Λ₂ = Λ²π` at every placement
-  ((MC-47)(i)), which gives equality.
+  (i)–(iii), and `c ∈ (Λ²π)^⊥ = Λ²π` in orbit (iv). There `Λ₂ = Λ²π` at every placement of
+  generic span ((MC-47)(i); the span drops to `⟨n⟩` when `x₁, x₂ ∈ n`), which gives equality.
 - **`k = 1`.** `Λ₁(x) = ⟨p_a∧x, x∧p_b⟩`, and every line through `x` meets both lines, so
   `star(x) ⊆ Λ₁(x)^⊥`. Over a dense set of `x ∈ m`, this gives `c ⊥ m̂ ∧ K⁴`, the lines meeting
   `m`, so `c ∈ (m̂ ∧ K⁴)^⊥ = ⟨m⟩`.
@@ -5456,7 +5480,7 @@ nonzero `c ∈ ρ` lies in `Λ_k(x)` on a dense open set. Apply (MC-135) or (MC-
 > **The table**, for `y = [l₀L₀ + l₁L₁ + l₂L₂] ∈ P(Λ₂(x⁰))` and `d_y := dim S·y`, is exactly
 > (MC-46)'s:
 > - orbit (i): `d_y = 4` where `l₁ ≠ 0`; `3` on `l₁ = 0`; `1` at `L₀` and `L₂`;
-> - orbit (ii): `d_y ≥ 5` where `l₀l₁l₂ ≠ 0`; `≥ 4` where `l₀l₂ = 0 ≠ l₁`; `≥ 3` on `l₁ = 0`; `≥ 1`
+> - orbit (ii): `d_y ≥ 5` where `l₀l₁l₂ ≠ 0`; `≥ 4` where `l₀l₂ = 0 ≠ l₁`; `≥ 3` on `l₁ = 0 ≠ l₀l₂`; `≥ 1`
 >   at `L₀`, `L₂`.
 >
 > In orbit (i) the values are exact. In orbit (ii) they are lower bounds, and lower bounds are all
@@ -5525,7 +5549,8 @@ polynomial identity in the group parameters.
 
 > **(MC-139)** `[PROVED]` *((MC-21)(b) without the 30 certificates)* Every simple θ-graph
 > `θ(p₁, p₂, p₃)` attains on `X₀`. The proof uses (MC-21)(a), (MC-20), (MC-25), (MC-45), (MC-54)
-> and (MC-5)(iii), and no per-graph computation.
+> and (MC-5)(iii), with their leaves (MC-18)(a), (MC-22), (MC-24), (MC-134) and (MC-137)(a), (b),
+> and no per-graph computation.
 
 *Proof.* Strong induction on `|V|`. Order `p₁ ≤ p₂ ≤ p₃`, so `p₃ ≥ p₂ ≥ 2` (simple). Let `G′`
 be the cycle `C_s`, `s = p₁ + p₂ ≥ 3`, with `a, b` at distance `p₁` on it, and attach the
@@ -5556,21 +5581,24 @@ prints each of the 30 small graphs' case, and checks `δ = 0` at `k = 2` and `di
 | driver | what it certifies | verdict | evidence |
 |---|---|---|---|
 | `earstep.py --chains` | (MC-19): 16 rows (CH-1 closed polygons `n = 3..6`; CH-2a, CH-2b open ears and CH-3 closed ears, `k = 2..5`) | **sound** | Each row is one configuration, and full rank is a lower bound equal to the trivial maximum. A degenerate draw could only print FAIL. Frames are valid normalizations. Exact ℚ; the prime coverage of its random middle points is unspecified. Superseded by (MC-134). |
-| `earstep.py --thetas 5` | (MC-21)(b), 30 θ-graphs | **sound-but-unguarded** | The mod-`2⁶¹−1` rank is a valid lower bound. But `maincomp.probe` never certifies `q ∈ U`: `dim L(q)` is not compared with `ℓ₀`. So the attaining point is a pencil configuration not certified to lie on `X₀` ((MC-2)'s remark on jump strata). `certguard.py --thetas 5` certifies `q ∈ U` by `dim L(q) = 3 + def₂` and computes exact ℚ ranks: **30/30 attain**. Superseded by (MC-139). |
-| `earstep.py --lamcap` | (MC-25), (MC-26): `⋂Λ_k` over 12 unguarded draws | **wrong in one cell**: orbit (ii), `k = 1` prints `0`, the truth is `⟨m⟩` | The intersection is unguarded; its docstring's "an intersection of 0 is a proof" is false without a span guard. `certguard.py --replay`: span-deficient draws at (ii) `k = 1, 2, 3` (1 of 12 each) and (iv) `k = 1` (1 of 12). Only (ii) `k = 1` gives a false value. `certguard.py --lamcap` (24 accepted draws, deficient ones rejected and counted) gives every cell the hand value of (MC-135)/(MC-136). Agrees with (MC-97). |
+| `earstep.py --thetas 5` | (MC-21)(b), 30 θ-graphs | **sound-but-unguarded** | The mod-`2⁶¹−1` rank is a valid lower bound. But `maincomp.probe` never certifies `q ∈ U`: `dim L(q)` is not compared with `ℓ₀`. So the attaining point is a pencil configuration not certified to lie on `X₀` ((MC-2)'s remark on jump strata). `certguard.py --thetas 5` certifies `q ∈ U` by `dim L(q) = 3 + def₂` and computes exact ℚ ranks: **30/30 attain**. Superseded by (MC-139). A replay of the driver's own stream (`thetareplay.py`, the second reading) finds `dim L(q) = 3 + def₂` at all 30 accepted draws, so the landed 30/30 were certificates as they stand; what was missing is the assert. |
+| `earstep.py --lamcap` | (MC-25), (MC-26): `⋂Λ_k` over 12 unguarded draws | **wrong in one cell**: orbit (ii), `k = 1` prints `0`, the truth is `⟨m⟩` | The intersection is unguarded; its docstring's "an intersection of 0 is a proof" is false without a span guard. `certguard.py --replay`: span-deficient draws at (ii) `k = 1, 2, 3` (1 of 12 each) and (iv) `k = 1` (1 of 12). Only (ii) `k = 1` gives a false value. `certguard.py --lamcap` (24 accepted draws, deficient ones rejected and counted) gives every cell the hand value of (MC-135)/(MC-136). Agrees with (MC-97). Over its span-generic draws only, the driver's own stream gives the hand value in all 16 cells (`lamreplay.py`, the second reading); the wrong print comes only from the one deficient draw at (ii) `k = 1`. The guarded re-run first landed as `lamguard.py` (Step MC17). |
 | `earante.py --orbits` | (MC-46)'s table; transitivity; semi-invariance | **sound over ℚ; silent in characteristic 2 at one stratum** | Exact symbolic minors. But the generators include `E₀₀, …, E₃₃`, whose sum acts on `Λ²` by `2` and stands in for the cone direction `y`. `orbitaudit.py`: for orbit (i)'s generic stratum `l₀l₁ ≠ 0`, the driver's certifying minor has coefficient `−2`, and every certifying monomial minor there has `|coefficient| = 2`. Its "none of size `s+1`" half is a Lie-algebra bound, an orbit-dimension bound only in characteristic 0; the count does not use it. The semi-invariance is checked at 5 random group elements, a check rather than a proof. (MC-138) proves all three in every characteristic. |
 | `earante.py --frames` | (MC-43)/(MC-46)/(MC-47) families | **sound as a check** | "good" is certified: a placement with `λ = j+1` and the least `dim(ρ ∩ Λ)`. "BAD" means not seen good in `T = 4` draws, a measurement. It agrees with the proved inclusions and is not an input to (MC-89). The workbook's "the families bad" is stronger than the driver shows; the badness is proved by (MC-43), (MC-46), (MC-47). |
-| `m2/earbad.m2` | (MC-45) `r = 2` inclusion; (MC-46) classification; (MC-47)(ii) | **sound** (characteristic 0) | Placement coordinates are indeterminates, so "`ρ ∩ Λ ≠ 0` at every placement" is an exact linear condition. There is no randomness. Valid where the generic `λ = j + 1`, which holds in every case it uses. Not a leaf of (MC-89). |
+| `m2/earbad.m2` | (MC-45) `r = 2` inclusion; (MC-46) classification; (MC-47)(ii) | **sound** (characteristic 0) | Placement coordinates are indeterminates, so "`ρ ∩ Λ ≠ 0` at every placement" is an exact linear condition. There is no randomness. Valid where the generic `λ = j + 1`, which holds in every case it uses. Not a leaf of (MC-89). Ported to `ZZ/2`, `ZZ/3`, `ZZ/5` by changing only the coefficient field (`m2/earbad_p{2,3,5}.m2`), (B0)–(B4) pass unchanged (the second reading). |
 | `earspan.py` | `λ` per orbit, `k ≤ 4`; `⋂Λ₄` | **sound** | The `⋂Λ₄` loop asserts `λ = 5` at every draw, so a deficient draw would crash, not bias. |
 
 
 **Part IV — what (MC-89) now rests on.**
 
 > **(MC-141)** `[PROVED-MOD]` *((MC-33); the leaves of (MC-89), after (MC-134)–(MC-139); a statement about the
-> tree, conditional on the argument leaves as landed and on the second readings still owed)*
+> tree, conditional on the argument leaves as landed; second-read 2026-09-25, which also audited
+> those leaves for characteristic, (MC-166))*
 > (MC-89) rests on:
 > - **arguments:** every claim in Part I's table, with (MC-19), (MC-21)(b), (MC-25)'s and
->   (MC-45)'s `r = 1` cells, and (MC-46)'s table now proved by (MC-134)–(MC-139);
+>   (MC-45)'s `r = 1` cells, and (MC-46)'s table now proved by (MC-134)–(MC-139), and the argument
+>   leaves those claims cite (among them (MC-13)(a), (b), the union lemma in (MC-14)'s proof,
+>   (MC-26)'s two links and (MC-47)(i)'s span identity);
 > - **JJ** at the simple graphs:
 >   - `G` itself at FLAT (`def₂ = def₃`);
 >   - `H = G[W]` and `G/H` at both kinds of CONTRACT;
@@ -5580,16 +5608,67 @@ prints each of the 30 small graphs' case, and checks `δ = 0` at `k = 2` and `di
 >
 >   Every one except FLAT's `G` has fewer vertices than `G`.
 > - **no computational certificate.** The former certificate leaves hold over every infinite
->   field, so beyond characteristic 0 the qualifier is exactly "mod (MC-33)(i)". The argument leaves
->   were not audited for characteristic. Among those I read closely ((MC-16)–(MC-26),
->   (MC-45), (MC-46), (MC-54)), none divides by an integer.
+>   field. The argument leaves use of `K` only that it is an infinite field ((MC-166), the second
+>   reader's audit). So beyond characteristic 0 the qualifier is exactly "mod (MC-33)(i)".
+>   *(Repaired at the second reading: as first written, this bullet drew that conclusion while
+>   saying the argument leaves "were not audited for characteristic".)*
+
+> **(MC-166)** `[INFORMAL]` *(gap: a reading-level audit of where the field enters, not a fresh
+> re-derivation of steps already second-read; the second reader's, 2026-09-25)* Across every
+> argument leaf of (MC-89)'s tree, `K` enters only in three ways:
+> - nonzero elements are inverted (the plane coefficient in (MC-1), pivots, (MC-30)(ii)'s
+>   denominator, the rescalings by `t ≠ 0`);
+> - `K` is infinite (open sets have `K`-points; a nonzero one-variable polynomial has finitely many
+>   roots: (MC-2), (MC-30), (MC-36), (MC-136));
+> - rank and kernel dimension are semicontinuous, and Grassmannian limits are taken.
+>
+> No integer is divided by: the integer arithmetic of (MC-17), (MC-29), (MC-48)(i), (MC-75)–(MC-80)
+> and (MC-87) is on graph counts, not in `K`. No differential is used as an upper bound, and
+> `c ∧ c = 0` is never used as the line test (it fails in characteristic 2). (MC-45)'s and (MC-46)'s
+> quadric arguments hold in every characteristic. The only characteristic-dependent input is
+> Jackson–Jordán, (MC-33)(i).
+>
+> *Scope:* Part I's table with (MC-1)–(MC-5), (MC-13)(a), (b), (MC-14)'s union lemma, (MC-16)–(MC-18),
+> (MC-20)–(MC-22), (MC-24), (MC-26)'s links, (MC-28)–(MC-31), (MC-34)–(MC-39), (MC-45), (MC-46), (MC-47)(i)'s
+> span identity, (MC-48)(ii)'s count, (MC-52)–(MC-56), (MC-59), (MC-62), (MC-63), (MC-67)–(MC-71),
+> (MC-75)–(MC-80) and (MC-87).
+
+> **(MC-167)** `[CONSTRUCTED]` *(`thetareplay.py`, `lamreplay.py`; replays of the landed drivers'
+> own random streams, importing them unchanged)*
+> - **(a)** All 30 draws that `earstep.py --thetas 5` accepted have `dim L(q) = 3 + def₂`, so they
+>   lie in `U`.
+> - **(b)** Over its span-generic draws only, the landed `--lamcap` stream gives the hand value in
+>   all 16 cells. Four draws drop out, one each at (ii) `k = 1, 2, 3` and (iv) `k = 1`. The wrong `0`
+>   printed at (ii) `k = 1` comes only from the deficient draw.
+>
+> `PYTHONHASHSEED=0 python3 notes/scripts/w4/thetareplay.py` (< 1 s); `… lamreplay.py` (< 1 s).
+
+> **(MC-168)** `[CONSTRUCTED]` *(`charcheck.py`, seeded and exact over finite fields;
+> `m2/earbad_p{2,3,5}.m2`)* Independent certificates in positive characteristic:
+> - **(a)** The 16 (MC-134) configurations, and the insertion to `k = 6..9`, have the claimed rank
+>   over GF(2), GF(3), GF(5), GF(7) and GF(2⁸).
+> - **(b)** The guarded `⋂Λ_k` equals the hand value in all 16 cells: over GF(2) at every placement
+>   for `k ≤ 4`; over GF(3) and GF(5) at every placement for `k ≤ 2` and 20 000 seeded draws for
+>   `k = 3, 4`; over GF(2⁸) at 20 000 seeded draws. With the hand lower bounds asserted these are
+>   upper-bound certificates over `K̄`, so certificates in characteristics 2, 3 and 5.
+> - **(c)** (MC-138)'s tangent bounds hold at every point of every stratum over GF(2), GF(3), GF(5).
+> - **(d)** (MC-46)'s classification is checked at every GF(2)-rational `ρ` with `r ≤ 3` (63 / 651 /
+>   1 395), every GF(3)-rational `ρ` with `r ≤ 2` (364 / 11 011), and 1 500 seeded GF(3)-rational `ρ`
+>   with `r = 3`. The families are bad everywhere, and every other `ρ` is certified good.
+> - **(e)** (MC-45)'s `(P₂) ⟹ (P₃)` at `r = 2` holds at every GF(2)-rational `ρ`, in all four orbits.
+> - **(f)** `earbad.m2`'s (B0)–(B4) pass over `ZZ/2`, `ZZ/3` and `ZZ/5`, trusting M2's `radical` over
+>   finite fields.
+>
+> `PYTHONHASHSEED=0 python3 notes/scripts/w4/charcheck.py` (~35 s; 123 OK, 0 FAIL);
+> `M2 --script notes/scripts/m2/earbad_p{2,3,5}.m2` (~1.3 s each).
 
 **What remains.** The second readings of (MC-80), (MC-87)–(MC-89), (MC-68), (MC-69)(a) and (MC-71)
-have landed (`b0bc1341`). Swapping the certificate citations in (MC-19), (MC-21)(b), (MC-25),
+have landed (`b0bc1341`), and Step MC20's own on 2026-09-25. Swapping the certificate citations in (MC-19), (MC-21)(b), (MC-25),
 (MC-45) and (MC-46) for (MC-134)–(MC-139) is done here by a pointer at each claim, not by a rewrite.
 Guarding `earstep.py --lamcap`, adding a `q ∈ U` check to `--thetas`, and flagging `--orbits`'
 characteristic-2 blind spot are harness debt: those drivers' figures must not move, so the fixes
-belong in a deliberate driver-edit commit.
+belong in a deliberate driver-edit commit. The debt is recorded in `notes/scripts/README.md`
+*Harness debt* (the 2026-09-25 item).
 
 **Drivers** (all at `PYTHONHASHSEED=0` from the repository root; exact, deterministic):
 
