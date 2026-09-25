@@ -369,6 +369,73 @@ theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
       funext i; fin_cases i <;> rfl
     rw [hfun]; exact hLI_ext
 
+/-- **Two independent extensors through a *prescribed* point of a panel** (`lem:extensor-pair-
+through-given-point`; Phase 39 PENCIL, L0b; sibling of
+`exists_linearIndependent_extensor_pair_through_point` that fixes the concurrency point in advance
+instead of choosing it). For any normal `n : Fin 4 → K` and any nonzero point `q` of the panel
+`n^⊥` (`q ⬝ᵥ n = 0`), there are two screw elements `Ce, Cf : ScrewSpace K 2`, each lying in the
+panel `n^⊥` (`ExtensorInPanel`) *and* passing through `q` (`ExtensorThroughPoint`), whose
+`2`-extensors are linearly independent.
+
+Needed for W4-A (`hasPencilRealization_of_not_simple`), where the two re-realized hinges at a
+contracted body must pass through the point the contraction's induction hypothesis already fixed,
+not a freshly chosen one. The panel `W = n^⊥` has dimension `≥ 3` (the three independent perps of
+`exists_three_perp`), so `q` extends to a linearly independent triple `q, y, z` in `W`; the two
+pencil lines `q ∨ y` and `q ∨ z` through `q` both lie in `W` and their extensors are linearly
+independent by the shared-vector wedge-LI brick `linearIndependent_pair_extensor_of_li3`. -/
+theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 → K}
+    (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
+    ∃ Ce Cf : ScrewSpace K 2,
+      ExtensorInPanel Ce n ∧ ExtensorInPanel Cf n ∧
+      ExtensorThroughPoint Ce q ∧ ExtensorThroughPoint Cf q ∧
+      LinearIndependent K ![Ce, Cf] := by
+  classical
+  -- The panel `W = n^⊥` as the kernel of `x ↦ x ⬝ᵥ n`.
+  set W : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n)
+    with hW
+  have hmemW : ∀ x : Fin 4 → K, x ∈ W ↔ x ⬝ᵥ n = 0 := by
+    intro x
+    simp only [hW, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
+  -- `3 ≤ finrank W`: the three independent perps of `exists_three_perp` live in `W`.
+  have hW3 : 3 ≤ Module.finrank K W := by
+    obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
+    have hli : LinearIndependent K (fun i => (⟨v i, (hmemW _).2 (hvperp i)⟩ : W)) :=
+      LinearIndependent.of_comp W.subtype hvli
+    simpa using hli.fintype_card_le_finrank
+  -- Extend `q ∈ W` to an independent triple `q, y, z` in `W`.
+  set q' : W := ⟨q, (hmemW q).2 hqn⟩
+  have hq' : q' ≠ 0 := fun h => hq (congrArg Subtype.val h)
+  obtain ⟨y, hy⟩ := exists_linearIndependent_pair_of_one_lt_finrank (R := K) (by omega) hq'
+  obtain ⟨z, hz⟩ := exists_linearIndependent_snoc_of_lt_finrank hy (by omega)
+  have h3 : LinearIndependent K ![q, (y : Fin 4 → K), (z : Fin 4 → K)] := by
+    have := hz.map' W.subtype (Submodule.ker_subtype _)
+    have heq : (W.subtype ∘ Fin.snoc ![q', y] z : Fin 3 → Fin 4 → K) = ![q, y, z] := by
+      funext i; fin_cases i <;> rfl
+    rwa [heq] at this
+  have hyn : (y : Fin 4 → K) ⬝ᵥ n = 0 := (hmemW _).1 y.2
+  have hzn : (z : Fin 4 → K) ⬝ᵥ n = 0 := (hmemW _).1 z.2
+  refine ⟨ScrewSpace.mk (extensor ![q, (y : Fin 4 → K)]) (extensor_mem_exteriorPower _),
+    ScrewSpace.mk (extensor ![q, (z : Fin 4 → K)]) (extensor_mem_exteriorPower _),
+    ⟨_, ScrewSpace.val_mk _ _, fun i => by fin_cases i; exacts [hqn, hyn]⟩,
+    ⟨_, ScrewSpace.val_mk _ _, fun i => by fin_cases i; exacts [hqn, hzn]⟩,
+    ⟨_, ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩,
+    ⟨_, ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩, ?_⟩
+  have hLI_ext : LinearIndependent K
+      ![extensor (![q, (y : Fin 4 → K)] : Fin 2 → Fin 4 → K), extensor ![q, (z : Fin 4 → K)]] :=
+    linearIndependent_pair_extensor_of_li3 h3
+  rw [← LinearMap.linearIndependent_iff
+    ((⋀[K]^2 (Fin 4 → K)).subtype.comp (ScrewSpace.equivExteriorPower K 2).toLinearMap)
+    (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
+  have hfun : ((⋀[K]^2 (Fin 4 → K)).subtype.comp
+      (ScrewSpace.equivExteriorPower K 2).toLinearMap) ∘
+      ![ScrewSpace.mk (extensor (![q, (y : Fin 4 → K)] : Fin 2 → Fin 4 → K))
+          (extensor_mem_exteriorPower _),
+        ScrewSpace.mk (extensor ![q, (z : Fin 4 → K)]) (extensor_mem_exteriorPower _)]
+      = ![extensor (![q, (y : Fin 4 → K)] : Fin 2 → Fin 4 → K),
+          extensor ![q, (z : Fin 4 → K)]] := by
+    funext i; fin_cases i <;> rfl
+  rw [hfun]; exact hLI_ext
+
 /-- **The two-body coincident-panel pencil realization** (`lem:pencil-base-parallel-pair`; Phase 39
 PENCIL, leaf W1; the pencil analogue of `theorem_55_base_producer_parallel_pair`, KT Lemma 5.3,
 p. 670). A two-vertex minimal-`0`-dof-graph — a *parallel pair* of edges `e ≠ f` both linking

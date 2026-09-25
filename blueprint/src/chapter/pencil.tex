@@ -212,6 +212,30 @@ lines of a flat pencil already share the point of the pencil.
   case.
 \end{proof}
 
+\begin{lemma}[Two independent extensors through a prescribed point of a panel]
+  \label{lem:extensor-pair-through-given-point}
+  \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_through_given_point}
+  \leanok
+  \uses{def:extensor-through-point, def:genuine-hinge-realization}
+  For any normal $n \in K^4$ and any nonzero point $q \in n^{\perp}$, there
+  are two screw elements $C, C' \in \mathrm{ScrewSpace}\,2$, each lying in
+  the panel with normal $n$ (\cref{def:genuine-hinge-realization}) and
+  passing through $q$ (\cref{def:extensor-through-point}), whose
+  $2$-extensors are linearly independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:extensor-pair-in-panel}
+  Sibling of \cref{lem:extensor-pair-through-point}, with the concurrency
+  point $q$ prescribed rather than chosen. The panel $n^{\perp}$ has
+  dimension at least $3$ in $K^4$, so $q$ extends to a linearly
+  independent triple $q, y, z$ in $n^{\perp}$. The two pencil lines
+  $q \vee y$ and $q \vee z$ through $q$ both lie in $n^{\perp}$ and
+  contain $q$ in their span, so each lies in the panel and passes through
+  $q$; their extensors are linearly independent because $\{q, y, z\}$ is
+  --- the shared-vector case behind \cref{lem:extensor-pair-in-panel}.
+\end{proof}
+
 The base region of Katoh--Tanigawa's induction is realized directly at
 one and two bodies (\cref{lem:theorem-55-base-producer}); the pencil
 condition first bites at a body of degree three or more, so on two
@@ -1061,16 +1085,20 @@ class, and assembles the conditioned pair from these pieces.
 
 \begin{lemma}[The parallel-class case]
   \label{lem:pencil-nonsimple-case}
+  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_not_simple}
+  \leanok
   \uses{def:pencil-rank-hypothesis, def:pencil-conditioned-pair,
         def:rigid-subgraph}
-  Let $K$ be an infinite field and $G$ a loopless multigraph on at least
-  three bodies that is not simple. If every multigraph on strictly fewer
+  Let $K$ be a field and $G$ a loopless multigraph on at least three
+  bodies that is not simple. If every multigraph on strictly fewer
   bodies satisfies the conditioned pair at $n = 3$
   (\cref{def:pencil-conditioned-pair}), then $G$ has a pencil realization
   at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-I-realization-nonsimple}
+  \leanok
+  \uses{lem:case-I-realization-nonsimple, lem:pencil-contraction-deficiency,
+        lem:rigidityRows-splice-rank-add, lem:extensor-pair-through-given-point}
   This is Katoh and Tanigawa's parallel-edge
   contraction~\cite[Lemma~6.2]{katohTanigawa2011}, in the form of
   \cref{lem:case-I-realization-nonsimple}, run at the pencil condition and
@@ -1092,6 +1120,7 @@ class, and assembles the conditioned pair from these pieces.
   \label{thm:pencil-conditional-realization-main-component}
   \lean{CombinatorialRigidity.Molecular.pencilPair_of_X0,
         CombinatorialRigidity.Molecular.pencil_conjecture_of_X0}
+  \leanok
   \uses{thm:pencil-reduction, def:pencil-conditioned-pair,
         def:pencil-main-component-statements}
   Let $K$ be an infinite field. If the distinct and the generic
@@ -1100,6 +1129,7 @@ class, and assembles the conditioned pair from these pieces.
   conditioned pair at $n = 3$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-cut-case, lem:pencil-nonsimple-case}
   Apply \cref{thm:pencil-reduction} as in
   \cref{thm:pencil-conditional-realization-pair}. One argument serves

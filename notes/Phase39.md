@@ -1,16 +1,16 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — **closing on L0** (PI, 2026-09-25: the `X₀` formalization opens as
+**Status:** in progress — **closing on L0c** (PI, 2026-09-25: the `X₀` formalization opens as
 **Phase 40**, and Phase 39 closes once L0 lands; verbatim `notes/pencil/adjudications.md`). The
 target is **`PencilPair K 3 G`**, a three-conjunct motive: bare; adjacent-distinct under
 `G.Simple`; generic under simplicity plus feasibility. The landed
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) reduces it
 to three carried hypotheses (`hcontract`, `hK`, `hbareSplit`). The adopted `X₀` route replaces
-them with two statements, `X0Dist` and `X0Gen` (Phase 40 discharges them), plus W4-A, which L0
-builds. **L0** (*Lemma checklist* item 0) has three steps: the new headline
-`pencil_conjecture_of_X0` beside the landed one — **L0a LANDED 2026-09-25**
-(`Molecule/Pencil/X0.lean`); next, W4-A, the non-simple bare case (L0b); and the phase-close
-commit (L0c). The Lean hold is lifted for both remaining builds.
+them with two statements, `X0Dist` and `X0Gen` (Phase 40 discharges them). **L0** (*Lemma
+checklist* item 0) had three steps, both Lean steps now landed 2026-09-25: the headline
+`pencil_conjecture_of_X0` (**L0a**) and the non-simple bare case
+`hasPencilRealization_of_not_simple` (**L0b**, dropping the carried `hW4A`), both in
+`Molecule/Pencil/X0.lean`. **Next: L0c, the phase-close commit** (docs only).
 **Held until Phase 40's MOTIVES layer lands** (PI, 2026-09-25): the kernels (K-res)/`kres`,
 (K-c), (K-bare-c) with (α), and the smark attack, which is paused; its `state.md` records where it
 stopped. gr10 CLOSED 2026-09-23. Item 6 is DONE except the deferred A6 and one factoring item.
@@ -28,13 +28,15 @@ verdicts `notes/pencil/fanout.md`; the *State of (K)* gap map `notes/pencil/work
 
 **L0a LANDED 2026-09-25:** `X0Dist`, `X0Gen`, `pencilPair_of_X0`, `pencil_conjecture_of_X0` in the
 new `Molecule/Pencil/X0.lean` (sorry-free, axioms `[propext, Classical.choice, Quot.sound]`);
-`def:pencil-main-component-statements` pinned and green,
-`thm:pencil-conditional-realization-main-component` pinned to both theorems and left red (carries
-`hW4A`). **Next: L0b, W4-A** (*Lemma checklist* item 0, the non-simple bare case; template and the
-one new brick are in the item). Then L0c, the phase close (*Hand-off*). The mathematics behind the
-`X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all second-read, in
+`def:pencil-main-component-statements` pinned and green. **L0b LANDED 2026-09-25:**
+`hasPencilRealization_of_not_simple` (`Molecule/Pencil/X0.lean`) and its brick
+`exists_linearIndependent_extensor_pair_through_given_point` (`Pencil/Statement.lean`), both
+sorry-free (same axiom set); full route in the *Lemma checklist* entry. Both L0a headlines now
+drop `hW4A` and call the theorem directly. Blueprint:
+`thm:pencil-conditional-realization-main-component` and `lem:pencil-nonsimple-case` both pinned
+and green. **Next: L0c, the phase-close commit** (docs only; *Hand-off*). The mathematics behind
+the `X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all second-read, in
 `notes/pencil/workbook/K-main*.md` §(K-main). Its formalization plan is `notes/Phase40-design.md`.
-Nothing in L0b depends on it.
 
 **Lean, landed:** W0–W3, the whole of W5 (L0–L7), `hsplit` and `hfresh`'s discharge (W5-L7c);
 checklist items 1–5 (2026-09-15/16); item 6's Layers A–C (2026-09-16/17). The declaration index is
@@ -86,30 +88,20 @@ the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
     (`X0Dist`/`X0Gen`); `thm:pencil-conditional-realization-main-component` pinned to both
     theorems, left **red** — it still carries `hW4A`, and its `\uses` names the red
     `lem:pencil-nonsimple-case`.
-  - [ ] **L0b — W4-A, the non-simple bare case** (W4-L1; KT Lemma 6.2 mirror, minimality-free).
-    Rated S2/P2/B1, 1–2 commits. Prove `hW4A`'s statement as a theorem (suggested name
-    `hasPencilRealization_of_not_simple`, in `X0.lean` or its own file). Then drop `hW4A` from
-    both L0a decls: a statement change, so restate and green
-    `thm:pencil-conditional-realization-main-component` and green `lem:pencil-nonsimple-case`
-    in the same commit.
-    - **Template:** `case_I_realization_nonsimple_gen` (`AlgebraicInduction/Theorem55.lean`).
-      Its Steps 1–4 transfer: the parallel pair, `H′ := G.induce {a, b} ↾ {e, f}` proper rigid by
-      `isKDof_zero_of_parallel_pair`, and the contraction measure.
-    - **The changes:**
-      - (i) the IH is `PencilPair`'s **bare** conjunct at `G.rigidContract H′ a`, with no
-        minimality; the deficiency transfers by `rigidContract_deficiency_eq`, which needs
-        `[NeZero (bodyHingeMult 3)]`;
-      - (ii) the points follow the normals: `point := Fc_point ∘ collapseTo a V(H′)`;
-      - (iii) the two hinges at `e, f` must be linearly independent **through the prescribed
-        `point a`** in `normal a`'s panel. The landed
-        `exists_linearIndependent_extensor_pair_through_point` (`Pencil/Statement.lean`) chooses
-        its own point, so add a sibling taking `q ≠ 0`, `q ⬝ᵥ n = 0` (extend `q` to a basis of
-        `n^⊥`, then `q ∧ v₁`, `q ∧ v₂`). This is the one new brick;
-      - (iv) every other edge keeps `Fc`'s extensor, since both endpoints carry shared data.
-    - **Rank:** as in the template, `D + rank(G/H′) ≤ rank(G)` from its splice bricks
-      (`theorem_55_base` for `FH`), and `≤ target` from B2.
-    - If the splice bricks do not accept pencil data, stop and dispatch a compiler-checked spike
-      recon.
+  - [x] **L0b — W4-A, the non-simple bare case — LANDS 2026-09-25** (W4-L1; KT Lemma 6.2 mirror,
+    minimality-free), sorry-free (axioms `[propext, Classical.choice, Quot.sound]`). Route:
+    transcribed verbatim from the coordinator's compiled spike (opus recon, 2026-09-25) —
+    `hasPencilRealization_of_not_simple` (`Molecule/Pencil/X0.lean`, template
+    `case_I_realization_nonsimple_gen`, `AlgebraicInduction/Theorem55.lean`) and its one new brick
+    `exists_linearIndependent_extensor_pair_through_given_point` (`Pencil/Statement.lean`, a
+    sibling of `exists_linearIndependent_extensor_pair_through_point` taking a prescribed point
+    `q ≠ 0`, `q ⬝ᵥ n = 0` rather than choosing its own). Against the sketch above: the theorem
+    drops `h2ec` and `[Infinite K]` (both unused, `#lint unusedArguments`-flagged), needing only
+    `[Finite α] [Finite β]`; `NeZero (Graph.bodyHingeMult 3)` is built from `hD` inside the proof,
+    not synthesized as an instance; the brick needs no `n ≠ 0` (only `q ≠ 0`). `hW4A` dropped from
+    both L0a decls, which now call the theorem directly. Blueprint: `lem:pencil-nonsimple-case`
+    and `thm:pencil-conditional-realization-main-component` pinned and green; the new brick node
+    `lem:extensor-pair-through-given-point` added beside its sibling.
   - [ ] **L0c — close Phase 39.** A docs commit: `PHASE-BOUNDARIES.md` *When this commit closes a
     phase*, plus the phase-specific list in *Hand-off*.
 
@@ -426,14 +418,11 @@ the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 ## Hand-off / next phase
 
-**L0a landed 2026-09-25** (checklist item 0 entry). **Next concrete commit: L0b, W4-A** (*Lemma
-checklist* item 0), rated S2/P2/B1: prove `hW4A`'s statement as a theorem
-(`hasPencilRealization_of_not_simple`, template + the one new brick are in the item), then drop
-`hW4A` from both `pencilPair_of_X0` and `pencil_conjecture_of_X0` and green
-`thm:pencil-conditional-realization-main-component` and `lem:pencil-nonsimple-case` in the same
-commit. **Then L0c, the close.** Run it with `/coordinate-phase 39`. It is independent of Phase
-40's sub-phase 40a (the `n = 2` spine, `notes/Phase40a.md`): the two touch disjoint files and may
-run in either order, but not concurrently in one checkout.
+**L0a and L0b landed 2026-09-25** (checklist item 0 entries). **Next concrete commit: L0c, the
+phase close** (*Lemma checklist* item 0) — a docs-only commit, per the phase-specific list below
+plus `PHASE-BOUNDARIES.md` *When this commit closes a phase*. Run it with `/coordinate-phase 39`.
+It is independent of Phase 40's sub-phase 40a (the `n = 2` spine, `notes/Phase40a.md`): the two
+touch disjoint files and may run in either order, but not concurrently in one checkout.
 
 **L0c's phase-specific list** (on top of `PHASE-BOUNDARIES.md` *When this commit closes a phase*):
 - **ROADMAP.** Flip row 39 to ✓ Complete. It closes on the reduction: `pencil_conjecture_of_X0`
