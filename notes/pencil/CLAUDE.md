@@ -71,7 +71,7 @@ moved since 2026-09-13. Read them as the arc's record, not as current status.
 
 | what | where |
 |---|---|
-| the (K) workbook, **one file per section** | `workbook/`: 20 topical gaps, `K-bare-ext.md`, 36 direction continuations in `bare-ext/`, `grid.md`, `W4.md`, and **`K-main.md`**, §(K-main), the live `X₀` programme (tag `MC-`) |
+| the (K) workbook, **one file per section** | `workbook/`: 20 topical gaps, `K-bare-ext.md`, 36 direction continuations in `bare-ext/`, `grid.md`, `W4.md`, and **`K-main.md`** (+ Steps MC10–MC21 one file each, `K-main-MC10.md`–`K-main-MC21.md`), §(K-main), the live `X₀` programme (tag `MC-`) |
 | **the `X₀` formalization plan** (target, the index of done work, blueprint layers, open calls) | `X0-formalization.md` |
 | **W4 reopened**: the live hand-off (status, next tasks, PI calls, constraints) | `W4-reopen.md`; its frozen earlier text (P1–P5, T0–T4) is `W4-reopen-archive.md`, not read on load |
 | *State of (K)* gap map, the retired loop's status object | `workbook/gapmap.md`; read with `python3 notes/gapmap.py`, **never `sed`/`grep`** (one row is one 22 000-character line) |
