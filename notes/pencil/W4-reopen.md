@@ -62,7 +62,7 @@ can lean on more than it cites.
    characteristic-free: (MC-19) holds over every field (MC-134), and (b) needs no per-graph
    computation (MC-139)."
 2. **The PI's calls below.** The architecture recon has reported (below), and its inputs are ready.
-   Only readers E and F are still owed.
+   Readers E and F are still owed, and so is the `n = 2` sizing recon H (under *Jackson–Jordán*).
 
 **The architecture recon (2026-09-25)** is recorded in full in `notes/Phase39-design.md`
 § *X₀ architecture recon (2026-09-25)*, with its Lean spike verbatim. The coordinator
@@ -94,7 +94,9 @@ re-elaborated the spike: `lake env lean` on the built tree, exactly two `sorry`s
   commits.
 - **Jackson–Jordán: the route, not whether.** The project formalizes every result it uses
   (`DESIGN.md` *Formalize everything the argument uses*). The options:
-  - **(a)** a sizing recon for extending the landed KT spine to `n = 2`, which is field-general;
+  - **(a)** extending the landed KT spine to `n = 2`, which is field-general. A read-only sizing
+    recon (H) is in flight (2026-09-25): which `6 ≤ bodyBarDim n` sites are essential, KT Lemma 4.6
+    and Case III at `d = 2`, the wrappers, and a commit count;
   - **(b)** formalizing Jackson–Jordán's TR, whose field-general form is `[INFORMAL]` (MC-33)(i).
 - **Characteristic.** The Lean target is over any infinite field, and the `X₀` theorems are
   characteristic-0 only modulo (MC-33)(i) (Steps MC20, (MC-166)). The options are a `CharZero K`
