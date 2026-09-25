@@ -149,7 +149,7 @@ carried-hypothesis idiom, which is a sequencing device and not a citation (`DESI
      standalone phase first.
 4. **The kernels and smark:** cancel or hold. The recon reads *hold* until L6 lands.
 
-## 6. Dispatches in flight at the end of the 2026-09-25 session
+## 6. The 2026-09-25 session's dispatches (all returned; nothing in flight)
 
 *(Readers E and F, Steps MC17–MC18 and MC1–MC6/MC10, landed the same session: nothing on (MC-89)'s path refuted.)*
 

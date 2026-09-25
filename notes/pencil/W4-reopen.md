@@ -56,9 +56,9 @@ can lean on more than it cites.
 ## Next, in order
 
 1. **All second readings have landed** (readers A–F, 2026-09-25): every claim on (MC-89)'s path is
-   independently re-derived at least once. Recon H (`n = 2` sizing) has landed too. Writer I
-   (Jackson–Jordán over any field) was asked to wrap up early; land whatever it returns as a
-   fallback (`X0-formalization.md` §6).
+   independently re-derived at least once. Recon H (`n = 2` sizing) has landed too. Writer I's
+   field-general Jackson–Jordán proof is staged as a fallback (`notes/w4-pending/JJ-field-general/`).
+   **Nothing is in flight.**
 2. **Then open the formalization from `X0-formalization.md`**, the planning note. It holds the
    target, the index of everything already done, the proposed blueprint layers, the risk points,
    the open calls in gating order, and one-line briefs for re-dispatching anything still in flight.
