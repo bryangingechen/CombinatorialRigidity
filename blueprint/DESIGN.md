@@ -265,7 +265,8 @@ backfill produced enough evidence to close them.
   made*, *Blockers*, and *Hand-off*. The blueprint dep-graph was
   the authoritative todo list throughout the phase; the parallel
   checklist would have rotted. Convention now documented in the
-  top-level `CLAUDE.md` *Forward-mode blueprint phases*.
+  top-level `CLAUDE.md` *Forward-mode blueprint phases* (full rule since
+  2026-09-25: `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Project-history note
 

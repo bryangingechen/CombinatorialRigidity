@@ -64,18 +64,23 @@ in, so it cannot drift from the prose (`notes/Harness-structure.md` slice 8).
 
 ## Layout
 
+**Live status surfaces:** `W4-reopen.md` (the W4 / `X₀` line) and
+`notes/attacks/<name>/state.md` (each attack). The gap map, `fanout.md` and
+`strategy.md` belong to the coordinator loop retired on 2026-09-15 and have not
+moved since 2026-09-13. Read them as the arc's record, not as current status.
+
 | what | where |
 |---|---|
-| the (K) workbook, **one file per section** | `workbook/` — 20 topical gaps, `K-bare-ext.md`, 36 direction continuations in `bare-ext/`, `grid.md`, `W4.md` |
-| **the status object** — *State of (K)* gap map | `workbook/gapmap.md`; read with `python3 notes/gapmap.py`, **never `sed`/`grep`** (one row is one 22 000-character line) |
+| the (K) workbook, **one file per section** | `workbook/`: 20 topical gaps, `K-bare-ext.md`, 36 direction continuations in `bare-ext/`, `grid.md`, `W4.md`, and **`K-main.md`**, §(K-main), the live `X₀` programme (tag `MC-`) |
+| **W4 reopened**: the live hand-off (status, next tasks, PI calls, constraints) | `W4-reopen.md`; its frozen earlier text (P1–P5, T0–T4) is `W4-reopen-archive.md`, not read on load |
+| *State of (K)* gap map, the retired loop's status object | `workbook/gapmap.md`; read with `python3 notes/gapmap.py`, **never `sed`/`grep`** (one row is one 22 000-character line) |
 | shared dictionary + test shapes `W19`/`S29` | `workbook/dictionary.md` |
 | section index (paths, not line numbers) | `workbook/README.md` |
-| option board §8, the §9 Zheng shelf | `strategy.md` |
+| option board §8, the §9 Zheng shelf (retired loop) | `strategy.md` |
 | label registry + the minting rule | `labels.md` — **read before minting any label** |
-| dispatch specs and landing write-ups | `fanout.md` (ordinals 1–19: `fanout-archive.md`) |
+| the retired loop's dispatch specs and landing write-ups | `fanout.md` (ordinals 1–19: `fanout-archive.md`) |
 | archived verbatim user calls | `adjudications.md` |
-| **W4 reopened (2026-09-23)**: hand-off, task list T0–T4, the do-not list | `W4-reopen.md` |
-| the retired loop's final work log, verbatim (2026-09-15) | `arc-worklog.md` — not maintained; live status is `notes/attacks/<name>/state.md` |
+| the retired loop's final work log, verbatim (2026-09-15) | `arc-worklog.md`, not maintained |
 | structural-round work logs | `structure.md`, `cleanup.md` |
 
 `grid.md` and `W4.md` keep several sections each rather than one: `grid.md` is

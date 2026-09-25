@@ -92,7 +92,7 @@ decisions, blockers, hand-off — and points at the blueprint chapter.)
 3. Identify the active phase from ROADMAP's Status table. If the
    phase has not started yet, open ROADMAP's planning section for
    that phase and create `notes/PhaseN.md` in your first commit
-   (template in `notes/CLAUDE.md`). If no phase is active or planned
+   (template in `PHASE-BOUNDARIES.md`). If no phase is active or planned
    in the table (between phases), consult ROADMAP's *Queued
    post-program phases* subsection; the next concrete task is opening
    the queue's first codenamed phase (minting its number), with that
@@ -110,62 +110,13 @@ decisions, blockers, hand-off — and points at the blueprint chapter.)
   persist across sessions; use `notes/PhaseN.md` for anything that
   needs to outlast the session.
 - **Forward-mode blueprint phases (Phase 6 onward by default).** The
-  active phase's blueprint chapter — typically a section of
-  `blueprint/src/chapter/*.tex` — is the authoritative dep-graph
-  and lemma index. Pick the leaf-most red node (no `\leanok`,
-  dependencies all `\leanok` or mathlib facts), formalize it in
-  Lean, then add/flip `\lean{...}` and `\leanok` on its blueprint
-  entry in the same commit. Backfill mode (Phases 1–5) writes the
-  blueprint chapter end-to-end after the Lean lands; forward mode
-  inverts that so the dep-graph doubles as the live to-do list. See
-  `blueprint/CLAUDE.md` for rendering mechanics (`inv bp && inv
-  web`), `checkdecls`, dep-graph spot-check, and authoring
-  conventions; `blueprint/DESIGN.md` for the workflow-mode
-  rationale.
-
-  **Structural-edit phases** are the variant for refactor work that
-  reshapes existing definitions or signatures rather than adding new
-  ones (e.g. Phase 11's `Option` → verdict return-type reshape of
-  the Phase 9/10 pebble-game algorithms). No new chapter is opened;
-  the blueprint edits restate already-green nodes against the new
-  shape in step with the Lean, distributed across the existing
-  chapters per Layer. Forward-mode discipline still applies (the
-  dep-graph IS the lemma index), but the to-do list lives in
-  `notes/PhaseN.md`'s *Layer plan* section rather than a single
-  blueprint chapter, and the affected chapters spend a few Layer
-  commits with selected nodes red until their Lean catches up.
-  Per-slice gate (two misses in enharmonic Phase 17): before
-  committing a slice that changes a decl's *statement*, grep
-  `blueprint/src/` for that decl — when the `\lean{...}` name
-  survives the flip, `checkdecls` cannot catch a node still stating
-  the legacy form; restate it in the same commit.
-
-  The **additive variant** of the same gate (one miss in enharmonic
-  Phase 17, caught only by a later recon): a slice that lands a
-  unified *successor* for a node's existing declarations changes no
-  statement, so nothing fails — extend that node's `\lean{...}` list
-  with the successor name in the same commit, or record the repin
-  debt explicitly in the phase notes; otherwise the node silently
-  pins only names scheduled for deletion. The **deletion/retirement
-  variant** (three misses in one enharmonic sub-phase, repaired by a
-  coordinator follow-up): a slice is not complete until the deleted
-  declarations' names no longer appear as a *live cross-reference*
-  anywhere in the tree — `grep` the whole repo for each deleted name
-  and, in the **same commit**, repoint or remove every docstring /
-  comment reference. The trap is the rationalization "that reference
-  retires later with its own file's legacy": that holds *only* for a
-  reference sitting inside another decl that is itself scheduled for
-  deletion. A reference inside a **surviving** decl's docstring, or a
-  **live mirror lemma**, dangles permanently — repoint it to the
-  successor now. (A bare grep gives a false sense of completeness
-  here because the build stays green: docstring references don't
-  gate, and `checkdecls` only covers `\lean{...}` pins, not prose
-  `` `name` `` back-ticks. The only intentional surviving reference
-  to a deleted name is a retirement-history note that names it
-  precisely *because* it documents the deletion.) These are the
-  per-slice author-side view of the coordinator's step-4
-  additive-successor / supersession-deletion checks in
-  `.claude/commands/coordinate-phase.md`.
+  active phase's blueprint chapter is the authoritative dep-graph and
+  lemma index: pick the leaf-most red node, formalize it, and add/flip
+  its `\lean{...}` and `\leanok` in the same commit. The full rule —
+  structural-edit phases, and the three per-slice gates (a changed
+  statement, an additive successor, a deletion) that `checkdecls` cannot
+  see — is `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*, which
+  auto-loads when you touch Lean.
 - **Docstrings are not evidence.** When planning or building against
   a definition from an earlier phase — especially a mirror definition
   with no upstream precedent — derive your claims from the definition
@@ -421,32 +372,10 @@ for reading them (pypdf inside the blueprint venv when the `Read`
 tool lacks poppler; the page-offset caveat) lives in `REFS.md` —
 read on demand when consulting a PDF, not session-start orientation.
 
-## Project-history reminder
+## Project history
 
-This project was originally developed at `Archive/CombinatorialRigidity/`
-in a fork of mathlib4 and lifted to this standalone, mathlib-downstream
-repository on 2026-05-13. The 55 inherited commits carry the
-`Archive/CombinatorialRigidity/` prefix in their messages; file-path
-renames (`*.lean` → `CombinatorialRigidity/`, `Mathlib/` →
-`CombinatorialRigidity/Mathlib/`) and the
-`Archive.CombinatorialRigidity` → `CombinatorialRigidity` Lean-import
-rewrite were applied via `git filter-repo` during the lift. The
-single follow-up commit `chore: lift to standalone
-mathlib-downstream project` carries the scaffolding (lakefile,
-toolchain, manifest, top-level entry point) and the doc-comment
-path-reference cleanups that filter-repo couldn't handle
-context-sensitively.
-
-**Vendored provenance (Phase 12+).** The matroid-union subsystem under
-`CombinatorialRigidity/Matroid/` is **not** original to this project:
-it is ported from Peter Nelson's
-[`apnelson1/Matroid`](https://github.com/apnelson1/Matroid) package
-(Apache-2.0, the same package supplying `Matroid.ofFun` and
-`Graph.cycleMatroid`), rebased from its shelved
-`WIP/{Submodular,Union}.lean` onto the package's live
-`FiniteCircuitMatroid` constructor. Each vendored file carries a
-Peter-Nelson copyright header with a provenance + modifications note;
-the decision and Apache §4 attribution discipline are in `DESIGN.md`
-*Local mirror of the matroid-union subsystem*. This is a distinct kind
-of provenance from the mathlib-fork lift above — credit upstream
-authorship when touching these files.
+The project was lifted from a mathlib4 fork's `Archive/` to this standalone
+repository on 2026-05-13 (inherited commits carry an
+`Archive/CombinatorialRigidity/` prefix), and `CombinatorialRigidity/Matroid/`
+is ported from Peter Nelson's `apnelson1/Matroid` (credit upstream authorship
+when touching it). Details: `DESIGN.md` *Project history*.

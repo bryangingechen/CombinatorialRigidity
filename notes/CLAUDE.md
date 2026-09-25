@@ -18,138 +18,55 @@ for *organizing* this directory is here.
 
 ## Files in this directory
 
-- **`PhaseN.md`** (one per phase, N = 1, 2, …) — phase work logs.
-  **Four of the *Phase notes* rules below are machine-gated**
-  (`notes/check-phase-note.py`): the ~500-line tripwire, the
-  forward-vs-finished ratio, a `**Status:**`-header word cap and the
-  ≤ 8-line *Decisions made* entry. Run it (default mode; no flags)
-  before any commit that edits a phase note — it checks only what
-  changed, so legacy entries never block an unrelated commit; `--all` lists
-  every note and gates the ACTIVE ones (green at baseline, so it is a usable
-  post-commit fallback), and `--archive` gates the closed ones too and is red
-  by design. Caps,
-  calibration and the recompute-before-bump rule are in its docstring.
-  **To READ one, use `python3 notes/phasenote.py N --next`** (also
-  `--status`, `--handoff`, `--section`, `--list`, `--surfaces`): the gate
-  bounds the note's size, the reader gets you one slice of it, and the pair
-  is not redundant — a gate bounds a *measure*, a reader exposes *shape*.
-  `--next` is the one a coordinator wants pre-dispatch; `--surfaces` prints
-  every status surface an F17 sweep must touch, side by side.
-- **`FRICTION.md`** — active friction log: open items, anti-patterns,
-  mirrored upstream-eligible lemmas. File format and filing rule
-  in the file's own header.
-- **`FRICTION-archive.md`** — resolved project-internal entries
-  (design history; search-target only, not read-on-load).
-- **`PERFORMANCE.md`** — performance investigations and structural
-  options (Lean module system, import boundaries). Its own header
-  explains the format.
-- **`ToolchainBumps.md`** — the canonical home for **toolchain / mathlib /
-  `Matroid` dependency bumps**: the playbook (how to run one here, given that
-  `lake update` is hook-denied), the environment requirements (notably
-  `LAKE_CACHE_DIR`, without which Lean 4.34+ reports cache-write failures as
-  *build failures* and silently truncates coverage), the verification traps
-  (`lake env lean` skips the style linters; and the superseded "cached modules
-  don't re-emit warnings" — with `LAKE_CACHE_DIR` set they do), the gate set to
-  re-run after a bump, and a per-bump record with the fix taxonomy. Its
-  **first** section is the hand-off (current pins, push state, next concrete
-  task); the rc1 cleanup queue is closed and compressed to a one-table summary,
-  with its forward-looking lessons lifted into *What the cleanup after a big
-  bump costs*. It also owns the two bump scripts' rationale —
-  `scripts/bump-mathlib.sh`
-  (transitive-pin sync, the sanctioned `lake update` escape hatch) and
-  `scripts/sweep-deprecations.py` (build-log-driven rename sweep). Read it
-  before attempting a bump; it is maintenance, not a phase, so it outlives
-  whatever phase is active.
-- **`pencil/`** — the whole Phase-39 (PENCIL) corpus: the informal-mathematics
-  workbook (`workbook/`, **one file per section** since the 2026-09-09 split),
-  the *State of (K)* gap map that is the phase's status object
-  (`workbook/gapmap.md`), the label registry (`labels.md`), the dispatch
-  specs and landing write-ups (`fanout.md`, `fanout-archive.md`), the option
-  board (`strategy.md`), the archived verbatim user calls
-  (`adjudications.md`) and the structural-round logs (`structure.md`,
-  `cleanup.md`).
-  **`notes/pencil/CLAUDE.md` is the operating manual for all of it** and
-  auto-loads when you touch the subtree — the per-file catalogue that used to
-  sit here (119 lines, loaded on *every* `notes/` touch) lives there now, so a
-  session that never opens the corpus no longer pays for it.
-  **To find a claim, ask `python3 notes/ledger.py --label '(BE-216)'`** — not
-  `grep`: retrieval by grep was measured at ~35 probes and ~137k tokens of
-  context growth for ~18 claims, against ~7 600 tokens for 14 in one call.
-- **`scripts/`** — the numerics harness (exact ℚ Python, plus the `m2/`
-  Macaulay2 layer). Entry point is **`scripts/README.md`**: primitive index,
-  layering map, invocation table, and the standing rules. Two of those rules
-  bind **project-wide**, not just numerics dispatches, so they are flagged
-  here: *every script the project runs is committed* (a standing user
-  requirement of 2026-08-05 — a script that produced a figure, verdict or
-  decision is part of the audit trail, never left in a scratch directory or
-  quoted from a transcript; a throwaway probe either becomes a driver or is
-  recorded as *measured, script not retained*, explicitly), and *figures do
-  not move* (byte-identical output at pinned `PYTHONHASHSEED`, with the
-  re-run obligation proportionate to whether a tracked driver actually
-  changed). The README also carries the *Harness debt* list.
-- **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
-  refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
-  cost, the opacity spike, mathlib precedents, and the design-recon-first
-  refactor plan). **DONE** — the refactor landed (Phase 22l `d=3` API +
-  migration; the general-`d` part is subsumed by Phase 23). Retained as an
-  archival spec; consolidates what `PERFORMANCE.md` / `FRICTION.md` point at.
-- **`VersoPort.md`** — cross-phase coordination plan for a possible
-  future port of the LaTeX/plastex blueprint to
-  `leanprover/verso-blueprint`. **Currently deferred** (Stage 0 spike
-  complete; Stages 1+ paused pending verso-blueprint maturity); see
-  the file's *Deferral* section for resume criteria. Same editing
-  discipline as phase notes (≤ 8-line entries, lift cross-cutting
-  lessons).
-- **`BlueprintExposition.md`** — cross-phase *ledger* of hard nodes that
-  earn a fully detailed blueprint exposition (the project's deliverable of
-  spelling out the steps KT's paper compresses — a complement to, not a
-  verdict on, KT's research exposition). **Capture-now / write-later:** add a
-  one-line entry naming the stable *KT-math* insight when a node
-  reroutes/decomposes; write the expanded blueprint prose at phase-close
-  (the broadened blueprint re-read — see top-level `CLAUDE.md` *When this
-  commit closes a phase*). Inclusion criterion = KT-math difficulty, **not**
-  project-side setup; see the file's own header (format, flavors, criterion).
-- **`CaseIII-d3-exposition.md`** — plan doc for the Phase-27 stretch item
-  (A2-x): the d=3 Case-III worked-case blueprint write-up as an accessible
-  on-ramp to the general Lemma 6.13. **DONE** — landed at Phase-27 close
-  (2026-07-08); retained as the plan doc / audit trail, see its *Status* header.
-- **`FormalizationRetrospective.md`** — planning doc for **Phase 29
-  (RETRO, closed 2026-07-09)**: a wrong-turns methodology narrative (the
-  project-side mirror of `BlueprintExposition.md`), delivered as the
-  blueprint appendix `blueprint/src/chapter/retrospective.tex` rather
-  than as this file itself; work log `Phase29.md`. Retained as the
-  archival planning record (inventory + outline + pinned exemplar).
-  The oversized-design-doc compression (D1) closed with the phase:
-  `Phase22-realization-design.md` compressed by an anchor-preserving
-  body-shrink (8590 → 1939 lines, zero repoints), `Phase23-design.md`
-  stays **frozen** as a live-cited technical archive (137 live Lean
-  doc-comment anchors) — see `Phase29.md`.
-- **`model-experiment.md` / `model-experiment-protocol.md` /
-  `model-experiment-archive.md`** — the **concluded** (2026-07-09)
-  model-tier dispatch experiment (which subagent model rung per task).
-  `model-experiment.md` is now a thin archival pointer; the protocol is
-  retained as an archival reference; the archive is the frozen
-  per-dispatch log (search-target, not read on load). The experiment's
-  findings are promoted into the *Dispatch playbook* section of
-  `.claude/commands/coordinate-phase.md`; live coordinator exceptions go
-  to `dispatch-log.md` (below).
-- **`coordinate-phase-rescue.md`** — symptom-indexed rescue reference
-  for the `/coordinate-phase` loop: the rare / explicit-trigger
-  patterns (mechanical fixups, killed-dispatch resume, plan-label
-  deviations, BLOCKED resolution, non-build dispatch shapes) split out
-  of `.claude/commands/coordinate-phase.md` so that body stays the
-  every-iteration core. The per-dispatch discipline lives in the
-  `phase-builder` / `recon` agent definitions (`.claude/agents/`). Read
-  on demand when a trigger fires (the TACTICS-QUIRKS model), not
-  session-start orientation.
-- **`dispatch-log.md`** — the `/coordinate-phase` **exception log**
-  (escalations, probes, BLOCKED/killed/salvaged dispatches,
-  gate-invisible defects caught in verification, playbook deviations).
-  Coordinator-owned; routine clean dispatches are NOT logged (git
-  history is the record). Row discipline in the file's own header; the
-  rung-choice rules live in the coordinator command's *Dispatch
-  playbook*. Replaces the concluded model-tier experiment's per-dispatch
-  log.
+- **`PhaseN.md`** — phase work logs (one per phase; sub-lettered phases
+  get one per sub-phase). **Read one with `python3 notes/phasenote.py N
+  --next`** (also `--status`, `--handoff`, `--section`, `--list`,
+  `--surfaces`; `--surfaces` prints every status surface an F17 sweep
+  must touch). **Gate before any commit that edits one:**
+  `python3 notes/check-phase-note.py` (default mode checks only what
+  changed; `--all` gates the active notes and is green at baseline;
+  `--archive` also gates closed ones and is red by design). It
+  machine-checks four of the *Phase notes* rules below: the ~500-line
+  tripwire, the forward-vs-finished ratio, the `**Status:**`-header
+  word cap, and the ≤ 8-line *Decisions made* entry. Caps and
+  calibration are in its docstring.
+- **`FRICTION.md`** — the active friction log (format and filing rule in
+  its header); **`FRICTION-archive.md`** — resolved entries, a search
+  target only; **`PERFORMANCE.md`** — performance investigations.
+- **`ToolchainBumps.md`** — the home for toolchain / mathlib / `Matroid`
+  bumps: playbook, environment (`LAKE_CACHE_DIR`, without which Lean
+  4.34+ reports cache-write failures as build failures), verification
+  traps, the per-bump record, and the rationale of
+  `scripts/bump-mathlib.sh` and `scripts/sweep-deprecations.py`. Read
+  it before attempting a bump.
+- **`pencil/`** — the Phase-39 (PENCIL) research corpus. Its operating
+  manual is **`notes/pencil/CLAUDE.md`**, which auto-loads when you
+  touch the subtree. To find a claim, run
+  `python3 notes/ledger.py --label '(BE-216)'`, not `grep`.
+- **`attacks/`**, **`harness/`** — the research-side attack tracks and
+  the harness's evidence (`HARNESS.md` binds both).
+- **`scripts/`** — the numerics harness (exact ℚ Python, plus `m2/`
+  Macaulay2); entry point `scripts/README.md`. Two of its rules bind
+  **project-wide**: *every script the project runs is committed*
+  (user requirement, 2026-08-05; a throwaway probe is recorded as
+  *measured, script not retained*), and *figures do not move*
+  (byte-identical output at pinned `PYTHONHASHSEED`).
+- **`coordinate-phase-rescue.md`** — the `/coordinate-phase` loop's
+  symptom-indexed rescue reference, read when a trigger fires;
+  **`dispatch-log.md`** — that loop's coordinator-owned exception log
+  (row discipline in its header).
+- **`BlueprintExposition.md`** — the cross-phase ledger of hard nodes that
+  earn a detailed blueprint exposition: add a one-line entry when a node
+  reroutes or decomposes, and write the prose at phase close. The
+  criterion is KT-math difficulty (see its header).
+- **Archival, not read on load:** `ScrewSpaceCarrier-design.md` (the
+  carrier-opacity refactor, DONE); `VersoPort.md` (the verso-blueprint
+  port, deferred; resume criteria in its *Deferral* section);
+  `CaseIII-d3-exposition.md` (the Phase-27 worked case, DONE);
+  `FormalizationRetrospective.md` (Phase 29, delivered as
+  `blueprint/src/chapter/retrospective.tex`); `model-experiment*.md` (the
+  concluded model-tier experiment, promoted into
+  `.claude/commands/coordinate-phase.md` *Dispatch playbook*).
 
 ## One canonical home per content type
 
@@ -282,48 +199,5 @@ contract holds only if the file stays scannable.
 (flat "Decisions made"); `notes/Phase3.md` is the canonical example
 for a phase with the sub-organization.
 
-### Template for `notes/PhaseN.md`
-
-When starting a phase, seed the file with sections like:
-
-```markdown
-# Phase N — <name> (work log)
-
-**Status:** in progress.
-
-## Current state
-<one-paragraph: lead with the next concrete step; then what's done /
-what's mid-stream. This + the sections below it are the *forward* part
-the note is weighted toward.>
-
-## Architectural choices made up front
-<optional; phase-start design decisions. Cross-cutting ones go in DESIGN.md.>
-
-## Lemma checklist
-- [x] `lemma_a` — done
-- [ ] `lemma_b` — in progress; blocked on …
-- [ ] `lemma_c`
-
-## Blockers / open questions
-- …
-
-## Hand-off / next phase
-<the next concrete commit that moves work forward (the smallest one, not
-the target theorem); at phase close, what unlocks the next phase>
-
-## Decisions made during this phase
-
-<The finished-work tail — keep it **shorter than the forward sections
-above** (*Forward-weighted note*); promote cross-cutting entries and
-one-line settled ones as they age. For small phases a flat list is fine;
-for phases with cleanup passes or many refactors, sub-organize as below.>
-
-### Phase-local choices and proof techniques
-- <decision + rationale, ≤ 8 lines per entry>
-
-### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
-- *<lesson>* → TACTICS-GOLF § N / TACTICS-QUIRKS § N / FRICTION [tag] *<entry title>* / DESIGN.md *<section>*
-
-### Cleanup pass summaries
-<optional; per-file effect of any cleanup pass, with cross-references>
-```
+**The template for a new `notes/PhaseN.md`** is in `PHASE-BOUNDARIES.md`
+*Template for `notes/PhaseN.md`* (it is needed only at a phase open).

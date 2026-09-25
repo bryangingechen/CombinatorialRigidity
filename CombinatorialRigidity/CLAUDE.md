@@ -150,6 +150,68 @@ axioms` against the freshly-built olean. Full decision tree,
 cold-start details, and `lean_multi_attempt` payload shape in
 `../TACTICS-GOLF.md` § 7.
 
+## Forward-mode slices
+
+*(Moved from the top-level `CLAUDE.md` on 2026-09-25; it binds every
+Lean slice in a forward-mode phase.)* **Forward-mode blueprint phases
+(Phase 6 onward by default).** The
+active phase's blueprint chapter — typically a section of
+`blueprint/src/chapter/*.tex` — is the authoritative dep-graph
+and lemma index. Pick the leaf-most red node (no `\leanok`,
+dependencies all `\leanok` or mathlib facts), formalize it in
+Lean, then add/flip `\lean{...}` and `\leanok` on its blueprint
+entry in the same commit. Backfill mode (Phases 1–5) writes the
+blueprint chapter end-to-end after the Lean lands; forward mode
+inverts that so the dep-graph doubles as the live to-do list. See
+`blueprint/CLAUDE.md` for rendering mechanics (`inv bp && inv
+web`), `checkdecls`, dep-graph spot-check, and authoring
+conventions; `blueprint/DESIGN.md` for the workflow-mode
+rationale.
+
+**Structural-edit phases** are the variant for refactor work that
+reshapes existing definitions or signatures rather than adding new
+ones (e.g. Phase 11's `Option` → verdict return-type reshape of
+the Phase 9/10 pebble-game algorithms). No new chapter is opened;
+the blueprint edits restate already-green nodes against the new
+shape in step with the Lean, distributed across the existing
+chapters per Layer. Forward-mode discipline still applies (the
+dep-graph IS the lemma index), but the to-do list lives in
+`notes/PhaseN.md`'s *Layer plan* section rather than a single
+blueprint chapter, and the affected chapters spend a few Layer
+commits with selected nodes red until their Lean catches up.
+Per-slice gate (two misses in enharmonic Phase 17): before
+committing a slice that changes a decl's *statement*, grep
+`blueprint/src/` for that decl — when the `\lean{...}` name
+survives the flip, `checkdecls` cannot catch a node still stating
+the legacy form; restate it in the same commit.
+
+The **additive variant** of the same gate (one miss in enharmonic
+Phase 17, caught only by a later recon): a slice that lands a
+unified *successor* for a node's existing declarations changes no
+statement, so nothing fails — extend that node's `\lean{...}` list
+with the successor name in the same commit, or record the repin
+debt explicitly in the phase notes; otherwise the node silently
+pins only names scheduled for deletion. The **deletion/retirement
+variant** (three misses in one enharmonic sub-phase, repaired by a
+coordinator follow-up): a slice is not complete until the deleted
+declarations' names no longer appear as a *live cross-reference*
+anywhere in the tree — `grep` the whole repo for each deleted name
+and, in the **same commit**, repoint or remove every docstring /
+comment reference. The trap is the rationalization "that reference
+retires later with its own file's legacy": that holds *only* for a
+reference sitting inside another decl that is itself scheduled for
+deletion. A reference inside a **surviving** decl's docstring, or a
+**live mirror lemma**, dangles permanently — repoint it to the
+successor now. (A bare grep gives a false sense of completeness
+here because the build stays green: docstring references don't
+gate, and `checkdecls` only covers `\lean{...}` pins, not prose
+`` `name` `` back-ticks. The only intentional surviving reference
+to a deleted name is a retirement-history note that names it
+precisely *because* it documents the deletion.) These are the
+per-slice author-side view of the coordinator's step-4
+additive-successor / supersession-deletion checks in
+`.claude/commands/coordinate-phase.md`.
+
 ## Before each commit — friction review (mandatory)
 
 Before each commit that touches Lean code, do a **friction review**.

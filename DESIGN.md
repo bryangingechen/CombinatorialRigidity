@@ -2087,3 +2087,33 @@ to a fixed section above once a question is answered.
   `Graph`, add a single `SimpleGraph.toGraph` transport (and unify
   the two sparsity predicates by showing the `(2,3)` `SimpleGraph`
   form is its `toGraph` pullback) — a lemma, not a refactor.
+
+## Project history
+
+This project was originally developed at `Archive/CombinatorialRigidity/`
+in a fork of mathlib4 and lifted to this standalone, mathlib-downstream
+repository on 2026-05-13. The 55 inherited commits carry the
+`Archive/CombinatorialRigidity/` prefix in their messages; file-path
+renames (`*.lean` → `CombinatorialRigidity/`, `Mathlib/` →
+`CombinatorialRigidity/Mathlib/`) and the
+`Archive.CombinatorialRigidity` → `CombinatorialRigidity` Lean-import
+rewrite were applied via `git filter-repo` during the lift. The
+single follow-up commit `chore: lift to standalone
+mathlib-downstream project` carries the scaffolding (lakefile,
+toolchain, manifest, top-level entry point) and the doc-comment
+path-reference cleanups that filter-repo couldn't handle
+context-sensitively.
+
+**Vendored provenance (Phase 12+).** The matroid-union subsystem under
+`CombinatorialRigidity/Matroid/` is **not** original to this project:
+it is ported from Peter Nelson's
+[`apnelson1/Matroid`](https://github.com/apnelson1/Matroid) package
+(Apache-2.0, the same package supplying `Matroid.ofFun` and
+`Graph.cycleMatroid`), rebased from its shelved
+`WIP/{Submodular,Union}.lean` onto the package's live
+`FiniteCircuitMatroid` constructor. Each vendored file carries a
+Peter-Nelson copyright header with a provenance + modifications note;
+the decision and Apache §4 attribution discipline are in `DESIGN.md`
+*Local mirror of the matroid-union subsystem*. This is a distinct kind
+of provenance from the mathlib-fork lift above — credit upstream
+authorship when touching these files.

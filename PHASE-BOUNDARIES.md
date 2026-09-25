@@ -30,7 +30,8 @@ checklists:
   scope clause + `(see notes/PhaseN.md)`. The §N prose is the single
   per-phase summary home (ROADMAP *Status* preamble states this); never
   restate the §N summary inside the cell.
-- Create `notes/PhaseN.md` from the template in `notes/CLAUDE.md`.
+- Create `notes/PhaseN.md` from the template at the end of this file
+  (*Template for `notes/PhaseN.md`*).
 - **Sub-lettered phases (the molecular program's pattern, Phase 22+) —
   codes until open, no umbrella note.** When a phase is large enough to break
   into sub-phases, do **not** pre-assign letters to the not-yet-opened ones: a
@@ -239,3 +240,50 @@ of* the per-commit checklists above:
   commit if obvious; otherwise file a project-organization friction
   entry to address next phase. This step is what keeps the docs from
   drifting between phase boundaries.
+
+## Template for `notes/PhaseN.md`
+
+When starting a phase, seed the file with sections like these (the
+*Phase notes* rules in `notes/CLAUDE.md` govern what goes in them):
+
+```markdown
+# Phase N — <name> (work log)
+
+**Status:** in progress.
+
+## Current state
+<one-paragraph: lead with the next concrete step; then what's done /
+what's mid-stream. This + the sections below it are the *forward* part
+the note is weighted toward.>
+
+## Architectural choices made up front
+<optional; phase-start design decisions. Cross-cutting ones go in DESIGN.md.>
+
+## Lemma checklist
+- [x] `lemma_a` — done
+- [ ] `lemma_b` — in progress; blocked on …
+- [ ] `lemma_c`
+
+## Blockers / open questions
+- …
+
+## Hand-off / next phase
+<the next concrete commit that moves work forward (the smallest one, not
+the target theorem); at phase close, what unlocks the next phase>
+
+## Decisions made during this phase
+
+<The finished-work tail — keep it **shorter than the forward sections
+above** (*Forward-weighted note*); promote cross-cutting entries and
+one-line settled ones as they age. For small phases a flat list is fine;
+for phases with cleanup passes or many refactors, sub-organize as below.>
+
+### Phase-local choices and proof techniques
+- <decision + rationale, ≤ 8 lines per entry>
+
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *<lesson>* → TACTICS-GOLF § N / TACTICS-QUIRKS § N / FRICTION [tag] *<entry title>* / DESIGN.md *<section>*
+
+### Cleanup pass summaries
+<optional; per-file effect of any cleanup pass, with cross-references>
+```

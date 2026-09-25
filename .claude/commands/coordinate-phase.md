@@ -497,7 +497,8 @@ CLAUDE.md at phase close.
      is actually **gone — grep it**, and run the tree-wide
      deleted-name dual check (no *live* cross-reference survives in a
      surviving decl's docstring or a live mirror lemma; see the
-     structural-edit gate in CLAUDE.md). A build that adds the
+     structural-edit gate in `CombinatorialRigidity/CLAUDE.md`
+     *Forward-mode slices*). A build that adds the
      replacement but leaves the superseded decl orphaned passes gates
      *and* the statement-shape check; the deviation is an *absence*.
      Subagents under-apply this reliably — the coordinator's dual
