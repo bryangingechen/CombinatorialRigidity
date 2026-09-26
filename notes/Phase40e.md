@@ -4,7 +4,8 @@
 §3 STEPS). It lands the standing hypotheses (H) in Lean and the CUT and BRIDGE steps, (MC-52) and
 (MC-53): a cut vertex or a chain of bridges is a fibre product, so `X₀` attaining at both pieces
 gives it at `G`. Build 1 landed (H), CUT and the single bridge: seven of nine nodes are green.
-**Next: build 2**, BRIDGE for every `k` — see *Hand-off*.
+Build 2's first half landed the general-`k` fibre lemma: eight of nine nodes are green.
+**Next: build 2's second half**, the general-`k` theorem `thm:pencil-x0-bridge` — see *Hand-off*.
 
 ## Current state
 
@@ -12,8 +13,23 @@ gives it at `G`. Build 1 landed (H), CUT and the single bridge: seven of nine no
 the (H) header of `K-main.md`: seven in `main-component.tex` §`sec:main-component-cut`,
 `lem:deficiency-cut-vertex` in `deficiency.tex`, `lem:block-rank-cut-vertex` in
 `rigidity-matrix.tex`. Seven are green. Two are red: `lem:pencil-bridge-fibre` and
-`thm:pencil-x0-bridge`. **The next concrete commit is build 2**, BRIDGE for every `k`, which turns
-them green.
+`thm:pencil-x0-bridge`.
+
+**Build 2's first half landed:** `lem:pencil-bridge-fibre` (general `k`), in `Cut.lean`, with
+explicit path hypotheses per *Architectural choices* — `pathVertex a x b : Fin (k + 2) → α` is the
+extended sequence, and `Graph.exists_liftingRestrict_eq_of_bridgePath` is the restriction-onto
+lemma. **A simplification found while building it, not in the original informal proof
+(`K-main-MC14.md`'s (MC-53) block): restriction-onto needs only that `a` is `V₁`'s unique gateway**
+(no other `V₁` body has an edge leaving `V₁`) — extend `z₁` by the single affine function already
+witnessing its own condition at `a`. This needs no admissibility of `q`, no case split on `k`, and
+no reference to the path bodies' own non-collinearity (the informal proof's route, which does
+split on `k = 0, 1, \ge 2`). Re-derived and compiler-checked before writing it into the blueprint
+(`CLAUDE.md` *Working* — a transcribed proof can diverge from what the carrier actually needs).
+**The lemma is minimal, not the full path bundle**: it takes `hsub`, `hxV₁`, `ha`, `hb : b ∉ V₁`,
+`hpath`, `hsep`, `hz₁` — no `V₂`, no `V(G) = V₁ ∪ V₂ ∪ range x`, no injectivity of `x`, mirroring
+how `exists_liftingRestrict_eq_of_bridge` (build 1's single-bridge case) takes no `V₂` either.
+**The next concrete commit is build 2's second half**, the theorem `thm:pencil-x0-bridge`, which
+turns the last node green.
 
 ## Architectural choices made up front
 
@@ -59,13 +75,19 @@ Every item but the last two landed in build 1 (standard axioms).
 - [x] **Single bridge**: `exists_dotProduct_eq_of_linearIndependent`,
   `Graph.exists_liftingRestrict_eq_of_bridge`, `Graph.X0Attains.of_bridge`, in `Cut.lean` and
   pinned nowhere yet. Build 2 keeps them as its `k = 0` case or replaces them.
-- [ ] **BRIDGE for every `k`** (not spiked) → `lem:pencil-bridge-fibre`, `thm:pencil-x0-bridge`.
+- [x] **Onto (the fibre lemma)**: `pathVertex`, `pathVertex_zero`, `pathVertex_eq_or_exists`,
+  `Graph.exists_liftingRestrict_eq_of_bridgePath`, in `Cut.lean` → `lem:pencil-bridge-fibre`. The
+  gateway argument (*Current state*) replaces the informal proof's `q_a, q_b`/`q_x`/zero-affine
+  case split — none of it is needed for onto-ness.
+- [ ] **BRIDGE, the theorem** (not spiked) → `thm:pencil-x0-bridge`.
   - Deficiency: KT Lemma 3.6 at the last bridge, then A1 `deficiency_removeVertex_of_degree_eq_one`
     along the pendant path (pin A1 if used: D5 debt).
   - Rank: `le_finrank_span_rigidityRows_of_cut`, iterated.
-  - Onto: `z₁` on `V₁`, and an affine function on `V₂`. It is prescribed at `q_a, q_b` when
-    `k = 0`, at `q_x` when `k = 1`, and zero when `k ≥ 2`. The path heights come from the planes at
-    `a` and `b`.
+  - The theorem needs the fuller path bundle the fibre lemma didn't: `V₂`, `hxV₂`,
+    `V(G) = V₁ ∪ V₂ ∪ range x`, injectivity of `x` — for the exact vertex/edge counts the rank and
+    deficiency identities need. Add them at the theorem's own hypothesis list (or thread through a
+    second application of the fibre lemma for the `V₂` side, reversing `x` and `e` — untried,
+    check before relying on it).
 - [ ] **Tracked, not a close gate:** the "only if" halves of (MC-52)(iv) and (MC-53)(iv)
   (`notes/Phase40-design.md` §3 STEPS).
 
@@ -76,13 +98,25 @@ Every item but the last two landed in build 1 (standard axioms).
 
 ## Hand-off / next phase
 
-**Next: build 2, BRIDGE for every `k`** → `lem:pencil-bridge-fibre`, `thm:pencil-x0-bridge`, in
-`Cut.lean`. Not spiked. The plan is the checklist item's three sub-bullets, stated with explicit
-path hypotheses (a path `a − x₁ − ⋯ − x_k − b` of degree-2 bodies), not a chain structure. Build 1's
-single-bridge declarations are the `k = 0` case, to keep or replace. Pin
-`deficiency_removeVertex_of_degree_eq_one` (A1, D5 debt) if it is used.
-- **If it is too large for one commit**, land the fibre lemma first: the restriction is onto at a
-  chain of bridges, at every admissible picture. Then land the theorem.
+**Next: build 2's second half, the theorem** → `thm:pencil-x0-bridge`, in `Cut.lean`. Not spiked.
+`lem:pencil-bridge-fibre` is landed (`Graph.exists_liftingRestrict_eq_of_bridgePath`); the theorem
+follows `thm:pencil-x0-cut`'s shape (one picture generic for both sides and main for `G`, heights
+in one fibre via `MvPolynomial.exists_mem_eval_ne_zero₂`, ending at `Graph.x0Attains_of_exists`) —
+`Graph.X0Attains.of_bridge` (build 1, `k = 0`) is the template proof to generalize. Concretely:
+- **Widen the hypothesis bundle**: `V₂ := V(G) \ V₁` (or an explicit `V₂` per the fibre lemma's
+  choice — decide which), `hxV₂`, `V(G) = V₁ ∪ V₂ ∪ range x`, injectivity of `x`. These join here,
+  not at the fibre lemma (*Current state* — it doesn't need them).
+- **Apply the fibre lemma from both sides.** From `V₁`: direct. From `V₂`: needs `b`'s own gateway
+  role symmetrized — `V₂`, `b ∈ V₂`, `a ∉ V₂`, and the path **reversed** (`x` reversed, `e`
+  reversed, `pathVertex b (x ∘ Fin.rev) a` in place of `pathVertex a x b`). This reversal is
+  untried; check it compiles before relying on it, or restate the fibre lemma symmetrically if the
+  reversal proves awkward.
+- **Deficiency**: KT Lemma 3.6 (`Graph.deficiency_eq_of_cutEdges_ncard_le_one`) at the last bridge,
+  then A1 `deficiency_removeVertex_of_degree_eq_one` along the pendant path (pin A1, D5 debt, if
+  used) — or find the direct `k`-bridge form if one already covers it.
+- **Rank**: `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`, iterated over the `k + 1`
+  bridges (each contributes `screwDim 2 - 1 = 5`), plus the `k` path bodies' `6k` to the body term
+  — matching the blueprint's `tgt(G) = tgt(G₁) + tgt(G₂) + 5(k + 1)`.
 - Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`.
 
 **Then 40e's close.** The read-only ORBIT recon runs before the next group opens (PI). `scratch/`
@@ -104,3 +138,11 @@ lemma (SPLITOFF), for those groups. The coordinator removes `scratch/` once 40e 
   `Graph.X0Attains.of_bridge`, `Graph.deficiency_eq_add_of_cutVertex` and
   `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` all use
   `[propext, Classical.choice, Quot.sound]`.
+- **2026-09-26 — build 2's first half: the fibre lemma re-derived, not transcribed.** The informal
+  proof (`K-main-MC14.md`'s (MC-53) block) splits on `k = 0, 1, \ge 2` and leans on the path
+  bodies' non-collinearity. A compiler-checked re-derivation found this unnecessary for onto-ness:
+  extending `z₁` by the single affine function witnessing its own condition at `a` (`V₁`'s unique
+  gateway) works uniformly, for any `k`, without admissibility. Blueprint prose for
+  `lem:pencil-bridge-fibre` rewritten to match (dropped `q` admissible, added the explicit
+  edge-separation clause `hsep` already encodes). Axioms: `[propext, Classical.choice,
+  Quot.sound]`.

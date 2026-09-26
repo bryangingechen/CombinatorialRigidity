@@ -1097,23 +1097,29 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{lemma}[The heights along a chain of bridges]
   \label{lem:pencil-bridge-fibre}
-  \uses{lem:pencil-lifting-restrict, def:pencil-admissible-picture}
+  \lean{CombinatorialRigidity.Molecular.pathVertex,
+    CombinatorialRigidity.Molecular.pathVertex_zero,
+    CombinatorialRigidity.Molecular.pathVertex_eq_or_exists,
+    Graph.exists_liftingRestrict_eq_of_bridgePath}
+  \leanok
+  \uses{lem:pencil-lifting-restrict}
   Let $G$ be $G_1 \sqcup G_2$ plus a path $a - x_1 - \cdots - x_k - b$
-  ($k \ge 0$ new vertices), with $a \in V(G_1)$ and $b \in V(G_2)$. At
-  every picture $q$ admissible for $G$, both restriction maps
-  $L_G(q) \to L_{G_i}(q)$ are onto.
+  ($k \ge 0$ new vertices), with $a \in V(G_1)$, $b \in V(G_2)$, and
+  every other edge of $G$ inside $G_1$ or inside $G_2$. At every
+  picture $q$, both restriction maps $L_G(q) \to L_{G_i}(q)$ are onto.
 \end{lemma}
 \begin{proof}
-  The path bodies have degree two, and their closed neighbourhoods are
-  three non-collinear points, so they impose nothing. The body $a$ adds
-  $z_{x_1} = h_a(q_{x_1})$ and $b$ adds $z_{x_k} = h_b(q_{x_k})$ (for
-  $k = 0$, read $x_1 = b$ and $x_k = a$). Given $z^1 \in L_{G_1}(q)$,
-  put an affine function $g$ on $V(G_2)$: for $k \ge 2$ take $g = 0$,
-  the two end conditions fix $z_{x_1}$ and $z_{x_k}$, and the $k - 2$
-  middle heights are free; for $k = 1$ take $g$ with $g(q_x) =
-  h_a(q_x)$; for $k = 0$ take $g$ with $g(q_a) = z^1_a$ and $g(q_b) =
-  h_a(q_b)$, which exists because $q_a \neq q_b$. The other restriction
-  is symmetric.
+  \leanok
+  Given $z^1 \in L_{G_1}(q)$, take the affine function $h$ agreeing
+  with $z^1$ on the closed neighbourhood of $a$ in $G_1$
+  (\cref{lem:pencil-lifting-restrict}), and extend $z^1$ by $h$ on
+  every body outside $G_1$: $a$ is the only body of $G_1$ with an edge
+  leaving $G_1$ (the path's own bodies and $b$ are all outside $G_1$,
+  so only its first edge, at $a$, can cross), so the closed
+  neighbourhood of every body outside $G_1$ either lies entirely there
+  or meets $G_1$ only at $a$, where $h$ already agrees with $z^1$. No
+  admissibility of $q$, and no case split on $k$, is needed for this
+  direction. The other restriction is symmetric.
 \end{proof}
 
 \begin{remark}

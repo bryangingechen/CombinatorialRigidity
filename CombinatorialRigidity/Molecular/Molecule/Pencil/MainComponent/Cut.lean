@@ -36,6 +36,10 @@ to `G`.
   `Graph.X0Attains.of_bridge` — the single bridge ((MC-53) with no path bodies), from the cut-edge
   rank brick `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` and KT Lemma 3.6
   `Graph.deficiency_eq_of_cutEdges_ncard_le_one`.
+* `pathVertex` — the path's extended vertex sequence `a, x 0, …, x (k - 1), b`.
+* `Graph.exists_liftingRestrict_eq_of_bridgePath` — restriction is onto at a chain of bridges of
+  any length `k` ((MC-53)(iii), `lem:pencil-bridge-fibre`): a single affine extension by the
+  witness at `a`, needing no admissibility of the picture and no case split on `k`.
 
 ## Design
 
@@ -46,6 +50,13 @@ to `G`.
   `pencilConfigPoint_liftingRestrict`, so the three ranks are read at one framework.
 * The "only if" halves of (MC-52)(iv) and (MC-53)(iv) are a tracked item, not formalized here
   (`notes/Phase40e.md`).
+* **The chain-of-bridges fibre lemma needs only that `a` is `V₁`'s unique gateway.** Extending
+  `z₁` by the single affine function already witnessing its own condition at `a` matches every
+  closed neighbourhood outside `V₁`, whether it lies entirely there or meets `V₁` only at `a` —
+  the interior path bodies' own admissibility (three non-collinear points) and the picture's
+  admissibility are never used for this direction, and no case split on `k` is needed. Build 2
+  keeps this lemma minimal (no `V₂`, no exact vertex count, no injectivity of `x`): those join the
+  hypothesis bundle where the theorem's rank/deficiency count needs them (`notes/Phase40e.md`).
 -/
 
 open scoped Graph
@@ -565,5 +576,135 @@ theorem _root_.Graph.X0Attains.of_bridge [Infinite K] [Finite α] [Finite β] {G
   rw [hb3]
   push_cast at e1 ⊢
   linarith [hcount]
+
+/-! ## A chain of bridges
+
+Build 2, BRIDGE for every `k` (`notes/Phase40e.md`). Explicit path hypotheses, not a chain
+structure (the PI-endorsed plan, *Architectural choices*): the path's interior bodies are an
+injective `x : Fin k → α`, and `pathVertex a x b : Fin (k + 2) → α` is the extended sequence
+`a, x 0, …, x (k - 1), b` its `k + 1` edges link in order. -/
+
+/-- **The path's extended vertex sequence** (Phase 40e BRIDGE): `a`, the interior bodies
+`x 0, …, x (k - 1)`, then `b`, as one `Fin (k + 2) → α`. -/
+def pathVertex {k : ℕ} (a : α) (x : Fin k → α) (b : α) : Fin (k + 2) → α :=
+  Fin.snoc (Fin.cons a x) b
+
+@[simp] theorem pathVertex_zero {k : ℕ} (a : α) (x : Fin k → α) (b : α) :
+    pathVertex a x b 0 = a := by
+  simp [pathVertex]
+
+/-- **Every non-initial member of the path sequence is `b` or an interior body** (Phase 40e
+BRIDGE): the only index `pathVertex` sends to `a` is `0` (`pathVertex_zero`), so a nonzero index
+lands on `b` (the last position) or on some `x i` (an interior position). -/
+theorem pathVertex_eq_or_exists {k : ℕ} (a : α) (x : Fin k → α) (b : α)
+    {j : Fin (k + 2)} (hj : j ≠ 0) :
+    pathVertex a x b j = b ∨ ∃ i, pathVertex a x b j = x i := by
+  induction j using Fin.lastCases with
+  | last => exact Or.inl (by simp [pathVertex])
+  | cast i =>
+    refine Or.inr ?_
+    rw [pathVertex, Fin.snoc_castSucc]
+    induction i using Fin.cases with
+    | zero => exact absurd rfl hj
+    | succ i' => exact ⟨i', by simp⟩
+
+/-- **Restriction is onto at a chain of bridges** (`lem:pencil-bridge-fibre`; (MC-53)(iii)): the
+path `a - x 0 - ⋯ - x (k - 1) - b` (`hpath`, along `pathVertex`) joins `a ∈ V₁` to `b ∉ V₁`, and
+every other link of `G` stays on one side (`hsep`). Extend `z₁ ∈ L_{G[V₁]}(q)` across the rest of
+`G` by the same affine function `h₁` that already witnesses `z₁`'s own closed-neighbourhood
+condition at `a`: `a` is the only body of `V₁` with an edge leaving `V₁` (`hgate`, read off
+`hpath`/`hsep` — the only path edge that can touch `V₁` is the first, and only at `a`, since every
+other member of the path sequence is `b` or an interior body, `pathVertex_eq_or_exists`), so every
+closed neighbourhood outside `V₁` either lies entirely there or meets `V₁` only at `a`, where `h₁`
+already agrees with `z₁`. No admissibility of `q` and no case split on `k` is needed. -/
+theorem _root_.Graph.exists_liftingRestrict_eq_of_bridgePath {G : Graph α β} {V₁ : Set α}
+    (hsub : V₁ ⊆ V(G)) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
+    {a b : α} (ha : a ∈ V₁) (hb : b ∉ V₁)
+    {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
+      (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∉ V₁ ∧ v ∉ V₁))
+    {q : α × Fin 2 → K} {z₁ : α → K} (hz₁ : z₁ ∈ (G.induce V₁).liftingSpace q) :
+    ∃ z ∈ G.liftingSpace q, Graph.liftingRestrict V₁ z = z₁ := by
+  classical
+  have hgate : ∀ f u v, G.IsLink f u v → u ∈ V₁ → v ∉ V₁ → u = a := by
+    intro f u v hl hu hv
+    by_cases hcase : ∃ i, f = e i
+    · obtain ⟨i0, rfl⟩ := hcase
+      have hl0 := hpath i0
+      rcases hl.eq_and_eq_or_eq_and_eq hl0 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · by_cases hi0 : i0 = 0
+        · subst hi0; simp
+        · exfalso
+          have hne : pathVertex a x b i0.castSucc ∉ V₁ := by
+            rcases pathVertex_eq_or_exists a x b (j := i0.castSucc)
+              (by simpa [Fin.castSucc_eq_zero_iff] using hi0) with h | ⟨i, h⟩
+            · rw [h]; exact hb
+            · rw [h]; exact hxV₁ i
+          exact hne hu
+      · exfalso
+        have hnz : i0.succ ≠ 0 := Fin.succ_ne_zero i0
+        have hne : pathVertex a x b i0.succ ∉ V₁ := by
+          rcases pathVertex_eq_or_exists a x b (j := i0.succ) hnz with h | ⟨i, h⟩
+          · rw [h]; exact hb
+          · rw [h]; exact hxV₁ i
+        exact hne hu
+    · have hcase' : ∀ i, f ≠ e i := fun i hfi => hcase ⟨i, hfi⟩
+      rcases hsep f u v hl hcase' with ⟨-, hv1⟩ | ⟨hu2, -⟩
+      · exact absurd hv1 hv
+      · exact absurd hu hu2
+  obtain ⟨h₁, hh₁⟩ := hz₁.2 a ha
+  set z : α → K := fun w => if w ∈ V₁ then z₁ w
+    else if w ∈ V(G) then h₁ ⬝ᵥ pencilPicturePoint q w else 0 with hzdef
+  have haa : z₁ a = h₁ ⬝ᵥ pencilPicturePoint q a := hh₁ a (Or.inl rfl)
+  refine ⟨z, ⟨fun w hw => ?_, fun v hv => ?_⟩, ?_⟩
+  · have hw₁ : w ∉ V₁ := fun h => hw (hsub h)
+    simp [hzdef, hw₁, hw]
+  · by_cases hv1 : v ∈ V₁
+    · by_cases hva : v = a
+      · subst hva
+        refine ⟨h₁, fun w hw => ?_⟩
+        by_cases hw1 : w ∈ V₁
+        · simp only [hzdef, ite_eq_left hw1]
+          refine hh₁ w ?_
+          rcases hw with rfl | ⟨f, hf⟩
+          · exact Or.inl rfl
+          · exact Or.inr ⟨f, ⟨hf, hv1, hw1⟩⟩
+        · have hwV : w ∈ V(G) := by
+            rcases hw with rfl | ⟨f, hf⟩
+            · exact hv
+            · exact hf.right_mem
+          simp only [hzdef, ite_eq_right hw1, ite_eq_left hwV]
+      · obtain ⟨h, hh⟩ := hz₁.2 v hv1
+        refine ⟨h, fun w hw => ?_⟩
+        have hw1 : w ∈ V₁ := by
+          by_contra hw1
+          rcases hw with rfl | ⟨f, hf⟩
+          · exact hw1 hv1
+          · exact hva (hgate f v w hf hv1 hw1)
+        simp only [hzdef, ite_eq_left hw1]
+        refine hh w ?_
+        rcases hw with rfl | ⟨f, hf⟩
+        · exact Or.inl rfl
+        · exact Or.inr ⟨f, ⟨hf, hv1, hw1⟩⟩
+    · refine ⟨h₁, fun w hw => ?_⟩
+      by_cases hw1 : w ∈ V₁
+      · rcases hw with rfl | ⟨f, hf⟩
+        · exact absurd hw1 hv1
+        have hwa : w = a := hgate f w v hf.symm hw1 hv1
+        subst hwa
+        simp only [hzdef, ite_eq_left hw1]
+        exact haa
+      · have hwV : w ∈ V(G) := by
+          rcases hw with rfl | ⟨f, hf⟩
+          · exact hv
+          · exact hf.right_mem
+        simp [hzdef, hw1, hwV]
+  · funext w
+    by_cases hw1 : w ∈ V₁
+    · simp [Graph.liftingRestrict_apply, hzdef, hw1]
+    · simp only [Graph.liftingRestrict_apply, ite_eq_right hw1]
+      exact (hz₁.1 w hw1).symm
 
 end CombinatorialRigidity.Molecular
