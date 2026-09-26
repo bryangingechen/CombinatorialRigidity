@@ -1275,7 +1275,7 @@ literal `(cd.vtx ⟨1,_⟩) (cd.vtx ⟨0,_⟩) (cd.vtx ⟨2,_⟩)` slots need �
 reconciliation needed (contrast the `d = 3` adapter, whose fixed `vtx = ![b, v, a, c]` labeling
 runs the other way). -/
 theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} (hD : 6 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
     (hG : G.IsMinimalKDof n 0) [G.Simple]
     (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     (hV4 : 4 ≤ V(G).ncard) (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :

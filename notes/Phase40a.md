@@ -5,18 +5,28 @@ chain and the molecular conjecture weaken their dimension floor in place, from
 `6 ≤ Graph.bodyBarDim n` to `3 ≤ Graph.bodyBarDim n` and from `hd : 3 ≤ n` to `2 ≤ n`. One
 triangle case is repaired. That makes them hold at `n = 2`, the planar case, over every infinite
 field. It is the `X₀` route's replacement for Jackson–Jordán (`notes/Phase40-design.md` §3,
-SPINE2). **Next: Slice 1.** The program plan is `notes/Phase40-design.md`.
+SPINE2). **Slice 1 (the leaf layer) LANDS.** **Next: Slice 2**
+(`AlgebraicInduction/Theorem55.lean`). The program plan is `notes/Phase40-design.md`.
 
 ## Current state
 
-**Next: Slice 1**, the leaf layer (*Layer plan*). Nothing has landed yet. The plan was
+**Slice 1 landed** (`three_le_bodyBarDim_of_two_le`, `chainData_extract`, `cycle_realization`,
+`case_III_hsplit_producer_all_k` incl. the triangle repair, `case_III_realization{,_all_k}`, the
+one `Theorem55.lean` caller repaired with `(by omega)`, and the three chapters' blueprint
+restatements — `molecular-induction.tex`, `algebraic-induction/case-iii.tex`; `case-i.tex`'s
+`cycle_realization` node needed no edit, its statement is already phrased generically as
+`3 ≤ m ≤ D`). **Next: Slice 2**, `AlgebraicInduction/Theorem55.lean` (*Layer plan*). The plan was
 compiler-checked by the 2026-09-25 sizing recon: the landed proofs were copied, the floor
 weakened, and the copies elaborated against the built tree. Its diffs are verbatim in
 `notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)*, with hunks keyed to line numbers
-at `c05f7df7`. **No Lean has changed since** (`git diff c05f7df7 HEAD -- CombinatorialRigidity`
-is empty at `d90bae12`), so the hunks apply as written. The site list below was recomputed on
-2026-09-25 by grepping every `6 ≤ Graph.bodyBarDim` / `6 ≤ bodyBarDim` / `six_le_bodyBarDim`
-site, which completes the recon's list (its closure report stopped at ten declarations).
+at `c05f7df7`. **Lean has changed since** — Phase 39 L0a/L0b landed `Pencil/{Arms,Statement,X0}.lean`
+(disjoint from every Slice 1–4 target) and this commit landed Slice 1 itself — but no Slice 2–4
+target file has changed, so those hunks still apply as written. One correction to the recon's
+verbatim hunk: its `push_neg at hcon` is `push Not at hcon` in the built tree (mathlib deprecated
+`push_neg`, `notes/FRICTION.md` — not a markdown-rendering artifact, confirmed by elaborating both
+against the tree). The site list below was recomputed on 2026-09-25 by grepping every
+`6 ≤ Graph.bodyBarDim` / `6 ≤ bodyBarDim` / `six_le_bodyBarDim` site, which completes the recon's
+list (its closure report stopped at ten declarations).
 
 ## Architectural choices made up front
 
@@ -55,29 +65,18 @@ site, which completes the recon's list (its closure report stopped at ten declar
 
 ## Layer plan (the to-do list)
 
-- [ ] **Slice 1 — the leaves.** Rated S1/P1/B2.
-  - `BodyBar/Framework.lean`: add `three_le_bodyBarDim_of_two_le` (above).
-  - `Induction/ForestSurgery/ChainExtraction.lean`: in `chainData_extract`, `hD : 6 ≤ bodyBarDim n`
-    becomes `3 ≤`. Its proof uses `hD` only for `3 ≤ D`, `2 ≤ D` and `2 ≤ n` (the recon). The
-    "needs `n ≥ 3`" reading was an off-by-one: `vtx : Fin (cd.d + 1)`.
-  - `AlgebraicInduction/CaseIII/Arms.lean`:
-    - `PanelHingeFramework.cycle_realization`: `hm : cy.m ≤ n` becomes `cy.m ≤ n + 1`, since it
-      is used only as `cy.m ≤ k + 2`;
-    - `case_III_hsplit_producer_all_k`: the `hD` floor, plus the **triangle repair**. The recon's
-      hunk replaces `exists_adjacent_degree_two_pair` with `Graph.exists_degree_eq_two_of_noRigid`
-      and any other vertex, and `hn3 : 3 ≤ n` with `hn2 : 3 ≤ n + 1`.
-  - `AlgebraicInduction/CaseIII/Realization.lean`: the floor in `case_III_realization_all_k` and
-    `case_III_realization`.
-  - **Callers.** Grep each renamed hypothesis's callers. `RigidityMatrix/Claim612.lean` names
-    `case_III_hsplit_producer_all_k` only in docstrings, so no edit is needed there. The
-    replacement `Graph.exists_degree_eq_two_of_noRigid` (`ForestSurgery/Reduction.lean`) already
-    takes `hD : 3 ≤ bodyBarDim n`.
-  - **Blueprint.** Restate the nodes pinning these declarations:
-    - `molecular-induction.tex`: `chainData_extract`'s node; the `D \ge 6` wording near the
-      chain-extraction statement (two lines);
-    - `algebraic-induction/case-iii.tex`: `case_III_realization{,_all_k}`, and the `6 \le D`
-      line in the node near the chapter's end;
-    - `algebraic-induction/case-i.tex`: `cycle_realization`'s node.
+- [x] **Slice 1 — the leaves.** LANDED. `BodyBar/Framework.lean` (`three_le_bodyBarDim_of_two_le`),
+  `ChainExtraction.lean` (`chainData_extract`'s floor only — its proof already derived `hD3`/`hD2`
+  by `omega`, so the body needed no other change), `CaseIII/Arms.lean` (`cycle_realization`'s
+  `hm : cy.m ≤ n + 1`; `case_III_hsplit_producer_all_k`'s floor + the triangle repair via
+  `Graph.exists_degree_eq_two_of_noRigid` + any companion vertex), `CaseIII/Realization.lean`
+  (`case_III_realization_all_k` and `case_III_realization`, the latter per the phase's "`d = 3`-only
+  wrappers weaken too" call). One caller repair: `Theorem55.lean`'s `hsplitZero` branch now passes
+  `(by omega)` in place of `hD` to `case_III_realization_all_k` (Slice 2 still holds `hD : 6 ≤ D`
+  there). Blueprint: `molecular-induction.tex`'s `lem:chain-data-extract` floor, and
+  `algebraic-induction/case-iii.tex`'s `lem:case-III` floor + its triangle-base proof prose (which
+  named `lem:adjacent-degree-two-pair`, no longer invoked there); `case-i.tex`'s `cycle_realization`
+  node needed no edit (already phrased as `3 ≤ m ≤ D`, not tied to the Lean binder's exact value).
 - [ ] **Slice 2 — `AlgebraicInduction/Theorem55.lean`.** Rated S1/P1/B2.
   - The `hD` floor in: `case_I_realization_h65_gen`, `case_I_realization_h65`,
     `case_I_dispatch_gen`, `case_I_hcontract_gen`, `theorem_55_minimalKDof_k_all_k`,
@@ -143,13 +142,22 @@ site, which completes the recon's list (its closure report stopped at ten declar
 
 ## Hand-off / next phase
 
-**Next concrete commit: Slice 1** (*Layer plan*). Apply the recon's `ChainExtraction`,
-`cycle_realization`, `case_III_hsplit_producer_all_k` and `case_III_realization_all_k` hunks,
-add `three_le_bodyBarDim_of_two_le`, repair the callers, and restate the three chapters' nodes.
-Run it with `/coordinate-phase 40a`. It may run before or after Phase 39's L0
-(`notes/Phase39.md` item 0), since the files are disjoint, but not concurrently in one checkout.
+**Next concrete commit: Slice 2** (*Layer plan*), `AlgebraicInduction/Theorem55.lean`. Apply the
+recon's Theorem55 hunks (all `6 ≤ Graph.bodyBarDim n` → `3 ≤`, and `hd : 3 ≤ n` → `2 ≤ n` with
+`have hD := three_le_bodyBarDim_of_two_le hd`, per the *Layer plan*'s declaration list), repair the
+callers outside the file (`Molecule/Theorem56.lean`, `AlgebraicInduction/Nonvacuity.lean`,
+`GenericityDevice.lean`, `Coupling.lean`, `PanelHinge.lean`, `CaseI.lean`, `CaseII.lean`,
+`Deficiency.lean` — read each hit, many are docstring mentions only), and restate
+`panel-layer.tex` / `algebraic-induction.tex` / `case-i.tex` per the *Layer plan*. Run it with
+`/coordinate-phase 40a`.
 
 ## Decisions made during this phase
 
 - **2026-09-25 — opened** (PI: SPINE2 is the first sub-phase of Phase 40; weaken in place).
   Verbatim `notes/pencil/adjudications.md`.
+- **2026-09-25 — Slice 1 lands.** The recon's hunks applied verbatim except one tactic-name fix
+  (`push_neg` → `push Not`, mathlib deprecation, already an idiom in `notes/FRICTION.md`) and the
+  case-iii.tex triangle-base proof prose, which needed rewording (not just the floor numeral)
+  since the proof no longer invokes `lem:adjacent-degree-two-pair`. Gates: `lake build` (full
+  tree, 2968 jobs, zero warnings), `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh`
+  (`checkdecls` clean) — all green.

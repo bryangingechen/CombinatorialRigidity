@@ -70,6 +70,15 @@ theorem six_le_bodyBarDim {n : ℕ} (hn : 3 ≤ n) : 6 ≤ bodyBarDim n := by
   calc 6 * 2 = 3 * 4 := by norm_num
     _ ≤ n * (n + 1) := Nat.mul_le_mul hn (by omega)
 
+/-- **The body-bar dimension is at least `3` once `n ≥ 2`** (Phase 40a, SPINE2's `n = 2` sizing:
+the Katoh–Tanigawa spine's floor weakens from `6 ≤ bodyBarDim n` to `3 ≤ bodyBarDim n`, which
+`n = 2` (the planar case) already clears — `bodyBarDim 2 = 3`). Same monotone-sequence argument
+as `six_le_bodyBarDim`, one step down. -/
+theorem three_le_bodyBarDim_of_two_le {n : ℕ} (hn : 2 ≤ n) : 3 ≤ bodyBarDim n := by
+  have hbb : 2 * bodyBarDim n = n * (n + 1) := by
+    rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  nlinarith
+
 /-- A **body-bar framework** in `ℝⁿ` on a multigraph `G : Graph α β`
 (Whiteley 1988 §3, Tay 1984 §5; `def:body-bar-framework`): the multigraph `G`
 together with a **placement** `p` assigning each bar `e ∈ E(G)` a two-extensor

@@ -806,17 +806,18 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
 /-- **Cycle realization, generic motive** (`lem:cycle-realization`, ENTRY leaf E5; Katoh–Tanigawa
 2011 Lemma 5.4, whose geometric content is Crapo–Whiteley 1982 Prop. 3.4 / Whiteley 1999 Prop. 3;
 Phase 23g). The Lemma-5.4 brick discharging the `hcycle` green-modulo hypothesis of the Case-III
-producer/spine sites: a minimal `0`-dof-graph `G` that **is** a cycle on `cy.m ≤ n` vertices has
-the generic-motive realization `HasGenericFullRankRealization K k n G`. KT state Lemma 5.4 for the
-full range `3 ≤ |V| ≤ D`; both consumers land inside it — the chain dichotomy's cycle disjunct
-supplies `4 ≤ |V| = cy.m ≤ n ≤ D`, and (since Phase 31) the `|V| = 3` triangle floor supplies
-`cy.m = 3 ≤ n` via `Graph.CycleData.ofCardThree`, folding the former separate triangle base
-(`hasGenericFullRankRealization_of_triangle`, retained as worked-case exposition) into this one
-brick (design §(4.108.A)).
+producer/spine sites: a minimal `0`-dof-graph `G` that **is** a cycle on `cy.m ≤ n + 1` vertices
+has the generic-motive realization `HasGenericFullRankRealization K k n G`. KT state Lemma 5.4 for
+the full range `3 ≤ |V| ≤ D`; both consumers land inside it — the chain dichotomy's cycle disjunct
+supplies `4 ≤ |V| = cy.m ≤ n ≤ D`, and (since Phase 40a's `n = 2` repair, `D` weakened to `3 ≤ D`)
+the `|V| = 3` triangle floor supplies `cy.m = 3 ≤ n + 1` via `Graph.CycleData.ofCardThree`, folding
+the former separate triangle base (`hasGenericFullRankRealization_of_triangle`, retained as
+worked-case exposition) into this one brick (design §(4.108.A)). The `n + 1` floor (rather than
+`n`) is exactly what the triangle base needs at `n = 2` (`bodyBarDim 2 = 3`): only `3 ≤ n + 1`.
 
 **Construction** (the general-`m` line-by-line generalization of
 `hasGenericFullRankRealization_of_triangle`, stanzas per design §(4.108.D)). The dimension chain
-`hn` forces `n = k + 1` (the `ChainData.d_eq_kAdd` arithmetic), so `cy.m ≤ n < k + 2` and
+`hn` forces `n = k + 1` (the `ChainData.d_eq_kAdd` arithmetic), so `cy.m ≤ n + 1 = k + 2` and
 `exists_cycle_normals` (E5a) produces `m` normals with nonvanishing cyclic joins and LI cyclic
 extensor family. The seed `q₀` assigns `cy.vtx i ↦ nrm i` via `Function.extend` off `cy.vtx_inj`
 (junk elsewhere) — the general-`m` replacement for the triangle's 3-way nested-`if`. Each cycle
@@ -836,7 +837,7 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
     [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
     {G : Graph α β} (hG : G.IsMinimalKDof n 0)
-    (cy : G.CycleData) (hm : cy.m ≤ n) :
+    (cy : G.CycleData) (hm : cy.m ≤ n + 1) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   have hm3 : 3 ≤ cy.m := cy.hm
@@ -928,8 +929,11 @@ producer re-selects it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its 
 
 **Dichotomy spine (G4a).** On `|V(G)|`:
 
-* `|V(G)| = 3` — the **triangle base**: `exists_adjacent_degree_two_pair` (G4a-i) picks an
-  adjacent degree-2 pair `v–a` and `exists_splitOff_data_of_degree_eq_two` its two `v`-edges; since
+* `|V(G)| = 3` — the **triangle base**: since Phase 40a's `n = 2` repair (the floor weakened from
+  `6 ≤ D` to `3 ≤ D`), `Graph.exists_degree_eq_two_of_noRigid` (G4a-i) picks a single degree-2
+  vertex `v` and any other vertex `a` of the (`|V(G)| = 3`) graph as its companion —
+  `exists_adjacent_degree_two_pair` is false at `D = 3` (`K_{2,3}`, Prospect G2), but adjacency is
+  never used here — and `exists_splitOff_data_of_degree_eq_two` extracts `v`'s two edges; since
   Phase 31 the triangle is closed as the `m = 3` instance of the cycle family —
   `Graph.CycleData.ofCardThree` packages `G = C₃` as `3`-cycle data and `cycle_realization` (E5)
   closes the generic motive (KT never splits a `|V| = 3` graph — §1.46 finding 2; KT state Lemma 5.4
@@ -961,7 +965,7 @@ producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring bu
 rest of the producer. -/
 theorem PanelHingeFramework.case_III_hsplit_producer_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (_hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
+    {n : ℕ} (_hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
     -- the `theorem_55_minimalKDof_k_all_k.hsplitZero` premise data (at `n`, dof `0`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
@@ -995,27 +999,33 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
   have := hsimple
   -- Dichotomy on `|V(G)|`: the triangle base (`= 3`) versus the chain arm (`≥ 4`).
   rcases eq_or_lt_of_le hV3 with hV3eq | hV4
-  · -- **Triangle base (`|V(G)| = 3`).** Pick an adjacent degree-2 pair and its two `v`-edges, then
+  · -- **Triangle base (`|V(G)| = 3`).** Pick a degree-2 vertex and its two `v`-edges, then
     -- realize the triangle as the `m = 3` instance of the Lemma-5.4 cycle family:
     -- `CycleData.ofCardThree` packages `G = C₃` as `3`-cycle data, and `cycle_realization` (E5)
     -- closes it (Phase 31 fold; `hasGenericFullRankRealization_of_triangle` kept as exposition).
     have hcard3 : V(G).ncard = 3 := hV3eq.symm
-    obtain ⟨v, a, hvG, haG, hdegv, _, eₐ, hlea⟩ :=
-      Graph.exists_adjacent_degree_two_pair hD hV3 hG hnoRigid
-    have hav : a ≠ v := hlea.ne.symm
+    -- `n = 2` repair (Phase 40a): a single degree-2 vertex (`D ≥ 3` suffices) replaces the adjacent
+    -- pair `exists_adjacent_degree_two_pair` needs (false at `D = 3`) — any other vertex serves as
+    -- companion, since adjacency is never used below.
+    obtain ⟨v, hvG, hdegv⟩ := Graph.exists_degree_eq_two_of_noRigid hD hV3 hG hnoRigid
+    obtain ⟨a, haG, hav⟩ : ∃ a ∈ V(G), a ≠ v := by
+      by_contra hcon
+      push Not at hcon
+      have hsub : V(G) ⊆ {v} := fun x hx => hcon x hx
+      have hle := Set.ncard_le_ncard hsub (Set.finite_singleton v)
+      rw [Set.ncard_singleton] at hle
+      omega
     obtain ⟨a', b, eₐ', e_b, ha'v, hbv, ha'G, hbG, heab', hlea', hleb, _⟩ :=
       Graph.exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
-    -- The splitOff data at `v` supplies two distinct `v`-edges `eₐ'`, `e_b` with distinct far
-    -- endpoints `a'`, `b`; `ofCardThree` forces `G = C₃` from these. `6 ≤ D = bodyBarDim n` forces
-    -- `3 ≤ n` (`bodyBarDim 2 = 3 < 6`), so `cy.m = 3 ≤ n`.
-    have hn3 : 3 ≤ n := by
+    -- `cy.m = 3 ≤ n + 1` since `n ≥ 2` (from `3 ≤ bodyBarDim n = D`).
+    have hn2 : 3 ≤ n + 1 := by
       by_contra h
-      rw [not_le] at h
+      have h' : n < 2 := by omega
       have hb := hD
       simp only [Graph.bodyBarDim] at hb
       interval_cases n <;> omega
     exact PanelHingeFramework.cycle_realization hn hG
-      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn3
+      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn2
   · -- **Chain arm (`|V(G)| ≥ 4`).** Run the ENTRY dichotomy (`Graph.chainData_extract`, E3):
     -- either the length-`n` chain data (+ the `v₁`-split's minimality/simplicity/measure data)
     -- or the short-cycle disjunct (§C.5 shape 2).
@@ -1031,7 +1041,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
         (hIH _ hGv hGv2 hGvlt).1 hGvSimple
       exact hcand cd hd2 hGv.1 hsplitGP
     · -- Cycle disjunct (`4 ≤ |V(G)| ≤ n`): the Lemma-5.4 brick `cycle_realization` (E5) realizes
-      -- `G` directly.
-      exact PanelHingeFramework.cycle_realization hn hG cy hcym
+      -- `G` directly (`hcym : cy.m ≤ n`, weaker than the `cy.m ≤ n + 1` the brick now wants).
+      exact PanelHingeFramework.cycle_realization hn hG cy (by omega)
 
 end CombinatorialRigidity.Molecular

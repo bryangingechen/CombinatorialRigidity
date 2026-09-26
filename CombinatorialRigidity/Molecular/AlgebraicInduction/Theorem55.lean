@@ -2501,8 +2501,8 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
       have hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       have hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn G (hfresh 0 G hG) hG hV3
-        hnoRigid hSimple hIH
+      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 (by omega) hn G (hfresh 0 G hG)
+        hG hV3 hnoRigid hSimple hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
 

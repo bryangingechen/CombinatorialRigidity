@@ -1589,7 +1589,7 @@ dichotomy below.
   \uses{def:chain-data, def:cycle-data, lem:chain-cycle-dichotomy,
         lem:reduction-step, lem:reduction-measure, lem:simple-minimal-noRigid}
   Let $G$ be a simple minimal $0$-dof-graph with no proper rigid subgraph,
-  $D \ge 6$, $|V(G)| \ge 4$, with a fresh edge name available for $G$ (an
+  $D \ge 3$, $|V(G)| \ge 4$, with a fresh edge name available for $G$ (an
   unused label outside $E(G)$). Then either
   $G$ carries a length-$n$ chain (\cref{def:chain-data}) whose
   $v_1$-split $G_{v_1}^{v_0 v_2}$ is again a \emph{simple} minimal
@@ -1597,8 +1597,9 @@ dichotomy below.
   general-$d$ Case~III argument recurses on --- or $G$ is a cycle on
   $m \le n$ vertices (\cref{def:cycle-data}). This is the general-$d$ form
   of the $d = 3$ extraction pair (\cref{lem:adjacent-degree-two-pair},
-  \cref{lem:chain-data-of-noRigid}), with the cycle branch now genuinely
-  reachable.
+  \cref{lem:chain-data-of-noRigid}, both still pinned at their original
+  $D \ge 6$ floor), with the cycle branch now genuinely reachable and the
+  floor weakened to reach the planar case $n = 2$ ($D = 3$).
 \end{lemma}
 \begin{proof}
   \leanok

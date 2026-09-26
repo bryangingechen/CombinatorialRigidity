@@ -2649,7 +2649,7 @@ The body adapts the all-`k` IH to the `k = 0`-only form `case_III_hsplit_produce
 and discharges `hcand` via the router. -/
 theorem PanelHingeFramework.case_III_realization_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
+    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
@@ -2682,10 +2682,13 @@ rewire, Phase 23h A1). Thin wrapper pinning the grade to `k = 2`. Since CHAIN-5 
 `case_III_realization_all_k`, and since the A1 rewire the ENTRY chain **extraction** + short-cycle
 bricks are consumed directly inside the producer (`Graph.chainData_extract` / `cycle_realization`,
 both general-`n`); this wrapper now only pins the grade and threads `hD`/`hn`/`hfresh`. The
-general-`n` extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 6`), so the `d = 3`-only extractor this
-route used to run is redundant and has been removed (Phase 23h orphan sweep). -/
+general-`n` extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 3`), so the `d = 3`-only extractor this
+route used to run is redundant and has been removed (Phase 23h orphan sweep). Phase 40a's `n = 2`
+sizing weakens `hD` in place to `3 ≤ D`; the hypothesis is redundant at this wrapper's fixed
+`k = 2` (where `hD` always holds), but uniformity with `case_III_realization_all_k` keeps the
+docstrings honest. -/
 theorem PanelHingeFramework.case_III_realization [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)

@@ -1327,7 +1327,7 @@ isomorphisms $\rho_i$ one at a time.
         lem:simple-minimal-noRigid, lem:reduction-step}
   Let $G$ be a simple minimal $0$-dof-graph on $|V| \ge 3$ bodies with no
   proper rigid subgraph, at general dimension ($1 \le k$,
-  $6 \le D = \binom{n+1}{2} = \binom{k+2}{2}$), and suppose the all-$k$
+  $3 \le D = \binom{n+1}{2} = \binom{k+2}{2}$), and suppose the all-$k$
   induction hypothesis at every strictly smaller minimal $k'$-dof-graph
   ($k' \ge 0$ arbitrary): the graph is nonempty, it carries a
   general-position, link-recording realization when it is simple, and a
@@ -1340,17 +1340,25 @@ isomorphisms $\rho_i$ one at a time.
   splitting-off's short-circuit edge $e_0$). The eq.-(6.22) nested-IH rank
   bound is discharged internally from the all-$k$ IH
   (\cref{lem:case-III-nested-rank-lower}), not carried; the $d = 3$ form is
-  the $k = 2$ specialization.
+  the $k = 2$ specialization; and the floor $D \ge 3$ (weakened from
+  $D \ge 6$) already reaches the planar case $n = 2$ ($D = 3$), where the
+  triangle floor below is realized by a single degree-2 vertex rather than
+  an adjacent pair.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:triangle-third-edge, lem:chain-data-extract,
-        lem:adjacent-degree-two-pair, lem:cycle-realization, def:cycle-data,
+        lem:cycle-realization, def:cycle-data,
         lem:simple-minimal-noRigid, lem:reduction-step,
         lem:case-III-chain-dispatch}
   Induction on $|V(G)|$, proving both conjuncts of the statement together.
-  At $|V| = 3$ the recursion bottoms on the triangle floor: an adjacent degree-2 vertex
-  (\cref{lem:adjacent-degree-two-pair}) supplies two edges from a common vertex, which pin the
+  At $|V| = 3$ the recursion bottoms on the triangle floor: at the weakened floor $D \ge 3$
+  the adjacent-pair lemma \cref{lem:adjacent-degree-two-pair} is no longer available (it is
+  false at $D = 3$), so a single degree-2 vertex $v$
+  (\texttt{Graph.exists\_degree\_eq\_two\_of\_noRigid}) is picked instead, together with any
+  other vertex $a \ne v$ of the three-vertex graph as its companion --- adjacency of $v, a$ is
+  never used below. The degree-2 closure at $v$ then supplies its two edges $e_a : v$--$a$,
+  $e_b : v$--$b$, which pin the
   third edge and the vertex set $V(G) = \{v,a,b\}$ (\cref{lem:triangle-third-edge}); packaging
   $G$ as the $3$-cycle $C_3$ then realizes it as the $m = 3$ instance of the KT Lemma-5.4
   cycle family (\cref{lem:cycle-realization}, stated by KT at $3 \le |V| \le D$, of which the
@@ -1373,10 +1381,10 @@ isomorphisms $\rho_i$ one at a time.
   explicitly as an accessible entry point in
   \cref{lem:case-III-candidate-dispatch-d3}.
 
-  The $d = 3$-only extraction pair \cref{lem:adjacent-degree-two-pair}
-  is consumed on the triangle floor, which closes through
-  \cref{lem:cycle-realization} at $m = 3$; the dichotomy itself is run by
-  the general extractor at every grade, its $|V| \ge 4$ cycle disjunct closed by
-  \cref{lem:cycle-realization} (a genuine branch at $d \ge 4$, vacuous at $d = 3$); and the
+  At the weakened floor $D \ge 3$ the triangle base no longer consumes the $d = 3$-only
+  \cref{lem:adjacent-degree-two-pair} (false at $D = 3$); a single degree-2 vertex suffices,
+  and closes the same way through \cref{lem:cycle-realization} at $m = 3$. The dichotomy
+  itself is run by the general extractor at every grade, its $|V| \ge 4$ cycle disjunct closed
+  by \cref{lem:cycle-realization} (a genuine branch at $d \ge 4$, vacuous at $d = 3$); and the
   cycle family is load-bearing for the $k > 0$ Case~II (\cref{lem:case-II}) as well.
 \end{proof}
