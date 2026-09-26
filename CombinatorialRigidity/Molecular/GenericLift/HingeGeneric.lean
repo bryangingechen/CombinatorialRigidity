@@ -765,7 +765,7 @@ transport (`LinearIndependent.units_smul_iff`) carries that independence to the 
 unit, not merely a swap sign (unlike Layer P). -/
 theorem exists_hingePoints_independent_hingePointRow [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
@@ -907,7 +907,7 @@ The two bounds pinch the row count to the exact value — the Layer-P `le_antisy
 separate row-count computation for the witness since the assembly already reports it. -/
 theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
@@ -976,7 +976,7 @@ get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count
 `q`, hence rigidity there. -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
@@ -1019,7 +1019,7 @@ the tree-packing reformulation of the deficiency-zero condition
 (`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `lem:deficiency-zero-iff-tree-packing`). -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :

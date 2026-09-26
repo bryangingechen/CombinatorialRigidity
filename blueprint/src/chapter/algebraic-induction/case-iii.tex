@@ -1350,12 +1350,13 @@ isomorphisms $\rho_i$ one at a time.
   \uses{lem:triangle-third-edge, lem:chain-data-extract,
         lem:cycle-realization, def:cycle-data,
         lem:simple-minimal-noRigid, lem:reduction-step,
-        lem:case-III-chain-dispatch}
+        lem:case-III-chain-dispatch, lem:low-degree-vertex}
   Induction on $|V(G)|$, proving both conjuncts of the statement together.
   At $|V| = 3$ the recursion bottoms on the triangle floor: at the weakened floor $D \ge 3$
   the adjacent-pair lemma \cref{lem:adjacent-degree-two-pair} is no longer available (it is
-  false at $D = 3$), so a single degree-2 vertex $v$
-  (\texttt{Graph.exists\_degree\_eq\_two\_of\_noRigid}) is picked instead, together with any
+  false at $D = 3$), so a single degree-2 vertex $v$, from the average-degree count
+  \cref{lem:low-degree-vertex}
+  (\texttt{Graph.exists\_degree\_eq\_two\_of\_noRigid}), is picked instead, together with any
   other vertex $a \ne v$ of the three-vertex graph as its companion --- adjacency of $v, a$ is
   never used below. The degree-2 closure at $v$ then supplies its two edges $e_a : v$--$a$,
   $e_b : v$--$b$, which pin the

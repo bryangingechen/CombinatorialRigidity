@@ -97,7 +97,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
   classical
   have hloop : G.Loopless := hSimple.toLoopless
   -- Numerics for `n = 3`, `k = 2`.
-  have hD : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
+  have hD : (3 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.three_le_bodyBarDim_of_two_le (by norm_num)
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 3 c → ∃ e₀ : β, e₀ ∉ E(G') :=
     Graph.freshEdgeSupply_of_card_lt (by omega) (by simpa [Graph.bodyBarDim] using hcard)

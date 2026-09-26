@@ -399,7 +399,7 @@ general-position realization, run here against a *given* generic `q` rather than
 simultaneous non-root. -/
 theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
@@ -483,7 +483,7 @@ the assumed rigidity at any one generic assignment (`exists_isGenericNormals`,
 `q`, hence rigidity there. -/
 theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
