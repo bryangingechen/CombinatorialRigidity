@@ -393,6 +393,8 @@ contraction is not yet fully rigid
 
 \begin{lemma}[Rank addition at a cut vertex]
   \label{lem:block-rank-cut-vertex}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq}
+  \leanok
   \uses{def:rigidity-matrix, def:hinge-constraint}
   Let $(G,p)$ be a body-hinge framework and let $V_1, V_2$ be vertex sets
   with $V_1 \cap V_2 \subseteq \{v\}$ and every edge of $G$ inside $V_1$
@@ -403,6 +405,7 @@ contraction is not yet fully rigid
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:span-rigidityRows-eq-of-motions-eq}
   The row set of $R(G,p)$ is the union of the two sides' row sets. The
   two row spans meet in $0$, because the two motion spaces together span

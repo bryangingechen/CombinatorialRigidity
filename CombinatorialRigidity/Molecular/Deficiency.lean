@@ -4268,4 +4268,108 @@ theorem deficiency_eq_of_vertexTwoCut' [Finite α] [Finite β] {G : Graph α β}
   · rw [min_eq_left h, max_eq_left (by linarith)]; ring
   · rw [min_eq_right h, max_eq_right (by linarith)]
 
+/-! ## The deficiency at a cut vertex (`lem:deficiency-cut-vertex`; Phase 40e)
+
+The cut-vertex case `u = v` of the vertex-2-cut split `partitionDef_split_of_vertexTwoCut` above:
+two sides overlapping in one body `v`, every link internal to one side. Its non-adjacency
+hypothesis is then "no loop at `v`", and its correction `D (1 − |I|)` is `≤ 0` for every labeling,
+since the label of `v` is used on both sides — so the deficiencies add (informal (MC-52)(i)). The
+`X₀` induction's CUT step (`Graph.X0Attains.of_cutVertex`) uses the `≤` half. -/
+
+/-- **The deficiencies glue at a cut vertex** (`lem:deficiency-cut-vertex`, the `≥` direction):
+`def(G[V₁]) + def(G[V₂]) ≤ def(G)`. Optimal labelings of the two sides, relabelled injectively
+into their own sides with the cut vertex as the label of its part (`Equiv.swap`), glue to one
+labeling of `G` whose two label sets meet only in `v`; the vertex-2-cut split
+`partitionDef_split_of_vertexTwoCut` at `u = v` then reads its value as the sum. -/
+theorem deficiency_add_le_of_cutVertex [Finite α] [Finite β] {G : Graph α β}
+    (hloop : G.Loopless) (n : ℕ) {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G))
+    (hoverlap : V₁ ∩ V₂ = {v})
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    (G.induce V₁).deficiency n + (G.induce V₂).deficiency n ≤ G.deficiency n := by
+  classical
+  have hvV : v ∈ V₁ ∩ V₂ := hoverlap ▸ rfl
+  have : Nonempty α := ⟨v⟩
+  -- a relabelling of a side into itself, injective on the used labels, sending `f v` to `v`
+  have hnorm : ∀ (X : Set α) (f : α → α), v ∈ X → ∃ ι : α → α,
+      Set.MapsTo ι (f '' X) X ∧ Set.InjOn ι (f '' X) ∧ ι (f v) = v := by
+    intro X f hv
+    obtain ⟨ι, hmaps, hinj⟩ :=
+      (Set.toFinite (f '' X)).exists_injOn_of_encard_le (Set.encard_image_le f X)
+    refine ⟨Equiv.swap (ι (f v)) v ∘ ι, fun a ha => ?_, ?_, ?_⟩
+    · simp only [Function.comp]
+      have hιa := hmaps ha
+      rcases eq_or_ne (ι a) (ι (f v)) with h | h
+      · rw [h, Equiv.swap_apply_left]; exact hv
+      · rcases eq_or_ne (ι a) v with h' | h'
+        · rw [h', Equiv.swap_apply_right]; exact hmaps (Set.mem_image_of_mem f hv)
+        · rw [Equiv.swap_apply_of_ne_of_ne h h']; exact hιa
+    · exact (Equiv.injective _).injOn.comp hinj (Set.mapsTo_univ _ _)
+    · simp
+  obtain ⟨f₁, hf₁⟩ := exists_eq_ciSup_of_finite (f := (G.induce V₁).partitionDef n)
+  obtain ⟨f₂, hf₂⟩ := exists_eq_ciSup_of_finite (f := (G.induce V₂).partitionDef n)
+  obtain ⟨ι₁, hι₁m, hι₁i, hι₁v⟩ := hnorm V₁ f₁ hvV.1
+  obtain ⟨ι₂, hι₂m, hι₂i, hι₂v⟩ := hnorm V₂ f₂ hvV.2
+  set g : α → α := fun x => if x ∈ V₁ then ι₁ (f₁ x) else ι₂ (f₂ x) with hg
+  have hg₁ : Set.EqOn g (ι₁ ∘ f₁) V₁ := fun x hx => by simp [hg, hx]
+  have hg₂ : Set.EqOn g (ι₂ ∘ f₂) V₂ := fun x hx => by
+    by_cases hx₁ : x ∈ V₁
+    · have : x = v := by
+        have : x ∈ V₁ ∩ V₂ := ⟨hx₁, hx⟩
+        rwa [hoverlap] at this
+      subst this
+      simp [hg, hx₁, hι₁v, hι₂v]
+    · simp [hg, hx₁]
+  have hdef₁ : (G.induce V₁).partitionDef n g = (G.induce V₁).deficiency n := by
+    rw [partitionDef_congr (G := G.induce V₁) (by simpa using hg₁),
+      partitionDef_comp_of_injOn (by simpa using hι₁i)]
+    exact hf₁
+  have hdef₂ : (G.induce V₂).partitionDef n g = (G.induce V₂).deficiency n := by
+    rw [partitionDef_congr (G := G.induce V₂) (by simpa using hg₂),
+      partitionDef_comp_of_injOn (by simpa using hι₂i)]
+    exact hf₂
+  have hI : g '' V₁ ∩ g '' V₂ = {v} := by
+    rw [Set.image_congr hg₁, Set.image_congr hg₂]
+    apply Set.eq_singleton_iff_unique_mem.mpr
+    refine ⟨⟨⟨v, hvV.1, by simp [hι₁v]⟩, ⟨v, hvV.2, by simp [hι₂v]⟩⟩, ?_⟩
+    rintro w ⟨⟨a, ha, rfl⟩, ⟨b, hb, hab⟩⟩
+    have h1 : ι₁ (f₁ a) ∈ V₁ := hι₁m (Set.mem_image_of_mem f₁ ha)
+    have h2 : ι₂ (f₂ b) ∈ V₂ := hι₂m (Set.mem_image_of_mem f₂ hb)
+    have : (ι₁ ∘ f₁) a ∈ V₁ ∩ V₂ :=
+      ⟨h1, by simp only [Function.comp] at hab ⊢; rw [← hab]; exact h2⟩
+    rwa [hoverlap] at this
+  have hsplit := partitionDef_split_of_vertexTwoCut (G := G) (n := n) (u := v) (v := v)
+    (fun ⟨e, he⟩ => hloop.not_isLoopAt e v he) hcover (by rw [hoverlap]; simp) hsep g
+  rw [hI, Set.ncard_singleton, hdef₁, hdef₂] at hsplit
+  have := G.partitionDef_le_deficiency n g
+  push_cast at hsplit
+  linarith
+
+/-- **The deficiencies add at a cut vertex** (`lem:deficiency-cut-vertex`; informal (MC-52)(i)):
+`def(G) = def(G[V₁]) + def(G[V₂])`. The upper bound is the vertex-2-cut split at `u = v`, whose
+correction `D (1 − |I|)` is `≤ 0` because the cut vertex's label is shared; the lower bound is
+`deficiency_add_le_of_cutVertex`. -/
+theorem deficiency_eq_add_of_cutVertex [Finite α] [Finite β] {G : Graph α β}
+    (hloop : G.Loopless) (n : ℕ) {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G))
+    (hoverlap : V₁ ∩ V₂ = {v})
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n := by
+  classical
+  have hvV : v ∈ V₁ ∩ V₂ := hoverlap ▸ rfl
+  have : Nonempty α := ⟨v⟩
+  have : Nonempty (α → α) := ⟨id⟩
+  refine le_antisymm (ciSup_le fun f => ?_)
+    (deficiency_add_le_of_cutVertex hloop n hcover hoverlap hsep)
+  have hsplit := partitionDef_split_of_vertexTwoCut (G := G) (n := n) (u := v) (v := v)
+    (fun ⟨e, he⟩ => hloop.not_isLoopAt e v he) hcover (by rw [hoverlap]; simp) hsep f
+  have hne : (f '' V₁ ∩ f '' V₂).Nonempty :=
+    ⟨f v, Set.mem_image_of_mem f hvV.1, Set.mem_image_of_mem f hvV.2⟩
+  have hI : 1 ≤ (f '' V₁ ∩ f '' V₂).ncard := (Set.ncard_pos (Set.toFinite _)).mpr hne
+  have h1 := (G.induce V₁).partitionDef_le_deficiency n f
+  have h2 := (G.induce V₂).partitionDef_le_deficiency n f
+  have hD : (0 : ℤ) ≤ (bodyBarDim n : ℤ) := Int.natCast_nonneg _
+  have : (bodyBarDim n : ℤ) * (1 - ((f '' V₁ ∩ f '' V₂).ncard : ℤ)) ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos hD (by linarith [(by exact_mod_cast hI :
+      (1 : ℤ) ≤ ((f '' V₁ ∩ f '' V₂).ncard : ℤ))])
+  linarith
+
 end Graph

@@ -27,8 +27,9 @@ The file also carries the **vertex 2-cut layer** (`section TwoCutCarriers`, Phas
 Layer B): the carriers `relScrews` (`ρ̄_{uv}`), `jointRows`, `jointMotions` (`M_U`) and
 `weldedRank` of the cut-pair rank laws, with the joint's row count `finrank_span_jointRows`, the
 welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`), the welded codimension
-`weldedRank_add_finrank_jointMotions_bot` (`rank_w + dim M_⊥ = screwDim k·|α|`) and the gluing
-identity at a 2-cut `finrank_span_rigidityRows_vertexTwoCut_eq`.
+`weldedRank_add_finrank_jointMotions_bot` (`rank_w + dim M_⊥ = screwDim k·|α|`), the gluing
+identity at a 2-cut `finrank_span_rigidityRows_vertexTwoCut_eq`, and its cut-vertex case
+`finrank_span_rigidityRows_cutVertex_eq` (Phase 40e: the ranks simply add).
 Its own section header is their index; these are the objects the Layer-C losses in
 `Molecule/Pencil/TwoCut.lean` are stated in.
 
@@ -740,7 +741,9 @@ a 2-cut** (B5/B6): two sides overlapping exactly in a cut pair `{u, v}` meet, as
 exactly in `jointRows (ρ̄₁ ⊔ ρ̄₂) u v` (`inf_span_rigidityRows_of_vertexTwoCut`), so their ranks
 sum to the whole rank plus the `screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` rows they share
 (`finrank_span_rigidityRows_vertexTwoCut_eq`, stated in `ℤ`) — and, unlike its combinatorial
-counterpart `Graph.deficiency_eq_of_vertexTwoCut`, it needs no non-adjacency of the pair.
+counterpart `Graph.deficiency_eq_of_vertexTwoCut`, it needs no non-adjacency of the pair.  At a
+cut *vertex* (`u = v`) no relative screw survives and the ranks add outright
+(`finrank_span_rigidityRows_cutVertex_eq`, Phase 40e).
 Keep the `screwDiff v u` orientation of `relScrews` /
 `jointMotions` as written: the whole layer, and the Layer-C losses above it, are stated against
 it (it is immaterial to the mathematics — a submodule is closed under negation — but not to the
@@ -1271,6 +1274,45 @@ theorem finrank_span_rigidityRows_vertexTwoCut_eq [Finite α]
     have h := Submodule.finrank_le (F₁.relScrews u v ⊔ F₂.relScrews u v)
     rwa [screwSpace_finrank] at h
   omega
+
+/-- **Ranks add at a cut vertex** (`lem:block-rank-cut-vertex`; Phase 40e, informal (MC-52)(ii)):
+for sides overlapping in at most one body `v` and every link internal to one side,
+
+  `rank(G) = rank(G[V₁]) + rank(G[V₂])`,
+
+at every body-hinge framework.  It is the gluing identity above with the cut pair collapsed to
+`u = v`, where no relative screw survives: the two side row spans meet in `0`, since every screw
+assignment is a motion of one side plus a motion of the other (`mem_sup_infinitesimalMotions_induce`
+at `u = v`, where its `S u = S v` is `rfl`), and a row span is the annihilator of its motions. The
+join is the whole row span (`rigidityRows_eq_union_induce`), so the dimensions add. -/
+theorem finrank_span_rigidityRows_cutVertex_eq [Finite α]
+    (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α} {v : α} (hoverlap : V₁ ∩ V₂ ⊆ {v})
+    (hsep : ∀ e x y, F.graph.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+    Module.finrank K (Submodule.span K F.rigidityRows)
+      = Module.finrank K (Submodule.span K (⟨F.graph.induce V₁, F.supportExtensor⟩ :
+          BodyHingeFramework K k α β).rigidityRows)
+        + Module.finrank K (Submodule.span K (⟨F.graph.induce V₂, F.supportExtensor⟩ :
+          BodyHingeFramework K k α β).rigidityRows) := by
+  -- Both inputs are stated before `set` abstracts the two sides.
+  have hmem : ∀ S : α → ScrewSpace K k,
+      S ∈ (⟨F.graph.induce V₁, F.supportExtensor⟩ :
+            BodyHingeFramework K k α β).infinitesimalMotions
+          ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
+            BodyHingeFramework K k α β).infinitesimalMotions :=
+    fun _ => mem_sup_infinitesimalMotions_induce F (u := v) (v := v)
+      (by rwa [Set.pair_eq_singleton]) rfl
+  have hrows := F.rigidityRows_eq_union_induce hsep
+  set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
+  set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce V₂, F.supportExtensor⟩
+  have hinf : Submodule.span K F₁.rigidityRows ⊓ Submodule.span K F₂.rigidityRows = ⊥ := by
+    rw [F₁.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+      F₂.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+      ← Submodule.dualAnnihilator_sup_eq, Submodule.eq_top_iff'.mpr hmem,
+      Submodule.dualAnnihilator_top]
+  have hsup := Submodule.finrank_sup_add_finrank_inf_eq
+    (Submodule.span K F₁.rigidityRows) (Submodule.span K F₂.rigidityRows)
+  rw [hinf, finrank_bot, add_zero] at hsup
+  rw [hrows, Submodule.span_union, hsup]
 
 end TwoCutCarriers
 

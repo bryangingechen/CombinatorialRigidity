@@ -98,6 +98,17 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `rw [eq_top_iff.mpr fun S _ => h S]` fails ("pattern is a metavariable") — use `Submodule.eq_top_iff'.mpr h`
+- **Where it bit:** Phase 40e, `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`
+  (`RigidityMatrix/Bricks.lean`): rewriting `Z₁ ⊔ Z₂` to `⊤` inside a `dualAnnihilator` chain,
+  from `h : ∀ S, S ∈ Z₁ ⊔ Z₂`.
+- **Friction:** `eq_top_iff.mpr (fun S _ => h S)` elaborates before `rw` sees the target, so its
+  `?a = ⊤` has a metavariable left side and `rw` refuses it. One `lake env lean` cycle.
+- **Proposed fix:** `Submodule.eq_top_iff' : p = ⊤ ↔ ∀ x, x ∈ p`, whose `p` unifies from `h`'s
+  own type, so `rw [Submodule.eq_top_iff'.mpr h]` works in place. A separate `have htop : … = ⊤`
+  is the other way out.
+- **Status:** idiom.
+
 ### [mirror-candidate] Mathlib's `Graph` has no edge-relabelling map — `Graph.embedEdges` is project-local
 - **Where it bit:** Phase 40d BRIDGE (`Molecule/Pencil/MainComponent/Bridge.lean`). Jackson–Jordán's
   equality mentions no edge label, so it relabels the edges into `β ⊕ Fin (3|α| + 1)` to reach the

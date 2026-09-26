@@ -977,6 +977,9 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{definition}[The standing hypotheses]
   \label{def:pencil-x0-standing}
+  \lean{Graph.IsX0Graph, Graph.three_le_ncard_closedNbhd,
+    Graph.IsX0Graph.three_le_ncard_closedNbhd}
+  \leanok
   \uses{def:pencil-admissible-picture}
   A graph $G$ satisfies the \emph{standing hypotheses} if it is finite,
   simple and connected, with minimum degree at least two. Then every
@@ -986,6 +989,12 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{lemma}[Heights restrict to a subgraph]
   \label{lem:pencil-lifting-restrict}
+  \lean{Graph.liftingRestrict, Graph.liftingRestrict_apply,
+    Graph.liftingRestrict_mem_liftingSpace,
+    CombinatorialRigidity.Molecular.pencilConfigPoint_liftingRestrict,
+    CombinatorialRigidity.Molecular.restrictPoly,
+    CombinatorialRigidity.Molecular.eval_restrictPoly}
+  \leanok
   \uses{def:pencil-lifting-space, def:pencil-configuration}
   Let $G' \le G$ and let $q$ be any picture. The height that agrees with
   $z \in L_G(q)$ on $V(G')$ and vanishes elsewhere lies in
@@ -993,6 +1002,7 @@ smaller graphs, and attaining passes from the two pieces to the whole.
   the bodies of $G'$.
 \end{lemma}
 \begin{proof}
+  \leanok
   A closed neighbourhood in $G'$ lies in the corresponding closed
   neighbourhood in $G$, where $z$ agrees with an affine function of the
   picture.
@@ -1000,12 +1010,15 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{lemma}[The rank reads only the bodies of the graph]
   \label{lem:pencil-rank-congr}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr}
+  \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix}
   The rank of the rigidity matrix of the panel-hinge framework on $G$
   depends only on the panel normals at the bodies of $G$, and not on
   which end of each edge is recorded first.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint,
         lem:span-rigidityRows-eq-of-motions-eq}
   The hinge at an edge is built from the normals at its two ends, and
@@ -1018,12 +1031,15 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{lemma}[The heights at a cut vertex]
   \label{lem:pencil-cut-fibre}
+  \lean{Graph.exists_liftingRestrict_eq_of_cutVertex}
+  \leanok
   \uses{lem:pencil-lifting-restrict}
   Let $G = G_1 \cup G_2$ with $V(G_1) \cap V(G_2) = \{v\}$ and disjoint
   edge sets. At every picture $q$, both restriction maps
   $L_G(q) \to L_{G_i}(q)$ (\cref{lem:pencil-lifting-restrict}) are onto.
 \end{lemma}
 \begin{proof}
+  \leanok
   Given $z^1 \in L_{G_1}(q)$, extend it across $V(G_2)$ by the affine
   function of its closed neighbourhood at $v$. Every closed
   neighbourhood of $G$ other than $N_G[v]$ lies in one side, and
@@ -1042,6 +1058,8 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{theorem}[A cut vertex]
   \label{thm:pencil-x0-cut}
+  \lean{Graph.X0Attains.of_cutVertex}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses
   (\cref{def:pencil-x0-standing}), with $V(G) = V_1 \cup V_2$,
@@ -1050,6 +1068,7 @@ smaller graphs, and attaining passes from the two pieces to the whole.
   then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-cut-fibre, lem:block-rank-cut-vertex,
         lem:deficiency-cut-vertex, lem:pencil-lifting-restrict,
         lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,

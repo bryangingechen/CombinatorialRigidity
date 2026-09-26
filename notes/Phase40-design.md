@@ -272,7 +272,8 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (lands
     with CONTRACT-R).
   - [x] **`h3` from (H)**, compiled as `Graph.three_le_ncard_closedNbhd (hS : G.Simple)
-    (hdeg : 2 ≤ G.degree v)`, from the vendored `Graph.degree_eq_ncard_adj` (lands with 40e).
+    (hdeg : 2 ≤ G.degree v)`, from the vendored `Graph.degree_eq_ncard_adj` (landed in 40e build 1,
+    beside `Graph.closedNbhd` in `Motive.lean`).
 - [ ] **Tracked todo, not a 40e close gate (PI, 2026-09-26): the "only if" halves of (MC-52)(iv)
   and (MC-53)(iv).** 40e formalizes the "if" halves, the only ones the induction consumes;
   `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` name this item in their remarks. The informal
@@ -500,7 +501,8 @@ round that lands it.
   `partitionMotions_le_jointMotions_bot`,
   `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (B7); `pencilLoss`,
   `weldedLoss`, `pencilLoss_nonneg`, `finrank_relScrews_eq`, `weldedLoss_nonneg`,
-  `finrank_relScrews_le`, `pencilLoss_vertexTwoCut` (C1ℓ–C4ℓ).
+  `finrank_relScrews_le`, `pencilLoss_vertexTwoCut` (C1ℓ–C4ℓ). **Paid so far:**
+  `partitionDef_split_of_vertexTwoCut` (40e build 1, on `lem:deficiency-cut-vertex`).
 - **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
   40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
   exposition (the main component as a vector bundle over planar pictures, the flat rank, the

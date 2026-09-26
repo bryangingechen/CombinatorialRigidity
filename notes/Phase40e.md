@@ -3,20 +3,17 @@
 **Status:** in progress (opened design-first 2026-09-26). STEPS' first group (`notes/Phase40-design.md`
 §3 STEPS). It lands the standing hypotheses (H) in Lean and the CUT and BRIDGE steps, (MC-52) and
 (MC-53): a cut vertex or a chain of bridges is a fibre product, so `X₀` attaining at both pieces
-gives it at `G`. The recon's spike compiles CUT and the single bridge sorry-free. BRIDGE with `k ≥ 1`
-path bodies is not spiked. **Next: the build commit** — see *Hand-off*.
+gives it at `G`. Build 1 landed (H), CUT and the single bridge: seven of nine nodes are green.
+**Next: build 2**, BRIDGE for every `k` — see *Hand-off*.
 
 ## Current state
 
-**Opened.** Nine red nodes, with statements from `ledger.py --brief '(MC-52)' '(MC-53)'` and the
-(H) header of `K-main.md`:
-- seven in `main-component.tex` §`sec:main-component-cut`;
-- `lem:deficiency-cut-vertex` in `deficiency.tex`;
-- `lem:block-rank-cut-vertex` in `rigidity-matrix.tex`.
-
-No Lean has landed. **The next concrete commit is build 1**, the spike transcribed. It turns seven
-nodes green: all but `lem:pencil-bridge-fibre` and `thm:pencil-x0-bridge`. **Build 2**, BRIDGE for
-every `k`, turns those two green.
+**Build 1 landed.** Nine nodes, with statements from `ledger.py --brief '(MC-52)' '(MC-53)'` and
+the (H) header of `K-main.md`: seven in `main-component.tex` §`sec:main-component-cut`,
+`lem:deficiency-cut-vertex` in `deficiency.tex`, `lem:block-rank-cut-vertex` in
+`rigidity-matrix.tex`. Seven are green. Two are red: `lem:pencil-bridge-fibre` and
+`thm:pencil-x0-bridge`. **The next concrete commit is build 2**, BRIDGE for every `k`, which turns
+them green.
 
 ## Architectural choices made up front
 
@@ -43,26 +40,25 @@ are in `notes/Phase40-design.md` §3 STEPS):
 
 ## Lemma checklist
 
-Planned names; the spike compiles every one except the last two items' (exit 0, no warnings,
-standard axioms).
+Every item but the last two landed in build 1 (standard axioms).
 
-- [ ] **(H)**: `Graph.IsX0Graph`, `Graph.three_le_ncard_closedNbhd`,
+- [x] **(H)**: `Graph.IsX0Graph`, `Graph.three_le_ncard_closedNbhd`,
   `Graph.IsX0Graph.three_le_ncard_closedNbhd` → `def:pencil-x0-standing`.
-- [ ] **Rank congruence**: `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` →
+- [x] **Rank congruence**: `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` →
   `lem:pencil-rank-congr`.
-- [ ] **Restriction**: `Graph.liftingRestrict` (+ `_apply`), `Graph.liftingRestrict_mem_liftingSpace`,
+- [x] **Restriction**: `Graph.liftingRestrict` (+ `_apply`), `Graph.liftingRestrict_mem_liftingSpace`,
   `pencilConfigPoint_liftingRestrict`, `restrictPoly`, `eval_restrictPoly` →
   `lem:pencil-lifting-restrict`.
-- [ ] **Cut-vertex deficiency** (`Deficiency.lean`): `Graph.deficiency_add_le_of_cutVertex`,
+- [x] **Cut-vertex deficiency** (`Deficiency.lean`): `Graph.deficiency_add_le_of_cutVertex`,
   `Graph.deficiency_eq_add_of_cutVertex`, also pinning `Graph.partitionDef_split_of_vertexTwoCut`
   (Phase 39's D5 debt, consumed here) → `lem:deficiency-cut-vertex`.
-- [ ] **Cut-vertex rank** (`Bricks.lean`): `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`
+- [x] **Cut-vertex rank** (`Bricks.lean`): `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`
   → `lem:block-rank-cut-vertex`.
-- [ ] **Cut-vertex fibre**: `Graph.exists_liftingRestrict_eq_of_cutVertex` → `lem:pencil-cut-fibre`.
-- [ ] **CUT**: `Graph.X0Attains.of_cutVertex` → `thm:pencil-x0-cut`.
-- [ ] **Single bridge** (spiked): `exists_dotProduct_eq_of_linearIndependent`,
-  `Graph.exists_liftingRestrict_eq_of_bridge`, `Graph.X0Attains.of_bridge`. Build 2 keeps them as
-  its `k = 0` case or replaces them.
+- [x] **Cut-vertex fibre**: `Graph.exists_liftingRestrict_eq_of_cutVertex` → `lem:pencil-cut-fibre`.
+- [x] **CUT**: `Graph.X0Attains.of_cutVertex` → `thm:pencil-x0-cut`.
+- [x] **Single bridge**: `exists_dotProduct_eq_of_linearIndependent`,
+  `Graph.exists_liftingRestrict_eq_of_bridge`, `Graph.X0Attains.of_bridge`, in `Cut.lean` and
+  pinned nowhere yet. Build 2 keeps them as its `k = 0` case or replaces them.
 - [ ] **BRIDGE for every `k`** (not spiked) → `lem:pencil-bridge-fibre`, `thm:pencil-x0-bridge`.
   - Deficiency: KT Lemma 3.6 at the last bridge, then A1 `deficiency_removeVertex_of_degree_eq_one`
     along the pendant path (pin A1 if used: D5 debt).
@@ -80,20 +76,18 @@ standard axioms).
 
 ## Hand-off / next phase
 
-**Next: build 1.** The recon's spike files are untracked in `scratch/`, kept for the build. Its core
-is `S40eCut.lean`; `S40eTracked.lean` also carries `h3`, and `S40eInstances.lean` the (H) instances
-`K₄`, the triangle, `C₄` and the bowtie (with its CUT hypotheses). Transcribe it, placing:
-- the cut-vertex deficiency laws in `Molecular/Deficiency.lean`, after
-  `partitionDef_split_of_vertexTwoCut`;
-- the rank identity in `RigidityMatrix/Bricks.lean` (PI);
-- `Graph.three_le_ncard_closedNbhd` beside `Graph.closedNbhd` (`Motive.lean`);
-- the rest in a new `Molecule/Pencil/MainComponent/Cut.lean` (root import after `Bridge`).
+**Next: build 2, BRIDGE for every `k`** → `lem:pencil-bridge-fibre`, `thm:pencil-x0-bridge`, in
+`Cut.lean`. Not spiked. The plan is the checklist item's three sub-bullets, stated with explicit
+path hypotheses (a path `a − x₁ − ⋯ − x_k − b` of degree-2 bodies), not a chain structure. Build 1's
+single-bridge declarations are the `k = 0` case, to keep or replace. Pin
+`deficiency_removeVertex_of_degree_eq_one` (A1, D5 debt) if it is used.
+- **If it is too large for one commit**, land the fibre lemma first: the restriction is onto at a
+  chain of bridges, at every admissible picture. Then land the theorem.
+- Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`.
 
-Pin and flip the seven nodes listed under *Current state*; record the headline axioms here. Gates:
-`lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`.
-
-**Then build 2** (BRIDGE for every `k`), and 40e's close. The read-only ORBIT recon runs before
-the next group opens (PI).
+**Then 40e's close.** The read-only ORBIT recon runs before the next group opens (PI). `scratch/`
+still holds `S40eTracked.lean`'s `rigidContract_induce_simple` (CONTRACT-R) and the curve-limit
+lemma (SPLITOFF), for those groups. The coordinator removes `scratch/` once 40e no longer needs it.
 
 ## Decisions made during this phase
 
@@ -102,3 +96,11 @@ the next group opens (PI).
   `Graph.X0Attains.of_bridge` use `[propext, Classical.choice, Quot.sound]`. The six tracked items
   are settled in `notes/Phase40-design.md` §3 STEPS, and the later groups are recorded there by
   code.
+- **2026-09-26 — build 1: the spike transcribed.** The cut-vertex deficiency laws went in a new
+  section at the end of `Deficiency.lean`, after the vertex-2-cut split they specialize. The rank
+  identity went in `Bricks.lean`'s 2-cut section. There its proof is shorter than the spike's: the
+  private helpers `mem_sup_infinitesimalMotions_induce` (at `u = v`) and
+  `rigidityRows_eq_union_induce` do the work. **Headline axioms:** `Graph.X0Attains.of_cutVertex`,
+  `Graph.X0Attains.of_bridge`, `Graph.deficiency_eq_add_of_cutVertex` and
+  `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` all use
+  `[propext, Classical.choice, Quot.sound]`.

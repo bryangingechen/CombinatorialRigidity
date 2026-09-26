@@ -93,6 +93,20 @@ re-seeding sweep (`Molecule/Pencil/Engine.lean`) was built for. -/
 def _root_.Graph.closedNbhd (G : Graph α β) (v : α) : Set α :=
   {w | w = v ∨ ∃ e, G.IsLink e v w}
 
+/-- **A body of degree at least two in a simple graph has at least three members in its closed
+neighbourhood** (`def:pencil-x0-standing`; Phase 40e): its `degree` distinct neighbours, and
+itself, which is none of them since `G` has no loops. This is how the standing hypotheses of the
+`X₀` induction (`Graph.IsX0Graph`, `Molecule/Pencil/MainComponent/Cut.lean`) supply the
+closed-neighbourhood bound `h3` its main-picture polynomial takes. -/
+theorem _root_.Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph α β} (hS : G.Simple)
+    {v : α} (hdeg : 2 ≤ G.degree v) : 3 ≤ (G.closedNbhd v).ncard := by
+  have hnot : v ∉ N(G, v) := fun h => by
+    obtain ⟨e, he⟩ := h
+    exact hS.toLoopless.not_isLoopAt e v he
+  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
+  rw [heq, Set.ncard_insert_of_notMem hnot (Set.toFinite _), ← Graph.degree_eq_ncard_adj]
+  omega
+
 /-- **Stratum nondegeneracy** (`def:pencil-nondegenerate`; Phase 39 W5-L0, **restated 2026-07-24 per
 the W5-L4 blocker recon**, `notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"):
 a pencil panel realization whose adjacent concurrency points are projectively distinct (every

@@ -1252,7 +1252,8 @@ so one picture generic for both pieces carries attaining heights of both to `G` 
 the "if" halves; the "only if" halves are a tracked todo). The standing hypotheses (H) land as
 `Graph.IsX0Graph`. The design is a compiler-checked recon whose spike proves CUT and the single
 bridge sorry-free; the same recon settled STEPS' six tracked items and a provisional grouping of the
-later steps (`notes/Phase40-design.md` §3 STEPS).
+later steps (`notes/Phase40-design.md` §3 STEPS). Build 1 has landed (H), CUT and the single
+bridge; BRIDGE along a chain of bridges is next.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -245,6 +245,9 @@ parallel copies of each edge $e \in E(G)$.
 
 \begin{lemma}[Deficiency adds at a cut vertex]
   \label{lem:deficiency-cut-vertex}
+  \lean{Graph.deficiency_add_le_of_cutVertex, Graph.deficiency_eq_add_of_cutVertex,
+    Graph.partitionDef_split_of_vertexTwoCut}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be loopless, with $V(G) = V_1 \cup V_2$, $V_1 \cap V_2 = \{v\}$,
   and every edge of $G$ inside $V_1$ or inside $V_2$. Then for every $n$
@@ -254,6 +257,7 @@ parallel copies of each edge $e \in E(G)$.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:cut-edge-decomposition}
   For any labeling $f$ of the bodies, the value of $f$ on $G$ is the sum
   of its values on the two sides plus $D(1 - |I|)$, where $I$ is the set
