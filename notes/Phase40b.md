@@ -2,7 +2,7 @@
 
 **Status:** in progress (opened design-first 2026-09-26). C1a (the definitions) and C1b (the
 one-witness upgrade `Graph.x0Attains_of_exists`) landed 2026-09-26 in
-`Molecule/Pencil/MainComponent/Carrier.lean`. **Next: C2 ∥ C3 ∥ C4**; *Hand-off* names C2's
+`Molecule/Pencil/MainComponent/Carrier.lean`. **Next: C2 ∥ C3 ∥ (DUAL-K → C4)**; *Hand-off* names C2's
 `U`-open lemma first. Plan: `notes/Phase40-design.md` §3.
 
 ## Current state
@@ -96,9 +96,46 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
     heights over one picture point still give independent points); the hinge extensor `C_e = p_u ∧ p_v`
     affine in `z` (MC-3 Plücker); **the polar/primal rank equality**: a point-join framework
     (hinges `p_u ∧ p_v`, endpoints from `ends`, no `[Inhabited α]`) has the rank of `ofNormals` at
-    the config points — `panelSupportExtensor = complementIso ∘ normalsJoin`, then
-    `BodyHingeFramework.finrank_span_rigidityRows_mapSupport` (general `K`; the ℝ-only
-    `Molecule/Duality.lean` polarity is not needed). Touches `ScrewSpace`/extensor.
+    the config points. After DUAL-K this is `ofNormals (k := 2) G ends p = (pointJoin G ends
+    p).mapSupport screwComplementIso` (a `funext` on support extensors through
+    `screwComplementIso_mk_extensor`), then `BodyHingeFramework.finrank_span_rigidityRows_mapSupport`,
+    about 15 lines (duality recon, compiler-checked in scratch). The **X0Dist witness** must patch
+    the hinges off `E(G)`: `HasCoplanarPanelRealization` needs `supportExtensor e ≠ 0` for every
+    `e : β`, as `pencilChartFramework` does. Carry the rank across with
+    `span_rigidityRows_eq_of_supportExtensor_agree` (`Arms.lean:670`). Touches `ScrewSpace`/extensor.
+  - [ ] **DUAL-K — the polarity over every field, in place** (sonnet; a mechanical refactor, the
+    bodies compile verbatim at `[Field K]`; upstream of `Carrier.lean`, so never in parallel with a
+    Carrier build). Must land **before C4**. Design: `notes/Phase40-design.md` §4 *Duality*.
+    - ℝ → `K`, same bodies:
+      - `screwComplementIso` (`Molecule/Duality.lean:69`);
+      - `equivExteriorPower_mk_extensor` (`Molecule/ScrewVelocity.lean:161`; HingeGeneric has a
+        private K form, so reuse it rather than duplicate);
+      - `screwComplementIso_mk_extensor` (`Pencil/Statement.lean:200`);
+      - both transports, `extensorInPanel_screwComplementIso_of_extensorThroughPoint` and
+        `extensorThroughPoint_screwComplementIso_of_extensorInPanel`.
+    - The self-duality becomes
+      `hasPencilPanelRealization_mapSupport_screwComplementIso {F : BodyHingeFramework K 2 α β} (h :
+      HasPencilPanelRealization G F normal point) : HasPencilPanelRealization G (F.mapSupport
+      screwComplementIso) point normal`. Prove it with `mapSupport_graph`,
+      `mapSupport_supportExtensor` and `map_ne_zero_iff _ screwComplementIso.injective`.
+      `mapExtensor = mapSupport` holds by `rfl` at ℝ.
+    - Renaming triggers the deletion gate: repoint every live reference tree-wide. Statement.lean's
+      docstrings carry four.
+    - The ℝ³ molecular declarations (`screwComplementIso_lineExtensor`,
+      `molecularOfCentres_mapExtensor_screwComplementIso`, `*_ofNormals_homogenize*`) stay ℝ and
+      instantiate `K := ℝ`. Leave `ProjectiveInvariance.lean` alone; merging
+      `mapExtensor`/`mapSupport` is a cleanup-round item.
+    - Blueprint:
+      - restate and repin `lem:pencil-self-dual` over every field;
+      - replace `sec:pencil-duality`'s "Fix `K = ℝ`" with a field-generality remark stating only
+        what is verified: the polarity transports rank, rigidity and pencil realizations over
+        every field; field dependence enters only at self-dual configurations
+        (`fmlnote:pencil-conditional-realization-pair-field`);
+      - add the matching remark on `thm:projective-invariance`'s "ℝ³";
+      - reword `pencil.tex:610` ("whose polarity is one such automorphism" is wrong: the polarity
+        is a correlation, and that lemma is its collineation companion).
+    - Workbook: annotate `K-clos.md` (AC-1) in place, with date and finder, as now
+      compiler-witnessed (`notes/pencil/CLAUDE.md` discipline).
 - [ ] **C5 — `X0Attains` at the flat witness** (opus, fragility): `X0Attains` holds at a flat config
   `(q, 0)` from a single seed; rank arithmetic on `rigidityRows`. Enters through C1b (`0 ∈ L(q)`,
   `q` main). The entry point STEPS extends.
@@ -131,7 +168,8 @@ every body's closed neighbourhood has three members) and re-aim here. C3 and C4 
 may run in parallel; the rest of C2 (`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is separate.
 Blueprint: the `U`-open content is `thm:pencil-x0-main-component`'s first clause, which stays red
 until the bundle/irreducibility clauses are settled; give the `U`-open lemma its own node when it
-lands. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥C4 → C5 first.
+lands. DUAL-K (checklist) must land before C4 and never builds in parallel with a `Carrier.lean`
+build. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥(DUAL-K → C4) → C5 first.
 
 ## Decisions made during this phase
 
@@ -169,3 +207,9 @@ lands. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥C4 → C5
   `Graph.liftAtVertex` (`L(q)` states the per-vertex condition itself) were dropped; the normal's
   selector is a plain `α → Fin 3 → α`, since `IsFin3SelectorOf` is unsatisfiable at
   `|closedNbhd v| > 3` and padding would detach the normal from the picture.
+- **2026-09-26 — duality recon (PI-commissioned, opus, read-only; `Phase40-design.md` §4
+  *Duality*).** The polarity is field-free over every field, as a transport of frameworks and
+  pencil realizations; the ℝ scope of `Duality.lean`/the self-duality is historical. It never
+  preserves adjacent-distinctness, nondegeneracy or `X₀`, so self-duality does not reach `X0Dist`.
+  Its one use on the route is C4's rank equality, via the new slice DUAL-K. The rejected
+  simplifications and the FLAT-recon questions are in the design doc.

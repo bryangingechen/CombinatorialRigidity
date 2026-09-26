@@ -117,6 +117,13 @@ close the PI re-scoped the queued PIN item to a second, independent proof by the
   commit. (If a cleanup round reaches it first, it lands there instead.)
 - **New.** `F(q) ≅ L(q)`, and the split `Λ²K⁴ = W_Π ⊕ W′` against the opaque `ScrewSpace`
   carrier. Treat anything touching the carrier as fragility zone (opus minimum for producers).
+- **For the FLAT pre-build recon (from the duality recon, §4).**
+  - *(Hypothesis; ingredients verified.)* (MC-4)'s `F(q)` is the motion space of
+    `ofNormals (k := 1) G ends p̂`, with `p̂ = (x_v, y_v, 1)`, up to the carrier identification.
+    If so, (MC-4)(b) is the landed grade-1 lower bound and BRIDGE's first bullet folds into FLAT.
+  - Choose flat or cone. `X0Attains`'s own framework at `z = 0` *is* the cone: every polar hinge
+    passes through `e₂`. The primal (flat) side matches the workbook and is favoured; the cone
+    side skips C4 but needs a new 4D↔3D complement identity.
 
 ### BRIDGE — Jackson–Jordán's equality, as it is consumed
 
@@ -231,6 +238,58 @@ end.
   the consumer uses only the 2EC form.
 - `supportExtensor e ≠ 0` must hold for **every** `e : β`, not only the edges of `G`. This is
   trivial, but it is easy to miss.
+
+### Duality: field generality and what it buys (recon 2026-09-26)
+
+A read-only opus recon, commissioned by the PI. Its witnesses were `lake env lean` scratch files
+at `[Field K]`, exit 0 with no `sorry`; the coordinator re-ran the main one. DUAL-K
+(`notes/Phase40b.md`) lands them.
+
+- **Field generality (verified).** The polarity preserves rank, motion space, rigidity and genuine
+  hinges over **every field, of every characteristic**, as a transport of frameworks and of pencil
+  realizations. It needs only that the dot product is nondegenerate.
+  - The whole landed duality cluster restates over `K` with its ℝ proof bodies copied verbatim:
+    `screwComplementIso` (`rfl` to the landed ℝ definition at `K = ℝ`), `…_mk_extensor`, both
+    predicate transports, and `lem:pencil-self-dual` over `mapSupport` (`mapExtensor = mapSupport`
+    by `rfl` at ℝ). All of `ProjectiveInvariance.lean` also compiles over `K`.
+  - The ℝ scope is historical. Phase 33 drew its ℝ→K line at the `Molecule/` directory; only the
+    molecular dictionary (`lineExtensor`, `EuclideanSpace ℝ (Fin 3)` centres) is really ℝ³-bound.
+  - This settles `K-clos.md` (AC-1).
+- **No field obstruction on the X₀ route.**
+  - Characteristic 2, where `ω ∧ ω = 2·Pf` vanishes: never used. Decomposability is built into
+    the `ExtensorInPanel`/`ExtensorThroughPoint` witnesses, and (MC-166) never uses `c ∧ c = 0`.
+  - Isotropic vectors (`x ⬝ᵥ x = 0`): never used.
+  - (MC-166)/(MC-168): nothing duality-related.
+  - Genuine field dependence concerns only **self-dual** configurations: route σ and kernel (K),
+    the held kernels. `fmlnote:pencil-conditional-realization-pair-field` records it.
+  - *Hypothesis:* with the Euclidean form, duality's fixed points need `char ≠ 2` and `−1` a sum
+    of three squares; the second condition is an artefact of the choice of form.
+- **What duality preserves.** The polarity never preserves adjacent-distinctness,
+  `IsNondegPencilRealization`, or `X₀`; none of them is self-dual. The dual of a pencil
+  realization has as "points" the plane normals, which coincide on triangle edges ((MC-13)(c)).
+  So a K-general self-duality is **not** a route to `X0Dist`.
+  `hasPencilPanelRealization_mapExtensor_screwComplementIso` has zero Lean consumers.
+- **What it buys.** C4's polar/primal rank equality *is* the polarity over `K`: about 15 lines
+  once DUAL-K generalizes `screwComplementIso` in place.
+- **Rejected, so they are not re-asked:**
+  - Deriving one of X0Gen's two nondegeneracy halves from the other. Duality maps realizations,
+    not conditions; conjunct 4 is automatic on `B` by (MC-1), while conjunct 3 is all of
+    (MC-12)/(MC-14).
+  - Dual STEPS moves. Duality moves off `X₀`, and the (MC-138) orbit table is not duality-closed.
+  - Replacing (MC-4)'s `Φ` by the 3D polarity. `Φ` sends motions to heights; it does not
+    transport a framework.
+  - Building Klein self-duality S7(v). That is motion/wrench duality, which no route label uses.
+- **Structure.**
+  - Collineations over `K` (`Arms.lean`) plus the polarity give the whole projective group
+    (Crapo–Whiteley 1982 §3.6, p. 68, read in `.refs`). The polarity is a correlation, not `Λ²g`.
+  - `X₀` (points free) and its dual `X₀*` (planes free) differ whenever a def₂-rigid subgraph has
+    an edge. *Hypothesis:* they coincide otherwise.
+  - Duplication for a cleanup round: `mapExtensor` and `mapSupport` are one definition, and
+    `thm:projective-invariance`'s rank half restates `lem:screw-map-rows`.
+- **Citations.** Crapo–Whiteley Ex. 4.4 (pp. 72–73) is verified as the flat-tetrahedron instance
+  of (MC-4)'s `Φ`. Whiteley 1984 (*Discrete Appl. Math.* 9(3) 269–295) is verified by Crossref
+  metadata only; get the text before citing it for `Φ`. (MC-4)'s citation stays
+  "to be verified".
 
 ## 5. Standing constraints
 
