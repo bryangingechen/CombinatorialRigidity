@@ -76,6 +76,24 @@ parallel copies of each edge $e \in E(G)$.
   the maximum is $\ge 0$, witnessed by the trivial one-part partition.
 \end{definition}
 
+\begin{lemma}[The deficiency decreases with the dimension on a connected graph]
+  \label{lem:deficiency-antitone}
+  \uses{def:D-deficiency}
+  Let $G$ be connected, and let $n \le m$. Then the deficiency of $G$ at
+  $m$ is at most its deficiency at $n$; in particular
+  $\operatorname{def}_3(G) \le \operatorname{def}_2(G)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:rk-within-parts}
+  Partition by partition, with $D \le D'$ the two body dimensions,
+  $[D'(|P| - 1) - (D' - 1)d(P)] - [D(|P| - 1) - (D - 1)d(P)]
+  = (D' - D)(|P| - 1 - d(P)) \le 0$, because the parts of a connected
+  graph are joined by at least $|P| - 1$ crossing edges: deleting the
+  $d(P)$ crossing edges leaves at least $|P|$ components
+  (the count of \cref{lem:rk-within-parts}), and deleting an edge adds
+  at most one.
+\end{proof}
+
 \begin{definition}[$k$-dof and minimal $k$-dof graphs]
   \label{def:k-dof}
   \lean{Graph.IsKDof, Graph.IsMinimalKDof, Graph.edgeFiber}

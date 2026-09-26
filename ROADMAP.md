@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓ closed 2026-09-26; next **FLAT** (the flat rank), not yet opened (see `notes/Phase40b.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓; **40c/FLAT** (the flat rank) open (see `notes/Phase40c.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1156,7 +1156,7 @@ infinite field. Layers by stable code, lettered only as each opens:
   replaces Jackson–Jordán's pin-collinear theorem, which the informal proof cites, field-generally;
 - **CARRIER** ✓ (sub-phase 40b, closed 2026-09-26): planar pictures, the lifting space, `X₀`,
   and "the general point attains";
-- **FLAT**: the flat rank;
+- **FLAT** (sub-phase 40c, open): the flat rank;
 - **BRIDGE**: Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps;
 - **COVERAGE**: the structural half and the assembly;
@@ -1202,6 +1202,21 @@ content (PI, 2026-09-26), and the statement the whole induction proves,
 compiler-checked top-rung recon (opus and fable passes). The flat witness, the `β`-headroom
 questions and three STEPS items moved at the close to their layers (`notes/Phase40-design.md` §3).
 Headline axioms unchanged (re-verified at the close).
+
+#### Phase 40c — the flat rank (FLAT) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-26; work log `notes/Phase40c.md`). Step MC4/MC5 of
+§(K-main), in `Molecule/Pencil/MainComponent/Flat.lean` and `main-component.tex`
+§`sec:main-component-flat`. At the flat configuration `(q, 0)` over an admissible picture every
+hinge lies in the plane `z = 0`, so the screw space splits into a part the edges glue (constant on
+a connected graph, three dimensions) and a planar part, whose motions are the families of affine
+functions agreeing at both ends of every edge. That family space has the dimension of `L(q)`, so
+the flat rank is exactly `6|V| − 3 − dim L(q)`; it is also the motion space of the plane
+panel-hinge framework at the normals `(x_v, y_v, 1)`, whose landed partition bound gives
+`dim L(q) ≥ 3 + def₂`. With `def₃ ≤ def₂` on connected graphs, an admissible picture with
+`dim L(q) ≤ 3 + def₃` is main and its flat configuration attains, so `X₀` attains. The design is a
+compiler-checked recon (opus and fable passes; the opus route adopted). FLAT also pays 40a's
+pin debt on the relative deficiency bound.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

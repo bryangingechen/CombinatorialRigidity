@@ -5,7 +5,7 @@ sub-lettered home in the `notes/PhaseN-design.md` pattern (`notes/CLAUDE.md`): t
 index of work already done, the layer plan by **stable codes**, the proof map, the risks, and the
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
-(`notes/Phase40b.md`); **next: FLAT** (§3), not yet opened, to open design-first. This doc replaces
+(`notes/Phase40b.md`); **40c = FLAT open** (opened design-first 2026-09-26, `notes/Phase40c.md`). This doc replaces
 the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which
 is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
@@ -92,40 +92,39 @@ remark `rem:pencil-hinge-affine`. (MC-10)(a) moved to COVERAGE. The accepted des
 pictures, a single `X0Attains`, the β-headroom `_of_card` triple) and every decision are in
 `notes/Phase40b.md`.
 
-### FLAT — the flat rank
+### FLAT — the flat rank → **sub-phase 40c, open 2026-09-26** (`notes/Phase40c.md`)
 
-| label | step | 2nd | content |
+| label | step | 2nd | content (from `ledger.py --brief`) |
 |---|---|---|---|
-| (MC-4) | MC4 | ✓ 09-25 (Plücker by hand) | the flat rank is an identity in `dim L(q)`: `6|V| − 3 − dim L(q)`, with `dim L(q) ≥ 3 + def₂` |
-| (MC-5)(ii) | MC5 | ✓ 09-25 | `X₀` flat ⇒ `def₂ = def₃ = 0`, without Jackson–Jordán |
-| (MC-5)(iii) | MC5 | ✓ 09-25 | `X₀` flat (`ℓ₀ = 3`) ⇒ the flat configuration at every admissible `q` with `dim L(q) = 3` is rigid; consumed by (MC-139) |
+| (MC-4)(a) | MC4 | ✓ 09-25 (Plücker by hand) | `rank R(q, 0) = 6|V| − 3 − dim L(q)`, exactly |
+| (MC-4)(b) | MC4 | ✓ 09-25 | `dim L(q) ≥ 3 + def₂(G)` |
+| (MC-4)(c) | MC4 | ✓ 09-25 | `rank R(q, 0) ≤ 6(|V| − 1) − def₂(G)`, with equality iff `dim L(q) = 3 + def₂(G)` |
+| (MC-5)(i) | MC5 | ✓ 09-25 | `def₃(G) ≤ def₂(G)` |
+| (MC-5)(ii) | MC5 | ✓ 09-25 | the flat configuration at an admissible `q` attains `6(|V|−1) − def₃` iff `dim L(q) = 3 + def₃`, iff equality holds in (MC-4)(b) at `q` and `def₂ = def₃` |
+| (MC-5)(iii) | MC5 | ✓ 09-25 | if `X₀` is flat (`ℓ₀ = 3`), then `def₂ = def₃ = 0` and the flat configuration at every admissible `q` with `dim L(q) = 3` has rank `6(|V| − 1)`: `X₀` attains; consumed by (MC-139) |
 
-- **Lean reuse.** The inequality is landed at grade 1:
-  `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean`). The
-  upper bound `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` is general.
-- **Pin debt, routed here from 40a (Slice 4).** That upper bound has **no `\lean{}` pin** anywhere
-  in the blueprint; `thm:theorem-55-6-rows` (`panel-layer.tex`) points at
-  `lem:trivial-motions-rank-bound` as a stand-in for it. FLAT consumes the bound, so the FLAT
-  commit that first uses it pins it on its own node and repoints that stand-in `\uses`, in the same
-  commit. (If a cleanup round reaches it first, it lands there instead.)
-- **New.** `F(q) ≅ L(q)`, and the split `Λ²K⁴ = W_Π ⊕ W′` against the opaque `ScrewSpace`
-  carrier. Treat anything touching the carrier as fragility zone (opus minimum for producers).
-- **For the FLAT pre-build recon (from the duality recon, §4).**
-  - *(Hypothesis; ingredients verified.)* (MC-4)'s `F(q)` is the motion space of
-    `ofNormals (k := 1) G ends p̂`, with `p̂ = (x_v, y_v, 1)`, up to the carrier identification.
-    If so, (MC-4)(b) is the landed grade-1 lower bound and BRIDGE's first bullet folds into FLAT.
-  - Choose flat or cone. `X0Attains`'s own framework at `z = 0` *is* the cone: every polar hinge
-    passes through `e₂`. The primal (flat) side matches the workbook and is favoured; the cone
-    side skips C4 but needs a new 4D↔3D complement identity.
-- **Deliverable carried from CARRIER (its old C5, moved at the 40b close): `X0Attains` at the flat
-  witness `(q, 0)`.** From CARRIER's C5′ close recon (2026-09-26). The flat witness is
-  the `z₀ = 0` specialization of the general one-witness upgrade, not a separate construction:
-  `x0Attains_of_exists hV ends hends hq₀ (G.liftingSpace q₀).zero_mem hrank` (`0` is always a member
-  of the submodule `L(q₀)`). Picture certification — `dim L(q) = 3` at an admissible `q` makes it
-  main — is immediate from `three_le_finrank_liftingSpace` (`3 ≤ dim L(q')` at every admissible
-  `q'`, so `dim L(q) = 3` is already the least value). This is (MC-5)(iii)'s Lean shape, above.
-- **The codim bound `dim L(q) ≥ 3|V| − 2|E|`** ((MC-1)'s tail) was dropped at CARRIER's C2: (MC-4)(b)
-  subsumes it (singleton partition) and it has no route consumer. FLAT's recon may reinstate it.
+- **Design settled** by the compiler-checked FLAT recon (2026-09-26; route, names and slices in
+  `notes/Phase40c.md`): the flat side through C4's rewrites, the split as a linear equivalence
+  `flatScrewEquiv`, (MC-4)(a) exact, (MC-4)(b) as the landed grade-1 relative bound at the normals
+  `(x_v, y_v, 1)`, (MC-5)(i) in antitone form, and the carried flat witness
+  (`Graph.x0Attains_of_finrank_liftingSpace_le`). BRIDGE's first bullet folds into FLAT.
+- **Pin debt, routed here from 40a (Slice 4); paid in FLAT's build.** Neither
+  `BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (which
+  (MC-4)(b) consumes) nor `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` had a
+  `\lean{}` pin; `thm:theorem-55-6-rows` and `lem:pencil-x0-one-witness` used
+  `lem:trivial-motions-rank-bound` as a stand-in. FLAT's build pins both on
+  `lem:relative-deficiency-rank-bound` and repoints those two nodes.
+  - [ ] **Cleanup-round item (tracked here): the wider stand-in audit.** About 28 other
+    `lem:trivial-motions-rank-bound` reference sites in ten `.tex` files, against about 15 Lean
+    call sites of the row-span bound (`GenericLift/{PanelGeneric,HingeGeneric}`, `CaseI`,
+    `CaseII`, `CaseIII/Realization`, `Theorem55`, `Theorem56`, `Pencil/{Pair,Arms,TwoCut,X0,Steer}`;
+    `generic-lift.tex` uses `prop:rigidity-matrix-prop11` as its stand-in). Repoint each site
+    that means the relative bound. Not FLAT's scope.
+- **Citations for `Φ`** (FLAT's blueprint prose): Crapo–Whiteley 1982 Example 4.4 (pp. 72–73, the
+  flat tetrahedron) and Whiteley 1996 §8.3 (liftings of a picture; cite by section, the local copy
+  is a preprint). Whiteley 1984 is not cited until read. No identity is attributed.
+- **The codim bound `dim L(q) ≥ 3|V| − 2|E|`** stays dropped (no consumer; a corollary of
+  (MC-4)(b)).
 
 ### BRIDGE — Jackson–Jordán's equality, as it is consumed
 
@@ -133,8 +132,9 @@ The equality is consumed at FLAT (`G`), CONTRACT (`H`, `G/H`), `G′ + ab` and S
 Every use is at a simple graph ((MC-141)'s list). (MC-33) is the informal statement; SPINE2
 supplies it. BRIDGE builds two things on top of SPINE2:
 - the map from (MC-4)'s `F(q)` to the motion space of `PanelHingeFramework.ofNormals G ends q`
-  at normals `(x_v, y_v, 1)`, with generic normals moved into the chart by per-body rescaling and
-  open admissibility;
+  at normals `(x_v, y_v, 1)` — **folded into FLAT** (`Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint`,
+  its rank form `3|V| − dim L(q)`); BRIDGE keeps moving generic normals into the chart by per-body
+  rescaling and open admissibility;
 - the non-spanning forms at `H`, `G/H` and `G′ + ab`, each carrying a `hfresh`-type hypothesis.
   SPINE2 lands the row-rank core.
 - **Open point (40a Slice 4 spike, 2026-09-25).** The landed generic-normals row rank
@@ -311,10 +311,10 @@ consumers. What it bought: C4's polar/primal rank equality.
     (Crapo–Whiteley 1982 §3.6, p. 68, read in `.refs`). The polarity is a correlation, not `Λ²g`.
   - Duplication for a cleanup round: `mapExtensor` and `mapSupport` are one definition, and
     `thm:projective-invariance`'s rank half restates `lem:screw-map-rows`.
-- **Citations** (FLAT consumes them). Crapo–Whiteley Ex. 4.4 (pp. 72–73) is verified as the
-  flat-tetrahedron instance of (MC-4)'s `Φ`. Whiteley 1984 (*Discrete Appl. Math.* 9(3) 269–295) is
-  verified by Crossref metadata only; get the text before citing it for `Φ`. (MC-4)'s citation
-  stays "to be verified".
+- **Citations** (FLAT consumes them; settled in §3 FLAT). Crapo–Whiteley Ex. 4.4 (pp. 72–73) is
+  verified as the flat-tetrahedron instance of (MC-4)'s `Φ`, with Whiteley 1996 §8.3 for liftings.
+  Whiteley 1984 (*Discrete Appl. Math.* 9(3) 269–295) is verified by Crossref metadata only; it is
+  not cited until read.
 
 ## 5. Standing constraints
 
