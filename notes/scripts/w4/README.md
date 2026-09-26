@@ -987,3 +987,17 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   at the Case II-cyclic chains against (MC-143)'s hypotheses (exhaustive, combinatorial);
   `c1check.py` (graph6 on stdin) — (MC-143)'s mechanism at every C′-I chain in (MC-117)'s cell;
   `cycshape.py` (`findcyc.py` output on stdin) — the class-quotient shapes, a check of (MC-155).
+
+- **The ORBIT recon's driver** (§(K-main) Step MC13, (MC-173)–(MC-176); 2026-09-26; exact ℚ, seed
+  `20260926`, deterministic): `orbitlink.py (--link [--trials N] | --witness | --e2e [--limit N])`.
+  `--link` asserts (MC-173) on seeded orbit-(i) frames: the four limit directions span `Λ²` with
+  `Λ₁(y)`, and the proof's curve reaches `dim(ρ + Λ₂) ≥ min(s + 1, 6)` for adversarial `ρ`. It
+  also asserts that orbit (ii)'s two curve families span only a 5-space, and prints orbit (ii)'s
+  random-draw figure without asserting it (a single draw is a lower bound; nothing is claimed
+  there). `--witness` asserts that `K₄` subdivided `(2,2,2,2,2,2)` is in 𝒮 with no (MC-80) core
+  and six `k = 2`, `a ≁ b`, `δ = δ₂ = 3` chains. `--e2e` checks (MC-176) end to end at the
+  witness's chains and a capped list of subdivided-`K₄` chains: `G′`, `G₁` and `G` attain over
+  pictures certified main, and (MC-16)'s rank identity holds at `G₁` and at `G`. Blind axes
+  (`blindaxes.py`): `SEED`, the core `K4`, and the sampler range `rint(S=9)`; `--trials` and
+  `--limit` are the population caps. Imports `earante`, `coverstruct`, `maincomp`, `kbare_common`,
+  `exactcore`.

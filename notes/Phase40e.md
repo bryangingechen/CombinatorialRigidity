@@ -4,8 +4,8 @@
 group (`notes/Phase40-design.md` §3 STEPS), proved the cut and bridge steps of the `X₀` induction,
 the "if" halves of (MC-52) and (MC-53): if `G` satisfies the standing hypotheses (H) and has a cut
 vertex or a chain of bridges of any length, `X₀` attaining at both pieces gives it at `G`.
-**Next: the read-only ORBIT recon** (PI decision 1), then STEPS' next group (provisionally
-CONTRACT-R), **not yet opened** — see *Hand-off*.
+The ORBIT recon is done. **Next: the read-only fresh second reading of (MC-173)–(MC-176)**, then
+40f opens as CONTRACT-R, **not yet opened** — see *Hand-off*.
 
 ## Current state
 
@@ -73,17 +73,18 @@ All landed with the standard axioms or a subset (*Current state*).
 
 ## Hand-off / next phase
 
-**40e is closed. The next step is the read-only ORBIT recon** (opus; PI decision 1), before any
-later group opens. It decides how (MC-46)'s dimension counting, with (MC-138)'s orbit table, gets
-formalized: a new polynomial-level proof of `(P₂)` outside the three families, routing the cell
-`k = 2`, `a ≁ b`, `δ₂ ≥ 2` another way in COVERAGE, or building dimension theory
-(`notes/Phase40-design.md` §4, *ORBIT's dimension counting*).
+**40e is closed, and so is the ORBIT recon** (opus, 2026-09-26; `notes/Phase40-design.md` §4,
+*ORBIT's dimension counting*). The recon re-proved the cell `k = 2`, `a ≁ b`, `δ₂ ≥ 2` without
+the orbit count, as (MC-173)–(MC-176) in Step MC13, and PI D1/D2 accepted the result
+(`notes/pencil/adjudications.md`). **The next concrete step is a read-only fresh second
+reading of (MC-173)–(MC-176)**; the coordinator dispatches it with the design doc's appendix
+brief.
 
-**Then** STEPS' next group opens design-first, provisionally CONTRACT-R (§3 STEPS, *The provisional
-grouping*); its opening commit mints its letter and work log. The spike pieces CONTRACT-R and
-SPLITOFF reuse (`Graph.rigidContract_induce_simple`; the curve-limit lemma) are verbatim in the
-design doc's appendix *the STEPS recon's tracked spike*, so `scratch/` is no longer needed; the
-coordinator removes it after checking the copy.
+**Then** 40f opens design-first as CONTRACT-R (§3 STEPS, *The provisional grouping*); its opening
+commit mints its work log. ORBIT is now a 2–3-build tail group after SHORT. The spike pieces
+CONTRACT-R and SPLITOFF reuse (`Graph.rigidContract_induce_simple`; the curve-limit lemma) are
+verbatim in the design doc's appendix *the STEPS recon's tracked spike*, so `scratch/` is no
+longer needed; the coordinator removes it after checking the copy.
 
 ## Decisions made during this phase
 

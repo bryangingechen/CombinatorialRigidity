@@ -105,6 +105,11 @@ Remarks on the tree:
   cross-check.
 - **`m2/earbad.m2`** is an independent symbolic re-check of (MC-46)'s classification (B2), not a
   leaf of its proof. Its (B3) supports (MC-47)(ii), which (MC-89) does not use.
+- *(2026-09-26, ORBIT recon, found by formalization; not yet second-read.)* The row "chain `k = 2`,
+  `a ≁ b`, `δ₂ ≥ 2`" now rests on (MC-176) (Step MC13), whose `(P₁) ⟹ (P₂)` is the refined link
+  (MC-173). (MC-46), its orbit table (MC-138) and the semi-invariance are off the route and stay
+  proved. The row's leaves become (MC-173)–(MC-176), (MC-16), (MC-18)'s two fibre identifications,
+  (MC-4)(b), (MC-169) and JJ at `G′ + ab` ((MC-172)). No certificate leaf is added.
 - **No other computation hides in the tree.** `x0arms.py` and `coverstruct.py` assert proved
   identities at witnesses. The JJ "exhibitions" of Steps MC14/MC15 are replaced by the citation
   in (MC-89).
@@ -278,7 +283,7 @@ nonzero `c ∈ ρ` lies in `Λ_k(x)` on a dense open set. Apply (MC-135) or (MC-
   any nonzero `c ∈ ρ`. ∎
 
 > **(MC-138)** `[PROVED]` *((MC-46)'s orbit-dimension table, the open orbit, and the semi-invariance,
-> over every field)*
+> over every field; off (MC-89)'s route since 2026-09-26, when (MC-176) replaced (MC-46) there — still proved)*
 > **Orbit (i).** `S = {diag(λ, A, μ)}` with `A ∈ GL(⟨e₁,e₂⟩)`, modulo scalars, so `dim S = 5`.
 > `S` has the open orbit `{(αe₀ + u, v + βe₃) : αβ ≠ 0, u ∧ v ≠ 0}` on 2-ear placements, the
 > orbit of `x⁰ = (e₀+e₁, e₂+e₃)`.

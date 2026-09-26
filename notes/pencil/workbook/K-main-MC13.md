@@ -112,7 +112,7 @@ In orbits (i) and (ii) the survivors `Pen_a`, `Pen_b` violate `(P₂)` by (MC-43
 dominant (MC-18)(a), and `λ = 3` in every orbit (MC-19)(b). So (MC-22) gives `(R₂)` and `(P₂)`.
 `(R₂)` gives `(R₃)`, the implication gives `(P₃)`, and (MC-22) at `G` concludes. ∎
 
-> **(MC-46)** `[PROVED]` *(`k = 2`, orbits (i) and (ii); the orbit table by hand over every field: (MC-138))* Let the flag pair be in orbit (i) or (ii),
+> **(MC-46)** `[PROVED]` *(`k = 2`, orbits (i) and (ii); the orbit table by hand over every field: (MC-138); superseded on (MC-89)'s route 2026-09-26 by (MC-173) and (MC-176), below — still proved, no longer consumed)* Let the flag pair be in orbit (i) or (ii),
 > and let `r ≤ 3`. Then **`ρ ∈ B₂(r)` iff `ρ ⊇ Pen_a`, or `ρ ⊇ Pen_b`, or (`r = 3` and `ρ ⊆ N`)**.
 > Each of the three families lies in `B₁(r)`. So, in these orbits, `(P₁) ⟹ (P₂)` for every `ρ`
 > (`r ≥ 4` is (MC-26), and `B₂(1) = ∅`). Hence **under the strong induction the `k = 2` open-ear
@@ -166,6 +166,226 @@ hence `(R₂)` and `(P₂)`. ∎
 This is the attack's S14(iii), `m = 2`, `δ′ ≤ 3` case, specialised to the one partner `B = Λ₂`. For
 that partner `P(B)` meets only five orbit strata, so none of S2's exceptions (X1)–(X4) can arise.
 The specialisation adds orbit (ii), which S14 does not treat.
+
+**The `k = 2` cell without the orbit count (2026-09-26, found by formalization).** *Added by the
+Phase-40 ORBIT recon (opus), `notes/Phase40-design.md` §4. (MC-46)'s proof counts dimensions of
+incidence varieties and orbits, which has no polynomial-level form, so the cell it serves on
+(MC-89)'s route (`k = 2`, `a ≁ b`, `δ₂ ≥ 2`, (MC-79)(v)) is re-proved here. (MC-173)–(MC-176) are
+one writer's and **not yet second-read**; a fresh second reading is commissioned
+(`notes/pencil/adjudications.md`, 2026-09-26, D1). Driver `w4/orbitlink.py` (new). Notation as
+above and in Step MC20; the ear points are `p_a, x₁, x₂, p_b`, and `Λ₁(y) := span(p_a∧y, y∧p_b)`
+for `y ∈ m`.*
+
+On the route the flag pair is in orbit (i) ((MC-176), Step 1), and there a sharper form of
+(MC-26)'s first link does all of `(P₁) ⟹ (P₂)`. The idea is to choose the link's extra limit
+direction so that it misses `ρ + Λ₁(y)`.
+
+> **(MC-173)** `[PROVED]` *(the refined 2-ear link, orbit (i); found by formalization, ORBIT recon
+> 2026-09-26; not yet second-read)* Let `K` be an infinite field, let the flag pair
+> `(p_a, π_a; p_b, π_b)` be in orbit (i), let `y ∈ m = π_a ∩ π_b`, and let `ρ ⊆ Λ²K⁴` be any
+> subspace. Put `s := dim(ρ + Λ₁(y))`. Then the 2-ear placements `x = (x₁, x₂)`, `x₁ ∈ π_a`,
+> `x₂ ∈ π_b`, with **`dim(ρ + Λ₂(x)) ≥ min(s + 1, 6)`** contain the nonzero locus of a nonzero
+> polynomial in the placement coordinates. In the affine charts `x₁ = (q₁, h_a(q₁), 1)` and
+> `x₂ = (q₂, h_b(q₂), 1)`, it is a nonzero polynomial in `(q₁, q₂) ∈ K² × K²`. Consequently, in
+> orbit (i), **`(P₁) ⟹ (P₂)` for every `ρ`, at every `r`**. This contains (MC-26)'s first link and
+> (MC-46)'s conclusion in orbit (i), and it describes no bad set `B₂(r)`.
+
+*Proof.* *The frame.* In orbit (i) the lines `m` and `n = p_a p_b` are skew ((MC-169)'s proof).
+Take a second point `y′ ∈ m`, `y′ ≠ y`. Then `e₀ := p_a`, `e₁ := y`, `e₂ := y′`, `e₃ := p_b` is a
+basis of `K⁴`, with `π̂_a = ⟨e₀, e₁, e₂⟩` and `π̂_b = ⟨e₁, e₂, e₃⟩`. The six `e_{ij} := e_i ∧ e_j`,
+`i < j`, are a basis of `Λ²K⁴`, and `Λ₁(y) = ⟨e₀₁, e₁₃⟩`.
+
+*Two curve families*, the degenerations of (MC-26)'s link from each end. Fix `σ ≠ 1`.
+- (α) `x₁(t) = y + t·u` with `u ∈ π̂_a`, and `x₂ = (1 − σ)y + σp_b`. Then
+  `x₁∧x₂ = σ·y∧p_b + t·u∧x₂` and `x₂∧p_b = (1 − σ)·y∧p_b`, so
+  `x₁∧x₂ − (σ/(1 − σ))·x₂∧p_b = t·u∧x₂`.
+- (β) `x₁ = (1 − σ)y + σp_a` and `x₂(t) = y + t·w` with `w ∈ π̂_b`. Symmetrically,
+  `x₁∧x₂ − (σ/(1 − σ))·p_a∧x₁ = t·x₁∧w`.
+
+For all but finitely many `t` each `x(t)` is a placement with distinct consecutive points. Put
+`c := u∧x₂` in (α) and `c := x₁∧w` in (β). For `t ≠ 0` the three rows `p_a∧x₁(t)`, `c`,
+`x₂(t)∧p_b` come from the three hinge lines by an invertible triangular change, so they span
+`Λ₂(x(t))`. At `t = 0` they are `p_a∧y`, `c`, `y∧p_b` up to nonzero scalars.
+So `c` is the curve's **limit direction**, and the rows are polynomial in `t`.
+
+*The limit directions span.* Take `σ₀ ∉ {0, 1}`, which exists since `K` is infinite. The four
+curves below have these limit directions:
+- (α), `u = y′`, `σ = 0`: `−e₁₂`;
+- (α), `u = p_a`, `σ = σ₀`: `(1 − σ₀)e₀₁ + σ₀e₀₃`;
+- (α), `u = y′`, `σ = σ₀`: `(σ₀ − 1)e₁₂ + σ₀e₂₃`;
+- (β), `w = y′`, `σ = σ₀`: `(1 − σ₀)e₁₂ + σ₀e₀₂`.
+
+Modulo `Λ₁(y)` they span `⟨e₀₂, e₀₃, e₁₂, e₂₃⟩`, which is all of `Λ²K⁴ / Λ₁(y)`.
+
+*Conclusion.* Put `W := ρ + Λ₁(y)`. If `s ≤ 5`, then `W` is a proper subspace containing
+`Λ₁(y)`, so one of the four limit directions `c` lies outside `W`. If `s = 6`, take any of the
+four.
+- Let `M(t)` have as rows a basis of `ρ` and the curve's three rows. Its entries are polynomial in
+  `t`, and `rank M(0) = dim(W + ⟨c⟩) = min(s + 1, 6)`.
+- A nonzero minor of that size at `t = 0` is a univariate polynomial nonzero at `0`. So it is
+  nonzero at all but finitely many `t`. Pick such a `t ≠ 0, −1` at which `x(t)` is a placement. There
+  `dim(ρ + Λ₂(x(t))) ≥ min(s + 1, 6)`.
+- That rank bound is the nonvanishing of a minor of `[ρ; p_a∧x₁; x₁∧x₂; x₂∧p_b]`. The minor is
+  polynomial in the placement coordinates, and it is nonzero at `x(t)`.
+- For the affine charts, take `y`, `y′`, `p_a`, `p_b` affine (last coordinate `1`). Every point
+  of the four curves then has last coordinate `1` or `1 + t`, so for `t ≠ −1` it is a nonzero
+  multiple of an affine point of its plane. Rescaling a point changes no hinge line, so the minor
+  is also nonzero at a point of the charts. ∎
+
+*The consequence for `(P_k)`.* In orbit (i), `λ₁ = 2` at every `y ∈ m` (MC-169), and `λ₂ = 3`
+generically (MC-19)(b). `(P₁)` says `dim(ρ ∩ Λ₁(y)) = max(0, r − 4)` at a generic `y`, that is,
+`s = min(r + 2, 6)`. Then, at a generic `x`, `dim(ρ ∩ Λ₂) = r + 3 − dim(ρ + Λ₂) ≤ max(0, r − 3)`,
+which is `(P₂)`. ∎
+
+Orbit (ii) is not covered, and it never reaches the cell on the route. There `p_b ∈ m`, and the
+limit directions of both families, over every `u ∈ π̂_a`, `w ∈ π̂_b` and `σ`, span with `Λ₁(y)`
+only a hyperplane of `Λ²K⁴` (`orbitlink.py --link` asserts rank 5 at every frame).
+`[MEASURED orbitlink.py --link]` Seeded, 1 500 trials per orbit. `ρ` is drawn inside a random
+`W ⊇ Λ₁(y)`, half the time one spanned by limit directions, and `s = 2..6` all occur.
+- In orbit (i), the proof's curve reaches the bound at an exhibited `t` in every trial. Each
+  exhibited `t` is a certificate for its `ρ`.
+- In orbit (ii), the best of three random placements reached the bound at 1 500/1 500. That is a
+  lower bound, and nothing is claimed there.
+
+> **(MC-174)** `[PROVED]` *(the 1-ear incidence, parametrized: (MC-18)(b)'s "irreducible and
+> dominates" without divisibility or irreducibility; found by formalization, ORBIT recon
+> 2026-09-26; not yet second-read)* Let `K` be infinite, let `L` be a finite-dimensional
+> `K`-space, and let `D : L → Aff(K²)` be linear of rank `≥ 2`; write `D(z)(q)` for the value of
+> `D(z)` at `q ∈ K²`. Let `A` be a polynomial function on `L` that is nonzero somewhere, and `B` a
+> nonzero polynomial on `K²`. Then there are `z ∈ L` and `q ∈ K²` with **`D(z)(q) = 0`,
+> `A(z) ≠ 0` and `B(q) ≠ 0`**. At `X₀(G′)`, take `L = L_{G′}(q′)` and `D(z) = h_a − h_b`, so that
+> `rank D = dim U`. Then `{(z′, q_x) : D(z′)(q_x) = 0}` is `L_{G′+ear₁}` over the pictures `q_x`
+> ((MC-18)(b)). With `A` the open conditions on `z′` and `B` those on `q_x`, the incidence has a
+> point over the generic point of each factor. This is the dominance that (MC-54) (at `k = 1`) and
+> (MC-176) consume, one in each direction.
+
+*Proof.*
+- The constants form a line in `Aff(K²) ≅ K³`. So rank `≥ 2` gives a nonzero linear form `ℓ` on
+  `L`: the `X`- or the `Y`-coefficient of `D(z)`. Two nonempty Zariski-open subsets of `L` meet,
+  so pick `z₀` with `A(z₀) ≠ 0` and `ℓ(z₀) ≠ 0`. Then `D(z₀)` is nonconstant, and its zero set
+  `ℓ₀` is a line.
+- Rank `≥ 2` also gives `u ∈ L` with `D(u) ∉ K·D(z₀)`. An affine function that vanishes on the
+  zero line of a nonconstant `f` is a multiple of `f`, so `D(u)` does not vanish on all of `ℓ₀`.
+  Pick `q₀ ∈ ℓ₀` with `D(u)(q₀) ≠ 0`.
+- For `(q, w) ∈ K² × L` put `Z(q, w) := D(u)(q)·w − D(w)(q)·u ∈ L`. It is polynomial in `(q, w)`,
+  and `D(Z(q, w))(q) = D(u)(q)·D(w)(q) − D(w)(q)·D(u)(q) = 0`.
+- `F(q, w) := A(Z(q, w))` is polynomial, and `F(q₀, w₀) = A(z₀) ≠ 0` at `w₀ := z₀ / D(u)(q₀)`,
+  because `D(z₀)(q₀) = 0` gives `Z(q₀, w₀) = z₀`. So `F` and `B`, read on `K² × L`, are each
+  nonzero somewhere, and they have a common non-root `(q, w)`. Take `z := Z(q, w)`. ∎
+
+> **(MC-175)** `[PROVED]` *(three partition inequalities; any finite graph; found by
+> formalization, ORBIT recon 2026-09-26; not yet second-read)* Let `G′` be a graph with
+> `a ≠ b` in `V(G′)`, let `x₁, x₂ ∉ V(G′)`, and put `G₁ := G′ + (a − x₁ − b)` and
+> `G := G′ + (a − x₁ − x₂ − b)`.
+> **(i)** `[PROVED]` `def₃(G) ≥ def₃(G₁)`.
+> **(ii)** `[PROVED]` `def₃(G) ≥ def₃(G′) − 3`.
+> **(iii)** `[PROVED]` If `a ≁ b` in `G′`, then `def₂(G′ + ab) ≤ def₂(G′) − min(δ₂, 2)`, where
+> `δ₂ := def₂(G′) − def₂(G′/ab)` and `def₂(G′/ab)` maximizes over partitions with `a`, `b` in one
+> part. So `δ₂ ≥ 2` gives `def₂(G′ + ab) ≤ def₂(G′) − 2`.
+
+*Proof.* Write `val_D(P) = D(|P| − 1) − (D − 1)d(P)`, with `D = 6` for `def₃` and `D = 3` for
+`def₂`.
+- (i) Extend a partition of `V(G₁)` by putting `x₂` in `x₁`'s part. The number of parts is
+  unchanged, `x₁x₂` is internal, and `x₂b` crosses exactly when `x₁b` did. So the value is
+  unchanged.
+- (ii) Extend a partition of `V(G′)` by the singletons `{x₁}` and `{x₂}`. That adds two parts and
+  three crossing edges, so the value changes by `2·6 − 3·5 = −3`.
+- (iii) A partition separating `a` and `b` has `val_{G′+ab} = val_{G′} − 2 ≤ def₂(G′) − 2`. A
+  partition that does not separate them has `val_{G′+ab} = val_{G′} ≤ def₂(G′/ab) = def₂(G′) − δ₂`.
+  ∎
+
+(iii) is the `≤` half of (MC-48)(ii)'s partition count, with `δ₂ ≥ 2` as its hypothesis in place
+of (MC-48)'s (c). That half is all (MC-48)(ii)'s argument uses, and it is what (MC-79)(v)
+re-derives.
+
+> **(MC-176)** `[PROVED]` *(the `k = 2` open-ear step at `a ≁ b`, `δ₂ ≥ 2`, through the
+> antecedent; replaces (MC-46) and (MC-138) on (MC-89)'s route; Jackson–Jordán at `G′ + ab` is
+> (MC-172), a theorem over every infinite field; found by formalization, ORBIT recon 2026-09-26;
+> not yet second-read)* Let `K` be infinite. Let `G = G′ + ear₂` be an open ear
+> `a − x₁ − x₂ − b` with `G′` satisfying (H), `a ≁ b` in `G′`, and `δ₂ ≥ 2`. Put
+> `G₁ := G′ + (a − x₁ − b)`, that is, `G` with `x₂` split off. **If `X₀(G′)` and `X₀(G₁)` attain,
+> then `X₀(G)` attains.** Under the strong induction both hypotheses hold: both graphs satisfy (H)
+> and are smaller than `G` ((MC-55)(i)).
+
+*Proof.* **Step 1: flag genericity** ((MC-48)(ii)'s argument, under `δ₂ ≥ 2`). `G′ + ab` is
+simple, with `|N[v]| ≥ 3` at every vertex.
+- Take `q` admissible for `G′` and generic for (MC-172) at `G′ + ab`, so that
+  `dim L_{G′+ab}(q) = 3 + def₂(G′ + ab)`. By (MC-175)(iii) and (MC-4)(b) at `G′`,
+  `dim L_{G′+ab}(q) ≤ 1 + def₂(G′) ≤ dim L_{G′}(q) − 2`.
+- The planes are fixed by `N_{G′}[·]`, so the new edge asks only `p_b ∈ π_a` and `p_a ∈ π_b`.
+  Hence `L_{G′+ab}(q) = L_{G′}(q) ∩ ker φ₁ ∩ ker φ₂`, and so `φ₁`, `φ₂` are linearly independent
+  on `L_{G′}(q)`.
+- Both factor through `D(z) := h_a − h_b`: `φ₁ = −D(z)(q_b)` and `φ₂ = D(z)(q_a)`. So
+  `rank D = dim U ≥ 2`, and off the proper Zariski-closed set `{φ₁φ₂ = 0}` the flag pair is in
+  orbit (i).
+
+**Step 2: a common point.** Fix `q` on `V(G′)` as in Step 1, and also generic for `X₀(G′)`, so
+that the attaining heights contain a nonempty Zariski-open `O′ ⊆ L_{G′}(q)`. Make the extensions
+of `q` at `x₁` (generic for `X₀(G₁)`) and at `x₁`, `x₂` (main pictures of `G`) contain the
+nonzero locus of a nonzero polynomial in the new coordinates. Each requirement is a nonzero
+polynomial condition on `q`'s coordinates. Apply (MC-174) with:
+- `A := φ₁·φ₂·A′`, where `A′` cuts out `O′`; `A` is nonzero somewhere on `L_{G′}(q)`;
+- `B(q_x) :=` the `G₁`-genericity polynomial, whose non-roots are admissible for `G₁`, so that
+  `q_x ≠ q_a, q_b`.
+
+This gives `(z′, q_x)` with `D(z′)(q_x) = 0`. By (MC-18)(b)'s identification,
+`L_{G₁}(q, q_x) ≅ {z ∈ L_{G′}(q) : D(z)(q_x) = 0}` via `z_{x₁} = h_a(q_x)`. This vector space
+contains `z′`, where `A ≠ 0`, and it contains a nonempty Zariski-open set of heights at which
+`G₁` attains. Two such sets meet, so replace `z′` by a common point. Now `G′` attains at `z′`,
+`G₁` attains at `(z′, h_a(q_x))`, the flag pair is in orbit (i), and `y := (q_x, h_a(q_x), 1)`
+lies on `m`.
+
+**Step 3: the count at `G₁`.** In rank form, (MC-16) reads
+`rank R_{G′+ear_k} = rank R_{G′} + 5k − 1 + dim(ρ + Λ_k)` at every configuration with adjacent
+points distinct. The reason is that `dim M_G = dim M_{G′} + (k + 1) − dim(ρ + Λ)`, because
+`−r + dim(ρ ∩ Λ) − λ = −dim(ρ + Λ)`. This is the vertex-2-cut gluing at `{a, b}` (Phase 39's
+Layer B6): the path side has rank `5(k + 1)` and relative screws `Λ_k`. At `k = 1` it gives
+`rank R_{G₁} = rank R_{G′} + 4 + s`, with `s := dim(ρ + Λ₁(y))`.
+
+**Step 4: the placement.** Apply (MC-173) at `(z′, y)`, with `x₁ = (q_{x₁}, h_a(q_{x₁}), 1)` and
+`x₂ = (q_{x₂}, h_b(q_{x₂}), 1)` ((MC-18)(a)). The pictures `(q_{x₁}, q_{x₂})` with
+`dim(ρ + Λ₂(x)) ≥ min(s + 1, 6)` contain the nonzero locus of a nonzero polynomial. Intersect it
+with the main pictures of `G` over `q`. At such a point the heights
+`(z′, h_a(q_{x₁}), h_b(q_{x₂}))` lie in `L_G`, and (MC-16) at `k = 2` gives
+`rank R_G = rank R_{G′} + 9 + dim(ρ + Λ₂(x)) ≥ min(rank R_{G₁} + 6, rank R_{G′} + 15)`.
+
+**Step 5: the target.** `G′` and `G₁` attain at the point, so
+`rank R_{G′} = 6(|V′| − 1) − def₃(G′)` and `rank R_{G₁} = 6|V′| − def₃(G₁)`. With (MC-175)(i)
+and (ii),
+`rank R_G ≥ min(6(|V′| + 1) − def₃(G₁), 6(|V′| + 1) + 3 − def₃(G′)) ≥ 6(|V′| + 1) − def₃(G)`,
+which is `G`'s target, since `|V(G)| = |V′| + 2`. One attaining point over a main picture forces
+the generic one ((MC-2)'s semicontinuity). ∎
+
+What (MC-176) does not use: `δ`, (MC-17), (MC-22)'s split into `(R_k)` and `(P_k)`, (MC-26),
+(MC-44), (MC-46) and (MC-138). The antecedent `G₁` supplies both of (MC-22)'s conditions at once,
+through `s`. By (MC-17), `s = 2 + min(δ, 4)` at the common point, and attainment of `G′` there is
+used only when `s = 6`, which happens exactly when `δ ≥ 4`. `K` enters only as an infinite field:
+nonzero scalars are inverted, a nonzero univariate polynomial has finitely many roots, and nonzero
+polynomials have a common non-root. The one citation is (MC-172). So (MC-166)'s audit extends to
+(MC-173)–(MC-176) unchanged. The formalization interface is in `notes/Phase40-design.md` §3 STEPS
+(ORBIT).
+
+`[MEASURED orbitlink.py --e2e]` Exact over ℚ, at 30 chains of subdivided `K₄`: the witness's six
+below, then 24 more in the driver's order (a cap). The `(δ, r, s)` profile is `(1, 1, 3)` ×11,
+`(2, 2, 4)` ×9, `(3, 3, 5)` ×9 and `(4, 4, 6)` ×1. At each chain:
+- `G′`, `G₁` and `G` attain over pictures certified main (`dim L = 3 + def₂`);
+- the flag pair is in orbit (i), and `s = 2 + min(δ, 4)`;
+- (MC-16)'s rank identity holds at `G₁` and at `G`;
+- the curve of (MC-173)'s proof reaches `G`'s target.
+
+These are certificates at those instances, not coverage.
+
+`[CONSTRUCTED orbitlink.py --witness]` *(the cell is forced)* `K₄` with every edge subdivided
+twice (16 vertices, 18 edges) is in 𝒮, with `def₂ = 9 > def₃ = 0`. It is rigid, it has no
+(MC-80) core, and each of its six chains has `k = 2`, `a ≁ b` and `δ = δ₂ = 3`. So in (MC-89)'s
+step list its only covering step is this cell:
+- it is 2-connected, not a cycle or a θ-graph, and not FLAT;
+- it has no `def₂`-rigid subgraph, by (S) and (MC-76);
+- it has no core for (MC-71);
+- it has no chain with `k ≠ 2` or with `δ = 0`.
+
+Splitting off a chain vertex gives exactly `G₁`, the cell's own antecedent. So the cell cannot be
+routed around with the planned steps.
 
 > **(MC-47)** *(`k = 2` in orbits (iii) and (iv): what the antecedent cannot kill)*
 > **(i)** `[PROVED]` In orbit (iv), `Λ₂ = Λ²π` at every 2-ear placement of generic span (the span drops to `⟨n⟩` when `x₁, x₂ ∈ n`; *second
@@ -347,6 +567,7 @@ instance on ≤ 8 vertices.
 - an `m2/earbad.m2` check failing;
 - an instance where `(P₂)` holds and `(P₃)` fails;
 - or one in orbit (i)/(ii) where `(P₁)` holds and `(P₂)` fails.
+- *(2026-09-26)* an `orbitlink.py` assert firing: (MC-173), (MC-176) end to end, or the witness.
 
 **Drivers** (Python at `PYTHONHASHSEED=0`, seed `20260924`, exact ℚ except the mod-`2⁶¹ − 1`
 attainment screen of `G′`, which is a certificate and is re-derived exactly; `M2` 1.26.06,
@@ -365,4 +586,7 @@ attainment screen of `G′`, which is a certificate and is re-derived exactly; `
 | `python3 notes/scripts/w4/earante.py --chord-thetas 14` | 35 pairs; 13/13 computable `δ ≤ 4` limits reach the target | 8 s |
 | `python3 notes/scripts/w4/earante.py --chord-habitats --stride 4` | 269 pairs, all `δ = 4`, `a′ = 0`, `dim(ρ(z₀) ∩ n^⊥) = 3`; 269/269 reach the target | 183 s |
 | `python3 notes/scripts/w4/earante.py --chord-habitats` | 1 075 pairs, the same profile; 1 075/1 075 | 732 s (over the ceiling; `--stride 4` is the foreground form) |
+| `python3 notes/scripts/w4/orbitlink.py --link` | *(2026-09-26, seed `20260926`)* (MC-173): 1 500 trials per orbit; orbit (i) four-curve span 6 and the proof's curve certifies the bound at 1 500/1 500; orbit (ii) family span 5 (asserted), random draws printed, not claimed | 6 s |
+| `python3 notes/scripts/w4/orbitlink.py --witness` | *(2026-09-26)* the subdivided-`K₄` witness: 𝒮, `def₂ = 9 > def₃ = 0`, rigid, no (MC-80) core, six chains `k = 2`, `a ≁ b`, `δ = δ₂ = 3` | 0.3 s |
+| `python3 notes/scripts/w4/orbitlink.py --e2e` | *(2026-09-26, seed `20260926`)* (MC-176) end to end at 30 chains (6 witness + 24 capped): all attain over certified-main pictures; (MC-16) at `G₁`, `G` | 21 s |
 

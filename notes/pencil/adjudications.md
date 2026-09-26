@@ -843,3 +843,26 @@ PI decisions, 2026-09-26, on this recon's verdict (verbatim answers to the coord
 CHAIN, SHORT, SPLITOFF, CONTRACT-A, ORBIT) until each opens. The "only if" halves of (MC-52)(iv)
 and (MC-53)(iv) are an unchecked todo in the design doc's §3 STEPS, not a 40e close gate. Work log
 `notes/Phase40e.md`.
+
+## 2026-09-26 — ORBIT: the `k = 2` cell re-proved without the orbit count; workbook first; a tail group after SHORT
+
+Phase 40's read-only ORBIT recon (opus; verdict in `notes/Phase40-design.md` §4) found a short
+polynomial-level proof of the cell (MC-46) served on (MC-89)'s route (`k = 2`, `a ≁ b`, `δ₂ ≥ 2`).
+It is a refined form of (MC-26)'s degeneration link, and it needs neither (MC-46)'s dimension
+count nor (MC-138)'s orbit table. The recon refuted routing the cell another way in COVERAGE, with
+a witness graph, and found building dimension theory out of reach. It asked whether the new
+argument should replace (MC-46), and where the cell goes in the STEPS grouping. The user's
+answers, relayed verbatim in the coordinator's dispatch:
+
+```adjudication
+PI decisions, 2026-09-26, on the ORBIT recon's verdict (verbatim answers to the coordinator's questions):
+D1. "Should the new argument replace (MC-46) and its orbit table (MC-138) in the proof of the k = 2, a ≁ b, δ₂ ≥ 2 cell?" — "Workbook first (Recommended)": land it as a new MC label in the owning K-main step, with its drivers ported and one read-only fresh second-reader dispatch, then build it (about 1 docs commit + 1 read-only dispatch, then 3–4 builds). Keeps Phase 40's rule of transcribing only second-read mathematics.
+D2. "Where does the k = 2 cell (the new argument plus the step that uses it) go in the STEPS grouping?" — "Tail group after SHORT (Recommended)": keep it as its own 2–3-build group right after SHORT.
+```
+
+**Decided.** The new argument is landed in Step MC13 as (MC-173)–(MC-176), marked found by
+formalization and not yet second-read, with driver `w4/orbitlink.py`. (MC-46) and (MC-138) are
+superseded on the route but not deleted. A fresh read-only second reading of (MC-173)–(MC-176)
+comes next, then 40f opens as CONTRACT-R. In the grouping, (MC-48)(ii)'s argument, with
+`δ₂ ≥ 2` as its hypothesis, moves to SHORT. ORBIT keeps its code as the 2–3-build tail group
+after SHORT, holding (MC-173) and (MC-176).

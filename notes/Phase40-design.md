@@ -7,8 +7,9 @@ standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md`
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
 closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
-2026-09-26** (`notes/Phase40e.md`); the six later groups are provisional, and the next opens after
-the read-only ORBIT recon (§3 STEPS). This doc replaces the planning note
+2026-09-26** (`notes/Phase40e.md`); the six later groups are provisional. The ORBIT recon is done
+(2026-09-26, §4); next is a read-only fresh second reading of its new claims (MC-173)–(MC-176),
+then 40f opens as CONTRACT-R (§3 STEPS). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
 pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
@@ -200,7 +201,7 @@ map for the later groups.
 | chains `k ≥ 5` | (MC-18)(a), (MC-16), (MC-17), (MC-19)(b) → (MC-20); cert. (MC-134)(b) | ✓ |
 | chain `k = 4` | (MC-22), (MC-19)(b) `k = 2, 4` → (MC-24), (MC-25); `⋂Λ₄ = 0` (MC-136) | ✓ |
 | chain `k = 3` | (MC-22), (MC-19)(b) `k = 2, 3` → (MC-45); `r = 1` via (MC-26) and (MC-135); `r = 2` via (MC-47)(i)'s span identity; `r ≥ 3` via (MC-26)'s link | ✓ (MC13, MC20) |
-| chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-46) ← orbit table (MC-138), (MC-26)'s link, (MC-18)(b), (MC-19)(b) `k = 1`, (MC-22); `dim U ≥ 2` by (MC-48)(ii); Jackson–Jordán at `G′ + ab` | ✓ |
+| chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-176) ← the refined link (MC-173), the parametrized incidence (MC-174) (SHORT's (MC-18)(b)), (MC-175)(i)(ii), (MC-16) at `k = 1, 2`, (MC-18)(a)/(b)'s fibre identifications, (MC-169); orbit (i) and `dim U ≥ 2` by (MC-48)(ii)'s argument under `δ₂ ≥ 2` ((MC-175)(iii), (MC-4)(b), Jackson–Jordán at `G′ + ab` = (MC-172)). (MC-46)/(MC-138) superseded on route (2026-09-26) | ✗ (found by formalization 2026-09-26; second reading commissioned) |
 | chain `k ≤ 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a)/(b), (MC-16) | ✓ (MC14) |
 | SPLITOFF (`k = 1`, `δ ≥ 5`) | (MC-28), (MC-29), (MC-30)(iv) → (MC-31); Jackson–Jordán at `G″` | ✓ (MC11) |
 | CONTRACT | (MC-34)–(MC-38) → (MC-39); (MC-59)(b), (c1)–(c3) → (MC-59)(d) | ✓ (MC12, MC14) |
@@ -244,14 +245,46 @@ map for the later groups.
     Pins Layer B (`relScrews`, `jointMotions`) and A2/A3 (D5 debt); `CycleData` fits BASE.
     `ChainData` does not fit: it forces `d = n` and a fresh label. 6–10.
   - **SHORT**: (MC-22), (MC-24), (MC-44), (MC-25)/(MC-136), (MC-45)/(MC-135)/(MC-26)/(MC-47)(i),
-    (MC-54), THETA (MC-139). After CHAIN. 8–12.
+    (MC-54), THETA (MC-139). After CHAIN. 8–12, plus about 1 for the item moved in by the ORBIT
+    recon (PI D2, 2026-09-26):
+    - **(MC-48)(ii)'s argument, with `δ₂ ≥ 2` as its hypothesis** (not (MC-48)'s (c)). It says the
+      incidence functionals `φ₁`, `φ₂` are independent on `L_{G′}(q)` at generic `q`, which gives
+      orbit (i) and `dim U ≥ 2`. The ingredients are (MC-175)(iii) (on Layer A's
+      `deficiencySep`/`deficiencyMerged`), `Graph.exists_mvPolynomial_finrank_liftingSpace_eq` at
+      `G′ + ab` and `Graph.three_add_deficiency_le_finrank_liftingSpace` at `G′`. It discharges
+      (MC-54)'s `k = 1` hypothesis `dim U ≥ 2`, and ORBIT consumes it.
+    - SHORT's (MC-18)(b) dominance item is now (MC-174): the incidence parametrized by
+      `Z(q, w) = D(u)(q)·w − D(w)(q)·u`, with no divisibility and no irreducibility.
   - **SPLITOFF**: (MC-28)–(MC-31). 3–5. The compiled curve-limit lemma is in the same appendix.
   - **CONTRACT-A**, the additive core: (MC-67)–(MC-71). After CONTRACT-R. 4–7.
-  - **ORBIT**: (MC-46), (MC-138), (MC-48)(ii). After CHAIN and SHORT. Size unknown (§4).
+  - **ORBIT**, the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` cell: the refined link (MC-173) and the cell's step
+    (MC-176), with (MC-175)(i)(ii). A 2–3-build tail group after SHORT, and so after CHAIN (PI D2,
+    2026-09-26). The name is historical: the orbit table (MC-138) and (MC-46)'s count are off the
+    route, and no orbit is computed.
+    - **Consumes:** CHAIN's (MC-16) at `k = 1, 2` in rank form,
+      `rank R_{G′+ear_k} = rank R_{G′} + 5k − 1 + dim(ρ + Λ_k)`. This is
+      `BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq` at `{a, b}`, plus the path
+      side's rank `5(k + 1)` and the fact that its `relScrews` is the span of the hinges.
+      It also consumes SHORT's (MC-174) and (MC-48)(ii), and (MC-18)'s two fibre identifications.
+    - **The antecedent** is `G₁ = G.splitOff x₂ x₁ b e`, with `e` a freed label.
+    - **(MC-173)'s curve** goes through `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial`
+      and `exists_polynomial_ne_zero_of_linearIndependent_at`. Its frame basis of `Λ²` is
+      `exteriorPower.ιMulti_family_linearIndependent_field`, carried by
+      `panelSupportExtensor_linearIndependent_iff`.
+    - **The step** chooses its points through `MvPolynomial.exists_mem_eval_ne_zero₂` and ends at
+      `Graph.x0Attains_of_exists`. It needs no `δ`, (MC-17), (MC-22) or (MC-44).
+    - **Build commits:** (MC-173) about 1, the step 1–2.
 
   **Order** (PI, 2026-09-26): 40e's open and build first, then a read-only ORBIT recon (opus)
-  before the next group opens. 40e is closed, so the ORBIT recon is next, then the next group
-  (provisionally CONTRACT-R).
+  before the next group opens. Both are done; the ORBIT verdict is in §4. Next comes the read-only
+  fresh second reading of (MC-173)–(MC-176) (PI D1, 2026-09-26), then 40f opens as CONTRACT-R.
+  ORBIT's dependencies do not touch CONTRACT-R.
+- [ ] **Tracked for SHORT's pre-build recon (the ORBIT recon, 2026-09-26): re-check (MC-44) in
+  SHORT's list.** (MC-44) is not in (MC-89)'s tree (Step MC20, Part I). Step MC14's claim that
+  (MC-46) uses it was a mis-citation, repaired 2026-09-26. Its other users are off the route:
+  (MC-49), (MC-88)'s corollary, the ear cells of Steps MC17–MC18, Step MC21 and Step MC19's
+  informal *Consequence*. The new `k = 2` cell (MC-176) does not use it either. So confirm a
+  consumer on the route, or drop it from SHORT.
 - **Tracked from CARRIER's close and BRIDGE's recon (2026-09-26): settled by the STEPS pre-build
   recon (2026-09-26).** Each verdict below is compiled where it is a Lean question (the pieces the
   later groups reuse are verbatim in the appendix *the STEPS recon's tracked spike*), and lands
@@ -393,15 +426,32 @@ end.
   non-spanning form is the fix.
 - **(H) versus 2EC.** CUT and BRIDGE pass through non-2EC graphs, so the proof needs all of (H);
   the consumer uses only the 2EC form.
-- **ORBIT's dimension counting** (the STEPS pre-build recon, 2026-09-26). (MC-46)'s proof, with
-  (MC-138)'s table, counts dimensions of incidence varieties and orbits: `dim I ≥ dim S`, fibre
-  dimensions, orbit dimensions from Lie-algebra tangent vectors. It has no polynomial-level form,
-  and Mathlib lacks the dimension theory, so it will not transcribe as written. The options are a
-  new polynomial-level proof of `(P₂)` outside the three families, routing that cell
-  (`k = 2`, `a ≁ b`, `δ₂ ≥ 2`) another way in COVERAGE, or building dimension theory. The read-only
-  ORBIT recon after 40e's build decides which (PI, 2026-09-26). (MC-18)(b)'s "the zero set of a
-  bilinear form of rank `≥ 2` is irreducible and dominates" needs a polynomial-divisibility
-  reformulation (medium risk, SHORT).
+- [x] **ORBIT's dimension counting: resolved by the ORBIT recon (opus, 2026-09-26; PI D1/D2,
+  `notes/pencil/adjudications.md`).** (MC-46)'s proof, with (MC-138)'s table, counts dimensions
+  of incidence varieties and orbits, which has no polynomial-level form. The verdict is option
+  (A), in a stronger form than posed. On the route the flag pair is in orbit (i) ((MC-48)(ii)'s
+  argument under `δ₂ ≥ 2`), and there a sharper (MC-26) link, the refined link (MC-173), gives
+  `(P₁) ⟹ (P₂)` by two curve families. It picks the limit direction outside `ρ + Λ₁(y)`, with no
+  description of `B₂(r)`. The cell's step (MC-176) then counts ranks against the antecedent
+  directly. (MC-18)(b)'s dominance needs no divisibility: it is (MC-174), which retires SHORT's
+  medium-risk item. All of this is in
+  Step MC13, not yet second-read; the grouping effect is in §3 STEPS. Recorded so they are not
+  re-asked:
+  - **(B), rerouting in COVERAGE, is refuted** (`w4/orbitlink.py --witness`). `K₄` with every
+    edge subdivided twice is in 𝒮, with `def₂ = 9 > def₃ = 0`. It is rigid, it has no (MC-80)
+    core, and all six chains have `k = 2`, `a ≁ b` and `δ = δ₂ = 3`, so its only covering step
+    is this cell. Splitting off a chain vertex gives the cell's own antecedent. The consumers are
+    Step MC16's *usable* list, (MC-79)(v), (MC-80), (MC-81), (MC-82)(iii) and (MC-89)'s step 5.
+  - **(C), building dimension theory, is not feasible at any sensible cost** (well over 20
+    builds). The claims below were checked by compiler witnesses and bare-name searches across
+    `.lake/packages`.
+    - Mathlib **has** `ringKrullDim`, `MvPolynomial.ringKrullDim_of_isNoetherianRing`,
+      `Algebra.trdeg`, Noether normalization (`exists_finite_inj_algHom_of_fg`), Chevalley
+      (`PrimeSpectrum.isConstructible_comap_image`) and the topological `UpperSemicontinuous`.
+    - It **lacks** a fibre-dimension theorem, algebraic group actions, orbit–stabilizer
+      dimensions, a tangent-rank orbit bound, a trdeg–Krull-dimension bridge
+      (`Algebra.trdeg_eq_ringKrullDim` and `ringKrullDim_eq_trdeg` are unknown identifiers), and
+      any dimension for K-points over a non-closed field.
 - `supportExtensor e ≠ 0` must hold for **every** `e : β`, not only the edges of `G`. This is
   trivial, but it is easy to miss.
 

@@ -61,7 +61,8 @@ theorem (MC-89) stands, modulo Jackson–Jordán, in characteristic 0.** Driver
   - `k ≥ 5`: (MC-20);
   - `k = 4`: (MC-24)/(MC-25);
   - `k = 3`: (MC-45);
-  - `k = 2`: (MC-46) with `dim U ≥ 2`, or (MC-54) at `δ = 0`;
+  - `k = 2`: (MC-46) with `dim U ≥ 2`, or (MC-54) at `δ = 0` *(since 2026-09-26 the first
+    alternative is (MC-176), Step MC13, at `a ≁ b`, `δ₂ ≥ 2`)*;
   - `k = 1`: (MC-54) at `δ = 0` with `dim U ≥ 2`, or SPLITOFF (MC-31) at `δ ≥ 5`.
 - **JJ** means Jackson–Jordán's equality `ℓ₀ = 3 + def₂` at the named simple graph: in
   characteristic 0 it is their theorem, and beyond that it is (MC-33).
@@ -230,7 +231,11 @@ property. Its proper subsets satisfy (S), so `def₂(G[Y]) = max(0, s′(Y)) = 0
     `def₂(G′ + ab) = def₂(G′) − min(δ₂, 2) = def₂(G′) − 2`; with JJ at the simple `G′ + ab` and
     (MC-4)(b) at `G′`, the functionals `φ₁`, `φ₂` are independent on `L_{G′}` and factor through
     `U`;
-  - `dim U ≥ 2` excludes orbits (iii) and (iv), so (MC-46) applies.
+  - `dim U ≥ 2` excludes orbits (iii) and (iv), so (MC-46) applies. *(Repaired 2026-09-26, ORBIT
+    recon: the same independence gives orbit (i) itself. Both functionals are nonzero at generic
+    `z`, so `p_b ∉ π_a` and `p_a ∉ π_b`, as (MC-48)(ii) states; orbit (ii) never reaches this
+    cell. On (MC-89)'s route the cell's step is now (MC-176) (Step MC13), which uses orbit (i) and
+    not (MC-46).)*
 
   `k = 2`, `a ∼ b`: `δ ∈ {0, 1}` by (iii), and `δ = 0` is (MC-54). `k = 1`: `δ₂ ≥ 2` gives
   `dim U ≥ 2` as above, so `δ = 0` is (MC-54) and `δ ≥ 5` is SPLITOFF (`a ≁ b`).

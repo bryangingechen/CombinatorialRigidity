@@ -50,8 +50,10 @@ graph the step consumes is covered.
   common `def₂`-rigid subgraph ((MC-13)(b)'s argument, which does not use `a ∼ b`). That gives
   `U = 0` modulo JJ.
 - **(MC-44)** is not a step. Where `a ≁ b`, it supplies `(R_k)` from the chord gadget and so
-  removes (MC-24)'s dominance requirement for `(R₁)`, `(R₂)`. (MC-46) and (MC-49) use it; the table
-  records their conditions as landed.
+  removes (MC-24)'s dominance requirement for `(R₁)`, `(R₂)`. (MC-49) uses it; the table
+  records the conditions as landed. *(Repaired 2026-09-26, ORBIT recon: this said "(MC-46) and
+  (MC-49) use it". (MC-46)'s ear step (Step MC13) takes `(R₁)` from (MC-22) at the antecedent
+  `G′ + ear₁`, not from (MC-44), and (MC-44) is not in (MC-89)'s tree (Step MC20, Part I).)*
 
 > **(MC-52)** `[PROVED]` *(a cut vertex; the hybrid recon's "Aff-gauge fibre product", re-derived)*
 > Let `G = G₁ ∪ G₂` with `V(G₁) ∩ V(G₂) = {v}` and disjoint edge sets, where `G₁` and `G₂` satisfy

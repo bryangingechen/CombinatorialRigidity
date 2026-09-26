@@ -784,7 +784,8 @@ sub-phase 40b (2026-09-26, `notes/Phase40b.md`); its third, FLAT (the flat rank)
 sub-phase 40c (2026-09-26, `notes/Phase40c.md`); its fourth, BRIDGE (Jackson–Jordán's equality as
 consumed), closed as sub-phase 40d (2026-09-26, `notes/Phase40d.md`); STEPS runs by group, and its
 first, CUTBRIDGE (cut vertices and bridges), closed as sub-phase 40e (2026-09-26, `notes/Phase40e.md`);
-the read-only ORBIT recon runs before the next group opens. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+the read-only ORBIT recon has run (2026-09-26), and a second reading of its new proof comes before
+the next group, CONTRACT-R, opens as 40f. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
