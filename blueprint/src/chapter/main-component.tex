@@ -173,6 +173,9 @@ chosen.
 
 \begin{lemma}[The pencil condition is linear in the heights]
   \label{lem:pencil-condition-linear}
+  \lean{Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar,
+        Graph.IsAdmissiblePicture.exists_smul_eq_interpolant}
+  \leanok
   \uses{def:pencil-lifting-space, def:pencil-configuration,
         def:pencil-panel-realization}
   Let $q$ be admissible and $z$ a height. The configuration $p = (q, z)$
@@ -182,16 +185,29 @@ chosen.
   points, and each body's plane is unique and non-vertical.
 \end{lemma}
 \begin{proof}
-  If $z_w = a x_w + b y_w + c$ on the neighbourhood of $v$, its points
-  lie on the plane $\zeta = a\xi + b\eta + c$. Conversely a plane through
-  those points cannot be vertical --- a vertical plane would cut out an
-  affine relation on the non-collinear picture points, which vanish only
-  trivially --- so it is the graph of such an affine function, unique
-  because the picture points are not collinear. Adjacent points are
-  distinct because $q_u \neq q_v$. Linearity is the statement that the
-  condition at $v$ places the restriction of $z$ in the image of the
-  injective evaluation of affine functions on the neighbourhood, a
-  subspace of codimension $\deg v - 2$.
+  \leanok
+  \uses{lem:pencil-selector-plane-contains-nbhd,
+        lem:pencil-selector-independent-scalar,
+        lem:pencil-config-distinct-realization}
+  If $z \in L(q)$, admissibility gives at $v$ three closed-neighbourhood
+  members with non-collinear picture points, whose plane normal is
+  nonzero and, by \cref{lem:pencil-selector-plane-contains-nbhd},
+  orthogonal to the whole closed neighbourhood: the neighbourhood is
+  coplanar. Conversely, if some nonzero normal annihilates the whole
+  closed neighbourhood of $v$, evaluating it at those three non-collinear
+  members forces its height coefficient nonzero --- else it would already
+  annihilate three independent picture points --- and solving for $z_w$
+  exhibits $z$ as an affine function of the picture on the neighbourhood,
+  giving $z \in L(q)$.
+
+  Adjacent points are distinct because $q_u \neq q_v$
+  (\cref{lem:pencil-config-distinct-realization}). If $z_w = ax_w + by_w
+  + c$ on the neighbourhood of $v$, its points lie on the plane
+  $\zeta = a\xi + b\eta + c$; by the argument of
+  \cref{lem:pencil-selector-independent-scalar}, any nonzero normal of the
+  neighbourhood is a nonzero scalar multiple of $(a, b, -1, c)$, so its
+  height coefficient is nonzero (the plane is non-vertical) and it is
+  determined by $a, b, c$ up to scale (the plane is unique).
 \end{proof}
 
 \begin{lemma}[The hinges are affine in the heights]
@@ -516,6 +532,32 @@ allows no relative motion of its two bodies.
   and the nonempty set of attaining heights in $L(q)$ it provides has a
   member $z$. Apply \cref{lem:pencil-config-distinct-realization} to
   $(q, z)$.
+\end{proof}
+
+\begin{lemma}[Two open conditions on a fibre meet]
+  \label{lem:pencil-x0-fibre-intersection}
+  \lean{MvPolynomial.exists_mem_eval_ne_zero₂}
+  \leanok
+  Let $K$ be infinite and let $L$ be a linear subspace of $K^\sigma$
+  for an index set $\sigma$. If two polynomials in the coordinates of
+  $\sigma$ are each nonzero somewhere on $L$, some single point of $L$
+  makes both nonzero. This is the fibre-level form of the irreducibility
+  of $X_0$: the two conditions defining the generic member of a fibre
+  $L(q)$ --- attaining the deficiency rank and carrying a nondegenerate
+  realization --- are each open and each met somewhere on $L(q)$, so
+  they meet there together.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Restrict both polynomials to the line through the two witnessing
+  points of $L$, an affine substitution of one variable for the
+  coordinates of $\sigma$ turning each into a univariate polynomial.
+  Each restriction is nonzero, since it agrees with the corresponding
+  hypothesis at one of the line's two ends, so their product is a
+  nonzero univariate polynomial over the infinite field $K$ and has a
+  non-root there. The corresponding point of the line lies in $L$,
+  since a linear subspace is closed under it, and both original
+  polynomials are nonzero there.
 \end{proof}
 
 \begin{theorem}[The general point of the main component attains]

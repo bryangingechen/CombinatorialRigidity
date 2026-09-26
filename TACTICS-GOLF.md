@@ -99,6 +99,9 @@ symptom-indexed and lighter.
     `q₀`** — for a matrix of polynomials whose specialization at `q₀` is injective, don't hunt
     for a nonzero maximal minor: a constant left inverse `H` at `q₀` makes `H · A(q)` square with
     `det = 1` at `q₀`, and its adjugate is the polynomial inverse off `det = 0`.
+26. **`push_neg` is deprecated — use `push Not`.** The tactic is now a thin wrapper over a
+    generic `push <head>` combinator; `push_neg at h` still compiles but rides a deprecation
+    warning into the build.
 
 ---
 
@@ -1546,3 +1549,13 @@ first stack a projection onto `ker A(q₀)` under `A(q₀)` (`Matrix.fromRows`) 
 Worked example: `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
 (`CombinatorialRigidity/Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`, Phase 40b C1b; FRICTION
 *`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`*).
+
+## 26. `push_neg` is deprecated — use `push Not`
+
+Mathlib's negation-pushing tactic is now implemented as a thin wrapper: `Mathlib.Tactic.Push`
+defines a generic `push <head> [at loc]` combinator (the same machinery backs `push_cast`), and
+`push_neg` survives only as a deprecated macro for `push Not`. `push_neg at h` still elaborates,
+but the build then carries a `deprecated` warning — not warning-clean, per the build-gate rule in
+`CombinatorialRigidity/CLAUDE.md`. Write `push Not at h` directly (and `push Not` in `conv` mode,
+where `push_neg` is deprecated the same way). (FRICTION *`push_neg` is deprecated…*, Phase 40b
+CARRIER C5′.)

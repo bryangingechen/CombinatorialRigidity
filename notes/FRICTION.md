@@ -359,7 +359,9 @@ to be re-derived by re-reading entries later.
 - **Where it bit:** Phase 39 (PENCIL) W2 (`Molecular/Molecule/Pencil.lean`), negating `LinearIndependent.pair_iff'`'s `∀ c, c • x ≠ y` after `rw … at h` to obtain `∃ c, c • x = y`.
 - **Friction:** `push_neg at h` compiles but emits a **deprecation warning** ("`push_neg` has been deprecated. Prefer using `push Not` instead."), which trips the warning-clean build gate. This is a recent mathlib change; the project had no prior `push_neg` sites (so it surfaced only when W2 first used one).
 - **Fix:** `push Not at h` (the deprecation message's own suggested macro expansion `push $cfg Not $loc`) — same behavior, warning-clean. General: prefer `push Not` over `push_neg` project-wide going forward.
-- **Status:** resolved in-proof (usage note).
+- **Status:** resolved in-proof (usage note). Bit again in Phase 40b CARRIER C5′
+  (`MvPolynomial.exists_mem_eval_ne_zero₂`) — promoted on the second hit. **Lifted to:**
+  TACTICS-GOLF § 26.
 
 ### [idiom] `omega` can't close a `finrank` inequality from a separate `have : finrank K (Submodule.span K {x}) = 1` — `finrank_span_singleton`'s `K ∙ x` notation atomizes distinctly; `rw` the finrank lemmas *directly into* the `≤` hypothesis
 - **Where it bit:** Phase 39 (PENCIL) W2 (`Molecular/Molecule/Pencil.lean`), the coincident-points branch: deriving `False` from `hle : span (range pp) ≤ span {pt_u}` with `pp` an independent pair (`finrank 2`) but `span {pt_u}` a line (`finrank 1`).

@@ -106,6 +106,7 @@ close the PI re-scoped the queued PIN item to a second, independent proof by the
 |---|---|---|---|
 | (MC-4) | MC4 | ✓ 09-25 (Plücker by hand) | the flat rank is an identity in `dim L(q)`: `6|V| − 3 − dim L(q)`, with `dim L(q) ≥ 3 + def₂` |
 | (MC-5)(ii) | MC5 | ✓ 09-25 | `X₀` flat ⇒ `def₂ = def₃ = 0`, without Jackson–Jordán |
+| (MC-5)(iii) | MC5 | ✓ 09-25 | `X₀` flat (`ℓ₀ = 3`) ⇒ the flat configuration at every admissible `q` with `dim L(q) = 3` is rigid; consumed by (MC-139) |
 
 - **Lean reuse.** The inequality is landed at grade 1:
   `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean`). The
@@ -124,6 +125,12 @@ close the PI re-scoped the queued PIN item to a second, independent proof by the
   - Choose flat or cone. `X0Attains`'s own framework at `z = 0` *is* the cone: every polar hinge
     passes through `e₂`. The primal (flat) side matches the workbook and is favoured; the cone
     side skips C4 but needs a new 4D↔3D complement identity.
+- **CARRIER's C5′ close recon (2026-09-26), routed here for FLAT to consume.** The flat witness is
+  the `z₀ = 0` specialization of the general one-witness upgrade, not a separate construction:
+  `x0Attains_of_exists hV ends hends hq₀ (G.liftingSpace q₀).zero_mem hrank` (`0` is always a member
+  of the submodule `L(q₀)`). Picture certification — `dim L(q) = 3` at an admissible `q` makes it
+  main — is immediate from `three_le_finrank_liftingSpace` (`3 ≤ dim L(q')` at every admissible
+  `q'`, so `dim L(q) = 3` is already the least value). This is (MC-5)(iii)'s Lean shape, above.
 
 ### BRIDGE — Jackson–Jordán's equality, as it is consumed
 

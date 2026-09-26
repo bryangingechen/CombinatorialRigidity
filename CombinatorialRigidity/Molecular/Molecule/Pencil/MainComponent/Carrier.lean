@@ -77,6 +77,11 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
   field.
 * `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` — the rank is unchanged by
   `z ↦ t • z + a` for `t ≠ 0` and `a ∈ Aff(q)` (the last clause of (MC-3)).
+* `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` — over an admissible picture, coplanar
+  closed neighbourhoods force `z ∈ L(q)` (`lem:pencil-condition-linear`'s converse, CARRIER's C5′).
+* `Graph.IsAdmissiblePicture.exists_smul_eq_interpolant` — every nonzero normal of a closed
+  neighbourhood is a nonzero scalar multiple of the interpolant `(h₀, h₁, -1, h₂)`
+  (`lem:pencil-condition-linear`'s unique non-vertical plane, CARRIER's C5′).
 
 ## Design
 
@@ -1276,5 +1281,111 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G
     pointJoinFramework_comp_eq_mapSupport, BodyHingeFramework.finrank_span_rigidityRows_mapSupport,
     ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends (pencilConfigPoint q z),
     BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+
+/-! ## The pencil condition is linear in the heights (Phase 40b CARRIER slice C5′,
+`lem:pencil-condition-linear`) -/
+
+/-- **Coplanar closed neighbourhoods force `z ∈ L(q)`, over an admissible picture**
+(`lem:pencil-condition-linear`; Phase 40b CARRIER, informal (MC-1)'s converse). If a height `z`
+vanishes off `V(G)` and, at every body `v` of `G`, some nonzero `n : K⁴` annihilates the
+configuration point of every member of the closed neighbourhood of `v`, then `z ∈ L(q)`.
+
+Route: expand `n ⬝ᵥ p_w` as `(n₀, n₁, n₃) ⬝ᵥ (x_w, y_w, 1) + n₂ z_w`. Admissibility gives, at `v`,
+three closed-neighbourhood members `t` with independent picture points; if `n₂ = 0` the relation at
+each `t i` puts `(n₀, n₁, n₃)` in the kernel of the unit matrix of their picture points
+(`Matrix.linearIndependent_rows_iff_isUnit`), forcing it (hence all of `n`, since `n₂ = 0`) to
+vanish, contradicting `n ≠ 0`. So `n₂ ≠ 0`, and solving the relation for `z_w` exhibits `L(q)`'s
+affine coefficients `h = -(n₂)⁻¹ • (n₀, n₁, n₃)` at `v`. -/
+theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K}
+    (hs : ∀ w ∉ V(G), z w = 0)
+    (hcop : ∀ v ∈ V(G), ∃ n : Fin 4 → K, n ≠ 0 ∧
+      ∀ w ∈ G.closedNbhd v, n ⬝ᵥ pencilConfigPoint q z w = 0) :
+    z ∈ G.liftingSpace q := by
+  refine ⟨hs, fun v hv => ?_⟩
+  obtain ⟨n, hn, hnw⟩ := hcop v hv
+  obtain ⟨t, ht, hli⟩ := hq.2 v hv
+  have hexp : ∀ w, n ⬝ᵥ pencilConfigPoint q z w =
+      ![n 0, n 1, n 3] ⬝ᵥ pencilPicturePoint q w + n 2 * z w := by
+    intro w
+    simp [dotProduct, Fin.sum_univ_four, Fin.sum_univ_three, pencilConfigPoint,
+      pencilPicturePoint]
+    ring
+  have hn2 : n 2 ≠ 0 := by
+    intro h2
+    have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
+      Matrix.linearIndependent_rows_iff_isUnit.mp hli
+    have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ ![n 0, n 1, n 3] =
+        (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
+      rw [Matrix.mulVec_zero]
+      funext i
+      have := hnw (t i) (ht i)
+      rw [hexp, h2, zero_mul, add_zero] at this
+      simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
+      rwa [dotProduct_comm]
+    have h3 := Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
+    apply hn
+    funext i
+    fin_cases i
+    · simpa using congr_fun h3 0
+    · simpa using congr_fun h3 1
+    · exact h2
+    · simpa using congr_fun h3 2
+  refine ⟨-(n 2)⁻¹ • ![n 0, n 1, n 3], fun w hw => ?_⟩
+  have := hnw w hw
+  rw [hexp] at this
+  rw [smul_dotProduct, smul_eq_mul]
+  field_simp
+  linear_combination this
+
+/-- **Every nonzero normal of a closed neighbourhood is the interpolant, up to a nonzero scalar**
+(`lem:pencil-condition-linear`; Phase 40b CARRIER, informal (MC-1)'s "unique, non-vertical plane",
+in interpolant form). Over an admissible picture, at a body `v` where `z` restricts on the closed
+neighbourhood to the affine function `h`, any nonzero `n : K⁴` orthogonal to the whole closed
+neighbourhood is a nonzero scalar multiple of `(h₀, h₁, -1, h₂)`: in particular its third
+coordinate is nonzero (the plane is non-vertical) and it is determined by `h` up to scale (the
+plane is unique).
+
+Route, as in `exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`: both `n` and the interpolant
+`m = (h₀, h₁, -1, h₂)` lie in the common perp `W` of the three independent configuration points an
+admissible selector at `v` supplies (`n` by hypothesis, `m` by direct computation from `hh`); `W` is
+one-dimensional (`finrank_toDualPerp_triple_eq`), so it is spanned by the nonzero `m`
+(`Submodule.eq_of_le_of_finrank_eq`), and `n` is a scalar multiple. -/
+theorem _root_.Graph.IsAdmissiblePicture.exists_smul_eq_interpolant {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K} {v : α} (hv : v ∈ V(G))
+    {h : Fin 3 → K} (hh : ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w)
+    {n : Fin 4 → K} (hn : n ≠ 0)
+    (hnw : ∀ w ∈ G.closedNbhd v, n ⬝ᵥ pencilConfigPoint q z w = 0) :
+    ∃ c : K, c ≠ 0 ∧ n = c • ![h 0, h 1, -1, h 2] := by
+  obtain ⟨t, ht, hli⟩ := hq.2 v hv
+  set m : Fin 4 → K := ![h 0, h 1, -1, h 2] with hmdef
+  have hLIc : LinearIndependent K (fun i => pencilConfigPoint q z (t i)) :=
+    linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hli
+  have hm : m ≠ 0 := fun h0 => by simpa [hmdef] using congr_fun h0 2
+  set W : Submodule K (Fin 4 → K) := ⨅ j : Fin 3, LinearMap.ker
+      ((Pi.basisFun K (Fin 4)).toDual.flip ((fun i => pencilConfigPoint q z (t i)) j))
+    with hWdef
+  have hWdim : Module.finrank K W = 1 := finrank_toDualPerp_triple_eq hLIc
+  have hmemW : ∀ x : Fin 4 → K, x ∈ W ↔ ∀ j, x ⬝ᵥ pencilConfigPoint q z (t j) = 0 := by
+    intro x
+    simp only [hWdef, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+  have hnmem : n ∈ W := (hmemW n).mpr fun j => hnw _ (ht j)
+  have hmmem : m ∈ W := by
+    rw [hmemW]
+    intro j
+    have := hh _ (ht j)
+    simp only [hmdef, pencilConfigPoint, pencilPicturePoint, dotProduct, Fin.sum_univ_four,
+      Fin.sum_univ_three] at this ⊢
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] at this ⊢
+    rw [this]; ring
+  have hspan : Submodule.span K ({m} : Set (Fin 4 → K)) = W := by
+    apply Submodule.eq_of_le_of_finrank_eq
+    · rw [Submodule.span_le]; simpa using hmmem
+    · rw [hWdim, finrank_span_singleton hm]
+  rw [← hspan] at hnmem
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hnmem
+  exact ⟨c, fun hc0 => hn (by rw [← hc, hc0, zero_smul]), hc.symm⟩
 
 end CombinatorialRigidity.Molecular
