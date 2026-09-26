@@ -1201,12 +1201,11 @@ the lifting system through the witness composed with the rank polynomial. C2's `
 (2026-09-26, `Graph.exists_isAdmissiblePicture`/`exists_isMainPicture`/`exists_mvPolynomial_isMainPicture`)
 then landed the nonempty-Zariski-open set of main pictures, via the moment-curve existence witness,
 a `finrank`-minimizing admissible picture, and the same semicontinuity mirror lemma at the trivial
-kernel vector — under a temporary "exactly three members" hypothesis on closed neighbourhoods,
-weaker than the section's standing minimum-degree-two ("at least three"); generalizing that
-extraction is separate open work (`notes/Phase40b.md` *Hand-off*). C2's remaining lifting-space API
-(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is next, alongside C3 ∥ C4. Two questions are left
-for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root cause
-(`notes/Phase40b.md` *Blockers*).
+kernel vector, for loopless `G` whose closed neighbourhoods all have at least three members (both
+consequences of simplicity and minimum degree two). C2's remaining lifting-space API
+(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is next, alongside C3 ∥ (DUAL-K → C4). Two
+questions are left for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the
+headroom's root cause (`notes/Phase40b.md` *Blockers*).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

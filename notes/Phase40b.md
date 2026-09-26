@@ -4,14 +4,14 @@
 (`Graph.exists_isAdmissiblePicture`, `Graph.exists_isMainPicture`,
 `Graph.exists_mvPolynomial_isMainPicture`) landed 2026-09-26 in
 `Molecule/Pencil/MainComponent/Carrier.lean`. **Next: finish C2's remaining lifting-space API**
-(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound), or generalize the `U`-open landing's temporary
-"exactly three members" hypothesis; C3 and C4 may run in parallel. Plan: `notes/Phase40-design.md`
-§3.
+(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound); C3 and DUAL-K → C4 may run in parallel. Plan:
+`notes/Phase40-design.md` §3.
 
 ## Current state
 
 **Next concrete step: finish C2's remaining lifting-space API** (*Hand-off*) — `Aff(q) ⊆ L(q)`,
-`3 ≤ dim L(q)` at admissible `q`, and the codim bound are still open; C3 and C4 may run in parallel.
+`3 ≤ dim L(q)` at admissible `q`, and the codim bound are still open; C3 and DUAL-K → C4 may run in
+parallel.
 C1a landed seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
 `Graph.x0Attains_of_exists` at the pinned signature, and C2's `U`-open lemma landed the existence of
 an admissible picture, a main-picture minimizer, and the openness polynomial (checklist), all in
@@ -90,11 +90,10 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
       G.IsMainPicture q` (`[Infinite K]`; STEPS uses it to put its witnesses over `U`) —
       `Graph.exists_mvPolynomial_isMainPicture`, from `Graph.exists_isMainPicture` (a
       `finrank L(q)`-minimizing admissible `q_min`, via `Nat.sInf` over the image set) and
-      `Graph.exists_isAdmissiblePicture` (an admissible picture exists, via the moment curve
-      `v ↦ (φ v, (φ v)²)` at an injective `φ : α → K`, **under the temporary hypothesis that every
-      closed neighbourhood has *exactly* three members** — weaker than the section's standing "at
-      least three" from minimum degree two; generalizing the triple-extraction from a larger
-      neighbourhood is separate, still-open work). `P := Padm * D` from
+      `Graph.exists_isAdmissiblePicture` (an admissible picture exists for loopless `G` whose closed
+      neighbourhoods all have at least three members, via the moment curve `v ↦ (φ v, (φ v)²)` at
+      an injective `φ : α → K`). All three take `hloop : G.Loopless` and
+      `h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`. `P := Padm * D` from
       `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's semicontinuity conjunct at the
       trivial kernel vector `0`, with `finrank_ker_liftingMatrix` at both ends. Blueprint:
       `lem:pencil-x0-main-picture-open`.
@@ -176,25 +175,21 @@ recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now
 **Next commit: finish C2's remaining lifting-space API** (sonnet) in `Carrier.lean`: `Aff(q)`
 (restricted to `V(G)`) `⊆ L(q)`, `3 ≤ dim L(q)` at admissible `q` (non-collinear picture points force
 `Aff(q)` three-dimensional), and the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) — none of
-which the `U`-open landing touched (checklist). A separate, independent task: generalize
-`Graph.exists_isAdmissiblePicture`'s temporary "exactly three members" hypothesis to the section's
-standing "at least three" (extract an independent triple from a larger closed neighbourhood, rather
-than consuming `Set.ncard_eq_three`'s exact form directly) — flagged in
-`fmlnote:pencil-x0-main-picture-open-three`; either task is a fine next commit. C3 and C4 need only
-C1a and may run in parallel. DUAL-K (checklist) must land before C4 and never builds in parallel with
-a `Carrier.lean` build. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥(DUAL-K → C4) →
+which the `U`-open landing touched (checklist). C3 and DUAL-K → C4 are the parallel siblings: C3
+and C4 need only C1a; DUAL-K (checklist) must land before C4 and never builds in parallel with a
+`Carrier.lean` build. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥(DUAL-K → C4) →
 C5 first.
 
 ## Decisions made during this phase
 
-- **2026-09-26 — C2's `U`-open lemma scopes its existence step to "exactly three members".**
-  `Graph.exists_isAdmissiblePicture` takes the cheapest sufficient hypothesis
-  (`Set.ncard_eq_three` gives an explicit triple directly) rather than the section's "at least
-  three", which needs a separate triple-extraction lemma, left open
-  (`fmlnote:pencil-x0-main-picture-open-three`). The moment curve `v ↦ (φ v, (φ v)²)` makes every
-  triple's picture points non-collinear (`det_moment_curve_triple`, a permuted Vandermonde
-  product). The assembly reuses `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial
-  kernel vector `0`; no new mirror lemma and no witness height to transport.
+- **2026-09-26 — C2's `U`-open lemma: moment curve, `Nat.sInf` minimizer, reused mirror.** The
+  hypotheses are consequences of simplicity and minimum degree two: `G.Loopless` and
+  `3 ≤ (G.closedNbhd v).ncard` for every body (`fmlnote:pencil-x0-main-picture-open`). On the
+  moment curve `v ↦ (φ v, (φ v)²)` any three distinct members of a closed neighbourhood (a
+  three-element subset, `Set.exists_subset_card_eq`) are non-collinear (`det_moment_curve_triple`, a
+  permuted Vandermonde product). The openness polynomial reuses
+  `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial kernel vector `0`; no new
+  mirror lemma and no witness height to transport.
 - **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor.** Stacking a
   projection onto `ker M(q₀)` under `M(q₀)` and left-multiplying by a constant left inverse gives a
   square polynomial `S(q)` with `S(q₀) = 1`; `adj S(q) z₀` is the section, no minor or rank-minor

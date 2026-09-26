@@ -559,17 +559,17 @@ private theorem det_moment_curve_triple (a b c : K) :
   ring
 
 /-- **An admissible planar picture exists** (Phase 40b CARRIER slice C2), when `G` is loopless and
-every closed neighbourhood has exactly three members. The moment curve `w ↦ (φ w, φ w ^ 2)` at an
-injective `φ : α → K` (composing a `Fintype` enumeration of `α`, `Fin.valEmbedding`, and
-`Infinite.natEmbedding K`) puts every pair of distinct bodies at distinct points, and every closed
-neighbourhood's three members (`Set.ncard_eq_three`) at pairwise non-collinear points
-(`det_moment_curve_triple`, nonzero since `φ` is injective on the three pairwise-distinct
+every closed neighbourhood has at least three members (both consequences of simplicity and minimum
+degree two). The moment curve `w ↦ (φ w, φ w ^ 2)` at an injective `φ : α → K` (composing a
+`Fintype` enumeration of `α`, `Fin.valEmbedding`, and `Infinite.natEmbedding K`) puts every pair of
+distinct bodies at distinct points, and any three distinct members of a closed neighbourhood (a
+three-element subset, `Set.exists_subset_card_eq` then `Set.ncard_eq_three`) at non-collinear
+points (`det_moment_curve_triple`, nonzero since `φ` is injective on the three pairwise-distinct
 members). -/
 theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Graph α β}
-    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard = 3) :
+    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ q : α × Fin 2 → K, G.IsAdmissiblePicture q := by
   classical
-  have := hloop
   have : Fintype α := Fintype.ofFinite α
   set φ : α ↪ K :=
     (Fintype.equivFin α).toEmbedding.trans (Fin.valEmbedding.trans (Infinite.natEmbedding K))
@@ -582,8 +582,9 @@ theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Gr
     rw [hpp, hpp]
     intro hcontra
     exact huv (φ.injective (by simpa using congr_fun hcontra 0))
-  · obtain ⟨x, y, z, hxy, hxz, hyz, hset⟩ := Set.ncard_eq_three.mp (h3 v hv)
-    refine ⟨![x, y, z], fun i => ?_, ?_⟩
+  · obtain ⟨t, hts, ht3⟩ := Set.exists_subset_card_eq (h3 v hv)
+    obtain ⟨x, y, z, hxy, hxz, hyz, hset⟩ := Set.ncard_eq_three.mp ht3
+    refine ⟨![x, y, z], fun i => hts ?_, ?_⟩
     · fin_cases i <;> simp [hset]
     · have hdetne : (Matrix.of
           (fun i j : Fin 3 => pencilPicturePoint q (![x, y, z] i) j)).det ≠ 0 := by
@@ -604,7 +605,7 @@ theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Gr
 `Graph.exists_isAdmissiblePicture`) admissible pictures, the natural number `finrank L(q)` attains
 its least value at some admissible `q`, which is then a main picture by definition. -/
 theorem _root_.Graph.exists_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
-    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard = 3) :
+    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ q : α × Fin 2 → K, G.IsMainPicture q := by
   classical
   obtain ⟨q₀, hq₀⟩ := G.exists_isAdmissiblePicture (K := K) hloop h3
@@ -629,7 +630,7 @@ witness height. Off the zero set of `Padm * D`, `q` is admissible with
 `finrank L(q) ≤ finrank L(q_min)` (`Graph.finrank_ker_liftingMatrix` at both ends), and since
 `q_min` already achieves the global minimum among admissible pictures, `q` does too: `q ∈ U`. -/
 theorem _root_.Graph.exists_mvPolynomial_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
-    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard = 3) :
+    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧
       ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 → G.IsMainPicture q := by
   classical

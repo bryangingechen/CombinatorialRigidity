@@ -253,19 +253,19 @@ allows no relative motion of its two bodies.
         Graph.exists_mvPolynomial_isMainPicture}
   \leanok
   \uses{def:pencil-main-picture}
-  Suppose in addition that every closed neighbourhood of $G$ has exactly
-  three members. Then there is a nonzero polynomial $P$ in the picture
-  coordinates such that every picture $q$ with $P(q) \neq 0$ is a main
-  picture. In particular the set $U$ of main pictures is nonempty and
-  Zariski-open.
+  There is a nonzero polynomial $P$ in the picture coordinates such that
+  every picture $q$ with $P(q) \neq 0$ is a main picture. In particular
+  the set $U$ of main pictures is nonempty and Zariski-open.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-x0-one-witness}
   On the moment curve $v \mapsto (t_v, t_v^2)$ at pairwise distinct
-  parameters $t_v$, adjacent bodies lie at distinct points, and no three
-  points of a closed neighbourhood are collinear, since three points of a
-  parabola at distinct parameters never are: this picture is admissible.
+  parameters $t_v$, adjacent bodies lie at distinct points, and any three
+  members of a closed neighbourhood, which has at least three by the
+  degree hypothesis, lie at non-collinear points, since three points of a
+  parabola at distinct parameters never are collinear: this picture is
+  admissible.
   Among admissible pictures the natural number $\dim L(q)$ therefore
   attains a least value at some admissible $q_0$, which is a main
   picture. The semicontinuity argument of \cref{lem:pencil-x0-one-witness},
@@ -276,11 +276,10 @@ allows no relative motion of its two bodies.
   $\dim L(q) \le \dim L(q_0)$, hence a main picture.
 \end{proof}
 \begin{fmlnote}
-  \label{fmlnote:pencil-x0-main-picture-open-three}
-  The construction of an admissible picture stated here assumes every
-  closed neighbourhood has exactly three members; extracting an
-  independent triple from a larger neighbourhood, as the minimum-degree
-  hypothesis alone provides, is left for a further step.
+  \label{fmlnote:pencil-x0-main-picture-open}
+  In place of the standing hypotheses on $G$, the formal statements
+  assume the two consequences the construction uses: $G$ has no loops,
+  and every closed neighbourhood has at least three members.
 \end{fmlnote}
 
 \begin{theorem}[The main component]
