@@ -4,7 +4,9 @@
 §3 STEPS). It lands the standing hypotheses (H) in Lean and the CUT and BRIDGE steps, (MC-52) and
 (MC-53): a cut vertex or a chain of bridges is a fibre product, so `X₀` attaining at both pieces
 gives it at `G`. Build 1 landed (H), CUT and the single bridge: seven of nine nodes are green.
-Build 2's first half landed the general-`k` fibre lemma: eight of nine nodes are green.
+Build 2's first half landed the general-`k` fibre lemma: eight of nine nodes are green. A recon
+(not committed) ruled out an `X0Attains`-induction route for the theorem and tested the numeric
+route's building blocks — see *Hand-off*.
 **Next: build 2's second half**, the general-`k` theorem `thm:pencil-x0-bridge` — see *Hand-off*.
 
 ## Current state
@@ -93,30 +95,67 @@ Every item but the last two landed in build 1 (standard axioms).
 
 ## Blockers / open questions
 
-- None. BRIDGE for `k ≥ 1` is engineering: path hypotheses, iterated landed laws, an explicit
-  extension.
+- None load-bearing. The theorem is engineering, not a math gap: the numeric route (rank/deficiency
+  iterated over the path, never forming an intermediate `X0Attains`) is confirmed sound and its
+  building blocks tested (*Hand-off*); what remains is writing the per-step cut-edge facts and the
+  numeric telescoping wrapper, twice (deficiency, rank), then the `V₂`-side fibre-lemma reversal
+  and the final assembly. Sizeable enough that one recon pass landed no code — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: build 2's second half, the theorem** → `thm:pencil-x0-bridge`, in `Cut.lean`. Not spiked.
-`lem:pencil-bridge-fibre` is landed (`Graph.exists_liftingRestrict_eq_of_bridgePath`); the theorem
-follows `thm:pencil-x0-cut`'s shape (one picture generic for both sides and main for `G`, heights
-in one fibre via `MvPolynomial.exists_mem_eval_ne_zero₂`, ending at `Graph.x0Attains_of_exists`) —
-`Graph.X0Attains.of_bridge` (build 1, `k = 0`) is the template proof to generalize. Concretely:
-- **Widen the hypothesis bundle**: `V₂ := V(G) \ V₁` (or an explicit `V₂` per the fibre lemma's
-  choice — decide which), `hxV₂`, `V(G) = V₁ ∪ V₂ ∪ range x`, injectivity of `x`. These join here,
-  not at the fibre lemma (*Current state* — it doesn't need them).
-- **Apply the fibre lemma from both sides.** From `V₁`: direct. From `V₂`: needs `b`'s own gateway
-  role symmetrized — `V₂`, `b ∈ V₂`, `a ∉ V₂`, and the path **reversed** (`x` reversed, `e`
-  reversed, `pathVertex b (x ∘ Fin.rev) a` in place of `pathVertex a x b`). This reversal is
-  untried; check it compiles before relying on it, or restate the fibre lemma symmetrically if the
-  reversal proves awkward.
-- **Deficiency**: KT Lemma 3.6 (`Graph.deficiency_eq_of_cutEdges_ncard_le_one`) at the last bridge,
-  then A1 `deficiency_removeVertex_of_degree_eq_one` along the pendant path (pin A1, D5 debt, if
-  used) — or find the direct `k`-bridge form if one already covers it.
-- **Rank**: `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`, iterated over the `k + 1`
-  bridges (each contributes `screwDim 2 - 1 = 5`), plus the `k` path bodies' `6k` to the body term
-  — matching the blueprint's `tgt(G) = tgt(G₁) + tgt(G₂) + 5(k + 1)`.
+**Next: build 2's second half, the theorem** → `thm:pencil-x0-bridge`, in `Cut.lean`. **Not an
+X0Attains induction on `k`** — a recon this session (compiler-checked, not committed) ruled that
+out: peeling one path vertex at a time via the single-bridge theorem needs `X0Attains` at the
+peeled-off single vertex, which is **false** (`Graph.IsAdmissiblePicture`'s closed-neighbourhood
+clause needs 3 linearly independent picture points at a body whose closed neighbourhood is just
+itself, impossible). This confirms the coordinator's original ROUTE hypothesis. The theorem must
+instead compute the **rank inequality and deficiency equality as bare numbers**, iterating the
+landed cut bricks directly over the path — never forming an intermediate `X0Attains` claim — then
+combine once via `Graph.x0Attains_of_exists`, exactly as `thm:pencil-x0-cut`/`Graph.X0Attains.of_
+bridge` (build 1, `k = 0`) already do. Concretely, the tested plan:
+
+- **Use a bare `Fin.snoc x b : Fin (k + 1) → α` tail sequence for the iteration lemmas — not
+  `pathVertex a x b`.** `pathVertex`'s double nesting (`Fin.snoc (Fin.cons a x) b`) makes the
+  index identity for an *interior* position (`pathVertex a x b (i.castSucc.succ) = x i`) fight
+  `simp`; the bare `Fin.snoc x b` version has both endpoint identities close on `simp` alone
+  (`(Fin.snoc x b) i.castSucc = x i`, `(Fin.snoc x b) (Fin.last k) = b`, both verified). `a` and
+  the first path edge (`a` to `x 0`, or `a` to `b` at `k = 0`) are irrelevant to the deficiency/
+  rank-of-the-tail computation below; keep them only in the *outer* one-shot cut (`V₁` vs. the
+  tail) where the fibre lemma's own `hgate`-style argument already covers them.
+- **Deficiency, tested and ready to reuse verbatim**: for `u` with no self-loop and
+  `1 ≤ Graph.bodyBarDim n`, `(G.induce ({u} : Set α)).deficiency n = 0` — proved via
+  `Graph.numParts`/`Graph.crossingEdges`/`Graph.partitionDef_one` (`numParts ≤ 1` on a singleton
+  vertex set forces every `partitionDef` value `≤ 0`, and `≥ 0` is `partitionDef_one`). This is
+  the base case KT Lemma 3.6 (`Graph.deficiency_eq_of_cutEdges_ncard_le_one`) needs at each peeled
+  vertex (`(REST_j.induce {x j}).deficiency n = 0`, so peeling contributes exactly `+1` each).
+- **The peeling induction, set algebra tested**: define, for `j : ℕ`,
+  `restSet j := V₂ ∪ (x '' {i : Fin k | j ≤ i.val})` (so `restSet 0 = V₂ ∪ range x`,
+  `restSet k = V₂`). For `j < k`, `restSet j = insert (x ⟨j, hj⟩) (restSet (j + 1))` — the
+  `ext`/`rcases eq_or_lt_of_le`/`Fin.ext` proof is written and compiles standalone. Apply KT-3.6
+  (deficiency) and `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` (rank) at each step
+  with `V₁ := {x ⟨j, hj⟩}`, cut edge = the tail's `e' j` (linking `x j` to `Fin.snoc x b j.succ`);
+  `Graph.induce_induce_of_subset` (`Mathlib/Combinatorics/Graph/Delete.lean`,
+  `(G.induce S).induce T = G.induce T` for `T ⊆ S`) collapses `(G.induce (restSet j)).induce
+  (restSet j \ {x ⟨j, hj⟩})` back to `G.induce (restSet (j + 1))` in one step. Wrap the per-step
+  identity in a numeric induction (on `m := k - j`, or a fresh `∀ j ≤ k, …` downward induction) to
+  telescope `k` steps. **Not yet done**: proving the per-step `cutEdges = {e' j}` /
+  `hC_ext`/`hcut_mem` facts from `hpath`/`hsep` (needs `x j`'s *other* ambient neighbour, at
+  `e' (j - 1)` or the outer bridge edge if `j = 0`, to lie outside `restSet j`, and no third edge
+  at `x j` — both follow from `hsep` the same way the fibre lemma's `hgate` derivation did, but
+  not yet written for this shape), and the numeric telescoping wrapper itself, **for both
+  deficiency and rank** (the rank step additionally needs the nonzero-hinge and rank-congruence
+  bookkeeping `Graph.X0Attains.of_bridge`'s proof already carries, generalized per step).
+- **Then**: the outer one-shot cut (`V₁` vs. `restSet 0`), the `V₂`-side application of the fibre
+  lemma (`Graph.exists_liftingRestrict_eq_of_bridgePath` with `V₁ := V₂`, `a := b`, `hb := a ∉ V₂`,
+  and the path reversed — untried, flagged already), and the final `Graph.x0Attains_of_exists`
+  assembly mirroring `Graph.X0Attains.of_bridge`'s structure with the `+5(k+1)` / `+6k` counts
+  worked out above (*Lemma checklist*).
+- **Hygiene (coordinator's note, still open)**: don't touch build 1's `exists_dotProduct_eq_of_
+  linearIndependent` / `Graph.exists_liftingRestrict_eq_of_bridge` / `Graph.X0Attains.of_bridge`
+  until the theorem lands — they're the only working `k = 0` proof right now, so deleting them
+  first would be a regression. Once the theorem exists, check whether it specializes to `k = 0`
+  in one line (`x := Fin.elim0`) making all three redundant; if so, delete them and sweep every
+  `.lean`/`blueprint/`/`notes/` cross-reference in that same commit (no orphan).
 - Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`.
 
 **Then 40e's close.** The read-only ORBIT recon runs before the next group opens (PI). `scratch/`
