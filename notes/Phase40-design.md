@@ -117,6 +117,15 @@ supplies it. BRIDGE builds two things on top of SPINE2:
   open admissibility;
 - the non-spanning forms at `H`, `G/H` and `G′ + ab`, each carrying a `hfresh`-type hypothesis.
   SPINE2 lands the row-rank core.
+- **Open point (40a Slice 4 spike, 2026-09-25).** The landed generic-normals row rank
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals`
+  (`GenericLift/PanelGeneric.lean:400`) takes a *total* selector
+  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2`, which forces `E(G) = β`. At `H`, `G/H` or
+  `G′ + ab` inside a fixed `β` that cannot hold, so BRIDGE needs an edge-restricted-selector,
+  non-spanning variant of the generic-normals form. A read-only spike compiler-checked a variant
+  that drops `[Nonempty α]`/`hspan` by swapping in the new SPINE2 row-rank producer
+  (`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`); the
+  total `hends` remained, and that is the open point BRIDGE still needs to close.
 
 ### STEPS — the local steps of the induction
 

@@ -2808,6 +2808,140 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
   exact ⟨Q, hQg, hends, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
+/-- **KT Theorem 5.6, non-spanning row-rank form** (`thm:theorem-55-6-rows`; Katoh–Tanigawa 2011
+§5.2, p. 670; Phase 40a Slice 4). For a simple graph `G` on `≥ 2` bodies — *not* necessarily
+spanning `α` — at any grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite
+field, the strip-realize-re-add assembly of `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`
+produces a general-position panel-hinge realization `Q` of `G` whose selector records a genuine
+`G`-link on every edge, whose every supporting extensor is nonzero (total over `β`), and whose
+rigidity-row span has exactly the deficiency rank
+
+  `rank R(G, Q) = D·(|V(G)| − 1) − def(G̃)`.
+
+The spanning forms conclude `RankHypothesis (def(G̃))`, i.e. `dim Z(G, Q) = D + def(G̃)`; that
+count fails for a non-spanning `G`, since every body of `V(G)ᶜ` carries no constraint and
+contributes its own `D` free dimensions to the null space. The row rank is the `V(G)`-relative
+quantity, so the proof replaces the motion-space step (`rigidityMatrix_prop11`) by two row-span
+bounds:
+
+* **`≥`** — `Q` agrees with the strip realization `Q'` on every `G'`-link (`reaimSubLink`'s outer
+  branch), so `Q.withGraph G'` has `Q'`'s motion space
+  (`reaimSubLink_withGraph_infinitesimalMotions`), hence `Q'`'s row span
+  (`span_rigidityRows_eq_of_infinitesimalMotions_eq`); the `G'`-rows are a subset of the `G`-rows
+  (`G' ≤ G`), so `rank R(G', Q') ≤ rank R(G, Q)`, and the strip attains
+  `rank R(G', Q') = D·(|V(G)| − 1) − def(G̃)` (`V(G') = V(G)`, `def(G̃') = def(G̃)`).
+* **`≤`** — the `V(G)`-relative deficiency bound `finrank_span_rigidityRows_add_deficiency_le`
+  (B2), fed the genuine hinges `hC`.
+
+No `Nonempty α` and no `V(G) = Set.univ`: the two distinct bodies the off-edge selector needs come
+from `2 ≤ |V(G)|` itself (`Set.one_lt_ncard_iff`). This is the form the Phase 40 main-component
+induction consumes at the non-spanning graphs `H`, `G/H` and `G′ + ab` (BRIDGE,
+`notes/Phase40-design.md` §3). -/
+theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen
+    [Infinite K] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧ Q.IsGeneralPosition ∧
+      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
+      (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
+      (Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
+  have hne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  -- Two distinct bodies of `V(G)` for the off-edge selector (no `Nonempty α` / spanning needed).
+  obtain ⟨x₀, y₀, -, -, hxy⟩ :=
+    (Set.one_lt_ncard_iff (Set.toFinite _)).mp (by omega : 1 < V(G).ncard)
+  -- Strip `G` to a minimal `k`-dof spanning subgraph and re-add the deleted edges (KT p. 670).
+  obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
+    G.exists_isMinimalKDof_spanning_subgraph n (by omega) hne
+  have hG'Simple : G'.Simple := hSimple.mono hG'le
+  have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
+  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
+  -- Realize the spanning subgraph generically.
+  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec⟩ :=
+    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
+      hG'V2).1 hG'Simple
+  -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge; GP is `Q'`'s normals.
+  let Q := Q'.reaimSubLink k G G' x₀ y₀
+  have hQg : Q.graph = G := rfl
+  have hQgp : Q.IsGeneralPosition := hQ'gp
+  -- `hends`: the selector records a genuine `G`-link on every `G`-link.
+  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 := by
+    intro e u v he
+    simp only [Q, reaimSubLink]
+    by_cases hlink : ∃ u' v', G'.IsLink e u' v'
+    · rw [dite_eq_left hlink]
+      obtain ⟨u', v', hle'⟩ := hlink
+      rcases hQ'rec e u' v' (hQ'g ▸ hle') with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · rw [h1, h2]; exact hle'.of_le hG'le
+      · rw [h1, h2]; exact hle'.symm.of_le hG'le
+    · rw [dite_eq_right hlink]
+      have hGlink : ∃ u' v', G.IsLink e u' v' := ⟨u, v, he⟩
+      rw [dite_eq_left hGlink]
+      exact hGlink.choose_spec.choose_spec
+  -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
+  -- explicit distinct pair `(x₀, y₀)` off-edge) — total over `β`.
+  have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e
+    simp only [Q, reaimSubLink, toBodyHinge_supportExtensor]
+    by_cases hlink : ∃ u v, G'.IsLink e u v
+    · rw [dite_eq_left hlink]
+      obtain ⟨u, v, hle⟩ := hlink
+      rw [panelSupportExtensor_ne_zero_iff]
+      rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · rw [h1, h2]; exact hQ'gp u v hle.ne
+      · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
+    · rw [dite_eq_right hlink]
+      by_cases hGlink : ∃ u v, G.IsLink e u v
+      · rw [dite_eq_left hGlink]
+        rw [panelSupportExtensor_ne_zero_iff]
+        exact hQ'gp _ _ hGlink.choose_spec.choose_spec.ne
+      · rw [dite_eq_right hGlink]
+        rw [panelSupportExtensor_ne_zero_iff]
+        exact hQ'gp x₀ y₀ hxy
+  -- `≥`: `Q.withGraph G'` has `Q'`'s motion space, hence `Q'`'s row span, and its rows (the
+  -- `G'`-rows) sit inside `Q`'s rows.
+  have hmot : ((Q.toBodyHinge).withGraph G').infinitesimalMotions
+      = Q'.toBodyHinge.infinitesimalMotions :=
+    Q'.reaimSubLink_withGraph_infinitesimalMotions G G' x₀ y₀ hQ'g
+  have hspan' : Submodule.span K (Q.toBodyHinge.withGraph G').rigidityRows
+      = Submodule.span K Q'.toBodyHinge.rigidityRows :=
+    BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
+  have hsub : (Q.toBodyHinge.withGraph G').rigidityRows ⊆ Q.toBodyHinge.rigidityRows := by
+    rintro φ ⟨e, u, v, he, r, hr, rfl⟩
+    exact ⟨e, u, v, he.of_le hG'le, r, hr, rfl⟩
+  have hlow : Module.finrank K (Submodule.span K Q'.toBodyHinge.rigidityRows)
+      ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) := by
+    rw [← hspan']
+    exact Submodule.finrank_mono (Submodule.span_mono hsub)
+  -- `≤`: the `V(G)`-relative deficiency bound (B2), fed the genuine hinges on links.
+  have hup := Q.toBodyHinge.finrank_span_rigidityRows_add_deficiency_le hn
+    (by rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne) (fun e _ _ _ => hC e)
+  rw [PanelHingeFramework.toBodyHinge_graph, hQg] at hup
+  refine ⟨Q, hQg, hQgp, hends, hC, ?_⟩
+  rw [hG'V, hdefeq] at hQ'rank
+  have hlow' : (Module.finrank K (Submodule.span K Q'.toBodyHinge.rigidityRows) : ℤ)
+      ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) := by exact_mod_cast hlow
+  linarith
+
+/-- **KT Theorem 5.6 as the generic motive, for every simple graph on `≥ 2` bodies**
+(`thm:theorem-55-6-rows`, corollary form; Phase 40a Slice 4). Theorem 5.5's generic conclusion
+`HasGenericFullRankRealization K k n G` — stated by `theorem_55_minimalKDof_gen` for *minimal*
+`c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not: repackage
+`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, turning its edge-restricted
+link-recording conjunct into the motive's up-to-swap form via `IsLink.eq_and_eq_or_eq_and_eq`
+(two links of one edge agree up to order) and dropping the total-over-`β` genuine-hinge witness. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen
+    [Infinite K] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
+  obtain ⟨Q, hQg, hQgp, hends, -, hrank⟩ :=
+    PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen (K := K)
+      hk1 hD hn hfresh G hV hSimple
+  exact ⟨Q, hQg, hQgp, hrank, fun e u v he => (hends e u v he).eq_and_eq_or_eq_and_eq he⟩
+
 set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 at general `d` (the consumer-facing form)** (`thm:theorem-55-6`;
 Katoh–Tanigawa 2011 §5.2 Theorem 5.6, Phase 23h A4, reshaped Phase 23-cleanup E2). For a simple

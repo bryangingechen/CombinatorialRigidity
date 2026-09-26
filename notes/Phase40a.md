@@ -5,19 +5,20 @@ chain and the molecular conjecture weaken their dimension floor in place, from
 `6 ≤ Graph.bodyBarDim n` to `3 ≤ Graph.bodyBarDim n` and from `hd : 3 ≤ n` to `2 ≤ n`. One
 triangle case is repaired. That makes them hold at `n = 2`, the planar case, over every infinite
 field. It is the `X₀` route's replacement for Jackson–Jordán (`notes/Phase40-design.md` §3,
-SPINE2). **Slices 1–3 LAND** (Slice 2's own build forced Slice 3's `GenericLift/` floor weakening
-into the same commit — see *Decisions made*). **Next: Slice 4** (the non-spanning row-rank form).
-The program plan is `notes/Phase40-design.md`.
+SPINE2). **Slices 1–4 LAND** (Slice 2's own build forced Slice 3's `GenericLift/` floor weakening
+into the same commit — see *Decisions made*). **Next: Slice 5** (the 40a close — a
+coordinator-sanctioned top-rung dispatch; do not start it here). The program plan is
+`notes/Phase40-design.md`.
 
 ## Current state
 
-**Slices 1–3 landed** (`three_le_bodyBarDim_of_two_le`, `chainData_extract`, `cycle_realization`,
+**Slices 1–4 landed** (`three_le_bodyBarDim_of_two_le`, `chainData_extract`, `cycle_realization`,
 `case_III_hsplit_producer_all_k` incl. the triangle repair, `case_III_realization{,_all_k}`, the
 full `Theorem55.lean` `hD`/`hd` floor per the *Layer plan*'s declaration list, its eight named
-callers, `GenericLift/{PanelGeneric,HingeGeneric}.lean`'s six declarations, and every named
+callers, `GenericLift/{PanelGeneric,HingeGeneric}.lean`'s six declarations, every named
 blueprint restatement across `molecular-induction.tex`, `algebraic-induction.tex`,
-`algebraic-induction/{case-i,case-iii}.tex`, `panel-layer.tex`, `generic-lift.tex`). **Next: Slice
-4**, the non-spanning row-rank form (*Layer plan*). The plan was
+`algebraic-induction/{case-i,case-iii}.tex`, `panel-layer.tex`, `generic-lift.tex`, and Slice 4's
+non-spanning row-rank form). **Next: Slice 5**, the 40a close (*Layer plan*). The plan was
 compiler-checked by the 2026-09-25 sizing recon: the landed proofs were copied, the floor
 weakened, and the copies elaborated against the built tree. Its diffs are verbatim in
 `notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)*, with hunks keyed to line numbers
@@ -63,57 +64,18 @@ list (its closure report stopped at ten declarations).
 
 ## Layer plan (the to-do list)
 
-- [x] **Slice 1 — the leaves.** LANDED. `BodyBar/Framework.lean` (`three_le_bodyBarDim_of_two_le`),
-  `ChainExtraction.lean` (`chainData_extract`'s floor only — its proof already derived `hD3`/`hD2`
-  by `omega`, so the body needed no other change), `CaseIII/Arms.lean` (`cycle_realization`'s
-  `hm : cy.m ≤ n + 1`; `case_III_hsplit_producer_all_k`'s floor + the triangle repair via
-  `Graph.exists_degree_eq_two_of_noRigid` + any companion vertex), `CaseIII/Realization.lean`
-  (`case_III_realization_all_k` and `case_III_realization`, the latter per the phase's "`d = 3`-only
-  wrappers weaken too" call). One caller repair: `Theorem55.lean`'s `hsplitZero` branch now passes
-  `(by omega)` in place of `hD` to `case_III_realization_all_k` (Slice 2 still holds `hD : 6 ≤ D`
-  there). Blueprint: `molecular-induction.tex`'s `lem:chain-data-extract` floor, and
-  `algebraic-induction/case-iii.tex`'s `lem:case-III` floor + its triangle-base proof prose (which
-  named `lem:adjacent-degree-two-pair`, no longer invoked there); `case-i.tex`'s `cycle_realization`
-  node needed no edit (already phrased as `3 ≤ m ≤ D`, not tied to the Lean binder's exact value).
-- [x] **Slice 2 — `AlgebraicInduction/Theorem55.lean`.** LANDED. The `hD` floor weakened in the
-  eleven named declarations and the four `hd : 3 ≤ n` → `2 ≤ n` declarations (each with
-  `have hD := three_le_bodyBarDim_of_two_le hd`, except the file-end `molecular_conjecture_multigraph`,
-  which threads `hd` straight through). One caller repair reverted: `theorem_55_minimalKDof_k_all_k`'s
-  `hsplitZero` branch passes plain `hD` again (its own `hD` is now `3 ≤ D`, matching
-  `case_III_realization_all_k`). **Caller repair:** `Molecule/Theorem56.lean`'s
-  `exists_rankHypothesis_isGeneralPosition4_of_two_le` had a literal
-  `hD : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim …` feeding the weakened
-  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` directly — repointed to
-  `three_le_bodyBarDim_of_two_le`. The other seven named callers (`Nonvacuity.lean`,
-  `GenericityDevice.lean`, `Coupling.lean`, `PanelHinge.lean`, `CaseI.lean`, `CaseII.lean`,
-  `Deficiency.lean`) were docstring-only mentions or independent local floors (the Pencil `hD6`
-  sites feed `_of_edgeBound`/`pencil_reduction`, off the `n = 2` closure per *Architectural choices*)
-  — no repair needed. **Blueprint:** `panel-layer.tex` (all seven sites), `algebraic-induction.tex`
-  line 12; `case-i.tex`'s two named nodes carried no numeral (no edit needed).
-- [x] **Slice 3 — `GenericLift/`.** LANDED, merged into the Slice-2 commit: `PanelGeneric.lean`'s two
-  decls and `HingeGeneric.lean`'s four call the Slice-2-weakened Theorem55 producer
-  (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) with their own `hD` verbatim, so the
-  build fails at Slice 2 alone until these six floors weaken too — not optional scope creep, a
-  forced dependency the recon's own hunk list already carried (its diff blob includes
-  `PanelGeneric.lean`/`HingeGeneric.lean` hunks alongside Theorem55's). `Molecule/Pencil/Steer.lean`'s
-  mention is docstring-only. Blueprint: `generic-lift.tex`'s three sites.
-- [ ] **Slice 4 — the non-spanning row-rank form** (the core BRIDGE consumes). Rated S2/P2/B1.
-  - Land the recon's `spike_nonspanning_rows_n2` (about 40 lines, via
-    `exists_isMinimalKDof_spanning_subgraph`; first try in the recon) in `Theorem55.lean`, beside
-    the private `reaimSubLink` helpers it needs. Give it a real name, e.g.
-    `PanelHingeFramework.exists_rankHypothesis_rows_of_simple`.
-  - **State it at general `(n, k)`** (`3 ≤ bodyBarDim n`, `bodyBarDim n = screwDim k`) if the
-    proof is uniform; otherwise at `n = 2`. The statement as recon-pinned at `n = 2`:
-    ```lean
-    theorem spike_nonspanning_rows_n2 [Infinite K] [Finite α] [Finite β] [DecidableEq β]
-        (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 2 c → ∃ e₀ : β, e₀ ∉ E(G'))
-        (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
-        ∃ Q : PanelHingeFramework K 1 α β, Q.graph = G ∧ Q.IsGeneralPosition ∧
-          (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
-          (Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
-            = screwDim 1 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2
-    ```
-  - **Blueprint:** a new node in `panel-layer.tex` beside `thm:theorem-55-6`, green on landing.
+- [x] **Slice 1 — the leaves.** LANDED (`three_le_bodyBarDim_of_two_le`, `chainData_extract`,
+  `cycle_realization`, `case_III_hsplit_producer_all_k` incl. triangle repair,
+  `case_III_realization{,_all_k}`). Detail: *Decisions made*.
+- [x] **Slice 2 — `AlgebraicInduction/Theorem55.lean`.** LANDED (the full `hD`/`hd` floor weakening,
+  eight named callers repaired). Detail: *Decisions made*.
+- [x] **Slice 3 — `GenericLift/`.** LANDED, merged into the Slice-2 commit (six declarations forced
+  by the same dependency). Detail: *Decisions made*.
+- [x] **Slice 4 — the non-spanning row-rank form** (the core BRIDGE consumes). LANDED:
+  `PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` (the
+  five-conjunct form, no `[Nonempty α]`/`hspan`) and its corollary
+  `hasGenericFullRankRealization_of_theorem_55_gen`, in `Theorem55.lean`. Blueprint node
+  `thm:theorem-55-6-rows`. Detail: *Decisions made*.
 - [ ] **Slice 5 — close 40a** (a docs commit):
   - **Public surfaces.** README and `home_page/index.md` say "every dimension `d ≥ 3`", and so do
     `intro.tex` (Organization and *Reading this blueprint*) and `formalization.yaml`'s
@@ -131,11 +93,10 @@ list (its closure report stopped at ten declarations).
 
 ## Hand-off / next phase
 
-**Next concrete commit: Slice 4** (*Layer plan*), the non-spanning row-rank form. Land the recon's
-`spike_nonspanning_rows_n2` (about 40 lines, via `exists_isMinimalKDof_spanning_subgraph`) in
-`Theorem55.lean` under a real name (e.g. `PanelHingeFramework.exists_rankHypothesis_rows_of_simple`),
-state it at general `(n, k)` if the proof is uniform (otherwise at `n = 2`), and add its
-`panel-layer.tex` node beside `thm:theorem-55-6`. Run it with `/coordinate-phase 40a`.
+**Next concrete commit: Slice 5** (*Layer plan*), the 40a close — a docs commit syncing the
+public-facing status surfaces (README, `home_page/index.md`, `intro.tex`, `formalization.yaml`) to
+`d ≥ 2` and the PI's call on PIN. This is a **coordinator-sanctioned top-rung dispatch**; do not
+start it here.
 
 ## Decisions made during this phase
 
@@ -154,3 +115,10 @@ state it at general `(n, k)` if the proof is uniform (otherwise at `n = 2`), and
   `longLine`; `case-i.tex`'s `lem:cycle-realization` bound restated `m ≤ k+2`; `case-iii.tex`'s
   `lem:case-III` proof gained `lem:low-degree-vertex` in `\uses` (pins
   `Graph.exists_degree_eq_two_of_noRigid`'s `exists_degree_le_two` root). Gates all green.
+- **2026-09-25 — Slice 4 lands.** Transcribed verbatim from read-only opus/fable A/B spikes, no
+  re-derivation. **Pin debt (cleanup candidate):** `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`
+  (the `≤` brick) has no `\lean{}` pin anywhere in the blueprint; `thm:theorem-55-6-rows` uses
+  `lem:trivial-motions-rank-bound` as a stand-in pointer. **Optional cleanup candidate:** the
+  spanning `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is now a ~10-line corollary of
+  the new theorem (fable-spike-checked, not landed here) — its `[Nonempty α]` is unnecessary.
+  **BRIDGE open point:** `notes/Phase40-design.md` §3 BRIDGE. Gates all green.

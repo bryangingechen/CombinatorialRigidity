@@ -616,6 +616,51 @@ its hinges are nondegenerate.
   argument --- and with it the deficiency rank --- is unchanged.
 \end{proof}
 
+The main-component induction consumes KT Theorem~5.6 at graphs that need not
+span the body set; there the null-space count $\dim Z = D +
+\operatorname{def}(\tilde G)$ is false (each body off $V(G)$ is free), and the
+right invariant is the rank of the rigidity matrix itself.
+
+\begin{theorem}[KT Theorem 5.6, non-spanning row-rank form; \S5.2]
+  \label{thm:theorem-55-6-rows}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen}
+  \leanok
+  \uses{thm:theorem-55-6-genuine, def:rank-hypothesis, def:panel-general-position,
+        lem:general-position-support-nonzero}
+  Let $G$ be a simple graph on $\ge 2$ bodies, not necessarily spanning the body
+  set, at any dimension $n \ge 2$ (equivalently $D = \binom{n+1}{2} \ge 3$) and
+  over any infinite field $K$. Then $G$ has a general-position panel-hinge
+  realization $(G,p)$ whose endpoint selector records an actual link of every
+  edge, with $C(p(e)) \ne 0$ for every edge label $e$, attaining the deficiency
+  rank
+  \[
+    \operatorname{rank} R(G,p) = D(|V(G)|-1) - \operatorname{def}(\tilde G).
+  \]
+  In particular the generic conclusion of KT Theorem~5.5
+  (\cref{def:rank-hypothesis}, the strengthened predicate) holds for every
+  simple graph on $\ge 2$ bodies, minimal or not.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:theorem-55, lem:subgraph-minimality, lem:general-position-support-nonzero,
+        lem:span-rigidityRows-eq-of-motions-eq, lem:trivial-motions-rank-bound}
+  Strip, realize and re-add exactly as in \cref{thm:theorem-55-6-genuine}: a
+  deficiency-preserving minimal spanning subgraph $G' \le G$
+  (\cref{lem:subgraph-minimality}), realized generically by
+  \cref{thm:theorem-55}, then extended to $G$ with the link-recording selector;
+  the two distinct bodies the off-edge labels need come from $|V(G)| \ge 2$, so
+  no spanning hypothesis enters. Replace the motion-space step by two row-span
+  bounds. Lower bound: the extension agrees with the $G'$-realization on every
+  $G'$-link, so restricted to $G'$ it has the same motion space and hence the
+  same row span (\cref{lem:span-rigidityRows-eq-of-motions-eq}); the $G'$-rows
+  are among the $G$-rows, so $\operatorname{rank} R(G,p) \ge \operatorname{rank}
+  R(G',q) = D(|V(G)|-1) - \operatorname{def}(\tilde G)$. Upper bound: the
+  $V(G)$-relative deficiency bound on the row span (the relative form of
+  \cref{lem:trivial-motions-rank-bound}), which needs only that every link's
+  hinge is nondegenerate (\cref{lem:general-position-support-nonzero}).
+\end{proof}
+
 The chapter's main statement is the molecular conjecture itself. In it, a graph
 is \emph{realized as an infinitesimally rigid body-hinge (or panel-hinge)
 framework} when it carries a realization $(G,p)$ all of whose infinitesimal
