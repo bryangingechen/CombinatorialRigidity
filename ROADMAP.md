@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 (the Katoh–Tanigawa spine at `n = 2`) ✓ closed 2026-09-25; next: CARRIER, not yet opened (see `notes/Phase40a.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓ closed 2026-09-25; **40b/CARRIER** (planar pictures, lifting space, `X₀`) in progress, opened design-first (see `notes/Phase40b.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1154,8 +1154,8 @@ headline carries (`X0Dist`, `X0Gen`), and so proves the pencil conjecture outrig
 infinite field. Layers by stable code, lettered only as each opens:
 - **SPINE2** ✓ (sub-phase 40a, closed 2026-09-25): the Katoh–Tanigawa spine at `n = 2`. This
   replaces Jackson–Jordán's pin-collinear theorem, which the informal proof cites, field-generally;
-- **CARRIER** (next; opens design-first at the top rung, not yet opened): planar pictures, the
-  lifting space, `X₀`;
+- **CARRIER** ◐ (sub-phase 40b, opened design-first 2026-09-26): planar pictures, the
+  lifting space, `X₀`, and "the general point attains";
 - **FLAT**: the flat rank;
 - **BRIDGE**: Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps;
@@ -1179,6 +1179,21 @@ molecular conjecture is Jackson–Jordán's pin-collinear theorem (*Discrete Com
 **40**(2) (2008) 258–278), now proved over every infinite field. At the close the PI re-scoped the
 queued PIN item to a second, independent proof by Jackson–Jordán's own route (*Queued* below).
 Headline axioms unchanged (re-verified at the close).
+
+#### Phase 40b — planar pictures, the lifting space, and the main component (CARRIER) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-26; work log `notes/Phase40b.md`). The geometric
+layer the whole `X₀` argument rests on: the admissible planar picture `q : V → K²` and its
+Zariski-open set `U`, the lifting space `L(q)` of heights (the pencil condition is linear in them),
+the picture→normal map (the hinges are affine in the heights, built polynomially via `cross₃`), and
+"the general point of the main component attains `6(|V|−1) − def₃`". Opened with a compiler-checked
+top-rung design recon (both an opus and a fable pass; opus adopted as the session rung); its accepted
+design is `notes/Phase40b.md` *Architectural choices*, compressed from `notes/Phase40-design.md` §3.
+This commit is design-only: a new forward-mode blueprint section `main-component.tex` with the four
+red nodes ((MC-1),(MC-2),(MC-3),(MC-10)(a)) wired toward `def:pencil-main-component-statements`, the
+work log, and the status surfaces. The definitions land next (slice C1a). Two questions are left for
+the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root cause
+(`notes/Phase40b.md` *Blockers*).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

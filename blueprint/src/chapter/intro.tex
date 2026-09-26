@@ -379,7 +379,12 @@ Theorem~5.6 for graphs that need not span the body set
 two bodies and each panel is a line, the molecular conjecture is Jackson and
 Jord\'an's theorem on pin-collinear body-and-pin
 frameworks~\cite{jacksonJordan2008pin}, which they proved for real frameworks
-by a different argument; here it holds over every infinite field.
+by a different argument; here it holds over every infinite field. With that in
+hand the geometric layer of the proof is now under construction
+(\cref{sec:main-component}): over a fixed planar drawing of the bodies the
+realizations form a linear space of heights, and their least-dimensional
+family --- the main component --- has a general member attaining the deficiency
+rank, from which the two statements follow.
 
 \subsection*{Reading this blueprint}
 
@@ -397,7 +402,8 @@ the hinge-pencil reduction (\cref{sec:pencil}) --- are all complete
 (every node green); the pencil chapter's final theorem is conditional on
 the two main-component statements of
 \cref{sec:pencil-main-component-route}, whose proofs are phase~40's, in
-progress. The
+progress and begun in \cref{sec:main-component} (its nodes red until the
+Lean lands). The
 graph is authored \emph{forward} --- a
 chapter's nodes and their dependency edges written before its Lean
 proofs landed, a red node's statement and proof sketch standing as the

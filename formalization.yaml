@@ -235,7 +235,9 @@ status:
     itself is not yet proved). In progress (phase 40): the proofs of those two statements, carried
     meanwhile as the headline's explicit hypotheses, never as sorry. Its first step, complete,
     extended Theorems 5.5/5.6 and the molecular conjecture to dimension 2, where the molecular
-    conjecture is Jackson-Jordán's 2008 pin-collinear theorem, here over any infinite field.
+    conjecture is Jackson-Jordán's 2008 pin-collinear theorem, here over any infinite field. The
+    proof's geometric layer - admissible planar pictures, the lifting space of heights, and the main
+    component of the configuration space they carry - is now under construction.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

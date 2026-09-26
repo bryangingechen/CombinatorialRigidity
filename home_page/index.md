@@ -115,9 +115,12 @@ two-edge-connected multigraph has such a realization with adjacent concurrency p
 and a generic one whenever a nondegenerate realization exists at all — and proved the conjecture
 conditionally on them (`pencil_conjecture_of_X0`), over every infinite field. **The conjecture
 itself is not yet proved.** A proof of the two statements has been worked out informally and
-independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. Its first step is
-done: it extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to
-the plane (above), which the proof uses in place of Jackson–Jordán's theorem.
+independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. The planar case is done —
+it extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to the plane
+(above), used in place of Jackson–Jordán's theorem — and it is now building the geometry the two
+statements are proved from: a fixed planar drawing of the bodies, the space of heights that lift it
+into three dimensions, and the main component of the resulting configuration space, whose general
+member attains the target rank.
 
 The table below and `ROADMAP.md` carry the fine-grained status.
 
@@ -150,7 +153,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    25 | projective duality + the molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ |
 |    26 | the molecule application (Corollary 5.7) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean` | ✓ |
 |    39 | the hinge-pencil conjecture: reduction to two main-component statements (the conjecture itself is conditional on them) | `Molecular/Molecule/Pencil/` | ✓ |
-|    40 | the hinge-pencil conjecture: the main-component proof (first step done: the Katoh–Tanigawa theorems in the plane) | `Molecular/` | ◐ |
+|    40 | the hinge-pencil conjecture: the main-component proof (plane case done; now building the planar-picture / lifting-space geometry) | `Molecular/` | ◐ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

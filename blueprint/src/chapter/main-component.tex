@@ -1,0 +1,153 @@
+\section{The main component of the pencil configuration space}
+\label{sec:main-component}
+
+\Cref{sec:pencil-main-component-route} reduced the hinge-pencil question
+to the two main-component statements
+(\cref{def:pencil-main-component-statements}): every simple
+two-edge-connected multigraph has a pencil realization at the deficiency
+rank with adjacent concurrency points distinct, and a generic one
+whenever a nondegenerate realization exists at all. This section opens
+the geometry those statements are proved from. Over a fixed planar
+drawing of the bodies, the pencil realizations of a graph form a linear
+space of \emph{heights}; the drawings for which that space is smallest
+form a dense open set, over which the realizations assemble into an
+irreducible family whose general member attains the deficiency rank. A
+single realization at that rank forces the general one, because the
+rank is lower semicontinuous. The remaining sections --- the flat rank,
+the planar rank input, the ear, split-off, contraction and cut steps,
+the structural coverage, and the passage back to the two statements ---
+build on the objects introduced here.
+
+\subsection{Planar pictures, the lifting space, and the main component}
+\label{sec:main-component-carrier}
+
+Throughout, $G$ is a finite simple connected multigraph of minimum
+degree at least two and $K$ is an infinite field.
+
+\begin{definition}[Admissible planar picture]
+  \label{def:pencil-admissible-picture}
+  \uses{def:pencil-nondegenerate}
+  A \emph{planar picture} of $G$ is a map $q \colon V(G) \to K^2$,
+  written $q_v = (x_v, y_v)$. It is \emph{admissible} if $q_u \neq q_v$
+  for every edge $uv$ and, for every body $v$, the picture points $q(w)$
+  over the closed neighbourhood of $v$ (\cref{def:pencil-nondegenerate})
+  are not collinear (equivalently, three of their homogeneous lifts
+  $(1, x_w, y_w)$ are linearly independent; the closed neighbourhood has
+  at least three members by the degree hypothesis). The admissible
+  pictures form a nonempty Zariski-open subset of $K^{2|V(G)|}$:
+  nonempty because $K$ is infinite, open because admissibility is a
+  finite conjunction of non-vanishing conditions.
+\end{definition}
+
+\begin{definition}[The lifting space]
+  \label{def:pencil-lifting-space}
+  \uses{def:pencil-admissible-picture}
+  Let $q$ be an admissible picture. A \emph{height} is a map
+  $z \colon V(G) \to K$; it gives the homogeneous configuration
+  $p_v = (x_v, y_v, z_v, 1) \in K^4$, written $p = (q, z)$. The
+  \emph{lifting space} $L(q)$ is the set of heights $z$ such that, for
+  every body $v$, the restriction of $z$ to the closed neighbourhood of
+  $v$ agrees with an affine function of the picture there: there are
+  $a, b, c \in K$ with $z_w = a x_w + b y_w + c$ for every $w$ in that
+  neighbourhood. It is a linear subspace of $K^{V(G)}$, and contains
+  the three-dimensional space $\mathrm{Aff}(q)$ of globally affine
+  heights $z_w = \alpha x_w + \beta y_w + \gamma$.
+\end{definition}
+
+\begin{lemma}[The pencil condition is linear in the heights]
+  \label{lem:pencil-condition-linear}
+  \uses{def:pencil-lifting-space, def:pencil-panel-realization}
+  Let $q$ be admissible and $z$ a height. The configuration $p = (q, z)$
+  has every closed neighbourhood coplanar if and only if $z \in L(q)$.
+  Every such configuration is a pencil realization
+  (\cref{def:pencil-panel-realization}): adjacent bodies carry distinct
+  points, and each body's plane is unique and non-vertical.
+\end{lemma}
+\begin{proof}
+  If $z_w = a x_w + b y_w + c$ on the neighbourhood of $v$, its points
+  lie on the plane $\zeta = a\xi + b\eta + c$. Conversely a plane through
+  those points cannot be vertical --- a vertical plane would cut out an
+  affine relation on the non-collinear picture points, which vanish only
+  trivially --- so it is the graph of such an affine function, unique
+  because the picture points are not collinear. Adjacent points are
+  distinct because $q_u \neq q_v$. Linearity is the statement that the
+  condition at $v$ places the restriction of $z$ in the image of the
+  injective evaluation of affine functions on the neighbourhood, a
+  subspace of codimension $\deg v - 2$.
+\end{proof}
+
+\begin{lemma}[The hinges are affine in the heights]
+  \label{lem:pencil-hinge-affine}
+  \uses{def:pencil-lifting-space, def:extensor}
+  Fix a picture $q$. For an edge $e = uv$ the hinge extensor
+  $p_u \wedge p_v$ (\cref{def:extensor}) is an affine function of the
+  height $z$, its dependence on $z$ linear. Consequently the augmented
+  motion matrix at $(q, z)$ splits as a picture-only part plus a part
+  linear in $z$; when every hinge extensor is nonzero its rank is
+  $|E(G)|$ plus the rank of the panel-hinge rigidity matrix of the
+  associated realization. The rank is unchanged when $z$ is scaled by a
+  nonzero constant or shifted by a member of $\mathrm{Aff}(q)$.
+\end{lemma}
+\begin{proof}
+  Each Grassmann coordinate of $p_u \wedge p_v$ is a $2\times 2$ minor
+  of the two homogeneous points; the coordinates reading the height row
+  are linear in $z$, the others constant in $z$. The rank split and the
+  scale-and-shift invariance follow by reading the augmented matrix in
+  the panel-hinge coordinates, where the height-linear part is supported
+  on the hinge columns.
+\end{proof}
+
+\begin{theorem}[The main component]
+  \label{thm:pencil-x0-main-component}
+  \uses{def:pencil-lifting-space, lem:pencil-condition-linear}
+  Let $\ell_0$ be the least value of $\dim L(q)$ over admissible
+  pictures $q$, and let $U$ be the admissible pictures achieving it.
+  Then $U$ is nonempty and Zariski-open, the pairs $(q, z)$ with
+  $q \in U$ and $z \in L(q)$ form a vector bundle over $U$, and its
+  closure $X_0$ is irreducible of dimension $2|V(G)| + \ell_0$,
+  containing the flat configurations $(q, 0)$ for $q \in U$. The
+  molecular rank is lower semicontinuous on $X_0$, so over the bundle it
+  attains its maximum on a dense open subset; a single configuration in
+  the bundle at a given rank therefore forces the general member of
+  $X_0$ to reach at least that rank, and supplies at $G$ a rank-attaining
+  pencil realization with adjacent points distinct.
+\end{theorem}
+\begin{proof}
+  Over an admissible $q$, \cref{lem:pencil-condition-linear} presents
+  $L(q)$ as the height-projection of the kernel of the linear system
+  fixing the per-body affine functions, a matrix with entries linear in
+  $q$; its rank is lower semicontinuous, so the pictures of least
+  $\dim L$ are open, and there the kernel is a vector bundle with
+  irreducible total space. Lower semicontinuity of the molecular rank on
+  the irreducible $X_0$ gives the last two claims; the flat point
+  $(q, 0)$ is a member for every $q \in U$.
+\end{proof}
+
+\begin{theorem}[The general point of the main component attains]
+  \label{thm:pencil-x0-generic-attains}
+  \uses{thm:pencil-x0-main-component, lem:pencil-hinge-affine,
+        def:pencil-distinct-motive, def:pencil-generic-motive,
+        def:D-deficiency, def:pencil-main-component-statements}
+  For every simple connected multigraph $G$ of minimum degree at least
+  two, the general configuration of $X_0(G)$ attains molecular rank
+  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
+  (\cref{def:D-deficiency}, at $n = 3$). Granting this at every such
+  graph, the two main-component statements
+  (\cref{def:pencil-main-component-statements}) follow: the general
+  member of $X_0$ is a pencil realization at the deficiency rank with
+  adjacent points distinct (\cref{def:pencil-distinct-motive}), and,
+  wherever a nondegenerate realization exists at all, a generic one
+  (\cref{def:pencil-generic-motive}).
+\end{theorem}
+\begin{proof}
+  By \cref{thm:pencil-x0-main-component} it suffices to exhibit one
+  configuration of the bundle attaining the target rank. That runs a
+  strong induction on the number of bodies through ear, split-off,
+  contraction and cut steps (the following sections), whose flat inputs
+  use the planar rank theorem \cref{thm:theorem-55-6-rows} in place of
+  the pin-collinear theorem the informal proof cites. The distinct and
+  generic upgrades hold on the dense open subset where adjacent points
+  are distinct and, respectively, a nondegenerate realization survives;
+  the passage on to \cref{thm:pencil-conditional-realization-main-component}
+  is the last section.
+\end{proof}

@@ -135,9 +135,12 @@ two-edge-connected multigraph has such a realization with adjacent concurrency p
 and a generic one whenever a nondegenerate realization exists at all — and proved the conjecture
 conditionally on them (`pencil_conjecture_of_X0`), over every infinite field. **The conjecture
 itself is not yet proved.** A proof of the two statements has been worked out informally and
-independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. Its first step is
-done: it extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to
-the plane (above), which the proof uses in place of Jackson–Jordán's theorem.
+independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. The planar case is done —
+it extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to the plane
+(above), used in place of Jackson–Jordán's theorem — and it is now building the geometry the two
+statements are proved from: a fixed planar drawing of the bodies, the space of heights that lift it
+into three dimensions, and the main component of the resulting configuration space, whose general
+member attains the target rank.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

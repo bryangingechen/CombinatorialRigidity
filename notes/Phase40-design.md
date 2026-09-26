@@ -77,7 +77,7 @@ Jackson–Jordán's pin-collinear theorem (*Discrete Comput. Geom.* 40(2) (2008)
 close the PI re-scoped the queued PIN item to a second, independent proof by their route (ROADMAP
 *Queued*).
 
-### CARRIER — planar pictures, `L(q)`, `X₀` and "the generic point attains"
+### CARRIER — planar pictures, `L(q)`, `X₀` and "the generic point attains" → **sub-phase 40b, ◐ opened design-first 2026-09-26** (`notes/Phase40b.md`)
 
 | label | step | 2nd | content |
 |---|---|---|---|
@@ -90,11 +90,15 @@ close the PI re-scoped the queued PIN item to a second, independent proof by the
   (`Mathlib/Algebra/MvPolynomial/Funext.lean`); the `PanelHingeFramework.exists_rankPolynomial_of_*`
   family (`GenericityDevice.lean`, `CaseI.lean`); the pencil statement layer
   (`Molecule/Pencil/Statement.lean`).
-- **Design first (top rung).** This layer settles **new mirror definitions with no upstream
-  precedent**: the picture, admissibility, the lifting space, and "attains at the generic point"
-  as a nonzero rank polynomial over a rational parametrization. Open it with a
-  compiler-checked design recon. The recon must also decide the **β-headroom question** (§4): a
-  hypothesis like `hcard`, or a type-changing induction.
+- **Design settled (opened 2026-09-26; accepted design + leaf plan → `notes/Phase40b.md`).** The
+  compiler-checked recon (opus, adopted as session rung; a parallel fable pass too) fixed the four new
+  mirror defs — uncurried picture `q : α × Fin 2 → K` + admissibility, the lifting space `L(q)`, the
+  `cross₃` picture→normal map (polynomial, denominator-free), and a **single** `X0Attains` carrying a
+  nonzero `MvPolynomial (α × Fin 2) K` (semicontinuity once, in a mirror lemma `x0Attains_of_exists`).
+  β-headroom (§4): **needed**; fix is an additive-successor `_of_card` triple concluding the unchanged
+  L0 `X0Dist`/`X0Gen` and reusing `pencil_conjecture_of_X0` verbatim (a MOTIVES leaf). Two questions
+  deferred to the MOTIVES pre-build recon: the exact `hcard` constant, and the headroom root-cause
+  (`notes/Phase40b.md` *Blockers*).
 
 ### FLAT — the flat rank
 
