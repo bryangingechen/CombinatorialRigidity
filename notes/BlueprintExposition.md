@@ -1005,6 +1005,23 @@ bookkeeping of bodies off `V(G)` (`fmlnote:pencil-lifting-planes`) are project-s
 the whole induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main-component`
 above, `[pending]` until Phase 40's close. The ledger stays at **2 pending / 36 done** (of 38).
 
+### `main-component.tex` — Phase 40d (BRIDGE: Jackson–Jordán's equality)
+
+**No new entries — judged at the sub-phase close (2026-09-26).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC11.md`, (MC-172)), which derives the equality
+`dim L(q) = 3 + def₂` from Katoh–Tanigawa's rank formula at `d = 2` in place of Jackson–Jordán's
+pin-collinear theorem; the criterion transfers as in the `pencil.tex` section. Every node of
+`sec:main-component-jj` is green and landed as first scoped, in one build commit from the design
+recon's spike: nothing rerouted or decomposed. The argument is short and complete in the nodes'
+proofs: move a realization at the deficiency rank into the chart `(x_v, y_v, 1)` by rescaling the
+normals, read its rank there by the flat rank's plane framework, and close with the partition bound.
+The edge relabelling (`lem:pencil-jj-embed-edges`, `fmlnote:pencil-jj-embed-edges`) serves only the
+formal label type and is project-side. The end-to-end re-read added one clause to
+`thm:pencil-jj-equality`'s proof (three members in a closed neighbourhood give the chart lemma's two
+bodies). The account of the whole induction stays with the Phase-39 entry
+`thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
+ledger stays at **2 pending / 36 done** (of 38).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

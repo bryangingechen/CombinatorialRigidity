@@ -6,9 +6,10 @@ index of work already done, the layer plan by **stable codes**, the proof map, t
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
-open** (opened 2026-09-26, `notes/Phase40d.md`). This doc replaces the planning note `notes/pencil/X0-formalization.md`
-(2026-09-25), whose content moved here and which is now a pointer. The PI's calls behind the plan
-are verbatim in `notes/pencil/adjudications.md` (the 2026-09-25 entries).
+closed 2026-09-26** (`notes/Phase40d.md`); **STEPS is next**, not yet opened. This doc replaces the
+planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which
+is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
+(the 2026-09-25 entries).
 
 **Read §2 before doing any mathematics.** Everything the route needs exists in written,
 second-read form, so the job is transcription and formalization, not re-derivation.
@@ -112,52 +113,36 @@ Example 4.4 (pp. 72–73) and Whiteley 1996 §8.3, with no identity attributed; 
   `generic-lift.tex` uses `prop:rigidity-matrix-prop11` as its stand-in). Repoint each site
   that means the relative bound (`lem:relative-deficiency-rank-bound`). Not a Phase-40 layer.
 
-### BRIDGE — Jackson–Jordán's equality, as it is consumed → **sub-phase 40d, open** (`notes/Phase40d.md`)
+### BRIDGE — Jackson–Jordán's equality, as it is consumed → **sub-phase 40d, ✓ closed 2026-09-26** (`notes/Phase40d.md`)
 
-**Design settled** (opus design recon, 2026-09-26; its spike compiles every declaration sorry-free,
-and the coordinator re-ran it). BRIDGE lands in `Molecule/Pencil/MainComponent/Bridge.lean` and
-`main-component.tex` §`sec:main-component-jj`. SPINE2 supplies the form of (MC-33) the proof uses;
-the informal record is (MC-172) (Step MC11).
-- **The equality** (`thm:pencil-jj-equality`). Let `G` be simple, with at least one body and
-  `|N[v]| ≥ 3` at every body, anywhere in `α`, `β`. There is one nonzero polynomial in the ambient
-  picture coordinates `α × Fin 2` whose non-roots are main pictures with `dim L(q) = 3 + def₂(G)`
-  (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`). Every main picture has that dimension (the
-  `ℓ₀` form, `Graph.IsMainPicture.finrank_liftingSpace_eq`), and so does one picture
-  (`Graph.exists_isMainPicture_finrank_liftingSpace_eq`). No hypothesis on `β`, and no
-  connectivity. With FLAT (`cor:pencil-jj-flat`, `Graph.x0Attains_of_deficiency_two_eq_three`):
-  `X₀(G)` attains when `def₂ = def₃`, which is (MC-89)'s step 3. That corollary is BRIDGE's.
-- **The route: the chart.**
-  - SPINE2's non-spanning producer at `(n, k) = (2, 1)`, its rank polynomial, the general-position
-    polynomial and `∏ n(a, 2)` have a common non-root (the `Theorem56.lean` pattern).
-  - Per-body rescaling (`lem:pencil-jj-rescale`) moves it into the chart `(x_v, y_v, 1)` at the
-    same rank with nonzero hinges. The rank polynomial there, pulled back along the chart, is the
-    chart-rank form (`lem:pencil-jj-chart`).
-  - Times the main-picture polynomial, FLAT's bridge reads the rank as `3|V| − dim L(q)`, and
-    (MC-4)(b) gives the reverse inequality.
-  - Only the chart-rank form carries SPINE2's `hfresh`. The equality first relabels the edges into
-    `β ⊕ Fin (3|α| + 1)` (`Graph.embedEdges`, `lem:pencil-jj-embed-edges`: bodies, closed
-    neighbourhoods, `L(q)`, main pictures and every `def_n` unchanged), where
-    `Graph.freshEdgeSupply_of_card_lt (n := 2)` supplies it.
-- **The consumer map** (the recon's; every use in (MC-141)'s list, derived against the definition
-  bodies). Every use consumes the lifting-space form, at a simple graph, in the ambient
-  coordinates, so consumers multiply the polynomials.
-  - `G` (FLAT): the existential form, through the corollary.
-  - `H = G[W]` (both kinds of CONTRACT): the generic form at `q ∈ U(G)` and at the magnified core
-    picture; FLAT at `H` through the corollary (`def₂(H) = def₃(H) = 0`).
-  - `G/H = G.rigidContract (G.induce W) r`, `r ∈ W`: the `ℓ₀` form at the contracted picture, the
-    slice `q′ = (q_O, Q)` (a §3 STEPS *Tracked* item). `rigidContract` keeps parallel edges, as the
-    informal `G/H` does. Its simplicity is the step's hypothesis, and it needs `H` induced; `K₄`
-    contracted at a triangle is the recon's witness of the failure.
-  - `G′ + ab` at the chains, `a ≁ b`: the generic form at `q ∈ U(G′)`. The label `ab` can reuse an
-    ear-edge label.
-  - `G″ = G.splitOff x a b e₀`, `a ≁ b`: the generic or `ℓ₀` form.
-  - Finding 4 (no admissible picture without `|N[v]| ≥ 3`) bites at `G/H`'s contracted vertex
-    (`|δ(W)| ≥ 2`, from 2EC; already in (MC-37)'s second reading).
-  - Since the equality is now a theorem at every such graph, STEPS may also use it at `G` where
-    convenient.
-- **The open point is dissolved.** The landed generic-normals row rank takes a total selector,
-  which forces `E(G) = β`. The chart route never forms `IsGenericNormals`, so it does not need that
-  form at all.
+**Done.** The equality `dim L(q) = 3 + def₂(G)` at the generic picture is formalized in
+`Molecule/Pencil/MainComponent/Bridge.lean` (`main-component.tex` §`sec:main-component-jj`) for
+every simple `G` with at least one body and `|N[v]| ≥ 3` at every body, anywhere in `α`, `β`, over
+every infinite field, with no hypothesis on `β` and no connectivity. SPINE2 supplies the form of
+(MC-33) the proof uses; the informal record is (MC-172) (Step MC11). The consumer forms are the
+generic form `Graph.exists_mvPolynomial_finrank_liftingSpace_eq` (one nonzero polynomial in the
+ambient picture coordinates `α × Fin 2` whose non-roots are main pictures at `3 + def₂`), the `ℓ₀`
+form `Graph.IsMainPicture.finrank_liftingSpace_eq` and the existential form; with FLAT,
+`Graph.x0Attains_of_deficiency_two_eq_three` (`cor:pencil-jj-flat`, (MC-89)'s step 3). The recon's
+chart route: per-body rescaling moves a common non-root of SPINE2's rank polynomial, the
+general-position polynomial and `∏ n(a, 2)` into the chart `(x_v, y_v, 1)`, where FLAT's bridge
+reads the rank; only that chart-rank form carries SPINE2's `hfresh`, and the equality first
+relabels the edges into `β ⊕ Fin (3|α| + 1)` (`Graph.embedEdges`), where
+`Graph.freshEdgeSupply_of_card_lt (n := 2)` supplies it. The route never forms `IsGenericNormals`,
+so the total-selector open point dissolved. Every decision is in `notes/Phase40d.md`.
+- **The consumer map, for STEPS** (the recon's, derived against the definition bodies; each
+  consumer multiplies the polynomials). At `G`: the existential form, through `cor:pencil-jj-flat`.
+  At `H = G[W]` (both kinds of CONTRACT): the generic form at `q ∈ U(G)` and at the magnified core
+  picture, and FLAT through the corollary (`def₂(H) = def₃(H) = 0`). At
+  `G/H = G.rigidContract (G.induce W) r`, `r ∈ W`: the `ℓ₀` form at the contracted picture;
+  `rigidContract` keeps parallel edges, as the informal `G/H` does, and its simplicity needs `H`
+  induced (`K₄` contracted at a triangle is the recon's witness). At `G′ + ab`, `a ≁ b`: the generic
+  form at `q ∈ U(G′)`. At `G″ = G.splitOff x a b e₀`, `a ≁ b`: the generic or `ℓ₀` form. Finding 4
+  (no admissible picture without `|N[v]| ≥ 3`) bites at `G/H`'s contracted vertex (`|δ(W)| ≥ 2`,
+  from 2EC; already in (MC-37)'s second reading). STEPS may also use the equality at `G`. The open
+  questions of these uses are §3 STEPS's three items *Tracked from BRIDGE's design recon* (the
+  slice `q′ = (q_O, Q)`, the simplicity of `G/H`, `h3` from (H)); the label-reuse sources are in
+  §3 MOTIVES's β-headroom bullet.
 - [ ] **Cleanup-round item (post-Phase-40): the edge-restricted, non-spanning generic-normals row
   rank**, together with the optional re-base below. It is off every consumer path. The recon
   compiled it as three declarations (in `GenericLift/PanelGeneric.lean`):
@@ -184,12 +169,12 @@ the informal record is (MC-172) (Step MC11).
   - It lands either as an in-place weakening (call sites: `HingeGeneric.lean` ×2, `Steer.lean` ×1,
     the rigid corollary `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`, and
     `generic-lift.tex`'s `thm:panel-generic-rank`) or as an additive successor.
-- **Optional re-base, routed here from 40a (Slice 4); not taken in 40d**, since the chart route
-  never touches the spanning producer. It moves to the cleanup-round item above. The spanning
-  `PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is a ~10-line
-  corollary of the SPINE2 row-rank form (fable-spike-checked, not landed), and its `[Nonempty α]`
-  is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
-  (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
+  - **The optional re-base, routed here from 40a (Slice 4); not taken in 40d**, since the chart
+    route never touches the spanning producer. The spanning
+    `PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is a ~10-line
+    corollary of the SPINE2 row-rank form (fable-spike-checked, not landed), and its `[Nonempty α]`
+    is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
+    (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
 ### STEPS — the local steps of the induction
 
@@ -308,12 +293,12 @@ the landed SPINE2 threading):
 ### The blueprint chapter
 
 The main-component argument gets **one new forward-mode chapter** (`main-component.tex`), one
-subsection per layer from CARRIER to MOTIVES. CARRIER's subsection is all green; MOTIVES's stub
-subsection `sec:main-component-statements` is the last, and each later layer inserts its
-subsection before it. It is opened as red nodes transcribed from the proof map above, with
-statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when that layer
-opens, not all at once, and run a **pre-build recon of each transcribed section** before the
-first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
+subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subsections are all
+green; MOTIVES's stub subsection `sec:main-component-statements` is the last, and each later
+layer inserts its subsection before it. It is opened as red nodes transcribed from the proof map
+above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
+that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
+the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
 checked by no gate). The Phase 39 nodes `def:pencil-main-component-statements` and
 `thm:pencil-conditional-realization-main-component` (`pencil.tex`) are the chapter's consumer
 end.
