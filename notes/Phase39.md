@@ -10,7 +10,9 @@ them with two statements, `X0Dist` and `X0Gen` (Phase 40 discharges them). **L0*
 checklist* item 0) had three steps, both Lean steps now landed 2026-09-25: the headline
 `pencil_conjecture_of_X0` (**L0a**) and the non-simple bare case
 `hasPencilRealization_of_not_simple` (**L0b**, dropping the carried `hW4A`), both in
-`Molecule/Pencil/X0.lean`. **Next: L0c, the phase-close commit** (docs only).
+`Molecule/Pencil/X0.lean`. **L0c is two docs commits:** the pre-close chapter pass (**L0c-i**, landed
+2026-09-25: `pencil.tex` re-read, `blueprint/lint.sh` green, the exposition ledger written) and
+**next, L0c-ii, the close proper.**
 **Held until Phase 40's MOTIVES layer lands** (PI, 2026-09-25): the kernels (K-res)/`kres`,
 (K-c), (K-bare-c) with (α), and the smark attack, which is paused; its `state.md` records where it
 stopped. gr10 CLOSED 2026-09-23. Item 6 is DONE except the deferred A6 and one factoring item.
@@ -34,7 +36,15 @@ new `Molecule/Pencil/X0.lean` (sorry-free, axioms `[propext, Classical.choice, Q
 sorry-free (same axiom set); full route in the *Lemma checklist* entry. Both L0a headlines now
 drop `hW4A` and call the theorem directly. Blueprint:
 `thm:pencil-conditional-realization-main-component` and `lem:pencil-nonsimple-case` both pinned
-and green. **Next: L0c, the phase-close commit** (docs only; *Hand-off*). The mathematics behind
+and green. **L0c-i LANDED 2026-09-25**, the pre-close chapter pass: `pencil.tex` re-read end to end
+(per-commit asides and changelog prose collapsed; the seven vocabulary-gate lines fixed, so
+`blueprint/lint.sh` is green; the screw-space carrier written `\bigwedge^{2} K^{4}`;
+`lem:pencil-cut-case` split into statement and proof, gaining the `\uses` edge to
+`def:pencil-distinct-motive`; `fmlnote:pencil-main-component-statements`' claim that the planar
+rank theorem is the `n = 2` case of `thm:theorem-55-6` — still stated at `n ≥ 3` until 40a lands —
+reworded as a conditional); no statement-faithfulness problem found against the pinned Lean.
+`notes/BlueprintExposition.md` gains the `pencil.tex` section: 6 done, 2 `[pending]` on Phase 40.
+**Next: L0c-ii, the close proper** (*Hand-off*). The mathematics behind
 the `X₀` route is Phase 40's input: (MC-89), (MC-133) and (MC-157), all second-read, in
 `notes/pencil/workbook/K-main*.md` §(K-main). Its formalization plan is `notes/Phase40-design.md`.
 
@@ -102,8 +112,11 @@ the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
     both L0a decls, which now call the theorem directly. Blueprint: `lem:pencil-nonsimple-case`
     and `thm:pencil-conditional-realization-main-component` pinned and green; the new brick node
     `lem:extensor-pair-through-given-point` added beside its sibling.
-  - [ ] **L0c — close Phase 39.** A docs commit: `PHASE-BOUNDARIES.md` *When this commit closes a
-    phase*, plus the phase-specific list in *Hand-off*.
+  - [x] **L0c-i — the pre-close chapter pass — LANDS 2026-09-25** (docs only): the chapter bullet
+    of the close checklist — `pencil.tex` re-read, `lint.sh` green, the exposition ledger written.
+  - [ ] **L0c-ii — close Phase 39.** A docs commit: the rest of `PHASE-BOUNDARIES.md` *When this
+    commit closes a phase* (the chapter bullet is done), plus the phase-specific list in
+    *Hand-off*. It does not touch `pencil.tex` or `notes/attacks/`.
 
 - [x] **Girth lemmas** — **DONE 2026-09-15** (design pass same day, `notes/Phase39-design.md`
   § *Lean-track design pass*, leaves G1–G4; red nodes `def:girth`,
@@ -418,13 +431,15 @@ the fallback. Each item carries its crux as a HYPOTHESIS, never a `sorry`.*
 
 ## Hand-off / next phase
 
-**L0a and L0b landed 2026-09-25** (checklist item 0 entries). **Next concrete commit: L0c, the
-phase close** (*Lemma checklist* item 0) — a docs-only commit, per the phase-specific list below
-plus `PHASE-BOUNDARIES.md` *When this commit closes a phase*. Run it with `/coordinate-phase 39`.
-It is independent of Phase 40's sub-phase 40a (the `n = 2` spine, `notes/Phase40a.md`): the two
-touch disjoint files and may run in either order, but not concurrently in one checkout.
+**L0a, L0b and L0c-i landed 2026-09-25** (checklist item 0 entries). **Next concrete commit:
+L0c-ii, the phase close proper** (*Lemma checklist* item 0) — a docs-only commit, per the
+phase-specific list below plus `PHASE-BOUNDARIES.md` *When this commit closes a phase* minus its
+chapter bullet (done in L0c-i). Run it with `/coordinate-phase 39`. It is independent of Phase
+40's sub-phase 40a (the `n = 2` spine, `notes/Phase40a.md`): the two touch disjoint files and may
+run in either order, but not concurrently in one checkout.
 
-**L0c's phase-specific list** (on top of `PHASE-BOUNDARIES.md` *When this commit closes a phase*):
+**L0c-ii's phase-specific list** (on top of `PHASE-BOUNDARIES.md` *When this commit closes a
+phase*):
 - **ROADMAP.** Flip row 39 to ✓ Complete. It closes on the reduction: `pencil_conjecture_of_X0`
   carrying only `X0Dist`/`X0Gen`, which Phase 40 discharges. Compress §39.
 - **Move deferred items to where they land.**
@@ -433,14 +448,16 @@ touch disjoint files and may run in either order, but not concurrently in one ch
   - The HELD items after item 6, and W4-reopen's held kernels, go to Phase 40's fallback section.
   - Item 6's blueprint debt (*Blockers*, the D5 entry) moves to Phase 40, whose STEPS layer
     consumes those laws and will pin them.
+  - The two `[pending]` `pencil.tex` entries of `notes/BlueprintExposition.md` (the
+    main-component headline; the held-kernel theorem) are Phase 40's to write or close — name
+    them in its design doc.
 - **The attack tracks.** smark is paused (PI, 2026-09-25) and gr10 is CLOSED; `HARNESS.md`
   governs both, outside any phase. Confirm that `notes/attacks/smark/state.md` stays untouched and
   that ROADMAP's cell no longer names a live attack. `/harness-review` is still due (the PI's
   call).
-- **Design docs and chapter.** `notes/Phase39-design.md` is frozen (119 anchors, `notes/CLAUDE.md`),
-  so check its header says so. The chapter re-read and the exposition ledger cover `pencil.tex`.
-  `blueprint/lint.sh`'s vocabulary gate fails **at baseline** on seven older `pencil.tex` lines
-  ("motive", "stratum", in the conditioned-pair prose); fix them in that re-read.
+- **Design docs.** `notes/Phase39-design.md` is frozen (119 anchors, `notes/CLAUDE.md`), so check
+  its header says so. The chapter re-read and the exposition ledger are done (L0c-i); the close
+  commit does not edit `pencil.tex`.
 - **Status surfaces.** The Phase-40 open (2026-09-25) already synced them for Phase 40. Update
   Phase 39's line on each.
 

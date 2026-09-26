@@ -20,11 +20,19 @@ lines as hinges, centres as concurrency points) the condition says
 that every atom's incident bonds lie in a common plane through the
 atom's centre. Whether every spanning multigraph admits such a
 realization attaining the deficiency rank of
-\cref{thm:theorem-55-6-multigraph} is open. The
-final subsection records the combinatorial shape that the hypotheses of the
-two open kernels force --- the girth of the multigraph and the maximal chain
-of degree-two vertices through the split vertex --- which any argument for
-either kernel would use.
+\cref{thm:theorem-55-6-multigraph} is open. The section reduces the
+question by a strong induction on all spanning multigraphs
+(\cref{thm:pencil-reduction}), in which a minimum-degree argument
+replaces the minimality that Katoh--Tanigawa's induction uses; the loop,
+base and cut-edge cases are proved, and the remaining cases are reduced
+first to two kernel statements at a degree-two vertex
+(\cref{thm:pencil-conditional-realization-pair}) and then, bypassing
+those, to two statements about the main component of the configuration
+space of pencil realizations
+(\cref{thm:pencil-conditional-realization-main-component}), whose proofs
+lie outside this section. The final subsection records the combinatorial
+shape that the kernel hypotheses force --- the girth of the multigraph and
+the maximal chain of degree-two vertices through the split vertex.
 
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
@@ -41,16 +49,14 @@ element's span.
   \lean{CombinatorialRigidity.Molecular.ExtensorThroughPoint}
   \leanok
   \uses{def:rigidity-matrix, def:extensor}
-  A screw element $C \in \mathrm{ScrewSpace}\,k$ \emph{passes through}
+  A screw element $C \in \bigwedge^{k} K^{k+2}$ \emph{passes through}
   the homogeneous point $q \in K^{k+2}$ when $C$ is the extensor of $k$
   points $p_1, \dots, p_k \in K^{k+2}$ whose span contains $q$.
 \end{definition}
 
-This mirrors the witness shape of \cref{def:genuine-hinge-realization}
-exactly, with span-containment of $q$ in place of orthogonality to a
-normal: the degenerate $C = 0$ satisfies it (take every $p_i = q$),
-so nonzero-ness of $C$ is carried as a separate conjunct wherever the
-predicate is used below.
+The zero element passes through every point (take every $p_i = q$), so
+nonzero-ness of $C$ is a separate hypothesis wherever the notion is used
+below.
 
 \subsection{Pencil realizations}
 \label{sec:pencil-realization}
@@ -62,7 +68,7 @@ predicate is used below.
   \uses{def:coplanar-panel-realization, def:extensor-through-point}
   A hinge-coplanar panel realization of a multigraph $G$
   (\cref{def:coplanar-panel-realization}), with normal assignment $v
-  \mapsto n_v$, has a \emph{pencil realization} when it carries in
+  \mapsto n_v$, has a \emph{pencil realization} when it is given in
   addition a per-body homogeneous point $v \mapsto q_v \in K^{k+2}$
   such that every body of $V(G)$ has a nonzero point $q_v$, incident
   to its own panel ($q_v \cdot n_v = 0$), and every link's supporting
@@ -70,25 +76,25 @@ predicate is used below.
   (\cref{def:extensor-through-point}).
 \end{definition}
 
-The incidence $q_v \cdot n_v = 0$ is forced at any body carrying a
-genuine hinge --- the hinge's spanning points lie in $n_v^{\perp}$ and
-contain $q_v$ in their span, so $q_v \in n_v^{\perp}$ --- and recording
-it as a conjunct keeps an isolated body's data honest while making the
-panel and point roles symmetric under the polarity below. Concurrency
-of two coplanar lines is automatic, so at a body of degree at most two
-the point conjunct adds nothing to hinge-coplanarity; the condition
-first bites at a body whose hinges number three or more.
+The incidence $q_v \cdot n_v = 0$ is forced at any body with a nonzero
+hinge --- the hinge's spanning points lie in $n_v^{\perp}$ and contain
+$q_v$ in their span, so $q_v \in n_v^{\perp}$ --- and it is required at
+every body, isolated ones included, so that the panel and point roles are
+symmetric under the polarity below. Concurrency of two coplanar lines is
+automatic, so at a body of degree at most two the point condition adds
+nothing to hinge-coplanarity; it first has content at a body whose hinges
+number three or more.
 
 \subsection{The polarity and self-duality}
 \label{sec:pencil-duality}
 
 Fix $K = \R$ and grade $k = 2$ ($d = 3$), the setting of
-\cref{lem:panel-hinge-dual-molecular}: the polarity there carries the
+\cref{lem:panel-hinge-dual-molecular}: the polarity there sends the
 extensor of any two homogeneous points $v_0, v_1 \in \R^4$ to the
 panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}),
 the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity in
 its full generality, not only for the homogenized poles of a molecular
-framework. Two consequences carry the point-through and panel-in
+framework. Two consequences transport the point-through and panel-in
 conditions across the polarity.
 
 \begin{lemma}[The point-join condition transports to the panel-meet side]
@@ -97,7 +103,7 @@ conditions across the polarity.
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization,
         lem:panel-hinge-dual-molecular}
-  If a screw element $C \in \mathrm{ScrewSpace}\,2$ passes through the
+  If a screw element $C \in \bigwedge^{2} \R^{4}$ passes through the
   homogeneous point $q \in \R^4$ (\cref{def:extensor-through-point}),
   then its polarity image lies in the panel with normal $q$
   (\cref{def:genuine-hinge-realization}).
@@ -107,7 +113,7 @@ conditions across the polarity.
   \uses{lem:case-III-claim612-line-in-panel-union, def:panel-support-extensor}
   If $C = 0$ the image is $0$, which lies in every panel. Otherwise $C$
   is the extensor of an independent pair $v_0, v_1$ with $q$ in their
-  span; the polarity (\cref{lem:panel-hinge-dual-molecular}) carries
+  span; the polarity (\cref{lem:panel-hinge-dual-molecular}) sends
   $C$ to the panel-support extensor $C(v_0,v_1)$
   (\cref{def:panel-support-extensor}), which by the point-join
   $\leftrightarrow$ panel-meet duality
@@ -124,7 +130,7 @@ conditions across the polarity.
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization,
         lem:panel-hinge-dual-molecular}
-  If a screw element $C \in \mathrm{ScrewSpace}\,2$ lies in the panel
+  If a screw element $C \in \bigwedge^{2} \R^{4}$ lies in the panel
   with normal $q \in \R^4$ (\cref{def:genuine-hinge-realization}), then
   its polarity image passes through $q$
   (\cref{def:extensor-through-point}).
@@ -135,7 +141,7 @@ conditions across the polarity.
   If $C = 0$ the image is $0$, which passes through every point (take
   the constant family at $q$). Otherwise $C$ is the extensor of an
   independent pair $v_0, v_1$ both orthogonal to $q$; the polarity
-  carries $C$ to the panel-support extensor $C(v_0,v_1)$
+  sends $C$ to the panel-support extensor $C(v_0,v_1)$
   (\cref{def:panel-support-extensor}), which by
   \cref{lem:case-III-claim612-line-in-panel-union} is the extensor of
   an independent pair $p_0', p_1'$ orthogonal to both $v_0$ and $v_1$.
@@ -160,7 +166,7 @@ conditions across the polarity.
 \begin{proof}
   \leanok
   \uses{lem:pencil-transport-through-to-in, lem:pencil-transport-in-to-through}
-  The transported framework carries the same multigraph and nonzero
+  The transported framework has the same multigraph and nonzero
   supporting extensors, since the polarity is a linear automorphism
   (\cref{thm:projective-invariance}). Its new normal assignment is $q$,
   each nonzero by hypothesis, and the incidence $n_v \cdot q_v = 0$
@@ -177,12 +183,12 @@ conditions across the polarity.
 \label{sec:pencil-base}
 
 Katoh--Tanigawa's two-vertex base realization of a parallel edge pair
-(\cref{lem:theorem-55-base-producer-parallel}, Lemma~5.3, p.~670)
+(\cref{lem:theorem-55-base-producer-parallel}, KT Lemma~5.3, p.~670)
 places both hinges in a single shared panel $n^{\perp}$ with two
 linearly independent supporting extensors
 (\cref{lem:extensor-pair-in-panel}), which fill the whole screw space
 $K^6$ and make the two bodies rigid. On the pencil condition the same
-construction carries a common concurrency point at no extra cost: two
+construction supplies a common concurrency point at no extra cost: two
 lines of a flat pencil already share the point of the pencil.
 
 \begin{lemma}[Two independent extensors through a common point of a panel]
@@ -191,7 +197,7 @@ lines of a flat pencil already share the point of the pencil.
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization}
   For any normal $n \in K^4$ there is a nonzero point $q \in n^{\perp}$
-  and two screw elements $C, C' \in \mathrm{ScrewSpace}\,2$, each lying
+  and two screw elements $C, C' \in \bigwedge^{2} K^{4}$, each lying
   in the panel with normal $n$ (\cref{def:genuine-hinge-realization})
   and passing through $q$ (\cref{def:extensor-through-point}), whose
   $2$-extensors are linearly independent.
@@ -200,16 +206,13 @@ lines of a flat pencil already share the point of the pencil.
   \leanok
   \uses{lem:extensor-pair-in-panel}
   The panel $n^{\perp}$ has dimension at least $3$ in $K^4$, so it
-  carries three linearly independent vectors $q, a, b$. Take the two
+  contains three linearly independent vectors $q, a, b$. Take the two
   pencil lines $q \vee a$ and $q \vee b$ through $q$: both lie in
   $n^{\perp}$ and contain $q$ in their span, so each lies in the panel
   and passes through $q$. Their extensors are linearly independent
   because $\{q, a, b\}$ is --- the shared-vector case of the
   independence of extensors on two distinct point subsets behind
-  \cref{lem:extensor-pair-in-panel}. These are the two distinct pencil
-  lines through a common point of the shared panel whose stacked row
-  spaces fill $K^6$, the rank mechanism of the two-body pencil base
-  case.
+  \cref{lem:extensor-pair-in-panel}.
 \end{proof}
 
 \begin{lemma}[Two independent extensors through a prescribed point of a panel]
@@ -218,7 +221,7 @@ lines of a flat pencil already share the point of the pencil.
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization}
   For any normal $n \in K^4$ and any nonzero point $q \in n^{\perp}$, there
-  are two screw elements $C, C' \in \mathrm{ScrewSpace}\,2$, each lying in
+  are two screw elements $C, C' \in \bigwedge^{2} K^{4}$, each lying in
   the panel with normal $n$ (\cref{def:genuine-hinge-realization}) and
   passing through $q$ (\cref{def:extensor-through-point}), whose
   $2$-extensors are linearly independent.
@@ -226,8 +229,8 @@ lines of a flat pencil already share the point of the pencil.
 \begin{proof}
   \leanok
   \uses{lem:extensor-pair-in-panel}
-  Sibling of \cref{lem:extensor-pair-through-point}, with the concurrency
-  point $q$ prescribed rather than chosen. The panel $n^{\perp}$ has
+  As for \cref{lem:extensor-pair-through-point}, with $q$ given in
+  advance. The panel $n^{\perp}$ has
   dimension at least $3$ in $K^4$, so $q$ extends to a linearly
   independent triple $q, y, z$ in $n^{\perp}$. The two pencil lines
   $q \vee y$ and $q \vee z$ through $q$ both lie in $n^{\perp}$ and
@@ -238,9 +241,9 @@ lines of a flat pencil already share the point of the pencil.
 
 The base region of Katoh--Tanigawa's induction is realized directly at
 one and two bodies (\cref{lem:theorem-55-base-producer}); the pencil
-condition first bites at a body of degree three or more, so on two
-bodies the only content is the parallel-pair case, where the pencil pin
-is met for free by the pair above.
+condition has content only at a body of degree three or more, so on two
+bodies the only case with content is the parallel pair, where the
+concurrency point is supplied by the pair above.
 
 \begin{lemma}[Two-body coincident-panel pencil realization]
   \label{lem:pencil-base-parallel-pair}
@@ -274,14 +277,14 @@ is met for free by the pair above.
 \label{sec:pencil-cycle}
 
 Katoh--Tanigawa's cycle realization (\cref{lem:cycle-realization},
-Lemma~5.4) places a cycle of bodies with each hinge the meet of two
+KT Lemma~5.4) places a cycle of bodies with each hinge the meet of two
 adjacent panels. Every body has degree two, and at a body of degree at
-most two the pencil concurrency pin costs nothing: two lines lying in a
+most two the concurrency requirement costs nothing: two lines lying in a
 common plane always meet in a point of that plane. The following records
 this projective fact in the containment model, so that the cycle
 realization --- indeed any hinge-coplanar realization
 (\cref{def:coplanar-panel-realization}) restricted to its degree-two
-bodies --- already carries the per-body concurrency point a pencil
+bodies --- already admits the per-body concurrency point a pencil
 realization asks for.
 
 \begin{lemma}[Two coplanar hinges share a concurrency point]
@@ -289,7 +292,7 @@ realization asks for.
   \lean{CombinatorialRigidity.Molecular.exists_concurrency_point_of_extensorInPanel_pair}
   \leanok
   \uses{def:genuine-hinge-realization, def:extensor-through-point}
-  Let $n \in K^4$ be nonzero and let $C_1, C_2 \in \mathrm{ScrewSpace}\,2$
+  Let $n \in K^4$ be nonzero and let $C_1, C_2 \in \bigwedge^{2} K^{4}$
   be nonzero screw elements each lying in the panel with normal $n$
   (\cref{def:genuine-hinge-realization}). Then there is a nonzero point
   $q \in n^{\perp}$ through which both pass
@@ -306,7 +309,7 @@ realization asks for.
   orthogonal to $n$.
 \end{proof}
 
-The cycle itself carries a hinge-coplanar realization, rigid on all of
+The cycle itself has a hinge-coplanar realization, rigid on all of
 its bodies, built directly from the cyclic family of shared panel normals
 rather than through the meet model of the original cycle realization.
 
@@ -333,17 +336,16 @@ rather than through the meet model of the original cycle realization.
   in both endpoint panels $n_i^{\perp}$, $n_{i+1}^{\perp}$
   (\cref{def:genuine-hinge-realization}); every edge label off the cycle
   is given a fixed nonzero fallback, so all supporting extensors are
-  nonzero. Body $i$ carries normal $n_i$, and both hinges incident to it
+  nonzero. Body $i$ is given normal $n_i$, and both hinges incident to it
   lie in $n_i^{\perp}$, so the data is a hinge-coplanar realization. The
   $m$ cyclic meets are linearly independent (\cref{lem:cycle-normals}), so
   the framework is infinitesimally rigid on the cycle's bodies, which are
   all of $V(G)$ (\cref{lem:cycle-realization-rigid}).
 \end{proof}
 
-The cycle length range here is honest rather than triangle-only: a cycle
-is at least a triangle ($m \ge 3$), and the shared-normal family exists
-only up to $m \le k + 2 = 4$ at $d = 3$, so both the triangle and the
-quadrilateral are realized. Since every body of a cycle has degree two,
+The range $3 \le m \le 4$ is exactly where the shared-normal family exists
+at $d = 3$, so the triangle and the quadrilateral are both realized.
+Since every body of a cycle has degree two,
 the concurrency fact above (\cref{lem:coplanar-hinges-concurrent})
 supplies each body's point, upgrading the coplanar realization to a full
 pencil realization.
@@ -385,7 +387,7 @@ Katoh--Tanigawa's induction extends a hinge-coplanar realization across
 a re-added edge by supplying a supporting extensor in the meet of the
 two endpoint panels (p.~670): for any two normals the common perp
 $n_u^{\perp} \cap n_v^{\perp} \subseteq K^4$ has dimension at least
-$4 - 2 = 2$, so it carries a nonzero hinge lying in both panels, with
+$4 - 2 = 2$, so it contains a nonzero hinge lying in both panels, with
 no transversality of the normals needed. On the pencil condition the
 re-added hinge must additionally pass through the concurrency point of
 each endpoint. Where in the coplanar model a common hinge always
@@ -393,9 +395,8 @@ exists, the pencil model asks for one through two prescribed points as
 well, and this constrains the two bodies: a hinge lying in both panels
 and passing through both points confines each point to the common perp,
 so each concurrency point must lie not only in its own panel but in the
-other body's panel too. These two cross-incidences are exactly what the
-following existence step assumes --- making explicit the obligation the
-coplanar strip-and-re-add move leaves implicit.
+other body's panel too. The following existence step assumes exactly
+these two cross-incidences.
 
 \begin{lemma}[Two-pencil extension hinge]
   \label{lem:two-pencil-extension}
@@ -408,7 +409,7 @@ coplanar strip-and-re-add move leaves implicit.
   and suppose $q_u \ne 0$. If the two cross-incidences
   $q_u \cdot n_v = 0$ and $q_v \cdot n_u = 0$ hold --- each
   concurrency point lies in the other body's panel --- then there is a
-  nonzero $C \in \mathrm{ScrewSpace}\,2$ lying in both panels
+  nonzero $C \in \bigwedge^{2} K^{4}$ lying in both panels
   (\cref{def:genuine-hinge-realization}) and passing through both points
   (\cref{def:extensor-through-point}).
 \end{lemma}
@@ -601,7 +602,7 @@ exactly two.
   induced screw automorphism sends the extensor of spanning points
   $p_0, \dots$ to the extensor of $g p_0, \dots$; the contragredient
   identity turns each incidence $\langle p_i, n\rangle = 0$ into $\langle g
-  p_i, h n\rangle = 0$, and $g$ carries the point-span containing $q$ to
+  p_i, h n\rangle = 0$, and $g$ sends the span containing $q$ to
   the one containing $g q$. The panel--point incidence $\langle q,
   n\rangle = 0$ is likewise preserved, and the automorphisms send nonzero
   data to nonzero data. Rank invariance is the change-of-screw-coordinates
@@ -648,35 +649,38 @@ exactly two.
         CombinatorialRigidity.Molecular.hasDistinctPencilRealization_of_not_twoEdgeConnected}
   \leanok
   \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
+        def:pencil-distinct-motive,
         lem:two-pencil-extension-iff, lem:pencil-projective-transport,
         lem:pencil-cut-nondegeneracy}
-  Let $G$ be not two-edge-connected, with at
-  most one edge crossing some nonempty proper vertex set $V_1 \subsetneq
-  V(G)$, $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
-  pencil realization at the deficiency rank, so does $G$: place each side's
-  realization independently and, if a crossing edge remains, reposition one
-  side's frame along a projective automorphism so its two prescribed points
-  meet the crossing edge's two cross-incidence conditions
-  (\cref{lem:two-pencil-extension-iff}). The same assembly proves the
-  \emph{adjacent-distinct} form (\cref{def:pencil-distinct-motive}) from
-  adjacent-distinct hypotheses on the two sides: inside a side the property
-  is the side's own, on the transported side it survives a linear
-  automorphism, and at the crossing edge it is the distinctness clause of
-  \cref{lem:pencil-cut-nondegeneracy}. In Lean the two forms are one
-  theorem parametrized by a flag.
+  Let $G$ be not two-edge-connected, so that at most one edge crosses some
+  nonempty proper vertex set $V_1 \subsetneq V(G)$, with $V_2 = V(G)
+  \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a pencil realization
+  at the deficiency rank, so does $G$; and if each has an adjacent-distinct
+  one (\cref{def:pencil-distinct-motive}), so does $G$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy,
         lem:cut-edge-decomposition, lem:two-pencil-extension}
   As in the cut-edge case of the panel-only induction
-  (\cref{lem:case-cut-edge-realization}), with the crossing edge's
-  supporting extensor supplied by \cref{lem:two-pencil-extension} once the
-  two cross-incidences hold. The projective repositioning of one side is
-  \cref{lem:pencil-projective-transport} (which preserves the deficiency
-  rank); the automorphism meeting the two cross-incidences is furnished by
+  (\cref{lem:case-cut-edge-realization}). Place each side's realization
+  independently. If a crossing edge remains, reposition one side along a
+  projective automorphism (\cref{lem:pencil-projective-transport}, which
+  preserves the deficiency rank), chosen by
+  \cref{lem:pencil-cut-nondegeneracy} so that the two prescribed points at
+  the crossing edge meet its two cross-incidence conditions
+  (\cref{lem:two-pencil-extension-iff}); the crossing edge's supporting
+  extensor is then supplied by \cref{lem:two-pencil-extension}. The
+  adjacent-distinct form follows by the same assembly: inside a side the
+  property is the side's own, on the transported side it survives a linear
+  automorphism, and at the crossing edge it is the distinctness clause of
   \cref{lem:pencil-cut-nondegeneracy}.
 \end{proof}
+\begin{fmlnote}
+  \label{fmlnote:pencil-cut-case}
+  The two forms are one Lean theorem with a Boolean parameter selecting
+  the form; the pinned names are that theorem and its two specializations.
+\end{fmlnote}
 
 \begin{lemma}[The base case, $|V(G)| \le 2$]
   \label{lem:pencil-base-case}
@@ -692,7 +696,7 @@ exactly two.
   \leanok
   The one-vertex and edgeless cases contribute no rank (a single fixed
   hinge with no incidence to discharge); a single edge contributes rank
-  $D - 1$ from one genuine hinge; a class of parallel edges reduces to
+  $D - 1$ from one nonzero hinge; a class of parallel edges reduces to
   \cref{lem:pencil-base-parallel-pair}'s two independent hinges (any
   further edges reuse the second hinge and cost nothing), whose
   realization is infinitesimally rigid on both bodies.
@@ -739,25 +743,14 @@ exactly two.
   hypotheses.
 \end{proof}
 
-\begin{fmlnote}
-  \label{fmlnote:pencil-conditional-bare}
-  The two hypotheses above are stated for the bare existence predicate
-  (\cref{def:pencil-rank-hypothesis}). Discharging them is expected to need
-  the induction hypothesis strengthened by a pencil-generic conjunct, the
-  way Theorem~5.5's induction hypothesis carries a generic full-rank
-  conjunct alongside the bare panel realization (\cref{def:rank-hypothesis}).
-  Pinning that conjunct is the first task of the genericity argument these
-  two cases are expected to need.
-\end{fmlnote}
-
 \subsection{Nondegenerate realizations and the conditioned pair}
 \label{sec:pencil-nondegenerate}
 
-Discharging the contraction and split hypotheses of
-\cref{thm:pencil-conditional-realization} is expected to need the
-induction statement strengthened by a genericity conjunct, the way
-Theorem~5.5's induction statement carries a generic full-rank
-realization conditioned on simplicity alongside the bare panel
+The two hypotheses of \cref{thm:pencil-conditional-realization} are
+stated for the bare realization (\cref{def:pencil-rank-hypothesis}). To
+discharge them the induction statement is strengthened by a genericity
+conjunct, as KT Theorem~5.5's induction statement includes a generic
+full-rank realization conditioned on simplicity alongside the bare panel
 realization (\cref{def:rank-hypothesis}). Conditioning on simplicity
 alone does not work here: at $K_4$ every vertex's closed
 hub-neighbourhood (below) is all four vertices, and the necessity
@@ -765,11 +758,11 @@ direction of \cref{lem:two-pencil-extension-iff} forces every hub's
 panel normal into the same vertex's orthogonal complement, so no
 simple realization of $K_4$ has independent hub normals. Conditioning
 on the realization's own nondegenerate-satisfiability alone does not
-work either: a multigraph with a parallel class of hinges can carry a
+work either: a multigraph with a parallel class of hinges can have a
 nondegenerate realization without any hub, yet no such realization
 attains the deficiency-rank target, since the class's two hinges are
 then forced onto a single common supporting line. The conditioning
-below asks for both together: simplicity, as in Theorem~5.5, and the
+below asks for both together: simplicity, as in KT Theorem~5.5, and the
 realization's own nondegenerate-satisfiability.
 
 \begin{definition}[Nondegenerate pencil realization, feasibility]
@@ -780,8 +773,8 @@ realization's own nondegenerate-satisfiability.
   \leanok
   \uses{def:pencil-panel-realization}
   A vertex of a multigraph is a \emph{pencil hub} when it has degree at
-  least three, the degree at which the point conjunct of
-  \cref{def:pencil-panel-realization} first bites. The \emph{closed
+  least three, the least degree at which the point condition of
+  \cref{def:pencil-panel-realization} has content. The \emph{closed
   hub-neighbourhood} of a vertex $v$ is the set of pencil hubs among $v$
   itself and its neighbours, and the \emph{closed neighbourhood} of $v$
   is $v$ together with all of its neighbours, hub or not. A pencil
@@ -794,22 +787,20 @@ realization's own nondegenerate-satisfiability.
   when it has a nondegenerate pencil realization.
 \end{definition}
 \begin{fmlnote}
-  \label{fmlnote:pencil-nondegenerate-hub}
+  \label{fmlnote:pencil-nondegenerate}
   The closed hub-neighbourhood of $v$ is exactly the set of vertices
   whose panel normal a link's concurrency point at $v$ is forced
   orthogonal to: $v$'s own normal by the panel--point incidence of
   \cref{def:pencil-panel-realization}, and a neighbouring hub's normal by
   the necessity direction of \cref{lem:two-pencil-extension-iff} applied
   along the connecting link.
-\end{fmlnote}
-\begin{fmlnote}
-  \label{fmlnote:pencil-nondegenerate-nonhub}
+
   The third conjunct is not automatic from the first two: at a non-hub
   vertex (degree at most two) two coplanar lines are automatically
   concurrent, so nothing about projectively distinct link endpoints or
   independent hub normals prevents the two hinges meeting at such a
   vertex from coinciding at the same point. The conjunct rules out
-  exactly that coincidence, and so bites only where the closed
+  exactly that coincidence, and so has content only where the closed
   neighbourhood has all three of its members (an ordinary degree-two
   vertex with two distinct neighbours); a lower-degree vertex is already
   covered by nonzero-ness together with the link conjunct above. It is
@@ -837,25 +828,29 @@ realization's own nondegenerate-satisfiability.
   when it has a pencil realization at the deficiency rank
   (\cref{def:pencil-rank-hypothesis}) whose two concurrency points are
   projectively distinct along every link --- the first nondegeneracy
-  conjunct of \cref{def:pencil-nondegenerate} and none of the others. It
-  sits strictly between the bare motive and the generic one, both
-  implications being forgetful.
+  conjunct of \cref{def:pencil-nondegenerate} and none of the others.
 \end{definition}
+
+A generic pencil realization is adjacent-distinct, and an
+adjacent-distinct one is in particular a pencil realization at the
+deficiency rank.
+
 \begin{fmlnote}
   \label{fmlnote:pencil-distinct-motive}
-  Why the distinctness is a separate motive rather than a conjunct of the
+  The distinctness is a separate statement rather than a conjunct of the
   pencil realization itself (\cref{def:pencil-panel-realization}). Adding
-  it there would make the bare motive false at every parallel class: at
-  two bodies joined by two or more edges the deficiency-rank target is
+  it there would make the bare statement false at every parallel class:
+  at two bodies joined by two or more edges the deficiency-rank target is
   attained only with both concurrency points equal, since at distinct
   points every hinge through the pair is forced onto the single line they
-  span and the rows drop one short. It would also break the stratum
-  self-duality (\cref{lem:pencil-self-dual}), whose polarity exchanges the
-  normals and the points, at the coplanar-panel base case. The distinctness
-  is what the informal argument for kernel (K-bare) actually reasons
-  about --- a point of the configuration variety, not merely of the bare
-  space --- so it is carried here and imposed only under simplicity, where
-  parallel classes are excluded outright.
+  span and the rows drop one short. It would also break the self-duality
+  of the pencil condition (\cref{lem:pencil-self-dual}), whose polarity
+  exchanges the normals and the points, at the coplanar-panel base case.
+  The distinctness is what the informal argument for the second kernel of
+  \cref{thm:pencil-conditional-realization-pair} reasons about --- a
+  point of the configuration variety, not merely of the bare space --- so
+  it is imposed only under simplicity, where parallel classes are
+  excluded outright.
 \end{fmlnote}
 
 \begin{definition}[The conditioned pair]
@@ -874,30 +869,28 @@ realization's own nondegenerate-satisfiability.
 \end{definition}
 \begin{fmlnote}
   \label{fmlnote:pencil-conditioned-pair}
-  This is the pencil analogue of Theorem~5.5's own conditioned induction
-  statement (\cref{def:rank-hypothesis}), now conditioned on both
-  simplicity, exactly as Theorem~5.5, and nondegeneracy-feasibility, for
-  the $K_4$ reason above. Neither conjunct alone suffices: a multigraph
-  with a parallel class of hinges can carry a nondegenerate realization
-  (the two hinges can point to independent concurrency points and panel
-  normals, with neither body a hub), yet no nondegenerate realization of
-  such a multigraph attains the deficiency-rank target, since two hinges
-  through the same pair of bodies are forced onto a single common
+  This is the pencil analogue of KT Theorem~5.5's own conditioned
+  induction statement (\cref{def:rank-hypothesis}), conditioned on both
+  simplicity, exactly as KT Theorem~5.5, and nondegeneracy-feasibility,
+  for the reasons given at the start of this subsection: at $K_4$ no
+  simple realization has independent hub normals, and a parallel class
+  admits a nondegenerate realization (the two hinges can point to
+  independent concurrency points and panel normals, with neither body a
+  hub) but no nondegenerate one at the deficiency-rank target, since two
+  hinges through the same pair of bodies are forced onto a single common
   supporting line whenever their concurrency points are projectively
   distinct, contributing one row block where the target needs two
   independent ones. Dropping the conditioned conjuncts recovers the bare
   realization of \cref{def:pencil-rank-hypothesis} directly.
 
-  The middle, adjacent-distinct conjunct was added after the bare motive
-  was found too weak for kernel (K-bare)'s consumer
-  (\cref{fmlnote:pencil-distinct-motive}). It costs the arms almost
-  nothing: it is vacuous at a loop and at a parallel class, neither being
-  simple; it is a forgetful consequence wherever an arm already builds a
-  nondegenerate realization; and the cut-edge case proves it by the same
-  assembly as the bare one (\cref{lem:pencil-cut-case}). Its real cost
-  falls on the contraction case, whose conclusion now carries it while its
-  contraction stage is a multigraph whose attaining realizations must be
-  coincident at parallel classes.
+  The adjacent-distinct conjunct costs the cases of
+  \cref{thm:pencil-reduction} almost nothing: it is vacuous at a loop and
+  at a parallel class, neither being simple; it follows from the generic
+  conjunct wherever that one is available; and the cut-edge case proves
+  it by the same assembly as the bare one (\cref{lem:pencil-cut-case}).
+  Its cost falls on the contraction case, whose conclusion includes it
+  while the contracted multigraph's attaining realizations must be
+  coincident at parallel classes (\cref{fmlnote:pencil-distinct-motive}).
 \end{fmlnote}
 
 \begin{theorem}[Pencil realization from the contraction case and two open kernels, conditioned pair]
@@ -929,9 +922,11 @@ realization's own nondegenerate-satisfiability.
 \end{theorem}
 \begin{fmlnote}
   \label{fmlnote:pencil-conditional-realization-pair-kernels}
-  Kernels (K) and (K-bare) are the two hypotheses this formalization
-  currently carries rather than proves. Both are supported by exact-rational
-  computation across many habitat graphs with zero counterexamples found.
+  Kernels (K) and (K-bare) are hypotheses of the theorem and are not
+  proved here; \cref{thm:pencil-conditional-realization-main-component}
+  below reaches the same conclusion without them. Both are supported by
+  exact-rational computation on many multigraphs satisfying their
+  hypotheses, with no counterexample found.
   Kernel (K) is the pencil analogue of Katoh--Tanigawa's
   Claim~6.12~\cite{katohTanigawa2011}, but is not implied by it: their proof
   of that claim — a span argument showing one of the three candidate
@@ -951,10 +946,11 @@ realization's own nondegenerate-satisfiability.
   induction hypothesis available the side is supplied by the conjectured
   statement one graph down, which is what the informal arguments for both
   kernels in fact use. The same reading is why kernel (K-bare) is stated
-  at the adjacent-distinct motive (\cref{def:pencil-distinct-motive}) on
-  both sides of its implication rather than at the bare one: the bare
-  motive's coincident-point witnesses are not points of the configuration
-  variety those arguments reason about.
+  for adjacent-distinct realizations (\cref{def:pencil-distinct-motive})
+  on both sides of its implication rather than for bare ones: a
+  realization at the deficiency rank whose concurrency points coincide
+  along some link is not a point of the configuration variety those
+  arguments reason about.
 \end{fmlnote}
 \begin{fmlnote}
   \label{fmlnote:pencil-conditional-realization-pair-field}
@@ -973,9 +969,8 @@ realization's own nondegenerate-satisfiability.
   \cref{lem:panel-hinge-dual-molecular}; in characteristic $2$ that
   quadric degenerates to a double plane and the two eigenspaces coincide,
   so the argument needs an infinite field of characteristic different
-  from $2$ (in Lean, \texttt{[Infinite K]} together with
-  \texttt{[NeZero (2 : K)]}, satisfied by every field of characteristic
-  $0$) and nothing more: the certifying minor is a polynomial with integer
+  from $2$ (every field of characteristic $0$ qualifies) and nothing
+  more: the certifying minor is a polynomial with integer
   coefficients in the free parameters of the realization, so a proof over
   the algebraic closure of one field of a given characteristic gives the
   statement over every infinite field of that characteristic. For kernel
@@ -983,9 +978,8 @@ realization's own nondegenerate-satisfiability.
   component of the configuration variety, which presupposes an
   algebraically closed field, and uses no property of the characteristic;
   if the induction it rests on is restated in terms of explicit witnessing
-  configurations over $K$, an infinite field suffices
-  (\texttt{[Infinite K]}), and until then the interim hypothesis is an
-  algebraically closed field (\texttt{IsAlgClosed K}). Both routes have
+  configurations over $K$, an infinite field suffices, and until then
+  the interim hypothesis is an algebraically closed field. Both routes have
   been tested only in characteristic $0$, by exact computation over $\Q$
   and $\Q(i)$; whether the conjecture itself holds over infinite fields of
   characteristic $2$ is open.
@@ -999,7 +993,7 @@ realization's own nondegenerate-satisfiability.
   vacuous, since a loop already breaks nondegeneracy-feasibility
   (\cref{def:pencil-nondegenerate}); the base case's parallel-class
   sub-case is vacuous too, since a parallel class of edges is never
-  simple, and its remaining sub-cases (no edge, one edge) each carry a
+  simple, and its remaining sub-cases (no edge, one edge) each have a
   direct nondegenerate construction. The cut-edge case's generic
   conjunct assembles the two sides' induction hypotheses directly when
   no edge crosses the cut; when a single crossing edge joins two sides
@@ -1022,7 +1016,7 @@ realization's own nondegenerate-satisfiability.
   of kernel (K) or kernel (K-bare) applies to $G$'s own
   nondegeneracy-feasibility.
 
-  How the kernels are fed. Both are handed the split case's own induction
+  The kernels' inputs. Both receive the split case's own induction
   hypothesis unchanged, and then one antecedent each. If $G$ is
   nondegeneracy-feasible, the split-off graph inherits simplicity,
   triangle-freeness and the closed-hub-neighbourhood bound, so the
@@ -1066,21 +1060,22 @@ class, and assembles the conditioned pair from these pieces.
 \end{definition}
 \begin{fmlnote}
   \label{fmlnote:pencil-main-component-statements}
-  Both statements are hypotheses of
-  \cref{thm:pencil-conditional-realization-main-component}; they are not
-  yet formalized. Informally, both follow from one strong induction on
-  the main component, over an arbitrary infinite field. The main component
-  is a vector bundle over the admissible planar pictures. Its generic
-  point attains the target rank at every simple connected multigraph of
-  minimum degree at least two. The induction runs through ear, split-off,
-  contraction and cut steps.
+  Both statements enter
+  \cref{thm:pencil-conditional-realization-main-component} as
+  hypotheses; their proofs are not part of this section. Informally, both
+  follow from one strong induction on the main component, over an
+  arbitrary infinite field. The main component is a vector bundle over
+  the admissible planar pictures. Its generic point attains the target
+  rank at every simple connected multigraph of minimum degree at least
+  two. The induction runs through ear, split-off, contraction and cut
+  steps.
 
-  At its flat points the induction consumes the planar rank theorem for
+  At its flat points the induction uses the planar rank theorem for
   simple graphs, Jackson and Jord\'an's pin-collinear
   theorem~\cite{jacksonJordan2008pin}. Their proof is written in
-  characteristic zero. The formalization instead obtains the planar rank
-  theorem over every infinite field, as the $n = 2$ case of
-  \cref{thm:theorem-55-6}.
+  characteristic zero. Over every infinite field the planar rank theorem
+  would instead follow from \cref{thm:theorem-55-6} extended to $n = 2$;
+  that extension lies outside this section.
 \end{fmlnote}
 
 \begin{lemma}[The parallel-class case]
@@ -1098,22 +1093,32 @@ class, and assembles the conditioned pair from these pieces.
 \begin{proof}
   \leanok
   \uses{lem:case-I-realization-nonsimple, lem:pencil-contraction-deficiency,
-        lem:rigidityRows-splice-rank-add, lem:extensor-pair-through-given-point}
+        lem:rigidityRows-splice-rank-add, lem:extensor-pair-through-given-point,
+        lem:theorem-55-base, lem:trivial-motions-rank-bound}
   This is Katoh and Tanigawa's parallel-edge
   contraction~\cite[Lemma~6.2]{katohTanigawa2011}, in the form of
   \cref{lem:case-I-realization-nonsimple}, run at the pencil condition and
   without minimality.
 
   Let $e$ and $f$ be parallel edges joining bodies $a$ and $b$. They span
-  a proper rigid subgraph on $\{a, b\}$. Contracting it preserves the
-  deficiency and removes one body, and by the induction hypothesis the
-  contraction has a pencil realization at the deficiency rank. Now give
-  $a$ and $b$ the panel and the point of the contracted body, and keep
-  every other hinge. Realize $e$ and $f$ by two independent lines through
-  that point, inside that panel.
+  a proper rigid subgraph $H$ on $\{a, b\}$. Contracting $H$ preserves
+  the deficiency (\cref{lem:pencil-contraction-deficiency}) and removes
+  one body, so by the induction hypothesis the contraction $G/H$ has a
+  pencil realization at the deficiency rank. Now give $a$ and $b$ the
+  panel and the point of the contracted body, and keep every other hinge.
+  Realize $e$ and $f$ by two linearly independent lines through that
+  point, inside that panel (\cref{lem:extensor-pair-through-given-point};
+  the point is prescribed by the contraction's realization, not chosen).
+  Every hinge then lies in the panels and passes through the points of
+  both its endpoints, so this is a pencil realization of $G$.
 
-  These two hinges force $a$ and $b$ to move alike. The rank therefore
-  rises by exactly $D = 6$, the difference between the two targets.
+  For the rank: the two independent hinges through the common point make
+  $\{a, b\}$ infinitesimally rigid (\cref{lem:theorem-55-base}), so the
+  rows of $e$ and $f$ add $D = 6$ to the rank of the contraction's rows
+  (\cref{lem:rigidityRows-splice-rank-add}), giving at least $D(|V(G/H)|
+  - 1) - \operatorname{def} + D = D(|V(G)| - 1) - \operatorname{def}$;
+  the upper bound valid at every realization
+  (\cref{lem:trivial-motions-rank-bound}) gives equality.
 \end{proof}
 
 \begin{theorem}[Pencil realization from the two main-component statements]
@@ -1146,7 +1151,8 @@ class, and assembles the conditioned pair from these pieces.
       adjacent-distinct conjuncts are vacuous, and
       \cref{lem:pencil-nonsimple-case} gives the bare one.
   \end{itemize}
-  Neither open kernel is used, and no fresh edge.
+  Neither kernel of \cref{thm:pencil-conditional-realization-pair} is
+  used, nor its hypothesis that an edge outside $E(G)$ is available.
 \end{proof}
 
 \subsection{Girth and degree-two chains under no proper rigid subgraph}

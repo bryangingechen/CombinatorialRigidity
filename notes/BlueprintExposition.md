@@ -117,6 +117,15 @@ as its explicit project-side mirror (`notes/FormalizationRetrospective.md`),
 not KT mathematics — so it adds nothing under the source-side inclusion
 criterion. The ledger stays at **30 done**.
 
+**Phase-39 chapter pass (2026-09-25, the pre-close commit).** The
+`pencil.tex` section below is written: six entries done in place (the
+minimality-free reduction, the two-pencil extension biconditional, the
+cut-edge repositioning, the conditioned pair's shape, the parallel-class
+case, the degree-two-chain normal form) and two `[pending]` under the
+green-*modulo* rule — the main-component headline, whose two hypotheses are
+Phase 40's target, and the held-kernel theorem. **Result: 2 pending / 36
+done** (of 38).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -850,6 +859,104 @@ remaining reroutes were project-side encoding pins (transfer-form genericity
 for their max-rank definition; the literal spanning-tree-family shape of the
 packing corollary). Recorded so the no-entry state reads as a judgment, not
 an omission.
+
+### `pencil.tex` — Phase 39 (the hinge-pencil conjecture)
+
+The phase's source is not KT: the conjecture is new (no literature result,
+`ROADMAP.md` §39), and the chapter builds its reduction on KT Theorem 4.9's
+template. The criterion transfers as in the Phase 32/34 sections — a
+*source-side* step is one in the mathematical argument itself (KT's where
+the chapter reuses KT, the chapter's own where it departs), a *project-side*
+one is a Lean-encoding reroute. Written at the L0c chapter pass (2026-09-25).
+The phase closes on a reduction (PI, 2026-09-25): `pencil_conjecture_of_X0`
+carries the two main-component statements, which Phase 40 discharges, so two
+entries stay `[pending]` under the green-*modulo* rule with Phase 40 as the
+discharge point.
+
+- **`thm:pencil-reduction` / `Graph.pencil_reduction`, with
+  `lem:pencil-min-degree-rigid`** — [done (`pencil.tex`, the
+  `sec:pencil-reduction` preamble + the two nodes)] **(b)** KT Theorem 4.9's
+  induction uses minimality (no edge deletable without changing the
+  deficiency); the pencil condition breaks the strip-and-reinsert step (a
+  reinserted hinge constrained through two prescribed points can add no
+  rank), so the reduction is restated on every spanning multigraph. **Stable
+  insight:** minimality is used in KT only to find a degree-two vertex in the
+  no-proper-rigid-subgraph case; a handshake count against the
+  `(D,D)`-sparsity bound shows minimum degree ≥ 3 already forces a proper
+  rigid subgraph once `D ≥ 4`, so the induction needs minimality nowhere, and
+  simplicity in case (v) is free (`lem:pencil-simple-of-noRigid`). Pointer:
+  `notes/Phase39-design.md` § *W3–W5 route recon*.
+- **`lem:two-pencil-extension-iff` / `exists_extensor_two_pencils_iff`** —
+  [done (the `sec:pencil-extension` preamble + proofs)] **(a)** the coplanar
+  strip-and-re-add move (KT p. 670) always has a hinge in the meet of two
+  panels; the pencil analogue asks for one through two prescribed points, and
+  it exists iff each concurrency point lies in the other body's panel.
+  **Stable insight:** the two cross-incidences are the exact obstruction, by
+  Plücker injectivity of a nonzero decomposable 2-extensor; they are what the
+  cut-edge case must arrange by repositioning (`lem:pencil-cut-nondegeneracy`)
+  and what forces every hub's normal into a common complement at `K₄` — the
+  reason simplicity alone cannot condition the generic conjunct. Pointer:
+  `notes/Phase39-design.md` (the W2 leaf; opening recon R3).
+- **`lem:pencil-cut-case` /
+  `hasPencilRealization_of_not_twoEdgeConnected_core`, with
+  `lem:pencil-cut-nondegeneracy`** — [done (node proofs)] **(a)** the
+  panel-only cut-edge case places two sides independently; the pencil version
+  must reposition one side by a projective automorphism (a contragredient
+  acting on the normals) so the crossing edge's cross-incidences hold.
+  **Stable insight:** an explicit frame automorphism over any field does it,
+  and its independence choice gives the adjacent-distinct clause at the
+  crossing edge for free, so the bare and adjacent-distinct forms share one
+  assembly. Pointer: `notes/Phase39-design.md` § *Kernel restatement*.
+- **`def:pencil-nondegenerate` + `def:pencil-conditioned-pair` +
+  `def:pencil-distinct-motive`** — [done (the `sec:pencil-nondegenerate`
+  preamble + `fmlnote:pencil-distinct-motive`,
+  `fmlnote:pencil-conditioned-pair`)] **(a)** the induction statement was
+  reshaped twice: the generic conjunct conditioned on simplicity *and*
+  nondegeneracy-feasibility (`K₄` refutes simplicity alone; a parallel class
+  refutes feasibility alone), then an adjacent-distinct conjunct added under
+  simplicity (the R2 recon's (α)). **Stable insight:** why distinctness
+  cannot be a conjunct of the pencil realization itself — at a parallel class
+  the deficiency-rank target is attained only with coincident points, and the
+  pencil self-duality would break at the coplanar-panel base — so it is
+  imposed only where parallel classes are excluded. Pointer:
+  `notes/Phase39-design.md` § *W5 design pass*, § *R2 recon* (b);
+  `notes/pencil/adjudications.md` (α).
+- **`lem:pencil-nonsimple-case` / `hasPencilRealization_of_not_simple`, with
+  `lem:extensor-pair-through-given-point`** — [done (node proof, L0b)]
+  **(b)** KT Lemma 6.2's parallel-edge contraction, run without minimality
+  and at the pencil condition. **Stable insight:** the contraction's
+  realization *prescribes* the concurrency point the two re-realized hinges
+  must pass through, so the base pair lemma is needed in prescribed-point
+  form; the rank arithmetic is the block-triangular splice (KT eq. (6.3))
+  plus the general upper bound, with the contraction preserving the
+  deficiency. Pointer: `notes/Phase39.md` item 0 (L0b).
+- **`sec:pencil-girth-chain` (`lem:pencil-degree-two-chain`,
+  `lem:pencil-chain-side-distance`)** — [done (subsection preamble + nodes)]
+  **(a)** the normal form of the kernel hypotheses' consumed shape was first
+  stated as a chain between two hubs; the design pass found a trichotomy (the
+  chain can close at a single hub — a cycle through a cut vertex) and that
+  the chain's ends are non-adjacent only for `m ≤ D − 2`, the general clause
+  being the distance bound `D − m`. Pointer: `notes/Phase39.md` items 1–2;
+  `notes/Phase39-design.md` § *Lean-track design pass* (V3, V4).
+- **`thm:pencil-conditional-realization-main-component` /
+  `pencil_conjecture_of_X0`, with `def:pencil-main-component-statements`** —
+  [pending — discharge point: Phase 40's close] **(c)** the reduction itself
+  is final and exposited (the three-way case split in the node's proof); what
+  is not final is the account of the two main-component statements
+  (`X0Dist`/`X0Gen`), hypotheses here and Phase 40's target
+  (`notes/Phase40-design.md`; informal proof `notes/pencil/workbook/K-main*.md`
+  (MC-89), (MC-133), (MC-157)). Under the green-*modulo* rule the fuller
+  exposition — the main component as a vector bundle over planar pictures, the
+  flat rank, the ear/split-off/contraction/cut steps — is written at Phase
+  40's close, in Phase 40's chapter.
+- **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
+  [pending — held] **(c)** the two kernel hypotheses are held as the fallback
+  (PI, 2026-09-25) and bypassed by the main-component route; the chapter's
+  `fmlnote:pencil-conditional-realization-pair-kernels` and `…-field` already
+  carry what is stable (why both kernels take the induction hypothesis; the
+  field hypothesis each route needs). Nothing further is written unless a
+  kernel is proved; if Phase 40 discharges the main-component statements the
+  entry closes as superseded.
 
 ## Retroactive coverage
 
