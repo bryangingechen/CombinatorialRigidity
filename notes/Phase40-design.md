@@ -193,6 +193,12 @@ non-2EC graphs, while the consumer uses only the 2EC form (§4).
 `hasGenericPencilRealization_of_independent_pencilRow_target`. Landing both discharges L0's
 carried hypotheses and closes the phase. At the close, re-decide the held kernels (§6).
 
+**Consumes `Graph.X0Attains`** (CARRIER C1a, `notes/Phase40b.md` *Decisions*): `X0Dist` takes one
+attaining `(q, z)` and CARRIER C4's point-join rank equality; `X0Gen` intersects the fibre-open
+attaining set with a nondegenerate open set inside one fibre `L(q)`, which needs a new
+fibre-intersection lemma (two polynomials each nonvanishing somewhere on a subspace are jointly
+nonvanishing somewhere on it, `K` infinite) and C3's polynomial plane normal.
+
 ### The blueprint chapter
 
 The main-component argument gets **one new forward-mode chapter**, one section per layer from

@@ -42,6 +42,7 @@ import CombinatorialRigidity.Molecular.Molecule.Modelling
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Base
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Escape
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer

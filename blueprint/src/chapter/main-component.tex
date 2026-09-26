@@ -26,37 +26,79 @@ degree at least two and $K$ is an infinite field.
 
 \begin{definition}[Admissible planar picture]
   \label{def:pencil-admissible-picture}
+  \lean{Graph.IsAdmissiblePicture,
+        CombinatorialRigidity.Molecular.pencilPicturePoint}
+  \leanok
   \uses{def:pencil-nondegenerate}
   A \emph{planar picture} of $G$ is a map $q \colon V(G) \to K^2$,
-  written $q_v = (x_v, y_v)$. It is \emph{admissible} if $q_u \neq q_v$
-  for every edge $uv$ and, for every body $v$, the picture points $q(w)$
-  over the closed neighbourhood of $v$ (\cref{def:pencil-nondegenerate})
-  are not collinear (equivalently, three of their homogeneous lifts
-  $(1, x_w, y_w)$ are linearly independent; the closed neighbourhood has
-  at least three members by the degree hypothesis). The admissible
-  pictures form a nonempty Zariski-open subset of $K^{2|V(G)|}$:
-  nonempty because $K$ is infinite, open because admissibility is a
-  finite conjunction of non-vanishing conditions.
+  written $q_v = (x_v, y_v)$; its \emph{homogeneous picture points} are
+  the vectors $(x_v, y_v, 1) \in K^3$. The picture is \emph{admissible}
+  if $q_u \neq q_v$ for every edge $uv$ and, for every body $v$, three
+  members of the closed neighbourhood of $v$
+  (\cref{def:pencil-nondegenerate}) have linearly independent homogeneous
+  picture points, that is, the picture points over the closed
+  neighbourhood are not collinear.
 \end{definition}
+
+Admissibility is a finite conjunction of non-vanishing conditions, one
+coordinate difference for each edge and one $3 \times 3$ determinant for
+each body, so the admissible pictures form a Zariski-open subset of
+$K^{2|V(G)|}$. It is nonempty, since $K$ is infinite and every closed
+neighbourhood has at least three members by the degree hypothesis.
 
 \begin{definition}[The lifting space]
   \label{def:pencil-lifting-space}
+  \lean{Graph.liftingSpace}
+  \leanok
   \uses{def:pencil-admissible-picture}
-  Let $q$ be an admissible picture. A \emph{height} is a map
-  $z \colon V(G) \to K$; it gives the homogeneous configuration
-  $p_v = (x_v, y_v, z_v, 1) \in K^4$, written $p = (q, z)$. The
-  \emph{lifting space} $L(q)$ is the set of heights $z$ such that, for
-  every body $v$, the restriction of $z$ to the closed neighbourhood of
-  $v$ agrees with an affine function of the picture there: there are
-  $a, b, c \in K$ with $z_w = a x_w + b y_w + c$ for every $w$ in that
-  neighbourhood. It is a linear subspace of $K^{V(G)}$, and contains
-  the three-dimensional space $\mathrm{Aff}(q)$ of globally affine
-  heights $z_w = \alpha x_w + \beta y_w + \gamma$.
+  Let $q$ be a planar picture of $G$. A \emph{height} is a map
+  $z \colon V(G) \to K$. The \emph{lifting space} $L(q)$ is the set of
+  heights $z$ such that, for every body $v$, the restriction of $z$ to
+  the closed neighbourhood of $v$ agrees with an affine function of the
+  picture there: there are $a, b, c \in K$ with
+  $z_w = a x_w + b y_w + c$ for every $w$ in that neighbourhood.
 \end{definition}
+
+The conditions are linear in $z$, so $L(q)$ is a linear subspace of
+$K^{V(G)}$. It contains the space $\mathrm{Aff}(q)$ of globally affine
+heights $z_w = \alpha x_w + \beta y_w + \gamma$, which is
+three-dimensional when the picture points are not all collinear.
+
+\begin{fmlnote}
+  \label{fmlnote:pencil-lifting-space}
+  A height is a function on the whole ambient set of bodies that
+  vanishes off $V(G)$, so that for a graph not spanning the body set
+  the dimension of $L(q)$ is still that of a space of heights on
+  $V(G)$.
+\end{fmlnote}
+
+\begin{definition}[Configurations and their planes]
+  \label{def:pencil-configuration}
+  \lean{CombinatorialRigidity.Molecular.pencilConfigPoint,
+        CombinatorialRigidity.Molecular.pencilNormalOfPicture}
+  \leanok
+  \uses{def:pencil-lifting-space}
+  A planar picture $q$ and a height $z$ give the \emph{configuration}
+  $p = (q, z)$ of homogeneous points
+  $p_v = (x_v, y_v, z_v, 1) \in K^4$. Given a choice of three bodies
+  $a_v, b_v, c_v$ at every body $v$, the \emph{plane normal} of $p$ at
+  $v$ is the vector $n_v \in K^4$ with
+  $n_v \cdot w = \det[p_{a_v}, p_{b_v}, p_{c_v}, w]$ for every
+  $w \in K^4$.
+\end{definition}
+
+The plane normal is polynomial in the picture and height coordinates,
+orthogonal to the three chosen points, and nonzero exactly when they
+are linearly independent. When the three chosen bodies lie in the
+closed neighbourhood of $v$ with non-collinear picture points and
+$z \in L(q)$, it is, up to a nonzero scalar, the normal of the plane
+containing the points of the whole closed neighbourhood
+(\cref{lem:pencil-condition-linear}), whichever three are chosen.
 
 \begin{lemma}[The pencil condition is linear in the heights]
   \label{lem:pencil-condition-linear}
-  \uses{def:pencil-lifting-space, def:pencil-panel-realization}
+  \uses{def:pencil-lifting-space, def:pencil-configuration,
+        def:pencil-panel-realization}
   Let $q$ be admissible and $z$ a height. The configuration $p = (q, z)$
   has every closed neighbourhood coplanar if and only if $z \in L(q)$.
   Every such configuration is a pencil realization
@@ -78,7 +120,7 @@ degree at least two and $K$ is an infinite field.
 
 \begin{lemma}[The hinges are affine in the heights]
   \label{lem:pencil-hinge-affine}
-  \uses{def:pencil-lifting-space, def:extensor}
+  \uses{def:pencil-configuration, def:pencil-lifting-space, def:extensor}
   Fix a picture $q$. For an edge $e = uv$ the hinge extensor
   $p_u \wedge p_v$ (\cref{def:extensor}) is an affine function of the
   height $z$, its dependence on $z$ linear. Consequently the augmented
@@ -97,20 +139,61 @@ degree at least two and $K$ is an infinite field.
   on the hinge columns.
 \end{proof}
 
+\begin{definition}[Main pictures]
+  \label{def:pencil-main-picture}
+  \lean{Graph.IsMainPicture}
+  \leanok
+  \uses{def:pencil-lifting-space}
+  Let $\ell_0$ be the least value of $\dim L(q)$ over admissible
+  pictures $q$ of $G$. A \emph{main picture} of $G$ is an admissible
+  picture $q$ with $\dim L(q) = \ell_0$, and $U$ denotes the set of main
+  pictures.
+\end{definition}
+
+\begin{definition}[The general configuration attains]
+  \label{def:pencil-x0-attains}
+  \lean{Graph.X0Attains}
+  \leanok
+  \uses{def:pencil-configuration, def:panel-hinge-framework,
+        def:rigidity-matrix, def:D-deficiency}
+  The \emph{rank} of a configuration $p = (q, z)$ of $G$ is the rank of
+  the rigidity matrix (\cref{def:rigidity-matrix}) of the panel-hinge
+  framework on $G$ whose panel normal at each body $v$ is $p_v$
+  (\cref{def:panel-hinge-framework}). The \emph{general configuration of
+  $G$ attains} if there is a nonzero polynomial $P$ in the picture
+  coordinates such that every picture $q$ with $P(q) \neq 0$ is
+  admissible and the heights $z \in L(q)$ at which $(q, z)$ has rank
+  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ (\cref{def:D-deficiency},
+  at $n = 3$) contain a nonempty Zariski-open subset of $L(q)$.
+\end{definition}
+
+The hinge of that framework at an edge $uv$ is the meet of the planes
+$p_u^{\perp}$ and $p_v^{\perp}$ (\cref{def:panel-support-extensor}),
+the image of the line $p_u \wedge p_v$ under the complement
+isomorphism, and it is nonzero whenever $q_u \neq q_v$. An invertible
+linear map of the screw space applied to every hinge leaves the rank
+unchanged (\cref{lem:screw-map-rows}), so the rank of a configuration
+is also the rank of the body-hinge framework with hinges
+$p_u \wedge p_v$, the framework of a pencil realization. Taking the
+plane normals $n_v$ as panel normals instead would not give this rank:
+where two adjacent planes coincide the meet is zero, and a zero hinge
+allows no relative motion of its two bodies.
+
 \begin{theorem}[The main component]
   \label{thm:pencil-x0-main-component}
-  \uses{def:pencil-lifting-space, lem:pencil-condition-linear}
-  Let $\ell_0$ be the least value of $\dim L(q)$ over admissible
-  pictures $q$, and let $U$ be the admissible pictures achieving it.
-  Then $U$ is nonempty and Zariski-open, the pairs $(q, z)$ with
-  $q \in U$ and $z \in L(q)$ form a vector bundle over $U$, and its
-  closure $X_0$ is irreducible of dimension $2|V(G)| + \ell_0$,
-  containing the flat configurations $(q, 0)$ for $q \in U$. The
-  molecular rank is lower semicontinuous on $X_0$, so over the bundle it
-  attains its maximum on a dense open subset; a single configuration in
-  the bundle at a given rank therefore forces the general member of
-  $X_0$ to reach at least that rank, and supplies at $G$ a rank-attaining
-  pencil realization with adjacent points distinct.
+  \uses{def:pencil-main-picture, def:pencil-x0-attains,
+        lem:pencil-condition-linear}
+  The set $U$ of main pictures (\cref{def:pencil-main-picture}) is
+  nonempty and Zariski-open, the pairs $(q, z)$ with $q \in U$ and
+  $z \in L(q)$ form a vector bundle over $U$, and its closure $X_0$ is
+  irreducible of dimension $2|V(G)| + \ell_0$, containing the flat
+  configurations $(q, 0)$ for $q \in U$. The rank of a configuration
+  (\cref{def:pencil-x0-attains}) is lower semicontinuous on $X_0$, so
+  over the bundle it attains its maximum on a dense open subset. In
+  particular, if a single configuration $(q, z)$ with $q \in U$ and
+  $z \in L(q)$ has rank at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$,
+  then the general configuration of $G$ attains, and $G$ has a
+  rank-attaining pencil realization with adjacent points distinct.
 \end{theorem}
 \begin{proof}
   Over an admissible $q$, \cref{lem:pencil-condition-linear} presents
@@ -118,20 +201,27 @@ degree at least two and $K$ is an infinite field.
   fixing the per-body affine functions, a matrix with entries linear in
   $q$; its rank is lower semicontinuous, so the pictures of least
   $\dim L$ are open, and there the kernel is a vector bundle with
-  irreducible total space. Lower semicontinuity of the molecular rank on
-  the irreducible $X_0$ gives the last two claims; the flat point
-  $(q, 0)$ is a member for every $q \in U$.
+  irreducible total space. Over a neighbourhood of a main picture,
+  Cramer's rule on a maximal nonvanishing minor gives a polynomial
+  section of the bundle through any point of the fibre. Lower
+  semicontinuity of the rank on the irreducible $X_0$, together with
+  the fact that the rank never exceeds
+  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ once every hinge is
+  nonzero, gives the last two claims; the flat point $(q, 0)$ is a
+  member for every $q \in U$.
 \end{proof}
 
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
-  \uses{thm:pencil-x0-main-component, lem:pencil-hinge-affine,
-        def:pencil-distinct-motive, def:pencil-generic-motive,
-        def:D-deficiency, def:pencil-main-component-statements}
+  \uses{thm:pencil-x0-main-component, def:pencil-x0-attains,
+        lem:pencil-hinge-affine, def:pencil-distinct-motive,
+        def:pencil-generic-motive, def:D-deficiency,
+        def:pencil-main-component-statements}
   For every simple connected multigraph $G$ of minimum degree at least
-  two, the general configuration of $X_0(G)$ attains molecular rank
+  two, the general configuration of $G$ attains the rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
-  (\cref{def:D-deficiency}, at $n = 3$). Granting this at every such
+  (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $n = 3$).
+  Granting this at every such
   graph, the two main-component statements
   (\cref{def:pencil-main-component-statements}) follow: the general
   member of $X_0$ is a pencil realization at the deficiency rank with
@@ -147,7 +237,9 @@ degree at least two and $K$ is an infinite field.
   use the planar rank theorem \cref{thm:theorem-55-6-rows} in place of
   the pin-collinear theorem the informal proof cites. The distinct and
   generic upgrades hold on the dense open subset where adjacent points
-  are distinct and, respectively, a nondegenerate realization survives;
+  are distinct and, respectively, a nondegenerate realization survives,
+  the latter by intersecting two nonempty Zariski-open subsets of one
+  fibre $L(q)$;
   the passage on to \cref{thm:pencil-conditional-realization-main-component}
   is the last section.
 \end{proof}

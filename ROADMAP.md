@@ -1189,9 +1189,13 @@ the picture→normal map (the hinges are affine in the heights, built polynomial
 "the general point of the main component attains `6(|V|−1) − def₃`". Opened with a compiler-checked
 top-rung design recon (both an opus and a fable pass; opus adopted as the session rung); its accepted
 design is `notes/Phase40b.md` *Architectural choices*, compressed from `notes/Phase40-design.md` §3.
-This commit is design-only: a new forward-mode blueprint section `main-component.tex` with the four
-red nodes ((MC-1),(MC-2),(MC-3),(MC-10)(a)) wired toward `def:pencil-main-component-statements`, the
-work log, and the status surfaces. The definitions land next (slice C1a). Two questions are left for
+The opening commit was design-only: a new forward-mode blueprint section `main-component.tex` with
+four red nodes ((MC-1),(MC-2),(MC-3),(MC-10)(a)) wired toward `def:pencil-main-component-statements`.
+Slice C1a (2026-09-26) landed the definitions in `Molecule/Pencil/MainComponent/Carrier.lean`
+(`Graph.IsAdmissiblePicture`, `Graph.liftingSpace`, `Graph.IsMainPicture` for `U`,
+`pencilConfigPoint`/`pencilNormalOfPicture`, and `Graph.X0Attains`, whose rank is read at
+`ofNormals` of the configuration points and which carries a fibre-open set of attaining heights);
+next is C1b, the one-witness upgrade `Graph.x0Attains_of_exists`. Two questions are left for
 the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root cause
 (`notes/Phase40b.md` *Blockers*).
 
