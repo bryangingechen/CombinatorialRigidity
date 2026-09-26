@@ -105,7 +105,7 @@ failing pattern and the working fix.
 - `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
 - *"(deterministic) timeout at `whnf`"* pointing at a `by decide` declaration whose statement has a `∀`/`∃` prefix over a small `Fin` type (and possibly opaque tactic timeouts in *downstream* proofs of the same file) → § 101 (the quantifier prefix chains `Fintype.decidableForall/ExistsFintype` instances the elaborator can't whnf in budget; replace with a `Finset.card` counting argument, or `fin_cases` the variables first so `decide` only ever sees closed instances)
 - *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
-- *"unexpected token 'omit'; expected 'lemma'"* → § 76 (`omit […] in` must sit *before* the declaration's doc comment, not after)
+- *"unexpected token 'omit'/'open'/…; expected 'lemma'"* → § 76 (a command combinator like `omit […] in` or `open X in` must sit *before* the declaration's doc comment, not after)
 - *"Tactic `rcases` failed: `… : ∀ …, …` is not an inductive datatype"* on an `obtain ⟨…, _, …⟩` right after narrowing a producer's `∃`-conjunct count → § 78 (a stale sibling call site still destructures the *old*, wider tuple shape; grep every call site of the touched producer *name*, not just the ones already mid-edit)
 - *"Not a definitional equality: `(foo …).field` … not defeq to `3`"* / `rfl` fails on a data-`def`'s record projection, or a `… ≤ n` slot rejects a proof of the reduced form → § 79 (the `def` body used `obtain`/`rcases`/`cases`, i.e. `casesOn` on an opaque scrutinee, which blocks the returned `{…}`'s projections; rebuild with `have`+`.1`/`.2` projections + `set`/`let` so the constructor stays at the head)
 - `rw [Fintype.card_coe]` fails with *"Did not find an occurrence of the pattern `Fintype.card ↥?s`"* after unfolding a Finset-indexed clique/induced-subgraph fact (e.g. `isClique_iff_induce_eq`) → § 80 (the goal's vertex type is `↥(↑X : Set V)`, the *Set*-coercion's coe-sort, not `X`'s own Finset coe-sort `↥X` — `rfl`-equal via `Finset.coe_sort_coe` but not the same syntactic pattern `rw` searches for; close with `simp` instead)
@@ -2946,7 +2946,7 @@ explicit parameter) or name the argument (`(mem_commonNeighbors (G := G)).mpr �
 providing the `Set.Nonempty` witness directly (`⟨v, hx.symm, hy.symm⟩`), relying on
 `mem_commonNeighbors` being `Iff.rfl`.
 
-## 76. `omit [inst] in` must sit *before* the declaration's doc comment, not after — "unexpected token 'omit'; expected 'lemma'"
+## 76. `omit [inst] in` (or any `… in` command combinator, e.g. `open Classical in`) must sit *before* the declaration's doc comment, not after — "unexpected token 'omit'; expected 'lemma'"
 
 **Symptom.** Writing
 ```
@@ -2973,6 +2973,13 @@ theorem foo (G : SimpleGraph V) : … := …
 `Molecular/Molecule/Carrier.lean` (Phase 26, leaf F4) — the automatically-included section
 variable `[Finite V]` was unused in three lemmas not needing finiteness, and the first attempt at
 `omit [Finite V] in` after each doc comment failed to parse; reordering fixed all three at once.
+
+**Same rule, `open … in`.** `open Classical in` (needed to synthesize `Decidable (w ∈ V(G))` for
+an `if w ∈ V(G) then … else …` body, e.g. `Graph.affineLiftMap`/`Graph.affineLiftMap_apply` in
+`Molecule/Pencil/MainComponent/Carrier.lean`, Phase 40b CARRIER C2) hits the identical
+`"unexpected token 'open'; expected 'lemma'"` when placed *after* the doc comment; move it above,
+mirroring the file's existing `Graph.liftingMatrix` precedent (`open Classical in` immediately
+before its own doc comment).
 
 ## 77. `rw` on a bare numeral/`Nat.card V` fails "motive is not type correct" when the *same* literal also occurs inside an unrelated dependent-type index elsewhere in the goal — feed the raw equalities to `omega` instead
 

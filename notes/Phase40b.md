@@ -1,24 +1,26 @@
 # Phase 40b — PENCIL-X0 / CARRIER: planar pictures, the lifting space, `X₀`, and "the general point attains" (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). C1a, C1b, and C2's `U`-open lemma
-(`Graph.exists_isAdmissiblePicture`, `Graph.exists_isMainPicture`,
-`Graph.exists_mvPolynomial_isMainPicture`) landed 2026-09-26 in
-`Molecule/Pencil/MainComponent/Carrier.lean`. **Next: finish C2's remaining lifting-space API**
-(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound); C3 and DUAL-K → C4 may run in parallel. Plan:
-`notes/Phase40-design.md` §3.
+**Status:** in progress (opened design-first 2026-09-26). C1a, C1b, and C2 (both the `U`-open
+lemma and the lifting-space API) landed 2026-09-26 in `Molecule/Pencil/MainComponent/Carrier.lean`.
+**C2 is DONE.** **Next: C3 ∥ DUAL-K → C4** (parallelizable; DUAL-K must land before C4 and never
+builds in parallel with a `Carrier.lean` build). Plan: `notes/Phase40-design.md` §3.
 
 ## Current state
 
-**Next concrete step: finish C2's remaining lifting-space API** (*Hand-off*) — `Aff(q) ⊆ L(q)`,
-`3 ≤ dim L(q)` at admissible `q`, and the codim bound are still open; C3 and DUAL-K → C4 may run in
-parallel.
+**Next concrete step: C3 (picture→normal API) or DUAL-K (the polarity over every field)** (*Hand-
+off*) — both need only C1a; DUAL-K must land before C4 and never in parallel with a `Carrier.lean`
+build.
 C1a landed seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
-`Graph.x0Attains_of_exists` at the pinned signature, and C2's `U`-open lemma landed the existence of
-an admissible picture, a main-picture minimizer, and the openness polynomial (checklist), all in
-`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean` (signatures and the API
-in the checklist). `blueprint/src/chapter/main-component.tex` carries five green definition nodes,
-the green lemma `lem:pencil-x0-one-witness` (C1b), and the green lemma
-`lem:pencil-x0-main-picture-open` (C2's `U`-open landing), both split out of
+`Graph.x0Attains_of_exists` at the pinned signature, and C2 landed the `U`-open lemma (existence of
+an admissible picture, a main-picture minimizer, and the openness polynomial) plus the lifting-space
+API (`Graph.affineLiftMap`/`Graph.affineLifts`, `Graph.affineLifts_le_liftingSpace`,
+`Graph.finrank_affineLifts`) — full checklist below — all in
+`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean`. The codim bound
+`dim L(q) ≥ 3|V| − 2|E|` originally on C2's checklist is **dropped** (*Decisions made*): FLAT's
+(MC-4)(b) subsumes it and it has no consumer on the route. `blueprint/src/chapter/main-component.tex`
+carries five green definition nodes, the green lemma `lem:pencil-lifting-space-affine` (C2's
+`Aff(q)` containment/dimension), the green lemma `lem:pencil-x0-one-witness` (C1b), and the green
+lemma `lem:pencil-x0-main-picture-open` (C2's `U`-open landing), all split out of
 `thm:pencil-x0-main-component`, which stays red.
 
 ## Architectural choices made up front
@@ -82,21 +84,32 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
   `D(q) ≠ 0 → dim ker M(q) ≤ dim ker M(q₀)`, and the section in `ker M(q)` where also
   `dim ker M(q₀) ≤ dim ker M(q)`); mirrors `MvPolynomial.eval_bind₁`,
   `Matrix.linearIndependent_rows_iff_det_ne_zero`.
-- [ ] **C2 ∥ C3 ∥ C4** (parallelizable; each needs only C1a):
-  - [ ] **C2 — lifting-space API** (sonnet): `Aff(q)` (restricted to `V(G)`) `⊆ L(q)`,
-    `3 ≤ dim L(q)` at admissible `q`, and the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) are
-    still open.
-    - [x] **`U` nonempty open** (landed 2026-09-26): `∃ P ≠ 0, ∀ q, eval q P ≠ 0 →
-      G.IsMainPicture q` (`[Infinite K]`; STEPS uses it to put its witnesses over `U`) —
-      `Graph.exists_mvPolynomial_isMainPicture`, from `Graph.exists_isMainPicture` (a
-      `finrank L(q)`-minimizing admissible `q_min`, via `Nat.sInf` over the image set) and
-      `Graph.exists_isAdmissiblePicture` (an admissible picture exists for loopless `G` whose closed
-      neighbourhoods all have at least three members, via the moment curve `v ↦ (φ v, (φ v)²)` at
-      an injective `φ : α → K`). All three take `hloop : G.Loopless` and
-      `h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`. `P := Padm * D` from
-      `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's semicontinuity conjunct at the
-      trivial kernel vector `0`, with `finrank_ker_liftingMatrix` at both ends. Blueprint:
-      `lem:pencil-x0-main-picture-open`.
+- [x] **C2 — lifting-space API** (landed 2026-09-26, sonnet). `Aff(q)` (restricted to `V(G)`)
+  `⊆ L(q)`, at every picture, and `3 ≤ dim L(q)` at an admissible `q` with `V(G).Nonempty`.
+  **The codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) is dropped from the checklist**: FLAT's
+  (MC-4)(b), `dim L(q) ≥ 3 + def₂`, subsumes it (take the singleton partition in `def₂`), it has no
+  consumer on the route, and it is not proved here — FLAT's pre-build recon may reinstate it if its
+  route needs it.
+  - [x] **`U` nonempty open** (landed 2026-09-26): `∃ P ≠ 0, ∀ q, eval q P ≠ 0 →
+    G.IsMainPicture q` (`[Infinite K]`; STEPS uses it to put its witnesses over `U`) —
+    `Graph.exists_mvPolynomial_isMainPicture`, from `Graph.exists_isMainPicture` (a
+    `finrank L(q)`-minimizing admissible `q_min`, via `Nat.sInf` over the image set) and
+    `Graph.exists_isAdmissiblePicture` (an admissible picture exists for loopless `G` whose closed
+    neighbourhoods all have at least three members, via the moment curve `v ↦ (φ v, (φ v)²)` at
+    an injective `φ : α → K`). All three take `hloop : G.Loopless` and
+    `h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`. `P := Padm * D` from
+    `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's semicontinuity conjunct at the
+    trivial kernel vector `0`, with `finrank_ker_liftingMatrix` at both ends. Blueprint:
+    `lem:pencil-x0-main-picture-open`.
+  - [x] **`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`** (landed 2026-09-26): `Graph.affineLiftMap G q : (Fin 3
+    → K) →ₗ[K] (α → K)` sends `h` to `fun w => if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else
+    0`; `Graph.affineLifts G q := LinearMap.range (G.affineLiftMap q)` is `Aff(q)` restricted to
+    `V(G)`. `Graph.affineLifts_le_liftingSpace` holds at every `q` (the same `h` at every body — no
+    admissibility). `Graph.finrank_affineLifts` (admissible `q`, `V(G).Nonempty`, `[Finite α]`)
+    gives `finrank = 3`: the map is injective since `IsAdmissiblePicture`'s second conjunct gives
+    three closed-neighbourhood members with independent homogeneous picture points, forcing `h = 0`
+    via `Matrix.mulVec_injective_iff_isUnit`. Blueprint: `lem:pencil-lifting-space-affine`.
+- [ ] **C3 ∥ (DUAL-K → C4)** (parallelizable; each needs only C1a):
   - [ ] **C3 — picture→normal API** (sonnet/opus): `pencilNormalOfPicture ≠ 0 ↔` the selected
     triple is independent (via `cross₃_ne_zero_iff_linearIndependent`; picture-triple independence
     gives config-triple independence); selector-independence up to scalar at `z ∈ L(q)`; a
@@ -172,34 +185,26 @@ recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now
 
 ## Hand-off / next phase
 
-**Next commit: finish C2's remaining lifting-space API** (sonnet) in `Carrier.lean`: `Aff(q)`
-(restricted to `V(G)`) `⊆ L(q)`, `3 ≤ dim L(q)` at admissible `q` (non-collinear picture points force
-`Aff(q)` three-dimensional), and the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) — none of
-which the `U`-open landing touched (checklist). C3 and DUAL-K → C4 are the parallel siblings: C3
-and C4 need only C1a; DUAL-K (checklist) must land before C4 and never builds in parallel with a
-`Carrier.lean` build. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥(DUAL-K → C4) →
-C5 first.
+**C2 is DONE.** **Next commit: C3 (picture→normal API) or DUAL-K (the polarity over every field)**
+in `Carrier.lean` (checklist for both). C3 and C4 need only C1a; DUAL-K must land before C4 and
+never builds in parallel with a `Carrier.lean` build — so the two runnable-now leaves are C3 and
+DUAL-K, either order. Do NOT open FLAT or any successor layer; CARRIER runs C3∥(DUAL-K → C4) → C5
+next.
 
 ## Decisions made during this phase
 
-- **2026-09-26 — C2's `U`-open lemma: moment curve, `Nat.sInf` minimizer, reused mirror.** The
-  hypotheses are consequences of simplicity and minimum degree two: `G.Loopless` and
-  `3 ≤ (G.closedNbhd v).ncard` for every body (`fmlnote:pencil-x0-main-picture-open`). On the
-  moment curve `v ↦ (φ v, (φ v)²)` any three distinct members of a closed neighbourhood (a
-  three-element subset, `Set.exists_subset_card_eq`) are non-collinear (`det_moment_curve_triple`, a
-  permuted Vandermonde product). The openness polynomial reuses
-  `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial kernel vector `0`; no new
-  mirror lemma and no witness height to transport.
+- **2026-09-26 — C2's `U`-open lemma: moment curve, `Nat.sInf` minimizer, reused mirror.** Any
+  three distinct closed-neighbourhood members are non-collinear on the moment curve
+  `v ↦ (φ v, (φ v)²)` (`det_moment_curve_triple`, a permuted Vandermonde product). The openness
+  polynomial reuses `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial kernel
+  vector `0` — no new mirror lemma, no witness height to transport.
 - **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor.** Stacking a
   projection onto `ker M(q₀)` under `M(q₀)` and left-multiplying by a constant left inverse gives a
-  square polynomial `S(q)` with `S(q₀) = 1`; `adj S(q) z₀` is the section, no minor or rank-minor
-  lemma needed (TACTICS-GOLF § 25). `M(q)` carries per-body coefficient columns, so `L(q)` is its
-  kernel's height projection by definition; `IsMainPicture` enters once, as
-  `dim ker M(q₀) ≤ dim ker M(q)` at admissible `q`. The blueprint's `lem:pencil-condition-linear`
-  (red) is not used: the Lean route needs only the projection lemmas above.
-- **2026-09-26 — opened design-first.** The design recon (opus, adopted as session rung; a parallel
-  fable recon ran too) settled the new mirror definitions and the β-headroom fix; the coordinator
-  adjudication above is the accepted design. The cross-phase plan stays `notes/Phase40-design.md` §3.
+  square polynomial `S(q)` with `S(q₀) = 1`; `adj S(q) z₀` is the section (TACTICS-GOLF § 25); no
+  minor lemma needed. The blueprint's `lem:pencil-condition-linear` (red) is not used: the Lean
+  route needs only the projection lemmas.
+- **2026-09-26 — opened design-first.** The design recon (opus, adopted as session rung) settled
+  the new mirror definitions and the β-headroom fix; cross-phase plan stays `Phase40-design.md` §3.
 - **2026-09-26 — C1a: the rank is read at `ofNormals` of the config points, not of the plane
   normals** (the recon's scratch candidate fed `pencilNormalOfPicture` to `ofNormals`). From the
   bodies: a zero hinge welds its bodies (`hingeRowBlock` of `0` is `⊤`), `panelSupportExtensor n n = 0`,
@@ -208,25 +213,25 @@ C5 first.
   `6|V|−3−dim L(q)`. At the points the hinge is the polar of `p_u ∧ p_v`, `≠ 0 ↔ q_u ≠ q_v` (C4's
   line already assumed this); the rank device applies verbatim; C4 converts to the point-join rank.
 - **2026-09-26 — C1a, hypothesis 1 CONFIRMED: `U` is a def (`Graph.IsMainPicture`).** C1b's
-  Cramer transport of `z₀` to nearby fibres needs `rank M(q)` locally constant at `q₀`, i.e.
-  `dim L(q₀)` minimal; over a picture of larger fibre dimension `z₀` may lie off `X₀`. A def, not a
-  C1b-only hypothesis, since STEPS must also place witnesses over `U` (C2's openness lemma). `ℓ₀` is
-  not a def: finranks are compared directly, no `sInf`.
-- **2026-09-26 — C1a, hypothesis 2 CONFIRMED: `X0Attains` carries fibre-openness.** (MC-133)(ii)
-  needs one point both attaining and nondegenerate; (MC-14) gives nondegeneracy only at the general
-  point of `L(q)`, so the two sets must meet in one fibre. One attaining `z` per picture forces
-  MOTIVES to re-prove semicontinuity; the per-picture `R` (C1b gets it from the same device call)
-  does not. Trace: X0Dist uses one attaining `(q, z)`; X0Gen intersects `R` with a nondegeneracy
-  polynomial on `L(q)` (a MOTIVES fibre-intersection lemma); C5's `(q, 0)` enters via C1b. None blocked.
-- **2026-09-26 — C1a shape details.** `L(q)` vanishes off `V(G)` (honest dimension for non-spanning
-  `G`, which FLAT's `6|V|−3−dim L(q)` needs); `ends` is link-relative (a total selector forces
-  `E(G) = β`); the planned `IsAdmissiblePicture'` + `↔` (one triple form suffices) and
-  `Graph.liftAtVertex` (`L(q)` states the per-vertex condition itself) were dropped; the normal's
-  selector is a plain `α → Fin 3 → α`, since `IsFin3SelectorOf` is unsatisfiable at
-  `|closedNbhd v| > 3` and padding would detach the normal from the picture.
+  Cramer transport needs `rank M(q)` locally constant at `q₀`; STEPS also places witnesses over `U`
+  directly (C2's openness lemma), so it is a def, not a C1b-only hypothesis. `ℓ₀` is not a def.
+- **2026-09-26 — C1a, hypothesis 2 CONFIRMED: `X0Attains` carries fibre-openness.** One attaining
+  `z` per picture would force MOTIVES to re-prove semicontinuity; the per-picture `R` (C1b's device)
+  does not. X0Dist uses one attaining `(q, z)`; X0Gen intersects `R` with a nondegeneracy polynomial
+  on `L(q)`; C5's `(q, 0)` enters via C1b.
+- **2026-09-26 — C1a shape details.** `L(q)` vanishes off `V(G)`; `ends` is link-relative; the
+  planned `IsAdmissiblePicture'`/`Graph.liftAtVertex` were dropped as redundant; the normal's
+  selector is a plain `α → Fin 3 → α` (no `IsFin3SelectorOf`, unsatisfiable at
+  `|closedNbhd v| > 3`).
 - **2026-09-26 — duality recon (PI-commissioned, opus, read-only; `Phase40-design.md` §4
   *Duality*).** The polarity is field-free over every field, as a transport of frameworks and
   pencil realizations; the ℝ scope of `Duality.lean`/the self-duality is historical. It never
   preserves adjacent-distinctness, nondegeneracy or `X₀`, so self-duality does not reach `X0Dist`.
   Its one use on the route is C4's rank equality, via the new slice DUAL-K. The rejected
   simplifications and the FLAT-recon questions are in the design doc.
+- **2026-09-26 — C2 closes: `Aff(q)` as a linear map's range, and the codim bound is dropped.**
+  `Graph.affineLiftMap` needs `open Classical in` (the `if w ∈ V(G)` body has no `Decidable`
+  instance otherwise, matching `Graph.liftingMatrix`'s idiom); the dimension count reuses the
+  `finrank_ker_liftingMatrix` injectivity device (`Matrix.mulVec_injective_iff_isUnit`) rather than
+  a fresh argument. The codim bound is dropped per the coordinator's scope-pin: FLAT's (MC-4)(b)
+  `dim L(q) ≥ 3 + def₂` subsumes it (singleton partition), with no route consumer.

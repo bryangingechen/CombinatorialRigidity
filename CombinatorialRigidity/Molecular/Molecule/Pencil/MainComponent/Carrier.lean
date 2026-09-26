@@ -27,6 +27,8 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
   carries three members with independent homogeneous picture points (not collinear).
 * `Graph.liftingSpace` — the lifting space `L(q)`: heights supported on `V(G)` that restrict on
   every closed neighbourhood to an affine function of the picture.
+* `Graph.affineLifts` — `Aff(q)` restricted to `V(G)`: the range of `Graph.affineLiftMap`, a
+  single triple of affine coefficients applied at every body.
 * `Graph.IsMainPicture` — `U`: admissible pictures whose lifting space has the least dimension
   among admissible pictures.
 * `pencilConfigPoint` — the homogeneous configuration point `p_w = (x_w, y_w, z_w, 1) ∈ K⁴`.
@@ -46,6 +48,9 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
   (`Graph.finrank_ker_liftingMatrix`).
 * `Graph.x0Attains_of_exists` — one attaining configuration over a main picture forces
   `Graph.X0Attains` (the semicontinuity half of (MC-2)/(MC-10)).
+* `Graph.affineLifts_le_liftingSpace` — `Aff(q) ⊆ L(q)` at every picture.
+* `Graph.finrank_affineLifts` — `Aff(q)` is three-dimensional at an admissible picture with at
+  least one body.
 
 ## Design
 
@@ -139,6 +144,80 @@ the one-witness upgrade (`Graph.x0Attains_of_exists`) asks for its picture here.
 def _root_.Graph.IsMainPicture (G : Graph α β) (q : α × Fin 2 → K) : Prop :=
   G.IsAdmissiblePicture q ∧ ∀ q' : α × Fin 2 → K, G.IsAdmissiblePicture q' →
     Module.finrank K (G.liftingSpace q) ≤ Module.finrank K (G.liftingSpace q')
+
+/-! ## The globally affine heights `Aff(q)` -/
+
+open Classical in
+/-- **The affine lift map** (`def:pencil-lifting-space`; Phase 40b CARRIER slice C2): the linear
+map sending a triple of affine coefficients `h : Fin 3 → K` to the height `w ↦ h ⬝ (x_w, y_w, 1)`
+on `V(G)`, zero off `V(G)`. Its range is `Graph.affineLifts`. -/
+noncomputable def _root_.Graph.affineLiftMap (G : Graph α β) (q : α × Fin 2 → K) :
+    (Fin 3 → K) →ₗ[K] (α → K) where
+  toFun h w := if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else 0
+  map_add' h₁ h₂ := by funext w; by_cases hw : w ∈ V(G) <;> simp [hw, add_dotProduct]
+  map_smul' c h := by funext w; by_cases hw : w ∈ V(G) <;> simp [hw, smul_dotProduct]
+
+open Classical in
+@[simp]
+theorem _root_.Graph.affineLiftMap_apply (G : Graph α β) (q : α × Fin 2 → K) (h : Fin 3 → K)
+    (w : α) :
+    G.affineLiftMap q h w = if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else 0 :=
+  rfl
+
+/-- **The globally affine heights** `Aff(q)`, restricted to `V(G)` (`def:pencil-lifting-space`;
+Phase 40b CARRIER slice C2): the heights `w ↦ h ⬝ (x_w, y_w, 1)` of a single triple of affine
+coefficients `h : Fin 3 → K`, vanishing off `V(G)` exactly as `Graph.liftingSpace` does — the
+range of `Graph.affineLiftMap`. -/
+noncomputable def _root_.Graph.affineLifts (G : Graph α β) (q : α × Fin 2 → K) :
+    Submodule K (α → K) :=
+  LinearMap.range (G.affineLiftMap q)
+
+/-- **`Aff(q) ⊆ L(q)`, at every picture** (`lem:pencil-lifting-space-affine`; Phase 40b CARRIER
+slice C2). A single triple of affine coefficients `h` trivially restricts to an affine function
+of the picture on every closed neighbourhood — the same `h` at every body of `G` — so no
+admissibility hypothesis is needed. -/
+theorem _root_.Graph.affineLifts_le_liftingSpace (G : Graph α β) (q : α × Fin 2 → K) :
+    G.affineLifts q ≤ G.liftingSpace q := by
+  rintro z ⟨h, rfl⟩
+  refine ⟨fun w hw => by simp [hw], fun v hv => ⟨h, fun w hw => ?_⟩⟩
+  have hwV : w ∈ V(G) := by
+    rcases hw with rfl | ⟨e, he⟩
+    · exact hv
+    · exact he.right_mem
+  simp [hwV]
+
+/-- **`Aff(q)` is three-dimensional at an admissible picture** (`lem:pencil-lifting-space-affine`;
+Phase 40b CARRIER slice C2, with `Graph.affineLifts_le_liftingSpace` giving `3 ≤ dim L(q)`). The
+affine lift map is injective: admissibility gives, at some body `v₀` of `G`, three
+closed-neighbourhood members (hence bodies of `G`) with linearly independent homogeneous picture
+points, and a triple `h` in the kernel dots to zero against all three, forcing `h = 0` since that
+`3 × 3` matrix is a unit. -/
+theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α × Fin 2 → K}
+    (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
+    Module.finrank K (G.affineLifts q) = 3 := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  obtain ⟨v₀, hv₀⟩ := hV
+  obtain ⟨t, ht, hli⟩ := hq.2 v₀ hv₀
+  have hinj : Function.Injective (G.affineLiftMap q) := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro h hh
+    have htV : ∀ i, t i ∈ V(G) := fun i => by
+      rcases ht i with rfl | ⟨e, he⟩
+      · exact hv₀
+      · exact he.right_mem
+    have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
+      Matrix.linearIndependent_rows_iff_isUnit.mp hli
+    have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ h =
+        (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
+      rw [Matrix.mulVec_zero]
+      funext i
+      have hhi := congr_fun hh (t i)
+      simp only [Graph.affineLiftMap_apply, htV i, Pi.zero_apply] at hhi
+      simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
+      rwa [dotProduct_comm]
+    exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
+  rw [Graph.affineLifts, LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]
 
 /-! ## Configuration points and plane normals -/
 

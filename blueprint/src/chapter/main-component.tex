@@ -48,7 +48,7 @@ neighbourhood has at least three members by the degree hypothesis.
 
 \begin{definition}[The lifting space]
   \label{def:pencil-lifting-space}
-  \lean{Graph.liftingSpace}
+  \lean{Graph.liftingSpace, Graph.affineLifts}
   \leanok
   \uses{def:pencil-admissible-picture}
   Let $q$ be a planar picture of $G$. A \emph{height} is a map
@@ -56,13 +56,36 @@ neighbourhood has at least three members by the degree hypothesis.
   heights $z$ such that, for every body $v$, the restriction of $z$ to
   the closed neighbourhood of $v$ agrees with an affine function of the
   picture there: there are $a, b, c \in K$ with
-  $z_w = a x_w + b y_w + c$ for every $w$ in that neighbourhood.
+  $z_w = a x_w + b y_w + c$ for every $w$ in that neighbourhood. The
+  space $\mathrm{Aff}(q)$ of \emph{globally affine} heights is the
+  subspace of heights $z_w = \alpha x_w + \beta y_w + \gamma$ for a
+  single triple $(\alpha, \beta, \gamma) \in K^3$, the same at every
+  body.
 \end{definition}
 
 The conditions are linear in $z$, so $L(q)$ is a linear subspace of
-$K^{V(G)}$. It contains the space $\mathrm{Aff}(q)$ of globally affine
-heights $z_w = \alpha x_w + \beta y_w + \gamma$, which is
-three-dimensional when the picture points are not all collinear.
+$K^{V(G)}$.
+
+\begin{lemma}[The lifting space contains the affine heights]
+  \label{lem:pencil-lifting-space-affine}
+  \lean{Graph.affineLifts_le_liftingSpace, Graph.finrank_affineLifts}
+  \leanok
+  \uses{def:pencil-lifting-space, def:pencil-admissible-picture}
+  $\mathrm{Aff}(q) \subseteq L(q)$ at every picture $q$. At an
+  admissible picture, provided $G$ has at least one body,
+  $\mathrm{Aff}(q)$ is three-dimensional.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A single triple $(\alpha, \beta, \gamma)$ already restricts to an
+  affine function of the picture on every closed neighbourhood, giving
+  the containment with no hypothesis on $q$. At an admissible picture,
+  some body's closed neighbourhood carries three members with linearly
+  independent homogeneous picture points, so the coefficients
+  $(\alpha, \beta, \gamma)$ are pinned down by their values there: the
+  linear map from coefficients to heights is injective, hence an
+  isomorphism onto its image $\mathrm{Aff}(q)$.
+\end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:pencil-lifting-space}

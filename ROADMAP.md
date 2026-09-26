@@ -1202,8 +1202,10 @@ the lifting system through the witness composed with the rank polynomial. C2's `
 then landed the nonempty-Zariski-open set of main pictures, via the moment-curve existence witness,
 a `finrank`-minimizing admissible picture, and the same semicontinuity mirror lemma at the trivial
 kernel vector, for loopless `G` whose closed neighbourhoods all have at least three members (both
-consequences of simplicity and minimum degree two). C2's remaining lifting-space API
-(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is next, alongside C3 ∥ (DUAL-K → C4). Two
+consequences of simplicity and minimum degree two). C2 closed the same day with the remaining
+lifting-space API, `Graph.affineLifts_le_liftingSpace` (`Aff(q) ⊆ L(q)`, every picture) and
+`Graph.finrank_affineLifts` (`3 ≤ dim L(q)` at an admissible picture); the codim bound is dropped
+from the checklist, subsumed by FLAT's (MC-4)(b). **C3 ∥ (DUAL-K → C4)** is next. Two
 questions are left for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the
 headroom's root cause (`notes/Phase40b.md` *Blockers*).
 
