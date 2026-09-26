@@ -2699,6 +2699,23 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `BodyHingeFramework.dualAnnihilator_eq_map_dualMap_screwDiff` in `Bricks.lean` instead, the
   B5/B6 dispatch being scope-pinned to `section TwoCutCarriers`. Its docstring points here.
 
+### [idiom] `(WithTop.add_le_add_iff_left h).mp ?_` on an `ℕ∞` goal re-elaborates it at `WithTop ℕ`, so the next `rw` by an `ℕ∞`-stated equation finds no match
+- **Where it bit:** Phase 40c FLAT, `Graph.Connected.numParts_le_ncard_crossingEdges_add_one` (`Molecular/Deficiency.lean`): cancelling `eRk Y` from `eRk Y + c ≤ eRk Y + (d + 1)` in `ℕ∞`.
+- **Friction:** after `refine (WithTop.add_le_add_iff_left hYfin).mp ?_` the new goal is stated at `WithTop ℕ`; `rw [h1]` with `h1 : eRk Y + c = encard V` (at `ℕ∞`) fails with "did not find an occurrence … not type-correct under the `implicit` transparency".
+- **Resolution:** prove the `ℕ∞` inequality first as a `have` (the `rw`/`gcongr` run at `ℕ∞`), then `exact (WithTop.add_le_add_iff_left hYfin).mp this`.
+- **Status:** idiom.
+
+### [idiom] A `private` declaration still collides with a public one of the same name in the same namespace from an imported file
+- **Where it bit:** Phase 40c FLAT, `Molecule/Pencil/MainComponent/Flat.lean`: a private `stdBiv` (the field-general standard basis bivector) against `Molecule/ScrewVelocity.lean`'s public, `ℝ`-only `stdBiv`, both in `CombinatorialRigidity.Molecular`.
+- **Friction:** `private` does not make the name local; the declaration fails as already declared.
+- **Resolution:** a distinct name (`flatStdBiv`). Before naming a helper in a namespace as crowded as `CombinatorialRigidity.Molecular`, grep the import closure for the bare name.
+- **Status:** idiom.
+
+### [idiom] `omega` misses a `finrank` atom between a `have` and the goal when the framework term carries `Fin (1 + 2)` — cast the `ℕ` identity to `ℤ` and use `linarith`
+- **Where it bit:** Phase 40c FLAT, `Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint` (grade-1 rank at the normals `(x_v, y_v, 1)`): the complement brick's `ℕ` identity and the `ℤ` goal name the same `finrank … (ofNormals (k := 1) …)`, yet `omega` reports a counterexample treating them as unrelated. The same step at `k = 2` closes by `omega`. Another instance of the omega-atom family (TACTICS-QUIRKS §58/§63/§98).
+- **Resolution:** `have hz := congrArg (Nat.cast : ℕ → ℤ) hc; push_cast at hz; linarith`.
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

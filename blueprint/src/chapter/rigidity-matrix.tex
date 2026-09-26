@@ -219,6 +219,34 @@ against the contraction's inductive rank.
   bound to $\dim Z(G,p) \ge D + \operatorname{def}(\tilde G)$.
 \end{proof}
 
+\begin{lemma}[The relative deficiency bound]
+  \label{lem:relative-deficiency-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le}
+  \leanok
+  \uses{def:rigidity-matrix, def:D-deficiency}
+  Let $(G,p)$ be a body-hinge framework on an ambient body set
+  $B \supseteq V(G)$, with $V(G)$ nonempty and $C(e) \neq 0$ at every
+  edge $e$ of $G$. Then
+  \[
+    D\,(|B \setminus V(G)| + 1) + \operatorname{def}(\tilde G) \;\le\;
+      \dim Z(G,p),
+  \]
+  equivalently
+  $\operatorname{rank} R(G,p) \le D(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:trivial-motions-rank-bound}
+  The bodies outside $V(G)$ carry no hinge and contribute $D$ free
+  dimensions each. On $V(G)$ the partition count of
+  \cref{lem:trivial-motions-rank-bound} applies to a
+  deficiency-attaining partition, relabelled so that its labels are
+  bodies of $G$ and the outside bodies stay separate parts. The rank form
+  is rank--nullity over the $D|B|$-dimensional space of screw
+  assignments.
+\end{proof}
+
 \subsection{Rank lemmas}
 \label{sec:molecular-rigidity-matrix-rank}
 

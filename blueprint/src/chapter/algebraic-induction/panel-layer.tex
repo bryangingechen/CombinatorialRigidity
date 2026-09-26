@@ -644,7 +644,7 @@ right invariant is the rank of the rigidity matrix itself.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:subgraph-minimality, lem:general-position-support-nonzero,
-        lem:span-rigidityRows-eq-of-motions-eq, lem:trivial-motions-rank-bound}
+        lem:span-rigidityRows-eq-of-motions-eq, lem:relative-deficiency-rank-bound}
   Strip, realize and re-add exactly as in \cref{thm:theorem-55-6-genuine}: a
   deficiency-preserving minimal spanning subgraph $G' \le G$
   (\cref{lem:subgraph-minimality}), realized generically by
@@ -656,8 +656,8 @@ right invariant is the rank of the rigidity matrix itself.
   same row span (\cref{lem:span-rigidityRows-eq-of-motions-eq}); the $G'$-rows
   are among the $G$-rows, so $\operatorname{rank} R(G,p) \ge \operatorname{rank}
   R(G',q) = D(|V(G)|-1) - \operatorname{def}(\tilde G)$. Upper bound: the
-  $V(G)$-relative deficiency bound on the row span (the relative form of
-  \cref{lem:trivial-motions-rank-bound}), which needs only that every link's
+  $V(G)$-relative deficiency bound on the row span
+  (\cref{lem:relative-deficiency-rank-bound}), which needs only that every link's
   hinge is nondegenerate (\cref{lem:general-position-support-nonzero}).
 \end{proof}
 

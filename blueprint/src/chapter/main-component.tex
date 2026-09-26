@@ -389,7 +389,7 @@ every point, and the condition then holds vacuously.
   \leanok
   \uses{def:pencil-main-picture, def:pencil-x0-attains,
         def:panel-support-extensor, lem:rank-polynomial-of-le-finrank,
-        lem:trivial-motions-rank-bound}
+        lem:relative-deficiency-rank-bound}
   Let $G$ have at least one body, let $q_0$ be a main picture of $G$
   (\cref{def:pencil-main-picture}) and $z_0 \in L(q_0)$, and suppose the
   configuration $(q_0, z_0)$ has rank at least
@@ -437,7 +437,7 @@ every point, and the condition then holds vacuously.
   height $Z(q) \in L(q)$ has $R(Z(q)) \neq 0$, and at every $z \in L(q)$
   with $R(z) \neq 0$ the rank is at least the target and, every hinge
   being nonzero, at most the target
-  (\cref{lem:trivial-motions-rank-bound}).
+  (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
 \begin{lemma}[The main pictures are nonempty and Zariski-open]
@@ -597,6 +597,8 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
 
 \begin{definition}[The lifting planes]
   \label{def:pencil-lifting-planes}
+  \lean{Graph.liftingPlanes}
+  \leanok
   \uses{def:pencil-admissible-picture}
   Let $q$ be a planar picture of $G$, and identify a vector
   $h \in K^3$ with the affine function $(x, y) \mapsto h \cdot (x, y, 1)$
@@ -607,10 +609,13 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
 
 \begin{lemma}[The lifting planes and the lifting space]
   \label{lem:pencil-lifting-planes-dim}
+  \lean{Graph.finrank_liftingPlanes}
+  \leanok
   \uses{def:pencil-lifting-planes, def:pencil-lifting-space}
   Let $q$ be admissible. Then $\dim F(q) = \dim L(q)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Define $\Phi(h)_w = h_w(q_w)$. For a neighbour $u$ of $v$,
   $h_u(q_u) = h_v(q_u)$, so $\Phi(h)$ restricts on the closed
   neighbourhood of $v$ to the affine function $h_v$, and
@@ -623,8 +628,20 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   isomorphism.
 \end{proof}
 
+\begin{fmlnote}
+  \label{fmlnote:pencil-lifting-planes}
+  The families of lifting planes range over the whole ambient set of
+  bodies and are unconstrained off $V(G)$, as the infinitesimal motions
+  of every framework are. Each body off $V(G)$ adds three to
+  $\dim F(q)$, and six to the dimension of the motions in
+  \cref{lem:pencil-flat-split}; these terms cancel in every rank.
+\end{fmlnote}
+
 \begin{lemma}[The lifting planes are the motions of a plane framework]
   \label{lem:pencil-lifting-planes-motions}
+  \lean{Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint,
+        Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint}
+  \leanok
   \uses{def:pencil-lifting-planes, lem:pencil-lifting-planes-dim,
         def:panel-hinge-framework, def:rigidity-matrix}
   Let $q$ be admissible, and let $P_q$ be the panel-hinge framework in
@@ -634,39 +651,47 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   and $\operatorname{rank} R(P_q) = 3|V(G)| - \dim L(q)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:panel-support-extensor}
   The screw space of the plane is $K^3$. The hinge of $P_q$ at an edge
   $uv$ is the meet of the lines with normals $(x_u, y_u, 1)$ and
   $(x_v, y_v, 1)$ (\cref{def:panel-support-extensor}), a nonzero vector
-  orthogonal to both, since $q_u \ne q_v$. A vector lies on the line it
-  spans exactly when it is orthogonal to both normals, which is the
-  condition defining $F(q)$. The rank follows from
+  orthogonal to both, since $q_u \ne q_v$. So a relative screw is a
+  multiple of the hinge exactly when it is orthogonal to both normals,
+  which is the condition defining $F(q)$. The rank follows from
   \cref{lem:pencil-lifting-planes-dim} by rank--nullity.
 \end{proof}
 
 \begin{lemma}[The flat lower bound on the lifting space]
   \label{lem:pencil-lifting-space-deficiency}
+  \lean{Graph.three_add_deficiency_le_finrank_liftingSpace}
+  \leanok
   \uses{def:pencil-lifting-space, def:D-deficiency}
   Let $G$ have at least one body and let $q$ be admissible. Then
   $\dim L(q) \ge 3 + \operatorname{def}_2(G)$, where
   $\operatorname{def}_2(G) = \max_P\,[3(|P| - 1) - 2d(P)]$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-lifting-planes-motions, lem:pencil-lifting-planes-dim,
-        lem:trivial-motions-rank-bound}
+        lem:relative-deficiency-rank-bound}
   By \cref{lem:pencil-lifting-planes-motions} and \cref{lem:pencil-lifting-planes-dim}
   it suffices to bound the motions of $P_q$ below by
   $3 + \operatorname{def}_2(G)$. Its bodies are $3$-dimensional and each
   hinge imposes two conditions. For a partition $P$, the part-wise
   constant assignments form a $3|P|$-dimensional space, on which the
   edges inside a part impose nothing and each crossing edge at most two
-  conditions; this is the relative form of the codimension bound of
-  \cref{lem:trivial-motions-rank-bound}, at $D = 3$, and gives at least
+  conditions; this is the relative deficiency bound
+  \cref{lem:relative-deficiency-rank-bound}, at $D = 3$, and gives at least
   $3|P| - 2d(P) = 3 + [3(|P| - 1) - 2d(P)]$ motions.
 \end{proof}
 
 \begin{lemma}[The flat split]
   \label{lem:pencil-flat-split}
+  \lean{CombinatorialRigidity.Molecular.flatScrewEquiv,
+        Graph.finrank_linkConstants,
+        Graph.finrank_infinitesimalMotions_pointJoinFramework_flat}
+  \leanok
   \uses{def:pencil-lifting-planes, lem:pencil-config-point-join-rank}
   Let $G$ be connected, let $q$ be admissible, and let $F_{(q,0)}$ be the
   body-hinge framework whose hinge at each edge $uv$ is the line
@@ -675,6 +700,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   motions form a space of dimension $3 + \dim F(q)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:extensor, def:hinge-constraint}
   At $z = 0$ every hinge $p_u \wedge p_v$ lies in
   $W_\Pi = \operatorname{span}(e_{01}, e_{03}, e_{13})$, the Pl\"ucker
@@ -695,6 +721,10 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
 
 \begin{theorem}[The flat rank]
   \label{thm:pencil-flat-rank}
+  \lean{Graph.finrank_span_rigidityRows_ofNormals_flat,
+        Graph.finrank_span_rigidityRows_ofNormals_flat_le,
+        Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-lifting-space, def:D-deficiency}
   Let $G$ be connected and let $q$ be admissible. Then the flat
   configuration has rank
@@ -704,6 +734,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   with equality if and only if $\dim L(q) = 3 + \operatorname{def}_2(G)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-flat-split, lem:pencil-lifting-planes-dim,
         lem:pencil-config-point-join-rank,
         lem:pencil-lifting-space-deficiency}
@@ -717,6 +748,9 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
 
 \begin{corollary}[The flat configuration attains]
   \label{cor:pencil-flat-attains}
+  \lean{Graph.finrank_liftingSpace_eq_three_add_deficiency_three_iff,
+        Graph.x0Attains_of_finrank_liftingSpace_le}
+  \leanok
   \uses{thm:pencil-flat-rank, def:pencil-x0-attains}
   Let $G$ be connected and let $q$ be admissible. The flat configuration
   at $q$ attains $6(|V(G)| - 1) - \operatorname{def}_3(G)$ if and only if
@@ -727,6 +761,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   and the general configuration of $G$ attains.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-lifting-space-deficiency, lem:deficiency-antitone,
         lem:pencil-x0-one-witness, def:pencil-main-picture}
   The first equivalence is \cref{thm:pencil-flat-rank}. By
@@ -742,6 +777,9 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
 
 \begin{corollary}[A flat main component attains]
   \label{cor:pencil-flat-x0}
+  \lean{Graph.x0Attains_of_finrank_liftingSpace_eq_three,
+        Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_three}
+  \leanok
   \uses{cor:pencil-flat-attains, lem:pencil-lifting-space-affine}
   Let $G$ be connected, and suppose that $\dim L(q) = 3$ at some
   admissible picture $q$, so that $\ell_0 = 3$ and the main component is
@@ -750,6 +788,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   rank $6(|V(G)| - 1)$, and the general configuration of $G$ attains.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-flat-rank, lem:pencil-lifting-space-deficiency,
         lem:deficiency-antitone}
   \Cref{lem:pencil-lifting-space-deficiency} gives

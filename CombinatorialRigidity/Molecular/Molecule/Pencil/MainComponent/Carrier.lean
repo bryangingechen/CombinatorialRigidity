@@ -344,6 +344,29 @@ theorem linearIndependent_pencilConfigPoint_pair {q : α × Fin 2 → K} (z : α
     · simp [pencilPicturePoint]
   exact ⟨hs, by rwa [hs, zero_add] at h3⟩
 
+/-- **Distinct picture points are independent** (Phase 40c FLAT). Two homogeneous picture points
+`(x_u, y_u, 1)` and `(x_v, y_v, 1)` that differ are linearly independent: a relation
+`s p̂_u + t p̂_v = 0` has `s + t = 0` in the last coordinate, so `s (q_u − q_v) = 0`. -/
+theorem linearIndependent_pencilPicturePoint_pair {q : α × Fin 2 → K} {u v : α}
+    (huv : pencilPicturePoint q u ≠ pencilPicturePoint q v) :
+    LinearIndependent K ![pencilPicturePoint q u, pencilPicturePoint q v] := by
+  rw [LinearIndependent.pair_iff]
+  intro s t hst
+  have h0 : s * q (u, 0) + t * q (v, 0) = 0 := by simpa [pencilPicturePoint] using congr_fun hst 0
+  have h1 : s * q (u, 1) + t * q (v, 1) = 0 := by simpa [pencilPicturePoint] using congr_fun hst 1
+  have h2 : s + t = 0 := by simpa [pencilPicturePoint] using congr_fun hst 2
+  have hs : s = 0 := by
+    by_contra hs
+    apply huv
+    funext i
+    fin_cases i
+    · have : s * (q (u, 0) - q (v, 0)) = 0 := by linear_combination h0 - q (v, 0) * h2
+      simpa [pencilPicturePoint, hs, sub_eq_zero] using this
+    · have : s * (q (u, 1) - q (v, 1)) = 0 := by linear_combination h1 - q (v, 1) * h2
+      simpa [pencilPicturePoint, hs, sub_eq_zero] using this
+    · simp [pencilPicturePoint]
+  exact ⟨hs, by rwa [hs, zero_add] at h2⟩
+
 /-- **The hinges of a configuration over an admissible picture are nonzero** (Phase 40b CARRIER;
 the first clause of slice C4). Over an admissible picture `q`, at every height `z`, the framework
 `ofNormals G ends` at the configuration points has a nonzero support extensor at every link: the

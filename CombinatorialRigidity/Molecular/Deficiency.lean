@@ -1298,6 +1298,26 @@ theorem preconnected_of_twoEdgeConnected {G : Graph α β} (htec : G.TwoEdgeConn
   rw [hempty, Set.ncard_empty] at hcut
   omega
 
+/-- **A function that agrees across every link agrees along every walk.** If `s x = s y`
+whenever `G.IsLink e x y`, then `s x = s y` whenever `x` and `y` are joined by a walk of `G`:
+induction on the walk, each step a link. -/
+theorem ConnBetween.eq_of_forall_isLink {M : Type*} {G : Graph α β} {s : α → M}
+    (hs : ∀ e x y, G.IsLink e x y → s x = s y) {x y : α} (h : G.ConnBetween x y) :
+    s x = s y := by
+  obtain ⟨w, hw, rfl, rfl⟩ := h
+  induction hw with
+  | nil hx => rfl
+  | cons hw hlink ih =>
+    rw [WList.first_cons, WList.last_cons, hs _ _ _ hlink]
+    exact ih
+
+/-- **On a preconnected graph a function that agrees across every link is constant on the
+vertices** (`ConnBetween.eq_of_forall_isLink` along a walk between any two of them). -/
+theorem Preconnected.eq_of_forall_isLink {M : Type*} {G : Graph α β} (hG : G.Preconnected)
+    {s : α → M} (hs : ∀ e x y, G.IsLink e x y → s x = s y) {x y : α} (hx : x ∈ V(G))
+    (hy : y ∈ V(G)) : s x = s y :=
+  (hG x y hx hy).eq_of_forall_isLink hs
+
 /-- **A `0`-dof graph has minimum degree `≥ 2`** (`def:cut-edges-2ec`; Katoh–Tanigawa 2011
 Lemma 4.6's degree hypothesis — KT's `X₀ = X₁ = ∅` — ENTRY leaf E2a alongside
 `preconnected_of_isKDof_zero`, `notes/Phase23-design.md` §(4.107.D); replaces KT's own
@@ -2463,21 +2483,34 @@ with *components ≥ #parts*: a within-part edge keeps connectivity inside a par
 the connected components of `(G̃ ↾ Y)` refine the partition, hence there are at least
 `|P| = numParts` of them. -/
 
-/-- A labeling `f` that agrees across the endpoints of every edge of `Y` is constant
-on each connected component of the restriction `H ↾ Y`: if `x` and `y` are joined by a
-walk in `H ↾ Y`, then `f x = f y`. Proof by induction on the walk — each `cons` step is
-an `H ↾ Y`-link, hence an `H`-link with edge in `Y`, so `f` agrees across it. The engine
-of the components-refine-the-partition count in `rk_cycleMatroid_within_parts_le`. -/
-private theorem label_eq_of_connBetween {α γ : Type*} {H : Graph α γ} {Y : Set γ}
-    {f : α → α} (hY : ∀ e ∈ Y, ∀ x y, H.IsLink e x y → f x = f y) {x y : α}
-    (h : (H ↾ Y).ConnBetween x y) : f x = f y := by
-  obtain ⟨w, hw, rfl, rfl⟩ := h
-  induction hw with
-  | nil hx => rfl
-  | cons hw hlink ih =>
-    rw [Graph.restrict_isLink] at hlink
-    rw [WList.first_cons, WList.last_cons, hY _ hlink.1 _ _ hlink.2]
-    exact ih
+/-- **The parts of a labeling constant across `Y` number at most the components of `H ↾ Y`**
+(`lem:rk-within-parts`, the components-refine-the-partition count). If the labeling `f` agrees
+across the ends of every edge of `Y`, it is constant on each component of the restriction
+`H ↾ Y` (`ConnBetween.eq_of_forall_isLink`), so the map sending a label to the component of one of
+its vertices is injective on `f '' V(H)`. -/
+theorem encard_image_le_numberOfComponents_restrict {H : Graph α β} {Y : Set β} {f : α → α}
+    (hY : ∀ e ∈ Y, ∀ x y, H.IsLink e x y → f x = f y) : (f '' V(H)).encard ≤ c(H ↾ Y) := by
+  classical
+  -- A representative vertex for each label.
+  have hrep : ∀ ℓ : α, ∃ x : α, ℓ ∈ f '' V(H) → x ∈ V(H) ∧ f x = ℓ := by
+    intro ℓ
+    by_cases hℓ : ℓ ∈ f '' V(H)
+    · obtain ⟨x, hx, rfl⟩ := hℓ; exact ⟨x, fun _ => ⟨hx, rfl⟩⟩
+    · exact ⟨ℓ, fun h => (hℓ h).elim⟩
+  choose rep hrep using hrep
+  have hmaps : Set.MapsTo (fun ℓ => (H ↾ Y).walkable (rep ℓ)) (f '' V(H)) (H ↾ Y).Components :=
+    fun ℓ hℓ => mem_components_iff_isCompOf.mpr
+      (walkable_isCompOf (x := rep ℓ) (by rw [vertexSet_restrict]; exact (hrep ℓ hℓ).1))
+  refine Set.encard_le_encard_of_injOn hmaps fun ℓ hℓ ℓ' hℓ' heq => ?_
+  -- `rep ℓ'` lies in the component of `rep ℓ`, so the two reps carry the same label.
+  have hmem : rep ℓ' ∈ V((H ↾ Y).walkable (rep ℓ)) := by
+    rw [show (H ↾ Y).walkable (rep ℓ) = (H ↾ Y).walkable (rep ℓ') from heq,
+      mem_walkable_self_iff, vertexSet_restrict]
+    exact (hrep ℓ' hℓ').1
+  have hff := (mem_walkable_iff.mp hmem).symm.eq_of_forall_isLink (s := f) fun e x y hl => by
+    rw [restrict_isLink] at hl; exact hY e hl.1 x y hl.2
+  rw [(hrep ℓ hℓ).2, (hrep ℓ' hℓ').2] at hff
+  exact hff.symm
 
 /-- **Partition-respecting cycle-matroid rank bound** (`thm:def-eq-corank`, piece 1;
 the components-refine-the-partition leaf). For the multiplied graph `G̃ = (D-1)·G`,
@@ -2488,8 +2521,8 @@ edge of `Y` joins two equally-labeled vertices) satisfies
 Via the cycle-matroid rank–component identity `eRank + c = |V|` on the restriction
 `G̃ ↾ Y` (which keeps every vertex, so `V(G̃ ↾ Y) = V(G̃) = V(G)`): the rank is
 `|V(G)| - c(G̃ ↾ Y)`, and `c(G̃ ↾ Y) ≥ numParts f` because the labeling is constant on
-each component (`label_eq_of_connBetween`), so the map sending a label to the component
-of one of its vertices is injective. -/
+each component, so the map sending a label to the component of one of its vertices is
+injective (`encard_image_le_numberOfComponents_restrict`). -/
 theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} (hYE : Y ⊆ E(G.mulTilde n)) {f : α → α}
     (hY : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y) :
@@ -2503,30 +2536,10 @@ theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β
     rw [cycleMatroid_restrict, inter_eq_right.mpr hYE, Matroid.eRank_restrict]
   have hid : (H ↾ Y).cycleMatroid.eRank + c(H ↾ Y) = V(G).encard := by
     rw [eRank_cycleMatroid_add_numberOfComponents (H ↾ Y), vertexSet_restrict, hVH]
-  -- Choose a total representative-vertex function for each label.
-  have hrep : ∀ ℓ : α, ∃ x : α, ℓ ∈ f '' V(G) → x ∈ V(G) ∧ f x = ℓ := by
-    intro ℓ
-    by_cases hℓ : ℓ ∈ f '' V(G)
-    · obtain ⟨x, hx, rfl⟩ := hℓ; exact ⟨x, fun _ => ⟨hx, rfl⟩⟩
-    · exact ⟨ℓ, fun h => (hℓ h).elim⟩
-  choose rep hrep using hrep
-  -- The map `ℓ ↦ walkable (rep ℓ)` injects `f '' V(G)` into the components of `H ↾ Y`.
-  have hmaps : Set.MapsTo (fun ℓ => (H ↾ Y).walkable (rep ℓ)) (f '' V(G)) (H ↾ Y).Components := by
-    intro ℓ hℓ
-    exact mem_components_iff_isCompOf.mpr
-      (walkable_isCompOf (x := rep ℓ) (by rw [vertexSet_restrict, hVH]; exact (hrep ℓ hℓ).1))
-  have hinj : Set.InjOn (fun ℓ => (H ↾ Y).walkable (rep ℓ)) (f '' V(G)) := by
-    intro ℓ hℓ ℓ' hℓ' heq
-    simp only [] at heq
-    -- `rep ℓ'` lies in `walkable (rep ℓ)`, so the two reps are connected, hence equally labeled.
-    have hmem : rep ℓ' ∈ V((H ↾ Y).walkable (rep ℓ)) := by
-      rw [heq, mem_walkable_self_iff, vertexSet_restrict, hVH]; exact (hrep ℓ' hℓ').1
-    rw [mem_walkable_iff] at hmem
-    have hff := label_eq_of_connBetween hY hmem.symm
-    rw [(hrep ℓ hℓ).2, (hrep ℓ' hℓ').2] at hff
-    exact hff.symm
-  have hle_enc : (f '' V(G)).encard ≤ c(H ↾ Y) :=
-    Set.encard_le_encard_of_injOn hmaps hinj
+  -- Labels are constant on the components of `H ↾ Y`, so they number at most `c(H ↾ Y)`.
+  have hle_enc : (f '' V(G)).encard ≤ c(H ↾ Y) := by
+    have h := encard_image_le_numberOfComponents_restrict hY
+    rwa [hVH] at h
   -- Cast to `ℕ`: everything is finite since `V(G).encard` is.
   have hfinV : V(G).encard ≠ ⊤ := by rw [Set.encard_ne_top_iff]; exact V(G).toFinite
   have hnp : (G.numParts f : ℕ∞) ≤ c(H ↾ Y) := by
@@ -2538,6 +2551,77 @@ theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β
     rw [Set.Finite.cast_ncard_eq V(G).toFinite, ← hid, hrk_eq]
     gcongr
   exact_mod_cast hsum
+
+/-! ## Crossing edges of a connected graph, and the deficiency across dimensions
+(`lem:deficiency-antitone`)
+
+A partition of a connected graph into `p` parts is crossed by at least `p − 1` edges, so partition
+by partition `def` at a larger body dimension is no larger: the difference is
+`(D′ − D)(|P| − 1 − d(P)) ≤ 0`. Informal (MC-5)(i) of §(K-main), `def₃ ≤ def₂`. -/
+
+/-- **A partition of a connected graph into `p` parts is crossed by at least `p − 1` edges**
+(`lem:deficiency-antitone`). Deleting the crossing edges leaves at least `p` components
+(`encard_image_le_numberOfComponents_restrict`), and in the cycle matroid each deleted edge
+lowers the rank `|V| − c` by at most one (`Matroid.eRk_union_le_eRk_add_eRk`,
+`Matroid.eRk_le_encard`), from `|V| − 1` for the connected `G`. -/
+theorem Connected.numParts_le_ncard_crossingEdges_add_one [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.Connected) (f : α → α) : G.numParts f ≤ (G.crossingEdges f).ncard + 1 := by
+  set Y := E(G) \ G.crossingEdges f with hYdef
+  have hYE : Y ⊆ E(G) := sdiff_subset
+  have hY : ∀ e ∈ Y, ∀ x y, G.IsLink e x y → f x = f y := by
+    rintro e ⟨heE, hnc⟩ x y hl
+    by_contra h
+    exact hnc ⟨heE, x, y, hl, h⟩
+  have hnp := encard_image_le_numberOfComponents_restrict hY
+  -- the rank–component identities on `G ↾ Y` and on the connected `G`
+  have h1 : G.cycleMatroid.eRk Y + c(G ↾ Y) = V(G).encard := by
+    rw [show G.cycleMatroid.eRk Y = (G ↾ Y).cycleMatroid.eRank by
+      simp only [cycleMatroid_restrict, inter_eq_right.mpr hYE, Matroid.eRank_restrict],
+      eRank_cycleMatroid_add_numberOfComponents (G ↾ Y), vertexSet_restrict]
+  have h2 := eRank_cycleMatroid_add_numberOfComponents G
+  rw [numberOfComponents_eq_one_iff.mpr hG] at h2
+  -- deleting the crossing edges lowers the rank by at most their number
+  have h3 : G.cycleMatroid.eRank ≤ G.cycleMatroid.eRk Y + (G.crossingEdges f).encard := by
+    rw [← Matroid.eRk_ground, show G.cycleMatroid.E = Y ∪ G.crossingEdges f by
+      rw [cycleMatroid_E, hYdef, sdiff_union_self, union_eq_left.mpr fun e he => he.1]]
+    refine (Matroid.eRk_union_le_eRk_add_eRk _ _ _).trans ?_
+    gcongr
+    exact Matroid.eRk_le_encard _ _
+  have hYfin : G.cycleMatroid.eRk Y ≠ ⊤ :=
+    ne_top_of_le_ne_top (encard_ne_top_iff.mpr (toFinite Y)) (Matroid.eRk_le_encard _ _)
+  have hc : c(G ↾ Y) ≤ (G.crossingEdges f).encard + 1 := by
+    have : G.cycleMatroid.eRk Y + c(G ↾ Y) ≤
+        G.cycleMatroid.eRk Y + ((G.crossingEdges f).encard + 1) := by
+      rw [h1, ← h2, ← add_assoc]; gcongr
+    exact (WithTop.add_le_add_iff_left hYfin).mp this
+  have := hnp.trans hc
+  rw [numParts]
+  rw [← Finite.cast_ncard_eq (toFinite _), ← Finite.cast_ncard_eq (toFinite _)] at this
+  exact_mod_cast this
+
+/-- **On a connected graph the deficiency decreases with the dimension**
+(`lem:deficiency-antitone`; informal (MC-5)(i) of §(K-main) in general form). For `n ≤ m`,
+partition by partition `partitionDef m f − partitionDef n f = (D_m − D_n)(|P| − 1 − d(P)) ≤ 0`,
+since `bodyBarDim` is monotone and `|P| − 1 ≤ d(P)`
+(`Connected.numParts_le_ncard_crossingEdges_add_one`). -/
+theorem Connected.deficiency_le_deficiency_of_le [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.Connected) {n m : ℕ} (hnm : n ≤ m) : G.deficiency m ≤ G.deficiency n := by
+  have hD : (bodyBarDim n : ℤ) ≤ bodyBarDim m := by
+    have : bodyBarDim n ≤ bodyBarDim m := by
+      unfold bodyBarDim; exact Nat.div_le_div_right (Nat.mul_le_mul hnm (Nat.succ_le_succ hnm))
+    exact_mod_cast this
+  have : Nonempty α := ⟨hG.nonempty.some⟩
+  refine ciSup_le fun f => le_trans ?_ (G.partitionDef_le_deficiency n f)
+  have hp : ((G.numParts f : ℤ) - 1) ≤ (G.crossingEdges f).ncard := by
+    have := hG.numParts_le_ncard_crossingEdges_add_one f
+    omega
+  unfold partitionDef
+  nlinarith
+
+/-- **`def₃ ≤ def₂` on a connected graph** (`lem:deficiency-antitone`; informal (MC-5)(i)). -/
+theorem Connected.deficiency_three_le_deficiency_two [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.Connected) : G.deficiency 3 ≤ G.deficiency 2 :=
+  hG.deficiency_le_deficiency_of_le (by norm_num)
 
 /-! ## Weak duality (`thm:def-eq-corank`, piece 2)
 

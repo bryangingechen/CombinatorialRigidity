@@ -1,17 +1,23 @@
 # Phase 40c — PENCIL-X0 / FLAT: the flat rank (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). FLAT proves Step MC4/MC5 of
-§(K-main): the flat rank `6|V| − 3 − dim L(q)`, the bound `dim L(q) ≥ 3 + def₂`, `def₃ ≤ def₂`,
-and "`X₀` attains at the flat witness". The accepted design is a compiler-checked recon whose
-spike is sorry-free, so the build is transcription. **Next: the build commit** — see *Hand-off*.
+**Status:** in progress (opened design-first 2026-09-26); **the build has landed**. FLAT proves
+Step MC4/MC5 of §(K-main): the flat rank `6|V| − 3 − dim L(q)`, the bound `dim L(q) ≥ 3 + def₂`,
+`def₃ ≤ def₂`, and "`X₀` attains at the flat witness", all green, with 40a's pin debt paid.
+**Next: FLAT's close** (docs only) — see *Hand-off*.
 
 ## Current state
 
-**Opened.** The FLAT subsection `sec:main-component-flat` of `main-component.tex` carries eight
-red nodes, and `deficiency.tex` one (`lem:deficiency-antitone`), all transcribed from
-`python3 notes/ledger.py --brief '(MC-4)' '(MC-5)'`. No Lean has landed yet. The build lands the
-recon's spike in `Molecule/Pencil/MainComponent/Flat.lean` (new) and `Molecular/Deficiency.lean`,
-and pays the 40a pin debt (`lem:relative-deficiency-rank-bound`, born green) in the same commit.
+**Built.** The FLAT subsection `sec:main-component-flat` of `main-component.tex` (eight nodes)
+and `lem:deficiency-antitone` in `deficiency.tex` are green, transcribed at the open from
+`python3 notes/ledger.py --brief '(MC-4)' '(MC-5)'`. The Lean is in the new
+`Molecule/Pencil/MainComponent/Flat.lean` (its module docstring lists the statements) and
+`Molecular/Deficiency.lean` (the connectivity helpers and (MC-5)(i)), with
+`linearIndependent_pencilPicturePoint_pair` in `Carrier.lean`. The pin-debt node
+`lem:relative-deficiency-rank-bound` (`rigidity-matrix.tex`) is green, and
+`thm:theorem-55-6-rows` and `lem:pencil-x0-one-witness` now `\uses` it. The seventeen new pinned
+declarations, and the refactored `rk_cycleMatroid_within_parts_le`, each depend on exactly
+`[propext, Classical.choice, Quot.sound]` (*measured, script not
+retained*: one `#print axioms` per declaration under `import CombinatorialRigidity`).
 
 ## Architectural choices made up front
 
@@ -39,34 +45,12 @@ The coordinator's adjudication (2026-09-26) of the FLAT design recon:
 
 ## Lemma checklist
 
-Planned names; the spike compiles them all (`lake env lean`, exit 0, standard axioms).
-
-- [ ] **`Deficiency.lean`**: `Graph.ConnBetween.eq_of_forall_isLink` (generalizes the private
-  walk helper), `Graph.Preconnected.eq_of_forall_isLink`,
-  `Graph.encard_image_le_numberOfComponents_restrict` (shared with
-  `rk_cycleMatroid_within_parts_le`), `Graph.Connected.numParts_le_ncard_crossingEdges_add_one`,
-  `Graph.Connected.deficiency_le_deficiency_of_le`,
-  `Graph.Connected.deficiency_three_le_deficiency_two` → `lem:deficiency-antitone`.
-- [ ] **`Flat.lean`, lifting planes**: `Graph.liftingPlanes`, `Graph.finrank_liftingPlanes` →
-  `def:pencil-lifting-planes`, `lem:pencil-lifting-planes-dim`.
-- [ ] **grade 1 (carrier)**: `screwOneEquiv`,
-  `Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint`,
-  `Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint` →
-  `lem:pencil-lifting-planes-motions`; `Graph.three_add_deficiency_le_finrank_liftingSpace` →
-  `lem:pencil-lifting-space-deficiency`.
-- [ ] **grade 2 (carrier)**: `flatScrewEquiv`, `Graph.linkConstants`,
-  `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat` → `lem:pencil-flat-split`;
-  `Graph.finrank_span_rigidityRows_ofNormals_flat` (and `_flat_le`, `_flat_eq_iff`) →
-  `thm:pencil-flat-rank`.
-- [ ] **consequences**: `Graph.finrank_liftingSpace_eq_three_add_deficiency_three_iff`,
-  `Graph.x0Attains_of_finrank_liftingSpace_le` → `cor:pencil-flat-attains`;
-  `Graph.x0Attains_of_finrank_liftingSpace_eq_three` and the rank clause →
-  `cor:pencil-flat-x0`.
-- [ ] **Pin debt (40a)**: `lem:relative-deficiency-rank-bound` in `rigidity-matrix.tex`, born
-  green, pinning `BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
-  and `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`; repoint the proof `\uses`
-  and prose of `thm:theorem-55-6-rows` and `lem:pencil-x0-one-witness`. The wider audit is a
-  cleanup-round item (`notes/Phase40-design.md` §3 FLAT).
+- [x] **The build** (one commit): `Deficiency.lean` (connectivity helpers, (MC-5)(i)), `Flat.lean`
+  (lifting planes, grade 1, grade 2, consequences), and the 40a pin debt. Nodes and names: the
+  FLAT subsection's `\lean{}` pins and `Flat.lean`'s module docstring.
+- [ ] **FLAT's close** (docs only) — see *Hand-off*.
+- [ ] **Cleanup-round item, not FLAT's:** the wider `lem:trivial-motions-rank-bound` stand-in audit
+  (`notes/Phase40-design.md` §3 FLAT).
 
 ## Blockers / open questions
 
@@ -75,14 +59,19 @@ Planned names; the spike compiles them all (`lake env lean`, exit 0, standard ax
 
 ## Hand-off / next phase
 
-**Next: the build commit.** Land the checklist in `Deficiency.lean` and a new
-`Molecule/Pencil/MainComponent/Flat.lean` (root import), flip the FLAT nodes and
-`lem:deficiency-antitone` green, and pay the pin debt, in one commit (or two, split at the
-grade-2 section). Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`.
-After the build, the next step is FLAT's close.
+**Next: FLAT's close** (docs only, `PHASE-BOUNDARIES.md` *When this commit closes a phase*):
+flip the ROADMAP row and compress §40c, compress `notes/Phase40-design.md` §3 FLAT to a verdict,
+re-read the FLAT subsection end to end, add the `notes/BlueprintExposition.md` section, put the
+public-surface question to the PI, and re-verify the headline axioms. After it, BRIDGE opens
+design-first (`notes/Phase40-design.md` §3 BRIDGE).
 
 ## Decisions made during this phase
 
+- **2026-09-26 — the build**, one commit, transcribed from the recon's spike. The private walk
+  helper of `Deficiency.lean` became the public `Graph.ConnBetween.eq_of_forall_isLink`, and its
+  components count `Graph.encard_image_le_numberOfComponents_restrict`, now shared with
+  `rk_cycleMatroid_within_parts_le`. Three FRICTION idioms filed (an `ℕ∞`/`WithTop ℕ` cancel, a
+  `private` name clash, an omega atom).
 - **2026-09-26 — opened design-first; the opus/fable A/B.** The coordinator re-ran both recons'
   witnesses (exit 0, no `sorry`, standard axioms) and adopted the opus route: flat side,
   exact (MC-4)(a), `F(q)` with the exact grade-1 motion equality, (MC-5)(i) in antitone form.

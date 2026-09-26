@@ -78,12 +78,17 @@ parallel copies of each edge $e \in E(G)$.
 
 \begin{lemma}[The deficiency decreases with the dimension on a connected graph]
   \label{lem:deficiency-antitone}
+  \lean{Graph.Connected.deficiency_le_deficiency_of_le,
+        Graph.Connected.deficiency_three_le_deficiency_two,
+        Graph.Connected.numParts_le_ncard_crossingEdges_add_one}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be connected, and let $n \le m$. Then the deficiency of $G$ at
   $m$ is at most its deficiency at $n$; in particular
   $\operatorname{def}_3(G) \le \operatorname{def}_2(G)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rk-within-parts}
   Partition by partition, with $D \le D'$ the two body dimensions,
   $[D'(|P| - 1) - (D' - 1)d(P)] - [D(|P| - 1) - (D - 1)d(P)]
