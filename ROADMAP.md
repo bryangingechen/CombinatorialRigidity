@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓; 40e/CUTBRIDGE (STEPS' first group) open (see `notes/Phase40e.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓; next the read-only ORBIT recon, then STEPS' next group (provisionally CONTRACT-R), not yet opened (see `notes/Phase40e.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1159,7 +1159,8 @@ infinite field. Layers by stable code, lettered only as each opens:
 - **FLAT** ✓ (sub-phase 40c, closed 2026-09-26): the flat rank;
 - **BRIDGE** ✓ (sub-phase 40d, closed 2026-09-26): Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps, run by group; the first,
-  CUTBRIDGE, is sub-phase 40e (open), and the rest are provisional codes in the design doc;
+  CUTBRIDGE, closed as sub-phase 40e (2026-09-26), and the rest are provisional codes in the
+  design doc, the next (provisionally CONTRACT-R) opening after a read-only ORBIT recon;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
 
@@ -1241,20 +1242,25 @@ compiler-checked recon whose sorry-free spike was the build. The edge-restricted
 row rank is a tracked cleanup-round item, and the recon's three STEPS items wait for STEPS'
 pre-build recon (`notes/Phase40-design.md` §3). Headline axioms unchanged (re-verified at the close).
 
-#### Phase 40e — cut vertices and bridges (CUTBRIDGE, STEPS' first group) — ◐ In progress
+#### Phase 40e — cut vertices and bridges (CUTBRIDGE, STEPS' first group) — ✓ Complete
 
-**◐ In progress** (opened design-first 2026-09-26; work log `notes/Phase40e.md`). STEPS' first
-group, in `main-component.tex` §`sec:main-component-cut` (with one node each in `deficiency.tex` and
-`rigidity-matrix.tex`). The steps of the induction share one shape: `X₀` attaining at smaller graphs
-on the same bodies and edge labels gives it at `G`. A cut vertex and a chain of bridges are fibre
-products. Heights restrict onto both pieces, ranks add, and deficiencies add (plus one per bridge),
-so one picture generic for both pieces carries attaining heights of both to `G` ((MC-52), (MC-53),
-the "if" halves; the "only if" halves are a tracked todo). The standing hypotheses (H) land as
-`Graph.IsX0Graph`. The design is a compiler-checked recon whose spike proves CUT and the single
-bridge sorry-free; the same recon settled STEPS' six tracked items and a provisional grouping of the
-later steps (`notes/Phase40-design.md` §3 STEPS). Build 1 landed (H), CUT and the single bridge;
-build 2 landed BRIDGE along a chain of bridges of any length (`Graph.X0Attains.of_bridgePath`). All
-nine nodes are green; the phase close is next, then the read-only ORBIT recon.
+**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40e.md`). STEPS'
+first group, in `Molecule/Pencil/MainComponent/Cut.lean` and `main-component.tex`
+§`sec:main-component-cut` (with one node each in `deficiency.tex` and `rigidity-matrix.tex`). Every
+step of the induction has one shape: `X₀` attaining at smaller graphs on the same bodies and edge
+labels gives it at `G`, through one picture generic for the pieces and main for `G`, with heights
+chosen in the single fibre `L_G(q)`. A cut vertex or a chain of bridges makes `G` a fibre product
+of two induced pieces. Heights restrict onto both pieces at every picture, by extending along the
+one body where a piece is attached; the ranks add, plus at least five per bridge, and the
+deficiencies add, plus one per bridge. So attaining heights of both pieces give attaining heights of
+`G` (`Graph.X0Attains.of_cutVertex`, and `Graph.X0Attains.of_bridgePath` for a chain of any length;
+(MC-52), (MC-53), the "if" halves, the "only if" halves a tracked todo). The standing hypotheses
+(H) landed as `Graph.IsX0Graph`; the cut-vertex deficiency and rank laws, and a pendant-body rank
+law, landed in `Molecular/Deficiency.lean` and `RigidityMatrix/Bricks.lean`. Three build commits
+and one recon followed a compiler-checked design recon, which also settled STEPS' six tracked items
+and a provisional grouping of the later steps (`notes/Phase40-design.md` §3 STEPS; the spike pieces
+CONTRACT-R and SPLITOFF reuse are verbatim in its appendix). Headline axioms unchanged (re-verified
+at the close).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -6,10 +6,11 @@ index of work already done, the layer plan by **stable codes**, the proof map, t
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
-closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE opened
-2026-09-26** (`notes/Phase40e.md`), the six later groups provisional (§3 STEPS). This doc replaces the
-planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which
-is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
+closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
+2026-09-26** (`notes/Phase40e.md`); the six later groups are provisional, and the next opens after
+the read-only ORBIT recon (§3 STEPS). This doc replaces the planning note
+`notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
+pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
 
 **Read §2 before doing any mathematics.** Everything the route needs exists in written,
@@ -177,7 +178,20 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, opened 2026-09-26** (`notes/Phase40e.md`)
+### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`)
+
+**CUT/BRIDGE done** (40e). The "if" halves of (MC-52) and (MC-53) are formalized in
+`Molecule/Pencil/MainComponent/Cut.lean` (`main-component.tex` §`sec:main-component-cut`):
+`Graph.X0Attains.of_cutVertex` and `Graph.X0Attains.of_bridgePath` (a chain of `k + 1` bridges, any
+`k ≥ 0`, by explicit path hypotheses), over (H) as `Graph.IsX0Graph`. The cut-vertex laws are
+`Graph.deficiency_add_le_of_cutVertex` / `_eq_add_of_cutVertex` (`Deficiency.lean`) and
+`BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` (`Bricks.lean`). BRIDGE counts along the
+path with the pendant-body rank law `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton`
+(`Bricks.lean`) and Phase 39's `Graph.deficiency_induce_union_singleton`. Both fibre lemmas need no
+admissibility: extend along the one body where a piece is attached. An `X0Attains` induction along
+the path is impossible (a peeled body has no admissible picture), so BRIDGE cuts once at the last
+bridge and telescopes. Every decision is in `notes/Phase40e.md`; the table below stays as the proof
+map for the later groups.
 
 | step of (MC-89) | labels, in proof order | 2nd |
 |---|---|---|
@@ -198,10 +212,10 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
   2-cut law `deficiency_eq_of_vertexTwoCut`, the gluing identity
   `finrank_span_rigidityRows_vertexTwoCut_eq`, and the loss carriers in
   `Molecule/Pencil/TwoCut.lean`.
-- **There is no landed cut-vertex deficiency law.** 40e lands one (`lem:deficiency-cut-vertex`,
-  in `Deficiency.lean`), and its proof consumes item 6's A4 split
-  `partitionDef_split_of_vertexTwoCut` at a repeated vertex, so 40e pins it. Item 6's leaves have no
-  blueprint nodes (Phase 39's D5 debt); STEPS pins each when it consumes it.
+- **The cut-vertex deficiency law landed in 40e** (`lem:deficiency-cut-vertex`, in
+  `Deficiency.lean`). Its proof consumes item 6's A4 split `partitionDef_split_of_vertexTwoCut` at a
+  repeated vertex, which 40e pinned. Item 6's other leaves have no blueprint nodes (Phase 39's D5
+  debt); STEPS pins each when it consumes it.
 - **The step contract** (the STEPS pre-build recon, 2026-09-26; compiled end to end at CUT and at a
   single bridge, `notes/Phase40e.md`). Every step is `G.X0Attains K` from `Gᵢ.X0Attains K` at
   smaller graphs `Gᵢ : Graph α β` (same `α`, same `β`), with (H) at `G` (`Graph.IsX0Graph`: simple,
@@ -221,31 +235,35 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     main-picture propagation (admissible with `dim L ≤ 3 + def₂` is main).
 - **The provisional grouping** (PI, 2026-09-26, "Accept"; codes until each opens, letters minted
   only then; `notes/pencil/adjudications.md`). In dependency order, with build-commit estimates:
-  - **CUTBRIDGE = 40e**: (MC-52), (MC-53). 3–4.
+  - **CUTBRIDGE = 40e, ✓ closed**: (MC-52), (MC-53). Estimated 3–4; took three builds and a recon.
   - **CONTRACT-R**, the `def₂`-rigid core: (MC-34)–(MC-39), (MC-59). Reuses Phase 22i's projected
     Case-I machinery, FLAT, Jackson–Jordán, `rigidContract_deficiency_eq`, and the Cramer section.
-    The rescaled lifting system `M(t)` and its kernel at `t = 0` are new. 6–9.
+    The rescaled lifting system `M(t)` and its kernel at `t = 0` are new. 6–9. The compiled
+    `Graph.rigidContract_induce_simple` is in the appendix *the STEPS recon's tracked spike*.
   - **CHAIN**: (MC-16)–(MC-19), (MC-134)(a)(b), (MC-169), BASE (MC-21)(a), chains `k ≥ 5` (MC-20).
     Pins Layer B (`relScrews`, `jointMotions`) and A2/A3 (D5 debt); `CycleData` fits BASE.
     `ChainData` does not fit: it forces `d = n` and a fresh label. 6–10.
   - **SHORT**: (MC-22), (MC-24), (MC-44), (MC-25)/(MC-136), (MC-45)/(MC-135)/(MC-26)/(MC-47)(i),
     (MC-54), THETA (MC-139). After CHAIN. 8–12.
-  - **SPLITOFF**: (MC-28)–(MC-31). 3–5.
+  - **SPLITOFF**: (MC-28)–(MC-31). 3–5. The compiled curve-limit lemma is in the same appendix.
   - **CONTRACT-A**, the additive core: (MC-67)–(MC-71). After CONTRACT-R. 4–7.
   - **ORBIT**: (MC-46), (MC-138), (MC-48)(ii). After CHAIN and SHORT. Size unknown (§4).
 
   **Order** (PI, 2026-09-26): 40e's open and build first, then a read-only ORBIT recon (opus)
-  before the next group opens.
+  before the next group opens. 40e is closed, so the ORBIT recon is next, then the next group
+  (provisionally CONTRACT-R).
 - **Tracked from CARRIER's close and BRIDGE's recon (2026-09-26): settled by the STEPS pre-build
-  recon (2026-09-26).** Each verdict below is compiled where it is a Lean question (the spike files
-  are kept for the build, `notes/Phase40e.md`), and lands with the group that consumes it.
+  recon (2026-09-26).** Each verdict below is compiled where it is a Lean question (the pieces the
+  later groups reuse are verbatim in the appendix *the STEPS recon's tracked spike*), and lands
+  with the group that consumes it.
   - [x] **The SPLITOFF curve-limit lemma** (lands with SPLITOFF). Its shape is
     `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, compiled: along a polynomial curve of
     normals whose hinges are nonzero at `t = 0`, the rank is at least its value at `t = 0` for all
     but finitely many `t`. It is the landed rank device composed with the curve. (MC-30)(ii)'s
     rational curve is cleared by rescaling every body by its denominator
     (`finrank_span_rigidityRows_ofNormals_smul`). Main-ness and membership along the curve stay
-    SPLITOFF's own obligations.
+    SPLITOFF's own obligations. The compiled lemma, with its helper `polynomial_eval_aeval`, is
+    verbatim in the appendix *the STEPS recon's tracked spike*.
   - [x] **The CONTRACT rank-device open point: dissolved** (lands with CONTRACT-R). The `G/H`
     framework with the actual boundary hinges is never formed. Its rank is the rank of the rows of
     `ofNormals (G.deleteEdges E(H)) endsG`, projected by `(extProj W).dualMap`, and that framework
@@ -270,13 +288,14 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
   - [x] **`(G.rigidContract (G.induce W) r).Simple`**, compiled as
     `Graph.rigidContract_induce_simple (hS : G.Simple) (hr : r ∈ W) (hatt : ∀ u ∉ W, ∀ c₁ ∈ W,
     ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (lands
-    with CONTRACT-R).
+    with CONTRACT-R; the compiled proof is verbatim in the appendix *the STEPS recon's tracked
+    spike*).
   - [x] **`h3` from (H)**, compiled as `Graph.three_le_ncard_closedNbhd (hS : G.Simple)
     (hdeg : 2 ≤ G.degree v)`, from the vendored `Graph.degree_eq_ncard_adj` (landed in 40e build 1,
     beside `Graph.closedNbhd` in `Motive.lean`).
-- [ ] **Tracked todo, not a 40e close gate (PI, 2026-09-26): the "only if" halves of (MC-52)(iv)
-  and (MC-53)(iv).** 40e formalizes the "if" halves, the only ones the induction consumes;
-  `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` name this item in their remarks. The informal
+- [ ] **Tracked todo, carried past 40e's close (PI, 2026-09-26; not a 40e close gate): the "only
+  if" halves of (MC-52)(iv) and (MC-53)(iv).** 40e formalized the "if" halves, the only ones the
+  induction consumes; `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` name this item in their remarks. The informal
   proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
   height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
@@ -344,8 +363,9 @@ the landed SPINE2 threading):
 
 The main-component argument gets **one new forward-mode chapter** (`main-component.tex`), one
 subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subsections are all
-green; MOTIVES's stub subsection `sec:main-component-statements` is the last, and each later
-layer inserts its subsection before it. It is opened as red nodes transcribed from the proof map
+green, and so is STEPS' first, `sec:main-component-cut` (40e); MOTIVES's stub subsection
+`sec:main-component-statements` is the last, and each later layer inserts its subsection before
+it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
 the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
@@ -530,3 +550,165 @@ Dispatch a `recon-opus` agent, read-only. The brief says:
   - each repair as exact replacement text keyed by label;
   - new claims under placeholder labels, which the coordinator mints as `MC-` labels;
   - the commands re-run, with timings.
+
+## Appendix — the STEPS recon's tracked spike (verbatim, 2026-09-26)
+
+The STEPS pre-build recon's scratch file `S40eTracked.lean`, kept verbatim because two of its three
+pieces land with later groups (§3 STEPS, the settled *Tracked* items):
+- (2) `Graph.rigidContract_induce_simple`, with **CONTRACT-R**;
+- (3) `polynomial_eval_aeval` and `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, the
+  curve-limit lemma, with **SPLITOFF**.
+
+Piece (1), `Graph.three_le_ncard_closedNbhd`, landed in 40e build 1 (`Molecule/Pencil/Motive.lean`).
+
+**Provenance.** It compiled sorry-free against HEAD `c8319ce0` (the 40e opening commit; toolchain
+`leanprover/lean4:v4.34.0-rc2`); the coordinator re-ran it there: exit 0, no warnings. **To re-run:**
+save it as a `.lean` file and run `lake env lean <file>` from the repository root on a built tree.
+Against a tree after 40e build 1, delete piece (1) first, since it then duplicates the landed
+declaration (the only error). Re-checked at 40e's close, at HEAD `d57672c0`: the file as written
+fails on that duplicate alone, and without piece (1) it exits 0 with no output.
+
+```lean
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
+
+/-!
+# Phase 40 STEPS pre-build recon — the tracked Lean items (scratch spike)
+
+(1) `h3` from the Lean form of (H);
+(2) the simplicity of `G / G[W]` from "no outside vertex has two neighbours in `W`";
+(3) the curve-limit lemma: the row rank of an `ofNormals` framework is lower semicontinuous
+    along a polynomial curve of normals (the univariate specialization of the landed rank device).
+-/
+
+open scoped Graph
+
+namespace CombinatorialRigidity.Molecular
+
+variable {K : Type*} [Field K] {α β : Type*}
+
+/-! ## (1) `h3` from (H) -/
+
+/-- A body of degree at least two in a simple graph has at least three members in its closed
+neighbourhood. -/
+theorem _root_.Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph α β} (hS : G.Simple)
+    {v : α} (hdeg : 2 ≤ G.degree v) : 3 ≤ (G.closedNbhd v).ncard := by
+  have hnot : v ∉ N(G, v) := fun h => by
+    obtain ⟨e, he⟩ := h
+    exact hS.toLoopless.not_isLoopAt e v he
+  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
+  rw [heq, Set.ncard_insert_of_notMem hnot (Set.toFinite _), ← Graph.degree_eq_ncard_adj]
+  omega
+
+/-! ## (2) The simplicity of the contraction at an induced core -/
+
+theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simple) {W : Set α}
+    {r : α} (hr : r ∈ W)
+    (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂) :
+    (G.rigidContract (G.induce W) r).Simple := by
+  classical
+  have hV : V(G.induce W) = W := rfl
+  -- a surviving edge never has both ends in `W`
+  have hsurv : ∀ e x y, (G.deleteEdges E(G.induce W)).IsLink e x y →
+      G.IsLink e x y ∧ ¬ (x ∈ W ∧ y ∈ W) := by
+    intro e x y h
+    rw [Graph.deleteEdges_isLink] at h
+    refine ⟨h.1, fun ⟨hx, hy⟩ => h.2 ?_⟩
+    exact (show (G.induce W).IsLink e x y from ⟨h.1, hx, hy⟩).edge_mem
+  have hcol : ∀ x, Graph.collapseTo r W x = if x ∈ W then r else x := fun _ => rfl
+  -- the collapse is the identity off `W` and sends `W` to `r ∈ W`
+  have hout : ∀ {a b : α}, b ∉ W → Graph.collapseTo r W a = b → a ∉ W ∧ a = b := by
+    intro a b hb h
+    rw [hcol] at h
+    by_cases ha : a ∈ W
+    · rw [ite_eq_left ha] at h; exact absurd (h ▸ hr) hb
+    · rw [ite_eq_right ha] at h; exact ⟨ha, h⟩
+  have hin : ∀ {a : α}, Graph.collapseTo r W a = r → a ∈ W := by
+    intro a h
+    rw [hcol] at h
+    by_cases ha : a ∈ W
+    · exact ha
+    · rw [ite_eq_right ha] at h; exact h ▸ hr
+  have hcolW : ∀ {a : α}, a ∈ W → Graph.collapseTo r W a = r := by
+    intro a ha; rw [hcol, ite_eq_left ha]
+  have hcolO : ∀ {a : α}, a ∉ W → Graph.collapseTo r W a = a := by
+    intro a ha; rw [hcol, ite_eq_right ha]
+  refine Graph.rigidContract_simple (fun e x y h hxy => ?_)
+    (fun e₁ e₂ x₁ y₁ x₂ y₂ h₁ h₂ hx hy => ?_)
+  · obtain ⟨hl, hnW⟩ := hsurv e x y h
+    rw [hV] at hxy
+    by_cases hx : x ∈ W <;> by_cases hy : y ∈ W
+    · exact hnW ⟨hx, hy⟩
+    · rw [hcolW hx, hcolO hy] at hxy; exact hy (hxy ▸ hr)
+    · rw [hcolO hx, hcolW hy] at hxy; exact hx (hxy ▸ hr)
+    · rw [hcolO hx, hcolO hy] at hxy
+      subst hxy
+      exact hS.toLoopless.not_isLoopAt e x hl
+  · obtain ⟨hl₁, hn₁⟩ := hsurv e₁ x₁ y₁ h₁
+    obtain ⟨hl₂, hn₂⟩ := hsurv e₂ x₂ y₂ h₂
+    rw [hV] at hx hy
+    -- one end outside `W` pins the other edge's end there too
+    have key : ∀ {a b c : α}, a ∈ W → b ∉ W → c ∈ W → G.IsLink e₁ a b → G.IsLink e₂ c b →
+        e₁ = e₂ := by
+      intro a b c ha hb hc h1 h2
+      have := hatt b hb a ha c hc ⟨e₁, h1.symm⟩ ⟨e₂, h2.symm⟩
+      subst this
+      exact hS.eq_of_isLink h1 h2
+    by_cases hx₁ : x₁ ∈ W
+    · have hy₁ : y₁ ∉ W := fun h => hn₁ ⟨hx₁, h⟩
+      rw [hcolW hx₁] at hx
+      rw [hcolO hy₁] at hy
+      have hx₂ := hin hx.symm
+      obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
+      exact key hx₁ hy₁ hx₂ hl₁ hl₂
+    · rw [hcolO hx₁] at hx
+      obtain ⟨hx₂, rfl⟩ := hout hx₁ hx.symm
+      by_cases hy₁ : y₁ ∈ W
+      · rw [hcolW hy₁] at hy
+        have hy₂ := hin hy.symm
+        exact key hy₁ hx₁ hy₂ hl₁.symm hl₂.symm
+      · rw [hcolO hy₁] at hy
+        obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
+        exact hS.eq_of_isLink hl₁ hl₂
+
+/-! ## (3) The curve-limit lemma -/
+
+/-- Evaluating a polynomial substitution of univariate polynomials. -/
+theorem polynomial_eval_aeval {σ : Type*} (c : σ → Polynomial K) (Q : MvPolynomial σ K) (t : K) :
+    (MvPolynomial.aeval c Q).eval t = MvPolynomial.eval (fun i => (c i).eval t) Q := by
+  rw [MvPolynomial.aeval_def, ← Polynomial.coe_evalRingHom, MvPolynomial.hom_eval₂]
+  congr 1
+  ext a
+  simp [Polynomial.coe_evalRingHom]
+
+/-- **The curve-limit lemma**: along a polynomial curve `t ↦ c(t)` of normals, the row rank of
+`ofNormals G ends (c t)` is at least its value at `t = 0` for all but finitely many `t`, provided
+every recorded hinge is nonzero at `t = 0`. The univariate specialization of
+`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`. -/
+theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve {k : ℕ} [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (c : α × Fin (k + 2) → Polynomial K)
+    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.supportExtensor e
+        ≠ 0)
+    {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K
+      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.rigidityRows)) :
+    {t : K | Module.finrank K (Submodule.span K
+      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
+        < N}.Finite := by
+  classical
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
+  set P : Polynomial K := MvPolynomial.aeval c Q with hP
+  have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
+    fun t => polynomial_eval_aeval c Q t
+  have hP0 : P ≠ 0 := fun h => hQ₀ (by rw [← hPt 0, h, Polynomial.eval_zero])
+  refine (P.roots.toFinset.finite_toSet).subset fun t ht => ?_
+  simp only [Set.mem_ofPred_eq] at ht
+  simp only [Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP0,
+    Polynomial.IsRoot.def]
+  by_contra h
+  exact absurd (hQ _ (by rwa [← hPt])) (not_le.mpr ht)
+
+end CombinatorialRigidity.Molecular
+```

@@ -783,7 +783,8 @@ plane, `n ≥ 2`; its second, CARRIER (planar pictures, the lifting space, `X₀
 sub-phase 40b (2026-09-26, `notes/Phase40b.md`); its third, FLAT (the flat rank), closed as
 sub-phase 40c (2026-09-26, `notes/Phase40c.md`); its fourth, BRIDGE (Jackson–Jordán's equality as
 consumed), closed as sub-phase 40d (2026-09-26, `notes/Phase40d.md`); STEPS runs by group, and its
-first, CUTBRIDGE (cut vertices and bridges), opened as sub-phase 40e (2026-09-26, `notes/Phase40e.md`). Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+first, CUTBRIDGE (cut vertices and bridges), closed as sub-phase 40e (2026-09-26, `notes/Phase40e.md`);
+the read-only ORBIT recon runs before the next group opens. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

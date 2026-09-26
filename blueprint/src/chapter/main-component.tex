@@ -17,9 +17,10 @@ rank is lower semicontinuous. The first subsection introduces these
 objects and proves that one-witness principle; the second computes the
 rank of a flat configuration exactly; the third derives from the planar
 rank theorem the equality of Jackson and Jord\'an on which the remaining
-steps rest. The ear, split-off, contraction and cut steps and the
-structural coverage build on them; the last subsection states the
-passage back to the two statements.
+steps rest; the fourth proves the first steps of the induction, at a
+cut vertex and along a chain of bridges. The ear, split-off and
+contraction steps and the structural coverage build on them; the last
+subsection states the passage back to the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -963,10 +964,11 @@ connected and need not span the set of bodies.
 \label{sec:main-component-cut}
 
 The steps of the induction share one shape. Each deduces that the
-general configuration of $G$ attains (\cref{def:pencil-x0-attains})
-from the same conclusion at smaller graphs on the same bodies and edge
-labels. It picks one picture generic for the smaller graphs and main
-for $G$, and it finds the heights inside the single lifting space
+general configuration of $G$ attains the \emph{target rank}
+$\operatorname{tgt}(G) = 6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
+(\cref{def:pencil-x0-attains}, at $n = 3$) from the same conclusion at
+smaller graphs on the same bodies and edge labels. It picks one
+picture generic for the smaller graphs and main for $G$, and it finds the heights inside the single lifting space
 $L_G(q)$, where two nonempty Zariski-open conditions always meet
 (\cref{lem:pencil-x0-fibre-intersection}). One configuration at the
 target rank then suffices (\cref{lem:pencil-x0-one-witness}). This
@@ -1110,24 +1112,28 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 \end{lemma}
 \begin{proof}
   \leanok
-  Given $z^1 \in L_{G_1}(q)$, take the affine function $h$ agreeing
-  with $z^1$ on the closed neighbourhood of $a$ in $G_1$
-  (\cref{lem:pencil-lifting-restrict}), and extend $z^1$ by $h$ on
-  every body outside $G_1$: $a$ is the only body of $G_1$ with an edge
-  leaving $G_1$ (the path's own bodies and $b$ are all outside $G_1$,
-  so only its first edge, at $a$, can cross), so the closed
-  neighbourhood of every body outside $G_1$ either lies entirely there
-  or meets $G_1$ only at $a$, where $h$ already agrees with $z^1$. No
-  admissibility of $q$, and no case split on $k$, is needed for this
-  direction. The other restriction is symmetric.
+  Given $z^1 \in L_{G_1}(q)$, take an affine function $h$ agreeing
+  with $z^1$ on the closed neighbourhood $N_{G_1}[a]$
+  (\cref{def:pencil-lifting-space}), and extend $z^1$ by $h$ on every
+  body outside $G_1$. The body $a$ is the only body of $G_1$ with an
+  edge leaving $G_1$: the path's own bodies and $b$ lie outside $G_1$,
+  so only the path's first edge, at $a$, can cross. So the closed
+  neighbourhood in $G$ of a body of $G_1$ other than $a$ lies in $G_1$,
+  where the extension is $z^1$; the closed neighbourhood of $a$, or of
+  a body outside $G_1$, meets $G_1$ only inside $N_{G_1}[a]$, so the
+  extension equals $h$ on all of it. The extension is therefore affine
+  on every closed neighbourhood of $G$: it lies in $L_G(q)$ and
+  restricts to $z^1$. The other restriction is symmetric.
 \end{proof}
 
 \begin{remark}
   Informally more holds: at every $q$ admissible for $G$, $G_1$ and
-  $G_2$, $\dim L_G(q) = \dim L_{G_1} + \dim L_{G_2} + c_k$, with
-  $c_0 = -2$, $c_1 = -1$, and $c_k = k - 2$ for $k \ge 2$. Only the
-  surjectivity is formalized, which is all \cref{thm:pencil-x0-bridge}
-  uses.
+  $G_2$, $\dim L_G(q) = \dim L_{G_1} + \dim L_{G_2} + k - 2$. The $k$
+  path heights are new, the closed neighbourhoods of $a$ and $b$ each
+  add one condition, and those of the path bodies, of three bodies
+  each, add none. Only the surjectivity is formalized; it needs neither
+  the admissibility of $q$ nor this count, and it is all
+  \cref{thm:pencil-x0-bridge} uses.
 \end{remark}
 
 \begin{theorem}[A chain of bridges]
@@ -1169,10 +1175,11 @@ smaller graphs, and attaining passes from the two pieces to the whole.
   deficiency (\cref{lem:cut-edge-decomposition}). Inside $G[S_k]$ each
   path body $x_{j+1}$ hangs from $S_j$ by a single edge, and the same two
   lemmas, applied in $G[S_{j+1}]$ at $S_j$, add at least $5$ to the rank
-  and exactly $1$ to the deficiency. The $k$ path bodies add $6k$ to the
-  body term, so
+  and exactly $1$ to the deficiency. Against the two sides, the body
+  term $6(|V(G)| - 1)$ gains $6(k + 1)$ and the deficiency gains
+  $k + 1$, so
   $\operatorname{tgt}(G) = \operatorname{tgt}(G_1) +
-  \operatorname{tgt}(G_2) + 5(k + 1)$, and the rank at the chosen
+  \operatorname{tgt}(G_2) + 5(k + 1)$. The rank at the chosen
   configuration is at least this, so \cref{lem:pencil-x0-one-witness}
   applies.
 \end{proof}

@@ -1022,6 +1022,32 @@ bodies). The account of the whole induction stays with the Phase-39 entry
 `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
 ledger stays at **2 pending / 36 done** (of 38).
 
+### `main-component.tex` — Phase 40e (CUTBRIDGE: cut vertices and bridges)
+
+**One new entry — judged at the sub-phase close (2026-09-26).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC14.md`, (MC-52) and (MC-53)); the criterion
+transfers as in the `pencil.tex` section. The entry below is written in place. The rest landed as
+scoped or is project-side. The cut-vertex deficiency and rank laws follow the informal (i) and (ii)
+directly. BRIDGE counts ranks and deficiencies by one cut at the last bridge and a telescope along
+the path, not by the single-bridge step applied `k + 1` times, because the intermediate graphs have
+no admissible picture; the node's proof says so in one sentence. The "only if" halves are a tracked
+item of the design doc, not nodes. The account of the whole induction stays with the Phase-39 entry
+`thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
+ledger is now **2 pending / 37 done** (of 39).
+
+- **`lem:pencil-bridge-fibre` / `Graph.exists_liftingRestrict_eq_of_bridgePath`, with
+  `lem:pencil-cut-fibre`** — [done (the two nodes' proofs and the remark after
+  `lem:pencil-bridge-fibre`, at the 40e close)] **(b)** the informal proof of (MC-53)(iii) derives
+  the ontoness of both restrictions from the dimension count
+  `dim L_G = dim L_{G₁} + dim L_{G₂} + k − 2`, case by case in `k = 0, 1, ≥ 2` and at admissible
+  pictures (the case `k = 0` uses `q_a ≠ q_b`); (MC-52)(iii) likewise uses three non-collinear points
+  at the cut vertex. **Stable insight:** the steps need each restriction onto separately, not the
+  fibre-product description, and that holds at every picture by one extension. `a` is the only body
+  of `G₁` with an edge leaving it, so extending `z¹` by any affine function agreeing with it on
+  `N_{G₁}[a]` is affine on every closed neighbourhood of `G`, for every `k` and with no
+  admissibility; at a cut vertex the same extension runs through `v`. Pointer: `notes/Phase40e.md`
+  (build 2's first half).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
