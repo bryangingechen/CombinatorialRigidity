@@ -2,8 +2,9 @@
 name: recon-fable
 description: >
   Recon / design-pass agent for the /coordinate-phase loop, pinned at
-  the top (FABLE) rung via model frontmatter (rung-stable across
-  SendMessage resume, dispatch-log F5). Settles a route, faithfulness,
+  the FABLE rung via model frontmatter (rung-stable across SendMessage
+  resume, dispatch-log F5). Off the rung map since 2026-09-26: only a
+  parallel second reader on a design recon, at the user's request. Settles a route, faithfulness,
   decomposition, or satisfiability question with a grounded verdict.
   Default read-only (verdict in the return message, tree untouched);
   the coordinator's invocation prompt may instead commission a

@@ -3,15 +3,13 @@
 **Budget: 150 lines.** Adding a rule to a full file means removing one.
 A rule is one or two sentences tagged `[date, standing]` or `[date, trial]`,
 followed by `←` and the incident that earned it. Evidence, measurement and
-history live in `notes/harness/` and in the two `RETIRED` files named at the
-end; this file does not explain itself at length, on purpose.
+history live in `notes/harness/`; `RESEARCH-ARC.md` and
+`notes/Harness-structure.md` are retired history, read by no command.
 
 **How this file changes.** Never inside a research or attack session. An
-incident is one line in `notes/harness/incidents.md`. A rule enters as
-`trial`, is promoted to `standing` on a second independent incident, and is
-deleted after three attack sessions otherwise. `/harness-review` (every five
-attack sessions or monthly, with the PI) applies those defaults and runs
-`python3 notes/harness/check.py`. Commit rules — attribution, `-F` for
+incident is one line in `notes/harness/incidents.md`; rules enter, are
+promoted and expire by `/harness-review`'s defaults (every five research
+sessions or monthly, with the PI). Commit rules — attribution, `-F` for
 backticks, no local paths — are `CLAUDE.md`'s; the attack ritual is
 `.claude/commands/attack.md` and `review-attack.md`, the state file's
 sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
@@ -32,8 +30,10 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
   found under cap C", and the cap travels with the figure wherever it is
   quoted. ← RESEARCH-ARC §5; dispatch-log F30.
 - [2026-09-15, standing] For a semicontinuous statistic one draw is a bound,
-  not a measurement; say which direction. An exhibited certificate is a
-  proof. ← dispatch-log F27; the inverted gloss caught at BNEST 2026-09-13.
+  not a measurement; say which direction, and guard each draw of a many-draw
+  figure (an intersection, a minimum, an absence) by the exact generic
+  invariant it needs, not a proxy. An exhibited certificate is a proof.
+  ← F27; BNEST 2026-09-13; `earstep.py --lamcap` 09-24 and its replay 09-25.
 - [2026-09-15, standing] An in-driver assert is evidence about its sampler's
   support. Name the support and which variables of the claim it varies, and
   list the generator's fenced constants with `python3
@@ -49,15 +49,6 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
   disjunct, sessions 1–2; the antecedent read as `G − x`, sessions 1–4,
   surviving review 1; case (ii) sent to a cut-vertex arm the Lean does not
   have, surviving reviews 1–2 and a CHECKED pass — review 3).
-- [2026-09-15, standing] Retrieve claims with `python3 notes/ledger.py
-  --label | --brief | --cited-by`; read the gap map with `notes/gapmap.py`,
-  never `sed`/`grep`. ← D2: ~137k tokens on ~35 grep probes for 18 claims.
-- [2026-09-17, trial] A measured nonzero gets its witness — which vector,
-  which motion — exhibited before any mechanism for it is written. ← smark
-  s3's mechanism for `c′(Π_w) = 1`; s4's witness was an ear hinge; withdrawn.
-- [2026-09-17, trial] Cite Lean and the blueprint by declaration name or
-  `\label`; a line number travels only with the HEAD sha it was read at.
-  ← both briefs' `file:line` pointers drifted in two days (check 2026-09-17).
 
 ## Reproducibility
 
@@ -69,43 +60,35 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
   timeout; a run that cannot finish inside it starts in the background first
   and is collected before the turn ends; never mask an exit status through
   `head`/`tail`. ← F6; F15.
-- [2026-07-10, standing] Pin an agent's rung in its definition's frontmatter;
-  a resume re-resolves the model from there, not from the spawn parameter.
-  ← F5, three controlled spawn/resume probes.
 
 ## Attack track — `/attack <name>`, files under `notes/attacks/<name>/`
 
-- [2026-09-17, standing] `state.md` is the lemma's only status surface,
-  rewritten from the template every session inside its budgets. Every open
-  obligation names the consumer hypothesis that makes it necessary; every
-  target hypothesis the route does not use gets a one-line reason. The
-  obligation count is the progress signal — a renamed obligation is not a
-  moved break — and three flat sessions flag the route for review.
-  ← the phase note at 580/580 lines; smark sessions 1–4: O4 → O4′ → O4″ reset
-  the "changed" line each session while the count sat at 3, and (O4′), (O4″)
-  were consumed by nothing.
+- [2026-09-17, standing] `state.md` is the lemma's only status surface; the
+  brief restates none of it. It is rewritten from the template every session
+  inside its budgets. Every open obligation names the consumer hypothesis
+  that makes it necessary; every target hypothesis the route does not use
+  gets a one-line reason. The obligation count, by piece, is the progress
+  signal — a renamed obligation is not a moved break — and a count that has
+  not fallen in three sessions flags the route for review. ← the phase note
+  at 580/580 lines; smark s1–4 (O4 → O4′ → O4″, the count flat at 3); smark
+  reviews 5–6 (O7e-b's pieces counted as one; a 45 kB brief restating status).
 - [2026-09-17, standing] An attack writes only inside its own directory and
   its workbook file, where results are numbered (S1, S2, …) and cited by
-  number; it mints no corpus labels. Shared surfaces get a two-line pointer
-  edited by the PI. ← RESEARCH-ARC §2; F17; smark s1 spent ~10 min on a
-  labels rule it could not satisfy, then numbered; 5 of 5 sessions in scope.
+  number; it mints no corpus labels. Shared surfaces get a count-free
+  two-line pointer to `state.md`, edited by the PI. ← RESEARCH-ARC §2; F17;
+  smark s1 (~10 min on a labels rule it could not satisfy); smark review 5
+  (ROADMAP said "session 8" at session 13).
 - [2026-09-17, standing] `/review-attack` runs every three sessions or when a
   route change is proposed. The attack proposes, the reviewer checks, the PI
   alone decides route and brief changes. ← routes declared spent on false
   premises in the arc; smark reviews 1 and 2 (after sessions 2 and 5) each
   re-aimed the brief only on the PI's word.
-- [2026-09-23, trial] Work in small results, each landed in the workbook
-  as soon as it holds: state one sub-claim, prove it, write its statement
-  and proof as the next S-number, then take the next. A case analysis of
-  more than three cases is one sub-claim per case; on a resume, re-read the
-  workbook's last S-number and continue from it. ← smark s7: twelve
-  consecutive turns cut at the output cap with no file write between them,
-  ~4.1h, ≈$66, nothing committed; `report.py --attack`'s `cap` column
-  counts these.
-
-## Retired
-
-The coordinator loop and its machinery are retired with
-`/coordinate-research` (archive: `notes/harness/archive/`, 2026-09-15);
-`RESEARCH-ARC.md` and `notes/Harness-structure.md` stay under a `RETIRED`
-banner as history, read by no command. `/coordinate-phase` is unchanged.
+- [2026-09-23, standing] Work in small results, each landed in the workbook
+  as soon as it holds, the first after orientation included: state one
+  sub-claim, prove it, write its statement and proof as the next S-number,
+  then take the next. A case analysis of more than three cases is one
+  sub-claim per case; on a resume, re-read the workbook's last S-number and
+  continue from it. ← smark s7: twelve
+  turns cut at the output cap, no file write between them, ~4.1h, ≈$66,
+  nothing landed; s9, s10: one cut each on the first synthesis after
+  orientation (`report.py --attack`'s `cap` column).

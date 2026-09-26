@@ -163,7 +163,8 @@ def classify_tool(name, inp):
 
 # ---------- session kind, from the first slash command that is not a local setting ----------
 SKIP_CMDS = {'/model', '/clear', '/help', '/config', '/cost', '/usage', '/status', '/compact', '/fast',
-             '/context', '/memory', '/permissions', '/login', '/logout', '/doctor', '/resume', '/init'}
+             '/context', '/memory', '/permissions', '/login', '/logout', '/doctor', '/resume', '/init',
+             '/effort', '/mcp', '/agents', '/hooks', '/add-dir'}   # /effort: smark s14 misfiled (review 2026-09-26)
 CMD = re.compile(r'<command-name>(.*?)</command-name>(?:.*?<command-args>(.*?)</command-args>)?', re.S)
 
 def kind_of(cmds, prompt=None):

@@ -1,7 +1,7 @@
 ---
 name: attack-fable
 description: >
-  Attack-track session run as a subagent, pinned at the top (FABLE) rung
+  Attack-track session run as a subagent, pinned at the FABLE rung
   via model frontmatter (rung-stable across SendMessage resume, F5). Owns
   one lemma under notes/attacks/<name>/ and follows .claude/commands/attack.md
   with that name as its argument; HARNESS.md binds. Prefer running an

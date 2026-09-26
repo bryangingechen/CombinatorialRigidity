@@ -1,9 +1,10 @@
 ---
 name: phase-builder-fable
 description: >
-  Build agent for the /coordinate-phase loop, pinned at the top
-  (FABLE) rung via model frontmatter (rung-stable across SendMessage
-  resume, dispatch-log F5). Executes exactly one concrete commit of
+  Build agent for the /coordinate-phase loop, pinned at the FABLE rung
+  via model frontmatter (rung-stable across SendMessage resume,
+  dispatch-log F5). Off the rung map since 2026-09-26 (Opus is the top
+  rung); dispatch only at the user's request. Executes exactly one concrete commit of
   the active phase (the hand-off's next step), then stops. Returns
   `LANDED <sha>: <summary>` or `BLOCKED: <reason>`.
 model: fable

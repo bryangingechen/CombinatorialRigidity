@@ -41,8 +41,8 @@ Before the first dispatch, ask the user once whether this run modifies
 these instructions — in practice users customize at session start,
 typically lifting the 10-run cap and pre-authorizing the mechanical
 fixups (rescue §1). Fold the **rung-availability confirmation** into
-this same check-in: ask which model rungs (haiku / sonnet / opus /
-fable) are dispatchable this session (default: all reachable) and fix
+this same check-in: ask which model rungs (haiku / sonnet / opus) are
+dispatchable this session (default: all reachable) and fix
 each unavailable rung's substitute up front per the playbook — do NOT
 spend dispatches probing rungs. **This check BLOCKS the loop:** wait
 for an actual user response before the first dispatch — a timed-out
@@ -107,7 +107,7 @@ first). Three calibrations that repeatedly bit:
 | P=3 with S=1 and B≤2 (exact pinned signatures + named route) | sonnet |
 | P=3 (with S≥2) or B=3 | opus |
 | **Fragility-zone producer build** (see the repo-local list below) | opus minimum, regardless of profile |
-| S=3; phase-open / phase-close / design-settle; any recon settling **new mirror definitions with no upstream precedent** | top rung (fable); substitute opus when unavailable |
+| S=3; phase-open / phase-close / design-settle; any recon settling **new mirror definitions with no upstream precedent** | top rung (opus) |
 
 - **Fragility zone (repo-local input to the floor above).**
   `Molecular/AlgebraicInduction/` (esp. `CaseIII/` + `Theorem55.lean`),
@@ -125,7 +125,7 @@ first). Three calibrations that repeatedly bit:
   gate re-run by the coordinator.
 - **Read-only recon / research dispatches fall outside the axes**
   (they measure question stakes, not commit risk): default opus;
-  top rung when the verdict re-routes a phase, adjudicates a carried-
+  the same rung when the verdict re-routes a phase, adjudicates a carried-
   hypothesis / motive change, or settles new mirror math. This bullet
   stays because THIS command still dispatches recons inside a Lean
   phase; a phase with **no Lean at all** runs as an attack track
@@ -134,7 +134,16 @@ first). Three calibrations that repeatedly bit:
 - **Post-recon downgrade.** Once a top-rung recon has settled exact
   signatures, the transcription leaves rate as written (usually
   sonnet) — the faithfulness risk lives in the recon, not the
-  transcription.
+  transcription. A recon that returned the **whole build** as a
+  complete compiler-checked spike is not sliced at all: step 3's
+  *Resume and land*.
+- **Fable is off the map (harness review 2026-09-26).** Opus 5.5 is the
+  top rung. The `-fable` variants stay defined for one use: a parallel
+  second reader on a design recon, at the user's request. Three
+  opus ∥ fable A/Bs (dispatch-log, Phases 40a–40c) gave a tie, a
+  convergence (against Opus 4.8) and a clear Opus lead at lower cost.
+  Every output-cap cut since 2026-09-17, in main sessions and coordinator
+  dispatches, was on Fable, and its per-dispatch cost was no lower.
 - **When torn between two scores, score lower** — the per-commit
   verification gate bounds the damage — but honor the fragility-zone
   floor.
@@ -210,7 +219,7 @@ coordinator's own verification to the subagent.
 
 The step-4/5 checks below always run. On top of them, by rung:
 
-- **top rung (fable/opus recons):** reasoning scrutiny per step 4 —
+- **top rung (opus recons):** reasoning scrutiny per step 4 —
   the failure mode at these rungs is upstream plan/pin error, which
   gates can't catch.
 - **below top rung (sonnet builds):** read the **full diff** (not
@@ -480,6 +489,23 @@ CLAUDE.md at phase close.
    Validated 2026-07-10 (Phase 30 RELAX: 7 continuations across one
    recon arc + one builder arc, zero defects, incl. a killed-dispatch
    resume — dispatch-log F4).
+
+   **Resume and land (dispatch-log F43).** When a recon returns the
+   whole build as a complete compiler-checked spike (no `sorry`,
+   witnesses re-run by the coordinator), do not slice it into builder
+   dispatches. First review it: statement faithfulness against the
+   blueprint / source, a satisfying instance for every new predicate,
+   and deletion hygiene. Then resume the recon to land the open and
+   the build, one commit per coherent unit, each verified as usual. A
+   partial spike is sliced as before. Slicing buys bounded damage from
+   a failed proof, and a compiled spike has already bought that.
+   Resuming also skips the coordinator's re-transcription into builder
+   prompts, the loop's largest defect source (dispatch-log profile).
+   The cost is the recon's context, re-read on every turn: Phase 40c's
+   build half paid $37, mostly cache reads over 400–624k tokens. When
+   that context is already large and what remains is transcription, a
+   single fresh builder handed the spike file is the untried
+   alternative.
 4. Verify the return (`CronDelete` the keepalive job first):
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
      `git branch --show-current`. HEAD advanced past the noted sha;

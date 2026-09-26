@@ -8,9 +8,9 @@
 HARNESS.md rules: <= LINE_BUDGET lines; every bullet is tagged
 `[YYYY-MM-DD, standing|trial]` and carries an incident pointer after `<-`
 (or the arrow). The last `## review YYYY-MM-DD` line of incidents.md is
-printed with the number of attack-track sessions since it (from the
-transcripts, via instrument/sessions.py). A trial rule with more than
-TRIAL_REVIEW_SESSIONS attack sessions since its date is listed as review-due;
+printed with the number of research sessions since it (attack track and
+free-form, from the transcripts via instrument/sessions.py). A trial rule with more than
+TRIAL_REVIEW_SESSIONS research sessions since its date is listed as review-due;
 when no transcripts are readable the fallback is TRIAL_REVIEW_DAYS by date.
 State files: every section of the template present, none over its
 `<!-- budget N -->`, and "Where it breaks" non-empty. `--history` walks the
@@ -22,7 +22,7 @@ that changes every commit over a flat count is a rename treadmill
 import argparse, datetime, os, re, subprocess, sys, pathlib
 
 LINE_BUDGET = 150
-TRIAL_REVIEW_SESSIONS = 3   # attack sessions since the rule's date (the defaults in .claude/commands/harness-review.md)
+TRIAL_REVIEW_SESSIONS = 3   # research sessions since the rule's date (the defaults in .claude/commands/harness-review.md)
 TRIAL_REVIEW_DAYS = 30      # fallback when transcripts are unavailable
 INCIDENTS = 'notes/harness/incidents.md'
 
@@ -36,14 +36,24 @@ def last_review_date(incidents=INCIDENTS):
         pass
     return d
 
+def review_start():
+    """The window's opening after the last review (instrument/sessions.py's last_review), or None."""
+    try:
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent / 'instrument'))
+        import sessions as S
+        return S.last_review(INCIDENTS)
+    except Exception:
+        return None
+
 def attack_session_dates():
-    """Local start dates of every attack-track session in the transcripts, or None if unreadable."""
+    """Start times of every research session (attack track or free-form, sessions.py's groups
+    `attack` and `research`) in the transcripts, or None if unreadable."""
     try:
         sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent / 'instrument'))
         import sessions as S
         root = os.environ.get('CLAUDE_LOGS_ROOT') or S.default_root()
         if not os.path.isdir(root): return None
-        return [r['start'].astimezone().date() for r in S.list_sessions(root) if r['group'] == 'attack']
+        return [r['start'] for r in S.list_sessions(root) if r['group'] in ('attack', 'research')]
     except Exception:
         return None
 TAG = re.compile(r"^- \[(\d{4}-\d{2}-\d{2}), (standing|trial)\]")
@@ -58,7 +68,8 @@ def check_harness(path):
     today = datetime.date.today()
     lr = last_review_date()
     sess = attack_session_dates()
-    since = None if sess is None else [d for d in sess if lr is None or d >= lr]
+    rs = review_start()
+    since = None if sess is None else [t for t in sess if rs is None or t >= rs]
     i = 0
     while i < len(lines):
         l = lines[i]
@@ -77,15 +88,15 @@ def check_harness(path):
                     fails.append(f"{path}:{i+1}: rule has no incident pointer")
                 if s == "trial":
                     if sess is not None:
-                        n = sum(1 for x in sess if x >= d)
+                        n = sum(1 for x in sess if x.astimezone().date() >= d)
                         if n > TRIAL_REVIEW_SESSIONS:
-                            due.append(f"{path}:{i+1}: trial since {d}, {n} attack sessions since; review due")
+                            due.append(f"{path}:{i+1}: trial since {d}, {n} research sessions since; review due")
                     elif (today - d).days > TRIAL_REVIEW_DAYS:
                         due.append(f"{path}:{i+1}: trial since {d}, review due (day-based fallback; no transcripts)")
                 i = j
         i += 1
     print(f"{path}: {len(lines)}/{LINE_BUDGET} lines, {counts['standing']} standing, {counts['trial']} trial")
-    print(f"last review: {lr or 'none'} · attack sessions since: "
+    print(f"last review: {lr or 'none'} · research sessions since: "
           f"{len(since) if since is not None else 'unknown (no transcripts; day-based trial age)'}")
     for x in due: print("REVIEW-DUE", x)
     return fails

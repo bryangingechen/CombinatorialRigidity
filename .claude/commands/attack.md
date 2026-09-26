@@ -26,9 +26,8 @@ write only to scratch. A script that produced a figure follows
 Number results in your workbook file (S1, S2, …); mint no corpus labels.
 
 **Write** only under `notes/attacks/$ARGUMENTS/` and in your own workbook
-file. Never edit `HARNESS.md`, `.claude/`, `notes/Phase39.md`, `ROADMAP.md`
-or the gap map; if one of them needs a pointer changed, say so in your
-closing sentence and the PI does it.
+file (`HARNESS.md` *Attack track*); a pointer anywhere else that needs
+changing goes in your closing sentence, and the PI changes it.
 
 **End the day before context runs long**, and always before stopping:
 1. Rewrite `state.md` from the template — every section, inside its
@@ -42,9 +41,7 @@ closing sentence and the PI does it.
    attribution rules in `CLAUDE.md` *Working* (author identity, `-F` for a
    message with backticks, no local paths).
 5. One sentence to the PI: where the lemma stands, and whether a review is
-   due (`HARNESS.md` *Attack track*: three sessions since the last review, a
-   route change proposed, or the obligation count flat for three sessions —
-   the last whether or not "Where it breaks" moved).
+   due by `HARNESS.md` *Attack track*.
 
 If something in these instructions or in `HARNESS.md` cost you time, add
 one line to `notes/harness/incidents.md`; do not fix the harness yourself.

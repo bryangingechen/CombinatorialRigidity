@@ -3,15 +3,19 @@ or attack work. Its job is to keep `HARNESS.md` small and true.
 
 **Inputs.**
 - `HARNESS.md`, and `python3 notes/harness/check.py` (budget, tags, the last
-  review's date, and each trial rule's age in attack sessions).
+  review's date, and each trial rule's age in research sessions).
 - `notes/harness/incidents.md` since the last `## review` line.
-- `git log --since=<last review> -- HARNESS.md .claude/` — any edit made
-  outside a harness-review session is itself an incident; log it.
-- The instrumentation over the attack-track sessions since the last review.
+- `git log --since=<last review> -- HARNESS.md .claude/commands/{attack,review-attack,harness-review}.md .claude/agents/attack-*.md`
+  — any edit made outside a harness-review session is itself an incident;
+  log it. (`/coordinate-phase` and its agents change by their own
+  phase-close promotions.)
+- The instrumentation over the research sessions since the last review:
+  the attack track, plus free-form sessions that write under `notes/pencil/`
+  or `notes/attacks/` (`--select research`).
   `python3 notes/harness/instrument/sessions.py --since-review` lists them
   with the logs root it read (`--logs-root` or `CLAUDE_LOGS_ROOT` override
   it); then
-  `python3 notes/harness/instrument/analyze.py $(python3 notes/harness/instrument/sessions.py --since-review --select attack --ids) > all.json`
+  `python3 notes/harness/instrument/analyze.py $(python3 notes/harness/instrument/sessions.py --since-review --select research --ids) > all.json`
   and `python3 notes/harness/instrument/report.py --attack all.json` — one
   row per session: process against mathematics, thinking share, compactions,
   peak context, PDFs opened, Lean read, helpers and their fate, cost at
@@ -24,7 +28,7 @@ or attack work. Its job is to keep `HARNESS.md` small and true.
   treadmill, not progress.
 
 **Defaults, applied in this order.**
-1. A `trial` rule past three attack sessions is deleted unless a second,
+1. A `trial` rule past three research sessions is deleted unless a second,
    independent incident supports it; then it becomes `standing`.
 2. A `standing` rule no incident has touched in three months is proposed
    for deletion.
