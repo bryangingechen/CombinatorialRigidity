@@ -1,26 +1,31 @@
 # Phase 40b — PENCIL-X0 / CARRIER: planar pictures, the lifting space, `X₀`, and "the general point attains" (work log)
 
 **Status:** in progress (opened design-first 2026-09-26). C1a, C1b, C2 (both the `U`-open
-lemma and the lifting-space API), and DUAL-K (the polarity over every field) landed 2026-09-26.
-**C2 and DUAL-K are DONE.** **Next: C3 (picture→normal API), then C4.** Plan:
-`notes/Phase40-design.md` §3.
+lemma and the lifting-space API), DUAL-K (the polarity over every field), and C3 (the
+picture→normal API) landed 2026-09-26. **C2, DUAL-K, and C3 are DONE.** **Next: C4 (the config as
+a pencil framework, opus/fragility).** Plan: `notes/Phase40-design.md` §3.
 
 ## Current state
 
-**Next concrete step: C3 (picture→normal API)** (*Hand-off*) — needs only C1a. C4 needs both C3 and
-DUAL-K (now landed).
+**Next concrete step: C4 (the config as a pencil framework)** (*Hand-off*) — both of its
+prerequisites, C3 and DUAL-K, are now landed.
 C1a landed seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
 `Graph.x0Attains_of_exists` at the pinned signature, and C2 landed the `U`-open lemma (existence of
 an admissible picture, a main-picture minimizer, and the openness polynomial) plus the lifting-space
 API (`Graph.affineLiftMap`/`Graph.affineLifts`, `Graph.affineLifts_le_liftingSpace`,
-`Graph.finrank_affineLifts`) — full checklist below — all in
+`Graph.finrank_affineLifts`, and the hygiene lemma `Graph.three_le_finrank_liftingSpace`) — full
+checklist below — all in
 `CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean`. The codim bound
 `dim L(q) ≥ 3|V| − 2|E|` originally on C2's checklist is **dropped** (*Decisions made*): FLAT's
-(MC-4)(b) subsumes it and it has no consumer on the route. `blueprint/src/chapter/main-component.tex`
+(MC-4)(b) subsumes it and it has no consumer on the route. C3 landed the picture→normal API (items
+1–5 below) in the same file. `blueprint/src/chapter/main-component.tex`
 carries five green definition nodes, the green lemma `lem:pencil-lifting-space-affine` (C2's
-`Aff(q)` containment/dimension), the green lemma `lem:pencil-x0-one-witness` (C1b), and the green
-lemma `lem:pencil-x0-main-picture-open` (C2's `U`-open landing), all split out of
-`thm:pencil-x0-main-component`, which stays red.
+`Aff(q)` containment/dimension, now also the hygiene bound), the green lemma
+`lem:pencil-x0-one-witness` (C1b), the green lemma `lem:pencil-x0-main-picture-open` (C2's `U`-open
+landing), and the two new green lemmas `lem:pencil-selector-plane-contains-nbhd` /
+`lem:pencil-selector-independent-scalar` (C3 items 3/4), all split out of
+`thm:pencil-x0-main-component`, which stays red; `lem:pencil-condition-linear` also stays red (only
+its forward direction, item 3, is proved — the iff, uniqueness, and non-verticality are not).
 
 DUAL-K landed the field-general polarity `screwComplementIso` (`Molecule/Duality.lean`),
 `ProjectiveInvariance.lean`'s `mapExtensor`/`scaleExtensor` family, and the field-general forms of
@@ -57,35 +62,14 @@ Leaf plan in dependency order (from the recon; rungs and fragility flags noted).
 anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithmetic → opus minimum.
 
 - [x] **C1a — the definitions** (landed 2026-09-26). Namespace `CombinatorialRigidity.Molecular`,
-  `Graph.*` via `_root_`; bodies abbreviated except `X0Attains`, the contract C1b must meet:
-  ```
-  def pencilPicturePoint (q : α × Fin 2 → K) (w : α) : Fin 3 → K            -- ![x_w, y_w, 1]
-  def Graph.IsAdmissiblePicture (G : Graph α β) (q : α × Fin 2 → K) : Prop  -- links: picture pts differ;
-    -- ∀ v ∈ V(G), ∃ t : Fin 3 → α, (∀ i, t i ∈ G.closedNbhd v) ∧ LinearIndependent K (pencilPicturePoint q ∘ t)
-  def Graph.liftingSpace (G : Graph α β) (q : α × Fin 2 → K) : Submodule K (α → K)  -- z = 0 off V(G) ∧
-    -- ∀ v ∈ V(G), ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w
-  theorem Graph.mem_liftingSpace : z ∈ G.liftingSpace q ↔ … := Iff.rfl
-  def Graph.IsMainPicture (G) (q) : Prop  -- admissible ∧ ∀ q' admissible, finrank L(q) ≤ finrank L(q')
-  def pencilConfigPoint (q : α × Fin 2 → K) (z : α → K) (w : α) : Fin 4 → K    -- ![x_w, y_w, z w, 1]
-  def pencilNormalOfPicture (q) (z) (sel : α → Fin 3 → α) (v : α) : Fin 4 → K  -- cross₃ of sel v's points
-  def Graph.X0Attains (K : Type*) [Field K] (G : Graph α β) : Prop :=
-    ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K),
-      (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) ∧ P ≠ 0 ∧
-      ∀ q, MvPolynomial.eval q P ≠ 0 → G.IsAdmissiblePicture q ∧
-        ∃ R : MvPolynomial α K, (∃ z ∈ G.liftingSpace q, MvPolynomial.eval z R ≠ 0) ∧
-          ∀ z ∈ G.liftingSpace q, MvPolynomial.eval z R ≠ 0 →
-            (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
-                (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-              = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3
-  ```
+  `Graph.*` via `_root_`: `pencilPicturePoint`, `Graph.IsAdmissiblePicture`, `Graph.liftingSpace`
+  (+ `Graph.mem_liftingSpace`), `Graph.IsMainPicture`, `pencilConfigPoint`, `pencilNormalOfPicture`,
+  `Graph.X0Attains` — full signatures in `Carrier.lean`'s module docstring, not reproduced here.
 - [x] **C1b/C6 — `Graph.x0Attains_of_exists`** (landed 2026-09-26 at the signature C1a pinned,
   unchanged; no `[Infinite K]`). API for C2–C5, all in `Carrier.lean` unless noted:
-  `Graph.IsAdmissiblePicture.exists_mvPolynomial`, `Graph.IsAdmissiblePicture.supportExtensor_ne_zero`
-  (hinges nonzero at every height over an admissible `q`), `Graph.liftingMatrix K G` (`M(q)`) with
-  `Graph.map_ker_liftingMatrix` (height projection of `ker M(q)` is `L(q)`, any `q`) and
-  `Graph.finrank_ker_liftingMatrix` (equal finrank, admissible `q`), via the mirror
-  `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
-  (`Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`).
+  `Graph.IsAdmissiblePicture.{exists_mvPolynomial, supportExtensor_ne_zero}`, `Graph.liftingMatrix
+  K G` (`M(q)`) with `Graph.map_ker_liftingMatrix`/`Graph.finrank_ker_liftingMatrix`, via the mirror
+  `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` (`Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`).
 - [x] **C2 — lifting-space API** (landed 2026-09-26, sonnet). `Aff(q)` (restricted to `V(G)`)
   `⊆ L(q)`, at every picture, and `3 ≤ dim L(q)` at an admissible `q` with `V(G).Nonempty`.
   **The codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) is dropped from the checklist**: FLAT's
@@ -101,13 +85,26 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
     → K) →ₗ[K] (α → K)`, `h ↦ fun w => if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else 0`;
     `Graph.affineLifts G q := LinearMap.range (G.affineLiftMap q)` is `Aff(q)` restricted to `V(G)`,
     `≤ L(q)` at every `q` (`Graph.affineLifts_le_liftingSpace`); `Graph.finrank_affineLifts`
-    (admissible `q`, `V(G).Nonempty`, `[Finite α]`) gives `finrank = 3`. Blueprint:
-    `lem:pencil-lifting-space-affine`.
-- **C3, then C4** (DUAL-K, below, is DONE — C4 no longer waits on it):
-  - [ ] **C3 — picture→normal API** (sonnet/opus): `pencilNormalOfPicture ≠ 0 ↔` the selected
-    triple is independent (via `cross₃_ne_zero_iff_linearIndependent`; picture-triple independence
-    gives config-triple independence); selector-independence up to scalar at `z ∈ L(q)`; a
-    `…Poly`/`…Poly_eval` mirror via `cross₃Poly` (X0Gen's nondegeneracy is polynomial in `z`).
+    (admissible `q`, `V(G).Nonempty`, `[Finite α]`) gives `finrank = 3`; the named `3 ≤ dim L(q)`
+    bound is `Graph.three_le_finrank_liftingSpace` (`Submodule.finrank_mono` on the previous two).
+    Blueprint: `lem:pencil-lifting-space-affine`.
+- [x] **C3 — picture→normal API** (landed 2026-09-26, sonnet), coordinator scope-pin transcribed
+  (`p_w := pencilConfigPoint q z w`, `N := pencilNormalOfPicture q z sel v`), all in `Carrier.lean`:
+  1. `N ≠ 0 ↔ LinearIndependent K (config points at sel v)` — `pencilNormalOfPicture_ne_zero_iff`.
+  2. Picture independence gives configuration independence, any height —
+     `linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`.
+  3. **The plane contains the whole closed neighbourhood** (new; C4 consumes it) —
+     `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`. Blueprint: new green
+     `lem:pencil-selector-plane-contains-nbhd`, the forward half of (MC-1);
+     `lem:pencil-condition-linear` stays red (iff/uniqueness/non-verticality not proved).
+  4. **Selector independence up to a scalar** —
+     `exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`. Blueprint: new green
+     `lem:pencil-selector-independent-scalar`.
+  5. **The polynomial mirror at a fixed picture**, height variables —
+     `pencilNormalOfPicturePoly`/`eval_pencilNormalOfPicturePoly`, via `cross₃Poly`
+     (`Pencil/Engine.lean`, now imported); the shape `X0Gen`'s fibre-intersection at MOTIVES needs.
+     Routes/rationale: proof docstrings in `Carrier.lean`; see also *Decisions made*.
+- **C4** (DUAL-K, below, is DONE — C4 no longer waits on it):
   - [ ] **C4 — the config as a pencil framework** (opus, fragility): the `ofNormals … (config
     points) .toBodyHinge` support extensor `≠ 0 ↔ q_u ≠ q_v` (`←` landed in C1b, at every height:
     `Graph.IsAdmissiblePicture.supportExtensor_ne_zero`; `→` needs `z ∈ L(q)`, since distinct
@@ -153,12 +150,20 @@ recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now
 
 ## Hand-off / next phase
 
-**C2 and DUAL-K are DONE.** **Next commit: C3 (picture→normal API)**, in `Carrier.lean`; needs only
-C1a. C4 needs both C3 and DUAL-K (now landed). Do NOT open FLAT or any successor layer; CARRIER runs
-C3 → C4 → C5 next.
+**C2, DUAL-K, and C3 are DONE.** **Next commit: C4 (the config as a pencil framework, opus/
+fragility)**, in `Carrier.lean`; both its prerequisites are now landed — DUAL-K gives the polar/
+primal rank equality's polarity machinery, and C3 item 3 gives the closed-neighbourhood plane
+containment C4's `→` direction (`supportExtensor ≠ 0 ↔ q_u ≠ q_v`) needs. Do NOT open FLAT or any
+successor layer; CARRIER runs C4 → C5 next.
 
 ## Decisions made during this phase
 
+- **2026-09-26 — C3 closes: item 3 needs no genericity hypothesis, only `z ∈ L(q)`.** It is
+  `LinearIndependent.of_comp`'s contrapositive at a height-lifting linear map, plus "four vectors
+  in a `3`-dim space are dependent" — so its `hLI` is carried unused (named `_hLI`), kept only for
+  item 4's symmetry. Item 4 is "two nonzero vectors of a `1`-dim space are proportional." Two new
+  green blueprint lemmas replace the old cref (after `def:pencil-configuration`) to
+  `lem:pencil-condition-linear`, which stays red.
 - **2026-09-26 — C2's `U`-open lemma: moment curve, `Nat.sInf` minimizer, reused mirror.** Any
   three distinct closed-neighbourhood members are non-collinear on the moment curve
   `v ↦ (φ v, (φ v)²)` (`det_moment_curve_triple`). The openness polynomial reuses

@@ -6,14 +6,14 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Monad
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.MvPolynomial
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 /-!
 # The main component: planar pictures, the lifting space, and `X₀` attaining (Phase 40b CARRIER)
 
 The definitions the `X₀` argument rests on and its one-witness upgrade
 (`blueprint/src/chapter/main-component.tex`, `sec:main-component-carrier`; Phase 40b CARRIER
-slices C1a and C1b, `notes/Phase40b.md`). A pencil
+slices C1a, C1b, C2, and C3, `notes/Phase40b.md`). A pencil
 configuration of `G` over a field `K` is read as a **planar picture** `q` (a point
 `(x_v, y_v) ∈ K²` per body) together with a **height** `z` (a scalar `z_v` per body); the body's
 homogeneous point is `p_v = (x_v, y_v, z_v, 1)`. Over a fixed admissible picture the heights for
@@ -50,7 +50,18 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
   `Graph.X0Attains` (the semicontinuity half of (MC-2)/(MC-10)).
 * `Graph.affineLifts_le_liftingSpace` — `Aff(q) ⊆ L(q)` at every picture.
 * `Graph.finrank_affineLifts` — `Aff(q)` is three-dimensional at an admissible picture with at
-  least one body.
+  least one body; `Graph.three_le_finrank_liftingSpace` names the resulting `3 ≤ dim L(q)`.
+* `pencilNormalOfPicture_ne_zero_iff` — the normal is nonzero iff the selected configuration
+  triple is independent.
+* `linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint` — picture
+  independence gives configuration independence, at every height.
+* `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd` — over `z ∈ L(q)`, the plane of a
+  valid selector at `v` is orthogonal to the whole closed neighbourhood of `v`, not only the three
+  selected bodies (CARRIER's C3, new; consumed by C4).
+* `exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd` — two selectors at the same body give
+  proportional normals.
+* `pencilNormalOfPicturePoly` / `eval_pencilNormalOfPicturePoly` — the polynomial mirror of the
+  normal in the height variables, at a fixed picture (`X0Gen`'s fibre-intersection shape).
 
 ## Design
 
@@ -218,6 +229,19 @@ theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α �
       rwa [dotProduct_comm]
     exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
   rw [Graph.affineLifts, LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]
+
+/-- **`3 ≤ dim L(q)` at an admissible picture** (`lem:pencil-lifting-space-affine`; Phase 40b
+CARRIER, hygiene: the C2 checklist ticked this but no declaration stated it until now).
+Immediate from `Aff(q) ⊆ L(q)` (`Graph.affineLifts_le_liftingSpace`) and `dim Aff(q) = 3`
+(`Graph.finrank_affineLifts`), via monotonicity of `finrank` on submodules
+(`Submodule.finrank_mono`). -/
+theorem _root_.Graph.three_le_finrank_liftingSpace [Finite α] {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
+    3 ≤ Module.finrank K (G.liftingSpace q) := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  rw [← G.finrank_affineLifts hq hV]
+  exact Submodule.finrank_mono (G.affineLifts_le_liftingSpace q)
 
 /-! ## Configuration points and plane normals -/
 
@@ -735,5 +759,203 @@ theorem _root_.Graph.exists_mvPolynomial_isMainPicture [Infinite K] [Finite α] 
     have hle : Module.finrank K (G.liftingSpace q) ≤ Module.finrank K (G.liftingSpace q_min) := by
       rwa [Graph.finrank_ker_liftingMatrix hadm, Graph.finrank_ker_liftingMatrix hq_min.1] at hdim
     exact ⟨hadm, fun q' hq' => hle.trans (hq_min.2 q' hq')⟩
+
+/-! ## The picture-to-normal API (Phase 40b CARRIER slice C3) -/
+
+/-- **The normal is nonzero iff the selected configuration triple is independent** (Phase 40b
+CARRIER slice C3, item 1). Direct unfold of `pencilNormalOfPicture` as `cross₃` of the three
+selected configuration points, plus `cross₃_ne_zero_iff_linearIndependent`. -/
+theorem pencilNormalOfPicture_ne_zero_iff (q : α × Fin 2 → K) (z : α → K) (sel : α → Fin 3 → α)
+    (v : α) :
+    pencilNormalOfPicture q z sel v ≠ 0 ↔
+      LinearIndependent K (fun i => pencilConfigPoint q z (sel v i)) := by
+  have heq : (fun i => pencilConfigPoint q z (sel v i)) =
+      ![pencilConfigPoint q z (sel v 0), pencilConfigPoint q z (sel v 1),
+        pencilConfigPoint q z (sel v 2)] := by
+    funext i; fin_cases i <;> rfl
+  rw [heq]
+  exact cross₃_ne_zero_iff_linearIndependent _ _ _
+
+/-- **Picture independence gives configuration independence, at every height** (Phase 40b CARRIER
+slice C3, item 2). The linear map `f : K⁴ →ₗ K³` dropping the height coordinate (projecting onto
+coordinates `0, 1, 3`) sends every configuration point `pencilConfigPoint q z w` to the picture
+point `pencilPicturePoint q w`, so an independent family of picture points forces the corresponding
+family of configuration points independent (`LinearIndependent.of_comp`, which needs no
+injectivity of `f`: a dependency relation among the domain vectors pushes forward to one among
+their images, so independent images force independent domain vectors). -/
+theorem linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint
+    {q : α × Fin 2 → K} (z : α → K) {ι : Type*} {t : ι → α}
+    (ht : LinearIndependent K (fun i => pencilPicturePoint q (t i))) :
+    LinearIndependent K (fun i => pencilConfigPoint q z (t i)) := by
+  set f : (Fin 4 → K) →ₗ[K] (Fin 3 → K) :=
+    { toFun := fun a => ![a 0, a 1, a 3]
+      map_add' := fun a b => by funext i; fin_cases i <;> rfl
+      map_smul' := fun c a => by funext i; fin_cases i <;> rfl } with hfdef
+  refine LinearIndependent.of_comp f ?_
+  have heq : f ∘ (fun i => pencilConfigPoint q z (t i)) = fun i => pencilPicturePoint q (t i) := by
+    funext i
+    change f (pencilConfigPoint q z (t i)) = pencilPicturePoint q (t i)
+    funext j
+    fin_cases j <;> rfl
+  rwa [heq]
+
+/-- **The plane of a valid selector at `v` contains the whole closed neighbourhood** (Phase 40b
+CARRIER slice C3, item 3; new, consumed by C4). Over a height `z ∈ L(q)`, at a body `v ∈ V(G)`
+with a selector `sel v` valued in `G.closedNbhd v`, the normal `N = pencilNormalOfPicture q z sel
+v` annihilates every configuration point of the closed neighbourhood, not just the three selected
+ones. Route: `dotProduct_cross₃` reduces `N ⬝ᵥ p_w` to `det[p_{sel v 0}, p_{sel v 1}, p_{sel v 2},
+p_w]`. Membership in `L(q)` gives, at `v`, coefficients `h : Fin 3 → K` with every point over
+`G.closedNbhd v` an image of its picture point under the linear map `a ↦ (a 0, a 1, h ⬝ᵥ a, a 2)`
+— so all four rows are images, under one linear map, of four vectors in the `3`-dimensional `K³`,
+always dependent (`LinearIndependent.fintype_card_le_finrank`), and dependency of the domain
+vectors pushes forward through any linear map to the images, so the four rows are dependent too
+and the determinant vanishes (`linearIndependent_rows_iff_det_ne_zero`).
+
+The selector independence hypothesis `hLI` is not needed for this direction (the conclusion holds
+even when `N = 0`); it is carried because every call site already has it on hand (item 1) and item
+4 (the two-selector comparison) needs it on both selectors. -/
+theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α β}
+    {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) {v : α} (hv : v ∈ V(G))
+    {sel : α → Fin 3 → α} (hsel : ∀ i, sel v i ∈ G.closedNbhd v)
+    (_hLI : LinearIndependent K (fun i => pencilPicturePoint q (sel v i)))
+    {w : α} (hw : w ∈ G.closedNbhd v) :
+    pencilNormalOfPicture q z sel v ⬝ᵥ pencilConfigPoint q z w = 0 := by
+  classical
+  obtain ⟨h, hh⟩ := (Graph.mem_liftingSpace.mp hz).2 v hv
+  set L : (Fin 3 → K) →ₗ[K] (Fin 4 → K) :=
+    { toFun := fun a => ![a 0, a 1, h ⬝ᵥ a, a 2]
+      map_add' := fun a b => by funext i; fin_cases i <;> simp [dotProduct_add]
+      map_smul' := fun c a => by funext i; fin_cases i <;> simp [dotProduct_smul] } with hLdef
+  have hLapply : ∀ a, L a = ![a 0, a 1, h ⬝ᵥ a, a 2] := fun _ => rfl
+  have hLp : ∀ x ∈ G.closedNbhd v, pencilConfigPoint q z x = L (pencilPicturePoint q x) := by
+    intro x hx
+    rw [hLapply]
+    funext i
+    fin_cases i <;> simp [pencilConfigPoint, pencilPicturePoint, hh x hx]
+  have hdep : ¬ LinearIndependent K
+      ![pencilPicturePoint q (sel v 0), pencilPicturePoint q (sel v 1),
+        pencilPicturePoint q (sel v 2), pencilPicturePoint q w] := by
+    intro hli
+    have hc := hli.fintype_card_le_finrank
+    rw [Module.finrank_fin_fun] at hc
+    simp at hc
+  have hnotLI : ¬ LinearIndependent K
+      ![pencilConfigPoint q z (sel v 0), pencilConfigPoint q z (sel v 1),
+        pencilConfigPoint q z (sel v 2), pencilConfigPoint q z w] := by
+    intro hLI4
+    apply hdep
+    have heq : (![pencilConfigPoint q z (sel v 0), pencilConfigPoint q z (sel v 1),
+          pencilConfigPoint q z (sel v 2), pencilConfigPoint q z w] : Fin 4 → Fin 4 → K) =
+        L ∘ ![pencilPicturePoint q (sel v 0), pencilPicturePoint q (sel v 1),
+          pencilPicturePoint q (sel v 2), pencilPicturePoint q w] := by
+      funext i
+      fin_cases i
+      · exact hLp _ (hsel 0)
+      · exact hLp _ (hsel 1)
+      · exact hLp _ (hsel 2)
+      · exact hLp _ hw
+    rw [heq] at hLI4
+    exact hLI4.of_comp L
+  have hdetzero : Matrix.det (Matrix.of ![pencilConfigPoint q z (sel v 0),
+      pencilConfigPoint q z (sel v 1), pencilConfigPoint q z (sel v 2),
+      pencilConfigPoint q z w]) = 0 := by
+    by_contra hne
+    exact hnotLI (Matrix.linearIndependent_rows_iff_det_ne_zero (K := K)
+      (A := Matrix.of ![pencilConfigPoint q z (sel v 0), pencilConfigPoint q z (sel v 1),
+        pencilConfigPoint q z (sel v 2), pencilConfigPoint q z w]) |>.mpr hne)
+  change cross₃ (pencilConfigPoint q z (sel v 0)) (pencilConfigPoint q z (sel v 1))
+      (pencilConfigPoint q z (sel v 2)) ⬝ᵥ pencilConfigPoint q z w = 0
+  rw [dotProduct_cross₃]
+  exact hdetzero
+
+/-- **Selector independence up to a scalar** (Phase 40b CARRIER slice C3, item 4). Under item 3's
+hypotheses for two selectors `sel, sel'` at the same `v`, the normals differ by a nonzero scalar.
+Both normals are nonzero (items 1/2); item 3 puts `N = pencilNormalOfPicture q z sel v` in the perp
+of the three (independent, by item 2) configuration points at `sel'`, and `N' =
+pencilNormalOfPicture q z sel' v` lies there too (`cross₃`'s own orthogonality to its defining
+triple, `cross₃_dotProduct_apply_self`) — a `1`-dimensional perp (`finrank_toDualPerp_triple_eq`),
+so it is spanned by the nonzero `N'` (`Submodule.eq_of_le_of_finrank_eq`), and `N` is a scalar
+multiple. -/
+theorem exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd {G : Graph α β}
+    {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) {v : α} (hv : v ∈ V(G))
+    {sel sel' : α → Fin 3 → α}
+    (hsel : ∀ i, sel v i ∈ G.closedNbhd v) (hsel' : ∀ i, sel' v i ∈ G.closedNbhd v)
+    (hLI : LinearIndependent K (fun i => pencilPicturePoint q (sel v i)))
+    (hLI' : LinearIndependent K (fun i => pencilPicturePoint q (sel' v i))) :
+    ∃ c : K, c ≠ 0 ∧
+      pencilNormalOfPicture q z sel v = c • pencilNormalOfPicture q z sel' v := by
+  set N := pencilNormalOfPicture q z sel v with hNdef
+  set N' := pencilNormalOfPicture q z sel' v with hN'def
+  have hN : N ≠ 0 :=
+    (pencilNormalOfPicture_ne_zero_iff q z sel v).mpr
+      (linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hLI)
+  have hN' : N' ≠ 0 :=
+    (pencilNormalOfPicture_ne_zero_iff q z sel' v).mpr
+      (linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hLI')
+  have hLI'config : LinearIndependent K (fun i => pencilConfigPoint q z (sel' v i)) :=
+    linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hLI'
+  set W : Submodule K (Fin 4 → K) := ⨅ j : Fin 3, LinearMap.ker
+      ((Pi.basisFun K (Fin 4)).toDual.flip ((fun i => pencilConfigPoint q z (sel' v i)) j))
+    with hWdef
+  have hWdim : Module.finrank K W = 1 := finrank_toDualPerp_triple_eq hLI'config
+  have hmemW : ∀ x : Fin 4 → K, x ∈ W ↔ ∀ j, x ⬝ᵥ pencilConfigPoint q z (sel' v j) = 0 := by
+    intro x
+    simp only [hWdef, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+  have hNmem : N ∈ W := by
+    rw [hmemW]
+    intro j
+    exact dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd hz hv hsel hLI (hsel' j)
+  have hN'mem : N' ∈ W := by
+    rw [hmemW]
+    intro j
+    exact cross₃_dotProduct_apply_self (fun i => pencilConfigPoint q z (sel' v i)) j
+  have hspan : Submodule.span K ({N'} : Set (Fin 4 → K)) = W := by
+    apply Submodule.eq_of_le_of_finrank_eq
+    · rw [Submodule.span_le]; simpa using hN'mem
+    · rw [hWdim, finrank_span_singleton hN']
+  rw [← hspan] at hNmem
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hNmem
+  refine ⟨c, ?_, hc.symm⟩
+  intro hc0
+  exact hN (by rw [← hc, hc0, zero_smul])
+
+/-! ## The polynomial mirror of the picture-to-normal map (Phase 40b CARRIER slice C3, item 5) -/
+
+/-- **The homogeneous configuration point as polynomials in the height variables, at a fixed
+picture** (Phase 40b CARRIER slice C3, item 5): the vector `(C q_{w,0}, C q_{w,1}, X_w, 1)`, the
+picture coordinates baked in as constants and the height `z_w` a variable indexed by `α` — the
+shape `X0Gen`'s fibre-intersection needs, at a fixed picture `q`. -/
+noncomputable def pencilConfigPointPoly (q : α × Fin 2 → K) (w : α) : Fin 4 → MvPolynomial α K :=
+  ![MvPolynomial.C (q (w, 0)), MvPolynomial.C (q (w, 1)), MvPolynomial.X w, 1]
+
+@[simp]
+theorem eval_pencilConfigPointPoly (q : α × Fin 2 → K) (z : α → K) (w : α) (i : Fin 4) :
+    MvPolynomial.eval z (pencilConfigPointPoly q w i) = pencilConfigPoint q z w i := by
+  fin_cases i <;> simp [pencilConfigPointPoly, pencilConfigPoint]
+
+/-- **The polynomial mirror of `pencilNormalOfPicture`, in the height variables at a fixed
+picture** (Phase 40b CARRIER slice C3, item 5): `cross₃Poly` of the three selected configuration
+points' polynomial mirrors. Its eval lemma (`eval_pencilNormalOfPicturePoly`) is what lets `X0Gen`
+intersect the attaining heights with a nondegeneracy polynomial on `L(q)`. -/
+noncomputable def pencilNormalOfPicturePoly (q : α × Fin 2 → K) (sel : α → Fin 3 → α) (v : α) :
+    Fin 4 → MvPolynomial α K :=
+  cross₃Poly (pencilConfigPointPoly q (sel v 0)) (pencilConfigPointPoly q (sel v 1))
+    (pencilConfigPointPoly q (sel v 2))
+
+/-- **`pencilNormalOfPicturePoly` evaluates to the actual `pencilNormalOfPicture` value** (Phase
+40b CARRIER slice C3, item 5). -/
+theorem eval_pencilNormalOfPicturePoly (q : α × Fin 2 → K) (sel : α → Fin 3 → α) (v : α)
+    (z : α → K) (i : Fin 4) :
+    MvPolynomial.eval z (pencilNormalOfPicturePoly q sel v i)
+      = pencilNormalOfPicture q z sel v i := by
+  rw [pencilNormalOfPicturePoly, cross₃Poly_eval]
+  have h0 : (fun j => MvPolynomial.eval z (pencilConfigPointPoly q (sel v 0) j)) =
+      pencilConfigPoint q z (sel v 0) := funext fun j => eval_pencilConfigPointPoly q z (sel v 0) j
+  have h1 : (fun j => MvPolynomial.eval z (pencilConfigPointPoly q (sel v 1) j)) =
+      pencilConfigPoint q z (sel v 1) := funext fun j => eval_pencilConfigPointPoly q z (sel v 1) j
+  have h2 : (fun j => MvPolynomial.eval z (pencilConfigPointPoly q (sel v 2) j)) =
+      pencilConfigPoint q z (sel v 2) := funext fun j => eval_pencilConfigPointPoly q z (sel v 2) j
+  rw [h0, h1, h2, pencilNormalOfPicture]
 
 end CombinatorialRigidity.Molecular

@@ -1204,10 +1204,20 @@ a `finrank`-minimizing admissible picture, and the same semicontinuity mirror le
 kernel vector, for loopless `G` whose closed neighbourhoods all have at least three members (both
 consequences of simplicity and minimum degree two). C2 closed the same day with the remaining
 lifting-space API, `Graph.affineLifts_le_liftingSpace` (`Aff(q) ⊆ L(q)`, every picture) and
-`Graph.finrank_affineLifts` (`3 ≤ dim L(q)` at an admissible picture); the codim bound is dropped
-from the checklist, subsumed by FLAT's (MC-4)(b). **C3 ∥ (DUAL-K → C4)** is next. Two
-questions are left for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the
-headroom's root cause (`notes/Phase40b.md` *Blockers*).
+`Graph.finrank_affineLifts` (`dim Aff(q) = 3` at an admissible picture); the codim bound is dropped
+from the checklist, subsumed by FLAT's (MC-4)(b), and the hygiene lemma
+`Graph.three_le_finrank_liftingSpace` names the resulting `3 ≤ dim L(q)`. DUAL-K (2026-09-26)
+generalized the polarity `screwComplementIso` and its `ProjectiveInvariance.lean` family from `ℝ`
+to every field, unblocking C4's polar/primal rank equality. C3 (2026-09-26) landed the
+picture→normal API: `pencilNormalOfPicture_ne_zero_iff`, the picture→configuration independence
+transport, and two facts C4 consumes — the plane of a selector contains the whole closed
+neighbourhood (`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`, new green
+`lem:pencil-selector-plane-contains-nbhd`, the forward half of (MC-1)) and selector independence up
+to a scalar (`exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`, new green
+`lem:pencil-selector-independent-scalar`) — plus a polynomial mirror `pencilNormalOfPicturePoly`
+for MOTIVES. **C4** (the config as a pencil framework, opus/fragility) is next. Two questions are
+left for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root
+cause (`notes/Phase40b.md` *Blockers*).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

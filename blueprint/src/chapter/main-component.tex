@@ -68,12 +68,14 @@ $K^{V(G)}$.
 
 \begin{lemma}[The lifting space contains the affine heights]
   \label{lem:pencil-lifting-space-affine}
-  \lean{Graph.affineLifts_le_liftingSpace, Graph.finrank_affineLifts}
+  \lean{Graph.affineLifts_le_liftingSpace, Graph.finrank_affineLifts,
+        Graph.three_le_finrank_liftingSpace}
   \leanok
   \uses{def:pencil-lifting-space, def:pencil-admissible-picture}
   $\mathrm{Aff}(q) \subseteq L(q)$ at every picture $q$. At an
   admissible picture, provided $G$ has at least one body,
-  $\mathrm{Aff}(q)$ is three-dimensional.
+  $\mathrm{Aff}(q)$ is three-dimensional; in particular
+  $\dim L(q) \geq 3$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -84,7 +86,8 @@ $K^{V(G)}$.
   independent homogeneous picture points, so the coefficients
   $(\alpha, \beta, \gamma)$ are pinned down by their values there: the
   linear map from coefficients to heights is injective, hence an
-  isomorphism onto its image $\mathrm{Aff}(q)$.
+  isomorphism onto its image $\mathrm{Aff}(q)$. The dimension bound
+  follows from the containment by monotonicity of dimension.
 \end{proof}
 
 \begin{fmlnote}
@@ -98,7 +101,9 @@ $K^{V(G)}$.
 \begin{definition}[Configurations and their planes]
   \label{def:pencil-configuration}
   \lean{CombinatorialRigidity.Molecular.pencilConfigPoint,
-        CombinatorialRigidity.Molecular.pencilNormalOfPicture}
+        CombinatorialRigidity.Molecular.pencilNormalOfPicture,
+        CombinatorialRigidity.Molecular.pencilNormalOfPicture_ne_zero_iff,
+        CombinatorialRigidity.Molecular.pencilNormalOfPicturePoly}
   \leanok
   \uses{def:pencil-lifting-space}
   A planar picture $q$ and a height $z$ give the \emph{configuration}
@@ -110,13 +115,61 @@ $K^{V(G)}$.
   $w \in K^4$.
 \end{definition}
 
-The plane normal is polynomial in the picture and height coordinates,
-orthogonal to the three chosen points, and nonzero exactly when they
-are linearly independent. When the three chosen bodies lie in the
-closed neighbourhood of $v$ with non-collinear picture points and
-$z \in L(q)$, it is, up to a nonzero scalar, the normal of the plane
-containing the points of the whole closed neighbourhood
-(\cref{lem:pencil-condition-linear}), whichever three are chosen.
+The plane normal is polynomial in the picture coordinates and, at a
+fixed picture, in the height coordinates; it is orthogonal to the
+three chosen points, and nonzero exactly when they are linearly
+independent. When the three chosen bodies lie in the closed
+neighbourhood of $v$ with non-collinear picture points and
+$z \in L(q)$, it is, up to a nonzero scalar
+(\cref{lem:pencil-selector-independent-scalar}), the normal of the
+plane containing the points of the whole closed neighbourhood
+(\cref{lem:pencil-selector-plane-contains-nbhd}), whichever three are
+chosen.
+
+\begin{lemma}[The plane of a selector contains the closed neighbourhood]
+  \label{lem:pencil-selector-plane-contains-nbhd}
+  \lean{CombinatorialRigidity.Molecular.dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd}
+  \leanok
+  \uses{def:pencil-configuration, def:pencil-lifting-space}
+  Let $q$ be admissible, $z \in L(q)$, and $v$ a body of $G$ whose
+  three chosen bodies $a_v, b_v, c_v$ lie in the closed neighbourhood
+  of $v$. Then the plane normal $n_v$ is orthogonal to $p_w$ for every
+  $w$ in the closed neighbourhood of $v$, not only the three chosen
+  bodies.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Membership in $L(q)$ gives, at $v$, coefficients $h \in K^3$
+  expressing every point of the closed neighbourhood as the image,
+  under one fixed linear map $K^3 \to K^4$ built from $h$, of its
+  homogeneous picture point. Four images under one linear map of four
+  vectors of the $3$-dimensional $K^3$ are always linearly dependent,
+  so the determinant defining $n_v \cdot p_w$ vanishes for every $w$ in
+  the neighbourhood, including the three chosen bodies themselves.
+\end{proof}
+
+\begin{lemma}[The plane normal is independent of the selector, up to a scalar]
+  \label{lem:pencil-selector-independent-scalar}
+  \lean{CombinatorialRigidity.Molecular.exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd}
+  \leanok
+  \uses{lem:pencil-selector-plane-contains-nbhd}
+  Let $q$ be admissible, $z \in L(q)$, and $v$ a body of $G$. For two
+  choices of three bodies at $v$, each with non-collinear picture
+  points and lying in the closed neighbourhood of $v$, the two
+  resulting plane normals differ by a nonzero scalar.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Both normals are nonzero, since a plane normal vanishes exactly when
+  its three defining points are dependent, and here both triples are
+  independent. Fix the second choice's three points: the first normal
+  is orthogonal to them by \cref{lem:pencil-selector-plane-contains-nbhd}
+  (they lie in the closed neighbourhood), and the second normal is
+  orthogonal to them by its own defining orthogonality. Those three
+  points are independent, so their common perp in $K^4$ is
+  one-dimensional; two nonzero vectors of a one-dimensional space are
+  scalar multiples of one another.
+\end{proof}
 
 \begin{lemma}[The pencil condition is linear in the heights]
   \label{lem:pencil-condition-linear}
