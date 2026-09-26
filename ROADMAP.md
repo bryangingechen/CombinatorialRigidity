@@ -1197,9 +1197,15 @@ Slice C1a (2026-09-26) landed the definitions in `Molecule/Pencil/MainComponent/
 `ofNormals` of the configuration points and which carries a fibre-open set of attaining heights).
 Slice C1b (2026-09-26) landed the one-witness upgrade `Graph.x0Attains_of_exists`: one attaining
 configuration over a main picture forces the general one, by a denominator-free Cramer section of
-the lifting system through the witness composed with the rank polynomial. Next are C2 ∥ C3 ∥ C4,
-C2's `U`-open lemma first. Two questions are left for
-the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root cause
+the lifting system through the witness composed with the rank polynomial. C2's `U`-open lemma
+(2026-09-26, `Graph.exists_isAdmissiblePicture`/`exists_isMainPicture`/`exists_mvPolynomial_isMainPicture`)
+then landed the nonempty-Zariski-open set of main pictures, via the moment-curve existence witness,
+a `finrank`-minimizing admissible picture, and the same semicontinuity mirror lemma at the trivial
+kernel vector — under a temporary "exactly three members" hypothesis on closed neighbourhoods,
+weaker than the section's standing minimum-degree-two ("at least three"); generalizing that
+extraction is separate open work (`notes/Phase40b.md` *Hand-off*). C2's remaining lifting-space API
+(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is next, alongside C3 ∥ C4. Two questions are left
+for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root cause
 (`notes/Phase40b.md` *Blockers*).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)

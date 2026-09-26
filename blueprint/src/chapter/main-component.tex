@@ -247,10 +247,47 @@ allows no relative motion of its two bodies.
   (\cref{lem:trivial-motions-rank-bound}).
 \end{proof}
 
+\begin{lemma}[The main pictures are nonempty and Zariski-open]
+  \label{lem:pencil-x0-main-picture-open}
+  \lean{Graph.exists_isAdmissiblePicture, Graph.exists_isMainPicture,
+        Graph.exists_mvPolynomial_isMainPicture}
+  \leanok
+  \uses{def:pencil-main-picture}
+  Suppose in addition that every closed neighbourhood of $G$ has exactly
+  three members. Then there is a nonzero polynomial $P$ in the picture
+  coordinates such that every picture $q$ with $P(q) \neq 0$ is a main
+  picture. In particular the set $U$ of main pictures is nonempty and
+  Zariski-open.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pencil-x0-one-witness}
+  On the moment curve $v \mapsto (t_v, t_v^2)$ at pairwise distinct
+  parameters $t_v$, adjacent bodies lie at distinct points, and no three
+  points of a closed neighbourhood are collinear, since three points of a
+  parabola at distinct parameters never are: this picture is admissible.
+  Among admissible pictures the natural number $\dim L(q)$ therefore
+  attains a least value at some admissible $q_0$, which is a main
+  picture. The semicontinuity argument of \cref{lem:pencil-x0-one-witness},
+  run at the trivial kernel vector $0$ in place of a witness height, gives
+  a second polynomial, nonzero at $q_0$, off whose zero set $\dim L(q)$
+  does not exceed $\dim L(q_0)$; off the product of that polynomial with
+  the one witnessing admissibility near $q_0$, $q$ is admissible with
+  $\dim L(q) \le \dim L(q_0)$, hence a main picture.
+\end{proof}
+\begin{fmlnote}
+  \label{fmlnote:pencil-x0-main-picture-open-three}
+  The construction of an admissible picture stated here assumes every
+  closed neighbourhood has exactly three members; extracting an
+  independent triple from a larger neighbourhood, as the minimum-degree
+  hypothesis alone provides, is left for a further step.
+\end{fmlnote}
+
 \begin{theorem}[The main component]
   \label{thm:pencil-x0-main-component}
   \uses{def:pencil-main-picture, def:pencil-x0-attains,
-        lem:pencil-condition-linear, lem:pencil-x0-one-witness}
+        lem:pencil-condition-linear, lem:pencil-x0-one-witness,
+        lem:pencil-x0-main-picture-open}
   The set $U$ of main pictures (\cref{def:pencil-main-picture}) is
   nonempty and Zariski-open, the pairs $(q, z)$ with $q \in U$ and
   $z \in L(q)$ form a vector bundle over $U$, and its closure $X_0$ is

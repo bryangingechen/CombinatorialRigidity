@@ -547,4 +547,113 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
       (fun e u v he => hadm.supportExtensor_ne_zero hends z he)
     exact le_antisymm hup ((Int.self_le_toNat _).trans (by exact_mod_cast hQ _ hRz))
 
+/-! ## An admissible picture exists -/
+
+/-- **Three points on a parabola at pairwise distinct parameters are not collinear** (Phase 40b
+CARRIER slice C2). The `3 × 3` determinant of `(a, a², 1)`, `(b, b², 1)`, `(c, c², 1)` is the
+permuted Vandermonde product `(b − a)(a − c)(b − c)`. -/
+private theorem det_moment_curve_triple (a b c : K) :
+    (Matrix.of ![![a, a ^ 2, 1], ![b, b ^ 2, 1], ![c, c ^ 2, 1]] : Matrix (Fin 3) (Fin 3) K).det
+      = (b - a) * (a - c) * (b - c) := by
+  simp [Matrix.det_fin_three]
+  ring
+
+/-- **An admissible planar picture exists** (Phase 40b CARRIER slice C2), when `G` is loopless and
+every closed neighbourhood has exactly three members. The moment curve `w ↦ (φ w, φ w ^ 2)` at an
+injective `φ : α → K` (composing a `Fintype` enumeration of `α`, `Fin.valEmbedding`, and
+`Infinite.natEmbedding K`) puts every pair of distinct bodies at distinct points, and every closed
+neighbourhood's three members (`Set.ncard_eq_three`) at pairwise non-collinear points
+(`det_moment_curve_triple`, nonzero since `φ` is injective on the three pairwise-distinct
+members). -/
+theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Graph α β}
+    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard = 3) :
+    ∃ q : α × Fin 2 → K, G.IsAdmissiblePicture q := by
+  classical
+  have := hloop
+  have : Fintype α := Fintype.ofFinite α
+  set φ : α ↪ K :=
+    (Fintype.equivFin α).toEmbedding.trans (Fin.valEmbedding.trans (Infinite.natEmbedding K))
+    with hφdef
+  set q : α × Fin 2 → K := fun p => ![φ p.1, (φ p.1) ^ 2] p.2 with hqdef
+  have hpp : ∀ w, pencilPicturePoint q w = ![φ w, (φ w) ^ 2, 1] := by
+    intro w; funext i; fin_cases i <;> simp [pencilPicturePoint, hqdef]
+  refine ⟨q, fun e u v he => ?_, fun v hv => ?_⟩
+  · have huv : u ≠ v := he.ne
+    rw [hpp, hpp]
+    intro hcontra
+    exact huv (φ.injective (by simpa using congr_fun hcontra 0))
+  · obtain ⟨x, y, z, hxy, hxz, hyz, hset⟩ := Set.ncard_eq_three.mp (h3 v hv)
+    refine ⟨![x, y, z], fun i => ?_, ?_⟩
+    · fin_cases i <;> simp [hset]
+    · have hdetne : (Matrix.of
+          (fun i j : Fin 3 => pencilPicturePoint q (![x, y, z] i) j)).det ≠ 0 := by
+        have hrw : (Matrix.of (fun i j : Fin 3 => pencilPicturePoint q (![x, y, z] i) j))
+            = Matrix.of ![![φ x, (φ x) ^ 2, 1], ![φ y, (φ y) ^ 2, 1], ![φ z, (φ z) ^ 2, 1]] := by
+          funext i j; fin_cases i <;> simp [hpp]
+        rw [hrw, det_moment_curve_triple]
+        refine mul_ne_zero (mul_ne_zero ?_ ?_) ?_
+        · exact sub_ne_zero.mpr (fun h => hxy (φ.injective h).symm)
+        · exact sub_ne_zero.mpr (fun h => hxz (φ.injective h))
+        · exact sub_ne_zero.mpr (fun h => hyz (φ.injective h))
+      have hLI : LinearIndependent K
+          (Matrix.of (fun i j : Fin 3 => pencilPicturePoint q (![x, y, z] i) j)).row :=
+        Matrix.linearIndependent_rows_iff_det_ne_zero.mpr hdetne
+      exact hLI
+
+/-- **A main picture exists** (Phase 40b CARRIER slice C2). Among the (nonempty, by
+`Graph.exists_isAdmissiblePicture`) admissible pictures, the natural number `finrank L(q)` attains
+its least value at some admissible `q`, which is then a main picture by definition. -/
+theorem _root_.Graph.exists_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
+    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard = 3) :
+    ∃ q : α × Fin 2 → K, G.IsMainPicture q := by
+  classical
+  obtain ⟨q₀, hq₀⟩ := G.exists_isAdmissiblePicture (K := K) hloop h3
+  set S : Set ℕ := (fun q => Module.finrank K (G.liftingSpace q)) ''
+    {q : α × Fin 2 → K | G.IsAdmissiblePicture q} with hSdef
+  obtain ⟨q, hq, hqeq⟩ := Nat.sInf_mem (⟨_, q₀, hq₀, rfl⟩ : S.Nonempty)
+  have hqeq' : Module.finrank K (G.liftingSpace q) = sInf S := hqeq
+  refine ⟨q, hq, fun q' hq' => ?_⟩
+  rw [hqeq']
+  exact Nat.sInf_le ⟨q', hq', rfl⟩
+
+/-! ## `U` is nonempty and Zariski-open -/
+
+/-- **`U` is nonempty and Zariski-open** (`lem:pencil-x0-main-picture-open`; Phase 40b CARRIER
+slice C2). Take a main picture `q_min` (`Graph.exists_isMainPicture`). Admissibility is open
+around it (`Graph.IsAdmissiblePicture.exists_mvPolynomial`, polynomial `Padm`), and the
+`Matrix.exists_mvPolynomial_section_mulVec_eq_zero` mirror at the trivial kernel vector `0` of the
+lifting system gives a second polynomial `D`, nonzero at `q_min`, off whose zero set the kernel of
+the lifting system is no larger than at `q_min` — the semicontinuity half of
+`Graph.x0Attains_of_exists`'s argument, reused here at the flat section instead of one through a
+witness height. Off the zero set of `Padm * D`, `q` is admissible with
+`finrank L(q) ≤ finrank L(q_min)` (`Graph.finrank_ker_liftingMatrix` at both ends), and since
+`q_min` already achieves the global minimum among admissible pictures, `q` does too: `q ∈ U`. -/
+theorem _root_.Graph.exists_mvPolynomial_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
+    (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard = 3) :
+    ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧
+      ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 → G.IsMainPicture q := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  obtain ⟨q_min, hq_min⟩ := G.exists_isMainPicture (K := K) hloop h3
+  obtain ⟨Padm, hPadm₀, hPadm⟩ := hq_min.1.exists_mvPolynomial
+  obtain ⟨D, Z, hD₀, -, hDrank, -⟩ :=
+    Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.liftingMatrix K)
+      (q₀ := q_min) (z₀ := (0 : α ⊕ (α × Fin 3) → K)) (Matrix.mulVec_zero _)
+  refine ⟨Padm * D, ?_, fun q hq => ?_⟩
+  · intro h0
+    have h := congrArg (MvPolynomial.eval q_min) h0
+    rw [map_mul, map_zero] at h
+    exact mul_ne_zero hPadm₀ hD₀ h
+  · rw [map_mul] at hq
+    have hadm : G.IsAdmissiblePicture q := hPadm q (left_ne_zero_of_mul hq)
+    have hDq : MvPolynomial.eval q D ≠ 0 := right_ne_zero_of_mul hq
+    have hdim : Module.finrank K
+          (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin) ≤
+        Module.finrank K
+          (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q_min)).mulVecLin) :=
+      hDrank q hDq
+    have hle : Module.finrank K (G.liftingSpace q) ≤ Module.finrank K (G.liftingSpace q_min) := by
+      rwa [Graph.finrank_ker_liftingMatrix hadm, Graph.finrank_ker_liftingMatrix hq_min.1] at hdim
+    exact ⟨hadm, fun q' hq' => hle.trans (hq_min.2 q' hq')⟩
+
 end CombinatorialRigidity.Molecular

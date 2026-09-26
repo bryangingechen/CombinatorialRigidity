@@ -1,19 +1,25 @@
 # Phase 40b — PENCIL-X0 / CARRIER: planar pictures, the lifting space, `X₀`, and "the general point attains" (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). C1a (the definitions) and C1b (the
-one-witness upgrade `Graph.x0Attains_of_exists`) landed 2026-09-26 in
-`Molecule/Pencil/MainComponent/Carrier.lean`. **Next: C2 ∥ C3 ∥ (DUAL-K → C4)**; *Hand-off* names C2's
-`U`-open lemma first. Plan: `notes/Phase40-design.md` §3.
+**Status:** in progress (opened design-first 2026-09-26). C1a, C1b, and C2's `U`-open lemma
+(`Graph.exists_isAdmissiblePicture`, `Graph.exists_isMainPicture`,
+`Graph.exists_mvPolynomial_isMainPicture`) landed 2026-09-26 in
+`Molecule/Pencil/MainComponent/Carrier.lean`. **Next: finish C2's remaining lifting-space API**
+(`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound), or generalize the `U`-open landing's temporary
+"exactly three members" hypothesis; C3 and C4 may run in parallel. Plan: `notes/Phase40-design.md`
+§3.
 
 ## Current state
 
-**Next concrete step: C2's `U`-open lemma** (*Hand-off*); C3 and C4 may run in parallel. C1a landed
-seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
-`Graph.x0Attains_of_exists` at the pinned signature, both in
-`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean` (signatures and the C1b
-API in the checklist). `blueprint/src/chapter/main-component.tex` carries five green definition
-nodes and the green lemma `lem:pencil-x0-one-witness` (C1b, split out of
-`thm:pencil-x0-main-component`); the four MC nodes stay red.
+**Next concrete step: finish C2's remaining lifting-space API** (*Hand-off*) — `Aff(q) ⊆ L(q)`,
+`3 ≤ dim L(q)` at admissible `q`, and the codim bound are still open; C3 and C4 may run in parallel.
+C1a landed seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
+`Graph.x0Attains_of_exists` at the pinned signature, and C2's `U`-open lemma landed the existence of
+an admissible picture, a main-picture minimizer, and the openness polynomial (checklist), all in
+`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean` (signatures and the API
+in the checklist). `blueprint/src/chapter/main-component.tex` carries five green definition nodes,
+the green lemma `lem:pencil-x0-one-witness` (C1b), and the green lemma
+`lem:pencil-x0-main-picture-open` (C2's `U`-open landing), both split out of
+`thm:pencil-x0-main-component`, which stays red.
 
 ## Architectural choices made up front
 
@@ -78,14 +84,20 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
   `Matrix.linearIndependent_rows_iff_det_ne_zero`.
 - [ ] **C2 ∥ C3 ∥ C4** (parallelizable; each needs only C1a):
   - [ ] **C2 — lifting-space API** (sonnet): `Aff(q)` (restricted to `V(G)`) `⊆ L(q)`,
-    `3 ≤ dim L(q)` at admissible `q`, the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail), and
-    **`U` nonempty open**: `∃ P ≠ 0, ∀ q, eval q P ≠ 0 → G.IsMainPicture q` (`[Infinite K]`; STEPS
-    uses it to put its witnesses over `U`). Route for the last, from C1b's API: an admissible
-    picture exists (the only new work; needs every closed neighbourhood of a body to have three
-    members, and `K` infinite, e.g. points `(t, t²)` at distinct `t`); take an admissible `q₀`
-    minimizing `finrank L` (`Nat.find`); then `P := Padm · D` from
-    `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's third conjunct (at `z₀ = 0`), with
-    `finrank_ker_liftingMatrix` at both ends.
+    `3 ≤ dim L(q)` at admissible `q`, and the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) are
+    still open.
+    - [x] **`U` nonempty open** (landed 2026-09-26): `∃ P ≠ 0, ∀ q, eval q P ≠ 0 →
+      G.IsMainPicture q` (`[Infinite K]`; STEPS uses it to put its witnesses over `U`) —
+      `Graph.exists_mvPolynomial_isMainPicture`, from `Graph.exists_isMainPicture` (a
+      `finrank L(q)`-minimizing admissible `q_min`, via `Nat.sInf` over the image set) and
+      `Graph.exists_isAdmissiblePicture` (an admissible picture exists, via the moment curve
+      `v ↦ (φ v, (φ v)²)` at an injective `φ : α → K`, **under the temporary hypothesis that every
+      closed neighbourhood has *exactly* three members** — weaker than the section's standing "at
+      least three" from minimum degree two; generalizing the triple-extraction from a larger
+      neighbourhood is separate, still-open work). `P := Padm * D` from
+      `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's semicontinuity conjunct at the
+      trivial kernel vector `0`, with `finrank_ker_liftingMatrix` at both ends. Blueprint:
+      `lem:pencil-x0-main-picture-open`.
   - [ ] **C3 — picture→normal API** (sonnet/opus): `pencilNormalOfPicture ≠ 0 ↔` the selected
     triple is independent (via `cross₃_ne_zero_iff_linearIndependent`; picture-triple independence
     gives config-triple independence); selector-independence up to scalar at `z ∈ L(q)`; a
@@ -161,18 +173,28 @@ recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now
 
 ## Hand-off / next phase
 
-**Next commit: C2's `U`-open lemma** (sonnet/opus) in `Carrier.lean`, route in the C2 bullet:
-`∃ P ≠ 0, ∀ q, eval q P ≠ 0 → G.IsMainPicture q` over an infinite `K`. Its one new sub-step is an
-admissible picture's existence; if that alone is a commit, land it first (under a hypothesis that
-every body's closed neighbourhood has three members) and re-aim here. C3 and C4 need only C1a and
-may run in parallel; the rest of C2 (`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is separate.
-Blueprint: the `U`-open content is `thm:pencil-x0-main-component`'s first clause, which stays red
-until the bundle/irreducibility clauses are settled; give the `U`-open lemma its own node when it
-lands. DUAL-K (checklist) must land before C4 and never builds in parallel with a `Carrier.lean`
-build. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥(DUAL-K → C4) → C5 first.
+**Next commit: finish C2's remaining lifting-space API** (sonnet) in `Carrier.lean`: `Aff(q)`
+(restricted to `V(G)`) `⊆ L(q)`, `3 ≤ dim L(q)` at admissible `q` (non-collinear picture points force
+`Aff(q)` three-dimensional), and the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) — none of
+which the `U`-open landing touched (checklist). A separate, independent task: generalize
+`Graph.exists_isAdmissiblePicture`'s temporary "exactly three members" hypothesis to the section's
+standing "at least three" (extract an independent triple from a larger closed neighbourhood, rather
+than consuming `Set.ncard_eq_three`'s exact form directly) — flagged in
+`fmlnote:pencil-x0-main-picture-open-three`; either task is a fine next commit. C3 and C4 need only
+C1a and may run in parallel. DUAL-K (checklist) must land before C4 and never builds in parallel with
+a `Carrier.lean` build. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥(DUAL-K → C4) →
+C5 first.
 
 ## Decisions made during this phase
 
+- **2026-09-26 — C2's `U`-open lemma scopes its existence step to "exactly three members".**
+  `Graph.exists_isAdmissiblePicture` takes the cheapest sufficient hypothesis
+  (`Set.ncard_eq_three` gives an explicit triple directly) rather than the section's "at least
+  three", which needs a separate triple-extraction lemma, left open
+  (`fmlnote:pencil-x0-main-picture-open-three`). The moment curve `v ↦ (φ v, (φ v)²)` makes every
+  triple's picture points non-collinear (`det_moment_curve_triple`, a permuted Vandermonde
+  product). The assembly reuses `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial
+  kernel vector `0`; no new mirror lemma and no witness height to transport.
 - **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor.** Stacking a
   projection onto `ker M(q₀)` under `M(q₀)` and left-multiplying by a constant left inverse gives a
   square polynomial `S(q)` with `S(q₀) = 1`; `adj S(q) z₀` is the section, no minor or rank-minor
