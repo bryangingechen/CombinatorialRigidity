@@ -95,6 +95,10 @@ symptom-indexed and lighter.
     the suffix grows. Re-index the inner steps off `rest ++ [b]` with
     `List.getElem_append_left`; the peeled last element resolves with bare `simp`.
     (FRICTION *A `List.foldl` whose induction base case lives at index `0`…*.)
+25. **"Injective near `q₀`, with a polynomial inverse" — left-multiply by a left inverse at
+    `q₀`** — for a matrix of polynomials whose specialization at `q₀` is injective, don't hunt
+    for a nonzero maximal minor: a constant left inverse `H` at `q₀` makes `H · A(q)` square with
+    `det = 1` at `q₀`, and its adjugate is the polynomial inverse off `det = 0`.
 
 ---
 
@@ -1524,3 +1528,21 @@ reuse. Projection notation sees through an arbitrary `Prop`-valued `def` unfoldi
 (no need to `unfold` first) — the same transparency `obtain`/`rcases` rely on, just non-destructive.
 (Phase 39 W5-L2 remainder, `hasPencilPanelRealization_pencilChartFramework` /
 `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`, `Molecule/Pencil.lean`.)
+
+## 25. "Injective near `q₀`, with a polynomial inverse" — left-multiply by a left inverse at `q₀`, not a nonzero minor
+
+The textbook route to "a matrix of polynomials `A(q)`, injective at `q₀`, stays injective on a
+Zariski-open set, with a polynomial (Cramer) inverse there" picks a nonzero maximal minor at `q₀`.
+In Lean that needs "rank = size of the largest nonzero minor", which mathlib lacks, plus row/column
+subtype bookkeeping. Instead take a **constant** left inverse `H` of `A(q₀)`
+(`LinearMap.exists_leftInverse_of_injective` on `A(q₀).mulVecLin`, then `LinearMap.toMatrix'`;
+`H * A(q₀) = 1` by `← toMatrix'_toLin'`, `← toMatrix'_comp`, `toLin'_apply'`, `toMatrix'_id`).
+Then `S(q) := H.map C * A` is square and polynomial with `S(q₀) = 1`, so `det S` is a polynomial
+nonzero at `q₀`; off its zero set `S(q)`, hence `A(q)`, is injective
+(`Matrix.mulVec_injective_iff_isUnit`), and `adj S(q)` gives Cramer solutions
+(`Matrix.adjugate_mul`). Push `MvPolynomial.eval q` through with `RingHom.map_det`,
+`RingHom.map_adjugate`, `RingHom.map_mulVec`, `Matrix.map_mul`. For a kernel (not an injective map)
+first stack a projection onto `ker A(q₀)` under `A(q₀)` (`Matrix.fromRows`) to make it injective.
+Worked example: `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
+(`CombinatorialRigidity/Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`, Phase 40b C1b; FRICTION
+*`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`*).

@@ -165,6 +165,12 @@ containing the points of the whole closed neighbourhood
   admissible and the heights $z \in L(q)$ at which $(q, z)$ has rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ (\cref{def:D-deficiency},
   at $n = 3$) contain a nonempty Zariski-open subset of $L(q)$.
+
+  The definition is stated over any field, but only over an infinite
+  field does $P \neq 0$ make the good pictures a nonempty Zariski-open
+  set: over a finite field a nonzero polynomial can vanish at every point,
+  and the condition then holds vacuously. The field is infinite throughout
+  this section.
 \end{definition}
 
 The hinge of that framework at an edge $uv$ is the meet of the planes
@@ -179,10 +185,72 @@ plane normals $n_v$ as panel normals instead would not give this rank:
 where two adjacent planes coincide the meet is zero, and a zero hinge
 allows no relative motion of its two bodies.
 
+\begin{lemma}[One attaining configuration forces the general one]
+  \label{lem:pencil-x0-one-witness}
+  \lean{Graph.x0Attains_of_exists,
+        Graph.IsAdmissiblePicture.exists_mvPolynomial,
+        Graph.IsAdmissiblePicture.supportExtensor_ne_zero,
+        Graph.liftingMatrix, Graph.map_ker_liftingMatrix,
+        Graph.finrank_ker_liftingMatrix,
+        Matrix.exists_mvPolynomial_section_mulVec_eq_zero}
+  \leanok
+  \uses{def:pencil-main-picture, def:pencil-x0-attains,
+        def:panel-support-extensor, lem:rank-polynomial-of-le-finrank,
+        lem:trivial-motions-rank-bound}
+  Let $G$ have at least one body, let $q_0$ be a main picture of $G$
+  (\cref{def:pencil-main-picture}) and $z_0 \in L(q_0)$, and suppose the
+  configuration $(q_0, z_0)$ has rank at least
+  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
+  (\cref{def:pencil-x0-attains}). Then the general configuration of $G$
+  attains.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Admissibility is the non-vanishing of finitely many polynomials in the
+  picture, one coordinate difference for each pair of adjacent bodies and
+  one $3 \times 3$ determinant for each body, so some polynomial nonzero
+  at $q_0$ has only admissible non-roots. Next, $L(q)$ is the projection
+  to the heights of the kernel of a linear system $M(q)$ in the heights
+  $z$ and one coefficient vector $h_v \in K^3$ per body, requiring
+  $z_w = h_v \cdot (x_w, y_w, 1)$ on the closed neighbourhood of $v$ and
+  vanishing off $V(G)$; its entries are affine in $q$. Over an admissible
+  picture the projection is injective, because three non-collinear
+  picture points in each closed neighbourhood determine $h_v$, so there
+  the kernel has dimension $\dim L(q)$, least at the main picture $q_0$.
+
+  Lift $z_0$ to a kernel vector $x_0$ at $q_0$. Take a projection $\pi$
+  onto $\ker M(q_0)$ and a left inverse $H$ of the stacked matrix
+  $[M(q_0); \pi]$ (the rows of $M(q_0)$ above those of $\pi$), which is
+  injective; then $S(q) = H\,[M(q); \pi]$ is a square matrix polynomial
+  in $q$ with $S(q_0) = 1$. At an admissible
+  picture $q$ with $\det S(q) \neq 0$ the stack is injective, so $\pi$
+  embeds $\ker M(q)$ into $\ker M(q_0)$, onto because $\dim \ker M(q)$ is
+  at least $\dim \ker M(q_0)$. The preimage $x$ of $x_0$ has
+  $S(q) x = x_0$, and by Cramer's rule
+  $\operatorname{adj} S(q)\, x_0 = \det S(q)\, x$ lies in the kernel: a
+  section of the kernel, polynomial in $q$, passing through $x_0$ at
+  $q_0$. Its height part $Z(q)$ lies in $L(q)$.
+
+  The rank of a configuration is the rank of the panel-hinge framework
+  with the configuration points as panel normals. Its hinges are nonzero
+  over an admissible picture (\cref{def:panel-support-extensor}), since
+  two points $(x, y, z, 1)$ over distinct picture points are
+  independent. So \cref{lem:rank-polynomial-of-le-finrank} gives a
+  polynomial $Q$ in the configuration coordinates, nonzero at
+  $(q_0, z_0)$, whose non-vanishing forces the target rank as a lower
+  bound. Take $P$ to be the admissibility polynomial times $\det S(q)$
+  times $Q$ at the configuration $(q, Z(q))$, and, for a picture $q$ with
+  $P(q) \neq 0$, take $R = Q$ at $(q, \cdot)$. Then $P(q_0) \neq 0$, the
+  height $Z(q) \in L(q)$ has $R(Z(q)) \neq 0$, and at every $z \in L(q)$
+  with $R(z) \neq 0$ the rank is at least the target and, every hinge
+  being nonzero, at most the target
+  (\cref{lem:trivial-motions-rank-bound}).
+\end{proof}
+
 \begin{theorem}[The main component]
   \label{thm:pencil-x0-main-component}
   \uses{def:pencil-main-picture, def:pencil-x0-attains,
-        lem:pencil-condition-linear}
+        lem:pencil-condition-linear, lem:pencil-x0-one-witness}
   The set $U$ of main pictures (\cref{def:pencil-main-picture}) is
   nonempty and Zariski-open, the pairs $(q, z)$ with $q \in U$ and
   $z \in L(q)$ form a vector bundle over $U$, and its closure $X_0$ is
@@ -192,8 +260,9 @@ allows no relative motion of its two bodies.
   over the bundle it attains its maximum on a dense open subset. In
   particular, if a single configuration $(q, z)$ with $q \in U$ and
   $z \in L(q)$ has rank at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$,
-  then the general configuration of $G$ attains, and $G$ has a
-  rank-attaining pencil realization with adjacent points distinct.
+  so that the general configuration of $G$ attains
+  (\cref{lem:pencil-x0-one-witness}), then $G$ has a rank-attaining
+  pencil realization with adjacent points distinct.
 \end{theorem}
 \begin{proof}
   Over an admissible $q$, \cref{lem:pencil-condition-linear} presents
@@ -202,8 +271,9 @@ allows no relative motion of its two bodies.
   $q$; its rank is lower semicontinuous, so the pictures of least
   $\dim L$ are open, and there the kernel is a vector bundle with
   irreducible total space. Over a neighbourhood of a main picture,
-  Cramer's rule on a maximal nonvanishing minor gives a polynomial
-  section of the bundle through any point of the fibre. Lower
+  Cramer's rule gives a polynomial section of the bundle through any
+  point of the fibre (\cref{lem:pencil-x0-one-witness}, whose proof also
+  gives the attaining half of the last claim). Lower
   semicontinuity of the rank on the irreducible $X_0$, together with
   the fact that the rank never exceeds
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ once every hinge is

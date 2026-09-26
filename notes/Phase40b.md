@@ -1,18 +1,19 @@
 # Phase 40b — PENCIL-X0 / CARRIER: planar pictures, the lifting space, `X₀`, and "the general point attains" (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). C1a landed 2026-09-26: the CARRIER
-definitions, in `Molecule/Pencil/MainComponent/Carrier.lean`. **Next: C1b**, the one-witness upgrade
-`Graph.x0Attains_of_exists`, at the signature in *Hand-off*. Plan: `notes/Phase40-design.md` §3.
+**Status:** in progress (opened design-first 2026-09-26). C1a (the definitions) and C1b (the
+one-witness upgrade `Graph.x0Attains_of_exists`) landed 2026-09-26 in
+`Molecule/Pencil/MainComponent/Carrier.lean`. **Next: C2 ∥ C3 ∥ C4**; *Hand-off* names C2's
+`U`-open lemma first. Plan: `notes/Phase40-design.md` §3.
 
 ## Current state
 
-**Next concrete step: C1b — prove `Graph.x0Attains_of_exists`** at the signature in *Hand-off*
-(type-checked with a `sorry` body in scratch; not landed). C1a landed seven definitions and the
-`Graph.mem_liftingSpace` unfolding in
-`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean` (signatures in the
-checklist). `blueprint/src/chapter/main-component.tex` carries them as five green definition nodes
-(`def:pencil-admissible-picture`, `def:pencil-lifting-space`, `def:pencil-configuration`,
-`def:pencil-main-picture`, `def:pencil-x0-attains`); the four MC nodes stay red.
+**Next concrete step: C2's `U`-open lemma** (*Hand-off*); C3 and C4 may run in parallel. C1a landed
+seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
+`Graph.x0Attains_of_exists` at the pinned signature, both in
+`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean` (signatures and the C1b
+API in the checklist). `blueprint/src/chapter/main-component.tex` carries five green definition
+nodes and the green lemma `lem:pencil-x0-one-witness` (C1b, split out of
+`thm:pencil-x0-main-component`); the four MC nodes stay red.
 
 ## Architectural choices made up front
 
@@ -62,31 +63,37 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
                 (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
               = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3
   ```
-- [ ] **C1b/C6 — `Graph.x0Attains_of_exists`** (next; opus, fragility): the semicontinuity engine,
-  proved once. Route: admissibility is open at `q₀` (one coordinate difference per link, one `3×3`
-  determinant per body at `q₀`'s triples); the lifting system `M(q)` (rows: per-body affine
-  equations on `closedNbhd` + support rows; columns: heights ⊕ per-body `Fin 3` coefficients) has a
-  minor nonzero at `q₀` of maximal rank over admissible pictures (`IsMainPicture`), so on
-  {minor ≠ 0, admissible} its kernel has constant dimension; Cramer on that minor, divided by its
-  value at `q₀`, gives a polynomial section `z̃(q) ∈ L(q)` with `z̃(q₀) = z₀`.
-  `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` at the `q₀, z₀` config points
-  gives `Q` over `α × Fin 4` (checked to apply verbatim, scratch `example`); take
-  `R := Q[X(w,0), X(w,1), X(w,2), X(w,3) ↦ C x_w, C y_w, X w, 1]` and
-  `P := admissibility · minor · Q(config points of (q, z̃(q)))`; equality from
-  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` (hinges nonzero at admissible `q`).
-  No `[Infinite K]` is needed; add it only if the proof uses it (`unusedArguments`). Scope
-  fallback: land the kernel-family/Cramer step alone first, as a general mirror lemma.
+- [x] **C1b/C6 — `Graph.x0Attains_of_exists`** (landed 2026-09-26 at the signature C1a pinned,
+  unchanged; no `[Infinite K]`). API for C2–C5, all in `Carrier.lean` unless noted:
+  `Graph.IsAdmissiblePicture.exists_mvPolynomial` (admissibility is open; `[Finite α]` only);
+  `Graph.IsAdmissiblePicture.supportExtensor_ne_zero` (hinges nonzero at every height over an
+  admissible `q`) via `linearIndependent_pencilConfigPoint_pair`; `Graph.liftingMatrix K G` (`M(q)`,
+  rows `α ⊕ (α × α) ⊕ (α × Fin 3)`, columns `α ⊕ (α × Fin 3)`) with
+  `Graph.liftingMatrix_mulVec_eq_zero_iff`, `Graph.map_ker_liftingMatrix` (height projection of
+  `ker M(q)` is `L(q)`, any `q`), `Graph.finrank_ker_liftingMatrix` (equal finrank, admissible `q`);
+  the mirror `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
+  (`Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`: `D`, `Z` with `D(q₀) ≠ 0`, `Z(q₀) = z₀`,
+  `D(q) ≠ 0 → dim ker M(q) ≤ dim ker M(q₀)`, and the section in `ker M(q)` where also
+  `dim ker M(q₀) ≤ dim ker M(q)`); mirrors `MvPolynomial.eval_bind₁`,
+  `Matrix.linearIndependent_rows_iff_det_ne_zero`.
 - [ ] **C2 ∥ C3 ∥ C4** (parallelizable; each needs only C1a):
   - [ ] **C2 — lifting-space API** (sonnet): `Aff(q)` (restricted to `V(G)`) `⊆ L(q)`,
     `3 ≤ dim L(q)` at admissible `q`, the codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail), and
     **`U` nonempty open**: `∃ P ≠ 0, ∀ q, eval q P ≠ 0 → G.IsMainPicture q` (`[Infinite K]`; STEPS
-    uses it to put its witnesses over `U`).
+    uses it to put its witnesses over `U`). Route for the last, from C1b's API: an admissible
+    picture exists (the only new work; needs every closed neighbourhood of a body to have three
+    members, and `K` infinite, e.g. points `(t, t²)` at distinct `t`); take an admissible `q₀`
+    minimizing `finrank L` (`Nat.find`); then `P := Padm · D` from
+    `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's third conjunct (at `z₀ = 0`), with
+    `finrank_ker_liftingMatrix` at both ends.
   - [ ] **C3 — picture→normal API** (sonnet/opus): `pencilNormalOfPicture ≠ 0 ↔` the selected
     triple is independent (via `cross₃_ne_zero_iff_linearIndependent`; picture-triple independence
     gives config-triple independence); selector-independence up to scalar at `z ∈ L(q)`; a
     `…Poly`/`…Poly_eval` mirror via `cross₃Poly` (X0Gen's nondegeneracy is polynomial in `z`).
   - [ ] **C4 — the config as a pencil framework** (opus, fragility): the `ofNormals … (config
-    points) .toBodyHinge` support extensor `≠ 0 ↔ q_u ≠ q_v`; the hinge extensor `C_e = p_u ∧ p_v`
+    points) .toBodyHinge` support extensor `≠ 0 ↔ q_u ≠ q_v` (`←` landed in C1b, at every height:
+    `Graph.IsAdmissiblePicture.supportExtensor_ne_zero`; `→` needs `z ∈ L(q)`, since distinct
+    heights over one picture point still give independent points); the hinge extensor `C_e = p_u ∧ p_v`
     affine in `z` (MC-3 Plücker); **the polar/primal rank equality**: a point-join framework
     (hinges `p_u ∧ p_v`, endpoints from `ends`, no `[Inhabited α]`) has the rank of `ofNormals` at
     the config points — `panelSupportExtensor = complementIso ∘ normalsJoin`, then
@@ -117,25 +124,24 @@ recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now
 
 ## Hand-off / next phase
 
-**Next commit: C1b — prove `Graph.x0Attains_of_exists`** (opus, fragility zone) in `Carrier.lean`,
-at this signature (type-checked with a `sorry` body against the landed defs; route in the checklist):
-```lean
-theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α β}
-    (hV : V(G).Nonempty) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    {q₀ : α × Fin 2 → K} (hq₀ : G.IsMainPicture q₀) {z₀ : α → K} (hz₀ : z₀ ∈ G.liftingSpace q₀)
-    (hrank : screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 ≤
-      (Module.finrank K (Submodule.span K
-        (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q₀ z₀ p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)) :
-    G.X0Attains K
-```
-Blueprint: `thm:pencil-x0-main-component` bundles C1b's one-witness clause with C2's `U`-open
-content, so C1b splits the clause into its own lemma node (pinned + `\leanok`) and leaves the
-theorem red. Do NOT open FLAT or any successor layer; CARRIER runs C1b → C2∥C3∥C4 → C5 first.
+**Next commit: C2's `U`-open lemma** (sonnet/opus) in `Carrier.lean`, route in the C2 bullet:
+`∃ P ≠ 0, ∀ q, eval q P ≠ 0 → G.IsMainPicture q` over an infinite `K`. Its one new sub-step is an
+admissible picture's existence; if that alone is a commit, land it first (under a hypothesis that
+every body's closed neighbourhood has three members) and re-aim here. C3 and C4 need only C1a and
+may run in parallel; the rest of C2 (`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`, the codim bound) is separate.
+Blueprint: the `U`-open content is `thm:pencil-x0-main-component`'s first clause, which stays red
+until the bundle/irreducibility clauses are settled; give the `U`-open lemma its own node when it
+lands. Do NOT open FLAT or any successor layer; CARRIER runs C2∥C3∥C4 → C5 first.
 
 ## Decisions made during this phase
 
+- **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor.** Stacking a
+  projection onto `ker M(q₀)` under `M(q₀)` and left-multiplying by a constant left inverse gives a
+  square polynomial `S(q)` with `S(q₀) = 1`; `adj S(q) z₀` is the section, no minor or rank-minor
+  lemma needed (TACTICS-GOLF § 25). `M(q)` carries per-body coefficient columns, so `L(q)` is its
+  kernel's height projection by definition; `IsMainPicture` enters once, as
+  `dim ker M(q₀) ≤ dim ker M(q)` at admissible `q`. The blueprint's `lem:pencil-condition-linear`
+  (red) is not used: the Lean route needs only the projection lemmas above.
 - **2026-09-26 — opened design-first.** The design recon (opus, adopted as session rung; a parallel
   fable recon ran too) settled the new mirror definitions and the β-headroom fix; the coordinator
   adjudication above is the accepted design. The cross-phase plan stays `notes/Phase40-design.md` §3.

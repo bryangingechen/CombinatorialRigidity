@@ -1194,8 +1194,11 @@ four red nodes ((MC-1),(MC-2),(MC-3),(MC-10)(a)) wired toward `def:pencil-main-c
 Slice C1a (2026-09-26) landed the definitions in `Molecule/Pencil/MainComponent/Carrier.lean`
 (`Graph.IsAdmissiblePicture`, `Graph.liftingSpace`, `Graph.IsMainPicture` for `U`,
 `pencilConfigPoint`/`pencilNormalOfPicture`, and `Graph.X0Attains`, whose rank is read at
-`ofNormals` of the configuration points and which carries a fibre-open set of attaining heights);
-next is C1b, the one-witness upgrade `Graph.x0Attains_of_exists`. Two questions are left for
+`ofNormals` of the configuration points and which carries a fibre-open set of attaining heights).
+Slice C1b (2026-09-26) landed the one-witness upgrade `Graph.x0Attains_of_exists`: one attaining
+configuration over a main picture forces the general one, by a denominator-free Cramer section of
+the lifting system through the witness composed with the rank polynomial. Next are C2 ∥ C3 ∥ C4,
+C2's `U`-open lemma first. Two questions are left for
 the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root cause
 (`notes/Phase40b.md` *Blockers*).
 

@@ -98,6 +98,32 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `if_pos` / `dif_pos` are now deprecated (mathlib bump) — use `ite_eq_left` / `dite_eq_left`
+- **Where it bit:** Phase 40b CARRIER C1b (`Graph.IsAdmissiblePicture.exists_mvPolynomial`),
+  `rw [if_pos h] at hl` to open a product factor `if G.Adj u v then … else 1`.
+- **Friction:** compiles with a deprecation warning ("Use `ite_eq_left` instead"), tripping the
+  warning-clean gate. Sibling of the `push_neg` → `push Not` and `linearIndependent_fin_cons`
+  renames below.
+- **Fix:** `rw [ite_eq_left h]` (same statement, `c → ite c a b = a`); `dite_eq_left` for `dif_pos`.
+- **Status:** resolved in-proof (usage note).
+
+### [idiom] `split_ifs` on `if ¬p then a else b` splits on `p` with the branches swapped — the first case carries `h : p`
+- **Where it bit:** Phase 40b CARRIER C1b (`Graph.liftingMatrix_mulVec_eq_zero_iff`), a row value
+  `if w ∉ V(G) then x w else 0`.
+- **Friction:** the bullets were written in source order (`¬p` case first) and both failed: the
+  first goal was the `0` branch with `hw : w ∈ V(G)`.
+- **Fix:** order the bullets as `p`-case (the `else` branch) first, or state the row with the
+  positive condition.
+- **Status:** resolved in-proof (usage note).
+
+### [idiom] `congr 1` on `MvPolynomial.eval f Q = MvPolynomial.eval g Q` stops at `eval f = eval g` — use `congr 2` to reach `f = g`
+- **Where it bit:** Phase 40b CARRIER C1b (`Graph.x0Attains_of_exists`, the two `eval_bind₁`
+  unfoldings).
+- **Friction:** `eval f Q` is `DFunLike.coe (eval f) Q`, so one `congr` level leaves the equality
+  of ring homs, and a following `funext ⟨w, j⟩` fails to unify with it.
+- **Fix:** `congr 2` (then `funext`).
+- **Status:** resolved in-proof (usage note).
+
 ### [resolved] Two Lean style linters cost a build cycle each in one commit: a *no-op* `show`, and `haveI` on a `Prop`-valued class
 - **Where it bit:** Phase 39 checklist item 5 (`Molecule/Pencil/Arms.lean`,
   `Molecule/Pencil/Pair.lean`). Four `show LinearIndependent K ![point u, point v]` lines
@@ -228,27 +254,6 @@ to be re-derived by re-reading entries later.
   (one `MultilinearMap.map_smul_univ`) or the 2-slot specialization. Kept local in `Steer.lean` for
   now to avoid rebuilding the deep-upstream `Extensor.lean` for the rank-brick commit — lift when a
   second consumer appears or in a cleanup round.
-- **Status:** open.
-
-### [mirror-candidate] `Matrix.dotProduct`/`Matrix.det` glue lemmas are unnamespaced; no packaged `LinearIndependent`-rows-iff-`det≠0` for a square family
-- **Where it bit:** Phase 39 (PENCIL) W5-L1 (`Molecular/Molecule/Pencil.lean`, `cross₃` and its
-  properties). Two separate gaps in one commit: (1) `dotProduct_eq_iff`, `dotProduct_eq_zero_iff`,
-  `add_dotProduct`, `smul_dotProduct` all live in `Mathlib.LinearAlgebra.Matrix.DotProduct` but are
-  declared *outside* the `Matrix` namespace — guessing `Matrix.dotProduct_eq_iff` etc. (the natural
-  first guess, matching how `Matrix.det_updateRow_add`/`Matrix.det_zero_of_row_eq` and everything
-  else in the same proofs are namespaced) fails with "unknown constant"; (2) proving `cross₃ x y z ≠
-  0 ↔ LinearIndependent K ![x, y, z]` needed the 3-lemma chain
-  `Matrix.linearIndependent_rows_iff_isUnit` + `Matrix.isUnit_iff_isUnit_det` +
-  `isUnit_iff_ne_zero` *twice* (both directions of the iff) to go from "rows of a square matrix are
-  independent" to "det ≠ 0" — no single packaged `LinearIndependent K A.row ↔ A.det ≠ 0` lemma for a
-  field exists.
-- **Proposed fix:** (1) is a pure naming-convention note, not a mirror candidate — just remember
-  `Matrix.DotProduct`'s API is unnamespaced. (2) is upstream-eligible:
-  `Matrix.linearIndependent_rows_iff_det_ne_zero {A : Matrix (Fin n) (Fin n) K} : LinearIndependent
-  K A.row ↔ A.det ≠ 0` (or the `Fintype`-indexed general form), a one-line corollary of the three
-  lemmas above, into `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` next to
-  `linearIndependent_rows_iff_isUnit`. Not mirrored yet — two call sites so far (both in
-  `cross₃_ne_zero_iff_linearIndependent`); mirror if a third consumer needs it.
 - **Status:** open.
 
 ### [mirror-candidate] No simp-normal form for `Fin.castPred` of a numeral — `![a, b, c] (Fin.castPred 2 ⋯)` stalls where `Fin.castSucc`/`Fin.succ` reduce
@@ -3013,6 +3018,62 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** wontfix (upstream concern).
 
 ## Mirrored
+
+### [mirrored] `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` — a polynomial section of a kernel family, and upper semicontinuity of its kernel dimension
+- **Where it bit:** Phase 40b CARRIER C1b (`Graph.x0Attains_of_exists`,
+  `Pencil/MainComponent/Carrier.lean`): transporting a point `z₀ ∈ L(q₀)` of the lifting space to
+  nearby pictures as a *polynomial* in the picture, which the rank polynomial can then be composed
+  with.
+- **Friction:** mathlib has nothing for "a matrix of `MvPolynomial`s; a kernel vector at `q₀`
+  extends to a polynomial kernel section where the kernel dimension is least". The planned route
+  (a maximal nonvanishing minor at `q₀`) needs a rank = largest-nonzero-minor lemma mathlib lacks.
+- **Resolution:** mirrored, via a minor-free Cramer argument: a projection `π` onto `ker A(q₀)`
+  makes `[A(q₀); π]` injective, so it has a left inverse `H`
+  (`LinearMap.exists_leftInverse_of_injective`), and `S(q) = H [A(q); π]` is square, polynomial,
+  with `S(q₀) = 1`; `adj S(q) z₀` is the section. The same `det S` gives
+  `dim ker A(q) ≤ dim ker A(q₀)` off its zero set (exposed as a conjunct, for CARRIER C2's
+  "`U` is open"). General lesson: to get a Zariski-open "injective near `q₀`" with a polynomial
+  inverse, left-multiply by a left inverse at `q₀` rather than hunting for a nonzero minor.
+  **Lifted to:** TACTICS-GOLF § 25.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean` (new mirror file).
+
+### [mirrored] `MvPolynomial.eval_bind₁` — the `eval` form of `aeval_bind₁`
+- **Where it bit:** Phase 40b CARRIER C1b (`Graph.x0Attains_of_exists`): evaluating the rank
+  polynomial `Q` after substituting the configuration coordinates (`bind₁`).
+- **Friction:** mathlib has `MvPolynomial.aeval_bind₁` and `eval₂Hom_bind₁`, no `eval_bind₁`.
+  `rw [MvPolynomial.aeval_bind₁]` fails on an `eval f (bind₁ g φ)` goal (`aeval f = eval f` holds
+  only definitionally), and `simpa only [coe_aeval_eq_eval]` does not bridge it either; the term
+  `aeval_bind₁ f g φ` itself does typecheck against the `eval` statement.
+- **Resolution:** mirrored `MvPolynomial.eval_bind₁ := aeval_bind₁ f g φ`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Algebra/MvPolynomial/Monad.lean` (new mirror file).
+
+### [mirrored] `Matrix.dotProduct`/`Matrix.det` glue lemmas are unnamespaced; no packaged `LinearIndependent`-rows-iff-`det≠0` for a square family
+- **Where it bit:** Phase 39 (PENCIL) W5-L1 (`Molecular/Molecule/Pencil.lean`, `cross₃` and its
+  properties). Two separate gaps in one commit: (1) `dotProduct_eq_iff`, `dotProduct_eq_zero_iff`,
+  `add_dotProduct`, `smul_dotProduct` all live in `Mathlib.LinearAlgebra.Matrix.DotProduct` but are
+  declared *outside* the `Matrix` namespace — guessing `Matrix.dotProduct_eq_iff` etc. (the natural
+  first guess, matching how `Matrix.det_updateRow_add`/`Matrix.det_zero_of_row_eq` and everything
+  else in the same proofs are namespaced) fails with "unknown constant"; (2) proving `cross₃ x y z ≠
+  0 ↔ LinearIndependent K ![x, y, z]` needed the 3-lemma chain
+  `Matrix.linearIndependent_rows_iff_isUnit` + `Matrix.isUnit_iff_isUnit_det` +
+  `isUnit_iff_ne_zero` *twice* (both directions of the iff) to go from "rows of a square matrix are
+  independent" to "det ≠ 0" — no single packaged `LinearIndependent K A.row ↔ A.det ≠ 0` lemma for a
+  field exists.
+- **Proposed fix:** (1) is a pure naming-convention note, not a mirror candidate — just remember
+  `Matrix.DotProduct`'s API is unnamespaced. (2) is upstream-eligible:
+  `Matrix.linearIndependent_rows_iff_det_ne_zero {A : Matrix (Fin n) (Fin n) K} : LinearIndependent
+  K A.row ↔ A.det ≠ 0` (or the `Fintype`-indexed general form), a one-line corollary of the three
+  lemmas above, into `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` next to
+  `linearIndependent_rows_iff_isUnit`. Not mirrored yet — two call sites so far (both in
+  `cross₃_ne_zero_iff_linearIndependent`); mirror if a third consumer needs it.
+- **Status:** mirrored (2026-09-26, Phase 40b C1b) at the third consumer,
+  `Graph.IsAdmissiblePicture.exists_mvPolynomial` (`Pencil/MainComponent/Carrier.lean`), as
+  `Matrix.linearIndependent_rows_iff_det_ne_zero`. The two original sites in
+  `cross₃_ne_zero_iff_linearIndependent` (`Pencil/Chart.lean`) are not refactored — touching
+  `Chart.lean` rebuilds every Pencil module; a cleanup pass may switch them.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` (new mirror file).
 
 ### [mirrored] `Submodule.finrank_sup_of_inf_eq_bot` — fused finrank equality for disjoint submodules
 - **Where it bit:** `le_finrank_span_rigidityRows_of_cut` (`RigidityMatrix.lean`) and
