@@ -818,6 +818,11 @@ connected and need not span the set of bodies.
 
 \begin{lemma}[Rescaling the panel normals]
   \label{lem:pencil-jj-rescale}
+  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor_smul_right,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ofNormals_smul,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.infinitesimalMotions_ofNormals_smul,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul}
+  \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:rigidity-matrix}
   Let $(n_v)$ be panel normals and $(c_v)$ nonzero scalars. At every
@@ -827,6 +832,7 @@ connected and need not span the set of bodies.
   infinitesimal motions and rigidity matrices of the same rank.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:hinge-constraint, lem:span-rigidityRows-eq-of-motions-eq}
   The support extensor is linear in each of its two normals
   (\cref{def:panel-support-extensor}), and a nonzero multiple of a hinge
@@ -837,6 +843,8 @@ connected and need not span the set of bodies.
 
 \begin{lemma}[The planar rank theorem in the chart]
   \label{lem:pencil-jj-chart}
+  \lean{Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint}
+  \leanok
   \uses{thm:theorem-55-6-rows, lem:pencil-lifting-planes-motions}
   Let $K$ be infinite and let $G$ be simple with at least two bodies.
   There is a nonzero polynomial $P$ in the picture coordinates such that
@@ -847,6 +855,7 @@ connected and need not span the set of bodies.
   \operatorname{def}_2(G)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-polynomial-of-le-finrank, def:panel-general-position,
         lem:general-position-support-nonzero, lem:pencil-jj-rescale}
   \Cref{thm:theorem-55-6-rows} at $n = 2$ ($D = 3$) gives a realization
@@ -865,6 +874,12 @@ connected and need not span the set of bodies.
 
 \begin{lemma}[Relabelling the edges]
   \label{lem:pencil-jj-embed-edges}
+  \lean{Graph.embedEdges, Graph.vertexSet_embedEdges, Graph.embedEdges_isLink,
+        Graph.edgeSet_embedEdges, Graph.closedNbhd_embedEdges, Graph.Simple.embedEdges,
+        Graph.liftingSpace_embedEdges, Graph.finrank_liftingSpace_embedEdges,
+        Graph.isAdmissiblePicture_embedEdges_iff, Graph.isMainPicture_embedEdges_iff,
+        Graph.deficiency_embedEdges}
+  \leanok
   \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
         def:pencil-main-picture, def:D-deficiency}
   Relabel the edges of $G$ injectively into a larger set of labels.
@@ -873,6 +888,7 @@ connected and need not span the set of bodies.
   $\operatorname{def}_n(G)$ for any $n$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The bodies, the pairs of adjacent bodies and hence the closed
   neighbourhoods are unchanged, and a partition crosses exactly the
   images of the edges it crossed before.
@@ -891,6 +907,11 @@ connected and need not span the set of bodies.
 
 \begin{theorem}[Jackson and Jord\'an's equality]
   \label{thm:pencil-jj-equality}
+  \lean{Graph.exists_mvPolynomial_finrank_liftingSpace_eq,
+        Graph.IsMainPicture.finrank_liftingSpace_eq,
+        Graph.exists_isMainPicture_finrank_liftingSpace_eq,
+        Graph.closedNbhd_subset_vertexSet}
+  \leanok
   \uses{def:pencil-lifting-space, def:pencil-main-picture,
         def:D-deficiency}
   Let $K$ be infinite and let $G$ be simple, with at least one body and
@@ -902,6 +923,7 @@ connected and need not span the set of bodies.
   $\dim L(q) = 3 + \operatorname{def}_2(G)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-jj-chart, lem:pencil-jj-embed-edges,
         lem:pencil-x0-main-picture-open, lem:pencil-lifting-planes-motions,
         lem:pencil-lifting-space-deficiency}
@@ -919,6 +941,8 @@ connected and need not span the set of bodies.
 
 \begin{corollary}[The general configuration attains when the two deficiencies agree]
   \label{cor:pencil-jj-flat}
+  \lean{Graph.x0Attains_of_deficiency_two_eq_three}
+  \leanok
   \uses{def:pencil-x0-attains, def:D-deficiency}
   Let $K$ be infinite and let $G$ be connected and simple, with at least
   three members in every closed neighbourhood. If
@@ -926,6 +950,7 @@ connected and need not span the set of bodies.
   configuration of $G$ attains (\cref{def:pencil-x0-attains}).
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-jj-equality, cor:pencil-flat-attains}
   \Cref{thm:pencil-jj-equality} gives an admissible picture with
   $\dim L(q) = 3 + \operatorname{def}_2(G) = 3 + \operatorname{def}_3(G)$,

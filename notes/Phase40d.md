@@ -1,18 +1,20 @@
 # Phase 40d — PENCIL-X0 / BRIDGE: Jackson–Jordán's equality (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). BRIDGE proves Jackson–Jordán's equality
-`dim L(q) = 3 + def₂(G)` at the generic picture of every simple graph with `|N[v]| ≥ 3`, over
-every infinite field and with no hypothesis on the edge labels, and `X₀` attaining when
-`def₂ = def₃`. The spike is sorry-free, so the build is transcription. **Next: the build
-commit** — see *Hand-off*.
+**Status:** in progress (opened design-first and built 2026-09-26). BRIDGE proves Jackson–Jordán's
+equality `dim L(q) = 3 + def₂(G)` at the generic picture of every simple graph with `|N[v]| ≥ 3`,
+over every infinite field and with no hypothesis on the edge labels, and `X₀` attaining when
+`def₂ = def₃`. All five nodes are green. **Next: BRIDGE's close** — see *Hand-off*.
 
 ## Current state
 
-**Opened.** `main-component.tex` §`sec:main-component-jj` carries five red nodes and one fmlnote,
-with the informal statements from `ledger.py --brief '(MC-4)' '(MC-5)' '(MC-33)'` and the new
-(MC-172). No Lean has landed yet. **The next concrete commit is the build**: the recon's spike
-becomes `Molecule/Pencil/MainComponent/Bridge.lean` (new, root import), and the five nodes get
-their `\lean{}` pins and turn green.
+**Built.** `Molecule/Pencil/MainComponent/Bridge.lean` (root import) landed in one commit from the
+recon's spike, and the five nodes of `main-component.tex` §`sec:main-component-jj` are green; the
+module docstring lists the statements. Headline axioms, measured on the built tree (one
+`#print axioms` line per declaration under `import CombinatorialRigidity`, `lake env lean`; *script
+not retained*): each of the seven headlines (`finrank_span_rigidityRows_ofNormals_smul`, the chart
+form, `deficiency_embedEdges`, the three equality forms, `x0Attains_of_deficiency_two_eq_three`)
+is exactly `[propext, Classical.choice, Quot.sound]`, and the other fourteen pinned declarations
+use a subset. **The next concrete commit is the close** (docs only).
 
 ## Architectural choices made up front
 
@@ -36,23 +38,16 @@ The coordinator's adjudication (2026-09-26) of the BRIDGE design recon (one opus
 
 ## Lemma checklist
 
-Planned names; the spike compiles them all (`lake env lean`, exit 0, standard axioms).
-
-- [ ] **Rescaling**: `panelSupportExtensor_smul_right`,
-  `PanelHingeFramework.supportExtensor_ofNormals_smul`,
-  `PanelHingeFramework.infinitesimalMotions_ofNormals_smul`,
-  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul` → `lem:pencil-jj-rescale`.
-- [ ] **The chart**: `Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint`
-  → `lem:pencil-jj-chart`.
-- [ ] **Relabelling**: `Graph.embedEdges` with `vertexSet_`, `edgeSet_`, `closedNbhd_`,
-  `liftingSpace_`, `finrank_liftingSpace_`, `deficiency_embedEdges`, `embedEdges_isLink`,
-  `Simple.embedEdges`, `isAdmissiblePicture_`/`isMainPicture_embedEdges_iff` →
-  `lem:pencil-jj-embed-edges`.
-- [ ] **The equality**: `Graph.exists_mvPolynomial_finrank_liftingSpace_eq`,
-  `Graph.IsMainPicture.finrank_liftingSpace_eq`,
-  `Graph.exists_isMainPicture_finrank_liftingSpace_eq`, with the helper
-  `Graph.closedNbhd_subset_vertexSet` → `thm:pencil-jj-equality`.
-- [ ] **With FLAT**: `Graph.x0Attains_of_deficiency_two_eq_three` → `cor:pencil-jj-flat`.
+- [x] **The build** (one commit): the rescaling, chart, relabelling, equality and FLAT-corollary
+  declarations → `lem:pencil-jj-rescale`, `lem:pencil-jj-chart`, `lem:pencil-jj-embed-edges`,
+  `thm:pencil-jj-equality`, `cor:pencil-jj-flat` (names: the nodes' `\lean{}` pins).
+- [ ] **The close** (docs only): ROADMAP (row cell, §40 layer list, compress the §40d
+  subsection), the design doc's status line and §3 BRIDGE, the end-to-end re-read of
+  `sec:main-component-jj`, the exposition ledger, the headline axioms. The public surfaces stay
+  unchanged until Phase 40 closes (the PI's standing call).
+- [ ] **Cleanup-round items, not BRIDGE's:** the edge-restricted generic-normals row rank and the
+  re-base (`notes/Phase40-design.md` §3 BRIDGE); mirroring `Graph.embedEdges` and moving
+  `Graph.closedNbhd_subset_vertexSet` beside `Graph.closedNbhd` (`notes/FRICTION.md`).
 
 ## Blockers / open questions
 
@@ -62,11 +57,11 @@ Planned names; the spike compiles them all (`lake env lean`, exit 0, standard ax
 
 ## Hand-off / next phase
 
-**Next: the build commit.** Transcribe the spike to a new
-`Molecule/Pencil/MainComponent/Bridge.lean` (root import after `Flat`), pin and flip the five
-`sec:main-component-jj` nodes, and record the headline axioms here. Gates: `lake build`,
-`lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`. After the build, the next step is
-BRIDGE's close.
+**Next: BRIDGE's close**, a docs-only commit per `PHASE-BOUNDARIES.md` (intermediate sub-phase
+close): mark 40d done in the ROADMAP cell and layer list, compress §40d and the design doc's §3
+BRIDGE to verdicts, re-read `sec:main-component-jj` end to end, write the exposition-ledger
+entry if any, and re-verify the headline axioms. STEPS opens after that, starting with its
+pre-build recon (§3 STEPS *Tracked*).
 
 ## Decisions made during this phase
 
@@ -79,3 +74,6 @@ BRIDGE's close.
 - **2026-09-26 — informal repairs** (`notes/Phase40-design.md` §5): (MC-172) minted in
   `K-main-MC11.md` (the equality over every infinite field, from Katoh–Tanigawa at `d = 2`), with
   dated appends at (MC-141) and at Step MC5's by-product paragraph.
+- **2026-09-26 — the build**, one commit, the spike transcribed verbatim (no `#print axioms`).
+  Everything stays in `Bridge.lean`: `Graph.embedEdges` is filed as a mirror candidate rather
+  than mirrored, since its `Simple` lemma is about the `Matroid` package's `Graph.Simple`.

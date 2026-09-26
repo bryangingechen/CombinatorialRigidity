@@ -98,6 +98,29 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [mirror-candidate] Mathlib's `Graph` has no edge-relabelling map — `Graph.embedEdges` is project-local
+- **Where it bit:** Phase 40d BRIDGE (`Molecule/Pencil/MainComponent/Bridge.lean`). Jackson–Jordán's
+  equality mentions no edge label, so it relabels the edges into `β ⊕ Fin (3|α| + 1)` to reach the
+  planar rank theorem's fresh-label supply. `Mathlib/Combinatorics/Graph/Maps.lean` maps vertices
+  (`Graph.map`) but not edge labels, so the construction was written from the structure fields.
+- **Friction:** none in the proof; the gap is the missing construction.
+- **Proposed fix:** upstream `Graph.embedEdges (G : Graph α β) (ι : β ↪ β') : Graph α β'` with
+  `vertexSet_embedEdges`, `embedEdges_isLink`, `edgeSet_embedEdges` beside `Graph.map`. It was not
+  mirrored yet: its `Simple` lemma is about the `Matroid` package's `Graph.Simple`, which is not
+  Mathlib's, and the invariance lemmas (`closedNbhd_`, `liftingSpace_`, `deficiency_embedEdges`)
+  are project-specific. Also project-local and misplaced: `Graph.closedNbhd_subset_vertexSet`
+  belongs beside `Graph.closedNbhd` (`Molecule/Pencil/Motive.lean`), where it would replace the two
+  inline copies in `Carrier.lean` (`affineLifts_le_liftingSpace`, `finrank_affineLifts`). That is a
+  cleanup-round move, since `Motive.lean` has many reverse dependencies.
+- **Status:** open.
+- **Recurred (known quirks, no new lesson):** the same build hit `congr 1` vs `congr 2` on
+  `MvPolynomial.eval` after `eval_bind₁` (entry below). It also hit TACTICS-QUIRKS § 38's
+  implicit-pinning timeout: `finrank_span_rigidityRows_ofNormals_smul` left `{c}` implicit against
+  `fun p => (n₀ (p.1, 2))⁻¹ * n₀ p`, which timed out at `isDefEq` until `(c := fun a => …)` was
+  passed. Separately, `simp only [liftingSpace_embedEdges]` could not rewrite under
+  `Module.finrank K ↥(…)` (§ 33's motive), fixed by a `finrank_liftingSpace_embedEdges` corollary
+  proved by `rw`.
+
 ### [idiom] `if_pos` / `dif_pos` are now deprecated (mathlib bump) — use `ite_eq_left` / `dite_eq_left`
 - **Where it bit:** Phase 40b CARRIER C1b (`Graph.IsAdmissiblePicture.exists_mvPolynomial`),
   `rw [if_pos h] at hl` to open a product factor `if G.Adj u v then … else 1`.
