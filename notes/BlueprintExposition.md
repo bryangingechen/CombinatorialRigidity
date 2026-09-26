@@ -989,6 +989,22 @@ subsection `sec:main-component-statements`), gets no exposition now: its account
 entry `thm:pencil-conditional-realization-main-component` above, `[pending]` with Phase 40's close
 as discharge point. The ledger stays at **2 pending / 36 done** (of 38).
 
+### `main-component.tex` — Phase 40c (FLAT: the flat rank)
+
+**No new entries — judged at the sub-phase close (2026-09-26).** The source is again the project's
+own informal proof (`notes/pencil/workbook/K-main.md`, Steps MC4–MC5), and the criterion transfers
+as in the `pencil.tex` section. Every node of `sec:main-component-flat`, with
+`lem:deficiency-antitone` (`deficiency.tex`) and `lem:relative-deficiency-rank-bound`
+(`rigidity-matrix.tex`), is green and landed as first scoped, in one build commit from the design
+recon's spike: nothing rerouted or decomposed. The substantive step, identifying the planar screws
+of a flat configuration with affine functions (`lem:pencil-flat-split`) and the lifting planes with
+the lifting space (`lem:pencil-lifting-planes-dim`), is spelled out in full in Step MC4 and in those
+nodes' proofs, with its classical instances cited (Crapo–Whiteley 1982 Example 4.4; Whiteley 1996
+§8.3); nothing compressed needed expanding. The field-general coordinates on the screw space and the
+bookkeeping of bodies off `V(G)` (`fmlnote:pencil-lifting-planes`) are project-side. The account of
+the whole induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main-component`
+above, `[pending]` until Phase 40's close. The ledger stays at **2 pending / 36 done** (of 38).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

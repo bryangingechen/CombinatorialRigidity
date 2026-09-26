@@ -14,10 +14,11 @@ form a dense open set, over which the realizations assemble into an
 irreducible family whose general member attains the deficiency rank. A
 single realization at that rank forces the general one, because the
 rank is lower semicontinuous. The first subsection introduces these
-objects and proves that one-witness principle. The flat rank, the planar
-rank input, the ear, split-off, contraction and cut steps, and the
-structural coverage build on them; the last subsection states the
-passage back to the two statements.
+objects and proves that one-witness principle; the second computes the
+rank of a flat configuration exactly. The planar rank input, the ear,
+split-off, contraction and cut steps, and the structural coverage build
+on them; the last subsection states the passage back to the two
+statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -726,10 +727,10 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
         Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff}
   \leanok
   \uses{def:pencil-x0-attains, def:pencil-lifting-space, def:D-deficiency}
-  Let $G$ be connected and let $q$ be admissible. Then the flat
-  configuration has rank
-  $\operatorname{rank} R(q, 0) = 6|V(G)| - 3 - \dim L(q)$ exactly
-  (\cref{def:pencil-x0-attains}); hence
+  Let $G$ be connected and let $q$ be admissible. Then the rank
+  $\operatorname{rank} R(q, 0)$ of the flat configuration
+  (\cref{def:pencil-x0-attains}) is exactly
+  $6|V(G)| - 3 - \dim L(q)$; hence
   $\operatorname{rank} R(q, 0) \le 6(|V(G)| - 1) - \operatorname{def}_2(G)$,
   with equality if and only if $\dim L(q) = 3 + \operatorname{def}_2(G)$.
 \end{theorem}
@@ -742,7 +743,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   (\cref{lem:pencil-config-point-join-rank}), which is $6|V(G)|$ minus
   the dimension $3 + \dim F(q) = 3 + \dim L(q)$ of its motions
   (\cref{lem:pencil-flat-split} and \cref{lem:pencil-lifting-planes-dim}). The
-  bound and its equality case are
+  bound and its equality case then follow from
   \cref{lem:pencil-lifting-space-deficiency}.
 \end{proof}
 
@@ -757,14 +758,14 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   $\dim L(q) = 3 + \operatorname{def}_3(G)$, if and only if equality holds
   in \cref{lem:pencil-lifting-space-deficiency} at $q$ and
   $\operatorname{def}_2(G) = \operatorname{def}_3(G)$. If
-  $\dim L(q) \le 3 + \operatorname{def}_3(G)$, then $q$ is a main picture
-  and the general configuration of $G$ attains.
+  $\dim L(q) \le 3 + \operatorname{def}_3(G)$, then the general
+  configuration of $G$ attains.
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{lem:pencil-lifting-space-deficiency, lem:deficiency-antitone,
         lem:pencil-x0-one-witness, def:pencil-main-picture}
-  The first equivalence is \cref{thm:pencil-flat-rank}. By
+  The first equivalence is the exact rank of \cref{thm:pencil-flat-rank}. By
   \cref{lem:pencil-lifting-space-deficiency} and
   \cref{lem:deficiency-antitone},
   $\dim L(q) \ge 3 + \operatorname{def}_2(G) \ge 3 + \operatorname{def}_3(G)$,
