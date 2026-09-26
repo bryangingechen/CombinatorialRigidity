@@ -105,6 +105,14 @@ to be re-derived by re-reading entries later.
   warning-clean gate. Sibling of the `push_neg` → `push Not` and `linearIndependent_fin_cons`
   renames below.
 - **Fix:** `rw [ite_eq_left h]` (same statement, `c → ite c a b = a`); `dite_eq_left` for `dif_pos`.
+- **Recurred:** Phase 40b CARRIER C4 (`pencilConfigFramework_supportExtensor_of_{mem,not_mem}_edgeSet`,
+  term-mode `if_pos he`/`if_neg he` → `ite_eq_left he`/`ite_eq_right he`; a `simp only [sel,
+  dif_pos hv]` unfolding a `let`-bound `dite` → `simp only [sel, hv, ↓reduceDIte]`). Same bump:
+  **`LinearEquiv.ofLinear` is deprecated for `LinearEquiv.ofLinearMap`** (same arguments,
+  since 2026-06-23) — the `LinearEquiv.trans`-across-`ScrewSpace` entry below still names the old
+  constant. And a first-draft `fin_cases i <;> simp <;> ring` trips `linter.unnecessarySeqFocus`
+  when only one goal survives the `simp` (write `fin_cases i <;> simp; ring`), and
+  `unusedTactic` when `field_simp` already closed it. Each cost one LSP diagnostics round, no build.
 - **Status:** resolved in-proof (usage note).
 
 ### [idiom] `split_ifs` on `if ¬p then a else b` splits on `p` with the branches swapped — the first case carries `h : p`

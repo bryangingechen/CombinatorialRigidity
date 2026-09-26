@@ -13,7 +13,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 The definitions the `X₀` argument rests on and its one-witness upgrade
 (`blueprint/src/chapter/main-component.tex`, `sec:main-component-carrier`; Phase 40b CARRIER
-slices C1a, C1b, C2, and C3, `notes/Phase40b.md`). A pencil
+slices C1a, C1b, C2, C3, and C4, `notes/Phase40b.md`). A pencil
 configuration of `G` over a field `K` is read as a **planar picture** `q` (a point
 `(x_v, y_v) ∈ K²` per body) together with a **height** `z` (a scalar `z_v` per body); the body's
 homogeneous point is `p_v = (x_v, y_v, z_v, 1)`. Over a fixed admissible picture the heights for
@@ -37,6 +37,10 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
 * `Graph.X0Attains` — "`X₀(G)`'s general point attains `6(|V| − 1) − def₃(G)`" ((MC-10)(a)): off
   one nonzero polynomial in the picture coordinates, the picture is admissible and the attaining
   heights contain a nonempty Zariski-open subset of `L(q)`.
+* `pointJoinFramework` — the body-hinge framework whose hinge at each label is the join
+  `p_u ∧ p_v` of its two ends' points.
+* `pencilConfigFramework` — the point-join framework of a configuration, patched off `E(G)` by a
+  fixed nonzero hinge: the framework of the pencil realization a configuration gives.
 
 ## Main statements
 
@@ -62,6 +66,17 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
   proportional normals.
 * `pencilNormalOfPicturePoly` / `eval_pencilNormalOfPicturePoly` — the polynomial mirror of the
   normal in the height variables, at a fixed picture (`X0Gen`'s fibre-intersection shape).
+* `ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework` — `ofNormals` at the points is the
+  polarity image of the point-join framework; `finrank_span_rigidityRows_pencilConfigFramework`
+  carries the rank to the patched configuration framework.
+* `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework` — over an admissible
+  picture and a height in `L(q)`, the configuration is a pencil panel realization.
+* `Graph.IsAdmissiblePicture.hasDistinctPencilRealization` — an attaining configuration over an
+  admissible picture gives `HasDistinctPencilRealization K 3 G`;
+  `Graph.X0Attains.hasDistinctPencilRealization` is the resulting `X0Dist` leg, over an infinite
+  field.
+* `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` — the rank is unchanged by
+  `z ↦ t • z + a` for `t ≠ 0` and `a ∈ Aff(q)` (the last clause of (MC-3)).
 
 ## Design
 
@@ -72,7 +87,8 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
   normal of the polar plane `p_v^⊥`, and the hinge `panelSupportExtensor p_u p_v` is the polar of
   the pencil line `p_u ∧ p_v`, so its row rank is the rank of the point-join framework the pencil
   motives carry (the complement isomorphism is an invertible map of the screw space;
-  `BodyHingeFramework.finrank_span_rigidityRows_mapSupport`, the conversion is CARRIER's C4). It is
+  `BodyHingeFramework.finrank_span_rigidityRows_mapSupport`; the conversion is
+  `finrank_span_rigidityRows_pencilConfigFramework`, CARRIER's C4). It is
   nonzero at every link as soon as the picture points differ. `ofNormals` at the *plane normals*
   would be the wrong rank: adjacent planes coincide on the whole fibre whenever the two bodies lie
   in a common planar-rigid subgraph ((MC-13)(c), e.g. every triangle edge at a generic picture,
@@ -811,13 +827,11 @@ always dependent (`LinearIndependent.fintype_card_le_finrank`), and dependency o
 vectors pushes forward through any linear map to the images, so the four rows are dependent too
 and the determinant vanishes (`linearIndependent_rows_iff_det_ne_zero`).
 
-The selector independence hypothesis `hLI` is not needed for this direction (the conclusion holds
-even when `N = 0`); it is carried because every call site already has it on hand (item 1) and item
-4 (the two-selector comparison) needs it on both selectors. -/
+No independence hypothesis on the selected triple is needed: a dependent triple has `cross₃ = 0`,
+and the conclusion then holds trivially. -/
 theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α β}
     {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) {v : α} (hv : v ∈ V(G))
     {sel : α → Fin 3 → α} (hsel : ∀ i, sel v i ∈ G.closedNbhd v)
-    (_hLI : LinearIndependent K (fun i => pencilPicturePoint q (sel v i)))
     {w : α} (hw : w ∈ G.closedNbhd v) :
     pencilNormalOfPicture q z sel v ⬝ᵥ pencilConfigPoint q z w = 0 := by
   classical
@@ -869,7 +883,8 @@ theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α
   exact hdetzero
 
 /-- **Selector independence up to a scalar** (Phase 40b CARRIER slice C3, item 4). Under item 3's
-hypotheses for two selectors `sel, sel'` at the same `v`, the normals differ by a nonzero scalar.
+hypotheses for two selectors `sel, sel'` at the same `v`, each selecting a triple with independent
+picture points, the normals differ by a nonzero scalar.
 Both normals are nonzero (items 1/2); item 3 puts `N = pencilNormalOfPicture q z sel v` in the perp
 of the three (independent, by item 2) configuration points at `sel'`, and `N' =
 pencilNormalOfPicture q z sel' v` lies there too (`cross₃`'s own orthogonality to its defining
@@ -905,7 +920,7 @@ theorem exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd {G : Graph α β}
   have hNmem : N ∈ W := by
     rw [hmemW]
     intro j
-    exact dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd hz hv hsel hLI (hsel' j)
+    exact dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd hz hv hsel (hsel' j)
   have hN'mem : N' ∈ W := by
     rw [hmemW]
     intro j
@@ -957,5 +972,309 @@ theorem eval_pencilNormalOfPicturePoly (q : α × Fin 2 → K) (sel : α → Fin
   have h2 : (fun j => MvPolynomial.eval z (pencilConfigPointPoly q (sel v 2) j)) =
       pencilConfigPoint q z (sel v 2) := funext fun j => eval_pencilConfigPointPoly q z (sel v 2) j
   rw [h0, h1, h2, pencilNormalOfPicture]
+
+/-! ## The configuration as a pencil framework (Phase 40b CARRIER slice C4) -/
+
+/-- **The point-join framework** (`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice
+C4): the body-hinge framework on `G` whose supporting extensor at every label `e` is the join
+`p_u ∧ p_v` of the points at `(u, v) = ends e`, the hinge of a pencil realization with concurrency
+points `p`. It is unpatched: at a label off `E(G)` the join is whatever `ends` names, possibly
+zero; the realization witness `pencilConfigFramework` patches it there. -/
+noncomputable def pointJoinFramework (G : Graph α β) (ends : β → α × α) (p : α → Fin 4 → K) :
+    BodyHingeFramework K 2 α β where
+  graph := G
+  supportExtensor e := ScrewSpace.mk (extensor ![p (ends e).1, p (ends e).2])
+    (extensor_mem_exteriorPower _)
+
+/-- **`ofNormals` at the points is the polarity image of the point-join framework**
+(`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4). The panel-hinge framework whose
+panel normal at each body is its point `p_v` has, at every label, the meet
+`panelSupportExtensor p_u p_v` of the two polar planes, which the polarity `screwComplementIso`
+takes the join `p_u ∧ p_v` to (`screwComplementIso_mk_extensor`, over every field). -/
+theorem ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework (G : Graph α β)
+    (ends : β → α × α) (p : α → Fin 4 → K) :
+    (PanelHingeFramework.ofNormals (k := 2) G ends (fun x => p x.1 x.2)).toBodyHinge
+      = (pointJoinFramework G ends p).mapSupport screwComplementIso := by
+  have hsupp : (PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p x.1 x.2)).toBodyHinge.supportExtensor
+      = ((pointJoinFramework G ends p).mapSupport screwComplementIso).supportExtensor := by
+    funext e
+    simp only [BodyHingeFramework.mapSupport_supportExtensor, pointJoinFramework,
+      screwComplementIso_mk_extensor, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal]
+    rfl
+  exact congrArg (BodyHingeFramework.mk (k := 2) G) hsupp
+
+open Classical in
+/-- **The configuration as a pencil framework** (`lem:pencil-config-point-join-rank`; Phase 40b
+CARRIER slice C4): the point-join framework of the configuration points `p_w =
+pencilConfigPoint q z w`, patched off `E(G)`. At a label `e ∈ E(G)` the supporting extensor is the
+join `p_u ∧ p_v` at `(u, v) = ends e`; off `E(G)` it is the fixed nonzero join of two standard
+basis vectors, as in `pencilChartFramework` (`Molecule/Pencil/Chart.lean`), since
+`HasCoplanarPanelRealization` asks for a nonzero supporting extensor at every label of `β`. The
+endpoints are read from `ends`, not `Graph.endsOf`, so no `[Inhabited α]` is needed. -/
+noncomputable def pencilConfigFramework (G : Graph α β) (ends : β → α × α) (q : α × Fin 2 → K)
+    (z : α → K) : BodyHingeFramework K 2 α β where
+  graph := G
+  supportExtensor e :=
+    if e ∈ E(G) then
+      ScrewSpace.mk (extensor ![pencilConfigPoint q z (ends e).1, pencilConfigPoint q z (ends e).2])
+        (extensor_mem_exteriorPower _)
+    else
+      ScrewSpace.mk (extensor ![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)])
+        (extensor_mem_exteriorPower _)
+
+@[simp]
+theorem pencilConfigFramework_graph (G : Graph α β) (ends : β → α × α) (q : α × Fin 2 → K)
+    (z : α → K) : (pencilConfigFramework G ends q z).graph = G := rfl
+
+/-- The supporting extensor of `pencilConfigFramework` at a label of `E(G)`: the point join. -/
+theorem pencilConfigFramework_supportExtensor_of_mem_edgeSet {G : Graph α β} (ends : β → α × α)
+    (q : α × Fin 2 → K) (z : α → K) {e : β} (he : e ∈ E(G)) :
+    (pencilConfigFramework G ends q z).supportExtensor e =
+      ScrewSpace.mk (extensor ![pencilConfigPoint q z (ends e).1, pencilConfigPoint q z (ends e).2])
+        (extensor_mem_exteriorPower _) :=
+  ite_eq_left he
+
+/-- The supporting extensor of `pencilConfigFramework` off `E(G)`: the standard-basis patch. -/
+theorem pencilConfigFramework_supportExtensor_of_not_mem_edgeSet {G : Graph α β}
+    (ends : β → α × α) (q : α × Fin 2 → K) (z : α → K) {e : β} (he : e ∉ E(G)) :
+    (pencilConfigFramework G ends q z).supportExtensor e =
+      ScrewSpace.mk (extensor ![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)])
+        (extensor_mem_exteriorPower _) :=
+  ite_eq_right he
+
+/-- **The patched configuration framework has the rank of `ofNormals` at the configuration
+points** (`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4, the polar/primal rank
+equality). The patch agrees with the unpatched point-join framework on every link, so the two
+have the same rigidity-row span (`span_rigidityRows_eq_of_supportExtensor_agree`); the unpatched
+one is carried to `ofNormals` by the polarity
+(`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`), an invertible map of the screw space,
+which leaves the rank unchanged (`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`). No
+hypothesis on `ends` is needed: a link's label lies in `E(G)`, where the patch is the join at
+whatever `ends` names, exactly as in the unpatched framework. -/
+theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends : β → α × α)
+    (q : α × Fin 2 → K) (z : α → K) :
+    Module.finrank K (Submodule.span K (pencilConfigFramework G ends q z).rigidityRows)
+      = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+          (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
+  have hspan : Submodule.span K (pencilConfigFramework G ends q z).rigidityRows
+      = Submodule.span K (pointJoinFramework G ends (pencilConfigPoint q z)).rigidityRows :=
+    span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun _ _ _ he =>
+      pencilConfigFramework_supportExtensor_of_mem_edgeSet ends q z he.edge_mem
+  rw [hspan, ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends (pencilConfigPoint q z),
+    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+
+/-- **The configuration framework's hinges are all nonzero over an admissible picture**
+(`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4). At a label of `E(G)`, `ends`
+names the two ends of a link, whose picture points differ, so their configuration points are
+independent at every height (`linearIndependent_pencilConfigPoint_pair`) and their join is
+nonzero; off `E(G)` the patch is nonzero (`extensor_stdBasis_pair_ne_zero`). -/
+theorem _root_.Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero
+    {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) (z : α → K) (e : β) :
+    (pencilConfigFramework G ends q z).supportExtensor e ≠ 0 := by
+  intro h0
+  have hval := congrArg ScrewSpace.val h0
+  by_cases he : e ∈ E(G)
+  · rw [pencilConfigFramework_supportExtensor_of_mem_edgeSet ends q z he, ScrewSpace.val_mk,
+      ScrewSpace.val_zero] at hval
+    obtain ⟨x, y, hxy⟩ := Graph.exists_isLink_of_mem_edgeSet he
+    exact (extensor_ne_zero_iff_linearIndependent _).mpr
+      (linearIndependent_pencilConfigPoint_pair z (hq.1 _ _ _ (hends e x y hxy))) hval
+  · rw [pencilConfigFramework_supportExtensor_of_not_mem_edgeSet ends q z he, ScrewSpace.val_mk,
+      ScrewSpace.val_zero] at hval
+    exact extensor_stdBasis_pair_ne_zero hval
+
+/-- **A configuration over an admissible picture is a pencil panel realization**
+(`lem:pencil-config-distinct-realization`; Phase 40b CARRIER slice C4). Over an admissible picture
+`q` and a height `z ∈ L(q)`, with a selector `sel` choosing at every body of `G` three members of
+its closed neighbourhood with independent picture points, the configuration framework
+`pencilConfigFramework G ends q z`, the plane normals `pencilNormalOfPicture q z sel` and the
+configuration points `pencilConfigPoint q z` form a pencil panel realization of `G`. The normals
+are nonzero (`pencilNormalOfPicture_ne_zero_iff`, with the picture-to-configuration independence
+transport); each normal is orthogonal to the points of the whole closed neighbourhood
+(`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`), which contains both ends of every
+link at the body and the body itself, giving both panel containments and the incidence; each
+point has last coordinate `1`; and a link's join passes through both its ends by construction. -/
+theorem _root_.Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework
+    {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {z : α → K} (hz : z ∈ G.liftingSpace q) {sel : α → Fin 3 → α}
+    (hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
+      LinearIndependent K (fun i => pencilPicturePoint q (sel v i))) :
+    HasPencilPanelRealization G (pencilConfigFramework G ends q z)
+      (pencilNormalOfPicture q z sel) (pencilConfigPoint q z) := by
+  have hperp : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v,
+      pencilConfigPoint q z w ⬝ᵥ pencilNormalOfPicture q z sel v = 0 := fun v hv w hw => by
+    rw [dotProduct_comm]
+    exact dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd hz hv (hsel v hv).1 hw
+  -- A link's supporting extensor is the join of its two ends, in one order or the other.
+  have hjoin : ∀ e u v, G.IsLink e u v →
+      (pencilConfigFramework G ends q z).supportExtensor e =
+        ScrewSpace.mk (extensor ![pencilConfigPoint q z u, pencilConfigPoint q z v])
+          (extensor_mem_exteriorPower _) ∨
+      (pencilConfigFramework G ends q z).supportExtensor e =
+        ScrewSpace.mk (extensor ![pencilConfigPoint q z v, pencilConfigPoint q z u])
+          (extensor_mem_exteriorPower _) := by
+    intro e u v he
+    rw [pencilConfigFramework_supportExtensor_of_mem_edgeSet ends q z he.edge_mem]
+    rcases (hends e u v he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · left; rw [h1, h2]
+    · right; rw [h1, h2]
+  -- The join of the two ends of a link, in either order, lies in both panels and passes through
+  -- both points.
+  have hkey : ∀ e a b, G.IsLink e a b →
+      ExtensorInPanel (ScrewSpace.mk (extensor ![pencilConfigPoint q z a, pencilConfigPoint q z b])
+          (extensor_mem_exteriorPower _)) (pencilNormalOfPicture q z sel a) ∧
+      ExtensorInPanel (ScrewSpace.mk (extensor ![pencilConfigPoint q z a, pencilConfigPoint q z b])
+          (extensor_mem_exteriorPower _)) (pencilNormalOfPicture q z sel b) ∧
+      ExtensorThroughPoint (ScrewSpace.mk (extensor ![pencilConfigPoint q z a,
+          pencilConfigPoint q z b]) (extensor_mem_exteriorPower _)) (pencilConfigPoint q z a) ∧
+      ExtensorThroughPoint (ScrewSpace.mk (extensor ![pencilConfigPoint q z a,
+          pencilConfigPoint q z b]) (extensor_mem_exteriorPower _)) (pencilConfigPoint q z b) := by
+    intro e a b he
+    have ha : a ∈ V(G) := he.left_mem
+    have hb : b ∈ V(G) := he.right_mem
+    refine ⟨⟨_, ScrewSpace.val_mk _ _, Fin.forall_fin_two.mpr
+        ⟨hperp a ha a (Or.inl rfl), hperp a ha b (Or.inr ⟨e, he⟩)⟩⟩,
+      ⟨_, ScrewSpace.val_mk _ _, Fin.forall_fin_two.mpr
+        ⟨hperp b hb a (Or.inr ⟨e, he.symm⟩), hperp b hb b (Or.inl rfl)⟩⟩,
+      ⟨_, ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩,
+      ⟨_, ScrewSpace.val_mk _ _, Submodule.subset_span ⟨1, rfl⟩⟩⟩
+  refine ⟨⟨rfl, fun v hv => ?_, hq.pencilConfigFramework_supportExtensor_ne_zero hends z,
+    fun e u v he => ?_⟩, fun v _ h0 => ?_, fun v hv => hperp v hv v (Or.inl rfl),
+    fun e u v he => ?_⟩
+  · exact (pencilNormalOfPicture_ne_zero_iff q z sel v).mpr
+      (linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z (hsel v hv).2)
+  · rcases hjoin e u v he with h | h <;> rw [h]
+    · exact ⟨(hkey e u v he).1, (hkey e u v he).2.1⟩
+    · exact ⟨(hkey e v u he.symm).2.1, (hkey e v u he.symm).1⟩
+  · simpa [pencilConfigPoint] using congr_fun h0 3
+  · rcases hjoin e u v he with h | h <;> rw [h]
+    · exact ⟨(hkey e u v he).2.2.1, (hkey e u v he).2.2.2⟩
+    · exact ⟨(hkey e v u he.symm).2.2.2, (hkey e v u he.symm).2.2.1⟩
+
+/-- **An attaining configuration over an admissible picture is a distinct pencil realization at
+the deficiency rank** (`lem:pencil-config-distinct-realization`; Phase 40b CARRIER slice C4, the
+bridge to the distinct statement). If a configuration `(q, z)` with `q` admissible and
+`z ∈ L(q)` has row rank `6(|V(G)| − 1) − def₃(G)` at `ofNormals` of its points (the rank
+`Graph.X0Attains` reads), then `G` has an adjacent-distinct pencil realization at the deficiency
+rank (`HasDistinctPencilRealization`). The witness is the patched configuration framework
+(`pencilConfigFramework`) with the configuration points as concurrency points and, as normals,
+the plane normals at admissibility's own triple at each body (chosen classically, a dummy off
+`V(G)`): a pencil panel realization
+(`Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework`), adjacent points
+independent since adjacent picture points differ (`linearIndependent_pencilConfigPoint_pair`), at
+the rank of `ofNormals` (`finrank_span_rigidityRows_pencilConfigFramework`). -/
+theorem _root_.Graph.IsAdmissiblePicture.hasDistinctPencilRealization {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {z : α → K} (hz : z ∈ G.liftingSpace q)
+    (hrank : (Module.finrank K (Submodule.span K
+        (PanelHingeFramework.ofNormals (k := 2) G ends
+          (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) :
+    HasDistinctPencilRealization K 3 G := by
+  classical
+  let sel : α → Fin 3 → α := fun v => if hv : v ∈ V(G) then (hq.2 v hv).choose else fun _ => v
+  have hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
+      LinearIndependent K (fun i => pencilPicturePoint q (sel v i)) := by
+    intro v hv
+    simp only [sel, hv, ↓reduceDIte]
+    exact (hq.2 v hv).choose_spec
+  refine ⟨pencilConfigFramework G ends q z, pencilNormalOfPicture q z sel, pencilConfigPoint q z,
+    hq.hasPencilPanelRealization_pencilConfigFramework hends hz hsel,
+    fun e u v he => linearIndependent_pencilConfigPoint_pair z (hq.1 e u v he), ?_⟩
+  rw [finrank_span_rigidityRows_pencilConfigFramework]
+  exact hrank
+
+/-- **The general configuration attaining gives a distinct pencil realization at the deficiency
+rank** (`lem:pencil-x0-attains-distinct`; Phase 40b CARRIER slice C4, the `X0Dist` leg of
+`thm:pencil-x0-generic-attains`). Over an infinite field, `Graph.X0Attains K G` forces
+`HasDistinctPencilRealization K 3 G`: the nonzero picture polynomial `P` has a non-root `q`
+(`MvPolynomial.exists_eval_ne_zero`), which is admissible with a height `z ∈ L(q)` off the
+height polynomial's zero set, where the rank is attained; the bridge
+`Graph.IsAdmissiblePicture.hasDistinctPencilRealization` finishes. This is the consumer
+`Graph.X0Attains` was shaped for: the distinct motive uses only one attaining configuration. -/
+theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Graph α β}
+    (h : G.X0Attains K) : HasDistinctPencilRealization K 3 G := by
+  obtain ⟨ends, P, hends, hP, hgood⟩ := h
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
+  obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
+  exact hadm.hasDistinctPencilRealization hends hz (hall z hz hRz)
+
+/-! ## Scaling and affine shifts of the heights keep the rank (Phase 40b CARRIER, (MC-3)) -/
+
+/-- **A collineation of the points is a change of screw coordinates of the point-join framework**
+(`lem:pencil-rank-scale-shift`; Phase 40b CARRIER). Applying an invertible linear map `g` of `K⁴`
+to every point replaces each join `p_u ∧ p_v` by `g p_u ∧ g p_v`, its image under the induced
+screw-space automorphism (`BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor`). -/
+theorem pointJoinFramework_comp_eq_mapSupport (G : Graph α β) (ends : β → α × α)
+    (p : α → Fin 4 → K) (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) :
+    pointJoinFramework G ends (fun v => g (p v))
+      = (pointJoinFramework G ends p).mapSupport
+          (BodyHingeFramework.screwEquivOfLinearEquiv g) := by
+  have hsupp : (pointJoinFramework G ends (fun v => g (p v))).supportExtensor
+      = ((pointJoinFramework G ends p).mapSupport
+          (BodyHingeFramework.screwEquivOfLinearEquiv g)).supportExtensor := by
+    funext e
+    simp only [BodyHingeFramework.mapSupport_supportExtensor, pointJoinFramework,
+      BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor]
+    congr 2
+    funext i; fin_cases i <;> rfl
+  exact congrArg (BodyHingeFramework.mk (k := 2) G) hsupp
+
+/-- **The rank of a configuration is unchanged by scaling the heights and shifting them by a
+globally affine height** (`lem:pencil-rank-scale-shift`; Phase 40b CARRIER, the last clause of
+informal (MC-3)). For `t ≠ 0` and `a ∈ Aff(q)` (`Graph.affineLifts`), the configurations `(q, z)`
+and `(q, t • z + a)` have the same row rank at `ofNormals` of their points. With
+`a_w = h ⬝ (x_w, y_w, 1)` on `V(G)`, the invertible linear map
+`(x, y, ζ, w) ↦ (x, y, t ζ + h ⬝ (x, y, w), w)` of `K⁴` carries `p_w` to the point of
+`(q, t • z + a)` at every body of `G`; the ends of every link are bodies of `G` (`hends`), so the
+two point-join frameworks agree on links (`span_rigidityRows_eq_of_supportExtensor_agree`), and a
+collineation leaves the point-join rank unchanged (`pointJoinFramework_comp_eq_mapSupport`,
+`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`), as does the polarity back to
+`ofNormals` (`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`). -/
+theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G : Graph α β}
+    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (q : α × Fin 2 → K) (z : α → K) {t : K} (ht : t ≠ 0) {a : α → K}
+    (ha : a ∈ G.affineLifts q) :
+    Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun p => pencilConfigPoint q (t • z + a) p.1 p.2)).toBodyHinge.rigidityRows)
+      = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
+  classical
+  obtain ⟨h, rfl⟩ := ha
+  let f : (Fin 4 → K) →ₗ[K] (Fin 4 → K) :=
+    { toFun := fun b => ![b 0, b 1, t * b 2 + (h 0 * b 0 + h 1 * b 1 + h 2 * b 3), b 3]
+      map_add' := fun b c => by funext i; fin_cases i <;> simp; ring
+      map_smul' := fun c b => by funext i; fin_cases i <;> simp; ring }
+  let f' : (Fin 4 → K) →ₗ[K] (Fin 4 → K) :=
+    { toFun := fun b => ![b 0, b 1, t⁻¹ * (b 2 - (h 0 * b 0 + h 1 * b 1 + h 2 * b 3)), b 3]
+      map_add' := fun b c => by funext i; fin_cases i <;> simp; ring
+      map_smul' := fun c b => by funext i; fin_cases i <;> simp; ring }
+  let g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K) := LinearEquiv.ofLinearMap f f'
+    (LinearMap.ext fun b => funext fun i => by fin_cases i <;> simp [f, f']; field_simp; ring)
+    (LinearMap.ext fun b => funext fun i => by fin_cases i <;> simp [f, f']; field_simp)
+  have hg : ∀ w ∈ V(G),
+      g (pencilConfigPoint q z w) = pencilConfigPoint q (t • z + G.affineLiftMap q h) w := by
+    intro w hw
+    funext i
+    fin_cases i <;> simp [g, f, pencilConfigPoint, pencilPicturePoint, hw, dotProduct,
+      Fin.sum_univ_three]
+  have hspan : Submodule.span K
+        (pointJoinFramework G ends (pencilConfigPoint q (t • z + G.affineLiftMap q h))).rigidityRows
+      = Submodule.span K
+        (pointJoinFramework G ends (fun w => g (pencilConfigPoint q z w))).rigidityRows :=
+    span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun e u v he => by
+      have h0 := hends e u v he
+      simp only [pointJoinFramework, hg _ h0.left_mem, hg _ h0.right_mem]
+  rw [ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends
+      (pencilConfigPoint q (t • z + G.affineLiftMap q h)),
+    BodyHingeFramework.finrank_span_rigidityRows_mapSupport, hspan,
+    pointJoinFramework_comp_eq_mapSupport, BodyHingeFramework.finrank_span_rigidityRows_mapSupport,
+    ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends (pencilConfigPoint q z),
+    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
 
 end CombinatorialRigidity.Molecular

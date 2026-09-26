@@ -131,7 +131,7 @@ chosen.
   \lean{CombinatorialRigidity.Molecular.dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd}
   \leanok
   \uses{def:pencil-configuration, def:pencil-lifting-space}
-  Let $q$ be admissible, $z \in L(q)$, and $v$ a body of $G$ whose
+  Let $q$ be a picture, $z \in L(q)$, and $v$ a body of $G$ whose
   three chosen bodies $a_v, b_v, c_v$ lie in the closed neighbourhood
   of $v$. Then the plane normal $n_v$ is orthogonal to $p_w$ for every
   $w$ in the closed neighbourhood of $v$, not only the three chosen
@@ -207,12 +207,15 @@ chosen.
   nonzero constant or shifted by a member of $\mathrm{Aff}(q)$.
 \end{lemma}
 \begin{proof}
+  \uses{lem:pencil-rank-scale-shift}
   Each Grassmann coordinate of $p_u \wedge p_v$ is a $2\times 2$ minor
   of the two homogeneous points; the coordinates reading the height row
   are linear in $z$, the others constant in $z$. The rank split and the
   scale-and-shift invariance follow by reading the augmented matrix in
   the panel-hinge coordinates, where the height-linear part is supported
-  on the hinge columns.
+  on the hinge columns. For the rank of a configuration
+  (\cref{def:pencil-x0-attains}) the scale-and-shift invariance is
+  \cref{lem:pencil-rank-scale-shift}.
 \end{proof}
 
 \begin{definition}[Main pictures]
@@ -260,6 +263,106 @@ $p_u \wedge p_v$, the framework of a pencil realization. Taking the
 plane normals $n_v$ as panel normals instead would not give this rank:
 where two adjacent planes coincide the meet is zero, and a zero hinge
 allows no relative motion of its two bodies.
+
+\begin{lemma}[The rank of a configuration is its point-join rank]
+  \label{lem:pencil-config-point-join-rank}
+  \lean{CombinatorialRigidity.Molecular.finrank_span_rigidityRows_pencilConfigFramework,
+        CombinatorialRigidity.Molecular.pencilConfigFramework,
+        Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero}
+  \leanok
+  \uses{def:pencil-x0-attains, def:body-hinge-framework, def:extensor,
+        lem:panel-hinge-dual-molecular, lem:screw-map-rows}
+  Let $p = (q, z)$ be a configuration of $G$, and let $F_p$ be the
+  body-hinge framework on $G$ (\cref{def:body-hinge-framework}) whose
+  hinge at each edge $uv$ is the line $p_u \wedge p_v$
+  (\cref{def:extensor}). Then the rigidity matrix of $F_p$ has the rank
+  of $p$ (\cref{def:pencil-x0-attains}). If $q$ is admissible, every
+  hinge of $F_p$ is nonzero.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The hinge at $uv$ of the panel-hinge framework defining the rank of
+  $p$ is the meet of the planes $p_u^{\perp}$ and $p_v^{\perp}$, the
+  image of $p_u \wedge p_v$ under the polarity
+  (\cref{lem:panel-hinge-dual-molecular}), an invertible linear map of
+  the screw space over every field; by \cref{lem:screw-map-rows} the two
+  rigidity matrices have the same rank. Over an admissible picture
+  adjacent picture points differ, so the points $(x_u, y_u, z_u, 1)$
+  and $(x_v, y_v, z_v, 1)$ are linearly independent and their join is
+  nonzero.
+\end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:pencil-config-point-join-rank}
+  A body-hinge framework carries a hinge for every label of the ambient
+  set of edge labels, including labels that are not edges of $G$. The
+  formal framework $F_p$ carries there one fixed nonzero line, which no
+  rigidity row reads, so that every hinge is nonzero as a pencil
+  realization requires.
+\end{fmlnote}
+
+\begin{lemma}[A configuration over an admissible picture is a pencil realization]
+  \label{lem:pencil-config-distinct-realization}
+  \lean{Graph.IsAdmissiblePicture.hasDistinctPencilRealization,
+        Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework}
+  \leanok
+  \uses{lem:pencil-config-point-join-rank,
+        lem:pencil-selector-plane-contains-nbhd,
+        def:pencil-panel-realization, def:pencil-distinct-motive}
+  Let $q$ be an admissible picture of $G$, $z \in L(q)$ and
+  $p = (q, z)$. Choose at every body $v$ three members of its closed
+  neighbourhood with non-collinear picture points, and let $n_v$ be the
+  resulting plane normal (\cref{def:pencil-configuration}). Then the
+  framework $F_p$ of \cref{lem:pencil-config-point-join-rank}, with
+  panel normals $n_v$ and concurrency points $p_v$, is a pencil
+  realization of $G$ (\cref{def:pencil-panel-realization}) whose
+  adjacent points are linearly independent. If moreover $p$ has rank
+  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, then $G$ has an
+  adjacent-distinct pencil realization (\cref{def:pencil-distinct-motive},
+  at $n = 3$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  The three chosen configuration points at $v$ are independent, since
+  their picture points are, so $n_v \neq 0$. By
+  \cref{lem:pencil-selector-plane-contains-nbhd}, $n_v$ is orthogonal
+  to $p_w$ for every $w$ in the closed neighbourhood of $v$.
+
+  For an edge $uv$ both $u$ and $v$ lie in the closed neighbourhoods of
+  $u$ and of $v$, so $p_u$ and $p_v$ are orthogonal to $n_u$ and to
+  $n_v$: the line $p_u \wedge p_v$ lies in both panels, and it passes
+  through both points by construction. Taking $w = v$ gives the
+  incidence $p_v \cdot n_v = 0$, and $p_v \neq 0$ since its last
+  coordinate is $1$. Adjacent points are independent because adjacent
+  picture points differ, and every hinge is nonzero
+  (\cref{lem:pencil-config-point-join-rank}). The rank of $F_p$ is the
+  rank of $p$ by the same lemma.
+\end{proof}
+
+\begin{lemma}[Scaling and affine shifts of the heights preserve the rank]
+  \label{lem:pencil-rank-scale-shift}
+  \lean{Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts}
+  \leanok
+  \uses{lem:pencil-config-point-join-rank, def:pencil-lifting-space,
+        lem:screw-map-rows}
+  Let $q$ be a picture of $G$, $z$ a height, $t \in K$ nonzero and
+  $a \in \mathrm{Aff}(q)$. Then the configurations $(q, z)$ and
+  $(q, tz + a)$ have the same rank (\cref{def:pencil-x0-attains}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Write $a_w = \alpha x_w + \beta y_w + \gamma$ on $V(G)$. The linear
+  map $(\xi, \eta, \zeta, \omega) \mapsto
+  (\xi, \eta, t\zeta + \alpha\xi + \beta\eta + \gamma\omega, \omega)$ of
+  $K^4$ is invertible, since $t \neq 0$, and carries the point of
+  $(q, z)$ at every body to the point of $(q, tz + a)$ there. It induces
+  an invertible linear map of the screw space taking each line
+  $p_u \wedge p_v$ to the line through the two image points, so by
+  \cref{lem:screw-map-rows} the two frameworks of
+  \cref{lem:pencil-config-point-join-rank} have rigidity matrices of the
+  same rank, and that lemma converts both to the rank of a
+  configuration.
+\end{proof}
 
 \begin{lemma}[One attaining configuration forces the general one]
   \label{lem:pencil-x0-one-witness}
@@ -362,7 +465,8 @@ allows no relative motion of its two bodies.
   \label{thm:pencil-x0-main-component}
   \uses{def:pencil-main-picture, def:pencil-x0-attains,
         lem:pencil-condition-linear, lem:pencil-x0-one-witness,
-        lem:pencil-x0-main-picture-open}
+        lem:pencil-x0-main-picture-open,
+        lem:pencil-config-distinct-realization}
   The set $U$ of main pictures (\cref{def:pencil-main-picture}) is
   nonempty and Zariski-open, the pairs $(q, z)$ with $q \in U$ and
   $z \in L(q)$ form a vector bundle over $U$, and its closure $X_0$ is
@@ -385,7 +489,9 @@ allows no relative motion of its two bodies.
   irreducible total space. Over a neighbourhood of a main picture,
   Cramer's rule gives a polynomial section of the bundle through any
   point of the fibre (\cref{lem:pencil-x0-one-witness}, whose proof also
-  gives the attaining half of the last claim). Lower
+  gives the attaining half of the last claim;
+  \cref{lem:pencil-config-distinct-realization} gives the realization).
+  Lower
   semicontinuity of the rank on the irreducible $X_0$, together with
   the fact that the rank never exceeds
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ once every hinge is
@@ -393,9 +499,29 @@ allows no relative motion of its two bodies.
   member for every $q \in U$.
 \end{proof}
 
+\begin{lemma}[The general configuration attaining gives an adjacent-distinct realization]
+  \label{lem:pencil-x0-attains-distinct}
+  \lean{Graph.X0Attains.hasDistinctPencilRealization}
+  \leanok
+  \uses{def:pencil-x0-attains, lem:pencil-config-distinct-realization,
+        def:pencil-distinct-motive}
+  Let $K$ be infinite. If the general configuration of $G$ attains
+  (\cref{def:pencil-x0-attains}), then $G$ has an adjacent-distinct
+  pencil realization (\cref{def:pencil-distinct-motive}, at $n = 3$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Over an infinite field the nonzero picture polynomial of
+  \cref{def:pencil-x0-attains} has a non-root $q$, which is admissible,
+  and the nonempty set of attaining heights in $L(q)$ it provides has a
+  member $z$. Apply \cref{lem:pencil-config-distinct-realization} to
+  $(q, z)$.
+\end{proof}
+
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
   \uses{thm:pencil-x0-main-component, def:pencil-x0-attains,
+        lem:pencil-x0-attains-distinct,
         lem:pencil-hinge-affine, def:pencil-distinct-motive,
         def:pencil-generic-motive, def:D-deficiency,
         def:pencil-main-component-statements}
@@ -417,11 +543,11 @@ allows no relative motion of its two bodies.
   strong induction on the number of bodies through ear, split-off,
   contraction and cut steps (the following sections), whose flat inputs
   use the planar rank theorem \cref{thm:theorem-55-6-rows} in place of
-  the pin-collinear theorem the informal proof cites. The distinct and
-  generic upgrades hold on the dense open subset where adjacent points
-  are distinct and, respectively, a nondegenerate realization survives,
-  the latter by intersecting two nonempty Zariski-open subsets of one
-  fibre $L(q)$;
+  the pin-collinear theorem the informal proof cites. The distinct
+  upgrade needs a single attaining configuration
+  (\cref{lem:pencil-x0-attains-distinct}); the generic upgrade holds on
+  the dense open subset where a nondegenerate realization survives, by
+  intersecting two nonempty Zariski-open subsets of one fibre $L(q)$;
   the passage on to \cref{thm:pencil-conditional-realization-main-component}
   is the last section.
 \end{proof}

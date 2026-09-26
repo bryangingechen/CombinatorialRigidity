@@ -1215,7 +1215,14 @@ neighbourhood (`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`, new
 `lem:pencil-selector-plane-contains-nbhd`, the forward half of (MC-1)) and selector independence up
 to a scalar (`exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`, new green
 `lem:pencil-selector-independent-scalar`) — plus a polynomial mirror `pencilNormalOfPicturePoly`
-for MOTIVES. **C4** (the config as a pencil framework, opus/fragility) is next. Two questions are
+for MOTIVES. C4 (2026-09-26) read each configuration as a pencil realization: the point-join
+framework `pencilConfigFramework` has the rank of `ofNormals` at the configuration points (through
+the field-general polarity), so an attaining configuration over an admissible picture gives an
+adjacent-distinct pencil realization at the deficiency rank, and `Graph.X0Attains` gives
+`HasDistinctPencilRealization K 3 G` over an infinite field (`Graph.X0Attains.hasDistinctPencilRealization`,
+the distinct half of the phase's target); it also landed (MC-3)'s rank invariance under scaling
+and affine shifts of the heights. **C5** (`X0Attains` at the flat witness, opus/fragility) is next,
+and closes CARRIER. Two questions are
 left for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root
 cause (`notes/Phase40b.md` *Blockers*).
 
