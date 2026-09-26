@@ -28,8 +28,11 @@ beyond instantiating the extensor-transport family `BodyHingeFramework.mapExtens
 
 ## Main definitions
 
-* `screwComplementIso` — the projective polarity of `ℝ³` as a linear automorphism of the screw
-  space `ScrewSpace ℝ 2`, i.e. `complementIso` conjugated by `ScrewSpace.equivExteriorPower`.
+* `screwComplementIso` — the projective polarity of `K³`, over any field `K`, as a linear
+  automorphism of the screw space `ScrewSpace K 2`, i.e. `complementIso` conjugated by
+  `ScrewSpace.equivExteriorPower`. Field-general: transports rank, rigidity and pencil
+  realizations over every field; the historical `ℝ³` scope survives only in the molecular
+  declarations below, which read the polarity against concrete real point placements.
 
 ## Main results
 
@@ -58,18 +61,19 @@ variable {V β : Type*}
 
 /-! ## The projective polarity as a screw-space automorphism -/
 
-/-- **The projective polarity of `ℝ³` as a linear automorphism of the screw space**
-(`lem:panel-hinge-dual-molecular`; Crapo–Whiteley 1982 §3.6, the correlation case): the
-meet-complement isomorphism `complementIso : ⋀²ℝ⁴ ≃ₗ ⋀^(2+2−2)ℝ⁴ = ⋀²ℝ⁴` (Phase 21a,
+/-- **The projective polarity of `K³` as a linear automorphism of the screw space, over any
+field `K`** (`lem:panel-hinge-dual-molecular`; Crapo–Whiteley 1982 §3.6, the correlation case): the
+meet-complement isomorphism `complementIso : ⋀²K⁴ ≃ₗ ⋀^(2+2−2)K⁴ = ⋀²K⁴` (Phase 21a,
 `Molecular/Meet.lean`), conjugated by the boundary equivalence `ScrewSpace.equivExteriorPower`
-so that it acts on the screw carrier `ScrewSpace ℝ 2` directly. This is the fixed automorphism
+so that it acts on the screw carrier `ScrewSpace K 2` directly. This is the fixed automorphism
 `Λ` of `thm:projective-invariance` that the panel-hinge ↔ molecular duality transports along;
 under the standard polarity (KT §5.1) it carries the line through two poles to the meet of the
-two panels. -/
-noncomputable def screwComplementIso : ScrewSpace ℝ 2 ≃ₗ[ℝ] ScrewSpace ℝ 2 :=
-  (ScrewSpace.equivExteriorPower ℝ 2) ≪≫ₗ
+two panels. Field-general (DUAL-K, Phase 40b): the polarity never preserves adjacent-distinctness
+or nondegeneracy, so field dependence enters only at self-dual configurations, not here. -/
+noncomputable def screwComplementIso {K : Type*} [Field K] : ScrewSpace K 2 ≃ₗ[K] ScrewSpace K 2 :=
+  (ScrewSpace.equivExteriorPower K 2) ≪≫ₗ
     complementIso (k := 2) (j := 2) (by omega) ≪≫ₗ
-    (ScrewSpace.equivExteriorPower ℝ 2).symm
+    (ScrewSpace.equivExteriorPower K 2).symm
 
 /-- **The boundary equivalence carries the line extensor to the grade-2 join of the homogenized
 points** (`lem:panel-hinge-dual-molecular`): `ScrewSpace.equivExteriorPower ℝ 2 (lineExtensor a b) =

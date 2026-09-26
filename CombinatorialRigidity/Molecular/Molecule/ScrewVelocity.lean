@@ -157,10 +157,13 @@ noncomputable def lineExtensor (a b : Fin 3 → ℝ) : ScrewSpace ℝ 2 :=
   ScrewSpace.mk (extensor ![homogenize a, homogenize b]) (extensor_mem_exteriorPower _)
 
 /-- The bridge lemma: `equivExteriorPower` carries a `mk`-extensor to the exterior-power `ιMulti`.
-Both are the same underlying element `ExteriorAlgebra.ιMulti ℝ 2 v` of the graded piece. -/
-theorem equivExteriorPower_mk_extensor (v : Fin 2 → Fin 4 → ℝ) :
-    ScrewSpace.equivExteriorPower ℝ 2 (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
-      = ιMulti ℝ 2 v := by
+Both are the same underlying element `ExteriorAlgebra.ιMulti K 2 v` of the graded piece.
+Field-general (DUAL-K, Phase 40b) — the underlying fact is `rfl`, the same argument
+`GenericLift/HingeGeneric.lean`'s private `screwSpace_equivExteriorPower_mk` makes for a general
+algebra element, specialized here to the extensor case. -/
+theorem equivExteriorPower_mk_extensor {K : Type*} [Field K] (v : Fin 2 → Fin 4 → K) :
+    ScrewSpace.equivExteriorPower K 2 (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
+      = ιMulti K 2 v := by
   apply Subtype.ext
   simp only [ScrewSpace.mk, ScrewSpace_def]
   rfl

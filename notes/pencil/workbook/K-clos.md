@@ -8,14 +8,20 @@ quadric `{x ⬝ᵥ x = 0}`, and `Λ²₊`, `Λ²₋` the `±1` eigenspaces of `�
 
 **Status, stated before the mathematics.**
 
-- **Settled — the polarity generalizes, and the cost is one section.** **(AC-1)**.
-  Nothing is obstructed, characteristic 2 included *for the definition*. The
-  general-`K` **transport** the route needs is not a new object either: it is
-  already in tree as `BodyHingeFramework.mapSupport`
-  (`Molecular/GenericLift/HingeGeneric.lean:462`), with its rank lemma
-  (`:544`). Source-verified; **no compiler witness** was taken (the dispatch
-  carried a no-Lean constraint), and a ~20-line typecheck spike would settle it
-  outright.
+- **Settled — the polarity generalizes, and the cost is one section.** **(AC-1)**,
+  now **compiler-witnessed** (landed 2026-09-26, DUAL-K/Phase 40b build agent):
+  `screwComplementIso` is `[Field K]`-generic in tree (`Duality.lean:69`), and the
+  self-duality theorem is restated over `K` at its unchanged name
+  (`hasPencilPanelRealization_mapExtensor_screwComplementIso`,
+  `Pencil/Statement.lean`). Nothing is obstructed, characteristic 2 included *for
+  the definition*. **Landed route differs from the plan below**: the coordinator
+  generalized `mapExtensor`/`ProjectiveInvariance.lean` in place (18 lemmas +
+  `scaleExtensor`, names unchanged) rather than restating the self-duality
+  through `mapSupport` as (c)/(d) below recommend, to avoid renaming a theorem
+  cited in frozen docs (`notes/Phase39-design.md`, the `notes/pencil/workbook/`
+  files, the gap map); `mapExtensor` and `mapSupport` remain the same
+  construction at two names, merging them stays a cleanup-round item
+  (`ProjectiveInvariance.lean`'s module docstring).
 - **Settled — one of §(K-σ)'s two `ℝ`-refutations REVERSES.** **(AC-2)**,
   **(AC-3)**. Over `ℂ̄` σ-fixed pencil configurations **exist**; they are exactly
   the `P¹ × P¹` grids on `Q`; and — refuting the *degeneracy* framing §(K-σ)
@@ -72,8 +78,9 @@ statement over `ℚ(i)` is not, and none is claimed.
 
 ### Step Z1 — (AC-1): the polarity generalizes; the general-`K` transport is already landed
 
-> **(AC-1)** *(proven-informally from the landed source; no compiler witness).*
-> `screwComplementIso` has a verbatim general-`K` companion. Both ingredients
+> **(AC-1)** `[PROVED]` *(landed 2026-09-26, DUAL-K/Phase 40b build agent;
+> compiler-witnessed — full `lake build` + `lake lint` clean, no `sorry`).*
+> `screwComplementIso` has a verbatim general-`K` form. Both ingredients
 > are already field-general in tree, all the helper inputs of the four
 > `ℝ`-fixed theorems are field-general, and the missing transport is **not**
 > missing.
@@ -138,12 +145,18 @@ extensor-level bridge (`Statement.lean:166`), two predicate transports (`:185`,
 `:216`), and one self-duality theorem (`:258`) restated with `mapSupport` in
 place of `mapExtensor`. Every input is already general. **No new mathematics.**
 
-*Confidence: proven-informally, source-level. Not compiler-checked.*
-*What would change this: a typecheck spike that fails — most plausibly on an
-instance-resolution or `rfl` step in `screwComplementIso_lineExtensor` /
-`screwComplementIso_mk_extensor`, both of which close by `rfl` at `ℝ`. This is
-the one claim in this section whose right instrument is a 20-line scratch
-`.lean`, and the dispatch's no-Lean constraint is why it was not taken.*
+*Confidence: **compiler-witnessed**, landed 2026-09-26 (DUAL-K/Phase 40b build
+agent), full `lake build` + `lake lint` clean, no `sorry`. Landed by a
+different route than sketched just above: the coordinator kept
+`hasPencilPanelRealization_mapExtensor_screwComplementIso`'s name (cited in
+frozen docs) and generalized `mapExtensor`/`ProjectiveInvariance.lean` in place
+instead of restating through `mapSupport`; the bill of declarations touched
+(`screwComplementIso`, `screwComplementIso_mk_extensor`, the two predicate
+transports, `ProjectiveInvariance.lean`'s 18 lemmas + `scaleExtensor`, and
+`equivExteriorPower_mk_extensor` in `ScrewVelocity.lean`) is otherwise as
+sketched. The one step that could have failed on `rfl`/instance resolution
+(`screwComplementIso_lineExtensor` / `screwComplementIso_mk_extensor`) closed
+verbatim at general `K`.*
 
 ### Step Z2 — (AC-2): the σ-fixed locus over `ℂ̄` is the `P¹ × P¹` grid on the fixed quadric
 

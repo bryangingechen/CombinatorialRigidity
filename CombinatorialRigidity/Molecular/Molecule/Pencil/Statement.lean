@@ -197,10 +197,10 @@ Grassmann–Cayley duality as `screwComplementIso_lineExtensor`, but stated for 
 points (not only the `homogenize`d affine points a `lineExtensor` supplies), which is what the
 predicate transport consumes: the screw element of a hinge is `extensor v` for the `v` witnessing
 `ExtensorThroughPoint` / `ExtensorInPanel`. -/
-theorem screwComplementIso_mk_extensor (v : Fin 2 → Fin 4 → ℝ) :
+theorem screwComplementIso_mk_extensor (v : Fin 2 → Fin 4 → K) :
     screwComplementIso (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
       = panelSupportExtensor (v 0) (v 1) := by
-  have hv : (![v 0, v 1] : Fin 2 → Fin 4 → ℝ) = v := by funext i; fin_cases i <;> rfl
+  have hv : (![v 0, v 1] : Fin 2 → Fin 4 → K) = v := by funext i; fin_cases i <;> rfl
   rw [screwComplementIso, LinearEquiv.trans_apply, LinearEquiv.trans_apply,
     equivExteriorPower_mk_extensor, panelSupportExtensor, normalsJoin, hv,
     ScrewSpace.equivExteriorPower_symm_apply]
@@ -216,7 +216,7 @@ stratum self-duality rests on; it follows the design doc's route via
 `exists_extensor_eq_panelSupportExtensor` and the polarity bridge, with the incidence coming from
 linearity (`dotProduct_eq_zero_of_mem_span`). -/
 theorem extensorInPanel_screwComplementIso_of_extensorThroughPoint
-    {C : ScrewSpace ℝ 2} {q : Fin 4 → ℝ} (h : ExtensorThroughPoint C q) :
+    {C : ScrewSpace K 2} {q : Fin 4 → K} (h : ExtensorThroughPoint C q) :
     ExtensorInPanel (screwComplementIso C) q := by
   obtain ⟨v, hCv, hq⟩ := h
   by_cases hC : C = 0
@@ -224,11 +224,11 @@ theorem extensorInPanel_screwComplementIso_of_extensorThroughPoint
     rw [map_zero]
     refine ⟨fun _ => 0, ?_, fun i => by simp⟩
     rw [ScrewSpace.val_zero,
-      extensor_eq_zero_of_eq (fun _ => (0 : Fin (2 + 2) → ℝ)) (a := 0) (b := 1) rfl (by decide)]
+      extensor_eq_zero_of_eq (fun _ => (0 : Fin (2 + 2) → K)) (a := 0) (b := 1) rfl (by decide)]
   · have hCval : C.val ≠ 0 := fun h0 => hC (ScrewSpace.ext (h0.trans ScrewSpace.val_zero.symm))
     have hvne : extensor v ≠ 0 := hCv ▸ hCval
-    have hvli : LinearIndependent ℝ v := (extensor_ne_zero_iff_linearIndependent v).1 hvne
-    have hvli2 : LinearIndependent ℝ ![v 0, v 1] := by
+    have hvli : LinearIndependent K v := (extensor_ne_zero_iff_linearIndependent v).1 hvne
+    have hvli2 : LinearIndependent K ![v 0, v 1] := by
       rw [show ![v 0, v 1] = v from by funext i; fin_cases i <;> rfl]; exact hvli
     obtain ⟨p', hp'val, hp'perp⟩ := exists_extensor_eq_panelSupportExtensor hvli2
     have hCmk : C = ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v) :=
@@ -247,7 +247,7 @@ point `q` (`ExtensorThroughPoint`). The dual of
 dimension-count `mem_span_of_dotProduct_perp_pair` (the panel meet's spanning pair is the perp of
 `{v 0, v 1}`, which contains `q`). -/
 theorem extensorThroughPoint_screwComplementIso_of_extensorInPanel
-    {C : ScrewSpace ℝ 2} {q : Fin 4 → ℝ} (h : ExtensorInPanel C q) :
+    {C : ScrewSpace K 2} {q : Fin 4 → K} (h : ExtensorInPanel C q) :
     ExtensorThroughPoint (screwComplementIso C) q := by
   obtain ⟨v, hCv, hvperp⟩ := h
   by_cases hC : C = 0
@@ -258,8 +258,8 @@ theorem extensorThroughPoint_screwComplementIso_of_extensorInPanel
       extensor_eq_zero_of_eq (fun _ => q) (a := 0) (b := 1) rfl (by decide)]
   · have hCval : C.val ≠ 0 := fun h0 => hC (ScrewSpace.ext (h0.trans ScrewSpace.val_zero.symm))
     have hvne : extensor v ≠ 0 := hCv ▸ hCval
-    have hvli : LinearIndependent ℝ v := (extensor_ne_zero_iff_linearIndependent v).1 hvne
-    have hvli2 : LinearIndependent ℝ ![v 0, v 1] := by
+    have hvli : LinearIndependent K v := (extensor_ne_zero_iff_linearIndependent v).1 hvne
+    have hvli2 : LinearIndependent K ![v 0, v 1] := by
       rw [show ![v 0, v 1] = v from by funext i; fin_cases i <;> rfl]; exact hvli
     obtain ⟨p', hp'val, hp'perp⟩ := exists_extensor_eq_panelSupportExtensor hvli2
     have hCmk : C = ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v) :=
@@ -271,7 +271,7 @@ theorem extensorThroughPoint_screwComplementIso_of_extensorInPanel
         (panelSupportExtensor_ne_zero_iff (v 0) (v 1)).2 hvli2
       exact hp'val ▸ fun h0 =>
         hpsne (ScrewSpace.ext (h0.trans ScrewSpace.val_zero.symm))
-    have hp'li : LinearIndependent ℝ p' := (extensor_ne_zero_iff_linearIndependent p').1 hp'ne
+    have hp'li : LinearIndependent K p' := (extensor_ne_zero_iff_linearIndependent p').1 hp'ne
     refine ⟨p', by rw [hbridge]; exact hp'val, ?_⟩
     exact mem_span_of_dotProduct_perp_pair hvli hp'li
       (fun i j => by fin_cases j; exacts [(hp'perp i).1, (hp'perp i).2])
@@ -289,7 +289,7 @@ The polarity swaps "extensor in the panel of `normal v`" with "extensor through 
 hinges (`screwComplementIso` injective), and preserves the panel–point incidence
 (`dotProduct_comm`). -/
 theorem hasPencilPanelRealization_mapExtensor_screwComplementIso
-    {G : Graph α β} {F : BodyHingeFramework ℝ 2 α β} {normal point : α → Fin 4 → ℝ}
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : HasPencilPanelRealization G F normal point) :
     HasPencilPanelRealization G (F.mapExtensor screwComplementIso) point normal := by
   obtain ⟨⟨hFg, hnnz, hSnz, hlink⟩, hpnz, hincid, hthrough⟩ := h

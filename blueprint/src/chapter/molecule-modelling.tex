@@ -128,7 +128,15 @@ dual transposes points and planes and where the molecule model lives
   correlation case is the one the duality below consumes. Motions are
   likewise unchanged when each supporting extensor is rescaled by a
   nonzero scalar (the normalization from homogeneous to affine data),
-  since only the spans of the extensors enter the constraints.
+  since only the spans of the extensors enter the constraints. The
+  argument uses only linearity and invertibility of $\Lambda$, so the
+  Lean statement holds over an arbitrary field $K$ ($\Lambda$ a
+  $K$-linear automorphism of $\textstyle\bigwedge^2 K^4$, $F$ a
+  body-hinge framework over $K$); $\R^3$ is fixed above because that is
+  where the projective-transformation reading of $\Lambda$ applies, and
+  where the molecule modelling equivalence uses it. The polarity of
+  \cref{lem:panel-hinge-dual-molecular} is field-general in the same
+  sense (\cref{sec:pencil-duality}).
 \end{theorem}
 \begin{proof}
   \leanok

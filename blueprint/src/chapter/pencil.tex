@@ -88,14 +88,19 @@ number three or more.
 \subsection{The polarity and self-duality}
 \label{sec:pencil-duality}
 
-Fix $K = \R$ and grade $k = 2$ ($d = 3$), the setting of
+Work at grade $k = 2$ ($d = 3$), the setting of
 \cref{lem:panel-hinge-dual-molecular}: the polarity there sends the
-extensor of any two homogeneous points $v_0, v_1 \in \R^4$ to the
+extensor of any two homogeneous points $v_0, v_1 \in K^4$ to the
 panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}),
 the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity in
 its full generality, not only for the homogenized poles of a molecular
-framework. Two consequences transport the point-through and panel-in
-conditions across the polarity.
+framework (the latter is the setting of \cref{lem:panel-hinge-dual-molecular}
+itself, fixed at $K = \R$; the polarity and the two transport lemmas below
+hold over an arbitrary field $K$). Field dependence enters only at
+self-dual configurations, not at this transport
+(\cref{fmlnote:pencil-conditional-realization-pair-field}). Two
+consequences transport the point-through and panel-in conditions across
+the polarity.
 
 \begin{lemma}[The point-join condition transports to the panel-meet side]
   \label{lem:pencil-transport-through-to-in}
@@ -103,8 +108,8 @@ conditions across the polarity.
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization,
         lem:panel-hinge-dual-molecular}
-  If a screw element $C \in \bigwedge^{2} \R^{4}$ passes through the
-  homogeneous point $q \in \R^4$ (\cref{def:extensor-through-point}),
+  If a screw element $C \in \bigwedge^{2} K^{4}$ passes through the
+  homogeneous point $q \in K^4$ (\cref{def:extensor-through-point}),
   then its polarity image lies in the panel with normal $q$
   (\cref{def:genuine-hinge-realization}).
 \end{lemma}
@@ -130,8 +135,8 @@ conditions across the polarity.
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization,
         lem:panel-hinge-dual-molecular}
-  If a screw element $C \in \bigwedge^{2} \R^{4}$ lies in the panel
-  with normal $q \in \R^4$ (\cref{def:genuine-hinge-realization}), then
+  If a screw element $C \in \bigwedge^{2} K^{4}$ lies in the panel
+  with normal $q \in K^4$ (\cref{def:genuine-hinge-realization}), then
   its polarity image passes through $q$
   (\cref{def:extensor-through-point}).
 \end{lemma}
@@ -157,11 +162,12 @@ conditions across the polarity.
   \leanok
   \uses{def:pencil-panel-realization, lem:panel-hinge-dual-molecular,
         thm:projective-invariance}
-  Transporting a pencil realization $(F, n, q)$ of a multigraph $G$
-  along the polarity of \cref{lem:panel-hinge-dual-molecular}
-  (\cref{thm:projective-invariance}) produces a pencil realization
-  $(\Lambda F, q, n)$ of $G$, with the roles of the normal and the
-  point exchanged.
+  Over any field $K$, transporting a pencil realization $(F, n, q)$ of
+  a multigraph $G$ along the polarity $\Lambda$ of
+  \cref{lem:panel-hinge-dual-molecular} (field-general as a screw-space
+  automorphism, \cref{thm:projective-invariance}) produces a pencil
+  realization $(\Lambda F, q, n)$ of $G$, with the roles of the normal
+  and the point exchanged.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -606,8 +612,11 @@ exactly two.
   the one containing $g q$. The panel--point incidence $\langle q,
   n\rangle = 0$ is likewise preserved, and the automorphisms send nonzero
   data to nonzero data. Rank invariance is the change-of-screw-coordinates
-  identity (this is the general-field companion of
-  \cref{lem:pencil-self-dual}, whose polarity is one such automorphism).
+  identity: this lemma is the collineation companion of
+  \cref{lem:pencil-self-dual}, whose polarity is instead a correlation,
+  exchanging the normal and point roles rather than repositioning within
+  them; both rest on the same field-general screw-space automorphism
+  mechanism (\cref{thm:projective-invariance}).
 \end{proof}
 
 \begin{lemma}[Existence of a repositioning automorphism]

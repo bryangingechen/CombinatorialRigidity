@@ -1,15 +1,14 @@
 # Phase 40b — PENCIL-X0 / CARRIER: planar pictures, the lifting space, `X₀`, and "the general point attains" (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). C1a, C1b, and C2 (both the `U`-open
-lemma and the lifting-space API) landed 2026-09-26 in `Molecule/Pencil/MainComponent/Carrier.lean`.
-**C2 is DONE.** **Next: C3 ∥ DUAL-K → C4** (parallelizable; DUAL-K must land before C4 and never
-builds in parallel with a `Carrier.lean` build). Plan: `notes/Phase40-design.md` §3.
+**Status:** in progress (opened design-first 2026-09-26). C1a, C1b, C2 (both the `U`-open
+lemma and the lifting-space API), and DUAL-K (the polarity over every field) landed 2026-09-26.
+**C2 and DUAL-K are DONE.** **Next: C3 (picture→normal API), then C4.** Plan:
+`notes/Phase40-design.md` §3.
 
 ## Current state
 
-**Next concrete step: C3 (picture→normal API) or DUAL-K (the polarity over every field)** (*Hand-
-off*) — both need only C1a; DUAL-K must land before C4 and never in parallel with a `Carrier.lean`
-build.
+**Next concrete step: C3 (picture→normal API)** (*Hand-off*) — needs only C1a. C4 needs both C3 and
+DUAL-K (now landed).
 C1a landed seven definitions and `Graph.mem_liftingSpace`, C1b the one-witness upgrade
 `Graph.x0Attains_of_exists` at the pinned signature, and C2 landed the `U`-open lemma (existence of
 an admissible picture, a main-picture minimizer, and the openness polynomial) plus the lifting-space
@@ -22,6 +21,14 @@ carries five green definition nodes, the green lemma `lem:pencil-lifting-space-a
 `Aff(q)` containment/dimension), the green lemma `lem:pencil-x0-one-witness` (C1b), and the green
 lemma `lem:pencil-x0-main-picture-open` (C2's `U`-open landing), all split out of
 `thm:pencil-x0-main-component`, which stays red.
+
+DUAL-K landed the field-general polarity `screwComplementIso` (`Molecule/Duality.lean`),
+`ProjectiveInvariance.lean`'s `mapExtensor`/`scaleExtensor` family, and the field-general forms of
+`screwComplementIso_mk_extensor` and both predicate transports (`Pencil/Statement.lean`), all at
+`[Field K]` with names unchanged, so C4's polar/primal rank equality (`ofNormals … = (pointJoin …
+).mapSupport screwComplementIso`) is unblocked and needs no further duality work. Blueprint and the
+`notes/pencil/workbook/K-clos.md` (AC-1) annotation restated in step; no new dep-graph node (the
+existing `lem:pencil-self-dual` pin stays green, now honestly over every field).
 
 ## Architectural choices made up front
 
@@ -73,17 +80,12 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
   ```
 - [x] **C1b/C6 — `Graph.x0Attains_of_exists`** (landed 2026-09-26 at the signature C1a pinned,
   unchanged; no `[Infinite K]`). API for C2–C5, all in `Carrier.lean` unless noted:
-  `Graph.IsAdmissiblePicture.exists_mvPolynomial` (admissibility is open; `[Finite α]` only);
-  `Graph.IsAdmissiblePicture.supportExtensor_ne_zero` (hinges nonzero at every height over an
-  admissible `q`) via `linearIndependent_pencilConfigPoint_pair`; `Graph.liftingMatrix K G` (`M(q)`,
-  rows `α ⊕ (α × α) ⊕ (α × Fin 3)`, columns `α ⊕ (α × Fin 3)`) with
-  `Graph.liftingMatrix_mulVec_eq_zero_iff`, `Graph.map_ker_liftingMatrix` (height projection of
-  `ker M(q)` is `L(q)`, any `q`), `Graph.finrank_ker_liftingMatrix` (equal finrank, admissible `q`);
-  the mirror `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
-  (`Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`: `D`, `Z` with `D(q₀) ≠ 0`, `Z(q₀) = z₀`,
-  `D(q) ≠ 0 → dim ker M(q) ≤ dim ker M(q₀)`, and the section in `ker M(q)` where also
-  `dim ker M(q₀) ≤ dim ker M(q)`); mirrors `MvPolynomial.eval_bind₁`,
-  `Matrix.linearIndependent_rows_iff_det_ne_zero`.
+  `Graph.IsAdmissiblePicture.exists_mvPolynomial`, `Graph.IsAdmissiblePicture.supportExtensor_ne_zero`
+  (hinges nonzero at every height over an admissible `q`), `Graph.liftingMatrix K G` (`M(q)`) with
+  `Graph.map_ker_liftingMatrix` (height projection of `ker M(q)` is `L(q)`, any `q`) and
+  `Graph.finrank_ker_liftingMatrix` (equal finrank, admissible `q`), via the mirror
+  `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
+  (`Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`).
 - [x] **C2 — lifting-space API** (landed 2026-09-26, sonnet). `Aff(q)` (restricted to `V(G)`)
   `⊆ L(q)`, at every picture, and `3 ≤ dim L(q)` at an admissible `q` with `V(G).Nonempty`.
   **The codim bound `dim L(q) ≥ 3|V| − 2|E|` (MC-1 tail) is dropped from the checklist**: FLAT's
@@ -91,25 +93,17 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
   consumer on the route, and it is not proved here — FLAT's pre-build recon may reinstate it if its
   route needs it.
   - [x] **`U` nonempty open** (landed 2026-09-26): `∃ P ≠ 0, ∀ q, eval q P ≠ 0 →
-    G.IsMainPicture q` (`[Infinite K]`; STEPS uses it to put its witnesses over `U`) —
-    `Graph.exists_mvPolynomial_isMainPicture`, from `Graph.exists_isMainPicture` (a
-    `finrank L(q)`-minimizing admissible `q_min`, via `Nat.sInf` over the image set) and
-    `Graph.exists_isAdmissiblePicture` (an admissible picture exists for loopless `G` whose closed
-    neighbourhoods all have at least three members, via the moment curve `v ↦ (φ v, (φ v)²)` at
-    an injective `φ : α → K`). All three take `hloop : G.Loopless` and
-    `h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`. `P := Padm * D` from
-    `IsAdmissiblePicture.exists_mvPolynomial` and the mirror's semicontinuity conjunct at the
-    trivial kernel vector `0`, with `finrank_ker_liftingMatrix` at both ends. Blueprint:
-    `lem:pencil-x0-main-picture-open`.
+    G.IsMainPicture q` (`[Infinite K]`; STEPS uses it) — `Graph.exists_mvPolynomial_isMainPicture`,
+    from `Graph.exists_isMainPicture` (`Nat.sInf`-minimizing) and `Graph.exists_isAdmissiblePicture`
+    (moment curve), both taking `hloop : G.Loopless`, `h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`.
+    Blueprint: `lem:pencil-x0-main-picture-open`.
   - [x] **`Aff(q) ⊆ L(q)`, `3 ≤ dim L(q)`** (landed 2026-09-26): `Graph.affineLiftMap G q : (Fin 3
-    → K) →ₗ[K] (α → K)` sends `h` to `fun w => if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else
-    0`; `Graph.affineLifts G q := LinearMap.range (G.affineLiftMap q)` is `Aff(q)` restricted to
-    `V(G)`. `Graph.affineLifts_le_liftingSpace` holds at every `q` (the same `h` at every body — no
-    admissibility). `Graph.finrank_affineLifts` (admissible `q`, `V(G).Nonempty`, `[Finite α]`)
-    gives `finrank = 3`: the map is injective since `IsAdmissiblePicture`'s second conjunct gives
-    three closed-neighbourhood members with independent homogeneous picture points, forcing `h = 0`
-    via `Matrix.mulVec_injective_iff_isUnit`. Blueprint: `lem:pencil-lifting-space-affine`.
-- [ ] **C3 ∥ (DUAL-K → C4)** (parallelizable; each needs only C1a):
+    → K) →ₗ[K] (α → K)`, `h ↦ fun w => if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else 0`;
+    `Graph.affineLifts G q := LinearMap.range (G.affineLiftMap q)` is `Aff(q)` restricted to `V(G)`,
+    `≤ L(q)` at every `q` (`Graph.affineLifts_le_liftingSpace`); `Graph.finrank_affineLifts`
+    (admissible `q`, `V(G).Nonempty`, `[Finite α]`) gives `finrank = 3`. Blueprint:
+    `lem:pencil-lifting-space-affine`.
+- **C3, then C4** (DUAL-K, below, is DONE — C4 no longer waits on it):
   - [ ] **C3 — picture→normal API** (sonnet/opus): `pencilNormalOfPicture ≠ 0 ↔` the selected
     triple is independent (via `cross₃_ne_zero_iff_linearIndependent`; picture-triple independence
     gives config-triple independence); selector-independence up to scalar at `z ∈ L(q)`; a
@@ -127,39 +121,13 @@ anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithme
     the hinges off `E(G)`: `HasCoplanarPanelRealization` needs `supportExtensor e ≠ 0` for every
     `e : β`, as `pencilChartFramework` does. Carry the rank across with
     `span_rigidityRows_eq_of_supportExtensor_agree` (`Arms.lean:670`). Touches `ScrewSpace`/extensor.
-  - [ ] **DUAL-K — the polarity over every field, in place** (sonnet; a mechanical refactor, the
-    bodies compile verbatim at `[Field K]`; upstream of `Carrier.lean`, so never in parallel with a
-    Carrier build). Must land **before C4**. Design: `notes/Phase40-design.md` §4 *Duality*.
-    - ℝ → `K`, same bodies:
-      - `screwComplementIso` (`Molecule/Duality.lean:69`);
-      - `equivExteriorPower_mk_extensor` (`Molecule/ScrewVelocity.lean:161`; HingeGeneric has a
-        private K form, so reuse it rather than duplicate);
-      - `screwComplementIso_mk_extensor` (`Pencil/Statement.lean:200`);
-      - both transports, `extensorInPanel_screwComplementIso_of_extensorThroughPoint` and
-        `extensorThroughPoint_screwComplementIso_of_extensorInPanel`.
-    - The self-duality becomes
-      `hasPencilPanelRealization_mapSupport_screwComplementIso {F : BodyHingeFramework K 2 α β} (h :
-      HasPencilPanelRealization G F normal point) : HasPencilPanelRealization G (F.mapSupport
-      screwComplementIso) point normal`. Prove it with `mapSupport_graph`,
-      `mapSupport_supportExtensor` and `map_ne_zero_iff _ screwComplementIso.injective`.
-      `mapExtensor = mapSupport` holds by `rfl` at ℝ.
-    - Renaming triggers the deletion gate: repoint every live reference tree-wide. Statement.lean's
-      docstrings carry four.
-    - The ℝ³ molecular declarations (`screwComplementIso_lineExtensor`,
-      `molecularOfCentres_mapExtensor_screwComplementIso`, `*_ofNormals_homogenize*`) stay ℝ and
-      instantiate `K := ℝ`. Leave `ProjectiveInvariance.lean` alone; merging
-      `mapExtensor`/`mapSupport` is a cleanup-round item.
-    - Blueprint:
-      - restate and repin `lem:pencil-self-dual` over every field;
-      - replace `sec:pencil-duality`'s "Fix `K = ℝ`" with a field-generality remark stating only
-        what is verified: the polarity transports rank, rigidity and pencil realizations over
-        every field; field dependence enters only at self-dual configurations
-        (`fmlnote:pencil-conditional-realization-pair-field`);
-      - add the matching remark on `thm:projective-invariance`'s "ℝ³";
-      - reword `pencil.tex:610` ("whose polarity is one such automorphism" is wrong: the polarity
-        is a correlation, and that lemma is its collineation companion).
-    - Workbook: annotate `K-clos.md` (AC-1) in place, with date and finder, as now
-      compiler-witnessed (`notes/pencil/CLAUDE.md` discipline).
+  - [x] **DUAL-K — the polarity over every field, in place** (landed 2026-09-26, sonnet;
+    see *Decisions made* for the adjudication). `screwComplementIso`, `equivExteriorPower_
+    mk_extensor`, `screwComplementIso_mk_extensor`, both transports, and
+    `ProjectiveInvariance.lean` (`mapExtensor`/`scaleExtensor` + 18 lemmas) are all
+    `[Field K]`-generic; the ℝ-specific molecular declarations stay `K := ℝ`. Blueprint
+    (`lem:pencil-self-dual`, `sec:pencil-duality`, `thm:projective-invariance`,
+    `pencil.tex:610`) and `K-clos.md` (AC-1, now `[PROVED]`) restated in step.
 - [ ] **C5 — `X0Attains` at the flat witness** (opus, fragility): `X0Attains` holds at a flat config
   `(q, 0)` from a single seed; rank arithmetic on `rigidityRows`. Enters through C1b (`0 ∈ L(q)`,
   `q` main). The entry point STEPS extends.
@@ -185,53 +153,29 @@ recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now
 
 ## Hand-off / next phase
 
-**C2 is DONE.** **Next commit: C3 (picture→normal API) or DUAL-K (the polarity over every field)**
-in `Carrier.lean` (checklist for both). C3 and C4 need only C1a; DUAL-K must land before C4 and
-never builds in parallel with a `Carrier.lean` build — so the two runnable-now leaves are C3 and
-DUAL-K, either order. Do NOT open FLAT or any successor layer; CARRIER runs C3∥(DUAL-K → C4) → C5
-next.
+**C2 and DUAL-K are DONE.** **Next commit: C3 (picture→normal API)**, in `Carrier.lean`; needs only
+C1a. C4 needs both C3 and DUAL-K (now landed). Do NOT open FLAT or any successor layer; CARRIER runs
+C3 → C4 → C5 next.
 
 ## Decisions made during this phase
 
 - **2026-09-26 — C2's `U`-open lemma: moment curve, `Nat.sInf` minimizer, reused mirror.** Any
   three distinct closed-neighbourhood members are non-collinear on the moment curve
-  `v ↦ (φ v, (φ v)²)` (`det_moment_curve_triple`, a permuted Vandermonde product). The openness
-  polynomial reuses `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial kernel
-  vector `0` — no new mirror lemma, no witness height to transport.
-- **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor.** Stacking a
-  projection onto `ker M(q₀)` under `M(q₀)` and left-multiplying by a constant left inverse gives a
-  square polynomial `S(q)` with `S(q₀) = 1`; `adj S(q) z₀` is the section (TACTICS-GOLF § 25); no
-  minor lemma needed. The blueprint's `lem:pencil-condition-linear` (red) is not used: the Lean
-  route needs only the projection lemmas.
-- **2026-09-26 — opened design-first.** The design recon (opus, adopted as session rung) settled
-  the new mirror definitions and the β-headroom fix; cross-phase plan stays `Phase40-design.md` §3.
-- **2026-09-26 — C1a: the rank is read at `ofNormals` of the config points, not of the plane
-  normals** (the recon's scratch candidate fed `pencilNormalOfPicture` to `ofNormals`). From the
-  bodies: a zero hinge welds its bodies (`hingeRowBlock` of `0` is `⊤`), `panelSupportExtensor n n = 0`,
-  and adjacent planes coincide on the whole fibre inside a def₂-rigid subgraph ((MC-13)(c): every
-  triangle edge) and everywhere at a flat `(q, 0)`, where that rank is `6(|V|−1)`, not (MC-4)'s
-  `6|V|−3−dim L(q)`. At the points the hinge is the polar of `p_u ∧ p_v`, `≠ 0 ↔ q_u ≠ q_v` (C4's
-  line already assumed this); the rank device applies verbatim; C4 converts to the point-join rank.
-- **2026-09-26 — C1a, hypothesis 1 CONFIRMED: `U` is a def (`Graph.IsMainPicture`).** C1b's
-  Cramer transport needs `rank M(q)` locally constant at `q₀`; STEPS also places witnesses over `U`
-  directly (C2's openness lemma), so it is a def, not a C1b-only hypothesis. `ℓ₀` is not a def.
-- **2026-09-26 — C1a, hypothesis 2 CONFIRMED: `X0Attains` carries fibre-openness.** One attaining
-  `z` per picture would force MOTIVES to re-prove semicontinuity; the per-picture `R` (C1b's device)
-  does not. X0Dist uses one attaining `(q, z)`; X0Gen intersects `R` with a nondegeneracy polynomial
-  on `L(q)`; C5's `(q, 0)` enters via C1b.
-- **2026-09-26 — C1a shape details.** `L(q)` vanishes off `V(G)`; `ends` is link-relative; the
-  planned `IsAdmissiblePicture'`/`Graph.liftAtVertex` were dropped as redundant; the normal's
-  selector is a plain `α → Fin 3 → α` (no `IsFin3SelectorOf`, unsatisfiable at
-  `|closedNbhd v| > 3`).
-- **2026-09-26 — duality recon (PI-commissioned, opus, read-only; `Phase40-design.md` §4
-  *Duality*).** The polarity is field-free over every field, as a transport of frameworks and
-  pencil realizations; the ℝ scope of `Duality.lean`/the self-duality is historical. It never
-  preserves adjacent-distinctness, nondegeneracy or `X₀`, so self-duality does not reach `X0Dist`.
-  Its one use on the route is C4's rank equality, via the new slice DUAL-K. The rejected
-  simplifications and the FLAT-recon questions are in the design doc.
-- **2026-09-26 — C2 closes: `Aff(q)` as a linear map's range, and the codim bound is dropped.**
-  `Graph.affineLiftMap` needs `open Classical in` (the `if w ∈ V(G)` body has no `Decidable`
-  instance otherwise, matching `Graph.liftingMatrix`'s idiom); the dimension count reuses the
-  `finrank_ker_liftingMatrix` injectivity device (`Matrix.mulVec_injective_iff_isUnit`) rather than
-  a fresh argument. The codim bound is dropped per the coordinator's scope-pin: FLAT's (MC-4)(b)
-  `dim L(q) ≥ 3 + def₂` subsumes it (singleton partition), with no route consumer.
+  `v ↦ (φ v, (φ v)²)` (`det_moment_curve_triple`). The openness polynomial reuses
+  `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` at the trivial kernel vector `0`.
+- **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor** (TACTICS-GOLF
+  § 25); the blueprint's `lem:pencil-condition-linear` (red) is not used, since the Lean route needs
+  only the projection lemmas.
+- **2026-09-26 — opened design-first** (opus recon; plan `Phase40-design.md` §3). **C1a: the rank
+  is read at `ofNormals` of the config points**, not the plane normals (a zero hinge would weld a
+  def₂-rigid subgraph at the wrong rank); the hinge there is the polar of `p_u ∧ p_v`,
+  `≠ 0 ↔ q_u ≠ q_v`, and C4 converts to the point-join rank.
+- **2026-09-26 — C1a hypotheses CONFIRMED and shape details.** `U` is a def
+  (`Graph.IsMainPicture`, needed by both C1b's Cramer transport and STEPS); `X0Attains` carries
+  fibre-openness via a per-picture `R`. `L(q)` vanishes off `V(G)`; `ends` is link-relative.
+- **2026-09-26 — C2 closes: `Aff(q)` as a linear map's range, codim bound dropped.** Dimension count
+  reuses the `finrank_ker_liftingMatrix` injectivity device; the codim bound is dropped per the
+  coordinator's scope-pin, FLAT's (MC-4)(b) subsuming it with no route consumer.
+- **2026-09-26 — duality recon (field-free, `Phase40-design.md` §4) and DUAL-K adjudication.** Its
+  one route use is C4's rank equality; frozen-doc citations ruled out the planned `mapSupport`
+  restatement for the self-duality, so `ProjectiveInvariance.lean` was generalized in place instead.
