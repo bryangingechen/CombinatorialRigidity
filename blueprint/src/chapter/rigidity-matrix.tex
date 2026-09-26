@@ -358,7 +358,8 @@ contraction is not yet fully rigid
 
 \begin{lemma}[Block-rank addition for a vertex cut; KT Lemma 6.1]
   \label{lem:block-rank-cut}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton}
   \leanok
   \uses{def:rigidity-matrix, def:hinge-row-block}
   Let $(G,p)$ be a body-hinge framework with all nonzero supporting extensors,
@@ -376,7 +377,10 @@ contraction is not yet fully rigid
   cut-edge decomposition; it replaces the isometry argument of
   Katoh--Tanigawa's Lemma~6.1~\cite{katohTanigawa2011} with an argument
   via three mutually disjoint subspaces of the rigidity-row span at a
-  fixed placement.
+  fixed placement. In particular, if exactly one edge joins a vertex set
+  $V_1$ to a body $w \notin V_1$, then
+  $\operatorname{rank} R(G[V_1],p) + (D-1) \le
+  \operatorname{rank} R(G[V_1 \cup \{w\}],p)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -389,6 +393,9 @@ contraction is not yet fully rigid
   subspace $S_c$ (from the hinge-row block of $e_c$, nonzero by hypothesis);
   the three subspaces $S_1, S_c, S_2$ are pairwise disjoint, and a
   calc chain of disjoint-rank additions closes the inequality.
+  For the particular case, apply the bound to $G[V_1 \cup \{w\}]$ at
+  $V_1$: its only crossing edge is the one joining $w$, its $V_1$ side is
+  $G[V_1]$, and the rank of the single body $w$ is dropped.
 \end{proof}
 
 \begin{lemma}[Rank addition at a cut vertex]

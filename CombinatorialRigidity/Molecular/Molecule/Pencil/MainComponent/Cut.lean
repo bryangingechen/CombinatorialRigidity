@@ -32,14 +32,25 @@ to `G`.
 * `Graph.X0Attains.of_cutVertex` — **CUT** ((MC-52)(iv), the "if" half), from the rank identity
   `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` (`RigidityMatrix/Bricks.lean`) and
   the deficiency law `Graph.deficiency_add_le_of_cutVertex` (`Molecular/Deficiency.lean`).
-* `exists_dotProduct_eq_of_linearIndependent`, `Graph.exists_liftingRestrict_eq_of_bridge`,
-  `Graph.X0Attains.of_bridge` — the single bridge ((MC-53) with no path bodies), from the cut-edge
-  rank brick `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` and KT Lemma 3.6
-  `Graph.deficiency_eq_of_cutEdges_ncard_le_one`.
 * `pathVertex` — the path's extended vertex sequence `a, x 0, …, x (k - 1), b`.
 * `Graph.exists_liftingRestrict_eq_of_bridgePath` — restriction is onto at a chain of bridges of
   any length `k` ((MC-53)(iii), `lem:pencil-bridge-fibre`): a single affine extension by the
   witness at `a`, needing no admissibility of the picture and no case split on `k`.
+* `pathVertex_cases`, `pathVertex_eq_of_val_eq_succ`, `pathVertex_rev`,
+  `pathVertex_mem_union_image_iff` — the path sequence read by index value, read backwards, and
+  against the prefixes `V₁ ∪ {x i | i < j}`.
+* `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath`,
+  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the
+  counts along the path: each body hangs from the prefix before it by one edge, so it adds `1` to
+  the deficiency and at least `D − 1` to the rank.
+* `Graph.X0Attains.of_bridgePath` — **BRIDGE** ((MC-53)(iv), the "if" half) at a chain of `k + 1`
+  bridges, any `k ≥ 0`: the cut-edge rank brick
+  `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` and KT Lemma 3.6
+  `Graph.deficiency_eq_of_cutEdges_ncard_le_one` at the last bridge, plus the counts along the
+  path. The rank step is the pendant-body brick
+  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton`
+  (`RigidityMatrix/Bricks.lean`), the deficiency step `Graph.deficiency_induce_union_singleton`
+  (`Molecule/Pencil/Motive.lean`).
 
 ## Design
 
@@ -54,9 +65,14 @@ to `G`.
   `z₁` by the single affine function already witnessing its own condition at `a` matches every
   closed neighbourhood outside `V₁`, whether it lies entirely there or meets `V₁` only at `a` —
   the interior path bodies' own admissibility (three non-collinear points) and the picture's
-  admissibility are never used for this direction, and no case split on `k` is needed. Build 2
-  keeps this lemma minimal (no `V₂`, no exact vertex count, no injectivity of `x`): those join the
-  hypothesis bundle where the theorem's rank/deficiency count needs them (`notes/Phase40e.md`).
+  admissibility are never used for this direction, and no case split on `k` is needed. The lemma
+  stays minimal (no `V₂`, no exact vertex count, no injectivity of `x`); the theorem adds those,
+  which its rank and deficiency counts need.
+* **BRIDGE counts in numbers, not by an induction on `X0Attains`.** A peeled path body has no
+  admissible picture (its closed neighbourhood is itself), so no intermediate graph attains. The
+  theorem cuts once at the last bridge and telescopes the rank inequality and the deficiency
+  equality along the path, then applies `Graph.x0Attains_of_exists` once. The single bridge is its
+  `k = 0` case.
 -/
 
 open scoped Graph
@@ -348,235 +364,6 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   push_cast
   linarith [hdef, hcount]
 
-/-! ## A single bridge
-
-The `k = 0` case of (MC-53), kept as build 2's base case (`notes/Phase40e.md`). -/
-
-/-- Prescribed values on two independent vectors of `K³` are taken by one linear functional,
-written as a dot product. -/
-theorem exists_dotProduct_eq_of_linearIndependent {u w : Fin 3 → K}
-    (h : LinearIndependent K ![u, w]) (c₁ c₂ : K) :
-    ∃ γ : Fin 3 → K, γ ⬝ᵥ u = c₁ ∧ γ ⬝ᵥ w = c₂ := by
-  classical
-  set T := Fintype.linearCombination K ![u, w] with hT
-  have hinj : LinearMap.ker T = ⊥ :=
-    LinearMap.ker_eq_bot.mpr (linearIndependent_iff_injective_fintypeLinearCombination.mp h)
-  obtain ⟨L, hL⟩ := T.exists_leftInverse_of_injective hinj
-  set φ : (Fin 3 → K) →ₗ[K] K :=
-    (LinearMap.proj 0 : (Fin 2 → K) →ₗ[K] K).smulRight c₁ ∘ₗ L
-      + (LinearMap.proj 1 : (Fin 2 → K) →ₗ[K] K).smulRight c₂ ∘ₗ L with hφ
-  have hφdot : ∀ x, (fun i => φ (Pi.single i 1)) ⬝ᵥ x = φ x := by
-    intro x
-    conv_rhs => rw [show x = ∑ i, x i • Pi.single i (1 : K) by
-      funext j; simp [Finset.sum_apply, Pi.single_apply]]
-    rw [map_sum]
-    simp [dotProduct, mul_comm]
-  have hLu : L u = Pi.single 0 1 := by
-    have := congr($hL (Pi.single 0 1))
-    simpa [hT, Fintype.linearCombination_apply_single] using this
-  have hLw : L w = Pi.single 1 1 := by
-    have := congr($hL (Pi.single 1 1))
-    simpa [hT, Fintype.linearCombination_apply_single] using this
-  refine ⟨fun i => φ (Pi.single i 1), ?_, ?_⟩
-  · rw [hφdot, hφ]; simp [hLu]
-  · rw [hφdot, hφ]; simp [hLw]
-
-/-- **Restriction is onto at a single bridge** ((MC-53)(iii) with no path bodies): the bridge
-`e = ab` joins `a ∈ V₁` to `b ∉ V₁`, every other link stays on one side, and `q_a ≠ q_b`. Extend
-`z₁ ∈ L_{G[V₁]}(q)` across the other side by an affine function taking the value `z₁(a)` at `q_a`
-and the value of `z₁`'s plane at `a` at `q_b`. -/
-theorem _root_.Graph.exists_liftingRestrict_eq_of_bridge {G : Graph α β} {V₁ : Set α}
-    (hsub : V₁ ⊆ V(G)) {e : β} {a b : α} (ha : a ∈ V₁) (hb : b ∉ V₁) (hl : G.IsLink e a b)
-    (hsep : ∀ f x y, G.IsLink f x y → f ≠ e →
-      (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∉ V₁ ∧ y ∉ V₁))
-    {q : α × Fin 2 → K} (hab : pencilPicturePoint q a ≠ pencilPicturePoint q b)
-    {z₁ : α → K} (hz₁ : z₁ ∈ (G.induce V₁).liftingSpace q) :
-    ∃ z ∈ G.liftingSpace q, Graph.liftingRestrict V₁ z = z₁ := by
-  classical
-  obtain ⟨h₁, hh₁⟩ := hz₁.2 a ha
-  obtain ⟨γ, hγa, hγb⟩ := exists_dotProduct_eq_of_linearIndependent
-    (linearIndependent_pencilPicturePoint_pair hab) (z₁ a) (h₁ ⬝ᵥ pencilPicturePoint q b)
-  set z : α → K := fun w => if w ∈ V₁ then z₁ w else if w ∈ V(G) then γ ⬝ᵥ pencilPicturePoint q w
-    else 0 with hzdef
-  -- a link leaving `V₁` is the bridge
-  have hcross : ∀ f x y, G.IsLink f x y → x ∈ V₁ → y ∉ V₁ → x = a ∧ y = b := by
-    intro f x y hf hx hy
-    by_cases hfe : f = e
-    · subst hfe
-      rcases hf.eq_and_eq_or_eq_and_eq hl with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · exact ⟨h1, h2⟩
-      · exact absurd (h2 ▸ ha) hy
-    · rcases hsep f x y hf hfe with ⟨-, h'⟩ | ⟨h', -⟩
-      · exact absurd h' hy
-      · exact absurd hx h'
-  refine ⟨z, ⟨fun w hw => ?_, fun x hx => ?_⟩, ?_⟩
-  · have hw₁ : w ∉ V₁ := fun h' => hw (hsub h')
-    simp [hzdef, hw₁, hw]
-  · by_cases hx₁ : x ∈ V₁
-    · by_cases hxa : x = a
-      · subst hxa
-        refine ⟨h₁, fun w hw => ?_⟩
-        by_cases hw₁ : w ∈ V₁
-        · simp only [hzdef, ite_eq_left hw₁]
-          refine hh₁ w ?_
-          rcases hw with rfl | ⟨f, hf⟩
-          · exact Or.inl rfl
-          · exact Or.inr ⟨f, ⟨hf, hx₁, hw₁⟩⟩
-        · rcases hw with rfl | ⟨f, hf⟩
-          · exact absurd hx₁ hw₁
-          obtain ⟨-, rfl⟩ := hcross f x w hf hx₁ hw₁
-          have hwV : w ∈ V(G) := hf.right_mem
-          simp only [hzdef, ite_eq_right hw₁, ite_eq_left hwV]
-          exact hγb
-      · obtain ⟨h, hh⟩ := hz₁.2 x hx₁
-        refine ⟨h, fun w hw => ?_⟩
-        have hw₁ : w ∈ V₁ := by
-          by_contra hw₁
-          rcases hw with rfl | ⟨f, hf⟩
-          · exact hw₁ hx₁
-          · exact hxa (hcross f x w hf hx₁ hw₁).1
-        simp only [hzdef, ite_eq_left hw₁]
-        refine hh w ?_
-        rcases hw with rfl | ⟨f, hf⟩
-        · exact Or.inl rfl
-        · exact Or.inr ⟨f, ⟨hf, hx₁, hw₁⟩⟩
-    · refine ⟨γ, fun w hw => ?_⟩
-      by_cases hw₁ : w ∈ V₁
-      · rcases hw with rfl | ⟨f, hf⟩
-        · exact absurd hw₁ hx₁
-        obtain ⟨rfl, rfl⟩ := hcross f w x hf.symm hw₁ hx₁
-        simp only [hzdef, ite_eq_left hw₁]
-        exact hγa.symm
-      · have hwV : w ∈ V(G) := by
-          rcases hw with rfl | ⟨f, hf⟩
-          · exact hx
-          · exact hf.right_mem
-        simp [hzdef, hw₁, hwV]
-  · funext w
-    by_cases hw₁ : w ∈ V₁
-    · simp [Graph.liftingRestrict_apply, hzdef, hw₁]
-    · simp only [Graph.liftingRestrict_apply, ite_eq_right hw₁]
-      exact (hz₁.1 w hw₁).symm
-
-/-- **BRIDGE at a single bridge** ((MC-53)(iv) with no path bodies, the "if" half): if `G`
-satisfies (H), the bridge `e` joins `a ∈ V₁` to `b ∉ V₁` and every other link stays on one side,
-and `X₀` attains at both sides, then `X₀(G)` attains. The landed pieces: the cut-edge rank brick
-`BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` (ranks add plus `5` for the bridge) and
-KT Lemma 3.6 `Graph.deficiency_eq_of_cutEdges_ncard_le_one` (the deficiency adds plus `1`). -/
-theorem _root_.Graph.X0Attains.of_bridge [Infinite K] [Finite α] [Finite β] {G : Graph α β}
-    (hG : G.IsX0Graph) {V₁ : Set α} (hne : V₁.Nonempty) (hssub : V₁ ⊂ V(G)) {e : β} {a b : α}
-    (ha : a ∈ V₁) (hb : b ∉ V₁) (hl : G.IsLink e a b)
-    (hsep : ∀ f x y, G.IsLink f x y → f ≠ e → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∉ V₁ ∧ y ∉ V₁))
-    (h₁ : (G.induce V₁).X0Attains K) (h₂ : (G.induce (V(G) \ V₁)).X0Attains K) :
-    G.X0Attains K := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  have hV : V(G).Nonempty := hG.connected.nonempty
-  have : Inhabited α := ⟨hV.some⟩
-  have hsub : V₁ ⊆ V(G) := hssub.subset
-  set V₂ := V(G) \ V₁ with hV₂
-  have hle₁ : G.induce V₁ ≤ G := Graph.induce_le hsub
-  have hle₂ : G.induce V₂ ≤ G := Graph.induce_le Set.sdiff_subset
-  obtain ⟨ends₁, P₁, hends₁, hP₁, hgood₁⟩ := h₁
-  obtain ⟨ends₂, P₂, hends₂, hP₂, hgood₂⟩ := h₂
-  obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
-    hG.simple.toLoopless hG.three_le_ncard_closedNbhd
-  set ends := G.endsOf with hendsdef
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsI : ∀ X : Set α, ∀ f u w, (G.induce X).IsLink f u w →
-      (G.induce X).IsLink f (ends f).1 (ends f).2 := by
-    intro X f u w hf
-    have hl' := hends f u w hf.1
-    rcases hl'.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl', h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl', h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
-  rw [map_mul, map_mul] at hq
-  obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
-  obtain ⟨-, R₂, ⟨z₂, hz₂, hR₂⟩, hatt₂⟩ := hgood₂ q (right_ne_zero_of_mul (left_ne_zero_of_mul hq))
-  have hqmain := hmain q (right_ne_zero_of_mul hq)
-  have hab : pencilPicturePoint q a ≠ pencilPicturePoint q b := hqmain.1.1 e a b hl
-  have hbV : b ∈ V₂ := ⟨hl.right_mem, hb⟩
-  have haV₂ : a ∉ V₂ := fun h => h.2 ha
-  have hsep₂ : ∀ f x y, G.IsLink f x y → f ≠ e → (x ∈ V₂ ∧ y ∈ V₂) ∨ (x ∉ V₂ ∧ y ∉ V₂) := by
-    intro f x y hf hfe
-    rcases hsep f x y hf hfe with ⟨hx, hy⟩ | ⟨hx, hy⟩
-    · exact Or.inr ⟨fun h => h.2 hx, fun h => h.2 hy⟩
-    · exact Or.inl ⟨⟨hf.left_mem, hx⟩, ⟨hf.right_mem, hy⟩⟩
-  have hex₁ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₁ R₁) ≠ 0 := by
-    obtain ⟨z, hz, hzr⟩ := Graph.exists_liftingRestrict_eq_of_bridge hsub ha hb hl hsep hab hz₁
-    exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
-  have hex₂ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₂ R₂) ≠ 0 := by
-    obtain ⟨z, hz, hzr⟩ := Graph.exists_liftingRestrict_eq_of_bridge Set.sdiff_subset hbV haV₂
-      hl.symm hsep₂ hab.symm hz₂
-    exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
-  obtain ⟨z, hz, hz₁', hz₂'⟩ := MvPolynomial.exists_mem_eval_ne_zero₂ hex₁ hex₂
-  rw [eval_restrictPoly] at hz₁' hz₂'
-  have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
-  have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpace hle₂ hz) hz₂'
-  have hcongr : ∀ (X : Set α) (endsX : β → α × α),
-      (∀ f u w, (G.induce X).IsLink f u w → (G.induce X).IsLink f (endsX f).1 (endsX f).2) →
-      Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
-          endsX (fun p => pencilConfigPoint q (Graph.liftingRestrict X z) p.1 p.2)
-            ).toBodyHinge.rigidityRows)
-        = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
-          ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
-    intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX (hendsI X) ?_
-    intro x hx i
-    exact pencilConfigPoint_liftingRestrict X q z hx i
-  rw [show V(G.induce V₁) = V₁ from rfl] at hr₁
-  rw [show V(G.induce V₂) = V₂ from rfl] at hr₂
-  rw [hcongr V₁ ends₁ hends₁] at hr₁
-  rw [hcongr V₂ ends₂ hends₂] at hr₂
-  -- the cut is the bridge
-  have hcut : G.cutEdges V₁ = {e} := by
-    ext f
-    simp only [Graph.cutEdges, Set.mem_ofPred_eq, Set.mem_singleton_iff]
-    constructor
-    · rintro ⟨-, x, y, hf, hx, hy⟩
-      by_contra hfe
-      rcases hsep f x y hf hfe with ⟨-, h'⟩ | ⟨h', -⟩
-      · exact hy h'
-      · exact h' hx
-    · rintro rfl
-      exact ⟨hl.edge_mem, a, b, hl, ha, hb⟩
-  -- the ranks add, plus the bridge's `5`
-  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut
-    (PanelHingeFramework.ofNormals (k := 2) G ends
-      (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge (V₁ := V₁) (C := {e})
-    (by simp) (fun f u w hf => hqmain.1.supportExtensor_ne_zero hends z hf)
-    (fun f u w hf hfC => hsep f u w hf (by simpa using hfC))
-    (fun f hf => by rw [Set.mem_singleton_iff.mp hf]; exact ⟨a, b, hl, ha, hb⟩)
-  -- the deficiency adds, plus `1`
-  have hdef := Graph.deficiency_eq_of_cutEdges_ncard_le_one (n := 3) (by decide) hne hssub
-    (by rw [hcut, Set.ncard_singleton])
-  rw [hcut, Set.ncard_singleton] at hdef
-  have hcount : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by
-    have := Set.ncard_sdiff_add_ncard_of_subset hsub (Set.toFinite _)
-    rw [← hV₂] at this
-    exact_mod_cast (by omega : V₁.ncard + V₂.ncard = V(G).ncard)
-  refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
-  have e1 : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
-        (G.induce V₁) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
-          : ℤ)
-      + (screwDim 2 - 1) * 1
-      + (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
-          (G.induce V₂) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
-            : ℤ)
-      ≤ (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ) := by
-    have := hbrick
-    simp only [Set.ncard_singleton] at this
-    exact_mod_cast this
-  rw [hr₁, hr₂, show screwDim 2 = 6 from rfl] at e1
-  rw [show screwDim 2 = 6 from rfl, hdef]
-  have hb3 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
-  rw [hb3]
-  push_cast at e1 ⊢
-  linarith [hcount]
-
 /-! ## A chain of bridges
 
 Build 2, BRIDGE for every `k` (`notes/Phase40e.md`). Explicit path hypotheses, not a chain
@@ -706,5 +493,430 @@ theorem _root_.Graph.exists_liftingRestrict_eq_of_bridgePath {G : Graph α β} {
     · simp [Graph.liftingRestrict_apply, hzdef, hw1]
     · simp only [Graph.liftingRestrict_apply, ite_eq_right hw1]
       exact (hz₁.1 w hw1).symm
+
+/-! ## A chain of bridges: the counts, and BRIDGE
+
+The theorem computes the rank inequality and the deficiency equality as numbers along the path,
+never forming an intermediate `X0Attains` claim: a peeled path body has no admissible picture
+(its closed neighbourhood in the peeled graph is itself). It cuts once at the last bridge, whose
+far side is `V₂`, and telescopes over the prefixes `V₁ ∪ {x i | i < j}` of the path, each of which
+the next body `x j` hangs from by the single edge `e j`. -/
+
+/-- **The three kinds of position in the path sequence** (Phase 40e BRIDGE): index `0` is `a`, an
+index of value `i + 1` is the interior body `x i`, and index `k + 1` is `b`. Read off by value, so
+index arithmetic goes to `omega`. -/
+theorem pathVertex_cases {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (k + 2)) :
+    (m.val = 0 ∧ pathVertex a x b m = a) ∨
+      (∃ i : Fin k, m.val = i.val + 1 ∧ pathVertex a x b m = x i) ∨
+      (m.val = k + 1 ∧ pathVertex a x b m = b) := by
+  induction m using Fin.lastCases with
+  | last => exact Or.inr (Or.inr ⟨by simp, by simp [pathVertex]⟩)
+  | cast i =>
+    rw [pathVertex, Fin.snoc_castSucc]
+    induction i using Fin.cases with
+    | zero => exact Or.inl ⟨by simp, by simp⟩
+    | succ i' => exact Or.inr (Or.inl ⟨i', by simp, by simp⟩)
+
+/-- **An interior position, by value** (Phase 40e BRIDGE): an index of value `i + 1` is sent to
+the interior body `x i`. -/
+theorem pathVertex_eq_of_val_eq_succ {k : ℕ} (a : α) (x : Fin k → α) (b : α) {m : Fin (k + 2)}
+    {i : Fin k} (h : m.val = i.val + 1) : pathVertex a x b m = x i := by
+  rcases pathVertex_cases a x b m with ⟨hm, -⟩ | ⟨i', hm, h'⟩ | ⟨hm, -⟩
+  · omega
+  · rw [h', show i' = i from Fin.ext (by omega)]
+  · omega
+
+/-- **The path read from its other end** (Phase 40e BRIDGE): `pathVertex b (x ∘ Fin.rev) a` is
+`pathVertex a x b` backwards. This is the path as seen from `b`'s side, where the fibre lemma
+`Graph.exists_liftingRestrict_eq_of_bridgePath` is applied a second time. -/
+theorem pathVertex_rev {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (k + 2)) :
+    pathVertex b (x ∘ Fin.rev) a m = pathVertex a x b m.rev := by
+  have hrev := Fin.val_rev m
+  rcases pathVertex_cases b (x ∘ Fin.rev) a m with ⟨hm, h⟩ | ⟨i, hm, h⟩ | ⟨hm, h⟩
+  · rw [h]
+    rcases pathVertex_cases a x b m.rev with ⟨hm', -⟩ | ⟨i', hm', -⟩ | ⟨-, h'⟩
+    · omega
+    · omega
+    · exact h'.symm
+  · rw [h]
+    rcases pathVertex_cases a x b m.rev with ⟨hm', -⟩ | ⟨i', hm', h'⟩ | ⟨hm', -⟩
+    · omega
+    · rw [h', Function.comp_apply]
+      congr 1
+      ext
+      simp [Fin.val_rev]
+      omega
+    · omega
+  · rw [h]
+    rcases pathVertex_cases a x b m.rev with ⟨-, h'⟩ | ⟨i', hm', -⟩ | ⟨hm', -⟩
+    · exact h'.symm
+    · omega
+    · omega
+
+/-- **Which path positions lie in a prefix** (Phase 40e BRIDGE): for `j ≤ k`, the prefix
+`V₁ ∪ {x i | i < j}` contains exactly the path positions `0, …, j`, that is `a` and the first `j`
+interior bodies. This needs the interior bodies distinct and outside `V₁`, and `b` outside `V₁`
+and not an interior body. -/
+theorem pathVertex_mem_union_image_iff {k : ℕ} {V₁ : Set α} {x : Fin k → α} {a b : α}
+    (hxV₁ : ∀ i, x i ∉ V₁) (hinj : Function.Injective x) (ha : a ∈ V₁) (hb : b ∉ V₁)
+    (hbx : ∀ i, x i ≠ b) {j : ℕ} (hj : j ≤ k) (m : Fin (k + 2)) :
+    pathVertex a x b m ∈ V₁ ∪ x '' {i | i.val < j} ↔ m.val ≤ j := by
+  rcases pathVertex_cases a x b m with ⟨hm, h⟩ | ⟨i, hm, h⟩ | ⟨hm, h⟩
+  · rw [h, hm]
+    exact ⟨fun _ => Nat.zero_le _, fun _ => Or.inl ha⟩
+  · rw [h, hm]
+    constructor
+    · rintro (h1 | ⟨i', hi', hii'⟩)
+      · exact absurd h1 (hxV₁ i)
+      · rw [hinj hii'] at hi'
+        exact hi'
+    · intro hij
+      exact Or.inr ⟨i, by simp only [Set.mem_ofPred_eq]; omega, rfl⟩
+  · rw [h, hm]
+    constructor
+    · rintro (h1 | ⟨i', -, hi'⟩)
+      · exact absurd h1 hb
+      · exact absurd hi' (hbx i')
+    · intro hkj
+      omega
+
+/-- **The only edge leaving a prefix of the path is the next path edge** (Phase 40e BRIDGE): for
+`j ≤ k`, the one edge of `G` with exactly one end in `V₁ ∪ {x i | i < j}` is `e j`, from position
+`j` to position `j + 1`. Every other edge lies inside `V₁` or inside `V₂` (`hsep`), and a path edge
+`e i` with `i ≠ j` has both ends on one side of the prefix (`pathVertex_mem_union_image_iff`). At
+`j = k` this is the last bridge, into `V₂`. -/
+theorem _root_.Graph.cutEdges_union_image_of_bridgePath {G : Graph α β} {V₁ V₂ : Set α}
+    (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
+    (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x) {a b : α} (ha : a ∈ V₁) (hb : b ∈ V₂)
+    {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
+      (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂))
+    {j : ℕ} (hj : j ≤ k) :
+    G.cutEdges (V₁ ∪ x '' {i | i.val < j}) = {e ⟨j, Nat.lt_succ_of_le hj⟩} := by
+  have hmem := pathVertex_mem_union_image_iff hxV₁ hinj ha
+    (fun h => Set.disjoint_left.mp hdisj h hb) (fun i h => hxV₂ i (h ▸ hb)) hj
+  ext f
+  simp only [Graph.cutEdges, Set.mem_ofPred_eq, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨-, u, v, hl, hu, hv⟩
+    by_cases hf : ∃ i, f = e i
+    · obtain ⟨i, rfl⟩ := hf
+      rcases hl.eq_and_eq_or_eq_and_eq (hpath i) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · rw [hmem] at hu hv
+        simp only [Fin.val_castSucc, Fin.val_succ] at hu hv
+        exact congrArg e (Fin.ext (by simp only; omega))
+      · rw [hmem] at hu hv
+        simp only [Fin.val_castSucc, Fin.val_succ] at hu hv
+        omega
+    · rcases hsep f u v hl (fun i h => hf ⟨i, h⟩) with ⟨-, hv1⟩ | ⟨hu2, -⟩
+      · exact absurd (Or.inl hv1) hv
+      · rcases hu with hu1 | ⟨i, -, rfl⟩
+        · exact absurd hu2 (Set.disjoint_left.mp hdisj hu1)
+        · exact absurd hu2 (hxV₂ i)
+  · rintro rfl
+    refine ⟨(hpath _).edge_mem, _, _, hpath _, ?_, ?_⟩
+    · rw [hmem]; simp
+    · rw [hmem]; simp
+
+private theorem image_val_lt_eq_range {k : ℕ} (x : Fin k → α) :
+    x '' {i | i.val < k} = Set.range x := by
+  ext w; simp [Fin.is_lt]
+
+private theorem union_image_val_lt_succ {k : ℕ} (V₁ : Set α) (x : Fin k → α) {j : ℕ}
+    (hj : j < k) :
+    V₁ ∪ x '' {i | i.val < j + 1} = (V₁ ∪ x '' {i | i.val < j}) ∪ {x ⟨j, hj⟩} := by
+  ext w
+  simp only [Set.mem_union, Set.mem_image, Set.mem_ofPred_eq, Set.mem_singleton_iff]
+  constructor
+  · rintro (h | ⟨i, hi, rfl⟩)
+    · exact Or.inl (Or.inl h)
+    · rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hi | hi
+      · exact Or.inl (Or.inr ⟨i, hi, rfl⟩)
+      · exact Or.inr (congrArg x (Fin.ext hi))
+  · rintro ((h | ⟨i, hi, rfl⟩) | rfl)
+    · exact Or.inl h
+    · exact Or.inr ⟨i, by omega, rfl⟩
+    · exact Or.inr ⟨_, by simp, rfl⟩
+
+/-- **Each path body adds one to the deficiency** (`lem:cut-edge-decomposition` along the path;
+Phase 40e BRIDGE): `def(G[V₁ ∪ {x 0, …, x (k − 1)}]) = def(G[V₁]) + k`. Adding the bodies one at a
+time, `x j` hangs from the prefix before it by the single edge `e j`
+(`Graph.cutEdges_union_image_of_bridgePath`), so KT Lemma 3.6 in its pendant form
+`Graph.deficiency_induce_union_singleton` adds `1` at each step. -/
+theorem _root_.Graph.deficiency_induce_union_range_of_bridgePath [Finite α] [Finite β]
+    {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n) {V₁ V₂ : Set α}
+    (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
+    (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x) {a b : α} (ha : a ∈ V₁) (hb : b ∈ V₂)
+    {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
+      (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂)) :
+    (G.induce (V₁ ∪ Set.range x)).deficiency n = (G.induce V₁).deficiency n + k := by
+  have hmem := fun j (hj : j ≤ k) => pathVertex_mem_union_image_iff hxV₁ hinj ha
+    (fun h => Set.disjoint_left.mp hdisj h hb) (fun i h => hxV₂ i (h ▸ hb)) hj
+  have hstep : ∀ j, j ≤ k → (G.induce (V₁ ∪ x '' {i | i.val < j})).deficiency n
+      = (G.induce V₁).deficiency n + j := by
+    intro j
+    induction j with
+    | zero => intro _; simp
+    | succ j ih =>
+      intro hj
+      have hjk : j < k := hj
+      have hxj : pathVertex a x b (⟨j, by omega⟩ : Fin (k + 1)).succ = x ⟨j, hjk⟩ :=
+        pathVertex_eq_of_val_eq_succ a x b (by simp)
+      have hl := hpath ⟨j, by omega⟩
+      rw [hxj] at hl
+      rw [union_image_val_lt_succ V₁ x hjk,
+        Graph.deficiency_induce_union_singleton hD hl
+          ((hmem _ hjk.le _).mpr (by simp))
+          (by rw [← hxj, hmem _ hjk.le]; simp)
+          (by rw [Graph.cutEdges_union_image_of_bridgePath hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
+            hjk.le, Set.ncard_singleton]),
+        ih hjk.le]
+      push_cast
+      ring
+  simpa [image_val_lt_eq_range] using hstep k le_rfl
+
+/-- **Each path body adds at least `D − 1` to the rank** (`lem:block-rank-cut` along the path;
+Phase 40e BRIDGE): with every hinge nonzero,
+`finrank(G[V₁]) + (screwDim d − 1)·k ≤ finrank(G[V₁ ∪ {x 0, …, x (k − 1)}])`. As for the
+deficiency (`Graph.deficiency_induce_union_range_of_bridgePath`), with the pendant-body brick
+`BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton` at each step. -/
+theorem BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath
+    {d : ℕ} [Finite α] [Finite β] {G : Graph α β} (ext : β → ScrewSpace K d)
+    (hext : ∀ e u v, G.IsLink e u v → ext e ≠ 0) {V₁ V₂ : Set α}
+    (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
+    (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x) {a b : α} (ha : a ∈ V₁) (hb : b ∈ V₂)
+    {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
+      (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂)) :
+    Module.finrank K (Submodule.span K
+        (⟨G.induce V₁, ext⟩ : BodyHingeFramework K d α β).rigidityRows) + (screwDim d - 1) * k
+      ≤ Module.finrank K (Submodule.span K
+        (⟨G.induce (V₁ ∪ Set.range x), ext⟩ : BodyHingeFramework K d α β).rigidityRows) := by
+  have hmem := fun j (hj : j ≤ k) => pathVertex_mem_union_image_iff hxV₁ hinj ha
+    (fun h => Set.disjoint_left.mp hdisj h hb) (fun i h => hxV₂ i (h ▸ hb)) hj
+  have hstep : ∀ j, j ≤ k → Module.finrank K (Submodule.span K
+        (⟨G.induce V₁, ext⟩ : BodyHingeFramework K d α β).rigidityRows) + (screwDim d - 1) * j
+      ≤ Module.finrank K (Submodule.span K (⟨G.induce (V₁ ∪ x '' {i | i.val < j}), ext⟩ :
+        BodyHingeFramework K d α β).rigidityRows) := by
+    intro j
+    induction j with
+    | zero =>
+      intro _
+      rw [show x '' {i : Fin k | i.val < 0} = ∅ by simp, Set.union_empty, Nat.mul_zero,
+        Nat.add_zero]
+    | succ j ih =>
+      intro hj
+      have hjk : j < k := hj
+      have hxj : pathVertex a x b (⟨j, by omega⟩ : Fin (k + 1)).succ = x ⟨j, hjk⟩ :=
+        pathVertex_eq_of_val_eq_succ a x b (by simp)
+      have hl := hpath ⟨j, by omega⟩
+      rw [hxj] at hl
+      have hu₀ := (hmem _ hjk.le (Fin.castSucc ⟨j, by omega⟩)).mpr (by simp)
+      have hw₀ : x ⟨j, hjk⟩ ∉ V₁ ∪ x '' {i | i.val < j} := by
+        rw [← hxj, hmem _ hjk.le]
+        simp
+      have hcut := Graph.cutEdges_union_image_of_bridgePath hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
+        hjk.le
+      have h1 := BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton ext hl
+        hu₀ hw₀ (fun f u hf hu => Graph.eq_cutEdge_of_isLink_crossing hl hu₀ hw₀
+          (by rw [hcut, Set.ncard_singleton]) hf hu hw₀) hext
+      rw [union_image_val_lt_succ V₁ x hjk]
+      have := ih hjk.le
+      rw [Nat.mul_succ]
+      omega
+  have := hstep k le_rfl
+  rwa [image_val_lt_eq_range] at this
+
+/-- **BRIDGE** (`thm:pencil-x0-bridge`; (MC-53)(iv), the half the induction uses): if `G` satisfies
+(H), `V(G)` is the disjoint union of `V₁`, `V₂` and the distinct interior bodies
+`x 0, …, x (k − 1)` of a path `a − x 0 − ⋯ − x (k − 1) − b` from `a ∈ V₁` to `b ∈ V₂` (`hpath`,
+along `pathVertex`; `k ≥ 0`), every other edge lies inside `V₁` or inside `V₂`, and `X₀` attains at
+`G[V₁]` and at `G[V₂]`, then `X₀(G)` attains.
+
+As for CUT: one picture generic for both sides and main for `G`, and heights on which both
+restrictions attain (`Graph.exists_liftingRestrict_eq_of_bridgePath`, applied from `V₂` along the
+reversed path, `pathVertex_rev`). The counts: the last bridge is the only edge leaving
+`V₁ ∪ range x`, whose complement is `V₂`, so the cut-edge brick
+`BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` and KT Lemma 3.6
+`Graph.deficiency_eq_of_cutEdges_ncard_le_one` add `5` to the rank and `1` to the deficiency; along
+the path each body adds at least `5` and exactly `1` again
+(`BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`,
+`Graph.deficiency_induce_union_range_of_bridgePath`), and `6` to the body term. So the rank is at
+least the two sides' targets plus `5(k + 1)`, which is the target of `G`. -/
+theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β] {G : Graph α β}
+    (hG : G.IsX0Graph) {V₁ V₂ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
+    (hcover : V(G) = V₁ ∪ Set.range x ∪ V₂) (hdisj : Disjoint V₁ V₂)
+    (hxV₁ : ∀ i, x i ∉ V₁) (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x)
+    (ha : a ∈ V₁) (hb : b ∈ V₂)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
+      (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂))
+    (h₁ : (G.induce V₁).X0Attains K) (h₂ : (G.induce V₂).X0Attains K) :
+    G.X0Attains K := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  have hV : V(G).Nonempty := hG.connected.nonempty
+  have : Inhabited α := ⟨hV.some⟩
+  have : G.Loopless := hG.simple.toLoopless
+  set S := V₁ ∪ Set.range x with hSdef
+  have hSV : S ⊆ V(G) := hcover ▸ Set.subset_union_left
+  have hV₁ : V₁ ⊆ V(G) := Set.subset_union_left.trans hSV
+  have hV₂ : V₂ ⊆ V(G) := hcover ▸ Set.subset_union_right
+  have hle₁ : G.induce V₁ ≤ G := Graph.induce_le hV₁
+  have hle₂ : G.induce V₂ ≤ G := Graph.induce_le hV₂
+  have hbV₁ : b ∉ V₁ := fun h => Set.disjoint_left.mp hdisj h hb
+  have haV₂ : a ∉ V₂ := fun h => Set.disjoint_left.mp hdisj ha h
+  have hSV₂ : Disjoint S V₂ := by
+    refine Set.disjoint_union_left.mpr ⟨hdisj, Set.disjoint_left.mpr ?_⟩
+    rintro _ ⟨i, rfl⟩
+    exact hxV₂ i
+  obtain ⟨ends₁, P₁, hends₁, hP₁, hgood₁⟩ := h₁
+  obtain ⟨ends₂, P₂, hends₂, hP₂, hgood₂⟩ := h₂
+  obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
+    hG.simple.toLoopless hG.three_le_ncard_closedNbhd
+  set ends := G.endsOf with hendsdef
+  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
+    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hendsI : ∀ X : Set α, ∀ f u w, (G.induce X).IsLink f u w →
+      (G.induce X).IsLink f (ends f).1 (ends f).2 := by
+    intro X f u w hf
+    have hl' := hends f u w hf.1
+    rcases hl'.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact ⟨hl', h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
+    · exact ⟨hl', h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
+  rw [map_mul, map_mul] at hq
+  obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
+  obtain ⟨-, R₂, ⟨z₂, hz₂, hR₂⟩, hatt₂⟩ := hgood₂ q (right_ne_zero_of_mul (left_ne_zero_of_mul hq))
+  have hqmain := hmain q (right_ne_zero_of_mul hq)
+  -- the heights restrict onto each side: from `V₁` along the path, from `V₂` along its reverse
+  have hex₁ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₁ R₁) ≠ 0 := by
+    have hsep₁ : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
+        (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∉ V₁ ∧ v ∉ V₁) := by
+      intro f u v hf hfe
+      rcases hsep f u v hf hfe with h | ⟨hu, hv⟩
+      · exact Or.inl h
+      · exact Or.inr ⟨fun h => Set.disjoint_left.mp hdisj h hu,
+          fun h => Set.disjoint_left.mp hdisj h hv⟩
+    obtain ⟨z, hz, hzr⟩ :=
+      Graph.exists_liftingRestrict_eq_of_bridgePath hV₁ hxV₁ ha hbV₁ hpath hsep₁ hz₁
+    exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
+  have hex₂ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₂ R₂) ≠ 0 := by
+    have hpath₂ : ∀ i : Fin (k + 1), G.IsLink ((e ∘ Fin.rev) i)
+        (pathVertex b (x ∘ Fin.rev) a i.castSucc) (pathVertex b (x ∘ Fin.rev) a i.succ) := by
+      intro i
+      rw [pathVertex_rev, pathVertex_rev, Fin.rev_castSucc, Fin.rev_succ, Function.comp_apply]
+      exact (hpath i.rev).symm
+    have hsep₂ : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ (e ∘ Fin.rev) i) →
+        (u ∈ V₂ ∧ v ∈ V₂) ∨ (u ∉ V₂ ∧ v ∉ V₂) := by
+      intro f u v hf hfe
+      rcases hsep f u v hf (fun i h => hfe i.rev (by simp [h])) with ⟨hu, hv⟩ | h
+      · exact Or.inr ⟨fun h => Set.disjoint_left.mp hdisj hu h,
+          fun h => Set.disjoint_left.mp hdisj hv h⟩
+      · exact Or.inl h
+    obtain ⟨z, hz, hzr⟩ := Graph.exists_liftingRestrict_eq_of_bridgePath hV₂
+      (fun i => hxV₂ _) hb haV₂ hpath₂ hsep₂ hz₂
+    exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
+  obtain ⟨z, hz, hz₁', hz₂'⟩ := MvPolynomial.exists_mem_eval_ne_zero₂ hex₁ hex₂
+  rw [eval_restrictPoly] at hz₁' hz₂'
+  have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
+  have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpace hle₂ hz) hz₂'
+  have hcongr : ∀ (X : Set α) (endsX : β → α × α),
+      (∀ f u w, (G.induce X).IsLink f u w → (G.induce X).IsLink f (endsX f).1 (endsX f).2) →
+      Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
+          endsX (fun p => pencilConfigPoint q (Graph.liftingRestrict X z) p.1 p.2)
+            ).toBodyHinge.rigidityRows)
+        = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
+          ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
+    intro X endsX hendsX
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX (hendsI X) ?_
+    intro x hx i
+    exact pencilConfigPoint_liftingRestrict X q z hx i
+  rw [show V(G.induce V₁) = V₁ from rfl] at hr₁
+  rw [show V(G.induce V₂) = V₂ from rfl] at hr₂
+  rw [hcongr V₁ ends₁ hends₁] at hr₁
+  rw [hcongr V₂ ends₂ hends₂] at hr₂
+  -- the last bridge is the only edge leaving `S = V₁ ∪ range x`, whose complement is `V₂`
+  have hcut : G.cutEdges S = {e (Fin.last k)} := by
+    have := Graph.cutEdges_union_image_of_bridgePath hdisj hxV₁ hxV₂ hinj ha hb hpath hsep le_rfl
+    rwa [image_val_lt_eq_range] at this
+  have hVS : V(G) \ S = V₂ := by
+    rw [hcover, Set.union_sdiff_left]
+    exact hSV₂.symm.sdiff_eq_left
+  set F := (PanelHingeFramework.ofNormals (k := 2) G ends
+    (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge with hFdef
+  have hext : ∀ f u w, G.IsLink f u w → F.supportExtensor f ≠ 0 :=
+    fun f u w hf => hqmain.1.supportExtensor_ne_zero hends z hf
+  -- the ranks: at least `5` for the last bridge, and for each path body
+  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F (V₁ := S)
+    (C := {e (Fin.last k)}) (by simp) hext
+    (fun f u w hf hfC => by
+      by_cases hu : u ∈ S <;> by_cases hw : w ∈ S
+      · exact Or.inl ⟨hu, hw⟩
+      · have hfS : f ∈ G.cutEdges S := ⟨hf.edge_mem, u, w, hf, hu, hw⟩
+        exact absurd (hcut ▸ hfS) hfC
+      · have hfS : f ∈ G.cutEdges S := ⟨hf.edge_mem, w, u, hf.symm, hw, hu⟩
+        exact absurd (hcut ▸ hfS) hfC
+      · exact Or.inr ⟨hu, hw⟩)
+    (fun f hf => by rw [← hcut] at hf; exact hf.2)
+  have hpathrank :=
+    BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath
+      F.supportExtensor hext hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
+  -- the deficiencies: `1` for the last bridge, and for each path body
+  have hdefS := Graph.deficiency_induce_union_range_of_bridgePath (n := 3) (by decide) hdisj
+    hxV₁ hxV₂ hinj ha hb hpath hsep
+  have hSne : S.Nonempty := ⟨a, Or.inl ha⟩
+  have hSssub : S ⊂ V(G) := (Set.ssubset_iff_of_subset hSV).mpr
+    ⟨b, hV₂ hb, fun h => Set.disjoint_left.mp hSV₂ h hb⟩
+  have hdef := Graph.deficiency_eq_of_cutEdges_ncard_le_one (n := 3) (by decide) hSne hSssub
+    (by rw [hcut, Set.ncard_singleton])
+  rw [hcut, Set.ncard_singleton, hVS] at hdef
+  -- the body counts
+  have hcountS : S.ncard = V₁.ncard + k := by
+    rw [hSdef, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
+      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
+    refine Set.disjoint_left.mpr ?_
+    rintro _ h ⟨i, rfl⟩
+    exact hxV₁ i h
+  have hcount : V(G).ncard = S.ncard + V₂.ncard := by
+    rw [hcover, Set.ncard_union_eq hSV₂ (Set.toFinite _) (Set.toFinite _)]
+  refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
+  have e1 : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
+        (G.induce S) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
+          : ℤ)
+      + (screwDim 2 - 1) * 1
+      + (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
+          (G.induce V₂) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
+            : ℤ)
+      ≤ (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
+    have := hbrick
+    simp only [Set.ncard_singleton] at this
+    rw [show V(F.graph) \ S = V₂ from hVS] at this
+    exact_mod_cast this
+  have e2 : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
+        (G.induce V₁) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
+          : ℤ) + (screwDim 2 - 1) * k
+      ≤ (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
+        (G.induce S) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
+          : ℤ) := by
+    exact_mod_cast hpathrank
+  rw [hr₁, show screwDim 2 = 6 from rfl] at e2
+  rw [hr₂, show screwDim 2 = 6 from rfl] at e1
+  rw [show screwDim 2 = 6 from rfl, hdef, hdefS]
+  have hb3 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
+  rw [hb3]
+  push_cast at e1 e2 ⊢
+  have hcount' : (V(G).ncard : ℤ) = V₁.ncard + k + V₂.ncard := by
+    rw [hcount, hcountS]; push_cast; ring
+  rw [hcount']
+  linarith
 
 end CombinatorialRigidity.Molecular

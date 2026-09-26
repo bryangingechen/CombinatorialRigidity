@@ -5186,6 +5186,32 @@ limitations. Worth a once-over so future agents don't re-litigate.
   TACTICS-QUIRKS § 64 (statement-level instance requirement) and § 87 (un-ascribed `obtain` leaving
   an implicit type-parameter stuck).
 
+### [idiom] `simp` can't rewrite a set inside `Module.finrank K ↥(span …)`; a `(by simp)` argument whose implicit index is pinned only by the `rw` target; toolchain renames
+- **Where it bit:** Phase 40e (CUTBRIDGE) build 2, `Molecule/Pencil/MainComponent/Cut.lean` — the
+  path telescopes `Graph.deficiency_induce_union_range_of_bridgePath` and
+  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`, and
+  `Graph.X0Attains.of_bridgePath`.
+- **Friction 1:** the rank telescope's base case (`intro _; simp`) and final re-indexing
+  (`simpa [image_val_lt_eq_range] using hstep k le_rfl`) left `x '' {i | ↑i < 0}` / the prefix set
+  unrewritten inside `Module.finrank K ↥(Submodule.span K ⟨G.induce …, ext⟩.rigidityRows)`, although
+  the identical calls closed the deficiency twin. **Fix:** `rw [show … = ∅ by simp,
+  Set.union_empty, …]` and `rwa [image_val_lt_eq_range] at this`. **Lifted to:** TACTICS-QUIRKS
+  § 112.
+- **Friction 2:** `rw [pathVertex_eq_of_val_eq_succ a x b (i := ⟨j, hjk⟩) (by simp)] at hl` — the
+  lemma's implicit `m` is fixed only by where the rewrite lands, but the `by simp` proof of
+  `m.val = i.val + 1` elaborated first, against a metavariable `m`, and failed as an unsolved `False`.
+  **Fix:** state the instance as a `have hxj : pathVertex a x b (⟨j, _⟩ : Fin (k + 1)).succ = x ⟨j,
+  hjk⟩ := pathVertex_eq_of_val_eq_succ a x b (by simp)` and `rw [hxj] at hl`. A variant of
+  TACTICS-QUIRKS § 94 (an implicit pinned only by later information). Relatedly, `exact absurd
+  (hcut ▸ ⟨hf.edge_mem, u, w, hf, hu, hw⟩ : f ∈ G.cutEdges S) hfC` failed *"Constructor `Eq.refl`
+  does not have explicit fields"* (the anonymous constructor is elaborated against `▸`'s
+  motive, not the ascription); a `have hfS : f ∈ G.cutEdges S := ⟨…⟩` first, then `hcut ▸ hfS`,
+  works.
+- **Friction 3 (renames, one build cycle each):** `Set.mem_setOf_eq` → `Set.mem_ofPred_eq`,
+  `Fin.coe_castSucc` → `Fin.val_castSucc`, `Set.union_diff_left` → `Set.union_sdiff_left` (all
+  deprecated, warning-only), and `push_neg` → `push Not` (TACTICS-GOLF § 26).
+- **Status:** resolved in-proof.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

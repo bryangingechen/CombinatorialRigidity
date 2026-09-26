@@ -139,6 +139,7 @@ failing pattern and the working fix.
 - `obtain ⟨a, haS, b, hbS, …⟩ := h` from `h : ∃ a b c, a ∈ s ∧ b ∈ s ∧ c ∈ s ∧ …` type-checks with no arity complaint, but a later use of `haS`/`hbS` fails with a confusing *"Application type mismatch"* — e.g. `haS` reported as having the base type `α`, not the membership `Prop` → § 109 (nested `∃`s flatten to *witnesses-then-propositions*: `⟨a, b, c, h₁, h₂, …⟩`, never interleaved to match the statement's informal per-variable reading)
 - `X.mp`/`X.mpr` on a bare, unapplied `autoParam`-guarded `Iff` lemma name fails with *"Unknown constant `X.mp`"*, not an elaboration error against the `Iff` → § 110 (dot notation on an unapplied global constant tries the whole dotted string as a namespaced declaration lookup first; wrap in parens, `(X).mp`, to force the elaborate-then-project fallback)
 - `Module.finrank K (A ⊓ B)` (or `⊔`) on two `Submodule`-typed terms that each elaborate fine alone fails with *"failed to synthesize instance of type class `Min (Type u_1)`"*, pointing at the `finrank` call and mentioning neither `Submodule` nor `Inf` → § 111 (the `Type*` argument is committed before the `↥`-coercion is inserted, so `⊓` is searched at `Type` itself; write `Module.finrank K ↥(A ⊓ B)`, or ascribe `(A ⊓ B : Submodule K M)`)
+- `simp`/`simpa [h]` makes progress everywhere *except* a set (or any term) sitting inside `Module.finrank K ↥(Submodule.span K (⟨G.induce X, ext⟩ : BodyHingeFramework …).rigidityRows)`, leaving *"unsolved goals"* / a *"type mismatch after simplification"* that still shows the unrewritten `X` — while the same `simp` rewrites `X` fine in a deficiency or `ncard` goal → § 112 (`X` lives in the **type** argument of `Module.finrank`, which `simp` never rewrites; `rw [show X = X' by simp]` / `rwa [h] at this` does, since `rw` abstracts every occurrence including the instance arguments)
 
 ## Sections
 
@@ -4192,5 +4193,40 @@ that **restates** one of them for a concrete pair must carry it too.
 form) and item-6 Layer B4 (`RigidityMatrix/Bricks.lean`, `weldedRank_eq` — the `↥` form, on a
 restatement of `finrank_sup_add_finrank_inf_eq`). Full friction entry: `notes/FRICTION.md`
 *[idiom] `Module.finrank K (A ⊓ B)` … `Min (Type u_1)`*.
+
+---
+
+## 112. `simp` won't rewrite inside `Module.finrank K ↥(span …)` — the term is in a *type* argument; use `rw`
+
+**Symptom.** A rank statement whose framework's graph carries a set expression, e.g.
+
+```
+Module.finrank K ↥(Submodule.span K
+  (⟨G.induce (V₁ ∪ x '' {i | i.val < 0}), ext⟩ : BodyHingeFramework K d α β).rigidityRows)
+```
+
+and `simp` (or `simpa [image_val_lt_eq_range] using h`) simplifies the arithmetic around it but
+leaves the set untouched: *"unsolved goals"* still showing `x '' {i | ↑i < 0}`, or *"Type mismatch:
+After simplification, term … has type …"* differing only in that set. The same `simp` call rewrites
+the same set without trouble in the sibling deficiency or `ncard` goal, which is what makes it look
+like a missing simp lemma.
+
+**Cause.** `Module.finrank K M` takes the module as a *type* `M := ↥(span …)`, and its `Module`
+instance argument depends on `M`. `simp` rewrites terms, not the types that instances are indexed
+by, so anything inside `M` is out of its reach. (The opposite trap to § 33, where `rw` on the goal
+fails and rewriting a hypothesis works; here `simp` fails and `rw` works.)
+
+**Fix.** `rw` it: `rw` abstracts every occurrence of the left-hand side, including the ones inside
+the instance arguments, so its motive type-checks for an ordinary `≤`/`=` goal.
+
+```
+rw [show x '' {i : Fin k | i.val < 0} = ∅ by simp, Set.union_empty]   -- goal
+have := h; rwa [image_val_lt_eq_range] at this                          -- hypothesis
+```
+
+**Worked case:** Phase 40e (CUTBRIDGE) build 2, `Molecule/Pencil/MainComponent/Cut.lean`,
+`BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the base
+case and the final re-indexing of the path telescope, where the deficiency twin
+`Graph.deficiency_induce_union_range_of_bridgePath` closes both by `simp`/`simpa`.
 
 ---

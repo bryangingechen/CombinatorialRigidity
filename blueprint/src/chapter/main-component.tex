@@ -1132,6 +1132,15 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 
 \begin{theorem}[A chain of bridges]
   \label{thm:pencil-x0-bridge}
+  \lean{Graph.X0Attains.of_bridgePath,
+    CombinatorialRigidity.Molecular.pathVertex_cases,
+    CombinatorialRigidity.Molecular.pathVertex_eq_of_val_eq_succ,
+    CombinatorialRigidity.Molecular.pathVertex_rev,
+    CombinatorialRigidity.Molecular.pathVertex_mem_union_image_iff,
+    Graph.cutEdges_union_image_of_bridgePath,
+    Graph.deficiency_induce_union_range_of_bridgePath,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses. Let
   $V(G)$ be the disjoint union of $V_1$, $V_2$ and path bodies
@@ -1141,18 +1150,31 @@ smaller graphs, and attaining passes from the two pieces to the whole.
   $G[V_2]$ attain, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-bridge-fibre, lem:block-rank-cut, lem:cut-edge-decomposition,
         lem:pencil-lifting-restrict, lem:pencil-rank-congr,
         lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
         lem:pencil-x0-one-witness}
   As for \cref{thm:pencil-x0-cut}, with \cref{lem:pencil-bridge-fibre}
-  for the heights. Each of the $k + 1$ bridges adds $D - 1 = 5$ to the
-  rank (\cref{lem:block-rank-cut}, all hinges being nonzero at an
-  admissible picture) and $1$ to the deficiency
-  (\cref{lem:cut-edge-decomposition}), and the $k$ path bodies add $6k$
-  to the body term, so the targets satisfy
+  for the heights, applied to the second side from $b$ along the
+  reversed path. The ranks and deficiencies are counted as numbers, not
+  by asking an intermediate graph to attain: a path body on its own has
+  a closed neighbourhood of one body, so no picture of it is admissible.
+  Write $S_j = V_1 \cup \{x_1, \dots, x_j\}$. Every edge off the path
+  lies inside $V_1$ or inside $V_2$, so the only edge of $G$ leaving
+  $S_j$ is the path edge from $S_j$ to the next path body, or to $b$
+  when $j = k$. The last bridge therefore splits $G$ into $G[S_k]$ and
+  $G[V_2]$, adding $D - 1 = 5$ to the rank (\cref{lem:block-rank-cut},
+  all hinges being nonzero at an admissible picture) and $1$ to the
+  deficiency (\cref{lem:cut-edge-decomposition}). Inside $G[S_k]$ each
+  path body $x_{j+1}$ hangs from $S_j$ by a single edge, and the same two
+  lemmas, applied in $G[S_{j+1}]$ at $S_j$, add at least $5$ to the rank
+  and exactly $1$ to the deficiency. The $k$ path bodies add $6k$ to the
+  body term, so
   $\operatorname{tgt}(G) = \operatorname{tgt}(G_1) +
-  \operatorname{tgt}(G_2) + 5(k + 1)$.
+  \operatorname{tgt}(G_2) + 5(k + 1)$, and the rank at the chosen
+  configuration is at least this, so \cref{lem:pencil-x0-one-witness}
+  applies.
 \end{proof}
 
 \begin{remark}

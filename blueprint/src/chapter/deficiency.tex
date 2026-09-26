@@ -200,7 +200,8 @@ parallel copies of each edge $e \in E(G)$.
     Graph.partitionDef_split_of_sides,
     Graph.exists_sides_separated_partitionDef_le,
     Graph.deficiency_eq_of_cutEdges_ncard_le_one,
-    Graph.exists_cut_decomposition_of_not_twoEdgeConnected}
+    Graph.exists_cut_decomposition_of_not_twoEdgeConnected,
+    Graph.deficiency_induce_union_singleton}
   \leanok
   \uses{def:k-dof, def:cut-edges-2ec}
   Let $G$ be a multigraph, $V' \subsetneq V(G)$ nonempty, and
@@ -219,6 +220,10 @@ parallel copies of each edge $e \in E(G)$.
   are again minimal dof-graphs (with their own deficiencies $k_1, k_2$ as
   the dof counts, by minimality descending to subgraphs), and
   $k = k_1 + k_2 + D - (D-1)\,|\operatorname{cutEdges}(G, V')|$.
+  In particular, if $G$ is loopless and the only edge leaving $V'$ joins
+  it to a body $w$, then
+  $\operatorname{def}(\tilde G[V' \cup \{w\}]) =
+  \operatorname{def}(\tilde G[V']) + 1$.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -241,6 +246,9 @@ parallel copies of each edge $e \in E(G)$.
   exist by $|f_i(V_i)| \le |V_i|$; use
   $\operatorname{partitionDef}$-comp-of-injOn), and combine piecewise
   to get a single labeling of $V(G)$ attaining the right-hand side.
+  For the particular case, split $G[V' \cup \{w\}]$ at $\{w\}$: its only
+  crossing edge is the one joining $w$, the single body $w$ carries no
+  edge and so has deficiency $0$, and the other side is $G[V']$.
 \end{proof}
 
 \begin{lemma}[Deficiency adds at a cut vertex]

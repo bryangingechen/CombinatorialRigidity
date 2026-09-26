@@ -506,6 +506,49 @@ theorem finrank_span_rigidityRows_le_add_of_links_subset {k : ℕ} [Finite α]
     _ ≤ Module.finrank K ↥Ss + Module.finrank K ↥Sc := hsup
     _ ≤ Module.finrank K ↥Ss + (screwDim k - 1) := Nat.add_le_add_left hSc _
 
+/-- **A body joined by one hinge adds at least the hinge's block to the rank**
+(`lem:block-rank-cut`, the pendant-body case; Phase 40e BRIDGE). If `e₀ = u₀w₀` is the only link
+of `G` from `V₁` to `w₀ ∉ V₁`, and every hinge of `G` is nonzero, then adding `w₀` to `V₁` raises
+the rank of the induced framework by at least `screwDim k − 1`:
+`finrank (span rows(G[V₁])) + (screwDim k − 1) ≤ finrank (span rows(G[V₁ ∪ {w₀}]))`.
+The lower-bound companion of `finrank_span_rigidityRows_le_add_of_links_subset`, and the rank
+side of `Graph.deficiency_induce_union_singleton` (`Molecule/Pencil/Motive.lean`).
+
+Proof: the cut-edge brick `le_finrank_span_rigidityRows_of_cut` inside `G[V₁ ∪ {w₀}]` at `V₁`,
+whose only crossing edge is `e₀`; the `V₁` side re-induces to `G[V₁]`, and the singleton side's
+rank is dropped. -/
+theorem add_le_finrank_span_rigidityRows_induce_union_singleton [Finite α] [Finite β]
+    {G : Graph α β} (ext : β → ScrewSpace K k) {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (honly : ∀ e u, G.IsLink e u w₀ → u ∈ V₁ → e = e₀)
+    (hext : ∀ e u v, G.IsLink e u v → ext e ≠ 0) :
+    Module.finrank K (Submodule.span K
+        (⟨G.induce V₁, ext⟩ : BodyHingeFramework K k α β).rigidityRows) + (screwDim k - 1)
+      ≤ Module.finrank K (Submodule.span K
+        (⟨G.induce (V₁ ∪ {w₀}), ext⟩ : BodyHingeFramework K k α β).rigidityRows) := by
+  have hbrick := le_finrank_span_rigidityRows_of_cut
+    (⟨G.induce (V₁ ∪ {w₀}), ext⟩ : BodyHingeFramework K k α β) (V₁ := V₁) (C := {e₀})
+    (by simp) (fun e u v hl => hext e u v hl.1) ?_ ?_
+  · have hind : (G.induce (V₁ ∪ {w₀})).induce V₁ = G.induce V₁ :=
+      Graph.ext rfl fun e x y => by
+        simp only [Graph.induce_isLink]
+        exact ⟨fun ⟨⟨hl, _, _⟩, hx, hy⟩ => ⟨hl, hx, hy⟩,
+          fun ⟨hl, hx, hy⟩ => ⟨⟨hl, Or.inl hx, Or.inl hy⟩, hx, hy⟩⟩
+    dsimp only at hbrick
+    rw [hind, Set.ncard_singleton, Nat.mul_one] at hbrick
+    omega
+  · rintro e u v ⟨hl, hu, hv⟩ he
+    have hne : e ≠ e₀ := he
+    by_cases hu₁ : u ∈ V₁ <;> by_cases hv₁ : v ∈ V₁
+    · exact Or.inl ⟨hu₁, hv₁⟩
+    · obtain rfl : v = w₀ := hv.resolve_left hv₁
+      exact absurd (honly e u hl hu₁) hne
+    · obtain rfl : u = w₀ := hu.resolve_left hu₁
+      exact absurd (honly e v hl.symm hv₁) hne
+    · exact Or.inr ⟨hu₁, hv₁⟩
+  · rintro e rfl
+    exact ⟨u₀, w₀, ⟨hl₀, Or.inl hu₀, Or.inr rfl⟩, hu₀, hw₀⟩
+
 end CutEdgeBrick
 
 section SpliceBrick
