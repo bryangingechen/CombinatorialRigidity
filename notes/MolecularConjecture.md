@@ -781,7 +781,8 @@ about the main component of the pencil configuration space, which
 (closed 2026-09-25, `notes/Phase40a.md`), extended Theorems 5.5/5.6 and the conjecture to the
 plane, `n ≥ 2`; its second, CARRIER (planar pictures, the lifting space, `X₀`), closed as
 sub-phase 40b (2026-09-26, `notes/Phase40b.md`); its third, FLAT (the flat rank), closed as
-sub-phase 40c (2026-09-26, `notes/Phase40c.md`); BRIDGE is next. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+sub-phase 40c (2026-09-26, `notes/Phase40c.md`); its fourth, BRIDGE (Jackson–Jordán's equality as
+consumed), opened as sub-phase 40d (2026-09-26, `notes/Phase40d.md`). Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

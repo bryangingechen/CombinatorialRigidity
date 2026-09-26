@@ -5,8 +5,8 @@ sub-lettered home in the `notes/PhaseN-design.md` pattern (`notes/CLAUDE.md`): t
 index of work already done, the layer plan by **stable codes**, the proof map, the risks, and the
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
-(`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **BRIDGE is next**,
-not yet opened. This doc replaces the planning note `notes/pencil/X0-formalization.md`
+(`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
+open** (opened 2026-09-26, `notes/Phase40d.md`). This doc replaces the planning note `notes/pencil/X0-formalization.md`
 (2026-09-25), whose content moved here and which is now a pointer. The PI's calls behind the plan
 are verbatim in `notes/pencil/adjudications.md` (the 2026-09-25 entries).
 
@@ -112,33 +112,84 @@ Example 4.4 (pp. 72–73) and Whiteley 1996 §8.3, with no identity attributed; 
   `generic-lift.tex` uses `prop:rigidity-matrix-prop11` as its stand-in). Repoint each site
   that means the relative bound (`lem:relative-deficiency-rank-bound`). Not a Phase-40 layer.
 
-### BRIDGE — Jackson–Jordán's equality, as it is consumed
+### BRIDGE — Jackson–Jordán's equality, as it is consumed → **sub-phase 40d, open** (`notes/Phase40d.md`)
 
-The equality is consumed at FLAT (`G`), CONTRACT (`H`, `G/H`), `G′ + ab` and SPLITOFF (`G″`).
-Every use is at a simple graph ((MC-141)'s list). (MC-33) is the informal statement; SPINE2
-supplies it. BRIDGE builds two things on top of SPINE2:
-- the map from (MC-4)'s `F(q)` to the motion space of `PanelHingeFramework.ofNormals G ends q`
-  at normals `(x_v, y_v, 1)` — **folded into FLAT** (`Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint`,
-  its rank form `3|V| − dim L(q)`); BRIDGE keeps moving generic normals into the chart by per-body
-  rescaling and open admissibility;
-- the non-spanning forms at `H`, `G/H` and `G′ + ab`, each carrying a `hfresh`-type hypothesis.
-  SPINE2 lands the row-rank core.
-- **Open point (40a Slice 4 spike, 2026-09-25).** The landed generic-normals row rank
-  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals`
-  (`GenericLift/PanelGeneric.lean:400`) takes a *total* selector
-  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2`, which forces `E(G) = β`. At `H`, `G/H` or
-  `G′ + ab` inside a fixed `β` that cannot hold, so BRIDGE needs an edge-restricted-selector,
-  non-spanning variant of the generic-normals form. A read-only spike compiler-checked a variant
-  that drops `[Nonempty α]`/`hspan` by swapping in the new SPINE2 row-rank producer
-  (`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`); the
-  total `hends` remained, and that is the open point BRIDGE still needs to close.
-- **Optional re-base, routed here from 40a (Slice 4).** The spanning
-  `PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is now a ~10-line
+**Design settled** (opus design recon, 2026-09-26; its spike compiles every declaration sorry-free,
+and the coordinator re-ran it). BRIDGE lands in `Molecule/Pencil/MainComponent/Bridge.lean` and
+`main-component.tex` §`sec:main-component-jj`. SPINE2 supplies the form of (MC-33) the proof uses;
+the informal record is (MC-172) (Step MC11).
+- **The equality** (`thm:pencil-jj-equality`). Let `G` be simple, with at least one body and
+  `|N[v]| ≥ 3` at every body, anywhere in `α`, `β`. There is one nonzero polynomial in the ambient
+  picture coordinates `α × Fin 2` whose non-roots are main pictures with `dim L(q) = 3 + def₂(G)`
+  (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`). Every main picture has that dimension (the
+  `ℓ₀` form, `Graph.IsMainPicture.finrank_liftingSpace_eq`), and so does one picture
+  (`Graph.exists_isMainPicture_finrank_liftingSpace_eq`). No hypothesis on `β`, and no
+  connectivity. With FLAT (`cor:pencil-jj-flat`, `Graph.x0Attains_of_deficiency_two_eq_three`):
+  `X₀(G)` attains when `def₂ = def₃`, which is (MC-89)'s step 3. That corollary is BRIDGE's.
+- **The route: the chart.**
+  - SPINE2's non-spanning producer at `(n, k) = (2, 1)`, its rank polynomial, the general-position
+    polynomial and `∏ n(a, 2)` have a common non-root (the `Theorem56.lean` pattern).
+  - Per-body rescaling (`lem:pencil-jj-rescale`) moves it into the chart `(x_v, y_v, 1)` at the
+    same rank with nonzero hinges. The rank polynomial there, pulled back along the chart, is the
+    chart-rank form (`lem:pencil-jj-chart`).
+  - Times the main-picture polynomial, FLAT's bridge reads the rank as `3|V| − dim L(q)`, and
+    (MC-4)(b) gives the reverse inequality.
+  - Only the chart-rank form carries SPINE2's `hfresh`. The equality first relabels the edges into
+    `β ⊕ Fin (3|α| + 1)` (`Graph.embedEdges`, `lem:pencil-jj-embed-edges`: bodies, closed
+    neighbourhoods, `L(q)`, main pictures and every `def_n` unchanged), where
+    `Graph.freshEdgeSupply_of_card_lt (n := 2)` supplies it.
+- **The consumer map** (the recon's; every use in (MC-141)'s list, derived against the definition
+  bodies). Every use consumes the lifting-space form, at a simple graph, in the ambient
+  coordinates, so consumers multiply the polynomials.
+  - `G` (FLAT): the existential form, through the corollary.
+  - `H = G[W]` (both kinds of CONTRACT): the generic form at `q ∈ U(G)` and at the magnified core
+    picture; FLAT at `H` through the corollary (`def₂(H) = def₃(H) = 0`).
+  - `G/H = G.rigidContract (G.induce W) r`, `r ∈ W`: the `ℓ₀` form at the contracted picture, the
+    slice `q′ = (q_O, Q)` (a §3 STEPS *Tracked* item). `rigidContract` keeps parallel edges, as the
+    informal `G/H` does. Its simplicity is the step's hypothesis, and it needs `H` induced; `K₄`
+    contracted at a triangle is the recon's witness of the failure.
+  - `G′ + ab` at the chains, `a ≁ b`: the generic form at `q ∈ U(G′)`. The label `ab` can reuse an
+    ear-edge label.
+  - `G″ = G.splitOff x a b e₀`, `a ≁ b`: the generic or `ℓ₀` form.
+  - Finding 4 (no admissible picture without `|N[v]| ≥ 3`) bites at `G/H`'s contracted vertex
+    (`|δ(W)| ≥ 2`, from 2EC; already in (MC-37)'s second reading).
+  - Since the equality is now a theorem at every such graph, STEPS may also use it at `G` where
+    convenient.
+- **The open point is dissolved.** The landed generic-normals row rank takes a total selector,
+  which forces `E(G) = β`. The chart route never forms `IsGenericNormals`, so it does not need that
+  form at all.
+- [ ] **Cleanup-round item (post-Phase-40): the edge-restricted, non-spanning generic-normals row
+  rank**, together with the optional re-base below. It is off every consumer path. The recon
+  compiled it as three declarations (in `GenericLift/PanelGeneric.lean`):
+  - **The headline** `finrank_span_rigidityRows_ofNormals_of_isGenericNormals_of_recordsLinks`. It
+    has the conclusion of `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` with three
+    hypotheses changed: no `[Nonempty α]`, no `hspan : V(G) = Set.univ`, and the total selector
+    `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` weakened to
+    `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`. Its proof is the landed pinch,
+    with SPINE2's non-spanning producer
+    `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` as the witness in place of
+    the spanning `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, which gives the witness
+    rank directly.
+  - **`supportExtensor_ofNormals_ne_zero_of_isGenericNormals_of_ne`.** This is the seed argument
+    of `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, which uses the graph only for
+    `(ends e).1 ≠ (ends e).2`. It is restated per edge, under that hypothesis alone.
+  - **`exists_independent_normalRow_of_le_finrank_of_recordsLinks`.** This is the transplant
+    `exists_independent_normalRow_of_le_finrank` with the edge-restricted selector. It keeps, and
+    also returns, the extraction's first conjunct: the extracted indices are links
+    (`exists_independent_panelRow_subfamily_of_le_finrank`). So the per-edge sign comparison runs
+    only at links.
+  - In the headline, that link conjunct puts each extracted row among the rigidity rows
+    (`panelRow_mem_rigidityRows_of_link`). The upper bound
+    (`finrank_span_rigidityRows_add_deficiency_le`) needs the per-edge nondegeneracy only at links.
+  - It lands either as an in-place weakening (call sites: `HingeGeneric.lean` ×2, `Steer.lean` ×1,
+    the rigid corollary `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`, and
+    `generic-lift.tex`'s `thm:panel-generic-rank`) or as an additive successor.
+- **Optional re-base, routed here from 40a (Slice 4); not taken in 40d**, since the chart route
+  never touches the spanning producer. It moves to the cleanup-round item above. The spanning
+  `PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is a ~10-line
   corollary of the SPINE2 row-rank form (fable-spike-checked, not landed), and its `[Nonempty α]`
   is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
-  (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`; the first is
-  the declaration the open point above generalizes. Take it in the BRIDGE slice that builds the edge-restricted
-  variant, if that slice finds it cheaper; otherwise it is a post-Phase-40 cleanup-round item.
+  (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
 ### STEPS — the local steps of the induction
 
@@ -175,6 +226,26 @@ supplies it. BRIDGE builds two things on top of SPINE2:
   - [ ] **The deferred generic-condition API** (`HoldsGenerally`: one-witness genericity for any
     polynomial condition, plus conjunction). Consumers (MC-44), (MC-38), (MC-30)(iv). Deferred at
     CARRIER's close; the STEPS pre-build recon decides whether to build it.
+- **Tracked from BRIDGE's design recon (2026-09-26), for the STEPS pre-build recon:**
+  - [ ] **The slice `q′ = (q_O, Q)`.** (MC-37) and (MC-59)(c3), (MC-68)(b), (MC-69)(b) read
+    Jackson–Jordán at `G/H` at the contracted picture, with the contracted body pinned at the
+    collapse point. A generic ambient polynomial can vanish identically on that slice. Two ways
+    out:
+    - Collapse the core at `p(r)`: `q_c(t) = p_r + t·p_c` for `c ∈ W`. Then the equality at `H`
+      and at `G/H` is read at one ambient generic picture `p`.
+    - Or prove translation invariance of `L(q)`, admissibility and the main pictures. The recon
+      compiled it as `translatePicture`, `Graph.liftingSpace_translatePicture`,
+      `Graph.isAdmissiblePicture_translatePicture_iff` and
+      `Graph.isMainPicture_translatePicture_iff` (an affine function of the translated picture is
+      an affine function of the picture; the translation matrix is invertible). It is not landed.
+  - [ ] **`(G.rigidContract (G.induce W) r).Simple`**, for `G` simple and `r ∈ W`, from "no outside
+    vertex has two neighbours in `W`". BRIDGE's forms at `G/H` take it as `hSimple`.
+    `rigidContract` keeps parallel edges, and it makes loops of any edge inside `V(H)` that is not
+    in `E(H)`. So `H` must be induced, or at least edge-closed, as
+    `exists_maximal_induced_isProperRigidSubgraph` supplies.
+  - [ ] **`h3` from the Lean form of (H).** BRIDGE carries CARRIER's
+    `∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`. Deriving it from simplicity and minimum degree
+    `≥ 2` belongs to the STEPS pre-build recon, or to COVERAGE if COVERAGE fixes (H) in Lean.
 
 ### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`)
 
@@ -227,6 +298,12 @@ the landed SPINE2 threading):
   reuse a freed label, and the real source is BRIDGE consuming SPINE2's `hfresh`. Sub-gap: the
   landed fresh-edge supply lemma keys on sparsity (no proper rigid subgraph), while the split-off
   step runs at `δ ≥ 5`; settle which supply lemma discharges `e₀ ∉ E(G)`.
+- **BRIDGE forces no headroom** (the 40d design recon, 2026-09-26). Its Jackson–Jordán forms
+  carry no hypothesis on `β`: they relabel the edges into a larger label type (`Graph.embedEdges`,
+  §3 BRIDGE), so SPINE2's `hfresh` never reaches a consumer. Questions (a) and (b) stay open for
+  the MOTIVES recon, including the two label-reuse sources that recon named. The split-off
+  `G.splitOff x a b e₀` can take for `e₀` a freed label of the split vertex. `G′ + ab` at a chain
+  can reuse an ear-edge label.
 
 ### The blueprint chapter
 

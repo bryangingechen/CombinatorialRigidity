@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓; next **BRIDGE** (Jackson–Jordán's equality as consumed), not yet opened (see `notes/Phase40c.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓; **40d/BRIDGE** (Jackson–Jordán's equality as consumed) open (see `notes/Phase40d.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1157,7 +1157,7 @@ infinite field. Layers by stable code, lettered only as each opens:
 - **CARRIER** ✓ (sub-phase 40b, closed 2026-09-26): planar pictures, the lifting space, `X₀`,
   and "the general point attains";
 - **FLAT** ✓ (sub-phase 40c, closed 2026-09-26): the flat rank;
-- **BRIDGE**: Jackson–Jordán's equality as consumed;
+- **BRIDGE** (sub-phase 40d, open): Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
@@ -1220,6 +1220,21 @@ layer landed in one build commit from a compiler-checked recon (opus and fable p
 route adopted), and paid 40a's pin debt on the relative deficiency bound; the wider stand-in audit
 of that bound is a tracked cleanup-round item (`notes/Phase40-design.md` §3 FLAT). Headline axioms
 unchanged (re-verified at the close).
+
+#### Phase 40d — Jackson–Jordán's equality (BRIDGE) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-26; work log `notes/Phase40d.md`). The one input of
+the main-component argument beyond the flat rank: at the general planar picture of a simple graph
+with at least three members in every closed neighbourhood, `dim L(q) = 3 + def₂`. This is the form
+in which the informal proof cites Jackson–Jordán's pin-collinear theorem; here it is derived over
+every infinite field from 40a's planar rank theorem, in `Molecule/Pencil/MainComponent/Bridge.lean`
+and `main-component.tex` §`sec:main-component-jj`. A realization at the deficiency rank is moved,
+by rescaling each body's normal, into the chart `(x_v, y_v, 1)`, where FLAT reads its rank as
+`3|V| − dim L(q)`; semicontinuity carries the rank to the general admissible picture. Relabelling
+the edges into a larger label type removes the planar rank theorem's label-headroom hypothesis, so
+the equality holds at every graph the induction consumes: the contraction's core and quotient, the
+chains' `G′ + ab`, the split-off, and `G` itself, where with `def₂ = def₃` it makes `X₀` attain.
+The design is a compiler-checked recon whose sorry-free spike is the build.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

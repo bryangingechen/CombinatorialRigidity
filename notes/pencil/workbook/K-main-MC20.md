@@ -414,6 +414,11 @@ prints each of the 30 small graphs' case, and checks `δ = 0` at `k = 2` and `di
 >   - `G″ = G′ + ab` at SPLITOFF.
 >
 >   Every one except FLAT's `G` has fewer vertices than `G`.
+>
+>   *(2026-09-26, BRIDGE recon: every use in this list is discharged over every infinite field by
+>   (MC-172), Step MC11, which needs `G` simple with `|N[v]| ≥ 3` and nothing else. At `G/H`, the
+>   Lean contraction `G.rigidContract G[W] r` keeps parallel edges, as `G/H` does here. Its
+>   simplicity is the step's hypothesis, and it needs `H` induced.)*
 > - **no computational certificate.** The former certificate leaves hold over every infinite
 >   field. The argument leaves use of `K` only that it is an infinite field ((MC-166), the second
 >   reader's audit). So beyond characteristic 0 the qualifier is exactly "mod (MC-33)(i)".

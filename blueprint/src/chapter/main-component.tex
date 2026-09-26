@@ -15,10 +15,11 @@ irreducible family whose general member attains the deficiency rank. A
 single realization at that rank forces the general one, because the
 rank is lower semicontinuous. The first subsection introduces these
 objects and proves that one-witness principle; the second computes the
-rank of a flat configuration exactly. The planar rank input, the ear,
-split-off, contraction and cut steps, and the structural coverage build
-on them; the last subsection states the passage back to the two
-statements.
+rank of a flat configuration exactly; the third derives from the planar
+rank theorem the equality of Jackson and Jord\'an on which the remaining
+steps rest. The ear, split-off, contraction and cut steps and the
+structural coverage build on them; the last subsection states the
+passage back to the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -799,6 +800,138 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   \cref{cor:pencil-flat-attains} applies.
 \end{proof}
 
+\subsection{Jackson and Jord\'an's equality}
+\label{sec:main-component-jj}
+
+By \cref{thm:pencil-flat-rank} the flat configuration reaches the
+$\operatorname{def}_2$ bound exactly when $\dim L(q) = 3 +
+\operatorname{def}_2(G)$. That this equality holds at the general
+picture is the form in which the argument uses Jackson and Jord\'an's
+pin-collinear theorem~\cite{jacksonJordan2008pin}, at $G$ itself and at
+the smaller graphs of the contraction, chain and split-off steps. This
+subsection derives it over every infinite field from the planar rank
+theorem, Katoh and Tanigawa's rank formula~\cite{katohTanigawa2011} at
+$d = 2$ (\cref{thm:theorem-55-6-rows}), read in the chart
+$(x_v, y_v, 1)$ of the plane framework of
+\cref{lem:pencil-lifting-planes-motions}. The graph need not be
+connected and need not span the set of bodies.
+
+\begin{lemma}[Rescaling the panel normals]
+  \label{lem:pencil-jj-rescale}
+  \uses{def:panel-hinge-framework, def:panel-support-extensor,
+        def:rigidity-matrix}
+  Let $(n_v)$ be panel normals and $(c_v)$ nonzero scalars. At every
+  edge $e$ with recorded ends $u, v$, the panel-hinge framework on $G$
+  with normals $c_v n_v$ has the hinge $c_u c_v\, C(e)$, where $C(e)$ is
+  its hinge at the normals $n_v$. So the two frameworks have the same
+  infinitesimal motions and rigidity matrices of the same rank.
+\end{lemma}
+\begin{proof}
+  \uses{def:hinge-constraint, lem:span-rigidityRows-eq-of-motions-eq}
+  The support extensor is linear in each of its two normals
+  (\cref{def:panel-support-extensor}), and a nonzero multiple of a hinge
+  spans the same line, which is all the hinge constraint reads
+  (\cref{def:hinge-constraint}). Equal motion spaces give equal row
+  spans (\cref{lem:span-rigidityRows-eq-of-motions-eq}).
+\end{proof}
+
+\begin{lemma}[The planar rank theorem in the chart]
+  \label{lem:pencil-jj-chart}
+  \uses{thm:theorem-55-6-rows, lem:pencil-lifting-planes-motions}
+  Let $K$ be infinite and let $G$ be simple with at least two bodies.
+  There is a nonzero polynomial $P$ in the picture coordinates such that
+  at every picture $q$ with $P(q) \ne 0$ the plane framework $P_q$ of
+  \cref{lem:pencil-lifting-planes-motions}, with panel normal
+  $(x_v, y_v, 1)$ at each body, has
+  $\operatorname{rank} R(P_q) \ge 3(|V(G)| - 1) -
+  \operatorname{def}_2(G)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:rank-polynomial-of-le-finrank, def:panel-general-position,
+        lem:general-position-support-nonzero, lem:pencil-jj-rescale}
+  \Cref{thm:theorem-55-6-rows} at $n = 2$ ($D = 3$) gives a realization
+  of $G$ at rank $3(|V(G)| - 1) - \operatorname{def}_2(G)$. Its rank
+  polynomial (\cref{lem:rank-polynomial-of-le-finrank}), a polynomial
+  whose non-roots are in general position
+  (\cref{def:panel-general-position}), and the product of the third
+  coordinates of the normals have a common non-root $n$, since $K$ is
+  infinite. Dividing each normal $n_v$ by its third coordinate gives the
+  normals $(x_v, y_v, 1)$ of a picture $q'$, at the same rank and with
+  nonzero hinges (\cref{lem:pencil-jj-rescale},
+  \cref{lem:general-position-support-nonzero}). The rank polynomial at
+  $q'$, composed with the chart $q \mapsto (x_v, y_v, 1)$, is nonzero at
+  $q'$; it is the required $P$.
+\end{proof}
+
+\begin{lemma}[Relabelling the edges]
+  \label{lem:pencil-jj-embed-edges}
+  \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
+        def:pencil-main-picture, def:D-deficiency}
+  Relabel the edges of $G$ injectively into a larger set of labels.
+  This keeps $G$ simple if it is simple, and it changes neither the
+  lifting spaces $L(q)$, nor the admissible and the main pictures, nor
+  $\operatorname{def}_n(G)$ for any $n$.
+\end{lemma}
+\begin{proof}
+  The bodies, the pairs of adjacent bodies and hence the closed
+  neighbourhoods are unchanged, and a partition crosses exactly the
+  images of the edges it crossed before.
+\end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:pencil-jj-embed-edges}
+  The formal planar rank theorem is stated over a fixed type of edge
+  labels with a supply of spare labels (\cref{rem:fresh-edge-supply}),
+  and \cref{lem:pencil-jj-chart} carries that supply. Jackson and
+  Jord\'an's equality below mentions no edge label, so it first relabels
+  the edges into a label set with room to spare
+  (\cref{lem:pencil-jj-embed-edges}); it carries no hypothesis on the
+  labels.
+\end{fmlnote}
+
+\begin{theorem}[Jackson and Jord\'an's equality]
+  \label{thm:pencil-jj-equality}
+  \uses{def:pencil-lifting-space, def:pencil-main-picture,
+        def:D-deficiency}
+  Let $K$ be infinite and let $G$ be simple, with at least one body and
+  at least three members in every closed neighbourhood. There is a
+  nonzero polynomial $P$ in the picture coordinates such that every
+  picture $q$ with $P(q) \ne 0$ is a main picture with
+  $\dim L(q) = 3 + \operatorname{def}_2(G)$. Consequently
+  $\ell_0 = 3 + \operatorname{def}_2(G)$: every main picture has
+  $\dim L(q) = 3 + \operatorname{def}_2(G)$.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-jj-chart, lem:pencil-jj-embed-edges,
+        lem:pencil-x0-main-picture-open, lem:pencil-lifting-planes-motions,
+        lem:pencil-lifting-space-deficiency}
+  Relabel the edges (\cref{lem:pencil-jj-embed-edges}). The main
+  pictures contain the non-roots of a nonzero polynomial
+  (\cref{lem:pencil-x0-main-picture-open}), and \cref{lem:pencil-jj-chart}
+  gives a second; let $P$ be their product. At a non-root $q$ the rank of
+  the plane framework is $3|V(G)| - \dim L(q)$
+  (\cref{lem:pencil-lifting-planes-motions}), so
+  $\dim L(q) \le 3 + \operatorname{def}_2(G)$, and
+  \cref{lem:pencil-lifting-space-deficiency} gives the reverse. A main
+  picture has $\dim L(q)$ at most its value at such a non-root, and at
+  least $3 + \operatorname{def}_2(G)$ by the same lemma.
+\end{proof}
+
+\begin{corollary}[The general configuration attains when the two deficiencies agree]
+  \label{cor:pencil-jj-flat}
+  \uses{def:pencil-x0-attains, def:D-deficiency}
+  Let $K$ be infinite and let $G$ be connected and simple, with at least
+  three members in every closed neighbourhood. If
+  $\operatorname{def}_2(G) = \operatorname{def}_3(G)$, then the general
+  configuration of $G$ attains (\cref{def:pencil-x0-attains}).
+\end{corollary}
+\begin{proof}
+  \uses{thm:pencil-jj-equality, cor:pencil-flat-attains}
+  \Cref{thm:pencil-jj-equality} gives an admissible picture with
+  $\dim L(q) = 3 + \operatorname{def}_2(G) = 3 + \operatorname{def}_3(G)$,
+  and \cref{cor:pencil-flat-attains} applies.
+\end{proof}
+
 \subsection{The passage to the two main-component statements}
 \label{sec:main-component-statements}
 
@@ -828,13 +961,16 @@ second derives from the first the two main-component statements
   (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
+  \uses{thm:pencil-jj-equality, cor:pencil-jj-flat}
   By \cref{thm:pencil-x0-main-component} it suffices, for the first
   claim, to exhibit one configuration over a main picture attaining the
   target rank. That runs a strong induction on the number of bodies
   through ear, split-off, contraction and cut steps, whose flat inputs
-  use the planar rank theorem \cref{thm:theorem-55-6-rows} in place of
-  Jackson and Jord\'an's pin-collinear
-  theorem~\cite{jacksonJordan2008pin}. Granting the first claim, the
+  use Jackson and Jord\'an's equality in the form
+  \cref{thm:pencil-jj-equality}, derived from the planar rank theorem
+  \cref{thm:theorem-55-6-rows} in place of their pin-collinear
+  theorem~\cite{jacksonJordan2008pin}; where the two deficiencies agree
+  it is \cref{cor:pencil-jj-flat}. Granting the first claim, the
   distinct statement needs a single attaining configuration
   (\cref{lem:pencil-x0-attains-distinct}). The generic statement holds on
   the dense open subset of a fibre $L(q)$ where a nondegenerate

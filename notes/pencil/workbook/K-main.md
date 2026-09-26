@@ -292,6 +292,8 @@ closure, as BINDUC said it might be. That section's statement is not changed; it
 is (MC-5)(ii) **plus Jackson–Jordán at `G`**. Without the citation, what holds is: wherever
 `dim L(q) = 3 + def₃` at some admissible `q`, the flat configuration at `q` attains with adjacent
 points distinct. The census measures that equality directly (the `JJ` column).
+*(2026-09-26, BRIDGE recon: the by-product is now unconditional over every infinite field, by
+(MC-172) (Step MC11). Lean `Graph.x0Attains_of_deficiency_two_eq_three`, `cor:pencil-jj-flat`.)*
 
 ### Step MC6 — the first-order structure at the flat point is a symmetric form on the lifting space
 

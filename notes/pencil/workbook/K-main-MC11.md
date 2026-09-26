@@ -301,3 +301,34 @@ the harness's "GF(p) only as a bound for ℚ" rule does not apply. The GF(2¹⁶
 constructors assert that `X` has order `q − 1`, which makes the polynomial primitive and so the
 quotient a field. They also check the table arithmetic against slow polynomial arithmetic.
 
+
+#### Jackson–Jordán's equality from the planar rank theorem (2026-09-26, BRIDGE recon)
+
+*Added 2026-09-26 by the Phase-40d BRIDGE design recon (opus). Every step below is compiler-checked
+as the Lean the 40d build lands (`notes/Phase40d.md`, `main-component.tex`
+§`sec:main-component-jj`). This is route (a) of `notes/Phase40-design.md` §1, made explicit at
+(MC-4)(c)'s equality: Jackson–Jordán's theorem is not used.*
+
+> **(MC-172)** `[PROVED]` *(Jackson–Jordán's equality over every infinite field, from
+> Katoh–Tanigawa 2011's Theorem 5.6 at `d = 2`; Lean `Graph.exists_mvPolynomial_finrank_liftingSpace_eq`,
+> `thm:pencil-jj-equality`)* Let `K` be an infinite field and `G` a finite simple graph with at least
+> one vertex and `|N[v]| ≥ 3` at every vertex; connectivity is not needed. Off the zero set of one
+> nonzero polynomial in the picture coordinates, `q` is admissible and `dim L(q) = 3 + def₂(G)`.
+> Hence `ℓ₀(G) = 3 + def₂(G)`: equality holds in (MC-4)(b) at the generic picture.
+
+*Proof.* Katoh–Tanigawa's Theorem 5.6 at `d = 2` (`D = 3`), in its non-spanning row-rank form
+(Phase 40a), gives panel normals `n_v ∈ K³` of a realization of `G` with
+`rank R = 3(|V| − 1) − def₂(G)`.
+- Three conditions on the normals are nonempty and Zariski-open: rank at least that value, pairwise
+  independence of the normals, and `n_v · e₃ ≠ 0` for every `v`. Over an infinite field they meet.
+- Rescaling each `n_v` by a nonzero scalar multiplies each hinge by a nonzero scalar. So it changes
+  no hinge line, no motion and no rank.
+- Hence the plane framework at the normals `p̂_v = (x_v, y_v, 1)` of some picture has that rank, with
+  nonzero hinges. Its rank stays at least the target on a nonempty open set of pictures, which
+  meets the nonempty open set of admissible pictures.
+- At such a `q` the motion space is `F(q) ≅ L(q)` (Step MC4), so `rank = 3|V| − dim L(q)`, which
+  gives `dim L(q) ≤ 3 + def₂(G)`. (MC-4)(b) is the reverse inequality. ∎
+
+So every "modulo Jackson–Jordán" and "modulo (MC-33)(i)" on (MC-89)'s path ((MC-141)'s list) is
+discharged over every infinite field, at every simple graph with `|N[v]| ≥ 3`. This does not prove
+Jackson–Jordán's Theorems 6.1 and 7.1 in general, so (MC-33)(i) keeps its status.
