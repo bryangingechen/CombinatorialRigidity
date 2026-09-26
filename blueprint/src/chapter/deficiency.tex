@@ -243,6 +243,29 @@ parallel copies of each edge $e \in E(G)$.
   to get a single labeling of $V(G)$ attaining the right-hand side.
 \end{proof}
 
+\begin{lemma}[Deficiency adds at a cut vertex]
+  \label{lem:deficiency-cut-vertex}
+  \uses{def:D-deficiency}
+  Let $G$ be loopless, with $V(G) = V_1 \cup V_2$, $V_1 \cap V_2 = \{v\}$,
+  and every edge of $G$ inside $V_1$ or inside $V_2$. Then for every $n$
+  \[
+    \operatorname{def}(\tilde G)
+    = \operatorname{def}(\tilde G[V_1]) + \operatorname{def}(\tilde G[V_2]).
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:cut-edge-decomposition}
+  For any labeling $f$ of the bodies, the value of $f$ on $G$ is the sum
+  of its values on the two sides plus $D(1 - |I|)$, where $I$ is the set
+  of labels used on both sides: the parts count by inclusion and
+  exclusion, and every edge crosses on exactly one side, since an edge
+  inside both would be a loop at $v$. As $f(v) \in I$, this gives $\le$.
+  For $\ge$, normalize attaining labelings of the two sides into their
+  own sides, as in \cref{lem:cut-edge-decomposition}, with $v$ as the
+  label of its part on both; glued, they form one labeling with
+  $I = \{v\}$, whose value on $G$ is the sum.
+\end{proof}
+
 \begin{lemma}[Matroid restriction descends to subgraphs]
   \label{lem:matroid-restrict-subgraph}
   \lean{Graph.matroidMG_restrict_mulTilde}

@@ -959,6 +959,183 @@ connected and need not span the set of bodies.
   and \cref{cor:pencil-flat-attains} applies.
 \end{proof}
 
+\subsection{Cut vertices and bridges}
+\label{sec:main-component-cut}
+
+The steps of the induction share one shape. Each deduces that the
+general configuration of $G$ attains (\cref{def:pencil-x0-attains})
+from the same conclusion at smaller graphs on the same bodies and edge
+labels. It picks one picture generic for the smaller graphs and main
+for $G$, and it finds the heights inside the single lifting space
+$L_G(q)$, where two nonempty Zariski-open conditions always meet
+(\cref{lem:pencil-x0-fibre-intersection}). One configuration at the
+target rank then suffices (\cref{lem:pencil-x0-one-witness}). This
+subsection states the standing hypotheses and the restriction of
+heights to a subgraph, and proves the first two steps. At a cut vertex
+and along a chain of bridges the graph is a fibre product of two
+smaller graphs, and attaining passes from the two pieces to the whole.
+
+\begin{definition}[The standing hypotheses]
+  \label{def:pencil-x0-standing}
+  \uses{def:pencil-admissible-picture}
+  A graph $G$ satisfies the \emph{standing hypotheses} if it is finite,
+  simple and connected, with minimum degree at least two. Then every
+  closed neighbourhood of $G$ has at least three members: a body of
+  degree $d$ in a simple graph has $d$ distinct neighbours.
+\end{definition}
+
+\begin{lemma}[Heights restrict to a subgraph]
+  \label{lem:pencil-lifting-restrict}
+  \uses{def:pencil-lifting-space, def:pencil-configuration}
+  Let $G' \le G$ and let $q$ be any picture. The height that agrees with
+  $z \in L_G(q)$ on $V(G')$ and vanishes elsewhere lies in
+  $L_{G'}(q)$, and its configuration points agree with those of $z$ at
+  the bodies of $G'$.
+\end{lemma}
+\begin{proof}
+  A closed neighbourhood in $G'$ lies in the corresponding closed
+  neighbourhood in $G$, where $z$ agrees with an affine function of the
+  picture.
+\end{proof}
+
+\begin{lemma}[The rank reads only the bodies of the graph]
+  \label{lem:pencil-rank-congr}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  The rank of the rigidity matrix of the panel-hinge framework on $G$
+  depends only on the panel normals at the bodies of $G$, and not on
+  which end of each edge is recorded first.
+\end{lemma}
+\begin{proof}
+  \uses{def:panel-support-extensor, def:hinge-constraint,
+        lem:span-rigidityRows-eq-of-motions-eq}
+  The hinge at an edge is built from the normals at its two ends, and
+  swapping them negates it (\cref{def:panel-support-extensor}); the
+  hinge constraint reads only the line it spans
+  (\cref{def:hinge-constraint}). So the motion spaces agree, and equal
+  motion spaces give equal row spans
+  (\cref{lem:span-rigidityRows-eq-of-motions-eq}).
+\end{proof}
+
+\begin{lemma}[The heights at a cut vertex]
+  \label{lem:pencil-cut-fibre}
+  \uses{lem:pencil-lifting-restrict}
+  Let $G = G_1 \cup G_2$ with $V(G_1) \cap V(G_2) = \{v\}$ and disjoint
+  edge sets. At every picture $q$, both restriction maps
+  $L_G(q) \to L_{G_i}(q)$ (\cref{lem:pencil-lifting-restrict}) are onto.
+\end{lemma}
+\begin{proof}
+  Given $z^1 \in L_{G_1}(q)$, extend it across $V(G_2)$ by the affine
+  function of its closed neighbourhood at $v$. Every closed
+  neighbourhood of $G$ other than $N_G[v]$ lies in one side, and
+  $N_G[v] = N_1[v] \cup N_2[v]$ carries that affine function on both, so
+  the extension lies in $L_G(q)$ and restricts to $z^1$. The other side
+  is symmetric.
+\end{proof}
+
+\begin{remark}
+  Informally more holds: at every $q$ admissible for $G_1$ and $G_2$,
+  $L_G(q)$ is the set of pairs $(z^1, z^2) \in L_{G_1} \times L_{G_2}$
+  whose planes at $v$ coincide, so $\dim L_G(q) = \dim L_{G_1} +
+  \dim L_{G_2} - 3$. Only the surjectivity is formalized, which is all
+  \cref{thm:pencil-x0-cut} uses.
+\end{remark}
+
+\begin{theorem}[A cut vertex]
+  \label{thm:pencil-x0-cut}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses
+  (\cref{def:pencil-x0-standing}), with $V(G) = V_1 \cup V_2$,
+  $V_1 \cap V_2 = \{v\}$ and every edge of $G$ inside $V_1$ or inside
+  $V_2$. If the general configurations of $G[V_1]$ and $G[V_2]$ attain,
+  then the general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-cut-fibre, lem:block-rank-cut-vertex,
+        lem:deficiency-cut-vertex, lem:pencil-lifting-restrict,
+        lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
+  Take a picture $q$ generic for both sides and main for $G$
+  (\cref{lem:pencil-x0-main-picture-open}). The attaining heights of
+  each side contain a nonempty Zariski-open subset of $L_{G[V_i]}(q)$.
+  Since the restrictions are onto (\cref{lem:pencil-cut-fibre},
+  \cref{lem:pencil-lifting-restrict}), their preimages are nonempty
+  Zariski-open subsets of $L_G(q)$, and they meet
+  (\cref{lem:pencil-x0-fibre-intersection}). At such a height $z$ the
+  rank of each side is its target (\cref{lem:pencil-rank-congr}), the
+  ranks add (\cref{lem:block-rank-cut-vertex}), and so do the
+  deficiencies (\cref{lem:deficiency-cut-vertex}), while the body counts
+  overlap in one. So $(q, z)$ has rank at least the target of $G$, and
+  \cref{lem:pencil-x0-one-witness} applies.
+\end{proof}
+
+\begin{remark}
+  Informally the converse holds as well: at a general configuration of
+  $G$ the ranks add and each is at most its target, so if $G$ attains,
+  both sides attain. Only the ``if'' half is formalized, the half the
+  induction uses; the ``only if'' half is a tracked item of the
+  formalization, not a node of this chapter.
+\end{remark}
+
+\begin{lemma}[The heights along a chain of bridges]
+  \label{lem:pencil-bridge-fibre}
+  \uses{lem:pencil-lifting-restrict, def:pencil-admissible-picture}
+  Let $G$ be $G_1 \sqcup G_2$ plus a path $a - x_1 - \cdots - x_k - b$
+  ($k \ge 0$ new vertices), with $a \in V(G_1)$ and $b \in V(G_2)$. At
+  every picture $q$ admissible for $G$, both restriction maps
+  $L_G(q) \to L_{G_i}(q)$ are onto.
+\end{lemma}
+\begin{proof}
+  The path bodies have degree two, and their closed neighbourhoods are
+  three non-collinear points, so they impose nothing. The body $a$ adds
+  $z_{x_1} = h_a(q_{x_1})$ and $b$ adds $z_{x_k} = h_b(q_{x_k})$ (for
+  $k = 0$, read $x_1 = b$ and $x_k = a$). Given $z^1 \in L_{G_1}(q)$,
+  put an affine function $g$ on $V(G_2)$: for $k \ge 2$ take $g = 0$,
+  the two end conditions fix $z_{x_1}$ and $z_{x_k}$, and the $k - 2$
+  middle heights are free; for $k = 1$ take $g$ with $g(q_x) =
+  h_a(q_x)$; for $k = 0$ take $g$ with $g(q_a) = z^1_a$ and $g(q_b) =
+  h_a(q_b)$, which exists because $q_a \neq q_b$. The other restriction
+  is symmetric.
+\end{proof}
+
+\begin{remark}
+  Informally more holds: at every $q$ admissible for $G$, $G_1$ and
+  $G_2$, $\dim L_G(q) = \dim L_{G_1} + \dim L_{G_2} + c_k$, with
+  $c_0 = -2$, $c_1 = -1$, and $c_k = k - 2$ for $k \ge 2$. Only the
+  surjectivity is formalized, which is all \cref{thm:pencil-x0-bridge}
+  uses.
+\end{remark}
+
+\begin{theorem}[A chain of bridges]
+  \label{thm:pencil-x0-bridge}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses. Let
+  $V(G)$ be the disjoint union of $V_1$, $V_2$ and path bodies
+  $x_1, \dots, x_k$ ($k \ge 0$), with a path $a - x_1 - \cdots - x_k - b$
+  from $a \in V_1$ to $b \in V_2$, every other edge of $G$ lying inside
+  $V_1$ or inside $V_2$. If the general configurations of $G[V_1]$ and
+  $G[V_2]$ attain, then the general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-bridge-fibre, lem:block-rank-cut, lem:cut-edge-decomposition,
+        lem:pencil-lifting-restrict, lem:pencil-rank-congr,
+        lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
+        lem:pencil-x0-one-witness}
+  As for \cref{thm:pencil-x0-cut}, with \cref{lem:pencil-bridge-fibre}
+  for the heights. Each of the $k + 1$ bridges adds $D - 1 = 5$ to the
+  rank (\cref{lem:block-rank-cut}, all hinges being nonzero at an
+  admissible picture) and $1$ to the deficiency
+  (\cref{lem:cut-edge-decomposition}), and the $k$ path bodies add $6k$
+  to the body term, so the targets satisfy
+  $\operatorname{tgt}(G) = \operatorname{tgt}(G_1) +
+  \operatorname{tgt}(G_2) + 5(k + 1)$.
+\end{proof}
+
+\begin{remark}
+  Informally the converse holds as well, by the same count. Only the
+  ``if'' half is formalized; the ``only if'' half is a tracked item of
+  the formalization, as for \cref{thm:pencil-x0-cut}.
+\end{remark}
+
 \subsection{The passage to the two main-component statements}
 \label{sec:main-component-statements}
 

@@ -6,7 +6,8 @@ index of work already done, the layer plan by **stable codes**, the proof map, t
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
-closed 2026-09-26** (`notes/Phase40d.md`); **STEPS is next**, not yet opened. This doc replaces the
+closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE opened
+2026-09-26** (`notes/Phase40e.md`), the six later groups provisional (§3 STEPS). This doc replaces the
 planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which
 is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
@@ -176,7 +177,7 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction
+### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, opened 2026-09-26** (`notes/Phase40e.md`)
 
 | step of (MC-89) | labels, in proof order | 2nd |
 |---|---|---|
@@ -197,40 +198,86 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
   2-cut law `deficiency_eq_of_vertexTwoCut`, the gluing identity
   `finrank_span_rigidityRows_vertexTwoCut_eq`, and the loss carriers in
   `Molecule/Pencil/TwoCut.lean`.
-- **There is no landed cut-vertex deficiency law.** Item 6's leaves have no blueprint nodes
-  (Phase 39's D5 debt). STEPS pins them when it consumes them.
-- **Tracked from CARRIER's close (2026-09-26), for the STEPS pre-build recon:**
-  - [ ] **The SPLITOFF curve-limit lemma.** (MC-31)'s special point lies in `X₀ ∖ B` (`B` the
-    bundle over `U`) and its picture is not admissible, so `Graph.x0Attains_of_exists` cannot take
-    it as a witness. A limit along (MC-30)(ii)'s explicit curve is needed; the lemma's shape is a
-    hypothesis, not yet checked.
-  - [ ] **The CONTRACT rank-device open point.** (MC-36)'s augmented-matrix framework on `G/H`
-    keeps the boundary hinges `p_u ∧ p_c` and is not in `ofNormals` form, while every landed
-    rank-polynomial device (`PanelHingeFramework.exists_rankPolynomial_of_*`, and the rank read
-    by `Graph.X0Attains`) is.
-  - [ ] **The deferred generic-condition API** (`HoldsGenerally`: one-witness genericity for any
-    polynomial condition, plus conjunction). Consumers (MC-44), (MC-38), (MC-30)(iv). Deferred at
-    CARRIER's close; the STEPS pre-build recon decides whether to build it.
-- **Tracked from BRIDGE's design recon (2026-09-26), for the STEPS pre-build recon:**
-  - [ ] **The slice `q′ = (q_O, Q)`.** (MC-37) and (MC-59)(c3), (MC-68)(b), (MC-69)(b) read
-    Jackson–Jordán at `G/H` at the contracted picture, with the contracted body pinned at the
-    collapse point. A generic ambient polynomial can vanish identically on that slice. Two ways
-    out:
-    - Collapse the core at `p(r)`: `q_c(t) = p_r + t·p_c` for `c ∈ W`. Then the equality at `H`
-      and at `G/H` is read at one ambient generic picture `p`.
-    - Or prove translation invariance of `L(q)`, admissibility and the main pictures. The recon
-      compiled it as `translatePicture`, `Graph.liftingSpace_translatePicture`,
-      `Graph.isAdmissiblePicture_translatePicture_iff` and
-      `Graph.isMainPicture_translatePicture_iff` (an affine function of the translated picture is
-      an affine function of the picture; the translation matrix is invertible). It is not landed.
-  - [ ] **`(G.rigidContract (G.induce W) r).Simple`**, for `G` simple and `r ∈ W`, from "no outside
-    vertex has two neighbours in `W`". BRIDGE's forms at `G/H` take it as `hSimple`.
-    `rigidContract` keeps parallel edges, and it makes loops of any edge inside `V(H)` that is not
-    in `E(H)`. So `H` must be induced, or at least edge-closed, as
-    `exists_maximal_induced_isProperRigidSubgraph` supplies.
-  - [ ] **`h3` from the Lean form of (H).** BRIDGE carries CARRIER's
-    `∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`. Deriving it from simplicity and minimum degree
-    `≥ 2` belongs to the STEPS pre-build recon, or to COVERAGE if COVERAGE fixes (H) in Lean.
+- **There is no landed cut-vertex deficiency law.** 40e lands one (`lem:deficiency-cut-vertex`,
+  in `Deficiency.lean`), and its proof consumes item 6's A4 split
+  `partitionDef_split_of_vertexTwoCut` at a repeated vertex, so 40e pins it. Item 6's leaves have no
+  blueprint nodes (Phase 39's D5 debt); STEPS pins each when it consumes it.
+- **The step contract** (the STEPS pre-build recon, 2026-09-26; compiled end to end at CUT and at a
+  single bridge, `notes/Phase40e.md`). Every step is `G.X0Attains K` from `Gᵢ.X0Attains K` at
+  smaller graphs `Gᵢ : Graph α β` (same `α`, same `β`), with (H) at `G` (`Graph.IsX0Graph`: simple,
+  connected, degree `≥ 2`) and structural hypotheses. The proof picks one picture generic for every
+  `Gᵢ` and main for `G`, chooses heights inside the one fibre `L_G(q)`
+  (`MvPolynomial.exists_mem_eval_ne_zero₂`), and ends at `Graph.x0Attains_of_exists`.
+  - No step consumes more than attainment at smaller graphs satisfying (H), Jackson–Jordán at named
+    graphs (a theorem since 40d) and structural facts. COVERAGE is a plain strong induction on
+    `V(G).ncard`; no `Covered` predicate is needed.
+  - (H) is the carried predicate, and every consumed graph satisfies it ((MC-55)(i)). 2EC is not
+    carried: it is CONTRACT's step hypothesis (for `h3` at `G/H`), which COVERAGE supplies from
+    2-connectivity at (MC-89)'s step 4.
+  - Every consumed graph reuses labels: `splitOff` with a freed label, `G′ + ab` by relinking a
+    chain edge, `G/H` keeping its own. So **STEPS forces no `β`-headroom** (§3 MOTIVES).
+  - The ear steps also need picture locality (`L`, admissibility, main-ness and rank read the
+    picture only on `V(Γ)`; the rank half is 40e's `finrank_span_rigidityRows_ofNormals_congr`) and
+    main-picture propagation (admissible with `dim L ≤ 3 + def₂` is main).
+- **The provisional grouping** (PI, 2026-09-26, "Accept"; codes until each opens, letters minted
+  only then; `notes/pencil/adjudications.md`). In dependency order, with build-commit estimates:
+  - **CUTBRIDGE = 40e**: (MC-52), (MC-53). 3–4.
+  - **CONTRACT-R**, the `def₂`-rigid core: (MC-34)–(MC-39), (MC-59). Reuses Phase 22i's projected
+    Case-I machinery, FLAT, Jackson–Jordán, `rigidContract_deficiency_eq`, and the Cramer section.
+    The rescaled lifting system `M(t)` and its kernel at `t = 0` are new. 6–9.
+  - **CHAIN**: (MC-16)–(MC-19), (MC-134)(a)(b), (MC-169), BASE (MC-21)(a), chains `k ≥ 5` (MC-20).
+    Pins Layer B (`relScrews`, `jointMotions`) and A2/A3 (D5 debt); `CycleData` fits BASE.
+    `ChainData` does not fit: it forces `d = n` and a fresh label. 6–10.
+  - **SHORT**: (MC-22), (MC-24), (MC-44), (MC-25)/(MC-136), (MC-45)/(MC-135)/(MC-26)/(MC-47)(i),
+    (MC-54), THETA (MC-139). After CHAIN. 8–12.
+  - **SPLITOFF**: (MC-28)–(MC-31). 3–5.
+  - **CONTRACT-A**, the additive core: (MC-67)–(MC-71). After CONTRACT-R. 4–7.
+  - **ORBIT**: (MC-46), (MC-138), (MC-48)(ii). After CHAIN and SHORT. Size unknown (§4).
+
+  **Order** (PI, 2026-09-26): 40e's open and build first, then a read-only ORBIT recon (opus)
+  before the next group opens.
+- **Tracked from CARRIER's close and BRIDGE's recon (2026-09-26): settled by the STEPS pre-build
+  recon (2026-09-26).** Each verdict below is compiled where it is a Lean question (the spike files
+  are kept for the build, `notes/Phase40e.md`), and lands with the group that consumes it.
+  - [x] **The SPLITOFF curve-limit lemma** (lands with SPLITOFF). Its shape is
+    `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, compiled: along a polynomial curve of
+    normals whose hinges are nonzero at `t = 0`, the rank is at least its value at `t = 0` for all
+    but finitely many `t`. It is the landed rank device composed with the curve. (MC-30)(ii)'s
+    rational curve is cleared by rescaling every body by its denominator
+    (`finrank_span_rigidityRows_ofNormals_smul`). Main-ness and membership along the curve stay
+    SPLITOFF's own obligations.
+  - [x] **The CONTRACT rank-device open point: dissolved** (lands with CONTRACT-R). The `G/H`
+    framework with the actual boundary hinges is never formed. Its rank is the rank of the rows of
+    `ofNormals (G.deleteEdges E(H)) endsG`, projected by `(extProj W).dualMap`, and that framework
+    is in `ofNormals` form. The value at `t = 0` is Phase 22i's composition (`degeneratePlacement`,
+    `panelRow_collapseTo_comp_extProj_dualMap`, `exists_independent_panelRow_subfamily_of_le_finrank_proj`),
+    as in `exists_rankPolynomial_of_IH_relabel_linking_set_proj`. One sibling is new: the projected
+    rank polynomial must return `eval q₀ Qc ≠ 0`, which its proof already has. The coupling
+    `rank_G ≥ rank_H + finrank (S.map D)` is rank-nullity.
+  - [x] **`HoldsGenerally`: not built.** Its three consumers need no bundle-level genericity. (MC-44)
+    works at one picture inside `L_{G′}(q) ⊇ L_{G′+ab}(q)`. (MC-38) at a `def₂`-rigid core follows
+    from the flat limit core being rigid (FLAT and Jackson–Jordán at `H`) and lower semicontinuity
+    along the curve; at an additive core it is two open conditions in `ker M₀` at one picture.
+    (MC-30)(iv) uses one picture, one fibre point and one curve. `exists_mem_eval_ne_zero₂`
+    suffices throughout. Build it only if a later recon finds a witness over a picture that no
+    product of polynomials can align.
+  - [x] **The slice `q′ = (q_O, Q)`: collapse at `p(r)`, with the magnified core `δ := q|_W`** (lands
+    with CONTRACT-R). With `q_c(t) = q_r + t·q_c` for `c ∈ W`, `H` is read at `q|_W` and `G/H` at
+    `q|_{V(G/H)}`, both at one generic ambient picture, so no slice arises. Translation invariance
+    was re-derived and is true, but it is not needed and the translation lemmas stay unlanded. What
+    remains is `H`'s rank under the core rescaling `A_t ∈ GL₄`, by the collineation action (to
+    confirm at CONTRACT-R's recon).
+  - [x] **`(G.rigidContract (G.induce W) r).Simple`**, compiled as
+    `Graph.rigidContract_induce_simple (hS : G.Simple) (hr : r ∈ W) (hatt : ∀ u ∉ W, ∀ c₁ ∈ W,
+    ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (lands
+    with CONTRACT-R).
+  - [x] **`h3` from (H)**, compiled as `Graph.three_le_ncard_closedNbhd (hS : G.Simple)
+    (hdeg : 2 ≤ G.degree v)`, from the vendored `Graph.degree_eq_ncard_adj` (lands with 40e).
+- [ ] **Tracked todo, not a 40e close gate (PI, 2026-09-26): the "only if" halves of (MC-52)(iv)
+  and (MC-53)(iv).** 40e formalizes the "if" halves, the only ones the induction consumes;
+  `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` name this item in their remarks. The informal
+  proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
+  height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
 ### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`)
 
@@ -283,6 +330,8 @@ the landed SPINE2 threading):
   reuse a freed label, and the real source is BRIDGE consuming SPINE2's `hfresh`. Sub-gap: the
   landed fresh-edge supply lemma keys on sparsity (no proper rigid subgraph), while the split-off
   step runs at `δ ≥ 5`; settle which supply lemma discharges `e₀ ∉ E(G)`.
+- **STEPS forces no headroom either** (the STEPS pre-build recon, 2026-09-26): every consumed
+  graph reuses labels (§3 STEPS, the step contract).
 - **BRIDGE forces no headroom** (the 40d design recon, 2026-09-26). Its Jackson–Jordán forms
   carry no hypothesis on `β`: they relabel the edges into a larger label type (`Graph.embedEdges`,
   §3 BRIDGE), so SPINE2's `hfresh` never reaches a consumer. Questions (a) and (b) stay open for
@@ -323,6 +372,15 @@ end.
   non-spanning form is the fix.
 - **(H) versus 2EC.** CUT and BRIDGE pass through non-2EC graphs, so the proof needs all of (H);
   the consumer uses only the 2EC form.
+- **ORBIT's dimension counting** (the STEPS pre-build recon, 2026-09-26). (MC-46)'s proof, with
+  (MC-138)'s table, counts dimensions of incidence varieties and orbits: `dim I ≥ dim S`, fibre
+  dimensions, orbit dimensions from Lie-algebra tangent vectors. It has no polynomial-level form,
+  and Mathlib lacks the dimension theory, so it will not transcribe as written. The options are a
+  new polynomial-level proof of `(P₂)` outside the three families, routing that cell
+  (`k = 2`, `a ≁ b`, `δ₂ ≥ 2`) another way in COVERAGE, or building dimension theory. The read-only
+  ORBIT recon after 40e's build decides which (PI, 2026-09-26). (MC-18)(b)'s "the zero set of a
+  bilinear form of rank `≥ 2` is irreducible and dominates" needs a polynomial-divisibility
+  reformulation (medium risk, SHORT).
 - `supportExtensor e ≠ 0` must hold for **every** `e : β`, not only the edges of `G`. This is
   trivial, but it is easy to miss.
 

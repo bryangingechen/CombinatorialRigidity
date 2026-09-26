@@ -391,6 +391,27 @@ contraction is not yet fully rigid
   calc chain of disjoint-rank additions closes the inequality.
 \end{proof}
 
+\begin{lemma}[Rank addition at a cut vertex]
+  \label{lem:block-rank-cut-vertex}
+  \uses{def:rigidity-matrix, def:hinge-constraint}
+  Let $(G,p)$ be a body-hinge framework and let $V_1, V_2$ be vertex sets
+  with $V_1 \cap V_2 \subseteq \{v\}$ and every edge of $G$ inside $V_1$
+  or inside $V_2$. Then
+  \[
+    \operatorname{rank} R(G,p)
+    = \operatorname{rank} R(G[V_1],p) + \operatorname{rank} R(G[V_2],p).
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:span-rigidityRows-eq-of-motions-eq}
+  The row set of $R(G,p)$ is the union of the two sides' row sets. The
+  two row spans meet in $0$, because the two motion spaces together span
+  every screw assignment $S$: the assignment equal to $S_v$ on $V_1$ and
+  to $S$ elsewhere is a motion of the first side, and the rest vanishes
+  on $V_2$, so it is a motion of the second. A row span is the
+  annihilator of its motions, so the dimensions add.
+\end{proof}
+
 \begin{lemma}[Block-triangular rank-addition for a shared-body splice; KT Lemma 6.2]
   \label{lem:rigidityRows-splice-rank-add}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_splice}

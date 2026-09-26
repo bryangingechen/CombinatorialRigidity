@@ -823,3 +823,23 @@ user's decision, relayed verbatim in the closing dispatch's prompt:
 **Everything else stands unchanged:** Phase 40 stays in progress, and its next layer, CARRIER
 (`notes/Phase40-design.md` §3), is not opened by the closing commit. The call does not reorder the
 queue: ORIGAMI remains the next queued phase to open.
+
+## 2026-09-26 — STEPS opens by group: 40e = CUT/BRIDGE; the grouping, ORBIT's order, placement, faithfulness
+
+Phase 40's STEPS pre-build recon (one opus pass; verdicts in `notes/Phase40-design.md` §3 STEPS)
+proposed a grouping of STEPS into sub-phases, flagged (MC-46)'s dimension counting as not
+transcribable as written, and asked where to place the cut-vertex laws and how faithful CUT and
+BRIDGE should be. The user's answers, relayed verbatim in the coordinator's dispatch:
+
+```adjudication
+PI decisions, 2026-09-26, on this recon's verdict (verbatim answers to the coordinator's questions):
+1. ORBIT risk: "After 40e opens+builds" — land 40e's open and its CUT/BRIDGE build first, then the read-only ORBIT recon (opus) before the next sub-phase opens.
+2. Grouping: "Accept" — 40e = CUT/BRIDGE; the six later groups go into the design doc as a provisional order, with letters minted only as each opens.
+3. Placement: "Deficiency/Bricks" — the cut-vertex deficiency laws in `Molecular/Deficiency.lean` and the rank identity in `Bricks.lean`, per the ROADMAP convention (a lemma lives with its definition), as FLAT did in 40c.
+4. CUT/BRIDGE faithfulness: "Let's formalize the if and leave only if as an explicit todo item."
+```
+
+**Decided.** Sub-phase 40e (CUT/BRIDGE) opens; the later groups keep stable codes (CONTRACT-R,
+CHAIN, SHORT, SPLITOFF, CONTRACT-A, ORBIT) until each opens. The "only if" halves of (MC-52)(iv)
+and (MC-53)(iv) are an unchecked todo in the design doc's §3 STEPS, not a 40e close gate. Work log
+`notes/Phase40e.md`.
