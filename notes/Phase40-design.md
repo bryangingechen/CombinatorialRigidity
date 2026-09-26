@@ -4,10 +4,10 @@
 sub-lettered home in the `notes/PhaseN-design.md` pattern (`notes/CLAUDE.md`): the target, the
 index of work already done, the layer plan by **stable codes**, the proof map, the risks, and the
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
-open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **next: CARRIER** (§3), not yet
-opened. This doc replaces the planning note
-`notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
-pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
+open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
+(`notes/Phase40b.md`); **next: FLAT** (§3), not yet opened, to open design-first. This doc replaces
+the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which
+is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
 
 **Read §2 before doing any mathematics.** Everything the route needs exists in written,
@@ -77,28 +77,20 @@ Jackson–Jordán's pin-collinear theorem (*Discrete Comput. Geom.* 40(2) (2008)
 close the PI re-scoped the queued PIN item to a second, independent proof by their route (ROADMAP
 *Queued*).
 
-### CARRIER — planar pictures, `L(q)`, `X₀` and "the generic point attains" → **sub-phase 40b, ◐ opened design-first 2026-09-26** (`notes/Phase40b.md`)
+### CARRIER — planar pictures, `L(q)`, `X₀` and "the generic point attains" → **sub-phase 40b, ✓ closed 2026-09-26** (`notes/Phase40b.md`)
 
-| label | step | 2nd | content |
-|---|---|---|---|
-| (MC-1) | MC1 | ✓ 09-25 | the pencil condition is linear in the heights over an admissible picture |
-| (MC-2) | MC2 | ✓ 09-25 | `X₀` is the main component; `ℓ₀`, the open set `U` |
-| (MC-3) | MC3 | ✓ 09-25 | the hinges are affine in the heights |
-| (MC-10)(a) | census | — | the statement proved: `X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)` |
-
-- **Lean reuse.** `MvPolynomial.exists_eval_ne_zero` and its variants
-  (`Mathlib/Algebra/MvPolynomial/Funext.lean`); the `PanelHingeFramework.exists_rankPolynomial_of_*`
-  family (`GenericityDevice.lean`, `CaseI.lean`); the pencil statement layer
-  (`Molecule/Pencil/Statement.lean`).
-- **Design settled (opened 2026-09-26; accepted design + leaf plan → `notes/Phase40b.md`).** The
-  compiler-checked recon (opus, adopted as session rung; a parallel fable pass too) fixed the four new
-  mirror defs — uncurried picture `q : α × Fin 2 → K` + admissibility, the lifting space `L(q)`, the
-  `cross₃` picture→normal map (polynomial, denominator-free), and a **single** `X0Attains` carrying a
-  nonzero `MvPolynomial (α × Fin 2) K` (semicontinuity once, in a mirror lemma `x0Attains_of_exists`).
-  β-headroom (§4): **needed**; fix is an additive-successor `_of_card` triple concluding the unchanged
-  L0 `X0Dist`/`X0Gen` and reusing `pencil_conjecture_of_X0` verbatim (a MOTIVES leaf). Two questions
-  deferred to the MOTIVES pre-build recon: the exact `hcard` constant, and the headroom root-cause
-  (`notes/Phase40b.md` *Blockers*).
+**Done.** (MC-1)–(MC-3) are formalized in `Molecule/Pencil/MainComponent/Carrier.lean`: admissible
+pictures, `L(q)` and `Aff(q)`, `U` (nonempty and Zariski-open, `Graph.exists_mvPolynomial_isMainPicture`),
+the `cross₃` picture→normal map, `Graph.X0Attains` and its one-witness upgrade
+`Graph.x0Attains_of_exists`, the configuration as a pencil realization with the `X0Dist` leg
+`Graph.X0Attains.hasDistinctPencilRealization`, (MC-3)'s scale-and-shift rank invariance, and the
+fibre-intersection lemma `MvPolynomial.exists_mem_eval_ne_zero₂`; DUAL-K made the polarity
+field-general (§4). (MC-2)'s vector bundle and its irreducible closure are never formed:
+`thm:pencil-x0-main-component` is green at its formalized content, with the geometry in
+`rem:pencil-x0-main-component`; (MC-3)'s augmented-matrix rank split has no Lean object and is the
+remark `rem:pencil-hinge-affine`. (MC-10)(a) moved to COVERAGE. The accepted design (uncurried
+pictures, a single `X0Attains`, the β-headroom `_of_card` triple) and every decision are in
+`notes/Phase40b.md`.
 
 ### FLAT — the flat rank
 
@@ -125,12 +117,15 @@ close the PI re-scoped the queued PIN item to a second, independent proof by the
   - Choose flat or cone. `X0Attains`'s own framework at `z = 0` *is* the cone: every polar hinge
     passes through `e₂`. The primal (flat) side matches the workbook and is favoured; the cone
     side skips C4 but needs a new 4D↔3D complement identity.
-- **CARRIER's C5′ close recon (2026-09-26), routed here for FLAT to consume.** The flat witness is
+- **Deliverable carried from CARRIER (its old C5, moved at the 40b close): `X0Attains` at the flat
+  witness `(q, 0)`.** From CARRIER's C5′ close recon (2026-09-26). The flat witness is
   the `z₀ = 0` specialization of the general one-witness upgrade, not a separate construction:
   `x0Attains_of_exists hV ends hends hq₀ (G.liftingSpace q₀).zero_mem hrank` (`0` is always a member
   of the submodule `L(q₀)`). Picture certification — `dim L(q) = 3` at an admissible `q` makes it
   main — is immediate from `three_le_finrank_liftingSpace` (`3 ≤ dim L(q')` at every admissible
   `q'`, so `dim L(q) = 3` is already the least value). This is (MC-5)(iii)'s Lean shape, above.
+- **The codim bound `dim L(q) ≥ 3|V| − 2|E|`** ((MC-1)'s tail) was dropped at CARRIER's C2: (MC-4)(b)
+  subsumes it (singleton partition) and it has no route consumer. FLAT's recon may reinstate it.
 
 ### BRIDGE — Jackson–Jordán's equality, as it is consumed
 
@@ -182,6 +177,18 @@ supplies it. BRIDGE builds two things on top of SPINE2:
   `Molecule/Pencil/TwoCut.lean`.
 - **There is no landed cut-vertex deficiency law.** Item 6's leaves have no blueprint nodes
   (Phase 39's D5 debt). STEPS pins them when it consumes them.
+- **Tracked from CARRIER's close (2026-09-26), for the STEPS pre-build recon:**
+  - [ ] **The SPLITOFF curve-limit lemma.** (MC-31)'s special point lies in `X₀ ∖ B` (`B` the
+    bundle over `U`) and its picture is not admissible, so `Graph.x0Attains_of_exists` cannot take
+    it as a witness. A limit along (MC-30)(ii)'s explicit curve is needed; the lemma's shape is a
+    hypothesis, not yet checked.
+  - [ ] **The CONTRACT rank-device open point.** (MC-36)'s augmented-matrix framework on `G/H`
+    keeps the boundary hinges `p_u ∧ p_c` and is not in `ofNormals` form, while every landed
+    rank-polynomial device (`PanelHingeFramework.exists_rankPolynomial_of_*`, and the rank read
+    by `Graph.X0Attains`) is.
+  - [ ] **The deferred generic-condition API** (`HoldsGenerally`: one-witness genericity for any
+    polynomial condition, plus conjunction). Consumers (MC-44), (MC-38), (MC-30)(iv). Deferred at
+    CARRIER's close; the STEPS pre-build recon decides whether to build it.
 
 ### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`)
 
@@ -190,6 +197,7 @@ supplies it. BRIDGE builds two things on top of SPINE2:
 | (MC-62), (MC-63), (MC-67), (MC-68)(d), (MC-69)(a) → (MC-69)(b), (MC-70), (MC-71) | MC15 | ✓ 09-25 (one merge step supplied) |
 | (MC-75)(iii), (MC-76), (MC-77), (MC-78), (MC-79)(i)–(iv) → (MC-80); (MC-87) → (MC-89) | MC16 | ✓ (two readers) |
 | coverage ⟹ attainment: (MC-56), (MC-55)(i), (MC-2); strong induction | MC14, MC2 | ✓ |
+| the statement proved, (MC-10)(a): `X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)` (moved from CARRIER at its close; `thm:pencil-x0-generic-attains`'s first sentence) | census | — |
 
 **Lean reuse.** `exists_maximal_induced_isProperRigidSubgraph`, `triangle_isProperRigidSubgraph`,
 `c4_isProperRigidSubgraph`. The proof uses all of (H), because CUT and BRIDGE pass through
@@ -208,15 +216,38 @@ non-2EC graphs, while the consumer uses only the 2EC form (§4).
 carried hypotheses and closes the phase. At the close, re-decide the held kernels (§6).
 
 **Consumes `Graph.X0Attains`** (CARRIER C1a, `notes/Phase40b.md` *Decisions*): `X0Dist` takes one
-attaining `(q, z)` and CARRIER C4's point-join rank equality; `X0Gen` intersects the fibre-open
-attaining set with a nondegenerate open set inside one fibre `L(q)`, which needs a new
-fibre-intersection lemma (two polynomials each nonvanishing somewhere on a subspace are jointly
-nonvanishing somewhere on it, `K` infinite) and C3's polynomial plane normal.
+attaining `(q, z)` through the landed `Graph.X0Attains.hasDistinctPencilRealization` (CARRIER C4);
+`X0Gen` intersects the fibre-open attaining set with a nondegenerate open set inside one fibre
+`L(q)`, through the landed fibre-intersection lemma `MvPolynomial.exists_mem_eval_ne_zero₂`
+(CARRIER C5′, `lem:pencil-x0-fibre-intersection`) and C3's polynomial plane normal
+`pencilNormalOfPicturePoly`.
+
+**The blueprint node.** `thm:pencil-x0-generic-attains` (red) sits in the chapter's final stub
+subsection `sec:main-component-statements`. Its first sentence is COVERAGE's conclusion
+((MC-10)(a), by (MC-56)'s induction via (MC-89)); its "granting this" clause is MOTIVES.
+
+**β-headroom (CARRIER's design recon, `notes/Phase40b.md` *Architectural choices*).** Needed; the
+fix is an additive-successor `_of_card` triple (`x0Dist_of_card`, `x0Gen_of_card`,
+`pencil_conjecture_of_card`) concluding the unchanged L0 `X0Dist`/`X0Gen` and reusing
+`pencil_conjecture_of_X0` verbatim. **Two questions for the MOTIVES pre-build recon**, moved here
+from `notes/Phase40b.md` at CARRIER's close (the opus and fable recons disagreed; settle against
+the landed SPINE2 threading):
+- **(a) The exact `hcard` constant.** Opus read `bodyBarDim 3 · (|α|−1)` (= `6·`, matching
+  `molecular_conjecture_multigraph` and `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two`,
+  `Molecule/Pencil/Escape.lean`); fable read `3 · (|α|−1)`. Pin it against the SPINE2 producer's
+  actual `hfresh`/`hcard` threading.
+- **(b) The headroom's root cause.** Opus: the split-off's `e₀ ∉ E(G)` (the `hK`/`hbareSplit`
+  slots in `Escape.lean`). Fable (reading `splitOff`, `Induction/Operations.lean`): split-off can
+  reuse a freed label, and the real source is BRIDGE consuming SPINE2's `hfresh`. Sub-gap: the
+  landed fresh-edge supply lemma keys on sparsity (no proper rigid subgraph), while the split-off
+  step runs at `δ ≥ 5`; settle which supply lemma discharges `e₀ ∉ E(G)`.
 
 ### The blueprint chapter
 
-The main-component argument gets **one new forward-mode chapter**, one section per layer from
-CARRIER to MOTIVES. It is opened as red nodes transcribed from the proof map above, with
+The main-component argument gets **one new forward-mode chapter** (`main-component.tex`), one
+subsection per layer from CARRIER to MOTIVES. CARRIER's subsection is all green; MOTIVES's stub
+subsection `sec:main-component-statements` is the last, and each later layer inserts its
+subsection before it. It is opened as red nodes transcribed from the proof map above, with
 statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when that layer
 opens, not all at once, and run a **pre-build recon of each transcribed section** before the
 first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
@@ -237,7 +268,8 @@ end.
   either a `β`-headroom hypothesis like `hcard` or a type-changing induction; the informal proof
   never meets the issue. **If MOTIVES' proof needs headroom**, `X0Dist`/`X0Gen` as L0 pins them
   (no headroom) are stronger than what is proved. The fix is then an additive successor headline
-  carrying `hcard`, not an edit of L0's declarations. CARRIER's design recon decides this.
+  carrying `hcard`, not an edit of L0's declarations. CARRIER's design recon decided it: headroom is
+  needed, and the fix is the `_of_card` triple (§3 MOTIVES).
 - **Non-spanning uses** of the rank theorem at `H` and `G/H`. The landed
   `rankHypothesis_of_theorem_55_gen` is stated for spanning `G` with `hcard` headroom; SPINE2's
   non-spanning form is the fix.
@@ -248,36 +280,20 @@ end.
 
 ### Duality: field generality and what it buys (recon 2026-09-26)
 
-A read-only opus recon, commissioned by the PI. Its witnesses were `lake env lean` scratch files
-at `[Field K]`, exit 0 with no `sorry`; the coordinator re-ran the main one. DUAL-K
-(`notes/Phase40b.md`) lands them.
-
-- **Field generality (verified).** The polarity preserves rank, motion space, rigidity and genuine
-  hinges over **every field, of every characteristic**, as a transport of frameworks and of pencil
-  realizations. It needs only that the dot product is nondegenerate.
-  - The whole landed duality cluster restates over `K` with its ℝ proof bodies copied verbatim:
-    `screwComplementIso` (`rfl` to the landed ℝ definition at `K = ℝ`), `…_mk_extensor`, both
-    predicate transports, and `lem:pencil-self-dual` over `mapSupport` (`mapExtensor = mapSupport`
-    by `rfl` at ℝ). All of `ProjectiveInvariance.lean` also compiles over `K`.
-  - The ℝ scope is historical. Phase 33 drew its ℝ→K line at the `Molecule/` directory; only the
-    molecular dictionary (`lineExtensor`, `EuclideanSpace ℝ (Fin 3)` centres) is really ℝ³-bound.
-  - This settles `K-clos.md` (AC-1).
-- **No field obstruction on the X₀ route.**
-  - Characteristic 2, where `ω ∧ ω = 2·Pf` vanishes: never used. Decomposability is built into
-    the `ExtensorInPanel`/`ExtensorThroughPoint` witnesses, and (MC-166) never uses `c ∧ c = 0`.
-  - Isotropic vectors (`x ⬝ᵥ x = 0`): never used.
-  - (MC-166)/(MC-168): nothing duality-related.
-  - Genuine field dependence concerns only **self-dual** configurations: route σ and kernel (K),
-    the held kernels. `fmlnote:pencil-conditional-realization-pair-field` records it.
-  - *Hypothesis:* with the Euclidean form, duality's fixed points need `char ≠ 2` and `−1` a sum
-    of three squares; the second condition is an artefact of the choice of form.
-- **What duality preserves.** The polarity never preserves adjacent-distinctness,
-  `IsNondegPencilRealization`, or `X₀`; none of them is self-dual. The dual of a pencil
-  realization has as "points" the plane normals, which coincide on triangle edges ((MC-13)(c)).
-  So a K-general self-duality is **not** a route to `X0Dist`.
-  `hasPencilPanelRealization_mapExtensor_screwComplementIso` has zero Lean consumers.
-- **What it buys.** C4's polar/primal rank equality *is* the polarity over `K`: about 15 lines
-  once DUAL-K generalizes `screwComplementIso` in place.
+**Verdict, landed as DUAL-K** (`notes/Phase40b.md`). A read-only opus recon commissioned by the PI
+(witnesses: `lake env lean` scratch files at `[Field K]`, exit 0, no `sorry`; the coordinator re-ran
+the main one). The polarity preserves rank, motion space, rigidity and genuine hinges over **every
+field, of every characteristic**, as a transport of frameworks and of pencil realizations; it needs
+only a nondegenerate dot product. The landed ℝ duality cluster and all of
+`ProjectiveInvariance.lean` restated over `K` with the ℝ proofs verbatim (the ℝ scope was Phase
+33's `Molecule/` line; only the molecular dictionary is ℝ³-bound; this settles `K-clos.md` (AC-1)).
+There is no field obstruction on the `X₀` route: characteristic 2 (`ω ∧ ω = 2·Pf`) and isotropic
+vectors are never used, and genuine field dependence concerns only the self-dual configurations of
+route σ and kernel (K), the held kernels (`fmlnote:pencil-conditional-realization-pair-field`). The
+polarity never preserves adjacent-distinctness, `IsNondegPencilRealization` or `X₀` (the dual's
+"points" are the plane normals, which coincide on triangle edges, (MC-13)(c)), so self-duality is
+not a route to `X0Dist`; `hasPencilPanelRealization_mapExtensor_screwComplementIso` has zero Lean
+consumers. What it bought: C4's polar/primal rank equality.
 - **Rejected, so they are not re-asked:**
   - Deriving one of X0Gen's two nondegeneracy halves from the other. Duality maps realizations,
     not conditions; conjunct 4 is automatic on `B` by (MC-1), while conjunct 3 is all of
@@ -286,17 +302,19 @@ at `[Field K]`, exit 0 with no `sorry`; the coordinator re-ran the main one. DUA
   - Replacing (MC-4)'s `Φ` by the 3D polarity. `Φ` sends motions to heights; it does not
     transport a framework.
   - Building Klein self-duality S7(v). That is motion/wrench duality, which no route label uses.
-- **Structure.**
-  - Collineations over `K` (`Arms.lean`) plus the polarity give the whole projective group
-    (Crapo–Whiteley 1982 §3.6, p. 68, read in `.refs`). The polarity is a correlation, not `Λ²g`.
+- **Still open (hypotheses and cleanup items).**
+  - *Hypothesis:* with the Euclidean form, duality's fixed points need `char ≠ 2` and `−1` a sum of
+    three squares; the second condition is an artefact of the choice of form.
   - `X₀` (points free) and its dual `X₀*` (planes free) differ whenever a def₂-rigid subgraph has
     an edge. *Hypothesis:* they coincide otherwise.
+  - Collineations over `K` (`Arms.lean`) plus the polarity give the whole projective group
+    (Crapo–Whiteley 1982 §3.6, p. 68, read in `.refs`). The polarity is a correlation, not `Λ²g`.
   - Duplication for a cleanup round: `mapExtensor` and `mapSupport` are one definition, and
     `thm:projective-invariance`'s rank half restates `lem:screw-map-rows`.
-- **Citations.** Crapo–Whiteley Ex. 4.4 (pp. 72–73) is verified as the flat-tetrahedron instance
-  of (MC-4)'s `Φ`. Whiteley 1984 (*Discrete Appl. Math.* 9(3) 269–295) is verified by Crossref
-  metadata only; get the text before citing it for `Φ`. (MC-4)'s citation stays
-  "to be verified".
+- **Citations** (FLAT consumes them). Crapo–Whiteley Ex. 4.4 (pp. 72–73) is verified as the
+  flat-tetrahedron instance of (MC-4)'s `Φ`. Whiteley 1984 (*Discrete Appl. Math.* 9(3) 269–295) is
+  verified by Crossref metadata only; get the text before citing it for `Φ`. (MC-4)'s citation
+  stays "to be verified".
 
 ## 5. Standing constraints
 

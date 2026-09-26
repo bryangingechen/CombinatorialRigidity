@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓ closed 2026-09-25; **40b/CARRIER** (planar pictures, lifting space, `X₀`) in progress, opened design-first (see `notes/Phase40b.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓ closed 2026-09-26; next **FLAT** (the flat rank), not yet opened (see `notes/Phase40b.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1154,8 +1154,8 @@ headline carries (`X0Dist`, `X0Gen`), and so proves the pencil conjecture outrig
 infinite field. Layers by stable code, lettered only as each opens:
 - **SPINE2** ✓ (sub-phase 40a, closed 2026-09-25): the Katoh–Tanigawa spine at `n = 2`. This
   replaces Jackson–Jordán's pin-collinear theorem, which the informal proof cites, field-generally;
-- **CARRIER** ◐ (sub-phase 40b, opened design-first 2026-09-26): planar pictures, the
-  lifting space, `X₀`, and "the general point attains";
+- **CARRIER** ✓ (sub-phase 40b, closed 2026-09-26): planar pictures, the lifting space, `X₀`,
+  and "the general point attains";
 - **FLAT**: the flat rank;
 - **BRIDGE**: Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps;
@@ -1180,51 +1180,28 @@ molecular conjecture is Jackson–Jordán's pin-collinear theorem (*Discrete Com
 queued PIN item to a second, independent proof by Jackson–Jordán's own route (*Queued* below).
 Headline axioms unchanged (re-verified at the close).
 
-#### Phase 40b — planar pictures, the lifting space, and the main component (CARRIER) — ◐ In progress
+#### Phase 40b — planar pictures, the lifting space, and the main component (CARRIER) — ✓ Complete
 
-**◐ In progress** (opened design-first 2026-09-26; work log `notes/Phase40b.md`). The geometric
-layer the whole `X₀` argument rests on: the admissible planar picture `q : V → K²` and its
-Zariski-open set `U`, the lifting space `L(q)` of heights (the pencil condition is linear in them),
-the picture→normal map (the hinges are affine in the heights, built polynomially via `cross₃`), and
-"the general point of the main component attains `6(|V|−1) − def₃`". Opened with a compiler-checked
-top-rung design recon (both an opus and a fable pass; opus adopted as the session rung); its accepted
-design is `notes/Phase40b.md` *Architectural choices*, compressed from `notes/Phase40-design.md` §3.
-The opening commit was design-only: a new forward-mode blueprint section `main-component.tex` with
-four red nodes ((MC-1),(MC-2),(MC-3),(MC-10)(a)) wired toward `def:pencil-main-component-statements`.
-Slice C1a (2026-09-26) landed the definitions in `Molecule/Pencil/MainComponent/Carrier.lean`
-(`Graph.IsAdmissiblePicture`, `Graph.liftingSpace`, `Graph.IsMainPicture` for `U`,
-`pencilConfigPoint`/`pencilNormalOfPicture`, and `Graph.X0Attains`, whose rank is read at
-`ofNormals` of the configuration points and which carries a fibre-open set of attaining heights).
-Slice C1b (2026-09-26) landed the one-witness upgrade `Graph.x0Attains_of_exists`: one attaining
-configuration over a main picture forces the general one, by a denominator-free Cramer section of
-the lifting system through the witness composed with the rank polynomial. C2's `U`-open lemma
-(2026-09-26, `Graph.exists_isAdmissiblePicture`/`exists_isMainPicture`/`exists_mvPolynomial_isMainPicture`)
-then landed the nonempty-Zariski-open set of main pictures, via the moment-curve existence witness,
-a `finrank`-minimizing admissible picture, and the same semicontinuity mirror lemma at the trivial
-kernel vector, for loopless `G` whose closed neighbourhoods all have at least three members (both
-consequences of simplicity and minimum degree two). C2 closed the same day with the remaining
-lifting-space API, `Graph.affineLifts_le_liftingSpace` (`Aff(q) ⊆ L(q)`, every picture) and
-`Graph.finrank_affineLifts` (`dim Aff(q) = 3` at an admissible picture); the codim bound is dropped
-from the checklist, subsumed by FLAT's (MC-4)(b), and the hygiene lemma
-`Graph.three_le_finrank_liftingSpace` names the resulting `3 ≤ dim L(q)`. DUAL-K (2026-09-26)
-generalized the polarity `screwComplementIso` and its `ProjectiveInvariance.lean` family from `ℝ`
-to every field, unblocking C4's polar/primal rank equality. C3 (2026-09-26) landed the
-picture→normal API: `pencilNormalOfPicture_ne_zero_iff`, the picture→configuration independence
-transport, and two facts C4 consumes — the plane of a selector contains the whole closed
-neighbourhood (`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`, new green
-`lem:pencil-selector-plane-contains-nbhd`, the forward half of (MC-1)) and selector independence up
-to a scalar (`exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`, new green
-`lem:pencil-selector-independent-scalar`) — plus a polynomial mirror `pencilNormalOfPicturePoly`
-for MOTIVES. C4 (2026-09-26) read each configuration as a pencil realization: the point-join
-framework `pencilConfigFramework` has the rank of `ofNormals` at the configuration points (through
-the field-general polarity), so an attaining configuration over an admissible picture gives an
-adjacent-distinct pencil realization at the deficiency rank, and `Graph.X0Attains` gives
-`HasDistinctPencilRealization K 3 G` over an infinite field (`Graph.X0Attains.hasDistinctPencilRealization`,
-the distinct half of the phase's target); it also landed (MC-3)'s rank invariance under scaling
-and affine shifts of the heights. **C5** (`X0Attains` at the flat witness, opus/fragility) is next,
-and closes CARRIER. Two questions are
-left for the MOTIVES pre-build recon: the exact `β`-headroom constant, and the headroom's root
-cause (`notes/Phase40b.md` *Blockers*).
+**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40b.md`). The
+geometric layer the `X₀` argument rests on, in `Molecule/Pencil/MainComponent/Carrier.lean` and the
+new forward-mode chapter `main-component.tex`. Over an admissible planar picture `q : V → K²`, the heights `z`
+for which the configuration `(q, z)` has every closed neighbourhood coplanar form a linear space
+`L(q)` (the pencil condition is linear in the heights), and the admissible pictures of least
+`dim L(q)` form a nonempty Zariski-open set `U` (a moment-curve witness plus a Cramer-section
+semicontinuity argument). `Graph.X0Attains` says the general configuration attains the deficiency
+rank `6(|V| − 1) − def₃`: off a nonzero picture polynomial and, fibre by fibre, off a nonzero height
+polynomial. One attaining configuration over a main picture forces it (`Graph.x0Attains_of_exists`),
+and it gives an adjacent-distinct pencil realization over every infinite field
+(`Graph.X0Attains.hasDistinctPencilRealization`, the leg of `X0Dist` that follows from it), through
+the point-join reading of a configuration; DUAL-K made that reading's polar/primal rank equality
+field-general by generalizing the polarity `screwComplementIso` from `ℝ` to every field. A
+fibre-intersection lemma (`MvPolynomial.exists_mem_eval_ne_zero₂`) stands in for the irreducibility
+of `X₀`, which is never formed: `thm:pencil-x0-main-component` was restated to this formalized
+content (PI, 2026-09-26), and the statement the whole induction proves,
+`thm:pencil-x0-generic-attains`, waits in the chapter's final subsection. The design was a
+compiler-checked top-rung recon (opus and fable passes). The flat witness, the `β`-headroom
+questions and three STEPS items moved at the close to their layers (`notes/Phase40-design.md` §3).
+Headline axioms unchanged (re-verified at the close).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

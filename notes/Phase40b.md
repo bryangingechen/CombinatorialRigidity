@@ -1,45 +1,27 @@
 # Phase 40b — PENCIL-X0 / CARRIER: planar pictures, the lifting space, `X₀`, and "the general point attains" (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). C1a, C1b, C2 (both the `U`-open
-lemma and the lifting-space API), DUAL-K (the polarity over every field), C3 (the picture→normal
-API), C4 (the configuration as a pencil framework, with (MC-3)'s scale-and-shift rank
-invariance), and C5′ (the fibre-intersection lemma and `lem:pencil-condition-linear`'s converse
-and unique-non-vertical-plane pieces) landed 2026-09-26. **C1–C5′ and DUAL-K are DONE.** **Next:
-commit 2, the CARRIER close (opus).** Per the PI's 2026-09-26 adjudication ("2 commits"), commit 2
-moves the old C5 checklist content to FLAT, turns `lem:pencil-hinge-affine` into a remark, restates
-or retires `thm:pencil-x0-main-component` (PI still deciding which), moves
-`thm:pencil-x0-generic-attains` to a MOTIVES stub, and leaves the public surfaces (README, home
-page, `intro.tex`, `formalization.yaml`) unchanged. Plan: `notes/Phase40-design.md` §3.
+**Status:** ✓ complete (opened design-first and closed 2026-09-26). The geometric layer of the
+`X₀` argument landed in `Molecule/Pencil/MainComponent/Carrier.lean`: admissible planar pictures,
+the lifting space `L(q)`, the open set `U` of main pictures, `Graph.X0Attains` with its one-witness
+upgrade, each configuration read as a pencil realization (the `X0Dist` leg), and the
+fibre-intersection lemma; DUAL-K made the polarity field-general. `thm:pencil-x0-main-component` is
+green at its formalized content; `thm:pencil-x0-generic-attains` waits, red, in the chapter's final
+stub subsection. **Next: FLAT**, Phase 40's next layer (`notes/Phase40-design.md` §3), **not yet
+opened** — see *Hand-off*.
 
 ## Current state
 
-**Next concrete step: commit 2, the CARRIER close (opus)** (*Hand-off*); every CARRIER slice
-before it is landed, including C5′. All Lean is in
-`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Carrier.lean` (~1370 lines):
-C1a's seven definitions and `Graph.mem_liftingSpace`; C1b's one-witness upgrade
-`Graph.x0Attains_of_exists`; C2's `U`-open lemma and lifting-space API (`Aff(q) ⊆ L(q)`,
-`dim Aff(q) = 3`, `3 ≤ dim L(q)`; the codim bound is **dropped**, *Decisions made*); C3's
-picture→normal API; C4's configuration framework, its rank equality with `ofNormals`, the
-bridge to `HasDistinctPencilRealization`, the `X0Dist` leg `Graph.X0Attains.hasDistinctPencilRealization`,
-and (MC-3)'s scale-and-shift invariance; and C5′'s two pieces,
-`Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` (coplanar closed neighbourhoods force
-`z ∈ L(q)`) and `Graph.IsAdmissiblePicture.exists_smul_eq_interpolant` (every nonzero normal of a
-closed neighbourhood is a nonzero scalar multiple of the interpolant `(h₀, h₁, -1, h₂)`). DUAL-K
-generalized the polarity `screwComplementIso` and `ProjectiveInvariance.lean` to `[Field K]` in
-place. The fibre-intersection lemma `MvPolynomial.exists_mem_eval_ne_zero₂` (C5′) landed in
-`CombinatorialRigidity/Mathlib/Algebra/MvPolynomial/Funext.lean`, next to `exists_eval_ne_zero₂`.
-
-`blueprint/src/chapter/main-component.tex` carries five green definition nodes and the green
-lemmas `lem:pencil-lifting-space-affine` (C2), `lem:pencil-x0-one-witness` (C1b),
-`lem:pencil-x0-main-picture-open` (C2), `lem:pencil-selector-plane-contains-nbhd` /
-`lem:pencil-selector-independent-scalar` (C3), C4's four: `lem:pencil-config-point-join-rank`,
-`lem:pencil-config-distinct-realization`, `lem:pencil-rank-scale-shift`, and
-`lem:pencil-x0-attains-distinct` (the `X0Dist` half of `thm:pencil-x0-generic-attains`'s
-"granting this" clause), and C5′'s two: `lem:pencil-condition-linear` (now fully green: the
-iff plus adjacent-distinct and unique-non-vertical-plane) and the new leaf
-`lem:pencil-x0-fibre-intersection`. Red: `lem:pencil-hinge-affine` (only its last clause, now
-`lem:pencil-rank-scale-shift`), `thm:pencil-x0-main-component`, and `thm:pencil-x0-generic-attains`
-(the `X0Gen` half and the induction are open).
+**Closed.** C1a–C5′, DUAL-K and the close commit landed. `blueprint/src/chapter/main-component.tex`
+§`sec:main-component-carrier` is all green (five definitions, eleven lemmas, the restated
+`thm:pencil-x0-main-component`, and two remarks: `rem:pencil-hinge-affine`, which replaced the
+red (MC-3) lemma, and `rem:pencil-x0-main-component`, the geometry of `X₀`). The final stub
+subsection `sec:main-component-statements` holds the red `thm:pencil-x0-generic-attains`, whose
+first sentence is COVERAGE's and whose "granting this" clause is MOTIVES's. Headline axioms were
+re-verified at the close on 22 declarations: the eighteen `formalization.yaml` main results
+(the seventeen headline theorems plus `pencil_conjecture_of_X0`) and the four new pins of
+`thm:pencil-x0-main-component`. Each is exactly `[propext, Classical.choice, Quot.sound]`
+(*measured, script not retained*: one `#print axioms` line per declaration under
+`import CombinatorialRigidity`, run with `lake env lean` on the built tree).
 
 ## Architectural choices made up front
 
@@ -58,117 +40,56 @@ The coordinator's adjudication (2026-09-26), settling the design recon:
 - **β-headroom fix: an additive-successor `_of_card` triple** (`x0Dist_of_card`, `x0Gen_of_card`,
   `pencil_conjecture_of_card`) concluding the UNCHANGED L0 predicates `X0Dist`/`X0Gen` and reusing the
   protected `pencil_conjecture_of_X0` verbatim. L0 is protected: not edited, not made
-  unprovable-as-stated. These are MOTIVES leaves — the planned signatures are recorded, they do not
-  land here. Mirrors `molecular_conjecture_multigraph`'s `hcard`+`hspan` shape (type-checked in the
-  recon, only the MOTIVES bodies sorried).
+  unprovable-as-stated. These are MOTIVES leaves (`notes/Phase40-design.md` §3 MOTIVES, with the
+  two open questions). Mirrors `molecular_conjecture_multigraph`'s `hcard`+`hspan` shape.
 
 ## Lemma checklist
 
-Leaf plan in dependency order (from the recon; rungs and fragility flags noted). Fragility zone =
-anything touching `ScrewSpace`/the opaque carrier or `rigidityRows` rank arithmetic → opus minimum.
+All in `Carrier.lean` unless noted; signatures in its module docstring.
 
-- [x] **C1a–C3, DUAL-K** (landed 2026-09-26; signatures in `Carrier.lean`'s module docstring and
-  its declarations). C1a: the seven definitions. C1b: `Graph.x0Attains_of_exists` (no
-  `[Infinite K]`), with `Graph.IsAdmissiblePicture.{exists_mvPolynomial, supportExtensor_ne_zero}`
-  and `Graph.liftingMatrix`. C2: `Graph.exists_mvPolynomial_isMainPicture` (`[Infinite K]`, taking
-  `hloop : G.Loopless`, `h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard`; STEPS uses it) and
-  `Graph.{affineLifts_le_liftingSpace, finrank_affineLifts, three_le_finrank_liftingSpace}`; the
-  codim bound is dropped (FLAT's (MC-4)(b) subsumes it; FLAT's recon may reinstate it). C3:
-  `pencilNormalOfPicture_ne_zero_iff`, the picture→configuration independence transport,
-  `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`,
-  `exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`, and `pencilNormalOfPicturePoly` (the
-  shape `X0Gen`'s fibre intersection needs). DUAL-K: `screwComplementIso` and
-  `ProjectiveInvariance.lean` at `[Field K]`, names unchanged.
-- [x] **C4 — the config as a pencil framework** (landed 2026-09-26, opus); the coordinator's
-  scope-pin, final signatures (`p := pencilConfigPoint q z`), all in `Carrier.lean`:
-  1. `pencilConfigFramework G ends q z : BodyHingeFramework K 2 α β` (hinge `mk (extensor ![p (ends
-     e).1, p (ends e).2])` on `E(G)`, the standard-basis join off it; no `[Inhabited α]`), and
-     `Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero hq hends z e`.
-  2. `finrank_span_rigidityRows_pencilConfigFramework G ends q z` — `finrank` of its row span `=`
-     that of `(ofNormals (k := 2) G ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge`;
-     **no `hends`** (*Decisions*). Via `ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`.
-  3. `Graph.IsAdmissiblePicture.hasDistinctPencilRealization hq hends (hz : z ∈ G.liftingSpace q)
-     (hrank : (finrank … : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) :
-     HasDistinctPencilRealization K 3 G`; its realization half,
-     `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework hq hends hz hsel`,
-     takes any selector with `hsel : ∀ v ∈ V(G), (∀ i, sel v i ∈ G.closedNbhd v) ∧
-     LinearIndependent K (fun i => pencilPicturePoint q (sel v i))`, for `X0Gen` to reuse.
-  4. `Graph.X0Attains.hasDistinctPencilRealization [Infinite K] (h : G.X0Attains K) :
-     HasDistinctPencilRealization K 3 G` (`lem:pencil-x0-attains-distinct`).
-  5. **Fit, landed:** `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts hends q z
-     (ht : t ≠ 0) (ha : a ∈ G.affineLifts q)`, rank at `(q, t • z + a)` `=` rank at `(q, z)`
-     (`lem:pencil-rank-scale-shift`); `lem:pencil-hinge-affine` stays red.
-  6. **Dropped:** the `→` of "support extensor `≠ 0 ↔ q_u ≠ q_v`" (no consumer; item 3 did not
-     need it). Hygiene: C3's unused `_hLI` dropped, caller updated.
-- [x] **C5′ — the fibre-intersection lemma and `lem:pencil-condition-linear`'s converse and
-  unique-plane pieces** (landed 2026-09-26). Replaces the checklist's old C5 per the PI's
-  2026-09-26 adjudication ("2 commits (Recommended)"): `MvPolynomial.exists_mem_eval_ne_zero₂`
-  (`lem:pencil-x0-fibre-intersection`, `Mathlib/Algebra/MvPolynomial/Funext.lean`); `Carrier.lean`'s
-  `Graph.IsAdmissiblePicture.{mem_liftingSpace_of_coplanar, exists_smul_eq_interpolant}`, greening
-  `lem:pencil-condition-linear` (pinned together with the landed
-  `lem:pencil-selector-plane-contains-nbhd`, `lem:pencil-selector-independent-scalar`,
-  `lem:pencil-config-distinct-realization`).
-- [ ] **Commit 2 — the CARRIER close** (opus). Per the same adjudication: move the old C5
-  checklist content (`X0Attains` at the flat witness `(q, 0)`, entering through C1b's
-  `x0Attains_of_exists` at `z₀ = 0`, `(G.liftingSpace q₀).zero_mem`) to FLAT's checklist (its recon
-  note is already in `notes/Phase40-design.md` §3 FLAT); turn `lem:pencil-hinge-affine` into a
-  remark (its rank-split clause is subsumed, only the scale-and-shift clause is a live lemma,
-  already `lem:pencil-rank-scale-shift`); restate or retire `thm:pencil-x0-main-component` (PI still
-  deciding which); move `thm:pencil-x0-generic-attains` to a MOTIVES stub (a red node carrying the
-  full statement, `\uses`'d by the CARRIER nodes it needs, with the induction proof sketch moved to
-  MOTIVES's own section when that layer opens); leave the public surfaces (README, home page,
-  `intro.tex`, `formalization.yaml`) unchanged (PI: "Leave them").
-
-Blueprint red nodes for the four MC labels stay in `main-component.tex`; each flips to `\lean{}` +
-`\leanok` in the commit that lands its Lean.
+- [x] **C1a** — the seven definitions. **C1b** — `Graph.x0Attains_of_exists`.
+- [x] **C2** — `Graph.exists_mvPolynomial_isMainPicture` and the lifting-space API.
+- [x] **DUAL-K** — `screwComplementIso` and `ProjectiveInvariance.lean` at `[Field K]`.
+- [x] **C3** — the picture→normal API, incl. `pencilNormalOfPicturePoly`.
+- [x] **C4** — `pencilConfigFramework`, its rank equality, `Graph.X0Attains.hasDistinctPencilRealization`.
+- [x] **C5′** — `MvPolynomial.exists_mem_eval_ne_zero₂` (`Mathlib/Algebra/MvPolynomial/Funext.lean`);
+  `lem:pencil-condition-linear` green.
+- [x] **Commit 2 — the close** (docs only): the old C5 content moved to FLAT; the (MC-3) lemma a
+  remark; `thm:pencil-x0-main-component` restated and green; `thm:pencil-x0-generic-attains` moved
+  to the stub subsection; the public surfaces left unchanged (PI).
 
 ## Blockers / open questions
 
-Two questions are recorded for the **MOTIVES pre-build recon**, deliberately NOT resolved now (both
-recons disagreed; settle against the landed SPINE2 threading at MOTIVES, not now):
-
-- **(a) The exact `hcard` constant.** The opus recon read it as `bodyBarDim 3 · (|α|−1)` (= `6·`,
-  matching `molecular_conjecture_multigraph` and `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two`,
-  `Molecule/Pencil/Escape.lean`); the fable recon read `3 · (|α|−1)`. Pin against the SPINE2
-  producer's actual `hfresh`/`hcard` threading when MOTIVES builds the `_of_card` triple.
-- **(b) The headroom root cause.** The opus recon attributed the fresh-edge need to the split-off's
-  `e₀ ∉ E(G)` (the `hK`/`hbareSplit` slots in `Escape.lean`); the fable recon read `splitOff`'s body
-  (`Induction/Operations.lean:770`) and argued split-off can reuse a freed label, locating the real
-  source in BRIDGE consuming SPINE2's `hfresh`. Plus the opus recon's sub-gap: the landed fresh-edge
-  supply lemma keys on *sparsity* (no proper rigid subgraph), while the X₀ split-off step is applied
-  at `δ ≥ 5` — MOTIVES settles which supply lemma discharges `e₀ ∉ E(G)`.
+- None for CARRIER. The two questions deferred to the MOTIVES pre-build recon (the exact `hcard`
+  constant; the headroom's root cause) moved at the close to `notes/Phase40-design.md` §3
+  MOTIVES, and three STEPS items to §3 STEPS.
 
 ## Hand-off / next phase
 
-**C1–C5′ and DUAL-K are DONE.** **Next commit: commit 2, the CARRIER close (opus)**, per the PI's
-2026-09-26 "2 commits (Recommended)" adjudication and the checklist's *Commit 2* item above: move
-the old C5 content to FLAT (recon note already staged, `Phase40-design.md` §3 FLAT); turn
-`lem:pencil-hinge-affine` into a remark; restate or retire `thm:pencil-x0-main-component` (get the
-PI's call on which before writing it); move `thm:pencil-x0-generic-attains` to a MOTIVES stub;
-leave the public surfaces (README, home page, `intro.tex`, `formalization.yaml`) unchanged.
-`Carrier.lean` is ~1370 lines: if commit 2's Lean runs long, put it in a sibling `MainComponent/`
-file importing `Carrier.lean`. Do NOT open FLAT or any successor layer as a sub-phase; CARRIER
-closes after commit 2.
+**40b is closed. Next: open FLAT design-first** (its pre-build recon carries the questions in
+`Phase40-design.md` §3 FLAT). The commit that opens it mints its letter and its work log. FLAT's
+deliverables include the old C5 item (`X0Attains` at the flat witness `(q, 0)`) and the 40a pin
+debt, both in §3 FLAT.
 
 ## Decisions made during this phase
 
-- **2026-09-26 — CARRIER closes in two commits (PI adjudication); C5′ lands, replacing C5.** The
-  PI's call, verbatim: "2 commits (Recommended)". This commit (C5′) is the first: the
-  fibre-intersection lemma `MvPolynomial.exists_mem_eval_ne_zero₂` and `lem:pencil-condition-linear`'s
-  missing converse (`Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar`) and unique-plane
-  (`Graph.IsAdmissiblePicture.exists_smul_eq_interpolant`) pieces, transcribed from a compiler-checked
-  scope-pin recon with no golf opportunities found. Commit 2 (opus) is the close (checklist above);
-  it does not land here.
-- **2026-09-26 — C4 closes: the polar/primal rank equality needs no `hends`, and (MC-3) fit.** The
-  patch agrees with the unpatched point-join framework on every link whatever `ends` names, so
-  the pinned `hends` on item 2 was dropped (unused argument); items 3–5 keep it (orientation,
-  and endpoints in `V(G)` for the affine shift). `HasCoplanarPanelRealization` needs a nonzero
-  hinge on every label of `β`, hence the patch. Four scoped green nodes; the MC nodes stay red.
-- **2026-09-26 — C3: item 3 needs only `z ∈ L(q)`** (four vectors of `K³` are dependent); its
-  unused `_hLI` was dropped in C4. `lem:pencil-condition-linear` stays red.
-- **2026-09-26 — C2: moment-curve admissible picture, `Nat.sInf` minimizer, reused section mirror
-  at the kernel vector `0`; `Aff(q)` as a linear map's range; codim bound dropped** (scope-pin).
-- **2026-09-26 — C1b: the Cramer section uses a left inverse, not a maximal minor** (TACTICS-GOLF
+- **2026-09-26 — the PI's close adjudication, verbatim.** Close shape: "2 commits (Recommended)"
+  (C5′, `532d63fe`, was commit 1; the close is commit 2). `thm:pencil-x0-main-component`: "Let's
+  restate and keep." Public surfaces (README, `home_page`, `intro.tex`, `formalization.yaml`):
+  "Leave them".
+- **2026-09-26 — the close.** `thm:pencil-x0-main-component` restated to its formalized content,
+  pinned to four declarations and green; the geometry of `X₀` is `rem:pencil-x0-main-component`.
+  (MC-3)'s lemma became `rem:pencil-hinge-affine` (its rank split has no Lean object).
+  Project-organization review: no new item; the auto-loaded CLAUDE.md suite is unchanged since
+  40a's review (1 695 lines), whose open FRICTION entry on `blueprint/CLAUDE.md` still covers it.
+- **2026-09-26 — C5′:** `exists_mem_eval_ne_zero₂`, `mem_liftingSpace_of_coplanar`,
+  `exists_smul_eq_interpolant`, transcribed from a compiler-checked scope-pin recon.
+- **2026-09-26 — C4:** the polar/primal rank equality needs no `hends`; the patch off `E(G)` is
+  forced by `HasCoplanarPanelRealization`.
+- **2026-09-26 — C3:** item 3 needs only `z ∈ L(q)`.
+- **2026-09-26 — C2:** moment-curve witness, `Nat.sInf` minimizer, the section mirror at `0`; the
+  codim bound dropped (now §3 FLAT).
+- **2026-09-26 — C1b:** the Cramer section uses a left inverse, not a maximal minor (TACTICS-GOLF
   § 25).
 - **2026-09-26 — opened design-first; C1a shapes.** The rank is read at `ofNormals` of the
   configuration points, not the plane normals (a zero hinge would weld a def₂-rigid subgraph);

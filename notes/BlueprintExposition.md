@@ -975,6 +975,20 @@ triangle-floor entry above (`lem:case-III` `|V|=3` base) stays done: `case-iii.t
 floor* now reads `d ≤ 3` for the vacuous cycle disjunct, and `lem:case-III`'s proof names the single
 degree-2 vertex. The ledger stays at **2 pending / 36 done** (of 38).
 
+### `main-component.tex` — Phase 40b (CARRIER: planar pictures, the lifting space, `X₀`)
+
+**No new entries — judged at the sub-phase close (2026-09-26).** The chapter's source is the
+project's own informal proof (`notes/pencil/workbook/K-main.md` §(K-main), Steps MC1–MC3), not KT;
+the criterion transfers as in the `pencil.tex` section. Every node of `sec:main-component-carrier`
+is green with a terse proof. The one restatement, `thm:pencil-x0-main-component` (the
+vector-bundle / irreducible-closure form cut to its formalized content, the geometry kept in
+`rem:pencil-x0-main-component`), is project-side: the formalization never forms `X₀` and replaces
+its irreducibility by a fibre-intersection lemma and products of picture polynomials. The node
+whose argument spans later sub-phases, `thm:pencil-x0-generic-attains` (red, in the stub
+subsection `sec:main-component-statements`), gets no exposition now: its account is the Phase-39
+entry `thm:pencil-conditional-realization-main-component` above, `[pending]` with Phase 40's close
+as discharge point. The ledger stays at **2 pending / 36 done** (of 38).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

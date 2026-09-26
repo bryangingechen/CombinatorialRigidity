@@ -13,16 +13,21 @@ space of \emph{heights}; the drawings for which that space is smallest
 form a dense open set, over which the realizations assemble into an
 irreducible family whose general member attains the deficiency rank. A
 single realization at that rank forces the general one, because the
-rank is lower semicontinuous. The remaining sections --- the flat rank,
-the planar rank input, the ear, split-off, contraction and cut steps,
-the structural coverage, and the passage back to the two statements ---
-build on the objects introduced here.
+rank is lower semicontinuous. The first subsection introduces these
+objects and proves that one-witness principle. The flat rank, the planar
+rank input, the ear, split-off, contraction and cut steps, and the
+structural coverage build on them; the last subsection states the
+passage back to the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
 
 Throughout, $G$ is a finite simple connected multigraph of minimum
-degree at least two and $K$ is an infinite field.
+degree at least two and $K$ is an infinite field. This subsection
+introduces planar pictures and their lifting spaces, reads every
+configuration over an admissible picture as a pencil realization, and
+proves that one configuration at the deficiency rank over a main
+picture forces the general one (\cref{thm:pencil-x0-main-component}).
 
 \begin{definition}[Admissible planar picture]
   \label{def:pencil-admissible-picture}
@@ -210,30 +215,6 @@ chosen.
   determined by $a, b, c$ up to scale (the plane is unique).
 \end{proof}
 
-\begin{lemma}[The hinges are affine in the heights]
-  \label{lem:pencil-hinge-affine}
-  \uses{def:pencil-configuration, def:pencil-lifting-space, def:extensor}
-  Fix a picture $q$. For an edge $e = uv$ the hinge extensor
-  $p_u \wedge p_v$ (\cref{def:extensor}) is an affine function of the
-  height $z$, its dependence on $z$ linear. Consequently the augmented
-  motion matrix at $(q, z)$ splits as a picture-only part plus a part
-  linear in $z$; when every hinge extensor is nonzero its rank is
-  $|E(G)|$ plus the rank of the panel-hinge rigidity matrix of the
-  associated realization. The rank is unchanged when $z$ is scaled by a
-  nonzero constant or shifted by a member of $\mathrm{Aff}(q)$.
-\end{lemma}
-\begin{proof}
-  \uses{lem:pencil-rank-scale-shift}
-  Each Grassmann coordinate of $p_u \wedge p_v$ is a $2\times 2$ minor
-  of the two homogeneous points; the coordinates reading the height row
-  are linear in $z$, the others constant in $z$. The rank split and the
-  scale-and-shift invariance follow by reading the augmented matrix in
-  the panel-hinge coordinates, where the height-linear part is supported
-  on the hinge columns. For the rank of a configuration
-  (\cref{def:pencil-x0-attains}) the scale-and-shift invariance is
-  \cref{lem:pencil-rank-scale-shift}.
-\end{proof}
-
 \begin{definition}[Main pictures]
   \label{def:pencil-main-picture}
   \lean{Graph.IsMainPicture}
@@ -260,12 +241,6 @@ chosen.
   admissible and the heights $z \in L(q)$ at which $(q, z)$ has rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ (\cref{def:D-deficiency},
   at $n = 3$) contain a nonempty Zariski-open subset of $L(q)$.
-
-  The definition is stated over any field, but only over an infinite
-  field does $P \neq 0$ make the good pictures a nonempty Zariski-open
-  set: over a finite field a nonzero polynomial can vanish at every point,
-  and the condition then holds vacuously. The field is infinite throughout
-  this section.
 \end{definition}
 
 The hinge of that framework at an edge $uv$ is the meet of the planes
@@ -279,6 +254,11 @@ $p_u \wedge p_v$, the framework of a pencil realization. Taking the
 plane normals $n_v$ as panel normals instead would not give this rank:
 where two adjacent planes coincide the meet is zero, and a zero hinge
 allows no relative motion of its two bodies.
+
+\Cref{def:pencil-x0-attains} makes sense over any field, but only over
+an infinite field does $P \neq 0$ make the good pictures a nonempty
+Zariski-open set: over a finite field a nonzero polynomial can vanish at
+every point, and the condition then holds vacuously.
 
 \begin{lemma}[The rank of a configuration is its point-join rank]
   \label{lem:pencil-config-point-join-rank}
@@ -380,6 +360,24 @@ allows no relative motion of its two bodies.
   configuration.
 \end{proof}
 
+\begin{remark}[The hinges are affine in the heights]
+  \label{rem:pencil-hinge-affine}
+  Fix a picture $q$. For an edge $uv$ the line $p_u \wedge p_v$
+  (\cref{def:extensor}) is an affine function of the height $z$: each of
+  its Grassmann coordinates is a $2 \times 2$ minor of the two points
+  $(x_u, y_u, z_u, 1)$ and $(x_v, y_v, z_v, 1)$, and the minors reading
+  the height coordinate are linear in $z$, the others constant in $z$.
+  Consequently the augmented motion matrix at $(q, z)$, whose unknowns
+  are a screw $m_v$ for every body and a scalar $\omega_e$ for every
+  edge, subject to $m_u - m_v = \omega_e (p_u \wedge p_v)$ at each edge
+  $e = uv$, is a picture-only matrix plus one linear in $z$ and supported
+  on the $\omega$ columns; when every hinge is nonzero its rank is
+  $|E(G)|$ plus the rank of the rigidity matrix of the pencil
+  realization. Only one consequence of this is used here, the invariance
+  of the rank under scaling and affine shifts of the heights, and
+  \cref{lem:pencil-rank-scale-shift} proves it directly.
+\end{remark}
+
 \begin{lemma}[One attaining configuration forces the general one]
   \label{lem:pencil-x0-one-witness}
   \lean{Graph.x0Attains_of_exists,
@@ -477,44 +475,6 @@ allows no relative motion of its two bodies.
   and every closed neighbourhood has at least three members.
 \end{fmlnote}
 
-\begin{theorem}[The main component]
-  \label{thm:pencil-x0-main-component}
-  \uses{def:pencil-main-picture, def:pencil-x0-attains,
-        lem:pencil-condition-linear, lem:pencil-x0-one-witness,
-        lem:pencil-x0-main-picture-open,
-        lem:pencil-config-distinct-realization}
-  The set $U$ of main pictures (\cref{def:pencil-main-picture}) is
-  nonempty and Zariski-open, the pairs $(q, z)$ with $q \in U$ and
-  $z \in L(q)$ form a vector bundle over $U$, and its closure $X_0$ is
-  irreducible of dimension $2|V(G)| + \ell_0$, containing the flat
-  configurations $(q, 0)$ for $q \in U$. The rank of a configuration
-  (\cref{def:pencil-x0-attains}) is lower semicontinuous on $X_0$, so
-  over the bundle it attains its maximum on a dense open subset. In
-  particular, if a single configuration $(q, z)$ with $q \in U$ and
-  $z \in L(q)$ has rank at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$,
-  so that the general configuration of $G$ attains
-  (\cref{lem:pencil-x0-one-witness}), then $G$ has a rank-attaining
-  pencil realization with adjacent points distinct.
-\end{theorem}
-\begin{proof}
-  Over an admissible $q$, \cref{lem:pencil-condition-linear} presents
-  $L(q)$ as the height-projection of the kernel of the linear system
-  fixing the per-body affine functions, a matrix with entries linear in
-  $q$; its rank is lower semicontinuous, so the pictures of least
-  $\dim L$ are open, and there the kernel is a vector bundle with
-  irreducible total space. Over a neighbourhood of a main picture,
-  Cramer's rule gives a polynomial section of the bundle through any
-  point of the fibre (\cref{lem:pencil-x0-one-witness}, whose proof also
-  gives the attaining half of the last claim;
-  \cref{lem:pencil-config-distinct-realization} gives the realization).
-  Lower
-  semicontinuity of the rank on the irreducible $X_0$, together with
-  the fact that the rank never exceeds
-  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ once every hinge is
-  nonzero, gives the last two claims; the flat point $(q, 0)$ is a
-  member for every $q \in U$.
-\end{proof}
-
 \begin{lemma}[The general configuration attaining gives an adjacent-distinct realization]
   \label{lem:pencil-x0-attains-distinct}
   \lean{Graph.X0Attains.hasDistinctPencilRealization}
@@ -541,11 +501,7 @@ allows no relative motion of its two bodies.
   Let $K$ be infinite and let $L$ be a linear subspace of $K^\sigma$
   for an index set $\sigma$. If two polynomials in the coordinates of
   $\sigma$ are each nonzero somewhere on $L$, some single point of $L$
-  makes both nonzero. This is the fibre-level form of the irreducibility
-  of $X_0$: the two conditions defining the generic member of a fibre
-  $L(q)$ --- attaining the deficiency rank and carrying a nondegenerate
-  realization --- are each open and each met somewhere on $L(q)$, so
-  they meet there together.
+  makes both nonzero.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -560,13 +516,77 @@ allows no relative motion of its two bodies.
   polynomials are nonzero there.
 \end{proof}
 
+\begin{theorem}[The main component]
+  \label{thm:pencil-x0-main-component}
+  \lean{Graph.exists_mvPolynomial_isMainPicture,
+        MvPolynomial.exists_mem_eval_ne_zero₂,
+        Graph.x0Attains_of_exists,
+        Graph.X0Attains.hasDistinctPencilRealization}
+  \leanok
+  \uses{def:pencil-main-picture, def:pencil-x0-attains,
+        def:pencil-distinct-motive, lem:pencil-x0-main-picture-open,
+        lem:pencil-x0-fibre-intersection, lem:pencil-x0-one-witness,
+        lem:pencil-x0-attains-distinct}
+  Let $K$ be infinite, and let $G$ have at least one body, no loops, and
+  at least three members in every closed neighbourhood. Then the main
+  pictures of $G$ (\cref{def:pencil-main-picture}) contain the non-roots
+  of a nonzero polynomial in the picture coordinates. Over any picture
+  $q$, two polynomials in the heights that are each nonzero somewhere on
+  $L(q)$ are nonzero together somewhere on $L(q)$. Moreover, if a single
+  configuration $(q, z)$ with $q$ a main picture and $z \in L(q)$ has
+  rank at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, then the
+  general configuration of $G$ attains (\cref{def:pencil-x0-attains}),
+  and $G$ has an adjacent-distinct pencil realization
+  (\cref{def:pencil-distinct-motive}, at $n = 3$).
+\end{theorem}
+\begin{proof}
+  \leanok
+  The first claim is \cref{lem:pencil-x0-main-picture-open}, and the
+  second is \cref{lem:pencil-x0-fibre-intersection} applied to the
+  linear subspace $L(q)$ of the heights. For the third, $L(q)$ is at
+  every picture the height projection of the kernel of the lifting system
+  (\texttt{Graph.map\_ker\_liftingMatrix}), so a Cramer section of that
+  system through the witness, composed with a rank polynomial nonzero at
+  the witness, shows that the general configuration attains
+  (\cref{lem:pencil-x0-one-witness}); an attaining general configuration
+  gives the realization (\cref{lem:pencil-x0-attains-distinct}).
+\end{proof}
+
+\begin{remark}[The geometry of the main component]
+  \label{rem:pencil-x0-main-component}
+  Over the set $U$ of main pictures the dimension of $L(q)$ is constant,
+  equal to $\ell_0$, and $L(q)$ is the height projection of the kernel of
+  a matrix polynomial in $q$, so the pairs $(q, z)$ with $q \in U$ and
+  $z \in L(q)$ form a vector bundle over $U$. Its closure $X_0$, the
+  \emph{main component} of the pencil configuration space, is
+  irreducible of dimension $2|V(G)| + \ell_0$, and it contains every
+  flat configuration $(q, 0)$ with $q \in U$. The statements of this
+  subsection never form $X_0$ itself: in them, ``general'' means off the
+  zero set of a nonzero polynomial in the picture coordinates and, fibre
+  by fibre, off the zero set of a nonzero polynomial in the heights
+  (\cref{def:pencil-x0-attains}). The irreducibility of $X_0$ enters only
+  through the fibre statement of \cref{thm:pencil-x0-main-component}, by
+  which two polynomials each nonzero somewhere on one fibre $L(q)$ are
+  nonzero there together, and through products of picture polynomials;
+  the dimension of $X_0$ is not used.
+\end{remark}
+
+\subsection{The passage to the two main-component statements}
+\label{sec:main-component-statements}
+
+The theorem below has two parts. The first is the conclusion of a strong
+induction on the number of bodies, through the ear, split-off,
+contraction and cut steps, which the structural coverage completes. The
+second derives from the first the two main-component statements
+(\cref{def:pencil-main-component-statements}), the hypotheses of
+\cref{thm:pencil-conditional-realization-main-component}.
+
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
-  \uses{thm:pencil-x0-main-component, def:pencil-x0-attains,
-        lem:pencil-x0-attains-distinct,
-        lem:pencil-hinge-affine, def:pencil-distinct-motive,
-        def:pencil-generic-motive, def:D-deficiency,
-        def:pencil-main-component-statements}
+  \uses{def:pencil-x0-attains, lem:pencil-x0-one-witness,
+        lem:pencil-x0-attains-distinct, thm:pencil-x0-main-component,
+        def:pencil-distinct-motive, def:pencil-generic-motive,
+        def:D-deficiency, def:pencil-main-component-statements}
   For every simple connected multigraph $G$ of minimum degree at least
   two, the general configuration of $G$ attains the rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
@@ -580,16 +600,18 @@ allows no relative motion of its two bodies.
   (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
-  By \cref{thm:pencil-x0-main-component} it suffices to exhibit one
-  configuration of the bundle attaining the target rank. That runs a
-  strong induction on the number of bodies through ear, split-off,
-  contraction and cut steps (the following sections), whose flat inputs
+  By \cref{thm:pencil-x0-main-component} it suffices, for the first
+  claim, to exhibit one configuration over a main picture attaining the
+  target rank. That runs a strong induction on the number of bodies
+  through ear, split-off, contraction and cut steps, whose flat inputs
   use the planar rank theorem \cref{thm:theorem-55-6-rows} in place of
-  the pin-collinear theorem the informal proof cites. The distinct
-  upgrade needs a single attaining configuration
-  (\cref{lem:pencil-x0-attains-distinct}); the generic upgrade holds on
-  the dense open subset where a nondegenerate realization survives, by
-  intersecting two nonempty Zariski-open subsets of one fibre $L(q)$;
-  the passage on to \cref{thm:pencil-conditional-realization-main-component}
-  is the last section.
+  Jackson and Jord\'an's pin-collinear
+  theorem~\cite{jacksonJordan2008pin}. Granting the first claim, the
+  distinct statement needs a single attaining configuration
+  (\cref{lem:pencil-x0-attains-distinct}). The generic statement holds on
+  the dense open subset of a fibre $L(q)$ where a nondegenerate
+  realization survives: the attaining heights and the heights carrying a
+  nondegenerate realization are each nonempty and Zariski-open in $L(q)$,
+  so they meet by the fibre statement of
+  \cref{thm:pencil-x0-main-component}.
 \end{proof}
