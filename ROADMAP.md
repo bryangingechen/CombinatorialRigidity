@@ -154,7 +154,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress — closing on L0c: the `X₀` headline (L0a) and the non-simple case (L0b) both landed; kernels and the smark attack held (see `notes/Phase39.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ✓ Complete — as a reduction: `pencil_conjecture_of_X0` carries only the two main-component statements `X0Dist`/`X0Gen`, which Phase 40 discharges (see `notes/Phase39.md`) |
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
@@ -1109,88 +1109,41 @@ detail, per-pattern verdicts, and hand-off → `notes/Phase38.md`.
 
 ### Phase 39 — The hinge-pencil molecular conjecture (PENCIL, post-program)
 
-**◐ In progress** (opened 2026-07-23, recon-first; work log
-`notes/Phase39.md`; planning input `notes/pencil/scope.md`, user-queued
-2026-07-23 and folded into the work log at open). A **new-mathematics**
-phase on the KT template: the formalized theorem says the generic
-body-hinge rank in `ℝ³` is achieved on the *panel* stratum — each
-body's hinges coplanar (`molecular_conjecture`, Phases 17–26; multigraph
-strength, Phase 35) — and, by projective duality (Phase 25), on the
-*molecular* stratum — each body's hinges concurrent. PENCIL asks about
-the **intersection stratum**: each body's hinges both concurrent *and*
-coplanar, a **pencil** of lines through a point in a plane (in the `G²`
-molecular reading, every atom's bond-star coplanar — sp²-planar
-molecules). Does a realization generic in that stratum still achieve the
-generic (Tay tree-packing) rank? The trivial direction (pencil ⇒ panel
-per body, so pencil rank ≤ generic) is immediate; the content is the
-lower bound, and the all-bodies statement implies every mixed version by
-rank lower-semicontinuity. No literature result found (2026-07-23;
-Jordán 2016 and the KT paper are silent) — apparently new mathematics,
-so the phase runs recon-first and **a grounded refutation is a
-legitimate close**. The 2026-07-23 opening recon settled its three
-gates (record: `notes/Phase39-design.md`): R1 — statement pinned in
-Phase 35's containment model plus a per-body concurrency point; R2 —
-no refutation (exact-rational rank experiments attain the target on
-every configuration tested); R3 — KT's route does not survive verbatim
-(three open cores: the outer Thm-5.6 strip-extend layer, the Case-I
-glue, and Claim 6.12's quantified 1-dim span shortfall), refuting the
-queue's "warmup" premise. The W0–W2 support layers are **complete**
-(2026-07-24): statement layer + stratum self-duality, the KT
-Lemma-5.3/5.4 base cases as pencil realizations, and the two-pencil
-extension biconditional (`exists_extensor_two_pencils_iff`) — all in
-`Molecular/Molecule/Pencil.lean` + `blueprint/src/chapter/pencil.tex`
-(all nodes green). The phase stays open; the **W3–W5 route recon landed
-2026-07-24** (record: `notes/Phase39-design.md` §W3–W5 route recon):
-attack order W3 → W5 → W4, W3's strip route refuted and the
-all-multigraphs induction (b′) adopted with typechecked leaf shapes,
-W5's genericity escape and W4's constrained-family route both supported
-by new exact-rational numerics. W3 and the W5 device/arms/feasibility
-layers are complete; as of 2026-07-30 the W5-L7 rank core is decomposed
-into landed glue (L7a/L7b) plus the L7c build sequence carrying two
-named kernels — (K)/`hK` (the escape) and (K-bare)/`hbareSplit` (the
-half off-feasibility). Those two, plus W4's `hcontract` (the
-constrained-family route), are the **three carried items** the landed
-successor in `Molecule/Pencil/Escape.lean` reduces the target to; their
-live status is `notes/Phase39.md`'s, and their **current statements**
-(restated 2026-09-16: both take the induction hypothesis, `hK`
-concludes the generic motive and `hbareSplit` the new adjacent-distinct
-one) are `notes/Phase39-design.md` § *Kernel restatement (2026-09-16)*.
-
-From 2026-08-02 to 2026-09-15 the phase ran a **docs+scripts-only research
-arc** (no `.lean`, under the standing 2026-08-05 Lean hold; the arc is now
-retired and the hold lifted — and discharged — for checklist items 1–3) —
-overwhelmingly on
-kernel (K), with a four-direction W4 lane that closed W4's informal side —
-latterly as multidispatch fan-outs of concurrent directions, each
-leaving a named dispatchable successor. **This section deliberately does
-not track that arc's running state** — the **Status row above** carries
-the landed-direction count, `notes/Phase39.md` the current state and the
-next concrete task, `notes/pencil/fanout.md` (ordinals 1–19:
-`notes/pencil/fanout-archive.md`) the per-direction specs and verdicts,
-and `notes/pencil/workbook/gapmap.md`'s *State of (K)* gap map is authoritative
-for every status word. Its **standing result, unchanged by every
-direction so far: `hK` is not closer** — no g-flank found, **(GR-15)**
-(the one open gap the whole §(K-grid) chain reduces to) OPEN, class
-uniformity of the escape untouched; against that, the disproof risk is
-removed and a series of named gaps, routes and constructions are
-refuted-or-superseded, with HITs among the landings. A **harness
-re-baselining round** cleared all four recorded numerics-harness debt
-items and CLOSED 2026-08-06 (its cost ledger and the rules now binding
-new numerics work: `notes/scripts/README.md` *Harness debt*); two doc
-rounds — a structural doc-split and a discipline distillation into the
-new read-on-demand root manual `RESEARCH-ARC.md` — are the ⋮ Status
-rows. Hand-off → `notes/Phase39.md`.
-
-**2026-09-23 → 09-25: W4 reopened, and the `X₀` route.** The census of the pencil configuration
-space's main component `X₀` (over a fixed planar picture the pencil condition is linear in the
-heights) found that `X₀`'s generic point attains the target rank at every graph tested. An informal
-proof followed, second-read: the coverage theorem (MC-89), with the generic and adjacent-distinct
-consequences (MC-133), (MC-157) (`notes/pencil/workbook/K-main*.md` §(K-main)). A recon showed these
-bypass all three carried hypotheses except the non-simple bare case (W4-A). The PI adopted that
-route over every infinite field, minted **Phase 40** for its formalization, and set Phase 39 to
-**close on L0**: the new headline `pencil_conjecture_of_X0` carrying the two main-component
-statements, plus W4-A (`notes/Phase39.md` item 0). The kernels and the smark attack are held as
-the fallback until Phase 40's last layer lands.
+**✓ Complete — as a reduction** (opened 2026-07-23 recon-first, closed 2026-09-25; work log
+`notes/Phase39.md`; planning input `notes/pencil/scope.md`, user-queued 2026-07-23). A
+**new-mathematics** phase on the KT template: the formalized theorem says the generic body-hinge
+rank in `ℝ³` is achieved on the *panel* stratum — each body's hinges coplanar
+(`molecular_conjecture`, Phases 17–26; multigraph strength, Phase 35) — and, by projective duality
+(Phase 25), on the *molecular* stratum — each body's hinges concurrent. PENCIL asks about the
+**intersection stratum**: each body's hinges both concurrent *and* coplanar, a **pencil** of lines
+through a point in a plane (in the `G²` molecular reading, every atom's bond-star coplanar —
+sp²-planar molecules). Does a realization generic in that stratum still achieve the generic (Tay
+tree-packing) rank? The trivial direction (pencil ⇒ panel per body) is immediate; the content is
+the lower bound. No literature result was found (2026-07-23; Jordán 2016 and the KT paper are
+silent) — apparently new mathematics, so the phase ran recon-first with a grounded refutation
+admitted as a legitimate close. **What landed** (`Molecular/Molecule/Pencil/`,
+`blueprint/src/chapter/pencil.tex`, every node green): the statement layer and the stratum's
+projective self-duality (W0); the KT Lemma-5.3/5.4 base cases and the two-pencil extension
+biconditional `exists_extensor_two_pencils_iff` (W1–W2); the minimality-free reduction on KT
+Theorem 4.9's template with the loop, base and cut-edge arms, the cut arm by a projective
+repositioning (W3); the in-stratum genericity device, the conditioned-pair motive `PencilPair`
+(bare; adjacent-distinct under simplicity; generic under simplicity plus
+nondegeneracy-feasibility) and its assembly `pencil_conjecture_of_arms_pair` carrying two kernels
+(W5); the girth / degree-two-chain normal form and item 6's deficiency laws (the vertex 2-cut law
+and the gluing identity, `TwoCut.lean`); and the non-simple bare case (W4-A, KT Lemma 6.2 without
+minimality). **The phase closes on the reduction:** the headline `pencil_conjecture_of_X0`
+(`Pencil/X0.lean`) proves `PencilPair K 3 G` for every spanning multigraph over any infinite field
+from two statements about the main component `X₀` of the pencil configuration space — `X0Dist`
+(every simple two-edge-connected multigraph has an adjacent-distinct pencil realization) and
+`X0Gen` (a generic one when nondegeneracy-feasible) — which **Phase 40** (§40) discharges. The
+pencil conjecture itself is therefore **not yet a theorem**. Between 2026-08-05 and 09-13 the phase
+ran a docs+scripts-only research arc on the two kernels (127 directions under a coordinator loop,
+retired 2026-09-15 for attack tracks under `HARNESS.md`; standing result: kernel (K) not closer);
+its corpus is `notes/pencil/` (manual `notes/pencil/CLAUDE.md`, record `notes/pencil/structure.md`),
+its design record the frozen `notes/Phase39-design.md`, and the ⋮ Status rows above are its two doc
+rounds. The kernels, the paused smark attack and the W4 split/contract line are held as Phase 40's
+fallback (`notes/Phase40-design.md` §6); the deferred items (A6, the hub-normalization factoring,
+the D5 blueprint debt, two pending exposition entries) are its §7. Hand-off → `notes/Phase39.md`.
 
 ### Phase 40 — The `X₀` formalization of the pencil conjecture (PENCIL-X0, post-program; sub-lettered)
 
@@ -1235,8 +1188,9 @@ of the queue at the user's initiative (§37 above). **FACTOR** — the long-proo
 de-duplication / missing-abstraction round — then opened as Phase 38 ahead of
 the queue at the user's initiative (§38 above), and opened and closed as
 Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
-2026-07-23; PENCIL then opened as Phase 39 (§39 above), and its formalization
-sequel **PENCIL-X0** opened as Phase 40 at the user's initiative on 2026-09-25 (§40 above), so
+2026-07-23; PENCIL opened as Phase 39 and closed 2026-09-25 as a reduction (§39
+above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day at the user's
+initiative (§40 above), so
 **ORIGAMI is the next queued phase to open**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math

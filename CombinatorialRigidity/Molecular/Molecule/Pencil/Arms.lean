@@ -12,8 +12,9 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
 `notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
 the W3 leaf decomposition's four induction arms (loop `L3`, cut-edge `L4` with its transport /
-nondegeneracy / rank-assembly infrastructure, base `L5`) and the provisional bare-motive wrapper
-`L7` (`pencil_conjecture_of_arms`) assembling them via `Graph.pencil_reduction`
+nondegeneracy / rank-assembly infrastructure, base `L5`) and the original bare-motive wrapper
+`L7` (`pencil_conjecture_of_arms`, since superseded by `pencil_conjecture_of_arms_pair` and
+`pencil_conjecture_of_X0`) assembling them via `Graph.pencil_reduction`
 (`Induction/ForestSurgery/Reduction.lean`). Builds on the statement layer, transport, and
 two-pencil machinery in `Molecule/Pencil/Statement.lean`.
 
@@ -1445,14 +1446,19 @@ complement identity `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`
 `finrank (span rigidityRows) = D(|V|−1) − def` and `finrank (span rigidityRows) + finrank motions =
 D·|V|`, `finrank motions = D + def` falls out linearly.
 
-**PROVISIONAL** (the recorded GP caveat, `notes/Phase39.md` *Hand-off*, blueprint
-`fmlnote:pencil-conditional-bare`): this bare-motive interface is not expected to be the final
-shape. Katoh–Tanigawa's own Theorem 5.5 motive is a *conditioned pair* — a generic full-rank
-conjunct alongside the bare panel realization (`RankHypothesis`'s own `def:rank-hypothesis`
-companion) — not a bare existential; the `hcontract`/`hsplit` arms below will almost certainly need
-the induction hypothesis strengthened by a pencil-generic conjunct once W5 (the in-stratum
-genericity device) lands, since the constrained-family argument (W4) consumes in-family genericity,
-not bare existence. Do not treat this wrapper's interfaces as final. -/
+**Superseded interface, kept as the bare-motive assembly.** This bare-motive wrapper was the
+reduction's first headline shape, and its recorded caveat held: Katoh–Tanigawa's own Theorem 5.5
+motive is a *conditioned pair* — a generic full-rank conjunct alongside the bare panel realization
+(`RankHypothesis`'s own `def:rank-hypothesis` companion) — not a bare existential, and the
+`hcontract`/`hsplit` arms consume in-stratum genericity, not bare existence (the blueprint's
+`sec:pencil-nondegenerate` preamble carries the reasoning). Its successors run the same assembly
+against the conditioned motive `PencilPair` (bare; adjacent-distinct under simplicity; generic under
+simplicity plus nondegeneracy-feasibility): `pencil_conjecture_of_arms_pair`
+(`Molecule/Pencil/Pair2.lean`, `thm:pencil-conditional-realization-pair`) with the two arms still
+carried, and the landed Phase-39 headline `pencil_conjecture_of_X0` (`Molecule/Pencil/X0.lean`,
+`thm:pencil-conditional-realization-main-component`) with both arms discharged from the two
+main-component statements. Neither successor consumes this wrapper; it stays as the blueprint's
+`thm:pencil-conditional-realization`. -/
 theorem pencil_conjecture_of_arms [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →

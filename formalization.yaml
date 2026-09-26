@@ -213,10 +213,14 @@ status:
     place of R, multigraphs, "every generic realization" in place of "some realization")
     and drew further consequences of the rank formula. See status.main_results for the
     headline statements and fidelity.divergences for how they differ from their sources.
-    In progress (phases 39-40): the hinge-pencil conjecture, a further strengthening in which
-    each body's hinges are also concurrent through a common point of its panel. Its open steps
-    are carried as explicit hypotheses on red blueprint nodes, never as sorry. The first step of
-    phase 40 extends Theorems 5.5/5.6 and the molecular conjecture to dimension 2.
+    Phase 39 (closed 2026-09-25) formalized the reduction of the hinge-pencil conjecture - a
+    further strengthening in which each body's hinges are also concurrent through a common point
+    of its panel - to two statements about the main component of the pencil configuration space:
+    granting them, every spanning multigraph attains the deficiency rank by such a realization,
+    over any infinite field (pencil_conjecture_of_X0, a conditional theorem; the conjecture
+    itself is not yet proved). In progress (phase 40): the proofs of those two statements, carried
+    meanwhile as the headline's explicit hypotheses, never as sorry. Its first step extends
+    Theorems 5.5/5.6 and the molecular conjecture to dimension 2.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -224,7 +228,8 @@ status:
     The project carries no `sorry` and no project-specific `axiom`. During development,
     incomplete obligations were pinned as explicit hypotheses on red blueprint dep-graph
     nodes (never as `sorry` or `axiom`); none remain in the completed results below, and the
-    in-progress pencil work carries its open steps the same way.
+    pencil conjecture's two open statements are carried the same way, as the explicit hypotheses
+    of its conditional headline (pencil_conjecture_of_X0), which phase 40 is discharging.
     `warn.sorry = true` in the lakefile is a backstop. Every main result below was checked
     with `#print axioms` and uses only the three standard axioms.
   main_results:                                                  # the completed headline theorems (four arcs + post-program phases)
@@ -430,6 +435,29 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
+  - declaration: "CombinatorialRigidity.Molecular.pencil_conjecture_of_X0"
+    file: "CombinatorialRigidity/Molecular/Molecule/Pencil/X0.lean"
+    description: >-
+      The hinge-pencil conjecture, CONDITIONAL (phase 39, closed 2026-09-25 as a reduction; no
+      literature source - the question appears to be new): if the two main-component statements
+      hold - X0Dist (every simple two-edge-connected multigraph on >= 3 bodies has a pencil
+      realization at the deficiency rank with adjacent concurrency points distinct) and X0Gen
+      (such a multigraph that admits any nondegenerate pencil realization has a generic one) -
+      then every spanning multigraph satisfies the conditioned pencil pair at n = 3 over any
+      infinite field: a hinge-coplanar realization in which each body's hinges are also
+      concurrent through a common point of its panel, attaining rank D(|V|-1) - def(G~), with
+      the adjacent-distinct and generic conjuncts under simplicity. The two statements are
+      hypotheses of the theorem, not proved; phase 40 is proving them. The conjecture itself is
+      therefore not yet a theorem of this project.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+    note: >-
+      Conditional result: proved as stated, with X0Dist and X0Gen as explicit hypotheses. Listed
+      so the reduction's shape is on record; it becomes an unconditional main result only when
+      phase 40 lands both statements and a headline carrying neither.
+
 # how it was produced. Extra per-entry fields are allowed.
 automation:                                                      # [required]
   methods:                                                       # one entry per distinct phase/run/tool
@@ -508,8 +536,9 @@ review:
   notes: >-
     No external human peer review. Confidence rests on: a fully green CI build on every push
     (Lean compile, blueprint web/PDF, and checkdecls cross-checking every blueprint \lean{...}
-    pointer against the Lean environment); per-result `#print axioms` checks (all seventeen main
-    results use only propext / Classical.choice / Quot.sound); the lakefile's `warn.sorry`
+    pointer against the Lean environment); per-result `#print axioms` checks (all seventeen
+    completed main results, and the conditional pencil reduction, use only propext /
+    Classical.choice / Quot.sound); the lakefile's `warn.sorry`
     backstop; and continuous AI-agent review (between-phase cleanup rounds auditing
     Lean/blueprint divergence and long proofs, plus /code-review and friction-review passes),
     overseen by the author.
@@ -638,6 +667,18 @@ alignment:
         endpoint body; the realization predicate is
         CombinatorialRigidity.Molecular.HasCoplanarPanelRealization), where coincident-panel
         realizations (KT Lemma 5.3) are expressible; parallel edges and loops admitted (phase 35).
+
+    - source: "The hinge-pencil conjecture (this project, 2026; no literature source found) - reduction to the two main-component statements"
+      lean: "CombinatorialRigidity.Molecular.pencil_conjecture_of_X0, CombinatorialRigidity.Molecular.X0Dist, CombinatorialRigidity.Molecular.X0Gen"
+      module: "CombinatorialRigidity/Molecular/Molecule/Pencil/X0.lean"
+      status: "conditional"
+      note: >-
+        Proved as a conditional theorem (phase 39, closed 2026-09-25): the conclusion
+        CombinatorialRigidity.Molecular.PencilPair K 3 G holds for every spanning multigraph over
+        any infinite field, from the hypotheses X0Dist and X0Gen, which are not proved. Phase 40
+        is proving them; until then the conjecture itself is open. The non-simple bare case is
+        CombinatorialRigidity.Molecular.hasPencilRealization_of_not_simple (Katoh-Tanigawa
+        Lemma 6.2's parallel-edge contraction, without minimality).
 
 # acknowledgements - optional credits for libraries, tools, discussions, etc.
 acknowledgements: >-

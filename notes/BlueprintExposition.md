@@ -124,7 +124,9 @@ cut-edge repositioning, the conditioned pair's shape, the parallel-class
 case, the degree-two-chain normal form) and two `[pending]` under the
 green-*modulo* rule — the main-component headline, whose two hypotheses are
 Phase 40's target, and the held-kernel theorem. **Result: 2 pending / 36
-done** (of 38).
+done** (of 38). At the close proper (L0c-ii, same day) both pending entries
+were handed to Phase 40 (`notes/Phase40-design.md` §7), which writes or closes
+them.
 
 ## Format
 
@@ -940,7 +942,8 @@ discharge point.
   `notes/Phase39-design.md` § *Lean-track design pass* (V3, V4).
 - **`thm:pencil-conditional-realization-main-component` /
   `pencil_conjecture_of_X0`, with `def:pencil-main-component-statements`** —
-  [pending — discharge point: Phase 40's close] **(c)** the reduction itself
+  [pending — discharge point: Phase 40's close; handed to Phase 40 at the
+  Phase-39 close, `notes/Phase40-design.md` §7] **(c)** the reduction itself
   is final and exposited (the three-way case split in the node's proof); what
   is not final is the account of the two main-component statements
   (`X0Dist`/`X0Gen`), hypotheses here and Phase 40's target
@@ -950,7 +953,8 @@ discharge point.
   flat rank, the ear/split-off/contraction/cut steps — is written at Phase
   40's close, in Phase 40's chapter.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
-  [pending — held] **(c)** the two kernel hypotheses are held as the fallback
+  [pending — held; handed to Phase 40 at the Phase-39 close,
+  `notes/Phase40-design.md` §7] **(c)** the two kernel hypotheses are held as the fallback
   (PI, 2026-09-25) and bypassed by the main-component route; the chapter's
   `fmlnote:pencil-conditional-realization-pair-kernels` and `…-field` already
   carry what is stable (why both kernels take the induction hypothesis; the

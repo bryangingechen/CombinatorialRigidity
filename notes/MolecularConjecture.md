@@ -774,8 +774,11 @@ the hinge-pencil molecular conjecture — does a realization generic in
 the stratum where each body's hinges are both concurrent *and*
 coplanar, a pencil, still achieve the generic body-hinge rank?; work
 log `notes/Phase39.md`) opened 2026-07-23 recon-first — apparently new
-mathematics, so a grounded refutation is a legitimate close. Still
-queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+mathematics — and closed 2026-09-25 **as a reduction**: `pencil_conjecture_of_X0`
+proves the pencil pair for every spanning multigraph from two statements
+about the main component of the pencil configuration space, which
+**Phase 40** (PENCIL-X0, `notes/Phase40-design.md`; sub-phase 40a open)
+is discharging. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (the
 2-d molecular conjecture via Jackson–Jordán 2008's pin-collinear
 route; unplanned placeholder), **UPSTREAM** (mathlib upstreaming) and

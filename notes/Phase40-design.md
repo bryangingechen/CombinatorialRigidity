@@ -220,14 +220,70 @@ The split/contract architecture and its three kernels are recorded in `notes/pen
 (held record) and `W4-reopen-archive.md`: (K-res)/`kres`, (K-c), and (K-bare-c) with (α).
 Phase 39's held checklist items are the grid route for `hK`, tree-triples, and the rest of the
 W4 build. smark's O7e programme is paused; its status surface is `notes/attacks/smark/state.md`.
-All of these are held until MOTIVES lands (PI, 2026-09-25), then re-decided. Phase 39's close
-moves its held items here.
+All of these are held until MOTIVES lands (PI, 2026-09-25), then re-decided. On a HIT on a held
+kernel, the phase-boundary consequences are the PI's call (`PHASE-BOUNDARIES.md`), surfaced with an
+estimate.
+
+**Phase 39's held checklist items, moved here at its close (2026-09-25):**
+- **`hK` on the tight stratum from grid vanishing**, the colouring statement as hypothesis:
+  decoupling, rank formula, Vandermonde, chart step, descent. It decides whether the independence
+  proviso is a hypothesis of the crux (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*). The chart
+  machinery exists (`IsFin3SelectorOf`, `cross₃`, `pencilRow`); the grid geometry does not.
+- **Tree-triple ⇒ `dim Z = 0`**, and the circular-ladder family (GUNIZERO's uniform instance) as a
+  formal witness.
+- **The rest of the W4 build** (`notes/pencil/W4-reopen.md`, held record): T1, the W4 wrapper
+  carrying (K-res); W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and spike-elaborated);
+  W4-L2/L3′/L5; the residual carry `hnoGood'`. W4-L1 (W4-A) landed as Phase 39's L0b.
+- **The reverse arms of the W0 transport** (a `complementIso` involution lemma), off every critical
+  path (the workbook's §(K-σ) *Step σ6*, via `python3 notes/ledger.py`).
 
 ## 7. Deferred from Phase 39
 
-*(Filled at Phase 39's close, L0c.)* Expected here:
-- item 6's A6 and its hub-normalization factoring item;
-- the D5 blueprint debt (item 6's leaves have no nodes; STEPS pins them).
+Moved here at Phase 39's close (2026-09-25). None is on SPINE2's path; each names the layer or
+round that lands it.
+
+- **A6 — C3, the welded pendant law** `g(H) = max(g(H−u), f_sep(H−u) − (D−1))` and
+  `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). Deferred by the PI's D2
+  call (2026-09-16): off the consumed path — S6 is the side-degree-1 reduction, S14's `H′` has
+  side-degree ≥ 2 at both ends (S10(iii)) — and it is the only law needing `deficiencySep`. Site
+  `Induction/SplitOffDeficiency.lean`. Build only if STEPS consumes S6's reduction.
+- **The shared hub normalization — a factoring item.** C2ℓ's merged hub
+  `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (`Molecule/Pencil/TwoCut.lean`)
+  duplicates ~85 lines of `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
+  (`AlgebraicInduction/PanelLayer.lean`); only the attaining labeling's subtype, one `g u = g v`
+  step and the final monotonicity differ. Extract the `ι₀` normalization as one private lemma — for
+  any `f`, some `g` with (i) `g '' V(G) ⊆ V(G)`, (ii) `numParts g = numParts f`,
+  (iii) `crossingEdges g = crossingEdges f`, (iv) `|range g| = numParts f + |V(G)ᶜ|`,
+  (v) `g x = g y ↔ f x = f y` on `V(G)` — and rebuild both hub sites on it. It edits
+  `PanelLayer.lean`, in the defeq-fragile zone, so it gets its own pass with its own verification
+  (Phase 38 is the precedent); a cleanup round or a STEPS slice that touches the hub.
+- **Item 6's other deferred laws** (all cheap on Layer B): the general-`U` joint count (S7(iii))
+  and `finrank_jointMotions_eq` (S7(i)) — motion-side, hence `|α|`-laden; S7(ii) (the bar reading),
+  S7(v) (Klein self-duality), S9 (the `ear1` criterion). Build when a STEPS step consumes one.
+- **The D5 blueprint debt.** Item 6's leaves landed with **no blueprint nodes** (PI, D5: a chapter
+  without a complete informal proof would pin a shape likely to be reworked), and `checkdecls`
+  cannot see a decl with no node. STEPS pins each law when it consumes it (§3's *There is no
+  landed cut-vertex deficiency law* note), or a cleanup round pins the set if the PI reverses D5.
+  The debt, `private` helpers exempt: `deficiency_removeVertex_of_degree_eq_one` (A1);
+  `deficiencyMerged`, `deficiencySep`, `weldPair`, `pairDelta`, `partitionDef_map`,
+  `deficiency_weldPair_eq_deficiencyMerged`, `bddAbove_range_partitionDef_merged`,
+  `partitionDef_le_deficiencyMerged` (A2); `pairDelta_le_bodyBarDim`, `deficiency_eq_max` (A3);
+  `partitionDef_split_of_vertexTwoCut`, `deficiency_eq_of_vertexTwoCut`, `deficiency_eq_of_vertexTwoCut'`
+  (A4/A5); `relScrews`, `jointRows`, `jointMotions`, `weldedRank`,
+  `span_jointRows_eq_map_dualAnnihilator`, `finrank_span_jointRows` (B1/B2);
+  `inf_span_rigidityRows_span_jointRows_top`, `weldedRank_eq`, `map_screwDiff_comm`,
+  `span_jointRows_bot` (B3/B4); `inf_span_rigidityRows_of_vertexTwoCut`,
+  `finrank_span_rigidityRows_vertexTwoCut_eq` (B5/B6); `weldedRank_add_finrank_jointMotions_bot`,
+  `partitionMotions_le_jointMotions_bot`,
+  `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (B7); `pencilLoss`,
+  `weldedLoss`, `pencilLoss_nonneg`, `finrank_relScrews_eq`, `weldedLoss_nonneg`,
+  `finrank_relScrews_le`, `pencilLoss_vertexTwoCut` (C1ℓ–C4ℓ).
+- **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
+  40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
+  exposition (the main component as a vector bundle over planar pictures, the flat rank, the
+  ear/split-off/contraction/cut steps) is written at Phase 40's close, in Phase 40's chapter; and
+  **`thm:pencil-conditional-realization-pair`** (the held kernels) — closes as superseded when
+  MOTIVES lands, or is written if a kernel is proved.
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 

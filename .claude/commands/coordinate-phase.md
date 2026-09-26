@@ -91,6 +91,13 @@ first). Three calibrations that repeatedly bit:
   the same object / framework level as C's actual slot binding* (not
   merely the same Lean type, and not merely that B exists) — read
   both before rating; a wrong-level brick hides a P=3 leaf.
+- *An arm re-derivation against a conditioned motive is P ≥ 2* even
+  when the design doc calls the arm "small" / "free" / "mirrors landed
+  X" — reserve P = 1 for arms whose vacuity guard is already landed and
+  named, and tell the builder to re-derive the spiked plan against the
+  CURRENT definition bodies and return a refutation instead of building
+  on it (three Phase-39 W5 leaves each failed a design-pass arm verdict
+  at first contact; dispatch-log F9).
 
 ### Pick the rung
 
@@ -160,6 +167,21 @@ user-approved sample section transcribed verbatim into the planning
 doc pins register, template, and evidence bar at once — six Phase-29
 episode-writing slices then ran clean at sonnet against it.
 
+A **coordinator spike** (`lake env lean` against the built tree) raises
+S the same way — it turns a P=3 leaf with no informal proof into a
+transcription — and its discipline is fixed (dispatch-log F41/F42, three
+Phase-39 instances): its *positive* results are coordinator-verified and
+go in the `route` block; its *absences* go there only as *"I did not
+find X — check before hand-rolling it"*, because the recurring miss is a
+guessed namespace-qualified name searched for alone — search by **bare
+declaration name across the whole dependency tree** (`grep -rn "theorem
+<name>" .lake/packages/`, or the Lean MCP's declaration search); and a
+spike whose verdict is about a *consumer* ("downstream can / cannot
+unfold X") must be built the way that consumer's file is built (`module`
+vs non-`module` importer) — run **both** cases and name the kind in the
+finding. Hand the builder the verified proof *and* ask it to look for a
+shorter route.
+
 The coordinator MAY append short, named shaping blocks to the
 invocation prompt when they carry **coordinator-verified information
 only**: `route` (a verified proof route / named lemmas — P2 at
@@ -171,9 +193,18 @@ deletion/retirement slices), `adjudication` (a user decision from
 this session passed VERBATIM — it overrides stale phase-note text
 where they conflict, and the dispatch transcribes it into the phase
 docs in the same commit; Phase 29's S1-revision and D1-deviation
-records are the model). Shaping never changes the
-LANDED/BLOCKED contract and never delegates the coordinator's own
-verification to the subagent.
+records are the model). Two calibrations from Phase 39 (dispatch-log
+F14, F12): **mark a coordinator hypothesis as a hypothesis** inside the
+block — the verified register is for what was opened in source or
+re-run, and a truncated search (`| head`, `-m N`) established *"at least
+N"*, never an enumeration; and the `hygiene` sweep is **tree-wide over
+every file kind** — Lean docstrings and `notes/` prose included, not
+only the `.tex`/`.md` where the name was defined (a deleted blueprint
+label survived in a live Lean docstring through a lint-green chapter
+pass, 2026-09-25) — and a correction to a summary row / cell is
+presumptively a correction to the body prose it summarizes. Shaping
+never changes the LANDED/BLOCKED contract and never delegates the
+coordinator's own verification to the subagent.
 
 ### Verification tiers (what the coordinator re-runs itself)
 
@@ -187,6 +218,12 @@ The step-4/5 checks below always run. On top of them, by rung:
   the touched `.lean` files.
 - **probe (haiku):** re-run every gate the return names; treat all
   attestations as unverified.
+- **the coordinator's own artifacts** — specs, shaping blocks,
+  predictions, prep commits — get the same tier as a subagent return
+  (dispatch-log F19: four of four needed correction in one Phase-39
+  wave, three caught by the dispatches they primed), and a coordinator
+  commit runs the same status-surface sweep it enforces on landings
+  (F17; `python3 notes/phasenote.py N --surfaces` lists them).
 
 When re-running a gate **yourself**, obey the same mechanics the agent
 cores mandate: pass the Bash tool's **`timeout` PARAMETER** and never
@@ -556,6 +593,15 @@ CLAUDE.md at phase close.
        only a **satisfiability trace against the consumer's actual
        object** catches it. Run the trace before landing the leaf,
        not at the consumer's build.
+     - a **new conditioning / well-formedness predicate** is unverified
+       until something *instantiates* it: a by-construction theorem
+       that only consumes it as a hypothesis says nothing about its
+       satisfiability. At acceptance ask *what concrete instance
+       satisfies this?* and hit the common graph shapes (degree-2
+       vertices, dense bodies, `K₄`/`C₄`, the design doc's own test
+       graphs) with a one-`lake env lean` witness or a prose trace
+       (dispatch-log F8: an unsatisfiable WF conjunct rode two
+       gate-clean slices).
      - the trace must also hit a **kernel/architecture lemma's
        SHAPE**: a sound-but-too-strong-shaped kernel (e.g. a total
        partition / full-row-rank cert where the source states a
