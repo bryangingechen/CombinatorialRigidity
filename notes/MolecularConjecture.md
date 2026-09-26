@@ -4,9 +4,9 @@
 sub-letters 22a–22l / 23a–23h) done. **The Molecular Conjecture (KT 2011
 Conjecture 1.2, conjectured Tay–Whiteley 1984) is formalized at general `d`**:
 `PanelHingeFramework.molecular_conjecture` (green + axiom-clean for `6 ≤ bodyBarDim n`, i.e.
-`n ≥ 3`) states the panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges,
+`n ≥ 3`; since Phase 40a, `3 ≤ bodyBarDim n`, i.e. `n ≥ 2`) states the panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges,
 built on Katoh–Tanigawa's Theorem 5.5 and Theorem 5.6 at full KT strength (all degrees of
-freedom, genuine hinges, every dimension `d ≥ 3`) — and **the molecule
+freedom, genuine hinges, every dimension `d ≥ 3` at the program's close) — and **the molecule
 application is assembled on top**: the 3-D generic bar-joint rigidity matroid
 (Phase 24), projective duality + the molecule modelling equivalence (Phase 25),
 and the capstone **molecule rank formula** `r(G²) = 3|V| − 6 − def(G̃)`
@@ -777,9 +777,10 @@ log `notes/Phase39.md`) opened 2026-07-23 recon-first — apparently new
 mathematics — and closed 2026-09-25 **as a reduction**: `pencil_conjecture_of_X0`
 proves the pencil pair for every spanning multigraph from two statements
 about the main component of the pencil configuration space, which
-**Phase 40** (PENCIL-X0, `notes/Phase40-design.md`; sub-phase 40a open)
-is discharging. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md` — the next phase to open), **PIN** (the
-2-d molecular conjecture via Jackson–Jordán 2008's pin-collinear
-route; unplanned placeholder), **UPSTREAM** (mathlib upstreaming) and
+**Phase 40** (PENCIL-X0, `notes/Phase40-design.md`) is discharging; its first sub-phase, 40a
+(closed 2026-09-25, `notes/Phase40a.md`), extended Theorems 5.5/5.6 and the conjecture to the
+plane, `n ≥ 2`, and the next layer is CARRIER. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
+independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
+pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

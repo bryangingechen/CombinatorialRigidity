@@ -1,31 +1,24 @@
 # Phase 40a — PENCIL-X0 / SPINE2: the Katoh–Tanigawa spine at `n = 2` (work log)
 
-**Status:** in progress (opened 2026-09-25). A **structural edit**: the landed Theorem 5.5/5.6
-chain and the molecular conjecture weaken their dimension floor in place, from
-`6 ≤ Graph.bodyBarDim n` to `3 ≤ Graph.bodyBarDim n` and from `hd : 3 ≤ n` to `2 ≤ n`. One
-triangle case is repaired. That makes them hold at `n = 2`, the planar case, over every infinite
-field. It is the `X₀` route's replacement for Jackson–Jordán (`notes/Phase40-design.md` §3,
-SPINE2). **Slices 1–4 LAND** (Slice 2's own build forced Slice 3's `GenericLift/` floor weakening
-into the same commit — see *Decisions made*). **Next: Slice 5** (the 40a close — a
-coordinator-sanctioned top-rung dispatch; do not start it here). The program plan is
-`notes/Phase40-design.md`.
+**Status:** ✓ complete (opened and closed 2026-09-25). A **structural edit**: the landed Theorem
+5.5/5.6 chain, the generic-lift rank theorems and the molecular conjecture (simple and multigraph)
+weakened their dimension floor in place, from `6 ≤ Graph.bodyBarDim n` to `3 ≤ Graph.bodyBarDim n`
+and from `hd : 3 ≤ n` to `2 ≤ n`; one triangle case was repaired; and the non-spanning row-rank
+form of Theorem 5.6 landed. They hold at `n = 2`, the planar case (Jackson–Jordán's pin-collinear
+theorem), over every infinite field. **Next: CARRIER**, Phase 40's next layer
+(`notes/Phase40-design.md` §3), **not yet opened** — see *Hand-off*.
 
 ## Current state
 
-**Slices 1–4 landed** (`three_le_bodyBarDim_of_two_le`, `chainData_extract`, `cycle_realization`,
-`case_III_hsplit_producer_all_k` incl. the triangle repair, `case_III_realization{,_all_k}`, the
-full `Theorem55.lean` `hD`/`hd` floor per the *Layer plan*'s declaration list, its eight named
-callers, `GenericLift/{PanelGeneric,HingeGeneric}.lean`'s six declarations, every named
-blueprint restatement across `molecular-induction.tex`, `algebraic-induction.tex`,
-`algebraic-induction/{case-i,case-iii}.tex`, `panel-layer.tex`, `generic-lift.tex`, and Slice 4's
-non-spanning row-rank form). **Next: Slice 5**, the 40a close (*Layer plan*). The plan was
-compiler-checked by the 2026-09-25 sizing recon: the landed proofs were copied, the floor
-weakened, and the copies elaborated against the built tree. Its diffs are verbatim in
-`notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)*, with hunks keyed to line numbers
-at `c05f7df7`; Lean had changed since only outside the Slice 1–4 targets, so those hunks applied as
-written. The site list was recomputed on 2026-09-25 by grepping every
-`6 ≤ Graph.bodyBarDim` / `6 ≤ bodyBarDim` / `six_le_bodyBarDim` site, which completes the recon's
-list (its closure report stopped at ten declarations).
+**Closed.** Slices 1–5 landed. Phase 40 continues with **CARRIER** (*Hand-off*); nothing of it is
+started. The two Slice-4 follow-ups were routed at the close to the layers that land them
+(`notes/Phase40-design.md` §3 FLAT and BRIDGE). Headline axioms were re-verified at the close on
+25 declarations: the seventeen `formalization.yaml` main results, the conditional
+`pencil_conjecture_of_X0`, `theorem_55_6_multigraph`, `rigidityMatrix_prop11`, the three other
+restated generic-lift rank theorems and the two Slice-4 declarations. Each is exactly
+`[propext, Classical.choice, Quot.sound]` (*measured, script not retained*: one `#print axioms`
+line per declaration under `import CombinatorialRigidity`, run with `lake env lean` on the built
+tree).
 
 ## Architectural choices made up front
 
@@ -38,29 +31,20 @@ list (its closure report stopped at ten declarations).
     (Prospect G2).
   - `Graph.pencil_reduction` and `exists_chain_data_of_noRigid` (`ForestSurgery/Reduction.lean`).
     They are off the `n = 2` closure.
-  - The `hD6 := six_le_bodyBarDim …` lines at `n = 3` in `Molecule/` (Pencil `Arms`, `Escape`,
-    `Pair2`; `Theorem56`). These stay valid.
+  - The `hD6 := six_le_bodyBarDim …` lines at `n = 3` in `Molecule/Pencil/` (`Arms`, `Escape`,
+    `Pair2`, and `X0`'s two `six_le_bodyBarDim` uses). These stay valid. (`Molecule/Theorem56.lean`'s
+    `hD` line did *not* stay: Slice 2 repointed it to `three_le_bodyBarDim_of_two_le`, since its
+    callee now wants `3 ≤ D`.)
 - **The `d = 3`-only wrappers weaken too.** These are the declarations with
   `hn : bodyBarDim n = screwDim 2`: `case_I_realization_h65`, `theorem_55_minimalKDof_k`,
   `case_III_realization`. The hypothesis is redundant there, but uniformity keeps the docstrings
   honest (the recon did the same).
 - **New lemma** `Graph.three_le_bodyBarDim_of_two_le` in `BodyBar/Framework.lean`, beside
-  `six_le_bodyBarDim`. The recon's proof:
-  ```lean
-  theorem three_le_bodyBarDim_of_two_le {n : ℕ} (hn : 2 ≤ n) : 3 ≤ bodyBarDim n := by
-    have hbb : 2 * bodyBarDim n = n * (n + 1) := by
-      rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
-    nlinarith
-  ```
-- **Caller repair.** A caller holding `hD : 6 ≤ D` now passes `(by omega)` where a `3 ≤ D` is
-  wanted.
-- **The statement-change gate binds every slice** (`CombinatorialRigidity/CLAUDE.md`
-  *Forward-mode slices*). In the same commit, restate every blueprint node and every docstring
-  that states the old floor (`n ≥ 3`, `D ≥ 6`, "d = 3 (D ≥ 6)", `3 ≤ n`). `checkdecls` cannot
-  see a stale statement.
-- **Rung.** The files are in the fragility zone (`AlgebraicInduction/`), but the work is a
-  mechanical refactor with one compiler-checked, pasted proof edit, which the playbook keeps at
-  the mapped rung. If a build wall appears, escalate to opus.
+  `six_le_bodyBarDim` (the recon's two-line `nlinarith` proof, landed as written).
+- **Caller repair.** A caller holding `hD : 6 ≤ D` passes `(by omega)` where a `3 ≤ D` is wanted.
+- **The statement-change gate bound every slice** (`CombinatorialRigidity/CLAUDE.md`
+  *Forward-mode slices*): every blueprint node and docstring stating the old floor was restated in
+  the same commit.
 
 ## Layer plan (the to-do list)
 
@@ -76,49 +60,56 @@ list (its closure report stopped at ten declarations).
   five-conjunct form, no `[Nonempty α]`/`hspan`) and its corollary
   `hasGenericFullRankRealization_of_theorem_55_gen`, in `Theorem55.lean`. Blueprint node
   `thm:theorem-55-6-rows`. Detail: *Decisions made*.
-- [ ] **Slice 5 — close 40a** (a docs commit):
+- [x] **Slice 5 — close 40a** (a docs commit). LANDED:
   - **Public surfaces.** README and `home_page/index.md` say "every dimension `d ≥ 3`", and so do
     `intro.tex` (Organization and *Reading this blueprint*) and `formalization.yaml`'s
     `main_results`. Each becomes `d ≥ 2`, and each names the planar case, the pin-collinear
     theorem of Jackson–Jordán (DCG 40, 2008), now proved over every infinite field. Re-verify
-    `#print axioms` for the restated headline declarations.
+    `#print axioms` for the restated headline declarations. — *Delivered* (all four surfaces;
+    axioms: *Current state*).
   - **The PI's call on PIN** (ROADMAP *Queued*): its target, the 2-d molecular conjecture, is
-    delivered here by Katoh–Tanigawa's route at `d = 2` rather than Jackson–Jordán's.
+    delivered here by Katoh–Tanigawa's route at `d = 2` rather than Jackson–Jordán's. —
+    *Delivered*: re-scoped (*Decisions made*).
   - Then the next layer's sub-phase opens: CARRIER, from `notes/Phase40-design.md` §3,
-    design-first at the top rung.
+    design-first at the top rung. — **Not delivered by this commit, by scope**: the closing
+    dispatch was barred from opening it. Re-flagged as the next task in *Hand-off*.
 
 ## Blockers / open questions
 
-- None. The one PI call, PIN's disposition, is due at Slice 5.
+- None. The one PI call, PIN's disposition, was made at the close (*Decisions made*).
 
 ## Hand-off / next phase
 
-**Next concrete commit: Slice 5** (*Layer plan*), the 40a close — a docs commit syncing the
-public-facing status surfaces (README, `home_page/index.md`, `intro.tex`, `formalization.yaml`) to
-`d ≥ 2` and the PI's call on PIN. This is a **coordinator-sanctioned top-rung dispatch**; do not
-start it here.
+**40a is closed. Phase 40 continues with CARRIER** (`notes/Phase40-design.md` §3), the next layer,
+**not yet opened**. Its first commit is a **design-first, compiler-checked top-rung recon**. That
+recon settles CARRIER's new mirror definitions: the picture, admissibility, the lifting space, and
+"attains at the generic point". It also decides the β-headroom question (design doc §4). The
+commit that opens CARRIER mints its letter and its work log. Two follow-ups from Slice 4 ride with
+the layers that consume them (routed into design doc §3):
+- **FLAT**: pin `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`, and repoint the
+  stand-in `\uses{lem:trivial-motions-rank-bound}` of `thm:theorem-55-6-rows`;
+- **BRIDGE** (optional): re-base the spanning
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` as a corollary of the row-rank form.
 
 ## Decisions made during this phase
 
 - **2026-09-25 — opened** (PI: SPINE2 is the first sub-phase of Phase 40; weaken in place).
   Verbatim `notes/pencil/adjudications.md`.
-- **2026-09-25 — Slice 1 lands.** The recon's hunks applied verbatim except the case-iii.tex
-  triangle-base proof prose, which needed rewording (not just the floor numeral) since the proof
-  no longer invokes `lem:adjacent-degree-two-pair`. Gates: `lake build` (full tree, 2968 jobs, zero
-  warnings), `lake lint`, `blueprint/lint.sh`, `blueprint/verify.sh` (`checkdecls` clean) — all
-  green.
-- **2026-09-25 — Slices 2–3 land as one commit.** Slice 3 was pulled in: Slice 2 alone breaks the
-  build, since `GenericLift/{PanelGeneric,HingeGeneric}.lean` call the weakened Theorem55 producer
-  with their own still-`6`-pinned `hD` (a genuine dependency, already in the recon's hunk blob, not
-  scope creep). Repairs beyond the recon's hunks: `Molecule/Theorem56.lean`'s literal
-  `Graph.six_le_bodyBarDim` repointed to `three_le_bodyBarDim_of_two_le`; one docstring rewrap for
-  `longLine`; `case-i.tex`'s `lem:cycle-realization` bound restated `m ≤ k+2`; `case-iii.tex`'s
-  `lem:case-III` proof gained `lem:low-degree-vertex` in `\uses` (pins
-  `Graph.exists_degree_eq_two_of_noRigid`'s `exists_degree_le_two` root). Gates all green.
-- **2026-09-25 — Slice 4 lands.** Transcribed verbatim from read-only opus/fable A/B spikes, no
-  re-derivation. **Pin debt (cleanup candidate):** `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`
-  (the `≤` brick) has no `\lean{}` pin anywhere in the blueprint; `thm:theorem-55-6-rows` uses
-  `lem:trivial-motions-rank-bound` as a stand-in pointer. **Optional cleanup candidate:** the
-  spanning `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is now a ~10-line corollary of
-  the new theorem (fable-spike-checked, not landed here) — its `[Nonempty α]` is unnecessary.
-  **BRIDGE open point:** `notes/Phase40-design.md` §3 BRIDGE. Gates all green.
+- **Slice 1** landed the recon's hunks verbatim, except `case-iii.tex`'s triangle-base proof prose,
+  reworded since the proof no longer invokes `lem:adjacent-degree-two-pair`.
+- **Slices 2–3 landed as one commit**: Slice 2 alone breaks the build, since `GenericLift/` calls the
+  weakened producer with its own `6`-pinned `hD`. Repairs beyond the recon's hunks: the
+  `Theorem56.lean` `hD` line; `lem:cycle-realization`'s bound restated `m ≤ k+2`; and
+  `lem:case-III`'s proof `\uses` gained `lem:low-degree-vertex`.
+- **Slice 4** was transcribed verbatim from read-only opus/fable A/B spikes. Its two follow-ups were
+  routed at the close (*Hand-off*). Its BRIDGE open point is design doc §3 BRIDGE.
+- **2026-09-25 — PIN re-scoped** (PI, at the close; verbatim `notes/pencil/adjudications.md`).
+  PIN stays queued. It is re-scoped to formalizing Jackson–Jordán's own pin-collinear proof: a
+  second, independent proof of the planar theorem 40a already proves by KT's route. Its seed is the
+  staged field-general write-up in `notes/w4-pending/JJ-field-general/`. It is multi-phase.
+- **2026-09-25 — Slice 5, the close.** The JJ citation was verified against Crossref: *Discrete
+  Comput. Geom.* 40(2) (2008) 258–278, doi:10.1007/s00454-008-9100-z. It enters
+  `formalization.yaml` as an `independently-proves` source, and the `n ≥ 3` scope restriction left
+  its `fidelity`. The re-read restated changelog asides in `case-iii.tex` and
+  `molecular-induction.tex`, and `pencil.tex`'s now-stale "extended to `n = 2`" note. No exposition
+  entries: the edit is project-side (`notes/BlueprintExposition.md`, *Phase 40a*).

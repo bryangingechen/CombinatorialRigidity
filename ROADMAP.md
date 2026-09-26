@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40a. The Katoh–Tanigawa spine at `n = 2` — the planar molecular theorem (post-program) — PENCIL-X0 | `Molecular/{AlgebraicInduction,GenericLift}/`, `Induction/ForestSurgery/ChainExtraction.lean`, `BodyBar/Framework.lean` (structural edit, in place) | ◐ In progress — opened 2026-09-25; first sub-phase of Phase 40, the `X₀` formalization (see `notes/Phase40a.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 (the Katoh–Tanigawa spine at `n = 2`) ✓ closed 2026-09-25; next: CARRIER, not yet opened (see `notes/Phase40a.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -735,7 +735,7 @@ chain `v₀…v_d`, eqs. 6.46–6.67), completed Theorems 5.5 and 5.6 at general
 (`PanelHingeFramework.molecular_conjecture`: a simple spanning graph on ≥ 2
 bodies has an infinitesimally rigid genuine **body-hinge** realization iff it
 has one as a **panel-hinge** framework; green + axiom-clean for
-`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`). The work split along the recon's
+`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a). The work split along the recon's
 carrier-grade fault line: **`CARRIER`** (23a, the mechanical `screwDim k`
 spine lift), **`CHAIN`** (23b–23f — the general-`d` chain dispatch; after the
 `±r`-block rank cert hit the *member-mapping wall* (source-verified intrinsic
@@ -1152,9 +1152,10 @@ the D5 blueprint debt, two pending exposition entries) are its §7. Hand-off →
 configuration space attains the generic rank. It discharges the two statements Phase 39's
 headline carries (`X0Dist`, `X0Gen`), and so proves the pencil conjecture outright over every
 infinite field. Layers by stable code, lettered only as each opens:
-- **SPINE2**: the Katoh–Tanigawa spine at `n = 2`. This replaces Jackson–Jordán's pin-collinear
-  theorem, which the informal proof cites, field-generally;
-- **CARRIER**: planar pictures, the lifting space, `X₀`;
+- **SPINE2** ✓ (sub-phase 40a, closed 2026-09-25): the Katoh–Tanigawa spine at `n = 2`. This
+  replaces Jackson–Jordán's pin-collinear theorem, which the informal proof cites, field-generally;
+- **CARRIER** (next; opens design-first at the top rung, not yet opened): planar pictures, the
+  lifting space, `X₀`;
 - **FLAT**: the flat rank;
 - **BRIDGE**: Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps;
@@ -1163,14 +1164,21 @@ infinite field. Layers by stable code, lettered only as each opens:
 
 The design doc carries the proof map, label by label.
 
-#### Phase 40a — the Katoh–Tanigawa spine at `n = 2` (SPINE2) — ◐ In progress
+#### Phase 40a — the Katoh–Tanigawa spine at `n = 2` (SPINE2) — ✓ Complete
 
-A structural edit. The landed Theorem 5.5/5.6 chain and the molecular conjecture weaken their
-dimension floor from `n ≥ 3` (`D ≥ 6`) to `n ≥ 2` (`D ≥ 3`) in place, and one triangle case is
-repaired. This was compiler-checked by the 2026-09-25 sizing recon (`notes/Phase39-design.md`
-§ *`n = 2` sizing recon*), and it overturns Prospect G2's 2026-07-10 drop. The planar case is
-Jackson–Jordán's pin-collinear theorem, now over every infinite field, which bears on the queued
-PIN item (the PI decides at 40a's close). Work log `notes/Phase40a.md`.
+**✓ Complete** (opened and closed 2026-09-25; work log `notes/Phase40a.md`). A structural edit:
+the landed Theorem 5.5/5.6 chain, the generic-lift rank theorems and the molecular conjecture
+(simple and multigraph) weakened their dimension floor in place, from `n ≥ 3` (`D ≥ 6`) to
+`n ≥ 2` (`D ≥ 3`), through one new lemma, `Graph.three_le_bodyBarDim_of_two_le`. The `|V| = 3`
+triangle base was repaired to use a single degree-2 vertex, since the adjacent-pair lemma is false
+at `D = 3` (`K_{2,3}`). The sub-phase also landed the non-spanning row-rank form of Theorem 5.6
+that BRIDGE consumes, `PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`.
+The plan was the compiler-checked 2026-09-25 sizing recon (`notes/Phase39-design.md`
+§ *`n = 2` sizing recon*), which overturned Prospect G2's 2026-07-10 drop. The planar case of the
+molecular conjecture is Jackson–Jordán's pin-collinear theorem (*Discrete Comput. Geom.*
+**40**(2) (2008) 258–278), now proved over every infinite field. At the close the PI re-scoped the
+queued PIN item to a second, independent proof by Jackson–Jordán's own route (*Queued* below).
+Headline axioms unchanged (re-verified at the close).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1179,7 +1187,8 @@ a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
 this commit opens a phase*). (The PROSPECT proof-study queue is concluded:
 its last grouping, G3, ran and closed as Phase 34; G2 planar was dropped
 2026-07-10 — Phase 31's sizing recon refuted its gating lemma at `D = 3`;
-verdicts in `notes/Prospect.md`. COPLANAR opened and closed as Phase 35 —
+verdicts in `notes/Prospect.md`; the planar theorem later landed anyway, as
+Phase 40a, by a route that avoids that lemma. COPLANAR opened and closed as Phase 35 —
 §35 above. **AUTOMATE** — the proof-automation / `grind`-adoption round —
 opened and closed as Phase 36 ahead of the queue at the user's initiative
 (§36 above); it spun off **AUTOMATE-Z**, the deferred `Molecular/`
@@ -1205,15 +1214,15 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   splitting, block-and-hole combinatorics — the latter pebble-game-adjacent
   to Phases 9–11) plus one new subvariety-generic vertex-splitting engine;
   candidate routes + prerequisite ladder in `notes/Origami.md`.
-- **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
-  pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
-  not a Case-III adaptation: the Phase-31 G2 sizing recon refuted KT's
-  Lemma 4.6 at `D = 3` (`K_{2,3}`; `notes/Prospect.md` G2), so none of
-  the formalized induction's Case-III machinery transfers. Placeholder
-  (user-queued 2026-07-18); unplanned — opening it starts with its own
-  survey/planning note. **Re-scope pending:** Phase 40a delivers the 2-d molecular theorem by
-  Katoh–Tanigawa's own route at `d = 2` (the sizing recon refutes G2's drop), so PIN's target
-  may already be met; the PI decides at 40a's close.
+- **PIN** — a **second, independent proof** of the 2-d molecular conjecture, formalizing
+  Jackson–Jordán's own pin-collinear body-and-pin argument (*Discrete Comput. Geom.* **40**(2)
+  (2008) 258–278, doi:10.1007/s00454-008-9100-z). The theorem itself is already proved: Phase 40a
+  extended Katoh–Tanigawa's route to `d = 2` over every infinite field (§40a). **Re-scoped by the PI
+  at 40a's close** (2026-09-25, verbatim `notes/pencil/adjudications.md`): PIN's target is now JJ's
+  argument itself, a new program rather than a Katoh–Tanigawa adaptation. Its seed is the staged,
+  unlanded field-general JJ write-up in `notes/w4-pending/JJ-field-general/` (one writer, not
+  second-read). Multi-phase; user-queued 2026-07-18; unplanned — opening it starts with its own
+  survey/planning note.
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

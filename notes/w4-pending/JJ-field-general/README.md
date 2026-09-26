@@ -20,6 +20,9 @@ It is copied verbatim from the writer's message. Its driver is already ported:
 showed the landed KT spine extends to `n = 2` over every infinite field. That replaces every
 Jackson–Jordán use on the `X₀` route. So this proof is a **fallback**, not on the route
 (`notes/Phase40-design.md` §2, §3 BRIDGE). It is also a one-writer proof, not yet second-read.
+Since 40a's close (2026-09-25) it is also the named **seed of the queued PIN item**, re-scoped by
+the PI to a second, independent proof by Jackson–Jordán's route (ROADMAP *Queued*;
+`notes/pencil/adjudications.md`).
 
 **To land it, if ever wanted** (the procedure the 2026-09-25 readers' landings followed):
 1. Dispatch a second reader on `write-up.md` (brief: `notes/Phase40-design.md`, Appendix).

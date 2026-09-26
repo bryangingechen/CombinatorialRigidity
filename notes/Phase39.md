@@ -8,7 +8,7 @@ about the main component `X₀` of the pencil configuration space**: `pencil_con
 (`Molecule/Pencil/X0.lean`) carries `X0Dist` and `X0Gen` as hypotheses and nothing else (axioms
 `[propext, Classical.choice, Quot.sound]`, re-run at the close). **The pencil conjecture itself is
 not yet proved**; it is proved outright when **Phase 40** (PENCIL-X0, plan
-`notes/Phase40-design.md`; sub-phase 40a open, `notes/Phase40a.md`) discharges the two statements.
+`notes/Phase40-design.md`; its first sub-phase, 40a, closed 2026-09-25, `notes/Phase40a.md`) discharges the two statements.
 The kernels (K-res)/`kres`, (K-c), (K-bare-c) with (α), the rest of the W4 build and the paused
 smark attack are held as Phase 40's fallback (its design doc §6); A6, the hub-normalization
 factoring item, the D5 blueprint debt and the two `[pending]` exposition entries are deferred to

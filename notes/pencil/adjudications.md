@@ -799,3 +799,27 @@ can use a subagent for this mostly mechanical work while you proceed."**
 **Everything else stands unchanged:** `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` and
 the landed headline are not edited (the new headline sits beside them); gr10 CLOSED; the adversarial
 census deferred, not cancelled.
+
+## 2026-09-25 (40a close) — PIN re-scoped: a second, independent proof by Jackson–Jordán's route
+
+Sub-phase 40a (the Katoh–Tanigawa spine at `n = 2`) proves PIN's original target, the 2-d
+molecular conjecture, by Katoh–Tanigawa's route, over every infinite field. The opening call had
+left PIN's disposition to the PI at 40a's close (the 2026-09-25 "(later)" entry above, *(c)*). The
+user's decision, relayed verbatim in the closing dispatch's prompt:
+
+> PIN disposition: **"Re-scope to JJ's route — Keep PIN queued, re-scoped to formalizing
+> Jackson–Jordán's independent pin-collinear proof (a second proof; the staged field-general JJ
+> write-up in notes/w4-pending/ would be its seed). Multi-phase."**
+
+**Decided.**
+- *(a)* PIN stays **queued**: neither cancelled nor opened. Its target becomes a **second,
+  independent proof** of the planar molecular theorem, formalizing Jackson–Jordán's own
+  pin-collinear body-and-pin argument (*Discrete Comput. Geom.* 40(2) (2008) 258–278). The theorem
+  itself is already proved, by 40a.
+- *(b)* Its seed is the staged, unlanded field-general Jackson–Jordán write-up,
+  `notes/w4-pending/JJ-field-general/` (one writer, not yet second-read).
+- *(c)* It is **multi-phase**. Its number, and any letters, are minted when it opens.
+
+**Everything else stands unchanged:** Phase 40 stays in progress, and its next layer, CARRIER
+(`notes/Phase40-design.md` §3), is not opened by the closing commit. The call does not reorder the
+queue: ORIGAMI remains the next queued phase to open.

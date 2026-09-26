@@ -962,6 +962,19 @@ discharge point.
   kernel is proved; if Phase 40 discharges the main-component statements the
   entry closes as superseded.
 
+### Phase 40a (the Katoh–Tanigawa spine at `n = 2`, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-09-25).** The sub-phase restates existing
+(all-green) nodes at the floor `D ≥ 3` and adds one node, `thm:theorem-55-6-rows`. No KT-side
+compressed step surfaced: KT fix `d ≥ 2` throughout (p. 651), so the lowered floor recovers their
+own range rather than expanding anything they compress. The two new arguments are project-side.
+The triangle-base repair, a single degree-2 vertex in place of the `d = 3`-only adjacent pair
+(false at `D = 3`, `K_{2,3}`), undoes a crutch of the formalization's own `D ≥ 6` pinning. The
+non-spanning row-rank form serves Phase 40's consumer, not a step of KT's proof. The done
+triangle-floor entry above (`lem:case-III` `|V|=3` base) stays done: `case-iii.tex`'s *The triangle
+floor* now reads `d ≤ 3` for the vacuous cycle disjunct, and `lem:case-III`'s proof names the single
+degree-2 vertex. The ledger stays at **2 pending / 36 done** (of 38).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

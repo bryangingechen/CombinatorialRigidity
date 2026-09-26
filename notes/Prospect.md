@@ -118,6 +118,10 @@ first dispatch should settle.
   `d = 3`), and Case III obstructs twice (`chainData_extract` separately
   needs `n ≥ 3`): a planar phase would mean formalizing the JJ
   pin-collinear route — a new program, not a Case-III adaptation.
+  **Overturned 2026-09-25** (the `n = 2` sizing recon, `notes/Phase39-design.md`): the `K_{2,3}`
+  refutation stands, but neither obstruction binds — the triangle base needs only one degree-2
+  vertex, and `chainData_extract` weakens to `D ≥ 3` — so Phase 40a extended the chain to `n = 2`
+  in place (ROADMAP §40a).
 - **S3 — RECLASSIFIED at Phase 31 (2026-07-10): already formalized in
   Phase 20; the deferral claim was stale.** The full tightness equality
   (`|X−e| = D(|V(X)|−1)` exactly) and the `G[V(X)]`-rigid conclusion
@@ -355,6 +359,7 @@ the phase order):
 5. **G2 planar — DROPPED (2026-07-10):** the sizing recon refuted
    `exists_adjacent_degree_two_pair` at `D = 3` (`K_{2,3}`; the G2
    entry), so the track drops per this item's pre-registered rule.
+   (The planar theorem landed anyway, as Phase 40a, 2026-09-25; the G2 entry.)
 
 Each later grouping's opening commit mints its number per
 `PHASE-BOUNDARIES.md` *When this commit opens a phase* and seeds its

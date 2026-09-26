@@ -1108,8 +1108,8 @@ work that the paper covers in a phrase. KT open Lemma~6.13 by Lemma~4.6: $G$ is
 either a short cycle (handled by the Lemma~5.4 cycle family,
 \cref{lem:cycle-realization}) or carries a length-$d$ chain. The formalized
 reduction runs this dichotomy directly (\cref{lem:chain-data-extract}); at
-$d = 3$ its cycle disjunct is mathematically vacuous (a cycle witness would
-force $|V(G)| \le d = 3$, contradicting the $|V(G)| \ge 4$ floor the chain
+$d \le 3$ its cycle disjunct is mathematically vacuous (a cycle witness would
+force $|V(G)| \le d \le 3$, contradicting the $|V(G)| \ge 4$ floor the chain
 disjunct runs under), so in practice the split recursion always descends via
 the chain disjunct until $|V(G)| = 3$. There it genuinely cannot recurse:
 splitting off a degree-2 vertex of a triangle leaves the \emph{double edge} on
@@ -1133,7 +1133,7 @@ upgrading by the genericity device) is also given, as the accessible worked
 instance of the general cyclic construction, off the recursion's live path.
 The one Lemma~5.4 node (\cref{lem:cycle-realization}) thus serves both the
 triangle floor at $m = 3$ and the $|V(G)| \ge 4$ chain dichotomy's cycle
-disjunct at $m \ge 4$ (the latter vacuous at $d = 3$).
+disjunct at $m \ge 4$ (the latter vacuous at $d \le 3$).
 
 \begin{lemma}[$|V|=3$ triangle base: vertex and edge pin; KT \S6.4]
   \label{lem:triangle-third-edge}
@@ -1340,10 +1340,8 @@ isomorphisms $\rho_i$ one at a time.
   splitting-off's short-circuit edge $e_0$). The eq.-(6.22) nested-IH rank
   bound is discharged internally from the all-$k$ IH
   (\cref{lem:case-III-nested-rank-lower}), not carried; the $d = 3$ form is
-  the $k = 2$ specialization; and the floor $D \ge 3$ (weakened from
-  $D \ge 6$) already reaches the planar case $n = 2$ ($D = 3$), where the
-  triangle floor below is realized by a single degree-2 vertex rather than
-  an adjacent pair.
+  the $k = 2$ specialization, and the floor $D \ge 3$ includes the planar
+  case $n = 2$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1352,14 +1350,12 @@ isomorphisms $\rho_i$ one at a time.
         lem:simple-minimal-noRigid, lem:reduction-step,
         lem:case-III-chain-dispatch, lem:low-degree-vertex}
   Induction on $|V(G)|$, proving both conjuncts of the statement together.
-  At $|V| = 3$ the recursion bottoms on the triangle floor: at the weakened floor $D \ge 3$
-  the adjacent-pair lemma \cref{lem:adjacent-degree-two-pair} is no longer available (it is
-  false at $D = 3$), so a single degree-2 vertex $v$, from the average-degree count
-  \cref{lem:low-degree-vertex}
-  (\texttt{Graph.exists\_degree\_eq\_two\_of\_noRigid}), is picked instead, together with any
-  other vertex $a \ne v$ of the three-vertex graph as its companion --- adjacency of $v, a$ is
-  never used below. The degree-2 closure at $v$ then supplies its two edges $e_a : v$--$a$,
-  $e_b : v$--$b$, which pin the
+  At $|V| = 3$ the recursion bottoms on the triangle floor. A degree-2 vertex $v$ exists by the
+  average-degree count \cref{lem:low-degree-vertex}
+  (\texttt{Graph.exists\_degree\_eq\_two\_of\_noRigid}); any other vertex $a \ne v$ of the
+  three-vertex graph serves as its companion, since adjacency of $v, a$ is never used below (the
+  adjacent-pair lemma \cref{lem:adjacent-degree-two-pair} is false at $D = 3$). The degree-2
+  closure at $v$ supplies its two edges $e_a : v$--$a$, $e_b : v$--$b$, which pin the
   third edge and the vertex set $V(G) = \{v,a,b\}$ (\cref{lem:triangle-third-edge}); packaging
   $G$ as the $3$-cycle $C_3$ then realizes it as the $m = 3$ instance of the KT Lemma-5.4
   cycle family (\cref{lem:cycle-realization}, stated by KT at $3 \le |V| \le D$, of which the
@@ -1368,7 +1364,7 @@ isomorphisms $\rho_i$ one at a time.
   Lemma-4.6/4.8 chain-vs-short-cycle dichotomy. On the short-cycle disjunct,
   the Lemma-5.4 cycle family (\cref{lem:cycle-realization}) closes $G$
   directly --- a genuine branch at $d \ge 4$, mathematically vacuous at
-  $d = 3$ (a cycle witness forces $|V(G)| = m \le d = 3$, contradicting the
+  $d \le 3$ (a cycle witness forces $|V(G)| = m \le d \le 3$, contradicting the
   $|V| \ge 4$ floor this disjunct runs under). On the chain disjunct it
   returns a length-$d$ chain $v_0 v_1 \cdots v_d$ together with the base
   $v_1$-split's minimality/simplicity/measure data; splitting off at $v_1$
@@ -1382,10 +1378,9 @@ isomorphisms $\rho_i$ one at a time.
   explicitly as an accessible entry point in
   \cref{lem:case-III-candidate-dispatch-d3}.
 
-  At the weakened floor $D \ge 3$ the triangle base no longer consumes the $d = 3$-only
-  \cref{lem:adjacent-degree-two-pair} (false at $D = 3$); a single degree-2 vertex suffices,
-  and closes the same way through \cref{lem:cycle-realization} at $m = 3$. The dichotomy
+  The triangle base needs a single degree-2 vertex, not the $d = 3$-only
+  \cref{lem:adjacent-degree-two-pair}. The dichotomy
   itself is run by the general extractor at every grade, its $|V| \ge 4$ cycle disjunct closed
-  by \cref{lem:cycle-realization} (a genuine branch at $d \ge 4$, vacuous at $d = 3$); and the
+  by \cref{lem:cycle-realization} (a genuine branch at $d \ge 4$, vacuous at $d \le 3$); and the
   cycle family is load-bearing for the $k > 0$ Case~II (\cref{lem:case-II}) as well.
 \end{proof}

@@ -4,10 +4,11 @@
 sub-lettered home in the `notes/PhaseN-design.md` pattern (`notes/CLAUDE.md`): the target, the
 index of work already done, the layer plan by **stable codes**, the proof map, the risks, and the
 standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
-open. **Open now: 40a = SPINE2** (`notes/Phase40a.md`). It replaces the planning note
+open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **next: CARRIER** (§3), not yet
+opened. This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
 pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
-(2026-09-25, both entries).
+(the 2026-09-25 entries).
 
 **Read §2 before doing any mathematics.** Everything the route needs exists in written,
 second-read form, so the job is transcription and formalization, not re-derivation.
@@ -45,8 +46,8 @@ second-read form, so the job is transcription and formalization, not re-derivati
 | the generic and distinct motives | Step MC19: (MC-123)–(MC-130), (MC-133), (MC-157); nondegeneracy (MC-13), (MC-14) (Step MC8) | second-read 2026-09-25 |
 | the certificate leaves as hand proofs over every field | Step MC20, (MC-134)–(MC-139); characteristic-2/3/5 certificates (MC-168) | second-read |
 | the consumer map and the L0 spike | `notes/Phase39-design.md` § *X₀ architecture recon (2026-09-25)* (frozen archive; the spike verbatim at its end) | transcribed into Phase 39 item 0 |
-| **the `n = 2` spine** | `notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)* (frozen archive: diffs, one new lemma, witness statements, reproduction recipe). The site list is recomputed in `notes/Phase40a.md` | compiler-checked in scratch copies; sub-phase 40a |
-| Jackson–Jordán beyond ℝ (fallback only) | Step MC11's companion section, (MC-33). A complete field-general write-up, one writer and not second-read, is staged unlanded in `notes/w4-pending/JJ-field-general/` (driver `w4/jjbuild.py`) | not needed on route (a) |
+| **the `n = 2` spine** | `notes/Phase39-design.md` § *`n = 2` sizing recon (2026-09-25)* (frozen archive: diffs, one new lemma, witness statements, reproduction recipe). The site list is recomputed in `notes/Phase40a.md` | **landed**, sub-phase 40a (closed 2026-09-25) |
+| Jackson–Jordán beyond ℝ (fallback only) | Step MC11's companion section, (MC-33). A complete field-general write-up, one writer and not second-read, is staged unlanded in `notes/w4-pending/JJ-field-general/` (driver `w4/jjbuild.py`) | not needed on route (a); since 40a's close, the seed of the re-scoped PIN item (ROADMAP *Queued*) |
 | drivers behind every figure | `notes/scripts/w4/README.md`, the *Step MCnn's drivers* bullets; commands in `notes/scripts/README.md` | the unguarded ones are listed in *Harness debt* |
 | the literature, verified | `K-main.md` *Literature, checked 2026-09-24* (Crossref data): Jackson–Jordán DCG 40 (2008) and its TR; KT 2011; Crapo–Whiteley | cite from there |
 | the superseded split/contract route | `notes/pencil/W4-reopen.md` (held record), `W4-reopen-archive.md`, `workbook/W4.md` | fallback only (§6) |
@@ -63,17 +64,18 @@ Adjacent layers may share a sub-phase, and the grouping is decided at each open.
 column is the proof map: claims in proof order, their step, and their second-reading state.
 Briefing a layer takes one call, `python3 notes/ledger.py --brief <labels>`.
 
-### SPINE2 — the KT spine at `n = 2` → **sub-phase 40a, OPEN** (`notes/Phase40a.md`)
+### SPINE2 — the KT spine at `n = 2` → **sub-phase 40a, ✓ closed 2026-09-25** (`notes/Phase40a.md`)
 
-A structural edit of landed chapters: weaken `6 ≤ Graph.bodyBarDim n` to `3 ≤ …` (and
-`hd : 3 ≤ n` to `2 ≤ n`) in place, and repair the `|V| = 3` triangle case of
-`case_III_hsplit_producer_all_k`. That gives `rankHypothesis_of_theorem_55_gen` and
+**Done.** A structural edit of landed chapters: `6 ≤ Graph.bodyBarDim n` weakened to `3 ≤ …` (and
+`hd : 3 ≤ n` to `2 ≤ n`) in place, and the `|V| = 3` triangle case of
+`case_III_hsplit_producer_all_k` repaired. That gives `rankHypothesis_of_theorem_55_gen` and
 `molecular_conjecture` at `n = 2`, and the generic-normals row rank at `(n, k) = (2, 1)`, all over
-every infinite field. It also lands the non-spanning row-rank form that BRIDGE consumes. It needs
-no informal mathematics. KT 2011 works at `d ≥ 2` throughout: p. 651, on the architecture recon's
-reading, and compiler-confirmed for this spine by the sizing recon. Its planar corollary is
-the pin-collinear theorem of Jackson–Jordán (DCG 40, 2008), which bears on the queued PIN item
-(decided at 40a's close).
+every infinite field, plus the non-spanning row-rank form BRIDGE consumes
+(`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`). KT 2011
+fixes `d ≥ 2` throughout (p. 651, checked against the local text). The planar corollary is
+Jackson–Jordán's pin-collinear theorem (*Discrete Comput. Geom.* 40(2) (2008) 258–278); at 40a's
+close the PI re-scoped the queued PIN item to a second, independent proof by their route (ROADMAP
+*Queued*).
 
 ### CARRIER — planar pictures, `L(q)`, `X₀` and "the generic point attains"
 
@@ -104,6 +106,11 @@ the pin-collinear theorem of Jackson–Jordán (DCG 40, 2008), which bears on th
 - **Lean reuse.** The inequality is landed at grade 1:
   `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean`). The
   upper bound `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` is general.
+- **Pin debt, routed here from 40a (Slice 4).** That upper bound has **no `\lean{}` pin** anywhere
+  in the blueprint; `thm:theorem-55-6-rows` (`panel-layer.tex`) points at
+  `lem:trivial-motions-rank-bound` as a stand-in for it. FLAT consumes the bound, so the FLAT
+  commit that first uses it pins it on its own node and repoints that stand-in `\uses`, in the same
+  commit. (If a cleanup round reaches it first, it lands there instead.)
 - **New.** `F(q) ≅ L(q)`, and the split `Λ²K⁴ = W_Π ⊕ W′` against the opaque `ScrewSpace`
   carrier. Treat anything touching the carrier as fragility zone (opus minimum for producers).
 
@@ -126,6 +133,13 @@ supplies it. BRIDGE builds two things on top of SPINE2:
   that drops `[Nonempty α]`/`hspan` by swapping in the new SPINE2 row-rank producer
   (`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`); the
   total `hends` remained, and that is the open point BRIDGE still needs to close.
+- **Optional re-base, routed here from 40a (Slice 4).** The spanning
+  `PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is now a ~10-line
+  corollary of the SPINE2 row-rank form (fable-spike-checked, not landed), and its `[Nonempty α]`
+  is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
+  (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`; the first is
+  the declaration the open point above generalizes. Take it in the BRIDGE slice that builds the edge-restricted
+  variant, if that slice finds it cheaper; otherwise it is a post-Phase-40 cleanup-round item.
 
 ### STEPS — the local steps of the induction
 

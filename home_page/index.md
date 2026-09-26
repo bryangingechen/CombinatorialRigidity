@@ -51,12 +51,16 @@ freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all
 three cases including the hardest, Case III: `k=0`, no proper rigid
 subgraph) and **Theorem 5.6** (every simple spanning multigraph realizes
 the deficiency rank, reconciling the rigidity-matrix rank with the
-combinatorial deficiency) hold at every dimension `d ≥ 3`, and the
+combinatorial deficiency) hold at every dimension `d ≥ 2`, and the
 **molecular conjecture itself** — Katoh–Tanigawa's Conjecture 1.2, for
 simple graphs: such a graph can be realized as an infinitesimally rigid
 body-hinge framework iff it can be realized as an infinitesimally rigid
 panel-hinge framework — is a theorem of the development
-(`PanelHingeFramework.molecular_conjecture`). On top of it sits the
+(`PanelHingeFramework.molecular_conjecture`). In the plane, where each hinge
+is a pin joining two bodies and each panel is a line, the molecular
+conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
+frameworks; the development proves it over every infinite field, by
+Katoh–Tanigawa's argument (phase 40). On top of it sits the
 molecule application: the generic bar-joint rigidity matroid in dimension
 three, in linear-matroid form (phase 24); projective invariance plus the
 molecule modelling equivalence — the chain identifying bar-joint motions
@@ -111,10 +115,9 @@ two-edge-connected multigraph has such a realization with adjacent concurrency p
 and a generic one whenever a nondegenerate realization exists at all — and proved the conjecture
 conditionally on them (`pencil_conjecture_of_X0`), over every infinite field. **The conjecture
 itself is not yet proved.** A proof of the two statements has been worked out informally and
-independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. Its first step extends
-Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to the plane, where
-the molecular conjecture becomes Jackson–Jordán's theorem on pin-collinear body-and-pin frameworks
-(2008), which would then hold over every infinite field.
+independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. Its first step is
+done: it extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to
+the plane (above), which the proof uses in place of Jackson–Jordán's theorem.
 
 The table below and `ROADMAP.md` carry the fine-grained status.
 
@@ -147,7 +150,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    25 | projective duality + the molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ |
 |    26 | the molecule application (Corollary 5.7) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean` | ✓ |
 |    39 | the hinge-pencil conjecture: reduction to two main-component statements (the conjecture itself is conditional on them) | `Molecular/Molecule/Pencil/` | ✓ |
-|    40 | the hinge-pencil conjecture: the main-component proof (first step: the Katoh–Tanigawa theorems in the plane) | `Molecular/` | ◐ |
+|    40 | the hinge-pencil conjecture: the main-component proof (first step done: the Katoh–Tanigawa theorems in the plane) | `Molecular/` | ◐ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

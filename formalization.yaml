@@ -119,6 +119,20 @@ sources:                                                          # [required] l
       are also proved at their full multigraph strength, with the panel side stated in KT's
       hinge-coplanar panel model.
 
+  - title: "Pin-collinear body-and-pin frameworks and the molecular conjecture"
+    authors: ["B. Jackson", "T. Jordán"]
+    id: "doi:10.1007/s00454-008-9100-z"
+    type: "article"                                             # Discrete Comput. Geom. 40(2) (2008) 258-278
+    location: "main theorem (the 2-dimensional molecular conjecture)"
+    relationship: "independently-proves"
+    author_endorsement: "not-contacted"
+    note: >-
+      Their theorem - the molecular conjecture in the plane, where each hinge is a pin and each
+      panel a line - is proved here as the n = 2 case of the Katoh-Tanigawa chain
+      (CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture and its multigraph
+      form; phase 40), over any infinite field, not by Jackson-Jordán's own argument.
+      Formalizing that argument as a second proof is a queued item.
+
   - title: "On the rigidity of molecular graphs"
     authors: ["B. Jackson", "T. Jordán"]
     id: "doi:10.1007/s00493-008-2287-z"
@@ -219,8 +233,9 @@ status:
     granting them, every spanning multigraph attains the deficiency rank by such a realization,
     over any infinite field (pencil_conjecture_of_X0, a conditional theorem; the conjecture
     itself is not yet proved). In progress (phase 40): the proofs of those two statements, carried
-    meanwhile as the headline's explicit hypotheses, never as sorry. Its first step extends
-    Theorems 5.5/5.6 and the molecular conjecture to dimension 2.
+    meanwhile as the headline's explicit hypotheses, never as sorry. Its first step, complete,
+    extended Theorems 5.5/5.6 and the molecular conjecture to dimension 2, where the molecular
+    conjecture is Jackson-Jordán's 2008 pin-collinear theorem, here over any infinite field.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -307,8 +322,9 @@ status:
       Katoh-Tanigawa 2011 Theorem 5.5 (the realization theorem, all three cases including the
       hardest, Case III): every minimal k-dof-graph on >= 2 vertices admits a
       nondegenerate-hinge panel realization whose rigidity matrix attains rank D(|V|-1) - k,
-      at every dimension n >= 3 (D = (n+1 choose 2) >= 6) and over any infinite field of any
-      characteristic (phase 33; KT's real statement is the K = R case); generic for simple G.
+      at every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40 lowered the floor from
+      n >= 3) and over any infinite field of any characteristic (phase 33; KT's real statement is
+      the K = R case); generic for simple G.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -319,7 +335,7 @@ status:
     description: >-
       Katoh-Tanigawa 2011 Theorem 5.6: every simple spanning multigraph has a panel-hinge
       realization attaining the deficiency rank, rank R(G,p) = D(|V|-1) - def(G~), at every
-      dimension n >= 3 and over any infinite field of any characteristic (phase 33). With the
+      dimension n >= 2 and over any infinite field of any characteristic (phase 33). With the
       def = corank bridge this completes the Katoh-Tanigawa Proposition 1.1 reconciliation
       (CombinatorialRigidity.Molecular.rigidityMatrix_prop11).
     sorry_count: 0
@@ -332,8 +348,9 @@ status:
     description: >-
       The Molecular Conjecture (Tay-Whiteley 1984; Katoh-Tanigawa 2011 Conjecture 1.2): a
       simple spanning graph on >= 2 bodies has an infinitesimally rigid genuine body-hinge
-      realization iff it has one as a panel-hinge framework, at every dimension n >= 3 and
-      over any infinite field of any characteristic (phase 33).
+      realization iff it has one as a panel-hinge framework, at every dimension n >= 2 and
+      over any infinite field of any characteristic (phase 33). At n = 2 (phase 40) this is
+      Jackson-Jordán 2008's pin-collinear theorem, here over any infinite field.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -408,7 +425,7 @@ status:
       Generic body-and-hinge rigidity from spanning trees (Tay 1989, Whiteley 1988;
       Jackson-Jordán 2010 Thm 6.1 / Cor 6.3, with the existential quantifier upgraded to
       every generic realization; phase 34): for a simple spanning multigraph on >= 2
-      bodies, at any dimension n >= 3 and over any infinite field, the affine-hinge
+      bodies, at any dimension n >= 2 and over any infinite field, the affine-hinge
       framework at every hinge-point assignment generic for row independence is
       infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees.
       The panel-normal analogue (JJ Thm 7.2, sharpened to an iff) is
@@ -427,7 +444,7 @@ status:
       set - parallel edges and loops admitted - has an infinitesimally rigid genuine body-hinge
       realization iff it has an infinitesimally rigid hinge-coplanar panel realization
       (KT's containment model: each hinge lies in the panel of each endpoint body), at
-      every dimension n >= 3 and over any infinite field of any characteristic. The
+      every dimension n >= 2 and over any infinite field of any characteristic. The
       multigraph Theorem 5.6 behind it is
       CombinatorialRigidity.Molecular.theorem_55_6_multigraph.
     sorry_count: 0
@@ -513,10 +530,11 @@ fidelity:
   divergences: >-
     Most statements are more general than their classical sources - over mathlib's multigraph
     `Graph alpha beta`, at arbitrary dimension, and (for the Katoh-Tanigawa chain) over any
-    infinite field rather than R, with the original real statements as the K = R case. Two
-    scope restrictions run the other way: the (k,l)-count matroid and the pebble game are
-    developed only in the matroidal regime l < 2k, which covers the (2,3) Laman case, and the
-    molecular results only at dimension n >= 3. The body-bar and body-hinge realization
+    infinite field rather than R, with the original real statements as the K = R case. One
+    scope restriction runs the other way: the (k,l)-count matroid and the pebble game are
+    developed only in the matroidal regime l < 2k, which covers the (2,3) Laman case. (The
+    molecular results, once restricted to dimension n >= 3, hold since phase 40 at every
+    n >= 2, Katoh-Tanigawa's own range d >= 2.) The body-bar and body-hinge realization
     theorems are formalized twice: in existence-of-realization form with an explicit witness,
     and in a generic form following Jackson-Jordán 2010's coordinate route, where "almost all"
     is delivered as one nonzero polynomial per framework class rather than as a measure-zero
@@ -617,7 +635,16 @@ alignment:
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
       status: "proved"
-      note: "At every dimension n >= 3 (D = (n+1 choose 2) >= 6) and over any infinite field, any characteristic (phase 33)."
+      note: "At every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40) and over any infinite field, any characteristic (phase 33)."
+
+    - source: "Jackson-Jordán 2008 (Discrete Comput. Geom. 40), the molecular conjecture in the plane for pin-collinear body-and-pin frameworks"
+      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture, CombinatorialRigidity.Molecular.molecular_conjecture_multigraph"
+      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+      status: "proved"
+      note: >-
+        The n = 2 instances, over any infinite field (phase 40), proved by Katoh-Tanigawa's
+        argument rather than Jackson-Jordán's; the multigraph form is stated in KT's
+        hinge-coplanar model, which at n = 2 is exactly the pin-collinear condition.
 
     - source: "Jackson-Jordán 2008 / Katoh-Tanigawa 2011 Corollary 5.7 (molecule rank formula r(G^2) = 3|V| - 6 - def(G~))"
       lean: "SimpleGraph.molecule_rank_formula"
