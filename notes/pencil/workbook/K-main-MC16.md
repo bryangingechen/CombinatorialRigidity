@@ -224,7 +224,7 @@ property. Its proper subsets satisfy (S), so `def₂(G[Y]) = max(0, s′(Y)) = 0
     since `e(Y₁, Y₂) ≤ e(Y₂, [R])`. So the minimum in (i) is attained inside `R`.
   - *`δ₂`.* By (MC-78) in `G`, a tight set containing `a, b` is inside `R` or is the edge `ab`.
 - **(v)** `k ≥ 3` is (MC-20), (MC-24)/(MC-25) and (MC-45), as landed. *(Since 2026-09-27, SHORT recon,
-  not yet second-read: `k = 4` is (MC-180) and `k = 3` is (MC-181), both through the antecedent `G`
+  second-read the same day: `k = 4` is (MC-180) and `k = 3` is (MC-181), both through the antecedent `G`
   with `x₂` suppressed. Neither uses `a ≁ b`, so the flag below is discharged on the route.)* *Flag:* at `k = 4` with
   `a ∼ b` (a 6-cycle, allowed in 𝒮), this rests on Step MC14's reading that (MC-22)–(MC-25) need no
   `a ≁ b`, confirmed by the 2026-09-24 second reading. `k = 2`, `a ≁ b`:

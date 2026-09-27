@@ -4,7 +4,7 @@
 group (`notes/Phase40-design.md` §3 STEPS), proved the base of the `X₀` induction and its two
 unconditional ear steps: every cycle attains (BASE), and if `X₀(G[V₁])` attains, `X₀(G)` attains
 for an open ear with `k ≥ 5` interior bodies, its ends possibly adjacent, or a closed ear with
-`k ≥ 2` ((MC-20)). **Next: a fresh read-only second reading of SHORT's new claims (MC-179)–(MC-182), then 40h opens as SHORT** — see *Hand-off*.
+`k ≥ 2` ((MC-20)). SHORT's new claims (MC-179)–(MC-182) are second-read (confirmed, with repairs). **Next: 40h opens as SHORT**, design-first from the recon's verdict and the PI's decisions — see *Hand-off*.
 
 ## Current state
 
@@ -85,10 +85,13 @@ All landed with the standard axioms (*Current state*).
 STEPS, *The provisional grouping*, the SHORT entry). Its design recon ran on 2026-09-27 (opus,
 compiler-checked, read-only), and the PI decided on it the same day (`notes/pencil/adjudications.md`).
 - **The recon re-proved the `k = 3, 4` ear steps by insertion.** It is written in Step MC13 as
-  (MC-179)–(MC-182), found by formalization and not yet second-read. (MC-44) is dropped.
+  (MC-179)–(MC-182), found by formalization. (MC-44) is dropped.
 - **The `k = 1` cell goes to ORBIT, and THETA dissolves into COVERAGE.**
-- **Next, the smallest step:** one fresh read-only second reading of (MC-179)–(MC-182). Then 40h opens
-  as SHORT, with the recon's plan: `k = 2, 3, 4` and their infrastructure, seven builds (B1–B7). The
+- **A fresh read-only second reading (2026-09-27) confirmed (MC-179)–(MC-182)**: no refutation and no
+  gap, with repairs in place (Step MC13's block preamble). It added the insertion lemma's "at least
+  `dim W`" half, which B6 needs.
+- **Next, the smallest step:** 40h opens as SHORT, design-first from the recon's verdict and the PI's
+  decisions, with the recon's plan: `k = 2, 3, 4` and their infrastructure, seven builds (B1–B7). The
   open mints `notes/Phase40h.md` and the chapter's subsection. It reuses CHAIN's ear rank law and ear
   deficiency bound.
 

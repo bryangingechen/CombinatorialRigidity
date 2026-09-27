@@ -10,7 +10,7 @@ closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRID
 2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R closed 2026-09-26** (`notes/Phase40f.md`),
 one build commit from a compiler-checked recon's spike; **40g = CHAIN closed 2026-09-27**
 (`notes/Phase40g.md`), two build commits from a compiler-checked recon's spike; the four later
-groups are provisional, and SHORT is next in their order: its design recon is done (2026-09-27), and the second reading of its new claims (MC-179)–(MC-182) comes before 40h opens. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
+groups are provisional, and SHORT is next in their order: its design recon and the fresh second reading of its new claims (MC-179)–(MC-182) are done (2026-09-27; confirmed, with repairs), and next 40h opens as SHORT, design-first, from the recon's verdict and the PI's decisions. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
 claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
 pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -246,8 +246,8 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
 | CUT / BRIDGE | (MC-52), (MC-53), (MC-55)(ii), (MC-56) | ✓ (MC14) |
 | BASE `C_n` | (MC-16) (closed chain), (MC-17), (MC-19)(a) → (MC-21)(a); certificate (MC-134)(a) | ✓ (MC10, MC20) |
 | chains `k ≥ 5` | (MC-18)(a), (MC-16), (MC-17), (MC-19)(b) → (MC-20); cert. (MC-134)(b) | ✓ |
-| chain `k = 4` | (MC-180) ← the antecedent `G′ + ear₃` (`G.splitOff (x 1) …`), (MC-179)(a), (d), (MC-182), (MC-16) in rank form, (MC-17)'s separated count *(since 2026-09-27; (MC-24)/(MC-25) with (MC-136) off the route)* | pending (found by formalization 2026-09-27; second reading next) |
-| chain `k = 3` | (MC-181) ← the antecedent `G′ + ear₂`, (MC-179)(b)–(d) ((c) = (MC-135)(ii)'s `k = 2` step with (MC-47)(i)'s span identity), (MC-182), (MC-16) in rank form, (MC-17)'s separated count *(since 2026-09-27; (MC-45)'s `r`-split off the route)* | pending (as `k = 4`) |
+| chain `k = 4` | (MC-180) ← the antecedent `G′ + ear₃` (`G.splitOff (x 1) …`), (MC-179)(a), (d), (MC-182), (MC-16) in rank form, (MC-18)(a), (MC-17)'s separated count *(since 2026-09-27; (MC-24)/(MC-25) with (MC-136) off the route)* | ✓ (MC13, 2026-09-27; found by formalization the same day) |
+| chain `k = 3` | (MC-181) ← the antecedent `G′ + ear₂`, (MC-179)(b)–(d) ((c) = (MC-135)(ii)'s `k = 2` step with (MC-47)(i)'s span identity), (MC-182), (MC-16) in rank form, (MC-18)(a), (MC-17)'s separated count *(since 2026-09-27; (MC-45)'s `r`-split off the route)* | ✓ (as `k = 4`) |
 | chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-176) ← the refined link (MC-173), the parametrized incidence (MC-174) (SHORT's (MC-18)(b)), (MC-175)(i)(ii), (MC-16) at `k = 1, 2`, (MC-18)(a)/(b)'s fibre identifications, (MC-169); orbit (i) and `dim U ≥ 2` by (MC-48)(ii)'s argument under `δ₂ ≥ 2` ((MC-175)(iii), (MC-4)(b), Jackson–Jordán at `G′ + ab` = (MC-172)). (MC-46)/(MC-138) superseded on route (2026-09-26); (MC-177) is (MC-16)'s rank form | ✓ (MC13, 2026-09-26; found by formalization the same day) |
 | chain `k ≤ 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a)/(b), (MC-16); the Lean hypothesis is `def₃(G′) ≤ def₃(G)` (PI decision 4(a), 2026-09-27); `k = 1` with (MC-174) and (MC-48)(ii) goes to ORBIT | ✓ (MC14) |
 | SPLITOFF (`k = 1`, `δ ≥ 5`) | (MC-28), (MC-29), (MC-30)(iv) → (MC-31); Jackson–Jordán at `G″` | ✓ (MC11) |
@@ -321,9 +321,10 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
       (MC-21)(a)'s class theorem stays unstated (`rem:pencil-x0-ear-class`). *(SHORT's design recon,
       2026-09-27, re-homed them again: see the SHORT entry's* Re-homed and dropped.*)*
   - **SHORT** (design recon done 2026-09-27, opus, compiler-checked; PI decisions 1–4 the same day,
-    `notes/pencil/adjudications.md`): the open ears with `k = 2, 3, 4`. After CHAIN. **Next is a fresh
-    read-only second reading of the new claims (MC-179)–(MC-182)** (Step MC13, found by
-    formalization; PI decision 1, the ORBIT precedent). Then 40h opens as SHORT: **7 builds (B1–B7)
+    `notes/pencil/adjudications.md`): the open ears with `k = 2, 3, 4`. After CHAIN. The fresh
+    read-only second reading of the new claims (MC-179)–(MC-182) is done (2026-09-27; Step MC13, found
+    by formalization; PI decision 1, the ORBIT precedent): confirmed, with repairs in place. **Next, 40h
+    opens as SHORT**, design-first, from the recon's verdict and the PI's decisions: **7 builds (B1–B7)
     + open + close**.
     - **The route** (the recon's verdict). By the landed ear rank law, `G` attains at a
       configuration where `G[V₁]` attains iff `dim(ρ ⊔ Λ_k) ≥ k + 1 + def₃(G[V₁]) − def₃(G)`.
@@ -358,18 +359,20 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
     - **The line geometry is compiled sorry-free** (standard axioms): the Klein pairing in flat
       coordinates with `κ(p ∧ q, r ∧ s) = det`, the tetrahedron basis, the two-star bound
       `dim(star y ⊔ star y′) ≥ 5` with `star y ⊔ star y′ ≤ ker κ(·, y ∧ y′)`, the bilinear lemma, the plane
-      lines (at most 3-dimensional), and the affine-curve independence. The insertion lemma has one
-      elementary residual (a basis of `R` extended by two vectors outside it is independent).
+      lines (at most 3-dimensional), and the affine-curve independence. The insertion lemma had one
+      elementary residual (a basis of `R` extended by two vectors outside it is independent). The
+      second reader filled it and proved the insertion lemma's "at least `dim W`" half, which the
+      recon's spike did not state and B6's `W = ⊤` branch needs.
     - **The plan for 40h's open** (the recon's build table):
 
       | build | content | file | risk |
       |---|---|---|---|
-      | B1 | the line geometry, (MC-179) | new `MainComponent/Lines.lean` | low |
-      | B2 | (MC-182) as `splitOff_deficiency_le_of_eq_left`; the `δ = 0` bridge | `Induction/SplitOffDeficiency.lean`; `MainComponent/Ear.lean` (990 → ~1060) | low |
+      | B1 | the line geometry, (MC-179); also `linearIndependent_basis_sumElim_two`, `linearIndependent_basis_sumElim_one` and `exists_insertion_ge`, from the second reader's compiled file (`scratch/40h-read/S40hReadGeom.lean`, local to this checkout: a builder pointer, not evidence) | new `MainComponent/Lines.lean` | low |
+      | B2 | (MC-182) as `splitOff_deficiency_le_of_eq_left`; the `δ = 0` bridge; the module docstring's "KT 4.3(ii)" corrected to 4.3(i) | `Induction/SplitOffDeficiency.lean`; `MainComponent/Ear.lean` (990 → ~1060) | low |
       | B3–B4 | EARGEN: picture locality (`liftingSpace_congr`, `isAdmissiblePicture_congr`, the step contract's compiled signatures), the ear configuration as a polynomial map over fixed `V₁` data, main-ness and the antecedent's rank polynomial in the ear data | new `MainComponent/EarGen.lean` | high |
       | B5 | `of_openEar_two` | new `MainComponent/Short.lean` | low |
-      | B6 | `of_openEar_four` (the tetrahedron) | `Short.lean` | medium |
-      | B7 | `of_openEar_three` (the bilinear lemma) | `Short.lean` | medium |
+      | B6 | `of_openEar_four` (the tetrahedron; its `W = ⊤` branch uses `exists_insertion_ge`); its docstring cites (MC-180), not (MC-25) | `Short.lean` | medium |
+      | B7 | `of_openEar_three` (the bilinear lemma); its docstring cites (MC-181), not (MC-45) | `Short.lean` | medium |
 
       `Bricks.lean`, `Chain.lean`, `Carrier.lean` and `Contract.lean` are untouched, so there is no
       `TwoCutCarriers` split.
@@ -455,9 +458,10 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
   repairs applied in place, (MC-177) and (MC-178) added. **40f opened design-first as
   CONTRACT-R** (2026-09-26), from a compiler-checked design recon, and closed the same day after
   one build commit. **CHAIN opened as 40g** (2026-09-27), design-first from a compiler-checked
-  recon, and closed the same day after two build commits. **SHORT is next**: its design recon is
-  done (2026-09-27), and a fresh read-only second reading of its new claims (MC-179)–(MC-182) comes
-  before 40h opens (PI decision 1). ORBIT's dependencies do not touch CONTRACT-R.
+  recon, and closed the same day after two build commits. **SHORT is next**: its design recon and
+  the fresh read-only second reading of its new claims (MC-179)–(MC-182) (PI decision 1) are done
+  (2026-09-27): confirmed, with repairs in place. Next 40h opens as SHORT, design-first, from the
+  recon's verdict and the PI's decisions. ORBIT's dependencies do not touch CONTRACT-R.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**
   - **(MC-177) is built in CHAIN, forced**: BASE and the open ear both go through the ear rank law.

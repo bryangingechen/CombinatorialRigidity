@@ -82,8 +82,8 @@ Read from (MC-89)'s proof, (MC-79)(v)'s list of usable chains, and the owning cl
 | 5a. THETA | **(MC-21)(b)**: `p₃ ≥ 6` by (MC-21)(a) + (MC-20); `p₃ ≤ 5` by 30 exhibited points *(2026-09-27, SHORT recon: by (MC-139), an assembly of step theorems. In the formalization it dissolves into COVERAGE's strong induction, with no named theorem (PI decision 3). Its `k = 4, 3` cases go through (MC-180), (MC-181); its `k = 2` case through (MC-54) with `def₃(C_s) = 0`; its `k = 1` cases through FLAT)* | **certificate** `--thetas 5` → (MC-139) |
 | 5b. 𝒮 | (MC-76), (MC-80) ← (MC-77), (MC-78), (MC-79)(i)–(iv) | argument |
 | — chain `k ≥ 5` | (MC-20) ← (MC-18)(a), (MC-16), (MC-17), **(MC-19)(b)** `k ≥ 5` | **cert.** CH-2a/2b → (MC-134) |
-| — chain `k = 4` | (MC-24), (MC-25) ← (MC-22), (MC-19)(b) `k = 2, 4`, **`⋂Λ₄ = 0`, four orbits** *(since 2026-09-27, SHORT recon, found by formalization and not yet second-read: (MC-180) ← the antecedent `G′ + ear₃`, (MC-179)(a), (d), (MC-182), (MC-16) in rank form, (MC-17)'s separated count; no certificate; (MC-24), (MC-136) off the route)* | **cert.** `--lamcap` → (MC-136) |
-| — chain `k = 3` | (MC-45) ← (MC-22) twice, (MC-19)(b) `k = 2, 3`; `r = 1`: **`⋂Λ₃ = 0`, four orbits** (via (MC-26)); `r = 2`: splitting degeneration, and (MC-47)(i)'s span identity (orbit (iv)); `r ≥ 3`: (MC-26)'s link *(since 2026-09-27, SHORT recon, found by formalization and not yet second-read: (MC-181) ← the antecedent `G′ + ear₂`, (MC-179)(b)–(d) ((c) is (MC-135)(ii)'s `k = 2` step, with (MC-47)(i)'s span identity), (MC-182), (MC-16) in rank form, (MC-17)'s separated count; (MC-45)'s `r`-split, (MC-26)'s links and the rest of (MC-135) off the route)* | **cert.** `--lamcap` → (MC-135); rest argument |
+| — chain `k = 4` | (MC-24), (MC-25) ← (MC-22), (MC-19)(b) `k = 2, 4`, **`⋂Λ₄ = 0`, four orbits** *(since 2026-09-27, SHORT recon, found by formalization and second-read the same day: (MC-180) ← the antecedent `G′ + ear₃`, (MC-179)(a), (d), (MC-182), (MC-16) in rank form, (MC-18)(a), (MC-17)'s separated count; no certificate; (MC-24), (MC-136) off the route)* | **cert.** `--lamcap` → (MC-136) |
+| — chain `k = 3` | (MC-45) ← (MC-22) twice, (MC-19)(b) `k = 2, 3`; `r = 1`: **`⋂Λ₃ = 0`, four orbits** (via (MC-26)); `r = 2`: splitting degeneration, and (MC-47)(i)'s span identity (orbit (iv)); `r ≥ 3`: (MC-26)'s link *(since 2026-09-27, SHORT recon, found by formalization and second-read the same day: (MC-181) ← the antecedent `G′ + ear₂`, (MC-179)(b)–(d) ((c) is (MC-135)(ii)'s `k = 2` step, with (MC-47)(i)'s span identity), (MC-182), (MC-16) in rank form, (MC-18)(a), (MC-17)'s separated count; (MC-45)'s `r`-split, (MC-26)'s links and the rest of (MC-135) off the route)* | **cert.** `--lamcap` → (MC-135); rest argument |
 | — chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-176) ← (MC-173) (frame from (MC-169)'s proof), (MC-174), (MC-175)(i)–(iii), (MC-16) at `k = 1, 2` in rank form, (MC-18)(a) and (b)'s fibre identifications, (MC-4)(b) at `G′`; orbit (i) and `dim U ≥ 2` by (MC-48)(ii)'s argument under `δ₂ ≥ 2` *(since 2026-09-26; before, (MC-46) ← orbit table + semi-invariance, cert. `--orbits` → (MC-138), now off the route; row repaired at the second reading of (MC-173)–(MC-176), 2026-09-26)* | argument; JJ at `G′ + ab` ((MC-172)) |
 | — chain `k = 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a), (MC-16) | argument (+ (MC-134)) |
 | — chain `k = 1`, `δ = 0` | (MC-54) ← (MC-18)(b), (MC-19)(b) `k = 1`; `dim U ≥ 2` | argument + JJ at `G′ + ab` |
@@ -110,7 +110,7 @@ Remarks on the tree:
   `a ≁ b`, `δ₂ ≥ 2`" now rests on (MC-176) (Step MC13), whose rank step is the refined link's bound `dim(ρ + Λ₂) ≥ min(s + 1, 6)` (MC-173); (MC-176) uses no `(P_k)`. (MC-46), its orbit table (MC-138) and the semi-invariance are off the route and stay
   proved. The row's leaves become (MC-173)–(MC-176), (MC-16) (in rank form, (MC-177)), (MC-18)'s two fibre identifications,
   (MC-4)(b), (MC-169) and JJ at `G′ + ab` ((MC-172)). No certificate leaf is added.
-- *(2026-09-27, SHORT recon, found by formalization and not yet second-read.)* The rows "chain
+- *(2026-09-27, SHORT recon, found by formalization and second-read the same day.)* The rows "chain
   `k = 4`" and "chain `k = 3`" now rest on (MC-180) and (MC-181) (Step MC13). Each removes the ear's
   second interior body, counts against that antecedent, and puts the body back along a curve. The
   collision lemma (MC-136), (MC-137)(a), (b), and (MC-135) except its (ii) `k = 2` step are off the
@@ -418,6 +418,7 @@ prints each of the 30 small graphs' case, and checks `δ = 0` at `k = 2` and `di
 >   leaves those claims cite (among them (MC-13)(a), (b), the union lemma in (MC-14)'s proof,
 >   (MC-26)'s two links and (MC-47)(i)'s span identity);
 >   *(2026-09-26, ORBIT recon: the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` row rests on (MC-173)–(MC-176), not on (MC-46) or its table; they use `K` only as an infinite field, so (MC-166)'s audit extends to them. Note added at the second reading, 2026-09-26.)*
+>   *(2026-09-27, SHORT recon, second-read: the chain `k = 4` and `k = 3` rows rest on (MC-180) and (MC-181), with (MC-179), (MC-182), (MC-16) in rank form, (MC-18)(a) and (MC-17)'s separated count, not on (MC-24), (MC-25), (MC-45), (MC-136), (MC-26)'s links or (MC-137)(a), (b). They use `K` only as an infinite field, so (MC-166)'s audit extends to them.)*
 > - **JJ** at the simple graphs:
 >   - `G` itself at FLAT (`def₂ = def₃`);
 >   - `H = G[W]` and `G/H` at both kinds of CONTRACT;

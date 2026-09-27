@@ -178,7 +178,7 @@ the dense open set of span-generic placements, which is therefore `0`. (The span
 deficient draw can make an intersection `0` spuriously, (MC-97). Hand proof over every field:
 (MC-136).) *(Repaired at the second reading, 2026-09-25: "over all placements".)* ∎
 
-*(2026-09-27, SHORT recon, found by formalization and not yet second-read.)* On (MC-89)'s route the
+*(2026-09-27, SHORT recon, found by formalization and second-read the same day.)* On (MC-89)'s route the
 `k = 4` step is now (MC-180) (Step MC13). It counts against the antecedent `G′ + ear₃` (`G` with `x₂`
 suppressed), and its placement condition is one tetrahedron. (MC-24)'s gadget, (MC-25)'s proof and
 (MC-136) are off the route, and stay proved.
@@ -202,7 +202,7 @@ iff `r ≥ 4`. The second implication is the same, with `x₂` on the line `p_a 
 (P_k) means `ρ ⊄ ⋂Λ` (`--lamcap`). ∎
 
 *(2026-09-27, SHORT recon.)* On (MC-89)'s route (MC-26)'s links were consumed only by (MC-45)'s proof
-of the `k = 3` step. That step is now (MC-181) (Step MC13, not yet second-read). The links are off the
+of the `k = 3` step. That step is now (MC-181) (Step MC13, second-read 2026-09-27). The links are off the
 route, and stay proved.
 
 Orbit (iv) is harmless on `X₀`. It is `P_a = P_b` at the generic point, i.e. `U = 0`. By the

@@ -39,7 +39,7 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
     route the `k = 2` cell is (MC-176), through the refined link (MC-173), the parametrized
     incidence (MC-174) and (MC-175); (MC-46)'s orbit count and (MC-138) are off the route. The
     second reading added (MC-177), the path brick, and (MC-178), (MC-175)(iii) with equality.)*
-    *(2026-09-27, SHORT recon, found by formalization and not yet second-read: on (MC-89)'s route the
+    *(2026-09-27, SHORT recon, found by formalization and second-read the same day: on (MC-89)'s route the
     `k = 4` and `k = 3` steps are (MC-180) and (MC-181). Each counts against the antecedent `G` with
     `x₂` suppressed, then puts `x₂` back along a curve ((MC-179)(d)); the gain comes from a tetrahedron
     at `k = 4` and from the bilinear lemma at `k = 3`. (MC-24), (MC-136), (MC-45)'s `r`-split and

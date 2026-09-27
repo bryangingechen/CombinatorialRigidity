@@ -119,14 +119,20 @@ orbits, and the `k = 3` step through (MC-45)'s `r = 1, 2, ≥ 3` split, with (MC
 (α)/(β) classification. Both are re-proved here by one move: remove the ear's second interior body,
 then put it back along a curve. The antecedent is `G` with that body suppressed. The count is taken
 against it directly, with no `δ`, no exact (MC-17), and no (MC-22), (MC-24) or (MC-44).
-(MC-179)–(MC-182) are one writer's and **not yet second-read**; a fresh second reading is commissioned
-(`notes/pencil/adjudications.md`, 2026-09-27, decision 1). They are hand proofs; no driver. Notation
+(MC-179)–(MC-182) were **second-read on 2026-09-27** by a fresh read-only reader (the PI's decision 1,
+`notes/pencil/adjudications.md`, 2026-09-27). The reader re-derived every step and checked every
+citation's hypotheses. It found no refutation and no gap. It repaired (MC-180)/(MC-181)'s Step 1 (the
+picture `q*` must be generic for `X₀(G′)` and `X₀(G″)`, not only in their `U`), the proof's closing field
+audit, (MC-182)'s citation, and Step MC20's Part I rows and (MC-141). The load-bearing line geometry is
+kernel-checked in a compiled spike, not landed: (MC-179)(a)–(c), and both halves of (d) (the "at least
+`dim W`" half, which Step 3's `W = ⊤` branch needs, was added by the reader). They are hand proofs; no
+driver. Notation
 as above, in Step MC10 and in Step MC20. `⟨·,·⟩` is the Klein pairing, and `star(p) := {p ∧ v : v ∈ K⁴}`
 is the space of lines through `p`. The interior bodies are `x₁, …, x_k`, with `x₀ := a` and
 `x_{k+1} := b`.*
 
-> **(MC-179)** `[PROVED]` *(four line lemmas; found by formalization, SHORT recon 2026-09-27; not yet
-> second-read)* Let `K` be a field.
+> **(MC-179)** `[PROVED]` *(four line lemmas; found by formalization, SHORT recon 2026-09-27;
+> second-read 2026-09-27)* Let `K` be a field.
 > **(a)** *(the tetrahedron)* If `p₀, p₁, p₂, p₃ ∈ K⁴` are linearly independent, the six joins
 > `p_i ∧ p_j`, `i < j`, are a basis of `Λ²K⁴`.
 > **(b)** *(two stars)* If `y, y′ ∈ K⁴` are linearly independent, then
@@ -170,7 +176,7 @@ hinges become `y ∧ u` (after dividing by `t`) and the antecedent's hinge `y �
 the count against the antecedent, and one line argument in place of the classification.
 
 > **(MC-182)** `[PROVED]` *(suppressing a degree-2 body does not raise the deficiency; any finite graph,
-> both `D`; found by formalization, SHORT recon 2026-09-27; not yet second-read)* Let `x` be a vertex of
+> both `D`; found by formalization, SHORT recon 2026-09-27; second-read 2026-09-27, citation repaired)* Let `x` be a vertex of
 > `G` whose only edges are `e_u = xu` and `e_w = xw`, with `u ≠ w` and `u, w ≠ x`. Let `G″` be `G` with
 > `x` suppressed: delete `x`, and relink the freed label `e_u` to join `u` and `w`. Then
 > **`def_D(G″) ≤ def_D(G)`**.
@@ -180,13 +186,17 @@ unchanged, and `e_u = xu` is internal. `e_w = xw` crosses exactly when `u` and `
 parts, that is, exactly when the relinked `e_u = uw` crosses in `G″`. Every other edge keeps its ends and
 its status. So the value is unchanged. ∎
 
-This is Katoh–Tanigawa's partition extension for splitting off (KT 2011, Lemma 4.3(i); landed as
-`splitOff_deficiency_le`, where the new label is fresh), with the freed label reused. It is also
-(MC-175)(i)'s argument. In Lean, `G″ = G.splitOff x u w e_u`, the construction of (MC-176)'s `G₁`.
+The inequality is Katoh–Tanigawa's. For a minimal `k`-dof-graph it is part of their Lemma 4.3(i)
+(KT 2011, p. 661, inequality (4.1) in its proof). They derive it from the forest surgery of their
+Lemma 4.1 (p. 660), which needs no minimality; `rem:kt-lemma-41` records that lemma's gap and its
+repair. The partition extension above is not their proof. It is the project's direct proof
+(`lem:splitoff-deficiency`), landed as `splitOff_deficiency_le` with a fresh label; here the freed label
+is reused. It is also (MC-175)(i)'s argument. *(Citation repaired at the second reading, 2026-09-27: as
+first written it called the partition extension Katoh–Tanigawa's.)* In Lean, `G″ = G.splitOff x u w e_u`, the construction of (MC-176)'s `G₁`.
 
 > **(MC-180)** `[PROVED]` *(the `k = 4` open-ear step by insertion; every orbit, `a ∼ b` allowed, no
 > Jackson–Jordán; replaces (MC-24)/(MC-25) with (MC-136) on (MC-89)'s route; found by formalization,
-> SHORT recon 2026-09-27; not yet second-read)* Let `K` be infinite. Let `G = G′ + ear₄` be an open ear
+> SHORT recon 2026-09-27; second-read 2026-09-27, Step 1 repaired)* Let `K` be infinite. Let `G = G′ + ear₄` be an open ear
 > `a − x₁ − x₂ − x₃ − x₄ − b`, with `a ≠ b` possibly adjacent and `G` satisfying (H). Let `G″` be `G` with
 > `x₂` suppressed ((MC-182), the label of `x₁x₂` relinked to `x₁x₃`), so
 > `G″ = G′ + (a − x₁ − x₃ − x₄ − b)`. **If `X₀(G′)` and `X₀(G″)` attain, then `X₀(G)` attains.** Under the
@@ -195,7 +205,7 @@ This is Katoh–Tanigawa's partition extension for splitting off (KT 2011, Lemma
 
 > **(MC-181)** `[PROVED]` *(the `k = 3` open-ear step by insertion; every orbit, `a ∼ b` allowed, no
 > Jackson–Jordán; replaces (MC-45)'s proof of the step on (MC-89)'s route; found by formalization, SHORT
-> recon 2026-09-27; not yet second-read)* Let `K` be infinite. Let `G = G′ + ear₃` be an open ear
+> recon 2026-09-27; second-read 2026-09-27, Step 1 repaired)* Let `K` be infinite. Let `G = G′ + ear₃` be an open ear
 > `a − x₁ − x₂ − x₃ − b`, with `a ≠ b` possibly adjacent and `G` satisfying (H). Let `G″` be `G` with `x₂`
 > suppressed, so `G″ = G′ + (a − x₁ − x₃ − b)`. **If `X₀(G′)` and `X₀(G″)` attain, then `X₀(G)`
 > attains.** The hypotheses are supplied as in (MC-180).
@@ -217,8 +227,13 @@ which `G′` attains, therefore attains for `G` as soon as
 and then `X₀(G)` attains by (MC-2) (one point of `B` at the target rank).
 
 **Step 1: the base data, fixed first.**
-- Choose a picture `q*` in `U(G) ∩ U(G′) ∩ U(G″)`. Each is a nonempty Zariski-open subset of `K^{2V}` (the
-  last two depend on fewer coordinates), and `K^{2V}` is irreducible.
+- Choose a picture `q*` in `U(G)` that is also generic for `X₀(G′)` and for `X₀(G″)`: over `q*` the
+  heights at which `G′` attains contain a nonempty Zariski-open subset of `L_{G′}(q*)`, and likewise for
+  `G″` in `L_{G″}(q*)`. Each condition is nonempty and Zariski-open in `K^{2V}` (the last two depend on
+  fewer coordinates), and `K^{2V}` is irreducible: for `U(G)` by (MC-2); for the other two by attainment
+  itself, in Lean the non-roots of `X0Attains`'s picture polynomial. *(Repaired at the second reading:
+  as first written `q*` was chosen in `U(G′) ∩ U(G″)`, and over a point of `U` the attaining heights can
+  be empty. (MC-176)'s Step 2 makes the same choice.)*
 - Over `q*`, restriction `L_{G″}(q*) → L_{G′}(q*)` is onto ((MC-18)(a), since `G″`'s ear has
   `k − 1 ≥ 2` interior bodies). So the heights where `G′` attains pull back to a nonempty open subset of
   `L_{G″}(q*)`. The heights where `G″` attains are another. Choose `z*` in both.
@@ -321,7 +336,11 @@ collapse to the one question `π_a = π_b`.
   It holds whether or not `a ∼ b` (Phase 40g, `lem:deficiency-ear`).
 
 So `X₀(G)` attains. Nothing here uses `δ`, the exact value of (MC-17), (MC-22), (MC-24), (MC-44),
-`a ≁ b`, or the orbit of the flag pair. ∎
+`a ≁ b`, or the orbit of the flag pair. `K` enters only as an infinite field: nonzero scalars are
+inverted, a nonzero polynomial in one variable has finitely many roots ((MC-179)(d)), and finitely many
+nonzero polynomials on an affine space have a common non-root. (MC-179)(a)–(c) and (MC-182) hold over
+every field. So (MC-166)'s audit extends to (MC-179)–(MC-182) unchanged. *(Field audit added at the
+second reading, 2026-09-27.)* ∎
 
 *Consequences.* (MC-180) and (MC-181) cover the `k = 4` and `k = 3` chains of (MC-79)(v) and (MC-139),
 in every orbit and with `a ∼ b` allowed. They also cover (MC-54) at `k = 3, 4`, which needs no
