@@ -447,17 +447,16 @@ private theorem coord_linearMap_eq_matrix_mulVec {W : Type*} [AddCommGroup W] [M
   refine Finset.sum_congr rfl fun l _ => ?_
   simp only [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
-/-- **The `D ∘ panelRow` rank polynomial: a projected-independent subfamily at one placement yields
-a nonzero rank polynomial witnessing exterior-projected row-independence at its generic locus**
-(`lem:claim-6-4` packaging brick N-22b-2; Katoh–Tanigawa 2011 §5.1, §6.2 eqs. (6.5)/(6.9), Phase
-22b). The **bounded packaging** half of the Claim-6.4 discharge: the projected sibling of
-`exists_rankPolynomial_of_rigidOn_linking_set` whose row family is post-composed with the fixed
-exterior-column projection `D := (extProj proj).dualMap`. Where the un-projected parent *derives*
-its independent subfamily from `hrig` via the body-set N7b-0, this brick takes the
-**already-projected independence at the witness placement `q₀`** as the hypothesis `hindep` — the
-`∃`-one-placement output of the research-shaped rank-transport N-22b-1 (the contraction's generic IH
-carried across the collapse map by algebraic independence) — and packages it into the `Qc`-non-root
-form the block-triangular coupling consumes.
+/-- **The projected rank polynomial is nonzero at its witness** (`lem:rank-polynomial-proj-eval`,
+Phase 40f CONTRACT-R; the additive successor of
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj`, which forgets the value at
+the witness and is now its corollary). If a family `t` of panel rows of `G` at linking edges is
+linearly independent at the normals `q₀` after the exterior-column projection
+`D := (extProj proj).dualMap`, there is a polynomial `Qc` in the normals with `Qc(q₀) ≠ 0` such that
+at every `q` with `Qc(q) ≠ 0` a family of panel rows at linking edges, of the same size, is linearly
+independent after `D`. The contraction step on pencil configurations needs the value at the
+witness: its witness is the collapsed placement at one end of a curve, and the curve's parameter is
+chosen off the zero set of `Qc` along it.
 
 It re-instantiates the generic engine `exists_polynomial_ne_zero_of_linearIndependent_at` (fully
 generic in its target space) at the **post-projection** family `g q i := D (panelRow ends i)`. Since
@@ -467,14 +466,9 @@ panel polynomials: writing `M` for the matrix of `φ ∘ D ∘ φ⁻¹` in the d
 each projected coordinate is the polynomial `cD i j := ∑ l, C (M j l) · c i l`. The witnessed
 subfamily index `t`, its linking-edge support `hsupp`, and the count `hscard` are passed through
 unchanged. **No new matrix-rank theory** (the engine is generic in `W`; here
-`W = Module.Dual K (α → ScrewSpace K k)` is the same finite-dim dual as the parent).
-The output is the
-conjunct `hclaim64` of `case_I_realization` consumes, modulo the rank-transport supplying `t`. (No
-rationality conjunct on `Qc`: dropped RELAX slice (e), `notes/Phase30.md` — see
-`PanelHingeFramework.exists_rankPolynomial_of_rigidOn`; the matrix-entry/projected-coordinate
-rationality bricks `hMrat`/`hcD` this proof once carried are gone with it.) -/
-theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [Finite α] [Finite β]
-    (G : Graph α β) (ends : β → α × α) (proj : Set α) {m : ℕ}
+`W = Module.Dual K (α → ScrewSpace K k)` is the same finite-dim dual as the parent). -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval [Finite α]
+    [Finite β] (G : Graph α β) (ends : β → α × α) (proj : Set α) {m : ℕ}
     {q₀ : α × Fin (k + 2) → K}
     {t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
@@ -482,7 +476,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
     (hcount : m ≤ Nat.card t)
     (hindep : LinearIndependent K (fun i : t => (extProj (k := k) proj).dualMap
       ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
-    ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, Qc ≠ 0 ∧
+    ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, MvPolynomial.eval q₀ Qc ≠ 0 ∧
       ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Qc ≠ 0 →
         ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
           (∀ i ∈ rsc, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
@@ -562,8 +556,48 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
   obtain ⟨Q, hQ₀, hQ⟩ :=
     exists_polynomial_ne_zero_of_linearIndependent_at gD cD φ hgD
       (p₀ := q₀) (s := t) (by simpa only [hgD_def, hg_def, hDdef] using hindep)
-  refine ⟨Q, fun hQz => hQ₀ (by rw [hQz, map_zero]), fun q hq => ?_⟩
+  refine ⟨Q, hQ₀, fun q hq => ?_⟩
   exact ⟨t, hsupp, hcount, by simpa only [hgD_def, hg_def, hDdef] using hQ q hq⟩
+
+/-- **The `D ∘ panelRow` rank polynomial: a projected-independent subfamily at one placement yields
+a nonzero rank polynomial witnessing exterior-projected row-independence at its generic locus**
+(`lem:claim-6-4` packaging brick N-22b-2; Katoh–Tanigawa 2011 §5.1, §6.2 eqs. (6.5)/(6.9), Phase
+22b). The **bounded packaging** half of the Claim-6.4 discharge: the projected sibling of
+`exists_rankPolynomial_of_rigidOn_linking_set` whose row family is post-composed with the fixed
+exterior-column projection `D := (extProj proj).dualMap`. Where the un-projected parent *derives*
+its independent subfamily from `hrig` via the body-set N7b-0, this brick takes the
+**already-projected independence at the witness placement `q₀`** as the hypothesis `hindep` — the
+`∃`-one-placement output of the research-shaped rank-transport N-22b-1 (the contraction's generic IH
+carried across the collapse map by algebraic independence) — and packages it into the `Qc`-non-root
+form the block-triangular coupling consumes.
+
+Proved from its successor `exists_rankPolynomial_of_rigidOn_linking_set_proj_eval`, which also
+keeps the value `Qc(q₀) ≠ 0` and carries the coordinatization of the projected rows. The output is
+the conjunct `hclaim64` of `case_I_realization` consumes, modulo the rank-transport supplying `t`.
+(No rationality conjunct on `Qc`: dropped RELAX slice (e), `notes/Phase30.md` — see
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn`; the matrix-entry/projected-coordinate
+rationality bricks `hMrat`/`hcD` this proof once carried are gone with it.) -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α) (proj : Set α) {m : ℕ}
+    {q₀ : α × Fin (k + 2) → K}
+    {t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+      (ends (i : β × _ × _).1).2)
+    (hcount : m ≤ Nat.card t)
+    (hindep : LinearIndependent K (fun i : t => (extProj (k := k) proj).dualMap
+      ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
+    ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, Qc ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Qc ≠ 0 →
+        ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+          (∀ i ∈ rsc, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+            (ends (i : β × _ × _).1).2) ∧ m ≤ Nat.card rsc ∧
+          LinearIndependent K (fun i : rsc => (extProj (k := k) proj).dualMap
+            ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends
+              (i : β × _ × _))) := by
+  obtain ⟨Qc, hQc₀, hQc⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval G ends proj hsupp
+      hcount hindep
+  exact ⟨Qc, fun h => hQc₀ (by rw [h, map_zero]), hQc⟩
 
 /-- **KT Claim 6.4 — the contraction leg's rank transports across the collapse map to a
 single-placement exterior-projected surviving-row witness** (`lem:claim-6-4`, the N-22b-1

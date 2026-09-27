@@ -98,6 +98,37 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] A spike that is silent under `lake env lean` lands with style-linter warnings
+- **Where it bit:** Phase 40f CONTRACT-R build, `Graph.eq_zero_of_contractLimitMap_eq_zero`
+  (`Molecule/Pencil/MainComponent/Contract.lean`): the spike's `simp [...] at hrow hgr ⊢` drew six
+  `linter.flexible` warnings at the first `lake build`, and the spike had six lines over 100.
+- **Friction:** one extra build cycle. The spike's check (`lake env lean scratch/…`) printed only
+  the axioms line, since the lakefile's `weak.linter.mathlibStandardSet` does not reach it.
+- **Proposed fix:** `simp only` from `simp?`; reflow by the codepoint script.
+  **Lifted to:** TACTICS-QUIRKS § 55 (*a scratch spike sees neither this linter nor
+  `linter.flexible`*).
+- **Status:** resolved.
+
+### [idiom] `linear_combination h₁ - h₂` rejected ("argument `h₂` … expected to have type `K`") where `linear_combination h₁ + h₂.symm` works
+- **Where it bit:** Phase 40f CONTRACT-R build, `Graph.eq_zero_of_contractLimitMap_eq_zero`, with
+  `hgr : a = 0` and `hrow : 0 = b` in a field `K`.
+- **Friction:** `linear_combination hgr - hrow` (and `(hgr) - (hrow)`) failed with an application
+  type mismatch on `?m - hrow`; `-hrow + hgr`, `hgr - 1 * hrow` and `hgr + hrow.symm` all work.
+  Cause not isolated; one LSP round-trip.
+- **Proposed fix:** write the combination as a sum (`h₁ + h₂.symm`, or `-h₂ + h₁`).
+- **Status:** idiom.
+
+### [resolved] `exact` of a `Gc.map (collapseTo r V(H))` panel-row lemma against a `G.rigidContract (G.induce W) r` framework times out at `isDefEq`
+- **Where it bit:** Phase 40f CONTRACT-R design spike,
+  `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
+  (`Molecule/Pencil/MainComponent/Contract.lean`), applying `panelRow_collapseTo_comp_extProj_dualMap`.
+- **Friction:** the two graphs agree by `rfl`, but unifying them inside the heavy
+  `(ofNormals …).toBodyHinge` carrier unfolds `rigidContract` and times out.
+- **Proposed fix:** rewrite to the lemma's shape by `rfl` equations first
+  (`G.rigidContract (G.induce W) r = Gc.map f`, `V(G.induce W) = W`), then `exact`.
+  **Lifted to:** TACTICS-QUIRKS § 38 (*contraction-carrier variant*).
+- **Status:** resolved.
+
 ### [idiom] `rw [eq_top_iff.mpr fun S _ => h S]` fails ("pattern is a metavariable") — use `Submodule.eq_top_iff'.mpr h`
 - **Where it bit:** Phase 40e, `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`
   (`RigidityMatrix/Bricks.lean`): rewriting `Z₁ ⊔ Z₂` to `⊤` inside a `dualAnnihilator` chain,
@@ -3079,6 +3110,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** wontfix (upstream concern).
 
 ## Mirrored
+
+### [mirrored] `Submodule.finrank_add_finrank_map_le_of_le_ker` — a kernel block and an image block bound the ambient dimension
+- **Where it bit:** Phase 40f CONTRACT-R, the block coupling
+  `PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le` (`Coupling.lean`,
+  KT eq. (6.3)'s `≥`).
+- **Friction:** mathlib has rank-nullity (`LinearMap.finrank_range_add_finrank_ker`) and
+  `Submodule.finrank_mono`, but no packaged `A ≤ ker D → A, B ≤ S → finrank A + finrank (B.map D) ≤
+  finrank S`; it takes rank-nullity on `D.domRestrict (A ⊔ B)` plus four `finrank` comparisons.
+- **Resolution:** mirrored `Submodule.finrank_add_finrank_map_le_of_le_ker` (over a division ring),
+  beside `Submodule.finrank_sup_of_inf_eq_bot`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`.
 
 ### [mirrored] `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` — a polynomial section of a kernel family, and upper semicontinuity of its kernel dimension
 - **Where it bit:** Phase 40b CARRIER C1b (`Graph.x0Attains_of_exists`,

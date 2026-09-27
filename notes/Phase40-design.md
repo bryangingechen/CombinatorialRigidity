@@ -240,7 +240,8 @@ map for the later groups.
   - **CUTBRIDGE = 40e, ✓ closed**: (MC-52), (MC-53). Estimated 3–4; took three builds and a recon.
   - **CONTRACT-R = 40f, open** (`notes/Phase40f.md`), the `def₂`-rigid core: (MC-34)–(MC-39),
     (MC-59). Estimated 6–9; the design recon (opus, 2026-09-26) returned the whole step as one
-    sorry-free spike, so it lands as one build commit. The verdict in brief:
+    sorry-free spike, so it lands as one build commit; the build landed (2026-09-26), and 40f's
+    close is next. The verdict in brief:
     - one ambient picture `q`, and the curve `q_c(t) = (1−t)q_r + t·q_c` on `W` (`q(1) = q`);
     - the rescaled lifting system `M(t)` (new): onto `L_G(q(t))` at `t ≠ 0`, and at `t = 0`
       `dim ker M(0) ≤ dim L_{G/H}(q)` plus the flat-core extension, i.e. (MC-59)(c2)'s bound and
@@ -311,7 +312,8 @@ map for the later groups.
   before the next group opens. Both are done; the ORBIT verdict is in §4. The read-only fresh
   second reading of (MC-173)–(MC-176) (PI D1) is done too (2026-09-26): no refutation and no gap,
   repairs applied in place, (MC-177) and (MC-178) added. **40f opened design-first as
-  CONTRACT-R** (2026-09-26), from a compiler-checked design recon; its build is next. ORBIT's
+  CONTRACT-R** (2026-09-26), from a compiler-checked design recon; its build landed, and its close
+  is next. ORBIT's
   dependencies do not touch CONTRACT-R.
 - [ ] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26).**
   Decide whether (MC-177)'s path facts (the path side's rank `5(k + 1)`, and its `relScrews` is

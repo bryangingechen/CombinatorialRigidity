@@ -50,6 +50,9 @@ pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector
 * `Graph.liftingMatrix` — the lifting system, a matrix of polynomials in the picture whose kernel
   projects onto `L(q)` (`Graph.map_ker_liftingMatrix`), isomorphically over an admissible picture
   (`Graph.finrank_ker_liftingMatrix`).
+* `Graph.weightedLiftingMatrix` — the lifting system with an arbitrary polynomial weight point in
+  place of the picture point (`Graph.weightedLiftingMatrix_mulVec_eq_zero_iff`), the shape of the
+  contraction step's rescaled system.
 * `Graph.x0Attains_of_exists` — one attaining configuration over a main picture forces
   `Graph.X0Attains` (the semicontinuity half of (MC-2)/(MC-10)).
 * `Graph.affineLifts_le_liftingSpace` — `Aff(q) ⊆ L(q)` at every picture.
@@ -598,6 +601,85 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
         rw [dotProduct_comm, ← h2 v hv (t j) (ht j), hz]
       exact congr_fun (Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero) i
     · exact h3 v hv i
+
+/-! ## The lifting system with weights -/
+
+open Classical in
+/-- **The lifting system with weights** (`def:pencil-weighted-lifting-system`; Phase 40f
+CONTRACT-R): `Graph.liftingMatrix` with an arbitrary polynomial weight point `ω v w ∈ K[σ]³` in
+place of the homogeneous picture point `(x_w, y_w, 1)`. Its rows say `z_w = h_v ⬝ ω(v, w)` for `w`
+in the closed neighbourhood of a body `v`, plus the support rows for the heights and the
+coefficients (`Graph.weightedLiftingMatrix_mulVec_eq_zero_iff`). The contraction step reads the
+closed neighbourhoods meeting the core through other vectors than the picture points
+(`Graph.contractLiftingMatrix`). -/
+noncomputable def _root_.Graph.weightedLiftingMatrix {σ : Type*} (K : Type*) [Field K]
+    (G : Graph α β) (ω : α → α → Fin 3 → MvPolynomial σ K) :
+    Matrix (α ⊕ (α × α) ⊕ (α × Fin 3)) (α ⊕ (α × Fin 3)) (MvPolynomial σ K) :=
+  Matrix.of fun ρ c => match ρ, c with
+    | Sum.inl w, Sum.inl u => if w ∉ V(G) then (if u = w then 1 else 0) else 0
+    | Sum.inl _, Sum.inr _ => 0
+    | Sum.inr (Sum.inl (v, w)), Sum.inl u =>
+        if v ∈ V(G) ∧ w ∈ G.closedNbhd v then (if u = w then 1 else 0) else 0
+    | Sum.inr (Sum.inl (v, w)), Sum.inr (v', i) =>
+        if v ∈ V(G) ∧ w ∈ G.closedNbhd v then
+          (if v' = v then -ω v w i else 0) else 0
+    | Sum.inr (Sum.inr _), Sum.inl _ => 0
+    | Sum.inr (Sum.inr (v, i)), Sum.inr (v', i') =>
+        if v ∉ V(G) then (if v' = v ∧ i' = i then 1 else 0) else 0
+
+/-- **The kernel of the lifting system with weights**: at a point `s` of the parameters, a pair
+`x = (z, h)` lies in the kernel exactly when `z` vanishes off `V(G)`, `z_w = h_v ⬝ ω(v, w)(s)` on
+every closed neighbourhood of a body `v`, and `h` vanishes off `V(G)`. -/
+theorem _root_.Graph.weightedLiftingMatrix_mulVec_eq_zero_iff {σ : Type*} [Fintype α]
+    {G : Graph α β} {ω : α → α → Fin 3 → MvPolynomial σ K} {s : σ → K}
+    {x : α ⊕ (α × Fin 3) → K} :
+    (G.weightedLiftingMatrix K ω).map (MvPolynomial.eval s) *ᵥ x = 0 ↔
+      (∀ w ∉ V(G), x (Sum.inl w) = 0) ∧
+      (∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v,
+        x (Sum.inl w) = (fun i => x (Sum.inr (v, i))) ⬝ᵥ (fun i => MvPolynomial.eval s (ω v w i)))
+      ∧ ∀ v ∉ V(G), ∀ i, x (Sum.inr (v, i)) = 0 := by
+  classical
+  set M := (G.weightedLiftingMatrix K ω).map (MvPolynomial.eval s) with hM
+  have hr1 : ∀ w, (M *ᵥ x) (Sum.inl w) = if w ∉ V(G) then x (Sum.inl w) else 0 := by
+    intro w
+    by_cases hw : w ∈ V(G) <;>
+      simp [hM, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Graph.weightedLiftingMatrix, hw]
+  have hr2 : ∀ v w, (M *ᵥ x) (Sum.inr (Sum.inl (v, w))) =
+      if v ∈ V(G) ∧ w ∈ G.closedNbhd v then
+        x (Sum.inl w) - (fun i => x (Sum.inr (v, i))) ⬝ᵥ
+          (fun i => MvPolynomial.eval s (ω v w i)) else 0 := by
+    intro v w
+    by_cases hc : v ∈ V(G) ∧ w ∈ G.closedNbhd v
+    · simp [hM, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.sum_prod_type,
+        Graph.weightedLiftingMatrix, hc, apply_ite (MvPolynomial.eval s), mul_ite,
+        Finset.sum_ite_irrel, sub_eq_add_neg, mul_comm]
+    · simp [hM, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Graph.weightedLiftingMatrix, hc]
+  have hr3 : ∀ v i, (M *ᵥ x) (Sum.inr (Sum.inr (v, i))) =
+      if v ∉ V(G) then x (Sum.inr (v, i)) else 0 := by
+    intro v i
+    by_cases hv : v ∈ V(G) <;>
+      simp [hM, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.sum_prod_type,
+        Graph.weightedLiftingMatrix, hv, ite_and, apply_ite (MvPolynomial.eval s), ite_mul,
+        Finset.sum_ite_irrel]
+  rw [funext_iff]
+  constructor
+  · intro h
+    refine ⟨fun w hw => ?_, fun v hv w hw => ?_, fun v hv i => ?_⟩
+    · simpa [hr1, hw] using h (Sum.inl w)
+    · have := h (Sum.inr (Sum.inl (v, w)))
+      rw [hr2, ite_eq_left ⟨hv, hw⟩, Pi.zero_apply, sub_eq_zero] at this
+      exact this
+    · simpa [hr3, hv] using h (Sum.inr (Sum.inr (v, i)))
+  · rintro ⟨h1, h2, h3⟩ (w | ⟨v, w⟩ | ⟨v, i⟩)
+    · rw [hr1]; split_ifs with hw
+      · rfl
+      · exact h1 w hw
+    · rw [hr2]; split_ifs with hc
+      · rw [h2 v hc.1 w hc.2, sub_self]; rfl
+      · rfl
+    · rw [hr3]; split_ifs with hv
+      · rfl
+      · exact h3 v hv i
 
 
 /-! ## One attaining configuration over a main picture forces the general one -/

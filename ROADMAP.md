@@ -1278,7 +1278,8 @@ and `G/H` simple, in a 2-edge-connected `G` satisfying (H), `X₀` attaining at 
   rows are bounded below at the collapsed placement, as in Phase 22i.
 - The design is a compiler-checked recon whose sorry-free spike is the build. The PI placed each
   general piece beside its definition (`CaseI.lean`, `Coupling.lean`, `Carrier.lean`,
-  `Deficiency.lean`, the Mathlib mirror).
+  `Deficiency.lean`, the Mathlib mirror), and the rest is in `MainComponent/Contract.lean`.
+- The build has landed in one commit, with all twelve nodes green; 40f's close is next.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

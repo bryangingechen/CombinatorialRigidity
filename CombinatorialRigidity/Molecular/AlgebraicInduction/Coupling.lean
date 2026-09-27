@@ -837,6 +837,36 @@ theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv
   simp only [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
     extProj_apply_mem hu, extProj_apply_mem hv, sub_zero, map_zero]
 
+/-- **The block-triangular rank bound at a core** (`lem:block-rank-contract`; Katoh–Tanigawa 2011
+eq. (6.3), the `≥` of informal (MC-34); Phase 40f CONTRACT-R). At one normal assignment `n`, the
+rank of the core `G[W]` plus the rank of the rows of `G − E(G[W])` with the columns of `W` deleted
+(projected by `(extProj W).dualMap`) is at most the rank of `G`. The rows of `G[W]` read only the
+columns of `W`, so the projection kills them (`hingeRow_comp_extProj_eq_zero`), and both row sets
+lie in the row span of `G`; rank-nullity for the projection
+(`Submodule.finrank_add_finrank_map_le_of_le_ker`) gives the bound. -/
+theorem PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le [Finite α]
+    (G : Graph α β) (W : Set α) (ends : β → α × α) (n : α × Fin (k + 2) → K) :
+    Module.finrank K (Submodule.span K
+        (PanelHingeFramework.ofNormals (G.induce W) ends n).toBodyHinge.rigidityRows) +
+      Module.finrank K ((Submodule.span K (PanelHingeFramework.ofNormals
+        (G.deleteEdges E(G.induce W)) ends n).toBodyHinge.rigidityRows).map
+          (extProj (K := K) (k := k) W).dualMap) ≤
+      Module.finrank K (Submodule.span K
+        (PanelHingeFramework.ofNormals G ends n).toBodyHinge.rigidityRows) := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  refine Submodule.finrank_add_finrank_map_le_of_le_ker _ ?_ ?_ ?_
+  · rw [Submodule.span_le]
+    rintro _ ⟨e, u, v, hl, ρ, -, rfl⟩
+    rw [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.dualMap_apply']
+    exact hingeRow_comp_extProj_eq_zero hl.2.1 hl.2.2 ρ
+  · refine Submodule.span_mono ?_
+    rintro _ ⟨e, u, v, hl, ρ, hρ, rfl⟩
+    exact ⟨e, u, v, hl.1, ρ, hρ, rfl⟩
+  · refine Submodule.span_mono ?_
+    rintro _ ⟨e, u, v, hl, ρ, hρ, rfl⟩
+    exact ⟨e, u, v, hl.1, ρ, hρ, rfl⟩
+
 /-- **The exterior-column projection reconciles the collapse relabel of a hinge row**
 (`lem:claim-6-4`, the U2 collapse-relabel projected-row reproduction; Katoh–Tanigawa 2011 §6.2,
 eqs. (6.7)/(6.9), Phase 22b — the one research-shaped Case-I brick). This is the column-side of KT's

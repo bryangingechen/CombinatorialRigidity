@@ -452,6 +452,8 @@ vectors in their place.
 
 \begin{definition}[The lifting system with weights]
   \label{def:pencil-weighted-lifting-system}
+  \lean{Graph.weightedLiftingMatrix}
+  \leanok
   \uses{def:pencil-lifting-space}
   Let $\omega$ assign a vector $\omega(v, w) \in K^3$ to every ordered
   pair of bodies. The \emph{lifting system with weights $\omega$} of $G$
@@ -1235,6 +1237,9 @@ the other edges with the columns of $W$ deleted.
 
 \begin{lemma}[The core and the contraction satisfy the standing hypotheses]
   \label{lem:pencil-contract-standing}
+  \lean{Graph.isX0Graph_induce_of_deficiency_two_eq_zero, Graph.isX0Graph_rigidContract_induce,
+        Graph.twoEdgeConnected_rigidContract_induce}
+  \leanok
   \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction,
         def:D-deficiency}
   Let $G$ satisfy the standing hypotheses and be $2$-edge-connected. Let
@@ -1246,6 +1251,7 @@ the other edges with the columns of $W$ deleted.
   and $|V(G/H)| = |V(G)| - |W| + 1$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-zero-connected, lem:reduction-measure}
   A graph of deficiency zero is connected, and of minimum degree at least
   two when it has at least two bodies
@@ -1265,6 +1271,9 @@ the other edges with the columns of $W$ deleted.
 
 \begin{definition}[The contraction curve and the rescaled lifting system]
   \label{def:pencil-contract-lifting-system}
+  \lean{Graph.contractLiftingMatrix, CombinatorialRigidity.Molecular.contractPicture,
+        CombinatorialRigidity.Molecular.contractHeight}
+  \leanok
   \uses{def:pencil-weighted-lifting-system, def:pencil-admissible-picture}
   Let $W \subseteq V(G)$, $r \in W$, and let $q$ be a planar picture. For
   $t \in K$ the \emph{contraction curve} $q(t)$ keeps each body outside
@@ -1285,12 +1294,15 @@ while the rest of $G$ sees it at $q_r$.
 
 \begin{lemma}[The rescaled system off the end of the curve]
   \label{lem:pencil-contract-lifting-kernel}
+  \lean{Graph.contractHeight_mem_liftingSpace, Graph.exists_contractHeight_eq}
+  \leanok
   \uses{def:pencil-contract-lifting-system, def:pencil-lifting-space}
   At every $t$, the heights of a solution of $M(t)$ lie in
   $L_G(q(t))$. At $t \neq 0$ every height of $L_G(q(t))$ is the heights
   of a solution of $M(t)$, so $\dim \ker M(t) \ge \dim L_G(q(t))$.
 \end{lemma}
 \begin{proof}
+  \leanok
   At a body $v$ whose closed neighbourhood meets $W$, the heights $z(t)$
   on that neighbourhood agree with the affine function of the picture
   $q(t)$ with coefficients
@@ -1302,6 +1314,8 @@ while the rest of $G$ sees it at $q_r$.
 
 \begin{lemma}[A core of planar deficiency zero has one plane]
   \label{lem:pencil-contract-core-plane}
+  \lean{Graph.exists_core_plane}
+  \leanok
   \uses{def:pencil-contract-lifting-system, lem:pencil-lifting-space-affine}
   Let $H = G[W]$, and let $q$ be admissible for $H$ with
   $L_H(q) = \mathrm{Aff}(q)$. At every $t$, a solution $(z, h)$ of $M(t)$
@@ -1310,6 +1324,7 @@ while the rest of $G$ sees it at $q_r$.
   every $c \in W$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The rows at a core body $c$ and a core neighbour of $c$ have the weight
   $(x_w, y_w, 1)$ at every $t$, and, $H$ being induced, the closed
   neighbourhood of $c$ in $H$ is its closed neighbourhood in $G$ met
@@ -1321,6 +1336,9 @@ while the rest of $G$ sees it at $q_r$.
 
 \begin{lemma}[The rescaled system at the end of the curve]
   \label{lem:pencil-contract-limit}
+  \lean{Graph.finrank_ker_contractLiftingMatrix_zero_le,
+        Graph.exists_mem_ker_contractLiftingMatrix_zero}
+  \leanok
   \uses{lem:pencil-contract-core-plane, def:rigid-contraction}
   In the setting of \cref{lem:pencil-contract-core-plane}, with $r \in W$:
   \begin{enumerate}
@@ -1332,6 +1350,7 @@ while the rest of $G$ sees it at $q_r$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   At $t = 0$ the rows at a core body $c$ and an attachment $u$ of $c$
   say that $u$ lies on the plane of $c$ through the point $(q_r, 0)$; the
   rows at an attachment $u$ and a body outside $W$ say that the plane of
@@ -1359,6 +1378,8 @@ while the rest of $G$ sees it at $q_r$.
 
 \begin{lemma}[The core is rigid along the curve]
   \label{lem:pencil-contract-core-rank}
+  \lean{Graph.finrank_span_rigidityRows_induce_contractHeight}
+  \leanok
   \uses{lem:pencil-contract-core-plane, lem:pencil-contract-lifting-kernel}
   In the setting of \cref{lem:pencil-contract-core-plane}, let $H$ be
   connected, let $t \neq 0$, and let $q(t)$ be admissible for $H$ with
@@ -1366,6 +1387,7 @@ while the rest of $G$ sees it at $q_r$.
   of $M(t)$, the rank of $H$ is $6(|W| - 1)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-rank-congr, lem:pencil-rank-scale-shift, cor:pencil-flat-x0}
   By \cref{lem:pencil-contract-core-plane} the core heights of $z(t)$ are
   $t\,g \cdot (x_w, y_w, 1)$, an affine function of the picture $q(t)$ on
@@ -1378,6 +1400,8 @@ while the rest of $G$ sees it at $q_r$.
 
 \begin{lemma}[The surviving rows near the collapsed placement]
   \label{lem:pencil-contract-degenerate-rank}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj}
+  \leanok
   \uses{def:rigid-contraction, lem:block-rank-contract}
   Let $r \in W \subseteq V(G)$ and $H = G[W]$, and let $n$ be panel
   normals at which every hinge of $G/H$ is nonzero and
@@ -1388,6 +1412,7 @@ while the rest of $G$ sees it at $q_r$.
   $p$, with the columns of $W$ deleted, have rank at least $N$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:claim-6-4, lem:extProj-preserves-rank-of-inter,
         lem:rank-polynomial-proj-eval}
   At the collapsed placement each row of $G \setminus E(H)$, with the
@@ -1403,6 +1428,8 @@ while the rest of $G$ sees it at $q_r$.
 
 \begin{theorem}[Contraction at a core of planar deficiency zero]
   \label{thm:pencil-x0-contract-rigid}
+  \lean{Graph.X0Attains.of_rigidContract}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:cut-edges-2ec,
         def:rigid-contraction, def:D-deficiency}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses and be
@@ -1413,6 +1440,7 @@ while the rest of $G$ sees it at $q_r$.
   general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-contract-standing, lem:pencil-contract-lifting-kernel,
         lem:pencil-contract-limit, lem:pencil-contract-core-rank,
         lem:pencil-contract-degenerate-rank, lem:block-rank-contract,

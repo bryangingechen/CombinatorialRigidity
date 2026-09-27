@@ -1336,6 +1336,13 @@ theorem preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) : G.Preconnected :=
   preconnected_of_twoEdgeConnected (twoEdgeConnected_of_isKDof_zero hD hrigid)
 
+/-- **A `0`-dof graph with a vertex is connected** (`lem:deficiency-zero-connected`, Phase 40f;
+the connectivity half of the standing hypotheses at a `def₂`-rigid core): `G.Connected` is
+`preconnected_of_isKDof_zero` plus a vertex. -/
+theorem connected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) (hV : V(G).Nonempty) : G.Connected :=
+  connected_iff.mpr ⟨hV, preconnected_of_isKDof_zero hD hrigid⟩
+
 /-- **A body-hinge-rigid (`0`-dof) graph's multiplied graph is connected** (Track-A
 N4a infrastructure below `lem:rigidContract-isMinimalKDof`; `notes/Phase22.md`). For a
 `0`-dof graph `G` with `D = bodyBarDim n ≥ 2` (so `bodyHingeMult n = D - 1 ≥ 1`, i.e.

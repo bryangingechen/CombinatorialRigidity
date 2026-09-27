@@ -45,6 +45,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed

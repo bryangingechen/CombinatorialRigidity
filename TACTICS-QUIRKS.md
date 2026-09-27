@@ -63,7 +63,7 @@ failing pattern and the working fix.
 - *"… does not contain field `Eq.foo`"* on `hf.foo`, where `hf`'s type is a `def : Prop` wrapping *another* `def : Prop` that unfolds to a bare `Eq` (e.g. `IsTightPartition`/`IsSquareTightPartition`) → § 35 (variant — re-ascribe the wrapper type via a `have` before dot-calling)
 - *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
 - *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
-- `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper); also when a lemma application leaves a *heavy-carrier implicit* (arg / row-family / seed-function `qρ` / panel-endpoint `a b` of a relabel brick) to be inferred against a heavy `ofNormals …` goal → § 38 (pin it explicit)
+- `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper); also when a lemma application leaves a *heavy-carrier implicit* (arg / row-family / seed-function `qρ` / panel-endpoint `a b` of a relabel brick) to be inferred against a heavy `ofNormals …` goal → § 38 (pin it explicit); also an `exact` of a lemma over `Gc.map (collapseTo r V(H))` against hypotheses over `G.rigidContract (G.induce W) r` → § 38 (rewrite to the map form by `rfl` first)
 - `(deterministic) timeout at whnf` in a *pre-existing, untouched* exterior-algebra proof right after adding an `InnerProductSpace`/`EuclideanSpace` import → § 59 (the metric `PiLp` instances poison `⋀`-elaboration; keep the bridge in a mirror / a downstream file)
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
 - `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
@@ -1840,6 +1840,17 @@ which is cheap (a metavariable assignment, not a defeq search). No `maxHeartbeat
 `BodyHingeFramework.finrank_span_rigidityRows_mapSupport` (Phase 34,
 `Molecular/GenericLift/HingeGeneric.lean`).
 
+**Contraction-carrier variant (Phase 40f).** A `panelRow` lemma stated over the *map form* of a
+contraction, `Gc.map (Graph.collapseTo r V(H))` (here `panelRow_collapseTo_comp_extProj_dualMap`,
+`Coupling.lean`), used by `exact` against hypotheses stated over `G.rigidContract (G.induce W) r` —
+the same graph by `rfl` — times out at `isDefEq`: the elaborator unfolds `rigidContract` (and
+`V(G.induce W)`) inside the heavy `(ofNormals …).toBodyHinge` carrier. Fix: first rewrite both sides
+to the lemma's syntactic shape with `rfl` equations — `have hGcf : G.rigidContract (G.induce W) r =
+Gc.map f := rfl` then `rw [hGcf] at hne hN`, and `have hVH : V(G.induce W) = W := rfl` then
+`rw [hVH] at h` on the lemma instance — so the final match is syntactic. Worked case:
+`PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
+(`Molecule/Pencil/MainComponent/Contract.lean`).
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or
@@ -2385,6 +2396,14 @@ natural delimiter (a `rw [a, b, c]` after a `,`; a long dotted prefix
 require restructuring a proof.
 
 Phase 22j A2 (`CaseI.lean`, the `case_II_realization_all_k` longLine drop).
+
+**A scratch spike sees neither this linter nor `linter.flexible`.** The lakefile turns the mathlib
+style linters on through `weak.linter.mathlibStandardSet`, which reaches a package module built by
+`lake build` but not a file checked with `lake env lean scratch/X.lean`. So a spike that prints
+only its `#print axioms` line can still land with long lines and flexible-`simp` warnings: the
+Phase 40f CONTRACT-R spike did (six long lines, one flexible `simp … at h₁ h₂ ⊢`). When
+transcribing a spike, scan it with the codepoint script above, and expect the first `lake build`
+of the landed file to report flexible tactics the spike never showed.
 
 
 ## 56. A bare-`Graph.`-prefixed decl *inside* `namespace Foo` creates a `Foo.Graph` sub-namespace that captures downstream `open scoped Graph` — `V(G)`/`E(G)`/`↾` stop parsing and `binop%` flips ℕ-sub→ℤ-sub

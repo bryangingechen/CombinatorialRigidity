@@ -428,6 +428,8 @@ contraction step on pencil configurations
 
 \begin{lemma}[The block-triangular rank bound at a core; KT eq.~(6.3)]
   \label{lem:block-rank-contract}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le}
+  \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Let $(G, p)$ be a panel-hinge framework, $W$ a set of bodies, and
   $H = G[W]$. Let $R_W(G \setminus E(H), p)$ be the rigidity matrix of
@@ -439,6 +441,7 @@ contraction step on pencil configurations
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   The rows of $H$ read only the columns of $W$, so deleting those columns
   kills them. Rank-nullity for the column deletion, on the span of the rows
   of $H$ and of the other edges, which lies in the row span of $G$, gives
@@ -705,6 +708,8 @@ contraction step on pencil configurations
 
 \begin{lemma}[Projected row independence persists near its witness]
   \label{lem:rank-polynomial-proj-eval}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval}
+  \leanok
   \uses{lem:rank-polynomial-of-le-finrank, def:rigidity-matrix}
   Let $t$ be a set of bodies and $D = (\operatorname{extProj} t)^{\!*}$ the
   projection deleting the columns of $t$. Suppose that at panel normals
@@ -715,6 +720,7 @@ contraction step on pencil configurations
   linearly independent after $D$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The coordinates of the projected panel rows are polynomials in the
   normals, and a maximal minor of the projected family that does not vanish
   at $q_0$ is the polynomial: the projected form of

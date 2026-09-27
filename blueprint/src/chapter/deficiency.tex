@@ -196,12 +196,15 @@ parallel copies of each edge $e \in E(G)$.
 
 \begin{lemma}[A $0$-dof graph is connected, of minimum degree at least two]
   \label{lem:deficiency-zero-connected}
+  \lean{Graph.connected_of_isKDof_zero, Graph.two_le_degree_of_isKDof_zero}
+  \leanok
   \uses{def:k-dof, def:cut-edges-2ec}
   Let $G$ be a $0$-dof graph with at least one vertex, at any $D \ge 1$.
   Then $G$ is connected, and if $|V(G)| \ge 2$, every vertex of $G$ has
   degree at least $2$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:two-edge-conn}
   $G$ is $2$-edge-connected (\cref{def:cut-edges-2ec}). A component of a
   disconnected $G$ would be a nonempty proper vertex set crossed by no
