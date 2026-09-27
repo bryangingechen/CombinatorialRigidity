@@ -937,3 +937,22 @@ of the step and (MC-26)'s links are superseded on (MC-89)'s route but not delete
 second reading of (MC-179)–(MC-182) comes next. Then 40h opens as SHORT: the `k = 2, 3, 4` steps and
 their infrastructure, seven builds (B1–B7). The `k = 1` cell (B8–B9) and (MC-175)(iii) join ORBIT's
 group, and THETA becomes a COVERAGE remark.
+
+## 2026-09-27 — SHORT opens as 40h: placement by convention, `Carrier.lean` split first
+
+Before 40h opened, the coordinator asked one more question on the SHORT recon's layout, where its new
+general pieces go; the numbering continues the SHORT entry above. The user's answer, relayed verbatim
+in the coordinator's dispatch:
+
+```adjudication
+PI decision, 2026-09-27, on 40h's placement (verbatim answer to the coordinator's question):
+5. Placement — "Where should 40h's new general pieces go? The recon's layout: new MainComponent/Lines.lean (line geometry, including two pointJoin lemmas), new EarGen.lean (including the picture-locality congr lemmas for liftingSpace/IsAdmissiblePicture), new Short.lean (the three step theorems), plus SplitOffDeficiency.lean and Ear.lean. Convention would put the congr lemmas in Carrier.lean (1 496 lines; the plan recorded at 40b is to split it first) and the pointJoin lemmas in Flat.lean (865).": "Convention, split Carrier" — one extra commit at B3 splits Carrier.lean along its section headers (as planned at 40b; rebuilds the downstream Phase-40 modules once), then the congr lemmas go beside their definitions; the pointJoin lemmas go in Flat.lean. The 40f 'convention everywhere' precedent.
+```
+
+**Decided.** Sub-phase 40h (SHORT) opens with fourteen red nodes, and the recon's seven builds B1–B7
+gain one commit: `Carrier.lean` is split along its section headers before B3, as the design doc's
+CARRIER entry planned. The locality lemmas `liftingSpace_congr` and `isAdmissiblePicture_congr` then
+go beside their definitions, in the part of the split that keeps `liftingSpace` and
+`IsAdmissiblePicture`; `pointJoin_add_smul_left` and `pointJoin_self` go in `Flat.lean`, beside
+`pointJoin`. The rest of the recon's layout stands (`Lines.lean`, `EarGen.lean`, `Short.lean`,
+`SplitOffDeficiency.lean`, `Ear.lean`). Work log `notes/Phase40h.md`.

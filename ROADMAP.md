@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓, SHORT recon and its second reading ✓; next 40h opens design-first as SHORT (see `notes/Phase40g.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓; 40h/SHORT open (see `notes/Phase40h.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1160,11 +1160,12 @@ infinite field. Layers by stable code, lettered only as each opens:
 - **BRIDGE** ✓ (sub-phase 40d, closed 2026-09-26): Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps, run by group; the first,
   CUTBRIDGE, closed as sub-phase 40e (2026-09-26); the second, CONTRACT-R, closed as sub-phase 40f
-  (2026-09-26); the third, CHAIN, closed as sub-phase 40g (2026-09-27); the rest are provisional
-  codes in the design doc, SHORT next. The ORBIT recon (2026-09-26) re-proved the one step whose
-  informal proof counted dimensions, and a second reading confirmed it. The SHORT recon (2026-09-27)
-  re-proved the `k = 3, 4` ear steps by removing one ear body and putting it back, in place of an
-  orbit case analysis, and a second reading confirmed it with repairs. SHORT opens design-first as 40h;
+  (2026-09-26); the third, CHAIN, closed as sub-phase 40g (2026-09-27); the fourth, SHORT, is
+  sub-phase 40h (open); the rest are provisional codes in the design doc. The ORBIT recon
+  (2026-09-26) re-proved the one step whose informal proof counted dimensions, and a second reading
+  confirmed it. The SHORT recon (2026-09-27) re-proved the `k = 3, 4` ear steps by removing one ear
+  body and putting it back, in place of an orbit case analysis, and a second reading confirmed it
+  with repairs;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
 
@@ -1306,6 +1307,26 @@ ends. A closed ear is a cut vertex with a cycle on its other side. Two build com
 compiler-checked recon's sorry-free spike, with the PI's placement (`Bricks.lean`, `Cut.lean`,
 `Flat.lean` and the new `Ear.lean` and `Chain.lean`). Headline axioms unchanged (re-verified at the
 close).
+
+#### Phase 40h — the shorter open ears (SHORT, STEPS' fourth group) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-27; work log `notes/Phase40h.md`). The open-ear steps
+with two, three and four interior bodies, whose ends may be adjacent, in `main-component.tex`
+§`sec:main-component-short`, with a split-off bound in `molecular-induction.tex` and a deficiency
+bound in `deficiency.tex`. `X₀` attaining at `G[V₁]` gives it at `G` for two interior bodies when
+the deficiency does not drop ((MC-54)), and for three or four when `X₀` also attains at `G` with its
+second interior body suppressed ((MC-181), (MC-180)).
+- The count is taken against the suppressed graph. Putting the body back on a line through a
+  neighbour raises `dim(ρ + Λ)` by one unless the span holds every line through that neighbour;
+  with four interior bodies a tetrahedron of joins rules that out, and with three a pairing of
+  lines does. This replaces the informal proof's case analysis over orbits; it was found by
+  formalization and second-read before the open.
+- The data on `V₁` are fixed before the ear's, so the picture is chosen in two stages.
+- Seven builds from a compiler-checked recon (its line geometry is sorry-free and its step
+  statements compile), and before the third a commit that splits `Carrier.lean` along its section
+  headers. Placement per the PI: new `Lines.lean`, `EarGen.lean` and `Short.lean`, the locality
+  lemmas beside their definitions, and two join lemmas in `Flat.lean`. The `k = 1` cell goes to
+  ORBIT, and θ-graphs to COVERAGE.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

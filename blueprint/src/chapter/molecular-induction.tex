@@ -861,6 +861,30 @@ some base $B'$ of $M(\widetilde{G_v^{ab}})$ has $|\tilde{ab} \cap B'| <
 D - 1$) is Katoh--Tanigawa's reading through the forest surgery
 (\cref{rem:kt-lemma-41}) and is not needed for Theorem~4.9.
 
+The upper bound holds as well when the new edge $ab$ carries the label
+of one of the two deleted edges, the form in which the ear steps on
+pencil configurations suppress a body (\cref{sec:main-component-short}).
+
+\begin{lemma}[Suppressing a body of degree two]
+  \label{lem:splitoff-deficiency-reuse}
+  \uses{def:graph-operations, def:D-deficiency}
+  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b \neq v$,
+  carried by the two distinct edges $e_a$ (joining $v, a$) and $e_b$
+  (joining $v, b$), and let $G''$ be obtained from $G$ by deleting $v$
+  and letting the label $e_a$ join $a$ and $b$. Then
+  \[
+    \operatorname{def}(\tilde G'') \;\le\; \operatorname{def}(\tilde G).
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:splitoff-deficiency}
+  As for the upper bound of \cref{lem:splitoff-deficiency}: extend a
+  partition of $V(G) - v$ to $V(G)$ by putting $v$ into the part of $a$.
+  The number of parts is unchanged, $e_a$ no longer crosses in $G$, and
+  $e_b$ crosses in $G$ exactly when $e_a$, joining $a$ and $b$, crosses in
+  $G''$; every other edge keeps its ends and its status.
+\end{proof}
+
 \begin{remark}[KT Lemma 4.4's lower bound \emph{is} a deficiency-counting fact, via the isolated-case crossing-drop]
   \label{rem:kt-lemma-44}
   \uses{lem:splitoff-deficiency, lem:removal-deficiency}

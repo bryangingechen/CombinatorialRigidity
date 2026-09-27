@@ -324,6 +324,31 @@ parallel copies of each edge $e \in E(G)$.
   $D - 2(D - 1) = 2 - D$ at least. The sum is the bound.
 \end{proof}
 
+When the ends of the path lie in one part of a partition attaining the
+deficiency of $G[V_1]$, the path bodies can join that part, and the
+deficiency does not drop.
+
+\begin{lemma}[The deficiency along an ear whose ends share a part]
+  \label{lem:deficiency-ear-merge}
+  \uses{def:D-deficiency}
+  Let $V_1 \subseteq V(G)$, and let $a - x_1 - \cdots - x_k - b$
+  ($k \ge 0$) be a path of $G$ with $a, b \in V_1$, possibly $a = b$, and
+  distinct bodies $x_1, \dots, x_k$ outside $V_1$, such that
+  $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ not on the
+  path lies inside $V_1$. If some partition of $V_1$ attaining
+  $\operatorname{def}(\tilde G[V_1])$ has $a$ and $b$ in one part, then,
+  at any $D$,
+  \[
+    \operatorname{def}(\tilde G[V_1]) \;\le\; \operatorname{def}(\tilde G).
+  \]
+\end{lemma}
+\begin{proof}
+  Put every $x_i$ into the part containing $a$ and $b$. The number of
+  parts is unchanged, every edge of the path lies inside that part, and
+  every other edge of $G$ lies inside $V_1$ with its status unchanged, so
+  the value of the partition on $G$ is its value on $G[V_1]$.
+\end{proof}
+
 \begin{lemma}[Matroid restriction descends to subgraphs]
   \label{lem:matroid-restrict-subgraph}
   \lean{Graph.matroidMG_restrict_mulTilde}

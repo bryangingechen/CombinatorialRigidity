@@ -21,10 +21,11 @@ steps rest; the fourth proves the first steps of the induction, at a
 cut vertex and along a chain of bridges; the fifth proves the
 contraction step at a core of planar deficiency zero; the sixth proves
 that a cycle attains, and the ear steps for a closed ear and for an open
-ear with at least five interior bodies. The shorter ear and split-off
-steps, the contraction step at the remaining cores, and the structural
-coverage build on them; the last subsection states the passage back to
-the two statements.
+ear with at least five interior bodies; the seventh proves the ear steps
+for an open ear with two, three or four interior bodies. The remaining
+ear steps, the split-off step, the contraction step at the remaining
+cores, and the structural coverage build on them; the last subsection
+states the passage back to the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -109,6 +110,23 @@ $K^{V(G)}$.
   the dimension of $L(q)$ is still that of a space of heights on
   $V(G)$.
 \end{fmlnote}
+
+When $G$ is a subgraph of a larger graph, a picture of the larger graph
+is read as a picture of $G$ by restriction to $V(G)$, and only the bodies
+of $G$ matter.
+
+\begin{lemma}[Admissibility and the lifting space read only the bodies of the graph]
+  \label{lem:pencil-picture-local}
+  \uses{def:pencil-admissible-picture, def:pencil-lifting-space}
+  Let $q$ and $q'$ be planar pictures of a set of bodies containing
+  $V(G)$ that agree at every body of $G$. Then $q$ is admissible for $G$
+  if and only if $q'$ is, and $L_G(q) = L_G(q')$.
+\end{lemma}
+\begin{proof}
+  Admissibility reads the picture at the two ends of each edge and on
+  each closed neighbourhood, and the lifting space on each closed
+  neighbourhood; all of these consist of bodies of $G$.
+\end{proof}
 
 \begin{definition}[Configurations and their planes]
   \label{def:pencil-configuration}
@@ -1844,6 +1862,416 @@ cycle.
   directly. For instance, the $\theta$-graph whose two branch bodies are
   joined by paths of one, two and six edges is a triangle with an open
   ear of five interior bodies on two adjacent bodies.
+\end{remark}
+
+\subsection{Open ears with two, three or four interior bodies}
+\label{sec:main-component-short}
+
+This subsection proves the ear steps for an open ear
+$a - x_1 - \cdots - x_k - b$ on $V_1$ with $k = 2, 3, 4$, whose ends may
+be adjacent. With $\rho$ and $\Lambda$ as in
+\cref{sec:main-component-chain}, the rank grows along the ear by
+$5(k + 1) + \dim(\rho + \Lambda) - 6$ (\cref{lem:block-rank-ear}) and the
+target by $6k - \operatorname{def}(\tilde G) + \operatorname{def}(\tilde
+G[V_1])$. So a configuration over a main picture of $G$, with nonzero
+hinges, at which the rank of $G[V_1]$ is its target, has at least the
+target rank of $G$ as soon as
+\[
+  \dim(\rho + \Lambda) \;\ge\; k + 1 + \operatorname{def}(\tilde G[V_1])
+  - \operatorname{def}(\tilde G), \qquad (\star)
+\]
+and then the general configuration of $G$ attains
+(\cref{lem:pencil-x0-one-witness}). With two interior bodies, three
+independent hinges suffice when the deficiency of $G$ is at least that of
+$G[V_1]$, and the three joins of a flat configuration are independent.
+With three or four interior bodies no bound on the deficiency is assumed.
+Besides $G[V_1]$, the step then uses $G$ with its second interior body
+$x_2$ suppressed, and the count is taken against it: putting $x_2$ back on a
+line through one of its neighbours raises $\dim(\rho + \Lambda)$ by one
+unless the span already contains every line through that neighbour
+(\cref{lem:pencil-insertion}). If it contains every line through $x_1$
+and every line through $x_3$, then with four interior bodies it contains
+the six edges of a tetrahedron. With three, either some relative screw
+pairs to a nonzero value with the line $x_1 x_3$
+(\cref{def:pencil-line-pairing}), and then lies outside the span of the
+lines through $x_1$ or $x_3$, or every relative screw pairs to zero with
+every line joining the planes of the two ends, and then the whole span
+has dimension at most three (\cref{lem:pencil-bilinear}). The data on
+$V_1$ are fixed first, from one configuration at which both smaller
+graphs attain, and the data of the ear second
+(\cref{lem:pencil-ear-data}).
+
+By \cref{lem:pencil-join-flat} every $c \in \Lambda^2 K^4$ has flat
+coordinates $(\sigma(c), \tau(c)) \in K^3 \times K^3$, with
+$\sigma(p \wedge p') = p_z\,\bar p' - p'_z\,\bar p$ and
+$\tau(p \wedge p') = \bar p \times \bar p'$.
+
+\begin{definition}[The pairing of lines]
+  \label{def:pencil-line-pairing}
+  \uses{lem:pencil-join-flat}
+  The \emph{pairing} of $c, c' \in \Lambda^2 K^4$ is
+  \[
+    \langle c, c' \rangle = \sigma(c) \cdot \tau(c') + \sigma(c') \cdot \tau(c).
+  \]
+\end{definition}
+
+The pairing is bilinear and symmetric. The \emph{star} of a point
+$y \in K^4$ is the span $\operatorname{star}(y)$ of the joins
+$y \wedge u$, $u \in K^4$, the lines through $y$.
+
+\begin{lemma}[The pairing of two joins]
+  \label{lem:pencil-line-pairing-join}
+  \uses{def:pencil-line-pairing, def:extensor}
+  For $p, q, r, s \in K^4$,
+  $\langle p \wedge q, r \wedge s \rangle = \det(p, q, r, s)$; in
+  particular two lines through a common point pair to zero. The pairing
+  is nondegenerate: if $\langle c, c' \rangle = 0$ for every $c'$, then
+  $c = 0$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-join-flat}
+  Expand both sides in the coordinates of the four points, with the flat
+  coordinates of \cref{lem:pencil-join-flat}. For nondegeneracy, pair $c$
+  with the six screws whose flat coordinates are a unit vector and zero:
+  they read off the coordinates of $\tau(c)$ and of $\sigma(c)$.
+\end{proof}
+
+\begin{lemma}[The joins of four independent points]
+  \label{lem:pencil-tetrahedron}
+  \uses{def:extensor}
+  If $p_0, p_1, p_2, p_3 \in K^4$ are linearly independent, the six joins
+  $p_i \wedge p_j$, $i < j$, are linearly independent, so they span
+  $\Lambda^2 K^4$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-line-pairing-join}
+  Pair a vanishing combination $\sum c_{ij}\, p_i \wedge p_j = 0$ with the
+  opposite edge $p_k \wedge p_l$. By \cref{lem:pencil-line-pairing-join}
+  the pairing of two edges is $\pm \det(p_0, p_1, p_2, p_3) \neq 0$ when
+  they are opposite and $0$ when they share a point, so every $c_{ij}$
+  vanishes. The space $\Lambda^2 K^4$ has dimension six.
+\end{proof}
+
+\begin{lemma}[The lines through two points]
+  \label{lem:pencil-two-stars}
+  \uses{def:pencil-line-pairing, def:extensor}
+  For $y, y' \in K^4$, every element $c$ of
+  $\operatorname{star}(y) + \operatorname{star}(y')$ has
+  $\langle c, y \wedge y' \rangle = 0$. If $y$ and $y'$ are linearly
+  independent, then
+  $\dim\bigl(\operatorname{star}(y) + \operatorname{star}(y')\bigr) \ge 5$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-line-pairing-join, lem:pencil-tetrahedron}
+  A line through $y$ or through $y'$ meets the line $y y'$, so the
+  pairing vanishes (\cref{lem:pencil-line-pairing-join}). Extend $y, y'$
+  to a basis $y, y', e, e'$ of $K^4$: five of the six joins of
+  \cref{lem:pencil-tetrahedron}, all but $e \wedge e'$, lie in the two
+  stars.
+\end{proof}
+
+For $h \in K^3$ write $\hat\pi_h = \{(u_1, u_2, h \cdot u, u_3) : u \in
+K^3\} \subseteq K^4$ for the homogeneous points of the plane
+$z = h_1 x + h_2 y + h_3$, and $\Lambda^2 \hat\pi_h$ for the space of
+screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
+
+\begin{lemma}[The lines of a plane]
+  \label{lem:pencil-plane-lines}
+  \uses{lem:pencil-join-flat}
+  For $h \in K^3$, the join of any two points of $\hat\pi_h$ lies in
+  $\Lambda^2 \hat\pi_h$, and $\dim \Lambda^2 \hat\pi_h \le 3$.
+\end{lemma}
+\begin{proof}
+  The first claim is a computation in the flat coordinates of
+  \cref{lem:pencil-join-flat}. On $\Lambda^2 \hat\pi_h$ the coordinate
+  $\sigma$ is determined by $\tau$, so $\tau$ is injective there.
+\end{proof}
+
+\begin{lemma}[Lines joining two planes]
+  \label{lem:pencil-bilinear}
+  \uses{def:pencil-line-pairing, lem:pencil-plane-lines}
+  Let $h, h' \in K^3$, and let $c \in \Lambda^2 K^4$ have
+  $\langle c, u \wedge v \rangle = 0$ for every $u \in \hat\pi_h$ and
+  every $v \in \hat\pi_{h'}$. If $h \neq h'$, then $c = 0$; if $h = h'$,
+  then $c \in \Lambda^2 \hat\pi_h$. Consequently, if every element of a
+  subspace $\rho \subseteq \Lambda^2 K^4$ has this property, and
+  $f_1, f_2, f_3 \in \Lambda^2 K^4$ lie in $\Lambda^2 \hat\pi_h$ when
+  $h = h'$, then $\dim\bigl(\rho + \operatorname{span}(f_1, f_2, f_3)\bigr)
+  \le 3$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-join-flat}
+  Test the hypothesis on the nine joins of the lift of a unit vector
+  $e_i$ of $K^3$ to $\hat\pi_h$ with the lift of $e_j$ to $\hat\pi_{h'}$.
+  The equations at $(i, i)$, and the sums of those at $(i, j)$ and
+  $(j, i)$, are linear in $\tau(c)$ with coefficients $h_i - h'_i$; when
+  $h \neq h'$ some coefficient is nonzero, and they force $\tau(c) = 0$,
+  after which the remaining equations give $\sigma(c) = 0$. When $h = h'$ the equations say
+  $\sigma(c) = -\, h \times \tau(c)$. For the consequence, if $h \neq h'$
+  then $\rho = 0$; if $h = h'$ then $\rho$ and the $f_i$ lie in
+  $\Lambda^2 \hat\pi_h$, of dimension at most three
+  (\cref{lem:pencil-plane-lines}).
+\end{proof}
+
+\begin{lemma}[Putting a body back next to a neighbour]
+  \label{lem:pencil-insertion}
+  \uses{def:extensor}
+  Let $K$ be infinite, let $\rho \subseteq \Lambda^2 K^4$ be a subspace
+  and $F$ a finite family in $\Lambda^2 K^4$, let $y, y', u \in K^4$, and
+  let $W = \rho + \operatorname{span} F + K\,(y \wedge y')$. For $t \in K$
+  write $W_t = \rho + \operatorname{span} F +
+  \operatorname{span}\bigl(y \wedge (y + t u),\ (y + t u) \wedge y'\bigr)$.
+  Then $\dim W_t \ge \dim W$ for some $t \neq 0$, and if
+  $y \wedge u \notin W$, then $\dim W_t \ge \dim W + 1$ for some
+  $t \neq 0$.
+\end{lemma}
+\begin{proof}
+  For $t \neq 0$, $y \wedge (y + t u) = t\,(y \wedge u)$ and
+  $(y + t u) \wedge y' = y \wedge y' + t\,(u \wedge y')$, so
+  $W_t = \rho + \operatorname{span} F + \operatorname{span}(y \wedge u,\
+  y \wedge y' + t\,(u \wedge y'))$. Take a basis of
+  $\rho + \operatorname{span} F$, followed by $y \wedge y'$ if it lies
+  outside, and by $y \wedge u$ if it lies outside $W$, and replace
+  $y \wedge y'$ in it by $y \wedge y' + t\,(u \wedge y')$. The family is
+  affine in $t$, lies in $W_t$ for $t \neq 0$, and is linearly independent
+  at $t = 0$; a maximal minor of its coordinates is a polynomial in $t$,
+  nonzero at $0$, and $K$ is infinite.
+\end{proof}
+
+\begin{lemma}[An open ear over fixed base data]
+  \label{lem:pencil-ear-data}
+  \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
+        lem:pencil-x0-main-picture-open, def:pencil-x0-attains,
+        def:pencil-configuration}
+  Let $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$ with
+  $k \ge 2$. Fix \emph{base data}: a picture $q_1$ of the bodies of $V_1$,
+  admissible for $G[V_1]$, and heights $z_1 \in L_{G[V_1]}(q_1)$; let
+  $h_a$ and $h_b$ be the affine functions agreeing with $z_1$ on the
+  closed neighbourhoods of $a$ and $b$ in $G[V_1]$. The \emph{ear data}
+  are points $\xi_1, \dots, \xi_k \in K^2$ and values
+  $w_2, \dots, w_{k-1} \in K$. They give the picture $q(\xi)$, equal to
+  $q_1$ on $V_1$ and to $\xi_i$ at $x_i$, and the height $z(\xi, w)$,
+  equal to $z_1$ on $V_1$, to $h_a(\xi_1)$ at $x_1$, to $w_i$ at $x_i$
+  for $1 < i < k$, and to $h_b(\xi_k)$ at $x_k$.
+  \begin{enumerate}
+    \item If $q(\xi)$ is admissible for $G$, then
+      $z(\xi, w) \in L_G(q(\xi))$. The points of the configuration
+      $(q(\xi), z(\xi, w))$ are polynomial in the ear data, and on $V_1$
+      they are those of $(q_1, z_1)$.
+    \item If $P$ is the polynomial of \cref{lem:pencil-x0-main-picture-open}
+      for $G$ and $P(q(\xi^*)) \neq 0$, then $\xi \mapsto P(q(\xi))$ is a
+      polynomial in $\xi$, nonzero at $\xi^*$, and $q(\xi)$ is a main
+      picture of $G$ wherever it does not vanish.
+    \item If the configuration $(q(\xi), z(\xi, w))$ has rank at least
+      $r$ at one ear datum, there is a polynomial in the ear data,
+      nonzero there, such that the rank is at least $r$ wherever it does
+      not vanish. The same holds for the linear independence of a finite
+      family of vectors of $\Lambda^2 K^4$, each fixed or a join of two
+      points of the configuration.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-ear-fibre, lem:pencil-picture-local,
+        lem:pencil-rank-congr, lem:pencil-join-independence-open}
+  By admissibility of $q_1$ the functions $h_a$ and $h_b$ are unique. For
+  (1), the height at $x_1$ and at $x_k$ is given by $h_a$ and $h_b$, and
+  every other closed neighbourhood of a body of $V_1$ lies in $V_1$, so
+  \cref{lem:pencil-ear-fibre}(1) applies; the points
+  $(\xi_i, z(\xi, w)_{x_i}, 1)$ are polynomial in $(\xi, w)$.
+  Admissibility and the lifting space of $G[V_1]$
+  (\cref{lem:pencil-picture-local}), and its rank
+  (\cref{lem:pencil-rank-congr}), read only the bodies of $V_1$, so they
+  are those of the base data at every ear datum. For (2), substitute the
+  fixed coordinates $q_1$ into $P$; for (3), into a maximal minor of the
+  rigidity matrix, or of the coordinate matrix of the family
+  (\cref{lem:pencil-join-independence-open}), nonzero at the given ear
+  datum.
+\end{proof}
+
+\begin{theorem}[An open ear with two interior bodies]
+  \label{thm:pencil-x0-open-ear-two}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:D-deficiency}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses
+  (\cref{def:pencil-x0-standing}), with an open ear $a - x_1 - x_2 - b$
+  on $V_1$ whose ends $a$ and $b$ may be adjacent, and suppose
+  $\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G)$
+  (\cref{def:D-deficiency}, at $n = 3$). If the general configuration of
+  $G[V_1]$ attains, then the general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-ear-fibre, lem:pencil-join-independence-open,
+        lem:pencil-ear-hinge-span, lem:block-rank-ear,
+        lem:pencil-lifting-restrict, lem:pencil-rank-congr,
+        lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
+        lem:pencil-x0-one-witness}
+  Take a picture $q$ off the zero sets of the polynomial of the
+  attainment at $G[V_1]$ and of the main-picture polynomial of $G$
+  (\cref{lem:pencil-x0-main-picture-open}). At the heights $0$, which lie
+  in $L_G(q)$, the joins of the three ear edges are the lines
+  $a x_1$, $x_1 x_2$ and $x_2 b$ of the plane $z = 0$. Admissibility at
+  $x_1$ and at $x_2$ keeps $a, x_1, x_2$ and $x_1, x_2, b$ off a line, so
+  the three lines are not concurrent and the joins are linearly
+  independent. The heights of $L_G(q)$ at which they stay independent,
+  and those restricting to attaining heights of $G[V_1]$
+  (\cref{lem:pencil-ear-fibre}(2), \cref{lem:pencil-lifting-restrict}),
+  each contain a nonempty Zariski-open subset
+  (\cref{lem:pencil-join-independence-open}), and the two meet
+  (\cref{lem:pencil-x0-fibre-intersection}). There the rank of $G[V_1]$
+  is its target (\cref{lem:pencil-rank-congr}) and
+  $\dim(\rho + \Lambda) \ge 3$ (\cref{lem:pencil-ear-hinge-span}), which
+  is $(\star)$ at $k = 2$ by the hypothesis on the deficiencies; so
+  \cref{lem:block-rank-ear} and \cref{lem:pencil-x0-one-witness} apply.
+\end{proof}
+
+\begin{theorem}[An open ear with four interior bodies]
+  \label{thm:pencil-x0-open-ear-four}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing,
+        def:graph-operations}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with
+  an open ear $a - x_1 - x_2 - x_3 - x_4 - b$ on $V_1$ whose ends $a$ and
+  $b$ may be adjacent. Let $G''$ be $G$ with $x_2$ suppressed: the
+  splitting-off $G_{x_2}^{x_1 x_3}$ (\cref{def:graph-operations}) whose
+  new edge $x_1 x_3$ carries the label of the deleted edge $x_1 x_2$. If
+  the general configurations of $G[V_1]$ and of $G''$ attain, then the
+  general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:block-rank-ear, lem:pencil-config-point-join-rank,
+        lem:pencil-ear-fibre, lem:pencil-lifting-restrict,
+        lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness,
+        lem:pencil-ear-data, lem:pencil-insertion, lem:pencil-tetrahedron,
+        lem:splitoff-deficiency-reuse, lem:deficiency-ear}
+  Write $f = \operatorname{def}(\tilde G[V_1])$, and compute ranks with the
+  joins as hinges (\cref{lem:pencil-config-point-join-rank}). $G''$ has
+  the open ear $a - x_1 - x_3 - x_4 - b$ on $V_1$, and the same
+  $G[V_1]$.
+
+  \emph{Base data.} Take a picture $q^*$ off the zero sets of the
+  main-picture polynomial of $G$ (\cref{lem:pencil-x0-main-picture-open})
+  and of the polynomials of the attainment at $G[V_1]$ and at $G''$, and
+  heights $z^* \in L_{G''}(q^*)$ at which $G''$ attains and whose
+  restriction attains for $G[V_1]$: both sets contain nonempty
+  Zariski-open subsets of $L_{G''}(q^*)$, by \cref{lem:pencil-ear-fibre}(2)
+  for the ear of $G''$, and they meet
+  (\cref{lem:pencil-x0-fibre-intersection}). Fix the base data $(q_1, z_1)$,
+  the restriction of $(q^*, z^*)$ to $V_1$, at which the rank of $G[V_1]$
+  is its target. This fixes $\rho$, the points $p_a$ and $p_b$, and the
+  functions $h_a$ and $h_b$ of \cref{lem:pencil-ear-data}; write
+  $\hat\pi_a$ and $\hat\pi_b$ for the homogeneous points of their planes,
+  which contain $p_a$ and $x_1$, and $p_b$ and $x_4$, at every
+  configuration of $G$ or $G''$ with these base data.
+
+  \emph{The configuration of $G''$.} Since $z^* \in L_{G''}(q^*)$ and
+  $h_a$, $h_b$ are unique, $(q^*, z^*)$ is the configuration of ear data of
+  $G''$ over the base data. By \cref{lem:pencil-ear-data}(3), applied to
+  $G''$ there, take ear data $y$ of
+  $G''$, with points $y_1 = x_1$, $y_3 = x_3$, $y_4 = x_4$, at which $G''$
+  has at least its target rank, the ear hinges are nonzero, and
+  $y_1, y_3, y_4, p_b$ are linearly independent. The last condition is a
+  nonzero polynomial: the determinant is affine in the free height of
+  $y_3$, with coefficient $\pm$ the determinant of the homogeneous
+  pictures of $x_1$, $x_4$ and $b$. By \cref{lem:block-rank-ear} at $G''$,
+  $W = \rho + \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_3,\
+  y_3 \wedge y_4,\ y_4 \wedge p_b)$ has
+  $\dim W \ge 4 + f - \operatorname{def}(\tilde G'')$.
+
+  \emph{Putting $x_2$ back.} Place $x_2$ at $y_1 + t u$ or at
+  $y_3 + t u$, with $u$ of last coordinate $0$, keeping the other bodies
+  (every line through an affine point $y$ is $y \wedge u$ for such a $u$);
+  $x_2$ is a middle body of the ear of $G$, so this is a configuration of
+  $G$ with the base data. By \cref{lem:pencil-insertion}, for some
+  $t \neq 0$, $\dim(\rho + \Lambda) \ge \dim W$, and
+  $\dim(\rho + \Lambda) \ge \dim W + 1$ if $W$ does not contain every line
+  through $y_1$, or every line through $y_3$. If it contains both, it
+  contains $y_1 \wedge y_3$, $y_1 \wedge y_4$, $y_1 \wedge p_b$,
+  $y_3 \wedge y_4$, $y_3 \wedge p_b$ and $y_4 \wedge p_b$, the six edges of
+  a tetrahedron, and $W = \Lambda^2 K^4$ (\cref{lem:pencil-tetrahedron}).
+  Either way $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$. This bound is
+  a nonzero polynomial condition on the ear data of $G$, and so is the
+  main-picture condition at $q^*$'s ear pictures
+  (\cref{lem:pencil-ear-data}); at a common non-root the picture is main
+  for $G$, the hinges are nonzero, and $G[V_1]$ attains at the base data
+  (\cref{lem:pencil-rank-congr}).
+
+  \emph{The count.} $\operatorname{def}(\tilde G'') \le
+  \operatorname{def}(\tilde G)$ (\cref{lem:splitoff-deficiency-reuse}) and
+  $\operatorname{def}(\tilde G) \ge f + k - 5$ (\cref{lem:deficiency-ear}),
+  so $\min(\dim W + 1, 6) \ge 5 + f - \operatorname{def}(\tilde G)$, which
+  is $(\star)$ at $k = 4$, and \cref{lem:block-rank-ear} and
+  \cref{lem:pencil-x0-one-witness} apply.
+\end{proof}
+
+\begin{theorem}[An open ear with three interior bodies]
+  \label{thm:pencil-x0-open-ear-three}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing,
+        def:graph-operations}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with
+  an open ear $a - x_1 - x_2 - x_3 - b$ on $V_1$ whose ends $a$ and $b$
+  may be adjacent. Let $G''$ be $G$ with $x_2$ suppressed: the
+  splitting-off $G_{x_2}^{x_1 x_3}$ (\cref{def:graph-operations}) whose
+  new edge $x_1 x_3$ carries the label of the deleted edge $x_1 x_2$. If
+  the general configurations of $G[V_1]$ and of $G''$ attain, then the
+  general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:block-rank-ear, lem:pencil-config-point-join-rank,
+        lem:pencil-ear-fibre, lem:pencil-lifting-restrict,
+        lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness,
+        lem:pencil-ear-data, lem:pencil-insertion, lem:pencil-two-stars,
+        lem:pencil-bilinear, lem:pencil-plane-lines,
+        lem:splitoff-deficiency-reuse, lem:deficiency-ear}
+  As in the proof of \cref{thm:pencil-x0-open-ear-four}, with the base
+  data fixed first and ear data $y = (y_1, y_3)$ of $G''$ with
+  $y_1 \in \hat\pi_a$, $y_3 \in \hat\pi_b$ and
+  $W = \rho + \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_3,\
+  y_3 \wedge p_b)$; only the reason why $W$ cannot contain every line
+  through $y_1$ and every line through $y_3$ unless $W = \Lambda^2 K^4$
+  changes. The pictures of $y_1$ and $y_3$ differ, since they are adjacent
+  in $G''$ and their hinge is nonzero, so $y_1$ and $y_3$ are linearly
+  independent, and the two stars span at least five dimensions and pair
+  to zero with $y_1 \wedge y_3$ (\cref{lem:pencil-two-stars}).
+
+  If $\langle c, u \wedge v \rangle = 0$ for every $c \in \rho$,
+  $u \in \hat\pi_a$ and $v \in \hat\pi_b$, then $\dim W \le 3$
+  (\cref{lem:pencil-bilinear}; when the two planes coincide, the three
+  ear joins are lines of that plane, \cref{lem:pencil-plane-lines}), and
+  $W$ cannot contain both stars. Otherwise some $c \in \rho$ pairs to a
+  nonzero value with some $u_0 \wedge v_0$. The map
+  $(s, s') \mapsto \langle c, \hat s \wedge \hat s' \rangle$, with
+  $\hat s \in \hat\pi_a$ and $\hat s' \in \hat\pi_b$ the lifts of
+  $s, s' \in K^3$, is bilinear, and the vectors of last coordinate $1$
+  span $K^3$, so it is nonzero at a pair of affine points: the pairing
+  $\langle c, y_1 \wedge y_3 \rangle$ is a nonzero polynomial in the
+  pictures of $y_1$ and $y_3$. Require it to be nonzero, as a further open
+  condition on $y$; this uses that $c$ is chosen from $\rho$ before the ear
+  data. Then $c \notin \operatorname{star}(y_1) + \operatorname{star}(y_3)$,
+  and if $W$ contained both stars it would contain them and $c$, so
+  $\dim W = 6$. The count is that of \cref{thm:pencil-x0-open-ear-four}
+  at $k = 3$.
+\end{proof}
+
+\begin{remark}[$\theta$-graphs]
+  \label{rem:pencil-x0-theta}
+  A $\theta$-graph has two branch bodies joined by three internally
+  disjoint paths, of $p_1 \le p_2 \le p_3$ edges, and it is simple when
+  $p_2 \ge 2$. Its general configuration attains, and this is not
+  formalized separately: the structural coverage's strong induction on
+  the number of bodies covers it. The two shorter paths form a cycle $C$
+  on $s = p_1 + p_2$ bodies, which attains (\cref{thm:pencil-x0-cycle}),
+  and the longest is an open ear on $V(C)$ with $k = p_3 - 1$ interior
+  bodies, whose ends are adjacent when $p_1 = 1$. For $k \ge 5$,
+  \cref{thm:pencil-x0-open-ear} applies. For $k = 3, 4$,
+  \cref{thm:pencil-x0-open-ear-three} and
+  \cref{thm:pencil-x0-open-ear-four} apply, since suppressing $x_2$ leaves
+  the smaller $\theta$-graph with paths of $p_1$, $p_2$ and $p_3 - 1$
+  edges. For $k = 2$, $s \le 6$ and the cycle has deficiency zero, so
+  \cref{thm:pencil-x0-open-ear-two} applies. The remaining simple
+  $\theta$-graphs are $K_4 - e$ and $K_{2,3}$. Both of their deficiencies
+  vanish, so at a general picture $\dim L(q) = 3$
+  (\cref{thm:pencil-jj-equality}), and \cref{cor:pencil-flat-attains}
+  applies.
 \end{remark}
 
 \subsection{The passage to the two main-component statements}
