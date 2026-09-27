@@ -7,9 +7,10 @@ standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md`
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
 closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
-2026-09-26** (`notes/Phase40e.md`); the six later groups are provisional. The ORBIT recon is done
-(2026-09-26, §4), and so is the second reading of its new claims (MC-173)–(MC-176); next, 40f
-opens design-first as CONTRACT-R (§3 STEPS). This doc replaces the planning note
+2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R opened 2026-09-26** (`notes/Phase40f.md`),
+design-first from a compiler-checked recon whose spike is the build; the five later groups are
+provisional. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
+claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
 pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
@@ -44,7 +45,7 @@ second-read form, so the job is transcription and formalization, not re-derivati
 
 | what | where | state |
 |---|---|---|
-| the informal mathematics, (MC-1)–(MC-171) | `notes/pencil/workbook/K-main.md` §(K-main). Steps MC1–MC9 are in that file; MC10–MC21 are one file each, `K-main-MCnn.md` (the index is in `K-main.md`). Query with `python3 notes/ledger.py --label '(MC-89)'`, `--brief …` | written; second-read (§3's proof map, column *2nd*) |
+| the informal mathematics, (MC-1)–(MC-178) | `notes/pencil/workbook/K-main.md` §(K-main). Steps MC1–MC9 are in that file; MC10–MC21 are one file each, `K-main-MCnn.md` (the index is in `K-main.md`). Query with `python3 notes/ledger.py --label '(MC-89)'`, `--brief …` | written; second-read (§3's proof map, column *2nd*) |
 | **the proof tree of (MC-89)** | Step MC20, *Part I — the dependency tree of (MC-89)* | audited complete: every computation it consumed is replaced by a hand proof |
 | **every argument leaf of (MC-89)** | (MC-166)'s *Scope* list (Step MC20) | audited characteristic-free |
 | the generic and distinct motives | Step MC19: (MC-123)–(MC-130), (MC-133), (MC-157); nondegeneracy (MC-13), (MC-14) (Step MC8) | second-read 2026-09-25 |
@@ -179,7 +180,7 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`)
+### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, open** (`notes/Phase40f.md`)
 
 **CUT/BRIDGE done** (40e). The "if" halves of (MC-52) and (MC-53) are formalized in
 `Molecule/Pencil/MainComponent/Cut.lean` (`main-component.tex` §`sec:main-component-cut`):
@@ -237,10 +238,25 @@ map for the later groups.
 - **The provisional grouping** (PI, 2026-09-26, "Accept"; codes until each opens, letters minted
   only then; `notes/pencil/adjudications.md`). In dependency order, with build-commit estimates:
   - **CUTBRIDGE = 40e, ✓ closed**: (MC-52), (MC-53). Estimated 3–4; took three builds and a recon.
-  - **CONTRACT-R**, the `def₂`-rigid core: (MC-34)–(MC-39), (MC-59). Reuses Phase 22i's projected
-    Case-I machinery, FLAT, Jackson–Jordán, `rigidContract_deficiency_eq`, and the Cramer section.
-    The rescaled lifting system `M(t)` and its kernel at `t = 0` are new. 6–9. The compiled
-    `Graph.rigidContract_induce_simple` is in the appendix *the STEPS recon's tracked spike*.
+  - **CONTRACT-R = 40f, open** (`notes/Phase40f.md`), the `def₂`-rigid core: (MC-34)–(MC-39),
+    (MC-59). Estimated 6–9; the design recon (opus, 2026-09-26) returned the whole step as one
+    sorry-free spike, so it lands as one build commit. The verdict in brief:
+    - one ambient picture `q`, and the curve `q_c(t) = (1−t)q_r + t·q_c` on `W` (`q(1) = q`);
+    - the rescaled lifting system `M(t)` (new): onto `L_G(q(t))` at `t ≠ 0`, and at `t = 0`
+      `dim ker M(0) ≤ dim L_{G/H}(q)` plus the flat-core extension, i.e. (MC-59)(c2)'s bound and
+      (MC-37) step 2; the no-jump chain is (c3)'s;
+    - Cramer's section along `t`; the core's rank is its flat rank;
+    - the degenerate placement is nonzero for the projected rank polynomial, the one new sibling;
+    - the block coupling (KT eq. (6.3)), ending at `Graph.x0Attains_of_exists`.
+
+    The step's picture moves along the curve, unlike the step contract, and
+    `exists_mem_eval_ne_zero₂` is not used. The PI's placement puts the four general pieces beside
+    their definitions (`notes/Phase40f.md`). `Graph.rigidContract_induce_simple` is transcribed
+    from the appendix *the STEPS recon's tracked spike*.
+  - [ ] **Tracked todo (PI decision 2, 2026-09-26; not a 40f close gate): revisit the shape of
+    CONTRACT-R's simplicity hypothesis for readability.** The theorem carries `hatt` (no outside
+    body adjacent to two core bodies), as spiked. The alternative is `(G/H).Simple`, which needs the
+    converse of `Graph.rigidContract_induce_simple` (about 30 lines).
   - **CHAIN**: (MC-16)–(MC-19), (MC-134)(a)(b), (MC-169), BASE (MC-21)(a), chains `k ≥ 5` (MC-20).
     Pins Layer B (`relScrews`, `jointMotions`) and A2/A3 (D5 debt); `CycleData` fits BASE.
     `ChainData` does not fit: it forces `d = n` and a fresh label. 6–10.
@@ -294,9 +310,9 @@ map for the later groups.
   **Order** (PI, 2026-09-26): 40e's open and build first, then a read-only ORBIT recon (opus)
   before the next group opens. Both are done; the ORBIT verdict is in §4. The read-only fresh
   second reading of (MC-173)–(MC-176) (PI D1) is done too (2026-09-26): no refutation and no gap,
-  repairs applied in place, (MC-177) and (MC-178) added. **Next, 40f opens design-first as
-  CONTRACT-R**, from a compiler-checked design recon. ORBIT's dependencies do not touch
-  CONTRACT-R.
+  repairs applied in place, (MC-177) and (MC-178) added. **40f opened design-first as
+  CONTRACT-R** (2026-09-26), from a compiler-checked design recon; its build is next. ORBIT's
+  dependencies do not touch CONTRACT-R.
 - [ ] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26).**
   Decide whether (MC-177)'s path facts (the path side's rank `5(k + 1)`, and its `relScrews` is
   the span of the hinges) are built in CHAIN or in ORBIT. Decide also whether Layer B6
@@ -339,9 +355,14 @@ map for the later groups.
   - [x] **The slice `q′ = (q_O, Q)`: collapse at `p(r)`, with the magnified core `δ := q|_W`** (lands
     with CONTRACT-R). With `q_c(t) = q_r + t·q_c` for `c ∈ W`, `H` is read at `q|_W` and `G/H` at
     `q|_{V(G/H)}`, both at one generic ambient picture, so no slice arises. Translation invariance
-    was re-derived and is true, but it is not needed and the translation lemmas stay unlanded. What
-    remains is `H`'s rank under the core rescaling `A_t ∈ GL₄`, by the collineation action (to
-    confirm at CONTRACT-R's recon).
+    was re-derived and is true, but it is not needed and the translation lemmas stay unlanded. The
+    remaining question, `H`'s rank under the core rescaling `A_t ∈ GL₄` by the collineation action,
+    is **resolved** by CONTRACT-R's recon (2026-09-26): no `A_t` lemma is needed. The core rows of
+    `M(t)` do not depend on `t`, so with `L_H(q) = Aff(q)` every kernel vector puts the core on one
+    plane. At `t ≠ 0` the core heights are then affine in `q(t)`, and `H`'s rank is its flat rank,
+    `6(|W| − 1)`. That uses (MC-3)'s shift `finrank_span_rigidityRows_ofNormals_smul_add_affineLifts`
+    (itself a collineation of `K⁴`) and `dim L_H(q(t)) = 3`, from Jackson–Jordán at `H` along the
+    curve.
   - [x] **`(G.rigidContract (G.induce W) r).Simple`**, compiled as
     `Graph.rigidContract_induce_simple (hS : G.Simple) (hr : r ∈ W) (hatt : ∀ u ∉ W, ∀ c₁ ∈ W,
     ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (lands

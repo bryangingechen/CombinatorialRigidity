@@ -354,7 +354,11 @@ motion spaces (\cref{lem:span-rigidityRows-eq-of-motions-eq}), and the
 deficiency-aware rank transport a collapsed leg needs when its
 contraction is not yet fully rigid
 (\cref{lem:rank-transport-relabel-of-le-finrank} and
-\cref{lem:rank-polynomial-IH-relabel-proj}).
+\cref{lem:rank-polynomial-IH-relabel-proj}). The block-triangular bound at
+a core (\cref{lem:block-rank-contract}) and the projected rank polynomial
+nonzero at its witness (\cref{lem:rank-polynomial-proj-eval}) serve the
+contraction step on pencil configurations
+(\cref{sec:main-component-contract}).
 
 \begin{lemma}[Block-rank addition for a vertex cut; KT Lemma 6.1]
   \label{lem:block-rank-cut}
@@ -420,6 +424,26 @@ contraction is not yet fully rigid
   to $S$ elsewhere is a motion of the first side, and the rest vanishes
   on $V_2$, so it is a motion of the second. A row span is the
   annihilator of its motions, so the dimensions add.
+\end{proof}
+
+\begin{lemma}[The block-triangular rank bound at a core; KT eq.~(6.3)]
+  \label{lem:block-rank-contract}
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  Let $(G, p)$ be a panel-hinge framework, $W$ a set of bodies, and
+  $H = G[W]$. Let $R_W(G \setminus E(H), p)$ be the rigidity matrix of
+  the edges of $G$ not inside $W$ with the columns of the bodies of $W$
+  deleted. Then
+  \[
+    \operatorname{rank} R(H, p) + \operatorname{rank} R_W(G \setminus E(H), p)
+    \;\le\; \operatorname{rank} R(G, p).
+  \]
+\end{lemma}
+\begin{proof}
+  The rows of $H$ read only the columns of $W$, so deleting those columns
+  kills them. Rank-nullity for the column deletion, on the span of the rows
+  of $H$ and of the other edges, which lies in the row span of $G$, gives
+  the bound. This is the rank bound Katoh and Tanigawa read off the
+  block-triangular shape of $R(G, p)$~\cite[eq.~(6.3), pp.~673--674]{katohTanigawa2011}.
 \end{proof}
 
 \begin{lemma}[Block-triangular rank-addition for a shared-body splice; KT Lemma 6.2]
@@ -677,4 +701,23 @@ contraction is not yet fully rigid
   uncollapsed framework at the degenerate placement (KT's $p_2$), giving
   a single-placement witness, which \cref{lem:rank-polynomial-of-le-finrank}'s
   projected form then lifts to the $Q$-non-root rank polynomial.
+\end{proof}
+
+\begin{lemma}[Projected row independence persists near its witness]
+  \label{lem:rank-polynomial-proj-eval}
+  \uses{lem:rank-polynomial-of-le-finrank, def:rigidity-matrix}
+  Let $t$ be a set of bodies and $D = (\operatorname{extProj} t)^{\!*}$ the
+  projection deleting the columns of $t$. Suppose that at panel normals
+  $q_0$ a family of panel rows of $G$ at linking edges is linearly
+  independent after $D$. Then there is a polynomial $Q$ in the panel
+  normals with $Q(q_0) \neq 0$ such that at every $q$ with $Q(q) \neq 0$ a
+  family of panel rows of $G$ at linking edges, of the same size, is
+  linearly independent after $D$.
+\end{lemma}
+\begin{proof}
+  The coordinates of the projected panel rows are polynomials in the
+  normals, and a maximal minor of the projected family that does not vanish
+  at $q_0$ is the polynomial: the projected form of
+  \cref{lem:rank-polynomial-of-le-finrank}, which keeps its value at the
+  witness.
 \end{proof}

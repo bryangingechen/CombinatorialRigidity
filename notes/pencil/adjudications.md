@@ -866,3 +866,24 @@ superseded on the route but not deleted. A fresh read-only second reading of (MC
 comes next, then 40f opens as CONTRACT-R. In the grouping, (MC-48)(ii)'s argument, with
 `δ₂ ≥ 2` as its hypothesis, moves to SHORT. ORBIT keeps its code as the 2–3-build tail group
 after SHORT, holding (MC-173) and (MC-176).
+
+## 2026-09-26 — CONTRACT-R opens as 40f: placement by convention, `hatt` as spiked, side claims in, CONTRACT-A factoring later
+
+Phase 40's CONTRACT-R design recon (opus; verdict in `notes/Phase40-design.md` §3 STEPS) returned
+the whole contraction step at a `def₂`-rigid core, (MC-59)(d) with (MC-39), as one sorry-free
+compiler-checked spike, and asked where its four general pieces live, what shape the "G/H is
+simple" hypothesis takes, whether (MC-39)'s side claims are in scope, and when to factor the part
+of the assembly CONTRACT-A shares. The user's answers, relayed verbatim in the coordinator's
+dispatch:
+
+```adjudication
+PI decisions, 2026-09-26, on the CONTRACT-R design recon's verdict (verbatim answers to the coordinator's questions):
+1. Placement — "Where should the new general pieces live? There are four: the projected rank-polynomial sibling, the block coupling, the weighted lifting matrix, and the laws that def₂ = 0 implies connected and degree ≥ 2.": "Convention everywhere (Recommended)" — each goes beside its definition. The sibling becomes an additive successor in CaseI.lean, with its parent re-proved as a 3-line corollary. The coupling goes in Coupling.lean beside extProj, with the pure linear-algebra lemma in the Mathlib mirror. weightedLiftingMatrix goes in Carrier.lean, and the def₂ = 0 laws are general IsKDof laws in Deficiency.lean.
+2. Hypothesis shape — "What shape should the 'G/H is simple' hypothesis have?": "Let's build this as spiked but leave a TODO for readability / understandability later".
+3. Side claims — "Include (MC-39)'s side claims (H and G/H satisfy (H), G/H is 2-edge-connected, and |V(G/H)| = |V| − |W| + 1) in 40f?": "Include (Recommended)".
+4. CONTRACT-A — "When should the shared part of the assembly be factored out?": "Later, at CONTRACT-A (Recommended)".
+```
+
+**Decided.** Sub-phase 40f (CONTRACT-R) opens with twelve red nodes. The build is one commit by a
+fresh opus builder, handed the spike (the coordinator's decision 8). The `hatt` shape is an
+unchecked todo in the design doc's §3 STEPS, not a 40f close gate. Work log `notes/Phase40f.md`.

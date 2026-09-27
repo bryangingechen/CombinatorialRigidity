@@ -4,8 +4,8 @@
 group (`notes/Phase40-design.md` §3 STEPS), proved the cut and bridge steps of the `X₀` induction,
 the "if" halves of (MC-52) and (MC-53): if `G` satisfies the standing hypotheses (H) and has a cut
 vertex or a chain of bridges of any length, `X₀` attaining at both pieces gives it at `G`.
-The ORBIT recon and its second reading are done. **Next: 40f opens design-first as CONTRACT-R**,
-from a compiler-checked design recon; **not yet opened** — see *Hand-off*.
+The ORBIT recon and its second reading are done. **Next: 40f = CONTRACT-R, opened 2026-09-26** —
+see `notes/Phase40f.md`.
 
 ## Current state
 
@@ -80,8 +80,8 @@ the orbit count, as (MC-173)–(MC-176) in Step MC13, and PI D1/D2 accepted the 
 refutation and no gap; its repairs are in place, and it added (MC-177) (the path brick) and
 (MC-178).
 
-**The next concrete step: 40f opens design-first as CONTRACT-R** (§3 STEPS, *The provisional
-grouping*), from a compiler-checked design recon; its opening commit mints its work log. ORBIT is
+**The next step moved to `notes/Phase40f.md`:** 40f opened design-first as CONTRACT-R
+(2026-09-26, §3 STEPS, *The provisional grouping*), from a compiler-checked design recon. ORBIT is
 a 2–3-build tail group after SHORT. The spike pieces CONTRACT-R and SPLITOFF reuse
 (`Graph.rigidContract_induce_simple`; the curve-limit lemma) are verbatim in the design doc's
 appendix *the STEPS recon's tracked spike*.

@@ -194,6 +194,21 @@ parallel copies of each edge $e \in E(G)$.
   edges of $\{v\}$ are exactly the nonloop edges at $v$, whose count is at most the degree.
 \end{proof}
 
+\begin{lemma}[A $0$-dof graph is connected, of minimum degree at least two]
+  \label{lem:deficiency-zero-connected}
+  \uses{def:k-dof, def:cut-edges-2ec}
+  Let $G$ be a $0$-dof graph with at least one vertex, at any $D \ge 1$.
+  Then $G$ is connected, and if $|V(G)| \ge 2$, every vertex of $G$ has
+  degree at least $2$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:two-edge-conn}
+  $G$ is $2$-edge-connected (\cref{def:cut-edges-2ec}). A component of a
+  disconnected $G$ would be a nonempty proper vertex set crossed by no
+  edge, and a single vertex $v$ is a vertex set crossed only by the edges
+  at $v$.
+\end{proof}
+
 \begin{theorem}[Deficiency splits over a cut of size $\le 1$; KT Lemma 3.6]
   \label{lem:cut-edge-decomposition}
   \lean{Graph.partitionDef_congr, Graph.partitionDef_comp_of_injOn,
