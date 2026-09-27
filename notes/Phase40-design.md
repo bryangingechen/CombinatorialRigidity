@@ -7,9 +7,9 @@ standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md`
 open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
 closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
-2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R opened 2026-09-26** (`notes/Phase40f.md`),
-design-first from a compiler-checked recon whose spike is the build; the five later groups are
-provisional. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
+2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R closed 2026-09-26** (`notes/Phase40f.md`),
+one build commit from a compiler-checked recon's spike; the five later groups are provisional, and
+CHAIN is next in their order. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
 claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
 pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -95,7 +95,12 @@ field-general (§4). (MC-2)'s vector bundle and its irreducible closure are neve
 `rem:pencil-x0-main-component`; (MC-3)'s augmented-matrix rank split has no Lean object and is the
 remark `rem:pencil-hinge-affine`. (MC-10)(a) moved to COVERAGE. The accepted design (uncurried
 pictures, a single `X0Attains`, the β-headroom `_of_card` triple) and every decision are in
-`notes/Phase40b.md`.
+`notes/Phase40b.md`. **`Carrier.lean` is at 1 496 lines** (40f's build added the lifting system with
+weights), at the ~1500-line tripwire. Its split is deferred: no scheduled group adds to it, and a
+split rebuilds every Phase-40 module downstream for no navigation gain yet. **The first commit that
+would grow it splits it first**, along its section headers: the picture-to-normal API, its
+polynomial mirror, the configuration as a pencil framework, the scale-and-shift invariance and the
+linear pencil condition (CARRIER's C3–C5′) to a second file, the rest (C1–C2) left behind.
 
 ### FLAT — the flat rank → **sub-phase 40c, ✓ closed 2026-09-26** (`notes/Phase40c.md`)
 
@@ -180,7 +185,7 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, open** (`notes/Phase40f.md`)
+### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`)
 
 **CUT/BRIDGE done** (40e). The "if" halves of (MC-52) and (MC-53) are formalized in
 `Molecule/Pencil/MainComponent/Cut.lean` (`main-component.tex` §`sec:main-component-cut`):
@@ -194,6 +199,18 @@ admissibility: extend along the one body where a piece is attached. An `X0Attain
 the path is impossible (a peeled body has no admissible picture), so BRIDGE cuts once at the last
 bridge and telescopes. Every decision is in `notes/Phase40e.md`; the table below stays as the proof
 map for the later groups.
+
+**CONTRACT-R done** (40f). (MC-59)(d) with (MC-39) and its side claims is formalized in
+`Molecule/Pencil/MainComponent/Contract.lean` (`main-component.tex` §`sec:main-component-contract`):
+`Graph.X0Attains.of_rigidContract`, at an induced core `H = G[W]` with `def₂(H) = 0` and no
+outside body adjacent to two core bodies, in a 2EC `G` satisfying (H), from `X₀(G/H)` attaining
+alone. The picture moves along the curve `q(t)` that shrinks the core to `r`'s picture point; the
+heights are solutions of the rescaled lifting system `M(t)`, whose kernel does not jump at `t = 0`;
+every solution is flat on the core, so the core's rank is its flat rank and no attainment at `H` is
+needed. The general pieces sit beside their definitions: `Graph.weightedLiftingMatrix`
+(`Carrier.lean`), `Graph.connected_of_isKDof_zero` (`Deficiency.lean`), the projected rank
+polynomial nonzero at its witness (`CaseI.lean`) and the block coupling (`Coupling.lean`, with a
+mirror lemma). Every decision is in `notes/Phase40f.md`.
 
 | step of (MC-89) | labels, in proof order | 2nd |
 |---|---|---|
@@ -238,26 +255,16 @@ map for the later groups.
 - **The provisional grouping** (PI, 2026-09-26, "Accept"; codes until each opens, letters minted
   only then; `notes/pencil/adjudications.md`). In dependency order, with build-commit estimates:
   - **CUTBRIDGE = 40e, ✓ closed**: (MC-52), (MC-53). Estimated 3–4; took three builds and a recon.
-  - **CONTRACT-R = 40f, open** (`notes/Phase40f.md`), the `def₂`-rigid core: (MC-34)–(MC-39),
+  - **CONTRACT-R = 40f, ✓ closed** (`notes/Phase40f.md`), the `def₂`-rigid core: (MC-34)–(MC-39),
     (MC-59). Estimated 6–9; the design recon (opus, 2026-09-26) returned the whole step as one
-    sorry-free spike, so it lands as one build commit; the build landed (2026-09-26), and 40f's
-    close is next. The verdict in brief:
-    - one ambient picture `q`, and the curve `q_c(t) = (1−t)q_r + t·q_c` on `W` (`q(1) = q`);
-    - the rescaled lifting system `M(t)` (new): onto `L_G(q(t))` at `t ≠ 0`, and at `t = 0`
-      `dim ker M(0) ≤ dim L_{G/H}(q)` plus the flat-core extension, i.e. (MC-59)(c2)'s bound and
-      (MC-37) step 2; the no-jump chain is (c3)'s;
-    - Cramer's section along `t`; the core's rank is its flat rank;
-    - the degenerate placement is nonzero for the projected rank polynomial, the one new sibling;
-    - the block coupling (KT eq. (6.3)), ending at `Graph.x0Attains_of_exists`.
-
-    The step's picture moves along the curve, unlike the step contract, and
-    `exists_mem_eval_ne_zero₂` is not used. The PI's placement puts the four general pieces beside
-    their definitions (`notes/Phase40f.md`). `Graph.rigidContract_induce_simple` is transcribed
-    from the appendix *the STEPS recon's tracked spike*.
-  - [ ] **Tracked todo (PI decision 2, 2026-09-26; not a 40f close gate): revisit the shape of
-    CONTRACT-R's simplicity hypothesis for readability.** The theorem carries `hatt` (no outside
-    body adjacent to two core bodies), as spiked. The alternative is `(G/H).Simple`, which needs the
-    converse of `Graph.rigidContract_induce_simple` (about 30 lines).
+    sorry-free spike, and it landed as one build commit (`e267d5fc`). The route is in *CONTRACT-R
+    done* above; unlike the step contract, the picture moves along a curve and
+    `exists_mem_eval_ne_zero₂` is not used.
+  - [ ] **Tracked todo, carried past 40f's close (PI decision 2, 2026-09-26; not a 40f close gate):
+    revisit the shape of CONTRACT-R's simplicity hypothesis for readability.** The theorem carries
+    `hatt` (no outside body adjacent to two core bodies), as spiked. The alternative is
+    `(G/H).Simple`, which needs the converse of `Graph.rigidContract_induce_simple` (about 30
+    lines).
   - **CHAIN**: (MC-16)–(MC-19), (MC-134)(a)(b), (MC-169), BASE (MC-21)(a), chains `k ≥ 5` (MC-20).
     Pins Layer B (`relScrews`, `jointMotions`) and A2/A3 (D5 debt); `CycleData` fits BASE.
     `ChainData` does not fit: it forces `d = n` and a fresh label. 6–10.
@@ -273,7 +280,13 @@ map for the later groups.
     - SHORT's (MC-18)(b) dominance item is now (MC-174): the incidence parametrized by
       `Z(q, w) = D(u)(q)·w − D(w)(q)·u`, with no divisibility and no irreducibility.
   - **SPLITOFF**: (MC-28)–(MC-31). 3–5. The compiled curve-limit lemma is in the same appendix.
-  - **CONTRACT-A**, the additive core: (MC-67)–(MC-71). After CONTRACT-R. 4–7.
+  - **CONTRACT-A**, the additive core: (MC-67)–(MC-71). After CONTRACT-R. 4–7. It factors out
+    the shared part of CONTRACT-R's assembly (PI decision 4, 2026-09-26): `M(t)`, K1, K2, K4, the
+    degenerate rank and the coupling are general; the core-plane, K3 and core-rank lemmas are
+    specific to the flat core. **It also splits `Contract.lean`** (1 496 lines at 40f's close, at
+    the ~1500-line tripwire) along that line: the general pieces to a shared file, the flat-core
+    pieces and CONTRACT-R's assembly left behind. The split waits for CONTRACT-A because the
+    factoring decides the cut, and the file has no other consumer.
   - **ORBIT**, the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` cell: the refined link (MC-173) and the cell's step
     (MC-176), with (MC-175)(i)(ii). A 2–3-build tail group after SHORT, and so after CHAIN (PI D2,
     2026-09-26). The name is historical: the orbit table (MC-138) and (MC-46)'s count are off the
@@ -312,8 +325,8 @@ map for the later groups.
   before the next group opens. Both are done; the ORBIT verdict is in §4. The read-only fresh
   second reading of (MC-173)–(MC-176) (PI D1) is done too (2026-09-26): no refutation and no gap,
   repairs applied in place, (MC-177) and (MC-178) added. **40f opened design-first as
-  CONTRACT-R** (2026-09-26), from a compiler-checked design recon; its build landed, and its close
-  is next. ORBIT's
+  CONTRACT-R** (2026-09-26), from a compiler-checked design recon, and closed the same day after
+  one build commit. **CHAIN is next** in the provisional order, not yet opened. ORBIT's
   dependencies do not touch CONTRACT-R.
 - [ ] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26).**
   Decide whether (MC-177)'s path facts (the path side's rank `5(k + 1)`, and its `relScrews` is
@@ -339,7 +352,7 @@ map for the later groups.
     (`finrank_span_rigidityRows_ofNormals_smul`). Main-ness and membership along the curve stay
     SPLITOFF's own obligations. The compiled lemma, with its helper `polynomial_eval_aeval`, is
     verbatim in the appendix *the STEPS recon's tracked spike*.
-  - [x] **The CONTRACT rank-device open point: dissolved** (lands with CONTRACT-R). The `G/H`
+  - [x] **The CONTRACT rank-device open point: dissolved** (landed in 40f). The `G/H`
     framework with the actual boundary hinges is never formed. Its rank is the rank of the rows of
     `ofNormals (G.deleteEdges E(H)) endsG`, projected by `(extProj W).dualMap`, and that framework
     is in `ofNormals` form. The value at `t = 0` is Phase 22i's composition (`degeneratePlacement`,
@@ -354,8 +367,8 @@ map for the later groups.
     (MC-30)(iv) uses one picture, one fibre point and one curve. `exists_mem_eval_ne_zero₂`
     suffices throughout. Build it only if a later recon finds a witness over a picture that no
     product of polynomials can align.
-  - [x] **The slice `q′ = (q_O, Q)`: collapse at `p(r)`, with the magnified core `δ := q|_W`** (lands
-    with CONTRACT-R). With `q_c(t) = q_r + t·q_c` for `c ∈ W`, `H` is read at `q|_W` and `G/H` at
+  - [x] **The slice `q′ = (q_O, Q)`: collapse at `p(r)`, with the magnified core `δ := q|_W`**
+    (landed in 40f). With `q_c(t) = q_r + t·q_c` for `c ∈ W`, `H` is read at `q|_W` and `G/H` at
     `q|_{V(G/H)}`, both at one generic ambient picture, so no slice arises. Translation invariance
     was re-derived and is true, but it is not needed and the translation lemmas stay unlanded. The
     remaining question, `H`'s rank under the core rescaling `A_t ∈ GL₄` by the collineation action,
@@ -367,9 +380,9 @@ map for the later groups.
     curve.
   - [x] **`(G.rigidContract (G.induce W) r).Simple`**, compiled as
     `Graph.rigidContract_induce_simple (hS : G.Simple) (hr : r ∈ W) (hatt : ∀ u ∉ W, ∀ c₁ ∈ W,
-    ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (lands
-    with CONTRACT-R; the compiled proof is verbatim in the appendix *the STEPS recon's tracked
-    spike*).
+    ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (landed
+    in 40f, in `Contract.lean`; the recon's compiled proof is verbatim in the appendix *the STEPS
+    recon's tracked spike*).
   - [x] **`h3` from (H)**, compiled as `Graph.three_le_ncard_closedNbhd (hS : G.Simple)
     (hdeg : 2 ≤ G.degree v)`, from the vendored `Graph.degree_eq_ncard_adj` (landed in 40e build 1,
     beside `Graph.closedNbhd` in `Motive.lean`).
@@ -652,7 +665,8 @@ Dispatch a `recon-opus` agent, read-only. The brief says:
 
 The STEPS pre-build recon's scratch file `S40eTracked.lean`, kept verbatim because two of its three
 pieces land with later groups (§3 STEPS, the settled *Tracked* items):
-- (2) `Graph.rigidContract_induce_simple`, with **CONTRACT-R**;
+- (2) `Graph.rigidContract_induce_simple`, with **CONTRACT-R** (landed in 40f's build,
+  `Molecule/Pencil/MainComponent/Contract.lean`);
 - (3) `polynomial_eval_aeval` and `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, the
   curve-limit lemma, with **SPLITOFF**.
 
@@ -663,7 +677,9 @@ Piece (1), `Graph.three_le_ncard_closedNbhd`, landed in 40e build 1 (`Molecule/P
 save it as a `.lean` file and run `lake env lean <file>` from the repository root on a built tree.
 Against a tree after 40e build 1, delete piece (1) first, since it then duplicates the landed
 declaration (the only error). Re-checked at 40e's close, at HEAD `d57672c0`: the file as written
-fails on that duplicate alone, and without piece (1) it exits 0 with no output.
+fails on that duplicate alone, and without piece (1) it exits 0 with no output. Re-checked at 40f's
+close, at HEAD `e267d5fc`: without piece (1) it still exits 0 with no output. Piece (2) does not
+clash with the landed copy, because the file imports `…MainComponent.Bridge`, not `…Contract`.
 
 ```lean
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge

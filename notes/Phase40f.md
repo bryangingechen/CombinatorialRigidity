@@ -1,44 +1,35 @@
 # Phase 40f — PENCIL-X0 / CONTRACT-R: contraction at a `def₂`-rigid core (work log)
 
-**Status:** in progress (opened design-first 2026-09-26). STEPS' second group (`notes/Phase40-design.md`
-§3 STEPS). It lands the contraction step at a core of planar deficiency zero, (MC-59)(d) with
-(MC-39): if `X₀(G/H)` attains, `X₀(G)` attains, for `H = G[W]` with `def₂(H) = 0` and `G/H` simple.
-The build landed the whole step in one commit, and all twelve nodes are green. **Next: 40f's
-close** — see *Hand-off*.
+**Status:** ✓ complete (opened design-first, built and closed 2026-09-26). CONTRACT-R, STEPS'
+second group (`notes/Phase40-design.md` §3 STEPS), proved the contraction step at a core of planar
+deficiency zero, (MC-59)(d) with (MC-39): if `X₀(G/H)` attains, `X₀(G)` attains, for `H = G[W]`
+with `def₂(H) = 0` and `G/H` simple. **Next: STEPS' CHAIN group**, not yet opened — see *Hand-off*.
 
 ## Current state
 
-**Built.** Twelve nodes, with statements from `ledger.py --brief '(MC-34)' … '(MC-39)' '(MC-59)'`
-and Step MC12's construction, all green:
-- eight in `main-component.tex` §`sec:main-component-contract`, whose closing remark keeps the
-  unformalized parts;
-- `def:pencil-weighted-lifting-system` in the same chapter's §`sec:main-component-carrier`;
-- `lem:block-rank-contract` and `lem:rank-polynomial-proj-eval` in `rigidity-matrix.tex`;
-- `lem:deficiency-zero-connected` in `deficiency.tex`.
+**Closed.** The build (`e267d5fc`) and the close landed. The twelve nodes are green: eight in
+`main-component.tex` §`sec:main-component-contract`, `def:pencil-weighted-lifting-system` in its
+§`sec:main-component-carrier`, `lem:block-rank-contract` and `lem:rank-polynomial-proj-eval` in
+`rigidity-matrix.tex`, and `lem:deficiency-zero-connected` in `deficiency.tex`. The close also
+pinned the landed `Graph.rigidContract_vertexSet_ncard` on `lem:pencil-contract-standing`, whose
+statement carries the body count. The Lean is `Molecule/Pencil/MainComponent/Contract.lean` (its
+module docstring lists the statements), with the general pieces in `Carrier.lean`,
+`Molecular/Deficiency.lean`, `CaseI.lean`, `Coupling.lean` and the mirror
+`Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`.
 
-**Headline axioms** (`#print axioms` under `import CombinatorialRigidity`, probe not retained):
-`Graph.X0Attains.of_rigidContract` and every pinned declaration, the sibling's parent and the
-mirror lemma: `[propext, Classical.choice, Quot.sound]`.
-
-**The next concrete commit is 40f's close** (*Hand-off*).
+**Headline axioms, re-verified at the close** on 39 declarations: the eighteen
+`formalization.yaml` main results, the nineteen pins of the twelve nodes at the build, the
+sibling's parent and the mirror lemma. All 39 are exactly `[propext, Classical.choice, Quot.sound]`.
+*Measured, script not retained*: one `#print axioms` line per declaration under
+`import CombinatorialRigidity`, run with `lake env lean` on the fully built tree (~14 s).
 
 ## Architectural choices made up front
 
-- **The route** (the recon's verdict, compiled at `3caa99c8`; `notes/Phase40-design.md` §3 STEPS).
-  - One ambient picture `q`, generic for `G/H` and `H` and main for `G`.
-  - The curve `q_c(t) = (1−t)q_r + t·q_c` on `W` collapses the core at `r`'s picture point, and
-    `q(1) = q`.
-  - The rescaled lifting system `M(t)` gives heights in `L_G(q(t))`, onto at `t ≠ 0`. At `t = 0`,
-    `dim ker M(0) ≤ dim L_{G/H}(q)`, and the flat-core extension of any `z ∈ L_{G/H}(q)` with
-    `z_r = 0` is a kernel vector.
-  - The no-jump chain: Jackson–Jordán at `G/H`, `rigidContract_deficiency_eq` at `n = 2`, and
-    (MC-4)(b) at `G`.
-  - Cramer's section along `t`; the core's rank is its flat rank; the degenerate placement is
-    nonzero for the new projected rank polynomial; the block coupling adds the ranks; the step ends
-    at `Graph.x0Attains_of_exists`.
-- **Unlike the step contract**, the picture moves along `q(t)`, and `exists_mem_eval_ne_zero₂` is
-  not used; one product polynomial in `t` picks the parameter. No collineation lemma is needed for
-  the core's rank.
+- **The route** (the design recon's verdict, compiled at `3caa99c8`; now the *CONTRACT-R done*
+  paragraph of `notes/Phase40-design.md` §3 STEPS): one picture `q`, the curve on which the core
+  shrinks to `r`'s picture point, the rescaled lifting system `M(t)` with no kernel jump at `t = 0`,
+  Cramer's section along `t`, the flat core's rank, the collapsed-placement rank, and the block
+  coupling, ending at `Graph.x0Attains_of_exists`.
 - **The PI's decisions, verbatim** (2026-09-26; also `notes/pencil/adjudications.md`):
 
   ```adjudication
@@ -48,76 +39,60 @@ mirror lemma: `[propext, Classical.choice, Quot.sound]`.
   3. Side claims — "Include (MC-39)'s side claims (H and G/H satisfy (H), G/H is 2-edge-connected, and |V(G/H)| = |V| − |W| + 1) in 40f?": "Include (Recommended)".
   4. CONTRACT-A — "When should the shared part of the assembly be factored out?": "Later, at CONTRACT-A (Recommended)".
   ```
-- **Decision 8 (the coordinator's):** a fresh opus builder lands the spike as **one build commit**,
-  as in 40e build 1. The rung is opus because of the `CaseI.lean` and `Coupling.lean` edits (the
-  fragile zone). It is not sliced.
-- **Decision 2's TODO** is tracked in `notes/Phase40-design.md` §3 STEPS (revisit `hatt` as
-  `(G/H).Simple`); not a 40f close gate.
+- **Decision 8 (the coordinator's):** one build commit by a fresh opus builder (the `CaseI.lean` /
+  `Coupling.lean` edits are the fragile zone), not sliced.
 
 ## Lemma checklist
 
-All landed in the build (standard axioms). Pins in **bold**; the other names are helpers.
+All landed with the standard axioms (*Current state*).
 
-- [x] **Weighted lifting system** (`Carrier.lean`, after `Graph.finrank_ker_liftingMatrix`):
-  **`Graph.weightedLiftingMatrix`**, `…_mulVec_eq_zero_iff` → `def:pencil-weighted-lifting-system`.
-- [x] **0-dof connected** (`Deficiency.lean`, after `preconnected_of_isKDof_zero`):
-  **`Graph.connected_of_isKDof_zero`**, **`Graph.two_le_degree_of_isKDof_zero`** →
-  `lem:deficiency-zero-connected`.
-- [x] **The sibling** (`CaseI.lean`, before its parent):
-  **`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval`**, with CaseI's own
-  private `coord_linearMap_eq_matrix_mulVec`; the parent is its three-line corollary, statement
-  unchanged → `lem:rank-polynomial-proj-eval`.
-- [x] **Block coupling**: `Submodule.finrank_add_finrank_map_le_of_le_ker` in the mirror
-  `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`;
-  **`PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le`** in `Coupling.lean`
-  after `hingeRow_comp_extProj_eq_zero` → `lem:block-rank-contract`.
-- [x] The rest in the new `Molecule/Pencil/MainComponent/Contract.lean` (root import after `Cut`):
-  **`Graph.contractLiftingMatrix`**, **`contractPicture`**, **`contractHeight`** →
-  `def:pencil-contract-lifting-system`; **`Graph.contractHeight_mem_liftingSpace`**,
-  **`Graph.exists_contractHeight_eq`** → `lem:pencil-contract-lifting-kernel`;
-  **`Graph.exists_core_plane`** → `lem:pencil-contract-core-plane`;
-  **`Graph.finrank_ker_contractLiftingMatrix_zero_le`**,
-  **`Graph.exists_mem_ker_contractLiftingMatrix_zero`** → `lem:pencil-contract-limit`;
-  **`Graph.finrank_span_rigidityRows_induce_contractHeight`** → `lem:pencil-contract-core-rank`;
-  **`PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`** →
-  `lem:pencil-contract-degenerate-rank`; **`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`**,
-  **`Graph.isX0Graph_rigidContract_induce`**, **`Graph.twoEdgeConnected_rigidContract_induce`** →
-  `lem:pencil-contract-standing`; **`Graph.X0Attains.of_rigidContract`** →
-  `thm:pencil-x0-contract-rigid`.
-- **Not 40f's, tracked elsewhere:** decision 2's `hatt` TODO (design doc §3 STEPS; also named in
-  `Contract.lean`'s module docstring).
+- [x] **General pieces, beside their definitions** (PI decision 1): `Graph.weightedLiftingMatrix`
+  → `def:pencil-weighted-lifting-system`; `Graph.connected_of_isKDof_zero` (with the landed
+  `Graph.two_le_degree_of_isKDof_zero`) → `lem:deficiency-zero-connected`;
+  `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval`, its parent now a
+  corollary with an unchanged statement → `lem:rank-polynomial-proj-eval`;
+  `PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le`, with the mirror
+  `Submodule.finrank_add_finrank_map_le_of_le_ker` → `lem:block-rank-contract`.
+- [x] **`Contract.lean`**: `M(t)`, the curve and the heights → `def:pencil-contract-lifting-system`;
+  (K1), (K2) → `lem:pencil-contract-lifting-kernel`; the core plane →
+  `lem:pencil-contract-core-plane`; (K3), (K4) → `lem:pencil-contract-limit`; the core's rank →
+  `lem:pencil-contract-core-rank`; the collapsed placement → `lem:pencil-contract-degenerate-rank`;
+  the standing facts, with the body count pinned at the close → `lem:pencil-contract-standing`;
+  `Graph.X0Attains.of_rigidContract` → `thm:pencil-x0-contract-rigid`.
+- [x] **The close** (docs and blueprint only): ROADMAP, the design doc's §3 STEPS, CARRIER entry and
+  appendix, the end-to-end re-read, the exposition ledger, the headline axioms, the file-size
+  plan; the public surfaces left unchanged (the PI's standing call).
+- **Not 40f's, tracked elsewhere:** decision 2's `hatt` TODO, an unchecked item of the design doc's
+  §3 STEPS carried past this close (also named in `Contract.lean`'s module docstring).
 
 ## Blockers / open questions
 
-- None.
+- None for 40f. Its one carried item, the `hatt` TODO, is tracked in the design doc (above).
 
 ## Hand-off / next phase
 
-**Next: 40f's close** — a sub-phase close (`PHASE-BOUNDARIES.md` *When this commit closes a
-phase*, the sub-phase adaptations):
-- advance the ROADMAP Status cell (40f ✓, name the next STEPS group) and compress §40f to a
-  summary; mark CONTRACT-R closed in `notes/Phase40-design.md` §3 STEPS and in its opening roster;
-- re-verify the headline axioms on the landed declarations (the build's list is in *Current
-  state*), and sync `notes/MolecularConjecture.md`;
-- the end-to-end re-read of §`sec:main-component-contract` and the exposition-ledger check
-  (`notes/BlueprintExposition.md`); `thm:pencil-x0-contract-rigid` is a candidate;
-- two files sit at the ~1500-line tripwire: `Carrier.lean` (1496 lines) and `Contract.lean`
-  (1496). Both are sectioned; record a split plan, or its deferral, at the close.
+**40f is closed. The next group is CHAIN**, the next in the design doc's provisional order (§3
+STEPS, *The provisional grouping*: (MC-16)–(MC-19), (MC-134)(a)(b), (MC-169), BASE (MC-21)(a),
+chains `k ≥ 5` (MC-20)). It is not yet opened: its open mints the next sub-phase letter and work
+log, and the design doc's *Tracked for CHAIN's design pass* item is its first input.
 
-**Then** the next STEPS group per the design doc's provisional grouping. At CONTRACT-A
-(decision 4): `M(t)`, K1, K2, K4, the degenerate rank and the coupling are general, and the
-core-plane, K3 and core-rank lemmas are specific to the flat core.
+**The two files at the ~1500-line tripwire have a plan, not a split** (both 1 496 lines, both
+sectioned). `Contract.lean` splits at CONTRACT-A, along PI decision 4's line (the general pieces to
+a shared file), recorded in that group's entry. `Carrier.lean` splits first in whichever commit next
+grows it, along its C3–C5′ section headers, recorded in the design doc's CARRIER entry.
 
 ## Decisions made during this phase
 
-- **2026-09-26 — opened design-first from one opus recon.** The coordinator re-ran its spike: exit 0,
-  only the axioms line, and no `sorry`/`admit`/`axiom`/`maxHeartbeats`. It also traced by hand the
-  recon's satisfiability instance: a triangle core on `{0,1,2}` in `G` = triangle plus the path
-  `1–3–4–0`, whose `G/H` is a triangle.
-- **2026-09-26 — the build: the spike transcribed, a few proofs shortened.**
-  `Graph.connected_of_isKDof_zero` replaced `induce_connected_of_deficiency_two_eq_zero`, and the
-  assembly reads the core's connectivity, simplicity and `h3` off
-  `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (the spike's `h3` helper is gone).
-  `collapseTo_mem_closedNbhd_rigidContract` is a corollary of `Graph.isLink_rigidContract_of_isLink`.
-  One flexible `simp` the spike never showed became `simp only` (TACTICS-QUIRKS §55). The
-  `rigidContract` defeq trap is TACTICS-QUIRKS §38 (*contraction-carrier variant*).
+- **2026-09-26 — the close.** The end-to-end re-read of `sec:main-component-contract` pinned
+  `Graph.rigidContract_vertexSet_ncard` on the standing lemma (its body count had no pin, and
+  `lem:reduction-measure` gives only `≤`), spelled out the distinct attachments at `r`, called the
+  `t = 0` plane of a core body's rows the parallel through `(q_r, 0)`, dropped the core-rank lemma's
+  `t ≠ 0` (the Lean has none; admissibility excludes `t = 0`), named Jackson–Jordán's polynomial at
+  `H` in the theorem's parameter choice, and said there that no attainment at `H` is needed. One
+  exposition-ledger entry, done in place. Public surfaces unchanged (the PI's standing call).
+- **2026-09-26 — the build:** the spike transcribed with the PI's placement; the core helpers
+  folded into `Graph.isX0Graph_induce_of_deficiency_two_eq_zero`; one flexible `simp` the spike never
+  showed (TACTICS-QUIRKS §55); the `rigidContract` defeq trap is TACTICS-QUIRKS §38.
+- **2026-09-26 — opened design-first from one opus recon**, whose spike the coordinator re-ran (exit
+  0, no `sorry`/`axiom`/`maxHeartbeats`) and whose satisfiability instance it traced by hand (a
+  triangle core with the path `1–3–4–0`).

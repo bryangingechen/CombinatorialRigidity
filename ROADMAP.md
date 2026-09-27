@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓; 40f/CONTRACT-R open (see `notes/Phase40f.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓; next STEPS' CHAIN group, not yet opened (see `notes/Phase40f.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1159,9 +1159,10 @@ infinite field. Layers by stable code, lettered only as each opens:
 - **FLAT** ✓ (sub-phase 40c, closed 2026-09-26): the flat rank;
 - **BRIDGE** ✓ (sub-phase 40d, closed 2026-09-26): Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps, run by group; the first,
-  CUTBRIDGE, closed as sub-phase 40e (2026-09-26); the second, CONTRACT-R, is sub-phase 40f
-  (open); the rest are provisional codes in the design doc. The ORBIT recon (2026-09-26)
-  re-proved the one step whose informal proof counted dimensions, and a second reading confirmed it;
+  CUTBRIDGE, closed as sub-phase 40e (2026-09-26); the second, CONTRACT-R, closed as sub-phase 40f
+  (2026-09-26); the rest are provisional codes in the design doc, CHAIN next. The ORBIT recon
+  (2026-09-26) re-proved the one step whose informal proof counted dimensions, and a second reading
+  confirmed it;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
 
@@ -1263,23 +1264,25 @@ and a provisional grouping of the later steps (`notes/Phase40-design.md` §3 STE
 CONTRACT-R and SPLITOFF reuse are verbatim in its appendix). Headline axioms unchanged (re-verified
 at the close).
 
-#### Phase 40f — contraction at a `def₂`-rigid core (CONTRACT-R, STEPS' second group) — ◐ In progress
+#### Phase 40f — contraction at a `def₂`-rigid core (CONTRACT-R, STEPS' second group) — ✓ Complete
 
-**◐ In progress** (opened design-first 2026-09-26; work log `notes/Phase40f.md`). Katoh–Tanigawa's
-contraction case (Lemma 6.3) on configurations, in `main-component.tex`
-§`sec:main-component-contract`. Its general pieces go in `deficiency.tex`, `rigidity-matrix.tex` and
-the chapter's carrier subsection. The statement: at an induced core `H = G[W]` with `def₂(H) = 0`
-and `G/H` simple, in a 2-edge-connected `G` satisfying (H), `X₀` attaining at `G/H` gives it at `G`
-((MC-59)(d) with (MC-39) and its side claims).
-- The proof moves the picture along one curve on which the core shrinks to `r`'s picture point.
-  The heights come from a rescaled lifting system whose kernel does not jump at the end of the
-  curve (Cramer's section along the parameter).
-- The rank is the core's flat rank plus the surviving rows with the core columns deleted. Those
-  rows are bounded below at the collapsed placement, as in Phase 22i.
-- The design is a compiler-checked recon whose sorry-free spike is the build. The PI placed each
-  general piece beside its definition (`CaseI.lean`, `Coupling.lean`, `Carrier.lean`,
-  `Deficiency.lean`, the Mathlib mirror), and the rest is in `MainComponent/Contract.lean`.
-- The build has landed in one commit, with all twelve nodes green; 40f's close is next.
+**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40f.md`).
+Katoh–Tanigawa's contraction case (Lemma 6.3) on configurations, in
+`Molecule/Pencil/MainComponent/Contract.lean` and `main-component.tex`
+§`sec:main-component-contract`: at an induced core `H = G[W]` with `def₂(H) = 0` and `G/H` simple,
+in a 2-edge-connected `G` satisfying (H), `X₀` attaining at `G/H` gives it at `G`
+(`Graph.X0Attains.of_rigidContract`; (MC-59)(d) with (MC-39), and its side claims that `H` and
+`G/H` satisfy (H) and `G/H` is 2-edge-connected). The picture moves along one curve on which the
+core shrinks to `r`'s picture point; the heights are the solutions of a rescaled lifting system
+whose kernel does not jump at the end of the curve (Cramer's section along the parameter). Every
+solution is flat on the core, so the core's rank is its flat rank and no attainment at `H` is
+needed; the surviving rows with the core columns deleted are bounded below at the collapsed
+placement, as in Phase 22i, and the block-triangular bound of KT eq. (6.3) adds the two. The general
+pieces landed beside their definitions (PI): the lifting system with weights (`Carrier.lean`), the
+connectivity of a `0`-dof graph (`Deficiency.lean`), the projected rank polynomial nonzero at its
+witness (`CaseI.lean`) and the block coupling (`Coupling.lean`, with a Mathlib mirror). One build
+commit from a compiler-checked recon's sorry-free spike. Headline axioms unchanged (re-verified at
+the close).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

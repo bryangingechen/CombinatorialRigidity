@@ -1238,7 +1238,7 @@ the other edges with the columns of $W$ deleted.
 \begin{lemma}[The core and the contraction satisfy the standing hypotheses]
   \label{lem:pencil-contract-standing}
   \lean{Graph.isX0Graph_induce_of_deficiency_two_eq_zero, Graph.isX0Graph_rigidContract_induce,
-        Graph.twoEdgeConnected_rigidContract_induce}
+        Graph.twoEdgeConnected_rigidContract_induce, Graph.rigidContract_vertexSet_ncard}
   \leanok
   \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction,
         def:D-deficiency}
@@ -1261,12 +1261,14 @@ the other edges with the columns of $W$ deleted.
   neighbours in $W$, or two parallel edges of $G$, so $G/H$ is simple. A
   path of $G$ maps to a walk of $G/H$, so $G/H$ is connected, and a cut of
   $G/H$ pulls back to a cut of $G$ crossed by the same edges, so $G/H$ is
-  $2$-edge-connected. At $r$ this gives two edges leaving $W$, with
-  distinct attachments as their outside ends; at a body outside $W$ the
-  contraction is injective on the closed neighbourhood. So every closed
-  neighbourhood of $G/H$ has at least three members, and $G/H$ has
-  minimum degree at least two. The body count is that of the
-  contraction (\cref{lem:reduction-measure}).
+  $2$-edge-connected. At $r$, the $2$-edge-connectivity of $G$ gives two
+  edges leaving $W$, and their outside ends are distinct attachments: an
+  attachment with both would have two neighbours in $W$, or two parallel
+  edges to one. At a body outside $W$ the contraction is injective on the
+  closed neighbourhood. So every closed neighbourhood of $G/H$ has at
+  least three members, and $G/H$ has minimum degree at least two. The
+  contraction sends $W$ to $r$ and fixes every other body, which gives the
+  body count (as in \cref{lem:reduction-measure}).
 \end{proof}
 
 \begin{definition}[The contraction curve and the rescaled lifting system]
@@ -1352,10 +1354,11 @@ while the rest of $G$ sees it at $q_r$.
 \begin{proof}
   \leanok
   At $t = 0$ the rows at a core body $c$ and an attachment $u$ of $c$
-  say that $u$ lies on the plane of $c$ through the point $(q_r, 0)$; the
-  rows at an attachment $u$ and a body outside $W$ say that the plane of
-  $u$ passes through $(q_r, 0)$; and the constant coefficient of an
-  attachment occurs only in its rows at its neighbours in $W$.
+  say that $u$ lies on the plane parallel to that of $c$ through the point
+  $(q_r, 0)$; the rows at an attachment $u$ and a body outside $W$ say
+  that the plane of $u$ passes through $(q_r, 0)$; and the constant
+  coefficient of an attachment occurs only in its rows at its neighbours
+  in $W$.
 
   For (1), send a solution to the heights $z_w + z_r$ at the bodies $w$
   outside $W$ and $z_r$ at $r$. By \cref{lem:pencil-contract-core-plane}
@@ -1382,7 +1385,7 @@ while the rest of $G$ sees it at $q_r$.
   \leanok
   \uses{lem:pencil-contract-core-plane, lem:pencil-contract-lifting-kernel}
   In the setting of \cref{lem:pencil-contract-core-plane}, let $H$ be
-  connected, let $t \neq 0$, and let $q(t)$ be admissible for $H$ with
+  connected, and let $q(t)$ be admissible for $H$ with
   $\dim L_H(q(t)) = 3$. At the configuration $(q(t), z(t))$ of a solution
   of $M(t)$, the rank of $H$ is $6(|W| - 1)$.
 \end{lemma}
@@ -1480,11 +1483,13 @@ while the rest of $G$ sees it at $q_r$.
 
   At $t = 0$ the configuration $(q(0), z(0))$ is the collapsed placement
   of $(q, z')$. Take $t$ off the zero sets of $t$, of that polynomial, of
-  the main-picture polynomials of $G$ and of $H$ along the curve, nonzero
-  at $t = 1$ where $q(1) = q$, and of the polynomial of
+  the main-picture polynomial of $G$ and the polynomial of
+  \cref{thm:pencil-jj-equality} at $H$ along the curve, both nonzero at
+  $t = 1$ where $q(1) = q$, and of the polynomial of
   \cref{lem:pencil-contract-degenerate-rank} along the curve, nonzero at
   $t = 0$. Then $q(t)$ is a main picture of $G$, the core has rank
-  $6(|W| - 1)$ (\cref{lem:pencil-contract-core-rank}), and the rows of the
+  $6(|W| - 1)$ (\cref{lem:pencil-contract-core-rank}; it is flat along the
+  curve, so no attainment at $H$ is needed), and the rows of the
   other edges, with the columns of $W$ deleted, have rank at least
   $\operatorname{tgt}(G/H)$. By \cref{lem:block-rank-contract} the rank of
   $G$ at $(q(t), z(t))$ is at least

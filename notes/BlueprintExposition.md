@@ -1048,6 +1048,33 @@ ledger is now **2 pending / 37 done** (of 39).
   admissibility; at a cut vertex the same extension runs through `v`. Pointer: `notes/Phase40e.md`
   (build 2's first half).
 
+### `main-component.tex` — Phase 40f (CONTRACT-R: contraction at a `def₂`-rigid core)
+
+**One new entry — judged at the sub-phase close (2026-09-26).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC12.md` and `K-main-MC14.md`, (MC-34)–(MC-39) and
+(MC-59)), after Katoh–Tanigawa's Lemma 6.3; the criterion transfers as in the `pencil.tex` section.
+The entry below is written in place. The rest landed as scoped, in one build commit from the design
+recon's spike: the rescaled lifting system and its two ends follow (MC-37) and (MC-59)(c1)–(c3),
+and the collapsed-placement rank is Phase 22i's composition, with the projected rank polynomial now
+keeping its value at the witness. The placement of the general pieces is project-side. The account
+of the whole induction stays with the Phase-39 entry
+`thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
+ledger is now **2 pending / 38 done** (of 40).
+
+- **`lem:pencil-contract-core-plane` / `Graph.exists_core_plane`, with
+  `lem:pencil-contract-core-rank` and `thm:pencil-x0-contract-rigid`** — [done (the three nodes'
+  proofs, at the 40f close)] **(b)** the informal step (MC-39) takes `X₀(H)` attaining as a
+  hypothesis and gets the core's rigidity at `X₀(G)`'s generic point from it, through (MC-38)'s
+  core-free condition (restriction onto `L_H`, then dominance of `B_G → B_H`); (MC-37)'s step 3 adds
+  a translation-invariance and slice-irreducibility argument for the collapsed picture. **Stable
+  insight:** at a core of planar deficiency zero neither is needed. The rows of the rescaled system
+  at a core body keep the weight `(x_w, y_w, 1)` along the whole curve, so with `L_H(q) = Aff(q)`
+  every solution is flat on the core, and at `t ≠ 0` its core heights are affine in `q(t)`; the
+  core's rank is then its flat rank `6(|W| − 1)`, from Jackson–Jordán at `H` alone. One ambient
+  picture, generic for `G/H` and `H` and main for `G`, collapses at `r`'s own picture point, so no
+  translation argument arises either. Pointer: `notes/Phase40f.md`; `notes/Phase40-design.md` §3
+  STEPS (the settled slice item).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
