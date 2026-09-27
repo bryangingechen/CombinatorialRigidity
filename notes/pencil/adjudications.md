@@ -911,3 +911,29 @@ fresh opus builders, split at the spike's rank/deficiency boundary (the coordina
 Under decision 4, every re-homed item's first consumer is SHORT; (MC-19)(c) and (MC-134)(c) have no
 consumer on (MC-89)'s route (Step MC20, Part I) and are recorded as off the route. Work log
 `notes/Phase40g.md`.
+
+## 2026-09-27 — SHORT: the `k = 3, 4` ear steps re-proved by insertion; workbook first, second reading next; the `k = 1` cell to ORBIT; THETA dissolves into COVERAGE
+
+Phase 40's SHORT design recon (opus; verdict in `notes/Phase40-design.md` §3 STEPS, SHORT) found a
+new, shorter proof of the `k = 3` and `k = 4` open-ear steps. Remove the ear's second interior body
+and count against that antecedent. Putting the body back raises `dim(ρ + Λ)` by one unless the span
+already holds every line meeting a fixed line. At `k = 4` a tetrahedron rules that out, and at
+`k = 3` a bilinear (Klein-pairing) lemma does. This replaces (MC-24)/(MC-136)'s four-orbit collision
+and (MC-45)'s `r`-split, and needs no `δ` and no exact (MC-17). The recon asked how to handle the new
+mathematics, where the `k = 1` cell goes, how THETA lands, and three small calls. The user's answers,
+relayed verbatim in the coordinator's dispatch:
+
+```adjudication
+PI decisions, 2026-09-27, on the SHORT design recon's verdict (verbatim answers to the coordinator's questions):
+1. The k = 3, 4 proofs — "The recon re-proved the k = 3 and k = 4 open-ear steps by a new, shorter route. Remove one ear body; putting it back raises dim(ρ + Λ) by one unless the span already holds every line meeting a fixed line. At k = 4 a tetrahedron rules that out; at k = 3 a bilinear (Klein-pairing) lemma does. This replaces (MC-24)/(MC-136)'s four-orbit collision and (MC-45)'s r-split. It is new mathematics, found by formalization. How should it be handled?": "Workbook, 2nd read, then open" — the ORBIT precedent: a workbook commit of the new claims (next MC labels, 'found by formalization') first, then a fresh read-only opus second reading, then 40h opens.
+2. The k = 1 cell — "Where should the k = 1 cell ((MC-54) at k = 1, with (MC-174) and (MC-48)(ii)) go? The recon proposes 40h = B1–B7 (the k = 2, 3, 4 steps and their infrastructure, about 7 builds + open + close) and moving the k = 1 cell (about 2 builds) out.": "Fold into ORBIT" — ORBIT already consumes (MC-174), (MC-48)(ii) and Jackson–Jordán at the split-off, so the k = 1 cell's two builds join ORBIT's group; 40h stays at 7 builds.
+3. THETA — "THETA ((MC-139): every simple θ-graph attains) turns out to be an assembly of step theorems plus FLAT at K₄ − e and K₂,₃. How should it land?": "Dissolve into COVERAGE" — no named theorem; a remark records that COVERAGE's strong induction covers θ-graphs, as with (MC-21)(a)'s class theorem in 40g.
+4. Small calls — "(a) The k = 2 step takes the hypothesis def₃(G[V₁]) ≤ def₃(G), with a bridge lemma from δ = 0, not δ = 0 through the δ machinery. (b) Off-route items (MC-44), (MC-136), (MC-24), exact (MC-17) and (MC-134)(b) at k = 3, 4 go to 'Not needed'; the jointMotions/weldedRank/A2/A3 pins go to their first consumers (SPLITOFF/ORBIT/COVERAGE); (MC-175)(iii) goes to ORBIT. (c) The label-reusing split-off deficiency bound lands as an additive successor lemma, with no landed call site moved.": "Accept all three".
+```
+
+**Decided.** The new mathematics is in Step MC13 as (MC-179)–(MC-182), marked found by
+formalization and not yet second-read. (MC-24)'s gadget, (MC-25)'s proof, (MC-136), (MC-45)'s proof
+of the step and (MC-26)'s links are superseded on (MC-89)'s route but not deleted. A fresh read-only
+second reading of (MC-179)–(MC-182) comes next. Then 40h opens as SHORT: the `k = 2, 3, 4` steps and
+their infrastructure, seven builds (B1–B7). The `k = 1` cell (B8–B9) and (MC-175)(iii) join ORBIT's
+group, and THETA becomes a COVERAGE remark.

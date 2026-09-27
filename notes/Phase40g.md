@@ -4,7 +4,7 @@
 group (`notes/Phase40-design.md` §3 STEPS), proved the base of the `X₀` induction and its two
 unconditional ear steps: every cycle attains (BASE), and if `X₀(G[V₁])` attains, `X₀(G)` attains
 for an open ear with `k ≥ 5` interior bodies, its ends possibly adjacent, or a closed ear with
-`k ≥ 2` ((MC-20)). **Next: STEPS' SHORT group**, not yet opened — see *Hand-off*.
+`k ≥ 2` ((MC-20)). **Next: a fresh read-only second reading of SHORT's new claims (MC-179)–(MC-182), then 40h opens as SHORT** — see *Hand-off*.
 
 ## Current state
 
@@ -82,13 +82,15 @@ All landed with the standard axioms (*Current state*).
 ## Hand-off / next phase
 
 **40g is closed. The next group is SHORT**, the next in the design doc's provisional order (§3
-STEPS, *The provisional grouping*): the open ears with `k ≤ 4` ((MC-22), (MC-24),
-(MC-25)/(MC-136), (MC-45)/(MC-135)/(MC-26)/(MC-47)(i)), (MC-54) and THETA (MC-139), with the items
-re-homed from CHAIN by PI decision 4. It is not yet opened: its open mints the next sub-phase letter
-and work log. Its first inputs are the design doc's *Tracked for SHORT's pre-build recon* item
-(confirm a consumer on the route for (MC-44), or drop it) and CHAIN's note there that the `k ≤ 3`
-ears still need (MC-134)(b) at the actual flag pair; it reuses CHAIN's ear rank law and ear
-deficiency bound.
+STEPS, *The provisional grouping*, the SHORT entry). Its design recon ran on 2026-09-27 (opus,
+compiler-checked, read-only), and the PI decided on it the same day (`notes/pencil/adjudications.md`).
+- **The recon re-proved the `k = 3, 4` ear steps by insertion.** It is written in Step MC13 as
+  (MC-179)–(MC-182), found by formalization and not yet second-read. (MC-44) is dropped.
+- **The `k = 1` cell goes to ORBIT, and THETA dissolves into COVERAGE.**
+- **Next, the smallest step:** one fresh read-only second reading of (MC-179)–(MC-182). Then 40h opens
+  as SHORT, with the recon's plan: `k = 2, 3, 4` and their infrastructure, seven builds (B1–B7). The
+  open mints `notes/Phase40h.md` and the chapter's subsection. It reuses CHAIN's ear rank law and ear
+  deficiency bound.
 
 **File sizes, no split.** `Bricks.lean` is at 1 443 lines, 57 under the ~1500-line tripwire: the
 commit that would take it past splits its vertex-2-cut layer (section `TwoCutCarriers`) into its own

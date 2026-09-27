@@ -53,7 +53,7 @@ Since `r = dim M_{G′} − dim M_weld`, `r ≥ min(δ, 5)`. With `r ≤ δ` ((M
 So (MC-23) holds at every `(G′, a, b)` with `a ≁ b` and `δ ≤ 5` for which (MC-10)(a) holds at `G′`
 and at `G′ + ab`. That is a reduction, not a proof of (MC-23).
 
-> **(MC-45)** `[PROVED]` *(`k = 3`, every orbit; its `r = 1` use of (MC-26) has a hand proof, (MC-135))* For every `ρ` and every flag pair with
+> **(MC-45)** `[PROVED]` *(`k = 3`, every orbit; its `r = 1` use of (MC-26) has a hand proof, (MC-135); the step's proof superseded on (MC-89)'s route 2026-09-27 by (MC-181), below — still proved, no longer consumed)* For every `ρ` and every flag pair with
 > `p_a ≠ p_b`: `(P₂) ⟹ (P₃)`. Hence, **under the strong induction, the open-ear step with `k = 3`
 > holds in every orbit**: if `X₀(G′)` attains, so does `X₀(G′ + ear₃)`. Nothing in this uses
 > Jackson–Jordán.
@@ -111,6 +111,222 @@ In orbits (i) and (ii) the survivors `Pen_a`, `Pen_b` violate `(P₂)` by (MC-43
 *Proof of the ear step.* `X₀(G′ + ear₂)` attains by the induction hypothesis. The restriction is
 dominant (MC-18)(a), and `λ = 3` in every orbit (MC-19)(b). So (MC-22) gives `(R₂)` and `(P₂)`.
 `(R₂)` gives `(R₃)`, the implication gives `(P₃)`, and (MC-22) at `G` concludes. ∎
+
+**The `k = 3, 4` ear steps by insertion (2026-09-27, found by formalization).** *Added by the
+Phase-40 SHORT design recon (opus), `notes/Phase40-design.md` §3 STEPS (SHORT). On (MC-89)'s route
+the `k = 4` step went through the 2-ear gadget (MC-24) and the collision lemma (MC-136), in four
+orbits, and the `k = 3` step through (MC-45)'s `r = 1, 2, ≥ 3` split, with (MC-26), (MC-135) and the
+(α)/(β) classification. Both are re-proved here by one move: remove the ear's second interior body,
+then put it back along a curve. The antecedent is `G` with that body suppressed. The count is taken
+against it directly, with no `δ`, no exact (MC-17), and no (MC-22), (MC-24) or (MC-44).
+(MC-179)–(MC-182) are one writer's and **not yet second-read**; a fresh second reading is commissioned
+(`notes/pencil/adjudications.md`, 2026-09-27, decision 1). They are hand proofs; no driver. Notation
+as above, in Step MC10 and in Step MC20. `⟨·,·⟩` is the Klein pairing, and `star(p) := {p ∧ v : v ∈ K⁴}`
+is the space of lines through `p`. The interior bodies are `x₁, …, x_k`, with `x₀ := a` and
+`x_{k+1} := b`.*
+
+> **(MC-179)** `[PROVED]` *(four line lemmas; found by formalization, SHORT recon 2026-09-27; not yet
+> second-read)* Let `K` be a field.
+> **(a)** *(the tetrahedron)* If `p₀, p₁, p₂, p₃ ∈ K⁴` are linearly independent, the six joins
+> `p_i ∧ p_j`, `i < j`, are a basis of `Λ²K⁴`.
+> **(b)** *(two stars)* If `y, y′ ∈ K⁴` are linearly independent, then
+> `star(y) + star(y′) = (y ∧ y′)^⊥`, of dimension 5.
+> **(c)** *(the bilinear lemma; (MC-135)(ii)'s `k = 2` step, restated)* Let `π, π′` be planes, and
+> let `c ∈ Λ²K⁴` satisfy `⟨c, u ∧ v⟩ = 0` for every `u ∈ π̂` and every `v ∈ π̂′`. If `π ≠ π′`, then
+> `c = 0`. If `π = π′`, then `c ∈ Λ²π`.
+> **(d)** *(the insertion lemma)* Let `K` be infinite. Let `ρ ⊆ Λ²K⁴` be a subspace, `F ⊂ Λ²K⁴` a
+> finite set, `y, y′, u ∈ K⁴`, and `W := ρ + span F + ⟨y ∧ y′⟩`. Then for all but finitely many `t ∈ K`,
+> `dim(ρ + span F + ⟨y ∧ (y + tu), (y + tu) ∧ y′⟩) ≥ dim(W + ⟨y ∧ u⟩)`. So the left side is at least
+> `dim W`, and at least `dim W + 1` when `y ∧ u ∉ W`.
+
+*Proof.* **(a)** Pair a vanishing combination `Σ c_{ij} p_i ∧ p_j = 0` with the opposite edge
+`p_k ∧ p_l`. Here `⟨p_i ∧ p_j, p_k ∧ p_l⟩ = det(p_i, p_j, p_k, p_l)`. It is `±det(p₀, p₁, p₂, p₃) ≠ 0`
+when `{i, j, k, l} = {0, 1, 2, 3}`, and `0` when the two pairs share an index. So `c_{ij} = 0`, and six
+independent vectors are a basis.
+
+**(b)** Extend `y, y′` to a basis `y, y′, e, e′`.
+- `star(y) + star(y′)` contains `y∧y′`, `y∧e`, `y∧e′`, `y′∧e`, `y′∧e′`, five of the six basis vectors of
+  (a). So its dimension is at least 5.
+- Every line through `y` or `y′` meets the line `yy′`. So `star(y) + star(y′) ⊆ (y ∧ y′)^⊥`.
+- That space has dimension 5, since the pairing is nondegenerate and `y ∧ y′ ≠ 0`.
+
+**(c)** This is (MC-135)(ii)'s argument at `k = 2`, with its `k = 3` basis.
+- `π ≠ π′`: write `π̂ = m̂ ⊕ ⟨α⟩` and `π̂′ = m̂ ⊕ ⟨β⟩`, with `m̂ = ⟨f₁, f₂⟩ = π̂ ∩ π̂′`. Then `f₁, f₂, α, β` is
+  a basis of `K⁴`. So by (a) the six vectors `f₁∧f₂, α∧f₁, α∧f₂, f₁∧β, f₂∧β, α∧β`, all of the form
+  `u ∧ v` with `u ∈ π̂` and `v ∈ π̂′`, are a basis. Hence `c ⊥ Λ²K⁴`, and `c = 0`.
+- `π = π′`: `c ∈ (Λ²π)^⊥`. Any two lines of `π` meet, so `Λ²π ⊆ (Λ²π)^⊥`, and both have dimension 3.
+  So `c ∈ Λ²π`.
+
+**(d)** For `t ≠ 0`, `y ∧ (y + tu) = t·(y ∧ u)` and `(y + tu) ∧ y′ = y ∧ y′ + t·(u ∧ y′)`. So the
+space in question is `S(t) := ρ + span F + ⟨y ∧ u, y ∧ y′ + t·(u ∧ y′)⟩`, and `S(0) = W + ⟨y ∧ u⟩`.
+- Choose a basis of `S(0)` from a basis of `ρ + span F`, together with `y ∧ y′` and `y ∧ u`.
+- In it, replace `y ∧ y′`, if present, by `y ∧ y′ + t·(u ∧ y′)`. The resulting family is affine in `t`,
+  lies in `S(t)` for `t ≠ 0`, and is independent at `t = 0`.
+- A maximal minor of its coordinate matrix is a polynomial in `t`, nonzero at `t = 0`. Off its finitely
+  many roots, and off `t = 0`, the family is independent in `S(t)`. ∎
+
+(d) is (MC-45)'s splitting degeneration: at `t = 0` the reinserted body collides with `y`. The two new
+hinges become `y ∧ u` (after dividing by `t`) and the antecedent's hinge `y ∧ y′`. What is new below is
+the count against the antecedent, and one line argument in place of the classification.
+
+> **(MC-182)** `[PROVED]` *(suppressing a degree-2 body does not raise the deficiency; any finite graph,
+> both `D`; found by formalization, SHORT recon 2026-09-27; not yet second-read)* Let `x` be a vertex of
+> `G` whose only edges are `e_u = xu` and `e_w = xw`, with `u ≠ w` and `u, w ≠ x`. Let `G″` be `G` with
+> `x` suppressed: delete `x`, and relink the freed label `e_u` to join `u` and `w`. Then
+> **`def_D(G″) ≤ def_D(G)`**.
+
+*Proof.* Extend a partition of `V(G″)` to `V(G)` by putting `x` in `u`'s part. The number of parts is
+unchanged, and `e_u = xu` is internal. `e_w = xw` crosses exactly when `u` and `w` lie in different
+parts, that is, exactly when the relinked `e_u = uw` crosses in `G″`. Every other edge keeps its ends and
+its status. So the value is unchanged. ∎
+
+This is Katoh–Tanigawa's partition extension for splitting off (KT 2011, Lemma 4.3(i); landed as
+`splitOff_deficiency_le`, where the new label is fresh), with the freed label reused. It is also
+(MC-175)(i)'s argument. In Lean, `G″ = G.splitOff x u w e_u`, the construction of (MC-176)'s `G₁`.
+
+> **(MC-180)** `[PROVED]` *(the `k = 4` open-ear step by insertion; every orbit, `a ∼ b` allowed, no
+> Jackson–Jordán; replaces (MC-24)/(MC-25) with (MC-136) on (MC-89)'s route; found by formalization,
+> SHORT recon 2026-09-27; not yet second-read)* Let `K` be infinite. Let `G = G′ + ear₄` be an open ear
+> `a − x₁ − x₂ − x₃ − x₄ − b`, with `a ≠ b` possibly adjacent and `G` satisfying (H). Let `G″` be `G` with
+> `x₂` suppressed ((MC-182), the label of `x₁x₂` relinked to `x₁x₃`), so
+> `G″ = G′ + (a − x₁ − x₃ − x₄ − b)`. **If `X₀(G′)` and `X₀(G″)` attain, then `X₀(G)` attains.** Under the
+> strong induction both hypotheses hold. `G′` and `G″` satisfy (H) and are smaller than `G`
+> ((MC-55)(i)); `G″` is simple because `x₁ ≁ x₃` in `G`.
+
+> **(MC-181)** `[PROVED]` *(the `k = 3` open-ear step by insertion; every orbit, `a ∼ b` allowed, no
+> Jackson–Jordán; replaces (MC-45)'s proof of the step on (MC-89)'s route; found by formalization, SHORT
+> recon 2026-09-27; not yet second-read)* Let `K` be infinite. Let `G = G′ + ear₃` be an open ear
+> `a − x₁ − x₂ − x₃ − b`, with `a ≠ b` possibly adjacent and `G` satisfying (H). Let `G″` be `G` with `x₂`
+> suppressed, so `G″ = G′ + (a − x₁ − x₃ − b)`. **If `X₀(G′)` and `X₀(G″)` attain, then `X₀(G)`
+> attains.** The hypotheses are supplied as in (MC-180).
+
+*Proof of (MC-180) and (MC-181).* Let `k ∈ {3, 4}`, `V₁ := V(G′)` and `f := def₃(G′)`.
+
+**Step 0: what is counted.** At every configuration whose ear hinges are nonzero, (MC-16) in rank form
+gives `rank R_G = rank R_{G′} + 5k − 1 + dim(ρ + Λ_k)`.
+- (MC-177)(iii) states this with `a ≁ b`. (MC-16)'s own proof, by solving along the chain, uses no
+  condition on `a, b`. Nonzero hinges make the ear's `ω` determine its bodies, and
+  `rank = 6|V| − dim M`. Phase 40g formalized it at every adjacency (`lem:block-rank-ear`).
+- Likewise at `G″`, with `k − 1`.
+
+The target of `G` is `6(|V| − 1) − def₃(G)`. A configuration over `U(G)`, with nonzero ear hinges, at
+which `G′` attains, therefore attains for `G` as soon as
+
+  **(★)** `dim(ρ + Λ_k) ≥ k + 1 + f − def₃(G)`,
+
+and then `X₀(G)` attains by (MC-2) (one point of `B` at the target rank).
+
+**Step 1: the base data, fixed first.**
+- Choose a picture `q*` in `U(G) ∩ U(G′) ∩ U(G″)`. Each is a nonempty Zariski-open subset of `K^{2V}` (the
+  last two depend on fewer coordinates), and `K^{2V}` is irreducible.
+- Over `q*`, restriction `L_{G″}(q*) → L_{G′}(q*)` is onto ((MC-18)(a), since `G″`'s ear has
+  `k − 1 ≥ 2` interior bodies). So the heights where `G′` attains pull back to a nonempty open subset of
+  `L_{G″}(q*)`. The heights where `G″` attains are another. Choose `z*` in both.
+- Fix the **base data** `(q₁, z₁)`: `q*` and `z*` restricted to `V₁`. `G′` attains there. So `ρ`, `p_a`,
+  `p_b`, `π_a` and `π_b` are fixed from now on.
+
+*How `π_a` is fixed.* `q₁` is admissible for `G′`, so `q₁(N_{G′}[a])` is not collinear. By (MC-1), the
+plane `π_a : z = h_a(x, y)` through the points of `N_{G′}[a]` is unique.
+- In particular `a` has at least two neighbours in `V₁`. If it had only one, `N_{G′}[a]` would be two
+  points. Then no picture would be admissible for `G′`, `U(G′)` would be empty, and `X₀(G′)` could not
+  attain. Under the strong induction `G′` satisfies (H) anyway.
+- In `G` and in `G″`, `N[a] = N_{G′}[a] ∪ {x₁}`, and the plane at `a` is already fixed by `N_{G′}[a]`. So
+  every configuration of `G` or `G″` with base data `(q₁, z₁)` has `x₁ ∈ π_a`, for this `π_a`. Likewise
+  `x_k ∈ π_b`.
+
+**Step 2: the ear data, chosen second.** Hold `(q₁, z₁)` fixed. The **ear data** of `G` are the
+pictures `q_{x₁}, …, q_{x_k} ∈ K²` and the heights `w₂, …, w_{k−1}` of the middle bodies. Their points
+are `x₁ = (q_{x₁}, h_a(q_{x₁}), 1)`, `x_i = (q_{x_i}, w_i, 1)` for `1 < i < k`, and
+`x_k = (q_{x_k}, h_b(q_{x_k}), 1)`. Over a picture `q₁ ⊕ (q_{x_i})` admissible for `G`, these are exactly
+the configurations of `L_G` with base heights `z₁` ((MC-18)(a)). The ear data of `G″` are those of its
+bodies `x₁, x₃, …, x_k`, in the same way.
+
+Each ear-data space is an affine space, hence irreducible. With `ρ` fixed, every condition below is
+polynomial in the ear data:
+- **(E1)** `q₁ ⊕ (q_{x_i}) ∈ U(G)`. This is open in the ear pictures, and nonempty: it contains `q*`'s.
+- **(E2)** every ear hinge is nonzero (adjacent pictures distinct). Open and nonempty.
+- **(E3)** for `G″`: `rank R_{G″} ≥ 6(|V(G″)| − 1) − def₃(G″)`. This is a maximal minor of the rigidity
+  matrix, nonzero at `z*`'s ear data, so it is open and nonempty. Those ear data are of this form:
+  `z*_{x₁} = h_a(q*_{x₁})`, because `z* ∈ L_{G″}(q*)` and `π_a` is unique. A rank lower bound needs no
+  main picture.
+
+At a `G″`-placement `y` with (E2) and (E3), where `y₁ := x₁` and `y₃ := x₃`, Step 0 at `G″` and
+`rank R_{G′}(q₁, z₁) = 6(|V₁| − 1) − f` give
+
+  **(1)** `dim W ≥ k + f − def₃(G″)`, where `W := ρ + Λ_{k−1}(y)`.
+
+**Step 3: the insertion.** Take a `G″`-placement `y` with (E2), (E3) and Step 4's extra open condition.
+- Put `x₂` back at `x₂(t) := y₁ + tu` or at `x₂(t) := y₃ + tu`, with `u ∈ K³ × {0}`, and keep every other
+  body as in `y`. Then `x₂(t)` is an affine point. `x₂` is a middle body of `G`, so its picture and height
+  are free.
+- The ear hinges are those of `y`, except that `y₁y₃` is replaced by `y₁ ∧ x₂(t)` and `x₂(t) ∧ y₃`.
+- Every line through an affine point `p` is `p ∧ u` with `u` of last coordinate `0`, since
+  `p ∧ v = p ∧ (v − v₃p)`.
+- Apply (MC-179)(d), with `F` the other hinges of `y` and `(y, y′) = (y₁, y₃)` or `(y₃, y₁)` (using
+  `x ∧ y = −y ∧ x`). For all but finitely many `t`, it gives
+  `dim(ρ + Λ_k(x(t))) ≥ dim W + 1` whenever the chosen star is not in `W`, and `≥ dim W` always.
+
+So **`dim(ρ + Λ_k(x(t))) ≥ min(dim W + 1, 6)`** as soon as
+
+  **(G)** `W = Λ²K⁴`, or `star(y₁) ⊄ W`, or `star(y₃) ⊄ W`.
+
+Step 4 proves (G). The condition `dim(ρ + Λ_k(x)) ≥ min(dim W + 1, 6)` is a maximal minor in the ear data
+of `G`, nonzero at `x(t)`. Intersect it with (E1) and (E2) for `G`. This gives a `G`-placement `x` over
+a picture of `U(G)`, with nonzero hinges, at which `G′` attains and, by (1),
+`dim(ρ + Λ_k(x)) ≥ min(k + 1 + f − def₃(G″), 6)`.
+
+**Step 4 for (MC-180), `k = 4`: the tetrahedron.** Here `y = (y₁, y₃, y₄)`, with `y₁ ∈ π_a`, `y₃` free
+and `y₄ ∈ π_b`, and `Λ₃(y) = ⟨p_a y₁, y₁ y₃, y₃ y₄, y₄ p_b⟩`. The extra open condition is: **`y₁, y₃, y₄, p_b`
+are linearly independent** (not coplanar).
+- *Why it holds at a configuration where `G″` and `G′` both attain.* In the ear data,
+  `det(y₁, y₃, y₄, p_b)` is affine in `y₃`'s free height `w₃`. Its `w₃`-coefficient is `±` the `3 × 3`
+  determinant of the homogeneous pictures `(q_{x₁}, 1)`, `(q_{x₄}, 1)` and `(q_b, 1)`, with `q_b` fixed by
+  the base data. That coefficient is nonzero once `q_{x₁}` is off the line through `q_{x₄}` and `q_b`, so
+  it is a nonzero polynomial. The determinant is therefore a nonzero polynomial on `G″`'s ear data, and
+  its non-roots meet (E2) and (E3). At such a `y`, `G′` attains (the base data) and `G″` reaches its
+  target rank (E3). That is the sense of "both attain" the proof uses.
+- *(G).* Suppose `star(y₁) ⊆ W` and `star(y₃) ⊆ W`. Then `W` contains `y₁y₃`, `y₁y₄`, `y₁p_b`, `y₃y₄` and
+  `y₃p_b`, and `y₄p_b ∈ Λ₃(y) ⊆ W`. These are the six edges of the tetrahedron, a basis by (MC-179)(a).
+  So `W = Λ²K⁴`.
+
+This replaces (MC-136). The only placement condition is one determinant, the same in every orbit.
+
+**Step 4 for (MC-181), `k = 3`: the bilinear lemma.** Here `y = (y₁, y₃)`, with `y₁ ∈ π_a` and
+`y₃ ∈ π_b`, and `Λ₂(y) = ⟨p_a y₁, y₁ y₃, y₃ p_b⟩`. In `G″`, `y₁ ∼ y₃`, so by (E2) their pictures differ,
+and `y₁, y₃` are independent. By (MC-179)(b), `star(y₁) + star(y₃) = (y₁ ∧ y₃)^⊥` has dimension 5. There
+are two cases on `ρ`, which the base data fix.
+- *Case B:* `⟨c, u ∧ v⟩ = 0` for every `c ∈ ρ`, `u ∈ π̂_a`, `v ∈ π̂_b`. By (MC-179)(c):
+  - if `π_a ≠ π_b`, then `ρ = 0` and `W = Λ₂(y)`;
+  - if `π_a = π_b = π`, then `ρ ⊆ Λ²π`, and `W ⊆ Λ²π` (`p_a, y₁, y₃, p_b ∈ π`).
+
+  Either way `dim W ≤ 3 < 5`, so one of the two stars is not in `W`: (G). No extra condition is needed.
+- *Case A:* some `c ∈ ρ`, `u₀ ∈ π̂_a` and `v₀ ∈ π̂_b` have `⟨c, u₀ ∧ v₀⟩ ≠ 0`. The extra open condition is
+  **`⟨c, y₁ ∧ y₃⟩ ≠ 0`**.
+  - *Why it can be met.* Write `π̂_a = {(s₁, s₂, h_a(s), s₃) : s ∈ K³}`, with `h_a` in homogeneous form,
+    and `π̂_b` likewise. Then `(s, s′) ↦ ⟨c, ŷ(s) ∧ ŷ′(s′)⟩` is bilinear on `K³ × K³` and nonzero at
+    `(u₀, v₀)`. The affine points (`s₃ = 1`) span `K³`, so it is nonzero at some affine pair.
+  - On the affine pairs it is `⟨c, y₁ ∧ y₃⟩` as a polynomial in `(q_{x₁}, q_{x₃})`, so that polynomial is
+    nonzero. Its non-roots meet (E2) and (E3). This is where the order of Steps 1–2 is used: `c` is
+    chosen from `ρ` before the ear data.
+  - *(G).* Now `c ∉ (y₁ ∧ y₃)^⊥ = star(y₁) + star(y₃)`. If both stars were in `W`, then `W` would contain
+    that 5-dimensional space and also `c ∈ ρ ⊆ W`, so `W = Λ²K⁴`.
+
+Case B with `π_a = π_b` is (MC-47)(i)'s situation (orbit (iv), `Λ₂ = Λ²π`). (MC-45)'s four orbits
+collapse to the one question `π_a = π_b`.
+
+**Step 5: the count.** (★) holds, since:
+- `k + 1 + f − def₃(G″) ≥ k + 1 + f − def₃(G)`, because `def₃(G″) ≤ def₃(G)` (MC-182);
+- `6 ≥ k + 1 + f − def₃(G)`, because `def₃(G) ≥ f + k − 5`. This is (MC-17)'s separated count: extend a
+  partition of `V₁` by the ear bodies as singletons, for `k` new parts and at most `k + 1` crossing edges.
+  It holds whether or not `a ∼ b` (Phase 40g, `lem:deficiency-ear`).
+
+So `X₀(G)` attains. Nothing here uses `δ`, the exact value of (MC-17), (MC-22), (MC-24), (MC-44),
+`a ≁ b`, or the orbit of the flag pair. ∎
+
+*Consequences.* (MC-180) and (MC-181) cover the `k = 4` and `k = 3` chains of (MC-79)(v) and (MC-139),
+in every orbit and with `a ∼ b` allowed. They also cover (MC-54) at `k = 3, 4`, which needs no
+hypothesis on `δ` there. (MC-24), (MC-25)'s proof, (MC-136), (MC-45)'s proof of the step and (MC-26)'s
+links are off (MC-89)'s route, and stay proved.
 
 > **(MC-46)** `[PROVED]` *(`k = 2`, orbits (i) and (ii); the orbit table by hand over every field: (MC-138); superseded on (MC-89)'s route 2026-09-26 by (MC-173) and (MC-176), below — still proved, no longer consumed)* Let the flag pair be in orbit (i) or (ii),
 > and let `r ≤ 3`. Then **`ρ ∈ B₂(r)` iff `ρ ⊇ Pen_a`, or `ρ ⊇ Pen_b`, or (`r = 3` and `ρ ⊆ N`)**.

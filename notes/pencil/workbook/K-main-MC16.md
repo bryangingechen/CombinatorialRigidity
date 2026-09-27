@@ -59,8 +59,8 @@ theorem (MC-89) stands, modulo Jackson–Jordán, in characteristic 0.** Driver
   `G′ := G − {xᵢ}`. `δ` and `δ₂` are as in Step MC10 and Step MC11.
 - A chain is **usable** if a landed step applies to it, modulo JJ:
   - `k ≥ 5`: (MC-20);
-  - `k = 4`: (MC-24)/(MC-25);
-  - `k = 3`: (MC-45);
+  - `k = 4`: (MC-24)/(MC-25) *(since 2026-09-27, (MC-180), Step MC13)*;
+  - `k = 3`: (MC-45) *(since 2026-09-27, (MC-181), Step MC13)*;
   - `k = 2`: (MC-46) with `dim U ≥ 2`, or (MC-54) at `δ = 0` *(since 2026-09-26 the first
     alternative is (MC-176), Step MC13, at `a ≁ b`, `δ₂ ≥ 2`)*;
   - `k = 1`: (MC-54) at `δ = 0` with `dim U ≥ 2`, or SPLITOFF (MC-31) at `δ ≥ 5`.
@@ -223,7 +223,9 @@ property. Its proper subsets satisfy (S), so `def₂(G[Y]) = max(0, s′(Y)) = 0
     `c(Y) = c(Y₁) + [6|Y₂| − 5e(Y₂) − 5e(Y₁, Y₂)] ≥ c(Y₁) + c_{Γ̂(G)}(Y₂ ∪ [R]) ≥ c(Y₁) + 1`,
     since `e(Y₁, Y₂) ≤ e(Y₂, [R])`. So the minimum in (i) is attained inside `R`.
   - *`δ₂`.* By (MC-78) in `G`, a tight set containing `a, b` is inside `R` or is the edge `ab`.
-- **(v)** `k ≥ 3` is (MC-20), (MC-24)/(MC-25) and (MC-45), as landed. *Flag:* at `k = 4` with
+- **(v)** `k ≥ 3` is (MC-20), (MC-24)/(MC-25) and (MC-45), as landed. *(Since 2026-09-27, SHORT recon,
+  not yet second-read: `k = 4` is (MC-180) and `k = 3` is (MC-181), both through the antecedent `G`
+  with `x₂` suppressed. Neither uses `a ≁ b`, so the flag below is discharged on the route.)* *Flag:* at `k = 4` with
   `a ∼ b` (a 6-cycle, allowed in 𝒮), this rests on Step MC14's reading that (MC-22)–(MC-25) need no
   `a ≁ b`, confirmed by the 2026-09-24 second reading. `k = 2`, `a ≁ b`:
   - by (iii), `δ = 0` (MC-54) or `δ₂ ≥ 2`;

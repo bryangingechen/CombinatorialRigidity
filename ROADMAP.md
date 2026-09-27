@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓; next STEPS' SHORT group, not yet opened (see `notes/Phase40g.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓, SHORT recon ✓; next a read-only second reading of SHORT's new claims (MC-179)–(MC-182), then 40h opens as SHORT (see `notes/Phase40g.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1162,7 +1162,9 @@ infinite field. Layers by stable code, lettered only as each opens:
   CUTBRIDGE, closed as sub-phase 40e (2026-09-26); the second, CONTRACT-R, closed as sub-phase 40f
   (2026-09-26); the third, CHAIN, closed as sub-phase 40g (2026-09-27); the rest are provisional
   codes in the design doc, SHORT next. The ORBIT recon (2026-09-26) re-proved the one step whose
-  informal proof counted dimensions, and a second reading confirmed it;
+  informal proof counted dimensions, and a second reading confirmed it. The SHORT recon (2026-09-27)
+  re-proved the `k = 3, 4` ear steps by removing one ear body and putting it back, in place of an
+  orbit case analysis. A second reading of those claims comes next, then SHORT opens as 40h;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
 

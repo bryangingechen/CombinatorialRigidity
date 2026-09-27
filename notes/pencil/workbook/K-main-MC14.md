@@ -133,6 +133,14 @@ hold with nothing to check. (MC-22) needs two more things:
 Directly, (MC-16) gives `dim M_G = dim M_{G′} = 6 + def₃(G′)`, and `def₃(G) = def₃(G′)` by
 (MC-17). ∎
 
+*(2026-09-27, SHORT recon; PI decision 4(a), `notes/pencil/adjudications.md`.)* The proof uses `δ = 0`
+only through `def₃(G) ≥ def₃(G′)`. Extend a partition of `V(G′)` with `a` and `b` in one part (one of
+value `def₃(G′)` exists when `δ = 0`) by putting the ear in that part. The count then needs only
+`dim(ρ + Λ) ≥ λ = k + 1`, not `ρ = 0`. So the Lean step takes `def₃(G′) ≤ def₃(G)` as its hypothesis,
+which COVERAGE supplies from `δ = 0`, and which is free when `def₃(G′) = 0` (the θ-graphs' `k = 2` case,
+(MC-139)). At `k = 3, 4` the step is subsumed by (MC-181) and (MC-180) (Step MC13), which need no
+hypothesis on `δ`.
+
 What this does to (MC-51)'s open cells:
 - (a) (`k = 2`, `dim U = 1`, orbits (i)–(iii), including `a ∼ b`) is closed wherever `δ = 0`.
 - (b) (`k = 2`, orbit (iv)) is closed wherever `δ = 0`, **without** Jackson–Jordán.
