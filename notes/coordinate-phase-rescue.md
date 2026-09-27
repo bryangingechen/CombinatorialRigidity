@@ -238,9 +238,8 @@ moved it into the hand-off).
   iterated with the lean-lsp MCP — which refuses files outside the repo), BUILDS the
   candidate composition with `sorry` for each gap, reads the kernel's per-seam verdict,
   and **reports the EXACT kernel-checked residual goal(s)** — not a prose verdict. The
-  evidence run is `lake lean <file>`, not `lake env lean <file>`: only `lake lean`
-  applies the lakefile's `[leanOptions]` (trial, 2026-09-27 incident; the recon core
-  carries the mechanics). Hard constraints: commit NOTHING, leave `git status` clean
+  evidence run is `lake lean <file>`, never `lake env lean` (the recon core carries the
+  mechanics). Hard constraints: commit NOTHING, leave `git status` clean
   (the deliverable is the gap map in the return message); keep the scratch files only
   when the spike may be handed to a builder. One spike dissolved the route fork
   3–4 prose recons couldn't + isolated the true crux (rows 426–428).

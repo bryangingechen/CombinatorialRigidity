@@ -12,7 +12,8 @@ slash command that is not a local setting (/model, /clear, ...): `attack <name>`
 prompt's opening words. `--since-review` starts at the last `## review YYYY-MM-DD`
 line of notes/harness/incidents.md (the time of the commit that added it). `--select attack` keeps attack and review
 sessions; `--select research` adds the free-form sessions that write under notes/pencil/ or
-notes/attacks/ (group `research`); an aborted start with fewer than `--min-requests` (2) API requests is
+notes/attacks/ (group `research`), and a subagent of any other session that writes there, listed
+as `<session-id>/<agent-id>` (group `research`; 2026-09-27); an aborted start with fewer than `--min-requests` (2) API requests is
 dropped; `--ids` prints only their ids, space-separated, for analyze.py:
 
     python3 notes/harness/instrument/analyze.py \\
@@ -32,6 +33,10 @@ from classify import CMD, kind_of
 # A free-form session (no /attack, /coordinate-phase or /harness-review) that writes under the
 # research corpus is a research session: the W4 reopening and the X0 design ran that way,
 # unseen by `--select attack` (incidents.md 2026-09-26; the PI chose to count them).
+# A subagent of a /coordinate-phase (or any non-research) session that writes there is one too: the
+# ORBIT recon and its second reading ran as recon-opus subagents of the 40f coordinator, unseen by
+# the main-session rows (incidents.md 2026-09-27; the PI chose to count them). A research session's
+# own helpers are part of that session and get no row.
 WRITE_TOOLS = {'Edit', 'Write', 'NotebookEdit', 'MultiEdit'}
 RESEARCH_PATH = re.compile(r'notes/(pencil|attacks)/')
 
@@ -101,11 +106,32 @@ def list_sessions(root, since=None, min_requests=2):
         if since and first < since: continue
         label, group = kind_of(cmds, prompt)
         if group == 'other' and rwrites: group = 'research'
-        rows.append(dict(sid=os.path.basename(p)[:-6], start=first, end=last,
+        sid = os.path.basename(p)[:-6]
+        rows.append(dict(sid=sid, start=first, end=last,
                          hours=(last - first).total_seconds() / 3600, requests=len(reqs),
                          models=models, label=label, group=group))
+        if group not in ('attack', 'research'):
+            rows += research_subagents(root, sid, since, min_requests)
     rows.sort(key=lambda r: r['start'])
     return rows
+
+def research_subagents(root, sid, since=None, min_requests=2):
+    """Subagents of session sid that write under the research corpus, as rows with id `<sid>/<agent-id>`."""
+    rows = []
+    for p in sorted(glob.glob(os.path.join(root, sid, 'subagents', '*.jsonl'))):
+        first, last, reqs, models, cmds, prompt, rwrites = scan(p)
+        if not first or not rwrites or len(reqs) < min_requests: continue
+        if since and first < since: continue
+        try: meta = json.load(open(p[:-6] + '.meta.json'))
+        except Exception: meta = {}
+        rows.append(dict(sid=f"{sid}/{os.path.basename(p)[:-6]}", start=first, end=last,
+                         hours=(last - first).total_seconds() / 3600, requests=len(reqs), models=models,
+                         label=f"↳{meta.get('agentType', '?')}: {meta.get('description', '')}", group='research'))
+    return rows
+
+def short_id(sid):
+    """A main session's first 8 characters; a subagent row's agent id, 8 characters after `agent-`."""
+    return sid.rsplit('/', 1)[-1].removeprefix('agent-')[:8]
 
 def model_mix(models):
     return ' '.join(f"{k.replace('claude-', '')}:{v}" for k, v in models.most_common())
@@ -134,7 +160,7 @@ def main():
         print(' '.join(r['sid'] for r in rows)); return
     for r in rows:
         s = r['start'].astimezone(); e = r['end'].astimezone()
-        print(f"{r['sid'][:8]}  {s:%Y-%m-%d %H:%M}->{e:%H:%M}  {r['hours']:5.2f}h  {r['requests']:4d} req  "
+        print(f"{short_id(r['sid'])}  {s:%Y-%m-%d %H:%M}->{e:%H:%M}  {r['hours']:5.2f}h  {r['requests']:4d} req  "
               f"{model_mix(r['models']):<28} {r['label']}")
     print(f'{len(rows)} sessions', file=sys.stderr)
 

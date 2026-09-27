@@ -10,8 +10,8 @@ or attack work. Its job is to keep `HARNESS.md` small and true.
   log it. (`/coordinate-phase` and its agents change by their own
   phase-close promotions.)
 - The instrumentation over the research sessions since the last review:
-  the attack track, plus free-form sessions that write under `notes/pencil/`
-  or `notes/attacks/` (`--select research`).
+  the attack track, plus free-form sessions and other sessions' subagents
+  that write under `notes/pencil/` or `notes/attacks/` (`--select research`).
   `python3 notes/harness/instrument/sessions.py --since-review` lists them
   with the logs root it read (`--logs-root` or `CLAUDE_LOGS_ROOT` override
   it); then

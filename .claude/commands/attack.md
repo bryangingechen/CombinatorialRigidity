@@ -23,7 +23,6 @@ Spawn helpers (`general-purpose` agents) for sweeps, literature reads or
 Lean checks; give each one question, take back a summary, and let them
 write only to scratch. A script that produced a figure follows
 `HARNESS.md` *Reproducibility* and lives in `notes/attacks/$ARGUMENTS/drivers/`.
-Number results in your workbook file (S1, S2, …); mint no corpus labels.
 
 **Write** only under `notes/attacks/$ARGUMENTS/` and in your own workbook
 file (`HARNESS.md` *Attack track*); a pointer anywhere else that needs

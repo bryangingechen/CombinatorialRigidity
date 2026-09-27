@@ -29,7 +29,8 @@ def attack_table(path):
         R = o['session']; sh = R['shares']; tot = max(1, R['total_calls'])
         st = _dt(R['start']).astimezone(); cmp_ = R['compactions']; h = R['helpers']
         thk = 100 * R['think_out'] / max(1, R['tok']['out'])
-        print(f"{R['sid'][:8]:8} {R['label'][:13]:13} {st:%m-%d %H:%M}       {R['span_h']:5.2f} {R['assistant_turns']:4d} {R['total_calls']:5d} "
+        sid8 = R['sid'].rsplit('/', 1)[-1].removeprefix('agent-')[:8]  # a subagent row: its agent id
+        print(f"{sid8:8} {R['label'][:13]:13} {st:%m-%d %H:%M}       {R['span_h']:5.2f} {R['assistant_turns']:4d} {R['total_calls']:5d} "
               f"{100*sh['process']/tot:5.0f} {100*sh['math']/tot:5.0f} {R['tok']['out']/1000:6.0f} {thk:4.0f} {R['cost']:6.2f} "
               f"{cmp_['markers']+cmp_['ctx_drops']:3d} {R['peak_ctx']/1000:6.0f} "
               f"{R['pdf_reads']:3d} {R['lean_reads']:4d} {h['spawned']:4d} {h['stopped_by_user']:4d} {h['idle_notifications']:4d} "

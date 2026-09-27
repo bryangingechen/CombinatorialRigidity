@@ -191,11 +191,19 @@ def human_user_turns(users):
     return cnt, samples
 
 def analyze_session(sid):
-    path = os.path.join(ROOT, sid+'.jsonl')
+    # `<session-id>/<agent-id>` is a research subagent (sessions.py, 2026-09-27): its transcript sits
+    # under the parent's subagents/, and its label is the agent type from the .meta.json beside it
+    sub = sid.split('/', 1) if '/' in sid else None
+    path = (os.path.join(ROOT, sub[0], 'subagents', sub[1]+'.jsonl') if sub
+            else os.path.join(ROOT, sid+'.jsonl'))
     turns, users, tok, models, meta = scan_transcript(path)
     times=[x['t'] for x in turns if x['t']]+[u['t'] for u in users if u['t']]
     R = dict(sid=sid)
     R['label'], R['group'] = kind_of(meta['cmds'], meta['prompt'])
+    if sub:
+        try: at = json.load(open(path[:-len('.jsonl')]+'.meta.json')).get('agentType', '?')
+        except Exception: at = '?'
+        R['label'], R['group'] = '↳' + at, 'research'
     R['start']=min(times); R['end']=max(times)
     R['span_h']=(R['end']-R['start']).total_seconds()/3600
     R['assistant_turns']=len(turns)

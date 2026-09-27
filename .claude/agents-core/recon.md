@@ -53,10 +53,8 @@ mechanics (trial, 2026-09-27 incident):
   then read goals with `lean_goal` rather than inserting a `sorry` and
   recompiling, and try tactics with `lean_multi_attempt`. The server
   loads the imports once and re-elaborates only from the edit onward.
-- **Attest with `lake lean <file>`, never `lake env lean <file>`.**
-  `lake lean` applies the lakefile's `[leanOptions]` (`autoImplicit =
-  false`, the mathlib linter set, `warn.sorry`); `lake env lean` runs
-  with Lean's defaults and hides errors as well as warnings. Report the
+- **Attest with `lake lean <file>`, never `lake env lean <file>`**
+  (why: `CombinatorialRigidity/CLAUDE.md` *Lean LSP MCP*). Report the
   `lake lean` counts.
 - **Keep the files** when the coordinator may hand the spike to a
   builder (a complete spike is the build, step 3 *Resume and land*);

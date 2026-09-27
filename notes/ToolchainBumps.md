@@ -148,11 +148,11 @@ sandbox disabled, so this is not a sandbox permission to grant.
   whole-tree count off a fully-cached build is honest. No `touch` needed. (This
   cuts the other way too: a build with no writable cache dir under-reports
   errors as well as warnings — that is the flattering count above.)
-- **`lake env lean <file>` does not apply the lakefile's `leanOptions`.** It is
-  a ~10s-per-file iteration loop (vs minutes for a targeted `lake build`) and
-  its *errors* are trustworthy, but it silently skips the whole mathlib style
-  linter set — it reported clean on three lines that were over the
-  100-character limit. Lint cleanliness is only established by `lake build`.
+- **`lake env lean <file>` does not apply the lakefile's `leanOptions`** — not
+  the mathlib style linters (it reported clean on three over-long lines) and not
+  `autoImplicit = false`, so its errors are not trustworthy either (2026-09-27).
+  Check one file with `lake lean <file>` (`TACTICS-QUIRKS.md` §55); lint
+  cleanliness is only established by `lake build`.
 
 ### The gate set to re-run after any bump
 

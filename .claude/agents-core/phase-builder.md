@@ -38,8 +38,7 @@ pre-commit checklists; this file pins the loop contract):
   attests: the gates below do. Scratch files go in `scratch/<phase>/`
   (gitignored), where the MCP can open them. When you are handed a
   coordinator or recon spike, check it first with `lake lean <file>`,
-  which applies the lakefile's options; `lake env lean` does not, and
-  its counts understate what your `lake build` will report.
+  never `lake env lean` (ibid.).
 - **Foreground gates, then commit, then stop.** Run your build/lint
   gates in the FOREGROUND (blocking) — never launch `lake build` /
   `lake lint` as a background task, **and do not use `run_in_background:

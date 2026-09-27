@@ -177,9 +177,7 @@ doc pins register, template, and evidence bar at once — six Phase-29
 episode-writing slices then ran clean at sonnet against it.
 
 A **coordinator spike** (`lake lean scratch/<phase>/X.lean` against the
-built tree — `lake lean`, which applies the lakefile's `[leanOptions]`;
-`lake env lean` runs with Lean's defaults and hid 6 errors and 264
-warnings of the 40g recon's spike, 2026-09-27 incident) raises S the same way — it turns a P=3 leaf with no informal proof into a
+built tree, never `lake env lean` — TACTICS-QUIRKS §55) raises S the same way — it turns a P=3 leaf with no informal proof into a
 transcription — and its discipline is fixed (dispatch-log F41/F42, three
 Phase-39 instances): its *positive* results are coordinator-verified and
 go in the `route` block; its *absences* go there only as *"I did not

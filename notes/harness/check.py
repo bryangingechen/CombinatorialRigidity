@@ -8,8 +8,8 @@
 HARNESS.md rules: <= LINE_BUDGET lines; every bullet is tagged
 `[YYYY-MM-DD, standing|trial]` and carries an incident pointer after `<-`
 (or the arrow). The last `## review YYYY-MM-DD` line of incidents.md is
-printed with the number of research sessions since it (attack track and
-free-form, from the transcripts via instrument/sessions.py). A trial rule with more than
+printed with the number of research sessions since it (attack track, free-form, and other
+sessions' research subagents, from the transcripts via instrument/sessions.py). A trial rule with more than
 TRIAL_REVIEW_SESSIONS research sessions since its date is listed as review-due;
 when no transcripts are readable the fallback is TRIAL_REVIEW_DAYS by date.
 State files: every section of the template present, none over its
@@ -46,8 +46,8 @@ def review_start():
         return None
 
 def attack_session_dates():
-    """Start times of every research session (attack track or free-form, sessions.py's groups
-    `attack` and `research`) in the transcripts, or None if unreadable."""
+    """Start times of every research session (attack track, free-form or a research subagent,
+    sessions.py's groups `attack` and `research`) in the transcripts, or None if unreadable."""
     try:
         sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent / 'instrument'))
         import sessions as S
