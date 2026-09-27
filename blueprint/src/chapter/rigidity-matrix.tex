@@ -357,11 +357,14 @@ contraction is not yet fully rigid
 \cref{lem:rank-polynomial-IH-relabel-proj}). Two sides that share a pair
 of bodies $u, v$ rather than one are glued through the relative screws of
 the pair (\cref{def:relative-screws}): the ranks add up to a correction
-by the joined relative screws (\cref{lem:block-rank-two-cut}). A path
-between the two bodies has an explicit rank and relative screws
-(\cref{lem:block-rank-path}), which gives the rank added by an open ear
-(\cref{lem:block-rank-ear}); these serve the ear steps on pencil
-configurations (\cref{sec:main-component-chain}). The block-triangular
+by the joined relative screws, for any two graphs sharing out the edges
+(\cref{lem:block-rank-two-cut}) and in particular for the two sides of a
+vertex $2$-cut (\cref{cor:block-rank-vertex-two-cut}). A path between
+the two bodies has an explicit rank (\cref{lem:block-rank-path}) and
+relative screws (\cref{lem:relative-screws-path}), which give the rank
+added by an open ear (\cref{lem:block-rank-ear}); these serve the ear
+steps on pencil configurations (\cref{sec:main-component-chain}). The
+block-triangular
 bound at a core (\cref{lem:block-rank-contract}) and the projected rank
 polynomial nonzero at its witness (\cref{lem:rank-polynomial-proj-eval})
 serve the contraction step (\cref{sec:main-component-contract}).
@@ -456,12 +459,10 @@ $u$ and $v$ rigidly together. At distinct bodies the map
 $S \mapsto S(u) - S(v)$ is onto, so the joint rows span a space of
 dimension $D - \dim U$.
 
-\begin{lemma}[Rank gluing at a vertex $2$-cut]
+\begin{lemma}[Rank gluing at a $2$-cut]
   \label{lem:block-rank-two-cut}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_twoCut_of_isLink,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_twoCut_eq_of_isLink,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_vertexTwoCut,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_twoCut_eq_of_isLink}
   \leanok
   \uses{def:relative-screws, def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework and $u \neq v$ two bodies. Let
@@ -476,9 +477,6 @@ dimension $D - \dim U$.
     \operatorname{rank} R(G,p) = \operatorname{rank} R(G_1,p)
     + \operatorname{rank} R(G_2,p) + \dim(\rho_1 + \rho_2) - D.
   \]
-  In particular this holds for $G_i = G[V_i]$ when
-  $V_1 \cap V_2 = \{u, v\}$ and every edge of $G$ lies inside $V_1$ or
-  inside $V_2$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -498,25 +496,44 @@ dimension $D - \dim U$.
   $R(G,p)$ is the sum of the two row spaces, and the dimension formula
   for a sum and an intersection gives the rank. No non-adjacency of $u$
   and $v$ is needed: an edge $uv$ belongs to $G_1$ or to $G_2$, and its
-  rows are the same on either side. The induced case is the
-  specialization $G_i = G[V_i]$, whose edges lie inside $V_i$ by
-  definition.
+  rows are the same on either side.
 \end{proof}
 
-\begin{lemma}[The rank and relative screws of a path]
+\begin{corollary}[Rank gluing at a vertex $2$-cut]
+  \label{cor:block-rank-vertex-two-cut}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_vertexTwoCut,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq}
+  \leanok
+  \uses{lem:block-rank-two-cut}
+  Let $(G,p)$ be a body-hinge framework, $u \neq v$ two bodies, and
+  $V_1, V_2$ sets of bodies with $V_1 \cap V_2 = \{u, v\}$ such that
+  every edge of $G$ lies inside $V_1$ or inside $V_2$. Write $\rho_i$ for
+  the relative screws of $u, v$ in $(G[V_i], p)$. Then the row spaces of
+  $R(G[V_1],p)$ and $R(G[V_2],p)$ meet in the span of the joint rows at
+  $u, v$ confining the relative screw to $\rho_1 + \rho_2$, and
+  \[
+    \operatorname{rank} R(G,p) = \operatorname{rank} R(G[V_1],p)
+    + \operatorname{rank} R(G[V_2],p) + \dim(\rho_1 + \rho_2) - D.
+  \]
+\end{corollary}
+\begin{proof}
+  \leanok
+  Apply \cref{lem:block-rank-two-cut} to $G_i = G[V_i]$: the edges of
+  $G[V_i]$ lie inside $V_i$ by definition, and together they are the
+  edges of $G$.
+\end{proof}
+
+\begin{lemma}[The rank of a path]
   \label{lem:block-rank-path}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_path,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_path_le,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.span_range_le_relScrews_path,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.relScrews_path_le_span_range}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_path_le}
   \leanok
-  \uses{def:relative-screws, def:rigidity-matrix}
+  \uses{def:rigidity-matrix}
   Let $(P,p)$ be a body-hinge framework whose edges are those of a path
   $a = x_0 - x_1 - \cdots - x_k - x_{k+1} = b$ of distinct bodies
   ($k \geq 0$), and let the hinge $C_i$ of the edge $x_i x_{i+1}$ be
   nonzero for every $i$. Then
-  $\operatorname{rank} R(P,p) = (D-1)(k+1)$, and the relative screws of
-  $a, b$ in $(P,p)$ are $\operatorname{span}(C_0, \dots, C_k)$.
+  $\operatorname{rank} R(P,p) = (D-1)(k+1)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -525,7 +542,25 @@ dimension $D - \dim U$.
   (\cref{def:hinge-row-block}). Conversely, the body $x_{i+1}$ hangs
   from $\{x_0, \dots, x_i\}$ by the single edge $x_i x_{i+1}$, so
   \cref{lem:block-rank-cut} adds $D - 1$ to the rank for each of the
-  $k + 1$ edges. At a motion $S$, each $S(x_{i+1}) - S(x_i)$ lies in
+  $k + 1$ edges.
+\end{proof}
+
+\begin{lemma}[The relative screws of a path]
+  \label{lem:relative-screws-path}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.span_range_le_relScrews_path,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.relScrews_path_le_span_range}
+  \leanok
+  \uses{def:relative-screws}
+  Let $(P,p)$ be a body-hinge framework whose edges are those of a path
+  $a = x_0 - x_1 - \cdots - x_k - x_{k+1} = b$ of distinct bodies
+  ($k \geq 0$), with hinge $C_i$ at the edge $x_i x_{i+1}$. Then the
+  relative screws of $a, b$ in $(P,p)$ are
+  $\operatorname{span}(C_0, \dots, C_k)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:hinge-constraint}
+  At a motion $S$, each $S(x_{i+1}) - S(x_i)$ lies in
   $\operatorname{span} C_i$, and these differences add up to
   $S(b) - S(a)$. Conversely, the assignment equal to $C_i$ at
   $x_{i+1}, \dots, x_{k+1}$ and to $0$ elsewhere is a motion with
@@ -551,14 +586,15 @@ dimension $D - \dim U$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:block-rank-two-cut, lem:block-rank-path}
+  \uses{lem:block-rank-two-cut, lem:block-rank-path, lem:relative-screws-path}
   Apply \cref{lem:block-rank-two-cut} to $G_1 = G[V_1]$ and to the path
   $G_2$, with $V_2$ its bodies: $V_1 \cap V_2 = \{a, b\}$, and every edge
-  of $G$ is on the path or inside $V_1$. By \cref{lem:block-rank-path}
-  the path has rank $(D-1)(k+1)$ and relative screws $\Lambda$. The
-  second side is the path itself, not the subgraph induced on its bodies,
-  which also contains the edge $ab$ when $a$ and $b$ are adjacent; so the
-  formula holds whether or not they are.
+  of $G$ is on the path or inside $V_1$. The path has rank $(D-1)(k+1)$
+  (\cref{lem:block-rank-path}) and relative screws $\Lambda$
+  (\cref{lem:relative-screws-path}). The second side is the path itself,
+  not the subgraph induced on its bodies, which also contains the edge
+  $ab$ when $a$ and $b$ are adjacent; so the formula holds whether or not
+  they are.
 \end{proof}
 
 \begin{lemma}[The block-triangular rank bound at a core; KT eq.~(6.3)]

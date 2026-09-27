@@ -8,9 +8,9 @@ open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER 
 (`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
 closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
 2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R closed 2026-09-26** (`notes/Phase40f.md`),
-one build commit from a compiler-checked recon's spike; **40g = CHAIN opened 2026-09-27**
-(`notes/Phase40g.md`), design-first from a compiler-checked recon, both builds landed; the four
-later groups are provisional. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
+one build commit from a compiler-checked recon's spike; **40g = CHAIN closed 2026-09-27**
+(`notes/Phase40g.md`), two build commits from a compiler-checked recon's spike; the four later
+groups are provisional, and SHORT is next in their order. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
 claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
 pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -187,7 +187,7 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`); **CHAIN = sub-phase 40g, opened 2026-09-27** (`notes/Phase40g.md`)
+### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`); **CHAIN = sub-phase 40g, ✓ closed 2026-09-27** (`notes/Phase40g.md`)
 
 **CUT/BRIDGE done** (40e). The "if" halves of (MC-52) and (MC-53) are formalized in
 `Molecule/Pencil/MainComponent/Cut.lean` (`main-component.tex` §`sec:main-component-cut`):
@@ -214,41 +214,24 @@ needed. The general pieces sit beside their definitions: `Graph.weightedLiftingM
 polynomial nonzero at its witness (`CaseI.lean`) and the block coupling (`Coupling.lean`, with a
 mirror lemma). Every decision is in `notes/Phase40f.md`.
 
-**CHAIN opened** (40g, 2026-09-27; `notes/Phase40g.md`, `main-component.tex`
-§`sec:main-component-chain`). The design recon (opus, read-only, 2026-09-27) returned the whole
-group as one sorry-free spike (`scratch/40g/`, local to its checkout; the coordinator's `lake
-lean` re-run found six one-line binder errors and 323 warnings of lint debt, recorded in the work
-log). The verdict in brief:
-- **Statements.** `Graph.X0Attains.of_openEar` (`k ≥ 5`, `a ≠ b` in `V₁`, `a ∼ b` allowed),
-  `Graph.X0Attains.of_cycle` (BASE, as the edge `ab` plus the path `a…b`, `k ≥ 1`; no (H), no
-  connectivity) and `Graph.X0Attains.of_closedEar` (`k ≥ 2`), in 40e's explicit-path format
-  (`pathVertex`, `hpath`, `hsep`, `G′ = G.induce V₁`). (H) is asked at `G` only, attainment at
-  `G[V₁]`: stronger than the workbook, which also asks (H) at `G′`.
-- **The rank side.** The landed B6 carries the open ear only when `a ≁ b`: with `a ∼ b` the induced
-  far side is the path plus `ab`. CHAIN needs `a ∼ b` twice (BASE always has it, and (MC-20) has no
-  non-adjacency hypothesis). The fix is B5′/B6′, the same proof with the two sides any two graphs
-  whose links partition `F.graph`'s; B5/B6 become corollaries (PI decision 1). On top of it, the
-  path brick (MC-177)(i)(ii), both directions, and the ear rank law, (MC-16) in rank form at every
-  adjacency and every `k`: `rank F = rank F[V₁] + (D − 1)(k + 1) + dim(ρ ⊔ Λ) − D`.
-- **Chain spans.** (MC-134)(a) enters as four configurations of pencil points, unimodular in the
-  landed `flatScrewEquiv` coordinates, hence over every field; `n ≥ 7` reuses the hexagon by
-  collapsing points in the evaluation picture. **(MC-19)(b)'s "for any flag pair" is replaced by a
-  witness inside the fibre**: the middle heights are free ((MC-18)(a)), so the height zero on
-  `V₁ ∪ {x₁, x_k}` and `1` at `x₂`, `x₃` lies in `L_G(q)` at every admissible picture; the hexagon at
-  a collapsed picture (`p_a = p_b`) makes six fixed ear joins independent as a polynomial in the
-  picture, and genericity in the heights carries it to the attaining heights. This is the
-  workbook's one-exhibited-point principle, applied in the fibre.
-- **The deficiency side.** `Graph.deficiency_induce_add_le_of_ear`, (MC-17)'s lower half, open or
-  closed, from the landed `partitionDef_split_of_sides` and a tight partition; the upper rank bound
-  comes from `x0Attains_of_exists`. None of the *Lean reuse* deficiency laws below is consumed.
-- **The closed ear** is `of_cutVertex` plus `of_cycle` on `G[{c} ∪ range x]`, reusing the ear's
-  labels: no `β`-headroom, no fresh label, no `ChainData`. (MC-21)(a)'s class theorem dissolves into
-  COVERAGE's strong induction and stays unstated (`rem:pencil-x0-ear-class`, PI decision 4).
-- **Satisfiable**: θ(1,2,6) and the bowtie, kernel-checked with no hypotheses, not landed.
-- **Placement** (PI decision 1): B5′/B6′ in `Bricks.lean`; `pathVertex` lemmas and the three-point
-  lemma in `Cut.lean`; the point-join pieces in `Flat.lean`; new `Ear.lean` and `Chain.lean`;
-  `Carrier.lean` and `Contract.lean` untouched. **Two build commits** (the coordinator's decision),
-  split at the rank/deficiency layer.
+**CHAIN done** (40g). BASE and (MC-20), open and closed, are formalized in
+`Molecule/Pencil/MainComponent/Chain.lean` (`main-component.tex` §`sec:main-component-chain`):
+`Graph.X0Attains.of_cycle` (a cycle as the edge `ab` plus the path `a…b`, `k ≥ 1`, no (H)),
+`Graph.X0Attains.of_openEar` (`k ≥ 5`, `a ≠ b` in `V₁`, `a ∼ b` allowed) and
+`Graph.X0Attains.of_closedEar` (`k ≥ 2`), in 40e's explicit-path format, with (H) at `G` only and
+attainment at `G[V₁]` (stronger than the workbook, which also asks (H) at `G′`). The rank side is
+B5′/B6′ over any two link-partitioning graphs (`Bricks.lean`; B5/B6 are their induced corollaries),
+the path's rank and relative screws (MC-177)(i)(ii) and the ear rank law
+`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, which holds at every adjacency (`Ear.lean`);
+the deficiency side is (MC-17)'s lower half, `Graph.deficiency_induce_add_le_of_ear`. (MC-19)(b)'s
+"for any flag pair" is replaced by a witness inside the fibre: the height `1` at two middle bodies
+and `0` elsewhere lies in `L_G(q)` at every admissible picture, and the hexagon of (MC-134)(a) at a
+collapsed picture (`p_a = p_b`) makes six ear joins independent (`k ≥ 4` for the witness, `k ≥ 5`
+for six edges). The closed ear is `of_cutVertex` plus `of_cycle`, reusing the ear's labels;
+(MC-21)(a)'s class theorem stays unstated (`rem:pencil-x0-ear-class`, PI decision 4). Neither
+step-contract prerequisite was built (the step contract, below). `Bricks.lean` is at 1 443 lines:
+the commit that would take it past the ~1500-line tripwire splits its vertex-2-cut layer (section
+`TwoCutCarriers`) into its own file first. Every decision is in `notes/Phase40g.md`.
 
 | step of (MC-89) | labels, in proof order | 2nd |
 |---|---|---|
@@ -316,15 +299,12 @@ log). The verdict in brief:
     `hatt` (no outside body adjacent to two core bodies), as spiked. The alternative is
     `(G/H).Simple`, which needs the converse of `Graph.rigidContract_induce_simple` (about 30
     lines).
-  - **CHAIN = 40g, opened 2026-09-27** (`notes/Phase40g.md`; *CHAIN opened* above): BASE, (MC-20)
-    open (`k ≥ 5`) and closed, from (MC-16) in rank form ((MC-177)), (MC-17)'s lower half,
-    (MC-18)(a) and (MC-19)(a)/(b) at `k ≥ 5` through the certificates (MC-134)(a). **It pins**
-    `relScrews` and `jointRows` (`def:relative-screws`) and B5/B6 (`lem:block-rank-two-cut`), and
-    consumes `finrank_span_jointRows` inside B6; **not** `jointMotions`, `weldedRank` or Layer A2/A3
-    (the δ machinery), which the pre-open scope line wrongly assigned here. `CycleData` fits BASE's
-    statement but not its proof (an adapter only if COVERAGE's cycle case produces one, PI decision
-    3); `ChainData` is never needed. Estimated 6–10; the recon returned one sorry-free spike, landing
-    as two build commits.
+  - **CHAIN = 40g, ✓ closed** (`notes/Phase40g.md`): BASE, (MC-20) open (`k ≥ 5`) and closed.
+    Estimated 6–10; the design recon (opus, 2026-09-27) returned one sorry-free spike, which landed
+    as two build commits (`80bcd3bb`, `1cf5b60f`). The route is in *CHAIN done* above. It pinned
+    `relScrews`, `jointRows` and B5/B6 (Phase 39's D5 debt, §7), not `jointMotions`, `weldedRank`
+    or A2/A3 (the δ machinery, now SHORT's). `CycleData` gets an adapter only if COVERAGE's cycle
+    case produces one (PI decision 3); `ChainData` was never needed.
     - **Re-homed at the open (PI decision 4, 2026-09-27)**, each item CHAIN does not consume, to its
       first consumer: (MC-169), (MC-134)(b) at `k ≤ 4`, (MC-18)(b), the exact (MC-17), and the pins
       of `jointMotions`, `weldedRank` and A2/A3 all go to **SHORT** (the entry below); ORBIT
@@ -403,7 +383,8 @@ log). The verdict in brief:
   repairs applied in place, (MC-177) and (MC-178) added. **40f opened design-first as
   CONTRACT-R** (2026-09-26), from a compiler-checked design recon, and closed the same day after
   one build commit. **CHAIN opened as 40g** (2026-09-27), design-first from a compiler-checked
-  recon; SHORT is next after it. ORBIT's dependencies do not touch CONTRACT-R.
+  recon, and closed the same day after two build commits. **SHORT is next** in the provisional
+  order, not yet opened. ORBIT's dependencies do not touch CONTRACT-R.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**
   - **(MC-177) is built in CHAIN, forced**: BASE and the open ear both go through the ear rank law.
@@ -536,8 +517,8 @@ the landed SPINE2 threading):
 
 The main-component argument gets **one new forward-mode chapter** (`main-component.tex`), one
 subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subsections are all
-green, and so are STEPS' first two, `sec:main-component-cut` (40e) and
-`sec:main-component-contract` (40f); CHAIN's `sec:main-component-chain` (40g) is red; MOTIVES's stub subsection
+green, and so are STEPS' first three, `sec:main-component-cut` (40e),
+`sec:main-component-contract` (40f) and `sec:main-component-chain` (40g); MOTIVES's stub subsection
 `sec:main-component-statements` is the last, and each later layer inserts its subsection before
 it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
@@ -715,8 +696,9 @@ round that lands it.
   `finrank_relScrews_le`, `pencilLoss_vertexTwoCut` (C1ℓ–C4ℓ). **Paid so far:**
   `partitionDef_split_of_vertexTwoCut` (40e build 1, on `lem:deficiency-cut-vertex`); `relScrews`,
   `jointRows` (40g's open, on the green `def:relative-screws`); `inf_span_rigidityRows_of_vertexTwoCut`,
-  `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open, on `lem:block-rank-two-cut`, green since
-  40g build 1 beside B5′/B6′). `jointMotions`, `weldedRank` and the A2/A3 set go with SHORT (§3 STEPS).
+  `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open; green since 40g build 1, and since 40g's
+  close on their own node `cor:block-rank-vertex-two-cut`, the induced corollary of
+  `lem:block-rank-two-cut`). `jointMotions`, `weldedRank` and the A2/A3 set go with SHORT (§3 STEPS).
 - **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
   40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
   exposition (the main component as a vector bundle over planar pictures, the flat rank, the

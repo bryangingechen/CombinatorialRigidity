@@ -1075,6 +1075,35 @@ ledger is now **2 pending / 38 done** (of 40).
   translation argument arises either. Pointer: `notes/Phase40f.md`; `notes/Phase40-design.md` §3
   STEPS (the settled slice item).
 
+### `main-component.tex` — Phase 40g (CHAIN: the ear steps and the cycle)
+
+**One new entry — judged at the sub-phase close (2026-09-27).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC10.md`, `K-main-MC13.md` and `K-main-MC20.md`,
+(MC-16)–(MC-21), (MC-134) and (MC-177)); the criterion transfers as in the `pencil.tex` section. The
+entry below is written in place. The rest landed as scoped, in two build commits from the design
+recon's spike: the 2-cut rank identity for any two graphs sharing out the edges has the landed
+induced identity's proof (which is now its corollary), the path's rank and relative screws are
+(MC-177)(i)(ii), and the closed ear is the cut-vertex step plus the cycle. The explicit-path format
+and asking (H) at `G` only are project-side. The account of the whole induction stays with the
+Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase
+40's close. The ledger is now **2 pending / 39 done** (of 41).
+
+- **`thm:pencil-x0-open-ear` / `Graph.X0Attains.of_openEar`, with `lem:pencil-ear-fibre`** —
+  [done (the theorem's proof and the remark after it, at the 40g close)] **(b)** the informal step
+  (MC-20) takes the span `Λ = K⁶` of an open ear with `k ≥ 5` from (MC-19)(b), which holds "for any
+  flag pair with `p_a ≠ p_b`": the ends sit wherever `X₀(G′)`'s generic point puts them, and
+  (MC-19)(b)'s proof exhibits one placement per projective orbit of flag pairs, over the
+  irreducible placement space. **Stable insight:** no uniformity over the ends is needed. The
+  independence of six fixed ear joins is one polynomial condition in the picture and the heights, so
+  one point where it holds suffices, and that point may be degenerate: a picture putting `a` and `b`
+  at one point (not admissible), carrying the closed hexagon of (MC-134)(a). What the point must
+  satisfy is that its heights are heights of `G` at the general picture, and the free interior
+  heights of an ear give that ((MC-18)(a)): the height `1` at `x₂`, `x₃` and `0` elsewhere vanishes on
+  `V₁ ∪ {x₁, x_k}`, so it lies in `L_G(q)` at every admissible `q` (this needs `k ≥ 4`). The picture
+  is then chosen off that polynomial's zero set, and the heights where `G[V₁]` attains and the joins
+  stay independent meet in `L_G(q)` by the fibre-intersection lemma. Pointer: `notes/Phase40g.md`;
+  `notes/Phase40-design.md` §3 STEPS (*CHAIN done*).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

@@ -1527,13 +1527,14 @@ that $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ off the
 path lies inside $V_1$. The ear is \emph{open} if $a \neq b$, and then
 $a$ and $b$ may be adjacent, and \emph{closed} if $a = b$. Along an open
 ear the rank grows by $5(k + 1) + \dim(\rho + \Lambda) - 6$
-(\cref{lem:block-rank-ear}), where $\Lambda$ is the span of the hinges
-of the ear, and the deficiency grows by at least $k - 5$
-(\cref{lem:deficiency-ear}); only this lower bound is needed, since one
-configuration of rank at least the target suffices
+(\cref{lem:block-rank-ear}), where $\rho$ is the space of relative
+screws of $a, b$ in $G[V_1]$ (\cref{def:relative-screws}) and $\Lambda$
+is the span of the hinges of the ear, and the deficiency grows by at
+least $k - 5$ (\cref{lem:deficiency-ear}); only this lower bound is
+needed, since one configuration of rank at least the target suffices
 (\cref{lem:pencil-x0-one-witness}). An ear with at least five interior
 bodies has at least six hinges, and at a general configuration they span
-the whole screw space, so the rank grows by exactly the increase of the
+the whole screw space, so the rank grows by at least the increase of the
 target. One exhibited configuration certifies the span: a closed hexagon
 whose joins are independent over every field, reached at a picture on
 which $a$ and $b$ coincide. It is not admissible, but its heights are
@@ -1685,10 +1686,10 @@ cycle.
   \uses{lem:pencil-config-point-join-rank, lem:panel-hinge-dual-molecular}
   The hinge at an edge $uw$ spans the line of the meet of the planes
   $p_u^{\perp}$ and $p_w^{\perp}$, and the polarity, an invertible
-  linear map of the screw space, carries that meet to the join
-  $p_u \wedge p_w$ (\cref{lem:pencil-config-point-join-rank}). So the
-  meets at $g_1, \dots, g_m$ are independent and lie in the span of the
-  hinges there. The screw space has dimension six.
+  linear map of the screw space, carries the join $p_u \wedge p_w$ to
+  that meet (\cref{lem:pencil-config-point-join-rank}). So the meets at
+  $g_1, \dots, g_m$ are independent and lie in the span of the hinges
+  there. The screw space has dimension six.
 \end{proof}
 
 \begin{theorem}[A cycle]
@@ -1706,8 +1707,9 @@ cycle.
   \leanok
   \uses{lem:pencil-three-points, lem:pencil-join-independence-open,
         lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
-        lem:block-rank-ear, lem:block-rank-path, def:D-deficiency,
-        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
+        lem:block-rank-ear, lem:block-rank-path, lem:relative-screws-path,
+        def:D-deficiency, lem:pencil-x0-main-picture-open,
+        lem:pencil-x0-one-witness}
   Every closed neighbourhood of $G$ has three members, so at an
   admissible picture $q$ every height lies in $L_G(q)$
   (\cref{lem:pencil-three-points}). Put the bodies at the points of
@@ -1723,9 +1725,11 @@ cycle.
   (\cref{lem:pencil-join-independence-open}).
 
   The cycle is the edge $ab$ with the open ear
-  $a - x_1 - \cdots - x_k - b$ on $\{a, b\}$. The edge has rank $5$ and
-  relative screws spanned by its hinge (\cref{lem:block-rank-path}, at
-  $k = 0$), so by \cref{lem:block-rank-ear} the rank at $(q, z)$ is
+  $a - x_1 - \cdots - x_k - b$ on $\{a, b\}$, and every hinge is nonzero
+  at the admissible picture $q$. The edge has rank $5$ and relative screws
+  spanned by its hinge (\cref{lem:block-rank-path} and
+  \cref{lem:relative-screws-path}, at $k = 0$), so by
+  \cref{lem:block-rank-ear} the rank at $(q, z)$ is
   $5 + 5(k + 1) + \lambda - 6 = 5m - 6 + \lambda$, where
   $\lambda \ge \min(m, 6)$ is the dimension of the span of all the
   hinges (\cref{lem:pencil-ear-hinge-span}). The partition into single
@@ -1785,6 +1789,24 @@ cycle.
   bodies by $k$, so the target grows by at most $5(k + 1)$, and
   \cref{lem:pencil-x0-one-witness} applies.
 \end{proof}
+
+\begin{remark}
+  The informal argument proves the span of the hinges of an open ear for
+  every position of its ends: whatever the points and planes of $a$ and
+  $b$, with $p_a \neq p_b$, a general placement of the interior bodies
+  has $\min(k + 1, 6)$ independent hinges, shown by one exhibited
+  placement for each projective type of the ends. The proof above needs
+  no such uniformity. The independence of six fixed joins is one
+  polynomial condition in the picture and the heights, so a single point
+  at which it holds suffices, and that point may be degenerate: the
+  picture $q^*$ puts $a$ and $b$ at one point and is not admissible. What
+  the point must satisfy is that its heights $z^*$ are heights of $G$ at
+  the general picture, and this is where the interior heights of an ear
+  enter: $z^*$ vanishes on $V_1$ and at $x_1$ and $x_k$, and is nonzero
+  only at $x_2$ and $x_3$, which lie in no closed neighbourhood of a body
+  of $V_1$ and whose own closed neighbourhoods have three members. This
+  needs $k \ge 4$, and six distinct ear edges need $k \ge 5$.
+\end{remark}
 
 \begin{theorem}[A closed ear]
   \label{thm:pencil-x0-closed-ear}

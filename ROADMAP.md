@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓; 40g/CHAIN open, both builds ✓, the close next (see `notes/Phase40g.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓; next STEPS' SHORT group, not yet opened (see `notes/Phase40g.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1160,9 +1160,9 @@ infinite field. Layers by stable code, lettered only as each opens:
 - **BRIDGE** ✓ (sub-phase 40d, closed 2026-09-26): Jackson–Jordán's equality as consumed;
 - **STEPS**: ear, split-off, contraction, cut and bridge steps, run by group; the first,
   CUTBRIDGE, closed as sub-phase 40e (2026-09-26); the second, CONTRACT-R, closed as sub-phase 40f
-  (2026-09-26); the third, CHAIN, is sub-phase 40g (open); the rest are provisional codes in the
-  design doc. The ORBIT recon (2026-09-26) re-proved the one step whose informal proof counted
-  dimensions, and a second reading confirmed it;
+  (2026-09-26); the third, CHAIN, closed as sub-phase 40g (2026-09-27); the rest are provisional
+  codes in the design doc, SHORT next. The ORBIT recon (2026-09-26) re-proved the one step whose
+  informal proof counted dimensions, and a second reading confirmed it;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
 
@@ -1284,25 +1284,26 @@ witness (`CaseI.lean`) and the block coupling (`Coupling.lean`, with a Mathlib m
 commit from a compiler-checked recon's sorry-free spike. Headline axioms unchanged (re-verified at
 the close).
 
-#### Phase 40g — the ear steps and the cycle (CHAIN, STEPS' third group) — ◐ In progress
+#### Phase 40g — the ear steps and the cycle (CHAIN, STEPS' third group) — ✓ Complete
 
-**◐ In progress** (opened design-first 2026-09-27; work log `notes/Phase40g.md`). The base of the
-induction and its two unconditional ear steps, in `main-component.tex` §`sec:main-component-chain`,
-with the rank and deficiency laws in `rigidity-matrix.tex` and `deficiency.tex`: every cycle
-attains, and `X₀` attaining at `G[V₁]` gives it at `G` for an open ear with at least five interior
-bodies, whose ends may be adjacent, or for a closed ear ((MC-20), with (MC-21)(a)'s base).
-- The rank side glues the two sides of the ear's end pair through their relative screws, for any
-  two graphs partitioning the edges (the landed identity for induced sides does not apply when the
-  ends are adjacent); a path has rank `5(k + 1)` and relative screws the span of its hinges, so
-  an ear adds `5(k + 1) + dim(ρ + Λ) − 6`.
-- Six ear hinges span the screw space at a general configuration: one exhibited hexagon of joins,
-  independent over every field, at a picture on which the ends coincide, with heights that are
-  heights of `G` at every admissible picture because the interior heights are free. A closed ear
-  is a cut vertex with a cycle on its other side.
-- The design is a compiler-checked recon whose sorry-free spike is the build, in two commits (the
-  rank and deficiency side, then the steps), both landed: all fourteen nodes are green, and the
-  close is next. Placement per the PI: `Bricks.lean`, `Cut.lean`, `Flat.lean` and the new
-  `Ear.lean` and `Chain.lean`.
+**✓ Complete** (opened design-first and closed 2026-09-27; work log `notes/Phase40g.md`). The base
+of the induction and its two unconditional ear steps, in `Molecule/Pencil/MainComponent/Chain.lean`
+and `main-component.tex` §`sec:main-component-chain`, with the rank and deficiency laws in
+`rigidity-matrix.tex` and `deficiency.tex`: every cycle attains (`Graph.X0Attains.of_cycle`), and
+`X₀` attaining at `G[V₁]` gives it at `G` for an open ear with at least five interior bodies, whose
+ends may be adjacent (`Graph.X0Attains.of_openEar`), or for a closed ear
+(`Graph.X0Attains.of_closedEar`; (MC-20), with (MC-21)(a)'s base). The rank side glues the two
+sides of the ear's end pair through their relative screws, for any two graphs sharing out the edges
+(`Bricks.lean`; the landed identity for induced sides is now its corollary); a path has rank
+`5(k + 1)` and relative screws the span of its hinges, so an ear adds `5(k + 1) + dim(ρ + Λ) − 6`
+(`Ear.lean`). Six ear hinges span the screw space at a general configuration: one exhibited hexagon
+of joins, independent over every field, at a degenerate picture on which the ends coincide, with
+heights that are heights of `G` at every admissible picture because the interior heights of an ear
+are free. That one point replaces the informal argument's case analysis over the positions of the
+ends. A closed ear is a cut vertex with a cycle on its other side. Two build commits from a
+compiler-checked recon's sorry-free spike, with the PI's placement (`Bricks.lean`, `Cut.lean`,
+`Flat.lean` and the new `Ear.lean` and `Chain.lean`). Headline axioms unchanged (re-verified at the
+close).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
