@@ -1,5 +1,13 @@
 /.lake
 
+# Agent spike / scratch Lean files, one subdirectory per phase or task
+# (`scratch/40g/`). Inside the workspace so the lean-lsp MCP can open
+# them (it refuses a file with no `lean-toolchain` ancestor); outside
+# the `CombinatorialRigidity` lib, so `lake build` never compiles them.
+# Check one with `lake lean <file>`, which applies the lakefile's
+# `[leanOptions]`; `lake env lean <file>` does not (2026-09-27 incident).
+/scratch/
+
 # Jekyll homepage artifacts (when previewing locally).
 home_page/_site
 home_page/.bundle

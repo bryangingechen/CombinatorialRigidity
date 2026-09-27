@@ -138,6 +138,15 @@ would otherwise:
   `lean_local_search` instead of `grep -rn` on the project's
   `.lean` files.
 
+**Scratch and spike files go in `scratch/<phase>/`** (gitignored):
+the MCP refuses a file with no `lean-toolchain` ancestor, so a spike
+in `/tmp` or a session scratchpad cannot be iterated with it. Check a
+scratch file with `lake lean <file>`, never `lake env lean <file>`:
+only `lake lean` applies the lakefile's `[leanOptions]`
+(`autoImplicit = false`, the mathlib linters, `warn.sorry`), so only
+its errors and warnings match what `lake build` will report once the
+code lands (`TACTICS-QUIRKS.md` §55; 2026-09-27 incident).
+
 Run `lake build` once before the first MCP call (warms `lake
 serve`); skip if you've built recently this session. **Do not call
 `lean_leansearch`** — its endpoint has been down since late 2025;

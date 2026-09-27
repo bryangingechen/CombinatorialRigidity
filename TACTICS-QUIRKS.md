@@ -2397,13 +2397,17 @@ require restructuring a proof.
 
 Phase 22j A2 (`CaseI.lean`, the `case_II_realization_all_k` longLine drop).
 
-**A scratch spike sees neither this linter nor `linter.flexible`.** The lakefile turns the mathlib
-style linters on through `weak.linter.mathlibStandardSet`, which reaches a package module built by
-`lake build` but not a file checked with `lake env lean scratch/X.lean`. So a spike that prints
-only its `#print axioms` line can still land with long lines and flexible-`simp` warnings: the
-Phase 40f CONTRACT-R spike did (six long lines, one flexible `simp … at h₁ h₂ ⊢`). When
-transcribing a spike, scan it with the codepoint script above, and expect the first `lake build`
-of the landed file to report flexible tactics the spike never showed.
+**A spike checked with `lake env lean` sees neither this linter nor `linter.flexible`, nor
+`autoImplicit = false`.** `lake env lean scratch/X.lean` runs Lean with its default options; none
+of the lakefile's `[leanOptions]` reach it (the mathlib style linters via
+`weak.linter.mathlibStandardSet`, `autoImplicit`/`relaxedAutoImplicit = false`, `warn.sorry`).
+**`lake lean scratch/X.lean` applies them**, as `lake build` and the lean-lsp MCP do. So a spike
+that prints only its `#print axioms` line under `lake env lean` can still land with long lines and
+flexible-`simp` warnings, as the Phase 40f CONTRACT-R spike did (six long lines, one flexible
+`simp … at h₁ h₂ ⊢`). It can even carry errors: the Phase 40g CHAIN spike (2 414 lines) printed 0
+errors and 59 warnings under `lake env lean`, and 6 errors (two lemmas binding `α` by auto-implicit
+after their section's `variable` closed) and 323 warnings under `lake lean`. Check every spike
+with `lake lean`, and a handed-over one first, before transcribing.
 
 
 ## 56. A bare-`Graph.`-prefixed decl *inside* `namespace Foo` creates a `Foo.Graph` sub-namespace that captures downstream `open scoped Graph` — `V(G)`/`E(G)`/`↾` stop parsing and `binop%` flips ℕ-sub→ℤ-sub

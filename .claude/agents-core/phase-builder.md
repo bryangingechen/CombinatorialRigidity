@@ -28,6 +28,18 @@ pre-commit checklists; this file pins the loop contract):
   not push on degraded: bring the tree to a clean state (commit only
   what is complete and gate-verified, revert the rest) and return
   BLOCKED with a progress summary.
+- **Iterate with the Lean LSP MCP; attest with `lake`** (trial,
+  2026-09-27 incident). Load the MCP tools once with ToolSearch
+  (`select:mcp__lean-lsp__lean_goal,mcp__lean-lsp__lean_multi_attempt,mcp__lean-lsp__lean_diagnostic_messages,mcp__lean-lsp__lean_loogle,mcp__lean-lsp__lean_local_search`)
+  and use them in the edit loop: `lean_goal` instead of a `sorry` plus
+  rebuild, `lean_multi_attempt` instead of edit-and-rebuild per tactic
+  guess, and `lean_loogle`/`lean_local_search` instead of `grep`
+  (`CombinatorialRigidity/CLAUDE.md` *Lean LSP MCP*). The MCP never
+  attests: the gates below do. Scratch files go in `scratch/<phase>/`
+  (gitignored), where the MCP can open them. When you are handed a
+  coordinator or recon spike, check it first with `lake lean <file>`,
+  which applies the lakefile's options; `lake env lean` does not, and
+  its counts understate what your `lake build` will report.
 - **Foreground gates, then commit, then stop.** Run your build/lint
   gates in the FOREGROUND (blocking) — never launch `lake build` /
   `lake lint` as a background task, **and do not use `run_in_background:

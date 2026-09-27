@@ -16,7 +16,7 @@ these):
    open the actual `def`/`theorem`, not the prior pin's prose or a
    docstring. Docstrings are not evidence; derive claims from the
    definition body, and check a surprise with a small compiler witness
-   (`lean_run_code` / `lake env lean`) before writing it into a
+   (`lean_run_code` / `lake lean`) before writing it into a
    verdict. This includes confirming that a pinned object **is** the
    construction the pin names (open every graph/algebra construction
    the pin references), not merely that the cited API names exist.
@@ -40,12 +40,31 @@ faithfulness / decomposition questions ("does this match the source?",
 "what are the buildable sub-leaves?"). For a **route-composition**
 question — "do these specific Lean objects compose to produce goal
 X?" — in a defeq-fragile zone, prose is the wrong tool: write a
-**compiler-checked spike** instead — a throwaway scratch `.lean` in
-the project tree that BUILDS the candidate composition, `sorry`s the
-gaps, and reports the **exact kernel-checked residual goal(s)**, not a
-prose verdict. Then delete the scratch and leave the tree clean —
-unless the invocation prompt authorized banking complete, gate-clean
-pieces (a finished leaf, a design entry) directly.
+**compiler-checked spike** instead — a scratch `.lean` that BUILDS the
+candidate composition, `sorry`s the gaps, and reports the **exact
+kernel-checked residual goal(s)**, not a prose verdict. The spike
+mechanics (trial, 2026-09-27 incident):
+
+- **Location: `scratch/<phase>/`** in the repo (gitignored, so the tree
+  stays clean). Not `/tmp` or a session scratchpad: the lean-lsp MCP
+  refuses a file with no `lean-toolchain` ancestor.
+- **Iterate with the MCP.** Load its tools once with ToolSearch
+  (`select:mcp__lean-lsp__lean_goal,mcp__lean-lsp__lean_multi_attempt,mcp__lean-lsp__lean_diagnostic_messages,mcp__lean-lsp__lean_loogle,mcp__lean-lsp__lean_local_search`),
+  then read goals with `lean_goal` rather than inserting a `sorry` and
+  recompiling, and try tactics with `lean_multi_attempt`. The server
+  loads the imports once and re-elaborates only from the edit onward.
+- **Attest with `lake lean <file>`, never `lake env lean <file>`.**
+  `lake lean` applies the lakefile's `[leanOptions]` (`autoImplicit =
+  false`, the mathlib linter set, `warn.sorry`); `lake env lean` runs
+  with Lean's defaults and hides errors as well as warnings. Report the
+  `lake lean` counts.
+- **Keep the files** when the coordinator may hand the spike to a
+  builder (a complete spike is the build, step 3 *Resume and land*);
+  otherwise delete them.
+
+Commit nothing from `scratch/` unless the invocation prompt authorized
+banking complete, gate-clean pieces (a finished leaf, a design entry)
+directly.
 
 For a **design-pass commit** (when the invocation prompt commissions
 one): commit as a docs commit under the project's usual per-commit

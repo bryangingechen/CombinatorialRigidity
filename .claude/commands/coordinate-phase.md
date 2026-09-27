@@ -176,8 +176,10 @@ user-approved sample section transcribed verbatim into the planning
 doc pins register, template, and evidence bar at once — six Phase-29
 episode-writing slices then ran clean at sonnet against it.
 
-A **coordinator spike** (`lake env lean` against the built tree) raises
-S the same way — it turns a P=3 leaf with no informal proof into a
+A **coordinator spike** (`lake lean scratch/<phase>/X.lean` against the
+built tree — `lake lean`, which applies the lakefile's `[leanOptions]`;
+`lake env lean` runs with Lean's defaults and hid 6 errors and 264
+warnings of the 40g recon's spike, 2026-09-27 incident) raises S the same way — it turns a P=3 leaf with no informal proof into a
 transcription — and its discipline is fixed (dispatch-log F41/F42, three
 Phase-39 instances): its *positive* results are coordinator-verified and
 go in the `route` block; its *absences* go there only as *"I did not
@@ -382,7 +384,7 @@ CLAUDE.md at phase close.
    prior phase's mirror definition with no upstream precedent, spend
    the few minutes deriving the leaf's statement against the
    definition **body** — docstrings are not evidence — and witness
-   any surprise with `lake env lean` before dispatching (this caught
+   any surprise with `lake lean` before dispatching (this caught
    a faithfulness gap *before* any Lean was built on it, where three
    prior defects were each caught only after a landed commit). The
    guard extends to **transcribed proofs**: when a carrier / encoding
@@ -625,7 +627,7 @@ CLAUDE.md at phase close.
        satisfiability. At acceptance ask *what concrete instance
        satisfies this?* and hit the common graph shapes (degree-2
        vertices, dense bodies, `K₄`/`C₄`, the design doc's own test
-       graphs) with a one-`lake env lean` witness or a prose trace
+       graphs) with a one-`lake lean` witness or a prose trace
        (dispatch-log F8: an unsatisfiable WF conjunct rode two
        gate-clean slices).
      - the trace must also hit a **kernel/architecture lemma's

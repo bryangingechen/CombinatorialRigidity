@@ -234,11 +234,15 @@ moved it into the hand-off).
   through the hand-off (the §I.8.24(4.12)–(4.15) interior-`hρe₀` crux was prose-mis-pinned
   3–4× — incl. by a diverse-lens *prose* pair — DESIGN.md *Compiler-checked spike, not
   prose recon, …*). Instead dispatch the `recon` agent to write a SCRATCH probe (a
-  throwaway `.lean` in the project tree importing the relevant modules), BUILDS the
+  `.lean` under the gitignored `scratch/<phase>/`, importing the relevant modules, and
+  iterated with the lean-lsp MCP — which refuses files outside the repo), BUILDS the
   candidate composition with `sorry` for each gap, reads the kernel's per-seam verdict,
-  and **reports the EXACT kernel-checked residual goal(s)** — not a prose verdict. Hard
-  constraints: commit NOTHING, delete the scratch, leave `git status` clean (the
-  deliverable is the gap map in the return message). One spike dissolved the route fork
+  and **reports the EXACT kernel-checked residual goal(s)** — not a prose verdict. The
+  evidence run is `lake lean <file>`, not `lake env lean <file>`: only `lake lean`
+  applies the lakefile's `[leanOptions]` (trial, 2026-09-27 incident; the recon core
+  carries the mechanics). Hard constraints: commit NOTHING, leave `git status` clean
+  (the deliverable is the gap map in the return message); keep the scratch files only
+  when the spike may be handed to a builder. One spike dissolved the route fork
   3–4 prose recons couldn't + isolated the true crux (rows 426–428).
 - **Spike-salvage resume** (recover a probe's sorry-free work): a read-only spike
   reverts its scratch (correct), but the sorry-free lemmas it proved are valuable — do

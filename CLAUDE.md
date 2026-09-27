@@ -121,7 +121,7 @@ decisions, blockers, hand-off — and points at the blueprint chapter.)
   a definition from an earlier phase — especially a mirror definition
   with no upstream precedent — derive your claims from the definition
   **body**, not its docstring or the prose that cites it, and check a
-  surprise with a small `lake env lean` witness before writing it
+  surprise with a small `lake lean` witness before writing it
   into a plan or chapter. (Precedent: an enharmonic docstring said a
   merged-away vertex survives "dead"; the definition makes it a
   *twin*, and the wrong claim propagated through a phase-open chapter
