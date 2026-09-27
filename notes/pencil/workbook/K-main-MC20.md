@@ -84,7 +84,7 @@ Read from (MC-89)'s proof, (MC-79)(v)'s list of usable chains, and the owning cl
 | — chain `k ≥ 5` | (MC-20) ← (MC-18)(a), (MC-16), (MC-17), **(MC-19)(b)** `k ≥ 5` | **cert.** CH-2a/2b → (MC-134) |
 | — chain `k = 4` | (MC-24), (MC-25) ← (MC-22), (MC-19)(b) `k = 2, 4`, **`⋂Λ₄ = 0`, four orbits** | **cert.** `--lamcap` → (MC-136) |
 | — chain `k = 3` | (MC-45) ← (MC-22) twice, (MC-19)(b) `k = 2, 3`; `r = 1`: **`⋂Λ₃ = 0`, four orbits** (via (MC-26)); `r = 2`: splitting degeneration, and (MC-47)(i)'s span identity (orbit (iv)); `r ≥ 3`: (MC-26)'s link | **cert.** `--lamcap` → (MC-135); rest argument |
-| — chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-46) ← **orbit table + semi-invariance**, (MC-26)'s link (`r ≥ 4`), (MC-18)(b), **(MC-19)(b) `k = 1`**, (MC-22); `dim U ≥ 2` by (MC-48)(ii)'s argument | **cert.** `--orbits` → (MC-138); JJ at `G′ + ab` |
+| — chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-176) ← (MC-173) (frame from (MC-169)'s proof), (MC-174), (MC-175)(i)–(iii), (MC-16) at `k = 1, 2` in rank form, (MC-18)(a) and (b)'s fibre identifications, (MC-4)(b) at `G′`; orbit (i) and `dim U ≥ 2` by (MC-48)(ii)'s argument under `δ₂ ≥ 2` *(since 2026-09-26; before, (MC-46) ← orbit table + semi-invariance, cert. `--orbits` → (MC-138), now off the route; row repaired at the second reading of (MC-173)–(MC-176), 2026-09-26)* | argument; JJ at `G′ + ab` ((MC-172)) |
 | — chain `k = 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a), (MC-16) | argument (+ (MC-134)) |
 | — chain `k = 1`, `δ = 0` | (MC-54) ← (MC-18)(b), (MC-19)(b) `k = 1`; `dim U ≥ 2` | argument + JJ at `G′ + ab` |
 | — chain `k = 1`, `δ ≥ 5` | SPLITOFF (MC-31) ← (MC-28), (MC-29), (MC-30)(iv) | argument + JJ at `G″ = G′ + ab` |
@@ -105,10 +105,10 @@ Remarks on the tree:
   cross-check.
 - **`m2/earbad.m2`** is an independent symbolic re-check of (MC-46)'s classification (B2), not a
   leaf of its proof. Its (B3) supports (MC-47)(ii), which (MC-89) does not use.
-- *(2026-09-26, ORBIT recon, found by formalization; not yet second-read.)* The row "chain `k = 2`,
-  `a ≁ b`, `δ₂ ≥ 2`" now rests on (MC-176) (Step MC13), whose `(P₁) ⟹ (P₂)` is the refined link
-  (MC-173). (MC-46), its orbit table (MC-138) and the semi-invariance are off the route and stay
-  proved. The row's leaves become (MC-173)–(MC-176), (MC-16), (MC-18)'s two fibre identifications,
+- *(2026-09-26, ORBIT recon, found by formalization; second-read 2026-09-26, which repaired this
+  bullet and the row.)* The row "chain `k = 2`,
+  `a ≁ b`, `δ₂ ≥ 2`" now rests on (MC-176) (Step MC13), whose rank step is the refined link's bound `dim(ρ + Λ₂) ≥ min(s + 1, 6)` (MC-173); (MC-176) uses no `(P_k)`. (MC-46), its orbit table (MC-138) and the semi-invariance are off the route and stay
+  proved. The row's leaves become (MC-173)–(MC-176), (MC-16) (in rank form, (MC-177)), (MC-18)'s two fibre identifications,
   (MC-4)(b), (MC-169) and JJ at `G′ + ab` ((MC-172)). No certificate leaf is added.
 - **No other computation hides in the tree.** `x0arms.py` and `coverstruct.py` assert proved
   identities at witnesses. The JJ "exhibitions" of Steps MC14/MC15 are replaced by the citation
@@ -411,6 +411,7 @@ prints each of the 30 small graphs' case, and checks `δ = 0` at `k = 2` and `di
 >   (MC-45)'s `r = 1` cells, and (MC-46)'s table now proved by (MC-134)–(MC-139), and the argument
 >   leaves those claims cite (among them (MC-13)(a), (b), the union lemma in (MC-14)'s proof,
 >   (MC-26)'s two links and (MC-47)(i)'s span identity);
+>   *(2026-09-26, ORBIT recon: the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` row rests on (MC-173)–(MC-176), not on (MC-46) or its table; they use `K` only as an infinite field, so (MC-166)'s audit extends to them. Note added at the second reading, 2026-09-26.)*
 > - **JJ** at the simple graphs:
 >   - `G` itself at FLAT (`def₂ = def₃`);
 >   - `H = G[W]` and `G/H` at both kinds of CONTRACT;

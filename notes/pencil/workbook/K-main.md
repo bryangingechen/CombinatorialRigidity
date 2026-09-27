@@ -35,9 +35,10 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
     `k = 2` when the generic flags are in orbit (i)/(ii) and `dim U ≠ 1` (MC-46); the chord gives
     every (R_k) (MC-44); `k = 1` at `δ ≥ 5` (MC-49), (MC-31); every short ear at `δ = 0` (MC-54). Open: (MC-51)(a)–(c) at `δ ≥ 1`. On `hK`'s
     habitat only `k = 1`, `δ ≤ 4` remains, modulo Jackson–Jordán (MC-48).
-    *(2026-09-26, ORBIT recon, found by formalization and not yet second-read: on (MC-89)'s route
-    the `k = 2` cell is (MC-176), through the refined link (MC-173), the parametrized incidence
-    (MC-174) and (MC-175); (MC-46)'s orbit count and (MC-138) are off the route.)*
+    *(2026-09-26, ORBIT recon, found by formalization and second-read the same day: on (MC-89)'s
+    route the `k = 2` cell is (MC-176), through the refined link (MC-173), the parametrized
+    incidence (MC-174) and (MC-175); (MC-46)'s orbit count and (MC-138) are off the route. The
+    second reading added (MC-177), the path brick, and (MC-178), (MC-175)(iii) with equality.)*
   - The relative-dof conjecture (MC-23) is certified on ≤ 7 vertices, and reduced to (MC-10)(a)
     at `G′` and `G′ + ab` when `a ≁ b` and `δ ≤ 5` (MC-44).
   - A second reader re-derived Steps MC7–MC9; its fixes are applied.

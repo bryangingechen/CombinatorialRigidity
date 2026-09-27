@@ -4,8 +4,8 @@
 group (`notes/Phase40-design.md` §3 STEPS), proved the cut and bridge steps of the `X₀` induction,
 the "if" halves of (MC-52) and (MC-53): if `G` satisfies the standing hypotheses (H) and has a cut
 vertex or a chain of bridges of any length, `X₀` attaining at both pieces gives it at `G`.
-The ORBIT recon is done. **Next: the read-only fresh second reading of (MC-173)–(MC-176)**, then
-40f opens as CONTRACT-R, **not yet opened** — see *Hand-off*.
+The ORBIT recon and its second reading are done. **Next: 40f opens design-first as CONTRACT-R**,
+from a compiler-checked design recon; **not yet opened** — see *Hand-off*.
 
 ## Current state
 
@@ -76,15 +76,15 @@ All landed with the standard axioms or a subset (*Current state*).
 **40e is closed, and so is the ORBIT recon** (opus, 2026-09-26; `notes/Phase40-design.md` §4,
 *ORBIT's dimension counting*). The recon re-proved the cell `k = 2`, `a ≁ b`, `δ₂ ≥ 2` without
 the orbit count, as (MC-173)–(MC-176) in Step MC13, and PI D1/D2 accepted the result
-(`notes/pencil/adjudications.md`). **The next concrete step is a read-only fresh second
-reading of (MC-173)–(MC-176)**; the coordinator dispatches it with the design doc's appendix
-brief.
+(`notes/pencil/adjudications.md`). A fresh read-only second reading (2026-09-26) found no
+refutation and no gap; its repairs are in place, and it added (MC-177) (the path brick) and
+(MC-178).
 
-**Then** 40f opens design-first as CONTRACT-R (§3 STEPS, *The provisional grouping*); its opening
-commit mints its work log. ORBIT is now a 2–3-build tail group after SHORT. The spike pieces
-CONTRACT-R and SPLITOFF reuse (`Graph.rigidContract_induce_simple`; the curve-limit lemma) are
-verbatim in the design doc's appendix *the STEPS recon's tracked spike*, so `scratch/` is no
-longer needed; the coordinator removes it after checking the copy.
+**The next concrete step: 40f opens design-first as CONTRACT-R** (§3 STEPS, *The provisional
+grouping*), from a compiler-checked design recon; its opening commit mints its work log. ORBIT is
+a 2–3-build tail group after SHORT. The spike pieces CONTRACT-R and SPLITOFF reuse
+(`Graph.rigidContract_induce_simple`; the curve-limit lemma) are verbatim in the design doc's
+appendix *the STEPS recon's tracked spike*.
 
 ## Decisions made during this phase
 

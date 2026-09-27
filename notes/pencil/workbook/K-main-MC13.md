@@ -170,9 +170,14 @@ The specialisation adds orbit (ii), which S14 does not treat.
 **The `k = 2` cell without the orbit count (2026-09-26, found by formalization).** *Added by the
 Phase-40 ORBIT recon (opus), `notes/Phase40-design.md` §4. (MC-46)'s proof counts dimensions of
 incidence varieties and orbits, which has no polynomial-level form, so the cell it serves on
-(MC-89)'s route (`k = 2`, `a ≁ b`, `δ₂ ≥ 2`, (MC-79)(v)) is re-proved here. (MC-173)–(MC-176) are
-one writer's and **not yet second-read**; a fresh second reading is commissioned
-(`notes/pencil/adjudications.md`, 2026-09-26, D1). Driver `w4/orbitlink.py` (new). Notation as
+(MC-89)'s route (`k = 2`, `a ≁ b`, `δ₂ ≥ 2`, (MC-79)(v)) is re-proved here. (MC-173)–(MC-176)
+were **second-read on 2026-09-26** by a fresh read-only reader (the PI's D1,
+`notes/pencil/adjudications.md`). The reader re-derived every step, checked every citation's
+hypotheses and re-ran `orbitlink.py --link`, `--witness` and `--e2e`. It found no refutation and
+no gap. Its own exact cross-check of (MC-173) and (MC-175) was a throwaway probe: attempted, no
+figure; script not retained. It repaired (MC-173)'s chart bullet and its `--link` evidence line here, and Step MC20's
+Part I row and (MC-141). It added (MC-177) (the path brick, beside (MC-176)) and (MC-178)
+((MC-175)(iii) with equality), which are one writer's. Driver `w4/orbitlink.py` (new). Notation as
 above and in Step MC20; the ear points are `p_a, x₁, x₂, p_b`, and `Λ₁(y) := span(p_a∧y, y∧p_b)`
 for `y ∈ m`.*
 
@@ -181,7 +186,7 @@ On the route the flag pair is in orbit (i) ((MC-176), Step 1), and there a sharp
 direction so that it misses `ρ + Λ₁(y)`.
 
 > **(MC-173)** `[PROVED]` *(the refined 2-ear link, orbit (i); found by formalization, ORBIT recon
-> 2026-09-26; not yet second-read)* Let `K` be an infinite field, let the flag pair
+> 2026-09-26; second-read 2026-09-26, chart bullet repaired)* Let `K` be an infinite field, let the flag pair
 > `(p_a, π_a; p_b, π_b)` be in orbit (i), let `y ∈ m = π_a ∩ π_b`, and let `ρ ⊆ Λ²K⁴` be any
 > subspace. Put `s := dim(ρ + Λ₁(y))`. Then the 2-ear placements `x = (x₁, x₂)`, `x₁ ∈ π_a`,
 > `x₂ ∈ π_b`, with **`dim(ρ + Λ₂(x)) ≥ min(s + 1, 6)`** contain the nonzero locus of a nonzero
@@ -227,10 +232,16 @@ four.
   `dim(ρ + Λ₂(x(t))) ≥ min(s + 1, 6)`.
 - That rank bound is the nonvanishing of a minor of `[ρ; p_a∧x₁; x₁∧x₂; x₂∧p_b]`. The minor is
   polynomial in the placement coordinates, and it is nonzero at `x(t)`.
-- For the affine charts, take `y`, `y′`, `p_a`, `p_b` affine (last coordinate `1`). Every point
-  of the four curves then has last coordinate `1` or `1 + t`, so for `t ≠ −1` it is a nonzero
-  multiple of an affine point of its plane. Rescaling a point changes no hinge line, so the minor
-  is also nonzero at a point of the charts. ∎
+- For the affine charts (`π_a = {z = h_a}` and `π_b = {z = h_b}` non-vertical, as at a pencil
+  configuration). Each row of the minor has degree `0` or `1` in `x₁` and in `x₂`, so the minor is
+  bihomogeneous in `(x₁, x₂)`. Write `x₁ = (X, Y, αX + βY + γW, W)` for `h_a = αx + βy + γ`, and
+  likewise `x₂`. Setting `W = 1` in both factors keeps distinct monomials distinct, so the minor,
+  read at `x₁ = (q₁, h_a(q₁), 1)` and `x₂ = (q₂, h_b(q₂), 1)`, is a nonzero polynomial in
+  `(q₁, q₂)`. When `y` is affine, as in (MC-176), the curves give a chart point directly: take `y`,
+  `y′`, `p_a`, `p_b` affine; every curve point has last coordinate `1` or `1 + t`, and rescaling a
+  point changes no hinge line. *(Repaired at the second reading, 2026-09-26: the bullet took `y`
+  affine, which fails when `h_a − h_b` is a nonzero constant, orbit (i) with `m` at infinity. The
+  statement is unchanged.)* ∎
 
 *The consequence for `(P_k)`.* In orbit (i), `λ₁ = 2` at every `y ∈ m` (MC-169), and `λ₂ = 3`
 generically (MC-19)(b). `(P₁)` says `dim(ρ ∩ Λ₁(y)) = max(0, r − 4)` at a generic `y`, that is,
@@ -240,8 +251,9 @@ which is `(P₂)`. ∎
 Orbit (ii) is not covered, and it never reaches the cell on the route. There `p_b ∈ m`, and the
 limit directions of both families, over every `u ∈ π̂_a`, `w ∈ π̂_b` and `σ`, span with `Λ₁(y)`
 only a hyperplane of `Λ²K⁴` (`orbitlink.py --link` asserts rank 5 at every frame).
-`[MEASURED orbitlink.py --link]` Seeded, 1 500 trials per orbit. `ρ` is drawn inside a random
-`W ⊇ Λ₁(y)`, half the time one spanned by limit directions, and `s = 2..6` all occur.
+`[MEASURED orbitlink.py --link]` Seeded, 1 500 trials per orbit, frames with integer entries in `−9..9`. `ρ` has `r ∈ 1..4` and is drawn inside a random
+`W ⊇ Λ₁(y)`, half the time one spanned by limit directions, and `s = 2..6` all occur. *(Sampler
+support named at the second reading, 2026-09-26.)*
 - In orbit (i), the proof's curve reaches the bound at an exhibited `t` in every trial. Each
   exhibited `t` is a certificate for its `ρ`.
 - In orbit (ii), the best of three random placements reached the bound at 1 500/1 500. That is a
@@ -249,7 +261,7 @@ only a hyperplane of `Λ²K⁴` (`orbitlink.py --link` asserts rank 5 at every f
 
 > **(MC-174)** `[PROVED]` *(the 1-ear incidence, parametrized: (MC-18)(b)'s "irreducible and
 > dominates" without divisibility or irreducibility; found by formalization, ORBIT recon
-> 2026-09-26; not yet second-read)* Let `K` be infinite, let `L` be a finite-dimensional
+> 2026-09-26; second-read 2026-09-26)* Let `K` be infinite, let `L` be a finite-dimensional
 > `K`-space, and let `D : L → Aff(K²)` be linear of rank `≥ 2`; write `D(z)(q)` for the value of
 > `D(z)` at `q ∈ K²`. Let `A` be a polynomial function on `L` that is nonzero somewhere, and `B` a
 > nonzero polynomial on `K²`. Then there are `z ∈ L` and `q ∈ K²` with **`D(z)(q) = 0`,
@@ -274,7 +286,7 @@ only a hyperplane of `Λ²K⁴` (`orbitlink.py --link` asserts rank 5 at every f
   nonzero somewhere, and they have a common non-root `(q, w)`. Take `z := Z(q, w)`. ∎
 
 > **(MC-175)** `[PROVED]` *(three partition inequalities; any finite graph; found by
-> formalization, ORBIT recon 2026-09-26; not yet second-read)* Let `G′` be a graph with
+> formalization, ORBIT recon 2026-09-26; second-read 2026-09-26)* Let `G′` be a graph with
 > `a ≠ b` in `V(G′)`, let `x₁, x₂ ∉ V(G′)`, and put `G₁ := G′ + (a − x₁ − b)` and
 > `G := G′ + (a − x₁ − x₂ − b)`.
 > **(i)** `[PROVED]` `def₃(G) ≥ def₃(G₁)`.
@@ -298,10 +310,26 @@ only a hyperplane of `Λ²K⁴` (`orbitlink.py --link` asserts rank 5 at every f
 of (MC-48)'s (c). That half is all (MC-48)(ii)'s argument uses, and it is what (MC-79)(v)
 re-derives.
 
+> **(MC-178)** `[PROVED]` *((MC-175)(iii) with equality; any finite graph; written at the second
+> reading, 2026-09-26, and so one writer's; not consumed on (MC-89)'s route, which uses only
+> (MC-175)(iii)'s `≤`)* Let `G′` be a finite graph with `a ≠ b` in `V(G′)` and `a ≁ b`, and let
+> `δ₂ := def₂(G′) − def₂(G′/ab)` as in (MC-175)(iii). Then
+> **`def₂(G′ + ab) = def₂(G′) − min(δ₂, 2)`**. This is the equality (MC-79)(v) writes, and the
+> count `max(f₂^sep − 2, g₂)` of (MC-48)(ii).
+
+*Proof.* Let `f_sep` be the maximum of `val₃` over the partitions of `V(G′)` that separate `a` and
+`b` (the singletons do, since `a ≠ b`), and put `g := def₂(G′/ab)`. Then
+`def₂(G′) = max(f_sep, g)`. By (MC-175)(iii)'s proof, adding `ab` lowers a separating partition's
+value by exactly `2` and leaves a non-separating one unchanged, so
+`def₂(G′ + ab) = max(f_sep − 2, g)`.
+- If `f_sep ≥ g`, then `def₂(G′) = f_sep` and `δ₂ = f_sep − g`, so
+  `max(f_sep − 2, g) = def₂(G′) − min(2, δ₂)`.
+- If `f_sep < g`, then `def₂(G′) = g` and `δ₂ = 0`, so `max(f_sep − 2, g) = g = def₂(G′) − 0`. ∎
+
 > **(MC-176)** `[PROVED]` *(the `k = 2` open-ear step at `a ≁ b`, `δ₂ ≥ 2`, through the
 > antecedent; replaces (MC-46) and (MC-138) on (MC-89)'s route; Jackson–Jordán at `G′ + ab` is
 > (MC-172), a theorem over every infinite field; found by formalization, ORBIT recon 2026-09-26;
-> not yet second-read)* Let `K` be infinite. Let `G = G′ + ear₂` be an open ear
+> second-read 2026-09-26)* Let `K` be infinite. Let `G = G′ + ear₂` be an open ear
 > `a − x₁ − x₂ − b` with `G′` satisfying (H), `a ≁ b` in `G′`, and `δ₂ ≥ 2`. Put
 > `G₁ := G′ + (a − x₁ − b)`, that is, `G` with `x₂` split off. **If `X₀(G′)` and `X₀(G₁)` attain,
 > then `X₀(G)` attains.** Under the strong induction both hypotheses hold: both graphs satisfy (H)
@@ -340,7 +368,8 @@ lies on `m`.
 points distinct. The reason is that `dim M_G = dim M_{G′} + (k + 1) − dim(ρ + Λ)`, because
 `−r + dim(ρ ∩ Λ) − λ = −dim(ρ + Λ)`. This is the vertex-2-cut gluing at `{a, b}` (Phase 39's
 Layer B6): the path side has rank `5(k + 1)` and relative screws `Λ_k`. At `k = 1` it gives
-`rank R_{G₁} = rank R_{G′} + 4 + s`, with `s := dim(ρ + Λ₁(y))`.
+`rank R_{G₁} = rank R_{G′} + 4 + s`, with `s := dim(ρ + Λ₁(y))`. *(Stated once with its proof as
+(MC-177), below; second reading, 2026-09-26.)*
 
 **Step 4: the placement.** Apply (MC-173) at `(z′, y)`, with `x₁ = (q_{x₁}, h_a(q_{x₁}), 1)` and
 `x₂ = (q_{x₂}, h_b(q_{x₂}), 1)` ((MC-18)(a)). The pictures `(q_{x₁}, q_{x₂})` with
@@ -386,6 +415,37 @@ step list its only covering step is this cell:
 
 Splitting off a chain vertex gives exactly `G₁`, the cell's own antecedent. So the cell cannot be
 routed around with the planned steps.
+
+> **(MC-177)** `[PROVED]` *(the path brick, and (MC-16) in rank form; any field; written at the
+> second reading, 2026-09-26, and so one writer's)* Let `P = a − x₁ − ⋯ − x_k − b`, `k ≥ 0`, be a
+> path of bodies with `a ≠ b`, and put `x₀ := a`, `x_{k+1} := b`. Let its `k + 1` hinges have
+> nonzero extensors `C₀, …, C_k`, with `C_i` joining `x_i` and `x_{i+1}`. Then:
+> **(i)** `[PROVED]` `rank R_P = 5(k + 1)`;
+> **(ii)** `[PROVED]` `{X_b − X_a : X ∈ M_P} = span(C₀, …, C_k) = Λ_k`;
+> **(iii)** `[PROVED]` hence, for an open ear `G = G′ + ear_k` with `a ≁ b` in `G′` and every ear hinge
+> nonzero, `rank R_G = rank R_{G′} + 5k − 1 + dim(ρ + Λ_k)`, with
+> `ρ = {X_b − X_a : X ∈ M_{G′}}`.
+>
+> (iii) is the rank form in (MC-176)'s Step 3, which the second reading confirmed. It is stated
+> here once, with its proof through the vertex-2-cut gluing, for CHAIN (`notes/Phase40-design.md`
+> §3 STEPS), which builds (MC-16).
+
+*Proof.* **(i)** A hinge with nonzero extensor `C` between bodies `u ≠ v` asks `X_u − X_v ∈ ⟨C⟩`.
+Its five rows are the annihilator of `⟨C⟩` read on `X_u − X_v`, and they are independent because
+`X ↦ X_u − X_v` is onto at `u ≠ v`. Solving along the path, `X_a` is free, and
+`X_{x_{i+1}} = X_{x_i} − ω_i C_i` with each `ω_i` free. So `dim M_P = 6 + (k + 1)`, and
+`rank R_P = 6(k + 2) − (k + 7) = 5(k + 1)`.
+**(ii)** At a motion, `X_b − X_a = −Σ ω_i C_i ∈ Λ_k`. Every `ω ∈ K^{k+1}` is realized, so every
+element of `Λ_k` is.
+**(iii)** The sides `V(G′)` and `{a, x₁, …, x_k, b}` meet exactly in `{a, b}`, and every edge of
+`G` lies inside one side. Because `a ≁ b` in `G′`, the second side induces exactly `P`. The
+vertex-2-cut gluing (Phase 39's Layer B6, `BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq`)
+gives `rank R_G = rank R_{G′} + rank R_P + dim(ρ + Λ_k) − 6`. Substitute (i) and (ii). ∎
+
+It agrees with (MC-16), whose dimension formula gives the same identity by
+`−r + dim(ρ ∩ Λ) − λ = −dim(ρ + Λ)`. The Lean instantiation (at `pointJoinFramework`, where `ρ`
+and `Λ_k` are the join-model spaces as written) is recorded in `notes/Phase40-design.md` §3 STEPS
+(ORBIT).
 
 > **(MC-47)** *(`k = 2` in orbits (iii) and (iv): what the antecedent cannot kill)*
 > **(i)** `[PROVED]` In orbit (iv), `Λ₂ = Λ²π` at every 2-ear placement of generic span (the span drops to `⟨n⟩` when `x₁, x₂ ∈ n`; *second
