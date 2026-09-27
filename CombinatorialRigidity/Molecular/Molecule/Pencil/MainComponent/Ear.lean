@@ -27,7 +27,7 @@ themselves are in `MainComponent/Chain.lean`.
   distinct bodies has rank exactly `(D − 1)(k + 1)` ((MC-177)(i), `lem:block-rank-path`).
 * `BodyHingeFramework.span_range_le_relScrews_path`,
   `BodyHingeFramework.relScrews_path_le_span_range` — the relative screws of the path's ends are
-  the span of its hinges ((MC-177)(ii)).
+  the span of its hinges ((MC-177)(ii), `lem:relative-screws-path`).
 * `BodyHingeFramework.finrank_span_rigidityRows_ear_eq` — **the ear rank law** ((MC-16) in rank
   form, `lem:block-rank-ear`): an open ear adds `(D − 1)(k + 1) + dim(ρ + Λ) − D` to the rank of
   `G[V₁]`, `ρ` the relative screws of `a, b` in `G[V₁]` and `Λ` the span of the ear's hinges,

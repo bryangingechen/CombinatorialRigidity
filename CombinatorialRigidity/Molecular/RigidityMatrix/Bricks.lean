@@ -757,7 +757,8 @@ identity at a vertex 2-cut `{u, v}` and the welded bound are stated in.  The inf
 are the PENCIL attack workbook's §§ S7, S10(ii) and S14(i)
 (`notes/pencil/workbook/attack-smark.md`), read against this file's carrier by the item-6 carrier
 recon (`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, which pins each signature
-below).  `relScrews` and `jointRows` are pinned by `def:relative-screws` and the gluing identity by
+below).  `relScrews` and `jointRows` are pinned by `def:relative-screws`, the gluing identity by
+`cor:block-rank-vertex-two-cut` and its edge-partitioned generalization by
 `lem:block-rank-two-cut` (Phase 40g); `jointMotions`, `weldedRank` and their laws carry no
 blueprint node yet (Phase 39's decision D5; their pins move to a first consumer,
 `notes/Phase40g.md`).
