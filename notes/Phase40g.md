@@ -4,54 +4,38 @@
 §3 STEPS). It lands the base of the `X₀` induction and its two unconditional ear steps: every
 cycle attains (BASE, (MC-21)(a)'s base), and if `X₀(G[V₁])` attains, `X₀(G)` attains for an open
 ear with `k ≥ 5` interior bodies, its ends possibly adjacent, or a closed ear with `k ≥ 2`
-((MC-20)). The design recon's spike proves the whole group sorry-free; it lands in two build
-commits (the coordinator's decision). Build 1, the rank and deficiency side, has landed (five of
-fourteen nodes green). **Next: build 2, the steps** — see *Hand-off*.
+((MC-20)). The design recon's spike proved the whole group sorry-free; it landed in two build
+commits (the coordinator's decision), and all fourteen nodes are green. **Next: the close** (docs
+and blueprint only) — see *Hand-off*.
 
 ## Current state
 
-**Build 1 landed.** Fourteen nodes, with statements from the spike and `ledger.py --brief` on
-(MC-16)–(MC-21), (MC-134) and (MC-177) (Steps MC10, MC13, MC20):
-- `rigidity-matrix.tex` §`sec:molecular-rigidity-matrix-blocks`: `def:relative-screws` (green at
-  the open: it pins the landed `BodyHingeFramework.relScrews` and `jointRows`, part of Phase 39's
-  D5 debt), and, **green since build 1**, `lem:block-rank-two-cut` (four pins: B5′/B6′, then B5/B6
-  as their induced corollaries), `lem:block-rank-path`, `lem:block-rank-ear`;
-- `deficiency.tex`: `lem:deficiency-ear` (green since build 1);
-- `main-component.tex`, the new §`sec:main-component-chain` (before the final statements
-  subsection): six red lemmas, the three red theorems `thm:pencil-x0-cycle`,
-  `thm:pencil-x0-open-ear`, `thm:pencil-x0-closed-ear`, and `rem:pencil-x0-ear-class`, which
-  records that (MC-21)(a)'s class theorem is not stated (PI decision 4).
+**Both builds landed; all fourteen nodes are green**, with statements from the spike and
+`ledger.py --brief` on (MC-16)–(MC-21), (MC-134) and (MC-177) (Steps MC10, MC13, MC20):
+- `rigidity-matrix.tex` §`sec:molecular-rigidity-matrix-blocks` (build 1): `def:relative-screws`
+  (it pins the landed `BodyHingeFramework.relScrews` and `jointRows`, part of Phase 39's D5 debt),
+  `lem:block-rank-two-cut` (B5′/B6′, then B5/B6 as their induced corollaries),
+  `lem:block-rank-path`, `lem:block-rank-ear`;
+- `deficiency.tex` (build 1): `lem:deficiency-ear`;
+- `main-component.tex`, §`sec:main-component-chain` (build 2): six lemmas and the three theorems
+  `thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear`, `thm:pencil-x0-closed-ear`; the unpinned
+  `rem:pencil-x0-ear-class` records that (MC-21)(a)'s class theorem is not stated (PI decision 4).
 
-Build 1 landed the rank and deficiency side in `Bricks.lean`, `Cut.lean` and the new `Ear.lean`
-(*Lemma checklist*). **The next concrete commit is build 2** (*Hand-off*): the nine
-`main-component.tex` nodes.
+**Headline axioms** (build 2; `lake lean` on a scratch `#print axioms` file against the built
+tree): `Graph.X0Attains.of_cycle`, `Graph.X0Attains.of_openEar` and `Graph.X0Attains.of_closedEar`
+each print `[propext, Classical.choice, Quot.sound]`.
 
-**The spike** lives in the gitignored `scratch/40g/`, so it is local to this checkout:
-`S40gFull.lean` (2 414 lines) is assembled by `python3 build.py S40gFull.lean S40gRank.lean
-S40gDef.lean S40gGeom.lean S40gCert.lean StepA.lean … StepH.lean`, run in that directory; the parts
-each import `…MainComponent.Contract`. `S40gAxioms.lean` is the full spike plus five
-`#print axioms` lines; `S40gPrereq.lean` holds the step-contract prerequisites (design doc §3 STEPS).
-**Since build 1 the assembled spike no longer compiles against the tree**: `S40gRank.lean`'s
-`pathVertex_last`, `pathVertex_injective`, `rigidityRows_congr_isLink` and the two motion helpers
-now exist in `CombinatorialRigidity.Molecular` (duplicate declarations). Check build 2's parts by
-assembling only them, under `import …MainComponent.Ear` (*Hand-off*).
-- **`lake lean scratch/40g/S40gFull.lean`** (the coordinator; re-run at `2350dbb0` at this open, ~16
-  s): **exit 1, 6 errors, 323 warnings.** All six errors are in `pathVertex_last` (spike line 150)
-  and `pathVertex_injective` (line 154), which bind `α` auto-implicitly after `end
-  BodyHingeFramework` closed the section's `variable`s; each is a one-line binder fix. The
-  warnings are lint debt: 67 "this tactic is never executed", 51 flexible `simp`, 27 unused
-  bindings, 22 + 13 deprecated `if_neg`/`if_pos`, 20 long lines, 10 deprecated
-  `Set.mem_setOf_eq`, 9 `show` as `change`, and a tail; the seven "declaration uses `sorry`"
-  warnings are the error recovery.
-- **`lake env lean S40gAxioms.lean`** (the coordinator; it skips the lakefile's options,
-  TACTICS-QUIRKS §55): exit 0, 0 errors, 59 warnings, ~15 s, peak RSS 3.3 GB. `of_openEar`,
-  `of_cycle`, `of_closedEar` and both instances each print `[propext, Classical.choice,
-  Quot.sound]`. No `sorry`/`admit`/`axiom`/`maxHeartbeats` in the source.
-- **Satisfiability (kernel-checked, not landed).** θ(1,2,6), a triangle with an open ear of five
-  interior bodies on two adjacent bodies (`theta126_x0Attains'`: `of_cycle`, then `of_openEar`),
-  and the bowtie, a triangle with a closed 2-ear (`bowtie_x0Attains'`), attain over every infinite
-  field with no hypotheses; (H) is proved in Lean for both (spike lines 2 161–2 414). By hand, a
-  square with a 5-ear joining opposite corners satisfies `of_openEar` with `a ≁ b`.
+**The next concrete commit is the close** (*Hand-off*).
+
+- **The spike** (gitignored `scratch/40g/`, local to this checkout) has landed except its two
+  instances (`StepG`, `StepH`) and the step-contract prerequisites `S40gPrereq.lean`. Before build 2
+  its parts, assembled under `import …MainComponent.Ear`, gave 0 errors and 90 warnings under
+  `lake lean`; all were fixed at the source (*Decisions made*).
+- **Satisfiability (kernel-checked in the spike, not landed).** θ(1,2,6), a triangle with an open
+  ear of five interior bodies on two adjacent bodies (`of_cycle`, then `of_openEar`), and the
+  bowtie, a triangle with a closed 2-ear, attain over every infinite field with no hypotheses; (H)
+  is proved in Lean for both. By hand, a square with a 5-ear joining opposite corners satisfies
+  `of_openEar` with `a ≁ b`.
 - **Faithfulness** (the coordinator, against Step MC10): the ear is `a − x₁ − ⋯ − x_k − b`, open iff
   `a ≠ b`, closed iff `a = b` with `k ≥ 2`; (MC-20) is the closed ear or the open ear with `k ≥ 5`.
   The Lean asks less of `G′` than the workbook ((H) at `G`, attainment at `G[V₁]`, no (H) at `G′`),
@@ -100,50 +84,21 @@ assembling only them, under `import …MainComponent.Ear` (*Hand-off*).
 
 ## Lemma checklist
 
-Planned names from the spike. Pins in **bold**; the other names are helpers, unpinned.
+The lemma index is the blueprint's `\lean{}` lists (forward mode); files and nodes here.
 
-- [x] **`BodyHingeFramework.relScrews`**, **`jointRows`** (landed, Phase 39 item 6) →
-  `def:relative-screws`, green at the open.
-- [x] **Build 1, `RigidityMatrix/Bricks.lean`** (1 364 lines, the fragile zone): the motion helpers
-  `isInfinitesimalMotion_of_eqOn_of_isLink`, `mem_sup_infinitesimalMotions_of_isLink`; B5′
-  **`inf_span_rigidityRows_of_twoCut_of_isLink`**, B6′
-  **`finrank_span_rigidityRows_twoCut_eq_of_isLink`**; `rigidityRows_congr_isLink`,
-  `infinitesimalMotions_congr_isLink`; B5 and B6 re-proved as corollaries, statements and pins
-  unchanged (PI decision 1) → `lem:block-rank-two-cut`. *Landed* (1 443 lines): the two motion
-  helpers replace B5/B6's private induced-side ones, a private `rigidityRows_eq_union_of_isLink`
-  replaces `rigidityRows_eq_union_induce`, and the cut-vertex identity now runs on them;
-  `infinitesimalMotions_congr_isLink` was dropped (no use; the hand-off's option).
-- [x] **Build 1, `MainComponent/Cut.lean`**: `pathVertex_last`, `pathVertex_injective` (helpers).
-  *Landed*, with `image_val_lt_eq_range` un-privated.
-- [x] **Build 1, new `MainComponent/Ear.lean`**: the path brick
-  **`BodyHingeFramework.le_finrank_span_rigidityRows_path`**, **`finrank_span_rigidityRows_path_le`**,
-  **`span_range_le_relScrews_path`**, **`relScrews_path_le_span_range`** → `lem:block-rank-path`;
-  the ear rank law **`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`** → `lem:block-rank-ear`;
-  **`Graph.deficiency_induce_add_le_of_ear`** (helper `ncard_range_le_of_fin`) →
-  `lem:deficiency-ear`. *Landed*; the helper is inlined (`Finite.card_range_le`), and
-  `Set.ncard_range_le` is a FRICTION mirror candidate.
-- [ ] **Build 2, `Cut.lean`**: **`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`**
-  → `lem:pencil-three-points`; `pathVertex_eq_x_iff`, `pathVertex_val_succ`, `pathVertex_shift`.
-- [ ] **Build 2, `Flat.lean`**: **`pointJoin`**, **`flatScrewEquiv_pointJoin`**,
-  **`linearIndependent_pointJoin_of_flat`** → `lem:pencil-join-flat`; `flatCoords`,
-  `joinPicturePoly`, `joinHeightPoly` and their `eval` lemmas,
-  **`exists_mvPolynomial_linearIndependent_pointJoin_picture`**, **`…_heights`** →
-  `lem:pencil-join-independence-open`.
-- [ ] **Build 2, `Ear.lean`**: **`Graph.earExtend_mem_liftingSpace`**,
-  **`Graph.mem_liftingSpace_of_ear`**; `closedNbhd_ear_subset`, `ncard_closedNbhd_ear_le_three`,
-  `mem_closedNbhd_induce_of_ear` → `lem:pencil-ear-fibre`; `certPt`, the four
-  `linearIndependent_flat_*`, **`linearIndependent_pointJoin_cert{Triangle,Square,Pentagon,Hexagon}`**
-  → `lem:pencil-chain-span-certificates`; **`span_supportExtensor_eq_top_of_linearIndependent`**,
-  **`card_le_finrank_of_linearIndependent_pointJoin`**; `panelSupportExtensor_mem_span_ofNormals`,
-  `screwComplementIso_pointJoin`, `ear_isLink_{first,mid,last}` → `lem:pencil-ear-hinge-span`.
-- [ ] **Build 2, new `MainComponent/Chain.lean`**: **`Graph.X0Attains.of_cycle`**
-  (`of_cycle_of_certificate`, `closedNbhd_cycle_subset`, `certPicture`, `certHeights`,
-  `pencilConfigPoint_cert`) → `thm:pencil-x0-cycle`; **`Graph.X0Attains.of_openEar`** →
-  `thm:pencil-x0-open-ear`; **`Graph.X0Attains.of_closedEar`** → `thm:pencil-x0-closed-ear`.
-- [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection, the
-  exposition ledger (a candidate: the witness inside the fibre that replaces (MC-19)(b)'s "for any
-  flag pair"), the headline axioms, the design doc's §3 STEPS, ROADMAP; the public surfaces stay
-  unchanged (the PI's standing call, recorded at 40f's close).
+- [x] `def:relative-screws` — the landed `BodyHingeFramework.relScrews`, `jointRows` (Phase 39),
+  green at the open.
+- [x] **Build 1** — `RigidityMatrix/Bricks.lean` (B5′/B6′ over link-partitioning sides, B5/B6 as
+  corollaries → `lem:block-rank-two-cut`), `Cut.lean` (`pathVertex_last`, `pathVertex_injective`),
+  new `Ear.lean` (the path brick → `lem:block-rank-path`, the ear rank law → `lem:block-rank-ear`,
+  `Graph.deficiency_induce_add_le_of_ear` → `lem:deficiency-ear`).
+- [x] **Build 2** — `Cut.lean` (the three-point lemma → `lem:pencil-three-points`, three
+  `pathVertex` helpers), `Flat.lean` (`pointJoin` and the join polynomials →
+  `lem:pencil-join-flat`, `lem:pencil-join-independence-open`), `Ear.lean` (the ear's heights, the
+  certificates, the hinge span → `lem:pencil-ear-fibre`, `lem:pencil-chain-span-certificates`,
+  `lem:pencil-ear-hinge-span`), new `Chain.lean` (`Graph.X0Attains.of_cycle`, `…of_openEar`,
+  `…of_closedEar` → the three theorems).
+- [ ] **The close** (docs and blueprint only) — see *Hand-off*.
 - **Not landed:** the instances (`StepG`, `StepH`) and `S40gPrereq.lean`.
 
 ## Blockers / open questions
@@ -152,32 +107,15 @@ Planned names from the spike. Pins in **bold**; the other names are helpers, unp
 
 ## Hand-off / next phase
 
-**Next: build 2 — the steps (fresh opus builder).** Source: `scratch/40g/S40gGeom.lean`,
-`S40gCert.lean` and `StepA`–`StepF.lean`, spike lines 594–2 160 (gitignored, local to this
-checkout). Targets: the nine `main-component.tex` nodes of §`sec:main-component-chain`
-(`lem:pencil-three-points` through `thm:pencil-x0-closed-ear`). Chores:
-- **Check the parts first, without build 1's.** Assemble only build 2's parts under
-  `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear` (`build.py` hard-codes
-  `…Contract`; edit its first part) and `lake lean` the result (TACTICS-QUIRKS §55): `S40gRank.lean`
-  and `S40gDef.lean` now duplicate landed names. The spike's `image_val_lt_eq_range'` is the landed
-  `image_val_lt_eq_range`, and `StepD.lean`'s `ncard_range_le_of_fin e` was not landed: use
-  `rw [← Nat.card_coe_set_eq]; exact (Finite.card_range_le _).trans (by simp)`, as in
-  `Graph.deficiency_induce_add_le_of_ear`, or land the FRICTION mirror candidate `Set.ncard_range_le`.
-- **Placement** (the checklist's names and files): `Cut.lean`, `Flat.lean`, `Ear.lean`, and the new
-  `Chain.lean` importing `…MainComponent.Ear`, with the root import after `Ear`.
-- **Lint debt.** In build 1's share of the spike the "never executed" and unused-binding warnings
-  were all error recovery from the two `α` binders; the real debt was the deprecated
-  `if_pos`/`if_neg`/`dif_pos` (→ `ite_eq_left`/`ite_eq_right`/`dite_eq_left`), `Set.mem_setOf_eq`
-  (→ `Set.mem_ofPred_eq`) and long lines. Judge by `lake build` and `lake lint`.
-- **Fragile spots**, from the recon: the polynomial engine times out at `W = ScrewSpace K 2`
-  (transcribe the spike's fix: named polynomial defs, `set`, explicit `(W := …)`);
-  `LinearMap.linearIndependent_iff` at `flatScrewEquiv` times out (the spike uses
-  `LinearIndependent.of_comp`); `λ` is a keyword (the spike's `Plam`, `Rlam`).
-- **Docstrings, pins, gates** as for build 1: a module docstring for `Chain.lean`, one per
-  declaration, pin and flip the nine nodes; `lake build`, `lake lint`, `blueprint/verify.sh`,
-  `blueprint/lint.sh`, `notes/check-phase-note.py`.
-
-**Then the close** (the checklist's last item).
+**Next: the close** (docs and blueprint only; the checklist's last item and
+`PHASE-BOUNDARIES.md` *When this commit closes a phase*):
+- the end-to-end re-read of `main-component.tex` §`sec:main-component-chain` against the landed
+  Lean (every node is pinned and green; the prose was written at the open);
+- the exposition ledger `notes/BlueprintExposition.md` — a candidate: the witness inside the fibre
+  that replaces (MC-19)(b)'s "for any flag pair" (`thm:pencil-x0-open-ear`);
+- the headline axioms (recorded in *Current state*), the design doc's §3 STEPS (CHAIN done; SHORT
+  and ORBIT inherit the re-homed items of PI decision 4), the ROADMAP row and §40g;
+- the public surfaces stay unchanged (the PI's standing call, recorded at 40f's close).
 
 ## Decisions made during this phase
 
@@ -185,10 +123,14 @@ checkout). Targets: the nine `main-component.tex` nodes of §`sec:main-component
   78 min). The coordinator re-ran its spike under both `lake env lean` and `lake lean` (*Current
   state*), checked its statements against Step MC10, and chose two build commits. The recon's
   verdict is in the design doc's §3 STEPS.
-- **2026-09-27 — build 1 landed** (the rank and deficiency side, one fresh opus builder). The
-  spike's proofs, with the binder fix, the deprecated names replaced and one `nlinarith` → `omega`.
-  B5′/B6′ are stated over any two link-partitioning graphs; B5/B6 are now one-term corollaries and
-  the cut-vertex identity runs on the general helpers, so the induced-side privates are gone. The
-  2-cut layer's section docstring now records `def:relative-screws`/`lem:block-rank-two-cut` as its
-  pins. FRICTION: the `Set.ncard_range_le` mirror candidate (deferred: its mirror file sits under
-  `Framework.lean`) and one elaboration idiom.
+- **2026-09-27 — build 1 landed** (the rank and deficiency side, one fresh opus builder): the spike's
+  proofs with the binder fix and the deprecations replaced; B5′/B6′ over any two link-partitioning
+  graphs, B5/B6 one-term corollaries, the induced-side privates gone. FRICTION: the
+  `Set.ncard_range_le` mirror candidate and one elaboration idiom.
+- **2026-09-27 — build 2 landed** (the steps, one fresh opus builder). The spike's proofs, its 90
+  `lake lean` warnings fixed at the source: `if_pos`/`if_neg` → `ite_eq_left`/`ite_eq_right`, `show`
+  → `change`, `simp?` lists for the flexible certificate eliminations, `one_add_one_eq_two` for the
+  `<;> norm_num` tails, reflowed lines. Every declaration has a docstring; the nine nodes are pinned.
+  FRICTION: the `Molecular.Matrix` capture of `open scoped Matrix` (lifted to TACTICS-QUIRKS § 56),
+  the certificate idiom, a `crossProduct` ring-hom mirror candidate, `Set.ncard_range_le`'s second
+  call site.

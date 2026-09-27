@@ -1546,6 +1546,8 @@ cycle.
 
 \begin{lemma}[Three points impose nothing]
   \label{lem:pencil-three-points}
+  \lean{Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three}
+  \leanok
   \uses{def:pencil-admissible-picture, def:pencil-lifting-space}
   Let $q$ be admissible for $G$, and let $v$ be a body of $G$ whose
   closed neighbourhood has at most three members. Then every height
@@ -1553,6 +1555,7 @@ cycle.
   neighbourhood of $v$.
 \end{lemma}
 \begin{proof}
+  \leanok
   By admissibility three members of the closed neighbourhood of $v$
   have linearly independent homogeneous picture points, so they are all
   its members, and any three values at them are taken by exactly one
@@ -1561,6 +1564,9 @@ cycle.
 
 \begin{lemma}[The heights of an open ear]
   \label{lem:pencil-ear-fibre}
+  \lean{Graph.mem_liftingSpace_of_ear,
+    Graph.earExtend_mem_liftingSpace}
+  \leanok
   \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
         lem:pencil-lifting-restrict}
   Let $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$ with
@@ -1575,6 +1581,7 @@ cycle.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-three-points}
   The closed neighbourhood of an interior body consists of the body and
   its two neighbours on the path, and every height is affine on it
@@ -1589,6 +1596,10 @@ cycle.
 
 \begin{lemma}[Joins in flat coordinates]
   \label{lem:pencil-join-flat}
+  \lean{CombinatorialRigidity.Molecular.pointJoin,
+    CombinatorialRigidity.Molecular.flatScrewEquiv_pointJoin,
+    CombinatorialRigidity.Molecular.linearIndependent_pointJoin_of_flat}
+  \leanok
   \uses{lem:pencil-flat-split, def:extensor}
   For $p = (p_x, p_y, p_z, p_w) \in K^4$ write
   $\bar p = (p_x, p_y, p_w) \in K^3$. There is a linear isomorphism of
@@ -1600,6 +1611,7 @@ cycle.
   family of these vectors is.
 \end{lemma}
 \begin{proof}
+  \leanok
   Expand $p \wedge p'$ in the basis of $W'$ and $W_\Pi$ used in the
   proof of \cref{lem:pencil-flat-split}: the coefficients on $W_\Pi$
   are the $2 \times 2$ minors of $\bar p$ and $\bar p'$, and those on
@@ -1608,6 +1620,9 @@ cycle.
 
 \begin{lemma}[Independence of joins is an open condition]
   \label{lem:pencil-join-independence-open}
+  \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_linearIndependent_pointJoin_picture,
+    CombinatorialRigidity.Molecular.exists_mvPolynomial_linearIndependent_pointJoin_heights}
+  \leanok
   \uses{def:pencil-configuration, def:extensor}
   Let $(u_i, w_i)_{i \in I}$ be a finite family of pairs of bodies, and
   write $p$ for the points of a configuration $(q, z)$. If the joins
@@ -1619,6 +1634,7 @@ cycle.
   whenever $R(z) \neq 0$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-join-flat}
   By \cref{lem:pencil-join-flat} the coordinates of each join are
   polynomials in the picture at fixed heights, and in the heights at a
@@ -1629,6 +1645,11 @@ cycle.
 
 \begin{lemma}[Four closed polygons with independent joins]
   \label{lem:pencil-chain-span-certificates}
+  \lean{CombinatorialRigidity.Molecular.linearIndependent_pointJoin_certTriangle,
+    CombinatorialRigidity.Molecular.linearIndependent_pointJoin_certSquare,
+    CombinatorialRigidity.Molecular.linearIndependent_pointJoin_certPentagon,
+    CombinatorialRigidity.Molecular.linearIndependent_pointJoin_certHexagon}
+  \leanok
   \uses{def:extensor}
   Let $Y_0, \dots, Y_5 \in K^4$ be the points $(1, 0, 0, 1)$,
   $(0, -1, 0, 1)$, $(0, 0, 1, 1)$, $(-1, 0, 1, 1)$, $(0, 0, 0, 1)$ and
@@ -1638,6 +1659,7 @@ cycle.
   over every field.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-join-flat}
   By \cref{lem:pencil-join-flat} the joins have integer coordinates, and
   in each of the four cases their coordinate matrix has a maximal minor
@@ -1646,6 +1668,9 @@ cycle.
 
 \begin{lemma}[Independent joins span the hinges]
   \label{lem:pencil-ear-hinge-span}
+  \lean{CombinatorialRigidity.Molecular.span_supportExtensor_eq_top_of_linearIndependent,
+    CombinatorialRigidity.Molecular.card_le_finrank_of_linearIndependent_pointJoin}
+  \leanok
   \uses{def:pencil-x0-attains, def:panel-support-extensor}
   Let $p$ be the points of a configuration of $G$, and let
   $g_1, \dots, g_m$ be edges of $G$, with ends $u_i, w_i$, whose joins
@@ -1656,6 +1681,7 @@ cycle.
   containing $g_1, \dots, g_6$ span the whole screw space.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-config-point-join-rank, lem:panel-hinge-dual-molecular}
   The hinge at an edge $uw$ spans the line of the meet of the planes
   $p_u^{\perp}$ and $p_w^{\perp}$, and the polarity, an invertible
@@ -1667,6 +1693,8 @@ cycle.
 
 \begin{theorem}[A cycle]
   \label{thm:pencil-x0-cycle}
+  \lean{Graph.X0Attains.of_cycle}
+  \leanok
   \uses{def:pencil-x0-attains}
   Let $K$ be infinite and let $G$ be a cycle on $m \ge 3$ bodies:
   $V(G) = \{a, x_1, \dots, x_k, b\}$ with these bodies distinct and
@@ -1675,6 +1703,7 @@ cycle.
   configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-three-points, lem:pencil-join-independence-open,
         lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
         lem:block-rank-ear, lem:block-rank-path, def:D-deficiency,
@@ -1709,6 +1738,8 @@ cycle.
 
 \begin{theorem}[An open ear with at least five interior bodies]
   \label{thm:pencil-x0-open-ear}
+  \lean{Graph.X0Attains.of_openEar}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses
   (\cref{def:pencil-x0-standing}), with an open ear
@@ -1717,6 +1748,7 @@ cycle.
   attains, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-ear-fibre, lem:pencil-join-independence-open,
         lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
         lem:block-rank-ear, lem:deficiency-ear, lem:pencil-lifting-restrict,
@@ -1756,6 +1788,8 @@ cycle.
 
 \begin{theorem}[A closed ear]
   \label{thm:pencil-x0-closed-ear}
+  \lean{Graph.X0Attains.of_closedEar}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with a
   closed ear $c - x_1 - \cdots - x_k - c$ on $V_1$ with $k \ge 2$. If the
@@ -1763,6 +1797,7 @@ cycle.
   configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-cut, thm:pencil-x0-cycle}
   The body $c$ is a cut vertex: the sides $V_1$ and
   $V_2 = \{c, x_1, \dots, x_k\}$ meet in $c$, and every edge of $G$ lies

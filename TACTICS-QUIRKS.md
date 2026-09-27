@@ -86,6 +86,7 @@ failing pattern and the working fix.
 - *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
 - `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
+- *"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been implemented"* at `M *ᵥ v`, with an `ambiguousOpen` warning on `open scoped Matrix`, inside `namespace CombinatorialRigidity.Molecular` → § 56 (same capture: `RigidityMatrix/Concrete.lean`'s bare `Matrix.`-prefixed theorems made a `Molecular.Matrix` sub-namespace; spell `Matrix.mulVec`, or open before the `namespace`)
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late); the same shape with `Inhabited α` (e.g. a hypothesis whose *type* invokes `Graph.endsOf`) → § 64 (worked case)
@@ -2442,6 +2443,15 @@ per-file `open scoped _root_.Graph` or `local notation` re-assertion needed down
 _root_.Graph` (forcing the root) fixes the downstream parse. Phase 22j-perf
 (`CaseI.lean`, `Graph.rigidContract_vertexSet_inter_eq_singleton` → `_root_.Graph.…`); the
 `CaseI.lean`-split blocker. See FRICTION [resolved] *Bare `Graph.`-prefix in `Molecular` namespace*.
+
+**Second instance: `Matrix`** (Phase 40g build 2). `RigidityMatrix/Concrete.lean` declares three bare
+`Matrix.`-prefixed theorems inside `namespace CombinatorialRigidity.Molecular`, so an `open scoped
+Matrix` (or `open scoped Matrix in`) inside that namespace downstream opens
+`CombinatorialRigidity.Molecular.Matrix`: the `ambiguousOpen` linter says so, and `M *ᵥ v` then
+parses `ᵥ` as a subscript (*"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been
+implemented"*). An `open scoped Matrix` placed before the `namespace` line still opens the root
+(`Flat.lean`, `Carrier.lean`). The § 56 fix, pinning the three to `_root_.Matrix.`, is FRICTION
+*`open scoped Matrix` inside `namespace CombinatorialRigidity.Molecular`* (open).
 
 
 ## 57. A `-/` *inside a word* in a docstring (e.g. `grade-/ambient`) terminates the doc comment early — *"unexpected identifier; expected 'lemma'"*

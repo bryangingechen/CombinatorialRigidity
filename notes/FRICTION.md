@@ -108,8 +108,50 @@ to be re-derived by re-reading entries later.
   (Finite.card_range_le _).trans (by simp)`.
 - **Proposed fix:** `Set.ncard_range_le [Finite ι] (f : ι → α) : (Set.range f).ncard ≤ Nat.card ι`
   in the `Mathlib/Data/Set/Card.lean` mirror. Not landed in build 1: that mirror sits under
-  `Framework.lean`, so landing it rebuilds nearly the whole tree for one call site. A second
-  consumer is queued: build 2's `StepD.lean` spike calls `ncard_range_le_of_fin e`.
+  `Framework.lean`, so landing it rebuilds nearly the whole tree for one call site. The second
+  call site landed in build 2 with the same inline glue: `Graph.X0Attains.of_cycle_of_certificate`
+  (`MainComponent/Chain.lean`), `(Set.range e).ncard ≤ k + 1`.
+- **Status:** open (mirror candidate).
+
+### [open] `open scoped Matrix` inside `namespace CombinatorialRigidity.Molecular` opens the project's `Molecular.Matrix`, not `_root_.Matrix` — § 56's capture, second instance
+- **Where it bit:** Phase 40g build 2, `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`
+  (`MainComponent/Cut.lean`), spiked under a file-head `open scoped Graph Matrix`. Transcribed as
+  `open scoped Matrix in` before the theorem, `M⁻¹ *ᵥ v` failed with *"elaboration function for
+  `Mathlib.Tactic.subscriptTerm` has not been implemented"*, with an `ambiguousOpen` warning on the
+  `open`. `RigidityMatrix/Concrete.lean` declares `theorem Matrix.rank_of_coordEquiv`,
+  `Matrix.rank_of_dualCoord` and `Matrix.linearIndependent_row_of_coordEquiv` inside `namespace
+  CombinatorialRigidity.Molecular`, which creates the sub-namespace that captures the `open`.
+- **Friction:** one failed build and a wrong first diagnosis (that `open … in` never activates a
+  scoped notation; a `lean_run_code` witness showed it does outside the namespace).
+- **Workaround:** spell `Matrix.mulVec`. An `open scoped Matrix` *before* the `namespace` line also
+  works (`Flat.lean`, `Carrier.lean` do this).
+- **Proposed fix:** pin the three `Concrete.lean` theorems to `_root_.Matrix.` (§ 56's fix); they
+  are called by name from several files, so it is a small refactor round, not a side errand.
+  **Lifted to:** TACTICS-QUIRKS § 56 (symptom-index line and a *Second instance* paragraph).
+- **Status:** open.
+
+### [idiom] The four certificate eliminations: the `<;>` linter's advice and the flexible `simp … at`
+- **Where it bit:** Phase 40g build 2, `linearIndependent_flat_{triangle,square,pentagon,hexagon}`
+  and `linearIndependent_pointJoin_cert*` (`MainComponent/Ear.lean`).
+- **Friction:** (1) `fin_cases … <;> simp [certPt, planarProj_apply, cross_apply] <;> norm_num` drew
+  *"Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice"* (hexagon, square) and *"`norm_num`
+  does nothing"* (triangle, pentagon). The `;` form fails (*"No goals to be solved"*): `simp`
+  closes most goals. The goals it leaves are `1 + 1 = 2` in `K`. (2) `simp [Fin.sum_univ_succ] at
+  s0 … p2` before `linear_combination` is flexible; `simp?` gives a 30-lemma `simp only` list.
+- **Fix:** (1) one `simp [certPt, planarProj_apply, cross_apply, one_add_one_eq_two]` where the
+  leftover goals appeared, the bare `simp` elsewhere; (2) the `simp?` lists, reflowed to 100
+  columns.
+- **Status:** idiom.
+
+### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
+- **Where it bit:** Phase 40g build 2, `eval_joinPicturePoly` (`MainComponent/Flat.lean`): the
+  flat coordinates of a join, as polynomials, evaluate to the join's coordinates.
+- **Friction:** a local `eval_crossProduct` (`fin_cases j <;> simp [cross_apply]`); loogle finds no
+  `map_crossProduct` / `RingHom.map_cross`.
+- **Proposed fix:** `RingHom.map_crossProduct (f : R →+* S) (a b : Fin 3 → R) :
+  (crossProduct a b).map f = crossProduct (f ∘ a) (f ∘ b)` (or pointwise) in a
+  `Mathlib/LinearAlgebra/CrossProduct.lean` mirror; `eval_crossProduct` is its `MvPolynomial.eval`
+  case.
 - **Status:** open (mirror candidate).
 
 ### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides

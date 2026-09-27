@@ -6,7 +6,7 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 
 /-!
-# Ears in the `X₀` induction: the rank and the deficiency (Phase 40g CHAIN)
+# Ears in the `X₀` induction: rank, deficiency, heights and hinge spans (Phase 40g CHAIN)
 
 The rank and deficiency side of the ear steps of the `X₀` induction
 (`blueprint/src/chapter/rigidity-matrix.tex`, `sec:molecular-rigidity-matrix-blocks`, and
@@ -15,7 +15,10 @@ The rank and deficiency side of the ear steps of the `X₀` induction
 `V₁`, every other edge lying inside `V₁`; it is *open* when `a ≠ b` and *closed* when `a = b`.
 The path is described as in `Cut.lean`: its interior bodies are an injective `x : Fin k → α`,
 `pathVertex a x b` is the extended sequence, and its `k + 1` edges `e i` link consecutive members
-(`hpath`); `hsep` says every other link stays inside `V₁`.
+(`hpath`); `hsep` says every other link stays inside `V₁`. The pieces of the ear steps that read
+the pencil configuration follow (`main-component.tex`, `sec:main-component-chain`): the heights of
+an ear, four closed polygons with independent joins, and the hinge span they give. The steps
+themselves are in `MainComponent/Chain.lean`.
 
 ## Main statements
 
@@ -32,6 +35,15 @@ The path is described as in `Cut.lean`: its interior bodies are an injective `x 
 * `Graph.deficiency_induce_add_le_of_ear` — **the ear deficiency bound** ((MC-17), the lower half,
   `lem:deficiency-ear`): `def(G[V₁]) + k + 1 − D ≤ def(G)` for an open or closed ear with
   `k ≥ 1`.
+* `Graph.mem_liftingSpace_of_ear`, `Graph.earExtend_mem_liftingSpace` — **the heights of an ear**
+  ((MC-18)(a), `lem:pencil-ear-fibre`): at an admissible picture membership in `L_G(q)` is decided
+  on `V₁`, and every height of `G[V₁]` extends to `G`, freely at the middle bodies of an open ear.
+* `linearIndependent_pointJoin_certTriangle`, `…Square`, `…Pentagon`, `…Hexagon` — the closed
+  polygons on the points `certPt` have independent joins over every field ((MC-134)(a),
+  `lem:pencil-chain-span-certificates`).
+* `span_supportExtensor_eq_top_of_linearIndependent`,
+  `card_le_finrank_of_linearIndependent_pointJoin` — independent joins at links bound the span of
+  the hinges there from below, and six of them span the screw space (`lem:pencil-ear-hinge-span`).
 
 ## Design
 
@@ -445,5 +457,534 @@ theorem _root_.Graph.deficiency_induce_add_le_of_ear [Finite α] [Finite β] {G 
   have hcutn' : ((G.cutEdges V₁).ncard : ℤ) ≤ 2 := by exact_mod_cast hcutn
   have hDZ : (1 : ℤ) ≤ Graph.bodyBarDim n := by exact_mod_cast hD
   nlinarith [mul_nonneg (sub_nonneg.mpr hDZ) (sub_nonneg.mpr hcutn')]
+
+
+/-! ## The heights of an ear ((MC-18)(a))
+
+At an admissible picture a closed neighbourhood with at most three members imposes nothing
+(`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`), so the interior
+bodies of an ear are free: membership in `L_G(q)` is decided on `V₁`, and the heights of `G[V₁]`
+extend to `G`, affinely at `x 0` and `x (k − 1)` and freely in the middle
+(`lem:pencil-ear-fibre`). -/
+
+/-- **The closed neighbourhood of an interior body of an ear** (Phase 40g CHAIN): the body and its
+two neighbours on the path. -/
+theorem _root_.Graph.closedNbhd_ear_subset {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hinj : Function.Injective x)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) (i : Fin k) :
+    G.closedNbhd (x i) ⊆ {x i, pathVertex a x b ⟨i.val, by omega⟩,
+      pathVertex a x b ⟨i.val + 2, by omega⟩} := by
+  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
+  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
+  rintro w (rfl | ⟨f, hf⟩)
+  · exact Or.inl rfl
+  by_cases hfe : ∃ j, f = e j
+  · obtain ⟨j, rfl⟩ := hfe
+    rcases hf.eq_and_eq_or_eq_and_eq (hpath j) with ⟨h1, rfl⟩ | ⟨h1, rfl⟩
+    · have := (pathVertex_eq_x_iff hinj hax hbx _ i).mp h1.symm
+      simp only [Fin.val_castSucc] at this
+      right; right
+      exact congrArg _ (Fin.ext (by simp; omega))
+    · have := (pathVertex_eq_x_iff hinj hax hbx _ i).mp h1.symm
+      simp only [Fin.val_succ] at this
+      right; left
+      exact congrArg _ (Fin.ext (by simp; omega))
+  · exact absurd (hsep f _ _ hf (fun j h => hfe ⟨j, h⟩)).1 (hxV₁ i)
+
+/-- **An interior body of an ear has at most three members in its closed neighbourhood**
+(`Graph.closedNbhd_ear_subset`, counted). -/
+theorem _root_.Graph.ncard_closedNbhd_ear_le_three {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hinj : Function.Injective x)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) (i : Fin k) :
+    (G.closedNbhd (x i)).ncard ≤ 3 :=
+  (Set.ncard_le_ncard (G.closedNbhd_ear_subset hinj hxV₁ ha hb hpath hsep i)
+    (Set.toFinite _)).trans ((Set.ncard_insert_le _ _).trans
+      (Nat.succ_le_succ (Set.ncard_pair_le _ _)))
+
+/-- **Membership in an ear's lifting space is decided on `V₁`** (`lem:pencil-ear-fibre`(1)): at an
+admissible picture the interior bodies impose nothing. -/
+theorem _root_.Graph.mem_liftingSpace_of_ear [Finite α] {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hcover : V(G) = V₁ ∪ Set.range x)
+    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K}
+    (hz0 : ∀ w ∉ V(G), z w = 0)
+    (hV₁ : ∀ v ∈ V₁, ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w) :
+    z ∈ G.liftingSpace q := by
+  refine ⟨hz0, fun v hv => ?_⟩
+  rw [hcover] at hv
+  rcases hv with hv | ⟨i, rfl⟩
+  · exact hV₁ v hv
+  · exact hq.exists_dotProduct_of_ncard_closedNbhd_le_three (hcover ▸ Or.inr ⟨i, rfl⟩)
+      (G.ncard_closedNbhd_ear_le_three hinj hxV₁ ha hb hpath hsep i) z
+
+/-- **The closed neighbourhood of a body of `V₁` along an open ear**: its closed neighbourhood in
+`G[V₁]`, together with `x 0` at `a` and `x (k − 1)` at `b`. -/
+theorem _root_.Graph.mem_closedNbhd_induce_of_ear {G : Graph α β} {V₁ : Set α} {k : ℕ}
+    {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hk : 1 ≤ k)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    {v : α} (hv : v ∈ V₁) {w : α} (hw : w ∈ G.closedNbhd v) :
+    w ∈ (G.induce V₁).closedNbhd v ∨ (v = a ∧ w = x ⟨0, by omega⟩)
+      ∨ (v = b ∧ w = x ⟨k - 1, by omega⟩) := by
+  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
+  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
+  rcases hw with rfl | ⟨f, hf⟩
+  · exact Or.inl (Or.inl rfl)
+  by_cases hwV : w ∈ V₁
+  · exact Or.inl (Or.inr ⟨f, hf, hv, hwV⟩)
+  right
+  by_cases hfe : ∃ j, f = e j
+  · obtain ⟨j, rfl⟩ := hfe
+    -- `w` is an interior body; `v ∈ V₁` is an end
+    have hvend : ∀ m : Fin (k + 2), pathVertex a x b m = v → m.val = 0 ∨ m.val = k + 1 := by
+      intro m hm
+      rcases pathVertex_cases a x b m with ⟨h0, -⟩ | ⟨i, -, h⟩ | ⟨h0, -⟩
+      · exact Or.inl h0
+      · rw [h] at hm; exact absurd (hm ▸ hv) (hxV₁ i)
+      · exact Or.inr h0
+    have hwint : ∀ m : Fin (k + 2), pathVertex a x b m = w →
+        ∃ i : Fin k, m.val = i.val + 1 ∧ w = x i := by
+      intro m hm
+      rcases pathVertex_cases a x b m with ⟨-, h⟩ | ⟨i, h0, h⟩ | ⟨-, h⟩
+      · rw [h] at hm; exact absurd (hm ▸ ha) hwV
+      · exact ⟨i, h0, by rw [← hm, h]⟩
+      · rw [h] at hm; exact absurd (hm ▸ hb) hwV
+    rcases hf.eq_and_eq_or_eq_and_eq (hpath j) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · obtain ⟨i, hi, rfl⟩ := hwint _ h2.symm
+      rcases hvend _ h1.symm with h0 | h0 <;> simp only [Fin.val_castSucc, Fin.val_succ] at h0 hi
+      · left
+        refine ⟨?_, congrArg x (Fin.ext (by simp; omega))⟩
+        rw [h1]
+        rcases pathVertex_cases a x b j.castSucc with ⟨-, h⟩ | ⟨i', h0', -⟩ | ⟨h0', -⟩
+        · exact h
+        · simp at h0'; omega
+        · simp at h0'; omega
+      · omega
+    · obtain ⟨i, hi, rfl⟩ := hwint _ h2.symm
+      rcases hvend _ h1.symm with h0 | h0 <;> simp only [Fin.val_castSucc, Fin.val_succ] at h0 hi
+      · omega
+      · right
+        refine ⟨?_, congrArg x (Fin.ext (by simp; omega))⟩
+        rw [h1]
+        rcases pathVertex_cases a x b j.succ with ⟨h0', -⟩ | ⟨i', h0', -⟩ | ⟨-, h⟩
+        · simp at h0'
+        · simp at h0'; omega
+        · exact h
+  · exact absurd (hsep f v w hf (fun j h => hfe ⟨j, h⟩)).2 hwV
+
+open Classical in
+/-- **The heights of an open ear** (`lem:pencil-ear-fibre`(2), (MC-18)(a), `k ≥ 2`): at a picture
+admissible for `G`, every height of `G[V₁]`, extended affinely at `x 0` and `x (k − 1)` and by `m`
+at the middle bodies, is a height of `G`. -/
+theorem _root_.Graph.earExtend_mem_liftingSpace [Finite α] {G : Graph α β} {V₁ : Set α}
+    {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hk : 2 ≤ k)
+    (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
+    (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z₁ : α → K}
+    (hz₁ : z₁ ∈ (G.induce V₁).liftingSpace q) (m : α → K) :
+    ∃ z ∈ G.liftingSpace q, Graph.liftingRestrict V₁ z = z₁ ∧
+      ∀ i : Fin k, 0 < i.val → i.val < k - 1 → z (x i) = m (x i) := by
+  obtain ⟨ha', hha⟩ := hz₁.2 a ha
+  obtain ⟨hb', hhb⟩ := hz₁.2 b hb
+  have hx0l : x ⟨0, by omega⟩ ≠ x ⟨k - 1, by omega⟩ := fun h => by
+    have := hinj h; simp [Fin.ext_iff] at this; omega
+  let z : α → K := fun w => if w ∈ V₁ then z₁ w
+    else if w = x ⟨0, by omega⟩ then ha' ⬝ᵥ pencilPicturePoint q w
+    else if w = x ⟨k - 1, by omega⟩ then hb' ⬝ᵥ pencilPicturePoint q w
+    else if w ∈ Set.range x then m w else 0
+  have hzV₁ : ∀ w ∈ V₁, z w = z₁ w := fun w hw => ite_eq_left hw
+  have hz0 : z (x ⟨0, by omega⟩) = ha' ⬝ᵥ pencilPicturePoint q (x ⟨0, by omega⟩) := by
+    change (if _ ∈ V₁ then _ else _) = _
+    rw [ite_eq_right (hxV₁ _), ite_eq_left rfl]
+  have hzl : z (x ⟨k - 1, by omega⟩) = hb' ⬝ᵥ pencilPicturePoint q (x ⟨k - 1, by omega⟩) := by
+    change (if _ ∈ V₁ then _ else _) = _
+    rw [ite_eq_right (hxV₁ _), ite_eq_right hx0l.symm, ite_eq_left rfl]
+  refine ⟨z, ?_, ?_, ?_⟩
+  · refine G.mem_liftingSpace_of_ear hcover hinj hxV₁ ha hb hpath hsep hq (fun w hw => ?_)
+      (fun v hv => ?_)
+    · rw [hcover] at hw
+      simp only [Set.mem_union, not_or] at hw
+      have h0 : w ≠ x ⟨0, by omega⟩ := fun h => hw.2 ⟨_, h.symm⟩
+      have hl : w ≠ x ⟨k - 1, by omega⟩ := fun h => hw.2 ⟨_, h.symm⟩
+      change (if w ∈ V₁ then _ else _) = 0
+      rw [ite_eq_right hw.1, ite_eq_right h0, ite_eq_right hl, ite_eq_right hw.2]
+    · by_cases hva : v = a
+      · subst hva
+        refine ⟨ha', fun w hw => ?_⟩
+        rcases G.mem_closedNbhd_induce_of_ear (by omega) hxV₁ ha hb hpath hsep hv hw with
+          hw' | ⟨-, rfl⟩ | ⟨h, rfl⟩
+        · rw [hzV₁ w (Graph.closedNbhd_subset_vertexSet hv hw')]; exact hha w hw'
+        · exact hz0
+        · exact absurd h hab
+      · by_cases hvb : v = b
+        · subst hvb
+          refine ⟨hb', fun w hw => ?_⟩
+          rcases G.mem_closedNbhd_induce_of_ear (by omega) hxV₁ ha hb hpath hsep hv hw with
+            hw' | ⟨h, -⟩ | ⟨-, rfl⟩
+          · rw [hzV₁ w (Graph.closedNbhd_subset_vertexSet hv hw')]; exact hhb w hw'
+          · exact absurd h hva
+          · exact hzl
+        · obtain ⟨h, hh⟩ := hz₁.2 v hv
+          refine ⟨h, fun w hw => ?_⟩
+          rcases G.mem_closedNbhd_induce_of_ear (by omega) hxV₁ ha hb hpath hsep hv hw with
+            hw' | ⟨h', -⟩ | ⟨h', -⟩
+          · rw [hzV₁ w (Graph.closedNbhd_subset_vertexSet hv hw')]; exact hh w hw'
+          · exact absurd h' hva
+          · exact absurd h' hvb
+  · funext w
+    by_cases hw : w ∈ V₁
+    · rw [Graph.liftingRestrict_apply, ite_eq_left hw, hzV₁ w hw]
+    · rw [Graph.liftingRestrict_apply, ite_eq_right hw]
+      exact (hz₁.1 w hw).symm
+  · intro i hi0 hil
+    have hne0 : x i ≠ x ⟨0, by omega⟩ := fun h => by
+      have := hinj h; simp [Fin.ext_iff] at this; omega
+    have hnel : x i ≠ x ⟨k - 1, by omega⟩ := fun h => by
+      have := hinj h; simp [Fin.ext_iff] at this; omega
+    change (if x i ∈ V₁ then _ else _) = _
+    rw [ite_eq_right (hxV₁ i), ite_eq_right hne0, ite_eq_right hnel, ite_eq_left ⟨i, rfl⟩]
+
+/-! ## The edges of an ear -/
+
+/-- **The first ear edge**: `e 0` joins `a` and `x 0`. -/
+theorem ear_isLink_first {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) (hk : 1 ≤ k) :
+    G.IsLink (e ⟨0, by omega⟩) a (x ⟨0, by omega⟩) := by
+  have h := hpath ⟨0, by omega⟩
+  have h2 : (Fin.succ (⟨0, (by omega)⟩ : Fin (k + 1))) = (⟨0 + 1, (by omega)⟩ : Fin (k + 2)) := rfl
+  rwa [h2, pathVertex_val_succ, show (Fin.castSucc (⟨0, (by omega)⟩ : Fin (k + 1))) = 0 from rfl,
+    pathVertex_zero] at h
+
+/-- **An inner ear edge**: `e j` (`1 ≤ j < k`) joins `x (j − 1)` and `x j`. -/
+theorem ear_isLink_mid {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (j : ℕ) (hj1 : 1 ≤ j) (hjk : j < k) :
+    G.IsLink (e ⟨j, by omega⟩) (x ⟨j - 1, by omega⟩) (x ⟨j, hjk⟩) := by
+  have h := hpath ⟨j, by omega⟩
+  have h1 : (Fin.castSucc (⟨j, (by omega)⟩ : Fin (k + 1)))
+      = (⟨(j - 1) + 1, (by omega)⟩ : Fin (k + 2)) :=
+    Fin.ext (by simp; omega)
+  have h2 : (Fin.succ (⟨j, (by omega)⟩ : Fin (k + 1))) = (⟨j + 1, (by omega)⟩ : Fin (k + 2)) := rfl
+  rwa [h1, h2, pathVertex_val_succ, pathVertex_val_succ] at h
+
+/-- **The last ear edge**: `e k` joins `x (k − 1)` and `b`. -/
+theorem ear_isLink_last {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) (hk : 1 ≤ k) :
+    G.IsLink (e ⟨k, by omega⟩) (x ⟨k - 1, by omega⟩) b := by
+  have h := hpath ⟨k, by omega⟩
+  have h1 : (Fin.castSucc (⟨k, (by omega)⟩ : Fin (k + 1)))
+      = (⟨(k - 1) + 1, (by omega)⟩ : Fin (k + 2)) :=
+    Fin.ext (by simp; omega)
+  have h2 : (Fin.succ (⟨k, (by omega)⟩ : Fin (k + 1))) = Fin.last (k + 1) := rfl
+  rwa [h1, h2, pathVertex_val_succ, pathVertex_last] at h
+
+/-! ## Four closed polygons with independent joins ((MC-134)(a))
+
+The points `Y₀, …, Y₅` of `certPt`, with integer coordinates and heights `0, 0, 1, 1, 0, 0`, close
+into an `n`-gon for `n = 3, 4, 5, 6` whose `n` joins are independent over every field
+(`lem:pencil-chain-span-certificates`): each family of flat coordinates is eliminated to zero by
+integer combinations (`linear_combination`), so its coordinate matrix has a unit minor. -/
+
+/-- **(MC-134)(a) at `n = 3`, in flat coordinates**: the flat coordinates of the joins of the
+closed triangle `Y₀Y₁Y₂Y₀` are independent over every field. -/
+theorem linearIndependent_flat_triangle :
+    LinearIndependent K ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![1, 0, 1], ![0, 1, 0])] := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  have e1 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![1, 0, 1], ![0, 1, 0])] i).1 j = 0 := fun j => by rw [hg]; rfl
+  have e2 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![1, 0, 1], ![0, 1, 0])] i).2 j = 0 := fun j => by rw [hg]; rfl
+  have s0 := e1 0
+  have s1 := e1 1
+  have s2 := e1 2
+  have p0 := e2 0
+  have p1 := e2 1
+  have p2 := e2 2
+  simp only [Nat.succ_eq_add_one, Nat.reduceAdd, Fin.sum_univ_succ, Fin.isValue,
+    Matrix.cons_val_zero, Prod.smul_mk, Matrix.smul_cons, smul_eq_mul, mul_zero, Matrix.smul_empty,
+    mul_one, mul_neg, Matrix.cons_val_succ, Fin.succ_zero_eq_one, Finset.univ_unique,
+    Fin.default_eq_zero, Matrix.cons_val_fin_one, Finset.sum_singleton, Fin.succ_one_eq_two,
+    Prod.mk_add_mk, Matrix.add_cons, Matrix.head_cons, zero_add, Matrix.tail_cons, add_zero,
+    Matrix.empty_add_empty, Matrix.cons_val_one, Matrix.cons_val, neg_eq_zero] at s0 s1 s2 p0 p1 p2
+  have hg0 : g 0 = 0 := by linear_combination p2
+  have hg1 : g 1 = 0 := by linear_combination s1
+  have hg2 : g 2 = 0 := by linear_combination s0
+  intro i
+  fin_cases i
+  exacts [hg0, hg1, hg2]
+
+/-- **(MC-134)(a) at `n = 4`, in flat coordinates**: the square `Y₀Y₁Y₂Y₃Y₀`. -/
+theorem linearIndependent_flat_square :
+    LinearIndependent K ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![1, 0, 1], ![0, 2, 0])] := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  have e1 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![1, 0, 1], ![0, 2, 0])] i).1 j = 0 := fun j => by rw [hg]; rfl
+  have e2 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![1, 0, 1], ![0, 2, 0])] i).2 j = 0 := fun j => by rw [hg]; rfl
+  have s0 := e1 0
+  have s1 := e1 1
+  have s2 := e1 2
+  have p0 := e2 0
+  have p1 := e2 1
+  have p2 := e2 2
+  simp only [Nat.succ_eq_add_one, Nat.reduceAdd, Fin.sum_univ_succ, Fin.isValue,
+    Matrix.cons_val_zero, Prod.smul_mk, Matrix.smul_cons, smul_eq_mul, mul_zero, Matrix.smul_empty,
+    mul_one, mul_neg, Matrix.cons_val_succ, Fin.succ_zero_eq_one, Fin.succ_one_eq_two,
+    Finset.univ_unique, Fin.default_eq_zero, Matrix.cons_val_fin_one, Finset.sum_singleton,
+    Fin.reduceSucc, Prod.mk_add_mk, Matrix.add_cons, Matrix.head_cons, Matrix.tail_cons, add_zero,
+    zero_add, Matrix.empty_add_empty, Matrix.cons_val_one, Matrix.cons_val,
+    neg_eq_zero] at s0 s1 s2 p0 p1 p2
+  have hg0 : g 0 = 0 := by linear_combination p2
+  have hg1 : g 1 = 0 := by linear_combination s1
+  have hg2 : g 2 = 0 := by linear_combination s2 + s1 - s0
+  have hg3 : g 3 = 0 := by linear_combination s2 + s1
+  intro i
+  fin_cases i
+  exacts [hg0, hg1, hg2, hg3]
+
+/-- **(MC-134)(a) at `n = 5`, in flat coordinates**: the pentagon `Y₀ ⋯ Y₄Y₀`. -/
+theorem linearIndependent_flat_pentagon :
+    LinearIndependent K ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![0, 0, 1], ![0, 1, 0]),
+      (![0, 0, 0], ![0, 1, 0])] := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  have e1 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![0, 0, 1], ![0, 1, 0]),
+      (![0, 0, 0], ![0, 1, 0])] i).1 j = 0 := fun j => by rw [hg]; rfl
+  have e2 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![0, 0, 1], ![0, 1, 0]),
+      (![0, 0, 0], ![0, 1, 0])] i).2 j = 0 := fun j => by rw [hg]; rfl
+  have s0 := e1 0
+  have s1 := e1 1
+  have s2 := e1 2
+  have p0 := e2 0
+  have p1 := e2 1
+  have p2 := e2 2
+  simp only [Nat.succ_eq_add_one, Nat.reduceAdd, Fin.sum_univ_succ, Fin.isValue,
+    Matrix.cons_val_zero, Prod.smul_mk, Matrix.smul_cons, smul_eq_mul, mul_zero, Matrix.smul_empty,
+    mul_one, mul_neg, Matrix.cons_val_succ, Fin.succ_zero_eq_one, Fin.succ_one_eq_two,
+    Fin.reduceSucc, Finset.univ_unique, Fin.default_eq_zero, Matrix.cons_val_fin_one,
+    Finset.sum_singleton, Prod.mk_add_mk, Matrix.add_cons, Matrix.head_cons, add_zero,
+    Matrix.tail_cons, Matrix.empty_add_empty, zero_add, neg_eq_zero, Matrix.cons_val_one,
+    Matrix.cons_val] at s0 s1 s2 p0 p1 p2
+  have hg0 : g 0 = 0 := by linear_combination p2
+  have hg1 : g 1 = 0 := by linear_combination s1
+  have hg2 : g 2 = 0 := by linear_combination s0
+  have hg3 : g 3 = 0 := by linear_combination s2 + s1
+  have hg4 : g 4 = 0 := by linear_combination p1 + p2 + s0 - s2 - s1
+  intro i
+  fin_cases i
+  exacts [hg0, hg1, hg2, hg3, hg4]
+
+/-- **(MC-134)(a) at `n = 6`, in flat coordinates**: the hexagon `Y₀ ⋯ Y₅Y₀`. -/
+theorem linearIndependent_flat_hexagon :
+    LinearIndependent K ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![0, 0, 1], ![0, 1, 0]),
+      (![0, 0, 0], ![1, -1, 0]),
+      (![0, 0, 0], ![-1, 2, 1])] := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  have e1 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![0, 0, 1], ![0, 1, 0]),
+      (![0, 0, 0], ![1, -1, 0]),
+      (![0, 0, 0], ![-1, 2, 1])] i).1 j = 0 := fun j => by rw [hg]; rfl
+  have e2 : ∀ j : Fin 3, (∑ i, g i • ![((![0, 0, 0] : Fin 3 → K), (![1, -1, -1] : Fin 3 → K)),
+      (![0, 1, -1], ![-1, 0, 0]),
+      (![-1, 0, 0], ![0, -1, 0]),
+      (![0, 0, 1], ![0, 1, 0]),
+      (![0, 0, 0], ![1, -1, 0]),
+      (![0, 0, 0], ![-1, 2, 1])] i).2 j = 0 := fun j => by rw [hg]; rfl
+  have s0 := e1 0
+  have s1 := e1 1
+  have s2 := e1 2
+  have p0 := e2 0
+  have p1 := e2 1
+  have p2 := e2 2
+  simp only [Nat.succ_eq_add_one, Nat.reduceAdd, Fin.sum_univ_succ, Fin.isValue,
+    Matrix.cons_val_zero, Prod.smul_mk, Matrix.smul_cons, smul_eq_mul, mul_zero, Matrix.smul_empty,
+    mul_one, mul_neg, Matrix.cons_val_succ, Fin.succ_zero_eq_one, Fin.succ_one_eq_two,
+    Fin.reduceSucc, Finset.univ_unique, Fin.default_eq_zero, Matrix.cons_val_fin_one,
+    Finset.sum_singleton, Prod.mk_add_mk, Matrix.add_cons, Matrix.head_cons, add_zero,
+    Matrix.tail_cons, Matrix.empty_add_empty, zero_add, neg_eq_zero, Matrix.cons_val_one,
+    Matrix.cons_val] at s0 s1 s2 p0 p1 p2
+  have hg0 : g 0 = 0 := by linear_combination p1 + s0 - s2 + p0 - p2
+  have hg1 : g 1 = 0 := by linear_combination s1
+  have hg2 : g 2 = 0 := by linear_combination s0
+  have hg3 : g 3 = 0 := by linear_combination s2 + s1
+  have hg4 : g 4 = 0 := by linear_combination p0 + s1 + p2
+  have hg5 : g 5 = 0 := by linear_combination p1 + s0 - s2 + p0
+  intro i
+  fin_cases i
+  exacts [hg0, hg1, hg2, hg3, hg4, hg5]
+
+/-- **The six certificate points** `Y₀, …, Y₅` (`lem:pencil-chain-span-certificates`), with
+heights `0, 0, 1, 1, 0, 0`. -/
+def certPt : Fin 6 → Fin 4 → K :=
+  ![![1, 0, 0, 1], ![0, -1, 0, 1], ![0, 0, 1, 1], ![-1, 0, 1, 1], ![0, 0, 0, 1], ![-1, -1, 0, 1]]
+
+/-- **(MC-134)(a) at `n = 3`** (`lem:pencil-chain-span-certificates`): the closed triangle
+`Y₀Y₁Y₂Y₀` has independent joins, over every field. -/
+theorem linearIndependent_pointJoin_certTriangle :
+    LinearIndependent K (fun i : Fin 3 =>
+      pointJoin (![certPt 0, certPt 1, certPt 2] i : Fin 4 → K)
+        (![certPt 1, certPt 2, certPt 0] i)) := by
+  refine linearIndependent_pointJoin_of_flat linearIndependent_flat_triangle ?_
+  intro i
+  fin_cases i <;> refine Prod.ext ?_ ?_ <;> funext j <;> fin_cases j <;>
+    simp [certPt, planarProj_apply, cross_apply]
+
+/-- **(MC-134)(a) at `n = 4`** (`lem:pencil-chain-span-certificates`): the closed square
+`Y₀Y₁Y₂Y₃Y₀` has independent joins, over every field. -/
+theorem linearIndependent_pointJoin_certSquare :
+    LinearIndependent K (fun i : Fin 4 =>
+      pointJoin (![certPt 0, certPt 1, certPt 2, certPt 3] i : Fin 4 → K)
+        (![certPt 1, certPt 2, certPt 3, certPt 0] i)) := by
+  refine linearIndependent_pointJoin_of_flat linearIndependent_flat_square ?_
+  intro i
+  fin_cases i <;> refine Prod.ext ?_ ?_ <;> funext j <;> fin_cases j <;>
+    simp [certPt, planarProj_apply, cross_apply, one_add_one_eq_two]
+
+/-- **(MC-134)(a) at `n = 5`** (`lem:pencil-chain-span-certificates`): the closed pentagon
+`Y₀ ⋯ Y₄Y₀` has independent joins, over every field. -/
+theorem linearIndependent_pointJoin_certPentagon :
+    LinearIndependent K (fun i : Fin 5 =>
+      pointJoin (![certPt 0, certPt 1, certPt 2, certPt 3, certPt 4] i : Fin 4 → K)
+        (![certPt 1, certPt 2, certPt 3, certPt 4, certPt 0] i)) := by
+  refine linearIndependent_pointJoin_of_flat linearIndependent_flat_pentagon ?_
+  intro i
+  fin_cases i <;> refine Prod.ext ?_ ?_ <;> funext j <;> fin_cases j <;>
+    simp [certPt, planarProj_apply, cross_apply]
+
+/-- **(MC-134)(a) at `n = 6`** (`lem:pencil-chain-span-certificates`): the closed hexagon
+`Y₀ ⋯ Y₅Y₀` has independent joins, over every field. Longer cycles, and an open ear with `k ≥ 5`,
+reach it by collapsing several bodies onto one point. -/
+theorem linearIndependent_pointJoin_certHexagon :
+    LinearIndependent K (fun i : Fin 6 =>
+      pointJoin (![certPt 0, certPt 1, certPt 2, certPt 3, certPt 4, certPt 5] i : Fin 4 → K)
+        (![certPt 1, certPt 2, certPt 3, certPt 4, certPt 5, certPt 0] i)) := by
+  refine linearIndependent_pointJoin_of_flat linearIndependent_flat_hexagon ?_
+  intro i
+  fin_cases i <;> refine Prod.ext ?_ ?_ <;> funext j <;> fin_cases j <;>
+    simp [certPt, planarProj_apply, cross_apply, one_add_one_eq_two]
+
+/-! ## Independent joins span the hinges -/
+
+/-- **The meet at a link lies on the `ofNormals` hinge there**, in either orientation
+(`lem:pencil-ear-hinge-span`). -/
+theorem panelSupportExtensor_mem_span_ofNormals {G : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (p : α → Fin 4 → K) {f : β} {u w : α} (hf : G.IsLink f u w) :
+    panelSupportExtensor (p u) (p w) ∈ Submodule.span K
+      {(PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p x.1 x.2)).toBodyHinge.supportExtensor f} := by
+  have h1 := hends f u w hf
+  change panelSupportExtensor (p u) (p w)
+    ∈ Submodule.span K {panelSupportExtensor (p (ends f).1) (p (ends f).2)}
+  rcases hf.eq_and_eq_or_eq_and_eq h1 with ⟨h, h'⟩ | ⟨h, h'⟩
+  · rw [h, h']
+    exact Submodule.mem_span_singleton_self _
+  · rw [h, h', panelSupportExtensor_swap (p (ends f).1) (p (ends f).2)]
+    exact (Submodule.span K _).neg_mem (Submodule.mem_span_singleton_self _)
+
+/-- **The polarity sends a join to the meet** of the planes with those normals
+(`screwComplementIso_mk_extensor` at `pointJoin`). -/
+theorem screwComplementIso_pointJoin (p p' : Fin 4 → K) :
+    screwComplementIso (pointJoin p p') = panelSupportExtensor p p' := by
+  rw [pointJoin, screwComplementIso_mk_extensor]
+  rfl
+
+/-- **Six independent joins at links span the whole screw space** (`lem:pencil-ear-hinge-span`):
+the hinges at any set of labels containing those links span `ScrewSpace K 2` (the hinge span
+`Λ = ⊤` the open ear consumes). -/
+theorem span_supportExtensor_eq_top_of_linearIndependent {G : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (p : α → Fin 4 → K) (u w : Fin 6 → α) (f : Fin 6 → β) (hf : ∀ i, G.IsLink (f i) (u i) (w i))
+    (hli : LinearIndependent K (fun i => pointJoin (p (u i)) (p (w i))))
+    {ι : Type*} (E : ι → β) (hE : ∀ i, ∃ j, f i = E j) :
+    Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p x.1 x.2)).toBodyHinge.supportExtensor ∘ E)) = ⊤ := by
+  set C := (PanelHingeFramework.ofNormals (k := 2) G ends
+    (fun x => p x.1 x.2)).toBodyHinge.supportExtensor
+    with hCdef
+  have hli' : LinearIndependent K (fun i => panelSupportExtensor (p (u i)) (p (w i))) := by
+    have h := hli.map' (screwComplementIso (K := K)).toLinearMap (LinearEquiv.ker _)
+    have hfun : ((screwComplementIso (K := K)).toLinearMap ∘ fun i => pointJoin (p (u i)) (p (w i)))
+        = fun i => panelSupportExtensor (p (u i)) (p (w i)) := by
+      funext i
+      simp only [Function.comp_apply, LinearEquiv.coe_coe, screwComplementIso_pointJoin]
+    rwa [hfun] at h
+  have htop := hli'.span_eq_top_of_card_eq_finrank'
+    (by rw [Fintype.card_fin, screwSpace_finrank]; rfl)
+  rw [eq_top_iff, ← htop, Submodule.span_le]
+  rintro _ ⟨i, rfl⟩
+  obtain ⟨j, hj⟩ := hE i
+  have hmem := panelSupportExtensor_mem_span_ofNormals hends p (hf i)
+  rw [hj] at hmem
+  exact Submodule.span_mono (by rintro _ rfl; exact ⟨j, rfl⟩) hmem
+
+/-- **Independent joins bound a span of hinges from below** (`lem:pencil-ear-hinge-span`): a
+submodule containing the hinges at `m` links with independent joins has dimension at least `m`. -/
+theorem card_le_finrank_of_linearIndependent_pointJoin {G : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (p : α → Fin 4 → K) {ι : Type*} [Fintype ι] (u w : ι → α) (g : ι → β)
+    (hg : ∀ i, G.IsLink (g i) (u i) (w i))
+    (hli : LinearIndependent K (fun i => pointJoin (p (u i)) (p (w i))))
+    (T : Submodule K (ScrewSpace K 2))
+    (hT : ∀ i, (PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p x.1 x.2)).toBodyHinge.supportExtensor (g i) ∈ T) :
+    Fintype.card ι ≤ Module.finrank K T := by
+  have hli' : LinearIndependent K (fun i => panelSupportExtensor (p (u i)) (p (w i))) := by
+    have h := hli.map' (screwComplementIso (K := K)).toLinearMap (LinearEquiv.ker _)
+    have hfun : ((screwComplementIso (K := K)).toLinearMap ∘ fun i => pointJoin (p (u i)) (p (w i)))
+        = fun i => panelSupportExtensor (p (u i)) (p (w i)) := by
+      funext i
+      simp only [Function.comp_apply, LinearEquiv.coe_coe, screwComplementIso_pointJoin]
+    rwa [hfun] at h
+  rw [← finrank_span_eq_card hli']
+  refine Submodule.finrank_mono (Submodule.span_le.mpr ?_)
+  rintro _ ⟨i, rfl⟩
+  have hmem := panelSupportExtensor_mem_span_ofNormals hends p (hg i)
+  exact (Submodule.span_le.mpr (by rintro _ rfl; exact hT i)) hmem
 
 end CombinatorialRigidity.Molecular

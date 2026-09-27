@@ -20,7 +20,8 @@ panel-hinge framework at the normals `(x_v, y_v, 1)`, whose partition bound give
 `dim L(q) ≥ 3 + def₂` ((MC-4)(b)). With `def₃ ≤ def₂` on a connected graph
 (`Graph.Connected.deficiency_three_le_deficiency_two`, (MC-5)(i)), an admissible picture with
 `dim L(q) ≤ 3 + def₃` is main and its flat configuration attains, so `X₀` attains ((MC-5)(ii),
-(iii)).
+(iii)). The joins of two points in these coordinates, and the Zariski-openness of their
+independence, serve the ear steps (Phase 40g CHAIN, `sec:main-component-chain`).
 
 ## Main definitions
 
@@ -28,6 +29,9 @@ panel-hinge framework at the normals `(x_v, y_v, 1)`, whose partition bound give
 * `screwOneEquiv` — the grade-1 screw space `ScrewSpace K 1 ≃ K³`.
 * `flatScrewEquiv` — the flat split `ScrewSpace K 2 ≃ K³ × K³`, `S ↦ (σ S, π S)`.
 * `Graph.linkConstants` — the families `α → K³` equal across every link (the glued block).
+* `pointJoin` — the join `p ∧ p'` of two points of `K⁴`, as a screw; `flatCoords` — the flat
+  coordinates on `Fin 3 ⊕ Fin 3`; `joinPicturePoly`, `joinHeightPoly` — a join's flat coordinates
+  as polynomials in the picture and in the heights (Phase 40g).
 
 ## Main statements
 
@@ -44,6 +48,12 @@ panel-hinge framework at the normals `(x_v, y_v, 1)`, whose partition bound give
   give (MC-4)(c).
 * `Graph.x0Attains_of_finrank_liftingSpace_le` — `X₀` attains at the flat witness when
   `dim L(q) ≤ 3 + def₃`; `Graph.x0Attains_of_finrank_liftingSpace_eq_three` is (MC-5)(iii).
+* `flatScrewEquiv_pointJoin`, `linearIndependent_pointJoin_of_flat` — a join is
+  `(p_z p̄′ − p′_z p̄, p̄ × p̄′)` in flat coordinates, and independence of joins is read there
+  (`lem:pencil-join-flat`, Phase 40g).
+* `exists_mvPolynomial_linearIndependent_pointJoin_picture`,
+  `exists_mvPolynomial_linearIndependent_pointJoin_heights` — independence of joins is
+  Zariski-open in the picture and in the heights (`lem:pencil-join-independence-open`).
 
 ## Design
 
@@ -688,5 +698,168 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_thre
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) := by
   rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, h3, show screwDim 2 = 6 from rfl]
   push_cast; ring
+
+
+/-! ## Joins of two points in flat coordinates (Phase 40g CHAIN)
+
+The hinge `pointJoinFramework` places at a link is the join of the two configuration points, and
+the flat split `flatScrewEquiv` reads it as `(p_z p̄′ − p′_z p̄, p̄ × p̄′)`, `p̄` the planar part
+(`lem:pencil-join-flat`). So independence of a family of joins is a question about integer vectors
+when the points have integer coordinates (`MainComponent/Ear.lean`'s certificates). -/
+
+/-- **The join `p ∧ p'` of two points of `K⁴`, as a screw** (Phase 40g CHAIN,
+`lem:pencil-join-flat`): the hinge of `pointJoinFramework` at a link with those end points. -/
+noncomputable def pointJoin (p p' : Fin 4 → K) : ScrewSpace K 2 :=
+  ScrewSpace.mk (extensor ![p, p']) (extensor_mem_exteriorPower _)
+
+/-- **A join in flat coordinates** (`lem:pencil-join-flat`): `p ∧ p'` is sent to
+`(p_z p̄′ − p′_z p̄, p̄ × p̄′)`, where `p̄ = planarProj p`. -/
+theorem flatScrewEquiv_pointJoin (p p' : Fin 4 → K) :
+    flatScrewEquiv (pointJoin p p')
+      = (p 2 • planarProj p' - p' 2 • planarProj p,
+        crossProduct (planarProj p) (planarProj p')) := by
+  rw [flatScrewEquiv_apply, pointJoin, flatSigma_mk_extensor, flatPi_mk_extensor]
+
+/-- **Independence of joins is read in flat coordinates** (`lem:pencil-join-flat`): a family of
+joins is linearly independent when the family of its flat coordinates is. -/
+theorem linearIndependent_pointJoin_of_flat {ι : Type*} {p p' : ι → Fin 4 → K}
+    {w : ι → (Fin 3 → K) × (Fin 3 → K)} (hw : LinearIndependent K w)
+    (hpw : ∀ i, (p i 2 • planarProj (p' i) - p' i 2 • planarProj (p i),
+      crossProduct (planarProj (p i)) (planarProj (p' i))) = w i) :
+    LinearIndependent K (fun i => pointJoin (p i) (p' i)) := by
+  have hcomp : ((flatScrewEquiv (K := K)).toLinearMap) ∘
+      (fun i => pointJoin (p i) (p' i)) = w := by
+    funext i
+    simp only [Function.comp_apply, LinearEquiv.coe_coe]
+    rw [flatScrewEquiv_pointJoin, hpw]
+  exact LinearIndependent.of_comp (flatScrewEquiv (K := K)).toLinearMap (hcomp ▸ hw)
+
+/-! ## Independence of joins is Zariski-open (Phase 40g CHAIN)
+
+The flat coordinates of a join of two configuration points are polynomials in the picture at fixed
+heights (`joinPicturePoly`) and in the heights at a fixed picture (`joinHeightPoly`), so a nonzero
+maximal minor of their coordinate matrix is a polynomial that keeps the joins independent off its
+zero set (`lem:pencil-join-independence-open`). -/
+
+/-- **The flat coordinates of a screw**, as one function on `Fin 3 ⊕ Fin 3`: `flatScrewEquiv`
+followed by the sum-product split. -/
+noncomputable def flatCoords : ScrewSpace K 2 ≃ₗ[K] (Fin 3 ⊕ Fin 3 → K) :=
+  (flatScrewEquiv (K := K)).trans (LinearEquiv.sumArrowLequivProdArrow (Fin 3) (Fin 3) K K).symm
+
+/-- The first three flat coordinates of a join: `p_z p̄′ − p′_z p̄`. -/
+theorem flatCoords_pointJoin_inl (p p' : Fin 4 → K) (j : Fin 3) :
+    flatCoords (pointJoin p p') (Sum.inl j) = (p 2 • planarProj p' - p' 2 • planarProj p) j := by
+  rw [flatCoords, LinearEquiv.trans_apply, flatScrewEquiv_pointJoin]
+  rfl
+
+/-- The last three flat coordinates of a join: `p̄ × p̄′`. -/
+theorem flatCoords_pointJoin_inr (p p' : Fin 4 → K) (j : Fin 3) :
+    flatCoords (pointJoin p p') (Sum.inr j) = crossProduct (planarProj p) (planarProj p') j := by
+  rw [flatCoords, LinearEquiv.trans_apply, flatScrewEquiv_pointJoin]
+  rfl
+
+/-- The screw space of `K⁴` has dimension `3 + 3`, the split `flatCoords` indexes. -/
+theorem finrank_screwSpace_two : Module.finrank K (ScrewSpace K 2) = 3 + 3 := by
+  rw [screwSpace_finrank]; rfl
+
+/-- Evaluating a cross product of polynomial vectors is the cross product of the evaluations. -/
+theorem eval_crossProduct {σ : Type*} (x : σ → K) (A B : Fin 3 → MvPolynomial σ K) (j : Fin 3) :
+    MvPolynomial.eval x (crossProduct A B j)
+      = crossProduct (fun t => MvPolynomial.eval x (A t))
+        (fun t => MvPolynomial.eval x (B t)) j := by
+  fin_cases j <;> simp [cross_apply]
+
+/-- **The flat coordinates of a join, as polynomials in the picture**: the join of the
+configuration points of `u` and `w` at fixed heights `z`. -/
+noncomputable def joinPicturePoly (z : α → K) (u w : α) :
+    Fin 3 ⊕ Fin 3 → MvPolynomial (α × Fin 2) K
+  | Sum.inl j => MvPolynomial.C (z u) * pencilPicturePointPoly w j
+      - MvPolynomial.C (z w) * pencilPicturePointPoly u j
+  | Sum.inr j => crossProduct (pencilPicturePointPoly u) (pencilPicturePointPoly w) j
+
+/-- `joinPicturePoly` evaluates at a picture to the flat coordinates of the join there. -/
+theorem eval_joinPicturePoly (q : α × Fin 2 → K) (z : α → K) (u w : α) (t : Fin 3 ⊕ Fin 3) :
+    MvPolynomial.eval q (joinPicturePoly z u w t)
+      = flatCoords (pointJoin (pencilConfigPoint q z u) (pencilConfigPoint q z w)) t := by
+  rcases t with j | j
+  · rw [flatCoords_pointJoin_inl, planarProj_pencilConfigPoint, planarProj_pencilConfigPoint]
+    simp only [joinPicturePoly, map_sub, map_mul, MvPolynomial.eval_C, eval_pencilPicturePointPoly,
+      Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+    rfl
+  · rw [flatCoords_pointJoin_inr, planarProj_pencilConfigPoint, planarProj_pencilConfigPoint]
+    simp only [joinPicturePoly, eval_crossProduct, eval_pencilPicturePointPoly]
+
+/-- **The flat coordinates of a join, as polynomials in the heights**: the join of the
+configuration points of `u` and `w` at a fixed picture `q`. -/
+noncomputable def joinHeightPoly (q : α × Fin 2 → K) (u w : α) :
+    Fin 3 ⊕ Fin 3 → MvPolynomial α K
+  | Sum.inl j => MvPolynomial.X u * MvPolynomial.C (pencilPicturePoint q w j)
+      - MvPolynomial.X w * MvPolynomial.C (pencilPicturePoint q u j)
+  | Sum.inr j => MvPolynomial.C (crossProduct (pencilPicturePoint q u) (pencilPicturePoint q w) j)
+
+/-- `joinHeightPoly` evaluates at heights to the flat coordinates of the join there. -/
+theorem eval_joinHeightPoly (q : α × Fin 2 → K) (z : α → K) (u w : α) (t : Fin 3 ⊕ Fin 3) :
+    MvPolynomial.eval z (joinHeightPoly q u w t)
+      = flatCoords (pointJoin (pencilConfigPoint q z u) (pencilConfigPoint q z w)) t := by
+  rcases t with j | j
+  · rw [flatCoords_pointJoin_inl, planarProj_pencilConfigPoint, planarProj_pencilConfigPoint]
+    simp only [joinHeightPoly, map_sub, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X,
+      Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+    rfl
+  · rw [flatCoords_pointJoin_inr, planarProj_pencilConfigPoint, planarProj_pencilConfigPoint]
+    simp only [joinHeightPoly, MvPolynomial.eval_C]
+
+/-- **Independence of joins is Zariski-open in the picture** (`lem:pencil-join-independence-open`,
+heights fixed): joins independent at `q₀` stay independent off the zero set of a polynomial in the
+picture nonzero at `q₀`, a nonzero maximal minor of `joinPicturePoly`
+(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`). -/
+theorem exists_mvPolynomial_linearIndependent_pointJoin_picture {ι : Type*} [Finite ι]
+    (z : α → K) (u v : ι → α) {q₀ : α × Fin 2 → K}
+    (h : LinearIndependent K
+      (fun i => pointJoin (pencilConfigPoint q₀ z (u i)) (pencilConfigPoint q₀ z (v i)))) :
+    ∃ P : MvPolynomial (α × Fin 2) K, MvPolynomial.eval q₀ P ≠ 0 ∧
+      ∀ q, MvPolynomial.eval q P ≠ 0 → LinearIndependent K
+        (fun i => pointJoin (pencilConfigPoint q z (u i)) (pencilConfigPoint q z (v i))) := by
+  set e : Fin (Module.finrank K (ScrewSpace K 2)) ≃ (Fin 3 ⊕ Fin 3) :=
+    (finCongr finrank_screwSpace_two).trans finSumFinEquiv.symm with he
+  set g : (α × Fin 2 → K) → ι → ScrewSpace K 2 :=
+    fun q i => pointJoin (pencilConfigPoint q z (u i)) (pencilConfigPoint q z (v i)) with hgdef
+  set c : ι → Fin 3 ⊕ Fin 3 → MvPolynomial (α × Fin 2) K :=
+    fun i => joinPicturePoly z (u i) (v i) with hcdef
+  have hg : ∀ q i t, flatCoords (g q i) t = MvPolynomial.eval q (c i t) := fun q i t =>
+    (eval_joinPicturePoly q z (u i) (v i) t).symm
+  have h' : LinearIndependent K (fun i : (Set.univ : Set ι) => g q₀ i) :=
+    h.comp Subtype.val Subtype.val_injective
+  obtain ⟨P, hP₀, hP⟩ := exists_polynomial_ne_zero_of_linearIndependent_at_reindex
+    (W := ScrewSpace K 2) e g c flatCoords hg (s := Set.univ) h'
+  refine ⟨P, hP₀, fun q hq => ?_⟩
+  have := hP q hq
+  exact this.comp (fun i => ⟨i, trivial⟩) (fun _ _ h => congrArg Subtype.val h)
+
+/-- **Independence of joins is Zariski-open in the heights** (`lem:pencil-join-independence-open`,
+picture fixed): joins independent at `z₀` stay independent off the zero set of a polynomial in the
+heights nonzero at `z₀`, a nonzero maximal minor of `joinHeightPoly`. -/
+theorem exists_mvPolynomial_linearIndependent_pointJoin_heights {ι : Type*} [Finite ι]
+    (q : α × Fin 2 → K) (u v : ι → α) {z₀ : α → K}
+    (h : LinearIndependent K
+      (fun i => pointJoin (pencilConfigPoint q z₀ (u i)) (pencilConfigPoint q z₀ (v i)))) :
+    ∃ R : MvPolynomial α K, MvPolynomial.eval z₀ R ≠ 0 ∧
+      ∀ z, MvPolynomial.eval z R ≠ 0 → LinearIndependent K
+        (fun i => pointJoin (pencilConfigPoint q z (u i)) (pencilConfigPoint q z (v i))) := by
+  set e : Fin (Module.finrank K (ScrewSpace K 2)) ≃ (Fin 3 ⊕ Fin 3) :=
+    (finCongr finrank_screwSpace_two).trans finSumFinEquiv.symm with he
+  set g : (α → K) → ι → ScrewSpace K 2 :=
+    fun z i => pointJoin (pencilConfigPoint q z (u i)) (pencilConfigPoint q z (v i)) with hgdef
+  set c : ι → Fin 3 ⊕ Fin 3 → MvPolynomial α K :=
+    fun i => joinHeightPoly q (u i) (v i) with hcdef
+  have hg : ∀ z i t, flatCoords (g z i) t = MvPolynomial.eval z (c i t) := fun z i t =>
+    (eval_joinHeightPoly q z (u i) (v i) t).symm
+  have h' : LinearIndependent K (fun i : (Set.univ : Set ι) => g z₀ i) :=
+    h.comp Subtype.val Subtype.val_injective
+  obtain ⟨R, hR₀, hR⟩ := exists_polynomial_ne_zero_of_linearIndependent_at_reindex
+    (W := ScrewSpace K 2) e g c flatCoords hg (s := Set.univ) h'
+  refine ⟨R, hR₀, fun z hz => ?_⟩
+  have := hR z hz
+  exact this.comp (fun i => ⟨i, trivial⟩) (fun _ _ h => congrArg Subtype.val h)
 
 end CombinatorialRigidity.Molecular

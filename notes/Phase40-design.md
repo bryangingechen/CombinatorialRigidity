@@ -9,7 +9,7 @@ open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER 
 closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
 2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R closed 2026-09-26** (`notes/Phase40f.md`),
 one build commit from a compiler-checked recon's spike; **40g = CHAIN opened 2026-09-27**
-(`notes/Phase40g.md`), design-first from a compiler-checked recon, build 1 of 2 landed; the four
+(`notes/Phase40g.md`), design-first from a compiler-checked recon, both builds landed; the four
 later groups are provisional. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
 claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a

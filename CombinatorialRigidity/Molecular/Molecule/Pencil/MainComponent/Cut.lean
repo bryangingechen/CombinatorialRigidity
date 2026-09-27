@@ -23,6 +23,9 @@ to `G`.
   `Graph.IsX0Graph.three_le_ncard_closedNbhd` gives the closed-neighbourhood bound `h3` from it.
 * `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` — the row rank reads the normals
   only on `V(G)`, and the selector only up to the orientation of each link.
+* `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three` — three points impose
+  nothing: at an admissible picture a closed neighbourhood with at most three members carries every
+  height affinely (`lem:pencil-three-points`, Phase 40g; the ear steps' free interior bodies).
 * `Graph.liftingRestrict`, `Graph.liftingRestrict_mem_liftingSpace`,
   `pencilConfigPoint_liftingRestrict` — a height restricted to a subgraph's bodies is a height of
   the subgraph, with the same configuration points there; `restrictPoly` / `eval_restrictPoly`
@@ -38,8 +41,9 @@ to `G`.
   witness at `a`, needing no admissibility of the picture and no case split on `k`.
 * `pathVertex_cases`, `pathVertex_eq_of_val_eq_succ`, `pathVertex_rev`,
   `pathVertex_mem_union_image_iff` — the path sequence read by index value, read backwards, and
-  against the prefixes `V₁ ∪ {x i | i < j}`; `pathVertex_last`, `pathVertex_injective` and
-  `image_val_lt_eq_range` serve the ear steps (`MainComponent/Ear.lean`, Phase 40g).
+  against the prefixes `V₁ ∪ {x i | i < j}`; `pathVertex_last`, `pathVertex_injective`,
+  `pathVertex_val_succ`, `pathVertex_eq_x_iff`, `pathVertex_shift` and `image_val_lt_eq_range`
+  serve the ear steps (`MainComponent/Ear.lean`, `MainComponent/Chain.lean`, Phase 40g).
 * `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath`,
   `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the
   counts along the path: each body hangs from the prefix before it by one edge, so it adds `1` to
@@ -183,6 +187,36 @@ theorem eval_restrictPoly (X : Set α) (R : MvPolynomial α K) (z : α → K) :
   refine congrArg (fun f => MvPolynomial.eval f R) ?_
   funext w
   by_cases hw : w ∈ X <;> simp [hw, Graph.liftingRestrict_apply]
+
+/-! ## Three points impose nothing -/
+
+/-- **Three points impose nothing** (Phase 40g CHAIN, `lem:pencil-three-points`; the no-hub half
+of (MC-21)(a)'s `L = K^V`): at an admissible picture, a closed neighbourhood with at most three
+members carries every height affinely. Admissibility gives three members with independent picture
+points, which are then all of it, and the heights there are matched by the inverse of the matrix
+of those points. -/
+theorem _root_.Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three
+    [Finite α] {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α}
+    (hv : v ∈ V(G)) (h3 : (G.closedNbhd v).ncard ≤ 3) (z : α → K) :
+    ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w := by
+  classical
+  obtain ⟨t, ht, hli⟩ := hq.2 v hv
+  have htinj : Function.Injective t := fun i j hij => hli.injective (by simp [hij])
+  have hrange : Set.range t = G.closedNbhd v := by
+    refine Set.eq_of_subset_of_ncard_le (by rintro _ ⟨i, rfl⟩; exact ht i) ?_ (Set.toFinite _)
+    rw [Set.ncard_range_of_injective htinj, Nat.card_eq_fintype_card, Fintype.card_fin]
+    exact h3
+  set M : Matrix (Fin 3) (Fin 3) K := Matrix.of fun i => pencilPicturePoint q (t i) with hM
+  have hunit : IsUnit M := Matrix.linearIndependent_rows_iff_isUnit.mp hli
+  refine ⟨Matrix.mulVec M⁻¹ (fun i => z (t i)), fun w hw => ?_⟩
+  rw [← hrange] at hw
+  obtain ⟨i, rfl⟩ := hw
+  have hMM : M.mulVec (Matrix.mulVec M⁻¹ (fun i => z (t i))) = fun i => z (t i) := by
+    rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det M).mp hunit),
+      Matrix.one_mulVec]
+  have := congr_fun hMM i
+  rw [← this, dotProduct_comm]
+  rfl
 
 /-! ## A cut vertex -/
 
@@ -532,6 +566,12 @@ theorem pathVertex_eq_of_val_eq_succ {k : ℕ} (a : α) (x : Fin k → α) (b : 
   · rw [h', show i' = i from Fin.ext (by omega)]
   · omega
 
+/-- **An interior position, by index** (Phase 40g CHAIN): the index `j + 1` is sent to the interior
+body `x j` (`pathVertex_eq_of_val_eq_succ` at a literal index). -/
+theorem pathVertex_val_succ {k : ℕ} (a : α) (x : Fin k → α) (b : α) (j : ℕ) (hj : j < k) :
+    pathVertex a x b ⟨j + 1, by omega⟩ = x ⟨j, hj⟩ :=
+  pathVertex_eq_of_val_eq_succ a x b rfl
+
 /-- **A path of distinct bodies has an injective sequence** (Phase 40g CHAIN): with the interior
 bodies distinct and different from both ends, and `a ≠ b`, no two positions carry the same body.
 Read off position by position (`pathVertex_cases`). -/
@@ -551,6 +591,18 @@ theorem pathVertex_injective {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Fun
   · exact absurd h.symm hab
   · exact absurd h.symm (hbx i')
   · exact Fin.ext (by omega)
+
+/-- **Where an interior body sits in the path sequence** (Phase 40g CHAIN): with the interior
+bodies distinct and different from both ends, `x i` sits exactly at the index of value `i + 1`. No
+injectivity of the whole sequence is needed, so `a = b` (a closed ear) is allowed. -/
+theorem pathVertex_eq_x_iff {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Function.Injective x)
+    (hax : ∀ i, x i ≠ a) (hbx : ∀ i, x i ≠ b) (m : Fin (k + 2)) (i : Fin k) :
+    pathVertex a x b m = x i ↔ m.val = i.val + 1 := by
+  rcases pathVertex_cases a x b m with ⟨hm, h⟩ | ⟨i', hm, h⟩ | ⟨hm, h⟩
+  · rw [h]; exact ⟨fun h' => absurd h'.symm (hax i), fun h' => by omega⟩
+  · rw [h]; exact ⟨fun h' => by rw [hinj h'] at hm; exact hm,
+      fun h' => congrArg x (Fin.ext (by omega))⟩
+  · rw [h]; exact ⟨fun h' => absurd h'.symm (hbx i), fun h' => by omega⟩
 
 /-- **The path read from its other end** (Phase 40e BRIDGE): `pathVertex b (x ∘ Fin.rev) a` is
 `pathVertex a x b` backwards. This is the path as seen from `b`'s side, where the fibre lemma
@@ -578,6 +630,20 @@ theorem pathVertex_rev {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (
     · exact h'.symm
     · omega
     · omega
+
+/-- **Dropping the first interior body shifts the path sequence** (Phase 40g CHAIN): the sequence
+from `x 0` through `x 1, …, x (k − 1)` to `d` is `pathVertex c x d` read from index `1` on. The
+closed ear reads its far side as a cycle through `x 0` with it. -/
+theorem pathVertex_shift {k : ℕ} (hk : 1 ≤ k) (c d : α) (x : Fin k → α) (m : Fin ((k - 1) + 2)) :
+    pathVertex (x ⟨0, (by omega)⟩) (fun j : Fin (k - 1) => x ⟨j.val + 1, (by omega)⟩) d m
+      = pathVertex c x d ⟨m.val + 1, (by omega)⟩ := by
+  rcases pathVertex_cases (x ⟨0, (by omega)⟩) (fun j : Fin (k - 1) => x ⟨j.val + 1, (by omega)⟩) d m
+    with ⟨hm, h⟩ | ⟨i, hm, h⟩ | ⟨hm, h⟩
+  · rw [h, pathVertex_eq_of_val_eq_succ c x d (i := ⟨0, (by omega)⟩) (by simp [hm])]
+  · rw [h, pathVertex_eq_of_val_eq_succ c x d (i := ⟨i.val + 1, (by omega)⟩) (by simp [hm])]
+  · rw [h]
+    have : (⟨m.val + 1, (by omega)⟩ : Fin (k + 2)) = Fin.last (k + 1) := Fin.ext (by simp; omega)
+    rw [this, pathVertex_last]
 
 /-- **Which path positions lie in a prefix** (Phase 40e BRIDGE): for `j ≤ k`, the prefix
 `V₁ ∪ {x i | i < j}` contains exactly the path positions `0, …, j`, that is `a` and the first `j`
