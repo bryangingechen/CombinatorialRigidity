@@ -887,3 +887,27 @@ PI decisions, 2026-09-26, on the CONTRACT-R design recon's verdict (verbatim ans
 **Decided.** Sub-phase 40f (CONTRACT-R) opens with twelve red nodes. The build is one commit by a
 fresh opus builder, handed the spike (the coordinator's decision 8). The `hatt` shape is an
 unchecked todo in the design doc's §3 STEPS, not a 40f close gate. Work log `notes/Phase40f.md`.
+
+## 2026-09-27 — CHAIN opens as 40g: the recon's layout with B5/B6 in place, the closed ear named, BASE as edge + ear, out-of-scope items to their first consumer
+
+Phase 40's CHAIN design recon (opus; verdict in `notes/Phase40-design.md` §3 STEPS, *CHAIN
+opened*) returned the whole group, BASE and the two unconditional ear steps of (MC-20), as one
+sorry-free compiler-checked spike, and asked where its declarations go, whether the closed ear
+stays a named theorem although COVERAGE never consumes it, how BASE takes its cycle, and what
+happens to the items the design doc's CHAIN scope listed but CHAIN never consumes. The user's
+answers, relayed verbatim in the coordinator's dispatch:
+
+```adjudication
+PI decisions, 2026-09-27, on the CHAIN design recon's verdict (verbatim answers to the coordinator's questions):
+1. Placement — "Where should CHAIN's new declarations go? The recon's layout: the 2-cut generalization in RigidityMatrix/Bricks.lean; pathVertex lemmas + a three-point lemma in MainComponent/Cut.lean (922→~1010); the point-join/flat pieces in Flat.lean (692→~870); a new MainComponent/Ear.lean (~960: path brick, ear rank law, ear deficiency bound, certificates) and a new MainComponent/Chain.lean (~890: the three step theorems). Carrier.lean and Contract.lean untouched.": "As listed, B5/B6 in place (Recommended)" — the recon's layout; B5/B6 re-proved as corollaries of the new B5′/B6′ with unchanged statements and pins (40f precedent); Bricks stays near 1450 lines.
+2. Closed ear — "The closed ear (half of (MC-20)) is off (MC-89)'s route: COVERAGE never consumes it. Keep it as a named theorem?": "Named theorem (Recommended)" — keep Graph.X0Attains.of_closedEar (~130 lines, faithful to (MC-20), already spiked: of_cutVertex + of_cycle).
+3. BASE form — "How should BASE (a cycle attains) take its cycle?": "Edge + ear (Recommended)" — as spiked: 'edge ab plus the path a…b', the same explicit-path format as the ear steps. A CycleData adapter (~60 lines) lands later only if COVERAGE's cycle case produces CycleData.
+4. Scope — "The design doc's CHAIN scope lists items CHAIN never consumes: (MC-169), (MC-134)(b) at k ≤ 4, (MC-134)(c), (MC-19)(c), (MC-18)(b), exact (MC-17), and the A2/A3, jointMotions, weldedRank pins; also (MC-21)(a)'s class theorem, which dissolves into COVERAGE's strong induction. What happens to them?": "Move to first consumer (Recommended)" — re-home each item to SHORT or ORBIT, whichever consumes it first; leave (MC-21)(a)'s class theorem unstated (a remark records that it dissolves into COVERAGE).
+```
+
+**Decided.** Sub-phase 40g (CHAIN) opens with fourteen nodes, `def:relative-screws` green at the
+open (it pins the landed `relScrews`/`jointRows`) and thirteen red. The build is two commits by
+fresh opus builders, split at the spike's rank/deficiency boundary (the coordinator's decision).
+Under decision 4, every re-homed item's first consumer is SHORT; (MC-19)(c) and (MC-134)(c) have no
+consumer on (MC-89)'s route (Step MC20, Part I) and are recorded as off the route. Work log
+`notes/Phase40g.md`.

@@ -65,7 +65,8 @@ in, so it cannot drift from the prose (`notes/Harness-structure.md` slice 8).
 ## Layout
 
 **Live status surfaces:** Phase 39 closed 2026-09-25 as a reduction (`notes/Phase39.md`); the
-`X₀` line is now a formalization, Phase 40 (`notes/Phase40-design.md`, `notes/Phase40a.md`);
+`X₀` line is now a formalization, Phase 40 (`notes/Phase40-design.md`, whose status line names
+the open sub-phase and its work log);
 `W4-reopen.md` is its HELD predecessor, and
 `notes/attacks/<name>/state.md` covers each attack. The gap map, `fanout.md` and
 `strategy.md` belong to the coordinator loop retired on 2026-09-15 and have not

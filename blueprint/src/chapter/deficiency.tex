@@ -296,6 +296,31 @@ parallel copies of each edge $e \in E(G)$.
   $I = \{v\}$, whose value on $G$ is the sum.
 \end{proof}
 
+\begin{lemma}[The deficiency along an ear]
+  \label{lem:deficiency-ear}
+  \uses{def:D-deficiency}
+  Let $V_1 \subseteq V(G)$, and let $a - x_1 - \cdots - x_k - b$
+  ($k \ge 1$) be a path of $G$ with $a, b \in V_1$, possibly $a = b$, and
+  distinct bodies $x_1, \dots, x_k$ outside $V_1$, such that
+  $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ not on the
+  path lies inside $V_1$. Then, at any $D \ge 1$,
+  \[
+    \operatorname{def}(\tilde G) \;\ge\;
+    \operatorname{def}(\tilde G[V_1]) + k + 1 - D.
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:cut-edge-decomposition}
+  Take a partition $P_1$ of $V_1$ attaining
+  $\operatorname{def}(\tilde G[V_1])$ and add each $x_i$ as a part of its
+  own. The value of this partition splits over $V_1$ and the path bodies,
+  as in the proof of \cref{lem:cut-edge-decomposition}. The $k$ new parts
+  are joined to one another by at most $k - 1$ edges of the path, which
+  contributes $D(k - 1) - (D - 1)(k - 1) = k - 1$ at least, and to $V_1$
+  by at most the two end edges of the path, which contributes
+  $D - 2(D - 1) = 2 - D$ at least. The sum is the bound.
+\end{proof}
+
 \begin{lemma}[Matroid restriction descends to subgraphs]
   \label{lem:matroid-restrict-subgraph}
   \lean{Graph.matroidMG_restrict_mulTilde}

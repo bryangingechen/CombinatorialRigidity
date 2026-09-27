@@ -354,11 +354,17 @@ motion spaces (\cref{lem:span-rigidityRows-eq-of-motions-eq}), and the
 deficiency-aware rank transport a collapsed leg needs when its
 contraction is not yet fully rigid
 (\cref{lem:rank-transport-relabel-of-le-finrank} and
-\cref{lem:rank-polynomial-IH-relabel-proj}). The block-triangular bound at
-a core (\cref{lem:block-rank-contract}) and the projected rank polynomial
-nonzero at its witness (\cref{lem:rank-polynomial-proj-eval}) serve the
-contraction step on pencil configurations
-(\cref{sec:main-component-contract}).
+\cref{lem:rank-polynomial-IH-relabel-proj}). Two sides that share a pair
+of bodies $u, v$ rather than one are glued through the relative screws of
+the pair (\cref{def:relative-screws}): the ranks add up to a correction
+by the joined relative screws (\cref{lem:block-rank-two-cut}). A path
+between the two bodies has an explicit rank and relative screws
+(\cref{lem:block-rank-path}), which gives the rank added by an open ear
+(\cref{lem:block-rank-ear}); these serve the ear steps on pencil
+configurations (\cref{sec:main-component-chain}). The block-triangular
+bound at a core (\cref{lem:block-rank-contract}) and the projected rank
+polynomial nonzero at its witness (\cref{lem:rank-polynomial-proj-eval})
+serve the contraction step (\cref{sec:main-component-contract}).
 
 \begin{lemma}[Block-rank addition for a vertex cut; KT Lemma 6.1]
   \label{lem:block-rank-cut}
@@ -424,6 +430,120 @@ contraction step on pencil configurations
   to $S$ elsewhere is a motion of the first side, and the rest vanishes
   on $V_2$, so it is a motion of the second. A row span is the
   annihilator of its motions, so the dimensions add.
+\end{proof}
+
+\begin{definition}[Relative screws and joint rows]
+  \label{def:relative-screws}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.relScrews,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.jointRows}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  Let $(G,p)$ be a body-hinge framework and $u, v$ two bodies. The
+  \emph{relative screws} of $u, v$ in $(G,p)$ form the subspace
+  \[
+    \rho_{uv}(G,p) = \{\, S(v) - S(u) : S \in Z(G,p) \,\} \subseteq K^{D}.
+  \]
+  For a subspace $U \subseteq K^{D}$, the \emph{joint rows} at $u, v$
+  confining the relative screw to $U$ are the functionals
+  $S \mapsto r\bigl(S(u) - S(v)\bigr)$ on screw assignments, one for each
+  $r$ in the annihilator $U^{\circ} \subseteq (K^{D})^{*}$.
+\end{definition}
+
+A screw assignment is annihilated by every joint row exactly when
+$S(u) - S(v) \in U$, by the double-annihilator identity, as for the
+hinge-row block (\cref{def:hinge-row-block}); at $U = 0$ the joint welds
+$u$ and $v$ rigidly together. At distinct bodies the map
+$S \mapsto S(u) - S(v)$ is onto, so the joint rows span a space of
+dimension $D - \dim U$.
+
+\begin{lemma}[Rank gluing at a vertex $2$-cut]
+  \label{lem:block-rank-two-cut}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_vertexTwoCut,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq}
+  \uses{def:relative-screws, def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework and $u \neq v$ two bodies. Let
+  $G_1, G_2$ be graphs whose edges, with their ends, are together exactly
+  the edges of $G$, such that every edge of $G_i$ lies inside a vertex
+  set $V_i$, where $V_1 \cap V_2 \subseteq \{u, v\}$; give each $G_i$ the
+  hinges of $p$, and write $\rho_i$ for the relative screws of $u, v$ in
+  $(G_i, p)$ (\cref{def:relative-screws}). Then the row spaces of
+  $R(G_1,p)$ and $R(G_2,p)$ meet in the span of the joint rows at $u, v$
+  confining the relative screw to $\rho_1 + \rho_2$, and
+  \[
+    \operatorname{rank} R(G,p) = \operatorname{rank} R(G_1,p)
+    + \operatorname{rank} R(G_2,p) + \dim(\rho_1 + \rho_2) - D.
+  \]
+  In particular this holds for $G_i = G[V_i]$ when
+  $V_1 \cap V_2 = \{u, v\}$ and every edge of $G$ lies inside $V_1$ or
+  inside $V_2$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:span-rigidityRows-eq-of-motions-eq}
+  A row space is the annihilator of the corresponding motion space
+  (\cref{lem:span-rigidityRows-eq-of-motions-eq}), so a functional lies
+  in both row spaces exactly when it annihilates
+  $Z(G_1,p) + Z(G_2,p)$. That sum contains every screw assignment $S$
+  with $S(u) = S(v)$: the assignment equal to $S(v)$ on $V_2$ and to $S$
+  elsewhere is a motion of $G_2$, and the difference vanishes on $V_1$
+  (on $V_1 \cap V_2 \subseteq \{u, v\}$ because $S(u) = S(v)$), so it is
+  a motion of $G_1$. A subspace containing the kernel of
+  $S \mapsto S(u) - S(v)$ has as annihilator the functionals
+  $S \mapsto r(S(u) - S(v))$ with $r$ annihilating its image, here
+  $\rho_1 + \rho_2$: the span of the joint rows, of dimension
+  $D - \dim(\rho_1 + \rho_2)$ since $u \neq v$. The row space of
+  $R(G,p)$ is the sum of the two row spaces, and the dimension formula
+  for a sum and an intersection gives the rank. No non-adjacency of $u$
+  and $v$ is needed: an edge $uv$ belongs to $G_1$ or to $G_2$, and its
+  rows are the same on either side.
+\end{proof}
+
+\begin{lemma}[The rank and relative screws of a path]
+  \label{lem:block-rank-path}
+  \uses{def:relative-screws, def:rigidity-matrix}
+  Let $(P,p)$ be a body-hinge framework whose edges are those of a path
+  $a = x_0 - x_1 - \cdots - x_k - x_{k+1} = b$ of distinct bodies
+  ($k \geq 0$), and let the hinge $C_i$ of the edge $x_i x_{i+1}$ be
+  nonzero for every $i$. Then
+  $\operatorname{rank} R(P,p) = (D-1)(k+1)$, and the relative screws of
+  $a, b$ in $(P,p)$ are $\operatorname{span}(C_0, \dots, C_k)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:block-rank-cut, def:hinge-row-block}
+  Each edge contributes at most $D - 1$ independent rows
+  (\cref{def:hinge-row-block}). Conversely, the body $x_{i+1}$ hangs
+  from $\{x_0, \dots, x_i\}$ by the single edge $x_i x_{i+1}$, so
+  \cref{lem:block-rank-cut} adds $D - 1$ to the rank for each of the
+  $k + 1$ edges. At a motion $S$, each $S(x_{i+1}) - S(x_i)$ lies in
+  $\operatorname{span} C_i$, and these differences add up to
+  $S(b) - S(a)$. Conversely, the assignment equal to $C_i$ at
+  $x_{i+1}, \dots, x_{k+1}$ and to $0$ elsewhere is a motion with
+  relative screw $C_i$.
+\end{proof}
+
+\begin{lemma}[Rank addition along an open ear]
+  \label{lem:block-rank-ear}
+  \uses{def:relative-screws, def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework and $V_1$ a set of bodies, and
+  let $a - x_1 - \cdots - x_k - b$ ($k \geq 0$) be a path of $G$ with
+  $a \neq b$ in $V_1$ and distinct bodies $x_1, \dots, x_k$ outside
+  $V_1$, such that every edge of $G$ not on the path lies inside $V_1$.
+  Let the hinges $C_0, \dots, C_k$ of the path be nonzero, let
+  $\Lambda = \operatorname{span}(C_0, \dots, C_k)$, and let $\rho$ be the
+  relative screws of $a, b$ in $(G[V_1], p)$. Then
+  \[
+    \operatorname{rank} R(G,p) = \operatorname{rank} R(G[V_1],p)
+    + (D - 1)(k + 1) + \dim(\rho + \Lambda) - D.
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:block-rank-two-cut, lem:block-rank-path}
+  Apply \cref{lem:block-rank-two-cut} to $G_1 = G[V_1]$ and to the path
+  $G_2$, with $V_2$ its bodies: $V_1 \cap V_2 = \{a, b\}$, and every edge
+  of $G$ is on the path or inside $V_1$. By \cref{lem:block-rank-path}
+  the path has rank $(D-1)(k+1)$ and relative screws $\Lambda$. The
+  second side is the path itself, not the subgraph induced on its bodies,
+  which also contains the edge $ab$ when $a$ and $b$ are adjacent; so the
+  formula holds whether or not they are.
 \end{proof}
 
 \begin{lemma}[The block-triangular rank bound at a core; KT eq.~(6.3)]

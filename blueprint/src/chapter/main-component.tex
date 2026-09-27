@@ -19,10 +19,12 @@ rank of a flat configuration exactly; the third derives from the planar
 rank theorem the equality of Jackson and Jord\'an on which the remaining
 steps rest; the fourth proves the first steps of the induction, at a
 cut vertex and along a chain of bridges; the fifth proves the
-contraction step at a core of planar deficiency zero. The ear and
-split-off steps, the contraction step at the remaining cores, and the
-structural coverage build on them; the last subsection states the
-passage back to the two statements.
+contraction step at a core of planar deficiency zero; the sixth proves
+that a cycle attains, and the ear steps for a closed ear and for an open
+ear with at least five interior bodies. The shorter ear and split-off
+steps, the contraction step at the remaining cores, and the structural
+coverage build on them; the last subsection states the passage back to
+the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -1511,6 +1513,280 @@ while the rest of $G$ sees it at $q_r$.
   equality at $G$ follows from those at $H$ and $G/H$. Only the bound and
   the containment of \cref{lem:pencil-contract-limit} are formalized,
   which is all the theorem uses; the general form of the step is not.
+\end{remark}
+
+\subsection{Ears and cycles}
+\label{sec:main-component-chain}
+
+This subsection proves that a cycle attains, and the two ear steps that
+need nothing of the smaller graph beyond attaining. Let $V_1 \subseteq
+V(G)$. An \emph{ear} of $G$ on $V_1$ is a path
+$a - x_1 - \cdots - x_k - b$ ($k \ge 1$) with $a, b \in V_1$ and
+distinct \emph{interior bodies} $x_1, \dots, x_k$ outside $V_1$, such
+that $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ off the
+path lies inside $V_1$. The ear is \emph{open} if $a \neq b$, and then
+$a$ and $b$ may be adjacent, and \emph{closed} if $a = b$. Along an open
+ear the rank grows by $5(k + 1) + \dim(\rho + \Lambda) - 6$
+(\cref{lem:block-rank-ear}), where $\Lambda$ is the span of the hinges
+of the ear, and the deficiency grows by at least $k - 5$
+(\cref{lem:deficiency-ear}); only this lower bound is needed, since one
+configuration of rank at least the target suffices
+(\cref{lem:pencil-x0-one-witness}). An ear with at least five interior
+bodies has at least six hinges, and at a general configuration they span
+the whole screw space, so the rank grows by exactly the increase of the
+target. One exhibited configuration certifies the span: a closed hexagon
+whose joins are independent over every field, reached at a picture on
+which $a$ and $b$ coincide. It is not admissible, but its heights are
+heights of $G$ at every admissible picture, because the interior heights
+of an ear are free, and the independence then passes to the general
+picture and the general height. A cycle is an edge together with an open
+ear on its two ends, and all its closed neighbourhoods have three
+members; a closed ear makes its end a cut vertex whose other side is a
+cycle.
+
+\begin{lemma}[Three points impose nothing]
+  \label{lem:pencil-three-points}
+  \uses{def:pencil-admissible-picture, def:pencil-lifting-space}
+  Let $q$ be admissible for $G$, and let $v$ be a body of $G$ whose
+  closed neighbourhood has at most three members. Then every height
+  agrees with an affine function of the picture on the closed
+  neighbourhood of $v$.
+\end{lemma}
+\begin{proof}
+  By admissibility three members of the closed neighbourhood of $v$
+  have linearly independent homogeneous picture points, so they are all
+  its members, and any three values at them are taken by exactly one
+  affine function.
+\end{proof}
+
+\begin{lemma}[The heights of an open ear]
+  \label{lem:pencil-ear-fibre}
+  \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
+        lem:pencil-lifting-restrict}
+  Let $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$ with
+  $k \ge 2$, and let $q$ be admissible for $G$.
+  \begin{enumerate}
+    \item A height lies in $L_G(q)$ as soon as it agrees with an affine
+      function of the picture on the closed neighbourhood in $G$ of
+      every body of $V_1$.
+    \item Every $z^1 \in L_{G[V_1]}(q)$ is the restriction to $V_1$
+      (\cref{lem:pencil-lifting-restrict}) of a height $z \in L_G(q)$
+      taking any prescribed values at $x_2, \dots, x_{k-1}$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-three-points}
+  The closed neighbourhood of an interior body consists of the body and
+  its two neighbours on the path, and every height is affine on it
+  (\cref{lem:pencil-three-points}); this gives (1). For (2), the closed
+  neighbourhood in $G$ of a body of $V_1$ is its closed neighbourhood in
+  $G[V_1]$, together with $x_1$ at $a$ and $x_k$ at $b$. Take affine
+  functions $h_a$ and $h_b$ agreeing with $z^1$ on the closed
+  neighbourhoods of $a$ and $b$ in $G[V_1]$, and set
+  $z_{x_1} = h_a(q_{x_1})$ and $z_{x_k} = h_b(q_{x_k})$, which is
+  possible since $k \ge 2$ makes $x_1 \neq x_k$; then (1) applies.
+\end{proof}
+
+\begin{lemma}[Joins in flat coordinates]
+  \label{lem:pencil-join-flat}
+  \uses{lem:pencil-flat-split, def:extensor}
+  For $p = (p_x, p_y, p_z, p_w) \in K^4$ write
+  $\bar p = (p_x, p_y, p_w) \in K^3$. There is a linear isomorphism of
+  the screw space $\Lambda^2 K^4$ onto $K^3 \times K^3$, adapted to the
+  splitting of \cref{lem:pencil-flat-split}, that sends the join
+  $p \wedge p'$ of $p, p' \in K^4$ to
+  $\bigl(p_z\,\bar p' - p'_z\,\bar p,\ \bar p \times \bar p'\bigr)$. In
+  particular, a family of joins is linearly independent as soon as the
+  family of these vectors is.
+\end{lemma}
+\begin{proof}
+  Expand $p \wedge p'$ in the basis of $W'$ and $W_\Pi$ used in the
+  proof of \cref{lem:pencil-flat-split}: the coefficients on $W_\Pi$
+  are the $2 \times 2$ minors of $\bar p$ and $\bar p'$, and those on
+  $W'$ pair the heights with the planar parts.
+\end{proof}
+
+\begin{lemma}[Independence of joins is an open condition]
+  \label{lem:pencil-join-independence-open}
+  \uses{def:pencil-configuration, def:extensor}
+  Let $(u_i, w_i)_{i \in I}$ be a finite family of pairs of bodies, and
+  write $p$ for the points of a configuration $(q, z)$. If the joins
+  $p_{u_i} \wedge p_{w_i}$ are linearly independent at $(q_0, z)$, there
+  is a polynomial $P$ in the picture, nonzero at $q_0$, such that they
+  are linearly independent at $(q, z)$ whenever $P(q) \neq 0$. Likewise,
+  if they are independent at $(q, z_0)$, there is a polynomial $R$ in the
+  heights, nonzero at $z_0$, such that they are independent at $(q, z)$
+  whenever $R(z) \neq 0$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-join-flat}
+  By \cref{lem:pencil-join-flat} the coordinates of each join are
+  polynomials in the picture at fixed heights, and in the heights at a
+  fixed picture. A finite family of vectors is linearly independent
+  exactly when some maximal minor of its coordinate matrix is nonzero;
+  take for $P$, or $R$, one such minor.
+\end{proof}
+
+\begin{lemma}[Four closed polygons with independent joins]
+  \label{lem:pencil-chain-span-certificates}
+  \uses{def:extensor}
+  Let $Y_0, \dots, Y_5 \in K^4$ be the points $(1, 0, 0, 1)$,
+  $(0, -1, 0, 1)$, $(0, 0, 1, 1)$, $(-1, 0, 1, 1)$, $(0, 0, 0, 1)$ and
+  $(-1, -1, 0, 1)$. For $n = 3, 4, 5, 6$, the $n$ joins
+  $Y_0 \wedge Y_1, \dots, Y_{n-2} \wedge Y_{n-1}, Y_{n-1} \wedge Y_0$ of
+  the closed polygon $Y_0 Y_1 \cdots Y_{n-1}$ are linearly independent,
+  over every field.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-join-flat}
+  By \cref{lem:pencil-join-flat} the joins have integer coordinates, and
+  in each of the four cases their coordinate matrix has a maximal minor
+  equal to $\pm 1$, which is nonzero in every characteristic.
+\end{proof}
+
+\begin{lemma}[Independent joins span the hinges]
+  \label{lem:pencil-ear-hinge-span}
+  \uses{def:pencil-x0-attains, def:panel-support-extensor}
+  Let $p$ be the points of a configuration of $G$, and let
+  $g_1, \dots, g_m$ be edges of $G$, with ends $u_i, w_i$, whose joins
+  $p_{u_i} \wedge p_{w_i}$ are linearly independent. Then the hinges at
+  $g_1, \dots, g_m$ of the panel-hinge framework defining the rank of
+  $p$ (\cref{def:pencil-x0-attains}) span a space of dimension at least
+  $m$. In particular, if $m = 6$, the hinges at any set of edges
+  containing $g_1, \dots, g_6$ span the whole screw space.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-config-point-join-rank, lem:panel-hinge-dual-molecular}
+  The hinge at an edge $uw$ spans the line of the meet of the planes
+  $p_u^{\perp}$ and $p_w^{\perp}$, and the polarity, an invertible
+  linear map of the screw space, carries that meet to the join
+  $p_u \wedge p_w$ (\cref{lem:pencil-config-point-join-rank}). So the
+  meets at $g_1, \dots, g_m$ are independent and lie in the span of the
+  hinges there. The screw space has dimension six.
+\end{proof}
+
+\begin{theorem}[A cycle]
+  \label{thm:pencil-x0-cycle}
+  \uses{def:pencil-x0-attains}
+  Let $K$ be infinite and let $G$ be a cycle on $m \ge 3$ bodies:
+  $V(G) = \{a, x_1, \dots, x_k, b\}$ with these bodies distinct and
+  $k = m - 2$, and the edges of $G$ are those of the path
+  $a - x_1 - \cdots - x_k - b$ and one edge $ab$. Then the general
+  configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-three-points, lem:pencil-join-independence-open,
+        lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
+        lem:block-rank-ear, lem:block-rank-path, def:D-deficiency,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
+  Every closed neighbourhood of $G$ has three members, so at an
+  admissible picture $q$ every height lies in $L_G(q)$
+  (\cref{lem:pencil-three-points}). Put the bodies at the points of
+  \cref{lem:pencil-chain-span-certificates}: for $m \le 5$ the bodies
+  $a, x_1, \dots, x_k, b$ at $Y_0, \dots, Y_{m-1}$, so that the $m$
+  edges carry the joins of the closed $m$-gon; for $m \ge 6$ the bodies
+  $a, x_1, x_2, x_3$ at $Y_0, \dots, Y_3$, the bodies $x_4, \dots, x_k$
+  at $Y_4$ and $b$ at $Y_5$, so that the edges $a x_1$, $x_1 x_2$,
+  $x_2 x_3$, $x_3 x_4$, $x_k b$ and $ba$ carry the joins of the closed
+  hexagon. Let $z$ be the heights of these points, and take a main
+  picture $q$ of $G$ (\cref{lem:pencil-x0-main-picture-open}) at which
+  these $\min(m, 6)$ joins stay independent
+  (\cref{lem:pencil-join-independence-open}).
+
+  The cycle is the edge $ab$ with the open ear
+  $a - x_1 - \cdots - x_k - b$ on $\{a, b\}$. The edge has rank $5$ and
+  relative screws spanned by its hinge (\cref{lem:block-rank-path}, at
+  $k = 0$), so by \cref{lem:block-rank-ear} the rank at $(q, z)$ is
+  $5 + 5(k + 1) + \lambda - 6 = 5m - 6 + \lambda$, where
+  $\lambda \ge \min(m, 6)$ is the dimension of the span of all the
+  hinges (\cref{lem:pencil-ear-hinge-span}). The partition into single
+  bodies has value $6(m - 1) - 5m = m - 6$
+  (\cref{def:D-deficiency}), so
+  $\operatorname{def}(\tilde G) \ge \max(0, m - 6)$ and the target is at
+  most $\min(6m - 6, 5m) \le 5m - 6 + \lambda$. So
+  \cref{lem:pencil-x0-one-witness} applies.
+\end{proof}
+
+\begin{theorem}[An open ear with at least five interior bodies]
+  \label{thm:pencil-x0-open-ear}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses
+  (\cref{def:pencil-x0-standing}), with an open ear
+  $a - x_1 - \cdots - x_k - b$ on $V_1$ with $k \ge 5$, whose ends $a$
+  and $b$ may be adjacent. If the general configuration of $G[V_1]$
+  attains, then the general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-ear-fibre, lem:pencil-join-independence-open,
+        lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
+        lem:block-rank-ear, lem:deficiency-ear, lem:pencil-lifting-restrict,
+        lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
+  Let $q^*$ put $a$ and $b$ at $(1, 0)$, the bodies $x_1, x_2, x_3$ at
+  $(0, -1)$, $(0, 0)$, $(-1, 0)$, the bodies $x_4, \dots, x_{k-1}$ at
+  $(0, 0)$ and $x_k$ at $(-1, -1)$, and let $z^*$ be $1$ at $x_2$ and
+  $x_3$ and $0$ elsewhere. The points of $a, x_1, x_2, x_3, x_4, x_k$
+  are then $Y_0, \dots, Y_5$ (\cref{lem:pencil-chain-span-certificates}),
+  and $x_{k-1}$ is at $Y_4$ too, so the six ear edges $a x_1$, $x_1 x_2$,
+  $x_2 x_3$, $x_3 x_4$, $x_{k-1} x_k$ and $x_k b$, distinct since
+  $k \ge 5$, carry the joins of the closed hexagon. The picture $q^*$ is
+  not admissible; it only makes nonzero the polynomial $P$ of
+  \cref{lem:pencil-join-independence-open} at the heights $z^*$.
+
+  Take a picture $q$ off the zero sets of $P$, of the polynomial of the
+  attainment at $G[V_1]$, and of the main-picture polynomial of $G$
+  (\cref{lem:pencil-x0-main-picture-open}). The height $z^*$ vanishes on
+  $V_1$ and at $x_1$ and $x_k$, so it lies in $L_G(q)$
+  (\cref{lem:pencil-ear-fibre}(1)), and the six joins are independent at
+  $(q, z^*)$. The heights of $L_G(q)$ restricting to attaining heights of
+  $G[V_1]$ contain a nonempty Zariski-open subset
+  (\cref{lem:pencil-ear-fibre}(2), \cref{lem:pencil-lifting-restrict}),
+  and so do the heights at which the six joins stay independent
+  (\cref{lem:pencil-join-independence-open}, in the heights); the two
+  meet (\cref{lem:pencil-x0-fibre-intersection}). At such a height $z$
+  the rank of $G[V_1]$ is its target (\cref{lem:pencil-rank-congr}), and
+  the hinges of the ear span the screw space
+  (\cref{lem:pencil-ear-hinge-span}), so $\rho + \Lambda$ is the whole
+  screw space and \cref{lem:block-rank-ear}, all hinges being nonzero at
+  an admissible picture, adds $5(k + 1)$ to the rank. The deficiency
+  grows by at least $k - 5$ (\cref{lem:deficiency-ear}) and the number of
+  bodies by $k$, so the target grows by at most $5(k + 1)$, and
+  \cref{lem:pencil-x0-one-witness} applies.
+\end{proof}
+
+\begin{theorem}[A closed ear]
+  \label{thm:pencil-x0-closed-ear}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with a
+  closed ear $c - x_1 - \cdots - x_k - c$ on $V_1$ with $k \ge 2$. If the
+  general configuration of $G[V_1]$ attains, then the general
+  configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-x0-cut, thm:pencil-x0-cycle}
+  The body $c$ is a cut vertex: the sides $V_1$ and
+  $V_2 = \{c, x_1, \dots, x_k\}$ meet in $c$, and every edge of $G$ lies
+  inside one of them. As $G$ has no loop, $G[V_2]$ is the cycle
+  $c - x_1 - \cdots - x_k - c$ on $k + 1 \ge 3$ bodies, which attains by
+  \cref{thm:pencil-x0-cycle}, with the edge $x_1 c$ in the role of $ab$.
+  So \cref{thm:pencil-x0-cut} applies; no span of the hinges of a closed
+  ear is needed.
+\end{proof}
+
+\begin{remark}[Graphs built from a cycle by ears]
+  \label{rem:pencil-x0-ear-class}
+  By induction on the number of ears, the three theorems above show that
+  every graph obtained from a cycle by successively adding closed ears
+  and open ears with at least five interior bodies has an attaining
+  general configuration: each graph along the way satisfies the standing
+  hypotheses, and removing its last ear leaves the subgraph induced on
+  the other bodies. This class statement is not formalized separately.
+  The structural coverage runs a strong induction on the number of
+  bodies, and each of its ear cases applies
+  \cref{thm:pencil-x0-open-ear} or \cref{thm:pencil-x0-closed-ear}
+  directly. For instance, the $\theta$-graph whose two branch bodies are
+  joined by paths of one, two and six edges is a triangle with an open
+  ear of five interior bodies on two adjacent bodies.
 \end{remark}
 
 \subsection{The passage to the two main-component statements}

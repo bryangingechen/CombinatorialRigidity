@@ -3,7 +3,8 @@
 **Status:** ✓ complete (opened design-first, built and closed 2026-09-26). CONTRACT-R, STEPS'
 second group (`notes/Phase40-design.md` §3 STEPS), proved the contraction step at a core of planar
 deficiency zero, (MC-59)(d) with (MC-39): if `X₀(G/H)` attains, `X₀(G)` attains, for `H = G[W]`
-with `def₂(H) = 0` and `G/H` simple. **Next: STEPS' CHAIN group**, not yet opened — see *Hand-off*.
+with `def₂(H) = 0` and `G/H` simple. **Next: 40g = CHAIN, opened 2026-09-27** — see
+`notes/Phase40g.md`.
 
 ## Current state
 
@@ -71,10 +72,9 @@ All landed with the standard axioms (*Current state*).
 
 ## Hand-off / next phase
 
-**40f is closed. The next group is CHAIN**, the next in the design doc's provisional order (§3
-STEPS, *The provisional grouping*: (MC-16)–(MC-19), (MC-134)(a)(b), (MC-169), BASE (MC-21)(a),
-chains `k ≥ 5` (MC-20)). It is not yet opened: its open mints the next sub-phase letter and work
-log, and the design doc's *Tracked for CHAIN's design pass* item is its first input.
+**40f is closed. The next step moved to `notes/Phase40g.md`:** CHAIN opened as 40g (2026-09-27),
+design-first from a compiler-checked recon, which also settled the design doc's *Tracked for
+CHAIN's design pass* item.
 
 **The two files at the ~1500-line tripwire have a plan, not a split** (both 1 496 lines, both
 sectioned). `Contract.lean` splits at CONTRACT-A, along PI decision 4's line (the general pieces to

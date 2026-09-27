@@ -786,7 +786,8 @@ consumed), closed as sub-phase 40d (2026-09-26, `notes/Phase40d.md`); STEPS runs
 first, CUTBRIDGE (cut vertices and bridges), closed as sub-phase 40e (2026-09-26, `notes/Phase40e.md`);
 the read-only ORBIT recon has run (2026-09-26), and a second reading confirmed its new proof; the
 next group, CONTRACT-R (contraction at a `def₂`-rigid core), closed as sub-phase 40f (2026-09-26,
-`notes/Phase40f.md`); CHAIN is next in the provisional order. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+`notes/Phase40f.md`); the third, CHAIN (the ear steps and the cycle), opened as sub-phase 40g
+(2026-09-27, `notes/Phase40g.md`). Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
