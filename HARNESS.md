@@ -54,8 +54,9 @@ sections and budgets `notes/attacks/TEMPLATE-state.md`. None is repeated here.
 
 - [2026-08-05, standing] Every script that produced a figure, verdict or
   decision is committed, seeded, in exact arithmetic, with a command-line
-  path that reproduces the landed figure. A throwaway probe is recorded as
-  "attempted, no figure; script not retained". ← user directive 2026-08-05; F39.
+  path that reproduces the landed figure. A throwaway probe is tagged
+  "measured, script not retained" beside the figure it gave, or "attempted,
+  no figure; script not retained". ← user directive 2026-08-05; F39.
 - [2026-07-11, standing] Every foreground command carries an explicit
   timeout; a run that cannot finish inside it starts in the background first
   and is collected before the turn ends; never mask an exit status through

@@ -28,8 +28,8 @@ verdict, or a decision is part of the audit trail, so it is tracked in the
 commit that uses it — never left in a scratch directory, never quoted from a
 transcript, never described in prose in place of the file. This covers
 throwaway probes too: if a probe's answer gets written into a note, the probe
-becomes a driver here (or its answer is recorded as *measured, script not
-retained*, explicitly). Check: `git status --porcelain notes/scripts/` is clean
+becomes a driver here, or its answer carries the throwaway-probe tag of
+`HARNESS.md` *Reproducibility*. Check: `git status --porcelain notes/scripts/` is clean
 at commit time, and `git ls-files notes/scripts/` lists every file the commit
 message cites.
 

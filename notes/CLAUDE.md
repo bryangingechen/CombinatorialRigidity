@@ -48,8 +48,8 @@ for *organizing* this directory is here.
 - **`scripts/`** — the numerics harness (exact ℚ Python, plus `m2/`
   Macaulay2); entry point `scripts/README.md`. Two of its rules bind
   **project-wide**: *every script the project runs is committed*
-  (user requirement, 2026-08-05; a throwaway probe is recorded as
-  *measured, script not retained*), and *figures do not move*
+  (user requirement, 2026-08-05; a throwaway probe's tags are
+  `HARNESS.md` *Reproducibility*'s), and *figures do not move*
   (byte-identical output at pinned `PYTHONHASHSEED`).
 - **`coordinate-phase-rescue.md`** — the `/coordinate-phase` loop's
   symptom-indexed rescue reference, read when a trigger fires;
