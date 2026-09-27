@@ -28,7 +28,8 @@ Layer B): the carriers `relScrews` (`ρ̄_{uv}`), `jointRows`, `jointMotions` (`
 `weldedRank` of the cut-pair rank laws, with the joint's row count `finrank_span_jointRows`, the
 welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`), the welded codimension
 `weldedRank_add_finrank_jointMotions_bot` (`rank_w + dim M_⊥ = screwDim k·|α|`), the gluing
-identity at a 2-cut `finrank_span_rigidityRows_vertexTwoCut_eq`, and its cut-vertex case
+identity at a 2-cut `finrank_span_rigidityRows_twoCut_eq_of_isLink` (Phase 40g; at induced sides
+`finrank_span_rigidityRows_vertexTwoCut_eq`), and its cut-vertex case
 `finrank_span_rigidityRows_cutVertex_eq` (Phase 40e: the ranks simply add).
 Its own section header is their index; these are the objects the Layer-C losses in
 `Molecule/Pencil/TwoCut.lean` are stated in.
@@ -756,8 +757,10 @@ identity at a vertex 2-cut `{u, v}` and the welded bound are stated in.  The inf
 are the PENCIL attack workbook's §§ S7, S10(ii) and S14(i)
 (`notes/pencil/workbook/attack-smark.md`), read against this file's carrier by the item-6 carrier
 recon (`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, which pins each signature
-below).  They carry **no blueprint node** yet, by the phase's decision D5 — the debt is tracked in
-`notes/Phase39.md` *Blockers*.
+below).  `relScrews` and `jointRows` are pinned by `def:relative-screws` and the gluing identity by
+`lem:block-rank-two-cut` (Phase 40g); `jointMotions`, `weldedRank` and their laws carry no
+blueprint node yet (Phase 39's decision D5; their pins move to a first consumer,
+`notes/Phase40g.md`).
 
 * `relScrews` (`ρ̄_{uv}`) — the space of **relative screw centers** `S v − S u` realized by
   infinitesimal motions of the framework.  Its dimension `ρ` is what the two sides of a vertex
@@ -780,11 +783,15 @@ exactly `dim ρ̄_{uv}`, `rank_w = rank + ρ`.  It turns on B3
 (`inf_span_rigidityRows_span_jointRows_top`) — the weld rows a framework already implies are exactly
 the ones annihilating `ρ̄_{uv}` — with the orientation bookkeeping in `map_screwDiff_comm` and the
 `U = ⊥` unfolding in `span_jointRows_bot`.  The layer's other identity is the **gluing identity at
-a 2-cut** (B5/B6): two sides overlapping exactly in a cut pair `{u, v}` meet, as row spans,
-exactly in `jointRows (ρ̄₁ ⊔ ρ̄₂) u v` (`inf_span_rigidityRows_of_vertexTwoCut`), so their ranks
-sum to the whole rank plus the `screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` rows they share
-(`finrank_span_rigidityRows_vertexTwoCut_eq`, stated in `ℤ`) — and, unlike its combinatorial
-counterpart `Graph.deficiency_eq_of_vertexTwoCut`, it needs no non-adjacency of the pair.  At a
+a 2-cut** (B5′/B6′): two graphs whose links partition the framework's, each inside a vertex set,
+the two sets overlapping inside a cut pair `{u, v}`, meet, as row spans, exactly in
+`jointRows (ρ̄₁ ⊔ ρ̄₂) u v` (`inf_span_rigidityRows_of_twoCut_of_isLink`), so their ranks sum to
+the whole rank plus the `screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` rows they share
+(`finrank_span_rigidityRows_twoCut_eq_of_isLink`, stated in `ℤ`) — and, unlike its combinatorial
+counterpart `Graph.deficiency_eq_of_vertexTwoCut`, it needs no non-adjacency of the pair.  At the
+induced sides of a vertex 2-cut these are B5/B6 (`inf_span_rigidityRows_of_vertexTwoCut`,
+`finrank_span_rigidityRows_vertexTwoCut_eq`); the general sides serve an ear whose ends are
+adjacent (`MainComponent/Ear.lean`), where the side induced on the path is not the path.  At a
 cut *vertex* (`u = v`) no relative screw survives and the ranks add outright
 (`finrank_span_rigidityRows_cutVertex_eq`, Phase 40e).
 Keep the `screwDiff v u` orientation of `relScrews` /
@@ -1101,9 +1108,9 @@ map (`LinearMap.range_dualMap_eq_dualAnnihilator_ker_of_surjective`); hence
 image's annihilator.
 
 This is the linear-algebraic core of the 2-cut gluing identity
-`inf_span_rigidityRows_of_vertexTwoCut` (B5), where `W = Z₁ ⊔ Z₂` is the join of the two sides'
-motion spaces and `ker (screwDiff u v) ≤ W` is the geometric content
-(`mem_sup_infinitesimalMotions_induce`).  The general form — any surjective `f` and any
+`inf_span_rigidityRows_of_twoCut_of_isLink` (B5′), where `W = Z₁ ⊔ Z₂` is the join of the two
+sides' motion spaces and `ker (screwDiff u v) ≤ W` is the geometric content
+(`mem_sup_infinitesimalMotions_of_isLink`).  The general form — any surjective `f` and any
 `W ⊇ ker f` — is upstream-eligible; it is kept private and `screwDiff`-specialized here
 (`notes/FRICTION.md`). -/
 private theorem dualAnnihilator_eq_map_dualMap_screwDiff {u v : α} (huv : u ≠ v)
@@ -1128,51 +1135,52 @@ private theorem dualAnnihilator_eq_map_dualMap_screwDiff {u v : α} (huv : u ≠
     rw [Submodule.mem_dualAnnihilator]
     exact fun S hS => hr _ ⟨S, hS, rfl⟩
 
-/-- **An assignment constant on a side is an infinitesimal motion of that side**: if `S a = c` for
-every `a ∈ V`, then `S` is a motion of the induced framework `⟨G.induce V, F.supportExtensor⟩`.
-Every link of `G.induce V` has both of its ends in `V` (`Graph.induce_isLink`), so its hinge
-constraint reads `c − c = 0 ∈ span {C(p(e))}`; no geometry is used, and nothing at all is assumed
-about `S` off `V`.
+/-- **An assignment constant on a side is an infinitesimal motion of that side**: if every link of
+`G` has both ends in `V` and `S a = c` for every `a ∈ V`, then `S` is a motion of `⟨G, C⟩`. Each
+hinge constraint reads `c − c = 0 ∈ span {C e}`; no geometry is used, and nothing at all is
+assumed about `S` off `V`.
 
 Both the `c = 0` instance ("`S` vanishes on `V`") and the general one are consumed by
-`mem_sup_infinitesimalMotions_induce`.  It is read off the *definition* of `infinitesimalMotions`
-— whose constraint quantifies only over the induced graph's own links — not off a docstring. -/
-private theorem isInfinitesimalMotion_induce_of_eqOn (F : BodyHingeFramework K k α β) (V : Set α)
+`mem_sup_infinitesimalMotions_of_isLink`.  It is read off the *definition* of
+`infinitesimalMotions`, whose constraint quantifies only over the graph's own links. -/
+theorem isInfinitesimalMotion_of_eqOn_of_isLink (G : Graph α β) (C : β → ScrewSpace K k)
+    {V : Set α} (hV : ∀ e x y, G.IsLink e x y → x ∈ V ∧ y ∈ V)
     {S : α → ScrewSpace K k} {c : ScrewSpace K k} (hS : ∀ a ∈ V, S a = c) :
-    (⟨F.graph.induce V, F.supportExtensor⟩ :
-      BodyHingeFramework K k α β).IsInfinitesimalMotion S := by
+    (⟨G, C⟩ : BodyHingeFramework K k α β).IsInfinitesimalMotion S := by
   intro e x y he
-  simp only [Graph.induce_isLink] at he
-  rw [hingeConstraint_iff, hS x he.2.1, hS y he.2.2, sub_self]
+  obtain ⟨hx, hy⟩ := hV e x y he
+  rw [hingeConstraint_iff, hS x hx, hS y hy, sub_self]
   exact Submodule.zero_mem _
 
-/-- **An assignment that moves the cut pair alike splits across a vertex 2-cut**: when the sides
-overlap inside the pair (`V₁ ∩ V₂ ⊆ {u, v}`) and `S u = S v`, the assignment `S` is the sum of a
-motion of side 1 and a motion of side 2,
+/-- **An assignment that moves the cut pair alike splits across a 2-cut**: let every link of `G₁`
+lie inside `V₁` and every link of `G₂` inside `V₂`, with the sides overlapping inside the pair
+(`V₁ ∩ V₂ ⊆ {u, v}`). If `S u = S v`, the assignment `S` is the sum of a motion of side 1 and a
+motion of side 2,
 
-  `S ∈ (F[V₁]).infinitesimalMotions ⊔ (F[V₂]).infinitesimalMotions`.
+  `S ∈ (⟨G₁, C⟩).infinitesimalMotions ⊔ (⟨G₂, C⟩).infinitesimalMotions`.
 
 One explicit `if` does it: `A a = if a ∈ V₂ then S v else S a` is constant on `V₂`, hence a motion
 of side 2, and `S − A` vanishes on `V₁` — off `V₂` by construction, and on `V₁ ∩ V₂ ⊆ {u, v}`
 because `S u = S v` is exactly the value `A` carries there — hence a motion of side 1
-(`isInfinitesimalMotion_induce_of_eqOn` twice).
+(`isInfinitesimalMotion_of_eqOn_of_isLink` twice).
 
 Read dually this is `ker (screwDiff u v) ≤ Z₁ ⊔ Z₂`, the one geometric input of the 2-cut gluing
-identity `inf_span_rigidityRows_of_vertexTwoCut`: the only motions the two sides fail to generate
-between them are those that separate `u` from `v`.  Neither `u ≠ v`, nor the covering
-`V₁ ∪ V₂ = V(G)`, nor the edge separation is used. -/
-private theorem mem_sup_infinitesimalMotions_induce (F : BodyHingeFramework K k α β)
-    {V₁ V₂ : Set α} {u v : α} (hoverlap : V₁ ∩ V₂ ⊆ {u, v})
-    {S : α → ScrewSpace K k} (hS : S u = S v) :
-    S ∈ (⟨F.graph.induce V₁, F.supportExtensor⟩ :
-          BodyHingeFramework K k α β).infinitesimalMotions
-        ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
-          BodyHingeFramework K k α β).infinitesimalMotions := by
+identity `inf_span_rigidityRows_of_twoCut_of_isLink`: the only motions the two sides fail to
+generate between them are those that separate `u` from `v`.  Neither `u ≠ v` nor any relation
+between the two graphs is used; at `u = v` it gives the cut-vertex identity
+`finrank_span_rigidityRows_cutVertex_eq`. -/
+theorem mem_sup_infinitesimalMotions_of_isLink (G₁ G₂ : Graph α β) (C : β → ScrewSpace K k)
+    {V₁ V₂ : Set α} {u v : α}
+    (h₁ : ∀ e x y, G₁.IsLink e x y → x ∈ V₁ ∧ y ∈ V₁)
+    (h₂ : ∀ e x y, G₂.IsLink e x y → x ∈ V₂ ∧ y ∈ V₂)
+    (hoverlap : V₁ ∩ V₂ ⊆ {u, v}) {S : α → ScrewSpace K k} (hS : S u = S v) :
+    S ∈ (⟨G₁, C⟩ : BodyHingeFramework K k α β).infinitesimalMotions
+        ⊔ (⟨G₂, C⟩ : BodyHingeFramework K k α β).infinitesimalMotions := by
   classical
   refine Submodule.mem_sup.2 ⟨S - (fun a => if a ∈ V₂ then S v else S a), ?_,
     (fun a => if a ∈ V₂ then S v else S a), ?_, by abel⟩
   · refine (mem_infinitesimalMotions _ _).2
-      (isInfinitesimalMotion_induce_of_eqOn F V₁ (c := 0) ?_)
+      (isInfinitesimalMotion_of_eqOn_of_isLink G₁ C h₁ (c := 0) ?_)
     intro a ha
     by_cases hb : a ∈ V₂
     · have hau : a = u ∨ a = v := by simpa using hoverlap ⟨ha, hb⟩
@@ -1181,42 +1189,62 @@ private theorem mem_sup_infinitesimalMotions_induce (F : BodyHingeFramework K k 
       · simp [hb]
     · simp [hb]
   · exact (mem_infinitesimalMotions _ _).2
-      (isInfinitesimalMotion_induce_of_eqOn F V₂ (c := S v) (fun a ha => by simp [ha]))
+      (isInfinitesimalMotion_of_eqOn_of_isLink G₂ C h₂ (c := S v) (fun a ha => by simp [ha]))
 
-/-- **A link-separating pair of sides splits the row set**: if every link of `G` has both ends in
-`V₁` or both ends in `V₂`, then `F.rigidityRows = (F[V₁]).rigidityRows ∪ (F[V₂]).rigidityRows`.
-`⊇` is `Graph.induce_isLink`'s forward half (an induced link is a link) and needs no hypothesis;
-`⊆` is `hsep` followed by its reverse half.  No row is re-indexed: the hinge-row block is the
-*same* submodule on both sides, since `hingeRowBlock` reads only `supportExtensor e`, which the
-sides inherit unchanged.
+/-- **The rigidity rows read the graph only through its links**: two graphs with the same links
+give the same rows at the same hinges (their vertex sets may differ). -/
+theorem rigidityRows_congr_isLink {G₁ G₂ : Graph α β} (C : β → ScrewSpace K k)
+    (h : ∀ e x y, G₁.IsLink e x y ↔ G₂.IsLink e x y) :
+    (⟨G₁, C⟩ : BodyHingeFramework K k α β).rigidityRows
+      = (⟨G₂, C⟩ : BodyHingeFramework K k α β).rigidityRows := by
+  ext φ
+  simp only [rigidityRows, Set.mem_ofPred_eq, h]
+  rfl
 
-This is the row-side half of the rank identity `finrank_span_rigidityRows_vertexTwoCut_eq` (B6),
-where `Submodule.span_union` turns it into
-`span F.rigidityRows = span (F[V₁]).rigidityRows ⊔ span (F[V₂]).rigidityRows`.  It is the
-overlapping-sides analogue of the disjoint cut brick's side-span inclusions
-(`le_finrank_span_rigidityRows_of_cut`), and unlike that brick's it is an *equality* — a vertex
-2-cut leaves no crossing edge to account for separately. -/
-private theorem rigidityRows_eq_union_induce (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α}
-    (hsep : ∀ e x y, F.graph.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
+/-- **Link-partitioning sides split the row set**: if the links of `F.graph` are exactly those of
+`G₁` together with those of `G₂`, then `F.rigidityRows` is the union of the two sides' rows at
+`F`'s hinges.  No row is re-indexed: the hinge-row block is the *same* submodule on both sides,
+since `hingeRowBlock` reads only `supportExtensor e`, which the sides inherit unchanged.
+
+This is the row-side half of the rank identity `finrank_span_rigidityRows_twoCut_eq_of_isLink`
+(B6′), where `Submodule.span_union` turns it into a join of the two side spans.  Unlike the
+disjoint cut brick's side-span inclusions (`le_finrank_span_rigidityRows_of_cut`) it is an
+*equality* — a 2-cut leaves no crossing edge to account for separately. -/
+private theorem rigidityRows_eq_union_of_isLink (F : BodyHingeFramework K k α β)
+    (G₁ G₂ : Graph α β)
+    (hlink : ∀ e x y, F.graph.IsLink e x y ↔ G₁.IsLink e x y ∨ G₂.IsLink e x y) :
     F.rigidityRows
-      = (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows
-        ∪ (⟨F.graph.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows := by
+      = (⟨G₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows
+        ∪ (⟨G₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows := by
   ext φ
   constructor
   · rintro ⟨e, x, y, he, r, hr, rfl⟩
-    rcases hsep e x y he with ⟨hx, hy⟩ | ⟨hx, hy⟩
-    · exact Or.inl ⟨e, x, y, by simp only [Graph.induce_isLink]; exact ⟨he, hx, hy⟩, r, hr, rfl⟩
-    · exact Or.inr ⟨e, x, y, by simp only [Graph.induce_isLink]; exact ⟨he, hx, hy⟩, r, hr, rfl⟩
-  · rintro (⟨e, x, y, he, r, hr, rfl⟩ | ⟨e, x, y, he, r, hr, rfl⟩) <;>
-      simp only [Graph.induce_isLink] at he <;> exact ⟨e, x, y, he.1, r, hr, rfl⟩
+    rcases (hlink e x y).1 he with h | h
+    · exact Or.inl ⟨e, x, y, h, r, hr, rfl⟩
+    · exact Or.inr ⟨e, x, y, h, r, hr, rfl⟩
+  · rintro (⟨e, x, y, he, r, hr, rfl⟩ | ⟨e, x, y, he, r, hr, rfl⟩)
+    · exact ⟨e, x, y, (hlink e x y).2 (Or.inl he), r, hr, rfl⟩
+    · exact ⟨e, x, y, (hlink e x y).2 (Or.inr he), r, hr, rfl⟩
 
-/-- **The two sides of a vertex 2-cut meet exactly in the joint rows of their joined
-relative-screw spaces** (Layer B5, C1′ of `notes/pencil/workbook/attack-smark.md` §§ S10(ii),
-S14(i)): for `u ≠ v` and sides overlapping exactly in the cut pair (`V₁ ∩ V₂ = {u, v}`),
+/-- **Link-separating vertex sets give link-partitioning induced sides**: if every link of `G` has
+both ends in `V₁` or both in `V₂`, its links are those of `G[V₁]` together with those of
+`G[V₂]` (`Graph.induce_isLink`). -/
+private theorem isLink_iff_induce_or_induce {G : Graph α β} {V₁ V₂ : Set α}
+    (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) (e : β) (x y : α) :
+    G.IsLink e x y ↔ (G.induce V₁).IsLink e x y ∨ (G.induce V₂).IsLink e x y := by
+  refine ⟨fun he => ?_, fun he => ?_⟩
+  · rcases hsep e x y he with ⟨hx, hy⟩ | ⟨hx, hy⟩
+    · exact Or.inl ⟨he, hx, hy⟩
+    · exact Or.inr ⟨he, hx, hy⟩
+  · rcases he with he | he <;> exact he.1
 
-  `span (F[V₁]).rigidityRows ⊓ span (F[V₂]).rigidityRows = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`,
+/-- **B5′: the two sides of a 2-cut meet exactly in the joint rows of their joined relative-screw
+spaces** (C1′ of `notes/pencil/workbook/attack-smark.md` §§ S10(ii), S14(i)): let every link of
+`G₁` lie inside `V₁` and every link of `G₂` inside `V₂`, with `V₁ ∩ V₂ ⊆ {u, v}` and `u ≠ v`. Then
 
-with `ρ̄ᵢ = (F[Vᵢ]).relScrews u v`.  Both sides are rewritten through the annihilator picture and
+  `span (⟨G₁, C⟩).rigidityRows ⊓ span (⟨G₂, C⟩).rigidityRows = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`,
+
+with `ρ̄ᵢ = (⟨Gᵢ, C⟩).relScrews u v`.  Both sides are rewritten through the annihilator picture and
 what is left is bookkeeping.  A functional lies in both row spans exactly when it kills `Z₁ ⊔ Z₂`
 (`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`, the only place `[Finite α]` is
 needed, and `Submodule.dualAnnihilator_sup_eq`); the right-hand side is the image of
@@ -1224,37 +1252,33 @@ needed, and `Submodule.dualAnnihilator_sup_eq`); the right-hand side is the imag
 (`span_jointRows_eq_map_dualAnnihilator` and `Submodule.map_sup`, with the orientation flip paid
 by `map_screwDiff_comm`).  The identity between the two is
 `dualAnnihilator_eq_map_dualMap_screwDiff` at `W = Z₁ ⊔ Z₂`, whose one geometric input is
-`mem_sup_infinitesimalMotions_induce` — an assignment moving `u` and `v` alike splits across the
-cut.
+`mem_sup_infinitesimalMotions_of_isLink` — an assignment moving `u` and `v` alike splits across
+the cut.
 
 **Genuinely new against the landed** `le_finrank_span_rigidityRows_of_cut`, which has
 vertex-*disjoint* sides and is an inequality, where this has overlapping sides and both
 directions.  Unlike the combinatorial 2-cut law `Graph.deficiency_eq_of_vertexTwoCut` it needs
-**no** `¬ G.Adj u v`: a cut edge `uv` is charged to both sides' *deficiencies*, but it contributes
-the *same rows* on either side, so it cannot disturb a row-span intersection.  Three of the pinned
-2-cut hypotheses are genuinely absent: the covering `V₁ ∪ V₂ = V(F.graph)` and the edge separation
-(only B6's row-set split needs the latter), and of `hoverlap` only the `⊆` half is consumed. -/
-theorem inf_span_rigidityRows_of_vertexTwoCut [Finite α]
-    (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
-    (hoverlap : V₁ ∩ V₂ = {u, v}) :
-    Submodule.span K (⟨F.graph.induce V₁, F.supportExtensor⟩ :
-          BodyHingeFramework K k α β).rigidityRows
-        ⊓ Submodule.span K (⟨F.graph.induce V₂, F.supportExtensor⟩ :
-          BodyHingeFramework K k α β).rigidityRows
+**no** `¬ G.Adj u v`: a cut edge `uv` contributes the *same rows* on either side, so it cannot
+disturb a row-span intersection.  The sides are any two graphs, not induced subgraphs: an ear
+whose ends `a, b` are adjacent has as far side the path, while the subgraph induced on the path's
+bodies also contains the edge `ab` (`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`). -/
+theorem inf_span_rigidityRows_of_twoCut_of_isLink [Finite α] (G₁ G₂ : Graph α β)
+    (C : β → ScrewSpace K k) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (h₁ : ∀ e x y, G₁.IsLink e x y → x ∈ V₁ ∧ y ∈ V₁)
+    (h₂ : ∀ e x y, G₂.IsLink e x y → x ∈ V₂ ∧ y ∈ V₂)
+    (hoverlap : V₁ ∩ V₂ ⊆ {u, v}) :
+    Submodule.span K (⟨G₁, C⟩ : BodyHingeFramework K k α β).rigidityRows
+        ⊓ Submodule.span K (⟨G₂, C⟩ : BodyHingeFramework K k α β).rigidityRows
       = Submodule.span K (jointRows
-          ((⟨F.graph.induce V₁, F.supportExtensor⟩ :
-              BodyHingeFramework K k α β).relScrews u v
-            ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
-              BodyHingeFramework K k α β).relScrews u v) u v) := by
+          ((⟨G₁, C⟩ : BodyHingeFramework K k α β).relScrews u v
+            ⊔ (⟨G₂, C⟩ : BodyHingeFramework K k α β).relScrews u v) u v) := by
   -- The geometric input, stated before `set` abstracts the two sides.
   have hmem : ∀ S : α → ScrewSpace K k, S u = S v →
-      S ∈ (⟨F.graph.induce V₁, F.supportExtensor⟩ :
-            BodyHingeFramework K k α β).infinitesimalMotions
-          ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
-            BodyHingeFramework K k α β).infinitesimalMotions :=
-    fun _ hS => mem_sup_infinitesimalMotions_induce F hoverlap.le hS
-  set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
-  set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce V₂, F.supportExtensor⟩
+      S ∈ (⟨G₁, C⟩ : BodyHingeFramework K k α β).infinitesimalMotions
+          ⊔ (⟨G₂, C⟩ : BodyHingeFramework K k α β).infinitesimalMotions :=
+    fun _ hS => mem_sup_infinitesimalMotions_of_isLink G₁ G₂ C h₁ h₂ hoverlap hS
+  set F₁ : BodyHingeFramework K k α β := ⟨G₁, C⟩
+  set F₂ : BodyHingeFramework K k α β := ⟨G₂, C⟩
   -- Both sides become annihilators of `Z₁ ⊔ Z₂`, resp. of its image under `screwDiff u v`.
   rw [F₁.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     F₂.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
@@ -1266,26 +1290,91 @@ theorem inf_span_rigidityRows_of_vertexTwoCut [Finite α]
   rw [LinearMap.mem_ker, screwDiff_apply, sub_eq_zero] at hS
   exact hmem S hS
 
-/-- **Gluing ranks at a vertex 2-cut** (Layer B6, C1 of
-`notes/pencil/workbook/attack-smark.md` § S10(ii)): for `u ≠ v`, sides overlapping exactly in the
-cut pair and every link internal to one side,
+/-- **B6′: gluing ranks at a 2-cut** (C1 of `notes/pencil/workbook/attack-smark.md` § S10(ii)):
+let the links of `F.graph` be exactly those of `G₁` together with those of `G₂`, every link of
+`Gᵢ` inside `Vᵢ`, with `V₁ ∩ V₂ ⊆ {u, v}` and `u ≠ v`. Then, at `F`'s hinges,
 
-  `rank(G) = rank(H₁) + rank(H₂) + dim (ρ̄₁ ⊔ ρ̄₂) − screwDim k`,
+  `rank(G) = rank(G₁) + rank(G₂) + dim (ρ̄₁ ⊔ ρ̄₂) − screwDim k`,
 
 an identity in `ℤ` between rigidity-row-span dimensions (`rank = finrank (span rigidityRows)`,
-`ρ̄ᵢ = (F[Vᵢ]).relScrews u v`).  It is the dimension formula
+`ρ̄ᵢ = (⟨Gᵢ, F.supportExtensor⟩).relScrews u v`).  It is the dimension formula
 `Submodule.finrank_sup_add_finrank_inf_eq` over the two side spans: their **join** is the whole
-row span (`rigidityRows_eq_union_induce` with `Submodule.span_union` — the one place `hsep` is
-used), and their **meet** is the joint of the joined relative-screw spaces (B5,
-`inf_span_rigidityRows_of_vertexTwoCut`), of dimension `screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` by the joint
-count `finrank_span_jointRows` at the same `u ≠ v`.  So the two sides share exactly the
+row span (`rigidityRows_eq_union_of_isLink` with `Submodule.span_union` — the one place `hlink` is
+used), and their **meet** is the joint of the joined relative-screw spaces (B5′,
+`inf_span_rigidityRows_of_twoCut_of_isLink`), of dimension `screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` by the
+joint count `finrank_span_jointRows` at the same `u ≠ v`.  So the two sides share exactly the
 `screwDim k` weld-type rows that the cut pair's relative screws do not already annihilate, and
 that overlap is what the `− screwDim k` corrects for.
 
 The `ℤ` statement (unlike B4's `ℕ`) is what makes the right-hand side a genuine difference; the
 `ℕ` subtraction inside the proof never truncates, `dim (ρ̄₁ ⊔ ρ̄₂) ≤ screwDim k` being handed to
-`omega` explicitly — the `weldedRank_eq` skeleton.  The covering hypothesis
-`V₁ ∪ V₂ = V(F.graph)` is not needed here either: vertices outside both sides carry no rows.
+`omega` explicitly — the `weldedRank_eq` skeleton.  No covering of `V(F.graph)` by the sides is
+needed: vertices outside both sides carry no rows. -/
+theorem finrank_span_rigidityRows_twoCut_eq_of_isLink [Finite α]
+    (F : BodyHingeFramework K k α β) (G₁ G₂ : Graph α β) {V₁ V₂ : Set α} {u v : α}
+    (huv : u ≠ v)
+    (h₁ : ∀ e x y, G₁.IsLink e x y → x ∈ V₁ ∧ y ∈ V₁)
+    (h₂ : ∀ e x y, G₂.IsLink e x y → x ∈ V₂ ∧ y ∈ V₂)
+    (hoverlap : V₁ ∩ V₂ ⊆ {u, v})
+    (hlink : ∀ e x y, F.graph.IsLink e x y ↔ G₁.IsLink e x y ∨ G₂.IsLink e x y) :
+    (Module.finrank K ↥(Submodule.span K F.rigidityRows) : ℤ)
+      = (Module.finrank K ↥(Submodule.span K
+            (⟨G₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows) : ℤ)
+        + (Module.finrank K ↥(Submodule.span K
+            (⟨G₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows) : ℤ)
+        + (Module.finrank K ↥((⟨G₁, F.supportExtensor⟩ :
+              BodyHingeFramework K k α β).relScrews u v
+            ⊔ (⟨G₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).relScrews u v) : ℤ)
+        - (screwDim k : ℤ) := by
+  -- Both inputs are stated before `set` abstracts the two sides.
+  have hkey := inf_span_rigidityRows_of_twoCut_of_isLink G₁ G₂ F.supportExtensor huv h₁ h₂
+    hoverlap
+  have hrows := F.rigidityRows_eq_union_of_isLink G₁ G₂ hlink
+  set F₁ : BodyHingeFramework K k α β := ⟨G₁, F.supportExtensor⟩
+  set F₂ : BodyHingeFramework K k α β := ⟨G₂, F.supportExtensor⟩
+  -- `dim (P ⊔ Q) + dim (P ⊓ Q) = dim P + dim Q`, with the meet counted by B5′ + the joint count.
+  have hsup := Submodule.finrank_sup_add_finrank_inf_eq
+    (Submodule.span K F₁.rigidityRows) (Submodule.span K F₂.rigidityRows)
+  rw [hkey, finrank_span_jointRows huv] at hsup
+  rw [hrows, Submodule.span_union]
+  have hle : Module.finrank K ↥(F₁.relScrews u v ⊔ F₂.relScrews u v) ≤ screwDim k := by
+    have h := Submodule.finrank_le (F₁.relScrews u v ⊔ F₂.relScrews u v)
+    rwa [screwSpace_finrank] at h
+  omega
+
+/-- **B5: the two sides of a vertex 2-cut meet exactly in the joint rows of their joined
+relative-screw spaces** (Layer B5): for `u ≠ v` and sides overlapping exactly in the cut pair
+(`V₁ ∩ V₂ = {u, v}`),
+
+  `span (F[V₁]).rigidityRows ⊓ span (F[V₂]).rigidityRows = span (jointRows (ρ̄₁ ⊔ ρ̄₂) u v)`,
+
+with `ρ̄ᵢ = (F[Vᵢ]).relScrews u v`.  It is B5′ (`inf_span_rigidityRows_of_twoCut_of_isLink`) at
+the induced sides `G[V₁]`, `G[V₂]`, whose links lie in `V₁`, `V₂` by definition.  Of `hoverlap`
+only the `⊆` half is consumed, and neither the covering `V₁ ∪ V₂ = V(F.graph)` nor the edge
+separation is needed; nor is `¬ G.Adj u v`. -/
+theorem inf_span_rigidityRows_of_vertexTwoCut [Finite α]
+    (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
+    (hoverlap : V₁ ∩ V₂ = {u, v}) :
+    Submodule.span K (⟨F.graph.induce V₁, F.supportExtensor⟩ :
+          BodyHingeFramework K k α β).rigidityRows
+        ⊓ Submodule.span K (⟨F.graph.induce V₂, F.supportExtensor⟩ :
+          BodyHingeFramework K k α β).rigidityRows
+      = Submodule.span K (jointRows
+          ((⟨F.graph.induce V₁, F.supportExtensor⟩ :
+              BodyHingeFramework K k α β).relScrews u v
+            ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
+              BodyHingeFramework K k α β).relScrews u v) u v) :=
+  inf_span_rigidityRows_of_twoCut_of_isLink _ _ _ huv (fun _ _ _ he => he.2)
+    (fun _ _ _ he => he.2) hoverlap.le
+
+/-- **B6: gluing ranks at a vertex 2-cut** (Layer B6): for `u ≠ v`, sides overlapping exactly in
+the cut pair and every link internal to one side,
+
+  `rank(G) = rank(G[V₁]) + rank(G[V₂]) + dim (ρ̄₁ ⊔ ρ̄₂) − screwDim k`,
+
+in `ℤ`, with `ρ̄ᵢ = (F[Vᵢ]).relScrews u v`.  It is B6′
+(`finrank_span_rigidityRows_twoCut_eq_of_isLink`) at the induced sides, whose links partition
+`F.graph`'s by `hsep`.  The covering `V₁ ∪ V₂ = V(F.graph)` is not needed.
 
 This is the linear-algebraic half of S10(ii)'s attainment criterion, whose combinatorial half is
 `Graph.deficiency_eq_of_vertexTwoCut'`; Layer C's `pencilLoss_vertexTwoCut` differences the two. -/
@@ -1302,21 +1391,9 @@ theorem finrank_span_rigidityRows_vertexTwoCut_eq [Finite α]
               BodyHingeFramework K k α β).relScrews u v
             ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
               BodyHingeFramework K k α β).relScrews u v) : ℤ)
-        - (screwDim k : ℤ) := by
-  -- Both inputs are stated before `set` abstracts the two sides.
-  have hkey := inf_span_rigidityRows_of_vertexTwoCut F huv hoverlap
-  have hrows := F.rigidityRows_eq_union_induce hsep
-  set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
-  set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce V₂, F.supportExtensor⟩
-  -- `dim (P ⊔ Q) + dim (P ⊓ Q) = dim P + dim Q`, with the meet counted by B5 + the joint count.
-  have hsup := Submodule.finrank_sup_add_finrank_inf_eq
-    (Submodule.span K F₁.rigidityRows) (Submodule.span K F₂.rigidityRows)
-  rw [hkey, finrank_span_jointRows huv] at hsup
-  rw [hrows, Submodule.span_union]
-  have hle : Module.finrank K ↥(F₁.relScrews u v ⊔ F₂.relScrews u v) ≤ screwDim k := by
-    have h := Submodule.finrank_le (F₁.relScrews u v ⊔ F₂.relScrews u v)
-    rwa [screwSpace_finrank] at h
-  omega
+        - (screwDim k : ℤ) :=
+  F.finrank_span_rigidityRows_twoCut_eq_of_isLink _ _ huv (fun _ _ _ he => he.2)
+    (fun _ _ _ he => he.2) hoverlap.le (isLink_iff_induce_or_induce hsep)
 
 /-- **Ranks add at a cut vertex** (`lem:block-rank-cut-vertex`; Phase 40e, informal (MC-52)(ii)):
 for sides overlapping in at most one body `v` and every link internal to one side,
@@ -1325,9 +1402,10 @@ for sides overlapping in at most one body `v` and every link internal to one sid
 
 at every body-hinge framework.  It is the gluing identity above with the cut pair collapsed to
 `u = v`, where no relative screw survives: the two side row spans meet in `0`, since every screw
-assignment is a motion of one side plus a motion of the other (`mem_sup_infinitesimalMotions_induce`
-at `u = v`, where its `S u = S v` is `rfl`), and a row span is the annihilator of its motions. The
-join is the whole row span (`rigidityRows_eq_union_induce`), so the dimensions add. -/
+assignment is a motion of one side plus a motion of the other
+(`mem_sup_infinitesimalMotions_of_isLink` at `u = v`, where its `S u = S v` is `rfl`), and a row
+span is the annihilator of its motions. The join is the whole row span
+(`rigidityRows_eq_union_of_isLink`), so the dimensions add. -/
 theorem finrank_span_rigidityRows_cutVertex_eq [Finite α]
     (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α} {v : α} (hoverlap : V₁ ∩ V₂ ⊆ {v})
     (hsep : ∀ e x y, F.graph.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
@@ -1342,9 +1420,10 @@ theorem finrank_span_rigidityRows_cutVertex_eq [Finite α]
             BodyHingeFramework K k α β).infinitesimalMotions
           ⊔ (⟨F.graph.induce V₂, F.supportExtensor⟩ :
             BodyHingeFramework K k α β).infinitesimalMotions :=
-    fun _ => mem_sup_infinitesimalMotions_induce F (u := v) (v := v)
+    fun _ => mem_sup_infinitesimalMotions_of_isLink (F.graph.induce V₁) (F.graph.induce V₂)
+      F.supportExtensor (u := v) (v := v) (fun _ _ _ he => he.2) (fun _ _ _ he => he.2)
       (by rwa [Set.pair_eq_singleton]) rfl
-  have hrows := F.rigidityRows_eq_union_induce hsep
+  have hrows := F.rigidityRows_eq_union_of_isLink _ _ (isLink_iff_induce_or_induce hsep)
   set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
   set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce V₂, F.supportExtensor⟩
   have hinf : Submodule.span K F₁.rigidityRows ⊓ Submodule.span K F₂.rigidityRows = ⊥ := by

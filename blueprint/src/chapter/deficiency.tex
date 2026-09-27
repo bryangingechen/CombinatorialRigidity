@@ -298,6 +298,8 @@ parallel copies of each edge $e \in E(G)$.
 
 \begin{lemma}[The deficiency along an ear]
   \label{lem:deficiency-ear}
+  \lean{Graph.deficiency_induce_add_le_of_ear}
+  \leanok
   \uses{def:D-deficiency}
   Let $V_1 \subseteq V(G)$, and let $a - x_1 - \cdots - x_k - b$
   ($k \ge 1$) be a path of $G$ with $a, b \in V_1$, possibly $a = b$, and
@@ -310,6 +312,7 @@ parallel copies of each edge $e \in E(G)$.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:cut-edge-decomposition}
   Take a partition $P_1$ of $V_1$ attaining
   $\operatorname{def}(\tilde G[V_1])$ and add each $x_i$ as a part of its

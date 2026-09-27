@@ -38,7 +38,8 @@ to `G`.
   witness at `a`, needing no admissibility of the picture and no case split on `k`.
 * `pathVertex_cases`, `pathVertex_eq_of_val_eq_succ`, `pathVertex_rev`,
   `pathVertex_mem_union_image_iff` — the path sequence read by index value, read backwards, and
-  against the prefixes `V₁ ∪ {x i | i < j}`.
+  against the prefixes `V₁ ∪ {x i | i < j}`; `pathVertex_last`, `pathVertex_injective` and
+  `image_val_lt_eq_range` serve the ear steps (`MainComponent/Ear.lean`, Phase 40g).
 * `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath`,
   `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the
   counts along the path: each body hangs from the prefix before it by one edge, so it adds `1` to
@@ -380,6 +381,11 @@ def pathVertex {k : ℕ} (a : α) (x : Fin k → α) (b : α) : Fin (k + 2) → 
     pathVertex a x b 0 = a := by
   simp [pathVertex]
 
+/-- **The path sequence ends at `b`** (Phase 40g CHAIN): the last index `k + 1` is sent to `b`. -/
+theorem pathVertex_last {k : ℕ} (a : α) (x : Fin k → α) (b : α) :
+    pathVertex a x b (Fin.last (k + 1)) = b := by
+  simp [pathVertex]
+
 /-- **Every non-initial member of the path sequence is `b` or an interior body** (Phase 40e
 BRIDGE): the only index `pathVertex` sends to `a` is `0` (`pathVertex_zero`), so a nonzero index
 lands on `b` (the last position) or on some `x i` (an interior position). -/
@@ -526,6 +532,26 @@ theorem pathVertex_eq_of_val_eq_succ {k : ℕ} (a : α) (x : Fin k → α) (b : 
   · rw [h', show i' = i from Fin.ext (by omega)]
   · omega
 
+/-- **A path of distinct bodies has an injective sequence** (Phase 40g CHAIN): with the interior
+bodies distinct and different from both ends, and `a ≠ b`, no two positions carry the same body.
+Read off position by position (`pathVertex_cases`). -/
+theorem pathVertex_injective {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Function.Injective x)
+    (hax : ∀ i, x i ≠ a) (hbx : ∀ i, x i ≠ b) (hab : a ≠ b) :
+    Function.Injective (pathVertex a x b) := by
+  intro m m' h
+  rcases pathVertex_cases a x b m with ⟨hm, h1⟩ | ⟨i, hm, h1⟩ | ⟨hm, h1⟩ <;>
+  rcases pathVertex_cases a x b m' with ⟨hm', h2⟩ | ⟨i', hm', h2⟩ | ⟨hm', h2⟩ <;>
+  rw [h1, h2] at h
+  · exact Fin.ext (by omega)
+  · exact absurd h.symm (hax i')
+  · exact absurd h hab
+  · exact absurd h (hax i)
+  · rw [hinj h] at hm; exact Fin.ext (by omega)
+  · exact absurd h (hbx i)
+  · exact absurd h.symm hab
+  · exact absurd h.symm (hbx i')
+  · exact Fin.ext (by omega)
+
 /-- **The path read from its other end** (Phase 40e BRIDGE): `pathVertex b (x ∘ Fin.rev) a` is
 `pathVertex a x b` backwards. This is the path as seen from `b`'s side, where the fibre lemma
 `Graph.exists_liftingRestrict_eq_of_bridgePath` is applied a second time. -/
@@ -620,7 +646,8 @@ theorem _root_.Graph.cutEdges_union_image_of_bridgePath {G : Graph α β} {V₁ 
     · rw [hmem]; simp
     · rw [hmem]; simp
 
-private theorem image_val_lt_eq_range {k : ℕ} (x : Fin k → α) :
+/-- **The full prefix is every interior body**: `{x i | i < k} = range x` for `x : Fin k → α`. -/
+theorem image_val_lt_eq_range {k : ℕ} (x : Fin k → α) :
     x '' {i | i.val < k} = Set.range x := by
   ext w; simp [Fin.is_lt]
 

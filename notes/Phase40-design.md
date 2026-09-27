@@ -9,7 +9,7 @@ open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER 
 closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
 2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R closed 2026-09-26** (`notes/Phase40f.md`),
 one build commit from a compiler-checked recon's spike; **40g = CHAIN opened 2026-09-27**
-(`notes/Phase40g.md`), design-first from a compiler-checked recon, two build commits next; the four
+(`notes/Phase40g.md`), design-first from a compiler-checked recon, build 1 of 2 landed; the four
 later groups are provisional. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
 claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
@@ -368,7 +368,7 @@ log). The verdict in brief:
       `rank R_{G′+ear_k} = rank R_{G′} + 5k − 1 + dim(ρ + Λ_k)`. This is
       `BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq` at `{a, b}`, plus the path
       side's rank `5(k + 1)` and the fact that its `relScrews` is the span of the hinges.
-      Neither is landed yet: both land in 40g build 1, as the path brick and the ear rank law
+      Both landed in 40g build 1 (`MainComponent/Ear.lean`), as the path brick and the ear rank law
       `BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, which holds at every adjacency (CHAIN
       applies it directly at `(ofNormals G ends p).toBodyHinge`, the polarity entering only per
       hinge through `screwComplementIso_mk_extensor`; ORBIT may do the same). The second side's induced graph is the path because
@@ -715,8 +715,8 @@ round that lands it.
   `finrank_relScrews_le`, `pencilLoss_vertexTwoCut` (C1ℓ–C4ℓ). **Paid so far:**
   `partitionDef_split_of_vertexTwoCut` (40e build 1, on `lem:deficiency-cut-vertex`); `relScrews`,
   `jointRows` (40g's open, on the green `def:relative-screws`); `inf_span_rigidityRows_of_vertexTwoCut`,
-  `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open, on the red `lem:block-rank-two-cut`, which
-  40g build 1 turns green). `jointMotions`, `weldedRank` and the A2/A3 set go with SHORT (§3 STEPS).
+  `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open, on `lem:block-rank-two-cut`, green since
+  40g build 1 beside B5′/B6′). `jointMotions`, `weldedRank` and the A2/A3 set go with SHORT (§3 STEPS).
 - **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
   40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
   exposition (the main component as a vector bundle over planar pictures, the flat rank, the

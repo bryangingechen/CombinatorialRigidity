@@ -458,8 +458,11 @@ dimension $D - \dim U$.
 
 \begin{lemma}[Rank gluing at a vertex $2$-cut]
   \label{lem:block-rank-two-cut}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_vertexTwoCut,
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_twoCut_of_isLink,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_twoCut_eq_of_isLink,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.inf_span_rigidityRows_of_vertexTwoCut,
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq}
+  \leanok
   \uses{def:relative-screws, def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework and $u \neq v$ two bodies. Let
   $G_1, G_2$ be graphs whose edges, with their ends, are together exactly
@@ -478,6 +481,7 @@ dimension $D - \dim U$.
   inside $V_2$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:span-rigidityRows-eq-of-motions-eq}
   A row space is the annihilator of the corresponding motion space
   (\cref{lem:span-rigidityRows-eq-of-motions-eq}), so a functional lies
@@ -494,11 +498,18 @@ dimension $D - \dim U$.
   $R(G,p)$ is the sum of the two row spaces, and the dimension formula
   for a sum and an intersection gives the rank. No non-adjacency of $u$
   and $v$ is needed: an edge $uv$ belongs to $G_1$ or to $G_2$, and its
-  rows are the same on either side.
+  rows are the same on either side. The induced case is the
+  specialization $G_i = G[V_i]$, whose edges lie inside $V_i$ by
+  definition.
 \end{proof}
 
 \begin{lemma}[The rank and relative screws of a path]
   \label{lem:block-rank-path}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_path,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_path_le,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.span_range_le_relScrews_path,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.relScrews_path_le_span_range}
+  \leanok
   \uses{def:relative-screws, def:rigidity-matrix}
   Let $(P,p)$ be a body-hinge framework whose edges are those of a path
   $a = x_0 - x_1 - \cdots - x_k - x_{k+1} = b$ of distinct bodies
@@ -508,6 +519,7 @@ dimension $D - \dim U$.
   $a, b$ in $(P,p)$ are $\operatorname{span}(C_0, \dots, C_k)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:block-rank-cut, def:hinge-row-block}
   Each edge contributes at most $D - 1$ independent rows
   (\cref{def:hinge-row-block}). Conversely, the body $x_{i+1}$ hangs
@@ -522,6 +534,8 @@ dimension $D - \dim U$.
 
 \begin{lemma}[Rank addition along an open ear]
   \label{lem:block-rank-ear}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ear_eq}
+  \leanok
   \uses{def:relative-screws, def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework and $V_1$ a set of bodies, and
   let $a - x_1 - \cdots - x_k - b$ ($k \geq 0$) be a path of $G$ with
@@ -536,6 +550,7 @@ dimension $D - \dim U$.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:block-rank-two-cut, lem:block-rank-path}
   Apply \cref{lem:block-rank-two-cut} to $G_1 = G[V_1]$ and to the path
   $G_2$, with $V_2$ its bodies: $V_1 \cap V_2 = \{a, b\}$, and every edge

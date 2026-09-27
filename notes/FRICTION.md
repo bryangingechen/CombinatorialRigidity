@@ -98,6 +98,31 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [mirror-candidate] No `Set.ncard_range_le` — `(Set.range f).ncard ≤ Nat.card ι` takes `← Nat.card_coe_set_eq` then `Finite.card_range_le`
+- **Where it bit:** Phase 40g build 1, `Graph.deficiency_induce_add_le_of_ear`
+  (`Molecule/Pencil/MainComponent/Ear.lean`), bounding the crossing edges of the interior bodies by
+  `k − 1`. The spike carried a three-line local helper `ncard_range_le_of_fin` instead; the first
+  inline attempt named `Set.Nat.card_coe_set_eq`, which does not exist (the bridge is the root
+  `Nat.card_coe_set_eq`, as the `ncard_edgeSet_deleteIncidenceSet` entry below records).
+- **Friction:** one LSP round, and a two-step glue: `rw [← Nat.card_coe_set_eq]; exact
+  (Finite.card_range_le _).trans (by simp)`.
+- **Proposed fix:** `Set.ncard_range_le [Finite ι] (f : ι → α) : (Set.range f).ncard ≤ Nat.card ι`
+  in the `Mathlib/Data/Set/Card.lean` mirror. Not landed in build 1: that mirror sits under
+  `Framework.lean`, so landing it rebuilds nearly the whole tree for one call site. A second
+  consumer is queued: build 2's `StepD.lean` spike calls `ncard_range_le_of_fin e`.
+- **Status:** open (mirror candidate).
+
+### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides
+- **Where it bit:** Phase 40g build 1, `RigidityMatrix/Bricks.lean`.
+- **Friction:** (1) `mem_sup_infinitesimalMotions_of_isLink _ _ _ (fun _ _ _ he => he.2) …` inside
+  `finrank_span_rigidityRows_cutVertex_eq` failed with *"Invalid projection … `?m.2 x y z`"*: the
+  lambda is elaborated before the graphs are unified, so `he`'s type is still a metavariable (the
+  same `_` form works in B5/B6's term-mode bodies, where the result type fixes the graphs first).
+  (2) `simp only [rigidityRows, Set.mem_ofPred_eq, h]` in `rigidityRows_congr_isLink` leaves
+  `(⟨G₁, C⟩).hingeRowBlock e` against `(⟨G₂, C⟩).hingeRowBlock e`, equal by `rfl` only.
+- **Fix:** (1) pass the graphs explicitly; (2) close with `rfl`. One LSP round each, no build.
+- **Status:** idiom.
+
 ### [resolved] A spike that is silent under `lake env lean` lands with style-linter warnings
 - **Where it bit:** Phase 40f CONTRACT-R build, `Graph.eq_zero_of_contractLimitMap_eq_zero`
   (`Molecule/Pencil/MainComponent/Contract.lean`): the spike's `simp [...] at hrow hgr ⊢` drew six
