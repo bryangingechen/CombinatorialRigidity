@@ -5,8 +5,8 @@
 interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2`
 when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
 at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
-second-read). Fourteen red nodes; seven builds B1–B7, plus the `Carrier.lean` split before B3 (PI
-decision 5). **Next: B1, the line geometry** — see *Hand-off*.
+second-read). Fourteen nodes, seven green; seven builds B1–B7, plus the `Carrier.lean` split before
+B3 (PI decision 5). B1 landed. **Next: B2, the two deficiency bounds** — see *Hand-off*.
 
 ## Current state
 
@@ -29,14 +29,14 @@ MC14):
 - `deficiency.tex`: `lem:deficiency-ear-merge` (COVERAGE's bridge from `δ = 0`), after
   `lem:deficiency-ear`.
 
-No Lean has landed. **The next concrete commit is B1** (*Hand-off*): seven nodes green.
+**B1 landed** (the line geometry): its seven nodes are green, in the new `MainComponent/Lines.lean`
+and five `pointJoin` lemmas in `Flat.lean`. The other seven nodes are red. **The next concrete commit
+is B2** (*Hand-off*): two nodes green.
 
 **The spikes** live in the gitignored `scratch/40h/` and `scratch/40h-read/`, local to this checkout
 (builder pointers, not evidence):
-- `scratch/40h-read/S40hReadGeom.lean` (563 lines), the second reader's line geometry. It supersedes
-  the recon's `scratch/40h/S40hGeom.lean`. **`lake lean`**, re-run at this open (`f3c46221`, ~35 s):
-  exit 0, 0 errors, 44 warnings, no `sorry`; its eighteen `#print axioms` lines are each
-  `[propext, Classical.choice, Quot.sound]`.
+- `scratch/40h-read/S40hReadGeom.lean` (563 lines), the second reader's line geometry: consumed by
+  B1.
 - `scratch/40h/S40hSteps.lean` (177 lines): the four step statements (`of_openEar_one` is ORBIT's) and
   the two deficiency lemmas, proofs `sorry`, and the θ instances. **`lake lean`**, re-run at this
   open: exit 0, 0 errors, 14 warnings, six of them the disclosed `sorry`s.
@@ -98,7 +98,7 @@ No Lean has landed. **The next concrete commit is B1** (*Hand-off*): seven nodes
 
 Planned names from the spikes. Pins in **bold**; the other names are helpers, unpinned.
 
-- [ ] **B1, new `MainComponent/Lines.lean`** (source `S40hReadGeom.lean`):
+- [x] **B1, new `MainComponent/Lines.lean`** (source `S40hReadGeom.lean`):
   - **`kleinLin`** → `def:pencil-line-pairing`;
   - **`klein_pointJoin_pointJoin`**, **`eq_zero_of_kleinLin_eq_zero`** (`kleinLin_apply`,
     `kleinLin_comm`, `klein_pointJoin_same`, `flatSigma_pointJoin`, `flatPi_pointJoin`) →
@@ -115,6 +115,11 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
   - In `Flat.lean`, beside `pointJoin` (PI decision 5): `pointJoin_add_smul_left`, `pointJoin_self`
     (helpers). The spike's `pointJoin_swap` is a `pointJoin` fact too; the same convention may put it
     there (the builder's call).
+  - **Landed** with every pin and helper above except three unpinned spike helpers:
+    `exists_ne_zero_linearIndependent_affine` and `linearIndependent_basis_sumElim_one`/`_two` give
+    way to `exists_ne_zero_add_smul_notMem`, a shorter insertion route (*Decisions made*).
+    `pointJoin_swap`, `flatSigma_pointJoin` and `flatPi_pointJoin` went to `Flat.lean` by the same
+    convention. `lem:pencil-plane-lines` pins in its clause order (`pointJoin_liftPlane_…` second).
 - [ ] **B2** — `Induction/SplitOffDeficiency.lean`: **`Graph.splitOff_deficiency_le_of_eq_left`** →
   `lem:splitoff-deficiency-reuse`, and the module docstring's "KT 4.3(ii)" corrected to 4.3(i);
   `MainComponent/Ear.lean`: **`Graph.deficiency_induce_le_of_ear_of_merge`** →
@@ -141,7 +146,7 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Blockers / open questions
 
-- None blocking B1.
+- None blocking B2.
 - **B3–B4 is the high-risk build** (MvPolynomial substitution), and its node has no compiled statement
   (*Current state*).
 - **Two pieces of the step proofs have no compiled form**, which the recon left open: the affine
@@ -152,22 +157,20 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Hand-off / next phase
 
-**Next: B1, the line geometry (fresh builder).** Source: `scratch/40h-read/S40hReadGeom.lean`
-(gitignored, local to this checkout), not the recon's superseded `S40hGeom.lean`. Targets: the seven
-B1 nodes (the checklist's names). Chores:
-- **`lake lean` the source first** (TACTICS-QUIRKS §55): 44 warnings of lint debt at this open.
-- **New `Lines.lean`**, importing the least module that provides what it uses. The spike imports
-  `…MainComponent.Chain`; `pointJoin`, `planarProj` and `flatScrewEquiv` are in `Flat.lean`, and the
-  rest is to be checked by name. Add it to the root import.
-- **`Flat.lean`** (865 lines): the two `pointJoin` lemmas of the checklist, beside `pointJoin`.
-- **Docstrings**: a module docstring for `Lines.lean` listing its statements (the `Cut.lean`
-  pattern), and one per declaration, with the pairing identity's sign as compiled (*Current state*).
-- **Lint debt**: judge by `lake lint` (TACTICS-QUIRKS §55), not by the spike's warnings.
-- **Pin and flip** the seven nodes, with a role-labelled map where a node carries two or three pins.
-  Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
-  `notes/check-phase-note.py`.
+**Next: B2, the two deficiency bounds (fresh builder).** Source: the statements in
+`scratch/40h/S40hSteps.lean` (gitignored, local to this checkout); their proofs there are `sorry`, so
+B2 writes them, from the two nodes' proofs. Targets: the checklist's B2 names.
+- **`Graph.splitOff_deficiency_le_of_eq_left`** (`Induction/SplitOffDeficiency.lean`, beside the
+  landed `Graph.splitOff_deficiency_le`, no call site moved; PI decision 4(c)) →
+  `lem:splitoff-deficiency-reuse`: extend a partition of `V(G) − v` by putting `v` into `a`'s part.
+  The same commit corrects that module docstring's "KT 4.3(ii)" to 4.3(i).
+- **`Graph.deficiency_induce_le_of_ear_of_merge`** (`MainComponent/Ear.lean`, beside the landed
+  `Graph.deficiency_induce_add_le_of_ear`) → `lem:deficiency-ear-merge`: put every `x i` into the
+  part holding `a` and `b`.
+- **Pin and flip** both nodes. Gates: `lake build`, `lake lint`, `blueprint/verify.sh`,
+  `blueprint/lint.sh`, `notes/check-phase-note.py`.
 
-**Then B2, the `Carrier.lean` split, B3–B4, B5, B6, B7, then the close.**
+**Then the `Carrier.lean` split, B3–B4, B5, B6, B7, then the close.**
 
 ## Decisions made during this phase
 
@@ -177,3 +180,10 @@ B1 nodes (the checklist's names). Chores:
 - **(MC-182) gets its own red node**, `lem:splitoff-deficiency-reuse`, not a third pin on the green
   `lem:splitoff-deficiency`. The successor is a separate Lean statement (PI decision 4(c)), and a red
   node keeps it on the dep graph's to-do list until B2.
+- **2026-09-27 — B1 landed by a shorter insertion route.** The spike extended a basis of
+  `R = ρ ⊔ span F` and used affine-curve independence. The landed proofs use one fact: a vector off a
+  subspace stays off it along `v + t w` at one of any two distinct nonzero `t`
+  (`exists_ne_zero_add_smul_notMem`), with `Submodule.finrank_sup_span_singleton` for the counts.
+  `lem:pencil-insertion`'s proof prose is rewritten to match; its statement is unchanged. The five
+  `pointJoin` facts sit in `Flat.lean` (PI decision 5's convention). `star` keeps its planned name:
+  nothing in the namespace uses `Star.star`.

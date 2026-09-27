@@ -141,6 +141,9 @@ to be re-derived by re-reading entries later.
 - **Fix:** (1) one `simp [certPt, planarProj_apply, cross_apply, one_add_one_eq_two]` where the
   leftover goals appeared, the bare `simp` elsewhere; (2) the `simp?` lists, reflowed to 100
   columns.
+- **Second instance of (2)** (Phase 40h B1, `klein_liftPlane` in `MainComponent/Lines.lean`): the
+  spike's `simp [liftPlane, dotProduct, …] at e00 … e21` drew thirty flexible warnings under `lake
+  lean`; `lean_code_actions` on a `simp?` gave a 34-lemma list, with no build.
 - **Status:** idiom.
 
 ### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
@@ -153,6 +156,17 @@ to be re-derived by re-reading entries later.
   `Mathlib/LinearAlgebra/CrossProduct.lean` mirror; `eval_crossProduct` is its `MvPolynomial.eval`
   case.
 - **Status:** open (mirror candidate).
+
+### [open] `y ∧ (y + t u) = t (y ∧ u)` takes six rewrites: no `pointJoin_add_smul_right`
+- **Where it bit:** Phase 40h B1, `exists_insertion_gain` (`MainComponent/Lines.lean`), the body put
+  back at `y + t u`. `Flat.lean` has only the left-linear `pointJoin_add_smul_left`, so the right
+  argument goes through `pointJoin_swap` twice: `rw [pointJoin_swap (y + t • u),
+  pointJoin_add_smul_left, pointJoin_self, zero_add, ← smul_neg, ← pointJoin_swap]`. The first
+  attempt, a bare `pointJoin_swap`, rewrote the wrong side (one LSP round).
+- **Proposed fix:** `pointJoin_add_smul_right (p p' r : Fin 4 → K) (t : K) : pointJoin p (p' + t •
+  r) = pointJoin p p' + t • pointJoin p r` beside `pointJoin_add_smul_left` in `Flat.lean`; B6 and
+  B7 put `x 1` back at `x 0 + t u` or `x 2 + t u`, so they are its likely next call sites.
+- **Status:** open.
 
 ### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides
 - **Where it bit:** Phase 40g build 1, `RigidityMatrix/Bricks.lean`.

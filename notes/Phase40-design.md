@@ -11,7 +11,7 @@ closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRID
 one build commit from a compiler-checked recon's spike; **40g = CHAIN closed 2026-09-27**
 (`notes/Phase40g.md`), two build commits from a compiler-checked recon's spike; **40h = SHORT
 opened 2026-09-27** (`notes/Phase40h.md`), design-first from a compiler-checked recon whose new
-claims (MC-179)–(MC-182) were second-read first, with B1 next; the three later groups are
+claims (MC-179)–(MC-182) were second-read first, B1 landed and B2 next; the three later groups are
 provisional. The ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new
 claims (MC-173)–(MC-176). This doc replaces the planning note
 `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved here and which is now a
@@ -333,7 +333,7 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
     repairs in place. **40h opened 2026-09-27**, design-first, from the recon's verdict and the PI's
     decisions, with fourteen red nodes (`main-component.tex` §`sec:main-component-short`, and one node
     each in `molecular-induction.tex` and `deficiency.tex`): **7 builds (B1–B7) and the `Carrier.lean`
-    split + open + close**. B1 is next.
+    split + open + close**. B1 (the line geometry) landed; B2 is next.
     - **The route** (the recon's verdict). By the landed ear rank law, `G` attains at a
       configuration where `G[V₁]` attains iff `dim(ρ ⊔ Λ_k) ≥ k + 1 + def₃(G[V₁]) − def₃(G)`.
       - `k = 3, 4` ((MC-181), (MC-180)): the antecedent is `G″ := G.splitOff (x 1) (x 0) (x 2) (e 1)`
@@ -370,7 +370,10 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
       lines (at most 3-dimensional), and the affine-curve independence. The insertion lemma had one
       elementary residual (a basis of `R` extended by two vectors outside it is independent). The
       second reader filled it and proved the insertion lemma's "at least `dim W`" half, which the
-      recon's spike did not state and B6's `W = ⊤` branch needs.
+      recon's spike did not state and B6's `W = ⊤` branch needs. **Landed in B1**
+      (`MainComponent/Lines.lean`), with both insertion halves proved by a shorter route: a vector
+      off a subspace stays off it along a line at one of any two nonzero parameters, so neither the
+      affine-curve independence nor the basis extension is landed.
     - **The plan for 40h's open** (the recon's build table, with PI decision 5's split and placement):
 
       | build | content | file | risk |
@@ -474,7 +477,8 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
   one build commit. **CHAIN opened as 40g** (2026-09-27), design-first from a compiler-checked
   recon, and closed the same day after two build commits. **SHORT opened as 40h** (2026-09-27),
   design-first from a compiler-checked recon, after the fresh read-only second reading of its new
-  claims (MC-179)–(MC-182) (PI decision 1) confirmed them, with repairs in place; B1 is next.
+  claims (MC-179)–(MC-182) (PI decision 1) confirmed them, with repairs in place; B1 landed, B2 is
+  next.
   ORBIT's dependencies do not touch CONTRACT-R.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**

@@ -50,7 +50,9 @@ independence, serve the ear steps (Phase 40g CHAIN, `sec:main-component-chain`).
   `dim L(q) ≤ 3 + def₃`; `Graph.x0Attains_of_finrank_liftingSpace_eq_three` is (MC-5)(iii).
 * `flatScrewEquiv_pointJoin`, `linearIndependent_pointJoin_of_flat` — a join is
   `(p_z p̄′ − p′_z p̄, p̄ × p̄′)` in flat coordinates, and independence of joins is read there
-  (`lem:pencil-join-flat`, Phase 40g).
+  (`lem:pencil-join-flat`, Phase 40g); `flatSigma_pointJoin` and `flatPi_pointJoin` are its two
+  components, and `pointJoin_swap`, `pointJoin_self`, `pointJoin_add_smul_left` say the join is
+  alternating and linear in its first point (Phase 40h, for `MainComponent/Lines.lean`).
 * `exists_mvPolynomial_linearIndependent_pointJoin_picture`,
   `exists_mvPolynomial_linearIndependent_pointJoin_heights` — independence of joins is
   Zariski-open in the picture and in the heights (`lem:pencil-join-independence-open`).
@@ -719,6 +721,37 @@ theorem flatScrewEquiv_pointJoin (p p' : Fin 4 → K) :
       = (p 2 • planarProj p' - p' 2 • planarProj p,
         crossProduct (planarProj p) (planarProj p')) := by
   rw [flatScrewEquiv_apply, pointJoin, flatSigma_mk_extensor, flatPi_mk_extensor]
+
+/-- The `W′` coordinate of a join: `σ(p ∧ p') = p_z p̄′ − p′_z p̄`. -/
+theorem flatSigma_pointJoin (p p' : Fin 4 → K) :
+    flatSigma (pointJoin p p') = p 2 • planarProj p' - p' 2 • planarProj p :=
+  flatSigma_mk_extensor p p'
+
+/-- The `W_Π` coordinate of a join: `π(p ∧ p') = p̄ ×₃ p̄′`. -/
+theorem flatPi_pointJoin (p p' : Fin 4 → K) :
+    flatPi (pointJoin p p') = crossProduct (planarProj p) (planarProj p') :=
+  flatPi_mk_extensor p p'
+
+/-- The join is antisymmetric: `p′ ∧ p = −(p ∧ p′)` (Phase 40h SHORT). -/
+theorem pointJoin_swap (p p' : Fin 4 → K) : pointJoin p' p = -pointJoin p p' := by
+  refine (flatScrewEquiv (K := K)).injective ?_
+  rw [map_neg, flatScrewEquiv_pointJoin, flatScrewEquiv_pointJoin, Prod.neg_mk, neg_sub,
+    ← cross_anticomm]
+
+/-- The join of a point with itself vanishes: `p ∧ p = 0` (Phase 40h SHORT). -/
+theorem pointJoin_self (p : Fin 4 → K) : pointJoin p p = 0 :=
+  (flatScrewEquiv (K := K)).injective <| by
+    rw [flatScrewEquiv_pointJoin, sub_self, cross_self, map_zero, Prod.mk_zero_zero]
+
+/-- The join is linear in its first point along a line:
+`(p + t r) ∧ p′ = p ∧ p′ + t (r ∧ p′)` (Phase 40h SHORT). -/
+theorem pointJoin_add_smul_left (p r p' : Fin 4 → K) (t : K) :
+    pointJoin (p + t • r) p' = pointJoin p p' + t • pointJoin r p' := by
+  refine (flatScrewEquiv (K := K)).injective ?_
+  simp only [map_add, map_smul, flatScrewEquiv_pointJoin, Pi.add_apply, Pi.smul_apply,
+    smul_eq_mul, LinearMap.add_apply, LinearMap.smul_apply, Prod.smul_mk, Prod.mk_add_mk]
+  congr 1
+  module
 
 /-- **Independence of joins is read in flat coordinates** (`lem:pencil-join-flat`): a family of
 joins is linearly independent when the family of its flat coordinates is. -/

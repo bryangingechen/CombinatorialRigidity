@@ -1908,6 +1908,8 @@ $\tau(p \wedge p') = \bar p \times \bar p'$.
 
 \begin{definition}[The pairing of lines]
   \label{def:pencil-line-pairing}
+  \lean{CombinatorialRigidity.Molecular.kleinLin}
+  \leanok
   \uses{lem:pencil-join-flat}
   The \emph{pairing} of $c, c' \in \Lambda^2 K^4$ is
   \[
@@ -1921,6 +1923,9 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
 
 \begin{lemma}[The pairing of two joins]
   \label{lem:pencil-line-pairing-join}
+  \lean{CombinatorialRigidity.Molecular.klein_pointJoin_pointJoin,
+    CombinatorialRigidity.Molecular.eq_zero_of_kleinLin_eq_zero}
+  \leanok
   \uses{def:pencil-line-pairing, def:extensor}
   For $p, q, r, s \in K^4$,
   $\langle p \wedge q, r \wedge s \rangle = \det(p, q, r, s)$; in
@@ -1929,6 +1934,7 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
   $c = 0$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-join-flat}
   Expand both sides in the coordinates of the four points, with the flat
   coordinates of \cref{lem:pencil-join-flat}. For nondegeneracy, pair $c$
@@ -1938,12 +1944,16 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
 
 \begin{lemma}[The joins of four independent points]
   \label{lem:pencil-tetrahedron}
+  \lean{CombinatorialRigidity.Molecular.linearIndependent_pointJoin_tetra,
+    CombinatorialRigidity.Molecular.span_pointJoin_tetra_eq_top}
+  \leanok
   \uses{def:extensor}
   If $p_0, p_1, p_2, p_3 \in K^4$ are linearly independent, the six joins
   $p_i \wedge p_j$, $i < j$, are linearly independent, so they span
   $\Lambda^2 K^4$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-line-pairing-join}
   Pair a vanishing combination $\sum c_{ij}\, p_i \wedge p_j = 0$ with the
   opposite edge $p_k \wedge p_l$. By \cref{lem:pencil-line-pairing-join}
@@ -1954,6 +1964,10 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
 
 \begin{lemma}[The lines through two points]
   \label{lem:pencil-two-stars}
+  \lean{CombinatorialRigidity.Molecular.star,
+    CombinatorialRigidity.Molecular.star_sup_star_le_ker_klein,
+    CombinatorialRigidity.Molecular.five_le_finrank_star_sup_star}
+  \leanok
   \uses{def:pencil-line-pairing, def:extensor}
   For $y, y' \in K^4$, every element $c$ of
   $\operatorname{star}(y) + \operatorname{star}(y')$ has
@@ -1962,6 +1976,7 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
   $\dim\bigl(\operatorname{star}(y) + \operatorname{star}(y')\bigr) \ge 5$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-line-pairing-join, lem:pencil-tetrahedron}
   A line through $y$ or through $y'$ meets the line $y y'$, so the
   pairing vanishes (\cref{lem:pencil-line-pairing-join}). Extend $y, y'$
@@ -1977,11 +1992,16 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{lemma}[The lines of a plane]
   \label{lem:pencil-plane-lines}
+  \lean{CombinatorialRigidity.Molecular.planeLines,
+    CombinatorialRigidity.Molecular.pointJoin_liftPlane_mem_planeLines,
+    CombinatorialRigidity.Molecular.finrank_planeLines_le}
+  \leanok
   \uses{lem:pencil-join-flat}
   For $h \in K^3$, the join of any two points of $\hat\pi_h$ lies in
   $\Lambda^2 \hat\pi_h$, and $\dim \Lambda^2 \hat\pi_h \le 3$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The first claim is a computation in the flat coordinates of
   \cref{lem:pencil-join-flat}. On $\Lambda^2 \hat\pi_h$ the coordinate
   $\sigma$ is determined by $\tau$, so $\tau$ is injective there.
@@ -1989,6 +2009,9 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{lemma}[Lines joining two planes]
   \label{lem:pencil-bilinear}
+  \lean{CombinatorialRigidity.Molecular.klein_liftPlane,
+    CombinatorialRigidity.Molecular.finrank_sup_le_three_of_klein}
+  \leanok
   \uses{def:pencil-line-pairing, lem:pencil-plane-lines}
   Let $h, h' \in K^3$, and let $c \in \Lambda^2 K^4$ have
   $\langle c, u \wedge v \rangle = 0$ for every $u \in \hat\pi_h$ and
@@ -2000,6 +2023,7 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \le 3$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-join-flat}
   Test the hypothesis on the nine joins of the lift of a unit vector
   $e_i$ of $K^3$ to $\hat\pi_h$ with the lift of $e_j$ to $\hat\pi_{h'}$.
@@ -2015,6 +2039,9 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{lemma}[Putting a body back next to a neighbour]
   \label{lem:pencil-insertion}
+  \lean{CombinatorialRigidity.Molecular.exists_insertion_ge,
+    CombinatorialRigidity.Molecular.exists_insertion_gain}
+  \leanok
   \uses{def:extensor}
   Let $K$ be infinite, let $\rho \subseteq \Lambda^2 K^4$ be a subspace
   and $F$ a finite family in $\Lambda^2 K^4$, let $y, y', u \in K^4$, and
@@ -2026,16 +2053,25 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   $t \neq 0$.
 \end{lemma}
 \begin{proof}
-  For $t \neq 0$, $y \wedge (y + t u) = t\,(y \wedge u)$ and
-  $(y + t u) \wedge y' = y \wedge y' + t\,(u \wedge y')$, so
-  $W_t = \rho + \operatorname{span} F + \operatorname{span}(y \wedge u,\
-  y \wedge y' + t\,(u \wedge y'))$. Take a basis of
-  $\rho + \operatorname{span} F$, followed by $y \wedge y'$ if it lies
-  outside, and by $y \wedge u$ if it lies outside $W$, and replace
-  $y \wedge y'$ in it by $y \wedge y' + t\,(u \wedge y')$. The family is
-  affine in $t$, lies in $W_t$ for $t \neq 0$, and is linearly independent
-  at $t = 0$; a maximal minor of its coordinates is a polynomial in $t$,
-  nonzero at $0$, and $K$ is infinite.
+  \leanok
+  Write $R = \rho + \operatorname{span} F$. For $t \neq 0$,
+  $y \wedge (y + t u) = t\,(y \wedge u)$ and
+  $(y + t u) \wedge y' = v_t$ with $v_t = y \wedge y' + t\,(u \wedge y')$,
+  so $W_t$ contains $R$, $y \wedge u$ and $v_t$. A vector $v$ outside a
+  subspace $S$ has $v + t w \notin S$ for one of any two distinct nonzero
+  values of $t$, since otherwise $S$ contains $w$ and then $v$; as $K$ is
+  infinite, two such values exist.
+
+  If $y \wedge y' \in R$, then $W = R \subseteq W_t$, and when
+  $y \wedge u \notin W$, $\dim W_t \ge \dim\bigl(R + K\,(y \wedge u)\bigr)
+  = \dim W + 1$ for every $t \neq 0$. Otherwise $\dim W = \dim R + 1$, and
+  some $t \neq 0$ has $v_t \notin R$, so that
+  $\dim W_t \ge \dim(R + K v_t) = \dim W$. If moreover
+  $y \wedge u \notin W$, then $y \wedge y' \notin R + K\,(y \wedge u)$,
+  since a relation $y \wedge y' = r + c\,(y \wedge u)$ with $r \in R$ has
+  $c \neq 0$ and puts $y \wedge u$ in $W$. So some $t \neq 0$ has
+  $v_t \notin R + K\,(y \wedge u)$, and $\dim W_t \ge \dim R + 2 =
+  \dim W + 1$.
 \end{proof}
 
 \begin{lemma}[An open ear over fixed base data]
