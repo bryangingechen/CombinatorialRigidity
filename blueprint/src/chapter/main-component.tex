@@ -3932,9 +3932,10 @@ additive core applies.
 \begin{proof}
   \leanok
   (1) The ends of the chain keep at least two neighbours in $V_1$ and
-  every other body of $V_1$ keeps all of them. A set of bodies of $V_1$
-  left by no edge of $G[V_1]$ would give one of $G - x_1$, adding
-  $x_2, \dots, x_k$ to the side of $b$.
+  every other body of $V_1$ keeps all of them. A nonempty proper subset
+  of $V_1$ left by no edge of $G[V_1]$ would give one of $G - x_1$,
+  adding $x_2, \dots, x_k$ to whichever of it and its complement in
+  $V_1$ contains $b$.
 
   (2) The new edge is not parallel to an old one, since $u$ and $w$ are
   not adjacent, and $u$ and $w$ each exchange the edge to $v$ for the
@@ -4124,13 +4125,15 @@ additive core applies.
   \cref{lem:deficiency-additive-core} give the inequality.
 
   If $\operatorname{def}_3(G) = 0$, take a body $x$ of degree two and a
-  rigid set avoiding it: the 4-cycle of a chain with two bodies and a
-  body of degree two off it (\cref{lem:pencil-x0-sparse-count}); or, if
-  no two bodies of degree two are adjacent, any such $x$ and a rigid set
-  in $V(G) \setminus \{x\}$, which exists since $s_6(V(G) \setminus
-  \{x\}) \le 0$ (\cref{lem:pencil-x0-sparse-count},
-  \cref{lem:deficiency-sparse}). Let $W$ be a maximal rigid set
-  containing it in $V(G) \setminus \{x\}$. The body $x$ has at most one
+  rigid set avoiding it. If two bodies of degree two are adjacent, they
+  lie on a chain with two interior bodies, whose 4-cycle is rigid, and
+  since at least four bodies have degree two
+  (\cref{lem:pencil-x0-sparse-count}), one of them, $x$, lies off it.
+  Otherwise take any such $x$ and a rigid set in $V(G) \setminus \{x\}$,
+  which exists since $s_6(V(G) \setminus \{x\}) \le 0$
+  (\cref{lem:pencil-x0-sparse-count}, \cref{lem:deficiency-sparse}).
+  Let $W$ be a maximal rigid set in $V(G) \setminus \{x\}$ containing
+  the rigid set taken. The body $x$ has at most one
   neighbour in $W$: a neighbour of degree two would have only one
   neighbour in $W$, too few for a rigid set; and two neighbours of
   degree at least three would be the ends of a chain $a - x - b$ whose

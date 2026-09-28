@@ -1282,6 +1282,33 @@ Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pend
   `10 − 6`; beside others, each crossing edge at `x` costs `5`), so `x` lies in a rigid set.
   Pointer: `notes/Phase40l.md`; `notes/Phase40-design.md` §3 COVERAGE (D2).
 
+### `main-component.tex` — Phase 40m (CHAINS + THEOREM-S: chains, cuts, Theorem S and the covering theorem)
+
+**One new entry — judged at the sub-phase close (2026-09-28).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC16.md`, Step MC16, (MC-75)–(MC-89), with
+(MC-21)(b) and (MC-139) for θ-graphs); the criterion transfers as in the `pencil.tex` section. The
+entry below is the design recon's fourth proof-level departure, D4, written in place in the node
+proofs and the remark. The rest landed as scoped, in five build commits from the design recon's
+spikes: the maximal ear, which serves chain extraction, the cycle and the chain of bridges, is the
+informal proof's maximal path of bodies of degree two, and the one-gate connectivity lemma and the
+standing hypotheses at the smaller graphs are project-side graph bookkeeping; the chain dispatch,
+the count of bodies of degree two and the planar-rigid contraction follow (MC-79)(v), (MC-76) and
+(MC-75)(iii). The account of the whole induction stays with the Phase-39 entry
+`thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close, at
+MOTIVES. The ledger is now **2 pending / 47 done** (of 49).
+
+- **`thm:pencil-x0-theorem-s` / `Graph.IsX0Graph.exists_additiveCore`, with
+  `thm:pencil-x0-coverage` and `rem:pencil-x0-theta`** — [done (the two nodes' proofs and the
+  remark, at 40m's B5 and close)] **(b)** the informal case analysis ((MC-89), step 5) sends
+  θ-graphs to their own step, THETA ((MC-21)(b), covered along the longest path by (MC-139)), and
+  states Theorem S ((MC-80)) on the class 𝒮, which excludes them, with the extra conclusion
+  `1 ≤ def₂(G[W]) < def₂(G)`. **Stable insight:** with the core produced by maximality, the core
+  bound (D1) and additivity ((MC-87)), no step of Theorem S's proof uses that `G` is not a
+  θ-graph, and the contraction step needs neither inequality; so θ-graphs fall under the covering
+  theorem's other cases and need no step of their own (`rem:pencil-x0-theta` keeps (MC-139)'s
+  covering as a second one). Pointer: `notes/Phase40m.md`; `notes/Phase40-design.md` §3 COVERAGE
+  (D4).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

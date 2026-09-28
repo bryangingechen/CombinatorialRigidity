@@ -1,183 +1,128 @@
 # Phase 40m — PENCIL-X0 / COVERAGE-CHAINS + THEOREM-S: chains, cuts, Theorem S and the covering theorem (work log)
 
-**Status:** in progress (opened design-first 2026-09-28). COVERAGE's second and last sub-phase:
-**CHAINS** (the maximal ear through bodies of degree two, chains, the cycle, and the cut-vertex and
-bridge reductions, with (H) at every smaller graph) with **THEOREM-S** (Theorem S and the covering
-theorem) folded in, by the PI's call (2026-09-28, `notes/pencil/adjudications.md`; plan
-`notes/Phase40-design.md` §3 COVERAGE). Its close also closes COVERAGE: the general configuration
-attains at every graph satisfying (H). No workbook change and no new mathematics. Eleven red nodes
-to green in five builds, all transcriptions of complete sorry-free spikes; B1–B5 are landed
-(**all eleven CHAINS+THEOREM-S nodes green**). **Next: the close** — see *Hand-off*. Then
-MOTIVES.
+**Status:** ✓ complete (opened design-first, built and closed 2026-09-28). COVERAGE's second and
+last sub-phase: **CHAINS** (the maximal ear through bodies of degree two, chains, the cycle, and the
+cut-vertex and bridge reductions, with (H) at every smaller graph) with **THEOREM-S** (Theorem S and
+the covering theorem) folded in, by the PI's call (2026-09-28, `notes/pencil/adjudications.md`;
+plan `notes/Phase40-design.md` §3 COVERAGE). Its close also closes COVERAGE: the general
+configuration attains at every graph satisfying (H). **Next: MOTIVES** (`X0Dist` and `X0Gen`),
+which closes Phase 40 — see *Hand-off*.
 
 ## Current state
 
-**B1–B5 landed; CHAINS and THEOREM-S both closed.** `CoverageChain.lean` (707 lines):
-`def:pencil-x0-chain`, `lem:pencil-x0-chain-exists` and `lem:pencil-x0-cycle-reduces` green, with
-the two proof rewordings. `CoverageCut.lean` (640 lines, imports `CoverageChain`):
-`lem:pencil-x0-chain-standing` and `lem:pencil-x0-cut-reduces` green, the latter with the
-reworded proof; its five BRIDGE helpers (`bridge_gate_left`, `x0Below_induce_bridge_left`,
-`bridge_symm`, `bridge_cons`, `x0Reduces_of_bridgeEar`) are `private` (confirmed unreferenced
-elsewhere in the tree, and in `Full.lean`'s THEOREM-S half). `CoverageTheoremS.lean` (580 lines,
-imports `CoverageCut` and `SparseDeficiency`): `def:pencil-x0-usable-chain`,
-`lem:pencil-x0-chain-reduces`, `lem:pencil-x0-planar-rigid-reduces` and
-`lem:pencil-x0-sparse-count` green from B4, plus `thm:pencil-x0-theorem-s` and
-`thm:pencil-x0-coverage` green from B5 — all six of THEOREM-S' `\lean{…}` pins matching the
-checklist's warning-fixed transcription (no proof rewording in B4 or B5). All eleven
-`sec:main-component-coverage` nodes but `thm:pencil-x0-generic-attains` (MOTIVES) are now green:
-COVERAGE itself is done, and only the close (docs/blueprint sync) is left.
+**Closed, and with it COVERAGE.** Five build commits (B1 `059fbd25`, B2 `13a3d4e1`, B3 `8858f01d`,
+B4 `a394309a`, B5 `36e66c7a`), two coordinator fixups (`61d97b06`, `eb085494`) and the close
+landed. All eleven CHAINS+THEOREM-S nodes of `main-component.tex` §`sec:main-component-coverage`
+are green: CHAINS' `def:pencil-x0-chain`, `lem:pencil-x0-chain-exists`,
+`lem:pencil-x0-chain-standing`, `lem:pencil-x0-cycle-reduces`, `lem:pencil-x0-cut-reduces`, and
+THEOREM-S' `def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`,
+`lem:pencil-x0-planar-rigid-reduces`, `lem:pencil-x0-sparse-count`, `thm:pencil-x0-theorem-s`,
+`thm:pencil-x0-coverage`. With 40l's two, the whole subsection is green. The chapter's one red
+node is `thm:pencil-x0-generic-attains` (`sec:main-component-statements`), for MOTIVES.
 
-**Two coordinator-caught fixes landed with B5.** The module docstring's sparse-count clause
-now states `hhubs`' actual (global, not per-removed-body) hypothesis; and
-`Graph.IsX0Graph.x0Attains`'s docstring names `thm:pencil-x0-coverage` (its own pin) alongside
-`thm:pencil-x0-generic-attains` (MOTIVES' later pin of the same fact).
+The Lean is three leaf modules in `Molecule/Pencil/MainComponent/`, each in the root import after
+`…MainComponent.Coverage`, each module docstring listing its statements: `CoverageChain.lean` (708
+lines; imports `Coverage`), `CoverageCut.lean` (640; imports `CoverageChain`; its five BRIDGE
+helpers `private`), `CoverageTheoremS.lean` (580; imports `CoverageCut` and
+`Induction/SparseDeficiency`). Each build is a verbatim transcription of the spikes over the
+checklist's ranges, plus docstrings and the listed warning fixes (the coordinator diffed every
+landed file against the concatenated ranges); after each, a `touch` + `lake build` of the touched
+module was warning-free and `lake lint` passed. **MOTIVES' interface:** `Graph.IsX0Graph.x0Attains`
+(every (H)-graph attains, `[Infinite K]`) and `Graph.X0Attains.of_twoEdgeConnected` (the consumer's
+form: `G.Simple`, `3 ≤ V(G).ncard`, `G.TwoEdgeConnected`).
 
-**The red-node consistency gate, run at this open.** All eleven nodes, statements and proofs, re-read
-against the spikes. Every statement is the compiled statement's, every proof routes through the
-Lean argument, and every `\uses` label exists and is live. THEOREM-S' six were re-confirmed against
-`scratch/40m/Full.lean`. The 40l close checked them against S5, and the one call that changed (the
-landed `partitionDef_induce_id_le_of_maximal`, which has no `hWV`) changes no statement. Three
-CHAINS proofs get optional rewordings, each in the build that greens its node (checklist).
+**Headline axioms, re-verified at the close** on 34 declarations: the eighteen
+`formalization.yaml` main results and the sixteen 40m pins. All 34 are exactly
+`[propext, Classical.choice, Quot.sound]` (the structure `Graph.IsChain` and the definition
+`Graph.ChainUsable` included); none uses `sorryAx`. *Measured, script not retained*: one
+`#print axioms` line per declaration under `import CombinatorialRigidity`, run with `lake lean` on
+the fully built tree (a full `lake build` first, after the close's docstring edits: 2 992 jobs, 0
+warnings, 0 errors, 0 cache-write failures).
 
-**The spikes** (gitignored `scratch/40m/`, local to this checkout; builder sources, not evidence;
-**keep them**, and `scratch/40l/`). Run with `lake lean` at `e8a37f3e`; the coordinator's re-run
-matched:
-- `Chains.lean` (1 288 lines; imports `…MainComponent.Coverage`; B1–B3's source): exit 0, no
-  warnings, no `sorry` (the word occurs only in comments); `#print axioms` standard on the five
-  interface statements, `splitOff` and its four instances, `isChain_one` and `two_le_of_adj`;
-  Batteries' `#lint` (14 linters) clean.
-- `Full.lean` (1 844 lines; B4–B5's source): `Chains.lean`'s body, then S5's THEOREM-S half verbatim
-  but for one edit. Exit 0, no `sorry`, 13 warnings, all in the THEOREM-S half (the fixes are listed
-  under B4 and B5). Six axioms lines, all standard, among them `Graph.IsX0Graph.x0Attains` and
-  `Graph.X0Attains.of_twoEdgeConnected`. S5's five statements restated verbatim as `example`s
-  (lines 1807–1835) are each discharged.
-- `Inst.lean`: 40l S6's `IsChain` instance (`K₄` with every edge subdivided twice, chain
-  `0 − 4 − 5 − 1`) re-checked over this `Graph.IsChain`: exit 0, one long-line warning (S6's text).
-  `gen.py` regenerates `Full.lean` and `Inst.lean` from `Chains.lean`.
+**The spikes** (gitignored `scratch/40m/`, with `scratch/40l/`): consumed. No later sub-phase reads
+them; MOTIVES calls the landed interface.
 
 ## Architectural choices made up front
 
-- **The route** (the recon's verdict; design doc §3 COVERAGE items 2–3). One core in the consumers'
-  own format: the maximal ear `Graph.IsOpenEar.exists_maximal` (strong induction on `V₁.ncard`, by
-  `IsOpenEar.symm` and `IsOpenEar.cons`) serves chain extraction and the cycle, and BRIDGE runs the
-  same extension on a bridge ear with its two sides tracked. The cut arguments go through one gate,
-  `Graph.Connected.induce_of_gate`. THEOREM-S is S5's text.
-- **Layout: three new leaf modules** in `CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/`,
-  each added to the root import `CombinatorialRigidity.lean` directly after the
-  `…MainComponent.Coverage` line, in order, by the build that creates it:
-  `CoverageChain.lean` (imports `…MainComponent.Coverage`; about 740 lines),
-  `CoverageCut.lean` (imports `…MainComponent.CoverageChain`; about 680),
-  `CoverageTheoremS.lean` (imports `…MainComponent.CoverageCut` and
-  `CombinatorialRigidity.Molecular.Induction.SparseDeficiency`; about 590).
-- **MOTIVES' interface** (B5): `Graph.IsX0Graph.x0Attains` and `Graph.X0Attains.of_twoEdgeConnected`.
+- **The route** (the recon's verdict; design doc §3 COVERAGE items 2–3): one core, the maximal ear
+  `Graph.IsOpenEar.exists_maximal`, serves chain extraction and the cycle, and BRIDGE runs the same
+  extension on a bridge ear with its two sides tracked; the cut arguments go through one gate,
+  `Graph.Connected.induce_of_gate`; THEOREM-S is S5's text.
+- **Layout:** the three new leaf modules above, named with the `Coverage` prefix (*Decisions*).
 
 ## Lemma checklist
 
-Pins in **bold**. `C` is `scratch/40m/Chains.lean` and `F` is `scratch/40m/Full.lean`; ranges are
-inclusive, include each declaration's docstring and exclude the spikes' own section headers. **Every build:** transcribe the listed lines
-verbatim in the listed order, under the listed `/-! ## … -/` headers. Put the copyright header and a
-module docstring listing the file's statements on a new file. Every declaration gets a docstring
-(the spikes omit a few). Open the file with `open scoped Graph`, `namespace
-CombinatorialRigidity.Molecular` and `variable {α β : Type*}`, and close it with `end
-CombinatorialRigidity.Molecular`. Then the gates of `CombinatorialRigidity/CLAUDE.md` *Before each
-commit*: a warning-free `lake build`, `lake lint`, `blueprint/verify.sh` and `blueprint/lint.sh`, and
-a `#print axioms` check on each pin.
+All landed with the standard axioms (*Current state*); pins in **bold**.
 
-- [x] **B1 → new `CoverageChain.lean`** (641 spike lines → 707, landed). Sections, in order:
-  `## Path sequences` ← C 13–65; `## Open ears` ← C 69–195, then C 618–648
-  (`IsOpenEar.exists_eq_of_isLink_notMem`, `isLink_first`, `isLink_last`), then C 1114–1121
-  (`IsOpenEar.ncard_lt`); `## The maximal ear` ← C 228–235
-  (`Graph.Connected.vertexSet_subset_of_forall_adj`), then C 274–342; `## Chains` ← C 346–614;
-  `## Plumbing for Theorem S` ← C 1196–1271. Root import: added
-  `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageChain`.
-  - `def:pencil-x0-chain` ← **`Graph.IsChain`**; green.
-  - `lem:pencil-x0-chain-exists` ← **`Graph.IsX0Graph.exists_isChain`**; green, with the reworded
-    proof (dropped the last clause on distinctness — the ends are distinct by construction).
-  - `lem:pencil-x0-cycle-reduces` ← **`Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two`**; green,
-    with the reworded proof (follows `lem:pencil-x0-chain-exists`' argument).
-  - No warnings; eight docstrings the spike omitted were added.
-- [x] **B2 → new `CoverageCut.lean`** (331 spike lines → 372, landed). `## Cut arguments` ←
-  C 199–226, then C 237–270; `## The standing hypotheses at a chain's smaller graphs` ← C 650–702,
-  then C 969–1112 (`IsX0Graph.splitOff`), then C 1123–1194 (its four instances). Root import:
-  added `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut`.
-  - `lem:pencil-x0-chain-standing` ← **`Graph.IsChain.isX0Graph_induce`,
-    `Graph.IsX0Graph.splitOff`**; green, no rewording, no warnings.
-- [x] **B3 → `CoverageCut.lean`, continued** (257 spike lines → 640 total, landed). `## BRIDGE` ←
-  C 706–873, with its five helpers `bridge_gate_left`, `x0Below_induce_bridge_left`,
-  `bridge_symm`, `bridge_cons` and `x0Reduces_of_bridgeEar` made `private`; `## CUT` ← C 877–965.
-  - `lem:pencil-x0-cut-reduces` ← **`Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected`,
-    `Graph.IsX0Graph.x0Reduces_of_not_connected`**; green, with the reworded proof. No warnings.
-    **CHAINS' five nodes are then green.**
-- [x] **B4 → new `CoverageTheoremS.lean`** (landed, 354 lines), with
-  `variable {K : Type*} [Field K] {α β : Type*}`. F 1280–1287 (`Graph.ChainUsable`), then
-  `variable [Finite α] [Finite β]`;
-  `## The reductions at a usable chain and at a planar-rigid set` ← F 1293–1390;
-  `## Counting bodies of degree two` ← F 1392–1522; `## The 4-cycle of a two-body chain` ←
-  F 1524–1590. Root import: add
-  `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS`.
-  - `def:pencil-x0-usable-chain` ← **`Graph.ChainUsable`**;
-  - `lem:pencil-x0-chain-reduces` ← **`Graph.IsChain.x0Reduces_of_chainUsable`**;
-  - `lem:pencil-x0-planar-rigid-reduces` ← **`Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid`**;
-  - `lem:pencil-x0-sparse-count` ← **`Graph.IsX0Graph.exists_degree_eq_two_notMem`,
-    `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos`**.
-  - **Warnings to fix** (`F` lines): 1340, `Graph.IsOpenEar.deficiency_induce_le` has the section
-    variable `[Finite β]` unused (put `omit [Finite β] in` before it); 1459, 1462, 1472, 1481,
-    `Set.mem_setOf_eq` → `Set.mem_ofPred_eq` (`two_mul_ncard_le_ncard_edgeSet`); in
-    `partitionDef_three_induce_diff_nonpos`, 1498 `Set.insert_diff_singleton` →
-    `Set.insert_sdiff_singleton`, 1499 `if_neg` → `ite_eq_right` (the same signature) with its
-    `by simpa using hxX` → `by simp`, and 1503 `Set.mem_setOf_eq` → `Set.mem_ofPred_eq` and
-    `Set.mem_diff` → `Set.mem_sdiff`; 1525, the unused `hG` of
-    `Graph.IsOpenEar.deficiency_three_induce_cycle` → `_hG` (its two callers in B5 unchanged).
-    All applied; `lake build` and `lake lint` warning-clean, `#print axioms` standard on all four
-    pins. **THEOREM-S' first four nodes are then green.**
-- [x] **B5 → `CoverageTheoremS.lean`, continued** (landed, 226 spike lines → 580 total).
-  `## Theorem S and the covering theorem` ← F 1594–1806.
-  - `thm:pencil-x0-theorem-s` ← **`Graph.IsX0Graph.exists_additiveCore`**; green.
-  - `thm:pencil-x0-coverage` ← **`Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains`,
-    `Graph.X0Attains.of_twoEdgeConnected`**; green.
-  - **Warnings fixed** (in `exists_additiveCore`): 1702 `Set.ncard_diff_singleton_of_mem` →
-    `Set.ncard_sdiff_singleton_of_mem`; 1719, wrapped the over-100-character line. **THEOREM-S'
-    six nodes are then green; CHAINS+THEOREM-S' full eleven are green.**
-- [ ] **The close** (docs and blueprint), which also closes COVERAGE: the re-read of
-  §`sec:main-component-coverage`; the headline axioms on the `formalization.yaml` main results and
-  40m's pins, one `#print axioms` line each under `import CombinatorialRigidity` with `lake lean`
-  after a full `lake build` (the 40k/40l method); the design doc, ROADMAP and
-  `MolecularConjecture.md`; the exposition-ledger candidates. The public surfaces stay unchanged
-  (the PI's standing call: they update when Phase 40 closes, at MOTIVES).
+- [x] **B1** (`059fbd25`) — `CoverageChain.lean`: **`Graph.IsChain`** → `def:pencil-x0-chain`;
+  **`Graph.IsX0Graph.exists_isChain`** → `lem:pencil-x0-chain-exists`;
+  **`Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two`** → `lem:pencil-x0-cycle-reduces`; the two
+  proofs reworded.
+- [x] **B2** (`13a3d4e1`) — `CoverageCut.lean`, the gate and (H) at a chain's smaller graphs:
+  **`Graph.IsChain.isX0Graph_induce`, `Graph.IsX0Graph.splitOff`** →
+  `lem:pencil-x0-chain-standing`.
+- [x] **B3** (`8858f01d`) — `CoverageCut.lean`, BRIDGE and CUT:
+  **`Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected`,
+  `Graph.IsX0Graph.x0Reduces_of_not_connected`** → `lem:pencil-x0-cut-reduces`, the proof reworded.
+- [x] **B4** (`a394309a`) — `CoverageTheoremS.lean`: **`Graph.ChainUsable`** →
+  `def:pencil-x0-usable-chain`; **`Graph.IsChain.x0Reduces_of_chainUsable`** →
+  `lem:pencil-x0-chain-reduces`; **`Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid`** →
+  `lem:pencil-x0-planar-rigid-reduces`; **`Graph.IsX0Graph.exists_degree_eq_two_notMem`,
+  `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos`** → `lem:pencil-x0-sparse-count`; eleven
+  spike warnings fixed.
+- [x] **B5** (`36e66c7a`) — `CoverageTheoremS.lean`: **`Graph.IsX0Graph.exists_additiveCore`** →
+  `thm:pencil-x0-theorem-s`; **`Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains`,
+  `Graph.X0Attains.of_twoEdgeConnected`** → `thm:pencil-x0-coverage`; two spike warnings fixed.
+- [x] **The close** (docs and blueprint, with one Lean docstring chore): the re-read of
+  §`sec:main-component-coverage`, the headline axioms, the design doc, ROADMAP and
+  `MolecularConjecture.md`, the exposition ledger; the public surfaces left unchanged (the PI's
+  standing call: they update when Phase 40 closes, at MOTIVES).
 
 ## Blockers / open questions
 
-- **None.** The interface statements are S5's (witnessed verbatim in `Full.lean`), so THEOREM-S'
-  calls are unchanged, and no REDUCE contract moves.
+- **None for 40m.**
 
 ## Hand-off / next phase
 
-**B5 is done; all eleven CHAINS+THEOREM-S nodes are green. The next concrete step is the close**
-(checklist): the §`sec:main-component-coverage` re-read, the headline axioms on the
-`formalization.yaml` main results and 40m's pins (one `#print axioms` line each under
-`import CombinatorialRigidity` with `lake lean` after a full `lake build`, the 40k/40l method),
-the design doc/ROADMAP/`MolecularConjecture.md` sync (public surfaces unchanged per the PI's
-standing call), and exposition-ledger candidates. **Then MOTIVES** (`X0Dist` and `X0Gen`), which
-closes Phase 40 and updates the public surfaces; it opens as its own sub-phase and consumes
-`Graph.X0Attains.of_twoEdgeConnected`.
+**40m is closed, and COVERAGE with it. Next: MOTIVES** (`X0Dist` and `X0Gen`; design doc §3
+MOTIVES), Phase 40's last layer, which opens as its own sub-phase (lettered when it opens) and
+closes Phase 40. Its first concrete step is the design-first open: the **MOTIVES pre-build recon**
+(the 40l–40m precedent: compiler-checked, top rung), which settles the design doc's two open
+questions, **(a)** the exact `hcard` constant and **(b)** the β-headroom's root cause, against the
+landed SPINE2 threading, and then the open commit, which mints the letter and the work log and
+runs the red-node consistency gate on `thm:pencil-x0-generic-attains`. MOTIVES consumes
+`Graph.X0Attains.of_twoEdgeConnected` (and `Graph.IsX0Graph.x0Attains`) through the landed
+`Graph.X0Attains.hasDistinctPencilRealization` (`X0Dist`) and the fibre-intersection lemma
+(`X0Gen`). Its close updates the public surfaces (README, home_page, intro.tex,
+`formalization.yaml`), writes or closes the two `[pending]` exposition entries (design doc §7),
+and re-decides the held kernels (design doc §6).
 
 ## Decisions made during this phase
 
+- **2026-09-28 — the close.** The re-read found every node's statement and proof on the Lean
+  route; two proofs were tightened: `lem:pencil-x0-chain-standing` (1) now takes a nonempty proper
+  subset, and `thm:pencil-x0-theorem-s`'s rigid case states its case split (two adjacent bodies of
+  degree two lie on a chain with two interior bodies). Lean chore, docstrings only: four wrong or
+  loose docstrings in `CoverageChain.lean` (`pathVertex_eq_of_val_eq_zero`,
+  `IsOpenEar.exists_isLink_of_degree_eq_two`, `IsChain.two_le_of_adj`) and `CoverageTheoremS.lean`
+  (`three_mul_sub_le_two_mul_ncard`, stated the wrong way round).
+- **`61d97b06` (coordinator fixup):** B5's range ran F 1594–1805, one line short; F 1806 is
+  `of_twoEdgeConnected`'s last line.
+- **`eb085494` (coordinator fixup):** `lem:pencil-x0-cut-reduces`' B3-reworded proof: part (2)'s set
+  `C` must be nonempty and not all of `G − v`; part (1) introduced no `V′`, and dropped why each
+  side keeps degree ≥ 2.
+- **B4/B5 docstrings, at the coordinator's request:** the module docstring's clause for
+  `partitionDef_three_induce_diff_nonpos` states its global `hhubs`, and `x0Attains` names
+  `thm:pencil-x0-coverage`.
+- **B1–B5** — transcribed verbatim from the spikes with fresh docstrings; the thirteen spike warnings
+  fixed as listed at the open; proof rewordings in B1 and B3 only.
+- **File names** `CoverageChain`/`CoverageCut`/`CoverageTheoremS`, not the planned
+  `Chains`/`Cuts`/`Cover`: those sit one letter from the step files `Chain.lean`, `Cut.lean` and
+  from `Coverage.lean`.
+- **`exists_isChain` keeps `_hv`** (M4's `_hdeg` precedent); a few helpers drop unused `Finite`
+  binders (hypotheses only weaken). **Reuse:** the landed `Graph.isLink_eq_of_degree_eq_two`
+  replaces S5's duplicate; Phase 39's M1–M3 not adopted (design doc §3 COVERAGE *Lean reuse*).
+  **Placement:** the helpers stay in the new files (40l precedent); moving them by definition is a
+  tracked cleanup-round item (design doc §3 COVERAGE).
 - **2026-09-28 — opened design-first** from CHAINS' design recon (opus, read-only,
-  compiler-checked), whose spikes prove S5's five plumbing statements, with S5's THEOREM-S half
-  composing on top. The PI folded THEOREM-S into 40m: one open, B1–B5, one close (verbatim in
-  `notes/pencil/adjudications.md`). The recon's flags, settled by precedent (the user's standing
-  configuration), are the entries below.
-- **File names.** `CoverageChain.lean`, `CoverageCut.lean`, `CoverageTheoremS.lean`, not the
-  planned `Chains.lean`/`Cuts.lean`/`Cover.lean`. The first two would sit one letter from the landed
-  step files `Chain.lean` and `Cut.lean`, whose theorems these files feed, and `Cover.lean` beside
-  `Coverage.lean`. The `Coverage` prefix groups COVERAGE's files with their interface.
-- **`exists_isChain` keeps `_hv`** (M4's `_hdeg` precedent), so the statement THEOREM-S calls is
-  unchanged. `IsChain.isX0Graph_induce` and a few helpers drop unused `Finite` binders, which weakens
-  only hypotheses; call sites are unaffected.
-- **Placement.** The helpers stay in the new files (the 40l precedent), and the placement by
-  definition is a tracked cleanup-round item (design doc §3 COVERAGE).
-- **Reuse.** S5's `eq_or_eq_of_degree_eq_two` is dropped for the landed
-  `Graph.isLink_eq_of_degree_eq_two`, and Phase 39's M1–M3 are not adopted (why: design doc §3
-  COVERAGE *Lean reuse*).
-- **Proof rewordings** land with the builds that green their nodes (B1, B3), not at the open.
+  compiler-checked); the PI folded THEOREM-S in (one open, B1–B5, one close).

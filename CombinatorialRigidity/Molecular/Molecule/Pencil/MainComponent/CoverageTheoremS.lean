@@ -157,7 +157,7 @@ theorem _root_.Graph.IsChain.x0Reduces_of_chainUsable {G : Graph α β} (hG : G.
 
 /-! ## Counting bodies of degree two -/
 
-/-- The degree sum over `V(G)` bounds `3|V| − |D₂|` from below, `D₂` the bodies of degree two. -/
+/-- The degree sum `2|E|` over `V(G)` is at least `3|V| − |D₂|`, `D₂` the bodies of degree two. -/
 theorem _root_.Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard {G : Graph α β}
     (hG : G.IsX0Graph) :
     3 * (V(G).ncard : ℤ) - ({v ∈ V(G) | G.degree v = 2} : Set α).ncard ≤ 2 * E(G).ncard := by

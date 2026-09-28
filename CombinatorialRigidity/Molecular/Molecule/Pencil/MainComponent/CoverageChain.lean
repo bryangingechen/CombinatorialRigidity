@@ -80,7 +80,7 @@ theorem val_eq_zero_or_of_pathVertex_mem {k : ℕ} {x : Fin k → α} {a b : α}
   · exact absurd (h ▸ hm) (hxV i)
   · exact Or.inr h
 
-/-- The body at a position of value one. -/
+/-- The body at a position of value zero. -/
 theorem pathVertex_eq_of_val_eq_zero {k : ℕ} (a : α) (x : Fin k → α) (b : α) {m : Fin (k + 2)}
     (hm : m.val = 0) : pathVertex a x b m = a := by
   rcases pathVertex_cases a x b m with ⟨-, h⟩ | ⟨i, h', -⟩ | ⟨h', -⟩
@@ -283,7 +283,7 @@ theorem _root_.Graph.Connected.vertexSet_subset_of_forall_adj {G : Graph α β}
   exact hz.2 (hcl y hy z hyz)
 
 /-- At an end `a` of degree two, the second link: `a`'s edges are `e 0` and one more, `g`, to a
-body `a'` of `V₁`, and `g` is no path edge. -/
+body `a' ≠ a`, and `g` is no path edge. -/
 theorem _root_.Graph.IsOpenEar.exists_isLink_of_degree_eq_two [Finite β]
     {G : Graph α β} [G.Simple] {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α}
     {e : Fin (k + 1) → β} (h : G.IsOpenEar V₁ x a b e) (ha : G.degree a = 2) :
@@ -645,7 +645,8 @@ theorem _root_.Graph.IsX0Graph.crossingEdges_id {G : Graph α β} (hG : G.IsX0Gr
   refine ⟨he, x, y, hl, fun hxy => ?_⟩
   exact hG.simple.toLoopless.not_isLoopAt e x (by rw [show y = x from hxy.symm] at hl; exact hl)
 
-/-- A chain through a body adjacent to another body of degree two has two or more bodies. -/
+/-- A chain through a body adjacent to another body of degree two has two or more interior
+bodies. -/
 theorem _root_.Graph.IsChain.two_le_of_adj {G : Graph α β} {V₁ : Set α} {k : ℕ}
     {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hC : G.IsChain V₁ x a b e) {v w : α}
     (hv : v ∈ Set.range x) (hvw : G.Adj v w) (hw : G.degree w = 2) : 2 ≤ k := by

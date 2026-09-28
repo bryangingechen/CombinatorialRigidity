@@ -799,9 +799,10 @@ COVERAGE (the structural half and the assembly), run as two sub-phases, closed i
 (the one-step interface, the induction and the deficiency layer), as sub-phase 40l (2026-09-28,
 `notes/Phase40l.md`), built from a compiler-checked recon whose proofs of three second-read claims
 are new and recorded in the blueprint; its second and last, CHAINS with THEOREM-S folded in (chains,
-cycles, cut vertices and bridges; Theorem S and the covering theorem), opened as sub-phase 40m
-(2026-09-28, `notes/Phase40m.md`) from a compiler-checked recon whose spikes are complete and
-sorry-free. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+cycles, cut vertices and bridges; Theorem S and the covering theorem), closed as sub-phase 40m
+(2026-09-28, `notes/Phase40m.md`), built from a compiler-checked recon whose complete sorry-free
+spikes needed no new mathematics, so COVERAGE is done; MOTIVES (the two main-component
+statements), Phase 40's last layer, is next. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
