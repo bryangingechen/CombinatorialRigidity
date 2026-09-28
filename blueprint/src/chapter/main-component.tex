@@ -3998,6 +3998,8 @@ additive core applies.
 
 \begin{definition}[Usable chains]
   \label{def:pencil-x0-usable-chain}
+  \lean{Graph.ChainUsable}
+  \leanok
   \uses{def:pencil-x0-chain, def:deficiency-merged}
   A chain $a - x_1 - \cdots - x_k - b$ on $V_1$ is \emph{usable} if
   $k \ge 3$; or $k = 2$ and either $\operatorname{def}_3(G[V_1]; a, b) =
@@ -4011,12 +4013,15 @@ additive core applies.
 
 \begin{lemma}[A usable chain gives a reduction]
   \label{lem:pencil-x0-chain-reduces}
+  \lean{Graph.IsChain.x0Reduces_of_chainUsable}
+  \leanok
   \uses{def:pencil-x0-usable-chain, def:pencil-x0-reduces}
   Let $G$ satisfy the standing hypotheses and be sparse, with $G - v$
   connected for every body $v$. If some chain of $G$ is usable, then $G$
   reduces to the graphs smaller than it.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-x0-chain-standing, lem:deficiency-ear-merge,
         lem:deficiency-one-body-chain}
   By the ear clause or the split-off clause at the usable chain, on
@@ -4035,12 +4040,15 @@ additive core applies.
 
 \begin{lemma}[Contraction at a maximal planar-rigid set]
   \label{lem:pencil-x0-planar-rigid-reduces}
+  \lean{Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid}
+  \leanok
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing}
   Let $G$ satisfy the standing hypotheses and be 2-edge-connected, with
   $\operatorname{def}_2(G) > 0$ and a planar-rigid set. Then $G$
   reduces to the graphs smaller than it.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-add-body, lem:pencil-contract-standing}
   By the contraction clause at a maximal planar-rigid set $W$, which is
   proper, since $\operatorname{def}_2(G) > 0$. A body outside $W$ with
@@ -4051,6 +4059,9 @@ additive core applies.
 
 \begin{lemma}[Counting bodies of degree two]
   \label{lem:pencil-x0-sparse-count}
+  \lean{Graph.IsX0Graph.exists_degree_eq_two_notMem,
+        Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos}
+  \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency}
   Let $G$ satisfy the standing hypotheses.
   \begin{enumerate}
@@ -4062,6 +4073,7 @@ additive core applies.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   (1) Sparsity at $V(G)$ gives $2|E(G)| \le 3|V(G)| - 4$, so the sum of
   $3 - \deg v$ over the bodies is at least $4$; each term is at most
   one, and positive only at degree two.

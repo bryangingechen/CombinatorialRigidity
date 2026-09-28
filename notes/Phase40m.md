@@ -6,25 +6,25 @@ bridge reductions, with (H) at every smaller graph) with **THEOREM-S** (Theorem 
 theorem) folded in, by the PI's call (2026-09-28, `notes/pencil/adjudications.md`; plan
 `notes/Phase40-design.md` §3 COVERAGE). Its close also closes COVERAGE: the general configuration
 attains at every graph satisfying (H). No workbook change and no new mathematics. Eleven red nodes
-to green in five builds, all transcriptions of complete sorry-free spikes; B1–B3 are landed
-(**CHAINS' five nodes all green**, six to go). **Next: B4, new `CoverageTheoremS.lean`** — see
-*Hand-off*. MOTIVES follows.
+to green in five builds, all transcriptions of complete sorry-free spikes; B1–B4 are landed
+(**CHAINS' five nodes plus THEOREM-S' first four nodes all green**, two to go). **Next: B5,
+`CoverageTheoremS.lean` continued** — see *Hand-off*. The close follows, then MOTIVES.
 
 ## Current state
 
-**B1–B3 landed; CHAINS closed.** `CoverageChain.lean` (707 lines): `def:pencil-x0-chain`,
+**B1–B4 landed; CHAINS closed.** `CoverageChain.lean` (707 lines): `def:pencil-x0-chain`,
 `lem:pencil-x0-chain-exists` and `lem:pencil-x0-cycle-reduces` green, with the two proof
 rewordings. `CoverageCut.lean` (640 lines, imports `CoverageChain`): `lem:pencil-x0-chain-standing`
 and `lem:pencil-x0-cut-reduces` green, the latter with the reworded proof; its five BRIDGE helpers
 (`bridge_gate_left`, `x0Below_induce_bridge_left`, `bridge_symm`, `bridge_cons`,
 `x0Reduces_of_bridgeEar`) are `private` (confirmed unreferenced elsewhere in the tree, and in
-`Full.lean`'s THEOREM-S half). The remaining six target nodes of
-`blueprint/src/chapter/main-component.tex` §`sec:main-component-coverage` are red and unpinned;
-each build adds its nodes' `\lean{…}` and `\leanok` (statement and proof). Which build greens each
-node:
-- **THEOREM-S:** `def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`,
-  `lem:pencil-x0-planar-rigid-reduces`, `lem:pencil-x0-sparse-count` (B4);
-  `thm:pencil-x0-theorem-s`, `thm:pencil-x0-coverage` (B5).
+`Full.lean`'s THEOREM-S half). `CoverageTheoremS.lean` (new, imports `CoverageCut` and
+`SparseDeficiency`): `def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`,
+`lem:pencil-x0-planar-rigid-reduces` and `lem:pencil-x0-sparse-count` green, all four `\lean{…}`
+pins matching the checklist's warning-fixed transcription (no proof rewording). The remaining two
+target nodes of `blueprint/src/chapter/main-component.tex` §`sec:main-component-coverage` are red
+and unpinned; B5 adds their `\lean{…}` and `\leanok` (statement and proof):
+- **THEOREM-S:** `thm:pencil-x0-theorem-s`, `thm:pencil-x0-coverage` (B5).
 - `thm:pencil-x0-generic-attains` stays red (MOTIVES).
 
 **The red-node consistency gate, run at this open.** All eleven nodes, statements and proofs, re-read
@@ -103,8 +103,9 @@ a `#print axioms` check on each pin.
   - `lem:pencil-x0-cut-reduces` ← **`Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected`,
     `Graph.IsX0Graph.x0Reduces_of_not_connected`**; green, with the reworded proof. No warnings.
     **CHAINS' five nodes are then green.**
-- [ ] **B4 → new `CoverageTheoremS.lean`** (≈310 → ≈350), with `variable {K : Type*} [Field K]`
-  besides `{α β : Type*}`. F 1280–1287 (`Graph.ChainUsable`), then `variable [Finite α] [Finite β]`;
+- [x] **B4 → new `CoverageTheoremS.lean`** (landed, 354 lines), with
+  `variable {K : Type*} [Field K] {α β : Type*}`. F 1280–1287 (`Graph.ChainUsable`), then
+  `variable [Finite α] [Finite β]`;
   `## The reductions at a usable chain and at a planar-rigid set` ← F 1293–1390;
   `## Counting bodies of degree two` ← F 1392–1522; `## The 4-cycle of a two-body chain` ←
   F 1524–1590. Root import: add
@@ -122,6 +123,8 @@ a `#print axioms` check on each pin.
     `by simpa using hxX` → `by simp`, and 1503 `Set.mem_setOf_eq` → `Set.mem_ofPred_eq` and
     `Set.mem_diff` → `Set.mem_sdiff`; 1525, the unused `hG` of
     `Graph.IsOpenEar.deficiency_three_induce_cycle` → `_hG` (its two callers in B5 unchanged).
+    All applied; `lake build` and `lake lint` warning-clean, `#print axioms` standard on all four
+    pins. **THEOREM-S' first four nodes are then green.**
 - [ ] **B5 → `CoverageTheoremS.lean`, continued** (≈214 → ≈240). `## Theorem S and the covering
   theorem` ← F 1594–1806.
   - `thm:pencil-x0-theorem-s` ← **`Graph.IsX0Graph.exists_additiveCore`**;
@@ -144,13 +147,15 @@ a `#print axioms` check on each pin.
 
 ## Hand-off / next phase
 
-**CHAINS is done; the next concrete step is B4** (checklist): a fresh builder given
-`scratch/40m/Full.lean` creates `CoverageTheoremS.lean`, importing `CoverageCut` and
-`SparseDeficiency`, from the listed lines, adds it to the root import, and pins and greens
-`def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`, `lem:pencil-x0-planar-rigid-reduces`
-and `lem:pencil-x0-sparse-count`, fixing the listed warnings. B5 follows against the landed state,
-then the close. **Then MOTIVES** (`X0Dist` and `X0Gen`), which closes Phase 40 and updates the
-public surfaces; it opens as its own sub-phase and consumes `Graph.X0Attains.of_twoEdgeConnected`.
+**B4 is done; the next concrete step is B5** (checklist): a builder given `scratch/40m/Full.lean`
+continues `CoverageTheoremS.lean` from F 1594–1806 (`## Theorem S and the covering theorem`),
+fixing the two listed warnings, and pins and greens `thm:pencil-x0-theorem-s` and
+`thm:pencil-x0-coverage` — THEOREM-S' last two nodes, closing THEOREM-S and CHAINS+THEOREM-S
+together. Then **the close** (checklist): the §`sec:main-component-coverage` re-read, the
+`formalization.yaml`/design-doc/ROADMAP/`MolecularConjecture.md` sync (public surfaces unchanged
+per the PI's standing call), and exposition-ledger candidates. **Then MOTIVES** (`X0Dist` and
+`X0Gen`), which closes Phase 40 and updates the public surfaces; it opens as its own sub-phase and
+consumes `Graph.X0Attains.of_twoEdgeConnected`.
 
 ## Decisions made during this phase
 
