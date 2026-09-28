@@ -3577,12 +3577,15 @@ steps ask for.
 
 \begin{lemma}[A tight set is rigid]
   \label{lem:deficiency-tight-rigid}
+  \lean{Graph.deficiency_three_induce_eq_zero_of_tight}
+  \leanok
   \uses{def:D-deficiency}
   Let $X \subseteq V(G)$ with $|X| \ge 3$, and suppose $s(Z) \ge 1$ for
   every $Z \subseteq X$ with $|Z| \ge 2$. If $s(X) \le 1$, then
   $\operatorname{def}_3(G[X]) = 0$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-singleton-bound}
   Write $v_2(P) = 3(|P| - 1) - 2d(P)$ and $v_3(P) = 6(|P| - 1) - 5d(P)$
   for the two values of a partition $P$ of $X$, so that $v_3(P) =
@@ -3600,6 +3603,8 @@ steps ask for.
 
 \begin{lemma}[A maximal rigid set bounds the singleton values above it]
   \label{lem:deficiency-core-bound}
+  \lean{Graph.deficiency_three_induce_eq_zero_of_le, Graph.partitionDef_induce_id_le_of_maximal}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be sparse.
   \begin{enumerate}
@@ -3645,6 +3650,8 @@ steps ask for.
 
 \begin{lemma}[The planar deficiency adds at a core]
   \label{lem:deficiency-additive-core}
+  \lean{Graph.partitionDef_map, Graph.deficiency_induce_add_deficiency_rigidContract_le}
+  \leanok
   \uses{def:D-deficiency, def:rigid-contraction}
   \begin{enumerate}
     \item For a map $c$ of the bodies, the value of a partition of the
@@ -3661,6 +3668,7 @@ steps ask for.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-singleton-bound}
   (1) The parts and the crossing edges correspond under $c$.
 
@@ -3676,6 +3684,8 @@ steps ask for.
 
 \begin{lemma}[The deficiencies at a body of degree two]
   \label{lem:deficiency-one-body-chain}
+  \lean{Graph.not_adj_and_deficiencyMerged_two_add_two_le, Graph.deficiencyMerged_three_add_five_le}
+  \leanok
   \uses{def:D-deficiency, def:deficiency-merged}
   Let $V_1 \subseteq V(G)$ and $x \in V(G) \setminus V_1$, and let
   $a \neq b$ in $V_1$ be joined to $x$ by edges.
@@ -3689,6 +3699,7 @@ steps ask for.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
         lem:cut-edge-decomposition}
   (1) An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
@@ -3720,6 +3731,8 @@ steps ask for.
 
 \begin{lemma}[A non-adjacent pair outside every rigid set]
   \label{lem:deficiency-two-body-chain}
+  \lean{Graph.deficiencyMerged_two_add_two_le}
+  \leanok
   \uses{def:D-deficiency, def:deficiency-merged}
   Let $G$ be sparse, and let $a \neq b$ be bodies of $G$ that are not
   adjacent, with $\operatorname{def}_3(G; a, b) \neq
@@ -3727,6 +3740,7 @@ steps ask for.
   \operatorname{def}_2(G)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
         lem:deficiency-tight-rigid, lem:deficiency-merge-rigid}
   Otherwise the part $Z$ of $a$ and $b$ in a partition attaining the
