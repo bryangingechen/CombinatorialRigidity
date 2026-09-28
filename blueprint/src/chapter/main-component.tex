@@ -3915,6 +3915,8 @@ additive core applies.
 
 \begin{lemma}[The standing hypotheses at the smaller graphs of a chain]
   \label{lem:pencil-x0-chain-standing}
+  \lean{Graph.IsChain.isX0Graph_induce, Graph.IsX0Graph.splitOff}
+  \leanok
   \uses{def:pencil-x0-chain, def:pencil-x0-standing,
         def:graph-operations}
   Let $G$ satisfy the standing hypotheses.
@@ -3928,6 +3930,7 @@ additive core applies.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   (1) The ends of the chain keep at least two neighbours in $V_1$ and
   every other body of $V_1$ keeps all of them. A set of bodies of $V_1$
   left by no edge of $G[V_1]$ would give one of $G - x_1$, adding
