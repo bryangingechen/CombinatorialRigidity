@@ -1,15 +1,15 @@
 # Phase 40i — PENCIL-X0 / ORBIT: the open ears with one or two interior bodies at non-adjacent ends (work log)
 
-**Status:** in progress (opened design-first 2026-09-28; B1, B2 landed 2026-09-28). STEPS' fifth
+**Status:** Lean and blueprint done (B1–B3 landed 2026-09-28); the close remains. STEPS' fifth
 group (`notes/Phase40-design.md` §3 STEPS, the ORBIT entry). It lands the open-ear steps with one
 interior body, and with two with no bound on the deficiency, both at non-adjacent ends `a ≁ b` and
 under `δ₂ ≥ 2` in the merged form `deficiencyMerged₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: if `X₀(G[V₁])`
 attains, `X₀(G)` attains for `k = 1` when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54) at `k = 1`), and for
 `k = 2` when `X₀` also attains at `G` with its second interior body suppressed ((MC-176)). No new
-mathematics. Eight nodes: six green after B1+B2 (`def:deficiency-merged` at the open,
+mathematics. **All eight nodes green**: `def:deficiency-merged` at the open,
 `lem:splitoff-deficiency-merged`, `lem:pencil-flag-genericity` from B1, `lem:pencil-one-ear-
-incidence`, `lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one` from B2), two still red (the
-`k = 2` cell); three builds, B1 and B2 done. **Next: B3, the `k = 2` cell** — see *Hand-off*.
+incidence`, `lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one` from B2, `lem:pencil-insertion-
+two`, `thm:pencil-x0-open-ear-two-orbit` from B3. **Next: the close** — see *Hand-off*.
 
 ## Current state
 
@@ -33,8 +33,8 @@ incidence`, `lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one` from B2), tw
   declarations `Graph.deficiencyMerged` and `Graph.partitionDef_le_deficiencyMerged`, after
   `lem:deficiency-ear-merge`.
 
-No Lean has landed. The seven red nodes carry no `\lean{…}` yet, 40h's open convention: each build
-adds its pins with `\leanok` (*Lemma checklist*).
+**All eight nodes are pinned and green** (B1–B3 landed the Lean and the blueprint pins in that
+order; *Lemma checklist*).
 
 **The spikes** (gitignored `scratch/40i/`, local to this checkout; builder pointers, not evidence):
 - `S40i.lean` (1 657 lines, 31 declarations): the whole group, sorry-free. **`lake lean`**, re-run at
@@ -123,10 +123,16 @@ section headers P1–P10 are the recon's pieces.
   `thm:pencil-x0-open-ear-one`. `Orbit.lean` imports `MainComponent/EarGen.lean` (confirmed minimal
   by a `lake lean` probe against every identifier the four pieces use: `Ear.lean` alone is missing
   `linearIndependent_pointJoin_pair`, `EarGen.lean` = `Ear` + `Lines` supplies everything).
-- [ ] **B3, the `k = 2` cell** (P8, the rest of P9, P10): `Lines.lean`: **`exists_insertion_two`** →
-  `lem:pencil-insertion-two` (`exists_insertion_two_aux`); `Orbit.lean`:
-  **`Graph.X0Attains.of_openEar_two_of_splitOff`** → `thm:pencil-x0-open-ear-two-orbit`
-  (`splitOff_ear_two`, `splitOff_ear_two_simple`).
+- [x] **B3, the `k = 2` cell** (P8, the rest of P9, P10) — landed 2026-09-28: `Lines.lean`:
+  **`exists_insertion_two`** → `lem:pencil-insertion-two` (`exists_insertion_two_aux`;
+  `mem_of_add_smul_mem` inlined at its three use sites as
+  `(Submodule.smul_mem_iff _ hc).mp ((Submodule.add_mem_iff_right _ hw).mp h)`, per the coordinator's
+  note, not landed as a named lemma); `Orbit.lean`: **`splitOff_ear_two`**,
+  **`splitOff_ear_two_simple`**, **`Graph.X0Attains.of_openEar_two_of_splitOff`** →
+  `thm:pencil-x0-open-ear-two-orbit`. `Orbit.lean` gained a second import,
+  `MainComponent/Short.lean` (confirmed no cycle: `Short.lean` itself only imports `EarGen.lean`),
+  for two SHORT-group facts P10 reuses (`induce_splitOff_ear`, `Graph.isLink_update_splitOff`) that
+  `EarGen.lean` alone does not supply.
 - [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection; the
   exposition ledger (candidates: the one-ear base, where the ear body's picture is chosen with the
   heights, and the insertion that replaces the orbit table); the headline axioms; the design doc's
@@ -135,12 +141,9 @@ section headers P1–P10 are the recon's pieces.
 
 ## Blockers / open questions
 
-- None blocking B1.
-- **Builder notes** (the recon's): inline `mem_of_add_smul_mem`; `finrank_span_singleton_le_one'` is
-  a one-liner through mathlib's `finrank_span_le_card` (inline it, or name it without the prime);
-  TACTICS-QUIRKS §48 (`a - b - c` and `linear_combination h0 - h1` misparse under
-  `open scoped Graph`), met twice in the spike. Every new top-level name greps to no prior definition
-  (the recon's check, TACTICS-QUIRKS §65).
+- None outstanding; B1–B3 landed the group. The recon's builder notes (inlining
+  `mem_of_add_smul_mem` and `finrank_span_singleton_le_one'`, TACTICS-QUIRKS §48's parse trap) were
+  applied in B2/B3 — see *Decisions made*.
 - **A stale Lean docstring, not a gate.** `Deficiency.lean`'s section docstring for the merged and
   separated deficiencies cites a label `def:pencil-deficiency-pair` that does not exist, and says none
   of its declarations has a node; since this open `def:deficiency-merged` pins two of them. Repoint it
@@ -149,25 +152,20 @@ section headers P1–P10 are the recon's pieces.
 
 ## Hand-off / next phase
 
-**B1 and B2 landed 2026-09-28.** Six of eight nodes are green (see *Status*). Gates green each
+**B1, B2 and B3 landed 2026-09-28.** All eight nodes are green (see *Status*). Gates green each
 build: `lake build` (whole tree, no warnings), `lake lint`, `blueprint/verify.sh`,
-`blueprint/lint.sh`.
+`blueprint/lint.sh`; `notes/check-phase-note.py` green on this commit too.
 
-**Next: B3, the `k = 2` cell (fresh builder).** Source: `scratch/40i/S40i.lean` (gitignored, local
-to this checkout; a builder pointer, not evidence), P8 (the antecedent of the two-body ear is a
-one-body ear, and simple with non-adjacent ends), the rest of P9 (`exists_insertion_two`'s curve
-family, `exists_insertion_two` itself — the `pointJoin` linearity lemmas already landed in B1), and
-P10 (`Graph.X0Attains.of_openEar_two_of_splitOff`). Targets: `Lines.lean`:
-**`exists_insertion_two`** → `lem:pencil-insertion-two` (`exists_insertion_two_aux`); `Orbit.lean`:
-**`Graph.X0Attains.of_openEar_two_of_splitOff`** → `thm:pencil-x0-open-ear-two-orbit`
-(`splitOff_ear_two`, `splitOff_ear_two_simple`). Chores:
-- **`lake lean` the spike first**, never `lake env lean` (`CombinatorialRigidity/CLAUDE.md` *Lean LSP
-  MCP*); it is clean at this open, so judge lint by `lake lint`.
-- **Pin and flip** each node with the checklist's bold names. Gates: `lake build`, `lake lint`,
-  `blueprint/verify.sh`, `blueprint/lint.sh`, `notes/check-phase-note.py`.
-
-**Then the close** (see the checklist's last item: end-to-end re-read, exposition ledger, headline
-axioms, design-doc/ROADMAP/`MolecularConjecture.md` sync).
+**Next: the close (fresh builder).** No more Lean or blueprint pins — the remaining work is the
+phase-close checklist (`PHASE-BOUNDARIES.md` *When this commit closes a phase*): an end-to-end
+re-read of the new `sec:main-component-orbit` subsection against the landed Lean; an exposition-
+ledger entry in `notes/BlueprintExposition.md` if the one-ear base or the two-body insertion
+warrants one; the headline-axioms check (`#print axioms` on the two theorem nodes, expect the
+project's standard `[propext, Classical.choice, Quot.sound]`); sync `notes/Phase40-design.md` §3
+STEPS (mark the ORBIT entry done), ROADMAP's Phase 40 status cell, and `notes/MolecularConjecture.md`
+if it tracks ORBIT; the public surfaces are unchanged (no new axioms, no scope change) per the PI's
+standing call recorded at 40f's close. Also repoint the stale `Deficiency.lean` docstring (see
+*Blockers*) if that file is touched for any reason before then, or fold it into the close commit.
 
 ## Decisions made during this phase
 
@@ -190,3 +188,16 @@ axioms, design-doc/ROADMAP/`MolecularConjecture.md` sync).
   `linearIndependent_pointJoin_pair` missing, which `Lines.lean` supplies. No other import needed
   (in particular `Graph.splitOff_deficiency_add_le_of_deficiencyMerged`, from a different directory
   tree, `Induction/SplitOffDeficiency.lean`, already resolves transitively).
+- **2026-09-28 B3 — a second import found only at transcription time.** `Orbit.lean`'s existing
+  `EarGen` import does not supply `induce_splitOff_ear` or `Graph.isLink_update_splitOff`, both of
+  which P10 uses and both of which live only in `MainComponent/Short.lean` (Phase 40h SHORT); every
+  other identifier P8/P9/P10 use was already reachable. Added
+  `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short` to `Orbit.lean`;
+  confirmed acyclic since `Short.lean` itself imports only `EarGen.lean`, not `Orbit.lean`.
+  `Lines.lean` needed no new import (`pointJoin_*_left/right` from B1 and `exists_ne_zero_add_smul_
+  notMem` already local to the file cover P9's `exists_insertion_two{,_aux}`).
+- **2026-09-28 B3 — `mem_of_add_smul_mem` inlined, per the coordinator's dispatch note**, at its
+  three use sites inside `exists_insertion_two` as
+  `(Submodule.smul_mem_iff _ hc).mp ((Submodule.add_mem_iff_right _ hw).mp h)`; not landed as a
+  named lemma. Two of the three inlined call sites overran the 100-character `longLine` linter and
+  were wrapped onto a continuation line — no other content change from the spike.

@@ -53,6 +53,11 @@ coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
   pairing with the lines joining two planes is nonzero at affine points; a span of screws pairing
   to zero with all of them holds neither both stars; so one affine point put back raises the span
   to at least `min(dim W + 1, 6)` (`thm:pencil-x0-open-ear-three`, (MC-181) Steps 3–4).
+* `exists_insertion_two_aux`, `exists_insertion_two` — at two interior bodies on two planes
+  meeting in a line, with the flag pair in orbit (i): moving one body along the meeting line finds
+  affine points on each plane whose two joins with the fixed ends raise the span to at least
+  `min(dim W + 1, 6)`, without a chart polynomial (`lem:pencil-insertion-two`, (MC-173), Phase 40i
+  ORBIT).
 
 ## Design
 
@@ -748,5 +753,312 @@ theorem exists_insertion_three [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
     intro c hc
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
     rcases hc with rfl | rfl <;> exact hnewm _ _ (by simp)
+
+/-! ## Putting two bodies back at once (`lem:pencil-insertion-two`, (MC-173), Phase 40i ORBIT) -/
+
+/-- **Moving one body off a degenerate placement** (the curve family (α) of (MC-173)'s proof, as an
+insertion): with `x₂ = y + σ (Q − y)` on the line `y Q` (`σ ≠ 1`) and `x₁ = y + t u`, the three
+joins `P ∧ x₁`, `x₁ ∧ x₂`, `x₂ ∧ Q` span, for some `t ≠ 0`, at least as much with `ρ` as `P ∧ y`,
+`y ∧ Q` and the limit direction `u ∧ x₂`. For `t ≠ 0` they contain `y ∧ Q`, `u ∧ x₂` and
+`P ∧ y + t (P ∧ u)`; a vector off a subspace stays off it at some `t ≠ 0`. -/
+theorem exists_insertion_two_aux [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
+    (P y Q u : Fin 4 → K) {σ : K} (hσ : σ ≠ 1) :
+    ∃ t : K, t ≠ 0 ∧ Module.finrank K ↥(ρ ⊔ Submodule.span K
+        {pointJoin P y, pointJoin y Q, pointJoin u (y + σ • (Q - y))}) ≤
+      Module.finrank K ↥(ρ ⊔ Submodule.span K
+        {pointJoin P (y + t • u), pointJoin (y + t • u) (y + σ • (Q - y)),
+          pointJoin (y + σ • (Q - y)) Q}) := by
+  set x₂ := y + σ • (Q - y) with hx₂
+  set R := ρ ⊔ Submodule.span K {pointJoin y Q, pointJoin u x₂} with hR
+  have hJ1 : pointJoin x₂ Q = (1 - σ) • pointJoin y Q := by
+    simp only [hx₂, pointJoin_add_left, pointJoin_smul_left, pointJoin_sub_left, pointJoin_self]
+    module
+  have hJ2 : ∀ t : K, pointJoin (y + t • u) x₂ = σ • pointJoin y Q + t • pointJoin u x₂ := by
+    intro t
+    rw [pointJoin_add_left, pointJoin_smul_left]
+    congr 1
+    simp only [hx₂, pointJoin_add_right, pointJoin_smul_right, pointJoin_sub_right, pointJoin_self]
+    module
+  have hJ3 : ∀ t : K, pointJoin P (y + t • u) = pointJoin P y + t • pointJoin P u := by
+    intro t; rw [pointJoin_add_right, pointJoin_smul_right]
+  -- the new span, for `t ≠ 0`
+  have hnew : ∀ t : K, t ≠ 0 → R ⊔ K ∙ (pointJoin P y + t • pointJoin P u) ≤
+      ρ ⊔ Submodule.span K {pointJoin P (y + t • u), pointJoin (y + t • u) x₂,
+        pointJoin x₂ Q} := by
+    intro t ht
+    set S := Submodule.span K {pointJoin P (y + t • u), pointJoin (y + t • u) x₂,
+      pointJoin x₂ Q} with hS
+    have h1 : pointJoin P (y + t • u) ∈ S := Submodule.subset_span (by simp)
+    have h2 : pointJoin (y + t • u) x₂ ∈ S := Submodule.subset_span (by simp)
+    have h3 : pointJoin x₂ Q ∈ S := Submodule.subset_span (by simp)
+    have hyQ : pointJoin y Q ∈ S := by
+      have : pointJoin y Q = (1 - σ)⁻¹ • pointJoin x₂ Q := by
+        rw [hJ1, smul_smul, inv_mul_cancel₀ (sub_ne_zero.mpr (Ne.symm hσ)), one_smul]
+      rw [this]; exact S.smul_mem _ h3
+    have hux : pointJoin u x₂ ∈ S := by
+      have : pointJoin u x₂ = t⁻¹ • (pointJoin (y + t • u) x₂ - σ • pointJoin y Q) := by
+        rw [hJ2, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ ht, one_smul]
+      rw [this]; exact S.smul_mem _ (S.sub_mem h2 (S.smul_mem _ hyQ))
+    refine sup_le (sup_le le_sup_left (le_sup_of_le_right ?_)) (le_sup_of_le_right ?_)
+    · rw [Submodule.span_le]
+      rintro _ (rfl | rfl)
+      exacts [hyQ, hux]
+    · rw [Submodule.span_singleton_le_iff_mem, ← hJ3]; exact h1
+  have hL : ρ ⊔ Submodule.span K {pointJoin P y, pointJoin y Q, pointJoin u x₂} =
+      R ⊔ K ∙ pointJoin P y := by
+    rw [hR, Submodule.span_insert, sup_comm (K ∙ pointJoin P y), ← sup_assoc]
+  rw [hL]
+  by_cases hPy : pointJoin P y ∈ R
+  · refine ⟨1, one_ne_zero, ?_⟩
+    rw [sup_eq_left.mpr ((Submodule.span_singleton_le_iff_mem _ _).mpr hPy)]
+    exact Submodule.finrank_mono (le_sup_left.trans (hnew 1 one_ne_zero))
+  · obtain ⟨t, ht, hnot⟩ := exists_ne_zero_add_smul_notMem hPy (pointJoin P u)
+    refine ⟨t, ht, ?_⟩
+    rw [Submodule.finrank_sup_span_singleton hPy, ← Submodule.finrank_sup_span_singleton hnot]
+    exact Submodule.finrank_mono (hnew t ht)
+
+
+/-- **The insertion at two interior bodies** (informal (MC-173), orbit (i), without the chart
+polynomial): let `p_a`, `y` lie on the plane `z = la ⬝ (x, y, w)`, `y`, `p_b` on `z = lb ⬝ (·)`, all
+affine, with `p_b` off the first plane and `p_a` off the second (orbit (i)). For every `ρ`, some
+affine `x₁` on the first plane and `x₂` on the second have
+`dim(ρ + span(p_a ∧ x₁, x₁ ∧ x₂, x₂ ∧ p_b)) ≥ min(dim(ρ + span(p_a ∧ y, y ∧ p_b)) + 1, 6)`. With
+`u₀` the direction of the line `m` of both planes, `p_a, y, u₀, p_b` is a basis; if
+`W = ρ + Λ₁(y)` is not everything, one of `y ∧ u₀`, `u₀ ∧ p_b`, `p_a ∧ u₀`, `p_a ∧ p_b` is off
+`W`, and the matching curve of (MC-173)'s proof raises the span by one
+(`exists_insertion_two_aux`). -/
+theorem exists_insertion_two [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) (la lb : Fin 3 → K)
+    {pa y pb : Fin 4 → K} (hpa : pa 2 = la ⬝ᵥ planarProj pa) (hpb : pb 2 = lb ⬝ᵥ planarProj pb)
+    (hya : y 2 = la ⬝ᵥ planarProj y) (hyb : y 2 = lb ⬝ᵥ planarProj y)
+    (hpa3 : pa 3 = 1) (hy3 : y 3 = 1) (hpb3 : pb 3 = 1)
+    (hoa : pa 2 ≠ lb ⬝ᵥ planarProj pa) (hob : pb 2 ≠ la ⬝ᵥ planarProj pb) :
+    ∃ x₁ x₂ : Fin 4 → K, x₁ 3 = 1 ∧ x₁ 2 = la ⬝ᵥ planarProj x₁ ∧ x₂ 3 = 1 ∧
+      x₂ 2 = lb ⬝ᵥ planarProj x₂ ∧
+      min (Module.finrank K ↥(ρ ⊔ Submodule.span K {pointJoin pa y, pointJoin y pb}) + 1) 6 ≤
+        Module.finrank K ↥(ρ ⊔ Submodule.span K
+          {pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb}) := by
+  classical
+  set W := ρ ⊔ Submodule.span K {pointJoin pa y, pointJoin y pb} with hW
+  have hsix : Module.finrank K (ScrewSpace K 2) = 6 := finrank_screwSpace_two
+  have hpaW : pointJoin pa y ∈ W := Submodule.mem_sup_right (Submodule.subset_span (by simp))
+  have hypbW : pointJoin y pb ∈ W := Submodule.mem_sup_right (Submodule.subset_span (by simp))
+  -- plane membership is linear
+  have hplane : ∀ (h : Fin 3 → K) (v w : Fin 4 → K) (c : K), v 2 = h ⬝ᵥ planarProj v →
+      w 2 = h ⬝ᵥ planarProj w → (v + c • w) 2 = h ⬝ᵥ planarProj (v + c • w) := by
+    intro h v w c hv hw
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_smul, dotProduct_add,
+      dotProduct_smul, hv, hw]
+  by_cases hWtop : W = ⊤
+  · -- put both bodies at `y`
+    refine ⟨y, y, hy3, hya, hy3, hyb, (min_le_right _ _).trans ?_⟩
+    rw [← hsix, ← finrank_top K (ScrewSpace K 2), ← hWtop]
+    refine Submodule.finrank_mono (sup_le_sup_left (Submodule.span_mono ?_) _)
+    intro c hc
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc ⊢
+    rcases hc with rfl | rfl
+    · exact Or.inl rfl
+    · exact Or.inr (Or.inr rfl)
+  -- the direction `u₀` of the line of both planes
+  set d := la - lb with hd
+  have hdne : d 0 ≠ 0 ∨ d 1 ≠ 0 := by
+    by_contra! h
+    have hd2 : d 2 = 0 := by
+      have : d ⬝ᵥ planarProj y = 0 := by rw [hd, sub_dotProduct, ← hya, ← hyb, sub_self]
+      simpa [dotProduct, Fin.sum_univ_three, planarProj_apply, h.1, h.2, hy3] using this
+    apply hob
+    have : la = lb := by
+      funext i; have := congr_fun hd i
+      fin_cases i <;> simp_all [sub_eq_zero]
+    rw [this]; exact hpb
+  set u₀ : Fin 4 → K := ![-d 1, d 0, la ⬝ᵥ ![-d 1, d 0, 0], 0] with hu₀
+  have hu₀a : u₀ 2 = la ⬝ᵥ planarProj u₀ := by simp [hu₀, planarProj_apply]
+  have hu₀b : u₀ 2 = lb ⬝ᵥ planarProj u₀ := by
+    have : (la - lb) ⬝ᵥ ![-d 1, d 0, 0] = 0 := by
+      rw [← hd]; simp [dotProduct, Fin.sum_univ_three]; ring
+    rw [sub_dotProduct, sub_eq_zero] at this
+    simp [hu₀, planarProj_apply, this]
+  have hu₀3 : u₀ 3 = 0 := by simp [hu₀]
+  have hu₀ne : u₀ ≠ 0 := by
+    intro h
+    rcases hdne with h0 | h1
+    · exact h0 (by simpa [hu₀] using congr_fun h 1)
+    · exact h1 (by simpa [hu₀] using congr_fun h 0)
+  -- `p_a, y, u₀, p_b` is a basis of `K⁴`: the two plane functionals separate `p_b` and `p_a`
+  have hfun : ∀ h : Fin 3 → K, ∃ f : (Fin 4 → K) →ₗ[K] K, ∀ v, f v = v 2 - h ⬝ᵥ planarProj v := by
+    intro h
+    refine ⟨{ toFun := fun v => v 2 - h ⬝ᵥ planarProj v, map_add' := ?_, map_smul' := ?_ }, ?_⟩
+    · intro v w; simp only [Pi.add_apply, map_add, dotProduct_add]; ring
+    · intro c v; simp only [Pi.smul_apply, map_smul, dotProduct_smul, smul_eq_mul,
+        RingHom.id_apply]; ring
+    · intro v; rfl
+  obtain ⟨fa, hfa⟩ := hfun la
+  obtain ⟨fb, hfb⟩ := hfun lb
+  have hli : LinearIndependent K ![pa, y, u₀, pb] := by
+    rw [Fintype.linearIndependent_iff]
+    intro g hg
+    have hv0 : ![pa, y, u₀, pb] 0 = pa := rfl
+    have hv1 : ![pa, y, u₀, pb] 1 = y := rfl
+    have hv2 : ![pa, y, u₀, pb] 2 = u₀ := rfl
+    have hv3 : ![pa, y, u₀, pb] 3 = pb := rfl
+    have hg' : g 0 • pa + g 1 • y + g 2 • u₀ + g 3 • pb = 0 := by
+      rw [← hg, Fin.sum_univ_four, hv0, hv1, hv2, hv3]
+    have ha' : g 0 * fa pa + g 1 * fa y + g 2 * fa u₀ + g 3 * fa pb = 0 := by
+      have := congrArg fa hg'
+      simpa [map_add, map_smul] using this
+    have hb' : g 0 * fb pa + g 1 * fb y + g 2 * fb u₀ + g 3 * fb pb = 0 := by
+      have := congrArg fb hg'
+      simpa [map_add, map_smul] using this
+    rw [hfa, hfa, hfa, hfa, hpa, hya, hu₀a, sub_self, sub_self, sub_self] at ha'
+    rw [hfb, hfb, hfb, hfb, hpb, hyb, hu₀b, sub_self, sub_self, sub_self] at hb'
+    have g3 : g 3 = 0 := by
+      have : g 3 * (pb 2 - la ⬝ᵥ planarProj pb) = 0 := by linear_combination ha'
+      exact (mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hob)
+    have g0 : g 0 = 0 := by
+      have : g 0 * (pa 2 - lb ⬝ᵥ planarProj pa) = 0 := by linear_combination hb'
+      exact (mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hoa)
+    have e3 := congr_fun hg' 3
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hpa3, hy3,
+      hu₀3, hpb3, g0, g3] at e3
+    have g1 : g 1 = 0 := by linear_combination e3
+    have g2 : g 2 = 0 := by
+      by_contra hg2
+      apply hu₀ne
+      have : g 2 • u₀ = 0 := by
+        rw [g0, g1, g3, zero_smul, zero_smul, zero_smul, zero_add, zero_add, add_zero] at hg'
+        exact hg'
+      exact (smul_eq_zero.mp this).resolve_left hg2
+    intro i; fin_cases i
+    exacts [g0, g1, g2, g3]
+  have htop : pointJoin y u₀ ∈ W → pointJoin u₀ pb ∈ W → pointJoin pa u₀ ∈ W →
+      pointJoin pa pb ∈ W → W = ⊤ := by
+    intro h1 h2 h3 h4
+    refine top_le_iff.mp ((span_pointJoin_tetra_eq_top hli) ▸ Submodule.span_le.mpr ?_)
+    rintro _ ⟨i, rfl⟩
+    fin_cases i
+    · exact hpaW
+    · exact h3
+    · exact h4
+    · exact h1
+    · exact hypbW
+    · exact h2
+  -- one curve of (MC-173)'s proof per limit direction off `W`
+  have hWc : ∀ c, ρ ⊔ Submodule.span K {pointJoin pa y, pointJoin y pb, c} = W ⊔ K ∙ c := by
+    intro c
+    rw [hW, show ({pointJoin pa y, pointJoin y pb, c} : Set (ScrewSpace K 2)) =
+      {pointJoin pa y, pointJoin y pb} ∪ {c} by rw [Set.insert_union, Set.singleton_union],
+      Submodule.span_union,
+      sup_assoc]
+  have hline : ∀ (h : Fin 3 → K) (v : Fin 4 → K), y 2 = h ⬝ᵥ planarProj y →
+      v 2 = h ⬝ᵥ planarProj v → (v - y) 2 = h ⬝ᵥ planarProj (v - y) := by
+    intro h v hy hv
+    simp only [Pi.sub_apply, map_sub, dotProduct_sub, hy, hv]
+  have hfinish : ∀ (u : Fin 4 → K) (σ : K), σ ≠ 1 → u 3 = 0 → u 2 = la ⬝ᵥ planarProj u →
+      pointJoin u (y + σ • (pb - y)) ∉ W →
+      ∃ x₁ x₂ : Fin 4 → K, x₁ 3 = 1 ∧ x₁ 2 = la ⬝ᵥ planarProj x₁ ∧ x₂ 3 = 1 ∧
+        x₂ 2 = lb ⬝ᵥ planarProj x₂ ∧
+        min (Module.finrank K ↥W + 1) 6 ≤ Module.finrank K ↥(ρ ⊔ Submodule.span K
+          {pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb}) := by
+    intro u σ hσ hu3 hua hc
+    obtain ⟨t, -, hle⟩ := exists_insertion_two_aux ρ pa y pb u hσ
+    refine ⟨y + t • u, y + σ • (pb - y), by simp [hy3, hu3], hplane la y u t hya hua,
+      by simp [hy3, hpb3], hplane lb y (pb - y) σ hyb (hline lb pb hyb hpb), ?_⟩
+    refine (min_le_left _ _).trans ?_
+    rw [← Submodule.finrank_sup_span_singleton hc, ← hWc]
+    exact hle
+  obtain ⟨σ₀, hσ₀⟩ := Infinite.exists_notMem_finset ({0, 1} : Finset K)
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hσ₀
+  obtain ⟨hσ0, hσ1⟩ := hσ₀
+  have hpy3 : (pa - y) 3 = 0 := by simp [hpa3, hy3]
+  by_cases h1 : pointJoin y u₀ ∈ W
+  · by_cases h2 : pointJoin u₀ pb ∈ W
+    · by_cases h3 : pointJoin pa u₀ ∈ W
+      · by_cases h4 : pointJoin pa pb ∈ W
+        · exact absurd (htop h1 h2 h3 h4) hWtop
+        · -- `u = p_a − y`: the limit direction is `≡ σ₀ (p_a ∧ p_b)` modulo `W`
+          refine hfinish (pa - y) σ₀ hσ1 hpy3 (hline la pa hya hpa) (fun hc => h4 ?_)
+          have heq : pointJoin (pa - y) (y + σ₀ • (pb - y)) = pointJoin pa y +
+              σ₀ • (pointJoin pa pb - (pointJoin pa y + pointJoin y pb)) := by
+            simp only [pointJoin_add_right, pointJoin_smul_right, pointJoin_sub_right,
+              pointJoin_sub_left, pointJoin_self]
+            module
+          rw [heq] at hc
+          have h' := (Submodule.smul_mem_iff _ hσ0).mp ((Submodule.add_mem_iff_right _ hpaW).mp hc)
+          have := W.add_mem h' (W.add_mem hpaW hypbW)
+          rwa [sub_add_cancel] at this
+      · -- the reversed curve: `x₂ = y + t u₀` next to `p_b`, `x₁` on the line `y p_a`
+        obtain ⟨t, -, hle⟩ := exists_insertion_two_aux ρ pb y pa u₀ hσ1
+        set x₁ := y + σ₀ • (pa - y) with hx₁
+        set x₂ := y + t • u₀ with hx₂
+        refine ⟨x₁, x₂, by simp [hx₁, hy3, hpa3],
+          hplane la y (pa - y) σ₀ hya (hline la pa hya hpa), by simp [hx₂, hy3, hu₀3],
+          hplane lb y u₀ t hyb hu₀b, (min_le_left _ _).trans ?_⟩
+        set c := pointJoin u₀ x₁ with hcdef
+        have hc : c ∉ W := by
+          intro hc
+          apply h3
+          have heq : c = -(pointJoin y u₀) + σ₀ • (-(pointJoin pa u₀) + pointJoin y u₀) := by
+            simp only [hcdef, hx₁, pointJoin_add_right, pointJoin_smul_right,
+              pointJoin_sub_right]
+            rw [pointJoin_swap y u₀, pointJoin_swap pa u₀]
+            module
+          rw [heq] at hc
+          have h' := (Submodule.smul_mem_iff _ hσ0).mp
+            ((Submodule.add_mem_iff_right _ (W.neg_mem h1)).mp hc)
+          have := W.neg_mem (W.sub_mem h' h1)
+          rwa [add_sub_cancel_right, neg_neg] at this
+        have hL : ρ ⊔ Submodule.span K {pointJoin pb y, pointJoin y pa, c} = W ⊔ K ∙ c := by
+          refine le_antisymm (sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.mpr ?_))
+            (sup_le (sup_le le_sup_left (Submodule.span_le.mpr ?_)) ?_)
+          · intro v hv
+            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+            rcases hv with rfl | rfl | rfl
+            · rw [SetLike.mem_coe, pointJoin_swap]
+              exact Submodule.mem_sup_left (W.neg_mem hypbW)
+            · rw [SetLike.mem_coe, pointJoin_swap]
+              exact Submodule.mem_sup_left (W.neg_mem hpaW)
+            · exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
+          · intro v hv
+            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+            have hmem : ∀ w ∈ ({pointJoin pb y, pointJoin y pa, c} : Set (ScrewSpace K 2)),
+                w ∈ ρ ⊔ Submodule.span K {pointJoin pb y, pointJoin y pa, c} :=
+              fun w hw => Submodule.mem_sup_right (Submodule.subset_span hw)
+            rcases hv with rfl | rfl
+            · rw [SetLike.mem_coe, pointJoin_swap y pa]
+              exact Submodule.neg_mem _ (hmem (pointJoin y pa) (by simp))
+            · rw [SetLike.mem_coe, pointJoin_swap pb y]
+              exact Submodule.neg_mem _ (hmem (pointJoin pb y) (by simp))
+          · rw [Submodule.span_singleton_le_iff_mem]
+            exact Submodule.mem_sup_right (Submodule.subset_span (by simp))
+        have hR : Submodule.span K {pointJoin pb x₂, pointJoin x₂ x₁, pointJoin x₁ pa} ≤
+            Submodule.span K {pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb} := by
+          refine Submodule.span_le.mpr ?_
+          intro v hv
+          simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+          have hsub : ∀ w ∈ ({pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb} :
+              Set (ScrewSpace K 2)), -w ∈ Submodule.span K
+                {pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb} :=
+            fun w hw => Submodule.neg_mem _ (Submodule.subset_span hw)
+          rcases hv with rfl | rfl | rfl
+          · rw [SetLike.mem_coe, pointJoin_swap x₂ pb]; exact hsub (pointJoin x₂ pb) (by simp)
+          · rw [SetLike.mem_coe, pointJoin_swap x₁ x₂]; exact hsub (pointJoin x₁ x₂) (by simp)
+          · rw [SetLike.mem_coe, pointJoin_swap pa x₁]; exact hsub (pointJoin pa x₁) (by simp)
+        rw [← Submodule.finrank_sup_span_singleton hc, ← hL]
+        exact hle.trans (Submodule.finrank_mono (sup_le_sup_left hR _))
+    · -- `u = u₀`, `σ = σ₀`: the limit direction is `≡ σ₀ (u₀ ∧ p_b)` modulo `W`
+      refine hfinish u₀ σ₀ hσ1 hu₀3 hu₀a (fun hc => h2 ?_)
+      have heq : pointJoin u₀ (y + σ₀ • (pb - y)) = -(pointJoin y u₀) +
+          σ₀ • (pointJoin u₀ pb + pointJoin y u₀) := by
+        simp only [pointJoin_add_right, pointJoin_smul_right, pointJoin_sub_right]
+        rw [pointJoin_swap y u₀]
+        module
+      rw [heq] at hc
+      have h' := (Submodule.smul_mem_iff _ hσ0).mp
+        ((Submodule.add_mem_iff_right _ (W.neg_mem h1)).mp hc)
+      have := W.sub_mem h' h1
+      rwa [add_sub_cancel_right] at this
+  · -- `u = u₀`, `σ = 0`: the limit direction is `u₀ ∧ y = −(y ∧ u₀)`
+    refine hfinish u₀ 0 zero_ne_one hu₀3 hu₀a (fun hc => h1 ?_)
+    rw [zero_smul, add_zero, pointJoin_swap] at hc
+    simpa using W.neg_mem hc
 
 end CombinatorialRigidity.Molecular

@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
 
 /-!
-# The open ear with one interior body at non-adjacent ends ((MC-54) at `k = 1`, Phase 40i ORBIT)
+# The open ears with one or two interior bodies at non-adjacent ends (Phase 40i ORBIT)
 
-The `k = 1` cell of the open ears at non-adjacent ends (`blueprint/src/chapter/main-component.tex`,
-`sec:main-component-orbit`; informal (MC-174), (MC-176) Steps 1–2, (MC-54) at `k = 1`,
-`notes/Phase40i.md`). Let `H` carry an open ear `a − x 0 − b` on `V₁` with `a ≁ b`, and suppose
+The `k = 1` and `k = 2` cells of the open ears at non-adjacent ends
+(`blueprint/src/chapter/main-component.tex`, `sec:main-component-orbit`; informal (MC-174),
+(MC-176), (MC-54) at `k = 1`, `notes/Phase40i.md`).
+
+## `k = 1`
+
+Let `H` carry an open ear `a − x 0 − b` on `V₁` with `a ≁ b`, and suppose
 `X₀(G′)` attains at `G′ = H[V₁]` under a two-dimensional gap in the merged deficiency,
 `deficiencyMerged₂(G′; a, b) + 2 ≤ def₂(G′)`. Splitting off the ear body (`Graph.splitOff_oneEar`)
 gives `G′ + ab`, whose lifting space is two smaller than `G′`'s at a general picture
@@ -20,6 +25,18 @@ are then independent on the lifting system's kernel of `G′` (`lem:pencil-flag-
 heights of `G′`, at a point where both planes are met transversally and `G′` attains
 (`Graph.exists_oneEar_base`). The ear rank law then adds the two independent ear joins to give
 `X₀(H)` attaining (`Graph.X0Attains.of_openEar_one`).
+
+## `k = 2`
+
+Let `G` carry an open ear `a − x 0 − x 1 − b` on `V₁`, `a ≁ b`, `δ₂(G[V₁]; a, b) ≥ 2`. Suppressing
+`x 1` (`splitOff_ear_two`) leaves a one-body ear `a − x 0 − b` on `V₁`, still simple with `a ≁ b`
+(`splitOff_ear_two_simple`), so `Graph.exists_oneEar_base` gives its base: a picture and heights of
+`G₁ = G.splitOff (x 1) (x 0) b (e 1)` at which `G[V₁]` attains and the flag pair at `a, b` is in
+orbit (i). A second fibre intersection in `G₁`'s lifting system makes `G₁` itself attain there.
+Putting `x 1` back (`exists_insertion_two`) raises the span of the ear's joins to at least
+`min(dim W + 1, 6)`; the deficiency count (`Graph.splitOff_deficiency_le_of_eq_left`,
+`Graph.deficiency_induce_add_le_of_ear`) turns this into `X₀(G)` attaining
+(`Graph.X0Attains.of_openEar_two_of_splitOff`).
 
 ## Main statements
 
@@ -34,12 +51,22 @@ heights of `G′`, at a point where both planes are met transversally and `G′`
   attains and the flag pair at `a, b` is transversal.
 * `Graph.X0Attains.of_openEar_one` — (MC-54) at `k = 1` (`thm:pencil-x0-open-ear-one`): `X₀(G′)`
   attaining under the deficiency and merged-deficiency hypotheses gives `X₀(H)` attaining.
+* `splitOff_ear_two`, `splitOff_ear_two_simple` — the antecedent of a two-body ear is a one-body
+  ear: suppressing `x 1` and relinking `e 1` to `x 0 − b` leaves the ear `a − x 0 − b` on `V₁`, and
+  it stays simple with `a ≁ b` when `G` was.
+* `Graph.X0Attains.of_openEar_two_of_splitOff` — (MC-176), the two-body open ear at `a ≁ b`,
+  `δ₂ ≥ 2` (`thm:pencil-x0-open-ear-two-orbit`): `X₀(G[V₁])` and `X₀(G₁)` attaining gives `X₀(G)`
+  attaining.
 
 ## Design
 
 * **`Graph.splitOff_oneEar`** records the combinatorics of suppressing the ear body: the split-off
   `G′ + ab` keeps every link of `G′`, and only `a`'s and `b`'s closed neighbourhoods grow, by each
   other. `Graph.exists_oneEar_base` reads it once, up front.
+* **`Short.lean` import.** The `k = 2` cell reuses two SHORT-group facts about a suppressed
+  interior body (`induce_splitOff_ear`, `Graph.isLink_update_splitOff`), so this file imports
+  `MainComponent/Short.lean` alongside `EarGen.lean`; no cycle (`Short.lean` itself only imports
+  `EarGen.lean`).
 -/
 
 open scoped Graph
@@ -588,6 +615,486 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
   have hdim' : (2 : ℤ) ≤ (Module.finrank K ↥((⟨F.graph.induce V₁, F.supportExtensor⟩ :
       BodyHingeFramework K 2 α β).relScrews a b
         ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e))) : ℤ) := by exact_mod_cast hdim
+  linarith
+
+/-! ## The antecedent of a two-body ear is a one-body ear -/
+
+/-- **The antecedent of the two-body ear is a one-body ear**: suppressing `x 1` and relinking
+`e 1` to `x 0 − b` leaves the ear `a − x 0 − b` on `V₁`, with the labels `e 0, e 1`. -/
+theorem splitOff_ear_two {G : Graph α β} {V₁ : Set α} {x : Fin 2 → α} {a b : α}
+    {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    (hpath : ∀ i : Fin 3,
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) :
+    V(G.splitOff (x 1) (x 0) b (e 1)) = V₁ ∪ Set.range ![x 0] ∧
+      Function.Injective ![x 0] ∧ (∀ i, ![x 0] i ∉ V₁) ∧
+      (∀ i : Fin 2, (G.splitOff (x 1) (x 0) b (e 1)).IsLink (![e 0, e 1] i)
+        (pathVertex a ![x 0] b i.castSucc) (pathVertex a ![x 0] b i.succ)) ∧
+      (∀ f u w, (G.splitOff (x 1) (x 0) b (e 1)).IsLink f u w →
+        (∀ i, f ≠ ![e 0, e 1] i) → u ∈ V₁ ∧ w ∈ V₁) := by
+  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
+  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
+  have he := pathEdge_injective hinj hax hbx hab hpath
+  have l0 : G.IsLink (e 0) a (x 0) := hpath 0
+  have l1 : G.IsLink (e 1) (x 0) (x 1) := hpath 1
+  have l2 : G.IsLink (e 2) (x 1) b := hpath 2
+  have e01 : e 0 ≠ e 1 := fun h => by simpa using he h
+  have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
+  refine ⟨?_, fun i j _ => Subsingleton.elim i j, fun i => by fin_cases i; exact hxV₁ 0, ?_, ?_⟩
+  · ext w
+    simp only [Graph.vertexSet_splitOff, hcover, Set.mem_sdiff, Set.mem_union, Set.mem_range,
+      Set.mem_singleton_iff, Fin.exists_fin_succ, Fin.exists_fin_zero, Matrix.cons_val_zero,
+      Fin.succ_zero_eq_one]
+    constructor
+    · rintro ⟨h | rfl | rfl | h, hw⟩
+      · exact Or.inl h
+      · exact Or.inr (Or.inl rfl)
+      · exact absurd rfl hw
+      · exact h.elim
+    · rintro (h | rfl | h)
+      · exact ⟨Or.inl h, fun h' => hxV₁ 1 (h' ▸ h)⟩
+      · exact ⟨Or.inr (Or.inl rfl), x01⟩
+      · exact h.elim
+  · intro i
+    fin_cases i
+    · exact Or.inl ⟨e01, l0, (hax 1).symm, x01⟩
+    · exact Or.inr ⟨rfl, x01, (hbx 1).symm, l1.left_mem, l2.right_mem, Or.inl ⟨rfl, rfl⟩⟩
+  · intro f u w hf hfe
+    rcases hf with ⟨hne, hf, hu, hw⟩ | ⟨rfl, -⟩
+    · refine hsep f u w hf (fun i => ?_)
+      fin_cases i
+      · exact hfe 0
+      · exact hne
+      · rintro rfl
+        rcases hf.eq_and_eq_or_eq_and_eq l2 with ⟨h, -⟩ | ⟨-, h⟩
+        · exact hu h
+        · exact hw h
+    · exact absurd rfl (hfe 1)
+
+/-- The antecedent of the two-body ear is simple, and its ends stay non-adjacent. -/
+theorem splitOff_ear_two_simple {G : Graph α β} (hS : G.Simple) {V₁ : Set α} {x : Fin 2 → α}
+    {a b : α} {e : Fin 3 → β} (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
+    (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    (hpath : ∀ i : Fin 3,
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) (hnadj : ¬ G.Adj a b) :
+    (G.splitOff (x 1) (x 0) b (e 1)).Simple ∧ ¬ (G.splitOff (x 1) (x 0) b (e 1)).Adj a b := by
+  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
+  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
+  have l0 : G.IsLink (e 0) a (x 0) := hpath 0
+  have l2 : G.IsLink (e 2) (x 1) b := hpath 2
+  have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
+  -- no edge of `G` other than the ear's joins `x 0` to `b`
+  have hno : ∀ f, f ≠ e 1 → ¬ G.IsLink f (x 0) b := by
+    intro f hf hl
+    by_cases hfe : ∃ i, f = e i
+    · obtain ⟨i, rfl⟩ := hfe
+      fin_cases i
+      · rcases hl.eq_and_eq_or_eq_and_eq l0 with ⟨h, -⟩ | ⟨-, h⟩
+        exacts [hax 0 h, hab h.symm]
+      · exact hf rfl
+      · rcases hl.eq_and_eq_or_eq_and_eq l2 with ⟨h, -⟩ | ⟨h, -⟩
+        exacts [x01 h, hbx 0 h]
+    · exact hxV₁ 0 (hsep f _ _ hl (fun i h => hfe ⟨i, h⟩)).1
+  refine ⟨Graph.splitOff_simple (fun f u w h => ?_) (fun f₁ f₂ u w h₁ h₂ => ?_), ?_⟩
+  · rcases h with ⟨-, h, -, -⟩ | ⟨-, -, -, -, -, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩
+    · exact h.ne
+    · exact hbx 0
+    · exact (hbx 0).symm
+  · rcases h₁ with ⟨hf₁, h₁, -, -⟩ | ⟨rfl, -, -, -, -, h₁⟩ <;>
+      rcases h₂ with ⟨hf₂, h₂, -, -⟩ | ⟨rfl, -, -, -, -, h₂⟩
+    · exact hS.eq_of_isLink h₁ h₂
+    · rcases h₂ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      exacts [absurd h₁ (hno _ hf₁), absurd h₁.symm (hno _ hf₁)]
+    · rcases h₁ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      exacts [absurd h₂ (hno _ hf₂), absurd h₂.symm (hno _ hf₂)]
+    · rfl
+  · rintro ⟨f, hf⟩
+    rcases hf with ⟨-, hf, -, -⟩ | ⟨-, -, -, -, -, ⟨h, -⟩ | ⟨h, -⟩⟩
+    · exact hnadj ⟨f, hf⟩
+    · exact hax 0 h.symm
+    · exact hab h
+
+
+/-! ## The two-body open ear at `a ≁ b`, `δ₂ ≥ 2` ((MC-176)) -/
+
+open Classical in
+/-- **(MC-176), the open ear with two interior bodies at `a ≁ b`, `δ₂ ≥ 2`**
+(`thm:pencil-x0-open-ear-two-orbit`). Let `G` satisfy (H), with an open ear
+`a − x 0 − x 1 − b` on `V₁`, `a ≁ b`, `δ₂(G[V₁]; a, b) ≥ 2`, and let
+`G₁ = G.splitOff (x 1) (x 0) b (e 1)` be `G` with `x 1` suppressed. If `X₀(G[V₁])` and `X₀(G₁)`
+attain, `X₀(G)` attains. The base of `G₁`'s one-body ear (`Graph.exists_oneEar_base`, with `G₁`'s
+and `G`'s picture polynomials) and a second fibre intersection give heights at which `G[V₁]` and
+`G₁` attain with the flag pair in orbit (i); `x 1` is put back by `exists_insertion_two`; the count
+is `Graph.splitOff_deficiency_le_of_eq_left` and `Graph.deficiency_induce_add_le_of_ear`. -/
+theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 2 → α} {a b : α}
+    {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    (hpath : ∀ i : Fin 3,
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    (hnadj : ¬ G.Adj a b)
+    (h₁ : (G.induce V₁).X0Attains K)
+    (h₂ : (G.splitOff (x 1) (x 0) b (e 1)).X0Attains K)
+    (hδ₂ : (G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2) :
+    G.X0Attains K := by
+  have : Fintype α := Fintype.ofFinite α
+  have hV : V(G).Nonempty := hG.connected.nonempty
+  have : Inhabited α := ⟨a⟩
+  have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
+  have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
+  have l0 : G.IsLink (e 0) a (x 0) := hpath 0
+  have l1 : G.IsLink (e 1) (x 0) (x 1) := hpath 1
+  have l2 : G.IsLink (e 2) (x 1) b := hpath 2
+  have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
+  have hV₁G : V₁ ⊆ V(G) := hcover ▸ Set.subset_union_left
+  -- the antecedent `G₁ = G′ + (a − x 0 − b)`
+  set G₁ := G.splitOff (x 1) (x 0) b (e 1) with hG₁
+  obtain ⟨hcover₁, hinj₁, hxV₁₁, hpath₁, hsep₁⟩ :=
+    splitOff_ear_two hcover hinj hxV₁ ha hb hab hpath hsep
+  obtain ⟨hS₁, hnadj₁⟩ := splitOff_ear_two_simple hG.simple hinj hxV₁ ha hb hab hpath hsep hnadj
+  have he₁ : ∀ y y', G.IsLink (e 1) y y' → y ∉ V₁ ∨ y' ∉ V₁ := by
+    intro y y' h
+    rcases h.eq_and_eq_or_eq_and_eq l1 with ⟨rfl, -⟩ | ⟨rfl, -⟩
+    · exact Or.inl (hxV₁ 0)
+    · exact Or.inl (hxV₁ 1)
+  obtain ⟨hle₁, hind⟩ := induce_splitOff_ear (x := x) (e₀ := e 1) (w := b) hcover hxV₁
+    ⟨1, rfl⟩ (hxV₁ 0) he₁
+  -- the polynomials: `G`'s main pictures and `G₁`'s attainment
+  obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
+    hG.simple.toLoopless hG.three_le_ncard_closedNbhd
+  obtain ⟨ends₂, P₂, hends₂, hP₂, hgood₂⟩ := h₂
+  -- Steps 1–2 at `G₁`: the base of its one-body ear
+  obtain ⟨q, A, hqB, ⟨xk₀, hxk₀, hA₀⟩, hgood⟩ := G₁.exists_oneEar_base hS₁ hcover₁ hinj₁ hxV₁₁
+    ha hb hab hpath₁ hsep₁ hnadj₁ (hind ▸ h₁) (hind ▸ hδ₂) (mul_ne_zero hP₂ hPm)
+    (fun q hq => (hgood₂ q (by rw [map_mul] at hq; exact left_ne_zero_of_mul hq)).1)
+  rw [map_mul] at hqB
+  obtain ⟨hadm₂, R₂, ⟨z₂, hz₂, hR₂⟩, hatt₂⟩ := hgood₂ q (left_ne_zero_of_mul hqB)
+  have hPmq := right_ne_zero_of_mul hqB
+  -- a second fibre intersection, in `G₁`'s lifting system: `G₁` attains too
+  set L₁ := LinearMap.ker ((G₁.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin with hL₁
+  obtain ⟨xk, hxk, hxkR, hxkA⟩ : ∃ xk ∈ L₁,
+      MvPolynomial.eval xk (MvPolynomial.rename Sum.inl R₂) ≠ 0 ∧ MvPolynomial.eval xk A ≠ 0 := by
+    refine MvPolynomial.exists_mem_eval_ne_zero₂ ?_ ⟨xk₀, hxk₀, hA₀⟩
+    have hz₂' : z₂ ∈ L₁.map (LinearMap.funLeft K K Sum.inl) := by
+      rw [hL₁, G₁.map_ker_liftingMatrix q]; exact hz₂
+    obtain ⟨y₂, hy₂, hy₂z⟩ := hz₂'
+    refine ⟨y₂, hy₂, ?_⟩
+    rw [MvPolynomial.eval_rename]
+    have : y₂ ∘ Sum.inl = z₂ := hy₂z
+    rwa [this]
+  obtain ⟨hoa, hob, hrkV₁⟩ := hgood xk hxk hxkA
+  set z : α → K := fun w => xk (Sum.inl w) with hzdef
+  have hz : z ∈ G₁.liftingSpace q := by
+    rw [← G₁.map_ker_liftingMatrix q]; exact ⟨xk, hxk, rfl⟩
+  rw [MvPolynomial.eval_rename] at hxkR
+  have hr₂ := hatt₂ z hz hxkR
+  set la : Fin 3 → K := fun i => xk (Sum.inr (a, i)) with hla
+  set lb : Fin 3 → K := fun i => xk (Sum.inr (b, i)) with hlb
+  obtain ⟨-, hxk2, -⟩ := Graph.liftingMatrix_mulVec_eq_zero_iff.mp (LinearMap.mem_ker.mp hxk)
+  have haV₁ : a ∈ V(G₁) := hcover₁ ▸ Or.inl ha
+  have hbV₁ : b ∈ V(G₁) := hcover₁ ▸ Or.inl hb
+  have hzla : ∀ w ∈ G₁.closedNbhd a, z w = la ⬝ᵥ pencilPicturePoint q w := hxk2 a haV₁
+  have hzlb : ∀ w ∈ G₁.closedNbhd b, z w = lb ⬝ᵥ pencilPicturePoint q w := hxk2 b hbV₁
+  -- the selectors
+  set ends := G.endsOf with hendsdef
+  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
+    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  set ends₁ := Function.update ends (e 1) (x 0, b) with hends₁def
+  have hends₁ : ∀ f u w, G₁.IsLink f u w → G₁.IsLink f (ends₁ f).1 (ends₁ f).2 :=
+    fun f _ _ hf => G.isLink_update_splitOff hends (hpath₁ 1) f hf
+  have hendsI : ∀ f u w, (G.induce V₁).IsLink f u w →
+      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
+    intro f u w hf
+    have hl := hends f u w hf.1
+    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
+    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
+  have hnot : ∀ f u w, (G.induce V₁).IsLink f u w → f ≠ e 1 := by
+    rintro f u w ⟨hf, hu, hw⟩ rfl
+    rcases he₁ u w hf with h | h
+    exacts [h hu, h hw]
+  have hendsI₁ : ∀ f u w, (G₁.induce V₁).IsLink f u w →
+      (G₁.induce V₁).IsLink f (ends₁ f).1 (ends₁ f).2 := by
+    rw [hind]
+    intro f u w hf
+    rw [hends₁def, Function.update_of_ne (hnot f u w hf)]
+    exact hendsI f u w hf
+  -- Step 3 at `G₁`: the ear rank law, `rank G₁ = rank G′ + 4 + s`
+  set c₁ : α × Fin 4 → K := fun p => pencilConfigPoint q z p.1 p.2 with hc₁
+  set F₁ := (PanelHingeFramework.ofNormals (k := 2) G₁ ends₁ c₁).toBodyHinge with hF₁
+  have hC₁ : ∀ i, F₁.supportExtensor (![e 0, e 1] i) ≠ 0 :=
+    fun i => hadm₂.supportExtensor_ne_zero hends₁ z (hpath₁ i)
+  have hear₁ := BodyHingeFramework.finrank_span_rigidityRows_ear_eq F₁ hinj₁ hxV₁₁ ha hb hab
+    hpath₁ hsep₁ hC₁
+  have hrk₁ : (Module.finrank K ↥(Submodule.span K
+      (⟨F₁.graph.induce V₁, F₁.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ) =
+      screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency 3 := by
+    have h := hrkV₁ ends₁ hendsI₁
+    rw [show (G₁.induce V₁).deficiency 3 = (G.induce V₁).deficiency 3 by rw [hind]] at h
+    exact h
+  set ρM := (⟨F₁.graph.induce V₁, F₁.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews a b
+    with hρM
+  set ρJ := ρM.map (screwComplementIso (K := K)).symm.toLinearMap with hρJ
+  set pa := pencilConfigPoint q z a with hpa
+  set y := pencilConfigPoint q z (x 0) with hy
+  set pb := pencilConfigPoint q z b with hpb
+  rw [span_supportExtensor_comp_eq_map_pointJoin hends₁ c₁ (![e 0, e 1])
+    (fun i => pathVertex a ![x 0] b i.castSucc) (fun i => pathVertex a ![x 0] b i.succ) hpath₁,
+    finrank_sup_map_screwComplementIso] at hear₁
+  have hjoins₁ : Set.range (fun i : Fin 2 => pointJoin
+      (fun j => c₁ (pathVertex a ![x 0] b i.castSucc, j))
+      (fun j => c₁ (pathVertex a ![x 0] b i.succ, j))) = {pointJoin pa y, pointJoin y pb} := by
+    rw [show (fun i : Fin 2 => pointJoin (fun j => c₁ (pathVertex a ![x 0] b i.castSucc, j))
+      (fun j => c₁ (pathVertex a ![x 0] b i.succ, j))) = ![pointJoin pa y, pointJoin y pb] from by
+        funext i; fin_cases i <;> rfl]
+    simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
+  rw [hjoins₁] at hear₁
+  -- the counts
+  have hdisj : Disjoint V₁ (Set.range x) := by
+    refine Set.disjoint_left.mpr ?_
+    rintro _ h ⟨i, rfl⟩
+    exact hxV₁ i h
+  have hcount : (V(G).ncard : ℤ) = V₁.ncard + 2 := by
+    rw [hcover, Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _),
+      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
+    push_cast; ring
+  have hcount₁ : (V(G₁).ncard : ℤ) = V₁.ncard + 1 := by
+    have hdisj₁ : Disjoint V₁ (Set.range ![x 0]) := by
+      refine Set.disjoint_left.mpr ?_
+      rintro _ h ⟨i, rfl⟩
+      exact hxV₁₁ i h
+    rw [hcover₁, Set.ncard_union_eq hdisj₁ (Set.toFinite _) (Set.toFinite _),
+      Set.ncard_range_of_injective hinj₁, Nat.card_eq_fintype_card, Fintype.card_fin]
+    push_cast; ring
+  have hdeg2 : ∀ e' y', G.IsLink e' (x 1) y' → e' = e 1 ∨ e' = e 2 := by
+    intro e' y' hl
+    by_cases h : ∃ i, e' = e i
+    · obtain ⟨i, rfl⟩ := h
+      fin_cases i
+      · rcases hl.eq_and_eq_or_eq_and_eq l0 with ⟨h1, -⟩ | ⟨h1, -⟩
+        exacts [absurd h1 (hax 1), absurd h1 x01.symm]
+      · exact Or.inl rfl
+      · exact Or.inr rfl
+    · exact absurd (hsep e' _ _ hl (fun i h' => h ⟨i, h'⟩)).1 (hxV₁ 1)
+  have hdef₁ : G₁.deficiency 3 ≤ G.deficiency 3 :=
+    Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 (hbx 1).symm
+      (fun h => by simpa using pathEdge_injective hinj hax hbx hab hpath h) l1.symm l2 hdeg2
+  have hdefG : (G.induce V₁).deficiency 3 + 2 + 1 - (Graph.bodyBarDim 3 : ℤ) ≤ G.deficiency 3 :=
+    Graph.deficiency_induce_add_le_of_ear (n := 3) (k := 2) (by decide) (by omega) hcover hinj
+      hxV₁ ha hb hpath hsep
+  have hs6 : (screwDim 2 : ℤ) = 6 := rfl
+  have hb6 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
+  -- `s = dim(ρ + Λ₁(y)) = 2 + def₃(G′) − def₃(G₁)`
+  have hs : (Module.finrank K ↥(ρJ ⊔ Submodule.span K {pointJoin pa y, pointJoin y pb}) : ℤ) =
+      2 + (G.induce V₁).deficiency 3 - G₁.deficiency 3 := by
+    have h1 : (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ) =
+        screwDim 2 * ((V(G₁).ncard : ℤ) - 1) - G₁.deficiency 3 := by
+      rw [← hr₂]
+      exact_mod_cast PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr G₁ hends₁
+        hends₂ (fun _ _ _ => rfl)
+    rw [hear₁, hrk₁, hcount₁, hs6, ← hρJ] at h1
+    push_cast at h1
+    linarith
+  -- Step 4: put `x 1` back (orbit (i) at `y`)
+  have hxa : x 0 ∈ G₁.closedNbhd a := Or.inr ⟨e 0, hpath₁ 0⟩
+  have hxb : x 0 ∈ G₁.closedNbhd b := Or.inr ⟨e 1, (hpath₁ 1).symm⟩
+  have hza : z a = la ⬝ᵥ pencilPicturePoint q a := hzla a (Or.inl rfl)
+  have hzb : z b = lb ⬝ᵥ pencilPicturePoint q b := hzlb b (Or.inl rfl)
+  have hdiff : ∀ u, planeDiff a b xk ⬝ᵥ u = la ⬝ᵥ u - lb ⬝ᵥ u := by
+    intro u; rw [← sub_dotProduct]; rfl
+  obtain ⟨x₁, x₂, hx₁3, hx₁a, hx₂3, hx₂b, hins⟩ := exists_insertion_two ρJ la lb
+    (pa := pa) (y := y) (pb := pb)
+    (by rw [hpa, planarProj_pencilConfigPoint]; exact hza)
+    (by rw [hpb, planarProj_pencilConfigPoint]; exact hzb)
+    (by rw [hy, planarProj_pencilConfigPoint]; exact hzla _ hxa)
+    (by rw [hy, planarProj_pencilConfigPoint]; exact hzlb _ hxb) rfl rfl rfl
+    (by
+      rw [hpa, planarProj_pencilConfigPoint]
+      intro h
+      apply hoa
+      rw [hdiff, ← hza]
+      exact sub_eq_zero.mpr h)
+    (by
+      rw [hpb, planarProj_pencilConfigPoint]
+      intro h
+      apply hob
+      rw [hdiff, ← hzb]
+      exact sub_eq_zero.mpr h.symm)
+  -- the ear data of `G` over the base `(q, z|V₁, la, lb)`
+  set z₁ := Graph.liftingRestrict V₁ z with hz₁def
+  set cfg := earConfig V₁ q z₁ (x 0) (x 1) (Set.range x) la lb with hcfgdef
+  set P := earPointPoly (K := K) V₁ q z₁ (x 0) (x 1) (Set.range x) la lb with hPdef
+  have hPc : ∀ s, (fun p => MvPolynomial.eval s (P p)) = cfg s :=
+    fun s => funext (eval_earPointPoly V₁ q z₁ (x 0) (x 1) (Set.range x) la lb s)
+  have hcV₁ : ∀ s w, w ∈ V₁ → ∀ j, cfg s (w, j) = c₁ (w, j) := by
+    intro s w hw j
+    rw [hcfgdef, earConfig_of_mem s hw j, hc₁]
+    exact pencilConfigPoint_liftingRestrict V₁ q z hw j
+  set pt : ((α × Fin 2) ⊕ α → K) → α → Fin 4 → K := fun s w j => cfg s (w, j) with hpt
+  have hevpt : ∀ s w, (fun j => MvPolynomial.eval s (P (w, j))) = pt s w :=
+    fun s w => funext fun j => congrFun (hPc s) (w, j)
+  have hpta : ∀ s, pt s a = pa := fun s => funext fun j => hcV₁ s a ha j
+  have hptb : ∀ s, pt s b = pb := fun s => funext fun j => hcV₁ s b hb j
+  -- the witness ear datum: `x 0` at `x₁`, `x 1` at `x₂`
+  set sw : (α × Fin 2) ⊕ α → K := Sum.elim (fun p => if p.1 = x 0 then ![x₁ 0, x₁ 1] p.2
+    else if p.1 = x 1 then ![x₂ 0, x₂ 1] p.2 else q p) (fun _ => 0) with hsw
+  have hpt0 : pt sw (x 0) = x₁ := by
+    change (fun j => cfg sw (x 0, j)) = x₁
+    rw [earConfig_first sw (hxV₁ 0)]
+    funext j
+    fin_cases j
+    · simp [hsw, liftPlane]
+    · simp [hsw, liftPlane]
+    · simp [hsw, liftPlane, hx₁a, planarProj_apply, hx₁3]
+    · simp [liftPlane, hx₁3]
+  have hpt1 : pt sw (x 1) = x₂ := by
+    change (fun j => cfg sw (x 1, j)) = x₂
+    rw [earConfig_last sw (hxV₁ 1) x01.symm]
+    funext j
+    fin_cases j
+    · simp [hsw, liftPlane, x01.symm]
+    · simp [hsw, liftPlane, x01.symm]
+    · simp [hsw, liftPlane, hx₂b, planarProj_apply, hx₂3, x01.symm]
+    · simp [liftPlane, hx₂3]
+  have hjoinsG : ∀ s, (fun i : Fin 3 =>
+      pointJoin (fun j => MvPolynomial.eval s (P (pathVertex a x b i.castSucc, j)))
+        (fun j => MvPolynomial.eval s (P (pathVertex a x b i.succ, j)))) =
+      ![pointJoin (pt s a) (pt s (x 0)), pointJoin (pt s (x 0)) (pt s (x 1)),
+        pointJoin (pt s (x 1)) (pt s b)] := by
+    intro s; funext i; rw [hevpt, hevpt]; fin_cases i <;> rfl
+  have hrange : ∀ u v w t : ScrewSpace K 2, u = v → Set.range ![u, w, t] = {v, w, t} := by
+    rintro u v w t rfl
+    simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
+  -- the span bound at the witness, `≥ 3 + def₃(G′) − def₃(G)`
+  set n₀ := (3 + (G.induce V₁).deficiency 3 - G.deficiency 3).toNat with hn₀
+  have hNt : n₀ ≤ Module.finrank K ↥(ρJ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
+      pointJoin (fun j => MvPolynomial.eval sw (P (pathVertex a x b i.castSucc, j)))
+        (fun j => MvPolynomial.eval sw (P (pathVertex a x b i.succ, j))))) := by
+    rw [hjoinsG, hrange _ _ _ _ rfl, hpta, hpt0, hpt1, hptb]
+    refine le_trans ?_ hins
+    rw [le_min_iff]
+    constructor
+    · refine Int.toNat_le.mpr ?_
+      push_cast
+      linarith
+    · refine Int.toNat_le.mpr ?_
+      push_cast
+      rw [hb6] at hdefG
+      linarith
+  obtain ⟨Qs, hQs₀, hQs⟩ := exists_mvPolynomial_le_finrank_sup_span_pointJoin ρJ P
+    (fun i : Fin 3 => pathVertex a x b i.castSucc) (fun i => pathVertex a x b i.succ) hNt
+  -- Round 2: a common non-root, main for `G`
+  set sstar : (α × Fin 2) ⊕ α → K := Sum.elim q (fun _ => 0) with hsstar
+  have hpicstar : earPicture V₁ q sstar = q := by
+    funext p; by_cases hp : p.1 ∈ V₁ <;> simp [earPicture, hp, hsstar]
+  have hPm'₀ : MvPolynomial.eval sstar (MvPolynomial.bind₁ (earPicturePoly V₁ q) Pm) ≠ 0 := by
+    rwa [eval_bind₁_earPicturePoly, hpicstar]
+  have hne0 : ∀ {Q : MvPolynomial ((α × Fin 2) ⊕ α) K} {s}, MvPolynomial.eval s Q ≠ 0 → Q ≠ 0 :=
+    fun h hQ => h (by rw [hQ, map_zero])
+  obtain ⟨s₀, hs₀a, hs₀b⟩ := MvPolynomial.exists_eval_ne_zero₂ (hne0 hQs₀) (hne0 hPm'₀)
+  rw [eval_bind₁_earPicturePoly] at hs₀b
+  have hqmain₀ := hmain _ hs₀b
+  -- the heights of the ear data are heights of `G`
+  have hpp : ∀ s, ∀ w ∈ V₁,
+      pencilPicturePoint (earPicture V₁ q s) w = pencilPicturePoint q w := by
+    intro s w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, earPicture_of_mem s hw]
+  have hz₁G : z₁ ∈ (G.induce V₁).liftingSpace q := by
+    have := Graph.liftingRestrict_mem_liftingSpace (Graph.induce_le (hcover₁ ▸
+      Set.subset_union_left : V₁ ⊆ V(G₁))) hz
+    rwa [hind] at this
+  have hz₁s : ∀ s, z₁ ∈ (G.induce V₁).liftingSpace (earPicture V₁ q s) := by
+    intro s
+    rw [Graph.liftingSpace_congr (G := G.induce V₁) (q := earPicture V₁ q s) (q' := q)
+      (fun w hw i => earPicture_of_mem s hw i)]
+    exact hz₁G
+  have hlas : ∀ s, ∀ p ∈ (G.induce V₁).closedNbhd a,
+      z₁ p = la ⬝ᵥ pencilPicturePoint (earPicture V₁ q s) p := by
+    intro s p hp
+    have hpV : p ∈ V₁ := Graph.closedNbhd_subset_vertexSet ha hp
+    have hp₁ : p ∈ G₁.closedNbhd a := by
+      rcases hp with rfl | ⟨f, hf⟩
+      · exact Or.inl rfl
+      · exact Or.inr ⟨f, hf.of_le hle₁⟩
+    rw [hpp s p hpV, ← hzla p hp₁]
+    simp [hz₁def, Graph.liftingRestrict_apply, hpV]
+  have hlbs : ∀ s, ∀ p ∈ (G.induce V₁).closedNbhd b,
+      z₁ p = lb ⬝ᵥ pencilPicturePoint (earPicture V₁ q s) p := by
+    intro s p hp
+    have hpV : p ∈ V₁ := Graph.closedNbhd_subset_vertexSet hb hp
+    have hp₁ : p ∈ G₁.closedNbhd b := by
+      rcases hp with rfl | ⟨f, hf⟩
+      · exact Or.inl rfl
+      · exact Or.inr ⟨f, hf.of_le hle₁⟩
+    rw [hpp s p hpV, ← hzlb p hp₁]
+    simp [hz₁def, Graph.liftingRestrict_apply, hpV]
+  have hz₀ := Graph.earHeight_mem_liftingSpace (k := 2) le_rfl hcover hinj hxV₁ ha hb hab
+    hpath hsep hqmain₀.1 (hz₁s s₀) (hlas s₀) (hlbs s₀) (fun w => s₀ (Sum.inr w))
+  -- what `G`'s frameworks read on `V₁`: `G₁`'s hinges
+  have hCG : ∀ s f u w, (G.induce V₁).IsLink f u w →
+      (PanelHingeFramework.ofNormals (k := 2) G ends (cfg s)).toBodyHinge.supportExtensor f =
+        F₁.supportExtensor f := by
+    intro s f u w hf
+    obtain ⟨-, h1, h2⟩ := hendsI f u w hf
+    simp only [hF₁, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hends₁def,
+      Function.update_of_ne (hnot f u w hf)]
+    congr 1 <;> funext j
+    · exact hcV₁ s _ h1 j
+    · exact hcV₁ s _ h2 j
+  have hF₁V : (⟨F₁.graph.induce V₁, F₁.supportExtensor⟩ : BodyHingeFramework K 2 α β) =
+      ⟨G.induce V₁, F₁.supportExtensor⟩ := by
+    rw [show F₁.graph = G₁ from rfl, hind]
+  have hρG : ∀ s, (⟨G.induce V₁, (PanelHingeFramework.ofNormals (k := 2) G ends
+      (cfg s)).toBodyHinge.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews a b = ρM := by
+    intro s
+    rw [hρM, hF₁V]
+    exact BodyHingeFramework.relScrews_congr (G.induce V₁) (hCG s) a b
+  have hrkG : ∀ s, (Module.finrank K ↥(Submodule.span K (⟨G.induce V₁,
+      (PanelHingeFramework.ofNormals (k := 2) G ends (cfg s)).toBodyHinge.supportExtensor⟩ :
+        BodyHingeFramework K 2 α β).rigidityRows) : ℤ) =
+      screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency 3 := by
+    intro s
+    rw [BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hCG s), ← hF₁V]
+    exact hrk₁
+  -- Step 5: the ear rank law at `G`
+  have hC : ∀ i, (PanelHingeFramework.ofNormals (k := 2) G ends
+      (cfg s₀)).toBodyHinge.supportExtensor (e i) ≠ 0 :=
+    fun i => hqmain₀.1.supportExtensor_ne_zero hends _ (hpath i)
+  have hear : (Module.finrank K ↥(Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+      (cfg s₀)).toBodyHinge.rigidityRows) : ℤ)
+      = (Module.finrank K ↥(Submodule.span K (⟨G.induce V₁, (PanelHingeFramework.ofNormals
+            (k := 2) G ends (cfg s₀)).toBodyHinge.supportExtensor⟩ :
+              BodyHingeFramework K 2 α β).rigidityRows) : ℤ)
+        + ((screwDim 2 : ℤ) - 1) * (2 + 1)
+        + (Module.finrank K ↥((⟨G.induce V₁, (PanelHingeFramework.ofNormals (k := 2) G ends
+              (cfg s₀)).toBodyHinge.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews a b
+            ⊔ Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := 2) G ends
+              (cfg s₀)).toBodyHinge.supportExtensor ∘ e))) : ℤ)
+        - (screwDim 2 : ℤ) :=
+    BodyHingeFramework.finrank_span_rigidityRows_ear_eq _ hinj hxV₁ ha hb hab hpath hsep hC
+  rw [hrkG s₀, hρG s₀, span_supportExtensor_comp_eq_map_pointJoin hends (cfg s₀) e
+    (fun i => pathVertex a x b i.castSucc) (fun i => pathVertex a x b i.succ) hpath,
+    finrank_sup_map_screwComplementIso, ← hρJ] at hear
+  have hspan₀ := hQs s₀ hs₀a
+  refine Graph.x0Attains_of_exists hV ends hends hqmain₀ hz₀ ?_
+  change _ ≤ (Module.finrank K ↥(Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+    (cfg s₀)).toBodyHinge.rigidityRows) : ℤ)
+  rw [hear, hcount, hs6]
+  have h₀ : ((3 + (G.induce V₁).deficiency 3 - G.deficiency 3 : ℤ)) ≤ (n₀ : ℤ) :=
+    Int.self_le_toNat _
+  have h₁ : (n₀ : ℤ) ≤ (Module.finrank K ↥(ρJ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
+      pointJoin (fun j => MvPolynomial.eval s₀ (P (pathVertex a x b i.castSucc, j)))
+        (fun j => MvPolynomial.eval s₀ (P (pathVertex a x b i.succ, j))))) : ℤ) := by
+    exact_mod_cast hspan₀
+  rw [show (fun i : Fin 3 =>
+      pointJoin (fun j => MvPolynomial.eval s₀ (P (pathVertex a x b i.castSucc, j)))
+        (fun j => MvPolynomial.eval s₀ (P (pathVertex a x b i.succ, j)))) =
+      fun i => pointJoin (fun j => cfg s₀ (pathVertex a x b i.castSucc, j))
+        (fun j => cfg s₀ (pathVertex a x b i.succ, j))
+    from funext fun i => by rw [hevpt, hevpt]] at h₁
   linarith
 
 end CombinatorialRigidity.Molecular

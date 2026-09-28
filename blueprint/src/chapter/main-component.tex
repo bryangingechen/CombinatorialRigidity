@@ -2661,6 +2661,8 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
 \begin{lemma}[Putting the second body back between the two end planes]
   \label{lem:pencil-insertion-two}
+  \lean{CombinatorialRigidity.Molecular.exists_insertion_two}
+  \leanok
   \uses{def:extensor, lem:pencil-join-flat}
   Let $K$ be infinite, and let $\pi_a$ and $\pi_b$ be the planes
   $p_z = \ell_a \cdot \bar p$ and $p_z = \ell_b \cdot \bar p$ of $K^4$, for
@@ -2677,6 +2679,7 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-tetrahedron, lem:pencil-insertion}
   Write $W = \rho + \operatorname{span}(p_a \wedge y, y \wedge p_b)$. If
   $W = \Lambda^2 K^4$, take $x_1 = x_2 = y$. Otherwise note that
@@ -2709,6 +2712,8 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
 \begin{theorem}[An open ear with two interior bodies at non-adjacent ends]
   \label{thm:pencil-x0-open-ear-two-orbit}
+  \lean{Graph.X0Attains.of_openEar_two_of_splitOff}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing,
         def:graph-operations, def:deficiency-merged}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with
@@ -2722,6 +2727,7 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-one-ear-base, lem:pencil-x0-main-picture-open,
         lem:pencil-x0-fibre-intersection, lem:block-rank-ear,
         lem:pencil-config-point-join-rank, lem:pencil-insertion-two,
