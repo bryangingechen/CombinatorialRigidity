@@ -15,7 +15,7 @@ The interface for the strong induction on the number of bodies that closes the `
 (`blueprint/src/chapter/main-component.tex`, `sec:main-component-coverage`; (MC-89), (MC-56)). One
 step of the induction is packaged as a single non-recursive predicate `Graph.X0Reduces P G`: each
 constructor is the structural hypotheses of one of the thirteen landed step theorems
-(`MainComponent/{Cut,Bridge,Chain,ContractCurve,Contract,ContractAdditive,SplitOff}.lean`), with
+(`MainComponent/{Bridge,Cut,Chain,Short,Orbit,SplitOff,Contract,ContractAdditive}.lean`), with
 the property `P` at every graph the step consumes. The dispatch
 (`Graph.X0Reduces.x0Attains`) reads off the matching step theorem in each case, so attainment at
 `G` follows from attainment at the graphs `P` names. The strong induction
