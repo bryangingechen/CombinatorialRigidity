@@ -3976,14 +3976,20 @@ additive core applies.
 \end{lemma}
 \begin{proof}
   \leanok
-  (1) By the clause of a chain of bridges. Follow the two sides of the
-  one edge leaving a set $V'$: an end of degree two extends into its
-  own side, since its other edge is not that one, until both ends have
-  degree at least three. Each side is connected, since its end is its
-  only body with a neighbour outside it.
+  (1) By the clause of a chain of bridges. As $G$ is connected but not
+  2-edge-connected, some nonempty proper set $V'$ of bodies is left by
+  exactly one edge; its sides are $V'$ and $V(G) \setminus V'$. Grow a
+  path from that edge, keeping the two sides: an end of degree two has
+  its other edge inside its own side, since that edge is not the one
+  leaving $V'$, so the path extends into that side, which loses the
+  end. The path stops when both ends have degree at least three. Each
+  side is then connected, since its end is its only body with a
+  neighbour outside it; the end loses exactly one edge, so it keeps
+  degree at least two, and every other body keeps all its neighbours.
 
-  (2) By the cut-vertex clause at $v$. Let $C$ be any set closed under
-  adjacency in $G - v$; the sides are $C \cup \{v\}$ and
+  (2) By the cut-vertex clause at $v$. As $G - v$ is disconnected, it
+  has a nonempty set $C$ of bodies, closed under adjacency in $G - v$
+  and not all of its bodies; the sides are $C \cup \{v\}$ and
   $V(G) \setminus C$. The body $v$ sends at least two edges into each
   side, since a single one would be a bridge, and every other body
   keeps all its neighbours. Each side is connected, since $v$ is its
