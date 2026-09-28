@@ -43,7 +43,8 @@ to `G`.
   `pathVertex_mem_union_image_iff` — the path sequence read by index value, read backwards, and
   against the prefixes `V₁ ∪ {x i | i < j}`; `pathVertex_last`, `pathVertex_injective`,
   `pathVertex_val_succ`, `pathVertex_eq_x_iff`, `pathVertex_shift` and `image_val_lt_eq_range`
-  serve the ear steps (`MainComponent/Ear.lean`, `MainComponent/Chain.lean`, Phase 40g).
+  serve the ear steps (`MainComponent/Ear.lean`, `MainComponent/Chain.lean`, Phase 40g), and
+  `pathEdge_injective` (a path of distinct bodies has distinct edges) the shorter ears (Phase 40h).
 * `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath`,
   `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the
   counts along the path: each body hangs from the prefix before it by one edge, so it adds `1` to
@@ -591,6 +592,26 @@ theorem pathVertex_injective {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Fun
   · exact absurd h.symm hab
   · exact absurd h.symm (hbx i')
   · exact Fin.ext (by omega)
+
+/-- **The edges of a path of distinct bodies are distinct** (Phase 40h SHORT): the labels `e i` of
+the path's `k + 1` edges are pairwise different, since their pairs of ends differ
+(`pathVertex_injective`). -/
+theorem pathEdge_injective {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α}
+    {e : Fin (k + 1) → β} (hinj : Function.Injective x) (hax : ∀ i, x i ≠ a)
+    (hbx : ∀ i, x i ≠ b) (hab : a ≠ b)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) :
+    Function.Injective e := by
+  have hpv := pathVertex_injective hinj hax hbx hab
+  intro i j hij
+  have h1 := hpath i
+  rw [hij] at h1
+  rcases h1.eq_and_eq_or_eq_and_eq (hpath j) with ⟨h, -⟩ | ⟨h, h'⟩
+  · exact Fin.castSucc_injective _ (hpv h)
+  · have e1 := congrArg Fin.val (hpv h)
+    have e2 := congrArg Fin.val (hpv h')
+    simp only [Fin.val_castSucc, Fin.val_succ] at e1 e2
+    omega
 
 /-- **Where an interior body sits in the path sequence** (Phase 40g CHAIN): with the interior
 bodies distinct and different from both ends, `x i` sits exactly at the index of value `i + 1`. No

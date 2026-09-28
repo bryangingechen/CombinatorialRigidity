@@ -393,7 +393,10 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
       the affine witness of a nonzero bilinear form (`k = 3`, Case A; B7), and the
       transport of `ρ ⊔ Λ` from meets to joins (B6, B7), unless the ear law is applied at the join
       framework as ORBIT's route does. The blueprint node of each build is in `notes/Phase40h.md`'s
-      checklist.
+      checklist. **Update at B3–B4 (2026-09-27, one commit, from the EARGEN recon's sorry-free spike
+      of the whole `k = 4` step):** the meet-to-join transport landed (`Ear.lean`), and `Bricks.lean`
+      gained one congruence (`relScrews_congr`); B6's `W = ⊤` branch uses the collision point, not
+      `exists_insertion_ge`. Placement and the rest: `notes/Phase40h.md` *Current state*.
     - **Re-homed and dropped** (PI decisions 2–4):
       - the `k = 1` cell (B8–B9) and (MC-175)(iii) go to **ORBIT** (below);
       - THETA ((MC-139)) dissolves into **COVERAGE**'s strong induction, with a remark and no named

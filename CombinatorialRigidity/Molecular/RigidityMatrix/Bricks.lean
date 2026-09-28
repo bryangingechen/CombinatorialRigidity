@@ -818,6 +818,20 @@ noncomputable def relScrews (F : BodyHingeFramework K k α β) (u v : α) :
     Submodule K (ScrewSpace K k) :=
   Submodule.map (screwDiff v u) F.infinitesimalMotions
 
+/-- **Relative screws read the hinges only on the links** of the graph (Phase 40h SHORT): two
+hinge assignments on `H` agreeing at every link have the same relative screws at every pair. The
+motion space reads the hinges only through the constraints at links (`IsInfinitesimalMotion`). -/
+theorem relScrews_congr (H : Graph α β) {C C' : β → ScrewSpace K k}
+    (h : ∀ f u w, H.IsLink f u w → C f = C' f) (a b : α) :
+    (⟨H, C⟩ : BodyHingeFramework K k α β).relScrews a b =
+      (⟨H, C'⟩ : BodyHingeFramework K k α β).relScrews a b := by
+  have hZ : (⟨H, C⟩ : BodyHingeFramework K k α β).infinitesimalMotions =
+      (⟨H, C'⟩ : BodyHingeFramework K k α β).infinitesimalMotions := by
+    ext S
+    simp only [mem_infinitesimalMotions, isInfinitesimalMotion_iff]
+    exact forall₃_congr fun f u w => imp_congr_right fun hf => by rw [h f u w hf]
+  rw [relScrews, relScrews, hZ]
+
 /-- The **joint rows** at a body pair `u, v` confining the relative screw to `U`
 (`notes/pencil/workbook/attack-smark.md` § S7(ii)): the set of rigidity-row functionals
 `hingeRow u v r` as `r` ranges over the annihilator `U^⊥ = U.dualAnnihilator ⊆ Module.Dual K

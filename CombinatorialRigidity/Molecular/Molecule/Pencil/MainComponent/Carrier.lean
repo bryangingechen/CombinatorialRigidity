@@ -48,6 +48,8 @@ PI decision 5).
 * `Graph.IsAdmissiblePicture.supportExtensor_ne_zero` — over an admissible picture every hinge of
   the configuration is nonzero, at every height.
 * `Graph.IsAdmissiblePicture.exists_mvPolynomial` — admissibility is Zariski-open.
+* `Graph.isAdmissiblePicture_congr`, `Graph.liftingSpace_congr` — admissibility and `L(q)` read
+  the picture only at the bodies of `G` (Phase 40h SHORT).
 * `Graph.liftingMatrix` — the lifting system, a matrix of polynomials in the picture whose kernel
   projects onto `L(q)` (`Graph.map_ker_liftingMatrix`), isomorphically over an admissible picture
   (`Graph.finrank_ker_liftingMatrix`).
@@ -102,6 +104,26 @@ def _root_.Graph.IsAdmissiblePicture (G : Graph α β) (q : α × Fin 2 → K) :
   ∀ v ∈ V(G), ∃ t : Fin 3 → α, (∀ i, t i ∈ G.closedNbhd v) ∧
     LinearIndependent K (fun i => pencilPicturePoint q (t i))
 
+/-- **Admissibility reads the picture only on `V(G)`** (`lem:pencil-picture-local`, the
+admissibility half; Phase 40h SHORT): two pictures agreeing at every body of `G` are admissible
+for `G` together. Admissibility reads the picture at the two ends of each link and on each closed
+neighbourhood, and all of these are bodies of `G`. -/
+theorem _root_.Graph.isAdmissiblePicture_congr {G : Graph α β} {q q' : α × Fin 2 → K}
+    (hq : ∀ w ∈ V(G), ∀ i, q (w, i) = q' (w, i)) :
+    G.IsAdmissiblePicture q ↔ G.IsAdmissiblePicture q' := by
+  have hpp : ∀ w ∈ V(G), pencilPicturePoint q w = pencilPicturePoint q' w := by
+    intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
+  have hN : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, w ∈ V(G) := by
+    rintro v hv w (rfl | ⟨e, he⟩)
+    exacts [hv, he.right_mem]
+  unfold Graph.IsAdmissiblePicture
+  refine and_congr (forall_congr' fun e => forall₂_congr fun u v => imp_congr_right fun he => ?_)
+    (forall₂_congr fun v hv => exists_congr fun t => and_congr_right fun ht => ?_)
+  · rw [hpp u he.left_mem, hpp v he.right_mem]
+  · have : (fun i => pencilPicturePoint q (t i)) = fun i => pencilPicturePoint q' (t i) :=
+      funext fun i => hpp _ (hN v hv _ (ht i))
+    rw [this]
+
 /-! ## The lifting space -/
 
 /-- **The lifting space `L(q)`** (`def:pencil-lifting-space`; Phase 40b CARRIER, informal (MC-1)).
@@ -132,6 +154,23 @@ theorem _root_.Graph.mem_liftingSpace {G : Graph α β} {q : α × Fin 2 → K} 
     z ∈ G.liftingSpace q ↔ (∀ w ∉ V(G), z w = 0) ∧
       ∀ v ∈ V(G), ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w :=
   Iff.rfl
+
+/-- **The lifting space reads the picture only on `V(G)`** (`lem:pencil-picture-local`, the
+lifting-space half; Phase 40h SHORT): two pictures agreeing at every body of `G` have the same
+`L(q)`. The lifting space reads the picture on each closed neighbourhood, which consists of bodies
+of `G`. -/
+theorem _root_.Graph.liftingSpace_congr {G : Graph α β} {q q' : α × Fin 2 → K}
+    (hq : ∀ w ∈ V(G), ∀ i, q (w, i) = q' (w, i)) : G.liftingSpace q = G.liftingSpace q' := by
+  have hpp : ∀ w ∈ V(G), pencilPicturePoint q w = pencilPicturePoint q' w := by
+    intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
+  have hN : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, w ∈ V(G) := by
+    rintro v hv w (rfl | ⟨e, he⟩)
+    exacts [hv, he.right_mem]
+  ext z
+  simp only [Graph.mem_liftingSpace]
+  refine and_congr_right fun _ => forall₂_congr fun v hv => exists_congr fun h =>
+    forall₂_congr fun w hw => ?_
+  rw [hpp w (hN v hv w hw)]
 
 /-- **The main pictures `U`** (`def:pencil-main-picture`; Phase 40b CARRIER, informal (MC-2)): the
 admissible pictures whose lifting space has the least dimension `ℓ₀` among all admissible

@@ -5,9 +5,9 @@
 interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2`
 when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
 at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
-second-read). Fourteen nodes, nine green; seven builds B1–B7, plus the `Carrier.lean` split before
-B3 (PI decision 5). B1–B2 landed, and the `Carrier.lean` split landed. **Next: B3–B4** — see
-*Hand-off*.
+second-read). Fourteen nodes, eleven green; seven builds B1–B7, plus the `Carrier.lean` split before
+B3 (PI decision 5). B1–B4 landed (B3–B4 as one commit, the coordinator's call), with the split.
+**The next concrete commit is B5**, then B6, then B7 — see *Hand-off*.
 
 ## Current state
 
@@ -54,10 +54,30 @@ both moved); every other downstream module (`Cut.lean`, `Bridge.lean`, `Contract
 `Chain.lean`, `Lines.lean`) reaches the moved declarations transitively through `Flat.lean`, per the
 project's one-hop-import convention. `CombinatorialRigidity.lean` gained the new import. Whole-project
 rebuild (2980 jobs): 0 errors, 0 warnings; `lake lint` clean; `blueprint/verify.sh` (`checkdecls`)
-passes unchanged (no blueprint edit this commit). **Next: B3–B4** (*Hand-off*).
+passes unchanged (no blueprint edit this commit).
 
-**The spikes** live in the gitignored `scratch/40h/` and `scratch/40h-read/`, local to this checkout
-(builder pointers, not evidence):
+**B3–B4 landed** (EARGEN, one commit): the EARGEN spike's Parts 0, 1, 2 and 5, and
+`pathEdge_injective`. `lem:pencil-picture-local` and `lem:pencil-ear-data` are green; the second
+was restated to RECON §2's text (the changed-statement gate), with `earConfig_of_mem` added to its
+pins (clause (1)'s "on `V₁` they are those of `(q₁, z₁)`"). Where each piece went:
+- `Carrier.lean`: `Graph.isAdmissiblePicture_congr` after `Graph.IsAdmissiblePicture`,
+  `Graph.liftingSpace_congr` after `Graph.mem_liftingSpace`;
+- new `MainComponent/EarGen.lean` (imports `Ear.lean` and `Lines.lean`; in the root import): Parts
+  1–2 — `earPicture`, `earHeight`, `earConfig`, the `…Poly` mirrors and their `eval` lemmas, the
+  `earPicture_…`/`earConfig_…` point values, `Graph.earHeight_mem_liftingSpace`, `joinPoly`, and the
+  two `exists_mvPolynomial_le_finrank_…` transfers;
+- `RigidityMatrix/Bricks.lean`: `BodyHingeFramework.relScrews_congr` after `relScrews`;
+  `AlgebraicInduction/Pinning.lean`: `BodyHingeFramework.finrank_span_rigidityRows_congr` after
+  `infinitesimalMotions_eq_of_isLink_span_supportExtensor`;
+- `Ear.lean`: `span_supportExtensor_comp_eq_map_pointJoin`, `finrank_sup_map_screwComplementIso`
+  after `screwComplementIso_pointJoin`; `Cut.lean`: `pathEdge_injective` after `pathVertex_injective`.
+
+**The spikes** live in the gitignored `scratch/40h/`, `scratch/40h-read/` and `scratch/40h-eargen/`,
+local to this checkout (builder pointers, not evidence):
+- `scratch/40h-eargen/EarGen.lean` (1 230 lines), the EARGEN recon's spike of the whole `k = 4` step,
+  sorry-free, with `Graph.X0Attains.of_openEar_four` stated as pinned; verdict in its `RECON.md`
+  (§4 the assembly, §6 the `k = 3` delta). Parts 0–2, 5 landed in B3–B4; **Parts 3, 4 (less
+  `pathEdge_injective`), 6 (less `finrank_span_rigidityRows_congr`) and 7 are B6's source.**
 - `scratch/40h-read/S40hReadGeom.lean` (563 lines), the second reader's line geometry: consumed by
   B1.
 - `scratch/40h/S40hSteps.lean` (177 lines): the four step statements (`of_openEar_one` is ORBIT's) and
@@ -84,9 +104,9 @@ passes unchanged (no blueprint edit this commit). **Next: B3–B4** (*Hand-off*)
   docstring ("−det") and the theorem's docstring ("up to sign") are stale.
 - `lem:pencil-picture-local` comes from the design doc's step-contract signatures (compiled in 40g's
   prerequisite spike).
-- **`lem:pencil-ear-data` has no compiled statement.** It is transcribed from (MC-180)'s Steps 1–2
-  (the base data, the ear data, (E1)–(E3)) and the recon's EARGEN description. If the Lean shape
-  differs, B3–B4 restates it in the same commit (the changed-statement gate).
+- `lem:pencil-ear-data` was restated at B3–B4 to the EARGEN spike's compiled shape (RECON §2): the
+  ear data are a point for every body, the rank clause asks nonzero hinges at its witness, and the
+  family clause is a bound on `dim(ρ + span F)`.
 
 ## Architectural choices made up front
 
@@ -151,14 +171,21 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
   doc's §3 CARRIER): C3–C5′ to a second file, C1–C2 left in `Carrier.lean`, the root import
   updated. No declaration is renamed, so no pin moves. **Landed** as new
   `MainComponent/Configuration.lean` (*Current state*).
-- [ ] **B3–B4** — `Carrier.lean`, beside their definitions: **`Graph.liftingSpace_congr`**,
-  **`Graph.isAdmissiblePicture_congr`** → `lem:pencil-picture-local`; new `MainComponent/EarGen.lean`:
-  the EARGEN device → `lem:pencil-ear-data` (names are the build's; the node may be restated,
-  *Current state*).
+- [x] **B3–B4** (one commit) — `Carrier.lean`: **`Graph.isAdmissiblePicture_congr`**,
+  **`Graph.liftingSpace_congr`** → `lem:pencil-picture-local`; new `MainComponent/EarGen.lean`:
+  **`earPicture`**, **`earHeight`**, **`earConfig`**, **`eval_earPointPoly`**, **`earConfig_of_mem`**,
+  **`Graph.earHeight_mem_liftingSpace`**, **`eval_bind₁_earPicturePoly`**,
+  **`exists_mvPolynomial_le_finrank_ofNormals_bind`**,
+  **`exists_mvPolynomial_le_finrank_sup_span_pointJoin`** → `lem:pencil-ear-data` (restated). The
+  unpinned Part-5 helpers and `pathEdge_injective`: *Current state*.
 - [ ] **B5**, new `MainComponent/Short.lean`: **`Graph.X0Attains.of_openEar_two`** →
   `thm:pencil-x0-open-ear-two`.
 - [ ] **B6**: **`Graph.X0Attains.of_openEar_four`** → `thm:pencil-x0-open-ear-four`; its docstring
-  cites (MC-180), not (MC-25).
+  cites (MC-180), not (MC-25). Source: the EARGEN spike's Parts 3, 4, 6, 7 (*Current state*), with
+  `relScrews_congr` and `finrank_span_rigidityRows_congr` now under `BodyHingeFramework.` (the
+  spike calls them unqualified). The node's proof prose is rewritten to RECON §4's form (two rounds
+  of common non-roots, no determinant, the collision point as the `W = Λ²K⁴` witness; `h_a`, `h_b`
+  are no longer unique).
 - [ ] **B7**: **`Graph.X0Attains.of_openEar_three`** → `thm:pencil-x0-open-ear-three`; its docstring
   cites (MC-181), not (MC-45).
 - [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection, the
@@ -170,23 +197,21 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Blockers / open questions
 
-- **B3–B4 is the high-risk build** (MvPolynomial substitution), and its node has no compiled statement
-  (*Current state*).
-- **Two pieces of the step proofs have no compiled form**, which the recon left open: the affine
-  witness of a nonzero bilinear form (B7) and the meet-to-join transport of `ρ ⊔ Λ` (B6, B7). The
-  design doc records them under the plan table.
+- **One piece of the step proofs has no compiled form**: the affine witness of a nonzero bilinear
+  form (B7; RECON §6, "the one genuinely new piece"). The meet-to-join transport of `ρ ⊔ Λ` landed at
+  B3–B4, and B6's whole step is compiled in the EARGEN spike.
 - **ORBIT's open flag is not 40h's.** The supply of `of_openEar_one`'s `hδ₂`, which fails at `K_{2,3}`,
   is the tracked item in the design doc's §3 STEPS, ORBIT entry.
 
 ## Hand-off / next phase
 
-**Next: B3–B4 (fresh builder).** EARGEN: picture locality (`Graph.liftingSpace_congr`,
-`Graph.isAdmissiblePicture_congr`) beside their definitions in `Carrier.lean` (`lem:pencil-picture-
-local`), and the EARGEN device in new `MainComponent/EarGen.lean` (`lem:pencil-ear-data`, no
-compiled statement — the changed-statement gate applies if the Lean shape differs from (MC-180)'s
-Steps 1–2, *Current state*). High-risk build (MvPolynomial substitution); may take two commits.
+**The next concrete commit is B5 (fresh builder):** `Graph.X0Attains.of_openEar_two` in new
+`MainComponent/Short.lean` (`thm:pencil-x0-open-ear-two`), CHAIN-style at one picture; EARGEN does
+not touch it (RECON §8). Its statement is the steps spike's (`scratch/40h/S40hSteps.lean`).
 
-**Then B5, B6, B7, then the close.**
+**Then B6** (the `k = 4` step, from the EARGEN spike's Parts 3, 4, 6, 7; the checklist item names
+the namespace change and the proof-prose rewrite), **then B7** (the `k = 3` step, RECON §6), **then
+the close.**
 
 ## Decisions made during this phase
 
@@ -217,3 +242,14 @@ Steps 1–2, *Current state*). High-risk build (MvPolynomial substitution); may 
   Design bullet moved with C4's `pencilConfigFramework` material it explains. `Flat.lean`'s import
   repointed to `Configuration.lean`; every other downstream module reaches the moved declarations
   transitively (no other file imports `Carrier.lean` directly).
+- **2026-09-27 — B3–B4 landed as one commit** (the coordinator's call, superseding "may take two"),
+  placed by convention (PI decision 5). `relScrews_congr` got a direct proof in `Bricks.lean`: the
+  spike's route, `infinitesimalMotions_eq_of_isLink_span_supportExtensor`, is in `Pinning.lean`,
+  which imports `Bricks.lean`. `finrank_span_rigidityRows_congr` sits beside that lemma with the
+  spike's proof. The `Carrier.lean` congr lemmas inline "a closed neighbourhood lies in `V(G)`",
+  since `Graph.closedNbhd_subset_vertexSet` is downstream, in `Bridge.lean`. `lake lint` found the
+  span transfer's `[Finite ι]` unused: dropped, and the node's clause (3) says "a family".
+- **2026-09-27 — two pinned declarations stay although this route does not consume them.**
+  `Graph.isAdmissiblePicture_congr` landed because `lem:pencil-picture-local` states it; B1's
+  `exists_insertion_ge` stays as (MC-179)(d)'s pinned second half. `earExtend_mem_liftingSpace` was
+  not re-derived from `earHeight_mem_liftingSpace`: `EarGen.lean` is downstream of `Ear.lean`.

@@ -2862,6 +2862,11 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Resolution:** `have hz := congrArg (Nat.cast : ℕ → ℤ) hc; push_cast at hz; linarith`.
 - **Status:** idiom.
 
+### [open] Two general facts sit downstream of their natural consumers: `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) and the `infinitesimalMotions_eq_of_isLink_*` congruences (`Pinning.lean`)
+- **Where it bit:** Phase 40h B3–B4. `Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`MainComponent/Carrier.lean`) each inline "a closed neighbourhood lies in `V(G)`", because `Graph.closedNbhd_subset_vertexSet` is in `MainComponent/Bridge.lean`, downstream. `BodyHingeFramework.relScrews_congr` (`RigidityMatrix/Bricks.lean`) re-proves the motion-space congruence at links, because `infinitesimalMotions_eq_of_isLink_span_supportExtensor` is in `AlgebraicInduction/Pinning.lean`, which imports `Bricks.lean`.
+- **Proposed fix:** move `closedNbhd_subset_vertexSet` to `Molecule/Pencil/Motive.lean` beside `Graph.closedNbhd`, and the `infinitesimalMotions_eq_of_isLink_*` pair (they read only `Basic.lean`) to `RigidityMatrix/Basic.lean`; then drop the inlined copies. Rename-free, so no pin moves.
+- **Status:** open.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

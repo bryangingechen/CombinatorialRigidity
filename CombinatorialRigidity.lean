@@ -47,6 +47,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat

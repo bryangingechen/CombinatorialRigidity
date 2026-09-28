@@ -1002,6 +1002,20 @@ theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHinge
     rw [hingeConstraint, ← hspan e u v he]
     exact hS e u v (hgraph ▸ he)
 
+/-- **The rank reads the hinges only on the links** of the graph (Phase 40h SHORT): two hinge
+assignments on `H` agreeing at every link have rigidity-row spans of the same dimension. The motion
+spaces agree (`infinitesimalMotions_eq_of_isLink_span_supportExtensor`), and the row span is the
+annihilator of the motion space
+(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`). -/
+theorem finrank_span_rigidityRows_congr [Finite α] (H : Graph α β)
+    {C C' : β → ScrewSpace K k} (h : ∀ f u w, H.IsLink f u w → C f = C' f) :
+    Module.finrank K ↥(Submodule.span K (⟨H, C⟩ : BodyHingeFramework K k α β).rigidityRows) =
+      Module.finrank K ↥(Submodule.span K (⟨H, C'⟩ : BodyHingeFramework K k α β).rigidityRows) := by
+  rw [BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+    BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+    BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor
+      ⟨H, C⟩ ⟨H, C'⟩ rfl (fun f u w hf => by simp only; rw [h f u w hf])]
+
 /-- **Deleting edges enlarges the motion space** (`lem:motions-mono-of-graph-le`, `withGraph`
 form): replacing `F.graph` by any subgraph `G' ≤ F.graph` (keeping the hinge data via
 `withGraph`) can only grow the null space — `F.infinitesimalMotions ≤

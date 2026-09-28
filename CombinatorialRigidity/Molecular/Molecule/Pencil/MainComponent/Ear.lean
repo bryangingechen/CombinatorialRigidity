@@ -47,6 +47,9 @@ themselves are in `MainComponent/Chain.lean`.
 * `span_supportExtensor_eq_top_of_linearIndependent`,
   `card_le_finrank_of_linearIndependent_pointJoin` — independent joins at links bound the span of
   the hinges there from below, and six of them span the screw space (`lem:pencil-ear-hinge-span`).
+* `span_supportExtensor_comp_eq_map_pointJoin`, `finrank_sup_map_screwComplementIso` — the span of
+  the hinges at a family of links is the polar image of the span of the joins, so a bound on
+  `dim(ρ + Λ)` is one on a span of joins (Phase 40h SHORT).
 
 ## Design
 
@@ -1007,6 +1010,57 @@ theorem screwComplementIso_pointJoin (p p' : Fin 4 → K) :
     screwComplementIso (pointJoin p p') = panelSupportExtensor p p' := by
   rw [pointJoin, screwComplementIso_mk_extensor]
   rfl
+
+/-- **The hinges of `ofNormals` along a family of links are the polar images of the joins**
+(Phase 40h SHORT, the meet-to-join transport of `ρ + Λ`): the span of the hinges at the labels
+`g i`, linking `u i` to `w i`, is the image under the polarity of the span of the joins
+`c (u i) ∧ c (w i)`. Each hinge is the meet at its recorded ends, which is `±` the polar image of
+the join at `u i, w i` (`screwComplementIso_pointJoin`, `panelSupportExtensor_swap`). -/
+theorem span_supportExtensor_comp_eq_map_pointJoin {H : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
+    (c : α × Fin 4 → K) {ι : Type*} (g : ι → β) (u w : ι → α)
+    (hg : ∀ i, H.IsLink (g i) (u i) (w i)) :
+    Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := 2) H ends
+        c).toBodyHinge.supportExtensor ∘ g)) =
+      (Submodule.span K (Set.range fun i =>
+        pointJoin (fun j => c (u i, j)) (fun j => c (w i, j)))).map
+          (screwComplementIso (K := K)).toLinearMap := by
+  rw [Submodule.map_span, ← Set.range_comp]
+  refine le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_)
+  · rintro _ ⟨i, rfl⟩
+    have hl := hends _ _ _ (hg i)
+    have hmem : ∀ v : ScrewSpace K 2, v ∈ Submodule.span K (Set.range
+        ((screwComplementIso (K := K)).toLinearMap ∘ fun i =>
+          pointJoin (fun j => c (u i, j)) (fun j => c (w i, j)))) →
+        -v ∈ Submodule.span K (Set.range
+        ((screwComplementIso (K := K)).toLinearMap ∘ fun i =>
+          pointJoin (fun j => c (u i, j)) (fun j => c (w i, j)))) :=
+      fun v hv => Submodule.neg_mem _ hv
+    have hbase : panelSupportExtensor (fun j => c (u i, j)) (fun j => c (w i, j)) ∈
+        Submodule.span K (Set.range ((screwComplementIso (K := K)).toLinearMap ∘ fun i =>
+          pointJoin (fun j => c (u i, j)) (fun j => c (w i, j)))) :=
+      Submodule.subset_span ⟨i, by simp [screwComplementIso_pointJoin]⟩
+    simp only [Function.comp_apply, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
+    rcases (hg i).eq_and_eq_or_eq_and_eq hl with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · rw [← h1, ← h2]; exact hbase
+    · rw [← h1, ← h2, panelSupportExtensor_swap]; exact hmem _ hbase
+  · rintro _ ⟨i, rfl⟩
+    have := panelSupportExtensor_mem_span_ofNormals hends (fun v j => c (v, j)) (hg i)
+    simp only [Function.comp_apply, LinearEquiv.coe_coe, screwComplementIso_pointJoin]
+    exact Submodule.span_mono (by rintro _ rfl; exact ⟨i, rfl⟩) this
+
+/-- **`dim(ρ + ι Λ) = dim(ι⁻¹ ρ + Λ)`** for the polarity `ι = screwComplementIso` (Phase 40h
+SHORT): the companion of `span_supportExtensor_comp_eq_map_pointJoin` that moves a bound on
+`ρ + (the hinge span)` to one on a span of joins. -/
+theorem finrank_sup_map_screwComplementIso (ρ Λ : Submodule K (ScrewSpace K 2)) :
+    Module.finrank K ↥(ρ ⊔ Λ.map (screwComplementIso (K := K)).toLinearMap) =
+      Module.finrank K ↥(ρ.map (screwComplementIso (K := K)).symm.toLinearMap ⊔ Λ) := by
+  have hΛ : (Λ.map (screwComplementIso (K := K)).toLinearMap).map
+      (screwComplementIso (K := K)).symm.toLinearMap = Λ := by
+    rw [← Submodule.map_comp]
+    simp
+  rw [← LinearEquiv.finrank_map_eq (screwComplementIso (K := K)).symm, Submodule.map_sup, hΛ]
 
 /-- **Six independent joins at links span the whole screw space** (`lem:pencil-ear-hinge-span`):
 the hinges at any set of labels containing those links span `ScrewSpace K 2` (the hinge span
