@@ -98,6 +98,24 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [open] The three-body step repeats the four-body step: `exists_insertion_three`, `splitOff_ear_three` and the assembly are near-copies
+- **Where it bit:** Phase 40h B7, `exists_insertion_three` (`MainComponent/Lines.lean`),
+  `splitOff_ear_three` and `Graph.X0Attains.of_openEar_three` (`MainComponent/Short.lean`).
+- **Friction:** no build cycle, since the pieces were transcribed, but about 90 lines of
+  `exists_insertion_three` repeat `exists_insertion_four` with two joins in `F` instead of three and
+  the hypothesis "both stars in `W` → `W = Λ²K⁴`" in place of the tetrahedron. `splitOff_ear_three`
+  repeats `splitOff_ear_four` at `Fin 3`. From the ear rank law at `G″` on, about 200 lines of the
+  assembly repeat `of_openEar_four`'s with `k = 3`. Small traps, one `lake lean` round each: the
+  affine witness's `simp only [Matrix.cons_val_one, …]` left `vecHead (vecTail ![0, 1])` until
+  `Matrix.head_cons`, `Matrix.tail_cons` joined it (TACTICS-QUIRKS § 46's "as needed");
+  `Submodule.finrank_lt` takes `s ≠ ⊤`, not `s < ⊤`; `rfl` does not close an `a + b = b + a`
+  goal, where `exact add_comm _ _` checks the rest up to defeq.
+- **Proposed fix:** one insertion lemma over `R ⊔ K ∙ (y₁ ∧ y₃)` with the star hypothesis, of which
+  both `exists_insertion_*` are corollaries; `splitOff_ear_four` and `_three` via `Fin.succAbove 1`;
+  and one assembly lemma from the round-1 point, parametrized by `k`. A cleanup-round item: both
+  steps are green and the close is docs-only.
+- **Status:** open.
+
 ### [open] The certificate-picture glue is written out a third time: `Short.lean` cannot see `Chain.lean`'s `pencilConfigPoint_cert`
 - **Where it bit:** Phase 40h B5, `Graph.X0Attains.of_openEar_two` (`MainComponent/Short.lean`).
 - **Friction:** no build cycle (the template was copied), but the glue is now inline twice: a
@@ -199,6 +217,7 @@ to be re-derived by re-reading entries later.
 - **Status:** open. B6 did not call it: `exists_insertion_four` reuses `exists_insertion_gain`, and
   its own direction lemma needed `pointJoin_add_smul_self_right` (`y ∧ (v + c y) = y ∧ v`, landed
   beside `pointJoin_add_smul_left`), a different identity.
+  B7 did not either: `exists_insertion_three` reuses `exists_insertion_gain` the same way.
 
 ### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides
 - **Where it bit:** Phase 40g build 1, `RigidityMatrix/Bricks.lean`.

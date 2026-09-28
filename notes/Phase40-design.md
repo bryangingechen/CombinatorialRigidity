@@ -400,7 +400,9 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
       B6 (2026-09-27):** B6 landed before B5 (the coordinator's call) and created `Short.lean`, with
       Steps 1–2 factored as `Graph.exists_earBase_splitOff` for B7. **Update at B5 (2026-09-27):**
       B5 landed without EARGEN, as `of_openEar`'s route at one picture: the heights `0`, and three
-      joins of the closed hexagon as the flat certificate.
+      joins of the closed hexagon as the flat certificate. **Update at B7 (2026-09-27):** B7 landed
+      from RECON §6, the affine witness compiled (`Lines.lean`), with Case A's condition a span
+      bound so that the landed span transfer certifies it; every 40h node is green.
     - **Re-homed and dropped** (PI decisions 2–4):
       - the `k = 1` cell (B8–B9) and (MC-175)(iii) go to **ORBIT** (below);
       - THETA ((MC-139)) dissolves into **COVERAGE**'s strong induction, with a remark and no named
@@ -635,7 +637,7 @@ The main-component argument gets **one new forward-mode chapter** (`main-compone
 subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subsections are all
 green, and so are STEPS' first three, `sec:main-component-cut` (40e),
 `sec:main-component-contract` (40f) and `sec:main-component-chain` (40g); the fourth,
-`sec:main-component-short` (40h), is open and red; MOTIVES's stub subsection
+`sec:main-component-short` (40h), is green, with 40h's close pending; MOTIVES's stub subsection
 `sec:main-component-statements` is the last, and each later layer inserts its subsection before
 it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when

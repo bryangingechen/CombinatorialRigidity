@@ -5,9 +5,10 @@
 interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2`
 when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
 at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
-second-read). Fourteen nodes, thirteen green; seven builds B1–B7, plus the `Carrier.lean` split
-before B3 (PI decision 5). B1–B6 landed (B3–B4 as one commit; B6 before B5; both the coordinator's
-calls), with the split. **The next concrete commit is B7**, then the close — see *Hand-off*.
+second-read). Fourteen nodes, all green; seven builds B1–B7, plus the `Carrier.lean` split
+before B3 (PI decision 5). B1–B7 landed (B3–B4 as one commit; B6 before B5; both the coordinator's
+calls), with the split. **The next concrete commit is the close** (docs and blueprint only) — see
+*Hand-off*.
 
 ## Current state
 
@@ -91,12 +92,22 @@ the antecedent's, and mirrors `Graph.X0Attains.of_openEar` (*Decisions made*). T
 rewritten to the Lean route; a remark after it keeps the admissibility argument, which the proof does
 not use.
 
+**B7 landed** (the three-body step): `thm:pencil-x0-open-ear-three` is green, its statement the
+steps spike's, unchanged; the proof prose is rewritten to the Lean route. Where each piece went:
+- `Lines.lean`: `eq_top_of_star_sup_star_le` (the case where some `c ∈ ρ` pairs to a nonzero
+  value with `y₁ ∧ y₃`) beside the two-star lemmas; `kleinLin_pointJoin_liftPlane`, the affine
+  witness `exists_klein_liftPlane_affine_ne_zero`, and `not_star_sup_star_le_of_klein` (the case
+  where all of `ρ` pairs to zero) after `finrank_sup_le_three_of_klein`; `exists_insertion_three`
+  after `exists_insertion_four`. All unpinned; the proof prose names them.
+- `Short.lean`: `splitOff_ear_three` after `splitOff_ear_four`, and
+  `Graph.X0Attains.of_openEar_three` in a last section, docstring citing (MC-181).
+
 **The spikes** live in the gitignored `scratch/40h/`, `scratch/40h-read/` and `scratch/40h-eargen/`,
 local to this checkout (builder pointers, not evidence):
 - `scratch/40h-eargen/EarGen.lean` (1 230 lines), the EARGEN recon's spike of the whole `k = 4` step,
   sorry-free, with `Graph.X0Attains.of_openEar_four` stated as pinned; verdict in its `RECON.md`
   (§4 the assembly, §6 the `k = 3` delta). All consumed: Parts 0–2, 5 in B3–B4, Parts 3, 4, 6, 7 in
-  B6. **RECON §6 is B7's source.**
+  B6, and §6 in B7.
 - `scratch/40h-read/S40hReadGeom.lean` (563 lines), the second reader's line geometry: consumed by
   B1.
 - `scratch/40h/S40hSteps.lean` (177 lines): the four step statements (`of_openEar_one` is ORBIT's) and
@@ -202,8 +213,8 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 - [x] **B6**: **`Graph.X0Attains.of_openEar_four`** → `thm:pencil-x0-open-ear-four`; docstring cites
   (MC-180). **Landed** with the proof prose in RECON §4's form (two rounds, no determinant, the
   collision witness, `h_a`, `h_b` not unique) and Steps 1–2 factored (*Current state*).
-- [ ] **B7**: **`Graph.X0Attains.of_openEar_three`** → `thm:pencil-x0-open-ear-three`; its docstring
-  cites (MC-181), not (MC-45).
+- [x] **B7**: **`Graph.X0Attains.of_openEar_three`** → `thm:pencil-x0-open-ear-three`; its docstring
+  cites (MC-181), not (MC-45). **Landed** with RECON §6's pieces, the helpers in *Current state*.
 - [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection, the
   exposition ledger (a candidate: the insertion argument, which replaces the informal proof's orbit
   case analysis), the headline axioms, the design doc's §3 STEPS, ROADMAP; the public surfaces stay
@@ -213,18 +224,17 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Blockers / open questions
 
-- **One piece of the step proofs has no compiled form**: the affine witness of a nonzero bilinear
-  form (B7; RECON §6, "the one genuinely new piece"). Everything else B7 needs has landed, the base
-  data included (`Graph.exists_earBase_splitOff`).
+- **None for 40h's close.** The three-body step's near-copies of the four-body step are an open
+  FRICTION entry for a cleanup round, not a close item.
 - **ORBIT's open flag is not 40h's.** The supply of `of_openEar_one`'s `hδ₂`, which fails at `K_{2,3}`,
   is the tracked item in the design doc's §3 STEPS, ORBIT entry.
 
 ## Hand-off / next phase
 
-**The next concrete commit is B7** (the `k = 3` step, RECON §6): `Graph.exists_earBase_splitOff` with `G″`'s ear
-`a − x 0 − x 2 − b` (`k = 2`, `xf = x 0`, `xl = x 2`, `X = Set.range x`, `hl₀` from `hpath″ 1`) gives
-the base data; the new pieces are `splitOff_ear_three`, the affine witness, `exists_insertion_three`
-and the Case A/B split, with `of_openEar_four` as the assembly's model. **Then the close.**
+**The next concrete commit is the close** (docs and blueprint only; the checklist's last item):
+the end-to-end re-read of §`sec:main-component-short`, the exposition-ledger entry (the insertion
+argument), the headline axioms, the design doc's §3 STEPS entry, and ROADMAP's row and §40h; the
+public surfaces stay unchanged. No Lean is left in 40h.
 
 ## Decisions made during this phase
 
@@ -281,3 +291,10 @@ and the Case A/B split, with `of_openEar_four` as the assembly's model. **Then t
   `Graph.isAdmissiblePicture_congr` landed because `lem:pencil-picture-local` states it; B1's
   `exists_insertion_ge` stays as (MC-179)(d)'s pinned second half. `earExtend_mem_liftingSpace` was
   not re-derived from `earHeight_mem_liftingSpace`: `EarGen.lean` is downstream of `Ear.lean`.
+- **2026-09-27 — B7's case split is one round-1 polynomial.** Before the ear data, either all of `ρ`
+  pairs to zero with the lines joining the planes at `a`, `b` (the condition is then `1`), or some
+  `c ∈ ρ` does not, and the condition is the span bound `dim(ker⟨c, ·⟩ + K (y₁ ∧ y₃)) ≥ 6`, so the
+  landed span transfer applies at the affine pair's ear datum; no new polynomial. Round 1 is then
+  `exists_eval_ne_zero₃` in both cases. `exists_insertion_three` takes "both stars in `W` → `W = ⊤`"
+  as its hypothesis; the two case lemmas supply it. `splitOff_ear_three` mirrors the four-body lemma
+  rather than generalizing it (the route note's shorter option).

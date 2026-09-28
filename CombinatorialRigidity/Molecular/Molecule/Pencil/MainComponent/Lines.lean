@@ -45,6 +45,12 @@ coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
   `y ∧ u` outside it with `u` at infinity; so, at four interior bodies, one affine point put
   back raises the span to at least `min(dim W + 1, 6)` once the tetrahedron spans
   (`thm:pencil-x0-open-ear-four`, (MC-180) Steps 3–4).
+* `eq_top_of_star_sup_star_le`, `exists_klein_liftPlane_affine_ne_zero`,
+  `not_star_sup_star_le_of_klein`, `exists_insertion_three` — at three interior bodies: a span
+  holding both stars and a screw pairing to a nonzero value with `y₁ ∧ y₃` is `Λ²K⁴`; a nonzero
+  pairing with the lines joining two planes is nonzero at affine points; a span of screws pairing
+  to zero with all of them holds neither both stars; so one affine point put back raises the span
+  to at least `min(dim W + 1, 6)` (`thm:pencil-x0-open-ear-three`, (MC-181) Steps 3–4).
 
 ## Design
 
@@ -226,6 +232,26 @@ theorem five_le_finrank_star_sup_star {y₁ y₂ : Fin 4 → K} (hy : LinearInde
   · exact Submodule.mem_sup_right (pointJoin_mem_star y₂ _)
   · exact Submodule.mem_sup_right (pointJoin_mem_star y₂ _)
 
+/-- **A span holding both stars and a screw off them is everything**
+(`thm:pencil-x0-open-ear-three`, the case where some relative screw pairs to a nonzero value with
+the line `y₁ y₃`; informal (MC-181) Step 4). If `y₁`, `y₃` are independent, `W` contains every line
+through `y₁` and every line through `y₃`, and some `c ∈ W` has `⟨c, y₁ ∧ y₃⟩ ≠ 0`, then
+`W = Λ²K⁴`: the two stars span at least five dimensions and pair to zero with `y₁ ∧ y₃`, so `c`
+lies outside them. -/
+theorem eq_top_of_star_sup_star_le {W : Submodule K (ScrewSpace K 2)} {c : ScrewSpace K 2}
+    {y₁ y₃ : Fin 4 → K} (hy : LinearIndependent K ![y₁, y₃]) (hc : c ∈ W)
+    (hne : kleinLin c (pointJoin y₁ y₃) ≠ 0) (hle : star y₁ ⊔ star y₃ ≤ W) : W = ⊤ := by
+  have hcS : c ∉ star y₁ ⊔ star y₃ := fun h =>
+    hne (by rw [kleinLin_comm]; exact star_sup_star_le_ker_klein y₁ y₃ h)
+  have h5 := five_le_finrank_star_sup_star hy
+  have h6 : 6 ≤ Module.finrank K W := by
+    refine le_trans ?_ (Submodule.finrank_mono (sup_le hle
+      ((Submodule.span_singleton_le_iff_mem _ _).mpr hc)))
+    rw [Submodule.finrank_sup_span_singleton hcS]
+    omega
+  exact Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _)
+    (by rw [finrank_screwSpace_two]; exact h6))
+
 /-! ## The lines of a plane, and the lines joining two planes -/
 
 /-- **The point of the plane `z = h ⬝ (x, y, w)` over `u = (x, y, w)`**: `(u₀, u₁, h ⬝ u, u₂)`. -/
@@ -348,6 +374,64 @@ theorem finrank_sup_le_three_of_klein {h h' : Fin 3 → K} {ρ : Submodule K (Sc
   · have hρ0 : ρ = ⊥ := (Submodule.eq_bot_iff _).mpr fun c hc => (klein_liftPlane (hρ c hc)).1 hh
     rw [hρ0, bot_sup_eq]
     exact (finrank_range_le_card f).trans (by simp)
+
+/-- **The pairing with a line joining two planes, in coordinates**: for `u`, `v` in the planes of
+`h` and `h'`, `⟨u ∧ v, c⟩ = σ c ⬝ (u ×₃ v) + ((h ⬝ u) v − (h' ⬝ v) u) ⬝ π c`, bilinear in
+`(u, v)`. -/
+theorem kleinLin_pointJoin_liftPlane (h h' u v : Fin 3 → K) (c : ScrewSpace K 2) :
+    kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c =
+      flatSigma c ⬝ᵥ crossProduct u v + ((h ⬝ᵥ u) • v - (h' ⬝ᵥ v) • u) ⬝ᵥ flatPi c := by
+  rw [kleinLin_comm, kleinLin_apply, flatSigma_pointJoin, flatPi_pointJoin, planarProj_liftPlane,
+    planarProj_liftPlane]
+  exact add_comm _ _
+
+/-- **A nonzero pairing with the lines joining two planes is nonzero at affine points**
+(`thm:pencil-x0-open-ear-three`, informal (MC-181) Step 4). If `⟨c, u₀ ∧ v₀⟩ ≠ 0` for `u₀`, `v₀`
+in the planes of `h`, `h'`, the same holds at some `u`, `v` with last coordinate `1`: the pairing is
+bilinear in `(u, v)` (`kleinLin_pointJoin_liftPlane`), and `(0, 0, 1)`, `(1, 0, 1)`, `(0, 1, 1)`
+span `K³`. -/
+theorem exists_klein_liftPlane_affine_ne_zero {h h' : Fin 3 → K} {c : ScrewSpace K 2}
+    {u₀ v₀ : Fin 3 → K}
+    (h₀ : kleinLin (pointJoin (liftPlane h u₀) (liftPlane h' v₀)) c ≠ 0) :
+    ∃ u v : Fin 3 → K, u 2 = 1 ∧ v 2 = 1 ∧
+      kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c ≠ 0 := by
+  by_contra! H
+  apply h₀
+  have e := fun i j => H (![![0, 0, 1], ![1, 0, 1], ![0, 1, 1]] i)
+    (![![0, 0, 1], ![1, 0, 1], ![0, 1, 1]] j) (by fin_cases i <;> rfl) (by fin_cases j <;> rfl)
+  have e00 := e 0 0
+  have e01 := e 0 1
+  have e02 := e 0 2
+  have e10 := e 1 0
+  have e11 := e 1 1
+  have e12 := e 1 2
+  have e20 := e 2 0
+  have e21 := e 2 1
+  have e22 := e 2 2
+  simp only [kleinLin_pointJoin_liftPlane, dotProduct, Fin.sum_univ_three, cross_apply,
+    Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+    at e00 e01 e02 e10 e11 e12 e20 e21 e22 ⊢
+  -- `u₀ = (u₀₂ − u₀₀ − u₀₁) (0, 0, 1) + u₀₀ (1, 0, 1) + u₀₁ (0, 1, 1)`, and likewise `v₀`
+  linear_combination
+    (u₀ 2 - u₀ 0 - u₀ 1) * (v₀ 2 - v₀ 0 - v₀ 1) * e00 + (u₀ 2 - u₀ 0 - u₀ 1) * v₀ 0 * e01 +
+    (u₀ 2 - u₀ 0 - u₀ 1) * v₀ 1 * e02 + u₀ 0 * (v₀ 2 - v₀ 0 - v₀ 1) * e10 + u₀ 0 * v₀ 0 * e11 +
+    u₀ 0 * v₀ 1 * e12 + u₀ 1 * (v₀ 2 - v₀ 0 - v₀ 1) * e20 + u₀ 1 * v₀ 0 * e21 +
+    u₀ 1 * v₀ 1 * e22
+
+/-- **A span of screws pairing to zero with the lines joining two planes holds neither both
+stars** (`thm:pencil-x0-open-ear-three`, the case where every relative screw pairs to zero with
+every line joining the two planes; informal (MC-181) Step 4). Under the hypotheses of
+`finrank_sup_le_three_of_klein`, `ρ ⊔ span f` has dimension at most three, and the lines through
+two independent points span at least five. -/
+theorem not_star_sup_star_le_of_klein {h h' : Fin 3 → K} {ρ : Submodule K (ScrewSpace K 2)}
+    (hρ : ∀ c ∈ ρ, ∀ u v, kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c = 0)
+    (f : Fin 3 → ScrewSpace K 2) (hf : h = h' → ∀ i, f i ∈ planeLines h)
+    {y₁ y₃ : Fin 4 → K} (hy : LinearIndependent K ![y₁, y₃]) :
+    ¬ star y₁ ⊔ star y₃ ≤ ρ ⊔ Submodule.span K (Set.range f) := fun hle => by
+  have := (five_le_finrank_star_sup_star hy).trans
+    ((Submodule.finrank_mono hle).trans (finrank_sup_le_three_of_klein hρ f hf))
+  omega
 
 /-! ## Putting a body back next to a neighbour -/
 
@@ -534,6 +618,109 @@ theorem exists_insertion_four [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
       · exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
       · exact hFR _ ⟨1, rfl⟩ _
       · exact hFR _ ⟨2, rfl⟩ _
+    have hle : ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₁ y₃ ≤ W := by
+      refine sup_le (sup_le le_sup_left hFW) ?_
+      rw [Submodule.span_singleton_le_iff_mem]
+      exact hWs _ (by simp)
+    obtain ⟨t, -, ht⟩ := exists_insertion_gain ρ F y₁ y₃ u (fun h => hu (hle h))
+    refine ⟨y₁ + t • u, by simp [hy₁, hu3], (min_le_left _ _).trans
+      ((Nat.add_le_add_right (Submodule.finrank_mono hWle) 1).trans (ht.trans ?_))⟩
+    refine Submodule.finrank_mono (sup_le (fun c hc => hnew _ c hc) ?_)
+    refine Submodule.span_le.mpr ?_
+    intro c hc
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+    rcases hc with rfl | rfl <;> exact hnewm _ _ (by simp)
+
+/-- **The insertion at three interior bodies** (`thm:pencil-x0-open-ear-three`, putting `x₂`
+back; informal (MC-181) Steps 3–4). Let `W = ρ + span(p_a ∧ y₁, y₁ ∧ y₃, y₃ ∧ p_b)`. If `W` is
+`Λ²K⁴` as soon as it contains every line through `y₁` and every line through `y₃`, some affine point
+`x₂` put back between `y₁` and `y₃` has
+`dim(ρ + span(p_a ∧ y₁, y₁ ∧ x₂, x₂ ∧ y₃, y₃ ∧ p_b)) ≥ min(dim W + 1, 6)`: next to `y₁` or `y₃`
+when `W` misses a line through it (`exists_insertion_gain`), and at `y₁` itself when `W = Λ²K⁴`.
+The hypothesis is supplied by `eq_top_of_star_sup_star_le` or `not_star_sup_star_le_of_klein`. -/
+theorem exists_insertion_three [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
+    (pa y₁ y₃ pb : Fin 4 → K) (hy₁ : y₁ 3 = 1) (hy₃ : y₃ 3 = 1)
+    (hG : star y₁ ⊔ star y₃ ≤ ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ pb} →
+      ρ ⊔ Submodule.span K {pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ pb} = ⊤) :
+    ∃ x₂ : Fin 4 → K, x₂ 3 = 1 ∧
+      min (Module.finrank K ↥(ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ pb}) + 1) 6 ≤
+      Module.finrank K ↥(ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃, pointJoin y₃ pb}) := by
+  set W := ρ ⊔ Submodule.span K {pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ pb} with hW
+  set F : Fin 2 → ScrewSpace K 2 := ![pointJoin pa y₁, pointJoin y₃ pb] with hF
+  have hWs : ∀ c ∈ ({pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ pb} :
+      Set (ScrewSpace K 2)), c ∈ W :=
+    fun c hc => Submodule.mem_sup_right (Submodule.subset_span hc)
+  have hFR : ∀ c ∈ Set.range F, ∀ S : Submodule K (ScrewSpace K 2),
+      c ∈ ρ ⊔ Submodule.span K (Set.range F) ⊔ S :=
+    fun c hc S => Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.subset_span hc))
+  -- the new span contains `ρ` and the two joins of `F`
+  have hnew : ∀ x₂ : Fin 4 → K, ∀ c ∈ ρ ⊔ Submodule.span K (Set.range F),
+      c ∈ ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃, pointJoin y₃ pb} := by
+    intro x₂
+    refine SetLike.le_def.mp (sup_le_sup_left (Submodule.span_le.mpr ?_) _)
+    rintro _ ⟨i, rfl⟩
+    fin_cases i <;> exact Submodule.subset_span (by simp [hF])
+  have hsix : Module.finrank K (ScrewSpace K 2) = 6 := finrank_screwSpace_two
+  have hnewm : ∀ x₂ : Fin 4 → K, ∀ c ∈ ({pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃,
+      pointJoin y₃ pb} : Set (ScrewSpace K 2)), c ∈ ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃, pointJoin y₃ pb} :=
+    fun x₂ c hc => Submodule.mem_sup_right (Submodule.subset_span hc)
+  have hFW : Submodule.span K (Set.range F) ≤ W :=
+    Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; fin_cases i <;> exact hWs _ (by simp [hF]))
+  by_cases hs1 : star y₁ ≤ W
+  · by_cases hs3 : star y₃ ≤ W
+    · -- `W = ⊤`: put `x₂` at `y₁`
+      have htop : W = ⊤ := hG (sup_le hs1 hs3)
+      refine ⟨y₁, hy₁, (min_le_right _ _).trans ?_⟩
+      rw [← hsix, ← finrank_top K (ScrewSpace K 2), ← htop]
+      refine Submodule.finrank_mono (sup_le le_sup_left (Submodule.span_le.mpr ?_))
+      intro c hc
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+      rcases hc with rfl | rfl | rfl <;> exact hnewm y₁ _ (by simp)
+    · -- insert next to `y₃`
+      obtain ⟨u, hu3, hu⟩ := exists_notMem_pointJoin_of_not_star_le hy₃ hs3
+      have hWle : W ≤ ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₃ y₁ := by
+        refine sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.mpr ?_)
+        intro c hc
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+        rcases hc with rfl | rfl | rfl
+        · exact hFR _ ⟨0, rfl⟩ _
+        · have h : pointJoin y₁ y₃ = -pointJoin y₃ y₁ := pointJoin_swap y₃ y₁
+          rw [SetLike.mem_coe, h]
+          exact Submodule.neg_mem _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))
+        · exact hFR _ ⟨1, rfl⟩ _
+      have hle : ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₃ y₁ ≤ W := by
+        refine sup_le (sup_le le_sup_left hFW) ?_
+        rw [Submodule.span_singleton_le_iff_mem, pointJoin_swap]
+        exact Submodule.neg_mem _ (hWs _ (by simp))
+      obtain ⟨t, -, ht⟩ := exists_insertion_gain ρ F y₃ y₁ u (fun h => hu (hle h))
+      refine ⟨y₃ + t • u, by simp [hy₃, hu3], (min_le_left _ _).trans
+        ((Nat.add_le_add_right (Submodule.finrank_mono hWle) 1).trans (ht.trans ?_))⟩
+      refine Submodule.finrank_mono (sup_le (fun c hc => hnew _ c hc) ?_)
+      refine Submodule.span_le.mpr ?_
+      intro c hc
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+      rcases hc with rfl | rfl
+      · have h : pointJoin y₃ (y₃ + t • u) = -pointJoin (y₃ + t • u) y₃ := pointJoin_swap _ _
+        rw [SetLike.mem_coe, h]
+        exact Submodule.neg_mem _ (hnewm _ _ (by simp))
+      · have h : pointJoin (y₃ + t • u) y₁ = -pointJoin y₁ (y₃ + t • u) := pointJoin_swap _ _
+        rw [SetLike.mem_coe, h]
+        exact Submodule.neg_mem _ (hnewm _ _ (by simp))
+  · -- insert next to `y₁`
+    obtain ⟨u, hu3, hu⟩ := exists_notMem_pointJoin_of_not_star_le hy₁ hs1
+    have hWle : W ≤ ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₁ y₃ := by
+      refine sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.mpr ?_)
+      intro c hc
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+      rcases hc with rfl | rfl | rfl
+      · exact hFR _ ⟨0, rfl⟩ _
+      · exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
+      · exact hFR _ ⟨1, rfl⟩ _
     have hle : ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₁ y₃ ≤ W := by
       refine sup_le (sup_le le_sup_left hFW) ?_
       rw [Submodule.span_singleton_le_iff_mem]

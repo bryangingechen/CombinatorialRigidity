@@ -2303,6 +2303,8 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{theorem}[An open ear with three interior bodies]
   \label{thm:pencil-x0-open-ear-three}
+  \lean{Graph.X0Attains.of_openEar_three}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing,
         def:graph-operations}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with
@@ -2314,41 +2316,83 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:block-rank-ear, lem:pencil-config-point-join-rank,
         lem:pencil-ear-fibre, lem:pencil-lifting-restrict,
-        lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
+        lem:pencil-rank-congr, lem:pencil-picture-local,
+        lem:pencil-x0-fibre-intersection,
         lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness,
         lem:pencil-ear-data, lem:pencil-insertion, lem:pencil-two-stars,
         lem:pencil-bilinear, lem:pencil-plane-lines,
         lem:splitoff-deficiency-reuse, lem:deficiency-ear}
-  As in the proof of \cref{thm:pencil-x0-open-ear-four}, with the base
-  data fixed first and ear data $y = (y_1, y_3)$ of $G''$ with
-  $y_1 \in \hat\pi_a$, $y_3 \in \hat\pi_b$ and
-  $W = \rho + \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_3,\
-  y_3 \wedge p_b)$; only the reason why $W$ cannot contain every line
-  through $y_1$ and every line through $y_3$ unless $W = \Lambda^2 K^4$
-  changes. The pictures of $y_1$ and $y_3$ differ, since they are adjacent
-  in $G''$ and their hinge is nonzero, so $y_1$ and $y_3$ are linearly
-  independent, and the two stars span at least five dimensions and pair
-  to zero with $y_1 \wedge y_3$ (\cref{lem:pencil-two-stars}).
+  Write $f = \operatorname{def}(\tilde G[V_1])$. $G''$ has the open ear
+  $a - x_1 - x_3 - b$ on $V_1$, and the same $G[V_1]$. Fix the base data
+  $(q_1, z_1)$, the affine functions $h_a$ and $h_b$, the ear datum $s^*$
+  and the relative screws $\rho$ as in the proof of
+  \cref{thm:pencil-x0-open-ear-four}
+  (\texttt{Graph.exists\_earBase\_splitOff}). At every configuration of
+  ear data, $p_a$ and the point $y_1$ of $x_1$ lie in $\hat\pi_a$, and the
+  point $y_3$ of $x_3$ and $p_b$ lie in $\hat\pi_b$.
 
-  If $\langle c, u \wedge v \rangle = 0$ for every $c \in \rho$,
-  $u \in \hat\pi_a$ and $v \in \hat\pi_b$, then $\dim W \le 3$
-  (\cref{lem:pencil-bilinear}; when the two planes coincide, the three
-  ear joins are lines of that plane, \cref{lem:pencil-plane-lines}), and
-  $W$ cannot contain both stars. Otherwise some $c \in \rho$ pairs to a
-  nonzero value with some $u_0 \wedge v_0$. The map
+  \emph{The case split on $\rho$}, made before the ear data are chosen. In
+  the first case $\langle c, u \wedge v \rangle = 0$ for every $c \in \rho$,
+  $u \in \hat\pi_a$ and $v \in \hat\pi_b$. In the second, some $c \in \rho$
+  pairs to a nonzero value with some $u_0 \wedge v_0$. The map
   $(s, s') \mapsto \langle c, \hat s \wedge \hat s' \rangle$, with
   $\hat s \in \hat\pi_a$ and $\hat s' \in \hat\pi_b$ the lifts of
-  $s, s' \in K^3$, is bilinear, and the vectors of last coordinate $1$
-  span $K^3$, so it is nonzero at a pair of affine points: the pairing
-  $\langle c, y_1 \wedge y_3 \rangle$ is a nonzero polynomial in the
-  pictures of $y_1$ and $y_3$. Require it to be nonzero, as a further open
-  condition on $y$; this uses that $c$ is chosen from $\rho$ before the ear
-  data. Then $c \notin \operatorname{star}(y_1) + \operatorname{star}(y_3)$,
-  and if $W$ contained both stars it would contain them and $c$, so
-  $\dim W = 6$. The count is that of \cref{thm:pencil-x0-open-ear-four}
-  at $k = 3$.
+  $s, s' \in K^3$, is bilinear, and $(0, 0, 1)$, $(1, 0, 1)$, $(0, 1, 1)$
+  span $K^3$, so it is nonzero at a pair of affine points
+  (\texttt{exists\_klein\_liftPlane\_affine\_ne\_zero}). Let $c^\perp$ be
+  the hyperplane of screws pairing to zero with $c$. The condition
+  $\langle c, y_1 \wedge y_3 \rangle \neq 0$ says
+  $\dim\bigl(c^\perp + K\,(y_1 \wedge y_3)\bigr) = 6$, so by
+  \cref{lem:pencil-ear-data}(3) it holds off the zero set of a polynomial
+  in the ear data that is nonzero at the ear datum putting $x_1$ and $x_3$
+  over that affine pair.
+
+  \emph{The configuration of $G''$.} Take ear data $y$ off the zero sets
+  of the polynomials of \cref{lem:pencil-ear-data}(2),(3) for these
+  conditions: the rank of $G''$ is at least its target, and the picture is
+  admissible for $G''$, both at $s^*$; in the second case, also
+  $\langle c, y_1 \wedge y_3 \rangle \neq 0$. By \cref{lem:block-rank-ear}
+  at $G''$,
+  $W = \rho + \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_3,\
+  y_3 \wedge p_b)$ has
+  $\dim W \ge 3 + f - \operatorname{def}(\tilde G'')$. The picture is
+  admissible and $x_1 x_3$ is an edge of $G''$, so the pictures of $y_1$
+  and $y_3$ differ and $y_1$, $y_3$ are linearly independent. The two
+  stars then span at least five dimensions and pair to zero with
+  $y_1 \wedge y_3$ (\cref{lem:pencil-two-stars}).
+
+  \emph{$W$ contains both stars only if $W = \Lambda^2 K^4$.} In the first
+  case $\dim W \le 3$ (\cref{lem:pencil-bilinear}; when the two planes
+  coincide, the three joins are lines of that plane,
+  \cref{lem:pencil-plane-lines}), so $W$ does not contain both stars
+  (\texttt{not\_star\_sup\_star\_le\_of\_klein}). In the second, $c \in W$
+  lies outside $\operatorname{star}(y_1) + \operatorname{star}(y_3)$, so if
+  $W$ contained both stars it would have dimension six
+  (\texttt{eq\_top\_of\_star\_sup\_star\_le}).
+
+  \emph{Putting $x_2$ back, and the configuration of $G$}, as in the proof
+  of \cref{thm:pencil-x0-open-ear-four}. Some affine point $x$ for $x_2$,
+  next to $y_1$ or $y_3$ when $W$ misses a line through it
+  (\cref{lem:pencil-insertion}) and at $y_1$ when $W = \Lambda^2 K^4$, has
+  $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$, where
+  $\Lambda = \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge x,\
+  x \wedge y_3,\ y_3 \wedge p_b)$ (\texttt{exists\_insertion\_three}).
+  This bound and the main-picture condition are nonzero polynomial
+  conditions on the ear data of $G$ (\cref{lem:pencil-ear-data}(2),(3)).
+  At a common non-root the picture is main for $G$, so the hinges are
+  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}(1)), and
+  the rank of $G[V_1]$ is its target.
+
+  \emph{The count.} $\operatorname{def}(\tilde G'') \le
+  \operatorname{def}(\tilde G)$ (\cref{lem:splitoff-deficiency-reuse}) and
+  $\operatorname{def}(\tilde G) \ge f + k - 5 = f - 2$
+  (\cref{lem:deficiency-ear}), so
+  $\min(\dim W + 1, 6) \ge 4 + f - \operatorname{def}(\tilde G)$, which is
+  $(\star)$ at $k = 3$, and \cref{lem:block-rank-ear} and
+  \cref{lem:pencil-x0-one-witness} apply.
 \end{proof}
 
 \begin{remark}[$\theta$-graphs]
