@@ -6,7 +6,8 @@ interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G
 when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
 at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
 second-read). Fourteen nodes, nine green; seven builds B1–B7, plus the `Carrier.lean` split before
-B3 (PI decision 5). B1–B2 landed. **Next: the `Carrier.lean` split (before B3)** — see *Hand-off*.
+B3 (PI decision 5). B1–B2 landed, and the `Carrier.lean` split landed. **Next: B3–B4** — see
+*Hand-off*.
 
 ## Current state
 
@@ -40,8 +41,20 @@ per-partition extension (no new infrastructure), matching the coordinator's rout
 The merge lemma's `hinj : Function.Injective x` hypothesis is unused by this proof (kept, renamed
 `_hinj`, for statement parity with the blueprint's "distinct bodies" ear data and the sibling ear
 lemmas); its `[Finite β]` from the spike was dropped (genuinely unused, `lake lint` caught it).
-Five red nodes remain (B3–B7). **The next concrete commit is the `Carrier.lean` split**
-(*Hand-off*).
+Five red nodes remain (B3–B7).
+
+**The `Carrier.lean` split landed** (PI decision 5, before B3; the plan was the design doc's §3
+CARRIER). `Carrier.lean` (1 496 lines) split along its section header `## The picture-to-normal API
+(Phase 40b CARRIER slice C3)`: C1–C2 (admissible pictures, `L(q)`, `Aff(q)`, `U`, `X0Attains`,
+`x0Attains_of_exists`) stayed in `Carrier.lean` (851 lines); C3, C3 item 5, C4, and C5′ moved to new
+`MainComponent/Configuration.lean` (691 lines), which imports `Carrier.lean`. No declaration renamed
+or re-stated, so no `\lean{...}` pin moved. `Flat.lean`'s import repointed from `Carrier` to
+`Configuration` (it uses `pointJoinFramework` and `ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`,
+both moved); every other downstream module (`Cut.lean`, `Bridge.lean`, `Contract.lean`, `Ear.lean`,
+`Chain.lean`, `Lines.lean`) reaches the moved declarations transitively through `Flat.lean`, per the
+project's one-hop-import convention. `CombinatorialRigidity.lean` gained the new import. Whole-project
+rebuild (2980 jobs): 0 errors, 0 warnings; `lake lint` clean; `blueprint/verify.sh` (`checkdecls`)
+passes unchanged (no blueprint edit this commit). **Next: B3–B4** (*Hand-off*).
 
 **The spikes** live in the gitignored `scratch/40h/` and `scratch/40h-read/`, local to this checkout
 (builder pointers, not evidence):
@@ -134,9 +147,10 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
   `lem:splitoff-deficiency-reuse`, and the module docstring's "KT 4.3(ii)" corrected to 4.3(i);
   `MainComponent/Ear.lean`: **`Graph.deficiency_induce_le_of_ear_of_merge`** →
   `lem:deficiency-ear-merge`. **Landed** with both names exactly as planned.
-- [ ] **The `Carrier.lean` split** (its own commit, before B3; PI decision 5; the plan is the design
+- [x] **The `Carrier.lean` split** (its own commit, before B3; PI decision 5; the plan is the design
   doc's §3 CARRIER): C3–C5′ to a second file, C1–C2 left in `Carrier.lean`, the root import
-  updated. No declaration is renamed, so no pin moves.
+  updated. No declaration is renamed, so no pin moves. **Landed** as new
+  `MainComponent/Configuration.lean` (*Current state*).
 - [ ] **B3–B4** — `Carrier.lean`, beside their definitions: **`Graph.liftingSpace_congr`**,
   **`Graph.isAdmissiblePicture_congr`** → `lem:pencil-picture-local`; new `MainComponent/EarGen.lean`:
   the EARGEN device → `lem:pencil-ear-data` (names are the build's; the node may be restated,
@@ -156,7 +170,6 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Blockers / open questions
 
-- None blocking the `Carrier.lean` split.
 - **B3–B4 is the high-risk build** (MvPolynomial substitution), and its node has no compiled statement
   (*Current state*).
 - **Two pieces of the step proofs have no compiled form**, which the recon left open: the affine
@@ -167,14 +180,13 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Hand-off / next phase
 
-**Next: the `Carrier.lean` split (fresh builder; PI decision 5, its own commit before B3).** Plan:
-the design doc's §3 CARRIER. Split `Carrier.lean` along its section headers into two files — C3–C5′
-move to a new second file, C1–C2 stay in `Carrier.lean` — and update the root import; no declaration
-is renamed, so no blueprint pin moves and no `\lean{...}` changes. Rebuilds the downstream Phase-40
-modules once. Gates: `lake build`, `lake lint`, `notes/check-phase-note.py` (no blueprint edit this
-commit, so `verify.sh`/`lint.sh` are unaffected but harmless to run).
+**Next: B3–B4 (fresh builder).** EARGEN: picture locality (`Graph.liftingSpace_congr`,
+`Graph.isAdmissiblePicture_congr`) beside their definitions in `Carrier.lean` (`lem:pencil-picture-
+local`), and the EARGEN device in new `MainComponent/EarGen.lean` (`lem:pencil-ear-data`, no
+compiled statement — the changed-statement gate applies if the Lean shape differs from (MC-180)'s
+Steps 1–2, *Current state*). High-risk build (MvPolynomial substitution); may take two commits.
 
-**Then B3–B4, B5, B6, B7, then the close.**
+**Then B5, B6, B7, then the close.**
 
 ## Decisions made during this phase
 
@@ -198,3 +210,10 @@ commit, so `verify.sh`/`lint.sh` are unaffected but harmless to run).
   once from `hla`/`hfv`/`hfa`). `deficiency_induce_le_of_ear_of_merge` extends `p` by the constant
   `p a` off `V₁`; every ear position collapses to `p a` under the extension (`pathVertex_cases`),
   so the crossing-edge sets are equal outright (not merely bounded), unlike the additive ear law.
+- **2026-09-27 — the `Carrier.lean` split landed as `Configuration.lean`** (the builder's name call,
+  PI decision 5). Cut exactly at the section header `## The picture-to-normal API (Phase 40b
+  CARRIER slice C3)`; the module docstrings were split along the same line (each "Main
+  definitions"/"Main statements" bullet moved with its declaration), and the "rank at `ofNormals`"
+  Design bullet moved with C4's `pencilConfigFramework` material it explains. `Flat.lean`'s import
+  repointed to `Configuration.lean`; every other downstream module reaches the moved declarations
+  transitively (no other file imports `Carrier.lean` directly).

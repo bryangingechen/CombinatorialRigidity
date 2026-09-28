@@ -96,25 +96,26 @@ close the PI re-scoped the queued PIN item to a second, independent proof by the
 
 ### CARRIER — planar pictures, `L(q)`, `X₀` and "the generic point attains" → **sub-phase 40b, ✓ closed 2026-09-26** (`notes/Phase40b.md`)
 
-**Done.** (MC-1)–(MC-3) are formalized in `Molecule/Pencil/MainComponent/Carrier.lean`: admissible
+**Done.** (MC-1)–(MC-3) are formalized in `Molecule/Pencil/MainComponent/Carrier.lean` and (split out
+2026-09-27, below) `Configuration.lean`: admissible
 pictures, `L(q)` and `Aff(q)`, `U` (nonempty and Zariski-open, `Graph.exists_mvPolynomial_isMainPicture`),
 the `cross₃` picture→normal map, `Graph.X0Attains` and its one-witness upgrade
-`Graph.x0Attains_of_exists`, the configuration as a pencil realization with the `X0Dist` leg
-`Graph.X0Attains.hasDistinctPencilRealization`, (MC-3)'s scale-and-shift rank invariance, and the
+`Graph.x0Attains_of_exists` (`Carrier.lean`), the configuration as a pencil realization with the
+`X0Dist` leg `Graph.X0Attains.hasDistinctPencilRealization` (`Configuration.lean`), (MC-3)'s
+scale-and-shift rank invariance, and the
 fibre-intersection lemma `MvPolynomial.exists_mem_eval_ne_zero₂`; DUAL-K made the polarity
 field-general (§4). (MC-2)'s vector bundle and its irreducible closure are never formed:
 `thm:pencil-x0-main-component` is green at its formalized content, with the geometry in
 `rem:pencil-x0-main-component`; (MC-3)'s augmented-matrix rank split has no Lean object and is the
 remark `rem:pencil-hinge-affine`. (MC-10)(a) moved to COVERAGE. The accepted design (uncurried
 pictures, a single `X0Attains`, the β-headroom `_of_card` triple) and every decision are in
-`notes/Phase40b.md`. **`Carrier.lean` is at 1 496 lines** (40f's build added the lifting system with
-weights), at the ~1500-line tripwire. Its split waited for a commit that would grow it, since a
-split rebuilds every Phase-40 module downstream. **That commit is now scheduled: the split lands as
-its own commit before 40h's B3** (PI decision 5, 2026-09-27; §3 STEPS, the SHORT entry), along its
-section headers: the picture-to-normal API, its polynomial mirror, the configuration as a pencil
-framework, the scale-and-shift invariance and the linear pencil condition (CARRIER's C3–C5′) to a
-second file, the rest (C1–C2) left behind. B3's locality lemmas then go in the part left behind,
-beside `liftingSpace` and `IsAdmissiblePicture`.
+`notes/Phase40b.md`. **`Carrier.lean` split 2026-09-27** (before 40h's B3, PI decision 5;
+`notes/Phase40h.md`), at 1 496 lines (40f's build added the lifting system with weights), the
+~1500-line tripwire: along its section headers, the picture-to-normal API, its polynomial mirror,
+the configuration as a pencil framework, the scale-and-shift invariance and the linear pencil
+condition (CARRIER's C3–C5′) moved to new `Configuration.lean`; C1–C2 (admissible pictures, `L(q)`,
+`Aff(q)`, `U`, `X0Attains`, `x0Attains_of_exists`) stayed in `Carrier.lean`. B3's locality lemmas go
+beside `liftingSpace` and `IsAdmissiblePicture`, in `Carrier.lean`.
 
 ### FLAT — the flat rank → **sub-phase 40c, ✓ closed 2026-09-26** (`notes/Phase40c.md`)
 

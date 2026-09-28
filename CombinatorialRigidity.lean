@@ -44,6 +44,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Escape
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain

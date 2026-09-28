@@ -1190,7 +1190,8 @@ Headline axioms unchanged (re-verified at the close).
 #### Phase 40b — planar pictures, the lifting space, and the main component (CARRIER) — ✓ Complete
 
 **✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40b.md`). The
-geometric layer the `X₀` argument rests on, in `Molecule/Pencil/MainComponent/Carrier.lean` and the
+geometric layer the `X₀` argument rests on, in `Molecule/Pencil/MainComponent/Carrier.lean` (split
+into `Carrier.lean` and `Configuration.lean` at Phase 40h) and the
 new forward-mode chapter `main-component.tex`. Over an admissible planar picture `q : V → K²`, the heights `z`
 for which the configuration `(q, z)` has every closed neighbourhood coplanar form a linear space
 `L(q)` (the pencil condition is linear in the heights), and the admissible pictures of least
@@ -1323,8 +1324,9 @@ second interior body suppressed ((MC-181), (MC-180)).
   formalization and second-read before the open.
 - The data on `V₁` are fixed before the ear's, so the picture is chosen in two stages.
 - Seven builds from a compiler-checked recon (its line geometry is sorry-free and its step
-  statements compile; the first build, the line geometry, landed), and before the third a commit that splits `Carrier.lean` along its section
-  headers. Placement per the PI: new `Lines.lean`, `EarGen.lean` and `Short.lean`, the locality
+  statements compile; the first two builds landed), with a further commit that split
+  `Carrier.lean` along its section headers into `Carrier.lean` and new `Configuration.lean` before
+  the third. Placement per the PI: new `Lines.lean`, `EarGen.lean` and `Short.lean`, the locality
   lemmas beside their definitions, and two join lemmas in `Flat.lean`. The `k = 1` cell goes to
   ORBIT, and θ-graphs to COVERAGE.
 
