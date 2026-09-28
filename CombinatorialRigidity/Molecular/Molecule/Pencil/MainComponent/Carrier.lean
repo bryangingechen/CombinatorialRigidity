@@ -42,6 +42,8 @@ PI decision 5).
 * `Graph.X0Attains` — "`X₀(G)`'s general point attains `6(|V| − 1) − def₃(G)`" ((MC-10)(a)): off
   one nonzero polynomial in the picture coordinates, the picture is admissible and the attaining
   heights contain a nonempty Zariski-open subset of `L(q)`.
+* `planeDiff a b` — the difference of the planes at `a` and `b` read off a point of the lifting
+  system's kernel, `(z, h) ↦ h_a − h_b` (Phase 40i ORBIT).
 
 ## Main statements
 
@@ -50,9 +52,18 @@ PI decision 5).
 * `Graph.IsAdmissiblePicture.exists_mvPolynomial` — admissibility is Zariski-open.
 * `Graph.isAdmissiblePicture_congr`, `Graph.liftingSpace_congr` — admissibility and `L(q)` read
   the picture only at the bodies of `G` (Phase 40h SHORT).
+* `Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd`,
+  `Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset` — every closed neighbourhood
+  at an admissible picture has at least three members, and any three bodies containing it have
+  independent picture points (Phase 40i ORBIT).
 * `Graph.liftingMatrix` — the lifting system, a matrix of polynomials in the picture whose kernel
   projects onto `L(q)` (`Graph.map_ker_liftingMatrix`), isomorphically over an admissible picture
   (`Graph.finrank_ker_liftingMatrix`).
+* `Graph.injective_liftingMatrix_ker_proj`, `Graph.two_le_finrank_map_planeDiff` — the height
+  projection is injective on the lifting system's kernel at an admissible picture, so a
+  two-dimensional drop in lifting space at a pair of newly-joined bodies makes the two
+  `planeDiff` incidence functionals independent on it (`lem:pencil-flag-genericity`, Phase 40i
+  ORBIT).
 * `Graph.weightedLiftingMatrix` — the lifting system with an arbitrary polynomial weight point in
   place of the picture point (`Graph.weightedLiftingMatrix_mulVec_eq_zero_iff`), the shape of the
   contraction step's rescaled system.
@@ -123,6 +134,38 @@ theorem _root_.Graph.isAdmissiblePicture_congr {G : Graph α β} {q q' : α × F
   · have : (fun i => pencilPicturePoint q (t i)) = fun i => pencilPicturePoint q' (t i) :=
       funext fun i => hpp _ (hN v hv _ (ht i))
     rw [this]
+
+/-- **An admissible picture puts three independent points in every closed neighbourhood**
+(Phase 40i ORBIT), so that neighbourhood has at least three members: the three admissible members
+are pairwise distinct, since three linearly independent vectors are pairwise distinct. -/
+theorem _root_.Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd [Finite α] {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G)) :
+    3 ≤ (G.closedNbhd v).ncard := by
+  obtain ⟨t, ht, hli⟩ := hq.2 v hv
+  have htinj : Function.Injective t := fun i j hij => hli.injective (by simp [hij])
+  have := Set.ncard_le_ncard (s := Set.range t) (by rintro _ ⟨i, rfl⟩; exact ht i)
+    (Set.toFinite _)
+  rwa [Set.ncard_range_of_injective htinj, Nat.card_eq_fintype_card, Fintype.card_fin] at this
+
+/-- **A closed neighbourhood inside three bodies has independent picture points** at an admissible
+picture (Phase 40i ORBIT): the three admissible members span `K³`, and they lie among the three. -/
+theorem _root_.Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset
+    {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G))
+    {u₀ u₁ u₂ : α} (hN : G.closedNbhd v ⊆ {u₀, u₁, u₂}) :
+    LinearIndependent K ![pencilPicturePoint q u₀, pencilPicturePoint q u₁,
+      pencilPicturePoint q u₂] := by
+  obtain ⟨t, ht, hli⟩ := hq.2 v hv
+  refine linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (by simp)
+  have htop : Submodule.span K (Set.range fun i => pencilPicturePoint q (t i)) = ⊤ :=
+    hli.span_eq_top_of_card_eq_finrank' (by simp)
+  rw [← htop]
+  refine Submodule.span_mono ?_
+  rintro _ ⟨i, rfl⟩
+  rcases hN (ht i) with h | h | h
+  · exact ⟨0, by simp [h]⟩
+  · exact ⟨1, by simp [h]⟩
+  · rw [Set.mem_singleton_iff] at h
+    exact ⟨2, by simp [h]⟩
 
 /-! ## The lifting space -/
 
@@ -602,6 +645,96 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
         rw [dotProduct_comm, ← h2 v hv (t j) (ht j), hz]
       exact congr_fun (Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero) i
     · exact h3 v hv i
+
+/-! ## The two-body incidence functionals (`lem:pencil-flag-genericity`, Phase 40i ORBIT) -/
+
+/-- **The difference of the planes at `a` and `b`**, read off a point `(z, h)` of the lifting
+system's kernel: `h_a − h_b`, an affine function of the picture (`D(z) = h_a − h_b`). -/
+noncomputable def planeDiff (a b : α) : (α ⊕ (α × Fin 3) → K) →ₗ[K] (Fin 3 → K) :=
+  LinearMap.funLeft K K (fun i => Sum.inr (a, i)) - LinearMap.funLeft K K (fun i => Sum.inr (b, i))
+
+theorem planeDiff_apply (a b : α) (x : α ⊕ (α × Fin 3) → K) (i : Fin 3) :
+    planeDiff a b x i = x (Sum.inr (a, i)) - x (Sum.inr (b, i)) := rfl
+
+/-- **The height projection is injective on the lifting system's kernel** at an admissible
+picture (the planes are pinned by three independent picture points). -/
+theorem _root_.Graph.injective_liftingMatrix_ker_proj [Fintype α] {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) :
+    Function.Injective ((LinearMap.funLeft K K (Sum.inl : α → α ⊕ (α × Fin 3))).domRestrict
+      (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin)) := by
+  classical
+  set L := LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin
+  set f := (LinearMap.funLeft K K (Sum.inl : α → α ⊕ (α × Fin 3))).domRestrict L
+  have h1 := LinearMap.finrank_range_add_finrank_ker f
+  rw [LinearMap.range_domRestrict, G.map_ker_liftingMatrix q] at h1
+  have h2 : Module.finrank K L = Module.finrank K (G.liftingSpace q) :=
+    Graph.finrank_ker_liftingMatrix hq
+  rw [← LinearMap.ker_eq_bot]
+  exact Submodule.finrank_eq_zero.mp (by omega)
+
+/-- **The incidence functionals at the two ends are independent** (`lem:pencil-flag-genericity`,
+(MC-48)(ii)'s argument, informal Step MC13/MC16; Phase 40i ORBIT). Let `H` be `G'` with the pair
+`a, b` joined (same bodies; each closed neighbourhood grows at most by the other end), and let the
+lifting space drop by two from `G'` to `H` at a picture admissible for `G'`. Then the two incidence
+functionals `z ↦ (h_a − h_b)(q_a)`, `(h_a − h_b)(q_b)` are independent on the lifting system's
+kernel of `G'`: their kernel projects injectively into `L_H(q)`. -/
+theorem _root_.Graph.two_le_finrank_map_planeDiff [Fintype α] {G' H : Graph α β}
+    {q : α × Fin 2 → K} (hq : G'.IsAdmissiblePicture q) {a b : α} (hV : V(H) = V(G'))
+    (hN : ∀ v ∈ V(G'), ∀ w ∈ H.closedNbhd v,
+      w ∈ G'.closedNbhd v ∨ (v = a ∧ w = b) ∨ (v = b ∧ w = a))
+    (hdim : Module.finrank K (H.liftingSpace q) + 2 ≤ Module.finrank K (G'.liftingSpace q)) :
+    2 ≤ Module.finrank K ((LinearMap.ker ((G'.liftingMatrix K).map
+      (MvPolynomial.eval q)).mulVecLin).map
+        ((Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q b]).mulVecLin ∘ₗ
+          planeDiff a b)) := by
+  classical
+  set L := LinearMap.ker ((G'.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin with hL
+  set E := (Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q b]).mulVecLin with hE
+  set Φ := (E ∘ₗ planeDiff a b).domRestrict L with hΦ
+  set π := (LinearMap.funLeft K K (Sum.inl : α → α ⊕ (α × Fin 3))).domRestrict L with hπ
+  have hπinj : Function.Injective π := Graph.injective_liftingMatrix_ker_proj hq
+  have h1 := LinearMap.finrank_range_add_finrank_ker Φ
+  rw [LinearMap.range_domRestrict, Graph.finrank_ker_liftingMatrix hq] at h1
+  -- the kernel of `Φ` projects into `L_H(q)`
+  have hker : (LinearMap.ker Φ).map π ≤ H.liftingSpace q := by
+    rintro _ ⟨⟨x, hxL⟩, hxΦ, rfl⟩
+    have hxΦ' : E (planeDiff a b x) = 0 := by
+      have := LinearMap.mem_ker.mp hxΦ
+      simpa [hΦ] using this
+    have hEa : planeDiff a b x ⬝ᵥ pencilPicturePoint q a = 0 := by
+      have := congr_fun hxΦ' 0
+      simpa [hE, Matrix.mulVec, dotProduct_comm] using this
+    have hEb : planeDiff a b x ⬝ᵥ pencilPicturePoint q b = 0 := by
+      have := congr_fun hxΦ' 1
+      simpa [hE, Matrix.mulVec, dotProduct_comm] using this
+    obtain ⟨h0, h2, -⟩ := Graph.liftingMatrix_mulVec_eq_zero_iff.mp (LinearMap.mem_ker.mp hxL)
+    refine ⟨fun w hw => h0 w (hV ▸ hw), fun v hv => ⟨fun i => x (Sum.inr (v, i)), fun w hw => ?_⟩⟩
+    have hwV : w ∈ V(G') := hV ▸ (by rcases hw with rfl | ⟨e, he⟩; exacts [hv, he.right_mem] :
+      w ∈ V(H))
+    rw [hV] at hv
+    change x (Sum.inl w) = _
+    have hdiff : ∀ u, planeDiff a b x ⬝ᵥ pencilPicturePoint q u =
+        (fun i => x (Sum.inr (a, i))) ⬝ᵥ pencilPicturePoint q u -
+          (fun i => x (Sum.inr (b, i))) ⬝ᵥ pencilPicturePoint q u := by
+      intro u
+      rw [← sub_dotProduct]
+      rfl
+    rcases hN v hv w hw with hw' | ⟨hva, hwb⟩ | ⟨hvb, hwa⟩
+    · exact h2 v hv w hw'
+    · subst hva hwb
+      rw [h2 w hwV w (Or.inl rfl)]
+      have := hdiff w
+      rw [hEb] at this
+      linear_combination this
+    · subst hvb hwa
+      rw [h2 w hwV w (Or.inl rfl)]
+      have := hdiff w
+      rw [hEa] at this
+      linear_combination -this
+  have h2 : Module.finrank K (LinearMap.ker Φ) ≤ Module.finrank K (H.liftingSpace q) := by
+    rw [LinearEquiv.finrank_eq (Submodule.equivMapOfInjective π hπinj (LinearMap.ker Φ))]
+    exact Submodule.finrank_mono hker
+  omega
 
 /-! ## The lifting system with weights -/
 

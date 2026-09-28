@@ -28,6 +28,8 @@ coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
   nondegenerate (`lem:pencil-line-pairing-join`).
 * `linearIndependent_pointJoin_tetra`, `span_pointJoin_tetra_eq_top` — the six joins of four
   independent points are independent, so they span `Λ²K⁴` (`lem:pencil-tetrahedron`, (MC-179)(a)).
+* `linearIndependent_pointJoin_pair` — two joins through a middle point of three independent
+  points are independent (Phase 40i ORBIT).
 * `star_sup_star_le_ker_klein`, `five_le_finrank_star_sup_star` — every line through `y₁` or `y₂`
   pairs to zero with `y₁ ∧ y₂`, and the lines through two independent points span at least five
   dimensions (`lem:pencil-two-stars`, (MC-179)(b)).
@@ -175,6 +177,19 @@ theorem span_pointJoin_tetra_eq_top {p : Fin 4 → Fin 4 → K} (hp : LinearInde
     Submodule.span K (Set.range (fun i => pointJoin (p (tetA i)) (p (tetB i)))) = ⊤ :=
   (linearIndependent_pointJoin_tetra hp).span_eq_top_of_card_eq_finrank'
     (by rw [Fintype.card_fin, screwSpace_finrank]; rfl)
+
+/-- **Two joins through a middle point of three independent points are independent**
+(Phase 40i ORBIT): extend `p, u, r` to a basis of `K⁴`; the joins `p ∧ u`, `u ∧ r` are two of its
+six tetrahedron joins. -/
+theorem linearIndependent_pointJoin_pair {p u r : Fin 4 → K}
+    (h : LinearIndependent K ![p, u, r]) :
+    LinearIndependent K ![pointJoin p u, pointJoin u r] := by
+  obtain ⟨w, hw⟩ := exists_linearIndependent_snoc_of_lt_finrank h
+    (by rw [Module.finrank_fin_fun]; omega)
+  have ht := (linearIndependent_pointJoin_tetra hw).comp ![0, 3] (by decide)
+  convert ht using 1
+  funext i
+  fin_cases i <;> rfl
 
 /-! ## The lines through a point -/
 

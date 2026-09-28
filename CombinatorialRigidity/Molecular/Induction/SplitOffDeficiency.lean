@@ -19,7 +19,11 @@ splitting-off and vertex removal (Katoh–Tanigawa 2011 §4):
 * the combined degrees-of-freedom bookkeeping (`dof_tracking`, `lem:dof-tracking`; KT 4.3–4.5);
 * **the label-reusing form of the upper bound**, suppressing a degree-2 body by relinking one of
   its own edge labels rather than a fresh one (`splitOff_deficiency_le_of_eq_left`,
-  `lem:splitoff-deficiency-reuse`), the form the pencil open-ear steps consume (Phase 40h SHORT).
+  `lem:splitoff-deficiency-reuse`), the form the pencil open-ear steps consume (Phase 40h SHORT);
+* **the merged-deficiency form of the upper bound**, comparing against `Graph.deficiencyMerged`
+  at a pair of bodies rather than the plain deficiency
+  (`splitOff_deficiency_add_le_of_deficiencyMerged`, `lem:splitoff-deficiency-merged`), the form
+  the pencil open ears at non-adjacent ends consume (Phase 40i ORBIT).
 
 The reducible-vertex, contraction-minimality, and forest-surgery layers build on top in
 `ReducibleVertex`, `Contraction`, and `ForestSurgery`. See `ROADMAP.md` §20 / `notes/Phase20.md`
@@ -284,6 +288,92 @@ theorem splitOff_deficiency_le_of_eq_left [Finite α] [Finite β] {G : Graph α 
       linarith
     nlinarith [Int.ofNat_le.mpr hcross]
   exact hmono.trans (G.partitionDef_le_deficiency n f)
+
+/-! ### Splitting off with a gap in the merged deficiency (`lem:splitoff-deficiency-merged`)
+
+A companion form of the upper bound, compared against the **merged** deficiency
+(`Graph.deficiencyMerged`, `Molecular/Deficiency.lean`) at the pair `a, b` rather than against
+`def(G̃')` directly: if every partition of `V(G')` keeping `a` and `b` together already falls
+`D - 1` short of `def(G̃')`, then splitting off at `v` and relinking the label `e₀` (whose every
+`G`-link already has `v` as an end, so it need not be one of `v`'s own edges) to join `a` and `b`
+lowers the whole graph's deficiency by that same gap. This is the form the pencil open-ear steps
+at non-adjacent ends consume (`sec:main-component-orbit`).
+
+Proved by the same per-partition comparison as the other splitting-off bounds: every partition of
+`V₁ = V(G) ∖ {v}` extends to one of `V(H) = V₁` unchanged, the parts are the same, and a partition
+separating `a, b` gains exactly the one crossing edge `e₀`; one merging them is bounded directly by
+`deficiencyMerged`. -/
+
+/-- **Splitting off with a gap in the merged deficiency** (`lem:splitoff-deficiency-merged`): let
+`v` be a body of `G`, let `a, b ≠ v` be bodies of `G`, and let `e₀` be a label every link of which
+in `G` has `v` as an end. With `V₁ = V(G) ∖ {v}`, `G' = G[V₁]`, and `H` the splitting-off relinking
+`e₀` to join `a` and `b`, if the merged deficiency of `G'` at `a, b` falls `D - 1` (`D = bodyBarDim
+n ≥ 1`) short of `def(G̃')`, then `def(H̃)` falls that same gap short of `def(G̃')`. -/
+theorem splitOff_deficiency_add_le_of_deficiencyMerged [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {V₁ : Set α} {v a b : α} {e₀ : β} (hV₁ : V(G) \ {v} = V₁)
+    (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
+    (he₀ : ∀ x y, G.IsLink e₀ x y → x = v ∨ y = v)
+    (hδ : (G.induce V₁).deficiencyMerged n a b + ((bodyBarDim n : ℤ) - 1) ≤
+      (G.induce V₁).deficiency n) :
+    (G.splitOff v a b e₀).deficiency n + ((bodyBarDim n : ℤ) - 1) ≤ (G.induce V₁).deficiency n := by
+  classical
+  set H := G.splitOff v a b e₀ with hH
+  set G' := G.induce V₁ with hG'
+  have hVH : V(H) = V(G') := by rw [hH, vertexSet_splitOff, hV₁]; rfl
+  have hne : Nonempty (α → α) := ⟨id⟩
+  -- every link of `G'` is a link of `H`, and `e₀` is not an edge of `G'`
+  have hle : ∀ f x y, G'.IsLink f x y → H.IsLink f x y := by
+    rintro f x y ⟨hf, hx, hy⟩
+    have hxv : x ≠ v := fun h => by rw [← hV₁] at hx; exact hx.2 h
+    have hyv : y ≠ v := fun h => by rw [← hV₁] at hy; exact hy.2 h
+    refine Or.inl ⟨?_, hf, hxv, hyv⟩
+    rintro rfl
+    rcases he₀ x y hf with h | h
+    exacts [hxv h, hyv h]
+  have he₀G' : e₀ ∉ E(G') := by
+    intro h
+    obtain ⟨x, y, hl⟩ := G'.exists_isLink_of_mem_edgeSet h
+    obtain ⟨hf, hx, hy⟩ := hl
+    rw [← hV₁] at hx hy
+    rcases he₀ x y hf with h | h
+    exacts [hx.2 h, hy.2 h]
+  rw [deficiency]
+  have hsup : ∀ f : α → α, H.partitionDef n f + ((bodyBarDim n : ℤ) - 1) ≤ G'.deficiency n := by
+    intro f
+    have hnp : H.numParts f = G'.numParts f := by rw [numParts, numParts, hVH]
+    have hsub : G'.crossingEdges f ⊆ H.crossingEdges f := by
+      rintro f' ⟨hf', x, y, hl, hxy⟩
+      exact ⟨(hle f' x y hl).edge_mem, x, y, hle f' x y hl, hxy⟩
+    have hDn : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1 := by
+      have : (1 : ℤ) ≤ bodyBarDim n := by exact_mod_cast hD
+      linarith
+    by_cases hab : f a = f b
+    · have h1 : (G'.crossingEdges f).ncard ≤ (H.crossingEdges f).ncard :=
+        Set.ncard_le_ncard hsub (Set.toFinite _)
+      have h2 := G'.partitionDef_le_deficiencyMerged n hab
+      have h3 : H.partitionDef n f ≤ G'.partitionDef n f := by
+        rw [partitionDef, partitionDef, hnp]
+        have : ((G'.crossingEdges f).ncard : ℤ) ≤ (H.crossingEdges f).ncard := by exact_mod_cast h1
+        nlinarith
+      linarith
+    · -- `e₀` crosses in `H`
+      have hvab : a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) := ⟨hav, hbv, haV, hbV⟩
+      · have he₀H : e₀ ∈ H.crossingEdges f :=
+          ⟨(show H.IsLink e₀ a b from Or.inr ⟨rfl, hvab.1, hvab.2.1, hvab.2.2.1, hvab.2.2.2,
+            Or.inl ⟨rfl, rfl⟩⟩).edge_mem, a, b,
+            Or.inr ⟨rfl, hvab.1, hvab.2.1, hvab.2.2.1, hvab.2.2.2, Or.inl ⟨rfl, rfl⟩⟩, hab⟩
+        have hnot : e₀ ∉ G'.crossingEdges f := fun h => he₀G' h.1
+        have h1 : (G'.crossingEdges f).ncard + 1 ≤ (H.crossingEdges f).ncard := by
+          rw [← Set.ncard_insert_of_notMem hnot (Set.toFinite _)]
+          exact Set.ncard_le_ncard (Set.insert_subset he₀H hsub) (Set.toFinite _)
+        have h2 := G'.partitionDef_le_deficiency n f
+        rw [partitionDef] at h2 ⊢
+        rw [hnp]
+        have : ((G'.crossingEdges f).ncard : ℤ) + 1 ≤ (H.crossingEdges f).ncard := by
+          exact_mod_cast h1
+        nlinarith
+  exact (ciSup_le fun f => by linarith [hsup f] : ⨆ f, H.partitionDef n f ≤
+    G'.deficiency n - ((bodyBarDim n : ℤ) - 1)) |> fun h => by linarith
 
 /-! ### Splitting-off lowers the deficiency by at most one (`lem:splitoff-deficiency`, KT 4.3(ii))
 

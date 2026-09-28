@@ -1,13 +1,14 @@
 # Phase 40i — PENCIL-X0 / ORBIT: the open ears with one or two interior bodies at non-adjacent ends (work log)
 
-**Status:** in progress (opened design-first 2026-09-28). STEPS' fifth group
+**Status:** in progress (opened design-first 2026-09-28; B1 landed 2026-09-28). STEPS' fifth group
 (`notes/Phase40-design.md` §3 STEPS, the ORBIT entry). It lands the open-ear steps with one interior
 body, and with two with no bound on the deficiency, both at non-adjacent ends `a ≁ b` and under
 `δ₂ ≥ 2` in the merged form `deficiencyMerged₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: if `X₀(G[V₁])`
 attains, `X₀(G)` attains for `k = 1` when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54) at `k = 1`), and for
 `k = 2` when `X₀` also attains at `G` with its second interior body suppressed ((MC-176)). No new
-mathematics. Eight nodes, seven red (`def:deficiency-merged` is green at the open); three builds
-B1–B3. **Next: B1, the general pieces** (with B2, if the coordinator merges them) — see *Hand-off*.
+mathematics. Eight nodes: three green after B1 (`def:deficiency-merged` at the open,
+`lem:splitoff-deficiency-merged` and `lem:pencil-flag-genericity` from this build), five still red;
+three builds, B1 done. **Next: B2, the `k = 1` cell** — see *Hand-off*.
 
 ## Current state
 
@@ -100,13 +101,15 @@ adds its pins with `\leanok` (*Lemma checklist*).
 Planned names from the spike; pins in **bold**, the other names helpers, unpinned. The spike's
 section headers P1–P10 are the recon's pieces.
 
-- [ ] **B1, the general pieces** (P1, P2, P4, P5 but `splitOff_oneEar`, P9's `pointJoin` lemmas):
+- [x] **B1, the general pieces** (P1, P2, P4, P5 but `splitOff_oneEar`, P9's `pointJoin` lemmas) —
+  landed 2026-09-28:
   - `Induction/SplitOffDeficiency.lean`: **`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`**
     → `lem:splitoff-deficiency-merged`;
   - `Carrier.lean`, beside `liftingMatrix`: **`Graph.two_le_finrank_map_planeDiff`**,
     **`planeDiff`** → `lem:pencil-flag-genericity` (`planeDiff_apply`,
     `Graph.injective_liftingMatrix_ker_proj`); also `Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd`
-    and `Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset`;
+    and `Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset` (placed beside
+    `isAdmissiblePicture_congr`, both unpinned helpers);
   - `Lines.lean`: `linearIndependent_pointJoin_pair`; `Flat.lean`, beside `pointJoin`:
     `linearIndependent_pencilConfigPoint_triple` and the seven `pointJoin_{zero,add,smul,sub}_left`,
     `pointJoin_{add,smul,sub}_right`; `Induction/Operations.lean`, beside `splitOff_simple`:
@@ -142,20 +145,24 @@ section headers P1–P10 are the recon's pieces.
 
 ## Hand-off / next phase
 
-**Next: B1, the general pieces (fresh builder), or B1 and B2 as one commit at the coordinator's
-call.** Source: `scratch/40i/S40i.lean` (gitignored, local to this checkout; a builder pointer, not
-evidence), the checklist's sections. Targets: `lem:splitoff-deficiency-merged` and
-`lem:pencil-flag-genericity` green (with B2, also the three `k = 1` nodes). Chores:
+**B1 landed 2026-09-28** (this commit). `lem:splitoff-deficiency-merged` and
+`lem:pencil-flag-genericity` are green; the four unpinned helper lemmas landed alongside them per
+the checklist. Gates green: `lake build` (whole tree, no warnings), `lake lint`,
+`blueprint/verify.sh`, `blueprint/lint.sh`.
+
+**Next: B2, the `k = 1` cell (fresh builder).** Source: `scratch/40i/S40i.lean` (gitignored, local
+to this checkout; a builder pointer, not evidence), sections P3 (`Graph.exists_oneEar_base`'s
+incidence half), `Graph.splitOff_oneEar` (held back from B1 per the coordinator's scope-pin), P6,
+P7. New file `MainComponent/Orbit.lean`, importing the least module that provides what it uses (the
+spike imports `…MainComponent.Short`), added to the root import, with a module docstring listing
+its statements (the `Cut.lean` pattern). Targets: `lem:pencil-one-ear-incidence`,
+`lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one` green. Chores:
 - **`lake lean` the spike first**, never `lake env lean` (`CombinatorialRigidity/CLAUDE.md` *Lean LSP
   MCP*); it is clean at this open, so judge lint by `lake lint`.
-- **Placement** as the checklist. B2 creates `Orbit.lean`, importing the least module that provides
-  what it uses (the spike imports `…MainComponent.Short`), adds it to the root import, and gives it
-  a module docstring listing its statements (the `Cut.lean` pattern).
-- **Pin and flip** each node with the checklist's bold names, with a role-labelled map where a node
-  carries two pins. Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
-  `notes/check-phase-note.py`.
+- **Pin and flip** each node with the checklist's bold names. Gates: `lake build`, `lake lint`,
+  `blueprint/verify.sh`, `blueprint/lint.sh`, `notes/check-phase-note.py`.
 
-**Then B2 (unless merged), B3, then the close.**
+**Then B3, then the close.**
 
 ## Decisions made during this phase
 
@@ -166,3 +173,9 @@ evidence), the checklist's sections. Targets: `lem:splitoff-deficiency-merged` a
   `checkdecls` resolves them. Definition faithfulness: the Lean restricts the labeling supremum to
   `f u = f v`, which at bodies `u, v` of `G` is the maximum over the partitions with `u`, `v` in one
   part, as the node states; the cheapest witness is the one-part partition, of value `0`.
+- **2026-09-28 B1 — one import-order deviation from the spike.** `Graph.two_le_finrank_map_planeDiff`
+  (in `Carrier.lean`) used `Graph.closedNbhd_subset_vertexSet` verbatim from the spike, but that
+  lemma lives downstream in `MainComponent/Bridge.lean` (which imports `Carrier.lean`, not the
+  reverse); its three-line proof (`rcases hw with rfl | ⟨e, he⟩; exacts [hv, he.right_mem]`) is
+  inlined at the one call site rather than moved or duplicated as a named declaration. No other
+  placement changed from the checklist.

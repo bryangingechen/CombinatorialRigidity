@@ -2481,6 +2481,9 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
 \begin{lemma}[The incidence functionals at the two ends are independent]
   \label{lem:pencil-flag-genericity}
+  \lean{CombinatorialRigidity.Molecular.planeDiff,
+        Graph.two_le_finrank_map_planeDiff}
+  \leanok
   \uses{def:pencil-weighted-lifting-system, def:pencil-lifting-space,
         def:pencil-admissible-picture}
   Let $G'$ and $H$ be graphs on the same bodies, and $a, b$ two bodies of
@@ -2497,6 +2500,7 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   are linearly independent.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-x0-one-witness}
   At a common zero $(z, h)$ of the two functionals, $h_a$ and $h_b$ take
   the same values at $q_a$ and at $q_b$. As $z_a = h_a \cdot (q_a, 1)$ and
@@ -2509,6 +2513,16 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   functionals form a space of dimension at most
   $\dim L_H(q) \le \dim L_{G'}(q) - 2$, and the two are independent.
 \end{proof}
+\begin{fmlnote}
+  \label{fmlnote:pencil-flag-genericity}
+  \texttt{planeDiff a b} is the difference map $(z, h) \mapsto h_a - h_b$
+  on the lifting system's ambient coordinates, read at $q_a$ or $q_b$ to
+  give the two functionals in the statement.
+  \texttt{Graph.two\_le\_finrank\_map\_planeDiff} is the independence
+  claim itself, phrased as: the pair of functionals, viewed as one map
+  into $K^2$, has rank two on the solutions of the lifting system of
+  $G'$ at $q$.
+\end{fmlnote}
 
 \begin{lemma}[An incidence meets two open conditions]
   \label{lem:pencil-one-ear-incidence}

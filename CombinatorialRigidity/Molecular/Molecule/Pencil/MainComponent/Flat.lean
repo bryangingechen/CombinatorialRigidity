@@ -53,7 +53,11 @@ independence, serve the ear steps (Phase 40g CHAIN, `sec:main-component-chain`).
   (`lem:pencil-join-flat`, Phase 40g); `flatSigma_pointJoin` and `flatPi_pointJoin` are its two
   components, and `pointJoin_swap`, `pointJoin_self`, `pointJoin_add_smul_left` say the join is
   alternating and linear in its first point, and `pointJoin_add_smul_self_right` that it is
-  unchanged by moving its second point along the first (Phase 40h, for `MainComponent/Lines.lean`).
+  unchanged by moving its second point along the first (Phase 40h, for `MainComponent/Lines.lean`);
+  `pointJoin_{zero,add,smul,sub}_left` and `pointJoin_{add,smul,sub}_right` restate the linearity
+  as a plain (not affine) bilinear map (Phase 40i ORBIT).
+* `linearIndependent_pencilConfigPoint_triple` — three configuration points over independent
+  picture points are independent, for any heights (Phase 40i ORBIT).
 * `exists_mvPolynomial_linearIndependent_pointJoin_picture`,
   `exists_mvPolynomial_linearIndependent_pointJoin_heights` — independence of joins is
   Zariski-open in the picture and in the heights (`lem:pencil-join-independence-open`).
@@ -754,6 +758,50 @@ theorem pointJoin_add_smul_left (p r p' : Fin 4 → K) (t : K) :
   congr 1
   module
 
+/-- The join vanishes when its first point is the origin: `0 ∧ p' = 0` (Phase 40i ORBIT). -/
+theorem pointJoin_zero_left (p' : Fin 4 → K) : pointJoin 0 p' = 0 := by
+  have := pointJoin_add_smul_left 0 0 p' 1
+  simp only [add_zero, smul_zero, one_smul] at this
+  exact left_eq_add.mp this
+
+/-- The join is additive in its first point: `(p + r) ∧ p′ = p ∧ p′ + r ∧ p′` (Phase 40i ORBIT). -/
+theorem pointJoin_add_left (p r p' : Fin 4 → K) :
+    pointJoin (p + r) p' = pointJoin p p' + pointJoin r p' := by
+  simpa using pointJoin_add_smul_left p r p' 1
+
+/-- The join is homogeneous in its first point: `(c • p) ∧ p′ = c • (p ∧ p′)` (Phase 40i ORBIT). -/
+theorem pointJoin_smul_left (c : K) (p p' : Fin 4 → K) :
+    pointJoin (c • p) p' = c • pointJoin p p' := by
+  have := pointJoin_add_smul_left 0 p p' c
+  rwa [zero_add, pointJoin_zero_left, zero_add] at this
+
+/-- The join is subtractive in its first point: `(p − r) ∧ p′ = p ∧ p′ − r ∧ p′`
+(Phase 40i ORBIT). -/
+theorem pointJoin_sub_left (p r p' : Fin 4 → K) :
+    pointJoin (p - r) p' = pointJoin p p' - pointJoin r p' := by
+  rw [sub_eq_add_neg, pointJoin_add_left, ← neg_one_smul K r, pointJoin_smul_left]
+  module
+
+/-- The join is additive in its second point: `p′ ∧ (p + r) = p′ ∧ p + p′ ∧ r`
+(Phase 40i ORBIT). -/
+theorem pointJoin_add_right (p r p' : Fin 4 → K) :
+    pointJoin p' (p + r) = pointJoin p' p + pointJoin p' r := by
+  rw [pointJoin_swap, pointJoin_add_left, pointJoin_swap p p', pointJoin_swap r p']
+  abel
+
+/-- The join is homogeneous in its second point: `p′ ∧ (c • p) = c • (p′ ∧ p)`
+(Phase 40i ORBIT). -/
+theorem pointJoin_smul_right (c : K) (p p' : Fin 4 → K) :
+    pointJoin p' (c • p) = c • pointJoin p' p := by
+  rw [pointJoin_swap, pointJoin_smul_left, pointJoin_swap p p', smul_neg]
+
+/-- The join is subtractive in its second point: `p′ ∧ (p − r) = p′ ∧ p − p′ ∧ r`
+(Phase 40i ORBIT). -/
+theorem pointJoin_sub_right (p r p' : Fin 4 → K) :
+    pointJoin p' (p - r) = pointJoin p' p - pointJoin p' r := by
+  rw [pointJoin_swap, pointJoin_sub_left, pointJoin_swap p p', pointJoin_swap r p']
+  abel
+
 /-- A join is unchanged by moving its second point along the first:
 `y ∧ (v + c y) = y ∧ v` (Phase 40h SHORT). -/
 theorem pointJoin_add_smul_self_right (y v : Fin 4 → K) (c : K) :
@@ -774,6 +822,18 @@ theorem linearIndependent_pointJoin_of_flat {ι : Type*} {p p' : ι → Fin 4 �
     simp only [Function.comp_apply, LinearEquiv.coe_coe]
     rw [flatScrewEquiv_pointJoin, hpw]
   exact LinearIndependent.of_comp (flatScrewEquiv (K := K)).toLinearMap (hcomp ▸ hw)
+
+/-- **Three configuration points over independent picture points are independent**
+(Phase 40i ORBIT): the planar projection sends them to the picture points. -/
+theorem linearIndependent_pencilConfigPoint_triple {q : α × Fin 2 → K} (z : α → K) {u v w : α}
+    (h : LinearIndependent K ![pencilPicturePoint q u, pencilPicturePoint q v,
+      pencilPicturePoint q w]) :
+    LinearIndependent K ![pencilConfigPoint q z u, pencilConfigPoint q z v,
+      pencilConfigPoint q z w] := by
+  refine LinearIndependent.of_comp (planarProj (K := K)) ?_
+  convert h using 1
+  funext i
+  fin_cases i <;> simp [planarProj_pencilConfigPoint]
 
 /-! ## Independence of joins is Zariski-open (Phase 40g CHAIN)
 

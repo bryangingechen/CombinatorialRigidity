@@ -895,6 +895,8 @@ ends are not adjacent use this (\cref{sec:main-component-orbit}).
 
 \begin{lemma}[Splitting off with a gap in the merged deficiency]
   \label{lem:splitoff-deficiency-merged}
+  \lean{Graph.splitOff_deficiency_add_le_of_deficiencyMerged}
+  \leanok
   \uses{def:graph-operations, def:D-deficiency, def:deficiency-merged}
   Let $v$ be a body of $G$, let $a, b \neq v$ be bodies of $G$, and let
   $e_0$ be a label every link of which in $G$ has $v$ as an end. Let
@@ -908,6 +910,7 @@ ends are not adjacent use this (\cref{sec:main-component-orbit}).
   $\operatorname{def}(\tilde H) \le \operatorname{def}(\tilde G') - (D - 1)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   $H$ has the bodies of $G'$, every edge of $G'$ with its ends, and the
   edge $e_0$ joining $a$ and $b$, which is not an edge of $G'$ since its
   links in $G$ meet $v$. Compare the value of each partition $P$ of

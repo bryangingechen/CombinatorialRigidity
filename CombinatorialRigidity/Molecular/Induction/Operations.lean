@@ -930,6 +930,26 @@ lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
   not_isLoopAt e x h := hloop e x x (isLink_self_iff.mp h) rfl
   eq_of_isLink e f x y he hf := hpar e f x y he hf
 
+/-- **The splitting-off `G_v^{ab}` is simple when the ends are not adjacent** (the pencil open-ear
+steps' simplicity criterion, Phase 40i ORBIT): from `H.Simple`, `a ≠ b`, and `¬ H.Adj a b`, both
+`splitOff_simple` hypotheses hold outright — no surviving edge parallels the fresh `ab`, since `a`
+and `b` are not linked in `H` at all. -/
+lemma splitOff_simple_of_not_adj {H : Graph α β} (hS : H.Simple) {v a b : α}
+    {e₀ : β} (hab : a ≠ b) (hnadj : ¬ H.Adj a b) : (H.splitOff v a b e₀).Simple := by
+  refine splitOff_simple (fun f u w h => ?_) (fun f₁ f₂ u w h₁ h₂ => ?_)
+  · rcases h with ⟨-, h, -, -⟩ | ⟨-, -, -, -, -, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩
+    · exact h.ne
+    · exact hab
+    · exact hab.symm
+  · rcases h₁ with ⟨-, h₁, -, -⟩ | ⟨rfl, -, -, -, -, h₁⟩ <;>
+      rcases h₂ with ⟨-, h₂, -, -⟩ | ⟨rfl, -, -, -, -, h₂⟩
+    · exact hS.eq_of_isLink h₁ h₂
+    · rcases h₂ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      exacts [absurd ⟨f₁, h₁⟩ hnadj, absurd ⟨f₁, h₁.symm⟩ hnadj]
+    · rcases h₁ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      exacts [absurd ⟨f₂, h₂⟩ hnadj, absurd ⟨f₂, h₂.symm⟩ hnadj]
+    · rfl
+
 /-- **The splitting-off `G_v^{ab}` is simple** (KT Lemma 6.7(ii), Katoh–Tanigawa 2011 p. 677; the
 graph-side discharge feeding Theorem 5.5's *generic* Case-III hypothesis `hsplitGP`). It discharges
 both hypotheses of `splitOff_simple` from `G.Simple`, the splitting data, and the
