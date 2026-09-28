@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓, 40h/SHORT ✓, 40i/ORBIT ✓; next STEPS' SPLITOFF group, not yet opened (see `notes/Phase40i.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a/SPINE2 ✓, 40b/CARRIER ✓, 40c/FLAT ✓, 40d/BRIDGE ✓, 40e/CUTBRIDGE ✓, ORBIT recon ✓, 40f/CONTRACT-R ✓, 40g/CHAIN ✓, 40h/SHORT ✓, 40i/ORBIT ✓; 40j/SPLITOFF open (see `notes/Phase40j.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1161,10 +1161,10 @@ infinite field. Layers by stable code, lettered only as each opens:
 - **STEPS**: ear, split-off, contraction, cut and bridge steps, run by group; the first,
   CUTBRIDGE, closed as sub-phase 40e (2026-09-26); the second, CONTRACT-R, closed as sub-phase 40f
   (2026-09-26); the third, CHAIN, closed as sub-phase 40g (2026-09-27); the fourth, SHORT, closed
-  as sub-phase 40h (2026-09-27); the fifth, ORBIT, closed as sub-phase 40i (2026-09-28); the rest
-  are provisional codes in the design doc, SPLITOFF next. The ORBIT recon (2026-09-26) re-proved
-  the one step whose informal proof counted dimensions, and a second reading confirmed it. The
-  SHORT recon (2026-09-27) re-proved the `k = 3, 4` ear steps by removing one ear body and putting
+  as sub-phase 40h (2026-09-27); the fifth, ORBIT, closed as sub-phase 40i (2026-09-28); the
+  sixth, SPLITOFF, is sub-phase 40j (open); the rest are provisional codes in the design doc. The
+  ORBIT recon (2026-09-26) re-proved the one step whose informal proof counted dimensions, and a
+  second reading confirmed it. The SHORT recon (2026-09-27) re-proved the `k = 3, 4` ear steps by removing one ear body and putting
   it back, in place of an orbit case analysis, and a second reading confirmed it with repairs;
 - **COVERAGE**: the structural half and the assembly;
 - **MOTIVES**: the two statements.
@@ -1352,6 +1352,24 @@ without its chart polynomial, and replaces its dimension count over the orbits o
 mathematics: three build commits from a compiler-checked recon's sorry-free spike, the steps in
 the new `Orbit.lean` and the general pieces beside their definitions, by the PI's 40h placement
 convention. Headline axioms unchanged (re-verified at the close).
+
+#### Phase 40j — splitting off a body of degree two (SPLITOFF, STEPS' sixth group) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-28; work log `notes/Phase40j.md`). The split-off
+step at a body `x` of degree two whose neighbours `a`, `b` are not adjacent, in `main-component.tex`
+§`sec:main-component-splitoff`: when every partition of `V₁ = V(G) ∖ {x}` keeping `a` and `b` in one
+part falls at least five below the deficiency of `G[V₁]`, `X₀` attaining at `G` with `x` suppressed
+(`G[V₁]` plus the edge `ab`) gives it at `G` ((MC-31)). It transfers the splitting-off case of
+Jackson–Jordán's proof of the pin-collinear theorem.
+- At a configuration of the suppressed graph, `x` is put on the line through the points of `a` and
+  `b`. The hinges at `ax` and `xb` are then multiples of the one at `ab`, and the rank of `G` is
+  that of the suppressed graph plus five.
+- That position is not over an admissible picture. So the picture of `x` moves along a line to a
+  general point and the heights along a line of solutions of the lifting system of `G[V₁]`; off
+  finitely many parameters the rank stays at least its special value and the picture is main.
+- No new mathematics, so no workbook commit or second reading. Two builds, possibly three, from a
+  compiler-checked recon's sorry-free spike: the general pieces in `Bridge.lean`, `Ear.lean`,
+  `Cut.lean`, `Carrier.lean` and a Mathlib mirror, then the step in a new `SplitOff.lean`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

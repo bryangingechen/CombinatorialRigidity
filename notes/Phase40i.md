@@ -5,8 +5,8 @@ group (`notes/Phase40-design.md` §3 STEPS), proved the open-ear steps with one 
 with two with no bound on the deficiency, both at non-adjacent ends and under
 `deficiencyMerged₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: if `X₀(G[V₁])` attains, `X₀(G)` attains for
 `k = 1` when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54) at `k = 1`), and for `k = 2` when `X₀` also attains
-at `G` with its second interior body suppressed ((MC-176)). No new mathematics. **Next: STEPS'
-SPLITOFF group, not yet opened** — see *Hand-off*.
+at `G` with its second interior body suppressed ((MC-176)). No new mathematics. **Next: 40j =
+SPLITOFF, opened 2026-09-28** — see `notes/Phase40j.md`.
 
 ## Current state
 
@@ -94,12 +94,11 @@ helpers.
 
 ## Hand-off / next phase
 
-**40i is closed. The next concrete task is STEPS' SPLITOFF group**, (MC-28)–(MC-31), the next group
-in the design doc's provisional grouping and its recorded order (`notes/Phase40-design.md` §3
-STEPS; CONTRACT-A after it). It is not yet opened and has no letter. By the 40f–40i precedent its
-first step is a compiler-checked design recon (opus) of (MC-28)–(MC-31); the group opens as the
-next sub-phase after it. It is the first consumer of the `jointMotions`, `weldedRank` and remaining A2/A3 pins
-(PI decision 4(b); design doc §7).
+**40i is closed. The next step moved to `notes/Phase40j.md`:** STEPS' SPLITOFF group,
+(MC-28)–(MC-31), opened as 40j (2026-09-28), design-first from a compiler-checked recon (opus) with
+no new mathematics. It was expected to be the first consumer of the `jointMotions`, `weldedRank`
+and remaining A2/A3 pins (PI decision 4(b); design doc §7); 40j's recon found it consumes none of
+them, so they pass to COVERAGE.
 
 **Cleanup-round items.** 40h's four stay in the design doc's SHORT entry. 40i adds none: its files
 are under the ~1500-line tripwire (`Orbit.lean` 1 099, `Lines.lean` 1 064, `Carrier.lean` 1 023),
