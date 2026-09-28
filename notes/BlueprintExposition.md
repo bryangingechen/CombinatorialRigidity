@@ -1173,6 +1173,36 @@ ledger is now **2 pending / 41 done** (of 43).
   same base is the whole `k = 1` step. Pointer: `notes/Phase40i.md`; `notes/Phase40-design.md` §3
   STEPS (*ORBIT done*).
 
+### `main-component.tex` — Phase 40j (SPLITOFF: splitting off a body of degree two at non-adjacent neighbours)
+
+**One new entry — judged at the sub-phase close (2026-09-28).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC11.md`, Step MC11, (MC-28)–(MC-31)), after the
+splitting-off case of Jackson–Jordán's proof of the pin-collinear theorem; the criterion transfers
+as in the `pencil.tex` section. The entry below is written in place. The rest landed as scoped, in
+two build commits from the design recon's spike. (MC-28) is the informal motion count, (MC-29) is
+two landed deficiency bounds composed, and (MC-30)(i) is the informal dimension count at one
+picture, on the lifting system's kernel. That the flexes of `G′` are that kernel, not `L_{G′}`
+(`G′` may have bodies of degree 1), is a carrier detail recorded in the node's proof. The account of
+the whole induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main-component`
+above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 42 done** (of 44).
+
+- **`thm:pencil-x0-splitoff` / `Graph.X0Attains.of_splitOff`, with `lem:pencil-splitoff-curve` and
+  `lem:pencil-curve-limit`** — [done (the subsection preamble, the theorem's proof and the remark
+  after it, at the 40j close)] **(b)** the informal step (MC-31) reaches `X₀(G)` from the special
+  configuration, which puts `x` on the line `p_a p_b` and has the rank of `G″` plus five but is not
+  admissible: (MC-30)(ii) moves `x`'s picture off the line in an arbitrary direction `η`, keeps the
+  curve over admissible pictures with `dim L_G` minimal by the formula (★) and (MC-4)(b), lifts it by
+  a rational family `P(t)` of flexes, and (MC-31) closes by lower semicontinuity of the rank on the
+  irreducible `X₀(G)` ((MC-2)). **Stable insight:** no geometry of `X₀(G)` is needed. Take `η` to end
+  the curve at the general picture itself (`q(1) = q`), so main-ness along it is one polynomial in
+  `t`, nonzero at `t = 1`, and solution dimensions are compared only at `q` ((MC-30)(i)). The
+  incidence that makes a flex a height of `G` is the pencil `φ₀ + tψ`; once `s` makes `φ₀` nonzero
+  on the flexes of `G′` (or every flex has `h_a = h_b`), the pencil has an explicit line of
+  solutions through `y₀`, on which `ψ` is constant. It is `P(t)` times a scalar equal to `1` at
+  `t = 0`, so the family is polynomial. Lower semicontinuity is then along the one curve of normals: the rank polynomial
+  restricted to it is nonzero at `t = 0`, and one attaining configuration over a main picture
+  suffices. Pointer: `notes/Phase40j.md`; `notes/Phase40-design.md` §3 STEPS (*SPLITOFF done*).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

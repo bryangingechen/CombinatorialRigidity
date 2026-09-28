@@ -22,8 +22,10 @@ and `b`'s picture points; the rank of `G` there is that of `G″` plus five
 `BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions`, Phase 40j B1). This position is
 not admissible for `G`, so the picture of `x` moves along a line to a general point, and the
 heights of `G[V₁]` along a line of solutions of its lifting system's kernel
-(`exists_mem_forall_add_smul_eq_zero`), incident throughout at the special direction unless every
-flex of `G[V₁]` already vanishes on the line `ab` (`Graph.planeDiff_eq_zero_of_splitOff`). For all
+(`exists_mem_forall_add_smul_eq_zero`) whose end planes `h_a` and `h_b` agree at `x`'s moving
+picture point throughout. Such a line exists because either some flex of `G[V₁]` has `h_a − h_b`
+nonzero at the special point, or every flex of `G[V₁]` has `h_a = h_b`
+(`Graph.planeDiff_eq_zero_of_splitOff`). For all
 but finitely many parameters of this curve the rank stays at least its special value
 (`PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, Phase 40j B1) and the picture is main for
 `G`, so `Graph.x0Attains_of_exists` applies.
@@ -33,11 +35,14 @@ but finitely many parameters of this curve the rank stays at least its special v
 * `Graph.finrank_span_rigidityRows_splitOff_special` — **(MC-28), the rank at the special
   position** (`lem:pencil-splitoff-special-rank`): at normals putting the split body's normal on
   the pencil of the ends' normals, the rank of `G` is the rank of `G″` plus `D − 1`.
-* `Graph.planeDiff_eq_zero_of_splitOff` — **(MC-30)(i)** (`lem:pencil-splitoff-flexes`): if `G″`
-  attains at no smaller a dimension than `G[V₁]`'s lifting space, every flex of `G[V₁]` incident at
-  both `a` and `b` along the special direction already vanishes on the line `ab`.
-* `exists_mem_forall_add_smul_eq_zero` — **a line of solutions of a pencil of linear conditions**:
-  the abstract dimension-count producing the line of flexes.
+* `Graph.planeDiff_eq_zero_of_splitOff` — **(MC-30)(i)** (`lem:pencil-splitoff-flexes`): at a
+  picture admissible for `G` and for `G″` with `dim L_{G″}(q) ≤ dim L_G(q)`, if every solution of
+  `G[V₁]`'s lifting system has `planeDiff a b` vanishing at the picture points of `a` and `b`, then
+  every solution has `planeDiff a b = 0`, that is, `h_a = h_b`.
+* `exists_mem_forall_add_smul_eq_zero` — **a line of solutions of a pencil of linear conditions**
+  (`lem:pencil-splitoff-curve`(1)): an explicit construction, not a dimension count. Given `y₀ ∈ L`
+  with `φ₀ y₀ = 0`, if `φ₀` is nonzero somewhere on `L` or `φ₀` and `ψ` both vanish on `L`, some
+  `w ∈ L` has `φ₀ (y₀ + t • w) + t * ψ (y₀ + t • w) = 0` for every `t`.
 * `Graph.X0Attains.of_splitOff` — **(MC-31), the split-off step** (`thm:pencil-x0-splitoff`):
   `X₀(G″)` attaining and `δ ≥ 5` give `X₀(G)` attaining.
 
@@ -65,9 +70,13 @@ variable {K : Type*} [Field K] {α β : Type*}
 /-! ## (MC-28): the rank at the special position -/
 
 open Classical in
-/-- **(MC-28), the rank at the special point**: at normals putting the split body's normal on the
-pencil of the ends' normals, `n_x = (1 − s) n_a + s n_b` with `s ≠ 0, 1`, the rank of `G` is the
-rank of `G″ = G.splitOff x a b (e 0)` plus `D − 1`. -/
+/-- **(MC-28), the rank at the special position** (`lem:pencil-splitoff-special-rank`). Let `G`
+carry the one-body ear `a − x 0 − b` on `V₁`, and let `G″ = G.splitOff (x 0) a b (e 0)`, the label
+`e 0` relinked to `a − b`. At panel normals with `n_a`, `n_b` independent and
+`n_{x 0} = (1 − s) n_a + s n_b`, `s ≠ 0, 1`, the rank of `G` is the rank of `G″` plus `D − 1`: the
+hinges at `a − x 0` and `x 0 − b` are nonzero multiples of `G″`'s hinge `C₀` at `a − b`, so the
+motions of `G` are those of `G″` with `S (x 0) − S a ∈ K ∙ C₀`, and the motion count
+`BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions` applies. -/
 theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finite α]
     {G : Graph α β} {V₁ : Set α} {x : Fin 1 → α} {a b : α} {e : Fin 2 → β}
     (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
@@ -184,9 +193,16 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
         rw [hsame f hf0]
         exact hS f u w (Or.inl ⟨hf0, hf, fun h => hx0 (h ▸ hu), fun h => hx0 (h ▸ hw)⟩)
 
-/-! ## (MC-30)(i): the flexes of `G′` do not all meet the line `ab` -/
+/-! ## (MC-30)(i): end planes that agree over the line `ab` coincide -/
 
-/-- **(MC-30)(i).** -/
+/-- **(MC-30)(i), end planes that agree over the line `ab` coincide**
+(`lem:pencil-splitoff-flexes`). Let `G` carry the one-body ear `a − x 0 − b` on `V₁`, let
+`G″ = G.splitOff (x 0) a b (e 0)`, and let `q` be admissible for `G` and for `G″` with
+`dim L_{G″}(q) ≤ dim L_G(q)`. If every solution `y` of `G[V₁]`'s lifting system at `q` has
+`planeDiff a b y` vanishing at the picture points of `a` and `b`, then every such `y` has
+`planeDiff a b y = 0`, that is, `h_a = h_b`. Otherwise restriction to `V₁` embeds the solutions for
+`G` in a proper subspace of those for `G[V₁]`, which lie among those for `G″`, and
+`dim L_G(q) < dim L_{G″}(q)`. -/
 theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β} {V₁ : Set α}
     {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x)
     (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
@@ -365,7 +381,11 @@ theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β
 
 /-! ## (MC-30)(ii): a line of flexes through the special point -/
 
-/-- **A line of solutions of a pencil of linear conditions.** -/
+/-- **A line of solutions of a pencil of linear conditions** (`lem:pencil-splitoff-curve`(1),
+(MC-30)(ii)'s line of flexes). Let `y₀ ∈ L` with `φ₀ y₀ = 0`, and suppose `φ₀` is nonzero at some
+`W ∈ L`, or `φ₀` and `ψ` both vanish on `L`. Then some `w ∈ L` puts `y₀ + t • w` in the kernel of
+`φ₀ + t ψ` for every `t`: in the first case `w = (ψ W / φ₀ W) • y₀ − (ψ y₀ / φ₀ W) • W`, along
+which `ψ` is constant and `φ₀` takes the value `−t ψ y₀`; in the second `w = 0`. -/
 theorem exists_mem_forall_add_smul_eq_zero {V : Type*} [AddCommGroup V] [Module K V]
     (L : Submodule K V) (φ₀ ψ : V →ₗ[K] K) {y₀ : V} (hy₀ : y₀ ∈ L) (h0 : φ₀ y₀ = 0)
     (hcase : (∃ W ∈ L, φ₀ W ≠ 0) ∨ ∀ y ∈ L, φ₀ y = 0 ∧ ψ y = 0) :
@@ -381,7 +401,16 @@ theorem exists_mem_forall_add_smul_eq_zero {V : Type*} [AddCommGroup V] [Module 
 /-! ## (MC-31): the split-off step -/
 
 open Classical in
-/-- **(MC-31), the split-off step.** -/
+/-- **(MC-31), the split-off step at `δ ≥ 5`** (`thm:pencil-x0-splitoff`). Let `G` satisfy (H),
+with a body `x 0` of degree two on the one-body ear `a − x 0 − b` over `V₁`, `a ≁ b`, and let
+`G″ = G.splitOff (x 0) a b (e 0)` be `G` with `x 0` suppressed. If `X₀(G″)` attains and
+`deficiencyMerged₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])` (Step MC11's `δ ≥ 5`), then `X₀(G)` attains.
+At a picture general for `G″` and main for `G`, `x 0` is put at a special point on the line through
+the picture points of `a` and `b`, where the rank is `G″`'s plus five
+(`Graph.finrank_span_rigidityRows_splitOff_special`); a line of pictures and flexes
+(`exists_mem_forall_add_smul_eq_zero`) leads back to a main picture of `G` at which the rank has
+not dropped (`PanelHingeFramework.finite_setOf_finrank_lt_of_curve`), and
+`def₃(G″) + 1 ≤ def₃(G)` closes the count. -/
 theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 1 → α} {a b : α}
     {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)

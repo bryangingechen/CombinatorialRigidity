@@ -3083,14 +3083,40 @@ rank, and the picture is a main picture of $G$.
   $G$ at $(q(t), z(t))$ is at least its value at $t = 0$ for all but
   finitely many $t$. The main-picture polynomial of $G$ at $q(t)$ is a
   polynomial in $t$, nonzero at $t = 1$, so $q(t)$ is a main picture of
-  $G$ for all but finitely many $t$; this replaces the informal
-  argument's dimension count along the curve. Take $t$ outside both
+  $G$ for all but finitely many $t$. Take $t$ outside both
   finite sets. Then $z(t) \in L_G(q(t))$
   (\cref{lem:pencil-splitoff-curve}(2)), and $(q(t), z(t))$ has rank at
   least $6(|V_1| - 1) - \operatorname{def}(\tilde G'') + 5 \ge
   6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, as $|V(G)| = |V_1| + 1$.
   So \cref{lem:pencil-x0-one-witness} applies.
 \end{proof}
+
+\begin{remark}
+  The special configuration has the rank the step needs, but it is not
+  over an admissible picture of $G$. The informal argument places it on
+  the main component as a limit. It moves the point of $x$ off the line
+  $q_a q_b$ in an arbitrary direction, keeps the moving picture
+  admissible, and $\dim L_G$ minimal by a formula for the dimension of
+  the solutions along the curve, lifts the curve by a
+  rational family of solutions, and then uses the lower semicontinuity of
+  the rank on the irreducible main component. The proof above uses no
+  geometry of the main component. Its curve ends at the general picture
+  itself, $q(1) = q$, so the main-picture condition along it is one
+  polynomial in $t$, nonzero at $t = 1$, and the dimension of the
+  solutions is compared only at $q$
+  (\cref{lem:pencil-splitoff-flexes}). The condition that makes the
+  moving solution a height of $G$, that $h_a - h_b$ vanish at
+  $(q(t)_x, 1)$, is the vanishing of the pencil $\varphi_0 + t\,\psi$ of
+  functionals. With $s$ chosen as in the proof, the solutions for
+  $G[V_1]$ contain a line $y_0 + t w$ with
+  $(\varphi_0 + t\,\psi)(y_0 + t w) = 0$ for every $t$
+  (\cref{lem:pencil-splitoff-curve}(1)), so the rational family is a
+  polynomial one. The lower semicontinuity is taken
+  along the one curve of normals (\cref{lem:pencil-curve-limit}): off
+  finitely many $t$ the rank of $G$ is at least its value at the special
+  position, and one such configuration over a main picture suffices
+  (\cref{lem:pencil-x0-one-witness}).
+\end{remark}
 
 \begin{remark}
   Write $\delta = \operatorname{def}(\tilde G[V_1]) -
