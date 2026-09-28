@@ -1,12 +1,12 @@
 # Phase 40j — PENCIL-X0 / SPLITOFF: splitting off a body of degree two at non-adjacent neighbours (work log)
 
-**Status:** in progress (opened design-first 2026-09-28). STEPS' sixth group
+**Status:** Lean done, close remaining (opened design-first 2026-09-28). STEPS' sixth group
 (`notes/Phase40-design.md` §3 STEPS, the SPLITOFF entry). It lands the split-off step at a body `x`
 of degree two whose neighbours `a ≁ b`, the one-body ear `a − x − b` on `V₁`: if `X₀` attains at
 `G″ = G.splitOff (x 0) a b (e 0)` (`G` with `x` suppressed) and
 `deficiencyMerged₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])` (Step MC11's `δ ≥ 5`), then `X₀(G)` attains
-((MC-31)). No new mathematics. Five nodes: `lem:pencil-curve-limit` green, four still red; B1
-done, B2 next. **Next: B2, the split-off step** — see *Hand-off*.
+((MC-31)). No new mathematics. All five nodes green (B1, B2 both landed). **Next: the close** —
+see *Hand-off*.
 
 ## Current state
 
@@ -41,9 +41,19 @@ bare `PanelHingeFramework.…` (caught by `blueprint/verify.sh`'s `checkdecls` s
 `extensor.tex`'s `CombinatorialRigidity.Molecular.homogenize` pin for the same pattern). The other
 four B1 names all carry `_root_.Graph.…`/`_root_.` prefixes already, so this correction is local to
 the one pin. Line counts after B1: `Bridge.lean` 472, `Ear.lean` 1 227, `Cut.lean` 1 053,
-`Carrier.lean` 1 062, all comfortably under the ~1500 tripwire. Gates: `lake build` (root, clean,
-no warnings), `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`, `notes/check-phase-note.py`
-all green.
+`Carrier.lean` 1 062, all comfortably under the ~1500 tripwire.
+
+**B2 landed** (this commit): new `MainComponent/SplitOff.lean` (715 lines; imports `Orbit.lean`
+only — every B2 identifier resolved on the first `lake build`, no extra import needed), the four
+remaining declarations transcribed verbatim, all four nodes pinned with both statement and proof
+`\leanok`. `exists_mem_forall_add_smul_eq_zero` and the motion count needed the
+`CombinatorialRigidity.Molecular.`/`…BodyHingeFramework.` fully qualified form (B1's correction);
+the three `_root_.Graph.…` names did not. Two docstring fixes in passing (coordinator review):
+`Graph.mem_liftingSpace_oneEar`'s docstring now says it is built from `Graph.mem_liftingSpace_of_ear`
+with `Graph.mem_closedNbhd_induce_of_ear` at `k = 1`, and the mirror
+`Mathlib/Algebra/MvPolynomial/Polynomial.lean` docstring's garbled sentence is now plain prose.
+Gates: `lake build` (root, warning-clean), `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
+`notes/check-phase-note.py` all green, both B1 and B2.
 
 **The spikes** (gitignored `scratch/40j/`, local to this checkout; builder pointers, not evidence),
 re-run at this open with **`lake lean`** at `52706564`, identical to the coordinator's re-run:
@@ -147,7 +157,7 @@ B2 pins them with their nodes.
   - `Cut.lean`: `span_supportExtensor_ofNormals_eq` — unpinned, for B2;
   - `Carrier.lean`: `Graph.ker_liftingMatrix_congr` (with `Graph.closedNbhd_subset_vertexSet`
     inlined as a local `have`), `Graph.ker_liftingMatrix_le_of_le` — unpinned, for B2.
-- [ ] **B2, the step**, new `MainComponent/SplitOff.lean`:
+- [x] **B2, the step**, new `MainComponent/SplitOff.lean` — landed this commit:
   **`Graph.finrank_span_rigidityRows_splitOff_special`** (the graph form) and
   **`BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions`** (the motion count) →
   `lem:pencil-splitoff-special-rank`; **`Graph.planeDiff_eq_zero_of_splitOff`** →
@@ -162,28 +172,20 @@ B2 pins them with their nodes.
 
 ## Blockers / open questions
 
-- None blocking B2.
+- None. All five nodes are green; the phase is ready to close.
 
 ## Hand-off / next phase
 
-**Next: B2, the split-off step (fresh builder).** Source: `scratch/40j/S40jSplitOff.lean`
-(gitignored, local to this checkout; a builder pointer, not evidence). Target: new
-`MainComponent/SplitOff.lean` (importing `Orbit.lean`, added to the root import
-`CombinatorialRigidity.lean`, with a module docstring listing its statements, the `Cut.lean`
-pattern), the four remaining nodes green — `lem:pencil-splitoff-special-rank`,
-`lem:pencil-splitoff-flexes`, `lem:pencil-splitoff-curve`, `thm:pencil-x0-splitoff` — pinned per the
-checklist's B2 entry, both statement and proof `\leanok`. Chores:
-- **`lake lean` the spike first**, never `lake env lean` (`CombinatorialRigidity/CLAUDE.md` *Lean
-  LSP MCP*); it is clean at this open, so judge lint by `lake lint`.
-- **A fully qualified name is needed wherever `checkdecls` sees no `_root_.` prefix** inside
-  `namespace CombinatorialRigidity.Molecular` — B1's correction (*Current state*). Every B2 pin
-  that names a bare `Graph.…`/`BodyHingeFramework.…` declared with `_root_.` is unaffected;
-  `exists_mem_forall_add_smul_eq_zero` has no `_root_.` and needs the full
-  `CombinatorialRigidity.Molecular.` prefix if it is pinned.
-- Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
-  `notes/check-phase-note.py`.
-
-**Then the close.**
+**Next: the close (fresh agent).** Both builds are landed and every SPLITOFF node is green —
+`lem:pencil-curve-limit`, `lem:pencil-splitoff-special-rank`, `lem:pencil-splitoff-flexes`,
+`lem:pencil-splitoff-curve`, `thm:pencil-x0-splitoff`. Per the checklist's *The close* item and
+`PHASE-BOUNDARIES.md` *When this commit closes a phase*: the end-to-end re-read of
+`sec:main-component-splitoff`; the exposition ledger (candidate: the special position and the
+curve back to an admissible picture); the headline axioms (`#print axioms
+Graph.X0Attains.of_splitOff` and the other four B1/B2 declarations); the design
+doc's §3 STEPS, ROADMAP and `MolecularConjecture.md`; the public surfaces unchanged (the PI's
+standing call, recorded at 40f's close). Gates: `blueprint/verify.sh`, `blueprint/lint.sh`,
+`notes/check-phase-note.py`.
 
 **Cleanup-round item** (call 9; the design doc's SPLITOFF entry): the orientation split in
 `finrank_span_rigidityRows_ofNormals_congr`.
@@ -201,3 +203,6 @@ checklist's B2 entry, both statement and proof `\leanok`. Chores:
   `checkdecls` needs `CombinatorialRigidity.Molecular.PanelHingeFramework.…`, not the bare
   `PanelHingeFramework.…`, for a declaration with no `_root_.` prefix (details in *Current
   state*). Gates green; line counts under *Current state*.
+- **2026-09-28 — B2 landed**: the split-off step, new `SplitOff.lean`, importing only `Orbit.lean`
+  (no extra import needed — every identifier resolved). All five SPLITOFF nodes now green. Two
+  coordinator-reviewed docstring fixes landed in passing (*Current state*). Gates green.

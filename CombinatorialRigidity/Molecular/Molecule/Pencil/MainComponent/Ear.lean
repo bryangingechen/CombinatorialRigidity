@@ -722,8 +722,9 @@ theorem _root_.Graph.mem_closedNbhd_induce_of_ear {G : Graph α β} {V₁ : Set 
   · exact absurd (hsep f v w hf (fun j h => hfe ⟨j, h⟩)).2 hwV
 
 open Classical in
-/-- **A flex of `G′` incident at the ear body is a height of `G`** (Phase 40j SPLITOFF, the
-one-body case `k = 1` of `Graph.mem_closedNbhd_induce_of_ear`): at an admissible picture, a member
+/-- **A flex of `G′` incident at the ear body is a height of `G`** (Phase 40j SPLITOFF, built from
+`Graph.mem_liftingSpace_of_ear` with `Graph.mem_closedNbhd_induce_of_ear` at `k = 1`): at an
+admissible picture, a member
 `y` of the lifting system's kernel at `G[V₁]` extends to a height of `G` that agrees with `y` on
 `V₁` and, at the interior body `x 0`, takes the value pinned by `y`'s coefficients at `a` read at
 `x 0`'s picture point — provided `y` is *incident* there, i.e. the same value is pinned by `y`'s

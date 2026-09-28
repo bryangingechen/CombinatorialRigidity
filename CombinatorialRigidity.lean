@@ -54,6 +54,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer

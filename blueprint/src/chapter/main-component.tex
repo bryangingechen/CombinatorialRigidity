@@ -2871,6 +2871,9 @@ rank, and the picture is a main picture of $G$.
 
 \begin{lemma}[The rank at the special position]
   \label{lem:pencil-splitoff-special-rank}
+  \lean{Graph.finrank_span_rigidityRows_splitOff_special,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions}
+  \leanok
   \uses{def:graph-operations, def:panel-hinge-framework,
         def:rigidity-matrix}
   Let $G$ have an open ear $a - x - b$ on $V_1$ with one interior body,
@@ -2886,6 +2889,7 @@ rank, and the picture is a main picture of $G$.
   $D = \binom{k+2}{2}$ is the dimension of the screw space.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint,
         lem:span-rigidityRows-eq-of-motions-eq}
   The panel support extensor is bilinear and alternating
@@ -2905,6 +2909,8 @@ rank, and the picture is a main picture of $G$.
 
 \begin{lemma}[End planes that all meet over the line of the ends coincide]
   \label{lem:pencil-splitoff-flexes}
+  \lean{Graph.planeDiff_eq_zero_of_splitOff}
+  \leanok
   \uses{def:graph-operations, def:pencil-weighted-lifting-system,
         def:pencil-lifting-space, def:pencil-admissible-picture}
   Let $G$ have an open ear $a - x - b$ on $V_1$ with one interior body,
@@ -2920,6 +2926,7 @@ rank, and the picture is a main picture of $G$.
   then every such solution has $h_a = h_b$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-x0-one-witness, lem:pencil-three-points}
   The flexes of $G'$ are the solutions of its lifting system, not the
   heights $L_{G'}(q)$: $G'$ may have bodies of degree one (it is a path
@@ -2951,6 +2958,9 @@ rank, and the picture is a main picture of $G$.
 
 \begin{lemma}[A line of solutions through the special position]
   \label{lem:pencil-splitoff-curve}
+  \lean{CombinatorialRigidity.Molecular.exists_mem_forall_add_smul_eq_zero,
+    Graph.mem_liftingSpace_oneEar, Graph.ker_liftingMatrix_congr}
+  \leanok
   \uses{def:pencil-weighted-lifting-system, def:pencil-lifting-space,
         def:pencil-admissible-picture}
   \begin{enumerate}
@@ -2972,6 +2982,7 @@ rank, and the picture is a main picture of $G$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-three-points, lem:pencil-picture-local}
   (1) If $\varphi_0(W) \neq 0$ for some $W \in L$, take
   $w = \varphi_0(W)^{-1}\bigl(\psi(W)\, y_0 - \psi(y_0)\, W\bigr)$; then
@@ -2995,6 +3006,8 @@ rank, and the picture is a main picture of $G$.
 
 \begin{theorem}[Splitting off a body of degree two]
   \label{thm:pencil-x0-splitoff}
+  \lean{Graph.X0Attains.of_splitOff}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing,
         def:graph-operations, def:D-deficiency, def:deficiency-merged}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses
@@ -3008,6 +3021,7 @@ rank, and the picture is a main picture of $G$.
   $G''$ attains, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:splitoff-deficiency-merged, lem:deficiency-ear,
         lem:splitoff-deficiency-reuse, thm:pencil-jj-equality,
         lem:pencil-lifting-space-deficiency,

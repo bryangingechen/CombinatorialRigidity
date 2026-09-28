@@ -12,8 +12,8 @@ public import Mathlib.Algebra.MvPolynomial.Polynomial
 
 `Mathlib.Algebra.MvPolynomial.Polynomial` has `MvPolynomial.polynomial_eval_eval₂`, the `eval₂`
 form of substituting each variable by a univariate polynomial and then evaluating at a point, but
-not the `aeval` form — the one a substitution over a commutative semiring's own polynomial ring
-meets as, since `aeval` is definitionally `eval₂` at the algebra map.
+not the `aeval` form, in which a substitution by polynomials over `R` usually appears; `aeval` is
+definitionally `eval₂` at the algebra map.
 
 The combinatorial-rigidity project uses it to specialize the planar rank theorem's non-vanishing
 polynomial along a univariate curve of normals (the curve-limit lemma,
