@@ -3961,6 +3961,9 @@ additive core applies.
 
 \begin{lemma}[Graphs that are not 2-connected]
   \label{lem:pencil-x0-cut-reduces}
+  \lean{Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected,
+    Graph.IsX0Graph.x0Reduces_of_not_connected}
+  \leanok
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing,
         def:cut-edges-2ec}
   Let $G$ satisfy the standing hypotheses.
@@ -3972,16 +3975,19 @@ additive core applies.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  (1) By the clause of a chain of bridges. A bridge lies on a maximal
-  path through bodies of degree two, and every edge of that path is a
-  bridge. Its ends are distinct bodies of degree at least three, and
-  removing its interior leaves them in different components, each
-  keeping degree at least two there.
+  \leanok
+  (1) By the clause of a chain of bridges. Follow the two sides of the
+  one edge leaving a set $V'$: an end of degree two extends into its
+  own side, since its other edge is not that one, until both ends have
+  degree at least three. Each side is connected, since its end is its
+  only body with a neighbour outside it.
 
-  (2) By the cut-vertex clause at $v$. Let $C$ be a component of $G - v$;
-  the sides are $C \cup \{v\}$ and $V(G) \setminus C$. The body $v$ sends
-  at least two edges into each side, since a single one would be a
-  bridge, and every other body keeps all its neighbours.
+  (2) By the cut-vertex clause at $v$. Let $C$ be any set closed under
+  adjacency in $G - v$; the sides are $C \cup \{v\}$ and
+  $V(G) \setminus C$. The body $v$ sends at least two edges into each
+  side, since a single one would be a bridge, and every other body
+  keeps all its neighbours. Each side is connected, since $v$ is its
+  only body with a neighbour outside it.
 \end{proof}
 
 \begin{definition}[Usable chains]

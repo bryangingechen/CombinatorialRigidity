@@ -6,20 +6,22 @@ bridge reductions, with (H) at every smaller graph) with **THEOREM-S** (Theorem 
 theorem) folded in, by the PI's call (2026-09-28, `notes/pencil/adjudications.md`; plan
 `notes/Phase40-design.md` §3 COVERAGE). Its close also closes COVERAGE: the general configuration
 attains at every graph satisfying (H). No workbook change and no new mathematics. Eleven red nodes
-to green in five builds, all transcriptions of complete sorry-free spikes; B1 and B2 are landed
-(four green, seven to go). **Next: B3, `CoverageCut.lean`, continued** — see *Hand-off*. MOTIVES
-follows.
+to green in five builds, all transcriptions of complete sorry-free spikes; B1–B3 are landed
+(**CHAINS' five nodes all green**, six to go). **Next: B4, new `CoverageTheoremS.lean`** — see
+*Hand-off*. MOTIVES follows.
 
 ## Current state
 
-**B1 and B2 landed.** `CoverageChain.lean` (707 lines): `def:pencil-x0-chain`,
+**B1–B3 landed; CHAINS closed.** `CoverageChain.lean` (707 lines): `def:pencil-x0-chain`,
 `lem:pencil-x0-chain-exists` and `lem:pencil-x0-cycle-reduces` green, with the two proof
-rewordings. `CoverageCut.lean` (372 lines, imports `CoverageChain`):
-`lem:pencil-x0-chain-standing` green. The remaining seven target nodes of
+rewordings. `CoverageCut.lean` (640 lines, imports `CoverageChain`): `lem:pencil-x0-chain-standing`
+and `lem:pencil-x0-cut-reduces` green, the latter with the reworded proof; its five BRIDGE helpers
+(`bridge_gate_left`, `x0Below_induce_bridge_left`, `bridge_symm`, `bridge_cons`,
+`x0Reduces_of_bridgeEar`) are `private` (confirmed unreferenced elsewhere in the tree, and in
+`Full.lean`'s THEOREM-S half). The remaining six target nodes of
 `blueprint/src/chapter/main-component.tex` §`sec:main-component-coverage` are red and unpinned;
 each build adds its nodes' `\lean{…}` and `\leanok` (statement and proof). Which build greens each
 node:
-- **CHAINS:** `lem:pencil-x0-cut-reduces` (B3).
 - **THEOREM-S:** `def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`,
   `lem:pencil-x0-planar-rigid-reduces`, `lem:pencil-x0-sparse-count` (B4);
   `thm:pencil-x0-theorem-s`, `thm:pencil-x0-coverage` (B5).
@@ -95,16 +97,12 @@ a `#print axioms` check on each pin.
   added `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut`.
   - `lem:pencil-x0-chain-standing` ← **`Graph.IsChain.isX0Graph_induce`,
     `Graph.IsX0Graph.splitOff`**; green, no rewording, no warnings.
-- [ ] **B3 → `CoverageCut.lean`, continued** (≈262 → ≈290). `## BRIDGE` ← C 706–873, with its five
-  helpers `bridge_gate_left`, `x0Below_induce_bridge_left`, `bridge_symm`, `bridge_cons` and
-  `x0Reduces_of_bridgeEar` made `private`; `## CUT` ← C 877–965.
+- [x] **B3 → `CoverageCut.lean`, continued** (257 spike lines → 640 total, landed). `## BRIDGE` ←
+  C 706–873, with its five helpers `bridge_gate_left`, `x0Below_induce_bridge_left`,
+  `bridge_symm`, `bridge_cons` and `x0Reduces_of_bridgeEar` made `private`; `## CUT` ← C 877–965.
   - `lem:pencil-x0-cut-reduces` ← **`Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected`,
-    `Graph.IsX0Graph.x0Reduces_of_not_connected`**; reword the proof. (1): follow the two sides of the
-    one edge leaving a set `V′`: an end of degree two extends into its own side, since its other edge
-    is not that one. Drop "every edge of that path is a bridge". Say why each side is connected:
-    its end is its only body with a neighbour outside it. (2): the side `C` may be any set closed
-    under adjacency in `G − v`, as in the Lean, and each side is connected because `v` is its only
-    body with a neighbour outside it. No warnings. **CHAINS' five nodes are then green.**
+    `Graph.IsX0Graph.x0Reduces_of_not_connected`**; green, with the reworded proof. No warnings.
+    **CHAINS' five nodes are then green.**
 - [ ] **B4 → new `CoverageTheoremS.lean`** (≈310 → ≈350), with `variable {K : Type*} [Field K]`
   besides `{α β : Type*}`. F 1280–1287 (`Graph.ChainUsable`), then `variable [Finite α] [Finite β]`;
   `## The reductions at a usable chain and at a planar-rigid set` ← F 1293–1390;
@@ -146,12 +144,13 @@ a `#print axioms` check on each pin.
 
 ## Hand-off / next phase
 
-**The next concrete step is B3** (checklist): a fresh builder given `scratch/40m/Chains.lean`
-continues `CoverageCut.lean` with the `## BRIDGE` and `## CUT` sections, and pins and greens
-`lem:pencil-x0-cut-reduces` with the reworded proof — **CHAINS' five nodes are then green.** B4 and
-B5 follow in order, each against the landed state of the one before, then the close. **Then
-MOTIVES** (`X0Dist` and `X0Gen`), which closes Phase 40 and updates the public surfaces; it opens
-as its own sub-phase and consumes `Graph.X0Attains.of_twoEdgeConnected`.
+**CHAINS is done; the next concrete step is B4** (checklist): a fresh builder given
+`scratch/40m/Full.lean` creates `CoverageTheoremS.lean`, importing `CoverageCut` and
+`SparseDeficiency`, from the listed lines, adds it to the root import, and pins and greens
+`def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`, `lem:pencil-x0-planar-rigid-reduces`
+and `lem:pencil-x0-sparse-count`, fixing the listed warnings. B5 follows against the landed state,
+then the close. **Then MOTIVES** (`X0Dist` and `X0Gen`), which closes Phase 40 and updates the
+public surfaces; it opens as its own sub-phase and consumes `Graph.X0Attains.of_twoEdgeConnected`.
 
 ## Decisions made during this phase
 
