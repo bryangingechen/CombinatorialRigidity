@@ -1203,6 +1203,39 @@ above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 42 do
   restricted to it is nonzero at `t = 0`, and one attaining configuration over a main picture
   suffices. Pointer: `notes/Phase40j.md`; `notes/Phase40-design.md` §3 STEPS (*SPLITOFF done*).
 
+### `main-component.tex` — Phase 40k (CONTRACT-A: contraction at an additive core)
+
+**One new entry — judged at the sub-phase close (2026-09-28).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC15.md` and `K-main-MC12.md`, (MC-69), (MC-71) and
+(MC-34)–(MC-39)), after Katoh–Tanigawa's Lemma 6.3; the criterion transfers as in the `pencil.tex`
+section. The entry below is written in place. The rest landed as scoped, in three build commits
+from the design recon's spike: the curve, the rescaled lifting system and both of its ends are
+CONTRACT-R's, (MC-69)(a)'s dimension formula enters as an inequality, and the `Contract.lean`
+split and the placement of the general pieces are project-side. The account of the whole
+induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main-component` above,
+`[pending]` until Phase 40's close. The ledger is now **2 pending / 43 done** (of 45).
+
+- **`thm:pencil-x0-contract-additive` / `Graph.X0Attains.of_additiveContract`, with
+  `lem:pencil-contract-kernel-bound` and `lem:pencil-contract-magnified-rank`** — [done (the
+  subsection preamble, the theorem's proof and the remark after it, at the 40k close)] **(b)** the
+  informal step (MC-71) gets the core's rank at `X₀(G)`'s generic point as CONTRACT-R's informal
+  step does: at a generic picture (MC-68)(d) makes the heights of `G` restrict onto `L_H`
+  ((MC-38)(i), core-freeness), (MC-38) deduces from it, by the dominance of restriction to the
+  core, that the core is rigid at `X₀(G)`'s generic point, (MC-69)(b) supplies the no-jump
+  condition (MC-37)(ii), and (MC-39) assembles. **Stable insight:** neither the restriction at a
+  generic picture nor the dominance is needed. At the one picture `q`, the kernel
+  of `M(0)` is bounded below by `3 + def₂(G)` (it is no smaller than the kernels near it, and those
+  contain `L_G(q(t))`) and above by `dim ρ(ker M(0)) + dim L_{G/H}(q) − 3` through the core heights
+  `ρ`; with Jackson–Jordán at `H` and `G/H`, additivity makes the bounds meet, so
+  `ρ(ker M(0)) = L_H(q)` ((MC-69)(b)'s by-product `S ⊆ T`) and the kernel does not jump. Attainment
+  at `H` then pulls back to a nonempty open condition on `ker M(0)`, which meets the degenerate-rank
+  condition, and along the polynomial section through a common point both hold off finitely many
+  `t`. The rows of `M(t)` between core bodies do not depend on `t`, so the core heights stay in
+  `L_H(q)`, and the configuration of `H` over `q(t)` is a collineation of `K⁴` applied to the one
+  over the fixed `q`; the core's rank is read there, where `X₀(H)` attains. At `def₂(H) = 0` the
+  same curve gives CONTRACT-R (the 40f entry above), with the flat core in place of attainment at
+  `H`. Pointer: `notes/Phase40k.md`; `notes/Phase40-design.md` §3 STEPS (*CONTRACT-A done*).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

@@ -54,8 +54,9 @@ at any core, and the standing hypotheses at a rigid core, at any `n`.
 * `Graph.contractLimitMap_mem_liftingSpace`, `Graph.eq_zero_of_contractLimitMap_eq_zero` — given
   one plane on the core, the limit map sends `ker M(0)` into `L_{G/H}(q)` and is injective there
   (`lem:pencil-contract-limit` (1)'s two halves).
-* `Graph.exists_mem_ker_contractLiftingMatrix_zero` — a height of `G/H` vanishing at `r` extends
-  by the flat core to a solution of `M(0)` (`lem:pencil-contract-limit` (2); (MC-37) step 2).
+* `Graph.exists_mem_ker_contractLiftingMatrix_zero` — at any core, a height of `G/H` vanishing at
+  `r` agrees off the core with the heights of a solution of `M(0)`, the core put on the height's
+  plane at `r` (`lem:pencil-contract-limit` (2); (MC-37) step 2).
 * `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`,
   `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` — at any core, `ρ` maps `ker M(t)`
   into `L_H(q)` at every `t`, and `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`
@@ -859,8 +860,9 @@ upper bound, the general form of `Graph.finrank_ker_contractLiftingMatrix_zero_l
 `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`. A solution with zero core heights has zero
 core planes (admissibility at `H`), so the limit map (`Graph.contractLimitMap_mem_liftingSpace`,
 `Graph.eq_zero_of_contractLimitMap_eq_zero`, given the zero plane) embeds those solutions
-injectively into `L_{G/H}(q)`, onto heights vanishing on the closed neighbourhood of `r`, which
-meet `Aff(q)` only in `0`; rank–nullity on `ρ` restricted to `ker M(0)` gives the bound. -/
+injectively into `L_{G/H}(q)`, with image in the heights vanishing on the closed neighbourhood of
+`r`, which meet `Aff(q)` only in `0`; rank–nullity on `ρ` restricted to `ker M(0)` gives the
+bound. -/
 theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintype α]
     {G : Graph α β} {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     (hqH : (G.induce W).IsAdmissiblePicture q)

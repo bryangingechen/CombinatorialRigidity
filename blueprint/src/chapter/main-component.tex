@@ -1270,12 +1270,12 @@ the other edges with the columns of $W$ deleted.
   \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction,
         def:D-deficiency}
   Let $G$ satisfy the standing hypotheses and be $2$-edge-connected. Let
-  $W \subsetneq V(G)$ with $|W| \ge 2$ and
-  $\operatorname{def}_2(G[W]) = 0$, such that no attachment has two
+  $W \subsetneq V(G)$ with $|W| \ge 2$, such that no attachment has two
   neighbours in $W$, and let $G/H$ be the contraction of $H = G[W]$ to a
-  body $r \in W$. Then $H$ satisfies the standing hypotheses; $G/H$ is
-  simple, satisfies the standing hypotheses and is $2$-edge-connected;
-  and $|V(G/H)| = |V(G)| - |W| + 1$.
+  body $r \in W$. Then $G/H$ is simple, satisfies the standing hypotheses
+  and is $2$-edge-connected, and $|V(G/H)| = |V(G)| - |W| + 1$. If
+  moreover $\operatorname{def}_2(G[W]) = 0$, then $H$ satisfies the
+  standing hypotheses.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1283,7 +1283,8 @@ the other edges with the columns of $W$ deleted.
   A graph of deficiency zero is connected, and of minimum degree at least
   two when it has at least two bodies
   (\cref{lem:deficiency-zero-connected}); this gives the standing
-  hypotheses at $H$. An edge of $G/H$ is an edge of $G$ not inside $W$.
+  hypotheses at $H$ when $\operatorname{def}_2(H) = 0$. An edge of $G/H$
+  is an edge of $G$ not inside $W$.
   Two such edges with the same ends in $G/H$ would give an attachment two
   neighbours in $W$, or two parallel edges of $G$, so $G/H$ is simple. A
   path of $G$ maps to a walk of $G/H$, so $G/H$ is connected, and a cut of
@@ -1539,7 +1540,11 @@ while the rest of $G$ sees it at $q_r$.
   vanishing at $r$ plus one free constant, and Jackson and Jord\'an's
   equality at $G$ follows from those at $H$ and $G/H$. Only the bound and
   the containment of \cref{lem:pencil-contract-limit} are formalized,
-  which is all the theorem uses; the general form of the step is not.
+  which is all the theorem uses. At a rigid core whose planar
+  deficiencies add, both conditions are obtained for the solutions of
+  $M(0)$ at one picture, and the step is
+  \cref{thm:pencil-x0-contract-additive}; the general form of the step is
+  not formalized.
 \end{remark}
 
 \subsection{Ears and cycles}
@@ -3160,11 +3165,12 @@ The kernel of $M(0)$ is bounded above through the core heights of its
 solutions (\cref{lem:pencil-contract-kernel-bound}), and below by
 $3 + \operatorname{def}_2(G)$, since for all but finitely many $t$ the
 kernel of $M(t)$ is no larger than that of $M(0)$ and, at $t \neq 0$,
-at least as large as $L_G(q(t))$. Under additivity the
-two bounds meet, and the core heights of the solutions of $M(0)$ are then
-all of $L_H(q)$. So the attainment at $H$, read on the core heights, and
-the bound on the rows of the edges outside $H$ are two open conditions
-that meet inside $\ker M(0)$ (\cref{lem:pencil-x0-fibre-intersection}).
+at least as large as $L_G(q(t))$. Under additivity, with Jackson and
+Jord\'an's equality at $H$ and at $G/H$, the two bounds meet, and the
+core heights of the solutions of $M(0)$ are then all of $L_H(q)$. So
+the attainment at $H$, read on the core heights, and the bound on the
+rows of the edges outside $H$ are two open conditions that meet inside
+$\ker M(0)$ (\cref{lem:pencil-x0-fibre-intersection}).
 And the rank of the core along the curve is no longer its flat rank: at
 $t \neq 0$ the configuration of $H$ is the image of one over the fixed
 picture $q$ under an invertible linear map of $K^4$
@@ -3317,9 +3323,8 @@ configuration of $H$ attains.
         lem:block-rank-contract}
   \emph{The pieces.} $H$ satisfies the standing hypotheses
   (\cref{lem:pencil-contract-standing-rigid}, at $n = 3$), and $G/H$ is
-  simple with at least three members in every closed neighbourhood, by
-  the argument of \cref{lem:pencil-contract-standing}, which does not use
-  the deficiency of $H$. As $H$ is rigid, $G/H$ has the deficiency of $G$
+  simple and satisfies them (\cref{lem:pencil-contract-standing}). As $H$
+  is rigid, $G/H$ has the deficiency of $G$
   (\cref{lem:pencil-contraction-deficiency}, at $n = 3$). Take one
   picture $q$ generic for the attainment and for Jackson and Jord\'an's
   equality (\cref{thm:pencil-jj-equality}) at $H$ and at $G/H$, and main
@@ -3381,9 +3386,7 @@ configuration of $H$ attains.
   $G$ at $(q(t), z(t))$ is at least
   $6(|W| - 1) + \operatorname{tgt}(G/H) = \operatorname{tgt}(G)$, since
   $|V(G/H)| = |V(G)| - |W| + 1$ and $G/H$ has the deficiency of $G$. So
-  \cref{lem:pencil-x0-one-witness} applies. This reaches the rank of the
-  core without the informal argument's restriction of heights onto $H$
-  and its dominance argument (the remark below).
+  \cref{lem:pencil-x0-one-witness} applies.
 \end{proof}
 
 \begin{remark}
@@ -3394,9 +3397,21 @@ configuration of $H$ attains.
   the general configuration of $G$ because restriction to the core is
   then dominant. The proof above needs neither. The two bounds on
   $\ker M(0)$ give the corresponding statement for the solutions of
-  $M(0)$ at one picture, and the rank of the core along the curve is read
-  over the fixed picture $q$, where the general configuration of $H$
-  attains.
+  $M(0)$ at the one picture $q$: their core heights are all of $L_H(q)$.
+  So the attaining heights of $H$ over $q$, a nonempty open subset of
+  $L_H(q)$, pull back to a nonempty open subset of $\ker M(0)$, which
+  meets the one on which the rows of the other edges keep their rank, and
+  along the polynomial section through a common point both conditions
+  hold off finitely many $t$. The core heights of the solution at $t$ lie
+  in $L_H(q)$ at every $t$, since the rows of $M(t)$ between bodies of the
+  core do not depend on $t$
+  (\cref{lem:pencil-contract-kernel-bound}(1)), and the configuration of
+  $H$ over $q(t)$ is the image of the one over $q$ with those heights
+  under an invertible linear map of $K^4$
+  (\cref{lem:pencil-contract-magnified-rank}). So the rank of the
+  core is read over the fixed picture $q$, where the general
+  configuration of $H$ attains, and never at a general configuration of
+  $G$.
 
   Informally the hypothesis is additivity, since the reverse inequality
   $\operatorname{def}_2(G) \le \operatorname{def}_2(H) +

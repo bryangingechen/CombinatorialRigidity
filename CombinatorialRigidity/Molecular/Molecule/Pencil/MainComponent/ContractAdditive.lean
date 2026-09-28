@@ -53,8 +53,8 @@ bodies (`G/H` simple), where the planar deficiencies add, `def₂(H) + def₂(G/
 
 The two bounds on `ker M(0)` — above through the core heights of its solutions
 (`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`), below by `3 + def₂(G)` from
-semicontinuity at `t = 0` — meet under additivity, so the core heights of the solutions of
-`ker M(0)` are all of `L_H(q)`. The attainment at `H`, read on the core heights, and the
+semicontinuity at `t = 0` — meet under additivity, so the core heights of the solutions of `M(0)`
+are all of `L_H(q)`. The attainment at `H`, read on the core heights, and the
 degenerate-rank condition of `ContractCurve.lean` then meet as two open conditions inside
 `ker M(0)` (`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the curve the core's rank is read at
 the fixed picture `q` through a collineation

@@ -793,8 +793,9 @@ steps, now in the workbook and second-read; the fifth, ORBIT (the remaining `k =
 closed as sub-phase 40i (2026-09-28, `notes/Phase40i.md`), built from a recon that needed no new
 mathematics; the sixth, SPLITOFF (splitting off a body of degree two), closed as sub-phase 40j
 (2026-09-28, `notes/Phase40j.md`), built from a recon that needed no new mathematics; the seventh
-and last, CONTRACT-A (contraction at an additive core), opened as sub-phase 40k (2026-09-28,
-`notes/Phase40k.md`), design-first from a recon that needs no new mathematics. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+and last, CONTRACT-A (contraction at an additive core), closed as sub-phase 40k (2026-09-28,
+`notes/Phase40k.md`), built from a recon that needed no new mathematics, so STEPS is done;
+COVERAGE (the structural half and the assembly) is next, not yet opened. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

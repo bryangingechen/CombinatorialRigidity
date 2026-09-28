@@ -15,10 +15,11 @@ compiler-checked recon whose new claims (MC-179)–(MC-182) were second-read fir
 closed 2026-09-28** (`notes/Phase40i.md`), three build commits from a compiler-checked recon's
 sorry-free spike with no new mathematics; **40j = SPLITOFF closed 2026-09-28**
 (`notes/Phase40j.md`), two build commits from a compiler-checked recon's sorry-free spike with no
-new mathematics; **40k = CONTRACT-A opened 2026-09-28** (`notes/Phase40k.md`), STEPS' last group,
-design-first from a compiler-checked recon's sorry-free spike with no new mathematics, B1 next. The
-ORBIT recon is done (2026-09-26, §4), and so is the second reading of its new claims
-(MC-173)–(MC-176). This doc
+new mathematics; **40k = CONTRACT-A closed 2026-09-28** (`notes/Phase40k.md`), STEPS' last group,
+three build commits (the first the `Contract.lean` split) from a compiler-checked recon's
+sorry-free spike with no new mathematics. **STEPS is done; COVERAGE is next, not yet opened** (§3
+STEPS, the *Order* paragraph). The ORBIT recon is done (2026-09-26, §4), and so is the second
+reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
@@ -215,7 +216,7 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`); **CHAIN = sub-phase 40g, ✓ closed 2026-09-27** (`notes/Phase40g.md`); **SHORT = sub-phase 40h, ✓ closed 2026-09-27** (`notes/Phase40h.md`); **ORBIT = sub-phase 40i, ✓ closed 2026-09-28** (`notes/Phase40i.md`); **SPLITOFF = sub-phase 40j, ✓ closed 2026-09-28** (`notes/Phase40j.md`); **CONTRACT-A = sub-phase 40k, open** (`notes/Phase40k.md`)
+### STEPS — the local steps of the induction → **✓ done 2026-09-28**, by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`); **CHAIN = sub-phase 40g, ✓ closed 2026-09-27** (`notes/Phase40g.md`); **SHORT = sub-phase 40h, ✓ closed 2026-09-27** (`notes/Phase40h.md`); **ORBIT = sub-phase 40i, ✓ closed 2026-09-28** (`notes/Phase40i.md`); **SPLITOFF = sub-phase 40j, ✓ closed 2026-09-28** (`notes/Phase40j.md`); **CONTRACT-A = sub-phase 40k, ✓ closed 2026-09-28** (`notes/Phase40k.md`)
 
 **CUT/BRIDGE done** (40e). The "if" halves of (MC-52) and (MC-53) are formalized in
 `Molecule/Pencil/MainComponent/Cut.lean` (`main-component.tex` §`sec:main-component-cut`):
@@ -240,7 +241,9 @@ every solution is flat on the core, so the core's rank is its flat rank and no a
 needed. The general pieces sit beside their definitions: `Graph.weightedLiftingMatrix`
 (`Carrier.lean`), `Graph.connected_of_isKDof_zero` (`Deficiency.lean`), the projected rank
 polynomial nonzero at its witness (`CaseI.lean`) and the block coupling (`Coupling.lean`, with a
-mirror lemma). Every decision is in `notes/Phase40f.md`.
+mirror lemma). Since 40k's split, the curve, `M(t)` and every piece CONTRACT-A shares sit in
+`ContractCurve.lean`, and `Contract.lean` keeps the flat-core pieces and the step. Every decision
+is in `notes/Phase40f.md`.
 
 **CHAIN done** (40g). BASE and (MC-20), open and closed, are formalized in
 `Molecule/Pencil/MainComponent/Chain.lean` (`main-component.tex` §`sec:main-component-chain`):
@@ -356,6 +359,37 @@ landed as the recon's:
   `span_supportExtensor_ofNormals_eq` in `Cut.lean`, the two kernel lemmas in `Carrier.lean`, and the
   mirror `MvPolynomial.polynomial_eval_aeval`. No fragile-zone file is touched, nor `Contract.lean`,
   `Bricks.lean` or `Short.lean`. Every decision is in `notes/Phase40j.md`.
+
+**CONTRACT-A done** (40k). (MC-71), with (MC-69)(a) as an inequality and (MC-69)(b), is formalized
+in `Molecule/Pencil/MainComponent/ContractAdditive.lean` (`main-component.tex`
+§`sec:main-component-contract-additive`). `Graph.X0Attains.of_additiveContract` takes CONTRACT-R's
+core data (`hr`, `hWss`, `hW2`, `hatt`), `hdef3 : def₃(G[W]) = 0` and
+`hadd : def₂(G[W]) + def₂(G/H) ≤ def₂(G)`, the `≤` half of (MC-71)'s count, the form (MC-87)(i)'s
+proof produces; it concludes from attainment at `H = G[W]` and at `G/H`. (H) is asked at `G` only:
+at `H` it is `lem:pencil-contract-standing-rigid` at `n = 3`, at `G/H` CONTRACT-R's standing
+lemmas. The route landed as the recon's:
+- **Two bounds on `ker M(0)`.** Below, `3 + def₂(G)`, from the semicontinuity conjunct of Cramer's
+  section at the zero vector. Above, (MC-69)(a) as
+  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`, through the core heights `ρ`, with
+  `ρ(ker M(t)) ⊆ L_H(q)` at every `t` (`Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`).
+  With Jackson–Jordán at `H` and `G/H` and `hadd` they force `ρ(ker M(0)) = L_H(q)`, (MC-69)(b)'s
+  `S ⊆ T`.
+- **Two open conditions in `ker M(0)`**, `X₀(H)`'s height polynomial on `ρ` and the degenerate-rank
+  polynomial at `t = 0` (witnessed by K4, `Graph.exists_mem_ker_contractLiftingMatrix_zero`), meet
+  by `exists_mem_eval_ne_zero₂`; Cramer's section through the common point does not jump.
+- **The core's rank by a collineation.** G1,
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`, and its instance G2,
+  `Graph.finrank_span_rigidityRows_induce_contractHeight_eq`, read `H`'s rank at the fixed picture
+  `q`, where `X₀(H)` attains.
+- These replace (MC-68)(d)'s core-freeness and (MC-38)'s dominance: a proof-level departure, in the
+  blueprint proof and the remark after it, not a workbook claim. (MC-67), (MC-68) and (MC-70) are
+  off route (§2).
+- **Placement** (option A, the coordinator's call 5). `Contract.lean` was split first (B1): the
+  curve, `M(t)`, K1, K2, K4, the degenerate rank and the `G/H` standing facts moved to the new
+  `ContractCurve.lean`, the two `contractLimitMap` lemmas generalized in place to a plane
+  hypothesis; the flat-core pieces and CONTRACT-R stayed. G1 went in `Configuration.lean` (call 6,
+  which the PI may reverse), G2, G4 and G5 in `ContractCurve.lean`, and the step in the new
+  `ContractAdditive.lean`. No fragile-zone file is touched. Every decision is in `notes/Phase40k.md`.
 
 | step of (MC-89) | labels, in proof order | 2nd |
 |---|---|---|
@@ -510,73 +544,33 @@ landed as the recon's:
     - [ ] **Tracked cleanup-round item (the coordinator's call; not a close gate):**
       `span_supportExtensor_ofNormals_eq` could replace the orientation split inlined in
       `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` (`Cut.lean`).
-  - **CONTRACT-A = 40k, open** (`notes/Phase40k.md`; design recon 2026-09-28, opus,
-    compiler-checked, one sorry-free spike; the coordinator's calls the same day are in the work
-    log): (MC-71), the contraction step at a rigid core whose planar deficiency adds, with
-    (MC-69)(a)(b). **No new mathematics**: 40k opened directly, with no workbook commit and no
-    second reading (the coordinator's call 1, the 40f/40g/40i/40j precedent).
-    - **The statement** (compiled; the nodes are `main-component.tex`
-      §`sec:main-component-contract-additive`). `Graph.X0Attains.of_additiveContract` takes
-      CONTRACT-R's core data (`hr`, `hWss : W ⊂ V(G)`, `hW2`, `hatt`), `hdef3 : def₃(G[W]) = 0`,
-      `hadd : def₂(G[W]) + def₂(G/H) ≤ def₂(G)`, and attainment at `H = G[W]` and at
-      `G/H = G.rigidContract (G.induce W) r`, in a 2EC `G` satisfying (H). `hadd` is the `≤` half of
-      (MC-71)'s count, the form (MC-87)(i)'s proof produces (call 2); `hdef3` is (MC-71)'s rigid
-      core (call 3); `hatt` is kept for parity with CONTRACT-R (call 4).
-    - **The route** (the recon's verdict):
-      - one picture `q` generic for `X₀` and Jackson–Jordán at `H` and `G/H`, and main for `G`;
-      - **the lower bound** `dim ker M(0) ≥ 3 + def₂(G)`, from the semicontinuity conjunct of
-        Cramer's section at the zero vector, which CONTRACT-R discards;
-      - **the upper bound** (MC-69)(a), `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`, with
-        `ρ` the core heights and `ρ(ker M(t)) ⊆ L_H(q)` at every `t`;
-      - with Jackson–Jordán at `H` and `G/H` and `hadd`, the two force `ρ(ker M(0)) = L_H(q)`,
-        (MC-69)(b)'s by-product `S ⊆ T`;
-      - **two open conditions in `ker M(0)`**, as the `HoldsGenerally` item below predicted:
-        `X₀(H)`'s height polynomial on `ρ`, and the degenerate-rank polynomial at `t = 0`, witnessed
-        by the flat-core extension K4; `exists_mem_eval_ne_zero₂` gives a common point;
-      - Cramer's section through it does not jump:
-        `dim ker M(0) ≤ 3 + def₂(G) ≤ dim L_G(q(t)) ≤ dim ker M(t)`;
-      - **the core's rank** is `H`'s at `(q, ρ x(t))`, by a collineation of `K⁴` (G1, G2), and that
-        is the target by `X₀(H)` at the fixed picture `q`;
-      - the degenerate rank, the block coupling and `x0Attains_of_exists` finish, as in CONTRACT-R.
-    - **The proof-level departure from (MC-71)'s proof text** (call 1; in the theorem's blueprint
-      proof and the remark after it, not a workbook claim): `S ⊆ T`, two open conditions in
-      `ker M(0)` and a collineation, in place of (MC-68)(d)'s core-freeness and (MC-38)'s dominance.
-    - **The recon's names for the new pieces:** G1 the collineation lemma, G2 the core's rank along
-      the curve, G4 the kernel bound through the core heights, G5 the rigid-core standing lemma
-      (Lean names and nodes in `notes/Phase40k.md`'s checklist).
-    - **The factoring** (PI decision 4, 2026-09-26, as the recon found it). Shared with CONTRACT-R,
-      unchanged: the curve, `M(t)`, K1, K2, K4 (already general in Lean), the degenerate rank, the
-      coupling, the curve polynomials and the `G/H` standing facts; the two unpinned
-      `contractLimitMap` helpers generalize in place to a plane hypothesis. Specific to the flat
-      core: `exists_core_plane`, the flat K3 (successor G4), the flat core rank (successor G2), the
-      `def₂` standing lemma (successor G5) and CONTRACT-R's assembly.
-    - **Placement: option A**, the line above (call 5). The general pieces move to a new
-      `MainComponent/ContractCurve.lean`, importing `Cut.lean` (about 1 040 lines moved, 170 new);
-      `Contract.lean`, importing it, keeps the flat pieces and CONTRACT-R untouched (1 496 → about
-      430); the step goes in a new `ContractAdditive.lean` (about 360). G1 goes in
-      `Configuration.lean`, beside `pointJoinFramework_comp_eq_mapSupport` (call 6: a reading of PI
-      decision 5's convention, the 40j placement precedent, which the PI may reverse). No fragile-zone
-      file is touched. **Alternatives the PI may prefer:** option B, the compiled
+  - **CONTRACT-A = 40k, ✓ closed** (`notes/Phase40k.md`): (MC-71), the contraction step at a rigid
+    core whose planar deficiency adds, with (MC-69)(a)(b). No new mathematics: the design recon
+    (opus, 2026-09-28, compiler-checked) returned one sorry-free spike, and 40k opened directly,
+    with no workbook commit and no second reading (the coordinator's call 1, the 40f/40g/40i/40j
+    precedent). Estimated 4–7 builds before the recon and three, possibly two, after it; it landed
+    as three (`b7e9a778`, the split; `8499bb79`; `b394aac3`). It factors out the shared part of
+    CONTRACT-R's assembly, as PI decision 4 (2026-09-26) asked. The route is in *CONTRACT-A done*
+    above; the recon's names G1, G2, G4 and G5 are mapped to Lean names and nodes in
+    `notes/Phase40k.md`'s checklist.
+    - **Alternatives the PI may prefer to option A** (call 5): option B, the compiled
       `of_rigidContract_viaAdditive`, re-proves CONTRACT-R in about 20 lines through CONTRACT-A and
       FLAT and removes about 140 lines of duplicated setup, but leaves three pinned flat nodes
       (`lem:pencil-contract-core-plane`, `lem:pencil-contract-limit` (1),
       `lem:pencil-contract-core-rank`) without a consumer; the cheaper-diff sub-option of A keeps
-      the general part in `Contract.lean` and moves the flat part out.
-    - **Pins** (PI decision 4(b), first consumer; call 7): **CONTRACT-A pays none of the D5 debt**.
+      the general part in `Contract.lean` and moves the flat part out. **Not adopted** (call 3): the
+      compiled `of_additiveContract_weak` (no core rigidity: `def₃`-additivity in its place, no
+      `hW2`).
+    - **Pins** (PI decision 4(b), first consumer; call 7): **CONTRACT-A paid none of the D5 debt**.
       The recon's grep of the spike finds no `jointMotions`, `weldedRank`, `relScrews`, `pairDelta`,
       `weldPair`, `deficiencySep` or `deficiencyMerged`; the debt passes to COVERAGE (§7).
     - **Re-homed** (call 8): (MC-67), (MC-68) and (MC-70) to §2's *Not needed*, with the
       (MC-119)/(MC-120) caveat there; COVERAGE's MC15 row corrected; the `hadd` supplier a COVERAGE
       tracked item.
-    - **Not adopted** (call 3): the compiled `of_additiveContract_weak`, which needs no core
-      rigidity (`def₃`-additivity in its place, and `h3` at `H` from `X₀(H)`, no `hW2`).
     - [ ] **Tracked cleanup-round items (call 12; not close gates):** the flat K3 as a corollary of
       G4; the `def₂` standing lemma as a corollary of G5; `exists_core_plane`'s middle step via the
       new core-heights lemma; `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` via
       G1.
-    - **Build commits: three, possibly two** (estimated 4–7 before the recon) — B1 the split, B2 the
-      general pieces and the four lemma nodes, B3 `ContractAdditive.lean` and the theorem. The nodes
-      of each build are in `notes/Phase40k.md`'s checklist.
   - **ORBIT = 40i, ✓ closed** (`notes/Phase40i.md`): the `k = 1` cell ((MC-54) at `k = 1`, folded
     in from SHORT by PI decision 2) and the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` cell ((MC-176)), with
     (MC-173)–(MC-175). A tail group right after SHORT (PI D2, 2026-09-26), although this list prints
@@ -619,7 +613,14 @@ landed as the recon's:
   (MC-28)–(MC-31) whose sorry-free spike needs no new mathematics; it closed the same day after
   two build commits. **CONTRACT-A opened as 40k** (2026-09-28), the list's next group and the last
   of STEPS: design-first from a compiler-checked recon (opus) of (MC-67)–(MC-71) whose sorry-free
-  spike needs no new mathematics; B1, the `Contract.lean` split (its entry above), is next.
+  spike needs no new mathematics; it closed the same day after three build commits, the first the
+  `Contract.lean` split. **STEPS is done. Next: COVERAGE** (§3 COVERAGE), the next layer in
+  dependency order, not yet opened; by the 40e–40k precedent its next concrete step is a
+  compiler-checked design recon (opus) of COVERAGE, and it opens as 40l after it. Its tracked
+  supplier items are in its section: ORBIT's `hδ₂`, SPLITOFF's `hδ`, CONTRACT-A's `hadd` with
+  `hatt`, and (H) at the split-off antecedents. The carried todos stay in this section: PI decision
+  2's `hatt` readability todo (the CONTRACT-R entry above) and the "only if" halves of (MC-52) and
+  (MC-53) (below).
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**
   - **(MC-177) is built in CHAIN, forced**: BASE and the open ear both go through the ear rank law.
@@ -686,8 +687,8 @@ landed as the recon's:
   - [x] **`(G.rigidContract (G.induce W) r).Simple`**, compiled as
     `Graph.rigidContract_induce_simple (hS : G.Simple) (hr : r ∈ W) (hatt : ∀ u ∉ W, ∀ c₁ ∈ W,
     ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)`, from the landed `rigidContract_simple` (landed
-    in 40f, in `Contract.lean`; the recon's compiled proof is verbatim in the appendix *the STEPS
-    recon's tracked spike*).
+    in 40f, in `Contract.lean`, and moved to `ContractCurve.lean` at 40k's split; the recon's
+    compiled proof is verbatim in the appendix *the STEPS recon's tracked spike*).
   - [x] **`h3` from (H)**, compiled as `Graph.three_le_ncard_closedNbhd (hS : G.Simple)
     (hdeg : 2 ≤ G.degree v)`, from the vendored `Graph.degree_eq_ncard_adj` (landed in 40e build 1,
     beside `Graph.closedNbhd` in `Motive.lean`).
@@ -697,7 +698,7 @@ landed as the recon's:
   proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
   height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
-### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`)
+### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **next, not yet opened** (design recon first; §3 STEPS, the *Order* paragraph)
 
 | labels | step | 2nd |
 |---|---|---|
@@ -796,12 +797,12 @@ the landed SPINE2 threading):
 
 The main-component argument gets **one new forward-mode chapter** (`main-component.tex`), one
 subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subsections are all
-green, and so are STEPS' first six, `sec:main-component-cut` (40e),
+green, and so are all seven of STEPS', `sec:main-component-cut` (40e),
 `sec:main-component-contract` (40f), `sec:main-component-chain` (40g), `sec:main-component-short`
-(40h), `sec:main-component-orbit` (40i) and `sec:main-component-splitoff` (40j); the seventh,
-`sec:main-component-contract-additive` (40k), is open and red. MOTIVES's stub subsection
-`sec:main-component-statements` is the last, and each later layer inserts its subsection before
-it. It is opened as red nodes transcribed from the proof map
+(40h), `sec:main-component-orbit` (40i), `sec:main-component-splitoff` (40j) and
+`sec:main-component-contract-additive` (40k). COVERAGE's subsection is next. MOTIVES's stub
+subsection `sec:main-component-statements` is the last, and each later layer inserts its
+subsection before it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
 the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
