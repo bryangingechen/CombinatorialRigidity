@@ -144,7 +144,7 @@ Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/
 Source `scratch/40l/S4Kit.lean` (gitignored, local to this checkout), lines 12–207, 263–366,
 523–575, fixing the warnings listed under *Builder notes* on transcription (never verbatim for
 these ranges — the fixes are mandatory, not optional polish). Target: new
-`CombinatorialRigidity/Molecular/Molecule/Pencil/Induction/SparseDeficiency.lean` (beside
+`CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (beside
 `SplitOffDeficiency.lean`), importing `Induction/ReducibleVertex.lean` (for `rigidContract`) and
 the mirror `Mathlib/Combinatorics/Graph/Delete.lean` (for `induce_induce_of_subset`); add it to
 `CombinatorialRigidity.lean`. The checklist's B2 bullet has the exact pins:
