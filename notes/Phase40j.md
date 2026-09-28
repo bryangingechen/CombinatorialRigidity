@@ -5,8 +5,8 @@
 of degree two whose neighbours `a ≁ b`, the one-body ear `a − x − b` on `V₁`: if `X₀` attains at
 `G″ = G.splitOff (x 0) a b (e 0)` (`G` with `x` suppressed) and
 `deficiencyMerged₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])` (Step MC11's `δ ≥ 5`), then `X₀(G)` attains
-((MC-31)). No new mathematics. Five nodes, all red; two builds B1–B2, possibly three. **Next: B1,
-the general pieces** — see *Hand-off*.
+((MC-31)). No new mathematics. Five nodes: `lem:pencil-curve-limit` green, four still red; B1
+done, B2 next. **Next: B2, the split-off step** — see *Hand-off*.
 
 ## Current state
 
@@ -24,10 +24,26 @@ precedent) and workbook labels from `ledger.py --brief`:
 - `thm:pencil-x0-splitoff` — (MC-31), with (MC-30)(iv) and (MC-29)(a)(b); the unpinned remark after
   it records that (MC-31)'s bound within one for `δ ≤ 4` is not formalized (call 5).
 
-No Lean has landed. The red nodes carry no `\lean{…}` yet, 40h's open convention: each build adds
-its pins with `\leanok` (*Lemma checklist*). No other node changes: the three deficiency nodes the
-theorem uses are already stated at general `D`. The three carrier-forced deviations
-(*Architectural choices*) are recorded in the blueprint proofs.
+No other node changes: the three deficiency nodes the theorem uses are already stated at general
+`D`. The three carrier-forced deviations (*Architectural choices*) are recorded in the blueprint
+proofs.
+
+**B1 landed** (this commit): the general pieces from the checklist, transcribed verbatim from the
+spike into their homes (`Bridge.lean`, `Ear.lean`, `Cut.lean`, `Carrier.lean`) plus the mirror
+`MvPolynomial.polynomial_eval_aeval` (general `[CommSemiring R]`, not `Field K` — the proof only
+needs a comm semiring, matching `polynomial_eval_eval₂`'s own generality) in a new
+`Mathlib/Algebra/MvPolynomial/Polynomial.lean`. `lem:pencil-curve-limit` is pinned and green on
+both the statement and the proof; the checklist's other three B1 pieces land unpinned, for B2. One
+correction against the scope-pin's shorthand: `checkdecls` needs the **fully qualified** name for
+a declaration with no `_root_.` prefix inside `namespace CombinatorialRigidity.Molecular` — the pin
+is `CombinatorialRigidity.Molecular.PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, not the
+bare `PanelHingeFramework.…` (caught by `blueprint/verify.sh`'s `checkdecls` step; c.f.
+`extensor.tex`'s `CombinatorialRigidity.Molecular.homogenize` pin for the same pattern). The other
+four B1 names all carry `_root_.Graph.…`/`_root_.` prefixes already, so this correction is local to
+the one pin. Line counts after B1: `Bridge.lean` 472, `Ear.lean` 1 227, `Cut.lean` 1 053,
+`Carrier.lean` 1 062, all comfortably under the ~1500 tripwire. Gates: `lake build` (root, clean,
+no warnings), `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`, `notes/check-phase-note.py`
+all green.
 
 **The spikes** (gitignored `scratch/40j/`, local to this checkout; builder pointers, not evidence),
 re-run at this open with **`lake lean`** at `52706564`, identical to the coordinator's re-run:
@@ -117,16 +133,20 @@ Planned names from the spike; pins in **bold**, the other names helpers, unpinne
 of B2's pins unpinned (the motion count, `mem_liftingSpace_oneEar`, `ker_liftingMatrix_congr`);
 B2 pins them with their nodes.
 
-- [ ] **B1, the general pieces** (their homes by call 3):
+- [x] **B1, the general pieces** (their homes by call 3) — landed this commit:
   - `Bridge.lean`, section *Per-body rescaling of the normals*:
     **`PanelHingeFramework.finite_setOf_finrank_lt_of_curve`** → `lem:pencil-curve-limit`, with
     the mirror `MvPolynomial.polynomial_eval_aeval` (call 8; mathlib's
     `Mathlib/Algebra/MvPolynomial/Polynomial.lean`, home of `MvPolynomial.polynomial_eval_eval₂`,
-    is the natural mirror path);
+    is the natural mirror path); pinned as
+    `CombinatorialRigidity.Molecular.PanelHingeFramework.finite_setOf_finrank_lt_of_curve` (the
+    fully qualified name — *Current state*'s correction);
   - `Ear.lean`: `BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions` and
-    `Graph.mem_liftingSpace_oneEar` (after `Graph.mem_closedNbhd_induce_of_ear`);
-  - `Cut.lean`: `span_supportExtensor_ofNormals_eq`;
-  - `Carrier.lean`: `Graph.ker_liftingMatrix_congr`, `Graph.ker_liftingMatrix_le_of_le`.
+    `Graph.mem_liftingSpace_oneEar` (after `Graph.mem_closedNbhd_induce_of_ear`) — unpinned, for
+    B2;
+  - `Cut.lean`: `span_supportExtensor_ofNormals_eq` — unpinned, for B2;
+  - `Carrier.lean`: `Graph.ker_liftingMatrix_congr` (with `Graph.closedNbhd_subset_vertexSet`
+    inlined as a local `have`), `Graph.ker_liftingMatrix_le_of_le` — unpinned, for B2.
 - [ ] **B2, the step**, new `MainComponent/SplitOff.lean`:
   **`Graph.finrank_span_rigidityRows_splitOff_special`** (the graph form) and
   **`BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions`** (the motion count) →
@@ -142,29 +162,28 @@ B2 pins them with their nodes.
 
 ## Blockers / open questions
 
-- None blocking B1.
-- **Builder notes.** `Graph.ker_liftingMatrix_congr` uses `Graph.closedNbhd_subset_vertexSet`,
-  which lives downstream in `Bridge.lean`: inline it in `Carrier.lean`, as 40i's B1 did. The
-  mirror file is new unless the builder extends an existing one; import it where
-  `Bridge.lean` sees it, and add any new file to the root import. Every new top-level name greps
-  to no prior definition (this open's check, TACTICS-QUIRKS §65).
+- None blocking B2.
 
 ## Hand-off / next phase
 
-**Next: B1, the general pieces (fresh builder).** Source: `scratch/40j/S40jSplitOff.lean`
-(gitignored, local to this checkout; a builder pointer, not evidence), with `S40jCurve.lean` for
-the curve-limit lemma. Target: `lem:pencil-curve-limit` green; the other B1 pieces land unpinned for
-B2. Chores:
+**Next: B2, the split-off step (fresh builder).** Source: `scratch/40j/S40jSplitOff.lean`
+(gitignored, local to this checkout; a builder pointer, not evidence). Target: new
+`MainComponent/SplitOff.lean` (importing `Orbit.lean`, added to the root import
+`CombinatorialRigidity.lean`, with a module docstring listing its statements, the `Cut.lean`
+pattern), the four remaining nodes green — `lem:pencil-splitoff-special-rank`,
+`lem:pencil-splitoff-flexes`, `lem:pencil-splitoff-curve`, `thm:pencil-x0-splitoff` — pinned per the
+checklist's B2 entry, both statement and proof `\leanok`. Chores:
 - **`lake lean` the spike first**, never `lake env lean` (`CombinatorialRigidity/CLAUDE.md` *Lean
   LSP MCP*); it is clean at this open, so judge lint by `lake lint`.
-- **Placement** as the checklist (call 3). No fragile-zone file is touched; after B1, `Bridge.lean`
-  is about 480 lines, `Ear.lean` about 1 210, `Cut.lean` and `Carrier.lean` about 1 050 each, all
-  under the tripwire.
-- **Pin and flip** `lem:pencil-curve-limit` with its bold name. Gates: `lake build`, `lake lint`,
-  `blueprint/verify.sh`, `blueprint/lint.sh`, `notes/check-phase-note.py`.
+- **A fully qualified name is needed wherever `checkdecls` sees no `_root_.` prefix** inside
+  `namespace CombinatorialRigidity.Molecular` — B1's correction (*Current state*). Every B2 pin
+  that names a bare `Graph.…`/`BodyHingeFramework.…` declared with `_root_.` is unaffected;
+  `exists_mem_forall_add_smul_eq_zero` has no `_root_.` and needs the full
+  `CombinatorialRigidity.Molecular.` prefix if it is pinned.
+- Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
+  `notes/check-phase-note.py`.
 
-**Then B2** (`SplitOff.lean`, importing `Orbit.lean`, added to the root import, with a module
-docstring listing its statements, the `Cut.lean` pattern), **then the close.**
+**Then the close.**
 
 **Cleanup-round item** (call 9; the design doc's SPLITOFF entry): the orientation split in
 `finrank_span_rigidityRows_ofNormals_congr`.
@@ -177,3 +196,8 @@ docstring listing its statements, the `Cut.lean` pattern), **then the close.**
   Jackson–Jordán's splitting-off case (Claim 6.5, Case 1, in the report form EGRES TR-2006-06,
   pp. 15–16) was read in `.refs/` for this open; the blueprint cites the journal paper without a
   claim number.
+- **2026-09-28 — B1 landed**: the general pieces transcribed verbatim into their homes, plus the
+  `MvPolynomial.polynomial_eval_aeval` mirror at general `[CommSemiring R]`. One correction:
+  `checkdecls` needs `CombinatorialRigidity.Molecular.PanelHingeFramework.…`, not the bare
+  `PanelHingeFramework.…`, for a declaration with no `_root_.` prefix (details in *Current
+  state*). Gates green; line counts under *Current state*.

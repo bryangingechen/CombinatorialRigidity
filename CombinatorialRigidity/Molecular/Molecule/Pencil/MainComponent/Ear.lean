@@ -41,6 +41,12 @@ themselves are in `MainComponent/Chain.lean`.
 * `Graph.mem_liftingSpace_of_ear`, `Graph.earExtend_mem_liftingSpace` — **the heights of an ear**
   ((MC-18)(a), `lem:pencil-ear-fibre`): at an admissible picture membership in `L_G(q)` is decided
   on `V₁`, and every height of `G[V₁]` extends to `G`, freely at the middle bodies of an open ear.
+* `Graph.mem_liftingSpace_oneEar` — the one-body case of the heights of an ear (Phase 40j
+  SPLITOFF): a flex of `G[V₁]` incident at the ear body extends to a height of `G`.
+* `BodyHingeFramework.finrank_span_rigidityRows_eq_add_of_motions` — **(MC-28)'s motion count,
+  abstractly** (Phase 40j SPLITOFF): if the motions of `F` are the motions of `F'` with a relative
+  screw at `x, a` restricted to a fixed line, freely realized by `F'`, the row rank of `F` is the
+  row rank of `F'` plus `D − 1`.
 * `linearIndependent_pointJoin_certTriangle`, `…Square`, `…Pentagon`, `…Hexagon` — the closed
   polygons on the points `certPt` have independent joins over every field ((MC-134)(a),
   `lem:pencil-chain-span-certificates`).
@@ -343,6 +349,61 @@ theorem finrank_span_rigidityRows_ear_eq [Finite α] [Finite β] (F : BodyHingeF
   rw [heq]
   push_cast [Nat.cast_sub hD]
   ring
+
+/-! ## The motion count ((MC-28), abstractly) -/
+
+/-- **(MC-28)'s motion count, abstractly** (Phase 40j SPLITOFF): if the motions of `F` are exactly
+the motions of `F'` with a relative screw at `x, a` restricted to a fixed line `K ∙ C₀`, and every
+relative screw at `x, a` is realized by some motion of `F'`, then the row rank of `F` is the row
+rank of `F'` plus `D − 1`. Counted through the motion spaces' dual annihilators: the relative-screw
+evaluation `x ↦ S x − S a` composed with the quotient by `K ∙ C₀` is surjective onto
+`ScrewSpace K k ⧸ (K ∙ C₀)` (`hfree`) with kernel exactly the motions of `F` (`hM`), so a
+dimension count on the short exact sequence gives the rank difference `screwDim k − 1`. -/
+theorem finrank_span_rigidityRows_eq_add_of_motions {k : ℕ} [Finite α]
+    (F F' : BodyHingeFramework K k α β) {x a : α} {C₀ : ScrewSpace K k} (hC₀ : C₀ ≠ 0)
+    (hfree : ∀ T : ScrewSpace K k, ∃ S ∈ F'.infinitesimalMotions, S x - S a = T)
+    (hM : ∀ S, S ∈ F.infinitesimalMotions ↔
+      S ∈ F'.infinitesimalMotions ∧ S x - S a ∈ K ∙ C₀) :
+    Module.finrank K (Submodule.span K F.rigidityRows) =
+      Module.finrank K (Submodule.span K F'.rigidityRows) + (screwDim k - 1) := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  rw [span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+    span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions]
+  set M := F.infinitesimalMotions
+  set M' := F'.infinitesimalMotions
+  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq M
+  have h2 := Subspace.finrank_add_finrank_dualAnnihilator_eq M'
+  set ψ : M' →ₗ[K] (ScrewSpace K k ⧸ (K ∙ C₀)) :=
+    (K ∙ C₀).mkQ ∘ₗ (screwDiff x a) ∘ₗ M'.subtype with hψ
+  have hsurj : Function.Surjective ψ := by
+    intro y
+    obtain ⟨T, rfl⟩ := Submodule.mkQ_surjective _ y
+    obtain ⟨S, hS, hST⟩ := hfree T
+    exact ⟨⟨S, hS⟩, by simp [hψ, screwDiff_apply, hST]⟩
+  have hker : (LinearMap.ker ψ).map M'.subtype = M := by
+    ext S
+    constructor
+    · rintro ⟨⟨S, hS⟩, hk, rfl⟩
+      rw [hM]
+      refine ⟨hS, ?_⟩
+      rw [SetLike.mem_coe, LinearMap.mem_ker, hψ, LinearMap.comp_apply, LinearMap.comp_apply,
+        Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, screwDiff_apply] at hk
+      exact hk
+    · intro hS
+      obtain ⟨hS', hd⟩ := (hM S).mp hS
+      refine ⟨⟨S, hS'⟩, ?_, rfl⟩
+      rw [SetLike.mem_coe, LinearMap.mem_ker, hψ, LinearMap.comp_apply, LinearMap.comp_apply,
+        Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, screwDiff_apply]
+      exact hd
+  have h3 := LinearMap.finrank_range_add_finrank_ker ψ
+  rw [LinearMap.range_eq_top.mpr hsurj, finrank_top] at h3
+  have h4 := Submodule.finrank_quotient_add_finrank (K ∙ C₀)
+  rw [finrank_span_singleton hC₀, screwSpace_finrank] at h4
+  have h5 : Module.finrank K (LinearMap.ker ψ) = Module.finrank K M := by
+    rw [← hker]
+    exact (LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ M'.injective_subtype _))
+  omega
 
 end BodyHingeFramework
 
@@ -659,6 +720,54 @@ theorem _root_.Graph.mem_closedNbhd_induce_of_ear {G : Graph α β} {V₁ : Set 
         · simp at h0'; omega
         · exact h
   · exact absurd (hsep f v w hf (fun j h => hfe ⟨j, h⟩)).2 hwV
+
+open Classical in
+/-- **A flex of `G′` incident at the ear body is a height of `G`** (Phase 40j SPLITOFF, the
+one-body case `k = 1` of `Graph.mem_closedNbhd_induce_of_ear`): at an admissible picture, a member
+`y` of the lifting system's kernel at `G[V₁]` extends to a height of `G` that agrees with `y` on
+`V₁` and, at the interior body `x 0`, takes the value pinned by `y`'s coefficients at `a` read at
+`x 0`'s picture point — provided `y` is *incident* there, i.e. the same value is pinned by `y`'s
+coefficients at `b`. -/
+theorem _root_.Graph.mem_liftingSpace_oneEar [Fintype α] {G : Graph α β} {V₁ : Set α}
+    {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x)
+    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hpath : ∀ i : Fin 2,
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {y : α ⊕ (α × Fin 3) → K}
+    (hy : y ∈ LinearMap.ker (((G.induce V₁).liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin)
+    (hinc : planeDiff a b y ⬝ᵥ pencilPicturePoint q (x 0) = 0) :
+    (fun w => if w = x 0 then (fun i => y (Sum.inr (a, i))) ⬝ᵥ pencilPicturePoint q (x 0)
+      else y (Sum.inl w)) ∈ G.liftingSpace q := by
+  have hx0 : x 0 ∉ V₁ := hxV₁ 0
+  have hx0G : x 0 ∈ V(G) := hcover ▸ Or.inr ⟨0, rfl⟩
+  rw [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff] at hy
+  obtain ⟨g1, g2, -⟩ := hy
+  refine Graph.mem_liftingSpace_of_ear hcover hinj hxV₁ ha hb hpath hsep hq (fun w hw => ?_)
+    (fun v hv => ⟨fun i => y (Sum.inr (v, i)), fun w hw => ?_⟩)
+  · have hw0 : w ≠ x 0 := fun h => hw (h ▸ hx0G)
+    simp only [hw0, ↓reduceIte]
+    exact g1 w (fun h => hw (hcover ▸ Or.inl h))
+  · rcases G.mem_closedNbhd_induce_of_ear (k := 1) le_rfl hxV₁ ha hb hpath hsep hv hw with
+      hw' | ⟨hva, hw'⟩ | ⟨hvb, hw'⟩
+    · have hwV : w ∈ V₁ := Graph.closedNbhd_subset_vertexSet hv hw'
+      have hw0 : w ≠ x 0 := fun h => hx0 (h ▸ hwV)
+      simp only [hw0, ↓reduceIte]
+      exact g2 v hv w hw'
+    · have : w = x 0 := hw'
+      subst this
+      rw [hva]
+      simp
+    · have : w = x 0 := hw'
+      subst this
+      rw [hvb]
+      simp only [↓reduceIte]
+      have hd : planeDiff a b y ⬝ᵥ pencilPicturePoint q (x 0) =
+          (fun i => y (Sum.inr (a, i))) ⬝ᵥ pencilPicturePoint q (x 0) -
+            (fun i => y (Sum.inr (b, i))) ⬝ᵥ pencilPicturePoint q (x 0) := by
+        rw [← sub_dotProduct]; rfl
+      rw [hd, sub_eq_zero] at hinc
+      exact hinc
 
 open Classical in
 /-- **The heights of an open ear** (`lem:pencil-ear-fibre`(2), (MC-18)(a), `k ≥ 2`): at a picture

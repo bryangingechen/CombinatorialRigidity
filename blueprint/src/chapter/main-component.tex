@@ -2847,6 +2847,8 @@ rank, and the picture is a main picture of $G$.
 
 \begin{lemma}[The rank along a polynomial curve of normals]
   \label{lem:pencil-curve-limit}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finite_setOf_finrank_lt_of_curve}
+  \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:rigidity-matrix}
   Let $G$ be a graph with finitely many bodies and edges and an endpoint
@@ -2857,6 +2859,7 @@ rank, and the picture is a main picture of $G$.
   on $G$ with normals $n(t)$ is at least its value at $t = 0$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-polynomial-of-le-finrank}
   By \cref{lem:rank-polynomial-of-le-finrank} at $n(0)$ there is a
   polynomial $Q$ in the normal coordinates, nonzero at $n(0)$, such that

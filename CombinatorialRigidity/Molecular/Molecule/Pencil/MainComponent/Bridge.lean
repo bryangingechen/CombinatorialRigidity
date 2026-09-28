@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Polynomial
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
@@ -22,6 +23,9 @@ equality case, (MC-33); the consumers are (MC-141)'s list).
   `PanelHingeFramework.infinitesimalMotions_ofNormals_smul`,
   `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul` — rescaling every body's normal
   by a nonzero scalar rescales each hinge and leaves the motions and the rank unchanged.
+* `PanelHingeFramework.finite_setOf_finrank_lt_of_curve` — **the curve-limit lemma**
+  (`lem:pencil-curve-limit`, Phase 40j SPLITOFF): along a polynomial curve of normals nonzero at
+  `t = 0`, the row rank drops below its value at `t = 0` for only finitely many `t`.
 * `Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint` — off one nonzero
   polynomial in the picture coordinates, the plane framework at the normals `(x_v, y_v, 1)` has
   rank at least `3(|V(G)| − 1) − def₂(G)` (the chart-rank form; it carries the planar rank
@@ -107,6 +111,40 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul [Finite α]
           (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) := by
   rw [BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _
     (PanelHingeFramework.infinitesimalMotions_ofNormals_smul G ends q hc)]
+
+/-- **The curve-limit lemma** (`lem:pencil-curve-limit`; the STEPS recon's tracked spike, Phase 40j
+SPLITOFF): along a polynomial curve `t ↦ c(t)` of normals, the row rank of `ofNormals G ends (c t)`
+is at least its value at `t = 0` for all but finitely many `t`, provided every recorded hinge is
+nonzero at `t = 0`. The univariate specialization of the rank polynomial
+(`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`) along the curve, pulled back
+through the mirror substitution lemma `MvPolynomial.polynomial_eval_aeval`: the rank polynomial
+composed with the curve is a nonzero univariate polynomial (nonzero at `t = 0`), so its finitely
+many roots are the only `t` where the rank can drop. -/
+theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve {k : ℕ} [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (c : α × Fin (k + 2) → Polynomial K)
+    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.supportExtensor e
+        ≠ 0)
+    {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K
+      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.rigidityRows)) :
+    {t : K | Module.finrank K (Submodule.span K
+      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
+        < N}.Finite := by
+  classical
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
+  set P : Polynomial K := MvPolynomial.aeval c Q with hP
+  have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
+    fun t => MvPolynomial.polynomial_eval_aeval c Q t
+  have hP0 : P ≠ 0 := fun h => hQ₀ (by rw [← hPt 0, h, Polynomial.eval_zero])
+  refine (P.roots.toFinset.finite_toSet).subset fun t ht => ?_
+  simp only [Set.mem_ofPred_eq] at ht
+  simp only [Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP0,
+    Polynomial.IsRoot.def]
+  by_contra h
+  exact absurd (hQ _ (by rwa [← hPt])) (not_le.mpr ht)
 
 /-! ## The planar rank theorem in the chart -/
 

@@ -23,6 +23,8 @@ to `G`.
   `Graph.IsX0Graph.three_le_ncard_closedNbhd` gives the closed-neighbourhood bound `h3` from it.
 * `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` — the row rank reads the normals
   only on `V(G)`, and the selector only up to the orientation of each link.
+* `span_supportExtensor_ofNormals_eq` — the hinge at a recorded link is the panel extensor of its
+  two ends, in either orientation (Phase 40j SPLITOFF).
 * `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three` — three points impose
   nothing: at an admissible picture a closed neighbourhood with at most three members carries every
   height affinely (`lem:pencil-three-points`, Phase 40g; the ear steps' free interior bodies).
@@ -133,6 +135,21 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr {k : ℕ} 
     · rw [ha, hb, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
   rw [BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, hmot]
+
+/-- **The hinge of an `ofNormals` framework at a recorded link spans the panel extensor of its
+two ends**, in either orientation (Phase 40j SPLITOFF): swapping the ends only negates the panel
+extensor, which does not change its span. -/
+theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
+    (n : α × Fin (k + 2) → K) {f : β} {u w : α} (hf : H.IsLink f u w) :
+    Submodule.span K {(PanelHingeFramework.ofNormals H ends n).toBodyHinge.supportExtensor f} =
+      Submodule.span K {panelSupportExtensor (fun i => n (u, i)) (fun i => n (w, i))} := by
+  have h := hends f u w hf
+  simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
+  rcases h.eq_and_eq_or_eq_and_eq hf with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · rw [h1, h2]
+  · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
 /-! ## Heights restrict to a subgraph -/
 

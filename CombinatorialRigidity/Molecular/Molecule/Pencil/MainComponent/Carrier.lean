@@ -59,6 +59,9 @@ PI decision 5).
 * `Graph.liftingMatrix` — the lifting system, a matrix of polynomials in the picture whose kernel
   projects onto `L(q)` (`Graph.map_ker_liftingMatrix`), isomorphically over an admissible picture
   (`Graph.finrank_ker_liftingMatrix`).
+* `Graph.ker_liftingMatrix_congr`, `Graph.ker_liftingMatrix_le_of_le` — the lifting system's kernel
+  reads the picture only on `V(H)`, and shrinks when links are added on the same bodies (Phase 40j
+  SPLITOFF).
 * `Graph.injective_liftingMatrix_ker_proj`, `Graph.two_le_finrank_map_planeDiff` — the height
   projection is injective on the lifting system's kernel at an admissible picture, so a
   two-dimensional drop in lifting space at a pair of newly-joined bodies makes the two
@@ -645,6 +648,42 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
         rw [dotProduct_comm, ← h2 v hv (t j) (ht j), hz]
       exact congr_fun (Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero) i
     · exact h3 v hv i
+
+/-! ## The lifting system's kernel: locality and monotonicity (Phase 40j SPLITOFF) -/
+
+/-- **The lifting system's kernel reads the picture only on `V(H)`.** The closed-neighbourhood
+membership fact `Graph.closedNbhd_subset_vertexSet` is downstream (`Bridge.lean`); inlined here as
+a local `have`. -/
+theorem _root_.Graph.ker_liftingMatrix_congr [Fintype α] {H : Graph α β} {q q' : α × Fin 2 → K}
+    (hq : ∀ w ∈ V(H), ∀ i, q (w, i) = q' (w, i)) :
+    LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin =
+      LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q')).mulVecLin := by
+  have hcsv : ∀ {v : α}, v ∈ V(H) → H.closedNbhd v ⊆ V(H) := by
+    rintro v hv w (rfl | ⟨e, he⟩)
+    · exact hv
+    · exact he.right_mem
+  have hpp : ∀ w ∈ V(H), pencilPicturePoint q w = pencilPicturePoint q' w := by
+    intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
+  ext y
+  simp only [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
+  refine and_congr_right fun _ => and_congr_left fun _ => forall₂_congr fun v hv =>
+    forall₂_congr fun w hw => ?_
+  rw [hpp w (hcsv hv hw)]
+
+/-- **Adding links on the same bodies shrinks the lifting system's kernel.** -/
+theorem _root_.Graph.ker_liftingMatrix_le_of_le [Fintype α] {H H' : Graph α β} (hle : H ≤ H')
+    (hV : V(H) = V(H')) (q : α × Fin 2 → K) :
+    LinearMap.ker ((H'.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ≤
+      LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin := by
+  intro y hy
+  simp only [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
+    at hy ⊢
+  obtain ⟨h1, h2, h3⟩ := hy
+  refine ⟨fun w hw => h1 w (hV ▸ hw), fun v hv w hw => h2 v (hV ▸ hv) w ?_,
+    fun v hv i => h3 v (hV ▸ hv) i⟩
+  rcases hw with rfl | ⟨f, hf⟩
+  · exact Or.inl rfl
+  · exact Or.inr ⟨f, hf.of_le hle⟩
 
 /-! ## The two-body incidence functionals (`lem:pencil-flag-genericity`, Phase 40i ORBIT) -/
 
