@@ -26,8 +26,9 @@ for an open ear with two, three or four interior bodies; the eighth
 proves the ear steps for an open ear with one interior body, and with two
 at non-adjacent ends with no bound on the deficiency; the ninth proves
 the split-off step at a body of degree two whose neighbours are not
-adjacent. The contraction step at the remaining cores and the structural
-coverage build on them; the last subsection states the passage back to
+adjacent; the tenth proves the contraction step at a rigid core whose
+planar deficiency adds with that of the contraction. The structural
+coverage builds on them; the last subsection states the passage back to
 the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
@@ -1367,12 +1368,14 @@ while the rest of $G$ sees it at $q_r$.
   \lean{Graph.finrank_ker_contractLiftingMatrix_zero_le,
         Graph.exists_mem_ker_contractLiftingMatrix_zero}
   \leanok
-  \uses{lem:pencil-contract-core-plane, def:rigid-contraction}
-  In the setting of \cref{lem:pencil-contract-core-plane}, with $r \in W$:
+  \uses{def:pencil-contract-lifting-system, lem:pencil-contract-core-plane,
+        def:rigid-contraction}
+  Let $r \in W \subseteq V(G)$ and $H = G[W]$, and let $q$ be a picture.
   \begin{enumerate}
-    \item if $q$ is also admissible for $G/H$, then
-      $\dim \ker M(0) \le \dim L_{G/H}(q)$;
-    \item if no attachment has two neighbours in $W$, then every
+    \item If $q$ is admissible for $H$ with $L_H(q) = \mathrm{Aff}(q)$,
+      as in \cref{lem:pencil-contract-core-plane}, and admissible for
+      $G/H$, then $\dim \ker M(0) \le \dim L_{G/H}(q)$.
+    \item If no attachment has two neighbours in $W$, then every
       $z \in L_{G/H}(q)$ with $z_r = 0$ agrees off $W$ with the heights
       of a solution of $M(0)$.
   \end{enumerate}
@@ -3127,6 +3130,269 @@ rank, and the picture is a main picture of $G$.
   one-body split-off only there; when $\delta = 0$ it uses the ear step
   with one interior body (\cref{thm:pencil-x0-open-ear-one}), and it uses
   no one-body ear with $1 \le \delta \le 4$.
+\end{remark}
+
+\subsection{Contraction at an additive core}
+\label{sec:main-component-contract-additive}
+
+This subsection proves the contraction step at a rigid core whose planar
+deficiency need not vanish. Let $W \subsetneq V(G)$ and $r \in W$, and
+let $H = G[W]$ and $G/H$ be as in \cref{sec:main-component-contract}.
+The step assumes that $\operatorname{def}(\tilde H) = 0$ and that the
+planar deficiencies add,
+\[
+  \operatorname{def}_2(H) + \operatorname{def}_2(G/H) \;\le\;
+  \operatorname{def}_2(G),
+\]
+and it asks that the general configurations of both $H$ and $G/H$
+attain. It is again Katoh and Tanigawa's contraction
+case~\cite[\S6.2, Lemma~6.3]{katohTanigawa2011}, read on configurations
+along the contraction curve and the rescaled lifting system
+(\cref{def:pencil-contract-lifting-system}). The end of the curve is as
+at a core of planar deficiency zero: a height of $G/H$ vanishing at $r$
+agrees off $W$ with the heights of a solution of $M(0)$
+(\cref{lem:pencil-contract-limit}), and the rows of the edges outside
+$H$, with the columns of $W$ deleted, are bounded below near the
+collapsed placement (\cref{lem:pencil-contract-degenerate-rank}).
+
+Two parts of that argument change, because the core is no longer flat.
+The kernel of $M(0)$ is bounded above through the core heights of its
+solutions (\cref{lem:pencil-contract-kernel-bound}), and below by
+$3 + \operatorname{def}_2(G)$, since for all but finitely many $t$ the
+kernel of $M(t)$ is no larger than that of $M(0)$ and, at $t \neq 0$,
+at least as large as $L_G(q(t))$. Under additivity the
+two bounds meet, and the core heights of the solutions of $M(0)$ are then
+all of $L_H(q)$. So the attainment at $H$, read on the core heights, and
+the bound on the rows of the edges outside $H$ are two open conditions
+that meet inside $\ker M(0)$ (\cref{lem:pencil-x0-fibre-intersection}).
+And the rank of the core along the curve is no longer its flat rank: at
+$t \neq 0$ the configuration of $H$ is the image of one over the fixed
+picture $q$ under an invertible linear map of $K^4$
+(\cref{lem:pencil-rank-collineation},
+\cref{lem:pencil-contract-magnified-rank}), and there the general
+configuration of $H$ attains.
+
+\begin{lemma}[A collineation of the normals preserves the rank]
+  \label{lem:pencil-rank-collineation}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  Let $G$ be a graph with an endpoint selector, and let $g$ be an
+  invertible linear map of $K^4$. If panel normals $p$ and $p'$ in $K^4$
+  satisfy $p'_w = g(p_w)$ at every body $w$ of $G$, then the rigidity
+  matrices of the panel-hinge frameworks on $G$ with normals $p$ and
+  with normals $p'$ have the same rank.
+\end{lemma}
+\begin{proof}
+  \uses{lem:panel-hinge-dual-molecular, lem:screw-map-rows,
+        lem:pencil-config-point-join-rank}
+  The hinge at an edge $uv$ with normals $p$ is the image of the line
+  $p_u \wedge p_v$ under the polarity
+  (\cref{lem:panel-hinge-dual-molecular}), so the rigidity matrix with
+  normals $p$ has the rank of the body-hinge framework whose hinge at
+  $uv$ is $p_u \wedge p_v$ (\cref{lem:screw-map-rows}, as in the proof
+  of \cref{lem:pencil-config-point-join-rank}), and likewise for $p'$.
+  Both ends of an edge of $G$ are bodies of $G$, so there
+  $p'_u \wedge p'_v = g(p_u) \wedge g(p_v)$ is the image of
+  $p_u \wedge p_v$ under the invertible linear map of the screw space
+  induced by $g$, and \cref{lem:screw-map-rows} applies once more. This
+  is the argument of \cref{lem:pencil-rank-scale-shift}, for any
+  invertible linear map.
+\end{proof}
+
+\begin{lemma}[The kernel at the end of the curve, through the core heights]
+  \label{lem:pencil-contract-kernel-bound}
+  \uses{def:pencil-contract-lifting-system, def:pencil-lifting-space,
+        def:pencil-admissible-picture, def:rigid-contraction}
+  Let $r \in W \subseteq V(G)$ and $H = G[W]$, let $q$ be a picture, and
+  let $\rho$ send a vector $(z, h)$ of unknowns of the rescaled lifting
+  system to the height that agrees with $z$ on $W$ and vanishes
+  elsewhere.
+  \begin{enumerate}
+    \item At every $t$, $\rho$ maps the solutions of $M(t)$ into
+      $L_H(q)$.
+    \item If $q$ is admissible for $H$ and for $G/H$, then
+      $\dim \ker M(0) + 3 \le \dim \rho(\ker M(0)) + \dim L_{G/H}(q)$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-contract-limit, lem:pencil-lifting-space-affine}
+  (1) The rows at a core body $c$ and a member of its closed
+  neighbourhood in $H$ have the weight $(x_w, y_w, 1)$ at every $t$, as
+  in the proof of \cref{lem:pencil-contract-core-plane}.
+
+  (2) By rank--nullity it suffices that the solutions of $M(0)$ with
+  $\rho = 0$ form a space $N$ with $\dim N + 3 \le \dim L_{G/H}(q)$. A
+  solution in $N$ has zero heights on $W$, so by the rows of (1) its
+  plane at every core body is zero: three members of each closed
+  neighbourhood in $H$ have independent picture points. The map of the
+  proof of \cref{lem:pencil-contract-limit}, which sends a solution to
+  the heights $z_w + z_r$ at the bodies $w$ outside $W$ and $z_r$ at $r$,
+  then takes $N$ injectively into $L_{G/H}(q)$, as it does there for a
+  core with one plane, here the zero plane. Its image vanishes on the
+  closed neighbourhood of $r$ in $G/H$, which consists of $r$ and the
+  attachments: $z_r = 0$, and the row at a core body $c$ and an
+  attachment $u$ of $c$ gives
+  $z_u = h_c \cdot (x_u - x_r, y_u - y_r, 0) = 0$. Three members of that
+  closed neighbourhood have independent picture points, so the only
+  affine height vanishing there is zero, and the image meets
+  $\mathrm{Aff}(q)$ only in zero. As $\mathrm{Aff}(q)$ is
+  three-dimensional and lies in $L_{G/H}(q)$
+  (\cref{lem:pencil-lifting-space-affine}), this gives the bound.
+\end{proof}
+
+\begin{lemma}[The rank of the core along the curve]
+  \label{lem:pencil-contract-magnified-rank}
+  \uses{def:pencil-contract-lifting-system, def:pencil-x0-attains}
+  Let $r \in W$ and $H = G[W]$, let $q$ be a picture and $t \in K$
+  nonzero, and let $(z, h)$ be any vector of unknowns of the rescaled
+  lifting system. Then the rank of $H$ at the configuration
+  $(q(t), z(t))$ equals its rank at $(q, z)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-rank-collineation}
+  At a body $c$ of $W$ the point of $(q(t), z(t))$ is
+  $((1 - t)\,x_r + t\,x_c,\ (1 - t)\,y_r + t\,y_c,\ t\,z_c,\ 1)$, the
+  image of $(x_c, y_c, z_c, 1)$ under the linear map
+  \[
+    (\xi, \eta, \zeta, \omega) \mapsto
+    (t\,\xi + (1 - t)\,x_r\,\omega,\ t\,\eta + (1 - t)\,y_r\,\omega,\
+     t\,\zeta,\ \omega)
+  \]
+  of $K^4$, which is invertible as $t \neq 0$. So
+  \cref{lem:pencil-rank-collineation} applies.
+\end{proof}
+
+\begin{lemma}[A rigid core satisfies the standing hypotheses]
+  \label{lem:pencil-contract-standing-rigid}
+  \uses{def:pencil-x0-standing, def:D-deficiency}
+  Let $G$ be simple and $W \subseteq V(G)$ with $|W| \ge 2$, and suppose
+  $G[W]$ has deficiency zero at some $n \ge 1$
+  (\cref{def:D-deficiency}). Then $G[W]$ satisfies the standing
+  hypotheses.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-zero-connected}
+  $G[W]$ is simple, and it is connected and of minimum degree at least
+  two by \cref{lem:deficiency-zero-connected}.
+\end{proof}
+
+\begin{theorem}[Contraction at an additive core]
+  \label{thm:pencil-x0-contract-additive}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:cut-edges-2ec,
+        def:rigid-contraction, def:D-deficiency}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses and be
+  $2$-edge-connected. Let $W \subsetneq V(G)$ with $|W| \ge 2$ and
+  $\operatorname{def}(\tilde G[W]) = 0$, such that no attachment has two
+  neighbours in $W$, and let $G/H$ be the contraction of $H = G[W]$ to a
+  body of $W$. Suppose
+  $\operatorname{def}_2(H) + \operatorname{def}_2(G/H) \le
+  \operatorname{def}_2(G)$. If the general configurations of $H$ and of
+  $G/H$ attain, then the general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-contract-standing-rigid, lem:pencil-contract-standing,
+        lem:pencil-contraction-deficiency, thm:pencil-jj-equality,
+        lem:pencil-x0-main-picture-open, lem:pencil-rank-scale-shift,
+        lem:pencil-x0-one-witness, lem:pencil-lifting-space-deficiency,
+        lem:pencil-contract-lifting-kernel,
+        lem:pencil-contract-kernel-bound, lem:pencil-contract-limit,
+        lem:pencil-contract-degenerate-rank,
+        lem:pencil-x0-fibre-intersection,
+        lem:pencil-contract-magnified-rank, lem:pencil-rank-congr,
+        lem:block-rank-contract}
+  \emph{The pieces.} $H$ satisfies the standing hypotheses
+  (\cref{lem:pencil-contract-standing-rigid}, at $n = 3$), and $G/H$ is
+  simple with at least three members in every closed neighbourhood, by
+  the argument of \cref{lem:pencil-contract-standing}, which does not use
+  the deficiency of $H$. As $H$ is rigid, $G/H$ has the deficiency of $G$
+  (\cref{lem:pencil-contraction-deficiency}, at $n = 3$). Take one
+  picture $q$ generic for the attainment and for Jackson and Jord\'an's
+  equality (\cref{thm:pencil-jj-equality}) at $H$ and at $G/H$, and main
+  for $G$ (\cref{lem:pencil-x0-main-picture-open}). Then $q$ is
+  admissible for $H$ and for $G/H$, with
+  $\dim L_H(q) = 3 + \operatorname{def}_2(H)$ and
+  $\dim L_{G/H}(q) = 3 + \operatorname{def}_2(G/H)$, and both have
+  attaining heights; that of $G/H$ may be taken to vanish at $r$
+  (\cref{lem:pencil-rank-scale-shift}). Call it $z'$.
+
+  \emph{The kernel at the end of the curve.} The polynomial section of
+  the kernel through the zero solution at $t = 0$ (as in the proof of
+  \cref{lem:pencil-x0-one-witness}, with the parameter $t$) shows that
+  $\dim \ker M(t) \le \dim \ker M(0)$ for all but finitely many $t$. At
+  such a $t \neq 0$ with $q(t)$ a main picture of $G$,
+  \[
+    3 + \operatorname{def}_2(G) \le \dim L_G(q(t)) \le \dim \ker M(t)
+    \le \dim \ker M(0)
+  \]
+  (\cref{lem:pencil-lifting-space-deficiency},
+  \cref{lem:pencil-contract-lifting-kernel}). By
+  \cref{lem:pencil-contract-kernel-bound}, Jackson and Jord\'an's
+  equality at $H$ and $G/H$, and additivity,
+  \[
+    \dim \ker M(0) + 3 \le \dim \rho(\ker M(0)) + \dim L_{G/H}(q)
+    \le \dim L_H(q) + \dim L_{G/H}(q) \le 6 + \operatorname{def}_2(G).
+  \]
+  So $\dim \ker M(0) = 3 + \operatorname{def}_2(G)$, and
+  $\rho(\ker M(0)) = L_H(q)$: the core heights of the solutions of $M(0)$
+  are all of $L_H(q)$.
+
+  \emph{Two open conditions.} The polynomial of the attainment at $H$,
+  applied to $\rho$, is nonzero somewhere on $\ker M(0)$, at a preimage
+  of an attaining height of $H$. The polynomial of
+  \cref{lem:pencil-contract-degenerate-rank}, for the rank of $G/H$ at
+  $(q, z')$ and applied to the configuration $(q(0), z(0))$ of a
+  solution, is nonzero at the solution that agrees with $z'$ off $W$
+  (\cref{lem:pencil-contract-limit}), whose configuration at $t = 0$ is
+  the collapsed placement of $(q, z')$. So some $x_0 \in \ker M(0)$ makes
+  both nonzero (\cref{lem:pencil-x0-fibre-intersection}).
+
+  \emph{The curve.} At every $t \neq 0$ with $q(t)$ a main picture of
+  $G$ the kernel does not jump:
+  $\dim \ker M(0) = 3 + \operatorname{def}_2(G) \le \dim L_G(q(t)) \le
+  \dim \ker M(t)$. So the polynomial section of the kernel through $x_0$
+  solves $M(t)$ off the zero set of one polynomial in $t$, and its
+  heights $z(t)$ lie in $L_G(q(t))$
+  (\cref{lem:pencil-contract-lifting-kernel}). Take $t$ off the zero sets
+  of $t$, of that polynomial, of the main-picture polynomial of $G$ along
+  the curve (nonzero at $t = 1$, where $q(1) = q$), and of the two open
+  conditions along the section (nonzero at $t = 0$). Then $\rho$ of the
+  solution at $t$ is an attaining height of $H$ over the fixed picture
+  $q$ (\cref{lem:pencil-contract-kernel-bound}(1)), so the core has rank
+  $6(|W| - 1)$ at $(q(t), z(t))$
+  (\cref{lem:pencil-contract-magnified-rank},
+  \cref{lem:pencil-rank-congr}), and the rows of the other edges, with
+  the columns of $W$ deleted, have rank at least
+  $\operatorname{tgt}(G/H)$. By \cref{lem:block-rank-contract} the rank of
+  $G$ at $(q(t), z(t))$ is at least
+  $6(|W| - 1) + \operatorname{tgt}(G/H) = \operatorname{tgt}(G)$, since
+  $|V(G/H)| = |V(G)| - |W| + 1$ and $G/H$ has the deficiency of $G$. So
+  \cref{lem:pencil-x0-one-witness} applies. This reaches the rank of the
+  core without the informal argument's restriction of heights onto $H$
+  and its dominance argument (the remark below).
+\end{proof}
+
+\begin{remark}
+  The informal argument reaches the rank of the core otherwise. It
+  shows that at a general picture the heights of $G$ restrict onto those
+  of $H$, which under additivity follows from Jackson and Jord\'an's
+  equality at $H$ and at $G/H$, and it deduces that the core is rigid at
+  the general configuration of $G$ because restriction to the core is
+  then dominant. The proof above needs neither. The two bounds on
+  $\ker M(0)$ give the corresponding statement for the solutions of
+  $M(0)$ at one picture, and the rank of the core along the curve is read
+  over the fixed picture $q$, where the general configuration of $H$
+  attains.
+
+  Informally the hypothesis is additivity, since the reverse inequality
+  $\operatorname{def}_2(G) \le \operatorname{def}_2(H) +
+  \operatorname{def}_2(G/H)$ holds for every $W$; only the inequality
+  stated is used, and the reverse is not formalized. At a core of planar
+  deficiency zero the hypothesis is the conservation of the planar
+  deficiency (\cref{lem:pencil-contraction-deficiency}, at $n = 2$), and
+  the general configuration of $H$ attains (\cref{cor:pencil-jj-flat}),
+  so \cref{thm:pencil-x0-contract-rigid} is the case
+  $\operatorname{def}_2(H) = 0$; it is proved separately, along the flat
+  core and with no attainment at $H$. The structural coverage supplies
+  additivity at its cores from a partition condition on $G$.
 \end{remark}
 
 \subsection{The passage to the two main-component statements}

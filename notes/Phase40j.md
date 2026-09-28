@@ -5,7 +5,8 @@ group (`notes/Phase40-design.md` §3 STEPS), proved the split-off step at a body
 whose neighbours `a ≁ b`, the one-body ear `a − x − b` on `V₁`: if `X₀` attains at
 `G″ = G.splitOff (x 0) a b (e 0)` (`G` with `x` suppressed) and
 `deficiencyMerged₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])` (Step MC11's `δ ≥ 5`), then `X₀(G)` attains
-((MC-31)). No new mathematics. **Next: STEPS' CONTRACT-A group, not yet opened** — see *Hand-off*.
+((MC-31)). No new mathematics. **Next: 40k = CONTRACT-A, opened 2026-09-28** — see
+`notes/Phase40k.md`.
 
 ## Current state
 
@@ -91,15 +92,11 @@ helpers.
 
 ## Hand-off / next phase
 
-**40j is closed. Next: STEPS' CONTRACT-A group, not yet opened.** It is the next group in the
-design doc's list order, and the last of STEPS' groups: contraction at an additive core,
-(MC-67)–(MC-71). The next concrete step is **CONTRACT-A's design recon** (opus,
-compiler-checked), by the 40f–40j precedent; the group opens as 40k after it. Its inputs are the
-design doc's §3 STEPS CONTRACT-A entry and the landed CONTRACT-R step (`Contract.lean`,
-`notes/Phase40f.md`). It factors out the shared part of CONTRACT-R's assembly (PI decision 4,
-2026-09-26) and splits `Contract.lean` (1 496 lines, at the ~1500-line tripwire) along that line: the
-general pieces to a shared file, the flat-core pieces and CONTRACT-R's assembly left behind. The
-split waits for CONTRACT-A because the factoring decides the cut.
+**40j is closed. The next step moved to `notes/Phase40k.md`:** STEPS' CONTRACT-A group, the last,
+contraction at an additive core ((MC-71)), opened as 40k (2026-09-28), design-first from a
+compiler-checked recon (opus) with no new mathematics. Its first build splits `Contract.lean`
+(1 496 lines) along the factoring the recon found: the general pieces to a new
+`ContractCurve.lean`, the flat-core pieces and CONTRACT-R's assembly left behind.
 
 **Cleanup-round item** (call 9; the design doc's SPLITOFF entry): `span_supportExtensor_ofNormals_eq`
 could replace the orientation split inlined in
