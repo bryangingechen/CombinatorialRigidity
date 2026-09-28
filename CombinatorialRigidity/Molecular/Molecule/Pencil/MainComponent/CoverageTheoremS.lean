@@ -7,12 +7,14 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
 import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 
 /-!
-# Theorem S's reductions and the count of bodies of degree two (Phase 40m THEOREM-S B4)
+# Theorem S, the covering theorem and the pieces they compose from (Phase 40m THEOREM-S B4–B5)
 
 A usable chain's dispatch, contraction at a maximal planar-rigid set, and the count of bodies of
-degree two a sparse (H)-graph needs, all of which Theorem S composes from
+degree two a sparse (H)-graph needs, all of which Theorem S composes from; Theorem S itself; and
+the covering theorem — every (H)-graph reduces by one landed step, hence `X₀`'s general point
+attains at every simple 2-edge-connected graph on at least three bodies
 (`blueprint/src/chapter/main-component.tex`, `sec:main-component-coverage`; (MC-75), (MC-76),
-(MC-79)ff, (MC-80)).
+(MC-79)ff, (MC-80), (MC-89), (MC-10)(a)).
 
 ## Main statements
 
@@ -25,8 +27,14 @@ degree two a sparse (H)-graph needs, all of which Theorem S composes from
   set** (`lem:pencil-x0-planar-rigid-reduces`).
 * `Graph.IsX0Graph.exists_degree_eq_two_notMem`,
   `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos` — **counting bodies of degree two**
-  (`lem:pencil-x0-sparse-count`): a sparse graph has at least four, and removing one whose
-  neighbours are all hubs keeps `val₃ ≤ 0`.
+  (`lem:pencil-x0-sparse-count`): a sparse graph has at least four, and, when no two are adjacent,
+  removing any one of them keeps `val₃ ≤ 0`.
+* `Graph.IsX0Graph.exists_additiveCore` — **Theorem S** (`thm:pencil-x0-theorem-s`): an (S)-graph
+  none of whose chains is usable has an additive core with the attachment condition.
+* `Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains`,
+  `Graph.X0Attains.of_twoEdgeConnected` — **the covering theorem** (`thm:pencil-x0-coverage`):
+  every (H)-graph reduces by one landed step, and consequently `X₀`'s general point attains at
+  every (H)-graph, in particular at every simple 2-edge-connected graph on at least three bodies.
 -/
 
 open scoped Graph
@@ -350,5 +358,223 @@ theorem _root_.Graph.IsOpenEar.deficiency_three_induce_cycle {G : Graph α β} (
     linarith
   exact ⟨hXV, by omega, Graph.deficiency_three_induce_eq_zero_of_tight
     (fun Z hZ => hSv Z (hZ.trans hXV)) (by omega) hval⟩
+
+/-! ## Theorem S and the covering theorem -/
+
+/-- The core producer: a maximal rigid superset of a rigid `Y` avoiding `X₀` is an additive core
+with the attachment condition. -/
+theorem _root_.Graph.IsX0Graph.exists_additiveCore_of_rigid {G : Graph α β}
+    (hG : G.IsX0Graph)
+    (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
+    {X₀ Y : Set α} (hX₀ : X₀.Subsingleton) (hX₀V : X₀ ⊆ V(G)) (hYX₀ : Y ⊆ V(G) \ X₀)
+    (hY2 : 2 ≤ Y.ncard) (hYd : (G.induce Y).deficiency 3 = 0)
+    (hprop : X₀ = ∅ → G.deficiency 3 ≠ 0) (hdeg : ∀ x ∈ X₀, G.degree x ≤ 2)
+    (hattX : ∀ x ∈ X₀, ∀ W ⊆ V(G) \ X₀, 2 ≤ W.ncard → (G.induce W).deficiency 3 = 0 →
+      ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj x c₁ → G.Adj x c₂ → c₁ = c₂) :
+    ∃ W r, r ∈ W ∧ W ⊂ V(G) ∧ 2 ≤ W.ncard ∧ (G.induce W).deficiency 3 = 0 ∧
+      (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
+        G.deficiency 2 ∧
+      ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
+  obtain ⟨W, hYW, hWU, hWd, hmax⟩ := G.exists_maximal_deficiency_induce_eq_zero 3 hYX₀ hYd
+  have hWV : W ⊆ V(G) := hWU.trans Set.sdiff_subset
+  have hW2 : 2 ≤ W.ncard := hY2.trans (Set.ncard_le_ncard hYW (Set.toFinite _))
+  obtain ⟨r, hr⟩ : W.Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  have hWX₀ : Disjoint W X₀ := Set.disjoint_left.mpr fun w hw hwX₀ => (hWU hw).2 hwX₀
+  have hWss : W ⊂ V(G) := by
+    refine hWV.ssubset_of_ne fun hWeq => ?_
+    have hX₀e : X₀ = ∅ := Set.eq_empty_of_forall_notMem fun x hx =>
+      Set.disjoint_left.mp hWX₀ (hWeq ▸ hX₀V hx) hx
+    apply hprop hX₀e
+    rw [← Graph.induce_vertexSet G, ← hWeq]
+    exact hWd
+  have hattW : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
+    intro u hu c₁ hc₁ c₂ hc₂ h₁ h₂
+    by_cases huX₀ : u ∈ X₀
+    · exact hattX u huX₀ W hWU hW2 hWd c₁ hc₁ c₂ hc₂ h₁ h₂
+    by_contra hne
+    have hins := Graph.deficiency_induce_insert_eq_zero (by decide) hWd hu hc₁ hc₂ hne h₁ h₂
+    have := hmax (insert u W) (Set.subset_insert _ _)
+      (Set.insert_subset ⟨h₁.left_mem, huX₀⟩ hWU) hins
+    exact hu (this ▸ Set.mem_insert u W)
+  have hmono := Graph.partitionDef_induce_id_le_of_maximal hSv ⟨r, hr⟩ hWX₀ hWd
+    hmax hX₀ (fun x hx Y' hxY' => (Graph.ncard_setOf_isLink_le_degree hxY').trans (hdeg x hx))
+    (fun x hx => Graph.ncard_setOf_isLink_le_one hG.simple (hattX x hx W hWU hW2 hWd))
+  exact ⟨W, r, hr, hWss, hW2, hWd,
+    Graph.deficiency_induce_add_deficiency_rigidContract_le hSv hWV hr hmono, hattW⟩
+
+/-- **Theorem S** in the Lean steps' form ((MC-80) with (MC-87)): an (S)-graph none of whose
+chains is usable has an additive core with the attachment condition. -/
+theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX0Graph)
+    (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
+    (hhub : ∃ w ∈ V(G), G.degree w ≠ 2)
+    (hS : ∀ X ⊆ V(G), 2 ≤ X.ncard → (G.induce X).deficiency 2 ≠ 0)
+    (hblk : ∀ (V₁ : Set α) (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β),
+      G.IsChain V₁ x a b e → ¬ G.ChainUsable V₁ k a b) :
+    ∃ W r, r ∈ W ∧ W ⊂ V(G) ∧ 2 ≤ W.ncard ∧ (G.induce W).deficiency 3 = 0 ∧
+      (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
+        G.deficiency 2 ∧
+      ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
+  have hSv := Graph.one_le_partitionDef_induce_id hS
+  -- a blocked two-body chain has adjacent ends, and its 4-cycle is rigid
+  have hk2 : ∀ (V₁ : Set α) (x : Fin 2 → α) (a b : α) (e : Fin 3 → β),
+      G.IsChain V₁ x a b e → G.Adj a b := by
+    intro V₁ x a b e hC
+    have hb := hblk _ _ _ _ _ _ hC
+    have hδ : (G.induce V₁).deficiencyMerged 3 a b ≠ (G.induce V₁).deficiency 3 :=
+      fun h => hb (Or.inr (Or.inl ⟨rfl, Or.inl h⟩))
+    have hnot : ¬ G.Adj a b → ¬ ((G.induce V₁).deficiencyMerged 2 a b + 2 ≤
+        (G.induce V₁).deficiency 2) := fun hn h => hb (Or.inr (Or.inl ⟨rfl, Or.inr ⟨hn, h⟩⟩))
+    by_contra hnadj
+    have hSv' : ∀ X ⊆ V(G.induce V₁), 2 ≤ X.ncard →
+        1 ≤ ((G.induce V₁).induce X).partitionDef 2 id := fun X hX hX2 => by
+      have hX' : X ⊆ V₁ := hX
+      rw [Graph.induce_induce_of_subset G hX']
+      exact hSv X (hX'.trans (hC.cover ▸ Set.subset_union_left)) hX2
+    have hnadj' : ¬ (G.induce V₁).Adj a b := fun ⟨f, hf⟩ => hnadj ⟨f, hf.1⟩
+    exact hnot hnadj (Graph.deficiencyMerged_two_add_two_le hSv' hC.left_mem hC.right_mem hC.ne
+      hnadj' hδ)
+  obtain ⟨v, hv, hv2, -⟩ := hG.exists_degree_eq_two_notMem hSv (s := ∅) (by simp)
+  obtain ⟨V₁, k, x, a, b, e, hC, hvx⟩ := hG.exists_isChain h2c hhub hv hv2
+  have hbC := hblk _ _ _ _ _ _ hC
+  have hk3 : k < 3 := Nat.lt_of_not_le fun h => hbC (Or.inl h)
+  by_cases hrig : G.deficiency 3 = 0
+  · -- the rigid case: a body `x₀` of degree two and a rigid set avoiding it
+    obtain ⟨x₀, hx₀V, hx₀2, Y, hYx₀, hY2, hYd⟩ : ∃ x₀ ∈ V(G), G.degree x₀ = 2 ∧
+        ∃ Y ⊆ V(G) \ {x₀}, 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 3 = 0 := by
+      by_cases hadj : ∃ v w, G.degree v = 2 ∧ G.degree w = 2 ∧ v ∈ V(G) ∧ G.Adj v w
+      · obtain ⟨v', w', hv'2, hw'2, hv'V, hv'w'⟩ := hadj
+        obtain ⟨V₁', k', x', a', b', e', hC', hv'x'⟩ := hG.exists_isChain h2c hhub hv'V hv'2
+        have h2 := hC'.two_le_of_adj hv'x' hv'w' hw'2
+        have h3 : k' < 3 := Nat.lt_of_not_le fun h => hblk _ _ _ _ _ _ hC' (Or.inl h)
+        obtain rfl : k' = 2 := by omega
+        have hab' := hk2 _ _ _ _ _ hC'
+        obtain ⟨hcycV, hcyc2, hcycd⟩ :=
+          hC'.toIsOpenEar.deficiency_three_induce_cycle hG hab' hSv
+        obtain ⟨x₀, hx₀V, hx₀2, hx₀s⟩ :=
+          hG.exists_degree_eq_two_notMem hSv (s := {x' 0, x' 1})
+            ((Set.ncard_pair_le _ _).trans (by norm_num))
+        refine ⟨x₀, hx₀V, hx₀2, _, fun y hy => ⟨hcycV hy, ?_⟩, hcyc2, hcycd⟩
+        rintro rfl
+        rcases hy with rfl | rfl | rfl | rfl
+        · exact absurd hx₀2 (by have := hC'.three_le_degree_left; omega)
+        · exact hx₀s (Or.inl rfl)
+        · exact hx₀s (Or.inr rfl)
+        · exact absurd hx₀2 (by have := hC'.three_le_degree_right; omega)
+      · push Not at hadj
+        have hhubs : ∀ v w, G.degree v = 2 → G.Adj v w → 3 ≤ G.degree w := by
+          intro v w hv2' hvw
+          have := hG.two_le_degree w hvw.right_mem
+          by_contra h3
+          exact hadj v w hv2' (by omega) hvw.left_mem hvw
+        have hval := hG.partitionDef_three_induce_diff_nonpos hhubs hv hv2
+        have hcard : 2 ≤ (V(G) \ {v}).ncard := by
+          have h3 : 3 ≤ V(G).ncard := hG.three_le_ncard_vertexSet
+          rw [Set.ncard_sdiff_singleton_of_mem hv]; omega
+        obtain ⟨Y, hYs, hY2, hYd⟩ :=
+          Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos
+            (G := G) (n := 3) Set.sdiff_subset hcard hval
+        exact ⟨v, hv, hv2, Y, hYs, hY2, hYd⟩
+    refine hG.exists_additiveCore_of_rigid hSv (X₀ := {x₀}) Set.subsingleton_singleton
+      (Set.singleton_subset_iff.mpr hx₀V) hYx₀ hY2 hYd (fun h => absurd h
+        (Set.singleton_ne_empty x₀)) (fun y hy => by rw [Set.mem_singleton_iff.mp hy, hx₀2]) ?_
+    rintro y hy W hW hW2 hWd c₁ hc₁ c₂ hc₂ h₁ h₂
+    rw [Set.mem_singleton_iff] at hy
+    subst hy
+    by_contra hne
+    have hWV : W ⊆ V(G) := hW.trans Set.sdiff_subset
+    have hyW : y ∉ W := fun h => (hW h).2 rfl
+    -- a neighbour of degree two in a rigid set would have degree `≤ 1` there
+    have hhub : ∀ c ∈ W, G.Adj y c → 3 ≤ G.degree c := by
+      intro c hc hyc
+      have h2 := Graph.two_le_degree_of_isKDof_zero (G := G.induce W) (n := 3) (by decide) hWd
+        hc hW2
+      have hlt := Graph.degree_induce_lt_of_adj hc hyW hyc.symm
+      have := hG.two_le_degree c (hWV hc)
+      by_contra h3
+      omega
+    obtain ⟨e₁, he₁⟩ := h₁
+    obtain ⟨e₂, he₂⟩ := h₂
+    have hC₁ := hG.isChain_one hx₀2 he₁.symm he₂ hne (hhub c₁ hc₁ ⟨e₁, he₁⟩)
+      (hhub c₂ hc₂ ⟨e₂, he₂⟩)
+    have hb₁ := hblk _ _ _ _ _ _ hC₁
+    apply hb₁ (Or.inr (Or.inr ⟨rfl, Or.inl ?_⟩))
+    have hWd' : ((G.induce (V(G) \ {y})).induce W).deficiency 3 = 0 := by
+      rwa [Graph.induce_induce_of_subset G hW]
+    exact Graph.deficiencyMerged_eq_deficiency_of_mem (by decide) hW hWd' hc₁ hc₂
+  · -- the non-rigid case: one blocked chain lies in a rigid set
+    obtain ⟨Y, hYV, hY2, hYd⟩ : ∃ Y ⊆ V(G), 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 3 = 0 := by
+      have hk1 := hC.one_le
+      obtain rfl | rfl : k = 1 ∨ k = 2 := by omega
+      · by_contra hno
+        push Not at hno
+        apply hbC (Or.inr (Or.inr ⟨rfl, Or.inr ?_⟩))
+        exact Graph.deficiencyMerged_three_add_five_le (hC.cover ▸ Set.subset_union_left)
+          (hC.notMem 0) hC.left_mem hC.right_mem hC.ne
+          (show G.IsLink (e 0) a (x 0) from hC.isLink 0).symm (hC.isLink 1)
+          (fun Y hY _ hY2 => hno Y hY hY2)
+      · obtain ⟨hcycV, hcyc2, hcycd⟩ :=
+          hC.toIsOpenEar.deficiency_three_induce_cycle hG (hk2 _ _ _ _ _ hC) hSv
+        exact ⟨_, hcycV, hcyc2, hcycd⟩
+    exact hG.exists_additiveCore_of_rigid hSv (X₀ := ∅) Set.subsingleton_empty
+      (Set.empty_subset _) (by simpa using hYV) hY2 hYd (fun _ => hrig) (by simp) (by simp)
+
+/-- (MC-89)'s step 5: an (S)-graph that is 2-connected and not a cycle reduces (θ-graphs
+included: their longest path is a usable chain, and Theorem S's proof does not exclude them). -/
+theorem _root_.Graph.IsX0Graph.x0Reduces_of_sparse {G : Graph α β} (hG : G.IsX0Graph)
+    (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected) (htec : G.TwoEdgeConnected)
+    (hhub : ∃ w ∈ V(G), G.degree w ≠ 2)
+    (hS : ∀ X ⊆ V(G), 2 ≤ X.ncard → (G.induce X).deficiency 2 ≠ 0) :
+    G.X0Reduces G.X0Below := by
+  have hSv := Graph.one_le_partitionDef_induce_id hS
+  by_cases hu : ∃ (V₁ : Set α) (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β),
+      G.IsChain V₁ x a b e ∧ G.ChainUsable V₁ k a b
+  · obtain ⟨V₁, k, x, a, b, e, hC, hCu⟩ := hu
+    exact hC.x0Reduces_of_chainUsable hG h2c hSv hCu
+  · push Not at hu
+    obtain ⟨W, r, hr, hWss, hW2, hdef3, hadd, hatt⟩ := hG.exists_additiveCore h2c hhub hS hu
+    exact hG.x0Reduces_of_additiveCore htec hr hWss hW2 hdef3 hadd hatt
+
+/-- **The covering theorem** ((MC-89)'s case analysis): every (H)-graph reduces by one landed
+step to smaller (H)-graphs. -/
+theorem _root_.Graph.IsX0Graph.x0Reduces {G : Graph α β} (hG : G.IsX0Graph) :
+    G.X0Reduces G.X0Below := by
+  by_cases htec : G.TwoEdgeConnected
+  swap
+  · exact hG.x0Reduces_of_not_twoEdgeConnected htec
+  by_cases h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected
+  swap
+  · push Not at h2c
+    obtain ⟨v, hv, hdisc⟩ := h2c
+    exact hG.x0Reduces_of_not_connected htec hv hdisc
+  by_cases hcyc : ∀ v ∈ V(G), G.degree v = 2
+  · exact hG.x0Reduces_of_forall_degree_eq_two hcyc
+  push Not at hcyc
+  by_cases hflat : G.deficiency 2 = G.deficiency 3
+  · exact .flat hflat
+  have hpos : 0 < G.deficiency 2 := by
+    have h3 := Graph.Connected.deficiency_three_le_deficiency_two hG.connected
+    have h0 := Graph.deficiency_nonneg G 3 hG.connected.nonempty
+    omega
+  by_cases hrig : ∃ Y ⊆ V(G), 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 2 = 0
+  · obtain ⟨Y, hY, hY2, hYd⟩ := hrig
+    exact hG.x0Reduces_of_deficiency_two_rigid htec hpos hY hY2 hYd
+  push Not at hrig
+  exact hG.x0Reduces_of_sparse h2c htec hcyc hrig
+
+/-- **(MC-10)(a)**: `X₀(G)`'s general point attains at every simple connected graph of minimum
+degree two. Pinned at `thm:pencil-x0-coverage` (whose statement carries this attainment
+consequence); also `thm:pencil-x0-generic-attains`'s first sentence, pinned at MOTIVES. -/
+theorem _root_.Graph.IsX0Graph.x0Attains [Infinite K] {G : Graph α β} (hG : G.IsX0Graph) :
+    G.X0Attains K :=
+  Graph.X0Attains.of_isX0Graph_of_x0Reduces (fun _ hG' => hG'.x0Reduces) hG
+
+/-- The consumer's form (MOTIVES, `X0Dist`'s graphs): simple, 2EC, `3 ≤ |V|`. -/
+theorem _root_.Graph.X0Attains.of_twoEdgeConnected [Infinite K] {G : Graph α β}
+    (hS : G.Simple) (hV : 3 ≤ V(G).ncard) (htec : G.TwoEdgeConnected) : G.X0Attains K :=
+  Graph.IsX0Graph.x0Attains
+    { simple := hS
+      connected := Graph.connected_iff.mpr ⟨Set.nonempty_of_ncard_ne_zero (by omega),
+        Graph.preconnected_of_twoEdgeConnected htec⟩
+      two_le_degree := fun v hv => Graph.two_le_degree_of_twoEdgeConnected htec hv (by omega) }
 
 end CombinatorialRigidity.Molecular

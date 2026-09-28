@@ -4086,6 +4086,8 @@ additive core applies.
 
 \begin{theorem}[A core when no chain is usable]
   \label{thm:pencil-x0-theorem-s}
+  \lean{Graph.IsX0Graph.exists_additiveCore}
+  \leanok
   \uses{def:pencil-x0-usable-chain, def:pencil-x0-standing,
         def:rigid-contraction}
   Let $G$ satisfy the standing hypotheses, with $G - v$ connected for
@@ -4100,6 +4102,7 @@ additive core applies.
   \]
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-sparse, lem:pencil-x0-sparse-count,
         lem:pencil-x0-chain-exists, lem:deficiency-one-body-chain,
         lem:deficiency-two-body-chain, lem:deficiency-tight-rigid,
@@ -4145,6 +4148,9 @@ additive core applies.
 
 \begin{theorem}[The structural coverage]
   \label{thm:pencil-x0-coverage}
+  \lean{Graph.IsX0Graph.x0Reduces, Graph.IsX0Graph.x0Attains,
+        Graph.X0Attains.of_twoEdgeConnected}
+  \leanok
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing,
         def:pencil-x0-attains, def:cut-edges-2ec}
   Every graph satisfying the standing hypotheses reduces to the graphs
@@ -4154,6 +4160,7 @@ additive core applies.
   on at least three bodies.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-reduction-attains, lem:pencil-x0-cut-reduces,
         lem:pencil-x0-cycle-reduces, lem:pencil-x0-planar-rigid-reduces,
         lem:pencil-x0-chain-exists, lem:pencil-x0-chain-reduces,
