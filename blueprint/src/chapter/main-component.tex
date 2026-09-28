@@ -2526,6 +2526,8 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
 \begin{lemma}[An incidence meets two open conditions]
   \label{lem:pencil-one-ear-incidence}
+  \lean{CombinatorialRigidity.Molecular.exists_incidence}
+  \leanok
   Let $K$ be infinite, let $L$ be a linear subspace of $K^\sigma$ for a
   finite index set $\sigma$, and let $D \colon K^\sigma \to K^3$ be linear
   with $\dim D(L) \ge 2$; read $D(z)$ as the affine function
@@ -2554,6 +2556,8 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
 \begin{lemma}[The base configuration of a one-body ear]
   \label{lem:pencil-one-ear-base}
+  \lean{Graph.exists_oneEar_base}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-weighted-lifting-system,
         def:pencil-admissible-picture, def:deficiency-merged}
   Let $K$ be infinite and let $H$ be simple, with an open ear $a - x - b$
@@ -2575,6 +2579,7 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:graph-operations, lem:splitoff-deficiency-merged,
         thm:pencil-jj-equality, lem:pencil-lifting-space-deficiency,
         lem:pencil-flag-genericity, lem:pencil-one-ear-incidence,
@@ -2620,6 +2625,8 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
 \begin{theorem}[An open ear with one interior body]
   \label{thm:pencil-x0-open-ear-one}
+  \lean{Graph.X0Attains.of_openEar_one}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:D-deficiency,
         def:deficiency-merged}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses
@@ -2633,6 +2640,7 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-one-ear-base, lem:pencil-x0-main-picture-open,
         lem:pencil-ear-hinge-span, lem:block-rank-ear,
         lem:pencil-rank-congr, lem:pencil-x0-one-witness}
