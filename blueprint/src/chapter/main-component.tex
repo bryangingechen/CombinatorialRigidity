@@ -1886,7 +1886,8 @@ target rank of $G$ as soon as
 and then the general configuration of $G$ attains
 (\cref{lem:pencil-x0-one-witness}). With two interior bodies, three
 independent hinges suffice when the deficiency of $G$ is at least that of
-$G[V_1]$, and the three joins of a flat configuration are independent.
+$G[V_1]$, and the three joins of the ear are independent at a suitable
+flat configuration.
 With three or four interior bodies no bound on the deficiency is assumed.
 Besides $G[V_1]$, the step then uses $G$ with its second interior body
 $x_2$ suppressed, and the count is taken against it: putting $x_2$ back on a
@@ -1895,11 +1896,12 @@ unless the span already contains every line through that neighbour
 (\cref{lem:pencil-insertion}). If it contains every line through $x_1$
 and every line through $x_3$, then with four interior bodies it contains
 the six edges of a tetrahedron. With three, either some relative screw
-pairs to a nonzero value with the line $x_1 x_3$
-(\cref{def:pencil-line-pairing}), and then lies outside the span of the
-lines through $x_1$ or $x_3$, or every relative screw pairs to zero with
-every line joining the planes of the two ends, and then the whole span
-has dimension at most three (\cref{lem:pencil-bilinear}). The data on
+pairs to a nonzero value (\cref{def:pencil-line-pairing}) with some line
+joining the planes of the two ends, and then, for a general ear, with
+the line $x_1 x_3$, so that it lies outside the span of the lines through
+$x_1$ and the lines through $x_3$ (\cref{lem:pencil-two-stars}); or every
+relative screw pairs to zero with every such line, and then the whole
+span has dimension at most three (\cref{lem:pencil-bilinear}). The data on
 $V_1$ are fixed first, from one configuration at which both smaller
 graphs attain, and the data of the ear second
 (\cref{lem:pencil-ear-data}).
@@ -2154,9 +2156,10 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   (\cref{lem:pencil-chain-span-certificates}), so the three ear edges
   $a x_1$, $x_1 x_2$ and $x_2 b$ carry the joins $Y_4 \wedge Y_5$,
   $Y_5 \wedge Y_0$ and $Y_0 \wedge Y_1$ of the closed hexagon, which are
-  linearly independent. The picture $q^*$ only makes nonzero the
-  polynomial $P$ of \cref{lem:pencil-join-independence-open} at the
-  heights $0$.
+  linearly independent. The picture $q^*$ need not be admissible: it
+  only shows that the polynomial $P$ of
+  \cref{lem:pencil-join-independence-open}, at the heights $0$, is
+  nonzero.
 
   Take a picture $q$ off the zero sets of $P$, of the polynomial of the
   attainment at $G[V_1]$, and of the main-picture polynomial of $G$
@@ -2226,10 +2229,11 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   functions with which $z^*$ agrees on the closed neighbourhoods of $a$
   and $b$ in $G''$; they agree with $z_1$ on those in $G[V_1]$, as
   \cref{lem:pencil-ear-data} asks. Write $\hat\pi_a$ and $\hat\pi_b$ for
-  the homogeneous points of their planes, which contain $p_a$ and $x_1$,
-  and $p_b$ and $x_4$, at every configuration of ear data of $G$ or $G''$
-  with these base data. Since $x_1$ and $x_4$ lie in those
-  neighbourhoods, $(q^*, z^*)$ is the configuration of one ear datum $s^*$.
+  the homogeneous points of their planes, which contain $p_a$ and the
+  point of $x_1$, and $p_b$ and the point of $x_4$, at every configuration
+  of ear data of $G$ or $G''$ with these base data. Since $x_1$ and $x_4$
+  lie in those neighbourhoods, $(q^*, z^*)$ is the configuration of one
+  ear datum $s^*$.
   The rank of $G[V_1]$ and its relative screws $\rho$ read only the hinges
   on its links, which the points on $V_1$ fix
   (\cref{lem:pencil-rank-congr}, \cref{lem:pencil-picture-local}), so both
@@ -2375,8 +2379,8 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
   \emph{Putting $x_2$ back, and the configuration of $G$}, as in the proof
   of \cref{thm:pencil-x0-open-ear-four}. Some affine point $x$ for $x_2$,
-  next to $y_1$ or $y_3$ when $W$ misses a line through it
-  (\cref{lem:pencil-insertion}) and at $y_1$ when $W = \Lambda^2 K^4$, has
+  on a line through $y_1$ or $y_3$ that is not in $W$
+  (\cref{lem:pencil-insertion}), or at $y_1$ when $W = \Lambda^2 K^4$, has
   $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$, where
   $\Lambda = \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge x,\
   x \wedge y_3,\ y_3 \wedge p_b)$ (\texttt{exists\_insertion\_three}).
@@ -2394,6 +2398,22 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   $(\star)$ at $k = 3$, and \cref{lem:block-rank-ear} and
   \cref{lem:pencil-x0-one-witness} apply.
 \end{proof}
+
+\begin{remark}
+  The steps with three and four interior bodies count against $G''$, not
+  against $G[V_1]$ alone. Counting against $G[V_1]$ alone needs two
+  further inputs: a lower bound on $\dim \rho$ at a general configuration
+  of $G[V_1]$, from a further induction through an ear with two interior
+  bodies, and a property of the span of a general ear, proved case by
+  case over the projective types of the two ends, each a point on a
+  plane. Counting against $G''$ needs neither. $G''$ bounds $\dim W$
+  directly, and putting $x_2$ back gains a dimension unless $W$ contains
+  every line through $x_1$ and every line through $x_3$, in which case
+  $W = \Lambda^2 K^4$: with four interior bodies by the tetrahedron, and
+  with three by the split on $\rho$, in whose first case the only
+  question about the ends is whether their planes coincide
+  (\cref{lem:pencil-bilinear}).
+\end{remark}
 
 \begin{remark}[$\theta$-graphs]
   \label{rem:pencil-x0-theta}

@@ -1,123 +1,43 @@
 # Phase 40h — PENCIL-X0 / SHORT: the open ears with two, three and four interior bodies (work log)
 
-**Status:** in progress (opened design-first 2026-09-27). STEPS' fourth group
-(`notes/Phase40-design.md` §3 STEPS, the SHORT entry). It lands the open-ear steps with `k = 2, 3, 4`
-interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2`
-when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
-at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
-second-read). Fourteen nodes, all green; seven builds B1–B7, plus the `Carrier.lean` split
-before B3 (PI decision 5). B1–B7 landed (B3–B4 as one commit; B6 before B5; both the coordinator's
-calls), with the split. **The next concrete commit is the close** (docs and blueprint only) — see
-*Hand-off*.
+**Status:** ✓ complete (opened design-first, built and closed 2026-09-27). SHORT, STEPS' fourth
+group (`notes/Phase40-design.md` §3 STEPS), proved the open-ear steps with `k = 2, 3, 4` interior
+bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2` when
+`def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains at `G`
+with its second interior body suppressed ((MC-181), (MC-180): found by formalization, second-read).
+**Next: STEPS' ORBIT group, not yet opened** — see *Hand-off*.
 
 ## Current state
 
-**Opened.** Fourteen red nodes, with statements from the recon's compiled step statements, the second
-reader's compiled line geometry, and `ledger.py --brief` on (MC-54), (MC-179)–(MC-182) (Steps MC13,
-MC14):
-- `main-component.tex`, the new §`sec:main-component-short` (before the final statements subsection;
-  the chapter preamble names it):
-  - the line geometry (MC-179): `def:pencil-line-pairing` and the lemmas
-    `lem:pencil-line-pairing-join`, `lem:pencil-tetrahedron`, `lem:pencil-two-stars`,
-    `lem:pencil-plane-lines`, `lem:pencil-bilinear`, `lem:pencil-insertion`;
-  - EARGEN: `lem:pencil-ear-data`;
-  - the theorems `thm:pencil-x0-open-ear-two`, `thm:pencil-x0-open-ear-four`,
-    `thm:pencil-x0-open-ear-three`;
-  - the unpinned `rem:pencil-x0-theta`: θ-graphs are covered by COVERAGE's strong induction (PI
-    decision 3);
-- §`sec:main-component-carrier`: `lem:pencil-picture-local`, beside the definitions it reads (PI
-  decision 5);
-- `molecular-induction.tex`: `lem:splitoff-deficiency-reuse` ((MC-182)), after `lem:splitoff-deficiency`;
-- `deficiency.tex`: `lem:deficiency-ear-merge` (COVERAGE's bridge from `δ = 0`), after
-  `lem:deficiency-ear`.
+**Closed.** Six build commits (B1 `89a9c446`, B2 `ca7c2f43`, B3–B4 `8fc12079`, B6 `57a07b77`, B5
+`fd24389c`, B7 `a3ec5a8d`), the `Carrier.lean` split (`3f7f272d`) and the close landed. The fourteen
+nodes are green:
+- `main-component.tex` §`sec:main-component-short`: the line geometry (`def:pencil-line-pairing`,
+  `lem:pencil-line-pairing-join`, `lem:pencil-tetrahedron`, `lem:pencil-two-stars`,
+  `lem:pencil-plane-lines`, `lem:pencil-bilinear`, `lem:pencil-insertion`), `lem:pencil-ear-data`,
+  and `thm:pencil-x0-open-ear-two`, `…-four`, `…-three`, with the unpinned remarks after the three
+  theorems and `rem:pencil-x0-theta` (PI decision 3);
+- §`sec:main-component-carrier`: `lem:pencil-picture-local`;
+- `molecular-induction.tex`: `lem:splitoff-deficiency-reuse`; `deficiency.tex`:
+  `lem:deficiency-ear-merge`.
 
-**B1 landed** (the line geometry): its seven nodes are green, in the new `MainComponent/Lines.lean`
-and five `pointJoin` lemmas in `Flat.lean`.
+The Lean is `Molecule/Pencil/MainComponent/Lines.lean`, `EarGen.lean` and `Short.lean` (their module
+docstrings list the statements), with `Configuration.lean` split out of `Carrier.lean`, and pieces
+placed by PI decision 5's convention in `Carrier.lean`, `Flat.lean`, `Ear.lean`, `Cut.lean`,
+`RigidityMatrix/Bricks.lean`, `AlgebraicInduction/Pinning.lean` and
+`Induction/SplitOffDeficiency.lean`. The spikes (`scratch/40h/`, `scratch/40h-read/`,
+`scratch/40h-eargen/`, gitignored and local to this checkout) are all consumed.
 
-**B2 landed** (the two deficiency bounds): `Graph.splitOff_deficiency_le_of_eq_left`
-(`Induction/SplitOffDeficiency.lean`, beside `splitOff_deficiency_le`; module docstring's "KT
-4.3(ii)" corrected to 4.3(i)) and `Graph.deficiency_induce_le_of_ear_of_merge`
-(`MainComponent/Ear.lean`, beside `deficiency_induce_add_le_of_ear`), both proved by direct
-per-partition extension (no new infrastructure), matching the coordinator's route note verbatim.
-The merge lemma's `hinj : Function.Injective x` hypothesis is unused by this proof (kept, renamed
-`_hinj`, for statement parity with the blueprint's "distinct bodies" ear data and the sibling ear
-lemmas); its `[Finite β]` from the spike was dropped (genuinely unused, `lake lint` caught it).
-Five red nodes remain (B3–B7).
+**Headline axioms, re-verified at the close** on 49 declarations: the eighteen `formalization.yaml`
+main results and the thirty-one pins of the fourteen nodes. All 49 are exactly
+`[propext, Classical.choice, Quot.sound]`. *Measured, script not retained*: one `#print axioms` line
+per declaration under `import CombinatorialRigidity`, run with `lake lean` on the fully built tree
+(a full `lake build` first: 2 982 jobs, 0 warnings).
 
-**The `Carrier.lean` split landed** (PI decision 5, before B3; the plan was the design doc's §3
-CARRIER). `Carrier.lean` (1 496 lines) split along its section header `## The picture-to-normal API
-(Phase 40b CARRIER slice C3)`: C1–C2 (admissible pictures, `L(q)`, `Aff(q)`, `U`, `X0Attains`,
-`x0Attains_of_exists`) stayed in `Carrier.lean` (851 lines); C3, C3 item 5, C4, and C5′ moved to new
-`MainComponent/Configuration.lean` (691 lines), which imports `Carrier.lean`. No declaration renamed
-or re-stated, so no `\lean{...}` pin moved. `Flat.lean`'s import repointed from `Carrier` to
-`Configuration` (it uses `pointJoinFramework` and `ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`,
-both moved); every other downstream module (`Cut.lean`, `Bridge.lean`, `Contract.lean`, `Ear.lean`,
-`Chain.lean`, `Lines.lean`) reaches the moved declarations transitively through `Flat.lean`, per the
-project's one-hop-import convention. `CombinatorialRigidity.lean` gained the new import. Whole-project
-rebuild (2980 jobs): 0 errors, 0 warnings; `lake lint` clean; `blueprint/verify.sh` (`checkdecls`)
-passes unchanged (no blueprint edit this commit).
-
-**B3–B4 landed** (EARGEN, one commit): the EARGEN spike's Parts 0, 1, 2 and 5, and
-`pathEdge_injective`. `lem:pencil-picture-local` and `lem:pencil-ear-data` are green; the second
-was restated to RECON §2's text (the changed-statement gate), with `earConfig_of_mem` added to its
-pins (clause (1)'s "on `V₁` they are those of `(q₁, z₁)`"). Where each piece went:
-- `Carrier.lean`: `Graph.isAdmissiblePicture_congr` after `Graph.IsAdmissiblePicture`,
-  `Graph.liftingSpace_congr` after `Graph.mem_liftingSpace`;
-- new `MainComponent/EarGen.lean` (imports `Ear.lean` and `Lines.lean`; in the root import): Parts
-  1–2 — `earPicture`, `earHeight`, `earConfig`, the `…Poly` mirrors and their `eval` lemmas, the
-  `earPicture_…`/`earConfig_…` point values, `Graph.earHeight_mem_liftingSpace`, `joinPoly`, and the
-  two `exists_mvPolynomial_le_finrank_…` transfers;
-- `RigidityMatrix/Bricks.lean`: `BodyHingeFramework.relScrews_congr` after `relScrews`;
-  `AlgebraicInduction/Pinning.lean`: `BodyHingeFramework.finrank_span_rigidityRows_congr` after
-  `infinitesimalMotions_eq_of_isLink_span_supportExtensor`;
-- `Ear.lean`: `span_supportExtensor_comp_eq_map_pointJoin`, `finrank_sup_map_screwComplementIso`
-  after `screwComplementIso_pointJoin`; `Cut.lean`: `pathEdge_injective` after `pathVertex_injective`.
-
-**B6 landed** (the four-body step, before B5): `thm:pencil-x0-open-ear-four` is green, its proof
-prose rewritten to the Lean route (statement unchanged), with a remark after it on where the informal
-argument differs. Where each piece went (PI decision 5's convention):
-- `Flat.lean`: `pointJoin_add_smul_self_right`, beside `pointJoin_add_smul_left`; `Lines.lean`:
-  `exists_notMem_pointJoin_of_not_star_le` beside `star`'s lemmas, `exists_insertion_four` after
-  `exists_insertion_gain`; `EarGen.lean`: `earConfig_congr`, with the other point values of `earConfig`;
-- new `MainComponent/Short.lean` (in the root import; one-hop import of `EarGen.lean`):
-  `splitOff_ear_four`, `induce_splitOff_ear`, `Graph.isLink_update_splitOff` (the spike's inline
-  relinked selector), `linearIndependent_tetra_witness`, `Graph.exists_earBase_splitOff` (Steps 1–2,
-  *Decisions made*), and `Graph.X0Attains.of_openEar_four`, docstring citing (MC-180);
-- the spike's `range_fin_four`/`_five` were dropped for a `Matrix.range_cons` `simp only`
-  (FRICTION); `lake lint` found the base lemma's `[Finite β]` unused, dropped.
-
-**B5 landed** (the two-body step): `thm:pencil-x0-open-ear-two` is green, its statement the steps
-spike's, unchanged. `Graph.X0Attains.of_openEar_two` opens `Short.lean`, in its own section before
-the antecedent's, and mirrors `Graph.X0Attains.of_openEar` (*Decisions made*). The proof prose is
-rewritten to the Lean route; a remark after it keeps the admissibility argument, which the proof does
-not use.
-
-**B7 landed** (the three-body step): `thm:pencil-x0-open-ear-three` is green, its statement the
-steps spike's, unchanged; the proof prose is rewritten to the Lean route. Where each piece went:
-- `Lines.lean`: `eq_top_of_star_sup_star_le` (the case where some `c ∈ ρ` pairs to a nonzero
-  value with `y₁ ∧ y₃`) beside the two-star lemmas; `kleinLin_pointJoin_liftPlane`, the affine
-  witness `exists_klein_liftPlane_affine_ne_zero`, and `not_star_sup_star_le_of_klein` (the case
-  where all of `ρ` pairs to zero) after `finrank_sup_le_three_of_klein`; `exists_insertion_three`
-  after `exists_insertion_four`. All unpinned; the proof prose names them.
-- `Short.lean`: `splitOff_ear_three` after `splitOff_ear_four`, and
-  `Graph.X0Attains.of_openEar_three` in a last section, docstring citing (MC-181).
-
-**The spikes** live in the gitignored `scratch/40h/`, `scratch/40h-read/` and `scratch/40h-eargen/`,
-local to this checkout (builder pointers, not evidence):
-- `scratch/40h-eargen/EarGen.lean` (1 230 lines), the EARGEN recon's spike of the whole `k = 4` step,
-  sorry-free, with `Graph.X0Attains.of_openEar_four` stated as pinned; verdict in its `RECON.md`
-  (§4 the assembly, §6 the `k = 3` delta). All consumed: Parts 0–2, 5 in B3–B4, Parts 3, 4, 6, 7 in
-  B6, and §6 in B7.
-- `scratch/40h-read/S40hReadGeom.lean` (563 lines), the second reader's line geometry: consumed by
-  B1.
-- `scratch/40h/S40hSteps.lean` (177 lines): the four step statements (`of_openEar_one` is ORBIT's) and
-  the two deficiency lemmas, proofs `sorry`, and the θ instances. **`lake lean`**, re-run at this
-  open: exit 0, 0 errors, 14 warnings, six of them the disclosed `sorry`s.
 - **Satisfiability (kernel-checked in the steps spike, not landed).** θ(1,2,4), the triangle `0 1 2`
-  with the open ear `0 − 3 − 4 − 5 − 1`, meets `of_openEar_three`'s path hypotheses, and its
-  antecedent `θ(1,2,4).splitOff 4 3 5 4` is θ(1,2,3) in `of_openEar_two`'s format (the ear
-  `0 − 3 − 5 − 1` on the labels `3, 4, 6`, the freed label `4` relinked). So the antecedents chain.
-  By hand, not kernel-checked: `hdef` there is `def₃(K₃) = 0 ≤ def₃(θ(1,2,3))`, and θ(1,2,5) is the
+  with the open ear `0 − 3 − 4 − 5 − 1`, meets `of_openEar_three`'s hypotheses, and its antecedent
+  `θ(1,2,4).splitOff 4 3 5 4` is θ(1,2,3) in `of_openEar_two`'s format, so the antecedents chain. By
+  hand, not kernel-checked: `hdef` there is `def₃(K₃) = 0 ≤ def₃(θ(1,2,3))`, and θ(1,2,5) is the
   `k = 4` pattern.
 - **Faithfulness** (against (MC-180), (MC-181), (MC-54)): the Lean's `x 0, …, x (k − 1)` are the
   workbook's `x₁, …, x_k`, so `G.splitOff (x 1) (x 0) (x 2) (e 1)` suppresses the workbook's `x₂` and
@@ -126,26 +46,13 @@ local to this checkout (builder pointers, not evidence):
 - **`rem:pencil-x0-theta`'s counts** (measured, script not retained; an exhaustive partition
   enumeration): `def₂ = def₃ = 0` at `K₄ − e` and `K_{2,3}`, and `def₃(C_s) = 0` for `s ≤ 6`.
 
-**Statement provenance (the transcription guard: a red node's statement is checked by no gate).**
-- The three theorems and the two deficiency lemmas come from `S40hSteps.lean` and `ledger.py
-  --brief`.
-- The seven geometry nodes come from `S40hReadGeom.lean`'s statements. The pairing identity is the
-  compiled `kleinLin (pointJoin r s) (pointJoin p q) = det ![p, q, r, s]`; the spike's module
-  docstring ("−det") and the theorem's docstring ("up to sign") are stale.
-- `lem:pencil-picture-local` comes from the design doc's step-contract signatures (compiled in 40g's
-  prerequisite spike).
-- `lem:pencil-ear-data` was restated at B3–B4 to the EARGEN spike's compiled shape (RECON §2): the
-  ear data are a point for every body, the rank clause asks nonzero hinges at its witness, and the
-  family clause is a bound on `dim(ρ + span F)`.
-
 ## Architectural choices made up front
 
-- **The route** (the recon's verdict, second-read; the design doc's §3 STEPS, SHORT entry). The
-  landed ear rank law reduces each step to `dim(ρ ⊔ Λ_k) ≥ k + 1 + def₃(G[V₁]) − def₃(G)` at one
-  configuration where `G[V₁]` attains. `k = 2` is CHAIN-style, at one picture. For `k = 3, 4`, the
-  body `x₂` is put back into `G″` along an insertion curve, with the tetrahedron (`k = 4`) or the
-  bilinear lemma (`k = 3`) excluding failure. The count needs only (MC-182) and the landed
-  `Graph.deficiency_induce_add_le_of_ear`. The `V₁` data are fixed before the ear data (EARGEN).
+- **The route** (the recon's verdict, second-read; as landed, the *SHORT done* paragraph of
+  `notes/Phase40-design.md` §3 STEPS): the ear rank law reduces each step to
+  `dim(ρ ⊔ Λ_k) ≥ k + 1 + def₃(G[V₁]) − def₃(G)`; `k = 2` at one picture; `k = 3, 4` by putting `x₂`
+  back into `G″`, over base data fixed before the ear data (EARGEN), counted with (MC-182) and the
+  landed `Graph.deficiency_induce_add_le_of_ear`.
 - **The PI's decisions, verbatim** (2026-09-27; also `notes/pencil/adjudications.md`, the SHORT
   entry and the *SHORT opens as 40h* entry):
 
@@ -161,140 +68,75 @@ local to this checkout (builder pointers, not evidence):
   PI decision, 2026-09-27, on 40h's placement (verbatim answer to the coordinator's question):
   5. Placement — "Where should 40h's new general pieces go? The recon's layout: new MainComponent/Lines.lean (line geometry, including two pointJoin lemmas), new EarGen.lean (including the picture-locality congr lemmas for liftingSpace/IsAdmissiblePicture), new Short.lean (the three step theorems), plus SplitOffDeficiency.lean and Ear.lean. Convention would put the congr lemmas in Carrier.lean (1 496 lines; the plan recorded at 40b is to split it first) and the pointJoin lemmas in Flat.lean (865).": "Convention, split Carrier" — one extra commit at B3 splits Carrier.lean along its section headers (as planned at 40b; rebuilds the downstream Phase-40 modules once), then the congr lemmas go beside their definitions; the pointJoin lemmas go in Flat.lean. The 40f 'convention everywhere' precedent.
   ```
-- **The builds** are the design doc's plan table: B1–B7, one commit each (B3–B4 may take two), with
-  the `Carrier.lean` split as its own commit before B3.
-- **Blueprint placement.** The general pieces sit beside their related nodes, as 40g's did. The
-  steps are ordered two, four, three, as the workbook states (MC-180) before (MC-181) and as B6
-  precedes B7.
+- **The builds** were the design doc's plan table, B1–B7 with the `Carrier.lean` split before B3;
+  they landed as six commits and the split (B3–B4 as one, B6 before B5: the coordinator's calls).
+- **Blueprint placement.** The general pieces sit beside their related nodes, as 40g's did; the
+  steps are ordered two, four, three, as the workbook states (MC-180) before (MC-181).
 
 ## Lemma checklist
 
-Planned names from the spikes. Pins in **bold**; the other names are helpers, unpinned.
+All landed with the standard axioms (*Current state*); pins in **bold**.
 
-- [x] **B1, new `MainComponent/Lines.lean`** (source `S40hReadGeom.lean`):
-  - **`kleinLin`** → `def:pencil-line-pairing`;
-  - **`klein_pointJoin_pointJoin`**, **`eq_zero_of_kleinLin_eq_zero`** (`kleinLin_apply`,
-    `kleinLin_comm`, `klein_pointJoin_same`, `flatSigma_pointJoin`, `flatPi_pointJoin`) →
-    `lem:pencil-line-pairing-join`;
-  - **`linearIndependent_pointJoin_tetra`**, **`span_pointJoin_tetra_eq_top`** (`tetA`, `tetB`) →
-    `lem:pencil-tetrahedron`;
-  - **`star`**, **`star_sup_star_le_ker_klein`**, **`five_le_finrank_star_sup_star`**
-    (`pointJoin_mem_star`, `pointJoin_mem_star_right`) → `lem:pencil-two-stars`;
-  - **`planeLines`**, **`finrank_planeLines_le`**, **`pointJoin_liftPlane_mem_planeLines`**
-    (`liftPlane`, `planarProj_liftPlane`, `mem_planeLines`) → `lem:pencil-plane-lines`;
-  - **`klein_liftPlane`**, **`finrank_sup_le_three_of_klein`** → `lem:pencil-bilinear`;
-  - **`exists_insertion_ge`**, **`exists_insertion_gain`** (`exists_ne_zero_linearIndependent_affine`,
-    `linearIndependent_basis_sumElim_one`, `…_two`) → `lem:pencil-insertion`.
-  - In `Flat.lean`, beside `pointJoin` (PI decision 5): `pointJoin_add_smul_left`, `pointJoin_self`
-    (helpers). The spike's `pointJoin_swap` is a `pointJoin` fact too; the same convention may put it
-    there (the builder's call).
-  - **Landed** with every pin and helper above except three unpinned spike helpers:
-    `exists_ne_zero_linearIndependent_affine` and `linearIndependent_basis_sumElim_one`/`_two` give
-    way to `exists_ne_zero_add_smul_notMem`, a shorter insertion route (*Decisions made*).
-    `pointJoin_swap`, `flatSigma_pointJoin` and `flatPi_pointJoin` went to `Flat.lean` by the same
-    convention. `lem:pencil-plane-lines` pins in its clause order (`pointJoin_liftPlane_…` second).
-- [x] **B2** — `Induction/SplitOffDeficiency.lean`: **`Graph.splitOff_deficiency_le_of_eq_left`** →
-  `lem:splitoff-deficiency-reuse`, and the module docstring's "KT 4.3(ii)" corrected to 4.3(i);
-  `MainComponent/Ear.lean`: **`Graph.deficiency_induce_le_of_ear_of_merge`** →
-  `lem:deficiency-ear-merge`. **Landed** with both names exactly as planned.
-- [x] **The `Carrier.lean` split** (its own commit, before B3; PI decision 5; the plan is the design
-  doc's §3 CARRIER): C3–C5′ to a second file, C1–C2 left in `Carrier.lean`, the root import
-  updated. No declaration is renamed, so no pin moves. **Landed** as new
-  `MainComponent/Configuration.lean` (*Current state*).
-- [x] **B3–B4** (one commit) — `Carrier.lean`: **`Graph.isAdmissiblePicture_congr`**,
-  **`Graph.liftingSpace_congr`** → `lem:pencil-picture-local`; new `MainComponent/EarGen.lean`:
-  **`earPicture`**, **`earHeight`**, **`earConfig`**, **`eval_earPointPoly`**, **`earConfig_of_mem`**,
-  **`Graph.earHeight_mem_liftingSpace`**, **`eval_bind₁_earPicturePoly`**,
-  **`exists_mvPolynomial_le_finrank_ofNormals_bind`**,
-  **`exists_mvPolynomial_le_finrank_sup_span_pointJoin`** → `lem:pencil-ear-data` (restated). The
-  unpinned Part-5 helpers and `pathEdge_injective`: *Current state*.
-- [x] **B5**, `MainComponent/Short.lean` (created by B6): **`Graph.X0Attains.of_openEar_two`** →
-  `thm:pencil-x0-open-ear-two`. **Landed** under that name, docstring citing (MC-54).
-- [x] **B6**: **`Graph.X0Attains.of_openEar_four`** → `thm:pencil-x0-open-ear-four`; docstring cites
-  (MC-180). **Landed** with the proof prose in RECON §4's form (two rounds, no determinant, the
-  collision witness, `h_a`, `h_b` not unique) and Steps 1–2 factored (*Current state*).
-- [x] **B7**: **`Graph.X0Attains.of_openEar_three`** → `thm:pencil-x0-open-ear-three`; its docstring
-  cites (MC-181), not (MC-45). **Landed** with RECON §6's pieces, the helpers in *Current state*.
-- [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection, the
-  exposition ledger (a candidate: the insertion argument, which replaces the informal proof's orbit
-  case analysis), the headline axioms, the design doc's §3 STEPS, ROADMAP; the public surfaces stay
+- [x] **B1** (`89a9c446`) — new `Lines.lean`: **`kleinLin`** → `def:pencil-line-pairing`, and the
+  pins of the six line-geometry lemmas; five `pointJoin` helpers in `Flat.lean`.
+- [x] **B2** (`ca7c2f43`) — **`Graph.splitOff_deficiency_le_of_eq_left`** →
+  `lem:splitoff-deficiency-reuse`; **`Graph.deficiency_induce_le_of_ear_of_merge`** →
+  `lem:deficiency-ear-merge`.
+- [x] **The `Carrier.lean` split** (`3f7f272d`) — new `Configuration.lean`; no pin moved.
+- [x] **B3–B4** (`8fc12079`) — **`Graph.isAdmissiblePicture_congr`**, **`Graph.liftingSpace_congr`**
+  → `lem:pencil-picture-local`; new `EarGen.lean`, nine pins → `lem:pencil-ear-data` (restated to
+  the EARGEN spike's shape).
+- [x] **B6** (`57a07b77`), **B5** (`fd24389c`), **B7** (`a3ec5a8d`) — new `Short.lean`:
+  **`Graph.X0Attains.of_openEar_four`**, **`…_two`**, **`…_three`** → the three theorems.
+- [x] **The close** (docs and blueprint only): the end-to-end re-read, the exposition ledger, the
+  headline axioms, the design doc, ROADMAP and `MolecularConjecture.md`; the public surfaces left
   unchanged (the PI's standing call, recorded at 40f's close).
-- **Not 40h's:** the `k = 1` cell `of_openEar_one` (ORBIT, PI decision 2; its compiled statement is in
-  the steps spike and the design doc's ORBIT entry), and a named THETA theorem (PI decision 3).
+- **Not 40h's:** the `k = 1` cell `of_openEar_one` (ORBIT, PI decision 2) and a named THETA theorem
+  (PI decision 3).
 
 ## Blockers / open questions
 
-- **None for 40h's close.** The three-body step's near-copies of the four-body step are an open
-  FRICTION entry for a cleanup round, not a close item.
-- **ORBIT's open flag is not 40h's.** The supply of `of_openEar_one`'s `hδ₂`, which fails at `K_{2,3}`,
-  is the tracked item in the design doc's §3 STEPS, ORBIT entry.
+- **None for 40h.** Four cleanup-round items from the close are tracked in the design doc's §3
+  STEPS SHORT entry, none of them a gate for ORBIT.
 
 ## Hand-off / next phase
 
-**The next concrete commit is the close** (docs and blueprint only; the checklist's last item):
-the end-to-end re-read of §`sec:main-component-short`, the exposition-ledger entry (the insertion
-argument), the headline axioms, the design doc's §3 STEPS entry, and ROADMAP's row and §40h; the
-public surfaces stay unchanged. No Lean is left in 40h.
+**40h is closed. Next: STEPS' ORBIT group, not yet opened and no letter minted.** The PI's D2
+(2026-09-26, `notes/pencil/adjudications.md`) put it "right after SHORT", although the design doc's
+grouping list prints it last. It holds the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` cell ((MC-173), (MC-176),
+(MC-175)(i)(ii)) and, since PI decision 2, SHORT's `k = 1` cell (`of_openEar_one`, (MC-174), U2,
+(MC-175)(iii)). The smallest concrete next step is **ORBIT's design recon**, as every STEPS group
+has opened. Its inputs are the design doc's §3 STEPS ORBIT entry, with the compiled `of_openEar_one`
+statement and the tracked trace of its `hδ₂` (which fails at `K_{2,3}`). The landed EARGEN device
+(`EarGen.lean`) and `Graph.exists_earBase_splitOff` (`Short.lean`) are there to reuse.
+
+**The cleanup-round items** (the design doc's SHORT entry, with line counts and plans):
+- the split plans for `Short.lean` (1 366 lines) and `Bricks.lean` (1 458), for the next commit to
+  grow either past ~1500;
+- the B2 dedupe of `splitOff_deficiency_le_of_eq_left` against `splitOff_deficiency_le`;
+- the three-body step's near-copies (open in FRICTION);
+- the nine pins of `lem:pencil-ear-data`.
 
 ## Decisions made during this phase
 
-- **2026-09-27 — opened design-first** from the SHORT recon (opus, read-only) and its second reading
-  (a fresh opus, read-only; confirmed, with repairs). This commit re-ran both spikes at `f3c46221`
-  and got the coordinator's counts. PI decision 5 added the `Carrier.lean` split before B3.
-- **(MC-182) gets its own red node**, `lem:splitoff-deficiency-reuse`, not a third pin on the green
-  `lem:splitoff-deficiency`. The successor is a separate Lean statement (PI decision 4(c)), and a red
-  node keeps it on the dep graph's to-do list until B2.
-- **2026-09-27 — B1 landed by a shorter insertion route.** The spike extended a basis of
-  `R = ρ ⊔ span F` and used affine-curve independence. The landed proofs use one fact: a vector off a
-  subspace stays off it along `v + t w` at one of any two distinct nonzero `t`
-  (`exists_ne_zero_add_smul_notMem`), with `Submodule.finrank_sup_span_singleton` for the counts.
-  `lem:pencil-insertion`'s proof prose is rewritten to match; its statement is unchanged. The five
-  `pointJoin` facts sit in `Flat.lean` (PI decision 5's convention). `star` keeps its planned name:
-  nothing in the namespace uses `Star.star`.
-- **2026-09-27 — B2 landed as two direct per-partition-extension proofs, no shared
-  infrastructure.** `splitOff_deficiency_le_of_eq_left` adapts the landed
-  `splitOff_deficiency_le`'s proof verbatim, with `eₐ ∉ E(G)` (unavailable — `eₐ` is reused, not
-  fresh) replaced by `eₐ ∉ G.crossingEdges f` (the extended partition's own internality, proved
-  once from `hla`/`hfv`/`hfa`). `deficiency_induce_le_of_ear_of_merge` extends `p` by the constant
-  `p a` off `V₁`; every ear position collapses to `p a` under the extension (`pathVertex_cases`),
-  so the crossing-edge sets are equal outright (not merely bounded), unlike the additive ear law.
-- **2026-09-27 — the `Carrier.lean` split landed as `Configuration.lean`** (the builder's name call,
-  PI decision 5). Cut exactly at the section header `## The picture-to-normal API (Phase 40b
-  CARRIER slice C3)`; the module docstrings were split along the same line (each "Main
-  definitions"/"Main statements" bullet moved with its declaration), and the "rank at `ofNormals`"
-  Design bullet moved with C4's `pencilConfigFramework` material it explains. `Flat.lean`'s import
-  repointed to `Configuration.lean`; every other downstream module reaches the moved declarations
-  transitively (no other file imports `Carrier.lean` directly).
-- **2026-09-27 — B3–B4 landed as one commit** (the coordinator's call, superseding "may take two"),
-  placed by convention (PI decision 5). `relScrews_congr` got a direct proof in `Bricks.lean`: the
-  spike's route, `infinitesimalMotions_eq_of_isLink_span_supportExtensor`, is in `Pinning.lean`,
-  which imports `Bricks.lean`. `finrank_span_rigidityRows_congr` sits beside that lemma with the
-  spike's proof. The `Carrier.lean` congr lemmas inline "a closed neighbourhood lies in `V(G)`",
-  since `Graph.closedNbhd_subset_vertexSet` is downstream, in `Bridge.lean`. `lake lint` found the
-  span transfer's `[Finite ι]` unused: dropped, and the node's clause (3) says "a family".
-- **2026-09-27 — B6 before B5 (the coordinator's call).** After EARGEN, B6 was a transcription of a
-  compiled spike, and it sets up the step skeleton B5 and B7 reuse (`Short.lean`, the base data).
-- **2026-09-27 — B6's Steps 1–2 are one lemma, `Graph.exists_earBase_splitOff`,** for B7's reuse
-  (RECON §8). It is stated for any split-off `G.splitOff v u w e₀` carrying an ear with at least two
-  interior bodies, any selector `ends` of `G` (relinked at `e₀`), and ear data reading the planes at
-  any `xf ∈ N[a]`, `xl ∈ N[b]`. It returns the base data, one ear datum at which the antecedent has
-  nonzero hinges and its target rank, and, at every ear datum, `ρ` and `G[V₁]`'s target rank for
-  both frameworks. The blueprint cites no workbook labels (AUTHORING D, E), so the node's remark
-  says "the informal argument"; (MC-180) is cited in the Lean docstrings.
-- **2026-09-27 — B5 mirrors `of_openEar`, not EARGEN** (the route note's first option; the second
-  needs `exists_earBase_splitOff`'s split-off antecedent, which `k = 2` lacks). One picture off
-  `G[V₁]`'s, `G`'s main and a join polynomial; the heights `0`; three independent hinges give
-  `dim(ρ ⊔ Λ) ≥ 3`. The route note's witness was wrong: `certSquare`'s `Y₂`, `Y₃` sit at height `1`,
-  so its first three joins are not flat. The flat witness is `certHexagon`'s joins 4, 5, 0
-  (`Y₄ − Y₅ − Y₀ − Y₁`, all at height `0`), a subfamily by `LinearIndependent.comp`.
-- **2026-09-27 — two pinned declarations stay although this route does not consume them.**
-  `Graph.isAdmissiblePicture_congr` landed because `lem:pencil-picture-local` states it; B1's
-  `exists_insertion_ge` stays as (MC-179)(d)'s pinned second half. `earExtend_mem_liftingSpace` was
-  not re-derived from `earHeight_mem_liftingSpace`: `EarGen.lean` is downstream of `Ear.lean`.
-- **2026-09-27 — B7's case split is one round-1 polynomial.** Before the ear data, either all of `ρ`
-  pairs to zero with the lines joining the planes at `a`, `b` (the condition is then `1`), or some
-  `c ∈ ρ` does not, and the condition is the span bound `dim(ker⟨c, ·⟩ + K (y₁ ∧ y₃)) ≥ 6`, so the
-  landed span transfer applies at the affine pair's ear datum; no new polynomial. Round 1 is then
-  `exists_eval_ne_zero₃` in both cases. `exists_insertion_three` takes "both stars in `W` → `W = ⊤`"
-  as its hypothesis; the two case lemmas supply it. `splitOff_ear_three` mirrors the four-body lemma
-  rather than generalizing it (the route note's shorter option).
+- **2026-09-27 — the close.** The re-read made the preamble's three-body dichotomy precise (a
+  relative screw pairs nonzero with some line joining the ends' planes, then with `x₁x₃` for a
+  general ear), said the two-body witness picture need not be admissible, and fixed a wording each
+  in the four- and three-body proofs; a remark after the three-body theorem is the exposition-ledger
+  entry. The six unpinned helpers the prose names match landed declarations. `lem:pencil-ear-data`'s
+  nine pins were recorded as a tracked item, not split: `EarGen.lean`'s docstrings cite it by clause.
+- **B7** — the case split is one round-1 polynomial (Case A's condition a span bound);
+  `exists_insertion_three` takes "both stars in `W` → `W = ⊤`"; `splitOff_ear_three` mirrors the
+  four-body lemma (FRICTION: the near-copies).
+- **B5** — mirrors `of_openEar`, not EARGEN: one picture, the heights `0`, `certHexagon`'s joins 4,
+  5, 0 as the flat witness (the route note's `certSquare` witness was wrong: height `1`).
+- **B6 before B5** (the coordinator's call); Steps 1–2 factored as `Graph.exists_earBase_splitOff`
+  for B7; in the branch `W = Λ²K⁴`, `x₂` at `x₁`'s point (the collision witness).
+- **B3–B4 as one commit** (the coordinator's call), by convention; `relScrews_congr` proved directly
+  in `Bricks.lean`, which `Pinning.lean` imports (FRICTION: two downstream general facts).
+- **The split** landed as `Configuration.lean` (the builder's name), cut at the C3 section header.
+- **B2** — two direct per-partition extensions, no shared infrastructure (the dedupe is tracked).
+- **B1** — a shorter insertion route (`exists_ne_zero_add_smul_notMem`); the `pointJoin` facts in
+  `Flat.lean`.
+- **At the open** — (MC-182) got its own red node; `isAdmissiblePicture_congr` and
+  `exists_insertion_ge` stay pinned although the route does not consume them.

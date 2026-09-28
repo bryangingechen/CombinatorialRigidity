@@ -1104,6 +1104,41 @@ Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pend
   stay independent meet in `L_G(q)` by the fibre-intersection lemma. Pointer: `notes/Phase40g.md`;
   `notes/Phase40-design.md` §3 STEPS (*CHAIN done*).
 
+### `main-component.tex` — Phase 40h (SHORT: the open ears with two, three and four interior bodies)
+
+**One new entry — judged at the sub-phase close (2026-09-27).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC13.md` and `K-main-MC14.md`, (MC-54) and
+(MC-179)–(MC-182)); the criterion transfers as in the `pencil.tex` section. The entry below is
+written in place. The rest landed as scoped or is project-side. The line geometry is (MC-179), its
+insertion half by a shorter proof: a vector off a subspace stays off it along a line at one of any
+two nonzero parameters. The two-body step is CHAIN's one-picture route with three joins of the
+closed hexagon. The fixed-base-data order is (MC-180)'s Steps 1–2, and the two deficiency bounds are
+direct per-partition extensions. Where the four-body step departs from (MC-180)'s Steps 3–4 (the
+collision witness, two rounds of genericity) is the remark after `thm:pencil-x0-open-ear-four`, a
+formalization detail, not an entry. The account of the whole induction stays with the Phase-39
+entry `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close.
+The ledger is now **2 pending / 40 done** (of 42).
+
+- **`thm:pencil-x0-open-ear-four` / `Graph.X0Attains.of_openEar_four` and
+  `thm:pencil-x0-open-ear-three` / `Graph.X0Attains.of_openEar_three`, with
+  `lem:pencil-insertion`** — [done (the subsection preamble, the two theorems' proofs and the remark
+  after the three-body theorem, at the 40h close)] **(b)** the informal proof first counted the
+  `k = 3, 4` open-ear steps against `G′ = G[V₁]` alone, reduced by (MC-22) to two conditions at
+  `X₀(G′)`'s generic point: a lower bound on `dim ρ` from the 2-ear gadget (MC-24), a further strong
+  induction, and a property of `Λ_k` over the placements, proved in each of the four orbits of the
+  ends' flag pair ((MC-25) with the collision lemma (MC-136) at `k = 4`; (MC-45)'s `r`-split with
+  (MC-26)'s links at `k = 3`). The SHORT recon found the shorter route, now (MC-179)–(MC-181), found
+  by formalization and second-read before the open. **Stable insight:** count against `G″`, `G` with
+  its second interior body suppressed, whose deficiency is no larger ((MC-182)). `G″` bounds
+  `dim W = dim(ρ + Λ_{k−1})` directly, and putting `x₂` back on a line through `x₁` or `x₃` gains a
+  dimension unless `W` holds both stars ((MC-179)(d)). Both stars force `W = Λ²K⁴`. At `k = 4` they
+  contain the six edges of the tetrahedron `x₁, x₃, x₄, p_b` ((MC-179)(a)). At `k = 3` they span the
+  5-dimensional `(x₁ ∧ x₃)^⊥` ((MC-179)(b)): either a relative screw pairing nonzero with a line
+  joining the ends' planes, chosen before the ear, lies outside them, or every relative screw pairs
+  to zero with those lines and `dim W ≤ 3` ((MC-179)(c)). No `δ`, no bound on `dim ρ`, no orbit:
+  the four orbits collapse to whether the ends' planes coincide. Pointer: `notes/Phase40h.md`;
+  `notes/Phase40-design.md` §3 STEPS (*SHORT done*).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
