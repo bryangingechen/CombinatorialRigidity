@@ -3885,6 +3885,8 @@ additive core applies.
 
 \begin{definition}[Chains]
   \label{def:pencil-x0-chain}
+  \lean{Graph.IsChain}
+  \leanok
   \uses{def:pencil-x0-reduces}
   A \emph{chain} of $G$ is an open ear $a - x_1 - \cdots - x_k - b$ on
   $V_1$ with $k \ge 1$ whose interior bodies all have degree two in $G$
@@ -3893,20 +3895,22 @@ additive core applies.
 
 \begin{lemma}[Every body of degree two lies on a chain]
   \label{lem:pencil-x0-chain-exists}
+  \lean{Graph.IsX0Graph.exists_isChain}
+  \leanok
   \uses{def:pencil-x0-chain, def:pencil-x0-standing}
   Let $G$ satisfy the standing hypotheses, with $G - v$ connected for
   every body $v$ and some body of degree other than two. Then every body
   of degree two is an interior body of a chain.
 \end{lemma}
 \begin{proof}
+  \leanok
   Extend a path through the body along bodies of degree two as far as
   possible. An interior body has both of its neighbours on the path, so
   if an end had degree two its other neighbour would either extend the
   path or be the other end. In the second case the path and that edge
   form a cycle joined to the rest of $G$ at one body at most, which is
   then a cut vertex, or the cycle is all of $G$, whose bodies would all
-  have degree two. So both ends have degree at least three, and they are
-  distinct, since otherwise their common body would be a cut vertex.
+  have degree two. So both ends have degree at least three.
 \end{proof}
 
 \begin{lemma}[The standing hypotheses at the smaller graphs of a chain]
@@ -3938,15 +3942,18 @@ additive core applies.
 
 \begin{lemma}[A graph of degree two everywhere is a cycle]
   \label{lem:pencil-x0-cycle-reduces}
+  \lean{Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two}
+  \leanok
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing}
   Let $G$ satisfy the standing hypotheses, with every body of degree
   two. Then $G$ reduces to the graphs smaller than it.
 \end{lemma}
 \begin{proof}
-  By the cycle clause. Take an edge $ab$ and the path from $a$ through
-  the other neighbours, away from $b$. As every body has degree two, the
-  path meets no body twice before it returns to $b$, and its bodies and
-  edges, with $ab$, are closed under adjacency, hence all of $G$.
+  \leanok
+  By the cycle clause. Extend a path through a body as far as possible
+  along bodies of degree two. As every body has degree two, it stops
+  only when its ends are adjacent, and the path with that edge is
+  closed under adjacency, hence all of $G$.
 \end{proof}
 
 \begin{lemma}[Graphs that are not 2-connected]
