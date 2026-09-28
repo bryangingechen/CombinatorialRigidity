@@ -3759,6 +3759,8 @@ additive core applies.
 
 \begin{definition}[One step of the induction]
   \label{def:pencil-x0-reduces}
+  \lean{Graph.IsOpenEar, Graph.X0Reduces}
+  \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency, def:deficiency-merged,
         def:graph-operations, def:rigid-contraction, def:cut-edges-2ec}
   Let $\mathcal P$ be a property of graphs, and let open ears be as in
@@ -3805,6 +3807,8 @@ additive core applies.
 
 \begin{theorem}[The induction on the number of bodies]
   \label{thm:pencil-x0-reduction-attains}
+  \lean{Graph.X0Reduces.x0Attains, Graph.X0Attains.of_isX0Graph_of_x0Reduces}
+  \leanok
   \uses{def:pencil-x0-reduces, def:pencil-x0-attains,
         def:pencil-x0-standing}
   Let $K$ be infinite.
@@ -3819,6 +3823,7 @@ additive core applies.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{cor:pencil-jj-flat, thm:pencil-x0-cut, thm:pencil-x0-bridge,
         thm:pencil-x0-cycle, thm:pencil-x0-open-ear,
         thm:pencil-x0-open-ear-four, thm:pencil-x0-open-ear-three,

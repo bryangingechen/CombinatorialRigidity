@@ -6,8 +6,8 @@
 hypotheses; the strong induction on the number of bodies, carried on the statement "every graph
 satisfying (H) reduces to smaller ones"; and the deficiency layer of the structural half: the
 singleton bound, (MC-75)(i), (MC-76), merging along a rigid set, (MC-79)(ii)(iii) and (MC-87), with
-the departures D1–D3. No workbook change. Eleven red nodes to green in three builds, both spikes
-sorry-free. **Next: B1, the interface** — see *Hand-off*. CHAINS and THEOREM-S follow, by code.
+the departures D1–D3. No workbook change. **B1 (the interface) landed** — two of eleven red nodes
+now green. **Next: B2, the value calculus** — see *Hand-off*. CHAINS and THEOREM-S follow, by code.
 
 ## Current state
 
@@ -20,7 +20,7 @@ the compiled spike statements. Which sub-phase greens each node:
   `lem:deficiency-tight-rigid`, `lem:deficiency-core-bound`, `lem:deficiency-additive-core`,
   `lem:deficiency-one-body-chain`, `lem:deficiency-two-body-chain`.
 - **§`sec:main-component-coverage`:** `def:pencil-x0-reduces` and
-  `thm:pencil-x0-reduction-attains` (REDUCE, B1); `def:pencil-x0-chain`,
+  `thm:pencil-x0-reduction-attains` (REDUCE, B1 — **green**); `def:pencil-x0-chain`,
   `lem:pencil-x0-chain-exists`, `lem:pencil-x0-chain-standing`, `lem:pencil-x0-cycle-reduces`,
   `lem:pencil-x0-cut-reduces` (CHAINS; the cut half's statements are S5's interface statements,
   unspiked); `def:pencil-x0-usable-chain`, `lem:pencil-x0-chain-reduces`,
@@ -83,12 +83,13 @@ matching the coordinator's re-run:
 
 Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/40l/S4Kit.lean`'s.
 
-- [ ] **B1, the interface** → new `Coverage.lean`: `Graph.IsOpenEar`, `Graph.X0Reduces`,
+- [x] **B1, the interface** → new `Coverage.lean`: `Graph.IsOpenEar`, `Graph.X0Reduces`,
   `Graph.X0Below` (from S5, the three-line abbrev, the codomain of CHAINS' and THEOREM-S'
   interface statements), `Graph.X0Reduces.x0Attains`, `Graph.X0Attains.of_isX0Graph_of_x0Reduces`.
   Nodes: `def:pencil-x0-reduces` (**`Graph.IsOpenEar`, `Graph.X0Reduces`**),
   `thm:pencil-x0-reduction-attains` (**`Graph.X0Reduces.x0Attains`,
-  `Graph.X0Attains.of_isX0Graph_of_x0Reduces`**).
+  `Graph.X0Attains.of_isX0Graph_of_x0Reduces`**). Landed verbatim from `S1Dispatch.lean` with fresh
+  docstrings; `lake build`/`lake lint`/blueprint gates all clean.
 - [ ] **B2, the value calculus** → new `SparseDeficiency.lean`, S4 lines 12–207, 263–366,
   523–575:
   - `lem:deficiency-singleton-bound`: **`Graph.partitionDef_le_partitionDef_id`,
@@ -122,10 +123,8 @@ Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/
 
 ## Blockers / open questions
 
-- None blocking B1.
+- None blocking B2.
 - **Builder notes.**
-  - B1: S1 compiles warning-free as is. Write real docstrings and a module docstring listing the
-    statements (the `Cut.lean` pattern). `Graph.IsChain` is not in B1 (CHAINS).
   - B2/B3: fix S4's 25 warnings on transcription: `if_pos`/`if_neg`/`dif_pos` → the suggested
     `ite_eq_left`/`ite_eq_right`/`dite_eq_left` (or `simp only`), `Set.mem_setOf_eq` →
     `Set.mem_ofPred_eq`, `Set.insert_diff_singleton` → `Set.insert_sdiff_singleton`, the `show`
@@ -138,26 +137,28 @@ Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/
 
 ## Hand-off / next phase
 
-**The next concrete commit is B1, the interface** (fresh builder; sonnet at S=1 suffices). Source
-`scratch/40l/S1Dispatch.lean` (gitignored, local to this checkout), lines 14–135, verbatim, plus
-`Graph.X0Below` from `scratch/40l/S5Full.lean` lines 931–933. Target: new
-`CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Coverage.lean`, `namespace
-CombinatorialRigidity.Molecular`, `variable {K : Type*} [Field K] {α β : Type*}`, importing exactly
-S1's four imports (`…MainComponent.SplitOff`, `.Chain`, `.Contract`, `.ContractAdditive`); add it
-to `CombinatorialRigidity.lean`. The declarations: `Graph.IsOpenEar`, `Graph.X0Reduces`,
-`Graph.X0Below`, `Graph.X0Reduces.x0Attains`, `Graph.X0Attains.of_isX0Graph_of_x0Reduces`.
-Chores:
-- copyright header and a module docstring listing the five declarations; real docstrings;
-- blueprint: pin and flip `def:pencil-x0-reduces` (`\lean{Graph.IsOpenEar, Graph.X0Reduces}`,
-  `\leanok`) and `thm:pencil-x0-reduction-attains` (`\lean{Graph.X0Reduces.x0Attains,
-  Graph.X0Attains.of_isX0Graph_of_x0Reduces}`, `\leanok` on statement and proof);
-- gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
-  `notes/check-phase-note.py`; this note's checklist, *Current state* and *Hand-off*.
+**B1 (the interface) landed** — `Coverage.lean`, `def:pencil-x0-reduces` and
+`thm:pencil-x0-reduction-attains` green.
 
-**Then B2 and B3** (`SparseDeficiency.lean`, about 350 and 430 lines; the checklist), **then the
-close.** After 40l: **CHAINS** opens (a spike of its cut half first; about 5–7 builds), then
-**THEOREM-S** (about 2 builds; closes COVERAGE). Both transcribe from `scratch/40l/S5Full.lean`
-(design doc §3 COVERAGE lists each one's interface statements).
+**The next concrete commit is B2, the value calculus** (fresh builder; sonnet at S=1 suffices).
+Source `scratch/40l/S4Kit.lean` (gitignored, local to this checkout), lines 12–207, 263–366,
+523–575, fixing the warnings listed under *Builder notes* on transcription (never verbatim for
+these ranges — the fixes are mandatory, not optional polish). Target: new
+`CombinatorialRigidity/Molecular/Molecule/Pencil/Induction/SparseDeficiency.lean` (beside
+`SplitOffDeficiency.lean`), importing `Induction/ReducibleVertex.lean` (for `rigidContract`) and
+the mirror `Mathlib/Combinatorics/Graph/Delete.lean` (for `induce_induce_of_subset`); add it to
+`CombinatorialRigidity.lean`. The checklist's B2 bullet has the exact pins:
+`lem:deficiency-singleton-bound`, `lem:deficiency-add-body`, `lem:deficiency-sparse`,
+`lem:deficiency-merge-rigid` (with the D5 pin `Graph.deficiencyMerged_le_deficiency` already
+landed — confirm it resolves rather than re-deriving it), plus the listed helpers. Chores:
+copyright header + module docstring + real docstrings; blueprint pin + flip the four B2 nodes;
+gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
+`notes/check-phase-note.py`; this note's checklist, *Current state* and *Hand-off*.
+
+**Then B3** (same file, S4 lines 209–262, 368–522, 576–794; the checklist), **then the close.**
+After 40l: **CHAINS** opens (a spike of its cut half first; about 5–7 builds), then **THEOREM-S**
+(about 2 builds; closes COVERAGE). Both transcribe from `scratch/40l/S5Full.lean` (design doc §3
+COVERAGE lists each one's interface statements).
 
 ## Decisions made during this phase
 
