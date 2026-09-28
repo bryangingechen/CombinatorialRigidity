@@ -125,7 +125,7 @@ a `#print axioms` check on each pin.
     `Set.mem_diff` → `Set.mem_sdiff`; 1525, the unused `hG` of
     `Graph.IsOpenEar.deficiency_three_induce_cycle` → `_hG` (its two callers in B5 unchanged).
 - [ ] **B5 → `CoverageTheoremS.lean`, continued** (≈214 → ≈240). `## Theorem S and the covering
-  theorem` ← F 1594–1805.
+  theorem` ← F 1594–1806.
   - `thm:pencil-x0-theorem-s` ← **`Graph.IsX0Graph.exists_additiveCore`**;
   - `thm:pencil-x0-coverage` ← **`Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains`,
     `Graph.X0Attains.of_twoEdgeConnected`**.
