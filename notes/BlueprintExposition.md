@@ -1139,6 +1139,40 @@ The ledger is now **2 pending / 40 done** (of 42).
   the four orbits collapse to whether the ends' planes coincide. Pointer: `notes/Phase40h.md`;
   `notes/Phase40-design.md` §3 STEPS (*SHORT done*).
 
+### `main-component.tex` — Phase 40i (ORBIT: the open ears with one or two interior bodies at non-adjacent ends)
+
+**One new entry — judged at the sub-phase close (2026-09-28).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC13.md`, (MC-54) at `k = 1` and (MC-173)–(MC-176)),
+and the criterion transfers as in the `pencil.tex` section. The entry below is written in place.
+The rest landed as scoped, in three build commits from the design recon's spike. U2 is (MC-48)(ii)'s
+argument read as rank–nullity on the lifting system's kernel, the incidence is (MC-174), and the
+merged-deficiency split-off bound is a direct per-partition comparison. That (MC-173) is consumed
+in existence form, its chart polynomial replaced by EARGEN's span transfer, is project-side. The
+account of the whole induction stays with the Phase-39 entry
+`thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
+ledger is now **2 pending / 41 done** (of 43).
+
+- **`thm:pencil-x0-open-ear-two-orbit` / `Graph.X0Attains.of_openEar_two_of_splitOff`, with
+  `lem:pencil-insertion-two` and `lem:pencil-one-ear-base`** — [done (the subsection preamble, the
+  nodes' proofs and the remark after the two-body theorem, at the 40i close)] **(b)** the informal
+  proof first proved the `k = 2`, `a ≁ b` open-ear step against `G′ = G[V₁]` alone, through
+  (MC-22)'s reduction. It described the bad subspaces `B₂(r)` of `ρ` by a dimension count over the
+  ear's placements, one orbit of the ends' flag pair at a time ((MC-46), with the orbit table
+  (MC-138)), and needed `dim U ≠ 1`. The ORBIT recon (2026-09-26) found the shorter route, now
+  (MC-173)–(MC-176), found by formalization and second-read. **Stable insight:** count against
+  `G₁`, `G` with `x₂` suppressed, a one-body ear. Its base configuration puts `x₁`'s point `y` on
+  `m = π_a ∩ π_b` with the flag pair in orbit (i): `p_b ∉ π_a` and `p_a ∉ π_b`. In the frame
+  `p_a, y, u₀, p_b` (`u₀` the direction of `m`) the six joins span `Λ²K⁴`, and `W = ρ + Λ₁(y)`
+  already holds `p_a ∧ y` and `y ∧ p_b`. So unless `W = Λ²K⁴`, one of `y ∧ u₀`, `u₀ ∧ p_b`,
+  `p_a ∧ u₀`, `p_a ∧ p_b` lies off `W`, and moving `x₁` in `π_a` or `x₂` in `π_b` along the
+  matching line gains a dimension. No orbit is computed and `B₂(r)` is never described: orbit (i)
+  is the only property of the ends used, and `δ₂ ≥ 2` gives it at a general point through
+  Jackson–Jordán at `G′ + ab` (U2, `dim U ≥ 2`). The base is the other half: a height of a one-body
+  ear graph restricts to one of `G′` whose planes at `a` and `b` agree at the ear body's picture,
+  so that picture is chosen jointly with the heights ((MC-174)), with no dominance argument. The
+  same base is the whole `k = 1` step. Pointer: `notes/Phase40i.md`; `notes/Phase40-design.md` §3
+  STEPS (*ORBIT done*).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

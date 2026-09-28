@@ -3623,7 +3623,7 @@ theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n :
   have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
   linarith [hbound, hdefnn, hmul, hcardZ, hEeq]
 
-/-! ## The merged / separated deficiency at a vertex pair (`def:pencil-deficiency-pair`,
+/-! ## The merged / separated deficiency at a vertex pair (`def:deficiency-merged`,
 Phase 39 checklist item 6)
 
 Phase 39 (PENCIL; `notes/Phase39.md` checklist item 6, carrier recon
@@ -3639,9 +3639,16 @@ file, though the two are provably equal); `pairDelta` (`δ`) is their gap `f −
 settling decision D4 (`notes/Phase39.md` *Blockers*) by a proof rather than a presentation
 preference. `deficiencySep` has **no consumer in this slice** — only the welded-pendant law
 (checklist item A6) needs it, and that item is dropped from scope by decision D2; it is
-defined here per the carrier recon's scope-pin and left otherwise bare. Blueprint debt: none
-of the declarations in this section has a blueprint node yet (`notes/Phase39.md` *Blockers*,
-D5). -/
+defined here per the carrier recon's scope-pin and left otherwise bare. Blueprint nodes:
+`def:deficiency-merged` (`blueprint/src/chapter/deficiency.tex`, Phase 40i) pins
+`deficiencyMerged` and `partitionDef_le_deficiencyMerged`, and `lem:deficiency-cut-vertex`
+(Phase 40e) pins `partitionDef_split_of_vertexTwoCut`. Its other public declarations are
+unpinned: `deficiencySep`, `weldPair`, `pairDelta`, `bddAbove_range_partitionDef_merged`,
+`partitionDef_map`, `deficiency_weldPair_eq_deficiencyMerged`, `deficiency_eq_of_vertexTwoCut`,
+`pairDelta_le_bodyBarDim`, `bddAbove_range_partitionDef_sep`, `partitionDef_le_deficiencySep`,
+`deficiencyMerged_le_deficiency`, `deficiencySep_le_deficiency`, `deficiency_eq_max` and
+`deficiency_eq_of_vertexTwoCut'` — Phase 39's D5 blueprint debt, pinned by each law's first
+consumer (`notes/Phase40-design.md` §7). -/
 
 /-- **`g` — the merged deficiency** (Phase 39's `deficiencyMerged`): the `D`-deficiency
 supremum restricted to labelings that keep `u` and `v` together (`f u = f v`). Always

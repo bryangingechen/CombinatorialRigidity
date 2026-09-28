@@ -205,7 +205,7 @@ to be re-derived by re-reading entries later.
   case.
 - **Status:** open (mirror candidate).
 
-### [open] `y ∧ (y + t u) = t (y ∧ u)` takes six rewrites: no `pointJoin_add_smul_right`
+### [resolved] `y ∧ (y + t u) = t (y ∧ u)` takes six rewrites: no `pointJoin_add_smul_right`
 - **Where it bit:** Phase 40h B1, `exists_insertion_gain` (`MainComponent/Lines.lean`), the body put
   back at `y + t u`. `Flat.lean` has only the left-linear `pointJoin_add_smul_left`, so the right
   argument goes through `pointJoin_swap` twice: `rw [pointJoin_swap (y + t • u),
@@ -214,10 +214,14 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `pointJoin_add_smul_right (p p' r : Fin 4 → K) (t : K) : pointJoin p (p' + t •
   r) = pointJoin p p' + t • pointJoin p r` beside `pointJoin_add_smul_left` in `Flat.lean`; B6 and
   B7 put `x 1` back at `x 0 + t u` or `x 2 + t u`, so they are its likely next call sites.
-- **Status:** open. B6 did not call it: `exists_insertion_four` reuses `exists_insertion_gain`, and
+- **Status:** resolved (below). B6 did not call it: `exists_insertion_four` reuses `exists_insertion_gain`, and
   its own direction lemma needed `pointJoin_add_smul_self_right` (`y ∧ (v + c y) = y ∧ v`, landed
   beside `pointJoin_add_smul_left`), a different identity.
   B7 did not either: `exists_insertion_three` reuses `exists_insertion_gain` the same way.
+  **Resolved by 40i B1 (2026-09-28):** the right-linear family `pointJoin_add_right`,
+  `pointJoin_smul_right`, `pointJoin_sub_right` (`Flat.lean`, beside `pointJoin_add_smul_left`)
+  gives the identity in two rewrites; `exists_insertion_two{,_aux}` use them. The six-rewrite call site in
+  `exists_insertion_gain` is unchanged (a cleanup-round golf).
 
 ### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides
 - **Where it bit:** Phase 40g build 1, `RigidityMatrix/Bricks.lean`.

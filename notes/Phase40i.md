@@ -1,203 +1,126 @@
 # Phase 40i — PENCIL-X0 / ORBIT: the open ears with one or two interior bodies at non-adjacent ends (work log)
 
-**Status:** Lean and blueprint done (B1–B3 landed 2026-09-28); the close remains. STEPS' fifth
-group (`notes/Phase40-design.md` §3 STEPS, the ORBIT entry). It lands the open-ear steps with one
-interior body, and with two with no bound on the deficiency, both at non-adjacent ends `a ≁ b` and
-under `δ₂ ≥ 2` in the merged form `deficiencyMerged₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: if `X₀(G[V₁])`
-attains, `X₀(G)` attains for `k = 1` when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54) at `k = 1`), and for
-`k = 2` when `X₀` also attains at `G` with its second interior body suppressed ((MC-176)). No new
-mathematics. **All eight nodes green**: `def:deficiency-merged` at the open,
-`lem:splitoff-deficiency-merged`, `lem:pencil-flag-genericity` from B1, `lem:pencil-one-ear-
-incidence`, `lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one` from B2, `lem:pencil-insertion-
-two`, `thm:pencil-x0-open-ear-two-orbit` from B3. **Next: the close** — see *Hand-off*.
+**Status:** ✓ complete (opened design-first, built and closed 2026-09-28). ORBIT, STEPS' fifth
+group (`notes/Phase40-design.md` §3 STEPS), proved the open-ear steps with one interior body, and
+with two with no bound on the deficiency, both at non-adjacent ends and under
+`deficiencyMerged₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: if `X₀(G[V₁])` attains, `X₀(G)` attains for
+`k = 1` when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54) at `k = 1`), and for `k = 2` when `X₀` also attains
+at `G` with its second interior body suppressed ((MC-176)). No new mathematics. **Next: STEPS'
+SPLITOFF group, not yet opened** — see *Hand-off*.
 
 ## Current state
 
-**Opened.** Eight nodes, with statements from the spike's exact statements (40h's
-`lem:pencil-ear-data` precedent) and workbook labels from `ledger.py --brief`:
-- `main-component.tex`, the new §`sec:main-component-orbit` (before `sec:main-component-statements`;
-  the chapter preamble names it):
-  - `lem:pencil-flag-genericity` — U2, (MC-48)(ii)'s argument, on the lifting system's kernel;
-  - `lem:pencil-one-ear-incidence` — (MC-174), its family restricted to `w ∈ K z₀`;
-  - `lem:pencil-one-ear-base` — (MC-176)'s Steps 1–2 and (MC-54) at `k = 1`: (MC-174) at `X₀(G′)`,
-    U2, Jackson–Jordán at `G′ + ab` ((MC-172)), (MC-4)(b), (MC-175)(iii), (MC-18)(b);
-  - `thm:pencil-x0-open-ear-one` — (MC-54) at `k = 1`, with (MC-169) by admissibility;
-  - `lem:pencil-insertion-two` — (MC-173) in existence form: its four curves, the chart polynomial
-    off route;
-  - `thm:pencil-x0-open-ear-two-orbit` — (MC-176), with (MC-175)(i)(ii) as the landed
-    `lem:splitoff-deficiency-reuse` and `lem:deficiency-ear`, and (MC-18)(a) through
-    `lem:pencil-ear-data`;
-- `molecular-induction.tex`: `lem:splitoff-deficiency-merged` — (MC-175)(iii), the `≤` half, after
-  `lem:splitoff-deficiency-reuse`;
-- `deficiency.tex`: **`def:deficiency-merged`, green at the open**, pinning Phase 39's landed A2
-  declarations `Graph.deficiencyMerged` and `Graph.partitionDef_le_deficiencyMerged`, after
-  `lem:deficiency-ear-merge`.
+**Closed.** Three build commits (B1 `5ba25337`, B2 `b733f5fe`, B3 `b3dac673`), a coordinator
+fixup (`6b266906`, one proof `\leanok`) and the close landed. The eight nodes are green:
+- `main-component.tex` §`sec:main-component-orbit`: `lem:pencil-flag-genericity`,
+  `lem:pencil-one-ear-incidence`, `lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one`,
+  `lem:pencil-insertion-two` and `thm:pencil-x0-open-ear-two-orbit`, with the unpinned remark after
+  the two-body theorem (the exposition-ledger entry);
+- `molecular-induction.tex`: `lem:splitoff-deficiency-merged`; `deficiency.tex`:
+  `def:deficiency-merged` (green at the open).
 
-**All eight nodes are pinned and green** (B1–B3 landed the Lean and the blueprint pins in that
-order; *Lemma checklist*).
+The Lean is `Molecule/Pencil/MainComponent/Orbit.lean` (its module docstring lists the statements),
+with pieces placed by PI decision 5's convention in `Carrier.lean`, `Flat.lean`, `Lines.lean`,
+`Induction/Operations.lean` and `Induction/SplitOffDeficiency.lean`. The spikes (`scratch/40i/`,
+gitignored and local to this checkout) are consumed.
 
-**The spikes** (gitignored `scratch/40i/`, local to this checkout; builder pointers, not evidence):
-- `S40i.lean` (1 657 lines, 31 declarations): the whole group, sorry-free. **`lake lean`**, re-run at
-  this open (`0689dfa3`): exit 0, no errors, no warnings, no `sorry`; of its 31 `#print axioms`
-  lines, 28 are `[propext, Classical.choice, Quot.sound]`, `planeDiff` and `planeDiff_apply`
-  `[propext, Quot.sound]`, and `Graph.splitOff_simple_of_not_adj` `[propext]`, identical to the
-  coordinator's re-run.
-- `S40iInst.lean`: the two instances' structural hypotheses. **`lake lean`**: exit 0, no output.
-- **Satisfiability** (not landed). `k = 1` at `x8_60101824`, the 8-cycle `4 0 5 2 7 3 6 1` with the
-  chords `4–7`, `5–6`, ear `4 − 0 − 5`: the eight structural hypotheses kernel-checked;
-  `def₂(G[V₁]) = 2` with merged value `0`, so `hδ₂` holds, and `def₃(G[V₁]) = def₃(G) = 0`, so `hdef`
-  holds (measured, script not retained); `h₁` by hand (`G[V₁]` is θ(1,2,2), covered by THETA's
-  assembly). `k = 2` at `K₄` with every edge subdivided twice, ear `0 − 4 − 5 − 1`: the structural
-  hypotheses kernel-checked; (S) holds and `δ₂ = 3` (measured, script not retained); `h₁`, `h₂` from
-  the workbook's certificates. At `K_{2,3}` (`δ₂ = 1`) `hδ₂` fails, and FLAT covers it.
-- **Faithfulness** (against (MC-54), (MC-176)): `of_openEar_one` is (MC-54) at `k = 1`, with `hdef`
-  for `δ = 0` (PI decision 4(a)) and `hδ₂` for `dim U ≥ 2`, sufficient by U2; `hnadj` holds in 𝒮 by
-  (MC-79)(ii). `of_openEar_two_of_splitOff` is (MC-176): attainment at `G[V₁]` and at
-  `G.splitOff (x 1) (x 0) b (e 1)` (the workbook's `G₁`, its `x₂` suppressed), `a ≁ b`, `δ₂ ≥ 2`.
-  Both ask (H) at `G` only, as 40g's and 40h's do.
+**Headline axioms, re-verified at the close** on 28 declarations: the eighteen `formalization.yaml`
+main results and the ten pins of the eight nodes. 27 are exactly
+`[propext, Classical.choice, Quot.sound]`; `planeDiff`, a linear map built from
+`LinearMap.funLeft`, is `[propext, Quot.sound]`, a subset. None uses `sorryAx`. *Measured, script
+not retained*: one `#print axioms` line per declaration under `import CombinatorialRigidity`, run
+with `lake lean` on the fully built tree (a full `lake build` first: 2 983 jobs, 0 warnings).
+
+- **Satisfiability (not landed).** The structural hypotheses are kernel-checked in the recon's
+  instance spike; the deficiencies are measured (script not retained). `k = 1` at the 8-cycle
+  `4 0 5 2 7 3 6 1` with the chords `4–7`, `5–6` and ear `4 − 0 − 5`: `def₂(G[V₁]) = 2` with merged
+  value `0`, and `def₃(G[V₁]) = def₃(G) = 0`; `h₁` by hand (`G[V₁]` is θ(1,2,2)). `k = 2` at `K₄`
+  with every edge subdivided twice, ear `0 − 4 − 5 − 1`: (S) holds and `δ₂ = 3`; `h₁`, `h₂` from
+  the workbook's certificates. At `K_{2,3}` (`δ₂ = 1`) the merged-deficiency hypothesis fails, and
+  FLAT covers it.
+- **Faithfulness** (against (MC-54), (MC-176)): `of_openEar_one` takes `hdef` for `δ = 0` (PI
+  decision 4(a)) and `hδ₂` for `dim U ≥ 2`, sufficient by U2; `hnadj` holds in 𝒮 by (MC-79)(ii).
+  `of_openEar_two_of_splitOff` asks attainment at `G[V₁]` and at
+  `G.splitOff (x 1) (x 0) b (e 1)`, the workbook's `G₁` (its `x₂` suppressed). Both ask (H) at `G`
+  only, as 40g's and 40h's do.
 
 ## Architectural choices made up front
 
-- **The route** (the recon's verdict; the design doc's §3 STEPS, ORBIT entry). U2 and (MC-174) run
-  on the lifting system's kernel. One base lemma (`Graph.exists_oneEar_base`) serves both cells.
-  `k = 1` is one picture and the ear rank law. `k = 2` counts against `G₁`, with (MC-173) as the
-  polynomial-free insertion `exists_insertion_two` and EARGEN's landed span transfer for the open
-  condition. The ear law is applied at `(ofNormals …).toBodyHinge`, as CHAIN and SHORT do.
-- **The coordinator's calls** (2026-09-28). The PI's session-start configuration was **"follow
-  precedent"**: where a 40e–40h precedent answers a recon question, the coordinator applies it and
-  records it as its call, citing the precedent; only a genuinely new question goes to the PI. These
-  are the coordinator's calls, not PI decisions, so they are not in `notes/pencil/adjudications.md`.
-  1. **No new mathematics: 40i opens directly**, with no workbook commit and no second reading.
-     (MC-173)'s second-read proof already spans `Λ²K⁴ / Λ₁(y)` by four curve limit directions and
-     picks one outside `W`; the spike's `y∧u₀`, `u₀∧p_b`, `p_a∧u₀`, `p_a∧p_b` are that basis modulo
-     `Λ₁(y)` in the frame `p_a, y, u₀, p_b`. Its polynomial conclusion is replaced by EARGEN's span
-     transfer, as 40h did at `k = 4`; (MC-174)'s restricted family and U2 on the kernel are
-     formalization-level. Precedent: 40f and 40g (40h's workbook-first path fired only because its
-     claims were new). No workbook statement changes; the proof-map row records (MC-173)'s form.
-  2. **`hδ₂`, in both cells, is the `deficiencyMerged` form**, (MC-176)'s and (MC-175)(iii)'s
-     `δ₂ ≥ 2` over Layer A's carrier, which COVERAGE supplies from (S) ((MC-79)(ii) at `k = 1`;
-     (iii) with (vi) at `k = 2`). The compiled split-off form would be a double split-off at `k = 2`,
-     and PI decision 4(a) does not answer this directly (no δ machinery is added). Reversible in
-     about three lines per call site. `dim U ≥ 2` in Lean form is rejected (COVERAGE would re-run
-     U2). The tracked trace is settled (the ORBIT entry); COVERAGE's supplier is tracked in its
-     section of the design doc.
-  3. **Placement: PI decision 5's convention.** A new `MainComponent/Orbit.lean` holds the steps and
-     their ORBIT-specific pieces; the general pieces go beside their definitions. `Operations.lean`
-     (3 334 lines) gains about 20, by 40h's `Pinning.lean` precedent; no split fires.
-  4. **Pins: PI decision 4(b)'s first-consumer rule.** ORBIT pins only `deficiencyMerged` and
-     `partitionDef_le_deficiencyMerged`, on a definition node (40g's `def:relative-screws`
-     precedent); the rest of A2/A3, `jointMotions` and `weldedRank` wait for COVERAGE or SPLITOFF.
-  5. **The nodes follow the spike's statements** (40h's `lem:pencil-ear-data` precedent), as the
-     recon's node list. The open kept its labels and grouping: no node has four or more planned
-     pins (`blueprint/AUTHORING.md` D).
-  6. **The builds: B1 the general pieces, B2 the `k = 1` cell, B3 the `k = 2` cell.** B1 and B2 may
-     land as one commit (40h's B3–B4 precedent); the coordinator decides at dispatch. Estimate: open,
-     2–3 builds, close.
+- **The route** (the recon's verdict; as landed, the *ORBIT done* paragraph of
+  `notes/Phase40-design.md` §3 STEPS): U2 and (MC-174) on the lifting system's kernel, one base
+  lemma for both cells, and at `k = 2` (MC-173) in existence form with EARGEN's span transfer.
+- **The coordinator's calls** (2026-09-28, under the PI's session-start "follow precedent"; not PI
+  decisions, so not in `notes/pencil/adjudications.md`):
+  1. no new mathematics, so 40i opened directly, with no workbook commit and no second reading
+     (the 40f/40g precedent);
+  2. `hδ₂` in both cells in the `deficiencyMerged` form (the design doc's ORBIT entry has the
+     trace; COVERAGE supplies it);
+  3. placement by PI decision 5's convention, the steps in a new `Orbit.lean`;
+  4. pins by PI decision 4(b)'s first-consumer rule: only `deficiencyMerged` and
+     `partitionDef_le_deficiencyMerged`, on a definition node;
+  5. the nodes follow the spike's statements (40h's `lem:pencil-ear-data` precedent);
+  6. three builds: the general pieces, the `k = 1` cell, the `k = 2` cell.
 - **Blueprint placement.** In the new subsection, the general lemmas before the steps and `k = 1`
   before `k = 2`; the split-off bound after its label-reusing sibling; the definition after
-  `lem:deficiency-ear-merge`, the lemma about partitions with the ends in one part.
+  `lem:deficiency-ear-merge`.
 
 ## Lemma checklist
 
-Planned names from the spike; pins in **bold**, the other names helpers, unpinned. The spike's
-section headers P1–P10 are the recon's pieces.
+All landed with the standard axioms (*Current state*); pins in **bold**, the other names unpinned
+helpers.
 
-- [x] **B1, the general pieces** (P1, P2, P4, P5 but `splitOff_oneEar`, P9's `pointJoin` lemmas) —
-  landed 2026-09-28:
-  - `Induction/SplitOffDeficiency.lean`: **`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`**
-    → `lem:splitoff-deficiency-merged`;
-  - `Carrier.lean`, beside `liftingMatrix`: **`Graph.two_le_finrank_map_planeDiff`**,
-    **`planeDiff`** → `lem:pencil-flag-genericity` (`planeDiff_apply`,
-    `Graph.injective_liftingMatrix_ker_proj`); also `Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd`
-    and `Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset` (placed beside
-    `isAdmissiblePicture_congr`, both unpinned helpers);
-  - `Lines.lean`: `linearIndependent_pointJoin_pair`; `Flat.lean`, beside `pointJoin`:
-    `linearIndependent_pencilConfigPoint_triple` and the seven `pointJoin_{zero,add,smul,sub}_left`,
-    `pointJoin_{add,smul,sub}_right`; `Induction/Operations.lean`, beside `splitOff_simple`:
-    `Graph.splitOff_simple_of_not_adj`.
-- [x] **B2, the `k = 1` cell**, new `MainComponent/Orbit.lean` (P3, `Graph.splitOff_oneEar`, P6, P7)
-  — landed 2026-09-28: **`exists_incidence`** → `lem:pencil-one-ear-incidence`
-  (`exists_dotProduct_eq_zero_ne_zero`; `finrank_span_singleton_le_one'` inlined as a local `have`,
-  per the recon's note); **`Graph.exists_oneEar_base`** → `lem:pencil-one-ear-base`
-  (`incidencePoly`, `eval_incidencePoly`); **`Graph.X0Attains.of_openEar_one`** →
-  `thm:pencil-x0-open-ear-one`. `Orbit.lean` imports `MainComponent/EarGen.lean` (confirmed minimal
-  by a `lake lean` probe against every identifier the four pieces use: `Ear.lean` alone is missing
-  `linearIndependent_pointJoin_pair`, `EarGen.lean` = `Ear` + `Lines` supplies everything).
-- [x] **B3, the `k = 2` cell** (P8, the rest of P9, P10) — landed 2026-09-28: `Lines.lean`:
-  **`exists_insertion_two`** → `lem:pencil-insertion-two` (`exists_insertion_two_aux`;
-  `mem_of_add_smul_mem` inlined at its three use sites as
-  `(Submodule.smul_mem_iff _ hc).mp ((Submodule.add_mem_iff_right _ hw).mp h)`, per the coordinator's
-  note, not landed as a named lemma); `Orbit.lean`: **`splitOff_ear_two`**,
-  **`splitOff_ear_two_simple`**, **`Graph.X0Attains.of_openEar_two_of_splitOff`** →
-  `thm:pencil-x0-open-ear-two-orbit`. `Orbit.lean` gained a second import,
-  `MainComponent/Short.lean` (confirmed no cycle: `Short.lean` itself only imports `EarGen.lean`),
-  for two SHORT-group facts P10 reuses (`induce_splitOff_ear`, `Graph.isLink_update_splitOff`) that
-  `EarGen.lean` alone does not supply.
-- [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection; the
-  exposition ledger (candidates: the one-ear base, where the ear body's picture is chosen with the
-  heights, and the insertion that replaces the orbit table); the headline axioms; the design doc's
-  §3 STEPS, ROADMAP and `MolecularConjecture.md`; the public surfaces unchanged (the PI's standing
-  call, recorded at 40f's close).
+- [x] **B1** (`5ba25337`) — **`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`** →
+  `lem:splitoff-deficiency-merged` (`Induction/SplitOffDeficiency.lean`);
+  **`planeDiff`**, **`Graph.two_le_finrank_map_planeDiff`** → `lem:pencil-flag-genericity`
+  (`Carrier.lean`, with `planeDiff_apply`, `Graph.injective_liftingMatrix_ker_proj` and two
+  admissibility helpers); `linearIndependent_pointJoin_pair` (`Lines.lean`),
+  `linearIndependent_pencilConfigPoint_triple` and the seven `pointJoin` linearity lemmas
+  (`Flat.lean`), and `Graph.splitOff_simple_of_not_adj` (`Operations.lean`).
+- [x] **B2** (`b733f5fe`) — new `Orbit.lean`: **`exists_incidence`** →
+  `lem:pencil-one-ear-incidence`; **`Graph.exists_oneEar_base`** → `lem:pencil-one-ear-base`;
+  **`Graph.X0Attains.of_openEar_one`** → `thm:pencil-x0-open-ear-one`; `Graph.splitOff_oneEar`,
+  `exists_dotProduct_eq_zero_ne_zero`, `incidencePoly`, `eval_incidencePoly`.
+- [x] **B3** (`b3dac673`) — **`exists_insertion_two`** → `lem:pencil-insertion-two` (`Lines.lean`,
+  with `exists_insertion_two_aux`);
+  **`Graph.X0Attains.of_openEar_two_of_splitOff`** → `thm:pencil-x0-open-ear-two-orbit`;
+  `splitOff_ear_two`, `splitOff_ear_two_simple` (`Orbit.lean`).
+- [x] **The close** (docs and blueprint, with two Lean doc/import chores): the end-to-end re-read,
+  the exposition ledger, the headline axioms, the design doc, ROADMAP and `MolecularConjecture.md`;
+  the public surfaces left unchanged (the PI's standing call, recorded at 40f's close).
 
 ## Blockers / open questions
 
-- None outstanding; B1–B3 landed the group. The recon's builder notes (inlining
-  `mem_of_add_smul_mem` and `finrank_span_singleton_le_one'`, TACTICS-QUIRKS §48's parse trap) were
-  applied in B2/B3 — see *Decisions made*.
-- **A stale Lean docstring, not a gate.** `Deficiency.lean`'s section docstring for the merged and
-  separated deficiencies cites a label `def:pencil-deficiency-pair` that does not exist, and says none
-  of its declarations has a node; since this open `def:deficiency-merged` pins two of them. Repoint it
-  the next time `Deficiency.lean` is edited (a docstring edit there rebuilds everything downstream, so
-  not on its own), or at the close.
+- **None for 40i.** The stale `Deficiency.lean` section docstring was repointed at the close.
 
 ## Hand-off / next phase
 
-**B1, B2 and B3 landed 2026-09-28.** All eight nodes are green (see *Status*). Gates green each
-build: `lake build` (whole tree, no warnings), `lake lint`, `blueprint/verify.sh`,
-`blueprint/lint.sh`; `notes/check-phase-note.py` green on this commit too.
+**40i is closed. The next concrete task is STEPS' SPLITOFF group**, (MC-28)–(MC-31), the next group
+in the design doc's provisional grouping and its recorded order (`notes/Phase40-design.md` §3
+STEPS; CONTRACT-A after it). It is not yet opened and has no letter. By the 40f–40i precedent its
+first step is a compiler-checked design recon (opus) of (MC-28)–(MC-31); the group opens as the
+next sub-phase after it. It is the first consumer of the `jointMotions`, `weldedRank` and remaining A2/A3 pins
+(PI decision 4(b); design doc §7).
 
-**Next: the close (fresh builder).** No more Lean or blueprint pins — the remaining work is the
-phase-close checklist (`PHASE-BOUNDARIES.md` *When this commit closes a phase*): an end-to-end
-re-read of the new `sec:main-component-orbit` subsection against the landed Lean; an exposition-
-ledger entry in `notes/BlueprintExposition.md` if the one-ear base or the two-body insertion
-warrants one; the headline-axioms check (`#print axioms` on the two theorem nodes, expect the
-project's standard `[propext, Classical.choice, Quot.sound]`); sync `notes/Phase40-design.md` §3
-STEPS (mark the ORBIT entry done), ROADMAP's Phase 40 status cell, and `notes/MolecularConjecture.md`
-if it tracks ORBIT; the public surfaces are unchanged (no new axioms, no scope change) per the PI's
-standing call recorded at 40f's close. Also repoint the stale `Deficiency.lean` docstring (see
-*Blockers*) if that file is touched for any reason before then, or fold it into the close commit.
+**Cleanup-round items.** 40h's four stay in the design doc's SHORT entry. 40i adds none: its files
+are under the ~1500-line tripwire (`Orbit.lean` 1 099, `Lines.lean` 1 064, `Carrier.lean` 1 023),
+and the one friction it resolved (the right-linear `pointJoin` lemmas) leaves an optional golf in
+`exists_insertion_gain` (`notes/FRICTION.md`).
 
 ## Decisions made during this phase
 
-- **2026-09-28 — opened design-first** from ORBIT's design recon (opus, read-only, compiler-checked).
-  This commit re-ran both spikes at `0689dfa3` and got the coordinator's counts. The coordinator's
-  calls are under *Architectural choices*.
-- **`def:deficiency-merged` is green at the open**: both pins landed in Phase 39 (A2), and
-  `checkdecls` resolves them. Definition faithfulness: the Lean restricts the labeling supremum to
-  `f u = f v`, which at bodies `u, v` of `G` is the maximum over the partitions with `u`, `v` in one
-  part, as the node states; the cheapest witness is the one-part partition, of value `0`.
-- **2026-09-28 B1 — one import-order deviation from the spike.** `Graph.two_le_finrank_map_planeDiff`
-  (in `Carrier.lean`) used `Graph.closedNbhd_subset_vertexSet` verbatim from the spike, but that
-  lemma lives downstream in `MainComponent/Bridge.lean` (which imports `Carrier.lean`, not the
-  reverse); its three-line proof (`rcases hw with rfl | ⟨e, he⟩; exacts [hv, he.right_mem]`) is
-  inlined at the one call site rather than moved or duplicated as a named declaration. No other
-  placement changed from the checklist.
-- **2026-09-28 B2 — `Orbit.lean`'s import, confirmed by probe.** `EarGen.lean` (= `Ear.lean` +
-  `Lines.lean`) is the least existing module supplying every identifier the four transcribed pieces
-  use; a `lake lean` probe file (`#check` on all of them against `import … .Ear` alone) showed only
-  `linearIndependent_pointJoin_pair` missing, which `Lines.lean` supplies. No other import needed
-  (in particular `Graph.splitOff_deficiency_add_le_of_deficiencyMerged`, from a different directory
-  tree, `Induction/SplitOffDeficiency.lean`, already resolves transitively).
-- **2026-09-28 B3 — a second import found only at transcription time.** `Orbit.lean`'s existing
-  `EarGen` import does not supply `induce_splitOff_ear` or `Graph.isLink_update_splitOff`, both of
-  which P10 uses and both of which live only in `MainComponent/Short.lean` (Phase 40h SHORT); every
-  other identifier P8/P9/P10 use was already reachable. Added
-  `import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short` to `Orbit.lean`;
-  confirmed acyclic since `Short.lean` itself imports only `EarGen.lean`, not `Orbit.lean`.
-  `Lines.lean` needed no new import (`pointJoin_*_left/right` from B1 and `exists_ne_zero_add_smul_
-  notMem` already local to the file cover P9's `exists_insertion_two{,_aux}`).
-- **2026-09-28 B3 — `mem_of_add_smul_mem` inlined, per the coordinator's dispatch note**, at its
-  three use sites inside `exists_insertion_two` as
-  `(Submodule.smul_mem_iff _ hc).mp ((Submodule.add_mem_iff_right _ hw).mp h)`; not landed as a
-  named lemma. Two of the three inlined call sites overran the 100-character `longLine` linter and
-  were wrapped onto a continuation line — no other content change from the spike.
+- **2026-09-28 — the close.** The re-read clarified that the two-body step drops
+  `thm:pencil-x0-open-ear-two`'s deficiency bound, named the incidence proof's non-root, made the
+  two-body count's `s` an equality (as the Lean derives), and added the remark after the two-body
+  theorem (the exposition-ledger entry). Two Lean chores: `Deficiency.lean`'s section docstring now
+  cites `def:deficiency-merged` and lists the section's pinned and unpinned declarations;
+  `Orbit.lean` drops its redundant `EarGen.lean` import (`Short.lean` brings it). The B3 checklist
+  bolding is corrected to the open's plan (`splitOff_ear_two{,_simple}` unpinned).
+- **B3** — `Orbit.lean` also imports `Short.lean`, for `induce_splitOff_ear` and
+  `Graph.isLink_update_splitOff`; a recon helper inlined at its three use sites.
+- **B2** — `EarGen.lean` was the least module supplying B2's identifiers (a `lake lean` probe); a
+  recon helper inlined as a local `have`.
+- **B1** — `Graph.closedNbhd_subset_vertexSet` (downstream in `Bridge.lean`) inlined at its one call
+  site in `Carrier.lean`.
+- **At the open** — `def:deficiency-merged` green: the Lean restricts the labeling supremum to
+  `f u = f v`, the maximum over the partitions with `u`, `v` in one part; the cheapest witness is
+  the one-part partition, of value `0`.

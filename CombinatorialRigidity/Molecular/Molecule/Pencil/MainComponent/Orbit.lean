@@ -3,7 +3,6 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
 
 /-!
@@ -65,8 +64,8 @@ Putting `x 1` back (`exists_insertion_two`) raises the span of the ear's joins t
   other. `Graph.exists_oneEar_base` reads it once, up front.
 * **`Short.lean` import.** The `k = 2` cell reuses two SHORT-group facts about a suppressed
   interior body (`induce_splitOff_ear`, `Graph.isLink_update_splitOff`), so this file imports
-  `MainComponent/Short.lean` alongside `EarGen.lean`; no cycle (`Short.lean` itself only imports
-  `EarGen.lean`).
+  `MainComponent/Short.lean`, which brings `EarGen.lean` with it; no cycle (`Short.lean` itself
+  only imports `EarGen.lean`).
 -/
 
 open scoped Graph
@@ -174,7 +173,7 @@ theorem exists_incidence [Infinite K] {σ : Type*} [Finite σ] {L : Submodule K 
       MvPolynomial.eval q B ≠ 0 := by
   classical
   have : Fintype σ := Fintype.ofFinite σ
-  -- the one-dimensional span bound, inlined (no named `finrank_span_singleton_le_one'` helper)
+  -- the one-dimensional span bound
   have hspan1 : ∀ v : Fin 3 → K, Module.finrank K (K ∙ v) ≤ 1 :=
     fun v => (finrank_span_le_card ({v} : Set (Fin 3 → K))).trans (by simp)
   -- a point of `L` where `D` is nonconstant

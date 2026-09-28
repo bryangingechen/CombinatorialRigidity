@@ -2444,9 +2444,10 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
 This subsection proves the ear steps for an open ear $a - x_1 - b$ on
 $V_1$ with one interior body, and for an open ear $a - x_1 - x_2 - b$ with
-two, with no bound on the deficiency, both when $a$ and $b$ are not
-adjacent. With $\rho$ and $\Lambda$ as in \cref{sec:main-component-chain},
-the aim is the inequality $(\star)$ of \cref{sec:main-component-short}.
+two and, unlike \cref{thm:pencil-x0-open-ear-two}, no bound on the
+deficiency, both when $a$ and $b$ are not adjacent. With $\rho$ and
+$\Lambda$ as in \cref{sec:main-component-chain}, the aim is the
+inequality $(\star)$ of \cref{sec:main-component-short}.
 Both steps assume
 \[
   \operatorname{def}_2(G[V_1]; a, b) + 2 \;\le\;
@@ -2550,9 +2551,10 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   $w(q) = D(u)(q)\, z_0 - D(z_0)(q)\, u \in L$; then $D(w(q))$ vanishes at
   $q$. An affine function vanishing on the zero line of the nonconstant
   $D(z_0)$ is a multiple of it, so some $q_0$ on that line has
-  $D(u)(q_0) \neq 0$, and there $w(q_0)$ is a nonzero multiple of $z_0$.
-  So $(q, s) \mapsto A(s\, w(q))$ is a nonzero polynomial, and a non-root
-  $(q, s)$ of its product with $B$ gives $z = s\, w(q)$.
+  $D(u)(q_0) \neq 0$, and there $w(q_0) = D(u)(q_0)\, z_0$. So
+  $(q, s) \mapsto A(s\, w(q))$ is a polynomial, nonzero at $q_0$ and
+  $s = D(u)(q_0)^{-1}$, and a non-root $(q, s)$ of its product with $B$
+  gives $z = s\, w(q)$.
 \end{proof}
 
 \begin{lemma}[The base configuration of a one-body ear]
@@ -2751,7 +2753,7 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   the ranks of $G[V_1]$ and of $G_1$ are their targets, so by
   \cref{lem:block-rank-ear} at $G_1$,
   $s = \dim\bigl(\rho + \operatorname{span}(p_a \wedge y,\ y \wedge
-  p_b)\bigr) \ge 2 + f - \operatorname{def}(\tilde G_1)$.
+  p_b)\bigr) = 2 + f - \operatorname{def}(\tilde G_1)$.
 
   \emph{Putting $x_2$ back.} By \cref{lem:pencil-insertion-two} there are
   affine points $y_1 \in \pi_a$ and $y_2 \in \pi_b$ with
@@ -2779,6 +2781,30 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   $(\star)$ at $k = 2$, and \cref{lem:block-rank-ear} and
   \cref{lem:pencil-x0-one-witness} apply.
 \end{proof}
+
+\begin{remark}
+  The step with two interior bodies counts against $G_1$, not against
+  $G[V_1]$ alone. Counting against $G[V_1]$ alone means describing the
+  subspaces $\rho$ at which a general ear gains too little, by a dimension
+  count over the placements of the ear, carried out case by case over the
+  projective types of the two ends. Counting against $G_1$ needs no such
+  description. Its base configuration puts the point $y$ of $x_1$ on the
+  line $\pi_a \cap \pi_b$, with each end's point off the other end's plane.
+  With $u_0$ a direction of that line, the six joins of $p_a, y, u_0, p_b$
+  span $\Lambda^2 K^4$, and
+  $W = \rho + \operatorname{span}(p_a \wedge y,\ y \wedge p_b)$ holds two
+  of them, so unless $W = \Lambda^2 K^4$ one of the other four lies outside
+  $W$, and the matching curve gains a dimension
+  (\cref{lem:pencil-insertion-two}). The only property of the ends used is
+  that each point lies off the other plane, which the hypothesis on the
+  merged deficiency gives at a general configuration, where the map
+  $(z, h) \mapsto h_a - h_b$ has rank at least two
+  (\cref{lem:pencil-flag-genericity}). In both steps the
+  picture of $x_1$ is chosen together with the heights on $V_1$
+  (\cref{lem:pencil-one-ear-base}), since a height of the one-body ear
+  graph restricts to one of $G[V_1]$ whose affine functions at $a$ and $b$
+  agree at the picture of $x_1$.
+\end{remark}
 
 \subsection{The passage to the two main-component statements}
 \label{sec:main-component-statements}
