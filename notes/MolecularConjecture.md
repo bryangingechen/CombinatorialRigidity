@@ -789,8 +789,9 @@ next group, CONTRACT-R (contraction at a `def₂`-rigid core), closed as sub-pha
 `notes/Phase40f.md`); the third, CHAIN (the ear steps and the cycle), closed as sub-phase 40g
 (2026-09-27, `notes/Phase40g.md`); the fourth, SHORT (the shorter ears), closed as sub-phase 40h
 (2026-09-27, `notes/Phase40h.md`), built from a recon that found a shorter proof of two of its
-steps, now in the workbook and second-read; ORBIT (the remaining `k = 1, 2` ear cells) is next in
-the provisional order. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+steps, now in the workbook and second-read; the fifth, ORBIT (the remaining `k = 1, 2` ear cells),
+opened as sub-phase 40i (2026-09-28, `notes/Phase40i.md`), design-first from a recon that needs no
+new mathematics. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

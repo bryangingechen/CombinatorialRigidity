@@ -888,6 +888,37 @@ pencil configurations suppress a body (\cref{sec:main-component-short}).
   $G''$; every other edge keeps its ends and its status.
 \end{proof}
 
+When every partition of $V(G) - v$ keeping $a$ and $b$ in one part falls
+at least $D - 1$ below the deficiency of $G - v$, the new edge $ab$ lowers
+the deficiency by $D - 1$; the ear steps on pencil configurations whose
+ends are not adjacent use this (\cref{sec:main-component-orbit}).
+
+\begin{lemma}[Splitting off with a gap in the merged deficiency]
+  \label{lem:splitoff-deficiency-merged}
+  \uses{def:graph-operations, def:D-deficiency, def:deficiency-merged}
+  Let $v$ be a body of $G$, let $a, b \neq v$ be bodies of $G$, and let
+  $e_0$ be a label every link of which in $G$ has $v$ as an end. Let
+  $G' = G[V(G) - v]$, and let $H$ be obtained from $G$ by deleting $v$ and
+  letting the label $e_0$ join $a$ and $b$. If, at some $D \ge 1$,
+  \[
+    \operatorname{def}(\tilde G'; a, b) \;\le\;
+    \operatorname{def}(\tilde G') - (D - 1)
+  \]
+  (\cref{def:deficiency-merged}), then
+  $\operatorname{def}(\tilde H) \le \operatorname{def}(\tilde G') - (D - 1)$.
+\end{lemma}
+\begin{proof}
+  $H$ has the bodies of $G'$, every edge of $G'$ with its ends, and the
+  edge $e_0$ joining $a$ and $b$, which is not an edge of $G'$ since its
+  links in $G$ meet $v$. Compare the value of each partition $P$ of
+  $V(G')$ on $H$ and on $G'$: the parts are the same. If $P$ separates $a$
+  and $b$, then $e_0$ is one more crossing edge, and the value on $H$ is
+  that on $G'$ minus $D - 1$, at most $\operatorname{def}(\tilde G') -
+  (D - 1)$. If $P$ keeps them in one part, the value on $H$ is that on
+  $G'$, at most $\operatorname{def}(\tilde G'; a, b)$, and the hypothesis
+  bounds it.
+\end{proof}
+
 \begin{remark}[KT Lemma 4.4's lower bound \emph{is} a deficiency-counting fact, via the isolated-case crossing-drop]
   \label{rem:kt-lemma-44}
   \uses{lem:splitoff-deficiency, lem:removal-deficiency}

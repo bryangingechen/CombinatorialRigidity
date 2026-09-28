@@ -11,9 +11,11 @@ closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRID
 one build commit from a compiler-checked recon's spike; **40g = CHAIN closed 2026-09-27**
 (`notes/Phase40g.md`), two build commits from a compiler-checked recon's spike; **40h = SHORT
 closed 2026-09-27** (`notes/Phase40h.md`), six build commits and a file split from a
-compiler-checked recon whose new claims (MC-179)–(MC-182) were second-read first; the three later
-groups are provisional, and ORBIT is next in their order (§3 STEPS). The ORBIT recon is done
-(2026-09-26, §4), and so is the second reading of its new claims (MC-173)–(MC-176). This doc
+compiler-checked recon whose new claims (MC-179)–(MC-182) were second-read first; **40i = ORBIT
+opened 2026-09-28** (`notes/Phase40i.md`), design-first from a compiler-checked recon's sorry-free
+spike with no new mathematics, B1 next; the two later groups (SPLITOFF, CONTRACT-A) are
+provisional (§3 STEPS). The ORBIT recon is done (2026-09-26, §4), and so is the second reading of
+its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
 (the 2026-09-25 entries).
@@ -200,7 +202,7 @@ so the total-selector open point dissolved. Every decision is in `notes/Phase40d
     is unnecessary. Its consumers are the generic-normals and generic-hinge row ranks
     (`GenericLift/{PanelGeneric,HingeGeneric}.lean`) and `Molecule/Theorem56.lean`.
 
-### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`); **CHAIN = sub-phase 40g, ✓ closed 2026-09-27** (`notes/Phase40g.md`); **SHORT = sub-phase 40h, ✓ closed 2026-09-27** (`notes/Phase40h.md`)
+### STEPS — the local steps of the induction → by group; **CUT/BRIDGE = sub-phase 40e, ✓ closed 2026-09-26** (`notes/Phase40e.md`); **CONTRACT-R = sub-phase 40f, ✓ closed 2026-09-26** (`notes/Phase40f.md`); **CHAIN = sub-phase 40g, ✓ closed 2026-09-27** (`notes/Phase40g.md`); **SHORT = sub-phase 40h, ✓ closed 2026-09-27** (`notes/Phase40h.md`); **ORBIT = sub-phase 40i, open** (`notes/Phase40i.md`)
 
 **CUT/BRIDGE done** (40e). The "if" halves of (MC-52) and (MC-53) are formalized in
 `Molecule/Pencil/MainComponent/Cut.lean` (`main-component.tex` §`sec:main-component-cut`):
@@ -281,8 +283,8 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
 | chains `k ≥ 5` | (MC-18)(a), (MC-16), (MC-17), (MC-19)(b) → (MC-20); cert. (MC-134)(b) | ✓ |
 | chain `k = 4` | (MC-180) ← the antecedent `G′ + ear₃` (`G.splitOff (x 1) …`), (MC-179)(a), (d), (MC-182), (MC-16) in rank form, (MC-18)(a), (MC-17)'s separated count *(since 2026-09-27; (MC-24)/(MC-25) with (MC-136) off the route)* | ✓ (MC13, 2026-09-27; found by formalization the same day) |
 | chain `k = 3` | (MC-181) ← the antecedent `G′ + ear₂`, (MC-179)(b)–(d) ((c) = (MC-135)(ii)'s `k = 2` step with (MC-47)(i)'s span identity), (MC-182), (MC-16) in rank form, (MC-18)(a), (MC-17)'s separated count *(since 2026-09-27; (MC-45)'s `r`-split off the route)* | ✓ (as `k = 4`) |
-| chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-176) ← the refined link (MC-173), the parametrized incidence (MC-174) ((MC-18)(b)'s form), (MC-175)(i)(ii), (MC-16) at `k = 1, 2`, (MC-18)(a)/(b)'s fibre identifications, (MC-169); orbit (i) and `dim U ≥ 2` by (MC-48)(ii)'s argument under `δ₂ ≥ 2` ((MC-175)(iii), (MC-4)(b), Jackson–Jordán at `G′ + ab` = (MC-172)). (MC-46)/(MC-138) superseded on route (2026-09-26); (MC-177) is (MC-16)'s rank form | ✓ (MC13, 2026-09-26; found by formalization the same day) |
-| chain `k ≤ 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a)/(b), (MC-16); the Lean hypothesis is `def₃(G′) ≤ def₃(G)` (PI decision 4(a), 2026-09-27); `k = 1` with (MC-174) and (MC-48)(ii) goes to ORBIT | ✓ (MC14) |
+| chain `k = 2`, `a ≁ b`, `δ₂ ≥ 2` | (MC-176) ← the refined link (MC-173), the parametrized incidence (MC-174) ((MC-18)(b)'s form), (MC-175)(i)(ii), (MC-16) at `k = 1, 2`, (MC-18)(a)/(b)'s fibre identifications, (MC-169); orbit (i) and `dim U ≥ 2` by (MC-48)(ii)'s argument under `δ₂ ≥ 2` ((MC-175)(iii), (MC-4)(b), Jackson–Jordán at `G′ + ab` = (MC-172)). (MC-46)/(MC-138) superseded on route (2026-09-26); (MC-177) is (MC-16)'s rank form. **(MC-173) is consumed in existence form** (its four curves, as the insertion lemma `lem:pencil-insertion-two`), and **its chart polynomial is off route**: EARGEN's landed span transfer supplies the open condition (40i's design recon, 2026-09-28; ORBIT entry below) | ✓ (MC13, 2026-09-26; found by formalization the same day) |
+| chain `k ≤ 2`, `δ = 0` | (MC-54) ← (MC-19)(b), (MC-18)(a)/(b), (MC-16); the Lean hypothesis is `def₃(G′) ≤ def₃(G)` (PI decision 4(a), 2026-09-27); `k = 1` with (MC-174) and (MC-48)(ii) goes to ORBIT (40i) | ✓ (MC14) |
 | SPLITOFF (`k = 1`, `δ ≥ 5`) | (MC-28), (MC-29), (MC-30)(iv) → (MC-31); Jackson–Jordán at `G″` | ✓ (MC11) |
 | CONTRACT | (MC-34)–(MC-38) → (MC-39); (MC-59)(b), (c1)–(c3) → (MC-59)(d) | ✓ (MC12, MC14) |
 | THETA | (MC-21)(b) ← (MC-21)(a), (MC-20), and (MC-139); **dissolves into COVERAGE** (PI decision 3, 2026-09-27): no named theorem, a remark | ✓ (MC20) |
@@ -320,7 +322,8 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
     Neither was built then. **SHORT (40h) built the two locality lemmas**,
     `Graph.liftingSpace_congr` and `Graph.isAdmissiblePicture_congr` (B3–B4,
     `lem:pencil-picture-local`), beside their definitions in `Carrier.lean` (PI decision 5).
-    Main-picture propagation is still unbuilt. For whichever later group needs it, the compiled
+    Main-picture propagation is still unbuilt, and ORBIT does not need it either (40i's design
+    recon, 2026-09-28). For whichever later group needs it, the compiled
     signature (proof in `scratch/40g/S40gPrereq.lean`, local to the recon's checkout; five lines from
     FLAT's `three_add_deficiency_le_finrank_liftingSpace`, no Jackson–Jordán):
     - `Graph.IsAdmissiblePicture.isMainPicture_of_finrank_le [Finite α] [Finite β] {G : Graph α β}
@@ -368,8 +371,9 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
       - (MC-44), (MC-136), (MC-24), the exact (MC-17) and (MC-134)(b) at `k = 3, 4` go to §2's *Not
         needed*;
       - the pins of `jointMotions`, `weldedRank` and A2/A3 go to their first consumer, which is not
-        SHORT: SPLITOFF (`δ ≥ 5`), ORBIT ((MC-175)(iii) on `deficiencySep`/`deficiencyMerged`) or
-        COVERAGE ((MC-79)'s `δ`).
+        SHORT: SPLITOFF (`δ ≥ 5`), ORBIT ((MC-175)(iii); at 40i's open it pins only
+        `deficiencyMerged` and `partitionDef_le_deficiencyMerged`, and needs no `deficiencySep`)
+        or COVERAGE ((MC-79)'s `δ`).
     - **CHAIN's note is answered:** the `k ≤ 3` ears never need (MC-134)(b) at the actual flag pair.
       - `k = 3, 4` never use `λ_k` alone.
       - `k = 2` uses a flat witness, as CHAIN's hexagon did (the flag pair is in orbit (iv) at it).
@@ -379,8 +383,8 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
       - **File sizes.** `Short.lean` is at 1 366 lines (134 under the ~1500-line tripwire) and
         `Bricks.lean` at 1 458 (42 under). The commit that would take `Bricks.lean` past splits its
         vertex-2-cut layer (section `TwoCutCarriers`, lines 803–1454) into its own file first (40g's
-        plan). The commit that would take `Short.lean` past (ORBIT's `of_openEar_one`, which reuses
-        the EARGEN device, is the likely grower) first splits its antecedent and base-data layer
+        plan). ORBIT leaves both files untouched (its steps go in a new `Orbit.lean`, 2026-09-28).
+        The commit that would take `Short.lean` past first splits its antecedent and base-data layer
         into its own file, imported by `Short.lean`: the three sections from `## The antecedent G″`
         through `## The base data of the three- and four-body steps` (lines 221–635:
         `splitOff_ear_four`/`_three`, `induce_splitOff_ear`, `Graph.isLink_update_splitOff`,
@@ -411,62 +415,74 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
     the ~1500-line tripwire) along that line: the general pieces to a shared file, the flat-core
     pieces and CONTRACT-R's assembly left behind. The split waits for CONTRACT-A because the
     factoring decides the cut, and the file has no other consumer.
-  - **ORBIT**, the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` cell: the refined link (MC-173) and the cell's step
-    (MC-176), with (MC-175)(i)(ii). A 2–3-build tail group right after SHORT, and so after CHAIN (PI
-    D2, 2026-09-26): **next**, not yet opened. The name is historical: the orbit table (MC-138) and
-    (MC-46)'s count are off the route, and no orbit is computed.
-    - **Consumes:** CHAIN's (MC-16) at `k = 1, 2` in rank form,
-      `rank R_{G′+ear_k} = rank R_{G′} + 5k − 1 + dim(ρ + Λ_k)`. This is
-      `BodyHingeFramework.finrank_span_rigidityRows_vertexTwoCut_eq` at `{a, b}`, plus the path
-      side's rank `5(k + 1)` and the fact that its `relScrews` is the span of the hinges.
-      Both landed in 40g build 1 (`MainComponent/Ear.lean`), as the path brick and the ear rank law
-      `BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, which holds at every adjacency (CHAIN
-      applies it directly at `(ofNormals G ends p).toBodyHinge`, the polarity entering only per
-      hinge through `screwComplementIso_mk_extensor`; ORBIT may do the same). The second side's induced graph is the path because
-      `a ≁ b`. Instantiate the lemma at `pointJoinFramework G ends (pencilConfigPoint q z)`, whose
-      `relScrews` are the workbook's `ρ`, `Λ_k` in `⋀²K⁴` as written, and move each rank to
-      `X0Attains`'s `ofNormals` form by `ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`
-      and `BodyHingeFramework.finrank_span_rigidityRows_mapSupport`; the `G′` side's rank is
-      `X0Attains(G′)`'s by `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` once
-      `G[V(G′)] = G′`.
-      It also builds (MC-174) and (MC-48)(ii)'s argument, which SHORT did not (PI decision 2,
-      2026-09-27; the `k = 1` cell below), and consumes (MC-18)'s two fibre identifications.
-    - **The antecedent** is `G₁ = G.splitOff x₂ x₁ b e`, with `e` a freed label.
-    - **(MC-173)'s curve** goes through `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial`
-      and `exists_polynomial_ne_zero_of_linearIndependent_at`. Its frame basis of `Λ²` is
-      `exteriorPower.ιMulti_family_linearIndependent_field` (in the join model no carrier lemma is
-      needed; `panelSupportExtensor_linearIndependent_iff` covers only pure panel-hinge families,
-      and (MC-173)'s family is a basis of `ρ` plus hinges).
-    - **The step** does not have the STEPS contract's one-picture shape: `G₁`'s picture puts `x₁`
-      on the zero line of `h_a − h_b`, which depends on the `G′` heights. The order is `q` on
-      `V(G′)` (each graph's polynomial reduced to a nonzero coefficient in those coordinates); then
-      `(z′, q_x)` by (MC-174); then a common point in `L_{G₁}` by
-      `MvPolynomial.exists_mem_eval_ne_zero₂`; then `(q_{x₁}, q_{x₂})` off (MC-173)'s chart
-      polynomial and `Graph.exists_mvPolynomial_isMainPicture` at `G`. `G`'s heights come from
-      `z′` by (MC-18)(a). It ends at `Graph.x0Attains_of_exists`, and needs no `δ`, (MC-17),
-      (MC-22) or (MC-44).
-    - *(The Consumes, curve and step bullets were repaired at the second reading of
-      (MC-173)–(MC-176), 2026-09-26.)*
-    - **The `k = 1` cell, folded in from SHORT** (PI decision 2, 2026-09-27; the SHORT recon's B8–B9).
-      This is (MC-54) at `k = 1`: `Graph.X0Attains.of_openEar_one` (compiled statement, proof `sorry`).
-      It has SHORT's explicit-path format at `k = 1` with `hnadj : ¬ G.Adj a b`, `h₁`, `hdef` as in
-      `of_openEar_two`, and `hδ₂ : (G.splitOff (x 0) a b (e 0)).deficiency 2 + 2 ≤
-      (G.induce V₁).deficiency 2`. The proof chooses the ear body's picture jointly with the `V₁`
-      heights by (MC-174), since `L_G(q)` is a hyperplane section of `L_{G′}(q)` there. `rank D ≥ 2`
-      comes from **U2**, (MC-48)(ii)'s argument: BRIDGE's JJ at the split-off `G.splitOff (x 0) a b
-      (e 0)` (= `G′ + ab`, simple as `a ≁ b`), FLAT's (MC-4)(b) at `G[V₁]`, and `hδ₂`. `λ₁ = 2` is
-      automatic at an admissible picture. It needs SHORT's EARGEN device (landed in 40h's B3–B4,
-      `MainComponent/EarGen.lean`). Builds: (MC-174)
-      and U2 about 1; `of_openEar_one` about 1.
-    - **(MC-175)(iii)** (`δ₂ ≥ 2 ⟹ def₂(G′ + ab) ≤ def₂(G′) − 2`, on Layer A's `deficiencySep` and
-      `deficiencyMerged`) is ORBIT's too (PI decision 4(b)). Both the `k = 2` cell and COVERAGE's
-      `k = 1` use feed it into U2.
-    - [ ] **Tracked (the coordinator's flag, 2026-09-27): trace the supply of `of_openEar_one`'s
-      `hδ₂` at ORBIT's recon.** At COVERAGE's `k = 1`, `δ = 0` use, the theorem's
-      `hδ₂ : def₂(G.splitOff (x 0) a b (e 0)) + 2 ≤ def₂(G[V₁])` must be supplied. It fails at
-      `K_{2,3}` (`def₂(C₄) = 1`), which FLAT covers instead.
-    - **Build commits:** (MC-173) about 1, the step 1–2, and the `k = 1` cell about 2 (so 4–5 in
-      all).
+  - **ORBIT = 40i, open** (`notes/Phase40i.md`; design recon 2026-09-28, opus, compiler-checked,
+    one sorry-free spike; the coordinator's calls the same day are in the work log): the `k = 1`
+    cell ((MC-54) at `k = 1`, folded in from SHORT by PI decision 2) and the `k = 2`, `a ≁ b`,
+    `δ₂ ≥ 2` cell ((MC-176)), with (MC-173)–(MC-175). A tail group right after SHORT (PI D2,
+    2026-09-26), although this list prints it last. **No new mathematics**: 40i opened directly,
+    with no workbook commit and no second reading (the coordinator's call, the 40f/40g
+    precedent). The name is historical: the orbit table (MC-138) and (MC-46)'s count are off the
+    route, and no orbit is computed.
+    - **The statements** (compiled; the nodes are `main-component.tex` §`sec:main-component-orbit`,
+      `lem:splitoff-deficiency-merged` and `def:deficiency-merged`). `Graph.X0Attains.of_openEar_one`
+      and `Graph.X0Attains.of_openEar_two_of_splitOff` take SHORT's explicit-path format with
+      `hnadj : ¬ G.Adj a b`, `h₁` at `G[V₁]`, and
+      `hδ₂ : (G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2`. The `k = 1`
+      step adds `hdef` as `of_openEar_two` does (PI decision 4(a)); the `k = 2` step adds `h₂`,
+      attainment at `G₁ = G.splitOff (x 1) (x 0) b (e 1)` (the workbook's `x₂` suppressed). (H) is
+      asked at `G` only.
+    - **The route** (the recon's verdict, shorter than the plan it replaces):
+      - **U2 and (MC-174) run on the lifting system's kernel** (coordinates `(z, h)`), where
+        `h_a − h_b` is linear and the incidence functionals and orbit (i) are linear polynomials.
+        U2 ((MC-48)(ii)'s argument) is rank–nullity: the functionals' common kernel injects into
+        `L_{G′+ab}(q)`, and `dim L_{G′+ab} + 2 ≤ dim L_{G′}` by Jackson–Jordán at `G′ + ab` (simple
+        as `a ≁ b`), (MC-4)(b) at `G′` and (MC-175)(iii), new as
+        `Graph.splitOff_deficiency_add_le_of_deficiencyMerged` (the `≤` half; no `deficiencySep`).
+        (MC-174)'s family is restricted to `w ∈ K z₀`. (MC-48)(i)/(iii), the habitat's condition
+        (c), are off route.
+      - **The one-ear base** (`Graph.exists_oneEar_base`, both cells): a picture off the caller's
+        polynomial, `G′`'s attainment polynomial and Jackson–Jordán's at `G′ + ab`; U2 there; then
+        (MC-174) picks the ear body's picture jointly with a kernel point of `G′`. So the step does
+        not have the STEPS contract's one-picture shape.
+      - **`k = 1`**: one picture, one kernel point and the ear rank law at `k = 1`; `λ₁ = 2`
+        ((MC-169)) is automatic by admissibility at the ear body. No EARGEN.
+      - **`k = 2`**: the base at `G₁`, a second fibre intersection for `G₁`'s attainment, then
+        (MC-173) **in existence form**, `exists_insertion_two`, polynomial-free through the landed
+        `exists_ne_zero_add_smul_notMem` (SHORT's style). Its frame basis `p_a, y, u₀, p_b` (`u₀` the
+        direction of `π_a ∩ π_b`) is the landed tetrahedron; one of `y∧u₀`, `u₀∧p_b`, `p_a∧u₀`,
+        `p_a∧p_b` is off `W`, and its curve raises the span by one. EARGEN's landed span transfer
+        `exists_mvPolynomial_le_finrank_sup_span_pointJoin` then gives the open condition at that
+        witness, as `of_openEar_four` does. The count is (MC-175)(i)(ii), landed as
+        `Graph.splitOff_deficiency_le_of_eq_left` and `Graph.deficiency_induce_add_le_of_ear`.
+      - **Off route:** (MC-173)'s chart polynomial and minor,
+        `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial`,
+        `exteriorPower.ιMulti_family_linearIndependent_field`, `Graph.exists_earBase_splitOff` (its
+        antecedent ear needs `k ≥ 2`), and the `pointJoinFramework` instantiation with its
+        `mapSupport` transport: the ear law is applied at `(ofNormals …).toBodyHinge`, as in CHAIN
+        and SHORT, with 40h's meet-to-join transport.
+    - [x] **Tracked (the coordinator's flag, 2026-09-27): trace the supply of `of_openEar_one`'s
+      `hδ₂`. Settled by ORBIT's design recon (2026-09-28).** Both cells take the `deficiencyMerged`
+      form above (the coordinator's call): (MC-176)'s and (MC-175)(iii)'s `δ₂ ≥ 2` over Layer A's
+      carrier, which COVERAGE computes from (S), by (MC-79)(ii) at `k = 1` and by (MC-79)(iii) with
+      (vi) at `k = 2`, `a ≁ b`, `δ ≥ 1`. It fails exactly at chains with `δ₂ ≤ 1`. Those graphs
+      violate (S) and are covered before (MC-89)'s step 5, by CUT/BRIDGE, BASE, FLAT (`K_{2,3}` and
+      `K₄` with one edge subdivided once, `def₂ = def₃ = 0`, measured, script not retained) or
+      CONTRACT; θ-graphs go through THETA's assembly, which uses no `k = 1` ear. The compiled
+      split-off form would be a double split-off at `k = 2`; switching to it would cost about three
+      lines per call site. `dim U ≥ 2` in Lean form is rejected (COVERAGE would re-run U2). The supplier
+      is COVERAGE's, tracked in its section.
+    - **Placement** (PI decision 5's convention; the coordinator's call): the steps and their
+      ORBIT-specific pieces in a new `Molecule/Pencil/MainComponent/Orbit.lean`; the general pieces
+      beside their definitions (`Induction/SplitOffDeficiency.lean`, `Carrier.lean`, `Flat.lean`,
+      `Lines.lean`, `Induction/Operations.lean`). `Operations.lean` (3 334 lines) gains about 20,
+      by the 40h `Pinning.lean` precedent; no split fires.
+    - **Pins** (PI decision 4(b), first consumer; the coordinator's call): ORBIT pins only A2's
+      `Graph.deficiencyMerged` and `Graph.partitionDef_le_deficiencyMerged`, on
+      `def:deficiency-merged`, green at the open (40g's `def:relative-screws` precedent). The rest
+      of A2/A3, `jointMotions` and `weldedRank` stay unpinned for COVERAGE or SPLITOFF.
+    - **Build commits: three** — B1 the general pieces, B2 the `k = 1` cell, B3 the `k = 2` cell;
+      B1 and B2 may land as one (40h's B3–B4 precedent). The nodes of each build are in
+      `notes/Phase40i.md`'s checklist.
 
   **Order** (PI, 2026-09-26): 40e's open and build first, then a read-only ORBIT recon (opus)
   before the next group opens. Both are done; the ORBIT verdict is in §4. The read-only fresh
@@ -477,11 +493,11 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
   recon, and closed the same day after two build commits. **SHORT opened as 40h** (2026-09-27),
   design-first from a compiler-checked recon, after the fresh read-only second reading of its new
   claims (MC-179)–(MC-182) (PI decision 1) confirmed them, with repairs in place, and closed the same
-  day after six build commits and the `Carrier.lean` split. **ORBIT is next**, not yet opened: the
-  PI's D2 (2026-09-26, verbatim in `notes/pencil/adjudications.md`) placed it "right after SHORT",
-  although the list above prints it last. It now also holds SHORT's `k = 1` cell (PI decision 2).
-  Like every STEPS group so far, it opens from a design recon, which also runs the ORBIT entry's tracked
-  `hδ₂` trace. ORBIT's dependencies do not touch CONTRACT-R.
+  day after six build commits and the `Carrier.lean` split. **ORBIT opened as 40i** (2026-09-28),
+  right after SHORT as the PI's D2 (2026-09-26, verbatim in `notes/pencil/adjudications.md`)
+  placed it, with SHORT's `k = 1` cell (PI decision 2): design-first from a compiler-checked recon
+  whose sorry-free spike needs no new mathematics, and which settled the tracked `hδ₂` trace; B1
+  is next. ORBIT's dependencies do not touch CONTRACT-R.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**
   - **(MC-177) is built in CHAIN, forced**: BASE and the open ear both go through the ear rank law.
@@ -491,7 +507,8 @@ bridge from `δ = 0` to `k = 2`'s `hdef`. The route as landed:
     ear law, which hold at any framework, directly at `(ofNormals G ends p).toBodyHinge`, the
     framework `X0Attains` reads; the polarity enters only per hinge. ORBIT's recommended route
     stays available (the ear law at `pointJoinFramework`, the rank moved by the landed `mapSupport`
-    lemmas), and no `relScrews`/`mapSupport` transport lemma is needed by anyone yet.
+    lemmas), and no `relScrews`/`mapSupport` transport lemma is needed by anyone yet. *(ORBIT's
+    design recon, 2026-09-28, takes the direct route too.)*
 - [x] **Tracked for SHORT's pre-build recon (the ORBIT recon, 2026-09-26): re-check (MC-44) in
   SHORT's list. Settled by SHORT's design recon (2026-09-27): no consumer on the route, dropped to
   §2's *Not needed* (PI decision 4(b)).** (MC-44) is not in (MC-89)'s tree (Step MC20, Part I). Step MC14's claim that
@@ -571,6 +588,12 @@ So COVERAGE's strong induction covers θ-graphs, and a remark records it, as wit
 theorem in 40g. COVERAGE also supplies SHORT's `hdef` from `δ = 0`, through
 `Graph.deficiency_induce_le_of_ear_of_merge`, and the antecedent `G.splitOff (x 1) (x 0) (x 2) (e 1)`
 satisfying (H).
+- [ ] **Tracked (from 40i's open, 2026-09-28): ORBIT's `hδ₂` supplier.** Both ORBIT steps ask
+  `(G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2` at a chain of `G ∈ 𝒮`.
+  COVERAGE builds it as a Layer-A lemma, "(S) at `G` ⟹ `deficiencyMerged₂(G′; a, b) + 2 ≤
+  def₂(G′)`", at a one-body chain by (MC-79)(ii)'s computation, and at a two-body chain with
+  `a ≁ b`, `δ ≥ 1` by (MC-79)(iii) with (vi). It uses Layer A only. The trace is the ORBIT entry's
+  settled item (§3 STEPS).
 
 **Lean reuse.** `exists_maximal_induced_isProperRigidSubgraph`, `triangle_isProperRigidSubgraph`,
 `c4_isProperRigidSubgraph`. The proof uses all of (H), because CUT and BRIDGE pass through
@@ -629,7 +652,8 @@ The main-component argument gets **one new forward-mode chapter** (`main-compone
 subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subsections are all
 green, and so are STEPS' first four, `sec:main-component-cut` (40e),
 `sec:main-component-contract` (40f), `sec:main-component-chain` (40g) and
-`sec:main-component-short` (40h); MOTIVES's stub subsection
+`sec:main-component-short` (40h); the fifth, `sec:main-component-orbit` (40i), is open and red;
+MOTIVES's stub subsection
 `sec:main-component-statements` is the last, and each later layer inserts its subsection before
 it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
@@ -809,7 +833,10 @@ round that lands it.
   `jointRows` (40g's open, on the green `def:relative-screws`); `inf_span_rigidityRows_of_vertexTwoCut`,
   `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open; green since 40g build 1, and since 40g's
   close on their own node `cor:block-rank-vertex-two-cut`, the induced corollary of
-  `lem:block-rank-two-cut`). `jointMotions`, `weldedRank` and the A2/A3 set go to their first consumer: SPLITOFF, ORBIT or COVERAGE, not SHORT (PI decision 4(b), 2026-09-27; §3 STEPS).
+  `lem:block-rank-two-cut`); `deficiencyMerged`, `partitionDef_le_deficiencyMerged` (40i's open, on
+  the green `def:deficiency-merged`). `jointMotions`, `weldedRank` and the rest of the A2/A3 set go to
+  their first consumer, SPLITOFF or COVERAGE, not SHORT or ORBIT (PI decision 4(b), 2026-09-27; §3
+  STEPS).
 - **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
   40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
   exposition (the main component as a vector bundle over planar pictures, the flat rank, the

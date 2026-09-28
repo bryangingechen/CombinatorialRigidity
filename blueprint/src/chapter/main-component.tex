@@ -22,10 +22,12 @@ cut vertex and along a chain of bridges; the fifth proves the
 contraction step at a core of planar deficiency zero; the sixth proves
 that a cycle attains, and the ear steps for a closed ear and for an open
 ear with at least five interior bodies; the seventh proves the ear steps
-for an open ear with two, three or four interior bodies. The remaining
-ear steps, the split-off step, the contraction step at the remaining
-cores, and the structural coverage build on them; the last subsection
-states the passage back to the two statements.
+for an open ear with two, three or four interior bodies; the eighth
+proves the ear steps for an open ear with one interior body, and with two
+at non-adjacent ends with no bound on the deficiency. The split-off step, the
+contraction step at the remaining cores, and the structural coverage
+build on them; the last subsection states the passage back to the two
+statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -2436,6 +2438,318 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   (\cref{thm:pencil-jj-equality}), and \cref{cor:pencil-flat-attains}
   applies.
 \end{remark}
+
+\subsection{Open ears with one or two interior bodies at non-adjacent ends}
+\label{sec:main-component-orbit}
+
+This subsection proves the ear steps for an open ear $a - x_1 - b$ on
+$V_1$ with one interior body, and for an open ear $a - x_1 - x_2 - b$ with
+two, with no bound on the deficiency, both when $a$ and $b$ are not
+adjacent. With $\rho$ and $\Lambda$ as in \cref{sec:main-component-chain},
+the aim is the inequality $(\star)$ of \cref{sec:main-component-short}.
+Both steps assume
+\[
+  \operatorname{def}_2(G[V_1]; a, b) + 2 \;\le\;
+  \operatorname{def}_2(G[V_1])
+\]
+(\cref{def:deficiency-merged}, at $n = 2$): every partition of $V_1$
+keeping $a$ and $b$ in one part falls at least two below the planar
+deficiency of $G[V_1]$. Adding the edge $ab$ to $G[V_1]$ then lowers the
+planar deficiency by at least two (\cref{lem:splitoff-deficiency-merged}),
+so at a general picture its lifting space is at least two smaller than
+that of $G[V_1]$ (\cref{thm:pencil-jj-equality},
+\cref{lem:pencil-lifting-space-deficiency}). On the solutions $(z, h)$ of the
+lifting system of $G[V_1]$ the two values of $h_a - h_b$ at the pictures of
+$a$ and $b$ are then independent linear functionals
+(\cref{lem:pencil-flag-genericity}), so at a general solution the point of
+$b$ lies off the plane at $a$ and the point of $a$ off the plane at $b$.
+
+With one interior body, a height of $G$ restricts to a height of $G[V_1]$
+whose affine functions $h_a$ and $h_b$ at $a$ and $b$ agree at the picture
+of $x_1$. The picture of $x_1$ is therefore chosen together with the
+heights on $V_1$, as a point of their incidence
+(\cref{lem:pencil-one-ear-incidence}, \cref{lem:pencil-one-ear-base}). The
+two joins at $x_1$ are independent at every admissible picture, which is
+$(\star)$ when the deficiency does not drop.
+
+With two interior bodies, the step also uses $G$ with $x_2$ suppressed,
+which has the one-body ear $a - x_1 - b$, and the count is taken against
+it. At its configuration from \cref{lem:pencil-one-ear-base}, moving $x_1$
+in the plane at $a$ and putting $x_2$ back in the plane at $b$ raises
+$\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
+(\cref{lem:pencil-insertion-two}).
+
+\begin{lemma}[The incidence functionals at the two ends are independent]
+  \label{lem:pencil-flag-genericity}
+  \uses{def:pencil-weighted-lifting-system, def:pencil-lifting-space,
+        def:pencil-admissible-picture}
+  Let $G'$ and $H$ be graphs on the same bodies, and $a, b$ two bodies of
+  $G'$, such that every closed neighbourhood in $H$ lies in the closed
+  neighbourhood of the same body in $G'$, except that the one of $a$ may
+  also contain $b$ and the one of $b$ may also contain $a$. Let $q$ be
+  admissible for $G'$, with $\dim L_H(q) + 2 \le \dim L_{G'}(q)$. Then on
+  the solutions $(z, h)$ of the lifting system of $G'$ at $q$
+  (\cref{def:pencil-weighted-lifting-system}), the two linear functionals
+  \[
+    (z, h) \mapsto (h_a - h_b) \cdot (q_a, 1), \qquad
+    (z, h) \mapsto (h_a - h_b) \cdot (q_b, 1)
+  \]
+  are linearly independent.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-x0-one-witness}
+  At a common zero $(z, h)$ of the two functionals, $h_a$ and $h_b$ take
+  the same values at $q_a$ and at $q_b$. As $z_a = h_a \cdot (q_a, 1)$ and
+  $z_b = h_b \cdot (q_b, 1)$, the height $z$ agrees with $h_a$ on the
+  closed neighbourhood of $a$ in $G'$ together with $b$, and with $h_b$ on
+  that of $b$ together with $a$; so $z \in L_H(q)$. At a picture
+  admissible for $G'$ a solution is determined by its heights, and the
+  solutions form a space of dimension $\dim L_{G'}(q)$ (the proof of
+  \cref{lem:pencil-x0-one-witness}). So the common zeros of the two
+  functionals form a space of dimension at most
+  $\dim L_H(q) \le \dim L_{G'}(q) - 2$, and the two are independent.
+\end{proof}
+
+\begin{lemma}[An incidence meets two open conditions]
+  \label{lem:pencil-one-ear-incidence}
+  Let $K$ be infinite, let $L$ be a linear subspace of $K^\sigma$ for a
+  finite index set $\sigma$, and let $D \colon K^\sigma \to K^3$ be linear
+  with $\dim D(L) \ge 2$; read $D(z)$ as the affine function
+  $q \mapsto D(z) \cdot (q, 1)$ on $K^2$. Let $A$ be a polynomial in the
+  coordinates of $\sigma$, nonzero somewhere on $L$, and $B$ a nonzero
+  polynomial on $K^2$. Then there are $z \in L$ and $q \in K^2$ with
+  \[
+    D(z) \cdot (q, 1) = 0, \qquad A(z) \neq 0, \qquad B(q) \neq 0.
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-x0-fibre-intersection}
+  The constant affine functions form a line, so some $z_1 \in L$ has
+  $D(z_1)$ nonconstant, and some $z_0 \in L$ has both $A(z_0) \neq 0$ and
+  $D(z_0)$ nonconstant, since one of the first two coefficients of $D(z)$
+  is a linear polynomial in $z$ nonzero at $z_1$
+  (\cref{lem:pencil-x0-fibre-intersection}). As $\dim D(L) \ge 2$, some
+  $u \in L$ has $D(u)$ not a multiple of $D(z_0)$. For $q \in K^2$ put
+  $w(q) = D(u)(q)\, z_0 - D(z_0)(q)\, u \in L$; then $D(w(q))$ vanishes at
+  $q$. An affine function vanishing on the zero line of the nonconstant
+  $D(z_0)$ is a multiple of it, so some $q_0$ on that line has
+  $D(u)(q_0) \neq 0$, and there $w(q_0)$ is a nonzero multiple of $z_0$.
+  So $(q, s) \mapsto A(s\, w(q))$ is a nonzero polynomial, and a non-root
+  $(q, s)$ of its product with $B$ gives $z = s\, w(q)$.
+\end{proof}
+
+\begin{lemma}[The base configuration of a one-body ear]
+  \label{lem:pencil-one-ear-base}
+  \uses{def:pencil-x0-attains, def:pencil-weighted-lifting-system,
+        def:pencil-admissible-picture, def:deficiency-merged}
+  Let $K$ be infinite and let $H$ be simple, with an open ear $a - x - b$
+  on $V_1$ with one interior body, whose ends are not adjacent. Let
+  $G' = H[V_1]$, suppose that the general configuration of $G'$ attains
+  and that $\operatorname{def}_2(G'; a, b) + 2 \le
+  \operatorname{def}_2(G')$ (\cref{def:deficiency-merged}, at $n = 2$),
+  and let $B$ be a nonzero polynomial in the picture coordinates whose
+  non-roots are admissible for $H$. Then there are a picture $q$ with
+  $B(q) \neq 0$ and a polynomial $A$ in the coordinates of the lifting
+  system of $H$ at $q$, nonzero at one of its solutions, such that every
+  solution $(z, h)$ with $A(z, h) \neq 0$ has
+  \begin{enumerate}
+    \item $(h_a - h_b) \cdot (q_a, 1) \neq 0$ and
+      $(h_a - h_b) \cdot (q_b, 1) \neq 0$: the point of $b$ lies off the
+      plane at $a$, and the point of $a$ off the plane at $b$; and
+    \item rank $6(|V_1| - 1) - \operatorname{def}(\tilde G')$ at $(q, z)$
+      as a configuration of $G'$ (\cref{def:pencil-x0-attains}).
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{def:graph-operations, lem:splitoff-deficiency-merged,
+        thm:pencil-jj-equality, lem:pencil-lifting-space-deficiency,
+        lem:pencil-flag-genericity, lem:pencil-one-ear-incidence,
+        lem:pencil-x0-fibre-intersection, lem:pencil-three-points,
+        lem:pencil-lifting-restrict, lem:pencil-picture-local,
+        lem:pencil-rank-congr}
+  Let $H'$ be $H$ with $x$ suppressed: the splitting-off $H_x^{ab}$
+  (\cref{def:graph-operations}) whose new edge $ab$ carries the label of
+  the edge $ax$. It is $G'$ together with the edge $ab$, simple since $a$
+  and $b$ are not adjacent, and $\operatorname{def}_2(H') + 2 \le
+  \operatorname{def}_2(G')$ (\cref{lem:splitoff-deficiency-merged}, at
+  $D = 3$).
+
+  Take a picture $q'$ off the zero sets of $B$, of the polynomial of the
+  attainment at $G'$, and of the polynomial of Jackson and Jord\'an's
+  equality at $H'$ (\cref{thm:pencil-jj-equality}; the closed
+  neighbourhoods of $H'$ contain those of $G'$, which have three members
+  at a picture admissible for $G'$). Then
+  $\dim L_{H'}(q') = 3 + \operatorname{def}_2(H') \le \dim L_{G'}(q') - 2$
+  (\cref{lem:pencil-lifting-space-deficiency}), so on the solutions of the
+  lifting system of $G'$ at $q'$ the linear map $(z, h) \mapsto h_a - h_b$
+  has rank at least two (\cref{lem:pencil-flag-genericity}). Apply
+  \cref{lem:pencil-one-ear-incidence} to it, with $A$ the product of the
+  two functionals of \cref{lem:pencil-flag-genericity} and the polynomial
+  in the heights of the attainment at $G'$, which is nonzero at some
+  solution (\cref{lem:pencil-x0-fibre-intersection}), and with $B$ read as
+  a polynomial in the picture point of $x$, the picture fixed at $q'$
+  elsewhere, which is nonzero at $q'_x$. This gives a solution $(z', h')$
+  for $G'$ and a picture point $q_x$ at which $h'_a - h'_b$ vanishes.
+
+  Let $q$ be $q'$ with $x$ moved to $q_x$. Then $B(q) \neq 0$, and $G'$
+  reads the same picture at $q$ as at $q'$ (\cref{lem:pencil-picture-local}).
+  The heights $z'$ on $V_1$ and $h'_a \cdot (q_x, 1) = h'_b \cdot (q_x, 1)$
+  at $x$, with the coefficient vectors $h'$ on $V_1$ and, at $x$, that of
+  the affine function through the three points of its closed neighbourhood
+  $\{a, x, b\}$ (\cref{lem:pencil-three-points}), solve the lifting system
+  of $H$ at $q$: the closed neighbourhoods of $a$ and $b$ in $H$ are those
+  in $G'$ with $x$ added. Read $A$ on the solutions for $H$ through their
+  restriction to $V_1$ (\cref{lem:pencil-lifting-restrict}). It is nonzero
+  at this solution, and wherever it is nonzero both functionals are
+  nonzero and the heights attain for $G'$ (\cref{lem:pencil-rank-congr}).
+\end{proof}
+
+\begin{theorem}[An open ear with one interior body]
+  \label{thm:pencil-x0-open-ear-one}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:D-deficiency,
+        def:deficiency-merged}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses
+  (\cref{def:pencil-x0-standing}), with an open ear $a - x_1 - b$ on
+  $V_1$ whose ends $a$ and $b$ are not adjacent. Suppose
+  $\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G)$
+  (\cref{def:D-deficiency}, at $n = 3$) and
+  $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+  \operatorname{def}_2(G[V_1])$ (\cref{def:deficiency-merged}, at
+  $n = 2$). If the general configuration of $G[V_1]$ attains, then the
+  general configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-one-ear-base, lem:pencil-x0-main-picture-open,
+        lem:pencil-ear-hinge-span, lem:block-rank-ear,
+        lem:pencil-rank-congr, lem:pencil-x0-one-witness}
+  Apply \cref{lem:pencil-one-ear-base} to $G$, with $B$ the polynomial of
+  \cref{lem:pencil-x0-main-picture-open}. It gives a main picture $q$ of
+  $G$ and a solution of the lifting system of $G$ at $q$ whose heights
+  $z \in L_G(q)$ make the rank of $G[V_1]$ its target
+  (\cref{lem:pencil-rank-congr}). The closed neighbourhood of $x_1$ is
+  $\{a, x_1, b\}$, whose picture points are not collinear at the
+  admissible picture $q$; so $p_a$, $p_{x_1}$ and $p_b$ are linearly
+  independent, and so are the two joins $p_a \wedge p_{x_1}$ and
+  $p_{x_1} \wedge p_b$. Every hinge is nonzero at $q$, and
+  $\dim(\rho + \Lambda) \ge 2$ (\cref{lem:pencil-ear-hinge-span}). This is
+  $(\star)$ at $k = 1$ by the hypothesis on the deficiencies, so
+  \cref{lem:block-rank-ear} and \cref{lem:pencil-x0-one-witness} apply.
+\end{proof}
+
+\begin{lemma}[Putting the second body back between the two end planes]
+  \label{lem:pencil-insertion-two}
+  \uses{def:extensor, lem:pencil-join-flat}
+  Let $K$ be infinite, and let $\pi_a$ and $\pi_b$ be the planes
+  $p_z = \ell_a \cdot \bar p$ and $p_z = \ell_b \cdot \bar p$ of $K^4$, for
+  $\ell_a, \ell_b \in K^3$ (with $\bar p$ as in \cref{lem:pencil-join-flat}).
+  Let $p_a \in \pi_a$, $p_b \in \pi_b$ and $y \in \pi_a \cap \pi_b$ be
+  affine points, of last coordinate $1$, with $p_a \notin \pi_b$ and
+  $p_b \notin \pi_a$. Then for every subspace $\rho \subseteq \Lambda^2 K^4$
+  there are affine points $x_1 \in \pi_a$ and $x_2 \in \pi_b$ with
+  \[
+    \dim\bigl(\rho + \operatorname{span}(p_a \wedge x_1,\ x_1 \wedge x_2,\
+      x_2 \wedge p_b)\bigr)
+    \;\ge\; \min\bigl(\dim(\rho + \operatorname{span}(p_a \wedge y,\
+      y \wedge p_b)) + 1,\ 6\bigr).
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-tetrahedron, lem:pencil-insertion}
+  Write $W = \rho + \operatorname{span}(p_a \wedge y, y \wedge p_b)$. If
+  $W = \Lambda^2 K^4$, take $x_1 = x_2 = y$. Otherwise note that
+  $\pi_a \neq \pi_b$, as $p_b \notin \pi_a$, so the two planes meet in a
+  line through $y$; let $u_0$ be a direction of it, of last coordinate
+  $0$. The points $p_a$, $y$, $u_0$, $p_b$ are linearly independent: both
+  plane equations vanish at $y$ and $u_0$, the equation of $\pi_a$ vanishes
+  at $p_a$ but not at $p_b$ and that of $\pi_b$ the other way round, and
+  $y$ is affine while $u_0$ is not. Their six joins span $\Lambda^2 K^4$
+  (\cref{lem:pencil-tetrahedron}), and $W$ contains $p_a \wedge y$ and
+  $y \wedge p_b$, so one of $y \wedge u_0$, $u_0 \wedge p_b$,
+  $p_a \wedge u_0$, $p_a \wedge p_b$ lies outside $W$.
+
+  Put $x_1 = y + t u$ and $x_2 = y + \sigma (p_b - y)$, with $\sigma \neq 1$
+  and $u$ a direction in $\pi_a$ of last coordinate $0$. For $t \neq 0$,
+  the span of $\rho$ and the three joins contains $y \wedge p_b$ (a nonzero
+  multiple of $x_2 \wedge p_b$), $u \wedge x_2$, and
+  $p_a \wedge y + t\,(p_a \wedge u)$.
+  So if $u \wedge x_2 \notin W$, some $t \neq 0$ gives dimension at least
+  $\dim W + 1$, since a vector outside a subspace stays outside it after
+  adding $t$ times another for some $t \neq 0$ (as in the proof of
+  \cref{lem:pencil-insertion}). It remains to choose $u$ and $\sigma$ with
+  $u \wedge x_2 \notin W$. If $y \wedge u_0 \notin W$, take $u = u_0$ and
+  $\sigma = 0$. Otherwise, for $\sigma \notin \{0, 1\}$, the join
+  $u \wedge x_2$ is modulo $W$ a nonzero multiple of $u_0 \wedge p_b$ when
+  $u = u_0$, and of $p_a \wedge u_0$ for the same curve with the two planes
+  exchanged. For $u = p_a - y$ and $\sigma \notin \{0, 1\}$ it is modulo
+  $W$ a nonzero multiple of $p_a \wedge p_b$.
+\end{proof}
+
+\begin{theorem}[An open ear with two interior bodies at non-adjacent ends]
+  \label{thm:pencil-x0-open-ear-two-orbit}
+  \uses{def:pencil-x0-attains, def:pencil-x0-standing,
+        def:graph-operations, def:deficiency-merged}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses, with
+  an open ear $a - x_1 - x_2 - b$ on $V_1$ whose ends $a$ and $b$ are not
+  adjacent, and suppose $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+  \operatorname{def}_2(G[V_1])$ (\cref{def:deficiency-merged}, at
+  $n = 2$). Let $G_1$ be $G$ with $x_2$ suppressed: the splitting-off
+  $G_{x_2}^{x_1 b}$ (\cref{def:graph-operations}) whose new edge $x_1 b$
+  carries the label of the deleted edge $x_1 x_2$. If the general
+  configurations of $G[V_1]$ and of $G_1$ attain, then the general
+  configuration of $G$ attains.
+\end{theorem}
+\begin{proof}
+  \uses{lem:pencil-one-ear-base, lem:pencil-x0-main-picture-open,
+        lem:pencil-x0-fibre-intersection, lem:block-rank-ear,
+        lem:pencil-config-point-join-rank, lem:pencil-insertion-two,
+        lem:pencil-ear-data, lem:pencil-rank-congr,
+        lem:pencil-picture-local, lem:splitoff-deficiency-reuse,
+        lem:deficiency-ear, lem:pencil-x0-one-witness}
+  Write $f = \operatorname{def}(\tilde G[V_1])$, and compute ranks with the
+  joins as hinges (\cref{lem:pencil-config-point-join-rank}). $G_1$ has
+  the open ear $a - x_1 - b$ on $V_1$ and the same $G[V_1]$; it is simple,
+  and its ends are not adjacent.
+
+  \emph{Base data.} Apply \cref{lem:pencil-one-ear-base} to $G_1$, with
+  $B$ the product of the polynomial of the attainment at $G_1$ and the
+  polynomial of \cref{lem:pencil-x0-main-picture-open} for $G$. At the
+  picture $q$ it gives, the solutions of the lifting system of $G_1$ at
+  which $G_1$ attains contain a nonempty Zariski-open set too, and the two
+  meet (\cref{lem:pencil-x0-fibre-intersection}). Take a solution in both,
+  with heights $z$; write $\pi_a$ and $\pi_b$ for the planes of its
+  coefficient vectors at $a$ and $b$, and $y$ for the point of $x_1$. Then
+  $p_b \notin \pi_a$, $p_a \notin \pi_b$ and $y \in \pi_a \cap \pi_b$, and
+  the ranks of $G[V_1]$ and of $G_1$ are their targets, so by
+  \cref{lem:block-rank-ear} at $G_1$,
+  $s = \dim\bigl(\rho + \operatorname{span}(p_a \wedge y,\ y \wedge
+  p_b)\bigr) \ge 2 + f - \operatorname{def}(\tilde G_1)$.
+
+  \emph{Putting $x_2$ back.} By \cref{lem:pencil-insertion-two} there are
+  affine points $y_1 \in \pi_a$ and $y_2 \in \pi_b$ with
+  $\dim(\rho + \Lambda) \ge \min(s + 1, 6)$, where
+  $\Lambda = \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_2,\
+  y_2 \wedge p_b)$.
+
+  \emph{The configuration of $G$.} Take as base data the restriction of
+  $(q, z)$ to $V_1$, with the affine functions of $\pi_a$ and $\pi_b$
+  (\cref{lem:pencil-ear-data}); the points $y_1$, $y_2$ at $x_1$, $x_2$ are
+  the configuration of one ear datum of $G$. By
+  \cref{lem:pencil-ear-data}(3) the bound
+  $\dim(\rho + \Lambda) \ge \min(s + 1, 6)$ is a nonzero polynomial
+  condition on the ear data, and so is the main-picture condition of $G$,
+  nonzero at the ear datum with picture $q$ (\cref{lem:pencil-ear-data}(2)).
+  At a common non-root the picture is main for $G$, so the hinges are
+  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}(1)), and
+  the rank of $G[V_1]$ and $\rho$ are those of the base data
+  (\cref{lem:pencil-rank-congr}, \cref{lem:pencil-picture-local}).
+
+  \emph{The count.} $\operatorname{def}(\tilde G_1) \le
+  \operatorname{def}(\tilde G)$ (\cref{lem:splitoff-deficiency-reuse}) and
+  $\operatorname{def}(\tilde G) \ge f - 3$ (\cref{lem:deficiency-ear}), so
+  $\min(s + 1, 6) \ge 3 + f - \operatorname{def}(\tilde G)$, which is
+  $(\star)$ at $k = 2$, and \cref{lem:block-rank-ear} and
+  \cref{lem:pencil-x0-one-witness} apply.
+\end{proof}
 
 \subsection{The passage to the two main-component statements}
 \label{sec:main-component-statements}

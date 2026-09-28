@@ -5,7 +5,7 @@ group (`notes/Phase40-design.md` §3 STEPS), proved the open-ear steps with `k =
 bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2` when
 `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains at `G`
 with its second interior body suppressed ((MC-181), (MC-180): found by formalization, second-read).
-**Next: STEPS' ORBIT group, not yet opened** — see *Hand-off*.
+**Next: 40i = ORBIT, opened 2026-09-28** — see `notes/Phase40i.md`.
 
 ## Current state
 
@@ -101,14 +101,9 @@ All landed with the standard axioms (*Current state*); pins in **bold**.
 
 ## Hand-off / next phase
 
-**40h is closed. Next: STEPS' ORBIT group, not yet opened and no letter minted.** The PI's D2
-(2026-09-26, `notes/pencil/adjudications.md`) put it "right after SHORT", although the design doc's
-grouping list prints it last. It holds the `k = 2`, `a ≁ b`, `δ₂ ≥ 2` cell ((MC-173), (MC-176),
-(MC-175)(i)(ii)) and, since PI decision 2, SHORT's `k = 1` cell (`of_openEar_one`, (MC-174), U2,
-(MC-175)(iii)). The smallest concrete next step is **ORBIT's design recon**, as every STEPS group
-has opened. Its inputs are the design doc's §3 STEPS ORBIT entry, with the compiled `of_openEar_one`
-statement and the tracked trace of its `hδ₂` (which fails at `K_{2,3}`). The landed EARGEN device
-(`EarGen.lean`) and `Graph.exists_earBase_splitOff` (`Short.lean`) are there to reuse.
+**40h is closed. The next step moved to `notes/Phase40i.md`:** ORBIT opened as 40i (2026-09-28),
+design-first from a compiler-checked recon with no new mathematics, which also settled the tracked
+`hδ₂` trace (the design doc's ORBIT entry).
 
 **The cleanup-round items** (the design doc's SHORT entry, with line counts and plans):
 - the split plans for `Short.lean` (1 366 lines) and `Bricks.lean` (1 458), for the next commit to

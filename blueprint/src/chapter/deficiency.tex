@@ -352,6 +352,26 @@ deficiency does not drop.
   the value of the partition on $G$ is its value on $G[V_1]$.
 \end{proof}
 
+The partitions keeping two given bodies in one part have a maximum of
+their own, which measures how much the deficiency depends on separating
+the two bodies.
+
+\begin{definition}[The deficiency with two bodies in one part]
+  \label{def:deficiency-merged}
+  \lean{Graph.deficiencyMerged, Graph.partitionDef_le_deficiencyMerged}
+  \leanok
+  \uses{def:D-deficiency}
+  Let $u, v$ be bodies of $G$. The \emph{merged deficiency} of $\tilde G$
+  at $u, v$ is
+  \[
+    \operatorname{def}(\tilde G; u, v) \;=\; \max_{P}\,
+      \operatorname{def}_{\tilde G}(P),
+  \]
+  the maximum over the partitions $P$ of $V(G)$ that have $u$ and $v$ in
+  one part. In particular $\operatorname{def}_{\tilde G}(P) \le
+  \operatorname{def}(\tilde G; u, v)$ for every such partition.
+\end{definition}
+
 \begin{lemma}[Matroid restriction descends to subgraphs]
   \label{lem:matroid-restrict-subgraph}
   \lean{Graph.matroidMG_restrict_mulTilde}
