@@ -990,3 +990,26 @@ covering theorem, which closes COVERAGE). Only 40l's letter is minted. Each sub-
 named interface statements, listed in the design doc. D1–D4 are recorded in the blueprint proofs
 and not second-read; the workbook is unchanged. PI decision 2's `hatt` todo (2026-09-26) is closed
 with `hatt` kept. Work log `notes/Phase40l.md`.
+
+## 2026-09-28 — CHAINS opens as 40m, with THEOREM-S folded in
+
+CHAINS' design recon (opus, read-only, compiler-checked; verdict in `notes/Phase40-design.md` §3
+COVERAGE) proved S5's five plumbing statements sorry-free against the landed tree (spikes in
+`scratch/40m/`, gitignored and local to the recon's checkout), and S5's THEOREM-S half composed on
+top of them verbatim, with one call edited, so the covering theorem and the attainment at every
+graph satisfying (H) have no `sorry` end to end. The coordinator put the split question to the PI;
+question and answer are relayed verbatim in the coordinator's dispatch:
+
+```adjudication
+PI call, 2026-09-28, this session (verbatim).
+Q: "The recon's spike proves CHAINS' five statements and THEOREM-S composes sorry-free on top, end to end. So the whole of COVERAGE is now compiler-checked. Keep THEOREM-S as its own sub-phase (the PI's 2026-09-28 split), or fold it into 40m?"
+A: "Fold into 40m" — "40m = CHAINS + THEOREM-S: one open covering both node sets, B1–B3 (CHAINS) + B4–B5 (THEOREM-S, its own file), one close that also closes COVERAGE. About 7 commits; saves one open/close pair. Module isolation is unchanged (separate files)."
+```
+
+**Decided.** COVERAGE runs as two sub-phases, not three: **REDUCE** = 40l (closed) and **40m =
+CHAINS + THEOREM-S**, one open for both node sets (CHAINS' five red nodes and THEOREM-S' six), five
+builds (B1–B3 CHAINS, B4–B5 THEOREM-S in its own file) and one close, which also closes COVERAGE.
+This overrides the three-sub-phase text of the COVERAGE entry above where the two conflict; the
+named interfaces and the separate files stand. The recon's other flags were settled by precedent
+(the user's standing configuration) and are recorded in `notes/Phase40m.md` *Decisions made*.
+Work log `notes/Phase40m.md`.

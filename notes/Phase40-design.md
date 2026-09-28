@@ -17,10 +17,11 @@ sorry-free spike with no new mathematics; **40j = SPLITOFF closed 2026-09-28**
 (`notes/Phase40j.md`), two build commits from a compiler-checked recon's sorry-free spike with no
 new mathematics; **40k = CONTRACT-A closed 2026-09-28** (`notes/Phase40k.md`), STEPS' last group,
 three build commits (the first the `Contract.lean` split) from a compiler-checked recon's
-sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as three sub-phases
-(PI, 2026-09-28): REDUCE = 40l closed 2026-09-28** (`notes/Phase40l.md`), three build commits
-from a compiler-checked recon's two sorry-free spikes; **CHAINS is next**, then THEOREM-S, by
-code (§3 COVERAGE). The ORBIT recon is done (2026-09-26, §4), and so is the second
+sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as two sub-phases
+(PI, 2026-09-28; a second call the same day folded THEOREM-S into CHAINS): REDUCE = 40l closed
+2026-09-28** (`notes/Phase40l.md`), three build commits from a compiler-checked recon's two
+sorry-free spikes; **40m = CHAINS + THEOREM-S opened 2026-09-28** (`notes/Phase40m.md`), five
+builds from a compiler-checked recon's complete sorry-free spikes (§3 COVERAGE). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -630,9 +631,9 @@ lemmas. The route landed as the recon's:
   of STEPS: design-first from a compiler-checked recon (opus) of (MC-67)–(MC-71) whose sorry-free
   spike needs no new mathematics; it closed the same day after three build commits, the first the
   `Contract.lean` split. **STEPS is done.** COVERAGE, the next layer, had its compiler-checked
-  design recon (opus, 2026-09-28) and opened as 40l = REDUCE, its first of three sub-phases (§3
-  COVERAGE; PI, 2026-09-28), which closed the same day after three build commits; CHAINS is
-  next. The recon settled its tracked supplier items, and the PI closed decision 2's `hatt` todo
+  design recon (opus, 2026-09-28) and opened as 40l = REDUCE, its first sub-phase (§3
+  COVERAGE; PI, 2026-09-28), which closed the same day after three build commits; its second and
+  last, 40m = CHAINS + THEOREM-S, opened the same day. The recon settled its tracked supplier items, and the PI closed decision 2's `hatt` todo
   (the CONTRACT-R entry above). The "only if" halves of (MC-52) and (MC-53) (below) stay a
   carried todo: COVERAGE does not consume them.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
@@ -712,7 +713,7 @@ lemmas. The route landed as the recon's:
   proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
   height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
-### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **three sub-phases (PI, 2026-09-28): REDUCE = sub-phase 40l, ✓ closed 2026-09-28** (`notes/Phase40l.md`); **CHAINS** next, then **THEOREM-S**, by code
+### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **two sub-phases (PI, 2026-09-28): REDUCE = sub-phase 40l, ✓ closed 2026-09-28** (`notes/Phase40l.md`); **CHAINS + THEOREM-S = sub-phase 40m, open** (`notes/Phase40m.md`)
 
 | labels | step | 2nd |
 |---|---|---|
@@ -751,8 +752,10 @@ sorry-free; S5 everything composed, with five `sorry`s, all graph plumbing; S6 i
   (H) at `H` and `G/H`: the landed `isX0Graph_induce_of_deficiency_eq_zero` and
   `isX0Graph_rigidContract_induce`.
 
-**The three sub-phases and their interfaces** (PI, 2026-09-28). Each lands against the statements
-the next one consumes; a re-route edits one module.
+**The sub-phases and their interfaces** (PI, 2026-09-28: three sub-phases with named interfaces; a
+second call the same day, after CHAINS' recon, folded THEOREM-S into CHAINS as 40m, verbatim in
+`notes/pencil/adjudications.md`). Each lands against the statements the next one consumes; a
+re-route edits one module, and each has its own files.
 1. **REDUCE = 40l, ✓ done 2026-09-28** (three builds, B1 `42352cea`, B2 `e6fb3fbf`, B3
    `776daad5`; `notes/Phase40l.md`). `MainComponent/Coverage.lean` (S1, with `X0Below`; 183 lines)
    and `Molecular/Induction/SparseDeficiency.lean` (S4; 889 lines); all eleven REDUCE nodes green,
@@ -772,40 +775,80 @@ the next one consumes; a re-route edits one module.
    - `deficiency_induce_add_deficiency_rigidContract_le` ((MC-87)(i));
    - `not_adj_and_deficiencyMerged_two_add_two_le`, `deficiencyMerged_three_add_five_le` (D2) and
      `deficiencyMerged_two_add_two_le` ((MC-79)(ii), (iii)).
-2. **CHAINS — next** (about 5–7 builds; the cut half unspiked, so it starts with a spike). Its
-   open is design-first at the top rung (opus), and its first step is that spike. Files
-   `MainComponent/Chains.lean`, split into a `Cuts.lean` if it would pass the ~1500-line tripwire.
-   **Interface** (S5's statements; `h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected`):
-   - `Graph.IsChain` (an `IsOpenEar` with `1 ≤ k`, interior degrees two, end degrees at least three);
-   - `IsX0Graph.exists_isChain (hG) (h2c) (hhub : ∃ w ∈ V(G), G.degree w ≠ 2) (hv) (hdeg : G.degree v
-     = 2) : ∃ V₁ k x a b e, G.IsChain V₁ x a b e ∧ v ∈ Set.range x`;
-   - `IsChain.isX0Graph_induce (hG) (h2c) (hC) : (G.induce V₁).IsX0Graph`;
+2. **CHAINS = 40m, B1–B3** (`notes/Phase40m.md`). **The design recon's verdict** (opus, 2026-09-28,
+   read-only, compiler-checked; spikes in `scratch/40m/`, gitignored and local to the recon's
+   checkout: `Chains.lean` proves S5's five plumbing statements, no `sorry`, no warnings;
+   `Full.lean` composes S5's THEOREM-S half on top, verbatim but for the one edit in item 3, with
+   no `sorry` end to end; `Inst.lean` re-checks 40l S6's `IsChain` instance). Files
+   `MainComponent/CoverageChain.lean` (imports `Coverage.lean`) and `MainComponent/CoverageCut.lean`
+   (imports `CoverageChain.lean`), not the planned `Chains.lean`/`Cuts.lean`: those sit one letter
+   from the landed step files `Chain.lean` (CHAIN) and `Cut.lean` (CUT, BRIDGE), whose theorems
+   these files feed. **Interface, as compiled** (S5's statements; `h2c : ∀ v ∈ V(G),
+   (G.induce (V(G) \ {v})).Connected`):
+   - `Graph.IsChain` (S5's structure verbatim: an `IsOpenEar` with `1 ≤ k`, interior degrees two,
+     end degrees at least three);
+   - `IsX0Graph.exists_isChain (hG) (h2c) (hhub : ∃ w ∈ V(G), G.degree w ≠ 2) (_hv) (hdeg :
+     G.degree v = 2) : ∃ V₁ k x a b e, G.IsChain V₁ x a b e ∧ v ∈ Set.range x` (`hv` is unused and
+     kept as `_hv`, the M4 `_hdeg` precedent);
+   - `IsChain.isX0Graph_induce (hG) (h2c) (hC) : (G.induce V₁).IsX0Graph` (its unused `[Finite β]`
+     dropped);
    - `IsX0Graph.splitOff (hG) (h₁ : G.IsLink e₁ v u) (h₂ : G.IsLink e₂ v w) (hne : e₁ ≠ e₂) (honly)
      (huw) (hnadj) : (G.splitOff v u w e₁).IsX0Graph` and its instances
-     `IsOpenEar.isX0Graph_splitOff_four/_three/_orbit/_one` (sorry-free in S5);
+     `IsOpenEar.isX0Graph_splitOff_four/_three/_orbit/_one`;
    - `IsX0Graph.x0Reduces_of_forall_degree_eq_two (hG) (h2) : G.X0Reduces G.X0Below`;
    - `IsX0Graph.x0Reduces_of_not_twoEdgeConnected (hG) (htec : ¬ G.TwoEdgeConnected)` and
      `IsX0Graph.x0Reduces_of_not_connected (hG) (htec) (hv) (hdisc)`, both into `G.X0Reduces
-     G.X0Below`.
+     G.X0Below`;
+   - S5's plumbing: `IsOpenEar.isLink_interior`, `isChain_one`, `IsChain.two_le_of_adj`,
+     `degree_induce_lt_of_adj`, `ncard_setOf_isLink_le_degree`, `ncard_setOf_isLink_le_one`,
+     `three_le_ncard_vertexSet`, `crossingEdges_id`, `IsOpenEar.ncard_lt`. S5's
+     `eq_or_eq_of_degree_eq_two` is dropped: it duplicates the landed
+     `Graph.isLink_eq_of_degree_eq_two` (`Induction/ForestSurgery/ChainExtraction.lean`, already
+     in `Coverage.lean`'s import closure), and THEOREM-S never calls it.
 
-   Sorry-free in S5 already: the split-off lemmas, `IsOpenEar.isLink_interior`, `isChain_one`,
-   `eq_or_eq_of_degree_eq_two`, `IsChain.two_le_of_adj`, `degree_induce_lt_of_adj`,
-   `ncard_setOf_isLink_le_degree`, `ncard_setOf_isLink_le_one`, `three_le_ncard_vertexSet`,
-   `crossingEdges_id`, `IsOpenEar.ncard_lt`. To build: a maximal path through bodies of degree
-   two (the core, serving the chain, the cycle and the bridge chain), (H) at `G[V₁]` (a cut argument
-   through `G − x₁`), and BRIDGE and CUT with (H) at both sides (cut arguments via
-   `connected_iff_forall_exists_adj`).
-3. **THEOREM-S** (about 2 builds; closes COVERAGE). File `MainComponent/Cover.lean`. Sorry-free in S5
-   over CHAINS' interface: `Graph.ChainUsable`; `IsChain.x0Reduces_of_chainUsable`;
-   `x0Reduces_of_deficiency_two_rigid` ((MC-75)(iii)); the counts `exists_degree_eq_two_notMem` and
-   `partitionDef_three_induce_diff_nonpos`; `exists_additiveCore_of_rigid` and `exists_additiveCore`
-   ((MC-80) with (MC-87)), where `exists_additiveCore_of_rigid`'s one call of the landed
-   `partitionDef_induce_id_le_of_maximal` drops S5's `hWV` argument (its own `hWV` stays, for
-   `W ⊂ V(G)` and `deficiency_induce_add_deficiency_rigidContract_le`); `x0Reduces_of_sparse`,
-   `x0Reduces`, `x0Attains`, `of_twoEdgeConnected`;
-   the adapters `IsOpenEar.deficiency_induce_le`, `IsOpenEar.not_adj_and_two_le_pairDelta_two`,
-   `IsOpenEar.deficiency_three_induce_cycle`, `x0Reduces_of_additiveCore`,
-   `x0Reduces_of_rigidCore`.
+   S5's five statements, verbatim, are each discharged by the spike's theorem (`Full.lean`'s
+   `example`s). **The route.** One core in the consumers' own format (`x : Fin k → α` along
+   `pathVertex`), not a walk: an open ear read backwards (`IsOpenEar.symm`, by the landed
+   `pathVertex_rev`) or extended by one body at `a` (`IsOpenEar.cons`); the second link at an end
+   of degree two (`IsOpenEar.exists_isLink_of_degree_eq_two`); and **the maximal ear**
+   (`IsOpenEar.exists_maximal`), a strong induction on `V₁.ncard` extending at an end of degree
+   two until each end is a hub or adjacent to the other. Chain extraction takes the maximal ear of
+   the one-body ear at a body of degree two; an end of degree two adjacent to the other end is
+   refuted, since the closed path is then all of `G` (against the hub) or cut off by the other end
+   (against `h2c`). The cycle is the same maximal ear: its ends are adjacent, and its closed path
+   is closed under adjacency. BRIDGE runs the same extension on a bridge ear on `V₁ ∪ V₂`, started
+   at the one edge leaving a set `V′`, each new body on its end's side, until both ends are hubs.
+   The cut arguments go through one gate (`Graph.Connected.induce_of_gate`: a set whose only body
+   with a neighbour outside it is `g` induces a connected graph): a bridge chain's sides (gate its
+   end), a cut vertex's sides (gate `v`, the side any set closed under adjacency in `G − v`, from
+   the Matroid package's `exists_of_not_connected`), and `G[V₁]` inside `G − x₀` (gate `b`); the
+   degrees by `Graph.degree_le_degree_induce` and `_add_one`.
+3. **THEOREM-S = 40m, B4–B5**: file `MainComponent/CoverageTheoremS.lean` (imports
+   `CoverageCut.lean` and `Molecular/Induction/SparseDeficiency.lean`), not the planned
+   `Cover.lean`, which beside `Coverage.lean` would be the near-collision the CHAINS names avoid:
+   the `Coverage` prefix groups COVERAGE's four files, and the suffix names the content, here the
+   stable code. Sorry-free in `scratch/40m/Full.lean` over CHAINS' statements as compiled, S5's
+   text verbatim, with 13 warnings to fix on transcription (`notes/Phase40m.md`, B4 and B5):
+   `Graph.ChainUsable`; `IsChain.x0Reduces_of_chainUsable`; `x0Reduces_of_deficiency_two_rigid`
+   ((MC-75)(iii)); the counts `exists_degree_eq_two_notMem` and
+   `partitionDef_three_induce_diff_nonpos`; `exists_additiveCore_of_rigid` and
+   `exists_additiveCore` ((MC-80) with (MC-87)), where `exists_additiveCore_of_rigid`'s one call of
+   the landed `partitionDef_induce_id_le_of_maximal` drops S5's `hWV` argument (its own `hWV`
+   stays, for `W ⊂ V(G)` and `deficiency_induce_add_deficiency_rigidContract_le`);
+   `x0Reduces_of_sparse`, `x0Reduces`, `x0Attains`, `of_twoEdgeConnected` (the last two are
+   MOTIVES' interface; standard axioms in the spike); the adapters `IsOpenEar.deficiency_induce_le`,
+   `IsOpenEar.not_adj_and_two_le_pairDelta_two`, `IsOpenEar.deficiency_three_induce_cycle`,
+   `x0Reduces_of_additiveCore`, `x0Reduces_of_rigidCore`.
+- [ ] **Tracked cleanup-round item (40m's open; not a close gate).** By the convention that a lemma
+  lives with its definition (`CombinatorialRigidity/CLAUDE.md` *Engineering conventions*), CHAINS'
+  `pathVertex` helpers (`pathVertex_cons`, `isLink_pathVertex_cons`, `isLink_pathVertex_rev`,
+  `val_eq_zero_or_of_pathVertex_mem`, `pathVertex_eq_of_val_eq_zero`/`_last`,
+  `pathVertex_mem_insert_insert_range`) belong in `Cut.lean`, and its `IsOpenEar` lemmas in
+  `Coverage.lean`. They stay in `CoverageChain.lean`, following the 40l precedent (nothing outside
+  COVERAGE consumes them), which also avoids rebuilding every step file below `Cut.lean`; a
+  cleanup round may move them, with no statement change. The generic graph lemmas
+  `Graph.Connected.induce_of_gate`, `Graph.Connected.vertexSet_subset_of_forall_adj` and
+  `Graph.degree_le_degree_induce` (and `_add_one`) are upstream candidates for the Matroid package.
 
 **Proof-level departures** (kernel-checked in S4/S5; recorded in the node proofs, not second-read:
 PI, 2026-09-28, the 40k precedent; no workbook label added):
@@ -845,7 +888,24 @@ covering along the longest path as one covering by the steps alone.
 **Pins.** COVERAGE pays `partitionDef_map` and `deficiencyMerged_le_deficiency` of the D5 debt (§7),
 at 40l. **Lean reuse.** The route uses none of `exists_maximal_induced_isProperRigidSubgraph`,
 `triangle_isProperRigidSubgraph` or `c4_isProperRigidSubgraph`: the kit has its own maximal rigid
-superset, and the 4-cycle is rigid as a tight set (D3).
+superset, and the 4-cycle is rigid as a tight set (D3). CHAINS reuses the landed
+`Graph.isLink_eq_of_degree_eq_two` (Phase 23g, in place of S5's duplicate), `Cut.lean`'s
+`pathVertex` API (`pathVertex_rev`, `_cases`, `_injective`, `_eq_x_iff`, `_eq_of_val_eq_succ`,
+`pathEdge_injective`) and the Matroid package's `connected_iff_forall_exists_adj` and
+`exists_of_not_connected`. **Not adopted: Phase 39's `Induction/ForestSurgery/MaximalChain.lean`**
+(M1 `exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected`, M2
+`cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair`, M3a
+`connected_deleteVerts_interior_of_twoEdgeConnected`, M3b `degree_deleteVerts_interior_add_one`),
+checked by CHAINS' recon at the consumers' slots. All four take `TwoEdgeConnected`, which BRIDGE's
+graph lacks by hypothesis and which the cycle and chain-extraction statements do not carry. They
+work on `WList` paths and return paths, closed walks or `Nonempty G.CycleData`, where the slots are
+`IsOpenEar`'s `Fin k → α` along `pathVertex` and `of_cycle`'s `(a, b, x, e, f)`, so every use
+needs an adapter. M2 leaves the lollipop still to refute and assumes a neighbour of degree two.
+And the file is outside `Coverage.lean`'s import closure (it adds `Induction/Girth.lean`). The one
+core above serves all three uses in the slots' own format. `chainData_of_isPath`
+(`ChainExtraction.lean`) returns KT's `ChainData n` (a chain of length `n` with a fresh label), the
+wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear decomposition of a
+2-connected graph (ears of a growing subgraph, with no degree-two condition), a different notion.
 
 ### MOTIVES — `X0Dist` and `X0Gen` (closes the phase)
 
@@ -904,8 +964,8 @@ green, and so are all seven of STEPS', `sec:main-component-cut` (40e),
 `sec:main-component-contract-additive` (40k). COVERAGE's two subsections,
 `sec:main-component-sparse` and `sec:main-component-coverage`, were transcribed whole at 40l's open;
 REDUCE greened all of the first and the first two nodes of the second, and its other eleven stay
-red, five for CHAINS and six for THEOREM-S (`notes/Phase40l.md` *Current state*). MOTIVES's stub
-subsection `sec:main-component-statements` is the last, and each later layer inserts its
+red for 40m, five for CHAINS and six for THEOREM-S (`notes/Phase40m.md` *Current state*).
+MOTIVES's stub subsection `sec:main-component-statements` is the last, and each later layer inserts its
 subsection before it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
