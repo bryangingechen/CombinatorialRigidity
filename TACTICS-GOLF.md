@@ -1532,6 +1532,15 @@ reuse. Projection notation sees through an arbitrary `Prop`-valued `def` unfoldi
 (Phase 39 W5-L2 remainder, `hasPencilPanelRealization_pencilChartFramework` /
 `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`, `Molecule/Pencil.lean`.)
 
+The same trap bites `rintro`/`obtain` on a **membership hypothesis you also want to keep whole**
+(e.g. `e ∈ G.crossingEdges f` unfolds to `e ∈ E(G) ∧ ∃ x y, …`, and a later step needs `e ∈
+G.crossingEdges f` itself, not just its pieces): `rintro e ⟨heG, x, y, hlink, hxy⟩` or `obtain
+⟨…⟩ := he` both clear `he`. Wrapping the scrutinee in `id` breaks the syntactic match that makes
+`rcases`/`obtain` clear a bare local hypothesis, so `obtain ⟨heG, x, y, hlink, hxy⟩ := id he`
+destructures while leaving `he` untouched for reuse (`Graph.deficiency_induce_le_of_ear_of_merge`
+and `Graph.splitOff_deficiency_le_of_eq_left`, `Induction/SplitOffDeficiency.lean` /
+`MainComponent/Ear.lean`, Phase 40h B2).
+
 ## 25. "Injective near `q₀`, with a polynomial inverse" — left-multiply by a left inverse at `q₀`, not a nonzero minor
 
 The textbook route to "a matrix of polynomials `A(q)`, injective at `q₀`, stays injective on a

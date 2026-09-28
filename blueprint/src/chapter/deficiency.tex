@@ -330,6 +330,8 @@ deficiency does not drop.
 
 \begin{lemma}[The deficiency along an ear whose ends share a part]
   \label{lem:deficiency-ear-merge}
+  \lean{Graph.deficiency_induce_le_of_ear_of_merge}
+  \leanok
   \uses{def:D-deficiency}
   Let $V_1 \subseteq V(G)$, and let $a - x_1 - \cdots - x_k - b$
   ($k \ge 0$) be a path of $G$ with $a, b \in V_1$, possibly $a = b$, and
@@ -343,6 +345,7 @@ deficiency does not drop.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   Put every $x_i$ into the part containing $a$ and $b$. The number of
   parts is unchanged, every edge of the path lies inside that part, and
   every other edge of $G$ lies inside $V_1$ with its status unchanged, so

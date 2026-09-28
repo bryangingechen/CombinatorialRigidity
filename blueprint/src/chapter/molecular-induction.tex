@@ -867,6 +867,8 @@ pencil configurations suppress a body (\cref{sec:main-component-short}).
 
 \begin{lemma}[Suppressing a body of degree two]
   \label{lem:splitoff-deficiency-reuse}
+  \lean{Graph.splitOff_deficiency_le_of_eq_left}
+  \leanok
   \uses{def:graph-operations, def:D-deficiency}
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b \neq v$,
   carried by the two distinct edges $e_a$ (joining $v, a$) and $e_b$
@@ -877,6 +879,7 @@ pencil configurations suppress a body (\cref{sec:main-component-short}).
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:splitoff-deficiency}
   As for the upper bound of \cref{lem:splitoff-deficiency}: extend a
   partition of $V(G) - v$ to $V(G)$ by putting $v$ into the part of $a$.

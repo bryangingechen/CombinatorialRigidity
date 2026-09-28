@@ -13,10 +13,13 @@ operations (`Induction/Operations`), this file tracks how the `D`-deficiency mov
 splitting-off and vertex removal (Katoh–Tanigawa 2011 §4):
 
 * **splitting-off does not increase the deficiency** and lowers it by at most one
-  (`splitOff_deficiency_le` / `splitOff_deficiency_ge`, `lem:splitoff-deficiency`; KT 4.3(ii));
+  (`splitOff_deficiency_le` / `splitOff_deficiency_ge`, `lem:splitoff-deficiency`; KT 4.3(i));
 * **vertex removal raises the deficiency** (`removeVertex_deficiency_ge`, `lem:removal-deficiency`;
   KT Lemma 4.4);
-* the combined degrees-of-freedom bookkeeping (`dof_tracking`, `lem:dof-tracking`; KT 4.3–4.5).
+* the combined degrees-of-freedom bookkeeping (`dof_tracking`, `lem:dof-tracking`; KT 4.3–4.5);
+* **the label-reusing form of the upper bound**, suppressing a degree-2 body by relinking one of
+  its own edge labels rather than a fresh one (`splitOff_deficiency_le_of_eq_left`,
+  `lem:splitoff-deficiency-reuse`), the form the pencil open-ear steps consume (Phase 40h SHORT).
 
 The reducible-vertex, contraction-minimality, and forest-surgery layers build on top in
 `ReducibleVertex`, `Contraction`, and `ForestSurgery`. See `ROADMAP.md` §20 / `notes/Phase20.md`
@@ -149,6 +152,128 @@ theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : �
         exact absurd (hg ▸ hmemG he2) he₀
       · rw [ite_eq_right h1, ite_eq_left h2] at hg
         exact absurd (hg.symm ▸ hmemG he1) he₀
+      · rwa [ite_eq_right h1, ite_eq_right h2] at hg
+    · exact Set.toFinite _
+  -- Combine: `partitionDef_G(f) ≥ partitionDef_H(f')`, then bound by the supremum.
+  have hmono : H.partitionDef n f' ≤ G.partitionDef n f := by
+    rw [partitionDef, partitionDef, hparts]
+    have hD1 : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1 := by
+      have : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+      linarith
+    nlinarith [Int.ofNat_le.mpr hcross]
+  exact hmono.trans (G.partitionDef_le_deficiency n f)
+
+/-! ### Suppressing a body by reusing one of its own edge labels (`lem:splitoff-deficiency-reuse`)
+
+The label-reusing form of `splitOff_deficiency_le`: instead of a fresh short-circuit label `e₀ ∉
+E(G)`, the new `a–b` edge reuses the label `eₐ` itself (`G.splitOff v a b eₐ`), the form in which
+the pencil open-ear steps suppress a body (`main-component.tex`,
+`sec:main-component-short`). `eₐ` never crosses the extended partition `f = update f' v (f' a)` —
+its endpoints `v, a` both carry `f' a` — so it plays the role the fresh `e₀ ∉ E(G)` played there:
+the crossing-edge injection is again `e_b ↦ eₐ`, identity elsewhere, and the same argument as
+`splitOff_deficiency_le` carries through with `eₐ ∉ G.crossingEdges f` (not `eₐ ∉ E(G)`, which
+now fails) standing in for `e₀ ∉ E(G)`. -/
+
+/-- **Suppressing a body of degree two, reusing one of its own edge labels** (`lem:splitoff-
+deficiency-reuse`, the label-reusing form of `splitOff_deficiency_le`, KT Lemma 4.3(i)): with the
+same degree-2 hypotheses as `splitOff_deficiency_le` (the two `v`-incident edges `eₐ`, `e_b`), but
+reusing the label `eₐ` itself as the new `a–b` edge in place of a fresh short-circuit label,
+`def(G̃'') ≤ def(G̃)`.
+
+Proved by the same deficiency-count route as `splitOff_deficiency_le`: `eₐ` is internal under the
+extended partition `f` (its endpoints `v, a` share the label `f' a`), so the crossing-edge
+injection `e_b ↦ eₐ` is again well-defined and injective, this time using `eₐ ∉
+G.crossingEdges f` in place of `e₀ ∉ E(G)`. -/
+theorem splitOff_deficiency_le_of_eq_left [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) :
+    (G.splitOff v a b eₐ).deficiency n ≤ G.deficiency n := by
+  classical
+  set H := G.splitOff v a b eₐ with hH
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  have : Nonempty α := ⟨a⟩
+  rw [deficiency]
+  refine ciSup_le fun f' => ?_
+  -- Extend `f'` to a partition `f` of `V(G)` by dropping `v` into `a`'s block.
+  set f := Function.update f' v (f' a) with hf
+  have hfne : ∀ x, x ≠ v → f x = f' x := fun x hx => Function.update_of_ne hx _ _
+  have hfv : f v = f' a := Function.update_self v (f' a) f'
+  -- Step 1: the number of parts is unchanged (identical to `splitOff_deficiency_le`; the
+  -- vertex set of `H` does not depend on the label reused for the relinked edge).
+  have hparts : G.numParts f = H.numParts f' := by
+    rw [numParts, numParts, vertexSet_splitOff]
+    congr 1
+    apply Set.Subset.antisymm
+    · rintro _ ⟨x, hx, rfl⟩
+      by_cases hxv : x = v
+      · subst hxv
+        exact ⟨a, ⟨haV, by simpa using hav⟩, by rw [hfv]⟩
+      · exact ⟨x, ⟨hx, by simpa using hxv⟩, (hfne x hxv).symm⟩
+    · rintro _ ⟨x, ⟨hx, hxv⟩, rfl⟩
+      exact ⟨x, hx, hfne x (by simpa using hxv)⟩
+  have hfa : f a = f' a := hfne a hav
+  -- `eₐ` is internal under `f`: its endpoints `v, a` both carry `f' a`.
+  have heaf : eₐ ∉ G.crossingEdges f := by
+    rintro ⟨-, x, y, hlink, hxy⟩
+    rcases hla.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact hxy (by rw [hfv, hfa])
+    · exact hxy (by rw [hfv, hfa])
+  -- Step 2: the crossing-edge count does not increase, via the injection `e_b ↦ eₐ`.
+  have hcross : (G.crossingEdges f).ncard ≤ (H.crossingEdges f').ncard := by
+    have hfb : f b = f' b := hfne b hbv
+    refine Set.ncard_le_ncard_of_injOn (fun e => if e = e_b then eₐ else e) ?_ ?_ ?_
+    · -- maps crossing edges of `G` to crossing edges of `H`
+      rintro e he
+      obtain ⟨heG, x, y, hlink, hxy⟩ := id he
+      by_cases hev : e = e_b
+      · -- `e_b` ↦ `eₐ`: `eₐ` links `a, b` in `H`, and `f' a ≠ f' b` (since `e_b` crosses).
+        simp only [ite_eq_left hev]
+        rw [hev] at hlink
+        have hab' : f' a ≠ f' b := by
+          rcases hlb.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+          · rwa [hfv, hfb] at hxy
+          · rw [hfv, hfb] at hxy; exact fun h => hxy h.symm
+        have hl₀ : H.IsLink eₐ a b := by
+          rw [hH, splitOff_isLink]
+          exact Or.inr ⟨rfl, hav, hbv, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
+        exact ⟨hl₀.edge_mem, a, b, hl₀, hab'⟩
+      · -- `e ≠ e_b`: `e` avoids `v`, survives in `H`, crosses with the same labels.
+        simp only [ite_eq_right hev]
+        have hxv : x ≠ v ∧ y ≠ v := by
+          refine ⟨fun hxv => hxy ?_, fun hyv => hxy ?_⟩
+          · subst hxv
+            rcases hdeg2 e y hlink with rfl | rfl
+            · obtain ⟨_, rfl⟩ | ⟨_, hav'⟩ := hla.eq_and_eq_or_eq_and_eq hlink
+              · rw [hfv, hfa]
+              · exact absurd hav' hav
+            · exact absurd rfl hev
+          · subst hyv
+            rcases hdeg2 e x hlink.symm with rfl | rfl
+            · obtain ⟨_, rfl⟩ | ⟨_, hav'⟩ := hla.eq_and_eq_or_eq_and_eq hlink.symm
+              · rw [hfv, hfa]
+              · exact absurd hav' hav
+            · exact absurd rfl hev
+        -- `e ≠ eₐ`: else `e ∈ G.crossingEdges f` would put `eₐ` there too, contra `heaf`.
+        have hee₀ : e ≠ eₐ := fun h => heaf (h ▸ he)
+        refine ⟨?_, x, y, ?_, ?_⟩
+        · have : H.IsLink e x y := by
+            rw [hH, splitOff_isLink]; exact Or.inl ⟨hee₀, hlink, hxv.1, hxv.2⟩
+          exact this.edge_mem
+        · rw [hH, splitOff_isLink]; exact Or.inl ⟨hee₀, hlink, hxv.1, hxv.2⟩
+        · rwa [hfne x hxv.1, hfne y hxv.2] at hxy
+    · -- injectivity on `crossingEdges G f`: `g` is identity except `e_b ↦ eₐ`, and `eₐ` never
+      -- crosses `f` (`heaf`), so no surviving crossing edge collides with it.
+      intro e1 he1 e2 he2 hg
+      dsimp only at hg
+      by_cases h1 : e1 = e_b <;> by_cases h2 : e2 = e_b
+      · rw [h1, h2]
+      · rw [ite_eq_left h1, ite_eq_right h2] at hg
+        exact absurd (by rw [hg]; exact he2) heaf
+      · rw [ite_eq_right h1, ite_eq_left h2] at hg
+        exact absurd (by rw [← hg]; exact he1) heaf
       · rwa [ite_eq_right h1, ite_eq_right h2] at hg
     · exact Set.toFinite _
   -- Combine: `partitionDef_G(f) ≥ partitionDef_H(f')`, then bound by the supremum.

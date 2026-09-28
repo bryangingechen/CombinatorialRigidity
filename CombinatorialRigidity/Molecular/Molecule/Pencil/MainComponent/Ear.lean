@@ -35,6 +35,9 @@ themselves are in `MainComponent/Chain.lean`.
 * `Graph.deficiency_induce_add_le_of_ear` — **the ear deficiency bound** ((MC-17), the lower half,
   `lem:deficiency-ear`): `def(G[V₁]) + k + 1 − D ≤ def(G)` for an open or closed ear with
   `k ≥ 1`.
+* `Graph.deficiency_induce_le_of_ear_of_merge` — **the deficiency along an ear whose ends share a
+  part** (`lem:deficiency-ear-merge`, `k ≥ 0` allowed): `def(G[V₁]) ≤ def(G)` when some partition
+  of `V₁` attaining `def(G[V₁])` already puts the ear's ends `a, b` in one part.
 * `Graph.mem_liftingSpace_of_ear`, `Graph.earExtend_mem_liftingSpace` — **the heights of an ear**
   ((MC-18)(a), `lem:pencil-ear-fibre`): at an admissible picture membership in `L_G(q)` is decided
   on `V₁`, and every height of `G[V₁]` extends to `G`, freely at the middle bodies of an open ear.
@@ -458,6 +461,77 @@ theorem _root_.Graph.deficiency_induce_add_le_of_ear [Finite α] [Finite β] {G 
   have hDZ : (1 : ℤ) ≤ Graph.bodyBarDim n := by exact_mod_cast hD
   nlinarith [mul_nonneg (sub_nonneg.mpr hDZ) (sub_nonneg.mpr hcutn')]
 
+/-- **The deficiency along an ear whose ends share a part** (`lem:deficiency-ear-merge`, the
+`k = 0` case allowed): when some partition `p` of `V₁` attaining `def(G[V₁])` puts `a` and `b` in
+one part, the interior bodies can join that same part for free, so the deficiency of `G` is at
+least that of `G[V₁]` (no `D(k+1) - D` loss, unlike `deficiency_induce_add_le_of_ear`). Extend `p`
+to all of `G` by sending every ear body to `p a` (already `p b`'s label, by `hmerge`): the number
+of parts is unchanged (every extra label collapses into `a`'s existing one) and every ear edge
+becomes internal (both its ends now carry `p a`), so `partitionDef` at `G` under the extension
+equals `partitionDef` at `G[V₁]` under `p`. -/
+theorem _root_.Graph.deficiency_induce_le_of_ear_of_merge [Finite α] {G : Graph α β}
+    {n : ℕ} {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
+    (hcover : V(G) = V₁ ∪ Set.range x) (_hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
+    (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    (hmerge : ∃ p : α → α, (G.induce V₁).partitionDef n p = (G.induce V₁).deficiency n ∧
+      p a = p b) :
+    (G.induce V₁).deficiency n ≤ G.deficiency n := by
+  classical
+  obtain ⟨p, hp, hpab⟩ := hmerge
+  set g : α → α := fun w => if w ∈ V₁ then p w else p a with hgdef
+  have hgV₁ : ∀ w ∈ V₁, g w = p w := fun w hw => ite_eq_left hw
+  have hgx : ∀ i, g (x i) = p a := fun i => ite_eq_right (hxV₁ i)
+  -- Every position of the path carries the label `p a` under `g`.
+  have hgpath : ∀ m : Fin (k + 2), g (pathVertex a x b m) = p a := by
+    intro m
+    rcases pathVertex_cases a x b m with ⟨-, hm⟩ | ⟨i, -, hm⟩ | ⟨-, hm⟩
+    · rw [hm, hgV₁ a ha]
+    · rw [hm, hgx i]
+    · rw [hm, hgV₁ b hb]; exact hpab.symm
+  -- The number of parts is unchanged: every ear body's label `p a` is already carried by `a`.
+  have hnp : G.numParts g = (G.induce V₁).numParts p := by
+    rw [Graph.numParts, Graph.numParts, show V(G.induce V₁) = V₁ from rfl]
+    congr 1
+    apply Set.Subset.antisymm
+    · rintro _ ⟨w, hw, rfl⟩
+      rw [hcover] at hw
+      rcases hw with hw | ⟨i, rfl⟩
+      · exact ⟨w, hw, (hgV₁ w hw).symm⟩
+      · exact ⟨a, ha, (hgx i).symm⟩
+    · rintro _ ⟨w, hw, rfl⟩
+      have hwG : w ∈ V(G) := by rw [hcover]; exact Or.inl hw
+      exact ⟨w, hwG, hgV₁ w hw⟩
+  -- The crossing edges agree: every ear edge is internal under `g` (`hgpath`), and every other
+  -- edge lies inside `V₁` (`hsep`), where `g` and `p` agree.
+  have hcr : G.crossingEdges g = (G.induce V₁).crossingEdges p := by
+    ext f₀
+    constructor
+    · rintro he
+      obtain ⟨hfG, u, w, hlink, huw⟩ := id he
+      by_cases hfe : ∃ i, f₀ = e i
+      · exfalso
+        obtain ⟨i, rfl⟩ := hfe
+        apply huw
+        rcases hlink.eq_and_eq_or_eq_and_eq (hpath i) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · rw [hgpath, hgpath]
+        · rw [hgpath, hgpath]
+      · push Not at hfe
+        obtain ⟨huV₁, hwV₁⟩ := hsep f₀ u w hlink hfe
+        have hlinkV₁ : (G.induce V₁).IsLink f₀ u w := by
+          simp only [Graph.induce_isLink]; exact ⟨hlink, huV₁, hwV₁⟩
+        exact ⟨hlinkV₁.edge_mem, u, w, hlinkV₁, by rw [← hgV₁ u huV₁, ← hgV₁ w hwV₁]; exact huw⟩
+    · rintro ⟨-, u, w, hlink, huw⟩
+      simp only [Graph.induce_isLink] at hlink
+      obtain ⟨hlinkG, huV₁, hwV₁⟩ := hlink
+      exact ⟨hlinkG.edge_mem, u, w, hlinkG, by rwa [hgV₁ u huV₁, hgV₁ w hwV₁]⟩
+  have hdef_eq : G.partitionDef n g = (G.induce V₁).partitionDef n p := by
+    rw [Graph.partitionDef, Graph.partitionDef, hnp, hcr]
+  calc (G.induce V₁).deficiency n = (G.induce V₁).partitionDef n p := hp.symm
+    _ = G.partitionDef n g := hdef_eq.symm
+    _ ≤ G.deficiency n := G.partitionDef_le_deficiency n g
 
 /-! ## The heights of an ear ((MC-18)(a))
 

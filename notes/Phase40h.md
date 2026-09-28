@@ -5,8 +5,8 @@
 interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2`
 when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
 at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
-second-read). Fourteen nodes, seven green; seven builds B1–B7, plus the `Carrier.lean` split before
-B3 (PI decision 5). B1 landed. **Next: B2, the two deficiency bounds** — see *Hand-off*.
+second-read). Fourteen nodes, nine green; seven builds B1–B7, plus the `Carrier.lean` split before
+B3 (PI decision 5). B1–B2 landed. **Next: the `Carrier.lean` split (before B3)** — see *Hand-off*.
 
 ## Current state
 
@@ -30,8 +30,18 @@ MC14):
   `lem:deficiency-ear`.
 
 **B1 landed** (the line geometry): its seven nodes are green, in the new `MainComponent/Lines.lean`
-and five `pointJoin` lemmas in `Flat.lean`. The other seven nodes are red. **The next concrete commit
-is B2** (*Hand-off*): two nodes green.
+and five `pointJoin` lemmas in `Flat.lean`.
+
+**B2 landed** (the two deficiency bounds): `Graph.splitOff_deficiency_le_of_eq_left`
+(`Induction/SplitOffDeficiency.lean`, beside `splitOff_deficiency_le`; module docstring's "KT
+4.3(ii)" corrected to 4.3(i)) and `Graph.deficiency_induce_le_of_ear_of_merge`
+(`MainComponent/Ear.lean`, beside `deficiency_induce_add_le_of_ear`), both proved by direct
+per-partition extension (no new infrastructure), matching the coordinator's route note verbatim.
+The merge lemma's `hinj : Function.Injective x` hypothesis is unused by this proof (kept, renamed
+`_hinj`, for statement parity with the blueprint's "distinct bodies" ear data and the sibling ear
+lemmas); its `[Finite β]` from the spike was dropped (genuinely unused, `lake lint` caught it).
+Five red nodes remain (B3–B7). **The next concrete commit is the `Carrier.lean` split**
+(*Hand-off*).
 
 **The spikes** live in the gitignored `scratch/40h/` and `scratch/40h-read/`, local to this checkout
 (builder pointers, not evidence):
@@ -120,10 +130,10 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
     way to `exists_ne_zero_add_smul_notMem`, a shorter insertion route (*Decisions made*).
     `pointJoin_swap`, `flatSigma_pointJoin` and `flatPi_pointJoin` went to `Flat.lean` by the same
     convention. `lem:pencil-plane-lines` pins in its clause order (`pointJoin_liftPlane_…` second).
-- [ ] **B2** — `Induction/SplitOffDeficiency.lean`: **`Graph.splitOff_deficiency_le_of_eq_left`** →
+- [x] **B2** — `Induction/SplitOffDeficiency.lean`: **`Graph.splitOff_deficiency_le_of_eq_left`** →
   `lem:splitoff-deficiency-reuse`, and the module docstring's "KT 4.3(ii)" corrected to 4.3(i);
   `MainComponent/Ear.lean`: **`Graph.deficiency_induce_le_of_ear_of_merge`** →
-  `lem:deficiency-ear-merge`.
+  `lem:deficiency-ear-merge`. **Landed** with both names exactly as planned.
 - [ ] **The `Carrier.lean` split** (its own commit, before B3; PI decision 5; the plan is the design
   doc's §3 CARRIER): C3–C5′ to a second file, C1–C2 left in `Carrier.lean`, the root import
   updated. No declaration is renamed, so no pin moves.
@@ -146,7 +156,7 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Blockers / open questions
 
-- None blocking B2.
+- None blocking the `Carrier.lean` split.
 - **B3–B4 is the high-risk build** (MvPolynomial substitution), and its node has no compiled statement
   (*Current state*).
 - **Two pieces of the step proofs have no compiled form**, which the recon left open: the affine
@@ -157,20 +167,14 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Hand-off / next phase
 
-**Next: B2, the two deficiency bounds (fresh builder).** Source: the statements in
-`scratch/40h/S40hSteps.lean` (gitignored, local to this checkout); their proofs there are `sorry`, so
-B2 writes them, from the two nodes' proofs. Targets: the checklist's B2 names.
-- **`Graph.splitOff_deficiency_le_of_eq_left`** (`Induction/SplitOffDeficiency.lean`, beside the
-  landed `Graph.splitOff_deficiency_le`, no call site moved; PI decision 4(c)) →
-  `lem:splitoff-deficiency-reuse`: extend a partition of `V(G) − v` by putting `v` into `a`'s part.
-  The same commit corrects that module docstring's "KT 4.3(ii)" to 4.3(i).
-- **`Graph.deficiency_induce_le_of_ear_of_merge`** (`MainComponent/Ear.lean`, beside the landed
-  `Graph.deficiency_induce_add_le_of_ear`) → `lem:deficiency-ear-merge`: put every `x i` into the
-  part holding `a` and `b`.
-- **Pin and flip** both nodes. Gates: `lake build`, `lake lint`, `blueprint/verify.sh`,
-  `blueprint/lint.sh`, `notes/check-phase-note.py`.
+**Next: the `Carrier.lean` split (fresh builder; PI decision 5, its own commit before B3).** Plan:
+the design doc's §3 CARRIER. Split `Carrier.lean` along its section headers into two files — C3–C5′
+move to a new second file, C1–C2 stay in `Carrier.lean` — and update the root import; no declaration
+is renamed, so no blueprint pin moves and no `\lean{...}` changes. Rebuilds the downstream Phase-40
+modules once. Gates: `lake build`, `lake lint`, `notes/check-phase-note.py` (no blueprint edit this
+commit, so `verify.sh`/`lint.sh` are unaffected but harmless to run).
 
-**Then the `Carrier.lean` split, B3–B4, B5, B6, B7, then the close.**
+**Then B3–B4, B5, B6, B7, then the close.**
 
 ## Decisions made during this phase
 
@@ -187,3 +191,10 @@ B2 writes them, from the two nodes' proofs. Targets: the checklist's B2 names.
   `lem:pencil-insertion`'s proof prose is rewritten to match; its statement is unchanged. The five
   `pointJoin` facts sit in `Flat.lean` (PI decision 5's convention). `star` keeps its planned name:
   nothing in the namespace uses `Star.star`.
+- **2026-09-27 — B2 landed as two direct per-partition-extension proofs, no shared
+  infrastructure.** `splitOff_deficiency_le_of_eq_left` adapts the landed
+  `splitOff_deficiency_le`'s proof verbatim, with `eₐ ∉ E(G)` (unavailable — `eₐ` is reused, not
+  fresh) replaced by `eₐ ∉ G.crossingEdges f` (the extended partition's own internality, proved
+  once from `hla`/`hfv`/`hfa`). `deficiency_induce_le_of_ear_of_merge` extends `p` by the constant
+  `p a` off `V₁`; every ear position collapses to `p a` under the extension (`pathVertex_cases`),
+  so the crossing-edge sets are equal outright (not merely bounded), unlike the additive ear law.
