@@ -1850,7 +1850,8 @@ to the lemma's syntactic shape with `rfl` equations — `have hGcf : G.rigidCont
 Gc.map f := rfl` then `rw [hGcf] at hne hN`, and `have hVH : V(G.induce W) = W := rfl` then
 `rw [hVH] at h` on the lemma instance — so the final match is syntactic. Worked case:
 `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
-(`Molecule/Pencil/MainComponent/Contract.lean`).
+(`Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
+split).
 
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 

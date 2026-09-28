@@ -236,7 +236,8 @@ to be re-derived by re-reading entries later.
 
 ### [resolved] A spike that is silent under `lake env lean` lands with style-linter warnings
 - **Where it bit:** Phase 40f CONTRACT-R build, `Graph.eq_zero_of_contractLimitMap_eq_zero`
-  (`Molecule/Pencil/MainComponent/Contract.lean`): the spike's `simp [...] at hrow hgr ⊢` drew six
+  (`Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
+  split): the spike's `simp [...] at hrow hgr ⊢` drew six
   `linter.flexible` warnings at the first `lake build`, and the spike had six lines over 100.
 - **Friction:** one extra build cycle. The spike's check (`lake env lean scratch/…`) printed only
   the axioms line, since the lakefile's `weak.linter.mathlibStandardSet` does not reach it.
@@ -257,7 +258,8 @@ to be re-derived by re-reading entries later.
 ### [resolved] `exact` of a `Gc.map (collapseTo r V(H))` panel-row lemma against a `G.rigidContract (G.induce W) r` framework times out at `isDefEq`
 - **Where it bit:** Phase 40f CONTRACT-R design spike,
   `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
-  (`Molecule/Pencil/MainComponent/Contract.lean`), applying `panelRow_collapseTo_comp_extProj_dualMap`.
+  (`Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
+  split), applying `panelRow_collapseTo_comp_extProj_dualMap`.
 - **Friction:** the two graphs agree by `rfl`, but unifying them inside the heavy
   `(ofNormals …).toBodyHinge` carrier unfolds `rigidContract` and times out.
 - **Proposed fix:** rewrite to the lemma's shape by `rfl` equations first

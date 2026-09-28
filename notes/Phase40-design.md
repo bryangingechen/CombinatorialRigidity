@@ -1017,7 +1017,8 @@ Dispatch a `recon-opus` agent, read-only. The brief says:
 The STEPS pre-build recon's scratch file `S40eTracked.lean`, kept verbatim because two of its three
 pieces land with later groups (§3 STEPS, the settled *Tracked* items):
 - (2) `Graph.rigidContract_induce_simple`, with **CONTRACT-R** (landed in 40f's build,
-  `Molecule/Pencil/MainComponent/Contract.lean`);
+  `Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
+  split);
 - (3) `polynomial_eval_aeval` and `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`, the
   curve-limit lemma, with **SPLITOFF** (re-compiled verbatim against `52706564` by 40j's design
   recon, importing `…MainComponent.Orbit`; it landed in 40j's B1, `Bridge.lean`, the helper as the

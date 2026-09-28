@@ -6,8 +6,8 @@ core whose planar deficiency adds: at an induced core `H = G[W]`, `W ⊊ V(G)`, 
 `def₃(H) = 0`, with no outside body adjacent to two core bodies, in a 2EC `G` satisfying (H), if
 `def₂(H) + def₂(G/H) ≤ def₂(G)` and `X₀` attains at `H` and at `G/H = G.rigidContract (G.induce W) r`,
 then `X₀(G)` attains ((MC-71)). It also splits `Contract.lean`. No new mathematics. Five nodes, all
-red, and a remark; three builds B1–B3, possibly two. **Next: B1, the `Contract.lean` split** — see
-*Hand-off*.
+red, and a remark; three builds B1–B3, possibly two. **B1 (the split) lands green.** **Next: B2, the
+general pieces and the four lemma nodes** — see *Hand-off*.
 
 ## Current state
 
@@ -124,25 +124,32 @@ re-run at this open with **`lake lean`** at `77f80d09`, identical to the coordin
 Planned names from the spike; pins in **bold**, the other names helpers, unpinned. The slicing is
 the recon's: B1 and B2 may merge.
 
-- [ ] **B1, the split** (call 5): a pure move plus an in-place generalization; no blueprint change,
-  since every moved name is kept.
-  - New `Molecule/Pencil/MainComponent/ContractCurve.lean`, importing `Cut.lean`: the sections *The
-    rescaled lifting system* through *The bodies and closed neighbourhoods of the contraction*
-    (`Contract.lean` lines 97–430), `Graph.closedNbhd_induce_subset`, `contractLimitMap` and
-    `contractLimitMap_apply`, the two helpers below, `Graph.exists_mem_ker_contractLiftingMatrix_zero`
-    (K4), *The surviving rows near the collapsed placement*, the five `G/H` standing lemmas
-    (`rigidContract_induce_simple`, `three_le_ncard_closedNbhd_rigidContract`,
-    `connected_rigidContract_induce`, `twoEdgeConnected_rigidContract_induce`,
-    `isX0Graph_rigidContract_induce`) and *The curve as polynomials in `t`*.
-  - `Graph.contractLimitMap_mem_liftingSpace` and `Graph.eq_zero_of_contractLimitMap_eq_zero`,
-    generalized in place to the spike's `…_of_plane` statements: the plane hypothesis
-    `hg : ∃ g, (∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w) ∧ ∀ c ∈ W, (fun i => x
-    (Sum.inr (c, i))) = g` in place of `hqH`/`hLH`. Both are unpinned, and the flat K3 is their only
-    call site; it now takes `hg` from `Graph.exists_core_plane`.
-  - `Contract.lean`, importing `ContractCurve.lean`, keeps `Graph.exists_core_plane`,
-    `Graph.finrank_ker_contractLiftingMatrix_zero_le`,
-    `Graph.finrank_span_rigidityRows_induce_contractHeight`,
-    `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` and `Graph.X0Attains.of_rigidContract`.
+- [x] **B1, the split** (call 5): a pure move plus an in-place generalization; no blueprint change,
+  every moved name kept. `Molecule/Pencil/MainComponent/ContractCurve.lean` (1115 lines, importing
+  `Cut.lean`) got the sections *The rescaled lifting system* through *The bodies and closed
+  neighbourhoods of the contraction*, a new *Closed neighbourhoods of an induced subgraph* mini-
+  section for `Graph.closedNbhd_induce_subset`, *The rescaled system at the end of the curve*
+  (`contractLimitMap`, `contractLimitMap_apply`, the two generalized theorems below,
+  `Graph.exists_mem_ker_contractLiftingMatrix_zero`, K4), *The surviving rows near the collapsed
+  placement*, a renamed *The standing hypotheses at the contraction* (the five `G/H` lemmas) and
+  *The curve as polynomials in `t`*. `Contract.lean` (446 lines, importing `ContractCurve.lean`
+  only — the one-hop convention, no direct `Cut.lean` import) kept `Graph.exists_core_plane` (its
+  own *One plane on the core*), `Graph.finrank_ker_contractLiftingMatrix_zero_le` (a new *The
+  kernel at the end of the curve*), `Graph.finrank_span_rigidityRows_induce_contractHeight`,
+  `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (a thinned *The standing hypotheses at the
+  core*) and `Graph.X0Attains.of_rigidContract` (**CONTRACT-R**, unchanged). Both module docstrings
+  split per the Phase 40h `Carrier`/`Configuration` precedent (each bullet moved with its
+  declaration).
+  - `Graph.contractLimitMap_mem_liftingSpace` and `Graph.eq_zero_of_contractLimitMap_eq_zero`
+    generalized in place to the spike's `…_of_plane` statements, landed under their base names: the
+    plane hypothesis `hg : ∃ g, (∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w) ∧ ∀ c ∈ W,
+    (fun i => x (Sum.inr (c, i))) = g` in place of `hqH`/`hLH`. Both unpinned; `finrank_ker_
+    contractLiftingMatrix_zero_le` is their only call site, now deriving `hg` from
+    `Graph.exists_core_plane hW hqH hLH hx` at each of its two call sites.
+  - Repointed the one live `TACTICS-QUIRKS.md` §38 file pointer, and three more prose mentions of
+    moved declarations against a `Contract.lean` file path (`notes/Phase40-design.md`'s appendix,
+    `notes/FRICTION.md` ×2) found by a repo-wide grep of the old path; every other hit named a
+    declaration that stayed.
 - [ ] **B2, the general pieces and the four lemma nodes:**
   - `Configuration.lean` (call 6):
     **`CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`**
@@ -167,12 +174,8 @@ the recon's: B1 and B2 may merge.
 
 ## Blockers / open questions
 
-- None blocking B1.
+- None blocking B2.
 - **Builder notes.**
-  - B1: split the module docstring, each file listing its own statements (the `Cut.lean` pattern);
-    add `ContractCurve.lean` to the root import. One live pointer names a moved declaration's file:
-    `TACTICS-QUIRKS.md` §38's worked case (`exists_rankPolynomial_rigidContract_induce_proj`);
-    repoint it. FRICTION's `[resolved]` entries record where their friction bit, and stay.
   - B2: the collineation lemma in `Configuration.lean` rebuilds its downstream files (cost unmeasured). The spike's
     docstrings are minimal; write real ones.
   - B3: the spike imports all of `Contract.lean`, but its step uses none of the flat pieces (this
@@ -183,19 +186,28 @@ the recon's: B1 and B2 may merge.
 
 ## Hand-off / next phase
 
-**Next: B1, the `Contract.lean` split (fresh builder).** Source: `Contract.lean` itself, with the
-spike's `…_of_plane` statements (`scratch/40k/S40kContractA.lean`, section G3; gitignored, local to
-this checkout; a builder pointer, not evidence). Target: the move and the in-place generalization of
-the checklist's B1 item, green, with no blueprint change. Chores:
-- **Placement** as the checklist (call 5). About 1 040 lines move to `ContractCurve.lean`;
-  `Contract.lean` drops from 1 496 to about 430. No fragile-zone file is touched.
-- **No repins.** Every name is kept, so `checkdecls` stays green and no node changes.
+**B1 (the `Contract.lean` split) is done and green** (`ContractCurve.lean` 1115 lines,
+`Contract.lean` 446 lines — both bigger than the pre-split estimate, from the new module
+docstrings and section headers the split needs, not from moved-content growth).
+
+**Next: B2, the general pieces and the four lemma nodes (fresh builder).** Source: the spike
+(`scratch/40k/S40kContractA.lean`, sections G1, G2, G4, G5; gitignored, local to this checkout; a
+builder pointer, not evidence). Target: the checklist's B2 item, green:
+- `Configuration.lean` (call 6): pin
+  `CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
+  → `lem:pencil-rank-collineation` (fully qualified, the 40j B1 precedent).
+- `ContractCurve.lean` (which now hosts the general contraction machinery, per B1): add
+  `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`,
+  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` (with `contractCoreRestrict` and
+  `contractCoreRestrict_apply`) → `lem:pencil-contract-kernel-bound`;
+  `Graph.finrank_span_rigidityRows_induce_contractHeight_eq` → `lem:pencil-contract-magnified-rank`;
+  `Graph.isX0Graph_induce_of_deficiency_eq_zero` → `lem:pencil-contract-standing-rigid`.
+- Pin and flip all four nodes' `\lean{...}`/`\leanok` in this commit; write real module-docstring
+  bullets (the spike's are minimal, per *Builder notes*).
 - Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
   `notes/check-phase-note.py`.
 
-**Then B2** (the general pieces and the four lemma nodes; `ContractCurve.lean` grows to about
-1 270, `Configuration.lean` 691 → about 715), **then B3** (`ContractAdditive.lean`, about 360 lines,
-and the theorem), **then the close**.
+**Then B3** (`ContractAdditive.lean`, about 360 lines, and the theorem), **then the close**.
 
 **Cleanup-round items** (call 12; the design doc's CONTRACT-A entry), in the recon's names (G1 the
 collineation lemma, G4 the kernel bound, G5 the rigid-core standing lemma): the flat K3
@@ -208,3 +220,10 @@ corollary of G5; `exists_core_plane`'s middle step via the new core-heights lemm
 - **2026-09-28 — opened design-first** from CONTRACT-A's design recon (opus, read-only,
   compiler-checked). This commit re-ran the two spikes and `measure.py` at `77f80d09` and got the
   coordinator's counts. The coordinator's calls are under *Architectural choices*.
+- **2026-09-28 — B1 lands.** Section-header choices not pinned by the scope: a new mini-section for
+  the one relocated helper (`closedNbhd_induce_subset`); the staying half of "rescaled system at
+  the end of the curve" (`finrank_ker_contractLiftingMatrix_zero_le`) gets its own *The kernel at
+  the end of the curve*; the moved `G/H` lemmas' section drops "at the core" from its title, since
+  the core half stayed behind. `Contract.lean` imports `ContractCurve.lean` only, not `Cut.lean`
+  (one-hop convention). Gates: `lake build` (2986 jobs) clean, `lake lint` clean, blueprint
+  unchanged, `check-phase-note.py` OK.
