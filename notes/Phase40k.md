@@ -6,8 +6,9 @@ core whose planar deficiency adds: at an induced core `H = G[W]`, `W ⊊ V(G)`, 
 `def₃(H) = 0`, with no outside body adjacent to two core bodies, in a 2EC `G` satisfying (H), if
 `def₂(H) + def₂(G/H) ≤ def₂(G)` and `X₀` attains at `H` and at `G/H = G.rigidContract (G.induce W) r`,
 then `X₀(G)` attains ((MC-71)). It also splits `Contract.lean`. No new mathematics. Five nodes, all
-red, and a remark; three builds B1–B3, possibly two. **B1 (the split) and B2 (the general pieces
-and the four lemma nodes) land green.** **Next: B3, the step** — see *Hand-off*.
+green; three builds B1–B3, possibly two. **B1 (the split), B2 (the general pieces and the four
+lemma nodes) and B3 (the step) all land green.** **Next: the close** (docs and blueprint only) —
+see *Hand-off*.
 
 ## Current state
 
@@ -28,8 +29,8 @@ labels from `ledger.py --brief`:
 
 One statement edit (call 9, blueprint only): `lem:pencil-contract-limit` (2) is lifted out of the
 flat setting, to match `Graph.exists_mem_ker_contractLiftingMatrix_zero` (`Contract.lean:727`),
-which has no flat hypothesis. No Lean has landed. The red nodes carry no `\lean{…}` yet (40h's open
-convention): each build adds its pins with `\leanok` (*Lemma checklist*). No other node changes.
+which has no flat hypothesis. **All five nodes are now `\lean{...}`-pinned and `\leanok`'d**
+(statement and proof, B1–B3; *Lemma checklist*).
 
 **The spikes** (gitignored `scratch/40k/`, local to this checkout; builder pointers, not evidence),
 re-run at this open with **`lake lean`** at `77f80d09`, identical to the coordinator's re-run:
@@ -164,9 +165,12 @@ the recon's: B1 and B2 may merge.
   → `lem:pencil-contract-standing-rigid`, before the `G/H` standing section (*The standing
   hypotheses at a rigid core*). `finrank_ker_contractLiftingMatrix_zero_add_three_le`'s two calls to
   the B1-generalized limit-map theorems needed no `_of_plane` rename (already base-named).
-- [ ] **B3, the step**, new `MainComponent/ContractAdditive.lean`, importing `ContractCurve.lean`
-  only, added to the root import, with a module docstring listing its statements (the `Cut.lean`
-  pattern): **`Graph.X0Attains.of_additiveContract`** → `thm:pencil-x0-contract-additive`.
+- [x] **B3, the step** (transcribed verbatim from the spike): new
+  `MainComponent/ContractAdditive.lean` (293 lines), importing `ContractCurve.lean` only, added to
+  the root import right after `Contract.lean`, with a module docstring listing its one statement:
+  **`Graph.X0Attains.of_additiveContract`** → `thm:pencil-x0-contract-additive`, pinned and
+  `\leanok`'d (statement and proof). The unpinned remark after the theorem was already in place
+  from the phase-open commit (checked, not re-added).
 - [ ] **The close** (docs and blueprint only): the end-to-end re-read of the new subsection, with two
   candidates found at this open — `lem:pencil-contract-standing`'s `G/H` clauses do not need
   `def₂(H) = 0` (the theorem's proof says so), and the remark after `thm:pencil-x0-contract-rigid`
@@ -178,37 +182,23 @@ the recon's: B1 and B2 may merge.
 
 ## Blockers / open questions
 
-- None blocking B3.
-- **Builder notes.**
-  - B3: the spike imports all of `Contract.lean`, but its step uses none of the flat pieces (this
-    open's grep), so `ContractAdditive.lean` imports `ContractCurve.lean` only. The variants
-    `…_viaAdditive` and `…_weak` are not the build (calls 3 and 5). The spike's step (lines 418–723)
-    calls no `_of_plane` name, so no renaming there either.
-  - Every new top-level name and module greps to no prior definition (this open's check,
-    TACTICS-QUIRKS §65).
+- None blocking the close.
 
 ## Hand-off / next phase
 
-**B1 and B2 are done and green.** `ContractCurve.lean` is now 1318 lines and `Configuration.lean`
-723 lines (both bigger than the pre-split/pre-B2 estimates, from module-docstring and section-
-header prose, not from moved- or new-content growth beyond the four lemmas).
+**B1, B2 and B3 are done and green.** `ContractCurve.lean` is 1318 lines, `Configuration.lean` 723
+lines, and the new `ContractAdditive.lean` 293 lines. All five CONTRACT-A nodes are `\lean{...}`-
+pinned and `\leanok`'d (statement and proof); `blueprint/verify.sh` and `blueprint/lint.sh` both
+green, full `lake build` (2987 jobs) and `lake lint` both clean, `#print axioms
+Graph.X0Attains.of_additiveContract` standard (`[propext, Classical.choice, Quot.sound]`).
 
-**Next: B3, the step (fresh builder).** Source: the spike's assembly theorem
-(`scratch/40k/S40kContractA.lean` lines 418–723, `_root_.Graph.X0Attains.of_additiveContract`;
-gitignored, local to this checkout; a builder pointer, not evidence). Target: new
-`MainComponent/ContractAdditive.lean`, importing `ContractCurve.lean` only (its step uses none of
-the flat pieces in `Contract.lean`), added to the root import, with a module docstring listing its
-one statement (the `Cut.lean` pattern):
-- `Graph.X0Attains.of_additiveContract` → `thm:pencil-x0-contract-additive`, pinned and
-  `\leanok`'d (statement and proof), transcribed verbatim from the spike.
-- The unpinned remark after the theorem (blueprint only, call 1's proof-level departure) needs no
-  Lean; it may already be in place from the phase-open commit (check before re-adding).
-- The spike's two variants (`of_additiveContract_weak`, `of_rigidContract_viaAdditive`, lines
-  724–1066) are not the build (calls 3 and 5) — do not transcribe them.
-- Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
-  `notes/check-phase-note.py`.
-
-**Then the close** (docs and blueprint only — see the checklist's last item).
+**Next: the close (docs and blueprint only, fresh builder)** — see the checklist's last item for
+the full list: the end-to-end re-read of the new subsection (two candidates already found at this
+open — `lem:pencil-contract-standing`'s `G/H` clauses do not need `def₂(H) = 0`, and the remark
+after `thm:pencil-x0-contract-rigid` may point at the new step); the exposition ledger; the
+headline axioms; the design doc's §3 STEPS (STEPS done), ROADMAP and `MolecularConjecture.md`; the
+public surfaces (unchanged — they update when Phase 40 closes, per 40f's standing call). Gates:
+`blueprint/verify.sh`, `blueprint/lint.sh`, `notes/check-phase-note.py`; no Lean change expected.
 
 **Cleanup-round items** (call 12; the design doc's CONTRACT-A entry), in the recon's names (G1 the
 collineation lemma, G4 the kernel bound, G5 the rigid-core standing lemma): the flat K3
@@ -234,4 +224,12 @@ corollary of G5; `exists_core_plane`'s middle step via the new core-heights lemm
   section, before the `G/H` standing section). No renaming beyond the two B1 base names already in
   place. Gates: `lake build` (2986 jobs) clean, `lake lint` clean, `blueprint/verify.sh`/`lint.sh`
   (four new `\lean{...}` pins resolve), `#print axioms` on all five new/reused declarations
+  standard, `check-phase-note.py` OK.
+- **2026-09-28 — B3 lands.** `Graph.X0Attains.of_additiveContract` transcribed verbatim from the
+  spike into new `ContractAdditive.lean`, importing `ContractCurve.lean` only; checked that every
+  declaration it calls (`rigidContract_deficiency_eq`, `rigidContract_vertexSet_ncard`, `extProj`,
+  `exists_mvPolynomial_section_mulVec_eq_zero`, etc., homed outside `MainComponent/`) resolves
+  through the `Carrier`→`Configuration`→`Flat`→`Bridge`→`Cut`→`ContractCurve` chain, matching how
+  CONTRACT-R's own single-import `Contract.lean` already reaches them. Gates: `lake build`
+  (2987 jobs) and `lake lint` clean, `blueprint/verify.sh`/`lint.sh` green, `#print axioms`
   standard, `check-phase-note.py` OK.

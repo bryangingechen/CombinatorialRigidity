@@ -3290,6 +3290,8 @@ configuration of $H$ attains.
 
 \begin{theorem}[Contraction at an additive core]
   \label{thm:pencil-x0-contract-additive}
+  \lean{Graph.X0Attains.of_additiveContract}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:cut-edges-2ec,
         def:rigid-contraction, def:D-deficiency}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses and be
@@ -3302,6 +3304,7 @@ configuration of $H$ attains.
   $G/H$ attain, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-contract-standing-rigid, lem:pencil-contract-standing,
         lem:pencil-contraction-deficiency, thm:pencil-jj-equality,
         lem:pencil-x0-main-picture-open, lem:pencil-rank-scale-shift,

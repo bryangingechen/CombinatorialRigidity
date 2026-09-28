@@ -51,6 +51,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
