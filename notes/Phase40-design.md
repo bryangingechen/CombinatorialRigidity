@@ -398,7 +398,9 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
       gained one congruence (`relScrews_congr`); B6's `W = ⊤` branch uses the collision point, not
       `exists_insertion_ge`. Placement and the rest: `notes/Phase40h.md` *Current state*. **Update at
       B6 (2026-09-27):** B6 landed before B5 (the coordinator's call) and created `Short.lean`, with
-      Steps 1–2 factored as `Graph.exists_earBase_splitOff` for B7.
+      Steps 1–2 factored as `Graph.exists_earBase_splitOff` for B7. **Update at B5 (2026-09-27):**
+      B5 landed without EARGEN, as `of_openEar`'s route at one picture: the heights `0`, and three
+      joins of the closed hexagon as the flat certificate.
     - **Re-homed and dropped** (PI decisions 2–4):
       - the `k = 1` cell (B8–B9) and (MC-175)(iii) go to **ORBIT** (below);
       - THETA ((MC-139)) dissolves into **COVERAGE**'s strong induction, with a remark and no named

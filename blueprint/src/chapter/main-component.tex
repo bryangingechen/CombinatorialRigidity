@@ -2131,6 +2131,8 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{theorem}[An open ear with two interior bodies]
   \label{thm:pencil-x0-open-ear-two}
+  \lean{Graph.X0Attains.of_openEar_two}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing, def:D-deficiency}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses
   (\cref{def:pencil-x0-standing}), with an open ear $a - x_1 - x_2 - b$
@@ -2140,29 +2142,48 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   $G[V_1]$ attains, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-ear-fibre, lem:pencil-join-independence-open,
-        lem:pencil-ear-hinge-span, lem:block-rank-ear,
-        lem:pencil-lifting-restrict, lem:pencil-rank-congr,
-        lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
-        lem:pencil-x0-one-witness}
-  Take a picture $q$ off the zero sets of the polynomial of the
-  attainment at $G[V_1]$ and of the main-picture polynomial of $G$
-  (\cref{lem:pencil-x0-main-picture-open}). At the heights $0$, which lie
-  in $L_G(q)$, the joins of the three ear edges are the lines
-  $a x_1$, $x_1 x_2$ and $x_2 b$ of the plane $z = 0$. Admissibility at
-  $x_1$ and at $x_2$ keeps $a, x_1, x_2$ and $x_1, x_2, b$ off a line, so
-  the three lines are not concurrent and the joins are linearly
-  independent. The heights of $L_G(q)$ at which they stay independent,
-  and those restricting to attaining heights of $G[V_1]$
-  (\cref{lem:pencil-ear-fibre}(2), \cref{lem:pencil-lifting-restrict}),
-  each contain a nonempty Zariski-open subset
-  (\cref{lem:pencil-join-independence-open}), and the two meet
-  (\cref{lem:pencil-x0-fibre-intersection}). There the rank of $G[V_1]$
-  is its target (\cref{lem:pencil-rank-congr}) and
-  $\dim(\rho + \Lambda) \ge 3$ (\cref{lem:pencil-ear-hinge-span}), which
-  is $(\star)$ at $k = 2$ by the hypothesis on the deficiencies; so
-  \cref{lem:block-rank-ear} and \cref{lem:pencil-x0-one-witness} apply.
+        lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
+        lem:block-rank-ear, lem:pencil-lifting-restrict,
+        lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
+  Let $q^*$ put $a$, $x_1$, $x_2$ and $b$ at $(0, 0)$, $(-1, -1)$,
+  $(1, 0)$ and $(0, -1)$, and every other body at $(0, 0)$. At the
+  heights $0$ the points of $a, x_1, x_2, b$ are then $Y_4, Y_5, Y_0, Y_1$
+  (\cref{lem:pencil-chain-span-certificates}), so the three ear edges
+  $a x_1$, $x_1 x_2$ and $x_2 b$ carry the joins $Y_4 \wedge Y_5$,
+  $Y_5 \wedge Y_0$ and $Y_0 \wedge Y_1$ of the closed hexagon, which are
+  linearly independent. The picture $q^*$ only makes nonzero the
+  polynomial $P$ of \cref{lem:pencil-join-independence-open} at the
+  heights $0$.
+
+  Take a picture $q$ off the zero sets of $P$, of the polynomial of the
+  attainment at $G[V_1]$, and of the main-picture polynomial of $G$
+  (\cref{lem:pencil-x0-main-picture-open}). The heights $0$ lie in the
+  linear space $L_G(q)$, and the three joins are independent at $(q, 0)$.
+  The heights of $L_G(q)$ restricting to attaining heights of $G[V_1]$
+  contain a nonempty Zariski-open subset (\cref{lem:pencil-ear-fibre}(2),
+  \cref{lem:pencil-lifting-restrict}), and so do the heights at which the
+  three joins stay independent (\cref{lem:pencil-join-independence-open},
+  in the heights); the two meet (\cref{lem:pencil-x0-fibre-intersection}).
+  At such a height the rank of $G[V_1]$ is its target
+  (\cref{lem:pencil-rank-congr}), every hinge is nonzero at the admissible
+  picture $q$, and $\dim(\rho + \Lambda) \ge 3$
+  (\cref{lem:pencil-ear-hinge-span}). This is $(\star)$ at $k = 2$ by the
+  hypothesis on the deficiencies, so \cref{lem:block-rank-ear} and
+  \cref{lem:pencil-x0-one-witness} apply.
 \end{proof}
+
+\begin{remark}
+  At every admissible picture the three joins are already independent at
+  the heights $0$: admissibility at $x_1$ and at $x_2$ keeps
+  $a, x_1, x_2$ and $x_1, x_2, b$ off a line, so the lines $a x_1$,
+  $x_1 x_2$ and $x_2 b$ of the plane $z = 0$ are not concurrent. The proof
+  above does not use this. As in \cref{thm:pencil-x0-open-ear}, one
+  picture at which the joins are independent suffices, and it need not be
+  admissible.
+\end{remark}
 
 \begin{theorem}[An open ear with four interior bodies]
   \label{thm:pencil-x0-open-ear-four}

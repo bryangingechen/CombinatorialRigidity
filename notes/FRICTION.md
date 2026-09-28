@@ -98,6 +98,19 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [open] The certificate-picture glue is written out a third time: `Short.lean` cannot see `Chain.lean`'s `pencilConfigPoint_cert`
+- **Where it bit:** Phase 40h B5, `Graph.X0Attains.of_openEar_two` (`MainComponent/Short.lean`).
+- **Friction:** no build cycle (the template was copied), but the glue is now inline twice: a
+  labelling `lab : α → Fin 6`, the picture `q₀ p = certPt (lab p.1) ⟨p.2, _⟩`, an `hpt :
+  pencilConfigPoint q₀ z w = certPt (lab w)` by `funext`/`fin_cases`/`change`, and one
+  `change …; rw [hpt, hpt, …]; rfl` per join, in `Graph.X0Attains.of_openEar` (`Chain.lean`) and
+  here. `Graph.X0Attains.of_cycle` has it packaged (`certPicture`, `certHeights`,
+  `pencilConfigPoint_cert`, `Chain.lean`), which `Short.lean` does not import.
+- **Proposed fix:** move `certPicture` to `Ear.lean` beside `certPt`, with a height-general
+  `pencilConfigPoint (certPicture lab) z w = certPt (lab w)` under `z w = certPt (lab w) 2`, and use
+  it at all three call sites.
+- **Status:** open.
+
 ### [resolved] Factoring the four-body step: a one-shot `set` fold, and the ear law's `F.graph[V₁]`
 - **Where it bit:** Phase 40h B6, `MainComponent/Short.lean` (`Graph.exists_earBase_splitOff`,
   `Graph.X0Attains.of_openEar_four`), refactoring the EARGEN spike's Steps 1–2 into a lemma.

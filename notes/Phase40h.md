@@ -5,9 +5,9 @@
 interior bodies, the ends possibly adjacent: if `X₀(G[V₁])` attains, `X₀(G)` attains for `k = 2`
 when `def₃(G[V₁]) ≤ def₃(G)` ((MC-54); PI decision 4(a)), and for `k = 3, 4` when `X₀` also attains
 at `G` with its second interior body suppressed ((MC-181), (MC-180): found by formalization,
-second-read). Fourteen nodes, twelve green; seven builds B1–B7, plus the `Carrier.lean` split before
-B3 (PI decision 5). B1–B4 and B6 landed (B3–B4 as one commit; B6 before B5; both the coordinator's
-calls), with the split. **The next concrete commit is B5**, then B7 — see *Hand-off*.
+second-read). Fourteen nodes, thirteen green; seven builds B1–B7, plus the `Carrier.lean` split
+before B3 (PI decision 5). B1–B6 landed (B3–B4 as one commit; B6 before B5; both the coordinator's
+calls), with the split. **The next concrete commit is B7**, then the close — see *Hand-off*.
 
 ## Current state
 
@@ -84,6 +84,12 @@ argument differs. Where each piece went (PI decision 5's convention):
   *Decisions made*), and `Graph.X0Attains.of_openEar_four`, docstring citing (MC-180);
 - the spike's `range_fin_four`/`_five` were dropped for a `Matrix.range_cons` `simp only`
   (FRICTION); `lake lint` found the base lemma's `[Finite β]` unused, dropped.
+
+**B5 landed** (the two-body step): `thm:pencil-x0-open-ear-two` is green, its statement the steps
+spike's, unchanged. `Graph.X0Attains.of_openEar_two` opens `Short.lean`, in its own section before
+the antecedent's, and mirrors `Graph.X0Attains.of_openEar` (*Decisions made*). The proof prose is
+rewritten to the Lean route; a remark after it keeps the admissibility argument, which the proof does
+not use.
 
 **The spikes** live in the gitignored `scratch/40h/`, `scratch/40h-read/` and `scratch/40h-eargen/`,
 local to this checkout (builder pointers, not evidence):
@@ -191,8 +197,8 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
   **`exists_mvPolynomial_le_finrank_ofNormals_bind`**,
   **`exists_mvPolynomial_le_finrank_sup_span_pointJoin`** → `lem:pencil-ear-data` (restated). The
   unpinned Part-5 helpers and `pathEdge_injective`: *Current state*.
-- [ ] **B5**, `MainComponent/Short.lean` (created by B6): **`Graph.X0Attains.of_openEar_two`** →
-  `thm:pencil-x0-open-ear-two`.
+- [x] **B5**, `MainComponent/Short.lean` (created by B6): **`Graph.X0Attains.of_openEar_two`** →
+  `thm:pencil-x0-open-ear-two`. **Landed** under that name, docstring citing (MC-54).
 - [x] **B6**: **`Graph.X0Attains.of_openEar_four`** → `thm:pencil-x0-open-ear-four`; docstring cites
   (MC-180). **Landed** with the proof prose in RECON §4's form (two rounds, no determinant, the
   collision witness, `h_a`, `h_b` not unique) and Steps 1–2 factored (*Current state*).
@@ -215,11 +221,7 @@ Planned names from the spikes. Pins in **bold**; the other names are helpers, un
 
 ## Hand-off / next phase
 
-**The next concrete commit is B5 (fresh builder):** `Graph.X0Attains.of_openEar_two` in
-`MainComponent/Short.lean` (`thm:pencil-x0-open-ear-two`), CHAIN-style at one picture; EARGEN does
-not touch it (RECON §8). Its statement is the steps spike's (`scratch/40h/S40hSteps.lean`).
-
-**Then B7** (the `k = 3` step, RECON §6): `Graph.exists_earBase_splitOff` with `G″`'s ear
+**The next concrete commit is B7** (the `k = 3` step, RECON §6): `Graph.exists_earBase_splitOff` with `G″`'s ear
 `a − x 0 − x 2 − b` (`k = 2`, `xf = x 0`, `xl = x 2`, `X = Set.range x`, `hl₀` from `hpath″ 1`) gives
 the base data; the new pieces are `splitOff_ear_three`, the affine witness, `exists_insertion_three`
 and the Case A/B split, with `of_openEar_four` as the assembly's model. **Then the close.**
@@ -269,6 +271,12 @@ and the Case A/B split, with `of_openEar_four` as the assembly's model. **Then t
   nonzero hinges and its target rank, and, at every ear datum, `ρ` and `G[V₁]`'s target rank for
   both frameworks. The blueprint cites no workbook labels (AUTHORING D, E), so the node's remark
   says "the informal argument"; (MC-180) is cited in the Lean docstrings.
+- **2026-09-27 — B5 mirrors `of_openEar`, not EARGEN** (the route note's first option; the second
+  needs `exists_earBase_splitOff`'s split-off antecedent, which `k = 2` lacks). One picture off
+  `G[V₁]`'s, `G`'s main and a join polynomial; the heights `0`; three independent hinges give
+  `dim(ρ ⊔ Λ) ≥ 3`. The route note's witness was wrong: `certSquare`'s `Y₂`, `Y₃` sit at height `1`,
+  so its first three joins are not flat. The flat witness is `certHexagon`'s joins 4, 5, 0
+  (`Y₄ − Y₅ − Y₀ − Y₁`, all at height `0`), a subfamily by `LinearIndependent.comp`.
 - **2026-09-27 — two pinned declarations stay although this route does not consume them.**
   `Graph.isAdmissiblePicture_congr` landed because `lem:pencil-picture-local` states it; B1's
   `exists_insertion_ge` stays as (MC-179)(d)'s pinned second half. `earExtend_mem_liftingSpace` was
