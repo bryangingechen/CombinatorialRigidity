@@ -37,8 +37,8 @@ as a `deficiency`-only inequality. The nine lemmas are the pencil workbook's cla
   value, hence (MC-79)(i): two bodies in a common rigid set have `deficiencyMerged = deficiency`
   (with `Graph.deficiencyMerged_le_deficiency`, `Molecular/Deficiency.lean`, the other direction).
 * `Graph.deficiency_three_induce_eq_zero_of_tight` (`lem:deficiency-tight-rigid`) — a set of
-  three or more bodies with singleton value at most `1` (every proper subset at least `1`) is
-  rigid; D3, replacing (MC-78) Lemma T.
+  three or more bodies with singleton value at most `1`, every subset of two or more bodies
+  having singleton value at least `1`, is rigid; D3, replacing (MC-78) Lemma T.
 * `Graph.deficiency_three_induce_eq_zero_of_le` / `Graph.partitionDef_induce_id_le_of_maximal`
   (`lem:deficiency-core-bound`) — a maximal rigid set `W` avoiding a small `X₀` bounds the
   singleton value of every superset `X ⊇ W` below by that of `W`; D1, by a minimal
