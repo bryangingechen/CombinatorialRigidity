@@ -32,6 +32,7 @@ import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.MaximalChain
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Induction.Girth
+import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Molecule.Application
 import CombinatorialRigidity.Molecular.Molecule.Carrier

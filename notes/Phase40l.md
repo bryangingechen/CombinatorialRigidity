@@ -6,8 +6,8 @@
 hypotheses; the strong induction on the number of bodies, carried on the statement "every graph
 satisfying (H) reduces to smaller ones"; and the deficiency layer of the structural half: the
 singleton bound, (MC-75)(i), (MC-76), merging along a rigid set, (MC-79)(ii)(iii) and (MC-87), with
-the departures D1–D3. No workbook change. **B1 (the interface) landed** — two of eleven red nodes
-now green. **Next: B2, the value calculus** — see *Hand-off*. CHAINS and THEOREM-S follow, by code.
+the departures D1–D3. No workbook change. **B1 and B2 landed** — six of eleven red nodes now
+green. **Next: B3, the suppliers** — see *Hand-off*. CHAINS and THEOREM-S follow, by code.
 
 ## Current state
 
@@ -18,7 +18,9 @@ the compiled spike statements. Which sub-phase greens each node:
 - **§`sec:main-component-sparse` (REDUCE, this sub-phase):** `lem:deficiency-singleton-bound`,
   `lem:deficiency-add-body`, `lem:deficiency-sparse`, `lem:deficiency-merge-rigid`,
   `lem:deficiency-tight-rigid`, `lem:deficiency-core-bound`, `lem:deficiency-additive-core`,
-  `lem:deficiency-one-body-chain`, `lem:deficiency-two-body-chain`.
+  `lem:deficiency-one-body-chain`, `lem:deficiency-two-body-chain`. Of these, B2 (this commit)
+  greens `lem:deficiency-singleton-bound`, `lem:deficiency-add-body`, `lem:deficiency-sparse`,
+  `lem:deficiency-merge-rigid`; B3 takes the remaining five.
 - **§`sec:main-component-coverage`:** `def:pencil-x0-reduces` and
   `thm:pencil-x0-reduction-attains` (REDUCE, B1 — **green**); `def:pencil-x0-chain`,
   `lem:pencil-x0-chain-exists`, `lem:pencil-x0-chain-standing`, `lem:pencil-x0-cycle-reduces`,
@@ -90,8 +92,8 @@ Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/
   `thm:pencil-x0-reduction-attains` (**`Graph.X0Reduces.x0Attains`,
   `Graph.X0Attains.of_isX0Graph_of_x0Reduces`**). Landed verbatim from `S1Dispatch.lean` with fresh
   docstrings; `lake build`/`lake lint`/blueprint gates all clean.
-- [ ] **B2, the value calculus** → new `SparseDeficiency.lean`, S4 lines 12–207, 263–366,
-  523–575:
+- [x] **B2, the value calculus** → new `Molecular/Induction/SparseDeficiency.lean`, S4 lines
+  12–207, 263–366, 523–575, landed:
   - `lem:deficiency-singleton-bound`: **`Graph.partitionDef_le_partitionDef_id`,
     `Graph.partitionDef_add_partitionDef_induce_id_le`**;
   - `lem:deficiency-add-body`: **`Graph.partitionDef_induce_insert`,
@@ -123,12 +125,13 @@ Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/
 
 ## Blockers / open questions
 
-- None blocking B2.
+- None blocking B3.
 - **Builder notes.**
-  - B2/B3: fix S4's 25 warnings on transcription: `if_pos`/`if_neg`/`dif_pos` → the suggested
-    `ite_eq_left`/`ite_eq_right`/`dite_eq_left` (or `simp only`), `Set.mem_setOf_eq` →
-    `Set.mem_ofPred_eq`, `Set.insert_diff_singleton` → `Set.insert_sdiff_singleton`, the `show`
-    at S4:153 → `change`, the long line at S4:666; `push Not`, not `push_neg`.
+  - B3: fix S4's remaining warnings on transcription (B2's fourteen — the `show`/`if_pos`/`if_neg`/
+    `dif_pos` occurrences inside its own line ranges — are fixed, landed in
+    `Molecular/Induction/SparseDeficiency.lean`): `if_pos`/`if_neg` → `ite_eq_left`/`ite_eq_right`,
+    `Set.mem_setOf_eq` → `Set.mem_ofPred_eq`, `Set.insert_diff_singleton` →
+    `Set.insert_sdiff_singleton`, the long line at S4:666; `push Not`, not `push_neg`.
   - `partitionDef_induce_id_le_of_maximal`'s `hWV : W ⊆ V(G)` is unused (S4:407): drop it, and
     THEOREM-S drops the argument at its one call site (S5's `exists_additiveCore_of_rigid`).
   - Every new top-level name greps to no prior definition (this open's check, TACTICS-QUIRKS §65).
@@ -137,28 +140,32 @@ Pins in **bold**, the other names unpinned helpers. S4 line ranges are `scratch/
 
 ## Hand-off / next phase
 
-**B1 (the interface) landed** — `Coverage.lean`, `def:pencil-x0-reduces` and
-`thm:pencil-x0-reduction-attains` green.
+**B1 and B2 landed** — `Coverage.lean` (`def:pencil-x0-reduces`, `thm:pencil-x0-reduction-attains`)
+and `Molecular/Induction/SparseDeficiency.lean` (`lem:deficiency-singleton-bound`,
+`lem:deficiency-add-body`, `lem:deficiency-sparse`, `lem:deficiency-merge-rigid`) green; six of
+eleven REDUCE nodes done.
 
-**The next concrete commit is B2, the value calculus** (fresh builder; sonnet at S=1 suffices).
-Source `scratch/40l/S4Kit.lean` (gitignored, local to this checkout), lines 12–207, 263–366,
-523–575, fixing the warnings listed under *Builder notes* on transcription (never verbatim for
-these ranges — the fixes are mandatory, not optional polish). Target: new
-`CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (beside
-`SplitOffDeficiency.lean`), importing `Induction/ReducibleVertex.lean` (for `rigidContract`) and
-the mirror `Mathlib/Combinatorics/Graph/Delete.lean` (for `induce_induce_of_subset`); add it to
-`CombinatorialRigidity.lean`. The checklist's B2 bullet has the exact pins:
-`lem:deficiency-singleton-bound`, `lem:deficiency-add-body`, `lem:deficiency-sparse`,
-`lem:deficiency-merge-rigid` (with the D5 pin `Graph.deficiencyMerged_le_deficiency` already
-landed — confirm it resolves rather than re-deriving it), plus the listed helpers. Chores:
-copyright header + module docstring + real docstrings; blueprint pin + flip the four B2 nodes;
-gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
-`notes/check-phase-note.py`; this note's checklist, *Current state* and *Hand-off*.
+**The next concrete commit is B3, the suppliers** (fresh builder; sonnet at S=1 suffices). Source
+`scratch/40l/S4Kit.lean` (gitignored, local to this checkout), lines 209–262, 368–522, 576–794,
+fixing the warnings listed under *Builder notes* on transcription (never verbatim for these
+ranges — the fixes are mandatory, not optional polish, plus the `hWV` unused-argument drop).
+Target: same `CombinatorialRigidity/Molecular/Induction/SparseDeficiency.lean` (already imports
+`Induction/ReducibleVertex.lean` for `rigidContract` and the mirror
+`Mathlib/Combinatorics/Graph/Delete.lean` for `induce_induce_of_subset`; already in
+`CombinatorialRigidity.lean`). The checklist's B3 bullet has the exact pins:
+`lem:deficiency-tight-rigid`, `lem:deficiency-core-bound`, `lem:deficiency-additive-core`,
+`lem:deficiency-one-body-chain`, `lem:deficiency-two-body-chain` (with the D5 pin
+`Graph.partitionDef_map` already landed — confirm it resolves rather than re-deriving it), plus
+the listed helper `partitionDef_deleteEdges_induce_eq`. Chores: real docstrings on every new
+declaration (module docstring already covers B3 in outline — extend its *Main statements* list);
+blueprint pin + flip the five B3 nodes; gates: `lake build`, `lake lint`, `blueprint/verify.sh`,
+`blueprint/lint.sh`, `notes/check-phase-note.py`; this note's checklist, *Current state* and
+*Hand-off*.
 
-**Then B3** (same file, S4 lines 209–262, 368–522, 576–794; the checklist), **then the close.**
-After 40l: **CHAINS** opens (a spike of its cut half first; about 5–7 builds), then **THEOREM-S**
-(about 2 builds; closes COVERAGE). Both transcribe from `scratch/40l/S5Full.lean` (design doc §3
-COVERAGE lists each one's interface statements).
+**Then the close** (docs and blueprint re-read, headline axioms, `formalization.yaml`). After
+40l: **CHAINS** opens (a spike of its cut half first; about 5–7 builds), then **THEOREM-S** (about
+2 builds; closes COVERAGE). Both transcribe from `scratch/40l/S5Full.lean` (design doc §3 COVERAGE
+lists each one's interface statements).
 
 ## Decisions made during this phase
 

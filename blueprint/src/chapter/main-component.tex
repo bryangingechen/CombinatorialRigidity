@@ -3467,6 +3467,8 @@ steps ask for.
 
 \begin{lemma}[The singletons bound the partitions of a sparse graph]
   \label{lem:deficiency-singleton-bound}
+  \lean{Graph.partitionDef_add_partitionDef_induce_id_le, Graph.partitionDef_le_partitionDef_id}
+  \leanok
   \uses{def:D-deficiency}
   Let $P$ be a partition of $V(G)$ with a part $Z$, and suppose
   $s_D(Y) \ge 0$ for every nonempty $Y \subseteq V(G) \setminus Z$.
@@ -3479,6 +3481,7 @@ steps ask for.
   partition $P$ of $V(G)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:cut-edge-decomposition}
   Both $P$ and the partition into singletons are separated by $Z$, so
   each splits at $Z$ with the same cut term
@@ -3492,6 +3495,8 @@ steps ask for.
 
 \begin{lemma}[Adding one body]
   \label{lem:deficiency-add-body}
+  \lean{Graph.partitionDef_induce_insert, Graph.deficiency_induce_insert_eq_zero}
+  \leanok
   \uses{def:D-deficiency}
   Let $X \subseteq V(G)$ and $u \notin X$, and let $P$ be a partition of
   $X \cup \{u\}$. Let $t$ be the number of edges of $G$ from $u$ to a
@@ -3507,6 +3512,7 @@ steps ask for.
   $\operatorname{def}(\tilde G[W \cup \{u\}]) = 0$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The number of parts grows by one exactly when $u$ is alone, and the
   crossing edges gain the $t$ edges at $u$. For the consequence, let $P$
   partition $W \cup \{u\}$. If $u$ shares a part, the value of $P$ is at
@@ -3517,6 +3523,9 @@ steps ask for.
 
 \begin{lemma}[A set of nonpositive singleton value contains a set of deficiency zero]
   \label{lem:deficiency-sparse}
+  \lean{Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos,
+        Graph.one_le_partitionDef_induce_id}
+  \leanok
   \uses{def:D-deficiency}
   Let $X \subseteq V(G)$ with $|X| \ge 2$ and $s_D(X) \le 0$. Then some
   $Y \subseteq X$ with $|Y| \ge 2$ has $\operatorname{def}(\tilde G[Y])
@@ -3525,6 +3534,7 @@ steps ask for.
   graph with no planar-rigid set is sparse.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-singleton-bound}
   Take $Y \subseteq X$ minimal with $|Y| \ge 2$ and $s_D(Y) \le 0$.
   Every nonempty proper subset of $Y$ then has nonnegative singleton
@@ -3536,6 +3546,9 @@ steps ask for.
 
 \begin{lemma}[Merging along a set of deficiency zero]
   \label{lem:deficiency-merge-rigid}
+  \lean{Graph.exists_partitionDef_le_mergeOn, Graph.deficiencyMerged_le_deficiency,
+        Graph.deficiencyMerged_eq_deficiency_of_mem}
+  \leanok
   \uses{def:D-deficiency, def:deficiency-merged}
   Let $D \ge 1$ and let $W \subseteq V(G)$ be nonempty with
   $\operatorname{def}(\tilde G[W]) = 0$.
@@ -3549,6 +3562,7 @@ steps ask for.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:partitionDef-merge}
   (1) If $m$ parts of $P$ meet $W$ and $e$ edges join distinct ones
   among them, merging them lowers the value by $D(m - 1) - (D - 1)e$
