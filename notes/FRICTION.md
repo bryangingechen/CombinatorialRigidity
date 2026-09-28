@@ -98,6 +98,23 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] Factoring the four-body step: a one-shot `set` fold, and the ear law's `F.graph[V₁]`
+- **Where it bit:** Phase 40h B6, `MainComponent/Short.lean` (`Graph.exists_earBase_splitOff`,
+  `Graph.X0Attains.of_openEar_four`), refactoring the EARGEN spike's Steps 1–2 into a lemma.
+- **Friction:** (1) after `set cfg := earConfig …`, goals the closing `refine ⟨q', z₁, …⟩`
+  instantiated still read `earConfig …`, so `rw [hcfgstar]` (stated with `cfg`) found nothing; and
+  `rw [earConfig_of_mem …]` found nothing in a folded `cfg stet (b, j)`. (2) Replacing the spike's
+  type-ascribed `hear` by `have hear := finrank_span_rigidityRows_ear_eq (ofNormals …).toBodyHinge …`
+  left `(ofNormals G ends c).toBodyHinge.graph[V₁]` where the base lemma's rank reads
+  `G.induce V₁`, so its `rw` failed. (3) `lake lint` found the base lemma's `[Finite β]` unused.
+  One build cycle each for (1) and (2).
+- **Fix:** (1) `rw [← hcfgdef, …]`, and a local `hcV₁` restating `earConfig_of_mem` against `cfg`;
+  (2) keep the spike's ascription; (3) dropped. Also, `Set.range ![a, b, c, d] = {a, b, c, d}` needs
+  no helper: `simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty,
+  Set.singleton_union]` (the spike's `range_fin_four`/`_five` were dropped).
+- **Lifted to:** TACTICS-QUIRKS § 43 (the one-shot fold bullet).
+- **Status:** resolved.
+
 ### [mirror-candidate] No `Set.ncard_range_le` — `(Set.range f).ncard ≤ Nat.card ι` takes `← Nat.card_coe_set_eq` then `Finite.card_range_le`
 - **Where it bit:** Phase 40g build 1, `Graph.deficiency_induce_add_le_of_ear`
   (`Molecule/Pencil/MainComponent/Ear.lean`), bounding the crossing edges of the interior bodies by
@@ -166,7 +183,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `pointJoin_add_smul_right (p p' r : Fin 4 → K) (t : K) : pointJoin p (p' + t •
   r) = pointJoin p p' + t • pointJoin p r` beside `pointJoin_add_smul_left` in `Flat.lean`; B6 and
   B7 put `x 1` back at `x 0 + t u` or `x 2 + t u`, so they are its likely next call sites.
-- **Status:** open.
+- **Status:** open. B6 did not call it: `exists_insertion_four` reuses `exists_insertion_gain`, and
+  its own direction lemma needed `pointJoin_add_smul_self_right` (`y ∧ (v + c y) = y ∧ v`, landed
+  beside `pointJoin_add_smul_left`), a different identity.
 
 ### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides
 - **Where it bit:** Phase 40g build 1, `RigidityMatrix/Bricks.lean`.

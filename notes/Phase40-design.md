@@ -396,7 +396,9 @@ the commit that would take it past the ~1500-line tripwire splits its vertex-2-c
       checklist. **Update at B3–B4 (2026-09-27, one commit, from the EARGEN recon's sorry-free spike
       of the whole `k = 4` step):** the meet-to-join transport landed (`Ear.lean`), and `Bricks.lean`
       gained one congruence (`relScrews_congr`); B6's `W = ⊤` branch uses the collision point, not
-      `exists_insertion_ge`. Placement and the rest: `notes/Phase40h.md` *Current state*.
+      `exists_insertion_ge`. Placement and the rest: `notes/Phase40h.md` *Current state*. **Update at
+      B6 (2026-09-27):** B6 landed before B5 (the coordinator's call) and created `Short.lean`, with
+      Steps 1–2 factored as `Graph.exists_earBase_splitOff` for B7.
     - **Re-homed and dropped** (PI decisions 2–4):
       - the `k = 1` cell (B8–B9) and (MC-175)(iii) go to **ORBIT** (below);
       - THETA ((MC-139)) dissolves into **COVERAGE**'s strong induction, with a remark and no named

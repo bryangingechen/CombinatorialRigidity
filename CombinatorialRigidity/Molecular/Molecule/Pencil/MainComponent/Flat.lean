@@ -52,7 +52,8 @@ independence, serve the ear steps (Phase 40g CHAIN, `sec:main-component-chain`).
   `(p_z p̄′ − p′_z p̄, p̄ × p̄′)` in flat coordinates, and independence of joins is read there
   (`lem:pencil-join-flat`, Phase 40g); `flatSigma_pointJoin` and `flatPi_pointJoin` are its two
   components, and `pointJoin_swap`, `pointJoin_self`, `pointJoin_add_smul_left` say the join is
-  alternating and linear in its first point (Phase 40h, for `MainComponent/Lines.lean`).
+  alternating and linear in its first point, and `pointJoin_add_smul_self_right` that it is
+  unchanged by moving its second point along the first (Phase 40h, for `MainComponent/Lines.lean`).
 * `exists_mvPolynomial_linearIndependent_pointJoin_picture`,
   `exists_mvPolynomial_linearIndependent_pointJoin_heights` — independence of joins is
   Zariski-open in the picture and in the heights (`lem:pencil-join-independence-open`).
@@ -752,6 +753,13 @@ theorem pointJoin_add_smul_left (p r p' : Fin 4 → K) (t : K) :
     smul_eq_mul, LinearMap.add_apply, LinearMap.smul_apply, Prod.smul_mk, Prod.mk_add_mk]
   congr 1
   module
+
+/-- A join is unchanged by moving its second point along the first:
+`y ∧ (v + c y) = y ∧ v` (Phase 40h SHORT). -/
+theorem pointJoin_add_smul_self_right (y v : Fin 4 → K) (c : K) :
+    pointJoin y (v + c • y) = pointJoin y v := by
+  rw [pointJoin_swap (v + c • y) y, pointJoin_add_smul_left, pointJoin_self, smul_zero, add_zero,
+    ← pointJoin_swap]
 
 /-- **Independence of joins is read in flat coordinates** (`lem:pencil-join-flat`): a family of
 joins is linearly independent when the family of its flat coordinates is. -/

@@ -31,7 +31,8 @@ graph on the same bodies, such as `G` with an interior body suppressed.
 
 * `eval_earPointPoly` — the configuration points of ear data are polynomial in `s`;
   `earConfig_of_mem` — on `V₁` they are those of the base data; `earConfig_of_mem_X`,
-  `earConfig_first`, `earConfig_last` — the points of the interior bodies.
+  `earConfig_first`, `earConfig_last` — the points of the interior bodies; `earConfig_congr` —
+  the point of a body reads only that body's coordinates (Phase 40h B6).
 * `Graph.earHeight_mem_liftingSpace` — at a picture admissible for `G`, the height of ear data is
   a height of `G` (`lem:pencil-ear-data`(1)).
 * `eval_bind₁_earPicturePoly` — a polynomial in the picture becomes one in the ear data
@@ -188,6 +189,15 @@ theorem earConfig_last (s : (α × Fin 2) ⊕ α → K) (hw : xl ∉ V₁) (hfl 
   funext i
   fin_cases i <;> simp [earConfig, pencilConfigPoint, earPicture, earHeight, hw, hfl, liftPlane,
     pencilPicturePoint]
+
+/-- **The point of a body reads only that body's coordinates** of the ear data: two ear data
+agreeing in the picture coordinates and the free height of `w` give `w` the same point. -/
+theorem earConfig_congr {s s' : (α × Fin 2) ⊕ α → K} {w : α}
+    (hs : ∀ i, s (Sum.inl (w, i)) = s' (Sum.inl (w, i))) (hm : s (Sum.inr w) = s' (Sum.inr w))
+    (j : Fin 4) :
+    earConfig V₁ q₁ z₁ xf xl X la lb s (w, j) = earConfig V₁ q₁ z₁ xf xl X la lb s' (w, j) := by
+  fin_cases j <;> simp [earConfig, pencilConfigPoint, earPicture, earHeight, pencilPicturePoint,
+    hs, hm]
 
 end EarDataFacts
 

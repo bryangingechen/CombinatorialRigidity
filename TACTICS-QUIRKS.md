@@ -68,7 +68,7 @@ failing pattern and the working fix.
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
 - `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
 - `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
-- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43; also *"Application type mismatch: hyp has type … re✝³ but is expected … re"* (or a whnf-heartbeat timeout) when `set` folds a *carried hypothesis*'s heavy type before an `exact` of a lemma whose expected type is built from the `set` vars → § 43 (don't `set` the type-bearing atoms; pass literals)
+- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43; also *"Application type mismatch: hyp has type … re✝³ but is expected … re"* (or a whnf-heartbeat timeout) when `set` folds a *carried hypothesis*'s heavy type before an `exact` of a lemma whose expected type is built from the `set` vars → § 43 (don't `set` the type-bearing atoms; pass literals); and, dually, on a goal a `refine` instantiated *after* the `set` (the fold is one-shot, so the goal still spells `e`) → § 43 (`rw [← hX, …]`)
 - `rw [map_neg]` fails *"Did not find … `?f (-?a)`"* on `(-f) x` (negation on the *map*, not the argument) → § 44 (use `LinearMap.neg_apply`)
 - `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
 - *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
@@ -2018,6 +2018,14 @@ erroring. (Phase 23b CHAIN-3 OD-8: `set b := Pi.basisFun ℝ (Fin (d+1))` folded
   arithmetic side-proof out as a named `have hi1 : 1 < (i : ℕ) := by omega` *before* the `exact`, so
   the application's index arg is concrete and the unification stays syntactic. (Phase 23f
   `chainData_dispatch_interior`'s `hwmem` slot, feeding `chainData_bottom_relabel`.)
+
+- **The fold is one-shot: terms that appear *after* the `set` still spell `e`.** A goal a later
+  `refine ⟨…⟩` instantiates from the statement's binders, or the type of a later `have := lemma …`,
+  shows `e`, not `X`; so a `rw [hX']` stated against `X` finds nothing there. Fold the new goal
+  first, `rw [← hX, hX']`. Conversely, a library `rw` whose LHS head is `e`'s head constant does not
+  fire on the folded `X s` (a let-bound fvar head, so kabstract has no candidate) though `exact`
+  accepts it by defeq; rewrite through a local restatement against `X`. (Phase 40h B6
+  `Graph.exists_earBase_splitOff` and `Graph.X0Attains.of_openEar_four`, `set cfg := earConfig …`.)
 
 The general rule: after a `set`/`subst`/`simp only [eqn] at *` that touches the context, re-read
 what your *old* hypotheses now say before threading them into a later `rw`. The atom you named is

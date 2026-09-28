@@ -41,6 +41,10 @@ coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
 * `exists_insertion_ge`, `exists_insertion_gain` — putting a body back at `y + t u` between `y`
   and `y′` does not lower the span for some `t ≠ 0`, and raises it by one when `y ∧ u` lies outside
   it (`lem:pencil-insertion`, (MC-179)(d)).
+* `exists_notMem_pointJoin_of_not_star_le`, `exists_insertion_four` — a star outside `W` has a line
+  `y ∧ u` outside it with `u` at infinity; so, at four interior bodies, one affine point put
+  back raises the span to at least `min(dim W + 1, 6)` once the tetrahedron spans
+  (`thm:pencil-x0-open-ear-four`, (MC-180) Steps 3–4).
 
 ## Design
 
@@ -180,6 +184,17 @@ theorem pointJoin_mem_star (y u : Fin 4 → K) : pointJoin y u ∈ star y :=
 /-- A line `u ∧ y` lies in the star of `y`. -/
 theorem pointJoin_mem_star_right (y u : Fin 4 → K) : pointJoin u y ∈ star y := by
   rw [pointJoin_swap]; exact (star y).neg_mem (pointJoin_mem_star y u)
+
+/-- **Every line through an affine point is a join with a vector at infinity**
+(`thm:pencil-x0-open-ear-four`): if the star of `y` (`y 3 = 1`) is not in `W`, some `u` with
+`u 3 = 0` has `y ∧ u ∉ W`, since `y ∧ v = y ∧ (v − v₃ y)`. -/
+theorem exists_notMem_pointJoin_of_not_star_le {y : Fin 4 → K} (hy : y 3 = 1)
+    {W : Submodule K (ScrewSpace K 2)} (h : ¬ star y ≤ W) :
+    ∃ u : Fin 4 → K, u 3 = 0 ∧ pointJoin y u ∉ W := by
+  rw [star, Submodule.span_le] at h
+  obtain ⟨_, ⟨v, rfl⟩, hv⟩ := Set.not_subset.mp h
+  refine ⟨v + (-v 3) • y, by simp [hy], ?_⟩
+  rwa [pointJoin_add_smul_self_right]
 
 /-- **Every line through `y₁` or `y₂` meets the line `y₁ y₂`** (`lem:pencil-two-stars`,
 (MC-179)(b)): `star y₁ ⊔ star y₂` pairs to zero with `y₁ ∧ y₂`. -/
@@ -418,5 +433,118 @@ theorem exists_insertion_gain [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) {
     rw [Submodule.finrank_sup_span_singleton hR, ← Submodule.finrank_sup_span_singleton huR,
       ← Submodule.finrank_sup_span_singleton hnot]
     exact Submodule.finrank_mono (hle t ht)
+
+/-- **The insertion at four interior bodies** (`thm:pencil-x0-open-ear-four`, putting `x₂` back;
+informal (MC-180) Steps 3–4). Let `W = ρ + span(p_a ∧ y₁, y₁ ∧ y₃, y₃ ∧ y₄, y₄ ∧ p_b)`. If the six
+joins of `y₁, y₃, y₄, p_b` span `Λ²K⁴`, some affine point `x₂` put back between `y₁` and `y₃` has
+`dim(ρ + span(p_a ∧ y₁, y₁ ∧ x₂, x₂ ∧ y₃, y₃ ∧ y₄, y₄ ∧ p_b)) ≥ min(dim W + 1, 6)`: next to `y₁` or
+`y₃` when `W` misses a line through it (`exists_insertion_gain`), and at `y₁` itself when `W` holds
+both stars, since then it holds the tetrahedron and is `Λ²K⁴`. -/
+theorem exists_insertion_four [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
+    (pa y₁ y₃ y₄ pb : Fin 4 → K) (hy₁ : y₁ 3 = 1) (hy₃ : y₃ 3 = 1)
+    (htet : Submodule.span K (Set.range fun i =>
+      pointJoin (![y₁, y₃, y₄, pb] (tetA i)) (![y₁, y₃, y₄, pb] (tetB i))) = ⊤) :
+    ∃ x₂ : Fin 4 → K, x₂ 3 = 1 ∧
+      min (Module.finrank K ↥(ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ y₄, pointJoin y₄ pb}) + 1) 6 ≤
+      Module.finrank K ↥(ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃, pointJoin y₃ y₄, pointJoin y₄ pb}) := by
+  set W := ρ ⊔ Submodule.span K
+    {pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ y₄, pointJoin y₄ pb} with hW
+  set F : Fin 3 → ScrewSpace K 2 := ![pointJoin pa y₁, pointJoin y₃ y₄, pointJoin y₄ pb] with hF
+  have hWs : ∀ c ∈ ({pointJoin pa y₁, pointJoin y₁ y₃, pointJoin y₃ y₄, pointJoin y₄ pb} :
+      Set (ScrewSpace K 2)), c ∈ W :=
+    fun c hc => Submodule.mem_sup_right (Submodule.subset_span hc)
+  have hFR : ∀ c ∈ Set.range F, ∀ S : Submodule K (ScrewSpace K 2),
+      c ∈ ρ ⊔ Submodule.span K (Set.range F) ⊔ S :=
+    fun c hc S => Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.subset_span hc))
+  -- the new span contains `ρ` and the three joins of `F`
+  have hnew : ∀ x₂ : Fin 4 → K, ∀ c ∈ ρ ⊔ Submodule.span K (Set.range F),
+      c ∈ ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃, pointJoin y₃ y₄, pointJoin y₄ pb} := by
+    intro x₂
+    refine SetLike.le_def.mp (sup_le_sup_left (Submodule.span_le.mpr ?_) _)
+    rintro _ ⟨i, rfl⟩
+    fin_cases i <;> exact Submodule.subset_span (by simp [hF])
+  have hsix : Module.finrank K (ScrewSpace K 2) = 6 := finrank_screwSpace_two
+  have hnewm : ∀ x₂ : Fin 4 → K, ∀ c ∈ ({pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃,
+      pointJoin y₃ y₄, pointJoin y₄ pb} : Set (ScrewSpace K 2)), c ∈ ρ ⊔ Submodule.span K
+        {pointJoin pa y₁, pointJoin y₁ x₂, pointJoin x₂ y₃, pointJoin y₃ y₄, pointJoin y₄ pb} :=
+    fun x₂ c hc => Submodule.mem_sup_right (Submodule.subset_span hc)
+  have hFW : Submodule.span K (Set.range F) ≤ W :=
+    Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; fin_cases i <;> exact hWs _ (by simp [hF]))
+  by_cases hs1 : star y₁ ≤ W
+  · by_cases hs3 : star y₃ ≤ W
+    · -- `W = ⊤`: put `x₂` at `y₁`
+      have htop : W = ⊤ := by
+        refine top_le_iff.mp (htet ▸ Submodule.span_le.mpr ?_)
+        rintro _ ⟨i, rfl⟩
+        fin_cases i
+        · exact hs1 (pointJoin_mem_star _ _)
+        · exact hs1 (pointJoin_mem_star _ _)
+        · exact hs1 (pointJoin_mem_star _ _)
+        · exact hs3 (pointJoin_mem_star _ _)
+        · exact hs3 (pointJoin_mem_star _ _)
+        · exact hWs _ (by simp [tetA, tetB])
+      refine ⟨y₁, hy₁, (min_le_right _ _).trans ?_⟩
+      rw [← hsix, ← finrank_top K (ScrewSpace K 2), ← htop]
+      refine Submodule.finrank_mono (sup_le le_sup_left (Submodule.span_le.mpr ?_))
+      intro c hc
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+      rcases hc with rfl | rfl | rfl | rfl <;> exact hnewm y₁ _ (by simp)
+    · -- insert next to `y₃`
+      obtain ⟨u, hu3, hu⟩ := exists_notMem_pointJoin_of_not_star_le hy₃ hs3
+      have hWle : W ≤ ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₃ y₁ := by
+        refine sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.mpr ?_)
+        intro c hc
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+        rcases hc with rfl | rfl | rfl | rfl
+        · exact hFR _ ⟨0, rfl⟩ _
+        · have h : pointJoin y₁ y₃ = -pointJoin y₃ y₁ := pointJoin_swap y₃ y₁
+          rw [SetLike.mem_coe, h]
+          exact Submodule.neg_mem _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))
+        · exact hFR _ ⟨1, rfl⟩ _
+        · exact hFR _ ⟨2, rfl⟩ _
+      have hle : ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₃ y₁ ≤ W := by
+        refine sup_le (sup_le le_sup_left hFW) ?_
+        rw [Submodule.span_singleton_le_iff_mem, pointJoin_swap]
+        exact Submodule.neg_mem _ (hWs _ (by simp))
+      obtain ⟨t, -, ht⟩ := exists_insertion_gain ρ F y₃ y₁ u (fun h => hu (hle h))
+      refine ⟨y₃ + t • u, by simp [hy₃, hu3], (min_le_left _ _).trans
+        ((Nat.add_le_add_right (Submodule.finrank_mono hWle) 1).trans (ht.trans ?_))⟩
+      refine Submodule.finrank_mono (sup_le (fun c hc => hnew _ c hc) ?_)
+      refine Submodule.span_le.mpr ?_
+      intro c hc
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+      rcases hc with rfl | rfl
+      · have h : pointJoin y₃ (y₃ + t • u) = -pointJoin (y₃ + t • u) y₃ := pointJoin_swap _ _
+        rw [SetLike.mem_coe, h]
+        exact Submodule.neg_mem _ (hnewm _ _ (by simp))
+      · have h : pointJoin (y₃ + t • u) y₁ = -pointJoin y₁ (y₃ + t • u) := pointJoin_swap _ _
+        rw [SetLike.mem_coe, h]
+        exact Submodule.neg_mem _ (hnewm _ _ (by simp))
+  · -- insert next to `y₁`
+    obtain ⟨u, hu3, hu⟩ := exists_notMem_pointJoin_of_not_star_le hy₁ hs1
+    have hWle : W ≤ ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₁ y₃ := by
+      refine sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.mpr ?_)
+      intro c hc
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+      rcases hc with rfl | rfl | rfl | rfl
+      · exact hFR _ ⟨0, rfl⟩ _
+      · exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
+      · exact hFR _ ⟨1, rfl⟩ _
+      · exact hFR _ ⟨2, rfl⟩ _
+    have hle : ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y₁ y₃ ≤ W := by
+      refine sup_le (sup_le le_sup_left hFW) ?_
+      rw [Submodule.span_singleton_le_iff_mem]
+      exact hWs _ (by simp)
+    obtain ⟨t, -, ht⟩ := exists_insertion_gain ρ F y₁ y₃ u (fun h => hu (hle h))
+    refine ⟨y₁ + t • u, by simp [hy₁, hu3], (min_le_left _ _).trans
+      ((Nat.add_le_add_right (Submodule.finrank_mono hWle) 1).trans (ht.trans ?_))⟩
+    refine Submodule.finrank_mono (sup_le (fun c hc => hnew _ c hc) ?_)
+    refine Submodule.span_le.mpr ?_
+    intro c hc
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc
+    rcases hc with rfl | rfl <;> exact hnewm _ _ (by simp)
 
 end CombinatorialRigidity.Molecular
