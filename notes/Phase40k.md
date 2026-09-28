@@ -6,8 +6,8 @@ core whose planar deficiency adds: at an induced core `H = G[W]`, `W ⊊ V(G)`, 
 `def₃(H) = 0`, with no outside body adjacent to two core bodies, in a 2EC `G` satisfying (H), if
 `def₂(H) + def₂(G/H) ≤ def₂(G)` and `X₀` attains at `H` and at `G/H = G.rigidContract (G.induce W) r`,
 then `X₀(G)` attains ((MC-71)). It also splits `Contract.lean`. No new mathematics. Five nodes, all
-red, and a remark; three builds B1–B3, possibly two. **B1 (the split) lands green.** **Next: B2, the
-general pieces and the four lemma nodes** — see *Hand-off*.
+red, and a remark; three builds B1–B3, possibly two. **B1 (the split) and B2 (the general pieces
+and the four lemma nodes) land green.** **Next: B3, the step** — see *Hand-off*.
 
 ## Current state
 
@@ -150,16 +150,20 @@ the recon's: B1 and B2 may merge.
     moved declarations against a `Contract.lean` file path (`notes/Phase40-design.md`'s appendix,
     `notes/FRICTION.md` ×2) found by a repo-wide grep of the old path; every other hit named a
     declaration that stayed.
-- [ ] **B2, the general pieces and the four lemma nodes:**
-  - `Configuration.lean` (call 6):
-    **`CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`**
-    → `lem:pencil-rank-collineation` (pinned fully qualified, the 40j B1 precedent);
-  - `ContractCurve.lean`: **`Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`** and
-    **`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`**, with `contractCoreRestrict` and
-    `contractCoreRestrict_apply` → `lem:pencil-contract-kernel-bound`;
-    **`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`** →
-    `lem:pencil-contract-magnified-rank`; **`Graph.isX0Graph_induce_of_deficiency_eq_zero`** →
-    `lem:pencil-contract-standing-rigid`.
+- [x] **B2, the general pieces and the four lemma nodes:** all four pinned and `\leanok`'d
+  (statement and proof), landed under the spike's names with no renaming. `Configuration.lean`
+  (call 6): **`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`** →
+  `lem:pencil-rank-collineation` (pinned fully qualified, the 40j B1 precedent), inserted right
+  after `pointJoinFramework_comp_eq_mapSupport` (its own call 6). `ContractCurve.lean` (three new
+  sections): **`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`** →
+  `lem:pencil-contract-magnified-rank`, after K1/K2 (*The core's rank along the curve, by a
+  collineation*); **`Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`** and
+  **`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`** (with `contractCoreRestrict` and
+  `contractCoreRestrict_apply`) → `lem:pencil-contract-kernel-bound`, after the B1 end-of-curve
+  section (*The kernel of `M(0)` at any core*); **`Graph.isX0Graph_induce_of_deficiency_eq_zero`**
+  → `lem:pencil-contract-standing-rigid`, before the `G/H` standing section (*The standing
+  hypotheses at a rigid core*). `finrank_ker_contractLiftingMatrix_zero_add_three_le`'s two calls to
+  the B1-generalized limit-map theorems needed no `_of_plane` rename (already base-named).
 - [ ] **B3, the step**, new `MainComponent/ContractAdditive.lean`, importing `ContractCurve.lean`
   only, added to the root import, with a module docstring listing its statements (the `Cut.lean`
   pattern): **`Graph.X0Attains.of_additiveContract`** → `thm:pencil-x0-contract-additive`.
@@ -174,40 +178,37 @@ the recon's: B1 and B2 may merge.
 
 ## Blockers / open questions
 
-- None blocking B2.
+- None blocking B3.
 - **Builder notes.**
-  - B2: the collineation lemma in `Configuration.lean` rebuilds its downstream files (cost unmeasured). The spike's
-    docstrings are minimal; write real ones.
   - B3: the spike imports all of `Contract.lean`, but its step uses none of the flat pieces (this
     open's grep), so `ContractAdditive.lean` imports `ContractCurve.lean` only. The variants
-    `…_viaAdditive` and `…_weak` are not the build (calls 3 and 5).
+    `…_viaAdditive` and `…_weak` are not the build (calls 3 and 5). The spike's step (lines 418–723)
+    calls no `_of_plane` name, so no renaming there either.
   - Every new top-level name and module greps to no prior definition (this open's check,
     TACTICS-QUIRKS §65).
 
 ## Hand-off / next phase
 
-**B1 (the `Contract.lean` split) is done and green** (`ContractCurve.lean` 1115 lines,
-`Contract.lean` 446 lines — both bigger than the pre-split estimate, from the new module
-docstrings and section headers the split needs, not from moved-content growth).
+**B1 and B2 are done and green.** `ContractCurve.lean` is now 1318 lines and `Configuration.lean`
+723 lines (both bigger than the pre-split/pre-B2 estimates, from module-docstring and section-
+header prose, not from moved- or new-content growth beyond the four lemmas).
 
-**Next: B2, the general pieces and the four lemma nodes (fresh builder).** Source: the spike
-(`scratch/40k/S40kContractA.lean`, sections G1, G2, G4, G5; gitignored, local to this checkout; a
-builder pointer, not evidence). Target: the checklist's B2 item, green:
-- `Configuration.lean` (call 6): pin
-  `CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
-  → `lem:pencil-rank-collineation` (fully qualified, the 40j B1 precedent).
-- `ContractCurve.lean` (which now hosts the general contraction machinery, per B1): add
-  `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`,
-  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` (with `contractCoreRestrict` and
-  `contractCoreRestrict_apply`) → `lem:pencil-contract-kernel-bound`;
-  `Graph.finrank_span_rigidityRows_induce_contractHeight_eq` → `lem:pencil-contract-magnified-rank`;
-  `Graph.isX0Graph_induce_of_deficiency_eq_zero` → `lem:pencil-contract-standing-rigid`.
-- Pin and flip all four nodes' `\lean{...}`/`\leanok` in this commit; write real module-docstring
-  bullets (the spike's are minimal, per *Builder notes*).
+**Next: B3, the step (fresh builder).** Source: the spike's assembly theorem
+(`scratch/40k/S40kContractA.lean` lines 418–723, `_root_.Graph.X0Attains.of_additiveContract`;
+gitignored, local to this checkout; a builder pointer, not evidence). Target: new
+`MainComponent/ContractAdditive.lean`, importing `ContractCurve.lean` only (its step uses none of
+the flat pieces in `Contract.lean`), added to the root import, with a module docstring listing its
+one statement (the `Cut.lean` pattern):
+- `Graph.X0Attains.of_additiveContract` → `thm:pencil-x0-contract-additive`, pinned and
+  `\leanok`'d (statement and proof), transcribed verbatim from the spike.
+- The unpinned remark after the theorem (blueprint only, call 1's proof-level departure) needs no
+  Lean; it may already be in place from the phase-open commit (check before re-adding).
+- The spike's two variants (`of_additiveContract_weak`, `of_rigidContract_viaAdditive`, lines
+  724–1066) are not the build (calls 3 and 5) — do not transcribe them.
 - Gates: `lake build`, `lake lint`, `blueprint/verify.sh`, `blueprint/lint.sh`,
   `notes/check-phase-note.py`.
 
-**Then B3** (`ContractAdditive.lean`, about 360 lines, and the theorem), **then the close**.
+**Then the close** (docs and blueprint only — see the checklist's last item).
 
 **Cleanup-round items** (call 12; the design doc's CONTRACT-A entry), in the recon's names (G1 the
 collineation lemma, G4 the kernel bound, G5 the rigid-core standing lemma): the flat K3
@@ -227,3 +228,10 @@ corollary of G5; `exists_core_plane`'s middle step via the new core-heights lemm
   the core half stayed behind. `Contract.lean` imports `ContractCurve.lean` only, not `Cut.lean`
   (one-hop convention). Gates: `lake build` (2986 jobs) clean, `lake lint` clean, blueprint
   unchanged, `check-phase-note.py` OK.
+- **2026-09-28 — B2 lands.** Section-placement calls per the coordinator's scope-pin: G1 beside
+  `pointJoinFramework_comp_eq_mapSupport` (call 6); G2, G4 and G5 each get a new `ContractCurve.lean`
+  section, positioned beside the B1 content they generalize (after K1/K2, after the B1 end-of-curve
+  section, before the `G/H` standing section). No renaming beyond the two B1 base names already in
+  place. Gates: `lake build` (2986 jobs) clean, `lake lint` clean, `blueprint/verify.sh`/`lint.sh`
+  (four new `\lean{...}` pins resolve), `#print axioms` on all five new/reused declarations
+  standard, `check-phase-note.py` OK.

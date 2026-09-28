@@ -47,6 +47,9 @@ renamed or re-stated, so no blueprint `\lean{...}` pin moved.
   admissible picture gives `HasDistinctPencilRealization K 3 G`;
   `Graph.X0Attains.hasDistinctPencilRealization` is the resulting `X0Dist` leg, over an infinite
   field.
+* `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` — a collineation of the
+  normals preserves the row rank, at any invertible linear map of `K⁴`
+  (`lem:pencil-rank-collineation`, Phase 40k CONTRACT-A).
 * `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` — the rank is unchanged by
   `z ↦ t • z + a` for `t ≠ 0` and `a ∈ Aff(q)` (the last clause of (MC-3)).
 * `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` — over an admissible picture, coplanar
@@ -529,6 +532,35 @@ theorem pointJoinFramework_comp_eq_mapSupport (G : Graph α β) (ends : β → �
     congr 2
     funext i; fin_cases i <;> rfl
   exact congrArg (BodyHingeFramework.mk (k := 2) G) hsupp
+
+/-- **A collineation of the normals preserves the rank** (`lem:pencil-rank-collineation`; Phase 40k
+CONTRACT-A). If panel normals `p'` are the images of `p` under one invertible linear map `g` of
+`K⁴` at every body of `G`, the panel-hinge frameworks with normals `p` and with normals `p'` have
+the same row rank: both are `ofNormals` frameworks, whose hinge at a link is the polarity image of
+the join of its two ends' normals (`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`), `g`
+carries one join to the other's screw-space image (`pointJoinFramework_comp_eq_mapSupport`), and a
+`mapSupport` isomorphism leaves the rank unchanged
+(`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`). The special case of scaling the
+heights and shifting them by an affine height is
+`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` below. -/
+theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G : Graph α β}
+    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) {p p' : α → Fin 4 → K}
+    (hp : ∀ w ∈ V(G), p' w = g (p w)) :
+    Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p' x.1 x.2)).toBodyHinge.rigidityRows)
+      = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p x.1 x.2)).toBodyHinge.rigidityRows) := by
+  have hspan : Submodule.span K (pointJoinFramework G ends p').rigidityRows
+      = Submodule.span K (pointJoinFramework G ends (fun w => g (p w))).rigidityRows :=
+    span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun e u v he => by
+      have h0 := hends e u v he
+      simp only [pointJoinFramework, hp _ h0.left_mem, hp _ h0.right_mem]
+  rw [ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends p',
+    BodyHingeFramework.finrank_span_rigidityRows_mapSupport, hspan,
+    pointJoinFramework_comp_eq_mapSupport, BodyHingeFramework.finrank_span_rigidityRows_mapSupport,
+    ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends p,
+    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
 
 /-- **The rank of a configuration is unchanged by scaling the heights and shifting them by a
 globally affine height** (`lem:pencil-rank-scale-shift`; Phase 40b CARRIER, the last clause of

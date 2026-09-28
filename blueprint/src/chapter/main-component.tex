@@ -3174,6 +3174,8 @@ configuration of $H$ attains.
 
 \begin{lemma}[A collineation of the normals preserves the rank]
   \label{lem:pencil-rank-collineation}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv}
+  \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix}
   Let $G$ be a graph with an endpoint selector, and let $g$ be an
   invertible linear map of $K^4$. If panel normals $p$ and $p'$ in $K^4$
@@ -3182,6 +3184,7 @@ configuration of $H$ attains.
   with normals $p'$ have the same rank.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:panel-hinge-dual-molecular, lem:screw-map-rows,
         lem:pencil-config-point-join-rank}
   The hinge at an edge $uv$ with normals $p$ is the image of the line
@@ -3200,6 +3203,9 @@ configuration of $H$ attains.
 
 \begin{lemma}[The kernel at the end of the curve, through the core heights]
   \label{lem:pencil-contract-kernel-bound}
+  \lean{Graph.liftingRestrict_mem_liftingSpace_induce_of_contract,
+        Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le}
+  \leanok
   \uses{def:pencil-contract-lifting-system, def:pencil-lifting-space,
         def:pencil-admissible-picture, def:rigid-contraction}
   Let $r \in W \subseteq V(G)$ and $H = G[W]$, let $q$ be a picture, and
@@ -3214,6 +3220,7 @@ configuration of $H$ attains.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-contract-limit, lem:pencil-lifting-space-affine}
   (1) The rows at a core body $c$ and a member of its closed
   neighbourhood in $H$ have the weight $(x_w, y_w, 1)$ at every $t$, as
@@ -3241,6 +3248,8 @@ configuration of $H$ attains.
 
 \begin{lemma}[The rank of the core along the curve]
   \label{lem:pencil-contract-magnified-rank}
+  \lean{Graph.finrank_span_rigidityRows_induce_contractHeight_eq}
+  \leanok
   \uses{def:pencil-contract-lifting-system, def:pencil-x0-attains}
   Let $r \in W$ and $H = G[W]$, let $q$ be a picture and $t \in K$
   nonzero, and let $(z, h)$ be any vector of unknowns of the rescaled
@@ -3248,6 +3257,7 @@ configuration of $H$ attains.
   $(q(t), z(t))$ equals its rank at $(q, z)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-rank-collineation}
   At a body $c$ of $W$ the point of $(q(t), z(t))$ is
   $((1 - t)\,x_r + t\,x_c,\ (1 - t)\,y_r + t\,y_c,\ t\,z_c,\ 1)$, the
@@ -3263,6 +3273,8 @@ configuration of $H$ attains.
 
 \begin{lemma}[A rigid core satisfies the standing hypotheses]
   \label{lem:pencil-contract-standing-rigid}
+  \lean{Graph.isX0Graph_induce_of_deficiency_eq_zero}
+  \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency}
   Let $G$ be simple and $W \subseteq V(G)$ with $|W| \ge 2$, and suppose
   $G[W]$ has deficiency zero at some $n \ge 1$
@@ -3270,6 +3282,7 @@ configuration of $H$ attains.
   hypotheses.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-zero-connected}
   $G[W]$ is simple, and it is connected and of minimum degree at least
   two by \cref{lem:deficiency-zero-connected}.

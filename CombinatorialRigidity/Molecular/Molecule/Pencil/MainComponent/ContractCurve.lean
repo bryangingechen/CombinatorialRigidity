@@ -24,6 +24,10 @@ a hypothesis (in place of `hqH`/`hLH`) so a later step can supply it from a magn
 instead of `Graph.exists_core_plane`; no declaration is renamed or re-stated otherwise, so no
 blueprint `\lean{...}` pin moves.
 
+CONTRACT-A's own general pieces land here too (Phase 40k B2): the core's rank along the curve at
+any `t ≠ 0` (no flatness needed, by a collineation of `Configuration.lean`), the kernel of `M(0)`
+at any core, and the standing hypotheses at a rigid core, at any `n`.
+
 ## Main definitions
 
 * `Graph.coreNbhd` — the bodies whose closed neighbourhood meets the core.
@@ -34,6 +38,7 @@ blueprint `\lean{...}` pin moves.
 * `contractPicture` — the contraction curve `q(t)`; `contractHeight` — the heights `z(t)` of a
   solution of `M(t)`, the core heights scaled by `t`.
 * `contractLimitMap` — the map from `ker M(0)` to heights of `G/H`.
+* `contractCoreRestrict` — the restriction of the unknowns of `M(t)` to the core heights.
 * `contractPicturePoly`, `contractConfigPoly` — the curve and its configuration as polynomials in
   `t`.
 
@@ -43,21 +48,32 @@ blueprint `\lean{...}` pin moves.
   `Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix` — along the curve the heights
   of a solution of `M(t)` lie in `L_G(q(t))`, onto at `t ≠ 0`
   (`lem:pencil-contract-lifting-kernel`).
+* `Graph.finrank_span_rigidityRows_induce_contractHeight_eq` — at `t ≠ 0` the core's rank at
+  `(q(t), z(t))` equals its rank at the fixed picture `(q, z)`, by a collineation
+  (`lem:pencil-contract-magnified-rank`).
 * `Graph.contractLimitMap_mem_liftingSpace`, `Graph.eq_zero_of_contractLimitMap_eq_zero` — given
   one plane on the core, the limit map sends `ker M(0)` into `L_{G/H}(q)` and is injective there
   (`lem:pencil-contract-limit` (1)'s two halves).
 * `Graph.exists_mem_ker_contractLiftingMatrix_zero` — a height of `G/H` vanishing at `r` extends
   by the flat core to a solution of `M(0)` (`lem:pencil-contract-limit` (2); (MC-37) step 2).
+* `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`,
+  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` — at any core, `ρ` maps `ker M(t)`
+  into `L_H(q)` at every `t`, and `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`
+  (`lem:pencil-contract-kernel-bound`'s two parts).
 * `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj` — a polynomial nonzero at
   the collapsed placement bounds below the surviving rows with the core columns deleted
   (`lem:pencil-contract-degenerate-rank`; KT eqs. (6.5)/(6.9)).
+* `Graph.isX0Graph_induce_of_deficiency_eq_zero` — a rigid core satisfies the standing hypotheses,
+  at any `n` with `bodyBarDim n ≥ 1` (`lem:pencil-contract-standing-rigid`).
 * `Graph.rigidContract_induce_simple`, `Graph.isX0Graph_rigidContract_induce`,
   `Graph.twoEdgeConnected_rigidContract_induce`, `Graph.three_le_ncard_closedNbhd_rigidContract`,
   `Graph.connected_rigidContract_induce` — `G/H` satisfies the standing hypotheses and is
   2-edge-connected (`lem:pencil-contract-standing`, (MC-39)'s side claims).
 
-The general pieces sit beside their definitions: `Graph.weightedLiftingMatrix` (`Carrier.lean`) and
-`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval` (`CaseI.lean`).
+The general pieces sit beside their definitions: `Graph.weightedLiftingMatrix` (`Carrier.lean`),
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval` (`CaseI.lean`) and the
+collineation lemma `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
+(`Configuration.lean`, `lem:pencil-rank-collineation`).
 
 ## Design
 
@@ -303,6 +319,49 @@ theorem _root_.Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix [
     obtain ⟨x, hx, rfl⟩ := Graph.exists_contractHeight_eq ht hz
     exact ⟨x, hx, rfl⟩
   exact (Submodule.finrank_mono hle).trans (Submodule.finrank_map_le _ _)
+
+/-! ## The core's rank along the curve, by a collineation -/
+
+/-- **The core's rank along the curve is its rank at the magnified core picture**
+(`lem:pencil-contract-magnified-rank`; Phase 40k CONTRACT-A). At `t ≠ 0`, the configuration of
+`H = G[W]` at `(q(t), z(t))` is the image of the configuration at `(q, z)` (the unscaled core
+heights of the unknowns) under the collineation
+`(x, y, ζ, w) ↦ (t x + (1 − t) x_r w, t y + (1 − t) y_r w, t ζ, w)` of `K⁴`, so
+`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` gives the same rank at both:
+unlike `Graph.finrank_span_rigidityRows_induce_contractHeight` (`Contract.lean`), no flatness of
+the core is needed. -/
+theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Graph α β}
+    {W : Set α} {r : α} (q : α × Fin 2 → K) {t : K} (ht : t ≠ 0) (x : α ⊕ (α × Fin 3) → K)
+    {ends : β → α × α}
+    (hends : ∀ e u v, (G.induce W).IsLink e u v → (G.induce W).IsLink e (ends e).1 (ends e).2) :
+    Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce W) ends
+        (fun p => pencilConfigPoint (contractPicture W r q t) (contractHeight W t x) p.1 p.2)
+          ).toBodyHinge.rigidityRows)
+      = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce W)
+        ends (fun p => pencilConfigPoint q (fun w => x (Sum.inl w)) p.1 p.2)
+          ).toBodyHinge.rigidityRows) := by
+  classical
+  let f : (Fin 4 → K) →ₗ[K] (Fin 4 → K) :=
+    { toFun := fun b => ![t * b 0 + (1 - t) * q (r, 0) * b 3,
+        t * b 1 + (1 - t) * q (r, 1) * b 3, t * b 2, b 3]
+      map_add' := fun b c => by funext i; fin_cases i <;> simp <;> ring
+      map_smul' := fun c b => by funext i; fin_cases i <;> simp <;> ring }
+  let f' : (Fin 4 → K) →ₗ[K] (Fin 4 → K) :=
+    { toFun := fun b => ![t⁻¹ * (b 0 - (1 - t) * q (r, 0) * b 3),
+        t⁻¹ * (b 1 - (1 - t) * q (r, 1) * b 3), t⁻¹ * b 2, b 3]
+      map_add' := fun b c => by funext i; fin_cases i <;> simp <;> ring
+      map_smul' := fun c b => by funext i; fin_cases i <;> simp <;> ring }
+  let g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K) := LinearEquiv.ofLinearMap f f'
+    (LinearMap.ext fun b => funext fun i => by
+      fin_cases i <;> simp [f, f'] <;> field_simp <;> ring)
+    (LinearMap.ext fun b => funext fun i => by
+      fin_cases i <;> simp [f, f'] <;> field_simp)
+  refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv hends g
+    (p := pencilConfigPoint q (fun w => x (Sum.inl w))) fun w hw => ?_
+  have hwW : w ∈ W := hw
+  funext i
+  fin_cases i <;> simp [g, f, pencilConfigPoint, contractPicture, contractHeight_apply, hwW] <;>
+    ring
 
 /-! ## Three independent picture points pin a plane -/
 
@@ -765,6 +824,136 @@ theorem _root_.Graph.exists_mem_ker_contractLiftingMatrix_zero [Fintype α] {G :
   · intro v hv i
     simp [hxdef, hv]
 
+/-! ## The kernel of `M(0)` at any core -/
+
+/-- **The core heights of a solution lie in `L_H(q)`, at every `t`**
+(`lem:pencil-contract-kernel-bound` (1); Phase 40k CONTRACT-A): `contractCoreRestrict` (`ρ` below)
+maps a solution of `M(t)` into `L_H(q)`. The core rows keep the weight `(x_w, y_w, 1)` along the
+curve (the `hmem` step of `Graph.exists_core_plane`), with no flatness of the core needed. -/
+theorem _root_.Graph.liftingRestrict_mem_liftingSpace_induce_of_contract [Fintype α]
+    {G : Graph α β} {W : Set α} {r : α} (hW : W ⊆ V(G)) {q : α × Fin 2 → K} {t : K}
+    {x : α ⊕ (α × Fin 3) → K}
+    (hx : (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => t)) *ᵥ x = 0) :
+    Graph.liftingRestrict W (fun w => x (Sum.inl w)) ∈ (G.induce W).liftingSpace q := by
+  classical
+  obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
+  refine ⟨fun w hw => by simp [Graph.liftingRestrict_apply, show w ∉ W from hw], fun c hc => ?_⟩
+  refine ⟨fun i => x (Sum.inr (c, i)), fun w hw => ?_⟩
+  have hwW : w ∈ W := Graph.closedNbhd_subset_vertexSet (G := G.induce W) hc hw
+  rw [Graph.liftingRestrict_apply, ite_eq_left hwW,
+    h2 c (hW hc) w (Graph.closedNbhd_induce_subset hw), Graph.contractWeightAt_of_mem hwW]
+
+/-- **`ρ`**: the restriction of the unknowns of `M(t)` to the core heights, `x ↦ (x_w)_{w ∈ W}`
+(`lem:pencil-contract-kernel-bound`). -/
+noncomputable def contractCoreRestrict (W : Set α) :
+    (α ⊕ (α × Fin 3) → K) →ₗ[K] (α → K) :=
+  Graph.liftingRestrict W ∘ₗ LinearMap.funLeft K K Sum.inl
+
+/-- Unfolding `contractCoreRestrict`. -/
+theorem contractCoreRestrict_apply (W : Set α) (x : α ⊕ (α × Fin 3) → K) :
+    contractCoreRestrict W x = Graph.liftingRestrict W (fun w => x (Sum.inl w)) := rfl
+
+/-- **The kernel of `M(0)` at any core** (`lem:pencil-contract-kernel-bound` (2); (MC-69)(a)'s
+upper bound, the general form of `Graph.finrank_ker_contractLiftingMatrix_zero_le`
+(`Contract.lean`), which needs a flat core). With `q` admissible for `H = G[W]` and for `G/H`,
+`dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`. A solution with zero core heights has zero
+core planes (admissibility at `H`), so the limit map (`Graph.contractLimitMap_mem_liftingSpace`,
+`Graph.eq_zero_of_contractLimitMap_eq_zero`, given the zero plane) embeds those solutions
+injectively into `L_{G/H}(q)`, onto heights vanishing on the closed neighbourhood of `r`, which
+meet `Aff(q)` only in `0`; rank–nullity on `ρ` restricted to `ker M(0)` gives the bound. -/
+theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintype α]
+    {G : Graph α β} {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
+    (hqH : (G.induce W).IsAdmissiblePicture q)
+    (hqc : (G.rigidContract (G.induce W) r).IsAdmissiblePicture q) :
+    Module.finrank K (LinearMap.ker ((G.contractLiftingMatrix K W r q).map
+        (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin) + 3 ≤
+      Module.finrank K ((LinearMap.ker ((G.contractLiftingMatrix K W r q).map
+          (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin).map (contractCoreRestrict W)) +
+        Module.finrank K ((G.rigidContract (G.induce W) r).liftingSpace q) := by
+  classical
+  set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
+    (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin with hL
+  set Gc := G.rigidContract (G.induce W) r with hGc
+  have hrVc : r ∈ V(Gc) := (Graph.mem_vertexSet_rigidContract_iff hr hW).mpr (Or.inl rfl)
+  -- a solution with zero core heights has zero core planes
+  have hplane : ∀ x ∈ L, contractCoreRestrict W x = 0 →
+      (∀ w ∈ W, x (Sum.inl w) = (0 : Fin 3 → K) ⬝ᵥ pencilPicturePoint q w) ∧
+        ∀ c ∈ W, (fun i => x (Sum.inr (c, i))) = 0 := by
+    intro x hx h0
+    have hxW : ∀ w ∈ W, x (Sum.inl w) = 0 := fun w hw => by
+      have := congr_fun h0 w
+      rwa [contractCoreRestrict_apply, Graph.liftingRestrict_apply, ite_eq_left hw] at this
+    obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
+    refine ⟨fun w hw => by rw [hxW w hw, zero_dotProduct], fun c hc => ?_⟩
+    refine hqH.eq_zero_of_forall_closedNbhd hc fun w hw => ?_
+    have hwW : w ∈ W := Graph.closedNbhd_subset_vertexSet (G := G.induce W) hc hw
+    have := h2 c (hW hc) w (Graph.closedNbhd_induce_subset hw)
+    rw [Graph.contractWeightAt_of_mem hwW, hxW w hwW] at this
+    exact this.symm
+  -- and its limit heights vanish on the closed neighbourhood of `r` in `G/H`
+  have hvan : ∀ x ∈ L, contractCoreRestrict W x = 0 →
+      ∀ w' ∈ Gc.closedNbhd r, contractLimitMap G W r x w' = 0 := by
+    intro x hx h0 w' hw'
+    obtain ⟨hxW, hxc⟩ := hplane x hx h0
+    obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
+    have hxr : x (Sum.inl r) = 0 := by rw [hxW r hr, zero_dotProduct]
+    rcases Graph.mem_closedNbhd_rigidContract hw' with rfl | ⟨e, a, b, hab, hnot, ha, rfl⟩
+    · rw [contractLimitMap_apply, ite_eq_left rfl, hxr]
+    · have haW : a ∈ W := mem_of_collapseTo_eq hr ha.symm
+      have hbW : b ∉ W := fun hb => hnot ⟨haW, hb⟩
+      rw [collapseTo_of_not_mem hbW]
+      have hrow := h2 a hab.left_mem b (Or.inr ⟨e, hab⟩)
+      rw [hxc a haW] at hrow
+      have hbr : b ≠ r := fun h => hbW (h ▸ hr)
+      rw [contractLimitMap_apply, ite_eq_right hbr, ite_eq_left ⟨hab.right_mem, hbW⟩, hrow, hxr,
+        zero_dotProduct, add_zero]
+  -- rank–nullity on `ρ` restricted to `L`
+  set ρL := (contractCoreRestrict (K := K) W).domRestrict L with hρL
+  have hrn := LinearMap.finrank_range_add_finrank_ker ρL
+  have hrange : LinearMap.range ρL = L.map (contractCoreRestrict W) :=
+    LinearMap.range_domRestrict _ _
+  set N : Submodule K (α ⊕ (α × Fin 3) → K) := L ⊓ LinearMap.ker (contractCoreRestrict W)
+    with hN
+  have hkerN : Module.finrank K (LinearMap.ker ρL) = Module.finrank K N := by
+    rw [← Submodule.finrank_map_subtype_eq, hρL, LinearMap.ker_domRestrict,
+      Submodule.map_comap_subtype]
+  -- the limit map on `N`
+  set Ψ : N →ₗ[K] (α → K) := (contractLimitMap (K := K) G W r).domRestrict N with hΨ
+  have hNmem : ∀ y : N, (y : α ⊕ (α × Fin 3) → K) ∈ L ∧
+      contractCoreRestrict W (y : α ⊕ (α × Fin 3) → K) = 0 :=
+    fun y => ⟨y.2.1, LinearMap.mem_ker.mp y.2.2⟩
+  have hΨinj : Function.Injective Ψ := by
+    refine LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr fun y hy => ?_)
+    obtain ⟨hyL, hy0⟩ := hNmem y
+    obtain ⟨hxW, hxc⟩ := hplane _ hyL hy0
+    exact Subtype.ext
+      (Graph.eq_zero_of_contractLimitMap_eq_zero hr hW hqc hyL ⟨0, hxW, hxc⟩ hy)
+  have hΨL : LinearMap.range Ψ ≤ Gc.liftingSpace q := by
+    rintro _ ⟨y, rfl⟩
+    obtain ⟨hyL, hy0⟩ := hNmem y
+    obtain ⟨hxW, hxc⟩ := hplane _ hyL hy0
+    exact Graph.contractLimitMap_mem_liftingSpace hr hW hyL ⟨0, hxW, hxc⟩
+  have hΨA : LinearMap.range Ψ ⊓ Gc.affineLifts q = ⊥ := by
+    rw [eq_bot_iff]
+    rintro z ⟨⟨y, rfl⟩, ⟨g', hg'⟩⟩
+    obtain ⟨hyL, hy0⟩ := hNmem y
+    have hg'0 : g' = 0 := by
+      refine hqc.eq_zero_of_forall_closedNbhd hrVc fun w' hw' => ?_
+      have h1 := congr_fun hg' w'
+      have hw'V : w' ∈ V(Gc) := Graph.closedNbhd_subset_vertexSet hrVc hw'
+      rw [Graph.affineLiftMap_apply, ite_eq_left hw'V] at h1
+      rw [h1]
+      exact hvan _ hyL hy0 w' hw'
+    rw [Submodule.mem_bot, ← hg', hg'0, map_zero]
+  have hfin := Submodule.finrank_sup_add_finrank_inf_eq (LinearMap.range Ψ) (Gc.affineLifts q)
+  rw [hΨA, finrank_bot, add_zero, Graph.finrank_affineLifts hqc ⟨r, hrVc⟩,
+    LinearMap.finrank_range_of_inj hΨinj] at hfin
+  have hsup : Module.finrank K ↥(LinearMap.range Ψ ⊔ Gc.affineLifts q) ≤
+      Module.finrank K (Gc.liftingSpace q) :=
+    Submodule.finrank_mono (sup_le hΨL (Gc.affineLifts_le_liftingSpace q))
+  rw [hrange, hkerN] at hrn
+  omega
+
 /-! ## The surviving rows near the collapsed placement -/
 
 /-- **The surviving rows near the collapsed placement** (`lem:pencil-contract-degenerate-rank`;
@@ -859,6 +1048,20 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
     _ ≤ _ := Submodule.finrank_mono (Submodule.span_le.mpr (by
         rintro _ ⟨i, rfl⟩
         exact hmem i))
+
+/-! ## The standing hypotheses at a rigid core -/
+
+/-- **A rigid core satisfies the standing hypotheses, at any `n`**
+(`lem:pencil-contract-standing-rigid`; Phase 40k CONTRACT-A, the `n`-general form of
+`Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (`Contract.lean`), which needs `n = 2`). -/
+theorem _root_.Graph.isX0Graph_induce_of_deficiency_eq_zero [Finite α] [Finite β]
+    {G : Graph α β} (hS : G.Simple) {W : Set α} (hW : W ⊆ V(G)) (hW2 : 2 ≤ W.ncard) {n : ℕ}
+    (hn : 1 ≤ Graph.bodyBarDim n) (hdef : (G.induce W).deficiency n = 0) :
+    (G.induce W).IsX0Graph where
+  simple := hS.mono (Graph.induce_le hW)
+  connected := Graph.connected_of_isKDof_zero hn hdef
+    (Set.nonempty_of_ncard_ne_zero (s := W) (by omega))
+  two_le_degree := fun _ hv => Graph.two_le_degree_of_isKDof_zero hn hdef hv hW2
 
 /-! ## The standing hypotheses at the contraction -/
 
