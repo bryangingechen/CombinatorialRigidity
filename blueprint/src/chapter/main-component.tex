@@ -3553,8 +3553,8 @@ steps ask for.
   Let $D \ge 1$ and let $W \subseteq V(G)$ be nonempty with
   $\operatorname{def}(\tilde G[W]) = 0$.
   \begin{enumerate}
-    \item For every partition $P$ of $V(G)$, merging the parts of $P$
-      that meet $W$ into one part gives a partition $P'$ with
+    \item For every partition $P$ of $V(G)$, some partition $P'$ coarser
+      than $P$, with $W$ inside one of its parts, has
       $\operatorname{def}_{\tilde G}(P) \le \operatorname{def}_{\tilde
       G}(P')$.
     \item For all bodies $a$ and $b$, $\operatorname{def}(\tilde G; a, b)
@@ -3564,8 +3564,9 @@ steps ask for.
 \begin{proof}
   \leanok
   \uses{lem:partitionDef-merge}
-  (1) If $m$ parts of $P$ meet $W$ and $e$ edges join distinct ones
-  among them, merging them lowers the value by $D(m - 1) - (D - 1)e$
+  (1) Let $P'$ merge the parts of $P$ that meet $W$ into one part. If $m$
+  parts of $P$ meet $W$ and $e$ edges join distinct ones among them,
+  merging them lowers the value by $D(m - 1) - (D - 1)e$
   (\cref{lem:partitionDef-merge}). The $e$ edges include the edges of
   $G[W]$ crossing $P|_W$, so this quantity is at most the value of
   $P|_W$ in $G[W]$, which is at most zero.
@@ -3625,23 +3626,27 @@ steps ask for.
   \leanok
   \uses{lem:deficiency-merge-rigid, lem:deficiency-singleton-bound,
         lem:deficiency-add-body}
-  (1) Let $P$ be a partition of $Y$, and let $P'$ merge the parts that
-  meet $W$, into a part $Q \supseteq W$; then $v_3(P) \le v_3(P')$
+  (1) Let $P$ be a partition of $Y$, and let $P'$ be a partition coarser
+  than $P$ with $W$ inside one part $Q$ and $v_3(P) \le v_3(P')$
   (\cref{lem:deficiency-merge-rigid}), in the notation of the proof of
   \cref{lem:deficiency-tight-rigid}. If $Q = Y$ then $v_3(P') = 0$.
   Otherwise $v_2(P') \le s(Y) - s(Q) \le 0$
   (\cref{lem:deficiency-singleton-bound}), so $v_3(P') \le 2v_2(P') \le
   0$.
 
-  (2) Take $X$ with $W \subseteq X$ and $s(X) < s(W)$, of least size. If
-  $X$ avoids $X_0$, then (1) at $Y = X$ makes $G[X]$ rigid, against the
-  maximality of $W$. Otherwise $X_0 = \{x\}$ with $x \in X$; put $Y = X
-  \setminus \{x\}$. Adding $x$ to $Y$ changes the singleton value by
+  (2) Suppose not, and take $X \subseteq V(G)$ with $W \subseteq X$ and
+  $s(X) < s(W)$, of least size. Then $X \ne W$, and $s(W) \le s(Q)$ for
+  every $Q \supseteq W$ with fewer bodies than $X$. If $X$ avoids $X_0$,
+  then (1) at $Y = X$ makes $G[X]$ rigid, against the maximality of $W$.
+  Otherwise $X_0 = \{x\}$ with $x \in X$; put $Y = X \setminus \{x\}$,
+  which contains $W$. Adding $x$ to $Y$ changes the singleton value by
   $3 - 2t$, where $t \le 2$ is the number of edges from $x$ into $Y$
   (\cref{lem:deficiency-add-body}), and $t \le 1$ if $Y = W$. So $Y \ne
-  W$, $s(Y) \ge s(W)$ by the choice of $X$, and then $s(X) = s(W) - 1$
-  and $s(Y) = s(W)$; now (1) makes $G[Y]$ rigid, against the maximality
-  of $W$.
+  W$, since otherwise $s(X) \ge s(W) + 1$. Then $s(Y) \ge s(W)$, as $Y$
+  has fewer bodies than $X$, while $s(X) \ge s(Y) - 1$; so $s(X) = s(W)
+  - 1$ and $s(Y) = s(W)$. Now (1) at $Y$ makes $G[Y]$ rigid, a set
+  avoiding $X_0$ that strictly contains $W$, against the maximality of
+  $W$.
 
   The informal argument derives this bound from the partition of $G$
   into its maximal rigid sets, whose quotient has no rigid set of two or
@@ -3935,13 +3940,13 @@ additive core applies.
   \label{lem:pencil-x0-cycle-reduces}
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing}
   Let $G$ satisfy the standing hypotheses, with every body of degree
-  two. Then $G$ reduces to the graphs smaller than it, as a cycle.
+  two. Then $G$ reduces to the graphs smaller than it.
 \end{lemma}
 \begin{proof}
-  Take an edge $ab$ and the path from $a$ through the other neighbours,
-  away from $b$. As every body has degree two, the path meets no body
-  twice before it returns to $b$, and its bodies and edges, with $ab$,
-  are closed under adjacency, hence all of $G$.
+  By the cycle clause. Take an edge $ab$ and the path from $a$ through
+  the other neighbours, away from $b$. As every body has degree two, the
+  path meets no body twice before it returns to $b$, and its bodies and
+  edges, with $ab$, are closed under adjacency, hence all of $G$.
 \end{proof}
 
 \begin{lemma}[Graphs that are not 2-connected]
@@ -3951,22 +3956,22 @@ additive core applies.
   Let $G$ satisfy the standing hypotheses.
   \begin{enumerate}
     \item If $G$ is not 2-edge-connected, then $G$ reduces to the graphs
-      smaller than it along a chain of bridges.
+      smaller than it.
     \item If $G$ is 2-edge-connected and $G - v$ is disconnected for some
-      body $v$, then $G$ reduces to the graphs smaller than it at the cut
-      vertex $v$.
+      body $v$, then $G$ reduces to the graphs smaller than it.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  (1) A bridge lies on a maximal path through bodies of degree two, and
-  every edge of that path is a bridge. Its ends are distinct bodies of
-  degree at least three, and removing its interior leaves them in
-  different components, each keeping degree at least two there.
+  (1) By the clause of a chain of bridges. A bridge lies on a maximal
+  path through bodies of degree two, and every edge of that path is a
+  bridge. Its ends are distinct bodies of degree at least three, and
+  removing its interior leaves them in different components, each
+  keeping degree at least two there.
 
-  (2) Let $C$ be a component of $G - v$; the sides are $C \cup \{v\}$ and
-  $V(G) \setminus C$. The body $v$ sends at least two edges into each
-  side, since a single one would be a bridge, and every other body keeps
-  all its neighbours.
+  (2) By the cut-vertex clause at $v$. Let $C$ be a component of $G - v$;
+  the sides are $C \cup \{v\}$ and $V(G) \setminus C$. The body $v$ sends
+  at least two edges into each side, since a single one would be a
+  bridge, and every other body keeps all its neighbours.
 \end{proof}
 
 \begin{definition}[Usable chains]
@@ -3986,14 +3991,15 @@ additive core applies.
   \label{lem:pencil-x0-chain-reduces}
   \uses{def:pencil-x0-usable-chain, def:pencil-x0-reduces}
   Let $G$ satisfy the standing hypotheses and be sparse, with $G - v$
-  connected for every body $v$. Then $G$ reduces to the graphs smaller
-  than it at every usable chain.
+  connected for every body $v$. If some chain of $G$ is usable, then $G$
+  reduces to the graphs smaller than it.
 \end{lemma}
 \begin{proof}
   \uses{lem:pencil-x0-chain-standing, lem:deficiency-ear-merge,
         lem:deficiency-one-body-chain}
-  $G[V_1]$ satisfies the standing hypotheses, and so do the graphs with
-  an interior body suppressed (\cref{lem:pencil-x0-chain-standing}):
+  By the ear clause or the split-off clause at the usable chain, on
+  $V_1$. $G[V_1]$ satisfies the standing hypotheses, and so do the graphs
+  with an interior body suppressed (\cref{lem:pencil-x0-chain-standing}):
   the two neighbours of the suppressed body are not adjacent, because
   one of them is an interior body or, when $k = 1$, by sparsity
   (\cref{lem:deficiency-one-body-chain}). Where
@@ -4010,15 +4016,14 @@ additive core applies.
   \uses{def:pencil-x0-reduces, def:pencil-x0-standing}
   Let $G$ satisfy the standing hypotheses and be 2-edge-connected, with
   $\operatorname{def}_2(G) > 0$ and a planar-rigid set. Then $G$
-  reduces to the graphs smaller than it by contraction at a maximal
-  planar-rigid set.
+  reduces to the graphs smaller than it.
 \end{lemma}
 \begin{proof}
   \uses{lem:deficiency-add-body, lem:pencil-contract-standing}
-  A maximal planar-rigid set $W$ is proper, since
-  $\operatorname{def}_2(G) > 0$. A body outside $W$ with two neighbours
-  in $W$ would enlarge it (\cref{lem:deficiency-add-body}, at $n = 2$),
-  so no such body exists, and $G/G[W]$ is smaller than $G$
+  By the contraction clause at a maximal planar-rigid set $W$, which is
+  proper, since $\operatorname{def}_2(G) > 0$. A body outside $W$ with
+  two neighbours in $W$ would enlarge it (\cref{lem:deficiency-add-body},
+  at $n = 2$), so no such body exists, and $G/G[W]$ is smaller than $G$
   (\cref{lem:pencil-contract-standing}).
 \end{proof}
 
@@ -4134,7 +4139,8 @@ additive core applies.
   is none, \cref{thm:pencil-x0-theorem-s} gives a core $W$, at which
   $G[W]$ and $G/G[W]$ are smaller than $G$
   (\cref{lem:pencil-contract-standing-rigid},
-  \cref{lem:pencil-contract-standing}). The rest is
+  \cref{lem:pencil-contract-standing}), so $G$ reduces by the
+  contraction clause at $W$. The rest is
   \cref{thm:pencil-x0-reduction-attains}; a simple 2-edge-connected
   graph on at least three bodies is connected with minimum degree at
   least two (\cref{def:cut-edges-2ec}).

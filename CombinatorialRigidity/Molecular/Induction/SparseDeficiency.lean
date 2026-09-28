@@ -12,12 +12,12 @@ import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 The value form of the deficiency of Katoh–Tanigawa 2011 (`def:D-deficiency`) that COVERAGE's
 REDUCE sub-phase supplies to the `X₀` induction
 (`blueprint/src/chapter/main-component.tex`, `sec:main-component-sparse`): the singleton-optimal
-bound, the sparse-set-is-rigid step, the merge-along-a-rigid-set step, the add-one-body identity,
-the tight-set-is-rigid step, the core bound, the additive core, and the one- and two-body chain
-estimates, each stated at the `partitionDef` value level (`Molecular/Deficiency.lean`) rather than
-as a `deficiency`-only inequality. The nine lemmas are the pencil workbook's claims (MC-75)(i),
-(MC-76), (MC-79), (MC-87) at their Lean strength, with the recon's proof-level departures D1–D3
-(`notes/Phase40l.md` *Architectural choices*).
+bound, the rigid set inside a set of nonpositive singleton value, the merge-along-a-rigid-set
+step, the add-one-body identity, the tight-set-is-rigid step, the core bound, the additive core,
+and the one- and two-body chain estimates, each stated at the `partitionDef` value level
+(`Molecular/Deficiency.lean`) rather than as a `deficiency`-only inequality. The nine lemmas are
+the pencil workbook's claims (MC-75)(i), (MC-76), (MC-79), (MC-87) at their Lean strength, with
+the recon's proof-level departures D1–D3 (`notes/Phase40l.md` *Architectural choices*).
 
 ## Main statements
 
@@ -54,9 +54,9 @@ as a `deficiency`-only inequality. The nine lemmas are the pencil workbook's cla
 
 ## Project context
 
-See `notes/Phase40l.md` and `ROADMAP.md` §40 for the phase; the D5 pins discharged in this file
-are `Graph.deficiencyMerged_le_deficiency` and `Graph.partitionDef_map`
-(`Molecular/Deficiency.lean`), confirmed to resolve rather than re-derived.
+See `notes/Phase40l.md` and `ROADMAP.md` §40 for the phase; the D5 pins paid on this file's
+blueprint nodes are `Graph.deficiencyMerged_le_deficiency` and `Graph.partitionDef_map`, which live
+in `Molecular/Deficiency.lean` and are pinned as they stand, not re-derived.
 -/
 
 open scoped Graph
@@ -660,10 +660,10 @@ theorem deficiency_induce_add_deficiency_rigidContract_le [Finite α] [Finite β
 /-! ## The one-body and two-body chain estimates (`lem:deficiency-one-body-chain`,
 `lem:deficiency-two-body-chain`) -/
 
-/-- **(MC-79)(ii), first bullet, by a new proof** (SPLITOFF's `hδ` supplier): at a body `x` of
-degree two with neighbours `a ≠ b`, if `x` lies in no rigid set of `G`, then
-`deficiencyMerged₃(G − x; a, b) + 5 ≤ def₃(G − x)`. Otherwise, with `Q` the part of `a, b` in an
-optimal merged partition of `G − x`, `G[Q ∪ x]` is rigid. -/
+/-- **(MC-79)(ii), first bullet, by a new proof** (SPLITOFF's `hδ` supplier): for `V₁ ⊆ V(G)` and
+a body `x ∉ V₁` joined to `a ≠ b` in `V₁` (at a chain, `V₁ = V(G) ∖ {x}`), if `x` lies in no
+rigid set of `G`, then `deficiencyMerged₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])`. Otherwise, with `Q` the
+part of `a, b` in an optimal merged partition of `G[V₁]`, `G[Q ∪ x]` is rigid. -/
 theorem deficiencyMerged_three_add_five_le [Finite α] [Finite β] {G : Graph α β}
     {V₁ : Set α} {x a b : α} {e₀ e₁ : β} (hV₁ : V₁ ⊆ V(G)) (hxV₁ : x ∉ V₁) (ha : a ∈ V₁)
     (hb : b ∈ V₁) (hab : a ≠ b) (h₀ : G.IsLink e₀ x a) (h₁ : G.IsLink e₁ x b)
@@ -808,8 +808,8 @@ theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β
       (fun Y hY => hSv Y (hY.trans hZV)) hZ3 hZ1
     exact hδ (deficiencyMerged_eq_deficiency_of_mem (by decide) hZV hZd haZ hbZ)
 
-/-- **(MC-79)(ii), its first claims** (ORBIT's `hδ₂` supplier at `k = 1`): at a body `x` with
-two edges to `a ≠ b`, under (S), `a ≁ b` and `δ₂(G − x; a, b) ≥ 2`. -/
+/-- **(MC-79)(ii), its first claims** (ORBIT's `hδ₂` supplier at `k = 1`): for `V₁ ⊆ V(G)` and a
+body `x ∉ V₁` with edges to `a ≠ b` in `V₁`, under (S), `a ≁ b` and `δ₂(G[V₁]; a, b) ≥ 2`. -/
 theorem not_adj_and_deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β}
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {V₁ : Set α}
     {x a b : α} {e₀ e₁ : β} (hV₁ : V₁ ⊆ V(G)) (hxV₁ : x ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)

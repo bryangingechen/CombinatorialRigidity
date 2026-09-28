@@ -18,8 +18,9 @@ sorry-free spike with no new mathematics; **40j = SPLITOFF closed 2026-09-28**
 new mathematics; **40k = CONTRACT-A closed 2026-09-28** (`notes/Phase40k.md`), STEPS' last group,
 three build commits (the first the `Contract.lean` split) from a compiler-checked recon's
 sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as three sub-phases
-(PI, 2026-09-28): REDUCE = 40l, opened 2026-09-28** (`notes/Phase40l.md`), then CHAINS and
-THEOREM-S by code (§3 COVERAGE). The ORBIT recon is done (2026-09-26, §4), and so is the second
+(PI, 2026-09-28): REDUCE = 40l closed 2026-09-28** (`notes/Phase40l.md`), three build commits
+from a compiler-checked recon's two sorry-free spikes; **CHAINS is next**, then THEOREM-S, by
+code (§3 COVERAGE). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -630,9 +631,10 @@ lemmas. The route landed as the recon's:
   spike needs no new mathematics; it closed the same day after three build commits, the first the
   `Contract.lean` split. **STEPS is done.** COVERAGE, the next layer, had its compiler-checked
   design recon (opus, 2026-09-28) and opened as 40l = REDUCE, its first of three sub-phases (§3
-  COVERAGE; PI, 2026-09-28). The recon settled its tracked supplier items, and the PI closed
-  decision 2's `hatt` todo (the CONTRACT-R entry above). The "only if" halves of (MC-52) and
-  (MC-53) (below) stay a carried todo: COVERAGE does not consume them.
+  COVERAGE; PI, 2026-09-28), which closed the same day after three build commits; CHAINS is
+  next. The recon settled its tracked supplier items, and the PI closed decision 2's `hatt` todo
+  (the CONTRACT-R entry above). The "only if" halves of (MC-52) and (MC-53) (below) stay a
+  carried todo: COVERAGE does not consume them.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**
   - **(MC-177) is built in CHAIN, forced**: BASE and the open ear both go through the ear rank law.
@@ -710,7 +712,7 @@ lemmas. The route landed as the recon's:
   proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
   height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
-### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **three sub-phases (PI, 2026-09-28): REDUCE = sub-phase 40l, ◐ opened 2026-09-28** (`notes/Phase40l.md`); **CHAINS** and **THEOREM-S** by code
+### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **three sub-phases (PI, 2026-09-28): REDUCE = sub-phase 40l, ✓ closed 2026-09-28** (`notes/Phase40l.md`); **CHAINS** next, then **THEOREM-S**, by code
 
 | labels | step | 2nd |
 |---|---|---|
@@ -751,10 +753,12 @@ sorry-free; S5 everything composed, with five `sorry`s, all graph plumbing; S6 i
 
 **The three sub-phases and their interfaces** (PI, 2026-09-28). Each lands against the statements
 the next one consumes; a re-route edits one module.
-1. **REDUCE = 40l** (about 3 builds; `notes/Phase40l.md`). `MainComponent/Coverage.lean` (S1, with
-   `X0Below`) and `Molecular/Induction/SparseDeficiency.lean` (S4). **Interface:** the thirteen
-   `X0Reduces` constructors, `X0Below`, the induction's `hcov`; the kit's statements, in S4's exact
-   form:
+1. **REDUCE = 40l, ✓ done 2026-09-28** (three builds, B1 `42352cea`, B2 `e6fb3fbf`, B3
+   `776daad5`; `notes/Phase40l.md`). `MainComponent/Coverage.lean` (S1, with `X0Below`; 183 lines)
+   and `Molecular/Induction/SparseDeficiency.lean` (S4; 889 lines); all eleven REDUCE nodes green,
+   D1–D3 in the node proofs, the two D5 pins paid (*Pins* below). **Interface, as landed** (what
+   CHAINS and THEOREM-S call): the thirteen `X0Reduces` constructors, `X0Below`, the induction's
+   `hcov`; the kit's statements, in S4's exact form but for one dropped hypothesis:
    - `partitionDef_add_partitionDef_induce_id_le` (a partition falls below the singletons by the
      singleton value of any part, given nonnegative singleton values off it) and
      `partitionDef_le_partitionDef_id`;
@@ -768,7 +772,8 @@ the next one consumes; a re-route edits one module.
    - `deficiency_induce_add_deficiency_rigidContract_le` ((MC-87)(i));
    - `not_adj_and_deficiencyMerged_two_add_two_le`, `deficiencyMerged_three_add_five_le` (D2) and
      `deficiencyMerged_two_add_two_le` ((MC-79)(ii), (iii)).
-2. **CHAINS** (about 5–7 builds; the cut half unspiked, so it starts with a spike). Files
+2. **CHAINS — next** (about 5–7 builds; the cut half unspiked, so it starts with a spike). Its
+   open is design-first at the top rung (opus), and its first step is that spike. Files
    `MainComponent/Chains.lean`, split into a `Cuts.lean` if it would pass the ~1500-line tripwire.
    **Interface** (S5's statements; `h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected`):
    - `Graph.IsChain` (an `IsOpenEar` with `1 ≤ k`, interior degrees two, end degrees at least three);
@@ -794,7 +799,10 @@ the next one consumes; a re-route edits one module.
    over CHAINS' interface: `Graph.ChainUsable`; `IsChain.x0Reduces_of_chainUsable`;
    `x0Reduces_of_deficiency_two_rigid` ((MC-75)(iii)); the counts `exists_degree_eq_two_notMem` and
    `partitionDef_three_induce_diff_nonpos`; `exists_additiveCore_of_rigid` and `exists_additiveCore`
-   ((MC-80) with (MC-87)); `x0Reduces_of_sparse`, `x0Reduces`, `x0Attains`, `of_twoEdgeConnected`;
+   ((MC-80) with (MC-87)), where `exists_additiveCore_of_rigid`'s one call of the landed
+   `partitionDef_induce_id_le_of_maximal` drops S5's `hWV` argument (its own `hWV` stays, for
+   `W ⊂ V(G)` and `deficiency_induce_add_deficiency_rigidContract_le`); `x0Reduces_of_sparse`,
+   `x0Reduces`, `x0Attains`, `of_twoEdgeConnected`;
    the adapters `IsOpenEar.deficiency_induce_le`, `IsOpenEar.not_adj_and_two_le_pairDelta_two`,
    `IsOpenEar.deficiency_three_induce_cycle`, `x0Reduces_of_additiveCore`,
    `x0Reduces_of_rigidCore`.
@@ -894,8 +902,9 @@ green, and so are all seven of STEPS', `sec:main-component-cut` (40e),
 `sec:main-component-contract` (40f), `sec:main-component-chain` (40g), `sec:main-component-short`
 (40h), `sec:main-component-orbit` (40i), `sec:main-component-splitoff` (40j) and
 `sec:main-component-contract-additive` (40k). COVERAGE's two subsections,
-`sec:main-component-sparse` and `sec:main-component-coverage`, were transcribed whole at 40l's open
-(red; each node's greening sub-phase is in `notes/Phase40l.md`). MOTIVES's stub
+`sec:main-component-sparse` and `sec:main-component-coverage`, were transcribed whole at 40l's open;
+REDUCE greened all of the first and the first two nodes of the second, and its other eleven stay
+red, five for CHAINS and six for THEOREM-S (`notes/Phase40l.md` *Current state*). MOTIVES's stub
 subsection `sec:main-component-statements` is the last, and each later layer inserts its
 subsection before it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when

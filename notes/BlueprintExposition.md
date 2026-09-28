@@ -1236,6 +1236,52 @@ induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main
   same curve gives CONTRACT-R (the 40f entry above), with the flat core in place of attainment at
   `H`. Pointer: `notes/Phase40k.md`; `notes/Phase40-design.md` §3 STEPS (*CONTRACT-A done*).
 
+### `main-component.tex` — Phase 40l (REDUCE: the one-step interface, the induction and the deficiency layer)
+
+**Three new entries — judged at the sub-phase close (2026-09-28).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC16.md`, Step MC16, (MC-75)–(MC-89)); the criterion
+transfers as in the `pencil.tex` section. The three entries are the design recon's proof-level
+departures D1–D3, each written in place in its node's proof (the core bound's expanded at this
+close). They share one stable insight: none of the partition estimates needs the partition of a
+graph into its maximal rigid sets and its rigid-free quotient ((MC-77)), through which the informal
+proofs pass. The rest landed as scoped, in three build commits from the design recon's two spikes:
+the one-step predicate and the carried induction are project-side packaging, and the value
+calculus (the singleton bound, adding one body, (MC-76), merging along a rigid set, the additive
+core) is the informal proof's own counting. The account of the whole induction stays with the
+Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase
+40's close. The ledger is now **2 pending / 46 done** (of 48).
+
+- **`lem:deficiency-core-bound` / `Graph.partitionDef_induce_id_le_of_maximal`, with
+  `Graph.deficiency_three_induce_eq_zero_of_le`** — [done (the node's proof, expanded at the 40l
+  close)] **(b)** the informal (MC-87)(ii) bounds the singleton values above a maximal rigid set
+  through the partition of `G` into its maximal rigid sets, whose quotient has no rigid set of two
+  or more members ((MC-77)), or through (MC-119)'s finest optimal partition, with the maximal rigid
+  sets of `G − x` treated apart. **Stable insight:** a minimal counterexample needs neither
+  partition and treats both cases alike. Part (1): if `W ⊆ Y` is rigid, `s(Y) ≤ s(W)`, and
+  `s(W) ≤ s(Q)` whenever `W ⊆ Q ⊊ Y`, then `G[Y]` is rigid — coarsen any partition so that `W`
+  lies in one part (the value does not drop), and the singleton bound at that part caps the planar
+  value at zero, hence the spatial one. Part (2): a smallest `X ⊇ W` with `s(X) < s(W)` either
+  avoids `X₀`, and is rigid by (1), or is `Y` plus the body of `X₀`, which then sends two edges
+  into `Y ≠ W`, so `s(Y) = s(W)` and `Y` is rigid by (1); both contradict maximality. Pointer:
+  `notes/Phase40l.md`; `notes/Phase40-design.md` §3 COVERAGE (D1).
+- **`lem:deficiency-tight-rigid` / `Graph.deficiency_three_induce_eq_zero_of_tight`** — [done (the
+  node's proof, at 40l's B3)] **(b)** the informal (MC-79)(iii) places a tight set inside a maximal
+  rigid set through the same partition, by Lemma T ((MC-78)). **Stable insight:** a direct count.
+  On a partition of a tight set `X` (`|X| ≥ 3`, `s(X) ≤ 1`, every subset of two or more bodies of
+  singleton value at least one) the spatial value is `v₃ = 2v₂ − d`. A partition with a part `Z`,
+  `2 ≤ |Z| < |X|`, has `v₂ ≤ s(X) − s(Z) ≤ 0`; the singletons have `e(X) ≥ 3`, so `v₃ < 0`; only
+  `{X}` reaches zero. The 4-cycle of a two-body chain with adjacent ends is rigid this way.
+  Pointer: `notes/Phase40l.md`; `notes/Phase40-design.md` §3 COVERAGE (D3).
+- **`lem:deficiency-one-body-chain` / `Graph.deficiencyMerged_three_add_five_le`** — [done (the
+  node's proof, at 40l's B3)] **(b)** the informal (MC-79)(ii) first bullet reads the merged
+  deficiency at a one-body chain off (MC-79)(i)'s formula over the quotient of `G − x` by its
+  maximal rigid sets. **Stable insight:** refine one part. In an optimal merged partition with part
+  `Q ∋ a, b`, refining `Q` by a partition `R` changes the value by `R`'s value in `G[Q]`, so a gap
+  below five bounds every such `R` by `4`, and by `0` when `R` keeps `a` and `b` together. Then
+  every partition of `Q ∪ {x}` has value at most zero (alone, `x`'s two crossing edges cost
+  `10 − 6`; beside others, each crossing edge at `x` costs `5`), so `x` lies in a rigid set.
+  Pointer: `notes/Phase40l.md`; `notes/Phase40-design.md` §3 COVERAGE (D2).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
