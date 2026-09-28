@@ -27,9 +27,12 @@ proves the ear steps for an open ear with one interior body, and with two
 at non-adjacent ends with no bound on the deficiency; the ninth proves
 the split-off step at a body of degree two whose neighbours are not
 adjacent; the tenth proves the contraction step at a rigid core whose
-planar deficiency adds with that of the contraction. The structural
-coverage builds on them; the last subsection states the passage back to
-the two statements.
+planar deficiency adds with that of the contraction. The eleventh proves
+the partition estimates on sparse graphs that the structural coverage
+uses, and the twelfth records one step of the induction, shows that
+every graph satisfying the standing hypotheses admits one, and concludes
+that its general configuration attains; the last subsection states the
+passage back to the two statements.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -2430,9 +2433,13 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \label{rem:pencil-x0-theta}
   A $\theta$-graph has two branch bodies joined by three internally
   disjoint paths, of $p_1 \le p_2 \le p_3$ edges, and it is simple when
-  $p_2 \ge 2$. Its general configuration attains, and this is not
-  formalized separately: the structural coverage's strong induction on
-  the number of bodies covers it. The two shorter paths form a cycle $C$
+  $p_2 \ge 2$. Its general configuration attains, and the structural
+  coverage (\cref{thm:pencil-x0-coverage}) needs no separate case for
+  it: a $\theta$-graph is reached by the flat step where its two
+  deficiencies agree, by contraction where it has a planar-rigid set, and
+  otherwise at a usable chain (\cref{def:pencil-x0-usable-chain}). One
+  covering by the steps alone runs along its longest path. The two
+  shorter paths form a cycle $C$
   on $s = p_1 + p_2$ bodies, which attains (\cref{thm:pencil-x0-cycle}),
   and the longest is an open ear on $V(C)$ with $k = p_3 - 1$ interior
   bodies, whose ends are adjacent when $p_1 = 1$. For $k \ge 5$,
@@ -3426,6 +3433,682 @@ configuration of $H$ attains.
   additivity at its cores from a partition condition on $G$.
 \end{remark}
 
+\subsection{The deficiency of a sparse graph}
+\label{sec:main-component-sparse}
+
+This subsection proves the partition estimates the structural coverage
+(\cref{sec:main-component-coverage}) uses. Let $D$ be the dimension of
+\cref{def:D-deficiency} at some $n$. For $X \subseteq V(G)$ let $e(X)$
+be the number of edges of $G$ joining two distinct bodies of $X$, and
+let
+\[
+  s_D(X) \;=\; D\,(|X| - 1) \;-\; (D - 1)\,e(X),
+\]
+the value of the partition of $G[X]$ into singletons; write $s = s_3$.
+A set $W$ of at least two bodies is \emph{rigid} if
+$\operatorname{def}_3(G[W]) = 0$, and \emph{planar-rigid} if
+$\operatorname{def}_2(G[W]) = 0$. The graph $G$ is \emph{sparse} if
+$s(X) \ge 1$, that is $2e(X) \le 3|X| - 4$, for every $X \subseteq
+V(G)$ with $|X| \ge 2$; a graph with no planar-rigid set is sparse
+(\cref{lem:deficiency-sparse}). For bodies $a$ and $b$,
+$\operatorname{def}_n(G; a, b)$ is the merged deficiency of
+\cref{def:deficiency-merged}.
+
+Two estimates carry the rest. A partition of a graph whose sets have
+nonnegative singleton values falls below the singletons by at least the
+singleton value of any one of its parts
+(\cref{lem:deficiency-singleton-bound}); and merging the parts that meet
+a set of deficiency zero does not lower the value of a partition
+(\cref{lem:deficiency-merge-rigid}). From them come the rigidity of a
+tight set, the bound that a maximal rigid set places on the singleton
+values above it, the additivity of the planar deficiency at such a set,
+and the two estimates at the ends of a chain that the ear and split-off
+steps ask for.
+
+\begin{lemma}[The singletons bound the partitions of a sparse graph]
+  \label{lem:deficiency-singleton-bound}
+  \uses{def:D-deficiency}
+  Let $P$ be a partition of $V(G)$ with a part $Z$, and suppose
+  $s_D(Y) \ge 0$ for every nonempty $Y \subseteq V(G) \setminus Z$.
+  Then
+  \[
+    \operatorname{def}_{\tilde G}(P) + s_D(Z) \;\le\; s_D(V(G)).
+  \]
+  In particular, if $s_D(Y) \ge 0$ for every nonempty $Y \subseteq
+  V(G)$, then $\operatorname{def}_{\tilde G}(P) \le s_D(V(G))$ for every
+  partition $P$ of $V(G)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:cut-edge-decomposition}
+  Both $P$ and the partition into singletons are separated by $Z$, so
+  each splits at $Z$ with the same cut term
+  (\cref{lem:cut-edge-decomposition}). On $G[Z]$ the partition $P$ has
+  one part and value zero, and the singletons have value $s_D(Z)$. The
+  second statement follows by induction on the number of bodies, since
+  $s_D(Z) \ge 0$ and the rest is the statement at $G[V(G) \setminus
+  Z]$. The first follows from one such split and the second statement
+  at $G[V(G) \setminus Z]$.
+\end{proof}
+
+\begin{lemma}[Adding one body]
+  \label{lem:deficiency-add-body}
+  \uses{def:D-deficiency}
+  Let $X \subseteq V(G)$ and $u \notin X$, and let $P$ be a partition of
+  $X \cup \{u\}$. Let $t$ be the number of edges of $G$ from $u$ to a
+  body of $X$ in a part of $P$ other than the part of $u$, and let
+  $\epsilon = 1$ if $u$ is alone in its part and $\epsilon = 0$
+  otherwise. Then
+  \[
+    \operatorname{def}_{\tilde G[X \cup \{u\}]}(P) \;=\;
+    \operatorname{def}_{\tilde G[X]}(P|_X) + \epsilon D - (D - 1)\,t.
+  \]
+  Consequently, if $D \ge 3$, $\operatorname{def}(\tilde G[W]) = 0$ and
+  a body $u \notin W$ is adjacent to two distinct bodies of $W$, then
+  $\operatorname{def}(\tilde G[W \cup \{u\}]) = 0$.
+\end{lemma}
+\begin{proof}
+  The number of parts grows by one exactly when $u$ is alone, and the
+  crossing edges gain the $t$ edges at $u$. For the consequence, let $P$
+  partition $W \cup \{u\}$. If $u$ shares a part, the value of $P$ is at
+  most that of $P|_W$, which is at most zero. If $u$ is alone, both of
+  its edges into $W$ cross, and the value is at most
+  $0 + D - 2(D - 1) < 0$.
+\end{proof}
+
+\begin{lemma}[A set of nonpositive singleton value contains a set of deficiency zero]
+  \label{lem:deficiency-sparse}
+  \uses{def:D-deficiency}
+  Let $X \subseteq V(G)$ with $|X| \ge 2$ and $s_D(X) \le 0$. Then some
+  $Y \subseteq X$ with $|Y| \ge 2$ has $\operatorname{def}(\tilde G[Y])
+  = 0$. Hence, if no set of at least two bodies has deficiency zero,
+  then $s_D(X) \ge 1$ for every $X$ with $|X| \ge 2$; at $n = 2$, a
+  graph with no planar-rigid set is sparse.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-singleton-bound}
+  Take $Y \subseteq X$ minimal with $|Y| \ge 2$ and $s_D(Y) \le 0$.
+  Every nonempty proper subset of $Y$ then has nonnegative singleton
+  value, a singleton having value zero. A partition of $Y$ other than
+  $\{Y\}$ has a part $Z \subsetneq Y$, and its value is at most $s_D(Y)
+  - s_D(Z) \le 0$ (\cref{lem:deficiency-singleton-bound}); the partition
+  $\{Y\}$ has value zero.
+\end{proof}
+
+\begin{lemma}[Merging along a set of deficiency zero]
+  \label{lem:deficiency-merge-rigid}
+  \uses{def:D-deficiency, def:deficiency-merged}
+  Let $D \ge 1$ and let $W \subseteq V(G)$ be nonempty with
+  $\operatorname{def}(\tilde G[W]) = 0$.
+  \begin{enumerate}
+    \item For every partition $P$ of $V(G)$, merging the parts of $P$
+      that meet $W$ into one part gives a partition $P'$ with
+      $\operatorname{def}_{\tilde G}(P) \le \operatorname{def}_{\tilde
+      G}(P')$.
+    \item For all bodies $a$ and $b$, $\operatorname{def}(\tilde G; a, b)
+      \le \operatorname{def}(\tilde G)$, with equality if $a, b \in W$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:partitionDef-merge}
+  (1) If $m$ parts of $P$ meet $W$ and $e$ edges join distinct ones
+  among them, merging them lowers the value by $D(m - 1) - (D - 1)e$
+  (\cref{lem:partitionDef-merge}). The $e$ edges include the edges of
+  $G[W]$ crossing $P|_W$, so this quantity is at most the value of
+  $P|_W$ in $G[W]$, which is at most zero.
+
+  (2) The merged deficiency is a maximum over fewer partitions. For the
+  equality, merge a partition attaining $\operatorname{def}(\tilde G)$
+  along $W$ by (1); the result has $a$ and $b$ in one part.
+\end{proof}
+
+\begin{lemma}[A tight set is rigid]
+  \label{lem:deficiency-tight-rigid}
+  \uses{def:D-deficiency}
+  Let $X \subseteq V(G)$ with $|X| \ge 3$, and suppose $s(Z) \ge 1$ for
+  every $Z \subseteq X$ with $|Z| \ge 2$. If $s(X) \le 1$, then
+  $\operatorname{def}_3(G[X]) = 0$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-singleton-bound}
+  Write $v_2(P) = 3(|P| - 1) - 2d(P)$ and $v_3(P) = 6(|P| - 1) - 5d(P)$
+  for the two values of a partition $P$ of $X$, so that $v_3(P) =
+  2v_2(P) - d(P)$. If $P$ has a part $Z$ with $2 \le |Z| < |X|$, then
+  $v_2(P) \le s(X) - s(Z) \le 0$
+  (\cref{lem:deficiency-singleton-bound}), so $v_3(P) \le 0$; the
+  partition $\{X\}$ has $v_3 = 0$. For the partition into singletons,
+  $v_2 = s(X) \le 1$ gives $2e(X) \ge 3|X| - 4 \ge 5$, so $e(X) \ge 3$
+  and $v_3 = 2s(X) - e(X) < 0$.
+
+  The informal argument places a tight set inside a maximal rigid set
+  through the partition of the graph into its maximal rigid sets; the
+  direct count above needs no such partition.
+\end{proof}
+
+\begin{lemma}[A maximal rigid set bounds the singleton values above it]
+  \label{lem:deficiency-core-bound}
+  \uses{def:D-deficiency}
+  Let $G$ be sparse.
+  \begin{enumerate}
+    \item Let $W \subseteq Y \subseteq V(G)$ with $W$ nonempty and
+      $\operatorname{def}_3(G[W]) = 0$. If $s(Y) \le s(W)$, and
+      $s(W) \le s(Q)$ for every $Q$ with $W \subseteq Q \subsetneq Y$,
+      then $\operatorname{def}_3(G[Y]) = 0$.
+    \item Let $W \subseteq V(G)$ be nonempty with
+      $\operatorname{def}_3(G[W]) = 0$, and let $X_0$ be empty or a
+      single body outside $W$ that sends at most two edges into every
+      set avoiding it and at most one into $W$. Suppose $W$ is maximal
+      among the sets $W' \supseteq W$ in $V(G) \setminus X_0$ with
+      $\operatorname{def}_3(G[W']) = 0$. Then $s(W) \le s(X)$ for every
+      $X$ with $W \subseteq X \subseteq V(G)$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-merge-rigid, lem:deficiency-singleton-bound,
+        lem:deficiency-add-body}
+  (1) Let $P$ be a partition of $Y$, and let $P'$ merge the parts that
+  meet $W$, into a part $Q \supseteq W$; then $v_3(P) \le v_3(P')$
+  (\cref{lem:deficiency-merge-rigid}), in the notation of the proof of
+  \cref{lem:deficiency-tight-rigid}. If $Q = Y$ then $v_3(P') = 0$.
+  Otherwise $v_2(P') \le s(Y) - s(Q) \le 0$
+  (\cref{lem:deficiency-singleton-bound}), so $v_3(P') \le 2v_2(P') \le
+  0$.
+
+  (2) Take $X$ with $W \subseteq X$ and $s(X) < s(W)$, of least size. If
+  $X$ avoids $X_0$, then (1) at $Y = X$ makes $G[X]$ rigid, against the
+  maximality of $W$. Otherwise $X_0 = \{x\}$ with $x \in X$; put $Y = X
+  \setminus \{x\}$. Adding $x$ to $Y$ changes the singleton value by
+  $3 - 2t$, where $t \le 2$ is the number of edges from $x$ into $Y$
+  (\cref{lem:deficiency-add-body}), and $t \le 1$ if $Y = W$. So $Y \ne
+  W$, $s(Y) \ge s(W)$ by the choice of $X$, and then $s(X) = s(W) - 1$
+  and $s(Y) = s(W)$; now (1) makes $G[Y]$ rigid, against the maximality
+  of $W$.
+
+  The informal argument derives this bound from the partition of $G$
+  into its maximal rigid sets, whose quotient has no rigid set of two or
+  more members; the minimal counterexample above needs no such partition
+  and treats a maximal rigid set of $G$ and of $G - x$ alike.
+\end{proof}
+
+\begin{lemma}[The planar deficiency adds at a core]
+  \label{lem:deficiency-additive-core}
+  \uses{def:D-deficiency, def:rigid-contraction}
+  \begin{enumerate}
+    \item For a map $c$ of the bodies, the value of a partition of the
+      image graph $c(G)$ equals the value of its pull-back along $c$ to
+      a partition of $V(G)$.
+    \item Let $G$ be sparse, let $r \in W \subseteq V(G)$, and suppose
+      $s(W) \le s(X)$ for every $X$ with $W \subseteq X \subseteq V(G)$.
+      Let $G/G[W]$ collapse $W$ to $r$ (\cref{def:rigid-contraction}).
+      Then
+      \[
+        \operatorname{def}_2(G[W]) + \operatorname{def}_2(G/G[W]) \;\le\;
+        \operatorname{def}_2(G).
+      \]
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-singleton-bound}
+  (1) The parts and the crossing edges correspond under $c$.
+
+  (2) By \cref{lem:deficiency-singleton-bound} and sparsity,
+  $\operatorname{def}_2(G[W]) \le s(W)$, and $s(V(G)) \le
+  \operatorname{def}_2(G)$ is the value of the singletons. A partition
+  of $G/G[W]$ pulls back by (1) to a partition of $V(G)$ with $W$
+  inside one part $Z$, at which the deleted edges of $G[W]$ cross
+  nothing; so its value is at most $s(V(G)) - s(Z) \le s(V(G)) - s(W)$
+  (\cref{lem:deficiency-singleton-bound}). Adding the three bounds gives
+  the claim.
+\end{proof}
+
+\begin{lemma}[The deficiencies at a body of degree two]
+  \label{lem:deficiency-one-body-chain}
+  \uses{def:D-deficiency, def:deficiency-merged}
+  Let $V_1 \subseteq V(G)$ and $x \in V(G) \setminus V_1$, and let
+  $a \neq b$ in $V_1$ be joined to $x$ by edges.
+  \begin{enumerate}
+    \item If $G$ is sparse, then $a$ and $b$ are not adjacent, and
+      $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+      \operatorname{def}_2(G[V_1])$.
+    \item If no set of at least two bodies containing $x$ is rigid, then
+      $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
+      \operatorname{def}_3(G[V_1])$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
+        lem:cut-edge-decomposition}
+  (1) An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
+  zero. Let a partition of $V_1$ with $a$ and $b$ together attain the
+  merged deficiency, and let $Z$ be the part of $a$ and $b$. Then the
+  merged deficiency plus $s(Z)$ is at most $s(V_1) \le
+  \operatorname{def}_2(G[V_1])$ (\cref{lem:deficiency-singleton-bound}).
+  Adding $x$ to $Z$ lowers the singleton value by at least one, as $x$
+  has two edges into $Z$ (\cref{lem:deficiency-add-body}), and $s(Z \cup
+  \{x\}) \ge 1$; so $s(Z) \ge 2$.
+
+  (2) Suppose otherwise, and let $P$ attain the merged deficiency $m$,
+  with $Q$ the part of $a$ and $b$. Refining $Q$ by a partition $R$ of
+  $Q$, relabelled apart from the other parts of $P$, changes the value
+  of $P$ by the value of $R$ in $G[Q]$
+  (\cref{lem:cut-edge-decomposition}). Since
+  $\operatorname{def}_3(G[V_1]) \le m + 4$, every such $R$ has value at
+  most $4$ in $G[Q]$, and at most $0$ if it keeps $a$ and $b$ together.
+  Then $G[Q \cup \{x\}]$ is rigid (\cref{lem:deficiency-add-body}): with
+  $x$ alone, both of its edges cross and the value drops by $10 - 6 =
+  4$, to at most $0$; with $x$ in a part, each edge from $x$ to another
+  part costs $5$, and when $a$ and $b$ are apart at least one does. This
+  contradicts the hypothesis.
+
+  The informal argument reads the merged deficiency off the partition of
+  $G - x$ into its maximal rigid sets; the refinement above needs no such
+  partition.
+\end{proof}
+
+\begin{lemma}[A non-adjacent pair outside every rigid set]
+  \label{lem:deficiency-two-body-chain}
+  \uses{def:D-deficiency, def:deficiency-merged}
+  Let $G$ be sparse, and let $a \neq b$ be bodies of $G$ that are not
+  adjacent, with $\operatorname{def}_3(G; a, b) \neq
+  \operatorname{def}_3(G)$. Then $\operatorname{def}_2(G; a, b) + 2 \le
+  \operatorname{def}_2(G)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
+        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid}
+  Otherwise the part $Z$ of $a$ and $b$ in a partition attaining the
+  planar merged deficiency has $s(Z) \le 1$
+  (\cref{lem:deficiency-singleton-bound}). The pair $\{a, b\}$ has
+  singleton value $3$, as $a$ and $b$ are not adjacent
+  (\cref{lem:deficiency-add-body}), so $|Z| \ge 3$, and $Z$ is rigid
+  (\cref{lem:deficiency-tight-rigid}). Then $\operatorname{def}_3(G; a,
+  b) = \operatorname{def}_3(G)$ (\cref{lem:deficiency-merge-rigid}).
+\end{proof}
+
+\subsection{The structural coverage}
+\label{sec:main-component-coverage}
+
+This subsection completes the strong induction on the number of bodies.
+Call a graph \emph{smaller than} $G$ if it satisfies the standing
+hypotheses (\cref{def:pencil-x0-standing}) and has fewer bodies than
+$G$. One step of the induction is recorded as a single property
+(\cref{def:pencil-x0-reduces}): the structural hypotheses of one of the
+preceding steps, with a property $\mathcal P$ at every graph that step
+consumes. The induction needs only that every graph satisfying the
+standing hypotheses reduces to the graphs smaller than it
+(\cref{thm:pencil-x0-reduction-attains}).
+
+That every such graph does reduce is a case analysis
+(\cref{thm:pencil-x0-coverage}). A graph with a bridge reduces along a
+chain of bridges, and a 2-edge-connected graph with a cut vertex at the
+cut vertex (\cref{lem:pencil-x0-cut-reduces}). A 2-connected graph whose
+bodies all have degree two is a cycle
+(\cref{lem:pencil-x0-cycle-reduces}). Where the two deficiencies agree,
+the flat step applies (\cref{cor:pencil-jj-flat}); otherwise
+$\operatorname{def}_2(G) > 0$, and a graph with a planar-rigid set
+reduces by contraction at a maximal one
+(\cref{lem:pencil-x0-planar-rigid-reduces}). What remains is a
+2-connected sparse graph that is not a cycle
+(\cref{sec:main-component-sparse}). There a \emph{chain} is a maximal
+path of bodies of degree two between bodies of degree at least three
+(\cref{def:pencil-x0-chain}), and it is \emph{usable} if one of the ear
+or split-off steps applies to it (\cref{def:pencil-x0-usable-chain}).
+Either some chain is usable (\cref{lem:pencil-x0-chain-reduces}), or the
+graph has a rigid core at which the planar deficiencies add
+(\cref{thm:pencil-x0-theorem-s}), where the contraction step at an
+additive core applies.
+
+\begin{definition}[One step of the induction]
+  \label{def:pencil-x0-reduces}
+  \uses{def:pencil-x0-standing, def:D-deficiency, def:deficiency-merged,
+        def:graph-operations, def:rigid-contraction, def:cut-edges-2ec}
+  Let $\mathcal P$ be a property of graphs, and let open ears be as in
+  \cref{sec:main-component-chain}. The graph $G$ \emph{reduces to
+  $\mathcal P$} if one of the following holds.
+  \begin{enumerate}
+    \item $\operatorname{def}_2(G) = \operatorname{def}_3(G)$.
+    \item $G$ has a cut vertex with sides $V_1$ and $V_2$ as in
+      \cref{thm:pencil-x0-cut}, and $G[V_1]$ and $G[V_2]$ satisfy
+      $\mathcal P$.
+    \item $G$ has a chain of bridges between $V_1$ and $V_2$ as in
+      \cref{thm:pencil-x0-bridge}, and $G[V_1]$ and $G[V_2]$ satisfy
+      $\mathcal P$.
+    \item $G$ is a cycle, given as an edge $ab$ and a path from $a$ to
+      $b$ through its other bodies, as in \cref{thm:pencil-x0-cycle}.
+    \item $G$ has an open ear $a - x_1 - \cdots - x_k - b$ on $V_1$,
+      $G[V_1]$ satisfies $\mathcal P$, and one of the following holds:
+      $k \ge 5$; $k \in \{3, 4\}$ and $G$ with $x_2$ suppressed
+      satisfies $\mathcal P$; $k = 2$ and $\operatorname{def}_3(G[V_1])
+      \le \operatorname{def}_3(G)$; $k = 2$, $a$ and $b$ are not
+      adjacent, $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+      \operatorname{def}_2(G[V_1])$ and $G$ with $x_2$ suppressed
+      satisfies $\mathcal P$; or $k = 1$, $a$ and $b$ are not adjacent,
+      $\operatorname{def}_3(G[V_1]) \le \operatorname{def}_3(G)$ and
+      $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+      \operatorname{def}_2(G[V_1])$.
+    \item $G$ has an open ear $a - x - b$ on $V_1$ whose ends are not
+      adjacent, $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
+      \operatorname{def}_3(G[V_1])$, and $G$ with $x$ suppressed
+      satisfies $\mathcal P$.
+    \item $G$ is 2-edge-connected, and there are $W \subsetneq V(G)$
+      with $|W| \ge 2$, no body outside $W$ adjacent to two bodies of
+      $W$, and $r \in W$, such that $G/G[W]$ (collapsing $W$ to $r$)
+      satisfies $\mathcal P$ and either $\operatorname{def}_2(G[W]) =
+      0$, or $\operatorname{def}_3(G[W]) = 0$,
+      $\operatorname{def}_2(G[W]) + \operatorname{def}_2(G/G[W]) \le
+      \operatorname{def}_2(G)$ and $G[W]$ satisfies $\mathcal P$.
+  \end{enumerate}
+  Here suppressing an interior body $x_i$ is the splitting-off
+  $G_{x_i}^{x_{i-1} x_{i+1}}$ (\cref{def:graph-operations}, with $x_0 =
+  a$ and $x_{k+1} = b$) whose new edge carries the label of the edge
+  $x_{i-1} x_i$.
+\end{definition}
+
+\begin{theorem}[The induction on the number of bodies]
+  \label{thm:pencil-x0-reduction-attains}
+  \uses{def:pencil-x0-reduces, def:pencil-x0-attains,
+        def:pencil-x0-standing}
+  Let $K$ be infinite.
+  \begin{enumerate}
+    \item Let $G$ satisfy the standing hypotheses and reduce to
+      $\mathcal P$. If the general configuration of every graph
+      satisfying $\mathcal P$ attains, then the general configuration of
+      $G$ attains.
+    \item If every graph satisfying the standing hypotheses reduces to
+      the graphs smaller than it, then the general configuration of
+      every graph satisfying the standing hypotheses attains.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \uses{cor:pencil-jj-flat, thm:pencil-x0-cut, thm:pencil-x0-bridge,
+        thm:pencil-x0-cycle, thm:pencil-x0-open-ear,
+        thm:pencil-x0-open-ear-four, thm:pencil-x0-open-ear-three,
+        thm:pencil-x0-open-ear-two, thm:pencil-x0-open-ear-two-orbit,
+        thm:pencil-x0-open-ear-one, thm:pencil-x0-splitoff,
+        thm:pencil-x0-contract-rigid, thm:pencil-x0-contract-additive}
+  (1) Each clause of \cref{def:pencil-x0-reduces} is the hypothesis of
+  one step: the flat step (\cref{cor:pencil-jj-flat}), the cut vertex
+  and the chain of bridges (\cref{thm:pencil-x0-cut},
+  \cref{thm:pencil-x0-bridge}), the cycle (\cref{thm:pencil-x0-cycle}),
+  the open ears (\cref{thm:pencil-x0-open-ear},
+  \cref{thm:pencil-x0-open-ear-four},
+  \cref{thm:pencil-x0-open-ear-three},
+  \cref{thm:pencil-x0-open-ear-two},
+  \cref{thm:pencil-x0-open-ear-two-orbit},
+  \cref{thm:pencil-x0-open-ear-one}), the split-off
+  (\cref{thm:pencil-x0-splitoff}) and the two contractions
+  (\cref{thm:pencil-x0-contract-rigid},
+  \cref{thm:pencil-x0-contract-additive}). Each consumes attainment
+  exactly at the graphs the clause requires to satisfy $\mathcal P$.
+
+  (2) Strong induction on the number of bodies, by (1) with $\mathcal P$
+  the property of being smaller than $G$.
+\end{proof}
+
+\begin{definition}[Chains]
+  \label{def:pencil-x0-chain}
+  \uses{def:pencil-x0-reduces}
+  A \emph{chain} of $G$ is an open ear $a - x_1 - \cdots - x_k - b$ on
+  $V_1$ with $k \ge 1$ whose interior bodies all have degree two in $G$
+  and whose ends have degree at least three.
+\end{definition}
+
+\begin{lemma}[Every body of degree two lies on a chain]
+  \label{lem:pencil-x0-chain-exists}
+  \uses{def:pencil-x0-chain, def:pencil-x0-standing}
+  Let $G$ satisfy the standing hypotheses, with $G - v$ connected for
+  every body $v$ and some body of degree other than two. Then every body
+  of degree two is an interior body of a chain.
+\end{lemma}
+\begin{proof}
+  Extend a path through the body along bodies of degree two as far as
+  possible. An interior body has both of its neighbours on the path, so
+  if an end had degree two its other neighbour would either extend the
+  path or be the other end. In the second case the path and that edge
+  form a cycle joined to the rest of $G$ at one body at most, which is
+  then a cut vertex, or the cycle is all of $G$, whose bodies would all
+  have degree two. So both ends have degree at least three, and they are
+  distinct, since otherwise their common body would be a cut vertex.
+\end{proof}
+
+\begin{lemma}[The standing hypotheses at the smaller graphs of a chain]
+  \label{lem:pencil-x0-chain-standing}
+  \uses{def:pencil-x0-chain, def:pencil-x0-standing,
+        def:graph-operations}
+  Let $G$ satisfy the standing hypotheses.
+  \begin{enumerate}
+    \item If $G - v$ is connected for every body $v$, then $G[V_1]$
+      satisfies the standing hypotheses for every chain on $V_1$.
+    \item Let a body $v$ have exactly two edges, to distinct bodies $u$
+      and $w$ that are not adjacent. Then the splitting-off $G_v^{uw}$,
+      whose new edge carries the label of the edge $vu$, satisfies the
+      standing hypotheses.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  (1) The ends of the chain keep at least two neighbours in $V_1$ and
+  every other body of $V_1$ keeps all of them. A set of bodies of $V_1$
+  left by no edge of $G[V_1]$ would give one of $G - x_1$, adding
+  $x_2, \dots, x_k$ to the side of $b$.
+
+  (2) The new edge is not parallel to an old one, since $u$ and $w$ are
+  not adjacent, and $u$ and $w$ each exchange the edge to $v$ for the
+  new edge. A set of bodies left by no edge of $G_v^{uw}$ contains both
+  or neither of $u$ and $w$, and then, with $v$ added in the first case,
+  it is left by no edge of $G$.
+\end{proof}
+
+\begin{lemma}[A graph of degree two everywhere is a cycle]
+  \label{lem:pencil-x0-cycle-reduces}
+  \uses{def:pencil-x0-reduces, def:pencil-x0-standing}
+  Let $G$ satisfy the standing hypotheses, with every body of degree
+  two. Then $G$ reduces to the graphs smaller than it, as a cycle.
+\end{lemma}
+\begin{proof}
+  Take an edge $ab$ and the path from $a$ through the other neighbours,
+  away from $b$. As every body has degree two, the path meets no body
+  twice before it returns to $b$, and its bodies and edges, with $ab$,
+  are closed under adjacency, hence all of $G$.
+\end{proof}
+
+\begin{lemma}[Graphs that are not 2-connected]
+  \label{lem:pencil-x0-cut-reduces}
+  \uses{def:pencil-x0-reduces, def:pencil-x0-standing,
+        def:cut-edges-2ec}
+  Let $G$ satisfy the standing hypotheses.
+  \begin{enumerate}
+    \item If $G$ is not 2-edge-connected, then $G$ reduces to the graphs
+      smaller than it along a chain of bridges.
+    \item If $G$ is 2-edge-connected and $G - v$ is disconnected for some
+      body $v$, then $G$ reduces to the graphs smaller than it at the cut
+      vertex $v$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  (1) A bridge lies on a maximal path through bodies of degree two, and
+  every edge of that path is a bridge. Its ends are distinct bodies of
+  degree at least three, and removing its interior leaves them in
+  different components, each keeping degree at least two there.
+
+  (2) Let $C$ be a component of $G - v$; the sides are $C \cup \{v\}$ and
+  $V(G) \setminus C$. The body $v$ sends at least two edges into each
+  side, since a single one would be a bridge, and every other body keeps
+  all its neighbours.
+\end{proof}
+
+\begin{definition}[Usable chains]
+  \label{def:pencil-x0-usable-chain}
+  \uses{def:pencil-x0-chain, def:deficiency-merged}
+  A chain $a - x_1 - \cdots - x_k - b$ on $V_1$ is \emph{usable} if
+  $k \ge 3$; or $k = 2$ and either $\operatorname{def}_3(G[V_1]; a, b) =
+  \operatorname{def}_3(G[V_1])$, or $a$ and $b$ are not adjacent and
+  $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+  \operatorname{def}_2(G[V_1])$; or $k = 1$ and either
+  $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$ or
+  $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
+  \operatorname{def}_3(G[V_1])$.
+\end{definition}
+
+\begin{lemma}[A usable chain gives a reduction]
+  \label{lem:pencil-x0-chain-reduces}
+  \uses{def:pencil-x0-usable-chain, def:pencil-x0-reduces}
+  Let $G$ satisfy the standing hypotheses and be sparse, with $G - v$
+  connected for every body $v$. Then $G$ reduces to the graphs smaller
+  than it at every usable chain.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-x0-chain-standing, lem:deficiency-ear-merge,
+        lem:deficiency-one-body-chain}
+  $G[V_1]$ satisfies the standing hypotheses, and so do the graphs with
+  an interior body suppressed (\cref{lem:pencil-x0-chain-standing}):
+  the two neighbours of the suppressed body are not adjacent, because
+  one of them is an interior body or, when $k = 1$, by sparsity
+  (\cref{lem:deficiency-one-body-chain}). Where
+  $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$,
+  some partition attaining $\operatorname{def}_3(G[V_1])$ has $a$ and
+  $b$ in one part, so $\operatorname{def}_3(G[V_1]) \le
+  \operatorname{def}_3(G)$ (\cref{lem:deficiency-ear-merge}). At $k = 1$
+  sparsity also gives the planar bound of the ear step
+  (\cref{lem:deficiency-one-body-chain}).
+\end{proof}
+
+\begin{lemma}[Contraction at a maximal planar-rigid set]
+  \label{lem:pencil-x0-planar-rigid-reduces}
+  \uses{def:pencil-x0-reduces, def:pencil-x0-standing}
+  Let $G$ satisfy the standing hypotheses and be 2-edge-connected, with
+  $\operatorname{def}_2(G) > 0$ and a planar-rigid set. Then $G$
+  reduces to the graphs smaller than it by contraction at a maximal
+  planar-rigid set.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-add-body, lem:pencil-contract-standing}
+  A maximal planar-rigid set $W$ is proper, since
+  $\operatorname{def}_2(G) > 0$. A body outside $W$ with two neighbours
+  in $W$ would enlarge it (\cref{lem:deficiency-add-body}, at $n = 2$),
+  so no such body exists, and $G/G[W]$ is smaller than $G$
+  (\cref{lem:pencil-contract-standing}).
+\end{proof}
+
+\begin{lemma}[Counting bodies of degree two]
+  \label{lem:pencil-x0-sparse-count}
+  \uses{def:pencil-x0-standing, def:D-deficiency}
+  Let $G$ satisfy the standing hypotheses.
+  \begin{enumerate}
+    \item If $G$ is sparse, then at least four bodies of $G$ have degree
+      two.
+    \item If no two bodies of degree two are adjacent, then
+      $s_6(V(G) \setminus \{x\}) \le 0$ for every body $x$ of degree
+      two.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  (1) Sparsity at $V(G)$ gives $2|E(G)| \le 3|V(G)| - 4$, so the sum of
+  $3 - \deg v$ over the bodies is at least $4$; each term is at most
+  one, and positive only at degree two.
+
+  (2) With $d$ bodies of degree two, their $2d$ edges are distinct, so
+  $|E(G)| \ge 2d$, while $2|E(G)| \ge 2d + 3(|V(G)| - d)$. Hence
+  $5|E(G)| \ge 6|V(G)|$, and removing $x$ removes one body and two
+  edges.
+\end{proof}
+
+\begin{theorem}[A core when no chain is usable]
+  \label{thm:pencil-x0-theorem-s}
+  \uses{def:pencil-x0-usable-chain, def:pencil-x0-standing,
+        def:rigid-contraction}
+  Let $G$ satisfy the standing hypotheses, with $G - v$ connected for
+  every body $v$, some body of degree other than two, and no
+  planar-rigid set. If no chain of $G$ is usable, then there are $W
+  \subsetneq V(G)$ with $|W| \ge 2$ and $\operatorname{def}_3(G[W]) =
+  0$, with no body outside $W$ adjacent to two bodies of $W$, and $r \in
+  W$ such that
+  \[
+    \operatorname{def}_2(G[W]) + \operatorname{def}_2(G/G[W]) \;\le\;
+    \operatorname{def}_2(G).
+  \]
+\end{theorem}
+\begin{proof}
+  \uses{lem:deficiency-sparse, lem:pencil-x0-sparse-count,
+        lem:pencil-x0-chain-exists, lem:deficiency-one-body-chain,
+        lem:deficiency-two-body-chain, lem:deficiency-tight-rigid,
+        lem:deficiency-add-body, lem:deficiency-merge-rigid,
+        lem:deficiency-core-bound, lem:deficiency-additive-core}
+  $G$ is sparse (\cref{lem:deficiency-sparse}), so it has bodies of
+  degree two (\cref{lem:pencil-x0-sparse-count}), each on a chain
+  (\cref{lem:pencil-x0-chain-exists}), and every chain has at most two
+  interior bodies. A chain with two has adjacent ends, since otherwise
+  it would be usable (\cref{lem:deficiency-two-body-chain}), and then
+  the chain and its ends form a 4-cycle, which is tight and so rigid
+  (\cref{lem:deficiency-tight-rigid}). The body of a chain with one lies
+  in a rigid set (\cref{lem:deficiency-one-body-chain}).
+
+  If $\operatorname{def}_3(G) > 0$, one chain gives a rigid set, and a
+  maximal rigid set $W$ containing it is proper. A body outside $W$ has
+  at most one neighbour in $W$ (\cref{lem:deficiency-add-body}), and
+  \cref{lem:deficiency-core-bound} with $X_0$ empty and
+  \cref{lem:deficiency-additive-core} give the inequality.
+
+  If $\operatorname{def}_3(G) = 0$, take a body $x$ of degree two and a
+  rigid set avoiding it: the 4-cycle of a chain with two bodies and a
+  body of degree two off it (\cref{lem:pencil-x0-sparse-count}); or, if
+  no two bodies of degree two are adjacent, any such $x$ and a rigid set
+  in $V(G) \setminus \{x\}$, which exists since $s_6(V(G) \setminus
+  \{x\}) \le 0$ (\cref{lem:pencil-x0-sparse-count},
+  \cref{lem:deficiency-sparse}). Let $W$ be a maximal rigid set
+  containing it in $V(G) \setminus \{x\}$. The body $x$ has at most one
+  neighbour in $W$: a neighbour of degree two would have only one
+  neighbour in $W$, too few for a rigid set; and two neighbours of
+  degree at least three would be the ends of a chain $a - x - b$ whose
+  merged deficiency equals its deficiency
+  (\cref{lem:deficiency-merge-rigid}), which would be usable. Every
+  other body outside $W$ has at most one neighbour in $W$
+  (\cref{lem:deficiency-add-body}), and
+  \cref{lem:deficiency-core-bound} with $X_0 = \{x\}$ and
+  \cref{lem:deficiency-additive-core} give the inequality.
+
+  The informal statement adds $1 \le \operatorname{def}_2(G[W]) <
+  \operatorname{def}_2(G)$, which the contraction step does not need,
+  and excludes $\theta$-graphs, which the proof above does not use.
+\end{proof}
+
+\begin{theorem}[The structural coverage]
+  \label{thm:pencil-x0-coverage}
+  \uses{def:pencil-x0-reduces, def:pencil-x0-standing,
+        def:pencil-x0-attains, def:cut-edges-2ec}
+  Every graph satisfying the standing hypotheses reduces to the graphs
+  smaller than it. Consequently, for $K$ infinite, the general
+  configuration of every graph satisfying the standing hypotheses
+  attains, and in particular that of every simple 2-edge-connected graph
+  on at least three bodies.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-x0-reduction-attains, lem:pencil-x0-cut-reduces,
+        lem:pencil-x0-cycle-reduces, lem:pencil-x0-planar-rigid-reduces,
+        lem:pencil-x0-chain-exists, lem:pencil-x0-chain-reduces,
+        thm:pencil-x0-theorem-s, lem:deficiency-sparse,
+        lem:deficiency-antitone, lem:pencil-contract-standing,
+        lem:pencil-contract-standing-rigid}
+  Let $G$ satisfy the standing hypotheses. If $G$ is not
+  2-edge-connected, or has a cut vertex, it reduces by
+  \cref{lem:pencil-x0-cut-reduces}; if all of its bodies have degree
+  two, by \cref{lem:pencil-x0-cycle-reduces}. If
+  $\operatorname{def}_2(G) = \operatorname{def}_3(G)$ it reduces by the
+  flat clause; otherwise $\operatorname{def}_2(G) > 0$
+  (\cref{lem:deficiency-antitone}), and a planar-rigid set gives a
+  reduction by \cref{lem:pencil-x0-planar-rigid-reduces}. In the
+  remaining case $G$ is sparse (\cref{lem:deficiency-sparse}). A usable
+  chain gives a reduction (\cref{lem:pencil-x0-chain-reduces}); if there
+  is none, \cref{thm:pencil-x0-theorem-s} gives a core $W$, at which
+  $G[W]$ and $G/G[W]$ are smaller than $G$
+  (\cref{lem:pencil-contract-standing-rigid},
+  \cref{lem:pencil-contract-standing}). The rest is
+  \cref{thm:pencil-x0-reduction-attains}; a simple 2-edge-connected
+  graph on at least three bodies is connected with minimum degree at
+  least two (\cref{def:cut-edges-2ec}).
+
+  The informal case analysis sets $\theta$-graphs apart; here they fall
+  under the cases above (\cref{rem:pencil-x0-theta}).
+\end{proof}
+
 \subsection{The passage to the two main-component statements}
 \label{sec:main-component-statements}
 
@@ -3455,11 +4138,13 @@ second derives from the first the two main-component statements
   (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
-  \uses{thm:pencil-jj-equality, cor:pencil-jj-flat}
-  By \cref{thm:pencil-x0-main-component} it suffices, for the first
-  claim, to exhibit one configuration over a main picture attaining the
-  target rank. That runs a strong induction on the number of bodies
-  through ear, split-off, contraction and cut steps, whose flat inputs
+  \uses{thm:pencil-jj-equality, cor:pencil-jj-flat,
+        thm:pencil-x0-coverage}
+  The first claim is \cref{thm:pencil-x0-coverage}, a strong induction
+  on the number of bodies through ear, split-off, contraction and cut
+  steps. Each step exhibits one configuration over a main picture
+  attaining the target rank, which suffices by
+  \cref{thm:pencil-x0-main-component}, and their flat inputs
   use Jackson and Jord\'an's equality in the form
   \cref{thm:pencil-jj-equality}, derived from the planar rank theorem
   \cref{thm:theorem-55-6-rows} in place of their pin-collinear

@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40k ✓ (SPINE2, CARRIER, FLAT, BRIDGE, CUTBRIDGE, CONTRACT-R, CHAIN, SHORT, ORBIT, SPLITOFF, CONTRACT-A; STEPS done); next COVERAGE, not yet opened (see `notes/Phase40k.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40k ✓ (SPINE2 … CONTRACT-A; STEPS done); 40l ◐ in progress, COVERAGE's first sub-phase REDUCE (see `notes/Phase40l.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1165,7 +1165,11 @@ infinite field. Layers by stable code, lettered only as each opens:
   confirmed it. The SHORT recon (2026-09-27) re-proved the `k = 3, 4` ear steps by removing one ear
   body and putting it back, in place of an orbit case analysis, and a second reading confirmed it
   with repairs;
-- **COVERAGE**: the structural half and the assembly; next, not yet opened;
+- **COVERAGE** (open): the structural half and the assembly, as three sub-phases (the PI's call,
+  2026-09-28), each landing against named interface statements: **REDUCE** (sub-phase 40l, the
+  one-step interface, the strong induction and the deficiency layer), then **CHAINS** (chains,
+  cycles, cut vertices and bridges) and **THEOREM-S** (the structural theorem and the covering
+  theorem);
 - **MOTIVES**: the two statements.
 
 The design doc carries the proof map, label by label.
@@ -1395,6 +1399,25 @@ recon's sorry-free spike, the first splitting `Contract.lean` (1 496 lines) into
 `ContractCurve.lean` and the flat-core remainder, then the general pieces (a collineation lemma in
 `Configuration.lean`), then the step in the new `ContractAdditive.lean`. With it STEPS is done.
 Headline axioms unchanged (re-verified at the close).
+
+#### Phase 40l — the one-step interface, the induction and the deficiency layer (REDUCE, COVERAGE's first sub-phase) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-28; work log `notes/Phase40l.md`). COVERAGE completes
+the strong induction on the number of bodies; this first sub-phase lands its interface and its
+partition estimates, in `main-component.tex` §`sec:main-component-sparse` and the first two nodes
+of §`sec:main-component-coverage`.
+- One step of the induction is recorded as a single predicate: the structural hypotheses of one
+  landed step, with a property at every graph it consumes. The general configuration attains at
+  every graph satisfying the standing hypotheses as soon as every such graph admits a step to
+  smaller ones, which CHAINS and THEOREM-S then prove.
+- The partition estimates on sparse graphs: a partition falls below the singletons by the singleton
+  value of any of its parts; a body with two neighbours in a rigid set joins it; merging along a
+  rigid set does not lower a partition's value; a tight set is rigid; a maximal rigid set bounds
+  the singleton values above it; the planar deficiency adds at such a set; and the two estimates at
+  the ends of a chain that the ear and split-off steps ask for. Three of them are shorter proofs
+  than the informal ones, which pass through the partition into maximal rigid sets.
+- Three builds from a compiler-checked recon's two sorry-free spikes: the interface in a new
+  `Coverage.lean`, the estimates in a new `Induction/SparseDeficiency.lean`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

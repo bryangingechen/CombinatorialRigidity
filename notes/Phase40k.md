@@ -5,7 +5,8 @@ seventh and last group (`notes/Phase40-design.md` §3 STEPS), proved the contrac
 rigid core whose planar deficiency adds: at an induced core `H = G[W]`, `W ⊊ V(G)`, `|W| ≥ 2`,
 `def₃(H) = 0`, with no outside body adjacent to two core bodies, in a 2EC `G` satisfying (H), if
 `def₂(H) + def₂(G/H) ≤ def₂(G)` and `X₀` attains at `H` and at `G/H`, then `X₀(G)` attains
-((MC-71)). No new mathematics. **STEPS is done. Next: COVERAGE, not yet opened** — see *Hand-off*.
+((MC-71)). No new mathematics. **STEPS is done. Next: 40l = COVERAGE's REDUCE, opened 2026-09-28** —
+see `notes/Phase40l.md`.
 
 ## Current state
 
@@ -93,18 +94,10 @@ helpers.
 
 ## Hand-off / next phase
 
-**40k is closed, and with it STEPS. Next: COVERAGE, not yet opened**, the next layer in the design
-doc's dependency order (`notes/Phase40-design.md` §3 COVERAGE): the structural half and the
-assembly, the strong induction on `V(G).ncard` that runs every STEPS step. The next concrete step is
-**COVERAGE's design recon** (opus, compiler-checked), by the 40e–40k precedent; the layer opens as
-40l after it. Its inputs are the design doc's §3 COVERAGE (the proof map, THETA's assembly, the
-tracked supplier items) and §3 STEPS (the step contract and the landed step statements).
-
-**COVERAGE's tracked supplier items** (its section of the design doc): ORBIT's `hδ₂`, SPLITOFF's
-`hδ`, CONTRACT-A's `hadd` with `hatt`, and (H) at the split-off antecedents (one lemma for
-SHORT's, ORBIT's and SPLITOFF's). **Carried todos** (§3 STEPS): PI decision 2's `hatt`
-readability todo, now with the recon's observation that COVERAGE's producer at the (MC-80) cores is
-itself `hatt`-shaped; and the "only if" halves of (MC-52) and (MC-53).
+**40k is closed, and with it STEPS. The next concrete step moved to `notes/Phase40l.md`:** COVERAGE, the
+structural half and the assembly, runs as three sub-phases (the PI's call, 2026-09-28), the first
+REDUCE = 40l, opened design-first from a compiler-checked recon. The recon settled COVERAGE's
+tracked supplier items, and the PI closed decision 2's `hatt` todo with `hatt` kept.
 
 **Cleanup-round items** (call 12; the design doc's CONTRACT-A entry), in the recon's names (G1 the
 collineation lemma, G4 the kernel bound, G5 the rigid-core standing lemma): the flat K3

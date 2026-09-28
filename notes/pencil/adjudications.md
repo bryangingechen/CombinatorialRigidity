@@ -956,3 +956,37 @@ go beside their definitions, in the part of the split that keeps `liftingSpace` 
 `IsAdmissiblePicture`; `pointJoin_add_smul_left` and `pointJoin_self` go in `Flat.lean`, beside
 `pointJoin`. The rest of the recon's layout stands (`Lines.lean`, `EarGen.lean`, `Short.lean`,
 `SplitOffDeficiency.lean`, `Ear.lean`). Work log `notes/Phase40h.md`.
+
+## 2026-09-28 — COVERAGE opens as 40l: three sub-phases with named interfaces, the departures recorded in the blueprint, `X0Reduces` adopted
+
+Phase 40's COVERAGE design recon (opus; verdict in `notes/Phase40-design.md` §3 COVERAGE) returned
+a compiler-checked route for the structural half and the assembly. A non-recursive one-step
+predicate `X0Reduces` packages each landed step's hypotheses, and the strong induction runs over it;
+the deficiency layer ((MC-75)(i), (MC-76), (MC-79)(ii)(iii), (MC-87)) is a sorry-free spike, and
+Theorem S and the covering case analysis compose over five graph-plumbing statements. Its
+additivity, split-off and tight-set arguments are new proofs of second-read claims (D1–D3), and
+THETA needs no branch (D4). While the recon ran, the PI gave guidance on how to split the work; the
+coordinator then put its recommendations to the PI. Both are relayed verbatim in the coordinator's
+dispatch:
+
+```adjudication
+PI calls, 2026-09-28, this session (verbatim).
+(1) While the recon ran: "OK, if we have to split up the current work into more subphases that is fine. If possible let's organize the work so it can proceed both efficiently and also keep things simple if we have to revise / cleanup the proof route; I imagine more modularization would be good on both fronts."
+(2) The coordinator then put these recommendations to the PI:
+  - keep the recon's five files, each with a named interface, but run COVERAGE as THREE sub-phases:
+    (i) the one-step interface `X0Reduces` + strong induction AND the deficiency layer (S1 + S4, both sorry-free, about 3 builds);
+    (ii) chains + cuts/bridges (about 5–7 builds; the cut half unspiked, so it starts with a spike);
+    (iii) Theorem S + the covering theorem (about 2 builds; closes COVERAGE);
+  - record the four proof-level departures D1–D4 in the blueprint proofs with NO second reading (the 40k precedent);
+  - adopt the `X0Reduces` interface predicate (not the ruled-out `Covered`: non-recursive, and the induction stays a plain strong induction);
+  - settle by precedent at the open: close PI decision 2's `hatt` readability todo and keep `hatt`; re-home the unconsumed claims to §2 *Not needed* with the "not consumed by this route" caveat; complete §7's D5 list.
+  The PI's answer, verbatim: "OK, please continue."
+```
+
+**Decided.** COVERAGE runs as three sub-phases by stable code: **REDUCE** (the one-step interface,
+the strong induction and the deficiency layer), which opens as 40l; **CHAINS** (maximal chains,
+cycles, cut vertices and bridges, with (H) at every piece); and **THEOREM-S** (Theorem S and the
+covering theorem, which closes COVERAGE). Only 40l's letter is minted. Each sub-phase lands against
+named interface statements, listed in the design doc. D1–D4 are recorded in the blueprint proofs
+and not second-read; the workbook is unchanged. PI decision 2's `hatt` todo (2026-09-26) is closed
+with `hatt` kept. Work log `notes/Phase40l.md`.

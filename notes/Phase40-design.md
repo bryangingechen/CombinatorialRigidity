@@ -17,8 +17,9 @@ sorry-free spike with no new mathematics; **40j = SPLITOFF closed 2026-09-28**
 (`notes/Phase40j.md`), two build commits from a compiler-checked recon's sorry-free spike with no
 new mathematics; **40k = CONTRACT-A closed 2026-09-28** (`notes/Phase40k.md`), STEPS' last group,
 three build commits (the first the `Contract.lean` split) from a compiler-checked recon's
-sorry-free spike with no new mathematics. **STEPS is done; COVERAGE is next, not yet opened** (§3
-STEPS, the *Order* paragraph). The ORBIT recon is done (2026-09-26, §4), and so is the second
+sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as three sub-phases
+(PI, 2026-09-28): REDUCE = 40l, opened 2026-09-28** (`notes/Phase40l.md`), then CHAINS and
+THEOREM-S by code (§3 COVERAGE). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -89,6 +90,18 @@ consumes it, and a remark in `thm:pencil-x0-splitoff` records it. By CONTRACT-A'
 
 Caveat: the second reader's independent cross-check (MC-119)/(MC-120) (Step MC16 §7) uses
 (MC-67)(a)–(c), so (MC-67) returns if COVERAGE ever takes that route.
+
+By COVERAGE's design recon (2026-09-28; the PI's call at 40l's open), the Step MC15–MC16 claims its
+Lean route does not consume join the list:
+- (MC-62) and (MC-63), the orbit dimensions and the structure of `δ₂` (the ORBIT steps and COVERAGE
+  take `δ₂` as a deficiency inequality);
+- (MC-75)(ii), (MC-77), (MC-78), and (MC-79)(i)'s formula, (iv) and (vi): the partition into maximal
+  rigid sets, its quotient and Lemma T, which the departures D1–D3 replace (§3 COVERAGE);
+- (MC-81)–(MC-85), (MC-88) and (MC-119)–(MC-121).
+
+Caveat: they are not consumed **by this route**. All stay proved, and they return if a re-route takes
+the workbook's argument through the partition into maximal rigid sets (and (MC-67) with
+(MC-119)/(MC-120)).
 
 ## 3. Layer plan (stable codes) and the proof map
 
@@ -454,14 +467,15 @@ lemmas. The route landed as the recon's:
     sorry-free spike, and it landed as one build commit (`e267d5fc`). The route is in *CONTRACT-R
     done* above; unlike the step contract, the picture moves along a curve and
     `exists_mem_eval_ne_zero₂` is not used.
-  - [ ] **Tracked todo, carried past 40f's close (PI decision 2, 2026-09-26; not a 40f close gate):
-    revisit the shape of CONTRACT-R's simplicity hypothesis for readability.** The theorem carries
+  - [x] **Tracked todo, carried past 40f's close (PI decision 2, 2026-09-26; not a 40f close gate):
+    revisit the shape of CONTRACT-R's simplicity hypothesis for readability. Closed at 40l's open
+    (PI, 2026-09-28): `hatt` kept** — COVERAGE's producers at both core kinds derive `hatt` from
+    maximality (kernel-checked in the recon's S5; §3 COVERAGE). The theorem carries
     `hatt` (no outside body adjacent to two core bodies), as spiked. The alternative is
     `(G/H).Simple`, which needs the converse of `Graph.rigidContract_induce_simple` (about 30
     lines). *(40k's design recon, 2026-09-28: CONTRACT-A keeps `hatt` too, for parity (the
     coordinator's call 4, `notes/Phase40k.md`), and COVERAGE's natural producer at the (MC-80)
-    cores, a maximality argument, is itself `hatt`-shaped. The PI decides whether that closes this
-    todo.)*
+    cores, a maximality argument, is itself `hatt`-shaped.)*
   - **CHAIN = 40g, ✓ closed** (`notes/Phase40g.md`): BASE, (MC-20) open (`k ≥ 5`) and closed.
     Estimated 6–10; the design recon (opus, 2026-09-27) returned one sorry-free spike, which landed
     as two build commits (`80bcd3bb`, `1cf5b60f`). The route is in *CHAIN done* above. It pinned
@@ -614,13 +628,11 @@ lemmas. The route landed as the recon's:
   two build commits. **CONTRACT-A opened as 40k** (2026-09-28), the list's next group and the last
   of STEPS: design-first from a compiler-checked recon (opus) of (MC-67)–(MC-71) whose sorry-free
   spike needs no new mathematics; it closed the same day after three build commits, the first the
-  `Contract.lean` split. **STEPS is done. Next: COVERAGE** (§3 COVERAGE), the next layer in
-  dependency order, not yet opened; by the 40e–40k precedent its next concrete step is a
-  compiler-checked design recon (opus) of COVERAGE, and it opens as 40l after it. Its tracked
-  supplier items are in its section: ORBIT's `hδ₂`, SPLITOFF's `hδ`, CONTRACT-A's `hadd` with
-  `hatt`, and (H) at the split-off antecedents. The carried todos stay in this section: PI decision
-  2's `hatt` readability todo (the CONTRACT-R entry above) and the "only if" halves of (MC-52) and
-  (MC-53) (below).
+  `Contract.lean` split. **STEPS is done.** COVERAGE, the next layer, had its compiler-checked
+  design recon (opus, 2026-09-28) and opened as 40l = REDUCE, its first of three sub-phases (§3
+  COVERAGE; PI, 2026-09-28). The recon settled its tracked supplier items, and the PI closed
+  decision 2's `hatt` todo (the CONTRACT-R entry above). The "only if" halves of (MC-52) and
+  (MC-53) (below) stay a carried todo: COVERAGE does not consume them.
 - [x] **Tracked for CHAIN's design pass (the second reading of (MC-173)–(MC-176), 2026-09-26):
   settled by CHAIN's design recon (2026-09-27).**
   - **(MC-177) is built in CHAIN, forced**: BASE and the open ear both go through the ear rank law.
@@ -698,53 +710,134 @@ lemmas. The route landed as the recon's:
   proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
   height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
-### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **next, not yet opened** (design recon first; §3 STEPS, the *Order* paragraph)
+### COVERAGE — the structural half and the assembly (pure combinatorics on `def₂`, `def₃`) → **three sub-phases (PI, 2026-09-28): REDUCE = sub-phase 40l, ◐ opened 2026-09-28** (`notes/Phase40l.md`); **CHAINS** and **THEOREM-S** by code
 
 | labels | step | 2nd |
 |---|---|---|
-| (MC-62), (MC-63) *(since 40k's open, 2026-09-28: (MC-69)(a)(b) and (MC-71) moved to STEPS' CONTRACT-A row, and (MC-67), (MC-68)(d) and (MC-70) to §2's* Not needed*. (MC-62) and (MC-63) stay: (MC-62) is cited on this side by (MC-79)(vi) and (MC-89)'s step 5, and (MC-63)(a)'s structure of `δ₂` by (MC-88) and (MC-102); whether COVERAGE's Lean route consumes either is its own recon's question)* | MC15 | ✓ 09-25 (one merge step supplied) |
-| (MC-75)(iii), (MC-76), (MC-77), (MC-78), (MC-79)(i)–(iv) → (MC-80); (MC-87) → (MC-89) | MC16 | ✓ (two readers) |
-| coverage ⟹ attainment: (MC-56), (MC-55)(i), (MC-2); strong induction | MC14, MC2 | ✓ |
-| the statement proved, (MC-10)(a): `X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)` (moved from CARRIER at its close; `thm:pencil-x0-generic-attains`'s first sentence) | census | — |
+| (MC-75)(i), (iii); (MC-76), the direction "no `def₂`-rigid set ⟹ (S)" and the count of bodies of degree two; (MC-79)(i) "⇐", (ii), (iii); (MC-80) in the Lean form below; (MC-87)(i) "if", in the `≤` form; (MC-87)(ii) → (MC-89) | MC16 | ✓ (two readers); the Lean proofs of (MC-79)(ii)'s first bullet, (MC-79)(iii) and (MC-87)(ii) are new (D1–D3 below), recorded in the blueprint and not second-read (PI, 2026-09-28) |
+| coverage ⟹ attainment: (MC-56), (MC-55)(i), (ii), (MC-2); strong induction | MC14, MC2 | ✓ |
+| the statement proved, (MC-10)(a): `X₀(G)`'s generic point attains `6(|V| − 1) − def₃(G)` (`thm:pencil-x0-generic-attains`'s first sentence) | census | — |
 
-**THETA dissolves here** (PI decision 3, 2026-09-27). (MC-139) is an assembly of step theorems:
-- BASE, then `of_openEar` (`k ≥ 5`);
-- SHORT's `of_openEar_four` and `…_three`, whose antecedent `θ(p₁, p₂, p₃ − 1)` comes from the strong
-  induction;
-- `of_openEar_two`, with `def₃(C_s) = 0` for `s ≤ 6`;
-- FLAT at `K₄ − e` and `K_{2,3}`.
+(MC-62), (MC-63) and the other unconsumed Step MC15–MC16 claims moved to §2's *Not needed*, with
+the caveat there (the PI's call at 40l's open).
 
-So COVERAGE's strong induction covers θ-graphs, and a remark records it, as with (MC-21)(a)'s class
-theorem in 40g. COVERAGE also supplies SHORT's `hdef` from `δ = 0`, through
-`Graph.deficiency_induce_le_of_ear_of_merge`, and the split-off antecedents satisfying (H): SHORT's
-`G.splitOff (x 1) (x 0) (x 2) (e 1)`, ORBIT's `G₁ = G.splitOff (x 1) (x 0) b (e 1)` and SPLITOFF's
-`G″ = G.splitOff (x 0) a b (e 0)`. One lemma, "(H) holds after splitting off at non-adjacent
-ends", serves all three (40j's design recon, 2026-09-28); none is landed.
-- [ ] **Tracked (from 40i's open, 2026-09-28): ORBIT's `hδ₂` supplier.** Both ORBIT steps ask
-  `(G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2` at a chain of `G ∈ 𝒮`.
-  COVERAGE builds it as a Layer-A lemma, "(S) at `G` ⟹ `deficiencyMerged₂(G′; a, b) + 2 ≤
-  def₂(G′)`", at a one-body chain by (MC-79)(ii)'s computation, and at a two-body chain with
-  `a ≁ b`, `δ ≥ 1` by (MC-79)(iii) with (vi). It uses Layer A only. The trace is the ORBIT entry's
-  settled item (§3 STEPS).
-- [ ] **Tracked (from 40j's open, 2026-09-28): SPLITOFF's `hδ` supplier.** `of_splitOff` asks
-  `(G.induce V₁).deficiencyMerged 3 a b + 5 ≤ (G.induce V₁).deficiency 3` at a one-body chain
-  `a − x − b` of `G ∈ 𝒮`, at (MC-89)'s step 5. COVERAGE builds it as a Layer-A lemma at `n = 3`,
-  "`x` in no rigid subgraph of `G` ⟹ `δ ≥ 5`", from (MC-79)(ii)'s first bullet, in the same form as
-  ORBIT's `hδ₂` supplier above.
-- [ ] **Tracked (from 40k's open, 2026-09-28): CONTRACT-A's `hadd` supplier.** `of_additiveContract`
-  asks `(G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤ G.deficiency 2`,
-  with `hatt`, at a core `W` of (MC-80) in `G ∈ 𝒮`, at (MC-89)'s step 5. COVERAGE builds it as a
-  Layer-A lemma from (MC-87)(i)'s "if" direction at the (MC-80) cores ((MC-87)(ii)), in the `≤`
-  form: (MC-87)(i)'s proof bounds every partition value of `G/H` by the singleton value
-  `s′(V) − s′(W) = def₂(G) − def₂(H)`. `hatt` at those cores comes with it ((MC-87)'s "`G/G[W]`
-  simple", by a maximality argument, the recon's observation; the PI-decision-2 todo, §3 STEPS).
-  The (MC-80) cores are rigid, which is `hdef3`, and `lem:pencil-contract-standing-rigid` at `n = 3`
-  then gives (H) at `H` for the induction hypothesis. The same form as the ORBIT and SPLITOFF
-  supplier items above.
+**The design recon's verdict** (opus, 2026-09-28, compiler-checked; spikes in `scratch/40l/`,
+gitignored and local to the recon's checkout: S1 the interface and S4 the deficiency layer, both
+sorry-free; S5 everything composed, with five `sorry`s, all graph plumbing; S6 instances;
+`measure.py`).
+- **The target.** `Graph.IsX0Graph.x0Attains [Infinite K] [Finite α] [Finite β] {G : Graph α β}
+  (hG : G.IsX0Graph) : G.X0Attains K`, and MOTIVES' form `Graph.X0Attains.of_twoEdgeConnected
+  (hS : G.Simple) (hV : 3 ≤ V(G).ncard) (htec : G.TwoEdgeConnected)`. No small-`|V|` base ((H)
+  forces three bodies) and no `β`-headroom: every consumed graph is `G.induce`, `G.splitOff` at a
+  path edge's own label, or `G.rigidContract`, all in `Graph α β`.
+- **The interface.** `Graph.IsOpenEar` bundles the ear format; `Graph.X0Reduces P G`, an inductive
+  with thirteen constructors, is one step: FLAT, CUT, BRIDGE, the cycle, the six open-ear steps,
+  SPLITOFF, CONTRACT-R and CONTRACT-A, each with its landed hypotheses verbatim and `P` at every
+  consumed graph. Not the ruled-out `Covered`: it is non-recursive, and the induction stays a plain
+  strong induction (PI, 2026-09-28). The dispatch `Graph.X0Reduces.x0Attains` calls the thirteen
+  step theorems; `Graph.X0Attains.of_isX0Graph_of_x0Reduces` is the induction, carried on
+  `hcov : ∀ G, G.IsX0Graph → G.X0Reduces G.X0Below` (`X0Below`: (H) and fewer bodies).
+- **The case analysis** (`Graph.IsX0Graph.x0Reduces`, compiled in S5): not 2EC → BRIDGE; 2EC with a
+  cut vertex → CUT; all degrees two → the cycle; `def₂ = def₃` → FLAT; a `def₂`-rigid set → CONTRACT-R
+  at a maximal one; otherwise (S), and a usable chain, or Theorem S's core → CONTRACT-A.
+- **Where each step's hypotheses come from.** (H) at `G[V₁]`: `IsChain.isX0Graph_induce`; at the
+  three split-off antecedents: `IsX0Graph.splitOff` and its instances; SHORT's and ORBIT's `hdef`
+  from `δ = 0`: `IsOpenEar.deficiency_induce_le` (the landed ear-merge bound); ORBIT's `hnadj`,
+  `hδ₂` at `k = 1`: `not_adj_and_deficiencyMerged_two_add_two_le`; `hδ₂` at `k = 2` and SPLITOFF's
+  `hδ` are clauses of the usability predicate, their suppliers used inside Theorem S; CONTRACT-R's
+  `hatt`: (MC-75)(i) and maximality; CONTRACT-A's `hadd`, `hatt`: `exists_additiveCore_of_rigid`;
+  (H) at `H` and `G/H`: the landed `isX0Graph_induce_of_deficiency_eq_zero` and
+  `isX0Graph_rigidContract_induce`.
 
-**Lean reuse.** `exists_maximal_induced_isProperRigidSubgraph`, `triangle_isProperRigidSubgraph`,
-`c4_isProperRigidSubgraph`. The proof uses all of (H), because CUT and BRIDGE pass through
-non-2EC graphs, while the consumer uses only the 2EC form (§4).
+**The three sub-phases and their interfaces** (PI, 2026-09-28). Each lands against the statements
+the next one consumes; a re-route edits one module.
+1. **REDUCE = 40l** (about 3 builds; `notes/Phase40l.md`). `MainComponent/Coverage.lean` (S1, with
+   `X0Below`) and `Molecular/Induction/SparseDeficiency.lean` (S4). **Interface:** the thirteen
+   `X0Reduces` constructors, `X0Below`, the induction's `hcov`; the kit's statements, in S4's exact
+   form:
+   - `partitionDef_add_partitionDef_induce_id_le` (a partition falls below the singletons by the
+     singleton value of any part, given nonnegative singleton values off it) and
+     `partitionDef_le_partitionDef_id`;
+   - `partitionDef_induce_insert` and `deficiency_induce_insert_eq_zero` ((MC-75)(i));
+   - `exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos` and
+     `one_le_partitionDef_induce_id` ((MC-76));
+   - `exists_partitionDef_le_mergeOn` and `deficiencyMerged_eq_deficiency_of_mem`;
+   - `deficiency_three_induce_eq_zero_of_tight` (D3);
+   - `deficiency_three_induce_eq_zero_of_le` and `partitionDef_induce_id_le_of_maximal` (D1; its
+     unused `hWV` dropped at transcription);
+   - `deficiency_induce_add_deficiency_rigidContract_le` ((MC-87)(i));
+   - `not_adj_and_deficiencyMerged_two_add_two_le`, `deficiencyMerged_three_add_five_le` (D2) and
+     `deficiencyMerged_two_add_two_le` ((MC-79)(ii), (iii)).
+2. **CHAINS** (about 5–7 builds; the cut half unspiked, so it starts with a spike). Files
+   `MainComponent/Chains.lean`, split into a `Cuts.lean` if it would pass the ~1500-line tripwire.
+   **Interface** (S5's statements; `h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected`):
+   - `Graph.IsChain` (an `IsOpenEar` with `1 ≤ k`, interior degrees two, end degrees at least three);
+   - `IsX0Graph.exists_isChain (hG) (h2c) (hhub : ∃ w ∈ V(G), G.degree w ≠ 2) (hv) (hdeg : G.degree v
+     = 2) : ∃ V₁ k x a b e, G.IsChain V₁ x a b e ∧ v ∈ Set.range x`;
+   - `IsChain.isX0Graph_induce (hG) (h2c) (hC) : (G.induce V₁).IsX0Graph`;
+   - `IsX0Graph.splitOff (hG) (h₁ : G.IsLink e₁ v u) (h₂ : G.IsLink e₂ v w) (hne : e₁ ≠ e₂) (honly)
+     (huw) (hnadj) : (G.splitOff v u w e₁).IsX0Graph` and its instances
+     `IsOpenEar.isX0Graph_splitOff_four/_three/_orbit/_one` (sorry-free in S5);
+   - `IsX0Graph.x0Reduces_of_forall_degree_eq_two (hG) (h2) : G.X0Reduces G.X0Below`;
+   - `IsX0Graph.x0Reduces_of_not_twoEdgeConnected (hG) (htec : ¬ G.TwoEdgeConnected)` and
+     `IsX0Graph.x0Reduces_of_not_connected (hG) (htec) (hv) (hdisc)`, both into `G.X0Reduces
+     G.X0Below`.
+
+   Sorry-free in S5 already: the split-off lemmas, `IsOpenEar.isLink_interior`, `isChain_one`,
+   `eq_or_eq_of_degree_eq_two`, `IsChain.two_le_of_adj`, `degree_induce_lt_of_adj`,
+   `ncard_setOf_isLink_le_degree`, `ncard_setOf_isLink_le_one`, `three_le_ncard_vertexSet`,
+   `crossingEdges_id`, `IsOpenEar.ncard_lt`. To build: a maximal path through bodies of degree
+   two (the core, serving the chain, the cycle and the bridge chain), (H) at `G[V₁]` (a cut argument
+   through `G − x₁`), and BRIDGE and CUT with (H) at both sides (cut arguments via
+   `connected_iff_forall_exists_adj`).
+3. **THEOREM-S** (about 2 builds; closes COVERAGE). File `MainComponent/Cover.lean`. Sorry-free in S5
+   over CHAINS' interface: `Graph.ChainUsable`; `IsChain.x0Reduces_of_chainUsable`;
+   `x0Reduces_of_deficiency_two_rigid` ((MC-75)(iii)); the counts `exists_degree_eq_two_notMem` and
+   `partitionDef_three_induce_diff_nonpos`; `exists_additiveCore_of_rigid` and `exists_additiveCore`
+   ((MC-80) with (MC-87)); `x0Reduces_of_sparse`, `x0Reduces`, `x0Attains`, `of_twoEdgeConnected`;
+   the adapters `IsOpenEar.deficiency_induce_le`, `IsOpenEar.not_adj_and_two_le_pairDelta_two`,
+   `IsOpenEar.deficiency_three_induce_cycle`, `x0Reduces_of_additiveCore`,
+   `x0Reduces_of_rigidCore`.
+
+**Proof-level departures** (kernel-checked in S4/S5; recorded in the node proofs, not second-read:
+PI, 2026-09-28, the 40k precedent; no workbook label added):
+- **D1, (MC-87)(ii):** a maximal rigid set avoiding `X₀` (empty, or one body of degree at most two
+  with at most one edge into the set) bounds every singleton value above it, by a minimal
+  counterexample (`partitionDef_induce_id_le_of_maximal`), in place of the partition into maximal
+  rigid sets and its rigid-free quotient ((MC-77)) or (MC-119)'s finest optimal partition.
+- **D2, (MC-79)(ii)'s first bullet:** by refining the part of `a, b` in an optimal merged partition
+  (`deficiencyMerged_three_add_five_le`), in place of (MC-79)(i)'s formula over the quotient.
+- **D3, (MC-79)(iii):** "a tight set of three or more bodies in an (S)-graph is rigid"
+  (`deficiency_three_induce_eq_zero_of_tight`), in place of Lemma T (MC-78).
+- **D4, THETA:** no θ branch; θ-graphs reach FLAT, CONTRACT-R or a usable chain (measured at
+  sixteen), and Theorem S's proof does not exclude them.
+
+**THETA: settled** (PI decision 3, 2026-09-27, with D4). No named theorem and no θ branch;
+`rem:pencil-x0-theta` records that the coverage needs no separate case, and keeps (MC-139)'s
+covering along the longest path as one covering by the steps alone.
+
+**The tracked supplier items: settled by the design recon**, each with where it lands:
+- [x] **ORBIT's `hδ₂`**: at `k = 1`, `Graph.not_adj_and_deficiencyMerged_two_add_two_le` (40l B3),
+  through THEOREM-S' adapter `IsOpenEar.not_adj_and_two_le_pairDelta_two`; at `k = 2`,
+  `Graph.deficiencyMerged_two_add_two_le` (40l B3), consumed in Theorem S (a blocked two-body chain
+  has adjacent ends).
+- [x] **SPLITOFF's `hδ`**: `Graph.deficiencyMerged_three_add_five_le` (40l B3), consumed in Theorem S
+  (a blocked one-body chain lies in a rigid set).
+- [x] **CONTRACT-A's `hadd` with `hatt`**: `partitionDef_induce_id_le_of_maximal` and
+  `deficiency_induce_add_deficiency_rigidContract_le` (40l B3), `hatt` from
+  `deficiency_induce_insert_eq_zero` (40l B2) and maximality, assembled in THEOREM-S'
+  `exists_additiveCore_of_rigid`.
+- [x] **(H) after splitting off at non-adjacent ends**: `Graph.IsX0Graph.splitOff` (CHAINS, sorry-free
+  in S5) and its four instances.
+- [x] **SHORT's `hdef` from `δ = 0`**: `IsOpenEar.deficiency_induce_le` (THEOREM-S, sorry-free in S5).
+- **PI decision 2's `hatt` todo: closed** (PI, 2026-09-28), `hatt` kept (§3 STEPS).
+- **The "only if" halves of (MC-52)/(MC-53):** not consumed; the dispatch calls only the "if"
+  halves. The todo stays in §3 STEPS.
+
+**Pins.** COVERAGE pays `partitionDef_map` and `deficiencyMerged_le_deficiency` of the D5 debt (§7),
+at 40l. **Lean reuse.** The route uses none of `exists_maximal_induced_isProperRigidSubgraph`,
+`triangle_isProperRigidSubgraph` or `c4_isProperRigidSubgraph`: the kit has its own maximal rigid
+superset, and the 4-cycle is rigid as a tight set (D3).
 
 ### MOTIVES — `X0Dist` and `X0Gen` (closes the phase)
 
@@ -800,7 +893,9 @@ subsection per layer from CARRIER to MOTIVES. The CARRIER, FLAT and BRIDGE subse
 green, and so are all seven of STEPS', `sec:main-component-cut` (40e),
 `sec:main-component-contract` (40f), `sec:main-component-chain` (40g), `sec:main-component-short`
 (40h), `sec:main-component-orbit` (40i), `sec:main-component-splitoff` (40j) and
-`sec:main-component-contract-additive` (40k). COVERAGE's subsection is next. MOTIVES's stub
+`sec:main-component-contract-additive` (40k). COVERAGE's two subsections,
+`sec:main-component-sparse` and `sec:main-component-coverage`, were transcribed whole at 40l's open
+(red; each node's greening sub-phase is in `notes/Phase40l.md`). MOTIVES's stub
 subsection `sec:main-component-statements` is the last, and each later layer inserts its
 subsection before it. It is opened as red nodes transcribed from the proof map
 above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
@@ -965,7 +1060,10 @@ round that lands it.
   The debt, `private` helpers exempt: `deficiency_removeVertex_of_degree_eq_one` (A1);
   `deficiencyMerged`, `deficiencySep`, `weldPair`, `pairDelta`, `partitionDef_map`,
   `deficiency_weldPair_eq_deficiencyMerged`, `bddAbove_range_partitionDef_merged`,
-  `partitionDef_le_deficiencyMerged` (A2); `pairDelta_le_bodyBarDim`, `deficiency_eq_max` (A3);
+  `partitionDef_le_deficiencyMerged` (A2); `pairDelta_le_bodyBarDim`, `bddAbove_range_partitionDef_sep`,
+  `partitionDef_le_deficiencySep`, `deficiencyMerged_le_deficiency`, `deficiencySep_le_deficiency`,
+  `deficiency_eq_max` (A3; the four middle names added at 40l's open, checked against
+  `Deficiency.lean`'s module docstring);
   `partitionDef_split_of_vertexTwoCut`, `deficiency_eq_of_vertexTwoCut`, `deficiency_eq_of_vertexTwoCut'`
   (A4/A5); `relScrews`, `jointRows`, `jointMotions`, `weldedRank`,
   `span_jointRows_eq_map_dualAnnihilator`, `finrank_span_jointRows` (B1/B2);
@@ -981,10 +1079,13 @@ round that lands it.
   `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open; green since 40g build 1, and since 40g's
   close on their own node `cor:block-rank-vertex-two-cut`, the induced corollary of
   `lem:block-rank-two-cut`); `deficiencyMerged`, `partitionDef_le_deficiencyMerged` (40i's open, on
-  the green `def:deficiency-merged`). `jointMotions`, `weldedRank` and the rest of the A2/A3 set go to
-  their first consumer, COVERAGE, or have none; not SHORT, ORBIT, SPLITOFF or CONTRACT-A (PI
-  decision 4(b), 2026-09-27; the design recons of 40j and 40k, 2026-09-28, found that neither
-  SPLITOFF's spike nor CONTRACT-A's uses any of them; §3 STEPS).
+  the green `def:deficiency-merged`); `partitionDef_map` and `deficiencyMerged_le_deficiency`
+  (COVERAGE, at 40l's B3 and B2, on `lem:deficiency-additive-core` and
+  `lem:deficiency-merge-rigid`). No other name of the debt is consumed by COVERAGE (the grep of
+  its design recon's spikes, 2026-09-28), nor by SHORT, ORBIT, SPLITOFF or CONTRACT-A (PI decision
+  4(b), 2026-09-27; the design recons of 40j and 40k); the rest, `jointMotions`, `weldedRank` and
+  the remaining A2/A3 names included, has no consumer on Phase 40's route through COVERAGE, and a
+  cleanup round pins or leaves it (PI, D5).
 - **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
   40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
   exposition (the main component as a vector bundle over planar pictures, the flat rank, the
