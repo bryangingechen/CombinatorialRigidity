@@ -12,54 +12,9 @@ recurring `rw` towers (Lean). Round manual: `CLEANUP.md`.
 **Next commit: task 4, B7** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
 1–3 landed, 46 remain. Nothing is mid-stream.
 
-**Task 2 (B3) landed, then corrected by a follow-up.** Final outcome for the 12 sites:
-- **Deleted, linter silent (2):** `Base.lean` 57 (`pencilPair_of_habitat_ncard_eq_three`, stale)
-  and the second `unusedDecidableInType` on `pencilPair_of_habitat_ncard_eq_four`.
-- **Fixed at the source (1):** `pencilPair_of_splitOff_of_habitat` (`Escape.lean`, unpinned). The
-  binder is dropped and the proof already opened with `classical`, so the silencer and its comment
-  are gone.
-- **Kept, `unusedDecidableInType` (6), all pinned or headline:** `pencil_conjecture_of_arms`
-  (`Arms.lean`) and `pencil_conjecture_of_arms_pair` (`Pair2.lean`), both threaded to
-  `Graph.pencil_reduction`; `pencil_conjecture_of_hcontract_hK_hbareSplit` and `…_of_card`
-  (`Escape.lean`); `pencil_conjecture_of_X0` (`X0.lean`); `pencil_conjecture`
-  (`MainComponent/Statements.lean`). Each comment now says the binder is type-unused, names the
-  callee it is threaded to, and says the fix is deferred. See *Candidates*.
-- **Kept, `unusedFintypeInType` (2):** `MainComponent/GenericBase.lean` 716 and 772. The task-2
-  commit said they gained new comments, but those comments predate it and are unchanged. They were
-  not re-examined against the linter's fix (`[Finite …]` plus `Fintype.ofFinite`).
-- **Heartbeats:** `pencilPair_of_habitat_ncard_eq_four` went from 1000000 to 400000 (bisected:
-  default 200000 and 300000 time out at `Base.lean:829`'s `simp` and the declaration's own
-  `whnf`; 500000 and 400000 pass).
-
-The task-2 commit had restored seven `unusedDecidableInType` silencers as "false positives". It had
-tested the deletion without adding `classical`. The linter checks the type only, and its fix is to
-drop the binder and use `classical` (the FRICTION entry, now reframed). The corrective dispatch had
-listed the two `Escape.lean` wrappers as unpinned. `thm:pencil-conditional-realization-pair`
-(`pencil.tex` 908–910) pins them, so they keep the option. Gates for the follow-up: whole-project
-`lake build` 3000 jobs, 0 `warning:`, 0 `failed to cache artifact`; `lake lint` passed.
-
-**Task 3 (B8) landed, all 32 `show … from rfl` sites.** 27 fixed, 5 kept:
-- `screwDim 2 = 6` (12) / `screwDim 1 = 3` (3): new `screwDim_two`/`screwDim_one` beside
-  `abbrev screwDim` (`RigidityMatrix/Basic.lean`).
-- `Graph.bodyBarDim 2 = 3` (3) / `bodyBarDim 3 = 6` (1): `Graph.bodyBarDim_two`/`_three` moved from
-  `Induction/SparseDeficiency.lean` to beside `def bodyBarDim` (`BodyBar/Framework.lean`) — a
-  same-name move, so the ~10 in-file callers and the 4 in `CoverageTheoremS.lean` needed no change.
-- `V(G.induce V₁) = V₁` (8): mathlib's `Graph.vertexSet_induce` (witnessed with `#check` — distinct
-  from the existing `Graph.induce_vertexSet : G.induce V(G) = G`, an easy name mix-up).
-- The other 5: `pt s a j`/`pt s b j` (`Short.lean` 1080, 1083) fixed with the site's own
-  `set pt := … with hpt` equation (`rw [hpt, …]` in place of `show … from rfl`). Kept, reason
-  *structural*: the two `Fin`-literal identities (`Ear.lean` 176, 857) and the bundled-projection
-  unfold (`Orbit.lean` 1048, `F₁.graph = G₁`) — no named lemma or in-scope hypothesis shortens them
-  without adding lines.
-
-**Task 1 (T1) landed.** ROADMAP's toolchain row and `notes/ToolchainBumps.md` *Where this
-stands* were stale: `origin/master` had already caught up to `91fcd24a` (one commit behind
-local master) with a green *Build & deploy site* run, and hopscotch had stopped re-stamping
-issue #2 with the old pin-order false positive — it now tracks a genuine mathlib incompatibility
-at `ab64d1c`, with PR #1 offering the last-known-good bump to `0258e25`. Both surfaces rewritten;
-the `bump/lean-4.34.0-rc{1,2}` local-only branches (never pushed, now 498 commits behind master)
-are noted but left for the PI to delete or not. Detail: `notes/ToolchainBumps.md` *Where this
-stands*.
+Landed so far, one line each under the checklist: tasks 1–3 (T1, B3 with its corrective
+follow-up, B8). Outcome detail goes on the task's checklist line, not here, so this section stays
+the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -121,51 +76,35 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 ### Status and small items
 
-- [x] **1. T1: the stale toolchain status.** Docs only. ROADMAP's Status row *Toolchain bumps to
-  Lean v4.34.0-rc1 → rc2* still says "**Still unpushed — CI has never validated the stack**", and
-  `notes/ToolchainBumps.md` *Where this stands — and the next concrete task* (lines 14–43) says
-  `origin/master` is at `0920772` and CI has never validated the stack. On 2026-09-29,
-  `origin/master` was at `91fcd24a` and CI's *Build & deploy site* run passed there
-  (`notes/Cleanup40.md` §2). Verify with `gh run list --branch master`, and cite the run by its
-  GitHub URL, not by a local path. Then rewrite both surfaces, and that section's "next concrete
-  task" (for example, whether the hopscotch workflow stopped re-stamping issue #2). Whether to
-  delete the `bump/lean-4.34.0-rc{1,2}` refs is the PI's call; note it and do not act on it. Done:
-  `grep -rn -i "unpushed\|never validated" ROADMAP.md notes/ToolchainBumps.md` is empty.
-- [x] **2. B3: linter silencers and the heartbeat bump** (12 sites).
-  - `set_option linter.unusedDecidableInType false in`, 9 sites: `Base.lean` 57, 543;
-    `Arms.lean` 1437; `Escape.lean` 346, 443, 551; `Pair2.lean` 1219; `X0.lean` 344;
-    `MainComponent/Statements.lean` 151. The last two have a justifying comment and the other
-    seven have none.
-  - `set_option linter.unusedFintypeInType false in`, 2 sites, both commented:
-    `GenericBase.lean` 716, 772.
-  - `set_option maxHeartbeats 1000000 in`, on `pencilPair_of_habitat_ncard_eq_four`
-    (`Base.lean` 538, commented).
-
-  Per site, remove the option and rebuild. If the linter no longer fires, the option stays deleted.
-  If it fires, restore the option with a one-line comment saying why. Dropping the instance from a
-  signature is the at-source fix, but on a headline or a pinned statement it changes the statement,
-  so record it as a candidate instead. For the heartbeats, try the default and then the smallest
-  budget that passes, and keep the comment. This is not a perf pass, so time nothing.
-  - **Outcome** (detail: *Current state*): 2 deleted (stale), 1 fixed at the source, 6 kept
-    (pinned, a candidate), 2 `unusedFintypeInType` kept (unexamined), heartbeats 400000 (bisected).
-- [x] **3. B8: `show … from rfl`** (32 sites, `CLEANUP.md` §B cases (a)–(d)). **Outcome** (detail:
-  *Current state*): 27 fixed, 5 kept (structural — two `Fin`-literal identities, one bundled-
-  projection unfold).
-  - `screwDim 2 = 6`, 12 sites: `Flat.lean` 604, 606, 621, 637, 676, 706; `Contract.lean` 429;
-    `ContractAdditive.lean` 351; `Cut.lean` 416, 1042, 1043, 1044.
-  - `screwDim 1 = 3`, 3 sites: `Flat.lean` 341, 369; `Bridge.lean` 422.
-  - For both: add `screwDim_one` and `screwDim_two` beside `abbrev screwDim`
-    (`RigidityMatrix/Basic.lean` 89, **⚠Z**, a mechanical addition that rebuilds the whole
-    `Molecular/` tree). No site outside the surface uses the `show` form.
-  - `Graph.bodyBarDim 2 = 3`, 3 sites (`Contract.lean` 198, 201; `Bridge.lean` 404), and
-    `bodyBarDim 3 = 6` (`ContractAdditive.lean` 79). Use `Graph.bodyBarDim_two` / `_three`. They
-    already exist, but in `Induction/SparseDeficiency.lean` 254/257; move them beside
-    `def bodyBarDim` (`BodyBar/Framework.lean` 61), since a lemma lives with its definition.
-  - `V(G.induce V₁) = V₁`, 8 sites: `Chain.lean` 726; `Short.lean` 180; `Ear.lean` 465, 560;
-    `Cut.lean` 393, 394, 974, 975. Use mathlib's `Graph.vertexSet_induce : G[X].vertexSet = X`
-    (checked at the open).
-  - The other 5: `Short.lean` 1080, 1083 (a `pt`/`cfg` unfold, case (a)); `Ear.lean` 176, 857
-    (`Fin` literals, (c)/(d)); `Orbit.lean` 1048 (`F₁.graph = G₁`, (a)).
+- [x] **1. T1: the stale toolchain status** (`a2686fde`). ROADMAP's toolchain row and
+  `notes/ToolchainBumps.md` *Where this stands* rewritten: `origin/master` was at `91fcd24a` with a
+  green *Build & deploy site* run, and hopscotch's issue #2 / PR #1 now track a real mathlib
+  incompatibility (`ab64d1c`), so both stay open. The local-only `bump/lean-4.34.0-rc{1,2}` refs are
+  the PI's call, recorded there and not acted on.
+- [x] **2. B3: linter silencers and the heartbeat bump** (12 sites; `5a636c0e`, corrected by
+  `244f6613`). 2 silencers deleted as stale (`Base.lean`: `pencilPair_of_habitat_ncard_eq_three`,
+  and the second one on `…_eq_four`). 1 fixed at the source: `pencilPair_of_splitOff_of_habitat`
+  (`Escape.lean`) has its `[DecidableEq β]` dropped, with `classical` in the proof. 6 are kept
+  because they are pinned or headline (see *Candidates*): `pencil_conjecture_of_arms`,
+  `…_of_arms_pair`, `…_of_hcontract_hK_hbareSplit` and its `_of_card` form, `…_of_X0`, and
+  `pencil_conjecture`. Their comments say the binder is type-unused and name the callee it is
+  threaded to. The 2 `unusedFintypeInType` in `GenericBase.lean` are kept, with their comments
+  predating the task, and were not re-examined against `[Finite …]` + `Fintype.ofFinite`. The
+  heartbeat budget of `…_eq_four` went from 1000000 to 400000 (bisected: 300000 times out at
+  `Base.lean` 829). The first commit had called the linter a false positive. That was wrong: its fix
+  is to drop the binder and use `classical`. The FRICTION entry is reframed, and
+  `notes/dispatch-log.md` has the row.
+- [x] **3. B8: `show … from rfl`** (32 sites; `9bf98a3c`). 29 fixed, 3 kept.
+  - Added `screwDim_one` / `screwDim_two` beside `abbrev screwDim` (`RigidityMatrix/Basic.lean`),
+    covering 15 sites.
+  - Moved `Graph.bodyBarDim_two` / `_three` beside `def bodyBarDim` (`BodyBar/Framework.lean`, same
+    names), covering 4 sites.
+  - Mathlib's `Graph.vertexSet_induce` covers 8 sites. Take care not to confuse it with
+    `Graph.induce_vertexSet : G.induce V(G) = G`.
+  - `Short.lean`'s two `pt` unfolds use `simp only [hpt, …]`. A bare `rw [hpt]` leaves a
+    beta-redex; the LSP accepted it, and only `lake build` caught it.
+  - Kept as structural: the `Fin`-literal identities at `Ear.lean` 176 and 857, and
+    `Orbit.lean` 1048's `F₁.graph = G₁`.
 - [ ] **4. B7: the recurring `rw` towers** (`CLEANUP.md` §B: a missing fused lemma). These are the
   only towers the open found recurring three or more times. The single chains are not this task's;
   §C's walks may touch them.
