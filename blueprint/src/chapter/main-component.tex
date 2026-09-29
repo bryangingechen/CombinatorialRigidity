@@ -4517,6 +4517,9 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[The generic realization across a pendant triangle]
   \label{lem:pencil-generic-pendant-triangle}
+  \lean{CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_closedEar_two,
+        CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization}
+  \leanok
   \uses{def:pencil-generic-motive}
   Let $K$ be infinite and $G$ simple and nondegeneracy-feasible, with two
   adjacent bodies $x_1, x_2$ of degree two, both joined to a body $c$ of
@@ -4525,6 +4528,7 @@ degree-two bodies enlarge the lifting space.
   generic pencil realization.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-generic-steer, lem:block-rank-cut-vertex,
         lem:cycle-realization-rigid, lem:deficiency-cut-vertex,
         lem:relative-deficiency-rank-bound}
