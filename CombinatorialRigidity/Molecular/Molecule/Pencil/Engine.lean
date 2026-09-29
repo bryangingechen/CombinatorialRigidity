@@ -147,6 +147,15 @@ theorem hubSlotNormalPoly_eval (hubSel : α → Fin 3 → Option α) (v : α) (s
   simp only [hubSlotNormalPoly, hubSlotNormal, PencilSeed.ofCoord]
   cases hubSel v slot <;> simp
 
+/-- **The function-level form of `hubSlotNormalPoly_eval`**: funext'd over the slot coordinate `j`,
+for direct use as a `rw`/`simp` argument against a bare `fun j => …` occurrence (the pencil
+`annihRowPoly` mirror's evaluation lemmas need this shape three times each). -/
+theorem hubSlotNormalPoly_eval_funext (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
+    (q : α × Fin 4 × Fin 4 → K) :
+    (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v slot j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v slot :=
+  funext fun j => hubSlotNormalPoly_eval hubSel v slot q j
+
 /-- **The chart's constructed point, lifted to `MvPolynomial`** (Phase 39 W5-L3, the pencil
 `annihRowPoly` mirror's first stage): `cross₃Poly` of the three (padded) hub-slot polynomials — a
 literal `4×4` determinant of degree-≤1 rows, hence `totalDegree ≤ 3` (the design doc's "constructed
@@ -162,15 +171,9 @@ theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
     MvPolynomial.eval q (pencilChartPointPoly hubSel v i)
       = pencilChartPoint (PencilSeed.ofCoord q) hubSel v i := by
   rw [pencilChartPointPoly, cross₃Poly_eval, pencilChartPoint,
-    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 0 j))
-      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 0 from
-      funext fun j => hubSlotNormalPoly_eval hubSel v 0 q j,
-    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 1 j))
-      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 1 from
-      funext fun j => hubSlotNormalPoly_eval hubSel v 1 q j,
-    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 2 j))
-      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 2 from
-      funext fun j => hubSlotNormalPoly_eval hubSel v 2 q j]
+    hubSlotNormalPoly_eval_funext hubSel v 0 q,
+    hubSlotNormalPoly_eval_funext hubSel v 1 q,
+    hubSlotNormalPoly_eval_funext hubSel v 2 q]
 
 /-- **Slot `i` of `v`'s neighbour-selector, read as a point vector and lifted to `MvPolynomial`**
 (Phase 39 W5-L5 L5-cut-v-d): the polynomial mirror of `nbrSlotPoint`, feeding
@@ -195,6 +198,14 @@ theorem nbrSlotPointPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (v : 
   cases nbrSel v slot with
   | some w => exact pencilChartPointPoly_eval hubSel w q i
   | none => exact pencilXPoly_eval slot.succ v q i
+
+/-- **The function-level form of `nbrSlotPointPoly_eval`**, `hubSlotNormalPoly_eval_funext`'s
+sibling for the neighbour-slot polynomial. -/
+theorem nbrSlotPointPoly_eval_funext (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
+    (q : α × Fin 4 × Fin 4 → K) :
+    (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v slot j))
+      = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v slot :=
+  funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v slot q j
 
 open Classical in
 /-- **The chart's constructed normal, lifted to `MvPolynomial`** (Phase 39 W5-L5 L5-cut-v-d, the
@@ -223,15 +234,9 @@ theorem pencilChartNormalPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) 
   split_ifs with hv
   · rw [pencilXPoly_eval]; rfl
   · rw [cross₃Poly_eval,
-      show (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v 0 j))
-        = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v 0 from
-        funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v 0 q j,
-      show (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v 1 j))
-        = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v 1 from
-        funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v 1 q j,
-      show (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v 2 j))
-        = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v 2 from
-        funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v 2 q j]
+      nbrSlotPointPoly_eval_funext hubSel nbrSel v 0 q,
+      nbrSlotPointPoly_eval_funext hubSel nbrSel v 1 q,
+      nbrSlotPointPoly_eval_funext hubSel nbrSel v 2 q]
 
 /-- **The point-join's screw-basis coordinate, lifted to `MvPolynomial`** (Phase 39 W5-L3, the
 pencil `annihRowPoly` mirror's second stage — the grade-`2` analogue of the panel layer's

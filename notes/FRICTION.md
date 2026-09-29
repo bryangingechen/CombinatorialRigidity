@@ -2416,7 +2416,7 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `Nat.card_unique` fires. (Same "pin the occurrence" lesson as the entry above.)
 - **Status:** resolved (Phase 22h W6d).
 
-### [open] `set`-bound `let` is opaque to `simp only`; pass the `with`-named eq (or `change`) to expose inner form
+### [resolved] `set`-bound `let` is opaque to `simp only`; pass the `with`-named eq (or `change`) to expose inner form
 
 - **Where it bit:** `ofNormals_relabel` / `rigidityRows_ofNormals_relabel` (Phase 22h, CaseI.lean):
   `set Q := PanelHingeFramework.ofNormals … with hQ_def` introduces `Q` as a `let`-binding opaque to
@@ -2429,7 +2429,21 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **General pattern:** when `set X := body with hX` then need `X`'s inner structure in `simp only`,
   include `hX` in the simp set; for `exact`/`rw` use `change body`. Neither `simp only [X]` nor
   `unfold_let` works.
-- **Status:** open (project-internal idiom).
+- **Correction (Phase 40-cleanup B6a, 2026-09-29):** "neither works" does not generalize to the
+  narrower, far more common need — unfold `X` one step and stop there (the caller then runs its own
+  `rw`/further `simp` separately, rather than needing everything to fire in one `simp only` call).
+  For that shape, **`simp only [X]`** (the bare local name, `set`-bound with or without `with hX`)
+  *does* unfold `X` to its value, structure-eta and iota-reduce a projection-of-literal for free —
+  confirmed by direct `lean_diagnostic_messages` re-verification (not the MCP's own goal display,
+  which pretty-prints an already-reduced goal regardless — see below), across ~10 sites in
+  `Molecule/Pencil/{Base,X0}.lean`. `unfold_let` genuinely doesn't fire (`unknown tactic`: its home
+  `Mathlib.Tactic.DefEqTransformations` isn't transitively imported by this file). This 2026 case's
+  "made no progress" was specifically about `ofNormals`'s *smart-constructor* body needing a *second*
+  round of `ofNormals_*` simp lemmas to reach `Q.toBodyHinge.supportExtensor`'s reduced form in the
+  same pass — `simp only [Q]` alone would have unfolded `Q`, just not far enough for that call's other
+  arguments to then match. **Lifted to:** TACTICS-GOLF § 27 (the general write-up, plus three named
+  bridge lemmas found along the way that remove the need for either form of unfold).
+- **Status:** resolved (the general shape now has a documented, verified fix; TACTICS-GOLF § 27).
 
 ### [idiom] statement-level `Equiv.swap`/`let` opacity — inline the term in the statement, re-`set` in the proof
 

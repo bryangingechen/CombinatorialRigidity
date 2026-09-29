@@ -582,13 +582,13 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       simp only [point, normal, h₁, ↓reduceIte, h₂]; exact hp₂inc v h₂
   have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
     fun e u v hl => by
-      simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
+      simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]
   have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂.supportExtensor e :=
     fun e u v hl => by
       have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
         fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
       simp only [extF, hnotE₁, ↓reduceIte,
-        show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩]
+        Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
   have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g hagree₁
   have hF₂span := span_rigidityRows_eq_of_supportExtensor_agree extF F₂ hF₂g hagree₂
   have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
@@ -735,8 +735,7 @@ theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
     span_rigidityRows_eq_of_supportExtensor_agree extF
       (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β) rfl hagree
   have hVcard : V(G.induce (V₁ ∪ {w₀})).ncard = V₁.ncard + 1 := by
-    change (V₁ ∪ {w₀}).ncard = V₁.ncard + 1
-    rw [Set.union_singleton]
+    rw [Graph.vertexSet_induce, Set.union_singleton]
     exact Set.ncard_insert_of_notMem hw₀
   have hdefeq : (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 :=
     Graph.deficiency_induce_union_singleton (n := n) hD hl₀ hu₀ hw₀ hcut
@@ -1029,13 +1028,13 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
   -- ── The rank, by the two rank-half compositions + the landed cut assembly. ───────────────
   have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
     fun e u v hl => by
-      simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
+      simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]
   have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂'.supportExtensor e :=
     fun e u v hl => by
       have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
         fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
       simp only [extF, hnotE₁, ↓reduceIte,
-        show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩]
+        Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
   have hlb₁ := hlb_induce_of_isNondegPencilRealization_induce_union_singleton
     (n := n) hD1 hl_c hu_c hv_c hcut hnd₁ hrank₁ hagree₁

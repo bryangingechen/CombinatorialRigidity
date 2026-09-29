@@ -286,7 +286,7 @@ theorem linearIndepOn_triple_of_linearIndependent {V : Type*} [AddCommGroup V] [
     · exact ⟨1, rfl⟩
     · exact ⟨2, rfl⟩
   set eqv : Fin 3 ≃ ↥({x, y, z} : Set α) := Equiv.ofBijective e ⟨heinj, hesurj⟩ with heqv_def
-  change LinearIndependent K (fun w : ↥({x, y, z} : Set α) => f ↑w)
+  rw [← linearIndependent_set_coe_iff]
   have hcomp : (fun w : ↥({x, y, z} : Set α) => f ↑w) ∘ ⇑eqv = ![f x, f y, f z] := by
     funext i; fin_cases i <;> rfl
   exact (linearIndependent_equiv eqv).mp (by rw [hcomp]; exact hLI)
@@ -320,11 +320,8 @@ theorem linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint {G : Graph α β} 
   have heq : (fun w : ↥(G.closedNbhd v) => pencilChartPoint seed hubSel ↑w) ∘ g
       = fun i : ↥{i | (nbrSel v i).isSome} => nbrSlotPoint seed hubSel nbrSel v ↑i := by
     funext i
-    change pencilChartPoint seed hubSel (wsel i) = nbrSlotPoint seed hubSel nbrSel v ↑i
-    simp only [nbrSlotPoint, hwsel i]
-  change LinearIndependent K
-    (fun i : ↥{i | (nbrSel v i).isSome} => nbrSlotPoint seed hubSel nbrSel v ↑i)
-  rw [← heq]; exact hcomp
+    simp only [Function.comp_apply, hg_def, nbrSlotPoint, hwsel i]
+  rw [← linearIndependent_set_coe_iff, ← heq]; exact hcomp
 
 /-- **The pendant-cut input half: feasibility descends to the induced side** (Phase 39 W5-L5,
 L5-cut-v-e; the input-half assembly of `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v
@@ -371,8 +368,7 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
     (by
       rintro (v | ⟨u, v⟩ | _)
       · -- conjunct 3 (all bodies) + `hnbr` (non-hubs): satisfiable at the flattening.
-        change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
-          (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v)
+        simp only []
         refine ⟨seed₀.toCoord, ?_⟩
         rw [hpt_eq]
         by_cases hv : G.PencilHub v
@@ -381,8 +377,7 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
         · rw [ite_eq_right hv]
           exact linearIndepOn_pencilChartPoint_closedNbhd seed₀ (hWF₀.2.1 v hv) (hWF₀.2.2.2.1 v hv)
       · -- conjunct 5 (adjacent pairs): satisfiable at the flattening.
-        change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
-          (if G.Adj u v then ({u, v} : Set α) else ∅)
+        simp only []
         by_cases hadj : G.Adj u v
         · rw [ite_eq_left hadj]
           obtain ⟨e, he⟩ := hadj
@@ -393,8 +388,7 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
         · rw [ite_eq_right hadj]
           exact ⟨seed₀.toCoord, linearIndepOn_empty K _⟩
       · -- the demoted triple: satisfiable at witness (i)'s seed.
-        change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
-          ({u_c, w₁, w₂} : Set α)
+        simp only []
         obtain ⟨q, hq⟩ := exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3
           hSimple hfeas hl_c hu_c hv_c hcut hdeg hl₁ hl₂ hw₁ hw₂ hw12 hubSel hWF₀.1
         exact ⟨q, linearIndepOn_triple_of_linearIndependent

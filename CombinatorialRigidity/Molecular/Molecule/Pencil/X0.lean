@@ -190,7 +190,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     rw [hEH']; simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or]; exact ⟨h1, h2⟩
   -- ── Step 8: finrank FH = D via theorem_55_base + B1 ──────────────────────────────────
   have hFH_li : LinearIndependent K ![FH.supportExtensor e_edge, FH.supportExtensor f_edge] := by
-    change LinearIndependent K ![extF e_edge, extF f_edge]
+    simp only [FH]
     rw [hFe, hFf]; exact hCEF_li
   have hFHne : FH.graph.vertexSet.Nonempty := by
     rw [hFHg, hVH']; exact ⟨a, Set.mem_insert a _⟩
@@ -221,8 +221,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     obtain ⟨e, u, v, hlink, r, hr, rfl⟩ := hφ
     have hu : u ∈ t := by simp only [ht_def]; exact hFHg ▸ hlink.left_mem
     have hv : v ∈ t := by simp only [ht_def]; exact hFHg ▸ hlink.right_mem
-    change Dmap (BodyHingeFramework.hingeRow u v r) = 0
-    simp only [Dmap, LinearMap.dualMap_apply']
+    simp only [SetLike.mem_coe, LinearMap.mem_ker, Dmap, LinearMap.dualMap_apply']
     exact hingeRow_comp_extProj_eq_zero hu hv r
   have hFcg_inter : Fc.graph.vertexSet ∩ t = {a} := by
     rw [ht_def, hFcg]

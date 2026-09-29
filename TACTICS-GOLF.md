@@ -1568,3 +1568,31 @@ but the build then carries a `deprecated` warning — not warning-clean, per the
 `CombinatorialRigidity/CLAUDE.md`. Write `push Not at h` directly (and `push Not` in `conv` mode,
 where `push_neg` is deprecated the same way). (FRICTION *`push_neg` is deprecated…*, Phase 40b
 CARRIER C5′.)
+
+## 27. `change <verbose unfolded type>` before a `rw` chain — `simp only [localName]` unfolds a `set`/`let`-bound local directly
+
+A `change P` whose only job is to unfold a `set`-bound structure literal (`set F := { graph := G,
+supportExtensor := supp }`) or a bare `let` (`set FH := { … }`, no `with h`) one step, so a
+following `rw [hsupp_e, …]` can see `supp e` instead of the opaque `F.supportExtensor e`, almost
+always has a one-line replacement: **`simp only [F]`** — passing the local variable's own name,
+not an equation — unfolds it (structure-eta and the projection-of-literal iota-reduce for free),
+whether or not `set … with hF` named an equation. This is a *different* mechanism from `simp
+only [hF]` rewriting occurrences of the term `hF`'s LHS names (§*rw/unfold chain* above, bullet 6,
+covers `rw` hitting a `let`-bound var that `simp only` won't rewrite *elsewhere in a chain*); here
+the local's own name is the unfold target, and it is not itself a smell to keep reaching for.
+Three recurring `change`/`show` shapes turned out to have an even better fix — a named bridge
+lemma, so no `simp only` guesswork is needed at all:
+- `V(G.induce S).ncard = …` unfolded by hand → `rw [Graph.vertexSet_induce, …]`
+  (`V(G.induce S) = S`, already in the tree via `Graph.vertexSet_induce`).
+- `show (∃ a b, G.IsLink e a b) from ⟨u, v, hl⟩` fed to a `simp`/`rw` list as an inline fact → 
+  `Graph.exists_isLink_of_mem_edgeSet hl.edge_mem` (`hl : G.IsLink e u v`), letting the exact
+  existential statement be inferred instead of written out.
+- `change LinearIndependent K (fun w : ↥s => f ↑w)` to unfold a `LinearIndepOn K f s` goal (or the
+  reverse, to state one) → `rw [← linearIndependent_set_coe_iff]` /
+  `rw [linearIndependent_set_coe_iff]`.
+**Verify by real edit, not by the MCP's displayed goal**: `lean_goal`/`lean_multi_attempt` pretty-
+print an already zeta/iota-reduced goal even when the underlying term still carries the un-reduced
+redex a `change` is needed to clear, so a candidate `dsimp only`/`simp only []` can misreport "made
+no progress" against a `change` that is genuinely load-bearing, and vice versa. Edit the file and
+read `lean_diagnostic_messages` for the ground truth. (Phase 40-cleanup B6a, the Pencil `change`/
+`show` sweep, `Molecule/Pencil/{Base,Statement,X0,Pair,Pair2,Reseed,Steer,Chart}.lean`.)

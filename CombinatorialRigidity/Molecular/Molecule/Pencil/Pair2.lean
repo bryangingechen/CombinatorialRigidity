@@ -1174,12 +1174,10 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
           · exact hV₂sub hx
           · exact hl_c.left_mem
         have hV1p_card : V(G.induce (V₁ ∪ {v_c})).ncard = V₁.ncard + 1 := by
-          change (V₁ ∪ {v_c}).ncard = V₁.ncard + 1
-          rw [Set.union_singleton]
+          rw [Graph.vertexSet_induce, Set.union_singleton]
           exact Set.ncard_insert_of_notMem hv_c
         have hV2p_card : V(G.induce (V₂ ∪ {u_c})).ncard = V₂.ncard + 1 := by
-          change (V₂ ∪ {u_c}).ncard = V₂.ncard + 1
-          rw [Set.union_singleton]
+          rw [Graph.vertexSet_induce, Set.union_singleton]
           exact Set.ncard_insert_of_notMem hu_notin₂
         have hlt1p : V(G.induce (V₁ ∪ {v_c})).ncard < V(G).ncard := by rw [hV1p_card]; omega
         have hlt2p : V(G.induce (V₂ ∪ {u_c})).ncard < V(G).ncard := by rw [hV2p_card]; omega

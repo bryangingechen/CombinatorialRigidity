@@ -4,16 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–5 landed; 44 of 49 one-commit tasks remain. **Next concrete task:** task 6, B6a, the
-`change`/`show` sites in the Phase 39 files (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–6 landed; 43 of 49 one-commit tasks remain. **Next concrete task:** task 7a, B6b, the
+`change`/`show` sites in the rest of `MainComponent/` and `SparseDeficiency.lean` (Lean). Round
+manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 6, B6a** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–5 landed, 44 remain. Nothing is mid-stream.
+**Next commit: task 7a, B6b** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–6 landed, 43 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–5 (T1, B3 with its corrective
-follow-up, B8, B7, F1). Outcome detail goes on the task's checklist line, not here, so this section
+Landed so far, one line each under the checklist: tasks 1–6 (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a). Outcome detail goes on the task's checklist line, not here, so this section
 stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
@@ -140,19 +141,35 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 ### §B: `change`/`show`, cardinalities, and trial removals
 
-- [ ] **6. B6a: `change`/`show` in the Phase 39 files** (35 sites). `Arms.lean` 234, 266, 976,
-  1166, 1515; `Base.lean` 315, 1224, 1251; `Chart.lean` 121; `Engine.lean` 165, 168, 171, 226, 229,
-  232, 264, 371; `Pair.lean` 591, 738, 1038; `Pair2.lean` 1177, 1181; `Reseed.lean` 218, 290;
-  `Statement.lean` 697, 706, 724; `Steer.lean` 289, 323, 325, 374, 384, 396; `X0.lean` 193, 224.
-  Four clusters to try as fused lemmas:
-  - `show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩`, ×4 (`Arms.lean` 976, 1166;
-    `Pair.lean` 591, 1038): an edge of an induced subgraph.
-  - `change ExtensorThroughPoint (supp e) (point u) ∧ …` / `ExtensorInPanel …`, ×5 (`Base.lean`,
-    `Statement.lean`): unfolding a realization predicate.
-  - The six `show (fun j => MvPolynomial.eval q (…Poly …))` in `Engine.lean`.
-  - `change ∃ q, LinearIndepOn …`, ×3 (`Steer.lean`).
+- [x] **6. B6a: `change`/`show` in the Phase 39 files** (35 sites; landed this commit). 32 fixed,
+  3 kept (`Chart.lean` 121, `Engine.lean` 264/371 — `screwBasis`/`exteriorPower` carrier defeq the
+  next `rw` needs; real-edit-verified via `lean_diagnostic_messages`, not the MCP's own
+  already-reduced goal display, no viable `simp only`/bridge-lemma substitute found).
+  - The four named clusters all fixed: the `∃ a b, (G.induce V).IsLink e a b` witness (Arms 976/1166,
+    Pair 591/1038) is `Graph.exists_isLink_of_mem_edgeSet hl.edge_mem` (no new lemma). The
+    `ExtensorThroughPoint`/`ExtensorInPanel`/nonzero-ness unfolds (Base ×3, Statement ×3 — one more
+    than the named 5, same root cause) are `simp only [hF]` (`set F := … with hF` in scope) or bare
+    `simp only []` (`F` inlined literally): both unfold the structure-literal projection that
+    `rw`/`by_cases` need syntactically. The six `MvPolynomial.eval` funext sites collapse to two new
+    lemmas beside their pointwise `_eval` originals, `hubSlotNormalPoly_eval_funext` /
+    `nbrSlotPointPoly_eval_funext` (`Engine.lean`). The three `∃ q, LinearIndepOn …` sites
+    (Steer.lean) are `simp only []` (a `match`-arm iota-redex after `rintro`).
+  - Found along the way, same root cause, not separately clustered in the open: `Graph.vertexSet_induce`
+    replaces `change (S).ncard = … ` after `V(G.induce S).ncard` (Pair.lean 738, Pair2.lean
+    1177/1181); `linearIndependent_set_coe_iff` bridges a `LinearIndepOn`/`LinearIndependent` unfold
+    (Reseed.lean 290, Steer.lean 289/325); `LinearEquiv.comp_symm` replaces an inline
+    `by ext x; simp` proof of `g ∘ₗ g.symm = id` (Arms.lean 266); `BodyHingeFramework.RankHypothesis`
+    unfolds via `simp only [BodyHingeFramework.RankHypothesis]` (Arms.lean 1515); `simp only [F]`
+    (the bare `set`-bound local's own name) unfolds it directly (X0.lean 193, Reseed.lean 218 via
+    `Function.comp_apply, hm, hg₀`; X0.lean 224 via `SetLike.mem_coe, LinearMap.mem_ker, Dmap`).
+  - `TACTICS-GOLF.md` § 27 (new) writes up the general shape; `notes/FRICTION.md`'s prior *"`set`-bound
+    `let` is opaque to `simp only`"* entry ([open] → [resolved]) gets a correction — the narrower,
+    far more common "unfold and stop" shape this task hit is not the "neither works" case that entry
+    documented.
 
-  ⚠Z where a site is a ScrewSpace-carrier term (`Arms`, `Base`, `Statement`, `Engine`, `X0`).
+  ⚠Z where a site is a ScrewSpace-carrier term (`Arms`, `Base`, `Statement`, `Engine`, `X0`) — none
+  of the kept 3 needed a heartbeat bump; the `simp`/`rw` substitutes elsewhere were not noticeably
+  slower than the `change` they replaced.
 - [ ] **7a. B6b: `change`/`show` in the rest of `MainComponent/`, and in
   `SparseDeficiency.lean`** (30 sites). `Bridge.lean` 404, 422 (task 3's); `Carrier.lean` 754;
   `Chain.lean` 270, 282, 415, 418; `Configuration.lean` 124, 191; `Contract.lean` 321, 322;
@@ -436,11 +453,19 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 6, B6a.** The `change`/`show` sites in the Phase 39 files (35 sites:
-`Arms.lean`, `Base.lean`, `Chart.lean`, `Engine.lean`, `Pair.lean`, `Pair2.lean`, `Reseed.lean`,
-`Statement.lean`, `Steer.lean`, `X0.lean`); try the four listed clusters as fused lemmas first.
-⚠Z where a site is a ScrewSpace-carrier term. Lean, no blueprint. Then continue in task order.
-Each task above names its files, sites and done criterion.
+**Next concrete commit: task 7a, B6b.** The `change`/`show` sites in the rest of `MainComponent/`
+and in `Induction/SparseDeficiency.lean` (30 sites; two named clusters — a contraction `isLink`
+unfold lemma, and `SparseDeficiency.lean`'s `partitionDef`/`deficiencyMerged` triple). Per-site
+question is the same as task 6's: is the `change`/`show` covering for a missing fused/unfold
+lemma, or a legitimate defeq-exposing reshape to keep? Task 6 found that a bare `simp only [F]`
+(the local's own name) or `simp only []` alone resolves most structure-literal/match-arm unfolds
+without a new lemma at all — try that route before reaching for a new declaration. Verify any
+substitute by real edit + `lean_diagnostic_messages`, not the MCP's own goal display (`goals`/
+`goals_before` from `lean_goal`/`lean_multi_attempt` already shows a zeta/iota-reduced form
+whether or not the underlying term is reduced, so a `change`-is-redundant read from those tools
+alone is unreliable — `TACTICS-GOLF.md` § 27). ⚠Z where a site is a ScrewSpace-carrier term
+(`Configuration`, `Flat`). Lean, no blueprint. Then continue in task order. Each task above names
+its files, sites and done criterion.
 
 ## Decisions made during this round
 

@@ -311,7 +311,7 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
       · rw [hpoint_y]; exact hp1n0
       · rw [hpoint_z]; exact hp2n0
     · intro e u v hl
-      change ExtensorThroughPoint (supp e) (point u) ∧ ExtensorThroughPoint (supp e) (point v)
+      simp only [hF]
       rcases hclass e u v hl with ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ |
         ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ | ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩
       · rw [hsupp_exy, hpoint_x, hpoint_y]; exact ⟨hCxy_thru0, hCxy_thru1⟩
@@ -1219,7 +1219,7 @@ theorem pencilPair_of_habitat_ncard_eq_four [Finite α] [Finite β] {G : Graph �
       · rw [hnormal_r]; exact hp0_ne
       · rw [hnormal_s]; exact hp1_ne
     · intro e u v hl
-      change ExtensorInPanel (supp e) (normal u) ∧ ExtensorInPanel (supp e) (normal v)
+      simp only [hF]
       rcases hclass e u v hl with
           ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ | ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ |
           ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ | ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩
@@ -1246,7 +1246,7 @@ theorem pencilPair_of_habitat_ncard_eq_four [Finite α] [Finite β] {G : Graph �
       · rw [hpoint_r, hnormal_r]; exact hd20
       · rw [hpoint_s, hnormal_s]; exact hd31
     · intro e u v hl
-      change ExtensorThroughPoint (supp e) (point u) ∧ ExtensorThroughPoint (supp e) (point v)
+      simp only [hF]
       rcases hclass e u v hl with
           ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ | ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ |
           ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ | ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩

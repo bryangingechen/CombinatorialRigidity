@@ -215,8 +215,7 @@ theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
     have hcomp := hLIs.comp m hminj
     have heq : (fun w : ↥s => f ↑w) ∘ m = fun i : ↥(S : Set (Fin 3)) => (g₀ ↑i : Fin 4 → K) := by
       funext i
-      change f (wsel i) = hubSlotOf f sel 0 ↑i
-      simp only [hubSlotOf, hwsel i]
+      simp only [Function.comp_apply, hm, hg₀, hubSlotOf, hwsel i]
     rw [heq] at hcomp
     exact LinearIndependent.of_comp P.subtype hcomp
   have hdim : 3 ≤ Module.finrank K P := hP
@@ -287,7 +286,7 @@ theorem LinearIndepOn.of_smul_eq {f g : α → Fin 4 → K} {s : Set α} (hLI : 
   choose! c hc0 hc using hsc
   have hLIs : LinearIndependent K (fun w : ↥s => f ↑w) := hLI
   have h2 := hLIs.units_smul (fun w : ↥s => Units.mk0 (c ↑w) (hc0 ↑w w.2))
-  change LinearIndependent K (fun w : ↥s => g ↑w)
+  rw [← linearIndependent_set_coe_iff]
   convert h2 using 1
   funext w
   simp [Units.smul_def, hc ↑w w.2]

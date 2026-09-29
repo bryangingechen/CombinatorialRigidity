@@ -694,7 +694,7 @@ theorem exists_pencilPanelRealization_cycle
     rw [hnormal_vtx]; simpa using (hpairLI i).ne_zero 0
   · -- Total-over-`β` nonzero: cycle edges carry the LI-nonzero meet, others the nonzero fallback.
     intro e
-    change supp e ≠ 0
+    simp only []
     by_cases he : ∃ i, cy.edge i = e
     · obtain ⟨i, rfl⟩ := he
       rw [hsupp_edge]; exact (panelSupportExtensor_ne_zero_iff _ _).mpr (hpairLI i)
@@ -703,8 +703,7 @@ theorem exists_pencilPanelRealization_cycle
   · -- Per-link in-panel: each cycle edge's meet lies in both endpoint panels.
     intro e u v he
     obtain ⟨i, rfl⟩ := cy.edge_surj e he.edge_mem
-    change ExtensorInPanel (supp (cy.edge i)) (normal u) ∧
-      ExtensorInPanel (supp (cy.edge i)) (normal v)
+    simp only []
     rw [hsupp_edge]
     have hip := extensorInPanel_panelSupportExtensor (hpairLI i)
     rcases he.eq_and_eq_or_eq_and_eq (hlink i) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
@@ -721,8 +720,7 @@ theorem exists_pencilPanelRealization_cycle
   · -- Per-link through-point: each cycle edge's meet passes through both endpoints' points.
     intro e u v he
     obtain ⟨j, rfl⟩ := cy.edge_surj e he.edge_mem
-    change ExtensorThroughPoint (supp (cy.edge j)) (point u) ∧
-      ExtensorThroughPoint (supp (cy.edge j)) (point v)
+    simp only []
     rw [hsupp_edge]
     -- `cy.edge j` is body `j`'s second hinge (`hq2 j`) and body `(j+1)`'s first hinge.
     have hj1 : ExtensorThroughPoint (panelSupportExtensor (nrm j) (nrm (j + 1)))

@@ -231,7 +231,7 @@ theorem hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv
   · intro v hv
     exact fun H => hpnz v hv (g.map_eq_zero_iff.mp H)
   · intro v hv
-    change g (point v) ⬝ᵥ h (normal v) = 0
+    simp only []
     rw [hgh]; exact hincid v hv
   · intro e u w hlk; rw [BodyHingeFramework.mapSupport_supportExtensor]
     exact ⟨extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).1,
@@ -262,9 +262,7 @@ theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K]
   set A : Matrix (Fin n) (Fin n) K :=
     LinearMap.toMatrix' (g : (Fin n → K) →ₗ[K] (Fin n → K)) with hA
   have hrinv : A * LinearMap.toMatrix' (g.symm : (Fin n → K) →ₗ[K] (Fin n → K)) = 1 := by
-    rw [hA, ← LinearMap.toMatrix'_comp,
-      show (g : (Fin n → K) →ₗ[K] (Fin n → K)) ∘ₗ (g.symm : (Fin n → K) →ₗ[K] (Fin n → K))
-        = LinearMap.id from by ext x; simp, LinearMap.toMatrix'_id]
+    rw [hA, ← LinearMap.toMatrix'_comp, LinearEquiv.comp_symm, LinearMap.toMatrix'_id]
   have hAu : IsUnit A.det := Matrix.isUnit_det_of_right_inverse hrinv
   have : Invertible ((A⁻¹)ᵀ) :=
     ((A⁻¹)ᵀ).invertibleOfIsUnitDet (by
@@ -967,13 +965,13 @@ theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β
         exact hdist₂ hDflag e u v hl'
     have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
       fun e u v hl => by
-        simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
+        simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]
     have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂.supportExtensor e :=
       fun e u v hl => by
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
           fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
         simp only [extF, hnotE₁, ↓reduceIte,
-          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩]
+          Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
     have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g hagree₁
     have hF₂span := span_rigidityRows_eq_of_supportExtensor_agree extF F₂ hF₂g hagree₂
     have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
@@ -1157,13 +1155,13 @@ theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β
             · exact LinearIndependent.pair_symm_iff.mp hLI
     have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
       fun e u v hl => by
-        simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
+        simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]
     have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂'.supportExtensor e :=
       fun e u v hl => by
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
           fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
         simp only [extF, hnotE₁, ↓reduceIte,
-          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩]
+          Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
     have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g hagree₁
     have hF₂span := span_rigidityRows_eq_of_supportExtensor_agree extF F₂' hF₂'g hagree₂
     have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
@@ -1516,7 +1514,7 @@ theorem pencil_conjecture_of_arms [Nonempty α] [Finite α] [Finite β] [Decidab
       + (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim 2 * (V(G).ncard : ℤ) := by
     exact_mod_cast hcompl
   rw [mul_sub, mul_one] at hrank
-  change (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim 2 + G.deficiency 3
+  simp only [BodyHingeFramework.RankHypothesis]
   linarith [hcompl', hrank]
 
 end CombinatorialRigidity.Molecular
