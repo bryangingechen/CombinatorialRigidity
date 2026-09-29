@@ -126,7 +126,6 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     (hli : LinearIndependent K
       (fun i => pointJoin (pencilConfigPoint q₀ zs (u i)) (pencilConfigPoint q₀ zs (w i)))) :
     G.X0Attains K := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   have : Inhabited α := ⟨a⟩
   have hpv := pathVertex_injective hinj hxa hxb hab
@@ -758,7 +757,6 @@ theorem _root_.Graph.X0Attains.of_closedEar [Infinite K] [Finite α] [Finite β]
       G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
     (h₁ : (G.induce V₁).X0Attains K) : G.X0Attains K := by
-  classical
   have hxc : ∀ i, x i ≠ c := fun i h => hxV₁ i (h ▸ hc)
   set V₂ : Set α := insert c (Set.range x) with hV₂
   have hpvV₂ : ∀ m, pathVertex c x c m ∈ V₂ := by

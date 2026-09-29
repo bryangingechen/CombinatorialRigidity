@@ -352,7 +352,6 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
     (hdem : ∀ y, G.Adj v y → ¬ H.Adj v y → ¬ G.PencilHub y) :
     ∃ q : α × Fin 4 × Fin 4 → K,
       LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) (H.closedNbhd v) := by
-  classical
   have hSH : H.Simple := hS.mono hle
   have hpt_eq : pencilChartPoint (PencilSeed.ofCoord seed₀.toCoord) hubSel
       = pencilChartPoint seed₀ hubSel := funext (pencilChartPoint_ofCoord_toCoord seed₀ hubSel)
@@ -512,7 +511,6 @@ theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite
 /-- **A selector of a three-member set fills every slot.** -/
 theorem IsFin3SelectorOf.isSome_of_ncard_eq_three {s : Set α} {sel : Fin 3 → Option α}
     (h : IsFin3SelectorOf s sel) (hs : s.ncard = 3) (i : Fin 3) : (sel i).isSome := by
-  classical
   by_contra hnone
   have hi : sel i = none := Option.not_isSome_iff_eq_none.mp hnone
   choose! slot hslot using h.2.1

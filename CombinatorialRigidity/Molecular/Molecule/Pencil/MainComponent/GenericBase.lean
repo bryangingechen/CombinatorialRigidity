@@ -175,7 +175,6 @@ theorem partitionDef_add_one_le_of_eq [Finite α] [Finite β] {G : Graph α β}
     (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) {u w : α} (huw : u ≠ w)
     (hu : u ∈ V(G)) (hw : w ∈ V(G)) {f : α → α} (hf : f w = f u) :
     G.partitionDef 2 f + 1 ≤ G.deficiency 2 := by
-  classical
   have hsv := Graph.one_le_partitionDef_induce_id hS
   have hpos : ∀ Z ⊆ V(G) \ {x | f x = f u}, Z.Nonempty → 0 ≤ (G.induce Z).partitionDef 2 id := by
     intro Z hZ hne
@@ -204,7 +203,6 @@ theorem addTwoEar_deficiency [Finite α] [Finite β] {G : Graph α β}
     (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) {u w : α} (huw : u ≠ w)
     (hu : u ∈ V(G)) (hw : w ∈ V(G)) :
     (G.addTwoEar u w).deficiency 2 + 1 ≤ G.deficiency 2 := by
-  classical
   have key : ∀ f' : Option α → Option α,
       (G.addTwoEar u w).partitionDef 2 f' ≤ G.deficiency 2 - 1 := by
     intro f'
@@ -356,7 +354,6 @@ theorem finrank_ker_inf_planeDiff_le [Fintype α] {G : Graph α β} {u w : α} (
       LinearMap.ker (planeDiff (K := K) u w)) ≤
     Module.finrank K ↥(LinearMap.ker (((G.addTwoEar u w).liftingMatrix K).map
       (MvPolynomial.eval (extPicture q qx))).mulVecLin) := by
-  classical
   set S := LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ⊓
       LinearMap.ker (planeDiff (K := K) u w) with hSdef
   set T := LinearMap.ker (((G.addTwoEar u w).liftingMatrix K).map
@@ -426,7 +423,6 @@ theorem exists_planes_separate [Infinite K] [Fintype α] [Finite β] {G : Graph 
     ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧ ∀ q, MvPolynomial.eval q P ≠ 0 →
       ∃ x ∈ LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin,
         planeDiff u w x ≠ 0 := by
-  classical
   obtain ⟨PG, hPG0, hPG⟩ :=
     Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K) hSimple ⟨u, hu⟩ h3
   obtain ⟨Pe, hPe0, hPe⟩ := Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K)
@@ -587,7 +583,6 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
     IsNondegPencilRealization G (pencilConfigFramework G ends q (fun a => x (Sum.inl a)))
       (pencilNormalOfPicture q (fun a => x (Sum.inl a)) sel)
       (pencilConfigPoint q (fun a => x (Sum.inl a))) := by
-  classical
   set z : α → K := fun a => x (Sum.inl a) with hzdef
   set h : α → Fin 3 → K := fun s i => x (Sum.inr (s, i)) with hhdef
   obtain ⟨k1, k2, -⟩ := Graph.liftingMatrix_mulVec_eq_zero_iff.mp (LinearMap.mem_ker.mp hx)

@@ -162,7 +162,6 @@ theorem _root_.Graph.IsX0Graph.splitOff [Finite α] {G : Graph α β} (hG : G.Is
     {e₁ e₂ : β} (h₁ : G.IsLink e₁ v u) (h₂ : G.IsLink e₂ v w) (hne : e₁ ≠ e₂)
     (honly : ∀ f y, G.IsLink f v y → f = e₁ ∨ f = e₂) (huw : u ≠ w) (hnadj : ¬ G.Adj u w) :
     (G.splitOff v u w e₁).IsX0Graph := by
-  classical
   have hloop := hG.simple.toLoopless
   have hvu : v ≠ u := fun h => hloop.not_isLoopAt e₁ v (h ▸ h₁)
   have hvw : v ≠ w := fun h => hloop.not_isLoopAt e₂ v (h ▸ h₂)

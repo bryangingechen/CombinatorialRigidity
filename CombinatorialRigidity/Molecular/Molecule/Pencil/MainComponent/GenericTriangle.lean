@@ -69,7 +69,6 @@ theorem isLink_cases_of_closedEar_two {G : Graph α β} {V₁ : Set α} {x : Fin
     (f = e 1 ∧ ((u = x 0 ∧ v = x 1) ∨ (u = x 1 ∧ v = x 0))) ∨
     (f = e 2 ∧ ((u = x 1 ∧ v = c) ∨ (u = c ∧ v = x 1))) ∨
     ((∀ i, f ≠ e i) ∧ (G.induce V₁).IsLink f u v) := by
-  classical
   have l0 : G.IsLink (e 0) c (x 0) := hpath 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hpath 1
   have l2 : G.IsLink (e 2) (x 1) c := hpath 2
@@ -102,7 +101,6 @@ theorem not_pencilHub_of_closedEar_two {G : Graph α β} (hS : G.Simple)
     (hpath : ∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) (i : Fin 2) :
     ¬ G.PencilHub (x i) := by
-  classical
   have := hS
   have hloop : G.Loopless := hS.toLoopless
   have hx0 : x 0 ∉ V₁ := hxV₁ 0

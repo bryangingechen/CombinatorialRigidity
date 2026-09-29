@@ -539,7 +539,6 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
     (hdef : (G.induce V₁).deficiency 3 ≤ G.deficiency 3)
     (hδ₂ : (G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2) :
     G.X0Attains K := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   have hV : V(G).Nonempty := hG.connected.nonempty
   have : Inhabited α := ⟨a⟩

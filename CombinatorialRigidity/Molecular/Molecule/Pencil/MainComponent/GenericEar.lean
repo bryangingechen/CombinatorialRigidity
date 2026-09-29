@@ -43,7 +43,6 @@ theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
     (hab : LinearIndependent K ![na, nb]) (hpa : pa ≠ 0) (hpb : pb ≠ 0)
     (ha : pa ⬝ᵥ na = 0) (hb : pb ⬝ᵥ nb = 0) (hflag : ¬ (pa ⬝ᵥ nb = 0 ∧ pb ⬝ᵥ na = 0)) :
     ∃ px : Fin 4 → K, px ⬝ᵥ na = 0 ∧ px ⬝ᵥ nb = 0 ∧ LinearIndependent K ![pa, px, pb] := by
-  classical
   set m : Submodule K (Fin 4 → K) :=
     ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![na, nb] j)) with hm
   have hmdim : Module.finrank K m = 2 := finrank_toDualPerp_pair_eq hab
@@ -387,7 +386,6 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
 theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
     (hab : LinearIndependent K ![na, nb]) (p : Fin 3 → Fin 4 → K)
     (h : ∀ i, p i ⬝ᵥ na = 0 ∧ p i ⬝ᵥ nb = 0) : ¬ LinearIndependent K p := by
-  classical
   intro hp
   set m : Submodule K (Fin 4 → K) :=
     ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![na, nb] j)) with hm

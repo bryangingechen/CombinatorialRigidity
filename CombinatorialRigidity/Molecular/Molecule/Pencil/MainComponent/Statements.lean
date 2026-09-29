@@ -63,7 +63,6 @@ theorem hasGenericPencilRealization_of_IH [Infinite K] [Finite α] [Finite β] {
     (hfeas : PencilNondegFeasible K G)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
     HasGenericPencilRealization K 3 G := by
-  classical
   have hG : G.IsX0Graph :=
     { simple := hS
       connected := Graph.connected_iff.mpr ⟨Set.nonempty_of_ncard_ne_zero (by omega),

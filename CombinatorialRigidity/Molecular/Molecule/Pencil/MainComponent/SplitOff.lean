@@ -93,7 +93,6 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
       Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (G.splitOff (x 0) a b (e 0))
           (Function.update ends (e 0) (a, b)) n).toBodyHinge.rigidityRows) + (screwDim k - 1) := by
-  classical
   set G'' := G.splitOff (x 0) a b (e 0) with hG''
   set ends'' := Function.update ends (e 0) (a, b) with hends''
   set F := (PanelHingeFramework.ofNormals G ends n).toBodyHinge with hF
@@ -419,7 +418,6 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     (h₁ : (G.splitOff (x 0) a b (e 0)).X0Attains K)
     (hδ : (G.induce V₁).deficiencyMerged 3 a b + 5 ≤ (G.induce V₁).deficiency 3) :
     G.X0Attains K := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   have : Inhabited α := ⟨a⟩
   have hV : V(G).Nonempty := hG.connected.nonempty

@@ -326,7 +326,6 @@ theorem exists_mvPolynomial_le_finrank_sup_span_pointJoin {ι : Type*}
       N ≤ Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range fun i =>
         pointJoin (fun j => MvPolynomial.eval s (P (u i, j)))
           (fun j => MvPolynomial.eval s (P (w i, j))))) := by
-  classical
   set b := Module.finBasis K ρ with hb
   set g : (σ → K) → Fin (Module.finrank K ρ) ⊕ ι → ScrewSpace K 2 := fun s =>
     Sum.elim (fun i => (b i : ScrewSpace K 2)) (fun i =>

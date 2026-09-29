@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–10 landed; 38 of 49 one-commit tasks remain. **Next concrete task:** task 11, B1c, dead
-`classical` and unforced `noncomputable` in `MainComponent/` part 2 (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–11 landed; 37 of 49 one-commit tasks remain. **Next concrete task:** task 12, B1d, dead
+`classical` and unforced `noncomputable` outside the pencil tree (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 11, B1c** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–10 landed, 38 remain. Nothing is mid-stream.
+**Next commit: task 12, B1d** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–11 landed, 37 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–10 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b). Outcome detail goes on the task's checklist line,
-not here, so this section stays the forward pointer.
+Landed so far, one line each under the checklist: tasks 1–11 (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c). Outcome detail goes on the task's
+checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -191,9 +191,14 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     Configuration 1/3, 3/4; Flat 2/5, 10/11; Bridge 1/3, –; Cut 2/8, 2/2; Contract 1/3, –;
     ContractCurve 3/23, 9/9; ContractAdditive 1/1, –. No downstream file outside the 8-file batch
     needed a restore. Per-site detail in the commit message.
-  - [ ] **11. B1c, `MainComponent/` part 2** (50 / 13). `Chain` 4, `Ear` 4, `EarGen` 1/7, `Lines` 2/3,
-    `Short` 1, `Orbit` 2/1, `SplitOff` 3, `CoverageCut` 1, `CoverageTheoremS` 5, `GenericBase` 9/1,
-    `GenericEar` 4, `GenericSteer` 5/1, `GenericTriangle` 4, `GoodEar` 3, `Statements` 2.
+  - [x] **11. B1c, `MainComponent/` part 2** (63 sites: 50 classical / 13 noncomputable; this
+    commit). 23 classical kept as the project-standard bridge, 27 deleted as dead; all 13
+    noncomputable kept (a genuine noncomputable dependency), 0 deleted. Per file (classical
+    kept/total, noncomputable kept/total): Chain 2/4, –; Ear 3/4, –; EarGen 0/1, 7/7; Lines 2/2,
+    3/3; Short 1/1, –; Orbit 1/2, 1/1; SplitOff 1/3, –; CoverageCut 0/1, –; CoverageTheoremS 1/5, –;
+    GenericBase 4/9, 1/1; GenericEar 2/4, –; GenericSteer 3/5, 1/1; GenericTriangle 2/4, –;
+    GoodEar 0/3, –; Statements 1/2, –. No downstream file outside the 15-file batch needed a
+    restore. Per-site detail in the commit message.
   - [ ] **12. B1d, outside the tree** (Phase-40-added lines only; 24 / 3). `Induction/SparseDeficiency`
     16, `Deficiency` 3, `Induction/SplitOffDeficiency` 2, `Induction/ReducibleVertex` 1,
     `Mathlib/LinearAlgebra/Matrix/MvPolynomial` 1, `AlgebraicInduction/Coupling` 1 (**⚠Z**);
@@ -440,16 +445,19 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 11, B1c.** Dead `classical` and unforced `noncomputable` in
-`MainComponent/` part 2 (50 `classical` / 13 `noncomputable`; per-file counts in the checklist:
-`Chain` 4, `Ear` 4, `EarGen` 1/7, `Lines` 2/3, `Short` 1, `Orbit` 2/1, `SplitOff` 3, `CoverageCut` 1,
-`CoverageTheoremS` 5, `GenericBase` 9/1, `GenericEar` 4, `GenericSteer` 5/1, `GenericTriangle` 4,
-`GoodEar` 3, `Statements` 2). Same method as tasks 9–10 (just landed): delete every `classical`
-line and every `noncomputable` on a `def` in the batch's files, whole-project build, restore
-exactly the ones whose removal breaks the build (a break anywhere, including outside the batch, is
-that site's restore signal — tasks 9–10 found every break stayed inside its own batch, including a
-within-batch cascade where fixing one `noncomputable` site forced a second downstream one in the
-same file), record removed/kept counts per file. Lean, no blueprint. Then continue in task order.
+**Next concrete commit: task 12, B1d.** Dead `classical` and unforced `noncomputable` outside the
+pencil tree, Phase-40-added lines only (24 `classical` / 3 `noncomputable`; per-file counts in the
+checklist: `Induction/SparseDeficiency` 16, `Deficiency` 3, `Induction/SplitOffDeficiency` 2,
+`Induction/ReducibleVertex` 1, `Mathlib/LinearAlgebra/Matrix/MvPolynomial` 1,
+`AlgebraicInduction/Coupling` 1 (**⚠Z**); `noncomputable` in `Molecule/Duality` 73 and
+`Molecule/ProjectiveInvariance` 79, 236 (**⚠Z**, carrier)). Same method as tasks 9–11 (just
+landed): delete every `classical` line and every `noncomputable` on a `def` in the batch's files,
+whole-project build, restore exactly the ones whose removal breaks the build (a break anywhere,
+including outside the batch, is that site's restore signal — tasks 9–11 found every break stayed
+inside its own batch, including within-batch cascades where fixing one site forced a second
+downstream one in the same file), record removed/kept counts per file. The two `AlgebraicInduction`/
+`Molecule` sites are **⚠Z** (fragility zone): the playbook floor applies to any producer-shaped fix
+there. Lean, no blueprint. This closes the B1 checklist item; task 13 starts the carried items.
 
 ## Decisions made during this round
 

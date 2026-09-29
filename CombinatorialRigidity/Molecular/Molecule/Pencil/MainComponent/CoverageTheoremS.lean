@@ -161,7 +161,6 @@ theorem _root_.Graph.IsChain.x0Reduces_of_chainUsable {G : Graph α β} (hG : G.
 theorem _root_.Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard {G : Graph α β}
     (hG : G.IsX0Graph) :
     3 * (V(G).ncard : ℤ) - ({v ∈ V(G) | G.degree v = 2} : Set α).ncard ≤ 2 * E(G).ncard := by
-  classical
   have : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   have hhs := Graph.handshake_degree_finset G
   rw [← Set.ncard_eq_toFinset_card _ G.edgeSet_finite] at hhs
@@ -191,7 +190,6 @@ three given bodies. -/
 theorem _root_.Graph.IsX0Graph.exists_degree_eq_two_notMem {G : Graph α β} (hG : G.IsX0Graph)
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {s : Set α}
     (hs : s.ncard ≤ 3) : ∃ v ∈ V(G), G.degree v = 2 ∧ v ∉ s := by
-  classical
   have hV3 := hG.three_le_ncard_vertexSet
   have h1 := hSv V(G) subset_rfl (by omega)
   rw [Graph.induce_vertexSet] at h1
@@ -260,7 +258,6 @@ theorem _root_.Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos {G : Graph 
     (hG : G.IsX0Graph) (hhubs : ∀ v w, G.degree v = 2 → G.Adj v w → 3 ≤ G.degree w)
     {x : α} (hx : x ∈ V(G)) (hx2 : G.degree x = 2) :
     (G.induce (V(G) \ {x})).partitionDef 3 id ≤ 0 := by
-  classical
   have hxX : x ∉ V(G) \ {x} := fun h => h.2 rfl
   have hins := Graph.partitionDef_induce_insert (G := G) (n := 3) hxX id
   rw [Set.insert_sdiff_singleton, Set.insert_eq_of_mem hx, Graph.induce_vertexSet,
@@ -297,7 +294,6 @@ theorem _root_.Graph.IsOpenEar.deficiency_three_induce_cycle {G : Graph α β} (
     (hadj : G.Adj a b) (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) :
     ({a, x 0, x 1, b} : Set α) ⊆ V(G) ∧ 2 ≤ ({a, x 0, x 1, b} : Set α).ncard ∧
       (G.induce {a, x 0, x 1, b}).deficiency 3 = 0 := by
-  classical
   obtain ⟨f, hf⟩ := hadj
   have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hear.isLink 1

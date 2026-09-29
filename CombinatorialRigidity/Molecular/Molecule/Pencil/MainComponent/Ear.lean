@@ -366,7 +366,6 @@ theorem finrank_span_rigidityRows_eq_add_of_motions {k : ℕ} [Finite α]
       S ∈ F'.infinitesimalMotions ∧ S x - S a ∈ K ∙ C₀) :
     Module.finrank K (Submodule.span K F.rigidityRows) =
       Module.finrank K (Submodule.span K F'.rigidityRows) + (screwDim k - 1) := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   rw [span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions]

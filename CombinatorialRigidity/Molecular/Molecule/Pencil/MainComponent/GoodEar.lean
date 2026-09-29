@@ -45,7 +45,6 @@ theorem _root_.Graph.exists_eq_triple_of_minimal [Finite α] [Finite β] {G : Gr
     (hty : ({e | ∃ z ∈ W₀ \ {y, u}, G.IsLink e y z} : Set β).ncard ≤ 1)
     (htu : ({e | ∃ z ∈ W₀ \ {y, u}, G.IsLink e u z} : Set β).ncard ≤ 1) :
     ∃ w, W₀ = {y, u, w} ∧ w ≠ y ∧ w ≠ u ∧ G.Adj y w ∧ G.Adj u w ∧ G.Adj u y := by
-  classical
   have hone : ∀ u q : α, ({e | ∃ y ∈ ({q} : Set α), G.IsLink e u y} : Set β).ncard ≤ 1 :=
     fun u q => Graph.ncard_setOf_isLink_le_one hG (x := u) (W := {q})
       (by rintro c₁ rfl c₂ rfl - -; rfl)
@@ -116,7 +115,6 @@ theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
       V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
       (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
       (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c := by
-  classical
   have := hS
   obtain ⟨g₁, hg₁⟩ := hyw
   obtain ⟨g₂, hg₂⟩ := huw
@@ -226,7 +224,6 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
       V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
       (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
       (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c) := by
-  classical
   have := hG.simple
   -- `W₀`, a minimal planar-rigid set
   obtain ⟨W₀, ⟨hW₀V, hW₀2, hW₀d⟩, hmin⟩ := Set.exists_min_image
