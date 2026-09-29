@@ -4,13 +4,22 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-The full task list below was populated at the open; no fix has landed yet. **Next concrete
-task:** T1, the stale toolchain status (docs only). Round manual: `CLEANUP.md`.
+Task 1 (T1) landed; 48 of 49 one-commit tasks remain. **Next concrete task:** task 2, B3, the
+linter silencers and heartbeat bump (Lean, 12 sites). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: T1** (*Lemma checklist*, task 1). The checklist holds 49 one-commit tasks, none
-started. Nothing is mid-stream.
+**Next commit: task 2, B3** (*Lemma checklist*). The checklist holds 49 one-commit tasks; task 1
+landed, 48 remain. Nothing is mid-stream.
+
+**Task 1 (T1) landed.** ROADMAP's toolchain row and `notes/ToolchainBumps.md` *Where this
+stands* were stale: `origin/master` had already caught up to `91fcd24a` (one commit behind
+local master) with a green *Build & deploy site* run, and hopscotch had stopped re-stamping
+issue #2 with the old pin-order false positive — it now tracks a genuine mathlib incompatibility
+at `ab64d1c`, with PR #1 offering the last-known-good bump to `0258e25`. Both surfaces rewritten;
+the `bump/lean-4.34.0-rc{1,2}` local-only branches (never pushed, now 498 commits behind master)
+are noted but left for the PI to delete or not. Detail: `notes/ToolchainBumps.md` *Where this
+stands*.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -72,7 +81,7 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 ### Status and small items
 
-- [ ] **1. T1: the stale toolchain status.** Docs only. ROADMAP's Status row *Toolchain bumps to
+- [x] **1. T1: the stale toolchain status.** Docs only. ROADMAP's Status row *Toolchain bumps to
   Lean v4.34.0-rc1 → rc2* still says "**Still unpushed — CI has never validated the stack**", and
   `notes/ToolchainBumps.md` *Where this stands — and the next concrete task* (lines 14–43) says
   `origin/master` is at `0920772` and CI has never validated the stack. On 2026-09-29,
@@ -428,10 +437,10 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 1, T1.** Rewrite the stale toolchain status in ROADMAP's toolchain row
-and in `notes/ToolchainBumps.md` *Where this stands*, after checking CI with
-`gh run list --branch master`. It is docs only, with no Lean and no blueprint. Then continue in
-task order. Each task above names its files, sites and done criterion.
+**Next concrete commit: task 2, B3.** Remove each of the 12 linter-silencer / heartbeat-bump
+sites listed under task 2 and rebuild; restore only the ones whose removal breaks the build, with
+a one-line comment. Lean, no blueprint. Then continue in task order. Each task above names its
+files, sites and done criterion.
 
 ## Decisions made during this round
 

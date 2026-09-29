@@ -14,32 +14,40 @@ never-`lake update` rule and its escape hatch) and *Automated mathlib bumps*
 ## Where this stands — and the next concrete task
 
 **Current pins (2026-08-24):** Lean `v4.34.0-rc2`, mathlib `8b36e867`,
-`Matroid` `2b92ee39`. Every gate green locally (the rc2 record's table).
+`Matroid` `2b92ee39`. Every gate green locally (the rc2 record's table), and
+this is still the tip: no bump has landed since.
 
-The rc1 stack (10 commits) is **merged into local `master`** — fast-forward
-from `bump/lean-4.34.0-rc1`, which still exists as a ref — and the **rc2 bump
-sits on top of it**, on `bump/lean-4.34.0-rc2`. The whole thing is **still
-unpushed**: `origin/master` sits at `0920772` (Phase-38 close, 2026-07-23),
-leaving local master **284 commits ahead**. So **CI has never validated any of
-it**, and the hopscotch workflow runs against `origin/master` — i.e. the
-*pre-fix* lakefile — so it will keep re-stamping issue #2 until master is
-pushed.
+**Pushed and CI-validated (checked 2026-09-29 via `gh run list --branch
+master` / `gh run view`).** `origin/master` has long since caught up —
+sitting at `91fcd24a` (one commit behind local master), with its *Build &
+deploy site* run green: [run
+36579395802](https://github.com/bryangingechen/CombinatorialRigidity/actions/runs/36579395802).
+The stack has been exercised by every push since, not just once. The
+`bump/lean-4.34.0-rc1` / `bump/lean-4.34.0-rc2` branches used to carry this
+work; both are still local-only (`gh api .../git/ref/heads/bump/...` 404s on
+origin — they were never themselves pushed) and are now **498 commits behind**
+`master`, fully merged into it (`git merge-base --is-ancestor` confirms).
+Whether to delete them is the PI's call; not acted on here.
 
-**Next concrete task: get CI onto this stack, then push `master`.** Nothing
-blocks it; the two routes differ in a way that is a real choice, not a
-formality:
+**Hopscotch stopped re-stamping issue #2 — it now tracks a real
+incompatibility, not the pin-order false positive.** Since the `require
+mathlib`-last fix and the push above, the daily `hopscotch (mathlib bump)`
+runs (all green in `gh run list`) bisect actual content again. Issue #2 was
+renamed once, on 2026-08-25, and has tracked the same genuine break since:
+first-bad commit
+[`ab64d1c`](https://github.com/leanprover-community/mathlib4/commit/ab64d1cdc0e5fd620fe0531593f8725c3cb079c8)
+("chore: don't inductively define sets (#42171)"). PR #1 offers the bump to
+the last-known-good rev
+[`0258e25`](https://github.com/leanprover-community/mathlib4/commit/0258e251f94ee225ff7549af5b8f5d06050c9afc),
+44 commits ahead of the current pin. **Both are live signal now, not stale
+artifacts — do not close either**, contra this section's previous plan
+(written while the false positive was still live).
 
-- **CI first (safer).** Push `bump/lean-4.34.0-rc2` and open a PR against
-  `master`; PRs build + lint but **skip** the Pages deploy. The diff is large
-  (284 commits) but the point is the build, not the review.
-- **Push `master` directly.** Simplest, and the local gates are green — but
-  every green `master` push **publishes** (blueprint, docs, upstreaming
-  dashboard via `docgen-action`). There is no "deploy later" knob, so this is
-  the first CI run *and* the deploy in one step.
-
-Then the post-merge tidying: close issue #2 / PR #1 (both stale false-positive
-artifacts), and the optional upstream hopscotch report the user is still
-weighing (see *The hopscotch false positive*).
+**Next concrete task:** none of this is blocking — the stack is on `master`
+and CI-green. The next real decision is a fresh one: whether to take PR #1's
+bump to `0258e25` (cheap, gated the usual way), or to chase the `ab64d1c`
+incompatibility to go further. Neither has been investigated yet; treat it as
+a new bump, not a continuation of this record.
 
 ---
 
