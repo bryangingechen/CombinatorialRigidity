@@ -59,6 +59,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short

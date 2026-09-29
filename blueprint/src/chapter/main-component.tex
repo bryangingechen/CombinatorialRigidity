@@ -4425,6 +4425,11 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[Steering a realization of a subgraph]
   \label{lem:pencil-generic-steer}
+  \lean{CombinatorialRigidity.Molecular.exists_pencilSeed_of_nondeg_of_selectors,
+        CombinatorialRigidity.Molecular.exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub,
+        CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_restrict_of_demoted,
+        CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_steer}
+  \leanok
   \uses{def:pencil-nondegenerate, def:pencil-generic-motive}
   Let $K$ be infinite.
   \textup{(a)} Let $G$ be simple and nondegeneracy-feasible and $H$ a
@@ -4445,6 +4450,7 @@ degree-two bodies enlarge the lifting space.
   0$ for every $j$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Points and hub normals are polynomial in the coordinates of a chart, and
   every nondegenerate realization is a chart point up to per-body scalars,
   for every correct choice of selectors: at each body the selected normals,

@@ -4,9 +4,9 @@
 PI's call, 2026-09-28; plan `notes/Phase40-design.md` §3 MOTIVES): after DIST+BASE (40n), **EARS**,
 then **REDUCE+CLOSE** by code. EARS greens the three nodes route B's assembly consumes at its two ear
 cases: the steering lemma, the one-ear step and the pendant-triangle step. Its pre-build recon
-compiled every leaf sorry-free, so the builds are transcriptions. **B1 landed** (T1, the reseed at
-given selectors, in `Pencil/Reseed.lean`; no node flips). **Next: B2** (T2 + T3, the steering
-lemma), then B3, B4, then the second read of (MC-190)–(MC-192), then the close — see *Hand-off*.
+compiled every leaf sorry-free, so the builds are transcriptions. **B1 and B2 landed** (T1 the
+reseed, T2+T3 the steering lemma; `lem:pencil-generic-steer` green). **Next: B3** (Z1, the one-ear
+step), then B4, then the second read of (MC-190)–(MC-192), then the close — see *Hand-off*.
 
 ## Current state
 
@@ -16,6 +16,17 @@ import), then `scratch/ears/Ears.lean` l.23–219 (the six T1 lemmas, ending wit
 `exists_pencilSeed_of_nondeg_of_selectors`) appended there. No blueprint node flips (T1 pins nothing
 on its own; it feeds B2's `lem:pencil-generic-steer`). `notes/FRICTION.md`'s `[mirror-candidate]`
 entry now records T1 as the lemma's second consumer and its new home.
+
+**B2 landed** (T2 + T3, the steering lemma): `scratch/ears/Ears.lean` l.221–956 moved verbatim into
+the new `Pencil/MainComponent/GenericSteer.lean` (importing `…Molecule.Pencil.Steer`), with the
+`hWF₂`-unused tidy-up (bound as `-`). Greens `lem:pencil-generic-steer`, statement and proof, pinned
+to all four planned names (`exists_pencilSeed_of_nondeg_of_selectors`,
+`exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
+`exists_isNondegPencilRealization_restrict_of_demoted` ((a)),
+`exists_isNondegPencilRealization_steer` ((b))); the node's restated (a)/(b) checked against the
+landed hypotheses before flipping — (a)'s "with normals independent on the closed hub-neighbourhood
+in `G`" clause is already part of `IsNondegPencilRealization G`'s own third conjunct, not a separate
+proof obligation. Root import added alphabetically (`GenericBase` < `GenericSteer` < `Lines`).
 
 The remaining three EARS nodes of `blueprint/src/chapter/main-component.tex`
 §`sec:main-component-statements` are still red and unpinned (the 40n convention). Each of B2–B4 adds
@@ -88,14 +99,16 @@ keeps its docstring.
   `PlaceReseed.lean`. **Landed** 2026-09-29: `lake build`/`lake lint`/`blueprint/verify.sh`/
   `blueprint/lint.sh` all clean; `#print axioms` on `exists_pencilSeed_of_nondeg_of_selectors` and
   `exists_extend_linearIndependent` show only the three standard axioms.
-- [ ] **B2 = T2 + T3** (l.221–956 → new `MainComponent/GenericSteer.lean`, importing
+- [x] **B2 = T2 + T3** (l.221–956 → new `MainComponent/GenericSteer.lean`, importing
   `…Molecule.Pencil.Steer`; ≈740 lines; greens `lem:pencil-generic-steer`, all four pins). In order:
   (MC-188) `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
   `Graph.closedNbhd_eq_insert`, `exists_coord_linearIndepOn_closedNbhd_of_demoted`,
   `exists_isNondegPencilRealization_restrict_of_demoted`, `IsFin3SelectorOf.isSome_of_ncard_eq_three`,
   `pencilDotPoly`, `pencilDotPoly_eval`, `exists_isNondegPencilRealization_steer`,
   `ncard_closedNbhd_eq_three_of_demoted`. **Tidy-up:** in the steering proof, `hWF₂` is obtained but
-  unused; bind it as `-`. Placement test: `PlaceSteer.lean`.
+  unused; bind it as `-`. Placement test: `PlaceSteer.lean`. **Landed** 2026-09-29: `lake build`/
+  `lake lint`/`blueprint/verify.sh`/`blueprint/lint.sh` all clean; `#print axioms` on all four pinned
+  declarations show only the three standard axioms.
 - [ ] **B3 = Z1** (l.958–1492 → new `MainComponent/GenericEar.lean`, importing `…GenericSteer` and
   `…MainComponent.CoverageChain`; ≈535 lines; greens `lem:pencil-generic-one-ear`). In order:
   `exists_mem_perp_pair_linearIndependent`,
@@ -123,13 +136,13 @@ keeps its docstring.
 
 ## Hand-off / next phase
 
-**Next concrete step: B2 = T2 + T3** (`scratch/ears/Ears.lean` l.221–956, new
-`MainComponent/GenericSteer.lean`, importing `…Molecule.Pencil.Steer`; ≈740 lines; greens
-`lem:pencil-generic-steer`, all four planned pins — checklist has the exact declaration order and
-the `hWF₂`-unused tidy-up). Placement test: `PlaceSteer.lean`. Then B3, B4, one sonnet build each,
-each greening one node. Then the second read of (MC-190)–(MC-192), after the builds and before the
-close, then the close. REDUCE+CLOSE follows: (MC-129), the route-B assembly from
-`scratch/40n-read/GenBase.lean`'s tail, with Z1's call passing one argument fewer, and both
+**Next concrete step: B3 = Z1** (`scratch/ears/Ears.lean` l.958–1492, new
+`MainComponent/GenericEar.lean`, importing `…GenericSteer` and `…MainComponent.CoverageChain`;
+≈535 lines; greens `lem:pencil-generic-one-ear`). Checklist has the exact declaration order and the
+dropped-`hnadj` architectural choice for the last lemma. Placement test: `PlaceEar.lean`. Then B4,
+one sonnet build each, each greening one node. Then the second read of (MC-190)–(MC-192), after the
+builds and before the close, then the close. REDUCE+CLOSE follows: (MC-129), the route-B assembly
+from `scratch/40n-read/GenBase.lean`'s tail, with Z1's call passing one argument fewer, and both
 headlines; its close closes Phase 40.
 
 ## Decisions made during this phase
