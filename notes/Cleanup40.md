@@ -1,11 +1,11 @@
 # The post-Phase-40 cleanup rounds (planning note)
 
-**Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI; none opened. Five cleanup rounds
+**Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI. Round 1, `40-cleanup`, opened
+2026-09-29 (`notes/Phase40-cleanup.md`); rounds 2–5 have not opened. Five cleanup rounds
 (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
 `40-factor`, `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the
-authority for the order and for which rounds are done. **The next concrete task:** open
-`40-cleanup`. Its first commit creates `notes/Phase40-cleanup.md` with the round's full task list
-(§2) and adds its ROADMAP Status row.
+authority for the order and for which rounds are done. **The next concrete task** is round 1's,
+named in `notes/Phase40-cleanup.md` *Hand-off / next phase*.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
