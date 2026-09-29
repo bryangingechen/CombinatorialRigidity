@@ -1095,6 +1095,37 @@ theorem linearIndependent_pointJoin_certHexagon :
   fin_cases i <;> refine Prod.ext ?_ ?_ <;> funext j <;> fin_cases j <;>
     simp [certPt, planarProj_apply, cross_apply, one_add_one_eq_two]
 
+/-! ## The certificate picture -/
+
+/-- **The certificate picture of a labelling** `lab : α → Fin 6`: body `w` is placed at the
+planar part of `Y (lab w)` (`certPt`). -/
+def certPicture (lab : α → Fin 6) : α × Fin 2 → K :=
+  fun p => certPt (lab p.1) ⟨p.2.val, (by omega)⟩
+
+/-- **The certificate heights of a labelling** `lab : α → Fin 6`: the height of `Y (lab w)`. -/
+def certHeights (lab : α → Fin 6) : α → K := fun w => certPt (lab w) 2
+
+/-- **At the certificate picture of `lab`, body `w` sits at `Y (lab w)`**, for any height function
+`z` that reads `w`'s correct height — the ear steps supply a height that agrees with
+`certHeights lab` at each labelled body without being equal to it as a function
+(`lem:pencil-chain-span-certificates`). -/
+theorem pencilConfigPoint_certPicture (lab : α → Fin 6) (z : α → K) (w : α)
+    (hw : z w = certPt (lab w) 2) :
+    pencilConfigPoint (certPicture (K := K) lab) z w = certPt (lab w) := by
+  funext t
+  fin_cases t
+  · rfl
+  · rfl
+  · exact hw
+  · change (1 : K) = certPt (lab w) 3
+    generalize lab w = l
+    fin_cases l <;> rfl
+
+/-- At the certificate picture and heights of `lab`, body `w` sits at `Y (lab w)`. -/
+theorem pencilConfigPoint_cert (lab : α → Fin 6) (w : α) :
+    pencilConfigPoint (certPicture (K := K) lab) (certHeights lab) w = certPt (lab w) :=
+  pencilConfigPoint_certPicture lab (certHeights lab) w rfl
+
 /-! ## Independent joins span the hinges -/
 
 /-- **The meet at a link lies on the `ofNormals` hinge there**, in either orientation

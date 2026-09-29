@@ -352,25 +352,6 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     push_cast at this ⊢
     linarith
 
-/-- **The certificate picture of a labelling** `lab : α → Fin 6`: body `w` is placed at the
-planar part of `Y (lab w)` (`certPt`). -/
-def certPicture (lab : α → Fin 6) : α × Fin 2 → K := fun p => certPt (lab p.1) ⟨p.2.val, (by omega)⟩
-
-/-- **The certificate heights of a labelling** `lab : α → Fin 6`: the height of `Y (lab w)`. -/
-def certHeights (lab : α → Fin 6) : α → K := fun w => certPt (lab w) 2
-
-/-- At the certificate picture and heights of `lab`, body `w` sits at `Y (lab w)`. -/
-theorem pencilConfigPoint_cert (lab : α → Fin 6) (w : α) :
-    pencilConfigPoint (certPicture (K := K) lab) (certHeights lab) w = certPt (lab w) := by
-  funext t
-  fin_cases t
-  · rfl
-  · rfl
-  · rfl
-  · change (1 : K) = certPt (lab w) 3
-    generalize lab w = l
-    fin_cases l <;> rfl
-
 /-- **BASE: a cycle attains** (Phase 40g CHAIN, `thm:pencil-x0-cycle`; the base of (MC-21)(a)):
 the cycle `a − x 0 − ⋯ − x (k − 1) − b − a` on `k + 2 ≥ 3` bodies attains on `X₀`, over every
 infinite field, with no further hypothesis. The certificate is the closed polygon on `k + 2`
@@ -600,18 +581,7 @@ theorem _root_.Graph.X0Attains.of_openEar [Infinite K] [Finite α] [Finite β] {
   set zs : α → K := fun w => if w = x1 ∨ w = x2 then 1 else 0 with hzsdef
   set lab : α → Fin 6 := fun w => if w = x0 then 1 else if w = x1 then 2 else if w = x2 then 3
     else if w = xl then 5 else if w ∈ Set.range x then 4 else 0 with hlabdef
-  set q₀ : α × Fin 2 → K := fun p => certPt (lab p.1) ⟨p.2.val, (by omega)⟩ with hq₀def
-  have hpt : ∀ w, zs w = certPt (K := K) (lab w) 2 →
-      pencilConfigPoint q₀ zs w = certPt (lab w) := by
-    intro w hw
-    funext t
-    fin_cases t
-    · rfl
-    · rfl
-    · exact hw
-    · change (1 : K) = certPt (lab w) 3
-      generalize lab w = l
-      fin_cases l <;> rfl
+  set q₀ : α × Fin 2 → K := certPicture lab with hq₀def
   have x01 : x0 ≠ x1 := hxne (by simp)
   have x02 : x0 ≠ x2 := hxne (by simp)
   have x12 : x1 ≠ x2 := hxne (by simp)
@@ -640,28 +610,35 @@ theorem _root_.Graph.X0Attains.of_openEar [Infinite K] [Finite α] [Finite β] {
   have hxmr : ∃ y, x y = xm := ⟨_, rfl⟩
   have pa : pencilConfigPoint q₀ zs a = certPt 0 := by
     have : lab a = 0 := by simp [hlabdef, ha0, ha1, ha2, hal, hax]
-    rw [hpt a (by simp [hzsdef, ha1, ha2, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs a (by simp [hzsdef, ha1, ha2, this, certPt]),
+      this]
   have pb : pencilConfigPoint q₀ zs b = certPt 0 := by
     have : lab b = 0 := by simp [hlabdef, hb0, hb1, hb2, hbl, hbx]
-    rw [hpt b (by simp [hzsdef, hb1, hb2, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs b (by simp [hzsdef, hb1, hb2, this, certPt]),
+      this]
   have p0 : pencilConfigPoint q₀ zs x0 = certPt 1 := by
     have : lab x0 = 1 := by simp [hlabdef]
-    rw [hpt x0 (by simp [hzsdef, x01, x02, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs x0 (by simp [hzsdef, x01, x02, this, certPt]),
+      this]
   have p1 : pencilConfigPoint q₀ zs x1 = certPt 2 := by
     have : lab x1 = 2 := by simp [hlabdef, x01.symm]
-    rw [hpt x1 (by simp [hzsdef, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs x1 (by simp [hzsdef, this, certPt]), this]
   have p2 : pencilConfigPoint q₀ zs x2 = certPt 3 := by
     have : lab x2 = 3 := by simp [hlabdef, x02.symm, x12.symm]
-    rw [hpt x2 (by simp [hzsdef, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs x2 (by simp [hzsdef, this, certPt]), this]
   have p3 : pencilConfigPoint q₀ zs x3 = certPt 4 := by
     have : lab x3 = 4 := by simp [hlabdef, x30, x31, x32, x3l, hx3r]
-    rw [hpt x3 (by simp [hzsdef, x31, x32, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs x3 (by simp [hzsdef, x31, x32, this, certPt]),
+      this]
   have pm : pencilConfigPoint q₀ zs xm = certPt 4 := by
     have : lab xm = 4 := by simp [hlabdef, xm0, xm1, xm2, xml, hxmr]
-    rw [hpt xm (by simp [hzsdef, xm1, xm2, this, certPt]), this]
+    rw [hq₀def, pencilConfigPoint_certPicture lab zs xm (by simp [hzsdef, xm1, xm2, this, certPt]),
+      this]
   have pl : pencilConfigPoint q₀ zs xl = certPt 5 := by
     have : lab xl = 5 := by simp [hlabdef, x0l.symm, x1l.symm, x2l.symm]
-    rw [hpt xl (by simp [hzsdef, x1l.symm, x2l.symm, this, certPt]), this]
+    rw [hq₀def,
+      pencilConfigPoint_certPicture lab zs xl (by simp [hzsdef, x1l.symm, x2l.symm, this, certPt]),
+      this]
   have hcert : LinearIndependent K
       (fun i => pointJoin (pencilConfigPoint q₀ zs (u6 i)) (pencilConfigPoint q₀ zs (v6 i))) := by
     have heq : (fun i =>

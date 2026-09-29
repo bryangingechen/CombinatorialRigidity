@@ -122,19 +122,10 @@ theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite �
   -- the flat certificate: `a, x 0, x 1, b` at `Y₄, Y₅, Y₀, Y₁`, at the heights `0`
   set lab : α → Fin 6 := fun w => if w = x 0 then 5 else if w = x 1 then 0 else if w = b then 1
     else 4 with hlabdef
-  set q₀ : α × Fin 2 → K := fun p => certPt (lab p.1) ⟨p.2.val, (by omega)⟩
-  have hpt : ∀ w, pencilConfigPoint q₀ 0 w = certPt (lab w) := by
-    intro w
-    funext t
-    fin_cases t
-    · rfl
-    · rfl
-    · change (0 : K) = certPt (lab w) 2
-      simp only [hlabdef]
-      split_ifs <;> rfl
-    · change (1 : K) = certPt (lab w) 3
-      generalize lab w = l
-      fin_cases l <;> rfl
+  set q₀ : α × Fin 2 → K := certPicture lab with hq₀def
+  have hpt : ∀ w, pencilConfigPoint q₀ 0 w = certPt (lab w) := fun w => by
+    rw [hq₀def]
+    exact pencilConfigPoint_certPicture lab 0 w (by simp only [hlabdef]; split_ifs <;> rfl)
   have la : lab a = 4 := by simp [hlabdef, (hax _).symm, hab]
   have l0 : lab (x 0) = 5 := by simp [hlabdef]
   have l1 : lab (x 1) = 0 := by simp [hlabdef, x01.symm]

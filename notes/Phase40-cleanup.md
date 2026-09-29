@@ -4,16 +4,16 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–4 landed; 45 of 49 one-commit tasks remain. **Next concrete task:** task 5, F1, the
-certificate-picture glue (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–5 landed; 44 of 49 one-commit tasks remain. **Next concrete task:** task 6, B6a, the
+`change`/`show` sites in the Phase 39 files (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 5, F1** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–4 landed, 45 remain. Nothing is mid-stream.
+**Next commit: task 6, B6a** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–5 landed, 44 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–4 (T1, B3 with its corrective
-follow-up, B8, B7). Outcome detail goes on the task's checklist line, not here, so this section
+Landed so far, one line each under the checklist: tasks 1–5 (T1, B3 with its corrective
+follow-up, B8, B7, F1). Outcome detail goes on the task's checklist line, not here, so this section
 stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
@@ -129,13 +129,14 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   - The `ite_eq_right`/`ite_eq_left` runs in `Ear.lean` and `ContractCurve.lean` go with task 7b.
     `this, certPt` (×6, `Chain.lean`) is task 5's, `hslot_*` is task 25's, and `hnu, hnv, hpu,
     hpv` is task 26's.
-- [ ] **5. F1: the certificate-picture glue** (the `[open]` FRICTION entry *The
-  certificate-picture glue is written out a third time*). The open's `rw` sweep found it again:
-  `this, certPt` ×6 at `Chain.lean` 643–664. Move `certPicture` to `Ear.lean` beside `certPt`,
-  with a height-general `pencilConfigPoint (certPicture lab) z w = certPt (lab w)` under
-  `z w = certPt (lab w) 2`. Use it in `Graph.X0Attains.of_openEar` (`Chain.lean`) and
-  `Graph.X0Attains.of_openEar_two` (`Short.lean`), and re-base `of_cycle`'s packaging on it. Close
-  the FRICTION entry.
+- [x] **5. F1: the certificate-picture glue** (the `[open]` FRICTION entry *The
+  certificate-picture glue is written out a third time*, now resolved). `certPicture`,
+  `certHeights` and a new height-general `pencilConfigPoint_certPicture` (`z w = certPt (lab w) 2`
+  as its hypothesis) moved to `Ear.lean` beside `certPt`; `pencilConfigPoint_cert` is now its
+  one-line corollary. `Graph.X0Attains.of_openEar` (`Chain.lean`) and `…of_openEar_two`
+  (`Short.lean`) both call it in place of their inline `funext`/`fin_cases`/`change` copy;
+  `of_cycle`'s packaging already used the moved names and needed no change. No statement, pin, or
+  docstring citation moved (none of the three names carry one outside this file trio).
 
 ### §B: `change`/`show`, cardinalities, and trial removals
 
@@ -435,13 +436,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 5, F1.** The certificate-picture glue (the `[open]` FRICTION entry
-*The certificate-picture glue is written out a third time*): move `certPicture` to `Ear.lean`
-beside `certPt`, with a height-general `pencilConfigPoint (certPicture lab) z w = certPt (lab w)`
-lemma, and use it to collapse the `this, certPt` ×6 run at `Chain.lean` 643–664 in
-`Graph.X0Attains.of_openEar` and `Graph.X0Attains.of_openEar_two` (`Short.lean`); re-base
-`of_cycle`'s packaging on it and close the FRICTION entry. Lean, no blueprint. Then continue in
-task order. Each task above names its files, sites and done criterion.
+**Next concrete commit: task 6, B6a.** The `change`/`show` sites in the Phase 39 files (35 sites:
+`Arms.lean`, `Base.lean`, `Chart.lean`, `Engine.lean`, `Pair.lean`, `Pair2.lean`, `Reseed.lean`,
+`Statement.lean`, `Steer.lean`, `X0.lean`); try the four listed clusters as fused lemmas first.
+⚠Z where a site is a ScrewSpace-carrier term. Lean, no blueprint. Then continue in task order.
+Each task above names its files, sites and done criterion.
 
 ## Decisions made during this round
 
