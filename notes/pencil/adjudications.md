@@ -1013,3 +1013,29 @@ This overrides the three-sub-phase text of the COVERAGE entry above where the tw
 named interfaces and the separate files stand. The recon's other flags were settled by precedent
 (the user's standing configuration) and are recorded in `notes/Phase40m.md` *Decisions made*.
 Work log `notes/Phase40m.md`.
+
+## 2026-09-28 — MOTIVES opens as 40n: three sub-phases, `G_e` from the Matroid apex graph, both headlines
+
+MOTIVES' pre-build recon (opus, read-only, compiler-checked; verdict in `notes/Phase40-design.md` §3
+MOTIVES) found `X0Dist` two lines over landed pieces, with no β-headroom anywhere, and the planned
+fibre route to `X0Gen` refuted at two hubs with three common neighbours ((MC-187)). It proved the
+generic motive inside the pencil reduction's own induction instead (route B, (MC-183)–(MC-186),
+awaiting a second read), compiled with four new-mathematics leaves as `sorry`. The coordinator put
+three calls to the PI; the answers are relayed verbatim in the coordinator's dispatch:
+
+```adjudication
+PI calls, 2026-09-28, this session (verbatim).
+Split: "(B) Three (Recommended)": "40n DIST+BASE (M0, B1–B3: 4–6 commits), 40o EARS (chart toolkit T1–T3, one-ear step, pendant triangle: 5–7), 40p REDUCE+CLOSE ((MC-129), assembly, Phase 40 close: 3–4). This matches the STEPS/COVERAGE group sizes. The second read of the route's new claims (MC-183)+ runs before 40o's ear builds."
+G_e: "Matroid `Graph.apex` (Recommended)": "`G.apex ↾ (inl '' E(G) ∪ {inr u, inr w})` compiles (scratch/40n/Apex.lean). It adds an import of `Matroid.Graph.Constructions.Sum`, two more upstream modules, about 20 s to build."
+Headline: "Both (Recommended)": "`pencil_conjecture` (spanning, `pencil_conjecture_of_X0 x0Dist x0Gen`, the L0 shape) plus the stronger `pencilPair_of_nonempty` (any nonempty G, no `[Nonempty α]`, `[DecidableEq β]` or spanning hypothesis), which it rests on."
+```
+
+**Decided.** MOTIVES runs as three sub-phases by stable code: **DIST+BASE** (the distinct statement
+and the generic realization at graphs with no planar-rigid set), which opens as 40n; **EARS** (the
+chart toolkit, the one-ear step and the pendant triangle); and **REDUCE+CLOSE** ((MC-129), the route-B
+assembly, both headlines and Phase 40's close). Only 40n's letter is minted. The auxiliary graph
+`G_e` of (MC-184) is the Matroid package's `Graph.apex` restricted. Both headlines land at the close.
+The second read of (MC-183)–(MC-187) runs before the first build that consumes one: BASE consumes
+(MC-184), so it runs before 40n's B1, which satisfies "before 40o's ear builds". The coordinator's
+call at the open: `pencil_conjecture_of_X0Gen` does not land (the close's `pencil_conjecture`
+supersedes it, and nothing consumes it). Work log `notes/Phase40n.md`.

@@ -31,8 +31,8 @@ planar deficiency adds with that of the contraction. The eleventh proves
 the partition estimates on sparse graphs that the structural coverage
 uses, and the twelfth records one step of the induction, shows that
 every graph satisfying the standing hypotheses admits one, and concludes
-that its general configuration attains; the last subsection states the
-passage back to the two statements.
+that its general configuration attains; the last subsection proves the two
+statements, the generic one inside the induction of the pencil reduction.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -4193,52 +4193,406 @@ additive core applies.
   under the cases above (\cref{rem:pencil-x0-theta}).
 \end{proof}
 
-\subsection{The passage to the two main-component statements}
+\subsection{The two main-component statements}
 \label{sec:main-component-statements}
 
-The theorem below has two parts. The first is the conclusion of a strong
-induction on the number of bodies, through the ear, split-off,
-contraction and cut steps, which the structural coverage completes. The
-second derives from the first the two main-component statements
+This subsection proves the two main-component statements
 (\cref{def:pencil-main-component-statements}), the hypotheses of
-\cref{thm:pencil-conditional-realization-main-component}.
+\cref{thm:pencil-conditional-realization-main-component}. The distinct
+statement follows from the covering theorem directly: one attaining
+configuration is an adjacent-distinct realization. The generic statement
+does not follow fibre by fibre. At a graph with two hubs and three common
+neighbours, $K_{2,3}$ the smallest, no configuration of the main component
+over a general picture is nondegenerate
+(\cref{lem:pencil-x0-two-hubs-obstruction}), and the generic realization
+lies on another component. It is proved inside the induction of the pencil
+reduction (\cref{thm:pencil-reduction}), whose hypothesis is the
+conditioned pair at every smaller graph. At a graph with no planar-rigid
+set of two or more bodies, the general configuration is nondegenerate
+(\cref{thm:pencil-x0-base-generic}). Otherwise a minimal planar-rigid set
+gives a body of degree two at non-adjacent hub ends across which the
+deficiency does not drop, or a pendant triangle
+(\cref{lem:pencil-rigid-good-ear}), and the generic realization of the
+smaller graph extends across it (\cref{lem:pencil-generic-one-ear},
+\cref{lem:pencil-generic-pendant-triangle}). The informal argument runs a
+separate induction over every graph satisfying the standing hypotheses; run
+inside the pencil reduction, the graphs that are not two-edge-connected are
+the cut-edge case (\cref{lem:pencil-cut-case}), and the pendant triangle at
+a body of degree three, which needs a bridge, never arises.
+
+\begin{lemma}[The distinct main-component statement]
+  \label{lem:pencil-x0-distinct-statement}
+  \uses{def:pencil-main-component-statements, def:pencil-distinct-motive}
+  Let $K$ be an infinite field. Every simple two-edge-connected
+  multigraph on at least three bodies has a pencil realization at the
+  deficiency rank with adjacent concurrency points distinct: the distinct
+  main-component statement (\cref{def:pencil-main-component-statements})
+  holds.
+\end{lemma}
+\begin{proof}
+  \uses{thm:pencil-x0-coverage, lem:pencil-x0-attains-distinct,
+        def:pencil-x0-standing, def:cut-edges-2ec}
+  A simple two-edge-connected multigraph on at least three bodies is
+  connected with minimum degree at least two (\cref{def:cut-edges-2ec}),
+  so it satisfies the standing hypotheses (\cref{def:pencil-x0-standing})
+  and its general configuration attains (\cref{thm:pencil-x0-coverage}).
+  One attaining configuration is such a realization
+  (\cref{lem:pencil-x0-attains-distinct}). No hypothesis on the number of
+  edge labels is used.
+\end{proof}
+
+\begin{lemma}[Feasibility bounds the hub neighbourhoods]
+  \label{lem:pencil-feasible-hub-conditions}
+  \uses{def:pencil-nondegenerate}
+  If a finite simple multigraph is nondegeneracy-feasible
+  (\cref{def:pencil-nondegenerate}), then every closed
+  hub-neighbourhood has at most three members, and no triangle contains
+  two pencil hubs.
+\end{lemma}
+\begin{proof}
+  At a nondegenerate realization the normals of a closed
+  hub-neighbourhood of $v$ are independent and all orthogonal to the
+  nonzero point of $v$, so there are at most three of them. At a triangle
+  with two hubs $y, z$, their normals are independent and the three
+  triangle points lie in their two-dimensional common orthogonal
+  complement; the third body's conjunct (independent points if it is not a
+  hub, a third independent normal if it is) cannot hold there.
+\end{proof}
+
+\begin{lemma}[Three bodies carry no proper rigid subgraph]
+  \label{lem:pencil-three-bodies-no-rigid}
+  \uses{def:rigid-subgraph}
+  A simple multigraph on exactly three bodies has no proper rigid
+  subgraph (\cref{def:rigid-subgraph}) at $n = 3$.
+\end{lemma}
+\begin{proof}
+  A proper rigid subgraph has exactly two bodies, and a rigid graph on
+  two bodies has at least two edges across the cut separating them, which
+  simplicity forbids.
+\end{proof}
+
+\begin{lemma}[Two hubs with three common neighbours]
+  \label{lem:pencil-x0-two-hubs-obstruction}
+  \uses{def:pencil-nondegenerate, def:pencil-configuration}
+  Let $a \ne b$ be pencil hubs of $G$ with three common neighbours $x, y,
+  z$. No pencil realization at which the points of $x$, $y$ and $z$ are
+  linearly independent is nondegenerate. In particular, over a planar
+  picture at which $q_x, q_y, q_z$ are not collinear, no height gives a
+  nondegenerate realization with the configuration points.
+\end{lemma}
+\begin{proof}
+  At a nondegenerate realization the normals of $a$ and $b$ are
+  independent, both lying in the closed hub-neighbourhood of $x$. Both
+  annihilate the points of $x$, $y$ and $z$, through the cross-incidence
+  along each of the six links, so three independent points would lie in a
+  two-dimensional space. The configuration points over non-collinear
+  picture points are independent, whatever the heights.
+\end{proof}
+
+A polynomial witnessing that the general configuration attains
+(\cref{def:pencil-x0-attains}) stays a witness when it is multiplied by the
+determinant of the homogeneous picture points of $x$, $y$ and $z$, nonzero at
+the picture $(0,0), (1,0), (0,1)$, so its good pictures can all be taken with
+the three points non-collinear. At $K_{2,3}$, which is
+nondegeneracy-feasible, every main picture is of that kind, since collinear
+degree-two bodies enlarge the lifting space.
+
+\begin{definition}[A new body joined to two bodies]
+  \label{def:pencil-two-ear-graph}
+  \uses{lem:pencil-jj-embed-edges}
+  For distinct bodies $u, w$ of $G$, the graph $G_{uw}$ is $G$ together
+  with one new body $x$ and two new edges, joining $x$ to $u$ and to $w$.
+  Its bodies and edges lie in larger types than $G$'s, as the edges of
+  \cref{lem:pencil-jj-embed-edges} do, so no label of $G$ is used.
+\end{definition}
+
+\begin{lemma}[The planes of two bodies separate without a planar-rigid set]
+  \label{lem:pencil-x0-planes-separate}
+  \uses{def:pencil-lifting-space, def:D-deficiency}
+  Let $K$ be infinite and $G$ simple, with at least three members in
+  every closed neighbourhood, and with $\operatorname{def}_2(G[Y]) \ne 0$
+  for every set $Y$ of at least two bodies. Let $u \ne w$ be bodies of
+  $G$. There is a nonzero polynomial $P$ in the picture coordinates such
+  that at every picture $q$ with $P(q) \ne 0$ some height $z \in L(q)$
+  has different planes at $u$ and $w$: the affine functions carrying $z$
+  on the closed neighbourhoods of $u$ and $w$ differ.
+\end{lemma}
+\begin{proof}
+  \uses{def:pencil-two-ear-graph, thm:pencil-jj-equality,
+        lem:deficiency-sparse}
+  A height of $G$ whose planes at $u$ and $w$ agree extends to $G_{uw}$
+  (\cref{def:pencil-two-ear-graph}), with the new body on that common
+  plane, injectively. For a partition of the bodies of $G_{uw}$, the new
+  body alone costs $1$, in a part other than those of $u$ and $w$ costs
+  $4$, and in the part of $u$ costs $2$ when $w$ lies elsewhere. In the
+  remaining case $u$ and $w$ share a part $X$ of at least two bodies, and
+  refining $X$ into singletons raises the value by the singleton value of
+  $X$, at least one by \cref{lem:deficiency-sparse}. So
+  $\operatorname{def}_2(G_{uw}) \le \operatorname{def}_2(G) - 1$.
+  Jackson and Jord\'an's equality (\cref{thm:pencil-jj-equality}) at
+  $G_{uw}$ and at $G$, at a picture general for both, gives that the
+  heights with equal planes at $u$ and $w$ form a subspace of dimension at
+  most $2 + \operatorname{def}_2(G)$, less than
+  $\dim L(q) = 3 + \operatorname{def}_2(G)$.
+\end{proof}
+
+\begin{lemma}[The hub normals of a configuration]
+  \label{lem:pencil-x0-conjunct-three}
+  \uses{def:pencil-nondegenerate, def:pencil-configuration}
+  Let $G$ satisfy the standing hypotheses, with every closed
+  hub-neighbourhood of at most three members. Let $q$ be an admissible
+  picture at which no hub and two of its hub neighbours have collinear
+  picture points, and let $z \in L(q)$. Suppose that the planes of the two
+  ends of every edge joining two hubs differ, and that the planes of the
+  two neighbours of every body of degree two whose neighbours are both hubs
+  differ. Then the configuration $(q, z)$ with its plane normals is a
+  nondegenerate pencil realization.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-config-distinct-realization, lem:pencil-condition-linear}
+  The configuration is a pencil realization with adjacent points distinct
+  (\cref{lem:pencil-config-distinct-realization}), and a non-hub's closed
+  neighbourhood, of at most three members with non-collinear picture
+  points, has independent points. Each normal is a nonzero multiple of
+  $(h_0, h_1, -1, h_2)$ for the plane $z = h_0 x + h_1 y + h_2$
+  (\cref{lem:pencil-condition-linear}), so independence of normals is
+  affine independence of planes. Every plane of a closed
+  hub-neighbourhood of $v$ contains the point of $v$. At a hub $v$ with
+  hub neighbours $w_1(, w_2)$, the difference of the planes of $v$ and
+  $w_i$ vanishes on the line $q_v q_{w_i}$, and these lines are distinct,
+  so the planes are affinely independent once each difference is nonzero.
+  At a body of degree two whose neighbours $a, b$ are hubs, the closed
+  hub-neighbourhood is $\{a, b\}$.
+\end{proof}
+
+\begin{theorem}[The general configuration is nondegenerate without a planar-rigid set]
+  \label{thm:pencil-x0-base-generic}
+  \uses{def:pencil-generic-motive, def:pencil-x0-standing}
+  Let $K$ be infinite and let $G$ satisfy the standing hypotheses, be
+  nondegeneracy-feasible, and have $\operatorname{def}_2(G[Y]) \ne 0$ for
+  every set $Y$ of at least two bodies. Then $G$ has a generic pencil
+  realization (\cref{def:pencil-generic-motive}).
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-x0-coverage, lem:pencil-x0-planes-separate,
+        lem:pencil-x0-conjunct-three, lem:pencil-x0-fibre-intersection,
+        lem:pencil-feasible-hub-conditions}
+  Every closed hub-neighbourhood has at most three members
+  (\cref{lem:pencil-feasible-hub-conditions}). Take a picture off the zero
+  sets of the attaining polynomial of \cref{thm:pencil-x0-coverage}, of
+  the general-position condition of \cref{lem:pencil-x0-conjunct-three},
+  and of the polynomials of \cref{lem:pencil-x0-planes-separate} for the
+  finitely many pairs \cref{lem:pencil-x0-conjunct-three} names. In its
+  fibre, the attaining heights and, for each pair, the heights with
+  different planes are each nonzero somewhere on $L(q)$, hence meet
+  (\cref{lem:pencil-x0-fibre-intersection}), and
+  \cref{lem:pencil-x0-conjunct-three} applies there.
+\end{proof}
+
+\begin{lemma}[Steering a realization of a subgraph]
+  \label{lem:pencil-generic-steer}
+  \uses{def:pencil-nondegenerate, def:pencil-generic-motive}
+  Let $K$ be infinite, $G$ simple and nondegeneracy-feasible, $V_1
+  \subseteq V(G)$ and $G' = G[V_1]$. Suppose every pencil hub $h$ of $G$
+  in $V_1$ that is not a hub of $G'$ has exactly two neighbours $u, w$ in
+  $V_1$, and every other neighbour of $h$ is not a hub of $G$. Then:
+  \textup{(a)} $G$ has a nondegenerate realization at which the points of
+  $h$, $u$ and $w$ are independent for every such $h$;
+  \textup{(b)} its restriction is a nondegenerate realization of $G'$, so
+  $G'$ is nondegeneracy-feasible, with normals independent on the closed
+  hub-neighbourhood in $G$ of every body of $V_1$;
+  \textup{(c)} if $G'$ has a generic pencil realization, it has one with,
+  besides, normals independent on the closed hub-neighbourhood in $G$ of
+  every body of $V_1$, and satisfying any finitely many further conditions
+  that are the non-vanishing of a polynomial in the chart coordinates and
+  hold at the restriction in \textup{(b)}.
+\end{lemma}
+\begin{proof}
+  Points and hub normals are polynomial in the coordinates of a chart, and
+  every nondegenerate realization is a chart point up to per-body scalars,
+  for every correct choice of selectors: at each body, the free slots of
+  its hub normals are filled with a basis of the rest of the orthogonal
+  complement of its point. \textup{(a)} The independence of the points of
+  $h$, $u$, $w$ holds at a chart point built from standard basis vectors,
+  since the other neighbours of $h$ are not hubs; a common chart point
+  with a reseeding of a nondegenerate realization of $G$ gives
+  \textup{(a)}. \textup{(b)} Restriction keeps every condition except the
+  point condition at the bodies that stop being hubs, which is
+  \textup{(a)}; the normal condition is $G$'s. \textup{(c)} Reseed the
+  generic realization and the restriction in one chart of $G'$; the rank
+  at the first and each condition at the second are nonzero polynomials,
+  and a common non-root gives the realization.
+\end{proof}
+
+\begin{lemma}[The generic realization across a one-body ear]
+  \label{lem:pencil-generic-one-ear}
+  \uses{def:pencil-generic-motive, def:D-deficiency}
+  Let $K$ be infinite and $G$ simple and nondegeneracy-feasible, with a
+  body $x$ of degree two whose neighbours $a$ and $b$ are non-adjacent
+  pencil hubs, and with $\operatorname{def}_3(G - x) \le
+  \operatorname{def}_3(G)$. If $G - x$ has a generic pencil realization
+  whenever it is nondegeneracy-feasible, then $G$ has a generic pencil
+  realization.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-generic-steer, lem:block-rank-ear,
+        lem:trivial-motions-rank-bound}
+  The ends that stop being hubs in $G - x$ have degree three in $G$, and
+  their third neighbour $x$ is not a hub, so \cref{lem:pencil-generic-steer}
+  applies with $V_1 = V(G) \setminus \{x\}$: $G - x$ is
+  nondegeneracy-feasible, and has a generic realization with normals
+  independent on every closed hub-neighbourhood in $G$, with $n_a, n_b$
+  independent, and with not both $p_a \perp n_b$ and $p_b \perp n_a$. The
+  last two hold at the restriction: the independent points of $x$, $a$,
+  $b$ of the realization of $G$ cannot lie in the two-dimensional common
+  orthogonal complement of $n_a$ and $n_b$. Then $p_a, p_b$ are
+  independent and the line $n_a^\perp \cap n_b^\perp$ is not the line
+  $p_a p_b$, so a point $p_x$ on the first off the second gives a
+  nondegenerate realization of $G$, the new hinges $p_a \wedge p_x$ and
+  $p_x \wedge p_b$ independent. By the rank addition along an open ear
+  (\cref{lem:block-rank-ear}) the rank rises by at least six, which is at
+  least $G$'s target by the deficiency hypothesis; the target bounds the
+  rank at every realization (\cref{lem:trivial-motions-rank-bound}).
+\end{proof}
+
+\begin{lemma}[The generic realization across a pendant triangle]
+  \label{lem:pencil-generic-pendant-triangle}
+  \uses{def:pencil-generic-motive}
+  Let $K$ be infinite and $G$ simple and nondegeneracy-feasible, with two
+  adjacent bodies $x_1, x_2$ of degree two, both joined to a body $c$ of
+  degree at least four. If $G - \{x_1, x_2\}$ has a generic pencil
+  realization whenever it is nondegeneracy-feasible, then $G$ has a
+  generic pencil realization.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pencil-generic-steer, lem:block-rank-cut-vertex,
+        lem:trivial-motions-rank-bound}
+  If $c$ stops being a hub, it has degree four in $G$ and its two removed
+  neighbours are not hubs, so \cref{lem:pencil-generic-steer} gives a
+  generic realization of $G - \{x_1, x_2\}$ with normals independent on
+  every closed hub-neighbourhood in $G$. Put $p_{x_1}, p_{x_2}$ in the
+  plane of $c$, independent of $p_c$ and of each other. The triangle's
+  three hinges are independent, so it adds rank twelve at the cut vertex
+  $c$ (\cref{lem:block-rank-cut-vertex}), and a triangle has deficiency
+  zero, so the target is met.
+\end{proof}
+
+\begin{lemma}[A minimal planar-rigid set has a good ear]
+  \label{lem:pencil-rigid-good-ear}
+  \uses{def:D-deficiency, def:cut-edges-2ec, def:pencil-nondegenerate}
+  Let $G$ be simple and two-edge-connected on at least four bodies, with
+  every closed hub-neighbourhood of at most three members and no triangle
+  containing two pencil hubs, and suppose $\operatorname{def}_2(G[Y]) = 0$
+  for some set $Y$ of at least two bodies. Then $G$ has a body $y$ of
+  degree two whose neighbours are non-adjacent pencil hubs with
+  $\operatorname{def}_3(G - y) \le \operatorname{def}_3(G)$, or two
+  adjacent bodies of degree two both joined to a body of degree at least
+  four.
+\end{lemma}
+\begin{proof}
+  \uses{lem:deficiency-sparse, lem:deficiency-merge-rigid}
+  Take $W_0$ minimal among the sets of at least two bodies with
+  $\operatorname{def}_2(G[W_0]) = 0$. If every body of $W_0$ were a hub,
+  each would have at most two neighbours in $W_0$, and $G[W_0]$ would be a
+  cycle of planar deficiency zero, hence a triangle of hubs; so some body
+  of $W_0$ has degree two, and the maximal path through it of bodies of
+  degree two lies in $W_0$. If it has at least two interior bodies,
+  removing two of them keeps the deficiency zero, and minimality leaves a
+  pendant triangle; its body has degree at least four, since degree three
+  would make its third edge a bridge. If it has one interior body $y$, its
+  ends are hubs, not adjacent (no triangle with two hubs), and $G[W_0] - y$
+  is connected with planar deficiency at most one. If it has no bridge it
+  has deficiency zero at $n = 3$, and merging along it
+  (\cref{lem:deficiency-merge-rigid}) gives the deficiency inequality; a
+  bridge would split it into two planar-rigid sides, which minimality
+  forces to single bodies, a triangle with two hubs.
+\end{proof}
+
+\begin{theorem}[The generic conjunct from the induction hypothesis]
+  \label{thm:pencil-generic-step}
+  \uses{def:pencil-generic-motive, def:pencil-conditioned-pair}
+  Let $K$ be infinite and $G$ simple and two-edge-connected on at least
+  three bodies, nondegeneracy-feasible, and suppose every multigraph on
+  fewer bodies, at least one, satisfies the conditioned pair at $n = 3$
+  (\cref{def:pencil-conditioned-pair}). Then $G$ has a generic pencil
+  realization.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-x0-base-generic, lem:pencil-three-bodies-no-rigid,
+        lem:pencil-feasible-hub-conditions, lem:pencil-rigid-good-ear,
+        lem:pencil-generic-one-ear, lem:pencil-generic-pendant-triangle}
+  $G$ satisfies the standing hypotheses. Without a planar-rigid set of at
+  least two bodies, \cref{thm:pencil-x0-base-generic} applies. On three
+  bodies $G$ is a triangle, with no proper rigid subgraph
+  (\cref{lem:pencil-three-bodies-no-rigid}), and the direct construction
+  on three bodies that the split case of
+  \cref{thm:pencil-conditional-realization-pair} uses applies. Otherwise
+  \cref{lem:pencil-rigid-good-ear} applies, with
+  \cref{lem:pencil-feasible-hub-conditions}, and gives a body of degree two
+  or a pendant triangle. The graph with it removed is simple, nonempty and
+  smaller, so the hypothesis gives its conditioned pair, whose generic
+  conjunct \cref{lem:pencil-generic-one-ear} or
+  \cref{lem:pencil-generic-pendant-triangle} extends to $G$.
+\end{proof}
+
+\begin{theorem}[The conditioned pair at every nonempty multigraph]
+  \label{thm:pencil-conditioned-pair-nonempty}
+  \uses{def:pencil-conditioned-pair}
+  Let $K$ be an infinite field. Every multigraph with at least one body
+  satisfies the conditioned pair at $n = 3$
+  (\cref{def:pencil-conditioned-pair}).
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-reduction, thm:pencil-generic-step,
+        lem:pencil-x0-distinct-statement, lem:pencil-cut-case,
+        lem:pencil-nonsimple-case}
+  Apply \cref{thm:pencil-reduction}, with the loop, base and cut-edge cases
+  as in \cref{thm:pencil-conditional-realization-pair}. The contraction and
+  split cases take one argument: at a loopless multigraph on at least three
+  bodies, the cut-edge case (\cref{lem:pencil-cut-case}) if it is not
+  two-edge-connected; if it is two-edge-connected and simple,
+  \cref{thm:pencil-generic-step} and \cref{lem:pencil-x0-distinct-statement}
+  give the generic and distinct conjuncts and the bare one follows; if it
+  is not simple, \cref{lem:pencil-nonsimple-case}.
+\end{proof}
 
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
-  \uses{def:pencil-x0-attains, lem:pencil-x0-one-witness,
-        lem:pencil-x0-attains-distinct, thm:pencil-x0-main-component,
-        def:pencil-distinct-motive, def:pencil-generic-motive,
-        def:D-deficiency, def:pencil-main-component-statements}
+  \uses{def:pencil-x0-attains, def:pencil-distinct-motive,
+        def:pencil-generic-motive, def:D-deficiency,
+        def:pencil-main-component-statements}
   For every simple connected multigraph $G$ of minimum degree at least
   two, the general configuration of $G$ attains the rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
   (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $n = 3$).
-  Granting this at every such
-  graph, the two main-component statements
-  (\cref{def:pencil-main-component-statements}) follow: the general
-  member of $X_0$ is a pencil realization at the deficiency rank with
-  adjacent points distinct (\cref{def:pencil-distinct-motive}), and,
-  wherever a nondegenerate realization exists at all, a generic one
+  Over an infinite field, the two main-component statements
+  (\cref{def:pencil-main-component-statements}) hold: every simple
+  two-edge-connected multigraph on at least three bodies has a pencil
+  realization at the deficiency rank with adjacent points distinct
+  (\cref{def:pencil-distinct-motive}), and, wherever a nondegenerate
+  realization exists at all, a generic one
   (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
-  \uses{thm:pencil-jj-equality, cor:pencil-jj-flat,
-        thm:pencil-x0-coverage}
-  The first claim is \cref{thm:pencil-x0-coverage}, a strong induction
-  on the number of bodies through ear, split-off, contraction and cut
-  steps. Each step exhibits one configuration over a main picture
-  attaining the target rank, which suffices by
-  \cref{thm:pencil-x0-main-component}, and their flat inputs
-  use Jackson and Jord\'an's equality in the form
-  \cref{thm:pencil-jj-equality}, derived from the planar rank theorem
-  \cref{thm:theorem-55-6-rows} in place of their pin-collinear
-  theorem~\cite{jacksonJordan2008pin}; where the two deficiencies agree
-  it is \cref{cor:pencil-jj-flat}. Granting the first claim, the
-  distinct statement needs a single attaining configuration
-  (\cref{lem:pencil-x0-attains-distinct}). The generic statement holds on
-  the dense open subset of a fibre $L(q)$ where a nondegenerate
-  realization survives: the attaining heights and the heights carrying a
-  nondegenerate realization are each nonempty and Zariski-open in $L(q)$,
-  so they meet by the fibre statement of
-  \cref{thm:pencil-x0-main-component}.
+  \uses{thm:pencil-x0-coverage, lem:pencil-x0-distinct-statement,
+        lem:pencil-x0-two-hubs-obstruction,
+        thm:pencil-conditioned-pair-nonempty}
+  The first claim is \cref{thm:pencil-x0-coverage}. Granting it, the
+  distinct statement needs one attaining configuration
+  (\cref{lem:pencil-x0-distinct-statement}). The generic statement does
+  not follow fibre by fibre: at a graph with two hubs and three common
+  neighbours, no configuration over a picture where the three are not
+  collinear is nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}).
+  It is proved inside the induction of \cref{thm:pencil-reduction}
+  instead (\cref{thm:pencil-generic-step}). At a graph with no
+  planar-rigid set of two or more bodies the general configuration is
+  nondegenerate (\cref{thm:pencil-x0-base-generic}). Otherwise a minimal
+  planar-rigid set gives a one-body ear at hub ends across which the
+  deficiency does not drop, or a pendant triangle
+  (\cref{lem:pencil-rigid-good-ear}), and the generic realization of the
+  smaller graph extends across it (\cref{lem:pencil-generic-one-ear},
+  \cref{lem:pencil-generic-pendant-triangle}). So every simple
+  two-edge-connected graph satisfies the conditioned pair
+  (\cref{thm:pencil-conditioned-pair-nonempty}), whose generic conjunct
+  is the generic statement.
 \end{proof}

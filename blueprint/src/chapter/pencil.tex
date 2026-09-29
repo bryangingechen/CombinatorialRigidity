@@ -1165,6 +1165,26 @@ class, and assembles the conditioned pair from these pieces.
   used, nor its hypothesis that an edge outside $E(G)$ is available.
 \end{proof}
 
+\begin{theorem}[The pencil conjecture]
+  \label{thm:pencil-conjecture}
+  \uses{def:pencil-conditioned-pair}
+  Let $K$ be an infinite field. Every multigraph on the whole ambient
+  body set satisfies the conditioned pair at $n = 3$
+  (\cref{def:pencil-conditioned-pair}): it has a pencil realization at
+  the deficiency rank, with adjacent concurrency points distinct when it
+  is simple, and a generic one when it is also nondegeneracy-feasible.
+  More generally, so does every multigraph with at least one body.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-conditional-realization-main-component,
+        thm:pencil-x0-generic-attains, thm:pencil-conditioned-pair-nonempty}
+  The two main-component statements hold over every infinite field
+  (\cref{thm:pencil-x0-generic-attains}), so
+  \cref{thm:pencil-conditional-realization-main-component} applies. The
+  general form is \cref{thm:pencil-conditioned-pair-nonempty}, on which
+  the generic statement's proof rests.
+\end{proof}
+
 \subsection{Girth and degree-two chains under no proper rigid subgraph}
 \label{sec:pencil-girth-chain}
 

@@ -951,7 +951,11 @@ discharge point.
   (MC-89), (MC-133), (MC-157)). Under the green-*modulo* rule the fuller
   exposition — the main component as a vector bundle over planar pictures, the
   flat rank, the ear/split-off/contraction/cut steps — is written at Phase
-  40's close, in Phase 40's chapter.
+  40's close, in Phase 40's chapter. *Rerouted at 40n's open (2026-09-28):*
+  `thm:pencil-x0-generic-attains`' generic half no longer intersects fibres of
+  `X₀` (refuted at two hubs with three common neighbours); it runs inside the
+  pencil reduction's induction (route B, (MC-183)–(MC-187)), which this
+  entry's account covers at the close.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
   [pending — held; handed to Phase 40 at the Phase-39 close,
   `notes/Phase40-design.md` §7] **(c)** the two kernel hypotheses are held as the fallback

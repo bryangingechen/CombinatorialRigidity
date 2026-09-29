@@ -22,7 +22,9 @@ sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as two 
 2026-09-28** (`notes/Phase40l.md`), three build commits from a compiler-checked recon's two
 sorry-free spikes; **40m = CHAINS + THEOREM-S closed 2026-09-28** (`notes/Phase40m.md`), five
 build commits from a compiler-checked recon's complete sorry-free spikes (§3 COVERAGE). **COVERAGE
-is done; MOTIVES is next**, not yet opened (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
+is done. MOTIVES runs as three sub-phases (PI, 2026-09-28): DIST+BASE = 40n, open**
+(`notes/Phase40n.md`), then EARS and REDUCE+CLOSE by code, from a compiler-checked recon whose route
+B ((MC-183)–(MC-187), awaiting a second read) replaces the planned fibre route (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -40,7 +42,10 @@ second-read form, so the job is transcription and formalization, not re-derivati
   - `X0Gen K α β` says the same graphs, when `PencilNondegFeasible K G` holds, have
     `HasGenericPencilRealization K 3 G`. This is (MC-133)(ii) restricted likewise.
 
-  **Phase 40 closes** when both are theorems and a headline carrying neither has landed.
+  **Phase 40 closes** when both are theorems and a headline carrying neither has landed. The
+  headlines are both (PI, 2026-09-28): `pencil_conjecture`, L0's spanning shape
+  (`pencil_conjecture_of_X0 x0Dist x0Gen`), and the stronger `pencilPair_of_nonempty` it rests on
+  (every nonempty `G`; no `[Nonempty α]`, `[DecidableEq β]` or spanning hypothesis).
 - **Field: every infinite field** (PI, 2026-09-25): `[Infinite K]`, no `CharZero`. The informal
   proof is written in characteristic 0 modulo Jackson–Jordán, and over any infinite field modulo
   (MC-33)(i) (the (MC-166) audit). SPINE2 removes the Jackson–Jordán dependence field-generally.
@@ -106,6 +111,18 @@ Caveat: they are not consumed **by this route**. All stay proved, and they retur
 the workbook's argument through the partition into maximal rigid sets (and (MC-67) with
 (MC-119)/(MC-120)).
 
+By MOTIVES' design recon (2026-09-28; route B, (MC-183), the PI's calls at 40n's open), the Step
+MC19 claims its Lean route does not consume:
+- (MC-123)(⇐): feasibility of the smaller graph comes by restriction ((MC-186)(b));
+- (MC-124), (MC-125) and (MC-128): no hub-plane chart `Z(G)` is formed, and no class theorem is used;
+- (MC-126)(iii)–(v), and (MC-126)(i)–(ii) as stated ((MC-185), (MC-186) are the forms consumed);
+- (MC-127)(c), the lollipop: route B meets only 2-edge-connected graphs;
+- (MC-130)'s own induction, (MC-131) and (MC-132);
+- (MC-13)(c)'s "if" direction and (MC-14)'s "only if".
+
+The same caveat applies: all stay proved (or measured), and they return if a re-route runs the generic
+motive by (MC-130)'s induction.
+
 ## 3. Layer plan (stable codes) and the proof map
 
 Layers are listed in dependency order. A letter is minted when a layer opens as a sub-phase.
@@ -140,7 +157,8 @@ field-general (§4). (MC-2)'s vector bundle and its irreducible closure are neve
 `thm:pencil-x0-main-component` is green at its formalized content, with the geometry in
 `rem:pencil-x0-main-component`; (MC-3)'s augmented-matrix rank split has no Lean object and is the
 remark `rem:pencil-hinge-affine`. (MC-10)(a) moved to COVERAGE. The accepted design (uncurried
-pictures, a single `X0Attains`, the β-headroom `_of_card` triple) and every decision are in
+pictures, a single `X0Attains`, the β-headroom `_of_card` triple, since retired by MOTIVES' recon)
+and every decision are in
 `notes/Phase40b.md`. **`Carrier.lean` split 2026-09-27** (before 40h's B3, PI decision 5;
 `notes/Phase40h.md`), at 1 496 lines (40f's build added the lifting system with weights), the
 ~1500-line tripwire: along its section headers, the picture-to-normal API, its polynomial mirror,
@@ -883,55 +901,74 @@ core above serves all three uses in the slots' own format. `chainData_of_isPath`
 wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear decomposition of a
 2-connected graph (ears of a growing subgraph, with no degree-two condition), a different notion.
 
-### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **next**, not yet opened (COVERAGE done 2026-09-28)
+### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, open** (`notes/Phase40n.md`); **EARS**; **REDUCE+CLOSE**
 
 | labels | step | 2nd |
 |---|---|---|
-| (MC-157) from (MC-89) | MC19 | ✓ 09-25 |
-| (MC-133)(ii) ← (MC-123), the hub-plane chart (MC-124)–(MC-129), the reduction (MC-130); nondegeneracy on `X₀` (MC-13)(a), (b) and (MC-14)'s union lemma | MC19, MC8 | ✓ 09-25 ((MC-130)'s cycle citation repaired) |
+| (MC-157) from (MC-89), at the 2EC graphs (`X0Dist`) | MC19 | ✓ 09-25 |
+| (MC-183), route B: the generic motive inside the pencil reduction's induction | MC19 | awaiting |
+| the base, at rigid-free graphs: (MC-184) (`G_e`, (MC-13)(a)–(b), (MC-172)), (MC-12), with (MC-89) and the fibre intersection | MC19, MC8 | (MC-12) ✓; (MC-184) awaiting |
+| (MC-129) at 2EC graphs (the good ear or a pendant triangle; no lollipop) | MC19 | ✓ 09-25 |
+| (MC-186) the formal hubs by steering; (MC-185) the one-ear extension; (MC-127)(b) the pendant triangle | MC19 | (MC-127) ✓; (MC-185), (MC-186) awaiting |
+| (MC-187), the obstruction to the fibre route | MC19 | awaiting |
 
-**Lean reuse.** `pencilChartFramework`/`PencilSeed`, `exists_pencilSeed_of_nondeg`, L6b
-(`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`), and
-`hasGenericPencilRealization_of_independent_pencilRow_target`. Landing both discharges L0's
-carried hypotheses and closes the phase. At the close, re-decide the held kernels (§6).
+**The recon's verdict (opus, read-only, compiler-checked, 2026-09-28; spikes in `scratch/40n/`,
+gitignored and local to the recon's checkout).**
+- **`X0Dist`** is two lines over landed pieces:
+  `(Graph.X0Attains.of_twoEdgeConnected hS hV htec).hasDistinctPencilRealization`.
+- **No β-headroom anywhere.** STEPS reuse labels, BRIDGE relabels its edges internally, every EARS
+  and REDUCE step removes bodies (`G.induce V₁`), and BASE's auxiliary graph `G_e` is a vertex-type
+  change: the Matroid package's `G.apex ↾ (inl '' E(G) ∪ {inr u, inr w}) : Graph (Option α) (β ⊕ α)`
+  (the PI's call; import `Matroid.Graph.Constructions.Sum`). CARRIER's `_of_card` triple and the two
+  questions this section carried (the `hcard` constant, the headroom's root cause) are retired.
+- **The planned fibre route to `X0Gen` fails** at two hubs with three common neighbours, `K_{2,3}` the
+  smallest ((MC-187), kernel-checked): no configuration over a picture where the three are not
+  collinear is nondegenerate, and any `X0Attains` witness can be shrunk to such pictures. So `X0Gen`
+  does not follow from `X0Attains` by intersecting sets inside one fibre `L(q)`; that argument is
+  sound only at the base.
+- **Route B** ((MC-183)). The generic conjunct at a simple 2EC feasible `G` is proved inside
+  `Graph.pencil_reduction`'s induction, from `PencilPair` at every smaller graph. The landed cut arm
+  covers the non-2EC graphs, so the lollipop (MC-127)(c) never arises. `X0Gen` is a corollary of
+  `pencilPair_of_nonempty`, and `pencil_conjecture` consumes `pencil_conjecture_of_X0` verbatim. The
+  composition compiles with four new-mathematics leaves as `sorry` (`Gen.lean`): BASE, (MC-129) at
+  2EC graphs, (MC-127)(a) and (MC-127)(b). (MC-185), the extension half of (MC-127)(a), is proved
+  sorry-free (`OneEar.lean`).
 
-**Consumes `Graph.X0Attains`** (CARRIER C1a, `notes/Phase40b.md` *Decisions*): `X0Dist` takes one
-attaining `(q, z)` through the landed `Graph.X0Attains.hasDistinctPencilRealization` (CARRIER C4);
-`X0Gen` intersects the fibre-open attaining set with a nondegenerate open set inside one fibre
-`L(q)`, through the landed fibre-intersection lemma `MvPolynomial.exists_mem_eval_ne_zero₂`
-(CARRIER C5′, `lem:pencil-x0-fibre-intersection`) and C3's polynomial plane normal
-`pencilNormalOfPicturePoly`. **The attaining input, landed at 40m** (`CoverageTheoremS.lean`):
-`Graph.X0Attains.of_twoEdgeConnected [Infinite K] (hS : G.Simple) (hV : 3 ≤ V(G).ncard)
-(htec : G.TwoEdgeConnected) : G.X0Attains K`, exactly `X0Dist`'s graphs, from
-`Graph.IsX0Graph.x0Attains`.
+**The split** (PI, 2026-09-28): **DIST+BASE = 40n** (M0, B1–B3; 4–6 commits); **EARS** (the chart
+toolkit T1–T3, the one-ear step, the pendant triangle; 5–7); **REDUCE+CLOSE** ((MC-129), the route-B
+assembly, both headlines, the phase close; 3–4). The second read of (MC-183)–(MC-187) runs before the
+first build that consumes one, so before 40n's B1. Signatures, spike pointers and placement are in
+`notes/Phase40n.md`; EARS' and REDUCE's leaves, as the recon named them:
+- **T1** the reseed at given selectors (`Reseed.lean`): a nondegenerate realization is a chart point
+  for every correct `hubSel`/`nbrSel`;
+- **T2** a standard-basis witness that the points around a hub that stops being a hub in `G′` are
+  independent (Phase 39's pendant witness with "every other neighbour is a non-hub" in place of the
+  single cut edge), the steering in `G`'s chart, and the restriction (`IsNondegPencilRealization.mono`);
+- **T3** the steering in `G′`'s chart (the pattern of
+  `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`);
+- **Z1** the one-ear step: `OneEar.lean`'s extension and the assembly; **Z2** the pendant triangle
+  (the cut-vertex rank law, `lem:block-rank-cut-vertex`);
+- **R** (MC-129) at 2EC graphs, over 40l's deficiency kit; **F1** `Gen.lean`'s assembly.
 
-**The blueprint node.** `thm:pencil-x0-generic-attains` (red) sits in the chapter's final stub
-subsection `sec:main-component-statements`. Its first sentence is COVERAGE's conclusion
-((MC-10)(a), by (MC-56)'s induction via (MC-89)); its "granting this" clause is MOTIVES.
+**Lean reuse** (corrected). Used: Phase 39's chart (`PencilSeed`, `pencilChartPoint`/`Normal`,
+`PencilChartWF`, `pencilChartFramework`, `exists_pencilSeed_of_nondeg`) with its steering engine
+(`exists_common_seed_pencilRow_and_polynomials`, `exists_fillNbr_pencilChartWF_of_standing`,
+`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`) and Witness.lean's
+idx/dtgt core; `IsNondegPencilRealization.mono`; the ear and cut-vertex rank laws; BRIDGE's equality
+at `G` and `G_e`; `pencilNormalOfPicturePoly` and `MvPolynomial.exists_mem_eval_ne_zero₂` (BASE's fibre
+intersection, the one place the fibre argument is sound); the landed cut arm
+`pencilPair_of_not_twoEdgeConnected` and the base leaf `pencilPair_of_habitat_ncard_eq_three`. **Not
+used:** L6b (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`), whose
+triangle-freeness excludes (F2)'s pendant triangles, since the smaller graph's feasibility comes by
+restriction; and `hasGenericPencilRealization_of_independent_pencilRow_target`, which carries
+`|closedHubNbhd| ≤ 3` and triangle-freeness, since route B builds the generic realizations directly.
 
-**β-headroom (CARRIER's design recon, `notes/Phase40b.md` *Architectural choices*).** Needed; the
-fix is an additive-successor `_of_card` triple (`x0Dist_of_card`, `x0Gen_of_card`,
-`pencil_conjecture_of_card`) concluding the unchanged L0 `X0Dist`/`X0Gen` and reusing
-`pencil_conjecture_of_X0` verbatim. **Two questions for the MOTIVES pre-build recon**, moved here
-from `notes/Phase40b.md` at CARRIER's close (the opus and fable recons disagreed; settle against
-the landed SPINE2 threading):
-- **(a) The exact `hcard` constant.** Opus read `bodyBarDim 3 · (|α|−1)` (= `6·`, matching
-  `molecular_conjecture_multigraph` and `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two`,
-  `Molecule/Pencil/Escape.lean`); fable read `3 · (|α|−1)`. Pin it against the SPINE2 producer's
-  actual `hfresh`/`hcard` threading.
-- **(b) The headroom's root cause.** Opus: the split-off's `e₀ ∉ E(G)` (the `hK`/`hbareSplit`
-  slots in `Escape.lean`). Fable (reading `splitOff`, `Induction/Operations.lean`): split-off can
-  reuse a freed label, and the real source is BRIDGE consuming SPINE2's `hfresh`. Sub-gap: the
-  landed fresh-edge supply lemma keys on sparsity (no proper rigid subgraph), while the split-off
-  step runs at `δ ≥ 5`; settle which supply lemma discharges `e₀ ∉ E(G)`.
-- **STEPS forces no headroom either** (the STEPS pre-build recon, 2026-09-26): every consumed
-  graph reuses labels (§3 STEPS, the step contract).
-- **BRIDGE forces no headroom** (the 40d design recon, 2026-09-26). Its Jackson–Jordán forms
-  carry no hypothesis on `β`: they relabel the edges into a larger label type (`Graph.embedEdges`,
-  §3 BRIDGE), so SPINE2's `hfresh` never reaches a consumer. Questions (a) and (b) stay open for
-  the MOTIVES recon, including the two label-reuse sources that recon named. The split-off
-  `G.splitOff x a b e₀` can take for `e₀` a freed label of the split vertex. `G′ + ab` at a chain
-  can reuse an ear-edge label.
+**The interface consumed** (landed at 40m, `CoverageTheoremS.lean`): `Graph.IsX0Graph.x0Attains` and
+`Graph.X0Attains.of_twoEdgeConnected`, exactly `X0Dist`'s graphs. **The blueprint nodes**: the fourteen
+new nodes of `sec:main-component-statements`, the rewritten `thm:pencil-x0-generic-attains`, and
+`thm:pencil-conjecture` (`pencil.tex`), red at the open with
+their planned pins in `notes/Phase40n.md`. `thm:pencil-x0-generic-attains`'s first sentence is
+COVERAGE's conclusion; its proof is rewritten to route B.
 
 ### The blueprint chapter
 
@@ -944,9 +981,11 @@ green, and so are all seven of STEPS', `sec:main-component-cut` (40e),
 `sec:main-component-sparse` and `sec:main-component-coverage`, were transcribed whole at 40l's open;
 REDUCE greened all of the first and the first two nodes of the second, and 40m the other eleven,
 five for CHAINS and six for THEOREM-S (`notes/Phase40m.md` *Current state*), so both are green.
-MOTIVES's stub subsection `sec:main-component-statements` is the last, and each later layer inserts its
-subsection before it. It is opened as red nodes transcribed from the proof map
-above, with statements from `ledger.py --brief`, never retyped. Transcribe a layer's section when
+MOTIVES' subsection `sec:main-component-statements` is the last; it was transcribed whole at 40n's
+open, fourteen new nodes and the rewritten `thm:pencil-x0-generic-attains` red and unpinned, with
+`thm:pencil-conjecture` red in `pencil.tex`, statements from `ledger.py --brief` and the recon's
+compiled spikes, never retyped; which sub-phase greens each node is in `notes/Phase40n.md`.
+Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
 the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
 checked by no gate). The Phase 39 nodes `def:pencil-main-component-statements` and
@@ -966,8 +1005,10 @@ end.
   either a `β`-headroom hypothesis like `hcard` or a type-changing induction; the informal proof
   never meets the issue. **If MOTIVES' proof needs headroom**, `X0Dist`/`X0Gen` as L0 pins them
   (no headroom) are stronger than what is proved. The fix is then an additive successor headline
-  carrying `hcard`, not an edit of L0's declarations. CARRIER's design recon decided it: headroom is
-  needed, and the fix is the `_of_card` triple (§3 MOTIVES).
+  carrying `hcard`, not an edit of L0's declarations. **Settled by MOTIVES' recon (2026-09-28): no
+  headroom is needed**, and CARRIER's `_of_card` triple is retired. STEPS reuse freed labels, BRIDGE
+  relabels its edges internally, MOTIVES' steps only remove bodies, and BASE's `G_e` changes the
+  vertex type (`Graph.apex`, §3 MOTIVES), as BRIDGE's `embedEdges` changes the edge type.
 - **Non-spanning uses** of the rank theorem at `H` and `G/H`. The landed
   `rankHypothesis_of_theorem_55_gen` is stated for spanning `G` with `hcard` headroom; SPINE2's
   non-spanning form is the fix.

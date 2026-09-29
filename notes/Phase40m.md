@@ -5,8 +5,8 @@ last sub-phase: **CHAINS** (the maximal ear through bodies of degree two, chains
 cut-vertex and bridge reductions, with (H) at every smaller graph) with **THEOREM-S** (Theorem S and
 the covering theorem) folded in, by the PI's call (2026-09-28, `notes/pencil/adjudications.md`;
 plan `notes/Phase40-design.md` §3 COVERAGE). Its close also closes COVERAGE: the general
-configuration attains at every graph satisfying (H). **Next: MOTIVES** (`X0Dist` and `X0Gen`),
-which closes Phase 40 — see *Hand-off*.
+configuration attains at every graph satisfying (H). **Next: 40n** (MOTIVES-DIST+BASE, opened
+2026-09-28): work log `notes/Phase40n.md`.
 
 ## Current state
 
@@ -84,18 +84,11 @@ All landed with the standard axioms (*Current state*); pins in **bold**.
 
 ## Hand-off / next phase
 
-**40m is closed, and COVERAGE with it. Next: MOTIVES** (`X0Dist` and `X0Gen`; design doc §3
-MOTIVES), Phase 40's last layer, which opens as its own sub-phase (lettered when it opens) and
-closes Phase 40. Its first concrete step is the design-first open: the **MOTIVES pre-build recon**
-(the 40l–40m precedent: compiler-checked, top rung), which settles the design doc's two open
-questions, **(a)** the exact `hcard` constant and **(b)** the β-headroom's root cause, against the
-landed SPINE2 threading, and then the open commit, which mints the letter and the work log and
-runs the red-node consistency gate on `thm:pencil-x0-generic-attains`. MOTIVES consumes
-`Graph.X0Attains.of_twoEdgeConnected` (and `Graph.IsX0Graph.x0Attains`) through the landed
-`Graph.X0Attains.hasDistinctPencilRealization` (`X0Dist`) and the fibre-intersection lemma
-(`X0Gen`). Its close updates the public surfaces (README, home_page, intro.tex,
-`formalization.yaml`), writes or closes the two `[pending]` exposition entries (design doc §7),
-and re-decides the held kernels (design doc §6).
+**40m is closed, and COVERAGE with it. MOTIVES continues in 40n**, DIST+BASE, the first of its three
+sub-phases (the PI's call at 40n's open, 2026-09-28), opened design-first from a compiler-checked
+recon that settled the headroom questions (none is needed) and replaced the fibre route to `X0Gen`
+by route B: work log `notes/Phase40n.md`. MOTIVES consumes this sub-phase's interface,
+`Graph.X0Attains.of_twoEdgeConnected` and `Graph.IsX0Graph.x0Attains`; its close closes Phase 40.
 
 ## Decisions made during this phase
 

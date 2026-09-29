@@ -57,6 +57,10 @@ connectivity, minimum-degree or vertex-count condition, and the consumers (`Esca
 characteristic-free (after its cycle bullet's repair), (MC-89) holds via (MC-141), and (MC-14) holds
 via (MC-13)(c)'s own field note.
 
+*The Lean route (2026-09-28, MOTIVES recon):* (ii) is proved inside the pencil reduction's induction,
+not by (MC-130)'s own; see *Route B* below, (MC-183)–(MC-187), awaiting a second read. The planned
+fibre argument from (i) alone fails at A′ graphs ((MC-187)).
+
 > **(MC-157)** `[PROVED-MOD]` *((MC-33); from (MC-89); the second reader's, 2026-09-25; strengthens
 > (MC-133)(i))* Let `K` have characteristic 0, let `G` satisfy (H), and let `α`, `β` be finite. Then
 > **`HasDistinctPencilRealization K 3 G`**. Feasibility is not needed. This is `PencilPair`'s second
@@ -493,6 +497,150 @@ occur. For the bridged populations, see (MC-158).
   draws. That would put (MC-123)'s genericity argument in doubt.
 - *(Closed at the second reading.)* The upper bound "rank ≤ target at every realization" that
   (MC-124) cites is the landed `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`.
+
+**Route B: the generic motive inside the pencil reduction's induction (2026-09-28, found by
+formalization).** *Added by the Phase-40 MOTIVES pre-build recon (opus, read-only,
+compiler-checked; `notes/Phase40-design.md` §3 MOTIVES). (MC-133)(ii)'s proof runs (MC-130)'s own
+strong induction over every feasible graph satisfying (H) and closes it with (MC-14) at the base.
+The Lean route proves the generic motive inside the induction of the pencil reduction
+(`thm:pencil-reduction`) instead, whose hypothesis is the conditioned pair at every smaller graph,
+and whose cut arm (`lem:pencil-cut-case`) already covers every graph that is not 2-edge-connected.
+The claims below record the route and its three changed steps, and the obstruction that rules out
+the planned fibre argument. **(MC-183)–(MC-187) are awaiting a second read** (the PI's call,
+2026-09-28, `notes/pencil/adjudications.md`): a fresh reader, before the first build that consumes
+one. (MC-183)'s composition, (MC-185) and (MC-187) are kernel-checked in compiled spikes (gitignored,
+local to the recon's checkout; `notes/Phase40n.md`); the rest are hand proofs. No driver. Notation
+as in Step MC8 and above: `Hub`, `C(v) = closedHubNbhd v`, `F(G, q)` the space of pairs `(z, P)` with
+`z ∈ L(q)` and `P_v` the plane of `N[v]`, and a def₂-**rigid set** is `Y ⊆ V(G)`, `|Y| ≥ 2`, with
+`def₂(G[Y]) = 0`.*
+
+> **(MC-183)** `[PROVED]` *(route B: the generic motive from the induction hypothesis; composes (MC-184)–
+> (MC-186) with (MC-129) and (MC-127)(b); found by formalization, MOTIVES recon 2026-09-28; the
+> composition kernel-checked with those five steps as hypotheses; awaiting a second read)* Let `K` be
+> infinite and `G` simple and 2-edge-connected on at least three bodies, `PencilNondegFeasible K G`,
+> and suppose every graph on fewer bodies (at least one) satisfies the conditioned pair `PencilPair K 3`.
+> Then **`HasGenericPencilRealization K 3 G`**. Consequently, run inside the pencil reduction, every
+> nonempty graph satisfies the conditioned pair, and in particular `X0Gen` holds.
+
+*Proof.* `G` satisfies (H).
+- If `G` has no def₂-rigid set, `X₀`'s general point attains ((MC-89)) and, by (MC-184) with (MC-12),
+  is nondegenerate at a common point of one fibre.
+- If `|V| = 3`, `G = C₃`, which has no proper rigid subgraph, and the pencil conjecture's `|V| = 3` base
+  case gives the realization.
+- Otherwise (MC-129) applies. A pendant triangle at a body of degree 3 would be joined to the rest by
+  one edge, so at a 2-edge-connected `G` the good ear is a one-body ear at hub ends with
+  `δ(G − y; a, b) = 0`, or a pendant triangle at a body of degree at least 4. No lollipop, (MC-127)(c),
+  arises.
+- In either case `G′`, `G` minus the ear or the triangle, is simple, nonempty and smaller, and feasible
+  by (MC-186)(b). The hypothesis gives its generic realization, and (MC-186)(c) with (MC-185), or with
+  (MC-127)(b)'s placement of the triangle in `π_a`, extends it to `G`.
+
+Inside the pencil reduction, a graph that is not 2-edge-connected is the landed cut case, a non-simple
+one has the generic and distinct conjuncts vacuous, and the step above is the rest. ∎
+
+> **(MC-184)** `[PROVED]` *(planes separate at a rigid-free graph, any pair; (MC-13)(a)–(c)'s "only
+> if", from edges to pairs; found by formalization, MOTIVES recon 2026-09-28; awaiting a second read)*
+> Let `K` be infinite and `G` simple, with `|N[v]| ≥ 3` at every body and no def₂-rigid set. Let
+> `u ≠ w` be bodies of `G`. **Off a proper Zariski-closed set of pictures `q`, some `(z, P) ∈ F(G, q)`
+> has `P_u ≠ P_w`.**
+
+*Proof.* Let `G_e` be `G` plus one new body `x` joined to exactly `u` and `w` (the (MC-13) graph; `u ∼ w`
+is not assumed). In Lean it is the Matroid package's apex graph of `G` restricted to `E(G)` and the two
+new edges, on `Option α`, so no label of `β` is used.
+- `{(z, P) ∈ F(G, q) : P_u = P_w}` injects into `F(G_e, (q, q_x))` by `z_x := P_u(q_x)`, `P_x := P_u`:
+  at `x` the plane `P_u` carries `z_u` and `z_w = P_w(q_w) = P_u(q_w)`, and at `u` and `w` the new
+  neighbour lies on `P_u = P_w`. This is (MC-13)(a)'s easy half, with no condition on `q_x`.
+- `def₂(G_e) ≤ def₂(G) − 1`. Take a partition of `V(G_e)` and restrict it to `V(G)`. As in (MC-13)(b),
+  `x` alone costs 1, `x` in a part other than `u`'s and `w`'s costs 4, and `x` in `u`'s part costs 2 when
+  `w` is elsewhere. In the remaining case `u, w` share a part `X`, `|X| ≥ 2`, and refining `X` into
+  singletons raises the value by `X`'s singleton value, which is at least 1 at a rigid-free graph
+  ((MC-76), `lem:deficiency-sparse`); so the restriction is at most `def₂(G) − 1`.
+- Jackson–Jordán's equality (MC-172) at `G_e` and at `G`, at a picture generic for both, gives
+  `dim{P_u = P_w} ≤ 3 + def₂(G_e) ≤ 2 + def₂(G) < 3 + def₂(G) = dim F(G, q)`. ∎
+
+At a rigid-free graph every hub pair of (MC-12)(ii) and (iii) is such a pair, and (MC-12)'s affine
+reading turns the finitely many resulting nonzero polynomials on `L(q)` into conjunct 3; the fibre
+intersection (`lem:pencil-x0-fibre-intersection`) meets them with the attaining heights. That is the
+base of (MC-183), in place of (MC-14), whose "if" direction it is at rigid-free graphs.
+
+> **(MC-185)** `[PROVED]` *(the one-ear extension; (MC-127)(a)'s rank and placement, with a weaker
+> flag condition than (MC-126)(ii); found by formalization, MOTIVES recon 2026-09-28; kernel-checked;
+> awaiting a second read)* Let `G` be simple with a one-body open ear `a − x − b` on `V₁`, `a` and `b`
+> hubs of `G`, and `def₃(G[V₁]) ≤ def₃(G)`. Let `(F′, n, p)` be a nondegenerate realization of `G[V₁]`
+> at its deficiency rank with **(i)** `n` independent on `C_G(v)` for every `v ∈ V₁`, **(ii)** `n_a, n_b`
+> independent, and **(iii)** not both `p_a ⊥ n_b` and `p_b ⊥ n_a`. Then **`HasGenericPencilRealization
+> K 3 G`**.
+
+*Proof.* By (iii), `p_a, p_b` are independent (a dependency puts both on `π_a ∩ π_b`), and the line
+`m = n_a^⊥ ∩ n_b^⊥` is not the line `p_a p_b`. Take `p_x ∈ m` off `span(p_a, p_b)`, so `p_a, p_x, p_b`
+are independent; `n_x` is the plane through them, and the new hinges are `p_a ∧ p_x`, `p_x ∧ p_b`.
+- Incidences: `p_x ∈ π_a ∩ π_b`, and `x`'s plane contains its three points.
+- Conjunct 3: at `v ∈ V₁` it is (i), since `x` is not a hub; at `x` it is (ii), `C(x) ⊆ {a, b}`.
+- Conjunct 4: at `x` by construction; elsewhere the closed neighbourhoods of non-hubs are unchanged,
+  since `a` and `b` are hubs.
+- Rank: the ear rank law ((MC-16) in rank form, `lem:block-rank-ear`) gives
+  `rank(G) = rank(G[V₁]) + 10 + dim(ρ + Λ) − 6 ≥ rank(G[V₁]) + 6`, the two new hinges being
+  independent. This is the target of `G[V₁]` plus 6, which is at least `G`'s target by
+  `def₃(G[V₁]) ≤ def₃(G)`; the upper bound holds at every realization. ∎
+
+(MC-126)(ii) asks for orbit (i), `p_a ∉ π_b` and `p_b ∉ π_a`. The step needs only that `m` and `p_a p_b`
+differ, and only the independence of the two new hinges enters the rank, not where `p_x` sits on `m`.
+(MC-129)'s `δ(G − y; a, b) = 0` gives the deficiency hypothesis through 40l's merge lemma
+(`lem:deficiency-merge-rigid`).
+
+> **(MC-186)** `[PROVED]` *(the formal hubs by steering; (MC-126)(i) in the form consumed; found by
+> formalization, MOTIVES recon 2026-09-28; awaiting a second read)* Let `K` be infinite, `G` simple and
+> feasible, `V₁ ⊆ V(G)` and `G′ := G[V₁]`. Suppose every hub `h` of `G` in `V₁` that is not a hub of `G′`
+> has exactly two neighbours `u, w` in `V₁`, and every other neighbour of `h` is a non-hub of `G` (at
+> (MC-127)(a) the ends of degree 3; at (MC-127)(b) the triangle's body of degree 4). Then:
+> **(a)** `G` has a nondegenerate realization at which the points of `N_{G′}[h] = {h, u, w}` are
+> independent, for every such `h`;
+> **(b)** its restriction is a nondegenerate realization of `G′` (so `G′` is feasible), with `n`
+> independent on `C_G(v)` for every `v ∈ V₁`;
+> **(c)** if `G′` has a generic realization, it has one at which, besides, `n` is independent on `C_G(v)`
+> for every `v ∈ V₁`, together with any finitely many further conditions that are the nonvanishing of a
+> polynomial in the chart seed and hold at the restriction in (b). At (MC-127)(a) these include
+> (MC-185)(ii) and (iii).
+
+*Proof.* Phase 39's chart (`PencilSeed`): the points and hub normals are polynomial in a seed, and every
+nondegenerate realization is a chart point up to per-body scalars (`exists_pencilSeed_of_nondeg`).
+- (a) The independence of `N_{G′}[h]`'s points is a polynomial condition on `G`'s seeds. A
+  standard-basis seed witnesses it: the construction of Phase 39's pendant witness, which needs only
+  (F1), (F2) and that `h`'s other neighbours are non-hubs. A common seed with `G`'s own nondegeneracy
+  conditions (witnessed at a reseeding of `G`'s feasible realization) gives (a).
+- (b) Restriction keeps every conjunct except conjunct 4 at the bodies that stop being hubs
+  (`IsNondegPencilRealization.mono`), and there it is (a). Conjunct 3 on `C_G(v)` is `G`'s.
+- (c) A nondegenerate realization is a chart point for **every** correct choice of selectors, not only
+  the one `exists_pencilSeed_of_nondeg` picks: at each body, fill the free slots of its hub normals
+  with a basis of the rest of that body's point's orthogonal complement. So the generic realization and
+  the restriction in (b) are chart points of one chart of `G′`. The rank at the first, and each condition
+  at the second, are nonzero polynomials on the seeds, and a common seed (Phase 39's steering, the
+  pattern of the pendant cut arm) gives the realization. At (MC-127)(a), (ii) and (iii) hold at the
+  restriction by `G`'s conjunct 3 and 4 at `x`: if `p_a ⊥ n_b` and `p_b ⊥ n_a`, the independent `p_x, p_a,
+  p_b` would lie in the 2-dimensional `n_a^⊥ ∩ n_b^⊥`. ∎
+
+This replaces (MC-126)(i)'s moment-curve witnesses by `G`'s own feasible realization, and (MC-123)(⇐)
+by restriction: feasibility of `G′` is never derived from (F1) and (F2).
+
+> **(MC-187)** `[PROVED]` *(the fibre route's obstruction; sharpens (MC-9); found by formalization,
+> MOTIVES recon 2026-09-28; kernel-checked; awaiting a second read)* Let `a ≠ b` be hubs of `G`
+> with three common neighbours `x, y, z`. **No realization at which `p_x, p_y, p_z` are independent
+> is nondegenerate.** Hence over a planar picture at which `q_x, q_y, q_z` are not collinear, no
+> height gives a nondegenerate realization with the configuration points `(q, z)`; and a witness of
+> `X₀`'s attaining (a nonzero picture polynomial `P` and, over each good picture, a height polynomial)
+> stays a witness after `P` is multiplied by the determinant of the three homogeneous picture points,
+> so that every good picture is of that kind.
+
+*Proof.* Conjunct 3 at `x` makes `n_a, n_b` independent, since `a, b ∈ C(x)`. Both annihilate
+`p_x, p_y, p_z` (the cross-incidence along each of the six links), so the three independent points
+lie in the 2-dimensional `n_a^⊥ ∩ n_b^⊥`. For the configuration points, picture independence lifts
+to independence of `(x_w, y_w, z_w, 1)`. The determinant is nonzero at `q_x = (0,0)`, `q_y = (1,0)`,
+`q_z = (0,1)`. ∎ At `K_{2,3}`, which is feasible by (MC-123) or L6b, every main picture has
+`q_x, q_y, q_z` non-collinear ((MC-9)), so the generic motive cannot come from `X₀` fibre by fibre.
+
+Off the route, as a consequence: (MC-123)(⇐), (MC-124), (MC-125), (MC-126)(iii)–(v), (MC-127)(c),
+(MC-128), (MC-130)'s own induction, (MC-131) and (MC-132), and (MC-13)(c)'s "if" and (MC-14)'s "only if"
+directions. All stay proved (or measured); they are not consumed.
 
 **Drivers** (`notes/scripts/w4/`, run from the repository root; `PYTHONHASHSEED=0`, seeds `20260924` / `1`; exact ℚ, ranks mod
 `2⁶¹ − 1` only as certificates; `zcore.py` is the shared core):

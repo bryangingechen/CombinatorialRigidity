@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40m ✓ (SPINE2 … CHAINS + THEOREM-S; COVERAGE done); next MOTIVES, not yet opened (see `notes/Phase40m.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40m ✓ (SPINE2 … COVERAGE); 40n ◐ (MOTIVES-DIST+BASE, MOTIVES' first of three) (see `notes/Phase40n.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1170,7 +1170,14 @@ infinite field. Layers by stable code, lettered only as each opens:
   **REDUCE** (sub-phase 40l: the one-step interface, the strong induction and the deficiency
   layer), then **CHAINS + THEOREM-S** (sub-phase 40m: chains, cycles, cut vertices and bridges,
   then the structural theorem and the covering theorem);
-- **MOTIVES** (next, not yet opened): the two statements.
+- **MOTIVES** (◐, three sub-phases, the PI's call, 2026-09-28): the two statements and the headline.
+  `X0Dist` follows from the covering theorem directly. `X0Gen` does not follow fibre by fibre (two
+  hubs with three common neighbours block it), so it is proved inside the pencil reduction's own
+  induction: at graphs with no planar-rigid set the general configuration is nondegenerate, and
+  otherwise a minimal planar-rigid set gives a one-body ear or a pendant triangle across which the
+  smaller graph's generic realization extends. **DIST+BASE** (sub-phase 40n, open: the distinct
+  statement and the rigid-free base), then **EARS** (the steering and the two ear steps) and
+  **REDUCE+CLOSE** (the good ear, the assembly, both headlines).
 
 The design doc carries the proof map, label by label.
 
@@ -1441,8 +1448,23 @@ argument serves the chain, the cycle and the chain of bridges: extend a path thr
 degree two as far as it goes. Theorem S needs no separate case for θ-graphs, which the informal
 case analysis sets apart. Five build commits from a compiler-checked recon's complete sorry-free
 spikes; no new mathematics. With it COVERAGE is done. Headline axioms unchanged (re-verified at the
-close). **Next: MOTIVES**, Phase 40's last layer (lettered when it opens), design-first from its
-pre-build recon; its close closes Phase 40.
+close). **Next:** 40n (below), MOTIVES' first sub-phase.
+
+#### Phase 40n — the distinct statement and the generic realization without a planar-rigid set (MOTIVES-DIST+BASE, MOTIVES' first sub-phase) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-28; work log `notes/Phase40n.md`). MOTIVES proves the
+two main-component statements, and its close closes Phase 40. Its pre-build recon (compiler-checked)
+found the distinct statement immediate from the covering theorem, and no bound on the number of edge
+labels needed anywhere. It refuted the planned route to the generic statement: at two hubs with three
+common neighbours, `K_{2,3}` the smallest, no general configuration of the main component is
+nondegenerate. Instead the generic realization is proved inside the pencil reduction's induction
+(route B, `notes/pencil/workbook/K-main-MC19.md` (MC-183)–(MC-187), awaiting a second read), which
+compiles with four new leaves open. This first sub-phase lands the distinct statement and small
+pieces (M0), then the generic realization at graphs with no planar-rigid set (B1–B3): the planes of
+any two bodies separate there, by Jackson–Jordán's equality at the graph with one new body joined to
+both, and the general configuration is then nondegenerate. The blueprint's
+`sec:main-component-statements` and `thm:pencil-conjecture` are transcribed red. **Next:** M0, then
+the second read of (MC-183)–(MC-187), then B1. EARS and REDUCE+CLOSE follow.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
