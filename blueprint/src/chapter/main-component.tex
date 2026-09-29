@@ -3495,7 +3495,8 @@ steps ask for.
 
 \begin{lemma}[Adding one body]
   \label{lem:deficiency-add-body}
-  \lean{Graph.partitionDef_induce_insert, Graph.deficiency_induce_insert_eq_zero}
+  \lean{Graph.partitionDef_induce_insert, Graph.deficiency_induce_insert_eq_zero,
+        Graph.partitionDef_two_induce_insert_id}
   \leanok
   \uses{def:D-deficiency}
   Let $X \subseteq V(G)$ and $u \notin X$, and let $P$ be a partition of
@@ -4562,6 +4563,9 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[A minimal planar-rigid set has a good ear]
   \label{lem:pencil-rigid-good-ear}
+  \lean{Graph.IsX0Graph.exists_oneEar_or_pendantTriangle, Graph.exists_eq_triple_of_minimal,
+        Graph.exists_closedEar_two_of_triangle}
+  \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency, def:cut-edges-2ec,
         def:pencil-nondegenerate}
   Let $G$ satisfy the standing hypotheses (\cref{def:pencil-x0-standing})
@@ -4574,6 +4578,7 @@ degree-two bodies enlarge the lifting space.
   common neighbour of degree at least four.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:deficiency-sparse, lem:deficiency-add-body,
         lem:deficiency-tight-rigid, lem:deficiency-merge-rigid,
         lem:deficiency-ear-merge}
@@ -4620,6 +4625,8 @@ degree-two bodies enlarge the lifting space.
 
 \begin{theorem}[The generic conjunct from the induction hypothesis]
   \label{thm:pencil-generic-step}
+  \lean{CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_IH}
+  \leanok
   \uses{def:pencil-generic-motive, def:pencil-conditioned-pair}
   Let $K$ be infinite and $G$ simple and two-edge-connected on at least
   three bodies, nondegeneracy-feasible, and suppose every multigraph on
@@ -4628,6 +4635,7 @@ degree-two bodies enlarge the lifting space.
   realization.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{def:pencil-x0-standing, thm:pencil-x0-base-generic,
         lem:pencil-three-bodies-no-rigid,
         lem:pencil-feasible-hub-conditions, lem:pencil-rigid-good-ear,
@@ -4648,12 +4656,16 @@ degree-two bodies enlarge the lifting space.
 
 \begin{theorem}[The conditioned pair at every nonempty multigraph]
   \label{thm:pencil-conditioned-pair-nonempty}
+  \lean{CombinatorialRigidity.Molecular.pencilPair_of_nonempty,
+        CombinatorialRigidity.Molecular.pencilPair_of_IH}
+  \leanok
   \uses{def:pencil-conditioned-pair}
   Let $K$ be an infinite field. Every multigraph with at least one body
   satisfies the conditioned pair at $n = 3$
   (\cref{def:pencil-conditioned-pair}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-reduction, thm:pencil-generic-step,
         lem:pencil-x0-distinct-statement, lem:pencil-cut-case,
         lem:pencil-nonsimple-case}
@@ -4669,6 +4681,9 @@ degree-two bodies enlarge the lifting space.
 
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
+  \lean{Graph.IsX0Graph.x0Attains, CombinatorialRigidity.Molecular.x0Dist,
+        CombinatorialRigidity.Molecular.x0Gen}
+  \leanok
   \uses{def:pencil-x0-attains, def:pencil-distinct-motive,
         def:pencil-generic-motive, def:D-deficiency,
         def:pencil-main-component-statements}
@@ -4685,6 +4700,7 @@ degree-two bodies enlarge the lifting space.
   (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-distinct-statement,
         lem:pencil-x0-two-hubs-obstruction,
         thm:pencil-conditioned-pair-nonempty}

@@ -25,9 +25,10 @@ the recon's proof-level departures D1–D3 (`notes/Phase40l.md` *Architectural c
   (`lem:deficiency-singleton-bound`) — if every nonempty subset has nonnegative singleton value,
   singletons are the optimal partition, and the distinguished part `Z₀ ∋ v` of any `f` can be
   split off without loss.
-* `Graph.partitionDef_induce_insert` / `Graph.deficiency_induce_insert_eq_zero`
-  (`lem:deficiency-add-body`) — the value identity for adding one body `u` to `X`, and (MC-75)(i):
-  a body with two neighbours in a rigid set joins it.
+* `Graph.partitionDef_induce_insert` / `Graph.deficiency_induce_insert_eq_zero` /
+  `Graph.partitionDef_two_induce_insert_id` (`lem:deficiency-add-body`) — the value identity for
+  adding one body `u` to `X`, (MC-75)(i): a body with two neighbours in a rigid set joins it, and
+  its singleton-partition specialization at `n = 2` (Phase 40p REDUCE+CLOSE).
 * `Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos` /
   `Graph.one_le_partitionDef_induce_id` (`lem:deficiency-sparse`) — a minimal set of nonpositive
   singleton value is rigid, hence (MC-76): a rigid-set-free graph has singleton value at least
@@ -334,6 +335,22 @@ theorem partitionDef_induce_insert [Finite α] [Finite β] {G : Graph α β} {n 
   simp only [partitionDef]
   rw [hcard, hparts]
   split_ifs <;> push_cast <;> ring
+
+/-- **The singleton value of adding one body**: `s′(Y ∪ u) = s′(Y) + 3 − 2 t`, `t` the edges from
+`u` into `Y` (`partitionDef_induce_insert` at `n = 2` and the singleton partition). -/
+theorem partitionDef_two_induce_insert_id [Finite α] [Finite β] {G : Graph α β}
+    {u : α} {Y : Set α} (huY : u ∉ Y) :
+    (G.induce (insert u Y)).partitionDef 2 id =
+      (G.induce Y).partitionDef 2 id + 3 - 2 * ({e | ∃ y ∈ Y, G.IsLink e u y} : Set β).ncard := by
+  classical
+  rw [partitionDef_induce_insert (n := 2) huY id, ite_eq_right (by simpa using huY),
+    bodyBarDim_two]
+  have hset : ({e | ∃ y ∈ Y, G.IsLink e u y ∧ id y ≠ id u} : Set β) =
+      {e | ∃ y ∈ Y, G.IsLink e u y} := by
+    ext e
+    exact ⟨fun ⟨y, hy, hl, _⟩ => ⟨y, hy, hl⟩,
+      fun ⟨y, hy, hl⟩ => ⟨y, hy, hl, fun h' => huY ((show y = u from h') ▸ hy)⟩⟩
+  rw [hset]; push_cast; ring
 
 /-- **(MC-75)(i)**: a body with two neighbours in a rigid set joins it (`D ≥ 3`). -/
 theorem deficiency_induce_insert_eq_zero [Finite α] [Finite β] {G : Graph α β} {n : ℕ}

@@ -3,18 +3,16 @@
 **Status:** in progress (opened design-first 2026-09-29). MOTIVES' third and last sub-phase (the
 PI's call, 2026-09-28; plan `notes/Phase40-design.md` §3 MOTIVES): after DIST+BASE (40n) and EARS
 (40o), **REDUCE+CLOSE** greens Phase 40's last five red nodes: (MC-129) at two-edge-connected
-graphs, the route-B assembly and both headlines. Its pre-build recon compiled all of it sorry-free
-with standard axioms, so the build is one transcription. **Next: B1**, then the Phase 40 close — see
-*Hand-off*.
+graphs, the route-B assembly and both headlines. **B1 landed**: all five nodes are `\leanok`,
+warning-free `lake build`/`lake lint`, green `blueprint/verify.sh`/`lint.sh`, and the standard three
+axioms on all nine pinned declarations. **Next: the Phase 40 close** — see *Hand-off*.
 
 ## Current state
 
-**Opened; no Lean yet.** The five nodes stay red and unpinned until B1 (the 40n convention):
-`lem:pencil-rigid-good-ear`, `thm:pencil-generic-step`, `thm:pencil-conditioned-pair-nonempty` and
-`thm:pencil-x0-generic-attains` (`main-component.tex` §`sec:main-component-statements`), and
-`thm:pencil-conjecture` (`pencil.tex`). This open restated the good-ear node (statement and proof)
-and the first sentence of `thm:pencil-x0-generic-attains` (*Decisions*). **B1's pins**, each red node
-also getting `\leanok` on its statement and its proof:
+**B1 landed.** All five nodes are green: `lem:pencil-rigid-good-ear`, `thm:pencil-generic-step`,
+`thm:pencil-conditioned-pair-nonempty` and `thm:pencil-x0-generic-attains` (`main-component.tex`
+§`sec:main-component-statements`), and `thm:pencil-conjecture` (`pencil.tex`), each `\leanok` on its
+statement and its proof, pinned as follows:
 - `lem:pencil-rigid-good-ear` ← `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`,
   `Graph.exists_eq_triple_of_minimal`, `Graph.exists_closedEar_two_of_triangle`;
 - `thm:pencil-generic-step` ← `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_IH`;
@@ -24,8 +22,16 @@ also getting `\leanok` on its statement and its proof:
   `CombinatorialRigidity.Molecular.x0Gen`;
 - `thm:pencil-conjecture` ← `CombinatorialRigidity.Molecular.pencil_conjecture`,
   `CombinatorialRigidity.Molecular.pencilPair_of_nonempty`;
-- `lem:deficiency-add-body` (green) adds `Graph.partitionDef_two_induce_insert_id` to its `\lean{}`: its
-  statement at the singleton partition, `D = 3`, so no text change.
+- `lem:deficiency-add-body` (green) gained `Graph.partitionDef_two_induce_insert_id` in its
+  `\lean{}`: its statement at the singleton partition, `D = 3`, so no text change.
+
+Placement: `partitionDef_two_induce_insert_id` sits in `Molecular/Induction/SparseDeficiency.lean`
+right after `partitionDef_induce_insert`; the three good-ear declarations are a new
+`Molecular/Molecule/Pencil/MainComponent/GoodEar.lean` over `MainComponent/CoverageTheoremS.lean`
+alone; the assembly and both headlines are in `MainComponent/Statements.lean`, alongside `x0Dist`.
+Gates run clean: `lake build` and `lake lint` warning-free, `blueprint/verify.sh` and `lint.sh`
+green, and `#print axioms` on all nine pinned declarations gives the standard three
+(`propext, Classical.choice, Quot.sound`).
 
 **The red-node consistency gate, run at this open.** Each of the five proofs routes through the
 argument its statement claims, and the good-ear proof is now the Lean route. Every `\uses` label
@@ -72,7 +78,7 @@ The coordinator's calls, 2026-09-29, on the recon's verdict:
 
 ## Lemma checklist
 
-- [ ] **B1** (one sonnet transcription commit; greens all five nodes). Source
+- [x] **B1** (one sonnet transcription commit; greens all five nodes). Source
   `scratch/40p/Close.lean`, three ranges, transcribed verbatim except as noted:
   - **l.14–28** `Graph.partitionDef_two_induce_insert_id` → `Molecular/Induction/SparseDeficiency.lean`,
     right after `partitionDef_induce_insert` (ends l.336), written `theorem
@@ -105,14 +111,15 @@ The coordinator's calls, 2026-09-29, on the recon's verdict:
 
 ## Blockers / open questions
 
-- **None for B1.** Every declaration is sorry-free at its planned place and imports.
+- **None for the close.** The three carried items (*Hand-off*) are PI calls, not blockers on
+  closing the phase.
 
 ## Hand-off / next phase
 
-**Next concrete step: B1**, one sonnet transcription (checklist): `scratch/40p/Close.lean` l.14–28
-into `SparseDeficiency.lean`, l.30–392 into the new `MainComponent/GoodEar.lean`, l.394–486 into
-`MainComponent/Statements.lean`, with the pins and `\leanok` on the five nodes. Then the Phase 40
-close. **It carries three items the recon did not settle** (coordinator, 2026-09-29):
+**B1 landed; next concrete step: the Phase 40 close** (`PHASE-BOUNDARIES.md` *When this commit
+closes a phase*): re-read the five nodes, the headline axioms, the design doc, ROADMAP,
+`notes/MolecularConjecture.md`, and the exposition ledger. **It carries three items the recon did
+not settle** (coordinator, 2026-09-29):
 - re-deciding the held kernels (`notes/Phase40-design.md` §6: (K-res)/`kres`, (K-c), (K-bare-c)
   with (α), smark's O7e programme): **the PI's call**, surfaced with options, not decided by the
   close;
@@ -136,3 +143,6 @@ The PI may also overturn choice 2 (N1–N4 without a second read) there.
   `thm:pencil-conjecture` is unchanged: its "whole ambient body set" is `[Nonempty α]`, the
   convention of the green `thm:pencil-conditional-realization-main-component`. The workbook's
   (MC-129) gains a one-line pointer to the Lean route.
+- **2026-09-29 — B1 landed**: the recon's spike transcribed verbatim to its three planned places
+  (*Current state*); no gap surfaced. All gates green; the standard three axioms on all nine
+  pinned declarations. Phase 40's last five red nodes are green.

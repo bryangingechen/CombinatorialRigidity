@@ -62,6 +62,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short

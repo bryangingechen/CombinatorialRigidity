@@ -1498,14 +1498,14 @@ greens Phase 40's last five nodes. A minimal planar-rigid set of a two-edge-conn
 body of degree two at hub ends across which the deficiency does not drop, or a pendant triangle at
 a body of degree at least four; the generic step and the conditioned pair at every nonempty graph
 follow inside the pencil reduction's induction, and with them the generic statement and both
-headlines, `pencil_conjecture` and `pencilPair_of_nonempty`. Its pre-build recon compiled all of it
-sorry-free with standard axioms. The good-ear proof is shorter than the informal one: it needs no
-cycle, no maximal chain and no bridge case, and gets the rigidity it needs from the tight-set
-lemma. That departure is recorded in the blueprint proof, not second-read (the 40l precedent). The
-good-ear node drops the non-adjacency of its ends, which nothing consumes. **Next:** one
-transcription build (the add-one-body identity in `SparseDeficiency.lean`, the good ear in a new
-`MainComponent/GoodEar.lean`, the assembly and both headlines in `MainComponent/Statements.lean`),
-then the Phase 40 close.
+headlines, `pencil_conjecture` and `pencilPair_of_nonempty`. The good-ear proof is shorter than the
+informal one: it needs no cycle, no maximal chain and no bridge case, and gets the rigidity it
+needs from the tight-set lemma. That departure is recorded in the blueprint proof, not second-read
+(the 40l precedent). The good-ear node drops the non-adjacency of its ends, which nothing consumes.
+**B1 landed** (the add-one-body identity in `SparseDeficiency.lean`, the good ear in a new
+`MainComponent/GoodEar.lean`, the assembly and both headlines in `MainComponent/Statements.lean`):
+a warning-free `lake build`/`lake lint`, green `blueprint/verify.sh`/`lint.sh`, and the standard
+three axioms on all nine pinned declarations. **Next:** the Phase 40 close.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -1167,6 +1167,9 @@ class, and assembles the conditioned pair from these pieces.
 
 \begin{theorem}[The pencil conjecture]
   \label{thm:pencil-conjecture}
+  \lean{CombinatorialRigidity.Molecular.pencil_conjecture,
+        CombinatorialRigidity.Molecular.pencilPair_of_nonempty}
+  \leanok
   \uses{def:pencil-conditioned-pair}
   Let $K$ be an infinite field. Every multigraph on the whole ambient
   body set satisfies the conditioned pair at $n = 3$
@@ -1176,6 +1179,7 @@ class, and assembles the conditioned pair from these pieces.
   More generally, so does every multigraph with at least one body.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-conditional-realization-main-component,
         thm:pencil-x0-generic-attains, thm:pencil-conditioned-pair-nonempty}
   The two main-component statements hold over every infinite field
