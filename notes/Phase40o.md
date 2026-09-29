@@ -4,16 +4,22 @@
 PI's call, 2026-09-28; plan `notes/Phase40-design.md` §3 MOTIVES): after DIST+BASE (40n), **EARS**,
 then **REDUCE+CLOSE** by code. EARS greens the three nodes route B's assembly consumes at its two ear
 cases: the steering lemma, the one-ear step and the pendant-triangle step. Its pre-build recon
-compiled every leaf sorry-free, so the builds are transcriptions. **Next: B1** (T1, the reseed at
-given selectors), then B2–B4, then the second read of (MC-190)–(MC-192), then the close — see
-*Hand-off*.
+compiled every leaf sorry-free, so the builds are transcriptions. **B1 landed** (T1, the reseed at
+given selectors, in `Pencil/Reseed.lean`; no node flips). **Next: B2** (T2 + T3, the steering
+lemma), then B3, B4, then the second read of (MC-190)–(MC-192), then the close — see *Hand-off*.
 
 ## Current state
 
-**Opened; no Lean yet.** The three EARS nodes of `blueprint/src/chapter/main-component.tex`
-§`sec:main-component-statements` are restated at this open to the compiled leaves (*Decisions*), red
-and unpinned (the 40n convention). Each build adds its node's `\lean{…}` and `\leanok` (statement
-and proof). **Planned pins:**
+**B1 landed** (T1, the reseed at given selectors): `exists_extend_linearIndependent` moved verbatim
+from `Pencil/Steer.lean` into `Pencil/Reseed.lean` (`Steer.lean` now reaches it through that existing
+import), then `scratch/ears/Ears.lean` l.23–219 (the six T1 lemmas, ending with
+`exists_pencilSeed_of_nondeg_of_selectors`) appended there. No blueprint node flips (T1 pins nothing
+on its own; it feeds B2's `lem:pencil-generic-steer`). `notes/FRICTION.md`'s `[mirror-candidate]`
+entry now records T1 as the lemma's second consumer and its new home.
+
+The remaining three EARS nodes of `blueprint/src/chapter/main-component.tex`
+§`sec:main-component-statements` are still red and unpinned (the 40n convention). Each of B2–B4 adds
+its node's `\lean{…}` and `\leanok` (statement and proof). **Planned pins:**
 - `lem:pencil-generic-steer` (B2) ← `CombinatorialRigidity.Molecular.exists_pencilSeed_of_nondeg_of_selectors`,
   `…exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
   `…exists_isNondegPencilRealization_restrict_of_demoted` ((a)), `…exists_isNondegPencilRealization_steer` ((b)).
@@ -72,14 +78,16 @@ lines 1–22 are the spike's header and 2138 its `end`. **Every build:** the gat
 copyright header, a module docstring listing their statements, and a root import; every declaration
 keeps its docstring.
 
-- [ ] **B1 = T1** (l.1–219 → `Pencil/Reseed.lean`; ≈290 lines; no node flips). First move
+- [x] **B1 = T1** (l.1–219 → `Pencil/Reseed.lean`; ≈290 lines; no node flips). First move
   `exists_extend_linearIndependent` (`Steer.lean` l.141–220, the section header, docstring and
   proof) verbatim to `Reseed.lean`, updating its docstring's location, and `notes/FRICTION.md`'s
   `[mirror-candidate]` entry (its *Where it bit*; T1 is its second consumer). Then
   `exists_fill_linearIndependent_hubSlotOf`, `mem_ker_toDual_flip_iff`,
   `exists_fill_cross₃_eq_smul_of_selector`, `exists_fill_linearIndependent_of_selector`,
   `LinearIndepOn.of_smul_eq` and `exists_pencilSeed_of_nondeg_of_selectors`. Placement test:
-  `PlaceReseed.lean`.
+  `PlaceReseed.lean`. **Landed** 2026-09-29: `lake build`/`lake lint`/`blueprint/verify.sh`/
+  `blueprint/lint.sh` all clean; `#print axioms` on `exists_pencilSeed_of_nondeg_of_selectors` and
+  `exists_extend_linearIndependent` show only the three standard axioms.
 - [ ] **B2 = T2 + T3** (l.221–956 → new `MainComponent/GenericSteer.lean`, importing
   `…Molecule.Pencil.Steer`; ≈740 lines; greens `lem:pencil-generic-steer`, all four pins). In order:
   (MC-188) `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
@@ -115,12 +123,14 @@ keeps its docstring.
 
 ## Hand-off / next phase
 
-**Next concrete step: B1**, the reseed at given selectors: `scratch/ears/Ears.lean` l.1–219 into
-`Pencil/Reseed.lean`, with `exists_extend_linearIndependent` moved from `Steer.lean` first
-(checklist). Then B2, B3 and B4, one sonnet build each, each greening one node. Then the second read
-of (MC-190)–(MC-192), after the builds and before the close, then the close. REDUCE+CLOSE follows:
-(MC-129), the route-B assembly from `scratch/40n-read/GenBase.lean`'s tail, with Z1's call passing
-one argument fewer, and both headlines; its close closes Phase 40.
+**Next concrete step: B2 = T2 + T3** (`scratch/ears/Ears.lean` l.221–956, new
+`MainComponent/GenericSteer.lean`, importing `…Molecule.Pencil.Steer`; ≈740 lines; greens
+`lem:pencil-generic-steer`, all four planned pins — checklist has the exact declaration order and
+the `hWF₂`-unused tidy-up). Placement test: `PlaceSteer.lean`. Then B3, B4, one sonnet build each,
+each greening one node. Then the second read of (MC-190)–(MC-192), after the builds and before the
+close, then the close. REDUCE+CLOSE follows: (MC-129), the route-B assembly from
+`scratch/40n-read/GenBase.lean`'s tail, with Z1's call passing one argument fewer, and both
+headlines; its close closes Phase 40.
 
 ## Decisions made during this phase
 

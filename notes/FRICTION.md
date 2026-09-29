@@ -445,6 +445,9 @@ to be re-derived by re-reading entries later.
   (`Molecular/Molecule/Pencil/Steer.lean`, `exists_fillNbr_pencilChartWF_of_standing`). Closing
   `PencilChartWF`'s fourth conjunct at a non-hub body means: given the `nbrSel`-assigned slots' points
   already independent, fill the unassigned slots to make the whole `Fin 3 → K⁴` triple independent.
+  **Second consumer:** Phase 40o (MOTIVES-EARS) T1, `exists_fill_linearIndependent_hubSlotOf`'s
+  hub-slot fill — the lemma itself moved to `Molecular/Molecule/Pencil/Reseed.lean` in that build
+  (B1), with `Steer.lean` now consuming it via that file's existing import.
 - **Friction:** needed the general fact "`g : Fin n → V` LI on a subset `s` of slots, `n ≤ finrank K
   V` ⟹ `∃ g'` agreeing with `g` on `s` and LI on all of `Fin n`", which mathlib does not package in
   this fill-the-free-slots shape (`LinearIndepOn.extend`/`Basis.extend` extend to a *subset* of a
@@ -453,9 +456,10 @@ to be re-derived by re-reading entries later.
   "pick a vector outside a proper span" per step).
 - **Proposed fix:** upstream-eligible; mirror to `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
   (or `.../Lemmas.lean`) as a general `LinearIndepOn`-extension lemma over an arbitrary
-  finite-dimensional `V` and `Fintype ι`, then have `Steer.lean` consume the mirror. Kept local for
-  now (the Pencil files are non-module; a mirror pulls a module-system import into the cone) — lift
-  in a cleanup round or the next toucher.
+  finite-dimensional `V` and `Fintype ι`, then have `Reseed.lean` (now the lemma's home; `Steer.lean`
+  reaches it through that import) consume the mirror. Kept local for now (the Pencil files are
+  non-module; a mirror pulls a module-system import into the cone) — lift in a cleanup round or the
+  next toucher.
 - **Status:** open.
 
 ### [mirror-candidate] No packaged "inject a finite set into a no-smaller finite set" lemma (`Set.ncard` → `Set.InjOn` + `MapsTo`)
