@@ -47,6 +47,9 @@ renamed or re-stated, so no blueprint `\lean{...}` pin moved.
   admissible picture gives `HasDistinctPencilRealization K 3 G`;
   `Graph.X0Attains.hasDistinctPencilRealization` is the resulting `X0Dist` leg, over an infinite
   field.
+* `not_isNondeg_pencilConfigPoint_of_two_hubs_three_common` — the configuration form of the
+  two-hubs obstruction (Phase 40n MOTIVES M0): over a picture where three given bodies are not
+  collinear, no height gives a nondegenerate realization with the configuration points.
 * `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` — a collineation of the
   normals preserves the row rank, at any invertible linear map of `K⁴`
   (`lem:pencil-rank-collineation`, Phase 40k CONTRACT-A).
@@ -496,6 +499,31 @@ theorem _root_.Graph.IsAdmissiblePicture.hasDistinctPencilRealization {G : Graph
     fun e u v he => linearIndependent_pencilConfigPoint_pair z (hq.1 e u v he), ?_⟩
   rw [finrank_span_rigidityRows_pencilConfigFramework]
   exact hrank
+
+/-- **The configuration form of the two-hubs obstruction** (`lem:pencil-x0-two-hubs-obstruction`;
+Phase 40n MOTIVES M0). On the configurations of `X₀`: over a picture where `x, y, z` are not
+collinear, no height gives a nondegenerate realization with the configuration points, whatever the
+framework and the normals — `linearIndependent_pencilConfigPoint_of_linearIndependent_
+pencilPicturePoint` transports picture independence to configuration independence, at any height,
+and `not_isNondegPencilRealization_of_two_hubs_three_common` finishes. -/
+theorem not_isNondeg_pencilConfigPoint_of_two_hubs_three_common
+    {G : Graph α β} {a b x y z : α} {ea eb fa fb ga gb : β} (hab : a ≠ b)
+    (ha : G.PencilHub a) (hb : G.PencilHub b)
+    (hxa : G.IsLink ea x a) (hxb : G.IsLink eb x b) (hya : G.IsLink fa y a)
+    (hyb : G.IsLink fb y b) (hza : G.IsLink ga z a) (hzb : G.IsLink gb z b)
+    {q : α × Fin 2 → K}
+    (hq : LinearIndependent K ![pencilPicturePoint q x, pencilPicturePoint q y,
+      pencilPicturePoint q z])
+    (h : α → K) (F : BodyHingeFramework K 2 α β) (normal : α → Fin 4 → K) :
+    ¬ IsNondegPencilRealization G F normal (pencilConfigPoint q h) := by
+  have hq' : LinearIndependent K (fun i => pencilPicturePoint q (![x, y, z] i)) := by
+    convert hq using 1
+    funext i; fin_cases i <;> rfl
+  have hLI := linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint h hq'
+  refine not_isNondegPencilRealization_of_two_hubs_three_common hab ha hb hxa hxb hya hyb hza hzb
+    ?_
+  convert hLI using 1
+  funext i; fin_cases i <;> rfl
 
 /-- **The general configuration attaining gives a distinct pencil realization at the deficiency
 rank** (`lem:pencil-x0-attains-distinct`; Phase 40b CARRIER slice C4, the `X0Dist` leg of

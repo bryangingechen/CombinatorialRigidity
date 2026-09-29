@@ -871,6 +871,42 @@ theorem not_simple_of_isMinimalKDof_of_ncard_two
   -- Simplicity collapses e₁ = e₂, contradicting e₁ ≠ e₂.
   exact hne (hSimple.eq_of_isLink (isLink_of_cross e₁ he₁) (isLink_of_cross e₂ he₂))
 
+/-- **Three bodies carry no proper rigid subgraph** (`lem:pencil-three-bodies-no-rigid`; Phase 40n
+MOTIVES M0). A simple multigraph on exactly three bodies has no proper rigid subgraph at `n = 3`: a
+proper rigid subgraph would have exactly two bodies, forcing two crossing edges across their cut
+(`two_le_crossingEdges_of_isKDof_zero`), collapsed to one by simplicity — the same route as
+`not_simple_of_isMinimalKDof_of_ncard_two` just above. -/
+theorem noRigid_of_simple_of_ncard_eq_three [Finite α] [Finite β] {G : Graph α β}
+    (hS : G.Simple) (h3 : V(G).ncard = 3) : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3 := by
+  classical
+  rintro H ⟨⟨hle, hH⟩, h2, hss⟩
+  have hHS : H.Simple := hS.mono hle
+  have hV : V(H).ncard = 2 := by
+    have := Set.ncard_lt_ncard hss (Set.toFinite _); omega
+  obtain ⟨u, v, huv, hVuv⟩ := Set.ncard_eq_two.mp hV
+  have huV : u ∈ V(H) := hVuv ▸ Set.mem_insert u _
+  have hvV : v ∈ V(H) := hVuv ▸ Set.mem_insert_of_mem u rfl
+  have hcross : 2 ≤ (H.crossingEdges (cutLabeling {u} u v)).ncard :=
+    two_le_crossingEdges_of_isKDof_zero (by decide) hH (Set.mem_singleton u) huV hvV
+      (by simpa using fun h : v = u => huv h.symm)
+  rw [show 2 ≤ _ ↔ 1 < _ from Iff.rfl, Set.one_lt_ncard_iff (Set.toFinite _)] at hcross
+  obtain ⟨e₁, e₂, he₁, he₂, hne⟩ := hcross
+  have isLink_of_cross : ∀ e, e ∈ H.crossingEdges (cutLabeling {u} u v) →
+      H.IsLink e u v := by
+    intro e he
+    simp only [crossingEdges, Set.mem_ofPred_eq] at he
+    obtain ⟨_, x, y, hxy, hfne⟩ := he
+    have hxV : x = u ∨ x = v := by
+      have := hxy.left_mem; rw [hVuv] at this; simpa using this
+    have hyV : y = u ∨ y = v := by
+      have := hxy.right_mem; rw [hVuv] at this; simpa using this
+    rcases hxV with rfl | rfl <;> rcases hyV with rfl | rfl
+    · simp [cutLabeling] at hfne
+    · exact hxy
+    · exact hxy.symm
+    · simp [cutLabeling] at hfne
+  exact hne (hHS.eq_of_isLink (isLink_of_cross e₁ he₁) (isLink_of_cross e₂ he₂))
+
 /-! ### Adjacent degree-2 pair in the Case-III `d = 3` regime (G4a-i, Phase 22h)
 
 Katoh–Tanigawa 2011 Lemma 4.6 at `d = 3` (`D ≥ 6`) — two adjacent degree-2 vertices

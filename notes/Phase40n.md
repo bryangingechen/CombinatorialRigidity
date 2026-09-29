@@ -3,20 +3,23 @@
 **Status:** in progress (opened design-first 2026-09-28). MOTIVES' first of three sub-phases (the
 PI's call, 2026-09-28, `notes/pencil/adjudications.md`; plan `notes/Phase40-design.md` §3 MOTIVES):
 **DIST+BASE**, then **EARS** and **REDUCE+CLOSE** by code. MOTIVES proves `X0Dist` and `X0Gen` by
-route B, (MC-183)–(MC-187) in `notes/pencil/workbook/K-main-MC19.md`, awaiting a second read. This
-sub-phase lands the distinct statement and small pieces (M0), then the generic realization at graphs
-with no planar-rigid set (B1–B3). **Next: M0**, a transcription build; then the second read; then
-B1 — see *Hand-off*.
+route B, (MC-183)–(MC-187) in `notes/pencil/workbook/K-main-MC19.md`, awaiting a second read. **M0
+landed** (the transcription build; four nodes green). This sub-phase now needs the second read,
+then the generic realization at graphs with no planar-rigid set (B1–B3). **Next: the second read
+of (MC-183)–(MC-187)**, before B1 — see *Hand-off*.
 
 ## Current state
 
-**Opened; no Lean yet.** `blueprint/src/chapter/main-component.tex` §`sec:main-component-statements`
-is transcribed whole, fourteen new nodes and the rewritten `thm:pencil-x0-generic-attains`, all red
-and unpinned (the 40h/40l convention), with `thm:pencil-conjecture` red in `pencil.tex`. Each build
-adds its nodes' `\lean{…}` and `\leanok` (statement and proof). Which sub-phase greens each node:
-- **40n:** `lem:pencil-x0-distinct-statement`, `lem:pencil-feasible-hub-conditions`,
-  `lem:pencil-three-bodies-no-rigid`, `lem:pencil-x0-two-hubs-obstruction` (M0);
-  `def:pencil-two-ear-graph` (B1); `lem:pencil-x0-planes-separate` (B2);
+**M0 landed** (four nodes green: `lem:pencil-x0-distinct-statement`,
+`lem:pencil-feasible-hub-conditions`, `lem:pencil-three-bodies-no-rigid`,
+`lem:pencil-x0-two-hubs-obstruction`, the last pinning both obstruction declarations). Otherwise
+`blueprint/src/chapter/main-component.tex` §`sec:main-component-statements` stays as transcribed at
+open: the remaining ten new nodes and the rewritten `thm:pencil-x0-generic-attains` are red and
+unpinned (the 40h/40l convention), with `thm:pencil-conjecture` red in `pencil.tex`. Each build adds
+its nodes' `\lean{…}` and `\leanok` (statement and proof). **Next concrete commit: the second read
+of (MC-183)–(MC-187)** (a fresh read-only reader; see *Hand-off*), before B1. Which sub-phase greens
+each remaining node:
+- **40n:** `def:pencil-two-ear-graph` (B1); `lem:pencil-x0-planes-separate` (B2);
   `lem:pencil-x0-conjunct-three`, `thm:pencil-x0-base-generic` (B3).
 - **EARS:** `lem:pencil-generic-steer`, `lem:pencil-generic-one-ear`,
   `lem:pencil-generic-pendant-triangle`.
@@ -71,23 +74,25 @@ commit*: a warning-free `lake build`, `lake lint`, `blueprint/verify.sh`, `bluep
 `#print axioms` check on each pin. New files get the copyright header and a module docstring listing
 their statements; every declaration gets a docstring.
 
-- [ ] **M0** (sonnet-rated transcription; ≈250 lines; greens four nodes).
+- [x] **M0** (sonnet-rated transcription; greens four nodes — landed).
   - **`CombinatorialRigidity.Molecular.x0Dist`** → `lem:pencil-x0-distinct-statement`, in the new
     `MainComponent/Statements.lean` (imports `…Pencil.X0` and `…MainComponent.CoverageTheoremS`;
-    root import after `…MainComponent.Lines`), ← `scratch/40n/Headline.lean` 16–18:
+    root import after `…MainComponent.SplitOff`, alphabetical), ← `scratch/40n/Headline.lean` 16–18:
     `theorem x0Dist [Finite α] [Finite β] [Infinite K] : X0Dist K α β`.
   - **`CombinatorialRigidity.Molecular.PencilNondegFeasible.hub_conditions`** →
     `lem:pencil-feasible-hub-conditions`, in `Pencil/Motive.lean` after
     `not_pencilNondegFeasible_of_triangle_two_hubs`, ← `Gen.lean` 89–106.
   - **`Graph.noRigid_of_simple_of_ncard_eq_three`** → `lem:pencil-three-bodies-no-rigid`, in
     `Molecular/Induction/ReducibleVertex.lean` (namespace `Graph`) after
-    `not_simple_of_isMinimalKDof_of_ncard_two`, ← `Gen.lean` 108–138 (drop the `Graph.` prefixes).
+    `not_simple_of_isMinimalKDof_of_ncard_two`, ← `Gen.lean` 108–138 (dropped the `Graph.` prefixes).
   - **`CombinatorialRigidity.Molecular.not_isNondegPencilRealization_of_two_hubs_three_common`**, in
-    `Pencil/Motive.lean` beside the triangle lemma, ← `K23.lean` 21–62; and
+    `Pencil/Motive.lean` beside the triangle lemma, ← `K23.lean` 21–62 (the spike left this one
+    undocumented; wrote a fresh docstring); and
     **`…not_isNondeg_pencilConfigPoint_of_two_hubs_three_common`**, in
     `MainComponent/Configuration.lean` after `Graph.IsAdmissiblePicture.hasDistinctPencilRealization`,
-    ← `K23.lean` 64–84 → `lem:pencil-x0-two-hubs-obstruction`. `K23.lean`'s witness shrinking
-    (89–138) does not land: nothing consumes it, and the blueprint states it in prose.
+    ← `K23.lean` 64–84 → `lem:pencil-x0-two-hubs-obstruction` (pins both declarations). `K23.lean`'s
+    witness shrinking (89–138) and `pencil_conjecture_of_X0Gen` (`Headline.lean` 20–25) do not land:
+    neither is consumed here, and the blueprint states the shrinking in prose.
 - [ ] **The second read of (MC-183)–(MC-187)** (a fresh read-only reader, before B1; see *Hand-off*).
 - [ ] **B1** → `def:pencil-two-ear-graph`. **`Graph.addTwoEar`** beside `Graph.embedEdges` in
   `MainComponent/Bridge.lean` (with `import Matroid.Graph.Constructions.Sum`), ← `Apex.lean` 13–15,
@@ -118,9 +123,10 @@ their statements; every declaration gets a docstring.
 
 ## Hand-off / next phase
 
-1. **M0** (a sonnet-rated transcription build; the checklist above, verbatim from the spikes). It
-   greens four nodes.
-2. **The second read of (MC-183)–(MC-187)**: a fresh read-only reader, using the design doc's
+1. **M0 — done**: the checklist above, landed verbatim from the spikes; four nodes green
+   (`lem:pencil-x0-distinct-statement`, `lem:pencil-feasible-hub-conditions`,
+   `lem:pencil-three-bodies-no-rigid`, `lem:pencil-x0-two-hubs-obstruction`).
+2. **Next: the second read of (MC-183)–(MC-187)**: a fresh read-only reader, using the design doc's
    Appendix brief. It runs **before B1**, since BASE consumes (MC-184); the PI's text says "before
    40o's ear builds", and reading earlier satisfies it. It checks each claim against its citations and
    the landed definitions, and records its verdict in Step MC19's route-B header.
@@ -134,3 +140,8 @@ their statements; every declaration gets a docstring.
   both headlines) are verbatim in `notes/pencil/adjudications.md`. Route B's claims were written as
   (MC-183)–(MC-187), awaiting a second read; the coordinator ruled out landing
   `pencil_conjecture_of_X0Gen`.
+- **2026-09-28 — M0 landed**: `x0Dist`, `PencilNondegFeasible.hub_conditions`,
+  `Graph.noRigid_of_simple_of_ncard_eq_three`, and the two-hubs obstruction (statement and
+  configuration forms) transcribed verbatim from the compiler-checked spikes, at the coordinator's
+  named placements. `K23.lean`'s witness-shrinking tail and `pencil_conjecture_of_X0Gen` do not
+  land (unconsumed).

@@ -4222,6 +4222,8 @@ a body of degree three, which needs a bridge, never arises.
 
 \begin{lemma}[The distinct main-component statement]
   \label{lem:pencil-x0-distinct-statement}
+  \lean{CombinatorialRigidity.Molecular.x0Dist}
+  \leanok
   \uses{def:pencil-main-component-statements, def:pencil-distinct-motive}
   Let $K$ be an infinite field. Every simple two-edge-connected
   multigraph on at least three bodies has a pencil realization at the
@@ -4230,6 +4232,7 @@ a body of degree three, which needs a bridge, never arises.
   holds.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-attains-distinct,
         def:pencil-x0-standing, def:cut-edges-2ec}
   A simple two-edge-connected multigraph on at least three bodies is
@@ -4243,6 +4246,8 @@ a body of degree three, which needs a bridge, never arises.
 
 \begin{lemma}[Feasibility bounds the hub neighbourhoods]
   \label{lem:pencil-feasible-hub-conditions}
+  \lean{CombinatorialRigidity.Molecular.PencilNondegFeasible.hub_conditions}
+  \leanok
   \uses{def:pencil-nondegenerate}
   If a finite simple multigraph is nondegeneracy-feasible
   (\cref{def:pencil-nondegenerate}), then every closed
@@ -4250,6 +4255,7 @@ a body of degree three, which needs a bridge, never arises.
   two pencil hubs.
 \end{lemma}
 \begin{proof}
+  \leanok
   At a nondegenerate realization the normals of a closed
   hub-neighbourhood of $v$ are independent and all orthogonal to the
   nonzero point of $v$, so there are at most three of them. At a triangle
@@ -4261,11 +4267,14 @@ a body of degree three, which needs a bridge, never arises.
 
 \begin{lemma}[Three bodies carry no proper rigid subgraph]
   \label{lem:pencil-three-bodies-no-rigid}
+  \lean{Graph.noRigid_of_simple_of_ncard_eq_three}
+  \leanok
   \uses{def:rigid-subgraph}
   A simple multigraph on exactly three bodies has no proper rigid
   subgraph (\cref{def:rigid-subgraph}) at $n = 3$.
 \end{lemma}
 \begin{proof}
+  \leanok
   A proper rigid subgraph has exactly two bodies, and a rigid graph on
   two bodies has at least two edges across the cut separating them, which
   simplicity forbids.
@@ -4273,6 +4282,9 @@ a body of degree three, which needs a bridge, never arises.
 
 \begin{lemma}[Two hubs with three common neighbours]
   \label{lem:pencil-x0-two-hubs-obstruction}
+  \lean{CombinatorialRigidity.Molecular.not_isNondegPencilRealization_of_two_hubs_three_common,
+        CombinatorialRigidity.Molecular.not_isNondeg_pencilConfigPoint_of_two_hubs_three_common}
+  \leanok
   \uses{def:pencil-nondegenerate, def:pencil-configuration}
   Let $a \ne b$ be pencil hubs of $G$ with three common neighbours $x, y,
   z$. No pencil realization at which the points of $x$, $y$ and $z$ are
@@ -4281,6 +4293,7 @@ a body of degree three, which needs a bridge, never arises.
   nondegenerate realization with the configuration points.
 \end{lemma}
 \begin{proof}
+  \leanok
   At a nondegenerate realization the normals of $a$ and $b$ are
   independent, both lying in the closed hub-neighbourhood of $x$. Both
   annihilate the points of $x$, $y$ and $z$, through the cross-incidence

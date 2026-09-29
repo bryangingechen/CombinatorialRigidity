@@ -829,6 +829,78 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     rw [hdim3, hVyzdim] at hmono
     omega
 
+/-- **Feasibility bounds the hub neighbourhoods** (`lem:pencil-feasible-hub-conditions`; Phase 40n
+MOTIVES M0): if `G` is nondegeneracy-feasible, every closed hub-neighbourhood has at most three
+members (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), and no triangle contains two
+pencil hubs (`not_pencilNondegFeasible_of_triangle_two_hubs`). -/
+theorem PencilNondegFeasible.hub_conditions [Finite α] {G : Graph α β}
+    (hfeas : PencilNondegFeasible K G) :
+    (∀ v, (G.closedHubNbhd v).ncard ≤ 3) ∧
+    (∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z → G.IsLink e₁ x y → G.IsLink e₂ y z →
+      G.IsLink e₃ z x → G.PencilHub y → G.PencilHub z → False) := by
+  refine ⟨fun w => ?_, fun e₁ e₂ e₃ x y z hxy hyz hxz h₁ h₂ h₃ hy hz =>
+    not_pencilNondegFeasible_of_triangle_two_hubs hxy hyz hxz h₁ h₂ h₃ hy hz hfeas⟩
+  obtain ⟨F, normal, point, hnd⟩ := hfeas
+  by_cases hw : w ∈ V(G)
+  · exact ncard_closedHubNbhd_le_three_of_isNondegPencilRealization hnd hw
+  · have hempty : G.closedHubNbhd w = ∅ := by
+      rw [Set.eq_empty_iff_forall_notMem]
+      rintro x ⟨hxhub, rfl | ⟨e, hlink⟩⟩
+      · exact hw hxhub.1
+      · exact hw hlink.left_mem
+    rw [hempty]; simp
+
+/-- **Two hubs with three common neighbours obstruct nondegeneracy**
+(`lem:pencil-x0-two-hubs-obstruction`; Phase 40n MOTIVES M0). If `a ≠ b` are pencil hubs of `G` with
+three common neighbours `x, y, z` whose points are linearly independent, no nondegenerate pencil
+realization has those points: conjunct 3 at `x` forces `normal a, normal b` independent (both lie in
+the closed hub-neighbourhood of `x`), and their two-dimensional common perp
+(`finrank_toDualPerp_pair_eq`) would then have to hold three independent points, since each of
+`point x, point y, point z` is orthogonal to both normals (own-panel/cross incidence along the six
+links). -/
+theorem not_isNondegPencilRealization_of_two_hubs_three_common
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    {a b x y z : α} {ea eb fa fb ga gb : β} (hab : a ≠ b)
+    (ha : G.PencilHub a) (hb : G.PencilHub b)
+    (hxa : G.IsLink ea x a) (hxb : G.IsLink eb x b) (hya : G.IsLink fa y a)
+    (hyb : G.IsLink fb y b) (hza : G.IsLink ga z a) (hzb : G.IsLink gb z b)
+    (hLI : LinearIndependent K ![point x, point y, point z]) :
+    ¬ IsNondegPencilRealization G F normal point := by
+  intro hnd
+  have hsub : ({a, b} : Set α) ⊆ G.closedHubNbhd x := by
+    rintro w (rfl | rfl)
+    · exact ⟨ha, Or.inr ⟨ea, hxa⟩⟩
+    · exact ⟨hb, Or.inr ⟨eb, hxb⟩⟩
+  have hLIab : LinearIndependent K ![normal a, normal b] :=
+    LinearIndependent.pair_iff.2
+      ((LinearIndepOn.pair_iff normal hab).1 ((hnd.2.2.1 x hxa.left_mem).mono hsub))
+  set V : Submodule K (Fin 4 → K) :=
+    ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![normal a, normal b] j))
+    with hV
+  have hVdim : Module.finrank K V = 2 := finrank_toDualPerp_pair_eq hLIab
+  have hmem : ∀ w : Fin 4 → K, w ∈ V ↔ ∀ j, w ⬝ᵥ (![normal a, normal b] j) = 0 := by
+    intro w
+    simp only [hV, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+  have hin : ∀ {w : α} {e f : β}, G.IsLink e w a → G.IsLink f w b → point w ∈ V := by
+    intro w e f he hf
+    rw [hmem]; intro j; fin_cases j
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd he.left_mem (Or.inr ⟨e, he⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd hf.left_mem (Or.inr ⟨f, hf⟩)
+  have hsub3 : Submodule.span K (Set.range ![point x, point y, point z]) ≤ V := by
+    rw [Submodule.span_le]
+    rintro _ ⟨j, rfl⟩
+    fin_cases j
+    · exact hin hxa hxb
+    · exact hin hya hyb
+    · exact hin hza hzb
+  have hdim3 :
+      Module.finrank K (Submodule.span K (Set.range ![point x, point y, point z])) = 3 := by
+    rw [finrank_span_eq_card hLI]; simp
+  have hmono := Submodule.finrank_mono hsub3
+  rw [hdim3, hVdim] at hmono
+  omega
+
 /-! ## W5-L5 cut-arm structure layer: the edge-closed side `Gᵢ⁺` (Phase 39)
 
 The cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
