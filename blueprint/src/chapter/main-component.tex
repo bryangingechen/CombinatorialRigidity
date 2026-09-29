@@ -4478,6 +4478,9 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[The generic realization across a one-body ear]
   \label{lem:pencil-generic-one-ear}
+  \lean{Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization,
+        Graph.IsOpenEar.hasGenericPencilRealization_of_one}
+  \leanok
   \uses{def:pencil-generic-motive, def:D-deficiency}
   Let $K$ be infinite and $G$ simple and nondegeneracy-feasible, with a
   body $x$ of degree two whose neighbours $a$ and $b$ are pencil hubs, and
@@ -4486,6 +4489,7 @@ degree-two bodies enlarge the lifting space.
   then $G$ has a generic pencil realization.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-generic-steer, lem:block-rank-ear,
         lem:relative-deficiency-rank-bound}
   An end that stops being a hub in $G - x$ loses only the neighbour $x$,
