@@ -54,7 +54,6 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-set_option linter.unusedDecidableInType false in
 /-- **L7c-3: the `|V| = 3` pencil base case** (Phase 39 W5-L7c;
 `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"). Under `2EC +
 no-proper-rigid + Loopless`, a graph on exactly three vertices is (after `Simple`) forced to be
@@ -535,12 +534,11 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
   exact ⟨fun _ _ => hgeneric, fun _ => hasDistinctPencilRealization_of_generic hgeneric,
     hasPencilRealization_of_generic hgeneric⟩
 
-set_option maxHeartbeats 1000000 in
+set_option maxHeartbeats 400000 in
 -- The four-cycle identification and the four-term join-detector rank computation together make
 -- this the largest single proof term in the file; the default 200000-heartbeat budget times out
 -- during `simp`/`whnf` even after hoisting the light combinatorial `have`s ahead of the
 -- `ScrewSpace`-heavy witness section and `clear`ing the identification's now-unused machinery.
-set_option linter.unusedDecidableInType false in
 /-- **L7c-4: the `|V| = 4` pencil base case** (Phase 39 W5-L7c;
 `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"). Under `2EC +
 no-proper-rigid + Loopless`, a graph on exactly four vertices is (after `Simple`) forced to be

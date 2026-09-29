@@ -1216,6 +1216,9 @@ longer re-exposes any cut-arm hypothesis. The conclusion is `PencilPair K 3 G` d
 pair` prose asks for "satisfies the conditioned pair" verbatim and `PencilPair` already *is* that
 predicate; no rank-nullity bridging is needed on top. -/
 
+-- `[DecidableEq β]` is genuinely load-bearing (removing it makes the `Graph.pencil_reduction`
+-- call below fail to synthesize the instance its signature takes) though it's never named in the
+-- body; `unusedDecidableInType` false-positives here.
 set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture, conditional on the contraction and split cases, conditioned-pair
 motive** (`thm:pencil-conditional-realization-pair`; Phase 39 W5-L5, the successor to the W3-L7

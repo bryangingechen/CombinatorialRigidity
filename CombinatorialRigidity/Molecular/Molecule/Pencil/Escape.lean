@@ -343,6 +343,10 @@ discharges the generic conjunct vacuously and gets the adjacent-distinct one fro
 fed the IH's `G′`-distinct half (`G′` is simple by `Graph.splitOff_simple_of_noRigid_of_card`),
 forgetting to the bare one (`hasPencilRealization_of_distinct`). -/
 
+-- `[DecidableEq β]` is genuinely load-bearing (removing it makes the
+-- `Graph.exists_adjacent_degree_two_pair_of_noRigid_of_degree_two` call below fail to synthesize
+-- the instance its signature takes) though it's never named in the body; `unusedDecidableInType`
+-- false-positives here.
 set_option linter.unusedDecidableInType false in
 /-- **W5-L7c-5 — the `5 ≤ |V|` hsplit producer** (Phase 39 PENCIL; `notes/Phase39-design.md`
 §"W5-L7 research recon" "L7c decomposition"). Given the split-arm habitat at `5 ≤ |V(G)|` —
@@ -440,6 +444,9 @@ successor's own hypotheses are exactly the residue: `hcontract` unchanged, the t
 `hK`/`hbareSplit`, and the mechanical `∀`-form fresh-edge supply `hfresh` (residue (iv), still a
 follow-up S1 discharge, not attempted here). -/
 
+-- `[DecidableEq β]` is genuinely load-bearing (removing it makes the
+-- `pencil_conjecture_of_arms_pair` call below fail to synthesize the instance its signature
+-- takes) though it's never named in the body; `unusedDecidableInType` false-positives here.
 set_option linter.unusedDecidableInType false in
 /-- **W5-L7c-6 — the successor wrapper closing `hsplit`** (Phase 39 PENCIL;
 `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"). The pencil conjecture,
@@ -548,6 +555,10 @@ theorem freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two
   rw [hBDZ] at hcardZ
   linarith [hbound, hcardZ, hVleZ, hVZ]
 
+-- `[DecidableEq β]` is genuinely load-bearing (removing it makes the
+-- `pencil_conjecture_of_hcontract_hK_hbareSplit` call below fail to synthesize the instance its
+-- signature takes) though it's never named in the body; `unusedDecidableInType` false-positives
+-- here.
 set_option linter.unusedDecidableInType false in
 /-- **The consumer-facing headline, `hfresh` discharged by a `β`-cardinality bound** (Phase 39
 PENCIL, residue (iv)). The repackaging of `pencil_conjecture_of_hcontract_hK_hbareSplit`

@@ -4,13 +4,28 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Task 1 (T1) landed; 48 of 49 one-commit tasks remain. **Next concrete task:** task 2, B3, the
-linter silencers and heartbeat bump (Lean, 12 sites). Round manual: `CLEANUP.md`.
+Tasks 1–2 landed; 47 of 49 one-commit tasks remain. **Next concrete task:** task 3, B8, `show …
+from rfl` (Lean, 32 sites). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 2, B3** (*Lemma checklist*). The checklist holds 49 one-commit tasks; task 1
-landed, 48 remain. Nothing is mid-stream.
+**Next commit: task 3, B8** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–2 landed, 47 remain. Nothing is mid-stream.
+
+**Task 2 (B3) landed.** 2 of the 12 sites stay removed (linter silent once rebuilt): Base.lean 57
+(`pencilPair_of_habitat_ncard_eq_three`) and the second `unusedDecidableInType` on
+`pencilPair_of_habitat_ncard_eq_four` (paired with its heartbeat bump) — that declaration only
+needed the heartbeat fix. The other 10 restored with a one-line comment naming the specific
+downstream call that needs the instance (`Graph.pencil_reduction`, `pencil_conjecture_of_arms_pair`,
+`pencil_conjecture_of_hcontract_hK_hbareSplit[_of_card]`,
+`Graph.exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`, `exists_planes_separate`'s
+`mulVecLin`, `Finset.univ`): X0.lean 344 and `MainComponent/Statements.lean` 151 kept their
+existing comment unchanged; Arms.lean 1437, Pair2.lean 1219, Escape.lean ×3, and
+`MainComponent/GenericBase.lean` ×2 gained a new one. The heartbeat bump
+(`pencilPair_of_habitat_ncard_eq_four`) dropped 1000000 → 400000 (bisected: default 200000 and
+300000 time out at `Base.lean:829`'s `simp` and the declaration's own `whnf`; 500000 and 400000
+pass). Whole-project `lake build`: 3000 jobs, 0 `warning:`, 0 `failed to cache artifact`; `lake
+lint` clean.
 
 **Task 1 (T1) landed.** ROADMAP's toolchain row and `notes/ToolchainBumps.md` *Where this
 stands* were stale: `origin/master` had already caught up to `91fcd24a` (one commit behind
@@ -91,7 +106,7 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   task" (for example, whether the hopscotch workflow stopped re-stamping issue #2). Whether to
   delete the `bump/lean-4.34.0-rc{1,2}` refs is the PI's call; note it and do not act on it. Done:
   `grep -rn -i "unpushed\|never validated" ROADMAP.md notes/ToolchainBumps.md` is empty.
-- [ ] **2. B3: linter silencers and the heartbeat bump** (12 sites).
+- [x] **2. B3: linter silencers and the heartbeat bump** (12 sites).
   - `set_option linter.unusedDecidableInType false in`, 9 sites: `Base.lean` 57, 543;
     `Arms.lean` 1437; `Escape.lean` 346, 443, 551; `Pair2.lean` 1219; `X0.lean` 344;
     `MainComponent/Statements.lean` 151. The last two have a justifying comment and the other
@@ -437,10 +452,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 2, B3.** Remove each of the 12 linter-silencer / heartbeat-bump
-sites listed under task 2 and rebuild; restore only the ones whose removal breaks the build, with
-a one-line comment. Lean, no blueprint. Then continue in task order. Each task above names its
-files, sites and done criterion.
+**Next concrete commit: task 3, B8.** `show … from rfl`, 32 sites: `screwDim 2 = 6` / `screwDim 1
+= 3` (add `screwDim_one`/`screwDim_two` beside `abbrev screwDim`, **⚠Z**), `Graph.bodyBarDim 2 =
+3` / `bodyBarDim 3 = 6` (move the existing `_two`/`_three` lemmas beside `def bodyBarDim`),
+`V(G.induce V₁) = V₁` (use mathlib's `Graph.vertexSet_induce`), and 5 others. Lean, no blueprint.
+Then continue in task order. Each task above names its files, sites and done criterion.
 
 ## Decisions made during this round
 
