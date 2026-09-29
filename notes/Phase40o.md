@@ -94,7 +94,14 @@ read-only), before REDUCE+CLOSE opens as the next sub-phase. Its inputs:
   `notes/Phase40n.md` *Architectural choices*);
 - the Phase 40 close, which updates the public surfaces.
 
-Its close closes Phase 40.
+Its close closes Phase 40. **The Phase 40 close also carries three items the recon does not settle**
+(coordinator, 2026-09-29): re-deciding the held kernels (`notes/Phase40-design.md` §6: (K-res)/`kres`,
+(K-c), (K-bare-c) with (α), smark's O7e programme), which is **the PI's call**, surfaced with options
+and not decided by the close; writing or closing the two `[pending]` exposition entries (design doc
+§7, `notes/BlueprintExposition.md`); and the public surfaces (README, home_page, intro.tex,
+`formalization.yaml`, the PI's standing call). The spikes (`scratch/ears/`, `scratch/40n-read/`) are
+gitignored and exist only in this checkout. A session without them re-derives the assembly from
+`scratch/ears/Route.lean`'s recorded shape in the design doc §3 MOTIVES.
 
 ## Decisions made during this phase
 
