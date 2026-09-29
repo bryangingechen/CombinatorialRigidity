@@ -24,7 +24,7 @@ sorry-free spikes; **40m = CHAINS + THEOREM-S closed 2026-09-28** (`notes/Phase4
 build commits from a compiler-checked recon's complete sorry-free spikes (§3 COVERAGE). **COVERAGE
 is done. MOTIVES runs as three sub-phases (PI, 2026-09-28): DIST+BASE = 40n, open**
 (`notes/Phase40n.md`), then EARS and REDUCE+CLOSE by code, from a compiler-checked recon whose route
-B ((MC-183)–(MC-187), awaiting a second read) replaces the planned fibre route (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
+B ((MC-183)–(MC-189), second-read 2026-09-28) replaces the planned fibre route (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -906,11 +906,11 @@ wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear d
 | labels | step | 2nd |
 |---|---|---|
 | (MC-157) from (MC-89), at the 2EC graphs (`X0Dist`) | MC19 | ✓ 09-25 |
-| (MC-183), route B: the generic motive inside the pencil reduction's induction | MC19 | awaiting |
-| the base, at rigid-free graphs: (MC-184) (`G_e`, (MC-13)(a)–(b), (MC-172)), (MC-12), with (MC-89) and the fibre intersection | MC19, MC8 | (MC-12) ✓; (MC-184) awaiting |
+| (MC-183), route B: the generic motive inside the pencil reduction's induction | MC19 | ✓ 09-28 |
+| the base, at rigid-free graphs: (MC-184) (`G_e`, (MC-13)(a)–(b), (MC-172)), (MC-12) in the form (MC-189), with (MC-89) and the fibre intersection | MC19, MC8 | (MC-12) ✓; (MC-184) ✓ 09-28; (MC-189) added 09-28 |
 | (MC-129) at 2EC graphs (the good ear or a pendant triangle; no lollipop) | MC19 | ✓ 09-25 |
-| (MC-186) the formal hubs by steering; (MC-185) the one-ear extension; (MC-127)(b) the pendant triangle | MC19 | (MC-127) ✓; (MC-185), (MC-186) awaiting |
-| (MC-187), the obstruction to the fibre route | MC19 | awaiting |
+| (MC-186) the formal hubs by steering; (MC-185) the one-ear extension; (MC-127)(b) the pendant triangle; (MC-188) the witness of (MC-186)(a) | MC19 | (MC-127) ✓; (MC-185), (MC-186) ✓ 09-28; (MC-188) added 09-28 |
+| (MC-187), the obstruction to the fibre route | MC19 | ✓ 09-28 |
 
 **The recon's verdict (opus, read-only, compiler-checked, 2026-09-28; spikes in `scratch/40n/`,
 gitignored and local to the recon's checkout).**
@@ -936,19 +936,25 @@ gitignored and local to the recon's checkout).**
 
 **The split** (PI, 2026-09-28): **DIST+BASE = 40n** (M0, B1–B3; 4–6 commits); **EARS** (the chart
 toolkit T1–T3, the one-ear step, the pendant triangle; 5–7); **REDUCE+CLOSE** ((MC-129), the route-B
-assembly, both headlines, the phase close; 3–4). The second read of (MC-183)–(MC-187) runs before the
-first build that consumes one, so before 40n's B1. Signatures, spike pointers and placement are in
-`notes/Phase40n.md`; EARS' and REDUCE's leaves, as the recon named them:
+assembly, both headlines, the phase close; 3–4). The second read of (MC-183)–(MC-187) ran on 2026-09-28,
+before B1 (no gap; repairs in place; (MC-188), (MC-189) added; verdict in Step MC19's route-B
+header). It compiled BASE sorry-free (`scratch/40n-read/BaseFull.lean`), so B1–B3 land as one
+build, and the route-B composition has three leaves left (`GenBase.lean`). **Placement change**
+(the coordinator's call, 2026-09-28): `Graph.addTwoEar` and its API go in the new
+`MainComponent/GenericBase.lean`, not `Bridge.lean`, keeping `import
+Matroid.Graph.Constructions.Sum` out of `Bridge.lean`'s downstream cone. Signatures, spike pointers
+and placement are in `notes/Phase40n.md`; EARS' and REDUCE's leaves, as the recon named them:
 - **T1** the reseed at given selectors (`Reseed.lean`): a nondegenerate realization is a chart point
   for every correct `hubSel`/`nbrSel`;
 - **T2** a standard-basis witness that the points around a hub that stops being a hub in `G′` are
   independent (Phase 39's pendant witness with "every other neighbour is a non-hub" in place of the
-  single cut edge), the steering in `G`'s chart, and the restriction (`IsNondegPencilRealization.mono`);
+  single cut edge; proved at the second read, (MC-188), `scratch/40n-read/WitnessGen.lean`), the steering in `G`'s chart, and the restriction (`IsNondegPencilRealization.mono`);
 - **T3** the steering in `G′`'s chart (the pattern of
   `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`);
 - **Z1** the one-ear step: `OneEar.lean`'s extension and the assembly; **Z2** the pendant triangle
   (the cut-vertex rank law, `lem:block-rank-cut-vertex`);
-- **R** (MC-129) at 2EC graphs, over 40l's deficiency kit; **F1** `Gen.lean`'s assembly.
+- **R** (MC-129) at 2EC graphs, over 40l's deficiency kit; **F1** `Gen.lean`'s assembly (at HEAD,
+  from `scratch/40n-read/GenBase.lean`: `Gen.lean` redeclares names M0 landed).
 
 **Lean reuse** (corrected). Used: Phase 39's chart (`PencilSeed`, `pencilChartPoint`/`Normal`,
 `PencilChartWF`, `pencilChartFramework`, `exists_pencilSeed_of_nondeg`) with its steering engine

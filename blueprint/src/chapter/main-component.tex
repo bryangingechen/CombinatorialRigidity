@@ -4326,13 +4326,13 @@ degree-two bodies enlarge the lifting space.
   every closed neighbourhood, and with $\operatorname{def}_2(G[Y]) \ne 0$
   for every set $Y$ of at least two bodies. Let $u \ne w$ be bodies of
   $G$. There is a nonzero polynomial $P$ in the picture coordinates such
-  that at every picture $q$ with $P(q) \ne 0$ some height $z \in L(q)$
-  has different planes at $u$ and $w$: the affine functions carrying $z$
-  on the closed neighbourhoods of $u$ and $w$ differ.
+  that every picture $q$ with $P(q) \ne 0$ is admissible and some height
+  $z \in L(q)$ has different planes at $u$ and $w$: the affine functions
+  carrying $z$ on the closed neighbourhoods of $u$ and $w$ differ.
 \end{lemma}
 \begin{proof}
   \uses{def:pencil-two-ear-graph, thm:pencil-jj-equality,
-        lem:deficiency-sparse}
+        lem:deficiency-sparse, lem:deficiency-singleton-bound}
   A height of $G$ whose planes at $u$ and $w$ agree extends to $G_{uw}$
   (\cref{def:pencil-two-ear-graph}), with the new body on that common
   plane, injectively. For a partition of the bodies of $G_{uw}$, the new
@@ -4346,36 +4346,42 @@ degree-two bodies enlarge the lifting space.
   $G_{uw}$ and at $G$, at a picture general for both, gives that the
   heights with equal planes at $u$ and $w$ form a subspace of dimension at
   most $2 + \operatorname{def}_2(G)$, less than
-  $\dim L(q) = 3 + \operatorname{def}_2(G)$.
+  $\dim L(q) = 3 + \operatorname{def}_2(G)$. Fixing the new body's picture
+  at one non-root of the polynomial of $G_{uw}$ turns that polynomial into
+  a nonzero polynomial in the picture coordinates of $G$.
 \end{proof}
 
 \begin{lemma}[The hub normals of a configuration]
   \label{lem:pencil-x0-conjunct-three}
-  \uses{def:pencil-nondegenerate, def:pencil-configuration}
-  Let $G$ satisfy the standing hypotheses, with every closed
-  hub-neighbourhood of at most three members. Let $q$ be an admissible
-  picture at which no hub and two of its hub neighbours have collinear
-  picture points, and let $z \in L(q)$. Suppose that the planes of the two
-  ends of every edge joining two hubs differ, and that the planes of the
-  two neighbours of every body of degree two whose neighbours are both hubs
-  differ. Then the configuration $(q, z)$ with its plane normals is a
+  \uses{def:pencil-nondegenerate, def:pencil-configuration,
+        def:pencil-admissible-picture, def:pencil-lifting-space}
+  Let $G$ be a finite multigraph with every closed hub-neighbourhood of at
+  most three members. Let $q$ be an admissible picture at which no hub
+  and two of its hub neighbours have collinear picture points, and let
+  $z \in L(q)$. Suppose that the planes of the two ends of every edge
+  joining two hubs differ, and that the planes of any two hubs adjacent to
+  one body that is not a hub differ. Then the configuration $(q, z)$, with
+  the plane normal of an admissible triple at every body, is a
   nondegenerate pencil realization.
 \end{lemma}
 \begin{proof}
   \uses{lem:pencil-config-distinct-realization, lem:pencil-condition-linear}
   The configuration is a pencil realization with adjacent points distinct
-  (\cref{lem:pencil-config-distinct-realization}), and a non-hub's closed
-  neighbourhood, of at most three members with non-collinear picture
-  points, has independent points. Each normal is a nonzero multiple of
-  $(h_0, h_1, -1, h_2)$ for the plane $z = h_0 x + h_1 y + h_2$
-  (\cref{lem:pencil-condition-linear}), so independence of normals is
-  affine independence of planes. Every plane of a closed
-  hub-neighbourhood of $v$ contains the point of $v$. At a hub $v$ with
-  hub neighbours $w_1(, w_2)$, the difference of the planes of $v$ and
-  $w_i$ vanishes on the line $q_v q_{w_i}$, and these lines are distinct,
-  so the planes are affinely independent once each difference is nonzero.
-  At a body of degree two whose neighbours $a, b$ are hubs, the closed
-  hub-neighbourhood is $\{a, b\}$.
+  (\cref{lem:pencil-config-distinct-realization}). A non-hub's closed
+  neighbourhood has at most three members, and admissibility puts three
+  with non-collinear picture points in it, so its points are independent.
+  Each normal is a nonzero multiple of $(h_0, h_1, -1, h_2)$ for the plane
+  $z = h_0 x + h_1 y + h_2$ (\cref{lem:pencil-condition-linear}), so
+  independence of normals is affine independence of planes. At a hub $v$
+  with one hub neighbour this is the first condition. With two, $w_1$ and
+  $w_2$, the difference $d_i$ of the planes of $w_i$ and $v$ is nonzero
+  and vanishes at $q_v$ and $q_{w_i}$, so $d_2$ does not vanish at
+  $q_{w_1}$, nor $d_1$ at $q_{w_2}$, since the three points are not
+  collinear; evaluating a relation between $d_1$ and $d_2$ at $q_{w_1}$
+  and at $q_{w_2}$ shows the two differences independent. The closed
+  hub-neighbourhood of a body that is not a hub consists of at most two
+  of its neighbours, and two is the second condition. Neither the
+  standing hypotheses nor nondegeneracy-feasibility is used.
 \end{proof}
 
 \begin{theorem}[The general configuration is nondegenerate without a planar-rigid set]
@@ -4397,9 +4403,11 @@ degree-two bodies enlarge the lifting space.
   and of the polynomials of \cref{lem:pencil-x0-planes-separate} for the
   finitely many pairs \cref{lem:pencil-x0-conjunct-three} names. In its
   fibre, the attaining heights and, for each pair, the heights with
-  different planes are each nonzero somewhere on $L(q)$, hence meet
-  (\cref{lem:pencil-x0-fibre-intersection}), and
-  \cref{lem:pencil-x0-conjunct-three} applies there.
+  different planes are each nonzero somewhere on $L(q)$, hence meet at one
+  height, by induction on their number from
+  \cref{lem:pencil-x0-fibre-intersection}, which meets two.
+  \Cref{lem:pencil-x0-conjunct-three} applies there, and the attaining
+  polynomial gives the rank.
 \end{proof}
 
 \begin{lemma}[Steering a realization of a subgraph]

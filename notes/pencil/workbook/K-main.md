@@ -98,8 +98,8 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   With (MC-89): **every feasible simple connected graph of minimum degree `≥ 2` has the generic
   pencil motive, modulo Jackson–Jordán, in characteristic 0 (MC-133).** And every simple graph
   satisfying (H), feasible or not, has `HasDistinctPencilRealization`, modulo Jackson–Jordán, in
-  characteristic 0 (MC-157). *2026-09-28 (MOTIVES recon, found by formalization, awaiting a second
-  read):* route B, (MC-183)–(MC-187): the generic motive inside the pencil reduction's induction, the
+  characteristic 0 (MC-157). *2026-09-28 (MOTIVES recon, found by formalization; second-read the
+  same day, confirmed with repairs, (MC-188) and (MC-189) added):* route B, (MC-183)–(MC-189): the generic motive inside the pencil reduction's induction, the
   planned fibre route refuted at two hubs with three common neighbours (MC-187).
 - **Step MC20** (second-read 2026-09-25, confirmed with repairs; the argument leaves audited for
   characteristic, (MC-166); (MC-167), (MC-168) added): every computational certificate under (MC-89) has a hand proof

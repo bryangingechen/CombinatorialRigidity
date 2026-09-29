@@ -1458,13 +1458,14 @@ found the distinct statement immediate from the covering theorem, and no bound o
 labels needed anywhere. It refuted the planned route to the generic statement: at two hubs with three
 common neighbours, `K_{2,3}` the smallest, no general configuration of the main component is
 nondegenerate. Instead the generic realization is proved inside the pencil reduction's induction
-(route B, `notes/pencil/workbook/K-main-MC19.md` (MC-183)–(MC-187), awaiting a second read), which
-compiles with four new leaves open. This first sub-phase lands the distinct statement and small
-pieces (M0), then the generic realization at graphs with no planar-rigid set (B1–B3): the planes of
+(route B, `notes/pencil/workbook/K-main-MC19.md` (MC-183)–(MC-189), second-read 2026-09-28 with no
+gap), which compiles with three new leaves open once the base is in. This first sub-phase lands the
+distinct statement and small pieces (M0), then the generic realization at graphs with no planar-rigid set (B1–B3): the planes of
 any two bodies separate there, by Jackson–Jordán's equality at the graph with one new body joined to
 both, and the general configuration is then nondegenerate. The blueprint's
-`sec:main-component-statements` and `thm:pencil-conjecture` are transcribed red. **Next:** M0, then
-the second read of (MC-183)–(MC-187), then B1. EARS and REDUCE+CLOSE follow.
+`sec:main-component-statements` and `thm:pencil-conjecture` are transcribed red. M0 and the second read
+are done; the second read compiled B1–B3 sorry-free. **Next:** B1–B3 as one build from that spike,
+which closes 40n. EARS and REDUCE+CLOSE follow.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
