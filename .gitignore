@@ -31,7 +31,9 @@ blueprint/web/
 # register as agent types), the safety hooks under
 # .claude/hooks/, and the project settings.json that wires the hooks:
 # they carry workflow lessons and mechanical guards that should
-# survive a fresh clone. (A bare `.claude/` ignore kept
+# survive a fresh clone. The autopilot's config, queue and project
+# rules under .claude/autopilot/ ship too: sessions commit the queue's
+# `done` flags. (A bare `.claude/` ignore kept
 # coordinate-phase.md and the lake-update guard machine-local; the
 # guard's motivating OOM crash is enharmonic 2026-06-10. The `.claude/*`
 # re-exclude silently dropped .claude/agents/ until the leading
@@ -46,6 +48,7 @@ blueprint/web/
 !.claude/agents-core/
 !.claude/hooks/
 !.claude/scripts/
+!.claude/autopilot/
 !.claude/settings.json
 
 # Python bytecode caches from the notes/scripts/ numerics (untracked

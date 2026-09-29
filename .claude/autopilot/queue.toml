@@ -1,0 +1,51 @@
+# The autopilot queue (autoformalize-driver, interface v1). Items run in file order: the driver
+# runs the first item with done = false, and stops *before* an item with attended = true.
+# - The session that closes an item sets its done = true in the closing commit.
+# - Only the PI reorders items or adds them.
+# - `id` is the argument of `/coordinate-phase`, and `note` is the item's work log. An item whose
+#   work log doesn't exist yet hasn't opened.
+# The five cleanup rounds' scope, order and stops: notes/Cleanup40.md (PI, 2026-09-29).
+
+[[item]]
+id = "40-cleanup"
+title = "Post-Phase-40 cleanup 1/5: the mechanical round"
+note = "notes/Phase40-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "40-factor"
+title = "Post-Phase-40 cleanup 2/5: the shared hub normalization"
+note = "notes/Phase40-factor.md"
+attended = false
+done = false
+
+[[item]]
+id = "40-exposition"
+title = "Post-Phase-40 cleanup 3/5: the pencil proof explained"
+note = "notes/Phase40-exposition.md"
+attended = false
+done = false
+
+[[item]]
+id = "40-simplify"
+title = "Post-Phase-40 cleanup 4/5: the deep simplification recon"
+note = "notes/Phase40-simplify.md"
+attended = false
+done = false
+
+[[item]]
+id = "40-docs"
+title = "Post-Phase-40 cleanup 5/5: project organization"
+note = "notes/Phase40-docs.md"
+attended = false
+done = false
+
+# Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
+# then; afterwards the PI may replace this row with the opened phase's id and set attended = false.
+[[item]]
+id = "ORIGAMI"
+title = "ORIGAMI: planar-blocks block-and-hole rigidity"
+note = "notes/Origami.md"
+attended = true
+done = false

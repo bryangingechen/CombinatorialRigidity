@@ -1,0 +1,17 @@
+# CombinatorialRigidity's autopilot config: autoformalize-driver, interface v1 (that repo's
+# docs/interface.md). The project rules are system-prompt.md; the queue is queue.toml.
+prompt = "/coordinate-phase {item}"
+queue = ".claude/autopilot/queue.toml"
+system_prompt = ".claude/autopilot/system-prompt.md"
+
+# Sent after "AUTOPILOT-RECOVER: (<reason>) " when the driver resumes this same session after the
+# process ended mid-run (a usage-limit kill, a crash, a stall).
+kill_recovery_prompt = """The process ended mid-run. Background agents in flight: {in_flight}. \
+Follow notes/coordinate-phase-rescue.md §3 (killed dispatch, resume first): check `git status` \
+for stranded work, then resume each in-flight agent with SendMessage to its id, saying where it \
+died and what remains. Relaunch fresh with its salvaged read map only if the resume fails. If \
+none was recorded, re-read the work log's hand-off against `git log` and the tree. Then verify \
+each return (loop steps 4-5) and continue the loop under the autopilot rules."""
+
+# The coordinator is the loop's top rung: it verifies every return and scrutinizes recons.
+claude_args = ["--model", "opus"]

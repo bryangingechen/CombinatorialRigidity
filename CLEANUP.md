@@ -325,4 +325,6 @@ belong in a phase plan or `DESIGN.md` *Choices to revisit*.
    existing lift-on-promotion rule.
 5. **Close the round** with a *Hand-off / next phase* section in
    the work log that names what carried over (if anything) and
-   updates the ROADMAP Status row.
+   updates the ROADMAP Status row. If the round is a row of
+   `.claude/autopilot/queue.toml`, the close commit also sets that
+   row's `done = true`, whether or not autopilot ran it.

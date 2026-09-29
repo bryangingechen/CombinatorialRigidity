@@ -49,7 +49,53 @@ for an actual user response before the first dispatch — a timed-out
 question is not an answer; re-ask (or idle) rather than proceeding on
 assumed defaults (a 60s timeout once had the coordinator carry over a
 prior session's config, which the user's late answer then partially
-reversed — CombinatorialRigidity 2026-07-02).
+reversed — CombinatorialRigidity 2026-07-02). Under autopilot the
+check-in is answered in advance; see *Autopilot mode*.
+
+## Autopilot mode
+
+This applies when `AUTOPILOT=1` is set, or when the system prompt has an
+*Autopilot mode* section. The loop then runs unattended under the
+autopilot driver (the separate `autoformalize-driver` repo; its contract
+is `docs/interface.md` there). The system prompt carries two sets of
+rules, and both survive compaction: the driver's generic rules, and this
+project's `.claude/autopilot/system-prompt.md`. Where they differ from
+this file, they win.
+
+- **`$ARGUMENTS` is a queue item** of `.claude/autopilot/queue.toml`,
+  and the item's `note` is its work log. If that file doesn't exist yet,
+  the item hasn't opened, and the loop's first commit opens it.
+- **The check-in is answered** in the project rules. Never ask it.
+- **Each step-7 stop ends the session.** So does a phase-boundary
+  decision surfaced at step 6. Write the stop up where the project rules
+  say, and bring the tree to a clean hand-off. Then write the status
+  object to `$AUTOPILOT_STATUS_FILE`, and give the same JSON as the final
+  answer. The project rules map each stop to its status, and name the
+  in-workflow resolutions that replace some stops.
+- **Skip the keepalive cron** (step 3). Cron never fires under
+  `claude -p` (the driver's smoke test (b)). A dispatch that runs past an
+  hour therefore costs one cold cache re-write when it returns.
+- **Usage.** The driver's pacing gate runs before every `Agent` and
+  `SendMessage` in the main session. It denies with `AUTOPILOT-PAUSE`
+  when:
+  - the 5-hour window is at 85% or more and resets over an hour away;
+  - an account-wide weekly limit is at 95% or more and resets over an
+    hour away;
+  - any limit is at 99%.
+
+  So serial dispatches need no check. A fan-out still runs *Session-budget
+  check*. A per-model weekly limit (`weekly_scoped` in
+  `session-usage.py limits`) doesn't gate. Before dispatching a rung that
+  has one, check it, and substitute per the playbook when it's near 100%.
+- **Kill recovery works across processes.** A prompt that starts
+  `AUTOPILOT-RECOVER:` means the process ended mid-run and the driver has
+  resumed this same session. Rescue §3's resume-first applies unchanged: a
+  `claude -p --resume` session can `SendMessage` the old agent id, and the
+  agent resumes with its context (smoke test (d)).
+- **Leave to the driver what it checks itself.** It blocks every push.
+  After each session it checks that HEAD moved, the tree is clean, the
+  branch is unchanged, and no remote-tracking ref moved. Don't push, and
+  don't add checks for these. Step 4's per-dispatch checks still run.
 
 ## Dispatch playbook
 
@@ -273,7 +319,8 @@ sign backwards and cost a pause.) The
 transcripts (subagent transcripts included, deduped by message id) —
 use it to calibrate a planned fan-out against what a comparable past
 round actually consumed. Serial single-dispatch loops don't need the
-check; the completion notification cadence self-paces them.
+check; the completion notification cadence self-paces them. Under
+autopilot, the driver's pacing gate also covers them (*Autopilot mode*).
 
 ### Exception log
 
@@ -465,7 +512,9 @@ CLAUDE.md at phase close.
    cache and the next turn re-writes the whole prefix at 2× base
    input, where a ping is a 0.1× cache read that refreshes the timer.
    Cron fires only while the REPL is idle; skip the keepalive in
-   overage (the TTL drops to 5 min there and no cadence catches it).
+   overage (the TTL drops to 5 min there and no cadence catches it),
+   and under autopilot (*Autopilot mode*: cron never fires under
+   `claude -p`).
 
    **Continuation dispatch (same-arc slices).** When the next task
    directly continues the arc the previous dispatch just delivered —
@@ -690,7 +739,8 @@ CLAUDE.md at phase close.
    Surface **phase-boundary decisions** — early close, sub-phase
    split, a change to what "phase close" means — with a concrete
    commit-count estimate rather than deciding unilaterally.
-7. Stop and surface on any of:
+7. Stop and surface on any of the following. Under autopilot, each stop
+   ends the session with a status (*Autopilot mode*).
    - ROADMAP Status shows Phase $ARGUMENTS closed (the subagent ran
      the phase-close checklist). For a **sub-lettered** phase,
      "closed" is the umbrella cell showing this sub-phase done + the

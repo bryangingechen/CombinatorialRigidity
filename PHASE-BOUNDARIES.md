@@ -161,6 +161,9 @@ of* the per-commit checklists above:
 - Flip the phase's row in the ROADMAP Status table to ✓ and **re-thin
   the cell to a pointer** if it grew during the phase (status + ≤1 short
   scope clause + `(see notes/PhaseN.md)`).
+- **If the phase (or sub-phase) is a row of `.claude/autopilot/queue.toml`,
+  set that row's `done = true`** in the close commit, whether or not
+  autopilot ran it. The driver runs the first row that isn't done.
 - **Compress its §N planning section in ROADMAP** to a one-paragraph
   summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is the
   canonical model; the §N prose is the *single* per-phase summary home

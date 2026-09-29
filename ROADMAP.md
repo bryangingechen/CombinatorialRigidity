@@ -1199,12 +1199,20 @@ the queue at the user's initiative (§38 above), and opened and closed as
 Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
 2026-07-23; PENCIL opened as Phase 39 and closed 2026-09-25 as a reduction (§39
 above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day at the user's
-initiative and closed 2026-09-29, proving the pencil conjecture (§40 above), so
-**ORIGAMI is the next queued phase to open**.) A longer **unqueued**
+initiative and closed 2026-09-29, proving the pencil conjecture (§40 above). The PI then
+queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
+autopilot, so **ORIGAMI opens after them**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`.
 
+- **The post-Phase-40 cleanup rounds** — five `CLEANUP.md` rounds over what Phases 39–40 built.
+  In order: `40-cleanup` (mechanical), `40-factor` (the shared hub normalization),
+  `40-exposition` (the pencil proof explained), `40-simplify` (a deep simplification recon) and
+  `40-docs` (project organization). Hygiene: no headline statement changes, and new mathematics
+  only where the PI sanctions it. Scope, order, stops and the PI's decisions are in
+  `notes/Cleanup40.md`. The autopilot queue is `.claude/autopilot/queue.toml`.
+  **Next concrete task:** open `40-cleanup` (`notes/Cleanup40.md` §2).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

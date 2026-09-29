@@ -4,8 +4,8 @@
 MOTIVES' third and last sub-phase greened Phase 40's last five red nodes in one build (B1): the
 good ear at two-edge-connected graphs, the route-B assembly and both headlines. The pencil
 conjecture is proved over every infinite field (`pencil_conjecture`, `pencilPair_of_nonempty`),
-standard axioms. **Next:** none in Phase 40; ORIGAMI is the next queued phase (ROADMAP *Queued*),
-not opened.
+standard axioms. **Next:** none in Phase 40. Five post-Phase-40 cleanup rounds run before ORIGAMI
+(`notes/Cleanup40.md`).
 
 ## Current state
 
@@ -54,10 +54,11 @@ The coordinator's calls, 2026-09-29, on the recon's verdict (all stand at the cl
 
 ## Hand-off / next phase
 
-**Phase 40 is closed; there is no next step in it.** The next queued phase is **ORIGAMI**
-(`notes/Origami.md`; ROADMAP *Queued post-program phases*), not opened by this close. A
-post-Phase-40 cleanup round, if the PI queues one, starts from `notes/Phase40-design.md` §7's
-carried index. The attack tracks are both closed (smark 2026-09-29, gr10 2026-09-23).
+**Phase 40 is closed; there is no next step in it.** On 2026-09-29 the PI queued five cleanup
+rounds ahead of ORIGAMI (`notes/Cleanup40.md`; ROADMAP *Queued post-program phases*).
+The next concrete task is opening the first, `40-cleanup`. Its task list takes
+`notes/Phase40-design.md` §7's carried index as `notes/Cleanup40.md` §2 divides it. The attack
+tracks are both closed (smark 2026-09-29, gr10 2026-09-23).
 
 ## Decisions made during this phase
 
