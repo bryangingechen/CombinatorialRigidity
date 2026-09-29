@@ -338,9 +338,10 @@ theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
--- `[DecidableEq β]` is genuinely load-bearing (empirical check per FRICTION.md: removing it
--- makes the `pencil_conjecture_of_arms_pair` call below fail to synthesize the instance it
--- requires) though it's never named in the body; `unusedDecidableInType` false-positives here.
+-- `[DecidableEq β]` is unused in the type; it is only threaded to `pencil_conjecture_of_arms_pair`.
+-- The linter's fix (drop it, `by classical exact` for the term) would change the signature pinned
+-- by `thm:pencil-conditional-realization-main-component` and named in `formalization.yaml`'s
+-- pencil entry, so it is a `40-simplify` candidate (`notes/Phase40-cleanup.md`), not applied here.
 set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture from the two main-component statements**
 (`thm:pencil-conditional-realization-main-component`; Phase 39 PENCIL, L0a/L0b). Over an infinite

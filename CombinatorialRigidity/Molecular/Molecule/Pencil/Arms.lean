@@ -1434,9 +1434,10 @@ supplied as hypotheses, bridging the resulting `HasPencilRealization`'s span-ran
 global `RankHypothesis` via the rank-nullity complement identity
 `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`. -/
 
--- `[DecidableEq β]` is genuinely load-bearing (removing it makes the `Graph.pencil_reduction`
--- call below fail to synthesize the instance its signature takes) though it's never named in the
--- body; `unusedDecidableInType` false-positives here.
+-- `[DecidableEq β]` is unused in the type; it is only threaded to `Graph.pencil_reduction`. The
+-- linter's fix (drop it, `classical` in the proof) would change the signature pinned by
+-- `thm:pencil-conditional-realization`, so it is a `40-simplify` candidate
+-- (`notes/Phase40-cleanup.md`), not applied here.
 set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture, conditional on the contraction and split cases**
 (`thm:pencil-conditional-realization`; Phase 39 route (b′), W3-L7, the last remaining W3 leaf;

@@ -12,20 +12,31 @@ from rfl` (Lean, 32 sites). Round manual: `CLEANUP.md`.
 **Next commit: task 3, B8** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
 1–2 landed, 47 remain. Nothing is mid-stream.
 
-**Task 2 (B3) landed.** 2 of the 12 sites stay removed (linter silent once rebuilt): Base.lean 57
-(`pencilPair_of_habitat_ncard_eq_three`) and the second `unusedDecidableInType` on
-`pencilPair_of_habitat_ncard_eq_four` (paired with its heartbeat bump) — that declaration only
-needed the heartbeat fix. The other 10 restored with a one-line comment naming the specific
-downstream call that needs the instance (`Graph.pencil_reduction`, `pencil_conjecture_of_arms_pair`,
-`pencil_conjecture_of_hcontract_hK_hbareSplit[_of_card]`,
-`Graph.exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`, `exists_planes_separate`'s
-`mulVecLin`, `Finset.univ`): X0.lean 344 and `MainComponent/Statements.lean` 151 kept their
-existing comment unchanged; Arms.lean 1437, Pair2.lean 1219, Escape.lean ×3, and
-`MainComponent/GenericBase.lean` ×2 gained a new one. The heartbeat bump
-(`pencilPair_of_habitat_ncard_eq_four`) dropped 1000000 → 400000 (bisected: default 200000 and
-300000 time out at `Base.lean:829`'s `simp` and the declaration's own `whnf`; 500000 and 400000
-pass). Whole-project `lake build`: 3000 jobs, 0 `warning:`, 0 `failed to cache artifact`; `lake
-lint` clean.
+**Task 2 (B3) landed, then corrected by a follow-up.** Final outcome for the 12 sites:
+- **Deleted, linter silent (2):** `Base.lean` 57 (`pencilPair_of_habitat_ncard_eq_three`, stale)
+  and the second `unusedDecidableInType` on `pencilPair_of_habitat_ncard_eq_four`.
+- **Fixed at the source (1):** `pencilPair_of_splitOff_of_habitat` (`Escape.lean`, unpinned). The
+  binder is dropped and the proof already opened with `classical`, so the silencer and its comment
+  are gone.
+- **Kept, `unusedDecidableInType` (6), all pinned or headline:** `pencil_conjecture_of_arms`
+  (`Arms.lean`) and `pencil_conjecture_of_arms_pair` (`Pair2.lean`), both threaded to
+  `Graph.pencil_reduction`; `pencil_conjecture_of_hcontract_hK_hbareSplit` and `…_of_card`
+  (`Escape.lean`); `pencil_conjecture_of_X0` (`X0.lean`); `pencil_conjecture`
+  (`MainComponent/Statements.lean`). Each comment now says the binder is type-unused, names the
+  callee it is threaded to, and says the fix is deferred. See *Candidates*.
+- **Kept, `unusedFintypeInType` (2):** `MainComponent/GenericBase.lean` 716 and 772. The task-2
+  commit said they gained new comments, but those comments predate it and are unchanged. They were
+  not re-examined against the linter's fix (`[Finite …]` plus `Fintype.ofFinite`).
+- **Heartbeats:** `pencilPair_of_habitat_ncard_eq_four` went from 1000000 to 400000 (bisected:
+  default 200000 and 300000 time out at `Base.lean:829`'s `simp` and the declaration's own
+  `whnf`; 500000 and 400000 pass).
+
+The task-2 commit had restored seven `unusedDecidableInType` silencers as "false positives". It had
+tested the deletion without adding `classical`. The linter checks the type only, and its fix is to
+drop the binder and use `classical` (the FRICTION entry, now reframed). The corrective dispatch had
+listed the two `Escape.lean` wrappers as unpinned. `thm:pencil-conditional-realization-pair`
+(`pencil.tex` 908–910) pins them, so they keep the option. Gates for the follow-up: whole-project
+`lake build` 3000 jobs, 0 `warning:`, 0 `failed to cache artifact`; `lake lint` passed.
 
 **Task 1 (T1) landed.** ROADMAP's toolchain row and `notes/ToolchainBumps.md` *Where this
 stands* were stale: `origin/master` had already caught up to `91fcd24a` (one commit behind
@@ -121,6 +132,8 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   signature is the at-source fix, but on a headline or a pinned statement it changes the statement,
   so record it as a candidate instead. For the heartbeats, try the default and then the smallest
   budget that passes, and keep the comment. This is not a perf pass, so time nothing.
+  - **Outcome** (detail: *Current state*): 2 deleted (stale), 1 fixed at the source, 6 kept
+    (pinned, a candidate), 2 `unusedFintypeInType` kept (unexamined), heartbeats 400000 (bisected).
 - [ ] **3. B8: `show … from rfl`** (32 sites, `CLEANUP.md` §B cases (a)–(d)).
   - `screwDim 2 = 6`, 12 sites: `Flat.lean` 604, 606, 621, 637, 676, 706; `Contract.lean` 429;
     `ContractAdditive.lean` 351; `Cut.lean` 416, 1042, 1043, 1044.
@@ -433,7 +446,15 @@ statement's strength. They are recorded here and never acted on in this round
 (`notes/Cleanup40.md` §2). Each line: the finding, its source task, and why it is structural. The
 close mirrors them into `notes/Cleanup40.md` §2 Round 4.
 
-- *(none yet)*
+- **Six type-unused `[DecidableEq β]` binders on pinned or headline pencil theorems** (task 2, B3).
+  They are on `pencil_conjecture`, `pencil_conjecture_of_X0`, `pencil_conjecture_of_arms`,
+  `pencil_conjecture_of_arms_pair`, `pencil_conjecture_of_hcontract_hK_hbareSplit` and `…_of_card`.
+  The linter's fix is to drop each binder and use `classical` wherever a callee still takes one:
+  `Graph.pencil_reduction` keeps its own, and the proofs that call it already open with
+  `classical`. Done together, the three term proofs need nothing. `pencilPair_of_nonempty` is the
+  in-tree precedent. The fix deletes all six silencers. It is deferred because it changes a
+  headline signature (`thm:pencil-conjecture`) and pinned ones
+  (`thm:pencil-conditional-realization`, `…-pair`, `…-main-component`).
 
 ## Moved to a later round
 
