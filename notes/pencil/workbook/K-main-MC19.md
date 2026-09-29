@@ -403,6 +403,10 @@ needed, and the argument is characteristic-free. ∎
    - Minimality forces `|H₁| = |H₂| = 1`. Then `H₀ = {a, y, b}` with `e = ab` is a triangle with
      two hubs, which (F2) excludes. ∎
 
+*(Lean route, 2026-09-29: at 2EC graphs by a shorter count, with no cycle, chain walk or bridge
+case, the tight-set lemma giving step 4's rigidity; recorded in `lem:pencil-rigid-good-ear`'s
+blueprint proof and not second-read, the 40l precedent; `notes/Phase40p.md`.)*
+
 > **(MC-130)** `[PROVED]` *(the reduction theorem)* Let `K` be infinite and let `G` be simple and
 > feasible, satisfying (H). **`HasGenericPencilRealization K 3 G` follows from the same statement at
 > every feasible simple graph `G°` satisfying (H), with `|V(G°)| ≤ |V(G)|`, that has no

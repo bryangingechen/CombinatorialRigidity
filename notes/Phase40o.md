@@ -3,8 +3,8 @@
 **Status:** ✓ complete (opened design-first, built and closed 2026-09-29). MOTIVES' second of three
 sub-phases (the PI's call, 2026-09-28; plan `notes/Phase40-design.md` §3 MOTIVES): after DIST+BASE
 (40n), **EARS** greened the three nodes route B's assembly consumes at its two ear cases. Its claims
-(MC-190)–(MC-192) were second-read after the builds, with no gap. **Next: REDUCE+CLOSE's pre-build
-recon** (not yet opened), whose close closes Phase 40; see *Hand-off*.
+(MC-190)–(MC-192) were second-read after the builds, with no gap. **REDUCE+CLOSE opened as
+sub-phase 40p** (2026-09-29, design-first; work log `notes/Phase40p.md`); see *Hand-off*.
 
 ## Current state
 
@@ -33,7 +33,7 @@ takes `G.Simple`, `PencilNondegFeasible K G` and the smaller graph's induction h
 conditioned form. The five nodes left in `sec:main-component-statements` and `pencil.tex`
 (`lem:pencil-rigid-good-ear`, `thm:pencil-generic-step`, `thm:pencil-conditioned-pair-nonempty`,
 `thm:pencil-x0-generic-attains`, `thm:pencil-conjecture`) stay red and unpinned for REDUCE+CLOSE.
-Their planned pins are in `notes/Phase40n.md`.
+Their pins are planned in `notes/Phase40p.md`.
 
 **Headline axioms, re-verified at the close** on 26 declarations: the eighteen `formalization.yaml`
 main results and the eight 40o pins above. All 26 are exactly `[propext, Classical.choice,
@@ -43,7 +43,7 @@ full `lake build` first, after the close's docstring edits: 2 999 jobs, 0 warnin
 cache-write failures).
 
 **The spikes** (gitignored, local to this checkout; builder sources, not evidence). **Keep
-`scratch/ears/`** until REDUCE+CLOSE transcribes its assembly:
+`scratch/ears/`** until 40p closes (its build source is now `scratch/40p/Close.lean`):
 - `Route.lean` (2264 lines), the route-B assembly's source: `Ears.lean` plus
   `scratch/40n-read/GenBase.lean`'s tail from l.799, with exactly one `sorry`, (MC-129)
   (`Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, l.2144). Its one-ear call (l.2186) still
@@ -83,25 +83,8 @@ All landed with the standard axioms (*Current state*).
 
 ## Hand-off / next phase
 
-**40o is closed. Next concrete step: REDUCE+CLOSE's pre-build recon** (compiler-checked, top rung,
-read-only), before REDUCE+CLOSE opens as the next sub-phase. Its inputs:
-- (MC-129) at 2EC graphs, `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`: the one remaining
-  `sorry` of `scratch/ears/Route.lean`, l.2144 (workbook proof in Step MC19; 40l's deficiency kit);
-- the route-B assembly from `Route.lean`'s tail (l.2139 on: `hasGenericPencilRealization_of_IH`,
-  `pencilPair_of_IH`, `pencilPair_of_nonempty`, `x0Gen`), with the one-ear call now without
-  `hnadj`;
-- both headlines, `pencil_conjecture` and `pencilPair_of_nonempty` (the PI's call,
-  `notes/Phase40n.md` *Architectural choices*);
-- the Phase 40 close, which updates the public surfaces.
-
-Its close closes Phase 40. **The Phase 40 close also carries three items the recon does not settle**
-(coordinator, 2026-09-29): re-deciding the held kernels (`notes/Phase40-design.md` §6: (K-res)/`kres`,
-(K-c), (K-bare-c) with (α), smark's O7e programme), which is **the PI's call**, surfaced with options
-and not decided by the close; writing or closing the two `[pending]` exposition entries (design doc
-§7, `notes/BlueprintExposition.md`); and the public surfaces (README, home_page, intro.tex,
-`formalization.yaml`, the PI's standing call). The spikes (`scratch/ears/`, `scratch/40n-read/`) are
-gitignored and exist only in this checkout. A session without them re-derives the assembly from
-`scratch/ears/Route.lean`'s recorded shape in the design doc §3 MOTIVES.
+**40o is closed. REDUCE+CLOSE is open as sub-phase 40p** (`notes/Phase40p.md`): its next step,
+the one build, and the three items the Phase 40 close carries are in that note's *Hand-off*.
 
 ## Decisions made during this phase
 

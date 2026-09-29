@@ -809,8 +809,9 @@ route and proves the generic statement inside the pencil reduction's own inducti
 second-read with no gap; the second, EARS (the steering and the two ear steps), closed as sub-phase
 40o (2026-09-29, `notes/Phase40o.md`), four builds transcribed from a compiler-checked recon's
 sorry-free spikes, its new claims second-read after the builds with no gap; the third,
-REDUCE+CLOSE (the good ear, the assembly, both headlines), not yet opened, whose close closes
-Phase 40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+REDUCE+CLOSE (the good ear, the assembly, both headlines), opened as sub-phase 40p (2026-09-29,
+`notes/Phase40p.md`) from a compiler-checked recon whose spike is complete and sorry-free, and
+whose close closes Phase 40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

@@ -4210,7 +4210,7 @@ reduction (\cref{thm:pencil-reduction}), whose hypothesis is the
 conditioned pair at every smaller graph. At a graph with no planar-rigid
 set of two or more bodies, the general configuration is nondegenerate
 (\cref{thm:pencil-x0-base-generic}). Otherwise a minimal planar-rigid set
-gives a body of degree two at non-adjacent hub ends across which the
+gives a body of degree two at hub ends across which the
 deficiency does not drop, or a pendant triangle
 (\cref{lem:pencil-rigid-good-ear}), and the generic realization of the
 smaller graph extends across it (\cref{lem:pencil-generic-one-ear},
@@ -4562,33 +4562,60 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[A minimal planar-rigid set has a good ear]
   \label{lem:pencil-rigid-good-ear}
-  \uses{def:D-deficiency, def:cut-edges-2ec, def:pencil-nondegenerate}
-  Let $G$ be simple and two-edge-connected on at least four bodies, with
-  every closed hub-neighbourhood of at most three members and no triangle
-  containing two pencil hubs, and suppose $\operatorname{def}_2(G[Y]) = 0$
-  for some set $Y$ of at least two bodies. Then $G$ has a body $y$ of
-  degree two whose neighbours are non-adjacent pencil hubs with
-  $\operatorname{def}_3(G - y) \le \operatorname{def}_3(G)$, or two
-  adjacent bodies of degree two both joined to a body of degree at least
-  four.
+  \uses{def:pencil-x0-standing, def:D-deficiency, def:cut-edges-2ec,
+        def:pencil-nondegenerate}
+  Let $G$ satisfy the standing hypotheses (\cref{def:pencil-x0-standing})
+  and be two-edge-connected on at least four bodies, with every closed
+  hub-neighbourhood of at most three members and no triangle containing
+  two pencil hubs, and suppose $\operatorname{def}_2(G[Y]) = 0$ for some
+  set $Y$ of at least two bodies. Then $G$ has a body $y$ of degree two
+  whose neighbours are pencil hubs with $\operatorname{def}_3(G - y) \le
+  \operatorname{def}_3(G)$, or two adjacent bodies of degree two with a
+  common neighbour of degree at least four.
 \end{lemma}
 \begin{proof}
-  \uses{lem:deficiency-sparse, lem:deficiency-merge-rigid}
-  Take $W_0$ minimal among the sets of at least two bodies with
-  $\operatorname{def}_2(G[W_0]) = 0$. If every body of $W_0$ were a hub,
-  each would have at most two neighbours in $W_0$, and $G[W_0]$ would be a
-  cycle of planar deficiency zero, hence a triangle of hubs; so some body
-  of $W_0$ has degree two, and the maximal path through it of bodies of
-  degree two lies in $W_0$. If it has at least two interior bodies,
-  removing two of them keeps the deficiency zero, and minimality leaves a
-  pendant triangle; its body has degree at least four, since degree three
-  would make its third edge a bridge. If it has one interior body $y$, its
-  ends are hubs, not adjacent (no triangle with two hubs), and $G[W_0] - y$
-  is connected with planar deficiency at most one. If it has no bridge it
-  has deficiency zero at $n = 3$, and merging along it
-  (\cref{lem:deficiency-merge-rigid}) gives the deficiency inequality; a
-  bridge would split it into two planar-rigid sides, which minimality
-  forces to single bodies, a triangle with two hubs.
+  \uses{lem:deficiency-sparse, lem:deficiency-add-body,
+        lem:deficiency-tight-rigid, lem:deficiency-merge-rigid,
+        lem:deficiency-ear-merge}
+  Take a planar-rigid set $W_0$ with as few bodies as possible. Then
+  $s(W_0) \le 0$, every $Z \subsetneq W_0$ with $|Z| \ge 2$ has
+  $s(Z) \ge 1$ (\cref{lem:deficiency-sparse}), and $|W_0| \ge 3$, since
+  two bodies of a simple graph have singleton value at least one. Adding a
+  body $u$ to a set changes its singleton value by $3 - 2t$, with $t$ the
+  number of edges from $u$ into the set (\cref{lem:deficiency-add-body});
+  so every body of $W_0$ has at least two neighbours in $W_0$.
+
+  Suppose two adjacent bodies $y$ and $u$ of $W_0$ each have at most one
+  neighbour in $Z = W_0 \setminus \{y, u\}$. Putting $y$ and then $u$ back
+  into $Z$ does not lower the singleton value: $y$ adds at least $3 - 2$,
+  and $u$, with at most two edges into $Z \cup \{y\}$, at least $3 - 4$. So
+  $s(Z) \le s(W_0) \le 0$ and $|Z| \le 1$. Hence $W_0 = \{y, u, w\}$, and
+  $s(W_0) \le 0$ makes it a triangle. If every body of $W_0$ is a hub,
+  each has at most two hub neighbours, its closed hub-neighbourhood having
+  at most three members, so this applies at any edge of $G[W_0]$ and gives
+  a triangle of hubs, which is excluded. So some $y \in W_0$ has degree
+  two, and both of its neighbours $a$ and $b$ lie in $W_0$.
+
+  If $a$, say, is not a hub, it has degree two too, and the same argument
+  at the edge $ya$ gives a pendant triangle $\{y, a, w\}$. Its third body
+  $w$ has degree at least four: at least two edges cross the triangle
+  (\cref{def:cut-edges-2ec}), and all of them are at $w$. If $a$ and $b$
+  are hubs, $X = W_0 \setminus \{y\}$ has $s(X) \le s(W_0) + 1 \le 1$, and
+  $|X| \ge 3$, since $X = \{a, b\}$ with $s(X) \le 1$ would need the edge
+  $ab$, and $\{y, a, b\}$ would be a triangle with two hubs. So $X$ is rigid
+  (\cref{lem:deficiency-tight-rigid}). Then $a$ and $b$ lie in the rigid set
+  $X$ of $G - y$, so $\operatorname{def}_3(G - y; a, b) =
+  \operatorname{def}_3(G - y)$ (\cref{lem:deficiency-merge-rigid}), and $y$
+  joins the part of $a$ and $b$ without changing the value
+  (\cref{lem:deficiency-ear-merge}), which gives
+  $\operatorname{def}_3(G - y) \le \operatorname{def}_3(G)$.
+
+  The informal argument settles the case of hubs by $G[W_0]$ being a cycle,
+  walks the maximal chain of bodies of degree two through $y$, and obtains
+  the rigidity of $W_0 \setminus \{y\}$ from its connectivity and its
+  bridges. The count at one edge above needs no cycle and no chain, the
+  tight-set lemma needs no bridge, and the minimality of $W_0$ enters only
+  through the singleton values of its proper subsets.
 \end{proof}
 
 \begin{theorem}[The generic conjunct from the induction hypothesis]
@@ -4601,7 +4628,8 @@ degree-two bodies enlarge the lifting space.
   realization.
 \end{theorem}
 \begin{proof}
-  \uses{thm:pencil-x0-base-generic, lem:pencil-three-bodies-no-rigid,
+  \uses{def:pencil-x0-standing, thm:pencil-x0-base-generic,
+        lem:pencil-three-bodies-no-rigid,
         lem:pencil-feasible-hub-conditions, lem:pencil-rigid-good-ear,
         lem:pencil-generic-one-ear, lem:pencil-generic-pendant-triangle}
   $G$ satisfies the standing hypotheses. Without a planar-rigid set of at
@@ -4644,11 +4672,11 @@ degree-two bodies enlarge the lifting space.
   \uses{def:pencil-x0-attains, def:pencil-distinct-motive,
         def:pencil-generic-motive, def:D-deficiency,
         def:pencil-main-component-statements}
-  For every simple connected multigraph $G$ of minimum degree at least
-  two, the general configuration of $G$ attains the rank
-  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
+  Let $K$ be an infinite field. For every simple connected multigraph $G$
+  of minimum degree at least two, the general configuration of $G$ attains
+  the rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
   (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $n = 3$).
-  Over an infinite field, the two main-component statements
+  The two main-component statements
   (\cref{def:pencil-main-component-statements}) hold: every simple
   two-edge-connected multigraph on at least three bodies has a pencil
   realization at the deficiency rank with adjacent points distinct

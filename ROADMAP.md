@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40o ✓ (SPINE2 … COVERAGE, MOTIVES-DIST+BASE, MOTIVES-EARS); MOTIVES-REDUCE+CLOSE next, not yet opened (see `notes/Phase40o.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40o ✓ (SPINE2 … COVERAGE, MOTIVES-DIST+BASE, MOTIVES-EARS); 40p ◐ (MOTIVES-REDUCE+CLOSE, MOTIVES' last) (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1177,8 +1177,8 @@ infinite field. Layers by stable code, lettered only as each opens:
   otherwise a minimal planar-rigid set gives a one-body ear or a pendant triangle across which the
   smaller graph's generic realization extends. **DIST+BASE** ✓ (sub-phase 40n, closed 2026-09-28:
   the distinct statement and the rigid-free base) and **EARS** ✓ (sub-phase 40o, closed
-  2026-09-29: the steering and the two ear steps), then **REDUCE+CLOSE** (the good ear, the
-  assembly, both headlines; not yet opened).
+  2026-09-29: the steering and the two ear steps), then **REDUCE+CLOSE** (sub-phase 40p, open: the
+  good ear, the assembly, both headlines).
 
 The design doc carries the proof map, label by label.
 
@@ -1488,8 +1488,24 @@ deficiencies add at the cut vertex). Four transcription builds from a compiler-c
 recon: the reseed at given selectors in `Pencil/Reseed.lean`, and three new files under
 `MainComponent/` (`GenericSteer`, `GenericEar`, `GenericTriangle`). A second read after the builds
 confirmed the workbook's (MC-190)–(MC-192) with precision repairs and added (MC-193), off the route.
-Headline axioms unchanged (re-verified at the close). **Next:** REDUCE+CLOSE, MOTIVES' third
-sub-phase (not yet opened; its pre-build recon first), whose close closes Phase 40.
+Headline axioms unchanged (re-verified at the close). **Next:** 40p (below), MOTIVES' third and
+last sub-phase, whose close closes Phase 40.
+
+#### Phase 40p — the good ear, the assembly and both headlines (MOTIVES-REDUCE+CLOSE, MOTIVES' last sub-phase) — ◐ In progress
+
+**◐ In progress** (opened design-first 2026-09-29; work log `notes/Phase40p.md`). REDUCE+CLOSE
+greens Phase 40's last five nodes. A minimal planar-rigid set of a two-edge-connected graph gives a
+body of degree two at hub ends across which the deficiency does not drop, or a pendant triangle at
+a body of degree at least four; the generic step and the conditioned pair at every nonempty graph
+follow inside the pencil reduction's induction, and with them the generic statement and both
+headlines, `pencil_conjecture` and `pencilPair_of_nonempty`. Its pre-build recon compiled all of it
+sorry-free with standard axioms. The good-ear proof is shorter than the informal one: it needs no
+cycle, no maximal chain and no bridge case, and gets the rigidity it needs from the tight-set
+lemma. That departure is recorded in the blueprint proof, not second-read (the 40l precedent). The
+good-ear node drops the non-adjacency of its ends, which nothing consumes. **Next:** one
+transcription build (the add-one-body identity in `SparseDeficiency.lean`, the good ear in a new
+`MainComponent/GoodEar.lean`, the assembly and both headlines in `MainComponent/Statements.lean`),
+then the Phase 40 close.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -33,7 +33,9 @@ wrapper). The Lean: M0 in `MainComponent/Statements.lean` (42 lines, new), `Penc
   pendant triangle ← `hasGenericPencilRealization_of_closedEar_two`; good ear ←
   `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`; generic step ←
   `hasGenericPencilRealization_of_IH`; nonempty pair ← `pencilPair_of_nonempty`; generic attains ←
-  `x0Gen`; the conjecture ← `pencil_conjecture`, `pencilPair_of_nonempty`.
+  `x0Gen`; the conjecture ← `pencil_conjecture`, `pencilPair_of_nonempty`. REDUCE+CLOSE's as
+  re-planned at 40p's open (the good ear with two helpers, generic attains with three):
+  `notes/Phase40p.md`.
 
 **The interface EARS and REDUCE+CLOSE consume:** the base
 `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`,
