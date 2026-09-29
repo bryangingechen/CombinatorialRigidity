@@ -335,8 +335,6 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
     fin_cases i <;> simp [Units.smul_def, hcu, hc1, hc2]
   rwa [heq] at hbase
 
-#print axioms exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
-
 /-! ## T2 (part 2): the steering in `G`'s chart and the restriction ((MC-186)(a)–(b)) -/
 
 /-- **The closed neighbourhood is the body and its neighbours.** -/
@@ -510,8 +508,6 @@ theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite
   rw [ite_eq_left ⟨hv, hGhub, hHnot⟩] at h
   rw [hpcp_eq]
   exact h
-
-#print axioms exists_isNondegPencilRealization_restrict_of_demoted
 
 /-! ## T3: the steering in `H`'s chart ((MC-186)(c)) -/
 
@@ -756,8 +752,6 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
   · rw [hpcp_eq, pencilChartNormal_congr hubSel nbrSel H hhub_eq hfill_eq
       (fun hxh => hassigned (w j) hxh (hwfree j hxh))]
     exact hcondD j
-
-#print axioms exists_isNondegPencilRealization_steer
 
 /-- **A demoted body that loses few neighbours keeps exactly two** (the `fillNbr`-free condition
 T3 reads): at a simple `G`, a body `v` of `H ≤ G` that is not a hub of `H`, whose

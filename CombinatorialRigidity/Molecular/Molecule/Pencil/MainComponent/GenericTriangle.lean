@@ -677,6 +677,4 @@ theorem hasGenericPencilRealization_of_closedEar_two
   exact hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization hS hcover hinj
     hxV₁ hc hpath hsep hchub hnd' hrank' hprom
 
-#print axioms hasGenericPencilRealization_of_closedEar_two
-
 end CombinatorialRigidity.Molecular
