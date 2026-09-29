@@ -98,6 +98,20 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
+- **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
+  (`Pencil/Motive.lean`, signature on the next line) returned no hit, while
+  `PencilNondegFeasible.hub_conditions` (binders on the name's line) was found.
+- **Friction:** lean-lsp-mcp's `search_utils.lean_local_search` builds the rg pattern
+  `…{re.escape(query)}[A-Za-z0-9_'.]*(?:\s|:)`. rg matches line by line, so `\s` never matches the
+  line end, and a name at end of line is invisible. About 325 declarations in `CombinatorialRigidity/`
+  are laid out that way. The server also checks for `rg` only at startup, so installing ripgrep
+  mid-session needs a `/mcp` reconnect.
+- **Proposed fix:** upstream, end the pattern with `(?:\s|:|$)`. Until then, a "not found" from
+  `lean_local_search` is not evidence of absence: search by bare declaration name with
+  `grep -rn "theorem <name>"` over the tree and `.lake/packages`.
+- **Status:** open (upstream tool, not a Mathlib mirror)
+
 ### [open] The three-body step repeats the four-body step: `exists_insertion_three`, `splitOff_ear_three` and the assembly are near-copies
 - **Where it bit:** Phase 40h B7, `exists_insertion_three` (`MainComponent/Lines.lean`),
   `splitOff_ear_three` and `Graph.X0Attains.of_openEar_three` (`MainComponent/Short.lean`).
