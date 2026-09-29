@@ -18,21 +18,22 @@ panel normal and the concurrency point exchanged. In the molecular
 reading of \cref{sec:molecule-modelling-defs} (atoms as bodies, bond
 lines as hinges, centres as concurrency points) the condition says
 that every atom's incident bonds lie in a common plane through the
-atom's centre. Whether every spanning multigraph admits such a
-realization attaining the deficiency rank of
-\cref{thm:theorem-55-6-multigraph} is open. The section reduces the
-question by a strong induction on all spanning multigraphs
+atom's centre. Every spanning multigraph admits such a realization
+attaining the deficiency rank of \cref{thm:theorem-55-6-multigraph}, over
+every infinite field (\cref{thm:pencil-conjecture}). The section proves
+this by a strong induction on all spanning multigraphs
 (\cref{thm:pencil-reduction}), in which a minimum-degree argument
 replaces the minimality that Katoh--Tanigawa's induction uses; the loop,
-base and cut-edge cases are proved, and the remaining cases are reduced
-first to two kernel statements at a degree-two vertex
+base and cut-edge cases are proved here, and the remaining cases are
+reduced first to two kernel statements at a degree-two vertex
 (\cref{thm:pencil-conditional-realization-pair}) and then, bypassing
 those, to two statements about the main component of the configuration
 space of pencil realizations
-(\cref{thm:pencil-conditional-realization-main-component}), whose proofs
-lie outside this section. The final subsection records the combinatorial
-shape that the kernel hypotheses force --- the girth of the multigraph and
-the maximal chain of degree-two vertices through the split vertex.
+(\cref{thm:pencil-conditional-realization-main-component}), which
+\cref{sec:main-component} proves. The final subsection records the
+combinatorial shape that the kernel hypotheses force --- the girth of the
+multigraph and the maximal chain of degree-two vertices through the split
+vertex.
 
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
@@ -969,9 +970,8 @@ deficiency rank.
   is that a nonzero polynomial over an infinite field has a non-root, and
   the statement is not strengthened by any hypothesis on the
   characteristic. The informal arguments known for the two kernels are
-  narrower, and the field hypothesis is expected to enter through them,
-  each at the weakest form its proof needs, with the eventual
-  unconditional statement inheriting whatever the kernels require. For
+  narrower, and a proof along them would carry the field hypothesis each
+  needs. For
   kernel (K) the known route places the bodies on the quadric
   $x \cdot x = 0$ in homogeneous coordinates on $K^4$ and splits the screw
   space along the two eigenspaces of the polarity of
@@ -990,8 +990,9 @@ deficiency rank.
   configurations over $K$, an infinite field suffices, and until then
   the interim hypothesis is an algebraically closed field. Both routes have
   been tested only in characteristic $0$, by exact computation over $\Q$
-  and $\Q(i)$; whether the conjecture itself holds over infinite fields of
-  characteristic $2$ is open.
+  and $\Q(i)$. The conjecture itself holds over every infinite field, of
+  every characteristic (\cref{thm:pencil-conjecture}), by the route through
+  the main component, which uses neither kernel.
 \end{fmlnote}
 \begin{proof}
   \leanok
@@ -1044,12 +1045,14 @@ deficiency rank.
 The two open kernels of \cref{thm:pencil-conditional-realization-pair}
 can be bypassed. Fix a planar picture of the bodies. Over it, the pencil
 condition is linear in the heights, so the configuration space of pencil
-realizations has a distinguished main component. A separate induction on
-that component yields the adjacent-distinct and generic conclusions
-directly, at every simple two-edge-connected multigraph. This subsection
-states those two conclusions in the form the reduction consumes. It adds the
-one case they do not reach, a two-edge-connected multigraph with a parallel
-class, and assembles the conditioned pair from these pieces.
+realizations has a distinguished main component. An induction on that
+component yields the adjacent-distinct conclusion at every simple
+two-edge-connected multigraph, and the generic conclusion follows inside
+the induction of \cref{thm:pencil-reduction}; both are proved in
+\cref{sec:main-component}. This subsection states those two conclusions in
+the form the reduction consumes. It adds the one case they do not reach, a
+two-edge-connected multigraph with a parallel class, assembles the
+conditioned pair from these pieces, and states the pencil conjecture.
 
 \begin{definition}[The two main-component statements]
   \label{def:pencil-main-component-statements}
@@ -1071,13 +1074,15 @@ class, and assembles the conditioned pair from these pieces.
   \label{fmlnote:pencil-main-component-statements}
   Both statements enter
   \cref{thm:pencil-conditional-realization-main-component} as
-  hypotheses; their proofs are not part of this section. Informally, both
-  follow from one strong induction on the main component, over an
-  arbitrary infinite field. The main component is a vector bundle over
-  the admissible planar pictures. Its generic point attains the target
-  rank at every simple connected multigraph of minimum degree at least
-  two. The induction runs through ear, split-off, contraction and cut
-  steps.
+  hypotheses, and both hold over every infinite field
+  (\cref{thm:pencil-x0-generic-attains}). Over the planar pictures of the
+  bodies whose lifting space of heights has least dimension, the
+  configurations form a vector bundle, whose closure is the main
+  component. By a strong induction
+  through ear, split-off, contraction and cut steps, its general point
+  attains the target rank at every simple connected multigraph of minimum
+  degree at least two, which gives the distinct statement; the generic
+  statement is proved inside the induction of \cref{thm:pencil-reduction}.
 
   At its flat points the induction uses the planar rank theorem for
   simple graphs, Jackson and Jord\'an's pin-collinear

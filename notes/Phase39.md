@@ -6,13 +6,13 @@ verbatim `notes/pencil/adjudications.md`, the 2026-09-25 "(later)" entry). The t
 feasibility — holds for every spanning multigraph over any infinite field **given two statements
 about the main component `X₀` of the pencil configuration space**: `pencil_conjecture_of_X0`
 (`Molecule/Pencil/X0.lean`) carries `X0Dist` and `X0Gen` as hypotheses and nothing else (axioms
-`[propext, Classical.choice, Quot.sound]`, re-run at the close). **The pencil conjecture itself is
-not yet proved**; it is proved outright when **Phase 40** (PENCIL-X0, plan
-`notes/Phase40-design.md`; its first sub-phase, 40a, closed 2026-09-25, `notes/Phase40a.md`) discharges the two statements.
-The kernels (K-res)/`kres`, (K-c), (K-bare-c) with (α), the rest of the W4 build and the paused
-smark attack are held as Phase 40's fallback (its design doc §6); A6, the hub-normalization
-factoring item, the D5 blueprint debt and the two `[pending]` exposition entries are deferred to
-it (§7). `blueprint/src/chapter/pencil.tex` is fully green (40 theorem-like nodes).
+`[propext, Classical.choice, Quot.sound]`, re-run at the close). **Phase 40** (PENCIL-X0, plan
+`notes/Phase40-design.md`, closed 2026-09-29, `notes/Phase40p.md`) discharged the two statements,
+so the pencil conjecture is proved outright (`pencil_conjecture`). The kernels (K-res)/`kres`,
+(K-c), (K-bare-c) with (α), the rest of the W4 build and the smark attack, held as Phase 40's
+fallback, were **retired** at its close (PI, 2026-09-29; design doc §6); A6, the
+hub-normalization factoring item, the D5 blueprint debt and the two `[pending]` exposition entries
+were deferred to it (§7). `blueprint/src/chapter/pencil.tex` is fully green (40 theorem-like nodes).
 
 ## Current state
 
@@ -81,35 +81,33 @@ record is the blueprint chapter and each declaration's docstring.
   *Blockers*). **Moved to Phase 40 §7:** A6 (C3, deferred by D2), the shared hub-normalization
   factoring item, the S7/S9 profile laws, and the D5 blueprint debt (item 6's leaves have no
   blueprint nodes; STEPS pins them).
-- [x] **Moved to Phase 40 §6 (the held fallback):** `hK` on the tight stratum from grid vanishing;
+- [x] **Moved to Phase 40 §6 (the held fallback; retired at Phase 40's close, 2026-09-29):** `hK` on the tight stratum from grid vanishing;
   tree-triple ⇒ `dim Z = 0`; the rest of the W4 build (T1, W4-L4b, W4-L2/L3′/L5, `hnoGood'`;
   `notes/pencil/W4-reopen.md`); the reverse arms of the W0 transport.
 
 ## Blockers / open questions
 
-None for this phase. Two items live outside it:
+None for this phase. One item lives outside it:
 
 - **`/harness-review` is due** (five S-mark sessions; the PI's call, `HARNESS.md`). The candidate
   artifacts from review 2 are listed in this note at `e316891f` (*Blockers*, "Each attack's first
   move is a reading check").
-- **On a future HIT on a held kernel**, the phase-boundary consequences are the PI's call
-  (`PHASE-BOUNDARIES.md`), surfaced with an estimate, never unilateral.
 
 ## Hand-off / next phase
 
-**Phase closed 2026-09-25.** The successor is **Phase 40** (PENCIL-X0), already open: its plan is
-`notes/Phase40-design.md` (layers by stable code, the label-level proof map, §6 the held fallback,
-§7 the items deferred from this phase), and its open sub-phase **40a** (SPINE2, the KT spine at
-`n = 2`) has its work log at `notes/Phase40a.md` — run it with `/coordinate-phase 40a`. The attack
-tracks stay under `HARNESS.md`, outside any phase: smark paused (`notes/attacks/smark/state.md`
-untouched by this close), gr10 CLOSED 2026-09-23. `notes/Phase39-design.md` is frozen (119 live
+**Phase closed 2026-09-25.** The successor, **Phase 40** (PENCIL-X0), closed 2026-09-29 with the
+pencil conjecture proved (`notes/Phase40p.md`): its plan is `notes/Phase40-design.md` (layers by
+stable code, the label-level proof map, §6 the fallback, retired at its close, §7 the items
+deferred from this phase). The attack
+tracks stay under `HARNESS.md`, outside any phase: smark CLOSED 2026-09-29 and gr10 CLOSED
+2026-09-23 (Part B retired 2026-09-29). `notes/Phase39-design.md` is frozen (119 live
 anchors; its header says so). The two `[pending]` `notes/BlueprintExposition.md` entries (the
-main-component headline; the held-kernel theorem) are Phase 40's to write or close.
+main-component headline; the held-kernel theorem) were written and closed at Phase 40's close.
 
 ## Adjacent directions (orientation only)
 
 The queue is `ROADMAP.md`'s *Queued post-program phases*: ORIGAMI (`notes/Origami.md`) is next
-after Phase 40; PIN's re-scope is decided at 40a's close; the unqueued survey is
+after Phase 40; PIN was re-scoped at 40a's close; the unqueued survey is
 `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase

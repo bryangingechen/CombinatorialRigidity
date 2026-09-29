@@ -145,9 +145,9 @@ theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
   fun G hS hV _ hfeas =>
     (pencilPair_of_nonempty G (Set.nonempty_of_ncard_ne_zero (by omega))).1 hS hfeas
 
--- `[DecidableEq β]` is genuinely load-bearing (empirical check per FRICTION.md: removing it
--- makes the `pencil_conjecture_of_arms_pair` call below fail to synthesize the instance it
--- requires) though it's never named in the body; `unusedDecidableInType` false-positives here.
+-- `[DecidableEq β]` is genuinely load-bearing (removing it makes the `pencil_conjecture_of_X0`
+-- call below fail to synthesize the instance its signature takes) though it's never named in the
+-- body; `unusedDecidableInType` false-positives here.
 set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture** (carrying neither statement): `pencil_conjecture_of_X0` verbatim. -/
 theorem pencil_conjecture [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]

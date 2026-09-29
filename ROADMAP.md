@@ -154,11 +154,11 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ✓ Complete — as a reduction: `pencil_conjecture_of_X0` carries only the two main-component statements `X0Dist`/`X0Gen`, which Phase 40 discharges (see `notes/Phase39.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ✓ Complete — as a reduction: `pencil_conjecture_of_X0` carries only the two main-component statements `X0Dist`/`X0Gen`, which Phase 40 discharged (see `notes/Phase39.md`) |
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40o ✓ (SPINE2 … COVERAGE, MOTIVES-DIST+BASE, MOTIVES-EARS); 40p ◐ (MOTIVES-REDUCE+CLOSE, MOTIVES' last) (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered, 40a–40p), `main-component.tex` | ✓ Complete — the pencil conjecture proved over every infinite field (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1135,377 +1135,50 @@ minimality). **The phase closes on the reduction:** the headline `pencil_conject
 (`Pencil/X0.lean`) proves `PencilPair K 3 G` for every spanning multigraph over any infinite field
 from two statements about the main component `X₀` of the pencil configuration space — `X0Dist`
 (every simple two-edge-connected multigraph has an adjacent-distinct pencil realization) and
-`X0Gen` (a generic one when nondegeneracy-feasible) — which **Phase 40** (§40) discharges. The
-pencil conjecture itself is therefore **not yet a theorem**. Between 2026-08-05 and 09-13 the phase
+`X0Gen` (a generic one when nondegeneracy-feasible) — which **Phase 40** (§40) discharged, proving
+the pencil conjecture outright. Between 2026-08-05 and 09-13 the phase
 ran a docs+scripts-only research arc on the two kernels (127 directions under a coordinator loop,
 retired 2026-09-15 for attack tracks under `HARNESS.md`; standing result: kernel (K) not closer);
 its corpus is `notes/pencil/` (manual `notes/pencil/CLAUDE.md`, record `notes/pencil/structure.md`),
 its design record the frozen `notes/Phase39-design.md`, and the ⋮ Status rows above are its two doc
-rounds. The kernels, the paused smark attack and the W4 split/contract line are held as Phase 40's
-fallback (`notes/Phase40-design.md` §6); the deferred items (A6, the hub-normalization factoring,
-the D5 blueprint debt, two pending exposition entries) are its §7. Hand-off → `notes/Phase39.md`.
+rounds. The kernels, the smark attack and the W4 split/contract line were held as Phase 40's
+fallback and retired at its close (PI, 2026-09-29; `notes/Phase40-design.md` §6); the deferred
+items (A6, the hub-normalization factoring, the D5 blueprint debt, two pending exposition entries)
+went to its §7. Hand-off → `notes/Phase39.md`.
 
-### Phase 40 — The `X₀` formalization of the pencil conjecture (PENCIL-X0, post-program; sub-lettered)
+### Phase 40 — The `X₀` formalization of the pencil conjecture (PENCIL-X0, post-program; sub-lettered 40a–40p) — ✓ Complete
 
-**◐ In progress** (opened 2026-09-25 at the user's initiative, ahead of the queue; plan
-`notes/Phase40-design.md`). It formalizes §(K-main)'s proof that the main component of the pencil
-configuration space attains the generic rank. It discharges the two statements Phase 39's
-headline carries (`X0Dist`, `X0Gen`), and so proves the pencil conjecture outright over every
-infinite field. Layers by stable code, lettered only as each opens:
-- **SPINE2** ✓ (sub-phase 40a, closed 2026-09-25): the Katoh–Tanigawa spine at `n = 2`. This
-  replaces Jackson–Jordán's pin-collinear theorem, which the informal proof cites, field-generally;
-- **CARRIER** ✓ (sub-phase 40b, closed 2026-09-26): planar pictures, the lifting space, `X₀`,
-  and "the general point attains";
-- **FLAT** ✓ (sub-phase 40c, closed 2026-09-26): the flat rank;
-- **BRIDGE** ✓ (sub-phase 40d, closed 2026-09-26): Jackson–Jordán's equality as consumed;
-- **STEPS** ✓ (sub-phases 40e–40k, closed 2026-09-26 to 2026-09-28): ear, split-off,
-  contraction, cut and bridge steps, run by group, as CUTBRIDGE (40e), CONTRACT-R (40f), CHAIN
-  (40g), SHORT (40h), ORBIT (40i), SPLITOFF (40j) and CONTRACT-A (40k). The ORBIT recon
-  (2026-09-26) re-proved the one step whose informal proof counted dimensions, and a second reading
-  confirmed it. The SHORT recon (2026-09-27) re-proved the `k = 3, 4` ear steps by removing one ear
-  body and putting it back, in place of an orbit case analysis, and a second reading confirmed it
-  with repairs;
-- **COVERAGE** ✓ (sub-phases 40l–40m, closed 2026-09-28): the structural half and the assembly,
-  as two sub-phases (the PI's calls, 2026-09-28), each landing against named interface statements:
-  **REDUCE** (sub-phase 40l: the one-step interface, the strong induction and the deficiency
-  layer), then **CHAINS + THEOREM-S** (sub-phase 40m: chains, cycles, cut vertices and bridges,
-  then the structural theorem and the covering theorem);
-- **MOTIVES** (◐, three sub-phases, the PI's call, 2026-09-28): the two statements and the headline.
-  `X0Dist` follows from the covering theorem directly. `X0Gen` does not follow fibre by fibre (two
-  hubs with three common neighbours block it), so it is proved inside the pencil reduction's own
-  induction: at graphs with no planar-rigid set the general configuration is nondegenerate, and
-  otherwise a minimal planar-rigid set gives a one-body ear or a pendant triangle across which the
-  smaller graph's generic realization extends. **DIST+BASE** ✓ (sub-phase 40n, closed 2026-09-28:
-  the distinct statement and the rigid-free base) and **EARS** ✓ (sub-phase 40o, closed
-  2026-09-29: the steering and the two ear steps), then **REDUCE+CLOSE** (sub-phase 40p, open: the
-  good ear, the assembly, both headlines).
-
-The design doc carries the proof map, label by label.
-
-#### Phase 40a — the Katoh–Tanigawa spine at `n = 2` (SPINE2) — ✓ Complete
-
-**✓ Complete** (opened and closed 2026-09-25; work log `notes/Phase40a.md`). A structural edit:
-the landed Theorem 5.5/5.6 chain, the generic-lift rank theorems and the molecular conjecture
-(simple and multigraph) weakened their dimension floor in place, from `n ≥ 3` (`D ≥ 6`) to
-`n ≥ 2` (`D ≥ 3`), through one new lemma, `Graph.three_le_bodyBarDim_of_two_le`. The `|V| = 3`
-triangle base was repaired to use a single degree-2 vertex, since the adjacent-pair lemma is false
-at `D = 3` (`K_{2,3}`). The sub-phase also landed the non-spanning row-rank form of Theorem 5.6
-that BRIDGE consumes, `PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`.
-The plan was the compiler-checked 2026-09-25 sizing recon (`notes/Phase39-design.md`
-§ *`n = 2` sizing recon*), which overturned Prospect G2's 2026-07-10 drop. The planar case of the
-molecular conjecture is Jackson–Jordán's pin-collinear theorem (*Discrete Comput. Geom.*
-**40**(2) (2008) 258–278), now proved over every infinite field. At the close the PI re-scoped the
-queued PIN item to a second, independent proof by Jackson–Jordán's own route (*Queued* below).
-Headline axioms unchanged (re-verified at the close).
-
-#### Phase 40b — planar pictures, the lifting space, and the main component (CARRIER) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40b.md`). The
-geometric layer the `X₀` argument rests on, in `Molecule/Pencil/MainComponent/Carrier.lean` (split
-into `Carrier.lean` and `Configuration.lean` at Phase 40h) and the
-new forward-mode chapter `main-component.tex`. Over an admissible planar picture `q : V → K²`, the heights `z`
-for which the configuration `(q, z)` has every closed neighbourhood coplanar form a linear space
-`L(q)` (the pencil condition is linear in the heights), and the admissible pictures of least
-`dim L(q)` form a nonempty Zariski-open set `U` (a moment-curve witness plus a Cramer-section
-semicontinuity argument). `Graph.X0Attains` says the general configuration attains the deficiency
-rank `6(|V| − 1) − def₃`: off a nonzero picture polynomial and, fibre by fibre, off a nonzero height
-polynomial. One attaining configuration over a main picture forces it (`Graph.x0Attains_of_exists`),
-and it gives an adjacent-distinct pencil realization over every infinite field
-(`Graph.X0Attains.hasDistinctPencilRealization`, the leg of `X0Dist` that follows from it), through
-the point-join reading of a configuration; DUAL-K made that reading's polar/primal rank equality
-field-general by generalizing the polarity `screwComplementIso` from `ℝ` to every field. A
-fibre-intersection lemma (`MvPolynomial.exists_mem_eval_ne_zero₂`) stands in for the irreducibility
-of `X₀`, which is never formed: `thm:pencil-x0-main-component` was restated to this formalized
-content (PI, 2026-09-26), and the statement the whole induction proves,
-`thm:pencil-x0-generic-attains`, waits in the chapter's final subsection. The design was a
-compiler-checked top-rung recon (opus and fable passes). The flat witness, the `β`-headroom
-questions and three STEPS items moved at the close to their layers (`notes/Phase40-design.md` §3).
-Headline axioms unchanged (re-verified at the close).
-
-#### Phase 40c — the flat rank (FLAT) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40c.md`). Step
-MC4/MC5 of §(K-main), in `Molecule/Pencil/MainComponent/Flat.lean` and `main-component.tex`
-§`sec:main-component-flat`. At the flat configuration `(q, 0)` over an admissible picture every
-hinge lies in the plane `z = 0`, so the screw space splits into a part the edges glue (constant on
-a connected graph, three dimensions) and a planar part, whose motions are the families of affine
-functions agreeing at both ends of every edge. That family space has the dimension of `L(q)`, so
-the flat rank is exactly `6|V| − 3 − dim L(q)`; it is also the motion space of the plane
-panel-hinge framework at the normals `(x_v, y_v, 1)`, whose partition bound gives
-`dim L(q) ≥ 3 + def₂`. With `def₃ ≤ def₂` on connected graphs (in `Molecular/Deficiency.lean`), an
-admissible picture with `dim L(q) ≤ 3 + def₃` is main and its flat configuration attains, so `X₀`
-attains (`Graph.x0Attains_of_finrank_liftingSpace_le`, and `_eq_three` for a flat `X₀`). The whole
-layer landed in one build commit from a compiler-checked recon (opus and fable passes; the opus
-route adopted), and paid 40a's pin debt on the relative deficiency bound; the wider stand-in audit
-of that bound is a tracked cleanup-round item (`notes/Phase40-design.md` §3 FLAT). Headline axioms
-unchanged (re-verified at the close).
-
-#### Phase 40d — Jackson–Jordán's equality (BRIDGE) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40d.md`). The one
-input of the main-component argument beyond the flat rank, in
-`Molecule/Pencil/MainComponent/Bridge.lean` and `main-component.tex` §`sec:main-component-jj`: at
-the general planar picture of a simple graph with at least three members in every closed
-neighbourhood, `dim L(q) = 3 + def₂` (`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`), and
-every main picture has it, so `ℓ₀ = 3 + def₂`. This is the form in which the informal proof cites
-Jackson–Jordán's pin-collinear theorem; here it is derived over every infinite field from 40a's
-planar rank theorem. A realization at the deficiency rank is moved, by rescaling each body's
-normal, into the chart `(x_v, y_v, 1)`, where FLAT reads its rank as `3|V| − dim L(q)`. Relabelling
-the edges into a larger label type (`Graph.embedEdges`) removes the planar rank theorem's
-label-headroom hypothesis, so the equality holds at every graph the induction consumes, connected
-or not, spanning or not; at `G` with `def₂ = def₃` it makes `X₀` attain
-(`Graph.x0Attains_of_deficiency_two_eq_three`). The layer landed in one build commit from a
-compiler-checked recon whose sorry-free spike was the build. The edge-restricted generic-normals
-row rank is a tracked cleanup-round item, and the recon's three STEPS items wait for STEPS'
-pre-build recon (`notes/Phase40-design.md` §3). Headline axioms unchanged (re-verified at the close).
-
-#### Phase 40e — cut vertices and bridges (CUTBRIDGE, STEPS' first group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40e.md`). STEPS'
-first group, in `Molecule/Pencil/MainComponent/Cut.lean` and `main-component.tex`
-§`sec:main-component-cut` (with one node each in `deficiency.tex` and `rigidity-matrix.tex`). Every
-step of the induction has one shape: `X₀` attaining at smaller graphs on the same bodies and edge
-labels gives it at `G`, through one picture generic for the pieces and main for `G`, with heights
-chosen in the single fibre `L_G(q)`. A cut vertex or a chain of bridges makes `G` a fibre product
-of two induced pieces. Heights restrict onto both pieces at every picture, by extending along the
-one body where a piece is attached; the ranks add, plus at least five per bridge, and the
-deficiencies add, plus one per bridge. So attaining heights of both pieces give attaining heights of
-`G` (`Graph.X0Attains.of_cutVertex`, and `Graph.X0Attains.of_bridgePath` for a chain of any length;
-(MC-52), (MC-53), the "if" halves, the "only if" halves a tracked todo). The standing hypotheses
-(H) landed as `Graph.IsX0Graph`; the cut-vertex deficiency and rank laws, and a pendant-body rank
-law, landed in `Molecular/Deficiency.lean` and `RigidityMatrix/Bricks.lean`. Three build commits
-and one recon followed a compiler-checked design recon, which also settled STEPS' six tracked items
-and a provisional grouping of the later steps (`notes/Phase40-design.md` §3 STEPS; the spike pieces
-CONTRACT-R and SPLITOFF reuse are verbatim in its appendix). Headline axioms unchanged (re-verified
-at the close).
-
-#### Phase 40f — contraction at a `def₂`-rigid core (CONTRACT-R, STEPS' second group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-26; work log `notes/Phase40f.md`).
-Katoh–Tanigawa's contraction case (Lemma 6.3) on configurations, in
-`Molecule/Pencil/MainComponent/Contract.lean` and `main-component.tex`
-§`sec:main-component-contract`: at an induced core `H = G[W]` with `def₂(H) = 0` and `G/H` simple,
-in a 2-edge-connected `G` satisfying (H), `X₀` attaining at `G/H` gives it at `G`
-(`Graph.X0Attains.of_rigidContract`; (MC-59)(d) with (MC-39), and its side claims that `H` and
-`G/H` satisfy (H) and `G/H` is 2-edge-connected). The picture moves along one curve on which the
-core shrinks to `r`'s picture point; the heights are the solutions of a rescaled lifting system
-whose kernel does not jump at the end of the curve (Cramer's section along the parameter). Every
-solution is flat on the core, so the core's rank is its flat rank and no attainment at `H` is
-needed; the surviving rows with the core columns deleted are bounded below at the collapsed
-placement, as in Phase 22i, and the block-triangular bound of KT eq. (6.3) adds the two. The general
-pieces landed beside their definitions (PI): the lifting system with weights (`Carrier.lean`), the
-connectivity of a `0`-dof graph (`Deficiency.lean`), the projected rank polynomial nonzero at its
-witness (`CaseI.lean`) and the block coupling (`Coupling.lean`, with a Mathlib mirror). One build
-commit from a compiler-checked recon's sorry-free spike. Headline axioms unchanged (re-verified at
-the close).
-
-#### Phase 40g — the ear steps and the cycle (CHAIN, STEPS' third group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-27; work log `notes/Phase40g.md`). The base
-of the induction and its two unconditional ear steps, in `Molecule/Pencil/MainComponent/Chain.lean`
-and `main-component.tex` §`sec:main-component-chain`, with the rank and deficiency laws in
-`rigidity-matrix.tex` and `deficiency.tex`: every cycle attains (`Graph.X0Attains.of_cycle`), and
-`X₀` attaining at `G[V₁]` gives it at `G` for an open ear with at least five interior bodies, whose
-ends may be adjacent (`Graph.X0Attains.of_openEar`), or for a closed ear
-(`Graph.X0Attains.of_closedEar`; (MC-20), with (MC-21)(a)'s base). The rank side glues the two
-sides of the ear's end pair through their relative screws, for any two graphs sharing out the edges
-(`Bricks.lean`; the landed identity for induced sides is now its corollary); a path has rank
-`5(k + 1)` and relative screws the span of its hinges, so an ear adds `5(k + 1) + dim(ρ + Λ) − 6`
-(`Ear.lean`). Six ear hinges span the screw space at a general configuration: one exhibited hexagon
-of joins, independent over every field, at a degenerate picture on which the ends coincide, with
-heights that are heights of `G` at every admissible picture because the interior heights of an ear
-are free. That one point replaces the informal argument's case analysis over the positions of the
-ends. A closed ear is a cut vertex with a cycle on its other side. Two build commits from a
-compiler-checked recon's sorry-free spike, with the PI's placement (`Bricks.lean`, `Cut.lean`,
-`Flat.lean` and the new `Ear.lean` and `Chain.lean`). Headline axioms unchanged (re-verified at the
-close).
-
-#### Phase 40h — the shorter open ears (SHORT, STEPS' fourth group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-27; work log `notes/Phase40h.md`). The
-open-ear steps with two, three and four interior bodies, whose ends may be adjacent, in
-`Molecule/Pencil/MainComponent/Short.lean` and `main-component.tex` §`sec:main-component-short`,
-with a split-off bound in `molecular-induction.tex` and a deficiency bound in `deficiency.tex`.
-`X₀` attaining at `G[V₁]` gives it at `G` for two interior bodies when the deficiency does not drop
-(`Graph.X0Attains.of_openEar_two`; (MC-54)), and for three or four when `X₀` also attains at `G`
-with its second interior body suppressed (`…_three`, `…_four`; (MC-181), (MC-180)), a graph whose
-deficiency is no larger. The count is taken against the suppressed graph: putting the body back on
-a line through a neighbour raises `dim(ρ + Λ)` by one unless the span holds every line through that
-neighbour, and holding both neighbours' lines forces the whole screw space, by a tetrahedron of
-joins with four interior bodies and by a pairing of lines (`Lines.lean`) with three. This replaces
-the informal proof's case analysis over the positions of the ends; it was found by formalization and
-second-read before the open. The data on `V₁` are fixed first and the ear's chosen second
-(`EarGen.lean`). The two-body step needs no suppressed graph and no ear data: three joins of the
-closed hexagon, at one picture, suffice. Six build commits and a split of `Carrier.lean` (into
-`Carrier.lean` and `Configuration.lean`) from a compiler-checked recon, the third and fourth builds
-as one from a second recon's sorry-free spike, with the PI's placement. The `k = 1` cell went to
-ORBIT, and θ-graphs to COVERAGE. Headline axioms unchanged (re-verified at the close).
-
-#### Phase 40i — the open ears with one or two interior bodies at non-adjacent ends (ORBIT, STEPS' fifth group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-28; work log `notes/Phase40i.md`). The
-open-ear steps with one interior body, and with two with no bound on the deficiency, both at
-non-adjacent ends, in `Molecule/Pencil/MainComponent/Orbit.lean` and `main-component.tex`
-§`sec:main-component-orbit`, with a split-off bound in `molecular-induction.tex` and the merged
-deficiency (the maximum over the partitions keeping two bodies in one part) as a definition in
-`deficiency.tex`. Both steps ask that every partition of `V₁` keeping the ends in one part fall at
-least two below the planar deficiency of `G[V₁]`. `X₀` attaining at `G[V₁]` then gives it at `G`
-for one interior body when the deficiency does not drop (`Graph.X0Attains.of_openEar_one`; (MC-54)
-at `k = 1`), and for two when `X₀` also attains at `G` with its second interior body suppressed
-(`Graph.X0Attains.of_openEar_two_of_splitOff`; (MC-176)). By Jackson–Jordán at `G[V₁] + ab`, the
-difference of the two end planes has rank at least two on the heights of `G[V₁]`, so each end's
-point lies off the other's plane at a general configuration, and the one-body ear's picture is
-chosen together with the heights on `V₁`. With two, the count is taken against the suppressed
-graph: in a frame of the two end points, the point of `x₁` and the direction of the planes' common
-line, one of four joins lies outside the span unless it is everything, and the matching curve
-gains a dimension (`Lines.lean`). This is the informal proof's refined link in existence form,
-without its chart polynomial, and replaces its dimension count over the orbits of the ends. No new
-mathematics: three build commits from a compiler-checked recon's sorry-free spike, the steps in
-the new `Orbit.lean` and the general pieces beside their definitions, by the PI's 40h placement
-convention. Headline axioms unchanged (re-verified at the close).
-
-#### Phase 40j — splitting off a body of degree two (SPLITOFF, STEPS' sixth group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-28; work log `notes/Phase40j.md`). The
-split-off step at a body `x` of degree two whose neighbours `a`, `b` are not adjacent, in
-`Molecule/Pencil/MainComponent/SplitOff.lean` and `main-component.tex`
-§`sec:main-component-splitoff`: when every partition of `V₁ = V(G) ∖ {x}` keeping `a` and `b` in
-one part falls at least five below the deficiency of `G[V₁]`, `X₀` attaining at `G` with `x`
-suppressed (`G[V₁]` plus the edge `ab`) gives it at `G` (`Graph.X0Attains.of_splitOff`; (MC-31)).
-It transfers the splitting-off case of Jackson–Jordán's proof of the pin-collinear theorem. At a
-configuration of the suppressed graph, `x` is put on the line through the points of `a` and `b`;
-the hinges at `ax` and `xb` are then multiples of the one at `ab`, and a count of motion spaces
-gives the rank of the suppressed graph plus five. That position is not over an admissible picture,
-so the picture of `x` moves along a line back to its general point and the heights along a line of
-solutions of the lifting system of `G[V₁]`; off finitely many parameters the rank stays at least
-its special value (a curve-limit lemma, `Bridge.lean`) and the picture is main. Since the curve
-ends at the general picture itself, no geometry of the main component is used. Only this case is
-formalized: the informal step's rank bound within one of the target, for a gap below five, has no
-consumer on the route. No new mathematics: two build commits from a compiler-checked recon's
-sorry-free spike, the step in the new `SplitOff.lean` and the general pieces in `Bridge.lean`,
-`Ear.lean`, `Cut.lean`, `Carrier.lean` and a Mathlib mirror. Headline axioms unchanged
-(re-verified at the close).
-
-#### Phase 40k — contraction at an additive core (CONTRACT-A, STEPS' seventh and last group) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-28; work log `notes/Phase40k.md`). The
-contraction step at a rigid core whose planar deficiency need not vanish, in
-`Molecule/Pencil/MainComponent/ContractAdditive.lean` and `main-component.tex`
-§`sec:main-component-contract-additive`: at an induced core `H = G[W]` with `def₃(H) = 0` and `G/H`
-simple, in a 2-edge-connected `G` satisfying (H), when `def₂(H) + def₂(G/H) ≤ def₂(G)`, `X₀`
-attaining at `H` and at `G/H` gives it at `G` (`Graph.X0Attains.of_additiveContract`; (MC-71)). It
-is Katoh–Tanigawa's contraction case again, along CONTRACT-R's curve and rescaled lifting system.
-The kernel at the end of the curve is bounded below by `3 + def₂(G)` (it is no smaller than the
-kernels near it) and above through the core heights of its solutions; under additivity, with
-Jackson–Jordán at `H` and `G/H`, the two bounds meet, so those core heights are all the heights of
-`H`, and the attainment at `H` and the bound on the surviving rows meet inside the one kernel.
-Along the curve the core is the image of a configuration over the fixed picture under a
-collineation of `K⁴`, so its rank is read where `H` attains. This replaces the informal proof's
-restriction of heights onto `H` and its dominance argument. CONTRACT-R is the case
-`def₂(H) = 0`, proved separately. No new mathematics: three build commits from a compiler-checked
-recon's sorry-free spike, the first splitting `Contract.lean` (1 496 lines) into the shared
-`ContractCurve.lean` and the flat-core remainder, then the general pieces (a collineation lemma in
-`Configuration.lean`), then the step in the new `ContractAdditive.lean`. With it STEPS is done.
-Headline axioms unchanged (re-verified at the close).
-
-#### Phase 40l — the one-step interface, the induction and the deficiency layer (REDUCE, COVERAGE's first sub-phase) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-28; work log `notes/Phase40l.md`). COVERAGE
-completes the strong induction on the number of bodies; this first sub-phase landed its interface
-and its partition estimates, in `main-component.tex` §`sec:main-component-sparse` and the first two
-nodes of §`sec:main-component-coverage`. One step of the induction is a single predicate
-(`Graph.X0Reduces`, in the new `Molecule/Pencil/MainComponent/Coverage.lean`): the structural
-hypotheses of one of the thirteen landed steps, with a property at every graph that step consumes.
-The general configuration then attains at every graph satisfying the standing hypotheses as soon
-as every such graph admits a step to smaller ones (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`),
-which CHAINS and THEOREM-S prove. The partition estimates on sparse graphs, in the new
-`Molecular/Induction/SparseDeficiency.lean`: a partition falls below the singletons by the
-singleton value of any of its parts; a body with two neighbours in a rigid set joins it; merging
-along a rigid set does not lower a partition's value; a tight set is rigid; a maximal rigid set
-bounds the singleton values above it; the planar deficiency adds at such a set; and the two
-estimates at the ends of a chain that the ear and split-off steps ask for. Three of them have
-shorter proofs than the informal ones, which pass through the partition into maximal rigid sets:
-the core bound by a minimal counterexample, the tight set by a direct count, and the one-body
-estimate by refining one part. Three build commits from a compiler-checked recon's two sorry-free
-spikes. Headline axioms unchanged (re-verified at the close). **Next:** 40m (below), COVERAGE's
-second and last sub-phase.
-
-#### Phase 40m — chains, cuts, Theorem S and the covering theorem (CHAINS + THEOREM-S, COVERAGE's second sub-phase) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-28; work log `notes/Phase40m.md`). COVERAGE's
-second and last sub-phase, CHAINS with THEOREM-S folded in (the PI's call, 2026-09-28), greened the
-eleven remaining nodes of `main-component.tex` §`sec:main-component-coverage`, in three new files
-under `Molecule/Pencil/MainComponent/`. `CoverageChain.lean`: a chain is a maximal path of bodies
-of degree two between bodies of degree at least three; in a 2-connected graph with a body of other
-degree every body of degree two lies on one, and a graph whose bodies all have degree two is a
-cycle. `CoverageCut.lean`: the smaller graphs at a chain satisfy the standing hypotheses, and a
-graph that is not 2-edge-connected, or has a cut vertex, reduces with the standing hypotheses at
-both sides. `CoverageTheoremS.lean`: a usable chain gives a reduction, and otherwise Theorem S
-gives a rigid core at which the planar deficiencies add; then the covering theorem
-(`Graph.IsX0Graph.x0Reduces`), so the general configuration attains at every graph satisfying the
-standing hypotheses (`Graph.IsX0Graph.x0Attains`), in particular at every simple 2-edge-connected
-graph on at least three bodies (`Graph.X0Attains.of_twoEdgeConnected`, MOTIVES' interface). One
-argument serves the chain, the cycle and the chain of bridges: extend a path through bodies of
-degree two as far as it goes. Theorem S needs no separate case for θ-graphs, which the informal
-case analysis sets apart. Five build commits from a compiler-checked recon's complete sorry-free
-spikes; no new mathematics. With it COVERAGE is done. Headline axioms unchanged (re-verified at the
-close). **Next:** 40n (below), MOTIVES' first sub-phase.
-
-#### Phase 40n — the distinct statement and the generic realization without a planar-rigid set (MOTIVES-DIST+BASE, MOTIVES' first sub-phase) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-28; work log `notes/Phase40n.md`). MOTIVES'
-first of three sub-phases greened eight of the fourteen new nodes of `main-component.tex`
-§`sec:main-component-statements`. Its pre-build recon (compiler-checked) found the distinct
-statement immediate from the covering theorem, and no bound on the number of edge labels needed
-anywhere. It refuted the planned route to the generic statement: at two hubs with three common
-neighbours, `K_{2,3}` the smallest, no configuration of the main component over a general picture is
-nondegenerate. The generic realization is instead proved inside the pencil reduction's induction
-(route B, `notes/pencil/workbook/K-main-MC19.md` (MC-183)–(MC-189), second-read 2026-09-28 with no
-gap). M0 landed the distinct statement (`x0Dist`, in the new `MainComponent/Statements.lean`),
-feasibility's bounds on the hub neighbourhoods, the absence of a proper rigid subgraph on three
-bodies, and the two-hubs obstruction. B1–B3, one build in the new `MainComponent/GenericBase.lean`,
-landed the generic realization at graphs with no planar-rigid set of two or more bodies
-(`Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`): the planes of any
-two bodies separate there, by Jackson–Jordán's equality at the graph with one new body joined to
-both (`Graph.addTwoEar`), and a configuration whose planes differ where the hubs need it is
-nondegenerate. Two build commits from compiler-checked spikes, with the second read between them.
-Headline axioms unchanged (re-verified at the close). **Next:** 40o (below), MOTIVES' second
-sub-phase; then REDUCE+CLOSE, whose close closes Phase 40.
-
-#### Phase 40o — the steering and the two ear steps (MOTIVES-EARS, MOTIVES' second sub-phase) — ✓ Complete
-
-**✓ Complete** (opened design-first and closed 2026-09-29; work log `notes/Phase40o.md`). EARS
-greened the three nodes by which route B extends a smaller graph's generic realization: the
-steering lemma, the step across a body of degree two at hub ends, and the step across a pendant
-triangle at a body of degree at least four. A nondegenerate realization of `G` whose restriction to
-the smaller graph is nondegenerate exists when the hubs that stop being hubs lose only non-hubs
-(`exists_isNondegPencilRealization_restrict_of_demoted`); two realizations of the smaller graph are
-chart points of one chart for every correct choice of selectors, so the generic one can be moved to
-meet the other's normal-independence and non-orthogonality conditions
-(`exists_isNondegPencilRealization_steer`). The one-ear step needs no non-adjacency of its ends
-(feasibility excludes the triangle), and the pendant-triangle step no deficiency hypothesis (the
-deficiencies add at the cut vertex). Four transcription builds from a compiler-checked pre-build
-recon: the reseed at given selectors in `Pencil/Reseed.lean`, and three new files under
-`MainComponent/` (`GenericSteer`, `GenericEar`, `GenericTriangle`). A second read after the builds
-confirmed the workbook's (MC-190)–(MC-192) with precision repairs and added (MC-193), off the route.
-Headline axioms unchanged (re-verified at the close). **Next:** 40p (below), MOTIVES' third and
-last sub-phase, whose close closes Phase 40.
-
-#### Phase 40p — the good ear, the assembly and both headlines (MOTIVES-REDUCE+CLOSE, MOTIVES' last sub-phase) — ◐ In progress
-
-**◐ In progress** (opened design-first 2026-09-29; work log `notes/Phase40p.md`). REDUCE+CLOSE
-greens Phase 40's last five nodes. A minimal planar-rigid set of a two-edge-connected graph gives a
-body of degree two at hub ends across which the deficiency does not drop, or a pendant triangle at
-a body of degree at least four; the generic step and the conditioned pair at every nonempty graph
-follow inside the pencil reduction's induction, and with them the generic statement and both
-headlines, `pencil_conjecture` and `pencilPair_of_nonempty`. The good-ear proof is shorter than the
-informal one: it needs no cycle, no maximal chain and no bridge case, and gets the rigidity it
-needs from the tight-set lemma. That departure is recorded in the blueprint proof, not second-read
-(the 40l precedent). The good-ear node drops the non-adjacency of its ends, which nothing consumes.
-**B1 landed** (the add-one-body identity in `SparseDeficiency.lean`, the good ear in a new
-`MainComponent/GoodEar.lean`, the assembly and both headlines in `MainComponent/Statements.lean`):
-a warning-free `lake build`/`lake lint`, green `blueprint/verify.sh`/`lint.sh`, and the standard
-three axioms on all nine pinned declarations. **Next:** the Phase 40 close.
+**✓ Complete** (opened 2026-09-25 at the user's initiative, ahead of the queue; closed 2026-09-29;
+sixteen sub-phases, work logs `notes/Phase40{a..p}.md`, plan and proof map
+`notes/Phase40-design.md`). It formalized §(K-main)'s proof that the main component of the pencil
+configuration space attains the generic rank, discharged the two statements Phase 39's headline
+carries (`X0Dist`, `X0Gen`, as the theorems `x0Dist`, `x0Gen`), and so **proved the pencil conjecture outright over every infinite
+field**: `pencil_conjecture` (every spanning multigraph, `pencil_conjecture_of_X0 x0Dist x0Gen`) and
+the stronger `pencilPair_of_nonempty` (every multigraph with at least one body), in
+`Molecule/Pencil/MainComponent/Statements.lean`, with the new chapter `main-component.tex`. The
+layers, by stable code: **SPINE2** (40a) weakened the landed Theorem 5.5/5.6 chain, the generic-lift
+rank theorems and the molecular conjecture in place from `n ≥ 3` to `n ≥ 2`, so the planar case,
+Jackson–Jordán's pin-collinear theorem (*Discrete Comput. Geom.* **40**(2) (2008) 258–278), is proved
+over every infinite field; **CARRIER** (40b) built planar pictures, the lifting space `L(q)` and the
+one-witness principle, with a fibre-intersection lemma standing in for the irreducibility of `X₀`;
+**FLAT** (40c) the flat rank `6|V| − 3 − dim L(q)`; **BRIDGE** (40d) Jackson–Jordán's equality
+`dim L(q) = 3 + def₂` at the general picture, from the planar rank theorem; **STEPS** (40e–40k) the
+cut, bridge, ear, split-off and contraction steps; **COVERAGE** (40l–40m) the one-step interface,
+the partition estimates, Theorem S and the covering theorem; **MOTIVES** (40n–40p) the two
+statements and both headlines. Formalization found new mathematics three times, each second-read
+before it was built on: a re-proof of the `k = 3, 4` ear steps by suppressing and re-inserting a
+body (SHORT), a re-proof of the two-body ear at non-adjacent ends without the orbit dimension count
+(ORBIT), and **route B**:
+the planned fibre route to `X0Gen` fails at two hubs with three common neighbours (`K_{2,3}` the
+smallest), so the generic statement is proved inside the pencil reduction's own induction
+((MC-183)–(MC-193)). Shorter proofs than the informal ones (COVERAGE's partition estimates and
+θ-graphs, the good ear) are recorded in the blueprint proofs. At the close the PI **retired** the
+held fallback, all of the design doc's §6: the kernels (K-res)/`kres`, (K-c) and (K-bare-c) with (α), smark's O7e
+programme, gr10's Part B and Phase 39's four held checklist items; their landed Lean stays as
+conditional theorems (verbatim `notes/pencil/adjudications.md`). The tracked cleanup-round items
+carried past the close are indexed in the design doc's §7. Headline axioms (the nineteen
+`formalization.yaml` main results) re-verified at the close. Detail → `notes/Phase40p.md` +
+`notes/Phase40-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1526,7 +1199,7 @@ the queue at the user's initiative (§38 above), and opened and closed as
 Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
 2026-07-23; PENCIL opened as Phase 39 and closed 2026-09-25 as a reduction (§39
 above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day at the user's
-initiative (§40 above), so
+initiative and closed 2026-09-29, proving the pencil conjecture (§40 above), so
 **ORIGAMI is the next queued phase to open**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
@@ -1544,7 +1217,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **PIN** — a **second, independent proof** of the 2-d molecular conjecture, formalizing
   Jackson–Jordán's own pin-collinear body-and-pin argument (*Discrete Comput. Geom.* **40**(2)
   (2008) 258–278, doi:10.1007/s00454-008-9100-z). The theorem itself is already proved: Phase 40a
-  extended Katoh–Tanigawa's route to `d = 2` over every infinite field (§40a). **Re-scoped by the PI
+  extended Katoh–Tanigawa's route to `d = 2` over every infinite field (§40). **Re-scoped by the PI
   at 40a's close** (2026-09-25, verbatim `notes/pencil/adjudications.md`): PIN's target is now JJ's
   argument itself, a new program rather than a Katoh–Tanigawa adaptation. Its seed is the staged,
   unlanded field-general JJ write-up in `notes/w4-pending/JJ-field-general/` (one writer, not

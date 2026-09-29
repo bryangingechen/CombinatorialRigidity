@@ -1039,3 +1039,28 @@ The second read of (MC-183)–(MC-187) runs before the first build that consumes
 (MC-184), so it runs before 40n's B1, which satisfies "before 40o's ear builds". The coordinator's
 call at the open: `pencil_conjecture_of_X0Gen` does not land (the close's `pencil_conjecture`
 supersedes it, and nothing consumes it). Work log `notes/Phase40n.md`.
+
+## 2026-09-29 — Phase 40 closes; all of design §6 retired, smark marked closed
+
+At the Phase 40 close the phase notes framed the held kernels as "the PI's call, surfaced with
+options, not decided by the close". The PI decided it before the close; the coordinator relayed the
+PI's words verbatim in its dispatch:
+
+```adjudication
+PI, this session, 2026-09-29 (verbatim).
+"Let's proceed to the close; what I meant was that we'll stop / cancel future work on the currently open kernels on the other route to the pencil conjecture before the close, if that makes sense."
+Which items does the close record as cancelled? "All of design §6": "The three held kernels, smark's O7e programme on hK/hbareSplit, gr10's Part B fallback, and Phase 39's four held checklist items: all retired."
+How should the close handle smark's files? "Mark smark closed": "The close adds one header line to smark's state.md ("CLOSED on the PI's word, 2026-09-29", as gr10's reads), and edits nothing else in the track."
+```
+
+**Decided.** Everything `notes/Phase40-design.md` §6 held is **retired**, not held: the three
+kernels (K-res)/`kres`, (K-c), and (K-bare-c) with (α); smark's O7e programme on `hK`/`hbareSplit`;
+gr10's Part B fallback; and Phase 39's four held checklist items (the grid route for `hK`,
+tree-triples with the circular-ladder witness, the rest of the W4 build, and the reverse arms of the
+W0 transport). The landed Lean on that route stays, untouched, as conditional theorems carrying
+the kernels as hypotheses (`pencilPair_of_splitOff_of_habitat`, `pencil_conjecture_of_arms_pair`,
+`pencil_conjecture_of_hcontract_hK_hbareSplit` and its `_of_card` form).
+smark's `state.md` gains the one header line and nothing else in `notes/attacks/smark/` changes.
+The coordinator's N1–N4 call (the good ear's shorter count recorded in the blueprint, not
+second-read; `notes/Phase40p.md` *Architectural choices* 2) was not overturned and stands. Work
+log `notes/Phase40p.md`.

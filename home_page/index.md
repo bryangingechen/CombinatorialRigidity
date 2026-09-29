@@ -103,24 +103,25 @@ panels — both results hold with parallel edges admitted
 (`Molecular.molecular_conjecture_multigraph`), while the multigraph
 equivalence is provably false for the intersection-based panel-hinge
 frameworks the simple-graph statements use. The blueprint dependency graph is
-fully green; the pencil chapter's final theorem is conditional, as described next.
+fully green.
 
-**The hinge-pencil conjecture (phase 39 complete as a reduction; phase 40 in progress).** A
-further strengthening of the hinge-coplanar model asks that each body's hinges also pass through a
-common point of its panel: a pencil of lines through a point in a plane, or, in the molecular
-reading, a bond-star lying in a plane through the atom. Does every multigraph still attain the
-generic rank this way? Phase 39 (closed 2026-09-25) reduced that question, in Lean, to two
-statements about the main component of the space of such realizations — every simple
-two-edge-connected multigraph has such a realization with adjacent concurrency points distinct,
-and a generic one whenever a nondegenerate realization exists at all — and proved the conjecture
-conditionally on them (`pencil_conjecture_of_X0`), over every infinite field. **The conjecture
-itself is not yet proved.** A proof of the two statements has been worked out informally and
-independently checked, and Phase 40 (opened 2026-09-25) is formalizing it. The planar case is done —
-it extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension three down to the plane
-(above), used in place of Jackson–Jordán's theorem — and it is now building the geometry the two
-statements are proved from: a fixed planar drawing of the bodies, the space of heights that lift it
-into three dimensions, and the main component of the resulting configuration space, whose general
-member attains the target rank.
+**The hinge-pencil conjecture (phases 39–40, complete).** A further strengthening of the
+hinge-coplanar model asks that each body's hinges also pass through a common point of its panel: a
+pencil of lines through a point in a plane, or, in the molecular reading, a bond-star lying in a
+plane through the atom. Does every multigraph still attain the generic rank this way? It does,
+over every infinite field (`CombinatorialRigidity.Molecular.pencil_conjecture`, with the stronger
+`pencilPair_of_nonempty` for every multigraph with at least one body); the question appears to be
+new. Phase 39 (closed 2026-09-25) reduced it, in Lean, to two statements about the main component
+of the space of such realizations — every simple two-edge-connected multigraph has such a
+realization with adjacent concurrency points distinct, and a generic one whenever a nondegenerate
+realization exists at all. Phase 40 (closed 2026-09-29) proved both, formalizing a proof first
+worked out informally and independently checked. Its first step extended Theorems 5.5 and 5.6 and
+the molecular conjecture from dimension three down to the plane (above), used in place of
+Jackson–Jordán's theorem. Over a fixed planar drawing of the bodies, the heights that lift it into
+three dimensions form a linear space, and the main component of the resulting configuration space
+has a general member attaining the target rank, by an induction through cut, ear, split-off and
+contraction steps; the generic realization, which the planned argument could not reach, is built
+inside the reduction's own induction.
 
 The table below and `ROADMAP.md` carry the fine-grained status.
 
@@ -152,8 +153,8 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    24 | 3-D generic bar-joint rigidity matroid (linear-matroid form) | `GenericRigidityMatroid.lean` | ✓ |
 |    25 | projective duality + the molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ |
 |    26 | the molecule application (Corollary 5.7) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean` | ✓ |
-|    39 | the hinge-pencil conjecture: reduction to two main-component statements (the conjecture itself is conditional on them) | `Molecular/Molecule/Pencil/` | ✓ |
-|    40 | the hinge-pencil conjecture: the main-component proof (plane case done; now building the planar-picture / lifting-space geometry) | `Molecular/` | ◐ |
+|    39 | the hinge-pencil conjecture: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
+|    40 | the hinge-pencil conjecture: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

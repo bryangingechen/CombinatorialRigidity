@@ -162,7 +162,7 @@ sandbox disabled, so this is not a sandbox permission to grant.
 | `LAKE_CACHE_DIR=<dir> lake lint` | batteries `runLinter`; separate from the in-build style linters |
 | `lake build pebble-game` | the exe is **not** in `defaultTargets`, so a plain `lake build` skips it |
 | `lake exe checkdecls blueprint/lean_decls` | silence + exit 0 = all 758 pinned blueprint declarations resolve |
-| `#print axioms` on the 17 `formalization.yaml` headline decls | expect `[propext, Classical.choice, Quot.sound]`, no `sorryAx` |
+| `#print axioms` on the `formalization.yaml` main results (17 at the rc bumps; 19 since Phase 40's close) | expect `[propext, Classical.choice, Quot.sound]`, no `sorryAx` |
 | the 11 `PebbleGame/Examples.lean` `#eval`s | printed by the build itself as `info:` lines; each has its expected value in a comment |
 | the 4 `examples/*.txt` via `lake exe pebble-game` | each file carries its expected output in its own header |
 

@@ -1,5 +1,7 @@
 # Attack gr10 — state
 
+**Part B RETIRED on the PI's word, 2026-09-29**: no longer a fallback; it is retired with the rest of `notes/Phase40-design.md` §6 at Phase 40's close, which proved the pencil conjecture by the main-component route (verbatim in `notes/pencil/adjudications.md`).
+
 <!-- Rewrite this whole file from the template at the end of EVERY session;
 never append to the old one. Budgets are lines of content per section
 (`python3 notes/harness/check.py --state <this file>`). Overflow goes to

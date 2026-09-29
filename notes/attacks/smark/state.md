@@ -1,5 +1,7 @@
 # Attack smark — state
 
+**CLOSED on the PI's word, 2026-09-29**: the O7e programme on `hK`/`hbareSplit` is retired with the rest of `notes/Phase40-design.md` §6 at Phase 40's close, which proved the pencil conjecture by the main-component route (verbatim in `notes/pencil/adjudications.md`); the rest of this file records where the attack stopped.
+
 <!-- Rewrite this whole file from the template at the end of EVERY session;
 never append to the old one. Budgets are lines of content per section
 (`python3 notes/harness/check.py --state <this file>`). Overflow goes to

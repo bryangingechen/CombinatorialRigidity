@@ -776,42 +776,14 @@ coplanar, a pencil, still achieve the generic body-hinge rank?; work
 log `notes/Phase39.md`) opened 2026-07-23 recon-first — apparently new
 mathematics — and closed 2026-09-25 **as a reduction**: `pencil_conjecture_of_X0`
 proves the pencil pair for every spanning multigraph from two statements
-about the main component of the pencil configuration space, which
-**Phase 40** (PENCIL-X0, `notes/Phase40-design.md`) is discharging; its first sub-phase, 40a
-(closed 2026-09-25, `notes/Phase40a.md`), extended Theorems 5.5/5.6 and the conjecture to the
-plane, `n ≥ 2`; its second, CARRIER (planar pictures, the lifting space, `X₀`), closed as
-sub-phase 40b (2026-09-26, `notes/Phase40b.md`); its third, FLAT (the flat rank), closed as
-sub-phase 40c (2026-09-26, `notes/Phase40c.md`); its fourth, BRIDGE (Jackson–Jordán's equality as
-consumed), closed as sub-phase 40d (2026-09-26, `notes/Phase40d.md`); STEPS runs by group, and its
-first, CUTBRIDGE (cut vertices and bridges), closed as sub-phase 40e (2026-09-26, `notes/Phase40e.md`);
-the read-only ORBIT recon has run (2026-09-26), and a second reading confirmed its new proof; the
-next group, CONTRACT-R (contraction at a `def₂`-rigid core), closed as sub-phase 40f (2026-09-26,
-`notes/Phase40f.md`); the third, CHAIN (the ear steps and the cycle), closed as sub-phase 40g
-(2026-09-27, `notes/Phase40g.md`); the fourth, SHORT (the shorter ears), closed as sub-phase 40h
-(2026-09-27, `notes/Phase40h.md`), built from a recon that found a shorter proof of two of its
-steps, now in the workbook and second-read; the fifth, ORBIT (the remaining `k = 1, 2` ear cells),
-closed as sub-phase 40i (2026-09-28, `notes/Phase40i.md`), built from a recon that needed no new
-mathematics; the sixth, SPLITOFF (splitting off a body of degree two), closed as sub-phase 40j
-(2026-09-28, `notes/Phase40j.md`), built from a recon that needed no new mathematics; the seventh
-and last, CONTRACT-A (contraction at an additive core), closed as sub-phase 40k (2026-09-28,
-`notes/Phase40k.md`), built from a recon that needed no new mathematics, so STEPS is done;
-COVERAGE (the structural half and the assembly), run as two sub-phases, closed its first, REDUCE
-(the one-step interface, the induction and the deficiency layer), as sub-phase 40l (2026-09-28,
-`notes/Phase40l.md`), built from a compiler-checked recon whose proofs of three second-read claims
-are new and recorded in the blueprint; its second and last, CHAINS with THEOREM-S folded in (chains,
-cycles, cut vertices and bridges; Theorem S and the covering theorem), closed as sub-phase 40m
-(2026-09-28, `notes/Phase40m.md`), built from a compiler-checked recon whose complete sorry-free
-spikes needed no new mathematics, so COVERAGE is done; MOTIVES (the two main-component
-statements), Phase 40's last layer, runs as three sub-phases, and its first, DIST+BASE (the distinct
-statement, and the generic realization at graphs with no planar-rigid set), closed as sub-phase 40n
-(2026-09-28, `notes/Phase40n.md`), built from a compiler-checked recon that refuted the planned fibre
-route and proves the generic statement inside the pencil reduction's own induction, its new claims
-second-read with no gap; the second, EARS (the steering and the two ear steps), closed as sub-phase
-40o (2026-09-29, `notes/Phase40o.md`), four builds transcribed from a compiler-checked recon's
-sorry-free spikes, its new claims second-read after the builds with no gap; the third,
-REDUCE+CLOSE (the good ear, the assembly, both headlines), opened as sub-phase 40p (2026-09-29,
-`notes/Phase40p.md`) from a compiler-checked recon whose spike is complete and sorry-free, and
-whose close closes Phase 40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+about the main component of the pencil configuration space. **Phase 40** (PENCIL-X0,
+`notes/Phase40-design.md`; sixteen sub-phases 40a–40p by stable code, SPINE2, CARRIER, FLAT,
+BRIDGE, STEPS, COVERAGE and MOTIVES) opened the same day and closed 2026-09-29 (`notes/Phase40p.md`),
+discharging both statements and **proving the pencil conjecture outright over every infinite
+field** (`pencil_conjecture`, `pencilPair_of_nonempty`); its first sub-phase extended Theorems
+5.5/5.6 and the conjecture to the plane, `n ≥ 2`, and its recons found three new proofs, each
+second-read, among them route B for the generic statement. At the close the PI retired the held
+kernels and the rest of the fallback (§6 of the design doc). Summary: ROADMAP §40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

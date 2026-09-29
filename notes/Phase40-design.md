@@ -1,42 +1,24 @@
 # Phase 40 — PENCIL-X0: the `X₀` formalization of the pencil conjecture (design doc)
 
-**Status: LIVE** (opened 2026-09-25). This is the cross-phase plan for Phase 40, the
+**Status: CLOSED 2026-09-29** (opened 2026-09-25). Phase 40 proved the pencil conjecture outright
+over every infinite field: `pencil_conjecture` and `pencilPair_of_nonempty`
+(`MainComponent/Statements.lean`), the standard three axioms. This was the cross-phase plan, the
 sub-lettered home in the `notes/PhaseN-design.md` pattern (`notes/CLAUDE.md`): the target, the
-index of work already done, the layer plan by **stable codes**, the proof map, the risks, and the
-standing constraints. Sub-phases get a letter and a work log `notes/Phase40x.md` only when they
-open. **40a = SPINE2 closed 2026-09-25** (`notes/Phase40a.md`); **40b = CARRIER closed 2026-09-26**
-(`notes/Phase40b.md`); **40c = FLAT closed 2026-09-26** (`notes/Phase40c.md`); **40d = BRIDGE
-closed 2026-09-26** (`notes/Phase40d.md`); **STEPS runs by group: 40e = CUT/BRIDGE closed
-2026-09-26** (`notes/Phase40e.md`); **40f = CONTRACT-R closed 2026-09-26** (`notes/Phase40f.md`),
-one build commit from a compiler-checked recon's spike; **40g = CHAIN closed 2026-09-27**
-(`notes/Phase40g.md`), two build commits from a compiler-checked recon's spike; **40h = SHORT
-closed 2026-09-27** (`notes/Phase40h.md`), six build commits and a file split from a
-compiler-checked recon whose new claims (MC-179)–(MC-182) were second-read first; **40i = ORBIT
-closed 2026-09-28** (`notes/Phase40i.md`), three build commits from a compiler-checked recon's
-sorry-free spike with no new mathematics; **40j = SPLITOFF closed 2026-09-28**
-(`notes/Phase40j.md`), two build commits from a compiler-checked recon's sorry-free spike with no
-new mathematics; **40k = CONTRACT-A closed 2026-09-28** (`notes/Phase40k.md`), STEPS' last group,
-three build commits (the first the `Contract.lean` split) from a compiler-checked recon's
-sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as two sub-phases
-(PI, 2026-09-28; a second call the same day folded THEOREM-S into CHAINS): REDUCE = 40l closed
-2026-09-28** (`notes/Phase40l.md`), three build commits from a compiler-checked recon's two
-sorry-free spikes; **40m = CHAINS + THEOREM-S closed 2026-09-28** (`notes/Phase40m.md`), five
-build commits from a compiler-checked recon's complete sorry-free spikes (§3 COVERAGE). **COVERAGE
-is done. MOTIVES runs as three sub-phases (PI, 2026-09-28): DIST+BASE = 40n closed 2026-09-28**
-(`notes/Phase40n.md`), two build commits from compiler-checked spikes with the second read between
-them; **EARS = 40o closed 2026-09-29** (`notes/Phase40o.md`), four build commits from a
-compiler-checked recon's sorry-free spikes, with the second read after them; **REDUCE+CLOSE = 40p
-opened 2026-09-29** (`notes/Phase40p.md`), design-first from a complete sorry-free spike.
-Route B ((MC-183)–(MC-189), second-read 2026-09-28; EARS' (MC-190)–(MC-192), second-read
-2026-09-29, (MC-193) added) replaces the planned fibre route
-(§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
-reading of its new claims (MC-173)–(MC-176). This doc
-replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
-here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
-(the 2026-09-25 entries).
+index of work already done, the layer plan by **stable codes**, the proof map, the risks and the
+standing constraints. It is now the phase's closed record, kept at its size (under the ~1500-line
+tripwire, 11 live Lean anchors into §1, §3, §7 and the appendix). The sixteen sub-phases, each with
+its work log `notes/Phase40x.md`: **SPINE2** = 40a; **CARRIER** = 40b; **FLAT** = 40c; **BRIDGE**
+= 40d; **STEPS** by group, CUT/BRIDGE = 40e, CONTRACT-R = 40f, CHAIN = 40g, SHORT = 40h, ORBIT =
+40i, SPLITOFF = 40j, CONTRACT-A = 40k; **COVERAGE** as REDUCE = 40l and CHAINS + THEOREM-S = 40m;
+**MOTIVES** as DIST+BASE = 40n, EARS = 40o and REDUCE+CLOSE = 40p (§3). Route B ((MC-183)–(MC-193),
+`notes/pencil/workbook/K-main-MC19.md`) replaced the planned fibre route to the generic statement
+(§3 MOTIVES). The held fallback of §6 was **retired** at the close (PI, 2026-09-29). This doc
+replaced the planning note `notes/pencil/X0-formalization.md` (2026-09-25), now a pointer; the PI's
+calls behind the plan are verbatim in `notes/pencil/adjudications.md`. **Carried past the close:**
+the tracked cleanup-round items, indexed in §7.
 
-**Read §2 before doing any mathematics.** Everything the route needs exists in written,
-second-read form, so the job is transcription and formalization, not re-derivation.
+**§2 indexes the written, second-read mathematics the route consumed**; the job was transcription
+and formalization, not re-derivation.
 
 ## 1. Target and decided calls
 
@@ -58,8 +40,9 @@ second-read form, so the job is transcription and formalization, not re-derivati
   `hbareSplit`, `pencilPair_of_splitOff_of_habitat` and
   `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` are protected: not edited and not
   consumed.
-- **Held, not cancelled:** the kernels (K-res)/`kres`, (K-c) and (K-bare-c) with (α), and smark's
-  O7e programme. smark is paused. They are the fallback until MOTIVES lands (§6).
+- **Held until MOTIVES landed, then retired** (PI, 2026-09-25 and 2026-09-29): the kernels
+  (K-res)/`kres`, (K-c) and (K-bare-c) with (α), and smark's O7e programme, with the rest of §6.
+  smark is closed.
 - **The Jackson–Jordán route is (a), the landed KT spine at `n = 2`, weakened in place** (a
   weaker hypothesis is a stronger theorem). This is SPINE2. The TR formalization, route (b), is
   fallback only.
@@ -78,7 +61,7 @@ second-read form, so the job is transcription and formalization, not re-derivati
 | Jackson–Jordán beyond ℝ (fallback only) | Step MC11's companion section, (MC-33). A complete field-general write-up, one writer and not second-read, is staged unlanded in `notes/w4-pending/JJ-field-general/` (driver `w4/jjbuild.py`) | not needed on route (a); since 40a's close, the seed of the re-scoped PIN item (ROADMAP *Queued*) |
 | drivers behind every figure | `notes/scripts/w4/README.md`, the *Step MCnn's drivers* bullets; commands in `notes/scripts/README.md` | the unguarded ones are listed in *Harness debt* |
 | the literature, verified | `K-main.md` *Literature, checked 2026-09-24* (Crossref data): Jackson–Jordán DCG 40 (2008) and its TR; KT 2011; Crapo–Whiteley | cite from there |
-| the superseded split/contract route | `notes/pencil/W4-reopen.md` (held record), `W4-reopen-archive.md`, `workbook/W4.md` | fallback only (§6) |
+| the superseded split/contract route | `notes/pencil/W4-reopen.md` (retired record), `W4-reopen-archive.md`, `workbook/W4.md` | retired 2026-09-29 (§6) |
 
 **Not needed on this route, whatever their state:** the open ear cell (MC-154) (Case II-cyclic);
 the second proof (MC-148) and Step MC21; the ear-cell programme of Steps MC17–MC18 beyond what
@@ -734,7 +717,7 @@ lemmas. The route landed as the recon's:
     beside `Graph.closedNbhd` in `Motive.lean`).
 - [ ] **Tracked todo, carried past 40e's close (PI, 2026-09-26; not a 40e close gate): the "only
   if" halves of (MC-52)(iv) and (MC-53)(iv).** 40e formalized the "if" halves, the only ones the
-  induction consumes; `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` name this item in their remarks. The informal
+  induction consumes; the remarks after `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` state the converse informally. The informal
   proof: at a generic point of `B(G)` the ranks add and each is at most its target, so an attaining
   height of `G` restricts to attaining heights of both pieces, and the restrictions are onto.
 
@@ -906,7 +889,7 @@ core above serves all three uses in the slots' own format. `chainData_of_isPath`
 wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear decomposition of a
 2-connected graph (ears of a growing subgraph, with no degree-two condition), a different notion.
 
-### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, ✓ closed 2026-09-28** (`notes/Phase40n.md`); **EARS = sub-phase 40o, ✓ closed 2026-09-29** (`notes/Phase40o.md`); **REDUCE+CLOSE = sub-phase 40p, ◐ opened 2026-09-29** (`notes/Phase40p.md`)
+### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, ✓ closed 2026-09-28** (`notes/Phase40n.md`); **EARS = sub-phase 40o, ✓ closed 2026-09-29** (`notes/Phase40o.md`); **REDUCE+CLOSE = sub-phase 40p, ✓ closed 2026-09-29** (`notes/Phase40p.md`); **MOTIVES done, and with it Phase 40**
 
 | labels | step | 2nd |
 |---|---|---|
@@ -1001,15 +984,14 @@ against the landed Lean: no gap; (MC-191) and (MC-192) repaired in place (the ra
 the role of the three-closed-neighbours count; KT Lemma 5.4's attribution), and (MC-193) added: the
 count is the Lean chart's (`PencilSeed.ofCoord` has no free non-hub fills), off the route.
 
-**REDUCE+CLOSE — ◐ opened (sub-phase 40p, 2026-09-29), design-first.** Its pre-build recon (opus,
-read-only, compiler-checked; spikes in `scratch/40p/`, gitignored) compiled R, F1 and both headlines
-sorry-free with standard axioms and a clean `#lint` under `import CombinatorialRigidity` at
-`23f31681`. R is proved by a shorter count than Step MC19's (N1–N4: the all-hub case at one edge, no
-chain walk, step 4's rigidity by `lem:deficiency-tight-rigid`, minimality only through (S)); the
-departure is recorded in the blueprint proof, not second-read (the 40l precedent). (MC-15)(i) step
-2's bridgeless form is not landed and not needed. R's one-ear disjunct drops `¬ G.Adj a b` (no
-consumer). F1 is Route.lean's tail with the one-ear call one argument shorter. Placement, the pins
-and the one build are in `notes/Phase40p.md`.
+**REDUCE+CLOSE — ✓ done (sub-phase 40p, closed 2026-09-29).** One build, B1 (`5829cc74`),
+transcribed the pre-build recon's complete sorry-free spike (opus, read-only, compiler-checked at
+`23f31681`): R, (MC-129) at 2EC graphs, in the new `MainComponent/GoodEar.lean`, by a shorter count
+than Step MC19's (N1–N4: the all-hub case at one edge, no chain walk, step 4's rigidity by
+`lem:deficiency-tight-rigid`, minimality only through (S)), recorded in the blueprint proof and not
+second-read (the 40l precedent; the PI did not overturn it at the close); R's one-ear disjunct
+drops `¬ G.Adj a b` (no consumer); F1 and both headlines in `MainComponent/Statements.lean`.
+(MC-15)(i) step 2's bridgeless form is not landed and not needed. Detail in `notes/Phase40p.md`.
 
 **Lean reuse** (corrected). Used: Phase 39's chart (`PencilSeed`, `pencilChartPoint`/`Normal`,
 `PencilChartWF`, `pencilChartFramework`, `exists_pencilSeed_of_nondeg`) with its steering engine
@@ -1027,8 +1009,8 @@ restriction; and `hasGenericPencilRealization_of_independent_pencilRow_target`, 
 **The interface consumed** (landed at 40m, `CoverageTheoremS.lean`): `Graph.IsX0Graph.x0Attains` and
 `Graph.X0Attains.of_twoEdgeConnected`, exactly `X0Dist`'s graphs. **The blueprint nodes**: the fourteen
 new nodes of `sec:main-component-statements`, the rewritten `thm:pencil-x0-generic-attains`, and
-`thm:pencil-conjecture` (`pencil.tex`), red at the open; 40n greened eight of the fourteen and 40o
-three (EARS'), and the pins of the rest are planned in `notes/Phase40p.md`.
+`thm:pencil-conjecture` (`pencil.tex`), red at the open; 40n greened eight of the fourteen, 40o three (EARS') and
+40p the rest with both headlines.
 `thm:pencil-x0-generic-attains`'s first sentence is
 COVERAGE's conclusion; its proof is rewritten to route B.
 
@@ -1046,9 +1028,9 @@ five for CHAINS and six for THEOREM-S (`notes/Phase40m.md` *Current state*), so 
 MOTIVES' subsection `sec:main-component-statements` is the last; it was transcribed whole at 40n's
 open, fourteen new nodes and the rewritten `thm:pencil-x0-generic-attains` red and unpinned, with
 `thm:pencil-conjecture` red in `pencil.tex`, statements from `ledger.py --brief` and the recon's
-compiled spikes, never retyped. 40n greened eight (M0's four and B1–B3's four) and 40o three
-(EARS', restated at its open to the compiled leaves); the five left are REDUCE+CLOSE's, with their
-planned pins in `notes/Phase40p.md`.
+compiled spikes, never retyped. 40n greened eight (M0's four and B1–B3's four), 40o three
+(EARS', restated at its open to the compiled leaves) and 40p the last five, so the whole chapter
+is green.
 Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
 the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
@@ -1118,7 +1100,7 @@ only a nondegenerate dot product. The landed ℝ duality cluster and all of
 33's `Molecule/` line; only the molecular dictionary is ℝ³-bound; this settles `K-clos.md` (AC-1)).
 There is no field obstruction on the `X₀` route: characteristic 2 (`ω ∧ ω = 2·Pf`) and isotropic
 vectors are never used, and genuine field dependence concerns only the self-dual configurations of
-route σ and kernel (K), the held kernels (`fmlnote:pencil-conditional-realization-pair-field`). The
+route σ and kernel (K), the kernels retired at the close (`fmlnote:pencil-conditional-realization-pair-field`). The
 polarity never preserves adjacent-distinctness, `IsNondegPencilRealization` or `X₀` (the dual's
 "points" are the plane normals, which coincide on triangle edges, (MC-13)(c)), so self-duality is
 not a route to `X0Dist`; `hasPencilPanelRealization_mapExtensor_screwComplementIso` has zero Lean
@@ -1153,40 +1135,46 @@ consumers. What it bought: C4's polar/primal rank equality.
   same commit. New drivers are ported to `notes/scripts/w4/` with a `README.md` row
   (`HARNESS.md` *Reproducibility*). Run `python3 notes/ledger.py --lint` before committing. The
   reusable second-reader brief is the Appendix.
-- **Files.** Never touch `notes/attacks/smark/` or `notes/pencil/workbook/attack-smark.md`; a
-  resumed smark runs in its own worktree. `notes/Phase39-design.md` is a frozen archive: append
-  only.
-- **Do not:** edit `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` or the landed
-  headline; launch `kres` or a contraction attack; or treat `workbook/W4.md`'s (K-res) statement
-  or cost estimates as current.
+- **Files.** smark is closed (PI, 2026-09-29): `notes/attacks/smark/` and
+  `notes/pencil/workbook/attack-smark.md` are its record, not edited. `notes/Phase39-design.md` is
+  a frozen archive: append only.
+- **Do not:** edit `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` or the landed Phase 39
+  headlines, which stay as conditional theorems; or treat `workbook/W4.md`'s (K-res) statement or
+  cost estimates as current.
 
-## 6. Held fallback
+## 6. Retired fallback (held 2026-09-25, retired 2026-09-29)
 
-The split/contract architecture and its three kernels are recorded in `notes/pencil/W4-reopen.md`
-(held record) and `W4-reopen-archive.md`: (K-res)/`kres`, (K-c), and (K-bare-c) with (α).
-Phase 39's held checklist items are the grid route for `hK`, tree-triples, and the rest of the
-W4 build. smark's O7e programme is paused; its status surface is `notes/attacks/smark/state.md`.
-All of these are held until MOTIVES lands (PI, 2026-09-25), then re-decided. On a HIT on a held
-kernel, the phase-boundary consequences are the PI's call (`PHASE-BOUNDARIES.md`), surfaced with an
-estimate.
+**Retired on the PI's word at Phase 40's close** (2026-09-29, verbatim in
+`notes/pencil/adjudications.md`, the Phase 40 close entry): "All of design §6". Held until MOTIVES
+landed (PI, 2026-09-25), then re-decided; MOTIVES landed, the pencil conjecture is proved by the
+main-component route, and nothing below is pursued. The landed Lean on that route stays as
+conditional theorems carrying the kernels as hypotheses (`pencilPair_of_splitOff_of_habitat`,
+`pencil_conjecture_of_arms_pair`, `pencil_conjecture_of_hcontract_hK_hbareSplit` and its `_of_card`
+form); reopening any item is the PI's call. The record:
+- **The split/contract architecture and its three kernels**, (K-res)/`kres`, (K-c), and
+  (K-bare-c) with (α): `notes/pencil/W4-reopen.md` (retired record) and `W4-reopen-archive.md`.
+- **smark's O7e programme** on `hK`/`hbareSplit`: smark is CLOSED (the header line of
+  `notes/attacks/smark/state.md`; nothing else in the track edited).
+- **gr10's Part B fallback** (the grid recipe on the tight stratum, `notes/attacks/gr10/brief.md`
+  Part B): retired; gr10 was already closed (2026-09-23).
+- **Phase 39's four held checklist items**, moved here at its close (2026-09-25):
+  - `hK` on the tight stratum from grid vanishing, the colouring statement as hypothesis
+    (decoupling, rank formula, Vandermonde, chart step, descent; the proviso question of
+    `notes/attacks/gr10/brief.md` §2 *Proviso (P)*);
+  - tree-triple ⇒ `dim Z = 0`, with the circular-ladder family (GUNIZERO's uniform instance) as a
+    formal witness;
+  - the rest of the W4 build (`notes/pencil/W4-reopen.md`): T1, the W4 wrapper carrying (K-res);
+    W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and spike-elaborated); W4-L2/L3′/L5; the
+    residual carry `hnoGood'` (W4-L1, W4-A, landed as Phase 39's L0b);
+  - the reverse arms of the W0 transport (a `complementIso` involution lemma; the workbook's
+    §(K-σ) *Step σ6*).
 
-**Phase 39's held checklist items, moved here at its close (2026-09-25):**
-- **`hK` on the tight stratum from grid vanishing**, the colouring statement as hypothesis:
-  decoupling, rank formula, Vandermonde, chart step, descent. It decides whether the independence
-  proviso is a hypothesis of the crux (`notes/attacks/gr10/brief.md` §2 *Proviso (P)*). The chart
-  machinery exists (`IsFin3SelectorOf`, `cross₃`, `pencilRow`); the grid geometry does not.
-- **Tree-triple ⇒ `dim Z = 0`**, and the circular-ladder family (GUNIZERO's uniform instance) as a
-  formal witness.
-- **The rest of the W4 build** (`notes/pencil/W4-reopen.md`, held record): T1, the W4 wrapper
-  carrying (K-res); W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and spike-elaborated);
-  W4-L2/L3′/L5; the residual carry `hnoGood'`. W4-L1 (W4-A) landed as Phase 39's L0b.
-- **The reverse arms of the W0 transport** (a `complementIso` involution lemma), off every critical
-  path (the workbook's §(K-σ) *Step σ6*, via `python3 notes/ledger.py`).
+## 7. Deferred from Phase 39, and carried past Phase 40's close
 
-## 7. Deferred from Phase 39
-
-Moved here at Phase 39's close (2026-09-25). None is on SPINE2's path; each names the layer or
-round that lands it.
+Moved here at Phase 39's close (2026-09-25). None was on Phase 40's route; each names the layer or
+round that lands it, and at Phase 40's close (2026-09-29) every one not paid below is carried to a
+post-Phase-40 cleanup round, with the tracked cleanup-round items of §3 (indexed at the end of this
+section).
 
 - **A6 — C3, the welded pendant law** `g(H) = max(g(H−u), f_sep(H−u) − (D−1))` and
   `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). Deferred by the PI's D2
@@ -1239,12 +1227,22 @@ round that lands it.
   4(b), 2026-09-27; the design recons of 40j and 40k); the rest, `jointMotions`, `weldedRank` and
   the remaining A2/A3 names included, has no consumer on Phase 40's route through COVERAGE, and a
   cleanup round pins or leaves it (PI, D5).
-- **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section), Phase
-  40's to write or close: **`thm:pencil-conditional-realization-main-component`** — the fuller
-  exposition (the main component as a vector bundle over planar pictures, the flat rank, the
-  ear/split-off/contraction/cut steps) is written at Phase 40's close, in Phase 40's chapter; and
-  **`thm:pencil-conditional-realization-pair`** (the held kernels) — closes as superseded when
-  MOTIVES lands, or is written if a kernel is proved.
+- [x] **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section):
+  **both settled at Phase 40's close.** `thm:pencil-conditional-realization-main-component`'s
+  fuller exposition (the main component as a vector bundle over planar pictures, the flat rank,
+  the induction's cut, ear, split-off and contraction steps, the coverage and route B) is written,
+  as `main-component.tex`'s section introduction; `thm:pencil-conditional-realization-pair` (the
+  kernels) closes as superseded, the kernels retired (§6).
+
+**Carried past Phase 40's close — the tracked cleanup-round items** (none is a close gate, none has
+a consumer on the route; a post-Phase-40 cleanup round takes them, or leaves them by a recorded
+call): the wider stand-in audit of `lem:trivial-motions-rank-bound` (§3 FLAT); the edge-restricted
+non-spanning generic-normals row rank (§3 BRIDGE); the "only if" halves of (MC-52)/(MC-53) (§3
+STEPS, CUT/BRIDGE; the remarks after `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` state them informally); the
+40h file-size and readability items, `span_supportExtensor_ofNormals_eq` in `Cut.lean`, and call
+12's corollary rebases (§3 STEPS); CHAINS' `pathVertex` helpers to their definition's file (§3
+COVERAGE); the §4 duplication note (`mapExtensor`/`mapSupport`); and the §7 items above (A6, the
+shared hub normalization, item 6's other laws, the rest of the D5 debt).
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 

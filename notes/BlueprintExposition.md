@@ -128,6 +128,14 @@ done** (of 38). At the close proper (L0c-ii, same day) both pending entries
 were handed to Phase 40 (`notes/Phase40-design.md` §7), which writes or closes
 them.
 
+**Phase-40 close (2026-09-29).** Both entries handed over are settled: the
+main-component headline's account is written, as the introduction of
+`main-component.tex`, and the kernel theorem's entry closes as superseded (the
+kernels retired by the PI at the close). Phase 40 added thirteen entries over its
+sixteen sub-phases, all written at their sub-phase closes; the last, the good
+ear's shorter count, is 40p's. **Result: 0 pending / 50 done / 1 closed as
+superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -942,8 +950,8 @@ discharge point.
   `notes/Phase39-design.md` § *Lean-track design pass* (V3, V4).
 - **`thm:pencil-conditional-realization-main-component` /
   `pencil_conjecture_of_X0`, with `def:pencil-main-component-statements`** —
-  [pending — discharge point: Phase 40's close; handed to Phase 40 at the
-  Phase-39 close, `notes/Phase40-design.md` §7] **(c)** the reduction itself
+  [done (`main-component.tex`, the section introduction, at Phase 40's close,
+  2026-09-29)] **(c)** the reduction itself
   is final and exposited (the three-way case split in the node's proof); what
   is not final is the account of the two main-component statements
   (`X0Dist`/`X0Gen`), hypotheses here and Phase 40's target
@@ -955,12 +963,19 @@ discharge point.
   `thm:pencil-x0-generic-attains`' generic half no longer intersects fibres of
   `X₀` (refuted at two hubs with three common neighbours); it runs inside the
   pencil reduction's induction (route B, (MC-183)–(MC-189)), which this
-  entry's account covers at the close; 40n landed its base, and 40o its steering and both ear
-  steps.
+  entry's account covers at the close; 40n landed its base, 40o its steering and both ear
+  steps, and 40p the good ear and the assembly. *Written at the close:* the section
+  introduction walks the whole argument in order, with pointers into the subsections: the
+  lifting space and the main component as a bundle over the drawings of least `dim L(q)`, with
+  the one-witness principle and the fibre intersection standing in for irreducibility; the flat
+  rank and Jackson–Jordán's equality; the steps of the induction (cut vertex and bridges, ears
+  by the span of their hinges and relative screws, split-off along a curve, contraction at a core
+  along a curve with a rescaled lifting system); the coverage as combinatorics on `def₂`, `def₃`;
+  and route B for the generic statement, with the two-hubs obstruction that forces it.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
-  [pending — held; handed to Phase 40 at the Phase-39 close,
-  `notes/Phase40-design.md` §7] **(c)** the two kernel hypotheses are held as the fallback
-  (PI, 2026-09-25) and bypassed by the main-component route; the chapter's
+  [closed — superseded (Phase 40's close, 2026-09-29): the main-component route proved the
+  conjecture and the PI retired the kernels] **(c)** the two kernel hypotheses were held as the
+  fallback (PI, 2026-09-25) and bypassed by the main-component route; the chapter's
   `fmlnote:pencil-conditional-realization-pair-kernels` and `…-field` already
   carry what is stable (why both kernels take the induction hypothesis; the
   field hypothesis each route needs). Nothing further is written unless a
@@ -1355,6 +1370,32 @@ chart's coordinates ((MC-193)), Lean-modelling the header's carve-out excludes. 
 route B as a whole stays with the Phase-39 entry
 `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
 ledger stays at **2 pending / 48 done** (of 50).
+
+### `main-component.tex` — Phase 40p (MOTIVES-REDUCE+CLOSE: the good ear, the assembly and both headlines) and the Phase 40 close
+
+**One new entry — judged at the sub-phase close, which is Phase 40's (2026-09-29).** The source is
+the project's own informal proof (`notes/pencil/workbook/K-main-MC19.md`, (MC-129)); the criterion
+transfers as in the `pencil.tex` section. The entry below is a proof-level departure, written in
+place in the node's proof (the 40l/40m precedent: compiler-checked, recorded in the blueprint, not
+second-read; the PI did not overturn it at the close). The rest landed as scoped: the generic step,
+the conditioned pair at every nonempty graph and both headlines assemble landed pieces, and the
+add-one-body identity is a count. With the phase closed the two entries handed over from Phase 39
+are settled (the `pencil.tex` section above), and the chapter end-to-end re-read found the
+section introduction a list of subsections; it is now the account of the whole argument. The
+ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
+
+- **`lem:pencil-rigid-good-ear` / `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, with
+  `Graph.exists_eq_triple_of_minimal` and `Graph.exists_closedEar_two_of_triangle`** — [done (the
+  node's proof, at 40p's B1)] **(b)** the informal (MC-129) settles the all-hub case by `G[W₀]`
+  being a cycle, walks the maximal chain of bodies of degree two through the chosen body, and gets
+  the rigidity of `W₀ ∖ {y}` from its connectivity and its bridges. **Stable insight:** at a
+  minimal planar-rigid set `W₀` the singleton values do all the work. Two adjacent bodies of `W₀`
+  with at most one neighbour each in the rest force `W₀` to be a triangle (N1, the count at one
+  edge, which also excludes the all-hub case by the hub-neighbourhood bound); a non-hub neighbour
+  of the chosen body gives the pendant triangle by the same count (N2, no chain walk); and at two
+  hub neighbours `W₀ ∖ {y}` is tight, hence rigid by the tight-set lemma (N3, no bridge case),
+  minimality entering only through the singleton values of proper subsets (N4). Pointer:
+  `notes/Phase40p.md`; `notes/Phase40-design.md` §3 MOTIVES.
 
 ## Retroactive coverage
 
