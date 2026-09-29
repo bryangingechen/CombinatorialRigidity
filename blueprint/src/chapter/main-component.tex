@@ -4426,67 +4426,83 @@ degree-two bodies enlarge the lifting space.
 \begin{lemma}[Steering a realization of a subgraph]
   \label{lem:pencil-generic-steer}
   \uses{def:pencil-nondegenerate, def:pencil-generic-motive}
-  Let $K$ be infinite, $G$ simple and nondegeneracy-feasible, $V_1
-  \subseteq V(G)$ and $G' = G[V_1]$. Suppose every pencil hub $h$ of $G$
-  in $V_1$ that is not a hub of $G'$ has exactly two neighbours $u, w$ in
-  $V_1$, and every other neighbour of $h$ is not a hub of $G$. Then:
-  \textup{(a)} $G$ has a nondegenerate realization at which the points of
-  $h$, $u$ and $w$ are independent for every such $h$;
-  \textup{(b)} its restriction is a nondegenerate realization of $G'$, so
-  $G'$ is nondegeneracy-feasible, with normals independent on the closed
-  hub-neighbourhood in $G$ of every body of $V_1$;
-  \textup{(c)} if $G'$ has a generic pencil realization, it has one with,
-  besides, normals independent on the closed hub-neighbourhood in $G$ of
-  every body of $V_1$, and satisfying any finitely many further conditions
-  that are the non-vanishing of a polynomial in the chart coordinates and
-  hold at the restriction in \textup{(b)}.
+  Let $K$ be infinite.
+  \textup{(a)} Let $G$ be simple and nondegeneracy-feasible and $H$ a
+  subgraph of $G$. Suppose that at every pencil hub $h$ of $G$ that is a
+  body but not a hub of $H$, every neighbour of $h$ in $G$ that is not its
+  neighbour in $H$ is not a hub of $G$. Then $G$ has a nondegenerate
+  realization whose restriction to $H$ is nondegenerate; so $H$ is
+  nondegeneracy-feasible, with normals independent on the closed
+  hub-neighbourhood in $G$ of every body of $G$.
+  \textup{(b)} Let $H$ be loopless with at least one body, with a generic
+  pencil realization and a nondegenerate realization with normals $n'$ and
+  points $p'$. Let $S_1, \dots, S_k \subseteq V(H)$ be sets on which $n'$
+  is independent, and $(u_1, w_1), \dots, (u_m, w_m)$ pairs of bodies of
+  $H$ with $p'_{u_j} \cdot n'_{w_j} \neq 0$, where every member of every
+  $S_i$, and every $w_j$, is a hub of $H$ or has exactly three closed
+  neighbours in $H$. Then $H$ has a generic pencil realization whose
+  normals are independent on every $S_i$, with $p_{u_j} \cdot n_{w_j} \neq
+  0$ for every $j$.
 \end{lemma}
 \begin{proof}
   Points and hub normals are polynomial in the coordinates of a chart, and
   every nondegenerate realization is a chart point up to per-body scalars,
-  for every correct choice of selectors: at each body, the free slots of
-  its hub normals are filled with a basis of the rest of the orthogonal
-  complement of its point. \textup{(a)} The independence of the points of
-  $h$, $u$, $w$ holds at a chart point built from standard basis vectors,
-  since the other neighbours of $h$ are not hubs; a common chart point
-  with a reseeding of a nondegenerate realization of $G$ gives
-  \textup{(a)}. \textup{(b)} Restriction keeps every condition except the
-  point condition at the bodies that stop being hubs, which is
-  \textup{(a)}; the normal condition is $G$'s. \textup{(c)} Reseed the
-  generic realization and the restriction in one chart of $G'$; the rank
-  at the first and each condition at the second are nonzero polynomials,
-  and a common non-root gives the realization.
+  for every correct choice of selectors: at each body the selected normals,
+  or at a body that is not a hub the selected neighbours' points, are
+  independent and orthogonal to its point, or normal, and completing them
+  to a basis of that orthogonal complement fills the free slots.
+
+  \textup{(a)} Reseed a nondegenerate realization of $G$, and choose one
+  chart point that also makes independent the points of the closed
+  neighbourhood in $H$ of every hub $h$ of $G$ that stops being a hub. If
+  $h$ has two neighbours $u$, $w$ in $H$, this holds at a chart point built
+  from standard basis vectors, since the other neighbours of $h$ are not
+  hubs; with at most one, the closed neighbourhood is a body or an edge of
+  $G$, independent already. Restriction keeps every condition except the
+  point condition at those hubs, which is the chosen one; the normal
+  condition is $G$'s.
+
+  \textup{(b)} Reseed the generic realization, and the second one in the
+  same chart. The rank at the first, and each condition at the second, are
+  nonzero polynomials in the chart coordinates, and a common non-root gives
+  the realization. The conditions read normals only at hubs and at bodies
+  with three closed neighbours, whose normals do not depend on the free
+  slots filled after that choice.
 \end{proof}
 
 \begin{lemma}[The generic realization across a one-body ear]
   \label{lem:pencil-generic-one-ear}
   \uses{def:pencil-generic-motive, def:D-deficiency}
   Let $K$ be infinite and $G$ simple and nondegeneracy-feasible, with a
-  body $x$ of degree two whose neighbours $a$ and $b$ are non-adjacent
-  pencil hubs, and with $\operatorname{def}_3(G - x) \le
-  \operatorname{def}_3(G)$. If $G - x$ has a generic pencil realization
-  whenever it is nondegeneracy-feasible, then $G$ has a generic pencil
-  realization.
+  body $x$ of degree two whose neighbours $a$ and $b$ are pencil hubs, and
+  with $\operatorname{def}_3(G - x) \le \operatorname{def}_3(G)$. If $G - x$
+  has a generic pencil realization whenever it is nondegeneracy-feasible,
+  then $G$ has a generic pencil realization.
 \end{lemma}
 \begin{proof}
   \uses{lem:pencil-generic-steer, lem:block-rank-ear,
-        lem:trivial-motions-rank-bound}
-  The ends that stop being hubs in $G - x$ have degree three in $G$, and
-  their third neighbour $x$ is not a hub, so \cref{lem:pencil-generic-steer}
-  applies with $V_1 = V(G) \setminus \{x\}$: $G - x$ is
-  nondegeneracy-feasible, and has a generic realization with normals
-  independent on every closed hub-neighbourhood in $G$, with $n_a, n_b$
-  independent, and with not both $p_a \perp n_b$ and $p_b \perp n_a$. The
-  last two hold at the restriction: the independent points of $x$, $a$,
-  $b$ of the realization of $G$ cannot lie in the two-dimensional common
-  orthogonal complement of $n_a$ and $n_b$. Then $p_a, p_b$ are
-  independent and the line $n_a^\perp \cap n_b^\perp$ is not the line
-  $p_a p_b$, so a point $p_x$ on the first off the second gives a
-  nondegenerate realization of $G$, the new hinges $p_a \wedge p_x$ and
-  $p_x \wedge p_b$ independent. By the rank addition along an open ear
+        lem:relative-deficiency-rank-bound}
+  An end that stops being a hub in $G - x$ loses only the neighbour $x$,
+  which is not a hub, so \cref{lem:pencil-generic-steer}(a) applies with
+  $H = G - x$: $G$ has a nondegenerate realization whose restriction is one
+  of $G - x$, and $G - x$ has a generic realization. At the realization of
+  $G$, $n_a$ and $n_b$ are independent, since $a$ and $b$ lie in the closed
+  hub-neighbourhood of $x$, and not both $p_a \perp n_b$ and
+  $p_b \perp n_a$: otherwise the independent points of $x$, $a$, $b$ would
+  lie in the two-dimensional common orthogonal complement of $n_a$ and
+  $n_b$. Such an end keeps exactly two neighbours, so it has three closed
+  neighbours in $G - x$, and \cref{lem:pencil-generic-steer}(b), with the
+  closed hub-neighbourhoods in $G$ of the bodies of $G - x$ and $\{a, b\}$
+  as the sets and whichever of $p_a \cdot n_b$, $p_b \cdot n_a$ is nonzero,
+  gives a generic realization of $G - x$ with the same three properties.
+
+  Then $p_a, p_b$ are independent and the line $n_a^\perp \cap n_b^\perp$
+  is not the line $p_a p_b$, so a point $p_x$ on the first off the second
+  gives a nondegenerate realization of $G$, the new hinges $p_a \wedge p_x$
+  and $p_x \wedge p_b$ independent. By the rank addition along an open ear
   (\cref{lem:block-rank-ear}) the rank rises by at least six, which is at
   least $G$'s target by the deficiency hypothesis; the target bounds the
-  rank at every realization (\cref{lem:trivial-motions-rank-bound}).
+  rank at every realization (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
 \begin{lemma}[The generic realization across a pendant triangle]
@@ -4500,15 +4516,25 @@ degree-two bodies enlarge the lifting space.
 \end{lemma}
 \begin{proof}
   \uses{lem:pencil-generic-steer, lem:block-rank-cut-vertex,
-        lem:trivial-motions-rank-bound}
-  If $c$ stops being a hub, it has degree four in $G$ and its two removed
-  neighbours are not hubs, so \cref{lem:pencil-generic-steer} gives a
-  generic realization of $G - \{x_1, x_2\}$ with normals independent on
-  every closed hub-neighbourhood in $G$. Put $p_{x_1}, p_{x_2}$ in the
-  plane of $c$, independent of $p_c$ and of each other. The triangle's
-  three hinges are independent, so it adds rank twelve at the cut vertex
-  $c$ (\cref{lem:block-rank-cut-vertex}), and a triangle has deficiency
-  zero, so the target is met.
+        lem:cycle-realization-rigid, lem:deficiency-cut-vertex,
+        lem:relative-deficiency-rank-bound}
+  Only $c$ can stop being a hub in $G - \{x_1, x_2\}$; it then has degree
+  four, loses the two neighbours $x_1$, $x_2$, which are not hubs, and has
+  three closed neighbours there. So \cref{lem:pencil-generic-steer}(a)
+  makes $G - \{x_1, x_2\}$ nondegeneracy-feasible, with normals independent
+  on the closed hub-neighbourhood in $G$ of each of its bodies, and
+  \cref{lem:pencil-generic-steer}(b), with those sets, gives a generic
+  realization of $G - \{x_1, x_2\}$ with the same property. Put $p_{x_1}$,
+  $p_{x_2}$ in the plane of $c$ with $p_c, p_{x_1}, p_{x_2}$ independent,
+  and give $x_1$ and $x_2$ the plane of $c$.
+
+  The triangle's three hinges are three of the six joins of a basis, hence
+  independent, so the triangle is rigid (\cref{lem:cycle-realization-rigid})
+  of rank twelve, and ranks add at the cut vertex $c$
+  (\cref{lem:block-rank-cut-vertex}). The deficiencies add at $c$
+  (\cref{lem:deficiency-cut-vertex}), the triangle's being nonnegative, so
+  the rank reaches $G$'s target, which bounds it
+  (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
 \begin{lemma}[A minimal planar-rigid set has a good ear]

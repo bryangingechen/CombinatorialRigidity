@@ -806,8 +806,9 @@ statements), Phase 40's last layer, runs as three sub-phases, and its first, DIS
 statement, and the generic realization at graphs with no planar-rigid set), closed as sub-phase 40n
 (2026-09-28, `notes/Phase40n.md`), built from a compiler-checked recon that refuted the planned fibre
 route and proves the generic statement inside the pencil reduction's own induction, its new claims
-second-read with no gap; the second, EARS (the steering and the two ear steps), is next, then
-REDUCE+CLOSE, whose close closes Phase 40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+second-read with no gap; the second, EARS (the steering and the two ear steps), opened as sub-phase
+40o (2026-09-29, `notes/Phase40o.md`) from a compiler-checked recon whose spikes close every leaf,
+then REDUCE+CLOSE, whose close closes Phase 40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

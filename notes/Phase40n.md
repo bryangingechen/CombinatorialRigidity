@@ -4,8 +4,8 @@
 sub-phases (the PI's call, 2026-09-28, `notes/pencil/adjudications.md`; plan
 `notes/Phase40-design.md` §3 MOTIVES): **DIST+BASE**, then **EARS** and **REDUCE+CLOSE** by code.
 It proved `X0Dist` and the base of route B ((MC-183)–(MC-189), `notes/pencil/workbook/K-main-MC19.md`,
-second-read 2026-09-28). **Next: EARS' pre-build recon** (compiler-checked, top rung); see
-*Hand-off*.
+second-read 2026-09-28). **EARS opened as sub-phase 40o** (2026-09-29, design-first from its
+pre-build recon; work log `notes/Phase40o.md`); see *Hand-off*.
 
 ## Current state
 
@@ -47,8 +47,9 @@ uses `sorryAx`. *Measured, script not retained*: one `#print axioms` line per de
 first, after the close's docstring edits: 2 996 jobs, 0 warnings, 0 errors, 0 cache-write
 failures).
 
-**The spikes** (gitignored, local to this checkout; builder sources, not evidence; **keep them for
-EARS' recon**):
+**The spikes** (gitignored, local to this checkout; builder sources, not evidence). **Keep
+`GenBase.lean`** until REDUCE+CLOSE transcribes its tail; the other two are copied into
+`scratch/ears/Ears.lean`:
 - `scratch/40n/OneEar.lean` (368 lines, the opening recon's, at `c2b74e61`; exit 0 at `8a0752d7`):
   Z1's extension, (MC-185).
 - `scratch/40n-read/WitnessGen.lean` (the second read's): T2's witness, (MC-188).
@@ -90,20 +91,14 @@ All landed with the standard axioms (*Current state*); pins in **bold**.
 
 ## Blockers / open questions
 
-- **None for 40n.** EARS' T1 (the reseed at given selectors), T3 (the steering in `G′`'s chart) and
-  Z2 (the pendant triangle) are unspiked; that is EARS' recon's question, not a 40n blocker.
+- **None for 40n.** EARS' recon has since spiked T1, T3 and Z2 sorry-free (`notes/Phase40o.md`).
 
 ## Hand-off / next phase
 
-**40n is closed. MOTIVES continues with EARS** (the steering and the two ear steps; letter minted at
-its open). **Next concrete step: EARS' pre-build recon** (compiler-checked, top rung), which opens
-EARS design-first. Its inputs are the three spikes above: `scratch/40n/OneEar.lean` (Z1's extension,
-(MC-185)), `scratch/40n-read/WitnessGen.lean` (T2, (MC-188)) and `scratch/40n-read/GenBase.lean`
-(the route-B assembly, three `sorry`s). It must spike what is not yet spiked: T1, the reseed at
-given selectors ((MC-186)(c); `exists_pencilSeed_of_nondeg` returns its own selectors); T3, the
-steering in `G′`'s chart; and Z2, the pendant triangle ((MC-127)(b), the cut-vertex rank law). EARS'
-plan is the design doc §3 MOTIVES (T1–T3, Z1, Z2). Then REDUCE+CLOSE ((MC-129), the assembly from
-`GenBase.lean`, both headlines), whose close closes Phase 40 and updates the public surfaces.
+**40n is closed. MOTIVES continues with EARS, opened as sub-phase 40o** (2026-09-29, work log
+`notes/Phase40o.md`, whose *Hand-off* names the next step). Its pre-build recon spiked every EARS
+leaf sorry-free in `scratch/ears/`. Then REDUCE+CLOSE ((MC-129), the assembly from `GenBase.lean`
+l.799 on, both headlines), whose close closes Phase 40 and updates the public surfaces.
 
 ## Decisions made during this phase
 

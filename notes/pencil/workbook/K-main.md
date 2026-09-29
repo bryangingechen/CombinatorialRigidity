@@ -100,7 +100,9 @@ The class statements (MC-10) are *open*. What follows is the PI's call.
   satisfying (H), feasible or not, has `HasDistinctPencilRealization`, modulo Jackson–Jordán, in
   characteristic 0 (MC-157). *2026-09-28 (MOTIVES recon, found by formalization; second-read the
   same day, confirmed with repairs, (MC-188) and (MC-189) added):* route B, (MC-183)–(MC-189): the generic motive inside the pencil reduction's induction, the
-  planned fibre route refuted at two hubs with three common neighbours (MC-187).
+  planned fibre route refuted at two hubs with three common neighbours (MC-187). *2026-09-29 (EARS
+  recon, found by formalization, awaiting a second read):* (MC-190)–(MC-192), the steering and the
+  pendant triangle in the forms the Lean proves.
 - **Step MC20** (second-read 2026-09-25, confirmed with repairs; the argument leaves audited for
   characteristic, (MC-166); (MC-167), (MC-168) added): every computational certificate under (MC-89) has a hand proof
   over every infinite field (MC-134)–(MC-139), so (MC-89) rests on arguments and Jackson–Jordán

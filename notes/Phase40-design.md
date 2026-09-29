@@ -24,8 +24,10 @@ sorry-free spikes; **40m = CHAINS + THEOREM-S closed 2026-09-28** (`notes/Phase4
 build commits from a compiler-checked recon's complete sorry-free spikes (§3 COVERAGE). **COVERAGE
 is done. MOTIVES runs as three sub-phases (PI, 2026-09-28): DIST+BASE = 40n closed 2026-09-28**
 (`notes/Phase40n.md`), two build commits from compiler-checked spikes with the second read between
-them; **EARS is next**, then REDUCE+CLOSE, by code, from a compiler-checked recon whose route B
-((MC-183)–(MC-189), second-read 2026-09-28) replaces the planned fibre route (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
+them; **EARS = 40o opened 2026-09-29** (`notes/Phase40o.md`), design-first from a compiler-checked
+recon whose spikes close every leaf; then REDUCE+CLOSE, by code. Route B ((MC-183)–(MC-189),
+second-read 2026-09-28; EARS' (MC-190)–(MC-192) await a second read) replaces the planned fibre route
+(§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -902,7 +904,7 @@ core above serves all three uses in the slots' own format. `chainData_of_isPath`
 wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear decomposition of a
 2-connected graph (ears of a growing subgraph, with no degree-two condition), a different notion.
 
-### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, ✓ closed 2026-09-28** (`notes/Phase40n.md`); **EARS, next**; **REDUCE+CLOSE**
+### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, ✓ closed 2026-09-28** (`notes/Phase40n.md`); **EARS = sub-phase 40o, ◐ opened 2026-09-29** (`notes/Phase40o.md`); **REDUCE+CLOSE**
 
 | labels | step | 2nd |
 |---|---|---|
@@ -912,6 +914,7 @@ wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear d
 | (MC-129) at 2EC graphs (the good ear or a pendant triangle; no lollipop) | MC19 | ✓ 09-25 |
 | (MC-186) the formal hubs by steering; (MC-185) the one-ear extension; (MC-127)(b) the pendant triangle; (MC-188) the witness of (MC-186)(a) | MC19 | (MC-127) ✓; (MC-185), (MC-186) ✓ 09-28; (MC-188) added 09-28 |
 | (MC-187), the obstruction to the fibre route | MC19 | ✓ 09-28 |
+| EARS' forms: (MC-190) the formal hubs at any subgraph; (MC-191) the steering's scope; (MC-192) the pendant triangle's rank at the cut vertex | MC19 | added 09-29; awaiting, before EARS' close |
 
 **The recon's verdict (opus, read-only, compiler-checked, 2026-09-28; spikes in `scratch/40n/`,
 gitignored and local to the recon's checkout).**
@@ -965,6 +968,28 @@ route-B composition has three leaves left (`scratch/40n-read/GenBase.lean`); spi
   from `scratch/40n-read/GenBase.lean`'s tail, l.799 on: `Gen.lean` redeclares names M0 landed, and
   `GenBase.lean`'s first 797 lines are the landed `GenericBase.lean`).
 
+**EARS — ◐ opened (sub-phase 40o, 2026-09-29), design-first.** Its pre-build recon (opus, read-only,
+compiler-checked; spikes in `scratch/ears/`, gitignored) closed every leaf sorry-free with standard
+axioms. The two steps compile exactly at `GenBase.lean`'s signatures (l.822, l.835), and the route-B
+composition then has one `sorry`, (MC-129). No shorter route exists: T3 is needed because the
+induction hypothesis' realization says nothing at the demoted ends' closed hub-neighbourhoods, and T1
+because two realizations must be chart points of one chart. The leaves as proved:
+- **T1** `exists_pencilSeed_of_nondeg_of_selectors`: complete the selected normals (or points) to a
+  basis of the target's orthogonal complement;
+- **T2** `exists_isNondegPencilRealization_restrict_of_demoted` ((MC-190)): any subgraph, the demoted
+  hubs losing only non-hubs, with (MC-188) at two kept neighbours and no steering at fewer;
+- **T3** `exists_isNondegPencilRealization_steer` ((MC-191)): normal independence and point–normal
+  non-orthogonality, read at hubs and at bodies with three closed neighbours (the re-chosen fills
+  move every other normal);
+- **Z1** `Graph.IsOpenEar.hasGenericPencilRealization_of_one`, without `¬ G.Adj a b` (the
+  coordinator's call; (F2) excludes it at a feasible `G`, and the proof never uses it);
+- **Z2** `hasGenericPencilRealization_of_closedEar_two` ((MC-192)): the triangle rigid by KT Lemma 5.4
+  (`theorem_55_cycle`), the cut-vertex rank and deficiency laws, the triangle's deficiency only
+  nonnegative.
+
+Placement, the four build slices and the tidy-ups are in `notes/Phase40o.md`. The second read of
+(MC-190)–(MC-192) runs after the builds and before EARS' close.
+
 **Lean reuse** (corrected). Used: Phase 39's chart (`PencilSeed`, `pencilChartPoint`/`Normal`,
 `PencilChartWF`, `pencilChartFramework`, `exists_pencilSeed_of_nondeg`) with its steering engine
 (`exists_common_seed_pencilRow_and_polynomials`, `exists_fillNbr_pencilChartWF_of_standing`,
@@ -982,7 +1007,8 @@ restriction; and `hasGenericPencilRealization_of_independent_pencilRow_target`, 
 `Graph.X0Attains.of_twoEdgeConnected`, exactly `X0Dist`'s graphs. **The blueprint nodes**: the fourteen
 new nodes of `sec:main-component-statements`, the rewritten `thm:pencil-x0-generic-attains`, and
 `thm:pencil-conjecture` (`pencil.tex`), red at the open; 40n greened eight of the fourteen, and the
-planned pins of the rest are in `notes/Phase40n.md`. `thm:pencil-x0-generic-attains`'s first sentence is
+planned pins of the rest are in `notes/Phase40n.md` (EARS' three, restated at 40o's open, in
+`notes/Phase40o.md`). `thm:pencil-x0-generic-attains`'s first sentence is
 COVERAGE's conclusion; its proof is rewritten to route B.
 
 ### The blueprint chapter
@@ -1000,7 +1026,8 @@ MOTIVES' subsection `sec:main-component-statements` is the last; it was transcri
 open, fourteen new nodes and the rewritten `thm:pencil-x0-generic-attains` red and unpinned, with
 `thm:pencil-conjecture` red in `pencil.tex`, statements from `ledger.py --brief` and the recon's
 compiled spikes, never retyped. 40n greened eight (M0's four and B1–B3's four); which sub-phase
-greens each remaining node is in `notes/Phase40n.md`.
+greens each remaining node is in `notes/Phase40n.md`; 40o's open restated EARS' three to the compiled
+leaves (`notes/Phase40o.md`).
 Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
 the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
