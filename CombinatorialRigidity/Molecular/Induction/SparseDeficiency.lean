@@ -233,8 +233,7 @@ theorem exists_partitionDef_le_mergeOn [Finite α] [Finite β] {G : Graph α β}
       ((bodyBarDim n : ℤ) - 1) * (G.crossingEdgesWithin f (f '' W)).ncard :=
     mul_le_mul_of_nonneg_left (by exact_mod_cast hcard) (by linarith)
   rw [hmerge]
-  change (bodyBarDim n : ℤ) * (((f '' W).ncard : ℤ) - 1) -
-    ((bodyBarDim n : ℤ) - 1) * ((G.induce W).crossingEdges f).ncard ≤ 0 at hval
+  rw [Graph.partitionDef, Graph.numParts, Graph.vertexSet_induce] at hval
   linarith
 
 /-- (MC-79)(i), the direction consumed: two bodies in a common rigid set have `δ = 0`. -/
@@ -688,7 +687,7 @@ theorem deficiencyMerged_three_add_five_le [Finite α] [Finite β] {G : Graph α
   have : Nonempty {f : α → α // f a = f b} := ⟨⟨fun _ => a, rfl⟩⟩
   obtain ⟨⟨f, hfab⟩, hf⟩ := exists_eq_ciSup_of_finite
     (f := fun f : {f : α → α // f a = f b} => G'.partitionDef 3 f.1)
-  change G'.partitionDef 3 f = G'.deficiencyMerged 3 a b at hf
+  rw [← Graph.deficiencyMerged] at hf
   set Q : Set α := {w ∈ V₁ | f w = f a} with hQ
   have hQV₁ : Q ⊆ V₁ := fun w hw => hw.1
   have haQ : a ∈ Q := ⟨ha, rfl⟩
@@ -786,7 +785,7 @@ theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β
   have : Nonempty {f : α → α // f a = f b} := ⟨⟨fun _ => a, rfl⟩⟩
   obtain ⟨⟨f, hfab⟩, hf⟩ := exists_eq_ciSup_of_finite
     (f := fun f : {f : α → α // f a = f b} => G.partitionDef 2 f.1)
-  change G.partitionDef 2 f = G.deficiencyMerged 2 a b at hf
+  rw [← Graph.deficiencyMerged] at hf
   set Z : Set α := {w ∈ V(G) | f w = f a} with hZ
   have hK := partitionDef_add_partitionDef_induce_id_le (G := G) (n := 2) f ha
     (fun Y hY hne => hnn Y (hY.trans Set.sdiff_subset) hne)
@@ -881,7 +880,7 @@ theorem not_adj_and_deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G :
     have : Nonempty {f : α → α // f a = f b} := ⟨⟨fun _ => a, rfl⟩⟩
     obtain ⟨⟨f, hfab⟩, hf⟩ := exists_eq_ciSup_of_finite
       (f := fun f : {f : α → α // f a = f b} => G'.partitionDef 2 f.1)
-    change G'.partitionDef 2 f = G'.deficiencyMerged 2 a b at hf
+    rw [← Graph.deficiencyMerged] at hf
     have hnn : ∀ Z ⊆ V(G'), Z.Nonempty → 0 ≤ (G'.induce Z).partitionDef 2 id := by
       intro Z hZ hne
       have hZ' : Z ⊆ V₁ := hZ

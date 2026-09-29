@@ -121,7 +121,7 @@ theorem linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePo
   refine LinearIndependent.of_comp f ?_
   have heq : f ∘ (fun i => pencilConfigPoint q z (t i)) = fun i => pencilPicturePoint q (t i) := by
     funext i
-    change f (pencilConfigPoint q z (t i)) = pencilPicturePoint q (t i)
+    simp only [Function.comp_apply]
     funext j
     fin_cases j <;> rfl
   rwa [heq]
@@ -188,9 +188,7 @@ theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α
     exact hnotLI (Matrix.linearIndependent_rows_iff_det_ne_zero (K := K)
       (A := Matrix.of ![pencilConfigPoint q z (sel v 0), pencilConfigPoint q z (sel v 1),
         pencilConfigPoint q z (sel v 2), pencilConfigPoint q z w]) |>.mpr hne)
-  change cross₃ (pencilConfigPoint q z (sel v 0)) (pencilConfigPoint q z (sel v 1))
-      (pencilConfigPoint q z (sel v 2)) ⬝ᵥ pencilConfigPoint q z w = 0
-  rw [dotProduct_cross₃]
+  rw [pencilNormalOfPicture, dotProduct_cross₃]
   exact hdetzero
 
 /-- **Selector independence up to a scalar** (Phase 40b CARRIER slice C3, item 4). Under item 3's

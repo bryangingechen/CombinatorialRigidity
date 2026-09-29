@@ -1596,3 +1596,30 @@ redex a `change` is needed to clear, so a candidate `dsimp only`/`simp only []` 
 no progress" against a `change` that is genuinely load-bearing, and vice versa. Edit the file and
 read `lean_diagnostic_messages` for the ground truth. (Phase 40-cleanup B6a, the Pencil `change`/
 `show` sweep, `Molecule/Pencil/{Base,Statement,X0,Pair,Pair2,Reseed,Steer,Chart}.lean`.)
+
+A `change`/`show` unfolding a plain (non-`set`-bound) `def` — `G.rigidContract H r`,
+`pencilNormalOfPicture q z sel v` — has the same one-line fix without a `set`-local in sight:
+**`rw [Def, …]`/`simp only [Def, …]` with the bare declaration name** unfolds it via its
+auto-generated equation lemma, exactly like `simp only [F]` above for a `set`-bound local; chain
+the usual follow-up lemma (`Graph.map_isLink`, `dotProduct_cross₃`, …) in the same call. The same
+mechanism runs in reverse to **fold** a raw expression back into a named `def`: after
+`exists_eq_ciSup_of_finite` produces `hf : G.partitionDef n f = ⨆ f : {f // f u = f v},
+G.partitionDef n f.1`, `rw [← Graph.deficiencyMerged] at hf` recognizes the `iSup` as
+`deficiencyMerged`'s own body and folds it, no `change`/`show` needed. (Phase 40-cleanup B6b,
+`MainComponent/{Contract,ContractAdditive,ContractCurve,Configuration,CoverageCut}.lean`,
+`Induction/SparseDeficiency.lean`.)
+
+**A genuine keep: a bundled morphism's `{ toFun := …, map_add' := ⋯, … }` structure literal,
+applied, then the argument gets `rw`'n.** Unlike the bundled-vs-unbundled gap `CLEANUP.md` §B
+names (`RingHom.mapMatrix_apply`, `LinearMap.coe_mk`, `DFunLike.coe_fn_eq`, …), this shape resists
+*every* substitute: `simp only []`/`dsimp only` report "made no progress" (the anonymous-
+constructor elaboration of a structure with a parent `extends` doesn't match `LinearMap.coe_mk`'s
+literal `LinearMap.mk` pattern), and even when a `simp only [hφ, LinearMap.comp_apply, …]` chain
+*does* unfold the outer application, a later `rw` at a value threaded through a dependent field
+(e.g. a `ScrewSpace.mk (extensor …) (extensor_mem_exteriorPower _)` second-argument proof whose
+*type* mentions the value) fails with "motive is not type correct" — `kabstract` can't see the
+value inside an opaque auto-generated field proof to abstract it uniformly. `change`/`show` sidesteps
+both failure modes by asking the kernel for defeq directly, without either the
+coercion-syntax mismatch or the dependent-motive walk. Keep the `change`, reason **coe-defeq**;
+don't spend a second round trying another simp set. (Phase 40-cleanup B6b, `Flat.lean` 544,
+`SplitOff.lean` 330/548 — all three ScrewSpace/`LinearMap`-carrier terms.)

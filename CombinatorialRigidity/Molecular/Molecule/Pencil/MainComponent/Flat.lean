@@ -303,8 +303,8 @@ theorem _root_.Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint
         (screwOneEquiv (S u) - screwOneEquiv (S v)) ⬝ᵥ pencilPicturePoint q u = 0 ∧
         (screwOneEquiv (S u) - screwOneEquiv (S v)) ⬝ᵥ pencilPicturePoint q v = 0) := by
     intro S e u v he
-    change S u - S v ∈ Submodule.span K {panelSupportExtensor (k := 1)
-      (pencilPicturePoint q (ends e).1) (pencilPicturePoint q (ends e).2)} ↔ _
+    simp only [F, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
     rcases (hends e u v he).eq_and_eq_or_eq_and_eq he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · rw [h1, h2, mem_span_panelSupportExtensor_one_iff
         (linearIndependent_pencilPicturePoint_pair (hq.1 e u v he)), map_sub]

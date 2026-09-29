@@ -148,9 +148,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
       (G.rigidContract (G.induce W) r).IsLink e (Graph.collapseTo r W (ends e).1)
         (Graph.collapseTo r W (ends e).2) := by
     intro e u w hlink
-    change ((G.deleteEdges E(G.induce W)).map (Graph.collapseTo r W)).IsLink e u w at hlink
-    change ((G.deleteEdges E(G.induce W)).map (Graph.collapseTo r W)).IsLink e _ _
-    rw [Graph.map_isLink] at hlink ⊢
+    rw [Graph.rigidContract, Graph.map_isLink] at hlink ⊢
     obtain ⟨x, y, hxy, _, _⟩ := hlink
     exact ⟨_, _, hendsD e x y hxy, rfl, rfl⟩
   -- the degenerate placement's projected surviving rank

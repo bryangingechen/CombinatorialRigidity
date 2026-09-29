@@ -462,8 +462,7 @@ theorem _root_.Graph.mem_closedNbhd_rigidContract {G : Graph α β} {W : Set α}
 theorem _root_.Graph.mem_vertexSet_rigidContract_iff {G : Graph α β} {W : Set α} {r : α}
     (hr : r ∈ W) (hW : W ⊆ V(G)) {v : α} :
     v ∈ V(G.rigidContract (G.induce W) r) ↔ v = r ∨ (v ∈ V(G) ∧ v ∉ W) := by
-  rw [Graph.vertexSet_rigidContract]
-  change v ∈ Graph.collapseTo r W '' V(G) ↔ _
+  rw [Graph.vertexSet_rigidContract, Graph.vertexSet_induce]
   constructor
   · rintro ⟨a, ha, rfl⟩
     by_cases haW : a ∈ W
@@ -998,9 +997,8 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
     (fun p => nrm p.1 p.2)).toBodyHinge with hF'
   have hendsF' : ∀ e u v, F'.graph.IsLink e u v → F'.graph.IsLink e (endsM e).1 (endsM e).2 := by
     intro e u v hlink
-    change (Gc.map f).IsLink e u v at hlink
-    change (Gc.map f).IsLink e _ _
-    rw [Graph.map_isLink] at hlink ⊢
+    rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+      Graph.map_isLink] at hlink ⊢
     obtain ⟨x, y, hxy, _, _⟩ := hlink
     exact ⟨_, _, hends e x y hxy, rfl, rfl⟩
   have hinter : F'.graph.vertexSet ∩ W = {r} :=
@@ -1012,8 +1010,8 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
       (ends (i : β × _ × _).1).2 := by
     intro i hi
     have := hsuppM i hi
-    change (Gc.map f).IsLink _ _ _ at this
-    rw [Graph.map_isLink] at this
+    rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+      Graph.map_isLink] at this
     obtain ⟨x, y, hxy, _, _⟩ := this
     exact hends i.1 x y hxy
   have hVH : V(G.induce W) = W := rfl
@@ -1218,8 +1216,7 @@ theorem _root_.Graph.connected_rigidContract_induce {G : Graph α β} (hG : G.Co
     obtain ⟨e, he⟩ := hcd
     by_cases hboth : c ∈ W ∧ d ∈ W
     · have hcd' : Graph.collapseTo r V(G.induce W) c = Graph.collapseTo r V(G.induce W) d := by
-        change Graph.collapseTo r W c = Graph.collapseTo r W d
-        rw [collapseTo_of_mem hboth.1, collapseTo_of_mem hboth.2]
+        rw [Graph.vertexSet_induce, collapseTo_of_mem hboth.1, collapseTo_of_mem hboth.2]
       rw [← hcd']
       exact ih
     · exact ih.tail ⟨e, Graph.isLink_rigidContract_of_isLink he hboth⟩

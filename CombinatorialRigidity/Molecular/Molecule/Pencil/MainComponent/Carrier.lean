@@ -763,7 +763,7 @@ theorem _root_.Graph.two_le_finrank_map_planeDiff [Fintype α] {G' H : Graph α 
     have hwV : w ∈ V(G') := hV ▸ (by rcases hw with rfl | ⟨e, he⟩; exacts [hv, he.right_mem] :
       w ∈ V(H))
     rw [hV] at hv
-    change x (Sum.inl w) = _
+    simp only [π, LinearMap.domRestrict_apply, LinearMap.funLeft_apply]
     have hdiff : ∀ u, planeDiff a b x ⬝ᵥ pencilPicturePoint q u =
         (fun i => x (Sum.inr (a, i))) ⬝ᵥ pencilPicturePoint q u -
           (fun i => x (Sum.inr (b, i))) ⬝ᵥ pencilPicturePoint q u := by

@@ -43,7 +43,7 @@ theorem _root_.Graph.Connected.induce_of_gate {H : Graph α β} (hH : H.Connecte
     (hgate : ∀ y z, H.Adj y z → y ∈ W → z ∉ W → y = g) : (H.induce W).Connected := by
   refine (Graph.connected_iff_forall_exists_adj ⟨g, hg⟩).mpr fun X hXW hXne => ?_
   have hHc := (Graph.connected_iff_forall_exists_adj hH.nonempty).mp hH
-  change X ⊂ W at hXW
+  rw [Graph.vertexSet_induce] at hXW
   have hadj : ∀ y z, H.Adj y z → y ∈ W → z ∈ W → (H.induce W).Adj y z :=
     fun y z ⟨f, hf⟩ hy hz => ⟨f, by rw [Graph.induce_isLink]; exact ⟨hf, hy, hz⟩⟩
   by_cases hgX : g ∈ X

@@ -155,9 +155,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
     simp [hu, hw]
   · simp only [BodyHingeFramework.mem_infinitesimalMotions,
       BodyHingeFramework.isInfinitesimalMotion_iff]
-    change (∀ f u w, G.IsLink f u w → S u - S w ∈ K ∙ F.supportExtensor f) ↔
-      (∀ f u w, G''.IsLink f u w → S u - S w ∈ K ∙ F''.supportExtensor f) ∧
-        S (x 0) - S a ∈ K ∙ C₀
+    simp only [hF, hF'', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
     constructor
     · intro hS
       have hxa : S (x 0) - S a ∈ K ∙ C₀ := by
@@ -669,7 +667,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     · simp only [pencilConfigPoint, hzt, hyt, hax, hbx, ↓reduceIte, zero_smul, add_zero]
       simp only [Fin.isValue, Fin.reduceFinMk, Matrix.cons_val]
       rw [hpp0x, hp0, dotProduct_smul_add_smul]
-      change (1 - s) * (ha₀ ⬝ᵥ pa) + s * (ha₀ ⬝ᵥ pb) = _
+      rw [← hha₀]
       rw [← hza, ← hzba]
     · simp [pencilConfigPoint]
   have hLIab : LinearIndependent K ![fun i => n0 (a, i), fun i => n0 (b, i)] := by

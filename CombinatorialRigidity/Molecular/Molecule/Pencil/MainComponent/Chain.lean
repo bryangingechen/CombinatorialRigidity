@@ -265,10 +265,11 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
         · rw [hj] at h2; exact hxV₁ j (h2 ▸ hw')
         · simp only [Fin.val_castSucc] at h0'; omega
   have hCf : F.supportExtensor f ≠ 0 := hqmain.1.supportExtensor_ne_zero hends z hf
+  have hFV₁ : F.graph.induce V₁ = P := by
+    rw [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph, ← hPdef]
   have hrankP : Module.finrank K (Submodule.span K
       (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) = 5 := by
-    change Module.finrank K (Submodule.span K
-      (⟨P, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) = 5
+    rw [hFV₁]
     have h1 := BodyHingeFramework.finrank_span_rigidityRows_path_le P F.supportExtensor hpathP
       honlyP (fun _ => hCf)
     have h2 := BodyHingeFramework.le_finrank_span_rigidityRows_path P F.supportExtensor
@@ -279,7 +280,7 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     exact le_antisymm h1 h2
   have hrelP : (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews a b
       = Submodule.span K {F.supportExtensor f} := by
-    change (⟨P, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews a b = _
+    rw [hFV₁]
     have hpvP := pathVertex_injective (x := (Fin.elim0 : Fin 0 → α)) (fun i => i.elim0)
       (fun i => i.elim0) (fun i => i.elim0) hab
     rw [le_antisymm (BodyHingeFramework.relScrews_path_le_span_range P F.supportExtensor hpathP)
@@ -392,11 +393,15 @@ theorem _root_.Graph.X0Attains.of_cycle [Infinite K] [Finite α] [Finite β]
     have xl1 : xl ≠ x1 := hxne (by simp; omega)
     have xl2 : xl ≠ x2 := hxne (by simp; omega)
     have la : lab a = 0 := by
-      simp [hlab, hab, show a ≠ x0 from (hxa _).symm, show a ≠ x1 from (hxa _).symm,
-        show a ≠ x2 from (hxa _).symm]
+      have ha0 : a ≠ x0 := (hxa _).symm
+      have ha1 : a ≠ x1 := (hxa _).symm
+      have ha2 : a ≠ x2 := (hxa _).symm
+      simp [hlab, hab, ha0, ha1, ha2]
     have lb : lab b = 5 := by
-      simp [hlab, show b ≠ x0 from (hxb _).symm, show b ≠ x1 from (hxb _).symm,
-        show b ≠ x2 from (hxb _).symm]
+      have hb0 : b ≠ x0 := (hxb _).symm
+      have hb1 : b ≠ x1 := (hxb _).symm
+      have hb2 : b ≠ x2 := (hxb _).symm
+      simp [hlab, hb0, hb1, hb2]
     have l0 : lab x0 = 1 := by simp [hlab]
     have l1 : lab x1 = 2 := by simp [hlab, x01.symm]
     have l2 : lab x2 = 3 := by simp [hlab, x02.symm, x12.symm]
