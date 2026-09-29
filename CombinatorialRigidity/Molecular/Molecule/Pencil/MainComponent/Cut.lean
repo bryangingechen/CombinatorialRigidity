@@ -171,7 +171,6 @@ a closed neighbourhood of `G′ ≤ G` lies in the one of `G`, so restricting a 
 theorem _root_.Graph.liftingRestrict_mem_liftingSpace {G G' : Graph α β} (hle : G' ≤ G)
     {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) :
     Graph.liftingRestrict V(G') z ∈ G'.liftingSpace q := by
-  classical
   refine ⟨fun w hw => by simp [Graph.liftingRestrict_apply, hw], fun v hv => ?_⟩
   obtain ⟨h, hh⟩ := hz.2 v (hle.vertexSet_mono hv)
   refine ⟨h, fun w hw => ?_⟩
@@ -188,7 +187,6 @@ theorem _root_.Graph.liftingRestrict_mem_liftingSpace {G G' : Graph α β} (hle 
 theorem pencilConfigPoint_liftingRestrict (X : Set α) (q : α × Fin 2 → K) (z : α → K) {x : α}
     (hx : x ∈ X) (i : Fin 4) :
     pencilConfigPoint q (Graph.liftingRestrict X z) x i = pencilConfigPoint q z x i := by
-  classical
   fin_cases i <;> simp [pencilConfigPoint, Graph.liftingRestrict_apply, hx]
 
 open Classical in
@@ -200,7 +198,6 @@ noncomputable def restrictPoly (X : Set α) (R : MvPolynomial α K) : MvPolynomi
 /-- **`restrictPoly` evaluates on the restriction** (`lem:pencil-lifting-restrict`). -/
 theorem eval_restrictPoly (X : Set α) (R : MvPolynomial α K) (z : α → K) :
     MvPolynomial.eval z (restrictPoly X R) = MvPolynomial.eval (Graph.liftingRestrict X z) R := by
-  classical
   rw [restrictPoly, MvPolynomial.eval_bind₁]
   refine congrArg (fun f => MvPolynomial.eval f R) ?_
   funext w
@@ -217,7 +214,6 @@ theorem _root_.Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_l
     [Finite α] {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α}
     (hv : v ∈ V(G)) (h3 : (G.closedNbhd v).ncard ≤ 3) (z : α → K) :
     ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w := by
-  classical
   obtain ⟨t, ht, hli⟩ := hq.2 v hv
   have htinj : Function.Injective t := fun i j hij => hli.injective (by simp [hij])
   have hrange : Set.range t = G.closedNbhd v := by
@@ -336,7 +332,6 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
     (hoverlap : V₁ ∩ V₂ = {v})
     (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂))
     (h₁ : (G.induce V₁).X0Attains K) (h₂ : (G.induce V₂).X0Attains K) : G.X0Attains K := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   have hV : V(G).Nonempty := hG.connected.nonempty
   have : Inhabited α := ⟨hV.some⟩
@@ -892,7 +887,6 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
       (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂))
     (h₁ : (G.induce V₁).X0Attains K) (h₂ : (G.induce V₂).X0Attains K) :
     G.X0Attains K := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   have hV : V(G).Nonempty := hG.connected.nonempty
   have : Inhabited α := ⟨hV.some⟩

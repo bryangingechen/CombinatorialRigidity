@@ -132,7 +132,6 @@ theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve {k : ℕ} [Finite �
     {t : K | Module.finrank K (Submodule.span K
       (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
         < N}.Finite := by
-  classical
   obtain ⟨Q, hQ₀, hQ⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
   set P : Polynomial K := MvPolynomial.aeval c Q with hP
@@ -172,7 +171,6 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
         screwDim 1 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2 ≤
           (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 1) G ends
             (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge.rigidityRows) : ℤ) := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   -- SPINE2's non-spanning planar rank theorem, at `(n, k) = (2, 1)`.
   obtain ⟨Q₀, hQ₀g, -, hQ₀ends, hQ₀C, hQ₀rank⟩ :=

@@ -145,7 +145,6 @@ theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α
     {sel : α → Fin 3 → α} (hsel : ∀ i, sel v i ∈ G.closedNbhd v)
     {w : α} (hw : w ∈ G.closedNbhd v) :
     pencilNormalOfPicture q z sel v ⬝ᵥ pencilConfigPoint q z w = 0 := by
-  classical
   obtain ⟨h, hh⟩ := (Graph.mem_liftingSpace.mp hz).2 v hv
   set L : (Fin 3 → K) →ₗ[K] (Fin 4 → K) :=
     { toFun := fun a => ![a 0, a 1, h ⬝ᵥ a, a 2]
@@ -289,7 +288,7 @@ C4): the body-hinge framework on `G` whose supporting extensor at every label `e
 `p_u ∧ p_v` of the points at `(u, v) = ends e`, the hinge of a pencil realization with concurrency
 points `p`. It is unpatched: at a label off `E(G)` the join is whatever `ends` names, possibly
 zero; the realization witness `pencilConfigFramework` patches it there. -/
-noncomputable def pointJoinFramework (G : Graph α β) (ends : β → α × α) (p : α → Fin 4 → K) :
+def pointJoinFramework (G : Graph α β) (ends : β → α × α) (p : α → Fin 4 → K) :
     BodyHingeFramework K 2 α β where
   graph := G
   supportExtensor e := ScrewSpace.mk (extensor ![p (ends e).1, p (ends e).2])
@@ -607,7 +606,6 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G
         (fun p => pencilConfigPoint q (t • z + a) p.1 p.2)).toBodyHinge.rigidityRows)
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
         (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
-  classical
   obtain ⟨h, rfl⟩ := ha
   let f : (Fin 4 → K) →ₗ[K] (Fin 4 → K) :=
     { toFun := fun b => ![b 0, b 1, t * b 2 + (h 0 * b 0 + h 1 * b 1 + h 2 * b 3), b 3]

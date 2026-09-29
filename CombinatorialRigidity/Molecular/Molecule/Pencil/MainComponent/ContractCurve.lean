@@ -132,7 +132,6 @@ theorem _root_.Graph.eval_contractWeight (G : Graph α β) (W : Set α) (r : α)
     (q : α × Fin 2 → K) (t : K) (v w : α) :
     (fun i => MvPolynomial.eval (fun _ => t) (G.contractWeight W r q v w i)) =
       G.contractWeightAt W r q t v w := by
-  classical
   funext i
   unfold Graph.contractWeight Graph.contractWeightAt
   split_ifs <;> fin_cases i <;> simp [pencilPicturePoint] <;> ring
@@ -162,14 +161,12 @@ theorem _root_.Graph.contractLiftingMatrix_mulVec_eq_zero_iff [Fintype α] {G : 
 theorem _root_.Graph.contractWeightAt_of_mem {G : Graph α β} {W : Set α} {r : α}
     {q : α × Fin 2 → K} {t : K} {v w : α} (hw : w ∈ W) :
     G.contractWeightAt W r q t v w = pencilPicturePoint q w := by
-  classical
   simp [Graph.contractWeightAt, hw]
 
 /-- At a row `(v, w)` with `v` not meeting the core the weight is the homogeneous picture point. -/
 theorem _root_.Graph.contractWeightAt_of_not_mem_coreNbhd {G : Graph α β} {W : Set α} {r : α}
     {q : α × Fin 2 → K} {t : K} {v w : α} (hv : v ∉ G.coreNbhd W) :
     G.contractWeightAt W r q t v w = pencilPicturePoint q w := by
-  classical
   simp [Graph.contractWeightAt, hv]
 
 /-- At a row `(v, w)` with `v` meeting the core and `w ∉ W` the weight is the magnified-frame point
@@ -178,7 +175,6 @@ theorem _root_.Graph.contractWeightAt_of_mem_coreNbhd {G : Graph α β} {W : Set
     {q : α × Fin 2 → K} {t : K} {v w : α} (hv : v ∈ G.coreNbhd W) (hw : w ∉ W) :
     G.contractWeightAt W r q t v w =
       ![q (w, 0) - (1 - t) * q (r, 0), q (w, 1) - (1 - t) * q (r, 1), t] := by
-  classical
   simp [Graph.contractWeightAt, hv, hw]
 
 /-! ## The contraction curve -/
@@ -194,7 +190,6 @@ noncomputable def contractPicture (W : Set α) (r : α) (q : α × Fin 2 → K) 
 /-- At `t = 1` the contraction curve is the picture `q`. -/
 theorem contractPicture_one (W : Set α) (r : α) (q : α × Fin 2 → K) :
     contractPicture W r q 1 = q := by
-  classical
   funext p
   simp [contractPicture]
 
@@ -217,7 +212,6 @@ theorem contractHeight_apply (W : Set α) (t : K) (x : α ⊕ (α × Fin 3) → 
 theorem pencilPicturePoint_contractPicture_of_not_mem {W : Set α} {r : α} {q : α × Fin 2 → K}
     {t : K} {w : α} (hw : w ∉ W) :
     pencilPicturePoint (contractPicture W r q t) w = pencilPicturePoint q w := by
-  classical
   funext i
   fin_cases i <;> simp [pencilPicturePoint, contractPicture, hw]
 
@@ -231,7 +225,6 @@ theorem _root_.Graph.contractHeight_mem_liftingSpace [Fintype α] {G : Graph α 
     {r : α} {q : α × Fin 2 → K} {t : K} {x : α ⊕ (α × Fin 3) → K}
     (hx : (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => t)) *ᵥ x = 0) :
     contractHeight W t x ∈ G.liftingSpace (contractPicture W r q t) := by
-  classical
   obtain ⟨h1, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
   refine ⟨fun w hw => ?_, fun v hv => ?_⟩
   · rw [contractHeight_apply, h1 w hw]
@@ -341,7 +334,6 @@ theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Gra
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce W)
         ends (fun p => pencilConfigPoint q (fun w => x (Sum.inl w)) p.1 p.2)
           ).toBodyHinge.rigidityRows) := by
-  classical
   let f : (Fin 4 → K) →ₗ[K] (Fin 4 → K) :=
     { toFun := fun b => ![t * b 0 + (1 - t) * q (r, 0) * b 3,
         t * b 1 + (1 - t) * q (r, 1) * b 3, t * b 2, b 3]
@@ -405,13 +397,11 @@ theorem _root_.Graph.IsAdmissiblePicture.eq_of_forall_closedNbhd {G : Graph α �
 
 /-- The collapse sends a core body to the representative `r`. -/
 theorem collapseTo_of_mem {W : Set α} {r a : α} (ha : a ∈ W) : Graph.collapseTo r W a = r := by
-  classical
   simp [Graph.collapseTo, ha]
 
 /-- The collapse fixes every body outside the core. -/
 theorem collapseTo_of_not_mem {W : Set α} {r a : α} (ha : a ∉ W) :
     Graph.collapseTo r W a = a := by
-  classical
   simp [Graph.collapseTo, ha]
 
 /-- With `r ∈ W`, a body that the collapse sends to `r` lies in the core. -/
@@ -517,7 +507,6 @@ theorem _root_.Graph.contractLimitMap_mem_liftingSpace [Fintype α] {G : Graph �
     (hg : ∃ g : Fin 3 → K, (∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w) ∧
       ∀ c ∈ W, (fun i => x (Sum.inr (c, i))) = g) :
     contractLimitMap G W r x ∈ (G.rigidContract (G.induce W) r).liftingSpace q := by
-  classical
   obtain ⟨g, hgW, hgc⟩ := hg
   obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
   refine ⟨fun w hw => ?_, fun v' hv' => ?_⟩
@@ -601,7 +590,6 @@ theorem _root_.Graph.eq_zero_of_contractLimitMap_eq_zero [Fintype α] {G : Graph
     (hg : ∃ g : Fin 3 → K, (∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w) ∧
       ∀ c ∈ W, (fun i => x (Sum.inr (c, i))) = g)
     (h0 : contractLimitMap G W r x = 0) : x = 0 := by
-  classical
   obtain ⟨g, hgW, hgc⟩ := hg
   obtain ⟨h1, h2, h3⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
   have hxr : x (Sum.inl r) = 0 := by simpa [contractLimitMap_apply] using congr_fun h0 r
@@ -835,7 +823,6 @@ theorem _root_.Graph.liftingRestrict_mem_liftingSpace_induce_of_contract [Fintyp
     {x : α ⊕ (α × Fin 3) → K}
     (hx : (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => t)) *ᵥ x = 0) :
     Graph.liftingRestrict W (fun w => x (Sum.inl w)) ∈ (G.induce W).liftingSpace q := by
-  classical
   obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
   refine ⟨fun w hw => by simp [Graph.liftingRestrict_apply, show w ∉ W from hw], fun c hc => ?_⟩
   refine ⟨fun i => x (Sum.inr (c, i)), fun w hw => ?_⟩
@@ -871,7 +858,6 @@ theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintyp
       Module.finrank K ((LinearMap.ker ((G.contractLiftingMatrix K W r q).map
           (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin).map (contractCoreRestrict W)) +
         Module.finrank K ((G.rigidContract (G.induce W) r).liftingSpace q) := by
-  classical
   set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
     (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin with hL
   set Gc := G.rigidContract (G.induce W) r with hGc
@@ -987,7 +973,6 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
         N ≤ Module.finrank K ((Submodule.span K
           (PanelHingeFramework.ofNormals (G.deleteEdges E(G.induce W)) ends
             q).toBodyHinge.rigidityRows).map (extProj (K := K) (k := k) W).dualMap) := by
-  classical
   set Gc := G.deleteEdges E(G.induce W) with hGc
   set f := Graph.collapseTo r W with hf
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
@@ -1149,7 +1134,6 @@ theorem _root_.Graph.three_le_ncard_closedNbhd_rigidContract [Finite α] [Finite
     (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂) :
     ∀ v ∈ V(G.rigidContract (G.induce W) r),
       3 ≤ ((G.rigidContract (G.induce W) r).closedNbhd v).ncard := by
-  classical
   have hW : W ⊆ V(G) := hWss.subset
   intro v hv
   rw [Graph.mem_vertexSet_rigidContract_iff hr hW] at hv
@@ -1203,7 +1187,6 @@ theorem _root_.Graph.three_le_ncard_closedNbhd_rigidContract [Finite α] [Finite
 a walk of `G/H`. -/
 theorem _root_.Graph.connected_rigidContract_induce {G : Graph α β} (hG : G.Connected)
     {W : Set α} {r : α} : (G.rigidContract (G.induce W) r).Connected := by
-  classical
   obtain ⟨⟨v, hv⟩, hpre⟩ := Graph.connected_iff.mp hG
   refine Graph.connected_iff.mpr ⟨⟨_, ⟨v, hv, rfl⟩⟩, ?_⟩
   rintro _ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩
@@ -1226,7 +1209,6 @@ back to a cut of `G` crossed by the same edges. -/
 theorem _root_.Graph.twoEdgeConnected_rigidContract_induce [Finite β] {G : Graph α β}
     (htec : G.TwoEdgeConnected) {W : Set α} {r : α} :
     (G.rigidContract (G.induce W) r).TwoEdgeConnected := by
-  classical
   intro X' hX'ne hX'ss
   set X : Set α := {a | a ∈ V(G) ∧ Graph.collapseTo r W a ∈ X'} with hXdef
   have hXne : X.Nonempty := by
@@ -1286,7 +1268,6 @@ noncomputable def contractPicturePoly (W : Set α) (r : α) (q : α × Fin 2 →
 theorem eval_contractPicturePoly (W : Set α) (r : α) (q : α × Fin 2 → K) (t : K)
     (p : α × Fin 2) :
     MvPolynomial.eval (fun _ => t) (contractPicturePoly W r q p) = contractPicture W r q t p := by
-  classical
   unfold contractPicturePoly contractPicture
   split_ifs <;> simp
   ring
@@ -1306,7 +1287,6 @@ theorem eval_contractConfigPoly (W : Set α) (r : α) (q : α × Fin 2 → K)
     (fun p => MvPolynomial.eval (fun _ => t) (contractConfigPoly W r q Z p)) =
       fun p => pencilConfigPoint (contractPicture W r q t)
         (contractHeight W t (fun c => MvPolynomial.eval (fun _ => t) (Z c))) p.1 p.2 := by
-  classical
   funext ⟨w, i⟩
   fin_cases i
   · simp [contractConfigPoly, pencilConfigPoint, eval_contractPicturePoly]

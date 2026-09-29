@@ -85,7 +85,6 @@ theorem _root_.Graph.exists_core_plane [Fintype α] {G : Graph α β} {W : Set �
     (hx : (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => t)) *ᵥ x = 0) :
     ∃ g : Fin 3 → K, (∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w) ∧
       ∀ c ∈ W, (fun i => x (Sum.inr (c, i))) = g := by
-  classical
   obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
   have hcore : ∀ c ∈ W, ∀ w ∈ (G.induce W).closedNbhd c,
       x (Sum.inl w) = (fun i => x (Sum.inr (c, i))) ⬝ᵥ pencilPicturePoint q w := by
@@ -158,7 +157,6 @@ theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight [Fintype α
     (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce W) ends
         (fun p => pencilConfigPoint (contractPicture W r q t) (contractHeight W t x) p.1 p.2)
           ).toBodyHinge.rigidityRows) : ℤ) = screwDim 2 * ((W.ncard : ℤ) - 1) := by
-  classical
   obtain ⟨g, hgW, -⟩ := Graph.exists_core_plane hW hqH hLH hx
   set g' : Fin 3 → K := ![g 0, g 1, t * g 2 - (1 - t) * (g 0 * q (r, 0) + g 1 * q (r, 1))]
   have haff : Graph.liftingRestrict W (contractHeight W t x) =

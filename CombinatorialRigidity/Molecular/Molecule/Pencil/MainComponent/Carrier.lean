@@ -277,7 +277,6 @@ points, and a triple `h` in the kernel dots to zero against all three, forcing `
 theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α × Fin 2 → K}
     (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     Module.finrank K (G.affineLifts q) = 3 := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   obtain ⟨v₀, hv₀⟩ := hV
   obtain ⟨t, ht, hli⟩ := hq.2 v₀ hv₀
@@ -309,7 +308,6 @@ Immediate from `Aff(q) ⊆ L(q)` (`Graph.affineLifts_le_liftingSpace`) and `dim 
 theorem _root_.Graph.three_le_finrank_liftingSpace [Finite α] {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     3 ≤ Module.finrank K (G.liftingSpace q) := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   rw [← G.finrank_affineLifts hq hV]
   exact Submodule.finrank_mono (G.affineLifts_le_liftingSpace q)
@@ -637,7 +635,6 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
     (hq : G.IsAdmissiblePicture q) :
     Module.finrank K (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin) =
       Module.finrank K (G.liftingSpace q) := by
-  classical
   rw [← G.map_ker_liftingMatrix q, ← LinearMap.range_domRestrict]
   refine (LinearMap.finrank_range_of_inj ?_).symm
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -701,7 +698,7 @@ theorem _root_.Graph.ker_liftingMatrix_le_of_le [Fintype α] {H H' : Graph α β
 
 /-- **The difference of the planes at `a` and `b`**, read off a point `(z, h)` of the lifting
 system's kernel: `h_a − h_b`, an affine function of the picture (`D(z) = h_a − h_b`). -/
-noncomputable def planeDiff (a b : α) : (α ⊕ (α × Fin 3) → K) →ₗ[K] (Fin 3 → K) :=
+def planeDiff (a b : α) : (α ⊕ (α × Fin 3) → K) →ₗ[K] (Fin 3 → K) :=
   LinearMap.funLeft K K (fun i => Sum.inr (a, i)) - LinearMap.funLeft K K (fun i => Sum.inr (b, i))
 
 theorem planeDiff_apply (a b : α) (x : α ⊕ (α × Fin 3) → K) (i : Fin 3) :
@@ -713,7 +710,6 @@ theorem _root_.Graph.injective_liftingMatrix_ker_proj [Fintype α] {G : Graph α
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) :
     Function.Injective ((LinearMap.funLeft K K (Sum.inl : α → α ⊕ (α × Fin 3))).domRestrict
       (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin)) := by
-  classical
   set L := LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin
   set f := (LinearMap.funLeft K K (Sum.inl : α → α ⊕ (α × Fin 3))).domRestrict L
   have h1 := LinearMap.finrank_range_add_finrank_ker f
@@ -738,7 +734,6 @@ theorem _root_.Graph.two_le_finrank_map_planeDiff [Fintype α] {G' H : Graph α 
       (MvPolynomial.eval q)).mulVecLin).map
         ((Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q b]).mulVecLin ∘ₗ
           planeDiff a b)) := by
-  classical
   set L := LinearMap.ker ((G'.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin with hL
   set E := (Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q b]).mulVecLin with hE
   set Φ := (E ∘ₗ planeDiff a b).domRestrict L with hΦ
@@ -896,7 +891,6 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q₀ z₀ p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)) :
     G.X0Attains K := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   -- The rank polynomial at the witness configuration.
   obtain ⟨Q, hQ₀, hQ⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
@@ -983,7 +977,6 @@ members). -/
 theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Graph α β}
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ q : α × Fin 2 → K, G.IsAdmissiblePicture q := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   set φ : α ↪ K :=
     (Fintype.equivFin α).toEmbedding.trans (Fin.valEmbedding.trans (Infinite.natEmbedding K))
@@ -1021,7 +1014,6 @@ its least value at some admissible `q`, which is then a main picture by definiti
 theorem _root_.Graph.exists_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ q : α × Fin 2 → K, G.IsMainPicture q := by
-  classical
   obtain ⟨q₀, hq₀⟩ := G.exists_isAdmissiblePicture (K := K) hloop h3
   set S : Set ℕ := (fun q => Module.finrank K (G.liftingSpace q)) ''
     {q : α × Fin 2 → K | G.IsAdmissiblePicture q} with hSdef
@@ -1047,7 +1039,6 @@ theorem _root_.Graph.exists_mvPolynomial_isMainPicture [Infinite K] [Finite α] 
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧
       ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 → G.IsMainPicture q := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   obtain ⟨q_min, hq_min⟩ := G.exists_isMainPicture (K := K) hloop h3
   obtain ⟨Padm, hPadm₀, hPadm⟩ := hq_min.1.exists_mvPolynomial

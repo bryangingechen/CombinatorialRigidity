@@ -142,7 +142,6 @@ to the affine function `h_v`. -/
 theorem _root_.Graph.liftingPlanesEval_mem_liftingSpace {G : Graph α β} {q : α × Fin 2 → K}
     {h : α → Fin 3 → K} (hh : h ∈ G.liftingPlanes q) :
     G.liftingPlanesEval q h ∈ G.liftingSpace q := by
-  classical
   refine ⟨fun w hw => by simp [Graph.liftingPlanesEval, hw], fun v hv => ⟨h v, fun w hw => ?_⟩⟩
   rcases hw with rfl | ⟨e, he⟩
   · simp [Graph.liftingPlanesEval, hv]
@@ -353,7 +352,6 @@ the motions of the plane framework at the normals `(x_v, y_v, 1)` below by
 theorem _root_.Graph.three_add_deficiency_le_finrank_liftingSpace [Finite α] [Finite β]
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     3 + G.deficiency 2 ≤ (Module.finrank K (G.liftingSpace q) : ℤ) := by
-  classical
   have : Inhabited α := ⟨hV.some⟩
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
     fun e _ _ he => G.isLink_endsOf he.edge_mem
@@ -659,7 +657,6 @@ applies at the height `0 ∈ L(q)`. -/
 theorem _root_.Graph.x0Attains_of_finrank_liftingSpace_le [Finite α] [Finite β] {G : Graph α β}
     (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
     (hL : (Module.finrank K (G.liftingSpace q) : ℤ) ≤ 3 + G.deficiency 3) : G.X0Attains K := by
-  classical
   have hV := hG.nonempty
   have : Inhabited α := ⟨hV.some⟩
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (G.endsOf e).1 (G.endsOf e).2 :=
@@ -715,7 +712,7 @@ when the points have integer coordinates (`MainComponent/Ear.lean`'s certificate
 
 /-- **The join `p ∧ p'` of two points of `K⁴`, as a screw** (Phase 40g CHAIN,
 `lem:pencil-join-flat`): the hinge of `pointJoinFramework` at a link with those end points. -/
-noncomputable def pointJoin (p p' : Fin 4 → K) : ScrewSpace K 2 :=
+def pointJoin (p p' : Fin 4 → K) : ScrewSpace K 2 :=
   ScrewSpace.mk (extensor ![p, p']) (extensor_mem_exteriorPower _)
 
 /-- **A join in flat coordinates** (`lem:pencil-join-flat`): `p ∧ p'` is sent to
