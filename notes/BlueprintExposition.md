@@ -955,7 +955,8 @@ discharge point.
   `thm:pencil-x0-generic-attains`' generic half no longer intersects fibres of
   `X₀` (refuted at two hubs with three common neighbours); it runs inside the
   pencil reduction's induction (route B, (MC-183)–(MC-189)), which this
-  entry's account covers at the close; 40n landed its base.
+  entry's account covers at the close; 40n landed its base, and 40o its steering and both ear
+  steps.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
   [pending — held; handed to Phase 40 at the Phase-39 close,
   `notes/Phase40-design.md` §7] **(c)** the two kernel hypotheses are held as the fallback
@@ -1338,6 +1339,22 @@ above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 48 do
   equality at both graphs, over every infinite field, then separates the two planes off one
   polynomial, the new body's picture fixed at a non-root. (MC-12)'s sufficient half needs neither the standing hypotheses nor
   feasibility ((MC-189)). Pointer: `notes/Phase40n.md`; `notes/Phase40-design.md` §3 MOTIVES.
+
+### `main-component.tex` — Phase 40o (MOTIVES-EARS: the steering and the two ear steps)
+
+**No new entries — judged at the sub-phase close (2026-09-29).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main-MC19.md`, route B, (MC-185)–(MC-188) and
+(MC-190)–(MC-192), second-read after the builds); the criterion transfers as in the `pencil.tex`
+section. The three new green nodes, `lem:pencil-generic-steer`, `lem:pencil-generic-one-ear` and
+`lem:pencil-generic-pendant-triangle`, carry their arguments in full in their proofs. What they
+change against the informal route is scope, not a compressed step: the steering holds at any
+subgraph and reads its conditions off a second realization, the one-ear step needs no non-adjacent
+ends (feasibility excludes the triangle), and the pendant triangle needs no deficiency hypothesis
+(the deficiencies add at the cut vertex). The steering's three-closed-neighbours count is the Lean
+chart's coordinates ((MC-193)), Lean-modelling the header's carve-out excludes. The account of
+route B as a whole stays with the Phase-39 entry
+`thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
+ledger stays at **2 pending / 48 done** (of 50).
 
 ## Retroactive coverage
 

@@ -13,8 +13,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCha
 carries a generic pencil realization up from the smaller graph. The extension half places the ear
 body on the ends' closed hub-neighbourhoods' common orthogonal complement, off the line through
 the ends' points; the assembly half steers `G` and `G[V₁]`'s realizations (T2 + T3,
-`GenericSteer.lean`) to the conditions the extension needs. Transcribed from a compiler-checked
-pre-build recon, `notes/pencil/workbook/K-main-MC19.md`.
+`GenericSteer.lean`) to the conditions the extension needs.
 
 ## Main statements
 
@@ -26,7 +25,8 @@ pre-build recon, `notes/pencil/workbook/K-main-MC19.md`.
   ear at a simple nondegeneracy-feasible `G` with `def₃(G[V₁]) ≤ def₃(G)` carries `G[V₁]`'s generic
   pencil realization (whenever feasible) up to one of `G`.
 
-See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-127)(a), (MC-185)),
+See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-127)(a), (MC-185),
+(MC-190), (MC-191)),
 and `blueprint/src/chapter/main-component.tex` (`lem:pencil-generic-one-ear`).
 -/
 
@@ -36,8 +36,7 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## Z1 (part 1): the one-ear extension ((MC-185), verbatim from the opening recon's
-`scratch/40n/OneEar.lean`) -/
+/-! ## Z1 (part 1): the one-ear extension ((MC-185)) -/
 
 /-- The point of the ear body: on the line `π_a ∩ π_b`, off the line `p_a p_b`. -/
 theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
@@ -405,8 +404,10 @@ theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
   rw [Fintype.card_fin, hmdim] at this
   omega
 
-/-- **(MC-127)(a) on the chart** (with (MC-186)): a one-body ear with
+/-- **(MC-127)(a) on the chart** (with (MC-190), (MC-191)): a one-body ear with
 `def₃(G[V₁]) ≤ def₃(G)`, over a feasible simple `G`, carries the generic motive up from `G[V₁]`.
+The ends need not be assumed non-adjacent: at a feasible `G` a triangle `a x b` with the two hubs
+`a`, `b` cannot occur (`not_pencilNondegFeasible_of_triangle_two_hubs`).
 The step itself proves `G[V₁]` feasible (restriction of a steered realization of `G`), so it
 consumes the induction hypothesis in the conditioned form. -/
 theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one

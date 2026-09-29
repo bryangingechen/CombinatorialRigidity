@@ -4451,10 +4451,12 @@ degree-two bodies enlarge the lifting space.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:relative-deficiency-rank-bound}
   Points and hub normals are polynomial in the coordinates of a chart, and
   every nondegenerate realization is a chart point up to per-body scalars,
   for every correct choice of selectors: at each body the selected normals,
-  or at a body that is not a hub the selected neighbours' points, are
+  or at a body that is not a hub the selected points of its closed
+  neighbours, are
   independent and orthogonal to its point, or normal, and completing them
   to a basis of that orthogonal complement fills the free slots.
 
@@ -4471,7 +4473,8 @@ degree-two bodies enlarge the lifting space.
   \textup{(b)} Reseed the generic realization, and the second one in the
   same chart. The rank at the first, and each condition at the second, are
   nonzero polynomials in the chart coordinates, and a common non-root gives
-  the realization. The conditions read normals only at hubs and at bodies
+  the realization, at the rank since the target bounds the rank at every
+  realization (\cref{lem:relative-deficiency-rank-bound}). The conditions read normals only at hubs and at bodies
   with three closed neighbours, whose normals do not depend on the free
   slots filled after that choice.
 \end{proof}
@@ -4540,7 +4543,13 @@ degree-two bodies enlarge the lifting space.
   \cref{lem:pencil-generic-steer}(b), with those sets, gives a generic
   realization of $G - \{x_1, x_2\}$ with the same property. Put $p_{x_1}$,
   $p_{x_2}$ in the plane of $c$ with $p_c, p_{x_1}, p_{x_2}$ independent,
-  and give $x_1$ and $x_2$ the plane of $c$.
+  and give $x_1$ and $x_2$ the plane of $c$. This is a nondegenerate
+  realization of $G$: the closed hub-neighbourhood in $G$ of a body of
+  $G - \{x_1, x_2\}$ contains neither $x_i$, which are not hubs, and that of
+  $x_i$ is $\{c\}$; the closed neighbourhood of $x_i$ carries the three
+  independent points; and a body of $G - \{x_1, x_2\}$ that is not a hub of
+  $G$ is not $c$, so its closed neighbourhood is unchanged and it is not a
+  hub of $G - \{x_1, x_2\}$.
 
   The triangle's three hinges are three of the six joins of a basis, hence
   independent, so the triangle is rigid (\cref{lem:cycle-realization-rigid})

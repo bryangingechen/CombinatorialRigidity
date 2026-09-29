@@ -158,7 +158,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. **Still unpushed — CI has never validated the stack** (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40n ✓ (SPINE2 … COVERAGE, MOTIVES-DIST+BASE); 40o ◐ (MOTIVES-EARS, MOTIVES' second of three) (see `notes/Phase40o.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 40a–40o ✓ (SPINE2 … COVERAGE, MOTIVES-DIST+BASE, MOTIVES-EARS); MOTIVES-REDUCE+CLOSE next, not yet opened (see `notes/Phase40o.md`; plan `notes/Phase40-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1176,9 +1176,9 @@ infinite field. Layers by stable code, lettered only as each opens:
   induction: at graphs with no planar-rigid set the general configuration is nondegenerate, and
   otherwise a minimal planar-rigid set gives a one-body ear or a pendant triangle across which the
   smaller graph's generic realization extends. **DIST+BASE** ✓ (sub-phase 40n, closed 2026-09-28:
-  the distinct statement and the rigid-free base), then **EARS** (sub-phase 40o, open: the
-  steering and the two ear steps) and **REDUCE+CLOSE** (the good ear, the assembly, both
-  headlines).
+  the distinct statement and the rigid-free base) and **EARS** ✓ (sub-phase 40o, closed
+  2026-09-29: the steering and the two ear steps), then **REDUCE+CLOSE** (the good ear, the
+  assembly, both headlines; not yet opened).
 
 The design doc carries the proof map, label by label.
 
@@ -1472,22 +1472,24 @@ nondegenerate. Two build commits from compiler-checked spikes, with the second r
 Headline axioms unchanged (re-verified at the close). **Next:** 40o (below), MOTIVES' second
 sub-phase; then REDUCE+CLOSE, whose close closes Phase 40.
 
-#### Phase 40o — the steering and the two ear steps (MOTIVES-EARS, MOTIVES' second sub-phase) — ◐ In progress
+#### Phase 40o — the steering and the two ear steps (MOTIVES-EARS, MOTIVES' second sub-phase) — ✓ Complete
 
-**◐ In progress** (opened design-first 2026-09-29; work log `notes/Phase40o.md`). EARS proves the
-two steps by which route B extends a smaller graph's generic realization: across a body of degree
-two at hub ends, and across a pendant triangle at a body of degree at least four. Both rest on one
-steering lemma. A nondegenerate realization of `G` whose restriction to the smaller graph is
-nondegenerate exists when the hubs that stop being hubs lose only non-hubs. Two realizations of the
-smaller graph are chart points of one chart, for every correct choice of selectors, so the generic
-one can be moved to satisfy finitely many normal-independence and non-orthogonality conditions the
-other satisfies. Its pre-build recon compiled every leaf sorry-free at the statements the route-B
-assembly consumes, the one-ear step also without the non-adjacency of its ends. It needed three new
-claims, `notes/pencil/workbook/K-main-MC19.md` (MC-190)–(MC-192), each awaiting a second read that
-runs after the builds and before the close. The three blueprint nodes are restated to the proved
-forms. **Next:** four transcription builds (the reseed at given selectors in `Pencil/Reseed.lean`;
-the steering, the one-ear step and the pendant triangle in three new files under
-`MainComponent/`), then the second read, then the close. REDUCE+CLOSE follows.
+**✓ Complete** (opened design-first and closed 2026-09-29; work log `notes/Phase40o.md`). EARS
+greened the three nodes by which route B extends a smaller graph's generic realization: the
+steering lemma, the step across a body of degree two at hub ends, and the step across a pendant
+triangle at a body of degree at least four. A nondegenerate realization of `G` whose restriction to
+the smaller graph is nondegenerate exists when the hubs that stop being hubs lose only non-hubs
+(`exists_isNondegPencilRealization_restrict_of_demoted`); two realizations of the smaller graph are
+chart points of one chart for every correct choice of selectors, so the generic one can be moved to
+meet the other's normal-independence and non-orthogonality conditions
+(`exists_isNondegPencilRealization_steer`). The one-ear step needs no non-adjacency of its ends
+(feasibility excludes the triangle), and the pendant-triangle step no deficiency hypothesis (the
+deficiencies add at the cut vertex). Four transcription builds from a compiler-checked pre-build
+recon: the reseed at given selectors in `Pencil/Reseed.lean`, and three new files under
+`MainComponent/` (`GenericSteer`, `GenericEar`, `GenericTriangle`). A second read after the builds
+confirmed the workbook's (MC-190)–(MC-192) with precision repairs and added (MC-193), off the route.
+Headline axioms unchanged (re-verified at the close). **Next:** REDUCE+CLOSE, MOTIVES' third
+sub-phase (not yet opened; its pre-build recon first), whose close closes Phase 40.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

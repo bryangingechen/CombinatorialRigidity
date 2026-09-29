@@ -676,7 +676,8 @@ nondegenerate realization is a chart point up to per-body scalars (`exists_penci
   nonzero at the restriction, and (iii), a disjunction, by whichever of `p_a · n_b`, `p_b · n_a` is
   nonzero there. ∎ *(Repaired at the second reading, 2026-09-28: (iii) is not the nonvanishing of one
   polynomial until that choice is made. The reseed at given selectors is not landed:
-  `exists_pencilSeed_of_nondeg` returns its own selectors, so it is a new leaf, EARS' T1.)* *(EARS
+  `exists_pencilSeed_of_nondeg` returns its own selectors, so it is a new leaf, EARS' T1.)* *(Landed
+  2026-09-29 as `exists_pencilSeed_of_nondeg_of_selectors`, `Pencil/Reseed.lean`.)* *(EARS
   recon, 2026-09-29: (a)–(b) in the form proved is (MC-190), and (c)'s scope as proved is (MC-191),
   below.)*
 
@@ -707,16 +708,18 @@ far body out of `C(u)` and `C(w)`, which a non-hub never enters. ∎
 recon (opus, read-only, compiler-checked; `notes/Phase40o.md`). It compiled every EARS leaf
 sorry-free at the signatures route B's assembly consumes, and needed three claims beyond
 (MC-183)–(MC-189): (MC-190) is (MC-186)(a)–(b) in the form proved, (MC-191) is (MC-186)(c)'s scope as
-proved, and (MC-192) is (MC-127)(b)'s rank argument in the cut-vertex form used. Each is one
-writer's, kernel-checked in a compiled spike (gitignored, local to the recon's checkout; builder
-sources, not evidence) and not landed. **Each awaits a second read, which runs before EARS closes**:
-the Lean is complete at the consumed signatures, so the read checks this prose, not the builds.
-`H ≤ G` is a subgraph, and a **demoted hub** of `H` is a hub of `G` that is a body but not a hub of
+proved, and (MC-192) is (MC-127)(b)'s rank argument in the cut-vertex form used. All three landed
+in EARS' builds (B1–B4, `e7c80bba`–`306dcf15`) and were **second-read on 2026-09-29**, after the
+builds, by a fresh read-only reader (opus), who checked this prose against the landed declarations,
+re-derived each proof and checked each citation's hypotheses. It found no refutation and no gap.
+(MC-190) is confirmed; (MC-191) and (MC-192) are confirmed with precision repairs, each marked in
+place. The reader added (MC-193), off the route. `H ≤ G` is a subgraph, and a **demoted hub** of `H` is a hub of `G` that is a body but not a hub of
 `H`.*
 
 > **(MC-190)** `[PROVED]` *(the formal hubs, (MC-186)(a)–(b) in the form proved: any subgraph, no count
-> of the kept neighbours; found by formalization, EARS recon 2026-09-29; kernel-checked in a compiled
-> spike, not landed; awaiting a second read)* Let `K` be infinite, `G` finite, simple and feasible, and
+> of the kept neighbours; found by formalization, EARS recon 2026-09-29; landed as
+> `exists_isNondegPencilRealization_restrict_of_demoted` (`Pencil/MainComponent/GenericSteer.lean`,
+> `45d49861`); second-read 2026-09-29, confirmed)* Let `K` be infinite, `G` finite, simple and feasible, and
 > `H ≤ G`. Suppose that at every demoted hub `h` of `H`, every neighbour of `h` in `G` that is not its
 > neighbour in `H` is a non-hub of `G`. **Then `G` has a nondegenerate realization whose restriction to
 > `H` is nondegenerate.** So `H` is feasible, and the restriction's normals are independent on `C_G(v)`
@@ -737,11 +740,13 @@ At (MC-127)(a) and (b) the lost neighbours are the ear's or the triangle's bodie
 hypothesis is immediate. (MC-186)'s "exactly two neighbours `u, w` in `V₁`" is not needed.
 
 > **(MC-191)** `[PROVED]` *((MC-186)(c)'s scope as proved; found by formalization, EARS recon
-> 2026-09-29; kernel-checked in a compiled spike, not landed; awaiting a second read)* Let `K` be
+> 2026-09-29; landed as `exists_isNondegPencilRealization_steer` (`GenericSteer.lean`, `45d49861`),
+> through T1 `exists_pencilSeed_of_nondeg_of_selectors` (`Pencil/Reseed.lean`, `e7c80bba`);
+> second-read 2026-09-29, confirmed with repairs)* Let `K` be
 > infinite, `H` finite and loopless with a body, `(F₁, n₁, p₁)` a nondegenerate realization of `H` at
 > its deficiency rank (`n = 3`), and `(F₂, n′, p′)` any nondegenerate realization of `H`. Let
 > `S₁, …, S_k ⊆ V(H)` be sets on which `n′` is independent, and `(u₁, w₁), …, (u_m, w_m)` pairs of
-> bodies with `p′_{u_j} · n′_{w_j} ≠ 0`. Suppose every member of every `S_i`, and every `w_j`, is a hub
+> bodies of `H` with `p′_{u_j} · n′_{w_j} ≠ 0`. Suppose every member of every `S_i`, and every `w_j`, is a hub
 > of `H` or has exactly three closed neighbours in `H`. **Then `H` has a nondegenerate realization at
 > its deficiency rank whose normals are independent on every `S_i`, with `p_{u_j} · n_{w_j} ≠ 0` for
 > every `j`.**
@@ -753,10 +758,19 @@ that orthogonal complement fills the free slots, and the cross product of a basi
 multiple of the target. So both realizations are chart points of one chart, up to per-body scalars.
 - The rank rows at the first, and at the second each independence and each product
   `Σᵢ (p_u)ᵢ (n_w)ᵢ`, are polynomials in the seed, each nonzero somewhere; a common non-root carries
-  them all together with the standing chart conditions.
-- The fills of the non-hub normals are re-chosen after steering. A condition survives that exactly
-  when it reads normals only at hubs (a free seed coordinate) and at non-hubs whose three closed
-  neighbours fill every slot (a cross product of chart points). ∎
+  them all together with the standing chart conditions. The rows give the steered realization at
+  least the first's rank, and the upper bound (`lem:relative-deficiency-rank-bound`) holds at every
+  realization, so it is at the deficiency rank.
+- The seed has no coordinates of its own for the fills of the non-hub normals (`PencilSeed.ofCoord`
+  reads `fillNbr` off `fillHub`'s coordinates), so they are re-chosen after steering, which moves no
+  point. A normal read by a condition is unaffected by the fills — so it is a nonzero multiple of `n′`
+  at the flattened second seed, and unchanged by the re-choice — when it is at a hub (a free seed
+  coordinate) or at a non-hub whose three closed neighbours fill every slot (a cross product of chart
+  points). The hypothesis puts every normal the conditions read in one of these two cases. ∎
+  *(Repaired at the second reading, 2026-09-29: the rank's upper bound was implicit, and the
+  hypothesis was said to be needed "exactly" for the re-chosen fills; it is sufficient, and it is
+  also what identifies the second realization's normals at the flattened seed (the Lean's `hnm₂'`).
+  (MC-193) records that it is the chart's, not the argument's.)*
 
 This replaces (c)'s "any finitely many further conditions that are the nonvanishing of a polynomial in
 the chart seed": such a polynomial need not survive the per-body scalars of the re-seeding or the
@@ -766,7 +780,9 @@ least 4 and loses two bodies. Either way it keeps exactly two neighbours, so it 
 neighbours in `G′`.
 
 > **(MC-192)** `[PROVED]` *((MC-127)(b)'s rank in cut-vertex form; found by formalization, EARS recon
-> 2026-09-29; kernel-checked in a compiled spike, not landed; awaiting a second read)* Let `G` be finite
+> 2026-09-29; landed as `hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization`
+> (`Pencil/MainComponent/GenericTriangle.lean`, `306dcf15`); second-read 2026-09-29, citation
+> repaired)* Let `G` be finite
 > and simple with a pendant triangle `c y₁ y₂` (`deg y_i = 2`) at a hub `c`, `G′ := G − {y₁, y₂}`, and
 > let `(F′, n, p)` be a nondegenerate realization of `G′` at its deficiency rank with `n` independent on
 > `C_G(v)` for every body `v` of `G′`. **Then `HasGenericPencilRealization K 3 G`.**
@@ -778,14 +794,36 @@ of `n_c^⊥`), give `y₁` and `y₂` the normal `n_c`, and put point joins on t
 - Conjunct 4: at `y_i` it is the three points. A non-hub of `G` in `G′` is not `c`, so its closed
   neighbourhood is unchanged, and it is a non-hub of `G′`.
 - Rank: the triangle's three sides are three of the six joins of a basis of `K⁴`, so independent, and
-  the triangle is rigid (KT Lemma 5.4), of rank `12`. Ranks add at the cut vertex `c`, and
+  a cycle of hinges with independent lines is infinitesimally rigid (Crapo–Whiteley 1982,
+  Proposition 3.4, the calculation KT cite for their Lemma 5.4; `lem:cycle-realization-rigid`,
+  `theorem_55_cycle`), so the triangle has rank `12`. Ranks add at the cut vertex `c`, and
   `def₃(G) ≥ def₃(G′) + def₃(triangle) ≥ def₃(G′)`, the triangle's deficiency being nonnegative. So
   `rank(G) = rank(G′) + 12 = 6(|V(G)| − 1) − def₃(G′) ≥ 6(|V(G)| − 1) − def₃(G)`, and the upper bound
-  holds at every realization. ∎
+  holds at every realization. ∎ *(Citation repaired at the second reading, 2026-09-29: KT Lemma 5.4
+  asserts only that a cycle on 3 to `D` bodies has some rigid realization.)*
 
 (MC-127)(b)'s "`def₃(G) = f`" is this inequality with the upper bound, and its placement of `y₁, y₂`
 "generic in `π_a`" is only the independence of the three points. With (MC-190) and (MC-191) this is
 (MC-127)(b) on the route; `deg c ≥ 4` enters only through (MC-191)'s count.
+
+> **(MC-193)** `[PROVED]` *(the count in (MC-191) is the Lean chart's; off the route; written at the
+> second reading, 2026-09-29, and so one writer's; not kernel-checked)* In a chart whose seed carries
+> the fills of the non-hub normals as free coordinates, (MC-191) holds without its hypothesis on the
+> members of the `S_i` and the `w_j`.
+
+*Proof.* Take `(hubNormal, fillHub, fillNbr)` all free. Fix the selectors by re-seeding the first
+realization, and re-seed the second at them (T1). The second is then a well-formed chart point with
+its own fills, whose chart normal is `n′` at hubs and a nonzero multiple of `n′` at every non-hub
+(T1's normal clause). The standing conditions (hub-slot triples, non-hub slot triples, adjacent
+points) and the rank rows are nonzero at the first seed; each independence and each dot product is
+nonzero at the second. A common non-root over the infinite `K` is a well-formed chart point. Its
+realization is nondegenerate, at the rank by the rows and the upper bound, and meets every condition.
+No fill is re-chosen. ∎
+
+The landed chart's seed (`PencilSeed.ofCoord`) reads `fillNbr` off `fillHub`'s coordinates, which is
+where (MC-191)'s hypothesis enters. With (MC-193) the pendant-triangle step would also run at a hub
+of degree 3, the lollipop (MC-127)(c), which route B never meets at a 2-edge-connected graph. Nothing
+on the route changes.
 
 > **(MC-187)** `[PROVED]` *(the fibre route's obstruction; sharpens (MC-9); found by formalization,
 > MOTIVES recon 2026-09-28; kernel-checked; second-read 2026-09-28)* Let `a ≠ b` be hubs of `G`

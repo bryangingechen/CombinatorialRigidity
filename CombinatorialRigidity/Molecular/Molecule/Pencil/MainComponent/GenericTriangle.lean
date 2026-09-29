@@ -10,12 +10,11 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 /-!
 # The pendant triangle (Phase 40o EARS, Z2)
 
-(MC-127)(b), (MC-185): a pendant triangle `c − x 0 − x 1 − c` at a body `c` of degree at least four
-whose deficiency does not rise carries a generic pencil realization up from the smaller graph. The
+(MC-127)(b), (MC-192): a pendant triangle `c − x 0 − x 1 − c` at a body `c` of degree at least four
+carries a generic pencil realization up from the smaller graph, with no deficiency hypothesis. The
 extension half puts `x 0` and `x 1` in `c`'s plane, the three points independent, and glues ranks
 and deficiencies at the cut vertex `c`; the assembly half steers `G` and `G[V₁]`'s realizations
-(T2 + T3, `GenericSteer.lean`) to the conditions the extension needs. Transcribed from a
-compiler-checked pre-build recon, `notes/pencil/workbook/K-main-MC19.md`.
+(T2 + T3, `GenericSteer.lean`) to the conditions the extension needs.
 
 ## Main statements
 
@@ -33,8 +32,9 @@ compiler-checked pre-build recon, `notes/pencil/workbook/K-main-MC19.md`.
   at a body of degree at least four carries `G[V₁]`'s generic pencil realization (whenever
   feasible) up to one of `G`.
 
-See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-127)(b), (MC-185)),
-and `blueprint/src/chapter/main-component.tex` (`lem:pencil-generic-pendant-triangle`).
+See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-127)(b),
+(MC-190)–(MC-192)), and `blueprint/src/chapter/main-component.tex`
+(`lem:pencil-generic-pendant-triangle`).
 -/
 
 open scoped Matrix Graph

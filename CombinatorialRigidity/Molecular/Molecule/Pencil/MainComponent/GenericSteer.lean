@@ -11,12 +11,11 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
 `lem:pencil-generic-steer`'s two claims: (a) a nondegenerate realization of a simple,
 nondegeneracy-feasible `G` steers to a chart point whose restriction to a subgraph `H` is
 nondegenerate too, whenever every hub of `G` demoted in `H` loses only non-hub neighbours
-((MC-186)(a)–(b), (MC-188)); (b) a generic pencil realization of `H` steers, in the same way, to
-also carry finitely many normal-independence and point–normal non-orthogonality conditions read off
-a second nondegenerate realization ((MC-186)(c)). Both route through the reseed at given selectors
+((MC-190), (MC-188)); (b) a generic pencil realization of `H` steers, in the same way, to also
+carry finitely many normal-independence and point–normal non-orthogonality conditions read off a
+second nondegenerate realization ((MC-191)). Both route through the reseed at given selectors
 (`exists_pencilSeed_of_nondeg_of_selectors`, `Reseed.lean`) and the rows-polynomial steering engine
-(`Engine.lean`, `Steer.lean`). Transcribed from a compiler-checked pre-build recon,
-`notes/pencil/workbook/K-main-MC19.md`.
+(`Engine.lean`, `Steer.lean`).
 
 ## Main definitions
 
@@ -28,13 +27,13 @@ a second nondegenerate realization ((MC-186)(c)). Both route through the reseed 
 * `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` — (MC-188): a hub with two
   non-hub-adjacent neighbours has a chart seed at which the hub and its two neighbours' points are
   independent.
-* `exists_isNondegPencilRealization_restrict_of_demoted` — (MC-186)(a)–(b), T2: `G` has a
+* `exists_isNondegPencilRealization_restrict_of_demoted` — (MC-190), T2: `G` has a
   nondegenerate realization whose restriction to a demoted-safe subgraph `H` is nondegenerate.
-* `exists_isNondegPencilRealization_steer` — (MC-186)(c), T3: a generic pencil realization of `H`
+* `exists_isNondegPencilRealization_steer` — (MC-191), T3: a generic pencil realization of `H`
   steers to also satisfy a second realization's finitely many normal-independence and
   point–normal non-orthogonality conditions.
 
-See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-186)–(MC-188)), and
+See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-186)–(MC-191)), and
 `blueprint/src/chapter/main-component.tex` (`lem:pencil-generic-steer`).
 -/
 
@@ -44,8 +43,7 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## T2 (part 1): (MC-188), the pendant witness with non-hub neighbours
-(verbatim from the second read's `scratch/40n-read/WitnessGen.lean`) -/
+/-! ## T2 (part 1): (MC-188), the pendant witness with non-hub neighbours -/
 
 theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
     [Finite α] {G : Graph α β} {e₁ e₂ : β} {h w₁ w₂ : α}
@@ -335,7 +333,7 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
     fin_cases i <;> simp [Units.smul_def, hcu, hc1, hc2]
   rwa [heq] at hbase
 
-/-! ## T2 (part 2): the steering in `G`'s chart and the restriction ((MC-186)(a)–(b)) -/
+/-! ## T2 (part 2): the steering in `G`'s chart and the restriction ((MC-190)) -/
 
 /-- **The closed neighbourhood is the body and its neighbours.** -/
 theorem _root_.Graph.closedNbhd_eq_insert (G : Graph α β) (v : α) :
@@ -404,7 +402,7 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
     rw [Graph.closedNbhd_eq_insert, hNuw]
     exact linearIndepOn_triple_of_linearIndependent _ he₁.ne he₂.ne huw hq
 
-/-- **The formal hubs by steering, in `G`'s chart** ((MC-186)(a)–(b), EARS' T2): at a simple
+/-- **The formal hubs by steering, in `G`'s chart** ((MC-190), EARS' T2): at a simple
 feasible `G` and a subgraph `H ≤ G` whose demoted hubs lose only non-hub neighbours, `G` has a
 nondegenerate realization whose restriction to `H` is nondegenerate. Re-seed `G`'s feasibility
 witness, steer one seed carrying the standing chart conditions and the demoted closed
@@ -509,7 +507,7 @@ theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite
   rw [hpcp_eq]
   exact h
 
-/-! ## T3: the steering in `H`'s chart ((MC-186)(c)) -/
+/-! ## T3: the steering in `H`'s chart ((MC-191)) -/
 
 /-- **A selector of a three-member set fills every slot.** -/
 theorem IsFin3SelectorOf.isSome_of_ncard_eq_three {s : Set α} {sel : Fin 3 → Option α}
@@ -549,7 +547,7 @@ theorem pencilDotPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Gra
   simp only [pencilDotPoly, map_sum, map_mul, pencilChartPointPoly_eval,
     pencilChartNormalPoly_eval, dotProduct]
 
-/-- **The steering in `H`'s chart** ((MC-186)(c), EARS' T3; the pattern of
+/-- **The steering in `H`'s chart** ((MC-191), EARS' T3; the pattern of
 `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`). Two nondegenerate
 realizations of `H` — one at the deficiency rank, one carrying finitely many normal-independence
 and point–normal non-orthogonality conditions — give one realization with all of them. Both are
