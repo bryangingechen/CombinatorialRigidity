@@ -941,7 +941,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   set sw : (α × Fin 2) ⊕ α → K := Sum.elim (fun p => if p.1 = x 0 then ![x₁ 0, x₁ 1] p.2
     else if p.1 = x 1 then ![x₂ 0, x₂ 1] p.2 else q p) (fun _ => 0) with hsw
   have hpt0 : pt sw (x 0) = x₁ := by
-    change (fun j => cfg sw (x 0, j)) = x₁
+    simp only [pt]
     rw [earConfig_first sw (hxV₁ 0)]
     funext j
     fin_cases j
@@ -950,7 +950,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     · simp [hsw, liftPlane, hx₁a, planarProj_apply, hx₁3]
     · simp [liftPlane, hx₁3]
   have hpt1 : pt sw (x 1) = x₂ := by
-    change (fun j => cfg sw (x 1, j)) = x₂
+    simp only [pt]
     rw [earConfig_last sw (hxV₁ 1) x01.symm]
     funext j
     fin_cases j

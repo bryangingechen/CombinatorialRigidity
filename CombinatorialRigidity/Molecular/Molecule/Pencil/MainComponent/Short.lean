@@ -886,7 +886,7 @@ theorem _root_.Graph.X0Attains.of_openEar_four [Infinite K] [Finite α] [Finite 
   set st := Function.update (Function.update (Function.update sy (Sum.inl (x 1, 0)) (x₂ 0))
     (Sum.inl (x 1, 1)) (x₂ 1)) (Sum.inr (x 1)) (x₂ 2) with hst
   have hpt1 : pt st (x 1) = x₂ := by
-    change (fun j => cfg st (x 1, j)) = x₂
+    simp only [pt]
     rw [earConfig_of_mem_X st (hxV₁ 1) x01.symm x13 (Set.mem_range_self 1)]
     funext j; fin_cases j <;> simp [hst, hx₂3]
   have hptne : ∀ w, w ≠ x 1 → pt st w = pt sy w := by
@@ -1257,7 +1257,7 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
   set st := Function.update (Function.update (Function.update sy (Sum.inl (x 1, 0)) (x₂ 0))
     (Sum.inl (x 1, 1)) (x₂ 1)) (Sum.inr (x 1)) (x₂ 2) with hst
   have hpt1 : pt st (x 1) = x₂ := by
-    change (fun j => cfg st (x 1, j)) = x₂
+    simp only [pt]
     rw [earConfig_of_mem_X st (hxV₁ 1) x01.symm x12 (Set.mem_range_self 1)]
     funext j; fin_cases j <;> simp [hst, hx₂3]
   have hptne : ∀ w, w ≠ x 1 → pt st w = pt sy w := by

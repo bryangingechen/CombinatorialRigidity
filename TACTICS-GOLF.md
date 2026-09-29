@@ -1623,3 +1623,16 @@ both failure modes by asking the kernel for defeq directly, without either the
 coercion-syntax mismatch or the dependent-motive walk. Keep the `change`, reason **coe-defeq**;
 don't spend a second round trying another simp set. (Phase 40-cleanup B6b, `Flat.lean` 544,
 `SplitOff.lean` 330/548 — all three ScrewSpace/`LinearMap`-carrier terms.)
+
+**`simp only [F]` can over-reduce a piecewise `let`/`set` whose branches compare the bound
+argument to itself — use `dsimp only [F]` instead.** When the unfolded body is a nested
+`if w = c₁ then … else if w = c₂ then … else …` and the call site instantiates `w := c₁` (so one
+branch's condition becomes a literal `c₁ = c₁`), `simp only [F]` doesn't stop at unfolding `F`: its
+built-in reflexivity simp-proc also closes that condition to `True` (invisibly, since no lemma name
+for it appears in the `simp only` list), which a following `rw [ite_eq_right …, ite_eq_left rfl]`
+chain can no longer match (`ite_eq_left rfl` expects `if ?a = ?a then … else …`, not `if True then
+… else …`) — a real elaboration failure, confirmed via `lean_diagnostic_messages`, not a `lean_goal`
+display artifact. `dsimp only [F]` unfolds `F` the same way without invoking any simp-proc, leaving
+the literal `if w = c₁ then …` pattern intact for the `rw` chain that follows. (Phase 40-cleanup
+B6c, `Ear.lean`'s `earExtend_mem_liftingSpace`, the piecewise `let z := fun w => if w ∈ V₁ then …
+else if w = x ⟨0, …⟩ then … else if w = x ⟨k - 1, …⟩ then … else if w ∈ Set.range x then … else 0`.)

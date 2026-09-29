@@ -560,7 +560,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
   have hprom : ∀ v ∈ V₁, LinearIndepOn K n' (G.closedHubNbhd v) := by
     intro v hv
     have := hS' (Sum.inl v)
-    change LinearIndepOn K n' (if v ∈ V₁ then G.closedHubNbhd v else ∅) at this
+    simp only [S] at this
     rwa [ite_eq_left hv] at this
   have hab' : LinearIndependent K ![n' a, n' b] :=
     LinearIndependent.pair_iff.mpr ((LinearIndepOn.pair_iff n' hab).mp (hS' (Sum.inr ())))

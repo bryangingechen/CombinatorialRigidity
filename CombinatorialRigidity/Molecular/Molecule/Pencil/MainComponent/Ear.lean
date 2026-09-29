@@ -114,7 +114,7 @@ theorem span_range_le_relScrews_path (P : Graph α β) (C : β → ScrewSpace K 
   refine ⟨S, ?_, ?_⟩
   · intro f u w hf
     obtain ⟨j, rfl⟩ := honly f u w hf
-    change S u - S w ∈ Submodule.span K {C (e j)}
+    rw [hingeConstraint]
     rcases hf.eq_and_eq_or_eq_and_eq (hpath j) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · rw [hS, hS]
       simp only [Fin.val_castSucc, Fin.val_succ]
@@ -161,7 +161,7 @@ theorem relScrews_path_le_span_range (P : Graph α β) (C : β → ScrewSpace K 
       intro hm
       have h1 := ih (by omega)
       have hl := hS (e ⟨m, by omega⟩) _ _ (hpath ⟨m, by omega⟩)
-      change _ ∈ Submodule.span K {C (e ⟨m, by omega⟩)} at hl
+      rw [hingeConstraint] at hl
       have hsub : Submodule.span K {C (e ⟨m, by omega⟩)}
           ≤ Submodule.span K (Set.range (C ∘ e)) :=
         Submodule.span_mono (by rintro _ rfl; exact ⟨⟨m, by omega⟩, rfl⟩)
@@ -795,10 +795,10 @@ theorem _root_.Graph.earExtend_mem_liftingSpace [Finite α] {G : Graph α β} {V
     else if w ∈ Set.range x then m w else 0
   have hzV₁ : ∀ w ∈ V₁, z w = z₁ w := fun w hw => ite_eq_left hw
   have hz0 : z (x ⟨0, by omega⟩) = ha' ⬝ᵥ pencilPicturePoint q (x ⟨0, by omega⟩) := by
-    change (if _ ∈ V₁ then _ else _) = _
+    dsimp only [z]
     rw [ite_eq_right (hxV₁ _), ite_eq_left rfl]
   have hzl : z (x ⟨k - 1, by omega⟩) = hb' ⬝ᵥ pencilPicturePoint q (x ⟨k - 1, by omega⟩) := by
-    change (if _ ∈ V₁ then _ else _) = _
+    dsimp only [z]
     rw [ite_eq_right (hxV₁ _), ite_eq_right hx0l.symm, ite_eq_left rfl]
   refine ⟨z, ?_, ?_, ?_⟩
   · refine G.mem_liftingSpace_of_ear hcover hinj hxV₁ ha hb hpath hsep hq (fun w hw => ?_)
@@ -807,7 +807,7 @@ theorem _root_.Graph.earExtend_mem_liftingSpace [Finite α] {G : Graph α β} {V
       simp only [Set.mem_union, not_or] at hw
       have h0 : w ≠ x ⟨0, by omega⟩ := fun h => hw.2 ⟨_, h.symm⟩
       have hl : w ≠ x ⟨k - 1, by omega⟩ := fun h => hw.2 ⟨_, h.symm⟩
-      change (if w ∈ V₁ then _ else _) = 0
+      dsimp only [z]
       rw [ite_eq_right hw.1, ite_eq_right h0, ite_eq_right hl, ite_eq_right hw.2]
     · by_cases hva : v = a
       · subst hva
@@ -842,7 +842,7 @@ theorem _root_.Graph.earExtend_mem_liftingSpace [Finite α] {G : Graph α β} {V
       have := hinj h; simp [Fin.ext_iff] at this; omega
     have hnel : x i ≠ x ⟨k - 1, by omega⟩ := fun h => by
       have := hinj h; simp [Fin.ext_iff] at this; omega
-    change (if x i ∈ V₁ then _ else _) = _
+    dsimp only [z]
     rw [ite_eq_right (hxV₁ i), ite_eq_right hne0, ite_eq_right hnel, ite_eq_left ⟨i, rfl⟩]
 
 /-! ## The edges of an ear -/
@@ -1137,8 +1137,8 @@ theorem panelSupportExtensor_mem_span_ofNormals {G : Graph α β} {ends : β →
       {(PanelHingeFramework.ofNormals (k := 2) G ends
         (fun x => p x.1 x.2)).toBodyHinge.supportExtensor f} := by
   have h1 := hends f u w hf
-  change panelSupportExtensor (p u) (p w)
-    ∈ Submodule.span K {panelSupportExtensor (p (ends f).1) (p (ends f).2)}
+  simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+    PanelHingeFramework.ofNormals_ends]
   rcases hf.eq_and_eq_or_eq_and_eq h1 with ⟨h, h'⟩ | ⟨h, h'⟩
   · rw [h, h']
     exact Submodule.mem_span_singleton_self _

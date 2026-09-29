@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–7a landed; 42 of 49 one-commit tasks remain. **Next concrete task:** task 7b, B6c, the
-`change`/`show` sites in the ear files (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–7b landed; 41 of 49 one-commit tasks remain. **Next concrete task:** task 8, B5, the
+`Set`/`Finset` and cardinality-coercion sites (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 7b, B6c** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–7a landed, 42 remain. Nothing is mid-stream.
+**Next commit: task 8, B5** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–7b landed, 41 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–7a (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b). Outcome detail goes on the task's checklist line, not here, so
-this section stays the forward pointer.
+Landed so far, one line each under the checklist: tasks 1–7b (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a, B6b, B6c). Outcome detail goes on the task's checklist line, not here,
+so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -126,7 +126,8 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     (`Motive.lean`) and `hh0, hh1, hh2, one_smul` (`Engine.lean`) — `hloops`/`hnonloops`/`hh*` are
     freshly proved per site from a different set/term, so the callee would need them as hypotheses
     too.
-  - The `ite_eq_right`/`ite_eq_left` runs in `Ear.lean` and `ContractCurve.lean` go with task 7b.
+  - The `ite_eq_right`/`ite_eq_left` runs in `Ear.lean` and `ContractCurve.lean`: task 7b kept all
+    of them (local hypothesis rewrites; `ContractCurve.lean`'s already use `contractLimitMap_apply`).
     `this, certPt` (×6, `Chain.lean`) is task 5's, `hslot_*` is task 25's, and `hnu, hnv, hpu,
     hpv` is task 26's.
 - [x] **5. F1: the certificate-picture glue** (the `[open]` FRICTION entry *The
@@ -152,18 +153,16 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   `Graph.deficiencyMerged` folds back via `rw [← Def]`. Kept (reason: coe-defeq) — `Flat.lean`
   544, `SplitOff.lean` 330/548. `TACTICS-GOLF.md` § 27 extended with the plain-`def`/fold/coe-defeq
   shapes.
-- [ ] **7b. B6c: `change`/`show` in the ear files** (26 sites). `Ear.lean` 117, 164, 798, 801,
-  810, 845, 1109; `GenericEar.lean` 376, 563; `GenericTriangle.lean` 544, 649, 657, 663, 675;
-  `Orbit.lean` 516, 944, 953, 1082; `Short.lean` 562, 595, 898, 987, 994, 1269, 1355, 1362.
-  - Clusters: `change (if v ∈ V₁ then G.closedHubNbhd v else ∅) …`, ×5 (`GenericTriangle.lean`,
-    `GenericEar.lean`), and `Ear.lean`'s `change (if _ ∈ V₁ then _ else _)` ×4 with its
-    `ite_eq_right`/`ite_eq_left` `rw` runs (`Ear.lean` 123, 811, 846; `ContractCurve.lean` 541,
-    614): an `_of_mem`/`_of_not_mem` pair beside each piecewise definition.
-  - `change (fun j => cfg st (x 1, j)) = x₂`, ×4 (`Short.lean`, `Orbit.lean`).
-  - The `change _ ≤ … (Module.finrank K ↥(…))` reshapes of a rank chain, ×5 (`Short.lean` 987,
-    994, 1355, 1362; `Orbit.lean` 1082).
-
-  ⚠Z where a site is a ScrewSpace-carrier term (all five files are carrier-touching).
+- [x] **7b. B6c: `change`/`show` in the ear files** (26 sites; this commit). 16 fixed, 10 kept, no
+  new lemma. Fixed: the closedHubNbhd cluster (5) via `simp only [S]`; `Ear.lean`'s `z`
+  piecewise-def cluster (4) via `dsimp only [z]` — `simp only [z]` over-collapses a
+  self-comparison branch here and breaks the follow-up `rw` (`TACTICS-GOLF.md` § 27 extended);
+  `Ear.lean` 117/164/1140 via existing lemmas (`hingeConstraint`, `toBodyHinge_supportExtensor`
+  trio); the `pt`/`cfg` cluster (4) via `simp only [pt]`. Kept, reason fold — `GenericEar.lean`
+  376, `GenericTriangle.lean` 544, `Short.lean` 553, the rank-chain reshapes ×5; reason
+  let-defeq — `Orbit.lean` 516; reason coe-defeq — `Short.lean` 586. The `ite_eq_right`/
+  `ite_eq_left` runs task 4 deferred here (`Ear.lean` 123/811/846, `ContractCurve.lean` 541/614)
+  are all kept too, local hypothesis rewrites. `FRICTION.md`'s B6a correction gets a B6c addendum.
 - [ ] **8. B5: `Set` against `Finset`, and cardinality coercions.**
   - The `toFinset` / `ncard_eq_toFinset_card` sites, 24: `CoverageTheoremS.lean` 167–254 (17, the
     degree-sum count in `Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard` and its neighbour);
@@ -423,18 +422,13 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 7b, B6c.** The `change`/`show` sites in the ear files (26 sites;
-`Ear.lean`, `GenericEar.lean`, `GenericTriangle.lean`, `Orbit.lean`, `Short.lean`) — the four
-named clusters are an `_of_mem`/`_of_not_mem` pair beside each piecewise definition (the
-`ite`-unfold sites), a fix for the `(fun j => cfg st (x 1, j)) = x₂` shape, and screening the
-rank-chain reshapes. Per-site question is the same as tasks 6/7a's: is the `change`/`show`
-covering for a missing fused/unfold lemma, or a legitimate defeq-exposing reshape to keep? Try, in
-order: a bare `simp only [F]`/`simp only []` (task 6); a plain `rw [Def, …]`/`simp only [Def, …]`
-on the bare declaration name, or `rw [← Def]` to fold a raw expression back (task 7a) — before
-reaching for a new declaration. Verify any substitute by real edit + `lean_diagnostic_messages`,
-not the MCP's own goal display (unreliable for this — `TACTICS-GOLF.md` § 27, all three shapes and
-the coe-defeq keep criterion). ⚠Z, all five files are carrier-touching. Lean, no blueprint. Then
-continue in task order. Each task above names its files, sites and done criterion.
+**Next concrete commit: task 8, B5.** `Set` against `Finset`, and cardinality coercions: the
+`toFinset`/`ncard_eq_toFinset_card` sites (24, mostly `CoverageTheoremS.lean` 167–254's
+degree-sum count) and the `Fintype.card` sites other than the 35 routine `Fintype.card_fin`
+rewrites (12). At each site, decide whether a bridge (`Set.ncard_eq_toFinset_card'`,
+`Nat.card_coe_set_eq`, …) or the `Set` form is cleaner; for the degree-sum count, try the Matroid
+package's finsum form `Graph.handshake_degree_subtype` as a route with no `Finset`. Lean, no
+blueprint. Then continue in task order. Each task above names its files, sites and done criterion.
 
 ## Decisions made during this round
 

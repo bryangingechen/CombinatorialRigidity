@@ -2443,6 +2443,11 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   same pass — `simp only [Q]` alone would have unfolded `Q`, just not far enough for that call's other
   arguments to then match. **Lifted to:** TACTICS-GOLF § 27 (the general write-up, plus three named
   bridge lemmas found along the way that remove the need for either form of unfold).
+- **Correction (Phase 40-cleanup B6c, 2026-09-29):** `simp only [X]` itself can go too far when `X`'s
+  body is a piecewise chain comparing the bound argument to itself (`if w = c₁ then … else …`
+  instantiated at `w := c₁`) — its reflexivity simp-proc silently closes that condition to `True`,
+  which then breaks a follow-up `rw […, ite_eq_left rfl]` expecting the literal `if ?a = ?a then …`
+  shape. `dsimp only [X]` unfolds `X` without that extra collapse. **Lifted to:** TACTICS-GOLF § 27.
 - **Status:** resolved (the general shape now has a documented, verified fix; TACTICS-GOLF § 27).
 
 ### [idiom] statement-level `Equiv.swap`/`let` opacity — inline the term in the statement, re-`set` in the proof

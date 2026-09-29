@@ -646,7 +646,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
   set S : α → Set α := fun v => if v ∈ V₁ then G.closedHubNbhd v else ∅ with hSdef
   have hSV : ∀ k, S k ⊆ V(G.induce V₁) := by
     intro v
-    change (if v ∈ V₁ then G.closedHubNbhd v else ∅) ⊆ _
+    simp only [S]
     rw [hVH]
     split_ifs with hv
     · exact hCsub v hv
@@ -654,13 +654,13 @@ theorem hasGenericPencilRealization_of_closedEar_two
   have hfreeS : ∀ k, ∀ w ∈ S k, ¬ (G.induce V₁).PencilHub w →
       ((G.induce V₁).closedNbhd w).ncard = 3 := by
     intro v w hw hwH
-    change w ∈ (if v ∈ V₁ then G.closedHubNbhd v else ∅) at hw
+    simp only [S] at hw
     split_ifs at hw with hv
     · exact hfree w (hCsub v hv hw) hw.1 hwH
     · exact absurd hw (Set.notMem_empty w)
   have hSLI : ∀ k, LinearIndepOn K normal (S k) := by
     intro v
-    change LinearIndepOn K normal (if v ∈ V₁ then G.closedHubNbhd v else ∅)
+    simp only [S]
     split_ifs with hv
     · exact hndG.2.2.1 v (hV₁ hv)
     · exact linearIndepOn_empty K _
@@ -672,7 +672,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
   have hprom : ∀ v ∈ V₁, LinearIndepOn K n' (G.closedHubNbhd v) := by
     intro v hv
     have := hS' v
-    change LinearIndepOn K n' (if v ∈ V₁ then G.closedHubNbhd v else ∅) at this
+    simp only [S] at this
     rwa [ite_eq_left hv] at this
   exact hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization hS hcover hinj
     hxV₁ hc hpath hsep hchub hnd' hrank' hprom
