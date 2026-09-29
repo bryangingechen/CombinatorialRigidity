@@ -63,7 +63,7 @@ two fields `PencilSeed.ofCoord` reconstructs. The seed's independent `fillNbr` f
 plays no role in the engine's `pencilChartPoint`/`hubSlotNormal` machinery, and
 `PencilSeed.ofCoord (seed.toCoord)` re-derives `fillNbr := fillHub` (the harmless coupling
 `PencilSeed.ofCoord` imposes). -/
-noncomputable def PencilSeed.toCoord (seed : PencilSeed K α) (p : α × Fin 4 × Fin 4) : K :=
+def PencilSeed.toCoord (seed : PencilSeed K α) (p : α × Fin 4 × Fin 4) : K :=
   (Fin.cons (seed.hubNormal p.1 p.2.2) (fun j => seed.fillHub p.1 j p.2.2) : Fin 4 → K) p.2.1
 
 /-- **The flattening reproduces the seed's hub-normal field** (Phase 39 W5-L5 L5-cut-v-d):
@@ -172,7 +172,6 @@ theorem exists_fillNbr_pencilChartWF_of_standing {G : Graph α β} {seed : Penci
       LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v) {i | (nbrSel v i).isSome}) :
     ∃ seed' : PencilSeed K α, seed'.hubNormal = seed.hubNormal ∧ seed'.fillHub = seed.fillHub ∧
       PencilChartWF G seed' hubSel nbrSel := by
-  classical
   have hn : (3 : ℕ) ≤ Module.finrank K (Fin 4 → K) := by
     rw [Module.finrank_fin_fun]; norm_num
   have key : ∀ v, ∃ f : Fin 3 → Fin 4 → K, ¬ G.PencilHub v →
@@ -304,7 +303,6 @@ theorem linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint {G : Graph α β} 
     (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
     (hLI : LinearIndepOn K (pencilChartPoint seed hubSel) (G.closedNbhd v)) :
     LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v) {i | (nbrSel v i).isSome} := by
-  classical
   have hex : ∀ i : ↥{i | (nbrSel v i).isSome}, ∃ w, nbrSel v ↑i = some w :=
     fun i => Option.isSome_iff_exists.mp i.2
   choose wsel hwsel using hex
@@ -620,7 +618,6 @@ theorem finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilR
     (Module.finrank K (Submodule.span K
         (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
-  classical
   have : Fintype s := Fintype.ofFinite s
   -- Lower bound: the independent `pencilRow` subfamily lands in the chart's rigidity-row span.
   have hsub : Submodule.span K
@@ -738,7 +735,6 @@ theorem exists_independent_pencilRow_subfamily_at_toCoord_of_reseed
       (∀ i ∈ s, (i : β × _ × _).1 ∈ E(H)) ∧ Nat.card s = N ∧
       LinearIndependent K
         (fun i : s => pencilRow hubSel H.endsOf seed₁.toCoord (i : β × _ × _)) := by
-  classical
   have hSuppNe : ∀ e, F₁.supportExtensor e ≠ 0 := h₁.1.1.2.2.1
   -- The chart at the flattening coincides with the chart at `seed₁` (points coincide).
   have hcongr : pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H
@@ -1197,7 +1193,6 @@ theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Infinite K
       LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
         (if G.Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅)) :
     PencilNondegFeasible K G := by
-  classical
   obtain ⟨q, hq⟩ := exists_common_seed_linearIndepOn_pencilChartPoint (K := K) hubSel
     (fun i : α ⊕ (α × α) => match i with
       | Sum.inl v => if G.PencilHub v then ({v} : Set α) else G.closedNbhd v
@@ -1264,7 +1259,6 @@ theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree
     (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
       G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
     PencilNondegFeasible K G := by
-  classical
   have : G.Loopless := ‹G.Simple›.toLoopless
   choose hubSel hHubSel using
     fun v => exists_isFin3SelectorOf_of_ncard_le_three (Set.toFinite _) (hcard v)
@@ -1306,7 +1300,6 @@ theorem pencilNondegFeasible_of_le_of_triangleFree
     (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
       G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
     H.Simple ∧ PencilNondegFeasible K H := by
-  classical
   have hHSimple : H.Simple := hSimple.mono hle
   have : H.Simple := hHSimple
   obtain ⟨F, normal, point, hnd⟩ := hfeas

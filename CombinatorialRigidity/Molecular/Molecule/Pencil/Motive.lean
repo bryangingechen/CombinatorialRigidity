@@ -452,7 +452,6 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
     [Finite α] {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) {v : α} (hv : v ∈ V(G)) :
     (G.closedHubNbhd v).ncard ≤ 3 := by
-  classical
   have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
   have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2.1 v hv
   set Vperp : Submodule K (Fin 4 → K) :=
@@ -493,7 +492,6 @@ gives the `+ 1`. -/
 theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β} {v : α}
     (hv : ¬ G.PencilHub v) :
     (G.closedNbhd v).ncard ≤ 3 := by
-  classical
   have hdeg : G.degree v ≤ 2 := by
     by_contra hcon
     push Not at hcon
@@ -531,7 +529,6 @@ the `fin_cases` link checks follow `CycleData.ofCardThree`'s template
 theorem _root_.Graph.ncard_closedNbhd_inter_le_two_of_girthGE [Finite α] {G : Graph α β}
     (hg : G.GirthGE 5) {v h : α} (hvh : v ≠ h) :
     (G.closedNbhd v ∩ G.closedNbhd h).ncard ≤ 2 := by
-  classical
   by_contra hcon
   push Not at hcon
   by_cases hadj : ∃ e, G.IsLink e h v
@@ -676,7 +673,6 @@ theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearInd
     Module.finrank K
         (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
           : Submodule K (Fin 4 → K)) = 1 := by
-  classical
   set b := Pi.basisFun K (Fin 4) with hb
   set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range n) with hS
   have hQ : (⨅ j : Fin 3, LinearMap.ker (b.toDual.flip (n j)))
@@ -1060,7 +1056,6 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) :
     (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 := by
-  classical
   set Gp := G.induce (V₁ ∪ {w₀}) with hGpdef
   have hne : ({w₀} : Set α).Nonempty := ⟨w₀, rfl⟩
   have hssub : ({w₀} : Set α) ⊂ V(Gp) :=

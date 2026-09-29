@@ -193,7 +193,6 @@ theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
     ∃ fill : Fin 3 → Fin 4 → K, (∀ i, hubSlotOf f sel fill i ∈ P) ∧
       LinearIndependent K
         ![hubSlotOf f sel fill 0, hubSlotOf f sel fill 1, hubSlotOf f sel fill 2] := by
-  classical
   have h₀ : ∀ i, hubSlotOf f sel 0 i ∈ P := by
     intro i
     unfold hubSlotOf
@@ -282,7 +281,6 @@ theorem exists_fill_linearIndependent_of_selector {f : α → Fin 4 → K} {s : 
 /-- A per-body nonzero rescaling keeps a family independent on a set. -/
 theorem LinearIndepOn.of_smul_eq {f g : α → Fin 4 → K} {s : Set α} (hLI : LinearIndepOn K f s)
     (hsc : ∀ w ∈ s, ∃ c : K, c ≠ 0 ∧ g w = c • f w) : LinearIndepOn K g s := by
-  classical
   choose! c hc0 hc using hsc
   have hLIs : LinearIndependent K (fun w : ↥s => f ↑w) := hLI
   have h2 := hLIs.units_smul (fun w : ↥s => Units.mk0 (c ↑w) (hc0 ↑w w.2))
@@ -304,7 +302,6 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
       (∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed hubSel v = c • point v) ∧
       (∀ v ∈ V(G), ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
         pencilChartNormal seed hubSel nbrSel G v = d • normal v) := by
-  classical
   -- the point side, body by body
   have hub : ∀ v, ∃ fill : Fin 3 → Fin 4 → K,
       LinearIndependent K ![hubSlotOf normal (hubSel v) fill 0, hubSlotOf normal (hubSel v) fill 1,

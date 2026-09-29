@@ -118,7 +118,6 @@ theorem hasGenericPencilRealization_of_splitOff_of_safe
     (hfeas : PencilNondegFeasible K G)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
     HasGenericPencilRealization K 3 (G.splitOff v a b e₀) := by
-  classical
   have : Inhabited α := Classical.inhabited_of_nonempty inferInstance
   have hab : a ≠ b := fun h => heab (Graph.Simple.eq_of_isLink hG_ea (h ▸ hG_eb))
   have hexa : ∃ eₐ, G.IsLink eₐ v a := ⟨eₐ, hG_ea⟩
@@ -481,7 +480,6 @@ theorem pencil_conjecture_of_hcontract_hK_hbareSplit [Inhabited α] [Finite α] 
       (∃ v ∈ V(G'), G'.degree v = 2) → 3 ≤ V(G').ncard → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G := by
-  classical
   have hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
       (∃ v ∈ V(G), G.degree v = 2) →

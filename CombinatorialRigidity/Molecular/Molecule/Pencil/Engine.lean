@@ -86,7 +86,7 @@ treating `PencilSeed`'s hub-normal and `fillHub` fields as one coordinate space 
 `fillHub` from the same coordinates — a harmless coupling, since no consumer in this section reads
 `fillNbr` (the L3 rows-polynomial machinery is entirely about `pencilChartPoint`, never
 `pencilChartNormal`'s non-hub branch). -/
-noncomputable def PencilSeed.ofCoord (q : α × Fin 4 × Fin 4 → K) : PencilSeed K α where
+def PencilSeed.ofCoord (q : α × Fin 4 × Fin 4 → K) : PencilSeed K α where
   hubNormal v i := q (v, 0, i)
   fillHub v j i := q (v, j.succ, i)
   fillNbr v j i := q (v, j.succ, i)
@@ -454,7 +454,6 @@ nonzero elements in the integral domain `MvPolynomial σ K`), so it has a non-ro
 theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*} [Finite ι]
     (P : ι → MvPolynomial σ K) (h : ∀ i, ∃ q : σ → K, MvPolynomial.eval q (P i) ≠ 0) :
     ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
-  classical
   have : Fintype ι := Fintype.ofFinite ι
   have hPne : ∀ i, P i ≠ 0 := fun i => by
     obtain ⟨q, hq⟩ := h i
@@ -546,7 +545,6 @@ theorem exists_smul_cross₃_eq_of_linearIndependent {n₁ n₂ n₃ q : Fin 4 �
     (hLI : LinearIndependent K ![n₁, n₂, n₃]) (hq : q ≠ 0)
     (hq1 : q ⬝ᵥ n₁ = 0) (hq2 : q ⬝ᵥ n₂ = 0) (hq3 : q ⬝ᵥ n₃ = 0) :
     ∃ c : K, c ≠ 0 ∧ cross₃ n₁ n₂ n₃ = c • q := by
-  classical
   set perp : Submodule K (Fin 4 → K) :=
     ⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂, n₃] j)) with hperp
   have hmem : ∀ x : Fin 4 → K, x ∈ perp ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0 ∧ x ⬝ᵥ n₃ = 0 := by
@@ -666,7 +664,6 @@ protect. -/
 theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
     (hn : n ≠ 0) (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
     ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] ∧ cross₃ n y z = q := by
-  classical
   set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
   have hmemV : ∀ x : Fin 4 → K, x ∈ V ↔ x ⬝ᵥ q = 0 := by
     intro x
@@ -715,7 +712,6 @@ first slot and delegate to the arity-`1` fact above. Feeds the re-seeding lemma 
 with no hub-neighbours (`closedHubNbhd v = ∅`). -/
 theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
     ∃ x y z : Fin 4 → K, LinearIndependent K ![x, y, z] ∧ cross₃ x y z = q := by
-  classical
   set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
   have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
   obtain ⟨x, hxne⟩ := Module.finrank_pos_iff_exists_ne_zero.1 (show 0 < Module.finrank K V by omega)
@@ -868,7 +864,7 @@ shape the per-vertex re-seeding existence lemma below produces, before the `Clas
 global assembly packages it into an actual seed
 (`hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v i = hubSlotOf normal (hubSel v) (fillHub v) i`
 by `rfl`, for any `fillNbr`). -/
-noncomputable def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Option α)
+def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Option α)
     (fill : Fin 3 → Fin 4 → K) (i : Fin 3) : Fin 4 → K :=
   match sel i with
   | some w => normal w
@@ -891,7 +887,6 @@ theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
       (v ∈ V(G) → ∃ c : K, c ≠ 0 ∧
         cross₃ (hubSlotOf normal sel fill 0) (hubSlotOf normal sel fill 1)
           (hubSlotOf normal sel fill 2) = c • point v) := by
-  classical
   by_cases hv : v ∈ V(G)
   · have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
     have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2.1 v hv
@@ -1142,7 +1137,6 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
       (v ∈ V(G) → ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
         cross₃ (hubSlotOf pt sel fill 0) (hubSlotOf pt sel fill 1) (hubSlotOf pt sel fill 2)
           = d • normal v) := by
-  classical
   by_cases hhub : G.PencilHub v
   · exact ⟨fun _ => none, fun _ => 0, fun hcon => absurd hhub hcon, fun hcon => absurd hhub hcon,
       fun _ hcon => absurd hhub hcon⟩

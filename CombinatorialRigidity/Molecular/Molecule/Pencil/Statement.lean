@@ -168,7 +168,6 @@ theorem mem_span_of_dotProduct_perp_pair {v p' : Fin 2 → Fin 4 → K}
     (hv : LinearIndependent K v) (hp' : LinearIndependent K p')
     (hp'v : ∀ i j, p' i ⬝ᵥ v j = 0) {q : Fin 4 → K} (hqv : ∀ j, q ⬝ᵥ v j = 0) :
     q ∈ Submodule.span K (Set.range p') := by
-  classical
   set perp : Submodule K (Fin 4 → K) :=
     ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (v j)) with hperp_def
   have hmem : ∀ x : Fin 4 → K, x ∈ perp ↔ ∀ j, x ⬝ᵥ v j = 0 := by
@@ -331,7 +330,6 @@ theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
       ExtensorInPanel Ce n ∧ ExtensorInPanel Cf n ∧
       ExtensorThroughPoint Ce q₀ ∧ ExtensorThroughPoint Cf q₀ ∧
       LinearIndependent K ![Ce, Cf] := by
-  classical
   obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
   refine ⟨v 0,
     ScrewSpace.mk (extensor ![v 0, v 1]) (extensor_mem_exteriorPower _),
@@ -389,7 +387,6 @@ theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 
       ExtensorInPanel Ce n ∧ ExtensorInPanel Cf n ∧
       ExtensorThroughPoint Ce q ∧ ExtensorThroughPoint Cf q ∧
       LinearIndependent K ![Ce, Cf] := by
-  classical
   -- The panel `W = n^⊥` as the kernel of `x ↦ x ⬝ᵥ n`.
   set W : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n)
     with hW
@@ -511,7 +508,6 @@ panel `n^⊥` in which a body's coplanar hinges live. -/
 theorem finrank_toDualPerp_single_eq {n : Fin 4 → K} (hn : n ≠ 0) :
     Module.finrank K
         (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n) : Submodule K (Fin 4 → K)) = 3 := by
-  classical
   set b := Pi.basisFun K (Fin 4) with hb
   set S : Submodule K (Fin 4 → K) := Submodule.span K {n} with hS
   have hQ : LinearMap.ker (b.toDual.flip n)
@@ -553,7 +549,6 @@ theorem exists_concurrency_point_of_extensorInPanel_pair
     (h₁ : ExtensorInPanel C₁ n) (h₂ : ExtensorInPanel C₂ n) :
     ∃ q : Fin 4 → K, q ≠ 0 ∧ q ⬝ᵥ n = 0 ∧
       ExtensorThroughPoint C₁ q ∧ ExtensorThroughPoint C₂ q := by
-  classical
   obtain ⟨p₁, hp₁val, hp₁perp⟩ := h₁
   obtain ⟨p₂, hp₂val, hp₂perp⟩ := h₂
   -- Each hinge's spanning pair is independent (its extensor is nonzero).
@@ -632,7 +627,6 @@ theorem exists_pencilPanelRealization_cycle
     {G : Graph α β} (cy : G.CycleData) (hm4 : cy.m ≤ 4) :
     ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
       HasPencilPanelRealization G F normal point ∧ F.IsInfinitesimallyRigidOn V(G) := by
-  classical
   have hm3 : 3 ≤ cy.m := cy.hm
   have : NeZero cy.m := ⟨by omega⟩
   -- E5a: the cyclic shared-normal family (`3 ≤ cy.m ≤ 4 = k + 2` at `k = 2`).
@@ -816,7 +810,6 @@ theorem exists_extensor_two_pencils {n_u n_v pt_u pt_v : Fin 4 → K}
     ∃ C : ScrewSpace K 2, C ≠ 0 ∧
       ExtensorInPanel C n_u ∧ ExtensorInPanel C n_v ∧
       ExtensorThroughPoint C pt_u ∧ ExtensorThroughPoint C pt_v := by
-  classical
   -- Any independent pair `![a, b]` lying in both panels, with `pt_u` and `pt_v` in its span, gives
   -- the extension hinge `C = extensor ![a, b]`.
   have aux : ∀ a b : Fin 4 → K, LinearIndependent K ![a, b] →

@@ -72,7 +72,7 @@ with rows `x, y, z, w`) — i.e. `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]` for
 /-- The defining linear functional of `cross₃`: `w ↦ det[x, y, z, w]`, built via
 `Matrix.updateRow` at a fixed base matrix so its linearity in `w` is immediate from
 `Matrix.det_updateRow_add`/`_smul`. Private plumbing; `cross₃` is the public interface. -/
-private noncomputable def cross₃Functional (x y z : Fin 4 → K) : (Fin 4 → K) →ₗ[K] K where
+private def cross₃Functional (x y z : Fin 4 → K) : (Fin 4 → K) →ₗ[K] K where
   toFun w := Matrix.det ((Matrix.of ![x, y, z, (0 : Fin 4 → K)]).updateRow 3 w)
   map_add' w1 w2 := Matrix.det_updateRow_add _ 3 w1 w2
   map_smul' c w := Matrix.det_updateRow_smul _ 3 c w

@@ -1187,7 +1187,6 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_of_idx
     (hinj : ∀ s ∈ S, Set.InjOn idx (G.closedHubNbhd s)) :
     ∃ q : α × Fin 4 × Fin 4 → K,
       LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) S := by
-  classical
   -- Per body in `S`, pull out the injective avoiding-`dtgt s` slot extension.
   have hex : ∀ s : α, ∃ σ : Fin 3 → Fin 4, s ∈ S →
       Function.Injective σ ∧ (∀ i, σ i ≠ dtgt s) ∧
@@ -1580,7 +1579,6 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_adjacentPair
     ∃ q : α × Fin 4 × Fin 4 → K,
       LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
         (if G.Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅) := by
-  classical
   obtain ⟨u, v⟩ := p
   by_cases hadj : G.Adj u v
   · rw [ite_eq_left hadj]
@@ -1674,7 +1672,6 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_perBody
     ∃ q : α × Fin 4 × Fin 4 → K,
       LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
         (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := by
-  classical
   by_cases hv : G.PencilHub v
   · rw [ite_eq_left hv]
     exact exists_coord_linearIndepOn_pencilChartPoint_hubSingleton hcard hubSel hHubSel v

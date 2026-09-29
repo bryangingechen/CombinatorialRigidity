@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–8 landed; 40 of 49 one-commit tasks remain. **Next concrete task:** task 9, B1a, dead
-`classical` and unforced `noncomputable` in the Phase 39 files (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–9 landed; 39 of 49 one-commit tasks remain. **Next concrete task:** task 10, B1b, dead
+`classical` and unforced `noncomputable` in `MainComponent/` part 1 (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 9, B1a** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–8 landed, 40 remain. Nothing is mid-stream.
+**Next commit: task 10, B1b** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–9 landed, 39 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–8 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5). Outcome detail goes on the task's checklist line, not
-here, so this section stays the forward pointer.
+Landed so far, one line each under the checklist: tasks 1–9 (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a). Outcome detail goes on the task's checklist line,
+not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -175,9 +175,14 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     the batch's files, build, and restore exactly the ones whose removal breaks the build. Record
     the removed and kept counts per file. A proof-top `classical` that is needed is the
     project-standard bridge (ROADMAP *Engineering conventions*, Decidability), not a smell.
-  - [ ] **9. B1a, the Phase 39 files** (15 files; 71 `classical` / 21 `noncomputable`). `Arms` 9,
-    `Base` 2, `Engine` 7/11, `Escape` 5, `Habitat` 3, `Motive` 5, `Pair` 5, `Pair2` 5, `Reseed` 4,
-    `Statement` 8, `Steer` 9/1, `Witness` 8, `X0` 1, `Chart` 0/7, `TwoCut` 0/2.
+  - [x] **9. B1a, the Phase 39 files** (15 files; 71 `classical` / 21 `noncomputable`; this
+    commit). 25 `classical` kept as the project-standard bridge, 46 deleted as dead: `Arms` 3/9,
+    `Base` 2/2, `Engine` 1/7, `Escape` 3/5, `Habitat` 0/3, `Motive` 0/5, `Pair` 4/5, `Pair2` 2/5,
+    `Reseed` 1/4, `Statement` 1/8, `Steer` 2/9, `Witness` 5/8, `X0` 1/1 (kept/total; `Chart` and
+    `TwoCut` have none). 17 `noncomputable` kept, 4 deleted: `Chart` 6/7, `Engine` 9/11, `Steer`
+    0/1, `TwoCut` 2/2. Every restore was forced by an actual whole-project build break (a missing
+    `Decidable`/`Fintype` instance or a genuine noncomputable dependency); no downstream file
+    outside the batch needed a restore. Per-site detail in the commit message.
   - [ ] **10. B1b, `MainComponent/` part 1** (59 / 33). `Carrier` 13/7, `Configuration` 3/4,
     `Flat` 5/11, `Bridge` 3, `Cut` 8/2, `Contract` 3, `ContractCurve` 23/9, `ContractAdditive` 1.
   - [ ] **11. B1c, `MainComponent/` part 2** (50 / 13). `Chain` 4, `Ear` 4, `EarGen` 1/7, `Lines` 2/3,
@@ -429,12 +434,14 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 9, B1a.** Dead `classical` and unforced `noncomputable` in the 15
-Phase 39 files (71 `classical` / 21 `noncomputable`; per-file counts in the checklist). Method
-(shared by tasks 9–12): delete every `classical` line and every `noncomputable` on a `def` in the
-batch's files, build, and restore exactly the ones whose removal breaks the build; record the
-removed/kept counts per file. Lean, no blueprint. Then continue in task order. Each task above
-names its files, sites and done criterion.
+**Next concrete commit: task 10, B1b.** Dead `classical` and unforced `noncomputable` in
+`MainComponent/` part 1 (59 `classical` / 33 `noncomputable`; per-file counts in the checklist:
+`Carrier` 13/7, `Configuration` 3/4, `Flat` 5/11, `Bridge` 3, `Cut` 8/2, `Contract` 3,
+`ContractCurve` 23/9, `ContractAdditive` 1). Same method as task 9 (just landed): delete every
+`classical` line and every `noncomputable` on a `def` in the batch's files, whole-project build,
+restore exactly the ones whose removal breaks the build (a break anywhere, including outside the
+batch, is that site's restore signal — task 9 found every break stayed inside its own 15 files),
+record removed/kept counts per file. Lean, no blueprint. Then continue in task order.
 
 ## Decisions made during this round
 

@@ -94,7 +94,6 @@ theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
     (hsafe : ¬ G.PencilHub a ∨ ¬ G.PencilHub b)
     (hcard : ∀ w, (G.closedHubNbhd w).ncard ≤ 3) :
     ∀ w, ((G.splitOff v a b e₀).closedHubNbhd w).ncard ≤ 3 := by
-  classical
   obtain ⟨eₐ, hea⟩ := heₐ
   obtain ⟨e_b, heb⟩ := e_b
   set G' := G.splitOff v a b e₀ with hG'
@@ -215,7 +214,6 @@ theorem c4_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {p q r
     (hpr_nadj : ∀ e, ¬ G.IsLink e p r) (hqs_nadj : ∀ e, ¬ G.IsLink e q s)
     (hcard : 5 ≤ V(G).ncard) :
     ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
-  classical
   have hvtx_inj : Function.Injective (![p, q, r, s] : Fin 4 → α) := by
     intro i j hij
     fin_cases i <;> fin_cases j <;> simp_all
@@ -306,7 +304,6 @@ theorem splitOff_triangleFree_of_noRigid
     ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
       (G.splitOff v a b e₀).IsLink e₁ x y → (G.splitOff v a b e₀).IsLink e₂ y z →
       (G.splitOff v a b e₀).IsLink e₃ z x → False := by
-  classical
   have : G.Loopless := ‹G.Simple›.toLoopless
   obtain ⟨eₐ, hea⟩ := heₐ
   obtain ⟨e_b, heb⟩ := e_b

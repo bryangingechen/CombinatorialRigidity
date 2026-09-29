@@ -716,7 +716,6 @@ theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
     screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
       ≤ (Module.finrank K (Submodule.span K
         (⟨G.induce V₁, extF⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ) := by
-  classical
   obtain ⟨hreal, -, -, -⟩ := hnd
   obtain ⟨⟨hFg, -, hSnz, -⟩, -, -, -⟩ := hreal
   have hscrew1 : 1 ≤ screwDim 2 := by decide

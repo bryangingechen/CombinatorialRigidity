@@ -988,7 +988,6 @@ theorem hasGenericPencilRealization_pendant_deg3_of_IH [Finite α] [Finite β] [
     (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg : G.degree u_c = 3)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     HasGenericPencilRealization K n G := by
-  classical
   have := hSimple
   -- ── Extract `u_c`'s two `V₁`-links `e₁ : u_c–w₁`, `e₂ : u_c–w₂` from `G.degree u_c = 3`. ──────
   have hNcard : N(G, u_c).ncard = 3 := by
@@ -1079,7 +1078,6 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
       (fun G' hle' hne' hlt' => (hIH G' hne' hlt').2.1 (hSimple.mono hle')),
     hasPencilRealization_of_not_twoEdgeConnected hD hn hntec
       (fun G' hne' hlt' => (hIH G' hne' hlt').2.2)⟩
-  classical
   have := hSimple.toLoopless
   simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
   obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
@@ -1244,7 +1242,6 @@ theorem pencil_conjecture_of_arms_pair [Nonempty α] [Finite α] [Finite β] [De
       PencilPair K 3 G)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G := by
-  classical
   -- Numerics for `n = 3`, `k = 2`: `bodyBarDim 3 = 6 = screwDim 2` (as W3-L7).
   have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
   have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by omega

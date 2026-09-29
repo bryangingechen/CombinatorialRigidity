@@ -258,7 +258,6 @@ matrix `A = toMatrix' g` as `toLinearEquiv' ((A⁻¹)ᵀ)`. This is the `≃ₗ`
 injectivity. -/
 theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K] (Fin n → K)) :
     ∃ h : (Fin n → K) ≃ₗ[K] (Fin n → K), ∀ x y : Fin n → K, g x ⬝ᵥ h y = x ⬝ᵥ y := by
-  classical
   set A : Matrix (Fin n) (Fin n) K :=
     LinearMap.toMatrix' (g : (Fin n → K) →ₗ[K] (Fin n → K)) with hA
   have hrinv : A * LinearMap.toMatrix' (g.symm : (Fin n → K) →ₗ[K] (Fin n → K)) = 1 := by
@@ -282,7 +281,6 @@ kernel of a single functional on a `4`-dimensional space), so it is not containe
 `span {p}`; any `w ∈ m^⊥ \ span {p}` works. -/
 theorem exists_perp_linearIndependent (m p : Fin 4 → K) (hp : p ≠ 0) :
     ∃ w : Fin 4 → K, w ⬝ᵥ m = 0 ∧ LinearIndependent K ![w, p] := by
-  classical
   set φ : (Fin 4 → K) →ₗ[K] K := ∑ j, m j • (LinearMap.proj j) with hφ
   have hφa : ∀ x : Fin 4 → K, φ x = m ⬝ᵥ x := fun x => by simp [hφ, dotProduct]
   have hrk : 3 ≤ Module.finrank K (LinearMap.ker φ) := by
@@ -327,7 +325,6 @@ theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 �
       (∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y) ∧
       pt₁u ⬝ᵥ h n₂v = 0 ∧ (g pt₂v) ⬝ᵥ n₁u = 0 ∧
       LinearIndependent K ![pt₁u, g pt₂v] := by
-  classical
   obtain ⟨a, hanu, hLIa⟩ := exists_perp_linearIndependent n₁u pt₁u h1
   obtain ⟨b, hbnv, hLIb⟩ := exists_perp_linearIndependent n₂v pt₂v h2
   obtain ⟨g₁, hg₁0, hg₁1⟩ := exists_linearEquiv_basisFun_pair (k := 2) ![b, pt₂v] hLIb
@@ -489,7 +486,6 @@ theorem exists_reposition_cross_incidences_avoiding
       n₁u ∉ Submodule.span K {h t₁, h t₂} ∧
       g pt₂v ∉ Submodule.span K {q₁, q₂} ∧
       pt₁u ∉ Submodule.span K {g w₁, g w₂} := by
-  classical
   set ker₁ : (Fin 4 → K) → Submodule K (Fin 4 → K) :=
     fun t => LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) with hker₁
   have hker_mem : ∀ t z : Fin 4 → K, z ∈ ker₁ t ↔ z ⬝ᵥ t = 0 := by
@@ -714,7 +710,6 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {k n : ℕ}
         ≤ (Module.finrank K S₂ : ℤ)) :
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
-  classical
   have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
       u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
     intro e u v hl hnotcut
@@ -1477,7 +1472,6 @@ theorem pencil_conjecture_of_arms [Nonempty α] [Finite α] [Finite β] [Decidab
     ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
       HasPencilPanelRealization G F normal point ∧
       F.RankHypothesis (G.deficiency 3) := by
-  classical
   -- Numerics for `n = 3`, `k = 2`: `bodyBarDim 3 = 6 = screwDim 2`.
   have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
   have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by omega
