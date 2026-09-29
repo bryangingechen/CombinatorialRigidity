@@ -954,8 +954,8 @@ discharge point.
   40's close, in Phase 40's chapter. *Rerouted at 40n's open (2026-09-28):*
   `thm:pencil-x0-generic-attains`' generic half no longer intersects fibres of
   `X₀` (refuted at two hubs with three common neighbours); it runs inside the
-  pencil reduction's induction (route B, (MC-183)–(MC-187)), which this
-  entry's account covers at the close.
+  pencil reduction's induction (route B, (MC-183)–(MC-189)), which this
+  entry's account covers at the close; 40n landed its base.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
   [pending — held; handed to Phase 40 at the Phase-39 close,
   `notes/Phase40-design.md` §7] **(c)** the two kernel hypotheses are held as the fallback
@@ -1312,6 +1312,32 @@ MOTIVES. The ledger is now **2 pending / 47 done** (of 49).
   theorem's other cases and need no step of their own (`rem:pencil-x0-theta` keeps (MC-139)'s
   covering as a second one). Pointer: `notes/Phase40m.md`; `notes/Phase40-design.md` §3 COVERAGE
   (D4).
+
+### `main-component.tex` — Phase 40n (MOTIVES-DIST+BASE: the distinct statement, and the generic realization without a planar-rigid set)
+
+**One new entry — judged at the sub-phase close (2026-09-28).** The source is the project's own
+informal proof (`notes/pencil/workbook/K-main.md`, (MC-12)–(MC-14), and `K-main-MC19.md`, route B,
+(MC-183)–(MC-189)); the criterion transfers as in the `pencil.tex` section. The entry below is
+written in place in the three node proofs. The rest landed as scoped: the distinct statement is
+two lines over the covering theorem, feasibility's hub bounds and the three-body case are landed
+Phase-39 facts restated, and the two-ear graph is a type change (the new body and edges in larger
+types). The two-hubs obstruction and route B, which move the generic statement inside the pencil
+reduction's induction, belong to the Phase-39 entry `thm:pencil-conditional-realization-main-component`
+above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 48 done** (of 50).
+
+- **`thm:pencil-x0-base-generic` /
+  `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`, with
+  `lem:pencil-x0-planes-separate` and `lem:pencil-x0-conjunct-three`** — [done (the three nodes'
+  proofs, at 40n's B1–B3 and close)] **(b)** the informal base ((MC-14), informal modulo
+  Jackson–Jordán in characteristic zero) reads nondegeneracy off (MC-12)'s conditions on the hub
+  pairs, and gets each from (MC-13): an isomorphism of `G_e`'s lifting space with the equal-planes
+  heights at pictures with the new body off a line, and the exact value of `def₂(G_e)`. **Stable
+  insight:** an injection and an inequality are enough, at every pair of distinct bodies at once.
+  The equal-planes heights extend to `G_e` at any picture of the new body; at a graph with no
+  planar-rigid set the partition case analysis gives `def₂(G_e) ≤ def₂(G) − 1`; Jackson–Jordán's
+  equality at both graphs, over every infinite field, then separates the two planes off one
+  polynomial, the new body's picture fixed at a non-root. (MC-12)'s sufficient half needs neither the standing hypotheses nor
+  feasibility ((MC-189)). Pointer: `notes/Phase40n.md`; `notes/Phase40-design.md` §3 MOTIVES.
 
 ## Retroactive coverage
 

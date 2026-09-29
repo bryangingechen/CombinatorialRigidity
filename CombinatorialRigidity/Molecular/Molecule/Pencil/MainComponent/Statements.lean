@@ -21,7 +21,7 @@ MOTIVES-REDUCE+CLOSE).
 
 * `x0Dist` — the distinct main-component statement.
 
-See `notes/Phase40n.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-183)–(MC-187)), and
+See `notes/Phase40n.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-183)–(MC-189)), and
 `blueprint/src/chapter/main-component.tex` (`sec:main-component-statements`).
 -/
 

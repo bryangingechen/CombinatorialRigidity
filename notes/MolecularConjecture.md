@@ -803,10 +803,11 @@ cycles, cut vertices and bridges; Theorem S and the covering theorem), closed as
 (2026-09-28, `notes/Phase40m.md`), built from a compiler-checked recon whose complete sorry-free
 spikes needed no new mathematics, so COVERAGE is done; MOTIVES (the two main-component
 statements), Phase 40's last layer, runs as three sub-phases, and its first, DIST+BASE (the distinct
-statement, and the generic realization at graphs with no planar-rigid set), opened as sub-phase 40n
-(2026-09-28, `notes/Phase40n.md`) from a compiler-checked recon that refuted the planned fibre route
-and proves the generic statement inside the pencil reduction's own induction, its new claims
-awaiting a second read. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+statement, and the generic realization at graphs with no planar-rigid set), closed as sub-phase 40n
+(2026-09-28, `notes/Phase40n.md`), built from a compiler-checked recon that refuted the planned fibre
+route and proves the generic statement inside the pencil reduction's own induction, its new claims
+second-read with no gap; the second, EARS (the steering and the two ear steps), is next, then
+REDUCE+CLOSE, whose close closes Phase 40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and

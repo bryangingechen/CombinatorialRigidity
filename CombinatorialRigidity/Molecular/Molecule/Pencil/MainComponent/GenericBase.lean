@@ -13,10 +13,10 @@ import Matroid.Graph.Constructions.Sum
 The two-ear graph `G_e = G.addTwoEar u w` (a new body joined to `u` and `w`), its simplicity and
 closed neighbourhoods; the partition case analysis giving `def₂(G_e) + 1 ≤ def₂(G)`; the injection
 of the equal-planes kernel of `G` into the lifting space of `G_e`; Jackson–Jordán's equality read at
-`G` and at `G_e` (B2's target shape); the hub-normal independence of a nondegenerate configuration
-(B3's conjunct); and the base case of the generic motive, at a graph with no planar-rigid set of two
-or more bodies (BASE, `(MC-133)(ii)`'s base). Transcribed from a compiler-checked second read of
-route B (MC-183)–(MC-189), `notes/pencil/workbook/K-main-MC19.md`.
+`G` and at `G_e`, so that the planes of two bodies separate; the independence of the hub normals of
+a configuration whose named planes differ; and the base case of the generic motive, at a graph with
+no planar-rigid set of two or more bodies (BASE, `(MC-133)(ii)`'s base). Transcribed from a
+compiler-checked second read of route B (MC-183)–(MC-189), `notes/pencil/workbook/K-main-MC19.md`.
 
 ## Main definitions
 
@@ -26,11 +26,13 @@ route B (MC-183)–(MC-189), `notes/pencil/workbook/K-main-MC19.md`.
 
 * `exists_planes_separate` — without a planar-rigid set, the planes of two distinct bodies separate
   on a Zariski-open set of pictures.
-* `isNondeg_pencilConfig_of_planeDiff` — a configuration with adjacent-hub and adjacent-non-hub
-  planes distinct, and every closed hub-neighbourhood of at most three members, is nondegenerate.
-* `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero` — **BASE**: at a
-  graph satisfying (H) that is feasible and has no planar-rigid set of two or more bodies, the
-  general configuration of `X₀` is nondegenerate and attains.
+* `isNondeg_pencilConfig_of_planeDiff` — with every closed hub-neighbourhood of at most three
+  members, a configuration over an admissible picture, with every hub in general position with any
+  two of its hub neighbours, is nondegenerate when the planes differ at the two ends of every edge
+  joining two hubs and at any two hubs adjacent to one body that is not a hub.
+* `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero` — **BASE**: a
+  graph satisfying (H) that is feasible and has no planar-rigid set of two or more bodies has a
+  generic pencil realization, a configuration of `X₀` over a general picture.
 
 See `notes/Phase40n.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-183)–(MC-189)), and
 `blueprint/src/chapter/main-component.tex` (`sec:main-component-statements`).
@@ -195,7 +197,9 @@ theorem partitionDef_add_one_le_of_eq [Finite α] [Finite β] {G : Graph α β}
   have hid := G.partitionDef_le_deficiency 2 id
   linarith
 
-/-- **The partition case analysis** ((MC-184)'s second bullet). -/
+/-- **The partition case analysis** ((MC-184)'s second bullet): at a `G` with no planar-rigid set
+of two or more bodies, adding a new body joined to two distinct bodies lowers the planar deficiency
+by at least one, `def₂(G.addTwoEar u w) + 1 ≤ def₂(G)`. -/
 theorem addTwoEar_deficiency [Finite α] [Finite β] {G : Graph α β}
     (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) {u w : α} (huw : u ≠ w)
     (hu : u ∈ V(G)) (hw : w ∈ V(G)) :
@@ -343,8 +347,9 @@ def extLift (u : α) (p : Fin 3 → K) :
       rw [← smul_dotProduct]; rfl
     all_goals rfl
 
-/-- **B1's injection**: a kernel point of `G` with equal planes at `u, w` extends to one of
-`G.addTwoEar u w`, injectively. -/
+/-- **The equal-planes injection** ((MC-184)'s first bullet): a kernel point of `G` with equal
+planes at `u, w` extends to one of `G.addTwoEar u w`, injectively, at any picture of the new
+body. -/
 theorem finrank_ker_inf_planeDiff_le [Fintype α] {G : Graph α β} {u w : α} (hu : u ∈ V(G))
     (hw : w ∈ V(G)) (q : α × Fin 2 → K) (qx : Fin 2 → K) :
     Module.finrank K ↥(LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ⊓
@@ -408,7 +413,12 @@ theorem finrank_ker_inf_planeDiff_le [Fintype α] {G : Graph α β} {u w : α} (
     exact congrArg Subtype.val hxy
   exact LinearMap.finrank_le_finrank_of_injective hΨ
 
-/-- **B2's target shape**, from JJ's equality at `G` and `G_e` (the composition under test). -/
+/-- **The planes of two bodies separate** (`lem:pencil-x0-planes-separate`, (MC-184)): at a simple
+`G` with every closed neighbourhood of at least three members and no planar-rigid set of two or
+more bodies, there is a nonzero picture polynomial off whose zero set some point of the lifting
+kernel has different planes at the distinct bodies `u` and `w`. From Jackson–Jordán's equality at
+`G` and at `G.addTwoEar u w`, with the new body's picture fixed at one non-root of the latter's
+polynomial. -/
 theorem exists_planes_separate [Infinite K] [Fintype α] [Finite β] {G : Graph α β}
     (hSimple : G.Simple) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard)
     (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) {u w : α} (huw : u ≠ w)
@@ -552,7 +562,13 @@ theorem eq_zero_of_dotProduct_triple {a b c d : Fin 3 → K}
     · change c ⬝ᵥ d = 0; rw [dotProduct_comm]; exact hc
   exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
 
-/-- **`lem:pencil-x0-conjunct-three`**, kernel form. -/
+/-- **The hub normals of a configuration** (`lem:pencil-x0-conjunct-three`, (MC-189)), stated at a
+point `x` of the lifting kernel (heights with a plane at every body): if every closed
+hub-neighbourhood has at most three members, `q` is admissible with every hub in general position
+with any two of its hub neighbours, and the planes of `x` differ at the two ends of every edge
+joining two hubs and at any two hubs adjacent to one body that is not a hub, then the configuration
+of `q` and `x`'s heights, with the plane normal of an admissible triple at every body, is
+nondegenerate. -/
 theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph α β}
     (hF1 : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
@@ -754,10 +770,10 @@ theorem exists_det_poly (x y w : α) (hxy : x ≠ y) (hxw : x ≠ w) (hyw : y �
 -- `[Fintype α]` feeds `exists_planes_separate`'s `mulVecLin`; the type never re-mentions it
 -- (`unusedFintypeInType`).
 set_option linter.unusedFintypeInType false in
-/-- The `[Fintype α]` form of **BASE** (`thm:pencil-x0-base-generic`, B3's target): at a graph
-satisfying (H) that is feasible and has no planar-rigid set of two or more bodies, the general
-configuration of `X₀` is nondegenerate and attains. The `[Finite α]` wrapper below is the blueprint
-pin. -/
+/-- The `[Fintype α]` form of **BASE** (`thm:pencil-x0-base-generic`): a graph satisfying (H) that
+is feasible and has no planar-rigid set of two or more bodies has a generic pencil realization, a
+configuration of `X₀` over a picture off the attaining, separating and general-position
+polynomials. The `[Finite α]` wrapper below is the blueprint pin. -/
 theorem hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'
     [Infinite K] [Fintype α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
     (hfeas : PencilNondegFeasible K G)
@@ -858,9 +874,9 @@ theorem hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'
   rw [finrank_span_rigidityRows_pencilConfigFramework]
   exact hrank z hz hxR
 
-/-- **`thm:pencil-x0-base-generic`**, **BASE** (`(MC-133)(ii)`'s base, via (MC-12), (MC-13)(a)–(c)
-and (MC-14)): at a graph satisfying (H) that is feasible and has no planar-rigid set of two or more
-bodies, the general configuration of `X₀` is nondegenerate and attains. -/
+/-- **`thm:pencil-x0-base-generic`**, **BASE** (`(MC-133)(ii)`'s base, by (MC-184) and (MC-189) in
+place of (MC-14)): a graph satisfying (H) that is feasible and has no planar-rigid set of two or
+more bodies has a generic pencil realization, a configuration of `X₀` over a general picture. -/
 theorem _root_.Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero
     [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
     (hfeas : PencilNondegFeasible K G)

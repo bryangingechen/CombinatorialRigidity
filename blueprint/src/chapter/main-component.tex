@@ -4249,7 +4249,7 @@ a body of degree three, which needs a bridge, never arises.
   \lean{CombinatorialRigidity.Molecular.PencilNondegFeasible.hub_conditions}
   \leanok
   \uses{def:pencil-nondegenerate}
-  If a finite simple multigraph is nondegeneracy-feasible
+  If a finite multigraph is nondegeneracy-feasible
   (\cref{def:pencil-nondegenerate}), then every closed
   hub-neighbourhood has at most three members, and no triangle contains
   two pencil hubs.
@@ -4331,8 +4331,8 @@ degree-two bodies enlarge the lifting space.
   for every set $Y$ of at least two bodies. Let $u \ne w$ be bodies of
   $G$. There is a nonzero polynomial $P$ in the picture coordinates such
   that every picture $q$ with $P(q) \ne 0$ has some height $z \in L(q)$
-  with different planes at $u$ and $w$: the affine functions carrying
-  $z$ on the closed neighbourhoods of $u$ and $w$ differ.
+  and, at every body, an affine function carrying $z$ on its closed
+  neighbourhood, with the functions at $u$ and $w$ different.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -4406,19 +4406,21 @@ degree-two bodies enlarge the lifting space.
   \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-planes-separate,
         lem:pencil-x0-conjunct-three, lem:pencil-x0-fibre-intersection,
-        lem:pencil-feasible-hub-conditions}
+        lem:pencil-feasible-hub-conditions, lem:pencil-config-point-join-rank}
   Every closed hub-neighbourhood has at most three members
-  (\cref{lem:pencil-feasible-hub-conditions}). Take a picture off the zero
-  sets of the attaining polynomial of \cref{thm:pencil-x0-coverage}, of
-  the general-position condition of \cref{lem:pencil-x0-conjunct-three},
-  and of the polynomials of \cref{lem:pencil-x0-planes-separate} for the
-  finitely many pairs \cref{lem:pencil-x0-conjunct-three} names. In its
-  fibre, the attaining heights and, for each pair, the heights with
-  different planes are each nonzero somewhere on $L(q)$, hence meet at one
-  height, by induction on their number from
+  (\cref{lem:pencil-feasible-hub-conditions}). Take a picture $q$ off the
+  zero sets of the attaining polynomial of \cref{thm:pencil-x0-coverage},
+  which makes $q$ admissible, of the determinant of the homogeneous
+  picture points of every three distinct bodies, and of the polynomial of
+  \cref{lem:pencil-x0-planes-separate} at every two distinct bodies. Over
+  $q$, on the heights with their planes, the attaining heights contain the
+  non-roots of one polynomial that has a non-root, and for each pair some
+  coordinate of the difference of the two planes is nonzero at the point
+  \cref{lem:pencil-x0-planes-separate} gives. One point is a non-root of
+  all of them, by induction on their number from
   \cref{lem:pencil-x0-fibre-intersection}, which meets two.
   \Cref{lem:pencil-x0-conjunct-three} applies there, and the attaining
-  polynomial gives the rank.
+  polynomial gives the rank (\cref{lem:pencil-config-point-join-rank}).
 \end{proof}
 
 \begin{lemma}[Steering a realization of a subgraph]

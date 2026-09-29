@@ -22,9 +22,10 @@ sorry-free spike with no new mathematics. **STEPS is done. COVERAGE runs as two 
 2026-09-28** (`notes/Phase40l.md`), three build commits from a compiler-checked recon's two
 sorry-free spikes; **40m = CHAINS + THEOREM-S closed 2026-09-28** (`notes/Phase40m.md`), five
 build commits from a compiler-checked recon's complete sorry-free spikes (§3 COVERAGE). **COVERAGE
-is done. MOTIVES runs as three sub-phases (PI, 2026-09-28): DIST+BASE = 40n, open**
-(`notes/Phase40n.md`), then EARS and REDUCE+CLOSE by code, from a compiler-checked recon whose route
-B ((MC-183)–(MC-189), second-read 2026-09-28) replaces the planned fibre route (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
+is done. MOTIVES runs as three sub-phases (PI, 2026-09-28): DIST+BASE = 40n closed 2026-09-28**
+(`notes/Phase40n.md`), two build commits from compiler-checked spikes with the second read between
+them; **EARS is next**, then REDUCE+CLOSE, by code, from a compiler-checked recon whose route B
+((MC-183)–(MC-189), second-read 2026-09-28) replaces the planned fibre route (§3 MOTIVES). The ORBIT recon is done (2026-09-26, §4), and so is the second
 reading of its new claims (MC-173)–(MC-176). This doc
 replaces the planning note `notes/pencil/X0-formalization.md` (2026-09-25), whose content moved
 here and which is now a pointer. The PI's calls behind the plan are verbatim in `notes/pencil/adjudications.md`
@@ -901,7 +902,7 @@ core above serves all three uses in the slots' own format. `chainData_of_isPath`
 wrong shape; the Matroid package's `Graph/Connected/Ear.lean` is Whitney's ear decomposition of a
 2-connected graph (ears of a growing subgraph, with no degree-two condition), a different notion.
 
-### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, open** (`notes/Phase40n.md`); **EARS**; **REDUCE+CLOSE**
+### MOTIVES — `X0Dist` and `X0Gen` (closes the phase) → **three sub-phases (PI, 2026-09-28): DIST+BASE = sub-phase 40n, ✓ closed 2026-09-28** (`notes/Phase40n.md`); **EARS, next**; **REDUCE+CLOSE**
 
 | labels | step | 2nd |
 |---|---|---|
@@ -934,16 +935,23 @@ gitignored and local to the recon's checkout).**
   2EC graphs, (MC-127)(a) and (MC-127)(b). (MC-185), the extension half of (MC-127)(a), is proved
   sorry-free (`OneEar.lean`).
 
-**The split** (PI, 2026-09-28): **DIST+BASE = 40n** (M0, B1–B3; 4–6 commits); **EARS** (the chart
-toolkit T1–T3, the one-ear step, the pendant triangle; 5–7); **REDUCE+CLOSE** ((MC-129), the route-B
-assembly, both headlines, the phase close; 3–4). The second read of (MC-183)–(MC-187) ran on 2026-09-28,
-before B1 (no gap; repairs in place; (MC-188), (MC-189) added; verdict in Step MC19's route-B
-header). It compiled BASE sorry-free (`scratch/40n-read/BaseFull.lean`), so B1–B3 land as one
-build, and the route-B composition has three leaves left (`GenBase.lean`). **Placement change**
-(the coordinator's call, 2026-09-28): `Graph.addTwoEar` and its API go in the new
-`MainComponent/GenericBase.lean`, not `Bridge.lean`, keeping `import
-Matroid.Graph.Constructions.Sum` out of `Bridge.lean`'s downstream cone. Signatures, spike pointers
-and placement are in `notes/Phase40n.md`; EARS' and REDUCE's leaves, as the recon named them:
+**The split** (PI, 2026-09-28): **DIST+BASE = 40n** (M0, B1–B3); **EARS** (the chart toolkit
+T1–T3, the one-ear step, the pendant triangle; 5–7 commits); **REDUCE+CLOSE** ((MC-129), the route-B
+assembly, both headlines, the phase close; 3–4).
+
+**DIST+BASE — ✓ done (sub-phase 40n, closed 2026-09-28).** M0 (`8a0752d7`): `x0Dist` (the new
+`MainComponent/Statements.lean`, 42 lines), `PencilNondegFeasible.hub_conditions`,
+`Graph.noRigid_of_simple_of_ncard_eq_three` and the two-hubs obstruction (both forms), verbatim from
+the recon's spikes. The second read of (MC-183)–(MC-187) (`3d1d463f`; no gap, repairs in place,
+(MC-188), (MC-189) added; verdict in Step MC19's route-B header) compiled BASE sorry-free, so B1–B3
+landed as one build (`2f126b5f`): the new `MainComponent/GenericBase.lean` (888 lines; imports
+`Pencil/X0`, `MainComponent/CoverageTheoremS` and `Matroid.Graph.Constructions.Sum`), with
+`Graph.addTwoEar` there rather than in `Bridge.lean` (the coordinator's call, keeping the `Sum`
+import out of `Bridge.lean`'s downstream cone). **The interface EARS and REDUCE+CLOSE consume:** the
+base `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero` (`[Finite α]`),
+`PencilNondegFeasible.hub_conditions`, `Graph.noRigid_of_simple_of_ncard_eq_three` and `x0Dist`. The
+route-B composition has three leaves left (`scratch/40n-read/GenBase.lean`); spike pointers are in
+`notes/Phase40n.md`. EARS' and REDUCE's leaves, as the recon named them:
 - **T1** the reseed at given selectors (`Reseed.lean`): a nondegenerate realization is a chart point
   for every correct `hubSel`/`nbrSel`;
 - **T2** a standard-basis witness that the points around a hub that stops being a hub in `G′` are
@@ -954,7 +962,8 @@ and placement are in `notes/Phase40n.md`; EARS' and REDUCE's leaves, as the reco
 - **Z1** the one-ear step: `OneEar.lean`'s extension and the assembly; **Z2** the pendant triangle
   (the cut-vertex rank law, `lem:block-rank-cut-vertex`);
 - **R** (MC-129) at 2EC graphs, over 40l's deficiency kit; **F1** `Gen.lean`'s assembly (at HEAD,
-  from `scratch/40n-read/GenBase.lean`: `Gen.lean` redeclares names M0 landed).
+  from `scratch/40n-read/GenBase.lean`'s tail, l.799 on: `Gen.lean` redeclares names M0 landed, and
+  `GenBase.lean`'s first 797 lines are the landed `GenericBase.lean`).
 
 **Lean reuse** (corrected). Used: Phase 39's chart (`PencilSeed`, `pencilChartPoint`/`Normal`,
 `PencilChartWF`, `pencilChartFramework`, `exists_pencilSeed_of_nondeg`) with its steering engine
@@ -972,8 +981,8 @@ restriction; and `hasGenericPencilRealization_of_independent_pencilRow_target`, 
 **The interface consumed** (landed at 40m, `CoverageTheoremS.lean`): `Graph.IsX0Graph.x0Attains` and
 `Graph.X0Attains.of_twoEdgeConnected`, exactly `X0Dist`'s graphs. **The blueprint nodes**: the fourteen
 new nodes of `sec:main-component-statements`, the rewritten `thm:pencil-x0-generic-attains`, and
-`thm:pencil-conjecture` (`pencil.tex`), red at the open with
-their planned pins in `notes/Phase40n.md`. `thm:pencil-x0-generic-attains`'s first sentence is
+`thm:pencil-conjecture` (`pencil.tex`), red at the open; 40n greened eight of the fourteen, and the
+planned pins of the rest are in `notes/Phase40n.md`. `thm:pencil-x0-generic-attains`'s first sentence is
 COVERAGE's conclusion; its proof is rewritten to route B.
 
 ### The blueprint chapter
@@ -990,7 +999,8 @@ five for CHAINS and six for THEOREM-S (`notes/Phase40m.md` *Current state*), so 
 MOTIVES' subsection `sec:main-component-statements` is the last; it was transcribed whole at 40n's
 open, fourteen new nodes and the rewritten `thm:pencil-x0-generic-attains` red and unpinned, with
 `thm:pencil-conjecture` red in `pencil.tex`, statements from `ledger.py --brief` and the recon's
-compiled spikes, never retyped; which sub-phase greens each node is in `notes/Phase40n.md`.
+compiled spikes, never retyped. 40n greened eight (M0's four and B1–B3's four); which sub-phase
+greens each remaining node is in `notes/Phase40n.md`.
 Transcribe a layer's section when
 that layer opens, not all at once, and run a **pre-build recon of each transcribed section** before
 the first build against it (the `/coordinate-phase` transcription guard: a red node's statement is
