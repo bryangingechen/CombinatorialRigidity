@@ -528,7 +528,7 @@ theorem exists_insertion_gain [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) {
       have hc : c ≠ 0 := by rintro rfl; exact hR (by simpa [← hrs] using hr)
       refine hu ?_
       rw [show pointJoin y u = c⁻¹ • (pointJoin y y' - r) by
-        rw [← hrs, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hc, one_smul]]
+        rw [← hrs, add_sub_cancel_left, inv_smul_smul₀ hc]]
       exact Submodule.smul_mem _ _ (Submodule.sub_mem _
         (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)) (Submodule.mem_sup_left hr))
     obtain ⟨t, ht, hnot⟩ := exists_ne_zero_add_smul_notMem hS (pointJoin u y')
@@ -793,11 +793,11 @@ theorem exists_insertion_two_aux [Infinite K] (ρ : Submodule K (ScrewSpace K 2)
     have h3 : pointJoin x₂ Q ∈ S := Submodule.subset_span (by simp)
     have hyQ : pointJoin y Q ∈ S := by
       have : pointJoin y Q = (1 - σ)⁻¹ • pointJoin x₂ Q := by
-        rw [hJ1, smul_smul, inv_mul_cancel₀ (sub_ne_zero.mpr (Ne.symm hσ)), one_smul]
+        rw [hJ1, inv_smul_smul₀ (sub_ne_zero.mpr (Ne.symm hσ))]
       rw [this]; exact S.smul_mem _ h3
     have hux : pointJoin u x₂ ∈ S := by
       have : pointJoin u x₂ = t⁻¹ • (pointJoin (y + t • u) x₂ - σ • pointJoin y Q) := by
-        rw [hJ2, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ ht, one_smul]
+        rw [hJ2, add_sub_cancel_left, inv_smul_smul₀ ht]
       rw [this]; exact S.smul_mem _ (S.sub_mem h2 (S.smul_mem _ hyQ))
     refine sup_le (sup_le le_sup_left (le_sup_of_le_right ?_)) (le_sup_of_le_right ?_)
     · rw [Submodule.span_le]

@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–3 landed; 46 of 49 one-commit tasks remain. **Next concrete task:** task 4, B7, the
-recurring `rw` towers (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–4 landed; 45 of 49 one-commit tasks remain. **Next concrete task:** task 5, F1, the
+certificate-picture glue (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 4, B7** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–3 landed, 46 remain. Nothing is mid-stream.
+**Next commit: task 5, F1** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–4 landed, 45 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–3 (T1, B3 with its corrective
-follow-up, B8). Outcome detail goes on the task's checklist line, not here, so this section stays
-the forward pointer.
+Landed so far, one line each under the checklist: tasks 1–4 (T1, B3 with its corrective
+follow-up, B8, B7). Outcome detail goes on the task's checklist line, not here, so this section
+stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -105,20 +105,27 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     beta-redex; the LSP accepted it, and only `lake build` caught it.
   - Kept as structural: the `Fin`-literal identities at `Ear.lean` 176 and 857, and
     `Orbit.lean` 1048's `F₁.graph = G₁`.
-- [ ] **4. B7: the recurring `rw` towers** (`CLEANUP.md` §B: a missing fused lemma). These are the
+- [x] **4. B7: the recurring `rw` towers** (`CLEANUP.md` §B: a missing fused lemma). These are the
   only towers the open found recurring three or more times. The single chains are not this task's;
   §C's walks may touch them.
-  - `LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff`, ×5 in
-    `SplitOff.lean` (274, 275, 305, 309, 342): a fused `mem_ker` form beside
-    `Graph.liftingMatrix_mulVec_eq_zero_iff` (`Carrier.lean` 552). Check `lean_local_search` first.
-  - `smul_smul, inv_mul_cancel₀ _, one_smul`, ×4 (`Engine.lean` 704; `Lines.lean` 531, 796, 800),
-    plus the prefix at `GenericEar.lean` 75: use mathlib's `inv_smul_smul₀` (checked at the open).
-  - `Function.update_of_ne …, Function.update_of_ne …, Function.update_self`, ×3 (`Base.lean` 946,
-    1060, 1121, and 1119).
-  - `dotProduct_add, dotProduct_smul, smul_eq_mul`, ×3 (`SplitOff.lean` 527, 585, 672).
-  - `Graph.degree_eq_ncard_add_ncard, hloops, hnonloops`, ×4 (`Motive.lean` 965, 996, 1229, 1318)
-    and `hh0, hh1, hh2, one_smul`, ×4 (`Engine.lean` 929, 959, 1191, 1254). Is a lemma missing
-    here, or are these just local rewrites?
+  - Fixed: `LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff` (×5,
+    `SplitOff.lean`) — new `Graph.mem_ker_liftingMatrix_iff` beside
+    `Graph.liftingMatrix_mulVec_eq_zero_iff` (`Carrier.lean`); no prior form (`lean_local_search`).
+  - Fixed: `smul_smul, inv_mul_cancel₀ _, one_smul` (×4 + the `GenericEar.lean` 75 prefix) —
+    mathlib's `inv_smul_smul₀`.
+  - Fixed: `dotProduct_add, dotProduct_smul, smul_eq_mul` (×3, `SplitOff.lean`) — new
+    `dotProduct_add_smul` / `dotProduct_smul_add_smul` (`Mathlib/Data/Matrix/Mul.lean`, new mirror
+    file; `dotProduct_add`/`dotProduct_smul`/`smul_eq_mul` are all root-level in
+    `Mathlib.Data.Matrix.Mul`, so the mirror is too).
+  - Kept, local hypothesis rewrites: `Function.update_of_ne …, Function.update_of_ne …,
+    Function.update_self` (`Base.lean`, the `point`/`normal`/`supp` nested-update unfolds) — each
+    site's distinctness hypotheses (`hqs`, `hqr`, `he24`, `he23`, …) are local to that one nested
+    `Function.update` chain; a general lemma would take the same hypotheses as arguments and not
+    shorten the one-line `rw` it replaces.
+  - Kept, local hypothesis rewrites: `Graph.degree_eq_ncard_add_ncard, hloops, hnonloops`
+    (`Motive.lean`) and `hh0, hh1, hh2, one_smul` (`Engine.lean`) — `hloops`/`hnonloops`/`hh*` are
+    freshly proved per site from a different set/term, so the callee would need them as hypotheses
+    too.
   - The `ite_eq_right`/`ite_eq_left` runs in `Ear.lean` and `ContractCurve.lean` go with task 7b.
     `this, certPt` (×6, `Chain.lean`) is task 5's, `hslot_*` is task 25's, and `hnu, hnv, hpu,
     hpv` is task 26's.
@@ -428,11 +435,13 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 4, B7.** The recurring `rw` towers (`CLEANUP.md` §B: a missing fused
-lemma) — the five clusters named in the task's checklist entry, the largest a fused `mem_ker` form
-beside `Graph.liftingMatrix_mulVec_eq_zero_iff` (`Carrier.lean` 552) for the ×5 chain in
-`SplitOff.lean`. Lean, no blueprint. Then continue in task order. Each task above names its files,
-sites and done criterion.
+**Next concrete commit: task 5, F1.** The certificate-picture glue (the `[open]` FRICTION entry
+*The certificate-picture glue is written out a third time*): move `certPicture` to `Ear.lean`
+beside `certPt`, with a height-general `pencilConfigPoint (certPicture lab) z w = certPt (lab w)`
+lemma, and use it to collapse the `this, certPt` ×6 run at `Chain.lean` 643–664 in
+`Graph.X0Attains.of_openEar` and `Graph.X0Attains.of_openEar_two` (`Short.lean`); re-base
+`of_cycle`'s packaging on it and close the FRICTION entry. Lean, no blueprint. Then continue in
+task order. Each task above names its files, sites and done criterion.
 
 ## Decisions made during this round
 

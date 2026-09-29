@@ -598,6 +598,18 @@ theorem _root_.Graph.liftingMatrix_mulVec_eq_zero_iff [Fintype α] {G : Graph α
       · rfl
       · exact h3 v hv i
 
+/-- **Membership in the lifting system's kernel**, restated without unfolding `LinearMap.ker` /
+`Matrix.mulVecLin` at the call site (Phase 40-cleanup B7: the fused form of
+`Graph.liftingMatrix_mulVec_eq_zero_iff`). -/
+theorem _root_.Graph.mem_ker_liftingMatrix_iff [Fintype α] {G : Graph α β}
+    {q : α × Fin 2 → K} {x : α ⊕ (α × Fin 3) → K} :
+    x ∈ LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ↔
+      (∀ w ∉ V(G), x (Sum.inl w) = 0) ∧
+      (∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v,
+        x (Sum.inl w) = (fun i => x (Sum.inr (v, i))) ⬝ᵥ pencilPicturePoint q w) ∧
+      ∀ v ∉ V(G), ∀ i, x (Sum.inr (v, i)) = 0 := by
+  rw [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
+
 /-- **The lifting space is the height projection of the lifting system's kernel** (Phase 40b
 CARRIER): at every picture `q`, projecting the kernel of the lifting system to its height
 coordinates gives exactly `L(q)`. -/

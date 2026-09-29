@@ -701,7 +701,7 @@ theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
         (![n, y0, z0] : Fin 3 → Fin 4 → K)) = ![n, y0, c⁻¹ • z0] := by
       funext i; fin_cases i <;> simp [Units.smul_def]
     rwa [heq] at hw
-  · rw [cross₃_smul_thd, hc, smul_smul, inv_mul_cancel₀ hcne, one_smul]
+  · rw [cross₃_smul_thd, hc, inv_smul_smul₀ hcne]
 
 /-- **The arity-`0` perp-sweep** (Phase 39 W5-L4, D6 infrastructure, the isolated-body corollary):
 with all three `cross₃` slots free and no prescribed normal at all, any nonzero `q` is still hit

@@ -65,14 +65,14 @@ theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
       exact hpb ((smul_eq_zero.mp hst).resolve_left ht)
     have hpa' : pa = (-(t / s)) • pb := by
       have : s • pa = -(t • pb) := eq_neg_of_add_eq_zero_left hst
-      calc pa = s⁻¹ • (s • pa) := by rw [smul_smul, inv_mul_cancel₀ hs, one_smul]
+      calc pa = s⁻¹ • (s • pa) := (inv_smul_smul₀ hs pa).symm
         _ = (-(t / s)) • pb := by rw [this, smul_neg, smul_smul, div_eq_inv_mul, neg_smul]
     have ht : t ≠ 0 := by
       rintro rfl
       exact hpa (by simpa using hpa')
     refine ⟨by rw [hpa', smul_dotProduct, hb, smul_zero], ?_⟩
     have hpb' : pb = (-(t / s))⁻¹ • pa := by
-      rw [hpa', smul_smul, inv_mul_cancel₀ (by simp [hs, ht]), one_smul]
+      rw [hpa', inv_smul_smul₀ (by simp [hs, ht])]
     rw [hpb', smul_dotProduct, ha, smul_zero]
   -- `π_a ∩ π_b` is not the line `p_a p_b`, so it has a point off it.
   set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range ![pa, pb]) with hS

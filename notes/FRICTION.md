@@ -5426,6 +5426,19 @@ limitations. Worth a once-over so future agents don't re-litigate.
   deprecated, warning-only), and `push_neg` → `push Not` (TACTICS-GOLF § 26).
 - **Status:** resolved in-proof.
 
+### [mirrored] `dotProduct_add_smul` / `dotProduct_smul_add_smul` — a dot product against a (scaled) vector sum
+- **Where it bit:** Phase 40-cleanup task 4 (B7, the recurring `rw` towers). Three sites in
+  `Pencil/MainComponent/SplitOff.lean` (the split-off curve's incidence facts) each unfolded
+  `v ⬝ᵥ (u + c • w)` or `v ⬝ᵥ (c • pa + d • pb)` via `rw [dotProduct_add, dotProduct_smul, …,
+  smul_eq_mul, …]`.
+- **Friction:** `dotProduct_add`, `dotProduct_smul` and `smul_eq_mul` are all separate, unfused
+  facts about a dot product against a vector sum with a scaled summand; no packaged one-step form.
+- **Resolution:** mirrored both shapes — `dotProduct_add_smul (v u w) (c) : v ⬝ᵥ (u + c • w) =
+  v ⬝ᵥ u + c * (v ⬝ᵥ w)` and `dotProduct_smul_add_smul (v pa pb) (c d) : v ⬝ᵥ (c • pa + d • pb) =
+  c * (v ⬝ᵥ pa) + d * (v ⬝ᵥ pb)`, each a one-line `rw`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Matrix/Mul.lean` (new mirror file).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

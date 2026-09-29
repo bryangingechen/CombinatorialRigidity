@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Data.Matrix.Mul
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 
 /-!
@@ -271,8 +272,8 @@ theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β
   have hLK : L ≤ K'' := by
     intro y hy
     have hHy := hH y hy
-    rw [hL, LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff] at hy
-    rw [hK'', LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
+    rw [hL, Graph.mem_ker_liftingMatrix_iff] at hy
+    rw [hK'', Graph.mem_ker_liftingMatrix_iff]
     obtain ⟨h1, h2, h3⟩ := hy
     refine ⟨fun w hw => h1 w (by rwa [hVG''] at hw), fun v hv w hw => ?_,
       fun v hv i => h3 v (by rwa [hVG''] at hv) i⟩
@@ -302,11 +303,10 @@ theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β
   have rinr0 : ∀ y i, r y (Sum.inr (x 0, i)) = 0 := by intro y i; simp [hr, hkeep]
   have hmem : ∀ y ∈ KG, r y ∈ L ⊓ LinearMap.ker φ₁ := by
     intro y hy
-    rw [hKG, LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
-      at hy
+    rw [hKG, Graph.mem_ker_liftingMatrix_iff] at hy
     obtain ⟨g1, g2, g3⟩ := hy
     refine Submodule.mem_inf.mpr ⟨?_, ?_⟩
-    · rw [hL, LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
+    · rw [hL, Graph.mem_ker_liftingMatrix_iff]
       refine ⟨fun w hw => ?_, fun v hv w hw => ?_, fun v hv i => ?_⟩
       · by_cases hw0 : w = x 0
         · rw [hw0, rinl0]
@@ -339,8 +339,7 @@ theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β
         ← g2 b (hV₁G hb) (x 0) (Or.inr ⟨e 1, l1.symm⟩)]
   have hinj' : ∀ y ∈ KG, r y = 0 → y = 0 := by
     intro y hy hry
-    rw [hKG, LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
-      at hy
+    rw [hKG, Graph.mem_ker_liftingMatrix_iff] at hy
     obtain ⟨g1, g2, g3⟩ := hy
     have ha0 : (fun i => y (Sum.inr (a, i))) = 0 := by
       funext i; rw [← rinr y a i hax, hry]; rfl
@@ -524,7 +523,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
       obtain ⟨s, hs⟩ := Infinite.exists_notMem_finset ({0, 1, -A / (B - A)} : Finset K)
       simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hs
       refine ⟨s, hs.1, hs.2.1, Or.inl ⟨W, hW, ?_⟩⟩
-      rw [dotProduct_add, dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← hA', ← hB']
+      rw [dotProduct_smul_add_smul, ← hA', ← hB']
       intro h
       by_cases hBA : B - A = 0
       · have hAB : B = A := sub_eq_zero.mp hBA
@@ -582,7 +581,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   have hinc : ∀ t, planeDiff a b (yt t) ⬝ᵥ pencilPicturePoint (qt t) (x 0) = 0 := by
     intro t
     have := hw t
-    rw [hppx, dotProduct_add, dotProduct_smul, smul_eq_mul]
+    rw [hppx, dotProduct_add_smul]
     exact this
   -- the normals, as polynomials in `t`
   set ppoly : Fin 3 → Polynomial K := fun i =>
@@ -669,7 +668,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     · simp [pencilConfigPoint, hqt, hqx0, hax, hbx]
     · simp only [pencilConfigPoint, hzt, hyt, hax, hbx, ↓reduceIte, zero_smul, add_zero]
       simp only [Fin.isValue, Fin.reduceFinMk, Matrix.cons_val]
-      rw [hpp0x, hp0, dotProduct_add, dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul]
+      rw [hpp0x, hp0, dotProduct_smul_add_smul]
       change (1 - s) * (ha₀ ⬝ᵥ pa) + s * (ha₀ ⬝ᵥ pb) = _
       rw [← hza, ← hzba]
     · simp [pencilConfigPoint]
