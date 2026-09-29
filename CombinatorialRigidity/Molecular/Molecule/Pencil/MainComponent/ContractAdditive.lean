@@ -76,7 +76,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   have hV : V(G).Nonempty := hG.connected.nonempty
   -- standing facts at the core and at the contraction
   have hHX := Graph.isX0Graph_induce_of_deficiency_eq_zero hG.simple hW hW2 (n := 3)
-    (by rw [show Graph.bodyBarDim 3 = 6 from rfl]; norm_num) hdef3
+    (by rw [Graph.bodyBarDim_three]; norm_num) hdef3
   have hHS := hHX.simple
   have hH3 := hHX.three_le_ncard_closedNbhd
   have hcS := Graph.rigidContract_induce_simple hG.simple hr hatt
@@ -348,7 +348,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   have hcountZ : (V(G.rigidContract (G.induce W) r).ncard : ℤ) =
       ((V(G).ncard : ℤ) - (W.ncard : ℤ)) + 1 := by
     rw [hcount]; push_cast [Nat.cast_sub hWle]; ring
-  rw [show screwDim 2 = 6 from rfl] at hH hrank' ⊢
+  rw [screwDim_two] at hH hrank' ⊢
   rw [hcountZ, hdefc3] at hrank'
   have hc' : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
         (G.induce W) ends n).toBodyHinge.rigidityRows) : ℤ) +

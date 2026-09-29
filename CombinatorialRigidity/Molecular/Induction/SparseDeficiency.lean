@@ -250,12 +250,6 @@ theorem deficiencyMerged_eq_deficiency_of_mem [Finite α] [Finite β] {G : Graph
 
 /-! ## Value-calculus helpers -/
 
-/-- `bodyBarDim 2 = 3`: two translations plus one planar rotation. -/
-lemma bodyBarDim_two : bodyBarDim 2 = 3 := rfl
-
-/-- `bodyBarDim 3 = 6`: three translations plus three spatial rotations. -/
-lemma bodyBarDim_three : bodyBarDim 3 = 6 := rfl
-
 /-- `val₃(f) = 2 val₂(f) − d(f)`. -/
 lemma partitionDef_three_eq (G : Graph α β) (f : α → α) :
     G.partitionDef 3 f = 2 * G.partitionDef 2 f - (G.crossingEdges f).ncard := by

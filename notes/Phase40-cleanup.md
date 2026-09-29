@@ -4,13 +4,13 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–2 landed; 47 of 49 one-commit tasks remain. **Next concrete task:** task 3, B8, `show …
-from rfl` (Lean, 32 sites). Round manual: `CLEANUP.md`.
+Tasks 1–3 landed; 46 of 49 one-commit tasks remain. **Next concrete task:** task 4, B7, the
+recurring `rw` towers (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 3, B8** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–2 landed, 47 remain. Nothing is mid-stream.
+**Next commit: task 4, B7** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–3 landed, 46 remain. Nothing is mid-stream.
 
 **Task 2 (B3) landed, then corrected by a follow-up.** Final outcome for the 12 sites:
 - **Deleted, linter silent (2):** `Base.lean` 57 (`pencilPair_of_habitat_ncard_eq_three`, stale)
@@ -37,6 +37,20 @@ drop the binder and use `classical` (the FRICTION entry, now reframed). The corr
 listed the two `Escape.lean` wrappers as unpinned. `thm:pencil-conditional-realization-pair`
 (`pencil.tex` 908–910) pins them, so they keep the option. Gates for the follow-up: whole-project
 `lake build` 3000 jobs, 0 `warning:`, 0 `failed to cache artifact`; `lake lint` passed.
+
+**Task 3 (B8) landed, all 32 `show … from rfl` sites.** 27 fixed, 5 kept:
+- `screwDim 2 = 6` (12) / `screwDim 1 = 3` (3): new `screwDim_two`/`screwDim_one` beside
+  `abbrev screwDim` (`RigidityMatrix/Basic.lean`).
+- `Graph.bodyBarDim 2 = 3` (3) / `bodyBarDim 3 = 6` (1): `Graph.bodyBarDim_two`/`_three` moved from
+  `Induction/SparseDeficiency.lean` to beside `def bodyBarDim` (`BodyBar/Framework.lean`) — a
+  same-name move, so the ~10 in-file callers and the 4 in `CoverageTheoremS.lean` needed no change.
+- `V(G.induce V₁) = V₁` (8): mathlib's `Graph.vertexSet_induce` (witnessed with `#check` — distinct
+  from the existing `Graph.induce_vertexSet : G.induce V(G) = G`, an easy name mix-up).
+- The other 5: `pt s a j`/`pt s b j` (`Short.lean` 1080, 1083) fixed with the site's own
+  `set pt := … with hpt` equation (`rw [hpt, …]` in place of `show … from rfl`). Kept, reason
+  *structural*: the two `Fin`-literal identities (`Ear.lean` 176, 857) and the bundled-projection
+  unfold (`Orbit.lean` 1048, `F₁.graph = G₁`) — no named lemma or in-scope hypothesis shortens them
+  without adding lines.
 
 **Task 1 (T1) landed.** ROADMAP's toolchain row and `notes/ToolchainBumps.md` *Where this
 stands* were stale: `origin/master` had already caught up to `91fcd24a` (one commit behind
@@ -134,7 +148,9 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   budget that passes, and keep the comment. This is not a perf pass, so time nothing.
   - **Outcome** (detail: *Current state*): 2 deleted (stale), 1 fixed at the source, 6 kept
     (pinned, a candidate), 2 `unusedFintypeInType` kept (unexamined), heartbeats 400000 (bisected).
-- [ ] **3. B8: `show … from rfl`** (32 sites, `CLEANUP.md` §B cases (a)–(d)).
+- [x] **3. B8: `show … from rfl`** (32 sites, `CLEANUP.md` §B cases (a)–(d)). **Outcome** (detail:
+  *Current state*): 27 fixed, 5 kept (structural — two `Fin`-literal identities, one bundled-
+  projection unfold).
   - `screwDim 2 = 6`, 12 sites: `Flat.lean` 604, 606, 621, 637, 676, 706; `Contract.lean` 429;
     `ContractAdditive.lean` 351; `Cut.lean` 416, 1042, 1043, 1044.
   - `screwDim 1 = 3`, 3 sites: `Flat.lean` 341, 369; `Bridge.lean` 422.
@@ -473,11 +489,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 3, B8.** `show … from rfl`, 32 sites: `screwDim 2 = 6` / `screwDim 1
-= 3` (add `screwDim_one`/`screwDim_two` beside `abbrev screwDim`, **⚠Z**), `Graph.bodyBarDim 2 =
-3` / `bodyBarDim 3 = 6` (move the existing `_two`/`_three` lemmas beside `def bodyBarDim`),
-`V(G.induce V₁) = V₁` (use mathlib's `Graph.vertexSet_induce`), and 5 others. Lean, no blueprint.
-Then continue in task order. Each task above names its files, sites and done criterion.
+**Next concrete commit: task 4, B7.** The recurring `rw` towers (`CLEANUP.md` §B: a missing fused
+lemma) — the five clusters named in the task's checklist entry, the largest a fused `mem_ker` form
+beside `Graph.liftingMatrix_mulVec_eq_zero_iff` (`Carrier.lean` 552) for the ×5 chain in
+`SplitOff.lean`. Lean, no blueprint. Then continue in task order. Each task above names its files,
+sites and done criterion.
 
 ## Decisions made during this round
 

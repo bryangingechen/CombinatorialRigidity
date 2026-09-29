@@ -177,7 +177,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite �
   rw [eval_restrictPoly] at hz₁'
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
   have hli := hRlam z hzlam
-  rw [show V(G.induce V₁) = V₁ from rfl] at hr₁
+  rw [Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁ hendsI
     (q' := fun p => pencilConfigPoint q z p.1 p.2)
     (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
@@ -1077,10 +1077,10 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
     have := hlbs sstar b (Or.inl rfl)
     rwa [hpicstar] at this
   have hpta : ∀ s, pt s a = liftPlane la (pencilPicturePoint q' a) := by
-    intro s; funext j; rw [show pt s a j = cfg s (a, j) from rfl, hcV₁ s a ha]
+    intro s; funext j; simp only [hpt, hcV₁ s a ha]
     fin_cases j <;> simp [pencilConfigPoint, liftPlane, pencilPicturePoint, hza]
   have hptb : ∀ s, pt s b = liftPlane lb (pencilPicturePoint q' b) := by
-    intro s; funext j; rw [show pt s b j = cfg s (b, j) from rfl, hcV₁ s b hb]
+    intro s; funext j; simp only [hpt, hcV₁ s b hb]
     fin_cases j <;> simp [pencilConfigPoint, liftPlane, pencilPicturePoint, hzb]
   have hpt0 : ∀ s, pt s (x 0) = liftPlane la ![s (Sum.inl (x 0, 0)), s (Sum.inl (x 0, 1)), 1] :=
     fun s => earConfig_first s (hxV₁ 0)

@@ -60,6 +60,12 @@ the Plücker space `ℝᵈ` into which two-extensors of `ℝⁿ⁺¹` embed; a b
 carries a two-extensor coordinate in this space. -/
 def bodyBarDim (n : ℕ) : ℕ := n * (n + 1) / 2
 
+/-- `bodyBarDim 2 = 3`: two translations plus one planar rotation. -/
+lemma bodyBarDim_two : bodyBarDim 2 = 3 := rfl
+
+/-- `bodyBarDim 3 = 6`: three translations plus three spatial rotations. -/
+lemma bodyBarDim_three : bodyBarDim 3 = 6 := rfl
+
 /-- **The body-bar dimension is at least `6` once `n ≥ 3`** (Phase 23-cleanup E2, the
 consumer-surface headroom floor): `3 ≤ n ⟺ 6 ≤ bodyBarDim n`, since `bodyBarDim` is the
 monotone integer sequence `0, 1, 3, 6, 10, …`. This packages the `d = 3` numeral floor

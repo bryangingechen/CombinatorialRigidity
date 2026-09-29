@@ -401,7 +401,7 @@ theorem _root_.Graph.exists_mvPolynomial_finrank_liftingSpace_eq [Infinite K] [F
       G''.IsMinimalKDof 2 c → ∃ e₀, e₀ ∉ E(G'') :=
     Graph.freshEdgeSupply_of_card_lt (by decide) (by
       rw [Nat.card_sum, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin,
-        show Graph.bodyBarDim 2 = 3 from rfl]
+        Graph.bodyBarDim_two]
       omega)
   have hV2 : 2 ≤ V(G').ncard := by
     obtain ⟨v, hv⟩ := hV
@@ -419,7 +419,7 @@ theorem _root_.Graph.exists_mvPolynomial_finrank_liftingSpace_eq [Infinite K] [F
   have hmain' : G'.IsMainPicture q := Graph.isMainPicture_embedEdges_iff.mpr hmain
   have hrk := hPrk q (right_ne_zero_of_mul hq)
   rw [Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint hmain'.1 hends,
-    show screwDim 1 = 3 from rfl, Graph.liftingSpace_embedEdges, Graph.deficiency_embedEdges,
+    screwDim_one, Graph.liftingSpace_embedEdges, Graph.deficiency_embedEdges,
     Graph.vertexSet_embedEdges] at hrk
   have hlow := Graph.three_add_deficiency_le_finrank_liftingSpace hmain.1 hV
   refine ⟨hmain, ?_⟩

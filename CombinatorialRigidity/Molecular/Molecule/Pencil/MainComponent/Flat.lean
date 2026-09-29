@@ -338,7 +338,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint [Fin
     (PanelHingeFramework.ofNormals (k := 1) G ends
       (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge
   rw [Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint hq hends,
-    Graph.finrank_liftingPlanes hq, show screwDim 1 = 3 from rfl,
+    Graph.finrank_liftingPlanes hq, screwDim_one,
     ← Set.ncard_add_ncard_compl V(G) (Set.toFinite _) (Set.toFinite _)] at hc
   have hz := congrArg (Nat.cast : ℕ → ℤ) hc
   push_cast at hz
@@ -366,7 +366,7 @@ theorem _root_.Graph.three_add_deficiency_le_finrank_liftingSpace [Finite α] [F
   rw [Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint hq hends,
     Graph.finrank_liftingPlanes hq] at hhub
   simp only [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
-    show screwDim 1 = 3 from rfl] at hhub
+    screwDim_one] at hhub
   push_cast at hhub
   have : (V(G).compl.ncard : ℤ) = (V(G)ᶜ.ncard : ℤ) := rfl
   linarith
@@ -601,9 +601,9 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat [Finite α] {G : G
   have hc := (pointJoinFramework G ends
     (pencilConfigPoint q 0)).finrank_span_rigidityRows_add_finrank_infinitesimalMotions
   rw [Graph.finrank_infinitesimalMotions_pointJoinFramework_flat hG hq hends,
-    Graph.finrank_liftingPlanes hq, show screwDim 2 = 6 from rfl,
+    Graph.finrank_liftingPlanes hq, screwDim_two,
     ← Set.ncard_add_ncard_compl V(G) (Set.toFinite _) (Set.toFinite _)] at hc
-  rw [show screwDim 2 = 6 from rfl]
+  rw [screwDim_two]
   push_cast
   omega
 
@@ -618,7 +618,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_le [Finite α] [Fi
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
       ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2 := by
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, show screwDim 2 = 6 from rfl]
+  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, screwDim_two]
   have := Graph.three_add_deficiency_le_finrank_liftingSpace hq hG.nonempty
   push_cast; linarith
 
@@ -634,7 +634,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_eq_iff [Finite α]
           (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n ↔
     (Module.finrank K (G.liftingSpace q) : ℤ) = 3 + G.deficiency n := by
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, show screwDim 2 = 6 from rfl]
+  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, screwDim_two]
   push_cast
   constructor <;> intro h <;> linarith
 
@@ -673,7 +673,7 @@ theorem _root_.Graph.x0Attains_of_finrank_liftingSpace_le [Finite α] [Finite β
       linarith
     exact_mod_cast this
   refine Graph.x0Attains_of_exists hV G.endsOf hends hmain (G.liftingSpace q).zero_mem ?_
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, show screwDim 2 = 6 from rfl]
+  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, screwDim_two]
   push_cast; linarith
 
 /-- **A flat main component attains** (`cor:pencil-flat-x0`; informal (MC-5)(iii)). If
@@ -703,7 +703,7 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_thre
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) := by
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, h3, show screwDim 2 = 6 from rfl]
+  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, h3, screwDim_two]
   push_cast; ring
 
 

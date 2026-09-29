@@ -88,6 +88,14 @@ dimension `binom(d+1, 2)` of the space of infinitesimal screw motions of a rigid
 `K^d` (Katoh–Tanigawa 2011 §2.2). -/
 abbrev screwDim (k : ℕ) : ℕ := (k + 2).choose 2
 
+/-- `screwDim 1 = 3`: the screw dimension of `d = 2`-dimensional (planar) body-hinge rigidity,
+two translations plus one planar rotation. -/
+lemma screwDim_one : screwDim 1 = 3 := rfl
+
+/-- `screwDim 2 = 6`: the screw dimension of `d = 3`-dimensional (spatial) body-hinge rigidity,
+three translations plus three spatial rotations. -/
+lemma screwDim_two : screwDim 2 = 6 := rfl
+
 /-- The **screw-center space** of `d = k+1`-dimensional body-hinge rigidity: the degree-`k`
 graded piece `⋀[K]^k (Fin (k+2) → K)` of the exterior algebra, in which the supporting
 extensors `C(·) = affineSubspaceExtensor` of the hinges live

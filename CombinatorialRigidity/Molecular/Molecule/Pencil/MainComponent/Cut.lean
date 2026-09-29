@@ -390,8 +390,8 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
     refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX (hendsI X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
-  rw [show V(G.induce V₁) = V₁ from rfl] at hr₁
-  rw [show V(G.induce V₂) = V₂ from rfl] at hr₂
+  rw [Graph.vertexSet_induce G V₁] at hr₁
+  rw [Graph.vertexSet_induce G V₂] at hr₂
   rw [hcongr V₁ ends₁ hends₁] at hr₁
   rw [hcongr V₂ ends₂ hends₂] at hr₂
   -- the ranks add
@@ -413,7 +413,7 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
           (G.induce V₂) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
             : ℤ) := by
     exact_mod_cast hadd
-  rw [e1, hr₁, hr₂, show screwDim 2 = 6 from rfl]
+  rw [e1, hr₁, hr₂, screwDim_two]
   push_cast
   linarith [hdef, hcount]
 
@@ -971,8 +971,8 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
     refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX (hendsI X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
-  rw [show V(G.induce V₁) = V₁ from rfl] at hr₁
-  rw [show V(G.induce V₂) = V₂ from rfl] at hr₂
+  rw [Graph.vertexSet_induce G V₁] at hr₁
+  rw [Graph.vertexSet_induce G V₂] at hr₂
   rw [hcongr V₁ ends₁ hends₁] at hr₁
   rw [hcongr V₂ ends₂ hends₂] at hr₂
   -- the last bridge is the only edge leaving `S = V₁ ∪ range x`, whose complement is `V₂`
@@ -1039,9 +1039,9 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
         (G.induce S) ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows)
           : ℤ) := by
     exact_mod_cast hpathrank
-  rw [hr₁, show screwDim 2 = 6 from rfl] at e2
-  rw [hr₂, show screwDim 2 = 6 from rfl] at e1
-  rw [show screwDim 2 = 6 from rfl, hdef, hdefS]
+  rw [hr₁, screwDim_two] at e2
+  rw [hr₂, screwDim_two] at e1
+  rw [screwDim_two, hdef, hdefS]
   have hb3 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
   rw [hb3]
   push_cast at e1 e2 ⊢

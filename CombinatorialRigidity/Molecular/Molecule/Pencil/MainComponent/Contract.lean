@@ -195,10 +195,10 @@ theorem _root_.Graph.isX0Graph_induce_of_deficiency_two_eq_zero [Finite α] [Fin
     (hdef : (G.induce W).deficiency 2 = 0) : (G.induce W).IsX0Graph where
   simple := hS.mono (Graph.induce_le hW)
   connected := Graph.connected_of_isKDof_zero (n := 2)
-    (by rw [show Graph.bodyBarDim 2 = 3 from rfl]; norm_num) hdef
+    (by rw [Graph.bodyBarDim_two]; norm_num) hdef
     (Set.nonempty_of_ncard_ne_zero (s := W) (by omega))
   two_le_degree := fun _ hv => Graph.two_le_degree_of_isKDof_zero (n := 2)
-    (by rw [show Graph.bodyBarDim 2 = 3 from rfl]; norm_num) hdef hv hW2
+    (by rw [Graph.bodyBarDim_two]; norm_num) hdef hv hW2
 
 /-! ## The assembly: contraction at a `def₂`-rigid core -/
 
@@ -426,7 +426,7 @@ theorem _root_.Graph.X0Attains.of_rigidContract [Infinite K] [Finite α] [Finite
   have hcountZ : (V(G.rigidContract (G.induce W) r).ncard : ℤ) =
       ((V(G).ncard : ℤ) - (W.ncard : ℤ)) + 1 := by
     rw [hcount]; push_cast [Nat.cast_sub hWle]; ring
-  rw [show screwDim 2 = 6 from rfl] at hH hrank' ⊢
+  rw [screwDim_two] at hH hrank' ⊢
   rw [hcountZ, hdefc3] at hrank'
   have hc' : (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
         (G.induce W) ends n).toBodyHinge.rigidityRows) : ℤ) +

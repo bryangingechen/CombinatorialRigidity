@@ -462,7 +462,7 @@ theorem _root_.Graph.deficiency_induce_add_le_of_ear [Finite α] [Finite β] {G 
   have h₂ : (k : ℤ) - 1 ≤ (G.induce (V(G) \ V₁)).partitionDef n g := by
     rw [hrest]
     have hnp : (G.induce (Set.range x)).numParts g = k := by
-      rw [Graph.numParts, show V(G.induce (Set.range x)) = Set.range x from rfl]
+      rw [Graph.numParts, Graph.vertexSet_induce G (Set.range x)]
       have : g '' Set.range x = Set.range x := by
         ext w
         constructor
@@ -557,7 +557,7 @@ theorem _root_.Graph.deficiency_induce_le_of_ear_of_merge [Finite α] {G : Graph
     · rw [hm, hgV₁ b hb]; exact hpab.symm
   -- The number of parts is unchanged: every ear body's label `p a` is already carried by `a`.
   have hnp : G.numParts g = (G.induce V₁).numParts p := by
-    rw [Graph.numParts, Graph.numParts, show V(G.induce V₁) = V₁ from rfl]
+    rw [Graph.numParts, Graph.numParts, Graph.vertexSet_induce G V₁]
     congr 1
     apply Set.Subset.antisymm
     · rintro _ ⟨w, hw, rfl⟩

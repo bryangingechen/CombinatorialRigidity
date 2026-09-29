@@ -723,7 +723,7 @@ theorem _root_.Graph.X0Attains.of_openEar [Infinite K] [Finite α] [Finite β] {
   rw [eval_restrictPoly] at hz₁'
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
   have hli := hRlam z hzlam
-  rw [show V(G.induce V₁) = V₁ from rfl] at hr₁
+  rw [Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁ hendsI
     (q' := fun p => pencilConfigPoint q z p.1 p.2)
     (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
