@@ -98,6 +98,22 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] Two-step `ncard`↔`Fintype.card`/`toFinset` bridges, and `.roots.toFinset` for a polynomial's root set, each already have a direct mathlib lemma
+- **Where it bit:** Phase 40-cleanup task 8 (B5, the `Set`/`Finset` and cardinality-coercion sweep):
+  `MainComponent/Flat.lean` (`Graph.finrank_linkConstants`), `Pencil/Motive.lean`
+  (`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`'s neighbourhood
+  bound), `Pencil/Witness.lean` (`exists_injOn_mapsTo_of_ncard_le`) each chained
+  `Set.ncard_eq_toFinset_card'` + `Set.toFinset_card` (or `Nat.card_eq_fintype_card` +
+  `Nat.card_coe_set_eq`) to get `Fintype.card s = s.ncard`; `MainComponent/Bridge.lean` and
+  `MainComponent/SplitOff.lean` each built a `Set.Finite` witness for a polynomial's root set via
+  `P.roots.toFinset.finite_toSet`.
+- **Fix:** `Set.fintypeCard_eq_ncard [Fintype s] : Fintype.card s = s.ncard` (`@[simp]`,
+  `Mathlib.Data.Set.Card`) is the direct one-liner for the first shape;
+  `Polynomial.finite_setOfPred_isRoot (hp : p ≠ 0) : Set.Finite {x | p.IsRoot x}` is the direct
+  `Set`-native form for the second, and it also drops the `Multiset.mem_toFinset` /
+  `Polynomial.mem_roots hp` unfold pair at the membership step.
+- **Status:** resolved. **Lifted to:** `TACTICS-GOLF.md` § 2 (two new subsections).
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

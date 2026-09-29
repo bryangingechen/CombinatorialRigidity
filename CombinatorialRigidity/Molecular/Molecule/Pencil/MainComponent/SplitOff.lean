@@ -700,9 +700,9 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   have hPt0 : Pt ≠ 0 := fun h =>
     right_ne_zero_of_mul hq (by rw [← hqt1, ← hPt, h, Polynomial.eval_zero])
   have hfin2 : {t : K | MvPolynomial.eval (qt t) Pm = 0}.Finite := by
-    refine (Pt.roots.toFinset.finite_toSet).subset fun t ht => ?_
+    refine (Polynomial.finite_setOfPred_isRoot hPt0).subset fun t ht => ?_
     simp only [Set.mem_ofPred_eq] at ht
-    simp [Polynomial.mem_roots hPt0, hPt, ht]
+    simp [hPt, ht]
   -- a good `t`
   obtain ⟨t, ht⟩ := (hfin1.union hfin2).infinite_compl.nonempty
   simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_ofPred_eq, not_or, not_lt] at ht

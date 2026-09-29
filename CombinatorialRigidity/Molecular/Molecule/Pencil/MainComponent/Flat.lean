@@ -517,8 +517,7 @@ theorem _root_.Graph.finrank_linkConstants [Finite α] {G : Graph α β} (hG : G
         simp [Φ, show w ∉ V(G) from hw]
   rw [(LinearEquiv.ofBijective Φ hbij).finrank_eq, Module.finrank_prod, Module.finrank_fin_fun,
     Module.finrank_pi_fintype]
-  have hc : Fintype.card ↥(V(G)ᶜ) = V(G)ᶜ.ncard := by
-    rw [← Nat.card_eq_fintype_card, Nat.card_coe_set_eq]
+  have hc : Fintype.card ↥(V(G)ᶜ) = V(G)ᶜ.ncard := Set.fintypeCard_eq_ncard _
   simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul, Module.finrank_fin_fun, hc]
   ring
 

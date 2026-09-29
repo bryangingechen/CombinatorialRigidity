@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–7b landed; 41 of 49 one-commit tasks remain. **Next concrete task:** task 8, B5, the
-`Set`/`Finset` and cardinality-coercion sites (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–8 landed; 40 of 49 one-commit tasks remain. **Next concrete task:** task 9, B1a, dead
+`classical` and unforced `noncomputable` in the Phase 39 files (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 8, B5** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–7b landed, 41 remain. Nothing is mid-stream.
+**Next commit: task 9, B1a** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–8 landed, 40 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–7b (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c). Outcome detail goes on the task's checklist line, not here,
-so this section stays the forward pointer.
+Landed so far, one line each under the checklist: tasks 1–8 (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5). Outcome detail goes on the task's checklist line, not
+here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -163,19 +163,12 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   let-defeq — `Orbit.lean` 516; reason coe-defeq — `Short.lean` 586. The `ite_eq_right`/
   `ite_eq_left` runs task 4 deferred here (`Ear.lean` 123/811/846, `ContractCurve.lean` 541/614)
   are all kept too, local hypothesis rewrites. `FRICTION.md`'s B6a correction gets a B6c addendum.
-- [ ] **8. B5: `Set` against `Finset`, and cardinality coercions.**
-  - The `toFinset` / `ncard_eq_toFinset_card` sites, 24: `CoverageTheoremS.lean` 167–254 (17, the
-    degree-sum count in `Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard` and its neighbour);
-    `Bridge.lean` 142, 144; `GenericSteer.lean` 532, 533; `Flat.lean` 230; `SplitOff.lean` 706;
-    `Motive.lean` 479.
-  - The `Fintype.card` sites other than the 35 routine `Fintype.card_fin` rewrites, 12:
-    `Arms.lean` 595; `Steer.lean` 641; `Witness.lean` 1269; `Motive.lean` 474, 478;
-    `Engine.lean` 352; `Flat.lean` 231, 520; `Chain.lean` 123, 389; `Ear.lean` 1214;
-    `ContractCurve.lean` 1048.
-
-  At each site, decide whether a bridge (`Set.ncard_eq_toFinset_card'`, `Nat.card_coe_set_eq`, …)
-  or the `Set` form is cleaner. For the count, try the Matroid package's finsum form
-  `Graph.handshake_degree_subtype` as a route with no `Finset`.
+- [x] **8. B5: `Set` against `Finset`, and cardinality coercions** (36 sites; this commit). 9
+  fixed, 27 kept (reasons in the commit message). `Set.fintypeCard_eq_ncard` collapses the
+  two-step `ncard`↔`Fintype.card`/`toFinset` bridge (4 sites); `Polynomial.finite_setOfPred_isRoot`
+  replaces `.roots.toFinset` for a root set (3 sites); `Set.ncard_compl` + `Nat.card_fin` closes
+  `{j | j ≠ i}.ncard = 2` (2 sites). `TACTICS-GOLF.md` § 2 gets both lemma pointers. The 17-site
+  `CoverageTheoremS.lean` degree-sum pair is kept — the finsum route is structural (*Candidates*).
 - **9–12. B1a–B1d: dead `classical` and unforced `noncomputable`** (204 `classical`, 203 of
   them opening a proof body and one mid-proof, in `Pair2.lean`; 70 `noncomputable def`).
   - **Method**, per batch: delete every `classical` line and every `noncomputable` on a `def` in
@@ -404,6 +397,20 @@ close mirrors them into `notes/Cleanup40.md` §2 Round 4.
   in-tree precedent. The fix deletes all six silencers. It is deferred because it changes a
   headline signature (`thm:pencil-conjecture`) and pinned ones
   (`thm:pencil-conditional-realization`, `…-pair`, `…-main-component`).
+- **A finsum-native rewrite of `CoverageTheoremS.lean`'s degree-sum pair** (task 8, B5;
+  `Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard` and `…two_mul_ncard_le_ncard_edgeSet`, the 17
+  kept sites). Both proofs bridge `Set.ncard` to a `Finset` sum (`G.vertexSet_finite.toFinset`, or
+  a `set D : Finset α := …toFinset`) because the inequality/constant-sum steps they need —
+  `Finset.sum_le_sum`, `Finset.sum_sub_distrib`, `Finset.sum_const`, `Finset.sum_boole`,
+  `Finset.card_biUnion` — have no finsum (`∑ᶠ`) analogue in this mathlib vintage (checked: no
+  `finsum_le_finsum`/`finsum_mono`/`finsum_mem_const` anywhere under `Mathlib/`). The Matroid
+  package's `Graph.handshake_degree_subtype` (`∑ᶠ v ∈ V(G), G.degree v = 2 * E(G).ncard`) is exactly
+  what the first proof's `Graph.handshake_degree_finset` call already reduces to internally, so
+  swapping it in gains nothing. `Set.Finite.ncard_biUnion` (`Mathlib.Data.Set.Card.Arithmetic`) could
+  replace the second proof's `Finset.card_biUnion`, but its output is a finsum whose constant-value
+  sum still needs converting back to a multiple of `ncard` — the missing step above. A rewrite would
+  need new finsum comparison/constant-sum mirror lemmas first, which is a new proof route, not a
+  local substitution.
 
 ## Moved to a later round
 
@@ -422,13 +429,12 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 8, B5.** `Set` against `Finset`, and cardinality coercions: the
-`toFinset`/`ncard_eq_toFinset_card` sites (24, mostly `CoverageTheoremS.lean` 167–254's
-degree-sum count) and the `Fintype.card` sites other than the 35 routine `Fintype.card_fin`
-rewrites (12). At each site, decide whether a bridge (`Set.ncard_eq_toFinset_card'`,
-`Nat.card_coe_set_eq`, …) or the `Set` form is cleaner; for the degree-sum count, try the Matroid
-package's finsum form `Graph.handshake_degree_subtype` as a route with no `Finset`. Lean, no
-blueprint. Then continue in task order. Each task above names its files, sites and done criterion.
+**Next concrete commit: task 9, B1a.** Dead `classical` and unforced `noncomputable` in the 15
+Phase 39 files (71 `classical` / 21 `noncomputable`; per-file counts in the checklist). Method
+(shared by tasks 9–12): delete every `classical` line and every `noncomputable` on a `def` in the
+batch's files, build, and restore exactly the ones whose removal breaks the build; record the
+removed/kept counts per file. Lean, no blueprint. Then continue in task order. Each task above
+names its files, sites and done criterion.
 
 ## Decisions made during this round
 

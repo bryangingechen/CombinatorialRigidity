@@ -475,8 +475,8 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
   have himg : Set.range (fun x : G.closedHubNbhd v => normal x) = normal '' G.closedHubNbhd v :=
     (Set.image_eq_range normal (G.closedHubNbhd v)).symm
   rw [himg] at hspan_eq
-  have hcard : (G.closedHubNbhd v).ncard = Fintype.card (G.closedHubNbhd v) := by
-    rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+  have hcard : (G.closedHubNbhd v).ncard = Fintype.card (G.closedHubNbhd v) :=
+    (Set.fintypeCard_eq_ncard _).symm
   rw [hcard, ← hspan_eq]
   exact hspan_le
 

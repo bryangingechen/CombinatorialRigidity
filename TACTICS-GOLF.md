@@ -416,6 +416,29 @@ deleted across `Henneberg.lean`, with no logic touched. If you find
 yourself writing `have hX_fin : X.Finite := …`, stop and check whether
 the consumer has an autoparam.
 
+### `Fintype.card s = s.ncard` in one step — don't chain two bridges
+
+`Set.ncard_eq_toFinset_card'` then `Set.toFinset_card` (or
+`Nat.card_eq_fintype_card` then `Nat.card_coe_set_eq`) is a two-lemma
+chain for exactly the fact mathlib already states directly:
+`Set.fintypeCard_eq_ncard [Fintype s] : Fintype.card s = s.ncard`
+(`@[simp]`, `Mathlib.Data.Set.Card`). Reach for it (or its `.symm`)
+first; `simpa using h` also fires since it's tagged `@[simp]`. Cost:
+40-cleanup B5 found four two-step chains doing exactly this
+(`MainComponent/Flat.lean`, `Pencil/Motive.lean`, `Pencil/Witness.lean`).
+
+### A `Set` of a polynomial's roots — use `Polynomial.finite_setOfPred_isRoot`, not `.roots.toFinset`
+
+`(P.roots.toFinset.finite_toSet).subset …` is `Finset`-land laundering
+to state a `Set.Finite` fact about a root set. Mathlib already has the
+`Set`-native form: `Polynomial.finite_setOfPred_isRoot (hp : p ≠ 0) :
+Set.Finite {x | p.IsRoot x}`. Swapping in the direct lemma also drops
+the `Multiset.mem_toFinset` / `Polynomial.mem_roots hp` unfold pair
+from the membership step — `Set.mem_ofPred_eq` (or nothing at all)
+is enough once the target is stated over `{x | p.IsRoot x}` instead of
+`↑p.roots.toFinset`. Two sites, same shape, in 40-cleanup B5
+(`MainComponent/Bridge.lean`, `MainComponent/SplitOff.lean`).
+
 ---
 
 ## 3. Mirror-first rule

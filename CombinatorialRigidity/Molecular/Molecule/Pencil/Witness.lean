@@ -1266,10 +1266,7 @@ theorem exists_injOn_mapsTo_of_ncard_le {γ δ : Type*} [Inhabited δ] {T : Set 
   classical
   have := hT.fintype
   have := hP.fintype
-  have hc : Fintype.card T ≤ Fintype.card P := by
-    rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq,
-      Nat.card_coe_set_eq]
-    exact hle
+  have hc : Fintype.card T ≤ Fintype.card P := by simpa using hle
   obtain ⟨e⟩ := Function.Embedding.nonempty_of_card_le hc
   refine ⟨fun x => if h : x ∈ T then (e ⟨x, h⟩ : δ) else default, ?_, ?_⟩
   · intro x hx y hy hxy

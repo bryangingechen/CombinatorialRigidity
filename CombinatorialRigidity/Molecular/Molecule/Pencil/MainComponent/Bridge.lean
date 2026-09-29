@@ -139,10 +139,9 @@ theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve {k : ℕ} [Finite �
   have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
     fun t => MvPolynomial.polynomial_eval_aeval c Q t
   have hP0 : P ≠ 0 := fun h => hQ₀ (by rw [← hPt 0, h, Polynomial.eval_zero])
-  refine (P.roots.toFinset.finite_toSet).subset fun t ht => ?_
+  refine (Polynomial.finite_setOfPred_isRoot hP0).subset fun t ht => ?_
   simp only [Set.mem_ofPred_eq] at ht
-  simp only [Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP0,
-    Polynomial.IsRoot.def]
+  simp only [Set.mem_ofPred_eq, Polynomial.IsRoot.def]
   by_contra h
   exact absurd (hQ _ (by rwa [← hPt])) (not_le.mpr ht)
 
