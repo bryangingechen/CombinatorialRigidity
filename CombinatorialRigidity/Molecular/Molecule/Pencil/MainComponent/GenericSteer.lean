@@ -529,8 +529,7 @@ theorem IsFin3SelectorOf.isSome_of_ncard_eq_three {s : Set α} {sel : Fin 3 → 
     exact (Option.some.inj h1).symm
   have hle := Set.ncard_le_ncard_of_injOn slot hmaps hinj
   have hcard : ({j | j ≠ i} : Set (Fin 3)).ncard = 2 := by
-    rw [show ({j | j ≠ i} : Set (Fin 3)) = {i}ᶜ from rfl, Set.ncard_compl, Set.ncard_singleton,
-      Nat.card_fin]
+    rw [← Set.compl_singleton_eq, Set.ncard_compl, Set.ncard_singleton, Nat.card_fin]
   omega
 
 /-- The dot product of a chart point and a chart normal, as a polynomial in the seed. -/
