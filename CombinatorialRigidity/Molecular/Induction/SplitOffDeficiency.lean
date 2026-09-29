@@ -316,7 +316,6 @@ theorem splitOff_deficiency_add_le_of_deficiencyMerged [Finite α] [Finite β] {
     (hδ : (G.induce V₁).deficiencyMerged n a b + ((bodyBarDim n : ℤ) - 1) ≤
       (G.induce V₁).deficiency n) :
     (G.splitOff v a b e₀).deficiency n + ((bodyBarDim n : ℤ) - 1) ≤ (G.induce V₁).deficiency n := by
-  classical
   set H := G.splitOff v a b e₀ with hH
   set G' := G.induce V₁ with hG'
   have hVH : V(H) = V(G') := by rw [hH, vertexSet_splitOff, hV₁]; rfl

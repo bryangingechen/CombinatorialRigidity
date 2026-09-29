@@ -4,16 +4,16 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–11 landed; 37 of 49 one-commit tasks remain. **Next concrete task:** task 12, B1d, dead
-`classical` and unforced `noncomputable` outside the pencil tree (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–12 landed; 36 of 49 one-commit tasks remain. **Next concrete task:** task 13, M3
+(the carried items begin), `span_supportExtensor_ofNormals_eq` (Lean, ⚠Z). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 12, B1d** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–11 landed, 37 remain. Nothing is mid-stream.
+**Next commit: task 13, M3** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–12 landed, 36 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–11 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c). Outcome detail goes on the task's
+Landed so far, one line each under the checklist: tasks 1–12 (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d). Outcome detail goes on the task's
 checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
@@ -199,11 +199,14 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     GenericBase 4/9, 1/1; GenericEar 2/4, –; GenericSteer 3/5, 1/1; GenericTriangle 2/4, –;
     GoodEar 0/3, –; Statements 1/2, –. No downstream file outside the 15-file batch needed a
     restore. Per-site detail in the commit message.
-  - [ ] **12. B1d, outside the tree** (Phase-40-added lines only; 24 / 3). `Induction/SparseDeficiency`
-    16, `Deficiency` 3, `Induction/SplitOffDeficiency` 2, `Induction/ReducibleVertex` 1,
-    `Mathlib/LinearAlgebra/Matrix/MvPolynomial` 1, `AlgebraicInduction/Coupling` 1 (**⚠Z**);
-    `noncomputable` in `Molecule/Duality` 73 and `Molecule/ProjectiveInvariance` 79, 236 (**⚠Z**,
-    carrier).
+  - [x] **12. B1d, outside the tree** (27 sites: 24 classical / 3 noncomputable; this commit). 7
+    classical kept as the project-standard bridge, 17 deleted as dead; all 3 noncomputable kept (a
+    genuine noncomputable dependency — `ScrewSpace`'s `AddCommGroup` instance), 0 deleted. Per file
+    (classical kept/total, noncomputable kept/total): Deficiency 1/3, –; Coupling 0/1, –;
+    SparseDeficiency 3/16, –; ReducibleVertex 1/1, –; SplitOffDeficiency 1/2, –; MvPolynomial 1/1,
+    –; Duality –, 1/1 (⚠Z); ProjectiveInvariance –, 2/2 (⚠Z, carrier). No downstream file outside
+    the batch needed a restore. Closes the B1 checklist item (tasks 9–12). Per-site detail in the
+    commit message.
 
 ### The carried items (`notes/Phase40-design.md` §3/§4/§7)
 
@@ -445,19 +448,12 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 12, B1d.** Dead `classical` and unforced `noncomputable` outside the
-pencil tree, Phase-40-added lines only (24 `classical` / 3 `noncomputable`; per-file counts in the
-checklist: `Induction/SparseDeficiency` 16, `Deficiency` 3, `Induction/SplitOffDeficiency` 2,
-`Induction/ReducibleVertex` 1, `Mathlib/LinearAlgebra/Matrix/MvPolynomial` 1,
-`AlgebraicInduction/Coupling` 1 (**⚠Z**); `noncomputable` in `Molecule/Duality` 73 and
-`Molecule/ProjectiveInvariance` 79, 236 (**⚠Z**, carrier)). Same method as tasks 9–11 (just
-landed): delete every `classical` line and every `noncomputable` on a `def` in the batch's files,
-whole-project build, restore exactly the ones whose removal breaks the build (a break anywhere,
-including outside the batch, is that site's restore signal — tasks 9–11 found every break stayed
-inside its own batch, including within-batch cascades where fixing one site forced a second
-downstream one in the same file), record removed/kept counts per file. The two `AlgebraicInduction`/
-`Molecule` sites are **⚠Z** (fragility zone): the playbook floor applies to any producer-shaped fix
-there. Lean, no blueprint. This closes the B1 checklist item; task 13 starts the carried items.
+**Next concrete commit: task 13, M3.** The carried items begin (§3, the SPLITOFF entry).
+`span_supportExtensor_ofNormals_eq` (`Cut.lean` 142) could replace the orientation split inlined in
+`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` (`Cut.lean` 113); the lemma sits
+below its consumer, so move it up first. Statements are unchanged. **⚠Z** (fragility zone): the
+playbook floor applies to any producer-shaped fix there. Lean, no blueprint. Task 12 (just landed)
+closed the B1 checklist item (tasks 9–12, all `classical`/`noncomputable` batches).
 
 ## Decisions made during this round
 

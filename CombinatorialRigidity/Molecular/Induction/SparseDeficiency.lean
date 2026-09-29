@@ -80,7 +80,6 @@ lemma partitionDef_eq_zero_of_forall_eq {G : Graph α β} {n : ℕ} {f : α → 
 theorem partitionDef_le_partitionDef_id [Finite α] [Finite β] {n : ℕ} :
     ∀ {G : Graph α β}, (∀ Z ⊆ V(G), Z.Nonempty → 0 ≤ (G.induce Z).partitionDef n id) →
       ∀ f : α → α, G.partitionDef n f ≤ G.partitionDef n id := by
-  classical
   intro G
   induction h : V(G).ncard using Nat.strong_induction_on generalizing G with
   | _ m ih =>
@@ -117,7 +116,6 @@ theorem partitionDef_add_partitionDef_induce_id_le [Finite α] [Finite β] {G : 
     (hS : ∀ Z ⊆ V(G) \ {w | f w = f v}, Z.Nonempty → 0 ≤ (G.induce Z).partitionDef n id) :
     G.partitionDef n f + (G.induce {w ∈ V(G) | f w = f v}).partitionDef n id ≤
       G.partitionDef n id := by
-  classical
   set Z₀ : Set α := {w ∈ V(G) | f w = f v} with hZ₀
   have hZ₀V : Z₀ ⊆ V(G) := fun w hw => hw.1
   have hsf : ∀ x ∈ Z₀, ∀ y ∈ V(G) \ Z₀, f x ≠ f y := by
@@ -151,7 +149,6 @@ theorem exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos [Finite α] [
     {G : Graph α β} {n : ℕ} :
     ∀ {X : Set α}, X ⊆ V(G) → 2 ≤ X.ncard → (G.induce X).partitionDef n id ≤ 0 →
       ∃ Y ⊆ X, 2 ≤ Y.ncard ∧ (G.induce Y).deficiency n = 0 := by
-  classical
   intro X
   induction h : X.ncard using Nat.strong_induction_on generalizing X with
   | _ m ih =>
@@ -292,7 +289,6 @@ theorem partitionDef_induce_insert [Finite α] [Finite β] {G : Graph α β} {n 
     (G.induce (insert u X)).partitionDef n g =
       (G.induce X).partitionDef n g + (if g u ∈ g '' X then 0 else (bodyBarDim n : ℤ)) -
         ((bodyBarDim n : ℤ) - 1) * ({e | ∃ y ∈ X, G.IsLink e u y ∧ g y ≠ g u}).ncard := by
-  classical
   set T : Set β := {e | ∃ y ∈ X, G.IsLink e u y ∧ g y ≠ g u} with hT
   have hce : (G.induce (insert u X)).crossingEdges g = (G.induce X).crossingEdges g ∪ T := by
     ext e
@@ -335,7 +331,6 @@ theorem partitionDef_two_induce_insert_id [Finite α] [Finite β] {G : Graph α 
     {u : α} {Y : Set α} (huY : u ∉ Y) :
     (G.induce (insert u Y)).partitionDef 2 id =
       (G.induce Y).partitionDef 2 id + 3 - 2 * ({e | ∃ y ∈ Y, G.IsLink e u y} : Set β).ncard := by
-  classical
   rw [partitionDef_induce_insert (n := 2) huY id, ite_eq_right (by simpa using huY),
     bodyBarDim_two]
   have hset : ({e | ∃ y ∈ Y, G.IsLink e u y ∧ id y ≠ id u} : Set β) =
@@ -350,7 +345,6 @@ theorem deficiency_induce_insert_eq_zero [Finite α] [Finite β] {G : Graph α �
     (hn : 3 ≤ bodyBarDim n) {W : Set α} (hdef : (G.induce W).deficiency n = 0) {u c₁ c₂ : α}
     (huW : u ∉ W) (hc₁ : c₁ ∈ W) (hc₂ : c₂ ∈ W) (hne : c₁ ≠ c₂) (h₁ : G.Adj u c₁)
     (h₂ : G.Adj u c₂) : (G.induce (insert u W)).deficiency n = 0 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   refine le_antisymm (ciSup_le fun f => ?_) (deficiency_nonneg _ n ⟨u, Or.inl rfl⟩)
   rw [partitionDef_induce_insert (n := n) huW f]
@@ -453,7 +447,6 @@ theorem deficiency_three_induce_eq_zero_of_tight [Finite α] [Finite β] {G : Gr
     {X : Set α} (hSv : ∀ Z ⊆ X, 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id)
     (hX3 : 3 ≤ X.ncard) (hX1 : (G.induce X).partitionDef 2 id ≤ 1) :
     (G.induce X).deficiency 3 = 0 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   have hnn := partitionDef_induce_id_nonneg hSv
   refine le_antisymm (ciSup_le fun f => ?_) (deficiency_nonneg _ 3
@@ -516,7 +509,6 @@ theorem deficiency_three_induce_eq_zero_of_le [Finite α] [Finite β] {G : Graph
     (hmin : ∀ Q, W ⊆ Q → Q ⊂ Y →
       (G.induce W).partitionDef 2 id ≤ (G.induce Q).partitionDef 2 id) :
     (G.induce Y).deficiency 3 = 0 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   have hnn := partitionDef_induce_id_nonneg hSv
   obtain ⟨w₀, hw₀⟩ := hWne
@@ -556,7 +548,6 @@ theorem partitionDef_induce_id_le_of_maximal [Finite α] [Finite β] {G : Graph 
     (hatt : ∀ x ∈ X₀, ({e | ∃ y ∈ W, G.IsLink e x y} : Set β).ncard ≤ 1) :
     ∀ X, W ⊆ X → X ⊆ V(G) →
       (G.induce W).partitionDef 2 id ≤ (G.induce X).partitionDef 2 id := by
-  classical
   intro X
   induction h : X.ncard using Nat.strong_induction_on generalizing X with
   | _ m ih =>
@@ -642,7 +633,6 @@ theorem deficiency_induce_add_deficiency_rigidContract_le [Finite α] [Finite β
       (G.induce W).partitionDef 2 id ≤ (G.induce X).partitionDef 2 id) :
     (G.induce W).deficiency 2 + (G.rigidContract (G.induce W) r).deficiency 2 ≤
       G.deficiency 2 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   have hnn := partitionDef_induce_id_nonneg hSv
   have h1 : (G.induce W).deficiency 2 ≤ (G.induce W).partitionDef 2 id :=
@@ -679,7 +669,6 @@ theorem deficiencyMerged_three_add_five_le [Finite α] [Finite β] {G : Graph α
     (hb : b ∈ V₁) (hab : a ≠ b) (h₀ : G.IsLink e₀ x a) (h₁ : G.IsLink e₁ x b)
     (hno : ∀ Y ⊆ V(G), x ∈ Y → 2 ≤ Y.ncard → (G.induce Y).deficiency 3 ≠ 0) :
     (G.induce V₁).deficiencyMerged 3 a b + 5 ≤ (G.induce V₁).deficiency 3 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   by_contra hlt
   push Not at hlt
@@ -777,7 +766,6 @@ theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β
     (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hab : a ≠ b) (hnadj : ¬ G.Adj a b)
     (hδ : G.deficiencyMerged 3 a b ≠ G.deficiency 3) :
     G.deficiencyMerged 2 a b + 2 ≤ G.deficiency 2 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   have hnn := partitionDef_induce_id_nonneg hSv
   by_contra hlt
@@ -826,7 +814,6 @@ theorem not_adj_and_deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G :
     (hab : a ≠ b) (h₀ : G.IsLink e₀ x a) (h₁ : G.IsLink e₁ x b) :
     ¬ G.Adj a b ∧
       (G.induce V₁).deficiencyMerged 2 a b + 2 ≤ (G.induce V₁).deficiency 2 := by
-  classical
   have : Nonempty (α → α) := ⟨id⟩
   have hxV : x ∈ V(G) := h₀.left_mem
   have he : e₀ ≠ e₁ := by

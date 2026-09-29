@@ -853,7 +853,6 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le 
           (extProj (K := K) (k := k) W).dualMap) ≤
       Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals G ends n).toBodyHinge.rigidityRows) := by
-  classical
   have : Fintype α := Fintype.ofFinite α
   refine Submodule.finrank_add_finrank_map_le_of_le_ker _ ?_ ?_ ?_
   · rw [Submodule.span_le]

@@ -2497,7 +2497,6 @@ across the ends of every edge of `Y`, it is constant on each component of the re
 its vertices is injective on `f '' V(H)`. -/
 theorem encard_image_le_numberOfComponents_restrict {H : Graph α β} {Y : Set β} {f : α → α}
     (hY : ∀ e ∈ Y, ∀ x y, H.IsLink e x y → f x = f y) : (f '' V(H)).encard ≤ c(H ↾ Y) := by
-  classical
   -- A representative vertex for each label.
   have hrep : ∀ ℓ : α, ∃ x : α, ℓ ∈ f '' V(H) → x ∈ V(H) ∧ f x = ℓ := by
     intro ℓ
@@ -4367,7 +4366,6 @@ theorem deficiency_eq_add_of_cutVertex [Finite α] [Finite β] {G : Graph α β}
     (hoverlap : V₁ ∩ V₂ = {v})
     (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂)) :
     G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n := by
-  classical
   have hvV : v ∈ V₁ ∩ V₂ := hoverlap ▸ rfl
   have : Nonempty α := ⟨v⟩
   have : Nonempty (α → α) := ⟨id⟩
