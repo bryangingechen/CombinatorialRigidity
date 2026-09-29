@@ -1463,9 +1463,11 @@ gap), which compiles with three new leaves open once the base is in. This first 
 distinct statement and small pieces (M0), then the generic realization at graphs with no planar-rigid set (B1–B3): the planes of
 any two bodies separate there, by Jackson–Jordán's equality at the graph with one new body joined to
 both, and the general configuration is then nondegenerate. The blueprint's
-`sec:main-component-statements` and `thm:pencil-conjecture` are transcribed red. M0 and the second read
-are done; the second read compiled B1–B3 sorry-free. **Next:** B1–B3 as one build from that spike,
-which closes 40n. EARS and REDUCE+CLOSE follow.
+`sec:main-component-statements` and `thm:pencil-conjecture` are transcribed red. M0, the second read,
+and B1–B3 (`MainComponent/GenericBase.lean`, warning-free) are done: all four 40n nodes
+(`def:pencil-two-ear-graph`, `lem:pencil-x0-planes-separate`, `lem:pencil-x0-conjunct-three`,
+`thm:pencil-x0-base-generic`) are green and pinned. **Next:** the 40n phase-close
+(`PHASE-BOUNDARIES.md`). EARS and REDUCE+CLOSE follow.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -1,12 +1,15 @@
 # Phase 40n — PENCIL-X0 / MOTIVES-DIST+BASE: the distinct statement, and the generic realization without a planar-rigid set (work log)
 
-**Status:** in progress (opened design-first 2026-09-28). MOTIVES' first of three sub-phases (the
-PI's call, 2026-09-28, `notes/pencil/adjudications.md`; plan `notes/Phase40-design.md` §3 MOTIVES):
-**DIST+BASE**, then **EARS** and **REDUCE+CLOSE** by code. MOTIVES proves `X0Dist` and `X0Gen` by
-route B, (MC-183)–(MC-189) in `notes/pencil/workbook/K-main-MC19.md`, second-read 2026-09-28. **M0
-landed** (four nodes green), and so did **the second read** (no gap; BASE compiled sorry-free).
-**Next: B1–B3 as one build** from `scratch/40n-read/BaseFull.lean`, by one fresh builder handed the
-file — see *Hand-off*.
+**Status:** B1–B3 landed (2026-09-28), and with them **all four 40n nodes are green and pinned** —
+`def:pencil-two-ear-graph`, `lem:pencil-x0-planes-separate`, `lem:pencil-x0-conjunct-three`,
+`thm:pencil-x0-base-generic`. **BASE is done. Next concrete task: the 40n phase-close**
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*) — see *Hand-off*. MOTIVES' first of three
+sub-phases (the PI's call, 2026-09-28, `notes/pencil/adjudications.md`; plan
+`notes/Phase40-design.md` §3 MOTIVES): **DIST+BASE**, then **EARS** and **REDUCE+CLOSE** by code.
+MOTIVES proves `X0Dist` and `X0Gen` by route B, (MC-183)–(MC-189) in
+`notes/pencil/workbook/K-main-MC19.md`, second-read 2026-09-28. **M0 landed** (four nodes green),
+so did **the second read** (no gap; BASE compiled sorry-free), and so did **B1–B3** (one build,
+warning-free, in `MainComponent/GenericBase.lean`).
 
 ## Current state
 
@@ -16,15 +19,24 @@ file — see *Hand-off*.
 read landed** (2026-09-28, docs only): every claim confirmed, (MC-183), (MC-184), (MC-186) repaired in
 place, (MC-188), (MC-189) added, and `lem:pencil-x0-planes-separate`, `lem:pencil-x0-conjunct-three`
 (restated at (MC-189)'s weaker hypotheses, which the build lands) and `thm:pencil-x0-base-generic`
-reworded. Otherwise `blueprint/src/chapter/main-component.tex` §`sec:main-component-statements`
-stays as transcribed at open: the remaining ten new nodes and the rewritten
-`thm:pencil-x0-generic-attains` are red and unpinned (the 40h/40l convention), with
-`thm:pencil-conjecture` red in `pencil.tex`. Each build adds its nodes' `\lean{…}` and `\leanok`
-(statement and proof). **Next concrete commit: B1–B3 in one build** from the sorry-free
-`scratch/40n-read/BaseFull.lean` (see the checklist), which greens the four 40n nodes and closes 40n.
+reworded. **B1–B3 landed** (2026-09-28): `MainComponent/GenericBase.lean` (transcribed from
+`scratch/40n-read/BaseFull.lean` plus `GenBase.lean`'s `[Finite α]` wrapper), warning-free
+(`lake build`, `lake lint`), wired into the root import (`CombinatorialRigidity.lean`) so
+`checkdecls` sees it. All four 40n nodes are `\lean{…}` + `\leanok` (statement and proof):
+`def:pencil-two-ear-graph` → `Graph.addTwoEar`; `lem:pencil-x0-planes-separate` →
+`exists_planes_separate` (its statement dropped a spurious "is admissible" conjunct the Lean
+conclusion never proves — the admissibility in `thm:pencil-x0-base-generic`'s proof comes from the
+attaining polynomial, not this lemma); `lem:pencil-x0-conjunct-three` →
+`isNondeg_pencilConfig_of_planeDiff`; `thm:pencil-x0-base-generic` →
+`Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero` (the `[Finite α]`
+wrapper; the pin, per the checklist). Otherwise `blueprint/src/chapter/main-component.tex`
+§`sec:main-component-statements` stays as transcribed at open: the remaining ten new nodes and the
+rewritten `thm:pencil-x0-generic-attains` are red and unpinned (the 40h/40l convention), with
+`thm:pencil-conjecture` red in `pencil.tex`. **Next concrete task: the 40n phase-close**
+(`PHASE-BOUNDARIES.md`), not a build — see *Hand-off*.
 Which sub-phase greens each remaining node:
-- **40n:** `def:pencil-two-ear-graph`, `lem:pencil-x0-planes-separate`,
-  `lem:pencil-x0-conjunct-three`, `thm:pencil-x0-base-generic` (all in the one B1–B3 build).
+- **40n — done:** `def:pencil-two-ear-graph`, `lem:pencil-x0-planes-separate`,
+  `lem:pencil-x0-conjunct-three`, `thm:pencil-x0-base-generic`.
 - **EARS:** `lem:pencil-generic-steer`, `lem:pencil-generic-one-ear`,
   `lem:pencil-generic-pendant-triangle`.
 - **REDUCE+CLOSE:** `lem:pencil-rigid-good-ear`, `thm:pencil-generic-step`,
@@ -91,9 +103,14 @@ their statements; every declaration gets a docstring.
   opening recon's spikes.
 - [x] **The second read of (MC-183)–(MC-187)** (a fresh read-only reader, 2026-09-28; verdict in
   Step MC19's route-B header; (MC-188), (MC-189) added; BASE compiled sorry-free).
-- [ ] **B1–B3, one build** (one fresh builder handed `scratch/40n-read/BaseFull.lean`; transcription
-  plus lint cleanup: the spike carries flexible-`simp` and deprecation warnings, and uses `[Fintype α]`
-  where the pins below say so), all in the new `MainComponent/GenericBase.lean` (imports
+- [x] **B1–B3, one build** (landed 2026-09-28: transcribed from `scratch/40n-read/BaseFull.lean`,
+  plus lint cleanup — 20 missing docstrings added, 3 deprecated names repointed
+  (`Set.mem_ofPred_eq`, `Set.insert_sdiff_singleton`, `Set.ncard_sdiff_singleton_of_mem`), the
+  `haveI`→`have` style hit, one long module-title line wrapped, both flexible `simp`s converted to
+  explicit `simp only [...]` sets (verified goal-for-goal via the Lean LSP MCP's `simp?`), and the
+  two `unusedFintypeInType` hits `set_option`-suppressed with a one-line justification (`[Fintype α]`
+  / `[Fintype ι]` are genuinely needed in the proof body but never re-mentioned in the type, so the
+  linter's shallow type-only check can't see it) — all in the new `MainComponent/GenericBase.lean` (imports
   `Matroid.Graph.Constructions.Sum`; root import alphabetical among `MainComponent`):
   - **B1** → `def:pencil-two-ear-graph`: **`Graph.addTwoEar`** (← `Apex.lean` 13–15) and its API:
     simplicity (`apex_simple_iff` and restriction; no `u ≠ w`), the vertex set, the links, the closed
@@ -118,16 +135,19 @@ their statements; every declaration gets a docstring.
 
 ## Blockers / open questions
 
-- None. B1–B3 are no longer unspiked: the second read's `BaseFull.lean` is the build, less placement,
-  docstrings and lint. Keeping `import Matroid.Graph.Constructions.Sum` out of `Bridge.lean` (see
-  *Decisions*) leaves the new import's only downstream the new leaf file.
+- None. B1–B3 are landed and pinned; 40n's build work is complete. The next step is administrative
+  (the phase-close checklist), not a build.
 
 ## Hand-off / next phase
 
-1. **M0 — done**; **the second read — done** (see the checklist).
-2. **Next: B1–B3 as one build**: dispatch one fresh builder, handed `scratch/40n-read/BaseFull.lean`,
-   to land it in `MainComponent/GenericBase.lean` with the pins above, greening the four 40n nodes.
-   That build closes 40n (phase-close checklist, `PHASE-BOUNDARIES.md`).
+1. **M0 — done**; **the second read — done**; **B1–B3 — done** (see the checklist): all four 40n
+   nodes are green, pinned, and warning-free.
+2. **Next: the 40n phase-close** (`PHASE-BOUNDARIES.md` *When this commit closes a phase*): flip +
+   re-thin the ROADMAP Phase-40 row's 40n clause, compress this note to the closed-phase archive
+   shape, sync the user-facing status surfaces (`formalization.yaml` incl. `#print axioms` on the
+   four pins), and do the end-to-end blueprint-chapter re-read (the ten remaining red
+   `sec:main-component-statements` nodes and `thm:pencil-conjecture` stay red — EARS' and
+   REDUCE+CLOSE's work, not 40n's).
 3. Then **EARS** opens by code (letter minted then): T1 (the reseed at given selectors), T2 (the
    witness `WitnessGen.lean` proves, (MC-188)), T3, Z1 from `OneEar.lean`, Z2; then REDUCE+CLOSE,
    both transcribing the assembly from `scratch/40n-read/GenBase.lean`.
@@ -154,3 +174,11 @@ their statements; every declaration gets a docstring.
   downstream import cone (`Cut.lean` onward), where a changed `simp` set would show only in a full
   build. It departs from the beside-their-definitions convention for that reason; the PI's `apex`
   construction stands.
+- **2026-09-28 — B1–B3 landed**: `GenericBase.lean` imports `Pencil/X0.lean` (for
+  `linearIndepOn_triple_of_linearIndependent`, only reachable via `X0 → Pair2 → Steer`) and
+  `MainComponent/CoverageTheoremS.lean` (everything else) — the same pair `Statements.lean` uses.
+  Both flexible `simp`s needed a hand-verified `simp only` set (`FRICTION.md` *third instance* of the
+  `<;>`-chain idiom); the linter's own "Try this" is a per-goal delta, not a drop-in replacement.
+  `lem:pencil-x0-planes-separate` dropped
+  a stale "is admissible" conjunct the landed lemma never proves (admissibility comes from the
+  attaining polynomial, not this lemma) — caught re-checking the node against the declaration.

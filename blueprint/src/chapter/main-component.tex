@@ -4312,6 +4312,8 @@ degree-two bodies enlarge the lifting space.
 
 \begin{definition}[A new body joined to two bodies]
   \label{def:pencil-two-ear-graph}
+  \lean{Graph.addTwoEar}
+  \leanok
   \uses{lem:pencil-jj-embed-edges}
   For distinct bodies $u, w$ of $G$, the graph $G_{uw}$ is $G$ together
   with one new body $x$ and two new edges, joining $x$ to $u$ and to $w$.
@@ -4321,16 +4323,19 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[The planes of two bodies separate without a planar-rigid set]
   \label{lem:pencil-x0-planes-separate}
+  \lean{CombinatorialRigidity.Molecular.exists_planes_separate}
+  \leanok
   \uses{def:pencil-lifting-space, def:D-deficiency}
   Let $K$ be infinite and $G$ simple, with at least three members in
   every closed neighbourhood, and with $\operatorname{def}_2(G[Y]) \ne 0$
   for every set $Y$ of at least two bodies. Let $u \ne w$ be bodies of
   $G$. There is a nonzero polynomial $P$ in the picture coordinates such
-  that every picture $q$ with $P(q) \ne 0$ is admissible and some height
-  $z \in L(q)$ has different planes at $u$ and $w$: the affine functions
-  carrying $z$ on the closed neighbourhoods of $u$ and $w$ differ.
+  that every picture $q$ with $P(q) \ne 0$ has some height $z \in L(q)$
+  with different planes at $u$ and $w$: the affine functions carrying
+  $z$ on the closed neighbourhoods of $u$ and $w$ differ.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:pencil-two-ear-graph, thm:pencil-jj-equality,
         lem:deficiency-sparse, lem:deficiency-singleton-bound}
   A height of $G$ whose planes at $u$ and $w$ agree extends to $G_{uw}$
@@ -4353,6 +4358,8 @@ degree-two bodies enlarge the lifting space.
 
 \begin{lemma}[The hub normals of a configuration]
   \label{lem:pencil-x0-conjunct-three}
+  \lean{CombinatorialRigidity.Molecular.isNondeg_pencilConfig_of_planeDiff}
+  \leanok
   \uses{def:pencil-nondegenerate, def:pencil-configuration,
         def:pencil-admissible-picture, def:pencil-lifting-space}
   Let $G$ be a finite multigraph with every closed hub-neighbourhood of at
@@ -4365,6 +4372,7 @@ degree-two bodies enlarge the lifting space.
   nondegenerate pencil realization.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pencil-config-distinct-realization, lem:pencil-condition-linear}
   The configuration is a pencil realization with adjacent points distinct
   (\cref{lem:pencil-config-distinct-realization}). A non-hub's closed
@@ -4386,6 +4394,8 @@ degree-two bodies enlarge the lifting space.
 
 \begin{theorem}[The general configuration is nondegenerate without a planar-rigid set]
   \label{thm:pencil-x0-base-generic}
+  \lean{Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero}
+  \leanok
   \uses{def:pencil-generic-motive, def:pencil-x0-standing}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses, be
   nondegeneracy-feasible, and have $\operatorname{def}_2(G[Y]) \ne 0$ for
@@ -4393,6 +4403,7 @@ degree-two bodies enlarge the lifting space.
   realization (\cref{def:pencil-generic-motive}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-planes-separate,
         lem:pencil-x0-conjunct-three, lem:pencil-x0-fibre-intersection,
         lem:pencil-feasible-hub-conditions}

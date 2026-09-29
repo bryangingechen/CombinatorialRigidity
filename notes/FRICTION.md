@@ -192,6 +192,13 @@ to be re-derived by re-reading entries later.
 - **Second instance of (2)** (Phase 40h B1, `klein_liftPlane` in `MainComponent/Lines.lean`): the
   spike's `simp [liftPlane, dotProduct, …] at e00 … e21` drew thirty flexible warnings under `lake
   lean`; `lean_code_actions` on a `simp?` gave a 34-lemma list, with no build.
+- **Third instance** (Phase 40n B1, `addTwoEar_isLink_iff` in `MainComponent/GenericBase.lean`): a
+  `<;>`-chained `simp [Graph.addTwoEar]` across 8 `rcases` branches drew 9 flexible warnings, but
+  each warning's own "Try this" is a per-goal *delta* (assumes the other goals already closed) —
+  three different, incomplete lemma sets, none a safe drop-in `simp only` for the whole `<;>` chain.
+  Fix: `simp? [Graph.addTwoEar]` (the Lean LSP MCP's `lean_multi_attempt`) at the tactic's own
+  position gives the FULL per-goal set across all 8 branches at once; the union of those closes
+  every branch identically to the original (goal-for-goal verified before editing).
 - **Status:** idiom.
 
 ### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
