@@ -156,7 +156,7 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   `GenericEar.lean`/`GenericTriangle.lean`'s main-component route). No missed mathlib lemma or
   tactic substitution surfaced; no cross-proof unification attempted (out of this task's scope).
   `Witness.lean` is at 1 758 lines (task 28 still applies).
-- [x] **26. C3** (this commit). `Pair.lean`/`Pair2.lean`'s #4, #5, #6 are all live (each is called
+- [x] **26. C3** (`6ff611b0`). `Pair.lean`/`Pair2.lean`'s #4, #5, #6 are all live (each is called
   within `Pair2.lean` itself: #4 at 1134/1161, #5 at 1194, #6 at 1028). One API extraction landed:
   the `hcross_eq` derivation — `∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ → e' = e_c ∧ x = u_c ∧
   y = v_c` — was re-derived from `Graph.eq_cutEdge_of_isLink_crossing` plus an
@@ -296,17 +296,17 @@ close mirrors them into `notes/Cleanup40.md` §2 Round 4.
     The shared step is the join-detector rank computation. Its `m`-general form would need a
     standard-basis API for `⋀²K⁴` that the project lacks, which is not worth building for an
     off-headline proof.
-- **A `_four`/`_six` cross-proof unification of `Pair2.lean`'s two pendant producers** (task 26,
-  C3; `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and its
-  `_deg3` sibling). Once `hcross_eq` is factored out (landed), the two proofs' shared tail —
+- **A #4/#6 cross-proof unification of `Pair2.lean`'s two pendant producers** (task 26,
+  C3; `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`, #4, and its
+  `_deg3` sibling, #6). Once `hcross_eq` is factored out (landed), the two proofs' shared tail —
   `normal_vc`'s choice through the pendant hinge, the glued data, `hlinks`, the four
   nonzero/incidence `have`s, `hadjLI` (conjunct 2), and the entire rank section — is
   byte-identical, ~190 lines each. A shared sub-lemma would need to abstract over: (a) the
   `point_vc`-avoidance target (a `≤ 2`-generator cover of `H.closedNbhd u_c`'s point image in
-  `_four`, vs. `span {point₁ u_c}` in `_six`), and (b) conjunct 3's closed-hub-neighbourhood
-  transfer (`Graph.pencilHub_iff_induce_of_degree_ne`, unconditional, in `_four`; the promoted
-  triple `hpromoted` at `{u_c, w₁, w₂}`, in `_six`) and conjunct 4's `v = u_c` case (a nontrivial
-  `≤ 2`-generator cover argument in `_four`; vacuous — `u_c` is always a `G`-hub — in `_six`). That
+  #4, vs. `span {point₁ u_c}` in #6), and (b) conjunct 3's closed-hub-neighbourhood
+  transfer (`Graph.pencilHub_iff_induce_of_degree_ne`, unconditional, in #4; the promoted
+  triple `hpromoted` at `{u_c, w₁, w₂}`, in #6) and conjunct 4's `v = u_c` case (a nontrivial
+  `≤ 2`-generator cover argument in #4; vacuous — `u_c` is always a `G`-hub — in #6). That
   is a real design task (a shared lemma taking the avoidance target and the hub-transfer proof as
   parameters), not a small local extraction — structural, per §C's fifth bullet.
 
