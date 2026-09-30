@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Molecular.Molecule.Pencil.ArmsAssembly
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 /-!
@@ -199,18 +200,19 @@ theorem exists_isNondegPencilRealization_parallel_pair
 /-! ## W5-L5: the base arm against the (b′) conditioned-pair motive (Phase 39 PENCIL)
 
 `pencilPair_of_ncard_le_two` mirrors the bare-motive `hasPencilRealization_of_ncard_le_two`
-(W3-L5, `Arms.lean`)'s own three-way case split (edgeless / single edge / `≥ 2`-fold parallel
-class), reusing its bare half verbatim for `PencilPair`'s **last** conjunct. The generic conjunct
-(`G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G`) dispatches on the same
-three cases: the parallel class is vacuous by `not_simple_of_parallel` (the case `G.Simple`
-excludes); the edgeless and single-edge cases are genuine producers, each needing a nondegenerate
-(not merely bare) witness — the edgeless graph gets one for free (every `closedHubNbhd`/`closedNbhd`
-collapses to `⊆ {v}`, so the bare arm's own constant `n₀`/`q₀` choice already satisfies
-`IsNondegPencilRealization`), while the single edge needs the same distinct-panel/distinct-point
-technique as `exists_isNondegPencilRealization_parallel_pair` above (one edge instead of two, so no
-edge-order dispatch), then the identical `exists_independent_rigidityRows_of_edge` rank sandwich the
-bare arm's own single-edge branch uses (it works for *any* nonzero support extensor, not a specific
-one). **Since 2026-09-16** that producer is split out as
+(W3-L5, `ArmsAssembly.lean`)'s own three-way case split (edgeless / single edge / `≥ 2`-fold
+parallel class), reusing its bare half verbatim for `PencilPair`'s **last** conjunct. The generic
+conjunct (`G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G`) dispatches on
+the same three cases: the parallel class is vacuous by `not_simple_of_parallel` (the case
+`G.Simple` excludes); the edgeless and single-edge cases are genuine producers, each needing a
+nondegenerate (not merely bare) witness — the edgeless graph gets one for free (every
+`closedHubNbhd`/`closedNbhd` collapses to `⊆ {v}`, so the bare arm's own constant `n₀`/`q₀` choice
+already satisfies `IsNondegPencilRealization`), while the single edge needs the same
+distinct-panel/distinct-point technique as `exists_isNondegPencilRealization_parallel_pair` above
+(one edge instead of two, so no edge-order dispatch), then the identical
+`exists_independent_rigidityRows_of_edge` rank sandwich the bare arm's own single-edge branch uses
+(it works for *any* nonzero support extensor, not a specific one). **Since 2026-09-16** that
+producer is split out as
 `hasGenericPencilRealization_of_ncard_le_two` (it never used the feasibility hypothesis), and
 `PencilPair`'s new adjacent-distinct conjunct forgets from it — so this arm needs no new
 construction and the *bare* arm's coincident single-edge witness stays untouched. -/

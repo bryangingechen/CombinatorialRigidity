@@ -1187,10 +1187,10 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
 /-! ## W5-L5: the successor assembly `pencil_conjecture_of_arms_pair` (`thm:pencil-conditional-
 realization-pair`, Phase 39 PENCIL)
 
-Mirrors the W3-L7 wrapper `pencil_conjecture_of_arms` (`Molecule/Pencil/Arms.lean`), instantiating
-`Graph.pencil_reduction` at the conditioned-pair motive `P := PencilPair K 3` instead of the bare
-`HasPencilRealization K 3`: the loop/base/cut arms discharge internally from the three landed
-leaves above (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
+Mirrors the W3-L7 wrapper `pencil_conjecture_of_arms` (`Molecule/Pencil/ArmsAssembly.lean`),
+instantiating `Graph.pencil_reduction` at the conditioned-pair motive `P := PencilPair K 3` instead
+of the bare `HasPencilRealization K 3`: the loop/base/cut arms discharge internally from the
+three landed leaves above (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
 `pencilPair_of_not_twoEdgeConnected`), and `hcontract`/`hsplit` are taken as hypotheses exactly as
 W3-L7's, restated against `PencilPair` in place of `HasPencilRealization`. Over an infinite field
 the cut arm is now fully self-contained (`pencilPair_of_not_twoEdgeConnected` discharges its

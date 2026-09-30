@@ -4,20 +4,20 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27 and 28 closed (17 not landed); 18
-of 50 one-commit tasks remain (task 28b, `Arms.lean`'s own tripwire split, added as task 28's
-follow-up). **Next concrete task:** task 28b, the `Arms.lean` file-size split. Round manual:
-`CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28 and 28b closed (17 not
+landed); 17 of 50 one-commit tasks remain. **Next concrete task:** task 29, A-P1, the
+blueprint-against-Lean walk of `pencil.tex`'s opening sections. Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 28b** (*Lemma checklist*). The checklist holds 50 one-commit tasks (task 28b
-added this commit); tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27 and 28 are
-closed (17 not landed), 18 remain. Nothing is mid-stream.
+**Next commit: task 29, A-P1** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28 and 28b are closed (17 not
+landed), 17 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27 and 28, one line each under *Lemma
-checklist → Landed* (task 17 closed not landed). A finished task gets one or two lines there, with
-its commit; the detail stays in the commit message, and this section stays the forward pointer.
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28 and 28b, one line each under
+*Lemma checklist → Landed* (task 17 closed not landed). A finished task gets one or two lines
+there, with its commit; the detail stays in the commit message, and this section stays the
+forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -149,10 +149,13 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - [x] **27. C4** (`a9a141c6`). #7–#9 all live (task 24's `hasGenericPencilRealization_of_IH`
   chain); no local fix, `Arms.lean` unchanged at 1 513 lines; #8's case-split duplication over
   `ScrewSpace`-carrier terms is a candidate.
-- [x] **28. S1** (this commit). `Witness.lean` split along its `## The general-position core`
+- [x] **28. S1** (`9a424770`). `Witness.lean` split along its `## The general-position core`
   header into `Witness.lean` (1 109 lines) and `WitnessGeneral.lean` (685 lines); every file
-  pointer naming a moved declaration repointed. `Arms.lean` is unchanged, still past ~1500
-  (task 28b, below).
+  pointer naming a moved declaration repointed. `Arms.lean` left unchanged, still past ~1500.
+- [x] **28b. S1 follow-up** (this commit). `Arms.lean` split along its `## W3-L5: the base arm`
+  header into `Arms.lean` (1 224 lines, loop + cut-edge arms and infra) and the new
+  `ArmsAssembly.lean` (324 lines, base arm + bare-motive wrapper); `Pair.lean` gained an import
+  and two docstring repoints, `Pair2.lean` one.
 
 ### §C: the long-proof screen (the top ten, walked; screening only)
 
@@ -163,15 +166,8 @@ findings are recorded as candidates. First run a cheap liveness check (`lean_ref
 transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`). A proof that feeds neither
 headline is recorded as off-headline (round 4's third question) and gets no local work.
 
-(Tasks 27–28, C4/S1, closed above. The ranking's tied tenth, `of_openEar_three`, and the twelfth,
+(Tasks 27–28b, C4/S1, closed above. The ranking's tied tenth, `of_openEar_three`, and the twelfth,
 `of_openEar_four`, are task 18's.)
-
-- [ ] **28b. S1 follow-up: `Arms.lean`.** Recorded as task 28's follow-up (coordinator-verified at
-  `a9a141c6`, carried through task 28 unchanged): `Arms.lean` is at 1 513 lines, still past ~1500.
-  Its `/-! ##` headers are at 36, 148, 239, 344, 646, 744, 1224, 1421. Same discipline as task 28:
-  pick a header giving two halves under ~1200, check whether either half calls a declaration from
-  the other (import the surviving file from the new one if so), find its importer(s), and repoint
-  every file pointer naming `Arms.lean` for a moved declaration.
 
 ### §A: the blueprint against the Lean (every `\leanok` node, including the laundering walk)
 
@@ -312,18 +308,20 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 28b**, `Arms.lean`'s own file-size split (recorded this commit as
-task 28's follow-up, not done here). It is at 1 513 lines, past ~1500; headers at 36, 148, 239,
-344, 646, 744, 1224, 1421. Same discipline as task 28: pick a header giving two halves under
-~1200, check cross-references between the halves, find the importer(s), and repoint every file
-pointer naming `Arms.lean` for a moved declaration. Task 29 (A-P1, §A) is next after that.
+**Next concrete commit: task 29, A-P1** (§A, the blueprint-against-Lean walk). `pencil.tex`, from
+`sec:pencil-through-point` through `sec:pencil-extension` (38–468; 13 environments): compare each
+`\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read the
+prose proof for oversell. Tasks 29–44 (§A) walk the rest of the surface; task 45 closes the round.
 
-Task 28 (this commit) split `Witness.lean` at its `## The general-position core` header into
-`Witness.lean` (1 109 lines, sections 1–2) and the new `WitnessGeneral.lean` (685 lines, sections
-3–5); `Steer.lean` (the only importer) now imports both. Every file pointer naming a moved
-declaration is repointed (`Engine.lean`'s three `Witness.lean` mentions and `Steer.lean`'s own are
-all to section 1–2 content that stayed, so untouched). `Arms.lean` was left untouched per the
-coordinator's scope-pin, which split its own follow-up into task 28b (above).
+Task 28b (this commit) split `Arms.lean` at its `## W3-L5: the base arm` header into `Arms.lean`
+(1 224 lines: loop arm `L3`, cut-edge arm `L4` and its transport/nondegeneracy/rank-assembly
+infra) and the new `ArmsAssembly.lean` (324 lines: base arm `L5`, bare-motive wrapper `L7`).
+`Pair.lean` — the only real caller of the moved `hasPencilRealization_of_ncard_le_two` (via
+`Motive.lean`'s transitive import, which itself needs nothing from the new file) — gained a
+direct `ArmsAssembly` import and its one specific-declaration docstring repoint;
+`Pair2.lean` had one (`pencil_conjecture_of_arms`, docstring-only, never called elsewhere). Every
+other `Arms.lean` docstring pointer in the tree (`Engine`/`Motive`/`Pair`/`Pair2`/`TACTICS-GOLF`/
+`FRICTION`/`Phase40-design`) names a declaration that stayed, so was left as-is.
 
 ## Decisions made during this round
 
