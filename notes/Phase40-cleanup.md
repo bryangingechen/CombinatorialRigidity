@@ -110,7 +110,7 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - [x] **18. M2c-iii** (`b8b24c9a`). `Graph.X0Attains.of_openEar_splitOff`, parametrized by the
   antecedent's ear length, with no `Fin.succAbove`: 704 → 461 lines, heartbeats halved,
   `Short.lean` 1 357 → 1 139. The FRICTION entry is resolved. TACTICS-QUIRKS §112, §114.
-- [x] **19. M2d** (this commit). `lem:pencil-ear-data`'s nine pins split along its three clauses:
+- [x] **19. M2d** (`d9acaee8`). `lem:pencil-ear-data`'s nine pins split along its three clauses:
   `def:pencil-ear-data` (the construction, `earPicture`/`earHeight`/`earConfig`), `lem:pencil-ear-data`
   (clause 1, kept the old label), `lem:pencil-ear-data-picture` (clause 2), `lem:pencil-ear-data-open`
   (clause 3). Every `\uses`/`\cref` site in `main-component.tex` and all 14 `EarGen.lean` docstring
@@ -317,7 +317,7 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 to `Cut.lean` beside `def pathVertex` (429), and the `Graph.IsOpenEar.*` lemmas (`## Open ears`,
 99–273, plus 443 and 470) to `Coverage.lean` beside `structure Graph.IsOpenEar` (58), as far as
 `Coverage.lean`'s imports allow (record any that stay, and why). No names change, so no pin moves;
-every step file below `Cut.lean` rebuilds. Task 19 (this commit) closed the pin budget of
+every step file below `Cut.lean` rebuilds. Task 19 (`d9acaee8`) closed the pin budget of
 `lem:pencil-ear-data`.
 
 ## Decisions made during this round
