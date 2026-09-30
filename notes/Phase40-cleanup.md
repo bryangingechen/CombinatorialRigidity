@@ -4,18 +4,19 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b and 29 closed (17 not
-landed); 16 of 50 one-commit tasks remain. **Next concrete task:** task 30, A-P2, the
-blueprint-against-Lean walk of `pencil.tex`'s `sec:pencil-reduction`. Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29 and 30 closed (17 not
+landed); 15 of 50 one-commit tasks remain. **Next concrete task:** task 31, A-P3, the
+blueprint-against-Lean walk of `pencil.tex`'s `sec:pencil-nondegenerate` and
+`sec:pencil-main-component-route`. Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 30, A-P2** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b and 29 are closed (17 not
-landed), 16 remain. Nothing is mid-stream.
+**Next commit: task 31, A-P3** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29 and 30 are closed (17
+not landed), 15 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b and 29, one line each under
-*Lemma checklist → Landed* (task 17 closed not landed). A finished task gets one or two lines
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29 and 30, one line each
+under *Lemma checklist → Landed* (task 17 closed not landed). A finished task gets one or two lines
 there, with its commit; the detail stays in the commit message, and this section stays the
 forward pointer.
 
@@ -184,14 +185,18 @@ Done: one tally line per task (nodes walked, divergences found, fixes landed), w
 strength-changing finding under *Candidates*. The ranges are the open's line numbers.
 
 - [x] **29. A-P1: `pencil.tex`, from `sec:pencil-through-point` through `sec:pencil-extension`**
-  (38–468; 13 environments; this commit). 13 nodes walked, 2 divergences found and fixed: the
+  (38–468; 13 environments; `9a286917`). 13 nodes walked, 2 divergences found and fixed: the
   cycle pair's proof `\uses` ran backwards (`lem:cycle-coplanar-realization` narrated as built
   directly from `lem:cycle-normals`, `lem:cycle-pencil-realization` narrated as built from it,
   while the Lean does the reverse — the pencil version is primary and the coplanar version is its
   one-line forgetful corollary); and `lem:two-pencil-extension-iff`'s backward direction rested on
   `span_range_eq_of_extensor_eq` (Plücker injectivity), pinned nowhere — its own docstring names an
   intended label (`lem:decomposable-extensor-span-unique`) never added, now minted in `meet.tex`.
-- [ ] **30. A-P2: `sec:pencil-reduction`** (469–755; 11).
+- [x] **30. A-P2: `sec:pencil-reduction`** (469–755; 11; this commit). 11 nodes walked, 2
+  divergences found and fixed, both prose-only: a missing `\uses{lem:screw-map-rows}` on
+  `lem:pencil-projective-transport`'s rank-invariance claim, and a missing proof sentence on
+  `thm:pencil-conditional-realization` narrating its rank–nullity bridge to the pinned
+  `pencil_conjecture_of_arms`'s motion-space conclusion.
 - [ ] **31. A-P3: `sec:pencil-nondegenerate` and `sec:pencil-main-component-route`** (756–1196; 9).
   The conditional theorems kept when design §6 was retired live here.
 - [ ] **32. A-P4: `sec:pencil-girth-chain` and the chapter introduction** (1197–1412 and 1–37; 8).
@@ -314,45 +319,15 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 30, A-P2** (§A, the blueprint-against-Lean walk). `pencil.tex`,
-`sec:pencil-reduction` (469–755; 11 environments): compare each `\leanok` node's statement with its
-pinned Lean signature, check the laundering walk, and read the prose proof for oversell. Tasks
-30–44 (§A) walk the rest of the surface; task 45 closes the round.
+**Next concrete commit: task 31, A-P3** (§A, the blueprint-against-Lean walk). `pencil.tex`,
+`sec:pencil-nondegenerate` and `sec:pencil-main-component-route` (756–1196; 9 environments):
+compare each `\leanok` node's statement with its pinned Lean signature, check the laundering walk,
+and read the prose proof for oversell. Tasks 31–44 (§A) walk the rest of the surface; task 45
+closes the round.
 
-Task 29 (this commit) walked `pencil.tex`'s 13 environments from `sec:pencil-through-point` through
-`sec:pencil-extension` against their pinned Lean (`Molecular/Molecule/Pencil/Statement.lean`).
-Every statement's hypotheses/conclusion/binders match its Lean signature, and every `\leanok`
-node's hypotheses are ambient or discharged — no laundering. Two divergences surfaced and were
-fixed, both in proof-level `\uses`/prose only (no statement changed):
-- **The cycle pair's proof dependency ran backwards.** The Lean builds
-  `exists_pencilPanelRealization_cycle` (`lem:cycle-pencil-realization`) directly from
-  `exists_cycle_normals` + `exists_concurrency_point_of_extensorInPanel_pair`, and
-  `exists_coplanarPanelRealization_cycle` (`lem:cycle-coplanar-realization`) is a one-line corollary
-  that forgets the point (matching that decl's own Lean docstring: "Immediate corollary of the
-  pencil realization … discarding the per-body concurrency point"). The blueprint had it exactly
-  backwards — `lem:cycle-coplanar-realization`'s proof claimed the direct build from
-  `lem:cycle-normals`, and `lem:cycle-pencil-realization`'s proof claimed to build from
-  `lem:cycle-coplanar-realization`. Swapped both proofs' `\uses` edges and content to match; no
-  statement changed.
-- **A missing `\uses` target with no blueprint node at all.** `lem:two-pencil-extension-iff`'s
-  backward direction rests on `span_range_eq_of_extensor_eq` (Plücker injectivity: equal nonzero
-  decomposable `2`-extensors span the same plane), which was pinned nowhere in the blueprint — not
-  even inside another node's declaration-list cluster. Its own Lean docstring names an intended
-  label, `lem:decomposable-extensor-span-unique`, never added. Minted that node in `meet.tex`
-  (beside `lem:case-III-claim612-line-in-panel-union`, whose converse it is) and added it to
-  `lem:two-pencil-extension-iff`'s proof `\uses`.
-
-`blueprint/lint.sh` and `blueprint/verify.sh` (bp + web + checkdecls) both green after the fixes.
-
-Task 28b split `Arms.lean` at its `## W3-L5: the base arm` header into `Arms.lean`
-(1 224 lines: loop arm `L3`, cut-edge arm `L4` and its transport/nondegeneracy/rank-assembly
-infra) and the new `ArmsAssembly.lean` (324 lines: base arm `L5`, bare-motive wrapper `L7`).
-`Pair.lean` — the only real caller of the moved `hasPencilRealization_of_ncard_le_two` (via
-`Motive.lean`'s transitive import, which itself needs nothing from the new file) — gained a
-direct `ArmsAssembly` import and its one specific-declaration docstring repoint;
-`Pair2.lean` had one (`pencil_conjecture_of_arms`, docstring-only, never called elsewhere). Every
-other `Arms.lean` docstring pointer in the tree (`Engine`/`Motive`/`Pair`/`Pair2`/`TACTICS-GOLF`/
-`FRICTION`/`Phase40-design`) names a declaration that stayed, so was left as-is.
+Tasks 29 and 30's divergences and fixes are recorded on their own *Lemma checklist* lines above
+(both closed the same way: fixed in-commit, both gates green, no statement changed). Task 28b's
+`Arms.lean`/`ArmsAssembly.lean` split and its repointed callers are on its own checklist line.
 
 ## Decisions made during this round
 

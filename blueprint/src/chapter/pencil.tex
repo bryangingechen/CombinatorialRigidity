@@ -600,6 +600,7 @@ exactly two.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:screw-map-rows}
   Panel containment and through-point incidence transport because the
   induced screw automorphism sends the extensor of spanning points
   $p_0, \dots$ to the extensor of $g p_0, \dots$; the contragredient
@@ -608,11 +609,11 @@ exactly two.
   the one containing $g q$. The panel--point incidence $\langle q,
   n\rangle = 0$ is likewise preserved, and the automorphisms send nonzero
   data to nonzero data. Rank invariance is the change-of-screw-coordinates
-  identity: this lemma is the collineation companion of
-  \cref{lem:pencil-self-dual}, whose polarity is instead a correlation,
-  exchanging the normal and point roles rather than repositioning within
-  them; both rest on the same field-general screw-space automorphism
-  mechanism (\cref{thm:projective-invariance}).
+  identity (\cref{lem:screw-map-rows}): this lemma is the collineation
+  companion of \cref{lem:pencil-self-dual}, whose polarity is instead a
+  correlation, exchanging the normal and point roles rather than
+  repositioning within them; both rest on the same field-general
+  screw-space automorphism mechanism (\cref{thm:projective-invariance}).
 \end{proof}
 
 \begin{lemma}[Existence of a repositioning automorphism]
@@ -745,7 +746,10 @@ exactly two.
   \cref{lem:pencil-loop-case}, the base case is
   \cref{lem:pencil-base-case}, and the cut-edge case is
   \cref{lem:pencil-cut-case}; the contraction and split cases are the two
-  hypotheses.
+  hypotheses. Because the ambient body set is exactly $V(G)$, the
+  resulting rigidity-row rank equation restates, via the rank--nullity
+  complement between the rigidity-row span and the infinitesimal-motion
+  space, as the equivalent global rank hypothesis on the motion space.
 \end{proof}
 
 \subsection{Nondegenerate realizations and the conditioned pair}
