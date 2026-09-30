@@ -306,10 +306,8 @@ theorem _root_.Graph.IsX0Graph.three_le_ncard_vertexSet [Finite α] {G : Graph �
     (hG : G.IsX0Graph) :
     3 ≤ V(G).ncard := by
   obtain ⟨v, hv⟩ := hG.connected.nonempty
-  refine (hG.three_le_ncard_closedNbhd v hv).trans (Set.ncard_le_ncard ?_ (Set.toFinite _))
-  rintro w (rfl | ⟨e, he⟩)
-  · exact hv
-  · exact he.right_mem
+  exact (hG.three_le_ncard_closedNbhd v hv).trans
+    (Set.ncard_le_ncard (Graph.closedNbhd_subset_vertexSet hv) (Set.toFinite _))
 
 /-- The identity partition's crossing edges are all of `E(G)`. -/
 theorem _root_.Graph.IsX0Graph.crossingEdges_id {G : Graph α β} (hG : G.IsX0Graph) :

@@ -324,27 +324,21 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
   -- `V(G)` at every vertex of a triangle. ───────────────────────────────────────────────────────
   have hcnx : G.closedNbhd x = ({x, y, z} : Set α) := by
     apply Set.Subset.antisymm
-    · rintro w (rfl | ⟨e, hl⟩)
-      · rw [← hVeq]; exact hxy_link.left_mem
-      · rw [← hVeq]; exact hl.right_mem
+    · rw [← hVeq]; exact Graph.closedNbhd_subset_vertexSet hxy_link.left_mem
     · rintro w (rfl | rfl | rfl)
       · exact Or.inl rfl
       · exact Or.inr ⟨exy, hxy_link⟩
       · exact Or.inr ⟨ezx, hzx_link.symm⟩
   have hcny : G.closedNbhd y = ({x, y, z} : Set α) := by
     apply Set.Subset.antisymm
-    · rintro w (rfl | ⟨e, hl⟩)
-      · rw [← hVeq]; exact hxy_link.right_mem
-      · rw [← hVeq]; exact hl.right_mem
+    · rw [← hVeq]; exact Graph.closedNbhd_subset_vertexSet hxy_link.right_mem
     · rintro w (rfl | rfl | rfl)
       · exact Or.inr ⟨exy, hxy_link.symm⟩
       · exact Or.inl rfl
       · exact Or.inr ⟨eyz, hyz_link⟩
   have hcnz : G.closedNbhd z = ({x, y, z} : Set α) := by
     apply Set.Subset.antisymm
-    · rintro w (rfl | ⟨e, hl⟩)
-      · rw [← hVeq]; exact hyz_link.right_mem
-      · rw [← hVeq]; exact hl.right_mem
+    · rw [← hVeq]; exact Graph.closedNbhd_subset_vertexSet hyz_link.right_mem
     · rintro w (rfl | rfl | rfl)
       · exact Or.inr ⟨ezx, hzx_link⟩
       · exact Or.inr ⟨eyz, hyz_link.symm⟩

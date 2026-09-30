@@ -260,11 +260,7 @@ theorem _root_.Graph.affineLifts_le_liftingSpace (G : Graph α β) (q : α × Fi
     G.affineLifts q ≤ G.liftingSpace q := by
   rintro z ⟨h, rfl⟩
   refine ⟨fun w hw => by simp [hw], fun v hv => ⟨h, fun w hw => ?_⟩⟩
-  have hwV : w ∈ V(G) := by
-    rcases hw with rfl | ⟨e, he⟩
-    · exact hv
-    · exact he.right_mem
-  simp [hwV]
+  simp [Graph.closedNbhd_subset_vertexSet hv hw]
 
 /-- **`Aff(q)` is three-dimensional at an admissible picture** (`lem:pencil-lifting-space-affine`;
 Phase 40b CARRIER slice C2, with `Graph.affineLifts_le_liftingSpace` giving `3 ≤ dim L(q)`). The
@@ -281,10 +277,7 @@ theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α �
   have hinj : Function.Injective (G.affineLiftMap q) := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
     intro h hh
-    have htV : ∀ i, t i ∈ V(G) := fun i => by
-      rcases ht i with rfl | ⟨e, he⟩
-      · exact hv₀
-      · exact he.right_mem
+    have htV : ∀ i, t i ∈ V(G) := fun i => Graph.closedNbhd_subset_vertexSet hv₀ (ht i)
     have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
       Matrix.linearIndependent_rows_iff_isUnit.mp hli
     have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ h =
@@ -658,25 +651,19 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
 
 /-! ## The lifting system's kernel: locality and monotonicity (Phase 40j SPLITOFF) -/
 
-/-- **The lifting system's kernel reads the picture only on `V(H)`.** The closed-neighbourhood
-membership fact `Graph.closedNbhd_subset_vertexSet` now lives in `Motive.lean` (moved from
-`Bridge.lean`, 40-cleanup task 21a); this call site's local `have` predates that move (Phase 40j)
-and is not yet swapped in. -/
+/-- **The lifting system's kernel reads the picture only on `V(H)`**: a closed neighbourhood of a
+body of `H` lies in `V(H)` (`Graph.closedNbhd_subset_vertexSet`). -/
 theorem _root_.Graph.ker_liftingMatrix_congr [Fintype α] {H : Graph α β} {q q' : α × Fin 2 → K}
     (hq : ∀ w ∈ V(H), ∀ i, q (w, i) = q' (w, i)) :
     LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin =
       LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q')).mulVecLin := by
-  have hcsv : ∀ {v : α}, v ∈ V(H) → H.closedNbhd v ⊆ V(H) := by
-    rintro v hv w (rfl | ⟨e, he⟩)
-    · exact hv
-    · exact he.right_mem
   have hpp : ∀ w ∈ V(H), pencilPicturePoint q w = pencilPicturePoint q' w := by
     intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
   ext y
   simp only [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
   refine and_congr_right fun _ => and_congr_left fun _ => forall₂_congr fun v hv =>
     forall₂_congr fun w hw => ?_
-  rw [hpp w (hcsv hv hw)]
+  rw [hpp w (Graph.closedNbhd_subset_vertexSet hv hw)]
 
 /-- **Adding links on the same bodies shrinks the lifting system's kernel.** -/
 theorem _root_.Graph.ker_liftingMatrix_le_of_le [Fintype α] {H H' : Graph α β} (hle : H ≤ H')
@@ -754,8 +741,7 @@ theorem _root_.Graph.two_le_finrank_map_planeDiff [Fintype α] {G' H : Graph α 
       simpa [hE, Matrix.mulVec, dotProduct_comm] using this
     obtain ⟨h0, h2, -⟩ := Graph.liftingMatrix_mulVec_eq_zero_iff.mp (LinearMap.mem_ker.mp hxL)
     refine ⟨fun w hw => h0 w (hV ▸ hw), fun v hv => ⟨fun i => x (Sum.inr (v, i)), fun w hw => ?_⟩⟩
-    have hwV : w ∈ V(G') := hV ▸ (by rcases hw with rfl | ⟨e, he⟩; exacts [hv, he.right_mem] :
-      w ∈ V(H))
+    have hwV : w ∈ V(G') := hV ▸ Graph.closedNbhd_subset_vertexSet hv hw
     rw [hV] at hv
     simp only [π, LinearMap.domRestrict_apply, LinearMap.funLeft_apply]
     have hdiff : ∀ u, planeDiff a b x ⬝ᵥ pencilPicturePoint q u =

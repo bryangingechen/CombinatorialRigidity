@@ -93,8 +93,7 @@ re-seeding sweep (`Molecule/Pencil/Engine.lean`) was built for. -/
 def _root_.Graph.closedNbhd (G : Graph α β) (v : α) : Set α :=
   {w | w = v ∨ ∃ e, G.IsLink e v w}
 
-/-- A closed neighbourhood of a body of `G` lies in `V(G)` (moved here 2026-09-30 from
-`MainComponent/Bridge.lean`, downstream of most of its consumers — `notes/FRICTION.md`). -/
+/-- A closed neighbourhood of a body of `G` lies in `V(G)`. -/
 theorem _root_.Graph.closedNbhd_subset_vertexSet {G : Graph α β} {v : α} (hv : v ∈ V(G)) :
     G.closedNbhd v ⊆ V(G) := by
   rintro w (rfl | ⟨e, he⟩)

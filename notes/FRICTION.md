@@ -358,10 +358,9 @@ to be re-derived by re-reading entries later.
   `vertexSet_embedEdges`, `embedEdges_isLink`, `edgeSet_embedEdges` beside `Graph.map`. It was not
   mirrored yet: its `Simple` lemma is about the `Matroid` package's `Graph.Simple`, which is not
   Mathlib's, and the invariance lemmas (`closedNbhd_`, `liftingSpace_`, `deficiency_embedEdges`)
-  are project-specific. Also project-local and misplaced: `Graph.closedNbhd_subset_vertexSet`
-  belongs beside `Graph.closedNbhd` (`Molecule/Pencil/Motive.lean`), where it would replace the two
-  inline copies in `Carrier.lean` (`affineLifts_le_liftingSpace`, `finrank_affineLifts`). That is a
-  cleanup-round move, since `Motive.lean` has many reverse dependencies.
+  are project-specific. (The misplaced `Graph.closedNbhd_subset_vertexSet` this entry also named
+  now sits beside `Graph.closedNbhd` in `Motive.lean`, and its inline copies, including the two in
+  `Carrier.lean` named here, are gone: 40-cleanup task 21a and its follow-up.)
 - **Status:** open.
 - **Recurred (known quirks, no new lesson):** the same build hit `congr 1` vs `congr 2` on
   `MvPolynomial.eval` after `eval_bind₁` (entry below). It also hit TACTICS-QUIRKS § 38's
@@ -3018,7 +3017,7 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 ### [open] Two general facts sit downstream of their natural consumers: `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) and the `infinitesimalMotions_eq_of_isLink_*` congruences (`Pinning.lean`)
 - **Where it bit:** Phase 40h B3–B4. `Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`MainComponent/Carrier.lean`) each inline "a closed neighbourhood lies in `V(G)`", because `Graph.closedNbhd_subset_vertexSet` is in `MainComponent/Bridge.lean`, downstream. `BodyHingeFramework.relScrews_congr` (`RigidityMatrix/Bricks.lean`) re-proves the motion-space congruence at links, because `infinitesimalMotions_eq_of_isLink_span_supportExtensor` is in `AlgebraicInduction/Pinning.lean`, which imports `Bricks.lean`.
 - **Proposed fix:** move `closedNbhd_subset_vertexSet` to `Molecule/Pencil/Motive.lean` beside `Graph.closedNbhd`, and the `infinitesimalMotions_eq_of_isLink_*` pair (they read only `Basic.lean`) to `RigidityMatrix/Basic.lean`; then drop the inlined copies. Rename-free, so no pin moves.
-- **Status:** open. The `closedNbhd_subset_vertexSet` half landed (40-cleanup task 21a): it now lives in `Motive.lean` beside `Graph.closedNbhd`, and `isAdmissiblePicture_congr`/`liftingSpace_congr` call it directly. Task 21b (the `infinitesimalMotions_eq_of_isLink_*` half) remains and closes this entry.
+- **Status:** open. The `closedNbhd_subset_vertexSet` half landed (40-cleanup task 21a and its follow-up): it now lives in `Motive.lean` beside `Graph.closedNbhd`, and every inlined copy calls it instead, `isAdmissiblePicture_congr`/`liftingSpace_congr` and 19 more across the pencil tree. Task 21b (the `infinitesimalMotions_eq_of_isLink_*` half) remains and closes this entry.
 
 ## Anti-patterns / known dead ends
 

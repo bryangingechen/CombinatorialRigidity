@@ -339,10 +339,7 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
     by_cases hhub : G.PencilHub v
     · exact ⟨fun _ _ => 0, fun h' => absurd hhub h'⟩
     by_cases hv : v ∈ V(G)
-    · have hsub : G.closedNbhd v ⊆ V(G) := by
-        rintro w (rfl | ⟨e, hl⟩)
-        · exact hv
-        · exact hl.right_mem
+    · have hsub : G.closedNbhd v ⊆ V(G) := Graph.closedNbhd_subset_vertexSet hv
       obtain ⟨fill, hLI, hd⟩ := exists_fill_cross₃_eq_smul_of_selector (h.1.1.2.1 v hv)
         (hNbrSel v hhub)
         (LinearIndepOn.of_smul_eq (f := point) (g := pt) (h.2.2.2 v hv hhub)

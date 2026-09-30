@@ -1162,11 +1162,7 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
         have hLI_point : LinearIndepOn K point (G.closedNbhd v) := h.2.2.2 v hv hhub
         have hpa_ne : point a ≠ 0 := by
           rw [heq] at hLI_point; exact (linearIndepOn_singleton_iff K).mp hLI_point
-        have haV : a ∈ V(G) := by
-          have hmem : a ∈ G.closedNbhd v := heq ▸ rfl
-          rcases hmem with rfl | ⟨e, hlink⟩
-          · exact hv
-          · exact hlink.right_mem
+        have haV : a ∈ V(G) := Graph.closedNbhd_subset_vertexSet hv (heq ▸ rfl)
         obtain ⟨ca, hca_ne, hca_eq⟩ := hpt a haV
         have hpta_ne : pt a ≠ 0 := by rw [hca_eq]; exact smul_ne_zero hca_ne hpa_ne
         have hqa : normal v ⬝ᵥ pt a = 0 := by
@@ -1203,16 +1199,9 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
         have hLI2 : LinearIndependent K ![point x, point y] := by
           rw [LinearIndependent.pair_iff]
           exact (LinearIndepOn.pair_iff point hxy).mp (heq ▸ hLI_point)
-        have hxV : x ∈ V(G) := by
-          have hmem : x ∈ G.closedNbhd v := heq ▸ Set.mem_insert x {y}
-          rcases hmem with rfl | ⟨e, hlink⟩
-          · exact hv
-          · exact hlink.right_mem
-        have hyV : y ∈ V(G) := by
-          have hmem : y ∈ G.closedNbhd v := heq ▸ Set.mem_insert_of_mem x rfl
-          rcases hmem with rfl | ⟨e, hlink⟩
-          · exact hv
-          · exact hlink.right_mem
+        have hxV : x ∈ V(G) := Graph.closedNbhd_subset_vertexSet hv (heq ▸ Set.mem_insert x {y})
+        have hyV : y ∈ V(G) :=
+          Graph.closedNbhd_subset_vertexSet hv (heq ▸ Set.mem_insert_of_mem x rfl)
         obtain ⟨cx, hcx_ne, hcx_eq⟩ := hpt x hxV
         obtain ⟨cy, hcy_ne, hcy_eq⟩ := hpt y hyV
         have hLI2' : LinearIndependent K ![pt x, pt y] := by
@@ -1266,21 +1255,12 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
         have hLI_point : LinearIndepOn K point (G.closedNbhd v) := h.2.2.2 v hv hhub
         have hLI3 : LinearIndependent K ![point x, point y, point z] :=
           linearIndependent_triple_of_linearIndepOn point hxy hxz hyz (heq ▸ hLI_point)
-        have hxV : x ∈ V(G) := by
-          have hmem : x ∈ G.closedNbhd v := heq ▸ (by simp : x ∈ ({x,y,z}:Set α))
-          rcases hmem with rfl | ⟨e, hlink⟩
-          · exact hv
-          · exact hlink.right_mem
-        have hyV : y ∈ V(G) := by
-          have hmem : y ∈ G.closedNbhd v := heq ▸ (by simp : y ∈ ({x,y,z}:Set α))
-          rcases hmem with rfl | ⟨e, hlink⟩
-          · exact hv
-          · exact hlink.right_mem
-        have hzV : z ∈ V(G) := by
-          have hmem : z ∈ G.closedNbhd v := heq ▸ (by simp : z ∈ ({x,y,z}:Set α))
-          rcases hmem with rfl | ⟨e, hlink⟩
-          · exact hv
-          · exact hlink.right_mem
+        have hxV : x ∈ V(G) :=
+          Graph.closedNbhd_subset_vertexSet hv (heq ▸ (by simp : x ∈ ({x,y,z}:Set α)))
+        have hyV : y ∈ V(G) :=
+          Graph.closedNbhd_subset_vertexSet hv (heq ▸ (by simp : y ∈ ({x,y,z}:Set α)))
+        have hzV : z ∈ V(G) :=
+          Graph.closedNbhd_subset_vertexSet hv (heq ▸ (by simp : z ∈ ({x,y,z}:Set α)))
         obtain ⟨cx, hcx_ne, hcx_eq⟩ := hpt x hxV
         obtain ⟨cy, hcy_ne, hcy_eq⟩ := hpt y hyV
         obtain ⟨cz, hcz_ne, hcz_eq⟩ := hpt z hzV

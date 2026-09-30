@@ -189,10 +189,7 @@ theorem exists_isNondegPencilRealization_parallel_pair
     · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 1
   · -- Non-hub closed-neighbourhood independence: `closedNbhd v' ⊆ V(G) = {x, y}`.
     intro v' hv' _
-    have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) := by
-      rintro w (rfl | ⟨e', hl⟩)
-      · exact hVG ▸ hv'
-      · exact hVG ▸ hl.right_mem
+    have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) := hVG ▸ Graph.closedNbhd_subset_vertexSet hv'
     refine LinearIndepOn.mono ?_ hsub
     rw [LinearIndepOn.pair_iff point hxy]
     refine fun c d hcd => ⟨?_, ?_⟩
@@ -369,10 +366,8 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
         · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 1
       · -- Non-hub closed-neighbourhood independence: `closedNbhd v' ⊆ V(G) = {x, y}`.
         intro v' hv' _
-        have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) := by
-          rintro w (rfl | ⟨e', hl⟩)
-          · exact hVG ▸ hv'
-          · exact hVG ▸ hl.right_mem
+        have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) :=
+          hVG ▸ Graph.closedNbhd_subset_vertexSet hv'
         refine LinearIndepOn.mono ?_ hsub
         rw [LinearIndepOn.pair_iff point hxy]
         refine fun c d hcd => ⟨?_, ?_⟩

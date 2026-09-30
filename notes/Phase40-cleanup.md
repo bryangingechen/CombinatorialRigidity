@@ -129,11 +129,11 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 - **21a–21b. F2: two general facts downstream of their consumers** (the `[open]` FRICTION
   entry of that name). Two commits. No names change. The second closes the FRICTION entry.
-  - [x] **21a.** (this commit). Moved `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to
-    `Motive.lean`, beside `Graph.closedNbhd`; `Graph.isAdmissiblePicture_congr`'s and
-    `Graph.liftingSpace_congr`'s inlined copies (`Carrier.lean`) now call it directly. A third,
-    undocumented inline copy (`ker_liftingMatrix_congr`, Phase 40j, outside this task's two named
-    sites) had its docstring repointed but keeps its `have` — out of scope here.
+  - [x] **21a.** (`24ad0724`; follow-up, this commit). Moved `Graph.closedNbhd_subset_vertexSet`
+    (`Bridge.lean`) to `Motive.lean`, beside `Graph.closedNbhd`, and dropped the two named inline
+    copies (`isAdmissiblePicture_congr`, `liftingSpace_congr`). The follow-up dropped the other 19
+    across the pencil tree: `Carrier.lean` 4 (incl. the mirror-candidate entry's two), `Engine.lean`
+    6, `Base.lean` 3, `Cut.lean` 2, `Pair.lean` 2, `CoverageChain.lean` 1, `Reseed.lean` 1.
   - [ ] **21b.** Move the `infinitesimalMotions_eq_of_isLink_*` pair (`AlgebraicInduction/Pinning.lean`)
     to `RigidityMatrix/Basic.lean`, and drop `BodyHingeFramework.relScrews_congr`'s re-proof
     (`RigidityMatrix/Bricks.lean`). **⚠Z**.
@@ -317,12 +317,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 of their consumers*): move the `infinitesimalMotions_eq_of_isLink_*` pair
 (`AlgebraicInduction/Pinning.lean`) to `RigidityMatrix/Basic.lean`, and drop
 `BodyHingeFramework.relScrews_congr`'s re-proof (`RigidityMatrix/Bricks.lean`), ⚠Z. This closes
-the FRICTION entry. Task 21a (this commit) moved `Graph.closedNbhd_subset_vertexSet`
-(`Bridge.lean`) to `Motive.lean` beside `Graph.closedNbhd`, and dropped the inlined copies in
-`Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`Carrier.lean`); no names
-changed, and no blueprint pin moved (`\lean{...}` names the declaration, not its file). A third
-inline copy, `ker_liftingMatrix_congr` (Phase 40j, not among 21a's or the mirror-candidate
-FRICTION entry's named consumers), keeps its `have` — only its docstring was repointed.
+the FRICTION entry. Task 21a (`24ad0724`, plus a follow-up) moved
+`Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to `Motive.lean` beside `Graph.closedNbhd`,
+and dropped all 21 inlined copies of it across the pencil tree, not only the two the task named;
+no names changed, and no blueprint pin moved (`\lean{...}` names the declaration, not its file).
+Task 21b also fills in the follow-up's sha on 21a's checklist line.
 
 ## Decisions made during this round
 

@@ -527,10 +527,7 @@ theorem _root_.Graph.exists_liftingRestrict_eq_of_bridgePath {G : Graph α β} {
           rcases hw with rfl | ⟨f, hf⟩
           · exact Or.inl rfl
           · exact Or.inr ⟨f, ⟨hf, hv1, hw1⟩⟩
-        · have hwV : w ∈ V(G) := by
-            rcases hw with rfl | ⟨f, hf⟩
-            · exact hv
-            · exact hf.right_mem
+        · have hwV : w ∈ V(G) := Graph.closedNbhd_subset_vertexSet hv hw
           simp only [hzdef, ite_eq_right hw1, ite_eq_left hwV]
       · obtain ⟨h, hh⟩ := hz₁.2 v hv1
         refine ⟨h, fun w hw => ?_⟩
@@ -552,10 +549,7 @@ theorem _root_.Graph.exists_liftingRestrict_eq_of_bridgePath {G : Graph α β} {
         subst hwa
         simp only [hzdef, ite_eq_left hw1]
         exact haa
-      · have hwV : w ∈ V(G) := by
-          rcases hw with rfl | ⟨f, hf⟩
-          · exact hv
-          · exact hf.right_mem
+      · have hwV : w ∈ V(G) := Graph.closedNbhd_subset_vertexSet hv hw
         simp [hzdef, hw1, hwV]
   · funext w
     by_cases hw1 : w ∈ V₁
