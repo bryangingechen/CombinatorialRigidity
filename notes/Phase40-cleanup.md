@@ -1,25 +1,30 @@
 # Phase 40 cleanup round 1/5 — `40-cleanup`, the mechanical round (work log)
 
-**Status:** in progress (opened 2026-09-29). Round 1 of the five post-Phase-40 cleanup rounds.
-Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
-`.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
+**Status:** ✓ closed 2026-09-30 (opened 2026-09-29). Round 1 of the five post-Phase-40 cleanup
+rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
+`.claude/autopilot/queue.toml` is the authority for which rounds are done. The work was
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40, 41, 42, 43 and 44 closed (17 not landed); 1 of 50 one-commit tasks remains.
-**Next concrete task:** task 45, X, close the round.
+All 50 one-commit tasks are closed (task 17 closed not landed). **Next concrete task:** none in
+this round; round 2, `40-factor`, opens next (`notes/Cleanup40.md` §2 *Round 2*).
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 45, X** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40, 41, 42, 43 and 44 are closed (17 not landed), 1 remains. Nothing is mid-stream.
+**Round 1 is closed** (task 45). All 50 one-commit tasks are closed: 49 landed, and task 17 closed
+not landed. Each has one line under *Lemma checklist* naming its commit, and the commit message has
+the detail. Nothing is mid-stream. What carried over: seven structural findings to round 4
+(*Candidates for `40-simplify`*, mirrored into `notes/Cleanup40.md` §2 *Round 4*) and three
+entries, five declarations with no blueprint node, to round 3 (*Moved to a later round*).
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34, 35,
-36, 37, 38, 39, 40, 41, 42, 43 and 44, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
-gets one or two lines there, with its commit; the detail stays in the commit message, and this
-section stays the
-forward pointer.
+**Verified at the close** (task 45; the Lean tree is `c3b6d83a`'s):
+- Whole-project `lake build` green, 3003 jobs (the open's 3000 plus the three new files
+  `WitnessGeneral.lean`, `ArmsAssembly.lean` and `Mathlib/Data/Matrix/Mul.lean`), 0 `warning:`
+  lines, 0 `failed to cache artifact`. `lake lint` green.
+- `#print axioms` on all **19** `formalization.yaml` main results gives `[propext,
+  Classical.choice, Quot.sound]`, as at the open. The open's harness was re-run with `lake lean`
+  after its 19 names and 14 imports were diffed against `formalization.yaml`'s `declaration:` and
+  `file:` fields: identical. Task 22's six renamed `mapSupport` lemmas are not main results.
+- The §B counts, before and after, and the file sizes are under task 45 below.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -28,14 +33,17 @@ forward pointer.
   module and prints its axioms, run with `lake lean` (`scratch/40-cleanup/`, gitignored). Re-run it
   the same way at the close.
 
-**How the open's figures were measured** (measured, script not retained; `HARNESS.md`
-*Reproducibility*). The §B counts are `CLEANUP.md` §B's greps, verbatim, plus `maxHeartbeats`. They
-cover every line of the pencil tree, but only the lines Phase 40 added in the files outside it
-(the `+` side of `git diff -U0 c9d26ef9^ 91fcd24a -- <file>`). The §C ranking measures each
-declaration from its header line to the next column-0 line, because `CLEANUP.md`'s awk stops a
-proof at its first blank line past 50 lines. The recurring `rw` towers come from counting
-consecutive argument pairs and triples across the 149 four-plus-argument `rw` chains. Line numbers
-below are as of the open; the declaration names are the stable reference.
+**How the open's figures were measured.** The §B counts are `CLEANUP.md` §B's greps plus
+`maxHeartbeats`. They cover every line of the pencil tree, but only the lines Phase 40 added in the
+files outside it (the `+` side of `git diff -U0 c9d26ef9^ 91fcd24a -- <file>`). The close committed
+the open's counter as `scripts/cleanup-smell-sweep.py`; its docstring states the patterns and their
+two small deviations from §B's literal text. Run at `--rev 91fcd24a`, it reproduces every §B count
+the open recorded. The §C ranking and the recurring `rw` towers were measured, script not retained
+(`HARNESS.md` *Reproducibility*). The ranking measures each declaration from its header line to the
+next column-0 line, because `CLEANUP.md`'s awk stops a proof at its first blank line past 50 lines.
+The towers come from counting consecutive argument pairs and triples across the 149
+four-plus-argument `rw` chains. Line numbers below are as of the open; the declaration names are
+the stable reference.
 
 ## Scope and standing rules
 
@@ -210,8 +218,8 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   unpinned remarks), 0 divergences: every pin, `\uses` edge and proof paragraph matches its Lean
   in `Carrier.lean`/`Configuration.lean`, including the round's `mapExtensor` rename and
   `Graph.closedNbhd_subset_vertexSet`'s move to `Motive.lean` (neither is pinned in this range).
-- [x] **34. A-MC2: `sec:main-component-flat` and `sec:main-component-jj`** (717–1102; this
-  commit). 15 environments walked (13 `\leanok`, 2 unpinned remarks), 0 divergences: both remarks
+- [x] **34. A-MC2: `sec:main-component-flat` and `sec:main-component-jj`** (717–1102;
+  `05825fc8`). 15 environments walked (13 `\leanok`, 2 unpinned remarks), 0 divergences: both remarks
   already document the ambient-off-`V(G)` and fresh-edge-label conventions the range's Lean
   carries (`Flat.lean`/`Bridge.lean`), and every `\uses` edge — incl. the
   `lem:relative-deficiency-rank-bound` citation — matches what the Lean calls.
@@ -263,7 +271,7 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
 - [x] **43. A-D: Phase 40's deficiency nodes** (9; `7e7392bf`). 9 nodes walked, all `\leanok`, 0
   statement/hypothesis divergences (detail in the commit message); fixed one wrong `\uses` edge
   and one `rem:fresh-edge-supply` enumeration gap in `panel-layer.tex`; D5 debt moved below.
-- [x] **44. A-R: Phase 40's `rigidity-matrix.tex` nodes** (11; this commit). 11 nodes walked, all
+- [x] **44. A-R: Phase 40's `rigidity-matrix.tex` nodes** (11; `c3b6d83a`). 11 nodes walked, all
   `\leanok`, 0 statement/hypothesis divergences; fixed one missing proof-level `\uses{lem:rank-
   polynomial-of-le-finrank}` on `lem:rank-polynomial-proj-eval` (its two siblings duplicate the
   statement's technique-`\uses` onto the proof block; this one hadn't). `lem:relative-deficiency-
@@ -273,20 +281,72 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
 
 ### The close
 
-- [ ] **45. X: close the round** (`CLEANUP.md` *Workflow* rule 5).
-  - Re-run the open's §B sweep and record the counts after.
-  - Re-run `#print axioms` on the 19 main results, the open's way.
-  - Re-measure the file sizes (the standing rule, and task 28).
-  - Flip the ROADMAP row, and set `40-cleanup`'s `done = true` in `.claude/autopilot/queue.toml`.
-  - Point `notes/Cleanup40.md`'s **Status** and ROADMAP's cleanup-rounds bullet at round 2.
-  - Hand *Candidates* to round 4: mirror each line into `notes/Cleanup40.md` §2 Round 4.
+- [x] **45. X: close the round** (`CLEANUP.md` *Workflow* rule 5; this commit).
+  - **Re-run the open's §B sweep and record the counts after.** Command: `python3
+    scripts/cleanup-smell-sweep.py --base 'c9d26ef9^' --tree
+    CombinatorialRigidity/Molecular/Molecule/Pencil/ --rev <rev>` (`--by-file` gives the per-file
+    table, `--sites <smell>` the line numbers). Each cell below is pencil tree + other files. The
+    surface was 40 files / 34 363 lines + 26 other files / 2 476 added lines at the open
+    (`--rev 91fcd24a`), and is 42 / 33 757 + 28 / 2 549 at the close (`--rev c3b6d83a`).
+
+    | smell | open | close |
+    |---|---|---|
+    | `classical` | 204 (180 + 24) | 69 (63 + 6) |
+    | `letI`/`haveI` … `Fintype.ofFinite` | 0 | 0 |
+    | `@[nolint` / `set_option linter` | 11 (11 + 0) | 8 (8 + 0) |
+    | `noncomputable def` | 70 (67 + 3) | 63 (60 + 3) |
+    | `change`/`show` | 91 (87 + 4) | 15 (13 + 2) |
+    | `rw [` with 4+ arguments | 149 (140 + 9) | 133 (120 + 13) |
+    | `show … from rfl` | 32 (32 + 0) | 3 (3 + 0) |
+    | `maxHeartbeats` | 1 (at 1000000) | 1 (at 400000) |
+    | `toFinset` (proxy for §B's manual `Set`/`Finset` row) | 24 (24 + 0) | 18 (18 + 0) |
+    | `Fintype.card` (proxy for §B's manual coercion row) | 47 (47 + 0) | 44 (44 + 0) |
+
+    How the moved and split files were handled:
+    - `WitnessGeneral.lean` and `ArmsAssembly.lean` (tasks 28, 28b) are in the pencil tree, so
+      every line counts, as it did inside `Witness.lean` and `Arms.lean` at the open.
+    - Outside the tree, the close counts the `+` side of `c9d26ef9^..c3b6d83a`, not
+      `..91fcd24a`: the lines Phase 40 added that survive, plus this round's own. So Lean that the
+      round moved or wrote outside the tree stays counted (in `BodyBar/Framework.lean`, task 3's
+      moved `bodyBarDim_two`/`_three`: 9 → 15 lines counted). This adds two files that Phase 40
+      never touched. One is `RigidityMatrix/Basic.lean`, 84 lines: task 3's new
+      `screwDim_one`/`_two`; task 21b's `infinitesimalMotions_eq_of_isLink_*` pair, out of
+      `AlgebraicInduction/Pinning.lean`, where it predates Phase 40; and task 22's `mapExtensor`,
+      out of `ProjectiveInvariance.lean`'s Phase 40 lines. The other is task 4's mirror
+      `Mathlib/Data/Matrix/Mul.lean`, 43 lines. It also adds the `HingeGeneric.lean` lines that
+      task 22 renamed, which predate Phase 40 (4 → 23 lines counted).
+    - The other-files column's changes come from these additions, not new smells. The `rw`
+      count's +4 is `Mul.lean`'s own two proofs and two renamed `HingeGeneric.lean` lines (817,
+      824). The column's 2 `change`/`show` hits are docstring lines that begin with the word "change"
+      (`HingeGeneric.lean` 458, `Basic.lean` 1111), so grep false positives. The open's 4, in
+      `SparseDeficiency.lean`, are gone.
+    - What stays. Each kept site's reason is on its §B task's line or in its commit (B1's surviving
+      `classical` and `noncomputable` were each forced by a build break). The `rw` count was never
+      a target: task 4 took only the towers that recur three or more times. The 8 silencers are the
+      six `[DecidableEq β]` sites (a candidate) and `GenericBase.lean`'s two `unusedFintypeInType`.
+      The `maxHeartbeats` is `pencilPair_of_habitat_ncard_eq_four`'s (off-headline, a candidate).
+  - **Re-run `#print axioms` on the 19 main results, the open's way.** 19 of 19 give `[propext,
+    Classical.choice, Quot.sound]` (*Current state*).
+  - **Re-measure the file sizes** (`wc -l`). The standing rule did not fire: `Short.lean` went
+    1 366 → 1 139 (task 18) and `RigidityMatrix/Bricks.lean` 1 458 → 1 456, both under ~1500.
+    Tasks 28 and 28b split `Witness.lean` 1 809 → 1 109 + `WitnessGeneral.lean` 686, and
+    `Arms.lean` 1 518 → 1 225 + `ArmsAssembly.lean` 324. No pencil-tree file is past ~1500. The
+    largest are `Motive.lean` at 1 444 (1 428 at the open; tasks 21a and 26 added lemmas to it) and
+    `Engine.lean` at 1 396. `RigidityMatrix/Basic.lean` is under *Blockers*.
+  - **Flip the ROADMAP row, and set `done = true`.** Done: the row reads ✓ Complete, and
+    `40-cleanup`'s row in `.claude/autopilot/queue.toml` has `done = true`.
+  - **Point the status surfaces at round 2.** `notes/Cleanup40.md`'s **Status** and ROADMAP's
+    cleanup-rounds bullet now name round 2, `40-factor`, as next. `notes/Phase40p.md`'s hand-off,
+    which still said round 1 was next, now defers to `notes/Cleanup40.md`'s **Status**.
+  - **Hand *Candidates* to round 4.** All seven are mirrored into `notes/Cleanup40.md` §2
+    *Round 4*, one line each, each naming its task here.
 
 ## Candidates for `40-simplify`
 
 Structural findings, and any finding that would change a headline statement or a blueprint
 statement's strength. They are recorded here and never acted on in this round
 (`notes/Cleanup40.md` §2). Each line: the finding, its source task, and why it is structural. The
-close mirrors them into `notes/Cleanup40.md` §2 Round 4.
+close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
 
 - **`lem:pencil-chain-side-connected`'s statement claims a symmetric fact its Lean proves only
   one-sided** (task 32, A-P4). The blueprint says the side `G - {u_1,...,u_m}` has $w$ *and* $w'$
@@ -387,32 +447,32 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
   deficiency-preserving minimal spanning subgraph; its own docstring says it mints no blueprint
   node and is the converse of `lem:subgraph-minimality` (KT 3.3), so no node is minted here (this
   round's rule). `thm:theorem-55-6-rows`'s proof had wrongly cited `lem:subgraph-minimality` for
-  it (fixed this commit, now names the strip by `\texttt{}`); round 3's D5-blueprint-debt sweep
+  it (fixed in task 43, `7e7392bf`, which now names the strip by `\texttt{}`); round 3's D5-blueprint-debt sweep
   decides whether to pin it, and whether `thm:theorem-55-6-genuine`'s proof (which uses it too,
   without a `\uses` mis-citation) should also name it.
 
 ## Blockers / open questions
 
-- None at the open.
+- None at the close.
 - Seen at the open, outside the surface, so not a task: the `[open]` FRICTION entry *`open scoped
   Matrix` inside `namespace CombinatorialRigidity.Molecular`* proposes pinning three
   `RigidityMatrix/Concrete.lean` theorems to `_root_.Matrix`. That file is outside the round's
   surface.
+- Seen at the close, not a task: `RigidityMatrix/Basic.lean` is 2 553 lines, past the ~1500
+  tripwire (`CombinatorialRigidity/CLAUDE.md`). It was already past it at the open (2 472 lines)
+  and was not in Phase 40's diff, so only the 84 lines this round added or moved there (tasks 3,
+  21b and 22, each beside its definition; +81 net) are in the close's count. No round in
+  `notes/Cleanup40.md` plans a split.
+  It is a fragility-zone file, and `notes/PERFORMANCE.md` is where a split would be ranked.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 45, X, close the round** (`CLEANUP.md` *Workflow* rule 5; the
-checklist's own *The close* bullets). Its first action is to fill task 44's own "this commit" sha
-in the *Lemma checklist* line above (the same backfill each walk task has done for its
-predecessor). Then: re-run the open's §B sweep and record the counts after, re-run `#print axioms`
-on the 19 main results the open's way, re-measure the file sizes, flip the ROADMAP row and set
-`40-cleanup`'s `done = true` in `.claude/autopilot/queue.toml`, point `notes/Cleanup40.md`'s
-**Status** and ROADMAP's cleanup-rounds bullet at round 2, and hand *Candidates for `40-simplify`*
-to round 4 (mirror each line into `notes/Cleanup40.md` §2 Round 4). This is the round's last task —
-no further hand-off after it beyond round 2's own open.
-
-Tasks 29–44's divergences (or their absence) are each recorded on their own *Lemma checklist* line
-above; task 43's fixes are detailed in its own commit message (`git log`), not repeated here.
+**Round 1 is closed; there is no next step in it.** Round 2, `40-factor`, opens next, from
+`notes/Cleanup40.md` §2 *Round 2*. It is the next undone item in `.claude/autopilot/queue.toml`,
+and its work log `notes/Phase40-factor.md` does not exist yet. What carried over: the seven
+*Candidates for `40-simplify`*, which are round 4's inputs (mirrored into `notes/Cleanup40.md` §2
+*Round 4*), and the three *Moved to a later round* entries, which are round 3's (already in §2
+*Round 3*). No task of this round is left open.
 
 ## Decisions made during this round
 
@@ -423,3 +483,10 @@ above; task 43's fixes are detailed in its own commit message (`git log`), not r
     Phase 40's three nodes outside the four named chapters (folded into A-D).
   - 40h's file-size item is a standing rule, not a task: its plan fires only on a crossing. The
     close re-measures. Nothing moved to a later round; fixes precede the §A walks.
+- **2026-09-30, the close.** Outside the pencil tree, the after-counts take the `+` side of
+  `c9d26ef9^..<close>`, not the open's `..91fcd24a`. Otherwise the Lean that this round wrote or
+  moved outside the tree (`mapExtensor` into `RigidityMatrix/Basic.lean`, task 4's mirror) would
+  drop out of the count and flatter it. The cost is that pre-Phase-40 lines the round moved or
+  edited (task 21b's pair, task 22's renames) enter the count; task 45 lists them. The open's
+  counter is committed as `scripts/cleanup-smell-sweep.py`,
+  so the next round's open can re-run it with its own `--base`, `--rev` and `--tree`.

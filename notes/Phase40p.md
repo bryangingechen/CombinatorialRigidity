@@ -56,8 +56,8 @@ The coordinator's calls, 2026-09-29, on the recon's verdict (all stand at the cl
 
 **Phase 40 is closed; there is no next step in it.** On 2026-09-29 the PI queued five cleanup
 rounds ahead of ORIGAMI (`notes/Cleanup40.md`; ROADMAP *Queued post-program phases*).
-The next concrete task is opening the first, `40-cleanup`. Its task list takes
-`notes/Phase40-design.md` §7's carried index as `notes/Cleanup40.md` §2 divides it. The attack
+Which round is open or next is `notes/Cleanup40.md`'s **Status**; the rounds take
+`notes/Phase40-design.md` §7's carried index as that note's §2 divides it. The attack
 tracks are both closed (smark 2026-09-29, gr10 2026-09-23).
 
 ## Decisions made during this phase

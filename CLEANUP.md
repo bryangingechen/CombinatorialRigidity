@@ -111,6 +111,12 @@ local workarounds.
 | `show X = Y from rfl` as a `rw` / `simp only` argument | `grep -nE "show .* from rfl" CombinatorialRigidity/*.lean` | Falls into one of: (a) a `let`-binding the rewrite chain should be reducing on its own — reorder so the binder lives at the elaboration boundary, or if a `set X := … with hX_def` is in scope, use `hX_def`; (b) a bundled-vs-unbundled morphism gap with a named `_apply` lemma upstream (`RingHom.mapMatrix_apply`, `LinearMap.coe_mk`, `DFunLike.coe_fn_eq`, …); (c) a numeric / arithmetic literal — reach for the named lemma (`Nat.choose_self`, `Nat.add_sub_cancel`, `Nat.succ_sub_one`, …) instead of `rfl`; (d) a notation unfold (e.g. `{a, b, c}` to nested `insert`) — the whole `rw` chain often collapses to a one-line `simp [structural_lemma, side_hypotheses]`. Phase 8-cleanup B4 + the post-cleanup sweep cleared the project surface; re-grep at each round open. |
 | Manual `Fintype.card` / coercion chains | manual | Often `Set.ncard_coe_finset` / `Set.ncard_eq_toFinset_card'` bridges that the autoparam pattern (`TACTICS-GOLF.md` § 2) would have absorbed. |
 
+**Counting a round's surface.** `scripts/cleanup-smell-sweep.py` counts
+these greps, plus `maxHeartbeats` and proxies for the two manual rows,
+over a tree counted whole and the lines a `git diff` added elsewhere. Run
+it at the open and at the close with the same `--base` and `--tree`; its
+docstring states the patterns (post-Phase-40 round 1 is the precedent).
+
 `DESIGN.md` *Engineering conventions* and *Choices to revisit* pin
 the project's official answers — a cleanup-round sweep is "are we
 actually following these". Drift gets fixed; if the drift looks

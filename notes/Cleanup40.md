@@ -1,11 +1,12 @@
 # The post-Phase-40 cleanup rounds (planning note)
 
 **Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI. Round 1, `40-cleanup`, opened
-2026-09-29 (`notes/Phase40-cleanup.md`); rounds 2–5 have not opened. Five cleanup rounds
-(`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
-`40-factor`, `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the
-authority for the order and for which rounds are done. **The next concrete task** is round 1's,
-named in `notes/Phase40-cleanup.md` *Hand-off / next phase*.
+2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`); rounds 2–5 have not opened. Five
+cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order:
+`40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
+`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
+**The next concrete task** is opening round 2, `40-factor`, from §2 *Round 2* below: its work log
+`notes/Phase40-factor.md` does not exist yet.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -136,6 +137,25 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
 A read-only Opus recon over the pencil surface, looking for bigger simplifications. Where a route
 question comes up, it uses compiler-checked spikes (rescue §6). Its inputs are round 1's recorded
 candidates and round 3's account.
+
+Round 1's recorded candidates, one line each. The detail, and why each is structural, is in
+`notes/Phase40-cleanup.md` *Candidates for `40-simplify`*, under the task named:
+
+- `lem:pencil-chain-side-connected` states a two-ended degree fact that its pin
+  `Graph.degree_deleteVerts_interior_add_one` proves only for `P.first`; either fix changes a
+  statement's strength (task 32).
+- Six type-unused `[DecidableEq β]` binders, each with a silencer, on `pencil_conjecture` and five
+  pinned pencil theorems; dropping them changes a headline signature (task 2).
+- A finsum-native rewrite of `CoverageTheoremS.lean`'s degree-sum pair, which needs finsum
+  comparison and constant-sum mirror lemmas first (task 8).
+- `pencilPair_of_habitat_ncard_eq_four` feeds neither headline: keep it, with `_three`'s task-24
+  substitutions carried over, or retire it (task 24).
+- A shared sub-lemma for `Pair2.lean`'s pendant producers #4 and #6, whose ~190-line tails are
+  byte-identical (task 26).
+- The `|C| = 0`/`|C| = 1` case-split duplication in
+  `hasPencilRealization_of_not_twoEdgeConnected_core` (`Arms.lean`), over `ScrewSpace` carrier
+  terms (task 27).
+- `Graph.X0Attains.of_closedEar` has no callers: keep, retarget or retire it (task 37).
 
 The coordinator's starting questions, guessed from file names and sizes (nobody has read the proofs
 for them):

@@ -11,7 +11,7 @@ id = "40-cleanup"
 title = "Post-Phase-40 cleanup 1/5: the mechanical round"
 note = "notes/Phase40-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "40-factor"
