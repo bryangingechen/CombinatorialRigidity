@@ -144,7 +144,18 @@ to be re-derived by re-reading entries later.
   both `exists_insertion_*` are corollaries; `splitOff_ear_four` and `_three` via `Fin.succAbove 1`;
   and one assembly lemma from the round-1 point, parametrized by `k`. A cleanup-round item: both
   steps are green and the close is docs-only.
-- **Status:** open.
+- **Part (i) fixed** (40-cleanup task 16): `exists_insertion_of_star_sup_star` (`Lines.lean`), over
+  `W = R ⊔ K ∙ (y₁ ∧ y₃)`, calls `exists_insertion_gain` at `ρ := R` and `F := ![]`
+  (`Matrix.range_empty, Submodule.span_empty, sup_bot_eq`). `exists_insertion_four`/`_three` are
+  its corollaries: `R` is `ρ ⊔ span` of the other joins, and each rearranges its two spans with
+  `sup_assoc, ← Submodule.span_union` and the `Set.insert_union`/`Set.union_comm` family; `_four`
+  keeps only its tetrahedron argument. Names and statements unchanged. With the new lemma, the block
+  is 215 → 105 lines and 21 747 → 6 303 heartbeats (measured, script not retained: each docstring
+  prefixed with `#count_heartbeats in set_option Elab.async false in` in a copy, run by `lake lean`).
+  Traps, one LSP round each: `obtain … := f fun hs => ?_` opens no goal (TACTICS-QUIRKS § 113), and
+  `rw [← finrank_screwSpace_two]` finds no `6`, since it reads `= 3 + 3` (ascribe a `hsix` first).
+- **Lifted to:** TACTICS-QUIRKS § 113.
+- **Status:** open, narrowed to parts (ii) and (iii) (40-cleanup tasks 17 and 18).
 
 ### [resolved] The certificate-picture glue is written out a third time: `Short.lean` cannot see `Chain.lean`'s `pencilConfigPoint_cert`
 - **Where it bit:** Phase 40h B5, `Graph.X0Attains.of_openEar_two` (`MainComponent/Short.lean`).

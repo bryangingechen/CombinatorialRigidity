@@ -4,18 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b and 15 landed; 32 of 49 one-commit tasks remain. **Next concrete task:** task
-16, M2c-i, unifying `Lines.lean`'s `exists_insertion_three`/`exists_insertion_four` (Lean, **⚠Z
-producer**). Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15 and 16 landed; 31 of 49 one-commit tasks remain. **Next concrete task:**
+task 17, M2c-ii, deriving `Short.lean`'s `splitOff_ear_three` from `splitOff_ear_four` via
+`Fin.succAbove 1` (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 16, M2c-i** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b and 15 landed, 32 remain. Nothing is mid-stream.
+**Next commit: task 17, M2c-ii** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15 and 16 landed, 31 remain. Nothing is mid-stream.
 
 Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3), 14a–14b and 15. Outcome detail
-goes on the task's checklist line, not here, so this section stays the forward pointer.
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3), 14a–14b, 15 and 16. Outcome
+detail goes on the task's checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -244,9 +244,12 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - **16–18. M2c: the three-body near-copies** (§3, the 40h items; the `[open]` FRICTION entry
   *The three-body step repeats the four-body step*, which proposes the fix). Close or narrow that
   entry as the parts land.
-  - [ ] **16. M2c-i.** `exists_insertion_three` (`Lines.lean` 661) repeats about 90 lines of
-    `exists_insertion_four` (547). Prove one insertion lemma over `R ⊔ K ∙ (y₁ ∧ y₃)` with the
-    star hypothesis, and derive both from it. **⚠Z (producer)**.
+  - [x] **16. M2c-i** (this commit). The proofs matched step for step, diverging only in `F`'s
+    length and the `W = ⊤` step (tetrahedron against `hG`). New `exists_insertion_of_star_sup_star`
+    over `W = R ⊔ K ∙ (y₁ ∧ y₃)` with the star hypothesis; both are its corollaries by a span
+    rearrangement, `_four` keeping its tetrahedron. Names, statements, pins unchanged (neither is
+    pinned). Block 215 → 105 lines, 21 747 → 6 303 heartbeats (measured, script not retained; method
+    in the FRICTION entry, now narrowed). TACTICS-QUIRKS § 113 (new).
   - [ ] **17. M2c-ii.** `splitOff_ear_three` (`Short.lean` 300) from `splitOff_ear_four` (228), via
     `Fin.succAbove 1`.
   - [ ] **18. M2c-iii.** About 200 lines of `Graph.X0Attains.of_openEar_three`'s assembly (`Short.lean`
@@ -454,11 +457,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 16, M2c-i** (§3, the 40h items; `[open]` FRICTION entry *The
-three-body step repeats the four-body step*). `exists_insertion_three` (`Lines.lean` 661) repeats
-about 90 lines of `exists_insertion_four` (547). Prove one insertion lemma over `R ⊔ K ∙ (y₁ ∧
-y₃)` with the star hypothesis, and derive both from it. **⚠Z (producer)**. Task 15 (just landed)
-closed the B2 dedupe; task 14b before it closed the CONTRACT-A corollary rebases.
+**Next concrete commit: task 17, M2c-ii** (§3, the 40h items; the `[open]` FRICTION entry *The
+three-body step repeats the four-body step*, now narrowed to tasks 17–18). Derive
+`splitOff_ear_three` (`Short.lean` 300) from `splitOff_ear_four` (228) via `Fin.succAbove 1`, first
+confirming the two match step for step (`CLEANUP.md` §C's per-step-divergence calibration). Task 16
+(just landed) unified the insertion pair in `exists_insertion_of_star_sup_star`.
 
 ## Decisions made during this round
 

@@ -141,6 +141,7 @@ failing pattern and the working fix.
 - `X.mp`/`X.mpr` on a bare, unapplied `autoParam`-guarded `Iff` lemma name fails with *"Unknown constant `X.mp`"*, not an elaboration error against the `Iff` → § 110 (dot notation on an unapplied global constant tries the whole dotted string as a namespaced declaration lookup first; wrap in parens, `(X).mp`, to force the elaborate-then-project fallback)
 - `Module.finrank K (A ⊓ B)` (or `⊔`) on two `Submodule`-typed terms that each elaborate fine alone fails with *"failed to synthesize instance of type class `Min (Type u_1)`"*, pointing at the `finrank` call and mentioning neither `Submodule` nor `Inf` → § 111 (the `Type*` argument is committed before the `↥`-coercion is inserted, so `⊓` is searched at `Type` itself; write `Module.finrank K ↥(A ⊓ B)`, or ascribe `(A ⊓ B : Submodule K M)`)
 - `simp`/`simpa [h]` makes progress everywhere *except* a set (or any term) sitting inside `Module.finrank K ↥(Submodule.span K (⟨G.induce X, ext⟩ : BodyHingeFramework …).rigidityRows)`, leaving *"unsolved goals"* / a *"type mismatch after simplification"* that still shows the unrewritten `X` — while the same `simp` rewrites `X` fine in a deficiency or `ncard` goal → § 112 (`X` lives in the **type** argument of `Module.finrank`, which `simp` never rewrites; `rw [show X = X' by simp]` / `rwa [h] at this` does, since `rw` abstracts every occurrence including the instance arguments)
+- `obtain ⟨…⟩ := f … fun h => ?_` (or `f ?_`) followed by two bullets fails with *"No goals to be solved"* on the second bullet — or, with no bullet after it, *"don't know how to synthesize placeholder"* at the `?_` → § 113 (`obtain`/`rcases` elaborates its `:=` term completely and never turns a `?_` into a goal; fill the argument with an inline `by` block, or `have h := f ?_` first — `have` does open the goal — and `obtain` from `h`)
 
 ## Sections
 
@@ -4270,5 +4271,32 @@ have := h; rwa [image_val_lt_eq_range] at this                          -- hypot
 `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the base
 case and the final re-indexing of the path telescope, where the deficiency twin
 `Graph.deficiency_induce_union_range_of_bridgePath` closes both by `simp`/`simpa`.
+
+---
+
+## 113. `obtain ⟨…⟩ := f ?_` does not open `?_` as a goal — *"No goals to be solved"* on the next bullet
+
+**Symptom.** A proof passes a hole to the lemma it destructures and plans to fill it afterwards:
+
+```
+obtain ⟨x₂, hx₂, h⟩ := exists_insertion_of_star_sup_star R y₁ y₃ hy₁ hy₃ fun hs => ?_
+· refine ⟨x₂, hx₂, ?_⟩; …      -- the main goal
+· …                             -- meant for the `?_`: "No goals to be solved"
+```
+
+The first bullet elaborates, and the second reports *"No goals to be solved"*. Without a second
+bullet the error is *"don't know how to synthesize placeholder"*, pointing at the `?_`; with one,
+the "No goals" error comes first and masks it, so the hole looks as if it had silently been closed.
+
+**Cause.** `obtain pat := e` (like `rcases`) elaborates `e` completely before destructuring it. A
+`?_` in `e` is not turned into a new goal, as `refine` and `have` would do. The placeholder
+is then left unsynthesized.
+
+**Fix.** Fill the argument in place with a `by` block (`… fun hs => by …`), or name the application
+first with `have h := f ?_`, which does open the goal, and then `obtain … := h`.
+
+**Worked case:** 40-cleanup task 16, `exists_insertion_four`
+(`Molecule/Pencil/MainComponent/Lines.lean`), whose tetrahedron argument is the hypothesis it passes
+to `exists_insertion_of_star_sup_star`.
 
 ---
