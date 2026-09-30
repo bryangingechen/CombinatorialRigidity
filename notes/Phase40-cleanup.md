@@ -4,18 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13 and 14a landed; 34 of 49 one-commit tasks remain. **Next concrete task:** task 14b, M4
-(iii)+(iv) (the carried items continue), two more `Contract.lean`/`Configuration.lean` corollary
-rebases (Lean, ⚠Z). Round manual: `CLEANUP.md`.
+Tasks 1–13 and 14a–14b landed; 33 of 49 one-commit tasks remain. **Next concrete task:** task 15,
+M2b (the B2 dedupe), factoring `Graph.splitOff_deficiency_le_of_eq_left`'s ~110-line repeat of
+`Graph.splitOff_deficiency_le` into one core (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 14b, M4 (iii)+(iv)** (*Lemma checklist*). The checklist holds 49 one-commit
-tasks; tasks 1–13 and 14a landed, 34 remain. Nothing is mid-stream.
+**Next commit: task 15, M2b** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
+1–13 and 14a–14b landed, 33 remain. Nothing is mid-stream.
 
 Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3) and 14a. Outcome detail goes on
-the task's checklist line, not here, so this section stays the forward pointer.
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3) and 14a–14b. Outcome detail goes
+on the task's checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -228,13 +228,13 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     `\uses lem:pencil-contract-kernel-bound` (part (1) rewritten to match) and drops the reverse
     edge from `…-kernel-bound` (would cycle; its own proof now inlines the map instead of pointing
     back); `lem:pencil-contract-standing`'s proof gains `\uses lem:pencil-contract-standing-rigid`.
-  - [ ] **14b, (iii)+(iv).**
-    - (iii) The middle step of `Graph.exists_core_plane` (`Contract.lean` 80), its `hmem`, through
-      the core-heights lemma `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`
-      (`ContractCurve.lean` 834).
-    - (iv) `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` (`Configuration.lean`
-      604) through G1, `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
-      (574). **⚠Z**.
+  - [x] **14b, (iii)+(iv)** (this commit). (iii) `Graph.exists_core_plane`'s `hmem` is now one call to
+    `…liftingRestrict_mem_liftingSpace_induce_of_contract` (`hcore` stays, still needed for the
+    closing step). (iv) `…smul_add_affineLifts` builds its `LinearEquiv` `g` and calls G1, dropping
+    the inlined `hspan`/`rw` chain. Blueprint: `lem:pencil-contract-core-plane`'s proof now
+    `\uses lem:pencil-contract-kernel-bound`, whose own part (1) is inlined self-contained (the
+    dangling-pointer target ran the other way from 14a's, into core-plane); `lem:pencil-rank-scale-
+    shift`'s proof now `\uses lem:pencil-rank-collineation`.
 - [ ] **15. M2b: the B2 dedupe** (§3, the 40h items). `Graph.splitOff_deficiency_le_of_eq_left`
   (`Induction/SplitOffDeficiency.lean` 191) re-runs about 110 lines of
   `Graph.splitOff_deficiency_le` (69). Factor out one core over any `e₀` with
@@ -452,14 +452,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 14b, M4 (iii)+(iv).** Two more corollary rebases (§3, the CONTRACT-A
-entry; `notes/Phase40k.md` *Hand-off* names them G1): (iii) the middle step of
-`Graph.exists_core_plane` (`Contract.lean` 80), its `hmem`, through the core-heights lemma
-`Graph.liftingRestrict_mem_liftingSpace_induce_of_contract` (`ContractCurve.lean` 834); (iv)
-`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` (`Configuration.lean` 604) through
-G1, `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` (574). **⚠Z**. Add a
-`\uses` edge wherever a node's proof now cites the new source; statements and pins otherwise
-unchanged. Task 14a (just landed) closed (i)+(ii) of the CONTRACT-A corollary rebases.
+**Next concrete commit: task 15, M2b (the B2 dedupe)** (§3, the 40h items).
+`Graph.splitOff_deficiency_le_of_eq_left` (`Induction/SplitOffDeficiency.lean` 191) re-runs about
+110 lines of `Graph.splitOff_deficiency_le` (69). Factor out one core over any `e₀` with
+`e₀ ∉ E(G) ∨ e₀ = eₐ`, and make both lemmas corollaries of it. No statement or pin moves. Task 14b
+(just landed) closed the CONTRACT-A corollary rebases (14a–14b, all four of call 12's).
 
 ## Decisions made during this round
 

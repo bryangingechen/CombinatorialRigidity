@@ -624,19 +624,8 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G
     funext i
     fin_cases i <;> simp [g, f, pencilConfigPoint, pencilPicturePoint, hw, dotProduct,
       Fin.sum_univ_three]
-  have hspan : Submodule.span K
-        (pointJoinFramework G ends (pencilConfigPoint q (t • z + G.affineLiftMap q h))).rigidityRows
-      = Submodule.span K
-        (pointJoinFramework G ends (fun w => g (pencilConfigPoint q z w))).rigidityRows :=
-    span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun e u v he => by
-      have h0 := hends e u v he
-      simp only [pointJoinFramework, hg _ h0.left_mem, hg _ h0.right_mem]
-  rw [ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends
-      (pencilConfigPoint q (t • z + G.affineLiftMap q h)),
-    BodyHingeFramework.finrank_span_rigidityRows_mapSupport, hspan,
-    pointJoinFramework_comp_eq_mapSupport, BodyHingeFramework.finrank_span_rigidityRows_mapSupport,
-    ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends (pencilConfigPoint q z),
-    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+  exact PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv hends g
+    (fun w hw => (hg w hw).symm)
 
 /-! ## The pencil condition is linear in the heights (Phase 40b CARRIER slice C5′,
 `lem:pencil-condition-linear`) -/

@@ -92,12 +92,8 @@ theorem _root_.Graph.exists_core_plane [Fintype α] {G : Graph α β} {W : Set �
     intro c hc w hw
     have hwW : w ∈ W := Graph.closedNbhd_subset_vertexSet (G := G.induce W) hc hw
     rw [h2 c (hW hc) w (Graph.closedNbhd_induce_subset hw), Graph.contractWeightAt_of_mem hwW]
-  have hmem : Graph.liftingRestrict W (fun w => x (Sum.inl w)) ∈ (G.induce W).liftingSpace q := by
-    refine ⟨fun w hw => by simp [Graph.liftingRestrict_apply, show w ∉ W from hw], fun c hc => ?_⟩
-    refine ⟨fun i => x (Sum.inr (c, i)), fun w hw => ?_⟩
-    have hwW : w ∈ W := Graph.closedNbhd_subset_vertexSet (G := G.induce W) hc hw
-    rw [Graph.liftingRestrict_apply, ite_eq_left hwW]
-    exact hcore c hc w hw
+  have hmem : Graph.liftingRestrict W (fun w => x (Sum.inl w)) ∈ (G.induce W).liftingSpace q :=
+    Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW hx
   obtain ⟨g, hg⟩ := hLH hmem
   have hgw : ∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w := by
     intro w hw

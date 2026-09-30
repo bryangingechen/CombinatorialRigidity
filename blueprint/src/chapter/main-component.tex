@@ -468,14 +468,13 @@ every point, and the condition then holds vacuously.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:pencil-rank-collineation}
   Write $a_w = \alpha x_w + \beta y_w + \gamma$ on $V(G)$. The linear
   map $(\xi, \eta, \zeta, \omega) \mapsto
   (\xi, \eta, t\zeta + \alpha\xi + \beta\eta + \gamma\omega, \omega)$ of
   $K^4$ is invertible, since $t \neq 0$, and carries the point of
-  $(q, z)$ at every body to the point of $(q, tz + a)$ there. It induces
-  an invertible linear map of the screw space taking each line
-  $p_u \wedge p_v$ to the line through the two image points, so by
-  \cref{lem:screw-map-rows} the two frameworks of
+  $(q, z)$ at every body to the point of $(q, tz + a)$ there. By
+  \cref{lem:pencil-rank-collineation} the two frameworks of
   \cref{lem:pencil-config-point-join-rank} have rigidity matrices of the
   same rank, and that lemma converts both to the rank of a
   configuration.
@@ -1444,13 +1443,11 @@ while the rest of $G$ sees it at $q_r$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The rows at a core body $c$ and a core neighbour of $c$ have the weight
-  $(x_w, y_w, 1)$ at every $t$, and, $H$ being induced, the closed
-  neighbourhood of $c$ in $H$ is its closed neighbourhood in $G$ met
-  with $W$. So the restriction of $z$ to $W$ lies in
-  $L_H(q) = \mathrm{Aff}(q)$, with the planes $h_c$. Three members of
-  the closed neighbourhood of $c$ in $H$ have independent picture points,
-  and they pin $h_c$ to the one plane.
+  \uses{lem:pencil-contract-kernel-bound}
+  By \cref{lem:pencil-contract-kernel-bound}(1), the restriction of $z$
+  to $W$ lies in $L_H(q) = \mathrm{Aff}(q)$, with the planes $h_c$. Three
+  members of the closed neighbourhood of $c$ in $H$ have independent
+  picture points, and they pin $h_c$ to the one plane.
 \end{proof}
 
 \begin{lemma}[The rescaled system at the end of the curve]
@@ -3318,9 +3315,10 @@ configuration of $H$ attains.
 \begin{proof}
   \leanok
   \uses{lem:pencil-lifting-space-affine}
-  (1) The rows at a core body $c$ and a member of its closed
-  neighbourhood in $H$ have the weight $(x_w, y_w, 1)$ at every $t$, as
-  in the proof of \cref{lem:pencil-contract-core-plane}.
+  (1) $H$ being induced, the closed neighbourhood of a core body $c$ in
+  $H$ is its closed neighbourhood in $G$ met with $W$, and the rows
+  there keep the weight $(x_w, y_w, 1)$ at every $t$; so $\rho$ sends
+  the restriction of a solution's heights on $W$ into $L_H(q)$.
 
   (2) By rank--nullity it suffices that the solutions of $M(0)$ with
   $\rho = 0$ form a space $N$ with $\dim N + 3 \le \dim L_{G/H}(q)$. A
