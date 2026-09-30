@@ -1185,8 +1185,8 @@ section).
   side-degree ≥ 2 at both ends (S10(iii)) — and it is the only law needing `deficiencySep`. Site
   `Induction/SplitOffDeficiency.lean`. Build only if STEPS consumes S6's reduction.
 - [x] **The shared hub normalization — a factoring item. Paid by cleanup round 2, `40-factor`**
-  (`notes/Phase40-factor.md`, tasks 1 and 2: `080be6a4`, and task 2's commit, whose sha the round's
-  close backfills here). The extraction landed as the public `Graph.exists_normalized_labeling`
+  (`notes/Phase40-factor.md`, tasks 1 and 2: `080be6a4` and `0b260626`; the round closed
+  2026-09-30). The extraction landed as the public `Graph.exists_normalized_labeling`
   (`Molecular/Deficiency.lean`), not as a private lemma, because the two hubs are in different
   files (that log's *Decisions*). It has properties (i)–(v) below, and both hubs are rebuilt on it
   with their statements unchanged. The item as specified: C2ℓ's merged hub

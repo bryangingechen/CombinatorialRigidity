@@ -18,7 +18,7 @@ id = "40-factor"
 title = "Post-Phase-40 cleanup 2/5: the shared hub normalization"
 note = "notes/Phase40-factor.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "40-exposition"

@@ -1,21 +1,35 @@
 # Phase 40 cleanup round 2/5 — `40-factor`, the shared hub normalization (work log)
 
-**Status:** in progress (opened 2026-09-30). Round 2 of the five post-Phase-40 cleanup rounds.
-Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
-`.claude/autopilot/queue.toml` is the authority for which rounds are done. The round extracts the
-labeling normalization that the two relative hubs duplicate (`notes/Phase40-design.md` §7) and
-rebuilds both hubs on it: three one-commit tasks, tasks 1 and 2 landed. **Next concrete task:**
-task 3, X — close the round (gates, axioms, the hub fingerprints, sizes, the status surfaces).
+**Status:** ✓ closed 2026-09-30 (opened 2026-09-30). Round 2 of the five post-Phase-40 cleanup
+rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
+`.claude/autopilot/queue.toml` is the authority for which rounds are done. The round extracted the
+labeling normalization that the two relative hubs duplicated (`notes/Phase40-design.md` §7) and
+rebuilt both hubs on it: three one-commit tasks, all landed. **Next concrete task:** none in this
+round; the current round is named in `notes/Cleanup40.md`'s **Status**.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Tasks 1 and 2 have landed; task 3, the close, is next.** The open settled the extraction's
-home, visibility and exact signature (*The extraction, pinned*; *Decisions*). It backed them with a
-complete compiler-checked spike: the extraction and both hubs rebuilt on it, with no `sorry`.
-Task 1 transcribed the extraction and the PanelLayer hub from it and retired the orphan pair.
-Task 2 transcribed the TwoCut hub from `Spike.lean` Part 2 and marked design §7's entry paid.
-Both hubs now run on the extraction. Nothing is mid-stream.
+**Round 2 is closed** (task 3). All three tasks landed, each with one line under *Lemma checklist*
+naming its commit. `Graph.exists_normalized_labeling` is in `Molecular/Deficiency.lean`, both hubs
+are rebuilt on it with their statements unchanged, and design §7's entry is paid. Nothing is
+mid-stream. What carried over: two structural findings to round 4 (*Candidates for `40-simplify`*,
+mirrored into `notes/Cleanup40.md` §2 *Round 4*) and one declaration with no blueprint node to
+round 3 (*Moved to a later round*, already in §2 *Round 3*).
+
+**Verified at the close** (task 3; the Lean and blueprint trees are `0b260626`'s):
+- Whole-project `lake build` green, 3003 jobs (as at the open: the round added no file), 0
+  `warning:` lines, 0 `failed to cache artifact`. `lake lint` green.
+- `#print axioms` on all **19** `formalization.yaml` main results gives `[propext,
+  Classical.choice, Quot.sound]`, as at the open; the output is byte-identical to the open's. The
+  harness `scratch/40-factor/Axioms.lean` was re-run with `lake lean` after its 19 names and 14
+  imports were diffed against `formalization.yaml`'s `declaration:` and `file:` fields: identical.
+- `scratch/40-factor/HubStatements.lean`, re-run with `lake lean`, prints the open's output: hash
+  `1841993124` (length 14 980) for the PanelLayer hub and `3105723357` (20 262) for the TwoCut hub.
+  Both statements are as they were.
+- File sizes: `Deficiency.lean` 4 387 → 4 441 (+54), `PanelLayer.lean` 2 299 → 2 173 (−126),
+  `TwoCut.lean` 424 → 358 (−66). Net −138 lines (`git diff --shortstat 8a932535 0b260626`: +93,
+  −231).
 
 **Verified at the open** (`8a932535`, a docs-only commit; its Lean and blueprint trees are
 `bb333dc4`'s):
@@ -111,7 +125,7 @@ One commit per task, in the order given.
   *Round 3*. Gates: `lake build` green (3003 jobs, 0 warnings, 0 cache failures), `lake lint`
   green; both hub fingerprints still equal the open's, and all 19 main results stay at the three
   standard axioms.
-- [x] **2. E2 — the TwoCut merged hub** (⚠Z, Opus; a transcription; this commit).
+- [x] **2. E2 — the TwoCut merged hub** (⚠Z, Opus; a transcription; `0b260626`).
   `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions`'s proof is `Spike.lean` Part
   2's, verbatim: 90 lines to 27, statement untouched (no diff line between its `theorem` line and
   `:= by`), dropping `open Classical in`, `have : Fintype α` and `set VG … with hVG`. Its docstring
@@ -122,27 +136,28 @@ One commit per task, in the order given.
   "merged hull" typo is now "hub"). Gates: `lake build` green (3003 jobs, 0 warnings, 0 cache
   failures), `lake lint` green; both hub fingerprints still equal the open's, and the merged hub
   and `weldedLoss_nonneg` are at the three standard axioms. `TwoCut.lean` 424 → 358.
-- [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* rule 5).
-  - Whole-project `lake build` (record the job count) and `lake lint`. `#print axioms` on the 19
-    main results the open's way, re-diffing the harness against `formalization.yaml` first.
-  - Re-run `scratch/40-factor/HubStatements.lean`; both hashes must equal the open's (*Current
-    state*). If the scratch file is gone, rebuild it from that description.
-  - Re-measure the three files (`wc -l`) and record the net change.
-  - Flip the ROADMAP row to ✓ Complete, and set `40-factor`'s row in
-    `.claude/autopilot/queue.toml` to `done = true`.
-  - Point the status surfaces at round 3, `40-exposition`: `notes/Cleanup40.md`'s **Status** and
-    ROADMAP's cleanup-rounds bullet. Round 3 stops for the PI after its open and one sample
-    section.
-  - Mirror the *Candidates* into `notes/Cleanup40.md` §2 *Round 4*, one line each, each naming
-    this log.
-  - Replace task 2's "this commit" with its sha, here and in design §7's paid entry ("task 2's
-    commit, whose sha the round's close backfills here").
+- [x] **3. X — close the round** (`CLEANUP.md` *Workflow* rule 5; Opus; this commit). Docs only.
+  - **Gates and axioms.** Whole-project `lake build` green, 3003 jobs, and `lake lint` green. The
+    harness was re-diffed against `formalization.yaml` (identical) and re-run with `lake lean`: 19
+    of 19 main results at `[propext, Classical.choice, Quot.sound]` (*Current state*).
+  - **Fingerprints.** `HubStatements.lean` re-run (the scratch file was still there): both hashes
+    equal the open's.
+  - **Sizes.** Re-measured with `wc -l`: net −138 lines over the three files (*Current state*).
+  - **ROADMAP row and `done = true`.** The row reads ✓ Complete, and `40-factor`'s row in
+    `.claude/autopilot/queue.toml` has `done = true` (nothing else there changed).
+  - **Status surfaces at round 3.** `notes/Cleanup40.md`'s **Status** and ROADMAP's
+    cleanup-rounds bullet name opening round 3, `40-exposition`, as next, and say it stops for the
+    PI after its open and one sample section.
+  - **Candidates to round 4.** Both are mirrored into `notes/Cleanup40.md` §2 *Round 4*, one line
+    each, naming this log.
+  - **The sha backfill.** Task 2's "this commit" reads `0b260626`, here and in design §7's paid
+    entry.
 
 ## Candidates for `40-simplify`
 
 Structural findings, and any finding that would change a headline or blueprint statement. They are
-recorded here and never acted on in this round (`notes/Cleanup40.md` §2). The close mirrors them
-into `notes/Cleanup40.md` §2 *Round 4*.
+recorded here and never acted on in this round (`notes/Cleanup40.md` §2). The close (task 3)
+mirrored them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
 
 - **Both hubs' statements write `V(G).compl.ncard` where `V(G)ᶜ.ncard` is idiomatic** (seen at
   the open). Both hubs, and all three of their consumers, carry a one-line `rfl` bridge between
@@ -180,16 +195,18 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
   (`CombinatorialRigidity/CLAUDE.md`). `Molecular/Deficiency.lean` has 4 387 lines and
   `PanelLayer.lean` 2 299 at the open, and no round in `notes/Cleanup40.md` plans a split. Task 1
   took the first to 4 441 (+54: the extraction, in its definitions' own file, *Decisions*) and the
-  second to 2 173 (−126). `notes/PERFORMANCE.md` is where a split would be ranked.
+  second to 2 173 (−126); both sizes stand at the close. `notes/PERFORMANCE.md` is where a split
+  would be ranked.
 
 ## Hand-off / next phase
 
-**Next: task 3, X — close the round** (`CLEANUP.md` *Workflow* rule 5), per the checklist: the
-whole-project gates and the 19-result axiom check, the two hub fingerprints (task 2 already saw
-both equal to the open's), the three file sizes, the ROADMAP row and `queue.toml`, the status
-surfaces pointed at round 3 (`40-exposition`), the *Candidates* mirrored into
-`notes/Cleanup40.md` §2 *Round 4* (two entries now), and task 2's sha backfilled here and in
-design §7. No Lean edit is planned.
+**Round 2 is closed; there is no next step in it.** The next concrete task is opening round 3,
+`40-exposition`, from `notes/Cleanup40.md` §2 *Round 3* (its work log
+`notes/Phase40-exposition.md` does not exist yet); it stops for the PI after its open and one
+sample section. `notes/Cleanup40.md`'s **Status** names the current round. What carried over: the
+two *Candidates for `40-simplify`*, which are round 4's inputs (mirrored into `notes/Cleanup40.md`
+§2 *Round 4*), and the one *Moved to a later round* entry, which is round 3's (already in §2
+*Round 3*). No task of this round is left open.
 
 ## Decisions made during this round
 

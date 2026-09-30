@@ -1,12 +1,13 @@
 # The post-Phase-40 cleanup rounds (planning note)
 
 **Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI. Round 1, `40-cleanup`, opened
-2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`). Round 2, `40-factor`, opened
-2026-09-30 (`notes/Phase40-factor.md`); rounds 3–5 have not opened. Five cleanup rounds
+2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`). Round 2, `40-factor`, opened and
+closed 2026-09-30 (`notes/Phase40-factor.md`); rounds 3–5 have not opened. Five cleanup rounds
 (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
 `40-factor`, `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the
-authority for the order and for which rounds are done. **The next concrete task** is round 2's,
-named in `notes/Phase40-factor.md` *Hand-off / next phase*.
+authority for the order and for which rounds are done. **The next concrete task** is opening
+round 3, `40-exposition`, from §2 *Round 3* below: its work log `notes/Phase40-exposition.md` does
+not exist yet. Round 3 stops for the PI after its open and one sample section (Stop 1).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -141,8 +142,8 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
 ### Round 4 — `40-simplify`: the deep recon (`notes/Phase40-simplify.md`)
 
 A read-only Opus recon over the pencil surface, looking for bigger simplifications. Where a route
-question comes up, it uses compiler-checked spikes (rescue §6). Its inputs are round 1's recorded
-candidates and round 3's account.
+question comes up, it uses compiler-checked spikes (rescue §6). Its inputs are rounds 1 and 2's
+recorded candidates and round 3's account.
 
 Round 1's recorded candidates, one line each. The detail, and why each is structural, is in
 `notes/Phase40-cleanup.md` *Candidates for `40-simplify`*, under the task named:
@@ -162,6 +163,16 @@ Round 1's recorded candidates, one line each. The detail, and why each is struct
   `hasPencilRealization_of_not_twoEdgeConnected_core` (`Arms.lean`), over `ScrewSpace` carrier
   terms (task 27).
 - `Graph.X0Attains.of_closedEar` has no callers: keep, retarget or retire it (task 37).
+
+Round 2's recorded candidates, one line each. The detail is in the log each names, under
+*Candidates for `40-simplify`*:
+
+- Both relative hubs state `V(G).compl.ncard` where `V(G)ᶜ.ncard` is idiomatic, so they and their
+  three consumers carry five `rfl` bridges; restating changes two statements, one pinned
+  (`lem:relative-deficiency-rank-bound`) (`notes/Phase40-factor.md`, seen at the open).
+- The merged hub's `hne : V(F.graph).Nonempty` is redundant (it follows from `hu`, and the proof
+  uses it only for a `Nonempty α` it does not need), but dropping it changes the statement; the
+  hub has no blueprint node (`notes/Phase40-factor.md`, task 2).
 
 The coordinator's starting questions, guessed from file names and sizes (nobody has read the proofs
 for them):
