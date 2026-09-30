@@ -1951,13 +1951,17 @@ cycle.
   and open ears with at least five interior bodies has an attaining
   general configuration: each graph along the way satisfies the standing
   hypotheses, and removing its last ear leaves the subgraph induced on
-  the other bodies. This class statement is not formalized separately.
-  The structural coverage runs a strong induction on the number of
-  bodies, and each of its ear cases applies
-  \cref{thm:pencil-x0-open-ear} or \cref{thm:pencil-x0-closed-ear}
-  directly. For instance, the $\theta$-graph whose two branch bodies are
-  joined by paths of one, two and six edges is a triangle with an open
-  ear of five interior bodies on two adjacent bodies.
+  the other bodies. This class statement is not formalized separately,
+  and neither is a closed ear's role in it: the structural coverage's
+  strong induction on the number of bodies reduces a closed ear through
+  its cut-vertex case, whose far side is a cycle handled by
+  \cref{thm:pencil-x0-cycle}, rather than through
+  \cref{thm:pencil-x0-closed-ear}; an open ear with at least five
+  interior bodies is instead one of the induction's own cases, applying
+  \cref{thm:pencil-x0-open-ear} directly. For instance, the
+  $\theta$-graph whose two branch bodies are joined by paths of one,
+  two and six edges is a triangle with an open ear of five interior
+  bodies on two adjacent bodies.
 \end{remark}
 
 \subsection{Open ears with two, three or four interior bodies}
