@@ -13,10 +13,9 @@ Tasks 1–13, 14a–14b and 15–18 closed (17 not landed); 29 of 49 one-commit 
 **Next commit: task 19, M2d** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
 tasks 1–13, 14a–14b and 15–18 are closed (17 not landed), 29 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3), 14a–14b, 15, 16 and 18;
-task 17 closed not landed (§3, checklist line has the detail). Outcome detail goes on the task's
-checklist line, not here, so this section stays the forward pointer.
+Landed so far: tasks 1–18, one line each under *Lemma checklist → Landed* (task 17 closed not
+landed). A finished task gets one or two lines there, with its commit; the detail stays in the
+commit message, and this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -76,196 +75,44 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given (the numbers). For the §B tasks, done means: every listed
 site is either fixed, or kept with a one-word reason recorded under the task's checklist line.
 
-### Status and small items
+### Landed: tasks 1–18 (one line each; each commit message has the detail)
 
-- [x] **1. T1: the stale toolchain status** (`a2686fde`). ROADMAP's toolchain row and
-  `notes/ToolchainBumps.md` *Where this stands* rewritten: `origin/master` was at `91fcd24a` with a
-  green *Build & deploy site* run, and hopscotch's issue #2 / PR #1 now track a real mathlib
-  incompatibility (`ab64d1c`), so both stay open. The local-only `bump/lean-4.34.0-rc{1,2}` refs are
-  the PI's call, recorded there and not acted on.
-- [x] **2. B3: linter silencers and the heartbeat bump** (12 sites; `5a636c0e`, corrected by
-  `244f6613`). 2 silencers deleted as stale (`Base.lean`: `pencilPair_of_habitat_ncard_eq_three`,
-  and the second one on `…_eq_four`). 1 fixed at the source: `pencilPair_of_splitOff_of_habitat`
-  (`Escape.lean`) has its `[DecidableEq β]` dropped, with `classical` in the proof. 6 are kept
-  because they are pinned or headline (see *Candidates*): `pencil_conjecture_of_arms`,
-  `…_of_arms_pair`, `…_of_hcontract_hK_hbareSplit` and its `_of_card` form, `…_of_X0`, and
-  `pencil_conjecture`. Their comments say the binder is type-unused and name the callee it is
-  threaded to. The 2 `unusedFintypeInType` in `GenericBase.lean` are kept, with their comments
-  predating the task, and were not re-examined against `[Finite …]` + `Fintype.ofFinite`. The
-  heartbeat budget of `…_eq_four` went from 1000000 to 400000 (bisected: 300000 times out at
-  `Base.lean` 829). The first commit had called the linter a false positive. That was wrong: its fix
-  is to drop the binder and use `classical`. The FRICTION entry is reframed, and
-  `notes/dispatch-log.md` has the row.
-- [x] **3. B8: `show … from rfl`** (32 sites; `9bf98a3c`). 29 fixed, 3 kept.
-  - Added `screwDim_one` / `screwDim_two` beside `abbrev screwDim` (`RigidityMatrix/Basic.lean`),
-    covering 15 sites.
-  - Moved `Graph.bodyBarDim_two` / `_three` beside `def bodyBarDim` (`BodyBar/Framework.lean`, same
-    names), covering 4 sites.
-  - Mathlib's `Graph.vertexSet_induce` covers 8 sites. Take care not to confuse it with
-    `Graph.induce_vertexSet : G.induce V(G) = G`.
-  - `Short.lean`'s two `pt` unfolds use `simp only [hpt, …]`. A bare `rw [hpt]` leaves a
-    beta-redex; the LSP accepted it, and only `lake build` caught it.
-  - Kept as structural: the `Fin`-literal identities at `Ear.lean` 176 and 857, and
-    `Orbit.lean` 1048's `F₁.graph = G₁`.
-- [x] **4. B7: the recurring `rw` towers** (`CLEANUP.md` §B: a missing fused lemma). These are the
-  only towers the open found recurring three or more times. The single chains are not this task's;
-  §C's walks may touch them.
-  - Fixed: `LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff` (×5,
-    `SplitOff.lean`) — new `Graph.mem_ker_liftingMatrix_iff` beside
-    `Graph.liftingMatrix_mulVec_eq_zero_iff` (`Carrier.lean`); no prior form (`lean_local_search`).
-  - Fixed: `smul_smul, inv_mul_cancel₀ _, one_smul` (×4 + the `GenericEar.lean` 75 prefix) —
-    mathlib's `inv_smul_smul₀`.
-  - Fixed: `dotProduct_add, dotProduct_smul, smul_eq_mul` (×3, `SplitOff.lean`) — new
-    `dotProduct_add_smul` / `dotProduct_smul_add_smul` (`Mathlib/Data/Matrix/Mul.lean`, new mirror
-    file; `dotProduct_add`/`dotProduct_smul`/`smul_eq_mul` are all root-level in
-    `Mathlib.Data.Matrix.Mul`, so the mirror is too).
-  - Kept, local hypothesis rewrites: `Function.update_of_ne …, Function.update_of_ne …,
-    Function.update_self` (`Base.lean`, the `point`/`normal`/`supp` nested-update unfolds) — each
-    site's distinctness hypotheses (`hqs`, `hqr`, `he24`, `he23`, …) are local to that one nested
-    `Function.update` chain; a general lemma would take the same hypotheses as arguments and not
-    shorten the one-line `rw` it replaces.
-  - Kept, local hypothesis rewrites: `Graph.degree_eq_ncard_add_ncard, hloops, hnonloops`
-    (`Motive.lean`) and `hh0, hh1, hh2, one_smul` (`Engine.lean`) — `hloops`/`hnonloops`/`hh*` are
-    freshly proved per site from a different set/term, so the callee would need them as hypotheses
-    too.
-  - The `ite_eq_right`/`ite_eq_left` runs in `Ear.lean` and `ContractCurve.lean`: task 7b kept all
-    of them (local hypothesis rewrites; `ContractCurve.lean`'s already use `contractLimitMap_apply`).
-    `this, certPt` (×6, `Chain.lean`) is task 5's, `hslot_*` is task 25's, and `hnu, hnv, hpu,
-    hpv` is task 26's.
-- [x] **5. F1: the certificate-picture glue** (the `[open]` FRICTION entry *The
-  certificate-picture glue is written out a third time*, now resolved). `certPicture`,
-  `certHeights` and a new height-general `pencilConfigPoint_certPicture` (`z w = certPt (lab w) 2`
-  as its hypothesis) moved to `Ear.lean` beside `certPt`; `pencilConfigPoint_cert` is now its
-  one-line corollary. `Graph.X0Attains.of_openEar` (`Chain.lean`) and `…of_openEar_two`
-  (`Short.lean`) both call it in place of their inline `funext`/`fin_cases`/`change` copy;
-  `of_cycle`'s packaging already used the moved names and needed no change. No statement, pin, or
-  docstring citation moved (none of the three names carry one outside this file trio).
+- [x] **1. T1** (`a2686fde`). The toolchain status was stale. Master is pushed and CI-green at
+  `91fcd24a`, and hopscotch's issue #2 / PR #1 are now live signal. The `bump/*` refs are the PI's call.
+- [x] **2. B3** (`5a636c0e`, corrected in `244f6613`). 12 sites: 2 silencers stale, 1 fixed at the
+  source (`classical` in place of the binder), 6 pinned or headline kept (see *Candidates*), and 2
+  `unusedFintypeInType` kept. Heartbeats went from 1000000 to 400000. The FRICTION entry is reframed.
+- [x] **3. B8** (`9bf98a3c`). 32 `show … from rfl`: 29 fixed with `screwDim_one`/`_two`, the moved
+  `bodyBarDim_two`/`_three` and `Graph.vertexSet_induce`; 3 kept (structural).
+- [x] **4. B7** (`63aee01d`). `rw` towers: 3 clusters fused (`Graph.mem_ker_liftingMatrix_iff`,
+  `inv_smul_smul₀`, the new mirror `Mathlib/Data/Matrix/Mul.lean`); 2 kept as local rewrites.
+- [x] **5. F1** (`088d5dec`). `certPicture`/`certHeights`/`pencilConfigPoint_certPicture` moved to
+  `Ear.lean`. The FRICTION entry is resolved.
+- [x] **6–7b. B6a–c** (`552f5857`, `72f492e9`, `9b8148ba`). `change`/`show`: 35/30/26 sites, 32/24/16
+  fixed. The kept sites (carrier, coe, let-defeq and fold reshapes) are listed in the commits.
+  `TACTICS-GOLF.md` §27.
+- [x] **8. B5** (`2f66dff2`; fixup `93ece315`). `Set`/`Finset`: 36 sites, 9 fixed, 27 kept. The
+  `CoverageTheoremS.lean` finsum route is structural (see *Candidates*).
+- [x] **9–12. B1a–d** (`6f2d75e5`, `a6c71d1c`, `3faf440e`, `de644285`). Dead `classical` and
+  unforced `noncomputable`: 204 + 70 sites, of which 134 `classical` and 7 `noncomputable` were
+  removed. Every kept site was forced by a build break.
+- [x] **13. M3** (`a0dda000`). `span_supportExtensor_ofNormals_eq` moved above
+  `…_ofNormals_congr`, whose orientation split it now replaces.
+- [x] **14a–14b. M4** (`58c4fa28`, blueprint fixup `388e5a18`; `ab2253e1`). Four corollary
+  rebases onto G1, G4, G5 and the core-heights lemma, with `\uses` edges added and prose
+  re-pointed. Nothing was orphaned.
+- [x] **15. M2b** (`289f96c3`). A private `splitOff_deficiency_le_aux` over `e₀ ∉ E(G) ∨ e₀ = eₐ`.
+  Both public lemmas are now one-line corollaries.
+- [x] **16. M2c-i** (`d7fea229`). `exists_insertion_of_star_sup_star` makes both insertions
+  corollaries: 215 → 105 lines, heartbeats down about 3.4×.
+- [x] **17. M2c-ii, not landed** (`1080f59c`). A `Fin.succAbove`-general `splitOff_ear` needs ad hoc
+  numeral-modulus unfolds at every pivot, so it nets no shorter. `_four`/`_three` stay.
+- [x] **18. M2c-iii** (`b8b24c9a`). `Graph.X0Attains.of_openEar_splitOff`, parametrized by the
+  antecedent's ear length, with no `Fin.succAbove`: 704 → 461 lines, heartbeats halved,
+  `Short.lean` 1 357 → 1 139. The FRICTION entry is resolved. TACTICS-QUIRKS §112, §114.
 
-### §B: `change`/`show`, cardinalities, and trial removals
+### The carried items (`notes/Phase40-design.md` §3/§4/§7), continued
 
-- [x] **6. B6a: `change`/`show` in the Phase 39 files** (35 sites; `552f5857`). 32 fixed, 3 kept
-  (`Chart.lean` 121, `Engine.lean` 264/371 — carrier defeq). New:
-  `hubSlotNormalPoly_eval_funext` / `nbrSlotPointPoly_eval_funext` (`Engine.lean`); everything
-  else is `Graph.vertexSet_induce`, `linearIndependent_set_coe_iff`, `LinearEquiv.comp_symm`, or
-  `simp only [F]`/`simp only []`. `TACTICS-GOLF.md` § 27 (new) writes up the shape.
-- [x] **7a. B6b: `change`/`show` in the rest of `MainComponent/`, and in
-  `SparseDeficiency.lean`** (30 sites; this commit). `Bridge.lean` 404/422 and `Flat.lean` 369
-  were task 3's, already fixed. 24 fixed, 3 kept, 3 already-resolved. No new lemma:
-  `Graph.rigidContract` / `pencilNormalOfPicture` unfold via `rw`/`simp only [Def]` directly;
-  `Graph.deficiencyMerged` folds back via `rw [← Def]`. Kept (reason: coe-defeq) — `Flat.lean`
-  544, `SplitOff.lean` 330/548. `TACTICS-GOLF.md` § 27 extended with the plain-`def`/fold/coe-defeq
-  shapes.
-- [x] **7b. B6c: `change`/`show` in the ear files** (26 sites; this commit). 16 fixed, 10 kept, no
-  new lemma. Fixed: the closedHubNbhd cluster (5) via `simp only [S]`; `Ear.lean`'s `z`
-  piecewise-def cluster (4) via `dsimp only [z]` — `simp only [z]` over-collapses a
-  self-comparison branch here and breaks the follow-up `rw` (`TACTICS-GOLF.md` § 27 extended);
-  `Ear.lean` 117/164/1140 via existing lemmas (`hingeConstraint`, `toBodyHinge_supportExtensor`
-  trio); the `pt`/`cfg` cluster (4) via `simp only [pt]`. Kept, reason fold — `GenericEar.lean`
-  376, `GenericTriangle.lean` 544, `Short.lean` 553, the rank-chain reshapes ×5; reason
-  let-defeq — `Orbit.lean` 516; reason coe-defeq — `Short.lean` 586. The `ite_eq_right`/
-  `ite_eq_left` runs task 4 deferred here (`Ear.lean` 123/811/846, `ContractCurve.lean` 541/614)
-  are all kept too, local hypothesis rewrites. `FRICTION.md`'s B6a correction gets a B6c addendum.
-- [x] **8. B5: `Set` against `Finset`, and cardinality coercions** (36 sites; this commit). 9
-  fixed, 27 kept (reasons in the commit message). `Set.fintypeCard_eq_ncard` collapses the
-  two-step `ncard`↔`Fintype.card`/`toFinset` bridge (4 sites); `Polynomial.finite_setOfPred_isRoot`
-  replaces `.roots.toFinset` for a root set (3 sites); `Set.ncard_compl` + `Nat.card_fin` closes
-  `{j | j ≠ i}.ncard = 2` (2 sites). `TACTICS-GOLF.md` § 2 gets both lemma pointers. The 17-site
-  `CoverageTheoremS.lean` degree-sum pair is kept — the finsum route is structural (*Candidates*).
-- **9–12. B1a–B1d: dead `classical` and unforced `noncomputable`** (204 `classical`, 203 of
-  them opening a proof body and one mid-proof, in `Pair2.lean`; 70 `noncomputable def`).
-  - **Method**, per batch: delete every `classical` line and every `noncomputable` on a `def` in
-    the batch's files, build, and restore exactly the ones whose removal breaks the build. Record
-    the removed and kept counts per file. A proof-top `classical` that is needed is the
-    project-standard bridge (ROADMAP *Engineering conventions*, Decidability), not a smell.
-  - [x] **9. B1a, the Phase 39 files** (15 files; 71 `classical` / 21 `noncomputable`; this
-    commit). 25 `classical` kept as the project-standard bridge, 46 deleted as dead: `Arms` 3/9,
-    `Base` 2/2, `Engine` 1/7, `Escape` 3/5, `Habitat` 0/3, `Motive` 0/5, `Pair` 4/5, `Pair2` 2/5,
-    `Reseed` 1/4, `Statement` 1/8, `Steer` 2/9, `Witness` 5/8, `X0` 1/1 (kept/total; `Chart` and
-    `TwoCut` have none). 17 `noncomputable` kept, 4 deleted: `Chart` 6/7, `Engine` 9/11, `Steer`
-    0/1, `TwoCut` 2/2. Every restore was forced by an actual whole-project build break (a missing
-    `Decidable`/`Fintype` instance or a genuine noncomputable dependency); no downstream file
-    outside the batch needed a restore. Per-site detail in the commit message.
-  - [x] **10. B1b, `MainComponent/` part 1** (59 `classical` / 33 `noncomputable`; this commit). 15
-    classical kept as the project-standard bridge, 44 deleted as dead; 30 noncomputable kept (a
-    genuine noncomputable dependency, including one within-batch cascade: `Flat.lean`'s
-    `flatRebuild` needed restoring only once its own dependency `flatStdBiv` was restored), 3
-    deleted. Per file (classical kept/total, noncomputable kept/total): Carrier 4/13, 6/7;
-    Configuration 1/3, 3/4; Flat 2/5, 10/11; Bridge 1/3, –; Cut 2/8, 2/2; Contract 1/3, –;
-    ContractCurve 3/23, 9/9; ContractAdditive 1/1, –. No downstream file outside the 8-file batch
-    needed a restore. Per-site detail in the commit message.
-  - [x] **11. B1c, `MainComponent/` part 2** (63 sites: 50 classical / 13 noncomputable; this
-    commit). 23 classical kept as the project-standard bridge, 27 deleted as dead; all 13
-    noncomputable kept (a genuine noncomputable dependency), 0 deleted. Per file (classical
-    kept/total, noncomputable kept/total): Chain 2/4, –; Ear 3/4, –; EarGen 0/1, 7/7; Lines 2/2,
-    3/3; Short 1/1, –; Orbit 1/2, 1/1; SplitOff 1/3, –; CoverageCut 0/1, –; CoverageTheoremS 1/5, –;
-    GenericBase 4/9, 1/1; GenericEar 2/4, –; GenericSteer 3/5, 1/1; GenericTriangle 2/4, –;
-    GoodEar 0/3, –; Statements 1/2, –. No downstream file outside the 15-file batch needed a
-    restore. Per-site detail in the commit message.
-  - [x] **12. B1d, outside the tree** (27 sites: 24 classical / 3 noncomputable; this commit). 7
-    classical kept as the project-standard bridge, 17 deleted as dead; all 3 noncomputable kept (a
-    genuine noncomputable dependency — `ScrewSpace`'s `AddCommGroup` instance), 0 deleted. Per file
-    (classical kept/total, noncomputable kept/total): Deficiency 1/3, –; Coupling 0/1, –;
-    SparseDeficiency 3/16, –; ReducibleVertex 1/1, –; SplitOffDeficiency 1/2, –; MvPolynomial 1/1,
-    –; Duality –, 1/1 (⚠Z); ProjectiveInvariance –, 2/2 (⚠Z, carrier). No downstream file outside
-    the batch needed a restore. Closes the B1 checklist item (tasks 9–12). Per-site detail in the
-    commit message.
-
-### The carried items (`notes/Phase40-design.md` §3/§4/§7)
-
-- [x] **13. M3: `span_supportExtensor_ofNormals_eq`** (§3, the SPLITOFF entry; this commit). Moved
-  above its consumer `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` (now `Cut.lean`
-  112/128). The consumer's `hmot` now rewrites both sides with the lemma (at `hends'`/`q'` then
-  `hends`/`q`) and closes with the existing `hnorm` rewrites at `he.left_mem`/`he.right_mem` — the
-  inlined `rcases … panelSupportExtensor_swap` orientation split is gone, absorbed by the lemma.
-  Statements, names and pins unchanged.
-- **14a–14b. M4: call 12's four corollary rebases** (§3, the CONTRACT-A entry;
-  `notes/Phase40k.md` *Hand-off* names G1, G4 and G5). Two commits. Statements and pins are
-  unchanged. Add a `\uses` edge wherever a node's proof now cites the new source.
-  - [x] **14a, (i)+(ii)** (`Contract.lean`; this commit). (i) derives the bound from G4 plus
-    `dim (ker.map ρ) ≤ 3` (`liftingRestrict_mem_liftingSpace_induce_of_contract`, `hLH`,
-    `Graph.finrank_affineLifts`, `omega`; needed a `set`-fold, TACTICS-QUIRKS.md § 1). (ii) is G5 at
-    `n := 2`. `contractLimitMap` and friends, and `Graph.exists_core_plane`, keep a consumer
-    elsewhere (liveness check: none orphaned). Blueprint: `lem:pencil-contract-limit`'s proof now
-    `\uses lem:pencil-contract-kernel-bound` (part (1) rewritten to match) and drops the reverse
-    edge from `…-kernel-bound` (would cycle; its own proof now inlines the map instead of pointing
-    back); `lem:pencil-contract-standing`'s proof gains `\uses lem:pencil-contract-standing-rigid`.
-  - [x] **14b, (iii)+(iv)** (this commit). (iii) `Graph.exists_core_plane`'s `hmem` is now one call to
-    `…liftingRestrict_mem_liftingSpace_induce_of_contract` (`hcore` stays, still needed for the
-    closing step). (iv) `…smul_add_affineLifts` builds its `LinearEquiv` `g` and calls G1, dropping
-    the inlined `hspan`/`rw` chain. Blueprint: `lem:pencil-contract-core-plane`'s proof now
-    `\uses lem:pencil-contract-kernel-bound`, whose own part (1) is inlined self-contained (the
-    dangling-pointer target ran the other way from 14a's, into core-plane); `lem:pencil-rank-scale-
-    shift`'s proof now `\uses lem:pencil-rank-collineation`.
-- [x] **15. M2b: the B2 dedupe** (§3, the 40h items; this commit). Confirmed the two proofs
-  matched step for step (only divergence: which label is relinked, and one fact — `e₀ ∉
-  G.crossingEdges f`, trivial if fresh, via `hfv`/`hfa` if reused — everything downstream of it
-  identical). Factored `private Graph.splitOff_deficiency_le_aux` over `e₀ ∉ E(G) ∨ e₀ = eₐ`;
-  both public lemmas are now one-line corollaries (`Or.inl`/`Or.inr rfl`). No statement, name, or
-  pin moved. `SplitOffDeficiency.lean`: 173 lines changed, net −67.
-- **16–18. M2c: the three-body near-copies** (§3, the 40h items; the FRICTION entry *The
-  three-body step repeats the four-body step*, which proposes the fix). Close or narrow that entry
-  as the parts land (closed at task 18).
-  - [x] **16. M2c-i** (this commit). The proofs matched step for step, diverging only in `F`'s
-    length and the `W = ⊤` step (tetrahedron against `hG`). New `exists_insertion_of_star_sup_star`
-    over `W = R ⊔ K ∙ (y₁ ∧ y₃)` with the star hypothesis; both are its corollaries by a span
-    rearrangement, `_four` keeping its tetrahedron. Names, statements, pins unchanged (neither is
-    pinned). Block 215 → 105 lines, 21 747 → 6 303 heartbeats (measured, script not retained; method
-    in the FRICTION entry, now narrowed). TACTICS-QUIRKS § 113 (new).
-  - [x] **17. M2c-ii, not landed** (this commit). Tried one lemma over `x : Fin (k + 3) → α`
-    suppressing `x 1` (`_four`/`_three` as `k = 1, 0`), bridged via `Fin.succAbove`. The
-    vertex-set/injective/`∉ V₁` conjuncts generalize cleanly, and a `pathVertex` vs. `succAbove`
-    shift lemma closes too (induction mirroring `pathVertex_eq_or_exists`), but only after ad hoc
-    `(n : Fin m).val = n` unfolds at every pivot index (`simp`/`omega` don't resolve a numeral
-    against a symbolic modulus alone). The edge/`hsep` conjuncts and the two `![…]`-bridge
-    corollaries need comparably more of the same, netting at least as long as the two present
-    ~65-line proofs, for materially more fragile Lean. Reverted (scratch only, no tracked diff);
-    `splitOff_ear_four`/`_three` stay as they are.
-  - [x] **18. M2c-iii** (this commit). Shared: base data, both rounds, both ear rank laws, the
-    counts. Divergent: the third polynomial and the insertion (tetrahedron against the case split
-    on `ρ`), `hdeg2`, the join lists. New `Graph.X0Attains.of_openEar_splitOff` over `m = k − 1`,
-    taking the antecedent's ear, `def₃(G″) ≤ def₃(G)` and an insertion hypothesis (no
-    `Fin.succAbove`, so task 17's trap does not arise). Names, statements, pins unchanged. 704 → 461
-    lines, 101 972 → 53 749 heartbeats; `Short.lean` 1 357 → 1 139. TACTICS-QUIRKS § 114, § 112.
 - [ ] **19. M2d: the pin budget of `lem:pencil-ear-data`** (§3, the 40h items).
   `main-component.tex` 2181, §`sec:main-component-short`, carries nine pins, while
   `blueprint/AUTHORING.md` D says a node pinning four or more is bundling results. Either split the
@@ -471,7 +318,7 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 `blueprint/AUTHORING.md` D's four). Split the node along its three clauses, with the ear data as a
 definition node, or leave the helpers unpinned; then repoint `EarGen.lean`'s 14 docstring
 citations of the label clause by clause (40g's `75df1aac` is the precedent). No statement changes
-strength. Task 18 (this commit) closed the M2c group and its FRICTION entry.
+strength. Task 18 (`b8b24c9a`) closed the M2c group and its FRICTION entry.
 
 ## Decisions made during this round
 
