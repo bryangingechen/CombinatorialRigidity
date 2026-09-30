@@ -4,19 +4,19 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b and 22 closed (17 not landed); 24 of 49 one-commit tasks
-remain. **Next concrete task:** task 23a, M1, the stand-in audit's molecular chapters.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a closed (17 not landed); 23 of 49 one-commit tasks
+remain. **Next concrete task:** task 23b, M1, the stand-in audit's molecule and pencil chapters.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 23a, M1** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b and 22 are closed (17 not landed), 24 remain. Nothing is
+**Next commit: task 23b, M1** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a are closed (17 not landed), 23 remain. Nothing is
 mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b and 22, one line each under *Lemma checklist → Landed* (task 17
-closed not landed). A finished task gets one or two lines there, with its commit; the detail stays
-in the commit message, and this section stays the forward pointer.
+Landed so far: tasks 1–20, 21a–21b, 22 and 23a, one line each under *Lemma checklist → Landed*
+(task 17 closed not landed). A finished task gets one or two lines there, with its commit; the
+detail stays in the commit message, and this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -172,10 +172,26 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     or `…finrank_span_rigidityRows_add_deficiency_le` is the relative form: repoint to
     `lem:relative-deficiency-rank-bound`.
   - Done: every reference names the bound its Lean uses, with one tally line here per commit.
-  - [ ] **23a, the molecular chapters** (24 references): `rigidity-matrix.tex` 7,
+  - [x] **23a, the molecular chapters** (24 references, this commit): `rigidity-matrix.tex` 7,
     `molecular-induction.tex` 6, `panel-layer.tex` 6, `case-i.tex` 3, `case-iii.tex` 1,
-    `genericity-and-count.tex` 1. Also `generic-lift.tex`'s stand-in,
-    `prop:rigidity-matrix-prop11`.
+    `genericity-and-count.tex` 1. Also `generic-lift.tex`'s stand-in, `prop:rigidity-matrix-prop11`.
+    - `rigidity-matrix.tex`'s 7 all stay: two cite `def:dof-generic`'s and
+      `lem:rank-delete-vertex`'s trivial-motion content (`finrank_trivialMotions`, not the rank
+      bound), one is chapter-intro prose, and `lem:relative-deficiency-rank-bound`'s own proof
+      re-derives the partition count rather than calling either pinned name.
+    - `molecular-induction.tex`'s 6 all repoint: `lem:case-cut-edge-realization` and its `-gp`
+      sibling share the private helper `cutEdge_finrank_assemble`, which calls
+      `finrank_span_rigidityRows_add_deficiency_le` directly.
+    - `panel-layer.tex`'s 6 all stay: `prop:rigidity-matrix-prop11`'s own proof,
+      `thm:molecular-conjecture` and `thm:molecular-conjecture-multigraph` each call
+      `screwDim_add_deficiency_le_finrank_infinitesimalMotions` directly.
+    - `case-i.tex`'s 3: 2 repoint (`lem:case-I-realization-nonsimple` calls
+      `finrank_span_rigidityRows_add_deficiency_le`), 1 stays (same trivial-motion-content pattern).
+    - `case-iii.tex`'s 1 and `genericity-and-count.tex`'s 1 stay: neither sits inside a `\uses`
+      edge — dead-route prose and section-intro prose, respectively.
+    - `generic-lift.tex`'s stand-in repoints both citing nodes (`thm:panel-generic-rank`,
+      `thm:bodyhinge-generic-rank`): both call `finrank_span_rigidityRows_add_deficiency_le`
+      directly, bypassing `prop:rigidity-matrix-prop11`'s own (spanning-form) proof.
   - [ ] **23b, the molecule and pencil chapters** (7): `molecule-application.tex` 3,
     `molecule-modelling.tex` 2, `pencil.tex` 2.
 
@@ -327,25 +343,27 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 23a, M1** (§3 FLAT; blueprint only, no Lean). This is the stand-in
-audit of `lem:trivial-motions-rank-bound` over the molecular chapters. It covers 24 references:
-`rigidity-matrix.tex` 7, `molecular-induction.tex` 6, `panel-layer.tex` 6, `case-i.tex` 3,
-`case-iii.tex` 1 and `genericity-and-count.tex` 1, plus `generic-lift.tex`'s stand-in
-`prop:rigidity-matrix-prop11`. For each reference, find the bound that the citing node's Lean calls:
+**Next concrete commit: task 23b, M1** (§3 FLAT; blueprint only, no Lean). This is the stand-in
+audit's molecule and pencil chapters: 7 references, `molecule-application.tex` 3,
+`molecule-modelling.tex` 2, `pencil.tex` 2. Same method as 23a: for each reference, find the bound
+the citing node's Lean calls:
 - the spanning form (`…screwDim_add_deficiency_le_finrank_infinitesimalMotions`) keeps the
   reference;
 - the relative form (`…screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` or
   `…finrank_span_rigidityRows_add_deficiency_le`) is repointed to
   `lem:relative-deficiency-rank-bound`.
 
-Record one tally line on 23a's checklist line. The gates are `blueprint/lint.sh` and
-`blueprint/verify.sh`. Task 23b (the molecule and pencil chapters, 7 references) follows.
+Record one tally line on 23b's checklist line, the same shape as 23a's. The gates are
+`blueprint/lint.sh` and `blueprint/verify.sh`.
 
-Task 22 (this commit) merged the duplicate screw-space transport. `mapExtensor` survives and moved
-to `RigidityMatrix/Basic.lean`. `mapSupport` is deleted, and six lemmas are renamed to match (the
-list is in the commit message). The pins of `lem:screw-map-rows` and
-`lem:pencil-projective-transport` are repointed. The checklist's rank-half derivation was not done;
-the reason is recorded on 22's checklist line. This commit also fills in 21b's sha (`84fcc137`).
+Task 23a (this commit) audited the molecular chapters' 24 direct references plus
+`generic-lift.tex`'s stand-in. 8 of the 24 repoint to `lem:relative-deficiency-rank-bound`
+(`molecular-induction.tex`'s 6, `case-i.tex`'s 2); the other 16 stay (`rigidity-matrix.tex`'s 7,
+`panel-layer.tex`'s 6, `case-i.tex`'s remaining 1, `case-iii.tex`'s 1,
+`genericity-and-count.tex`'s 1). Both of `generic-lift.tex`'s stand-in citations
+(`thm:panel-generic-rank`, `thm:bodyhinge-generic-rank`) also repoint. Per-node reasoning is on
+23a's checklist line. No Lean changed; the blueprint-only gates (`blueprint/lint.sh`,
+`blueprint/verify.sh`) are green.
 
 ## Decisions made during this round
 

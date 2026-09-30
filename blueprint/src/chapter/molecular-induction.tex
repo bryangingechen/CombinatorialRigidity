@@ -1386,7 +1386,7 @@ ends are not adjacent use this (\cref{sec:main-component-orbit}).
   \leanok
   \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
         thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
-        lem:trivial-motions-rank-bound}
+        lem:relative-deficiency-rank-bound}
   Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is not
   $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
   $k'$-dof-graph has a nondegenerate-hinge panel realization
@@ -1396,7 +1396,7 @@ ends are not adjacent use this (\cref{sec:main-component-orbit}).
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
-        lem:trivial-motions-rank-bound}
+        lem:relative-deficiency-rank-bound}
   Apply \cref{lem:cut-edge-decomposition} to obtain $V_1$, $V_2 = V(G)\setminus V_1$
   with $|C| \le 1$ and $k = k_1 + k_2 + D - (D-1)|C|$.  Apply the induction
   hypothesis on each side to get frameworks $F_1, F_2$ at their target ranks.
@@ -1404,7 +1404,7 @@ ends are not adjacent use this (\cref{sec:main-component-orbit}).
   the at-most-one cut edge assign a nonzero extensor lying in both endpoint panels
   (from \texttt{exists\_extensor\_in\_two\_panels}).  The rank lower bound is the
   block-rank addition \cref{lem:block-rank-cut}; the upper bound is the
-  genericity-free bound of \cref{lem:trivial-motions-rank-bound}; the deficiency
+  genericity-free bound of \cref{lem:relative-deficiency-rank-bound}; the deficiency
   arithmetic $k = k_1 + k_2 + D - (D-1)|C|$ and $|V| = |V_1| + |V_2|$ close
   equality.
 \end{proof}
@@ -1420,7 +1420,7 @@ generic conjunct for simple graphs.
   \leanok
   \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
         thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
-        lem:trivial-motions-rank-bound, lem:rank-polynomial-of-le-finrank,
+        lem:relative-deficiency-rank-bound, lem:rank-polynomial-of-le-finrank,
         lem:genericity-device}
   Let $G$ be a minimal $k$-dof simple graph with $|V(G)| \ge 3$ that is not
   $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
@@ -1431,7 +1431,7 @@ generic conjunct for simple graphs.
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
-        lem:trivial-motions-rank-bound, lem:rank-polynomial-of-le-finrank,
+        lem:relative-deficiency-rank-bound, lem:rank-polynomial-of-le-finrank,
         lem:genericity-device}
   Cut decomposition as in \cref{lem:case-cut-edge-realization}, yielding sides
   $V_1$, $V_2 = V(G)\setminus V_1$.  Each side is a simple induced subgraph, so
@@ -1448,7 +1448,7 @@ generic conjunct for simple graphs.
   follows from the non-vanishing of $Q_{\mathrm{gp}}$.  The per-side rank
   bounds at $q_0$ follow from the non-vanishing of the rank polynomials; the
   block-rank addition \cref{lem:block-rank-cut} plus arithmetic give the
-  combined lower bound; \cref{lem:trivial-motions-rank-bound} gives the upper
+  combined lower bound; \cref{lem:relative-deficiency-rank-bound} gives the upper
   bound; antisymmetry closes rank equality.
 \end{proof}
 

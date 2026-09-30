@@ -381,7 +381,7 @@ supplies it directly.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-6-genuine, lem:panel-witness-transplant,
-    lem:generic-normals-nondegenerate, prop:rigidity-matrix-prop11}
+    lem:generic-normals-nondegenerate, lem:relative-deficiency-rank-bound}
   For the lower bound: the link-recording nondegenerate witness of
   \cref{thm:theorem-55-6-genuine} attains
   $\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde
@@ -391,7 +391,7 @@ supplies it directly.
   the annihilator rows of a link-recording selector are rows of
   $R(G,q)$. The upper bound is the genericity-free bound
   $\dim Z(G,q) \ge D + \operatorname{def}(\tilde G)$ of
-  \cref{prop:rigidity-matrix-prop11}, whose nondegenerate-hinge
+  \cref{lem:relative-deficiency-rank-bound}, whose nondegenerate-hinge
   hypothesis holds at $q$ by
   \cref{lem:generic-normals-nondegenerate}.
 \end{proof}
@@ -1066,7 +1066,7 @@ re-places the panel witness inside that space.
 \begin{proof}
   \uses{lem:hinge-point-witness,
     lem:generic-hinge-points-nondegenerate,
-    prop:rigidity-matrix-prop11}
+    lem:relative-deficiency-rank-bound}
   For the lower bound: the witness assignment of
   \cref{lem:hinge-point-witness} has
   $D(|V|-1) - \operatorname{def}(\tilde G)$ linearly independent
@@ -1075,7 +1075,7 @@ re-places the panel witness inside that space.
   link-recording selector are rows of $R(G,q)$. The upper bound is
   the genericity-free bound
   $\dim Z(G,q) \ge D + \operatorname{def}(\tilde G)$ of
-  \cref{prop:rigidity-matrix-prop11}, whose nondegenerate-hinge
+  \cref{lem:relative-deficiency-rank-bound}, whose nondegenerate-hinge
   hypothesis holds at $q$ by
   \cref{lem:generic-hinge-points-nondegenerate}.
 \end{proof}
