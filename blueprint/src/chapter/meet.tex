@@ -280,6 +280,29 @@ identity the $d = 3$ Case-III realization of
   cites for its own bare-to-generic step.
 \end{fmlnote}
 
+\begin{lemma}[Equal nonzero decomposable extensors span the same plane; Plücker injectivity]
+  \label{lem:decomposable-extensor-span-unique}
+  \lean{CombinatorialRigidity.Molecular.span_range_eq_of_extensor_eq}
+  \leanok
+  \uses{def:extensor, def:join}
+  If two pairs $p_0, p_1, p_0', p_1' \in K^{d+1}$ have the same nonzero extensor,
+  $\mathrm{extensor}\,[p_0,p_1] = \mathrm{extensor}\,[p_0',p_1'] \ne 0$, then they span the same
+  plane, $\mathrm{span}\{p_0,p_1\} = \mathrm{span}\{p_0',p_1'\}$. This is the converse of the
+  point-pair proportionality of \cref{lem:case-III-claim612-line-in-panel-union}: there, a common
+  $1$-dimensional line forces proportional extensors; here, equal nonzero decomposable extensors
+  force a common $2$-dimensional plane.
+\end{lemma}
+\begin{proof}
+  \leanok
+  For any $x \in K^{d+1}$, the join factorization $\mathrm{extensor}\,[x,a,b] =
+  \mathrm{extensor}\,[x] \vee \mathrm{extensor}\,[a,b]$ (\cref{def:join}) makes the grade-$3$
+  extensor of $x$ against either pair depend only on their shared grade-$2$ extensor, so
+  $\mathrm{extensor}\,[x,p_0,p_1] = \mathrm{extensor}\,[x,p_0',p_1']$ for every $x$. A decomposable
+  triple vanishes exactly when its first vector lies in the span of the (independent) remaining
+  pair, so $x \in \mathrm{span}\{p_0',p_1'\}$ iff $\mathrm{extensor}\,[x,p_0,p_1] = 0$ iff
+  $x \in \mathrm{span}\{p_0,p_1\}$, and the two spans coincide.
+\end{proof}
+
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
   \lean{CombinatorialRigidity.Molecular.meet}
