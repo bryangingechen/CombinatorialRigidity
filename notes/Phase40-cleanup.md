@@ -5,19 +5,18 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
 Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40, 41, 42 and 43 closed (17 not landed); 2 of 50 one-commit tasks remain.
-**Next concrete task:** task 44, A-R, the blueprint-against-Lean walk of Phase 40's
-`rigidity-matrix.tex` nodes.
+35, 36, 37, 38, 39, 40, 41, 42, 43 and 44 closed (17 not landed); 1 of 50 one-commit tasks remains.
+**Next concrete task:** task 45, X, close the round.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 44, A-R** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+**Next commit: task 45, X** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
 tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40, 41, 42 and 43 are closed (17 not landed), 2 remain. Nothing is mid-stream.
+35, 36, 37, 38, 39, 40, 41, 42, 43 and 44 are closed (17 not landed), 1 remains. Nothing is mid-stream.
 
 Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34, 35,
-36, 37, 38, 39, 40, 41, 42 and 43, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
+36, 37, 38, 39, 40, 41, 42, 43 and 44, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
 gets one or two lines there, with its commit; the detail stays in the commit message, and this
 section stays the
 forward pointer.
@@ -261,15 +260,16 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
 - [x] **42. A-MC10: `sec:main-component-statements`** (4331–4858; 15; `eea4f89c`). 15 nodes walked
   (all `\leanok`, no remarks), 0 divergences: every pin, hypothesis, and `\uses` edge matches its
   Lean; both headline nodes match `formalization.yaml`'s `pencil_conjecture`/`pencilPair_of_nonempty`.
-- [x] **43. A-D: Phase 40's deficiency nodes** (9; this commit). 9 nodes walked, all `\leanok`, 0
+- [x] **43. A-D: Phase 40's deficiency nodes** (9; `7e7392bf`). 9 nodes walked, all `\leanok`, 0
   statement/hypothesis divergences (detail in the commit message); fixed one wrong `\uses` edge
   and one `rem:fresh-edge-supply` enumeration gap in `panel-layer.tex`; D5 debt moved below.
-- [ ] **44. A-R: Phase 40's `rigidity-matrix.tex` nodes** (11): `lem:relative-deficiency-rank-bound`,
-  `lem:block-rank-cut` (its pin extended), `lem:block-rank-cut-vertex`, `def:relative-screws`,
-  `lem:block-rank-two-cut`, `cor:block-rank-vertex-two-cut`, `lem:block-rank-path`,
-  `lem:relative-screws-path`, `lem:block-rank-ear`, `lem:block-rank-contract`,
-  `lem:rank-polynomial-proj-eval`. **⚠Z** for any Lean fix (`RigidityMatrix/Bricks.lean`,
-  `AlgebraicInduction/`).
+- [x] **44. A-R: Phase 40's `rigidity-matrix.tex` nodes** (11; this commit). 11 nodes walked, all
+  `\leanok`, 0 statement/hypothesis divergences; fixed one missing proof-level `\uses{lem:rank-
+  polynomial-of-le-finrank}` on `lem:rank-polynomial-proj-eval` (its two siblings duplicate the
+  statement's technique-`\uses` onto the proof block; this one hadn't). `lem:relative-deficiency-
+  rank-bound`'s own proof indeed re-derives the partition count via a sibling helper rather than
+  calling `lem:trivial-motions-rank-bound`'s pinned name (confirmed the task-44 hint) — a
+  legitimate cross-reference like task 43's `lem:deficiency-antitone` finding, not a divergence.
 
 ### The close
 
@@ -401,12 +401,17 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 44, A-R** (§A, the blueprint-against-Lean walk). `rigidity-matrix.tex`'s
-11 nodes: compare each `\leanok` node's statement with its pinned Lean signature, check the
-laundering walk, and read the prose proof for oversell. **⚠Z** applies to any Lean fix
-(`RigidityMatrix/Bricks.lean`, `AlgebraicInduction/`). Task 45 closes the round.
+**Next concrete commit: task 45, X, close the round** (`CLEANUP.md` *Workflow* rule 5; the
+checklist's own *The close* bullets). Its first action is to fill task 44's own "this commit" sha
+in the *Lemma checklist* line above (the same backfill each walk task has done for its
+predecessor). Then: re-run the open's §B sweep and record the counts after, re-run `#print axioms`
+on the 19 main results the open's way, re-measure the file sizes, flip the ROADMAP row and set
+`40-cleanup`'s `done = true` in `.claude/autopilot/queue.toml`, point `notes/Cleanup40.md`'s
+**Status** and ROADMAP's cleanup-rounds bullet at round 2, and hand *Candidates for `40-simplify`*
+to round 4 (mirror each line into `notes/Cleanup40.md` §2 Round 4). This is the round's last task —
+no further hand-off after it beyond round 2's own open.
 
-Tasks 29–42's divergences (or their absence) are each recorded on their own *Lemma checklist* line
+Tasks 29–44's divergences (or their absence) are each recorded on their own *Lemma checklist* line
 above; task 43's fixes are detailed in its own commit message (`git log`), not repeated here.
 
 ## Decisions made during this round
