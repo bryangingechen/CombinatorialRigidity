@@ -84,13 +84,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
   have hvc_not_hub : ¬ G.PencilHub v_c := by
     intro h; have h2 := h.2; omega
   have hcross_eq : ∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ →
-      e' = e_c ∧ x = u_c ∧ y = v_c := by
-    intro e' x y hle hx hy
-    have he' := Graph.eq_cutEdge_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
-    subst he'
-    rcases hle.eq_and_eq_or_eq_and_eq hl_c with ⟨hxeq, hyeq⟩ | ⟨hxeq, hyeq⟩
-    · exact ⟨rfl, hxeq, hyeq⟩
-    · rw [hxeq] at hx; exact absurd hx hv_c
+      e' = e_c ∧ x = u_c ∧ y = v_c :=
+    fun e' x y hle hx hy => Graph.eq_and_eq_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
   have hu_c_hub_iff : G.PencilHub u_c ↔ (G.induce V₁).PencilHub u_c :=
     Graph.pencilHub_iff_induce_of_degree_ne hl_c hu_c hv_c hcut hdeg3
   have hdeg_eq : ∀ w ∈ V₁, w ≠ u_c → (G.induce V₁).degree w = G.degree w :=
@@ -573,13 +568,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
   have hvc_not_hub : ¬ G.PencilHub v_c := by
     intro h; have h2 := h.2; omega
   have hcross_eq : ∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ →
-      e' = e_c ∧ x = u_c ∧ y = v_c := by
-    intro e' x y hle hx hy
-    have he' := Graph.eq_cutEdge_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
-    subst he'
-    rcases hle.eq_and_eq_or_eq_and_eq hl_c with ⟨hxeq, hyeq⟩ | ⟨hxeq, hyeq⟩
-    · exact ⟨rfl, hxeq, hyeq⟩
-    · rw [hxeq] at hx; exact absurd hx hv_c
+      e' = e_c ∧ x = u_c ∧ y = v_c :=
+    fun e' x y hle hx hy => Graph.eq_and_eq_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
   have hdeg_eq : ∀ w ∈ V₁, w ≠ u_c → (G.induce V₁).degree w = G.degree w :=
     fun w hw hwne => Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut hw hwne
   have huc_Ghub : G.PencilHub u_c := ⟨hl_c.left_mem, hdeg.ge⟩

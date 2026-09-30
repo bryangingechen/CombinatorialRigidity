@@ -934,6 +934,20 @@ theorem _root_.Graph.eq_cutEdge_of_isLink_crossing [Finite β] {G : Graph α β}
   have he₀ : e₀ ∈ G.cutEdges V₁ := ⟨hl₀.edge_mem, u₀, w₀, hl₀, hu₀, hw₀⟩
   exact (Set.ncard_le_one (Set.toFinite _)).mp hcut e he e₀ he₀
 
+/-- **Under `≤ 1` crossing edge, a crossing link's endpoints pin to the cut edge's** (the
+`hcross_eq` shape `Pair.lean`/`Pair2.lean`'s cut-arm producers each re-derive locally): a link
+`e = xy` with `x ∈ V₁` and `y ∉ V₁` is not just the same edge as the pinned `e₀ = u₀w₀`
+(`Graph.eq_cutEdge_of_isLink_crossing`), its endpoints agree in orientation too — the swapped
+orientation `x = w₀` contradicts `hx : x ∈ V₁` against `hw₀ : w₀ ∉ V₁`. -/
+theorem _root_.Graph.eq_and_eq_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set α}
+    {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {x y : α}
+    (hl : G.IsLink e x y) (hx : x ∈ V₁) (hy : y ∉ V₁) : e = e₀ ∧ x = u₀ ∧ y = w₀ := by
+  obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hx hy
+  rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · exact ⟨rfl, rfl, rfl⟩
+  · exact absurd hx hw₀
+
 /-- **The edge-closed side preserves own-side degrees** (Phase 39 W5-L5 cut-arm structure layer,
 degree lemma 1): with at most one crossing edge `e₀ = u₀w₀`, every `v ∈ V₁` has the same degree in
 `Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` as in `G` — an edge at `v` is either `V₁`-internal or the crossing

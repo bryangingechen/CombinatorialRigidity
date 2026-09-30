@@ -114,6 +114,20 @@ to be re-derived by re-reading entries later.
   `Polynomial.mem_roots hp` unfold pair at the membership step.
 - **Status:** resolved. **Lifted to:** `TACTICS-GOLF.md` § 2 (two new subsections).
 
+### [resolved] `hcross_eq`'s crossing-endpoint pinning was re-derived from `eq_cutEdge_of_isLink_crossing` at every call site
+- **Where it bit:** Phase 40-cleanup task 26 (C3, the `Pair.lean`/`Pair2.lean` long-proof screen):
+  three cut-arm producers each needed "a crossing link's endpoints pin to the cut edge's, not just
+  the edge itself" — `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and
+  its `_deg3` sibling (`Pair2.lean`) re-derived the exact same 6–8-line `have hcross_eq` (one
+  byte-identical between the two), and
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton` (`Pair.lean`)
+  re-derived an equivalent shape through a named `hcut_uniq` intermediate.
+- **Fix:** `Graph.eq_and_eq_of_isLink_crossing` (`Pencil/Motive.lean`, beside
+  `Graph.eq_cutEdge_of_isLink_crossing`) fuses the `obtain rfl := eq_cutEdge_of_isLink_crossing …`
+  + `rcases hl.eq_and_eq_or_eq_and_eq hl₀ with …` case split into the one lemma the three sites
+  needed; each site now calls it directly instead of restating the derivation.
+- **Status:** resolved.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

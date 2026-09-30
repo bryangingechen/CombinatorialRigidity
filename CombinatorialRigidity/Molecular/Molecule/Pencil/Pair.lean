@@ -818,12 +818,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
     fun e' u' v' hle hu' hv' =>
       Graph.eq_cutEdge_of_isLink_crossing hl_c hu_c hv_c hcut hle hu' hv'
   have hcross_eq : ∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ →
-      e' = e_c ∧ x = u_c ∧ y = v_c := by
-    intro e' x y hle hx hy
-    obtain rfl := hcut_uniq e' x y hle hx hy
-    rcases hle.eq_and_eq_or_eq_and_eq hl_c with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-    · exact ⟨rfl, rfl, rfl⟩
-    · exact absurd hx hv_c
+      e' = e_c ∧ x = u_c ∧ y = v_c :=
+    fun e' x y hle hx hy => Graph.eq_and_eq_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
   -- Side membership of closed neighbourhoods (minus the crossing endpoint).
   have hmemV₁ : ∀ {v w : α}, v ∈ V₁ → w ∈ G.closedNbhd v → w ≠ v_c → w ∈ V₁ := by
     intro v w hv hw hwne

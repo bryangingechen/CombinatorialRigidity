@@ -4,18 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24 and 25 closed (17 not landed); 20 of 49
-one-commit tasks remain. **Next concrete task:** task 26, C3, `Pair.lean` and `Pair2.lean` (the
-long-proof screen). Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25 and 26 closed (17 not landed); 19 of 49
+one-commit tasks remain. **Next concrete task:** task 27, C4, three singles (`GenericTriangle.lean`,
+`Arms.lean`, `Orbit.lean`; the long-proof screen). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 26, C3** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24 and 25 are closed (17 not landed), 20 remain.
+**Next commit: task 27, C4** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25 and 26 are closed (17 not landed), 19 remain.
 Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24 and 25, one line each under *Lemma checklist →
-Landed* (task 17 closed not landed). A finished task gets one or two lines there, with its commit;
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25 and 26, one line each under *Lemma checklist
+→ Landed* (task 17 closed not landed). A finished task gets one or two lines there, with its commit;
 the detail stays in the commit message, and this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
@@ -76,7 +76,7 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given (the numbers). For the §B tasks, done means: every listed
 site is either fixed, or kept with a one-word reason recorded under the task's checklist line.
 
-### Landed: tasks 1–25 (one line each; each commit message has the detail)
+### Landed: tasks 1–26 (one line each; each commit message has the detail)
 
 - [x] **1. T1** (`a2686fde`). The toolchain status was stale. Master is pushed and CI-green at
   `91fcd24a`, and hopscotch's issue #2 / PR #1 are now live signal. The `bump/*` refs are the PI's call.
@@ -137,13 +137,13 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   `lem:trivial-motions-rank-bound`'s 31 references: 12 repoint to `lem:relative-deficiency-rank-bound`
   (8 of the molecular chapters' 24 in 23a, 4 of the molecule/pencil chapters' 7 in 23b), the rest
   stay; both of `generic-lift.tex`'s stand-in citations (23a) also repoint.
-- [x] **24. C1** (this commit). `_three` is live (through `hasGenericPencilRealization_of_IH`):
+- [x] **24. C1** (`0bdb1681`). `_three` is live (through `hasGenericPencilRealization_of_IH`):
   469 → 362 lines, heartbeats 72 044 → 60 555. The changes are `Graph.degree_le_ncard` for
   no-hub, `LinearIndepOn.mono` in place of the three closed neighbourhoods, and
   `Pi.linearIndependent_single_one` with `linearIndepOn_range_iff`. FRICTION [idiom]. `_four` is
   off-headline (see *Candidates*), so its 400000 bump stays. There is no sibling unification and
   no file split (`Base.lean` is at 1 310 lines).
-- [x] **25. C2** (this commit). Both `Witness.lean` proofs are live, through
+- [x] **25. C2** (`c6557860`). Both `Witness.lean` proofs are live, through
   `hasGenericPencilRealization_pendant_deg3_of_IH` and `pencilPair_of_not_twoEdgeConnected` to
   `MainComponent/Statements.lean`'s headline nodes: #2
   `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3` (483 → 462 lines) and #10
@@ -156,6 +156,22 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   `GenericEar.lean`/`GenericTriangle.lean`'s main-component route). No missed mathlib lemma or
   tactic substitution surfaced; no cross-proof unification attempted (out of this task's scope).
   `Witness.lean` is at 1 758 lines (task 28 still applies).
+- [x] **26. C3** (this commit). `Pair.lean`/`Pair2.lean`'s #4, #5, #6 are all live (each is called
+  within `Pair2.lean` itself: #4 at 1134/1161, #5 at 1194, #6 at 1028). One API extraction landed:
+  the `hcross_eq` derivation — `∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ → e' = e_c ∧ x = u_c ∧
+  y = v_c` — was re-derived from `Graph.eq_cutEdge_of_isLink_crossing` plus an
+  `IsLink.eq_and_eq_or_eq_and_eq` case split at all three sites (byte-identical in #4/#6, a
+  `hcut_uniq`-mediated variant in #5); it is now the fused `Graph.eq_and_eq_of_isLink_crossing`
+  (`Motive.lean`, beside `eq_cutEdge_of_isLink_crossing`), collapsing each site's 6–8 lines to a
+  one-line `have`. No missed mathlib lemma or tactic substitution surfaced on #5 (the two-sided
+  union case, structurally distinct from #4/#6 — the avoidance-automorphism reposition has no
+  analogue in the pendant producers). #4/#6's shared tail — `normal_vc`'s choice through the
+  pendant hinge, the glued data, `hlinks` (both `rw [hnu, hnv, hpu, hpv]` occurrences),
+  `hnorm_nz`/`hextF_nz`/`hpoint_nz`/`hpoint_inc`/`hadjLI`, and the whole rank section — is
+  byte-identical (~190 lines each, confirmed by diff); the setup (the `point_vc` cover) and
+  conjuncts 3/4 diverge on whether `u_c`'s hub status can change (#4: `hdeg3`, cover-based; #6:
+  `hdeg = 3` forces a hub, `hpromoted`-based). Recorded as a candidate (see *Candidates*): a
+  unification needs a shared sub-lemma design, not a small local extraction.
 
 ### §C: the long-proof screen (the top ten, walked; screening only)
 
@@ -166,15 +182,6 @@ findings are recorded as candidates. First run a cheap liveness check (`lean_ref
 transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`). A proof that feeds neither
 headline is recorded as off-headline (round 4's third question) and gets no local work.
 
-- [ ] **26. C3: `Pair.lean` and `Pair2.lean`.**
-  - #4 `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` (`Pair2.lean` 66,
-    448).
-  - #5 `…_induce_union_singleton` (`Pair.lean` 794, 447).
-  - #6 `…_induce_pendant_deg3` (`Pair2.lean` 549, 409).
-
-  The `rw [hnu, hnv, hpu, hpv]` run recurs once in each of #4 and #6 (`Pair2.lean` 242/250,
-  701/709). That is the sibling shape §C's calibration warns about: check for per-step divergence
-  before proposing a unification.
 - [ ] **27. C4: three singles.**
   - #7 `hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization`
     (`GenericTriangle.lean` 155, 401).
@@ -289,6 +296,19 @@ close mirrors them into `notes/Cleanup40.md` §2 Round 4.
     The shared step is the join-detector rank computation. Its `m`-general form would need a
     standard-basis API for `⋀²K⁴` that the project lacks, which is not worth building for an
     off-headline proof.
+- **A `_four`/`_six` cross-proof unification of `Pair2.lean`'s two pendant producers** (task 26,
+  C3; `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and its
+  `_deg3` sibling). Once `hcross_eq` is factored out (landed), the two proofs' shared tail —
+  `normal_vc`'s choice through the pendant hinge, the glued data, `hlinks`, the four
+  nonzero/incidence `have`s, `hadjLI` (conjunct 2), and the entire rank section — is
+  byte-identical, ~190 lines each. A shared sub-lemma would need to abstract over: (a) the
+  `point_vc`-avoidance target (a `≤ 2`-generator cover of `H.closedNbhd u_c`'s point image in
+  `_four`, vs. `span {point₁ u_c}` in `_six`), and (b) conjunct 3's closed-hub-neighbourhood
+  transfer (`Graph.pencilHub_iff_induce_of_degree_ne`, unconditional, in `_four`; the promoted
+  triple `hpromoted` at `{u_c, w₁, w₂}`, in `_six`) and conjunct 4's `v = u_c` case (a nontrivial
+  `≤ 2`-generator cover argument in `_four`; vacuous — `u_c` is always a `G`-hub — in `_six`). That
+  is a real design task (a shared lemma taking the avoidance target and the hub-transfer proof as
+  parameters), not a small local extraction — structural, per §C's fifth bullet.
 
 ## Moved to a later round
 
@@ -307,23 +327,23 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 26, C3** (§C, the long-proof screen). Walk `Pair.lean` and
-`Pair2.lean`'s #4 `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`
-(`Pair2.lean`), #5 `…_induce_union_singleton` (`Pair.lean`), and #6 `…_induce_pendant_deg3`
-(`Pair2.lean`) against §C's four questions, after the liveness check. The `rw [hnu, hnv, hpu,
-hpv]` run recurs once in each of #4 and #6 (`Pair2.lean` 242/250, 701/709) — that is the sibling
-shape §C's calibration warns about (`CLEANUP.md` §C); check for per-step divergence before
-proposing a unification, the task-25/26 line numbers having shifted with this commit's `Engine.lean`
-insertion (`Witness.lean`/`GenericSteer.lean` line numbers in the checklist are stale by this
-commit's deletions; `Pair.lean`/`Pair2.lean` are untouched). Measure each change's heartbeats on a
-scratch copy, the task-16 way (FRICTION, `exists_insertion_of_star_sup_star`), and revert any
-change that raises them.
+**Next concrete commit: task 27, C4** (§C, the long-proof screen). Walk the three singles against
+§C's four questions, after the liveness check: #7
+`hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization` (`GenericTriangle.lean`),
+#8 `hasPencilRealization_of_not_twoEdgeConnected_core` (`Arms.lean`), #9
+`Graph.X0Attains.of_openEar_two_of_splitOff` (`Orbit.lean`). These are three unrelated singles (no
+sibling pair named), so the cross-proof-unification question is against the rest of the tree, not
+against each other. `Arms.lean` sits at 1 513 lines (past the ~1500 tripwire already) — task 28's
+note says it splits the standing-rule way only if still past ~1500 after this task, so re-measure
+after landing any fix here before deciding.
 
-Task 25 (this commit) extracted `Witness.lean`'s `hPu`/`hP1`/`hP2` triple (nine sites across
-`Witness.lean` and `GenericSteer.lean`) into `exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`
-(`Engine.lean`, upstream of both call sites). Both `Witness.lean` proofs and the `GenericSteer.lean`
-site are live. No mathlib lemma or tactic substitution surfaced; no unification attempted (not
-this task's scope). `Witness.lean` is at 1 758 lines; task 28 (the file split) still applies.
+Task 26 (this commit) confirmed #4/#5/#6 (`Pair.lean`/`Pair2.lean`) all live, and landed one API
+extraction: `Graph.eq_and_eq_of_isLink_crossing` (`Motive.lean`, beside
+`eq_cutEdge_of_isLink_crossing`) replaces the `hcross_eq` derivation duplicated at all three sites.
+#4/#6's much larger shared tail (~190 byte-identical lines each) is a real cross-proof-unification
+candidate but not a small local extraction — recorded under *Candidates*, not attempted. #5 (the
+two-sided union case) surfaced nothing further; it is structurally distinct from #4/#6 (an
+avoidance-automorphism reposition, no analogue in the pendant producers).
 
 ## Decisions made during this round
 
