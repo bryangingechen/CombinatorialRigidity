@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a closed (17 not landed); 23 of 49 one-commit tasks
-remain. **Next concrete task:** task 23b, M1, the stand-in audit's molecule and pencil chapters.
-Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a–23b closed (17 not landed); 22 of 49 one-commit
+tasks remain. **Next concrete task:** task 24, C1, the `Base.lean` sibling pair (the long-proof
+screen). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 23b, M1** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a are closed (17 not landed), 23 remain. Nothing is
-mid-stream.
+**Next commit: task 24, C1** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a–23b are closed (17 not landed), 22 remain. Nothing
+is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22 and 23a, one line each under *Lemma checklist → Landed*
+Landed so far: tasks 1–20, 21a–21b, 22 and 23a–23b, one line each under *Lemma checklist → Landed*
 (task 17 closed not landed). A finished task gets one or two lines there, with its commit; the
 detail stays in the commit message, and this section stays the forward pointer.
 
@@ -76,7 +76,7 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given (the numbers). For the §B tasks, done means: every listed
 site is either fixed, or kept with a one-word reason recorded under the task's checklist line.
 
-### Landed: tasks 1–18 (one line each; each commit message has the detail)
+### Landed: tasks 1–23b (one line each; each commit message has the detail)
 
 - [x] **1. T1** (`a2686fde`). The toolchain status was stale. Master is pushed and CI-green at
   `91fcd24a`, and hopscotch's issue #2 / PR #1 are now live signal. The `bump/*` refs are the PI's call.
@@ -125,75 +125,18 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   every one of the twenty fit; none stayed behind. No file pointers named the old file for these
   lemmas (grepped `.lean`/`blueprint`/`notes`), so nothing to repoint.
 
-### The carried items (`notes/Phase40-design.md` §3/§4/§7), continued
-
-- **21a–21b. F2: two general facts downstream of their consumers** (the `[open]` FRICTION
-  entry of that name). Two commits. No names change. The second closes the FRICTION entry.
-  - [x] **21a.** (`24ad0724`; follow-up, `dd5be5d9`). Moved `Graph.closedNbhd_subset_vertexSet`
-    (`Bridge.lean`) to `Motive.lean`, beside `Graph.closedNbhd`, and dropped the two named inline
-    copies (`isAdmissiblePicture_congr`, `liftingSpace_congr`). The follow-up dropped the other 19
-    across the pencil tree: `Carrier.lean` 4 (incl. the mirror-candidate entry's two), `Engine.lean`
-    6, `Base.lean` 3, `Cut.lean` 2, `Pair.lean` 2, `CoverageChain.lean` 1, `Reseed.lean` 1.
-  - [x] **21b.** (`84fcc137`). Moved the `infinitesimalMotions_eq_of_isLink_*` pair
-    (`AlgebraicInduction/Pinning.lean`) to `RigidityMatrix/Basic.lean`, beside
-    `mem_infinitesimalMotions` — they read only `hingeConstraint`, so they sit before the null-space
-    material that names it. `infinitesimalMotions_mono_of_graph_le` stays in `Pinning.lean` (it isn't
-    one of the pair; the FRICTION entry never named it). `BodyHingeFramework.relScrews_congr`
-    (`Bricks.lean`) now calls the moved `infinitesimalMotions_eq_of_isLink_supportExtensor` instead of
-    re-proving the motion-space equality inline as `hZ`. No names changed; no pin moved. Closes the
-    `[open]` FRICTION entry (line 3017; now `[resolved]`).
-- [x] **22. M6: `mapExtensor` and `mapSupport`** (§4, *Still open*). `mapExtensor`
-  (`Molecule/ProjectiveInvariance.lean` 79, pinned by `thm:projective-invariance`,
-  `molecule-modelling.tex` 106) and `mapSupport` (`GenericLift/HingeGeneric.lean` 462, pinned by
-  `lem:screw-map-rows`, `generic-lift.tex` 929) are one definition. `thm:projective-invariance`'s
-  rank half restates `lem:screw-map-rows`.
-  - At the open, `mapExtensor` has 32 occurrences (ProjectiveInvariance 26, Statement 3,
-    Duality 3) and `mapSupport` 20 (HingeGeneric 8, Configuration 5, Arms 4, Pair, Motive and
-    ProjectiveInvariance 1 each).
-  - Settle which definition survives from the import order. Repoint its callers and the pin; this
-    runs the deletion gate. Derive the rank half from `lem:screw-map-rows`'s Lean, adding the
-    `\uses` edge.
-  - If one definition would need an import restructure, record that as a candidate instead.
-    **⚠Z**, carrier.
-  - **Landed** (this commit). `mapExtensor` survives, moved up to `RigidityMatrix/Basic.lean`
-    beside `ofHinge` (the two files' only common ancestor is `Pinning.lean`; no import edge added).
-    `mapSupport` is deleted and its six lemmas are renamed to `mapExtensor` (list in the commit).
-    Both pins are repointed, and no statement changed.
-  - **The rank half is not re-derived** (per the coordinator's verified route). It is the
-    motion-space finrank and `lem:screw-map-rows` is the row-span one. Bridging them
-    (`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`) needs `[Finite α]`, which neither
-    statement has. So no `\uses` edge; the proof `\cref`s `lem:screw-map-rows` instead. Not a
-    `40-simplify` candidate either, since it would weaken a statement.
-- **23a–23b. M1: the wider stand-in audit of `lem:trivial-motions-rank-bound`** (§3 FLAT).
-  Blueprint only. There are 31 references outside the node's own label.
-  - **Method.** For each reference, find the bound that the citing node's Lean actually calls.
-    `BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions` is the spanning
-    form, and the reference stays. `…screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
-    or `…finrank_span_rigidityRows_add_deficiency_le` is the relative form: repoint to
-    `lem:relative-deficiency-rank-bound`.
-  - Done: every reference names the bound its Lean uses, with one tally line here per commit.
-  - [x] **23a, the molecular chapters** (24 references, this commit): `rigidity-matrix.tex` 7,
-    `molecular-induction.tex` 6, `panel-layer.tex` 6, `case-i.tex` 3, `case-iii.tex` 1,
-    `genericity-and-count.tex` 1. Also `generic-lift.tex`'s stand-in, `prop:rigidity-matrix-prop11`.
-    - `rigidity-matrix.tex`'s 7 all stay: two cite `def:dof-generic`'s and
-      `lem:rank-delete-vertex`'s trivial-motion content (`finrank_trivialMotions`, not the rank
-      bound), one is chapter-intro prose, and `lem:relative-deficiency-rank-bound`'s own proof
-      re-derives the partition count rather than calling either pinned name.
-    - `molecular-induction.tex`'s 6 all repoint: `lem:case-cut-edge-realization` and its `-gp`
-      sibling share the private helper `cutEdge_finrank_assemble`, which calls
-      `finrank_span_rigidityRows_add_deficiency_le` directly.
-    - `panel-layer.tex`'s 6 all stay: `prop:rigidity-matrix-prop11`'s own proof,
-      `thm:molecular-conjecture` and `thm:molecular-conjecture-multigraph` each call
-      `screwDim_add_deficiency_le_finrank_infinitesimalMotions` directly.
-    - `case-i.tex`'s 3: 2 repoint (`lem:case-I-realization-nonsimple` calls
-      `finrank_span_rigidityRows_add_deficiency_le`), 1 stays (same trivial-motion-content pattern).
-    - `case-iii.tex`'s 1 and `genericity-and-count.tex`'s 1 stay: neither sits inside a `\uses`
-      edge — dead-route prose and section-intro prose, respectively.
-    - `generic-lift.tex`'s stand-in repoints both citing nodes (`thm:panel-generic-rank`,
-      `thm:bodyhinge-generic-rank`): both call `finrank_span_rigidityRows_add_deficiency_le`
-      directly, bypassing `prop:rigidity-matrix-prop11`'s own (spanning-form) proof.
-  - [ ] **23b, the molecule and pencil chapters** (7): `molecule-application.tex` 3,
-    `molecule-modelling.tex` 2, `pencil.tex` 2.
+- [x] **21a–21b. F2** (`24ad0724`, `dd5be5d9`, `84fcc137`). Moved `Graph.closedNbhd_subset_vertexSet`
+  to `Motive.lean` (21 inline copies dropped across the pencil tree) and the
+  `infinitesimalMotions_eq_of_isLink_*` pair to `RigidityMatrix/Basic.lean`, beside
+  `mem_infinitesimalMotions`. Closes the `[open]` FRICTION entry (line 3017).
+- [x] **22. M6** (`0b5fcd46`). `mapExtensor` and `mapSupport` were one definition; `mapExtensor`
+  survives, moved to `RigidityMatrix/Basic.lean`, and `mapSupport` is deleted with its six lemmas
+  renamed to `mapExtensor`. The rank half was not re-derived — the bridge needs `[Finite α]`, which
+  neither statement has.
+- [x] **23a–23b. M1** (`36aa7e10`; this commit). The stand-in audit of
+  `lem:trivial-motions-rank-bound`'s 31 references: 12 repoint to `lem:relative-deficiency-rank-bound`
+  (8 of the molecular chapters' 24 in 23a, 4 of the molecule/pencil chapters' 7 in 23b), the rest
+  stay; both of `generic-lift.tex`'s stand-in citations (23a) also repoint.
 
 ### §C: the long-proof screen (the top ten, walked; screening only)
 
@@ -343,27 +286,20 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 23b, M1** (§3 FLAT; blueprint only, no Lean). This is the stand-in
-audit's molecule and pencil chapters: 7 references, `molecule-application.tex` 3,
-`molecule-modelling.tex` 2, `pencil.tex` 2. Same method as 23a: for each reference, find the bound
-the citing node's Lean calls:
-- the spanning form (`…screwDim_add_deficiency_le_finrank_infinitesimalMotions`) keeps the
-  reference;
-- the relative form (`…screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` or
-  `…finrank_span_rigidityRows_add_deficiency_le`) is repointed to
-  `lem:relative-deficiency-rank-bound`.
+**Next concrete commit: task 24, C1** (§C, the long-proof screen; blueprint debt is done). Walk
+`Base.lean`'s sibling pair — `pencilPair_of_habitat_ncard_eq_four` (571, 852 lines, the only
+`maxHeartbeats` bump) and `pencilPair_of_habitat_ncard_eq_three` (63, 474) — against §C's four
+questions (API extraction, a missed mathlib lemma, tactic substitution, definitional refactor);
+weigh the Phase-22j calibration that a diffuse cost wants a file split, not an extraction. Local
+changes land; structural findings go to *Candidates for `40-simplify`*.
 
-Record one tally line on 23b's checklist line, the same shape as 23a's. The gates are
-`blueprint/lint.sh` and `blueprint/verify.sh`.
-
-Task 23a (this commit) audited the molecular chapters' 24 direct references plus
-`generic-lift.tex`'s stand-in. 8 of the 24 repoint to `lem:relative-deficiency-rank-bound`
-(`molecular-induction.tex`'s 6, `case-i.tex`'s 2); the other 16 stay (`rigidity-matrix.tex`'s 7,
-`panel-layer.tex`'s 6, `case-i.tex`'s remaining 1, `case-iii.tex`'s 1,
-`genericity-and-count.tex`'s 1). Both of `generic-lift.tex`'s stand-in citations
-(`thm:panel-generic-rank`, `thm:bodyhinge-generic-rank`) also repoint. Per-node reasoning is on
-23a's checklist line. No Lean changed; the blueprint-only gates (`blueprint/lint.sh`,
-`blueprint/verify.sh`) are green.
+Task 23b (this commit) closed the M1 stand-in audit. `molecule-application.tex`'s 3 references stay
+(`lem:molecule-rank-upper-bound`'s Lean calls the spanning form directly). `molecule-modelling.tex`'s
+2 and `pencil.tex`'s 2 repoint to `lem:relative-deficiency-rank-bound`: `lem:theorem-56-general-
+position` reaches the bound only through its own `_of_two_le` helper, which calls
+`finrank_span_rigidityRows_add_deficiency_le` directly; `lem:pencil-nonsimple-case`'s
+`hasPencilRealization_of_not_simple` calls the same lemma directly. No Lean changed; the
+blueprint-only gates (`blueprint/lint.sh`, `blueprint/verify.sh`) are green.
 
 ## Decisions made during this round
 
