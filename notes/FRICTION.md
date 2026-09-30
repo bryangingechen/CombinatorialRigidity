@@ -2900,6 +2900,12 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   project-internal, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`, per the
   chart stack's precedent of bespoke `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
   `linearIndepOn_pencilChartNormal_closedHubNbhd`).
+- **`n = 2` is not fused either** (40-cleanup task 24). The title's gloss is loose: mathlib's
+  `LinearIndepOn.pair_iff` is the coefficient form (`∀ c d, c • f i + d • f j = 0 → c = 0 ∧ d = 0`),
+  not the `![f i, f j]` form. About 25 sites in 9 pencil files bridge the two through it and
+  `LinearIndependent.pair_iff` (e.g. `Base.lean`'s `hadj`: `rw [LinearIndepOn.pair_iff point huv]
+  at hpair; rwa [LinearIndependent.pair_iff]`). A fused `n = 2` mirror would make each one step;
+  it is a §B-style sweep, not part of task 24's screen.
 
 ### [idiom] `simp only [someDef, e.choose_spec]` blows `maxRecDepth` when the def's match reduces against an `Exists.choose` term — hoist a plain witness with the `choose` *tactic*
 - **Where it bit:** Phase 39 W5-L5 L5-cut-v-e,
@@ -3017,6 +3023,11 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 ### [resolved] Two general facts sit downstream of their natural consumers: `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) and the `infinitesimalMotions_eq_of_isLink_*` congruences (`Pinning.lean`)
 - **Where it bit:** Phase 40h B3–B4. `Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`MainComponent/Carrier.lean`) each inline "a closed neighbourhood lies in `V(G)`", because `Graph.closedNbhd_subset_vertexSet` is in `MainComponent/Bridge.lean`, downstream. `BodyHingeFramework.relScrews_congr` (`RigidityMatrix/Bricks.lean`) re-proves the motion-space congruence at links, because `infinitesimalMotions_eq_of_isLink_span_supportExtensor` is in `AlgebraicInduction/Pinning.lean`, which imports `Bricks.lean`.
 - **Resolution:** moved `closedNbhd_subset_vertexSet` to `Molecule/Pencil/Motive.lean` beside `Graph.closedNbhd` (40-cleanup task 21a and its follow-up), dropping all 21 inlined copies across the pencil tree. Moved the `infinitesimalMotions_eq_of_isLink_*` pair (they read only `hingeConstraint`, hence only `Basic.lean`) to `RigidityMatrix/Basic.lean`, beside `mem_infinitesimalMotions` (40-cleanup task 21b), and rewrote `relScrews_congr`'s inline `hZ` as a direct call to the moved lemma. Both moves are rename-free, so no blueprint pin moved.
+
+### [idiom] A small witness's per-vertex facts, hand-rolled where one global fact restricts
+- **Where it bit:** 40-cleanup task 24 (C1), `pencilPair_of_habitat_ncard_eq_three` (`Pencil/Base.lean`). The proof bounded each of its three degrees by an incidence subset and `Set.ncard_pair` (45 lines). It computed each closed neighbourhood exactly (23 lines), only to restrict the three-point independence to it. It also proved the standard basis independent by `Fintype.linearIndependent_iff` and `congr_fun`.
+- **Resolution:** `Graph.degree_le_ncard` (Matroid package: `[G.Simple] [G.Finite]`, `degree + 1 ≤ V(G).ncard`; `G.Finite` from `Graph.finite_of_vertexSet_finite`). `LinearIndepOn.mono` with `Graph.closedNbhd_subset_vertexSet`, since the independence holds on all of `V(G)`. `Pi.linearIndependent_single_one` with `convert … using 1; funext i; fin_cases i <;> rfl`, then `.ne_zero i`, `.comp ![i, j] (by decide)`, and `linearIndepOn_range_iff` to carry it to the point map. Heartbeats went from 72 044 to 60 555. Also: `fun w hw ⟨-, h⟩ => …` is a parse error. The `-` clear pattern is `rintro`/`rcases` syntax; write `⟨_, h⟩`.
+- **Status:** idiom. `_four` has the same shapes but feeds neither headline, so it was left for round 4 (`notes/Phase40-cleanup.md` *Candidates*).
 
 ## Anti-patterns / known dead ends
 

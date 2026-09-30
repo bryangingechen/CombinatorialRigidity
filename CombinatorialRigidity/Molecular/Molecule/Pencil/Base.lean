@@ -21,8 +21,9 @@ is proved outright, not merely under `G.Simple ∧ PencilNondegFeasible`).
 
 **Identification.** `simple_of_loopless_of_noRigid` gives `G.Simple`; every vertex is then forced
 to degree exactly `2` (2-edge-connectivity's `two_le_degree_of_twoEdgeConnected` lower bound,
-`Simple`'s at-most-one-edge-per-pair upper bound — no third neighbour is available to absorb a
-second edge at any vertex), pinning `G` to the spanning triangle with no other edges.
+`Simple`'s at-most-one-edge-per-pair upper bound, `Graph.degree_le_ncard` — no third neighbour is
+available to absorb a second edge at any vertex), pinning `G` to the spanning triangle with no
+other edges.
 
 **Witness.** A body is placed at each vertex using three of the four standard basis vectors of
 `K⁴` (`Pi.single i 1`), so that every cycle-edge's support extensor is the wedge of its two
@@ -128,57 +129,12 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
     · exact Or.inr (Or.inr ⟨hSimple.eq_of_isLink hl hzx_link, Or.inl ⟨rfl, rfl⟩⟩)
     · exact Or.inr (Or.inl ⟨hSimple.eq_of_isLink hl hyz_link.symm, Or.inr ⟨rfl, rfl⟩⟩)
     · exact absurd rfl hl.ne
-  -- No vertex is a hub (degree `2 < 3` everywhere): the incident edges at each vertex are
-  -- confined to the two named ones touching it.
-  have hEx_sub : E(G, x) ⊆ ({exy, ezx} : Set β) := by
-    rintro e ⟨w, hw⟩
-    have hwmem : w ∈ V(G) := hw.right_mem
-    rw [hVeq] at hwmem
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hwmem
-    rcases hwmem with rfl | rfl | rfl
-    · exact absurd rfl hw.ne
-    · exact Set.mem_insert_iff.mpr (Or.inl (hSimple.eq_of_isLink hw hxy_link))
-    · exact Set.mem_insert_iff.mpr
-        (Or.inr (Set.mem_singleton_iff.mpr (hSimple.eq_of_isLink hw hzx_link.symm)))
-  have hEy_sub : E(G, y) ⊆ ({exy, eyz} : Set β) := by
-    rintro e ⟨w, hw⟩
-    have hwmem : w ∈ V(G) := hw.right_mem
-    rw [hVeq] at hwmem
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hwmem
-    rcases hwmem with rfl | rfl | rfl
-    · exact Set.mem_insert_iff.mpr (Or.inl (hSimple.eq_of_isLink hw hxy_link.symm))
-    · exact absurd rfl hw.ne
-    · exact Set.mem_insert_iff.mpr
-        (Or.inr (Set.mem_singleton_iff.mpr (hSimple.eq_of_isLink hw hyz_link)))
-  have hEz_sub : E(G, z) ⊆ ({eyz, ezx} : Set β) := by
-    rintro e ⟨w, hw⟩
-    have hwmem : w ∈ V(G) := hw.right_mem
-    rw [hVeq] at hwmem
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hwmem
-    rcases hwmem with rfl | rfl | rfl
-    · exact Set.mem_insert_iff.mpr
-        (Or.inr (Set.mem_singleton_iff.mpr (hSimple.eq_of_isLink hw hzx_link)))
-    · exact Set.mem_insert_iff.mpr (Or.inl (hSimple.eq_of_isLink hw hyz_link.symm))
-    · exact absurd rfl hw.ne
-  have hdegx : G.degree x ≤ 2 := by
-    rw [Graph.degree_eq_ncard_inc]
-    calc E(G, x).ncard ≤ ({exy, ezx} : Set β).ncard :=
-          Set.ncard_le_ncard hEx_sub (Set.toFinite _)
-      _ = 2 := Set.ncard_pair hexy_ne_ezx
-  have hdegy : G.degree y ≤ 2 := by
-    rw [Graph.degree_eq_ncard_inc]
-    calc E(G, y).ncard ≤ ({exy, eyz} : Set β).ncard :=
-          Set.ncard_le_ncard hEy_sub (Set.toFinite _)
-      _ = 2 := Set.ncard_pair hexy_ne_eyz
-  have hdegz : G.degree z ≤ 2 := by
-    rw [Graph.degree_eq_ncard_inc]
-    calc E(G, z).ncard ≤ ({eyz, ezx} : Set β).ncard :=
-          Set.ncard_le_ncard hEz_sub (Set.toFinite _)
-      _ = 2 := Set.ncard_pair heyz_ne_ezx
-  have hnohub : ∀ w ∈ V(G), ¬ G.PencilHub w := by
-    rw [hVeq]
-    rintro w (rfl | rfl | rfl) ⟨-, hdeg⟩
-    exacts [by omega, by omega, by omega]
+  -- No vertex is a hub: a simple graph on three vertices has every degree at most `2 < 3`
+  -- (`Graph.degree_le_ncard`).
+  have hGfin : G.Finite := Graph.finite_of_vertexSet_finite (Set.toFinite _)
+  have hnohub : ∀ w ∈ V(G), ¬ G.PencilHub w := fun w hw ⟨_, hdeg⟩ => by
+    have := Graph.degree_le_ncard hw
+    omega
   have hchn : ∀ v, G.closedHubNbhd v = ∅ := by
     intro v
     rw [Set.eq_empty_iff_forall_notMem]
@@ -190,10 +146,15 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
   set p1 : Fin 4 → K := Pi.single 1 1 with hp1
   set p2 : Fin 4 → K := Pi.single 2 1 with hp2
   set n0 : Fin 4 → K := Pi.single 3 1 with hn0
-  have hp0_ne : p0 ≠ 0 := fun h => by simpa [hp0] using congr_fun h 0
-  have hp1_ne : p1 ≠ 0 := fun h => by simpa [hp1] using congr_fun h 1
-  have hp2_ne : p2 ≠ 0 := fun h => by simpa [hp2] using congr_fun h 2
-  have hn0_ne : n0 ≠ 0 := fun h => by simpa [hn0] using congr_fun h 3
+  -- The four vectors are the standard basis; the nonvanishing and independence facts below are
+  -- all read off it.
+  have hLI4 : LinearIndependent K ![p0, p1, p2, n0] := by
+    convert Pi.linearIndependent_single_one (Fin 4) K using 1
+    funext i; fin_cases i <;> rfl
+  have hp0_ne : p0 ≠ 0 := hLI4.ne_zero 0
+  have hp1_ne : p1 ≠ 0 := hLI4.ne_zero 1
+  have hp2_ne : p2 ≠ 0 := hLI4.ne_zero 2
+  have hn0_ne : n0 ≠ 0 := hLI4.ne_zero 3
   have hp0n0 : p0 ⬝ᵥ n0 = 0 := by simp [hp0, hn0]
   have hp1n0 : p1 ⬝ᵥ n0 = 0 := by simp [hp1, hn0]
   have hp2n0 : p2 ⬝ᵥ n0 = 0 := by simp [hp2, hn0]
@@ -207,44 +168,23 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
   have hCyz_val : Cyz.val = extensor ![p1, p2] := by rw [hCyz, ScrewSpace.val_mk]
   have hCzx_val : Czx.val = extensor ![p2, p0] := by rw [hCzx, ScrewSpace.val_mk]
   have hLI01 : LinearIndependent K ![p0, p1] := by
-    rw [LinearIndependent.pair_iff]
-    refine fun c d hcd => ⟨?_, ?_⟩
-    · simpa [hp0, hp1] using congr_fun hcd 0
-    · simpa [hp0, hp1] using congr_fun hcd 1
+    convert hLI4.comp ![0, 1] (by decide) using 1; funext i; fin_cases i <;> rfl
   have hLI12 : LinearIndependent K ![p1, p2] := by
-    rw [LinearIndependent.pair_iff]
-    refine fun c d hcd => ⟨?_, ?_⟩
-    · simpa [hp1, hp2] using congr_fun hcd 1
-    · simpa [hp1, hp2] using congr_fun hcd 2
+    convert hLI4.comp ![1, 2] (by decide) using 1; funext i; fin_cases i <;> rfl
   have hLI20 : LinearIndependent K ![p2, p0] := by
-    rw [LinearIndependent.pair_iff]
-    refine fun c d hcd => ⟨?_, ?_⟩
-    · simpa [hp2, hp0] using congr_fun hcd 2
-    · simpa [hp2, hp0] using congr_fun hcd 0
-  have hCxy_ne : Cxy ≠ 0 := fun h => by
-    have hv : extensor ![p0, p1] = 0 := by
-      have := congrArg ScrewSpace.val h; rwa [hCxy_val, ScrewSpace.val_zero] at this
-    exact (extensor_ne_zero_iff_linearIndependent _).mpr hLI01 hv
-  have hCyz_ne : Cyz ≠ 0 := fun h => by
-    have hv : extensor ![p1, p2] = 0 := by
-      have := congrArg ScrewSpace.val h; rwa [hCyz_val, ScrewSpace.val_zero] at this
-    exact (extensor_ne_zero_iff_linearIndependent _).mpr hLI12 hv
-  have hCzx_ne : Czx ≠ 0 := fun h => by
-    have hv : extensor ![p2, p0] = 0 := by
-      have := congrArg ScrewSpace.val h; rwa [hCzx_val, ScrewSpace.val_zero] at this
-    exact (extensor_ne_zero_iff_linearIndependent _).mpr hLI20 hv
-  have hCxy_panel : ExtensorInPanel Cxy n0 := ⟨![p0, p1], hCxy_val, by
-    intro i; fin_cases i
-    · simpa using hp0n0
-    · simpa using hp1n0⟩
-  have hCyz_panel : ExtensorInPanel Cyz n0 := ⟨![p1, p2], hCyz_val, by
-    intro i; fin_cases i
-    · simpa using hp1n0
-    · simpa using hp2n0⟩
-  have hCzx_panel : ExtensorInPanel Czx n0 := ⟨![p2, p0], hCzx_val, by
-    intro i; fin_cases i
-    · simpa using hp2n0
-    · simpa using hp0n0⟩
+    convert hLI4.comp ![2, 0] (by decide) using 1; funext i; fin_cases i <;> rfl
+  have hCxy_ne : Cxy ≠ 0 := fun h => (extensor_ne_zero_iff_linearIndependent _).mpr hLI01
+    (hCxy_val.symm.trans ((congrArg ScrewSpace.val h).trans ScrewSpace.val_zero))
+  have hCyz_ne : Cyz ≠ 0 := fun h => (extensor_ne_zero_iff_linearIndependent _).mpr hLI12
+    (hCyz_val.symm.trans ((congrArg ScrewSpace.val h).trans ScrewSpace.val_zero))
+  have hCzx_ne : Czx ≠ 0 := fun h => (extensor_ne_zero_iff_linearIndependent _).mpr hLI20
+    (hCzx_val.symm.trans ((congrArg ScrewSpace.val h).trans ScrewSpace.val_zero))
+  have hCxy_panel : ExtensorInPanel Cxy n0 :=
+    ⟨![p0, p1], hCxy_val, Fin.forall_fin_two.mpr ⟨hp0n0, hp1n0⟩⟩
+  have hCyz_panel : ExtensorInPanel Cyz n0 :=
+    ⟨![p1, p2], hCyz_val, Fin.forall_fin_two.mpr ⟨hp1n0, hp2n0⟩⟩
+  have hCzx_panel : ExtensorInPanel Czx n0 :=
+    ⟨![p2, p0], hCzx_val, Fin.forall_fin_two.mpr ⟨hp2n0, hp0n0⟩⟩
   have hCxy_thru0 : ExtensorThroughPoint Cxy p0 :=
     ⟨![p0, p1], hCxy_val, Submodule.subset_span ⟨0, rfl⟩⟩
   have hCxy_thru1 : ExtensorThroughPoint Cxy p1 :=
@@ -320,44 +260,24 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
       · rw [hsupp_eyz, hpoint_z, hpoint_y]; exact ⟨hCyz_thru2, hCyz_thru1⟩
       · rw [hsupp_ezx, hpoint_z, hpoint_x]; exact ⟨hCzx_thru2, hCzx_thru0⟩
       · rw [hsupp_ezx, hpoint_x, hpoint_z]; exact ⟨hCzx_thru0, hCzx_thru2⟩
-  -- ── The closed-neighbourhood triple (needed for conjuncts 2 and 4): `closedNbhd` is all of
-  -- `V(G)` at every vertex of a triangle. ───────────────────────────────────────────────────────
-  have hcnx : G.closedNbhd x = ({x, y, z} : Set α) := by
+  -- ── The three points are independent; conjuncts 2 and 4 restrict this to an edge's endpoints
+  -- and to a closed neighbourhood, both inside `V(G) = {x, y, z}`. ─────────────────────────────
+  have hvtx_inj : Function.Injective (![x, y, z] : Fin 3 → α) := by
+    intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      first
+        | rfl
+        | exact absurd hij hxy | exact absurd hij hxz | exact absurd hij hyz
+        | exact absurd hij.symm hxy | exact absurd hij.symm hxz | exact absurd hij.symm hyz
+  have hrange : Set.range (![x, y, z] : Fin 3 → α) = ({x, y, z} : Set α) := by
     apply Set.Subset.antisymm
-    · rw [← hVeq]; exact Graph.closedNbhd_subset_vertexSet hxy_link.left_mem
+    · rintro w ⟨i, rfl⟩; fin_cases i <;> simp
     · rintro w (rfl | rfl | rfl)
-      · exact Or.inl rfl
-      · exact Or.inr ⟨exy, hxy_link⟩
-      · exact Or.inr ⟨ezx, hzx_link.symm⟩
-  have hcny : G.closedNbhd y = ({x, y, z} : Set α) := by
-    apply Set.Subset.antisymm
-    · rw [← hVeq]; exact Graph.closedNbhd_subset_vertexSet hxy_link.right_mem
-    · rintro w (rfl | rfl | rfl)
-      · exact Or.inr ⟨exy, hxy_link.symm⟩
-      · exact Or.inl rfl
-      · exact Or.inr ⟨eyz, hyz_link⟩
-  have hcnz : G.closedNbhd z = ({x, y, z} : Set α) := by
-    apply Set.Subset.antisymm
-    · rw [← hVeq]; exact Graph.closedNbhd_subset_vertexSet hyz_link.right_mem
-    · rintro w (rfl | rfl | rfl)
-      · exact Or.inr ⟨ezx, hzx_link⟩
-      · exact Or.inr ⟨eyz, hyz_link.symm⟩
-      · exact Or.inl rfl
-  have hpz_ne : point z ≠ 0 := by rw [hpoint_z]; exact hp2_ne
-  have hsz : LinearIndepOn K point ({z} : Set α) := LinearIndepOn.singleton hpz_ne
-  have hzy : point y ∉ Submodule.span K (point '' ({z} : Set α)) := by
-    rw [Set.image_singleton, hpoint_z, hpoint_y, Submodule.mem_span_singleton]
-    rintro ⟨c, hc⟩
-    have h1 := congr_fun hc 1
-    simp [hp1, hp2] at h1
-  have hsy : LinearIndepOn K point (insert y ({z} : Set α)) := hsz.insert hzy
-  have hyx : point x ∉ Submodule.span K (point '' (insert y ({z} : Set α))) := by
-    rw [Set.image_insert_eq, Set.image_singleton, hpoint_x, hpoint_y, hpoint_z,
-      Submodule.mem_span_pair]
-    rintro ⟨c, d, hcd⟩
-    have h0 := congr_fun hcd 0
-    simp [hp0, hp1, hp2] at h0
-  have hLI3 : LinearIndepOn K point ({x, y, z} : Set α) := hsy.insert hyx
+      exacts [⟨0, rfl⟩, ⟨1, rfl⟩, ⟨2, rfl⟩]
+  have hLI3 : LinearIndepOn K point ({x, y, z} : Set α) := by
+    rw [← hrange, linearIndepOn_range_iff hvtx_inj]
+    convert hLI4.comp ![0, 1, 2] (by decide) using 1
+    funext i; fin_cases i <;> simp [hpoint_x, hpoint_y, hpoint_z]
   -- ── Nondegeneracy conjuncts 2–4. ───────────────────────────────────────────────────────────
   have hadj : ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
     intro e u v hl
@@ -370,22 +290,10 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
   have hhubLI : ∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v) := by
     intro v _
     rw [hchn v]; exact linearIndepOn_empty K normal
-  have hnbhdLI : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v) := by
-    intro v hv _
-    rw [hVeq] at hv
-    rcases hv with rfl | rfl | rfl
-    · rwa [hcnx]
-    · rwa [hcny]
-    · rwa [hcnz]
+  have hnbhdLI : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v) :=
+    fun v hv _ => hLI3.mono (hVeq ▸ Graph.closedNbhd_subset_vertexSet hv)
   have hnd : IsNondegPencilRealization G F normal point := ⟨hpencil, hadj, hhubLI, hnbhdLI⟩
   -- ── Rank: rigidity on `V(G)` via `theorem_55_cycle`, deficiency `0` via `isKDof_zero_of_cycle`.
-  have hvtx_inj : Function.Injective (![x, y, z] : Fin 3 → α) := by
-    intro i j hij
-    fin_cases i <;> fin_cases j <;>
-      first
-        | rfl
-        | exact absurd hij hxy | exact absurd hij hxz | exact absurd hij hyz
-        | exact absurd hij.symm hxy | exact absurd hij.symm hxz | exact absurd hij.symm hyz
   have hedge_inj : Function.Injective (![exy, eyz, ezx] : Fin 3 → β) := by
     intro i j hij
     fin_cases i <;> fin_cases j <;>
@@ -395,11 +303,6 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
         | exact absurd hij heyz_ne_ezx
         | exact absurd hij.symm hexy_ne_eyz | exact absurd hij.symm hexy_ne_ezx
         | exact absurd hij.symm heyz_ne_ezx
-  have hrange : Set.range (![x, y, z] : Fin 3 → α) = ({x, y, z} : Set α) := by
-    apply Set.Subset.antisymm
-    · rintro w ⟨i, rfl⟩; fin_cases i <;> simp
-    · rintro w (rfl | rfl | rfl)
-      exacts [⟨0, rfl⟩, ⟨1, rfl⟩, ⟨2, rfl⟩]
   have hlink3 : ∀ i : Fin 3, G.IsLink ((![exy, eyz, ezx] : Fin 3 → β) i)
       ((![x, y, z] : Fin 3 → α) i) ((![x, y, z] : Fin 3 → α) (i + ⟨1, by omega⟩)) := by
     intro i; fin_cases i
@@ -415,15 +318,6 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
   -- The wedge-family independence: joining each cycle-edge extensor with the complementary pair
   -- of basis vectors isolates its own coefficient (any *other* wedge repeats a vector against
   -- that complement and vanishes by the alternating property).
-  have hLI4 : LinearIndependent K ![p0, p1, p2, n0] := by
-    rw [Fintype.linearIndependent_iff]
-    intro g hg i
-    have h0 := congr_fun hg 0
-    have h1 := congr_fun hg 1
-    have h2 := congr_fun hg 2
-    have h3 := congr_fun hg 3
-    simp [Fin.sum_univ_four, hp0, hp1, hp2, hn0] at h0 h1 h2 h3
-    fin_cases i <;> assumption
   have htop_ne : extensor (![p0, p1, p2, n0] : Fin 4 → Fin 4 → K) ≠ 0 :=
     (extensor_ne_zero_iff_linearIndependent _).mpr hLI4
   have hkeyX : Cxy.val * extensor ![p2, n0] = extensor ![p0, p1, p2, n0] := by

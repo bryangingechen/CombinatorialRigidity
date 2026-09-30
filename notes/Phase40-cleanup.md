@@ -4,19 +4,19 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a–23b closed (17 not landed); 22 of 49 one-commit
-tasks remain. **Next concrete task:** task 24, C1, the `Base.lean` sibling pair (the long-proof
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b and 24 closed (17 not landed); 21 of 49
+one-commit tasks remain. **Next concrete task:** task 25, C2, `Witness.lean` (the long-proof
 screen). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 24, C1** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22 and 23a–23b are closed (17 not landed), 22 remain. Nothing
-is mid-stream.
+**Next commit: task 25, C2** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b and 24 are closed (17 not landed), 21 remain.
+Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22 and 23a–23b, one line each under *Lemma checklist → Landed*
-(task 17 closed not landed). A finished task gets one or two lines there, with its commit; the
-detail stays in the commit message, and this section stays the forward pointer.
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b and 24, one line each under *Lemma checklist →
+Landed* (task 17 closed not landed). A finished task gets one or two lines there, with its commit;
+the detail stays in the commit message, and this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -76,7 +76,7 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given (the numbers). For the §B tasks, done means: every listed
 site is either fixed, or kept with a one-word reason recorded under the task's checklist line.
 
-### Landed: tasks 1–23b (one line each; each commit message has the detail)
+### Landed: tasks 1–24 (one line each; each commit message has the detail)
 
 - [x] **1. T1** (`a2686fde`). The toolchain status was stale. Master is pushed and CI-green at
   `91fcd24a`, and hopscotch's issue #2 / PR #1 are now live signal. The `bump/*` refs are the PI's call.
@@ -133,10 +133,16 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   survives, moved to `RigidityMatrix/Basic.lean`, and `mapSupport` is deleted with its six lemmas
   renamed to `mapExtensor`. The rank half was not re-derived — the bridge needs `[Finite α]`, which
   neither statement has.
-- [x] **23a–23b. M1** (`36aa7e10`; this commit). The stand-in audit of
+- [x] **23a–23b. M1** (`36aa7e10`; `2d3d3818`). The stand-in audit of
   `lem:trivial-motions-rank-bound`'s 31 references: 12 repoint to `lem:relative-deficiency-rank-bound`
   (8 of the molecular chapters' 24 in 23a, 4 of the molecule/pencil chapters' 7 in 23b), the rest
   stay; both of `generic-lift.tex`'s stand-in citations (23a) also repoint.
+- [x] **24. C1** (this commit). `_three` is live (through `hasGenericPencilRealization_of_IH`):
+  469 → 362 lines, heartbeats 72 044 → 60 555. The changes are `Graph.degree_le_ncard` for
+  no-hub, `LinearIndepOn.mono` in place of the three closed neighbourhoods, and
+  `Pi.linearIndependent_single_one` with `linearIndepOn_range_iff`. FRICTION [idiom]. `_four` is
+  off-headline (see *Candidates*), so its 400000 bump stays. There is no sibling unification and
+  no file split (`Base.lean` is at 1 310 lines).
 
 ### §C: the long-proof screen (the top ten, walked; screening only)
 
@@ -147,10 +153,6 @@ findings are recorded as candidates. First run a cheap liveness check (`lean_ref
 transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`). A proof that feeds neither
 headline is recorded as off-headline (round 4's third question) and gets no local work.
 
-- [ ] **24. C1: `Base.lean`, a sibling pair.** #1 `pencilPair_of_habitat_ncard_eq_four` (571, 852
-  lines, the only `maxHeartbeats` bump, which task 2 handles) and #3
-  `pencilPair_of_habitat_ncard_eq_three` (63, 474). Also weigh §C's Phase-22j calibration: where
-  the cost is diffuse, the lever is a file split, not an extraction.
 - [ ] **25. C2: `Witness.lean`.** #2 `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`
   (670, 483) and #10 `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3` (244, 353).
   - The sweep found one block written out nine times: the `hPu`/`hP1`/`hP2` triple (each
@@ -268,6 +270,21 @@ close mirrors them into `notes/Cleanup40.md` §2 Round 4.
   sum still needs converting back to a multiple of `ncard` — the missing step above. A rewrite would
   need new finsum comparison/constant-sum mirror lemmas first, which is a new proof route, not a
   local substitution.
+- **`pencilPair_of_habitat_ncard_eq_four` feeds neither headline** (task 24, C1; round 4's third
+  question). Its only caller is `pencil_conjecture_of_hcontract_hK_hbareSplit` (`Escape.lean`),
+  and that theorem's only caller, `…_of_card`, has none. The headline reaches `|V| = 4` through
+  `hasGenericPencilRealization_of_IH`'s other branches, not through a base leaf. By §C's rule it
+  got no local work, and its `maxHeartbeats 400000` stays.
+  - If round 4 keeps it, `_three`'s task-24 substitutions carry over. Its degree-2 facts are
+    already proved before the `clear`, so the `hE*_sub`/`hdeg*_le` block (~60 lines) goes.
+    `hLI4pts.mono` with `Graph.closedNbhd_subset_vertexSet` replaces the four closed-neighbourhood
+    computations (~64 lines). Together they may retire the bump.
+  - No `_three`/`_four` unification. The two proofs diverge step by step: in the identification
+    (`_three` links every pair; `_four` rules out degree 3 through a triangle, then splits on `w`'s
+    non-neighbour) and in the witness (one shared normal, against an opposite normal per vertex).
+    The shared step is the join-detector rank computation. Its `m`-general form would need a
+    standard-basis API for `⋀²K⁴` that the project lacks, which is not worth building for an
+    off-headline proof.
 
 ## Moved to a later round
 
@@ -286,20 +303,22 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 24, C1** (§C, the long-proof screen; blueprint debt is done). Walk
-`Base.lean`'s sibling pair — `pencilPair_of_habitat_ncard_eq_four` (571, 852 lines, the only
-`maxHeartbeats` bump) and `pencilPair_of_habitat_ncard_eq_three` (63, 474) — against §C's four
-questions (API extraction, a missed mathlib lemma, tactic substitution, definitional refactor);
-weigh the Phase-22j calibration that a diffuse cost wants a file split, not an extraction. Local
-changes land; structural findings go to *Candidates for `40-simplify`*.
+**Next concrete commit: task 25, C2** (§C, the long-proof screen). Walk `Witness.lean`'s #2
+`exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3` and #10
+`…_pencilChartPoint_of_pendant_deg3` against §C's four questions. First run the liveness check
+(`lean_references`, transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`); an
+off-headline proof gets no local work. The checklist's extraction candidate is the
+`hPu`/`hP1`/`hP2` triple that is written out nine times (six in `Witness.lean`, three in
+`GenericSteer.lean`). Land it if its locals factor. Measure each change's heartbeats on a scratch
+copy, the task-16 way (FRICTION, `exists_insertion_of_star_sup_star`), and revert any change that
+raises them.
 
-Task 23b (this commit) closed the M1 stand-in audit. `molecule-application.tex`'s 3 references stay
-(`lem:molecule-rank-upper-bound`'s Lean calls the spanning form directly). `molecule-modelling.tex`'s
-2 and `pencil.tex`'s 2 repoint to `lem:relative-deficiency-rank-bound`: `lem:theorem-56-general-
-position` reaches the bound only through its own `_of_two_le` helper, which calls
-`finrank_span_rigidityRows_add_deficiency_le` directly; `lem:pencil-nonsimple-case`'s
-`hasPencilRealization_of_not_simple` calls the same lemma directly. No Lean changed; the
-blueprint-only gates (`blueprint/lint.sh`, `blueprint/verify.sh`) are green.
+Task 24 (this commit) screened `Base.lean`. Local substitutions took `_three` from 72 044 to
+60 555 heartbeats. `_four` is off-headline and is recorded under *Candidates*. One
+attempt was reverted: deriving `Cxy ≠ 0` from the wedge family's independence saved 24 lines but
+cost about 6 % more heartbeats. The screen also surfaced about 25 sites that bridge through both
+`pair_iff`s. They are filed on FRICTION's existing `[open]` `n`-ary `LinearIndepOn.pair_iff` entry,
+not as a task.
 
 ## Decisions made during this round
 
