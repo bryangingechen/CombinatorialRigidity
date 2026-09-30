@@ -7,15 +7,19 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, none landed. **Next concrete task:** task 1, the sample section
-`sec:main-component-splitoff` (spec under *Lemma checklist*). The round then stops for the PI
-(Stop 1) before any other section is written. Round manual: `CLEANUP.md`.
+one-commit tasks, 1 landed: task 1, the sample section `sec:main-component-splitoff`. **Next
+concrete task:** Stop 1, the PI's review of the sample, which the coordinator writes; no other
+section is written before the PI's entry. Then task 2 pins the exemplar. Round manual:
+`CLEANUP.md`.
 
 ## Current state
 
-**Round 3 is open** (this commit, docs only; the Lean and blueprint trees are `fc6f8f15`'s, which
-are `0b260626`'s). No task has landed and nothing is mid-stream. Next is task 1, the sample, and
-then Stop 1.
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Task 1,
+the sample, has landed** (this commit): `sec:main-component-splitoff` is rewritten, its record is
+under *Lemma checklist*, and nothing is mid-stream. Its gates: `lint.sh` and `verify.sh` green,
+`checkdecls` silent; the graph fingerprint (1 308 edges, `6c5064b7034feb95`) and the pin hash
+(`36133299d3fcc3c8`, 1 062 names) equal the open's; 0 `LaTeX Warning` lines, 187 overfull boxes
+and 9 `WARNING:` lines, as at the open. Next is Stop 1, then task 2.
 
 **Verified at the open:**
 - Whole-project `lake build` green, 3003 jobs, 0 `warning:` lines, 0 `failed to cache artifact`
@@ -123,65 +127,28 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given. Each task's diagnosis says what the unit needs in order
 to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
 
-- [ ] **1. S — the sample section: `sec:main-component-splitoff`** (Opus). It is
-  `main-component.tex` lines 2952–3273: `lem:pencil-curve-limit`,
-  `lem:pencil-splitoff-special-rank`, `lem:pencil-splitoff-flexes`, `lem:pencil-splitoff-curve`,
-  `thm:pencil-x0-splitoff` and two unlabelled remarks. **Stop 1 follows.**
-  - *Diagnosis.* The opening compresses the whole argument, and the key idea surfaces only in the
-    closing remark. The subsection never says where the induction uses the step or what its
-    hypothesis means. Three passages lean on "the informal argument": the first remark, the
-    second remark, and part (1) of `lem:pencil-splitoff-curve`'s proof. The JJ attribution is
-    unchecked.
-  - *Add (a), the opening, two or three short paragraphs.* It says where the step is used: the
-    coverage's one-body chain `a − x − b`, with `a ≁ b` and
-    `δ = def₃(G[V₁]) − def₃(G[V₁]; a, b) ≥ 5` (`def:pencil-x0-usable-chain`). At `δ = 0` the
-    one-body ear step is used instead, and at `1 ≤ δ ≤ 4` no one-body step is used. This moves
-    out of the second remark. It says what the hypothesis means, and why it closes the count:
-    `def₃(G″) + 1 ≤ def₃(G)`, so `G″`'s rank plus the five gained at the special position reaches
-    `G`'s target. It names the difficulty: the special configuration has that rank, but its
-    picture is not admissible for `G`, because `{a, x, b}` is pictured on a line. And it gives
-    the plan in three moves: the special position, a line of solutions through it, and a good
-    parameter.
-  - *Add (b), a proof overview.* One paragraph before the theorem's proof names the key idea. The
-    moving configuration must keep `h_a − h_b` vanishing at the moving picture point of `x`,
-    which is one linear condition `φ₀ + tψ`. A line `y₀ + tw` of solutions of `G[V₁]`'s lifting
-    system satisfies it identically (`lem:pencil-splitoff-curve`(1)). So the family is polynomial
-    in `t`, and the rank's semicontinuity along one curve (`lem:pencil-curve-limit`) finishes the
-    proof, with no geometry of the main component.
-  - *Add (c), a lead-in sentence before each lemma*, saying what the proof needs it for:
-    - `lem:pencil-curve-limit`: semicontinuity along a curve;
-    - `lem:pencil-splitoff-special-rank`: why `x` on the line `ab` makes its two hinges multiples
-      of `ab`'s;
-    - `lem:pencil-splitoff-flexes`: why it counts solutions and not heights (at a body of degree
-      one, heights do not fix planes; `G[V₁]` is a path when `G` is a cycle);
-    - `lem:pencil-splitoff-curve`: its three parts.
-  - *Add (d), the transfer from JJ*, stated only as far as it has been checked against the source:
-    which step of their proof this is, and what differs.
-  - *Add (e), the remarks,* under default (a) of *Decisions*. The first remark's alternative, the
-    route through the main component's geometry, survives only as a mathematical statement, or
-    folds into (b). The second remark's claim for every `δ` is not proved here: keep it only
-    marked unused, with its one-line reason, or cut it. The phrase "the informal argument" does
-    not appear.
-  - *Must not change:* any `\label`, `\lean`, `\leanok` or `\uses` line; the content of the five
-    statement blocks; the proofs' argument, which stays the proof the pinned Lean gives; the order
-    of the nodes; anything outside the subsection. A fix needed elsewhere goes, as one line in
-    this log, into the task for that subsection.
-  - *Evidence bar.*
-    - What the Lean proves, assumes or uses is read from the statements and bodies of
-      `Graph.X0Attains.of_splitOff`, `Graph.finrank_span_rigidityRows_splitOff_special`,
-      `Graph.planeDiff_eq_zero_of_splitOff`, `exists_mem_forall_add_smul_eq_zero` and
-      `PanelHingeFramework.finite_setOf_finrank_lt_of_curve`. The coverage's use of the step is
-      read from `Graph.ChainUsable` (`CoverageTheoremS.lean`) and `Graph.X0Reduces`.
-    - JJ is checked against the TR, as *Scope* says. Seen at the open, to be confirmed: the TR's
-      proof of Theorem 6.1, Claim 6.5, Case 1 (printed pp. 15–16). There a vertex `v₁` of degree
-      two, whose neighbours are non-adjacent and lie in distinct bricks of `G − v₁`, is handled
-      by realizing `G − v₁ + u₁u₂` by induction, then moving points locally (their Lemma 2.2).
-    - No new `\cite` key.
-  - *Depth.* This task sets the round's depth. Expect the subsection to grow by one to two
-    screens of source (about 40–80 lines), net of what the remarks lose. Much more than that is
-    duplication, or material for the chapter introduction.
-  - *Record.* This line gets the sha and a two-line note of the choices the PI should check: the
-    remarks, the JJ passage and the depth. It also gets the subsection's new line range.
+- [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; this commit; the spec is
+  at the open, `5f9cbe04`). Now `main-component.tex` lines 2952–3329: 322 → 378 lines (+56).
+  Clauses (a)–(e) are all delivered. No `\label`, `\lean`, `\leanok` or `\uses` line, statement
+  block or node order changed, and the diff stays inside the subsection. Two proof edits, argument
+  unchanged: the flexes proof's first sentence became its (c) lead-in, and part (1) of
+  `lem:pencil-splitoff-curve`'s proof now derives its line from the rational solution in words.
+  - *Record: what the PI should check.* **The remarks:** both are cut. The first folds into (b), a
+    paragraph just before the theorem (a lead-in, not text between statement and proof). The
+    second's coverage facts moved into (a); its every-`δ` bound is unproved and is cut, and (a) says
+    instead that `δ ≥ 5` enters only the count (the Lean agrees: `hδ` is used only for `hdef3a`).
+    **The JJ passage:** the TR's proof of Theorem 6.1, Claim 6.5, Case 1 (printed pp. 15–16), with
+    its Lemmas 2.2(b), 2.3 and 2.4 (p. 4) and the planar count of §3 (p. 7). The prose names no
+    claim or section number. "Brick" is lint-banned, so their case reads "adding the edge lowers
+    the deficiency", which Case 1 states. **The depth:** four opening paragraphs, not three; (d) is
+    the fourth.
+  - *Corrections to the spec.* `a ≁ b` is not in `Graph.ChainUsable`'s `k = 1` clause. It is a
+    hypothesis of `Graph.X0Attains.of_splitOff` and of the `X0Reduces.splitOff` constructor,
+    supplied from sparsity inside `Graph.IsChain.x0Reduces_of_chainUsable` (by
+    `Graph.IsOpenEar.not_adj_and_two_le_pairDelta_two`, `lem:deficiency-one-body-chain`(1)); the
+    prose says so. The new prose writes `def(G̃[V₁])`, not `def₃`, to match the frozen statement
+    blocks. Left for the PI: "an endpoint selector" in `lem:pencil-curve-limit`'s statement, a Lean
+    artifact that the frozen statement blocks kept.
 - [ ] **2. E — pin the exemplar.** Docs only; in the commit after the PI's Stop-1 entry.
   - Transcribe the PI's answer verbatim into *Decisions*.
   - If the PI approved the sample, copy the subsection verbatim into *The pinned exemplar*.
@@ -332,7 +299,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
 - [ ] **20. M11 — `sec:main-component-sparse`, 3569–3894.** Singleton-value combinatorics.
   - Three proofs compare with "the partition into maximal rigid sets". Check whether that is
     Jackson–Jordán's brick partition (the TR) before naming it; those remarks fall under default
-    (a).
+    (a). From task 1 (TR §3, pp. 7–8): their bricks are the maximal subgraphs with `def₂ = 0` in
+    this chapter's terms, not `def₃ = 0`, and "brick" is lint-banned in chapter prose.
   - Say in words what "sparse" and "tight" mean here.
 - [ ] **21. M12 — `sec:main-component-coverage`, 3895–4329.** The proof's combinatorial skeleton.
   - A displayed table would let the reader check that the cases are exhaustive: each case, the
@@ -368,6 +336,9 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - Name the two tools every step uses.
   - If default (a) leaves any comparison with the informal argument, introduce that argument here,
     once.
+  - From task 1: the split-off sentence (78–84) says the body "starts on the line through the
+    points of its neighbours" *as in* JJ's proof. The TR does not: JJ move the new pin, then
+    reinsert the vertex by extensions. Match `sec:main-component-splitoff`'s account.
 - [ ] **26. F3 — `intro.tex`'s reader path.** The fifth-continuation paragraph (362–392) runs the
   whole arc in one paragraph. Check each sentence against tasks 24 and 25, and split it where it
   joins two results. Lines 44–47 and 406–407 get the same check. Phase numbers are allowed here.
@@ -457,10 +428,11 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 1, the sample section `sec:main-component-splitoff`, at Opus.** The spec is under
-*Lemma checklist*. After it lands, the round stops for the PI (Stop 1, `NEEDS_PI`), which the
-coordinator writes. No other section is written before the PI's entry. Then task 2 transcribes
-the answer and pins the exemplar, tasks 3–26 follow in order, and task 27 closes the round.
+**Next: Stop 1 (`NEEDS_PI`), the PI's review of the sample.** Task 1 has landed, and the choices
+the PI should check are in its record under *Lemma checklist*. The coordinator writes the stop
+after verifying task 1's commit. No other section is written before the PI's entry. Then task 2
+transcribes the answer and pins the exemplar, tasks 3–26 follow in order, and task 27 closes the
+round.
 
 ## Decisions made during this round
 
