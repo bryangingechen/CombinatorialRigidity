@@ -7,19 +7,53 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 1 landed: task 1, the sample section `sec:main-component-splitoff`. **Next
-concrete task:** Stop 1, the PI's review of the sample, which the coordinator writes; no other
-section is written before the PI's entry. Then task 2 pins the exemplar. Round manual:
-`CLEANUP.md`.
+one-commit tasks, 1 landed: task 1, the sample section `sec:main-component-splitoff`. **Stopped
+for the PI** at Stop 1 (2026-09-30), whose open question is under *Autopilot: for the PI*.
+**Next concrete task:** task 2, pinning the exemplar, once the PI's entry is there. No other
+section is written before it. Round manual: `CLEANUP.md`.
+
+## Autopilot: for the PI
+
+### 2026-09-30 — `NEEDS_PI`: Stop 1, the sample section (planned stop, `notes/Cleanup40.md` §2)
+
+**What happened.** The round opened (`5f9cbe04`: 27 tasks, *Lemma checklist*) and task 1 landed
+(`806db52e`). The subsection `sec:main-component-splitoff` (`main-component.tex` 2952–3329, 322 →
+378 lines) now has a four-paragraph opening: where the coverage uses the step, what `δ ≥ 5` buys,
+the difficulty, and JJ's case. It also has a lead-in before each lemma and an overview before the
+theorem. Both remarks are cut. Read it with `git show 806db52e -- blueprint/src/chapter/main-component.tex`.
+The coordinator re-ran `lint.sh`, `verify.sh` and the invariance check, all equal to the open's. It
+also checked the opening against the cited statements (the sparsity count, the deficiency
+arithmetic, the `δ` cases against `Graph.ChainUsable`) and JJ's Case 1 against the TR, pp. 15–16.
+All are consistent.
+
+**Asked of the PI:**
+1. **The sample.** Is its register, depth and evidence bar the round's? Two things for you to
+   weigh: the opening's first paragraph carries coverage-level detail (the `δ` cases, Theorem S),
+   and the JJ paragraph is long.
+2. **The four defaults (a)–(d)** under *Decisions*: approve or amend each.
+3. **Granularity:** tasks 3–26, 24 section commits. Approve them, or regroup.
+4. **Small item.** "an endpoint selector" in `lem:pencil-curve-limit`'s statement is a Lean
+   leftover. *Scope* allows a statement edit for register, but task 1's spec froze the statement
+   blocks. The coordinator proposes that task 2 fixes it.
+
+**Options** (commit estimates are for round 3 only; it closes unattended, and round 4 has Stop 2):
+- **A. Approve as is**, defaults as drafted (the coordinator recommends this, with item 4 in task
+  2). Task 2 pins the exemplar (1 docs commit), then tasks 3–26 (24) and the close (1): ~26 commits.
+- **B. Approve with revisions** you name here. Task 2 revises and pins (1–2), then ~25 as in A.
+- **C. Revise and show again.** Task 2 revises (1–2), then Stop 1 repeats.
+- **D. Regroup the task list**, in any of A–C. Each merge saves one commit and enlarges a slice.
+
+Answer below in an entry that starts `**PI, <date>:**`.
 
 ## Current state
 
 **Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Task 1,
-the sample, has landed** (this commit): `sec:main-component-splitoff` is rewritten, its record is
+the sample, has landed** (`806db52e`): `sec:main-component-splitoff` is rewritten, its record is
 under *Lemma checklist*, and nothing is mid-stream. Its gates: `lint.sh` and `verify.sh` green,
 `checkdecls` silent; the graph fingerprint (1 308 edges, `6c5064b7034feb95`) and the pin hash
 (`36133299d3fcc3c8`, 1 062 names) equal the open's; 0 `LaTeX Warning` lines, 187 overfull boxes
-and 9 `WARNING:` lines, as at the open. Next is Stop 1, then task 2.
+and 9 `WARNING:` lines, as at the open (the coordinator re-ran them: the same values). Stop 1 is
+written (*Autopilot: for the PI*). Next is task 2, after the PI's entry.
 
 **Verified at the open:**
 - Whole-project `lake build` green, 3003 jobs, 0 `warning:` lines, 0 `failed to cache artifact`
@@ -127,7 +161,7 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given. Each task's diagnosis says what the unit needs in order
 to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
 
-- [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; this commit; the spec is
+- [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; `806db52e`; the spec is
   at the open, `5f9cbe04`). Now `main-component.tex` lines 2952–3329: 322 → 378 lines (+56).
   Clauses (a)–(e) are all delivered. No `\label`, `\lean`, `\leanok` or `\uses` line, statement
   block or node order changed, and the diff stays inside the subsection. Two proof edits, argument
@@ -418,21 +452,15 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Blockers / open questions
 
-- None blocking. The coordinator writes Stop 1 (`NEEDS_PI`) in a `## Autopilot: for the PI`
-  section of this log (`.claude/autopilot/system-prompt.md`). The sample is meant to answer three
-  questions there:
-  1. Are the sample's register, depth and evidence bar the round's?
-  2. Do the four defaults of *Decisions* hold?
-  3. Is the task list's granularity right? That is 24 section tasks, with three subsections split
-     and two groups formed.
+- **Open: Stop 1** (2026-09-30), the PI's review of the sample, under *Autopilot: for the PI*.
+  Nothing is done past it until the PI's entry is there.
 
 ## Hand-off / next phase
 
-**Next: Stop 1 (`NEEDS_PI`), the PI's review of the sample.** Task 1 has landed, and the choices
-the PI should check are in its record under *Lemma checklist*. The coordinator writes the stop
-after verifying task 1's commit. No other section is written before the PI's entry. Then task 2
-transcribes the answer and pins the exemplar, tasks 3–26 follow in order, and task 27 closes the
-round.
+**Next: task 2, once the PI has answered Stop 1** (*Autopilot: for the PI*). Task 2 transcribes
+the answer verbatim into *Decisions* and pins the exemplar as the PI ruled. Then tasks 3–26 follow
+in order, and task 27 closes the round. While the question has no `**PI, <date>:**` entry, the
+round does nothing past it.
 
 ## Decisions made during this round
 

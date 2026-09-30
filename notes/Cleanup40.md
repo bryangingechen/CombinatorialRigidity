@@ -6,9 +6,9 @@ closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 
 (`notes/Phase40-exposition.md`); rounds 4–5 have not opened. Five cleanup rounds (`CLEANUP.md`)
 over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`,
 `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
-order and for which rounds are done. **The next concrete task** is round 3's first, the sample
-section, named in `notes/Phase40-exposition.md` *Hand-off / next phase*. Round 3 stops for the PI
-after it (Stop 1).
+order and for which rounds are done. Round 3's sample section has landed, and **round 3 is
+stopped for the PI** at Stop 1 (`notes/Phase40-exposition.md` *Autopilot: for the PI*). **The next
+concrete task** is round 3's task 2, pinning the exemplar, once the PI has answered there.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
