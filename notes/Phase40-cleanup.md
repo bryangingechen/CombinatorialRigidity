@@ -4,20 +4,20 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29 and 30 closed (17 not
-landed); 15 of 50 one-commit tasks remain. **Next concrete task:** task 31, A-P3, the
-blueprint-against-Lean walk of `pencil.tex`'s `sec:pencil-nondegenerate` and
-`sec:pencil-main-component-route`. Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30 and 31 closed (17
+not landed); 14 of 50 one-commit tasks remain. **Next concrete task:** task 32, A-P4, the
+blueprint-against-Lean walk of `pencil.tex`'s `sec:pencil-girth-chain` and the chapter
+introduction. Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 31, A-P3** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29 and 30 are closed (17
-not landed), 15 remain. Nothing is mid-stream.
+**Next commit: task 32, A-P4** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30 and 31 are closed
+(17 not landed), 14 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29 and 30, one line each
-under *Lemma checklist → Landed* (task 17 closed not landed). A finished task gets one or two lines
-there, with its commit; the detail stays in the commit message, and this section stays the
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30 and 31, one line
+each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task gets one or two
+lines there, with its commit; the detail stays in the commit message, and this section stays the
 forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
@@ -192,13 +192,14 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   one-line forgetful corollary); and `lem:two-pencil-extension-iff`'s backward direction rested on
   `span_range_eq_of_extensor_eq` (Plücker injectivity), pinned nowhere — its own docstring names an
   intended label (`lem:decomposable-extensor-span-unique`) never added, now minted in `meet.tex`.
-- [x] **30. A-P2: `sec:pencil-reduction`** (469–755; 11; this commit). 11 nodes walked, 2
+- [x] **30. A-P2: `sec:pencil-reduction`** (469–755; 11; `96197adb`). 11 nodes walked, 2
   divergences found and fixed, both prose-only: a missing `\uses{lem:screw-map-rows}` on
   `lem:pencil-projective-transport`'s rank-invariance claim, and a missing proof sentence on
   `thm:pencil-conditional-realization` narrating its rank–nullity bridge to the pinned
   `pencil_conjecture_of_arms`'s motion-space conclusion.
-- [ ] **31. A-P3: `sec:pencil-nondegenerate` and `sec:pencil-main-component-route`** (756–1196; 9).
-  The conditional theorems kept when design §6 was retired live here.
+- [x] **31. A-P3: `sec:pencil-nondegenerate` and `sec:pencil-main-component-route`** (756–1196; 9;
+  this commit). 9 nodes walked, 0 divergences: every pin, `\uses` edge and proof matches its Lean,
+  and the held kernels (K)/(K-bare) already read as retired, off-headline, not a live route.
 - [ ] **32. A-P4: `sec:pencil-girth-chain` and the chapter introduction** (1197–1412 and 1–37; 8).
 - [ ] **33. A-MC1: `main-component.tex`, `sec:main-component-carrier` and the section
   introduction** (123–716 and 1–122; 21).
@@ -319,15 +320,17 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 31, A-P3** (§A, the blueprint-against-Lean walk). `pencil.tex`,
-`sec:pencil-nondegenerate` and `sec:pencil-main-component-route` (756–1196; 9 environments):
+**Next concrete commit: task 32, A-P4** (§A, the blueprint-against-Lean walk). `pencil.tex`,
+`sec:pencil-girth-chain` and the chapter introduction (1197–1412 and 1–37; 8 environments):
 compare each `\leanok` node's statement with its pinned Lean signature, check the laundering walk,
-and read the prose proof for oversell. Tasks 31–44 (§A) walk the rest of the surface; task 45
+and read the prose proof for oversell. Tasks 32–44 (§A) walk the rest of the surface; task 45
 closes the round.
 
 Tasks 29 and 30's divergences and fixes are recorded on their own *Lemma checklist* lines above
-(both closed the same way: fixed in-commit, both gates green, no statement changed). Task 28b's
-`Arms.lean`/`ArmsAssembly.lean` split and its repointed callers are on its own checklist line.
+(both closed the same way: fixed in-commit, both gates green, no statement changed). Task 31 found
+no divergences — the two held kernels already read as retired, off-headline (its own checklist
+line). Task 28b's `Arms.lean`/`ArmsAssembly.lean` split and its repointed callers are on its own
+checklist line.
 
 ## Decisions made during this round
 
