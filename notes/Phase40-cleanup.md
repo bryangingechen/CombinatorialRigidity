@@ -5,19 +5,19 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
 Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40 and 41 closed (17 not landed); 4 of 50 one-commit tasks remain. **Next
-concrete task:** task 42, A-MC10, the blueprint-against-Lean walk of `main-component.tex`'s
-`sec:main-component-statements`, which holds both headline nodes.
+35, 36, 37, 38, 39, 40, 41 and 42 closed (17 not landed); 3 of 50 one-commit tasks remain. **Next
+concrete task:** task 43, A-D, the blueprint-against-Lean walk of Phase 40's `deficiency.tex`,
+`molecular-induction.tex` and `panel-layer.tex` nodes.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 42, A-MC10** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+**Next commit: task 43, A-D** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
 tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40 and 41 are closed (17 not landed), 4 remain. Nothing is mid-stream.
+35, 36, 37, 38, 39, 40, 41 and 42 are closed (17 not landed), 3 remain. Nothing is mid-stream.
 
 Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34, 35,
-36, 37, 38, 39, 40 and 41, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
+36, 37, 38, 39, 40, 41 and 42, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
 gets one or two lines there, with its commit; the detail stays in the commit message, and this
 section stays the
 forward pointer.
@@ -252,14 +252,15 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   a lemma proved *from* the flagged node (a real `\uses` edge there would cycle), not missing
   edges; task 22's `mapExtensor` rename is already named correctly in `lem:pencil-rank-collineation`'s
   Lean docstring and the blueprint prose cites neither old nor new name directly.
-- [x] **41. A-MC9: `sec:main-component-coverage`** (3896–4330; 13; this commit). 13 nodes walked
+- [x] **41. A-MC9: `sec:main-component-coverage`** (3896–4330; 13; `8800b6e2`). 13 nodes walked
   (all `\leanok`, no remarks), 0 divergences: every pin, hypothesis and `\uses` edge matches its
   Lean (`Coverage.lean`, `CoverageChain.lean`, `CoverageCut.lean`, `CoverageTheoremS.lean`), incl.
   `X0Reduces`'s 13 constructors against the definition's 7 clauses and `thm:pencil-x0-coverage`'s
   case dispatch; the coverage prose does not invoke `Graph.X0Attains.of_closedEar` (task 37's
   finding). Two shared assemblies with no blueprint node moved to *Moved to a later round*.
-- [ ] **42. A-MC10: `sec:main-component-statements`** (4281–4809; 15). This holds both headline
-  nodes.
+- [x] **42. A-MC10: `sec:main-component-statements`** (4331–4858; 15; this commit). 15 nodes walked
+  (all `\leanok`, no remarks), 0 divergences: every pin, hypothesis, and `\uses` edge matches its
+  Lean; both headline nodes match `formalization.yaml`'s `pencil_conjecture`/`pencilPair_of_nonempty`.
 - [ ] **43. A-D: Phase 40's deficiency nodes** (9). In `deficiency.tex`: `lem:deficiency-antitone`,
   `lem:deficiency-zero-connected`, `lem:deficiency-cut-vertex`, `lem:deficiency-ear`,
   `lem:deficiency-ear-merge`, `def:deficiency-merged`. In `molecular-induction.tex`:
@@ -393,14 +394,13 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 42, A-MC10** (§A, the blueprint-against-Lean walk). `main-component.tex`,
-`sec:main-component-statements`, up to `deficiency.tex`'s Phase 40 nodes (task 43): compare each
-`\leanok` node's statement with its pinned Lean signature (this range holds both headline nodes),
-check the laundering walk, and read the prose proof for oversell. Tasks 42–44 (§A) walk the rest
-of the surface; task 45 closes the round. Also fill task 41's *Landed* sha in the same shape as
-task 40's fill this commit.
+**Next concrete commit: task 43, A-D** (§A, the blueprint-against-Lean walk). Phase 40's nodes in
+`deficiency.tex` (6), `molecular-induction.tex` (2) and `panel-layer.tex` (1): compare each
+`\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read the
+prose proof for oversell. Task 44 (§A) walks `rigidity-matrix.tex`'s nodes (⚠Z for any Lean fix);
+task 45 closes the round.
 
-Tasks 29–41's divergences (or their absence) are each recorded on their own *Lemma checklist* line
+Tasks 29–42's divergences (or their absence) are each recorded on their own *Lemma checklist* line
 above — see those lines for detail, not this section.
 
 ## Decisions made during this round
