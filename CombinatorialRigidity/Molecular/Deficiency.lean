@@ -41,7 +41,10 @@ leaf node landing here:
   are encoded as labelings `f : α → α` (the fibers are the parts); `numParts` counts the
   parts `|P| = |f '' V(G)|` and `crossingEdges` collects the edges `d_G(P)` joining distinct
   parts. The deficiency is `ℤ`-valued (genuinely signed) and `≥ 0` by the trivial one-part
-  partition (`partitionDef_one`).
+  partition (`partitionDef_one`). `exists_normalized_labeling` re-labels any partition so that its
+  labels are vertices of `G` and the vertices outside `V(G)` are their own labels, keeping its parts
+  and crossing edges (the normalization the relative hubs of `AlgebraicInduction/PanelLayer.lean`
+  and `Molecule/Pencil/TwoCut.lean` share).
 
 * `IsKDof` / `IsMinimalKDof` / `edgeFiber` (`def:k-dof`) — `G` is a `k`-dof-graph
   when `def(G̃) = k`; minimal when additionally every base of `M(G̃)` meets every
@@ -318,6 +321,57 @@ theorem deficiency_nonneg [Finite α] (G : Graph α β) (n : ℕ) (hne : V(G).No
   obtain ⟨a, ha⟩ := hne
   calc (0 : ℤ) = G.partitionDef n (fun _ => a) := (G.partitionDef_one n a ⟨a, ha⟩).symm
     _ ≤ G.deficiency n := G.partitionDef_le_deficiency n _
+
+/-- **Normalizing a labeling into `V(G)`**: every labeling `f` of a finite vertex type induces the
+same partition of `V(G)` as a labeling `g` whose labels on `V(G)` are vertices of `G` and which
+fixes every vertex outside `V(G)`. So `g` has the same parts and crossing edges as `f`, and its
+range is its `numParts f` labels on `V(G)` together with the `|V(G)ᶜ|` outside vertices, each its
+own label.
+
+Take `ι` injective on the carried labels `f '' V(G)` with `ι '' (f '' V(G)) ⊆ V(G)`
+(`Set.Finite.exists_injOn_of_encard_le`; there are at most `|V(G)|` of them), and set
+`g x = ι (f x)` on `V(G)`, `g x = x` off it.
+
+This is the normalization both relative hubs share, the `BodyHingeFramework` lemmas
+`screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
+(`AlgebraicInduction/PanelLayer.lean`) and its merged counterpart
+`screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (`Molecule/Pencil/TwoCut.lean`).
+Each applies the `|range g|`-form motion bound at `g`; the merged hub also reads the last
+conjunct, at its cut pair. -/
+theorem exists_normalized_labeling [Finite α] (G : Graph α β) (f : α → α) :
+    ∃ g : α → α, g '' V(G) ⊆ V(G) ∧ G.numParts g = G.numParts f ∧
+      G.crossingEdges g = G.crossingEdges f ∧
+      Nat.card (Set.range g) = G.numParts f + V(G)ᶜ.ncard ∧
+      ∀ ⦃x⦄, x ∈ V(G) → ∀ ⦃y⦄, y ∈ V(G) → (g x = g y ↔ f x = f y) := by
+  classical
+  obtain hα | hα := isEmpty_or_nonempty α
+  · refine ⟨f, fun y _ => isEmptyElim y, rfl, rfl, ?_, fun x => isEmptyElim x⟩
+    simp only [numParts, Set.eq_empty_of_isEmpty, Set.ncard_empty, Nat.card_of_isEmpty]
+  obtain ⟨ι, hιmaps, hιinj⟩ :=
+    (Set.toFinite (f '' V(G))).exists_injOn_of_encard_le (Set.encard_image_le f V(G))
+  set g : α → α := fun x => if x ∈ V(G) then ι (f x) else x
+  have hgV : Set.EqOn g (ι ∘ f) V(G) := fun x hx => ite_eq_left hx
+  have hgiff : ∀ ⦃x⦄, x ∈ V(G) → ∀ ⦃y⦄, y ∈ V(G) → (g x = g y ↔ f x = f y) :=
+    fun x hx y hy => by
+      rw [hgV hx, hgV hy]
+      exact hιinj.eq_iff (mem_image_of_mem f hx) (mem_image_of_mem f hy)
+  have himg : g '' V(G) = ι '' (f '' V(G)) := by rw [image_congr hgV, image_comp]
+  have hsub : g '' V(G) ⊆ V(G) := himg ▸ image_subset_iff.2 hιmaps
+  have hnp : G.numParts g = G.numParts f := by
+    rw [numParts, numParts, himg, hιinj.ncard_image]
+  refine ⟨g, hsub, hnp, ?_, ?_, hgiff⟩
+  · ext e
+    simp only [crossingEdges, Set.mem_ofPred_eq]
+    constructor <;> rintro ⟨he, x, y, hl, hne⟩
+    · exact ⟨he, x, y, hl, fun h => hne ((hgiff hl.left_mem hl.right_mem).2 h)⟩
+    · exact ⟨he, x, y, hl, fun h => hne ((hgiff hl.left_mem hl.right_mem).1 h)⟩
+  · have hcompl : g '' V(G)ᶜ = V(G)ᶜ :=
+      (image_congr fun x (hx : x ∉ V(G)) => ite_eq_right hx).trans (image_id _)
+    have hrange : range g = g '' V(G) ∪ V(G)ᶜ := by
+      rw [← image_univ, ← union_compl_self V(G), image_union, hcompl]
+    rw [Nat.card_coe_set_eq, hrange,
+      ncard_union_eq (disjoint_compl_right.mono_left hsub)]
+    exact congrArg (· + V(G)ᶜ.ncard) hnp
 
 /-- **Deleting a loop leaves the deficiency unchanged** (`sec:molecular-deficiency`, W3-L3
 ingredient, Phase 39): for a loop `e` at `v`, `def((G ＼ {e})\tilde{}) = def(\tilde G)`, with no

@@ -133,6 +133,10 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
     KT 3.3), so `40-cleanup` task 43 (A-D) minted no node for it; `thm:theorem-55-6-rows`'s proof
     had wrongly cited `lem:subgraph-minimality` for it, fixed this round to name the strip
     directly by `\texttt{}` (`notes/Phase40-cleanup.md` task 43).
+  - `Graph.exists_normalized_labeling` (`Molecular/Deficiency.lean`), the relabelling both
+    relative hubs share, which `40-factor` task 1 extracted from them. It cites no nonexistent
+    blueprint label, so that round minted no node for it; `lem:relative-deficiency-rank-bound`'s
+    proof already narrates the relabelling mathematically (`notes/Phase40-factor.md` task 1).
 
 ### Round 4 — `40-simplify`: the deep recon (`notes/Phase40-simplify.md`)
 

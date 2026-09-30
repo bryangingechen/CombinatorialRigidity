@@ -4,19 +4,20 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The round extracts the
 labeling normalization that the two relative hubs duplicate (`notes/Phase40-design.md` §7) and
-rebuilds both hubs on it: three one-commit tasks, none landed. **Next concrete task:** task 1,
-E1 — land `Graph.exists_normalized_labeling` in `Molecular/Deficiency.lean` and rebuild the
-PanelLayer hub on it (⚠Z, Opus), transcribing the open's spike. Round manual: `CLEANUP.md`.
+rebuilds both hubs on it: three one-commit tasks, task 1 landed. **Next concrete task:** task
+2, E2 — rebuild the TwoCut merged hub on `Graph.exists_normalized_labeling` (⚠Z, Opus),
+transcribing the open's spike, and mark design §7's entry paid. Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Opened; no task has landed.** The open settled the extraction's home, visibility and exact
-signature (*The extraction, pinned*; *Decisions*). It backed them with a complete
-compiler-checked spike: the extraction and both hubs rebuilt on it, with no `sorry`. Tasks 1 and
-2 are therefore transcriptions.
+**Task 1 has landed; task 2 is next.** The open settled the extraction's home, visibility and
+exact signature (*The extraction, pinned*; *Decisions*). It backed them with a complete
+compiler-checked spike: the extraction and both hubs rebuilt on it, with no `sorry`. Task 1
+transcribed the extraction and the PanelLayer hub from it and retired the orphan pair. Task 2
+transcribes the TwoCut hub from `Spike.lean` Part 2. Nothing is mid-stream.
 
-**Verified at the open** (the Lean and blueprint trees are `bb333dc4`'s; this commit is docs
-only):
+**Verified at the open** (`8a932535`, a docs-only commit; its Lean and blueprint trees are
+`bb333dc4`'s):
 - Whole-project `lake build` green, 3003 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
 - `#print axioms` on all **19** `formalization.yaml` main results gives `[propext,
   Classical.choice, Quot.sound]`. The harness is round 1's `scratch/40-cleanup/Axioms.lean`,
@@ -99,27 +100,16 @@ proof takes `ι` from `Set.Finite.exists_injOn_of_encard_le` and sets `g x = ι 
 
 One commit per task, in the order given.
 
-- [ ] **1. E1 — the extraction and the PanelLayer hub** (⚠Z, Opus).
-  - Land `Graph.exists_normalized_labeling` in `Molecular/Deficiency.lean`, in the
-    `## D-deficiency` section right after `deficiency_nonneg`, verbatim from `Spike.lean` Part 1
-    (statement, proof and docstring). Add a clause naming it to the module docstring's
-    `partitionDef` / `deficiency` bullet.
-  - Rebuild the proof of `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` on it,
-    from `Spike.lean` Part 2, leaving the statement untouched. The rebuilt proof needs neither the
-    `open Classical in` above the hub, nor `have : Fintype α`, nor `set VG`, so drop all three.
-    The spike's `==` check shows that dropping `open Classical in` leaves the statement unchanged.
-    The hub's docstring cites `Set.Finite.exists_injOn_of_encard_le`; make it name the extraction.
-  - Retire the orphan pair `crossingEdges_complement_sep` and `range_complement_sep_card`
-    (`PanelLayer.lean` 2137–2181, Phase 22i L0c, each with its own `open Classical in`), for the
-    reason under *Decisions*. Deletion gate: grep the whole tree for both names, and repoint
-    anything found. At the open they occur only at their own declarations.
-  - Two more docstrings narrate the normalization; re-point both at the extraction. One is the
-    section docstring `### Complement-separated |range f|-form hub bound and B2`, whose step 2
-    narrates it. The other is `screwDim_mul_range_card_sub_le_finrank_partitionMotions`'s, whose
-    last sentence cites "the complement-separated refinement `f'`".
-  - The extraction has no blueprint node. Add a line for it under *Moved to a later round* (round
-    3's D5-debt sweep decides whether to pin it), and mirror that line into `notes/Cleanup40.md`
-    §2 *Round 3* in the same commit.
+- [x] **1. E1 — the extraction and the PanelLayer hub** (⚠Z, Opus; this commit).
+  `Graph.exists_normalized_labeling` landed in `Deficiency.lean` after `deficiency_nonneg`,
+  verbatim from the spike, with a module-docstring clause. The PanelLayer hub's proof went from 101
+  lines to 22, statement untouched (no diff line between its `theorem` line and `:= by`), dropping
+  `open Classical in`, `Fintype α` and `set VG`. The orphan pair is retired (the tree-wide grep
+  finds the two names only in this log), and both normalization docstrings are re-pointed. The
+  no-node line is under *Moved to a later round* and mirrored into `notes/Cleanup40.md` §2
+  *Round 3*. Gates: `lake build` green (3003 jobs, 0 warnings, 0 cache failures), `lake lint`
+  green; both hub fingerprints still equal the open's, and all 19 main results stay at the three
+  standard axioms.
 - [ ] **2. E2 — the TwoCut merged hub** (⚠Z, Opus; a transcription).
   - Rebuild the proof of `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` on the
     extraction, from `Spike.lean` Part 2, leaving the statement untouched. As in task 1, drop
@@ -173,25 +163,30 @@ into `notes/Cleanup40.md` §2 *Round 4*.
 Each line: the task, its target round, and a one-line reason. The same line goes into the target
 round's plan section in `notes/Cleanup40.md` in the same commit.
 
-- None at the open. Task 1 adds one, for the extraction's missing blueprint node.
+- **`Graph.exists_normalized_labeling` (`Molecular/Deficiency.lean`) has no blueprint node**
+  (task 1), round 3 (`40-exposition`). It is the relabelling both relative hubs share. It cites no
+  nonexistent blueprint label, so no node is minted here (this round's rule), and
+  `lem:relative-deficiency-rank-bound`'s proof already narrates the relabelling mathematically.
+  Round 3's D5-blueprint-debt sweep decides whether to pin it or name it in that proof.
 
 ## Blockers / open questions
 
 - None.
 - Seen at the open, not a task: two of the round's three files are past the ~1500 tripwire
   (`CombinatorialRigidity/CLAUDE.md`). `Molecular/Deficiency.lean` has 4 387 lines and
-  `PanelLayer.lean` 2 299, and no round in `notes/Cleanup40.md` plans a split. Task 1 adds about 50
-  lines to the first, its definitions' own file (*Decisions*), and nets about −125 on the second.
-  `notes/PERFORMANCE.md` is where a split would be ranked.
+  `PanelLayer.lean` 2 299 at the open, and no round in `notes/Cleanup40.md` plans a split. Task 1
+  took the first to 4 441 (+54: the extraction, in its definitions' own file, *Decisions*) and the
+  second to 2 173 (−126). `notes/PERFORMANCE.md` is where a split would be ranked.
 
 ## Hand-off / next phase
 
-**Next: task 1, E1** (⚠Z, Opus). Transcribe `scratch/40-factor/Spike.lean` Part 1 into
-`Molecular/Deficiency.lean` right after `deficiency_nonneg`, rebuild the PanelLayer hub from Part
-2, and retire the orphan pair, per the checklist. If the scratch spike is gone, *The extraction,
-pinned* gives the statement and construction. The rebuilt hub then consumes it in about 20 lines:
-attain the deficiency, normalize, apply `screwDim_mul_range_card_sub_le_finrank_partitionMotions`
-at `g`, rewrite by (iii) and (iv), and close with `zify` and `linarith`.
+**Next: task 2, E2** (⚠Z, Opus). Rebuild the TwoCut merged hub's proof from
+`scratch/40-factor/Spike.lean` Part 2 (its second theorem), rewrite the hub's docstring, and mark
+design §7's entry paid, per the checklist. Also replace task 1's "this commit" with its sha. If the
+scratch spike is gone, the landed PanelLayer hub is the template: the merged hub differs only in
+drawing `f₀` from the subtype `{f // f u = f v}`, reading (v) as `hguv := (hgf hu hv).2 f₀.2`,
+and closing with `partitionMotions_le_jointMotions_bot hguv` in place of
+`partitionMotions_le_infinitesimalMotions`.
 
 ## Decisions made during this round
 
