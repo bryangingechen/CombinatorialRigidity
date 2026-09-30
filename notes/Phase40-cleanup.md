@@ -4,17 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b and 15–20 closed (17 not landed); 27 of 49 one-commit tasks remain.
-**Next concrete task:** task 21a, F2, moving `Graph.closedNbhd_subset_vertexSet` to `Motive.lean`.
+Tasks 1–13, 14a–14b, 15–20 and 21a closed (17 not landed); 26 of 49 one-commit tasks remain.
+**Next concrete task:** task 21b, F2, moving the `infinitesimalMotions_eq_of_isLink_*` pair to
+`RigidityMatrix/Basic.lean`.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 21a, F2** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b and 15–20 are closed (17 not landed), 27 remain. Nothing is mid-stream.
+**Next commit: task 21b, F2** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20 and 21a are closed (17 not landed), 26 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–20, one line each under *Lemma checklist → Landed* (task 17 closed not
-landed). A finished task gets one or two lines there, with its commit; the detail stays in the
+Landed so far: tasks 1–20 and 21a, one line each under *Lemma checklist → Landed* (task 17 closed
+not landed). A finished task gets one or two lines there, with its commit; the detail stays in the
 commit message, and this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
@@ -115,7 +116,7 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   (clause 1, kept the old label), `lem:pencil-ear-data-picture` (clause 2), `lem:pencil-ear-data-open`
   (clause 3). Every `\uses`/`\cref` site in `main-component.tex` and all 14 `EarGen.lean` docstring
   citations repointed clause by clause; no statement changed strength.
-- [x] **20. M5** (this commit). CHAINS' seven `pathVertex` helpers moved to `Cut.lean`; three of
+- [x] **20. M5** (`473a4a11`). CHAINS' seven `pathVertex` helpers moved to `Cut.lean`; three of
   them (`isLink_pathVertex_rev`, the `val_eq_zero_or_of_pathVertex_mem` trio,
   `pathVertex_mem_insert_insert_range`) sit beside `pathVertex_cases`/`pathVertex_rev` rather than
   literally beside `def pathVertex`, since they need those first. The thirteen `Graph.IsOpenEar.*`
@@ -128,9 +129,11 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 - **21a–21b. F2: two general facts downstream of their consumers** (the `[open]` FRICTION
   entry of that name). Two commits. No names change. The second closes the FRICTION entry.
-  - [ ] **21a.** Move `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to `Motive.lean`, beside
-    `Graph.closedNbhd`, and drop the inlined copies in `Graph.isAdmissiblePicture_congr` and
-    `Graph.liftingSpace_congr` (`Carrier.lean`).
+  - [x] **21a.** (this commit). Moved `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to
+    `Motive.lean`, beside `Graph.closedNbhd`; `Graph.isAdmissiblePicture_congr`'s and
+    `Graph.liftingSpace_congr`'s inlined copies (`Carrier.lean`) now call it directly. A third,
+    undocumented inline copy (`ker_liftingMatrix_congr`, Phase 40j, outside this task's two named
+    sites) had its docstring repointed but keeps its `have` — out of scope here.
   - [ ] **21b.** Move the `infinitesimalMotions_eq_of_isLink_*` pair (`AlgebraicInduction/Pinning.lean`)
     to `RigidityMatrix/Basic.lean`, and drop `BodyHingeFramework.relScrews_congr`'s re-proof
     (`RigidityMatrix/Bricks.lean`). **⚠Z**.
@@ -310,15 +313,16 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 21a, F2** (the `[open]` FRICTION entry *two general facts downstream
-of their consumers*): move `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to `Motive.lean`,
-beside `Graph.closedNbhd`, and drop the inlined copies in `Graph.isAdmissiblePicture_congr` and
-`Graph.liftingSpace_congr` (`Carrier.lean`). No names change. Task 21b (the
-`infinitesimalMotions_eq_of_isLink_*` pair, `AlgebraicInduction/Pinning.lean` to
-`RigidityMatrix/Basic.lean`, ⚠Z) follows and closes the FRICTION entry. Task 20 (this commit)
-moved CHAINS' `pathVertex` helpers to `Cut.lean` and its `Graph.IsOpenEar.*` lemmas to
-`Coverage.lean`; both landed inside the target files' existing import closures, so nothing stayed
-behind.
+**Next concrete commit: task 21b, F2** (the `[open]` FRICTION entry *two general facts downstream
+of their consumers*): move the `infinitesimalMotions_eq_of_isLink_*` pair
+(`AlgebraicInduction/Pinning.lean`) to `RigidityMatrix/Basic.lean`, and drop
+`BodyHingeFramework.relScrews_congr`'s re-proof (`RigidityMatrix/Bricks.lean`), ⚠Z. This closes
+the FRICTION entry. Task 21a (this commit) moved `Graph.closedNbhd_subset_vertexSet`
+(`Bridge.lean`) to `Motive.lean` beside `Graph.closedNbhd`, and dropped the inlined copies in
+`Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`Carrier.lean`); no names
+changed, and no blueprint pin moved (`\lean{...}` names the declaration, not its file). A third
+inline copy, `ker_liftingMatrix_congr` (Phase 40j, not among 21a's or the mirror-candidate
+FRICTION entry's named consumers), keeps its `have` — only its docstring was repointed.
 
 ## Decisions made during this round
 

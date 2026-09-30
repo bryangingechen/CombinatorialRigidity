@@ -361,13 +361,6 @@ end embedEdges
 
 /-! ## Jackson–Jordán's equality -/
 
-/-- A closed neighbourhood of a body of `G` lies in `V(G)`. -/
-theorem _root_.Graph.closedNbhd_subset_vertexSet {G : Graph α β} {v : α} (hv : v ∈ V(G)) :
-    G.closedNbhd v ⊆ V(G) := by
-  rintro w (rfl | ⟨e, he⟩)
-  · exact hv
-  · exact he.right_mem
-
 /-- **Jackson–Jordán's equality at the generic picture** (`thm:pencil-jj-equality`; informal
 (MC-4)(c)'s equality case, (MC-33), Jackson–Jordán's pin-collinear theorem via the planar rank
 theorem at `n = 2`). Let `G` be simple, with at least one body and at least three members in every

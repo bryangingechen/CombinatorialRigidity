@@ -127,9 +127,8 @@ theorem _root_.Graph.isAdmissiblePicture_congr {G : Graph α β} {q q' : α × F
     G.IsAdmissiblePicture q ↔ G.IsAdmissiblePicture q' := by
   have hpp : ∀ w ∈ V(G), pencilPicturePoint q w = pencilPicturePoint q' w := by
     intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
-  have hN : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, w ∈ V(G) := by
-    rintro v hv w (rfl | ⟨e, he⟩)
-    exacts [hv, he.right_mem]
+  have hN : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, w ∈ V(G) := fun _ hv _ hw =>
+    Graph.closedNbhd_subset_vertexSet hv hw
   unfold Graph.IsAdmissiblePicture
   refine and_congr (forall_congr' fun e => forall₂_congr fun u v => imp_congr_right fun he => ?_)
     (forall₂_congr fun v hv => exists_congr fun t => and_congr_right fun ht => ?_)
@@ -209,9 +208,8 @@ theorem _root_.Graph.liftingSpace_congr {G : Graph α β} {q q' : α × Fin 2 �
     (hq : ∀ w ∈ V(G), ∀ i, q (w, i) = q' (w, i)) : G.liftingSpace q = G.liftingSpace q' := by
   have hpp : ∀ w ∈ V(G), pencilPicturePoint q w = pencilPicturePoint q' w := by
     intro w hw; funext i; fin_cases i <;> simp [pencilPicturePoint, hq w hw]
-  have hN : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, w ∈ V(G) := by
-    rintro v hv w (rfl | ⟨e, he⟩)
-    exacts [hv, he.right_mem]
+  have hN : ∀ v ∈ V(G), ∀ w ∈ G.closedNbhd v, w ∈ V(G) := fun _ hv _ hw =>
+    Graph.closedNbhd_subset_vertexSet hv hw
   ext z
   simp only [Graph.mem_liftingSpace]
   refine and_congr_right fun _ => forall₂_congr fun v hv => exists_congr fun h =>
@@ -661,8 +659,9 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
 /-! ## The lifting system's kernel: locality and monotonicity (Phase 40j SPLITOFF) -/
 
 /-- **The lifting system's kernel reads the picture only on `V(H)`.** The closed-neighbourhood
-membership fact `Graph.closedNbhd_subset_vertexSet` is downstream (`Bridge.lean`); inlined here as
-a local `have`. -/
+membership fact `Graph.closedNbhd_subset_vertexSet` now lives in `Motive.lean` (moved from
+`Bridge.lean`, 40-cleanup task 21a); this call site's local `have` predates that move (Phase 40j)
+and is not yet swapped in. -/
 theorem _root_.Graph.ker_liftingMatrix_congr [Fintype α] {H : Graph α β} {q q' : α × Fin 2 → K}
     (hq : ∀ w ∈ V(H), ∀ i, q (w, i) = q' (w, i)) :
     LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin =
