@@ -123,6 +123,13 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
     built. Neither cites a nonexistent blueprint label, so `40-cleanup` task 41 (A-MC9) minted no
     node for either; both callers' proofs already narrate the shared construction honestly, so no
     prose fix was needed either (`notes/Phase40-cleanup.md` task 41).
+  - `Graph.exists_isMinimalKDof_spanning_subgraph` (`Molecular/Deficiency.lean`), the
+    converse-direction strip both `thm:theorem-55-6-genuine` and `thm:theorem-55-6-rows`'s
+    constructions call to produce a deficiency-preserving minimal spanning subgraph. Its own
+    docstring says it mints no blueprint node (it is the converse of `lem:subgraph-minimality`,
+    KT 3.3), so `40-cleanup` task 43 (A-D) minted no node for it; `thm:theorem-55-6-rows`'s proof
+    had wrongly cited `lem:subgraph-minimality` for it, fixed this round to name the strip
+    directly by `\texttt{}` (`notes/Phase40-cleanup.md` task 43).
 
 ### Round 4 — `40-simplify`: the deep recon (`notes/Phase40-simplify.md`)
 

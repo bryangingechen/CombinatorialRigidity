@@ -414,9 +414,10 @@ condition no welded degeneracy meets.
   \cref{cor:theorem-55-6-multigraph-d3}, and
   \cref{thm:molecular-conjecture-multigraph}, and by the second (consumer)
   declaration pinned on \cref{thm:theorem-55-6-multigraph}; the exceptions
-  are \cref{thm:theorem-55} and \cref{thm:theorem-55-6-multigraph}'s first
-  pinned declaration, which take the supply directly, in the per-graph form
-  described above.
+  are \cref{thm:theorem-55}, \cref{thm:theorem-55-6-genuine},
+  \cref{thm:theorem-55-6-rows}, and \cref{thm:theorem-55-6-multigraph}'s
+  first pinned declaration, which take the supply directly, in the
+  per-graph form described above.
   \Cref{rem:molecular-conjecture-nonvacuous} exhibits a concrete instance
   satisfying it.
 \end{remark}
@@ -643,11 +644,12 @@ right invariant is the rank of the rigidity matrix itself.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55, lem:subgraph-minimality, lem:general-position-support-nonzero,
+  \uses{thm:theorem-55, lem:general-position-support-nonzero,
         lem:span-rigidityRows-eq-of-motions-eq, lem:relative-deficiency-rank-bound}
   Strip, realize and re-add exactly as in \cref{thm:theorem-55-6-genuine}: a
   deficiency-preserving minimal spanning subgraph $G' \le G$
-  (\cref{lem:subgraph-minimality}), realized generically by
+  (\texttt{Graph.exists\_isMinimalKDof\_spanning\_subgraph}, the converse-direction
+  strip, no blueprint node of its own), realized generically by
   \cref{thm:theorem-55}, then extended to $G$ with the link-recording selector;
   the two distinct bodies the off-edge labels need come from $|V(G)| \ge 2$, so
   no spanning hypothesis enters. Replace the motion-space step by two row-span

@@ -5,19 +5,19 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
 Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40, 41 and 42 closed (17 not landed); 3 of 50 one-commit tasks remain. **Next
-concrete task:** task 43, A-D, the blueprint-against-Lean walk of Phase 40's `deficiency.tex`,
-`molecular-induction.tex` and `panel-layer.tex` nodes.
+35, 36, 37, 38, 39, 40, 41, 42 and 43 closed (17 not landed); 2 of 50 one-commit tasks remain.
+**Next concrete task:** task 44, A-R, the blueprint-against-Lean walk of Phase 40's
+`rigidity-matrix.tex` nodes.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 43, A-D** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+**Next commit: task 44, A-R** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
 tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38, 39, 40, 41 and 42 are closed (17 not landed), 3 remain. Nothing is mid-stream.
+35, 36, 37, 38, 39, 40, 41, 42 and 43 are closed (17 not landed), 2 remain. Nothing is mid-stream.
 
 Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34, 35,
-36, 37, 38, 39, 40, 41 and 42, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
+36, 37, 38, 39, 40, 41, 42 and 43, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
 gets one or two lines there, with its commit; the detail stays in the commit message, and this
 section stays the
 forward pointer.
@@ -258,14 +258,12 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   `X0Reduces`'s 13 constructors against the definition's 7 clauses and `thm:pencil-x0-coverage`'s
   case dispatch; the coverage prose does not invoke `Graph.X0Attains.of_closedEar` (task 37's
   finding). Two shared assemblies with no blueprint node moved to *Moved to a later round*.
-- [x] **42. A-MC10: `sec:main-component-statements`** (4331–4858; 15; this commit). 15 nodes walked
+- [x] **42. A-MC10: `sec:main-component-statements`** (4331–4858; 15; `eea4f89c`). 15 nodes walked
   (all `\leanok`, no remarks), 0 divergences: every pin, hypothesis, and `\uses` edge matches its
   Lean; both headline nodes match `formalization.yaml`'s `pencil_conjecture`/`pencilPair_of_nonempty`.
-- [ ] **43. A-D: Phase 40's deficiency nodes** (9). In `deficiency.tex`: `lem:deficiency-antitone`,
-  `lem:deficiency-zero-connected`, `lem:deficiency-cut-vertex`, `lem:deficiency-ear`,
-  `lem:deficiency-ear-merge`, `def:deficiency-merged`. In `molecular-induction.tex`:
-  `lem:splitoff-deficiency-reuse`, `lem:splitoff-deficiency-merged`. In `panel-layer.tex`:
-  `thm:theorem-55-6-rows`.
+- [x] **43. A-D: Phase 40's deficiency nodes** (9; this commit). 9 nodes walked, all `\leanok`, 0
+  statement/hypothesis divergences (detail in the commit message); fixed one wrong `\uses` edge
+  and one `rem:fresh-edge-supply` enumeration gap in `panel-layer.tex`; D5 debt moved below.
 - [ ] **44. A-R: Phase 40's `rigidity-matrix.tex` nodes** (11): `lem:relative-deficiency-rank-bound`,
   `lem:block-rank-cut` (its pin extended), `lem:block-rank-cut-vertex`, `def:relative-screws`,
   `lem:block-rank-two-cut`, `cor:block-rank-vertex-two-cut`, `lem:block-rank-path`,
@@ -383,6 +381,15 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
   proofs already narrate the shared construction honestly ("extend a path as far as possible",
   "its only body with a neighbour outside it"), so no prose fix is needed either. Round 3's
   D5-blueprint-debt sweep decides whether to pin them.
+- **`Graph.exists_isMinimalKDof_spanning_subgraph` (`Molecular/Deficiency.lean`) has no blueprint
+  node** (task 43, A-D), round 3 (`40-exposition`). It is the converse-direction strip
+  `thm:theorem-55-6-genuine` and `thm:theorem-55-6-rows`'s constructions both call to produce a
+  deficiency-preserving minimal spanning subgraph; its own docstring says it mints no blueprint
+  node and is the converse of `lem:subgraph-minimality` (KT 3.3), so no node is minted here (this
+  round's rule). `thm:theorem-55-6-rows`'s proof had wrongly cited `lem:subgraph-minimality` for
+  it (fixed this commit, now names the strip by `\texttt{}`); round 3's D5-blueprint-debt sweep
+  decides whether to pin it, and whether `thm:theorem-55-6-genuine`'s proof (which uses it too,
+  without a `\uses` mis-citation) should also name it.
 
 ## Blockers / open questions
 
@@ -394,14 +401,13 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 43, A-D** (§A, the blueprint-against-Lean walk). Phase 40's nodes in
-`deficiency.tex` (6), `molecular-induction.tex` (2) and `panel-layer.tex` (1): compare each
-`\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read the
-prose proof for oversell. Task 44 (§A) walks `rigidity-matrix.tex`'s nodes (⚠Z for any Lean fix);
-task 45 closes the round.
+**Next concrete commit: task 44, A-R** (§A, the blueprint-against-Lean walk). `rigidity-matrix.tex`'s
+11 nodes: compare each `\leanok` node's statement with its pinned Lean signature, check the
+laundering walk, and read the prose proof for oversell. **⚠Z** applies to any Lean fix
+(`RigidityMatrix/Bricks.lean`, `AlgebraicInduction/`). Task 45 closes the round.
 
 Tasks 29–42's divergences (or their absence) are each recorded on their own *Lemma checklist* line
-above — see those lines for detail, not this section.
+above; task 43's fixes are detailed in its own commit message (`git log`), not repeated here.
 
 ## Decisions made during this round
 
