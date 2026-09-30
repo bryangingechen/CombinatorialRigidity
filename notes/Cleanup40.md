@@ -117,6 +117,12 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
     argument into. Neither cites a nonexistent blueprint label, so `40-cleanup` task 38 (A-MC6)
     minted no node for either and instead pointed `thm:pencil-x0-open-ear-four`/`-three`'s proofs
     at them by name (`notes/Phase40-cleanup.md` task 38).
+  - `Graph.IsOpenEar.exists_maximal` (`Molecule/Pencil/MainComponent/CoverageChain.lean`) and
+    `Graph.Connected.induce_of_gate` (`Molecule/Pencil/MainComponent/CoverageCut.lean`), the
+    shared maximal-ear-extension and one-gate-connectivity lemmas Phase 40m's CHAINS sub-phase
+    built. Neither cites a nonexistent blueprint label, so `40-cleanup` task 41 (A-MC9) minted no
+    node for either; both callers' proofs already narrate the shared construction honestly, so no
+    prose fix was needed either (`notes/Phase40-cleanup.md` task 41).
 
 ### Round 4 — `40-simplify`: the deep recon (`notes/Phase40-simplify.md`)
 
