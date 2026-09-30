@@ -5,19 +5,19 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
 Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38 and 39 closed (17 not landed); 6 of 50 one-commit tasks remain. **Next concrete
-task:** task 40, A-MC8, the blueprint-against-Lean walk of `main-component.tex`'s
-`sec:main-component-contract-additive` and `sec:main-component-sparse`.
+35, 36, 37, 38, 39 and 40 closed (17 not landed); 5 of 50 one-commit tasks remain. **Next concrete
+task:** task 41, A-MC9, the blueprint-against-Lean walk of `main-component.tex`'s
+`sec:main-component-coverage`.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 40, A-MC8** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+**Next commit: task 41, A-MC9** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
 tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36, 37, 38 and 39 are closed (17 not landed), 6 remain. Nothing is mid-stream.
+35, 36, 37, 38, 39 and 40 are closed (17 not landed), 5 remain. Nothing is mid-stream.
 
 Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34, 35,
-36, 37, 38 and 39, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
+36, 37, 38, 39 and 40, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
 gets one or two lines there, with its commit; the detail stays in the commit message, and this
 section stays the
 forward pointer.
@@ -241,11 +241,17 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   assembly and `Graph.exists_earBase_splitOff` have no blueprint node (D5-shaped debt, moved to
   round 3 below).
 - [x] **39. A-MC7: `sec:main-component-orbit` and `sec:main-component-splitoff`** (2585–3273; 14;
-  this commit). 14 environments walked (11 `\leanok`, 3 unpinned remarks), 0 divergences: every
+  `741fce7b`). 14 environments walked (11 `\leanok`, 3 unpinned remarks), 0 divergences: every
   pin and `\uses` edge matches (checked programmatically); task 21b's `relScrews_congr` rewiring
   (`Orbit.lean` 1052) is still covered by `lem:pencil-rank-congr`.
-- [ ] **40. A-MC8: `sec:main-component-contract-additive` and `sec:main-component-sparse`**
-  (3231–3845; 15).
+- [x] **40. A-MC8: `sec:main-component-contract-additive` and `sec:main-component-sparse`**
+  (3275–3895; 15; this commit). 15 environments walked (14 `\leanok`, 1 unpinned remark), 0
+  divergences: every statement matches its pinned Lean (`ContractAdditive.lean`,
+  `ContractCurve.lean`, `Configuration.lean`, `Induction/SparseDeficiency.lean`), and a
+  programmatic `\cref`-vs-`\uses` diff's four flags are all same-notation/"argument of" pointers to
+  a lemma proved *from* the flagged node (a real `\uses` edge there would cycle), not missing
+  edges; task 22's `mapExtensor` rename is already named correctly in `lem:pencil-rank-collineation`'s
+  Lean docstring and the blueprint prose cites neither old nor new name directly.
 - [ ] **41. A-MC9: `sec:main-component-coverage`** (3846–4280; 13).
 - [ ] **42. A-MC10: `sec:main-component-statements`** (4281–4809; 15). This holds both headline
   nodes.
@@ -373,14 +379,14 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 40, A-MC8** (§A, the blueprint-against-Lean walk). `main-component.tex`,
-`sec:main-component-contract-additive` and `sec:main-component-sparse` (3275–3895 at this commit's
-line numbers, up to just before `sec:main-component-coverage`; 15 environments): compare each
-`\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read the
-prose proof for oversell. Tasks 40–44 (§A) walk the rest of the surface; task 45 closes the round.
-Also fill task 39's *Landed* sha in the same shape as task 38's fill this commit.
+**Next concrete commit: task 41, A-MC9** (§A, the blueprint-against-Lean walk). `main-component.tex`,
+`sec:main-component-coverage` (3896–4330 at this commit's line numbers, up to just before
+`sec:main-component-statements`; 13 environments): compare each `\leanok` node's statement with its
+pinned Lean signature, check the laundering walk, and read the prose proof for oversell. Tasks
+41–44 (§A) walk the rest of the surface; task 45 closes the round. Also fill task 40's *Landed* sha
+in the same shape as task 39's fill this commit.
 
-Tasks 29–39's divergences (or their absence) are each recorded on their own *Lemma checklist* line
+Tasks 29–40's divergences (or their absence) are each recorded on their own *Lemma checklist* line
 above — see those lines for detail, not this section.
 
 ## Decisions made during this round
