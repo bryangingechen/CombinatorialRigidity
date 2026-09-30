@@ -776,7 +776,7 @@ with a single crossing edge `e_c = u_c v_c` over `V₁ ⊆ V(G)` and nondegenera
 two edge-closed sides `G₁⁺ = G.induce (V₁ ∪ {v_c})`, `G₂⁺ = G.induce (V₂ ∪ {u_c})`
 (`V₂ = V(G) ∖ V₁`) attaining their deficiency-rank targets, `G` has a generic pencil realization:
 reposition side 2 along `exists_reposition_cross_incidences_avoiding` (transported by
-`IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`), take the crossing hinge from
+`IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv`), take the crossing hinge from
 `exists_extensor_two_pencils`, glue the panels/points/extensors as the bare arm's `|C| = 1` branch
 does, and close the rank by `finrank_span_rigidityRows_cutEdge_eq` with both `hlbᵢ` supplied by
 the rank half `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (once per side).
@@ -904,12 +904,12 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
   obtain ⟨g, h, hgh, hcross1, hcross2, havoid1, havoid2, havoid3, havoid4⟩ :=
     exists_reposition_cross_incidences_avoiding (normal₁ u_c) (point₁ u_c)
       (normal₂ v_c) (point₂ v_c) s₁ s₂ q₁ q₂ t₁ t₂ w₁ w₂ hn₁ne hp₁ne hn₂ne hp₂ne
-  have hnd₂' := hnd₂.mapSupport_screwEquivOfLinearEquiv g h hgh
-  set F₂' := F₂.mapSupport (BodyHingeFramework.screwEquivOfLinearEquiv g) with hF₂'def
+  have hnd₂' := hnd₂.mapExtensor_screwEquivOfLinearEquiv g h hgh
+  set F₂' := F₂.mapExtensor (BodyHingeFramework.screwEquivOfLinearEquiv g) with hF₂'def
   have hrank₂' : (Module.finrank K (Submodule.span K F₂'.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G.induce (V₂ ∪ {u_c})).ncard : ℤ) - 1)
         - (G.induce (V₂ ∪ {u_c})).deficiency n := by
-    rw [hF₂'def, BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+    rw [hF₂'def, BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
     exact hrank₂
   obtain ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩ := id hnd₁
   obtain ⟨⟨hF₁g, hn₁nz, hS₁nz, hpanel₁⟩, hp₁nz, hp₁inc, hthrough₁⟩ := hreal₁

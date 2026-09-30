@@ -66,8 +66,8 @@ independence, serve the ear steps (Phase 40g CHAIN, `sec:main-component-chain`).
 
 * **The flat (primal) side.** The rank is computed on the point-join framework at `z = 0` and
   carried to the `ofNormals` framework `Graph.X0Attains` reads by the polarity
-  (`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`,
-  `BodyHingeFramework.finrank_span_rigidityRows_mapSupport`).
+  (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`,
+  `BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`).
 * **Coordinates on the opaque screw space** come from alternating forms lifted along
   `exteriorPower.alternatingMapLinearEquiv` (the `Molecule/ScrewVelocity.lean` pattern, over every
   field), so no basis of `ScrewSpace K 2` is chosen; `flatScrewEquiv` is bijective by an explicit
@@ -581,8 +581,8 @@ theorem _root_.Graph.finrank_infinitesimalMotions_pointJoinFramework_flat [Finit
 /-- **The flat rank is `6|V(G)| − 3 − dim L(q)`** (`thm:pencil-flat-rank`; informal (MC-4)(a)), at
 the rank `Graph.X0Attains` reads, on a connected graph over an admissible picture. The polarity
 carries the rank to the point-join framework
-(`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`,
-`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`), whose motions have dimension
+(`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`,
+`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`), whose motions have dimension
 `3(|V(G)ᶜ| + 1) + 3|V(G)ᶜ| + dim L(q)`
 (`Graph.finrank_infinitesimalMotions_pointJoinFramework_flat`, `Graph.finrank_liftingPlanes`)
 inside the `6|α|`-dimensional screw assignments. -/
@@ -593,8 +593,8 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat [Finite α] {G : G
         (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
       = screwDim 2 * (V(G).ncard : ℤ) - 3 - Module.finrank K (G.liftingSpace q) := by
-  rw [ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends (pencilConfigPoint q 0),
-    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+  rw [ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends (pencilConfigPoint q 0),
+    BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
   have hc := (pointJoinFramework G ends
     (pencilConfigPoint q 0)).finrank_span_rigidityRows_add_finrank_infinitesimalMotions
   rw [Graph.finrank_infinitesimalMotions_pointJoinFramework_flat hG hq hends,

@@ -32,18 +32,16 @@ per-edge *nonzero rescaling* of the supporting extensors, since only the spans e
 constraint. This is the normalization from homogeneous (projective) to affine data.
 
 Generalized from `ℝ` to an arbitrary field `K` in Phase 40b (DUAL-K, `notes/Phase40b.md`): the
-proofs use only linearity and invertibility of `Λ`, so the field played no role. `mapExtensor` is
-the same construction as `BodyHingeFramework.mapSupport`
-(`Molecular/GenericLift/HingeGeneric.lean`) at two names — merging them is a cleanup-round item,
-not done here since `mapExtensor` is cited by name in frozen docs.
+proofs use only linearity and invertibility of `Λ`, so the field played no role. The transport
+`BodyHingeFramework.mapExtensor` itself is defined upstream, in `RigidityMatrix/Basic.lean`: its
+other consumer, the row-span rank `finrank_span_rigidityRows_mapExtensor` (`lem:screw-map-rows`,
+`GenericLift/HingeGeneric.lean`), sits in a separate import branch.
 
 See `notes/Phase25.md`, `notes/Phase25-design.md` §1.2/§3 (leaf W2), and
 `blueprint/src/chapter/molecule-modelling.tex` (`thm:projective-invariance`).
 
 ## Main definitions
 
-* `BodyHingeFramework.mapExtensor F Λ` — transport `F` along a linear automorphism `Λ` of the
-  screw space (the panel structure induced by a projective transformation / polarity).
 * `BodyHingeFramework.scaleExtensor F c` — rescale each supporting extensor by `c e : K`.
 
 ## Main results
@@ -70,27 +68,6 @@ namespace BodyHingeFramework
 variable {α β : Type*}
 
 /-! ## Transport along a screw-space automorphism (`thm:projective-invariance`) -/
-
-/-- **Transport a body-hinge framework along a linear automorphism `Λ` of the screw space**
-(`thm:projective-invariance`; Crapo–Whiteley 1982 §3.6): keep the multigraph and replace each
-supporting extensor `C(p(e))` by `Λ C(p(e))`. This is the panel structure a projective
-transformation (collineation) or correlation (polarity) of `K³` induces via the linear map it
-puts on the screw space `⋀² K⁴`. -/
-noncomputable def mapExtensor (F : BodyHingeFramework K k α β)
-    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
-    BodyHingeFramework K k α β where
-  graph := F.graph
-  supportExtensor e := Λ (F.supportExtensor e)
-
-@[simp]
-theorem mapExtensor_graph (F : BodyHingeFramework K k α β)
-    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
-    (F.mapExtensor Λ).graph = F.graph := rfl
-
-@[simp]
-theorem mapExtensor_supportExtensor (F : BodyHingeFramework K k α β)
-    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (e : β) :
-    (F.mapExtensor Λ).supportExtensor e = Λ (F.supportExtensor e) := rfl
 
 /-- **An automorphism carries a one-dimensional span isomorphically** (`thm:projective-invariance`):
 for a linear automorphism `Λ` of the screw space, `Λ w` lies in `span {Λ C}` iff `w` lies in

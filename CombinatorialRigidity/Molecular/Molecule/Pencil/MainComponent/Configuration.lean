@@ -38,7 +38,7 @@ renamed or re-stated, so no blueprint `\lean{...}` pin moved.
   proportional normals.
 * `pencilNormalOfPicturePoly` / `eval_pencilNormalOfPicturePoly` — the polynomial mirror of the
   normal in the height variables, at a fixed picture (`X0Gen`'s fibre-intersection shape).
-* `ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework` — `ofNormals` at the points is the
+* `ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework` — `ofNormals` at the points is the
   polarity image of the point-join framework; `finrank_span_rigidityRows_pencilConfigFramework`
   carries the rank to the patched configuration framework.
 * `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework` — over an admissible
@@ -68,7 +68,7 @@ renamed or re-stated, so no blueprint `\lean{...}` pin moved.
   normal of the polar plane `p_v^⊥`, and the hinge `panelSupportExtensor p_u p_v` is the polar of
   the pencil line `p_u ∧ p_v`, so its row rank is the rank of the point-join framework the pencil
   motives carry (the complement isomorphism is an invertible map of the screw space;
-  `BodyHingeFramework.finrank_span_rigidityRows_mapSupport`; the conversion is
+  `BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`; the conversion is
   `finrank_span_rigidityRows_pencilConfigFramework`, CARRIER's C4). It is
   nonzero at every link as soon as the picture points differ. `ofNormals` at the *plane normals*
   would be the wrong rank: adjacent planes coincide on the whole fibre whenever the two bodies lie
@@ -299,15 +299,15 @@ def pointJoinFramework (G : Graph α β) (ends : β → α × α) (p : α → Fi
 panel normal at each body is its point `p_v` has, at every label, the meet
 `panelSupportExtensor p_u p_v` of the two polar planes, which the polarity `screwComplementIso`
 takes the join `p_u ∧ p_v` to (`screwComplementIso_mk_extensor`, over every field). -/
-theorem ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework (G : Graph α β)
+theorem ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework (G : Graph α β)
     (ends : β → α × α) (p : α → Fin 4 → K) :
     (PanelHingeFramework.ofNormals (k := 2) G ends (fun x => p x.1 x.2)).toBodyHinge
-      = (pointJoinFramework G ends p).mapSupport screwComplementIso := by
+      = (pointJoinFramework G ends p).mapExtensor screwComplementIso := by
   have hsupp : (PanelHingeFramework.ofNormals (k := 2) G ends
         (fun x => p x.1 x.2)).toBodyHinge.supportExtensor
-      = ((pointJoinFramework G ends p).mapSupport screwComplementIso).supportExtensor := by
+      = ((pointJoinFramework G ends p).mapExtensor screwComplementIso).supportExtensor := by
     funext e
-    simp only [BodyHingeFramework.mapSupport_supportExtensor, pointJoinFramework,
+    simp only [BodyHingeFramework.mapExtensor_supportExtensor, pointJoinFramework,
       screwComplementIso_mk_extensor, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal]
     rfl
@@ -357,8 +357,8 @@ points** (`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4, the p
 equality). The patch agrees with the unpatched point-join framework on every link, so the two
 have the same rigidity-row span (`span_rigidityRows_eq_of_supportExtensor_agree`); the unpatched
 one is carried to `ofNormals` by the polarity
-(`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`), an invertible map of the screw space,
-which leaves the rank unchanged (`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`). No
+(`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`), an invertible map of the screw space,
+which leaves the rank unchanged (`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). No
 hypothesis on `ends` is needed: a link's label lies in `E(G)`, where the patch is the join at
 whatever `ends` names, exactly as in the unpatched framework. -/
 theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends : β → α × α)
@@ -370,8 +370,8 @@ theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends 
       = Submodule.span K (pointJoinFramework G ends (pencilConfigPoint q z)).rigidityRows :=
     span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun _ _ _ he =>
       pencilConfigFramework_supportExtensor_of_mem_edgeSet ends q z he.edge_mem
-  rw [hspan, ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends (pencilConfigPoint q z),
-    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+  rw [hspan, ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends (pencilConfigPoint q z),
+    BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
 
 /-- **The configuration framework's hinges are all nonzero over an admissible picture**
 (`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4). At a label of `E(G)`, `ends`
@@ -543,16 +543,16 @@ theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Gr
 (`lem:pencil-rank-scale-shift`; Phase 40b CARRIER). Applying an invertible linear map `g` of `K⁴`
 to every point replaces each join `p_u ∧ p_v` by `g p_u ∧ g p_v`, its image under the induced
 screw-space automorphism (`BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor`). -/
-theorem pointJoinFramework_comp_eq_mapSupport (G : Graph α β) (ends : β → α × α)
+theorem pointJoinFramework_comp_eq_mapExtensor (G : Graph α β) (ends : β → α × α)
     (p : α → Fin 4 → K) (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) :
     pointJoinFramework G ends (fun v => g (p v))
-      = (pointJoinFramework G ends p).mapSupport
+      = (pointJoinFramework G ends p).mapExtensor
           (BodyHingeFramework.screwEquivOfLinearEquiv g) := by
   have hsupp : (pointJoinFramework G ends (fun v => g (p v))).supportExtensor
-      = ((pointJoinFramework G ends p).mapSupport
+      = ((pointJoinFramework G ends p).mapExtensor
           (BodyHingeFramework.screwEquivOfLinearEquiv g)).supportExtensor := by
     funext e
-    simp only [BodyHingeFramework.mapSupport_supportExtensor, pointJoinFramework,
+    simp only [BodyHingeFramework.mapExtensor_supportExtensor, pointJoinFramework,
       BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor]
     congr 2
     funext i; fin_cases i <;> rfl
@@ -562,10 +562,10 @@ theorem pointJoinFramework_comp_eq_mapSupport (G : Graph α β) (ends : β → �
 CONTRACT-A). If panel normals `p'` are the images of `p` under one invertible linear map `g` of
 `K⁴` at every body of `G`, the panel-hinge frameworks with normals `p` and with normals `p'` have
 the same row rank: both are `ofNormals` frameworks, whose hinge at a link is the polarity image of
-the join of its two ends' normals (`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`), `g`
-carries one join to the other's screw-space image (`pointJoinFramework_comp_eq_mapSupport`), and a
-`mapSupport` isomorphism leaves the rank unchanged
-(`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`). The special case of scaling the
+the join of its two ends' normals (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`), `g`
+carries one join to the other's screw-space image (`pointJoinFramework_comp_eq_mapExtensor`), and a
+`mapExtensor` isomorphism leaves the rank unchanged
+(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). The special case of scaling the
 heights and shifting them by an affine height is
 `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` below. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G : Graph α β}
@@ -581,11 +581,12 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G :
     span_rigidityRows_eq_of_supportExtensor_agree _ _ rfl fun e u v he => by
       have h0 := hends e u v he
       simp only [pointJoinFramework, hp _ h0.left_mem, hp _ h0.right_mem]
-  rw [ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends p',
-    BodyHingeFramework.finrank_span_rigidityRows_mapSupport, hspan,
-    pointJoinFramework_comp_eq_mapSupport, BodyHingeFramework.finrank_span_rigidityRows_mapSupport,
-    ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework G ends p,
-    BodyHingeFramework.finrank_span_rigidityRows_mapSupport]
+  rw [ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends p',
+    BodyHingeFramework.finrank_span_rigidityRows_mapExtensor, hspan,
+    pointJoinFramework_comp_eq_mapExtensor,
+    BodyHingeFramework.finrank_span_rigidityRows_mapExtensor,
+    ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends p,
+    BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
 
 /-- **The rank of a configuration is unchanged by scaling the heights and shifting them by a
 globally affine height** (`lem:pencil-rank-scale-shift`; Phase 40b CARRIER, the last clause of
@@ -595,9 +596,9 @@ and `(q, t • z + a)` have the same row rank at `ofNormals` of their points. Wi
 `(x, y, ζ, w) ↦ (x, y, t ζ + h ⬝ (x, y, w), w)` of `K⁴` carries `p_w` to the point of
 `(q, t • z + a)` at every body of `G`; the ends of every link are bodies of `G` (`hends`), so the
 two point-join frameworks agree on links (`span_rigidityRows_eq_of_supportExtensor_agree`), and a
-collineation leaves the point-join rank unchanged (`pointJoinFramework_comp_eq_mapSupport`,
-`BodyHingeFramework.finrank_span_rigidityRows_mapSupport`), as does the polarity back to
-`ofNormals` (`ofNormals_toBodyHinge_eq_mapSupport_pointJoinFramework`). -/
+collineation leaves the point-join rank unchanged (`pointJoinFramework_comp_eq_mapExtensor`,
+`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`), as does the polarity back to
+`ofNormals` (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`). -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G : Graph α β}
     {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     (q : α × Fin 2 → K) (z : α → K) {t : K} (ht : t ≠ 0) {a : α → K}

@@ -5238,7 +5238,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [idiom] Composing two generic mathlib lemmas (`Submodule.map_span` + `LinearEquiv.finrank_map_eq`) at a heavy carrier `whnf`-times-out even inside `set`/`clear_value` — factor the composite into an abstract-`V`/`W` private lemma
 - **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
-  `finrank_span_rigidityRows_mapSupport` (`lem:screw-map-rows`): proving `finrank (span (T '' s)) =
+  `finrank_span_rigidityRows_mapExtensor` (`lem:screw-map-rows`): proving `finrank (span (T '' s)) =
   finrank (span s)` for an equivalence `T` of `Module.Dual K (α → ScrewSpace K k)` timed out at 200k
   heartbeats even after `set T := … with hT; set S := … with hS; …; clear_value T S` — the blowup
   landed on the `set T := dualBodyMap α M` line itself (forming the named term against its heavy

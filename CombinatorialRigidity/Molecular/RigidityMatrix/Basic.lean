@@ -50,6 +50,10 @@ dep-graph in dependency order. The leaf node landing here:
   `e = uv` to satisfy
   `S(u) - S(v) ∈ span C(p(e)) = Submodule.span K {affineSubspaceExtensor (p e)}`.
 
+The file also carries the transport `BodyHingeFramework.mapExtensor` along a linear automorphism of
+the screw space (the same multigraph, each supporting extensor replaced by its image), which
+`thm:projective-invariance` pins and `lem:screw-map-rows` also reads.
+
 ## Carrier and dimension
 
 Infinitesimal motions are `D`-dimensional screw centers with `D = (d+1 choose 2)`,
@@ -379,9 +383,9 @@ variable {k : ℕ} {α β : Type*}
 
 /-! ## The hinge constraint and the hinge-row block (`def:hinge-constraint`)
 
-The affine-hinge constructor `ofHinge` and the per-edge constraint `S u − S v ∈ span C(p(e))`,
-restated as the `(D−1)`-equation hinge-row block `(span C)^⊥`
-(`hingeConstraint_iff_hingeRowBlock`). -/
+The affine-hinge constructor `ofHinge`, the transport `mapExtensor` along a screw-space
+automorphism, and the per-edge constraint `S u − S v ∈ span C(p(e))`, restated as the
+`(D−1)`-equation hinge-row block `(span C)^⊥` (`hingeConstraint_iff_hingeRowBlock`). -/
 
 /-- The **affine-hinge body-hinge framework** (`def:hinge-constraint`): the canonical
 constructor from a *hinge assignment* `hinge` sending each edge `e : β` to a family of `k`
@@ -405,6 +409,31 @@ theorem ofHinge_supportExtensor_val (G : Graph α β) (hinge : β → Fin k → 
     (e : β) :
     ((ofHinge G hinge).supportExtensor e).val = affineSubspaceExtensor (hinge e) :=
   ScrewSpace.val_mk _ (affineSubspaceExtensor_mem_exteriorPower (hinge e))
+
+/-- **Transport a body-hinge framework along a linear automorphism `Λ` of the screw space**
+(`thm:projective-invariance`, `lem:screw-map-rows`): keep the multigraph and replace each
+supporting extensor `C(p(e))` by `Λ C(p(e))`. This is the panel structure a projective
+transformation (collineation) or correlation (polarity) of `K³` induces via the linear map it
+puts on the screw space `⋀² K⁴` (Crapo–Whiteley 1982 §3.6); read as a change of screw coordinates
+(Jackson–Jordán 2010 §6), it is also the move `lem:screw-map-rows` shows leaves the row rank
+unchanged. It is defined here, beside the carrier, because its two consumers sit in separate
+import branches: the motion-space transport (`Molecule/ProjectiveInvariance.lean`) and the row-span
+rank (`finrank_span_rigidityRows_mapExtensor`, `GenericLift/HingeGeneric.lean`). -/
+noncomputable def mapExtensor (F : BodyHingeFramework K k α β)
+    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
+    BodyHingeFramework K k α β where
+  graph := F.graph
+  supportExtensor e := Λ (F.supportExtensor e)
+
+@[simp]
+theorem mapExtensor_graph (F : BodyHingeFramework K k α β)
+    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
+    (F.mapExtensor Λ).graph = F.graph := rfl
+
+@[simp]
+theorem mapExtensor_supportExtensor (F : BodyHingeFramework K k α β)
+    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (e : β) :
+    (F.mapExtensor Λ).supportExtensor e = Λ (F.supportExtensor e) := rfl
 
 /-- The **hinge constraint** at an edge `e = uv` (`def:hinge-constraint`): a screw
 assignment `S : α → ScrewSpace K k` meets the hinge constraint at `e` between

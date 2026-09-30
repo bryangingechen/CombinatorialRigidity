@@ -652,8 +652,8 @@ lemmas. The route landed as the recon's:
   - **B6 at `pointJoinFramework` or a transport lemma: CHAIN needs neither.** It applies B6′ and the
     ear law, which hold at any framework, directly at `(ofNormals G ends p).toBodyHinge`, the
     framework `X0Attains` reads; the polarity enters only per hinge. ORBIT's recommended route
-    stays available (the ear law at `pointJoinFramework`, the rank moved by the landed `mapSupport`
-    lemmas), and no `relScrews`/`mapSupport` transport lemma is needed by anyone yet. *(ORBIT's
+    stays available (the ear law at `pointJoinFramework`, the rank moved by the landed `mapExtensor`
+    lemmas), and no `relScrews`/`mapExtensor` transport lemma is needed by anyone yet. *(ORBIT's
     design recon, 2026-09-28, takes the direct route too.)*
 - [x] **Tracked for SHORT's pre-build recon (the ORBIT recon, 2026-09-26): re-check (MC-44) in
   SHORT's list. Settled by SHORT's design recon (2026-09-27): no consumer on the route, dropped to
@@ -1120,8 +1120,10 @@ consumers. What it bought: C4's polar/primal rank equality.
     an edge. *Hypothesis:* they coincide otherwise.
   - Collineations over `K` (`Arms.lean`) plus the polarity give the whole projective group
     (Crapo–Whiteley 1982 §3.6, p. 68, read in `.refs`). The polarity is a correlation, not `Λ²g`.
-  - Duplication for a cleanup round: `mapExtensor` and `mapSupport` are one definition, and
-    `thm:projective-invariance`'s rank half restates `lem:screw-map-rows`.
+  - *Settled by `40-cleanup` task 22:* the duplicate `mapSupport` is deleted, and `mapExtensor`
+    moved up to `RigidityMatrix/Basic.lean` for both consumers. The rank half is not a restatement:
+    it is the motion-space finrank, `lem:screw-map-rows` the row-span one, and bridging needs
+    `[Finite α]`.
 - **Citations** (FLAT used them; verdict in §3 FLAT). Crapo–Whiteley Ex. 4.4 (pp. 72–73) is
   verified as the flat-tetrahedron instance of (MC-4)'s `Φ`, with Whiteley 1996 §8.3 for liftings.
   Whiteley 1984 (*Discrete Appl. Math.* 9(3) 269–295) is verified by Crossref metadata only; it is
@@ -1241,8 +1243,9 @@ non-spanning generic-normals row rank (§3 BRIDGE); the "only if" halves of (MC-
 STEPS, CUT/BRIDGE; the remarks after `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` state them informally); the
 40h file-size and readability items, `span_supportExtensor_ofNormals_eq` in `Cut.lean`, and call
 12's corollary rebases (§3 STEPS); CHAINS' `pathVertex` helpers to their definition's file (§3
-COVERAGE); the §4 duplication note (`mapExtensor`/`mapSupport`); and the §7 items above (A6, the
-shared hub normalization, item 6's other laws, the rest of the D5 debt).
+COVERAGE); the §4 duplication note (`mapExtensor`/`mapSupport`, settled by `40-cleanup` task 22);
+and the §7 items above (A6, the shared hub normalization, item 6's other laws, the rest of the D5
+debt).
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 

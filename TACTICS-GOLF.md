@@ -1493,8 +1493,8 @@ exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 the range by `rfl` (defeq, no coercion form to match). Sibling gotcha for the *extensor* side of the
 same transport: `extensor (⇑g ∘ p) = extensor (fun i => g (p i))` does **not** close by `rw`'s
 terminal (reducible) `rfl` — append `Function.comp_def` to the `rw` chain to normalize `⇑g ∘ p` to
-the `fun`-form. Both from `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`
-(`Molecule/Pencil.lean`, Phase 39 W3-L4).
+the `fun`-form. Both from `hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`
+(`Molecule/Pencil/Arms.lean`, Phase 39 W3-L4).
 
 **The set-image variant** (same cause, cheaper fix). When the span's generating set *is* already an
 image — `span K (f '' s)` — `Submodule.span_image` / `Submodule.map_span` still only fire when the

@@ -357,7 +357,7 @@ L5-cut-ii)
 The cut arm's non-hub matching sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
 "Cut-arm route verdict" item 1b) repositions one side's realization by a linear automorphism `g`
 of `K⁴` (with contragredient `h`) before gluing. The panel-realization half of that transport is
-already landed (`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`, W3-L4 infra,
+already landed (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`, W3-L4 infra,
 `Molecule/Pencil/Arms.lean`); this section layers the three nondegeneracy conjuncts on top —
 conjuncts 2–4 transport by injectivity of `g`/`h` alone (`LinearIndependent.map_injOn` /
 `LinearIndepOn.map_injOn`), with no further geometric content, since `G` itself is unchanged so
@@ -365,18 +365,18 @@ conjuncts 2–4 transport by injectivity of `g`/`h` alone (`LinearIndependent.ma
 
 /-- **Nondegeneracy transports along a contragredient linear-equivalence pair**
 (Phase 39 W5-L5 cut-arm infra, L5-cut-ii; the `IsNondegPencilRealization` companion of
-`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`). Transporting a nondegenerate
+`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`). Transporting a nondegenerate
 pencil realization `(F, normal, point)` along a linear automorphism `g` of `K⁴` (acting on the
 concurrency points) with contragredient `h` (acting on the panel normals, `g x ⬝ᵥ h y = x ⬝ᵥ y`)
 produces another nondegenerate realization on the same graph `G`. -/
-theorem IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv
+theorem IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
     (hnd : IsNondegPencilRealization G F normal point) :
-    IsNondegPencilRealization G (F.mapSupport (BodyHingeFramework.screwEquivOfLinearEquiv g))
+    IsNondegPencilRealization G (F.mapExtensor (BodyHingeFramework.screwEquivOfLinearEquiv g))
       (fun v => h (normal v)) (fun v => g (point v)) := by
   obtain ⟨hreal, hadj, hhubLI, hnbhdLI⟩ := hnd
-  refine ⟨hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv g h hgh hreal,
+  refine ⟨hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv g h hgh hreal,
     fun e u v hl => ?_, fun v hv => ?_, fun v hv hnothub => ?_⟩
   · have hli := (hadj e u v hl).map_injOn g.toLinearMap g.injective.injOn
     have heq : g.toLinearMap ∘ ![point u, point v] = ![g (point u), g (point v)] := by
