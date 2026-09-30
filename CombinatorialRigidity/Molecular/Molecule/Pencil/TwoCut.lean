@@ -148,7 +148,7 @@ motion conjunct transfers unchanged.
 
 This is the one step that connects the combinatorial restriction defining
 `Graph.deficiencyMerged` (labelings with `f u = f v`) to the geometric restriction defining
-`weldedRank` (rows welding `u` to `v`), and it is what lets the merged hull
+`weldedRank` (rows welding `u` to `v`), and it is what lets the merged hub
 `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` reuse the landed hub's counting
 argument verbatim. -/
 theorem partitionMotions_le_jointMotions_bot (F : BodyHingeFramework K k α β)
@@ -160,7 +160,6 @@ theorem partitionMotions_le_jointMotions_bot (F : BodyHingeFramework K k α β)
   simp only [Submodule.mem_comap, Submodule.mem_bot, screwDiff_apply, sub_eq_zero]
   exact (hS.2 v u hf.symm)
 
-open Classical in
 /-- **The merged relative hub** (the `deficiencyMerged` counterpart of
 `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`,
 `AlgebraicInduction/PanelLayer.lean`): for a framework with genuine hinges and a cut pair *inside*
@@ -170,21 +169,19 @@ the vertex set,
 
 with `g = Graph.deficiencyMerged n u v`.  The landed hub's argument runs **verbatim** with the
 deficiency-attaining labeling drawn from the merged subtype `{f // f u = f v}` instead of from all
-of `α → α`: pick the attaining `f₀`, normalize it to `g x = if x ∈ V(G) then ι₀ (f₀ x) else x` so
-that labels stay inside `V(G)` (`Set.Finite.exists_injOn_of_encard_le`), and apply the
-`|range f|`-form bound `screwDim_mul_range_card_sub_le_finrank_partitionMotions` at `g`.  Only two
-steps differ from the landed hub: `g u = g v` still holds (below), and the final monotonicity
-lands in `jointMotions ⊥ u v` rather than in `infinitesimalMotions`
-(`partitionMotions_le_jointMotions_bot`).
+of `α → α`: pick the attaining `f₀`, normalize it to `g` by `Graph.exists_normalized_labeling`
+(`Molecular/Deficiency.lean`; same parts and crossing edges, and
+`|range g| = numParts f₀ + |V(G)ᶜ|`), and apply the `|range f|`-form bound
+`screwDim_mul_range_card_sub_le_finrank_partitionMotions` at `g`.  Only two steps differ from the
+landed hub: `g u = g v` still holds (below), and the final monotonicity lands in
+`jointMotions ⊥ u v` rather than in `infinitesimalMotions` (`partitionMotions_le_jointMotions_bot`).
 
-**`hu` and `hv` are load-bearing exactly here.** The normalization's `if x ∈ V(G)` guard must fire
-at *both* `u` and `v` for `f₀ u = f₀ v` to survive it; a cut vertex outside `V(G)` would be
-renormalized to itself and the merge would be lost.  The necessity of the hypotheses for the
-*consumer* is separate and sharper — see `weldedLoss_nonneg`.
-
-The ~85 lines this shares with the landed hub are acknowledged duplication, tracked as a
-factoring item (`notes/Phase39.md` *Lemma checklist*, item 6, the shared-normalization entry),
-deliberately not resolved in this slice. -/
+**`hu` and `hv` are load-bearing exactly here.** The normalization's last conjunct,
+`g x = g y ↔ f₀ x = f₀ y`, holds only for `x` and `y` in `V(G)`, so `f₀ u = f₀ v` survives it
+only because both cut vertices are inside `V(G)`. Off `V(G)` the normalization promises nothing
+(its construction fixes every such vertex), so at a cut vertex outside `V(G)` the merge would be
+lost.  The necessity of the hypotheses for the *consumer* is separate and sharper — see
+`weldedLoss_nonneg`. -/
 theorem screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions
     [Finite α] [Finite β] {n : ℕ}
     (F : BodyHingeFramework K k α β)
@@ -194,79 +191,17 @@ theorem screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions
     {u v : α} (hu : u ∈ V(F.graph)) (hv : v ∈ V(F.graph)) :
     (screwDim k : ℤ) * (V(F.graph).compl.ncard + 1) + F.graph.deficiencyMerged n u v
       ≤ (Module.finrank K (F.jointMotions (⊥ : Submodule K (ScrewSpace K k)) u v) : ℤ) := by
-  have : Fintype α := Fintype.ofFinite α
   have : Nonempty α := ⟨hne.some⟩
-  set VG := V(F.graph) with hVG
-  -- The attaining labeling, drawn from the **merged** subtype.
+  -- The attaining labeling, drawn from the **merged** subtype, normalized into `V(G)`.
   have : Nonempty {f : α → α // f u = f v} := ⟨⟨fun _ => u, rfl⟩⟩
   obtain ⟨f₀, hf₀⟩ := exists_eq_ciSup_of_finite
     (f := fun f : {f : α → α // f u = f v} => F.graph.partitionDef n f.1)
   rw [Graph.deficiencyMerged, ← hf₀]
-  -- Normalize so the labels stay inside `V(G)`.
-  have hencard : ((f₀ : α → α) '' VG).encard ≤ VG.encard := Set.encard_image_le _ VG
-  obtain ⟨ι₀, hι₀maps, hι₀inj⟩ :=
-    (Set.toFinite ((f₀ : α → α) '' VG)).exists_injOn_of_encard_le hencard
-  set g : α → α := fun x => if x ∈ VG then ι₀ ((f₀ : α → α) x) else x with hg_def
+  obtain ⟨g, -, -, hcross, hrange_g, hgf⟩ := F.graph.exists_normalized_labeling f₀.1
   -- **First of the two steps that differ from the landed hub**: the normalization keeps the cut
-  -- pair together, because the `if` guard fires at both `u` and `v`.
-  have hguv : g u = g v := by
-    simp only [hg_def, ite_eq_left hu, ite_eq_left hv, f₀.2]
-  have hg_img : g '' VG ⊆ VG := by
-    rintro y ⟨x, hxV, rfl⟩
-    simp only [hg_def, ite_eq_left hxV]
-    exact hι₀maps (Set.mem_image_of_mem _ hxV)
-  have hnumParts : F.graph.numParts g = F.graph.numParts (f₀ : α → α) := by
-    simp only [Graph.numParts, hg_def]
-    have himg : (fun x => if x ∈ VG then ι₀ ((f₀ : α → α) x) else x) '' VG
-        = ι₀ '' ((f₀ : α → α) '' VG) := by
-      ext y
-      simp only [Set.mem_image]
-      constructor
-      · rintro ⟨x, hxV, rfl⟩
-        rw [ite_eq_left hxV]
-        exact Set.mem_image_of_mem ι₀ (Set.mem_image_of_mem _ hxV)
-      · rintro ⟨_, ⟨x, hxV, rfl⟩, rfl⟩
-        exact ⟨x, hxV, by rw [ite_eq_left hxV]⟩
-    rw [himg]
-    exact hι₀inj.ncard_image
-  have hcross : F.graph.crossingEdges g = F.graph.crossingEdges (f₀ : α → α) := by
-    ext e
-    simp only [Graph.crossingEdges, Set.mem_ofPred_eq]
-    constructor
-    · rintro ⟨heE, a, b, hlink, hne'⟩
-      refine ⟨heE, a, b, hlink, ?_⟩
-      have ha : g a = ι₀ ((f₀ : α → α) a) := ite_eq_left hlink.left_mem
-      have hb : g b = ι₀ ((f₀ : α → α) b) := ite_eq_left hlink.right_mem
-      rw [ha, hb] at hne'
-      exact fun h => hne' (congrArg ι₀ h)
-    · rintro ⟨heE, a, b, hlink, hne'⟩
-      refine ⟨heE, a, b, hlink, ?_⟩
-      have ha : g a = ι₀ ((f₀ : α → α) a) := ite_eq_left hlink.left_mem
-      have hb : g b = ι₀ ((f₀ : α → α) b) := ite_eq_left hlink.right_mem
-      rw [ha, hb]
-      exact fun h => hne' (hι₀inj (Set.mem_image_of_mem _ hlink.left_mem)
-        (Set.mem_image_of_mem _ hlink.right_mem) h)
-  have hrange_g : Nat.card (Set.range g) = F.graph.numParts g + VGᶜ.ncard := by
-    have hrange_eq : Set.range g = g '' VG ∪ VGᶜ := by
-      ext y
-      simp only [Set.mem_range, Set.mem_union, Set.mem_image, Set.mem_compl_iff]
-      constructor
-      · rintro ⟨x, rfl⟩
-        by_cases hx : x ∈ VG
-        · exact Or.inl ⟨x, hx, rfl⟩
-        · right; simp only [hg_def, ite_eq_right hx]; exact hx
-      · rintro (⟨x, hxV, rfl⟩ | hx)
-        · exact ⟨x, rfl⟩
-        · exact ⟨y, by simp [hg_def, hx]⟩
-    have hdisj : Disjoint (g '' VG) VGᶜ :=
-      Set.disjoint_left.mpr fun y hy hyc => hyc (hg_img hy)
-    rw [Nat.card_coe_set_eq, hrange_eq,
-        Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _)]
-    simp only [Graph.numParts]
-    rfl
-  have hCg : ∀ e ∈ F.graph.crossingEdges g, F.supportExtensor e ≠ 0 := by
-    rw [hcross]
-    intro e he
+  -- pair together, because `u` and `v` are both inside `V(G)`.
+  have hguv : g u = g v := (hgf hu hv).2 f₀.2
+  have hCg : ∀ e ∈ F.graph.crossingEdges g, F.supportExtensor e ≠ 0 := fun e he => by
     obtain ⟨_, x, y, hlink, _⟩ := he
     exact hC e x y hlink
   have hlb := F.screwDim_mul_range_card_sub_le_finrank_partitionMotions g hCg
@@ -274,14 +209,13 @@ theorem screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions
   have hmono : Module.finrank K (F.partitionMotions g)
       ≤ Module.finrank K (F.jointMotions (⊥ : Submodule K (ScrewSpace K k)) u v) :=
     Submodule.finrank_mono (F.partitionMotions_le_jointMotions_bot hguv)
-  rw [hrange_g, hnumParts] at hlb
-  rw [hcross] at hlb
+  rw [hrange_g, hcross] at hlb
   have hDcast : (Graph.bodyBarDim n : ℤ) = (screwDim k : ℤ) := by exact_mod_cast hn
-  have hpdef_eq : F.graph.partitionDef n (f₀ : α → α)
-      = (screwDim k : ℤ) * ((F.graph.numParts (f₀ : α → α) : ℤ) - 1)
-        - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges (f₀ : α → α)).ncard := by
+  have hpdef_eq : F.graph.partitionDef n f₀.1
+      = (screwDim k : ℤ) * ((F.graph.numParts f₀.1 : ℤ) - 1)
+        - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f₀.1).ncard := by
     simp [Graph.partitionDef, hDcast]
-  have hcompl_eq : VGᶜ.ncard = VG.compl.ncard := rfl
+  have hcompl_eq : V(F.graph)ᶜ.ncard = V(F.graph).compl.ncard := rfl
   zify [hcompl_eq] at hmono hlb ⊢
   linarith [hpdef_eq]
 

@@ -4,17 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The round extracts the
 labeling normalization that the two relative hubs duplicate (`notes/Phase40-design.md` §7) and
-rebuilds both hubs on it: three one-commit tasks, task 1 landed. **Next concrete task:** task
-2, E2 — rebuild the TwoCut merged hub on `Graph.exists_normalized_labeling` (⚠Z, Opus),
-transcribing the open's spike, and mark design §7's entry paid. Round manual: `CLEANUP.md`.
+rebuilds both hubs on it: three one-commit tasks, tasks 1 and 2 landed. **Next concrete task:**
+task 3, X — close the round (gates, axioms, the hub fingerprints, sizes, the status surfaces).
+Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Task 1 has landed; task 2 is next.** The open settled the extraction's home, visibility and
-exact signature (*The extraction, pinned*; *Decisions*). It backed them with a complete
-compiler-checked spike: the extraction and both hubs rebuilt on it, with no `sorry`. Task 1
-transcribed the extraction and the PanelLayer hub from it and retired the orphan pair. Task 2
-transcribes the TwoCut hub from `Spike.lean` Part 2. Nothing is mid-stream.
+**Tasks 1 and 2 have landed; task 3, the close, is next.** The open settled the extraction's
+home, visibility and exact signature (*The extraction, pinned*; *Decisions*). It backed them with a
+complete compiler-checked spike: the extraction and both hubs rebuilt on it, with no `sorry`.
+Task 1 transcribed the extraction and the PanelLayer hub from it and retired the orphan pair.
+Task 2 transcribed the TwoCut hub from `Spike.lean` Part 2 and marked design §7's entry paid.
+Both hubs now run on the extraction. Nothing is mid-stream.
 
 **Verified at the open** (`8a932535`, a docs-only commit; its Lean and blueprint trees are
 `bb333dc4`'s):
@@ -100,7 +101,7 @@ proof takes `ι` from `Set.Finite.exists_injOn_of_encard_le` and sets `g x = ι 
 
 One commit per task, in the order given.
 
-- [x] **1. E1 — the extraction and the PanelLayer hub** (⚠Z, Opus; this commit).
+- [x] **1. E1 — the extraction and the PanelLayer hub** (⚠Z, Opus; `080be6a4`).
   `Graph.exists_normalized_labeling` landed in `Deficiency.lean` after `deficiency_nonneg`,
   verbatim from the spike, with a module-docstring clause. The PanelLayer hub's proof went from 101
   lines to 22, statement untouched (no diff line between its `theorem` line and `:= by`), dropping
@@ -110,23 +111,17 @@ One commit per task, in the order given.
   *Round 3*. Gates: `lake build` green (3003 jobs, 0 warnings, 0 cache failures), `lake lint`
   green; both hub fingerprints still equal the open's, and all 19 main results stay at the three
   standard axioms.
-- [ ] **2. E2 — the TwoCut merged hub** (⚠Z, Opus; a transcription).
-  - Rebuild the proof of `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` on the
-    extraction, from `Spike.lean` Part 2, leaving the statement untouched. As in task 1, drop
-    `open Classical in`, `have : Fintype α` and `set VG … with hVG`.
-  - Rewrite the hub's docstring in three places:
-    - its normalization narration (the `if x ∈ V(G)` guard and
-      `Set.Finite.exists_injOn_of_encard_le`) now names the extraction;
-    - "**`hu` and `hv` are load-bearing exactly here**" now reads conjunct (v), which holds only
-      on `V(G)`;
-    - the last paragraph goes, because the duplication is paid. It calls the ~85 shared lines
-      "acknowledged duplication" and points at `notes/Phase39.md` item 6, an entry that moved to
-      design §7 at Phase 39's close.
-  - Mark design §7's entry *The shared hub normalization — a factoring item* paid, naming the
-    lemma and the commits of tasks 1–2. Update §7's closing index of carried items, which lists
-    it.
-  - Check that `TwoCut.lean`'s module docstring and `partitionMotions_le_jointMotions_bot`'s
-    ("reuse the landed hub's counting argument verbatim") still read true. At the open, they do.
+- [x] **2. E2 — the TwoCut merged hub** (⚠Z, Opus; a transcription; this commit).
+  `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions`'s proof is `Spike.lean` Part
+  2's, verbatim: 90 lines to 27, statement untouched (no diff line between its `theorem` line and
+  `:= by`), dropping `open Classical in`, `have : Fintype α` and `set VG … with hVG`. Its docstring
+  is rewritten in the three places: the normalization narration names the extraction; "**`hu` and
+  `hv` are load-bearing exactly here**" reads conjunct (v), which holds only on `V(G)`; the
+  duplication paragraph is gone. Design §7's entry is marked paid and its closing index updated.
+  The module docstring and `partitionMotions_le_jointMotions_bot`'s still read true (the latter's
+  "merged hull" typo is now "hub"). Gates: `lake build` green (3003 jobs, 0 warnings, 0 cache
+  failures), `lake lint` green; both hub fingerprints still equal the open's, and the merged hub
+  and `weldedLoss_nonneg` are at the three standard axioms. `TwoCut.lean` 424 → 358.
 - [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* rule 5).
   - Whole-project `lake build` (record the job count) and `lake lint`. `#print axioms` on the 19
     main results the open's way, re-diffing the harness against `formalization.yaml` first.
@@ -140,6 +135,8 @@ One commit per task, in the order given.
     section.
   - Mirror the *Candidates* into `notes/Cleanup40.md` §2 *Round 4*, one line each, each naming
     this log.
+  - Replace task 2's "this commit" with its sha, here and in design §7's paid entry ("task 2's
+    commit, whose sha the round's close backfills here").
 
 ## Candidates for `40-simplify`
 
@@ -157,6 +154,13 @@ into `notes/Cleanup40.md` §2 *Round 4*.
   with `ᶜ` should let all five go (read off the proofs, not compiled). It changes no statement's
   strength, but it does change two statements, one of them pinned
   (`lem:relative-deficiency-rank-bound`), and this round keeps both exactly as they are.
+- **The merged hub's `hne : V(F.graph).Nonempty` is redundant** (task 2, compiled). It follows
+  from `hu`, and its one consumer, `weldedLoss_nonneg`, passes `⟨u, hu⟩`. In the proof it feeds
+  only `have : Nonempty α`, which the merged hub does not need: it supplies the subtype's
+  `Nonempty` directly, as `⟨⟨fun _ => u, rfl⟩⟩`. Deleting that `have` leaves `hne` unused (the
+  `unusedVariables` warning, seen with the LSP), so dropping it means changing the statement. The
+  merged hub has no blueprint node. (The PanelLayer hub is different: its
+  `exists_eq_ciSup_of_finite` over `α → α` needs `Nonempty α`, which it can only get from `hne`.)
 
 ## Moved to a later round
 
@@ -180,13 +184,12 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 2, E2** (⚠Z, Opus). Rebuild the TwoCut merged hub's proof from
-`scratch/40-factor/Spike.lean` Part 2 (its second theorem), rewrite the hub's docstring, and mark
-design §7's entry paid, per the checklist. Also replace task 1's "this commit" with its sha. If the
-scratch spike is gone, the landed PanelLayer hub is the template: the merged hub differs only in
-drawing `f₀` from the subtype `{f // f u = f v}`, reading (v) as `hguv := (hgf hu hv).2 f₀.2`,
-and closing with `partitionMotions_le_jointMotions_bot hguv` in place of
-`partitionMotions_le_infinitesimalMotions`.
+**Next: task 3, X — close the round** (`CLEANUP.md` *Workflow* rule 5), per the checklist: the
+whole-project gates and the 19-result axiom check, the two hub fingerprints (task 2 already saw
+both equal to the open's), the three file sizes, the ROADMAP row and `queue.toml`, the status
+surfaces pointed at round 3 (`40-exposition`), the *Candidates* mirrored into
+`notes/Cleanup40.md` §2 *Round 4* (two entries now), and task 2's sha backfilled here and in
+design §7. No Lean edit is planned.
 
 ## Decisions made during this round
 

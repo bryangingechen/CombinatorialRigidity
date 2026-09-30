@@ -1184,9 +1184,14 @@ section).
   call (2026-09-16): off the consumed path — S6 is the side-degree-1 reduction, S14's `H′` has
   side-degree ≥ 2 at both ends (S10(iii)) — and it is the only law needing `deficiencySep`. Site
   `Induction/SplitOffDeficiency.lean`. Build only if STEPS consumes S6's reduction.
-- **The shared hub normalization — a factoring item.** C2ℓ's merged hub
+- [x] **The shared hub normalization — a factoring item. Paid by cleanup round 2, `40-factor`**
+  (`notes/Phase40-factor.md`, tasks 1 and 2: `080be6a4`, and task 2's commit, whose sha the round's
+  close backfills here). The extraction landed as the public `Graph.exists_normalized_labeling`
+  (`Molecular/Deficiency.lean`), not as a private lemma, because the two hubs are in different
+  files (that log's *Decisions*). It has properties (i)–(v) below, and both hubs are rebuilt on it
+  with their statements unchanged. The item as specified: C2ℓ's merged hub
   `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (`Molecule/Pencil/TwoCut.lean`)
-  duplicates ~85 lines of `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
+  duplicated ~85 lines of `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
   (`AlgebraicInduction/PanelLayer.lean`); only the attaining labeling's subtype, one `g u = g v`
   step and the final monotonicity differ. Extract the `ι₀` normalization as one private lemma — for
   any `f`, some `g` with (i) `g '' V(G) ⊆ V(G)`, (ii) `numParts g = numParts f`,
@@ -1245,8 +1250,8 @@ STEPS, CUT/BRIDGE; the remarks after `thm:pencil-x0-cut` and `thm:pencil-x0-brid
 40h file-size and readability items, `span_supportExtensor_ofNormals_eq` in `Cut.lean`, and call
 12's corollary rebases (§3 STEPS); CHAINS' `pathVertex` helpers to their definition's file (§3
 COVERAGE); the §4 duplication note (`mapExtensor`/`mapSupport`, settled by `40-cleanup` task 22);
-and the §7 items above (A6, the shared hub normalization, item 6's other laws, the rest of the D5
-debt).
+and the §7 items above (A6; the shared hub normalization, paid by `40-factor`; item 6's other
+laws; the rest of the D5 debt).
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 
