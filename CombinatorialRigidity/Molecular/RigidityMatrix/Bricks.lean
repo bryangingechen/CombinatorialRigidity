@@ -826,10 +826,8 @@ theorem relScrews_congr (H : Graph α β) {C C' : β → ScrewSpace K k}
     (⟨H, C⟩ : BodyHingeFramework K k α β).relScrews a b =
       (⟨H, C'⟩ : BodyHingeFramework K k α β).relScrews a b := by
   have hZ : (⟨H, C⟩ : BodyHingeFramework K k α β).infinitesimalMotions =
-      (⟨H, C'⟩ : BodyHingeFramework K k α β).infinitesimalMotions := by
-    ext S
-    simp only [mem_infinitesimalMotions, isInfinitesimalMotion_iff]
-    exact forall₃_congr fun f u w => imp_congr_right fun hf => by rw [h f u w hf]
+      (⟨H, C'⟩ : BodyHingeFramework K k α β).infinitesimalMotions :=
+    infinitesimalMotions_eq_of_isLink_supportExtensor _ _ rfl fun f u w hf => (h f u w hf).symm
   rw [relScrews, relScrews, hZ]
 
 /-- The **joint rows** at a body pair `u, v` confining the relative screw to `U`

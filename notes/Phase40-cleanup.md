@@ -4,19 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20 and 21a closed (17 not landed); 26 of 49 one-commit tasks remain.
-**Next concrete task:** task 21b, F2, moving the `infinitesimalMotions_eq_of_isLink_*` pair to
-`RigidityMatrix/Basic.lean`.
+Tasks 1–13, 14a–14b, 15–20 and 21a–21b closed (17 not landed); 25 of 49 one-commit tasks remain.
+**Next concrete task:** task 22, M6, settling which of `mapExtensor` / `mapSupport` survives.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 21b, F2** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20 and 21a are closed (17 not landed), 26 remain. Nothing is mid-stream.
+**Next commit: task 22, M6** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20 and 21a–21b are closed (17 not landed), 25 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–20 and 21a, one line each under *Lemma checklist → Landed* (task 17 closed
-not landed). A finished task gets one or two lines there, with its commit; the detail stays in the
-commit message, and this section stays the forward pointer.
+Landed so far: tasks 1–20 and 21a–21b, one line each under *Lemma checklist → Landed* (task 17
+closed not landed). A finished task gets one or two lines there, with its commit; the detail stays
+in the commit message, and this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -129,14 +128,19 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 - **21a–21b. F2: two general facts downstream of their consumers** (the `[open]` FRICTION
   entry of that name). Two commits. No names change. The second closes the FRICTION entry.
-  - [x] **21a.** (`24ad0724`; follow-up, this commit). Moved `Graph.closedNbhd_subset_vertexSet`
+  - [x] **21a.** (`24ad0724`; follow-up, `dd5be5d9`). Moved `Graph.closedNbhd_subset_vertexSet`
     (`Bridge.lean`) to `Motive.lean`, beside `Graph.closedNbhd`, and dropped the two named inline
     copies (`isAdmissiblePicture_congr`, `liftingSpace_congr`). The follow-up dropped the other 19
     across the pencil tree: `Carrier.lean` 4 (incl. the mirror-candidate entry's two), `Engine.lean`
     6, `Base.lean` 3, `Cut.lean` 2, `Pair.lean` 2, `CoverageChain.lean` 1, `Reseed.lean` 1.
-  - [ ] **21b.** Move the `infinitesimalMotions_eq_of_isLink_*` pair (`AlgebraicInduction/Pinning.lean`)
-    to `RigidityMatrix/Basic.lean`, and drop `BodyHingeFramework.relScrews_congr`'s re-proof
-    (`RigidityMatrix/Bricks.lean`). **⚠Z**.
+  - [x] **21b.** (this commit). Moved the `infinitesimalMotions_eq_of_isLink_*` pair
+    (`AlgebraicInduction/Pinning.lean`) to `RigidityMatrix/Basic.lean`, beside
+    `mem_infinitesimalMotions` — they read only `hingeConstraint`, so they sit before the null-space
+    material that names it. `infinitesimalMotions_mono_of_graph_le` stays in `Pinning.lean` (it isn't
+    one of the pair; the FRICTION entry never named it). `BodyHingeFramework.relScrews_congr`
+    (`Bricks.lean`) now calls the moved `infinitesimalMotions_eq_of_isLink_supportExtensor` instead of
+    re-proving the motion-space equality inline as `hZ`. No names changed; no pin moved. Closes the
+    `[open]` FRICTION entry (line 3017; now `[resolved]`).
 - [ ] **22. M6: `mapExtensor` and `mapSupport`** (§4, *Still open*). `mapExtensor`
   (`Molecule/ProjectiveInvariance.lean` 79, pinned by `thm:projective-invariance`,
   `molecule-modelling.tex` 106) and `mapSupport` (`GenericLift/HingeGeneric.lean` 462, pinned by
@@ -313,15 +317,23 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 21b, F2** (the `[open]` FRICTION entry *two general facts downstream
-of their consumers*): move the `infinitesimalMotions_eq_of_isLink_*` pair
-(`AlgebraicInduction/Pinning.lean`) to `RigidityMatrix/Basic.lean`, and drop
-`BodyHingeFramework.relScrews_congr`'s re-proof (`RigidityMatrix/Bricks.lean`), ⚠Z. This closes
-the FRICTION entry. Task 21a (`24ad0724`, plus a follow-up) moved
-`Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to `Motive.lean` beside `Graph.closedNbhd`,
-and dropped all 21 inlined copies of it across the pencil tree, not only the two the task named;
-no names changed, and no blueprint pin moved (`\lean{...}` names the declaration, not its file).
-Task 21b also fills in the follow-up's sha on 21a's checklist line.
+**Next concrete commit: task 22, M6** (§4, *Still open*): settle which of `mapExtensor`
+(`Molecule/ProjectiveInvariance.lean` 79, pinned by `thm:projective-invariance`) and `mapSupport`
+(`GenericLift/HingeGeneric.lean` 462, pinned by `lem:screw-map-rows`) survives as the one
+definition — from the import order — then repoint its callers and the pin (the deletion gate),
+and derive `thm:projective-invariance`'s rank half from `lem:screw-map-rows`'s Lean, adding the
+`\uses` edge. If one definition would need an import restructure, record that as a candidate
+instead. **⚠Z**, carrier. Full detail (occurrence counts, method) is in the checklist entry; it may
+be more than one session's work — assess the import-order question first and shrink to the
+settle-and-repoint half if the rank-half derivation doesn't fit the same commit.
+
+Task 21b (this commit) moved the `infinitesimalMotions_eq_of_isLink_*` pair
+(`AlgebraicInduction/Pinning.lean`) to `RigidityMatrix/Basic.lean`, beside
+`mem_infinitesimalMotions`, and rewrote `BodyHingeFramework.relScrews_congr`'s inline motion-space
+proof (`Bricks.lean`) as a direct call to the moved lemma; `infinitesimalMotions_mono_of_graph_le`
+stayed in `Pinning.lean` (it isn't part of the pair). No names changed and no blueprint pin moved.
+This closes the F2 FRICTION entry (line 3017, now `[resolved]`). It also fills in 21a's follow-up
+sha (`dd5be5d9`) on 21a's checklist line, per task 21a's own hand-off note.
 
 ## Decisions made during this round
 

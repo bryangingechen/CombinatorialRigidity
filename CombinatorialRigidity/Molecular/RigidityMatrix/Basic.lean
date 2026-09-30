@@ -1050,6 +1050,50 @@ theorem mem_infinitesimalMotions (F : BodyHingeFramework K k α β) (S : α → 
     S ∈ F.infinitesimalMotions ↔ F.IsInfinitesimalMotion S :=
   Iff.rfl
 
+/-- **The motion space depends only on the supporting extensors of the linking edges**
+(`lem:motions-mono-of-graph-le`, equality form): two body-hinge frameworks `F`, `F'` on the
+*same* multigraph whose supporting extensors agree at every edge that actually links
+(`∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e`) have the same null
+space, `F.infinitesimalMotions = F'.infinitesimalMotions`. Only the extensors of genuine hinges
+enter the constraint family, so an extensor change at a non-linking edge — the situation Case II's
+`withNormal` creates when the re-inserted body `v` carries no incident edges yet — leaves the
+motions untouched. The two inclusions are `infinitesimalMotions_mono_of_graph_le`
+(`AlgebraicInduction/Pinning.lean`, with `≤ = rfl`) in each direction. -/
+theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFramework K k α β)
+    (hgraph : F'.graph = F.graph)
+    (hext : ∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e) :
+    F.infinitesimalMotions = F'.infinitesimalMotions := by
+  apply le_antisymm
+  · intro S hS e u v he
+    rw [hingeConstraint, hext e u v (hgraph ▸ he)]
+    exact hS e u v (hgraph ▸ he)
+  · intro S hS e u v he
+    rw [hingeConstraint, ← hext e u v he]
+    exact hS e u v (hgraph ▸ he)
+
+/-- **The motion space depends only on the span of the supporting extensors of the linking edges**
+(`lem:motions-mono-of-graph-le`, span form): the span-keyed sibling of
+`infinitesimalMotions_eq_of_isLink_supportExtensor`. Two body-hinge frameworks `F`, `F'` on the
+*same* multigraph whose supporting extensors *span the same line* at every linking edge
+(`Submodule.span K {F'.supportExtensor e} = Submodule.span K {F.supportExtensor e}`) have the same
+null space. The hinge constraint is membership in `span {supportExtensor e}` (`hingeConstraint`,
+`IsInfinitesimalMotion`), so only the *span* — not the extensor itself — enters the motion space.
+This is strictly weaker than the extensor-equality form and is what an *anti-symmetric* extensor
+change (an endpoint swap, `panelSupportExtensor_swap`, where the extensor flips sign but its span is
+unchanged) needs: `span {−x} = span {x}`. -/
+theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHingeFramework K k α β)
+    (hgraph : F'.graph = F.graph)
+    (hspan : ∀ e u v, F.graph.IsLink e u v →
+      Submodule.span K {F'.supportExtensor e} = Submodule.span K {F.supportExtensor e}) :
+    F.infinitesimalMotions = F'.infinitesimalMotions := by
+  apply le_antisymm
+  · intro S hS e u v he
+    rw [hingeConstraint, hspan e u v (hgraph ▸ he)]
+    exact hS e u v (hgraph ▸ he)
+  · intro S hS e u v he
+    rw [hingeConstraint, ← hspan e u v he]
+    exact hS e u v (hgraph ▸ he)
+
 /-- **The null space `Z(G,p)` is the common kernel of the rows of `R(G,p)`**
 (`def:rigidity-matrix`): the infinitesimal-motion subspace equals the **dual coannihilator** of the
 span of the rigidity rows,
