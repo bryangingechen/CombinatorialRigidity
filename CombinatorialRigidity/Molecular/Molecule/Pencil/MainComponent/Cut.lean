@@ -106,6 +106,21 @@ theorem _root_.Graph.IsX0Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph 
 
 /-! ## The row rank reads the normals only on `V(G)` -/
 
+/-- **The hinge of an `ofNormals` framework at a recorded link spans the panel extensor of its
+two ends**, in either orientation (Phase 40j SPLITOFF): swapping the ends only negates the panel
+extensor, which does not change its span. -/
+theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
+    (n : α × Fin (k + 2) → K) {f : β} {u w : α} (hf : H.IsLink f u w) :
+    Submodule.span K {(PanelHingeFramework.ofNormals H ends n).toBodyHinge.supportExtensor f} =
+      Submodule.span K {panelSupportExtensor (fun i => n (u, i)) (fun i => n (w, i))} := by
+  have h := hends f u w hf
+  simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
+  rcases h.eq_and_eq_or_eq_and_eq hf with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · rw [h1, h2]
+  · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
+
 /-- **Rank congruence** (`lem:pencil-rank-congr`). Two selectors recording every link of `G`, and
 two normal assignments agreeing on the bodies of `G`, give the same row rank: the hinge at a link
 is built from the normals at its two ends and swapping them negates it, so the motion spaces
@@ -123,33 +138,12 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr {k : ℕ} 
       = (PanelHingeFramework.ofNormals G ends' q').toBodyHinge.infinitesimalMotions := by
     refine BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor _ _ rfl ?_
     intro e u v he
-    have h1 := hends e u v he
-    have h2 := hends' e u v he
     have hnorm : ∀ x ∈ V(G), (fun i => q' (x, i)) = (fun i => q (x, i)) :=
       fun x hx => funext fun i => (hq x hx i).symm
-    simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
-    rw [hnorm _ h2.left_mem, hnorm _ h2.right_mem]
-    rcases h2.eq_and_eq_or_eq_and_eq h1 with ⟨ha, hb⟩ | ⟨ha, hb⟩
-    · rw [ha, hb]
-    · rw [ha, hb, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
+    rw [span_supportExtensor_ofNormals_eq hends' q' he,
+      span_supportExtensor_ofNormals_eq hends q he, hnorm _ he.left_mem, hnorm _ he.right_mem]
   rw [BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, hmot]
-
-/-- **The hinge of an `ofNormals` framework at a recorded link spans the panel extensor of its
-two ends**, in either orientation (Phase 40j SPLITOFF): swapping the ends only negates the panel
-extensor, which does not change its span. -/
-theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
-    (n : α × Fin (k + 2) → K) {f : β} {u w : α} (hf : H.IsLink f u w) :
-    Submodule.span K {(PanelHingeFramework.ofNormals H ends n).toBodyHinge.supportExtensor f} =
-      Submodule.span K {panelSupportExtensor (fun i => n (u, i)) (fun i => n (w, i))} := by
-  have h := hends f u w hf
-  simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
-    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
-  rcases h.eq_and_eq_or_eq_and_eq hf with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · rw [h1, h2]
-  · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
 /-! ## Heights restrict to a subgraph -/
 

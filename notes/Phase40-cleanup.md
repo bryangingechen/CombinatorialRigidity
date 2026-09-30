@@ -4,17 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–12 landed; 36 of 49 one-commit tasks remain. **Next concrete task:** task 13, M3
-(the carried items begin), `span_supportExtensor_ofNormals_eq` (Lean, ⚠Z). Round manual: `CLEANUP.md`.
+Tasks 1–13 landed; 35 of 49 one-commit tasks remain. **Next concrete task:** task 14a, M4 (i)+(ii)
+(the carried items continue), two corollary rebases in `Contract.lean` (Lean, ⚠Z). Round manual:
+`CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 13, M3** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–12 landed, 36 remain. Nothing is mid-stream.
+**Next commit: task 14a, M4 (i)+(ii)** (*Lemma checklist*). The checklist holds 49 one-commit
+tasks; tasks 1–13 landed, 35 remain. Nothing is mid-stream.
 
-Landed so far, one line each under the checklist: tasks 1–12 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d). Outcome detail goes on the task's
-checklist line, not here, so this section stays the forward pointer.
+Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3). Outcome detail goes on the
+task's checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -210,10 +211,12 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 ### The carried items (`notes/Phase40-design.md` §3/§4/§7)
 
-- [ ] **13. M3: `span_supportExtensor_ofNormals_eq`** (§3, the SPLITOFF entry). It could replace
-  the orientation split inlined in `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr`
-  (`Cut.lean` 113). The lemma is at `Cut.lean` 142, below its consumer, so move it up first.
-  Statements are unchanged. **⚠Z**.
+- [x] **13. M3: `span_supportExtensor_ofNormals_eq`** (§3, the SPLITOFF entry; this commit). Moved
+  above its consumer `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` (now `Cut.lean`
+  112/128). The consumer's `hmot` now rewrites both sides with the lemma (at `hends'`/`q'` then
+  `hends`/`q`) and closes with the existing `hnorm` rewrites at `he.left_mem`/`he.right_mem` — the
+  inlined `rcases … panelSupportExtensor_swap` orientation split is gone, absorbed by the lemma.
+  Statements, names and pins unchanged.
 - **14a–14b. M4: call 12's four corollary rebases** (§3, the CONTRACT-A entry;
   `notes/Phase40k.md` *Hand-off* names G1, G4 and G5). Two commits. Statements and pins are
   unchanged. Add a `\uses` edge wherever a node's proof now cites the new source.
@@ -448,12 +451,14 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 13, M3.** The carried items begin (§3, the SPLITOFF entry).
-`span_supportExtensor_ofNormals_eq` (`Cut.lean` 142) could replace the orientation split inlined in
-`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` (`Cut.lean` 113); the lemma sits
-below its consumer, so move it up first. Statements are unchanged. **⚠Z** (fragility zone): the
-playbook floor applies to any producer-shaped fix there. Lean, no blueprint. Task 12 (just landed)
-closed the B1 checklist item (tasks 9–12, all `classical`/`noncomputable` batches).
+**Next concrete commit: task 14a, M4 (i)+(ii).** Two corollary rebases in `Contract.lean` (§3, the
+CONTRACT-A entry; `notes/Phase40k.md` *Hand-off* names them G1/G4/G5): (i) the flat K3,
+`Graph.finrank_ker_contractLiftingMatrix_zero_le` (`Contract.lean` 118), as a corollary of G4,
+`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` (`ContractCurve.lean`); (ii) the `def₂`
+standing lemma, `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (`Contract.lean` 193), as a
+corollary of G5, `Graph.isX0Graph_induce_of_deficiency_eq_zero` (`ContractCurve.lean` 1059). Add a
+`\uses` edge wherever a node's proof now cites the new source; statements and pins otherwise
+unchanged. Lean-plus-one-edge, ⚠Z. Task 13 (just landed) closed the SPLITOFF carried item.
 
 ## Decisions made during this round
 
