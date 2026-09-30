@@ -4,18 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13 landed; 35 of 49 one-commit tasks remain. **Next concrete task:** task 14a, M4 (i)+(ii)
-(the carried items continue), two corollary rebases in `Contract.lean` (Lean, ⚠Z). Round manual:
-`CLEANUP.md`.
+Tasks 1–13 and 14a landed; 34 of 49 one-commit tasks remain. **Next concrete task:** task 14b, M4
+(iii)+(iv) (the carried items continue), two more `Contract.lean`/`Configuration.lean` corollary
+rebases (Lean, ⚠Z). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 14a, M4 (i)+(ii)** (*Lemma checklist*). The checklist holds 49 one-commit
-tasks; tasks 1–13 landed, 35 remain. Nothing is mid-stream.
+**Next commit: task 14b, M4 (iii)+(iv)** (*Lemma checklist*). The checklist holds 49 one-commit
+tasks; tasks 1–13 and 14a landed, 34 remain. Nothing is mid-stream.
 
 Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3). Outcome detail goes on the
-task's checklist line, not here, so this section stays the forward pointer.
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3) and 14a. Outcome detail goes on
+the task's checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -220,13 +220,14 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - **14a–14b. M4: call 12's four corollary rebases** (§3, the CONTRACT-A entry;
   `notes/Phase40k.md` *Hand-off* names G1, G4 and G5). Two commits. Statements and pins are
   unchanged. Add a `\uses` edge wherever a node's proof now cites the new source.
-  - [ ] **14a, (i)+(ii)** (`Contract.lean`).
-    - (i) The flat K3, `Graph.finrank_ker_contractLiftingMatrix_zero_le` (`Contract.lean` 118), as
-      a corollary of G4, `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`
-      (`ContractCurve.lean`).
-    - (ii) The `def₂` standing lemma, `Graph.isX0Graph_induce_of_deficiency_two_eq_zero`
-      (`Contract.lean` 193), as a corollary of G5, `Graph.isX0Graph_induce_of_deficiency_eq_zero`
-      (`ContractCurve.lean` 1059).
+  - [x] **14a, (i)+(ii)** (`Contract.lean`; this commit). (i) derives the bound from G4 plus
+    `dim (ker.map ρ) ≤ 3` (`liftingRestrict_mem_liftingSpace_induce_of_contract`, `hLH`,
+    `Graph.finrank_affineLifts`, `omega`; needed a `set`-fold, TACTICS-QUIRKS.md § 1). (ii) is G5 at
+    `n := 2`. `contractLimitMap` and friends, and `Graph.exists_core_plane`, keep a consumer
+    elsewhere (liveness check: none orphaned). Blueprint: `lem:pencil-contract-limit`'s proof now
+    `\uses lem:pencil-contract-kernel-bound` (part (1) rewritten to match) and drops the reverse
+    edge from `…-kernel-bound` (would cycle; its own proof now inlines the map instead of pointing
+    back); `lem:pencil-contract-standing`'s proof gains `\uses lem:pencil-contract-standing-rigid`.
   - [ ] **14b, (iii)+(iv).**
     - (iii) The middle step of `Graph.exists_core_plane` (`Contract.lean` 80), its `hmem`, through
       the core-heights lemma `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`
@@ -451,14 +452,14 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 14a, M4 (i)+(ii).** Two corollary rebases in `Contract.lean` (§3, the
-CONTRACT-A entry; `notes/Phase40k.md` *Hand-off* names them G1/G4/G5): (i) the flat K3,
-`Graph.finrank_ker_contractLiftingMatrix_zero_le` (`Contract.lean` 118), as a corollary of G4,
-`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` (`ContractCurve.lean`); (ii) the `def₂`
-standing lemma, `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (`Contract.lean` 193), as a
-corollary of G5, `Graph.isX0Graph_induce_of_deficiency_eq_zero` (`ContractCurve.lean` 1059). Add a
+**Next concrete commit: task 14b, M4 (iii)+(iv).** Two more corollary rebases (§3, the CONTRACT-A
+entry; `notes/Phase40k.md` *Hand-off* names them G1): (iii) the middle step of
+`Graph.exists_core_plane` (`Contract.lean` 80), its `hmem`, through the core-heights lemma
+`Graph.liftingRestrict_mem_liftingSpace_induce_of_contract` (`ContractCurve.lean` 834); (iv)
+`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` (`Configuration.lean` 604) through
+G1, `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` (574). **⚠Z**. Add a
 `\uses` edge wherever a node's proof now cites the new source; statements and pins otherwise
-unchanged. Lean-plus-one-edge, ⚠Z. Task 13 (just landed) closed the SPLITOFF carried item.
+unchanged. Task 14a (just landed) closed (i)+(ii) of the CONTRACT-A corollary rebases.
 
 ## Decisions made during this round
 

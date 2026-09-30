@@ -1366,11 +1366,13 @@ the other edges with the columns of $W$ deleted.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-zero-connected, lem:reduction-measure}
+  \uses{lem:deficiency-zero-connected, lem:reduction-measure,
+        lem:pencil-contract-standing-rigid}
   A graph of deficiency zero is connected, and of minimum degree at least
   two when it has at least two bodies
   (\cref{lem:deficiency-zero-connected}); this gives the standing
-  hypotheses at $H$ when $\operatorname{def}_2(H) = 0$. An edge of $G/H$
+  hypotheses at $H$ when $\operatorname{def}_2(H) = 0$
+  (\cref{lem:pencil-contract-standing-rigid}, at $n = 2$). An edge of $G/H$
   is an edge of $G$ not inside $W$.
   Two such edges with the same ends in $G/H$ would give an attachment two
   neighbours in $W$, or two parallel edges of $G$, so $G/H$ is simple. A
@@ -1470,6 +1472,7 @@ while the rest of $G$ sees it at $q_r$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:pencil-contract-kernel-bound, lem:pencil-lifting-space-affine}
   At $t = 0$ the rows at a core body $c$ and an attachment $u$ of $c$
   say that $u$ lies on the plane parallel to that of $c$ through the point
   $(q_r, 0)$; the rows at an attachment $u$ and a body outside $W$ say
@@ -1477,16 +1480,12 @@ while the rest of $G$ sees it at $q_r$.
   coefficient of an attachment occurs only in its rows at its neighbours
   in $W$.
 
-  For (1), send a solution to the heights $z_w + z_r$ at the bodies $w$
-  outside $W$ and $z_r$ at $r$. By \cref{lem:pencil-contract-core-plane}
-  the core has one plane $g$, which passes through $(q_r, z_r)$ and, after
-  the shift, through every attachment; so the image lies in
-  $L_{G/H}(q)$, with the planes at $r$ and at the attachments through the
-  point of $r$. If the image vanishes, $g$ annihilates the homogeneous
-  picture points of the closed neighbourhood of $r$ in $G/H$, three of
-  which are independent, so $g = 0$; in the same way every plane outside
-  $W$ vanishes, the constant coefficient of an attachment by its row at a
-  neighbour in $W$. So the map is injective.
+  For (1), \cref{lem:pencil-contract-kernel-bound} gives
+  $\dim \ker M(0) + 3 \le \dim \rho(\ker M(0)) + \dim L_{G/H}(q)$, where
+  $\rho$ restricts a solution to its heights on the core. Those heights
+  lie in $L_H(q) = \mathrm{Aff}(q)$, which is three-dimensional
+  (\cref{lem:pencil-lifting-space-affine}), so
+  $\dim \rho(\ker M(0)) \le 3$ and the bound follows.
 
   For (2), put the core on the plane of $z$ at $r$, which passes through
   $(q_r, 0)$ and every attachment, as KT set every panel of the core to
@@ -3318,7 +3317,7 @@ configuration of $H$ attains.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-contract-limit, lem:pencil-lifting-space-affine}
+  \uses{lem:pencil-lifting-space-affine}
   (1) The rows at a core body $c$ and a member of its closed
   neighbourhood in $H$ have the weight $(x_w, y_w, 1)$ at every $t$, as
   in the proof of \cref{lem:pencil-contract-core-plane}.
@@ -3327,11 +3326,11 @@ configuration of $H$ attains.
   $\rho = 0$ form a space $N$ with $\dim N + 3 \le \dim L_{G/H}(q)$. A
   solution in $N$ has zero heights on $W$, so by the rows of (1) its
   plane at every core body is zero: three members of each closed
-  neighbourhood in $H$ have independent picture points. The map of the
-  proof of \cref{lem:pencil-contract-limit}, which sends a solution to
-  the heights $z_w + z_r$ at the bodies $w$ outside $W$ and $z_r$ at $r$,
-  then takes $N$ injectively into $L_{G/H}(q)$, as it does there for a
-  core with one plane, here the zero plane. Its image vanishes on the
+  neighbourhood in $H$ have independent picture points. Send a solution
+  in $N$ to the heights $z_w + z_r$ at the bodies $w$ outside $W$ and
+  $z_r$ at $r$; this map takes $N$ injectively into $L_{G/H}(q)$, as in
+  the proof of \cref{lem:pencil-contract-limit} for a core with one
+  plane, here the zero plane. Its image vanishes on the
   closed neighbourhood of $r$ in $G/H$, which consists of $r$ and the
   attachments: $z_r = 0$, and the row at a core body $c$ and an
   attachment $u$ of $c$ gives

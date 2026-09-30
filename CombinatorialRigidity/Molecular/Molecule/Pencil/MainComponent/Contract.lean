@@ -30,8 +30,9 @@ re-stated, so no blueprint `\lean{...}` pin moved.
 * `Graph.exists_core_plane` — at a core with `L_H(q) ⊆ Aff(q)`, a solution of `M(t)` has one plane
   on the whole core, at every `t` (`lem:pencil-contract-core-plane`).
 * `Graph.finrank_ker_contractLiftingMatrix_zero_le` — at a flat core, `dim ker M(0) ≤ dim
-  L_{G/H}(q)`, through the injective limit map given the core's one plane
-  (`lem:pencil-contract-limit` (1); (MC-59)(c2)'s upper bound).
+  L_{G/H}(q)`, a corollary of `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`
+  (`ContractCurve.lean`) once the core heights of `ker M(0)` are bounded by the three dimensions
+  of `Aff(q)` (`lem:pencil-contract-limit` (1); (MC-59)(c2)'s upper bound).
 * `Graph.finrank_span_rigidityRows_induce_contractHeight` — the core has rank `6(|W| − 1)` at the
   curve's configuration (`lem:pencil-contract-core-rank`).
 * `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` — a `def₂`-rigid core satisfies the standing
@@ -113,7 +114,9 @@ theorem _root_.Graph.exists_core_plane [Fintype α] {G : Graph α β} {W : Set �
 
 /-- **The kernel at the end of the curve is at most `L_{G/H}(q)`** (`lem:pencil-contract-limit` (1);
 (MC-59)(c2)'s upper bound): at a flat core (`L_H(q) ⊆ Aff(q)`), with `q` admissible for `H` and for
-`G/H`, `dim ker M(0) ≤ dim L_{G/H}(q)`, through the injective limit map. -/
+`G/H`, `dim ker M(0) ≤ dim L_{G/H}(q)`, a corollary of
+`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` once the core heights of `ker M(0)` are
+bounded by the three dimensions of `Aff(q)`. -/
 theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_le [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     (hqH : (G.induce W).IsAdmissiblePicture q)
@@ -123,18 +126,16 @@ theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_le [Fintype α] {G :
         (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin) ≤
       Module.finrank K ((G.rigidContract (G.induce W) r).liftingSpace q) := by
   set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
-    (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin
-  set Φ := (contractLimitMap (K := K) G W r).domRestrict L
-  have hinj : Function.Injective Φ := by
-    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    rintro ⟨x, hx⟩ h0
-    exact Subtype.ext (Graph.eq_zero_of_contractLimitMap_eq_zero hr hW hqc hx
-      (Graph.exists_core_plane hW hqH hLH hx) h0)
-  have hrange : LinearMap.range Φ ≤ (G.rigidContract (G.induce W) r).liftingSpace q := by
-    rintro _ ⟨⟨x, hx⟩, rfl⟩
-    exact Graph.contractLimitMap_mem_liftingSpace hr hW hx (Graph.exists_core_plane hW hqH hLH hx)
-  rw [← LinearMap.finrank_range_of_inj hinj]
-  exact Submodule.finrank_mono hrange
+    (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin with hLdef
+  have hK3 := Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le hr hW hqH hqc
+  rw [← hLdef] at hK3
+  have hmapLe : L.map (contractCoreRestrict W) ≤ (G.induce W).liftingSpace q := by
+    rintro _ ⟨x, hx, rfl⟩
+    exact Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW hx
+  have h3 : Module.finrank K (L.map (contractCoreRestrict W)) ≤ 3 := by
+    have h := Submodule.finrank_mono (hmapLe.trans hLH)
+    rwa [Graph.finrank_affineLifts hqH ⟨r, hr⟩] at h
+  omega
 
 /-! ## The core's rank along the curve -/
 
@@ -186,17 +187,13 @@ theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight [Fintype α
 
 /-- **A `def₂`-rigid core satisfies the standing hypotheses** (`lem:pencil-contract-standing`): a
 core `G[W]` of a simple `G` with `|W| ≥ 2` and `def₂(G[W]) = 0` is simple, connected, and of
-minimum degree at least two (`Graph.connected_of_isKDof_zero`,
-`Graph.two_le_degree_of_isKDof_zero`). -/
+minimum degree at least two, a corollary of `Graph.isX0Graph_induce_of_deficiency_eq_zero`
+(`ContractCurve.lean`) at `n = 2`. -/
 theorem _root_.Graph.isX0Graph_induce_of_deficiency_two_eq_zero [Finite α] [Finite β]
     {G : Graph α β} (hS : G.Simple) {W : Set α} (hW : W ⊆ V(G)) (hW2 : 2 ≤ W.ncard)
-    (hdef : (G.induce W).deficiency 2 = 0) : (G.induce W).IsX0Graph where
-  simple := hS.mono (Graph.induce_le hW)
-  connected := Graph.connected_of_isKDof_zero (n := 2)
+    (hdef : (G.induce W).deficiency 2 = 0) : (G.induce W).IsX0Graph :=
+  Graph.isX0Graph_induce_of_deficiency_eq_zero hS hW hW2 (n := 2)
     (by rw [Graph.bodyBarDim_two]; norm_num) hdef
-    (Set.nonempty_of_ncard_ne_zero (s := W) (by omega))
-  two_le_degree := fun _ hv => Graph.two_le_degree_of_isKDof_zero (n := 2)
-    (by rw [Graph.bodyBarDim_two]; norm_num) hdef hv hW2
 
 /-! ## The assembly: contraction at a `def₂`-rigid core -/
 
