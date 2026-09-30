@@ -4,16 +4,16 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b and 15–19 closed (17 not landed); 28 of 49 one-commit tasks remain.
-**Next concrete task:** task 20, M5, moving CHAINS' `pathVertex` helpers and the `Graph.IsOpenEar.*`
-lemmas to their definitions' files. Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b and 15–20 closed (17 not landed); 27 of 49 one-commit tasks remain.
+**Next concrete task:** task 21a, F2, moving `Graph.closedNbhd_subset_vertexSet` to `Motive.lean`.
+Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 20, M5** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b and 15–19 are closed (17 not landed), 28 remain. Nothing is mid-stream.
+**Next commit: task 21a, F2** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b and 15–20 are closed (17 not landed), 27 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–19, one line each under *Lemma checklist → Landed* (task 17 closed not
+Landed so far: tasks 1–20, one line each under *Lemma checklist → Landed* (task 17 closed not
 landed). A finished task gets one or two lines there, with its commit; the detail stays in the
 commit message, and this section stays the forward pointer.
 
@@ -115,19 +115,17 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   (clause 1, kept the old label), `lem:pencil-ear-data-picture` (clause 2), `lem:pencil-ear-data-open`
   (clause 3). Every `\uses`/`\cref` site in `main-component.tex` and all 14 `EarGen.lean` docstring
   citations repointed clause by clause; no statement changed strength.
+- [x] **20. M5** (this commit). CHAINS' seven `pathVertex` helpers moved to `Cut.lean`; three of
+  them (`isLink_pathVertex_rev`, the `val_eq_zero_or_of_pathVertex_mem` trio,
+  `pathVertex_mem_insert_insert_range`) sit beside `pathVertex_cases`/`pathVertex_rev` rather than
+  literally beside `def pathVertex`, since they need those first. The thirteen `Graph.IsOpenEar.*`
+  lemmas moved to `Coverage.lean` beside `structure Graph.IsOpenEar`. `Coverage.lean`'s import
+  closure is a superset of `CoverageChain.lean`'s own (which imported only `Coverage.lean`), so
+  every one of the twenty fit; none stayed behind. No file pointers named the old file for these
+  lemmas (grepped `.lean`/`blueprint`/`notes`), so nothing to repoint.
 
 ### The carried items (`notes/Phase40-design.md` §3/§4/§7), continued
 
-- [ ] **20. M5: lemmas to their definitions' files** (§3 COVERAGE).
-  - Move CHAINS' `pathVertex` helpers to `Cut.lean`, beside `def pathVertex` (429). They are
-    `pathVertex_cons`, `isLink_pathVertex_cons`, `isLink_pathVertex_rev`,
-    `val_eq_zero_or_of_pathVertex_mem`, `pathVertex_eq_of_val_eq_zero`/`_last` (`CoverageChain.lean`
-    `## Path sequences`, 39–98) and `pathVertex_mem_insert_insert_range` (434).
-  - Move the `Graph.IsOpenEar.*` lemmas (`## Open ears`, 99–273, plus 443 and 470) to
-    `Coverage.lean`, beside `structure Graph.IsOpenEar` (58), as far as `Coverage.lean`'s imports
-    allow. Record any that stay, and why.
-
-  No names change, so no pin moves. Every step file below `Cut.lean` rebuilds.
 - **21a–21b. F2: two general facts downstream of their consumers** (the `[open]` FRICTION
   entry of that name). Two commits. No names change. The second closes the FRICTION entry.
   - [ ] **21a.** Move `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to `Motive.lean`, beside
@@ -312,13 +310,15 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 20, M5** (§3 COVERAGE): move CHAINS' `pathVertex` helpers
-(`CoverageChain.lean` `## Path sequences`, 39–98, plus `pathVertex_mem_insert_insert_range`, 434)
-to `Cut.lean` beside `def pathVertex` (429), and the `Graph.IsOpenEar.*` lemmas (`## Open ears`,
-99–273, plus 443 and 470) to `Coverage.lean` beside `structure Graph.IsOpenEar` (58), as far as
-`Coverage.lean`'s imports allow (record any that stay, and why). No names change, so no pin moves;
-every step file below `Cut.lean` rebuilds. Task 19 (`d9acaee8`) closed the pin budget of
-`lem:pencil-ear-data`.
+**Next concrete commit: task 21a, F2** (the `[open]` FRICTION entry *two general facts downstream
+of their consumers*): move `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) to `Motive.lean`,
+beside `Graph.closedNbhd`, and drop the inlined copies in `Graph.isAdmissiblePicture_congr` and
+`Graph.liftingSpace_congr` (`Carrier.lean`). No names change. Task 21b (the
+`infinitesimalMotions_eq_of_isLink_*` pair, `AlgebraicInduction/Pinning.lean` to
+`RigidityMatrix/Basic.lean`, ⚠Z) follows and closes the FRICTION entry. Task 20 (this commit)
+moved CHAINS' `pathVertex` helpers to `Cut.lean` and its `Graph.IsOpenEar.*` lemmas to
+`Coverage.lean`; both landed inside the target files' existing import closures, so nothing stayed
+behind.
 
 ## Decisions made during this round
 

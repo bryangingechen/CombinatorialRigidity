@@ -427,6 +427,28 @@ theorem pathVertex_last {k : ℕ} (a : α) (x : Fin k → α) (b : α) :
     pathVertex a x b (Fin.last (k + 1)) = b := by
   simp [pathVertex]
 
+/-- The path sequence with one more body `a` in front of `x`, started at `a'`. -/
+theorem pathVertex_cons {k : ℕ} (a' a : α) (x : Fin k → α) (b : α) :
+    pathVertex a' (Fin.cons a x) b = Fin.cons a' (pathVertex a x b) := by
+  rw [pathVertex, pathVertex, Fin.cons_snoc_eq_snoc_cons]
+
+/-- The path edges of the sequence extended by one more body `a` in front, from `a'` along
+`g`. -/
+theorem isLink_pathVertex_cons {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b a' : α}
+    {e : Fin (k + 1) → β} {g : β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hg : G.IsLink g a' a) :
+    ∀ i : Fin (k + 2), G.IsLink ((Fin.cons g e : Fin (k + 2) → β) i)
+      (pathVertex a' (Fin.cons a x) b i.castSucc) (pathVertex a' (Fin.cons a x) b i.succ) := by
+  rw [pathVertex_cons]
+  intro i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · rw [Fin.castSucc_zero, Fin.cons_zero, Fin.cons_zero, Fin.cons_succ, pathVertex_zero]
+    exact hg
+  · rw [Fin.cons_succ, ← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]
+    exact hpath j
+
 /-- **Every non-initial member of the path sequence is `b` or an interior body** (Phase 40e
 BRIDGE): the only index `pathVertex` sends to `a` is `0` (`pathVertex_zero`), so a nonzero index
 lands on `b` (the last position) or on some `x i` (an interior position). -/
@@ -564,6 +586,39 @@ theorem pathVertex_cases {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin
     | zero => exact Or.inl ⟨by simp, by simp⟩
     | succ i' => exact Or.inr (Or.inl ⟨i', by simp, by simp⟩)
 
+/-- A position of the path sequence lying in a set that avoids the interior is an end. -/
+theorem val_eq_zero_or_of_pathVertex_mem {k : ℕ} {x : Fin k → α} {a b : α} {V : Set α}
+    (hxV : ∀ i, x i ∉ V) {m : Fin (k + 2)} (hm : pathVertex a x b m ∈ V) :
+    m.val = 0 ∨ m.val = k + 1 := by
+  rcases pathVertex_cases a x b m with ⟨h, -⟩ | ⟨i, -, h⟩ | ⟨h, -⟩
+  · exact Or.inl h
+  · exact absurd (h ▸ hm) (hxV i)
+  · exact Or.inr h
+
+/-- The body at a position of value zero. -/
+theorem pathVertex_eq_of_val_eq_zero {k : ℕ} (a : α) (x : Fin k → α) (b : α) {m : Fin (k + 2)}
+    (hm : m.val = 0) : pathVertex a x b m = a := by
+  rcases pathVertex_cases a x b m with ⟨-, h⟩ | ⟨i, h', -⟩ | ⟨h', -⟩
+  · exact h
+  · omega
+  · omega
+
+/-- The body at a position of value `k + 1`. -/
+theorem pathVertex_eq_of_val_eq_last {k : ℕ} (a : α) (x : Fin k → α) (b : α) {m : Fin (k + 2)}
+    (hm : m.val = k + 1) : pathVertex a x b m = b := by
+  rcases pathVertex_cases a x b m with ⟨h', -⟩ | ⟨i, h', -⟩ | ⟨-, h⟩
+  · omega
+  · omega
+  · exact h
+
+/-- Every body of the path sequence lies on the ear's closed path. -/
+theorem pathVertex_mem_insert_insert_range {k : ℕ} (a : α) (x : Fin k → α) (b : α)
+    (m : Fin (k + 2)) : pathVertex a x b m ∈ insert b (insert a (Set.range x)) := by
+  rcases pathVertex_cases a x b m with ⟨-, h⟩ | ⟨i, -, h⟩ | ⟨-, h⟩ <;> rw [h]
+  · exact Or.inr (Or.inl rfl)
+  · exact Or.inr (Or.inr ⟨i, rfl⟩)
+  · exact Or.inl rfl
+
 /-- **An interior position, by value** (Phase 40e BRIDGE): an index of value `i + 1` is sent to
 the interior body `x i`. -/
 theorem pathVertex_eq_of_val_eq_succ {k : ℕ} (a : α) (x : Fin k → α) (b : α) {m : Fin (k + 2)}
@@ -657,6 +712,17 @@ theorem pathVertex_rev {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (
     · exact h'.symm
     · omega
     · omega
+
+/-- The path edges of the sequence read from its other end. -/
+theorem isLink_pathVertex_rev {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α}
+    {e : Fin (k + 1) → β}
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) :
+    ∀ i : Fin (k + 1), G.IsLink ((e ∘ Fin.rev) i)
+      (pathVertex b (x ∘ Fin.rev) a i.castSucc) (pathVertex b (x ∘ Fin.rev) a i.succ) := by
+  intro i
+  rw [pathVertex_rev, pathVertex_rev, Fin.rev_castSucc, Fin.rev_succ]
+  exact (hpath i.rev).symm
 
 /-- **Dropping the first interior body shifts the path sequence** (Phase 40g CHAIN): the sequence
 from `x 0` through `x 1, …, x (k − 1)` to `d` is `pathVertex c x d` read from index `1` on. The
