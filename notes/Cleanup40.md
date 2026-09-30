@@ -2,12 +2,13 @@
 
 **Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI. Round 1, `40-cleanup`, opened
 2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`). Round 2, `40-factor`, opened and
-closed 2026-09-30 (`notes/Phase40-factor.md`); rounds 3–5 have not opened. Five cleanup rounds
-(`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
-`40-factor`, `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the
-authority for the order and for which rounds are done. **The next concrete task** is opening
-round 3, `40-exposition`, from §2 *Round 3* below: its work log `notes/Phase40-exposition.md` does
-not exist yet. Round 3 stops for the PI after its open and one sample section (Stop 1).
+closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 2026-09-30
+(`notes/Phase40-exposition.md`); rounds 4–5 have not opened. Five cleanup rounds (`CLEANUP.md`)
+over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`,
+`40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
+order and for which rounds are done. **The next concrete task** is round 3's first, the sample
+section, named in `notes/Phase40-exposition.md` *Hand-off / next phase*. Round 3 stops for the PI
+after it (Stop 1).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

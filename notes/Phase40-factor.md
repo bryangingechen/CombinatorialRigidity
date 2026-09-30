@@ -200,13 +200,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Round 2 is closed; there is no next step in it.** The next concrete task is opening round 3,
-`40-exposition`, from `notes/Cleanup40.md` §2 *Round 3* (its work log
-`notes/Phase40-exposition.md` does not exist yet); it stops for the PI after its open and one
-sample section. `notes/Cleanup40.md`'s **Status** names the current round. What carried over: the
-two *Candidates for `40-simplify`*, which are round 4's inputs (mirrored into `notes/Cleanup40.md`
-§2 *Round 4*), and the one *Moved to a later round* entry, which is round 3's (already in §2
-*Round 3*). No task of this round is left open.
+**Round 2 is closed; there is no next step in it.** Round 3, `40-exposition`, opened 2026-09-30
+(`notes/Phase40-exposition.md`); `notes/Cleanup40.md`'s **Status** names the current round. What
+carried over: the two *Candidates for `40-simplify`*, which are round 4's inputs (mirrored into
+`notes/Cleanup40.md` §2 *Round 4*), and the one *Moved to a later round* entry, which is round 3's
+(already in §2 *Round 3*). No task of this round is left open.
 
 ## Decisions made during this round
 
