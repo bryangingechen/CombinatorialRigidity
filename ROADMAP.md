@@ -160,6 +160,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. Pushed and CI-validated — `origin/master`'s *Build & deploy site* run passed at `91fcd24a` (2026-09-29); hopscotch now tracks a genuine mathlib incompatibility, not the old pin-order false positive (see `notes/ToolchainBumps.md`) |
 | 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered, 40a–40p), `main-component.tex` | ✓ Complete — the pencil conjecture proved over every infinite field (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
 | ⋮ Cleanup round (post-Phase-40, 1/5: mechanical) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` + Phase 40's other blueprint nodes | ✓ Complete — hygiene only, all 19 main results' axioms unchanged (see `notes/Phase40-cleanup.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-40, 2/5: the shared hub normalization) | `Molecular/Deficiency.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`, `Molecular/Molecule/Pencil/TwoCut.lean` | ◐ In progress (see `notes/Phase40-factor.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1213,9 +1214,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `40-docs` (project organization). Hygiene: no headline statement changes, and new mathematics
   only where the PI sanctions it. Scope, order, stops and the PI's decisions are in
   `notes/Cleanup40.md`. The autopilot queue is `.claude/autopilot/queue.toml`.
-  **Next concrete task:** opening round 2, `40-factor`, from `notes/Cleanup40.md` §2 *Round 2*
-  (its work log `notes/Phase40-factor.md` does not exist yet). Round 1, `40-cleanup`, closed
-  2026-09-30 (`notes/Phase40-cleanup.md`).
+  **Next concrete task:** round 2, `40-factor`, is open (opened 2026-09-30); its next task is in
+  `notes/Phase40-factor.md` *Hand-off / next phase*. Round 1, `40-cleanup`, closed 2026-09-30
+  (`notes/Phase40-cleanup.md`).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

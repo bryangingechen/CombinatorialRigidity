@@ -5,7 +5,7 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work was
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
 All 50 one-commit tasks are closed (task 17 closed not landed). **Next concrete task:** none in
-this round; round 2, `40-factor`, opens next (`notes/Cleanup40.md` §2 *Round 2*).
+this round; the current round is named in `notes/Cleanup40.md`'s **Status**.
 Round manual: `CLEANUP.md`.
 
 ## Current state
@@ -467,12 +467,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Round 1 is closed; there is no next step in it.** Round 2, `40-factor`, opens next, from
-`notes/Cleanup40.md` §2 *Round 2*. It is the next undone item in `.claude/autopilot/queue.toml`,
-and its work log `notes/Phase40-factor.md` does not exist yet. What carried over: the seven
-*Candidates for `40-simplify`*, which are round 4's inputs (mirrored into `notes/Cleanup40.md` §2
-*Round 4*), and the three *Moved to a later round* entries, which are round 3's (already in §2
-*Round 3*). No task of this round is left open.
+**Round 1 is closed; there is no next step in it.** Round 2, `40-factor`, opened 2026-09-30
+(`notes/Phase40-factor.md`); `notes/Cleanup40.md`'s **Status** names the current round. What
+carried over: the seven *Candidates for `40-simplify`*, which are round 4's inputs (mirrored into
+`notes/Cleanup40.md` §2 *Round 4*), and the three *Moved to a later round* entries, which are
+round 3's (already in §2 *Round 3*). No task of this round is left open.
 
 ## Decisions made during this round
 

@@ -1,12 +1,12 @@
 # The post-Phase-40 cleanup rounds (planning note)
 
 **Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI. Round 1, `40-cleanup`, opened
-2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`); rounds 2–5 have not opened. Five
-cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order:
-`40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
-`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
-**The next concrete task** is opening round 2, `40-factor`, from §2 *Round 2* below: its work log
-`notes/Phase40-factor.md` does not exist yet.
+2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`). Round 2, `40-factor`, opened
+2026-09-30 (`notes/Phase40-factor.md`); rounds 3–5 have not opened. Five cleanup rounds
+(`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
+`40-factor`, `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the
+authority for the order and for which rounds are done. **The next concrete task** is round 2's,
+named in `notes/Phase40-factor.md` *Hand-off / next phase*.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -89,7 +89,9 @@ duplicated between `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMoti
 (`AlgebraicInduction/PanelLayer.lean`). Extract it once and rebuild both sites on it.
 
 - §7 calls the extraction "one private lemma", but the two sites are in different files; settle
-  its visibility first.
+  its visibility first. Settled at the open: a public `Graph.exists_normalized_labeling` in
+  `Molecular/Deficiency.lean`, the file that defines `numParts` and `crossingEdges`
+  (`notes/Phase40-factor.md` *Decisions*).
 - `PanelLayer.lean` is in the fragility zone, so the builds are Opus (the playbook floor).
   Phase 38 is the precedent.
 
