@@ -996,10 +996,11 @@ drops `¬ G.Adj a b` (no consumer); F1 and both headlines in `MainComponent/Stat
 **Lean reuse** (corrected). Used: Phase 39's chart (`PencilSeed`, `pencilChartPoint`/`Normal`,
 `PencilChartWF`, `pencilChartFramework`, `exists_pencilSeed_of_nondeg`) with its steering engine
 (`exists_common_seed_pencilRow_and_polynomials`, `exists_fillNbr_pencilChartWF_of_standing`,
-`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`) and Witness.lean's
-idx/dtgt core; `IsNondegPencilRealization.mono`; the ear and cut-vertex rank laws; BRIDGE's equality
-at `G` and `G_e`; `pencilNormalOfPicturePoly` and `MvPolynomial.exists_mem_eval_ne_zero₂` (BASE's fibre
-intersection, the one place the fibre argument is sound); the landed cut arm
+`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`) and
+WitnessGeneral.lean's idx/dtgt core; `IsNondegPencilRealization.mono`; the ear and cut-vertex
+rank laws; BRIDGE's equality at `G` and `G_e`; `pencilNormalOfPicturePoly` and
+`MvPolynomial.exists_mem_eval_ne_zero₂` (BASE's fibre intersection, the one place the fibre
+argument is sound); the landed cut arm
 `pencilPair_of_not_twoEdgeConnected` and the base leaf `pencilPair_of_habitat_ncard_eq_three`. **Not
 used:** L6b (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`), whose
 triangle-freeness excludes (F2)'s pendant triangles, since the smaller graph's feasibility comes by
