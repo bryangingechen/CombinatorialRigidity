@@ -620,6 +620,23 @@ theorem exists_smul_cross₃_pi_single {a b c d : Fin 4} (had : a ≠ d) (hbd : 
     rw [dotProduct_single_one, Pi.single_apply, ite_eq_right hcd]
   exact exists_smul_cross₃_eq_of_linearIndependent hLI hd_ne hq1 hq2 hq3
 
+/-- **A body's chart point is a nonzero multiple of `e_d` once its slot triple reads back an
+injective, `d`-avoiding basis assignment** (Phase 40-cleanup C2 extraction, `Witness.lean`'s
+`hPu`/`hP1`/`hP2` triple, written out nine times across `Witness.lean` and `GenericSteer.lean`
+before this lemma): a direct corollary of `exists_smul_cross₃_pi_single` that reads the three
+`cross₃` slots off `hslot` and unfolds `pencilChartPoint`. -/
+theorem exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single
+    {seed : PencilSeed K α} {hubSel : α → Fin 3 → Option α} {v : α} {σ : Fin 3 → Fin 4} {d : Fin 4}
+    (hσinj : Function.Injective σ) (hσd : ∀ i, σ i ≠ d)
+    (hslot : ∀ i, hubSlotNormal seed hubSel v i = Pi.single (σ i) (1 : K)) :
+    ∃ cc : K, cc ≠ 0 ∧ pencilChartPoint seed hubSel v = cc • (Pi.single d (1 : K) : Fin 4 → K) := by
+  have h01 : σ 0 ≠ σ 1 := fun h => absurd (hσinj h) (by decide)
+  have h02 : σ 0 ≠ σ 2 := fun h => absurd (hσinj h) (by decide)
+  have h12 : σ 1 ≠ σ 2 := fun h => absurd (hσinj h) (by decide)
+  obtain ⟨cc, hcc, hcross⟩ :=
+    exists_smul_cross₃_pi_single (K := K) (hσd 0) (hσd 1) (hσd 2) h01 h02 h12
+  exact ⟨cc, hcc, by rw [pencilChartPoint, hslot 0, hslot 1, hslot 2, hcross]⟩
+
 /-! ## W5-L4: the exact perp-sweeps at arity `2`/`1`/`0` (Phase 39 PENCIL, D6,
 `notes/Phase39-design.md` §"W5 design pass", verdict 2)
 

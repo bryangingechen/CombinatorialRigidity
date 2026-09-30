@@ -4,17 +4,17 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b and 24 closed (17 not landed); 21 of 49
-one-commit tasks remain. **Next concrete task:** task 25, C2, `Witness.lean` (the long-proof
-screen). Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24 and 25 closed (17 not landed); 20 of 49
+one-commit tasks remain. **Next concrete task:** task 26, C3, `Pair.lean` and `Pair2.lean` (the
+long-proof screen). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 25, C2** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b and 24 are closed (17 not landed), 21 remain.
+**Next commit: task 26, C3** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24 and 25 are closed (17 not landed), 20 remain.
 Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b and 24, one line each under *Lemma checklist →
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24 and 25, one line each under *Lemma checklist →
 Landed* (task 17 closed not landed). A finished task gets one or two lines there, with its commit;
 the detail stays in the commit message, and this section stays the forward pointer.
 
@@ -76,7 +76,7 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given (the numbers). For the §B tasks, done means: every listed
 site is either fixed, or kept with a one-word reason recorded under the task's checklist line.
 
-### Landed: tasks 1–24 (one line each; each commit message has the detail)
+### Landed: tasks 1–25 (one line each; each commit message has the detail)
 
 - [x] **1. T1** (`a2686fde`). The toolchain status was stale. Master is pushed and CI-green at
   `91fcd24a`, and hopscotch's issue #2 / PR #1 are now live signal. The `bump/*` refs are the PI's call.
@@ -143,6 +143,19 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   `Pi.linearIndependent_single_one` with `linearIndepOn_range_iff`. FRICTION [idiom]. `_four` is
   off-headline (see *Candidates*), so its 400000 bump stays. There is no sibling unification and
   no file split (`Base.lean` is at 1 310 lines).
+- [x] **25. C2** (this commit). Both `Witness.lean` proofs are live, through
+  `hasGenericPencilRealization_pendant_deg3_of_IH` and `pencilPair_of_not_twoEdgeConnected` to
+  `MainComponent/Statements.lean`'s headline nodes: #2
+  `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3` (483 → 462 lines) and #10
+  `…_pencilChartPoint_of_pendant_deg3` (353 → 329). The `hPu`/`hP1`/`hP2` triple is now one lemma,
+  `exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single` (`Engine.lean`, beside
+  `exists_smul_cross₃_pi_single`, the file both `Witness.lean` and `GenericSteer.lean` import
+  upstream of `Chart.lean`'s own `pencilChartPoint`). All nine sites collapse to a one-line
+  `have`/`obtain`, including `GenericSteer.lean`'s live
+  `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` (287 → 263, through
+  `GenericEar.lean`/`GenericTriangle.lean`'s main-component route). No missed mathlib lemma or
+  tactic substitution surfaced; no cross-proof unification attempted (out of this task's scope).
+  `Witness.lean` is at 1 758 lines (task 28 still applies).
 
 ### §C: the long-proof screen (the top ten, walked; screening only)
 
@@ -153,15 +166,6 @@ findings are recorded as candidates. First run a cheap liveness check (`lean_ref
 transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`). A proof that feeds neither
 headline is recorded as off-headline (round 4's third question) and gets no local work.
 
-- [ ] **25. C2: `Witness.lean`.** #2 `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`
-  (670, 483) and #10 `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3` (244, 353).
-  - The sweep found one block written out nine times: the `hPu`/`hP1`/`hP2` triple (each
-    `exists_smul_cross₃_pi_single` followed by `rw [pencilChartPoint, hslot_* 0, …, hcross]`). It
-    is at `Witness.lean` 563–581 and 964–982, and at `GenericSteer.lean` 302–320 in
-    `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` (48, 287 lines).
-  - That is a small-extraction candidate: one lemma giving
-    `∃ cc ≠ 0, pencilChartPoint … = cc • Pi.single j 1` from the slot equations. Land it if its
-    locals factor.
 - [ ] **26. C3: `Pair.lean` and `Pair2.lean`.**
   - #4 `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` (`Pair2.lean` 66,
     448).
@@ -303,22 +307,23 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 25, C2** (§C, the long-proof screen). Walk `Witness.lean`'s #2
-`exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3` and #10
-`…_pencilChartPoint_of_pendant_deg3` against §C's four questions. First run the liveness check
-(`lean_references`, transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`); an
-off-headline proof gets no local work. The checklist's extraction candidate is the
-`hPu`/`hP1`/`hP2` triple that is written out nine times (six in `Witness.lean`, three in
-`GenericSteer.lean`). Land it if its locals factor. Measure each change's heartbeats on a scratch
-copy, the task-16 way (FRICTION, `exists_insertion_of_star_sup_star`), and revert any change that
-raises them.
+**Next concrete commit: task 26, C3** (§C, the long-proof screen). Walk `Pair.lean` and
+`Pair2.lean`'s #4 `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`
+(`Pair2.lean`), #5 `…_induce_union_singleton` (`Pair.lean`), and #6 `…_induce_pendant_deg3`
+(`Pair2.lean`) against §C's four questions, after the liveness check. The `rw [hnu, hnv, hpu,
+hpv]` run recurs once in each of #4 and #6 (`Pair2.lean` 242/250, 701/709) — that is the sibling
+shape §C's calibration warns about (`CLEANUP.md` §C); check for per-step divergence before
+proposing a unification, the task-25/26 line numbers having shifted with this commit's `Engine.lean`
+insertion (`Witness.lean`/`GenericSteer.lean` line numbers in the checklist are stale by this
+commit's deletions; `Pair.lean`/`Pair2.lean` are untouched). Measure each change's heartbeats on a
+scratch copy, the task-16 way (FRICTION, `exists_insertion_of_star_sup_star`), and revert any
+change that raises them.
 
-Task 24 (this commit) screened `Base.lean`. Local substitutions took `_three` from 72 044 to
-60 555 heartbeats. `_four` is off-headline and is recorded under *Candidates*. One
-attempt was reverted: deriving `Cxy ≠ 0` from the wedge family's independence saved 24 lines but
-cost about 6 % more heartbeats. The screen also surfaced about 25 sites that bridge through both
-`pair_iff`s. They are filed on FRICTION's existing `[open]` `n`-ary `LinearIndepOn.pair_iff` entry,
-not as a task.
+Task 25 (this commit) extracted `Witness.lean`'s `hPu`/`hP1`/`hP2` triple (nine sites across
+`Witness.lean` and `GenericSteer.lean`) into `exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`
+(`Engine.lean`, upstream of both call sites). Both `Witness.lean` proofs and the `GenericSteer.lean`
+site are live. No mathlib lemma or tactic substitution surfaced; no unification attempted (not
+this task's scope). `Witness.lean` is at 1 758 lines; task 28 (the file split) still applies.
 
 ## Decisions made during this round
 

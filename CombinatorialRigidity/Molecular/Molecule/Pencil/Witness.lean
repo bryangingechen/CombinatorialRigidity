@@ -552,33 +552,9 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3
   have hslot_1 := hslot w₁ σ1 hfill_1 hσ1_match
   have hslot_2 := hslot w₂ σ2 hfill_2 hσ2_match
   -- The three constructed points are nonzero multiples of three distinct basis vectors.
-  have hPu : ∃ cc : K, cc ≠ 0 ∧ pencilChartPoint (PencilSeed.ofCoord q) hubSel u_c
-      = cc • (Pi.single (3 : Fin 4) 1 : Fin 4 → K) := by
-    have h01 : σu 0 ≠ σu 1 := fun h => absurd (hσu_inj h) (by decide)
-    have h02 : σu 0 ≠ σu 2 := fun h => absurd (hσu_inj h) (by decide)
-    have h12 : σu 1 ≠ σu 2 := fun h => absurd (hσu_inj h) (by decide)
-    obtain ⟨cc, hcc, hcross⟩ :=
-      exists_smul_cross₃_pi_single (K := K) (hσu_d 0) (hσu_d 1) (hσu_d 2) h01 h02 h12
-    refine ⟨cc, hcc, ?_⟩
-    rw [pencilChartPoint, hslot_u 0, hslot_u 1, hslot_u 2, hcross]
-  have hP1 : ∃ cc : K, cc ≠ 0 ∧ pencilChartPoint (PencilSeed.ofCoord q) hubSel w₁
-      = cc • (Pi.single (2 : Fin 4) 1 : Fin 4 → K) := by
-    have h01 : σ1 0 ≠ σ1 1 := fun h => absurd (hσ1_inj h) (by decide)
-    have h02 : σ1 0 ≠ σ1 2 := fun h => absurd (hσ1_inj h) (by decide)
-    have h12 : σ1 1 ≠ σ1 2 := fun h => absurd (hσ1_inj h) (by decide)
-    obtain ⟨cc, hcc, hcross⟩ :=
-      exists_smul_cross₃_pi_single (K := K) (hσ1_d 0) (hσ1_d 1) (hσ1_d 2) h01 h02 h12
-    refine ⟨cc, hcc, ?_⟩
-    rw [pencilChartPoint, hslot_1 0, hslot_1 1, hslot_1 2, hcross]
-  have hP2 : ∃ cc : K, cc ≠ 0 ∧ pencilChartPoint (PencilSeed.ofCoord q) hubSel w₂
-      = cc • (Pi.single (1 : Fin 4) 1 : Fin 4 → K) := by
-    have h01 : σ2 0 ≠ σ2 1 := fun h => absurd (hσ2_inj h) (by decide)
-    have h02 : σ2 0 ≠ σ2 2 := fun h => absurd (hσ2_inj h) (by decide)
-    have h12 : σ2 1 ≠ σ2 2 := fun h => absurd (hσ2_inj h) (by decide)
-    obtain ⟨cc, hcc, hcross⟩ :=
-      exists_smul_cross₃_pi_single (K := K) (hσ2_d 0) (hσ2_d 1) (hσ2_d 2) h01 h02 h12
-    refine ⟨cc, hcc, ?_⟩
-    rw [pencilChartPoint, hslot_2 0, hslot_2 1, hslot_2 2, hcross]
+  have hPu := exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single hσu_inj hσu_d hslot_u
+  have hP1 := exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single hσ1_inj hσ1_d hslot_1
+  have hP2 := exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single hσ2_inj hσ2_d hslot_2
   obtain ⟨cu, hcu0, hcu⟩ := hPu
   obtain ⟨c1, hc10, hc1⟩ := hP1
   obtain ⟨c2, hc20, hc2⟩ := hP2
@@ -953,33 +929,12 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
   have hslot_1 := hslot w₁ σ1 hfill_1 hσ1_match
   have hslot_2 := hslot w₂ σ2 hfill_2 hσ2_match
   -- The three chart points are nonzero multiples of `e₃`, `e₂`, `e₁`.
-  obtain ⟨cu, hcu0, hpt_u⟩ : ∃ cc : K, cc ≠ 0 ∧
-      pencilChartPoint (PencilSeed.ofCoord q) hubSel u_c
-        = cc • (Pi.single (3 : Fin 4) 1 : Fin 4 → K) := by
-    have h01 : σu 0 ≠ σu 1 := fun h => absurd (hσu_inj h) (by decide)
-    have h02 : σu 0 ≠ σu 2 := fun h => absurd (hσu_inj h) (by decide)
-    have h12 : σu 1 ≠ σu 2 := fun h => absurd (hσu_inj h) (by decide)
-    obtain ⟨cc, hcc, hcross⟩ :=
-      exists_smul_cross₃_pi_single (K := K) (hσu_d 0) (hσu_d 1) (hσu_d 2) h01 h02 h12
-    exact ⟨cc, hcc, by rw [pencilChartPoint, hslot_u 0, hslot_u 1, hslot_u 2, hcross]⟩
-  obtain ⟨c1, hc10, hpt_1⟩ : ∃ cc : K, cc ≠ 0 ∧
-      pencilChartPoint (PencilSeed.ofCoord q) hubSel w₁
-        = cc • (Pi.single (2 : Fin 4) 1 : Fin 4 → K) := by
-    have h01 : σ1 0 ≠ σ1 1 := fun h => absurd (hσ1_inj h) (by decide)
-    have h02 : σ1 0 ≠ σ1 2 := fun h => absurd (hσ1_inj h) (by decide)
-    have h12 : σ1 1 ≠ σ1 2 := fun h => absurd (hσ1_inj h) (by decide)
-    obtain ⟨cc, hcc, hcross⟩ :=
-      exists_smul_cross₃_pi_single (K := K) (hσ1_d 0) (hσ1_d 1) (hσ1_d 2) h01 h02 h12
-    exact ⟨cc, hcc, by rw [pencilChartPoint, hslot_1 0, hslot_1 1, hslot_1 2, hcross]⟩
-  obtain ⟨c2, hc20, hpt_2⟩ : ∃ cc : K, cc ≠ 0 ∧
-      pencilChartPoint (PencilSeed.ofCoord q) hubSel w₂
-        = cc • (Pi.single (1 : Fin 4) 1 : Fin 4 → K) := by
-    have h01 : σ2 0 ≠ σ2 1 := fun h => absurd (hσ2_inj h) (by decide)
-    have h02 : σ2 0 ≠ σ2 2 := fun h => absurd (hσ2_inj h) (by decide)
-    have h12 : σ2 1 ≠ σ2 2 := fun h => absurd (hσ2_inj h) (by decide)
-    obtain ⟨cc, hcc, hcross⟩ :=
-      exists_smul_cross₃_pi_single (K := K) (hσ2_d 0) (hσ2_d 1) (hσ2_d 2) h01 h02 h12
-    exact ⟨cc, hcc, by rw [pencilChartPoint, hslot_2 0, hslot_2 1, hslot_2 2, hcross]⟩
+  obtain ⟨cu, hcu0, hpt_u⟩ :=
+    exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single hσu_inj hσu_d hslot_u
+  obtain ⟨c1, hc10, hpt_1⟩ :=
+    exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single hσ1_inj hσ1_d hslot_1
+  obtain ⟨c2, hc20, hpt_2⟩ :=
+    exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single hσ2_inj hσ2_d hslot_2
   -- `H.closedNbhd u_c = {u_c, w₁, w₂}`, so `nbrSel u_c` is fully assigned.
   have hNH_uc : (G.induce V₁).closedNbhd u_c = ({u_c, w₁, w₂} : Set α) := by
     ext x
