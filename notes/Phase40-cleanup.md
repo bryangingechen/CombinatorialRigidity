@@ -4,18 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32 and 33
-closed (17 not landed); 12 of 50 one-commit tasks remain. **Next concrete task:** task 34, A-MC2,
-the blueprint-against-Lean walk of `main-component.tex`'s `sec:main-component-flat` and
-`sec:main-component-jj`. Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33 and 34
+closed (17 not landed); 11 of 50 one-commit tasks remain. **Next concrete task:** task 35, A-MC3,
+the blueprint-against-Lean walk of `main-component.tex`'s `sec:main-component-cut`. Round manual:
+`CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 34, A-MC2** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
-tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32 and 33 are
-closed (17 not landed), 12 remain. Nothing is mid-stream.
+**Next commit: task 35, A-MC3** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33 and 34
+are closed (17 not landed), 11 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32 and 33,
+Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33 and 34,
 one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task gets
 one or two lines there, with its commit; the detail stays in the commit message, and this section
 stays the
@@ -206,11 +206,15 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   dichotomy}`, never invoked, repointed to `def:cycle-data`); the intro's route summary already
   matches the unconditional `pencil_conjecture`; 1 strength-changing finding under *Candidates*.
 - [x] **33. A-MC1: `main-component.tex`, `sec:main-component-carrier` and the section
-  introduction** (123–716 and 1–122; 21; this commit). 21 environments walked (19 `\leanok`, 2
+  introduction** (123–716 and 1–122; 21; `d6e6e201`). 21 environments walked (19 `\leanok`, 2
   unpinned remarks), 0 divergences: every pin, `\uses` edge and proof paragraph matches its Lean
   in `Carrier.lean`/`Configuration.lean`, including the round's `mapExtensor` rename and
   `Graph.closedNbhd_subset_vertexSet`'s move to `Motive.lean` (neither is pinned in this range).
-- [ ] **34. A-MC2: `sec:main-component-flat` and `sec:main-component-jj`** (717–1102; 13).
+- [x] **34. A-MC2: `sec:main-component-flat` and `sec:main-component-jj`** (717–1102; this
+  commit). 15 environments walked (13 `\leanok`, 2 unpinned remarks), 0 divergences: both remarks
+  already document the ambient-off-`V(G)` and fresh-edge-label conventions the range's Lean
+  carries (`Flat.lean`/`Bridge.lean`), and every `\uses` edge — incl. the
+  `lem:relative-deficiency-rank-bound` citation — matches what the Lean calls.
 - [ ] **35. A-MC3: `sec:main-component-cut`** (1103–1330; 11).
 - [ ] **36. A-MC4: `sec:main-component-contract`** (1331–1636; 9). Run it after tasks 14a–14b.
 - [ ] **37. A-MC5: `sec:main-component-chain`** (1637–1967; 11).
@@ -335,18 +339,19 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 34, A-MC2** (§A, the blueprint-against-Lean walk). `main-component.tex`,
-`sec:main-component-flat` and `sec:main-component-jj` (717–1102; 13 environments): compare each
-`\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read the
-prose proof for oversell. Tasks 34–44 (§A) walk the rest of the surface; task 45 closes the round.
+**Next concrete commit: task 35, A-MC3** (§A, the blueprint-against-Lean walk). `main-component.tex`,
+`sec:main-component-cut` (1103–1330; 11 environments): compare each `\leanok` node's statement with
+its pinned Lean signature, check the laundering walk, and read the prose proof for oversell. Tasks
+35–44 (§A) walk the rest of the surface; task 45 closes the round.
 
 Tasks 29, 30 and 32's divergences and fixes are recorded on their own *Lemma checklist* lines above
-(all three closed the same way: fixed in-commit, all gates green, no statement changed). Tasks 31
-and 33 found no divergences — task 31's two held kernels already read as retired, off-headline;
+(all three closed the same way: fixed in-commit, all gates green, no statement changed). Tasks 31,
+33 and 34 found no divergences — task 31's two held kernels already read as retired, off-headline;
 task 33's 21 environments (`sec:main-component-carrier` and the intro) all match their Lean,
-including the round's `mapExtensor`/`closedNbhd_subset_vertexSet` moves, which pin nothing there
-(their own checklist lines). Task 28b's `Arms.lean`/`ArmsAssembly.lean` split and its repointed
-callers are on its own checklist line.
+including the round's `mapExtensor`/`closedNbhd_subset_vertexSet` moves, which pin nothing there;
+task 34's 15 environments matched too, its two remarks already documenting the ambient-`V(G)`ᶜ and
+fresh-edge-label conventions (their own checklist lines). Task 28b's `Arms.lean`/`ArmsAssembly.lean`
+split and its repointed callers are on its own checklist line.
 
 ## Decisions made during this round
 
