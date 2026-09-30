@@ -154,8 +154,14 @@ to be re-derived by re-reading entries later.
   prefixed with `#count_heartbeats in set_option Elab.async false in` in a copy, run by `lake lean`).
   Traps, one LSP round each: `obtain … := f fun hs => ?_` opens no goal (TACTICS-QUIRKS § 113), and
   `rw [← finrank_screwSpace_two]` finds no `6`, since it reads `= 3 + 3` (ascribe a `hsix` first).
+- **Part (ii) not adopted** (40-cleanup task 17): a general `x : Fin (k + 3) → α` lemma over
+  `Fin.succAbove` typechecks, and its vertex-set/injective/`pathVertex`-shift pieces prove, but
+  only via ad hoc numeral-vs-symbolic-modulus unfolds at every pivot index; completing the
+  edge/`hsep` conjuncts and the two `![…]` bridge corollaries the same way nets at least as long
+  as the two present proofs. `splitOff_ear_four`/`_three` stay independent. Detail:
+  `notes/Phase40-cleanup.md` task 17.
 - **Lifted to:** TACTICS-QUIRKS § 113.
-- **Status:** open, narrowed to parts (ii) and (iii) (40-cleanup tasks 17 and 18).
+- **Status:** open, narrowed to part (iii) (40-cleanup task 18).
 
 ### [resolved] The certificate-picture glue is written out a third time: `Short.lean` cannot see `Chain.lean`'s `pencilConfigPoint_cert`
 - **Where it bit:** Phase 40h B5, `Graph.X0Attains.of_openEar_two` (`MainComponent/Short.lean`).

@@ -4,18 +4,19 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b, 15 and 16 landed; 31 of 49 one-commit tasks remain. **Next concrete task:**
-task 17, M2c-ii, deriving `Short.lean`'s `splitOff_ear_three` from `splitOff_ear_four` via
-`Fin.succAbove 1` (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b, 15, 16 and 17 (not landed) closed; 30 of 49 one-commit tasks remain.
+**Next concrete task:** task 18, M2c-iii, the `Graph.X0Attains.of_openEar_three`/`_four` assembly
+unification in `Short.lean` (Lean). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 17, M2c-ii** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b, 15 and 16 landed, 31 remain. Nothing is mid-stream.
+**Next commit: task 18, M2c-iii** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b, 15, 16 and 17 (not landed) are closed, 30 remain. Nothing is mid-stream.
 
 Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3), 14a–14b, 15 and 16. Outcome
-detail goes on the task's checklist line, not here, so this section stays the forward pointer.
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3), 14a–14b, 15 and 16; task 17
+closed not landed (§3, checklist line has the detail). Outcome detail goes on the task's checklist
+line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -250,8 +251,15 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     rearrangement, `_four` keeping its tetrahedron. Names, statements, pins unchanged (neither is
     pinned). Block 215 → 105 lines, 21 747 → 6 303 heartbeats (measured, script not retained; method
     in the FRICTION entry, now narrowed). TACTICS-QUIRKS § 113 (new).
-  - [ ] **17. M2c-ii.** `splitOff_ear_three` (`Short.lean` 300) from `splitOff_ear_four` (228), via
-    `Fin.succAbove 1`.
+  - [x] **17. M2c-ii, not landed** (this commit). Tried one lemma over `x : Fin (k + 3) → α`
+    suppressing `x 1` (`_four`/`_three` as `k = 1, 0`), bridged via `Fin.succAbove`. The
+    vertex-set/injective/`∉ V₁` conjuncts generalize cleanly, and a `pathVertex` vs. `succAbove`
+    shift lemma closes too (induction mirroring `pathVertex_eq_or_exists`), but only after ad hoc
+    `(n : Fin m).val = n` unfolds at every pivot index (`simp`/`omega` don't resolve a numeral
+    against a symbolic modulus alone). The edge/`hsep` conjuncts and the two `![…]`-bridge
+    corollaries need comparably more of the same, netting at least as long as the two present
+    ~65-line proofs, for materially more fragile Lean. Reverted (scratch only, no tracked diff);
+    `splitOff_ear_four`/`_three` stay as they are.
   - [ ] **18. M2c-iii.** About 200 lines of `Graph.X0Attains.of_openEar_three`'s assembly (`Short.lean`
     1012, 353 lines, tied tenth in the §C ranking) repeat `…_four`'s (646, 351 lines). Prove one
     assembly lemma from the round-1 point, parametrized by `k`. **⚠Z (producer)**. If it won't land
@@ -457,11 +465,12 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 17, M2c-ii** (§3, the 40h items; the `[open]` FRICTION entry *The
-three-body step repeats the four-body step*, now narrowed to tasks 17–18). Derive
-`splitOff_ear_three` (`Short.lean` 300) from `splitOff_ear_four` (228) via `Fin.succAbove 1`, first
-confirming the two match step for step (`CLEANUP.md` §C's per-step-divergence calibration). Task 16
-(just landed) unified the insertion pair in `exists_insertion_of_star_sup_star`.
+**Next concrete commit: task 18, M2c-iii** (§3, the 40h items; the `[open]` FRICTION entry *The
+three-body step repeats the four-body step*, now narrowed to task 18 only). Prove one assembly
+lemma for `Graph.X0Attains.of_openEar_three`/`_four`'s ~200-line shared tail, parametrized by `k`
+(`Short.lean` 1012/646); **⚠Z (producer)**. Task 17 (this commit) tried and closed not-landed the
+matching unification for `splitOff_ear_three`/`_four` — the checklist line has the reasoning, in
+case it bears on task 18's own size call.
 
 ## Decisions made during this round
 
