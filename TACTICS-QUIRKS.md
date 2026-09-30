@@ -142,6 +142,8 @@ failing pattern and the working fix.
 - `Module.finrank K (A ⊓ B)` (or `⊔`) on two `Submodule`-typed terms that each elaborate fine alone fails with *"failed to synthesize instance of type class `Min (Type u_1)`"*, pointing at the `finrank` call and mentioning neither `Submodule` nor `Inf` → § 111 (the `Type*` argument is committed before the `↥`-coercion is inserted, so `⊓` is searched at `Type` itself; write `Module.finrank K ↥(A ⊓ B)`, or ascribe `(A ⊓ B : Submodule K M)`)
 - `simp`/`simpa [h]` makes progress everywhere *except* a set (or any term) sitting inside `Module.finrank K ↥(Submodule.span K (⟨G.induce X, ext⟩ : BodyHingeFramework …).rigidityRows)`, leaving *"unsolved goals"* / a *"type mismatch after simplification"* that still shows the unrewritten `X` — while the same `simp` rewrites `X` fine in a deficiency or `ncard` goal → § 112 (`X` lives in the **type** argument of `Module.finrank`, which `simp` never rewrites; `rw [show X = X' by simp]` / `rwa [h] at this` does, since `rw` abstracts every occurrence including the instance arguments)
 - `obtain ⟨…⟩ := f … fun h => ?_` (or `f ?_`) followed by two bullets fails with *"No goals to be solved"* on the second bullet — or, with no bullet after it, *"don't know how to synthesize placeholder"* at the `?_` → § 113 (`obtain`/`rcases` elaborates its `:=` term completely and never turns a `?_` into a goal; fill the argument with an inline `by` block, or `have h := f ?_` first — `have` does open the goal — and `obtain` from `h`)
+- `simp only [lemma] at h` succeeds on a rank hypothesis `Module.finrank K ↥(… X …)`, and the *next* `rw … at h` fails *"Did not find an occurrence"* with a note that the target *"is not type-correct under the `implicit` transparency level"* and an *"Application type mismatch"* on an `addCommMonoid` instance → § 112 (the `simp` rewrote `X` everywhere but in the instance arguments; use `rw [lemma] at h`)
+- `rw [h]` with `h : ∀ w, (fun j => f (w, j)) = …` finds nothing in `fun i => … (fun j => f (u i, j)) …`, *"Did not find an occurrence of the pattern `fun j ↦ f (?w, j)`"* → § 114 (`?w` would capture the bound `i`; state `h` over index functions `u : ι → α` at the `fun i` level)
 
 ## Sections
 
@@ -4272,6 +4274,18 @@ have := h; rwa [image_val_lt_eq_range] at this                          -- hypot
 case and the final re-indexing of the path telescope, where the deficiency twin
 `Graph.deficiency_induce_union_range_of_bridgePath` closes both by `simp`/`simpa`.
 
+**The same cause, when the `simp` succeeds.** If the term also occurs *outside* the type argument,
+`simp only [lemma] at h` rewrites those occurrences, reports success, and leaves `h` type-incorrect:
+the `Module` instance inside `finrank` still mentions the old term. Nothing complains until the next
+`rw … at h`, which fails with *"Did not find an occurrence of the pattern"* plus a note that *"the
+target expression is not type-correct under the `implicit` transparency level"* and an
+*"Application type mismatch"* naming an `addCommMonoid` instance. The fix is again `rw`: the ear
+rank law's `have hear := BodyHingeFramework.finrank_span_rigidityRows_ear_eq
+(ofNormals H ends c).toBodyHinge …` reads `(ofNormals H ends c).toBodyHinge.graph[V₁]`, and
+`rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hear` turns it
+into `H[V₁]`, instance arguments included, where a `simp only` with the same two lemmas does not
+(40-cleanup task 18, `Graph.X0Attains.of_openEar_splitOff`, `Short.lean`).
+
 ---
 
 ## 113. `obtain ⟨…⟩ := f ?_` does not open `?_` as a goal — *"No goals to be solved"* on the next bullet
@@ -4298,5 +4312,50 @@ first with `have h := f ?_`, which does open the goal, and then `obtain … := h
 **Worked case:** 40-cleanup task 16, `exists_insertion_four`
 (`Molecule/Pencil/MainComponent/Lines.lean`), whose tetrahedron argument is the hypothesis it passes
 to `exists_insertion_of_star_sup_star`.
+
+---
+
+## 114. `rw [h]` with a lambda left-hand side finds nothing when the lambda's free slot must hold an outer bound variable — state `h` one binder up
+
+**Symptom.** A pointwise evaluation lemma, stated as a function equality so that `rw` can use it
+under `fun j`,
+
+```
+have hev : ∀ s w, (fun j => MvPolynomial.eval s (P (w, j))) = fun j => cfg s (w, j)
+```
+
+rewrites `fun j => MvPolynomial.eval s (P (x 0, j))`, but in a family
+
+```
+Set.range fun i => pointJoin (fun j => MvPolynomial.eval s (P (pathVertex a x b i.castSucc, j))) …
+```
+
+`rw [hev]` reports *"Did not find an occurrence of the pattern `fun j ↦ (MvPolynomial.eval s)
+(P (?w, j))`"*. When the family sits inside `Module.finrank K ↥(…)`, `simp only [hev]` is no way
+out either (§ 112).
+
+**Cause.** Here `?w` would have to be `pathVertex a x b i.castSucc`, which mentions the bound `i`
+of the enclosing `fun i`. A metavariable cannot be assigned a term with a loose bound variable, so
+the match fails.
+
+**Fix.** State the equation at the level of the binder whose variable the slot needs, over index
+functions:
+
+```
+have hfam : ∀ s {ι : Type} (u w : ι → α),
+    (fun i => pointJoin (fun j => MvPolynomial.eval s (P (u i, j)))
+      (fun j => MvPolynomial.eval s (P (w i, j)))) =
+    fun i => pointJoin (fun j => cfg s (u i, j)) (fun j => cfg s (w i, j)) :=
+  fun s _ u w => funext fun i => by simp only [hPc]
+```
+
+Now the slot is `?u i`, a pattern the unifier solves with `?u := fun i => pathVertex a x b
+i.castSucc`, and one `rw [hfam]` rewrites the whole family. The older workaround, a `rw [show (fun
+i => …) = fun i => … from funext fun i => by rw [hev, hev]]` spelled out at each use, costs five
+lines per site.
+
+**Worked case:** 40-cleanup task 18, `Graph.X0Attains.of_openEar_splitOff`
+(`Molecule/Pencil/MainComponent/Short.lean`), whose two span bounds (`hNt`, `hspan₀`) come out of
+`exists_mvPolynomial_le_finrank_sup_span_pointJoin` in the evaluated form.
 
 ---

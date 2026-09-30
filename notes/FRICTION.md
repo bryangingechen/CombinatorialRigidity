@@ -128,7 +128,7 @@ to be re-derived by re-reading entries later.
   `grep -rn "theorem <name>"` over the tree and `.lake/packages`.
 - **Status:** open (upstream tool, not a Mathlib mirror)
 
-### [open] The three-body step repeats the four-body step: `exists_insertion_three`, `splitOff_ear_three` and the assembly are near-copies
+### [resolved] The three-body step repeats the four-body step: `exists_insertion_three`, `splitOff_ear_three` and the assembly are near-copies
 - **Where it bit:** Phase 40h B7, `exists_insertion_three` (`MainComponent/Lines.lean`),
   `splitOff_ear_three` and `Graph.X0Attains.of_openEar_three` (`MainComponent/Short.lean`).
 - **Friction:** no build cycle, since the pieces were transcribed, but about 90 lines of
@@ -160,8 +160,18 @@ to be re-derived by re-reading entries later.
   edge/`hsep` conjuncts and the two `![…]` bridge corollaries the same way nets at least as long
   as the two present proofs. `splitOff_ear_four`/`_three` stay independent. Detail:
   `notes/Phase40-cleanup.md` task 17.
-- **Lifted to:** TACTICS-QUIRKS § 113.
-- **Status:** open, narrowed to part (iii) (40-cleanup task 18).
+- **Part (iii) fixed** (40-cleanup task 18): `Graph.X0Attains.of_openEar_splitOff` (`Short.lean`)
+  is the shared assembly, over the antecedent's ear length `m`. It takes the antecedent's ear data,
+  `def₃(G″) ≤ def₃(G)` and an insertion hypothesis as hypotheses, not a `Fin.succAbove` bridge, so
+  part (ii)'s trap does not arise. `_four`/`_three` keep their statements and supply the
+  tetrahedron, resp. the case split on `ρ`, and their explicit join lists. The two declarations'
+  704 lines (header to last line) are now 461 across the three, and 101 972 heartbeats are 53 749
+  (measured, script not retained; method as in part (i)).
+  Traps: § 112's `simp`-inside-`finrank` failure twice, once as a `simp only … at h` that
+  succeeds and leaves `h` type-incorrect; and a lambda-LHS `rw` whose slot needs an outer bound
+  variable (§ 114).
+- **Lifted to:** TACTICS-QUIRKS § 112 (extended), § 113, § 114 (new).
+- **Status:** resolved: parts (i) and (iii) fixed, part (ii) not adopted.
 
 ### [resolved] The certificate-picture glue is written out a third time: `Short.lean` cannot see `Chain.lean`'s `pencilConfigPoint_cert`
 - **Where it bit:** Phase 40h B5, `Graph.X0Attains.of_openEar_two` (`MainComponent/Short.lean`).
@@ -192,7 +202,8 @@ to be re-derived by re-reading entries later.
   `G.induce V₁`, so its `rw` failed. (3) `lake lint` found the base lemma's `[Finite β]` unused.
   One build cycle each for (1) and (2).
 - **Fix:** (1) `rw [← hcfgdef, …]`, and a local `hcV₁` restating `earConfig_of_mem` against `cfg`;
-  (2) keep the spike's ascription; (3) dropped. Also, `Set.range ![a, b, c, d] = {a, b, c, d}` needs
+  (2) keep the spike's ascription (or, since 40-cleanup task 18, `rw [toBodyHinge_graph,
+  ofNormals_graph] at hear`; TACTICS-QUIRKS § 112); (3) dropped. Also, `Set.range ![a, b, c, d] = {a, b, c, d}` needs
   no helper: `simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty,
   Set.singleton_union]` (the spike's `range_fin_four`/`_five` were dropped).
 - **Lifted to:** TACTICS-QUIRKS § 43 (the one-shot fold bullet).
