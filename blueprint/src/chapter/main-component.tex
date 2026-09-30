@@ -2104,6 +2104,7 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:pencil-join-flat}
   The first claim is a computation in the flat coordinates of
   \cref{lem:pencil-join-flat}. On $\Lambda^2 \hat\pi_h$ the coordinate
   $\sigma$ is determined by $\tau$, so $\tau$ is injective there.
@@ -2342,7 +2343,11 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   Write $f = \operatorname{def}(\tilde G[V_1])$, and compute ranks with the
   joins as hinges (\cref{lem:pencil-config-point-join-rank}). $G''$ has
   the open ear $a - x_1 - x_3 - x_4 - b$ on $V_1$, and the same
-  $G[V_1]$.
+  $G[V_1]$. The base data, the two rounds of ear data and the count below are the general
+  assembly of an open-ear step with an antecedent, shared with the proof of
+  \cref{thm:pencil-x0-open-ear-three} (\texttt{Graph.X0Attains.of\_openEar\_splitOff}); only the
+  reinsertion of $x_2$ (\emph{Putting $x_2$ back} below) is specific to the number of interior
+  bodies.
 
   \emph{Base data.} Take a picture $q^*$ off the zero sets of the
   main-picture polynomial of $G$ (\cref{lem:pencil-x0-main-picture-open})
@@ -2460,10 +2465,13 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
         lem:pencil-bilinear, lem:pencil-plane-lines,
         lem:splitoff-deficiency-reuse, lem:deficiency-ear}
   Write $f = \operatorname{def}(\tilde G[V_1])$. $G''$ has the open ear
-  $a - x_1 - x_3 - b$ on $V_1$, and the same $G[V_1]$. Fix the base data
+  $a - x_1 - x_3 - b$ on $V_1$, and the same $G[V_1]$. As in the proof of
+  \cref{thm:pencil-x0-open-ear-four}, the base data, the two rounds of ear data and the count are
+  the general assembly of an open-ear step with an antecedent
+  (\texttt{Graph.X0Attains.of\_openEar\_splitOff}); only the reinsertion of $x_2$ below, by the
+  case split on $\rho$, is specific to three interior bodies. Fix the base data
   $(q_1, z_1)$, the affine functions $h_a$ and $h_b$, the ear datum $s^*$
-  and the relative screws $\rho$ as in the proof of
-  \cref{thm:pencil-x0-open-ear-four}
+  and the relative screws $\rho$
   (\texttt{Graph.exists\_earBase\_splitOff}). At every configuration of
   ear data, $p_a$ and the point $y_1$ of $x_1$ lie in $\hat\pi_a$, and the
   point $y_3$ of $x_3$ and $p_b$ lie in $\hat\pi_b$.

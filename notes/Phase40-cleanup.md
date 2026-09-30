@@ -5,18 +5,19 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
 Tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36 and 37 closed (17 not landed); 8 of 50 one-commit tasks remain. **Next concrete task:** task
-38, A-MC6, the blueprint-against-Lean walk of `main-component.tex`'s `sec:main-component-short`.
+35, 36, 37 and 38 closed (17 not landed); 7 of 50 one-commit tasks remain. **Next concrete task:**
+task 39, A-MC7, the blueprint-against-Lean walk of `main-component.tex`'s `sec:main-component-orbit`
+and `sec:main-component-splitoff`.
 Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 38, A-MC6** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
+**Next commit: task 39, A-MC7** (*Lemma checklist*). The checklist holds 50 one-commit tasks;
 tasks 1–13, 14a–14b, 15–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34,
-35, 36 and 37 are closed (17 not landed), 8 remain. Nothing is mid-stream.
+35, 36, 37 and 38 are closed (17 not landed), 7 remain. Nothing is mid-stream.
 
 Landed so far: tasks 1–20, 21a–21b, 22, 23a–23b, 24, 25, 26, 27, 28, 28b, 29, 30, 31, 32, 33, 34, 35,
-36 and 37, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
+36, 37 and 38, one line each under *Lemma checklist → Landed* (task 17 closed not landed). A finished task
 gets one or two lines there, with its commit; the detail stays in the commit message, and this
 section stays the
 forward pointer.
@@ -224,12 +225,21 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
   walked (8 `\leanok`, 1 unpinned remark), 0 divergences, incl. the 14a–14b-rebased
   `lem:pencil-contract-standing`/`-limit`/`-core-plane` trio, whose `\uses` edges and prose already
   match their current (post-rebase) Lean bodies.
-- [x] **37. A-MC5: `sec:main-component-chain`** (1637–1967; 11; this commit). 11 environments
+- [x] **37. A-MC5: `sec:main-component-chain`** (1637–1967; 11; `4b3c798b`). 11 environments
   walked (9 `\leanok`, 2 unpinned remarks), 1 divergence found and fixed: `rem:pencil-x0-ear-class`
   claimed the structural coverage applies `thm:pencil-x0-closed-ear` directly for a closed ear;
   `notes/Phase40g.md`'s PI decision 2 records that COVERAGE never consumes it (the closed ear
   routes through the cut-vertex case recursing to `thm:pencil-x0-cycle`), now stated that way.
-- [ ] **38. A-MC6: `sec:main-component-short`** (1968–2541; 15). Run it after tasks 16–19.
+- [x] **38. A-MC6: `sec:main-component-short`** (1968–2574; 18; this commit). 18 environments
+  walked (14 `\leanok`, 4 unpinned remarks), 2 divergences found and fixed: `lem:pencil-plane-lines`'s
+  proof was missing `\uses{lem:pencil-join-flat}` (its Lean genuinely computes in the flat
+  coordinates, like the sibling `lem:pencil-line-pairing-join`/`lem:pencil-bilinear` proofs); and
+  `thm:pencil-x0-open-ear-four`/`-three`'s proofs still narrated each theorem's own base-data/
+  two-round/count derivation as if bespoke, when task 18 (`b8b24c9a`) folded it into the shared
+  `Graph.X0Attains.of_openEar_splitOff` assembly — both proofs now name it, leaving only the
+  reinsertion witness (the tetrahedron / the case split on $\rho$) as theorem-specific. That
+  assembly and `Graph.exists_earBase_splitOff` have no blueprint node (D5-shaped debt, moved to
+  round 3 below).
 - [ ] **39. A-MC7: `sec:main-component-orbit` and `sec:main-component-splitoff`** (2542–3230; 14).
 - [ ] **40. A-MC8: `sec:main-component-contract-additive` and `sec:main-component-sparse`**
   (3231–3845; 15).
@@ -332,13 +342,23 @@ close mirrors them into `notes/Cleanup40.md` §2 Round 4.
   need to abstract over the assembled `normal`/`point`/`extF` on the `V₂` side (plain vs.
   transported by the repositioning automorphism `(g, h)`) — a real design task, not a small local
   extraction, and squarely in the scope-pin's `ScrewSpace`-carrier caution. Not attempted.
+- **`Graph.X0Attains.of_closedEar` feeds neither headline** (task 37, A-MC5; round 4's third
+  question). It has zero callers anywhere in the tree — `Coverage.lean`'s `X0Reduces` dispatch
+  never consumes it (Phase 40g's PI decision 2, `notes/Phase40g.md`); round 4 decides whether to
+  keep, retarget, or retire it.
 
 ## Moved to a later round
 
 Each line: the task, its target round, and a one-line reason. The same line goes into the target
 round's plan section in `notes/Cleanup40.md` in the same commit.
 
-- *(none yet)*
+- **`Graph.X0Attains.of_openEar_splitOff` and `Graph.exists_earBase_splitOff` have no blueprint
+  node** (task 38, A-MC6), round 3 (`40-exposition`). Task 18 (`b8b24c9a`) factored the three- and
+  four-body ear steps' base-data-fixing and two-round assembly into these two shared Lean
+  declarations; neither cites a nonexistent blueprint label, so no node is minted here (this
+  round's rule). `thm:pencil-x0-open-ear-four`/`-three`'s proofs now name them by `\texttt{}`
+  instead of a `\uses` edge; round 3's D5-blueprint-debt sweep (`notes/Phase40-design.md` §7)
+  decides whether to pin them.
 
 ## Blockers / open questions
 
@@ -350,12 +370,13 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 38, A-MC6** (§A, the blueprint-against-Lean walk). `main-component.tex`,
-`sec:main-component-short` (1968–2541; 15 environments), run after tasks 16–19: compare each
-`\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read the
-prose proof for oversell. Tasks 38–44 (§A) walk the rest of the surface; task 45 closes the round.
+**Next concrete commit: task 39, A-MC7** (§A, the blueprint-against-Lean walk). `main-component.tex`,
+`sec:main-component-orbit` and `sec:main-component-splitoff` (2542–3230; 14 environments): compare
+each `\leanok` node's statement with its pinned Lean signature, check the laundering walk, and read
+the prose proof for oversell. Tasks 39–44 (§A) walk the rest of the surface; task 45 closes the
+round. Also fill task 38's *Landed* sha in the same shape as task 37's fill this commit.
 
-Tasks 29–37's divergences (or their absence) are each recorded on their own *Lemma checklist* line
+Tasks 29–38's divergences (or their absence) are each recorded on their own *Lemma checklist* line
 above — see those lines for detail, not this section.
 
 ## Decisions made during this round

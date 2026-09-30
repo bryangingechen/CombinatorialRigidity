@@ -111,6 +111,12 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
   - the edge-restricted, non-spanning generic-normals row rank (§3 BRIDGE). A recon has compiled it
     as three declarations; it is off every consumer path. The coordinator added this one, because
     it is the same kind of item.
+  - `Graph.X0Attains.of_openEar_splitOff` and `Graph.exists_earBase_splitOff`
+    (`Molecule/Pencil/MainComponent/Short.lean`), the shared assembly SHORT's task 18
+    (`b8b24c9a`) factored the three- and four-body open-ear steps' base data and two-round
+    argument into. Neither cites a nonexistent blueprint label, so `40-cleanup` task 38 (A-MC6)
+    minted no node for either and instead pointed `thm:pencil-x0-open-ear-four`/`-three`'s proofs
+    at them by name (`notes/Phase40-cleanup.md` task 38).
 
 ### Round 4 — `40-simplify`: the deep recon (`notes/Phase40-simplify.md`)
 
