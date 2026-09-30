@@ -4,18 +4,18 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13 and 14a–14b landed; 33 of 49 one-commit tasks remain. **Next concrete task:** task 15,
-M2b (the B2 dedupe), factoring `Graph.splitOff_deficiency_le_of_eq_left`'s ~110-line repeat of
-`Graph.splitOff_deficiency_le` into one core (Lean). Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b and 15 landed; 32 of 49 one-commit tasks remain. **Next concrete task:** task
+16, M2c-i, unifying `Lines.lean`'s `exists_insertion_three`/`exists_insertion_four` (Lean, **⚠Z
+producer**). Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 15, M2b** (*Lemma checklist*). The checklist holds 49 one-commit tasks; tasks
-1–13 and 14a–14b landed, 33 remain. Nothing is mid-stream.
+**Next commit: task 16, M2c-i** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b and 15 landed, 32 remain. Nothing is mid-stream.
 
 Landed so far, one line each under the checklist: tasks 1–13 (T1, B3 with its corrective
-follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3) and 14a–14b. Outcome detail goes
-on the task's checklist line, not here, so this section stays the forward pointer.
+follow-up, B8, B7, F1, B6a, B6b, B6c, B5, B1a, B1b, B1c, B1d, M3), 14a–14b and 15. Outcome detail
+goes on the task's checklist line, not here, so this section stays the forward pointer.
 
 **Verified at the open** (`06d175b8`; its Lean and blueprint trees are identical to `91fcd24a`'s):
 - Whole-project `lake build` green, 3000 jobs, 0 `warning:` lines, 0 `failed to cache artifact`.
@@ -235,10 +235,12 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
     `\uses lem:pencil-contract-kernel-bound`, whose own part (1) is inlined self-contained (the
     dangling-pointer target ran the other way from 14a's, into core-plane); `lem:pencil-rank-scale-
     shift`'s proof now `\uses lem:pencil-rank-collineation`.
-- [ ] **15. M2b: the B2 dedupe** (§3, the 40h items). `Graph.splitOff_deficiency_le_of_eq_left`
-  (`Induction/SplitOffDeficiency.lean` 191) re-runs about 110 lines of
-  `Graph.splitOff_deficiency_le` (69). Factor out one core over any `e₀` with
-  `e₀ ∉ E(G) ∨ e₀ = eₐ`, and make both lemmas corollaries of it. No statement or pin moves.
+- [x] **15. M2b: the B2 dedupe** (§3, the 40h items; this commit). Confirmed the two proofs
+  matched step for step (only divergence: which label is relinked, and one fact — `e₀ ∉
+  G.crossingEdges f`, trivial if fresh, via `hfv`/`hfa` if reused — everything downstream of it
+  identical). Factored `private Graph.splitOff_deficiency_le_aux` over `e₀ ∉ E(G) ∨ e₀ = eₐ`;
+  both public lemmas are now one-line corollaries (`Or.inl`/`Or.inr rfl`). No statement, name, or
+  pin moved. `SplitOffDeficiency.lean`: 173 lines changed, net −67.
 - **16–18. M2c: the three-body near-copies** (§3, the 40h items; the `[open]` FRICTION entry
   *The three-body step repeats the four-body step*, which proposes the fix). Close or narrow that
   entry as the parts land.
@@ -452,11 +454,11 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 15, M2b (the B2 dedupe)** (§3, the 40h items).
-`Graph.splitOff_deficiency_le_of_eq_left` (`Induction/SplitOffDeficiency.lean` 191) re-runs about
-110 lines of `Graph.splitOff_deficiency_le` (69). Factor out one core over any `e₀` with
-`e₀ ∉ E(G) ∨ e₀ = eₐ`, and make both lemmas corollaries of it. No statement or pin moves. Task 14b
-(just landed) closed the CONTRACT-A corollary rebases (14a–14b, all four of call 12's).
+**Next concrete commit: task 16, M2c-i** (§3, the 40h items; `[open]` FRICTION entry *The
+three-body step repeats the four-body step*). `exists_insertion_three` (`Lines.lean` 661) repeats
+about 90 lines of `exists_insertion_four` (547). Prove one insertion lemma over `R ⊔ K ∙ (y₁ ∧
+y₃)` with the star hypothesis, and derive both from it. **⚠Z (producer)**. Task 15 (just landed)
+closed the B2 dedupe; task 14b before it closed the CONTRACT-A corollary rebases.
 
 ## Decisions made during this round
 
