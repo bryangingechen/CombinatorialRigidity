@@ -1998,7 +1998,7 @@ relative screw pairs to zero with every such line, and then the whole
 span has dimension at most three (\cref{lem:pencil-bilinear}). The data on
 $V_1$ are fixed first, from one configuration at which both smaller
 graphs attain, and the data of the ear second
-(\cref{lem:pencil-ear-data}).
+(\cref{def:pencil-ear-data}).
 
 By \cref{lem:pencil-join-flat} every $c \in \Lambda^2 K^4$ has flat
 coordinates $(\sigma(c), \tau(c)) \in K^3 \times K^3$, with
@@ -2173,43 +2173,38 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \dim W + 1$.
 \end{proof}
 
-\begin{lemma}[An open ear over fixed base data]
-  \label{lem:pencil-ear-data}
+\begin{definition}[The ear data over fixed base data]
+  \label{def:pencil-ear-data}
   \lean{CombinatorialRigidity.Molecular.earPicture, CombinatorialRigidity.Molecular.earHeight,
-    CombinatorialRigidity.Molecular.earConfig, CombinatorialRigidity.Molecular.eval_earPointPoly,
-    CombinatorialRigidity.Molecular.earConfig_of_mem, Graph.earHeight_mem_liftingSpace,
-    CombinatorialRigidity.Molecular.eval_bind₁_earPicturePoly,
-    CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_ofNormals_bind,
-    CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_sup_span_pointJoin}
+    CombinatorialRigidity.Molecular.earConfig}
   \leanok
-  \uses{def:pencil-lifting-space, def:pencil-admissible-picture, def:pencil-configuration,
-        def:pencil-x0-attains}
+  \uses{def:pencil-lifting-space, def:pencil-admissible-picture, def:pencil-configuration}
   Let $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$ with $k \ge 2$. Fix \emph{base
   data}: a picture $q_1$, heights $z_1 \in L_{G[V_1]}(q_1)$, and $h_a, h_b \in K^3$ with
   $z_1(w) = h_a \cdot (q_1(w), 1)$ on the closed neighbourhood of $a$ in $G[V_1]$, and likewise $h_b$
   at $b$. The \emph{ear data} are a point $s$ giving every body a point of $K^2$ and a value in $K$.
-  They give the picture $q(s)$, equal to $q_1$ on $V_1$ and to the points of $s$ elsewhere, and the
-  height $z(s)$, equal to $z_1$ on $V_1$, to $h_a \cdot (q(s)_{x_1}, 1)$ at $x_1$, to
-  $h_b \cdot (q(s)_{x_k}, 1)$ at $x_k$, to the value of $s$ at the other interior bodies, and to $0$
-  elsewhere.
-  \begin{enumerate}
-    \item If $q(s)$ is admissible for $G$, then $z(s) \in L_G(q(s))$. The points of the
-      configuration $(q(s), z(s))$ are polynomial in $s$, and on $V_1$ they are those of
-      $(q_1, z_1)$.
-    \item If $P$ is a polynomial in the picture, $s \mapsto P(q(s))$ is a polynomial in $s$.
-    \item Let the points of a configuration be polynomial in a parameter $s$. If, at one parameter,
-      every hinge of a graph $H$ is nonzero and the rank is at least $r$, there is a polynomial in
-      $s$, nonzero there, such that the rank is at least $r$ wherever it does not vanish. If, at one
-      parameter, $\dim(\rho + \operatorname{span} F) \ge n$ for a fixed subspace
-      $\rho \subseteq \Lambda^2 K^4$ and a family $F$ of joins of points of the configuration,
-      the same holds for this bound.
-  \end{enumerate}
+  They give the picture $q(s)$ (\texttt{earPicture}), equal to $q_1$ on $V_1$ and to the points of
+  $s$ elsewhere, and the height $z(s)$ (\texttt{earHeight}), equal to $z_1$ on $V_1$, to
+  $h_a \cdot (q(s)_{x_1}, 1)$ at $x_1$, to $h_b \cdot (q(s)_{x_k}, 1)$ at $x_k$, to the value of $s$
+  at the other interior bodies, and to $0$ elsewhere. The point $(q(s), z(s))$ is \texttt{earConfig}.
+\end{definition}
+
+\begin{lemma}[An open ear over fixed base data]
+  \label{lem:pencil-ear-data}
+  \lean{Graph.earHeight_mem_liftingSpace, CombinatorialRigidity.Molecular.eval_earPointPoly,
+    CombinatorialRigidity.Molecular.earConfig_of_mem}
+  \leanok
+  \uses{def:pencil-ear-data, def:pencil-lifting-space, def:pencil-admissible-picture,
+        def:pencil-configuration}
+  If $q(s)$ is admissible for $G$, then $z(s) \in L_G(q(s))$
+  (\texttt{Graph.earHeight\_mem\_liftingSpace}). The points of the configuration $(q(s), z(s))$ are
+  polynomial in $s$ (\texttt{eval\_earPointPoly}), and on $V_1$ they are those of $(q_1, z_1)$
+  (\texttt{earConfig\_of\_mem}).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-ear-fibre, lem:pencil-picture-local, lem:rank-polynomial-of-le-finrank,
-        lem:pencil-join-flat}
-  For (1), the lifting space of $G[V_1]$ and the closed neighbourhoods of $a$ and $b$ in $G[V_1]$
+  \uses{lem:pencil-ear-fibre, lem:pencil-picture-local}
+  The lifting space of $G[V_1]$ and the closed neighbourhoods of $a$ and $b$ in $G[V_1]$
   read the picture only on $V_1$, where $q(s)$ is $q_1$ (\cref{lem:pencil-picture-local}). So
   $z(s)$ agrees with an affine function of the picture on the closed neighbourhood in $G$ of every
   body of $V_1$: with $h_a$ at $a$, since the neighbourhood is that in $G[V_1]$ together with $x_1$;
@@ -2217,12 +2212,47 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   affine function of $z_1$ at any other body of $V_1$, whose closed neighbourhood lies in $V_1$.
   It vanishes off $V(G)$, so \cref{lem:pencil-ear-fibre}(1) applies. Every coordinate of a point
   of the configuration is a constant, a coordinate of $s$, or, at $x_1$ and $x_k$, affine in the
-  picture coordinates of $s$. For (2), substitute these coordinates into $P$. For (3), substitute
-  the points into the polynomial of \cref{lem:rank-polynomial-of-le-finrank}, which asks for the
-  nonzero hinges. For the span, take a basis of $\rho$ together with $F$: the coordinates of its
-  members are polynomial in $s$ (\cref{lem:pencil-join-flat}), $n$ of them are linearly independent
-  at the given parameter, and they stay independent wherever a maximal minor of their coordinate
-  matrix, nonzero there, does not vanish.
+  picture coordinates of $s$, which proves the polynomial claim; on $V_1$ they are the coordinates
+  of the base data.
+\end{proof}
+
+\begin{lemma}[Pictures along the ear data]
+  \label{lem:pencil-ear-data-picture}
+  \lean{CombinatorialRigidity.Molecular.eval_bind₁_earPicturePoly}
+  \leanok
+  \uses{def:pencil-ear-data, def:pencil-admissible-picture}
+  If $P$ is a polynomial in the picture, $s \mapsto P(q(s))$ is a polynomial in $s$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Every coordinate of $q(s)$ is a constant or a coordinate of $s$ (\cref{def:pencil-ear-data}), so
+  substituting them for the picture's coordinates in $P$ gives a polynomial in $s$.
+\end{proof}
+
+\begin{lemma}[Openness along a polynomial parametrization]
+  \label{lem:pencil-ear-data-open}
+  \lean{CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_ofNormals_bind,
+    CombinatorialRigidity.Molecular.exists_mvPolynomial_le_finrank_sup_span_pointJoin}
+  \leanok
+  \uses{def:pencil-configuration, def:pencil-x0-attains}
+  Let the points of a configuration be polynomial in a parameter $s$. If, at one parameter,
+  every hinge of a graph $H$ is nonzero and the rank is at least $r$, there is a polynomial in
+  $s$, nonzero there, such that the rank is at least $r$ wherever it does not vanish
+  (\texttt{exists\_mvPolynomial\_le\_finrank\_ofNormals\_bind}). If, at one
+  parameter, $\dim(\rho + \operatorname{span} F) \ge n$ for a fixed subspace
+  $\rho \subseteq \Lambda^2 K^4$ and a family $F$ of joins of points of the configuration,
+  the same holds for this bound
+  (\texttt{exists\_mvPolynomial\_le\_finrank\_sup\_span\_pointJoin}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-polynomial-of-le-finrank, lem:pencil-join-flat}
+  For the rank bound, substitute the points into the polynomial of
+  \cref{lem:rank-polynomial-of-le-finrank}, which asks for the nonzero hinges. For the span, take a
+  basis of $\rho$ together with $F$: the coordinates of its members are polynomial in $s$
+  (\cref{lem:pencil-join-flat}), $n$ of them are linearly independent at the given parameter, and
+  they stay independent wherever a maximal minor of their coordinate matrix, nonzero there, does not
+  vanish.
 \end{proof}
 
 \begin{theorem}[An open ear with two interior bodies]
@@ -2303,7 +2333,8 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
         lem:pencil-rank-congr, lem:pencil-picture-local,
         lem:pencil-x0-fibre-intersection,
         lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness,
-        lem:pencil-ear-data, lem:pencil-insertion, lem:pencil-tetrahedron,
+        def:pencil-ear-data, lem:pencil-ear-data, lem:pencil-ear-data-picture,
+        lem:pencil-ear-data-open, lem:pencil-insertion, lem:pencil-tetrahedron,
         lem:splitoff-deficiency-reuse, lem:deficiency-ear}
   Write $f = \operatorname{def}(\tilde G[V_1])$, and compute ranks with the
   joins as hinges (\cref{lem:pencil-config-point-join-rank}). $G''$ has
@@ -2322,7 +2353,7 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   of $G[V_1]$ is its target, and take for $h_a$ and $h_b$ the affine
   functions with which $z^*$ agrees on the closed neighbourhoods of $a$
   and $b$ in $G''$; they agree with $z_1$ on those in $G[V_1]$, as
-  \cref{lem:pencil-ear-data} asks. Write $\hat\pi_a$ and $\hat\pi_b$ for
+  \cref{def:pencil-ear-data} asks. Write $\hat\pi_a$ and $\hat\pi_b$ for
   the homogeneous points of their planes, which contain $p_a$ and the
   point of $x_1$, and $p_b$ and the point of $x_4$, at every configuration
   of ear data of $G$ or $G''$ with these base data. Since $x_1$ and $x_4$
@@ -2337,8 +2368,9 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \emph{The configuration of $G''$.} $G''$ does not read the coordinates
   of $x_2$ in the ear data. Each of three conditions on the ear data holds
   off the zero set of a polynomial that is nonzero at one ear datum
-  (\cref{lem:pencil-ear-data}(2),(3)): the rank of $G''$ is at least its
-  target, at $s^*$, where the hinges of $G''$ are nonzero; the picture is
+  (\cref{lem:pencil-ear-data-picture}, \cref{lem:pencil-ear-data-open}): the
+  rank of $G''$ is at least its target, at $s^*$, where the hinges of $G''$
+  are nonzero; the picture is
   admissible for $G''$, at $s^*$; and the six joins of the points of $x_1$,
   $x_3$, $x_4$ and $b$ span $\Lambda^2 K^4$. For the last, with $b$ at the
   picture $q_b$ and the height $z_b$, put $x_1$ over $q_b + (0, 1)$ and
@@ -2367,13 +2399,13 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$
   (\texttt{exists\_insertion\_four}).
 
-  \emph{The configuration of $G$.} By \cref{lem:pencil-ear-data}(3), whose
+  \emph{The configuration of $G$.} By \cref{lem:pencil-ear-data-open}, whose
   bound on $\dim(\rho + \operatorname{span} F)$ asks for no nonzero hinge,
   $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$ is a nonzero polynomial
   condition on the ear data of $G$, and so is the main-picture condition
-  at the ear pictures, nonzero at $s^*$ (\cref{lem:pencil-ear-data}(2)).
+  at the ear pictures, nonzero at $s^*$ (\cref{lem:pencil-ear-data-picture}).
   At a common non-root the picture is main for $G$, so the hinges are
-  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}(1)), and
+  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}), and
   the rank of $G[V_1]$ is its target.
 
   \emph{The count.} $\operatorname{def}(\tilde G'') \le
@@ -2420,7 +2452,8 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
         lem:pencil-rank-congr, lem:pencil-picture-local,
         lem:pencil-x0-fibre-intersection,
         lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness,
-        lem:pencil-ear-data, lem:pencil-insertion, lem:pencil-two-stars,
+        def:pencil-ear-data, lem:pencil-ear-data, lem:pencil-ear-data-picture,
+        lem:pencil-ear-data-open, lem:pencil-insertion, lem:pencil-two-stars,
         lem:pencil-bilinear, lem:pencil-plane-lines,
         lem:splitoff-deficiency-reuse, lem:deficiency-ear}
   Write $f = \operatorname{def}(\tilde G[V_1])$. $G''$ has the open ear
@@ -2444,12 +2477,13 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   the hyperplane of screws pairing to zero with $c$. The condition
   $\langle c, y_1 \wedge y_3 \rangle \neq 0$ says
   $\dim\bigl(c^\perp + K\,(y_1 \wedge y_3)\bigr) = 6$, so by
-  \cref{lem:pencil-ear-data}(3) it holds off the zero set of a polynomial
+  \cref{lem:pencil-ear-data-open} it holds off the zero set of a polynomial
   in the ear data that is nonzero at the ear datum putting $x_1$ and $x_3$
   over that affine pair.
 
   \emph{The configuration of $G''$.} Take ear data $y$ off the zero sets
-  of the polynomials of \cref{lem:pencil-ear-data}(2),(3) for these
+  of the polynomials of \cref{lem:pencil-ear-data-picture} and
+  \cref{lem:pencil-ear-data-open} for these
   conditions: the rank of $G''$ is at least its target, and the picture is
   admissible for $G''$, both at $s^*$; in the second case, also
   $\langle c, y_1 \wedge y_3 \rangle \neq 0$. By \cref{lem:block-rank-ear}
@@ -2479,9 +2513,10 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   $\Lambda = \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge x,\
   x \wedge y_3,\ y_3 \wedge p_b)$ (\texttt{exists\_insertion\_three}).
   This bound and the main-picture condition are nonzero polynomial
-  conditions on the ear data of $G$ (\cref{lem:pencil-ear-data}(2),(3)).
+  conditions on the ear data of $G$ (\cref{lem:pencil-ear-data-picture},
+  \cref{lem:pencil-ear-data-open}).
   At a common non-root the picture is main for $G$, so the hinges are
-  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}(1)), and
+  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}), and
   the rank of $G[V_1]$ is its target.
 
   \emph{The count.} $\operatorname{def}(\tilde G'') \le
@@ -2829,7 +2864,8 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
   \uses{lem:pencil-one-ear-base, lem:pencil-x0-main-picture-open,
         lem:pencil-x0-fibre-intersection, lem:block-rank-ear,
         lem:pencil-config-point-join-rank, lem:pencil-insertion-two,
-        lem:pencil-ear-data, lem:pencil-rank-congr,
+        def:pencil-ear-data, lem:pencil-ear-data, lem:pencil-ear-data-picture,
+        lem:pencil-ear-data-open, lem:pencil-rank-congr,
         lem:pencil-picture-local, lem:splitoff-deficiency-reuse,
         lem:deficiency-ear, lem:pencil-x0-one-witness}
   Write $f = \operatorname{def}(\tilde G[V_1])$, and compute ranks with the
@@ -2859,14 +2895,14 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 
   \emph{The configuration of $G$.} Take as base data the restriction of
   $(q, z)$ to $V_1$, with the affine functions of $\pi_a$ and $\pi_b$
-  (\cref{lem:pencil-ear-data}); the points $y_1$, $y_2$ at $x_1$, $x_2$ are
+  (\cref{def:pencil-ear-data}); the points $y_1$, $y_2$ at $x_1$, $x_2$ are
   the configuration of one ear datum of $G$. By
-  \cref{lem:pencil-ear-data}(3) the bound
+  \cref{lem:pencil-ear-data-open} the bound
   $\dim(\rho + \Lambda) \ge \min(s + 1, 6)$ is a nonzero polynomial
   condition on the ear data, and so is the main-picture condition of $G$,
-  nonzero at the ear datum with picture $q$ (\cref{lem:pencil-ear-data}(2)).
+  nonzero at the ear datum with picture $q$ (\cref{lem:pencil-ear-data-picture}).
   At a common non-root the picture is main for $G$, so the hinges are
-  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}(1)), and
+  nonzero, the heights lie in $L_G$ (\cref{lem:pencil-ear-data}), and
   the rank of $G[V_1]$ and $\rho$ are those of the base data
   (\cref{lem:pencil-rank-congr}, \cref{lem:pencil-picture-local}).
 

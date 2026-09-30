@@ -10,7 +10,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 # An open ear over fixed base data (Phase 40h SHORT, EARGEN)
 
 The device the open-ear steps with three and four interior bodies choose their configurations with
-(`blueprint/src/chapter/main-component.tex`, `lem:pencil-ear-data`; informal (MC-180) Steps 1–2).
+(`blueprint/src/chapter/main-component.tex`, `def:pencil-ear-data`; informal (MC-180) Steps 1–2).
 The data on `V₁` are fixed first — a picture `q₁`, heights `z₁`, and planes `ha`, `hb` agreeing
 with `z₁` on the closed neighbourhoods of the ends `a`, `b` in `G[V₁]` — and the data of the ear
 second, as a point `s` of the parameter space `(α × Fin 2) ⊕ α`: a picture point and a free height
@@ -34,13 +34,13 @@ graph on the same bodies, such as `G` with an interior body suppressed.
   `earConfig_first`, `earConfig_last` — the points of the interior bodies; `earConfig_congr` —
   the point of a body reads only that body's coordinates (Phase 40h B6).
 * `Graph.earHeight_mem_liftingSpace` — at a picture admissible for `G`, the height of ear data is
-  a height of `G` (`lem:pencil-ear-data`(1)).
+  a height of `G` (`lem:pencil-ear-data`).
 * `eval_bind₁_earPicturePoly` — a polynomial in the picture becomes one in the ear data
-  (`lem:pencil-ear-data`(2)).
+  (`lem:pencil-ear-data-picture`).
 * `exists_mvPolynomial_le_finrank_ofNormals_bind`,
   `exists_mvPolynomial_le_finrank_sup_span_pointJoin` — along any polynomial parametrization of
   the configuration points, a rank lower bound (at a witness with nonzero hinges) and a lower bound
-  on `dim(ρ + span of joins)` are open conditions (`lem:pencil-ear-data`(3)).
+  on `dim(ρ + span of joins)` are open conditions (`lem:pencil-ear-data-open`).
 
 ## Design
 
@@ -67,20 +67,20 @@ variable (V₁ : Set α) (q₁ : α × Fin 2 → K) (z₁ : α → K) (xf xl : �
   (ha hb : Fin 3 → K)
 
 open Classical in
-/-- **The picture of ear data** `s` over the base picture `q₁` (`lem:pencil-ear-data`): `q₁` on
+/-- **The picture of ear data** `s` over the base picture `q₁` (`def:pencil-ear-data`): `q₁` on
 `V₁`, the picture coordinates `s (inl ·)` off it. -/
 noncomputable def earPicture (s : (α × Fin 2) ⊕ α → K) : α × Fin 2 → K :=
   fun p => if p.1 ∈ V₁ then q₁ p else s (Sum.inl p)
 
 open Classical in
 /-- **The height of ear data** over the base heights `z₁`, at the picture `q`
-(`lem:pencil-ear-data`): `z₁` on `V₁`, the plane `ha` at the first interior body `xf`, the plane
+(`def:pencil-ear-data`): `z₁` on `V₁`, the plane `ha` at the first interior body `xf`, the plane
 `hb` at the last `xl`, the free heights `m` at the other interior bodies `X`, and `0` elsewhere. -/
 noncomputable def earHeight (q : α × Fin 2 → K) (m : α → K) : α → K :=
   fun w => if w ∈ V₁ then z₁ w else if w = xf then ha ⬝ᵥ pencilPicturePoint q w
     else if w = xl then hb ⬝ᵥ pencilPicturePoint q w else if w ∈ X then m w else 0
 
-/-- **The configuration of ear data** (`lem:pencil-ear-data`), as the configuration point function
+/-- **The configuration of ear data** (`def:pencil-ear-data`), as the configuration point function
 `PanelHingeFramework.ofNormals` reads: the points of `(earPicture s, earHeight … (s ∘ inr))`. -/
 noncomputable def earConfig (s : (α × Fin 2) ⊕ α → K) : α × Fin 4 → K :=
   fun p => pencilConfigPoint (earPicture V₁ q₁ s)
@@ -112,7 +112,7 @@ theorem eval_earPicturePoly (s : (α × Fin 2) ⊕ α → K) (p : α × Fin 2) :
   split_ifs <;> simp
 
 /-- **The configuration points of ear data are polynomial in the ear data**
-(`lem:pencil-ear-data`(1)). -/
+(`lem:pencil-ear-data`). -/
 theorem eval_earPointPoly (s : (α × Fin 2) ⊕ α → K) (p : α × Fin 4) :
     MvPolynomial.eval s (earPointPoly V₁ q₁ z₁ xf xl X ha hb p) =
       earConfig V₁ q₁ z₁ xf xl X ha hb s p := by
@@ -133,7 +133,7 @@ theorem eval_earPointPoly (s : (α × Fin 2) ⊕ α → K) (p : α × Fin 4) :
         · by_cases hX : w ∈ X <;> simp [hw, hf, hl, hX]
   · simp [earPointPoly, earConfig, pencilConfigPoint]
 
-/-- **Pictures along the ear data** (`lem:pencil-ear-data`(2)): a polynomial in the picture
+/-- **Pictures along the ear data** (`lem:pencil-ear-data-picture`): a polynomial in the picture
 becomes a polynomial in the ear data. -/
 theorem eval_bind₁_earPicturePoly (s : (α × Fin 2) ⊕ α → K) (P : MvPolynomial (α × Fin 2) K) :
     MvPolynomial.eval s (MvPolynomial.bind₁ (earPicturePoly V₁ q₁) P) =
@@ -161,7 +161,7 @@ theorem earPicture_of_notMem (s : (α × Fin 2) ⊕ α → K) {w : α} (hw : w �
   simp [earPicture, hw]
 
 /-- **On `V₁` the configuration of ear data is the base configuration**
-(`lem:pencil-ear-data`(1)). -/
+(`lem:pencil-ear-data`). -/
 theorem earConfig_of_mem (s : (α × Fin 2) ⊕ α → K) {w : α} (hw : w ∈ V₁) (i : Fin 4) :
     earConfig V₁ q₁ z₁ xf xl X la lb s (w, i) = pencilConfigPoint q₁ z₁ w i := by
   fin_cases i <;> simp [earConfig, pencilConfigPoint, earPicture, earHeight, hw]
@@ -202,7 +202,7 @@ theorem earConfig_congr {s s' : (α × Fin 2) ⊕ α → K} {w : α}
 end EarDataFacts
 
 open Classical in
-/-- **The heights of ear data are lifting heights** (`lem:pencil-ear-data`(1)): at a picture
+/-- **The heights of ear data are lifting heights** (`lem:pencil-ear-data`): at a picture
 admissible for `G`, the base heights `z₁ ∈ L_{G[V₁]}(q)`, continued by planes `la`, `lb` agreeing
 with `z₁` on the closed neighbourhoods of `a`, `b` in `G[V₁]` to the first and last interior bodies
 and freely in the middle, form a height of `G`. This is `Graph.earExtend_mem_liftingSpace` with
@@ -265,13 +265,13 @@ theorem _root_.Graph.earHeight_mem_liftingSpace [Finite α] {G : Graph α β} {V
 
 `P : α × Fin 4 → MvPolynomial σ K` gives the point of body `w` at the parameter `s` as
 `fun j => eval s (P (w, j))`. Each bound below is the non-vanishing of one polynomial in `s`,
-nonzero at a given witness (`lem:pencil-ear-data`(3)). -/
+nonzero at a given witness (`lem:pencil-ear-data-open`). -/
 
 section Transfer
 
 variable {σ : Type*}
 
-/-- **A rank lower bound is open along the parametrization** (`lem:pencil-ear-data`(3), the rank
+/-- **A rank lower bound is open along the parametrization** (`lem:pencil-ear-data-open`, the rank
 half): the rank polynomial of `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`,
 substituted. The witness must have nonzero hinges at the links of `H`. -/
 theorem exists_mvPolynomial_le_finrank_ofNormals_bind [Finite α] [Finite β]
@@ -309,7 +309,7 @@ theorem eval_joinPoly (A B : Fin 4 → MvPolynomial σ K) (s : σ → K) (t : Fi
       planarProj_apply]
     congr 2
 
-/-- **A span lower bound is open along the parametrization** (`lem:pencil-ear-data`(3), the family
+/-- **A span lower bound is open along the parametrization** (`lem:pencil-ear-data-open`, the family
 half): for a fixed subspace `ρ` and any family of joins of configuration points,
 `N ≤ dim(ρ ⊔ span joins)` at `s₀` persists off the zero set of a polynomial nonzero at `s₀`. A
 basis of `ρ` together with the joins has polynomial flat coordinates (`eval_joinPoly`), and `N` of

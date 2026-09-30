@@ -4,16 +4,16 @@
 Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
 `CLEANUP.md` A and B over what Phases 39–40 built, C as screening only, and five carried items.
-Tasks 1–13, 14a–14b and 15–18 closed (17 not landed); 29 of 49 one-commit tasks remain.
-**Next concrete task:** task 19, M2d, the pin budget of `lem:pencil-ear-data` (blueprint, plus
-`EarGen.lean` docstrings). Round manual: `CLEANUP.md`.
+Tasks 1–13, 14a–14b and 15–19 closed (17 not landed); 28 of 49 one-commit tasks remain.
+**Next concrete task:** task 20, M5, moving CHAINS' `pathVertex` helpers and the `Graph.IsOpenEar.*`
+lemmas to their definitions' files. Round manual: `CLEANUP.md`.
 
 ## Current state
 
-**Next commit: task 19, M2d** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
-tasks 1–13, 14a–14b and 15–18 are closed (17 not landed), 29 remain. Nothing is mid-stream.
+**Next commit: task 20, M5** (*Lemma checklist*). The checklist holds 49 one-commit tasks;
+tasks 1–13, 14a–14b and 15–19 are closed (17 not landed), 28 remain. Nothing is mid-stream.
 
-Landed so far: tasks 1–18, one line each under *Lemma checklist → Landed* (task 17 closed not
+Landed so far: tasks 1–19, one line each under *Lemma checklist → Landed* (task 17 closed not
 landed). A finished task gets one or two lines there, with its commit; the detail stays in the
 commit message, and this section stays the forward pointer.
 
@@ -110,15 +110,14 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - [x] **18. M2c-iii** (`b8b24c9a`). `Graph.X0Attains.of_openEar_splitOff`, parametrized by the
   antecedent's ear length, with no `Fin.succAbove`: 704 → 461 lines, heartbeats halved,
   `Short.lean` 1 357 → 1 139. The FRICTION entry is resolved. TACTICS-QUIRKS §112, §114.
+- [x] **19. M2d** (this commit). `lem:pencil-ear-data`'s nine pins split along its three clauses:
+  `def:pencil-ear-data` (the construction, `earPicture`/`earHeight`/`earConfig`), `lem:pencil-ear-data`
+  (clause 1, kept the old label), `lem:pencil-ear-data-picture` (clause 2), `lem:pencil-ear-data-open`
+  (clause 3). Every `\uses`/`\cref` site in `main-component.tex` and all 14 `EarGen.lean` docstring
+  citations repointed clause by clause; no statement changed strength.
 
 ### The carried items (`notes/Phase40-design.md` §3/§4/§7), continued
 
-- [ ] **19. M2d: the pin budget of `lem:pencil-ear-data`** (§3, the 40h items).
-  `main-component.tex` 2181, §`sec:main-component-short`, carries nine pins, while
-  `blueprint/AUTHORING.md` D says a node pinning four or more is bundling results. Either split the
-  node along its three clauses, with the ear data as a definition node, or leave the helpers
-  unpinned. Repoint the 14 docstring citations of the label in `EarGen.lean` clause by clause (40g's
-  `75df1aac` is the precedent for a moved pin). No statement changes strength.
 - [ ] **20. M5: lemmas to their definitions' files** (§3 COVERAGE).
   - Move CHAINS' `pathVertex` helpers to `Cut.lean`, beside `def pathVertex` (429). They are
     `pathVertex_cons`, `isLink_pathVertex_cons`, `isLink_pathVertex_rev`,
@@ -313,12 +312,13 @@ round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next concrete commit: task 19, M2d** (§3, the 40h items): the pin budget of
-`lem:pencil-ear-data` (`main-component.tex` 2181, `sec:main-component-short`, nine pins against
-`blueprint/AUTHORING.md` D's four). Split the node along its three clauses, with the ear data as a
-definition node, or leave the helpers unpinned; then repoint `EarGen.lean`'s 14 docstring
-citations of the label clause by clause (40g's `75df1aac` is the precedent). No statement changes
-strength. Task 18 (`b8b24c9a`) closed the M2c group and its FRICTION entry.
+**Next concrete commit: task 20, M5** (§3 COVERAGE): move CHAINS' `pathVertex` helpers
+(`CoverageChain.lean` `## Path sequences`, 39–98, plus `pathVertex_mem_insert_insert_range`, 434)
+to `Cut.lean` beside `def pathVertex` (429), and the `Graph.IsOpenEar.*` lemmas (`## Open ears`,
+99–273, plus 443 and 470) to `Coverage.lean` beside `structure Graph.IsOpenEar` (58), as far as
+`Coverage.lean`'s imports allow (record any that stay, and why). No names change, so no pin moves;
+every step file below `Cut.lean` rebuilds. Task 19 (this commit) closed the pin budget of
+`lem:pencil-ear-data`.
 
 ## Decisions made during this round
 
