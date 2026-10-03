@@ -495,4 +495,6 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
 - **The invariance check** (gate 3). `checkdecls` and `lint.sh` cannot see a changed `\uses` edge
   or `\leanok`; the sorted hash of `inv web`'s graph can, and ignores node order, so a move passes.
 - **Rungs.** The sample is Opus. After Stop 1 the coordinator picks each task's rung against the
-  exemplar (Phase 29's playbook ran Sonnet); the JJ/KT-pinpoint tasks (12, 14, 20) may merit Opus.
+  exemplar (Phase 29's playbook ran Sonnet). Tasks 3 and 4 ran Sonnet, and each needed an Opus
+  corrective for a gate-invisible claim about other sections (one false). So from task 5 every
+  section task runs Opus, fresh per task (coordinator, 2026-10-03; `notes/dispatch-log.md`).
