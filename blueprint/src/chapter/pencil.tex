@@ -38,13 +38,13 @@ vertex.
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
 
-Hinge-coplanarity states the panel side of its condition by
-containment: a screw element lies in a hyperplane when it is the
-extensor of points of that hyperplane (\cref{def:genuine-hinge-realization}).
-We dualize this to concurrency. A screw element \emph{passing through}
-a point replaces containment in the hyperplane by containment of the
-point in the element's span: at $k = 2$ this says a line --- the
-extensor of two points --- contains the point.
+Hinge-coplanarity is a containment condition: a screw element lies in
+the panel with normal $n$ when it is the extensor of points of the
+hyperplane $n^{\perp}$ (\cref{def:genuine-hinge-realization}). We
+dualize this to concurrency. A screw element passing through a point
+replaces containment in the hyperplane by containment of the point in
+the element's span: at $k = 2$ this says a line --- the extensor of two
+points --- contains the point.
 
 \begin{definition}[Extensor through a point]
   \label{def:extensor-through-point}
@@ -63,12 +63,11 @@ notion is used below.
 \subsection{Pencil realizations}
 \label{sec:pencil-realization}
 
-A pencil realization combines the panel and point conditions at every
-body: its incident hinges then lie in one panel and all pass through
-one point of that panel --- the classical picture of a pencil of lines
-through a point in a plane. In the molecular reading
-(\cref{sec:molecule-modelling-defs}) the panel is the plane of an
-atom's bonds and the point is the atom's centre.
+A pencil realization asks that, at every body, the incident hinges lie
+in the body's panel and pass through one point of that panel. This is
+the classical picture of a pencil of lines through a point in a plane.
+In the molecular reading (\cref{sec:molecule-modelling-defs}) the panel
+is the plane of an atom's bonds and the point is the atom's centre.
 
 \begin{definition}[Pencil realization]
   \label{def:pencil-panel-realization}
@@ -87,12 +86,13 @@ atom's bonds and the point is the atom's centre.
 The incidence $q_v \cdot n_v = 0$ is forced at any body with a nonzero
 hinge: the hinge's spanning points lie in $n_v^{\perp}$ and contain
 $q_v$ in their span, so $q_v \in n_v^{\perp}$. We require it at every
-body, isolated ones included, so that the panel and point roles stay
-symmetric under the polarity below (\cref{sec:pencil-duality}). Concurrency
-of two coplanar lines is automatic (\cref{lem:coplanar-hinges-concurrent}),
-so at a body of degree at most two the point condition adds nothing to
-hinge-coplanarity; it first has content at a body whose hinges number
-three or more.
+body, isolated ones included, so that the normal and the point play
+symmetric roles under the polarity below (\cref{sec:pencil-duality}).
+Two hinges in one panel always pass through a common point of it
+(\cref{lem:coplanar-hinges-concurrent}). So at a body of degree at most
+two, asking the hinges to pass through one point adds nothing to
+hinge-coplanarity. The requirement first has content at a body with
+three or more hinges.
 
 \subsection{The polarity and self-duality}
 \label{sec:pencil-duality}
@@ -105,13 +105,11 @@ the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity,
 here in its full generality rather than only for the homogenized poles
 of a molecular framework. \cref{lem:panel-hinge-dual-molecular} itself
 fixes $K = \R$. The polarity and the two transport lemmas below instead
-hold over an arbitrary field $K$. Field dependence enters only at
-self-dual configurations, not at this transport
-(\cref{fmlnote:pencil-conditional-realization-pair-field}). Two
-consequences transport the point-through and panel-in conditions across
-the polarity.
+hold over an arbitrary field $K$. The two lemmas show that the polarity
+turns passing through the point $q$ into lying in the panel with normal
+$q$, and lying in that panel into passing through $q$.
 
-\begin{lemma}[The point-join condition transports to the panel-meet side]
+\begin{lemma}[Passing through a point transports to lying in a panel]
   \label{lem:pencil-transport-through-to-in}
   \lean{CombinatorialRigidity.Molecular.extensorInPanel_screwComplementIso_of_extensorThroughPoint}
   \leanok
@@ -138,7 +136,7 @@ the polarity.
   lies in the panel with normal $q$.
 \end{proof}
 
-\begin{lemma}[The panel-meet condition transports to the point-join side]
+\begin{lemma}[Lying in a panel transports to passing through a point]
   \label{lem:pencil-transport-in-to-through}
   \lean{CombinatorialRigidity.Molecular.extensorThroughPoint_screwComplementIso_of_extensorInPanel}
   \leanok
@@ -186,21 +184,19 @@ the polarity.
   (\cref{thm:projective-invariance}). Its new normal assignment is $q$,
   each nonzero by hypothesis, and the incidence $n_v \cdot q_v = 0$
   read the other way gives $q_v \cdot n_v = 0$, so it is preserved.
-  Every link's transported supporting extensor lies in the panel of
-  each endpoint's new normal $q$ by
-  \cref{lem:pencil-transport-through-to-in} (the old point-join
-  conditions become panel-meet conditions), and passes through each
-  endpoint's new point $n$ by \cref{lem:pencil-transport-in-to-through}
-  (the old panel-meet conditions become point-join conditions).
+  Let $C$ be the supporting extensor of a link $uw$. As $C$ passes
+  through $q_u$ and $q_w$, its image lies in the panels with normals
+  $q_u$ and $q_w$ (\cref{lem:pencil-transport-through-to-in}). As $C$
+  lies in the panels with normals $n_u$ and $n_w$, its image passes
+  through $n_u$ and $n_w$ (\cref{lem:pencil-transport-in-to-through}).
 \end{proof}
 
-We record this symmetry for its own sake: the induction below
-(\cref{thm:pencil-reduction}) and its kernels do not use it. What it
-constrains instead is the shape of \cref{def:pencil-panel-realization}
-itself, where the normal and the point enter the pencil condition on an
-equal footing. \cref{sec:pencil-nondegenerate} relies on exactly this to
-decide which further condition belongs inside that definition and which
-must be imposed separately (\cref{fmlnote:pencil-distinct-motive}).
+We record this symmetry for its own sake: the proof of
+\cref{thm:pencil-conjecture} does not use it. It is one reason why
+\cref{def:pencil-panel-realization} allows the points of a link's two
+endpoints to coincide: requiring them to be projectively distinct would
+break the symmetry. \cref{sec:pencil-nondegenerate} gives a second
+reason, and imposes distinctness as a separate condition.
 
 \subsection{The coincident-panel pencil pair}
 \label{sec:pencil-base}

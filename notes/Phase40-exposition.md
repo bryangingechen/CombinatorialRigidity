@@ -8,10 +8,11 @@ mathematics clearly" and "the proof and its key ideas in context" (the PI, `note
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
 one-commit tasks, 3 landed: task 1 (the sample section), task 2 (pinned it as the exemplar), task 3
-(`pencil.tex`'s three opening subsections). **Stop 1 is closed** (the PI, 2026-10-03, *Autopilot:
-for the PI*), and the round runs unattended to its close. **Next concrete task:** task 4,
-`pencil.tex`'s local-construction subsections (base, cycle, extension), against the pinned
-exemplar (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f). Round manual: `CLEANUP.md`.
+(`pencil.tex`'s three opening subsections, with a corrective). **Stop 1 is closed** (the PI,
+2026-10-03, *Autopilot: for the PI*), and the round runs unattended to its close. **Next concrete
+task:** task 4, `pencil.tex`'s local-construction subsections (base, cycle, extension), against
+the pinned exemplar (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per
+*Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -53,20 +54,19 @@ selector" in `lem:pencil-curve-limit` (item 4).
   we decided not to formalize it due to technical reasons, it could be worth mentioning as well.
   (b)-(d) These look fine." Then: "Let's commit."
 
-**What follows.** Stop 1 is closed. The sample was revised twice, approved, and pinned in
-`notes/Phase40-exposition-exemplar.md` (task 2). Defaults (a)–(f) and the granularity are settled
-under *Decisions*. The introduction's flags are in task 25, `lem:pencil-splitoff-curve` is under
-*Candidates*, and the blueprint-wide rewrite and bundled-node audit are queued as **PROSE**
-(ROADMAP). The round runs unattended from task 3.
+**What follows.** Stop 1 is closed: the approved sample is pinned (task 2), and defaults (a)–(f)
+and the granularity are under *Decisions*. The introduction's flags are in task 25,
+`lem:pencil-splitoff-curve` is under *Candidates*, and the blueprint-wide rewrite and bundled-node
+audit are queued as **PROSE** (ROADMAP). The round runs unattended from task 3.
 
 ## Current state
 
 **Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–3
-have landed**, and nothing is mid-stream. Task 2, attended by the PI, revised the sample
-twice, pinned it, settled defaults (a)–(f), added `blueprint/AUTHORING.md`'s clauses of
-2026-10-03, and edited one statement for register (item 4). Task 3's findings and edits are in its
-checklist entry below. All gates equal the baseline below (graph fingerprint, pin hash and warning
-counts, unchanged by all three commits). Next is task 4.
+have landed**, task 3 with a corrective, and nothing is mid-stream. Task 2, attended by the PI,
+pinned the exemplar, settled defaults (a)–(f) and added `blueprint/AUTHORING.md`'s clauses of
+2026-10-03. Task 3's findings, coinage list and corrective are in its checklist entry. Every commit
+so far leaves the gates at the baseline below (graph fingerprint, pin hash, warning counts). Next
+is task 4.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -82,16 +82,10 @@ counts, unchanged by all three commits). Next is task 4.
   labels are the stable reference.
 
 **What the inventory found** (seen at the open; each task re-derives its own findings):
-- **An unintroduced "informal argument."** 23 lines of reader-facing prose (19 in
-  `main-component.tex`, 4 in `pencil.tex`) compare with "the informal argument" or "statement".
-  That is the project's workbook `notes/pencil/workbook/K-main*.md`, which the blueprint never
-  introduces or cites (principle E). The round-wide default is under *Decisions*.
-- **Proofs that rest on lemmas stated later.** `lem:pencil-rank-scale-shift` rests on
-  `lem:pencil-rank-collineation`, `lem:pencil-contract-standing` on
-  `lem:pencil-contract-standing-rigid`, and `lem:pencil-contract-core-plane` and
-  `lem:pencil-contract-limit` on `lem:pencil-contract-kernel-bound`; all three are stated in
-  `sec:main-component-contract-additive`. In `pencil.tex`, `lem:pencil-cut-case`'s statement cites
-  the next subsection's `def:pencil-distinct-motive`. Tasks 10, 14 and 5 cure these.
+- **An unintroduced "informal argument."** 23 lines of prose compare with the project's workbook
+  (`notes/pencil/workbook/K-main*.md`), which the blueprint never introduces; default (a) rules.
+- **Proofs that rest on lemmas stated later**, and a statement citing a later definition: tasks 5,
+  10 and 14 name each one and cure it.
 - **Nodes outside the headline's closure.** On the dependency graph, 21 of `pencil.tex`'s 41 nodes
   and 2 of `main-component.tex`'s 123 lie outside the closure of `thm:pencil-conjecture`.
   - Some look off the proof in Lean too. `lem:pencil-self-dual`'s pin is named only in
@@ -166,27 +160,30 @@ From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs the
 One commit per task, in the order given. Each task's diagnosis says what the unit needs in order
 to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
 
-- [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; `806db52e`; the spec is
-  at the open, `5f9cbe04`). Revised at the PI's request (Stop 1, 2026-10-03), now lines 2950–3277
-  (322 → 328 lines). No `\label`, `\lean`, `\leanok` or `\uses` line and no node order changed;
-  one statement edit for register (item 4). Both remarks are cut. The JJ paragraph is checked
-  against the TR's proof of Theorem 6.1, Claim 6.5, Case 1 (printed pp. 15–16), and names no claim
-  or section number. A correction to the spec: `a ≁ b` is not in `Graph.ChainUsable`'s `k = 1`
-  clause. It is a hypothesis of `Graph.X0Attains.of_splitOff`, supplied from sparsity inside
-  `Graph.IsChain.x0Reduces_of_chainUsable` (`lem:deficiency-one-body-chain`(1)).
-- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03). The PI's entry is
-  transcribed (*Autopilot: for the PI*). The sample was revised twice at the PI's request, and the
-  approved text is pinned verbatim in `notes/Phase40-exposition-exemplar.md`, not in this log, to
-  keep the log under its line cap. The rulings on defaults (a)–(f) and the granularity are under
-  *Decisions*.
+- [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; `806db52e`; revised at
+  Stop 1, pinned by task 2). The JJ paragraph is checked against the TR's proof of Theorem 6.1,
+  Claim 6.5, Case 1 (printed pp. 15–16), and names no claim or section number. A correction to the
+  spec: `a ≁ b` is not in `Graph.ChainUsable`'s `k = 1` clause but a hypothesis of
+  `Graph.X0Attains.of_splitOff`, supplied inside `Graph.IsChain.x0Reduces_of_chainUsable`.
+- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03). The PI's entry is transcribed
+  (*Autopilot: for the PI*), the approved text is in `notes/Phase40-exposition-exemplar.md`, and
+  the rulings on defaults (a)–(f) and the granularity are under *Decisions*.
 - [x] **3. P1 — `pencil.tex`'s three opening subsections, 38–188**: `sec:pencil-through-point`,
-  `sec:pencil-realization` and `sec:pencil-duality`. Added the pencil-of-lines-through-a-point
-  picture and the molecular reading as lead-ins to the two definitions (not only the chapter
-  opening). Confirmed on the Lean call chain that `lem:pencil-self-dual`'s pin is named only in
-  `Statement.lean` docstrings and called nowhere else; a closing remark now says so and gives its
-  real role — constraining `def:pencil-panel-realization`'s shape
-  (`fmlnote:pencil-distinct-motive`). Split the dense field-generality paragraph into single-idea
-  sentences.
+  `sec:pencil-realization`, `sec:pencil-duality` (`99a3e639`, then a corrective).
+  - *Diagnosis, all done.* The pencil picture and the molecular reading lead into the definitions.
+    `lem:pencil-self-dual`'s pin has no caller; a closing remark says the headline's proof does
+    not use it, and that it is one reason `def:pencil-panel-realization` omits distinctness. The
+    forward pointer to the field note is cut. New forward `\cref`s: `sec:pencil-duality`,
+    `lem:coplanar-hinges-concurrent`, `sec:pencil-nondegenerate`, `thm:pencil-conjecture`.
+  - *(f) coinages.* Standard incidence terms, now the only names of the two conditions: *passes
+    through* a point and *lies in* a panel (KT: "contained in"). Also standard: *hinge-coplanar*
+    (KT p. 648), *polarity*. In a node: *pencil realization*, *panel-support extensor*. For task
+    25's notation paragraph: "the pencil condition" (also in `main-component.tex`). "Point-join ↔
+    panel-meet" names only `lem:case-III-claim612-line-in-panel-union`. "The point condition"
+    remains in tasks 6 and 23.
+  - *Corrective* (coordinator, three gaps): cut the field-dependence sentence, which rested on the
+    kernels' uncited routes; one name per condition, not four; the remark narrowed to
+    `fmlnote:pencil-distinct-motive`'s self-duality reason, without its claim about the kernels.
 - [ ] **4. P2 — base, cycle and extension, 189–463**: `sec:pencil-base`, `sec:pencil-cycle`,
   `sec:pencil-extension`.
   - Three local constructions, none placed: say which case of the reduction each serves.
@@ -225,6 +222,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - The theorem's 43-line proof needs an overview.
   - The field note's "known routes" for the kernels cite nothing, and are the project's own: say
     so, or cut them.
+  - `sec:pencil-duality`'s closing remark says this subsection gives a second reason, besides
+    self-duality, for keeping distinctness out of `def:pencil-panel-realization`: keep it true.
 - [ ] **7. P5 — `sec:pencil-main-component-route`, 1041–1195.** The route's one idea: over a fixed
   planar picture the pencil condition is linear in the heights. The preamble says it, but its
   sketch sits in `fmlnote:pencil-main-component-statements`, as mathematics: move it to prose, and
@@ -426,9 +425,8 @@ A node these items might gain would sit in `deficiency.tex`, `rigidity-matrix.te
 
 ## The pinned exemplar
 
-In its own file, `notes/Phase40-exposition-exemplar.md` (task 2, 2026-10-03), so that this log
-stays under its line cap. Every builder of tasks 3–26 reads it. It is altered only to correct a
-verified factual error.
+In its own file, `notes/Phase40-exposition-exemplar.md` (task 2, 2026-10-03). Every builder of
+tasks 3–26 reads it. It is altered only to correct a verified factual error.
 
 ## Candidates for `40-simplify`
 
@@ -459,24 +457,21 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
+- **Standing, for every section task (4–26)** (from task 3's corrective). Its return and its
+  checklist entry (i) answer every diagnosis bullet of the task: done, not done with the reason, or
+  moved per *Moved to a later round*; (ii) carry the section's (f) coinage list, each coinage
+  marked standard, defined in a node, or left for task 25's notation paragraph; (iii) name every
+  forward `\cref` it adds.
+
 ## Decisions made during this round
 
-- **2026-09-30, the open: the sample is `sec:main-component-splitoff`.** It is typical of the round:
-  the seven step subsections of `main-component.tex` (about 2 500 of its 4 858 lines) each prove
-  one step by a construction and a count against the one-witness lemma. It has five nodes, a key
-  idea stated but not explained, a published argument whose citation needs checking (JJ), and
-  three "informal argument" passages. It has no forward reference, so it is one clean commit.
-  Rejected: `sec:main-component-cut` (too easy), `sec:main-component-short` (617 lines), and
-  `sec:main-component-contract` (its lemmas are entangled with the additive subsection).
-- **The task list.** One commit per subsection. The carrier, SHORT and the statements split at
-  their natural seams; `pencil.tex`'s short opening and local-construction subsections are
-  grouped. The PI approved it (2026-10-03) on this judgment: slices of 150–430 lines match the
-  sample's 322, and the only sensible merges (M2 with M3, F2 with F3) save 2 of ~26 commits while
-  packing three citation checks and three recommendations into one slice.
-- **The two chapter introductions and `intro.tex` come last.** Principle F revises preambles and
-  connective prose once the content around them is stable. `pencil.tex`'s introduction also
-  summarizes the route into `main-component.tex`, so both introductions follow every subsection;
-  `intro.tex`'s paragraph summarizes both, so it follows them.
+- **2026-09-30, the open: the sample is `sec:main-component-splitoff`**, typical of the seven step
+  subsections (a construction and a count against the one-witness lemma), with a JJ citation to
+  check and no forward reference. Rejected: `sec:main-component-cut` (too easy), `-short` (617
+  lines), `-contract` (entangled with the additive subsection).
+- **The task list** (the PI approved it, 2026-10-03). One commit per subsection, split or grouped
+  at natural seams into slices of 150–430 lines, near the sample's 322. The introductions and
+  `intro.tex` come last (principle F): each summarizes what precedes it.
 - **Round-wide defaults (a)–(d), as the PI ruled (2026-10-03; verbatim under *Autopilot*).**
   - (a), amended: cut every comparison with the workbook's informal argument. A reason the proof
     is shaped as it is stays, stated on its own. So does an argument that gives more insight but
