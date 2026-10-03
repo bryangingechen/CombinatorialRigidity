@@ -1318,29 +1318,51 @@ from the conditioned pair at smaller multigraphs
 \subsection{Girth and degree-two chains under no proper rigid subgraph}
 \label{sec:pencil-girth-chain}
 
-The two kernels of \cref{thm:pencil-conditional-realization-pair} are
-stated for a simple two-edge-connected multigraph $G$ with no proper rigid
-subgraph, at a degree-two vertex $v$ one of whose neighbours is not a pencil
-hub (\cref{def:pencil-nondegenerate}). This subsection records the
-combinatorial shape those hypotheses force, which any argument for either
-kernel would use. Cycles on at most $D = \binom{n+1}{2}$ vertices are
-spanning (\cref{lem:pencil-short-cycle-spanning}), so as soon as some vertex
-has degree at least three the girth exceeds $D$
-(\cref{lem:pencil-girth-of-hub}); at girth at least five two distinct
-vertices, hubs or not, share at most two members of their closed
-neighbourhoods (\cref{lem:pencil-closed-nbhd-girth-five}). The degree-two
-vertex $v$ lies on a maximal chain of degree-two vertices whose ends are
-pencil hubs (\cref{lem:pencil-degree-two-chain}): either the two ends are
-distinct hubs, so that the chain is one side of a two-vertex separation
-whose other side is connected, has degree at least two at both ends
-(\cref{lem:pencil-chain-side-connected}), and joins them only by paths of
-at least $D - m$ edges when the chain has $m$ interior vertices
-(\cref{lem:pencil-chain-side-distance}); or the chain closes at a single
-hub, a cycle through a cut vertex; or $G$ is itself a cycle. At $n = 3$
-this is the shape the informal treatment of kernel~(K-bare) works with,
-with one difference: the middle alternative, the chain closing at a single
-hub, is not a two-vertex separation and is handled there by the cut-vertex
-case of the induction rather than by the two-cut composition.
+This subsection concerns the two kernels of
+\cref{thm:pencil-conditional-realization-pair}, which the proof of
+\cref{thm:pencil-conjecture} bypasses
+(\cref{sec:pencil-main-component-route}). The kernels split off a vertex
+$v$ of degree two from a simple two-edge-connected multigraph $G$ with no
+proper rigid subgraph (\cref{def:rigid-subgraph}). One neighbour of $v$ is
+not a pencil hub (\cref{def:pencil-nondegenerate}). We prove what these
+hypotheses imply about the shape of $G$ around $v$. Neither kernel is
+proved here. We keep these results because they hold under the kernels'
+hypotheses. A proof of either kernel can start from them.
+
+Let $D = \binom{n+1}{2} \ge 3$. In a multigraph with no proper rigid
+subgraph, a cycle on at most $D$ vertices is rigid, and so it passes
+through every vertex (\cref{lem:pencil-short-cycle-spanning}). Hence the
+girth of $G$ exceeds $D$ once some vertex has degree at least three
+(\cref{lem:pencil-girth-of-hub}). At $n = 3$, where $D = 6$, the girth is
+then at least seven. So the closed neighbourhoods of two distinct
+vertices share at most two vertices
+(\cref{lem:pencil-closed-nbhd-girth-five}).
+
+The neighbour of $v$ that is not a pencil hub has degree two, since $G$ is
+two-edge-connected (\cref{def:cut-edges-2ec}). There are then three cases
+(\cref{lem:pencil-degree-two-chain}). First, $G$ may be a cycle. Second,
+$v$ may lie on a cycle through a single pencil hub whose other vertices
+have degree two; that hub is then a cut vertex of $G$. Third, $v$ may lie
+on a chain $w u_1 \dots u_m w'$ between two distinct pencil hubs, whose
+$m \ge 2$ interior vertices have degree two.
+
+In the third case the interior vertices have no edges off the chain, so
+$\{w, w'\}$ separates them from the rest of $G$. Deleting them leaves a
+connected multigraph, in which $w$ and $w'$ each have one edge fewer
+(\cref{lem:pencil-chain-side-connected}). Across this separation, the
+rank of a realization of $G$ is determined by its restrictions to the two
+sides (\cref{cor:block-rank-vertex-two-cut}). Every path from $w$ to $w'$
+that avoids the interior vertices has at least $D - m$ edges
+(\cref{lem:pencil-chain-side-distance}). In particular, $w$ and $w'$ are
+not adjacent when $m \le D - 2$.
+
+The structural coverage of \cref{sec:main-component-coverage} uses chains
+in the same sense, between two vertices of degree at least three, and
+allows a single interior vertex (\cref{def:pencil-x0-chain}). Where the
+coverage extracts chains, the graph is 2-connected and has a vertex of
+degree other than two, so the first two cases cannot occur. The coverage
+finds its chains directly (\cref{lem:pencil-x0-chain-exists}) and does
+not use this subsection.
 
 \begin{definition}[Girth]
   \label{def:girth}
@@ -1350,9 +1372,8 @@ case of the induction rather than by the two-cut composition.
   consists of $m$ distinct vertices $v_0, \dots, v_{m-1}$ and $m$ distinct
   edges $e_0, \dots, e_{m-1}$ with $e_i$ joining $v_i$ to $v_{i+1}$, indices
   taken modulo $m$. The multigraph $G$ has \emph{girth at least $g$} when it
-  has no cycle on $m$ vertices for any $3 \le m < g$. Loops and pairs of
-  parallel edges are not counted as cycles here; the multigraphs to which
-  the notion is applied below are simple, so none occur.
+  has no cycle on $m$ vertices for any $3 \le m < g$. In particular, loops
+  and pairs of parallel edges are not cycles.
 \end{definition}
 
 \begin{lemma}[Short cycles are spanning]
@@ -1367,12 +1388,15 @@ case of the induction rather than by the two-cut composition.
 \begin{proof}
   \leanok
   \uses{lem:chain-cycle-dichotomy, def:rigid-subgraph}
-  The subgraph $H$ consisting of the cycle's vertices and edges is a cycle
-  on $m \le D$ vertices, hence $0$-dof by the deficiency count of the cycle
-  branch of \cref{lem:chain-cycle-dichotomy}: every part of a partition of
-  the cyclic index set has a boundary index, so the parts inject into the
-  crossing edges. It has at least two vertices, so if its vertex set were a
-  proper subset of $V(G)$ it would be a proper rigid subgraph.
+  Let $H$ be the subgraph formed by the cycle's vertices and edges, and
+  let $P$ be a partition of $V(H)$ into $p \ge 2$ parts. Each part contains
+  a vertex whose successor along the cycle lies in another part, so at
+  least $p$ edges of $H$ join distinct parts. Hence
+  $\operatorname{def}_{\tilde H}(P) \le D(p - 1) - (D - 1)p = p - D \le 0$,
+  as $p \le m \le D$. So $\operatorname{def}(\tilde H) = 0$, and $H$ is
+  rigid, as in the proof of \cref{lem:chain-cycle-dichotomy}. It has at least two vertices, so if its
+  vertex set were a proper subset of $V(G)$ it would be a proper rigid
+  subgraph.
 \end{proof}
 
 \begin{lemma}[Girth exceeds $D$ once some vertex has degree three]
@@ -1389,16 +1413,15 @@ case of the induction rather than by the two-cut composition.
   \uses{lem:pencil-short-cycle-spanning}
   Suppose $G$ has a cycle $C$ on $m \le D$ vertices. By
   \cref{lem:pencil-short-cycle-spanning} it passes through every vertex, so
-  $|V(G)| = m$ and the vertex $w$ of degree at least three lies on $C$. A
-  third edge $g$ at $w$, distinct from the two cycle edges at $w$, joins $w$
-  to another vertex $z$ of $C$ (simplicity excludes a loop); $z$ is not a
-  neighbour of $w$ along $C$, since $g$ would then be parallel to a cycle
-  edge. So $g$ is a chord, and either arc of $C$ from $w$ to $z$ together
-  with $g$ forms a cycle, on $a + 1$ vertices where $a$ is the number of
-  edges of that arc; the two arcs have $a + b = m$ and $a, b \ge 2$, so
-  $2 \le a \le m - 2$. That cycle has at least three and at most
-  $m - 1 < |V(G)|$ vertices, hence at most $D$, so it is not spanning,
-  contradicting \cref{lem:pencil-short-cycle-spanning}.
+  $|V(G)| = m$ and the vertex $w$ of degree at least three lies on $C$.
+  Let $g$ be an edge at $w$ other than its two edges on $C$. As $G$ has no
+  loop, $g$ joins $w$ to another vertex $z$ of $C$. As $G$ has no parallel
+  edges, $z$ is not a neighbour of $w$ along $C$, so $g$ is a chord. The
+  two arcs of $C$ between $w$ and $z$ have $a$ and $b$ edges, where
+  $a + b = m$ and $a, b \ge 2$. The arc with $a$ edges, together with $g$,
+  forms a cycle on $a + 1$ vertices, and $3 \le a + 1 \le m - 1$. So that
+  cycle does not pass through every vertex, which contradicts
+  \cref{lem:pencil-short-cycle-spanning}.
 \end{proof}
 
 \begin{lemma}[Closed neighbourhoods at girth five]
@@ -1412,13 +1435,16 @@ case of the induction rather than by the two-cut composition.
 \end{lemma}
 \begin{proof}
   \leanok
-  If they shared three vertices, then either $v$ and $h$ are adjacent and
-  have a common neighbour $x$, giving a cycle on the three vertices
-  $v, h, x$, or they are not adjacent and have two common neighbours
-  $x \ne y$, giving a cycle on the four vertices $v, x, h, y$; the edges
-  are distinct in either case because their endpoint pairs are. Both
-  contradict girth at least five.
+  Suppose they share three vertices. If $v$ and $h$ are adjacent, they
+  have a common neighbour $x$, and $v, h, x$ form a cycle on three
+  vertices. Otherwise they have two common neighbours $x \ne y$, and
+  $v, x, h, y$ form a cycle on four vertices. In either case the edges are
+  distinct, because their pairs of ends are. Both cycles contradict girth
+  at least five.
 \end{proof}
+
+We find the chain through $v$ by extending a path along vertices of degree
+two, first in one direction and then in the other.
 
 \begin{lemma}[Extending a degree-two chain]
   \label{lem:pencil-chain-walk-extension}
@@ -1438,20 +1464,24 @@ case of the induction rather than by the two-cut composition.
 \begin{proof}
   \leanok
   \uses{def:cut-edges-2ec, def:cycle-data}
-  Induction on $|V(G)| - k$, which is a genuine measure because the
-  vertices of a path are distinct, so $k < |V(G)|$. By hypothesis $x_k$ has
-  degree exactly two, so it has a second edge, leading to a vertex $y$. If
-  $y$ is not on $P$, append it: should $y$ have degree at least three, the
-  extended path is the third alternative, and otherwise two-edge-connectivity
-  pins $y$ at degree exactly two, the hypothesis is restored for
-  $x_0 \dots x_k y$, and we continue. If $y$ is on $P$ then $y = x_0$: an
-  interior vertex of $P$ already has both its edges on $P$, and $y = x_k$
-  would be a loop; simplicity also excludes closing a single edge into a
-  parallel pair. If $x_0$ has degree two, every vertex of the closed walk
-  has degree two and connectivity forces the walk to exhaust $G$, which is
-  then a cycle (the confinement argument in the proof of
-  \cref{lem:chain-cycle-dichotomy}); otherwise the closed walk is the
-  second alternative.
+  We extend $P$ one vertex at a time, by induction on $|V(G)| - k$. This
+  number is positive, as the $k + 1$ vertices of $P$ are distinct. The vertex
+  $x_k$ has degree two, so it has a second edge, to a vertex $y$.
+
+  Suppose first that $y$ is not on $P$. If $y$ has degree at least three,
+  the path $x_0 \dots x_k y$ is the third alternative. Otherwise $y$ has
+  degree two, as every vertex of a two-edge-connected multigraph has
+  degree at least two (\cref{def:cut-edges-2ec}). The path
+  $x_0 \dots x_k y$ then satisfies the hypothesis, and we continue from it.
+
+  Suppose next that $y$ is on $P$. The vertices $x_1, \dots, x_{k-1}$
+  already have both of their edges on $P$, and $y = x_k$ would give a
+  loop. So $y = x_0$, and $k \ge 2$, since for $k = 1$ the second edge of
+  $x_1$ would be parallel to the first. If $x_0$ has degree two, every
+  vertex of the closed walk has both of its edges on the walk. Then no
+  edge leaves the walk's vertex set. As $G$ is connected, the walk is all
+  of $G$, and $G$ is a cycle. Otherwise $x_0$ has degree at least
+  three, and the closed walk is the second alternative.
 \end{proof}
 
 \begin{lemma}[The maximal degree-two chain through the split vertex]
@@ -1475,15 +1505,15 @@ case of the induction rather than by the two-cut composition.
 \begin{proof}
   \leanok
   \uses{lem:pencil-chain-walk-extension}
-  Say $a$ has degree two. Apply \cref{lem:pencil-chain-walk-extension} to
-  the path $v a$. Unless $G$ is a cycle, this yields either a closed walk
-  through a hub containing $v$ --- impossible, as the walk returns to $v$,
-  which has degree two --- or a path $v a \dots w'$ ending at a hub $w'$.
-  Apply the lemma again to the reversed path $w' \dots a v$, extending at
-  $v$ along $e_b$: the closed-walk alternative returns to $w'$ and is
-  case~(ii) with $w = w'$; the path alternative ends at a second hub
-  $w \ne w'$ (a path has distinct ends) and is case~(iii). In both cases
-  $v$ and $a$ are interior vertices, so $m \ge 2$.
+  Say $a$ has degree two, and apply \cref{lem:pencil-chain-walk-extension}
+  to the path $v a$. Its closed-walk alternative would return to $v$, which
+  has degree two. So, unless $G$ is a cycle, it gives a path $v a \dots w'$
+  ending at a hub $w'$. Apply the lemma again to the reversed path
+  $w' \dots a v$, extending at $v$ along $e_b$. The closed-walk alternative
+  returns to $w'$ and is case~(2), with $w = w'$. The path alternative ends
+  at a second hub $w$, distinct from $w'$ as a path has distinct ends, and
+  is case~(3). In both cases $v$ and $a$ are interior vertices, so
+  $m \ge 2$.
 \end{proof}
 
 \begin{lemma}[The side of a degree-two chain]
@@ -1507,9 +1537,16 @@ case of the induction rather than by the two-cut composition.
   one of $w, w'$, taken together with the chain, is left by exactly one
   edge; both contradict two-edge-connectivity. So $w$ and $w'$ lie in the
   same component, which is therefore all of $G - \{u_1, \dots, u_m\}$. The
-  only edge at $w$ into the chain is $w u_1$ (a second one would give $u_1$
-  degree three), so exactly one edge at $w$ is lost, and likewise at $w'$.
+  only edge at $w$ into the chain is $w u_1$, as a second one would give
+  some $u_i$ degree three. So exactly one edge at $w$ is lost, and likewise
+  at $w'$.
 \end{proof}
+\begin{fmlnote}
+  \label{fmlnote:pencil-chain-side-connected}
+  The formalization states the degree count only at the end $w$. The
+  count at $w'$ follows by reversing the path, which keeps its interior
+  vertices.
+\end{fmlnote}
 
 \begin{lemma}[Side paths between the chain ends are long]
   \label{lem:pencil-chain-side-distance}
@@ -1528,6 +1565,8 @@ case of the induction rather than by the two-cut composition.
   \leanok
   \uses{lem:pencil-girth-of-hub}
   A path $Q$ from $w$ to $w'$ avoiding $u_1, \dots, u_m$ closes with $P$
-  into a cycle on $m + 1 + |E(Q)|$ vertices, which has at least $D + 1$
-  vertices by \cref{lem:pencil-girth-of-hub}.
+  into a cycle on $m + 1 + |E(Q)|$ vertices. That cycle has at least
+  $D + 1$ vertices (\cref{lem:pencil-girth-of-hub}), so
+  $|E(Q)| \ge D - m$. An edge $w w'$ would be such a path with one edge,
+  which needs $m \ge D - 1$.
 \end{proof}

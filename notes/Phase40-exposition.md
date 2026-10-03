@@ -7,18 +7,18 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 7 landed (tasks 1–7; tasks 3 and 4 with a corrective each). **Stop 1 is closed**
-(the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:** task 8,
-`sec:pencil-girth-chain`, against the pinned exemplar (`notes/Phase40-exposition-exemplar.md`)
-and defaults (a)–(f), returning per *Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
+one-commit tasks, 8 landed (tasks 1–8; tasks 3 and 4 with a corrective each). **Stop 1 is closed**
+(the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:** task 9,
+`sec:main-component-carrier`'s first half, against the pinned exemplar
+(`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
+bullet. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
 ### 2026-09-30 — `NEEDS_PI`: Stop 1, the sample section (planned stop, `notes/Cleanup40.md` §2)
 
-**What happened.** Task 1 landed the sample (`806db52e`); the full Stop-1 entry is at `82d806c5`.
-It asked about the sample's register, defaults (a)–(d), the granularity, and "an endpoint
-selector" in `lem:pencil-curve-limit` (item 4).
+**What happened.** Task 1 landed the sample (`806db52e`; the full Stop-1 entry is at
+`82d806c5`): its register, defaults (a)–(d), the granularity, and "an endpoint selector" (item 4).
 
 **PI, 2026-10-03:** (transcribed verbatim from the attended session that reviewed the sample)
 - On the sample: "I think the text is a bit wordy and there are redundancies. For example, "Each
@@ -52,16 +52,16 @@ selector" in `lem:pencil-curve-limit` (item 4).
   we decided not to formalize it due to technical reasons, it could be worth mentioning as well.
   (b)-(d) These look fine." Then: "Let's commit."
 
-**What follows.** Stop 1 is closed: the sample is pinned (task 2), defaults (a)–(f) and the
-granularity are under *Decisions*, the introduction's flags are in task 25,
-`lem:pencil-splitoff-curve` is under *Candidates*, and **PROSE** is queued (ROADMAP).
+**What follows.** Stop 1 is closed: the exemplar is pinned (task 2), defaults (a)–(f) and the
+granularity are under *Decisions*, the introduction's flags are in task 25, and **PROSE** is queued.
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–7
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–8
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
-the baseline below (graph fingerprint, pin hash, warning counts). Next is task 8.
+the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
+introduction (task 24); next is task 9, the first of `main-component.tex`'s.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -82,18 +82,12 @@ the baseline below (graph fingerprint, pin hash, warning counts). Next is task 8
 - **Proofs that rest on lemmas stated later**, and a statement citing a later definition: tasks 10
   and 14 name each one and cure it (task 5 cured its one).
 - **Nodes outside the headline's closure.** On the dependency graph, 21 of `pencil.tex`'s 41 nodes
-  and 2 of `main-component.tex`'s 123 lie outside the closure of `thm:pencil-conjecture`.
-  - Some look off the proof in Lean too. `lem:pencil-self-dual`'s pin is named only in
-    docstrings. The girth-chain subsection and `thm:pencil-x0-closed-ear` are also outside.
-  - Others are on the Lean call chain but have no edge to the headline: `pencil_conjecture` calls
-    `pencil_conjecture_of_X0`, which calls `pencil_conjecture_of_arms_pair`, one of the three pins
-    of `thm:pencil-conditional-realization-pair` (whose statement is the kernel form).
-
-  Liveness is a property of the Lean call chain (`CLEANUP.md` §B), so a task confirms it there
-  before its prose calls anything "off the proof".
-- **Mathematics in the wrong place.** `fmlnote:pencil-main-component-statements` carries
-  mathematics (task 6 cured its section's five notes). Lean names sit inside statement blocks:
-  `def:pencil-ear-data`, `lem:pencil-ear-data` and `lem:pencil-ear-data-open`.
+  (placed by tasks 3–8) and 2 of `main-component.tex`'s 123 (`thm:pencil-x0-main-component`,
+  `thm:pencil-x0-closed-ear`) lie outside the closure of `thm:pencil-conjecture`. Liveness is a
+  property of the Lean call chain (`CLEANUP.md` §B), so a task confirms it there before its prose
+  calls anything "off the proof".
+- **Mathematics in the wrong place.** Lean names sit inside statement blocks: `def:pencil-ear-data`,
+  `lem:pencil-ear-data` and `lem:pencil-ear-data-open` (task 16).
 
 ## Scope and standing rules
 
@@ -151,71 +145,66 @@ One commit per task, in the order given. Each task's diagnosis says what the uni
 to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
 
 - [x] **1. S — the sample, `sec:main-component-splitoff`** (`806db52e`; pinned by task 2). Its JJ
-  paragraph is checked against the TR (Theorem 6.1, Claim 6.5, Case 1, pp. 15–16) and names no claim
-  or section number. `a ≁ b` is a hypothesis of `Graph.X0Attains.of_splitOff`.
-- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03): the PI's entry under
-  *Autopilot*, the text in `notes/Phase40-exposition-exemplar.md`, the rulings under *Decisions*.
+  paragraph is checked against the TR (Theorem 6.1, Claim 6.5, Case 1, pp. 15–16).
+- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03; *Autopilot*, *Decisions*).
 - [x] **3. P1 — `pencil.tex`'s opening subsections, 38–188** (`99a3e639`, then a corrective). The
   pencil picture and the molecular reading lead in; a closing remark puts `lem:pencil-self-dual`
   (no caller) off the headline's proof. *(f):* standard *passes through* a point and *lies in* a
-  panel (the only names of the two conditions), *hinge-coplanar* (KT p. 648), *polarity*; in a
-  node, *pencil realization*, *panel-support extensor*; for task 25, "the pencil condition". "The
-  point condition" remains only in task 23's text. Forward `\cref`s: `sec:pencil-duality`,
-  `lem:coplanar-hinges-concurrent`, `sec:pencil-nondegenerate`, `thm:pencil-conjecture`.
+  panel, *hinge-coplanar* (KT p. 648), *polarity*; in a node, *pencil realization*, *panel-support
+  extensor*; for task 25, "the pencil condition". "The point condition" remains only in task 23's
+  text. Forward `\cref`s: `sec:pencil-duality`, `lem:coplanar-hinges-concurrent`,
+  `sec:pencil-nondegenerate`, `thm:pencil-conjecture`.
 - [x] **4. P2 — base, cycle and extension, 189–463** (`6bc95de3`, then a corrective).
   `sec:pencil-base` opens with `thm:pencil-reduction`'s base case; `lem:cycle-coplanar-realization`
-  moved after its `\uses` target. *Not done, with the reason:* `sec:pencil-cycle`'s two lemmas serve
-  no case of `thm:pencil-reduction` (pins without callers); the opening says so and names the
-  feature of `def:pencil-nondegenerate` the fact explains (edge: *Moved*). *(f):* standard
-  *concurrency point*, *pencil line*, *flat pencil*; new *cross-incidence(s)*, `\emph{}`-marked.
-  Corrective: the cycle opening's false nondegeneracy claim; the minimality remark (KT Theorem 5.6).
-  Forward `\cref`s: `thm:pencil-reduction` (×3), `sec:pencil-reduction`, `lem:pencil-base-case`
-  (×2), `sec:pencil-nondegenerate` (×2), `lem:pencil-cut-nondegeneracy`.
-- [x] **5. P3 — `sec:pencil-reduction`, 464–754** (`96eda8e2`). A roadmap after
-  `thm:pencil-reduction`; the cut-edge reason; `lem:pencil-cut-case` states distinctness itself;
-  loop and base cases live (edges: *Moved*); "KT Lemma 6.2" is its proof (p. 673); the preamble
-  gives KT Theorem 5.6's route, its `K_4` failure and KT Lemmas 4.5–4.6; ledger entry corrected;
-  one *Candidate*. *(f):* in a node, *deficiency rank*; standard, *contragredient*, *cut edge*.
-  Forward `\cref`s: `thm:pencil-conjecture` (×2), `thm:pencil-conditional-realization-pair`,
+  moved after its `\uses` target. *Not done:* `sec:pencil-cycle`'s two lemmas serve no case of
+  `thm:pencil-reduction` (no callers); the opening says so and names the feature of
+  `def:pencil-nondegenerate` they explain (edge: *Moved*). *(f):* standard *concurrency point*,
+  *pencil line*, *flat pencil*; new *cross-incidence(s)*, `\emph{}`-marked. Forward `\cref`s:
+  `thm:pencil-reduction` (×3), `sec:pencil-reduction`, `lem:pencil-base-case` (×2),
+  `sec:pencil-nondegenerate` (×2), `lem:pencil-cut-nondegeneracy`.
+- [x] **5. P3 — `sec:pencil-reduction`** (`96eda8e2`). A roadmap after `thm:pencil-reduction`; the
+  cut-edge reason; `lem:pencil-cut-case` states distinctness itself; loop and base cases live
+  (edges: *Moved*); the preamble gives KT Theorem 5.6's route, its `K_4` failure and KT Lemmas
+  4.5–4.6. *(f):* in a node, *deficiency rank*; standard, *contragredient*, *cut edge*. Forward
+  `\cref`s: `thm:pencil-conjecture` (×2), `thm:pencil-conditional-realization-pair`,
   `sec:pencil-nondegenerate`, `sec:pencil-main-component-route`, `sec:main-component` (×2), and
   five later nodes of the subsection, in the roadmap.
-- [x] **6. P4 — `sec:pencil-nondegenerate`, 755–1040** (`58fc3a52`). *Conditioning: in prose*
-  (KT p. 668, Theorem 5.5; `q_v · n_w = 0` explains each condition; the second reason
-  `sec:pencil-duality` promises kept true); the old note's "exactly the forced set" was false.
-  *Two results: said in the lead-in* (first pin live, kernel form off the proof; the live route
-  reuses only the three-body construction). *Overview: done.* *Field routes: said so.* Two notes
-  deleted. Edges, notes: *Moved*; splitting: *Candidates*. *(f):* standard *nonparallel*, *closed
-  neighbourhood*, *splitting off*; in a node, *pencil hub*, *closed hub-neighbourhood*,
-  *nondegenerate*, *nondegeneracy-feasible*, *generic*, *adjacent-distinct*, *conditioned pair*,
-  *kernel (K)*, *(K-bare)*; removed, *the point condition*, *chart realization*, *generic seed*,
-  *promoted concurrency family*, *configuration variety*. Forward `\cref`s: `thm:pencil-conjecture`
-  (×2), `thm:pencil-conditional-realization-main-component`, `sec:pencil-main-component-route`,
-  `thm:pencil-generic-step`.
-- [x] **7. P5 — `sec:pencil-main-component-route`, 1041–1195**, retitled *Reduction to the main
-  component*. *One idea: done:* the preamble lifts a planar picture (hinges the joins of points;
-  closed neighbourhoods coplanar, linear in the heights), then the main component, and why the
-  generic statement is proved inside the reduction (`K_{2,3}`). The note held no Lean divergence
-  and is deleted; its Jackson–Jordán paragraph is left to `sec:main-component` (task 12).
-  *`lem:pencil-nonsimple-case`: kept;* KT Lemma 6.2 checked (p. 673), KT eqs. (6.3)–(6.5) anchor
-  the rank. *Correction:* the theorem's cut case also needs the pair theorem's generic cut-edge
-  paragraph (edge: task 6's *Moved*). *(f):* standard *picture*, *height*, *lift*, *vector bundle*,
-  *general configuration*; in a node, *admissible*, *configuration*, *lifting space*, the two
+- [x] **6. P4 — `sec:pencil-nondegenerate`** (`58fc3a52`). *Conditioning: in prose* (KT p. 668,
+  Theorem 5.5; `q_v · n_w = 0` explains each condition). *Two results: in the lead-in* (first pin
+  live, kernel form off the proof; the live route reuses only the three-body construction).
+  *Overview: done; field routes: said.* Two notes deleted; edges, notes: *Moved*; splitting:
+  *Candidates*. *(f):* standard *nonparallel*, *closed neighbourhood*, *splitting off*; in a node,
+  *pencil hub*, *closed hub-neighbourhood*, *nondegenerate*, *nondegeneracy-feasible*, *generic*,
+  *adjacent-distinct*, *conditioned pair*, *kernel (K)*, *(K-bare)*; removed, *the point
+  condition*, *chart realization*, *generic seed*, *promoted concurrency family*, *configuration
+  variety*. Forward `\cref`s: `thm:pencil-conjecture` (×2), `sec:pencil-main-component-route`,
+  `thm:pencil-conditional-realization-main-component`, `thm:pencil-generic-step`.
+- [x] **7. P5 — `sec:pencil-main-component-route`** (`1010c804`), retitled *Reduction to the main
+  component*. *One idea: done* (lift a planar picture; coplanar closed neighbourhoods, linear in
+  the heights; the main component; why the generic statement is proved inside the reduction,
+  `K_{2,3}`).
+  to task 12. *`lem:pencil-nonsimple-case`: kept* (KT Lemma 6.2, p. 673; eqs. (6.3)–(6.5)).
+  *Correction:* the cut case also needs the pair theorem's generic cut-edge paragraph (edge: task
+  6's *Moved*). *(f):* standard *picture*, *height*, *lift*, *vector bundle*, *general
+  configuration*; in a node, *admissible*, *configuration*, *lifting space*, the two
   *main-component statements*; for task 25, *main component* (a remark only); removed, *route*,
-  *parallel class*, *the pencil condition*. Forward `\cref`s added (`main-component.tex`):
+  *parallel class*, *the pencil condition*. Forward `\cref`s (`main-component.tex`):
   `def:pencil-admissible-picture`, `def:pencil-configuration`, `lem:pencil-condition-linear`,
   `def:pencil-lifting-space`, `rem:pencil-x0-main-component`,
   `lem:pencil-config-distinct-realization`, `lem:pencil-x0-two-hubs-obstruction`,
   `thm:pencil-generic-step`, `sec:main-component`.
-- [ ] **8. P6 — `sec:pencil-girth-chain`, 1196–1411.** 8 nodes, all outside the headline's closure
-  (confirm).
-  - The preamble should say at once that the subsection serves the bypassed kernels of
-    `thm:pencil-conditional-realization-pair`, and why it is kept.
-  - Relate its chains to the coverage's `def:pencil-x0-chain`, which is proved separately.
-  - Its last sentence names "the two-cut composition" of kernel (K-bare) without introducing it.
-    That composition is where build-or-leave items 1 and 2 have their purpose. **Writes item 2's
-    recommendation**, and a note toward item 1's.
-  - Round 1's candidate on `lem:pencil-chain-side-connected` stands: no prose should paper over
-    it.
+- [x] **8. P6 — `sec:pencil-girth-chain`.** *Outside the closure: confirmed* (none of the 8 nodes is
+  among `thm:pencil-conjecture`'s 346 graph ancestors, nor their 12 pins in either headline's Lean
+  closure). *Preamble: done*: it opens on the bypassed kernels, kept as results that hold under
+  their hypotheses. *Coverage: done*: `def:pencil-x0-chain` is case (3) with one interior body
+  allowed; its graphs are 2-connected, so cases (1)–(2) cannot occur, and
+  `lem:pencil-x0-chain-exists` is proved without this subsection. *Two-cut composition: cut*
+  (default (a)); case (3) cites `cor:block-rank-vertex-two-cut`; item 2 written, item 1 noted.
+  *Round 1's candidate: stands*; a new note says the pin counts the degree at `w` only. Also cut:
+  `def:girth`'s false "applied below only to simple multigraphs". *(f):* standard *girth*, *chord*,
+  *cut vertex*, *chain* (KT Lemma 4.6, p. 664), *closed walk*; in a node, *pencil hub*, *closed
+  neighbourhood*, *rigid*; removed, *the two-cut composition*, *the informal treatment*. Forward
+  `\cref`s: `sec:main-component-coverage`, `def:pencil-x0-chain`, `lem:pencil-x0-chain-exists`.
 - [ ] **9. M1a — `sec:main-component-carrier`, first half, 123–338.** Pictures, the lifting space,
   configurations, and the linearity of the pencil condition; 8 nodes. It needs the idea that
   should lead: a configuration is a lifting of a planar drawing, the scene-analysis picture
@@ -369,13 +358,24 @@ node, refactor around it, or leave it with a recorded reason. The task named wri
 exposition has made the item's role clear. The PI decides at round 4's stop.
 
 1. **The D5 blueprint debt.** Of the 40 names in `notes/Phase40-design.md` §7's list, nine are
-   pinned; 31 have no node. Seen at the open: Layer C's file, `Molecule/Pencil/TwoCut.lean`, is
-   imported only by the root `CombinatorialRigidity.lean`, so its names feed neither headline.
-   Layers A and B were not checked. Role: task 8 (the two-cut composition) and task 15 (the ear
-   formula). *Recommendation: pending* (task 15).
+   pinned; 31 have no node. *Task 8 read all 40 in the Lean* (the closure of both headlines' types
+   and values; measured, script not retained). 11 are live: seven pinned names (not the two pins of
+   `cor:block-rank-vertex-two-cut`) and four unpinned helpers (`bddAbove_range_partitionDef_merged`,
+   `span_jointRows_eq_map_dualAnnihilator`, `finrank_span_jointRows`, `map_screwDiff_comm`). The
+   other 29, `TwoCut.lean`'s nine included, feed neither headline; item 2's reason may carry over.
+   Role: task 8 (the two-cut composition) and task 15 (the ear formula). *Recommendation: pending*
+   (task 15).
 2. **A6, the welded pendant law, and item 6's other deferred laws.** These are S7(i), S7(ii),
-   S7(iii), S7(v) and S9, all unbuilt; they belong to the same composition's block-profile family.
-   Role: task 8. *Recommendation: pending* (task 8).
+   S7(iii), S7(v) and S9, all unbuilt. Role: task 8. *Recommendation (task 8): leave them unbuilt,
+   with no node.* They belong to the two-cut composition, an unfinished attempt at kernel (K-bare):
+   split `G` at case (3)'s `{w, w'}` and combine the sides' deficiencies
+   (`Graph.deficiency_eq_of_vertexTwoCut`) and ranks (`cor:block-rank-vertex-two-cut`), as
+   `pencilLoss_vertexTwoCut` does. In the Lean that composite has no caller, and the kernels are
+   hypotheses only of three declarations off the proof: a build gains no caller. Nor are these laws
+   its gap. A6 reduces at a side end of degree one, but both ends keep degree two or more
+   (`lem:pencil-chain-side-connected`); the S7/S9 laws are not consumed; it lacks ear-profile facts
+   and a variety layer (`notes/Phase39-design.md` *Item-6 carrier recon*). From the cut remark:
+   it covers case (3) only, and case (2) falls to the induction's cut-vertex case.
 3. **The "only if" halves of (MC-52)/(MC-53).** Unbuilt; stated informally in the remarks after
    `thm:pencil-x0-cut` and `thm:pencil-x0-bridge`. Role: task 13. *Recommendation: pending*
    (task 13).
@@ -455,7 +455,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 8** (checklist above has its scope); then tasks 9–26 in order, and task 27 closes the
+**Next: task 9** (checklist above has its scope); then tasks 10–26 in order, and task 27 closes the
 round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
@@ -467,8 +467,8 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
 
 ## Decisions made during this round
 
-- **2026-09-30, the open: the sample is `sec:main-component-splitoff`**, a typical step subsection
-  with a JJ citation to check (rejected: `-cut`, too easy; `-short`, too long; `-contract`).
+- **2026-09-30, the open: the sample is `sec:main-component-splitoff`** (a typical step, with a JJ
+  citation).
 - **The task list** (the PI approved it, 2026-10-03). One commit per subsection, split or grouped
   at natural seams into slices of 150–430 lines, near the sample's 322. The introductions and
   `intro.tex` come last (principle F): each summarizes what precedes it.
@@ -493,7 +493,6 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
 - **Formalization notes** (task 6's reading of *Scope*, which protects nodes' labels). A note left
   with no Lean divergence is deleted, label and all, as a note is not a graph node. A note stays on
   its side of a proof: plasTeX attaches a proof to the environment just before it.
-- **Rungs.** The sample is Opus. After Stop 1 the coordinator picks each task's rung against the
-  exemplar (Phase 29's playbook ran Sonnet). Tasks 3 and 4 ran Sonnet, and each needed an Opus
-  corrective for a gate-invisible claim about other sections (one false). So from task 5 every
-  section task runs Opus, fresh per task (coordinator, 2026-10-03; `notes/dispatch-log.md`).
+- **Rungs.** Tasks 3 and 4 ran Sonnet, and each needed an Opus corrective for a gate-invisible
+  claim about other sections. From task 5 every section task runs Opus, fresh per task
+  (coordinator, 2026-10-03; `notes/dispatch-log.md`).
