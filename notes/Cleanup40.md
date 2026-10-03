@@ -8,7 +8,7 @@ over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
 `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
 order and for which rounds are done. Round 3's Stop 1 closed on 2026-10-03: the PI approved the
 revised sample section, pinned as the exemplar (`notes/Phase40-exposition.md` *Autopilot: for the
-PI*). Tasks 1–3 have landed. **The next concrete task** is round 3's task 4, run unattended.
+PI*). Tasks 1–4 have landed. **The next concrete task** is round 3's task 5, run unattended.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -175,6 +175,13 @@ Round 2's recorded candidates, one line each. The detail is in the log each name
 - The merged hub's `hne : V(F.graph).Nonempty` is redundant (it follows from `hu`, and the proof
   uses it only for a `Nonempty α` it does not need), but dropping it changes the statement; the
   hub has no blueprint node (`notes/Phase40-factor.md`, task 2).
+
+Round 3's recorded candidates, one line each. The detail is in `notes/Phase40-exposition.md`
+*Moved to a later round*:
+
+- `fmlnote:pencil-nondegenerate`'s remark that a non-hub vertex's two hinges are automatically
+  concurrent is exactly `lem:coplanar-hinges-concurrent`'s content, with no `\uses` edge to it
+  (task 4).
 
 The coordinator's starting questions, guessed from file names and sizes (nobody has read the proofs
 for them):

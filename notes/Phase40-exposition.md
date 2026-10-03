@@ -7,10 +7,10 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 3 landed: task 1 (the sample section), task 2 (pinned it as the exemplar), task 3
-(`pencil.tex`'s three opening subsections, with a corrective). **Stop 1 is closed** (the PI,
-2026-10-03, *Autopilot: for the PI*), and the round runs unattended to its close. **Next concrete
-task:** task 4, `pencil.tex`'s local-construction subsections (base, cycle, extension), against
+one-commit tasks, 4 landed: task 1 (the sample section), task 2 (pinned it as the exemplar), task 3
+(`pencil.tex`'s three opening subsections, with a corrective), task 4 (the base, cycle and
+extension subsections). **Stop 1 is closed** (the PI, 2026-10-03, *Autopilot: for the PI*), and the
+round runs unattended to its close. **Next concrete task:** task 5, `sec:pencil-reduction`, against
 the pinned exemplar (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per
 *Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
 
@@ -61,12 +61,12 @@ audit are queued as **PROSE** (ROADMAP). The round runs unattended from task 3.
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–3
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–4
 have landed**, task 3 with a corrective, and nothing is mid-stream. Task 2, attended by the PI,
 pinned the exemplar, settled defaults (a)–(f) and added `blueprint/AUTHORING.md`'s clauses of
-2026-10-03. Task 3's findings, coinage list and corrective are in its checklist entry. Every commit
-so far leaves the gates at the baseline below (graph fingerprint, pin hash, warning counts). Next
-is task 4.
+2026-10-03. Tasks 3–4's findings, coinage lists and (task 3's) corrective are in their checklist
+entries. Every commit so far leaves the gates at the baseline below (graph fingerprint, pin hash,
+warning counts). Next is task 5.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -184,16 +184,25 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - *Corrective* (coordinator, three gaps): cut the field-dependence sentence, which rested on the
     kernels' uncited routes; one name per condition, not four; the remark narrowed to
     `fmlnote:pencil-distinct-motive`'s self-duality reason, without its claim about the kernels.
-- [ ] **4. P2 — base, cycle and extension, 189–463**: `sec:pencil-base`, `sec:pencil-cycle`,
+- [x] **4. P2 — base, cycle and extension, 189–463**: `sec:pencil-base`, `sec:pencil-cycle`,
   `sec:pencil-extension`.
-  - Three local constructions, none placed: say which case of the reduction each serves.
-  - The two cross-incidences of `lem:two-pencil-extension-iff` are the chapter's first new
-    obstruction. Say where they matter later: the failure of minimality, the repositioning in the
-    cut-edge case, and `K₄`.
-  - `lem:cycle-coplanar-realization` is stated as a corollary before the lemma it follows from
-    (319–347): reorder.
-  - Keep `notes/BlueprintExposition.md`'s pointer to "the `sec:pencil-extension` preamble +
-    proofs" true.
+  - *Diagnosis, mostly done.* `sec:pencil-base` opens naming `thm:pencil-reduction`'s base case
+    and closes `\cref`-ing `lem:pencil-base-case`. `sec:pencil-extension`'s new closing remark
+    places the two cross-incidences: minimality's failure, the cut-edge repositioning
+    (`lem:pencil-cut-nondegeneracy`), and `K_4` (`sec:pencil-nondegenerate`) — also the "stable
+    insight" `notes/BlueprintExposition.md` already credits the subsection with, now actually
+    there. `lem:cycle-coplanar-realization` is reordered after `lem:cycle-pencil-realization`
+    (its own `\uses` target), curing the forward reference; no label/pin/`\leanok`/`\uses`
+    changed. **Not done, with the reason:** `sec:pencil-cycle`'s two lemmas serve no case of
+    `thm:pencil-reduction` — confirmed via the Lean call chain (`CLEANUP.md` §B):
+    `exists_{pencil,coplanar}PanelRealization_cycle` have no caller outside their own proof. The
+    opening now says so and points at the fact they illustrate instead (degree-two concurrency is
+    free, reused at `sec:pencil-nondegenerate`'s non-hub vertices; the missing `\uses` edge for
+    that reuse is under *Moved to a later round*).
+  - *(f) coinages.* Standard already: *concurrency point*, *pencil line*, *flat pencil*. New:
+    *cross-incidence(s)*, no KT analogue, kept and now `\emph{}`-marked at first use.
+  - *New forward `\cref`s.* `thm:pencil-reduction` (×4), `lem:pencil-base-case` (×2),
+    `sec:pencil-nondegenerate` (×2), `lem:pencil-cut-nondegeneracy` (×1).
 - [ ] **5. P3 — `sec:pencil-reduction`, 464–754.** 11 nodes.
   - The nodes do not follow the five cases of `thm:pencil-reduction`. It needs a roadmap from
     cases (i)–(v) to the lemma that settles each, naming the two cases left for later
@@ -445,7 +454,9 @@ mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
 Each line gives the task, its target round, and a one-line reason. The same line goes into the
 target round's plan section in `notes/Cleanup40.md` in the same commit.
 
-- None yet.
+- **Task 4, target `40-simplify`.** `fmlnote:pencil-nondegenerate`'s remark that a non-hub
+  vertex's two hinges are automatically concurrent is exactly `lem:coplanar-hinges-concurrent`'s
+  content, but the note carries no `\uses` edge to it.
 
 ## Blockers / open questions
 
@@ -453,7 +464,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 4** (checklist above has its scope); then tasks 5–26 in order, and task 27 closes the
+**Next: task 5** (checklist above has its scope); then tasks 6–26 in order, and task 27 closes the
 round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
