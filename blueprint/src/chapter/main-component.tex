@@ -121,12 +121,52 @@ every multigraph with at least one body
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
 
-Throughout, $G$ is a finite simple connected multigraph of minimum
-degree at least two and $K$ is an infinite field. This subsection
-introduces planar pictures and their lifting spaces, reads every
-configuration over an admissible picture as a pencil realization, and
-proves that one configuration at the deficiency rank over a main
-picture forces the general one (\cref{thm:pencil-x0-main-component}).
+This subsection introduces the configurations of the induction, and
+proves the lemma that each step of the induction uses
+(\cref{lem:pencil-x0-one-witness}). Throughout, $K$ is an infinite field
+and $G$ satisfies the standing hypotheses
+(\cref{def:pencil-x0-standing}): it is finite, simple and connected, with
+minimum degree at least two. A body of degree $d$ in a simple graph has
+$d$ distinct neighbours, so every closed neighbourhood of $G$ has at
+least three members.
+
+The idea is to lift a picture of $G$ in the plane, as in scene analysis.
+The picture places each body $v$ at a point $q_v = (x_v, y_v)$ of $K^2$,
+and a height $z_v$ lifts it to the point $p_v = (x_v, y_v, z_v, 1)$, in
+homogeneous coordinates. The picture and the heights form a
+configuration. Take the points $p_v$ as concurrency points and the joins
+$p_u \wedge p_v$ as hinges. Then the configuration is a pencil
+realization when the points of every closed neighbourhood lie in a plane
+(\cref{sec:pencil-main-component-route}). We draw the picture with
+adjacent bodies at distinct points and with no closed neighbourhood on a
+line; such a picture is admissible. The first condition makes every
+hinge nonzero. By the second, a plane through the points of a closed
+neighbourhood is not vertical, so it is the graph
+$\zeta = a\xi + b\eta + c$ of an affine function of $(\xi, \eta)$. The
+closed neighbourhood is therefore coplanar exactly when the heights on it
+agree with an affine function of the picture
+(\cref{lem:pencil-condition-linear}). This condition is linear in the
+heights. The heights that satisfy it at every body form the lifting space
+$L(q)$. In the language of scene analysis, $L(q)$ is the space of heights
+of the liftings of $q$, for the incidence structure whose faces are the
+closed neighbourhoods. The heights of one affine function at every body
+are the trivial liftings, which put all the faces in one plane (see
+Whiteley~\cite{whiteley1996}, \S 8.3).
+
+The rest of the subsection shows that one configuration can stand for
+the general one. A configuration over an admissible picture with
+$z \in L(q)$ gives a pencil realization
+(\cref{lem:pencil-config-distinct-realization}). The general
+configuration of $G$ attains when, at a general picture and a general
+height in $L(q)$, this realization has the deficiency rank
+(\cref{def:pencil-x0-attains}). The main pictures are the admissible
+pictures at which $\dim L(q)$ is least. If one configuration over a main
+picture has the deficiency rank, then the general configuration attains
+(\cref{lem:pencil-x0-one-witness}). We extend its height to heights
+$Z(q) \in L(q)$ at general pictures $q$, polynomial in $q$, and use that
+the rank is lower semicontinuous. The configurations over the main
+pictures form a vector bundle, whose closure is the main component of the
+configuration space (\cref{rem:pencil-x0-main-component}).
 
 \begin{definition}[Admissible planar picture]
   \label{def:pencil-admissible-picture}
@@ -140,15 +180,17 @@ picture forces the general one (\cref{thm:pencil-x0-main-component}).
   if $q_u \neq q_v$ for every edge $uv$ and, for every body $v$, three
   members of the closed neighbourhood of $v$
   (\cref{def:pencil-nondegenerate}) have linearly independent homogeneous
-  picture points, that is, the picture points over the closed
-  neighbourhood are not collinear.
+  picture points, that is, the points $q_w$ of the closed neighbourhood
+  do not lie on one line.
 \end{definition}
 
-Admissibility is a finite conjunction of non-vanishing conditions, one
-coordinate difference for each edge and one $3 \times 3$ determinant for
-each body, so the admissible pictures form a Zariski-open subset of
-$K^{2|V(G)|}$. It is nonempty, since $K$ is infinite and every closed
-neighbourhood has at least three members by the degree hypothesis.
+Both conditions are Zariski-open in the coordinates of the picture:
+$q_u \neq q_v$ fails only where $x_u - x_v$ and $y_u - y_v$ both vanish,
+and three picture points are collinear exactly where the determinant of
+their homogeneous picture points vanishes. So the admissible pictures
+form a Zariski-open subset of $K^{2|V(G)|}$. It is nonempty. As $K$ is
+infinite, we can place the bodies at distinct points $(t, t^2)$ of a
+parabola, and no three of these points are collinear.
 
 \begin{definition}[The lifting space]
   \label{def:pencil-lifting-space}
@@ -176,35 +218,34 @@ $K^{V(G)}$.
         Graph.three_le_finrank_liftingSpace}
   \leanok
   \uses{def:pencil-lifting-space, def:pencil-admissible-picture}
-  $\mathrm{Aff}(q) \subseteq L(q)$ at every picture $q$. At an
-  admissible picture, provided $G$ has at least one body,
-  $\mathrm{Aff}(q)$ is three-dimensional; in particular
-  $\dim L(q) \geq 3$.
+  Let $q$ be a picture of $G$. Then $\mathrm{Aff}(q) \subseteq L(q)$. If
+  $q$ is admissible and $G$ has at least one body, then
+  $\mathrm{Aff}(q)$ is three-dimensional, so $\dim L(q) \geq 3$.
 \end{lemma}
 \begin{proof}
   \leanok
-  A single triple $(\alpha, \beta, \gamma)$ already restricts to an
-  affine function of the picture on every closed neighbourhood, giving
-  the containment with no hypothesis on $q$. At an admissible picture,
-  some body's closed neighbourhood carries three members with linearly
-  independent homogeneous picture points, so the coefficients
-  $(\alpha, \beta, \gamma)$ are pinned down by their values there: the
-  linear map from coefficients to heights is injective, hence an
-  isomorphism onto its image $\mathrm{Aff}(q)$. The dimension bound
-  follows from the containment by monotonicity of dimension.
+  A height in $\mathrm{Aff}(q)$ agrees with one affine function of the
+  picture at every body, and so on every closed neighbourhood; it lies in
+  $L(q)$. The map $(\alpha, \beta, \gamma) \mapsto
+  (\alpha x_w + \beta y_w + \gamma)_w$ is linear, with image
+  $\mathrm{Aff}(q)$. At an admissible picture it is injective, since an
+  affine function that vanishes at three non-collinear picture points of
+  a closed neighbourhood is zero. So $\dim \mathrm{Aff}(q) = 3$, and
+  $\dim L(q) \geq 3$ by the containment.
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:pencil-lifting-space}
-  A height is a function on the whole ambient set of bodies that
-  vanishes off $V(G)$, so that for a graph not spanning the body set
-  the dimension of $L(q)$ is still that of a space of heights on
-  $V(G)$.
+  In the formalization a height is a function on the whole ambient set
+  of bodies that vanishes off $V(G)$. So $\dim L(q)$ is the dimension of
+  a space of heights on $V(G)$, also when $G$ does not contain every
+  body.
 \end{fmlnote}
 
-When $G$ is a subgraph of a larger graph, a picture of the larger graph
-is read as a picture of $G$ by restriction to $V(G)$, and only the bodies
-of $G$ matter.
+The steps of the induction use one picture both for $G$ and for smaller
+graphs on some of its bodies, and some steps move the picture at a body
+outside a smaller graph. A picture of a larger set of bodies is read as a
+picture of $G$ by restriction to $V(G)$.
 
 \begin{lemma}[Admissibility and the lifting space read only the bodies of the graph]
   \label{lem:pencil-picture-local}
@@ -239,18 +280,16 @@ of $G$ matter.
   $w \in K^4$.
 \end{definition}
 
-The plane normal is polynomial in the picture coordinates and, at a
-fixed picture, in the height coordinates; it is orthogonal to the
-three chosen points, and nonzero exactly when they are linearly
-independent. When the three chosen bodies lie in the closed
-neighbourhood of $v$ with non-collinear picture points and
-$z \in L(q)$, it is, up to a nonzero scalar
-(\cref{lem:pencil-selector-independent-scalar}), the normal of the
-plane containing the points of the whole closed neighbourhood
-(\cref{lem:pencil-selector-plane-contains-nbhd}), whichever three are
-chosen.
+In the pencil realization of a configuration, the panel of a body $v$ is
+the plane through the points of its closed neighbourhood. A normal of
+that plane is determined only up to a scalar, and we fix one by computing
+it from three of the points. The plane normal $n_v$ is orthogonal to
+$p_{a_v}$, $p_{b_v}$ and $p_{c_v}$, as a determinant with two equal rows
+vanishes. It is nonzero exactly when these three points are linearly
+independent, and then $n_v^{\perp}$ is the plane through them. The
+coordinates of $n_v$ are polynomials in those of $q$ and $z$.
 
-\begin{lemma}[The plane of a selector contains the closed neighbourhood]
+\begin{lemma}[The plane through three points of a closed neighbourhood contains all of it]
   \label{lem:pencil-selector-plane-contains-nbhd}
   \lean{CombinatorialRigidity.Molecular.dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd}
   \leanok
@@ -258,21 +297,22 @@ chosen.
   Let $q$ be a picture, $z \in L(q)$, and $v$ a body of $G$ whose
   three chosen bodies $a_v, b_v, c_v$ lie in the closed neighbourhood
   of $v$. Then the plane normal $n_v$ is orthogonal to $p_w$ for every
-  $w$ in the closed neighbourhood of $v$, not only the three chosen
-  bodies.
+  $w$ in the closed neighbourhood of $v$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Membership in $L(q)$ gives, at $v$, coefficients $h \in K^3$
-  expressing every point of the closed neighbourhood as the image,
-  under one fixed linear map $K^3 \to K^4$ built from $h$, of its
-  homogeneous picture point. Four images under one linear map of four
-  vectors of the $3$-dimensional $K^3$ are always linearly dependent,
-  so the determinant defining $n_v \cdot p_w$ vanishes for every $w$ in
-  the neighbourhood, including the three chosen bodies themselves.
+  As $z \in L(q)$, there are $a, b, c \in K$ with
+  $z_w = a x_w + b y_w + c$ for every $w$ in the closed neighbourhood of
+  $v$. For each such $w$, the point $p_w$ is therefore the image of the
+  homogeneous picture point $(x_w, y_w, 1)$ under the linear map
+  $(\xi, \eta, \omega) \mapsto (\xi, \eta, a\xi + b\eta + c\omega, \omega)$
+  from $K^3$ to $K^4$. The four points $p_{a_v}, p_{b_v}, p_{c_v}, p_w$
+  lie in its image, of dimension at most three. So they are linearly
+  dependent, and $n_v \cdot p_w = \det[p_{a_v}, p_{b_v}, p_{c_v}, p_w]$
+  vanishes.
 \end{proof}
 
-\begin{lemma}[The plane normal is independent of the selector, up to a scalar]
+\begin{lemma}[The plane normal does not depend on the three bodies, up to a scalar]
   \label{lem:pencil-selector-independent-scalar}
   \lean{CombinatorialRigidity.Molecular.exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd}
   \leanok
@@ -284,54 +324,15 @@ chosen.
 \end{lemma}
 \begin{proof}
   \leanok
-  Both normals are nonzero, since a plane normal vanishes exactly when
-  its three defining points are dependent, and here both triples are
-  independent. Fix the second choice's three points: the first normal
-  is orthogonal to them by \cref{lem:pencil-selector-plane-contains-nbhd}
-  (they lie in the closed neighbourhood), and the second normal is
-  orthogonal to them by its own defining orthogonality. Those three
-  points are independent, so their common perp in $K^4$ is
-  one-dimensional; two nonzero vectors of a one-dimensional space are
-  scalar multiples of one another.
-\end{proof}
-
-\begin{lemma}[The pencil condition is linear in the heights]
-  \label{lem:pencil-condition-linear}
-  \lean{Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar,
-        Graph.IsAdmissiblePicture.exists_smul_eq_interpolant}
-  \leanok
-  \uses{def:pencil-lifting-space, def:pencil-configuration,
-        def:pencil-panel-realization}
-  Let $q$ be admissible and $z$ a height. The configuration $p = (q, z)$
-  has every closed neighbourhood coplanar if and only if $z \in L(q)$.
-  Every such configuration is a pencil realization
-  (\cref{def:pencil-panel-realization}): adjacent bodies carry distinct
-  points, and each body's plane is unique and non-vertical.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-selector-plane-contains-nbhd,
-        lem:pencil-selector-independent-scalar,
-        lem:pencil-config-distinct-realization}
-  If $z \in L(q)$, admissibility gives at $v$ three closed-neighbourhood
-  members with non-collinear picture points, whose plane normal is
-  nonzero and, by \cref{lem:pencil-selector-plane-contains-nbhd},
-  orthogonal to the whole closed neighbourhood: the neighbourhood is
-  coplanar. Conversely, if some nonzero normal annihilates the whole
-  closed neighbourhood of $v$, evaluating it at those three non-collinear
-  members forces its height coefficient nonzero --- else it would already
-  annihilate three independent picture points --- and solving for $z_w$
-  exhibits $z$ as an affine function of the picture on the neighbourhood,
-  giving $z \in L(q)$.
-
-  Adjacent points are distinct because $q_u \neq q_v$
-  (\cref{lem:pencil-config-distinct-realization}). If $z_w = ax_w + by_w
-  + c$ on the neighbourhood of $v$, its points lie on the plane
-  $\zeta = a\xi + b\eta + c$; by the argument of
-  \cref{lem:pencil-selector-independent-scalar}, any nonzero normal of the
-  neighbourhood is a nonzero scalar multiple of $(a, b, -1, c)$, so its
-  height coefficient is nonzero (the plane is non-vertical) and it is
-  determined by $a, b, c$ up to scale (the plane is unique).
+  The three configuration points of each choice are linearly
+  independent, since dropping the height coordinate maps them to
+  independent homogeneous picture points. So both plane normals are
+  nonzero. The first is orthogonal to the three points of the second
+  choice, which lie in the closed neighbourhood
+  (\cref{lem:pencil-selector-plane-contains-nbhd}). The second is
+  orthogonal to them by definition. The vectors orthogonal to three
+  linearly independent vectors of $K^4$ form a line, so the two normals
+  are proportional.
 \end{proof}
 
 \begin{definition}[Main pictures]
@@ -452,6 +453,61 @@ every point, and the condition then holds vacuously.
   picture points differ, and every hinge is nonzero
   (\cref{lem:pencil-config-point-join-rank}). The rank of $F_p$ is the
   rank of $p$ by the same lemma.
+\end{proof}
+
+The next lemma proves the equivalence on which the lifting space rests.
+It also gives the plane of each body explicitly, in the form that
+\cref{lem:pencil-x0-conjunct-three} uses.
+
+\begin{lemma}[Coplanarity is linear in the heights]
+  \label{lem:pencil-condition-linear}
+  \lean{Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar,
+        Graph.IsAdmissiblePicture.exists_smul_eq_interpolant}
+  \leanok
+  \uses{def:pencil-lifting-space, def:pencil-configuration,
+        def:pencil-panel-realization}
+  Let $q$ be admissible, $z$ a height and $p = (q, z)$. The points of
+  every closed neighbourhood of $p$ lie in a plane if and only if
+  $z \in L(q)$. In that case $p$ gives a pencil realization
+  (\cref{def:pencil-panel-realization}) whose adjacent points are
+  distinct, and the plane through the points of the closed neighbourhood
+  of each body $v$ is unique and not vertical: if
+  $z_w = a x_w + b y_w + c$ on that neighbourhood, every nonzero vector
+  orthogonal to its points is a multiple of $(a, b, -1, c)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pencil-selector-plane-contains-nbhd,
+        lem:pencil-selector-independent-scalar,
+        lem:pencil-config-distinct-realization}
+  Suppose that $z \in L(q)$. Admissibility gives at each body $v$ three
+  members of its closed neighbourhood with non-collinear picture points.
+  Their configuration points are linearly independent, as their picture
+  points are, so their plane normal is nonzero. It is orthogonal to the
+  points of the whole closed neighbourhood
+  (\cref{lem:pencil-selector-plane-contains-nbhd}). So these points lie
+  in a plane.
+
+  Conversely, suppose that the points of every closed neighbourhood lie
+  in a plane. At a body $v$, let $n \neq 0$ be orthogonal to them, so
+  that $n_0 x_w + n_1 y_w + n_2 z_w + n_3 = 0$ for every $w$ in the
+  closed neighbourhood of $v$. If $n_2$ were zero, $(n_0, n_1, n_3)$
+  would be orthogonal to the homogeneous picture points of the three
+  members that admissibility gives, which are linearly independent, and
+  $n$ would vanish. So $n_2 \neq 0$, and solving for $z_w$ shows that $z$
+  agrees with an affine function of the picture on the closed
+  neighbourhood. Hence $z \in L(q)$.
+
+  The pencil realization, with adjacent points distinct, is that of
+  \cref{lem:pencil-config-distinct-realization}. If
+  $z_w = a x_w + b y_w + c$ on the closed neighbourhood of $v$, the
+  vector $(a, b, -1, c)$ is orthogonal to its points. The points of the
+  three members above are linearly independent, so the vectors orthogonal
+  to them form a line, as in
+  \cref{lem:pencil-selector-independent-scalar}. Hence every nonzero
+  vector orthogonal to the closed neighbourhood is a multiple of
+  $(a, b, -1, c)$, and its height coordinate is nonzero: the plane is not
+  vertical.
 \end{proof}
 
 \begin{lemma}[Scaling and affine shifts of the heights preserve the rank]
