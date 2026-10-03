@@ -809,25 +809,58 @@ Later subsections cite the lemmas themselves.
 \label{sec:main-component-flat}
 
 This subsection computes the rank of a \emph{flat} configuration
-$(q, 0)$, all heights zero, over an admissible picture $q$, and derives
-from it the case of the induction in which the two deficiencies agree.
-Every hinge of a flat configuration lies in the plane $z = 0$, so the
-screw space splits into a part the edges glue together and a planar
-part. The planar part's motions are the families of affine functions on
-$K^2$ that agree at both ends of every edge, and the map evaluating each
-at its own picture point identifies them with the lifting space. So the
-flat rank is exactly $6|V(G)| - 3 - \dim L(q)$
-(\cref{thm:pencil-flat-rank}), and a partition count on the planar part
+$(q, 0)$, with all heights zero, over an admissible picture $q$. The rank
+is exactly $6|V(G)| - 3 - \dim L(q)$ (\cref{thm:pencil-flat-rank}). With
+Jackson and Jord\'an's equality, the next subsection derives from it
+that, under the standing hypotheses, the general configuration attains
+whenever the two deficiencies agree (\cref{cor:pencil-jj-flat}). This
+settles one case of the induction with no appeal to smaller graphs
+(\cref{sec:main-component-coverage}).
+Throughout, $\operatorname{def}_2$ and $\operatorname{def}_3$ are the
+deficiencies of \cref{def:D-deficiency} at $n = 2$ and $n = 3$ ($D = 3$
+and $D = 6$).
+
+The idea is that at zero heights every hinge $p_u \wedge p_v$ is a line
+of the plane $z = 0$. We split the screw space into the screws of the
+lines of this plane and a complement (\cref{lem:pencil-flat-split}). At a
+hinge, the screws of the two bodies may differ only by a multiple of the
+hinge. So the hinges glue the complementary parts of the bodies' screws
+together, and on a connected graph these parts are all equal. They give
+three dimensions of motions. The screws of the lines of the plane
+correspond to the affine functions on $K^2$, a line to the functions
+vanishing on it. So the rest of a motion is a family $(h_v)$ of affine
+functions such that $h_u - h_v$ vanishes at $q_u$ and at $q_v$ for every
+edge $uv$. These families are the lifting planes
+(\cref{def:pencil-lifting-planes}). Evaluating each $h_v$ at $q_v$
+identifies them with the lifting space $L(q)$
+(\cref{lem:pencil-lifting-planes-dim}), and rank--nullity gives the flat
+rank.
+
+Over the reals, $h_v$ gives the velocities normal to the plane $z = 0$ of
+the points of that plane moving with the body $v$. The planes
+$\zeta = h_v(\xi, \eta)$ are then the faces of a polyhedron over the
+picture, a lifting as in \cref{sec:main-component-carrier}. Crapo and
+Whiteley~\cite{crapoWhiteley1982} describe this correspondence between
+the motions of a flat panel structure and the polyhedra over it for the
+tetrahedron, and note that it holds in great generality (Example~4.4).
+We prove what we need directly.
+
+The lifting planes also form the motion space of a panel-hinge framework
+$P_q$ in the plane, with panel normal $(x_v, y_v, 1)$ at each body $v$
+(\cref{lem:pencil-lifting-planes-motions}). A partition count on $P_q$
 bounds $\dim L(q)$ below by $3 + \operatorname{def}_2(G)$
-(\cref{lem:pencil-lifting-space-deficiency}). This is an instance of the
-classical correspondence between the motions of a flat panel structure
-and the polyhedra over it (Crapo--Whiteley~\cite{crapoWhiteley1982},
-Example~4.4, for the tetrahedron), with $L(q)$ the space of liftings of
-the picture in the sense of scene analysis
-(Whiteley~\cite{whiteley1996}, \S 8.3); the proofs below are
-self-contained. Throughout, $\operatorname{def}_2$ and
-$\operatorname{def}_3$ are the deficiencies of \cref{def:D-deficiency}
-at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
+(\cref{lem:pencil-lifting-space-deficiency}). So the flat rank is at most
+$6(|V(G)| - 1) - \operatorname{def}_2(G)$, with equality where the bound
+on $\dim L(q)$ is attained. Jackson and Jord\'an's equality says that,
+under the standing hypotheses, it is attained at a general picture
+(\cref{thm:pencil-jj-equality}). Since $\operatorname{def}_3(G) \le
+\operatorname{def}_2(G)$ (\cref{lem:deficiency-antitone}), the flat
+configuration has the deficiency rank
+$6(|V(G)| - 1) - \operatorname{def}_3(G)$ only if the two deficiencies
+agree. When it has, it is a witness for \cref{lem:pencil-x0-one-witness}
+(\cref{cor:pencil-flat-attains}). The last corollary is the case
+$\dim L(q) = 3$, which the contraction step uses at a core of planar
+deficiency zero (\cref{sec:main-component-contract}).
 
 \begin{definition}[The lifting planes]
   \label{def:pencil-lifting-planes}
@@ -836,7 +869,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   \uses{def:pencil-admissible-picture}
   Let $q$ be a planar picture of $G$, and identify a vector
   $h \in K^3$ with the affine function $(x, y) \mapsto h \cdot (x, y, 1)$
-  on $K^2$. The space of \emph{lifting planes} $F(q)$ is the set of
+  on $K^2$. The space $F(q)$ of \emph{lifting planes} is the set of
   families $(h_v)_{v \in V(G)}$ of affine functions with
   $(h_u - h_v)(q_u) = (h_u - h_v)(q_v) = 0$ for every edge $uv$.
 \end{definition}
@@ -850,16 +883,62 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
 \end{lemma}
 \begin{proof}
   \leanok
-  Define $\Phi(h)_w = h_w(q_w)$. For a neighbour $u$ of $v$,
-  $h_u(q_u) = h_v(q_u)$, so $\Phi(h)$ restricts on the closed
-  neighbourhood of $v$ to the affine function $h_v$, and
-  $\Phi(h) \in L(q)$. Conversely, for $z \in L(q)$ let $h_v$ be an affine
-  function agreeing with $z$ on the closed neighbourhood of $v$; both
-  ends of an edge $uv$ lie in both closed neighbourhoods, so
-  $(h_v)_v \in F(q)$, and $\Phi$ maps it to $z$. If $\Phi(h) = 0$, then
-  $h_v$ vanishes at every point of the closed neighbourhood of $v$,
-  three of which are not collinear, so $h_v = 0$. Hence $\Phi$ is an
+  Define $\Phi(h)_w = h_w(q_w)$. Let $v$ be a body. For a neighbour $u$
+  of $v$, $h_u(q_u) = h_v(q_u)$, as $h_u - h_v$ vanishes at $q_u$. So on
+  the closed neighbourhood of $v$, $\Phi(h)$ agrees with the affine
+  function $h_v$, and $\Phi(h) \in L(q)$.
+
+  Conversely, let $z \in L(q)$. For each body $v$, let $h_v$ be an affine
+  function that agrees with $z$ on the closed neighbourhood of $v$. Both
+  ends of an edge $uv$ lie in both closed neighbourhoods, so $h_u - h_v$
+  vanishes at $q_u$ and $q_v$. Hence $(h_v)_v \in F(q)$, and $\Phi$ maps
+  it to $z$.
+
+  If $\Phi(h) = 0$, then $h_v$ vanishes at the picture point of every
+  member of the closed neighbourhood of $v$. Three of these points are
+  not collinear, as $q$ is admissible, so $h_v = 0$. Hence $\Phi$ is an
   isomorphism.
+\end{proof}
+
+\begin{lemma}[The motions of a flat configuration]
+  \label{lem:pencil-flat-split}
+  \lean{CombinatorialRigidity.Molecular.flatScrewEquiv,
+        Graph.finrank_linkConstants,
+        Graph.finrank_infinitesimalMotions_pointJoinFramework_flat}
+  \leanok
+  \uses{def:pencil-lifting-planes, lem:pencil-config-point-join-rank}
+  Let $G$ be connected, let $q$ be admissible, and let $F_{(q,0)}$ be the
+  body-hinge framework whose hinge at each edge $uv$ is the line
+  $p_u \wedge p_v$ of the flat configuration $p = (q, 0)$
+  (\cref{lem:pencil-config-point-join-rank}). Then its infinitesimal
+  motions form a space of dimension $3 + \dim F(q)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:extensor, def:hinge-constraint}
+  Let $e_0, \dots, e_3$ be the standard basis of $K^4$, with $e_2$ the
+  height direction, and write $e_{ij} = e_i \wedge e_j$. The plane
+  $z = 0$ is spanned by $e_0$, $e_1$ and $e_3$. So at $z = 0$ every hinge
+  $p_u \wedge p_v$ lies in
+  $W_\Pi = \operatorname{span}(e_{01}, e_{03}, e_{13})$, the span of the
+  lines of that plane. Split $\Lambda^2 K^4 = W' \oplus W_\Pi$ with
+  $W' = \operatorname{span}(e_{02}, e_{12}, e_{23})$, and write a screw
+  as $m_v = (m'_v, m^\Pi_v)$. The hinge condition
+  $m_u - m_v \in \operatorname{span}(p_u \wedge p_v)$
+  (\cref{def:hinge-constraint}) splits into $m'_u = m'_v$ and
+  $m^\Pi_u - m^\Pi_v \in \operatorname{span}(p_u \wedge p_v)$. As $G$ is
+  connected, the first condition makes $m'$ constant, which gives three
+  dimensions.
+
+  For the second, identify $W_\Pi = \Lambda^2 \hat\Pi$, where
+  $\hat\Pi = \operatorname{span}(e_0, e_1, e_3)$, with the affine
+  functions on $K^2$ by $a \wedge b \mapsto \det(a, b, \cdot)$, evaluated
+  at $(x, y, 1)$. The line $p_u \wedge p_v$ becomes a nonzero affine
+  function vanishing at $q_u$ and $q_v$. As $q_u \ne q_v$, its multiples
+  are all the affine functions vanishing at these two points. So the
+  second condition says that $h_u - h_v$ vanishes at $q_u$ and $q_v$,
+  where $h_v$ is the affine function of $m^\Pi_v$. Its solutions are
+  $F(q)$.
 \end{proof}
 
 \begin{fmlnote}
@@ -867,8 +946,8 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   The families of lifting planes range over the whole ambient set of
   bodies and are unconstrained off $V(G)$, as the infinitesimal motions
   of every framework are. Each body off $V(G)$ adds three to
-  $\dim F(q)$, and six to the dimension of the motions in
-  \cref{lem:pencil-flat-split}; these terms cancel in every rank.
+  $\dim F(q)$ and six to the dimension of the motions in
+  \cref{lem:pencil-flat-split}. These terms cancel in every rank.
 \end{fmlnote}
 
 \begin{lemma}[The lifting planes are the motions of a plane framework]
@@ -889,11 +968,11 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   \uses{def:panel-support-extensor}
   The screw space of the plane is $K^3$. The hinge of $P_q$ at an edge
   $uv$ is the meet of the lines with normals $(x_u, y_u, 1)$ and
-  $(x_v, y_v, 1)$ (\cref{def:panel-support-extensor}), a nonzero vector
-  orthogonal to both, since $q_u \ne q_v$. So a relative screw is a
-  multiple of the hinge exactly when it is orthogonal to both normals,
-  which is the condition defining $F(q)$. The rank follows from
-  \cref{lem:pencil-lifting-planes-dim} by rank--nullity.
+  $(x_v, y_v, 1)$ (\cref{def:panel-support-extensor}). It is a nonzero
+  vector orthogonal to both normals, since $q_u \ne q_v$. So a relative
+  screw is a multiple of the hinge exactly when it is orthogonal to both
+  normals, which is the condition defining $F(q)$. The rank follows by
+  rank--nullity and \cref{lem:pencil-lifting-planes-dim}.
 \end{proof}
 
 \begin{lemma}[The flat lower bound on the lifting space]
@@ -909,48 +988,18 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   \leanok
   \uses{lem:pencil-lifting-planes-motions, lem:pencil-lifting-planes-dim,
         lem:relative-deficiency-rank-bound}
-  By \cref{lem:pencil-lifting-planes-motions} and \cref{lem:pencil-lifting-planes-dim}
-  it suffices to bound the motions of $P_q$ below by
-  $3 + \operatorname{def}_2(G)$. Its bodies are $3$-dimensional and each
-  hinge imposes two conditions. For a partition $P$, the part-wise
-  constant assignments form a $3|P|$-dimensional space, on which the
-  edges inside a part impose nothing and each crossing edge at most two
-  conditions; this is the relative deficiency bound
-  \cref{lem:relative-deficiency-rank-bound}, at $D = 3$, and gives at least
-  $3|P| - 2d(P) = 3 + [3(|P| - 1) - 2d(P)]$ motions.
-\end{proof}
-
-\begin{lemma}[The flat split]
-  \label{lem:pencil-flat-split}
-  \lean{CombinatorialRigidity.Molecular.flatScrewEquiv,
-        Graph.finrank_linkConstants,
-        Graph.finrank_infinitesimalMotions_pointJoinFramework_flat}
-  \leanok
-  \uses{def:pencil-lifting-planes, lem:pencil-config-point-join-rank}
-  Let $G$ be connected, let $q$ be admissible, and let $F_{(q,0)}$ be the
-  body-hinge framework whose hinge at each edge $uv$ is the line
-  $p_u \wedge p_v$ of the flat configuration $p = (q, 0)$
-  (\cref{lem:pencil-config-point-join-rank}). Then its infinitesimal
-  motions form a space of dimension $3 + \dim F(q)$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{def:extensor, def:hinge-constraint}
-  At $z = 0$ every hinge $p_u \wedge p_v$ lies in
-  $W_\Pi = \operatorname{span}(e_{01}, e_{03}, e_{13})$, the Pl\"ucker
-  coordinates of lines in the plane $z = 0$. Split
-  $\Lambda^2 K^4 = W' \oplus W_\Pi$ with
-  $W' = \operatorname{span}(e_{02}, e_{12}, e_{23})$ and write a screw as
-  $m_v = (m'_v, m^\Pi_v)$. The hinge condition
-  $m_u - m_v \in \operatorname{span}(p_u \wedge p_v)$
-  (\cref{def:hinge-constraint}) splits into $m'_u = m'_v$ and
-  $m^\Pi_u - m^\Pi_v \in \operatorname{span}(p_u \wedge p_v)$. Since $G$
-  is connected, $m'$ is constant, a $3$-dimensional contribution.
-  Identifying $W_\Pi = \Lambda^2 \hat\Pi$, $\hat\Pi = \operatorname{span}
-  (e_0, e_1, e_3)$, with the affine functions on $K^2$ by
-  $a \wedge b \mapsto \det(a, b, \cdot)$, the line $p_u \wedge p_v$
-  becomes the affine functions vanishing at $q_u$ and $q_v$, so the
-  planar part's solutions are $F(q)$.
+  By \cref{lem:pencil-lifting-planes-motions} and
+  \cref{lem:pencil-lifting-planes-dim}, it suffices to show that the
+  motions of $P_q$ have dimension at least
+  $3 + \operatorname{def}_2(G)$. Each body of $P_q$ has the screw space
+  $K^3$, and each hinge is nonzero, as adjacent picture points differ.
+  Let $P$ be a partition of $V(G)$. The screw assignments that are
+  constant on each part form a space of dimension $3|P|$. On it the edges
+  inside a part impose no condition, and each crossing edge imposes at
+  most two. So the motions have dimension at least
+  $3|P| - 2d(P) = 3 + [3(|P| - 1) - 2d(P)]$ for every $P$, and hence at
+  least $3 + \operatorname{def}_2(G)$. This is the relative deficiency
+  bound at $D = 3$ (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
 \begin{theorem}[The flat rank]
@@ -963,7 +1012,7 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   Let $G$ be connected and let $q$ be admissible. Then the rank
   $\operatorname{rank} R(q, 0)$ of the flat configuration
   (\cref{def:pencil-x0-attains}) is exactly
-  $6|V(G)| - 3 - \dim L(q)$; hence
+  $6|V(G)| - 3 - \dim L(q)$. Hence
   $\operatorname{rank} R(q, 0) \le 6(|V(G)| - 1) - \operatorname{def}_2(G)$,
   with equality if and only if $\dim L(q) = 3 + \operatorname{def}_2(G)$.
 \end{theorem}
@@ -973,24 +1022,25 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
         lem:pencil-config-point-join-rank,
         lem:pencil-lifting-space-deficiency}
   The rank of $(q, 0)$ is that of $F_{(q,0)}$
-  (\cref{lem:pencil-config-point-join-rank}), which is $6|V(G)|$ minus
-  the dimension $3 + \dim F(q) = 3 + \dim L(q)$ of its motions
-  (\cref{lem:pencil-flat-split} and \cref{lem:pencil-lifting-planes-dim}). The
-  bound and its equality case then follow from
+  (\cref{lem:pencil-config-point-join-rank}). Its motions have dimension
+  $3 + \dim F(q) = 3 + \dim L(q)$ (\cref{lem:pencil-flat-split},
+  \cref{lem:pencil-lifting-planes-dim}). By rank--nullity in the
+  $6|V(G)|$-dimensional space of screw assignments, the rank is
+  $6|V(G)| - 3 - \dim L(q)$. The bound and its equality case follow from
   \cref{lem:pencil-lifting-space-deficiency}.
 \end{proof}
 
-\begin{corollary}[The flat configuration attains]
+\begin{corollary}[When the flat configuration has the deficiency rank]
   \label{cor:pencil-flat-attains}
   \lean{Graph.finrank_liftingSpace_eq_three_add_deficiency_three_iff,
         Graph.x0Attains_of_finrank_liftingSpace_le}
   \leanok
   \uses{thm:pencil-flat-rank, def:pencil-x0-attains}
   Let $G$ be connected and let $q$ be admissible. The flat configuration
-  at $q$ attains $6(|V(G)| - 1) - \operatorname{def}_3(G)$ if and only if
-  $\dim L(q) = 3 + \operatorname{def}_3(G)$, if and only if equality holds
-  in \cref{lem:pencil-lifting-space-deficiency} at $q$ and
-  $\operatorname{def}_2(G) = \operatorname{def}_3(G)$. If
+  $(q, 0)$ has rank $6(|V(G)| - 1) - \operatorname{def}_3(G)$ if and only
+  if $\dim L(q) = 3 + \operatorname{def}_3(G)$, and this holds if and
+  only if equality holds in \cref{lem:pencil-lifting-space-deficiency} at
+  $q$ and $\operatorname{def}_2(G) = \operatorname{def}_3(G)$. If
   $\dim L(q) \le 3 + \operatorname{def}_3(G)$, then the general
   configuration of $G$ attains.
 \end{corollary}
@@ -998,38 +1048,48 @@ at $n = 2$ and $n = 3$ ($D = 3$ and $D = 6$).
   \leanok
   \uses{lem:pencil-lifting-space-deficiency, lem:deficiency-antitone,
         lem:pencil-x0-one-witness, def:pencil-main-picture}
-  The first equivalence is the exact rank of \cref{thm:pencil-flat-rank}. By
-  \cref{lem:pencil-lifting-space-deficiency} and
-  \cref{lem:deficiency-antitone},
-  $\dim L(q) \ge 3 + \operatorname{def}_2(G) \ge 3 + \operatorname{def}_3(G)$,
-  which gives the second, and shows that under
-  $\dim L(q) \le 3 + \operatorname{def}_3(G)$ every admissible picture
-  has $\dim L \ge \dim L(q)$: $q$ is a main picture
-  (\cref{def:pencil-main-picture}), and the flat configuration, at rank
-  at least the target, is a witness for \cref{lem:pencil-x0-one-witness}.
+  The first equivalence is the exact rank of \cref{thm:pencil-flat-rank}.
+  By \cref{lem:pencil-lifting-space-deficiency} and
+  \cref{lem:deficiency-antitone}, every admissible picture $q'$ has
+  \[
+    \dim L(q') \;\ge\; 3 + \operatorname{def}_2(G) \;\ge\;
+    3 + \operatorname{def}_3(G).
+  \]
+  At $q' = q$ this gives the second equivalence.
+
+  Now suppose that $\dim L(q) \le 3 + \operatorname{def}_3(G)$. Then
+  $\dim L(q') \ge \dim L(q)$ at every admissible picture $q'$, so $q$ is
+  a main picture (\cref{def:pencil-main-picture}). By the exact rank, the
+  flat configuration $(q, 0)$ has rank at least
+  $6(|V(G)| - 1) - \operatorname{def}_3(G)$, and its height $0$ lies in
+  $L(q)$. So it is a witness for \cref{lem:pencil-x0-one-witness}, and
+  the general configuration of $G$ attains.
 \end{proof}
 
-\begin{corollary}[A flat main component attains]
+\begin{corollary}[The flat configuration when the lifting space has dimension three]
   \label{cor:pencil-flat-x0}
   \lean{Graph.x0Attains_of_finrank_liftingSpace_eq_three,
         Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_three}
   \leanok
   \uses{cor:pencil-flat-attains, lem:pencil-lifting-space-affine}
   Let $G$ be connected, and suppose that $\dim L(q) = 3$ at some
-  admissible picture $q$, so that $\ell_0 = 3$ and the main component is
-  flat. Then $\operatorname{def}_2(G) = \operatorname{def}_3(G) = 0$, the
-  flat configuration at every admissible $q$ with $\dim L(q) = 3$ has
-  rank $6(|V(G)| - 1)$, and the general configuration of $G$ attains.
+  admissible picture $q$, so that $\ell_0 = 3$
+  (\cref{lem:pencil-lifting-space-affine}). Then
+  $\operatorname{def}_2(G) = \operatorname{def}_3(G) = 0$, the flat
+  configuration at every admissible $q$ with $\dim L(q) = 3$ has rank
+  $6(|V(G)| - 1)$, and the general configuration of $G$ attains.
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:pencil-flat-rank, lem:pencil-lifting-space-deficiency,
         lem:deficiency-antitone}
-  \Cref{lem:pencil-lifting-space-deficiency} gives
-  $\operatorname{def}_2(G) \le 0$, so both deficiencies vanish
-  (\cref{lem:deficiency-antitone}; both are nonnegative). Then
-  \cref{thm:pencil-flat-rank} gives the rank $6|V(G)| - 6$, and
-  \cref{cor:pencil-flat-attains} applies.
+  By \cref{lem:pencil-lifting-space-deficiency},
+  $3 + \operatorname{def}_2(G) \le 3$, so
+  $\operatorname{def}_2(G) \le 0$. Both deficiencies are nonnegative,
+  and $\operatorname{def}_3(G) \le \operatorname{def}_2(G)$
+  (\cref{lem:deficiency-antitone}), so both vanish. By
+  \cref{thm:pencil-flat-rank} the flat configuration then has rank
+  $6|V(G)| - 6$, and \cref{cor:pencil-flat-attains} applies.
 \end{proof}
 
 \subsection{Jackson and Jord\'an's equality}
