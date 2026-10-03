@@ -161,7 +161,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered, 40a–40p), `main-component.tex` | ✓ Complete — the pencil conjecture proved over every infinite field (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
 | ⋮ Cleanup round (post-Phase-40, 1/5: mechanical) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` + Phase 40's other blueprint nodes | ✓ Complete — hygiene only, all 19 main results' axioms unchanged (see `notes/Phase40-cleanup.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 2/5: the shared hub normalization) | `Molecular/Deficiency.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`, `Molecular/Molecule/Pencil/TwoCut.lean` | ✓ Complete — one shared lemma, both hubs' statements unchanged (see `notes/Phase40-factor.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ◐ In progress — Stop 1 closed 2026-10-03, exemplar pinned, tasks 1–5 landed; next is task 6 (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ◐ In progress — Stop 1 closed 2026-10-03, exemplar pinned, tasks 1–6 landed; next is task 7 (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1217,7 +1217,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `notes/Cleanup40.md`. The autopilot queue is `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 3, `40-exposition`, is open (opened 2026-09-30). Its Stop 1 closed
   on 2026-10-03: the PI approved the revised sample section, which is pinned as the exemplar
-  (`notes/Phase40-exposition-exemplar.md`). Tasks 1–5 have landed; its next task is task 6, run
+  (`notes/Phase40-exposition-exemplar.md`). Tasks 1–6 have landed; its next task is task 7, run
   unattended. Rounds 1, `40-cleanup`, and 2, `40-factor`, closed 2026-09-30
   (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture

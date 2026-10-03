@@ -923,8 +923,8 @@ discharge point.
   assembly. Pointer: `notes/Phase39-design.md` § *Kernel restatement*.
 - **`def:pencil-nondegenerate` + `def:pencil-conditioned-pair` +
   `def:pencil-distinct-motive`** — [done (the `sec:pencil-nondegenerate`
-  preamble + `fmlnote:pencil-distinct-motive`,
-  `fmlnote:pencil-conditioned-pair`)] **(a)** the induction statement was
+  prose around the three definitions; moved out of formalization notes at
+  `40-exposition` task 6)] **(a)** the induction statement was
   reshaped twice: the generic conjunct conditioned on simplicity *and*
   nondegeneracy-feasibility (`K₄` refutes simplicity alone; a parallel class
   refutes feasibility alone), then an adjacent-distinct conjunct added under
@@ -979,10 +979,10 @@ discharge point.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
   [closed — superseded (Phase 40's close, 2026-09-29): the main-component route proved the
   conjecture and the PI retired the kernels] **(c)** the two kernel hypotheses were held as the
-  fallback (PI, 2026-09-25) and bypassed by the main-component route; the chapter's
-  `fmlnote:pencil-conditional-realization-pair-kernels` and `…-field` already
-  carry what is stable (why both kernels take the induction hypothesis; the
-  field hypothesis each route needs). Nothing further is written unless a
+  fallback (PI, 2026-09-25) and bypassed by the main-component route; the
+  theorem's lead-in carries what is stable (why both kernels take the
+  induction hypothesis), and `fmlnote:pencil-conditional-realization-pair-field`
+  the field hypothesis each of the project's routes would need. Nothing further is written unless a
   kernel is proved; if Phase 40 discharges the main-component statements the
   entry closes as superseded.
 

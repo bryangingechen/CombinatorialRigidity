@@ -68,6 +68,13 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   HTML build (each links separately) but produces only one link
   target in the PDF. Reserve multi-name `\lean{}` for closely-
   related corner cases the reader genuinely thinks of as a unit.
+- **A formalization note between a statement and its proof takes the
+  proof.** plasTeX attaches `\begin{proof}` to the environment just
+  before it, so the statement node loses its proof and the dep graph
+  draws it unfilled, though both blocks carry `\leanok`. Put notes after
+  the proof (`AUTHORING.md` principle D). Found at `40-exposition` task 6
+  on `thm:pencil-conditional-realization-pair`, the only case; moving its
+  notes changes the graph, so that round left them (`notes/Cleanup40.md`).
 - **A literal `\lean{}` in prose poisons `lean_decls` and fails
   `checkdecls`.** plastex executes the `\lean` macro wherever it
   appears, including inside descriptive prose — e.g. a

@@ -8,7 +8,7 @@ over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
 `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
 order and for which rounds are done. Round 3's Stop 1 closed on 2026-10-03: the PI approved the
 revised sample section, pinned as the exemplar (`notes/Phase40-exposition.md` *Autopilot: for the
-PI*). Tasks 1–5 have landed. **The next concrete task** is round 3's task 6, run unattended.
+PI*). Tasks 1–6 have landed. **The next concrete task** is round 3's task 7, run unattended.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -179,13 +179,18 @@ Round 2's recorded candidates, one line each. The detail is in the log each name
 Round 3's recorded candidates, one line each. The detail is in `notes/Phase40-exposition.md`
 *Moved to a later round*:
 
-- `fmlnote:pencil-nondegenerate`'s remark that a non-hub vertex's two hinges are automatically
-  concurrent is exactly `lem:coplanar-hinges-concurrent`'s content, with no `\uses` edge to it
-  (task 4).
+- `def:pencil-nondegenerate`'s hub threshold rests on `lem:coplanar-hinges-concurrent` (since
+  task 6 through its lead-in, before in a deleted note), with no `\uses` edge to it (task 4).
 - Only the off-route `thm:pencil-conditional-realization` has `\uses` edges to
   `lem:pencil-loop-case` and `lem:pencil-base-case`, which the live route uses (task 5).
 - `lem:pencil-simple-of-noRigid` has no in-edge, though `thm:pencil-generic-step`'s pin calls it
   through the unpinned three-body construction (task 5).
+- `thm:pencil-conditional-realization-main-component` has no `\uses` edge to
+  `thm:pencil-conditional-realization-pair`, though its proof applies the reduction as in it and
+  its pin calls `pencil_conjecture_of_arms_pair` (task 6).
+- `thm:pencil-conditional-realization-pair`'s two notes sit between its statement and proof, so
+  plasTeX attaches the proof to a note and the graph draws the node unfilled; moving them after the
+  proof fills it, the graph's one changed line (task 6).
 
 The coordinator's starting questions, guessed from file names and sizes (nobody has read the proofs
 for them):
