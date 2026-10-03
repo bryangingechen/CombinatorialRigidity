@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 13 landed (tasks 1–13; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 14 landed (tasks 1–14; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 14, `sec:main-component-contract`, against the pinned exemplar
+task 15, `sec:main-component-chain`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. Round manual: `CLEANUP.md`.
 
@@ -57,12 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–13
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–14
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first four subsections are done; next is
-task 14, the contraction at a core of planar deficiency zero. Items 2, 3, 4, 7 and 8 are written.
+introduction (task 24), and `main-component.tex`'s first five subsections are done; next is
+task 15, ears and cycles. Items 2, 3, 4, 7 and 8 are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -83,7 +83,7 @@ task 14, the contraction at a core of planar deficiency zero. Items 2, 3, 4, 7 a
 - **Nodes outside the headline's closure** of `thm:pencil-conjecture`: 21 of `pencil.tex`'s 41
   (placed by tasks 3–8), and `thm:pencil-x0-main-component`, `thm:pencil-x0-closed-ear`. Liveness is
   read in the Lean call chain (`CLEANUP.md` §B) before prose calls anything "off the proof".
-- Forward references and Lean names in statement blocks: in tasks 14 and 16's entries.
+- Lean names in statement blocks: in task 16's entry.
 
 ## Scope and standing rules
 
@@ -165,44 +165,33 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
 - [x] **9. M1a — the carrier, first half** (`a23508c0`). The lifting idea leads (Whiteley 1996
   §8.3, checked); `lem:pencil-condition-linear` follows `lem:pencil-config-distinct-realization`.
   *(f):* for task 25, *standing hypotheses*; *selector* removed. Eight forward `\cref`s.
-- [x] **10. M1b — the carrier, second half** (`a5f782a5`; full entry there). Every step's pin uses
-  `Graph.x0Attains_of_exists`; the fibre lemma is outside 5 of the 15 step pins' closures (measured,
-  script not retained). The one-witness proof states the polynomial section in general;
-  `rem:pencil-hinge-affine` cut. *(f):* for task 25, *main component*, *pencil configuration
-  space*; three removed. Nine forward `\cref`s.
-- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; full entry there). The idea (at `z = 0`
-  the hinges glue the complementary screws) and Crapo–Whiteley Example 4.4 (pp. 72–73) lead; equal
-  deficiencies is the coverage's third case. Item 8 written. *(f):* in a node, *lifting planes*,
-  *flat rank*; for task 25, *flat configuration*, `def₂`, `def₃`. Nine forward `\cref`s.
+- [x] **10. M1b — the carrier, second half** (`a5f782a5`; full entry there). The one-witness proof
+  states the polynomial section in general; the fibre lemma is outside 5 of the 15 step pins'
+  closures. *(f):* for task 25, *main component*, *pencil configuration space*.
+- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; full entry there). The idea and
+  Crapo–Whiteley Example 4.4 (pp. 72–73) lead. Item 8 written. *(f):* in a node, *lifting planes*,
+  *flat rank*; for task 25, *flat configuration*, `def₂`, `def₃`.
 - [x] **12. M3 — `sec:main-component-jj`** (`b805e623`; full entry there). JJ in their terms
-  (checked against the TR, pp. 3, 12–13, 21, and KT pp. 648–649); why afresh (Lemma 2.2(b)); the
-  relabelling note before its lemma. Items 4 and 7 written. *(f):* standard, *pin-collinear
-  body-and-pin framework*, *chart*; in a node, *Jackson and Jordán's equality*. Forward `\cref`s
-  inside the subsection.
-- [x] **13. M4 — `sec:main-component-cut`** (this commit). Every diagnosis bullet done:
-  - *The template: displayed* in the opening as three parts (the picture, the height, the count),
-    with `tgt(G)` defined there. Checked against all 13 steps' proofs: parts one and three hold in
-    each, and the second varies. The opening says how, and names the three steps where no two open
-    conditions meet (task 10's five, less the two flat corollaries).
-  - *Item 3: written* (below), recording the four remarks; they are then *cut* (default (a)).
-    Also `tgt(G_1)` corrected to `tgt(G[V_1])` in the bridge proof.
-  - *(f):* standard, *cut vertex*, *bridge*, *ear*; in a node, *standing hypotheses*, *deficiency
-    rank*, *chain of bridges* (also glossed); for task 25, *target*, `tgt`; removed, *fibre
-    product* (of graphs). Forward `\cref`s: `thm:pencil-x0-cycle`, `-splitoff`, `-contract-rigid`;
-    in the subsection, `def:pencil-x0-standing`, `lem:pencil-lifting-restrict`, `-rank-congr`,
-    `-cut-fibre`, `-bridge-fibre`.
-- [ ] **14. M5 — `sec:main-component-contract`, 1329–1631.** The preamble packs the argument into
-  a paragraph.
-  - Give an overview of four things. The curve: the core shrinks to `r`'s point, the placement of
-    KT eq. (6.7). The rescaling: the core heights are magnified by `1/t`, so the core's rows do not
-    depend on `t`. Why the kernel not jumping at `t = 0` is the crux: it gives a polynomial section
-    through the limit. What planar deficiency zero buys: the core has one plane.
-  - Check the KT pinpoints: §6.2, Lemma 6.3, Claim 6.4, eqs. (6.3), (6.5), (6.7) and (6.9), and
-    pp. 674–675.
-  - Move `lem:pencil-contract-kernel-bound` and `lem:pencil-contract-standing-rigid` here,
-    before their first use. The closing remark falls under default (a).
-  - From task 10: the one-witness proof now states the polynomial section in general. Cite that
-    statement rather than re-derive it.
+  (checked against the TR and KT pp. 648–649); why afresh. Items 4 and 7 written. *(f):* standard,
+  *pin-collinear body-and-pin framework*, *chart*; in a node, *Jackson and Jordán's equality*.
+- [x] **13. M4 — `sec:main-component-cut`** (`9c931242`; full entry there). The opening displays the
+  steps' scheme (picture, height, count) with `tgt(G)` defined, and names the three steps where no
+  two open conditions meet. Item 3 written; its four remarks cut. *(f):* standard, *cut vertex*,
+  *bridge*, *ear*; for task 25, *target*, `tgt`. Forward `\cref`s to the later steps.
+- [x] **14. M5 — `sec:main-component-contract`** (this commit). Every diagnosis bullet done:
+  - *The overview.* Cites task 13's scheme: the height comes from a polynomial family along the
+    curve, and no two open conditions meet. Then the curve, the rescaling (a homothety of ratio `t`
+    about `(q_r, 0)`, undone by the `1/t` frame, so the core's rows are `H`'s at `q`), the kernel not
+    jumping (task 10's section cited), and the one plane (bound on `ker M(0)`, flat core rank).
+  - *KT pinpoints checked:* §6.2 and eq. (6.3), p. 673; Lemma 6.3 and eq. (6.5), p. 674; Claim 6.4,
+    eqs. (6.7), (6.9), p. 675. Corrected: the curve's end is Claim 6.4's choice (all core panels on
+    `r`'s), not "(6.7)'s placement"; `-limit`'s loose Claim-6.4 analogy left that proof.
+  - *Moves done.* `M(0)`'s rows are now read after the definition, curing `-kernel-bound`'s forward
+    reference to `-limit`'s proof. *Remark cut* (default (a)); its reason, two kinds of core, opens.
+  - *(f):* standard, *neighbour of `W`* (replaces *attachment*, also in
+    `thm:pencil-x0-contract-additive`'s statement), *homothety*, *rigid* (KT); in a node, *contraction
+    curve*, *rescaled lifting system*, *collapsed placement*; for task 25, *core*, *planar
+    deficiency*. Forward `\cref`s: `sec:main-component-coverage`, `-contract-additive`.
 - [ ] **15. M6 — `sec:main-component-chain`, 1632–1966.**
   - The ear rank formula, `lem:block-rank-ear`, organizes all three ear subsections but is stated
     inline. Display it, with `ρ` and `Λ` explained.
@@ -238,7 +227,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
     to the core.
   - The remarks fall under default (a). The claim of a reverse inequality "for every `W`" is not
     proved here.
-  - Re-read the subsection after tasks 10 and 14 move its lemmas out.
+  - Re-read the subsection after tasks 10 and 14 move its lemmas out (task 14 also replaced
+    *attachment* in the theorem's statement).
 - [ ] **20. M11 — `sec:main-component-sparse`, 3569–3894.** Singleton-value combinatorics.
   - Three proofs compare with "the partition into maximal rigid sets". Check whether that is
     Jackson–Jordán's brick partition (the TR) before naming it; those remarks fall under default
@@ -424,6 +414,11 @@ mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
   … Zariski-open" does not follow from its polynomial, and `Graph.exists_mvPolynomial_isMainPicture`
   gives only a nonempty open subset of `U`. `U` is open (admissibility and `dim ker M(q) ≤ ℓ₀` are),
   but nothing here proves it.
+- **`lem:pencil-lifting-restrict` (6 pins) and `thm:pencil-x0-bridge` (8 pins) are bundled nodes**
+  (task 13; counted by task 14), as `lem:pencil-splitoff-curve` is: principle D's four or more pins.
+  The first pins a definition with its unfolding, two facts and a polynomial helper with its
+  evaluation; the second its step with four path helpers and three counts. Splitting or unpinning
+  changes the pins. `lem:pencil-contract-standing` (4 pins, task 14) is of the same kind.
 
 ## Moved to a later round
 
@@ -452,7 +447,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 14** (checklist above has its scope); then tasks 15–26 in order,
+**Next: task 15** (checklist above has its scope); then tasks 16–26 in order,
 and task 27 closes the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
@@ -461,7 +456,7 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
   moved per *Moved to a later round*; (ii) carry the section's (f) coinage list, each coinage
   marked standard, defined in a node, or left for task 25's notation paragraph; (iii) name every
   forward `\cref` it adds.
-- **For tasks 14–19** (from task 13). `sec:main-component-cut`'s opening displays the steps' shared
+- **For tasks 15–19** (from task 13). `sec:main-component-cut`'s opening displays the steps' shared
   scheme (the picture, the height, the count). Cite it rather than re-derive it, and say how the
   step varies the height.
 
