@@ -7,11 +7,11 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 9 landed (tasks 1–9; tasks 3 and 4 with a corrective each). **Stop 1 is closed**
-(the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:** task 10,
-`sec:main-component-carrier`'s second half, with task 9's notes in its entry, against the pinned
-exemplar (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s
-standing bullet. Round manual: `CLEANUP.md`.
+one-commit tasks, 10 landed (tasks 1–10; tasks 3 and 4 with a corrective each). **Stop 1 is
+closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
+task 11, `sec:main-component-flat`, against the pinned exemplar
+(`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
+bullet. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -57,11 +57,11 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–9
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–10
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24); next is task 10, the carrier's second half.
+introduction (task 24), and `sec:main-component-carrier` is done; next is task 11, the flat rank.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -148,72 +148,49 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   paragraph is checked against the TR (Theorem 6.1, Claim 6.5, Case 1, pp. 15–16).
 - [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03; *Autopilot*, *Decisions*).
 - [x] **3. P1 — `pencil.tex`'s opening subsections** (`99a3e639`, then a corrective). The pencil
-  picture and the molecular reading lead in; `lem:pencil-self-dual` (no caller) is put off the
-  proof. *(f):* for task 25, "the pencil condition" ("the point condition" remains only in task
-  23's text); the rest standard or in a node. Four forward `\cref`s.
-- [x] **4. P2 — base, cycle and extension** (`6bc95de3`, then a corrective). `sec:pencil-base`
-  opens with `thm:pencil-reduction`'s base case; `lem:cycle-coplanar-realization` moved after its
-  `\uses` target. *Not done:* `sec:pencil-cycle`'s two lemmas serve no case of the reduction (no
-  callers); the opening says so (edge: *Moved*). *(f):* new *cross-incidence(s)*, `\emph{}`-marked;
-  the rest standard. Nine forward `\cref`s.
-- [x] **5. P3 — `sec:pencil-reduction`** (`96eda8e2`). A roadmap after `thm:pencil-reduction`; the
-  cut-edge reason; loop and base cases live (edges: *Moved*); KT Theorem 5.6's route, its `K_4`
-  failure and KT Lemmas 4.5–4.6 in the preamble. *(f):* in a node, *deficiency rank*; the rest
-  standard. Forward `\cref`s into `sec:main-component`, and the subsection's roadmap.
+  picture and the molecular reading lead in; `lem:pencil-self-dual` is put off the proof. *(f):* for
+  task 25, "the pencil condition" ("the point condition" is left to task 23). Four forward `\cref`s.
+- [x] **4. P2 — base, cycle and extension** (`6bc95de3`, then a corrective). The base case leads;
+  `lem:cycle-coplanar-realization` follows its `\uses` target; `sec:pencil-cycle`'s two lemmas serve
+  no case (edge: *Moved*). *(f):* new, *cross-incidence(s)*. Nine forward `\cref`s.
+- [x] **5. P3 — `sec:pencil-reduction`** (`96eda8e2`). A roadmap; the cut-edge reason; loop and base
+  cases live (edges: *Moved*); KT Theorem 5.6's route, its `K_4` failure, KT Lemmas 4.5–4.6. *(f):*
+  in a node, *deficiency rank*. Forward `\cref`s into `sec:main-component`.
 - [x] **6. P4 — `sec:pencil-nondegenerate`** (`58fc3a52`). Conditioning in prose (KT p. 668,
-  Theorem 5.5); the pair theorem's two results in the lead-in (first pin live, kernel form off the
-  proof). Two notes deleted; edges, notes: *Moved*; splitting: *Candidates*. *(f):* in a node,
-  *pencil hub*, *closed hub-neighbourhood*, *nondegenerate*, *nondegeneracy-feasible*, *generic*,
-  *adjacent-distinct*, *conditioned pair*, kernels (K) and (K-bare); removed, *chart realization*,
-  *generic seed*, *promoted concurrency family*, *configuration variety*. Five forward `\cref`s.
+  Theorem 5.5); the pair theorem's two results in the lead-in (edges, splitting: *Moved*,
+  *Candidates*). *(f):* in a node, *pencil hub*, *nondegenerate*, *adjacent-distinct*, *conditioned
+  pair*, kernels (K), (K-bare) and three more; four removed. Five forward `\cref`s.
 - [x] **7. P5 — `sec:pencil-main-component-route`** (`1010c804`), retitled *Reduction to the main
-  component*. *One idea: done* (lift a planar picture; coplanar closed neighbourhoods, linear in
-  the heights; the main component; why the generic statement is proved inside the reduction,
-  `K_{2,3}`). Its deleted note's Jackson–Jordán paragraph is left to task 12.
-  *`lem:pencil-nonsimple-case`: kept* (KT Lemma 6.2, p. 673; eqs. (6.3)–(6.5)). *Correction:* the
-  cut case also needs the pair theorem's generic cut-edge paragraph (edge: task 6's *Moved*).
-  *(f):* for task 25, *main component* (a remark only); removed, *route*, *parallel class*, *the
-  pencil condition*; the rest standard or in a node. Nine forward `\cref`s into
-  `main-component.tex`.
-- [x] **8. P6 — `sec:pencil-girth-chain`** (`694d892e`). *Outside the closure: confirmed* (none of
-  its 8 nodes is a graph ancestor of `thm:pencil-conjecture`, nor their 12 pins in either
-  headline's Lean closure). *Preamble: done* (the bypassed kernels, kept as results under their
-  hypotheses). *Coverage: done* (`def:pencil-x0-chain` is case (3) with one interior body allowed;
-  `lem:pencil-x0-chain-exists` is proved without this subsection). *Two-cut composition: cut*
-  (default (a); item 2 written). *Round 1's candidate: stands.* Cut `def:girth`'s false "applied
-  below only to simple multigraphs". *(f):* removed, *the two-cut composition*, *the informal
-  treatment*; the rest standard or in a node. Three forward `\cref`s.
-- [x] **9. M1a — `sec:main-component-carrier`, first half.** *Lifting idea: done*: the opening
-  leads with it (a plane through a non-collinear closed neighbourhood is not vertical, so
-  coplanarity is agreement with an affine function, linear in the heights), and cites Whiteley 1996
-  §8.3 for liftings and trivial liftings (checked in `.refs/`). *Throughout: anchored* by a gloss
-  and a `\cref` to `def:pencil-x0-standing`, left in place (first used by `thm:pencil-x0-cut`).
-  *Found and cured:* `lem:pencil-condition-linear`'s proof rested on the later
-  `lem:pencil-config-distinct-realization`; it now follows it (default (d)), retitled *Coplanarity
-  is linear in the heights*; its statement shows the normal `(a, b, -1, c)` that
-  `lem:pencil-x0-conjunct-three` cites. *(f):* standard *picture*, *height*, *lifting*, *trivial
-  lifting*, *vertical*; in a node, *admissible*, *homogeneous picture point*, *lifting space*,
-  *globally affine*, *configuration*, *plane normal*, *standing hypotheses* (also task 25);
-  removed, *selector* and *the pencil condition* (titles). Forward `\cref`s:
-  `lem:pencil-x0-one-witness` (×2), `def:pencil-x0-standing`, `lem:pencil-condition-linear`,
-  `lem:pencil-config-distinct-realization`, `def:pencil-x0-attains`,
-  `rem:pencil-x0-main-component`, `lem:pencil-x0-conjunct-three`.
-- [ ] **10. M1b — the carrier, second half, 339–715.** Main pictures, attaining, the point-join
-  rank, the one-witness lemma, openness, the fibre intersection, and the main component; 11
-  nodes.
-  - Say that the one-witness lemma and the fibre intersection are the two tools every step uses.
-  - Give an overview before the one-witness proof's Cramer section, which the two contraction
-    subsections reuse with a parameter.
-  - Let `rem:pencil-x0-main-component`, which explains the name, lead in rather than trail.
-  - Move `lem:pencil-rank-collineation` here, ahead of `lem:pencil-rank-scale-shift`.
-  - Say what `thm:pencil-x0-main-component`, a bundle of three tools, is for.
-  - From task 9. `lem:pencil-condition-linear` (task 9's text) now follows
-    `lem:pencil-config-distinct-realization`, so the first half runs straight into
-    `def:pencil-main-picture`, which nothing before `lem:pencil-x0-one-witness` uses: move it there,
-    with a lead-in. The opening's last paragraph sketches this half: keep it true.
-  - From task 9. On the graph the fibre intersection is not below the equal-deficiency,
-    rigid-contraction, cycle and split-off steps: check the Lean before saying every step uses it.
-    `lem:pencil-rank-collineation`'s statement names an endpoint selector (default (c)).
+  component*: its one idea; `lem:pencil-nonsimple-case` kept (KT Lemma 6.2, p. 673); the JJ paragraph
+  left to task 12. *(f):* for task 25, *main component*. Nine forward `\cref`s.
+- [x] **8. P6 — `sec:pencil-girth-chain`** (`694d892e`). Outside the closure, confirmed in the Lean;
+  kept as results under their hypotheses; the two-cut composition cut (item 2 written);
+  `def:girth`'s false clause cut. Three forward `\cref`s.
+- [x] **9. M1a — the carrier, first half** (`a23508c0`). The lifting idea leads (Whiteley 1996
+  §8.3, checked); `lem:pencil-condition-linear` follows `lem:pencil-config-distinct-realization`.
+  *(f):* for task 25, *standing hypotheses*; *selector* removed. Eight forward `\cref`s.
+- [x] **10. M1b — the carrier, second half.** Every diagnosis bullet done, one corrected:
+  - *Two tools: corrected.* Every step's pin uses `Graph.x0Attains_of_exists`. The fibre lemma is
+    outside the Lean closure of 5 of the 15 step pins: `cor:pencil-flat-x0`, `cor:pencil-jj-flat`,
+    the cycle, rigid-contraction and split-off steps (measured, script not retained). So the
+    opening says *most* steps need it, as task 9 warned.
+  - *Cramer overview: done.* The one-witness proof states the polynomial section in general, with
+    parameters, then proves it; the contraction steps' "with the parameter `t`" now cites a statement.
+  - *Moves: done.* `def:pencil-main-picture`, with a lead-in (why least), and
+    `rem:pencil-x0-main-component` now lead into the one-witness lemma. `lem:pencil-rank-collineation`
+    precedes `lem:pencil-rank-scale-shift` (its forward `\uses` cured) and loses the endpoint
+    selector (default (c)). The opening's last paragraph stays true, with one sentence added.
+  - *`thm:pencil-x0-main-component`: done.* A lead-in says it states the subsection's results
+    together; nothing `\uses` it, and later subsections cite the lemmas.
+  - Also: `rem:pencil-hinge-affine` cut (default (a): unused, unproved); a paragraph says why the
+    points, not the planes, are the panel normals. Two *Candidates*.
+  - *(f):* standard, *collineation*, *homothety*, *polynomial section*, *fibre*, *general*
+    (glossed); in a node, *main picture*, *attains*, *lifting system*, *deficiency rank*; for task
+    25, *main component*, *pencil configuration space*; removed, *endpoint selector*, *point-join
+    rank*, *Cramer section*. Forward `\cref`s: `lem:pencil-x0-fibre-intersection` (×2),
+    `lem:pencil-x0-one-witness` (×2), `def:pencil-contract-lifting-system` (×2),
+    `lem:pencil-config-point-join-rank`, `lem:pencil-rank-scale-shift`,
+    `lem:pencil-contract-magnified-rank`.
 - [ ] **11. M2 — `sec:main-component-flat`, 716–942.** A good roadmap. Check both citations,
   Crapo–Whiteley Example 4.4 and Whiteley 1996 §8.3, against `.refs/`. Task 9 checked §8.3 and
   cites it in the carrier's opening for liftings: point back rather than repeat it.
@@ -234,7 +211,7 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   heights in one fibre, two open conditions meeting, and one witness sufficing. Seven subsections
   rest on that template. Display it here once, for later subsections to cite rather than
   re-derive. The four "Informally …" remarks fall under default (a), and are item 3's text. Not
-  every step meets two open conditions (task 10's second note from task 9).
+  every step meets two open conditions (task 10 checked the Lean; its entry names the five).
   **Writes item 3's recommendation.**
 - [ ] **14. M5 — `sec:main-component-contract`, 1329–1631.** The preamble packs the argument into
   a paragraph.
@@ -246,6 +223,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
     pp. 674–675.
   - Move `lem:pencil-contract-kernel-bound` and `lem:pencil-contract-standing-rigid` here,
     before their first use. The closing remark falls under default (a).
+  - From task 10: the one-witness proof now states the polynomial section in general. Cite that
+    statement rather than re-derive it.
 - [ ] **15. M6 — `sec:main-component-chain`, 1632–1966.**
   - The ear rank formula, `lem:block-rank-ear`, organizes all three ear subsections but is stated
     inline. Display it, with `ρ` and `Λ` explained.
@@ -427,6 +406,15 @@ mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
   `thm:pencil-conditional-realization`).
 - **`lem:pencil-selector-independent-scalar` assumes an admissible picture** (task 9); its pin
   does not. Dropping the hypothesis would raise the statement to the pin's strength.
+- **`lem:pencil-condition-linear` restates another lemma** (task 9's return, checked by task 10).
+  Its clause "`p` gives a pencil realization whose adjacent points are distinct" is
+  `lem:pencil-config-distinct-realization`'s content. Neither pin proves it:
+  `mem_liftingSpace_of_coplanar` is the converse direction alone, `exists_smul_eq_interpolant` the
+  plane's normal. The forward direction is `lem:pencil-selector-plane-contains-nbhd`'s pin.
+- **`lem:pencil-x0-main-picture-open` claims more than its pins** (task 10). "In particular `U` is
+  … Zariski-open" does not follow from its polynomial, and `Graph.exists_mvPolynomial_isMainPicture`
+  gives only a nonempty open subset of `U`. `U` is open (admissibility and `dim ker M(q) ≤ ℓ₀` are),
+  but nothing here proves it.
 
 ## Moved to a later round
 
@@ -455,7 +443,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 10** (checklist above has its scope, and task 9's notes); then tasks 11–26 in order,
+**Next: task 11** (checklist above has its scope, and task 9's note); then tasks 12–26 in order,
 and task 27 closes the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 

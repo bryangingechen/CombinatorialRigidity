@@ -166,7 +166,11 @@ picture has the deficiency rank, then the general configuration attains
 $Z(q) \in L(q)$ at general pictures $q$, polynomial in $q$, and use that
 the rank is lower semicontinuous. The configurations over the main
 pictures form a vector bundle, whose closure is the main component of the
-configuration space (\cref{rem:pencil-x0-main-component}).
+configuration space (\cref{rem:pencil-x0-main-component}). Most steps of
+the induction also need one point of a linear space, such as $L(q)$, off
+the zero sets of two polynomials that are each nonzero somewhere on it.
+Such a point exists, as two nonempty Zariski-open subsets of a linear
+space meet (\cref{lem:pencil-x0-fibre-intersection}).
 
 \begin{definition}[Admissible planar picture]
   \label{def:pencil-admissible-picture}
@@ -335,17 +339,6 @@ coordinates of $n_v$ are polynomials in those of $q$ and $z$.
   are proportional.
 \end{proof}
 
-\begin{definition}[Main pictures]
-  \label{def:pencil-main-picture}
-  \lean{Graph.IsMainPicture}
-  \leanok
-  \uses{def:pencil-lifting-space}
-  Let $\ell_0$ be the least value of $\dim L(q)$ over admissible
-  pictures $q$ of $G$. A \emph{main picture} of $G$ is an admissible
-  picture $q$ with $\dim L(q) = \ell_0$, and $U$ denotes the set of main
-  pictures.
-\end{definition}
-
 \begin{definition}[The general configuration attains]
   \label{def:pencil-x0-attains}
   \lean{Graph.X0Attains}
@@ -363,24 +356,22 @@ coordinates of $n_v$ are polynomials in those of $q$ and $z$.
   at $n = 3$) contain a nonempty Zariski-open subset of $L(q)$.
 \end{definition}
 
-The hinge of that framework at an edge $uv$ is the meet of the planes
-$p_u^{\perp}$ and $p_v^{\perp}$ (\cref{def:panel-support-extensor}),
-the image of the line $p_u \wedge p_v$ under the complement
-isomorphism, and it is nonzero whenever $q_u \neq q_v$. An invertible
-linear map of the screw space applied to every hinge leaves the rank
-unchanged (\cref{lem:screw-map-rows}), so the rank of a configuration
-is also the rank of the body-hinge framework with hinges
-$p_u \wedge p_v$, the framework of a pencil realization. Taking the
-plane normals $n_v$ as panel normals instead would not give this rank:
-where two adjacent planes coincide the meet is zero, and a zero hinge
-allows no relative motion of its two bodies.
+The panel normals in this definition are the points $p_v$, not the plane
+normals $n_v$. With the points, the hinge at an edge $uv$ is the meet of
+the planes $p_u^{\perp}$ and $p_v^{\perp}$
+(\cref{def:panel-support-extensor}). Under the polarity it corresponds
+to the line $p_u \wedge p_v$, the hinge of the pencil realization, and it
+is nonzero whenever $q_u \neq q_v$
+(\cref{lem:pencil-config-point-join-rank}). With the plane normals, the
+hinge would be zero wherever two adjacent planes coincide, and a zero
+hinge allows its two bodies no relative motion.
 
-\Cref{def:pencil-x0-attains} makes sense over any field, but only over
-an infinite field does $P \neq 0$ make the good pictures a nonempty
-Zariski-open set: over a finite field a nonzero polynomial can vanish at
-every point, and the condition then holds vacuously.
+Over an infinite field a nonzero polynomial has a non-root, so the
+pictures $q$ with $P(q) \neq 0$ form a nonempty Zariski-open set. Over a
+finite field a nonzero polynomial can vanish at every point, and the
+definition then holds vacuously.
 
-\begin{lemma}[The rank of a configuration is its point-join rank]
+\begin{lemma}[The rank of a configuration is the rank of the joins of its points]
   \label{lem:pencil-config-point-join-rank}
   \lean{CombinatorialRigidity.Molecular.finrank_span_rigidityRows_pencilConfigFramework,
         CombinatorialRigidity.Molecular.pencilConfigFramework,
@@ -397,24 +388,26 @@ every point, and the condition then holds vacuously.
 \end{lemma}
 \begin{proof}
   \leanok
-  The hinge at $uv$ of the panel-hinge framework defining the rank of
-  $p$ is the meet of the planes $p_u^{\perp}$ and $p_v^{\perp}$, the
-  image of $p_u \wedge p_v$ under the polarity
+  The hinge at $uv$ of the panel-hinge framework that defines the rank
+  of $p$ is the meet of the planes $p_u^{\perp}$ and $p_v^{\perp}$. It is
+  the image of $p_u \wedge p_v$ under the polarity
   (\cref{lem:panel-hinge-dual-molecular}), an invertible linear map of
-  the screw space over every field; by \cref{lem:screw-map-rows} the two
-  rigidity matrices have the same rank. Over an admissible picture
-  adjacent picture points differ, so the points $(x_u, y_u, z_u, 1)$
-  and $(x_v, y_v, z_v, 1)$ are linearly independent and their join is
-  nonzero.
+  the screw space over every field. So the two rigidity matrices have the
+  same rank (\cref{lem:screw-map-rows}). Over an admissible picture,
+  adjacent picture points differ. A relation
+  $\lambda\, p_u + \mu\, p_v = 0$ then has $\lambda + \mu = 0$ in the last
+  coordinate and $\lambda\,(q_u - q_v) = 0$ in the first two, so
+  $\lambda = \mu = 0$. Hence $p_u$ and $p_v$ are linearly independent,
+  and their join is nonzero.
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:pencil-config-point-join-rank}
-  A body-hinge framework carries a hinge for every label of the ambient
-  set of edge labels, including labels that are not edges of $G$. The
-  formal framework $F_p$ carries there one fixed nonzero line, which no
-  rigidity row reads, so that every hinge is nonzero as a pencil
-  realization requires.
+  A body-hinge framework has a hinge at every label of the ambient set
+  of edge labels, also at labels that are not edges of $G$. There the
+  formal framework $F_p$ has one fixed nonzero line. No rigidity row
+  reads it, and it keeps every hinge nonzero, as a pencil realization
+  requires.
 \end{fmlnote}
 
 \begin{lemma}[A configuration over an admissible picture is a pencil realization]
@@ -439,20 +432,19 @@ every point, and the condition then holds vacuously.
 \end{lemma}
 \begin{proof}
   \leanok
-  The three chosen configuration points at $v$ are independent, since
-  their picture points are, so $n_v \neq 0$. By
-  \cref{lem:pencil-selector-plane-contains-nbhd}, $n_v$ is orthogonal
-  to $p_w$ for every $w$ in the closed neighbourhood of $v$.
+  The three chosen configuration points at $v$ are linearly independent,
+  since their picture points are, so $n_v \neq 0$. And $n_v$ is
+  orthogonal to $p_w$ for every $w$ in the closed neighbourhood of $v$
+  (\cref{lem:pencil-selector-plane-contains-nbhd}).
 
-  For an edge $uv$ both $u$ and $v$ lie in the closed neighbourhoods of
-  $u$ and of $v$, so $p_u$ and $p_v$ are orthogonal to $n_u$ and to
-  $n_v$: the line $p_u \wedge p_v$ lies in both panels, and it passes
-  through both points by construction. Taking $w = v$ gives the
-  incidence $p_v \cdot n_v = 0$, and $p_v \neq 0$ since its last
-  coordinate is $1$. Adjacent points are independent because adjacent
-  picture points differ, and every hinge is nonzero
-  (\cref{lem:pencil-config-point-join-rank}). The rank of $F_p$ is the
-  rank of $p$ by the same lemma.
+  The two ends of an edge $uv$ lie in the closed neighbourhoods of both
+  $u$ and $v$. So $p_u$ and $p_v$ are orthogonal to $n_u$ and to $n_v$:
+  the line $p_u \wedge p_v$ lies in both panels, and it passes through
+  both points by construction. Taking $w = v$ gives the incidence
+  $p_v \cdot n_v = 0$, and $p_v \neq 0$ since its last coordinate is $1$.
+  Adjacent points are linearly independent, and every hinge is nonzero
+  (\cref{lem:pencil-config-point-join-rank}). By the same lemma the rank
+  of $F_p$ is the rank of $p$.
 \end{proof}
 
 The next lemma proves the equivalence on which the lifting space rests.
@@ -510,6 +502,39 @@ It also gives the plane of each body explicitly, in the form that
   vertical.
 \end{proof}
 
+The next lemma is stated for every invertible linear map of $K^4$,
+because we need two such maps. One scales and shifts the heights
+(\cref{lem:pencil-rank-scale-shift}). The other is the homothety that
+shrinks a core along the contraction curve
+(\cref{lem:pencil-contract-magnified-rank}).
+
+\begin{lemma}[A collineation of the normals preserves the rank]
+  \label{lem:pencil-rank-collineation}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv}
+  \leanok
+  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  Let $G$ be a graph, and let $g$ be an invertible linear map of $K^4$.
+  If panel normals $p$ and $p'$ in $K^4$ satisfy $p'_w = g(p_w)$ at every
+  body $w$ of $G$, then the rigidity matrices of the panel-hinge
+  frameworks on $G$ with normals $p$ and with normals $p'$ have the same
+  rank.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:panel-hinge-dual-molecular, lem:screw-map-rows,
+        lem:pencil-config-point-join-rank}
+  The hinge at an edge $uv$ with normals $p$ is the image of the line
+  $p_u \wedge p_v$ under the polarity
+  (\cref{lem:panel-hinge-dual-molecular}). So the rigidity matrix with
+  normals $p$ has the rank of the body-hinge framework whose hinge at
+  $uv$ is $p_u \wedge p_v$, as in the proof of
+  \cref{lem:pencil-config-point-join-rank}, and likewise for $p'$. Both
+  ends of an edge of $G$ are bodies of $G$. So
+  $p'_u \wedge p'_v = g(p_u) \wedge g(p_v)$ is the image of
+  $p_u \wedge p_v$ under the invertible linear map of the screw space
+  induced by $g$, and the two ranks agree (\cref{lem:screw-map-rows}).
+\end{proof}
+
 \begin{lemma}[Scaling and affine shifts of the heights preserve the rank]
   \label{lem:pencil-rank-scale-shift}
   \lean{Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts}
@@ -523,33 +548,47 @@ It also gives the plane of each body explicitly, in the form that
 \begin{proof}
   \leanok
   \uses{lem:pencil-rank-collineation}
-  Write $a_w = \alpha x_w + \beta y_w + \gamma$ on $V(G)$. The linear
-  map $(\xi, \eta, \zeta, \omega) \mapsto
+  Write $a_w = \alpha x_w + \beta y_w + \gamma$. The linear map
+  $(\xi, \eta, \zeta, \omega) \mapsto
   (\xi, \eta, t\zeta + \alpha\xi + \beta\eta + \gamma\omega, \omega)$ of
-  $K^4$ is invertible, since $t \neq 0$, and carries the point of
-  $(q, z)$ at every body to the point of $(q, tz + a)$ there. By
-  \cref{lem:pencil-rank-collineation} the two frameworks of
-  \cref{lem:pencil-config-point-join-rank} have rigidity matrices of the
-  same rank, and that lemma converts both to the rank of a
-  configuration.
+  $K^4$ is invertible, since $t \neq 0$. At every body $w$ it maps the
+  point $(x_w, y_w, z_w, 1)$ of $(q, z)$ to the point
+  $(x_w, y_w, t z_w + a_w, 1)$ of $(q, tz + a)$. So
+  \cref{lem:pencil-rank-collineation} applies.
 \end{proof}
 
-\begin{remark}[The hinges are affine in the heights]
-  \label{rem:pencil-hinge-affine}
-  Fix a picture $q$. For an edge $uv$ the line $p_u \wedge p_v$
-  (\cref{def:extensor}) is an affine function of the height $z$: each of
-  its Grassmann coordinates is a $2 \times 2$ minor of the two points
-  $(x_u, y_u, z_u, 1)$ and $(x_v, y_v, z_v, 1)$, and the minors reading
-  the height coordinate are linear in $z$, the others constant in $z$.
-  Consequently the augmented motion matrix at $(q, z)$, whose unknowns
-  are a screw $m_v$ for every body and a scalar $\omega_e$ for every
-  edge, subject to $m_u - m_v = \omega_e (p_u \wedge p_v)$ at each edge
-  $e = uv$, is a picture-only matrix plus one linear in $z$ and supported
-  on the $\omega$ columns; when every hinge is nonzero its rank is
-  $|E(G)|$ plus the rank of the rigidity matrix of the pencil
-  realization. Only one consequence of this is used here, the invariance
-  of the rank under scaling and affine shifts of the heights, and
-  \cref{lem:pencil-rank-scale-shift} proves it directly.
+The proof of \cref{lem:pencil-x0-one-witness} extends a height in
+$L(q_0)$, for a picture $q_0$, to heights at a general picture. For this
+it needs $\dim L(q) \ge \dim L(q_0)$ at a general picture $q$, which
+holds when $\dim L(q_0)$ is least.
+
+\begin{definition}[Main pictures]
+  \label{def:pencil-main-picture}
+  \lean{Graph.IsMainPicture}
+  \leanok
+  \uses{def:pencil-lifting-space}
+  Let $\ell_0$ be the least value of $\dim L(q)$ over admissible
+  pictures $q$ of $G$. A \emph{main picture} of $G$ is an admissible
+  picture $q$ with $\dim L(q) = \ell_0$, and $U$ denotes the set of main
+  pictures.
+\end{definition}
+
+\begin{remark}[The geometry of the main component]
+  \label{rem:pencil-x0-main-component}
+  Over the set $U$ of main pictures, $\dim L(q)$ is constant, equal to
+  $\ell_0$. Moreover $L(q)$ is the projection to the heights of the
+  solutions of a linear system whose coefficients are polynomials in $q$
+  (the proof of \cref{lem:pencil-x0-one-witness}). So the pairs $(q, z)$
+  with $q \in U$ and $z \in L(q)$ form a vector bundle over $U$. Its
+  closure $X_0$ is the \emph{main component} of the pencil configuration
+  space. It is irreducible of dimension $2|V(G)| + \ell_0$, and it
+  contains every flat configuration $(q, 0)$ with $q \in U$. We never
+  form $X_0$ itself. In our statements, ``general'' means off the zero
+  set of a nonzero polynomial in the picture coordinates and, over each
+  picture, off the zero set of a nonzero polynomial in the heights
+  (\cref{def:pencil-x0-attains}). In place of the irreducibility of
+  $X_0$ we use that of the space of pictures and of each fibre $L(q)$
+  (\cref{lem:pencil-x0-fibre-intersection}).
 \end{remark}
 
 \begin{lemma}[One attaining configuration forces the general one]
@@ -573,51 +612,76 @@ It also gives the plane of each body explicitly, in the form that
 \end{lemma}
 \begin{proof}
   \leanok
-  Admissibility is the non-vanishing of finitely many polynomials in the
-  picture, one coordinate difference for each pair of adjacent bodies and
-  one $3 \times 3$ determinant for each body, so some polynomial nonzero
-  at $q_0$ has only admissible non-roots. Next, $L(q)$ is the projection
-  to the heights of the kernel of a linear system $M(q)$ in the heights
-  $z$ and one coefficient vector $h_v \in K^3$ per body, requiring
-  $z_w = h_v \cdot (x_w, y_w, 1)$ on the closed neighbourhood of $v$ and
-  vanishing off $V(G)$; its entries are affine in $q$. Over an admissible
-  picture the projection is injective, because three non-collinear
-  picture points in each closed neighbourhood determine $h_v$, so there
-  the kernel has dimension $\dim L(q)$, least at the main picture $q_0$.
+  \emph{The lifting system.} Let $M(q)$ be the homogeneous linear system
+  in the heights $z$ and one coefficient vector $h_v \in K^3$ per body
+  $v$ that requires $z_w = h_v \cdot (x_w, y_w, 1)$ for every $w$ in the
+  closed neighbourhood of $v$. Its coefficients are polynomials in $q$,
+  and the heights of its solutions form $L(q)$. Over an admissible
+  picture the heights of a solution determine each $h_v$, as three
+  members of the closed neighbourhood of $v$ have non-collinear picture
+  points. So there
+  the solutions form a space of dimension $\dim L(q)$. As $q_0$ is a main
+  picture, this dimension is at least $\dim L(q_0)$ at every admissible
+  picture $q$.
 
-  Lift $z_0$ to a kernel vector $x_0$ at $q_0$. Take a projection $\pi$
-  onto $\ker M(q_0)$ and a left inverse $H$ of the stacked matrix
-  $[M(q_0); \pi]$ (the rows of $M(q_0)$ above those of $\pi$), which is
-  injective; then $S(q) = H\,[M(q); \pi]$ is a square matrix polynomial
-  in $q$ with $S(q_0) = 1$. At an admissible
-  picture $q$ with $\det S(q) \neq 0$ the stack is injective, so $\pi$
-  embeds $\ker M(q)$ into $\ker M(q_0)$, onto because $\dim \ker M(q)$ is
-  at least $\dim \ker M(q_0)$. The preimage $x$ of $x_0$ has
-  $S(q) x = x_0$, and by Cramer's rule
-  $\operatorname{adj} S(q)\, x_0 = \det S(q)\, x$ lies in the kernel: a
-  section of the kernel, polynomial in $q$, passing through $x_0$ at
-  $q_0$. Its height part $Z(q)$ lies in $L(q)$.
+  \emph{A polynomial section.} Near a point, the kernel of a matrix of
+  polynomials can only lose dimension. Where it keeps its dimension, a
+  kernel vector at the point extends to kernel vectors nearby that are
+  polynomial in the parameters, and Cramer's rule writes them down. We
+  state this in general, since the contraction steps use it for the
+  rescaled lifting system, with the one parameter $t$
+  (\cref{def:pencil-contract-lifting-system}). Let $M(s)$ be a matrix
+  whose entries are polynomials in parameters $s$, and let
+  $M(s_0)\, x_0 = 0$. Then there are a polynomial $D$ with
+  $D(s_0) \neq 0$ and a vector $X(s)$ of polynomials with
+  $X(s_0) = x_0$, such that $\dim \ker M(s) \le \dim \ker M(s_0)$
+  wherever $D(s) \neq 0$, and $M(s)\, X(s) = 0$ wherever moreover
+  $\dim \ker M(s) \ge \dim \ker M(s_0)$.
 
-  The rank of a configuration is the rank of the panel-hinge framework
-  with the configuration points as panel normals. Its hinges are nonzero
-  over an admissible picture (\cref{def:panel-support-extensor}), since
-  two points $(x, y, z, 1)$ over distinct picture points are
-  independent. So \cref{lem:rank-polynomial-of-le-finrank} gives a
-  polynomial $Q$ in the configuration coordinates, nonzero at
-  $(q_0, z_0)$, whose non-vanishing forces the target rank as a lower
-  bound. Take $P$ to be the admissibility polynomial times $\det S(q)$
-  times $Q$ at the configuration $(q, Z(q))$, and, for a picture $q$ with
-  $P(q) \neq 0$, take $R = Q$ at $(q, \cdot)$. Then $P(q_0) \neq 0$, the
-  height $Z(q) \in L(q)$ has $R(Z(q)) \neq 0$, and at every $z \in L(q)$
-  with $R(z) \neq 0$ the rank is at least the target and, every hinge
-  being nonzero, at most the target
-  (\cref{lem:relative-deficiency-rank-bound}).
+  To prove it, let $\pi$ be a projection onto $\ker M(s_0)$. The stacked
+  matrix $[M(s_0); \pi]$, with the rows of $M(s_0)$ above those of $\pi$,
+  is injective, as $\pi$ fixes every vector of $\ker M(s_0)$. Let $H$ be
+  a left inverse of it, and let $S(s) = H\,[M(s); \pi]$. This is a square
+  matrix of polynomials with $S(s_0) = 1$. Put $D = \det S$. Where
+  $D(s) \neq 0$ the stack $[M(s); \pi]$ is injective, so $\pi$ maps
+  $\ker M(s)$ injectively into $\ker M(s_0)$. If moreover
+  $\dim \ker M(s) \ge \dim \ker M(s_0)$, this map is onto, and some
+  $x \in \ker M(s)$ has $\pi x = x_0$. Then
+  $S(s)\, x = H\,[0; x_0] = S(s_0)\, x_0 = x_0$. By Cramer's rule
+  $X(s) = \operatorname{adj} S(s)\, x_0$ equals $D(s)\, x$, so it lies in
+  $\ker M(s)$. And $X(s_0) = x_0$, as $S(s_0) = 1$.
+
+  \emph{The rank.} The rank of a configuration is the rank of the
+  panel-hinge framework whose panel normals are its points. Over an
+  admissible picture its hinges are nonzero
+  (\cref{def:panel-support-extensor}), since two points $(x, y, z, 1)$
+  over distinct picture points are linearly independent. So
+  \cref{lem:rank-polynomial-of-le-finrank} gives a polynomial $Q$ in the
+  coordinates of the points, nonzero at $(q_0, z_0)$, such that the rank
+  is at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ wherever $Q$
+  is nonzero. Wherever every hinge is nonzero, the rank is at most this
+  value (\cref{lem:relative-deficiency-rank-bound}).
+
+  \emph{The polynomials $P$ and $R$.} Some polynomial $A$ in the picture
+  coordinates, nonzero at $q_0$, has only admissible non-roots. For
+  instance, take the product of one coordinate difference for each pair
+  of adjacent bodies, in a coordinate in which they differ at $q_0$, and,
+  for each body, the determinant of the homogeneous picture points of
+  three members of its closed neighbourhood that are independent at
+  $q_0$. Lift $z_0$ to a solution $x_0$ of $M(q_0)$, and let $D$ and $X$
+  be as above, with $Z(q)$ the heights of $X(q)$. Let $P$ be the product
+  of $A$, $D$ and $Q$ at the configuration $(q, Z(q))$. Then
+  $P(q_0) \neq 0$. A picture $q$ with $P(q) \neq 0$ is admissible, and
+  $Z(q) \in L(q)$. For such $q$, let $R$ be $Q$ at $(q, \cdot)$, a
+  polynomial in the heights with $R(Z(q)) \neq 0$. At every
+  $z \in L(q)$ with $R(z) \neq 0$ the two bounds above give $(q, z)$ the
+  rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
 \end{proof}
 
-The lifting system in this proof reads each closed neighbourhood through
-the homogeneous picture points $(x_w, y_w, 1)$. The contraction step
-(\cref{sec:main-component-contract}) uses the same system with other
-vectors in their place.
+Later steps use the solutions $(z, h)$ of the lifting system $M(q)$ of
+this proof. The contraction steps use the same system with other vectors
+in place of the homogeneous picture points $(x_w, y_w, 1)$
+(\cref{def:pencil-contract-lifting-system}).
 
 \begin{definition}[The lifting system with weights]
   \label{def:pencil-weighted-lifting-system}
@@ -632,9 +696,8 @@ vectors in their place.
   closed neighbourhood of $v$.
 \end{definition}
 
-With $\omega(v, w) = (x_w, y_w, 1)$ this is the lifting system $M(q)$ of
-\cref{lem:pencil-x0-one-witness}'s proof, whose solutions have heights
-exactly $L(q)$.
+With $\omega(v, w) = (x_w, y_w, 1)$ this is the lifting system $M(q)$
+of $G$ at $q$, and the heights of its solutions form $L(q)$.
 
 \begin{lemma}[The main pictures are nonempty and Zariski-open]
   \label{lem:pencil-x0-main-picture-open}
@@ -649,20 +712,16 @@ exactly $L(q)$.
 \begin{proof}
   \leanok
   \uses{lem:pencil-x0-one-witness}
-  On the moment curve $v \mapsto (t_v, t_v^2)$ at pairwise distinct
-  parameters $t_v$, adjacent bodies lie at distinct points, and any three
-  members of a closed neighbourhood, which has at least three by the
-  degree hypothesis, lie at non-collinear points, since three points of a
-  parabola at distinct parameters never are collinear: this picture is
-  admissible.
-  Among admissible pictures the natural number $\dim L(q)$ therefore
-  attains a least value at some admissible $q_0$, which is a main
-  picture. The semicontinuity argument of \cref{lem:pencil-x0-one-witness},
-  run at the trivial kernel vector $0$ in place of a witness height, gives
-  a second polynomial, nonzero at $q_0$, off whose zero set $\dim L(q)$
-  does not exceed $\dim L(q_0)$; off the product of that polynomial with
-  the one witnessing admissibility near $q_0$, $q$ is admissible with
-  $\dim L(q) \le \dim L(q_0)$, hence a main picture.
+  Admissible pictures exist: place the bodies at distinct points of the
+  parabola $\{(t, t^2)\}$, as after \cref{def:pencil-admissible-picture}.
+  So $\ell_0$ exists, and it is attained at a main picture $q_0$. Apply the
+  polynomial section of the proof of \cref{lem:pencil-x0-one-witness} to
+  $M(q)$ at $q_0$ and the zero solution. It gives a polynomial $D$,
+  nonzero at $q_0$, such that wherever $D(q) \neq 0$ the solutions of
+  $M(q)$ form a space of dimension at most $\ell_0$. Let $P$ be the
+  product of $D$ and a polynomial nonzero at $q_0$ whose non-roots are
+  admissible, as in that proof. At a non-root $q$ of $P$, $q$ is
+  admissible and $\dim L(q) \le \ell_0$, so $q$ is a main picture.
 \end{proof}
 \begin{fmlnote}
   \label{fmlnote:pencil-x0-main-picture-open}
@@ -683,11 +742,11 @@ exactly $L(q)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Over an infinite field the nonzero picture polynomial of
-  \cref{def:pencil-x0-attains} has a non-root $q$, which is admissible,
-  and the nonempty set of attaining heights in $L(q)$ it provides has a
-  member $z$. Apply \cref{lem:pencil-config-distinct-realization} to
-  $(q, z)$.
+  As $K$ is infinite, the nonzero polynomial $P$ of
+  \cref{def:pencil-x0-attains} has a non-root $q$. This picture is
+  admissible, and some $z \in L(q)$ gives $(q, z)$ the rank
+  $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$. Apply
+  \cref{lem:pencil-config-distinct-realization} to $(q, z)$.
 \end{proof}
 
 \begin{lemma}[Two open conditions on a fibre meet]
@@ -701,16 +760,17 @@ exactly $L(q)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Restrict both polynomials to the line through the two witnessing
-  points of $L$, an affine substitution of one variable for the
-  coordinates of $\sigma$ turning each into a univariate polynomial.
-  Each restriction is nonzero, since it agrees with the corresponding
-  hypothesis at one of the line's two ends, so their product is a
-  nonzero univariate polynomial over the infinite field $K$ and has a
-  non-root there. The corresponding point of the line lies in $L$,
-  since a linear subspace is closed under it, and both original
+  Let $z_1, z_2 \in L$ be points at which the first and the second
+  polynomial are nonzero. On the line $z_1 + t\,(z_2 - z_1)$, $t \in K$,
+  each polynomial restricts to a polynomial in $t$. The first restriction
+  is nonzero at $t = 0$ and the second at $t = 1$, so their product is a
+  nonzero polynomial in one variable. As $K$ is infinite, it has a
+  non-root $t$. The point $z_1 + t\,(z_2 - z_1)$ lies in $L$, and both
   polynomials are nonzero there.
 \end{proof}
+
+The next theorem states the main results of this subsection together.
+Later subsections cite the lemmas themselves.
 
 \begin{theorem}[The main component]
   \label{thm:pencil-x0-main-component}
@@ -737,35 +797,13 @@ exactly $L(q)$.
 \end{theorem}
 \begin{proof}
   \leanok
-  The first claim is \cref{lem:pencil-x0-main-picture-open}, and the
-  second is \cref{lem:pencil-x0-fibre-intersection} applied to the
-  linear subspace $L(q)$ of the heights. For the third, $L(q)$ is at
-  every picture the height projection of the kernel of the lifting system
-  (\texttt{Graph.map\_ker\_liftingMatrix}), so a Cramer section of that
-  system through the witness, composed with a rank polynomial nonzero at
-  the witness, shows that the general configuration attains
-  (\cref{lem:pencil-x0-one-witness}); an attaining general configuration
-  gives the realization (\cref{lem:pencil-x0-attains-distinct}).
+  The first claim is \cref{lem:pencil-x0-main-picture-open}. The second
+  is \cref{lem:pencil-x0-fibre-intersection}, applied to the linear
+  subspace $L(q)$ of the heights. For the third, the general
+  configuration attains by \cref{lem:pencil-x0-one-witness}, and then
+  $G$ has an adjacent-distinct pencil realization
+  (\cref{lem:pencil-x0-attains-distinct}).
 \end{proof}
-
-\begin{remark}[The geometry of the main component]
-  \label{rem:pencil-x0-main-component}
-  Over the set $U$ of main pictures the dimension of $L(q)$ is constant,
-  equal to $\ell_0$, and $L(q)$ is the height projection of the kernel of
-  a matrix polynomial in $q$, so the pairs $(q, z)$ with $q \in U$ and
-  $z \in L(q)$ form a vector bundle over $U$. Its closure $X_0$, the
-  \emph{main component} of the pencil configuration space, is
-  irreducible of dimension $2|V(G)| + \ell_0$, and it contains every
-  flat configuration $(q, 0)$ with $q \in U$. The statements of this
-  subsection never form $X_0$ itself: in them, ``general'' means off the
-  zero set of a nonzero polynomial in the picture coordinates and, fibre
-  by fibre, off the zero set of a nonzero polynomial in the heights
-  (\cref{def:pencil-x0-attains}). The irreducibility of $X_0$ enters only
-  through the fibre statement of \cref{thm:pencil-x0-main-component}, by
-  which two polynomials each nonzero somewhere on one fibre $L(q)$ are
-  nonzero there together, and through products of picture polynomials;
-  the dimension of $X_0$ is not used.
-\end{remark}
 
 \subsection{The flat rank}
 \label{sec:main-component-flat}
@@ -3371,35 +3409,6 @@ picture $q$ under an invertible linear map of $K^4$
 (\cref{lem:pencil-rank-collineation},
 \cref{lem:pencil-contract-magnified-rank}), and there the general
 configuration of $H$ attains.
-
-\begin{lemma}[A collineation of the normals preserves the rank]
-  \label{lem:pencil-rank-collineation}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv}
-  \leanok
-  \uses{def:panel-hinge-framework, def:rigidity-matrix}
-  Let $G$ be a graph with an endpoint selector, and let $g$ be an
-  invertible linear map of $K^4$. If panel normals $p$ and $p'$ in $K^4$
-  satisfy $p'_w = g(p_w)$ at every body $w$ of $G$, then the rigidity
-  matrices of the panel-hinge frameworks on $G$ with normals $p$ and
-  with normals $p'$ have the same rank.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:panel-hinge-dual-molecular, lem:screw-map-rows,
-        lem:pencil-config-point-join-rank}
-  The hinge at an edge $uv$ with normals $p$ is the image of the line
-  $p_u \wedge p_v$ under the polarity
-  (\cref{lem:panel-hinge-dual-molecular}), so the rigidity matrix with
-  normals $p$ has the rank of the body-hinge framework whose hinge at
-  $uv$ is $p_u \wedge p_v$ (\cref{lem:screw-map-rows}, as in the proof
-  of \cref{lem:pencil-config-point-join-rank}), and likewise for $p'$.
-  Both ends of an edge of $G$ are bodies of $G$, so there
-  $p'_u \wedge p'_v = g(p_u) \wedge g(p_v)$ is the image of
-  $p_u \wedge p_v$ under the invertible linear map of the screw space
-  induced by $g$, and \cref{lem:screw-map-rows} applies once more. This
-  is the argument of \cref{lem:pencil-rank-scale-shift}, for any
-  invertible linear map.
-\end{proof}
 
 \begin{lemma}[The kernel at the end of the curve, through the core heights]
   \label{lem:pencil-contract-kernel-bound}
