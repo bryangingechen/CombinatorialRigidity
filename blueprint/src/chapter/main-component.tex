@@ -1287,19 +1287,76 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
 \subsection{Cut vertices and bridges}
 \label{sec:main-component-cut}
 
-The steps of the induction share one shape. Each deduces that the
-general configuration of $G$ attains the \emph{target rank}
-$\operatorname{tgt}(G) = 6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
-(\cref{def:pencil-x0-attains}, at $n = 3$) from the same conclusion at
-smaller graphs on the same bodies and edge labels. It picks one
-picture generic for the smaller graphs and main for $G$, and it finds the heights inside the single lifting space
-$L_G(q)$, where two nonempty Zariski-open conditions always meet
-(\cref{lem:pencil-x0-fibre-intersection}). One configuration at the
-target rank then suffices (\cref{lem:pencil-x0-one-witness}). This
-subsection states the standing hypotheses and the restriction of
-heights to a subgraph, and proves the first two steps. At a cut vertex
-and along a chain of bridges the graph is a fibre product of two
-smaller graphs, and attaining passes from the two pieces to the whole.
+This subsection and the six after it prove the steps of the induction,
+other than the case of equal deficiencies (\cref{cor:pencil-jj-flat}).
+In each step we show that the general configuration of a graph $G$
+satisfying the standing hypotheses (\cref{def:pencil-x0-standing})
+attains, assuming the same of one or two smaller graphs (of none, for a
+cycle). This subsection proves the first two steps: at a cut vertex, and
+along a chain of bridges, a path of bridges whose interior bodies have
+degree two. The shape that the steps share is plainest in these two,
+and we describe it first.
+
+Write
+\[
+  \operatorname{tgt}(G) \;=\; 6(|V(G)| - 1) - \operatorname{def}(\tilde G)
+\]
+for the deficiency rank of $G$ (\cref{def:pencil-rank-hypothesis}, with
+$D = 6$), and call it the \emph{target} of $G$. We end every step in the
+same way. We exhibit one configuration of $G$ over a main picture of
+$G$, with its heights in the lifting space, whose rank is at least
+$\operatorname{tgt}(G)$. Then the general configuration of $G$ attains
+(\cref{lem:pencil-x0-one-witness}). At a cut vertex and along a chain of
+bridges we find this configuration $(q, z)$ in three parts.
+\begin{enumerate}
+  \item \emph{The picture.} As $K$ is infinite, a product of nonzero
+    polynomials has a non-root. So we can take $q$ off the zero sets of
+    finitely many nonzero polynomials in the picture coordinates. One is
+    the polynomial of \cref{lem:pencil-x0-main-picture-open} for $G$, so
+    that $q$ is a main picture of $G$. The others are the polynomials of
+    the attainment at the smaller graphs $G'$
+    (\cref{def:pencil-x0-attains}). Then for each $G'$, the heights in
+    $L_{G'}(q)$ at which $G'$ has its target contain a nonempty
+    Zariski-open subset of $L_{G'}(q)$.
+  \item \emph{The height.} Here each smaller graph $G'$ is a subgraph of
+    $G$. The rank of $G'$ depends only on the points of its own bodies.
+    So at a height $z$ of $G$ it equals the rank of $G'$ at the
+    restriction of $z$ to $V(G')$ (\cref{lem:pencil-lifting-restrict},
+    \cref{lem:pencil-rank-congr}). If the restriction maps $L_G(q)$ onto
+    $L_{G'}(q)$, the heights $z \in L_G(q)$ at which $G'$ has its target
+    therefore contain a nonempty Zariski-open subset of $L_G(q)$. Two
+    such subsets meet (\cref{lem:pencil-x0-fibre-intersection}).
+  \item \emph{The count.} A rank-addition lemma bounds the rank of
+    $(q, z)$ below through the ranks of the smaller graphs. A deficiency
+    count shows that this bound is at least $\operatorname{tgt}(G)$.
+\end{enumerate}
+
+The later steps choose the picture and make the count in the same way,
+and vary how the height is found; each subsection says how. Often two
+open conditions still meet in one linear space, though not always in
+$L_G(q)$. One of them may ask that the hinges of an ear be independent.
+Some steps also move some bodies, with their heights, through a
+polynomial family of configurations of $G$, and we take a general member
+of the family. In three steps no two open conditions need to meet: the
+cycle (\cref{thm:pencil-x0-cycle}), the split-off step
+(\cref{thm:pencil-x0-splitoff}), and the contraction at a core of planar
+deficiency zero (\cref{thm:pencil-x0-contract-rigid}).
+
+At a cut vertex and along a chain of bridges, the restriction maps
+$L_G(q)$ onto the lifting spaces of the two sides, at every picture $q$.
+Each side meets the rest of $G$ at one body: the cut vertex, or the end
+of the path in that side. A height of the side extends to a height of
+$G$ by the affine function with which it agrees on the closed
+neighbourhood of that body (\cref{lem:pencil-cut-fibre},
+\cref{lem:pencil-bridge-fibre}). At a cut vertex the ranks of the two
+sides add (\cref{lem:block-rank-cut-vertex}), and so do their
+deficiencies (\cref{lem:deficiency-cut-vertex}). Along a chain of
+bridges, each bridge adds at least $5$ to the rank
+(\cref{lem:block-rank-cut}) and exactly $1$ to the deficiency
+(\cref{lem:cut-edge-decomposition}).
+
+We first record the hypotheses of the steps, and the two facts that let
+us read the rank of a subgraph at a height of $G$.
 
 \begin{definition}[The standing hypotheses]
   \label{def:pencil-x0-standing}
@@ -1328,9 +1385,11 @@ smaller graphs, and attaining passes from the two pieces to the whole.
 \end{lemma}
 \begin{proof}
   \leanok
-  A closed neighbourhood in $G'$ lies in the corresponding closed
-  neighbourhood in $G$, where $z$ agrees with an affine function of the
-  picture.
+  The restriction agrees with $z$ on $V(G')$. A closed neighbourhood in
+  $G'$ lies in the closed neighbourhood of the same body in $G$, where $z$
+  agrees with an affine function of the picture. So the restriction
+  agrees with that affine function on it too. The configuration points
+  at a body of $G'$ read only its picture point and its height.
 \end{proof}
 
 \begin{lemma}[The rank reads only the bodies of the graph]
@@ -1373,14 +1432,6 @@ smaller graphs, and attaining passes from the two pieces to the whole.
   is symmetric.
 \end{proof}
 
-\begin{remark}
-  Informally more holds: at every $q$ admissible for $G_1$ and $G_2$,
-  $L_G(q)$ is the set of pairs $(z^1, z^2) \in L_{G_1} \times L_{G_2}$
-  whose planes at $v$ coincide, so $\dim L_G(q) = \dim L_{G_1} +
-  \dim L_{G_2} - 3$. Only the surjectivity is formalized, which is all
-  \cref{thm:pencil-x0-cut} uses.
-\end{remark}
-
 \begin{theorem}[A cut vertex]
   \label{thm:pencil-x0-cut}
   \lean{Graph.X0Attains.of_cutVertex}
@@ -1398,26 +1449,29 @@ smaller graphs, and attaining passes from the two pieces to the whole.
         lem:deficiency-cut-vertex, lem:pencil-lifting-restrict,
         lem:pencil-rank-congr, lem:pencil-x0-fibre-intersection,
         lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
-  Take a picture $q$ generic for both sides and main for $G$
-  (\cref{lem:pencil-x0-main-picture-open}). The attaining heights of
-  each side contain a nonempty Zariski-open subset of $L_{G[V_i]}(q)$.
-  Since the restrictions are onto (\cref{lem:pencil-cut-fibre},
-  \cref{lem:pencil-lifting-restrict}), their preimages are nonempty
-  Zariski-open subsets of $L_G(q)$, and they meet
-  (\cref{lem:pencil-x0-fibre-intersection}). At such a height $z$ the
-  rank of each side is its target (\cref{lem:pencil-rank-congr}), the
-  ranks add (\cref{lem:block-rank-cut-vertex}), and so do the
-  deficiencies (\cref{lem:deficiency-cut-vertex}), while the body counts
-  overlap in one. So $(q, z)$ has rank at least the target of $G$, and
-  \cref{lem:pencil-x0-one-witness} applies.
-\end{proof}
+  We follow the three parts above. Take a picture $q$ off the zero sets
+  of the polynomials of the attainment at $G[V_1]$ and at $G[V_2]$, and
+  of the main-picture polynomial of $G$
+  (\cref{lem:pencil-x0-main-picture-open}). For $i = 1, 2$ some
+  polynomial $R_i$ in the heights is nonzero somewhere on
+  $L_{G[V_i]}(q)$, and $G[V_i]$ has its target at every height of
+  $L_{G[V_i]}(q)$ off the zero set of $R_i$. Read at the restriction to
+  $V_i$, $R_i$ is a polynomial in the heights of $G$
+  (\cref{lem:pencil-lifting-restrict}). It is nonzero somewhere on
+  $L_G(q)$, since the restriction is onto (\cref{lem:pencil-cut-fibre}).
+  So some $z \in L_G(q)$ makes both nonzero
+  (\cref{lem:pencil-x0-fibre-intersection}).
 
-\begin{remark}
-  Informally the converse holds as well: at a general configuration of
-  $G$ the ranks add and each is at most its target, so if $G$ attains,
-  both sides attain. Only the ``if'' half is formalized, the half the
-  induction uses.
-\end{remark}
+  At $(q, z)$ the rank of each side is its target
+  (\cref{lem:pencil-rank-congr}), and the rank of $G$ is their sum
+  (\cref{lem:block-rank-cut-vertex}). The deficiencies add
+  (\cref{lem:deficiency-cut-vertex}), and $|V_1| + |V_2| = |V(G)| + 1$, so
+  \[
+    \operatorname{tgt}(G[V_1]) + \operatorname{tgt}(G[V_2]) \;=\;
+    \operatorname{tgt}(G).
+  \]
+  Hence \cref{lem:pencil-x0-one-witness} applies.
+\end{proof}
 
 \begin{lemma}[The heights along a chain of bridges]
   \label{lem:pencil-bridge-fibre}
@@ -1448,16 +1502,6 @@ smaller graphs, and attaining passes from the two pieces to the whole.
   restricts to $z^1$. The other restriction is symmetric.
 \end{proof}
 
-\begin{remark}
-  Informally more holds: at every $q$ admissible for $G$, $G_1$ and
-  $G_2$, $\dim L_G(q) = \dim L_{G_1} + \dim L_{G_2} + k - 2$. The $k$
-  path heights are new, the closed neighbourhoods of $a$ and $b$ each
-  add one condition, and those of the path bodies, of three bodies
-  each, add none. Only the surjectivity is formalized; it needs neither
-  the admissibility of $q$ nor this count, and it is all
-  \cref{thm:pencil-x0-bridge} uses.
-\end{remark}
-
 \begin{theorem}[A chain of bridges]
   \label{thm:pencil-x0-bridge}
   \lean{Graph.X0Attains.of_bridgePath,
@@ -1483,33 +1527,32 @@ smaller graphs, and attaining passes from the two pieces to the whole.
         lem:pencil-lifting-restrict, lem:pencil-rank-congr,
         lem:pencil-x0-fibre-intersection, lem:pencil-x0-main-picture-open,
         lem:pencil-x0-one-witness}
-  As for \cref{thm:pencil-x0-cut}, with \cref{lem:pencil-bridge-fibre}
-  for the heights, applied to the second side from $b$ along the
-  reversed path. The ranks and deficiencies are counted as numbers, not
-  by asking an intermediate graph to attain: a path body on its own has
-  a closed neighbourhood of one body, so no picture of it is admissible.
+  We find $q$ and $z$ as in the proof of \cref{thm:pencil-x0-cut}, with
+  \cref{lem:pencil-bridge-fibre} for the restrictions. For $G[V_2]$ we
+  apply it from $b$, along the reversed path. We count the ranks and the
+  deficiencies directly, rather than apply the step one bridge at a
+  time. That would ask a graph with one path body as its only body to
+  attain, and no picture of such a graph is admissible.
+
   Write $S_j = V_1 \cup \{x_1, \dots, x_j\}$. Every edge off the path
   lies inside $V_1$ or inside $V_2$, so the only edge of $G$ leaving
   $S_j$ is the path edge from $S_j$ to the next path body, or to $b$
-  when $j = k$. The last bridge therefore splits $G$ into $G[S_k]$ and
-  $G[V_2]$, adding $D - 1 = 5$ to the rank (\cref{lem:block-rank-cut},
-  all hinges being nonzero at an admissible picture) and $1$ to the
-  deficiency (\cref{lem:cut-edge-decomposition}). Inside $G[S_k]$ each
-  path body $x_{j+1}$ hangs from $S_j$ by a single edge, and the same two
-  lemmas, applied in $G[S_{j+1}]$ at $S_j$, add at least $5$ to the rank
-  and exactly $1$ to the deficiency. Against the two sides, the body
-  term $6(|V(G)| - 1)$ gains $6(k + 1)$ and the deficiency gains
-  $k + 1$, so
-  $\operatorname{tgt}(G) = \operatorname{tgt}(G_1) +
-  \operatorname{tgt}(G_2) + 5(k + 1)$. The rank at the chosen
-  configuration is at least this, so \cref{lem:pencil-x0-one-witness}
-  applies.
+  when $j = k$. The last of these edges is a bridge between $G[S_k]$ and
+  $G[V_2]$. It adds $D - 1 = 5$ to the rank (\cref{lem:block-rank-cut};
+  every hinge is nonzero at an admissible picture) and $1$ to the
+  deficiency (\cref{lem:cut-edge-decomposition}). Inside $G[S_{j+1}]$ the
+  path body $x_{j+1}$ is joined to $S_j$ by a single edge. By the same
+  two lemmas, it adds at least $5$ to the rank and exactly $1$ to the
+  deficiency. Compared with the two sides together, the term
+  $6(|V(G)| - 1)$ is larger by $6(k + 1)$ and the deficiency by $k + 1$,
+  so
+  \[
+    \operatorname{tgt}(G) \;=\; \operatorname{tgt}(G[V_1]) +
+    \operatorname{tgt}(G[V_2]) + 5(k + 1).
+  \]
+  The rank at $(q, z)$ is at least this, so
+  \cref{lem:pencil-x0-one-witness} applies.
 \end{proof}
-
-\begin{remark}
-  Informally the converse holds as well, by the same count. Only the
-  ``if'' half is formalized, as for \cref{thm:pencil-x0-cut}.
-\end{remark}
 
 \subsection{Contraction at a core of planar deficiency zero}
 \label{sec:main-component-contract}
