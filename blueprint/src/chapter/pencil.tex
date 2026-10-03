@@ -309,9 +309,13 @@ this projective fact in the containment model, so that the cycle
 realization --- indeed any hinge-coplanar realization
 (\cref{def:coplanar-panel-realization}) restricted to its degree-two
 bodies --- already admits the per-body concurrency point a pencil
-realization asks for. That fact is why \cref{sec:pencil-nondegenerate}
-imposes its nondegeneracy conditions only at a body of degree three or
-more. \cref{thm:pencil-reduction} does not call on the two pencil
+realization asks for. The same fact accounts for two features of the
+nondegeneracy conditions in \cref{sec:pencil-nondegenerate}. A pencil
+hub there is a body of
+degree at least three, since only there does passing through one point
+constrain the hinges. At a body of degree two, whose two hinges pass
+through a common point for free, a further condition keeps them from
+coinciding. \cref{thm:pencil-reduction} does not call on the two pencil
 realizations of a cycle built below; they give a direct example of the
 same fact, on the cycle realization Katoh--Tanigawa already use.
 
@@ -486,11 +490,15 @@ are mutually panel-incident.
 
 These cross-incidences are the chapter's first condition that the
 coplanar model's extension step does not need, and three later
-arguments turn on them. Katoh--Tanigawa's induction deletes and
-reinserts an edge for free, using that the graph is minimal.
-Reinserting a pencil edge instead needs the two cross-incidences, so
-minimality is not available. \cref{thm:pencil-reduction} restates the
-induction without assuming it. The cut-edge case meets the
+arguments turn on them. Katoh--Tanigawa reach a graph that is not
+minimal from a minimal spanning subgraph of the same deficiency, by
+adding each remaining edge with a hinge in the meet of its two panels
+(\cref{thm:theorem-55-6-multigraph}). In a pencil realization such an
+edge needs its two cross-incidences, and these cannot always be met:
+for a $4$-cycle in $K_4$, no pencil realization at the deficiency rank
+meets those of the two diagonals. We therefore run the induction on
+every multigraph, without assuming minimality
+(\cref{thm:pencil-reduction}). The cut-edge case meets the
 cross-incidences by repositioning one side along a projective
 automorphism before adding the crossing edge back
 (\cref{lem:pencil-cut-nondegeneracy}). At $K_4$ the necessity direction

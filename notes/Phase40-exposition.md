@@ -8,11 +8,11 @@ mathematics clearly" and "the proof and its key ideas in context" (the PI, `note
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
 one-commit tasks, 4 landed: task 1 (the sample section), task 2 (pinned it as the exemplar), task 3
-(`pencil.tex`'s three opening subsections, with a corrective), task 4 (the base, cycle and
-extension subsections). **Stop 1 is closed** (the PI, 2026-10-03, *Autopilot: for the PI*), and the
-round runs unattended to its close. **Next concrete task:** task 5, `sec:pencil-reduction`, against
-the pinned exemplar (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per
-*Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
+(`pencil.tex`'s three opening subsections), task 4 (the base, cycle and extension subsections),
+each of the last two with a corrective. **Stop 1 is closed** (the PI, 2026-10-03, *Autopilot: for
+the PI*), and the round runs unattended to its close. **Next concrete task:** task 5,
+`sec:pencil-reduction`, against the pinned exemplar (`notes/Phase40-exposition-exemplar.md`) and
+defaults (a)–(f), returning per *Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -62,11 +62,11 @@ audit are queued as **PROSE** (ROADMAP). The round runs unattended from task 3.
 ## Current state
 
 **Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–4
-have landed**, task 3 with a corrective, and nothing is mid-stream. Task 2, attended by the PI,
-pinned the exemplar, settled defaults (a)–(f) and added `blueprint/AUTHORING.md`'s clauses of
-2026-10-03. Tasks 3–4's findings, coinage lists and (task 3's) corrective are in their checklist
-entries. Every commit so far leaves the gates at the baseline below (graph fingerprint, pin hash,
-warning counts). Next is task 5.
+have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
+the PI, pinned the exemplar, settled defaults (a)–(f) and added `blueprint/AUTHORING.md`'s clauses
+of 2026-10-03. Tasks 3–4's findings, coinage lists and correctives are in their checklist entries.
+Every commit so far leaves the gates at the baseline below (graph fingerprint, pin hash, warning
+counts). Next is task 5.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -171,48 +171,48 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
 - [x] **3. P1 — `pencil.tex`'s three opening subsections, 38–188**: `sec:pencil-through-point`,
   `sec:pencil-realization`, `sec:pencil-duality` (`99a3e639`, then a corrective).
   - *Diagnosis, all done.* The pencil picture and the molecular reading lead into the definitions.
-    `lem:pencil-self-dual`'s pin has no caller; a closing remark says the headline's proof does
-    not use it, and that it is one reason `def:pencil-panel-realization` omits distinctness. The
-    forward pointer to the field note is cut. New forward `\cref`s: `sec:pencil-duality`,
-    `lem:coplanar-hinges-concurrent`, `sec:pencil-nondegenerate`, `thm:pencil-conjecture`.
-  - *(f) coinages.* Standard incidence terms, now the only names of the two conditions: *passes
-    through* a point and *lies in* a panel (KT: "contained in"). Also standard: *hinge-coplanar*
-    (KT p. 648), *polarity*. In a node: *pencil realization*, *panel-support extensor*. For task
-    25's notation paragraph: "the pencil condition" (also in `main-component.tex`). "Point-join ↔
-    panel-meet" names only `lem:case-III-claim612-line-in-panel-union`. "The point condition"
-    remains in tasks 6 and 23.
-  - *Corrective* (coordinator, three gaps): cut the field-dependence sentence, which rested on the
-    kernels' uncited routes; one name per condition, not four; the remark narrowed to
-    `fmlnote:pencil-distinct-motive`'s self-duality reason, without its claim about the kernels.
+    A closing remark says `lem:pencil-self-dual` (no caller) is off the headline's proof and is
+    one reason `def:pencil-panel-realization` omits distinctness. Forward `\cref`s:
+    `sec:pencil-duality`, `lem:coplanar-hinges-concurrent`, `sec:pencil-nondegenerate`,
+    `thm:pencil-conjecture`.
+  - *(f) coinages.* Standard, now the only names of the two conditions: *passes through* a point,
+    *lies in* a panel (KT: "contained in"); also *hinge-coplanar* (KT p. 648), *polarity*. In a
+    node: *pencil realization*, *panel-support extensor*. For task 25's notation paragraph: "the
+    pencil condition" (also in `main-component.tex`). "Point-join ↔ panel-meet" names only
+    `lem:case-III-claim612-line-in-panel-union`. "The point condition" remains in tasks 6 and 23.
+  - *Corrective* (coordinator): the field-dependence sentence cut (uncited kernel routes); one name
+    per condition; the remark narrowed to the self-duality reason.
 - [x] **4. P2 — base, cycle and extension, 189–463**: `sec:pencil-base`, `sec:pencil-cycle`,
-  `sec:pencil-extension`.
+  `sec:pencil-extension` (`6bc95de3`, then a corrective).
   - *Diagnosis, mostly done.* `sec:pencil-base` opens naming `thm:pencil-reduction`'s base case
-    and closes `\cref`-ing `lem:pencil-base-case`. `sec:pencil-extension`'s new closing remark
-    places the two cross-incidences: minimality's failure, the cut-edge repositioning
-    (`lem:pencil-cut-nondegeneracy`), and `K_4` (`sec:pencil-nondegenerate`) — also the "stable
-    insight" `notes/BlueprintExposition.md` already credits the subsection with, now actually
-    there. `lem:cycle-coplanar-realization` is reordered after `lem:cycle-pencil-realization`
-    (its own `\uses` target), curing the forward reference; no label/pin/`\leanok`/`\uses`
-    changed. **Not done, with the reason:** `sec:pencil-cycle`'s two lemmas serve no case of
-    `thm:pencil-reduction` — confirmed via the Lean call chain (`CLEANUP.md` §B):
-    `exists_{pencil,coplanar}PanelRealization_cycle` have no caller outside their own proof. The
-    opening now says so and points at the fact they illustrate instead (degree-two concurrency is
-    free, reused at `sec:pencil-nondegenerate`'s non-hub vertices; the missing `\uses` edge for
-    that reuse is under *Moved to a later round*).
+    and closes `\cref`-ing `lem:pencil-base-case`. `sec:pencil-extension`'s closing remark places
+    the cross-incidences at their three uses: the induction without minimality, the cut-edge
+    repositioning (`lem:pencil-cut-nondegeneracy`), and `K_4` (`sec:pencil-nondegenerate`).
+    `lem:cycle-coplanar-realization` moved after its `\uses` target. **Not done, with the
+    reason:** `sec:pencil-cycle`'s two lemmas serve no case of `thm:pencil-reduction` (their pins
+    have no caller outside their own proofs; `CLEANUP.md` §B). The opening says so, and points at
+    the fact they illustrate: degree-two concurrency is free, which is why a pencil hub has degree
+    at least three and why `def:pencil-nondegenerate` has its own conjunct at the other bodies
+    (the missing `\uses` edge: *Moved to a later round*).
   - *(f) coinages.* Standard already: *concurrency point*, *pencil line*, *flat pencil*. New:
     *cross-incidence(s)*, no KT analogue, kept and now `\emph{}`-marked at first use.
   - *New forward `\cref`s.* `thm:pencil-reduction` (×4), `lem:pencil-base-case` (×2),
     `sec:pencil-nondegenerate` (×2), `lem:pencil-cut-nondegeneracy` (×1).
+  - *Corrective* (coordinator, two gaps; no new forward `\cref`): the cycle opening's false claim
+    that nondegeneracy starts at degree three; the minimality remark, now KT Theorem 5.6's route
+    (p. 670) and its failure at `K_4` (`notes/Phase39-design.md` §W3–W5 route recon).
 - [ ] **5. P3 — `sec:pencil-reduction`, 464–754.** 11 nodes.
   - The nodes do not follow the five cases of `thm:pencil-reduction`. It needs a roadmap from
-    cases (i)–(v) to the lemma that settles each, naming the two cases left for later
-    subsections.
-  - The cut-edge proof repositions a side without saying why: the crossing edge's two
-    cross-incidences.
+    cases (i)–(v) to the lemma that settles each, naming the two cases left for later subsections.
+  - The cut-edge proof repositions a side without saying why: the crossing edge's cross-incidences.
   - Cure `lem:pencil-cut-case`'s forward citation of `def:pencil-distinct-motive`.
   - Confirm the loop and base cases' live use (*Current state*), say in prose where the live route
     proves them, and record the missing edges under *Moved to a later round*.
   - Check "KT Lemma 6.2" in `lem:pencil-simple-of-noRigid` against KT.
+  - *The preamble's minimality account is wrong* (task 4's corrective). KT's added edges need no
+    rank (KT Theorem 5.6, p. 670); the failure is in the smaller graph. At `K_4` the diagonals'
+    cross-incidences put all four points in every panel, so the 4-cycle's hinge extensors span
+    ≤ 3 dimensions and its rank is ≤ 17 < 18. `notes/BlueprintExposition.md` repeats the error.
 - [ ] **6. P4 — `sec:pencil-nondegenerate`, 755–1040.** Four definitions,
   `thm:pencil-conditional-realization-pair`, and five formalization notes.
   - Why the induction statement is conditioned as it is sits in formalization notes, which
