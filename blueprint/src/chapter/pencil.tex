@@ -38,12 +38,13 @@ vertex.
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
 
-The panel side of hinge-coplanarity is stated by containment: a screw
-element lies in a hyperplane when it is the extensor of points of that
-hyperplane (\cref{def:genuine-hinge-realization}). The dual notion ---
-a screw element \emph{passing through} a point --- replaces
-containment in the hyperplane by containment of the point in the
-element's span.
+Hinge-coplanarity states the panel side of its condition by
+containment: a screw element lies in a hyperplane when it is the
+extensor of points of that hyperplane (\cref{def:genuine-hinge-realization}).
+We dualize this to concurrency. A screw element \emph{passing through}
+a point replaces containment in the hyperplane by containment of the
+point in the element's span: at $k = 2$ this says a line --- the
+extensor of two points --- contains the point.
 
 \begin{definition}[Extensor through a point]
   \label{def:extensor-through-point}
@@ -56,11 +57,18 @@ element's span.
 \end{definition}
 
 The zero element passes through every point (take every $p_i = q$), so
-nonzero-ness of $C$ is a separate hypothesis wherever the notion is used
-below.
+we treat the nonzero-ness of $C$ as a separate hypothesis wherever the
+notion is used below.
 
 \subsection{Pencil realizations}
 \label{sec:pencil-realization}
+
+A pencil realization combines the panel and point conditions at every
+body: its incident hinges then lie in one panel and all pass through
+one point of that panel --- the classical picture of a pencil of lines
+through a point in a plane. In the molecular reading
+(\cref{sec:molecule-modelling-defs}) the panel is the plane of an
+atom's bonds and the point is the atom's centre.
 
 \begin{definition}[Pencil realization]
   \label{def:pencil-panel-realization}
@@ -70,34 +78,34 @@ below.
   A hinge-coplanar panel realization of a multigraph $G$
   (\cref{def:coplanar-panel-realization}), with normal assignment $v
   \mapsto n_v$, has a \emph{pencil realization} when it is given in
-  addition a per-body homogeneous point $v \mapsto q_v \in K^{k+2}$
-  such that every body of $V(G)$ has a nonzero point $q_v$, incident
-  to its own panel ($q_v \cdot n_v = 0$), and every link's supporting
-  extensor passes through the points of both its endpoints
-  (\cref{def:extensor-through-point}).
+  addition a per-body nonzero homogeneous point $v \mapsto q_v \in
+  K^{k+2}$, incident to its own panel ($q_v \cdot n_v = 0$). Every
+  link's supporting extensor must then pass through the points of both
+  its endpoints (\cref{def:extensor-through-point}).
 \end{definition}
 
 The incidence $q_v \cdot n_v = 0$ is forced at any body with a nonzero
-hinge --- the hinge's spanning points lie in $n_v^{\perp}$ and contain
-$q_v$ in their span, so $q_v \in n_v^{\perp}$ --- and it is required at
-every body, isolated ones included, so that the panel and point roles are
-symmetric under the polarity below. Concurrency of two coplanar lines is
-automatic, so at a body of degree at most two the point condition adds
-nothing to hinge-coplanarity; it first has content at a body whose hinges
-number three or more.
+hinge: the hinge's spanning points lie in $n_v^{\perp}$ and contain
+$q_v$ in their span, so $q_v \in n_v^{\perp}$. We require it at every
+body, isolated ones included, so that the panel and point roles stay
+symmetric under the polarity below (\cref{sec:pencil-duality}). Concurrency
+of two coplanar lines is automatic (\cref{lem:coplanar-hinges-concurrent}),
+so at a body of degree at most two the point condition adds nothing to
+hinge-coplanarity; it first has content at a body whose hinges number
+three or more.
 
 \subsection{The polarity and self-duality}
 \label{sec:pencil-duality}
 
-Work at grade $k = 2$ ($d = 3$), the setting of
-\cref{lem:panel-hinge-dual-molecular}: the polarity there sends the
-extensor of any two homogeneous points $v_0, v_1 \in K^4$ to the
-panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}),
-the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity in
-its full generality, not only for the homogenized poles of a molecular
-framework (the latter is the setting of \cref{lem:panel-hinge-dual-molecular}
-itself, fixed at $K = \R$; the polarity and the two transport lemmas below
-hold over an arbitrary field $K$). Field dependence enters only at
+Work at grade $k = 2$ ($d = 3$) for the rest of this subsection, the
+setting of \cref{lem:panel-hinge-dual-molecular}. There the polarity
+sends the extensor of two homogeneous points $v_0, v_1 \in K^4$ to the
+panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}):
+the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity,
+here in its full generality rather than only for the homogenized poles
+of a molecular framework. \cref{lem:panel-hinge-dual-molecular} itself
+fixes $K = \R$. The polarity and the two transport lemmas below instead
+hold over an arbitrary field $K$. Field dependence enters only at
 self-dual configurations, not at this transport
 (\cref{fmlnote:pencil-conditional-realization-pair-field}). Two
 consequences transport the point-through and panel-in conditions across
@@ -185,6 +193,14 @@ the polarity.
   endpoint's new point $n$ by \cref{lem:pencil-transport-in-to-through}
   (the old panel-meet conditions become point-join conditions).
 \end{proof}
+
+We record this symmetry for its own sake: the induction below
+(\cref{thm:pencil-reduction}) and its kernels do not use it. What it
+constrains instead is the shape of \cref{def:pencil-panel-realization}
+itself, where the normal and the point enter the pencil condition on an
+equal footing. \cref{sec:pencil-nondegenerate} relies on exactly this to
+decide which further condition belongs inside that definition and which
+must be imposed separately (\cref{fmlnote:pencil-distinct-motive}).
 
 \subsection{The coincident-panel pencil pair}
 \label{sec:pencil-base}

@@ -7,11 +7,11 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 2 landed: task 1, the sample section `sec:main-component-splitoff`, and task 2,
-which pinned it as the exemplar after the PI's review. **Stop 1 is closed** (the PI, 2026-10-03,
-*Autopilot: for the PI*), and the round runs unattended to its close. **Next concrete task:**
-task 3, `pencil.tex`'s three opening subsections, against the pinned exemplar
-(`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f). Round manual: `CLEANUP.md`.
+one-commit tasks, 3 landed: task 1 (the sample section), task 2 (pinned it as the exemplar), task 3
+(`pencil.tex`'s three opening subsections). **Stop 1 is closed** (the PI, 2026-10-03, *Autopilot:
+for the PI*), and the round runs unattended to its close. **Next concrete task:** task 4,
+`pencil.tex`'s local-construction subsections (base, cycle, extension), against the pinned
+exemplar (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -61,11 +61,12 @@ under *Decisions*. The introduction's flags are in task 25, `lem:pencil-splitoff
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1
-and 2 have landed**, and nothing is mid-stream. Task 2, attended by the PI, revised the sample
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–3
+have landed**, and nothing is mid-stream. Task 2, attended by the PI, revised the sample
 twice, pinned it, settled defaults (a)–(f), added `blueprint/AUTHORING.md`'s clauses of
-2026-10-03, and edited one statement for register (item 4). Its gates equal the baseline below
-(graph fingerprint, pin hash and warning counts). Next is task 3.
+2026-10-03, and edited one statement for register (item 4). Task 3's findings and edits are in its
+checklist entry below. All gates equal the baseline below (graph fingerprint, pin hash and warning
+counts, unchanged by all three commits). Next is task 4.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -178,13 +179,14 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   approved text is pinned verbatim in `notes/Phase40-exposition-exemplar.md`, not in this log, to
   keep the log under its line cap. The rulings on defaults (a)–(f) and the granularity are under
   *Decisions*.
-- [ ] **3. P1 — `pencil.tex`'s three opening subsections, 38–188**: `sec:pencil-through-point`,
-  `sec:pencil-realization` and `sec:pencil-duality`. The definitions arrive without their picture,
-  a pencil of lines through a point of a plane, or its molecular reading; only the chapter opening
-  gives it. Nothing says what self-duality is for. It looks off the proof, since its pin is named
-  only in docstrings (confirm on the call chain). What it does is constrain how the induction
-  statement is shaped (`fmlnote:pencil-distinct-motive`). The field-generality paragraph (92–104)
-  points ahead to a formalization note three subsections on.
+- [x] **3. P1 — `pencil.tex`'s three opening subsections, 38–188**: `sec:pencil-through-point`,
+  `sec:pencil-realization` and `sec:pencil-duality`. Added the pencil-of-lines-through-a-point
+  picture and the molecular reading as lead-ins to the two definitions (not only the chapter
+  opening). Confirmed on the Lean call chain that `lem:pencil-self-dual`'s pin is named only in
+  `Statement.lean` docstrings and called nowhere else; a closing remark now says so and gives its
+  real role — constraining `def:pencil-panel-realization`'s shape
+  (`fmlnote:pencil-distinct-motive`). Split the dense field-generality paragraph into single-idea
+  sentences.
 - [ ] **4. P2 — base, cycle and extension, 189–463**: `sec:pencil-base`, `sec:pencil-cycle`,
   `sec:pencil-extension`.
   - Three local constructions, none placed: say which case of the reduction each serves.
@@ -453,10 +455,9 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 3**, `pencil.tex`'s three opening subsections; then tasks 4–26 in order, and task 27
-closes the round. Each section task reads the pinned exemplar
-(`notes/Phase40-exposition-exemplar.md`), defaults (a)–(f) under *Decisions*, and
-`blueprint/AUTHORING.md`'s clauses of 2026-10-03.
+**Next: task 4** (checklist above has its scope); then tasks 5–26 in order, and task 27 closes the
+round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
+defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
 ## Decisions made during this round
 
