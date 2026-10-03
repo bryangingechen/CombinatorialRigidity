@@ -1095,18 +1095,45 @@ deficiency zero (\cref{sec:main-component-contract}).
 \subsection{Jackson and Jord\'an's equality}
 \label{sec:main-component-jj}
 
-By \cref{thm:pencil-flat-rank} the flat configuration reaches the
-$\operatorname{def}_2$ bound exactly when $\dim L(q) = 3 +
-\operatorname{def}_2(G)$. That this equality holds at the general
-picture is the form in which the argument uses Jackson and Jord\'an's
-pin-collinear theorem~\cite{jacksonJordan2008pin}, at $G$ itself and at
-the smaller graphs of the contraction, chain and split-off steps. This
-subsection derives it over every infinite field from the planar rank
-theorem, Katoh and Tanigawa's rank formula~\cite{katohTanigawa2011} at
-$d = 2$ (\cref{thm:theorem-55-6-rows}), read in the chart
-$(x_v, y_v, 1)$ of the plane framework of
-\cref{lem:pencil-lifting-planes-motions}. The graph need not be
-connected and need not span the set of bodies.
+In this subsection we prove the equality of Jackson and Jord\'an
+(\cref{thm:pencil-jj-equality}). Let $G$ be simple, with at least three
+members in every closed neighbourhood. At a general picture the lower
+bound $\dim L(q) \ge 3 + \operatorname{def}_2(G)$ of
+\cref{lem:pencil-lifting-space-deficiency} is then an equality. With the
+flat rank, the equality settles the case of equal deficiencies
+(\cref{cor:pencil-jj-flat}). The contraction, ear and split-off steps use
+it at the smaller graphs they compare with $G$.
+
+The equality is Jackson and Jord\'an's theorem on pin-collinear
+body-and-pin frameworks~\cite{jacksonJordan2008pin}. Such a framework
+consists of rigid bodies in the real plane, with each pair of adjacent
+bodies joined by a pin and the pins of each body on one line. In the
+plane a panel is a line and a hinge is a point, so these are Katoh and
+Tanigawa's panel-hinge frameworks at
+$d = 2$~\cite[pp.~648--649]{katohTanigawa2011}. Jackson and Jord\'an
+prove the following for a simple graph $G$ without isolated vertices.
+Choose the line of each body generically, and pin adjacent bodies where
+their lines meet. Then the infinitesimal motions form a space of
+dimension $3 + \operatorname{def}_2(G)$. The plane framework $P_q$ of
+\cref{lem:pencil-lifting-planes-motions} is a framework of this kind, in
+which the body $v$ lies on the line with normal $(x_v, y_v, 1)$. Its
+motions are the lifting planes, and these form a space of dimension
+$\dim L(q)$ (\cref{lem:pencil-lifting-planes-dim}). So over the reals,
+their theorem at a generic picture is our equality.
+
+Jackson and Jord\'an's argument is specific to the reals. Their
+genericity is algebraic independence over $\Q$, and their proof moves
+points within small Euclidean neighbourhoods. We need the equality over
+every infinite field, and KT Theorem~5.6 holds over every infinite field
+(\cref{thm:theorem-55-6-rows}). So we derive the equality from its case
+$d = 2$. That case gives a panel-hinge framework on $G$ in the plane of
+rank $3(|V(G)| - 1) - \operatorname{def}_2(G)$. The rank does not drop
+when the normals move to a general point. It does not change when each
+normal is divided by its third coordinate (\cref{lem:pencil-jj-rescale}).
+So at a general picture, $P_q$ has at least this rank
+(\cref{lem:pencil-jj-chart}). As
+$\operatorname{rank} R(P_q) = 3|V(G)| - \dim L(q)$, the bound reads
+$\dim L(q) \le 3 + \operatorname{def}_2(G)$.
 
 \begin{lemma}[Rescaling the panel normals]
   \label{lem:pencil-jj-rescale}
@@ -1117,23 +1144,24 @@ connected and need not span the set of bodies.
   \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:rigidity-matrix}
-  Let $(n_v)$ be panel normals and $(c_v)$ nonzero scalars. At every
-  edge $e$ with recorded ends $u, v$, the panel-hinge framework on $G$
-  with normals $c_v n_v$ has the hinge $c_u c_v\, C(e)$, where $C(e)$ is
-  its hinge at the normals $n_v$. So the two frameworks have the same
-  infinitesimal motions and rigidity matrices of the same rank.
+  Let $(n_v)$ be panel normals and $(c_v)$ nonzero scalars. Then at every
+  edge $e$ with ends $u$ and $v$, the panel-hinge framework on $G$ with
+  normals $c_v n_v$ has the hinge $c_u c_v\, C(e)$, where $C(e)$ is its
+  hinge at the normals $n_v$. In particular the two frameworks have the
+  same infinitesimal motions, and their rigidity matrices have the same
+  rank.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:hinge-constraint, lem:span-rigidityRows-eq-of-motions-eq}
   The support extensor is linear in each of its two normals
-  (\cref{def:panel-support-extensor}), and a nonzero multiple of a hinge
-  spans the same line, which is all the hinge constraint reads
-  (\cref{def:hinge-constraint}). Equal motion spaces give equal row
-  spans (\cref{lem:span-rigidityRows-eq-of-motions-eq}).
+  (\cref{def:panel-support-extensor}). A nonzero multiple of a hinge
+  spans the same line, and the hinge constraint depends only on that line
+  (\cref{def:hinge-constraint}). Equal motion spaces give equal row spans
+  (\cref{lem:span-rigidityRows-eq-of-motions-eq}).
 \end{proof}
 
-\begin{lemma}[The planar rank theorem in the chart]
+\begin{lemma}[The planar case of KT Theorem 5.6, in the chart]
   \label{lem:pencil-jj-chart}
   \lean{Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint}
   \leanok
@@ -1150,19 +1178,32 @@ connected and need not span the set of bodies.
   \leanok
   \uses{lem:rank-polynomial-of-le-finrank, def:panel-general-position,
         lem:general-position-support-nonzero, lem:pencil-jj-rescale}
-  \Cref{thm:theorem-55-6-rows} at $n = 2$ ($D = 3$) gives a realization
-  of $G$ at rank $3(|V(G)| - 1) - \operatorname{def}_2(G)$. Its rank
-  polynomial (\cref{lem:rank-polynomial-of-le-finrank}), a polynomial
-  whose non-roots are in general position
-  (\cref{def:panel-general-position}), and the product of the third
-  coordinates of the normals have a common non-root $n$, since $K$ is
-  infinite. Dividing each normal $n_v$ by its third coordinate gives the
-  normals $(x_v, y_v, 1)$ of a picture $q'$, at the same rank and with
-  nonzero hinges (\cref{lem:pencil-jj-rescale},
-  \cref{lem:general-position-support-nonzero}). The rank polynomial at
-  $q'$, composed with the chart $q \mapsto (x_v, y_v, 1)$, is nonzero at
-  $q'$; it is the required $P$.
+  By \cref{thm:theorem-55-6-rows} at $n = 2$ ($D = 3$), $G$ has a
+  panel-hinge realization of rank
+  $3(|V(G)| - 1) - \operatorname{def}_2(G)$. As $K$ is infinite, three
+  nonzero polynomials in the normals have a common non-root $n$: the rank
+  polynomial of this realization
+  (\cref{lem:rank-polynomial-of-le-finrank}), a polynomial whose non-roots
+  are in general position (\cref{def:panel-general-position}), and the
+  product of the third coordinates of the normals. Dividing each normal
+  $n_v$ by its third coordinate gives the normals $(x_v, y_v, 1)$ of a
+  picture $q'$. The framework at $q'$ has the rank of the framework at
+  $n$, at least $3(|V(G)| - 1) - \operatorname{def}_2(G)$
+  (\cref{lem:pencil-jj-rescale}). Its hinges are nonzero
+  (\cref{lem:general-position-support-nonzero}). So the rank polynomial
+  of the framework at $q'$, composed with the chart
+  $q \mapsto (x_v, y_v, 1)$, is nonzero at $q'$. It is the required $P$.
 \end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:pencil-jj-embed-edges}
+  The formal case $d = 2$ of KT Theorem~5.6 assumes a supply of spare
+  edge labels (\cref{rem:fresh-edge-supply}), and so does
+  \cref{lem:pencil-jj-chart}. The equality mentions no edge label, so
+  its formal proof first relabels the edges into a larger label set,
+  which has spare labels (\cref{lem:pencil-jj-embed-edges}). The equality
+  therefore assumes nothing about the labels.
+\end{fmlnote}
 
 \begin{lemma}[Relabelling the edges]
   \label{lem:pencil-jj-embed-edges}
@@ -1174,28 +1215,17 @@ connected and need not span the set of bodies.
   \leanok
   \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
         def:pencil-main-picture, def:D-deficiency}
-  Relabel the edges of $G$ injectively into a larger set of labels.
-  This keeps $G$ simple if it is simple, and it changes neither the
-  lifting spaces $L(q)$, nor the admissible and the main pictures, nor
-  $\operatorname{def}_n(G)$ for any $n$.
+  Let $G'$ be $G$ with its edges relabelled injectively into a larger set
+  of labels. Then $G'$ is simple if $G$ is, and $G'$ has the lifting
+  spaces $L(q)$, the admissible and main pictures, and the deficiencies
+  $\operatorname{def}_n$ of $G$, for every $n$.
 \end{lemma}
 \begin{proof}
   \leanok
   The bodies, the pairs of adjacent bodies and hence the closed
-  neighbourhoods are unchanged, and a partition crosses exactly the
-  images of the edges it crossed before.
+  neighbourhoods are unchanged. A partition crosses exactly the images of
+  the edges it crossed before.
 \end{proof}
-
-\begin{fmlnote}
-  \label{fmlnote:pencil-jj-embed-edges}
-  The formal planar rank theorem is stated over a fixed type of edge
-  labels with a supply of spare labels (\cref{rem:fresh-edge-supply}),
-  and \cref{lem:pencil-jj-chart} carries that supply. Jackson and
-  Jord\'an's equality below mentions no edge label, so it first relabels
-  the edges into a label set with room to spare
-  (\cref{lem:pencil-jj-embed-edges}); it carries no hypothesis on the
-  labels.
-\end{fmlnote}
 
 \begin{theorem}[Jackson and Jord\'an's equality]
   \label{thm:pencil-jj-equality}
@@ -1219,18 +1249,20 @@ connected and need not span the set of bodies.
   \uses{lem:pencil-jj-chart, lem:pencil-jj-embed-edges,
         lem:pencil-x0-main-picture-open, lem:pencil-lifting-planes-motions,
         lem:pencil-lifting-space-deficiency}
-  Relabel the edges (\cref{lem:pencil-jj-embed-edges}). The main
-  pictures contain the non-roots of a nonzero polynomial
-  (\cref{lem:pencil-x0-main-picture-open}), and \cref{lem:pencil-jj-chart}
-  gives a second, since $G$ has at least three bodies (a closed
-  neighbourhood of a body lies in $V(G)$); let $P$ be their product. At a
-  non-root $q$ the rank of
-  the plane framework is $3|V(G)| - \dim L(q)$
-  (\cref{lem:pencil-lifting-planes-motions}), so
-  $\dim L(q) \le 3 + \operatorname{def}_2(G)$, and
-  \cref{lem:pencil-lifting-space-deficiency} gives the reverse. A main
-  picture has $\dim L(q)$ at most its value at such a non-root, and at
-  least $3 + \operatorname{def}_2(G)$ by the same lemma.
+  Let $P$ be the product of two nonzero polynomials. The non-roots of the
+  first are main pictures (\cref{lem:pencil-x0-main-picture-open}). The
+  second is the polynomial of \cref{lem:pencil-jj-chart}, which needs two
+  bodies. Here $G$ has at least three, since a closed neighbourhood of a
+  body lies in $V(G)$. (The formal proof applies \cref{lem:pencil-jj-chart}
+  to $G$ with its edges relabelled, \cref{lem:pencil-jj-embed-edges}.)
+
+  Let $q$ be a non-root of $P$. The plane framework $P_q$ has rank at
+  least $3(|V(G)| - 1) - \operatorname{def}_2(G)$, and exactly
+  $3|V(G)| - \dim L(q)$ (\cref{lem:pencil-lifting-planes-motions}). So
+  $\dim L(q) \le 3 + \operatorname{def}_2(G)$. The reverse inequality is
+  \cref{lem:pencil-lifting-space-deficiency}. As $q$ is a main picture,
+  $\ell_0 = \dim L(q) = 3 + \operatorname{def}_2(G)$
+  (\cref{def:pencil-main-picture}).
 \end{proof}
 
 \begin{corollary}[The general configuration attains when the two deficiencies agree]
@@ -1246,9 +1278,10 @@ connected and need not span the set of bodies.
 \begin{proof}
   \leanok
   \uses{thm:pencil-jj-equality, cor:pencil-flat-attains}
-  \Cref{thm:pencil-jj-equality} gives an admissible picture with
-  $\dim L(q) = 3 + \operatorname{def}_2(G) = 3 + \operatorname{def}_3(G)$,
-  and \cref{cor:pencil-flat-attains} applies.
+  By \cref{thm:pencil-jj-equality}, some main picture $q$ has
+  $\dim L(q) = 3 + \operatorname{def}_2(G) = 3 + \operatorname{def}_3(G)$.
+  So the general configuration of $G$ attains
+  (\cref{cor:pencil-flat-attains}).
 \end{proof}
 
 \subsection{Cut vertices and bridges}

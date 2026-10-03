@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 11 landed (tasks 1–11; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 12 landed (tasks 1–12; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 12, `sec:main-component-jj`, against the pinned exemplar
+task 13, `sec:main-component-cut`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. Round manual: `CLEANUP.md`.
 
@@ -57,12 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–11
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–12
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first two subsections are done; next is
-task 12, Jackson and Jordán's equality.
+introduction (task 24), and `main-component.tex`'s first three subsections are done; next is
+task 13, cut vertices and bridges (item 3's recommendation). Items 2, 4, 7 and 8 are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -176,33 +176,25 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   polynomial section in general; nodes moved to cure forward `\uses`; `rem:pencil-hinge-affine` cut
   (default (a)). *(f):* for task 25, *main component*, *pencil configuration space*; removed,
   *endpoint selector*, *point-join rank*, *Cramer section*. Nine forward `\cref`s.
-- [x] **11. M2 — `sec:main-component-flat`.** Every diagnosis bullet done, one corrected:
-  - *Roadmap: done.* The opening says what is proved and why, the idea, Crapo–Whiteley's picture,
-    then the order. `lem:pencil-flat-split` (retitled) moves after `lem:pencil-lifting-planes-dim`,
-    curing its note's forward `\cref` (default (d)).
-  - *Citations: checked.* Crapo–Whiteley Example 4.4 (pp. 72–73): a flat tetrahedron's panel
-    motions give the tetrahedra over it, "true in great generality". Whiteley 1996 §8.3 is cut
-    here; the opening points back to the carrier's liftings.
-  - *The split's idea: done*, in the opening: the hinges lie in `z = 0` and glue the complementary
-    screws; the screws of the plane's lines are affine functions (over the reals, normal velocities).
-  - *Why it matters: corrected.* Equal deficiencies is clause (1) of `def:pencil-x0-reduces`, but
-    the coverage's third case (its proof; `Graph.IsX0Graph.x0Reduces`). So the opening says it
-    settles "one case of the induction with no appeal to smaller graphs" (`cor:pencil-jj-flat`).
-  - *Item 8: written* (below). Also: `cor:pencil-flat-attains` says "has rank" (*attains* is the
-    general configuration's), and `cor:pencil-flat-x0` drops "the main component is flat".
-  - *(f):* in a node, *lifting planes*, *flat rank*, *flat lower bound*, `P_q`, *deficiency rank*;
-    for task 25, *flat configuration*, `def₂`, `def₃`; removed, *flat split*, *flat main component*.
-    Forward `\cref`s: `cor:pencil-jj-flat`, `thm:pencil-jj-equality`, `sec:main-component-coverage`,
-    `sec:main-component-contract`; from the opening to its own `lem:pencil-flat-split`,
-    `def:pencil-lifting-planes`, `lem:pencil-lifting-planes-dim`,
-    `lem:pencil-lifting-planes-motions`, `cor:pencil-flat-attains`.
-- [ ] **12. M3 — `sec:main-component-jj`, 943–1101.**
-  - Say what JJ's theorem is in their own terms (pin-collinear body-and-pin frameworks), and why
-    it is the equality used here, checked against the TR.
-  - Say why it is derived afresh: their frameworks are real, and here the field is any infinite
-    field.
-  - Keep the relabelling terse; it is Lean-side.
-  - **Writes items 4 and 7's recommendations.**
+- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; full entry there). The opening gives the
+  idea (at `z = 0` the hinges glue the complementary screws; the rest are lifting planes) and
+  Crapo–Whiteley Example 4.4 (pp. 72–73, checked); `lem:pencil-flat-split` follows
+  `lem:pencil-lifting-planes-dim`. Corrected: equal deficiencies is the coverage's third case. Item
+  8 written. *(f):* in a node, *lifting planes*, *flat rank*, *flat lower bound*, `P_q`, *deficiency
+  rank*; for task 25, *flat configuration*, `def₂`, `def₃`; removed, *flat split*, *flat main
+  component*. Nine forward `\cref`s, four past the subsection (`cor:pencil-jj-flat`,
+  `thm:pencil-jj-equality`, the coverage, the contraction).
+- [x] **12. M3 — `sec:main-component-jj`** (this commit). Every diagnosis bullet done:
+  - *JJ in their terms: done*, checked against the TR: pin-collinear frameworks (p. 3), KT's
+    panel-hinge frameworks at `d = 2` (KT pp. 648–649); with generic lines, `3 + def₂(G)` motions
+    (pp. 12–13, Theorem 7.1, p. 21). `P_q` is one, its motions the lifting planes: the equality.
+  - *Why afresh: done.* Genericity over `ℚ`, Euclidean perturbation (Lemma 2.2(b), p. 4).
+  - *Relabelling: terse.* Its note moves before the lemma; the proof cites it in one parenthesis.
+  - *Items 4 and 7: written* (below). Also: "chain" corrected to "ear" among the steps using it.
+  - *(f):* standard, *pin-collinear body-and-pin framework* (glossed), *chart*; in a node, *Jackson
+    and Jordán's equality*, `P_q`, `ℓ₀`; removed, *planar rank theorem*, *recorded ends*. Forward
+    `\cref`s, all in the subsection: the opening's to `thm:pencil-jj-equality`, `cor:pencil-jj-flat`,
+    `lem:pencil-jj-rescale`, `lem:pencil-jj-chart`; the note's to `lem:pencil-jj-embed-edges`.
 - [ ] **13. M4 — `sec:main-component-cut`, 1102–1328.** The subsection opens with "The steps of the
   induction share one shape": one picture generic for the smaller graphs and main for `G`, the
   heights in one fibre, two open conditions meeting, and one witness sufficing. Seven subsections
@@ -310,6 +302,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
     main component* paragraph (15–41) can shrink to pointers.
   - From task 11: *The flat rank* paragraph's "the flat configuration attains" misuses the term;
     the general configuration attains (`cor:pencil-jj-flat`), a configuration *has* a rank.
+  - From task 12: the same paragraph's "at a general drawing of a simple graph the bound is an
+    equality" drops `thm:pencil-jj-equality`'s three members in every closed neighbourhood.
 - [ ] **26. F3 — `intro.tex`'s reader path.** The fifth-continuation paragraph (362–392) runs the
   whole arc in one paragraph. Check each sentence against tasks 24 and 25, and split it where it
   joins two results. Lines 44–47 and 406–407 get the same check. Phase numbers are allowed here.
@@ -356,18 +350,28 @@ exposition has made the item's role clear. The PI decides at round 4's stop.
    `thm:pencil-x0-cut` and `thm:pencil-x0-bridge`. Role: task 13. *Recommendation: pending*
    (task 13).
 4. **The edge-restricted, non-spanning generic-normals row rank** (design §3 BRIDGE). Three
-   declarations, compiled by a recon and not landed; the chart route of `lem:pencil-jj-chart`
-   never uses them. Role: task 12. *Recommendation: pending* (task 12).
+   declarations, compiled by a recon and not landed. Role: task 12. *Recommendation (task 12):
+   leave them unbuilt, with no node.* The equality never forms generic normals
+   (`lem:pencil-jj-chart` moves one realization into the chart). Read in the Lean, the declaration
+   they generalize (`thm:panel-generic-rank`'s pin) has one caller, `cor:panel-generic-rigid`'s
+   pin, which has none; neither is in either headline's closure (measured, script not retained).
+   §3 BRIDGE lists `HingeGeneric.lean` and `Steer.lean` as call sites; they name it in docstrings.
 5. **SHORT's shared assembly**, `Graph.X0Attains.of_openEar_splitOff` and
    `Graph.exists_earBase_splitOff` (`Short.lean`). Called only by the three- and four-body steps.
    Role: task 17. *Recommendation: pending* (task 17).
 6. **The CHAINS pair**, `Graph.IsOpenEar.exists_maximal` (`CoverageChain.lean`) and
    `Graph.Connected.induce_of_gate` (`CoverageCut.lean`). Role: task 21. *Recommendation: pending*
    (task 21).
-7. **`Graph.exists_isMinimalKDof_spanning_subgraph`** (`Molecular/Deficiency.lean`). It has four
-   call sites in `AlgebraicInduction/Theorem55.lean`, behind `thm:theorem-55-6-genuine` and
-   `thm:theorem-55-6-rows` (`panel-layer.tex`), which `lem:pencil-jj-chart` consumes. Role:
-   task 12. *Recommendation: pending* (task 12).
+7. **`Graph.exists_isMinimalKDof_spanning_subgraph`** (`Molecular/Deficiency.lean`). Role: task 12.
+   *Recommendation (task 12): give it a node* in `deficiency.tex`, beside `lem:subgraph-minimality`.
+   Unlike item 8 it is mathematics: KT's first step for Theorem 5.6 (p. 670, checked), deleting
+   edges, the deficiency kept, down to a minimal k-dof-graph. Read in the Lean, its four callers are
+   the pins of `thm:theorem-55-6-genuine` (two) and `thm:theorem-55-6-rows` (which
+   `lem:pencil-jj-chart` consumes), and `theorem_55_6_multigraph_of_two_le` (under `-multigraph`).
+   It is in the closure of `pencil_conjecture` and `molecular_conjecture` (measured, script not
+   retained). The blueprint names it by `\texttt` in one proof; `thm:theorem-55-6`, `-multigraph`
+   cite the argument behind `lem:subgraph-minimality`, which it does not call. A node gives those
+   four proofs a `\cref`, and the graph its edges.
 8. **`Graph.exists_normalized_labeling`** (`Molecular/Deficiency.lean`). It is the relabelling
    inside `lem:relative-deficiency-rank-bound` (`rigidity-matrix.tex`), which
    `lem:pencil-lifting-space-deficiency` uses. Role: task 11. *Recommendation (task 11): leave it
@@ -448,7 +452,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 12** (checklist above has its scope); then tasks 13–26 in order,
+**Next: task 13** (checklist above has its scope); then tasks 14–26 in order,
 and task 27 closes the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
