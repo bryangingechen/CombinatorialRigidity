@@ -7,12 +7,10 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 4 landed: task 1 (the sample section), task 2 (pinned it as the exemplar), task 3
-(`pencil.tex`'s three opening subsections), task 4 (the base, cycle and extension subsections),
-each of the last two with a corrective. **Stop 1 is closed** (the PI, 2026-10-03, *Autopilot: for
-the PI*), and the round runs unattended to its close. **Next concrete task:** task 5,
-`sec:pencil-reduction`, against the pinned exemplar (`notes/Phase40-exposition-exemplar.md`) and
-defaults (a)–(f), returning per *Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
+one-commit tasks, 5 landed (tasks 1–5; tasks 3 and 4 with a corrective each). **Stop 1 is closed**
+(the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:** task 6,
+`sec:pencil-nondegenerate`, against the pinned exemplar (`notes/Phase40-exposition-exemplar.md`)
+and defaults (a)–(f), returning per *Hand-off*'s standing bullet. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,19 +52,16 @@ selector" in `lem:pencil-curve-limit` (item 4).
   we decided not to formalize it due to technical reasons, it could be worth mentioning as well.
   (b)-(d) These look fine." Then: "Let's commit."
 
-**What follows.** Stop 1 is closed: the approved sample is pinned (task 2), and defaults (a)–(f)
-and the granularity are under *Decisions*. The introduction's flags are in task 25,
-`lem:pencil-splitoff-curve` is under *Candidates*, and the blueprint-wide rewrite and bundled-node
-audit are queued as **PROSE** (ROADMAP). The round runs unattended from task 3.
+**What follows.** Stop 1 is closed: the sample is pinned (task 2), defaults (a)–(f) and the
+granularity are under *Decisions*, the introduction's flags are in task 25,
+`lem:pencil-splitoff-curve` is under *Candidates*, and **PROSE** is queued (ROADMAP).
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–4
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–5
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
-the PI, pinned the exemplar, settled defaults (a)–(f) and added `blueprint/AUTHORING.md`'s clauses
-of 2026-10-03. Tasks 3–4's findings, coinage lists and correctives are in their checklist entries.
-Every commit so far leaves the gates at the baseline below (graph fingerprint, pin hash, warning
-counts). Next is task 5.
+the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
+the baseline below (graph fingerprint, pin hash, warning counts). Next is task 6.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -84,19 +79,15 @@ counts). Next is task 5.
 **What the inventory found** (seen at the open; each task re-derives its own findings):
 - **An unintroduced "informal argument."** 23 lines of prose compare with the project's workbook
   (`notes/pencil/workbook/K-main*.md`), which the blueprint never introduces; default (a) rules.
-- **Proofs that rest on lemmas stated later**, and a statement citing a later definition: tasks 5,
-  10 and 14 name each one and cure it.
+- **Proofs that rest on lemmas stated later**, and a statement citing a later definition: tasks 10
+  and 14 name each one and cure it (task 5 cured its one).
 - **Nodes outside the headline's closure.** On the dependency graph, 21 of `pencil.tex`'s 41 nodes
   and 2 of `main-component.tex`'s 123 lie outside the closure of `thm:pencil-conjecture`.
   - Some look off the proof in Lean too. `lem:pencil-self-dual`'s pin is named only in
     docstrings. The girth-chain subsection and `thm:pencil-x0-closed-ear` are also outside.
-  - Others are on the Lean call chain but have no edge to the headline:
-    - `pencil_conjecture` calls `pencil_conjecture_of_X0`, which calls
-      `pencil_conjecture_of_arms_pair`. That is one of the three pins of
-      `thm:pencil-conditional-realization-pair`, whose statement is the kernel form.
-    - `pencilPair_of_nonempty` (`Statements.lean`) calls `pencilPair_of_isLoopAt` and
-      `pencilPair_of_ncard_le_two`, which call the pins of `lem:pencil-loop-case` and
-      `lem:pencil-base-case`.
+  - Others are on the Lean call chain but have no edge to the headline: `pencil_conjecture` calls
+    `pencil_conjecture_of_X0`, which calls `pencil_conjecture_of_arms_pair`, one of the three pins
+    of `thm:pencil-conditional-realization-pair` (whose statement is the kernel form).
 
   Liveness is a property of the Lean call chain (`CLEANUP.md` §B), so a task confirms it there
   before its prose calls anything "off the proof".
@@ -161,58 +152,53 @@ One commit per task, in the order given. Each task's diagnosis says what the uni
 to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
 
 - [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; `806db52e`; revised at
-  Stop 1, pinned by task 2). The JJ paragraph is checked against the TR's proof of Theorem 6.1,
-  Claim 6.5, Case 1 (printed pp. 15–16), and names no claim or section number. A correction to the
-  spec: `a ≁ b` is not in `Graph.ChainUsable`'s `k = 1` clause but a hypothesis of
-  `Graph.X0Attains.of_splitOff`, supplied inside `Graph.IsChain.x0Reduces_of_chainUsable`.
-- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03). The PI's entry is transcribed
-  (*Autopilot: for the PI*), the approved text is in `notes/Phase40-exposition-exemplar.md`, and
-  the rulings on defaults (a)–(f) and the granularity are under *Decisions*.
-- [x] **3. P1 — `pencil.tex`'s three opening subsections, 38–188**: `sec:pencil-through-point`,
-  `sec:pencil-realization`, `sec:pencil-duality` (`99a3e639`, then a corrective).
-  - *Diagnosis, all done.* The pencil picture and the molecular reading lead into the definitions.
-    A closing remark says `lem:pencil-self-dual` (no caller) is off the headline's proof and is
-    one reason `def:pencil-panel-realization` omits distinctness. Forward `\cref`s:
-    `sec:pencil-duality`, `lem:coplanar-hinges-concurrent`, `sec:pencil-nondegenerate`,
-    `thm:pencil-conjecture`.
-  - *(f) coinages.* Standard, now the only names of the two conditions: *passes through* a point,
-    *lies in* a panel (KT: "contained in"); also *hinge-coplanar* (KT p. 648), *polarity*. In a
-    node: *pencil realization*, *panel-support extensor*. For task 25's notation paragraph: "the
-    pencil condition" (also in `main-component.tex`). "Point-join ↔ panel-meet" names only
-    `lem:case-III-claim612-line-in-panel-union`. "The point condition" remains in tasks 6 and 23.
-  - *Corrective* (coordinator): the field-dependence sentence cut (uncited kernel routes); one name
-    per condition; the remark narrowed to the self-duality reason.
-- [x] **4. P2 — base, cycle and extension, 189–463**: `sec:pencil-base`, `sec:pencil-cycle`,
-  `sec:pencil-extension` (`6bc95de3`, then a corrective).
-  - *Diagnosis, mostly done.* `sec:pencil-base` opens naming `thm:pencil-reduction`'s base case
-    and closes `\cref`-ing `lem:pencil-base-case`. `sec:pencil-extension`'s closing remark places
-    the cross-incidences at their three uses: the induction without minimality, the cut-edge
-    repositioning (`lem:pencil-cut-nondegeneracy`), and `K_4` (`sec:pencil-nondegenerate`).
-    `lem:cycle-coplanar-realization` moved after its `\uses` target. **Not done, with the
-    reason:** `sec:pencil-cycle`'s two lemmas serve no case of `thm:pencil-reduction` (their pins
-    have no caller outside their own proofs; `CLEANUP.md` §B). The opening says so, and points at
-    the fact they illustrate: degree-two concurrency is free, which is why a pencil hub has degree
-    at least three and why `def:pencil-nondegenerate` has its own conjunct at the other bodies
-    (the missing `\uses` edge: *Moved to a later round*).
-  - *(f) coinages.* Standard already: *concurrency point*, *pencil line*, *flat pencil*. New:
-    *cross-incidence(s)*, no KT analogue, kept and now `\emph{}`-marked at first use.
-  - *New forward `\cref`s.* `thm:pencil-reduction` (×4), `lem:pencil-base-case` (×2),
-    `sec:pencil-nondegenerate` (×2), `lem:pencil-cut-nondegeneracy` (×1).
-  - *Corrective* (coordinator, two gaps; no new forward `\cref`): the cycle opening's false claim
-    that nondegeneracy starts at degree three; the minimality remark, now KT Theorem 5.6's route
-    (p. 670) and its failure at `K_4` (`notes/Phase39-design.md` §W3–W5 route recon).
-- [ ] **5. P3 — `sec:pencil-reduction`, 464–754.** 11 nodes.
-  - The nodes do not follow the five cases of `thm:pencil-reduction`. It needs a roadmap from
-    cases (i)–(v) to the lemma that settles each, naming the two cases left for later subsections.
-  - The cut-edge proof repositions a side without saying why: the crossing edge's cross-incidences.
-  - Cure `lem:pencil-cut-case`'s forward citation of `def:pencil-distinct-motive`.
-  - Confirm the loop and base cases' live use (*Current state*), say in prose where the live route
-    proves them, and record the missing edges under *Moved to a later round*.
-  - Check "KT Lemma 6.2" in `lem:pencil-simple-of-noRigid` against KT.
-  - *The preamble's minimality account is wrong* (task 4's corrective). KT's added edges need no
-    rank (KT Theorem 5.6, p. 670); the failure is in the smaller graph. At `K_4` the diagonals'
-    cross-incidences put all four points in every panel, so the 4-cycle's hinge extensors span
-    ≤ 3 dimensions and its rank is ≤ 17 < 18. `notes/BlueprintExposition.md` repeats the error.
+  Stop 1, pinned by task 2). Its JJ paragraph is checked against the TR (Theorem 6.1, Claim 6.5,
+  Case 1, printed pp. 15–16) and names no claim or section number. Spec correction: `a ≁ b` is a
+  hypothesis of `Graph.X0Attains.of_splitOff`, supplied in `Graph.IsChain.x0Reduces_of_chainUsable`.
+- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03): the PI's entry under
+  *Autopilot*, the text in `notes/Phase40-exposition-exemplar.md`, the rulings under *Decisions*.
+- [x] **3. P1 — `pencil.tex`'s three opening subsections, 38–188** (`99a3e639`, then a
+  corrective). The pencil picture and the molecular reading lead in; a closing remark says
+  `lem:pencil-self-dual` (no caller) is off the headline's proof and is one reason distinctness is
+  omitted. Forward `\cref`s: `sec:pencil-duality`, `lem:coplanar-hinges-concurrent`,
+  `sec:pencil-nondegenerate`, `thm:pencil-conjecture`. *(f):* standard, now the only names of the
+  two conditions: *passes through* a point, *lies in* a panel; also *hinge-coplanar* (KT p. 648),
+  *polarity*. In a node: *pencil realization*, *panel-support extensor*. For task 25's notation
+  paragraph: "the pencil condition". "Point-join ↔ panel-meet" names only
+  `lem:case-III-claim612-line-in-panel-union`. "The point condition" remains in tasks 6 and 23.
+- [x] **4. P2 — base, cycle and extension, 189–463** (`6bc95de3`, then a corrective).
+  `sec:pencil-base` opens naming `thm:pencil-reduction`'s base case and closes `\cref`-ing
+  `lem:pencil-base-case`; its "only the parallel pair has content" sentence was false (two parallel
+  edges give degree two), fixed in task 5's commit. `sec:pencil-extension`'s closing remark places
+  the cross-incidences at three uses; since task 5 the first points to the `sec:pencil-reduction`
+  preamble. `lem:cycle-coplanar-realization` moved after its `\uses` target. **Not done, with the
+  reason:** `sec:pencil-cycle`'s two lemmas serve no case of `thm:pencil-reduction` (pins without
+  callers); the opening says so and names what the fact explains in `def:pencil-nondegenerate`
+  (missing edge: *Moved*). *(f):* standard *concurrency point*, *pencil line*, *flat pencil*; new
+  *cross-incidence(s)*, `\emph{}`-marked. Forward `\cref`s: `thm:pencil-reduction` (×3),
+  `sec:pencil-reduction`, `lem:pencil-base-case` (×2), `sec:pencil-nondegenerate` (×2),
+  `lem:pencil-cut-nondegeneracy`. Corrective: the cycle opening's false nondegeneracy claim, and
+  the minimality remark (KT Theorem 5.6, p. 670).
+- [x] **5. P3 — `sec:pencil-reduction`, 464–754** (11 nodes).
+  - *Roadmap: done.* A paragraph after `thm:pencil-reduction` maps cases (i)–(v) to their lemmas,
+    and names (iv) and (v) as left for later subsections. No node moved: no forward reference.
+  - *Cut-edge reason: done.* Independently placed sides need not meet the crossing edge's
+    cross-incidences, and without them it has no hinge.
+  - *Forward citation: cured.* `lem:pencil-cut-case`'s statement says "points of every link
+    projectively distinct" itself; its `\uses` edge stays.
+  - *Loop and base cases: live*, through `pencil_conjecture_of_arms_pair` and
+    `pencilPair_of_nonempty`; `pencil_conjecture_of_arms` (`thm:pencil-conditional-realization`)
+    has no caller, and its new lead-in says the headline uses the strengthened form. Edges: *Moved*.
+  - *"KT Lemma 6.2": corrected* to "the proof of KT Lemma 6.2 (p. 673)", where KT note that a
+    parallel pair is rigid. The statement is now its pin's: loopless, no proper rigid set ⇒ simple.
+  - *Preamble: rewritten* (KT Theorem 5.6's route and its `K_4` failure; KT Lemmas 4.5–4.6 for the
+    degree-two vertex); the `notes/BlueprintExposition.md` entry corrected. Loop- and base-case
+    statements lost their proof sketches. One finding under *Candidates*.
+  - *(f):* in a node, *deficiency rank*; standard, *contragredient*, *cut edge*; *cross-incidence*
+    is task 4's. Forward `\cref`s: `thm:pencil-conjecture` (×2),
+    `thm:pencil-conditional-realization-pair`, `sec:pencil-nondegenerate`,
+    `sec:pencil-main-component-route`, `sec:main-component` (×2), and five later nodes of the
+    subsection, in the roadmap.
 - [ ] **6. P4 — `sec:pencil-nondegenerate`, 755–1040.** Four definitions,
   `thm:pencil-conditional-realization-pair`, and five formalization notes.
   - Why the induction statement is conditioned as it is sits in formalization notes, which
@@ -448,6 +434,9 @@ mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
   locality of the lifting system, under three pins. Splitting the node changes the dependency
   graph, so this round leaves it. The PI expects more such nodes in earlier chapters; that audit is
   queued with **PROSE** (ROADMAP).
+- **`thm:pencil-reduction` is stronger than its pin** (task 5). It gives cases (iii)–(v) the
+  property at every lexicographically smaller graph; `Graph.pencil_reduction`'s `hcut`, `hcontract`
+  and `hsplit` get it only at graphs with fewer vertices. Matching them changes the statement.
 
 ## Moved to a later round
 
@@ -457,6 +446,12 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 - **Task 4, target `40-simplify`.** `fmlnote:pencil-nondegenerate`'s remark that a non-hub
   vertex's two hinges are automatically concurrent is exactly `lem:coplanar-hinges-concurrent`'s
   content, but the note carries no `\uses` edge to it.
+- **Task 5, target `40-simplify`.** Only the off-route `thm:pencil-conditional-realization` has
+  `\uses` edges to `lem:pencil-loop-case` and `lem:pencil-base-case`. The live route uses them
+  through the pins of `thm:pencil-conditional-realization-pair` and
+  `thm:pencil-conditioned-pair-nonempty`.
+- **Task 5, target `40-simplify`.** `lem:pencil-simple-of-noRigid` has no in-edge, though
+  `thm:pencil-generic-step`'s pin calls it through the unpinned three-body construction.
 
 ## Blockers / open questions
 
@@ -464,7 +459,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 5** (checklist above has its scope); then tasks 6–26 in order, and task 27 closes the
+**Next: task 6** (checklist above has its scope); then tasks 7–26 in order, and task 27 closes the
 round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
@@ -476,10 +471,8 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
 
 ## Decisions made during this round
 
-- **2026-09-30, the open: the sample is `sec:main-component-splitoff`**, typical of the seven step
-  subsections (a construction and a count against the one-witness lemma), with a JJ citation to
-  check and no forward reference. Rejected: `sec:main-component-cut` (too easy), `-short` (617
-  lines), `-contract` (entangled with the additive subsection).
+- **2026-09-30, the open: the sample is `sec:main-component-splitoff`**, a typical step subsection
+  with a JJ citation to check (rejected: `-cut`, too easy; `-short`, too long; `-contract`).
 - **The task list** (the PI approved it, 2026-10-03). One commit per subsection, split or grouped
   at natural seams into slices of 150–430 lines, near the sample's 322. The introductions and
   `intro.tex` come last (principle F): each summarizes what precedes it.
@@ -499,10 +492,7 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
   *Once* (one sketch per subsection, no lead-in that restates a node), and E *Terminology*. Under
   (f) each task lists its section's project coinages. Each one is replaced by the standard term,
   or defined in a definition node or in task 25's notation paragraph.
-- **The invariance check** (gate 3). `checkdecls` resolves names and `lint.sh` checks that targets
-  exist; neither sees a changed `\uses` edge or `\leanok`. The graph `inv web` writes records node
-  status and edge kind, and its sorted hash does not depend on the order of the nodes, so a move
-  passes and any other change fails.
-- **Rungs.** The sample is Opus, since it sets the exemplar. After Stop 1 the coordinator picks
-  each task's rung against the exemplar, as Phase 29's post-exemplar slices ran at Sonnet (the
-  playbook). The tasks that check JJ or KT pinpoints (12, 14, 20) may still merit Opus.
+- **The invariance check** (gate 3). `checkdecls` and `lint.sh` cannot see a changed `\uses` edge
+  or `\leanok`; the sorted hash of `inv web`'s graph can, and ignores node order, so a move passes.
+- **Rungs.** The sample is Opus. After Stop 1 the coordinator picks each task's rung against the
+  exemplar (Phase 29's playbook ran Sonnet); the JJ/KT-pinpoint tasks (12, 14, 20) may merit Opus.

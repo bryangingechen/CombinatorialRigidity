@@ -261,13 +261,15 @@ lines of a flat pencil already share the point of the pencil.
   --- the shared-vector case behind \cref{lem:extensor-pair-in-panel}.
 \end{proof}
 
-The base region of Katoh--Tanigawa's induction is realized directly at
-one and two bodies (\cref{lem:theorem-55-base-producer}); the pencil
-condition has content only at a body of degree three or more, so on two
-bodies the only case with content is the parallel pair, where the
-concurrency point is supplied by the pair above. \cref{lem:pencil-base-case}
-assembles this with the edgeless and single-edge cases into the base
-case of \cref{thm:pencil-reduction}.
+Katoh--Tanigawa realize the base of their induction directly, at one
+and two bodies (\cref{lem:theorem-55-base-producer}). Asking the hinges
+at a body to pass through one point has content only at degree three or
+more, so on two bodies it has content only when three or more edges
+join them. The parallel-pair realization below serves every such class:
+each further edge reuses one of its two hinges, and both pass through a
+common point. \cref{lem:pencil-base-case} assembles this with the
+edgeless and single-edge cases into the base case of
+\cref{thm:pencil-reduction}.
 
 \begin{lemma}[Two-body coincident-panel pencil realization]
   \label{lem:pencil-base-parallel-pair}
@@ -491,17 +493,13 @@ are mutually panel-incident.
 These cross-incidences are the chapter's first condition that the
 coplanar model's extension step does not need, and three later
 arguments turn on them. Katoh--Tanigawa reach a graph that is not
-minimal from a minimal spanning subgraph of the same deficiency, by
-adding each remaining edge with a hinge in the meet of its two panels
-(\cref{thm:theorem-55-6-multigraph}). In a pencil realization such an
-edge needs its two cross-incidences, and these cannot always be met:
-for a $4$-cycle in $K_4$, no pencil realization at the deficiency rank
-meets those of the two diagonals. We therefore run the induction on
-every multigraph, without assuming minimality
-(\cref{thm:pencil-reduction}). The cut-edge case meets the
-cross-incidences by repositioning one side along a projective
-automorphism before adding the crossing edge back
-(\cref{lem:pencil-cut-nondegeneracy}). At $K_4$ the necessity direction
+minimal by adding edges to a realization of a minimal spanning subgraph.
+For pencil realizations the cross-incidences of the added edges cannot
+always be met, so we run the induction on every multigraph
+(\cref{sec:pencil-reduction}). The cut-edge case meets the
+cross-incidences of its crossing edge by first repositioning one side
+along a projective automorphism (\cref{lem:pencil-cut-nondegeneracy}).
+At $K_4$ the necessity direction
 of \cref{lem:two-pencil-extension-iff} forces every vertex's panel
 normal into a single hyperplane, so no simple realization of $K_4$ can
 give all four vertices independent panel normals
@@ -510,22 +508,42 @@ give all four vertices independent panel normals
 \subsection{Reduction on all spanning multigraphs}
 \label{sec:pencil-reduction}
 
-Katoh--Tanigawa's reduction of $0$-dof multigraphs (KT Theorem 4.9, restated
-in \cref{sec:molecular-induction} without reference to the pencil condition)
-proceeds by strong induction on $|V(G)|$ and at each step uses that the
-multigraph in question is \emph{minimal}: no edge can be deleted without
-changing the deficiency. Minimality is not available once an edge already
-deleted must be reinserted with its supporting extensor constrained to pass
-through two prescribed points (\cref{lem:two-pencil-extension}): the
-reinserted edge can then fail to contribute any rank, once its endpoints'
-concurrency points force every hinge extensor of the deleted graph into a
-single three-dimensional subspace. The reduction is therefore restated here
-on every spanning multigraph directly, with one additional combinatorial
-fact removing the need for minimality: a loopless multigraph with every
-vertex of degree at least three already has a proper rigid subgraph
-(\cref{lem:pencil-min-degree-rigid}), so a graph without one has a vertex of
-degree at most two, and two-edge-connectivity forces that degree to be
-exactly two.
+This subsection states the induction behind \cref{thm:pencil-conjecture}
+and proves three of its five cases. Katoh--Tanigawa's induction runs over
+minimal graphs, those from which no edge can be deleted without changing
+the deficiency (\cref{thm:minimal-kdof-reduction-all-k}). They reach any
+other graph by realizing a minimal spanning subgraph with the same
+deficiency and adding the remaining edges, each with a hinge in the meet
+of its two panels (\cref{thm:theorem-55-6-multigraph}). The added edges
+need not raise the rank, since the subgraph already attains the
+deficiency rank.
+
+For pencil realizations this step fails, and the failure lies in the
+smaller graph. An added edge needs its two cross-incidences
+(\cref{lem:two-pencil-extension-iff}), and imposing them can lower the
+rank of the smaller graph. Take $K_4$ and a $4$-cycle in it, both of
+deficiency $0$. A pencil realization of the $4$-cycle has rank $14$ plus
+the dimension of the span of its four hinges, so it attains its
+deficiency rank $18$ only when the hinges are linearly independent. The cross-incidences
+of the two diagonals, with those the cycle edges satisfy already, put all
+four points in every panel, so the points span at most a plane. If they
+span a plane, every panel is that plane, and the hinges lie in the
+three-dimensional space of its lines. If they span a line, at least two
+edges of the cycle join bodies with different points, and both of their
+hinges are that line. If they coincide, all four hinges pass through one
+point. In each case the hinges span at most three dimensions, so no
+pencil realization of the $4$-cycle at its deficiency rank admits the
+diagonals.
+
+We therefore run the induction on every multigraph. Its case analysis
+still needs a vertex of degree two when there is no proper rigid
+subgraph. Katoh--Tanigawa find one by an edge count that uses minimality
+(KT Lemmas~4.5 and~4.6, pp.~663--664). Here a counting fact takes its
+place: a loopless multigraph whose vertices all have degree at least
+three has a proper rigid subgraph (\cref{lem:pencil-min-degree-rigid}).
+So a graph without one has a vertex of degree at most two, and
+two-edge-connectivity forces that degree to be exactly two. The
+statement the induction proves is the following.
 
 \begin{definition}[Pencil realization at the deficiency rank]
   \label{def:pencil-rank-hypothesis}
@@ -593,21 +611,37 @@ exactly two.
   two).
 \end{proof}
 
+We take the five cases in the order of the lemmas below. In case~(v)
+the graph is simple (\cref{lem:pencil-simple-of-noRigid}). The loop
+case~(i) is \cref{lem:pencil-loop-case}. The cut-edge case~(iii) is
+\cref{lem:pencil-cut-case}, after two lemmas on projective
+automorphisms. The base case~(ii) is \cref{lem:pencil-base-case}. The
+contraction and split cases, (iv) and~(v), are left for later
+subsections. \Cref{sec:pencil-nondegenerate} strengthens the statement
+that the induction proves. \Cref{sec:pencil-main-component-route} then
+proves both cases by one argument, which rests on
+\cref{sec:main-component}. That argument and \cref{sec:main-component}
+contract proper rigid subgraphs, using
+\cref{lem:pencil-contraction-deficiency}: contraction leaves the
+deficiency unchanged.
+
 \begin{lemma}[Simplicity from looplessness and no proper rigid subgraph]
   \label{lem:pencil-simple-of-noRigid}
   \lean{Graph.simple_of_loopless_of_noRigid}
   \leanok
   \uses{def:rigid-subgraph}
-  A parallel edge pair joining two vertices $x, y$ of a multigraph $G$ with
-  $|V(G)| \ge 3$ already forms a proper rigid subgraph on $\{x,y\}$, so
-  case~(v) of \cref{thm:pencil-reduction} may assume $G$ simple.
+  Let $D \ge 2$, and let $G$ be a loopless multigraph with $|V(G)| \ge 3$
+  and no proper rigid subgraph (\cref{def:rigid-subgraph}). Then $G$ is
+  simple.
 \end{lemma}
 \begin{proof}
   \leanok
-  The two-vertex induced subgraph on a parallel pair is trivially rigid
-  (KT Lemma 6.2) and its vertex set is a proper subset once $|V(G)| \ge 3$,
-  so the absence of a proper rigid subgraph forces $G$ to have no parallel
-  pair; combined with looplessness this is simplicity.
+  Suppose two edges join vertices $x$ and $y$. Their $(D-1)$-fold copies
+  are $2(D-1) \ge D$ parallel edges on $\{x, y\}$, hence $D$
+  edge-disjoint spanning trees, so the subgraph induced on $\{x, y\}$ is
+  rigid, as in the proof of KT Lemma~6.2 (p.~673). It is proper, as
+  $|V(G)| \ge 3$, a contradiction. So $G$ has no parallel edges, and
+  being loopless it is simple.
 \end{proof}
 
 \begin{lemma}[The loop case]
@@ -615,18 +649,25 @@ exactly two.
   \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_isLoopAt}
   \leanok
   \uses{def:pencil-rank-hypothesis, lem:two-pencil-extension}
-  Let $e$ be a loop of $G$ at a vertex $v$, and suppose $G - e$ has a
-  pencil realization at the deficiency rank. Then so does $G$: assign $e$
-  any pencil line of $v$'s own panel through $v$'s own point
-  (\cref{lem:two-pencil-extension} at $n_u = n_v$, $q_u = q_v$), which
-  contributes no rank, since $\operatorname{def}(\tilde G) =
-  \operatorname{def}(\widetilde{G - e})$.
+  Let $e$ be a loop of $G$ at a vertex $v$. If $G - e$ has a pencil
+  realization at the deficiency rank (\cref{def:pencil-rank-hypothesis}),
+  then so does $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Immediate from \cref{lem:two-pencil-extension} applied to $v$ against
-  itself and the deficiency identity for deleting a loop.
+  Keep the realization of $G - e$, and give $e$ a nonzero hinge that lies
+  in the panel of $v$ and passes through the point of $v$. It exists by
+  \cref{lem:two-pencil-extension} with $u = v$, where both
+  cross-incidences become the incidence of the point of $v$ with its own
+  panel. The loop adds only zero rows, since both of its ends are $v$. A
+  loop crosses no partition of $V(G)$, so deleting it leaves the
+  deficiency unchanged, and the rank is still the deficiency rank.
 \end{proof}
+
+The cut-edge case moves one side of a realization by a projective
+automorphism. The next lemma shows that such a move keeps a pencil
+realization at the deficiency rank, and the one after it chooses the
+automorphism.
 
 \begin{lemma}[Projective transport of a pencil realization]
   \label{lem:pencil-projective-transport}
@@ -704,34 +745,37 @@ exactly two.
         def:pencil-distinct-motive,
         lem:two-pencil-extension-iff, lem:pencil-projective-transport,
         lem:pencil-cut-nondegeneracy}
-  Let $G$ be not two-edge-connected, so that at most one edge crosses some
-  nonempty proper vertex set $V_1 \subsetneq V(G)$, with $V_2 = V(G)
-  \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a pencil realization
-  at the deficiency rank, so does $G$; and if each has an adjacent-distinct
-  one (\cref{def:pencil-distinct-motive}), so does $G$.
+  Let $G$ be a multigraph that is not two-edge-connected, so that at most
+  one edge crosses some nonempty proper subset $V_1 \subsetneq V(G)$, and
+  let $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
+  pencil realization at the deficiency rank, then so does $G$. The same
+  holds for realizations at the deficiency rank in which the two points of
+  every link are projectively distinct.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy,
         lem:cut-edge-decomposition, lem:two-pencil-extension}
-  As in the cut-edge case of the panel-only induction
-  (\cref{lem:case-cut-edge-realization}). Place each side's realization
-  independently. If a crossing edge remains, reposition one side along a
-  projective automorphism (\cref{lem:pencil-projective-transport}, which
-  preserves the deficiency rank), chosen by
-  \cref{lem:pencil-cut-nondegeneracy} so that the two prescribed points at
-  the crossing edge meet its two cross-incidence conditions
-  (\cref{lem:two-pencil-extension-iff}); the crossing edge's supporting
-  extensor is then supplied by \cref{lem:two-pencil-extension}. The
-  adjacent-distinct form follows by the same assembly: inside a side the
-  property is the side's own, on the transported side it survives a linear
-  automorphism, and at the crossing edge it is the distinctness clause of
+  Realize the two sides separately. If no edge crosses, together they
+  realize $G$. Suppose one edge $uv$ crosses, with $u \in V_1$. The two
+  realizations were chosen independently, so the cross-incidences of $uv$
+  need not hold, and without them $uv$ has no hinge
+  (\cref{lem:two-pencil-extension-iff}). So we first move the side $V_2$ by
+  the projective automorphism of \cref{lem:pencil-cut-nondegeneracy}, after
+  which both cross-incidences hold. The moved side is still a pencil
+  realization at the deficiency rank
+  (\cref{lem:pencil-projective-transport}). Now
+  \cref{lem:two-pencil-extension} gives $uv$ a hinge. In both cases the
+  ranks of the parts add up to the deficiency rank of $G$, as in
+  Katoh--Tanigawa's cut-edge case (\cref{lem:case-cut-edge-realization}). For the
+  second form, the points along a link inside a side stay distinct under
+  the automorphism, and at $uv$ they are distinct by the last clause of
   \cref{lem:pencil-cut-nondegeneracy}.
 \end{proof}
 \begin{fmlnote}
   \label{fmlnote:pencil-cut-case}
-  The two forms are one Lean theorem with a Boolean parameter selecting
-  the form; the pinned names are that theorem and its two specializations.
+  The two forms are one Lean theorem whose parameter selects the form;
+  the pinned names are that theorem and its two specializations.
 \end{fmlnote}
 
 \begin{lemma}[The base case, $|V(G)| \le 2$]
@@ -740,18 +784,17 @@ exactly two.
   \leanok
   \uses{def:pencil-rank-hypothesis, lem:pencil-base-parallel-pair}
   Every loopless multigraph with at most two vertices has a pencil
-  realization at the deficiency rank: the one-vertex, no-edge, and
-  single-edge cases are immediate, and the parallel-edge-class case is
-  \cref{lem:pencil-base-parallel-pair}.
+  realization at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
 \end{lemma}
 \begin{proof}
   \leanok
-  The one-vertex and edgeless cases contribute no rank (a single fixed
-  hinge with no incidence to discharge); a single edge contributes rank
-  $D - 1$ from one nonzero hinge; a class of parallel edges reduces to
-  \cref{lem:pencil-base-parallel-pair}'s two independent hinges (any
-  further edges reuse the second hinge and cost nothing), whose
-  realization is infinitesimally rigid on both bodies.
+  Give every body the same normal $n$ and the same point $q$ of its
+  panel. With no edge the deficiency rank is $0$. With one edge it is
+  $D - 1$, which one nonzero hinge in the panel through $q$ attains.
+  With a class of two or more parallel edges it is $D$. Two edges of the
+  class get the two independent hinges of
+  \cref{lem:pencil-base-parallel-pair}, which make the two bodies rigid,
+  and every further edge reuses the second hinge.
 \end{proof}
 
 \begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]
@@ -771,6 +814,13 @@ exactly two.
   minimality; only the base/fiber-meeting half of the corresponding
   minimality-tracking statement did, and that half is not needed here.
 \end{proof}
+
+The next theorem assembles the three cases proved here, with the
+contraction and split cases as hypotheses. The proof of
+\cref{thm:pencil-conjecture} uses not this theorem but a strengthened
+form of it, \cref{thm:pencil-conditional-realization-pair}. The proof of
+that form follows this one, and uses the three lemmas above at a loop, on
+at most two bodies and at a cut edge.
 
 \begin{theorem}[Pencil realization from the contraction and split cases]
   \label{thm:pencil-conditional-realization}

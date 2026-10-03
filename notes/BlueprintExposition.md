@@ -885,16 +885,20 @@ discharge point.
 
 - **`thm:pencil-reduction` / `Graph.pencil_reduction`, with
   `lem:pencil-min-degree-rigid`** — [done (`pencil.tex`, the
-  `sec:pencil-reduction` preamble + the two nodes)] **(b)** KT Theorem 4.9's
-  induction uses minimality (no edge deletable without changing the
-  deficiency); the pencil condition breaks the strip-and-reinsert step (a
-  reinserted hinge constrained through two prescribed points can add no
-  rank), so the reduction is restated on every spanning multigraph. **Stable
-  insight:** minimality is used in KT only to find a degree-two vertex in the
-  no-proper-rigid-subgraph case; a handshake count against the
-  `(D,D)`-sparsity bound shows minimum degree ≥ 3 already forces a proper
-  rigid subgraph once `D ≥ 4`, so the induction needs minimality nowhere, and
-  simplicity in case (v) is free (`lem:pencil-simple-of-noRigid`). Pointer:
+  `sec:pencil-reduction` preamble + the two nodes)] **(b)** KT's induction
+  runs over minimal graphs and reaches the others by adding
+  deficiency-neutral edges in panel meets (KT Theorem 5.6, p. 670), which
+  need no rank. A pencil edge added back needs its two cross-incidences, and
+  imposing them can sink the smaller graph below its target: at `K₄` the
+  diagonals' cross-incidences put all four points in every panel, so a
+  4-cycle's hinges span ≤ 3 dimensions and its rank is ≤ 17 < 18. So the
+  reduction is restated on every spanning multigraph (corrected at
+  `40-exposition` task 5). **Stable insight:** once the induction runs over
+  all graphs, minimality's remaining job in KT's case analysis is to supply a
+  degree-two vertex when there is no proper rigid subgraph (KT Lemmas 4.5–4.6);
+  a handshake count against the `(D,D)`-sparsity bound shows minimum degree
+  ≥ 3 already forces a proper rigid subgraph once `D ≥ 4`, and simplicity in
+  case (v) is free (`lem:pencil-simple-of-noRigid`). Pointer:
   `notes/Phase39-design.md` § *W3–W5 route recon*.
 - **`lem:two-pencil-extension-iff` / `exists_extensor_two_pencils_iff`** —
   [done (the `sec:pencil-extension` preamble + proofs)] **(a)** the coplanar
