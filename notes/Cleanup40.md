@@ -6,9 +6,9 @@ closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 
 (`notes/Phase40-exposition.md`); rounds 4–5 have not opened. Five cleanup rounds (`CLEANUP.md`)
 over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`,
 `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
-order and for which rounds are done. Round 3's sample section has landed, and **round 3 is
-stopped for the PI** at Stop 1 (`notes/Phase40-exposition.md` *Autopilot: for the PI*). **The next
-concrete task** is round 3's task 2, pinning the exemplar, once the PI has answered there.
+order and for which rounds are done. Round 3's Stop 1 closed on 2026-10-03: the PI approved the
+revised sample section, pinned as the exemplar (`notes/Phase40-exposition.md` *Autopilot: for the
+PI*). **The next concrete task** is round 3's task 3, run unattended.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -104,7 +104,8 @@ mathematics clearly, and explain the proof and its key ideas in context (§1). I
 node's pinned Lean strength and dependency edges stay as they are (Phase 28's rule).
 
 - **Stop 1 (`NEEDS_PI`).** Comes after the open and one sample section, before any other section
-  is written. The approved sample goes into the work log verbatim as the pinned exemplar. It fixes
+  is written. The approved sample is copied verbatim as the pinned exemplar (in the end, into its
+  own file, `notes/Phase40-exposition-exemplar.md`, to keep the work log short). It fixes
   the register, depth and evidence bar for the remaining sections, as in Phase 29.
 - **The build-or-leave items.** The round writes a recommendation for each into its hand-off, as
   the exposition makes each result's role clear: build it, add its blueprint node, refactor around

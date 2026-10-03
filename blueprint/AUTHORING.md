@@ -209,6 +209,16 @@ use plain mathematical verbs. Hypothesis names never appear in prose;
 declaration names only parenthetically at step boundaries, as addresses.
 *Test:* a working mathematician could have written the paragraph, every
 sentence still mathematics with its parentheticals deleted.
+*Voice and sentences* (the PI, 2026-10-03, at round 3 of the post-Phase-40
+cleanup). "Flat" means no hype, not impersonal. Write as KT do: "we" and
+"let us" are fine ("we shall construct", "let us first sketch the proof").
+An abstract subject standing in for the author ("the proof reaches", "the
+step assumes", "call this") is a tell. One idea per sentence: split a
+sentence with more than one subordinate clause or more than one
+parenthetical `\cref`, and give every "this" or "it" a referent in the
+sentence before. Do not answer a question the reader has not asked: a
+negative remark ("X is not needed", "the hypothesis enters only here")
+stays only where a reader would expect X.
 *Algorithmic-chapter carve-out* (the DFS / pebble-game / executable
 chapters — Phase 28 calibration): a step that terminates, visits, marks,
 returns, accepts, or searches is plain computational English and **stays**
@@ -246,7 +256,10 @@ sentence ("Specialize \cref{…} to $n = 3$"); two Lean proofs that
 duplicate each other are a statement-surface item to collapse in Lean,
 never a license to duplicate prose. *Test:* every step with a sentence
 `\cref`s a node or names its Lean declaration inline, so the prose
-indexes every load-bearing declaration (helpers stay unpinned).
+indexes every load-bearing declaration (helpers stay unpinned). The test
+is for proofs, where the index is what links the prose to the Lean. An
+overview or a preamble cites only what the reader needs to find, not
+every sentence's source.
 
 **D. Formalization notes & pins.** Lean-encoding detail goes in a
 *Formalization note* — the `fmlnote` environment (`\begin{fmlnote} …
@@ -284,6 +297,12 @@ visible to the reader — a term used before (or without) its
 introduction fails even if a correct definition exists elsewhere in
 the corpus. (Failure tells: an unanchored "This is …"; an italicized
 term whose first occurrence is not its introduction.)
+*Terminology* (the PI, 2026-10-03). Be skeptical of nonstandard terms.
+Prefer the source's term or the textbook's. Keep a project coinage only
+when no standard term exists, and then define it where the reader cannot
+miss it: a definition node, or the chapter's notation paragraph, not a
+parenthetical or a lead-in. A Lean-side device with no mathematical
+content (an endpoint selector, say) stays out of statements.
 
 **F. Chapter flow.** A chapter opens with a half-page mathematical
 roadmap — what is proved, in what order, what the reader needs — with no
@@ -294,7 +313,11 @@ an article with embedded statements, not a list of environments; the
 dep-graph color convention is explained once in `chapter/intro.tex` and
 never re-explained in a preamble. *Test:* the preamble names what is
 proved and in what order without a single phase number or dep-graph
-term.
+term. *Once* (the PI, 2026-10-03). The orienting paragraph sketches the
+argument once, at overview depth. A lead-in before a node says only what
+the opening did not, such as why the node is stated in this generality;
+it never restates the node. No overview before a theorem repeats its
+proof's paragraphs.
 
 **Revising an existing chapter (the R-task sweep order).** Statements
 first (B): run the deletion and standalone tests on every environment

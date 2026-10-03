@@ -60,11 +60,9 @@ where the two deficiencies agree the flat configuration attains
 satisfying the standing hypotheses, finite, simple and connected with
 minimum degree at least two (\cref{def:pencil-x0-standing}), by a strong
 induction on the number of bodies (\cref{thm:pencil-x0-reduction-attains},
-\cref{thm:pencil-x0-coverage}). Each step deduces that the general
-configuration of $G$ attains from the same conclusion at smaller graphs
-on the same bodies and edge labels. It takes one drawing that is general
-for the smaller graphs and of least $\dim L(q)$ for $G$, and finds the
-heights inside the single fibre $L_G(q)$. At a cut vertex and along a
+\cref{thm:pencil-x0-coverage}). Each step takes one drawing that is
+general for the smaller graphs and of least $\dim L(q)$ for $G$, and
+finds the heights inside the single fibre $L_G(q)$. At a cut vertex and along a
 chain of bridges, $G$ is a fibre product of two smaller graphs whose
 ranks and deficiencies add (\cref{sec:main-component-cut}). Across an ear
 the rank grows with the span of its hinges together with the relative
@@ -2952,92 +2950,57 @@ $\dim(\rho + \Lambda)$ by one unless it is already the whole screw space
 \subsection{Splitting off a body of degree two}
 \label{sec:main-component-splitoff}
 
-This subsection proves the split-off step at a body $x$ of degree two
-whose neighbours $a$ and $b$ are not adjacent, that is, at an open ear
-$a - x - b$ on $V_1$ with one interior body
-(\cref{sec:main-component-chain}). Let $G''$ be $G$ with $x$
-suppressed: the splitting-off $G_x^{ab}$ (\cref{def:graph-operations})
-whose new edge $ab$ carries the label of the edge $ax$; it is $G[V_1]$
-together with the edge $ab$. Let
+This subsection proves the split-off step. Let $x$ be a body of degree
+two whose neighbours $a$ and $b$ are not adjacent, and let
+$V_1 = V(G) \setminus \{x\}$, so that $a - x - b$ is an open ear on $V_1$
+(\cref{sec:main-component-chain}). Splitting off $x$ gives the graph
+$G'' = G_x^{ab}$ (\cref{def:graph-operations}): it is $G[V_1]$ together
+with a new edge $ab$, which carries the label of $ax$. We show that if
+the general configuration of $G''$ attains, then so does that of $G$,
+provided that
 \[
   \delta \;=\; \operatorname{def}(\tilde G[V_1]) -
-  \operatorname{def}(\tilde G[V_1]; a, b) \;\ge\; 0
+  \operatorname{def}(\tilde G[V_1]; a, b) \;\ge\; 5
 \]
-(\cref{def:deficiency-merged}, at $n = 3$), the amount by which the
-deficiency of $G[V_1]$ falls when $a$ and $b$ are kept in one part. The
-step assumes $\delta \ge 5$. The structural coverage uses it at a chain
-$a - x - b$, a body of degree two whose neighbours have degree at least
-three (\cref{def:pencil-x0-chain}), in a 2-connected sparse graph.
-There $a$ and $b$ are not adjacent, since sparsity allows at most two
-edges on three bodies (\cref{lem:deficiency-one-body-chain}). Such a
-chain is usable (\cref{def:pencil-x0-usable-chain}) when $\delta = 0$,
-and then the ear step with one interior body applies
-(\cref{thm:pencil-x0-open-ear-one}), or when $\delta \ge 5$, and then
-this step applies. When
-$1 \le \delta \le 4$ the coverage takes no step at the chain: some set
-$W \ni x$ of at least two bodies then has
-$\operatorname{def}(\tilde G[W]) = 0$
-(\cref{lem:deficiency-one-body-chain}), and if no chain is usable the
-coverage contracts a set of deficiency zero at which the planar
-deficiencies add (\cref{thm:pencil-x0-theorem-s}).
+(\cref{def:deficiency-merged}, at $n = 3$). Here $\delta$ is how far the
+deficiency of $G[V_1]$ drops when only partitions with $a$ and $b$ in one
+part are counted. The structural coverage applies this step to a chain
+$a - x - b$ with $\delta \ge 5$ (\cref{def:pencil-x0-usable-chain}).
 
-The hypothesis says that adding the edge $ab$ lowers the deficiency of
-$G[V_1]$ by five, the most one edge can: a partition of $V_1$ keeping
-$a$ and $b$ in one part is at least five below
-$\operatorname{def}(\tilde G[V_1])$, and the edge $ab$ lowers the value
-of every other partition by five
-(\cref{lem:splitoff-deficiency-merged}). With
-$\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G) + 4$
-(\cref{lem:deficiency-ear}) this gives
-$\operatorname{def}(\tilde G'') + 1 \le \operatorname{def}(\tilde G)$.
-As $G$ has one body more than $G''$, the target
-$6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ of $G$ is then at most
-the target of $G''$ plus five, and five is what $x$ adds to the rank
-when its point is put on the line through the points of $a$ and $b$,
-away from both (\cref{lem:pencil-splitoff-special-rank}). The
-hypothesis enters only this count; the construction below does not use
-it.
+The idea is to put $x$ back on the line through $a$ and $b$. Take a
+configuration of $G''$ at its target rank, and place the point of $x$ on
+the line through the points of $a$ and $b$, distinct from both. We call
+this the \emph{special position} of $x$. There the hinges at $ax$ and
+$xb$ are nonzero multiples of the hinge at $ab$, and adding $x$ raises
+the rank by exactly five (\cref{lem:pencil-splitoff-special-rank}). The
+hypothesis $\delta \ge 5$ is what makes five enough: it implies that the
+target of $G$ is at most the target of $G''$ plus five.
 
-Call this the special position of $x$. There the two hinges at $x$ are
-nonzero multiples of the hinge at $ab$, and a configuration of $G''$ at
-its target gives one of $G$ at its target. This special configuration lies
-over no admissible picture of $G$, however, since it pictures the
-closed neighbourhood $\{a, x, b\}$ of $x$ on a line, and
-\cref{lem:pencil-x0-one-witness}, by which one configuration forces the
-general one, needs a main picture. The proof reaches a main picture in
-three moves. First, the special position: over a picture $q$ general
-for $G''$ and main for $G$, a configuration of $G''$ at its target, with
-the point of $x$ put on the line through those of $a$ and $b$. Second, a
-line of solutions through it: the picture of $x$ moves along a line
-back to $q_x$, and the heights on $V_1$ along a line of solutions of the
-lifting system of $G[V_1]$ (\cref{lem:pencil-splitoff-flexes},
-\cref{lem:pencil-splitoff-curve}). Third, a good parameter: a point of
-this curve at which the rank has not dropped
-(\cref{lem:pencil-curve-limit}) and the picture is main for $G$.
+The special position does not finish the proof. There $a$, $x$ and $b$
+are pictured on one line, so the picture is not a main picture of $G$,
+and \cref{lem:pencil-x0-one-witness} needs one. We therefore move the
+picture of $x$ along a line to a general point, and move the heights
+with it so that each closed neighbourhood stays in a plane
+(\cref{lem:pencil-splitoff-flexes}, \cref{lem:pencil-splitoff-curve}).
+Along this curve the rank falls below its starting value at only finitely
+many points (\cref{lem:pencil-curve-limit}), and the picture fails to be
+main at only finitely many. Any other point of the curve gives the
+configuration that \cref{lem:pencil-x0-one-witness} needs.
 
-The step is the case of Jackson and Jord\'an's proof of their
-pin-collinear theorem~\cite{jacksonJordan2008pin} in which a vertex of
-degree two has non-adjacent neighbours, and adding the edge between
-them to the graph with the vertex deleted lowers its deficiency, in
-their planar count $\operatorname{def}_2$. They realize the graph with
-the new edge at full rank by induction, move the pin of the new edge a
-little along the line of one end and off the line of the other, which
-does not lower the rank, make it the pin joining that end to the
-vertex, and add the second pin and the vertex by a 1-extension and a
-0-extension. Here the frameworks are panel-hinge frameworks in space,
-and the order is reversed: the body is put back first, at the special
-position, where the rank is exact, and the configuration then moves.
-The motion is along a polynomial curve, on which the rank drops at
-finitely many parameters at most, rather than within a small Euclidean
-neighbourhood, so the step holds over every infinite field. The heights
-move with the picture along a line of solutions of the lifting system,
-which keeps every closed neighbourhood in a plane, as moving the pin
-along the line of its end keeps the pins of each body collinear.
+Jackson and Jord\'an's proof of their pin-collinear
+theorem~\cite{jacksonJordan2008pin} handles the same situation: a vertex
+of degree two whose neighbours are not adjacent, where joining the
+neighbours by an edge lowers the deficiency of the rest of the graph.
+They realize the smaller graph with the new edge by induction, move the
+pin of that edge slightly, and then add back the vertex by a 1-extension
+and a 0-extension. We reverse the order: we put $x$ back first, at the
+special position, where the rank is known exactly, and then move it.
+Since we move along a polynomial curve rather than within a small
+Euclidean neighbourhood, the argument works over every infinite field.
 
-The rank of a panel-hinge framework is lower semicontinuous in its
-normals (\cref{lem:rank-polynomial-of-le-finrank}). The third move uses
-this along one polynomial curve of normals, on which the parameters where
-the rank drops are finitely many.
+We begin with the lower semicontinuity of the rank
+(\cref{lem:rank-polynomial-of-le-finrank}) along a polynomial curve of
+normals.
 
 \begin{lemma}[The rank along a polynomial curve of normals]
   \label{lem:pencil-curve-limit}
@@ -3045,31 +3008,26 @@ the rank drops are finitely many.
   \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:rigidity-matrix}
-  Let $G$ be a graph with finitely many bodies and edges and an endpoint
-  selector, and let $t \mapsto n(t) = (n_v(t))$ be panel normals whose
-  coordinates are polynomials in $t \in K$, such that the hinge at every
-  edge of $G$ is nonzero at $t = 0$. Then for all but finitely many
-  $t \in K$, the rank of the rigidity matrix of the panel-hinge framework
-  on $G$ with normals $n(t)$ is at least its value at $t = 0$.
+  Let $G$ be a finite graph, and let $t \mapsto n(t) = (n_v(t))$ be panel
+  normals whose coordinates are polynomials in $t \in K$, such that the
+  hinge at every edge of $G$ is nonzero at $t = 0$. Then for all but
+  finitely many $t \in K$, the rank of the rigidity matrix of the
+  panel-hinge framework on $G$ with normals $n(t)$ is at least its value
+  at $t = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-polynomial-of-le-finrank}
   By \cref{lem:rank-polynomial-of-le-finrank} at $n(0)$ there is a
   polynomial $Q$ in the normal coordinates, nonzero at $n(0)$, such that
-  at all normals off the zero set of $Q$ the rank is at least its value
-  at $n(0)$. Substituting the curve gives a polynomial $t \mapsto Q(n(t))$
-  in one variable, nonzero at $t = 0$. It has finitely many roots, and
-  off them the rank bound holds.
+  the rank is at least its value at $n(0)$ wherever $Q$ is nonzero. The
+  polynomial $t \mapsto Q(n(t))$ in one variable is nonzero at $t = 0$, so
+  it has finitely many roots, and off them the bound holds.
 \end{proof}
 
-The hinge at an edge is bilinear and alternating in the normals at its
-two ends (\cref{def:panel-support-extensor}). When the normal at $x$ is
-$(1 - s)\,n_a + s\,n_b$ with $s \neq 0, 1$, as at the special position,
-the hinges at $ax$ and $xb$ are therefore nonzero multiples of the hinge
-at $ab$, the screw of $x$ relative to $a$ is confined to one line, and
-the rank is determined by that of $G''$. The lemma is stated for
-panel normals in $K^{k+2}$; at a configuration $k = 2$, and $D - 1 = 5$.
+The next lemma computes the rank at the special position. It is stated
+for panel normals in $K^{k+2}$; configurations are the case $k = 2$,
+where $D - 1 = 5$.
 
 \begin{lemma}[The rank at the special position]
   \label{lem:pencil-splitoff-special-rank}
@@ -3098,26 +3056,27 @@ panel normals in $K^{k+2}$; at a configuration $k = 2$, and $D - 1 = 5$.
   (\cref{def:panel-support-extensor}), so up to sign the hinges at $ax$
   and $xb$ are $s\,C$ and $(1 - s)\,C$, where $C \neq 0$ is the hinge at
   $ab$ in $G''$; every other edge has the same hinge in $G$ and in $G''$.
-  A screw assignment $S$ is therefore a motion of $G$ exactly when it is a
-  motion of $G''$ with $S_x - S_a \in K C$: in one direction
-  $S_a - S_b$ is the difference of $S_x - S_b$ and $S_x - S_a$, in the
-  other $S_x - S_b = (S_x - S_a) + (S_a - S_b)$. As $x$ is not a body of
-  $G''$, the map $S \mapsto S_x - S_a$ takes the motions of $G''$ onto the
-  screw space, and the motions of $G$ are the preimage of the line $K C$,
-  of codimension $D - 1$. The row spans are the annihilators of the motion
-  spaces (\cref{lem:span-rigidityRows-eq-of-motions-eq}), so the ranks
-  differ by $D - 1$.
+  Since $S_x - S_b = (S_x - S_a) + (S_a - S_b)$, a screw assignment $S$ is
+  therefore a motion of $G$ if and only if it is a motion of $G''$ with
+  $S_x - S_a \in K C$. As $x$ is not a body of $G''$, the map
+  $S \mapsto S_x - S_a$ takes the motions of $G''$ onto the screw space,
+  so the motions of $G$ have codimension $D - 1$ in those of $G''$. The
+  row spaces are the annihilators of the motion spaces
+  (\cref{lem:span-rigidityRows-eq-of-motions-eq}), so the ranks differ by
+  $D - 1$.
 \end{proof}
 
-The line of solutions (\cref{lem:pencil-splitoff-curve}(1)) needs a
-special point at which $h_a - h_b$ is nonzero on some solution of the
-lifting system of $G[V_1]$, unless $h_a = h_b$ on every solution. Some
-$s$ gives such a point unless every solution has $h_a - h_b$ vanishing
-at $(q_a, 1)$ and at $(q_b, 1)$, and the next lemma shows that then
-$h_a = h_b$ on every solution. It is stated for the solutions $(z, h)$
-rather than for the heights $z$, since $G[V_1]$ may have bodies of
-degree one, at which a height does not determine the plane $h_v$; it is
-a path when $G$ is a cycle.
+To choose the special position we need one more lemma. A solution of
+the lifting system is a pair $(z, h)$: heights $z$, and for each body
+$v$ an affine function $h_v$ that agrees with $z$ on the closed
+neighbourhood of $v$ (\cref{def:pencil-weighted-lifting-system}). The
+curve needs a special point at which $h_a - h_b$ is nonzero on some
+solution for $G[V_1]$, unless $h_a = h_b$ on every solution
+(\cref{lem:pencil-splitoff-curve}(1)). Such a point exists unless every
+solution has $h_a - h_b$ vanishing on the line through $q_a$ and $q_b$.
+The next lemma shows that in that case $h_a = h_b$ on every solution. It
+is stated for pairs $(z, h)$, not for heights alone, because at a body of
+degree one in $G[V_1]$ the heights do not determine $h_v$.
 
 \begin{lemma}[End planes that all meet over the line of the ends coincide]
   \label{lem:pencil-splitoff-flexes}
@@ -3141,35 +3100,32 @@ a path when $G$ is a cycle.
   \leanok
   \uses{lem:pencil-x0-one-witness, lem:pencil-three-points}
   Suppose some solution $y_0$ has $h_a \neq h_b$. The affine function
-  $h_a - h_b$ vanishes at $q_a$ and $q_b$, and the homogeneous picture
-  points of the closed neighbourhood $\{a, x, b\}$ of $x$ in $G$ are
-  linearly independent, as $q$ is admissible for $G$. So the functional
+  $h_a - h_b$ vanishes at $q_a$ and $q_b$, and $q_a$, $q_b$, $q_x$ are
+  not collinear, as $q$ is admissible for $G$. So the functional
   $\varphi(z, h) = (h_a - h_b) \cdot (q_x, 1)$ is nonzero at $y_0$.
 
-  By the hypothesis, every solution for $G'$ is one for $G''$: the closed
-  neighbourhoods of $a$ and of $b$ in $G''$ are those in $G'$ with $b$,
-  respectively $a$, added, and $h_a$ takes the value
-  $z_b = h_b \cdot (q_b, 1)$ at $q_b$, and $h_b$ the value $z_a$ at $q_a$.
-  Restriction to $V_1$ sends the solutions for $G$ at $q$ into the
-  solutions for $G'$ on which $\varphi$ vanishes, since the closed
-  neighbourhoods of $a$ and $b$ in $G$ contain $x$, and it is injective: a
-  solution for $G$ vanishing on $V_1$ has $z_x = h_a \cdot (q_x, 1) = 0$,
-  and then $h_x = 0$, since $h_x \cdot (q_w, 1) = z_w = 0$ at the three
-  independent points of $\{a, x, b\}$ (as in
-  \cref{lem:pencil-three-points}). So the solutions for $G$ form a space
-  of dimension less than that of the solutions for $G'$, which is at most
-  that of the solutions for $G''$. At a picture admissible for a graph
-  the solutions form a space of dimension $\dim L(q)$ (the proof of
-  \cref{lem:pencil-x0-one-witness}), so $\dim L_G(q) < \dim L_{G''}(q)$,
-  a contradiction.
+  We compare the solution spaces of the three lifting systems at $q$.
+  First, every solution for $G'$ is one for $G''$. Indeed, the closed
+  neighbourhoods of $a$ and $b$ in $G''$ gain $b$ and $a$ respectively,
+  and by hypothesis $h_a \cdot (q_b, 1) = h_b \cdot (q_b, 1) = z_b$ and
+  $h_b \cdot (q_a, 1) = z_a$. Second, restriction to $V_1$ maps the
+  solutions for $G$ injectively into the solutions for $G'$ on which
+  $\varphi$ vanishes. A restricted solution is a solution for $G'$, since
+  each closed neighbourhood in $G'$ lies inside the one in $G$. And
+  $\varphi$ vanishes on it, since $x$ lies in the closed neighbourhoods of
+  both $a$ and $b$ in $G$, so $h_a$ and $h_b$ both take the value $z_x$
+  at $q_x$. The map is injective: a solution for $G$ that vanishes on
+  $V_1$ has $z_x = h_a \cdot (q_x, 1) = 0$, so $h_x$ vanishes at the three
+  non-collinear points $q_a, q_x, q_b$, and $h_x = 0$ (as in
+  \cref{lem:pencil-three-points}). Since $\varphi(y_0) \neq 0$, the
+  solutions for $G$ form a space of smaller dimension than the solutions
+  for $G'$, and hence than those for $G''$. At a picture admissible for a
+  graph, the solutions form a space of dimension $\dim L(q)$ (the proof of
+  \cref{lem:pencil-x0-one-witness}). So $\dim L_G(q) < \dim L_{G''}(q)$, a
+  contradiction.
 \end{proof}
 
-The last lemma collects what the curve needs: (1) a line of solutions
-of a pencil $\varphi_0 + t\,\psi$ of linear conditions; (2) the
-extension to a height of $G$ of a solution for $G[V_1]$ whose affine
-functions at $a$ and $b$ agree at the picture of $x$; and (3) the
-independence of the solutions for $G[V_1]$ from the picture of $x$, so
-that they remain solutions as $x$ moves.
+The last lemma collects three facts used to build the curve.
 
 \begin{lemma}[A line of solutions through the special position]
   \label{lem:pencil-splitoff-curve}
@@ -3200,45 +3156,25 @@ that they remain solutions as $x$ moves.
   \leanok
   \uses{lem:pencil-three-points, lem:pencil-picture-local}
   (1) If $\varphi_0(W) \neq 0$ for some $W \in L$, take
-  $w = \varphi_0(W)^{-1}\bigl(\psi(W)\, y_0 - \psi(y_0)\, W\bigr)$; then
+  $w = \varphi_0(W)^{-1}\bigl(\psi(W)\, y_0 - \psi(y_0)\, W\bigr)$. Then
   $\varphi_0(y_0 + t w) = -t\,\psi(y_0)$ and
-  $\psi(y_0 + t w) = \psi(y_0)$. Otherwise take $w = 0$. In the first
-  case the solution of the condition at $t$ in $y_0 + K W$ is
-  $y_0 - t\,\psi(y_0)\bigl(\varphi_0(W) + t\,\psi(W)\bigr)^{-1} W$,
-  rational in $t$; the condition is homogeneous, and $y_0 + t w$ is this
-  solution multiplied by $1 + t\,\psi(W)/\varphi_0(W)$, a scalar equal
-  to $1$ at $t = 0$, so it has no denominators.
+  $\psi(y_0 + t w) = \psi(y_0)$. (One finds this $w$ by solving the
+  condition on the line $y_0 + K W$ at each $t$. The solution is rational
+  in $t$, and as the condition is homogeneous it can be rescaled to clear
+  the denominator.) Otherwise $\varphi_0$ and $\psi$ vanish on $L$, and
+  $w = 0$ will do.
 
-  (2) At a body $v$ of $V_1$ the closed neighbourhood in $G$ is that in
-  $G[V_1]$, with $x$ added when $v$ is $a$ or $b$, and the height agrees
-  with $h_v$ there, at $x$ because $h_a$ and $h_b$ agree at $(q_x, 1)$.
-  The closed neighbourhood of $x$ is $\{a, x, b\}$, on which every height
-  agrees with an affine function (\cref{lem:pencil-three-points}).
+  (2) At a body $v$ of $V_1$, the closed neighbourhood in $G$ is the one
+  in $G[V_1]$, with $x$ added when $v$ is $a$ or $b$. The height agrees
+  with $h_v$ on it: at $x$, because $h_a$ and $h_b$ agree at
+  $(q_x, 1)$. The closed neighbourhood of $x$ is $\{a, x, b\}$, and every
+  height agrees with an affine function on three points
+  (\cref{lem:pencil-three-points}).
 
   (3) Each condition of the lifting system of $H$ reads the picture at a
   member of the closed neighbourhood of a body of $H$, and these are
   bodies of $H$ (as in \cref{lem:pencil-picture-local}).
 \end{proof}
-
-The proof of the theorem takes the moving heights from the lifting
-system of $G[V_1]$. Let $q(t)$ be $q$ with the picture of $x$ moved to
-$q^0_x + t\,(q_x - q^0_x)$, from the special point
-$q^0_x = (1 - s)\,q_a + s\,q_b$, for a suitable $s \neq 0, 1$, at
-$t = 0$ to $q_x$ at $t = 1$. At an admissible $q(t)$, a solution $(z, h)$ of the lifting
-system of $G[V_1]$ extends to a height of $G$ if $h_a - h_b$ vanishes
-at $(q(t)_x, 1)$ (\cref{lem:pencil-splitoff-curve}(2), (3)). That is one
-linear condition on the solution, $\varphi_0 + t\,\psi = 0$, where
-$\varphi_0$ and $\psi$ evaluate $h_a - h_b$ at $(q^0_x, 1)$ and at
-$(q_x - q^0_x, 0)$. A line $y_0 + t w$ of solutions satisfies it for
-every $t$ (\cref{lem:pencil-splitoff-curve}(1)), so the configurations
-along the curve are polynomial in $t$, and the lower semicontinuity of
-the rank along this one curve of normals (\cref{lem:pencil-curve-limit})
-completes the proof. No geometry of the main component is needed; in
-particular the special configuration is not shown to lie on it. The
-curve ends at the general picture itself, $q(1) = q$, so the condition
-that $q(t)$ be a main picture is one polynomial in $t$, nonzero at
-$t = 1$, and the dimensions of the lifting spaces are compared only at
-$q$ (\cref{lem:pencil-splitoff-flexes}).
 
 \begin{theorem}[Splitting off a body of degree two]
   \label{thm:pencil-x0-splitoff}
@@ -3265,66 +3201,78 @@ $q$ (\cref{lem:pencil-splitoff-flexes}).
         lem:pencil-rank-congr, lem:pencil-curve-limit,
         lem:pencil-splitoff-special-rank, lem:pencil-splitoff-flexes,
         lem:pencil-splitoff-curve}
-  \emph{The counts.} By \cref{lem:splitoff-deficiency-merged} at $D = 6$,
+  \emph{The counts.} The new edge $ab$ lowers by five the value of every
+  partition of $V_1$ that separates $a$ and $b$, and by hypothesis the
+  other partitions are already five below
+  $\operatorname{def}(\tilde G[V_1])$. So
   $\operatorname{def}(\tilde G'') + 5 \le
-  \operatorname{def}(\tilde G[V_1])$, and
+  \operatorname{def}(\tilde G[V_1])$
+  (\cref{lem:splitoff-deficiency-merged}, at $D = 6$). With
   $\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G) + 4$
-  (\cref{lem:deficiency-ear}, at $k = 1$), so
+  (\cref{lem:deficiency-ear}, at $k = 1$) this gives
   $\operatorname{def}(\tilde G'') + 1 \le \operatorname{def}(\tilde G)$.
   Also $\operatorname{def}_2(G'') \le \operatorname{def}_2(G)$
   (\cref{lem:splitoff-deficiency-reuse}, at $n = 2$).
 
-  \emph{The picture.} $G''$ is simple, as $a$ and $b$ are not adjacent.
-  Take a picture $q$ off the zero sets of the polynomial of the attainment
-  at $G''$, of the polynomial of Jackson and Jord\'an's equality at $G''$
-  (\cref{thm:pencil-jj-equality}; the closed neighbourhoods of $G''$ have
-  three members at a picture admissible for $G''$), and of the
-  main-picture polynomial of $G$ (\cref{lem:pencil-x0-main-picture-open}).
-  Then $q$ is admissible for $G''$ and a main picture of $G$, some
-  $z'' \in L_{G''}(q)$ gives $G''$ its target rank, and
-  $\dim L_{G''}(q) = 3 + \operatorname{def}_2(G'') \le \dim L_G(q)$
-  (\cref{lem:pencil-lifting-space-deficiency}). Let $y_0 = (z'', h)$ be a
-  solution of the lifting system of $G''$ at $q$ with heights $z''$. It
-  is a solution for $G[V_1]$, and $h_a - h_b$ vanishes at $(q_a, 1)$ and
-  $(q_b, 1)$, since $ab$ is an edge of $G''$.
+  \emph{The picture.} As $a$ and $b$ are not adjacent, $G''$ is simple
+  and each of its closed neighbourhoods has as many members as in $G$, at
+  least three. So Jackson and Jord\'an's equality applies to $G''$
+  (\cref{thm:pencil-jj-equality}). Take a picture $q$ off the zero sets
+  of three nonzero polynomials: that of the attainment at
+  $G''$, that of the equality at $G''$, and the main-picture polynomial
+  of $G$ (\cref{lem:pencil-x0-main-picture-open}). Then $q$ is admissible
+  for $G''$ and a main picture of $G$, some $z'' \in L_{G''}(q)$ gives
+  $G''$ its target rank, and
+  \[
+    \dim L_{G''}(q) \;=\; 3 + \operatorname{def}_2(G'') \;\le\;
+    3 + \operatorname{def}_2(G) \;\le\; \dim L_G(q)
+  \]
+  (\cref{lem:pencil-lifting-space-deficiency}). Let $y_0 = (z'', h)$ be
+  a solution of the lifting system of $G''$ at $q$ with heights $z''$.
+  It is a solution for $G[V_1]$, and $h_a - h_b$ vanishes at $(q_a, 1)$
+  and $(q_b, 1)$, since $ab$ is an edge of $G''$.
 
   \emph{The special position.} If some solution for $G[V_1]$ has
-  $h_a - h_b$ nonzero at $(q_a, 1)$ or at $(q_b, 1)$, then for all but at
-  most one $s$ it is nonzero at $(1 - s)(q_a, 1) + s\,(q_b, 1)$; otherwise
-  every solution for $G[V_1]$ has $h_a = h_b$
+  $h_a - h_b$ nonzero at $(q_a, 1)$ or at $(q_b, 1)$, then for all but
+  at most one $s$ it is nonzero at $(1 - s)(q_a, 1) + s\,(q_b, 1)$.
+  Otherwise every solution for $G[V_1]$ has $h_a = h_b$
   (\cref{lem:pencil-splitoff-flexes}). Fix $s \neq 0, 1$ accordingly, put
   $q^0_x = (1 - s) q_a + s\, q_b$, and let
   $\varphi_0(z, h) = (h_a - h_b) \cdot (q^0_x, 1)$ and
   $\psi(z, h) = (h_a - h_b) \cdot (q_x - q^0_x, 0)$. By
-  \cref{lem:pencil-splitoff-curve}(1) some solution $w$ for $G[V_1]$ gives
-  $\varphi_0(y(t)) + t\,\psi(y(t)) = 0$ for $y(t) = y_0 + t w$.
+  \cref{lem:pencil-splitoff-curve}(1) there is a solution $w$ for
+  $G[V_1]$ such that $y(t) = y_0 + t w$ satisfies
+  $\varphi_0(y(t)) + t\,\psi(y(t)) = 0$ for every $t$.
 
-  \emph{The curve.} Let $q(t)$ be $q$ with $x$ moved to
+  \emph{The curve.} Let $q(t)$ be $q$ with the picture of $x$ moved to
   $q^0_x + t\,(q_x - q^0_x)$, so that $q(1) = q$. As $q(t)$ agrees with
   $q$ on $V_1$, $y(t)$ is a solution for $G[V_1]$ at $q(t)$
-  (\cref{lem:pencil-splitoff-curve}(3)), and the identity above says that
-  its $h_a - h_b$ vanishes at $(q(t)_x, 1)$. Let $z(t)$ be the height of
-  $y(t)$ away from $x$, with the value $h_a \cdot (q(t)_x, 1)$ at $x$. The
-  points of the configuration $(q(t), z(t))$ are polynomials in $t$. At
-  $t = 0$ they are at the special position: $p_x = (1 - s) p_a + s\, p_b$,
-  since $h_a \cdot (q_b, 1) = z''_b$, and $p_a$, $p_b$ are independent, as
+  (\cref{lem:pencil-splitoff-curve}(3)), and the identity above says
+  that its $h_a - h_b$ vanishes at $(q(t)_x, 1)$. Let $z(t)$ be the
+  height of $y(t)$ on $V_1$, extended by $h_a \cdot (q(t)_x, 1)$ at $x$.
+  The points of the configuration $(q(t), z(t))$ are polynomials in $t$.
+  At $t = 0$ they are at the special position:
+  $p_x = (1 - s) p_a + s\, p_b$, because $h_a$ takes the values $z''_a$
+  and $z''_b$ at $q_a$ and $q_b$. Also $p_a$ and $p_b$ are independent, as
   $q_a \neq q_b$. Every hinge of $G$ is nonzero at $t = 0$: $q^0_x$
-  differs from $q_a$ and $q_b$ as $s \neq 0, 1$, and every other edge is an
-  edge of $G''$. So at $t = 0$ the rank of $G$ is that of $G''$ at
-  $(q, z'')$ plus five (\cref{lem:pencil-splitoff-special-rank},
-  \cref{lem:pencil-rank-congr}). The picture $q(0)$ is not admissible for
-  $G$, so \cref{lem:pencil-x0-one-witness} does not apply there.
+  differs from $q_a$ and $q_b$ as $s \neq 0, 1$, and every other edge is
+  an edge of $G''$. So at $t = 0$ the rank of $G$ is that of $G''$ at
+  $(q, z'')$ plus five
+  (\cref{lem:pencil-splitoff-special-rank}, \cref{lem:pencil-rank-congr}).
 
-  \emph{A good parameter.} By \cref{lem:pencil-curve-limit} the rank of
+  \emph{A good parameter.} By \cref{lem:pencil-curve-limit}, the rank of
   $G$ at $(q(t), z(t))$ is at least its value at $t = 0$ for all but
   finitely many $t$. The main-picture polynomial of $G$ at $q(t)$ is a
   polynomial in $t$, nonzero at $t = 1$, so $q(t)$ is a main picture of
-  $G$ for all but finitely many $t$. Take $t$ outside both
-  finite sets. Then $z(t) \in L_G(q(t))$
-  (\cref{lem:pencil-splitoff-curve}(2)), and $(q(t), z(t))$ has rank at
-  least $6(|V_1| - 1) - \operatorname{def}(\tilde G'') + 5 \ge
-  6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, as $|V(G)| = |V_1| + 1$.
-  So \cref{lem:pencil-x0-one-witness} applies.
+  $G$ for all but finitely many $t$. Take $t$ outside both finite sets.
+  Then $z(t) \in L_G(q(t))$ (\cref{lem:pencil-splitoff-curve}(2)), and
+  $(q(t), z(t))$ has rank at least
+  \[
+    6(|V_1| - 1) - \operatorname{def}(\tilde G'') + 5 \;\ge\;
+    6(|V(G)| - 1) - \operatorname{def}(\tilde G),
+  \]
+  as $|V(G)| = |V_1| + 1$. By \cref{lem:pencil-x0-one-witness} the
+  general configuration of $G$ attains.
 \end{proof}
 
 \subsection{Contraction at an additive core}

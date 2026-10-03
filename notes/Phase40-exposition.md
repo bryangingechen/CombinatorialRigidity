@@ -7,74 +7,78 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 1 landed: task 1, the sample section `sec:main-component-splitoff`. **Stopped
-for the PI** at Stop 1 (2026-09-30), whose open question is under *Autopilot: for the PI*.
-**Next concrete task:** task 2, pinning the exemplar, once the PI's entry is there. No other
-section is written before it. Round manual: `CLEANUP.md`.
+one-commit tasks, 2 landed: task 1, the sample section `sec:main-component-splitoff`, and task 2,
+which pinned it as the exemplar after the PI's review. **Stop 1 is closed** (the PI, 2026-10-03,
+*Autopilot: for the PI*), and the round runs unattended to its close. **Next concrete task:**
+task 3, `pencil.tex`'s three opening subsections, against the pinned exemplar
+(`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
 ### 2026-09-30 — `NEEDS_PI`: Stop 1, the sample section (planned stop, `notes/Cleanup40.md` §2)
 
-**What happened.** The round opened (`5f9cbe04`: 27 tasks, *Lemma checklist*) and task 1 landed
-(`806db52e`). The subsection `sec:main-component-splitoff` (`main-component.tex` 2952–3329, 322 →
-378 lines) now has a four-paragraph opening: where the coverage uses the step, what `δ ≥ 5` buys,
-the difficulty, and JJ's case. It also has a lead-in before each lemma and an overview before the
-theorem. Both remarks are cut. Read it with `git show 806db52e -- blueprint/src/chapter/main-component.tex`.
-The coordinator re-ran `lint.sh`, `verify.sh` and the invariance check, all equal to the open's. It
-also checked the opening against the cited statements (the sparsity count, the deficiency
-arithmetic, the `δ` cases against `Graph.ChainUsable`) and JJ's Case 1 against the TR, pp. 15–16.
-All are consistent.
+**What happened.** Task 1 landed the sample (`806db52e`); the full Stop-1 entry is at `82d806c5`.
+It asked about the sample's register, defaults (a)–(d), the granularity, and "an endpoint
+selector" in `lem:pencil-curve-limit` (item 4).
 
-**Asked of the PI:**
-1. **The sample.** Is its register, depth and evidence bar the round's? Two things for you to
-   weigh: the opening's first paragraph carries coverage-level detail (the `δ` cases, Theorem S),
-   and the JJ paragraph is long.
-2. **The four defaults (a)–(d)** under *Decisions*: approve or amend each.
-3. **Granularity:** tasks 3–26, 24 section commits. Approve them, or regroup.
-4. **Small item.** "an endpoint selector" in `lem:pencil-curve-limit`'s statement is a Lean
-   leftover. *Scope* allows a statement edit for register, but task 1's spec froze the statement
-   blocks. The coordinator proposes that task 2 fixes it.
+**PI, 2026-10-03:** (transcribed verbatim from the attended session that reviewed the sample)
+- On the sample: "I think the text is a bit wordy and there are redundancies. For example, "Each
+  step deduces that the general configuration of $G$ attains from the same conclusion at smaller
+  graphs on the same bodies and edge labels." is already implicit when it says the proof proceeds
+  by strong induction. Furthermore the text still feels a bit overwrought; I think the term is
+  "mannered prose"? Could you check the style of papers in .refs/ again and try and edit the text
+  to be easier to follow?"
+- On allowing "we", as KT do: "Yes, and at some point we should also look into doing a rewrite
+  round of the rest of the blueprint too."
+- On item 4: "Right, we should be skeptical of any nonstandard terminology; certainly any such
+  uses need a definition / explanation in a hard-to-miss place."
+- On writing the register guidance down for tasks 3–26: "Good idea. Yes, please add guidance per
+  what you found above."
+- On `blueprint/AUTHORING.md` principles A and C, whose bans and citation test push toward
+  stilted prose: "Hmm, I wonder if we can find some balance here?"
+- On leaving the chapter introduction to task 25: "Fine, as long as it doesn't get missed."
+- On `lem:pencil-splitoff-curve`, which bundles three unrelated facts: "Good catch; yes, we also
+  struggled with nodes containing too much in earlier blueprint phases, I wouldn't be surprised
+  if there are still some left around."
+- On the first revision: "In fact the whole paragraph still seems dense and tough to follow.
+  Perhaps we could lessen the detail since this is supposed to just be an overview? There are
+  also sentences which have too many clauses [...] It's not even clear to me what "This" refers
+  to. Can you try again?"
+- On the second revision and the balance for `AUTHORING.md`: "OK, this looks much better and your
+  suggested balance also sounds good."
+- On the granularity: "I think the task granularity is probably reasonable if it's backed by a
+  judgment that this would be most efficient and effective." Then, given that judgment (one
+  commit per subsection; *Decisions*): "The granularity judgment also looks fine."
+- On the defaults: "(a) agreed. In cases where the informal argument might give more insight but
+  we decided not to formalize it due to technical reasons, it could be worth mentioning as well.
+  (b)-(d) These look fine." Then: "Let's commit."
 
-**Options** (commit estimates are for round 3 only; it closes unattended, and round 4 has Stop 2):
-- **A. Approve as is**, defaults as drafted (the coordinator recommends this, with item 4 in task
-  2). Task 2 pins the exemplar (1 docs commit), then tasks 3–26 (24) and the close (1): ~26 commits.
-- **B. Approve with revisions** you name here. Task 2 revises and pins (1–2), then ~25 as in A.
-- **C. Revise and show again.** Task 2 revises (1–2), then Stop 1 repeats.
-- **D. Regroup the task list**, in any of A–C. Each merge saves one commit and enlarges a slice.
-
-Answer below in an entry that starts `**PI, <date>:**`.
+**What follows.** Stop 1 is closed. The sample was revised twice, approved, and pinned in
+`notes/Phase40-exposition-exemplar.md` (task 2). Defaults (a)–(f) and the granularity are settled
+under *Decisions*. The introduction's flags are in task 25, `lem:pencil-splitoff-curve` is under
+*Candidates*, and the blueprint-wide rewrite and bundled-node audit are queued as **PROSE**
+(ROADMAP). The round runs unattended from task 3.
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Task 1,
-the sample, has landed** (`806db52e`): `sec:main-component-splitoff` is rewritten, its record is
-under *Lemma checklist*, and nothing is mid-stream. Its gates: `lint.sh` and `verify.sh` green,
-`checkdecls` silent; the graph fingerprint (1 308 edges, `6c5064b7034feb95`) and the pin hash
-(`36133299d3fcc3c8`, 1 062 names) equal the open's; 0 `LaTeX Warning` lines, 187 overfull boxes
-and 9 `WARNING:` lines, as at the open (the coordinator re-ran them: the same values). Stop 1 is
-written (*Autopilot: for the PI*). Next is task 2, after the PI's entry.
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1
+and 2 have landed**, and nothing is mid-stream. Task 2, attended by the PI, revised the sample
+twice, pinned it, settled defaults (a)–(f), added `blueprint/AUTHORING.md`'s clauses of
+2026-10-03, and edited one statement for register (item 4). Its gates equal the baseline below
+(graph fingerprint, pin hash and warning counts). Next is task 3.
 
 **Verified at the open:**
-- Whole-project `lake build` green, 3003 jobs, 0 `warning:` lines, 0 `failed to cache artifact`
-  (the full output, grepped).
-- `#print axioms` on all **19** `formalization.yaml` main results gives `[propext,
-  Classical.choice, Quot.sound]`. The harness is round 2's `scratch/40-factor/Axioms.lean`, copied
-  to `scratch/40-exposition/Axioms.lean` (gitignored) after its 19 names (in order) and 14 imports
-  (as a set) were diffed against `formalization.yaml`'s `declaration:` and `file:` fields
-  (identical), and run with `lake lean`. The output equals round 2's close, up to the scratch
-  path; the one warning is the harness's own over-long line. Re-run it the same way at the close.
-- **The blueprint baseline**, which every section slice compares against:
-  - `blueprint/lint.sh` green. `blueprint/verify.sh` green: `checkdecls` silent, and 9 `WARNING:`
-    lines in its output, all plasTeX package and renderer notices.
-  - `blueprint/print/print.log`: 0 `LaTeX Warning` lines; 187 overfull boxes, recorded for
-    information.
-  - `blueprint/lean_decls`: 1 062 names, pin hash `36133299d3fcc3c8`.
-  - The dependency graph: 668 nodes and 1 308 edges, fingerprint `6c5064b7034feb95`. It was
-    identical on a second `verify.sh` run. The commands are under *Scope*, gate 3.
-- **The surface.** `pencil.tex` has 1 411 lines, 10 subsections and 41 graph nodes;
-  `main-component.tex` has 4 858 lines, 14 subsections and 123 nodes; `intro.tex` has 471 lines.
-  Line numbers below are as of the open. The labels are the stable reference.
+- Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
+  `formalization.yaml` main results gives the standard three, through round 2's harness copied to
+  `scratch/40-exposition/Axioms.lean` (gitignored; its names and imports diffed against
+  `formalization.yaml`, identical). Re-run it the same way at the close.
+- **The blueprint baseline** every slice compares against: `lint.sh` and `verify.sh` green
+  (`checkdecls` silent, 9 `WARNING:` lines, all plasTeX notices); 0 `LaTeX Warning` lines and 187
+  overfull boxes in `blueprint/print/print.log`; 1 062 pins, hash `36133299d3fcc3c8`; 668 nodes
+  and 1 308 edges, fingerprint `6c5064b7034feb95`, stable across runs (commands: *Scope*, gate 3).
+- **The surface.** `pencil.tex` 1 411 lines, 10 subsections, 41 nodes; `main-component.tex` 4 858
+  lines, 14 subsections, 123 nodes; `intro.tex` 471 lines. Line numbers below are the open's; the
+  labels are the stable reference.
 
 **What the inventory found** (seen at the open; each task re-derives its own findings):
 - **An unintroduced "informal argument."** 23 lines of reader-facing prose (19 in
@@ -162,33 +166,18 @@ One commit per task, in the order given. Each task's diagnosis says what the uni
 to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
 
 - [x] **1. S — the sample section: `sec:main-component-splitoff`** (Opus; `806db52e`; the spec is
-  at the open, `5f9cbe04`). Now `main-component.tex` lines 2952–3329: 322 → 378 lines (+56).
-  Clauses (a)–(e) are all delivered. No `\label`, `\lean`, `\leanok` or `\uses` line, statement
-  block or node order changed, and the diff stays inside the subsection. Two proof edits, argument
-  unchanged: the flexes proof's first sentence became its (c) lead-in, and part (1) of
-  `lem:pencil-splitoff-curve`'s proof now derives its line from the rational solution in words.
-  - *Record: what the PI should check.* **The remarks:** both are cut. The first folds into (b), a
-    paragraph just before the theorem (a lead-in, not text between statement and proof). The
-    second's coverage facts moved into (a); its every-`δ` bound is unproved and is cut, and (a) says
-    instead that `δ ≥ 5` enters only the count (the Lean agrees: `hδ` is used only for `hdef3a`).
-    **The JJ passage:** the TR's proof of Theorem 6.1, Claim 6.5, Case 1 (printed pp. 15–16), with
-    its Lemmas 2.2(b), 2.3 and 2.4 (p. 4) and the planar count of §3 (p. 7). The prose names no
-    claim or section number. "Brick" is lint-banned, so their case reads "adding the edge lowers
-    the deficiency", which Case 1 states. **The depth:** four opening paragraphs, not three; (d) is
-    the fourth.
-  - *Corrections to the spec.* `a ≁ b` is not in `Graph.ChainUsable`'s `k = 1` clause. It is a
-    hypothesis of `Graph.X0Attains.of_splitOff` and of the `X0Reduces.splitOff` constructor,
-    supplied from sparsity inside `Graph.IsChain.x0Reduces_of_chainUsable` (by
-    `Graph.IsOpenEar.not_adj_and_two_le_pairDelta_two`, `lem:deficiency-one-body-chain`(1)); the
-    prose says so. The new prose writes `def(G̃[V₁])`, not `def₃`, to match the frozen statement
-    blocks. Left for the PI: "an endpoint selector" in `lem:pencil-curve-limit`'s statement, a Lean
-    artifact that the frozen statement blocks kept.
-- [ ] **2. E — pin the exemplar.** Docs only; in the commit after the PI's Stop-1 entry.
-  - Transcribe the PI's answer verbatim into *Decisions*.
-  - If the PI approved the sample, copy the subsection verbatim into *The pinned exemplar*.
-  - If the PI asked for revisions, this task revises the sample and pins it. It stops again only
-    if the PI asked to see it again.
-  - Settle the four defaults of *Decisions* as the PI ruled.
+  at the open, `5f9cbe04`). Revised at the PI's request (Stop 1, 2026-10-03), now lines 2950–3277
+  (322 → 328 lines). No `\label`, `\lean`, `\leanok` or `\uses` line and no node order changed;
+  one statement edit for register (item 4). Both remarks are cut. The JJ paragraph is checked
+  against the TR's proof of Theorem 6.1, Claim 6.5, Case 1 (printed pp. 15–16), and names no claim
+  or section number. A correction to the spec: `a ≁ b` is not in `Graph.ChainUsable`'s `k = 1`
+  clause. It is a hypothesis of `Graph.X0Attains.of_splitOff`, supplied from sparsity inside
+  `Graph.IsChain.x0Reduces_of_chainUsable` (`lem:deficiency-one-body-chain`(1)).
+- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03). The PI's entry is
+  transcribed (*Autopilot: for the PI*). The sample was revised twice at the PI's request, and the
+  approved text is pinned verbatim in `notes/Phase40-exposition-exemplar.md`, not in this log, to
+  keep the log under its line cap. The rulings on defaults (a)–(f) and the granularity are under
+  *Decisions*.
 - [ ] **3. P1 — `pencil.tex`'s three opening subsections, 38–188**: `sec:pencil-through-point`,
   `sec:pencil-realization` and `sec:pencil-duality`. The definitions arrive without their picture,
   a pencil of lines through a point of a plane, or its molecular reading; only the chapter opening
@@ -368,11 +357,16 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - Add a notation paragraph: `def₂`, `def₃`, `tgt`, attaining, the standing hypotheses, `ρ`, `Λ`
     and `(⋆)`.
   - Name the two tools every step uses.
-  - If default (a) leaves any comparison with the informal argument, introduce that argument here,
-    once.
+  - Default (a), as ruled, leaves nothing that names "the informal argument". Confirm with
+    `grep -in informal` over the round's surface, and that each kept mention reads on its own.
   - From task 1: the split-off sentence (78–84) says the body "starts on the line through the
     points of its neighbours" *as in* JJ's proof. The TR does not: JJ move the new pin, then
     reinsert the vertex by extensions. Match `sec:main-component-splitoff`'s account.
+  - **The PI's flags (2026-10-03; "as long as it doesn't get missed").** The introduction is
+    wordy and repeats itself. Their example, "Each step deduces …", restated the strong induction
+    and is already cut. *The induction* paragraph packs the whole case analysis into one
+    paragraph: split it. Apply defaults (e) and (f) throughout. The notation paragraph is where
+    the chapter's coinages are defined (default (f)).
 - [ ] **26. F3 — `intro.tex`'s reader path.** The fifth-continuation paragraph (362–392) runs the
   whole arc in one paragraph. Check each sentence against tasks 24 and 25, and split it where it
   joins two results. Lines 44–47 and 406–407 get the same check. Phase numbers are allowed here.
@@ -430,10 +424,9 @@ A node these items might gain would sit in `deficiency.tex`, `rigidity-matrix.te
 
 ## The pinned exemplar
 
-Empty until Stop 1. Task 2 copies the PI-approved sample here verbatim, between `---BEGIN
-EXEMPLAR---` and `---END EXEMPLAR---` markers, as `notes/FormalizationRetrospective.md` did for
-Phase 29. Afterwards the block is altered only to correct a verified factual error. It fixes the
-register, depth and evidence bar for tasks 3–26.
+In its own file, `notes/Phase40-exposition-exemplar.md` (task 2, 2026-10-03), so that this log
+stays under its line cap. Every builder of tasks 3–26 reads it. It is altered only to correct a
+verified factual error.
 
 ## Candidates for `40-simplify`
 
@@ -441,7 +434,11 @@ Structural findings, and any finding that would change a headline or blueprint s
 recorded here and never acted on in this round (`notes/Cleanup40.md` §2). The close (task 27)
 mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
 
-- None yet.
+- **`lem:pencil-splitoff-curve` bundles three unrelated facts** (seen at Stop 1; the PI agreed,
+  2026-10-03). They are a linear-algebra lemma, the extension of a height across `x`, and the
+  locality of the lifting system, under three pins. Splitting the node changes the dependency
+  graph, so this round leaves it. The PI expects more such nodes in earlier chapters; that audit is
+  queued with **PROSE** (ROADMAP).
 
 ## Moved to a later round
 
@@ -452,15 +449,14 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Blockers / open questions
 
-- **Open: Stop 1** (2026-09-30), the PI's review of the sample, under *Autopilot: for the PI*.
-  Nothing is done past it until the PI's entry is there.
+- None. Stop 1 is closed (2026-10-03). The round's next planned stop is round 4's Stop 2.
 
 ## Hand-off / next phase
 
-**Next: task 2, once the PI has answered Stop 1** (*Autopilot: for the PI*). Task 2 transcribes
-the answer verbatim into *Decisions* and pins the exemplar as the PI ruled. Then tasks 3–26 follow
-in order, and task 27 closes the round. While the question has no `**PI, <date>:**` entry, the
-round does nothing past it.
+**Next: task 3**, `pencil.tex`'s three opening subsections; then tasks 4–26 in order, and task 27
+closes the round. Each section task reads the pinned exemplar
+(`notes/Phase40-exposition-exemplar.md`), defaults (a)–(f) under *Decisions*, and
+`blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
 ## Decisions made during this round
 
@@ -473,18 +469,29 @@ round does nothing past it.
   `sec:main-component-contract` (its lemmas are entangled with the additive subsection).
 - **The task list.** One commit per subsection. The carrier, SHORT and the statements split at
   their natural seams; `pencil.tex`'s short opening and local-construction subsections are
-  grouped. Pinning the exemplar is its own task, so it is copied exactly as approved.
+  grouped. The PI approved it (2026-10-03) on this judgment: slices of 150–430 lines match the
+  sample's 322, and the only sensible merges (M2 with M3, F2 with F3) save 2 of ~26 commits while
+  packing three citation checks and three recommendations into one slice.
 - **The two chapter introductions and `intro.tex` come last.** Principle F revises preambles and
   connective prose once the content around them is stable. `pencil.tex`'s introduction also
   summarizes the route into `main-component.tex`, so both introductions follow every subsection;
   `intro.tex`'s paragraph summarizes both, so it follows them.
-- **Round-wide defaults, pending the PI at Stop 1.**
-  - (a) A comparison with the workbook's informal argument stays only if it is mathematics the
-    reader can follow without the notes and it says why the proof is shaped as it is. A stronger
-    fact not proved here is marked unused, with its reason, or cut.
-  - (b) A formalization note keeps only what the Lean does differently.
-  - (c) A Lean name never appears in a statement block.
-  - (d) A node may move within its chapter to cure a forward reference.
+- **Round-wide defaults (a)–(d), as the PI ruled (2026-10-03; verbatim under *Autopilot*).**
+  - (a), amended: cut every comparison with the workbook's informal argument. A reason the proof
+    is shaped as it is stays, stated on its own. So does an argument that gives more insight but
+    was not formalized for technical reasons (the PI): a short remark or formalization note, with
+    that reason. A stronger fact not proved here is cut unless a reader would expect it; then one
+    sentence says the proof needs only the weaker form. A remark that carries a build-or-leave
+    item is cut only after that item's recommendation records the fact.
+  - (b) A formalization note keeps only what the Lean does differently. (c) A Lean name never
+    appears in a statement block. (d) A node may move within its chapter to cure a forward
+    reference. All three approved as drafted.
+- **(e) The register, and (f) terminology** (the PI, 2026-10-03, Stop 1). Every task follows
+  `blueprint/AUTHORING.md`'s clauses of that date. They are A *Voice and sentences* ("we" as KT
+  write it, one idea per sentence, no unasked questions), C's indexing test limited to proofs, F
+  *Once* (one sketch per subsection, no lead-in that restates a node), and E *Terminology*. Under
+  (f) each task lists its section's project coinages. Each one is replaced by the standard term,
+  or defined in a definition node or in task 25's notation paragraph.
 - **The invariance check** (gate 3). `checkdecls` resolves names and `lint.sh` checks that targets
   exist; neither sees a changed `\uses` edge or `\leanok`. The graph `inv web` writes records node
   status and edge kind, and its sorted hash does not depend on the order of the nodes, so a move
