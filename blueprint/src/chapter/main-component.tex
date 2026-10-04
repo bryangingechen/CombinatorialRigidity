@@ -5244,7 +5244,27 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   (\cref{lem:pencil-config-point-join-rank}).
 \end{proof}
 
-\begin{lemma}[Steering a realization of a subgraph]
+Both extensions, across a body of degree two and across a pendant
+triangle (\cref{lem:pencil-generic-one-ear},
+\cref{lem:pencil-generic-pendant-triangle}), start from the graph $H$
+left when the new bodies are removed. When $H$ is
+nondegeneracy-feasible, the induction hypothesis gives it a generic
+realization, and says nothing more about that realization. The extensions need finitely many further
+conditions on it. For instance, the normals must be independent on every
+closed hub-neighbourhood in $G$, which may contain hubs of $G$ that are
+not hubs of $H$. A nondegenerate realization of $G$, restricted to $H$,
+satisfies these conditions, but it need not have the deficiency rank. The
+next lemma combines the two realizations. Up to scalars, the points and
+the hub normals of every nondegenerate realization of $H$ are the values
+of one polynomial map. So the rank of the generic realization, as a
+lower bound, and each condition hold off the zero sets of polynomials,
+nonzero at the generic realization and at the restriction respectively.
+A common non-root gives a generic realization with every condition. Part
+(a) of the lemma shows that the restriction is nondegenerate, under a
+condition on the hubs of $G$ that are not hubs of $H$. So $H$ is
+nondegeneracy-feasible.
+
+\begin{lemma}[Nondegenerate and generic realizations of a subgraph]
   \label{lem:pencil-generic-steer}
   \lean{CombinatorialRigidity.Molecular.exists_pencilSeed_of_nondeg_of_selectors,
         CombinatorialRigidity.Molecular.exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub,
@@ -5253,51 +5273,110 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \leanok
   \uses{def:pencil-nondegenerate, def:pencil-generic-motive}
   Let $K$ be infinite.
-  \textup{(a)} Let $G$ be simple and nondegeneracy-feasible and $H$ a
-  subgraph of $G$. Suppose that at every pencil hub $h$ of $G$ that is a
-  body but not a hub of $H$, every neighbour of $h$ in $G$ that is not its
-  neighbour in $H$ is not a hub of $G$. Then $G$ has a nondegenerate
-  realization whose restriction to $H$ is nondegenerate; so $H$ is
-  nondegeneracy-feasible, with normals independent on the closed
+  \textup{(a)} Let $G$ be simple and nondegeneracy-feasible, and let $H$
+  be a subgraph of $G$. Suppose that whenever a pencil hub $h$ of $G$ is a
+  body of $H$ but not a hub of $H$, the neighbours of $h$ in $G$ that are
+  not its neighbours in $H$ are not hubs of $G$. Then $G$ has a
+  nondegenerate realization whose restriction to $H$ is a nondegenerate
+  realization of $H$. In particular $H$ is nondegeneracy-feasible, by a
+  realization whose normals are independent on the closed
   hub-neighbourhood in $G$ of every body of $G$.
-  \textup{(b)} Let $H$ be loopless with at least one body, with a generic
-  pencil realization and a nondegenerate realization with normals $n'$ and
-  points $p'$. Let $S_1, \dots, S_k \subseteq V(H)$ be sets on which $n'$
-  is independent, and $(u_1, w_1), \dots, (u_m, w_m)$ pairs of bodies of
-  $H$ with $p'_{u_j} \cdot n'_{w_j} \neq 0$, where every member of every
-  $S_i$, and every $w_j$, is a hub of $H$ or has exactly three closed
-  neighbours in $H$. Then $H$ has a generic pencil realization whose
-  normals are independent on every $S_i$, with $p_{u_j} \cdot n_{w_j} \neq
-  0$ for every $j$.
+  \textup{(b)} Let $H$ be loopless with at least one body. Suppose that
+  $H$ has a generic pencil realization, and a nondegenerate realization
+  with normals $n'$ and points $p'$. Let $S_1, \dots, S_k \subseteq V(H)$
+  be sets on which $n'$ is linearly independent, and let $(u_1, w_1),
+  \dots, (u_m, w_m)$ be pairs of bodies of $H$ with
+  $p'_{u_j} \cdot n'_{w_j} \neq 0$. Suppose that every member of every
+  $S_i$, and every $w_j$, is a hub of $H$ or has a closed neighbourhood in
+  $H$ of exactly three members. Then $H$ has a generic pencil realization
+  whose normals are independent on every $S_i$, with
+  $p_{u_j} \cdot n_{w_j} \neq 0$ for every $j$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:relative-deficiency-rank-bound}
-  Points and hub normals are polynomial in the coordinates of a chart, and
-  every nondegenerate realization is a chart point up to per-body scalars,
-  for every correct choice of selectors: at each body the selected normals,
-  or at a body that is not a hub the selected points of its closed
-  neighbours, are
-  independent and orthogonal to its point, or normal, and completing them
-  to a basis of that orthogonal complement fills the free slots.
+  \emph{A parametrization.} Let $\Gamma$ be a graph whose closed
+  hub-neighbourhoods have at most three members. For
+  $y_1, y_2, y_3 \in K^4$, let $y_1 \times y_2 \times y_3$ be the vector
+  with $(y_1 \times y_2 \times y_3) \cdot t = \det[y_1, y_2, y_3, t]$ for
+  every $t \in K^4$, as for the plane normal of
+  \cref{def:pencil-configuration}. It is orthogonal to $y_1$, $y_2$ and
+  $y_3$, its coordinates are polynomials in theirs, and it is nonzero
+  exactly when they are linearly independent.
+  The parameters are a vector $m_v \in K^4$ and three auxiliary vectors at
+  every body $v$. The normal of a hub $v$ is $m_v$. The point of a body $v$
+  is $p_v = y_1 \times y_2 \times y_3$, where $y_1, y_2, y_3$ are the
+  vectors $m_w$ for $w$ in the closed hub-neighbourhood of $v$, in a fixed
+  order, completed to three vectors by auxiliary vectors of $v$. At a body
+  that is not a hub, the closed neighbourhood has at most three members,
+  and the normal is any nonzero vector orthogonal to their points. When it
+  has three members with independent points, this normal is, up to a
+  scalar, the product of their points, a polynomial in the parameters.
 
-  \textup{(a)} Reseed a nondegenerate realization of $G$, and choose one
-  chart point that also makes independent the points of the closed
-  neighbourhood in $H$ of every hub $h$ of $G$ that stops being a hub. If
-  $h$ has two neighbours $u$, $w$ in $H$, this holds at a chart point built
-  from standard basis vectors, since the other neighbours of $h$ are not
-  hubs; with at most one, the closed neighbourhood is a body or an edge of
-  $G$, independent already. Restriction keeps every condition except the
-  point condition at those hubs, which is the chosen one; the normal
-  condition is $G$'s.
+  Each point is then orthogonal to the normals of the bodies of its closed
+  neighbourhood: to those of hubs by construction, and to the others by
+  the choice of their normals. At parameters where every point is nonzero,
+  adjacent points are independent, and the points of the closed
+  neighbourhood of every body that is not a hub are independent, these
+  points and normals form a nondegenerate realization of $\Gamma$. Its
+  hinge at each edge is the line through the points of the ends. The normals of each closed
+  hub-neighbourhood are independent, as factors of a nonzero product.
+  Each of these finitely many conditions says that a polynomial in the
+  parameters is nonzero. If the rank is $r$ at some parameters, it is at
+  least $r$ off the zero set of a polynomial that is nonzero there.
+  Indeed, the hinge of an edge $uv$ is $p_u \wedge p_v$ up to a scalar,
+  and the rows of the rigidity matrix at an edge can be taken linear in
+  its hinge, so the minors of the rigidity matrix are polynomials in the
+  parameters.
 
-  \textup{(b)} Reseed the generic realization, and the second one in the
-  same chart. The rank at the first, and each condition at the second, are
-  nonzero polynomials in the chart coordinates, and a common non-root gives
-  the realization, at the rank since the target bounds the rank at every
-  realization (\cref{lem:relative-deficiency-rank-bound}). The conditions read normals only at hubs and at bodies
-  with three closed neighbours, whose normals do not depend on the free
-  slots filled after that choice.
+  Conversely, let a nondegenerate realization be given, and let $m_v$ be
+  its normal at every hub $v$. At each body $v$, the normals of the closed
+  hub-neighbourhood are independent and orthogonal to $p_v$. Completing
+  them by auxiliary vectors to a basis of $p_v^{\perp}$ makes
+  $y_1 \times y_2 \times y_3$ a nonzero multiple of $p_v$. So the
+  realization comes from some parameters, with its own normals at the
+  bodies that are not hubs, up to a nonzero scalar at each point. These
+  scalars change neither the nondegeneracy nor the line of any hinge, so
+  they do not change the rank.
+
+  \textup{(a)} We parametrize the realizations of $G$, whose closed
+  hub-neighbourhoods have at most three members
+  (\cref{lem:pencil-feasible-hub-conditions}). The hubs of $H$ are hubs of
+  $G$, and each closed neighbourhood or closed hub-neighbourhood in $H$
+  lies in the one in $G$. So every condition of nondegeneracy for $H$ is
+  one for $G$, except at a hub $h$ of $G$ that is a body but not a hub of
+  $H$. There the points of the closed neighbourhood of $h$ in $H$ must be
+  independent. If $h$ has at most one neighbour in $H$, these are the
+  points of a body or of the two ends of an edge of $G$, independent at
+  every nondegenerate realization of $G$. Let $h$ have two neighbours $u$
+  and $w$ in $H$. By hypothesis the closed hub-neighbourhood of $h$ in $G$
+  lies in $\{h, u, w\}$. Let $m_h$, $m_u$ and $m_w$ be the first three
+  standard basis vectors, and $m_v$ the fourth at every other body. As no
+  triangle of $G$ contains two hubs
+  (\cref{lem:pencil-feasible-hub-conditions}), the auxiliary vectors can
+  be chosen among the standard basis vectors so that $p_h$, $p_u$ and
+  $p_w$ are multiples of the fourth, third and second. So each of these
+  conditions, and each condition of nondegeneracy for $G$, holds off the
+  zero set of a polynomial that is nonzero at some parameters: those just
+  chosen, or those of a nondegenerate realization of $G$. As $K$ is
+  infinite, these finitely many polynomials have a common non-root, and it
+  gives the realization.
+
+  \textup{(b)} We parametrize the realizations of $H$, which is
+  nondegeneracy-feasible, and take parameters $s_1$ and $s_2$ that give the
+  generic realization and the second one, up to scalars. The conditions of
+  nondegeneracy, and the rank at $s_1$ as a lower bound, hold off the zero
+  sets of polynomials nonzero at $s_1$. Each member of an $S_i$, and each
+  $w_j$, is a hub, whose normal is a parameter, or its normal is the
+  product of the three points of its closed neighbourhood. So at $s_2$
+  these normals are those of the second realization, up to scalars. Hence
+  the independence on each $S_i$, and each condition
+  $p_{u_j} \cdot n_{w_j} \neq 0$, holds off the zero set of a polynomial
+  nonzero at $s_2$. A common non-root of all these polynomials gives a
+  nondegenerate realization with the conditions, of rank at least the
+  deficiency rank. The deficiency rank bounds the
+  rank of every realization (\cref{lem:relative-deficiency-rank-bound}),
+  so the realization is generic.
 \end{proof}
 
 \begin{lemma}[The generic realization across a one-body ear]
@@ -5316,27 +5395,46 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \leanok
   \uses{lem:pencil-generic-steer, lem:block-rank-ear,
         lem:relative-deficiency-rank-bound}
-  An end that stops being a hub in $G - x$ loses only the neighbour $x$,
-  which is not a hub, so \cref{lem:pencil-generic-steer}(a) applies with
-  $H = G - x$: $G$ has a nondegenerate realization whose restriction is one
-  of $G - x$, and $G - x$ has a generic realization. At the realization of
-  $G$, $n_a$ and $n_b$ are independent, since $a$ and $b$ lie in the closed
-  hub-neighbourhood of $x$, and not both $p_a \perp n_b$ and
-  $p_b \perp n_a$: otherwise the independent points of $x$, $a$, $b$ would
-  lie in the two-dimensional common orthogonal complement of $n_a$ and
-  $n_b$. Such an end keeps exactly two neighbours, so it has three closed
-  neighbours in $G - x$, and \cref{lem:pencil-generic-steer}(b), with the
-  closed hub-neighbourhoods in $G$ of the bodies of $G - x$ and $\{a, b\}$
-  as the sets and whichever of $p_a \cdot n_b$, $p_b \cdot n_a$ is nonzero,
-  gives a generic realization of $G - x$ with the same three properties.
+  Let $H = G - x$. An end of degree three is not a hub of $H$, and its
+  only neighbour in $G$ outside $H$ is $x$, which is not a hub. So $G$ has
+  a nondegenerate realization whose restriction to $H$ is nondegenerate
+  (\cref{lem:pencil-generic-steer}(a)), and by hypothesis $H$ has a
+  generic realization. At the realization of $G$, the normals $n_a$ and
+  $n_b$ are independent, as $a$ and $b$ lie in the closed
+  hub-neighbourhood of $x$. Also $p_a \cdot n_b$ and $p_b \cdot n_a$ are
+  not both zero. Otherwise the independent points of $x$, $a$ and $b$
+  would all lie in the two-dimensional space
+  $n_a^{\perp} \cap n_b^{\perp}$.
 
-  Then $p_a, p_b$ are independent and the line $n_a^\perp \cap n_b^\perp$
-  is not the line $p_a p_b$, so a point $p_x$ on the first off the second
-  gives a nondegenerate realization of $G$, the new hinges $p_a \wedge p_x$
-  and $p_x \wedge p_b$ independent. By the rank addition along an open ear
-  (\cref{lem:block-rank-ear}) the rank rises by at least six, which is at
-  least $G$'s target by the deficiency hypothesis; the target bounds the
-  rank at every realization (\cref{lem:relative-deficiency-rank-bound}).
+  We apply \cref{lem:pencil-generic-steer}(b) to $H$. The sets are the
+  closed hub-neighbourhoods in $G$ of the bodies of $H$, and $\{a, b\}$.
+  The one pair is $(a, b)$ if $p_a \cdot n_b \neq 0$, and $(b, a)$
+  otherwise. Every member of these sets is a hub of $G$. A hub of $G$ that
+  is not a hub of $H$ is an end of degree three, and its closed
+  neighbourhood in $H$ has three members. So $H$ has a generic realization
+  with three properties: the normals of every closed hub-neighbourhood in
+  $G$ are independent, $n_a$ and $n_b$ are independent, and
+  $p_a \cdot n_b$ or $p_b \cdot n_a$ is nonzero.
+
+  As $p_a \cdot n_b$ or $p_b \cdot n_a$ is nonzero, $p_a$ and $p_b$ do not
+  both lie on the line $n_a^{\perp} \cap n_b^{\perp}$, where the panels of
+  $a$ and $b$ meet. Nor are they proportional: each lies in its own panel,
+  so both products would vanish. So this line is not the line through
+  $p_a$ and $p_b$. Put $p_x$ on the
+  first line and off the second. Give $x$ the plane through $p_a$, $p_x$
+  and $p_b$, and give the edges $ax$ and $xb$ the lines through the points
+  of their ends. This is a nondegenerate realization of $G$. The normals
+  of the closed hub-neighbourhoods in $G$ of the bodies of $H$ are
+  independent, and so are those of the closed hub-neighbourhood
+  $\{a, b\}$ of $x$. The points of the closed neighbourhood $\{x, a, b\}$
+  of $x$ are independent. A body of $H$ that is not a hub of $G$ is not
+  $a$ or $b$, so it has the same closed neighbourhood in $H$.
+
+  The new hinges $p_a \wedge p_x$ and $p_x \wedge p_b$ are independent, so
+  the rank rises by at least six (\cref{lem:block-rank-ear}). As
+  $\operatorname{def}_3(G - x) \le \operatorname{def}_3(G)$, the rank of
+  $G$ reaches its deficiency rank, which bounds it
+  (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
 \begin{lemma}[The generic realization across a pendant triangle]
@@ -5356,32 +5454,43 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \uses{lem:pencil-generic-steer, lem:block-rank-cut-vertex,
         lem:cycle-realization-rigid, lem:deficiency-cut-vertex,
         lem:relative-deficiency-rank-bound}
-  Only $c$ can stop being a hub in $G - \{x_1, x_2\}$; it then has degree
-  four, loses the two neighbours $x_1$, $x_2$, which are not hubs, and has
-  three closed neighbours there. So \cref{lem:pencil-generic-steer}(a)
-  makes $G - \{x_1, x_2\}$ nondegeneracy-feasible, with normals independent
-  on the closed hub-neighbourhood in $G$ of each of its bodies, and
-  \cref{lem:pencil-generic-steer}(b), with those sets, gives a generic
-  realization of $G - \{x_1, x_2\}$ with the same property. Put $p_{x_1}$,
-  $p_{x_2}$ in the plane of $c$ with $p_c, p_{x_1}, p_{x_2}$ independent,
-  and give $x_1$ and $x_2$ the plane of $c$. This is a nondegenerate
-  realization of $G$: the closed hub-neighbourhood in $G$ of a body of
-  $G - \{x_1, x_2\}$ contains neither $x_i$, which are not hubs, and that of
-  $x_i$ is $\{c\}$; the closed neighbourhood of $x_i$ carries the three
-  independent points; and a body of $G - \{x_1, x_2\}$ that is not a hub of
-  $G$ is not $c$, so its closed neighbourhood is unchanged and it is not a
-  hub of $G - \{x_1, x_2\}$.
+  Let $H = G - \{x_1, x_2\}$. Of the bodies of $H$, only $c$ can stop
+  being a hub. If it does, it has degree four in $G$, and its closed
+  neighbourhood in $H$ has three members. The neighbours it loses, $x_1$
+  and $x_2$, are not hubs. So $H$ is nondegeneracy-feasible, by a
+  realization whose normals are independent on the closed
+  hub-neighbourhood in $G$ of each body of $H$
+  (\cref{lem:pencil-generic-steer}(a)). By hypothesis $H$ has a generic
+  realization. Every member of these closed hub-neighbourhoods is a hub of
+  $G$, so $H$ has a generic realization with the same property
+  (\cref{lem:pencil-generic-steer}(b), with these sets).
 
-  The triangle's three hinges are three of the six joins of a basis, hence
-  independent, so the triangle is rigid (\cref{lem:cycle-realization-rigid})
-  of rank twelve, and ranks add at the cut vertex $c$
-  (\cref{lem:block-rank-cut-vertex}). The deficiencies add at $c$
-  (\cref{lem:deficiency-cut-vertex}), the triangle's being nonnegative, so
-  the rank reaches $G$'s target, which bounds it
+  Put $p_{x_1}$ and $p_{x_2}$ in the panel of $c$, with $p_c$, $p_{x_1}$
+  and $p_{x_2}$ independent. Give $x_1$ and $x_2$ the panel of $c$, and
+  give the three edges of the triangle the lines through the points of
+  their ends. This is a nondegenerate realization of $G$. The closed
+  hub-neighbourhoods in $G$ of the bodies of $H$ contain neither $x_1$ nor
+  $x_2$, which are not hubs, so their normals are independent. That of
+  $x_i$ is $\{c\}$. The closed neighbourhood of $x_i$ is $\{x_1, x_2, c\}$, with independent points. A
+  body of $H$ that is not a hub of $G$ is not $c$, so it has the same
+  closed neighbourhood in $H$ and is not a hub of $H$.
+
+  Extend $p_c, p_{x_1}, p_{x_2}$ to a basis of $K^4$. The three hinges of
+  the triangle are three of the six joins of pairs of basis vectors, hence
+  independent. So the triangle is rigid, of rank twelve
+  (\cref{lem:cycle-realization-rigid}). The ranks of $H$ and of the
+  triangle add at the cut vertex $c$ (\cref{lem:block-rank-cut-vertex}).
+  The deficiencies add at $c$ too (\cref{lem:deficiency-cut-vertex}), and
+  that of the triangle is nonnegative. Hence the rank reaches the
+  deficiency rank of $G$, which bounds it
   (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
-\begin{lemma}[A minimal planar-rigid set has a good ear]
+We find one of the two structures in the next lemma. We state it for
+graphs alone, with the two consequences of nondegeneracy-feasibility in
+\cref{lem:pencil-feasible-hub-conditions} as hypotheses.
+
+\begin{lemma}[A body of degree two with hub neighbours, or a pendant triangle]
   \label{lem:pencil-rigid-good-ear}
   \lean{Graph.IsX0Graph.exists_oneEar_or_pendantTriangle, Graph.exists_eq_triple_of_minimal,
         Graph.exists_closedEar_two_of_triangle}
@@ -5403,44 +5512,43 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
         lem:deficiency-tight-rigid, lem:deficiency-merge-rigid,
         lem:deficiency-ear-merge}
   Take a planar-rigid set $W_0$ with as few bodies as possible. Then
-  $s(W_0) \le 0$, every $Z \subsetneq W_0$ with $|Z| \ge 2$ has
-  $s(Z) \ge 1$ (\cref{lem:deficiency-sparse}), and $|W_0| \ge 3$, since
+  $s(W_0) \le 0$, and every $Z \subsetneq W_0$ with $|Z| \ge 2$ has
+  $s(Z) \ge 1$ (\cref{lem:deficiency-sparse}). Also $|W_0| \ge 3$, since
   two bodies of a simple graph have singleton value at least one. Adding a
-  body $u$ to a set changes its singleton value by $3 - 2t$, with $t$ the
-  number of edges from $u$ into the set (\cref{lem:deficiency-add-body});
-  so every body of $W_0$ has at least two neighbours in $W_0$.
+  body $u$ to a set changes its singleton value by $3 - 2t$, where $t$ is
+  the number of edges from $u$ into the set
+  (\cref{lem:deficiency-add-body}). So every body of $W_0$ has at least
+  two neighbours in $W_0$.
 
-  Suppose two adjacent bodies $y$ and $u$ of $W_0$ each have at most one
-  neighbour in $Z = W_0 \setminus \{y, u\}$. Putting $y$ and then $u$ back
-  into $Z$ does not lower the singleton value: $y$ adds at least $3 - 2$,
-  and $u$, with at most two edges into $Z \cup \{y\}$, at least $3 - 4$. So
-  $s(Z) \le s(W_0) \le 0$ and $|Z| \le 1$. Hence $W_0 = \{y, u, w\}$, and
-  $s(W_0) \le 0$ makes it a triangle. If every body of $W_0$ is a hub,
-  each has at most two hub neighbours, its closed hub-neighbourhood having
-  at most three members, so this applies at any edge of $G[W_0]$ and gives
-  a triangle of hubs, which is excluded. So some $y \in W_0$ has degree
-  two, and both of its neighbours $a$ and $b$ lie in $W_0$.
+  \emph{A triangle.} Suppose two adjacent bodies $y$ and $u$ of $W_0$ each
+  have at most one neighbour in $Z = W_0 \setminus \{y, u\}$. Putting $y$
+  and then $u$ back into $Z$ does not lower the singleton value: $y$ adds
+  at least $3 - 2$, and $u$, with at most two edges into $Z \cup \{y\}$,
+  at least $3 - 4$. So $s(Z) \le s(W_0) \le 0$, and $|Z| \le 1$. Hence
+  $W_0 = \{y, u, w\}$, and $s(W_0) \le 0$ makes it a triangle.
 
-  If $a$, say, is not a hub, it has degree two too, and the same argument
-  at the edge $ya$ gives a pendant triangle $\{y, a, w\}$. Its third body
-  $w$ has degree at least four: at least two edges cross the triangle
-  (\cref{def:cut-edges-2ec}), and all of them are at $w$. If $a$ and $b$
-  are hubs, $X = W_0 \setminus \{y\}$ has $s(X) \le s(W_0) + 1 \le 1$, and
-  $|X| \ge 3$, since $X = \{a, b\}$ with $s(X) \le 1$ would need the edge
-  $ab$, and $\{y, a, b\}$ would be a triangle with two hubs. So $X$ is rigid
-  (\cref{lem:deficiency-tight-rigid}). Then $a$ and $b$ lie in the rigid set
-  $X$ of $G - y$, so $\operatorname{def}_3(G - y; a, b) =
-  \operatorname{def}_3(G - y)$ (\cref{lem:deficiency-merge-rigid}), and $y$
-  joins the part of $a$ and $b$ without changing the value
+  \emph{A body of degree two.} Suppose every body of $W_0$ is a hub. Then
+  each has at most two hub neighbours, as its closed hub-neighbourhood has
+  at most three members. So each has exactly two neighbours in $W_0$. The
+  argument above then applies at any edge of $G[W_0]$, and $W_0$ is a
+  triangle of hubs, which is excluded. So some $y \in W_0$ is not a hub.
+  It has degree two, and both of its neighbours $a$ and $b$ lie in $W_0$.
+
+  \emph{The two cases.} If $a$, say, is not a hub, it has degree two too,
+  and the argument above at the edge $ya$ gives a pendant triangle
+  $\{y, a, w\}$. Its third body $w$ has degree at least four. Indeed, at
+  least two edges leave the triangle, as $G$ is two-edge-connected on at
+  least four bodies (\cref{def:cut-edges-2ec}), and all of them are at
+  $w$. If $a$ and $b$ are hubs, let $X = W_0 \setminus \{y\}$. As $y$ has
+  two edges into $X$, $s(X) = s(W_0) + 1 \le 1$. Also $|X| \ge 3$: otherwise $X = \{a, b\}$,
+  $s(X) \le 1$ needs the edge $ab$, and $\{y, a, b\}$ would be a triangle
+  with two hubs. So $X$ is rigid (\cref{lem:deficiency-tight-rigid}). As
+  $a$ and $b$ lie in the rigid set $X$ of $G - y$, we have
+  $\operatorname{def}_3(G - y; a, b) = \operatorname{def}_3(G - y)$
+  (\cref{lem:deficiency-merge-rigid}). Putting $y$ into the part of $a$
+  and $b$ does not change the value of a partition
   (\cref{lem:deficiency-ear-merge}), which gives
   $\operatorname{def}_3(G - y) \le \operatorname{def}_3(G)$.
-
-  The informal argument settles the case of hubs by $G[W_0]$ being a cycle,
-  walks the maximal chain of bodies of degree two through $y$, and obtains
-  the rigidity of $W_0 \setminus \{y\}$ from its connectivity and its
-  bridges. The count at one edge above needs no cycle and no chain, the
-  tight-set lemma needs no bridge, and the minimality of $W_0$ enters only
-  through the singleton values of its proper subsets.
 \end{proof}
 
 \begin{theorem}[The generic conjunct from the induction hypothesis]
@@ -5460,19 +5568,36 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
         lem:pencil-three-bodies-no-rigid,
         lem:pencil-feasible-hub-conditions, lem:pencil-rigid-good-ear,
         lem:pencil-generic-one-ear, lem:pencil-generic-pendant-triangle}
-  $G$ satisfies the standing hypotheses. Without a planar-rigid set of at
-  least two bodies, \cref{thm:pencil-x0-base-generic} applies. On three
-  bodies $G$ is a triangle, with no proper rigid subgraph
-  (\cref{lem:pencil-three-bodies-no-rigid}), and the direct construction
-  on three bodies that the split case of
-  \cref{thm:pencil-conditional-realization-pair} uses applies. Otherwise
-  \cref{lem:pencil-rigid-good-ear} applies, with
-  \cref{lem:pencil-feasible-hub-conditions}, and gives a body of degree two
-  or a pendant triangle. The graph with it removed is simple, nonempty and
-  smaller, so the hypothesis gives its conditioned pair, whose generic
-  conjunct \cref{lem:pencil-generic-one-ear} or
-  \cref{lem:pencil-generic-pendant-triangle} extends to $G$.
+  As a simple two-edge-connected graph on at least three bodies, $G$
+  satisfies the standing hypotheses (\cref{def:pencil-x0-standing}). If it
+  has no planar-rigid set, it has a generic realization
+  (\cref{thm:pencil-x0-base-generic}).
+
+  On three bodies $G$ is a triangle, with no proper rigid subgraph
+  (\cref{lem:pencil-three-bodies-no-rigid}). It is therefore a graph of
+  the split case on three and four bodies in the proof of
+  \cref{thm:pencil-conditional-realization-pair}. That case gives it a
+  generic realization by a direct construction: the three bodies get
+  linearly independent points and the plane through them as their common
+  panel, and each edge gets the line through the points of its ends.
+
+  Otherwise $G$ has at least four bodies. Its closed hub-neighbourhoods
+  have at most three members, and no triangle contains two hubs
+  (\cref{lem:pencil-feasible-hub-conditions}). So $G$ has a body of degree
+  two whose neighbours are hubs and whose removal does not raise the
+  deficiency, or a pendant triangle (\cref{lem:pencil-rigid-good-ear}).
+  Removing that body, or the two bodies of degree two of the triangle,
+  leaves a simple graph with fewer bodies, at least one. By hypothesis it
+  satisfies the conditioned pair, whose generic conjunct gives it a
+  generic realization whenever it is nondegeneracy-feasible. So $G$ has a
+  generic realization (\cref{lem:pencil-generic-one-ear},
+  \cref{lem:pencil-generic-pendant-triangle}).
 \end{proof}
+
+The hypothesis of \cref{thm:pencil-generic-step} asks for the conditioned
+pair at every multigraph with fewer bodies, not only at those on the
+whole ambient body set. So we prove it at every multigraph with at least
+one body.
 
 \begin{theorem}[The conditioned pair at every nonempty multigraph]
   \label{thm:pencil-conditioned-pair-nonempty}
@@ -5489,15 +5614,21 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \uses{thm:pencil-reduction, thm:pencil-generic-step,
         lem:pencil-x0-distinct-statement, lem:pencil-cut-case,
         lem:pencil-nonsimple-case}
-  Apply \cref{thm:pencil-reduction}, with the loop, base and cut-edge cases
-  as in \cref{thm:pencil-conditional-realization-pair}. The contraction and
-  split cases take one argument: at a loopless multigraph on at least three
-  bodies, the cut-edge case (\cref{lem:pencil-cut-case}) if it is not
-  two-edge-connected; if it is two-edge-connected and simple,
-  \cref{thm:pencil-generic-step} and \cref{lem:pencil-x0-distinct-statement}
-  give the generic and distinct conjuncts and the bare one follows; if it
-  is not simple, \cref{lem:pencil-nonsimple-case}.
+  We apply \cref{thm:pencil-reduction} with the conditioned pair as the
+  property, as in the proof of
+  \cref{thm:pencil-conditional-realization-main-component}. The loop,
+  base and cut-edge cases are proved as there. So are the contraction and
+  split cases at a multigraph that is not two-edge-connected
+  (\cref{lem:pencil-cut-case}) or not simple
+  (\cref{lem:pencil-nonsimple-case}). At a simple two-edge-connected
+  multigraph on at least three bodies, the distinct conjunct is
+  \cref{lem:pencil-x0-distinct-statement}, and the bare conjunct follows
+  from it. The generic conjunct follows from the conditioned pair at the
+  multigraphs with fewer bodies (\cref{thm:pencil-generic-step}), which
+  are smaller in the order of the reduction.
 \end{proof}
+
+We collect these results in the main theorem of this chapter.
 
 \begin{theorem}[The general point of the main component attains]
   \label{thm:pencil-x0-generic-attains}
@@ -5524,22 +5655,10 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-distinct-statement,
         lem:pencil-x0-two-hubs-obstruction,
         thm:pencil-conditioned-pair-nonempty}
-  The first claim is \cref{thm:pencil-x0-coverage}. Granting it, the
-  distinct statement needs one attaining configuration
-  (\cref{lem:pencil-x0-distinct-statement}). The generic statement does
-  not follow fibre by fibre: at a graph with two hubs and three common
-  neighbours, no configuration over a picture where the three are not
-  collinear is nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}).
-  It is proved inside the induction of \cref{thm:pencil-reduction}
-  instead (\cref{thm:pencil-generic-step}). At a graph with no
-  planar-rigid set of two or more bodies the general configuration is
-  nondegenerate (\cref{thm:pencil-x0-base-generic}). Otherwise a minimal
-  planar-rigid set gives a one-body ear at hub ends across which the
-  deficiency does not drop, or a pendant triangle
-  (\cref{lem:pencil-rigid-good-ear}), and the generic realization of the
-  smaller graph extends across it (\cref{lem:pencil-generic-one-ear},
-  \cref{lem:pencil-generic-pendant-triangle}). So every simple
-  two-edge-connected graph satisfies the conditioned pair
-  (\cref{thm:pencil-conditioned-pair-nonempty}), whose generic conjunct
-  is the generic statement.
+  The first claim is \cref{thm:pencil-x0-coverage}. The distinct statement
+  is \cref{lem:pencil-x0-distinct-statement}. The generic
+  statement is not proved from attaining configurations
+  (\cref{lem:pencil-x0-two-hubs-obstruction}). It is the generic conjunct
+  of the conditioned pair at a simple two-edge-connected multigraph on at
+  least three bodies (\cref{thm:pencil-conditioned-pair-nonempty}).
 \end{proof}

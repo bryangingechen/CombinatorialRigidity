@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 22 landed (tasks 1–22; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 23 landed (tasks 1–23; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 23, the second half of `sec:main-component-statements`, against the pinned exemplar
+task 24, `pencil.tex`'s introduction, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. All eight build-or-leave items are written. Round manual: `CLEANUP.md`.
 
@@ -57,13 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–22
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–23
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
-the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24). `main-component.tex`'s first twelve subsections and the first half of the
-thirteenth are done (the split-off was task 1); next is task 23, the thirteenth's second half.
-All eight build-or-leave items are written.
+the baseline below (graph fingerprint, pin hash, warning counts). Every subsection of `pencil.tex`
+and `main-component.tex` is done (the split-off was task 1); next are the two introductions (tasks
+24, 25), then `intro.tex`'s reader path (task 26). All eight build-or-leave items are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -198,31 +197,24 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
 - [x] **21. M12 — `sec:main-component-coverage`** (`5fbe5784`; full entry there). The 13-row case
   table and Theorem S's overview lead; both "informal" remarks cut (a); item 6 written. *(f):* in a
   node, *reduces to*, *chain*, *usable*; for task 25, *smaller than*; standard, *2-connected*.
-- [x] **22. M13a — `sec:main-component-statements`, first half** (this commit). All bullets done:
-  - *The obstruction at `K_{2,3}`*, after the lemma (it anchors the unlabelled paragraph): the
-    determinant of `q_x, q_y, q_z` times a witness; such a graph has a planar-rigid set (five
-    bodies, six edges); `K_{2,3}` is feasible (a construction), its main pictures have `q_x, q_y,
-    q_z` not collinear (`dim L(q)` 3, else 4), and the induction uses a 4-cycle.
-  - *The base case's overview* precedes `def:pencil-two-ear-graph` (planes fix normals; JJ's
-    equality at `G`, `G_{uw}`); its proof is in three paragraphs, read against `addTwoEar_deficiency`.
-  - *Default (a)*: the informal comparison is cut (its reason, the cut-edge case, is kept), as is
-    the unproved "another component". Statements, register only: "carrying", "admissible triple";
-    `def:pencil-two-ear-graph`'s "larger types" moved to a new note.
-  - *(f):* standard, *pendant triangle* (glossed), `K_{2,3}`; in a node, `G_{uw}`, *main picture*;
-    for task 25, *planar-rigid*, *singleton value* (task 20's); removed, *fibre by fibre*, *hub ends*.
-    Forward `\cref`s, all in this subsection: `lem:pencil-x0-distinct-statement`,
-    `thm:pencil-generic-step`, `thm:pencil-x0-base-generic`, `lem:pencil-x0-conjunct-three`,
-    `lem:pencil-x0-planes-separate`, `lem:pencil-generic-one-ear`.
-- [ ] **23. M13b — the statements' second half, 4560–4858.**
-  - Motivate `lem:pencil-generic-steer` first: nondegenerate realizations are chart points, so
-    the smaller graph's generic realization can meet the new bodies' finitely many open
-    conditions. Its title's "Steering" is a Lean-verb coinage (AUTHORING's dictionary).
-  - `thm:pencil-x0-generic-attains`'s proof repeats the subsection's opening, which since task 22
-    is the one account: cut the repeat, with its "fibre by fibre" and "one-body ear at hub ends".
-  - The good-ear lemma's closing remark falls under default (a).
-  - Name the direct construction on three bodies that `thm:pencil-generic-step` borrows.
-  - From task 22: the first half cites `lem:pencil-generic-one-ear` for `p_x` on `n_a^⊥ ∩ n_b^⊥`
-    at `K_{2,3}`, and calls the good-ear lemma's second case a pendant triangle: keep both true.
+- [x] **22. M13a — `sec:main-component-statements`, first half** (`d20cf90d`; full entry there). The
+  obstruction worked at `K_{2,3}`; the base case's overview first. *(f):* standard, *pendant
+  triangle*; in a node, `G_{uw}`, *main picture*; removed, *fibre by fibre*, *hub ends*.
+- [x] **23. M13b — the statements' second half** (this commit). All bullets done:
+  - A lead-in before `lem:pencil-generic-steer` motivates it: the extensions need open conditions
+    that a restriction of `G` meets, and one polynomial parametrization joins the two realizations.
+    Retitled (*Nondegenerate and generic realizations of a subgraph*). Its proof states the
+    parametrization, read against `PencilSeed`, `pencilChartPoint` and the four pins.
+  - `thm:pencil-x0-generic-attains`'s proof is three pointers; its repeat is cut.
+  - The good-ear lemma's closing remark is cut (default (a)); the lemma is retitled.
+  - The three-body construction is named, read from `pencilPair_of_habitat_ncard_eq_three`: the
+    split case on three and four bodies in `thm:pencil-conditional-realization-pair`'s proof.
+    `pencil.tex`'s two claims about `thm:pencil-generic-step` and task 22's two claims stay true.
+  - *(f):* removed, *steering*, *chart (point)*, *selectors*, *reseed*, *free slots*, *point
+    condition*, *normal condition*, *good ear*, *carries*; standard, *parametrization*, *joins*;
+    in a node, *pencil hub*, *closed hub-neighbourhood*, *nondegeneracy-feasible*, *conditioned
+    pair*; for task 25, *planar-rigid*, *singleton value*, *target*. Forward `\cref`s, in the
+    lead-in: `lem:pencil-generic-one-ear`, `lem:pencil-generic-pendant-triangle` (this subsection).
 - [ ] **24. F1 — `pencil.tex`'s introduction, 1–37.** One dense paragraph now; principle F asks for
   a half-page roadmap.
   - What is proved and in what order.
@@ -419,7 +411,8 @@ mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
   (task 13; counted by task 14), as `lem:pencil-splitoff-curve` is: principle D's four or more pins.
   The first pins a definition with its unfolding, two facts and a polynomial helper with its
   evaluation; the second its step with four path helpers and three counts. Splitting or unpinning
-  changes the pins. `lem:pencil-contract-standing` (4 pins, task 14) is of the same kind.
+  changes the pins. `lem:pencil-contract-standing` (4 pins, task 14) is of the same kind, and so is
+  `lem:pencil-generic-steer` (4 pins, task 23: the parametrization, a helper, parts (a) and (b)).
 - **Two toolkit halves have no caller** (task 16, read in the Lean): the pairing's nondegeneracy
   (`eq_zero_of_kleinLin_eq_zero`, in `lem:pencil-line-pairing-join`) and the no-loss half of
   `lem:pencil-insertion` (`exists_insertion_ge`). Dropping them changes the statements and pins.
@@ -447,6 +440,10 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 - **Task 21, target `40-simplify`.** `thm:pencil-x0-theorem-s`'s proof uses
   `lem:deficiency-zero-connected` (a body of a rigid set has two neighbours in it), which its pin
   calls (`Graph.two_le_degree_of_isKDof_zero`), with no `\uses` edge to it.
+- **Task 23, target `40-simplify`.** `lem:pencil-generic-steer`'s proof uses both halves of
+  `lem:pencil-feasible-hub-conditions`, which its pins call
+  (`not_pencilNondegFeasible_of_triangle_two_hubs`,
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), with no `\uses` edge to it.
 
 ## Blockers / open questions
 
@@ -454,7 +451,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 23** (checklist above has its scope); then tasks 24–26 in order, and task 27 closes
+**Next: task 24** (checklist above has its scope); then tasks 25–26 in order, and task 27 closes
 the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
