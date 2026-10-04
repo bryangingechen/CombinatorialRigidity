@@ -330,6 +330,19 @@ spike `scratch/40-simplify/7/ContractR.lean` does, statement unchanged, and the 
 names are in *Current state*, 10p). Then 10r, one commit at its listed rung; after 10r, task 11
 closes the round.
 
+**The coordinator's prep for 10q** (2026-10-04, verified at `f129ab64`; the session handed off
+before dispatching it). `ContractR.lean` re-run with `lake lean`: exit 0, no `sorry`, and its
+`example` confirms `of_rigidContract`'s exact type. Placement: `of_rigidContract` sits in
+`MainComponent/Contract.lean` (~212) and `of_additiveContract` in the sibling
+`ContractAdditive.lean` (~63), both importing only `ContractCurve`; move the corollary into
+`ContractAdditive.lean`, check that `x0Attains_of_deficiency_two_eq_three`'s file is in its import
+closure, and fix `Coverage.lean`'s import. If `Contract.lean` is left empty, delete it and its root
+import. Keep `x0Attains_of_finrank_liftingSpace_eq_three` (*Decisions*, 10p). `Contract.lean`'s
+module docstring lists the deleted declarations under retired labels (~lines 31, 37). **For 10r**,
+task 2's spike `scratch/40-simplify/2/Signatures.lean` has not been re-run since 10g–10i.
+**For task 11's report to the PI**, two kept items: `cor:pencil-flat-x0` and
+`span_supportExtensor_eq_top_of_linearIndependent`, each pinned with no caller (*Decisions*).
+
 ## Decisions made during this round
 
 - **2026-10-04, the open: the granularity.** Seven recon tasks (the mechanical map first, then the
