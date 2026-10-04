@@ -4911,26 +4911,35 @@ no two of them are adjacent, a rigid set that avoids one of them.
 This subsection proves the two main-component statements
 (\cref{def:pencil-main-component-statements}), the hypotheses of
 \cref{thm:pencil-conditional-realization-main-component}. The distinct
-statement follows from the covering theorem directly: one attaining
-configuration is an adjacent-distinct realization. The generic statement
-does not follow fibre by fibre. At a graph with two hubs and three common
-neighbours, $K_{2,3}$ the smallest, no configuration of the main component
-over a general picture is nondegenerate
-(\cref{lem:pencil-x0-two-hubs-obstruction}), and the generic realization
-lies on another component. It is proved inside the induction of the pencil
-reduction (\cref{thm:pencil-reduction}), whose hypothesis is the
-conditioned pair at every smaller graph. At a graph with no planar-rigid
-set of two or more bodies, the general configuration is nondegenerate
-(\cref{thm:pencil-x0-base-generic}). Otherwise a minimal planar-rigid set
-gives a body of degree two at hub ends across which the
-deficiency does not drop, or a pendant triangle
-(\cref{lem:pencil-rigid-good-ear}), and the generic realization of the
-smaller graph extends across it (\cref{lem:pencil-generic-one-ear},
-\cref{lem:pencil-generic-pendant-triangle}). The informal argument runs a
-separate induction over every graph satisfying the standing hypotheses; run
-inside the pencil reduction, the graphs that are not two-edge-connected are
-the cut-edge case (\cref{lem:pencil-cut-case}), and the pendant triangle at
-a body of degree three, which needs a bridge, never arises.
+statement is immediate (\cref{lem:pencil-x0-distinct-statement}): the
+general configuration of a simple two-edge-connected graph on at least
+three bodies attains, and one attaining configuration is an
+adjacent-distinct realization. The generic statement does not follow in
+this way. When two pencil hubs have three common neighbours, as in
+$K_{2,3}$, no configuration over a general picture is nondegenerate
+(\cref{lem:pencil-x0-two-hubs-obstruction}).
+
+We prove the generic statement instead inside the induction of the pencil
+reduction (\cref{thm:pencil-reduction}). There the step at a graph $G$
+may assume the conditioned pair at every graph with fewer bodies, at
+least one (\cref{thm:pencil-generic-step}). The generic conjunct of the
+conditioned pair asks for a realization only at a simple graph. A graph
+that is not two-edge-connected is treated as in the cut-edge case of the
+reduction. So the step may assume that $G$ is simple and
+two-edge-connected, on at least three bodies. If $G$ has no planar-rigid
+set (\cref{sec:main-component-sparse}), a general configuration is
+nondegenerate and attains (\cref{thm:pencil-x0-base-generic}). On three
+bodies $G$ is a triangle, which has a direct construction. Otherwise a
+minimal planar-rigid set gives one of two structures
+(\cref{lem:pencil-rigid-good-ear}). The first is a body of degree two
+whose neighbours are pencil hubs and whose removal does not raise the
+deficiency. The second is a pendant triangle: two adjacent bodies of
+degree two with a common neighbour. We remove this body, or these two,
+and the induction hypothesis gives the smaller graph the conditioned
+pair. We show that the smaller graph is nondegeneracy-feasible, and
+extend its generic realization across the removed bodies
+(\cref{lem:pencil-generic-one-ear},
+\cref{lem:pencil-generic-pendant-triangle}).
 
 \begin{lemma}[The distinct main-component statement]
   \label{lem:pencil-x0-distinct-statement}
@@ -4956,6 +4965,10 @@ a body of degree three, which needs a bridge, never arises.
   edge labels is used.
 \end{proof}
 
+We record two lemmas for the proof of the generic statement. The first
+part of the first is the bound noted after
+\cref{def:pencil-nondegenerate}.
+
 \begin{lemma}[Feasibility bounds the hub neighbourhoods]
   \label{lem:pencil-feasible-hub-conditions}
   \lean{CombinatorialRigidity.Molecular.PencilNondegFeasible.hub_conditions}
@@ -4970,11 +4983,17 @@ a body of degree three, which needs a bridge, never arises.
   \leanok
   At a nondegenerate realization the normals of a closed
   hub-neighbourhood of $v$ are independent and all orthogonal to the
-  nonzero point of $v$, so there are at most three of them. At a triangle
-  with two hubs $y, z$, their normals are independent and the three
-  triangle points lie in their two-dimensional common orthogonal
-  complement; the third body's conjunct (independent points if it is not a
-  hub, a third independent normal if it is) cannot hold there.
+  nonzero point of $v$, so there are at most three of them.
+
+  Let $x$, $y$, $z$ be a triangle with hubs $y$ and $z$. At a
+  nondegenerate realization the normals of $y$ and $z$ are independent.
+  The points of $x$, $y$ and $z$ are orthogonal to both, so they lie in a
+  two-dimensional space $W$, which the independent points of $y$ and $z$
+  span. If $x$ is not a hub, its closed neighbourhood is $\{x, y, z\}$,
+  and its three points cannot be independent. If $x$ is a hub, its normal
+  is orthogonal to $W$, so it lies in the span of the normals of $y$ and
+  $z$, and the closed hub-neighbourhood of $x$, which contains $x$, $y$
+  and $z$, has dependent normals.
 \end{proof}
 
 \begin{lemma}[Three bodies carry no proper rigid subgraph]
@@ -5002,25 +5021,79 @@ a body of degree three, which needs a bridge, never arises.
   z$. No pencil realization at which the points of $x$, $y$ and $z$ are
   linearly independent is nondegenerate. In particular, over a planar
   picture at which $q_x, q_y, q_z$ are not collinear, no height gives a
-  nondegenerate realization with the configuration points.
+  nondegenerate realization with the configuration points as concurrency
+  points.
 \end{lemma}
 \begin{proof}
   \leanok
-  At a nondegenerate realization the normals of $a$ and $b$ are
-  independent, both lying in the closed hub-neighbourhood of $x$. Both
-  annihilate the points of $x$, $y$ and $z$, through the cross-incidence
-  along each of the six links, so three independent points would lie in a
-  two-dimensional space. The configuration points over non-collinear
-  picture points are independent, whatever the heights.
+  At a nondegenerate realization the normals of $a$ and $b$ are linearly
+  independent, since both lie in the closed hub-neighbourhood of $x$. The
+  point of a body lies in the panel of each of its neighbours, as noted
+  after \cref{def:pencil-nondegenerate}. So the points of $x$, $y$ and $z$
+  are orthogonal to both normals, and three independent points would lie
+  in a two-dimensional space. Over a picture at which $q_x$, $q_y$ and
+  $q_z$ are not collinear, the configuration points of $x$, $y$ and $z$
+  are independent whatever the heights, since dropping the height
+  coordinate maps them to independent homogeneous picture points.
 \end{proof}
 
-A polynomial witnessing that the general configuration attains
-(\cref{def:pencil-x0-attains}) stays a witness when it is multiplied by the
-determinant of the homogeneous picture points of $x$, $y$ and $z$, nonzero at
-the picture $(0,0), (1,0), (0,1)$, so its good pictures can all be taken with
-the three points non-collinear. At $K_{2,3}$, which is
-nondegeneracy-feasible, every main picture is of that kind, since collinear
-degree-two bodies enlarge the lifting space.
+The lemma is the reason the generic statement is not proved through the
+main component. Let $G$ be simple, with pencil hubs $a \neq b$ and three
+common neighbours $x$, $y$ and $z$. The determinant of the homogeneous
+picture points of $x$, $y$ and $z$ is a nonzero polynomial in the picture
+coordinates, as it is nonzero at the picture with $q_x = (0, 0)$,
+$q_y = (1, 0)$ and $q_z = (0, 1)$. Multiplied by it, a polynomial that
+witnesses that the general configuration of $G$ attains
+(\cref{def:pencil-x0-attains}) is still a witness. At each non-root of
+the product, $q_x$, $q_y$ and $q_z$ are not collinear. So the attaining
+configurations over these general pictures are never nondegenerate. Such
+a graph $G$ has a planar-rigid set. The five bodies $a, b, x, y, z$ span
+at least six edges, so their singleton value is at most
+$3 \cdot 4 - 2 \cdot 6 = 0$. Hence some set of at least two of them is
+planar-rigid (\cref{lem:deficiency-sparse}). The obstruction therefore
+does not arise in the case without a planar-rigid set, treated below.
+
+At $K_{2,3}$, let $a$ and $b$ be the bodies of degree three, so that $x$,
+$y$ and $z$ are those of degree two. The generic statement asks for a
+generic realization of $K_{2,3}$, as $K_{2,3}$ is nondegeneracy-feasible.
+To see this, take linearly independent normals $n_a$ and $n_b$. Put the
+points of $x$, $y$ and $z$ at three distinct points of the line
+$n_a^{\perp} \cap n_b^{\perp}$, and put $p_a \in n_a^{\perp}$ and
+$p_b \in n_b^{\perp}$ off that line. Then $p_a \cdot n_b \neq 0$ and
+$p_b \cdot n_a \neq 0$, so the points of $x$, $a$ and $b$ are linearly
+independent. Give $x$ the plane through them, and $y$ and $z$ likewise,
+and give each edge the line through the points of its ends. This is a
+nondegenerate pencil realization, and its points of $x$, $y$ and $z$ are
+linearly dependent, as the lemma requires.
+
+By the lemma, no configuration over a main picture of $K_{2,3}$ is
+nondegenerate, since at every main picture $q_x$, $q_y$ and $q_z$ are not
+collinear. Indeed, at an admissible picture where they are not collinear,
+the planes of $a$ and $b$ are both the plane through the points of $x$,
+$y$ and $z$. So $L(q)$ consists of the globally affine heights, and has
+dimension three (\cref{lem:pencil-lifting-space-affine}). Where they are
+collinear, the heights of $x$, $y$ and $z$ need only agree with an affine
+function along their line, and the heights of $a$ and $b$ are then free,
+so $\dim L(q) = 4$. The induction obtains a generic realization of $K_{2,3}$
+instead from one of the $4$-cycle left when a body of degree two, say
+$x$, is removed. It puts the point of $x$ on the line where the panels of
+$a$ and $b$ meet (\cref{lem:pencil-generic-one-ear}).
+
+We turn to the case without a planar-rigid set
+(\cref{thm:pencil-x0-base-generic}). At a configuration $(q, z)$ with $q$
+admissible and $z \in L(q)$, the plane normal of a body is determined up
+to a scalar by its plane, the plane through the points of its closed
+neighbourhood (\cref{lem:pencil-condition-linear}). So over a picture in
+general position, the conditions of nondegeneracy on the normals reduce
+to conditions that certain planes differ
+(\cref{lem:pencil-x0-conjunct-three}). The planes of two bodies $u$ and
+$w$ differ at a general configuration by Jackson and Jord\'an's equality,
+applied to $G$ and to the graph $G_{uw}$ of the next definition. Without
+a planar-rigid set, $G_{uw}$ has the smaller planar deficiency, so at a
+general picture its lifting space has the smaller dimension. The heights
+of $G$ whose planes at $u$ and $w$ agree extend, injectively, to heights
+of $G_{uw}$. So they form a proper subspace of $L(q)$
+(\cref{lem:pencil-x0-planes-separate}).
 
 \begin{definition}[A new body joined to two bodies]
   \label{def:pencil-two-ear-graph}
@@ -5029,9 +5102,14 @@ degree-two bodies enlarge the lifting space.
   \uses{lem:pencil-jj-embed-edges}
   For distinct bodies $u, w$ of $G$, the graph $G_{uw}$ is $G$ together
   with one new body $x$ and two new edges, joining $x$ to $u$ and to $w$.
-  Its bodies and edges lie in larger types than $G$'s, as the edges of
-  \cref{lem:pencil-jj-embed-edges} do, so no label of $G$ is used.
 \end{definition}
+\begin{fmlnote}
+  \label{fmlnote:pencil-two-ear-graph}
+  The new body and the two new edge labels of $G_{uw}$ lie outside the
+  sets of bodies and edge labels of $G$, which are enlarged for them, as
+  the set of edge labels is in \cref{lem:pencil-jj-embed-edges}. So
+  $G_{uw}$ needs no unused body or edge label of $G$.
+\end{fmlnote}
 
 \begin{lemma}[The planes of two bodies separate without a planar-rigid set]
   \label{lem:pencil-x0-planes-separate}
@@ -5043,29 +5121,46 @@ degree-two bodies enlarge the lifting space.
   for every set $Y$ of at least two bodies. Let $u \ne w$ be bodies of
   $G$. There is a nonzero polynomial $P$ in the picture coordinates such
   that every picture $q$ with $P(q) \ne 0$ has some height $z \in L(q)$
-  and, at every body, an affine function carrying $z$ on its closed
-  neighbourhood, with the functions at $u$ and $w$ different.
+  and, at every body, an affine function that agrees with $z$ on its
+  closed neighbourhood, with the functions at $u$ and $w$ different.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:pencil-two-ear-graph, thm:pencil-jj-equality,
         lem:deficiency-sparse, lem:deficiency-singleton-bound}
-  A height of $G$ whose planes at $u$ and $w$ agree extends to $G_{uw}$
-  (\cref{def:pencil-two-ear-graph}), with the new body on that common
-  plane, injectively. For a partition of the bodies of $G_{uw}$, the new
-  body alone costs $1$, in a part other than those of $u$ and $w$ costs
-  $4$, and in the part of $u$ costs $2$ when $w$ lies elsewhere. In the
-  remaining case $u$ and $w$ share a part $X$ of at least two bodies, and
-  refining $X$ into singletons raises the value by the singleton value of
-  $X$, at least one by \cref{lem:deficiency-sparse}. So
-  $\operatorname{def}_2(G_{uw}) \le \operatorname{def}_2(G) - 1$.
-  Jackson and Jord\'an's equality (\cref{thm:pencil-jj-equality}) at
-  $G_{uw}$ and at $G$, at a picture general for both, gives that the
-  heights with equal planes at $u$ and $w$ form a subspace of dimension at
-  most $2 + \operatorname{def}_2(G)$, less than
-  $\dim L(q) = 3 + \operatorname{def}_2(G)$. Fixing the new body's picture
-  at one non-root of the polynomial of $G_{uw}$ turns that polynomial into
-  a nonzero polynomial in the picture coordinates of $G$.
+  \emph{Equal planes.} Give the new body $x$ of $G_{uw}$
+  (\cref{def:pencil-two-ear-graph}) any picture point. A height of $G$
+  whose planes at $u$ and $w$ agree extends to $G_{uw}$: the height of
+  $x$ is the value of the common plane at its picture point. The closed
+  neighbourhoods of $u$ and $w$ gain $x$, which lies on that plane, and
+  the plane agrees with the heights on the closed neighbourhood
+  $\{x, u, w\}$ of $x$. This extension is injective.
+
+  \emph{The count.} We show that $\operatorname{def}_2(G_{uw}) \le
+  \operatorname{def}_2(G) - 1$. Compare the value of a partition of the
+  bodies of $G_{uw}$ with that of its restriction to $V(G)$, which is at
+  most $\operatorname{def}_2(G)$. If $x$ is alone in its part, there is
+  one more part and there are two more crossing edges, so the value is
+  lower by $2 \cdot 2 - 3 = 1$. Otherwise the number of parts is the
+  same, and the value is lower by $2$ for each of $u$ and $w$ outside the
+  part of $x$. It remains that $x$, $u$ and $w$ share a part. Then the
+  value is that of the restriction, in which $u$ and $w$ share a part
+  $X$. As $G$ has no planar-rigid set, every set of at least two bodies
+  has singleton value at least one (\cref{lem:deficiency-sparse}). So the
+  restriction has value at most
+  $s(V(G)) - s(X) \le \operatorname{def}_2(G) - 1$
+  (\cref{lem:deficiency-singleton-bound}).
+
+  \emph{The equality.} At a picture general for both graphs, Jackson and
+  Jord\'an's equality (\cref{thm:pencil-jj-equality}) gives
+  $\dim L_G(q) = 3 + \operatorname{def}_2(G)$, and the lifting space of
+  $G_{uw}$ has dimension
+  $3 + \operatorname{def}_2(G_{uw}) \le 2 + \operatorname{def}_2(G)$. So
+  the heights of $G$ with equal planes at $u$ and $w$ form a proper
+  subspace of $L_G(q)$. The polynomial of the equality at $G_{uw}$
+  involves the picture point of $x$. Fixing that point at one non-root
+  turns it into a nonzero polynomial in the picture coordinates of $G$,
+  and $P$ is its product with the polynomial of the equality at $G$.
 \end{proof}
 
 \begin{lemma}[The hub normals of a configuration]
@@ -5079,29 +5174,35 @@ degree-two bodies enlarge the lifting space.
   and two of its hub neighbours have collinear picture points, and let
   $z \in L(q)$. Suppose that the planes of the two ends of every edge
   joining two hubs differ, and that the planes of any two hubs adjacent to
-  one body that is not a hub differ. Then the configuration $(q, z)$, with
-  the plane normal of an admissible triple at every body, is a
+  one body that is not a hub differ. Then the configuration $(q, z)$,
+  with the plane normal at every body computed from three members of its
+  closed neighbourhood with non-collinear picture points, is a
   nondegenerate pencil realization.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-config-distinct-realization, lem:pencil-condition-linear}
   The configuration is a pencil realization with adjacent points distinct
-  (\cref{lem:pencil-config-distinct-realization}). A non-hub's closed
-  neighbourhood has at most three members, and admissibility puts three
-  with non-collinear picture points in it, so its points are independent.
-  Each normal is a nonzero multiple of $(h_0, h_1, -1, h_2)$ for the plane
-  $z = h_0 x + h_1 y + h_2$ (\cref{lem:pencil-condition-linear}), so
-  independence of normals is affine independence of planes. At a hub $v$
-  with one hub neighbour this is the first condition. With two, $w_1$ and
-  $w_2$, the difference $d_i$ of the planes of $w_i$ and $v$ is nonzero
-  and vanishes at $q_v$ and $q_{w_i}$, so $d_2$ does not vanish at
-  $q_{w_1}$, nor $d_1$ at $q_{w_2}$, since the three points are not
-  collinear; evaluating a relation between $d_1$ and $d_2$ at $q_{w_1}$
-  and at $q_{w_2}$ shows the two differences independent. The closed
+  (\cref{lem:pencil-config-distinct-realization}). A body that is not a
+  hub has at most three members in its closed neighbourhood, and
+  admissibility puts three with non-collinear picture points in it. So the
+  points of its closed neighbourhood are independent.
+
+  Each normal is a nonzero multiple of $(h_0, h_1, -1, h_2)$, where
+  $\zeta = h_0 \xi + h_1 \eta + h_2$ is the plane of the body
+  (\cref{lem:pencil-condition-linear}). So normals are linearly
+  independent exactly when the planes are affinely independent. At a hub
+  $v$ with one hub neighbour this is the first condition. Let $v$ have
+  two hub neighbours $w_1$ and $w_2$, and let $d_i$ be the difference of
+  the planes of $w_i$ and $v$, an affine function. It is nonzero by the
+  first condition, and it vanishes at $q_v$ and at $q_{w_i}$, where both
+  planes take the height of the body. As $q_v$, $q_{w_1}$ and $q_{w_2}$
+  are not collinear, $d_2$ does not vanish at $q_{w_1}$, nor $d_1$ at
+  $q_{w_2}$. Evaluating a linear relation between $d_1$ and $d_2$ at
+  $q_{w_1}$ and at $q_{w_2}$ shows that $d_1$ and $d_2$ are independent,
+  so the three planes are affinely independent. The closed
   hub-neighbourhood of a body that is not a hub consists of at most two
-  of its neighbours, and two is the second condition. Neither the
-  standing hypotheses nor nondegeneracy-feasibility is used.
+  of its neighbours, and for two this is the second condition.
 \end{proof}
 
 \begin{theorem}[The general configuration is nondegenerate without a planar-rigid set]
@@ -5121,18 +5222,26 @@ degree-two bodies enlarge the lifting space.
         lem:pencil-feasible-hub-conditions, lem:pencil-config-point-join-rank}
   Every closed hub-neighbourhood has at most three members
   (\cref{lem:pencil-feasible-hub-conditions}). Take a picture $q$ off the
-  zero sets of the attaining polynomial of \cref{thm:pencil-x0-coverage},
-  which makes $q$ admissible, of the determinant of the homogeneous
-  picture points of every three distinct bodies, and of the polynomial of
-  \cref{lem:pencil-x0-planes-separate} at every two distinct bodies. Over
-  $q$, on the heights with their planes, the attaining heights contain the
-  non-roots of one polynomial that has a non-root, and for each pair some
-  coordinate of the difference of the two planes is nonzero at the point
-  \cref{lem:pencil-x0-planes-separate} gives. One point is a non-root of
-  all of them, by induction on their number from
-  \cref{lem:pencil-x0-fibre-intersection}, which meets two.
-  \Cref{lem:pencil-x0-conjunct-three} applies there, and the attaining
-  polynomial gives the rank (\cref{lem:pencil-config-point-join-rank}).
+  zero sets of three kinds of nonzero polynomial: one witnessing that the
+  general configuration of $G$ attains (\cref{thm:pencil-x0-coverage}),
+  whose non-roots are admissible; for every three distinct bodies, the
+  determinant of their homogeneous picture points; and for every two
+  distinct bodies, the polynomial of \cref{lem:pencil-x0-planes-separate}.
+
+  Over $q$, consider the pairs $(z, h)$ of a height $z \in L(q)$ and, at
+  every body $v$, an affine function $h_v$ that agrees with $z$ on the
+  closed neighbourhood of $v$. They form a linear space. The attaining
+  heights contain the non-roots of a polynomial in $z$ that is nonzero at
+  some pair. For two distinct bodies $u$ and $w$, some coordinate of
+  $h_u - h_w$ is nonzero at the pair that
+  \cref{lem:pencil-x0-planes-separate} gives. One pair makes all these
+  finitely many polynomials nonzero, by
+  \cref{lem:pencil-x0-fibre-intersection} and induction on their number.
+  At it the planes of any two distinct bodies differ, so the configuration
+  $(q, z)$ is a nondegenerate pencil realization
+  (\cref{lem:pencil-x0-conjunct-three}). Its height $z$ is an attaining
+  height, so the realization has the deficiency rank
+  (\cref{lem:pencil-config-point-join-rank}).
 \end{proof}
 
 \begin{lemma}[Steering a realization of a subgraph]

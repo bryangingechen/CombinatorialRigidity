@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 21 landed (tasks 1–21; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 22 landed (tasks 1–22; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 22, the first half of `sec:main-component-statements`, against the pinned exemplar
+task 23, the second half of `sec:main-component-statements`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. All eight build-or-leave items are written. Round manual: `CLEANUP.md`.
 
@@ -57,13 +57,13 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–21
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–22
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first twelve subsections are done (the ninth,
-the split-off, was task 1); next is task 22, the first half of `sec:main-component-statements`. All
-eight build-or-leave items are written.
+introduction (task 24). `main-component.tex`'s first twelve subsections and the first half of the
+thirteenth are done (the split-off was task 1); next is task 23, the thirteenth's second half.
+All eight build-or-leave items are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -195,32 +195,34 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
 - [x] **20. M11 — `sec:main-component-sparse`** (`df911478`; full entry there). The singleton count
   leads; three remarks cut. *(f):* standard, *rigid*, *sparse*, *tight*; for task 25, *value*,
   *singleton value* (`s_D`, `s`), *planar-rigid* (the TR's *strong*, p. 7), *core*.
-- [x] **21. M12 — `sec:main-component-coverage`** (this commit). All bullets done:
-  - *The table*, in the opening: 13 rows, read from `Graph.IsX0Graph.x0Reduces` and `-_of_sparse` in
-    test order (bridge, cut vertex, cycle, equal deficiencies, planar-rigid set; then
-    `Graph.ChainUsable`'s disjuncts, `k = 3, 4, ≥ 5` as `-_of_chainUsable` splits them; the additive
-    core), each with its step and the graphs its `Graph.X0Reduces` constructor consumes. The chain
-    rows are disjuncts, not tests: a `k = 2` chain may meet both, and either step applies.
-  - *Theorem S's overview* ends the opening: chains are short, each gives a rigid set, a maximal one
-    is the core (avoiding a body of degree two when `G` is rigid). Its proof is in four paragraphs.
-  - *Both "informal" remarks cut* (a): `1 ≤ def₂(G[W]) < def₂(G)` (unneeded, unexpected) and the θ
-    comparison; the opening cites `rem:pencil-x0-theta` (task 17's note). From task 20: "add" now
-    reads "add up to at most". Item 6 written; its two lemmas' callers name them (principle C).
-  - *(f):* in a node, *reduces to*, *chain*, *usable*; for task 25, *smaller than*; standard,
-    *2-connected*, *θ-graph*. No forward `\cref` into a later subsection. One missing edge: *Moved*.
-- [ ] **22. M13a — `sec:main-component-statements`, first half, 4330–4559.** The two-hubs
-  obstruction is why the generic statement leaves the main component. Work it at `K_{2,3}`, and
-  anchor the unlabelled paragraph after it (4439–4445). The base case's idea needs an overview
-  before `lem:pencil-x0-planes-separate`'s partition count: without a planar-rigid set, JJ's
-  equality at `G` and at `G_{uw}` separates two bodies' planes. The preamble's comparison with the
-  informal argument falls under default (a).
+- [x] **21. M12 — `sec:main-component-coverage`** (`5fbe5784`; full entry there). The 13-row case
+  table and Theorem S's overview lead; both "informal" remarks cut (a); item 6 written. *(f):* in a
+  node, *reduces to*, *chain*, *usable*; for task 25, *smaller than*; standard, *2-connected*.
+- [x] **22. M13a — `sec:main-component-statements`, first half** (this commit). All bullets done:
+  - *The obstruction at `K_{2,3}`*, after the lemma (it anchors the unlabelled paragraph): the
+    determinant of `q_x, q_y, q_z` times a witness; such a graph has a planar-rigid set (five
+    bodies, six edges); `K_{2,3}` is feasible (a construction), its main pictures have `q_x, q_y,
+    q_z` not collinear (`dim L(q)` 3, else 4), and the induction uses a 4-cycle.
+  - *The base case's overview* precedes `def:pencil-two-ear-graph` (planes fix normals; JJ's
+    equality at `G`, `G_{uw}`); its proof is in three paragraphs, read against `addTwoEar_deficiency`.
+  - *Default (a)*: the informal comparison is cut (its reason, the cut-edge case, is kept), as is
+    the unproved "another component". Statements, register only: "carrying", "admissible triple";
+    `def:pencil-two-ear-graph`'s "larger types" moved to a new note.
+  - *(f):* standard, *pendant triangle* (glossed), `K_{2,3}`; in a node, `G_{uw}`, *main picture*;
+    for task 25, *planar-rigid*, *singleton value* (task 20's); removed, *fibre by fibre*, *hub ends*.
+    Forward `\cref`s, all in this subsection: `lem:pencil-x0-distinct-statement`,
+    `thm:pencil-generic-step`, `thm:pencil-x0-base-generic`, `lem:pencil-x0-conjunct-three`,
+    `lem:pencil-x0-planes-separate`, `lem:pencil-generic-one-ear`.
 - [ ] **23. M13b — the statements' second half, 4560–4858.**
   - Motivate `lem:pencil-generic-steer` first: nondegenerate realizations are chart points, so
     the smaller graph's generic realization can meet the new bodies' finitely many open
-    conditions.
-  - `thm:pencil-x0-generic-attains`'s proof repeats the subsection preamble: keep one account.
+    conditions. Its title's "Steering" is a Lean-verb coinage (AUTHORING's dictionary).
+  - `thm:pencil-x0-generic-attains`'s proof repeats the subsection's opening, which since task 22
+    is the one account: cut the repeat, with its "fibre by fibre" and "one-body ear at hub ends".
   - The good-ear lemma's closing remark falls under default (a).
   - Name the direct construction on three bodies that `thm:pencil-generic-step` borrows.
+  - From task 22: the first half cites `lem:pencil-generic-one-ear` for `p_x` on `n_a^⊥ ∩ n_b^⊥`
+    at `K_{2,3}`, and calls the good-ear lemma's second case a pendant triangle: keep both true.
 - [ ] **24. F1 — `pencil.tex`'s introduction, 1–37.** One dense paragraph now; principle F asks for
   a half-page roadmap.
   - What is proved and in what order.
@@ -255,6 +257,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
     interior bodies; at two with non-adjacent ends `x₁` moves too (`sec:main-component-orbit`).
   - From task 19: "the planar deficiencies add" (the introduction, `sec:main-component-contract`,
     the coverage) means only `def₂(H) + def₂(G/H) ≤ def₂(G)`; define *additive core* so.
+  - From task 22: *The generic statement*'s "fibre by fibre", "steered" and "between two hubs"
+    go, as in `sec:main-component-statements`' opening.
 - [ ] **26. F3 — `intro.tex`'s reader path.** The fifth-continuation paragraph (362–392) runs the
   whole arc in one paragraph. Check each sentence against tasks 24 and 25, and split it where it
   joins two results. Lines 44–47 and 406–407 get the same check. Phase numbers are allowed here.
@@ -450,7 +454,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 22** (checklist above has its scope); then tasks 23–26 in order, and task 27 closes
+**Next: task 23** (checklist above has its scope); then tasks 24–26 in order, and task 27 closes
 the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
