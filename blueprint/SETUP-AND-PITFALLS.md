@@ -64,6 +64,12 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
 - **`_` in `\texttt{...}`.** LaTeX still treats `_` as a subscript
   inside `\texttt{...}`. Escape as `\_` (e.g.
   `\texttt{mk\_mem\_edgesIn}`) or use `\verb|...|`.
+- **Wrapping table cells are justified in the PDF.** A `p{…}` column
+  stretches the spaces of every wrapped line, and the `array` package
+  (`>{\raggedright\arraybackslash}`) is not loaded. Start each cell with
+  `\raggedright` and end each row with `\tabularnewline`, not `\\`;
+  plasTeX renders such a cell as a left-aligned `div`
+  (`sec:main-component-coverage`'s table, 2026-10-03).
 - **`\lean{Name1, Name2}` with multiple names** is fine for the
   HTML build (each links separately) but produces only one link
   target in the PDF. Reserve multi-name `\lean{}` for closely-

@@ -7,11 +7,11 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 20 landed (tasks 1–20; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 21 landed (tasks 1–21; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 21, `sec:main-component-coverage`, against the pinned exemplar
+task 22, the first half of `sec:main-component-statements`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
-bullet; it also writes item 6. Round manual: `CLEANUP.md`.
+bullet. All eight build-or-leave items are written. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -57,13 +57,13 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–20
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–21
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first eleven subsections are done (the ninth,
-the split-off, was task 1); next is task 21, `sec:main-component-coverage`. Items 1–5, 7 and 8 are
-written.
+introduction (task 24), and `main-component.tex`'s first twelve subsections are done (the ninth,
+the split-off, was task 1); next is task 22, the first half of `sec:main-component-statements`. All
+eight build-or-leave items are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -192,31 +192,22 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   bounds on `ker M(0)` lead (KT p. 674 checked); the remark cut. *(f):* standard, *rigid*; in a node,
   *contraction curve*, *rescaled lifting system*, *collapsed placement*, `ρ`; for task 25, *additive
   core* (only `≤`), *attaining height*. One forward `\cref` added.
-- [x] **20. M11 — `sec:main-component-sparse`** (this commit). All bullets done:
-  - *The three remarks are cut* (a), in `lem:deficiency-tight-rigid`, `-core-bound`, `-one-body-chain`;
-    the reason for `X₀` stays, as a lead-in (the coverage's two kinds of maximal rigid set). Nothing
-    named: the TR's bricks (§3, p. 7) are maximal *strong* subgraphs, `def₂ = 0`, so maximal
-    planar-rigid sets; maximal rigid sets are the other count of its footnote 4 (its ref. [5]).
-  - *The inequality.* `lem:deficiency-additive-core` is retitled *…add up to at most that of the
-    graph*; the opening says the same. Its proof split into sentences, checked against the Lean.
-  - *Sparse and tight in words.* Sparse: every `X` with `|X| ≥ 2` spans at most `(3|X| − 4)/2` edges;
-    exactly no planar-rigid set; for loopless `G`, `2G` is (3,4)-sparse (`def:graph-sparse`, body
-    read). Tight: as many edges as sparsity allows (a 4-cycle is). The opening's key idea: in a sparse
-    graph the singletons attain `def₂`, a part `Z` costs `s(Z)`, and `v₃ = 2v₂ − d` (moved from a proof).
-  - *(f):* standard, *rigid*, *sparse*, *tight*, *contraction*; in a node, *merged deficiency*; for
-    task 25, *value* of a partition, *singleton value* (`s_D`, `s`), *planar-rigid* (the TR's *strong*,
-    p. 7), *core*. Forward `\cref`s added: `sec:main-component-statements`, `thm:pencil-x0-theorem-s`.
-- [ ] **21. M12 — `sec:main-component-coverage`, 3895–4329.** The proof's combinatorial skeleton.
-  - A displayed table would let the reader check that the cases are exhaustive: each case, the
-    step that settles it, and the smaller graphs it consumes.
-  - `thm:pencil-x0-theorem-s` needs an overview: every chain is short, a short chain gives a rigid
-    set, and a maximal one is the additive core.
-  - Two "informal" remarks fall under default (a).
-  - From task 17: `rem:pencil-x0-theta` gives the coverage's order on θ-graphs, checked against
-    `Graph.IsX0Graph.x0Reduces`; the proof's "informal case analysis" sentence can cite it.
-  - From task 20: `sec:main-component-sparse` defines *sparse* (no planar-rigid set) and *tight* (a
-    4-cycle is). The overview's "a rigid core at which the planar deficiencies add" means only `≤`.
-  - **Writes item 6's recommendation.**
+- [x] **20. M11 — `sec:main-component-sparse`** (`df911478`; full entry there). The singleton count
+  leads; three remarks cut. *(f):* standard, *rigid*, *sparse*, *tight*; for task 25, *value*,
+  *singleton value* (`s_D`, `s`), *planar-rigid* (the TR's *strong*, p. 7), *core*.
+- [x] **21. M12 — `sec:main-component-coverage`** (this commit). All bullets done:
+  - *The table*, in the opening: 13 rows, read from `Graph.IsX0Graph.x0Reduces` and `-_of_sparse` in
+    test order (bridge, cut vertex, cycle, equal deficiencies, planar-rigid set; then
+    `Graph.ChainUsable`'s disjuncts, `k = 3, 4, ≥ 5` as `-_of_chainUsable` splits them; the additive
+    core), each with its step and the graphs its `Graph.X0Reduces` constructor consumes. The chain
+    rows are disjuncts, not tests: a `k = 2` chain may meet both, and either step applies.
+  - *Theorem S's overview* ends the opening: chains are short, each gives a rigid set, a maximal one
+    is the core (avoiding a body of degree two when `G` is rigid). Its proof is in four paragraphs.
+  - *Both "informal" remarks cut* (a): `1 ≤ def₂(G[W]) < def₂(G)` (unneeded, unexpected) and the θ
+    comparison; the opening cites `rem:pencil-x0-theta` (task 17's note). From task 20: "add" now
+    reads "add up to at most". Item 6 written; its two lemmas' callers name them (principle C).
+  - *(f):* in a node, *reduces to*, *chain*, *usable*; for task 25, *smaller than*; standard,
+    *2-connected*, *θ-graph*. No forward `\cref` into a later subsection. One missing edge: *Moved*.
 - [ ] **22. M13a — `sec:main-component-statements`, first half, 4330–4559.** The two-hubs
   obstruction is why the generic statement leaves the main component. Work it at `K_{2,3}`, and
   anchor the unlabelled paragraph after it (4439–4445). The base case's idea needs an overview
@@ -346,8 +337,18 @@ exposition has made the item's role clear. The PI decides at round 4's stop.
    the assembly. The base data are a twelve-conjunct existence. A node buys one copy of the shared
    `\uses` edges, now listed in both steps.
 6. **The CHAINS pair**, `Graph.IsOpenEar.exists_maximal` (`CoverageChain.lean`) and
-   `Graph.Connected.induce_of_gate` (`CoverageCut.lean`). Role: task 21. *Recommendation: pending*
-   (task 21).
+   `Graph.Connected.induce_of_gate` (`CoverageCut.lean`). Role: task 21. *Recommendation (task 21):
+   leave both unpinned, with no node.* Read in the Lean, the first has two callers, the pins of
+   `lem:pencil-x0-chain-exists` and `lem:pencil-x0-cycle-reduces`. The second has two:
+   `lem:pencil-x0-chain-standing`(1)'s pin, and the unpinned `Graph.IsX0Graph.induce_of_gate`, which
+   `lem:pencil-x0-cut-reduces`'s two pins call (the bridge's through a private helper). All are in
+   `pencil_conjecture`'s closure, none in `molecular_conjecture`'s (measured, script not retained).
+   Each is an elementary graph fact (extend a path through bodies of degree two; a set with one body
+   adjacent outside it, in a connected graph, induces a connected graph). Each pinned caller's proof
+   states it in a clause and, since task 21, names it, or at the cut and bridge the wrapper, as an
+   address (principle C), as item 5's do. A node would hold only that fact. The bridge case grows
+   its path by its own private induction: `exists_maximal` stops at once at a bridge, whose ends are
+   adjacent.
 7. **`Graph.exists_isMinimalKDof_spanning_subgraph`** (`Molecular/Deficiency.lean`). Role: task 12.
    *Recommendation (task 12): give it a node* in `deficiency.tex`, beside `lem:subgraph-minimality`.
    Unlike item 8 it is mathematics: KT's first step for Theorem 5.6 (p. 670, checked), deleting
@@ -439,6 +440,9 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 - **Task 6, target `40-simplify`.** `thm:pencil-conditional-realization-pair`'s two notes sit
   between its statement and proof, so plasTeX attaches the proof to a note and the graph draws the
   node unfilled. Moving them after the proof fills it (the graph's one changed line); the only case.
+- **Task 21, target `40-simplify`.** `thm:pencil-x0-theorem-s`'s proof uses
+  `lem:deficiency-zero-connected` (a body of a rigid set has two neighbours in it), which its pin
+  calls (`Graph.two_le_degree_of_isKDof_zero`), with no `\uses` edge to it.
 
 ## Blockers / open questions
 
@@ -446,7 +450,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 21** (checklist above has its scope); then tasks 22–26 in order, and task 27 closes
+**Next: task 22** (checklist above has its scope); then tasks 23–26 in order, and task 27 closes
 the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 

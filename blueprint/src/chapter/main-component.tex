@@ -4363,35 +4363,109 @@ empty or $X_0 = \{x\}$.
 \subsection{The structural coverage}
 \label{sec:main-component-coverage}
 
-This subsection completes the strong induction on the number of bodies.
-Call a graph \emph{smaller than} $G$ if it satisfies the standing
-hypotheses (\cref{def:pencil-x0-standing}) and has fewer bodies than
-$G$. One step of the induction is recorded as a single property
-(\cref{def:pencil-x0-reduces}): the structural hypotheses of one of the
-preceding steps, with a property $\mathcal P$ at every graph that step
-consumes. The induction needs only that every graph satisfying the
-standing hypotheses reduces to the graphs smaller than it
-(\cref{thm:pencil-x0-reduction-attains}).
+This subsection completes the induction on the number of bodies. Call a
+graph \emph{smaller than} $G$ if it satisfies the standing hypotheses
+(\cref{def:pencil-x0-standing}) and has fewer bodies than $G$. Each step
+of the preceding subsections applies to a graph $G$ that satisfies the
+standing hypotheses and some further conditions. It assumes that the
+general configurations of none, one or two graphs with fewer bodies
+attain. We say that $G$ \emph{reduces} to a property $\mathcal P$ of
+graphs if $G$ meets the further conditions of some step, and the graphs
+that this step assumes to attain satisfy $\mathcal P$
+(\cref{def:pencil-x0-reduces}). If every graph satisfying the standing
+hypotheses reduces to the graphs smaller than it, then the general
+configuration of every such graph attains, by strong induction on the
+number of bodies (\cref{thm:pencil-x0-reduction-attains}). The
+structural coverage proves that every such graph does reduce, by a case
+analysis (\cref{thm:pencil-x0-coverage}).
 
-That every such graph does reduce is a case analysis
-(\cref{thm:pencil-x0-coverage}). A graph with a bridge reduces along a
-chain of bridges, and a 2-edge-connected graph with a cut vertex at the
-cut vertex (\cref{lem:pencil-x0-cut-reduces}). A 2-connected graph whose
-bodies all have degree two is a cycle
-(\cref{lem:pencil-x0-cycle-reduces}). Where the two deficiencies agree,
-the flat step applies (\cref{cor:pencil-jj-flat}); otherwise
-$\operatorname{def}_2(G) > 0$, and a graph with a planar-rigid set
-reduces by contraction at a maximal one
-(\cref{lem:pencil-x0-planar-rigid-reduces}). What remains is a
-2-connected sparse graph that is not a cycle
-(\cref{sec:main-component-sparse}). There a \emph{chain} is a maximal
-path of bodies of degree two between bodies of degree at least three
-(\cref{def:pencil-x0-chain}), and it is \emph{usable} if one of the ear
-or split-off steps applies to it (\cref{def:pencil-x0-usable-chain}).
-Either some chain is usable (\cref{lem:pencil-x0-chain-reduces}), or the
-graph has a rigid core at which the planar deficiencies add
-(\cref{thm:pencil-x0-theorem-s}), where the contraction step at an
-additive core applies.
+The table below lists the cases. The proof tests the first five in
+order, so each of them assumes that those above it fail. Once all five
+fail, $G$ is 2-connected, sparse (\cref{sec:main-component-sparse}) and
+not a cycle. Its bodies of degree two then lie on \emph{chains}: paths
+of bodies of degree two between bodies of degree at least three
+(\cref{def:pencil-x0-chain}). We write a chain as an open ear
+$a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{sec:main-component-chain}).
+A chain is \emph{usable} if it meets the condition of one of the chain
+rows of the table (\cref{def:pencil-x0-usable-chain}), and then the step
+of that row applies (\cref{lem:pencil-x0-chain-reduces}). If no chain is
+usable, the last row applies. For each case the table names the step
+that settles it, and the smaller graphs whose attainment that step
+assumes. In the first two rows $V_1$ and $V_2$ are the two sides of a
+cut vertex or of a chain of bridges (\cref{sec:main-component-cut}), and
+$W$ is the set contracted.
+\begin{center}
+\begin{tabular}{p{5.4cm}p{4.4cm}p{2.8cm}}
+  \raggedright \emph{Case}
+    & \raggedright \emph{Step}
+    & \raggedright \emph{Smaller graphs} \tabularnewline
+  \hline
+  \raggedright $G$ is not $2$-edge-connected
+    & \raggedright a chain of bridges (\cref{thm:pencil-x0-bridge})
+    & \raggedright $G[V_1]$, $G[V_2]$ \tabularnewline
+  \raggedright $G - v$ is disconnected for some body $v$
+    & \raggedright a cut vertex (\cref{thm:pencil-x0-cut})
+    & \raggedright $G[V_1]$, $G[V_2]$ \tabularnewline
+  \raggedright every body has degree two
+    & \raggedright a cycle (\cref{thm:pencil-x0-cycle})
+    & \raggedright none \tabularnewline
+  \raggedright $\operatorname{def}_2(G) = \operatorname{def}_3(G)$
+    & \raggedright equal deficiencies (\cref{cor:pencil-jj-flat})
+    & \raggedright none \tabularnewline
+  \raggedright a planar-rigid set
+    & \raggedright contraction at a maximal planar-rigid set $W$
+      (\cref{thm:pencil-x0-contract-rigid})
+    & \raggedright $G/G[W]$ \tabularnewline
+  \raggedright a usable chain with $k = 3$
+    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-three})
+    & \raggedright $G[V_1]$, and $G$ with $x_2$ suppressed \tabularnewline
+  \raggedright a usable chain with $k = 4$
+    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-four})
+    & \raggedright $G[V_1]$, and $G$ with $x_2$ suppressed \tabularnewline
+  \raggedright a usable chain with $k \ge 5$
+    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear})
+    & \raggedright $G[V_1]$ \tabularnewline
+  \raggedright a usable chain with $k = 2$ and
+    $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$
+    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-two})
+    & \raggedright $G[V_1]$ \tabularnewline
+  \raggedright a usable chain with $k = 2$, $a$ and $b$ not adjacent,
+    and $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+    \operatorname{def}_2(G[V_1])$
+    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-two-orbit})
+    & \raggedright $G[V_1]$, and $G$ with $x_2$ suppressed \tabularnewline
+  \raggedright a usable chain with $k = 1$ and
+    $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$
+    & \raggedright an open ear (\cref{thm:pencil-x0-open-ear-one})
+    & \raggedright $G[V_1]$ \tabularnewline
+  \raggedright a usable chain with $k = 1$ and
+    $\operatorname{def}_3(G[V_1]; a, b) + 5 \le
+    \operatorname{def}_3(G[V_1])$
+    & \raggedright splitting off $x_1$ (\cref{thm:pencil-x0-splitoff})
+    & \raggedright $G$ with $x_1$ suppressed \tabularnewline
+  \raggedright no usable chain
+    & \raggedright contraction at an additive core $W$
+      (\cref{thm:pencil-x0-contract-additive})
+    & \raggedright $G[W]$, $G/G[W]$ \tabularnewline
+\end{tabular}
+\end{center}
+The chain rows are the conditions of \cref{def:pencil-x0-usable-chain},
+with $k \ge 3$ split by the step. A chain may meet two of them, and then
+either step applies. \Cref{rem:pencil-x0-theta} follows these cases
+through the $\theta$-graphs.
+
+In the last row, \cref{thm:pencil-x0-theorem-s} finds the core. Its
+proof has three steps. First, every chain has one or two interior
+bodies, as a chain with more is usable. Second, each chain gives a rigid
+set. With two interior bodies its ends are adjacent, and the chain and
+its ends form a $4$-cycle, which is rigid. With one interior body, that
+body lies in a rigid set. Third, a maximal rigid set containing the set
+found is the core. In a sparse graph a maximal rigid set has the least
+singleton value among the sets containing it. So the planar deficiencies
+of the core and of the contraction add up to at most that of $G$
+(\cref{sec:main-component-sparse}). When $G$ itself is rigid, a maximal
+rigid set is all of $V(G)$, and we take the core maximal among the rigid
+sets that avoid one body of degree two.
 
 \begin{definition}[One step of the induction]
   \label{def:pencil-x0-reduces}
@@ -4466,8 +4540,10 @@ additive core applies.
         thm:pencil-x0-open-ear-two, thm:pencil-x0-open-ear-two-orbit,
         thm:pencil-x0-open-ear-one, thm:pencil-x0-splitoff,
         thm:pencil-x0-contract-rigid, thm:pencil-x0-contract-additive}
-  (1) Each clause of \cref{def:pencil-x0-reduces} is the hypothesis of
-  one step: the flat step (\cref{cor:pencil-jj-flat}), the cut vertex
+  (1) Each clause of \cref{def:pencil-x0-reduces}, and each alternative
+  in clauses (5) and (7), states the further conditions of one step, with
+  $\mathcal P$ at the graphs that the step assumes to attain. The steps
+  are equal deficiencies (\cref{cor:pencil-jj-flat}), the cut vertex
   and the chain of bridges (\cref{thm:pencil-x0-cut},
   \cref{thm:pencil-x0-bridge}), the cycle (\cref{thm:pencil-x0-cycle}),
   the open ears (\cref{thm:pencil-x0-open-ear},
@@ -4478,12 +4554,16 @@ additive core applies.
   \cref{thm:pencil-x0-open-ear-one}), the split-off
   (\cref{thm:pencil-x0-splitoff}) and the two contractions
   (\cref{thm:pencil-x0-contract-rigid},
-  \cref{thm:pencil-x0-contract-additive}). Each consumes attainment
-  exactly at the graphs the clause requires to satisfy $\mathcal P$.
+  \cref{thm:pencil-x0-contract-additive}). As every graph satisfying
+  $\mathcal P$ attains, the step applies.
 
   (2) Strong induction on the number of bodies, by (1) with $\mathcal P$
   the property of being smaller than $G$.
 \end{proof}
+
+The rest of the subsection shows that $G$ reduces in each case of the
+table. We begin with the chains, and with the standing hypotheses at the
+smaller graphs that a chain gives.
 
 \begin{definition}[Chains]
   \label{def:pencil-x0-chain}
@@ -4507,12 +4587,13 @@ additive core applies.
 \begin{proof}
   \leanok
   Extend a path through the body along bodies of degree two as far as
-  possible. An interior body has both of its neighbours on the path, so
-  if an end had degree two its other neighbour would either extend the
-  path or be the other end. In the second case the path and that edge
-  form a cycle joined to the rest of $G$ at one body at most, which is
-  then a cut vertex, or the cycle is all of $G$, whose bodies would all
-  have degree two. So both ends have degree at least three.
+  possible (\texttt{Graph.IsOpenEar.exists\_maximal}). An interior body
+  has both of its neighbours on the path. So if an end had degree two,
+  its other neighbour would either extend the path or be the other end.
+  In the second case the path and that edge form a cycle. Either the
+  cycle is all of $G$, and every body of $G$ has degree two, or the cycle
+  meets the rest of $G$ only at the other end, which is then a cut
+  vertex. So both ends have degree at least three.
 \end{proof}
 
 \begin{lemma}[The standing hypotheses at the smaller graphs of a chain]
@@ -4533,11 +4614,12 @@ additive core applies.
 \end{lemma}
 \begin{proof}
   \leanok
-  (1) The ends of the chain keep at least two neighbours in $V_1$ and
-  every other body of $V_1$ keeps all of them. A nonempty proper subset
-  of $V_1$ left by no edge of $G[V_1]$ would give one of $G - x_1$,
-  adding $x_2, \dots, x_k$ to whichever of it and its complement in
-  $V_1$ contains $b$.
+  (1) The ends of the chain keep at least two neighbours in $V_1$, and
+  every other body of $V_1$ keeps all of them. In $G - x_1$ no body of
+  $V_1$ other than $b$ has a neighbour outside $V_1$. So if $G[V_1]$ were
+  disconnected, a part of it that avoids $b$ would be left by no edge of
+  $G - x_1$, which is connected
+  (\texttt{Graph.Connected.induce\_of\_gate}).
 
   (2) The new edge is not parallel to an old one, since $u$ and $w$ are
   not adjacent, and $u$ and $w$ each exchange the edge to $v$ for the
@@ -4545,6 +4627,8 @@ additive core applies.
   or neither of $u$ and $w$, and then, with $v$ added in the first case,
   it is left by no edge of $G$.
 \end{proof}
+
+The next two lemmas settle the first three cases of the table.
 
 \begin{lemma}[A graph of degree two everywhere is a cycle]
   \label{lem:pencil-x0-cycle-reduces}
@@ -4557,9 +4641,10 @@ additive core applies.
 \begin{proof}
   \leanok
   By the cycle clause. Extend a path through a body as far as possible
-  along bodies of degree two. As every body has degree two, it stops
-  only when its ends are adjacent, and the path with that edge is
-  closed under adjacency, hence all of $G$.
+  along bodies of degree two (\texttt{Graph.IsOpenEar.exists\_maximal}).
+  As every body has degree two, the path stops only when its ends are
+  adjacent. The path with that edge is then closed under adjacency, and
+  so it is all of $G$, as $G$ is connected.
 \end{proof}
 
 \begin{lemma}[Graphs that are not 2-connected]
@@ -4587,16 +4672,18 @@ additive core applies.
   leaving $V'$, so the path extends into that side, which loses the
   end. The path stops when both ends have degree at least three. Each
   side is then connected, since its end is its only body with a
-  neighbour outside it; the end loses exactly one edge, so it keeps
-  degree at least two, and every other body keeps all its neighbours.
+  neighbour outside it. The end loses exactly one edge, so it keeps
+  degree at least two, and every other body keeps all its neighbours
+  (\texttt{Graph.IsX0Graph.induce\_of\_gate}).
 
   (2) By the cut-vertex clause at $v$. As $G - v$ is disconnected, it
   has a nonempty set $C$ of bodies, closed under adjacency in $G - v$
-  and not all of its bodies; the sides are $C \cup \{v\}$ and
+  and not all of its bodies. The sides are $C \cup \{v\}$ and
   $V(G) \setminus C$. The body $v$ sends at least two edges into each
   side, since a single one would be a bridge, and every other body
   keeps all its neighbours. Each side is connected, since $v$ is its
-  only body with a neighbour outside it.
+  only body with a neighbour outside it
+  (\texttt{Graph.IsX0Graph.induce\_of\_gate}).
 \end{proof}
 
 \begin{definition}[Usable chains]
@@ -4627,18 +4714,25 @@ additive core applies.
   \leanok
   \uses{lem:pencil-x0-chain-standing, lem:deficiency-ear-merge,
         lem:deficiency-one-body-chain}
-  By the ear clause or the split-off clause at the usable chain, on
-  $V_1$. $G[V_1]$ satisfies the standing hypotheses, and so do the graphs
-  with an interior body suppressed (\cref{lem:pencil-x0-chain-standing}):
-  the two neighbours of the suppressed body are not adjacent, because
-  one of them is an interior body or, when $k = 1$, by sparsity
-  (\cref{lem:deficiency-one-body-chain}). Where
-  $\operatorname{def}_3(G[V_1]; a, b) = \operatorname{def}_3(G[V_1])$,
-  some partition attaining $\operatorname{def}_3(G[V_1])$ has $a$ and
-  $b$ in one part, so $\operatorname{def}_3(G[V_1]) \le
-  \operatorname{def}_3(G)$ (\cref{lem:deficiency-ear-merge}). At $k = 1$
-  sparsity also gives the planar bound of the ear step
+  By the ear clause or the split-off clause of
+  \cref{def:pencil-x0-reduces} at the usable chain, on $V_1$. The graphs
+  $G[V_1]$ and $G$ with an interior body suppressed have fewer bodies
+  than $G$. Both satisfy the standing hypotheses
+  (\cref{lem:pencil-x0-chain-standing}). For the second, the two
+  neighbours of the suppressed body must not be adjacent. When
+  $k \ge 2$, one of them is an interior body, adjacent only to the
+  bodies next to it on the chain. When $k = 1$, they are $a$ and $b$,
+  which are not adjacent as $G$ is sparse
   (\cref{lem:deficiency-one-body-chain}).
+
+  Where $\operatorname{def}_3(G[V_1]; a, b) =
+  \operatorname{def}_3(G[V_1])$, some partition attaining
+  $\operatorname{def}_3(G[V_1])$ has $a$ and $b$ in one part. So
+  $\operatorname{def}_3(G[V_1]) \le \operatorname{def}_3(G)$
+  (\cref{lem:deficiency-ear-merge}), the bound that the ear steps with
+  one or two interior bodies assume. At $k = 1$ sparsity also gives
+  $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
+  \operatorname{def}_2(G[V_1])$ (\cref{lem:deficiency-one-body-chain}).
 \end{proof}
 
 \begin{lemma}[Contraction at a maximal planar-rigid set]
@@ -4653,12 +4747,16 @@ additive core applies.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-add-body, lem:pencil-contract-standing}
-  By the contraction clause at a maximal planar-rigid set $W$, which is
+  By the contraction clause at a maximal planar-rigid set $W$. It is
   proper, since $\operatorname{def}_2(G) > 0$. A body outside $W$ with
   two neighbours in $W$ would enlarge it (\cref{lem:deficiency-add-body},
-  at $n = 2$), so no such body exists, and $G/G[W]$ is smaller than $G$
+  at $n = 2$). So no such body exists, and $G/G[W]$ is smaller than $G$
   (\cref{lem:pencil-contract-standing}).
 \end{proof}
+
+The proof of \cref{thm:pencil-x0-theorem-s} counts edges at the bodies
+of degree two. The count finds such bodies, and, when $G$ is rigid and
+no two of them are adjacent, a rigid set that avoids one of them.
 
 \begin{lemma}[Counting bodies of degree two]
   \label{lem:pencil-x0-sparse-count}
@@ -4711,44 +4809,52 @@ additive core applies.
         lem:deficiency-two-body-chain, lem:deficiency-tight-rigid,
         lem:deficiency-add-body, lem:deficiency-merge-rigid,
         lem:deficiency-core-bound, lem:deficiency-additive-core}
-  $G$ is sparse (\cref{lem:deficiency-sparse}), so it has bodies of
-  degree two (\cref{lem:pencil-x0-sparse-count}), each on a chain
-  (\cref{lem:pencil-x0-chain-exists}), and every chain has at most two
-  interior bodies. A chain with two has adjacent ends, since otherwise
-  it would be usable (\cref{lem:deficiency-two-body-chain}), and then
-  the chain and its ends form a 4-cycle, which is tight and so rigid
-  (\cref{lem:deficiency-tight-rigid}). The body of a chain with one lies
-  in a rigid set (\cref{lem:deficiency-one-body-chain}).
+  \emph{The chains.} As $G$ has no planar-rigid set, it is sparse
+  (\cref{lem:deficiency-sparse}). So it has bodies of degree two
+  (\cref{lem:pencil-x0-sparse-count}), and each of them lies on a chain
+  (\cref{lem:pencil-x0-chain-exists}). No chain has three or more
+  interior bodies, as such a chain is usable. Let a chain
+  $a - x_1 - x_2 - b$ on $V_1$ have two. Its ends are adjacent.
+  Otherwise, as the chain is not usable,
+  $\operatorname{def}_3(G[V_1]; a, b) \neq \operatorname{def}_3(G[V_1])$,
+  and \cref{lem:deficiency-two-body-chain} at $G[V_1]$ would make it
+  usable. So $a$, $x_1$, $x_2$ and $b$ induce a $4$-cycle, which is tight
+  and so rigid (\cref{lem:deficiency-tight-rigid}). The body of a chain
+  with one interior body lies in a rigid set, since otherwise the chain
+  would be usable (\cref{lem:deficiency-one-body-chain}).
 
-  If $\operatorname{def}_3(G) > 0$, one chain gives a rigid set, and a
-  maximal rigid set $W$ containing it is proper. A body outside $W$ has
-  at most one neighbour in $W$ (\cref{lem:deficiency-add-body}), and
-  \cref{lem:deficiency-core-bound} with $X_0$ empty and
+  \emph{When $\operatorname{def}_3(G) > 0$.} Take a rigid set given by a
+  chain, and a maximal rigid set $W$ containing it. Then $W \neq V(G)$.
+  A body outside $W$ has at most one neighbour in $W$, as otherwise it
+  would enlarge $W$ (\cref{lem:deficiency-add-body}). By
+  \cref{lem:deficiency-core-bound} with $X_0$ empty, $s(W) \le s(X)$ for
+  every $X \supseteq W$, and \cref{lem:deficiency-additive-core} gives
+  the inequality.
+
+  \emph{When $\operatorname{def}_3(G) = 0$.} We take a body $x$ of degree
+  two and a rigid set that avoids it. If two bodies of degree two are
+  adjacent, they lie on a chain with two interior bodies, whose
+  $4$-cycle is rigid. The $4$-cycle contains two bodies of degree two,
+  and at least four bodies have degree two
+  (\cref{lem:pencil-x0-sparse-count}). So some body $x$ of degree two
+  lies off it. Otherwise let $x$ be any body of degree two. Then
+  $s_6(V(G) \setminus \{x\}) \le 0$ (\cref{lem:pencil-x0-sparse-count}),
+  so $V(G) \setminus \{x\}$ contains a rigid set
+  (\cref{lem:deficiency-sparse}).
+
+  Let $W$ be maximal among the rigid sets that avoid $x$ and contain the
+  one taken. The body $x$ has at most one neighbour in $W$. A neighbour
+  of degree two would have only one neighbour in $W$, while every body of
+  a rigid set has at least two neighbours in it
+  (\cref{lem:deficiency-zero-connected}). Two neighbours $a$ and $b$ of
+  degree at least three would make $a - x - b$ a chain on
+  $V(G) \setminus \{x\}$. As $W$ is rigid and contains $a$ and $b$, the
+  merged deficiency of $G - x$ at $a$ and $b$ would equal its
+  deficiency (\cref{lem:deficiency-merge-rigid}), and the chain would be
+  usable. Every other body outside $W$ has at most one neighbour in $W$,
+  by the maximality of $W$ (\cref{lem:deficiency-add-body}).
+  \Cref{lem:deficiency-core-bound} with $X_0 = \{x\}$ and
   \cref{lem:deficiency-additive-core} give the inequality.
-
-  If $\operatorname{def}_3(G) = 0$, take a body $x$ of degree two and a
-  rigid set avoiding it. If two bodies of degree two are adjacent, they
-  lie on a chain with two interior bodies, whose 4-cycle is rigid, and
-  since at least four bodies have degree two
-  (\cref{lem:pencil-x0-sparse-count}), one of them, $x$, lies off it.
-  Otherwise take any such $x$ and a rigid set in $V(G) \setminus \{x\}$,
-  which exists since $s_6(V(G) \setminus \{x\}) \le 0$
-  (\cref{lem:pencil-x0-sparse-count}, \cref{lem:deficiency-sparse}).
-  Let $W$ be a maximal rigid set in $V(G) \setminus \{x\}$ containing
-  the rigid set taken. The body $x$ has at most one
-  neighbour in $W$: a neighbour of degree two would have only one
-  neighbour in $W$, too few for a rigid set; and two neighbours of
-  degree at least three would be the ends of a chain $a - x - b$ whose
-  merged deficiency equals its deficiency
-  (\cref{lem:deficiency-merge-rigid}), which would be usable. Every
-  other body outside $W$ has at most one neighbour in $W$
-  (\cref{lem:deficiency-add-body}), and
-  \cref{lem:deficiency-core-bound} with $X_0 = \{x\}$ and
-  \cref{lem:deficiency-additive-core} give the inequality.
-
-  The informal statement adds $1 \le \operatorname{def}_2(G[W]) <
-  \operatorname{def}_2(G)$, which the contraction step does not need,
-  and excludes $\theta$-graphs, which the proof above does not use.
 \end{proof}
 
 \begin{theorem}[The structural coverage]
@@ -4772,27 +4878,31 @@ additive core applies.
         thm:pencil-x0-theorem-s, lem:deficiency-sparse,
         lem:deficiency-antitone, lem:pencil-contract-standing,
         lem:pencil-contract-standing-rigid}
-  Let $G$ satisfy the standing hypotheses. If $G$ is not
-  2-edge-connected, or has a cut vertex, it reduces by
-  \cref{lem:pencil-x0-cut-reduces}; if all of its bodies have degree
-  two, by \cref{lem:pencil-x0-cycle-reduces}. If
-  $\operatorname{def}_2(G) = \operatorname{def}_3(G)$ it reduces by the
-  flat clause; otherwise $\operatorname{def}_2(G) > 0$
-  (\cref{lem:deficiency-antitone}), and a planar-rigid set gives a
-  reduction by \cref{lem:pencil-x0-planar-rigid-reduces}. In the
-  remaining case $G$ is sparse (\cref{lem:deficiency-sparse}). A usable
-  chain gives a reduction (\cref{lem:pencil-x0-chain-reduces}); if there
-  is none, \cref{thm:pencil-x0-theorem-s} gives a core $W$, at which
-  $G[W]$ and $G/G[W]$ are smaller than $G$
-  (\cref{lem:pencil-contract-standing-rigid},
-  \cref{lem:pencil-contract-standing}), so $G$ reduces by the
-  contraction clause at $W$. The rest is
-  \cref{thm:pencil-x0-reduction-attains}; a simple 2-edge-connected
-  graph on at least three bodies is connected with minimum degree at
-  least two (\cref{def:cut-edges-2ec}).
+  Let $G$ satisfy the standing hypotheses. We take the cases of the
+  table in order. If $G$ is not 2-edge-connected, or $G - v$ is
+  disconnected for some body $v$, then $G$ reduces by
+  \cref{lem:pencil-x0-cut-reduces}. If every body has degree two, it
+  reduces by \cref{lem:pencil-x0-cycle-reduces}. If
+  $\operatorname{def}_2(G) = \operatorname{def}_3(G)$, it reduces by
+  clause (1) of \cref{def:pencil-x0-reduces}. Otherwise
+  $\operatorname{def}_2(G) > 0$, as $\operatorname{def}_3(G) \le
+  \operatorname{def}_2(G)$ (\cref{lem:deficiency-antitone}) and a
+  deficiency is never negative. Then a planar-rigid set gives a
+  reduction (\cref{lem:pencil-x0-planar-rigid-reduces}).
 
-  The informal case analysis sets $\theta$-graphs apart; here they fall
-  under the cases above (\cref{rem:pencil-x0-theta}).
+  In the remaining case $G$ is sparse (\cref{lem:deficiency-sparse}),
+  2-connected, and has a body of degree other than two. A usable chain
+  gives a reduction (\cref{lem:pencil-x0-chain-reduces}). If there is
+  none, \cref{thm:pencil-x0-theorem-s} gives a core $W$. Then $G[W]$ and
+  $G/G[W]$ are smaller than $G$
+  (\cref{lem:pencil-contract-standing-rigid},
+  \cref{lem:pencil-contract-standing}), and $G$ reduces by clause (7) at
+  $W$.
+
+  The rest is \cref{thm:pencil-x0-reduction-attains}. A simple
+  2-edge-connected graph on at least three bodies is connected, with
+  minimum degree at least two (\cref{def:cut-edges-2ec}), so it
+  satisfies the standing hypotheses.
 \end{proof}
 
 \subsection{The two main-component statements}

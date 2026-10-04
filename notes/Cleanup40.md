@@ -8,7 +8,7 @@ over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
 `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
 order and for which rounds are done. Round 3's Stop 1 closed on 2026-10-03: the PI approved the
 revised sample section, pinned as the exemplar (`notes/Phase40-exposition.md` *Autopilot: for the
-PI*). Tasks 1–20 have landed. **The next concrete task** is round 3's task 21, run unattended.
+PI*). Tasks 1–21 have landed. **The next concrete task** is round 3's task 22, run unattended.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -191,6 +191,8 @@ Round 3's recorded candidates, one line each. The detail is in `notes/Phase40-ex
 - `thm:pencil-conditional-realization-pair`'s two notes sit between its statement and proof, so
   plasTeX attaches the proof to a note and the graph draws the node unfilled; moving them after the
   proof fills it, the graph's one changed line (task 6).
+- `thm:pencil-x0-theorem-s`'s proof uses `lem:deficiency-zero-connected`, which its pin calls, with no
+  `\uses` edge to it (task 21).
 
 The coordinator's starting questions, guessed from file names and sizes (nobody has read the proofs
 for them):
