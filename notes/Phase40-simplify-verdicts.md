@@ -144,79 +144,85 @@ and `1b`'s node; one deletion carries `1a`, `1b` and `1c-ii`; `a2` last.
 ### Task 3 (N)
 
 **The reading** (*read, and the pins' signatures `#check`ed; spikes run with `lake lean`, 0 errors,
-0 warnings*). Four nodes disagree with their pins (`a1`, `c5`, `c6`, `c7`); reading the proofs found
-two more (`c8`'s `-lifting-restrict` and `-contract-standing`). Batching, for task 8: one TeX commit
-carries `m6`, `m7` (with `1c-i`), `c1`, the two-hubs edge and `c8`'s re-pins; one Lean commit `c6`
-and `c7`; the 111 lines `c5`, `c8` and the polynomial retire go in `r1`'s deletion. -
-**`sec:pencil-duality`, `sec:pencil-cycle` (task 1's (a)): NO-GO, keep.** Prior evidence stands:
-round 3 rewrote and kept both, and the chapter opening names them as unused (366 lines). -
-**`sec:pencil-girth-chain` (task 1's (a)): with `1a`.** It is kept as a start for a proof of the
-kernels. *`1a` retires them:* GO, retire its 8 nodes and Lean, 947 lines (`MaximalChain.lean`,
-`Girth.lean`, `Motive.lean`'s girth-five lemma; 990 with the 43 shared with `_of_card`), in `1a`'s
-deletion, Sonnet; the graph loses the subsection, and `cor:block-rank-vertex-two-cut` keeps one
-citing chapter (`r1`'s premise for its 2). *Kept:* NO-GO. Evidence: the map, read. - **`a1`,
-`lem:pencil-chain-side-connected`: with the girth chain.** Retired: moot. Kept: GO, strengthen the
-Lean. The `w′` count is a 12-line corollary by reversing the path (spike); pin it beside, and the
-formalization note goes. 1 commit, Sonnet; nothing a reader sees. Spike. - **Task 1's (c), dead pins
-in other chapters: NO-GO, keep (127 lines).** Each is a clause of its node: Crapo–Whiteley's
-rigidity, genuineness and rescaling invariants, the polarity's dimension, rigidity and genuineness,
-KT 5.5's conclusion at every simple graph, the cut-vertex equality (its ≥ half is live). Evidence:
-read, `#check`. - **Task 1's (b), six nodes with one caller-less clause: NO-GO, keep (100 lines).**
-Each dead pin is a clause, 11–27 lines: `-lifting-space-affine`'s `dim L(q) ≥ 3`
-(`cor:pencil-flat-x0` reads it), `-picture-local`'s admissibility, `thm:pencil-flat-rank`'s bound
-and equality case, the flat corollaries' second equivalence and vanishing deficiencies,
-`thm:pencil-jj-equality`'s `ℓ₀`. Evidence: the map, `#check`. - **`def:pencil-configuration`'s
-polynomial (task 1's (b)): GO, retire.** `pencilNormalOfPicturePoly`, its evaluation and two helpers
-(32 lines) have no caller, and the definition does not state it; its docstring's use in `X0Gen` is
-false. With `r1`'s deletion, Sonnet; three pins stay; nothing a reader sees. Evidence: the map. -
-**`c5`, `lem:pencil-selector-independent-scalar`: GO, retire.** At an admissible picture it is two
-lines from `-condition-linear`'s plane clause, its pin has no caller, and that proof cites it only
-"as in". Retire node and pin (52 lines), with `r1`'s deletion, Sonnet; the headline's `\uses`
-ancestry loses a node. Or keep it restated to its pin (drop "admissible"). The map, read. -
-**`lem:pencil-x0-two-hubs-obstruction` (task 1's (b)): NO-GO for the node; GO, drop one edge.** A
-design witness, as `q3c`'s: three chapters cite it as why the generic statement goes through the
-reduction. Only `thm:pencil-x0-generic-attains`' proof `\uses` it, for that reason; without the edge
-it leaves the ancestry, as its pins (74 lines) have. TeX, batched. Evidence: the map, read. -
-**`c6`, `lem:pencil-condition-linear`: GO, restate and pin the iff.** Its pencil-realization clause
-is `-config-distinct-realization`'s statement, and the iff's forward direction has no pin. Drop the
-clause (cite that node); pin `mem_liftingSpace_iff_coplanar`, 13 lines, whose half is the
-caller-less converse pin (spike). 1 commit, Sonnet; the node drops a clause another node states.
-Leave `-config-distinct-realization`. Depends on `c5`. Evidence: spike, `#check`. - **`c7`,
-`lem:pencil-x0-main-picture-open`: GO, strengthen the Lean.** "`U` is Zariski-open" is the pin's
-proof run at any main picture: `IsMainPicture.exists_mvPolynomial` (nonzero at `q₀`, non-roots main,
-no `[Infinite K]`) compiles with it, and the pin becomes a 4-line corollary (spike). 1 commit,
-Sonnet, about +6 lines; pinned beside; no statement moves. Evidence: spike. - **`c1`, split
-`lem:pencil-splitoff-curve`: GO, three one-pin nodes.** (1) keeps the label (two `SplitOff.lean`
-docstrings cite it); (2), the extension across `x`, follows it; (3), the lifting system's locality,
-goes after `def:pencil-weighted-lifting-system`, as `-picture-local` precedes the system. 1 commit,
-Sonnet, as round 1's task 19; graph +2 nodes, the theorem's three citations repointed; no strength
-change. Evidence: read. - **`c8`, `lem:pencil-lifting-restrict` (6 pins): GO, restate to its pins.**
-Five proofs (the cut, three open-ear steps, the one-ear base) cite it for "a polynomial in the
-heights of `G′`, read at the restriction, is one in those of `G`" (`eval_restrictPoly`), which it
-does not state. Add the clause; pin one declaration per clause (three), leaving the map, its
-unfolding and `restrictPoly` unpinned. TeX, Sonnet; strengthens the node to its pins. Evidence:
-read. - **`c8`, `thm:pencil-x0-bridge` (8 pins): GO, unpin five helpers.** Keep the step and its
-proof's two counts (`deficiency_induce_union_range_of_bridgePath`, the rank's
-`add_le_…_of_bridgePath`); the four `pathVertex` lemmas and `cutEdges_union_image_of_bridgePath`
-encode the path. `lem:pencil-bridge-fibre` keeps its lemma and `pathVertex`. TeX, Sonnet. Evidence:
-`#check`. - **`c8`, `lem:pencil-contract-standing` (4 pins): GO, restate to two pins.** No proof
-reads "`G/H` is 2-edge-connected" (a smaller graph needs only the standing hypotheses; the pin has
-no caller, 27 lines), and "if `def₂(G[W]) = 0`, `H` satisfies them" is `-contract-standing-rigid` at
-`n = 2`, which its one reader can cite, as the additive step does. Drop both, retire the first pin;
-1 commit, Sonnet; weakens the node to what its readers use. Evidence: the map, read. - **`c8`,
-`lem:pencil-generic-steer` (4 pins): GO, unpin the helper.**
-`exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` (263 lines) is one step of (a),
-named there; three pins stay: the parametrization, (a), (b). No split: its two readers cite (a) and
-(b) by part, and both need the parametrization. TeX, Sonnet. Evidence: read. - **`c8a`, seven more
-nodes with four or more pins: NO-GO here.** `def:pencil-nondegenerate`, `lem:pencil-x0-one-witness`,
-`thm:pencil-x0-main-component`, `lem:pencil-jj-rescale`, `lem:pencil-jj-embed-edges` (11),
-`thm:pencil-jj-equality`, `lem:pencil-chain-span-certificates`: mostly one pin per clause. For the
-principle-D audit queued with **PROSE**. Evidence: measured. - **`m6`: GO.**
-`thm:pencil-x0-theorem-s`'s proof cites `lem:deficiency-zero-connected`, whose pin
-`two_le_degree_of_isKDof_zero` its pin calls: add the edge. TeX, batched. Evidence: the map, read. -
-**`m7`: GO.** `lem:pencil-generic-steer`'s proof cites `lem:pencil-feasible-hub-conditions` twice,
-and its helper pin calls both halves of that node's pin: add the edge, with `1c-i`. TeX, batched.
-Evidence: the map, read. ### Task 4 (E)
+0 warnings*). Four nodes disagree with their pins (`a1`, `c5`, `c6`, `c7`); reading the proofs
+found two more (`c8`'s `-lifting-restrict` and `-contract-standing`). Batching, for task 8: one TeX
+commit carries `m6`, `m7` (with `1c-i`), `c1`, the two-hubs edge and `c8`'s re-pins; one Lean
+commit `c6` and `c7`; the 111 lines `c5`, `c8` and the polynomial retire go in `r1`'s deletion.
+
+- **`sec:pencil-duality`, `sec:pencil-cycle` (task 1's (a)): NO-GO, keep.** Prior evidence stands:
+  round 3 rewrote and kept both, and the chapter opening names them as unused (366 lines).
+- **`sec:pencil-girth-chain` (task 1's (a)): with `1a`.** It is kept as a start for a proof of the
+  kernels. *`1a` retires them:* GO, retire its 8 nodes and Lean, 947 lines (`MaximalChain.lean`,
+  `Girth.lean`, `Motive.lean`'s girth-five lemma; 990 with the 43 shared with `_of_card`), in `1a`'s
+  deletion, Sonnet; the graph loses the subsection, and `cor:block-rank-vertex-two-cut` keeps one
+  citing chapter (`r1`'s premise for its 2). *Kept:* NO-GO. Evidence: the map, read.
+- **`a1`, `lem:pencil-chain-side-connected`: with the girth chain.** Retired: moot. Kept: GO,
+  strengthen the Lean. The `w′` count is a 12-line corollary by reversing the path (spike); pin it
+  beside, and the formalization note goes. 1 commit, Sonnet; nothing a reader sees. Spike.
+- **Task 1's (c), dead pins in other chapters: NO-GO, keep (127 lines).** Each is a clause of its
+  node: Crapo–Whiteley's rigidity, genuineness and rescaling invariants, the polarity's dimension,
+  rigidity and genuineness, KT 5.5's conclusion at every simple graph, the cut-vertex equality (its
+  ≥ half is live). Evidence: read, `#check`.
+- **Task 1's (b), six nodes with one caller-less clause: NO-GO, keep (100 lines).** Each dead pin
+  is a clause, 11–27 lines: `-lifting-space-affine`'s `dim L(q) ≥ 3` (`cor:pencil-flat-x0` reads
+  it), `-picture-local`'s admissibility, `thm:pencil-flat-rank`'s bound and equality case, the flat
+  corollaries' second equivalence and vanishing deficiencies, `thm:pencil-jj-equality`'s `ℓ₀`.
+  Evidence: the map, `#check`.
+- **`def:pencil-configuration`'s polynomial (task 1's (b)): GO, retire.**
+  `pencilNormalOfPicturePoly`, its evaluation and two helpers (32 lines) have no caller, and the
+  definition does not state it; its docstring's use in `X0Gen` is false. With `r1`'s deletion,
+  Sonnet; three pins stay; nothing a reader sees. Evidence: the map.
+- **`c5`, `lem:pencil-selector-independent-scalar`: GO, retire.** At an admissible picture it is
+  two lines from `-condition-linear`'s plane clause, its pin has no caller, and that proof cites it
+  only "as in". Retire node and pin (52 lines), with `r1`'s deletion, Sonnet; the headline's
+  `\uses` ancestry loses a node. Or keep it restated to its pin (drop "admissible"). The map, read.
+- **`lem:pencil-x0-two-hubs-obstruction` (task 1's (b)): NO-GO for the node; GO, drop one edge.** A
+  design witness, as `q3c`'s: three chapters cite it as why the generic statement goes through the
+  reduction. Only `thm:pencil-x0-generic-attains`' proof `\uses` it, for that reason; without the
+  edge it leaves the ancestry, as its pins (74 lines) have. TeX, batched. Evidence: the map, read.
+- **`c6`, `lem:pencil-condition-linear`: GO, restate and pin the iff.** Its pencil-realization
+  clause is `-config-distinct-realization`'s statement, and the iff's forward direction has no pin.
+  Drop the clause (cite that node); pin `mem_liftingSpace_iff_coplanar`, 13 lines, whose half is the
+  caller-less converse pin (spike). 1 commit, Sonnet; the node drops a clause another node states.
+  Leave `-config-distinct-realization`. Depends on `c5`. Evidence: spike, `#check`.
+- **`c7`, `lem:pencil-x0-main-picture-open`: GO, strengthen the Lean.** "`U` is Zariski-open" is
+  the pin's proof run at any main picture: `IsMainPicture.exists_mvPolynomial` (nonzero at `q₀`,
+  non-roots main, no `[Infinite K]`) compiles with it, and the pin becomes a 4-line corollary
+  (spike). 1 commit, Sonnet, about +6 lines; pinned beside; no statement moves. Evidence: spike.
+- **`c1`, split `lem:pencil-splitoff-curve`: GO, three one-pin nodes.** (1) keeps the label (two
+  `SplitOff.lean` docstrings cite it); (2), the extension across `x`, follows it; (3), the lifting
+  system's locality, goes after `def:pencil-weighted-lifting-system`, as `-picture-local` precedes
+  the system. 1 commit, Sonnet, as round 1's task 19; graph +2 nodes, the theorem's three citations
+  repointed; no strength change. Evidence: read.
+- **`c8`, `lem:pencil-lifting-restrict` (6 pins): GO, restate to its pins.** Five proofs (the cut,
+  three open-ear steps, the one-ear base) cite it for "a polynomial in the heights of `G′`, read at
+  the restriction, is one in those of `G`" (`eval_restrictPoly`), which it does not state. Add the
+  clause; pin one declaration per clause (three), leaving the map, its unfolding and `restrictPoly`
+  unpinned. TeX, Sonnet; strengthens the node to its pins. Evidence: read.
+- **`c8`, `thm:pencil-x0-bridge` (8 pins): GO, unpin five helpers.** Keep the step and its proof's
+  two counts (`deficiency_induce_union_range_of_bridgePath`, the rank's `add_le_…_of_bridgePath`);
+  the four `pathVertex` lemmas and `cutEdges_union_image_of_bridgePath` encode the path.
+  `lem:pencil-bridge-fibre` keeps its lemma and `pathVertex`. TeX, Sonnet. Evidence: `#check`.
+- **`c8`, `lem:pencil-contract-standing` (4 pins): GO, restate to two pins.** No proof reads
+  "`G/H` is 2-edge-connected" (a smaller graph needs only the standing hypotheses; the pin has no
+  caller, 27 lines), and "if `def₂(G[W]) = 0`, `H` satisfies them" is `-contract-standing-rigid` at
+  `n = 2`, which its one reader can cite, as the additive step does. Drop both, retire the first
+  pin; 1 commit, Sonnet; weakens the node to what its readers use. Evidence: the map, read.
+- **`c8`, `lem:pencil-generic-steer` (4 pins): GO, unpin the helper.**
+  `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` (263 lines) is one step of
+  (a), named there; three pins stay: the parametrization, (a), (b). No split: its two readers cite
+  (a) and (b) by part, and both need the parametrization. TeX, Sonnet. Evidence: read.
+- **`c8a`, seven more nodes with four or more pins: NO-GO here.** `def:pencil-nondegenerate`,
+  `lem:pencil-x0-one-witness`, `thm:pencil-x0-main-component`, `lem:pencil-jj-rescale`,
+  `lem:pencil-jj-embed-edges` (11), `thm:pencil-jj-equality`, `lem:pencil-chain-span-certificates`:
+  mostly one pin per clause. For the principle-D audit queued with **PROSE**. Evidence: measured.
+- **`m6`: GO.** `thm:pencil-x0-theorem-s`'s proof cites `lem:deficiency-zero-connected`, whose pin
+  `two_le_degree_of_isKDof_zero` its pin calls: add the edge. TeX, batched. Evidence: the map, read.
+- **`m7`: GO.** `lem:pencil-generic-steer`'s proof cites `lem:pencil-feasible-hub-conditions`
+  twice, and its helper pin calls both halves of that node's pin: add the edge, with `1c-i`. TeX,
+  batched. Evidence: the map, read.
+
+### Task 4 (E)
 
 **The reading** (*read; two spikes, not retained, run with `lake lean`: 0 errors and 0 warnings,
 every re-derived step at the three standard axioms*). The seven steps choose their configuration in
