@@ -96,7 +96,8 @@ is the plane of an atom's bonds and the point is the atom's centre.
   addition a per-body nonzero homogeneous point $v \mapsto q_v \in
   K^{k+2}$, incident to its own panel ($q_v \cdot n_v = 0$). Every
   link's supporting extensor must then pass through the points of both
-  its endpoints (\cref{def:extensor-through-point}).
+  its endpoints (\cref{def:extensor-through-point}). We call this
+  requirement the \emph{pencil condition}.
 \end{definition}
 
 The incidence $q_v \cdot n_v = 0$ is forced at any body with a nonzero
@@ -179,7 +180,7 @@ $q$, and lying in that panel into passing through $q$.
   image passes through $q$.
 \end{proof}
 
-\begin{lemma}[Self-duality of the pencil condition]
+\begin{lemma}[Self-duality of pencil realizations]
   \label{lem:pencil-self-dual}
   \lean{CombinatorialRigidity.Molecular.hasPencilPanelRealization_mapExtensor_screwComplementIso}
   \leanok
@@ -221,7 +222,7 @@ This subsection supplies the pencil condition at the base case of
 \cref{thm:pencil-reduction}: every loopless multigraph on at most two
 vertices (\cref{lem:pencil-base-case}). Katoh--Tanigawa's two-vertex
 base realization of a parallel edge pair
-(\cref{lem:theorem-55-base-producer-parallel}, KT Lemma~5.3, p.~670)
+(\cref{lem:theorem-55-base-producer-parallel}, KT Lemma~5.3, p.~669)
 places both hinges in a single shared panel $n^{\perp}$ with two
 linearly independent supporting extensors
 (\cref{lem:extensor-pair-in-panel}), which fill the whole screw space

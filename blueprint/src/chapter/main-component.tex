@@ -1,122 +1,154 @@
 \section{The main component of the pencil configuration space}
 \label{sec:main-component}
 
-\Cref{sec:pencil-main-component-route} reduced the hinge-pencil question
-to the two main-component statements
-(\cref{def:pencil-main-component-statements}): every simple
-two-edge-connected multigraph has a pencil realization at the deficiency
-rank with adjacent concurrency points distinct, and a generic one
-whenever a nondegenerate realization exists at all. This section proves
-both over every infinite field (\cref{thm:pencil-x0-generic-attains}),
-and with them the pencil conjecture (\cref{thm:pencil-conjecture}). The
-rest of this introduction outlines the argument; the subsections follow
-it in order.
+This section proves the two main-component statements over every
+infinite field (\cref{thm:pencil-x0-generic-attains}). The first asks
+that every simple two-edge-connected multigraph on at least three bodies
+have an adjacent-distinct pencil realization at the deficiency rank
+(\cref{def:pencil-main-component-statements}). The second asks such a
+multigraph for a generic pencil realization when it is
+nondegeneracy-feasible. At a simple two-edge-connected multigraph, the
+contraction and split cases of the pencil reduction follow from the two
+statements. So this section completes the proof of the pencil conjecture
+(\cref{thm:pencil-conjecture}). \Cref{sec:pencil-main-component-route}
+derives the two cases from the statements, and sketches the idea of this
+section: to lift planar pictures of the graph to configurations of points
+in $K^4$. It also explains, at $K_{2,3}$, why the generic statement needs
+a further argument. Besides \cref{sec:pencil}, the reader needs the
+deficiency and the merged deficiency of \cref{sec:molecular-deficiency},
+and the rank-addition lemmas of
+\cref{sec:molecular-rigidity-matrix-blocks}. We also use splitting off and
+contraction (\cref{def:graph-operations}, \cref{def:rigid-contraction}).
 
-\emph{The main component.} Draw the bodies in the plane,
-$v \mapsto q_v = (x_v, y_v) \in K^2$, with adjacent bodies drawn apart
-and no closed neighbourhood drawn on a line, and lift each body to the
-point $p_v = (x_v, y_v, z_v, 1) \in K^4$ at a height $z_v$. The lifted
-points of every closed neighbourhood lie in a common plane exactly when
-the heights agree with an affine function of the drawing on each closed
-neighbourhood. That condition is linear, so the heights form a linear
-space $L(q)$, the lifting space of the drawing
-(\cref{lem:pencil-condition-linear}). Each such configuration is a pencil
-realization, with concurrency point $p_v$, with panel the plane through
-the closed neighbourhood of $v$, and with the joins $p_u \wedge p_v$ of
-adjacent points as hinges (\cref{lem:pencil-config-distinct-realization},
-\cref{lem:pencil-config-point-join-rank}). The drawings of least
-$\dim L(q)$ contain the non-roots of a nonzero polynomial
-(\cref{lem:pencil-x0-main-picture-open}), and over them the
-configurations form a vector bundle whose closure is the main component
-(\cref{rem:pencil-x0-main-component}). Its general
-configuration \emph{attains} when, off the zero set of a nonzero
-polynomial in the drawing and, fibre by fibre, off the zero set of a
-nonzero polynomial in the heights, the rank is the target
-$6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
-(\cref{def:pencil-x0-attains}). The rank is lower semicontinuous, so one
-configuration at the target over a drawing of least $\dim L(q)$ forces
-the general one, and that configuration is itself an adjacent-distinct
-realization (\cref{thm:pencil-x0-main-component}). The main component is
-never formed: its irreducibility is used only in the form that two
-nonempty Zariski-open conditions on one fibre $L(q)$ meet.
+We fix the following notation and terms.
+\begin{itemize}
+  \item $\operatorname{def}_2(G)$ and $\operatorname{def}_3(G)$ are the
+    deficiencies of \cref{def:D-deficiency} at $n = 2$ and $n = 3$
+    ($D = 3$ and $D = 6$), so that
+    $\operatorname{def}_3(G) = \operatorname{def}(\tilde G)$. We call
+    $\operatorname{def}_2(G)$ the \emph{planar deficiency} of $G$.
+  \item A graph satisfies the standing hypotheses
+    (\cref{def:pencil-x0-standing}) if it is finite, simple and connected,
+    with minimum degree at least two.
+  \item The \emph{target} of $G$ is its deficiency rank
+    $\operatorname{tgt}(G) = 6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
+    (\cref{def:pencil-rank-hypothesis}, at $D = 6$). We say that $G$
+    \emph{has its target} at a configuration of rank
+    $\operatorname{tgt}(G)$ (\cref{def:pencil-configuration}).
+  \item $L_G(q)$ is the lifting space of $G$ at a picture $q$
+    (\cref{def:pencil-lifting-space}), written $L(q)$ when $G$ is clear. A
+    configuration $(q, z)$ with $q$ admissible and $z \in L_G(q)$ is
+    \emph{attaining} if $G$ has its target at it, and $z$ is then an
+    \emph{attaining height}.
+  \item The configurations at which the points of every closed
+    neighbourhood lie in a plane form the \emph{pencil configuration
+    space} of $G$. Over an admissible picture $q$, they are the
+    configurations $(q, z)$ with $z \in L(q)$
+    (\cref{lem:pencil-condition-linear}). The \emph{main component} is the
+    closure of the part of this space over the main pictures
+    (\cref{def:pencil-main-picture}). We never form it
+    (\cref{rem:pencil-x0-main-component}).
+  \item \emph{General} means off the zero set of a nonzero polynomial: in
+    the picture coordinates, and over each picture in the heights. The
+    general configuration of $G$ attains (\cref{def:pencil-x0-attains}) if
+    a general configuration $(q, z)$ with $z \in L(q)$ is attaining.
+  \item A \emph{flat configuration} is a configuration $(q, 0)$, with all
+    heights zero.
+  \item A set $W$ of at least two bodies is \emph{rigid} if
+    $\operatorname{def}_3(G[W]) = 0$, that is, if $G[W]$ is a rigid
+    subgraph (\cref{def:rigid-subgraph}). It is \emph{planar-rigid} if
+    $\operatorname{def}_2(G[W]) = 0$.
+  \item A contraction step contracts a set $W \subsetneq V(G)$ of at least
+    two bodies to one of its bodies. We call $W$, and the subgraph
+    $H = G[W]$ that it induces, the \emph{core}, and write $G/H$ for the
+    contraction (\cref{def:rigid-contraction}). The core is
+    \emph{additive} if it is rigid and
+    $\operatorname{def}_2(H) + \operatorname{def}_2(G/H) \le
+    \operatorname{def}_2(G)$.
+  \item The \emph{value} of a partition $P$ of the bodies is its
+    $D$-deficiency $\operatorname{def}_{\tilde G}(P)$
+    (\cref{def:D-deficiency}). The \emph{singleton value} of a set $X$ of
+    bodies is $s_D(X) = D(|X| - 1) - (D - 1)\, e(X)$, the value of the
+    partition of $G[X]$ into singletons. Here $e(X)$ is the number of edges
+    joining two distinct bodies of $X$, and $s = s_3$ is the case $n = 2$.
+  \item A graph is \emph{smaller than} $G$ if it satisfies the standing
+    hypotheses and has fewer bodies than $G$. The \emph{structural
+    coverage} is the case analysis by which every graph satisfying the
+    standing hypotheses admits a step of the induction at graphs smaller
+    than it (\cref{thm:pencil-x0-coverage}).
+  \item Let $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$
+    (\cref{sec:main-component-chain}), and take a configuration of $G$
+    whose hinges on the ear are nonzero. Then $\Lambda$ is the span of the
+    hinges of the ear, and $\rho$ is the space of relative screws of $a$
+    and $b$ in $G[V_1]$ (\cref{def:relative-screws}). The inequality
+    $(\star)$ is
+    \[
+      \dim(\rho + \Lambda) \;\ge\; k + 1 + \operatorname{def}(\tilde
+      G[V_1]) - \operatorname{def}(\tilde G).
+    \]
+    Where $G[V_1]$ has its target, $(\star)$ gives $G$ rank at least
+    $\operatorname{tgt}(G)$ (\cref{sec:main-component-short}). In the
+    contraction steps, $\rho$ is instead the map of
+    \cref{lem:pencil-contract-kernel-bound}, which takes a vector $(z, h)$
+    of unknowns of the rescaled lifting system to the height that agrees
+    with $z$ on the core and vanishes elsewhere.
+  \item The \emph{flat coordinates} $(\sigma(c), \tau(c)) \in K^3 \times
+    K^3$ of a screw $c \in \Lambda^2 K^4$ are its image under the
+    isomorphism of \cref{lem:pencil-join-flat}.
+\end{itemize}
 
-\emph{The flat rank and Jackson and Jord\'an's equality.} Write
-$\operatorname{def}_2$ and $\operatorname{def}_3$ for the deficiency of
-\cref{def:D-deficiency} at $n = 2$ and $n = 3$, so that
-$\operatorname{def}_3(G) = \operatorname{def}(\tilde G)$. At a flat
-configuration, all heights zero, every hinge lies in one plane and the
-rank is exactly $6|V(G)| - 3 - \dim L(q)$ (\cref{thm:pencil-flat-rank});
-a partition count bounds $\dim L(q)$ below by
-$3 + \operatorname{def}_2(G)$ (\cref{lem:pencil-lifting-space-deficiency}).
-At a general drawing of a simple graph the bound is an equality
-(\cref{thm:pencil-jj-equality}). This is the form in which the argument
-uses Jackson and Jord\'an's pin-collinear theorem~\cite{jacksonJordan2008pin};
-here it is derived from the planar case of Katoh and Tanigawa's rank
-formula (\cref{thm:theorem-55-6-rows}), over every infinite field. So
-where the two deficiencies agree the flat configuration attains
-(\cref{cor:pencil-jj-flat}).
+\Cref{sec:main-component-carrier} defines the configurations and proves
+two lemmas used throughout. If one configuration $(q, z)$ with $q$ a main
+picture and $z \in L(q)$ has rank $\operatorname{tgt}(G)$, then the
+general configuration of $G$ attains (\cref{lem:pencil-x0-one-witness}).
+Two nonempty Zariski-open subsets of a linear space meet
+(\cref{lem:pencil-x0-fibre-intersection}). \Cref{sec:main-component-flat}
+computes the rank of a flat configuration. \Cref{sec:main-component-jj}
+derives Jackson and Jord\'an's equality~\cite{jacksonJordan2008pin} for
+the dimension of the lifting space from the case $d = 2$ of KT
+Theorem~5.6 (\cref{thm:theorem-55-6-rows}). The equality then holds over
+every infinite field. With the flat rank, it settles the graphs whose two
+deficiencies agree (\cref{cor:pencil-jj-flat}).
 
-\emph{The induction.} The general configuration attains at every graph
-satisfying the standing hypotheses, finite, simple and connected with
-minimum degree at least two (\cref{def:pencil-x0-standing}), by a strong
-induction on the number of bodies (\cref{thm:pencil-x0-reduction-attains},
-\cref{thm:pencil-x0-coverage}). Each step takes one drawing that is
-general for the smaller graphs and of least $\dim L(q)$ for $G$, and
-finds the heights inside the single fibre $L_G(q)$. At a cut vertex and along a
-chain of bridges, $G$ is a fibre product of two smaller graphs whose
-ranks and deficiencies add (\cref{sec:main-component-cut}). Across an ear
-the rank grows with the span of its hinges together with the relative
-screws of its two ends. With five or more interior bodies the hinges span
-the whole screw space at a general configuration, as one hexagon of joins
-certifies (\cref{sec:main-component-chain}). With fewer, the span is
-counted at a suitable configuration: with two interior bodies, from three
-independent joins; with one, by choosing the drawing of the interior body
-together with the heights of the rest; and with three or four, or two at
-non-adjacent ends, against $G$ with its second interior body suppressed,
-which is then put back on a line through a neighbour
-(\cref{sec:main-component-short}, \cref{sec:main-component-orbit}). A body
-of degree two whose neighbours are not adjacent is split off as in
-Jackson and Jord\'an's proof~\cite{jacksonJordan2008pin}: it starts on the
-line through the points of its neighbours and moves along a curve to a
-general position, where the rank is at least its starting value
-(\cref{sec:main-component-splitoff}). At a rigid core the step is Katoh
-and Tanigawa's contraction case~\cite[Lemma~6.3]{katohTanigawa2011}, read
-along a curve on which the core shrinks to one point and the heights
-solve a rescaled lifting system whose kernel does not jump at the end of
-the curve (\cref{sec:main-component-contract},
-\cref{sec:main-component-contract-additive}). That every graph
-satisfying the standing hypotheses admits one of these steps is a case
-analysis on $\operatorname{def}_2$ and $\operatorname{def}_3$ alone
-(\cref{sec:main-component-sparse}, \cref{sec:main-component-coverage}): a
-bridge or a cut vertex; a cycle; equal deficiencies; a planar-rigid set,
-contracted at a maximal one; and otherwise, in a sparse 2-connected graph
-that is not a cycle, a chain of bodies of degree two to which an ear or
-split-off step applies, or a rigid core at which the planar deficiencies
-add (\cref{thm:pencil-x0-theorem-s}). The distinct statement follows
-(\cref{lem:pencil-x0-distinct-statement}).
+The general configuration of every graph satisfying the standing
+hypotheses attains. We prove this by strong induction on the number of
+bodies (\cref{thm:pencil-x0-reduction-attains}). Each step assumes that
+the general configuration attains at none, one or two graphs with fewer
+bodies, and proves it at $G$. Every step ends with
+\cref{lem:pencil-x0-one-witness}. Most steps also use
+\cref{lem:pencil-x0-fibre-intersection} to find the heights of the one
+configuration they need. \Cref{sec:main-component-cut} describes the
+scheme that the steps share, and proves the steps at a cut vertex and
+along a chain of bridges. The six subsections after it prove the other
+steps:
+\begin{itemize}
+  \item contraction at a core of planar deficiency zero, which is KT
+    Lemma~6.3 read on configurations (\cref{sec:main-component-contract});
+  \item a cycle, and an open ear with at least five interior bodies
+    (\cref{sec:main-component-chain});
+  \item an open ear with two, three or four interior bodies
+    (\cref{sec:main-component-short});
+  \item an open ear with one or two interior bodies whose ends are not
+    adjacent (\cref{sec:main-component-orbit});
+  \item splitting off a body of degree two whose neighbours are not
+    adjacent (\cref{sec:main-component-splitoff});
+  \item contraction at an additive core, again by KT Lemma~6.3
+    (\cref{sec:main-component-contract-additive}).
+\end{itemize}
+\Cref{sec:main-component-sparse} proves the estimates on partitions that
+the structural coverage uses. \Cref{sec:main-component-coverage} gives the
+coverage, which completes the induction (\cref{thm:pencil-x0-coverage}).
 
-\emph{The generic statement.} It does not follow fibre by fibre: at two
-pencil hubs with three common neighbours, $K_{2,3}$ the smallest, no
-configuration over a general drawing is nondegenerate
-(\cref{lem:pencil-x0-two-hubs-obstruction}). It is proved instead inside
-the induction of the pencil reduction (\cref{thm:pencil-reduction}), from
-the conditioned pair at every smaller graph
-(\cref{thm:pencil-generic-step}). Without a planar-rigid set of two or
-more bodies, Jackson and Jord\'an's equality, at $G$ and at $G$ with one
-new body joined to two of its bodies, separates the planes of those two
-bodies, and the general configuration is nondegenerate
-(\cref{thm:pencil-x0-base-generic}). Otherwise a minimal planar-rigid set
-gives a body of degree two between two hubs across which the deficiency
-does not drop, or a pendant triangle at a body of degree at least four
-(\cref{lem:pencil-rigid-good-ear}). The generic realization of the
-smaller graph, steered to meet the conditions the new bodies need,
-extends across it (\cref{lem:pencil-generic-steer},
-\cref{lem:pencil-generic-one-ear},
-\cref{lem:pencil-generic-pendant-triangle}). The graphs this induction
-meets that are not two-edge-connected are the reduction's cut-edge case
-(\cref{lem:pencil-cut-case}), and the result is the conditioned pair at
-every multigraph with at least one body
-(\cref{thm:pencil-conditioned-pair-nonempty}).
+\Cref{sec:main-component-statements} proves the two main-component
+statements. The first follows from the induction, as an attaining
+configuration is an adjacent-distinct pencil realization
+(\cref{lem:pencil-x0-distinct-statement}). The second is proved inside the
+induction of the pencil reduction (\cref{thm:pencil-reduction}). Its step
+at $G$ may assume the conditioned pair at every multigraph with fewer
+bodies, at least one (\cref{thm:pencil-generic-step}). This induction
+gives the conditioned pair at every multigraph with at least one body
+(\cref{thm:pencil-conditioned-pair-nonempty}), and the second statement
+with it.
 
 \subsection{Planar pictures, the lifting space, and the main component}
 \label{sec:main-component-carrier}
@@ -1573,7 +1605,7 @@ contraction is simple. We need the step only at the two kinds of core
 that the structural coverage contracts
 (\cref{sec:main-component-coverage}). At a core of planar deficiency zero
 the argument is simplest, and \cref{sec:main-component-contract-additive}
-adapts it to a rigid core whose planar deficiencies add.
+adapts it to an additive core.
 
 We follow the scheme of \cref{sec:main-component-cut}. The picture is
 chosen as there, general for $G/H$ and for $H$ and a main picture of $G$.

@@ -7,11 +7,11 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 24 landed (tasks 1–24; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 25 landed (tasks 1–25; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 25, `main-component.tex`'s introduction, against the pinned exemplar
-(`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
-bullet. All eight build-or-leave items are written. Round manual: `CLEANUP.md`.
+task 26, `intro.tex`'s reader path, checked against both introductions and the pinned exemplar
+(`notes/Phase40-exposition-exemplar.md`), returning per *Hand-off*'s standing bullet. All eight
+build-or-leave items are written. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -57,12 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–24
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–25
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). Every subsection of `pencil.tex`
-and `main-component.tex` is done (the split-off was task 1), and `pencil.tex`'s introduction (task
-24); next is `main-component.tex`'s (task 25), then `intro.tex`'s reader path (task 26). All eight
+and `main-component.tex` is done (the split-off was task 1), and so are both introductions (tasks
+24 and 25). Next is `intro.tex`'s reader path (task 26), then the close (task 27). All eight
 build-or-leave items are written.
 
 **Verified at the open:**
@@ -79,7 +79,8 @@ build-or-leave items are written.
   labels are the stable reference.
 
 **What the inventory found** (each task re-derives its own findings):
-- **An unintroduced "informal argument"** in 23 lines of prose; default (a) rules (task 25 re-checks).
+- **An unintroduced "informal argument"** in 23 lines of prose; default (a) ruled, and task 25's
+  grep found none left.
 - **Nodes outside the closure** of `thm:pencil-conjecture`'s pins, read in the Lean (`CLEANUP.md`
   §B): 17 of `pencil.tex`'s 41 and two kernel pins (measured, task 24), and in `main-component.tex`
   `thm:pencil-x0-main-component`, `thm:pencil-x0-closed-ear`.
@@ -147,7 +148,9 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   task 25, "the pencil condition" ("the point condition" is left to task 23). Four forward `\cref`s.
 - [x] **4. P2 — base, cycle and extension** (`6bc95de3`, then a corrective). The base case leads;
   `lem:cycle-coplanar-realization` follows its `\uses` target; `sec:pencil-cycle`'s two lemmas serve
-  no case (edge: *Moved*). *(f):* new, *cross-incidence(s)*. Nine forward `\cref`s.
+  no case (edge: *Moved*). *(f):* new, *cross-incidence(s)*. Nine forward `\cref`s. Task 25 set
+  `sec:pencil-base`'s pinpoint for KT Lemma 5.3 to p. 669, where KT state it (it was p. 670, where
+  the proof ends; `panel-layer.tex`'s "cf. … p. 670" cites that proof and stays).
 - [x] **5. P3 — `sec:pencil-reduction`** (`96eda8e2`). A roadmap; the cut-edge reason; loop and base
   cases live (edges: *Moved*); KT Theorem 5.6's route, its `K_4` failure, KT Lemmas 4.5–4.6. *(f):*
   in a node, *deficiency rank*. Forward `\cref`s into `sec:main-component`.
@@ -198,66 +201,52 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   `lem:pencil-generic-steer` (one polynomial parametrization joins the two realizations); the
   three-body construction is named; the good-ear remark is cut (a). *(f):* removed, *steering*,
   *chart (point)*, *good ear* and seven more; for task 25, *planar-rigid*, *singleton value*, *target*.
-- [x] **24. F1 — `pencil.tex`'s introduction** (this commit). One paragraph became a three-paragraph
-  roadmap that points to the subsection openings instead of repeating them (the molecular reading,
-  the dualization, the minimum-degree count and the main component are cut from it).
-  - What is proved and in what order: done. `thm:pencil-conjecture` with its two further claims,
-    then each subsection on the proof in one sentence, in order.
-  - What the reader needs: done. `sec:molecular-coplanar-multigraph`, and `sec:molecular-deficiency`
-    for the deficiency and rigid subgraphs. The polarity is needed only in `sec:pencil-duality`.
-  - Off the proof: done, four parts named: `sec:pencil-duality`, `sec:pencil-cycle`, the kernel
-    reduction (`thm:pencil-conditional-realization-pair`'s second and third pins) and
-    `sec:pencil-girth-chain`. Read in the Lean (the closure of `pencil_conjecture` and
-    `pencilPair_of_nonempty`, measured as task 8 did): none of their pins is in it, and no live
-    node `\uses` them. Also outside the closure, not named:
-    `thm:pencil-conditional-realization`; `lem:two-pencil-extension-iff` and
-    `lem:pencil-base-parallel-pair`, which live nodes `\uses` for notation or the same construction
-    (the base case's pin calls `exists_linearIndependent_extensor_pair_through_point` directly).
-  - *(f):* standard, *pencil of lines*, *spanning multigraph*, *projectively distinct*, *nonparallel*
-    (KT), *picture*, *lifting*; in a node, *pencil realization*, *deficiency rank*, *nondegenerate*,
-    *kernel statements*; removed, *concurrency point*, *main component*, *kernel hypotheses*. Forward
-    `\cref`s added: the ten subsections, `def:pencil-panel-realization`, `def:pencil-nondegenerate`,
-    `lem:two-pencil-extension-iff`, `def:pencil-main-component-statements`.
-- [ ] **25. F2 — `main-component.tex`'s introduction, 1–122.** It is Phase 40's close-time outline,
-  the account `notes/BlueprintExposition.md` records as written.
-  - Re-read it against the rewritten subsections.
-  - Add a notation paragraph: `def₂`, `def₃`, `tgt`, attaining, the standing hypotheses, `ρ`, `Λ`
-    and `(⋆)`.
-  - Name the two tools every step uses.
-  - Default (a), as ruled, leaves nothing that names "the informal argument". Confirm with
-    `grep -in informal` over the round's surface, and that each kept mention reads on its own.
-  - From task 1: the split-off sentence (78–84) says the body "starts on the line through the
-    points of its neighbours" *as in* JJ's proof. The TR does not: JJ move the new pin, then
-    reinsert the vertex by extensions. Match `sec:main-component-splitoff`'s account.
-  - **The PI's flags (2026-10-03; "as long as it doesn't get missed").** The introduction is
-    wordy and repeats itself. Their example, "Each step deduces …", restated the strong induction
-    and is already cut. *The induction* paragraph packs the whole case analysis into one
-    paragraph: split it. Apply defaults (e) and (f) throughout. The notation paragraph is where
-    the chapter's coinages are defined (default (f)).
-  - From task 9: the carrier's opening now sketches the lifting idea and the one witness, so *The
-    main component* paragraph (15–41) can shrink to pointers.
-  - From task 11: *The flat rank* paragraph's "the flat configuration attains" misuses the term;
-    the general configuration attains (`cor:pencil-jj-flat`), a configuration *has* a rank.
-  - From task 12: the same paragraph's "at a general drawing of a simple graph the bound is an
-    equality" drops `thm:pencil-jj-equality`'s three members in every closed neighbourhood.
-  - From task 13: *The induction*'s "finds the heights inside the single fibre `L_G(q)`" fails for
-    some steps, and its bridges' ranks and deficiencies do not just add (`sec:main-component-cut`).
-  - From task 18: *The induction*'s "put back on a line through a neighbour" fits three and four
-    interior bodies; at two with non-adjacent ends `x₁` moves too (`sec:main-component-orbit`).
-  - From task 19: "the planar deficiencies add" (the introduction, `sec:main-component-contract`,
-    the coverage) means only `def₂(H) + def₂(G/H) ≤ def₂(G)`; define *additive core* so.
-  - From task 22: *The generic statement*'s "fibre by fibre", "steered" and "between two hubs"
-    go, as in `sec:main-component-statements`' opening.
-  - From task 24: `pencil.tex`'s roadmap says only that `sec:main-component` proves the two
-    statements by lifting pictures. `sec:pencil-main-component-route` already sketches the lifting,
-    the main component and the `K_{2,3}` obstruction, so *The main component* and *The generic
-    statement* point there, not a third account. "The hinge-pencil question" (line 4) goes.
+- [x] **24. F1 — `pencil.tex`'s introduction** (`1432722c`; full entry there). A three-paragraph
+  roadmap that points to the subsection openings; four parts named off the proof, checked against
+  the closure of both headlines in the Lean. *(f):* removed, *concurrency point*, *main component*,
+  *kernel hypotheses*.
+- [x] **25. F2 — `main-component.tex`'s introduction** (this commit). Phase 40's close-time outline
+  became a roadmap with a notation list: what is proved and what the reader needs, with the lifting
+  and `K_{2,3}` left to `sec:pencil-main-component-route` (no third account); the notation; the
+  carrier, flat and JJ subsections; the steps, one item per subsection; the coverage; the
+  statements. "The hinge-pencil question" is gone.
+  - Re-read against the subsections: done. No old sentence survives. The claims tasks 1, 11, 12,
+    13, 18 and 22 found false (JJ's split-off order; "the flat configuration attains"; the dropped
+    three members; the single fibre and bridges that "add"; "put back on a line through a
+    neighbour"; "fibre by fibre", "steered", "between two hubs") are cut. *The main component* and
+    *The generic statement* became pointers (tasks 9, 24).
+  - The PI's flags: done. The case analysis left the introduction (the coverage's table has it);
+    the steps are one item each; (e) and (f) applied.
+  - Notation: done, 13 items, each checked against its uses: `def₂`, `def₃`, *planar deficiency*;
+    standing hypotheses; *target*, `tgt`; `L_G(q)`, *attaining* (configuration, height); *pencil
+    configuration space*, *main component*; *general*; *flat configuration*; *rigid*,
+    *planar-rigid*; *core*, *additive* (only `≤`, task 19; `sec:main-component-contract`'s "a rigid
+    core whose planar deficiencies add" now reads "an additive core"); *value*, *singleton value*;
+    *smaller than*, *structural coverage*; `ρ`, `Λ`, `(⋆)`; *flat coordinates*. `ρ` is scoped: the
+    contraction steps use it for `lem:pencil-contract-kernel-bound`'s map.
+  - Two tools: done as task 10 corrected it, re-measured in the Lean (each step pin's closure;
+    script not retained). `Graph.x0Attains_of_exists` is in all 13 closures, and
+    `MvPolynomial.exists_mem_eval_ne_zero₂` in 9: not the cycle's, equal deficiencies', rigid
+    contraction's or split-off's. So "every step ends with" the first; "most steps" use the second.
+  - `grep -in informal` over `pencil.tex`, `main-component.tex` and all of `intro.tex`: no hits.
+  - *(f):* defined in the list, as above; standard, *open ear*; in a node, *standing hypotheses*,
+    *attains*, *main picture*, *deficiency rank*. *The pencil condition* (task 3's) occurs only in
+    `pencil.tex` now: `def:pencil-panel-realization` names it, and `lem:pencil-self-dual` is
+    retitled *Self-duality of pencil realizations* (the polarity exchanges the condition with
+    containment in the panels).
+  - Forward `\cref`s added: `sec:main-component-carrier`, `-flat`, `-jj`, `-statements`,
+    `def:pencil-configuration`, `-lifting-space`, `-main-picture`, `lem:pencil-x0-one-witness`,
+    `-fibre-intersection`, `lem:pencil-join-flat`, `lem:pencil-contract-kernel-bound`.
 - [ ] **26. F3 — `intro.tex`'s reader path.** The fifth-continuation paragraph (362–392) runs the
   whole arc in one paragraph. Check each sentence against tasks 24 and 25, and split it where it
   joins two results. Lines 44–47 and 406–407 get the same check. Phase numbers are allowed here.
   - From task 24: that paragraph leads with the self-duality, which `pencil.tex`'s roadmap puts off
     the proof. "Hinge-pencil conjecture" (lines 46, 406) against the title *The pencil conjecture*:
     pick one. *Bond-star* is a coinage (`sec:pencil-realization`: a plane of bonds and the centre).
+  - From task 25: "a fixed planar drawing" (378) is the chapter's *picture*. "Their
+    least-dimensional family --- the main component" (379–380) should match the notation list: the
+    closure of the part of the pencil configuration space over the main pictures. "The space of
+    such realizations" (376) is that configuration space, as in `sec:main-component`'s title.
 - [ ] **27. X — close the round** (`CLEANUP.md` *Workflow* rule 5; docs only).
   - **Gates.** `lake build` and `lake lint` green. The harness is re-diffed and re-run: 19 of 19
     at the standard axioms.
@@ -266,7 +255,9 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - **Stop 2's inputs.** The build-or-leave table has no *pending* slot. Mirror it, one line per
     item, and the *Candidates*, into `notes/Cleanup40.md` §2 *Round 4*.
   - **The ledger.** Check the pointers of `notes/BlueprintExposition.md`'s `pencil.tex` and
-    `main-component.tex` entries against the new text, and add a one-paragraph round note.
+    `main-component.tex` entries against the new text, and add a one-paragraph round note. Its
+    `pencil_conjecture_of_X0` entry says the section introduction "walks the whole argument in
+    order"; since task 25 it is a roadmap with a notation list.
   - **Status surfaces.** The ROADMAP row reads ✓ Complete. The queued bullet and
     `notes/Cleanup40.md`'s **Status** name opening round 4.
   - **The queue.** `40-exposition`'s row in `.claude/autopilot/queue.toml` gets `done = true`,
@@ -455,8 +446,8 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 25** (its checklist entry has the scope, with notes from earlier tasks); then task
-26, and task 27 closes the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
+**Next: task 26** (its checklist entry has the scope, with notes from tasks 24 and 25); then task
+27 closes the round. Task 26 reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
 - **Standing, for every section task (4–26)** (from task 3's corrective). Its return and its
