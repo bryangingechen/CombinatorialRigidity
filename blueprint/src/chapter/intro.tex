@@ -43,8 +43,9 @@ $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
 consequences of the rank formula: Jacobs' conjecture on the
 independence of molecular graphs, and the degree-one rank formula. Two
 later chapters (\cref{sec:pencil}, \cref{sec:main-component}) prove a
-strengthening that appears to be new, the hinge-pencil conjecture, in
-which each body's hinges also pass through a common point of its panel.
+strengthening of Katoh--Tanigawa's Theorem~5.6 in dimension three that
+appears to be new, the pencil conjecture. It asks in addition that the
+hinges at each body pass through a common point of the body's panel.
 
 \subsection*{Organization of the blueprint}
 
@@ -359,37 +360,76 @@ a panel at each endpoint body, rather than being the intersection of
 the two panels --- both results hold with parallel edges admitted
 (\cref{sec:molecular-coplanar-multigraph}), while the multigraph
 equivalence is provably false for the intersection-based frameworks of
-the main development. A fifth continuation (phases~39--40) proves a
-further strengthening of the hinge-coplanar model, in which each body's
-hinges lie in a common panel \emph{and} are concurrent through a common
-point of that panel --- a pencil of lines through a point in a plane, or,
-in the molecular reading, a bond-star lying in a plane through the atom's
-centre. The condition is itself projectively self-dual: transporting
-such a realization along the polarity of
-\cref{lem:panel-hinge-dual-molecular} produces another realization of
-the same kind, with the panel normal and the concurrency point
-exchanged (\cref{sec:pencil}). Every spanning multigraph admits a
-realization of this kind attaining the deficiency rank of
-\cref{thm:theorem-55-6-multigraph}, over every infinite field
-(\cref{thm:pencil-conjecture}); the question appears to be new. Phase~39
-reduced it, by a form of Katoh--Tanigawa's induction that needs no
-minimality, to two statements about the main component of the space of
-such realizations (\cref{sec:pencil-main-component-route}), and phase~40
-proved them (\cref{sec:main-component}). Over a fixed planar drawing of
-the bodies the realizations form a linear space of heights, and their
-least-dimensional family --- the main component --- has a general member
-attaining the deficiency rank, by an induction through cut, ear,
-split-off and contraction steps; the generic realization is built inside
-the reduction's own induction. The first step of phase~40 extended
-Theorems~5.5 and~5.6 and the molecular conjecture to dimension two,
-together with a form of Theorem~5.6 for graphs that need not span the body
-set (\cref{thm:theorem-55-6-rows}). In the plane, where each hinge is a pin
-joining two bodies and each panel is a line, the molecular conjecture is
-Jackson and Jord\'an's theorem on pin-collinear body-and-pin
-frameworks~\cite{jacksonJordan2008pin}, which they proved for real
-frameworks by a different argument; here it holds over every infinite
-field, and its planar rank formula is what the main-component argument
-uses in place of their theorem.
+the main development.
+
+A fifth continuation (phases~39--40) strengthens the multigraph form of
+Theorem~5.6 in the hinge-coplanar model, in dimension three. A
+\emph{pencil realization} gives each body of a hinge-coplanar realization
+a point of its panel, through which every hinge at the body passes
+(\cref{def:pencil-panel-realization}). The hinges at a body then form a
+pencil of lines through a point in a plane. In the molecular reading, the
+panel is the plane of an atom's bonds and the point is the atom's centre.
+Over every infinite field, every spanning multigraph $G$ has a pencil
+realization of rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the
+deficiency rank of \cref{thm:theorem-55-6-multigraph}. If $G$ is simple,
+the points of adjacent bodies can be chosen projectively distinct. If $G$
+also has a nondegenerate pencil realization
+(\cref{def:pencil-nondegenerate}), it has one of that rank. These claims
+make up the pencil conjecture (\cref{thm:pencil-conjecture}).
+
+Katoh and Tanigawa's induction runs over minimal graphs (KT
+Theorem~4.9). They then add the remaining edges to a realization of a
+minimal spanning subgraph. In a pencil realization of the subgraph at its
+deficiency rank, the added edges may have no hinges in both panels
+through the points of their ends. So the proof runs the induction over
+every multigraph (\cref{thm:pencil-reduction}). Phase~39 reduced the
+pencil conjecture to the two \emph{main-component statements}
+(\cref{def:pencil-main-component-statements}). These ask the pencil
+conjecture's last two claims of every simple two-edge-connected
+multigraph on at least three bodies.
+
+Phase~40 proved the two statements (\cref{sec:main-component}). The idea
+is to build pencil realizations by lifting pictures of the graph in the
+plane. A picture places each body $v$ at a point $q_v = (x_v, y_v)$ of
+the plane. Lifting that point to a height $z_v$ gives the point
+$p_v = (x_v, y_v, z_v, 1)$ of $K^4$. The hinge of an edge $uv$ is the line
+through $p_u$ and $p_v$. The configurations at which the points of every
+closed neighbourhood lie in a plane form the \emph{pencil configuration
+space}. Over an admissible picture $q$
+(\cref{def:pencil-admissible-picture}), each of them is a pencil
+realization. Their heights form a linear space $L(q)$, the lifting space
+(\cref{def:pencil-lifting-space}). The \emph{main component} is the
+closure of the part of the pencil configuration space over the main
+pictures, the admissible pictures at which $\dim L(q)$ is least
+(\cref{rem:pencil-x0-main-component}).
+
+For every simple connected graph of minimum degree at least two, a
+general configuration in the main component has the deficiency rank
+(\cref{thm:pencil-x0-generic-attains}). The proof is a strong induction
+on the number of bodies. There are steps at cut vertices, bridges, cycles
+and ears, and steps by splitting off and by contraction. A case analysis,
+the structural coverage, shows that some step applies to every such graph
+(\cref{thm:pencil-x0-coverage}). Over an admissible picture adjacent
+bodies have distinct points, so the first statement follows
+(\cref{lem:pencil-x0-distinct-statement}). The second does not follow in
+this way. At $K_{2,3}$, no configuration over a general picture is
+nondegenerate (\cref{lem:pencil-x0-two-hubs-obstruction}). The second
+statement is proved instead inside the induction over every multigraph
+(\cref{thm:pencil-generic-step}).
+
+The first step of phase~40 extended Theorems~5.5 and~5.6 and the
+molecular conjecture to dimension two. It also proved a form of
+Theorem~5.6 for simple graphs that need not span the body set
+(\cref{thm:theorem-55-6-rows}). In the plane a hinge is a pin joining two
+bodies, and a panel is a line. There the molecular conjecture is a
+theorem of Jackson and Jord\'an on pin-collinear body-and-pin
+frameworks~\cite{jacksonJordan2008pin}, proved for real frameworks. Here
+it holds over every infinite field. The main-component argument uses
+Jackson and Jord\'an's rank formula for these frameworks, as an equality
+for the dimension of the lifting space at a general picture. We derive
+that equality from the planar case of the non-spanning form of
+Theorem~5.6, so that it too holds over every infinite field
+(\cref{sec:main-component-jj}).
 
 \subsection*{Reading this blueprint}
 
@@ -403,7 +443,7 @@ the independence and rank of molecular graphs (\cref{sec:jacobs}), the
 field generalization, the generic form of the realization theorems
 (\cref{sec:generic-lift}), the multigraph molecular conjecture in
 the hinge-coplanar model (\cref{sec:molecular-coplanar-multigraph}), and
-the hinge-pencil conjecture (\cref{sec:pencil}, \cref{sec:main-component})
+the pencil conjecture (\cref{sec:pencil}, \cref{sec:main-component})
 --- are all complete (every node green). The
 graph is authored \emph{forward} --- a
 chapter's nodes and their dependency edges written before its Lean

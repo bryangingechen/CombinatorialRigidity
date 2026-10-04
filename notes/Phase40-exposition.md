@@ -7,11 +7,10 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 25 landed (tasks 1–25; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 26 landed (tasks 1–26; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 26, `intro.tex`'s reader path, checked against both introductions and the pinned exemplar
-(`notes/Phase40-exposition-exemplar.md`), returning per *Hand-off*'s standing bullet. All eight
-build-or-leave items are written. Round manual: `CLEANUP.md`.
+task 27, the round's close (`CLEANUP.md` *Workflow* rule 5; docs only), as its checklist entry
+lists. All eight build-or-leave items are written. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -57,13 +56,13 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–25
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–26
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
-the baseline below (graph fingerprint, pin hash, warning counts). Every subsection of `pencil.tex`
-and `main-component.tex` is done (the split-off was task 1), and so are both introductions (tasks
-24 and 25). Next is `intro.tex`'s reader path (task 26), then the close (task 27). All eight
-build-or-leave items are written.
+the baseline below (graph fingerprint, pin hash, warning counts). The whole surface is rewritten:
+every subsection of `pencil.tex` and `main-component.tex` (the split-off was task 1), both
+introductions (tasks 24 and 25), and `intro.tex`'s reader path (task 26). Next is the close (task
+27). All eight build-or-leave items are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -205,48 +204,42 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   roadmap that points to the subsection openings; four parts named off the proof, checked against
   the closure of both headlines in the Lean. *(f):* removed, *concurrency point*, *main component*,
   *kernel hypotheses*.
-- [x] **25. F2 — `main-component.tex`'s introduction** (this commit). Phase 40's close-time outline
-  became a roadmap with a notation list: what is proved and what the reader needs, with the lifting
-  and `K_{2,3}` left to `sec:pencil-main-component-route` (no third account); the notation; the
-  carrier, flat and JJ subsections; the steps, one item per subsection; the coverage; the
-  statements. "The hinge-pencil question" is gone.
-  - Re-read against the subsections: done. No old sentence survives. The claims tasks 1, 11, 12,
-    13, 18 and 22 found false (JJ's split-off order; "the flat configuration attains"; the dropped
-    three members; the single fibre and bridges that "add"; "put back on a line through a
-    neighbour"; "fibre by fibre", "steered", "between two hubs") are cut. *The main component* and
-    *The generic statement* became pointers (tasks 9, 24).
-  - The PI's flags: done. The case analysis left the introduction (the coverage's table has it);
-    the steps are one item each; (e) and (f) applied.
-  - Notation: done, 13 items, each checked against its uses: `def₂`, `def₃`, *planar deficiency*;
-    standing hypotheses; *target*, `tgt`; `L_G(q)`, *attaining* (configuration, height); *pencil
-    configuration space*, *main component*; *general*; *flat configuration*; *rigid*,
-    *planar-rigid*; *core*, *additive* (only `≤`, task 19; `sec:main-component-contract`'s "a rigid
-    core whose planar deficiencies add" now reads "an additive core"); *value*, *singleton value*;
-    *smaller than*, *structural coverage*; `ρ`, `Λ`, `(⋆)`; *flat coordinates*. `ρ` is scoped: the
-    contraction steps use it for `lem:pencil-contract-kernel-bound`'s map.
-  - Two tools: done as task 10 corrected it, re-measured in the Lean (each step pin's closure;
-    script not retained). `Graph.x0Attains_of_exists` is in all 13 closures, and
-    `MvPolynomial.exists_mem_eval_ne_zero₂` in 9: not the cycle's, equal deficiencies', rigid
-    contraction's or split-off's. So "every step ends with" the first; "most steps" use the second.
-  - `grep -in informal` over `pencil.tex`, `main-component.tex` and all of `intro.tex`: no hits.
-  - *(f):* defined in the list, as above; standard, *open ear*; in a node, *standing hypotheses*,
-    *attains*, *main picture*, *deficiency rank*. *The pencil condition* (task 3's) occurs only in
-    `pencil.tex` now: `def:pencil-panel-realization` names it, and `lem:pencil-self-dual` is
-    retitled *Self-duality of pencil realizations* (the polarity exchanges the condition with
-    containment in the panels).
-  - Forward `\cref`s added: `sec:main-component-carrier`, `-flat`, `-jj`, `-statements`,
-    `def:pencil-configuration`, `-lifting-space`, `-main-picture`, `lem:pencil-x0-one-witness`,
-    `-fibre-intersection`, `lem:pencil-join-flat`, `lem:pencil-contract-kernel-bound`.
-- [ ] **26. F3 — `intro.tex`'s reader path.** The fifth-continuation paragraph (362–392) runs the
-  whole arc in one paragraph. Check each sentence against tasks 24 and 25, and split it where it
-  joins two results. Lines 44–47 and 406–407 get the same check. Phase numbers are allowed here.
-  - From task 24: that paragraph leads with the self-duality, which `pencil.tex`'s roadmap puts off
-    the proof. "Hinge-pencil conjecture" (lines 46, 406) against the title *The pencil conjecture*:
-    pick one. *Bond-star* is a coinage (`sec:pencil-realization`: a plane of bonds and the centre).
-  - From task 25: "a fixed planar drawing" (378) is the chapter's *picture*. "Their
-    least-dimensional family --- the main component" (379–380) should match the notation list: the
-    closure of the part of the pencil configuration space over the main pictures. "The space of
-    such realizations" (376) is that configuration space, as in `sec:main-component`'s title.
+- [x] **25. F2 — `main-component.tex`'s introduction** (`b166f435`; full entry there). A roadmap
+  with a 13-item notation list; the lifting and `K_{2,3}` left to `sec:pencil-main-component-route`
+  (no third account). *(f):* defined in the list; standard, *open ear*. Eleven forward `\cref`s.
+- [x] **26. F3 — `intro.tex`'s reader path** (this commit). The fifth continuation is now five
+  paragraphs: the pencil conjecture; the induction over every multigraph and phase 39's reduction;
+  the lifting and the main component; phase 40's induction and the two statements; dimension two
+  and JJ. Each sentence is checked against both introductions and the nodes it cites.
+  - One paragraph, sentences joining two results: done, split. Lines 44–47: they now say what is
+    strengthened (KT Theorem 5.6 in dimension three). Lines 406–407: the name only. Phase numbers
+    kept. "Appears to be new" is kept once, at 44–47.
+  - False before: the main-component statements are existence statements, not "about the main
+    component"; what the argument uses is the planar case of KT Theorem 5.6's non-spanning form,
+    not "its [the conjecture's] planar rank formula". Read in the Lean: the JJ chart lemma's pin
+    calls `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` at `n = 2`, and `x0Gen`
+    is a corollary of `pencilPair_of_nonempty` (`Statements.lean`).
+  - Task 24's notes: the self-duality is cut (off the proof; the reader path follows the proof).
+    One name, *the pencil conjecture* (the node's title and both introductions); `README.md`,
+    `home_page/index.md` and `formalization.yaml` keep the old one (*Moved*). *Bond-star* is
+    replaced by `sec:pencil-realization`'s reading.
+  - Task 25's notes: *planar drawing* became *picture*; the main component is the notation list's
+    closure over the main pictures; *the space of such realizations* is the pencil configuration
+    space.
+  - JJ checked against the TR: abstract and §1 (pp. 1–3, real frameworks, "a complete solution
+    of the conjecture when d = 2"), Theorems 6.1 (p. 14) and 7.3 (p. 21).
+  - *(f):* removed, *hinge-pencil conjecture*, *bond-star*, *planar drawing*, *least-dimensional
+    family*, *concurrency point*; in a node, *pencil realization*, *nondegenerate*, *main-component
+    statements*, *admissible*, *lifting space*, *deficiency rank*; task 25's list, *pencil
+    configuration space*, *main component*, *main picture*, *general*, *structural coverage*;
+    standard, *closed neighbourhood*, *cut vertex*, *bridge*, *ear*, *pin-collinear body-and-pin
+    framework*.
+  - Forward `\cref`s added: `def:pencil-panel-realization`, `-nondegenerate`,
+    `-main-component-statements`, `-admissible-picture`, `-lifting-space`, `thm:pencil-reduction`,
+    `rem:pencil-x0-main-component`, `thm:pencil-x0-generic-attains`, `-coverage`,
+    `lem:pencil-x0-distinct-statement`, `-two-hubs-obstruction`, `thm:pencil-generic-step`,
+    `sec:main-component-jj`. Two removed: `lem:panel-hinge-dual-molecular`,
+    `sec:pencil-main-component-route`.
 - [ ] **27. X — close the round** (`CLEANUP.md` *Workflow* rule 5; docs only).
   - **Gates.** `lake build` and `lake lint` green. The harness is re-diffed and re-run: 19 of 19
     at the standard axioms.
@@ -439,6 +432,9 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
   `lem:pencil-feasible-hub-conditions`, which its pins call
   (`not_pencilNondegFeasible_of_triangle_two_hubs`,
   `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), with no `\uses` edge to it.
+- **Task 26, target `40-docs`.** `README.md` and `home_page/index.md` repeat the old reader path
+  (*hinge-pencil conjecture*, *bond-star*, "statements about the main component", "a fixed planar
+  drawing"), and `formalization.yaml` says *hinge-pencil conjecture*: align them with `intro.tex`.
 
 ## Blockers / open questions
 
@@ -446,9 +442,9 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 26** (its checklist entry has the scope, with notes from tasks 24 and 25); then task
-27 closes the round. Task 26 reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
-defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
+**Next: task 27, the close** (its checklist entry has the scope: gates and the axioms harness, Stop
+2's inputs, the ledger, the status surfaces, the queue). It is docs only and the round's last
+commit; round 4, `40-simplify`, opens after it.
 
 - **Standing, for every section task (4–26)** (from task 3's corrective). Its return and its
   checklist entry (i) answer every diagnosis bullet of the task: done, not done with the reason, or

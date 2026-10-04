@@ -8,7 +8,8 @@ over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`,
 `40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
 order and for which rounds are done. Round 3's Stop 1 closed on 2026-10-03: the PI approved the
 revised sample section, pinned as the exemplar (`notes/Phase40-exposition.md` *Autopilot: for the
-PI*). Tasks 1–25 have landed. **The next concrete task** is round 3's task 26, run unattended.
+PI*). Tasks 1–26 have landed. **The next concrete task** is round 3's task 27, its close, run
+unattended.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -225,6 +226,12 @@ the round closes.
   `Phase22-realization-design.md`, with 8 anchors.
 - Lift the lessons of Phase 40 and rounds 1–4 into `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md` or
   `DESIGN.md`.
+
+From round 3, *Moved to a later round* (detail in `notes/Phase40-exposition.md`):
+
+- `README.md` and `home_page/index.md` repeat `intro.tex`'s old reader path (*hinge-pencil
+  conjecture*, *bond-star*, "statements about the main component", "a fixed planar drawing"), and
+  `formalization.yaml` says *hinge-pencil conjecture*: align them with `intro.tex` (task 26).
 
 Left out, per §1: trimming the auto-loaded `CLAUDE.md` files, and reorganizing `notes/` into
 directories (`CLEANUP.md` D's standing candidate).
