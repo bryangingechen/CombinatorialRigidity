@@ -603,7 +603,8 @@ its hinges are nondegenerate.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-6, lem:general-position-support-nonzero}
+  \uses{thm:theorem-55-6, lem:general-position-support-nonzero,
+        lem:minimal-kdof-spanning-subgraph}
   The construction of \cref{thm:theorem-55-6} realizes a minimal spanning
   subgraph $G' \le G$ generically and re-adds the deleted edges with an in-panel
   hinge on each. General position on the $G'$-links, and a fixed pair of
@@ -645,11 +646,11 @@ right invariant is the rank of the rigidity matrix itself.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:general-position-support-nonzero,
-        lem:span-rigidityRows-eq-of-motions-eq, lem:relative-deficiency-rank-bound}
+        lem:span-rigidityRows-eq-of-motions-eq, lem:relative-deficiency-rank-bound,
+        lem:minimal-kdof-spanning-subgraph}
   Strip, realize and re-add exactly as in \cref{thm:theorem-55-6-genuine}: a
   deficiency-preserving minimal spanning subgraph $G' \le G$
-  (\texttt{Graph.exists\_isMinimalKDof\_spanning\_subgraph}, the converse-direction
-  strip, no blueprint node of its own), realized generically by
+  (\cref{lem:minimal-kdof-spanning-subgraph}), realized generically by
   \cref{thm:theorem-55}, then extended to $G$ with the link-recording selector;
   the two distinct bodies the off-edge labels need come from $|V(G)| \ge 2$, so
   no spanning hypothesis enters. Replace the motion-space step by two row-span
@@ -1237,7 +1238,8 @@ all of them.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:subgraph-minimality, lem:motions-mono-of-graph-le,
-        prop:rigidity-matrix-prop11, def:genuine-hinge-realization}
+        prop:rigidity-matrix-prop11, def:genuine-hinge-realization,
+        lem:minimal-kdof-spanning-subgraph}
   If $|V| = 1$ the single body is trivially rigid: $\operatorname{def}(\tilde
   G) = 0$ (every partition has a single part), and a hinge-coplanar realization
   is a constant nonzero normal together with a nonzero extensor of the single

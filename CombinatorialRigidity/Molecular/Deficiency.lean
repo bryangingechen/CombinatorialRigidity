@@ -3082,8 +3082,8 @@ size, so deleting `e` preserves the deficiency (`isBase_ncard_add_deficiency_eq`
 `deficiency_le_deficiency_of_le_vertexSet_eq` for the `≥` bound) — contradicting minimality of
 `|F₀|`.
 
-The strip mints no blueprint node; it is `\uses`-only infrastructure for the `def > 0`
-`prop:rigidity-matrix-prop11` producer. -/
+The strip is pinned at `lem:minimal-kdof-spanning-subgraph` (`deficiency.tex`), feeding the
+`def > 0` `prop:rigidity-matrix-prop11` producer through its four Theorem 5.6 callers. -/
 theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Finite β]
     (G : Graph α β) (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     ∃ G' : Graph α β, G' ≤ G ∧ V(G') = V(G) ∧

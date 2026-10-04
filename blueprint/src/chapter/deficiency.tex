@@ -420,6 +420,39 @@ the two bodies.
   Katoh--Tanigawa~\cite[Lemma 3.3]{katohTanigawa2011}.
 \end{proof}
 
+\begin{lemma}[A deficiency-preserving minimal spanning subgraph exists; KT Theorem 5.6, first step]
+  \label{lem:minimal-kdof-spanning-subgraph}
+  \lean{Graph.exists_isMinimalKDof_spanning_subgraph}
+  \leanok
+  \uses{def:k-dof}
+  Let $D = \operatorname{bodyBarDim}\,n \ge 1$ and let $G$ be a graph with
+  $V(G) \ne \emptyset$. Then $G$ has a \emph{spanning} subgraph $G' \le G$
+  ($V(G') = V(G)$) that is a minimal $\operatorname{def}(\tilde G)$-dof-graph:
+  $\operatorname{def}(\tilde{G'}) = \operatorname{def}(\tilde G)$, and no edge
+  of $G'$ can be deleted without raising the deficiency. This is the converse
+  direction to \cref{lem:subgraph-minimality}, which starts from an already
+  minimal graph; here $G$ is arbitrary and the strip removes the
+  deficiency-irrelevant edges.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:matroid-restrict-subgraph, thm:def-eq-corank}
+  Among the edge subsets $F \subseteq E(G)$ whose restriction $G
+  \restriction F$ keeps $\operatorname{def}(\tilde G)$ --- $F = E(G)$ is one
+  such --- pick $F_0$ of minimal cardinality and set $G' = G \restriction
+  F_0$; then $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
+  \operatorname{def}(\tilde G)$ by the choice of $F_0$. For the minimality:
+  if a base $B$ of $M(\tilde{G'})$ missed the fiber $\tilde e$ of some $e \in
+  E(G')$, the restriction identity (\cref{lem:matroid-restrict-subgraph})
+  would make $B$ independent in $M(\widetilde{G \restriction (F_0 \setminus
+  \{e\})})$ of the full size $D(|V(G)|-1) - \operatorname{def}(\tilde{G'})$
+  (\cref{thm:def-eq-corank}), forcing $F_0 \setminus \{e\}$ to also keep the
+  deficiency --- contradicting the minimality of $|F_0|$. This is
+  Katoh--Tanigawa's first step towards Theorem~5.6
+  \cite[p.~670]{katohTanigawa2011}: delete edges from $G$ while the
+  deficiency is unchanged, until no further edge can be removed.
+\end{proof}
+
 \begin{lemma}[A circuit minus an edge is a maximal sparse subset; KT Lemma 3.4]
   \label{lem:circuit-rigid}
   \lean{Graph.isSparse_diff_singleton_of_isCircuit}

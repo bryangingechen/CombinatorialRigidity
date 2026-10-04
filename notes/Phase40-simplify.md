@@ -8,8 +8,8 @@ simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanc
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
 into 18 landings, 10a–10r (8 Opus). 10a–10e landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10f (Sonnet, TeX): `Graph.exists_isMinimalKDof_spanning_subgraph` in
-`deficiency.tex` by `r7`. Round manual: `CLEANUP.md`.
+**Next concrete task:** 10g (Opus, first Opus landing): `c3`'s Lean, `_of_arms_pair` over every
+nonempty graph. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -66,8 +66,13 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   (`k = 2`) now call it, statements unchanged. `span_supportExtensor_eq_top_of_linearIndependent`
   loses its only Lean caller but stays (`lem:pencil-ear-hinge-span`'s pin; no TeX in this commit).
   −38 net Lean lines (task 9 estimated about −43).
+- **10f**, TeX only: `lem:minimal-kdof-spanning-subgraph` in `deficiency.tex` beside
+  `lem:subgraph-minimality` (`r7`), pinning `Graph.exists_isMinimalKDof_spanning_subgraph`; its
+  three callers (`thm:theorem-55-6-genuine`, `-rows`, `-multigraph`) gain the `\uses` edge, and
+  `-rows`'s `\texttt` mention becomes a `\cref`; `Deficiency.lean`'s docstring reworded to name
+  the node.
 
-Next is 10f, then each landing in turn, then task 11 closes.
+Next is 10g, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -203,8 +208,11 @@ verdicts.
     −64 net Lean lines (task 9 estimated −70).
   - [x] **10e. `q1a`** (Sonnet, not ⚠Z). `Graph.X0Attains.of_openEar_of_cert`: −38 (estimate −43).
     Landed 2026-10-04.
-  - [ ] **10f. `r7`'s node** (Sonnet, TeX). `Graph.exists_isMinimalKDof_spanning_subgraph` in
-    `deficiency.tex`, beside `lem:subgraph-minimality`; four proofs gain a `\cref`.
+  - [x] **10f. `r7`'s node** (Sonnet, TeX). `Graph.exists_isMinimalKDof_spanning_subgraph` in
+    `deficiency.tex`, beside `lem:subgraph-minimality`; four proofs gain a `\cref`. Landed
+    2026-10-04: the node's statement/proof as written; of the four Lean callers, three distinct
+    TeX nodes gain the `\uses` edge (two callers share `thm:theorem-55-6-genuine`), and the one
+    that named the step by `\texttt` (`thm:theorem-55-6-rows`) gets the `\cref` in place of it.
   - [ ] **10g. `c3`'s Lean** (Opus; axioms harness). `_of_arms_pair` over every nonempty graph,
     `pencilPair_of_nonempty` from it, and the new lemma for the pair's three leaves: about −21.
   - [ ] **10h. `c3`'s TeX** (Opus). The split node, with `c2`, `c4`(b), `m2`, `m4`, `m5` and `1b`'s
@@ -261,11 +269,11 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10e landed; the rest of the landings run.** The smallest next commit is **10f** (Sonnet,
-TeX): `Graph.exists_isMinimalKDof_spanning_subgraph` in `deficiency.tex` by `r7`, beside
-`lem:subgraph-minimality`. Then 10g–10r in order (task 10), one commit each at its listed rung.
-10i is the first to touch ROADMAP §40 (its "stays as conditional theorems", marked verbatim).
-After 10r, task 11 closes the round.
+**10a–10f landed; the rest of the landings run.** The smallest next commit is **10g** (Opus, the
+first Opus landing; axioms harness): `c3`'s Lean, `_of_arms_pair` over every nonempty graph,
+`pencilPair_of_nonempty` from it, and the new lemma for the pair's three leaves. Then 10h–10r in
+order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its
+"stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
 
 ## Decisions made during this round
 
