@@ -162,7 +162,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-40, 1/5: mechanical) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` + Phase 40's other blueprint nodes | ✓ Complete — hygiene only, all 19 main results' axioms unchanged (see `notes/Phase40-cleanup.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 2/5: the shared hub normalization) | `Molecular/Deficiency.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`, `Molecular/Molecule/Pencil/TwoCut.lean` | ✓ Complete — one shared lemma, both hubs' statements unchanged (see `notes/Phase40-factor.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ◐ In progress — stopped for the PI at Stop 2 (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ◐ In progress — Stop 2 answered; the sanctioned landings next (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1213,13 +1213,14 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **The post-Phase-40 cleanup rounds** — five `CLEANUP.md` rounds over what Phases 39–40 built.
   In order: `40-cleanup` (mechanical), `40-factor` (the shared hub normalization),
   `40-exposition` (the pencil proof explained), `40-simplify` (a deep simplification recon) and
-  `40-docs` (project organization). Hygiene: no headline statement changes, and new mathematics
-  only where the PI sanctions it. Scope, order, stops and the PI's decisions are in
-  `notes/Cleanup40.md`. The autopilot queue is `.claude/autopilot/queue.toml`.
-  **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04) and
-  **stopped for the PI** at Stop 2 (`NEEDS_PI`): the PI decides the round's verdicts and round 3's
-  build-or-leave recommendations, in `notes/Phase40-simplify.md` *Autopilot: for the PI*. Tasks
-  1–8 are done; task 9, slicing the sanctioned items, waits on the PI's entry there. Rounds 1,
+  `40-docs` (project organization). Hygiene: headline statements, blueprint statements' strength
+  and new mathematics change only where the PI sanctions it, at round 4's Stop 2. Scope, order,
+  stops and the PI's decisions are in `notes/Cleanup40.md`. The autopilot queue is
+  `.claude/autopilot/queue.toml`.
+  **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04). Its
+  Stop 2 was answered on 2026-10-04: the PI sanctioned the recommended package with CONTRACT-R
+  restated as CONTRACT-A's corollary (`notes/Phase40-simplify.md` *Autopilot: for the PI*). Tasks
+  1–9 are done; next is landing 10a, the first of 18 (task 10), then task 11 closes. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3, `40-exposition`, closed
   2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`).
@@ -1253,7 +1254,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `40-exposition`, settled (`blueprint/AUTHORING.md`'s clauses of 2026-10-03; the round's defaults
   are in `notes/Phase40-exposition.md` *Decisions*, its exemplar in
   `notes/Phase40-exposition-exemplar.md`). It also audits for nodes that bundle unrelated
-  results, which the PI expects in earlier chapters. Its place in the queue is the PI's to set.
+  results, which the PI expects in earlier chapters. That audit also takes round 4's `c8a`: seven
+  `pencil.tex`/`main-component.tex` nodes with four or more pins, mostly one pin per clause
+  (`notes/Phase40-simplify.md` *Moved to a later round*). Its place in the queue is the PI's to set.
 
 ## Engineering conventions
 

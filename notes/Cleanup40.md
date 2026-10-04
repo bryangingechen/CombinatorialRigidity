@@ -9,11 +9,11 @@ Round 4, `40-simplify`, opened 2026-10-04 (`notes/Phase40-simplify.md`); round 5
 Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this
 order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
 `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done. Round
-4's seven recon tasks and its Stop-2 write-up (task 8) have landed, and **round 4 is stopped for
-the PI** at Stop 2 (`notes/Phase40-simplify.md` *Autopilot: for the PI*), where the PI decides the
-round's verdicts (`notes/Phase40-simplify-verdicts.md`) and round 3's build-or-leave
-recommendations. **The next concrete task** is round 4's task 9, slicing the sanctioned items,
-once the PI has answered there.
+4's seven recon tasks and its Stop-2 write-up (task 8) have landed, and **its Stop 2 was answered
+on 2026-10-04** (`notes/Phase40-simplify.md` *Autopilot: for the PI*): the PI sanctioned the
+recommended package of the round's verdicts (`notes/Phase40-simplify-verdicts.md`) with CONTRACT-R
+restated, and round 3's build-or-leave recommendations as written; task 9 sliced it into 18
+landings. **The next concrete task** is round 4's landing 10a (that log's task 10).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

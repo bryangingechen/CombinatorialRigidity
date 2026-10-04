@@ -1064,3 +1064,27 @@ smark's `state.md` gains the one header line and nothing else in `notes/attacks/
 The coordinator's N1–N4 call (the good ear's shorter count recorded in the blueprint, not
 second-read; `notes/Phase40p.md` *Architectural choices* 2) was not overturned and stands. Work
 log `notes/Phase40p.md`.
+
+## 2026-10-04 — Round 4 (`40-simplify`) Stop 2: the recommended package, CONTRACT-R restated; design §6's Lean retired
+
+Round 4's recon (`notes/Phase40-simplify.md`; verdicts in `notes/Phase40-simplify-verdicts.md`)
+found that each conditional theorem on design §6's route concludes what `pencilPair_of_nonempty`
+proves outright, and put eight decisions to the PI at Stop 2 (`aae919cf`). The PI answered in an
+attended session, after a summary that agreed with every recommendation, and then after a reading
+that stating CONTRACT-R as CONTRACT-A's corollary simplifies the chapter:
+
+```adjudication
+PI, this session, 2026-10-04 (verbatim).
+"Let's approve your recommendations above except 5. For 5, I think we should restate if it simplifies the exposition."
+"OK, ii looks good and let's update the adjudications."
+```
+
+**Decided.** Stop 2's default stands, with decision 5 at (ii). **This supersedes one clause of the
+2026-09-29 record above:** the landed Lean on design §6's route no longer "stays, untouched, as
+conditional theorems". `pencilPair_of_splitOff_of_habitat`,
+`pencil_conjecture_of_hcontract_hK_hbareSplit` and its `_of_card` form retire with `_of_card`'s
+cluster, the kernel route's two roots and the girth chain (`1a`). `pencil_conjecture_of_arms_pair`
+stays, generalized to every nonempty graph (`c3`), and it and `pencil_conjecture` drop a type-unused
+`[DecidableEq β]` (`a2`). The rest of that record stands: design §6's work stays cancelled and
+smark stays closed. The chapter states CONTRACT-R as CONTRACT-A's corollary (`7d` (ii)). The
+landings are `notes/Phase40-simplify.md` task 10, 10a–10r.
