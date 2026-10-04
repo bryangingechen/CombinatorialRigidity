@@ -114,29 +114,11 @@ theorem pencilPair_of_IH [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
-/-- **The conditioned pair at every nonempty graph** (`Graph.pencil_reduction` with the arms of
-`pencil_conjecture_of_arms_pair`, not only at spanning graphs). -/
+/-- **The conditioned pair at every nonempty graph** (`pencil_conjecture_of_arms_pair` with
+`pencilPair_of_IH` at both arms). -/
 theorem pencilPair_of_nonempty [Finite α] [Finite β] [Infinite K] (G : Graph α β)
-    (hne : V(G).Nonempty) : PencilPair K 3 G := by
-  classical
-  have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
-  have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by omega
-  have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
-  have hloop_arm : ∀ G : Graph α β, (∃ e x, G.IsLoopAt e x) →
-      (∀ G' : Graph α β, V(G').Nonempty →
-        V(G').ncard < V(G).ncard ∨
-          (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) →
-          PencilPair K 3 G') → PencilPair K 3 G := by
-    rintro G ⟨e, x, hloopAt⟩ IH
-    refine pencilPair_of_isLoopAt hloopAt (IH (G ＼ ({e} : Set β)) ?_ (Or.inr ⟨?_, ?_⟩))
-    · rw [Graph.vertexSet_deleteEdges]; exact ⟨x, hloopAt.left_mem⟩
-    · rw [Graph.vertexSet_deleteEdges]
-    · rw [Graph.edgeSet_deleteEdges]
-      exact Set.ncard_sdiff_singleton_lt_of_mem hloopAt.edge_mem
-  exact Graph.pencil_reduction hD6 hloop_arm
-    (fun G hloop hne hV2 => pencilPair_of_ncard_le_two hloop hne hV2)
-    (fun G _ _ hntec hIH => pencilPair_of_not_twoEdgeConnected hD2 hn hntec hIH)
-    (fun G hloop hV _ hIH => pencilPair_of_IH G hloop hV hIH)
+    (hne : V(G).Nonempty) : PencilPair K 3 G :=
+  pencil_conjecture_of_arms_pair (fun G hloop hV _ hIH => pencilPair_of_IH G hloop hV hIH)
     (fun G hloop hV _ _ _ hIH => pencilPair_of_IH G hloop hV hIH) G hne
 
 /-- **The generic statement**, a corollary. -/

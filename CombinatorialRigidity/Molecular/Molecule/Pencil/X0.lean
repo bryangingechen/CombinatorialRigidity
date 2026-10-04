@@ -337,10 +337,10 @@ theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
--- `[DecidableEq β]` is unused in the type; it is only threaded to `pencil_conjecture_of_arms_pair`.
--- The linter's fix (drop it, `by classical exact` for the term) would change the signature pinned
--- by `thm:pencil-conditional-realization-main-component` and named in `formalization.yaml`'s
--- pencil entry, so it is a `40-simplify` candidate (`notes/Phase40-cleanup.md`), not applied here.
+-- `[DecidableEq β]` is unused, in the type and, since `pencil_conjecture_of_arms_pair` dropped it,
+-- in the proof (hence both silencers). Dropping it changes the signature pinned by
+-- `thm:pencil-conditional-realization-main-component` and named in `formalization.yaml`'s pencil
+-- entry, so it waits for `40-simplify`'s `a2`, which deletes both (`notes/Phase40-simplify.md`).
 set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture from the two main-component statements**
 (`thm:pencil-conditional-realization-main-component`; Phase 39 PENCIL, L0a/L0b). Over an infinite
@@ -350,12 +350,14 @@ conditioned pair at `n = 3`. Assembles `pencilPair_of_X0` at both arms of
 per-graph argument, since neither the two-edge-connectivity split nor `X0Dist`/`X0Gen` cares which
 arm supplied the induction hypothesis. Neither open kernel of `thm:pencil-conditional-realization-
 pair` is used, and no fresh edge. -/
+@[nolint unusedArguments]
 theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
     (hdist : X0Dist K α β) (hgen : X0Gen K α β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G :=
   pencil_conjecture_of_arms_pair
     (fun G hloop hV _ hIH => pencilPair_of_X0 hdist hgen G hloop hV hIH)
-    (fun G hloop hV _ _ _ hIH => pencilPair_of_X0 hdist hgen G hloop hV hIH) G hspan
+    (fun G hloop hV _ _ _ hIH => pencilPair_of_X0 hdist hgen G hloop hV hIH) G
+    (hspan ▸ Set.univ_nonempty)
 
 end CombinatorialRigidity.Molecular

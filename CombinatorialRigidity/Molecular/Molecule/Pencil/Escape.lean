@@ -438,10 +438,10 @@ successor's own hypotheses are exactly the residue: `hcontract` unchanged, the t
 `hK`/`hbareSplit`, and the mechanical `∀`-form fresh-edge supply `hfresh` (residue (iv), still a
 follow-up S1 discharge, not attempted here). -/
 
--- `[DecidableEq β]` is unused in the type; it is only threaded to
--- `pencil_conjecture_of_arms_pair`. The linter's fix (drop it, `classical` in the proof) would
--- change the signature pinned by `thm:pencil-conditional-realization-pair`, so it is a
--- `40-simplify` candidate (`notes/Phase40-cleanup.md`), not applied here.
+-- `[DecidableEq β]` is unused, in the type and, since `pencil_conjecture_of_arms_pair` dropped it,
+-- in the proof (hence both silencers). Dropping it changes the signature pinned by
+-- `thm:pencil-conditional-realization-pair`; this declaration retires with `40-simplify`'s `1a`
+-- (`notes/Phase40-simplify.md`).
 set_option linter.unusedDecidableInType false in
 /-- **W5-L7c-6 — the successor wrapper closing `hsplit`** (Phase 39 PENCIL;
 `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"). The pencil conjecture,
@@ -454,6 +454,7 @@ fresh-edge supply `hfresh`.
 Builds `hsplit` internally by dispatching on `V(G).ncard`: `= 3`/`= 4` to the direct-witness base
 leaves (`Base.lean`), `5 ≤` to `pencilPair_of_splitOff_of_habitat` above, fed a fresh edge from
 `hfresh`. -/
+@[nolint unusedArguments]
 theorem pencil_conjecture_of_hcontract_hK_hbareSplit [Inhabited α] [Finite α] [Finite β]
     [DecidableEq β] [Infinite K]
     (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
@@ -492,7 +493,7 @@ theorem pencil_conjecture_of_hcontract_hK_hbareSplit [Inhabited α] [Finite α] 
       · exact pencilPair_of_habitat_ncard_eq_four hloop h4 h2ec hnoRigid
       · exact pencilPair_of_splitOff_of_habitat hloop (by omega) h2ec hnoRigid hdeg2
           (hfresh G hloop hnoRigid hdeg2 hV) hK hbareSplit hIH
-  exact pencil_conjecture_of_arms_pair hcontract hsplit G hspan
+  exact pencil_conjecture_of_arms_pair hcontract hsplit G (hspan ▸ Set.univ_nonempty)
 
 /-! ## `hfresh`'s mechanical discharge — residue (iv) (Phase 39 PENCIL)
 

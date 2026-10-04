@@ -7,9 +7,10 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10e landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10g (Opus, first Opus landing): `c3`'s Lean, `_of_arms_pair` over every
-nonempty graph. Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10g landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10h (Opus, TeX): `c3`'s TeX, splitting
+`thm:pencil-conditional-realization-pair` and pinning 10g's `pencilPair_loop_base_cut`. Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -71,8 +72,11 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   three callers (`thm:theorem-55-6-genuine`, `-rows`, `-multigraph`) gain the `\uses` edge, and
   `-rows`'s `\texttt` mention becomes a `\cref`; `Deficiency.lean`'s docstring reworded to name
   the node.
+- **10g**, Lean + one TeX clause: `pencil_conjecture_of_arms_pair` over every nonempty graph, its
+  first part the new `pencilPair_loop_base_cut` (unpinned until 10h); `pencilPair_of_nonempty`
+  through it; −31 net Lean lines (task 9 estimated about −21); axioms harness 19 of 19.
 
-Next is 10g, then each landing in turn, then task 11 closes.
+Next is 10h, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -213,10 +217,14 @@ verdicts.
     2026-10-04: the node's statement/proof as written; of the four Lean callers, three distinct
     TeX nodes gain the `\uses` edge (two callers share `thm:theorem-55-6-genuine`), and the one
     that named the step by `\texttt` (`thm:theorem-55-6-rows`) gets the `\cref` in place of it.
-  - [ ] **10g. `c3`'s Lean** (Opus; axioms harness). `_of_arms_pair` over every nonempty graph,
+  - [x] **10g. `c3`'s Lean** (Opus; axioms harness). `_of_arms_pair` over every nonempty graph,
     `pencilPair_of_nonempty` from it, and the new lemma for the pair's three leaves: about −21.
+    Landed 2026-10-04: −31; the lemma is `pencilPair_loop_base_cut`, a conjunction of
+    `Graph.pencil_reduction`'s three arm hypotheses at `PencilPair K 3`.
   - [ ] **10h. `c3`'s TeX** (Opus). The split node, with `c2`, `c4`(b), `m2`, `m4`, `m5` and `1b`'s
-    node; the kernel statement leaves (`1a`).
+    node; the kernel statement leaves (`1a`). The new node pins `pencilPair_loop_base_cut` (10g);
+    10g's clause in `fmlnote:pencil-conditional-realization-pair-kernels` (the first pin concludes
+    at every multigraph with a body) goes with the rewrite.
   - [ ] **10i. `1a`'s deletion** (Sonnet, ⚠Z files). `_of_card`'s cluster with `q3a`, `1b`,
     `1c-ii`, and the girth chain with its eight nodes; ROADMAP §40's verbatim "stays as conditional
     theorems" goes: −3 636.
@@ -238,7 +246,8 @@ verdicts.
   - [ ] **10q. `7d`'s Lean** (Sonnet, not ⚠Z). `Graph.X0Attains.of_rigidContract` from
     `of_additiveContract`, 238 → 22 lines, and the 122 lines 10p unpinned: −338.
   - [ ] **10r. `a2`** (Sonnet, last; axioms harness). `[DecidableEq β]` off `pencil_conjecture`
-    and the pinned theorems, by `classical`: the two sites left after 10g–10i.
+    and the pinned theorems, by `classical`: the two sites left after 10g–10i. At
+    `pencil_conjecture_of_X0` this deletes 10g's `@[nolint unusedArguments]` too (*Decisions*).
 - [ ] **11. X — close the round** (`CLEANUP.md` *Workflow* rule 5; docs). Whole-project
   `lake build` and `lake lint` green. The axioms harness re-diffed against `formalization.yaml`
   and re-run with `lake lean`: 19 of 19 at the three standard axioms. The ROADMAP row reads ✓, and
@@ -269,10 +278,11 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10f landed; the rest of the landings run.** The smallest next commit is **10g** (Opus, the
-first Opus landing; axioms harness): `c3`'s Lean, `_of_arms_pair` over every nonempty graph,
-`pencilPair_of_nonempty` from it, and the new lemma for the pair's three leaves. Then 10h–10r in
-order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its
+**10a–10g landed; the rest of the landings run.** The smallest next commit is **10h** (Opus, TeX):
+`c3`'s TeX, splitting `thm:pencil-conditional-realization-pair`, with a new node for the pair at a
+loop, on at most two bodies and at a cut edge pinning `pencilPair_loop_base_cut` (10g's lemma,
+unpinned until then), and `c2`, `c4`(b), `m2`, `m4`, `m5` and `1b`'s node (task 10). Then 10i–10r
+in order, one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its
 "stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
 
 ## Decisions made during this round
@@ -320,6 +330,13 @@ order (task 10), one commit each at its listed rung. 10i is the first to touch R
   clause (at `m = 6` the hinges span the screw space); 10e's shared step reads the general bound
   instead. Kept on task 1's (b) precedent, that a caller-less clause pin stays; the `k ≥ 5` proof
   still cites the clause.
+
+- **2026-10-04, 10g: two `@[nolint unusedArguments]`, deferred by sequencing.** Once
+  `_of_arms_pair` dropped `[DecidableEq β]`, the binder became unused in the proofs of
+  `pencil_conjecture_of_X0` (the headline's proof term) and `_hcontract_hK_hbareSplit`, and
+  `lake lint` flagged both. Dropping them is `a2`'s headline move (10r), so each carries the
+  attribute beside its existing silencer, its comment naming the item that deletes it: 10r at
+  `_of_X0`, 10i with the declaration at the other.
 
 ### Not sanctioned, or NO-GO (one line each; wording and evidence in the verdicts file)
 
