@@ -258,3 +258,52 @@ task 7: the open-ear steps are walked, and beyond `q1a` their length is their ar
   half or its argument. Drop the nondegeneracy clause and the no-loss half with their pins (15 and
   20 lines), as task 3 did at `-contract-standing`. 1 commit, Sonnet (a deletion, not ⚠Z work),
   batched as above; weakens two statements to what their readers use. Evidence: the map, read.
+
+### Task 5 (A)
+
+**The reading** (*measured, scripts not retained*; spikes run with `lake lean`, 0 errors, 0
+warnings). At statement level: no `Pencil/` declaration's type is alpha-equivalent to any other
+theorem's in the environment (814 against 179 698). By shape, the weighted constants of their types,
+the 680 `Pencil/` theorems against the project's other 2 107: the 110 with a match at 0.7 or more
+screened by statement, the candidate pairs read in full; the rest are siblings (a join lemma beside
+its meet) or corollaries already calling the outside lemma. `exact?`'s search, all solutions kept,
+on the 118 whose statements name no `Pencil/` constant: of the 107 that finished, an outside lemma
+closes only `screwComplementIso_mk_extensor`, which is `ScrewSpace.ext rfl` (compiled; a carrier
+`rfl`, a local golf, not proposed); 11 timed out. Three re-proofs besides round 2's hub
+normalization, `q2a`–`q2c`; the matches in `1a`'s cluster are moot if it retires. Batching, for
+task 8: `q2b`, `q2c` and `a3` are one Sonnet commit outside the zone; `q2a` and `b1` one ⚠Z
+commit, after `r1`'s deletion if it lands. For task 6: `q2d`.
+
+- **`q2`, where `Pencil/` re-proves: GO for `q2a`–`q2c` only.** The rest of the surface states
+  pencil facts, or corollaries of the outside lemma it calls (`deficiency_induce_union_singleton`
+  runs KT 3.6's cut split); `exists_extend_linearIndependent` has no mathlib form (FRICTION). Two
+  commits, below. Evidence: the screens above.
+- **`q2a`, `Theorem55.lean`'s private cut-edge bricks: GO, keep one copy.** `Arms.lean` copies all
+  four in public: the side span and the two endpoint lemmas verbatim, the rank assembly without
+  minimality. With `hG` weakened to `hc : G.deficiency n = c`, Theorem55's assembly gives both
+  statements (spike). Publish its four under Arms' names, delete Arms' (100 lines): 1 commit,
+  Sonnet, ⚠Z (mechanical); nothing a reader sees (none pinned). Evidence: spike, read.
+- **`q2b`, the perp's dimension, proved three times: GO.** `Meet.lean`'s pair, `Motive.lean`'s
+  triple and `Statement.lean`'s single `finrank_toDualPerp_*_eq` run one dual-annihilator proof,
+  and `Arms.lean`'s two `≤` forms are hand-derived. One lemma,
+  `finrank (⨅ j, ker …) + finrank (span (range n)) = N`, gives all five in 3–8 lines (spike).
+  1 commit, Sonnet, not ⚠Z; about −45 lines; nothing a reader sees (none pinned). Evidence: spike.
+- **`q2c`, `exists_common_eval_ne_zero_of_forall_exists`: GO, in `q2b`'s commit.** `Engine.lean`'s
+  proof repeats the product argument of the project's mirror
+  `MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero`; called, the body is 3 lines, not 11
+  (spike). Sonnet, not ⚠Z; nothing a reader sees. Evidence: spike.
+- **`q2d`, `Arms.lean`'s cut case against `Theorem55.lean`'s: NO-GO here; for task 6.** The core
+  (407 lines) follows `case_cut_edge_realization_gen` (266) step for step. Past `q2a` they share
+  only the edge classification (a link lies in a side or is the cut edge), derived inline in each
+  arm; the points, distinctness and repositioning (204 lines) are pencil-only. A shared
+  classification lemma is ⚠Z producer work: task 6 weighs it with `a6`. Evidence: read.
+- **`b1`, `.compl` in the two hubs: GO, after `r1`.** Restated with `ᶜ` (definitionally equal),
+  both hubs and all three consumers need no bridge (spike). With `r1`: one statement, the pinned
+  PanelLayer hub (its node already reads `|B ∖ V(G)|`), three bridges, −5 lines; without, two and
+  five, −9. 1 commit, Sonnet, ⚠Z (`PanelLayer.lean`, `GenericityDevice.lean`; mechanical); a pinned
+  signature's form, not its strength. Depends on `r1` for its size only. Evidence: spike.
+- **`a3`, the degree-sum pair: GO for `two_mul_ncard_le_ncard_edgeSet` only.** Round 1's missing
+  constant sum is in the build, `finsum_mem_const` (Matroid's `ForMathlib/Card.lean`); with
+  `Set.Finite.ncard_biUnion` that proof needs no `Finset`, 42 → 25 lines, no new lemma. Its partner
+  goes 27 → 12 over two new mirrors (13 lines), so stays. 1 commit, Sonnet, not ⚠Z; nothing a
+  reader sees. Evidence: spike.

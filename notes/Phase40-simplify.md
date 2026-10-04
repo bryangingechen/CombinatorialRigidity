@@ -7,9 +7,9 @@ surface, looking for bigger simplifications (`notes/Cleanup40.md` §2 *Round 4*)
 each commit GO / NO-GO verdicts with commit estimates, to their own file,
 `notes/Phase40-simplify-verdicts.md`. Task 8 writes Stop 2 (`NEEDS_PI`), the round's one planned
 stop; then the items the PI sanctions land, and task 11 closes. Tasks 1 (the liveness map), 2 (the
-reduction layer), 3 (node shapes) and 4 (the open ears) are done. **Next concrete task:** task 5
-(A), where `Pencil/` re-proves what other directories or mathlib have (Opus, docs only; spikes as
-needed). Round manual: `CLEANUP.md`.
+reduction layer), 3 (node shapes), 4 (the open ears) and 5 (re-proofs) are done. **Next concrete
+task:** task 6 (P), Phase 39's producers (Opus, docs only; ⚠Z reading, spikes). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,7 +25,9 @@ has landed: the reduction layer's shape and fifteen verdicts, two of them PI cal
 §6's Lean; `a2`, a headline signature) (*Task 2*). Task 3 (N) has landed: eighteen verdicts on the
 nodes outside that layer, two of them conditioned on `1a` (*Task 3*). Task 4 (E) has landed: the
 open ears are four arguments, not one; one GO inside the first (`q1a`), `a7` kept, and `c9`'s halves
-to retire (*Task 4*). Nothing is mid-stream. The task list is complete for the recon (tasks 1–8).
+to retire (*Task 4*). Task 5 (A) has landed: three re-proofs to remove (`q2a`–`q2c`), `b1` after
+`r1`, half of `a3`, and `q2d` handed to task 6 (*Task 5*). Nothing is mid-stream. The task list is
+complete for the recon (tasks 1–8).
 Task 9 slices the landings after Stop 2, and task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
@@ -124,15 +126,10 @@ verdicts.
 - [x] **4. E — the open ears** (`q1`, `a7`, `c9`, with task 1's sizes; Opus, docs; two spikes).
   One argument or several, and if one, what shared statement: the reading and the verdicts are in
   the verdicts file, *Task 4*.
-- [ ] **5. A — where `Pencil/` re-proves** (`q2`, `b1`, `a3`; Opus, docs; spikes as needed). The
-  question: where does `Pencil/` re-prove what `AlgebraicInduction/`, `RigidityMatrix/`,
-  `Induction/` or mathlib already has? Round 2's hub normalization is the one known instance. To
-  bound the reading, work at statement level first: match `Pencil/`'s declarations about motion
-  spaces, rigidity rows, deficiency and rank by shape (`lean_loogle`, `lean_local_search`) against
-  those directories. Read in full only the candidate pairs, and spike the one or two strongest
-  replacements. Also `b1` (restating both hubs with `ᶜ` should drop five `rfl` bridges, and
-  changes two statements, one pinned) and `a3` (the finsum mirrors `CoverageTheoremS.lean`'s
-  degree-sum pair needs).
+- [x] **5. A — where `Pencil/` re-proves** (`q2`, `b1`, `a3`; Opus, docs; five spikes). What
+  `Pencil/` re-proves of `Theorem55.lean`, `Meet.lean` and the project's mathlib mirrors, with the
+  hubs' `ᶜ` and the degree-sum pair: the reading and the verdicts are in the verdicts file,
+  *Task 5*.
 - [ ] **6. P — Phase 39's producers** (`a5`, `a6`; Opus, docs; ⚠Z reading, spikes). The question:
   does either recorded cross-proof duplication admit a shared lemma that nets shorter? `a5`:
   `Pair2.lean`'s pendant producers #4 and #6, whose ~190-line tails are byte-identical; the lemma
@@ -192,15 +189,18 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**Next: task 5 (A), where `Pencil/` re-proves** (Opus, docs only; spikes as needed): checklist item
-5's question and inputs (`q2`, `b1`, `a3`). It writes its verdicts as `### Task 5 (A)` in
-`notes/Phase40-simplify-verdicts.md`. Task 4 compared nothing outside `Pencil/`: the ear steps lean
-on `Ear.lean`'s ear rank law and deficiency bound, and no file outside `Pencil/` has an ear lemma
-(grep, not a match by shape). Then tasks 6–7 in order, each one docs commit of verdicts; task 7
-skips the open-ear steps, which task 4 walked. Then task 8 writes Stop 2, and the autopilot stops
-for the PI. For task 8, the statement moves so far are task 3's `c6`, and `c8`'s `-lifting-restrict`
-and `-contract-standing`, and task 4's `c9` (two clauses dropped); `sec:pencil-girth-chain` and `a1`
-follow `1a`; `a7` keeps a PI decision, which the PI may revisit.
+**Next: task 6 (P), Phase 39's producers** (Opus, docs only; ⚠Z reading, spikes): checklist item
+6's question and inputs (`a5`, `a6`). It writes its verdicts as `### Task 6 (P)` in
+`notes/Phase40-simplify-verdicts.md`. Task 5 hands it `q2d`: `Arms.lean`'s cut case follows
+`Theorem55.lean`'s `case_cut_edge_realization_gen` step for step, and past `q2a`'s bricks the two
+share only the edge classification; weigh a shared lemma for it with `a6`. `q2a` gives the rank
+assembly a `hc` argument, so its six `Pencil/` calls (two each in `Arms.lean`, `Pair.lean` and
+`Pair2.lean`, the last in `a5`'s tails) gain `rfl`; spike against today's signature. Then task 7,
+one docs commit of verdicts; it skips the open-ear steps, which task 4 walked. Then task 8 writes
+Stop 2, and the autopilot stops for the PI. For task 8, the statement moves so far are task 3's
+`c6`, and `c8`'s `-lifting-restrict` and `-contract-standing`, and task 4's `c9` (two clauses
+dropped); task 5's `b1` changes a pinned signature's form, not its strength;
+`sec:pencil-girth-chain` and `a1` follow `1a`; `a7` keeps a PI decision, which the PI may revisit.
 
 ## Decisions made during this round
 
