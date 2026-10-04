@@ -42,63 +42,17 @@ sanctioned the recommended package with `7d`'s chapter restated (*Autopilot: for
 *Decisions*). Task 10 lists 18 landings, 10a–10r, in dependency order, each with its rung and
 gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Decisions*.
 
-**10a landed** (2026-10-04, docs only; task 3's TeX batch): `m6`, `m7` added two missing `\uses`
-edges; `1c-i` pinned `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint` beside
-`lem:two-pencil-extension-iff` and added the edge from `lem:pencil-feasible-hub-conditions`; `c1`
-split `lem:pencil-splitoff-curve` into itself (clause 1), the new `lem:pencil-splitoff-ear-extension`
-(clause 2) and `lem:pencil-weighted-lifting-system-local` (clause 3, placed after
-`def:pencil-weighted-lifting-system`); the two-hubs edge dropped from `thm:pencil-x0-generic-attains`;
-`c8`'s four nodes restated to their pins (`lem:pencil-lifting-restrict` gained the `eval_restrictPoly`
-clause and dropped 3 pins, `thm:pencil-x0-bridge` dropped 5 helper pins, `lem:pencil-contract-standing`
-dropped its 2-edge-connected and `def₂=0` clauses and 2 pins (its one `def₂=0` reader now cites
-`lem:pencil-contract-standing-rigid` directly), `lem:pencil-generic-steer` dropped one helper pin);
-`c9` dropped `lem:pencil-line-pairing-join`'s nondegeneracy clause and `lem:pencil-insertion`'s
-no-loss half (1 pin each); `c5`'s node `lem:pencil-selector-independent-scalar` retired outright (its
-one caller, `lem:pencil-condition-linear`, now proves the line-of-vectors fact inline); the
-polynomial's pin `pencilNormalOfPicturePoly` dropped from `def:pencil-configuration` (3 pins stay).
-**10a's unpins, two kinds** (the coordinator's correction: each name's Lean callers grepped).
-*Dead, so 10b deletes them* (no Lean caller): `Graph.twoEdgeConnected_rigidContract_induce`
-(`c8`'s retired standing pin), `eq_zero_of_kleinLin_eq_zero` and `exists_insertion_ge` (`c9`),
-`exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd` (`c5`), and the polynomial cluster
-`pencilNormalOfPicturePoly`, `eval_pencilNormalOfPicturePoly`, `pencilConfigPointPoly`,
-`eval_pencilConfigPointPoly` (all in `CombinatorialRigidity.Molecular` unless `Graph.`-prefixed).
-*Live, unpinned only; they stay*: `Graph.liftingRestrict`, `Graph.liftingRestrict_apply`,
-`restrictPoly`, the four `pathVertex_*` lemmas, `Graph.cutEdges_union_image_of_bridgePath`,
-`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`,
-`exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`. Gates:
-`blueprint/verify.sh` (bp + web + checkdecls) and `blueprint/lint.sh` both green; the dep-graph
-spot-check confirms the two new nodes appear and `lem:pencil-selector-independent-scalar` is gone.
+**Landed so far** (one line each; the detail is in each commit's message):
+- **10a** `f53dace5`, TeX: task 3's batch. Of the declarations it unpinned, the eight dead ones went
+  in 10b; the rest are live helpers and stay unpinned (`Graph.liftingRestrict`, `restrictPoly`, the
+  `pathVertex_*` lemmas, the steering helper and others; the coordinator's split, `eb333e0c`).
+- **10b** `c48d323e`, Lean: `r1`'s deletion, `q3b` and 10a's eight dead declarations, 38 in all;
+  −1 340 Lean lines against the estimate's −1 159 (the difference is `TwoCut.lean`'s header and the
+  docstrings). No listed name had a live caller. Kept of D5's list: the paid names, the two B5/B6
+  pins and four live helpers (`bddAbove_range_partitionDef_merged`,
+  `span_jointRows_eq_map_dualAnnihilator`, `finrank_span_jointRows`, `map_screwDiff_comm`).
 
-**10b landed** (2026-10-04, Lean only; `r1`'s deletion): `TwoCut.lean` deleted whole (9 names:
-`pencilLoss`, `weldedLoss`, `pencilLoss_nonneg`, `finrank_relScrews_eq`,
-`partitionMotions_le_jointMotions_bot`,
-`screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions`, `weldedLoss_nonneg`,
-`finrank_relScrews_le`, `pencilLoss_vertexTwoCut`) and its import line; `Bricks.lean` loses 6
-(`jointMotions`, `weldedRank`, `span_jointRows_bot`, `inf_span_rigidityRows_span_jointRows_top`,
-`weldedRank_eq`, `weldedRank_add_finrank_jointMotions_bot`), keeping `relScrews`, `jointRows` and
-the two B5/B6 pins; `Deficiency.lean` loses 12 (`deficiency_eq_of_vertexTwoCut(')`, `pairDelta`,
-the private `deficiency_le_deficiencyMerged_add` helper, `deficiency_eq_max`, `deficiencySep`,
-`bddAbove_range_partitionDef_sep`, `partitionDef_le_deficiencySep`, `deficiencySep_le_deficiency`,
-`deficiency_weldPair_eq_deficiencyMerged`, `weldPair`, `pairDelta_le_bodyBarDim`), keeping
-`deficiencyMerged`, `partitionDef_map` and the rest of the D5-paid names; `SplitOffDeficiency.lean`
-loses `deficiency_removeVertex_of_degree_eq_one` and its sole-caller private helper
-`cutEdges_singleton_eq_setOf_isNonloopAt` (A1); `Steer.lean` loses
-`pencilChartWF_standing_ofCoord_toCoord` (`q3b`; its one caller already took the conjuncts as
-explicit hypotheses); and 10a's eight unpinned dead declarations go too
-(`Graph.twoEdgeConnected_rigidContract_induce`, `eq_zero_of_kleinLin_eq_zero`,
-`exists_insertion_ge`, and the `c5`/polynomial cluster in `Configuration.lean`). Every surviving
-docstring naming a deleted declaration is reworded (both module docstrings and the
-`TwoCutCarriers` section intro in `Bricks.lean`; three cross-references in its kept B5′/B6′/B6
-proofs; `Deficiency.lean`'s `deficiencyMerged` section intro and `exists_normalized_labeling`'s
-pointer to the now-gone merged hub; `Steer.lean`'s file/lemma docstrings; `ContractCurve.lean`'s
-stale "2-edge-connected" bullet, already dropped from the blueprint node by 10a; `Lines.lean`'s two
-bullets; `Configuration.lean`'s definitions/statements bullets and `exists_smul_eq_interpolant`'s
-route pointer). `notes/Phase40-design.md` §7's D5-debt bullet records the deletion. Gates:
-whole-project `lake build`, 3002 jobs, 0 `warning:` / 0 `error:`; `lake lint` green;
-`blueprint/verify.sh` and `blueprint/lint.sh` both green (no blueprint TeX touched; `checkdecls`
-confirms no surviving pin names a deleted declaration). `git diff --stat`: −1340 net Lean lines
-across 9 files (task 9's estimate was −1159). Next is 10c, then each landing in turn, then task 11
-closes.
+Next is 10c, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):

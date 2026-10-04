@@ -1236,7 +1236,9 @@ section).
   the remaining A2/A3 names included, has no consumer on Phase 40's route through COVERAGE, and a
   cleanup round pins or leaves it (PI, D5). **Round 4 (`40-simplify`, task 10b, `r1`) deleted the
   unpaid debt** — A1, A2, A3, A4/A5, B1/B2, B3/B4, B7 and all of C1ℓ–C4ℓ (`Molecule/Pencil/TwoCut.lean`
-  whole) — keeping only the paid names above and the two B5/B6 pins.
+  whole) — keeping the paid names above, the two B5/B6 pins and four live helpers
+  (`bddAbove_range_partitionDef_merged`, `span_jointRows_eq_map_dualAnnihilator`,
+  `finrank_span_jointRows`, `map_screwDiff_comm`).
 - [x] **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section):
   **both settled at Phase 40's close.** `thm:pencil-conditional-realization-main-component`'s
   fuller exposition (the main component as a vector bundle over planar pictures, the flat rank,
