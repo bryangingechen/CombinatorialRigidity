@@ -7,10 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10n landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10o (Sonnet, ⚠Z, mechanical): `q2a` + `b1`, Theorem55's cut-edge bricks
-under Arms' names and the PanelLayer hub's `ᶜ`, with 10m's caller-less lemma deleted. Round
-manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10o landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10p (Opus, TeX): `7d`'s chapter, CONTRACT-R restated as CONTRACT-A's
+corollary. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -95,8 +94,16 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
 - **10n**, Lean only: one glue, `exists_hasPencilPanelRealization_glue` with
   `HasPencilPanelRealization.restrict` (`Arms.lean`), at all four sites, 10l's pendant tail too;
   −298 net Lean lines (task 9 estimated about −280); axioms 19 of 19.
+- **10o**, Lean only: `Theorem55.lean`'s four private cut-edge bricks
+  (`mem_of_induce_isLink_left`/`_right`, `span_rigidityRows_eq_of_supportExtensor_agree`,
+  `finrank_span_rigidityRows_cutEdge_eq` with `IsMinimalKDof` weakened to `hc : G.deficiency n = c`)
+  published under `Arms.lean`'s names, which deletes its four copies; `PanelLayer.lean`'s relative
+  hub restated with `V(G)ᶜ.ncard` (three `rfl` bridges dropped, in `GenericityDevice.lean` and
+  `MainComponent/Flat.lean`); `Motive.lean`'s caller-less `Graph.pencilHub_iff_induce_of_degree_ne`
+  deleted (the coordinator's addition). −116 net Lean lines (task 9 estimated about −105); axioms
+  19 of 19.
 
-Next is 10o, then each landing in turn, then task 11 closes.
+Next is 10p, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -263,10 +270,11 @@ verdicts.
     every degree (the larger form): −1 470. Landed 2026-10-04: −1593 net Lean lines.
   - [x] **10n. `7b`** (Opus, ⚠Z). One glue for a cut's two sides, four sites: −213 (about −280).
     Landed 2026-10-04: −298 net Lean lines, all four sites.
-  - [ ] **10o. `q2a` + `b1`** (Sonnet, ⚠Z, mechanical). Theorem55's cut-edge bricks published
+  - [x] **10o. `q2a` + `b1`** (Sonnet, ⚠Z, mechanical). Theorem55's cut-edge bricks published
     under Arms' names; the PanelLayer hub's `ᶜ`: −105.
     Also delete `Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`), which 10m left with no
     caller (10l had removed its other use); trial deletion confirms (the coordinator's addition).
+    Landed 2026-10-04: −116 net Lean lines.
   - [ ] **10p. `7d`'s chapter, (ii)** (Opus, TeX). CONTRACT-R as CONTRACT-A's corollary, the two
     contraction sections merged; `-core-plane`, `-core-rank`, `-limit`'s clause (1) and a clause of
     `cor:pencil-flat-x0` retire, unpinned. The overview's list of steps where no two open
@@ -306,13 +314,12 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10n landed; the rest of the landings run.** The smallest next commit is **10o** (Sonnet, ⚠Z,
-mechanical): `q2a` + `b1`, `Theorem55.lean`'s four private cut-edge bricks published under Arms'
-names (Arms' copies deleted) and the PanelLayer hub's `ᶜ` (verdicts `q2a`, `b1`), with
-`Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`), caller-less since 10m, deleted (task
-10's entry). Since 10n, `finrank_span_rigidityRows_cutEdge_eq` has one caller, the glue
-`exists_hasPencilPanelRealization_glue`. Then 10p–10r in order, one commit each at its listed
-rung; after 10r, task 11 closes the round.
+**10a–10o landed; the rest of the landings run.** The smallest next commit is **10p** (Opus, TeX):
+`7d`'s chapter restated to (ii), CONTRACT-R as CONTRACT-A's corollary — the two contraction
+sections merged; `-core-plane`, `-core-rank`, `-limit`'s clause (1) and a clause of
+`cor:pencil-flat-x0` retire, unpinned; the overview's list of steps where no two open conditions
+meet, and the roadmaps, follow (task 10's entry). Then 10q–10r in order, one commit each at its
+listed rung; after 10r, task 11 closes the round.
 
 ## Decisions made during this round
 

@@ -1135,8 +1135,10 @@ its edge-closure, so they hold regardless of how large the complementary side is
 configuration only enters once the far vertex's own degree/hub-status needs pinning, which the
 pendant glue, `Pencil/Pair2.lean`, does locally). The crossing endpoint `u₀`'s hub status is
 the one place degree actually differs between `H` and `G` (by exactly one, the dropped crossing
-edge); `Graph.pencilHub_iff_induce_of_degree_ne` shows it does not change at all when `G.degree u₀`
-avoids exactly `3` — the sharp value where a single dropped edge can flip pencil-hub status. -/
+edge), unchanged when `G.degree u₀` avoids exactly `3` — the sharp value where a single dropped
+edge can flip pencil-hub status; the unified pendant route `lem:pencil-generic-steer`
+(`hasGenericPencilRealization_pendant_of_IH`) needs no such degree split, so this fact is no longer
+formalized separately (`40-simplify` task 10o). -/
 
 /-- **The bare induced side keeps the ambient degree away from the crossing endpoint**
 (Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3; dual to
@@ -1209,23 +1211,5 @@ theorem _root_.Graph.degree_eq_degree_induce_succ [Finite β] {G : Graph α β} 
   rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloopG, hloopH,
     hnonloop_eq, Set.ncard_insert_of_notMem hec_notmem (Set.toFinite _)]
   omega
-
-/-- **The crossing endpoint's pencil-hub status is unchanged whenever its `G`-degree avoids `3`**
-(Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3): combining the degree-succ fact
-above with `G.degree u₀ ≠ 3`, either `G.degree u₀ ≥ 4` (so both sides are hubs, the dropped edge
-still leaving `≥ 3`) or `G.degree u₀ ≤ 2` (so neither side is, `G.PencilHub u₀` already failing).
-At `deg = 3` exactly, the dropped edge can flip hub status (`H`-degree `2 < 3`) while `G`-degree
-stays `≥ 3`: the case `lem:pencil-generic-steer` handles in the pendant route
-(`hasGenericPencilRealization_pendant_of_IH`), which needs no degree split. -/
-theorem _root_.Graph.pencilHub_iff_induce_of_degree_ne [Finite β] {G : Graph α β} [G.Loopless]
-    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
-    (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg3 : G.degree u₀ ≠ 3) :
-    G.PencilHub u₀ ↔ (G.induce V₁).PencilHub u₀ := by
-  have hsucc := Graph.degree_eq_degree_induce_succ hl₀ hu₀ hw₀ hcut
-  constructor
-  · intro h
-    exact ⟨hu₀, by have := h.2; omega⟩
-  · intro h
-    exact ⟨hl₀.left_mem, by have := h.2; omega⟩
 
 end CombinatorialRigidity.Molecular

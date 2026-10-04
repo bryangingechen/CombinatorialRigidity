@@ -1178,33 +1178,45 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
 -- ── Auxiliary: side-membership from an induce-IsLink witness ──────────────────────────────
 -- Given `G.IsLink e u v` and `(G.induce V₁).IsLink e a b`, conclude `u ∈ V₁` and `v ∈ V₁`.
 -- Proof: `eq_or_eq_of_isLink_of_isLink` gives `u = a ∨ u = b`; both options land in V₁.
-private lemma mem_V₁_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
+/-- **An endpoint of a `G`-link lying under an induced link is on the induced side (left)**
+(`sec:pencil-reduction`; shared by the panel-only cut-edge producers
+`case_cut_edge_realization_gen`/`_gp_gen` and the pencil reduction's glue
+`exists_hasPencilPanelRealization_glue`). If `G`-link `e u v` shares its edge with an induced link
+`(G.induce V₁).IsLink e a b`, then `u ∈ V₁` — the two links share endpoints, and both of the
+induced link's are in `V₁`. -/
+theorem mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     u ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
-private lemma mem_V₁_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
+/-- **An endpoint of a `G`-link lying under an induced link is on the induced side (right)**
+(`sec:pencil-reduction`). The `right` companion of `mem_of_induce_isLink_left`. -/
+theorem mem_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     v ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
-/-- **Shared rank-arithmetic assembly tail of the two not-2-edge-connected cut-edge realization
-producers** (`case_cut_edge_realization_gen` / `_gp_gen`; Phase 38 FACTOR T2a).
+/-- **Cut-edge rank-arithmetic assembly** (shared by the two not-2-edge-connected cut-edge
+realization producers `case_cut_edge_realization_gen`/`_gp_gen`, Phase 38 FACTOR T2a, and the
+pencil reduction's glue `exists_hasPencilPanelRealization_glue`, `sec:pencil-reduction` rank
+infra — no blueprint node of its own, technical rank arithmetic).
 
-Given the assembled framework `F` on `G` (`hFgraph : F.graph = G`), the vertex-disjoint cut brick
-(`le_finrank_span_rigidityRows_of_cut`) lower bound and the B2 upper bound
-(`finrank_span_rigidityRows_add_deficiency_le`) pin `finrank (span F.rigidityRows)` to
+Given the assembled framework `F` on `G` (`hFgraph : F.graph = G`) with `G.deficiency n = c`
+(`hc`), the vertex-disjoint cut brick (`le_finrank_span_rigidityRows_of_cut`) lower bound and the B2
+upper bound (`finrank_span_rigidityRows_add_deficiency_le`) pin `finrank (span F.rigidityRows)` to
 `screwDim k · (|V(G)| − 1) − c`. The cut-edge count `(G.cutEdges V₁).ncard ∈ {0, 1}` is kept
 **abstract**: the brick's `(screwDim k − 1)·|C|` term together with the L1e decomposition
 arithmetic `hk_eq` carry it, so each producer feeds this helper once, over both `|C| = 0` and
 `|C| = 1`, with no per-arm numeral special-casing. The side ranks enter as the two span
 rewrites `hF₁span`/`hF₂span` (to abstract subspaces `S₁`, `S₂`) plus lower bounds `hlb₁`/`hlb₂`
-(exact equalities for the bare `_gen`, `≤` for the generic `_gp_gen`). Uses the explicit
-`hkey` product-distribution + `linarith` — not `nlinarith` — over the heavy `finrank` atoms
-(the fragility note above `_gp_gen`). -/
-private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+(exact equalities for the bare `_gen` and the pencil glue, `≤` for the generic `_gp_gen`). Uses the
+explicit `hkey` product-distribution + `linarith` — not `nlinarith` — over the heavy `finrank`
+atoms (the fragility note above `_gp_gen`). `hc` is the minimality-free replacement for a minimal
+`c`-dof-graph hypothesis (`G.IsMinimalKDof n c`), which only ever fed it through
+`IsMinimalKDof.deficiency_eq`; the pencil glue instantiates `c := G.deficiency n`, `hc := rfl`. -/
+theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    {c c₁ c₂ : ℤ} {G : Graph α β} {V₁ V₂ : Set α} (hG : G.IsMinimalKDof n c)
+    {c c₁ c₂ : ℤ} {G : Graph α β} {V₁ V₂ : Set α} (hc : G.deficiency n = c)
     (F : BodyHingeFramework K k α β) (hFgraph : F.graph = G) (hV₂ : V₂ = V(G) \ V₁)
     (hcut_le : (G.cutEdges V₁).ncard ≤ 1)
     (hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
@@ -1222,7 +1234,6 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
     (hlb₂ : screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ ≤ (Module.finrank K S₂ : ℤ)) :
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
-  classical
   -- A non-cut `G`-edge keeps both endpoints on the same side of the cut. Derived here from
   -- `hFgraph` (it needs only `F.graph = G` and `G.cutEdges V₁`, nothing about the extensor), so
   -- the two producers no longer construct + pass it (Phase 38 FACTOR T2d piece (a)).
@@ -1246,7 +1257,7 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
   rw [hFgraph] at hB2
   have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-      ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by rw [hG.deficiency_eq] at hB2; linarith
+      ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by rw [hc] at hB2; linarith
   -- Combined lower bound with the cut count kept abstract (brick + side ranks + L1e arithmetic).
   have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
       (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
@@ -1266,13 +1277,14 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
     linarith [hbrickZ, hlb₁, hlb₂, hk_eq, hkey]
   exact le_antisymm hB2' hlb
 
-/-- **Side span-equality brick** for the bare cut-edge producer's assembly (Phase 38 FACTOR T2d
-piece (b)). If an assembled extensor `sideExt` agrees with a side framework `Fᵢ`'s
-`supportExtensor` on every `Gᵢ`-internal link, then the assembled side framework `⟨Gᵢ, sideExt⟩`
-spans the same rigidity-row subspace as `Fᵢ`. `case_cut_edge_realization_gen` feeds this once per
-side (`V₁`/`V₂`) — the per-side `hagree` lambda selects the matching `extF` branch.
-Private: no blueprint node. -/
-private lemma span_rigidityRows_side_eq {Gᵢ : Graph α β}
+/-- **Side span-equality brick** for the cut-edge rank assembly (Phase 38 FACTOR T2d piece (b);
+`sec:pencil-reduction` rank infra — no blueprint node of its own, technical rank arithmetic). If an
+assembled extensor `sideExt` agrees with a side framework `Fᵢ`'s `supportExtensor` on every
+`Gᵢ`-internal link, then the assembled side framework `⟨Gᵢ, sideExt⟩` spans the same rigidity-row
+subspace as `Fᵢ` — the row blocks are determined edge-by-edge by the supporting extensor. Feeds
+`case_cut_edge_realization_gen` (once per side `V₁`/`V₂`, the per-side `hagree` lambda selecting the
+matching `extF` branch) and the pencil reduction's glue `exists_hasPencilPanelRealization_glue`. -/
+theorem span_rigidityRows_eq_of_supportExtensor_agree {Gᵢ : Graph α β}
     (sideExt : β → ScrewSpace K k) (Fᵢ : BodyHingeFramework K k α β) (hFᵢg : Fᵢ.graph = Gᵢ)
     (hagree : ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) :
     Submodule.span K (⟨Gᵢ, sideExt⟩ : BodyHingeFramework K k α β).rigidityRows
@@ -1294,7 +1306,8 @@ private lemma span_rigidityRows_side_eq {Gᵢ : Graph α β}
 -- The Phase-22l opacity flip cleared the diffuse `ScrewSpace K k` re-elaboration
 -- (the opaque carrier
 -- head no longer re-unfolds the heavy `↥(⋀ᵏ …)` type-expression at every motive). And its lower
--- bound (in `cutEdge_finrank_assemble`) uses the same `linarith` + explicit `screwDim k·(|V|−1)`
+-- bound (in `finrank_span_rigidityRows_cutEdge_eq`) uses the same `linarith` + explicit
+-- `screwDim k·(|V|−1)`
 -- product idiom as `_gp` below (the `hkey` helpers), instead of an `nlinarith` that blind-squares
 -- over the heavy `finrank` atoms (`notes/ScrewSpaceCarrier-design.md` OQ1).
 /-- **L4a bare-conjunct producer: cut-edge case — general grade `k`**
@@ -1391,15 +1404,15 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
     · simp only [hE₁, ↓reduceIte]
       obtain ⟨a, b, hlab⟩ := hE₁
-      have hu₁ : u ∈ V₁ := mem_V₁_of_induce_isLink_left hl hlab
-      have hv₁ : v ∈ V₁ := mem_V₁_of_induce_isLink_right hl hlab
+      have hu₁ : u ∈ V₁ := mem_of_induce_isLink_left hl hlab
+      have hv₁ : v ∈ V₁ := mem_of_induce_isLink_right hl hlab
       simp only [normal, hu₁, hv₁, ↓reduceIte]
       exact hF₁ext e u v (hF₁g ▸ (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩)
     · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
       · simp only [hE₁, hE₂, ↓reduceIte]
         obtain ⟨a, b, hlab⟩ := hE₂
-        have hu₂ : u ∈ V₂ := mem_V₁_of_induce_isLink_left hl hlab
-        have hv₂ : v ∈ V₂ := mem_V₁_of_induce_isLink_right hl hlab
+        have hu₂ : u ∈ V₂ := mem_of_induce_isLink_left hl hlab
+        have hv₂ : v ∈ V₂ := mem_of_induce_isLink_right hl hlab
         simp only [normal, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂]
         exact hF₂ext e u v (hF₂g ▸ (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩)
       · -- A crossing link: `extF e = C`.
@@ -1417,13 +1430,13 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
         · exact hcross e u v hl hu₁ hv₂.2
         · obtain ⟨hC, h1, h2⟩ := hcross e v u hl.symm hv₁ hu₂.2
           exact ⟨hC, h2, h1⟩
-  have hF₁span := span_rigidityRows_side_eq extF F₁ hF₁g
+  have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g
     (fun e u v hl => by
       simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte])
-  have hF₂span := span_rigidityRows_side_eq extF F₂ hF₂g
+  have hF₂span := span_rigidityRows_eq_of_supportExtensor_agree extF F₂ hF₂g
     (fun e u v hl => by
       have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-        fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl.1 hlab) hl.2.1.2
+        fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
       simp only [extF, hnotE₁, ↓reduceIte,
         show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩])
   have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
@@ -1435,8 +1448,8 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     exact ⟨a, b, hlab, ha, hb⟩
   have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
   -- Shared assembly tail (the cut count kept abstract inside the helper).
-  have hrank_eq := cutEdge_finrank_assemble hD hn hG F rfl hV₂def hcut_le hFext
-    hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
+  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn hG.deficiency_eq F rfl hV₂def hcut_le
+    hFext hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
   have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
     intro v hv
     simp only [normal]
@@ -1709,7 +1722,8 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   -- F := (ofNormals G G.endsOf q₀).toBodyHinge
   set F := (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge
   have hFgraph : F.graph = G := by simp [F, PanelHingeFramework.ofNormals_graph]
-  -- The Fcut hypothesis for the brick (FE₁ is now derived inside `cutEdge_finrank_assemble`).
+  -- The Fcut hypothesis for the brick (FE₁ is now derived inside
+  -- `finrank_span_rigidityRows_cutEdge_eq`).
   have hFext' : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
     intro e u v hl
     rw [hFgraph] at hl
@@ -1729,8 +1743,8 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     have := hQF₂rank; rw [hVeq₂, hG₂.1] at this; exact this
   -- Shared assembly tail; the side ranks enter as `≤` (rank-transfer bound composed with the
   -- side IH equalities), where the bare `_gen` producer feeds equalities.
-  have hrank_eq := cutEdge_finrank_assemble hD hn hG F hFgraph hV₂def hcut_le hFext'
-    hFcut hFVne hVcard hk_eq hF₁span hF₂span
+  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn hG.deficiency_eq F hFgraph hV₂def
+    hcut_le hFext' hFcut hFVne hVcard hk_eq hF₁span hF₂span
     (by rw [← hrank₁eq]; exact_mod_cast hrank₁_bound)
     (by rw [← hrank₂eq]; exact_mod_cast hrank₂_bound)
   rw [← hG.deficiency_eq] at hrank_eq

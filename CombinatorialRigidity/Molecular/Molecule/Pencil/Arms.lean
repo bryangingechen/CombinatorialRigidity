@@ -12,7 +12,8 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
 `notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
 two of the W3 leaf decomposition's induction arms (loop `L3`, cut-edge `L4` with its transport /
-nondegeneracy / rank-assembly infrastructure). The base arm `L5` split further into
+nondegeneracy infrastructure; its rank-assembly step reuses `Theorem55.lean`'s generalized bricks
+since `40-simplify` task 10o). The base arm `L5` split further into
 `Molecule/Pencil/ArmsAssembly.lean` (`40-cleanup` task 28b, the `≤1500`-LoC tripwire); its original
 bare-motive wrapper `L7`, `pencil_conjecture_of_arms` (which assembled all four arms via
 `Graph.pencil_reduction`, `Induction/ForestSurgery/Reduction.lean`), retired at the
@@ -637,134 +638,23 @@ theorem exists_reposition_cross_incidences_avoiding
     have hb_eq : b = a₁ • w₁ + a₂ • w₂ := g.injective (by rw [hgb, hsum'])
     exact hbw (hb_eq ▸ Submodule.mem_span_pair.mpr ⟨a₁, a₂, rfl⟩)
 
-/-! ## W3-L4 rank-assembly infrastructure: the minimality-free cut-edge rank (Phase 39)
-
-The cut arm's rank target is `screwDim 2 · (|V(G)| − 1) − def(G̃)`. These two helpers assemble it
-from the two sides, minimality-free — the `HasPencilRealization` motive carries no `IsMinimalKDof`,
-so the panel-side private siblings `cutEdge_finrank_assemble` / `span_rigidityRows_side_eq`
-(`Theorem55.lean`, both stated with a minimal `c`-dof-graph) do not apply. The rank bound bricks
-themselves are already minimality-free (`le_finrank_span_rigidityRows_of_cut`, the B2 bound
-`finrank_span_rigidityRows_add_deficiency_le`), so the assembly restated with the deficiency split
-`deficiency_eq_of_cutEdges_ncard_le_one` in place of the minimal-`k`-dof decomposition.
-Grade-general (the cut arm instantiates `k = 2`); no blueprint node (technical rank arithmetic, as
-its panel sibling). -/
-
-/-- **The assembled side framework's rigidity-row span agrees with the side's own**
-(`sec:pencil-reduction`, rank infra; the minimality-free public form of the panel-side private
-`span_rigidityRows_side_eq`). If an assembled extensor `sideExt` agrees with a side framework `Fᵢ`'s
-`supportExtensor` on every `Gᵢ`-internal link, then `⟨Gᵢ, sideExt⟩` and `Fᵢ` span the same
-rigidity-row subspace — the row blocks are determined edge-by-edge by the supporting extensor. -/
-theorem span_rigidityRows_eq_of_supportExtensor_agree {k : ℕ} {Gᵢ : Graph α β}
-    (sideExt : β → ScrewSpace K k) (Fᵢ : BodyHingeFramework K k α β) (hFᵢg : Fᵢ.graph = Gᵢ)
-    (hagree : ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) :
-    Submodule.span K (⟨Gᵢ, sideExt⟩ : BodyHingeFramework K k α β).rigidityRows
-      = Submodule.span K Fᵢ.rigidityRows := by
-  congr 1; ext φ
-  simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq]
-  constructor
-  · rintro ⟨e, u, v, hl, r, hr, rfl⟩
-    refine ⟨e, u, v, hFᵢg ▸ hl, r, ?_, rfl⟩
-    simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl] at hr
-    simpa [BodyHingeFramework.hingeRowBlock] using hr
-  · rintro ⟨e, u, v, hl, r, hr, rfl⟩
-    have hl' : Gᵢ.IsLink e u v := hFᵢg ▸ hl
-    refine ⟨e, u, v, hl', r, ?_, rfl⟩
-    simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl']
-    simpa [BodyHingeFramework.hingeRowBlock] using hr
-
-/-- **Minimality-free cut-edge rank assembly** (`sec:pencil-reduction`, rank infra; the
-deficiency-form, minimality-free analogue of the panel-side private `cutEdge_finrank_assemble`). For
-an assembled framework `F` on `G = V₁ ⊔ V₂` with at most one crossing edge, whose two side
-rigidity-row spans are pinned (`hF₁span`/`hF₂span`) at ranks meeting the two IH targets
-(`hlb₁`/`hlb₂`), the full rigidity-row span attains exactly `screwDim k · (|V(G)| − 1) − def(G̃)`.
-Lower bound: the vertex-disjoint cut brick `le_finrank_span_rigidityRows_of_cut` (whose
-`(screwDim k − 1)·|C|` cut term is kept abstract) plus the side ranks and the deficiency split
-`hdef`; upper bound: the B2 bound `finrank_span_rigidityRows_add_deficiency_le` (already stated with
-`def(G̃)`, no minimality). Feeds the cut arm (`lem:pencil-cut-case`) for both `|C| ∈ {0, 1}`. -/
-theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {k n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    {G : Graph α β} {V₁ V₂ : Set α} (F : BodyHingeFramework K k α β)
-    (hFgraph : F.graph = G) (hV₂ : V₂ = V(G) \ V₁)
-    (hcut_le : (G.cutEdges V₁).ncard ≤ 1)
-    (hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
-    (hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁)
-    (hFVne : V(F.graph).Nonempty)
-    (hVcard : V₁.ncard + V₂.ncard = V(G).ncard)
-    (hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
-      + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard)
-    {S₁ S₂ : Submodule K (Module.Dual K (α → ScrewSpace K k))}
-    (hF₁span : Submodule.span K
-        (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows = S₁)
-    (hF₂span : Submodule.span K
-        (⟨G.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows = S₂)
-    (hlb₁ : screwDim k * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
-        ≤ (Module.finrank K S₁ : ℤ))
-    (hlb₂ : screwDim k * ((V₂.ncard : ℤ) - 1) - (G.induce V₂).deficiency n
-        ≤ (Module.finrank K S₂ : ℤ)) :
-    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
-  have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
-      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
-    intro e u v hl hnotcut
-    simp only [Graph.cutEdges, not_and, Set.mem_ofPred_eq] at hnotcut
-    rw [hFgraph] at hl
-    by_cases hu₁ : u ∈ V₁
-    · left; refine ⟨hu₁, ?_⟩
-      by_contra hv₁
-      exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
-    · right; refine ⟨hu₁, ?_⟩
-      by_contra hv₁
-      exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
-  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext
-    (fun e u v hl he => hFE₁ e u v hl he) hFcut
-  rw [hFgraph, ← hV₂, hF₁span, hF₂span] at hbrick
-  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
-  rw [hFgraph] at hB2
-  have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n ≤
-      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
-    have hbrickZ : (Module.finrank K S₁ : ℤ) + (screwDim k - 1) * (G.cutEdges V₁).ncard +
-        (Module.finrank K S₂ : ℤ)
-        ≤ (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by exact_mod_cast hbrick
-    have hscrew : 1 ≤ screwDim k := by rw [← hn]; omega
-    rw [Nat.cast_sub hscrew, Nat.cast_one] at hbrickZ
-    have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-    have hkey : screwDim k * ((V(G).ncard : ℤ) - 1)
-        = screwDim k * ((V₁.ncard : ℤ) - 1) + screwDim k * ((V₂.ncard : ℤ) - 1) + screwDim k := by
-      rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
-    rw [hn] at hdef
-    linarith [hbrickZ, hlb₁, hlb₂, hdef, hkey]
-  exact le_antisymm hB2 hlb
-
 /-! ## W3-L4: the cut-edge arm of the pencil reduction (`lem:pencil-cut-case`, Phase 39)
 
 With the transport (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`), the
 repositioning automorphism (`exists_reposition_cross_incidences`), and the minimality-free rank
-assembly (`finrank_span_rigidityRows_cutEdge_eq` / `span_rigidityRows_eq_of_supportExtensor_agree`)
-in hand, the cut arm assembles a pencil realization of `G` from those of the two sides `G[V₁]`,
-`G[V₂]` of a cut with at most one crossing edge. The construction mirrors the panel-only sibling
-`case_cut_edge_realization_gen` (`Theorem55.lean`), minimality-free: `¬TwoEdgeConnected` is unfolded
-directly (its own opener needs `IsMinimalKDof`, which the motive-free `HasPencilRealization` lacks)
-and the deficiency splits by `deficiency_eq_of_cutEdges_ncard_le_one`. The one genuinely new step
-over the panel sibling is the crossing edge's hinge: it must lie in both panels *and* pass through
-both concurrency points, which `exists_extensor_two_pencils` supplies once the two cross-incidences
-hold — arranged by transporting the `V₂` side along the repositioning automorphism. -/
-
-/-- **An endpoint of a `G`-link lying under an induced link is on the induced side (left)**
-(`sec:pencil-reduction`; the minimality-free sibling of the panel-side private helper). If `G`-link
-`e u v` shares its edge with an induced link `(G.induce V₁).IsLink e a b`, then `u ∈ V₁` — the two
-links share endpoints, and both of the induced link's are in `V₁`. Used by the glue
-`exists_hasPencilPanelRealization_glue` and the cut arm's adjacent-distinctness rider. -/
-lemma mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
-    {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
-    u ∈ V₁ :=
-  (G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
-
-/-- **An endpoint of a `G`-link lying under an induced link is on the induced side (right)**
-(`sec:pencil-reduction`). The `right` companion of `mem_of_induce_isLink_left`. -/
-lemma mem_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
-    {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
-    v ∈ V₁ :=
-  (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
+assembly (`Theorem55.lean`'s `finrank_span_rigidityRows_cutEdge_eq`,
+`span_rigidityRows_eq_of_supportExtensor_agree`, `mem_of_induce_isLink_left` and
+`mem_of_induce_isLink_right` — shared with the panel-only cut-edge producers
+`case_cut_edge_realization_gen`/`_gp_gen` since `40-simplify` task 10o, which deleted this file's
+own copies) in hand, the cut arm assembles a pencil realization of `G` from those of the two sides
+`G[V₁]`, `G[V₂]` of a cut with at most one crossing edge. The construction mirrors the panel-only
+sibling `case_cut_edge_realization_gen` (`Theorem55.lean`), minimality-free: `¬TwoEdgeConnected` is
+unfolded directly (its own opener needs `IsMinimalKDof`, which the motive-free
+`HasPencilRealization` lacks) and the deficiency splits by
+`deficiency_eq_of_cutEdges_ncard_le_one`. The one genuinely new step over the panel sibling is the
+crossing edge's hinge: it must lie in both panels *and* pass through both concurrency points, which
+`exists_extensor_two_pencils` supplies once the two cross-incidences hold — arranged by
+transporting the `V₂` side along the repositioning automorphism. -/
 
 /-- **A pencil panel realization restricts to a subgraph** (`sec:pencil-reduction`). For `H ≤ G`,
 the framework on `H` with the same supporting extensors, normals and points is a pencil panel
@@ -852,7 +742,7 @@ theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
           fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
         simp only [extF, hnotE₁, ↓reduceIte, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
-    exact finrank_span_rigidityRows_cutEdge_eq hD hn ⟨G, extF⟩ rfl hV₂def hcut
+    exact finrank_span_rigidityRows_cutEdge_eq hD hn rfl ⟨G, extF⟩ rfl hV₂def hcut
       (fun e _ _ _ => by simp only [extF]; split_ifs; exacts [hS₁nz e, hS₂nz e, hC])
       (fun e he => by
         simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he

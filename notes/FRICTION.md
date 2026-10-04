@@ -573,11 +573,11 @@ to be re-derived by re-reading entries later.
 - **Status:** open (worked around at the only call site; the general rescue pattern is
   TACTICS-QUIRKS § 107).
 
-### [mirror-candidate] `induce`-link endpoint-membership helpers are private in `Theorem55.lean` — re-derived in `Pencil.lean`
+### [resolved] `induce`-link endpoint-membership helpers are private in `Theorem55.lean` — re-derived in `Pencil.lean`
 - **Where it bit:** Phase 39 (PENCIL) W3-L4 cut-arm assembly (`Molecular/Molecule/Pencil.lean`, `hasPencilRealization_of_not_twoEdgeConnected`). The panel-side sibling `case_cut_edge_realization_gen` (`AlgebraicInduction/Theorem55.lean`) uses `mem_V₁_of_induce_isLink_left`/`_right` — "a `G`-link sharing its edge with `(G.induce V₁).IsLink e a b` has both its endpoints in `V₁`" — but they are `private`, so unavailable across files.
 - **Friction:** re-derived the two one-liners locally as `mem_of_induce_isLink_left`/`_right` (same body: `(G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)`). No build-failure iteration (preemptive), but it's a genuine second copy of a generic induce-API helper with no rigidity content.
-- **Fix candidate:** promote to a public helper in the file owning the `Graph.induce` API (or a `CombinatorialRigidity/Mathlib` mirror), then have both `Theorem55.lean` and `Pencil.lean` consume it. Low priority (two one-liners); flagged so a future cut-arm author doesn't triplicate it.
-- **Status:** open (project-internal API gap; the same intentional-duplication story as the W3-L4 rank-assembly infra vs Theorem55's private `cutEdge_finrank_assemble`, `notes/Phase39.md`).
+- **Fix:** `40-simplify` task 10o (`q2a`) made Theorem55's two lemmas public under `Pencil/Arms.lean`'s names (`mem_of_induce_isLink_left`/`_right`, same `CombinatorialRigidity.Molecular` namespace, transitively imported) and deleted `Arms.lean`'s copies; `Theorem55.lean`'s own two call sites keep the renamed-but-still-local calls.
+- **Status:** resolved — the same commit also resolved the W3-L4 rank-assembly infra vs Theorem55's private `cutEdge_finrank_assemble` duplication this entry's *Status* line used to point at (`notes/Phase39.md`): that private lemma is now public under the deficiency-hypothesis form, published as `finrank_span_rigidityRows_cutEdge_eq`.
 
 ### [idiom] `unusedDecidableInType` flags a `[DecidableEq β]` the theorem's *type* never uses, even when callees consume it — working as designed; drop the binder and put `classical` in the proof
 - **Where it bit:** Phase 39 (PENCIL) W3-L6a (`Molecular/Induction/Contraction.lean`, `Graph.rigidContract_deficiency_eq`); W5-L6a-safe-exists (`ReducibleVertex.lean`); Phase 40-cleanup task 2 (`5a636c0e`, the pencil tree's seven sites) and its corrective follow-up.
@@ -4823,7 +4823,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   subtracting in `ℤ`-valued equations).
 
 ### [idiom] `linarith` won't cancel a ℕ-sub product across two hypotheses — post-normalize the `exact_mod_cast` output
-- **Where it bit:** `cutEdge_finrank_assemble` (`AlgebraicInduction/Theorem55.lean`, Phase 38 T2a),
+- **Where it bit:** `cutEdge_finrank_assemble` (`AlgebraicInduction/Theorem55.lean`, Phase 38 T2a;
+  renamed `finrank_span_rigidityRows_cutEdge_eq` and made public at `40-simplify` task 10o),
   unifying the two cut-edge realization proofs by keeping the cut count `(G.cutEdges V₁).ncard`
   *abstract* instead of substituting `0`/`1` per arm.
 - **Friction:** the vertex-disjoint cut brick returns a ℕ inequality with `(screwDim k - 1) * |C|`;

@@ -573,11 +573,9 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
   have hcompl := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
   have hhub := F.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions hn hne hC
   have hsplit : screwDim k * Nat.card α
-      = screwDim k * F.graph.vertexSet.ncard + screwDim k * F.graph.vertexSet.compl.ncard := by
-    have h : F.graph.vertexSet.ncard + F.graph.vertexSetᶜ.ncard = Nat.card α :=
-      Set.ncard_add_ncard_compl F.graph.vertexSet (Set.toFinite _) (Set.toFinite _)
-    have heq : F.graph.vertexSetᶜ.ncard = F.graph.vertexSet.compl.ncard := rfl
-    rw [← heq, ← Nat.mul_add, h]
+      = screwDim k * F.graph.vertexSet.ncard + screwDim k * F.graph.vertexSetᶜ.ncard := by
+    rw [← Nat.mul_add,
+      Set.ncard_add_ncard_compl F.graph.vertexSet (Set.toFinite _) (Set.toFinite _)]
   have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
   rw [Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card] at hcompl
   zify [h1] at hcompl hhub hsplit ⊢

@@ -366,7 +366,6 @@ theorem _root_.Graph.three_add_deficiency_le_finrank_liftingSpace [Finite α] [F
   simp only [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
     screwDim_one] at hhub
   push_cast at hhub
-  have : (V(G).compl.ncard : ℤ) = (V(G)ᶜ.ncard : ℤ) := rfl
   linarith
 
 /-! ## Grade 2: the flat split `Λ²K⁴ = W′ ⊕ W_Π` -/

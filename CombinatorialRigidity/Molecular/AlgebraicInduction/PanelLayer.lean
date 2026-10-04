@@ -2143,7 +2143,7 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
     (hn : Graph.bodyBarDim n = screwDim k)
     (hne : F.graph.vertexSet.Nonempty)
     (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
-    (screwDim k : ℤ) * (F.graph.vertexSet.compl.ncard + 1) + F.graph.deficiency n
+    (screwDim k : ℤ) * (F.graph.vertexSetᶜ.ncard + 1) + F.graph.deficiency n
       ≤ (Module.finrank K F.infinitesimalMotions : ℤ) := by
   have : Nonempty α := ⟨hne.some⟩
   -- Pick the def-attaining partition `f₀`, and normalize it into `V(G)`.
@@ -2164,8 +2164,7 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
       = (screwDim k : ℤ) * ((F.graph.numParts f₀ : ℤ) - 1)
         - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f₀).ncard := by
     simp [Graph.partitionDef, hDcast]
-  have hcompl_eq : F.graph.vertexSetᶜ.ncard = F.graph.vertexSet.compl.ncard := rfl
-  zify [hcompl_eq] at hmono hlb ⊢
+  zify at hmono hlb ⊢
   linarith [hpdef_eq]
 
 end BodyHingeFramework
