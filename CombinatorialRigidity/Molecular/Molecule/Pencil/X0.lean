@@ -10,11 +10,10 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 
 `X0Dist`/`X0Gen` are the two hypotheses the adopted `X₀` route replaces `hK`/`hbareSplit` with
 (`notes/pencil/adjudications.md`, 2026-09-25): a separate strong induction on the pencil-realization
-configuration space's main component, bypassing both open kernels of
-`thm:pencil-conditional-realization-pair`. Phase 40 discharges them
-(`notes/Phase40-design.md` §1). `pencilPair_of_X0` and `pencil_conjecture_of_X0` are the carried
-headline built on top, spike-compiled against `22d0f8f8`
-(`notes/Phase39-design.md` § "X₀ architecture recon") and transcribed here verbatim.
+configuration space's main component, bypassing both open kernels (retired at Phase 40's close).
+Phase 40 discharges them (`notes/Phase40-design.md` §1). `pencilPair_of_X0` and
+`pencil_conjecture_of_X0` are the carried headline built on top, spike-compiled against
+`22d0f8f8` (`notes/Phase39-design.md` § "X₀ architecture recon") and transcribed here verbatim.
 `hasPencilRealization_of_not_simple` (Phase 39 L0b, KT Lemma 6.2 mirror, minimality-free) is the
 non-simple bare case that used to be carried as the hypothesis `hW4A`; both carried headlines now
 call it directly, and Phase 39 closed once this landed.
@@ -348,8 +347,7 @@ field, given `X0Dist` and `X0Gen`, every multigraph on the whole ambient body se
 conditioned pair at `n = 3`. Assembles `pencilPair_of_X0` at both arms of
 `pencil_conjecture_of_arms_pair`'s reduction — the contraction and split arms feed it the same
 per-graph argument, since neither the two-edge-connectivity split nor `X0Dist`/`X0Gen` cares which
-arm supplied the induction hypothesis. Neither open kernel of `thm:pencil-conditional-realization-
-pair` is used, and no fresh edge. -/
+arm supplied the induction hypothesis. No fresh edge label is used. -/
 @[nolint unusedArguments]
 theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
     (hdist : X0Dist K α β) (hgen : X0Gen K α β)

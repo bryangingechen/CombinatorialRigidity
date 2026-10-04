@@ -32,24 +32,25 @@ states this induction and proves its cases at a loop, on at most two
 bodies and at a cut edge. \Cref{sec:pencil-nondegenerate} adds the
 distinct points and the nondegenerate realizations to the induction
 statement. Katoh and Tanigawa's induction statement likewise asks for
-nonparallel realizations (KT Theorem~5.5).
-\Cref{sec:pencil-main-component-route} proves the two remaining cases,
+nonparallel realizations (KT Theorem~5.5). The cases at a loop, on at
+most two bodies and at a cut edge hold for the strengthened statement
+too, so it follows from the two remaining cases
+(\cref{thm:pencil-conditional-realization-pair}).
+\Cref{sec:pencil-main-component-route} proves these two cases,
 where $G$ has a proper rigid subgraph and where it is two-edge-connected
 without one. At a simple two-edge-connected multigraph both follow from
 two statements (\cref{def:pencil-main-component-statements}), which
 \cref{sec:main-component} proves by lifting pictures of $G$ in the plane.
 
-Four parts of the chapter are not used in the proof of
+Three parts of the chapter are not used in the proof of
 \cref{thm:pencil-conjecture}. \Cref{sec:pencil-duality} shows that the
 polarity of \cref{lem:panel-hinge-dual-molecular} takes a pencil
 realization to one with the panel normals and the points exchanged.
 This chapter uses the polarity nowhere else. \Cref{sec:pencil-cycle}
-realizes the cycles on three and four bodies as pencil realizations. On
-five or more bodies, \cref{thm:pencil-conditional-realization-pair}
-reduces the two-edge-connected case without a proper rigid subgraph to
-two kernel statements, which are not proved here.
-\Cref{sec:pencil-girth-chain} derives what the kernels' hypotheses imply
-about the shape of $G$.
+realizes the cycles on three and four bodies as pencil realizations.
+\Cref{sec:pencil-girth-chain} derives the shape of a simple
+two-edge-connected multigraph with no proper rigid subgraph around a
+body of degree two.
 
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
@@ -615,15 +616,18 @@ statement the induction proves is the following.
   and has a proper rigid subgraph (\cref{def:rigid-subgraph}); \textup{(v)}
   $G$ is loopless, two-edge-connected, $|V(G)| \ge 3$, has no proper rigid
   subgraph, and (by \cref{lem:pencil-min-degree-rigid}) some vertex has
-  degree exactly two. Cases (i), (iii), (iv), (v) are handed the property
-  at every strictly smaller graph in the lexicographic order on
-  $(|V(G)|, |E(G)|)$.
+  degree exactly two. Case (i) is handed the property at every nonempty
+  multigraph smaller than $G$ in the lexicographic order on
+  $(|V(G)|, |E(G)|)$. Cases (iii), (iv) and (v) are handed it at every
+  nonempty multigraph on fewer vertices than $G$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Strong induction on $(|V(G)|, |E(G)|)$, lexicographically: deleting a
-  loop strictly decreases $|E(G)|$ at fixed $|V(G)|$, and every other case
-  strictly decreases $|V(G)|$. Case (v)'s degree-two vertex follows from
+  Strong induction on $(|V(G)|, |E(G)|)$, lexicographically. Its
+  hypothesis at $G$ gives the property at every smaller nonempty
+  multigraph, in particular at every one on fewer vertices. Deleting a
+  loop keeps $|V(G)|$ and lowers $|E(G)|$, so it gives a smaller
+  multigraph. Case (v)'s degree-two vertex follows from
   \cref{lem:pencil-min-degree-rigid} (no proper rigid subgraph forces a
   vertex of degree at most two) and two-edge-connectivity (degree at least
   two).
@@ -833,39 +837,6 @@ automorphism.
   minimality-tracking statement did, and that half is not needed here.
 \end{proof}
 
-The next theorem assembles the three cases proved here, with the
-contraction and split cases as hypotheses. The proof of
-\cref{thm:pencil-conjecture} uses not this theorem but a strengthened
-form of it, \cref{thm:pencil-conditional-realization-pair}. The proof of
-that form follows this one, and uses the three lemmas above at a loop, on
-at most two bodies and at a cut edge.
-
-\begin{theorem}[Pencil realization from the contraction and split cases]
-  \label{thm:pencil-conditional-realization}
-  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms}
-  \leanok
-  \uses{thm:pencil-reduction, def:pencil-rank-hypothesis, def:rigid-subgraph}
-  Suppose that for every loopless multigraph $G$ with $|V(G)| \ge 3$, if
-  every strictly smaller such graph has a pencil realization at the
-  deficiency rank, then so does $G$ whenever it has a proper rigid
-  subgraph, and so does $G$ whenever it is two-edge-connected with no
-  proper rigid subgraph. Then every multigraph on the whole ambient body
-  set has a pencil realization at the deficiency rank.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:pencil-reduction, lem:pencil-loop-case, lem:pencil-base-case,
-        lem:pencil-cut-case}
-  Apply \cref{thm:pencil-reduction}: the loop case is
-  \cref{lem:pencil-loop-case}, the base case is
-  \cref{lem:pencil-base-case}, and the cut-edge case is
-  \cref{lem:pencil-cut-case}; the contraction and split cases are the two
-  hypotheses. Because the ambient body set is exactly $V(G)$, the
-  resulting rigidity-row rank equation restates, via the rank--nullity
-  complement between the rigidity-row span and the infinitesimal-motion
-  space, as the equivalent global rank hypothesis on the motion space.
-\end{proof}
-
 \subsection{Nondegenerate realizations and the conditioned pair}
 \label{sec:pencil-nondegenerate}
 
@@ -1000,172 +971,101 @@ conditions.
   $n = 3$, where the two agree.
 \end{fmlnote}
 
-The proof of the next theorem has two parts. The first proves the loop,
-base and cut-edge cases for the conditioned pair, and takes the
-contraction and split cases as hypotheses, as
-\cref{thm:pencil-conditional-realization} does for the bare statement.
-The proof of \cref{thm:pencil-conjecture} uses this part, with
-\cref{thm:pencil-conditional-realization-main-component} supplying the
-two cases. The second part proves the split case on three and four bodies
-directly. On five or more bodies it reduces the split case to two
-statements at a body of degree two, which the theorem takes as
-hypotheses. The route through the main component
-(\cref{sec:pencil-main-component-route}) does not need them, and of this
-second part it reuses only the construction on three bodies
-(\cref{thm:pencil-generic-step}).
+We now prove the reduction for the conditioned pair, beginning with the
+three cases that \cref{sec:pencil-reduction} proves for the bare
+statement.
 
-The two statements are kernel (K), for a nondegeneracy-feasible graph,
-and kernel (K-bare), for one that is not. Neither is proved here. Kernel
-(K) is the pencil analogue of KT Claim~6.12 (p.~690), but Katoh and
-Tanigawa's proof does not carry over. That proof lets the hinges it tests
-range over all lines of three panels (KT eqs.~(6.42) and~(6.45),
-pp.~690--691), while a hinge of a pencil realization must pass through
-the points of its two ends. Both
-kernels take the induction hypothesis as well as a realization of the
-smaller graph. Without it, a proof of a kernel would have to prove the
-theorem for the graph left when the chain of bodies of degree two through
-the split body is removed.
-
-\begin{theorem}[Pencil realization from the contraction case and two open kernels, conditioned pair]
-  \label{thm:pencil-conditional-realization-pair}
-  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms_pair,
-        CombinatorialRigidity.Molecular.pencil_conjecture_of_hcontract_hK_hbareSplit,
-        CombinatorialRigidity.Molecular.pencil_conjecture_of_hcontract_hK_hbareSplit_of_card}
+\begin{lemma}[The conditioned pair at a loop, on at most two bodies and at a cut edge]
+  \label{lem:pencil-pair-loop-base-cut}
+  \lean{CombinatorialRigidity.Molecular.pencilPair_loop_base_cut}
   \leanok
-  \uses{thm:pencil-reduction, def:pencil-conditioned-pair, def:rigid-subgraph,
-        def:pencil-nondegenerate, def:pencil-generic-motive,
-        def:pencil-distinct-motive, def:pencil-rank-hypothesis}
-  Let $K$ be an infinite field. Suppose that for every loopless
-  multigraph $G$ with $|V(G)| \ge 3$, if every strictly smaller such graph
-  satisfies the conditioned pair (\cref{def:pencil-conditioned-pair}) at
-  $n = 3$, then so does $G$ whenever it has a proper rigid subgraph. For the
-  two-edge-connected case with no proper rigid subgraph, the conditioned
-  pair holds unconditionally on three or four vertices (such a multigraph is
-  forced to be the spanning $3$-cycle, resp.\ $4$-cycle). On five or more
-  vertices it holds given the following, at a degree-two vertex $v$ one of
-  whose two neighbours is not a pencil hub, with split-off multigraph $G'$,
-  and given that every strictly smaller such graph satisfies the conditioned
-  pair: whenever $G$ is nondegeneracy-feasible, a generic pencil realization
-  of $G'$ extends to a generic pencil realization of $G$ (kernel (K));
-  whenever it is not, an adjacent-distinct pencil realization of $G'$
-  (\cref{def:pencil-distinct-motive}) extends to an adjacent-distinct one of
-  $G$ (kernel (K-bare)); and some edge outside $E(G)$ is always
-  available. Then every multigraph on the whole ambient body set satisfies
-  the conditioned pair at $n = 3$.
-\end{theorem}
-\begin{fmlnote}
-  \label{fmlnote:pencil-conditional-realization-pair-kernels}
-  The first pinned declaration is the first part of the proof below. Its
-  hypotheses are the contraction case, as in the theorem, and the split
-  case at a two-edge-connected multigraph with no proper rigid subgraph.
-  Its conclusion holds at every multigraph with at least one body, not
-  only on the whole ambient body set.
-  The second is the theorem as stated. Its hypothesis that an edge label
-  outside $E(G)$ is available is the fresh-edge-label convention
-  (\cref{rem:fresh-edge-supply}): the label goes to the new edge of $G'$.
-  The third replaces this hypothesis by the bound
-  $6(|\alpha| - 1) < |\beta|$ on the numbers of bodies and edge labels, as
-  in \cref{rem:fresh-edge-supply}.
-\end{fmlnote}
-\begin{fmlnote}
-  \label{fmlnote:pencil-conditional-realization-pair-field}
-  The three declarations assume only that $K$ is infinite. The project's
-  own attempts at the kernels, which are not given here, would need more
-  of the field: a characteristic other than $2$ for kernel (K), and an
-  algebraically closed field for kernel (K-bare). Such a hypothesis
-  belongs to a proof of a kernel, so the declarations of this theorem do
-  not carry it.
-\end{fmlnote}
+  \uses{def:pencil-conditioned-pair, def:cut-edges-2ec}
+  Let $K$ be an infinite field and $G$ a multigraph.
+  \begin{enumerate}
+    \item If $G$ has a loop, and every nonempty multigraph with fewer
+      vertices than $G$, or with as many vertices and fewer edges,
+      satisfies the conditioned pair at $n = 3$
+      (\cref{def:pencil-conditioned-pair}), then so does $G$.
+    \item If $G$ is loopless and has one or two vertices, it satisfies
+      the conditioned pair at $n = 3$.
+    \item If $G$ is loopless with $|V(G)| \ge 3$ and not
+      two-edge-connected (\cref{def:cut-edges-2ec}), and every nonempty
+      multigraph on fewer vertices than $G$ satisfies the conditioned
+      pair at $n = 3$, then so does $G$.
+  \end{enumerate}
+\end{lemma}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-reduction, def:pencil-nondegenerate}
-  We apply \cref{thm:pencil-reduction} with the conditioned pair as the
-  property. The loop, base and cut-edge cases need no hypothesis, and the
-  contraction case is the first hypothesis. The split case is proved
-  directly on three and four bodies, and from the kernels on five or more.
+  \uses{lem:pencil-loop-case, lem:pencil-base-case, lem:pencil-cut-case,
+        def:pencil-nondegenerate}
+  In each case the bare conjunct is \cref{lem:pencil-loop-case},
+  \cref{lem:pencil-base-case} or \cref{lem:pencil-cut-case}. In case~(1)
+  the first of these applies to $G$ with the loop deleted, which has as
+  many vertices as $G$ and fewer edges. The other two conjuncts are
+  needed only when $G$ is simple. A multigraph with a loop is not simple.
+  A simple multigraph on at most two bodies has at most one edge, and a
+  direct construction gives it a nondegenerate realization at the
+  deficiency rank. At a cut edge, the adjacent-distinct conjunct is the
+  second form of \cref{lem:pencil-cut-case}.
 
-  \emph{The loop, base and cut-edge cases.} In each case the bare conjunct
-  is \cref{lem:pencil-loop-case}, \cref{lem:pencil-base-case} or
-  \cref{lem:pencil-cut-case}, and the other two conjuncts are needed only
-  when $G$ is simple. A multigraph with a loop is not simple. A simple
-  multigraph on at most two bodies has at most one edge, and a direct
-  construction gives it a nondegenerate realization at the deficiency
-  rank. At a cut edge, the adjacent-distinct conjunct is the second form of
-  \cref{lem:pencil-cut-case}.
+  It remains to prove the generic conjunct in case~(3). Let $G$ be simple
+  and nondegeneracy-feasible, with at most one edge crossing a nonempty
+  proper subset $V_1$ of $V(G)$. A nondegenerate realization of $G$
+  restricts to one of a subgraph, provided no body of the subgraph drops
+  from degree three or more to degree two. So, except in the last case
+  below, each smaller graph used is nondegeneracy-feasible, and the
+  hypothesis of case~(3) gives it a generic realization. If no edge
+  crosses, the generic realizations of the two sides together form one of
+  $G$. Suppose one edge $uv$ crosses, with $u \in V_1$. If both sides have
+  at least two bodies, we use each side together with the far end of
+  $uv$, so that $u$ keeps its degree in the first and $v$ in the second.
+  We move the second as in \cref{lem:pencil-cut-case}, by an automorphism
+  that also avoids finitely many subspaces, and join the two along $uv$.
 
-  \emph{The generic conjunct at a cut edge.} Let $G$ be simple and
-  nondegeneracy-feasible, with at most one edge crossing a nonempty proper
-  subset $V_1$ of $V(G)$. A nondegenerate realization of $G$ restricts to
-  one of a subgraph, provided no body of the subgraph drops from degree
-  three or more to degree two. So, except in the last case below, each
-  smaller graph used is nondegeneracy-feasible, and the induction
-  hypothesis gives it a generic realization. If no edge crosses, the generic realizations of the two
-  sides together form one of $G$. Suppose one edge $uv$ crosses, with
-  $u \in V_1$. If both sides have at least two bodies, we use each side
-  together with the far end of $uv$, so that $u$ keeps its degree in the
-  first and $v$ in the second. We move the second as in
-  \cref{lem:pencil-cut-case}, by an automorphism that also avoids finitely
-  many subspaces, and join the two along $uv$. If one side is a single
-  body, say $v$, we use $G - v$, and give $v$ a point and a panel that
-  avoid finitely many subspaces. When $u$ has degree three, it drops to
-  degree two in $G - v$. Then we first show that $G - v$ is
-  nondegeneracy-feasible, and move its generic realization, at the same
-  rank, to one that also meets the conditions of $G$ on the normals at $u$
-  and its other two neighbours. Both steps choose a point off the zero set of a nonzero
-  polynomial, which exists because $K$ is infinite.
+  If one side is a single body, say $v$, we use $G - v$, and give $v$ a
+  point and a panel that avoid finitely many subspaces. When $u$ has
+  degree three, it drops to degree two in $G - v$. Then we first show
+  that $G - v$ is nondegeneracy-feasible, and move its generic
+  realization, at the same rank, to one that also meets the conditions of
+  $G$ on the normals at $u$ and its other two neighbours. Both steps
+  choose a point off the zero set of a nonzero polynomial, which exists
+  because $K$ is infinite.
+\end{proof}
 
-  \emph{The split case on three and four bodies.} Here $G$ is loopless
-  and two-edge-connected with no proper rigid subgraph, so it is simple
-  (\cref{lem:pencil-simple-of-noRigid}) and every body has degree at least
-  two. On three bodies $G$ is therefore a triangle. On four it is a
-  $4$-cycle, since a triangle would be a proper rigid subgraph: a cycle on
-  at most six bodies is rigid (the proof of
-  \cref{lem:chain-cycle-dichotomy}). Both have a nondegenerate realization at the deficiency rank by
-  a direct construction. The bodies get linearly independent points, each
-  edge gets the line through the points of its ends, and each body gets a
-  panel containing its own point and those of its two neighbours. The
-  hinges are linearly independent, so the framework is infinitesimally
-  rigid (\cref{lem:cycle-realization-rigid}), and its rank is the
-  deficiency rank, as the cycle is rigid. No body is a hub, and the three
-  points of each closed neighbourhood are independent.
-
-  \emph{The split case on five or more bodies.} By
-  \cref{thm:pencil-reduction}, $G$ has a body of degree two, and in fact
-  two adjacent ones. This is \cref{lem:adjacent-degree-two-pair}
-  (KT Lemma~4.6 at $d = 3$) without minimality. The same count needs only
-  two-edge-connectivity and the edge bound of \cref{lem:no-rigid-edge-count}
-  (KT Lemma~4.5) at $k = 0$. That bound holds here because the edges of $\tilde G$ that
-  avoid a body of degree two are independent in $M(\tilde G)$: a circuit
-  among them would induce a proper rigid subgraph
-  (\cref{lem:circuit-induces-rigid}). Let $v$ be one of the two adjacent
-  bodies, with neighbours $a$ and $b$, where $a$ has degree two and so is
-  not a hub. The bodies $a$ and $b$ are not adjacent, since a triangle
-  $avb$ would be a proper rigid subgraph. Splitting off $v$ gives a simple
-  multigraph $G'$ on fewer bodies, whose new edge $ab$ takes the available
-  edge label. It is triangle-free, since a triangle of $G'$ would give a
-  cycle of $G$ on at most four bodies, a proper rigid subgraph.
-
-  \emph{The kernels.} Suppose first that $G$ is nondegeneracy-feasible.
-  Its closed hub-neighbourhoods have at most three members, as shown after
-  \cref{def:pencil-nondegenerate}, and so do those of $G'$, since $a$ is
-  not a hub. With $G'$ triangle-free, this makes $G'$
-  nondegeneracy-feasible. The induction hypothesis then gives $G'$ a
-  generic realization, kernel (K) gives one of $G$, and the other two
-  conjuncts follow. If $G$ is not nondegeneracy-feasible, its generic
-  conjunct is vacuous. The induction hypothesis gives the simple graph $G'$
-  an adjacent-distinct realization, kernel (K-bare) gives one of $G$, and
-  the bare conjunct follows.
+\begin{theorem}[The conditioned pair from the contraction and split cases]
+  \label{thm:pencil-conditional-realization-pair}
+  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms_pair}
+  \leanok
+  \uses{thm:pencil-reduction, def:pencil-conditioned-pair, def:rigid-subgraph,
+        def:cut-edges-2ec}
+  Let $K$ be an infinite field. Consider two kinds of loopless
+  multigraphs $G$ with $|V(G)| \ge 3$: those with a proper rigid subgraph
+  (\cref{def:rigid-subgraph}), and those that are two-edge-connected,
+  have no proper rigid subgraph and have a vertex of degree two. Suppose
+  that each such $G$ satisfies the conditioned pair at $n = 3$
+  (\cref{def:pencil-conditioned-pair}) whenever every nonempty multigraph
+  on fewer vertices than $G$ does. Then every nonempty multigraph
+  satisfies the conditioned pair at $n = 3$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:pencil-reduction, lem:pencil-pair-loop-base-cut}
+  Apply \cref{thm:pencil-reduction} with the conditioned pair at $n = 3$
+  as the property. Its cases at a loop, on at most two vertices and at a
+  cut edge are \cref{lem:pencil-pair-loop-base-cut}. Its contraction and
+  split cases are the two hypotheses.
 \end{proof}
 
 \subsection{Reduction to the main component}
 \label{sec:pencil-main-component-route}
 
-The kernels of \cref{thm:pencil-conditional-realization-pair} are not
-proved here, and we prove the pencil conjecture without them. At a
-simple two-edge-connected multigraph, the contraction and split cases of
-the reduction both follow from two statements: the multigraph has an
-adjacent-distinct pencil realization at the deficiency rank, and a
-generic one when it is nondegeneracy-feasible. These are the
+This subsection proves the two hypotheses of
+\cref{thm:pencil-conditional-realization-pair}, the contraction and
+split cases for the conditioned pair, and with them the pencil
+conjecture. At a simple two-edge-connected multigraph, both cases follow
+from two statements: the multigraph has an adjacent-distinct pencil
+realization at the deficiency rank, and a generic one when it is
+nondegeneracy-feasible. These are the
 main-component statements, proved in \cref{sec:main-component}. A
 loopless two-edge-connected multigraph that is not simple has two
 parallel edges, and we contract them, as Katoh and Tanigawa do
@@ -1287,18 +1187,16 @@ from the conditioned pair at smaller multigraphs
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-cut-case, lem:pencil-nonsimple-case}
-  We apply \cref{thm:pencil-reduction} with the conditioned pair as the
-  property. The loop, base and cut-edge cases are proved as in
-  \cref{thm:pencil-conditional-realization-pair}. The contraction and
-  split cases take one argument. Let $G$ be a loopless multigraph on at
-  least three bodies, and suppose that every smaller multigraph satisfies
-  the conditioned pair. There are three cases.
+  \uses{thm:pencil-conditional-realization-pair,
+        lem:pencil-pair-loop-base-cut, lem:pencil-nonsimple-case}
+  By \cref{thm:pencil-conditional-realization-pair}, it suffices to
+  prove the contraction and split cases for the conditioned pair, and one
+  argument proves both. Let $G$ be a loopless multigraph on at
+  least three bodies, and suppose that every nonempty multigraph on fewer
+  bodies satisfies the conditioned pair. There are three cases.
   \begin{itemize}
-    \item If $G$ is not two-edge-connected, its bare and
-      adjacent-distinct conjuncts follow from \cref{lem:pencil-cut-case}.
-      Its generic conjunct is proved as at a cut edge in the proof of
-      \cref{thm:pencil-conditional-realization-pair}.
+    \item If $G$ is not two-edge-connected, it satisfies the conditioned
+      pair by the cut-edge case of \cref{lem:pencil-pair-loop-base-cut}.
     \item If $G$ is two-edge-connected and simple, the two statements
       give its adjacent-distinct and generic conjuncts. An
       adjacent-distinct realization is in particular one at the
@@ -1307,8 +1205,6 @@ from the conditioned pair at smaller multigraphs
       adjacent-distinct and generic conjuncts are vacuous, and its bare
       conjunct follows from \cref{lem:pencil-nonsimple-case}.
   \end{itemize}
-  Neither kernel of \cref{thm:pencil-conditional-realization-pair} is
-  used, and no edge outside $E(G)$ is needed.
 \end{proof}
 
 \begin{theorem}[The pencil conjecture]
@@ -1338,16 +1234,12 @@ from the conditioned pair at smaller multigraphs
 \subsection{Girth and degree-two chains under no proper rigid subgraph}
 \label{sec:pencil-girth-chain}
 
-This subsection concerns the two kernels of
-\cref{thm:pencil-conditional-realization-pair}, which the proof of
-\cref{thm:pencil-conjecture} bypasses
-(\cref{sec:pencil-main-component-route}). The kernels split off a vertex
-$v$ of degree two from a simple two-edge-connected multigraph $G$ with no
-proper rigid subgraph (\cref{def:rigid-subgraph}). One neighbour of $v$ is
-not a pencil hub (\cref{def:pencil-nondegenerate}). We prove what these
-hypotheses imply about the shape of $G$ around $v$. Neither kernel is
-proved here. We keep these results because they hold under the kernels'
-hypotheses. A proof of either kernel can start from them.
+This subsection concerns a vertex $v$ of degree two in a simple
+two-edge-connected multigraph $G$ with no proper rigid subgraph
+(\cref{def:rigid-subgraph}). One neighbour of $v$ is not a pencil hub
+(\cref{def:pencil-nondegenerate}). We prove what these hypotheses imply
+about the shape of $G$ around $v$. The proof of
+\cref{thm:pencil-conjecture} does not use these results.
 
 Let $D = \binom{n+1}{2} \ge 3$. In a multigraph with no proper rigid
 subgraph, a cycle on at most $D$ vertices is rigid, and so it passes

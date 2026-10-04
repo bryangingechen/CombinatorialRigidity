@@ -5574,7 +5574,7 @@ graphs alone, with the two consequences of nondegeneracy-feasibility in
 \begin{proof}
   \leanok
   \uses{def:pencil-x0-standing, thm:pencil-x0-base-generic,
-        lem:pencil-three-bodies-no-rigid,
+        lem:pencil-three-bodies-no-rigid, lem:cycle-realization-rigid,
         lem:pencil-feasible-hub-conditions, lem:pencil-rigid-good-ear,
         lem:pencil-generic-one-ear, lem:pencil-generic-pendant-triangle}
   As a simple two-edge-connected graph on at least three bodies, $G$
@@ -5583,12 +5583,14 @@ graphs alone, with the two consequences of nondegeneracy-feasibility in
   (\cref{thm:pencil-x0-base-generic}).
 
   On three bodies $G$ is a triangle, with no proper rigid subgraph
-  (\cref{lem:pencil-three-bodies-no-rigid}). It is therefore a graph of
-  the split case on three and four bodies in the proof of
-  \cref{thm:pencil-conditional-realization-pair}. That case gives it a
-  generic realization by a direct construction: the three bodies get
-  linearly independent points and the plane through them as their common
-  panel, and each edge gets the line through the points of its ends.
+  (\cref{lem:pencil-three-bodies-no-rigid}). A direct construction gives
+  it a generic realization. The three bodies get linearly independent
+  points and the plane through them as their common panel, and each edge
+  gets the line through the points of its ends. No body is a hub, and the
+  three points are independent, so the realization is nondegenerate. The
+  three hinges are linearly independent, so the framework is
+  infinitesimally rigid (\cref{lem:cycle-realization-rigid}). Its rank is
+  therefore the deficiency rank, as the triangle is rigid.
 
   Otherwise $G$ has at least four bodies. Its closed hub-neighbourhoods
   have at most three members, and no triangle contains two hubs
@@ -5620,21 +5622,25 @@ one body.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:pencil-reduction, thm:pencil-generic-step,
-        lem:pencil-x0-distinct-statement, lem:pencil-cut-case,
+  \uses{thm:pencil-conditional-realization-pair, thm:pencil-generic-step,
+        lem:pencil-x0-distinct-statement, lem:pencil-pair-loop-base-cut,
         lem:pencil-nonsimple-case}
-  We apply \cref{thm:pencil-reduction} with the conditioned pair as the
-  property, as in the proof of
-  \cref{thm:pencil-conditional-realization-main-component}. The loop,
-  base and cut-edge cases are proved as there. So are the contraction and
-  split cases at a multigraph that is not two-edge-connected
-  (\cref{lem:pencil-cut-case}) or not simple
-  (\cref{lem:pencil-nonsimple-case}). At a simple two-edge-connected
-  multigraph on at least three bodies, the distinct conjunct is
+  We prove the contraction and split cases of
+  \cref{thm:pencil-conditional-realization-pair} as in the proof of
+  \cref{thm:pencil-conditional-realization-main-component}, with the
+  generic statement replaced by the induction hypothesis. Let $G$ be a
+  loopless multigraph on at least three bodies, and suppose that every
+  multigraph on fewer bodies, at least one, satisfies the conditioned
+  pair.
+
+  If $G$ is not two-edge-connected, it satisfies the conditioned
+  pair by the cut-edge case of \cref{lem:pencil-pair-loop-base-cut}. If
+  it is two-edge-connected and not simple, its bare conjunct is
+  \cref{lem:pencil-nonsimple-case}, and the other two are vacuous. At a
+  simple two-edge-connected multigraph, the distinct conjunct is
   \cref{lem:pencil-x0-distinct-statement}, and the bare conjunct follows
   from it. The generic conjunct follows from the conditioned pair at the
-  multigraphs with fewer bodies (\cref{thm:pencil-generic-step}), which
-  are smaller in the order of the reduction.
+  multigraphs with fewer bodies (\cref{thm:pencil-generic-step}).
 \end{proof}
 
 We collect these results in the main theorem of this chapter.

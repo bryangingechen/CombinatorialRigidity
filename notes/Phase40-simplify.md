@@ -7,10 +7,10 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10g landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10h (Opus, TeX): `c3`'s TeX, splitting
-`thm:pencil-conditional-realization-pair` and pinning 10g's `pencilPair_loop_base_cut`. Round
-manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10h landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10i (Sonnet, ⚠Z files): `1a`'s deletion, the Lean whose pins 10h dropped
+(`_of_card`'s cluster with `q3a`, `pencil_conjecture_of_arms`) with `1c-ii` and the girth chain.
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -75,8 +75,11 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
 - **10g**, Lean + one TeX clause: `pencil_conjecture_of_arms_pair` over every nonempty graph, its
   first part the new `pencilPair_loop_base_cut` (unpinned until 10h); `pencilPair_of_nonempty`
   through it; −31 net Lean lines (task 9 estimated about −21); axioms harness 19 of 19.
+- **10h**, TeX + four Lean docstrings: the pair theorem restated to `_of_arms_pair` alone, the new
+  `lem:pencil-pair-loop-base-cut` pinning `pencilPair_loop_base_cut`; the kernels and
+  `thm:pencil-conditional-realization` left, so no `\lean{}` names 10i's deletions.
 
-Next is 10h, then each landing in turn, then task 11 closes.
+Next is 10i, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -221,13 +224,15 @@ verdicts.
     `pencilPair_of_nonempty` from it, and the new lemma for the pair's three leaves: about −21.
     Landed 2026-10-04: −31; the lemma is `pencilPair_loop_base_cut`, a conjunction of
     `Graph.pencil_reduction`'s three arm hypotheses at `PencilPair K 3`.
-  - [ ] **10h. `c3`'s TeX** (Opus). The split node, with `c2`, `c4`(b), `m2`, `m4`, `m5` and `1b`'s
+  - [x] **10h. `c3`'s TeX** (Opus). The split node, with `c2`, `c4`(b), `m2`, `m4`, `m5` and `1b`'s
     node; the kernel statement leaves (`1a`). The new node pins `pencilPair_loop_base_cut` (10g);
     10g's clause in `fmlnote:pencil-conditional-realization-pair-kernels` (the first pin concludes
-    at every multigraph with a body) goes with the rewrite.
+    at every multigraph with a body) goes with the rewrite. Landed 2026-10-04: both fmlnotes went.
   - [ ] **10i. `1a`'s deletion** (Sonnet, ⚠Z files). `_of_card`'s cluster with `q3a`, `1b`,
     `1c-ii`, and the girth chain with its eight nodes; ROADMAP §40's verbatim "stays as conditional
-    theorems" goes: −3 636.
+    theorems" goes: −3 636. With the girth chain's nodes go the chapter opening's sentence on
+    `sec:pencil-girth-chain` ("Three parts" becomes two) and, with `1c-ii`'s node,
+    `lem:pencil-base-case`'s edge to it (re-aimed per `1c-ii`'s verdict).
   - [ ] **10j. `m3` + `7c`** (Opus, ⚠Z). `_three` from `G.Simple` by
     `linearIndependent_pointJoin_triangle`, moved into `MainComponent/`; two nodes go: −171.
   - [ ] **10k. `a6` + `a6a`** (Opus, ⚠Z; axioms harness, as `a6a` is in 10 of the 19 closures).
@@ -278,12 +283,12 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10g landed; the rest of the landings run.** The smallest next commit is **10h** (Opus, TeX):
-`c3`'s TeX, splitting `thm:pencil-conditional-realization-pair`, with a new node for the pair at a
-loop, on at most two bodies and at a cut edge pinning `pencilPair_loop_base_cut` (10g's lemma,
-unpinned until then), and `c2`, `c4`(b), `m2`, `m4`, `m5` and `1b`'s node (task 10). Then 10i–10r
-in order, one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its
-"stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
+**10a–10h landed; the rest of the landings run.** The smallest next commit is **10i** (Sonnet, ⚠Z
+files): `1a`'s deletion. 10h left no `\lean{}` naming `pencil_conjecture_of_arms` or the two
+`pencil_conjecture_of_hcontract_hK_hbareSplit` wrappers, so the cluster under them goes with
+`q3a`, `1c-ii` and the girth chain, their TeX nodes too (task 10's entry). 10i is the first to touch
+ROADMAP §40 (its "stays as conditional theorems", marked verbatim). Then 10j–10r in order, one
+commit each at its listed rung; after 10r, task 11 closes the round.
 
 ## Decisions made during this round
 

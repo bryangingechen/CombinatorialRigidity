@@ -14,8 +14,9 @@ on 2026-10-04** (`notes/Phase40-simplify.md` *Autopilot: for the PI*): the PI sa
 recommended package of the round's verdicts (`notes/Phase40-simplify-verdicts.md`) with CONTRACT-R
 restated, and round 3's build-or-leave recommendations as written; task 9 sliced it into 18
 landings. Landings 10a (task 3's TeX batch), 10b (`r1`'s deletion), 10c (`c6` + `c7`), 10d
-(`q2b` + `q2c` + `a3`), 10e (`q1a`), 10f (`r7`'s node) and 10g (`c3`'s Lean) landed 2026-10-04.
-**The next concrete task** is round 4's landing 10h, `c3`'s TeX (Opus; that log's task 10).
+(`q2b` + `q2c` + `a3`), 10e (`q1a`), 10f (`r7`'s node), 10g (`c3`'s Lean) and 10h (`c3`'s TeX)
+landed 2026-10-04. **The next concrete task** is round 4's landing 10i, `1a`'s deletion (Sonnet;
+that log's task 10).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

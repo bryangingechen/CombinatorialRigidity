@@ -998,11 +998,11 @@ discharge point.
   [closed — superseded (Phase 40's close, 2026-09-29): the main-component route proved the
   conjecture and the PI retired the kernels] **(c)** the two kernel hypotheses were held as the
   fallback (PI, 2026-09-25) and bypassed by the main-component route; the
-  theorem's lead-in carries what is stable (why both kernels take the
+  theorem's lead-in carried what was stable (why both kernels take the
   induction hypothesis), and `fmlnote:pencil-conditional-realization-pair-field`
-  the field hypothesis each of the project's routes would need. Nothing further is written unless a
-  kernel is proved; if Phase 40 discharges the main-component statements the
-  entry closes as superseded.
+  the field hypothesis each of the project's routes would need. Both left the chapter with the
+  kernel statement on 2026-10-04 (`notes/Phase40-simplify.md`, `1a`); the label now names the
+  conditioned pair's reduction, and git history keeps the kernel text.
 
 ### Phase 40a (the Katoh–Tanigawa spine at `n = 2`, structural edit — no new chapter)
 
