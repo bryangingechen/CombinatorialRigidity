@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). Then task 11 closes.
-**Next concrete task:** 10a (Sonnet, TeX): task 3's batch, which unpins what 10b deletes. Round
-manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10b (Sonnet, ⚠Z files): `r1`'s deletion, now unstranded by 10a's unpins.
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -40,8 +40,38 @@ them Opus, about −7 770 Lean lines net (task 10's 10a–10r). The answer is ar
 **Stop 2 is answered and the landings are sliced** (task 9, 2026-10-04, docs only). The PI
 sanctioned the recommended package with `7d`'s chapter restated (*Autopilot: for the PI*;
 *Decisions*). Task 10 lists 18 landings, 10a–10r, in dependency order, each with its rung and
-gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Decisions*. Nothing is
-mid-stream. Next is 10a, then each landing in turn, then task 11 closes.
+gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Decisions*.
+
+**10a landed** (2026-10-04, docs only; task 3's TeX batch): `m6`, `m7` added two missing `\uses`
+edges; `1c-i` pinned `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint` beside
+`lem:two-pencil-extension-iff` and added the edge from `lem:pencil-feasible-hub-conditions`; `c1`
+split `lem:pencil-splitoff-curve` into itself (clause 1), the new `lem:pencil-splitoff-ear-extension`
+(clause 2) and `lem:pencil-weighted-lifting-system-local` (clause 3, placed after
+`def:pencil-weighted-lifting-system`); the two-hubs edge dropped from `thm:pencil-x0-generic-attains`;
+`c8`'s four nodes restated to their pins (`lem:pencil-lifting-restrict` gained the `eval_restrictPoly`
+clause and dropped 3 pins, `thm:pencil-x0-bridge` dropped 5 helper pins, `lem:pencil-contract-standing`
+dropped its 2-edge-connected and `def₂=0` clauses and 2 pins (its one `def₂=0` reader now cites
+`lem:pencil-contract-standing-rigid` directly), `lem:pencil-generic-steer` dropped one helper pin);
+`c9` dropped `lem:pencil-line-pairing-join`'s nondegeneracy clause and `lem:pencil-insertion`'s
+no-loss half (1 pin each); `c5`'s node `lem:pencil-selector-independent-scalar` retired outright (its
+one caller, `lem:pencil-condition-linear`, now proves the line-of-vectors fact inline); the
+polynomial's pin `pencilNormalOfPicturePoly` dropped from `def:pencil-configuration` (3 pins stay).
+**Unpinned for 10b's deletion:** `Graph.liftingRestrict`, `Graph.liftingRestrict_apply`,
+`CombinatorialRigidity.Molecular.restrictPoly`, `CombinatorialRigidity.Molecular.pathVertex_cases`,
+`CombinatorialRigidity.Molecular.pathVertex_eq_of_val_eq_succ`,
+`CombinatorialRigidity.Molecular.pathVertex_rev`,
+`CombinatorialRigidity.Molecular.pathVertex_mem_union_image_iff`,
+`Graph.cutEdges_union_image_of_bridgePath`, `Graph.twoEdgeConnected_rigidContract_induce` (c8's one
+retired standing pin — `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` stays live, just unpinned),
+`CombinatorialRigidity.Molecular.exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
+`CombinatorialRigidity.Molecular.eq_zero_of_kleinLin_eq_zero`,
+`CombinatorialRigidity.Molecular.exists_insertion_ge`,
+`CombinatorialRigidity.Molecular.exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`, and the
+polynomial cluster `CombinatorialRigidity.Molecular.pencilNormalOfPicturePoly`,
+`eval_pencilNormalOfPicturePoly`, `pencilConfigPointPoly`, `eval_pencilConfigPointPoly`. Gates:
+`blueprint/verify.sh` (bp + web + checkdecls) and `blueprint/lint.sh` both green; the dep-graph
+spot-check confirms the two new nodes appear and `lem:pencil-selector-independent-scalar` is gone.
+Next is 10b, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -163,9 +193,9 @@ verdicts.
   2's, corrected: Opus for a ⚠Z proof rewrite, even where a spike exists. The spikes for `a5`,
   `a6`, `a6a` and `7a`–`7d` are in `scratch/40-simplify/6/` and `7/` (gitignored). Each item's
   wording and evidence is in the verdicts file; lines are net Lean lines.
-  - [ ] **10a. Task 3's TeX batch** (Sonnet). `m6`, `m7`, `1c-i`, `c1`, the two-hubs edge, `c8`'s
+  - [x] **10a. Task 3's TeX batch** (Sonnet). `m6`, `m7`, `1c-i`, `c1`, the two-hubs edge, `c8`'s
     four, `c9`'s clauses, `c5`'s node, the polynomial's pins. It unpins first, so 10b strands no
-    pin.
+    pin. Landed 2026-10-04; the exact unpinned declarations are in *Current state*.
   - [ ] **10b. `r1`'s deletion** (Sonnet, ⚠Z files). `TwoCut.lean` and 20 more of D5's names, with
     `q3b` and the Lean 10a unpinned (the polynomial, `c5`, `c8`'s standing pin, `c9`): −1 159.
   - [ ] **10c. `c6` + `c7`** (Sonnet). Restate `lem:pencil-condition-linear` and pin the iff;
@@ -231,11 +261,11 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**Stop 2 is answered; the landings run.** The smallest next commit is **10a** (Sonnet, TeX): task
-3's batch (`m6`, `m7`, `1c-i`, `c1`, the two-hubs edge, `c8`'s four, `c9`'s clauses, `c5`'s node,
-the polynomial's pins), which unpins what 10b's deletion removes; the blueprint gates. Then 10b–10r
-in order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its
-"stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
+**10a landed; the rest of the landings run.** The smallest next commit is **10b** (Sonnet, ⚠Z
+files): `r1`'s deletion (`TwoCut.lean` and 20 more of D5's names, with `q3b` and the Lean 10a
+unpinned — listed in *Current state*); a whole-project build confirms the trial deletion. Then
+10c–10r in order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP
+§40 (its "stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
 
 ## Decisions made during this round
 

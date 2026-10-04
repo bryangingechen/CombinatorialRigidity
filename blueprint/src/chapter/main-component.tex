@@ -303,8 +303,7 @@ picture of $G$ by restriction to $V(G)$.
   \label{def:pencil-configuration}
   \lean{CombinatorialRigidity.Molecular.pencilConfigPoint,
         CombinatorialRigidity.Molecular.pencilNormalOfPicture,
-        CombinatorialRigidity.Molecular.pencilNormalOfPicture_ne_zero_iff,
-        CombinatorialRigidity.Molecular.pencilNormalOfPicturePoly}
+        CombinatorialRigidity.Molecular.pencilNormalOfPicture_ne_zero_iff}
   \leanok
   \uses{def:pencil-lifting-space}
   A planar picture $q$ and a height $z$ give the \emph{configuration}
@@ -346,29 +345,6 @@ coordinates of $n_v$ are polynomials in those of $q$ and $z$.
   lie in its image, of dimension at most three. So they are linearly
   dependent, and $n_v \cdot p_w = \det[p_{a_v}, p_{b_v}, p_{c_v}, p_w]$
   vanishes.
-\end{proof}
-
-\begin{lemma}[The plane normal does not depend on the three bodies, up to a scalar]
-  \label{lem:pencil-selector-independent-scalar}
-  \lean{CombinatorialRigidity.Molecular.exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd}
-  \leanok
-  \uses{lem:pencil-selector-plane-contains-nbhd}
-  Let $q$ be admissible, $z \in L(q)$, and $v$ a body of $G$. For two
-  choices of three bodies at $v$, each with non-collinear picture
-  points and lying in the closed neighbourhood of $v$, the two
-  resulting plane normals differ by a nonzero scalar.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The three configuration points of each choice are linearly
-  independent, since dropping the height coordinate maps them to
-  independent homogeneous picture points. So both plane normals are
-  nonzero. The first is orthogonal to the three points of the second
-  choice, which lie in the closed neighbourhood
-  (\cref{lem:pencil-selector-plane-contains-nbhd}). The second is
-  orthogonal to them by definition. The vectors orthogonal to three
-  linearly independent vectors of $K^4$ form a line, so the two normals
-  are proportional.
 \end{proof}
 
 \begin{definition}[The general configuration attains]
@@ -502,7 +478,6 @@ It also gives the plane of each body explicitly, in the form that
 \begin{proof}
   \leanok
   \uses{lem:pencil-selector-plane-contains-nbhd,
-        lem:pencil-selector-independent-scalar,
         lem:pencil-config-distinct-realization}
   Suppose that $z \in L(q)$. Admissibility gives at each body $v$ three
   members of its closed neighbourhood with non-collinear picture points.
@@ -527,8 +502,7 @@ It also gives the plane of each body explicitly, in the form that
   $z_w = a x_w + b y_w + c$ on the closed neighbourhood of $v$, the
   vector $(a, b, -1, c)$ is orthogonal to its points. The points of the
   three members above are linearly independent, so the vectors orthogonal
-  to them form a line, as in
-  \cref{lem:pencil-selector-independent-scalar}. Hence every nonzero
+  to them form a line. Hence every nonzero
   vector orthogonal to the closed neighbourhood is a multiple of
   $(a, b, -1, c)$, and its height coordinate is nonzero: the plane is not
   vertical.
@@ -730,6 +704,22 @@ in place of the homogeneous picture points $(x_w, y_w, 1)$
 
 With $\omega(v, w) = (x_w, y_w, 1)$ this is the lifting system $M(q)$
 of $G$ at $q$, and the heights of its solutions form $L(q)$.
+
+\begin{lemma}[The lifting system reads only the picture at its bodies]
+  \label{lem:pencil-weighted-lifting-system-local}
+  \lean{Graph.ker_liftingMatrix_congr}
+  \leanok
+  \uses{def:pencil-weighted-lifting-system}
+  The solutions of the lifting system of a graph $H$ at a picture
+  depend only on the picture at the bodies of $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pencil-picture-local}
+  Each condition of the lifting system of $H$ reads the picture at a
+  member of the closed neighbourhood of a body of $H$, and these are
+  bodies of $H$ (as in \cref{lem:pencil-picture-local}).
+\end{proof}
 
 \begin{lemma}[The main pictures are nonempty and Zariski-open]
   \label{lem:pencil-x0-main-picture-open}
@@ -1403,25 +1393,31 @@ us read the rank of a subgraph at a height of $G$.
 
 \begin{lemma}[Heights restrict to a subgraph]
   \label{lem:pencil-lifting-restrict}
-  \lean{Graph.liftingRestrict, Graph.liftingRestrict_apply,
-    Graph.liftingRestrict_mem_liftingSpace,
+  \lean{Graph.liftingRestrict_mem_liftingSpace,
     CombinatorialRigidity.Molecular.pencilConfigPoint_liftingRestrict,
-    CombinatorialRigidity.Molecular.restrictPoly,
     CombinatorialRigidity.Molecular.eval_restrictPoly}
   \leanok
   \uses{def:pencil-lifting-space, def:pencil-configuration}
-  Let $G' \le G$ and let $q$ be any picture. The height that agrees with
-  $z \in L_G(q)$ on $V(G')$ and vanishes elsewhere lies in
-  $L_{G'}(q)$, and its configuration points agree with those of $z$ at
-  the bodies of $G'$.
+  Let $G' \le G$ and let $q$ be any picture, and write $z'$ for the
+  height that agrees with $z$ on $V(G')$ and vanishes elsewhere.
+  \begin{enumerate}
+    \item If $z \in L_G(q)$, then $z' \in L_{G'}(q)$.
+    \item The configuration points of $z'$ agree with those of $z$ at
+      the bodies of $G'$.
+    \item A polynomial in the heights of $G'$, read at $z'$, agrees
+      with a polynomial in the heights of $G$, read at $z$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
-  The restriction agrees with $z$ on $V(G')$. A closed neighbourhood in
+  $z'$ agrees with $z$ on $V(G')$. A closed neighbourhood in
   $G'$ lies in the closed neighbourhood of the same body in $G$, where $z$
-  agrees with an affine function of the picture. So the restriction
+  agrees with an affine function of the picture. So $z'$
   agrees with that affine function on it too. The configuration points
-  at a body of $G'$ read only its picture point and its height.
+  at a body of $G'$ read only its picture point and its height. For the
+  third, substituting zero for the heights off $V(G')$ in a polynomial
+  and then evaluating at $z$ is the same as evaluating the polynomial
+  directly at $z'$, which already vanishes there.
 \end{proof}
 
 \begin{lemma}[The rank reads only the bodies of the graph]
@@ -1537,11 +1533,6 @@ us read the rank of a subgraph at a height of $G$.
 \begin{theorem}[A chain of bridges]
   \label{thm:pencil-x0-bridge}
   \lean{Graph.X0Attains.of_bridgePath,
-    CombinatorialRigidity.Molecular.pathVertex_cases,
-    CombinatorialRigidity.Molecular.pathVertex_eq_of_val_eq_succ,
-    CombinatorialRigidity.Molecular.pathVertex_rev,
-    CombinatorialRigidity.Molecular.pathVertex_mem_union_image_iff,
-    Graph.cutEdges_union_image_of_bridgePath,
     Graph.deficiency_induce_union_range_of_bridgePath,
     CombinatorialRigidity.Molecular.BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath}
   \leanok
@@ -1681,10 +1672,9 @@ $n = 2$, and the step at an additive core at $n = 3$.
   two by \cref{lem:deficiency-zero-connected}.
 \end{proof}
 
-\begin{lemma}[The core and the contraction satisfy the standing hypotheses]
+\begin{lemma}[The contraction satisfies the standing hypotheses]
   \label{lem:pencil-contract-standing}
-  \lean{Graph.isX0Graph_induce_of_deficiency_two_eq_zero, Graph.isX0Graph_rigidContract_induce,
-        Graph.twoEdgeConnected_rigidContract_induce, Graph.rigidContract_vertexSet_ncard}
+  \lean{Graph.isX0Graph_rigidContract_induce, Graph.rigidContract_vertexSet_ncard}
   \leanok
   \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction,
         def:D-deficiency}
@@ -1692,24 +1682,16 @@ $n = 2$, and the step at an additive core at $n = 3$.
   $W \subsetneq V(G)$ with $|W| \ge 2$, such that no body outside $W$ is
   adjacent to two bodies of $W$, and let $G/H$ be the contraction of
   $H = G[W]$ to a body $r \in W$. Then $G/H$ is simple, satisfies the
-  standing hypotheses and is $2$-edge-connected, and
-  $|V(G/H)| = |V(G)| - |W| + 1$. If moreover
-  $\operatorname{def}_2(G[W]) = 0$, then $H$ satisfies the standing
-  hypotheses.
+  standing hypotheses, and $|V(G/H)| = |V(G)| - |W| + 1$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-zero-connected, lem:reduction-measure,
-        lem:pencil-contract-standing-rigid}
-  When $\operatorname{def}_2(H) = 0$, $H$ satisfies the standing
-  hypotheses (\cref{lem:pencil-contract-standing-rigid}, at $n = 2$).
-
+  \uses{lem:deficiency-zero-connected, lem:reduction-measure}
   An edge of $G/H$ is an edge of $G$ not inside $W$. Two such edges with
   the same ends in $G/H$ would give a body outside $W$ adjacent to two
   bodies of $W$, or two parallel edges of $G$, so $G/H$ is simple. A path
-  of $G$ maps to a walk of $G/H$, so $G/H$ is connected, and a cut of
-  $G/H$ pulls back to a cut of $G$ crossed by the same edges, so $G/H$ is
-  $2$-edge-connected. At $r$, the $2$-edge-connectivity of $G$ gives two
+  of $G$ maps to a walk of $G/H$, so $G/H$ is connected. At $r$, the
+  $2$-edge-connectivity of $G$ gives two
   edges leaving $W$. Their ends outside $W$ are distinct: a body at the
   end of both would be adjacent to two bodies of $W$, or joined to one by
   two parallel edges. At a body outside $W$ the contraction is injective
@@ -1968,15 +1950,18 @@ of the rank, so the step works over every infinite field.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-contract-standing, lem:pencil-contract-lifting-kernel,
+  \uses{lem:pencil-contract-standing, lem:pencil-contract-standing-rigid,
+        lem:pencil-contract-lifting-kernel,
         lem:pencil-contract-limit, lem:pencil-contract-core-rank,
         lem:pencil-contract-degenerate-rank, lem:block-rank-contract,
         thm:pencil-jj-equality, lem:pencil-contraction-deficiency,
         lem:pencil-lifting-space-deficiency, lem:pencil-rank-scale-shift,
         lem:deficiency-antitone, lem:pencil-x0-main-picture-open,
         lem:pencil-x0-one-witness}
-  \emph{The pieces.} By \cref{lem:pencil-contract-standing}, $H$ and
-  $G/H$ satisfy the standing hypotheses and $G/H$ is simple. Also $H$ is
+  \emph{The pieces.} $H$ satisfies the standing hypotheses
+  (\cref{lem:pencil-contract-standing-rigid}, at $n = 2$), and by
+  \cref{lem:pencil-contract-standing}, $G/H$ satisfies them too and is
+  simple. Also $H$ is
   rigid, since $\operatorname{def}_3(H) \le \operatorname{def}_2(H) = 0$
   (\cref{lem:deficiency-antitone}).
 
@@ -2487,23 +2472,18 @@ The pairing is bilinear and symmetric.
 
 \begin{lemma}[The pairing of two joins]
   \label{lem:pencil-line-pairing-join}
-  \lean{CombinatorialRigidity.Molecular.klein_pointJoin_pointJoin,
-    CombinatorialRigidity.Molecular.eq_zero_of_kleinLin_eq_zero}
+  \lean{CombinatorialRigidity.Molecular.klein_pointJoin_pointJoin}
   \leanok
   \uses{def:pencil-line-pairing, def:extensor}
   For $p, q, r, s \in K^4$,
   $\langle p \wedge q, r \wedge s \rangle = \det(p, q, r, s)$; in
-  particular two lines through a common point pair to zero. The pairing
-  is nondegenerate: if $\langle c, c' \rangle = 0$ for every $c'$, then
-  $c = 0$.
+  particular two lines through a common point pair to zero.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-join-flat}
   Expand both sides in the coordinates of the four points, with the flat
-  coordinates of \cref{lem:pencil-join-flat}. For nondegeneracy, pair $c$
-  with the six screws whose flat coordinates are a unit vector and zero.
-  They read off the coordinates of $\tau(c)$ and of $\sigma(c)$.
+  coordinates of \cref{lem:pencil-join-flat}.
 \end{proof}
 
 Two lines therefore pair to zero exactly when their four points are
@@ -2649,8 +2629,7 @@ $x_2$ put back at $y + t u$.
 
 \begin{lemma}[Putting a body back next to a neighbour]
   \label{lem:pencil-insertion}
-  \lean{CombinatorialRigidity.Molecular.exists_insertion_ge,
-    CombinatorialRigidity.Molecular.exists_insertion_gain}
+  \lean{CombinatorialRigidity.Molecular.exists_insertion_gain}
   \leanok
   \uses{def:extensor}
   Let $K$ be infinite, let $\rho \subseteq \Lambda^2 K^4$ be a subspace
@@ -2658,8 +2637,7 @@ $x_2$ put back at $y + t u$.
   let $W = \rho + \operatorname{span} F + K\,(y \wedge y')$. For $t \in K$
   write $W_t = \rho + \operatorname{span} F +
   \operatorname{span}\bigl(y \wedge (y + t u),\ (y + t u) \wedge y'\bigr)$.
-  Then $\dim W_t \ge \dim W$ for some $t \neq 0$, and if
-  $y \wedge u \notin W$, then $\dim W_t \ge \dim W + 1$ for some
+  If $y \wedge u \notin W$, then $\dim W_t \ge \dim W + 1$ for some
   $t \neq 0$.
 \end{lemma}
 \begin{proof}
@@ -2672,13 +2650,11 @@ $x_2$ put back at $y + t u$.
   values of $t$, since otherwise $S$ contains $w$ and then $v$. As $K$ is
   infinite, two such values exist.
 
-  If $y \wedge y' \in R$, then $W = R \subseteq W_t$. When moreover
-  $y \wedge u \notin W$, $\dim W_t \ge \dim\bigl(R + K\,(y \wedge u)\bigr)
+  If $y \wedge y' \in R$, then $W = R$, and
+  $\dim W_t \ge \dim\bigl(R + K\,(y \wedge u)\bigr)
   = \dim W + 1$ for every $t \neq 0$.
 
-  Otherwise $\dim W = \dim R + 1$, and some $t \neq 0$ has
-  $v_t \notin R$, so that $\dim W_t \ge \dim(R + K v_t) = \dim W$. If
-  moreover $y \wedge u \notin W$, then
+  Otherwise $\dim W = \dim R + 1$, and
   $y \wedge y' \notin R + K\,(y \wedge u)$, since a relation
   $y \wedge y' = r + c\,(y \wedge u)$ with $r \in R$ has $c \neq 0$ and
   puts $y \wedge u$ in $W$. So some $t \neq 0$ has
@@ -3633,7 +3609,7 @@ $v$ an affine function $h_v$ that agrees with $z$ on the closed
 neighbourhood of $v$ (\cref{def:pencil-weighted-lifting-system}). The
 curve needs a special point at which $h_a - h_b$ is nonzero on some
 solution for $G[V_1]$, unless $h_a = h_b$ on every solution
-(\cref{lem:pencil-splitoff-curve}(1)). Such a point exists unless every
+(\cref{lem:pencil-splitoff-curve}). Such a point exists unless every
 solution has $h_a - h_b$ vanishing on the line through $q_a$ and $q_b$.
 The next lemma shows that in that case $h_a = h_b$ on every solution. It
 is stated for pairs $(z, h)$, not for heights alone, because at a body of
@@ -3686,37 +3662,23 @@ degree one in $G[V_1]$ the heights do not determine $h_v$.
   contradiction.
 \end{proof}
 
-The last lemma collects three facts used to build the curve.
+The next lemma is the pure linear-algebra fact behind the curve.
 
 \begin{lemma}[A line of solutions through the special position]
   \label{lem:pencil-splitoff-curve}
-  \lean{CombinatorialRigidity.Molecular.exists_mem_forall_add_smul_eq_zero,
-    Graph.mem_liftingSpace_oneEar, Graph.ker_liftingMatrix_congr}
+  \lean{CombinatorialRigidity.Molecular.exists_mem_forall_add_smul_eq_zero}
   \leanok
-  \uses{def:pencil-weighted-lifting-system, def:pencil-lifting-space,
-        def:pencil-admissible-picture}
-  \begin{enumerate}
-    \item Let $L$ be a subspace of a vector space over $K$, let
-      $\varphi_0$ and $\psi$ be linear functionals, and let $y_0 \in L$
-      with $\varphi_0(y_0) = 0$. Suppose that $\varphi_0$ is nonzero
-      somewhere on $L$, or that $\varphi_0$ and $\psi$ both vanish on $L$.
-      Then some $w \in L$ has
-      $\varphi_0(y_0 + t w) + t\, \psi(y_0 + t w) = 0$ for every
-      $t \in K$.
-    \item Let $G$ have an open ear $a - x - b$ on $V_1$ with one interior
-      body, and let $q$ be admissible for $G$. If a solution $(z, h)$ of
-      the lifting system of $G[V_1]$ at $q$ has
-      $(h_a - h_b) \cdot (q_x, 1) = 0$, then the height that agrees with
-      $z$ away from $x$ and takes the value $h_a \cdot (q_x, 1)$ at $x$
-      lies in $L_G(q)$.
-    \item The solutions of the lifting system of a graph $H$ at a picture
-      depend only on the picture at the bodies of $H$.
-  \end{enumerate}
+  Let $L$ be a subspace of a vector space over $K$, let
+  $\varphi_0$ and $\psi$ be linear functionals, and let $y_0 \in L$
+  with $\varphi_0(y_0) = 0$. Suppose that $\varphi_0$ is nonzero
+  somewhere on $L$, or that $\varphi_0$ and $\psi$ both vanish on $L$.
+  Then some $w \in L$ has
+  $\varphi_0(y_0 + t w) + t\, \psi(y_0 + t w) = 0$ for every
+  $t \in K$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-three-points, lem:pencil-picture-local}
-  (1) If $\varphi_0(W) \neq 0$ for some $W \in L$, take
+  If $\varphi_0(W) \neq 0$ for some $W \in L$, take
   $w = \varphi_0(W)^{-1}\bigl(\psi(W)\, y_0 - \psi(y_0)\, W\bigr)$. Then
   $\varphi_0(y_0 + t w) = -t\,\psi(y_0)$ and
   $\psi(y_0 + t w) = \psi(y_0)$. (One finds this $w$ by solving the
@@ -3724,17 +3686,32 @@ The last lemma collects three facts used to build the curve.
   in $t$, and as the condition is homogeneous it can be rescaled to clear
   the denominator.) Otherwise $\varphi_0$ and $\psi$ vanish on $L$, and
   $w = 0$ will do.
+\end{proof}
 
-  (2) At a body $v$ of $V_1$, the closed neighbourhood in $G$ is the one
+The curve also needs the height that the ear body $x$ contributes.
+
+\begin{lemma}[A solution for the ear body extends to a height]
+  \label{lem:pencil-splitoff-ear-extension}
+  \lean{Graph.mem_liftingSpace_oneEar}
+  \leanok
+  \uses{def:pencil-weighted-lifting-system, def:pencil-lifting-space,
+        def:pencil-admissible-picture}
+  Let $G$ have an open ear $a - x - b$ on $V_1$ with one interior
+  body, and let $q$ be admissible for $G$. If a solution $(z, h)$ of
+  the lifting system of $G[V_1]$ at $q$ has
+  $(h_a - h_b) \cdot (q_x, 1) = 0$, then the height that agrees with
+  $z$ away from $x$ and takes the value $h_a \cdot (q_x, 1)$ at $x$
+  lies in $L_G(q)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pencil-three-points}
+  At a body $v$ of $V_1$, the closed neighbourhood in $G$ is the one
   in $G[V_1]$, with $x$ added when $v$ is $a$ or $b$. The height agrees
   with $h_v$ on it: at $x$, because $h_a$ and $h_b$ agree at
   $(q_x, 1)$. The closed neighbourhood of $x$ is $\{a, x, b\}$, and every
   height agrees with an affine function on three points
   (\cref{lem:pencil-three-points}).
-
-  (3) Each condition of the lifting system of $H$ reads the picture at a
-  member of the closed neighbourhood of a body of $H$, and these are
-  bodies of $H$ (as in \cref{lem:pencil-picture-local}).
 \end{proof}
 
 \begin{theorem}[Splitting off a body of degree two]
@@ -3761,7 +3738,8 @@ The last lemma collects three facts used to build the curve.
         lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness,
         lem:pencil-rank-congr, lem:pencil-curve-limit,
         lem:pencil-splitoff-special-rank, lem:pencil-splitoff-flexes,
-        lem:pencil-splitoff-curve}
+        lem:pencil-splitoff-curve, lem:pencil-splitoff-ear-extension,
+        lem:pencil-weighted-lifting-system-local}
   \emph{The counts.} The new edge $ab$ lowers by five the value of every
   partition of $V_1$ that separates $a$ and $b$, and by hypothesis the
   other partitions are already five below
@@ -3801,14 +3779,14 @@ The last lemma collects three facts used to build the curve.
   $q^0_x = (1 - s) q_a + s\, q_b$, and let
   $\varphi_0(z, h) = (h_a - h_b) \cdot (q^0_x, 1)$ and
   $\psi(z, h) = (h_a - h_b) \cdot (q_x - q^0_x, 0)$. By
-  \cref{lem:pencil-splitoff-curve}(1) there is a solution $w$ for
+  \cref{lem:pencil-splitoff-curve} there is a solution $w$ for
   $G[V_1]$ such that $y(t) = y_0 + t w$ satisfies
   $\varphi_0(y(t)) + t\,\psi(y(t)) = 0$ for every $t$.
 
   \emph{The curve.} Let $q(t)$ be $q$ with the picture of $x$ moved to
   $q^0_x + t\,(q_x - q^0_x)$, so that $q(1) = q$. As $q(t)$ agrees with
   $q$ on $V_1$, $y(t)$ is a solution for $G[V_1]$ at $q(t)$
-  (\cref{lem:pencil-splitoff-curve}(3)), and the identity above says
+  (\cref{lem:pencil-weighted-lifting-system-local}), and the identity above says
   that its $h_a - h_b$ vanishes at $(q(t)_x, 1)$. Let $z(t)$ be the
   height of $y(t)$ on $V_1$, extended by $h_a \cdot (q(t)_x, 1)$ at $x$.
   The points of the configuration $(q(t), z(t))$ are polynomials in $t$.
@@ -3826,7 +3804,7 @@ The last lemma collects three facts used to build the curve.
   finitely many $t$. The main-picture polynomial of $G$ at $q(t)$ is a
   polynomial in $t$, nonzero at $t = 1$, so $q(t)$ is a main picture of
   $G$ for all but finitely many $t$. Take $t$ outside both finite sets.
-  Then $z(t) \in L_G(q(t))$ (\cref{lem:pencil-splitoff-curve}(2)), and
+  Then $z(t) \in L_G(q(t))$ (\cref{lem:pencil-splitoff-ear-extension}), and
   $(q(t), z(t))$ has rank at least
   \[
     6(|V_1| - 1) - \operatorname{def}(\tilde G'') + 5 \;\ge\;
@@ -4840,7 +4818,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
         lem:pencil-x0-chain-exists, lem:deficiency-one-body-chain,
         lem:deficiency-two-body-chain, lem:deficiency-tight-rigid,
         lem:deficiency-add-body, lem:deficiency-merge-rigid,
-        lem:deficiency-core-bound, lem:deficiency-additive-core}
+        lem:deficiency-core-bound, lem:deficiency-additive-core,
+        lem:deficiency-zero-connected}
   \emph{The chains.} As $G$ has no planar-rigid set, it is sparse
   (\cref{lem:deficiency-sparse}). So it has bodies of degree two
   (\cref{lem:pencil-x0-sparse-count}), and each of them lies on a chain
@@ -5013,6 +4992,7 @@ part of the first is the bound noted after
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:two-pencil-extension-iff}
   At a nondegenerate realization the normals of a closed
   hub-neighbourhood of $v$ are independent and all orthogonal to the
   nonzero point of $v$, so there are at most three of them.
@@ -5299,7 +5279,6 @@ nondegeneracy-feasible.
 \begin{lemma}[Nondegenerate and generic realizations of a subgraph]
   \label{lem:pencil-generic-steer}
   \lean{CombinatorialRigidity.Molecular.exists_pencilSeed_of_nondeg_of_selectors,
-        CombinatorialRigidity.Molecular.exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub,
         CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_restrict_of_demoted,
         CombinatorialRigidity.Molecular.exists_isNondegPencilRealization_steer}
   \leanok
@@ -5326,7 +5305,7 @@ nondegeneracy-feasible.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:relative-deficiency-rank-bound}
+  \uses{lem:relative-deficiency-rank-bound, lem:pencil-feasible-hub-conditions}
   \emph{A parametrization.} Let $\Gamma$ be a graph whose closed
   hub-neighbourhoods have at most three members. For
   $y_1, y_2, y_3 \in K^4$, let $y_1 \times y_2 \times y_3$ be the vector
@@ -5685,7 +5664,6 @@ We collect these results in the main theorem of this chapter.
 \begin{proof}
   \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-distinct-statement,
-        lem:pencil-x0-two-hubs-obstruction,
         thm:pencil-conditioned-pair-nonempty}
   The first claim is \cref{thm:pencil-x0-coverage}. The distinct statement
   is \cref{lem:pencil-x0-distinct-statement}. The generic
