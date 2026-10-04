@@ -367,6 +367,11 @@ closes the round.
   `pencil_conjecture_of_X0` and `_hcontract_hK_hbareSplit`, each marked with a comment naming the
   item that deletes it: 10r at `_of_X0`; the other left with `Escape.lean` in 10i's deletion.
 
+- **2026-10-04, 10p: `cor:pencil-flat-x0` stays, now with no in-edge** (the coordinator's call).
+  Its pin `Graph.x0Attains_of_finrank_liftingSpace_eq_three` had no Lean caller before 10p, and
+  CONTRACT-R reads `cor:pencil-jj-flat` instead. Retiring the node would go past the retirements
+  Stop 2 named, so it stays on task 1's (b) precedent; the close lists it for the PI.
+
 ### Not sanctioned, or NO-GO (one line each; wording and evidence in the verdicts file)
 
 - `b2`: moot, as `TwoCut.lean` goes with `r1`.
