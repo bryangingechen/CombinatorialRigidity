@@ -307,3 +307,40 @@ commit, after `r1`'s deletion if it lands. For task 6: `q2d`.
   `Set.Finite.ncard_biUnion` that proof needs no `Finset`, 42 → 25 lines, no new lemma. Its partner
   goes 27 → 12 over two new mirrors (13 lines), so stays. 1 commit, Sonnet, not ⚠Z; nothing a
   reader sees. Evidence: spike.
+
+### Task 6 (P)
+
+**The reading** (*read; four spikes, kept in `scratch/40-simplify/6/` (gitignored) for the
+landings, run with `lake lean`: 0 errors and 0 warnings, each re-derived declaration at the three
+standard axioms and proving the original's exact statement*). All three sites are live and outside
+`1a`'s cluster (task 1's graph): #4 and #6 feed `pencilPair_of_not_twoEdgeConnected`, the core both
+cut-arm wrappers, Theorem55's cut case `theorem_55_minimalKDof_gen`. Both shapes are cheaper than
+round 1 sketched. #6's avoidance target is #4's cover at a hub, so the shared tail takes only the
+hub transfer as a parameter; the core's `|C| = 0` branch is its `|C| = 1` assembly at the
+identity, a split Theorem55's cut case repeats (`a6a`). Batching, for task 8: `a6` and `a6a` are
+one ⚠Z commit, which moves `Graph.eq_cutEdge_of_isLink_crossing` and
+`Graph.eq_and_eq_of_isLink_crossing` from `Motive.lean` to `Deficiency.lean` (beside `cutEdges`,
+upstream of both files); `a5` is another; both before `q2a`, whose rank-assembly calls then number
+four in `Pencil/`, not six, and two in Theorem55, not three. For task 7: #5 and `Pair.lean`'s
+`|C| = 0` producer glue as the core's two branches did (not spiked here).
+
+- **`a5`, one tail for `Pair2.lean`'s #4 and #6: GO.** #4's cover is `{point₁ u_c, 0}` at a hub,
+  #6's whole target, and an `H`-hub is a `G`-hub; so one lemma, with no degree hypothesis, takes
+  only conjunct 3 on `V₁`: #4's hub transfer proves it, #6's `hpromoted` and its own transfer. 1
+  commit, ⚠Z, Sonnet transcribing the spike (Opus if re-derived); 847 → 541 lines, about −295 with
+  a docstring; nothing a reader sees (neither is pinned). Evidence: spike (`A5.lean`).
+- **`a6`, the core's `|C| = 0` and `|C| = 1` branches: GO, one assembly.** `|C| = 0` is the
+  `|C| = 1` assembly at the identity repositioning and a junk hinge: obtain `(g, h, C)` with each
+  crossing link's incidences and distinctness (vacuous at `|C| = 0`), then one tail; no new lemma.
+  1 commit with `a6a`, ⚠Z, Sonnet transcribing the spike; 376 → 227 lines (−149; −146 without the
+  move); nothing a reader sees (statement unchanged). Evidence: spike (`A6b.lean`, `A6.lean`).
+- **`a6a`, Theorem55's `case_cut_edge_realization_gen`: GO, the same shape.** Its two branches
+  repeat the links, spans and rank; one hinge `C` for every crossing link (`0` at `|C| = 0`, as
+  `HasPanelRealization` asks nonzero only on links) leaves one tail: 244 → 129 lines (−115). In
+  `a6`'s commit, ⚠Z, Sonnet transcribing; spiked on `q2a`'s public bricks (the private names serve
+  the same); nothing a reader sees (pinned; statement unchanged). Evidence: spike (`Q2d.lean`).
+- **`q2d`, a shared edge-classification lemma: NO-GO, about 8 lines a site.** After `a6` and `a6a`
+  the two cut cases share a shape, not a lemma: "a link in neither side crosses" costs 11 lines and
+  saves 18 at Arms' two sites and 9 at Theorem55's (spiked at both): −16. A glued-extensor rank
+  lemma would take about 10 of each site's 20–29-line rank block (estimated). Without `a6`/`a6a`,
+  roughly −60 (estimated; 1 commit, Sonnet, ⚠Z): re-weigh then. Evidence: spike (`Q2dLemma.lean`).
