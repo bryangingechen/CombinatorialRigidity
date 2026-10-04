@@ -1,39 +1,55 @@
 \section{Pencil realizations: hinges concurrent within a common panel}
 \label{sec:pencil}
 
-Katoh--Tanigawa's hinge-coplanar (panel) model
-(\cref{def:coplanar-panel-realization}) assigns each body of a
-body-hinge framework a hyperplane --- its \emph{panel} --- containing
-every incident hinge. By projective duality
-(\cref{sec:molecule-modelling-projective}) this coplanarity condition
-is dual to hinge-\emph{concurrency}: every hinge at a body passing
-through a common point. This section states the strengthening in
-which both hold simultaneously at every body --- each body's hinges
-lie in a common panel \emph{and} pass through a common point of that
-panel, a pencil of lines through a point in a plane --- and proves
-that the condition is itself projectively self-dual: transporting a
-realization along the polarity of \cref{lem:panel-hinge-dual-molecular}
-produces another realization of the same kind, with the roles of the
-panel normal and the concurrency point exchanged. In the molecular
-reading of \cref{sec:molecule-modelling-defs} (atoms as bodies, bond
-lines as hinges, centres as concurrency points) the condition says
-that every atom's incident bonds lie in a common plane through the
-atom's centre. Every spanning multigraph admits such a realization
-attaining the deficiency rank of \cref{thm:theorem-55-6-multigraph}, over
-every infinite field (\cref{thm:pencil-conjecture}). The section proves
-this by a strong induction on all spanning multigraphs
-(\cref{thm:pencil-reduction}), in which a minimum-degree argument
-replaces the minimality that Katoh--Tanigawa's induction uses; the loop,
-base and cut-edge cases are proved here, and the remaining cases are
-reduced first to two kernel statements at a degree-two vertex
-(\cref{thm:pencil-conditional-realization-pair}) and then, bypassing
-those, to two statements about the main component of the configuration
-space of pencil realizations
-(\cref{thm:pencil-conditional-realization-main-component}), which
-\cref{sec:main-component} proves. The final subsection records the
-combinatorial shape that the kernel hypotheses force --- the girth of the
-multigraph and the maximal chain of degree-two vertices through the split
-vertex.
+In dimension three, this chapter and \cref{sec:main-component}
+strengthen KT Theorem~5.6 in the hinge-coplanar model of
+\cref{sec:molecular-coplanar-multigraph}. A pencil realization gives
+each body, besides its panel, a point of that panel, through which every
+hinge at the body passes (\cref{def:pencil-panel-realization}). The
+hinges at a body then form a pencil of lines through a point in a plane.
+We show that, over every infinite field, every spanning multigraph $G$
+has a pencil realization of rank
+$6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the deficiency rank of
+\cref{thm:theorem-55-6-multigraph}. If $G$ is simple, the realization
+can be chosen with the points of adjacent bodies projectively distinct.
+If moreover $G$ has a nondegenerate pencil realization
+(\cref{def:pencil-nondegenerate}), it has one of that rank. These claims
+make up \cref{thm:pencil-conjecture}. Besides
+\cref{sec:molecular-coplanar-multigraph}, the reader needs the
+deficiency and rigid subgraphs of \cref{sec:molecular-deficiency}.
+
+\Cref{sec:pencil-through-point} and \cref{sec:pencil-realization} give
+the definitions. \Cref{sec:pencil-base} places the two independent hinges
+of Katoh and Tanigawa's base case (KT Lemma~5.3) through one point of
+their common panel. \Cref{sec:pencil-extension} gives an added edge a
+hinge through the points of both its ends. Such a hinge exists only when
+the point of each end lies in the panel of the other
+(\cref{lem:two-pencil-extension-iff}). These conditions can fail at the
+edges that Katoh and Tanigawa add to a realization of a minimal spanning
+subgraph. So we induct over every multigraph, not only over the minimal
+ones (\cref{thm:pencil-reduction}). \Cref{sec:pencil-reduction}
+states this induction and proves its cases at a loop, on at most two
+bodies and at a cut edge. \Cref{sec:pencil-nondegenerate} adds the
+distinct points and the nondegenerate realizations to the induction
+statement. Katoh and Tanigawa's induction statement likewise asks for
+nonparallel realizations (KT Theorem~5.5).
+\Cref{sec:pencil-main-component-route} proves the two remaining cases,
+where $G$ has a proper rigid subgraph and where it is two-edge-connected
+without one. At a simple two-edge-connected multigraph both follow from
+two statements (\cref{def:pencil-main-component-statements}), which
+\cref{sec:main-component} proves by lifting pictures of $G$ in the plane.
+
+Four parts of the chapter are not used in the proof of
+\cref{thm:pencil-conjecture}. \Cref{sec:pencil-duality} shows that the
+polarity of \cref{lem:panel-hinge-dual-molecular} takes a pencil
+realization to one with the panel normals and the points exchanged.
+This chapter uses the polarity nowhere else. \Cref{sec:pencil-cycle}
+realizes the cycles on three and four bodies as pencil realizations. On
+five or more bodies, \cref{thm:pencil-conditional-realization-pair}
+reduces the two-edge-connected case without a proper rigid subgraph to
+two kernel statements, which are not proved here.
+\Cref{sec:pencil-girth-chain} derives what the kernels' hypotheses imply
+about the shape of $G$.
 
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
