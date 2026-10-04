@@ -307,6 +307,12 @@ After 10r, task 11 closes the round.
   variant. As A's corollary R needs `cor:pencil-flat-x0` at `H`, `def₃ ≤ def₂ = 0` and `def₂`'s
   conservation. Stop 2's "(i) keeps KT's order" undersold (ii).
 
+- **2026-10-04, 10e: `span_supportExtensor_eq_top_of_linearIndependent` stays pinned, now with
+  no caller** (the coordinator's call). It pins `lem:pencil-ear-hinge-span`'s "in particular"
+  clause (at `m = 6` the hinges span the screw space); 10e's shared step reads the general bound
+  instead. Kept on task 1's (b) precedent, that a caller-less clause pin stays; the `k ≥ 5` proof
+  still cites the clause.
+
 ### Not sanctioned, or NO-GO (one line each; wording and evidence in the verdicts file)
 
 - `b2`: moot, as `TwoCut.lean` goes with `r1`.
