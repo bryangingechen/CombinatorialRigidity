@@ -7,11 +7,11 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 19 landed (tasks 1–19; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 20 landed (tasks 1–20; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 20, `sec:main-component-sparse`, against the pinned exemplar
+task 21, `sec:main-component-coverage`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
-bullet. Round manual: `CLEANUP.md`.
+bullet; it also writes item 6. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -57,12 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–19
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–20
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first ten subsections are done (the ninth, the
-split-off, was task 1); next is task 20, `sec:main-component-sparse`. Items 1–5, 7 and 8 are
+introduction (task 24), and `main-component.tex`'s first eleven subsections are done (the ninth,
+the split-off, was task 1); next is task 21, `sec:main-component-coverage`. Items 1–5, 7 and 8 are
 written.
 
 **Verified at the open:**
@@ -188,27 +188,24 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
 - [x] **18. M8 — `sec:main-component-orbit`** (`3892f286`; full entry there). The incidence and the
   tetrahedron lead; the remark cut, `fmlnote:pencil-flag-genericity` deleted. *(f):* in a node, *merged
   deficiency*, *solution*, *ear data*; *plane of a body*. One forward `\cref` added.
-- [x] **19. M10 — `sec:main-component-contract-additive`** (this commit). All bullets done:
-  - *Key idea leads.* After the setting and a pointer to `sec:main-component-contract` (the scheme of
-    `sec:main-component-cut` and the polynomial section of `lem:pencil-x0-one-witness` cited), the
-    opening says the two bounds on `ker M(0)` meet, so no jump and `ρ(ker M(0)) = L_H(q)`; stated on
-    its own as what the new open condition (`H` at its target on the core heights) needs, which meets
-    the degenerate-rank one in `ker M(0)`. KT p. 674 checked: both pieces come from (6.1).
-  - *The remark is cut* (a). Its dominance comparison goes; its account is the opening's. The reverse
-    inequality "for every `W`" is not stated; the hypothesis reads "add up to at most".
-  - *Re-read after tasks 10, 14*: every cite into them is backward. Proof split into sentences, checked
-    against `Graph.X0Attains.of_additiveContract`; the coverage cite checked (`exists_additiveCore`).
-  - *(f):* standard, *rigid*; in a node, *contraction curve*, *rescaled lifting system*, *collapsed
-    placement*, `ρ`; for task 25, *additive core* (only `≤`), *attaining height*. Forward `\cref`:
-    added, `thm:pencil-x0-theorem-s`; kept, `lem:pencil-contract-magnified-rank` (the next node).
-- [ ] **20. M11 — `sec:main-component-sparse`, 3569–3894.** Singleton-value combinatorics.
-  - Three proofs compare with "the partition into maximal rigid sets". Check whether that is
-    Jackson–Jordán's brick partition (the TR) before naming it; those remarks fall under default
-    (a). From task 1 (TR §3, pp. 7–8): their bricks are the maximal subgraphs with `def₂ = 0` in
-    this chapter's terms, not `def₃ = 0`, and "brick" is lint-banned in chapter prose.
-  - From task 19: `lem:deficiency-additive-core`'s title says the planar deficiency "adds", but it
-    proves only `≤`, and the Lean has no reverse: word the title and prose to the inequality.
-  - Say in words what "sparse" and "tight" mean here.
+- [x] **19. M10 — `sec:main-component-contract-additive`** (`a396d213`; full entry there). The two
+  bounds on `ker M(0)` lead (KT p. 674 checked); the remark cut. *(f):* standard, *rigid*; in a node,
+  *contraction curve*, *rescaled lifting system*, *collapsed placement*, `ρ`; for task 25, *additive
+  core* (only `≤`), *attaining height*. One forward `\cref` added.
+- [x] **20. M11 — `sec:main-component-sparse`** (this commit). All bullets done:
+  - *The three remarks are cut* (a), in `lem:deficiency-tight-rigid`, `-core-bound`, `-one-body-chain`;
+    the reason for `X₀` stays, as a lead-in (the coverage's two kinds of maximal rigid set). Nothing
+    named: the TR's bricks (§3, p. 7) are maximal *strong* subgraphs, `def₂ = 0`, so maximal
+    planar-rigid sets; maximal rigid sets are the other count of its footnote 4 (its ref. [5]).
+  - *The inequality.* `lem:deficiency-additive-core` is retitled *…add up to at most that of the
+    graph*; the opening says the same. Its proof split into sentences, checked against the Lean.
+  - *Sparse and tight in words.* Sparse: every `X` with `|X| ≥ 2` spans at most `(3|X| − 4)/2` edges;
+    exactly no planar-rigid set; for loopless `G`, `2G` is (3,4)-sparse (`def:graph-sparse`, body
+    read). Tight: as many edges as sparsity allows (a 4-cycle is). The opening's key idea: in a sparse
+    graph the singletons attain `def₂`, a part `Z` costs `s(Z)`, and `v₃ = 2v₂ − d` (moved from a proof).
+  - *(f):* standard, *rigid*, *sparse*, *tight*, *contraction*; in a node, *merged deficiency*; for
+    task 25, *value* of a partition, *singleton value* (`s_D`, `s`), *planar-rigid* (the TR's *strong*,
+    p. 7), *core*. Forward `\cref`s added: `sec:main-component-statements`, `thm:pencil-x0-theorem-s`.
 - [ ] **21. M12 — `sec:main-component-coverage`, 3895–4329.** The proof's combinatorial skeleton.
   - A displayed table would let the reader check that the cases are exhaustive: each case, the
     step that settles it, and the smaller graphs it consumes.
@@ -217,6 +214,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - Two "informal" remarks fall under default (a).
   - From task 17: `rem:pencil-x0-theta` gives the coverage's order on θ-graphs, checked against
     `Graph.IsX0Graph.x0Reduces`; the proof's "informal case analysis" sentence can cite it.
+  - From task 20: `sec:main-component-sparse` defines *sparse* (no planar-rigid set) and *tight* (a
+    4-cycle is). The overview's "a rigid core at which the planar deficiencies add" means only `≤`.
   - **Writes item 6's recommendation.**
 - [ ] **22. M13a — `sec:main-component-statements`, first half, 4330–4559.** The two-hubs
   obstruction is why the generic statement leaves the main component. Work it at `K_{2,3}`, and
@@ -447,7 +446,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 20** (checklist above has its scope); then tasks 21–26 in order, and task 27 closes
+**Next: task 21** (checklist above has its scope); then tasks 22–26 in order, and task 27 closes
 the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 

@@ -4008,34 +4008,67 @@ target $6(|W| - 1)$.
 \subsection{The deficiency of a sparse graph}
 \label{sec:main-component-sparse}
 
-This subsection proves the partition estimates the structural coverage
-(\cref{sec:main-component-coverage}) uses. Let $D$ be the dimension of
-\cref{def:D-deficiency} at some $n$. For $X \subseteq V(G)$ let $e(X)$
-be the number of edges of $G$ joining two distinct bodies of $X$, and
-let
+This subsection proves the estimates on partitions that the structural
+coverage uses (\cref{sec:main-component-coverage}). The proof of the
+generic statement uses some of them too
+(\cref{sec:main-component-statements}). Let $D$ be the dimension of
+\cref{def:D-deficiency} at some $n$. We call the $D$-deficiency
+$\operatorname{def}_{\tilde G}(P)$ of a partition $P$ its \emph{value}.
+For $X \subseteq V(G)$ let $e(X)$ be the number of edges of $G$ joining
+two distinct bodies of $X$, and let
 \[
   s_D(X) \;=\; D\,(|X| - 1) \;-\; (D - 1)\,e(X),
 \]
-the value of the partition of $G[X]$ into singletons; write $s = s_3$.
-A set $W$ of at least two bodies is \emph{rigid} if
-$\operatorname{def}_3(G[W]) = 0$, and \emph{planar-rigid} if
-$\operatorname{def}_2(G[W]) = 0$. The graph $G$ is \emph{sparse} if
-$s(X) \ge 1$, that is $2e(X) \le 3|X| - 4$, for every $X \subseteq
-V(G)$ with $|X| \ge 2$; a graph with no planar-rigid set is sparse
-(\cref{lem:deficiency-sparse}). For bodies $a$ and $b$,
+the value of the partition of $G[X]$ into singletons. We call $s_D(X)$
+the \emph{singleton value} of $X$, and write $s = s_3$, the case
+$n = 2$. A set $W$ of at least two bodies is \emph{rigid} if $G[W]$ is a
+rigid subgraph at $n = 3$ (\cref{def:rigid-subgraph}), that is, if
+$\operatorname{def}_3(G[W]) = 0$. It is \emph{planar-rigid} if
+$\operatorname{def}_2(G[W]) = 0$. For bodies $a$ and $b$,
 $\operatorname{def}_n(G; a, b)$ is the merged deficiency of
 \cref{def:deficiency-merged}.
 
-Two estimates carry the rest. A partition of a graph whose sets have
-nonnegative singleton values falls below the singletons by at least the
-singleton value of any one of its parts
-(\cref{lem:deficiency-singleton-bound}); and merging the parts that meet
-a set of deficiency zero does not lower the value of a partition
-(\cref{lem:deficiency-merge-rigid}). From them come the rigidity of a
-tight set, the bound that a maximal rigid set places on the singleton
-values above it, the additivity of the planar deficiency at such a set,
-and the two estimates at the ends of a chain that the ear and split-off
-steps ask for.
+The graph $G$ is \emph{sparse} if $s(X) \ge 1$ for every set $X$ of at
+least two bodies, that is, if every such set spans at most
+$\frac12(3|X| - 4)$ edges. Sparsity is the absence of planar-rigid sets.
+Indeed, $\operatorname{def}_2(G[X])$ is at least the value $s(X)$ of the
+singletons, which is positive in a sparse graph. Conversely, a graph with
+no planar-rigid set is sparse (\cref{lem:deficiency-sparse}). For a graph
+without loops, sparsity says that the multigraph $2G$, with every edge of
+$G$ doubled, is $(3, 4)$-sparse (\cref{def:graph-sparse}). A set $X$ of
+at least three bodies is \emph{tight} if $G[X]$ is sparse and
+$s(X) = 1$, so that $X$ spans as many edges as sparsity allows. For
+example, a set inducing a $4$-cycle is tight.
+
+In a sparse graph, a partition with a part $Z$ has value at most
+$s(V(G)) - s(Z)$ at $n = 2$ (\cref{lem:deficiency-singleton-bound}). As
+$s(Z) \ge 0$, the partition into singletons attains the planar
+deficiency: $\operatorname{def}_2(G) = s(V(G))$. The estimates below
+compare singleton values in this way. We use three further facts. Adding
+a body with $t$ edges into a set changes its singleton value by
+$D - (D - 1)t$ (\cref{lem:deficiency-add-body}). Merging the parts of a
+partition that meet a set of deficiency zero does not lower its value
+(\cref{lem:deficiency-merge-rigid}). The third relates the two
+dimensions. Let a partition $P$ have value $v_2(P)$ at $n = 2$ and
+$v_3(P)$ at $n = 3$, and let $d(P)$ edges of $G$ join distinct parts of
+$P$. Then
+\[
+  v_3(P) \;=\; 6\,(|P| - 1) - 5\,d(P) \;=\; 2\,v_2(P) - d(P).
+\]
+So a partition whose value at $n = 2$ is at most zero has value at most
+zero at $n = 3$. Planar counts can therefore show that a set is rigid.
+
+From these facts we prove that a tight set is rigid, and that in a
+sparse graph a maximal rigid set has the least singleton value among the
+sets containing it. At a set $W$ of least singleton value among the sets
+containing it, the planar deficiencies of $G[W]$ and of $G/G[W]$ add up
+to at most that of $G$. The contraction step at an additive core
+assumes this inequality (\cref{sec:main-component-contract-additive}).
+Last, we bound the merged deficiencies at the ends of an open ear with
+one or two interior bodies. The split-off step assumes such a bound for
+one interior body (\cref{sec:main-component-splitoff}). So do the ear
+steps at non-adjacent ends, for one or two
+(\cref{sec:main-component-orbit}).
 
 \begin{lemma}[The singletons bound the partitions of a sparse graph]
   \label{lem:deficiency-singleton-bound}
@@ -4161,19 +4194,19 @@ steps ask for.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-singleton-bound}
-  Write $v_2(P) = 3(|P| - 1) - 2d(P)$ and $v_3(P) = 6(|P| - 1) - 5d(P)$
-  for the two values of a partition $P$ of $X$, so that $v_3(P) =
-  2v_2(P) - d(P)$. If $P$ has a part $Z$ with $2 \le |Z| < |X|$, then
+  Let $P$ be a partition of $X$, with values $v_2(P)$ and $v_3(P)$ in
+  $G[X]$. If $P$ has a part $Z$ with $2 \le |Z| < |X|$, then
   $v_2(P) \le s(X) - s(Z) \le 0$
-  (\cref{lem:deficiency-singleton-bound}), so $v_3(P) \le 0$; the
+  (\cref{lem:deficiency-singleton-bound}), so $v_3(P) \le 0$. The
   partition $\{X\}$ has $v_3 = 0$. For the partition into singletons,
   $v_2 = s(X) \le 1$ gives $2e(X) \ge 3|X| - 4 \ge 5$, so $e(X) \ge 3$
   and $v_3 = 2s(X) - e(X) < 0$.
-
-  The informal argument places a tight set inside a maximal rigid set
-  through the partition of the graph into its maximal rigid sets; the
-  direct count above needs no such partition.
 \end{proof}
+
+The structural coverage takes either a maximal rigid set, or a set
+maximal among the rigid sets that avoid one body $x$ of degree two
+(\cref{thm:pencil-x0-theorem-s}). The next lemma treats both, with $X_0$
+empty or $X_0 = \{x\}$.
 
 \begin{lemma}[A maximal rigid set bounds the singleton values above it]
   \label{lem:deficiency-core-bound}
@@ -4199,11 +4232,10 @@ steps ask for.
   \leanok
   \uses{lem:deficiency-merge-rigid, lem:deficiency-singleton-bound,
         lem:deficiency-add-body}
-  (1) Let $P$ be a partition of $Y$, and let $P'$ be a partition coarser
-  than $P$ with $W$ inside one part $Q$ and $v_3(P) \le v_3(P')$
-  (\cref{lem:deficiency-merge-rigid}), in the notation of the proof of
-  \cref{lem:deficiency-tight-rigid}. If $Q = Y$ then $v_3(P') = 0$.
-  Otherwise $v_2(P') \le s(Y) - s(Q) \le 0$
+  (1) Let $P$ be a partition of $Y$, with values taken in $G[Y]$. Let
+  $P'$ be a partition coarser than $P$ with $W$ inside one part $Q$ and
+  $v_3(P) \le v_3(P')$ (\cref{lem:deficiency-merge-rigid}). If $Q = Y$
+  then $v_3(P') = 0$. Otherwise $v_2(P') \le s(Y) - s(Q) \le 0$
   (\cref{lem:deficiency-singleton-bound}), so $v_3(P') \le 2v_2(P') \le
   0$.
 
@@ -4216,18 +4248,13 @@ steps ask for.
   $3 - 2t$, where $t \le 2$ is the number of edges from $x$ into $Y$
   (\cref{lem:deficiency-add-body}), and $t \le 1$ if $Y = W$. So $Y \ne
   W$, since otherwise $s(X) \ge s(W) + 1$. Then $s(Y) \ge s(W)$, as $Y$
-  has fewer bodies than $X$, while $s(X) \ge s(Y) - 1$; so $s(X) = s(W)
+  has fewer bodies than $X$. Also $s(X) \ge s(Y) - 1$, so $s(X) = s(W)
   - 1$ and $s(Y) = s(W)$. Now (1) at $Y$ makes $G[Y]$ rigid, a set
   avoiding $X_0$ that strictly contains $W$, against the maximality of
   $W$.
-
-  The informal argument derives this bound from the partition of $G$
-  into its maximal rigid sets, whose quotient has no rigid set of two or
-  more members; the minimal counterexample above needs no such partition
-  and treats a maximal rigid set of $G$ and of $G - x$ alike.
 \end{proof}
 
-\begin{lemma}[The planar deficiency adds at a core]
+\begin{lemma}[The planar deficiencies of a core and its contraction add up to at most that of the graph]
   \label{lem:deficiency-additive-core}
   \lean{Graph.partitionDef_map, Graph.deficiency_induce_add_deficiency_rigidContract_le}
   \leanok
@@ -4252,11 +4279,12 @@ steps ask for.
   (1) The parts and the crossing edges correspond under $c$.
 
   (2) By \cref{lem:deficiency-singleton-bound} and sparsity,
-  $\operatorname{def}_2(G[W]) \le s(W)$, and $s(V(G)) \le
-  \operatorname{def}_2(G)$ is the value of the singletons. A partition
-  of $G/G[W]$ pulls back by (1) to a partition of $V(G)$ with $W$
-  inside one part $Z$, at which the deleted edges of $G[W]$ cross
-  nothing; so its value is at most $s(V(G)) - s(Z) \le s(V(G)) - s(W)$
+  $\operatorname{def}_2(G[W]) \le s(W)$. Also $s(V(G)) \le
+  \operatorname{def}_2(G)$, as $s(V(G))$ is the value of the singletons.
+  A partition of $G/G[W]$ pulls back by (1) to a partition of $V(G)$
+  with $W$ inside one part $Z$. The deleted edges of $G[W]$ lie inside
+  $Z$, so the pull-back has the same value in $G$. That value is at most
+  $s(V(G)) - s(Z) \le s(V(G)) - s(W)$
   (\cref{lem:deficiency-singleton-bound}). Adding the three bounds gives
   the claim.
 \end{proof}
@@ -4282,13 +4310,14 @@ steps ask for.
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
         lem:cut-edge-decomposition}
   (1) An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
-  zero. Let a partition of $V_1$ with $a$ and $b$ together attain the
-  merged deficiency, and let $Z$ be the part of $a$ and $b$. Then the
-  merged deficiency plus $s(Z)$ is at most $s(V_1) \le
-  \operatorname{def}_2(G[V_1])$ (\cref{lem:deficiency-singleton-bound}).
-  Adding $x$ to $Z$ lowers the singleton value by at least one, as $x$
-  has two edges into $Z$ (\cref{lem:deficiency-add-body}), and $s(Z \cup
-  \{x\}) \ge 1$; so $s(Z) \ge 2$.
+  zero. Let a partition of $V_1$ with $a$ and $b$ in one part $Z$ attain
+  the merged deficiency. Its value plus $s(Z)$ is at most
+  $s(V_1) \le \operatorname{def}_2(G[V_1])$
+  (\cref{lem:deficiency-singleton-bound}), so it suffices that
+  $s(Z) \ge 2$. Adding $x$ to $Z$ lowers the singleton value by at least
+  one, as $x$ has at least two edges into $Z$
+  (\cref{lem:deficiency-add-body}). As $s(Z \cup \{x\}) \ge 1$ by
+  sparsity, $s(Z) \ge 2$.
 
   (2) Suppose otherwise, and let $P$ attain the merged deficiency $m$,
   with $Q$ the part of $a$ and $b$. Refining $Q$ by a partition $R$ of
@@ -4297,15 +4326,15 @@ steps ask for.
   (\cref{lem:cut-edge-decomposition}). Since
   $\operatorname{def}_3(G[V_1]) \le m + 4$, every such $R$ has value at
   most $4$ in $G[Q]$, and at most $0$ if it keeps $a$ and $b$ together.
-  Then $G[Q \cup \{x\}]$ is rigid (\cref{lem:deficiency-add-body}): with
-  $x$ alone, both of its edges cross and the value drops by $10 - 6 =
-  4$, to at most $0$; with $x$ in a part, each edge from $x$ to another
-  part costs $5$, and when $a$ and $b$ are apart at least one does. This
-  contradicts the hypothesis.
 
-  The informal argument reads the merged deficiency off the partition of
-  $G - x$ into its maximal rigid sets; the refinement above needs no such
-  partition.
+  We show that $G[Q \cup \{x\}]$ is rigid, against the hypothesis. Let
+  $R'$ be a partition of $Q \cup \{x\}$, and compare its value with that
+  of its restriction to $Q$ (\cref{lem:deficiency-add-body}). If $x$ is
+  alone, at least its two edges to $a$ and $b$ cross, and the value drops
+  by at least $10 - 6 = 4$, to at most $0$. If $x$ shares a part, each
+  edge from $x$ to another part costs $5$. When $a$ and $b$ are apart, at
+  least one such edge exists, and the value is at most $4 - 5 < 0$. When
+  they are together, the value is at most $0$.
 \end{proof}
 
 \begin{lemma}[A non-adjacent pair outside every rigid set]
