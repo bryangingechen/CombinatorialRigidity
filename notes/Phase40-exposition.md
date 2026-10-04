@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 16 landed (tasks 1–16; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 17 landed (tasks 1–17; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 17, the three steps of `sec:main-component-short`, against the pinned exemplar
+task 18, `sec:main-component-orbit`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. Round manual: `CLEANUP.md`.
 
@@ -57,13 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–16
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–17
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first six subsections are done, with the opening
-and toolkit of the seventh; next is task 17, the three steps of `sec:main-component-short`. Items 1,
-2, 3, 4, 7 and 8 are written.
+introduction (task 24), and `main-component.tex`'s first seven subsections are done; next is task
+18, `sec:main-component-orbit`. Items 1–5, 7 and 8 are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -163,49 +162,36 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   kept as results under their hypotheses; the two-cut composition cut (item 2 written);
   `def:girth`'s false clause cut. Three forward `\cref`s.
 - [x] **9. M1a — the carrier, first half** (`a23508c0`). The lifting idea leads (Whiteley 1996
-  §8.3, checked); `lem:pencil-condition-linear` follows `lem:pencil-config-distinct-realization`.
-  *(f):* for task 25, *standing hypotheses*; *selector* removed. Eight forward `\cref`s.
-- [x] **10. M1b — the carrier, second half** (`a5f782a5`; full entry there). The one-witness proof
-  states the polynomial section in general; the fibre lemma is outside 5 of the 15 step pins'
-  closures. *(f):* for task 25, *main component*, *pencil configuration space*.
-- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; full entry there). The idea and
-  Crapo–Whiteley Example 4.4 (pp. 72–73) lead. Item 8 written. *(f):* in a node, *lifting planes*,
-  *flat rank*; for task 25, *flat configuration*, `def₂`, `def₃`.
-- [x] **12. M3 — `sec:main-component-jj`** (`b805e623`; full entry there). JJ in their terms
-  (checked against the TR and KT pp. 648–649); why afresh. Items 4 and 7 written. *(f):* standard,
-  *pin-collinear body-and-pin framework*, *chart*; in a node, *Jackson and Jordán's equality*.
-- [x] **13. M4 — `sec:main-component-cut`** (`9c931242`; full entry there). The opening displays the
-  steps' scheme (picture, height, count) with `tgt(G)` defined, and names the three steps where no
-  two open conditions meet. Item 3 written; its four remarks cut. *(f):* standard, *cut vertex*,
-  *bridge*, *ear*; for task 25, *target*, `tgt`. Forward `\cref`s to the later steps.
-- [x] **14. M5 — `sec:main-component-contract`** (`8248885c`; full entry there). Cites task 13's
-  scheme; the curve, the rescaling, the kernel and the one plane lead; KT §6.2, Lemma 6.3 and Claim
-  6.4 checked (pp. 673–675). *(f):* *neighbour of `W`* replaces *attachment*; for task 25, *core*,
-  *planar deficiency*.
+  §8.3, checked); one node moved. *(f):* for task 25, *standing hypotheses*; *selector* removed.
+- [x] **10. M1b — the carrier, second half** (`a5f782a5`; full entry there). The one-witness proof;
+  the polynomial section in general. *(f):* for task 25, *main component*, *pencil configuration space*.
+- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; full entry there). Crapo–Whiteley Example
+  4.4. *(f):* in a node, *lifting planes*, *flat rank*; for task 25, *flat configuration*, `def₂`, `def₃`.
+- [x] **12. M3 — `sec:main-component-jj`** (`b805e623`; full entry there). JJ in their terms. *(f):*
+  standard, *pin-collinear body-and-pin framework*, *chart*; in a node, *Jackson and Jordán's equality*.
+- [x] **13. M4 — `sec:main-component-cut`** (`9c931242`; full entry there). The steps' scheme
+  displayed. *(f):* standard, *cut vertex*, *bridge*, *ear*; for task 25, *target*, `tgt`.
+- [x] **14. M5 — `sec:main-component-contract`** (`8248885c`; full entry there). KT §6.2 checked.
+  *(f):* *neighbour of `W`* replaces *attachment*; for task 25, *core*, *planar deficiency*.
 - [x] **15. M6 — `sec:main-component-chain`** (`698af66a`; full entry there). The ear rank formula
-  and the one-configuration idea lead the opening; the closed ear is unused; `rem:pencil-x0-ear-class`
-  corrected. Item 1 written. *(f):* in a node, *relative screws*, *joint rows*; for task 25, *flat
-  coordinates*, *structural coverage*.
-- [x] **16. M7a — `sec:main-component-short`'s opening and toolkit** (this commit). All bullets done:
-  - *The pairing* is the classical bilinear form of line geometry: two lines pair to zero exactly
-    when they meet (Crapo–Whiteley Examples 2.4–2.5, pp. 49–50, checked). `lem:pencil-tetrahedron`
-    is KT Lemma 2.1 at `d = 3` (pp. 651–652, checked).
-  - *The preamble* uses only defined terms: `(⋆)`, the count against `G″`, the two stages. Stars and
-    planes come where first used; `lem:pencil-bilinear`'s proof is written out. *Lean names* left
-    the ear-data statements. *(f):* in a node, *pairing*, *ear data*, *base data*; standard, *star*,
-    *suppressing*; local, `σ`, `τ`, `π̂_h`, `Λ²π̂_h`, `W`. Forward `\cref`s: the opening's to the
-    insertion, tetrahedron, two-stars, bilinear and ear-data nodes; `thm:pencil-x0-open-ear-two-orbit`.
-- [ ] **17. M7b — SHORT's three steps, 2262–2583.** `thm:pencil-x0-open-ear-two`, `-four`,
-  `-three`, and four remarks.
-  - State the idea before the proofs. Count against `G″`, then put `x₂` back on a line through a
-    neighbour: this gains a dimension unless `W` holds every line through `x₁` and `x₃`, and then
-    `W` is everything (the tetrahedron, or the split on `ρ`).
-  - The remark after the four-body step compares with the informal argument: default (a).
-  - From task 16: the opening now states the steps' idea and the configuration's two stages, so
-    bullet 1 is met there; keep one account (F *Once*). The remarks after the two- and three-body
-    steps repeat the opening. "The general assembly of an open-ear step with an antecedent" and
-    "two rounds of ear data", in the proofs, are coinages: use the opening's two stages.
-  - **Writes item 5's recommendation.**
+  leads. *(f):* in a node, *relative screws*, *joint rows*; for task 25, *flat coordinates*,
+  *structural coverage*.
+- [x] **16. M7a — SHORT's opening and toolkit** (`18e55da1`; full entry there). The count against
+  `G″` and the two stages lead. *(f):* in a node, *pairing*, *ear data*, *base data*; standard,
+  *star*, *suppressing*.
+- [x] **17. M7b — SHORT's three steps** (this commit). All bullets answered:
+  - *Idea first:* met by the opening (task 16). `-four`'s proof cites its two stages and names
+    what is specific to four bodies; `-three`'s follows it; `-two`'s is paragraphed as at five.
+  - *The remark after `-four`* is cut (default (a)); its reasons are in the proof.
+  - *The remarks after `-two`, `-three`:* `-three`'s is cut (the opening's account, and a
+    superseded informal route). `-two`'s keeps only the non-concurrence argument, unformalized,
+    which the proof does not need. *Assembly*, *antecedent*, *two rounds* are gone.
+  - `rem:pencil-x0-theta` kept: the covering along the longest path, and the coverage's order on
+    θ-graphs, both checked (`Graph.IsX0Graph.x0Reduces`). **Item 5 written.**
+  - *(f):* standard, *θ-graph*, *branch bodies*, *affine point*; in a node, *ear datum*, *closed
+    hexagon*, *usable chain*; for task 25, *planar-rigid set*. Forward `\cref`s: one added,
+    `sec:main-component-sparse` (θ remark); kept, `thm:pencil-x0-coverage`,
+    `def:pencil-x0-usable-chain`, and `-four`'s to `-three`.
 - [ ] **18. M8 — `sec:main-component-orbit`, 2584–2951.**
   - The key ideas sit in the closing remark; lead with them. The one-body ear picks `x₁`'s
     picture together with the heights, as a point of their incidence. The two-body step counts
@@ -213,6 +199,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - The preamble packs what the planar merged hypothesis gives (each end's point off the other
     end's plane, `lem:pencil-flag-genericity`) into one chain of clauses: unpack it.
   - Check `fmlnote:pencil-flag-genericity` against principle D.
+  - From task 17: the closing remark opens by comparing with counting against `G[V₁]` alone, the
+    superseded informal route; task 17 cut `-three`'s matching remark under (a).
 - [ ] **19. M10 — `sec:main-component-contract-additive`, 3274–3568.**
   - Lead the proof with the key idea: under additivity the two bounds on `ker M(0)` meet, so the
     core heights of its solutions are all of `L_H(q)`. This replaces the dominance of restriction
@@ -233,6 +221,8 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   - `thm:pencil-x0-theorem-s` needs an overview: every chain is short, a short chain gives a rigid
     set, and a maximal one is the additive core.
   - Two "informal" remarks fall under default (a).
+  - From task 17: `rem:pencil-x0-theta` gives the coverage's order on θ-graphs, checked against
+    `Graph.IsX0Graph.x0Reduces`; the proof's "informal case analysis" sentence can cite it.
   - **Writes item 6's recommendation.**
 - [ ] **22. M13a — `sec:main-component-statements`, first half, 4330–4559.** The two-hubs
   obstruction is why the generic statement leaves the main component. Work it at `K_{2,3}`, and
@@ -347,8 +337,17 @@ exposition has made the item's role clear. The PI decides at round 4's stop.
    pin, which has none; neither is in either headline's closure (measured, script not retained).
    §3 BRIDGE lists `HingeGeneric.lean` and `Steer.lean` as call sites; they name it in docstrings.
 5. **SHORT's shared assembly**, `Graph.X0Attains.of_openEar_splitOff` and
-   `Graph.exists_earBase_splitOff` (`Short.lean`). Called only by the three- and four-body steps.
-   Role: task 17. *Recommendation: pending* (task 17).
+   `Graph.exists_earBase_splitOff` (`Short.lean`). Role: task 17. *Recommendation (task 17): leave
+   both unpinned, with no node.* Read in the Lean, the assembly's callers are the four- and
+   three-body steps' pins, the base data's is the assembly, and all are in `pencil_conjecture`'s
+   closure (measured, script not retained). Those two proofs name both as addresses (principle C):
+   the opening sketches the two stages, `-four`'s proof writes them out once, `-three`'s cites it. A
+   node must state the pin's hypothesis: over all base data, a nonzero polynomial in the ear data
+   off which a point for the suppressed body gives `dim(ρ + Λ) ≥ min(dim W + 1, 6)`, read by no
+   other proof. Nor would it free `-three`'s proof from `-four`'s: their shared insertion,
+   `exists_insertion_of_star_sup_star`, is called by `exists_insertion_four` and `-three`, outside
+   the assembly. The base data are a twelve-conjunct existence. A node buys one copy of the shared
+   `\uses` edges, now listed in both steps.
 6. **The CHAINS pair**, `Graph.IsOpenEar.exists_maximal` (`CoverageChain.lean`) and
    `Graph.Connected.induce_of_gate` (`CoverageCut.lean`). Role: task 21. *Recommendation: pending*
    (task 21).
@@ -450,7 +449,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 17** (checklist above has its scope); then tasks 18–26 in order, and task 27 closes
+**Next: task 18** (checklist above has its scope); then tasks 19–26 in order, and task 27 closes
 the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
@@ -459,11 +458,11 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
   moved per *Moved to a later round*; (ii) carry the section's (f) coinage list, each coinage
   marked standard, defined in a node, or left for task 25's notation paragraph; (iii) name every
   forward `\cref` it adds.
-- **For tasks 17–19** (from tasks 13, 15 and 16). `sec:main-component-cut`'s opening displays the
+- **For tasks 18–19** (from tasks 13, 15 and 16). `sec:main-component-cut`'s opening displays the
   steps' shared scheme (the picture, the height, the count). Cite it rather than re-derive it, and
   say how the step varies the height. `sec:main-component-chain`'s opening displays the ear rank
-  formula, with `ρ` and `Λ`, and `sec:main-component-short`'s displays `(⋆)`: tasks 17–18 cite them
-  there, and keep their claims true.
+  formula, with `ρ` and `Λ`, and `sec:main-component-short`'s displays `(⋆)`: task 18 cites them
+  there, and keeps their claims true.
 
 ## Decisions made during this round
 
