@@ -6,9 +6,9 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 read-only Opus recon over the pencil surface, looking for bigger simplifications
 (`notes/Cleanup40.md` §2 *Round 4*). Seven recon tasks each commit GO / NO-GO verdicts with commit
 estimates to this log. Task 8 writes Stop 2 (`NEEDS_PI`), the round's one planned stop; then the
-items the PI sanctions land, and task 11 closes. Task 1, the liveness map, is done (*Verdicts* →
-*Task 1*). **Next concrete task:** task 2 (R), `pencil.tex`'s reduction layer, with what task 1
-handed it (Opus, docs only). Round manual: `CLEANUP.md`.
+items the PI sanctions land, and task 11 closes. Tasks 1 (the liveness map) and 2 (the reduction
+layer) are done (*Verdicts*). **Next concrete task:** task 3 (N), node shapes outside the reduction
+layer, with what tasks 1 and 2 handed it (Opus, docs only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,8 +19,10 @@ PI's answer goes below it, in an entry of the PI's own.
 
 **Round 4 is open** (2026-10-04, a docs-only commit). Task 1 (L) has landed: the liveness map,
 its verdicts, and the pinned dead clusters handed to tasks 2–4 by name, under *Verdicts* →
-*Task 1*. Nothing is mid-stream. The task list is complete for the recon (tasks 1–8). Task 9
-slices the landings after Stop 2, and task 11 closes.
+*Task 1*. Task 2 (R) has landed: the reduction layer's shape and fifteen verdicts, two of them PI
+calls (`1a`, design §6's Lean; `a2`, a headline signature), under *Verdicts* → *Task 2*. Nothing
+is mid-stream. The task list is complete for the recon (tasks 1–8). Task 9 slices the landings
+after Stop 2, and task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -98,6 +100,8 @@ the one question `r1` left open, whether to delete its 29 off-headline names.
 - `r1`–`r8`, round 3's build-or-leave recommendations, as numbered there.
 - `q1`–`q3`, the coordinator's starting questions: `q1` the open ears, `q2` `Pencil/` against
   `AlgebraicInduction/`, `q3` the Lean that feeds neither headline.
+- Added by the tasks: `1a`, `1b`, `1c-i` and `1c-ii` are task 1's hand-ons (a)–(c) to task 2. A
+  new finding takes the ID of the input it bears on, with a letter (`q3a`, `c3a`).
 
 ## Lemma checklist (the round's task list)
 
@@ -107,17 +111,8 @@ verdicts.
 - [x] **1. L — the liveness map** (`q3`, `b2`, and `r1`'s deletion question; Opus, docs). The
   closure of the 19 main results, the off-closure clusters, the verdicts and the hand-ons are under
   *Verdicts* → *Task 1*.
-- [ ] **2. R — `pencil.tex`'s reduction layer** (`a2`, `a4`, `m1`–`m5`, `c2`–`c4`, design §6's
-  conditional theorems, and task 1's hand-ons to it; Opus, docs). The question: once one route is
-  live, what do `sec:pencil-reduction`, `sec:pencil-nondegenerate` and
-  `sec:pencil-main-component-route` keep, and in what shape? Read those three subsections (about
-  810 lines, 27 labels) and the statements, not the proofs, of their pins, including
-  `Graph.pencil_reduction` and the six `pencil_conjecture*` theorems. `a4`'s proof is read only
-  for its estimate, against task 1's map.
-  Verdicts: retire, keep or re-pin each off-route conditional with its node; split
-  `thm:pencil-conditional-realization-pair` (`c3`); align its statement (`c4`) and
-  `thm:pencil-reduction`'s (`c2`) with their pins, or the pins with them; drop the six binders
-  (`a2`, a headline signature); the five graph lines `m1`–`m5`.
+- [x] **2. R — `pencil.tex`'s reduction layer** (`a2`, `a4`, `m1`–`m5`, `c2`–`c4`, design §6,
+  task 1's hand-ons; Opus, docs). The shape and the verdicts are under *Verdicts* → *Task 2*.
 - [ ] **3. N — node shapes outside the reduction layer** (`a1`, `m6`, `m7`, `c1`, `c5`–`c8`, and
   task 1's hand-ons to it; Opus, docs). The question: where a node's statement and its pins
   disagree, or a node bundles unrelated facts, which side moves? Read the nodes and their pins'
@@ -266,6 +261,84 @@ Outside the surface, not this round's: 18 dead declarations (529 lines) whose he
 between Phase 39's open and Phase 40's, in none of the clusters above (one, 139 lines, is shared by
 `_of_card` and an outside root); named in the commit message.
 
+### Task 2 (R)
+
+**The shape** (*read and measured, script not retained*; spikes run with `lake lean`). Every
+conditional theorem in the layer concludes what `pencilPair_of_nonempty` proves outright:
+`_of_card`'s exact statement, and `pencil_conjecture_of_arms`'s over an infinite field, compile from
+the headlines. Over a finite field only `_of_arms` says more, with both its cases open there. So
+they record routes; they are not results. The live layer is the induction and its lemmas, the bare
+loop, base, cut and non-simple cases, the four definitions, and one conditioned-pair assembly that
+both headlines can run. It lacks a node for the pair at a loop, on two bodies and at a cut edge: 42
+live declarations (3 935 lines) are reached only through those three unpinned leaves, whose one
+account is the proof of the off-route `thm:pencil-conditional-realization-pair` (`-pair` below;
+`-main-component` likewise). Batching, for task 8: `c3`'s TeX carries `c2`, `m2`, `m4`, `m5`, `1c-i`
+and `1b`'s node; one deletion carries `1a`, `1b` and `1c-ii`; `a2` last.
+
+- **`1a`, design §6's conditional theorems, with `q3a`: a PI call (retire recommended).** Their
+  conclusions are theorems now, and the PI cancelled the kernels' work; keeping the Lean "untouched"
+  is the close's own **Decided** record (2026-09-29), not the PI's words, so retiring revisits it.
+  *Retire:* the kernel statement leaves `c3`'s TeX, then 1 deletion (Sonnet, ⚠Z files), 2 482 lines
+  (1 565 without `q3a`); moots `a4`, `c4`(a). *Keep:* no commit. Evidence: the map, spike.
+- **`a4`, `pencilPair_of_habitat_ncard_eq_four`: with `1a`.** Retired, it goes with the cluster
+  (879 lines, its largest proof, and the heartbeat bump). Kept: GO, 1 commit, Sonnet, ⚠Z,
+  `_three`'s two substitutions (about 124 lines; both blocks confirmed in the proof), perhaps the
+  bump; nothing a reader sees. Evidence: read, the map.
+- **`c4`, `-pair`'s statement against its pins: GO, by part.** (a) The node assumes kernel (K) at
+  a feasible `G` only, `hK` at every `G`, where at an infeasible one it asserts that `G′` has no
+  generic realization. Kept: add `PencilNondegFeasible K G →` to `hK` in three signatures (two
+  pinned), pass `hfeas` at its one call (spike compiles); 1 commit, Sonnet. Retired: moot.
+  (b) "Strictly smaller" goes with `c2`. Depends on `1a`.
+- **`c2`, `thm:pencil-reduction`'s cases: GO, restate the node to its pin.** The pin gives cases
+  (iii)–(v) the property only at graphs on fewer vertices, and no proof needs more. Restate them so,
+  and use the same phrase for "strictly smaller (such)" in the conditional nodes (`c4`(b)). 1
+  commit, Sonnet, TeX; weakens a statement to its pin. A lexicographic hypothesis in the Lean would
+  need adapters at every caller, for no consumer. Evidence: read.
+- **`c3`, split `thm:pencil-conditional-realization-pair`: GO, one assembly.** `_of_arms_pair`
+  is on `pencil_conjecture`'s chain. Generalized to every nonempty graph (no `hspan`,
+  `[Nonempty α]`, `[DecidableEq β]`), it also proves `pencilPair_of_nonempty` in 3 lines (spike);
+  the node states it. A new lemma pins the three pair leaves with the proof's first part; the kernel
+  form follows `1a`. 2 commits, Opus; changes a pinned statement and the graph. Evidence: spike.
+- **`c3a`, the headline's direct proof: NO-GO, an option for the PI.** `pencil_conjecture` is
+  `pencilPair_of_nonempty` at a spanning graph (spike, one line), taking `X0Gen`, `x0Gen`,
+  `pencilPair_of_X0`, `pencil_conjecture_of_X0` and `_of_arms_pair` (101 lines today) off the
+  closure. But the PI chose the term (2026-09-28: "`pencil_conjecture_of_X0 x0Dist x0Gen`, the L0
+  shape"), `formalization.yaml` says so, and it saves no line. Evidence: spike, the map.
+- **`1b`, `pencil_conjecture_of_arms` (`thm:pencil-conditional-realization`): GO, retire.** No
+  caller; over an infinite field the headline gives its statement (spike); the close's record does
+  not name it. 1 commit, Sonnet, 78 lines, riding with `1a`'s deletion; the node and the
+  subsection's closing paragraph go in `c3`'s. Changes the graph (`m2`). Evidence: map, spike.
+- **`a2`, the six `[DecidableEq β]` binders: GO, a headline signature.** All six statements
+  compile without the binder, by `classical` (spike, 0 warnings); `pencil_conjecture` becomes
+  strictly more general. 1 commit, Sonnet, deleting the silencers: two sites if `1a`, `1b` and
+  `c3` land first. The axioms harness re-runs. Depends on `1a`, `1b`, `c3`. Evidence: spike.
+- **`m1`, `def:pencil-nondegenerate` to `lem:coplanar-hinges-concurrent`: NO-GO.** The threshold
+  is motivation: `Graph.PencilHub` is `v ∈ V(G) ∧ 3 ≤ G.degree v`, and the lemma's pin feeds only
+  the cycle realization. The edge would put `sec:pencil-cycle` under the headline, against the
+  chapter opening's true claim; the lead-in's `\cref` is the link. Evidence: read, the map.
+- **`m2`, edges to `lem:pencil-loop-case` and `lem:pencil-base-case`: GO, in `c3`.** `c3`'s new
+  lemma `\uses` the three bare cases, whose pins its pins call. Without `c3`: add both to `-pair`'s
+  proof, 1 commit, Sonnet, TeX. Evidence: the map.
+- **`m3`, `lem:pencil-simple-of-noRigid`'s in-edge: GO, remove the call instead.** `_three` uses
+  `hnoRigid` only to recover `G.Simple`, which its live caller has; restated from `G.Simple`,
+  neither it nor the generic step names a no-rigid lemma (spike). `lem:pencil-three-bodies-no-rigid`
+  and its pin (35 lines) retire; with `1a`, this node and its pin (62) too. 1 commit, Sonnet; an
+  unpinned signature, the graph. Evidence: spike.
+- **`m4`, `-main-component` to the pair theorem: GO, in `c3`.** After `c3` the pair theorem is
+  the assembly both `-main-component`'s and `thm:pencil-conditioned-pair-nonempty`'s pins run; both
+  get the edge. Evidence: the map, spike.
+- **`m5`, the pair node drawn unfilled: GO, in `c3`.** The built graph draws it with no fill.
+  Kept, the two notes follow the kernel node's proof; retired, they go. Alone: 1 commit, Sonnet,
+  TeX. Evidence: measured.
+- **`1c-i`, `lem:two-pencil-extension-iff`: GO, re-pin.** The iff has no caller, but its necessity
+  half, `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, feeds the hub bound of
+  `lem:pencil-feasible-hub-conditions`, whose proof uses it with no edge. Pin it beside the iff and
+  add that edge. 1 commit, Sonnet, TeX; the graph only. Evidence: the map, read.
+- **`1c-ii`, `lem:pencil-base-parallel-pair`: GO, retire.** Its pin (exactly two edges) and the
+  non-vacuity witness, 86 lines, have no live caller. `lem:pencil-base-case`'s pin calls the two
+  lemmas this node's proof uses, so it `\uses` them instead. 1 commit, Sonnet, riding with `1a`'s
+  deletion; the graph loses a node. Evidence: the map.
+
 ## Moved to a later round
 
 Each line gives the task, its target (round 5, `40-docs`, or **PROSE** in ROADMAP's queue) and a
@@ -277,12 +350,14 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**Next: task 2 (R), `pencil.tex`'s reduction layer** (Opus, docs only): checklist item 2's
-question and inputs, plus task 1's hand-ons to it (*Verdicts* → *Task 1*): design §6's cluster
-with `a4`, `pencil_conjecture_of_arms`, and the two nodes the reduction layer `\uses` with no live
-pin. Its §6 verdict also settles `q3a`'s. Then tasks 3–7 in order, each one docs commit of
-verdicts; tasks 3 and 4 take task 1's other hand-ons. Then task 8 writes Stop 2, and the
-autopilot stops for the PI.
+**Next: task 3 (N), node shapes outside the reduction layer** (Opus, docs only): checklist item
+3's question and inputs, plus task 1's hand-ons to it (*Verdicts* → *Task 1*). Two bear on task
+2's verdicts. `sec:pencil-girth-chain` opens as an account of the kernels' hypotheses, so its
+verdict depends on `1a`. `1c-i` gives `lem:pencil-feasible-hub-conditions`' proof a `\uses`
+edge, and `m7` would make `lem:pencil-generic-steer` `\uses` that node. `m3` already settles
+`lem:pencil-three-bodies-no-rigid` and `thm:pencil-generic-step`'s triangle; task 3 need not.
+Then tasks 4–7 in order, each one docs commit of verdicts; task 4 takes task 1's other hand-ons.
+Then task 8 writes Stop 2, and the autopilot stops for the PI.
 
 ## Decisions made during this round
 

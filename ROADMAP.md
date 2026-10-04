@@ -1217,7 +1217,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   only where the PI sanctions it. Scope, order, stops and the PI's decisions are in
   `notes/Cleanup40.md`. The autopilot queue is `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04). Its
-  next task is task 2, `pencil.tex`'s reduction layer; task 1, the liveness map, is done
+  next task is task 3, node shapes outside the reduction layer; tasks 1 and 2 are done
   (`notes/Phase40-simplify.md` *Hand-off*). Seven recon tasks precede Stop 2, where
   the PI decides the round's verdicts and round 3's build-or-leave recommendations. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3, `40-exposition`, closed
