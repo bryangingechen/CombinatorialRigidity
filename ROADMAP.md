@@ -1217,11 +1217,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   only where the PI sanctions it. Scope, order, stops and the PI's decisions are in
   `notes/Cleanup40.md`. The autopilot queue is `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04). Its
-  next task is task 4, the open ears; tasks 1–3 are done
-  (`notes/Phase40-simplify.md` *Hand-off*). Seven recon tasks precede Stop 2, where
-  the PI decides the round's verdicts and round 3's build-or-leave recommendations. Rounds 1,
-  `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3, `40-exposition`, closed
-  2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
+  next task is task 5, where `Pencil/` re-proves; tasks 1–4 are done, their verdicts in
+  `notes/Phase40-simplify-verdicts.md` (`notes/Phase40-simplify.md` *Hand-off*). Seven recon
+  tasks precede Stop 2, where the PI decides the round's verdicts and round 3's build-or-leave
+  recommendations. Rounds 1, `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3,
+  `40-exposition`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
