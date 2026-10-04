@@ -56,19 +56,16 @@ dropped its 2-edge-connected and `def₂=0` clauses and 2 pins (its one `def₂=
 no-loss half (1 pin each); `c5`'s node `lem:pencil-selector-independent-scalar` retired outright (its
 one caller, `lem:pencil-condition-linear`, now proves the line-of-vectors fact inline); the
 polynomial's pin `pencilNormalOfPicturePoly` dropped from `def:pencil-configuration` (3 pins stay).
-**Unpinned for 10b's deletion:** `Graph.liftingRestrict`, `Graph.liftingRestrict_apply`,
-`CombinatorialRigidity.Molecular.restrictPoly`, `CombinatorialRigidity.Molecular.pathVertex_cases`,
-`CombinatorialRigidity.Molecular.pathVertex_eq_of_val_eq_succ`,
-`CombinatorialRigidity.Molecular.pathVertex_rev`,
-`CombinatorialRigidity.Molecular.pathVertex_mem_union_image_iff`,
-`Graph.cutEdges_union_image_of_bridgePath`, `Graph.twoEdgeConnected_rigidContract_induce` (c8's one
-retired standing pin — `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` stays live, just unpinned),
-`CombinatorialRigidity.Molecular.exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
-`CombinatorialRigidity.Molecular.eq_zero_of_kleinLin_eq_zero`,
-`CombinatorialRigidity.Molecular.exists_insertion_ge`,
-`CombinatorialRigidity.Molecular.exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd`, and the
-polynomial cluster `CombinatorialRigidity.Molecular.pencilNormalOfPicturePoly`,
-`eval_pencilNormalOfPicturePoly`, `pencilConfigPointPoly`, `eval_pencilConfigPointPoly`. Gates:
+**10a's unpins, two kinds** (the coordinator's correction: each name's Lean callers grepped).
+*Dead, so 10b deletes them* (no Lean caller): `Graph.twoEdgeConnected_rigidContract_induce`
+(`c8`'s retired standing pin), `eq_zero_of_kleinLin_eq_zero` and `exists_insertion_ge` (`c9`),
+`exists_smul_pencilNormalOfPicture_eq_of_mem_closedNbhd` (`c5`), and the polynomial cluster
+`pencilNormalOfPicturePoly`, `eval_pencilNormalOfPicturePoly`, `pencilConfigPointPoly`,
+`eval_pencilConfigPointPoly` (all in `CombinatorialRigidity.Molecular` unless `Graph.`-prefixed).
+*Live, unpinned only; they stay*: `Graph.liftingRestrict`, `Graph.liftingRestrict_apply`,
+`restrictPoly`, the four `pathVertex_*` lemmas, `Graph.cutEdges_union_image_of_bridgePath`,
+`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`,
+`exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`. Gates:
 `blueprint/verify.sh` (bp + web + checkdecls) and `blueprint/lint.sh` both green; the dep-graph
 spot-check confirms the two new nodes appear and `lem:pencil-selector-independent-scalar` is gone.
 Next is 10b, then each landing in turn, then task 11 closes.
@@ -262,9 +259,9 @@ one-line reason. The same line goes into the target's plan section in the same c
 ## Hand-off / next phase
 
 **10a landed; the rest of the landings run.** The smallest next commit is **10b** (Sonnet, ⚠Z
-files): `r1`'s deletion (`TwoCut.lean` and 20 more of D5's names, with `q3b` and the Lean 10a
-unpinned — listed in *Current state*); a whole-project build confirms the trial deletion. Then
-10c–10r in order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP
+files): `r1`'s deletion (`TwoCut.lean` and 20 more of D5's names, with `q3b` and the eight dead
+declarations 10a unpinned, listed in *Current state* apart from its live ones); a whole-project
+build confirms the trial deletion. Then 10c–10r in order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP
 §40 (its "stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
 
 ## Decisions made during this round
