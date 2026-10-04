@@ -1242,7 +1242,8 @@ induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main
 
 - **`thm:pencil-x0-contract-additive` / `Graph.X0Attains.of_additiveContract`, with
   `lem:pencil-contract-kernel-bound` and `lem:pencil-contract-magnified-rank`** — [done (the
-  subsection preamble, the theorem's proof and the remark after it, at the 40k close)] **(b)** the
+  subsection preamble and the theorem's proof, at the 40k close; round 3 of the post-Phase-40
+  cleanup folded the remark after the theorem into the preamble)] **(b)** the
   informal step (MC-71) gets the core's rank at `X₀(G)`'s generic point as CONTRACT-R's informal
   step does: at a generic picture (MC-68)(d) makes the heights of `G` restrict onto `L_H`
   ((MC-38)(i), core-freeness), (MC-38) deduces from it, by the dominance of restriction to the
