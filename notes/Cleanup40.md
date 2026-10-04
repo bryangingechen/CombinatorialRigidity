@@ -5,11 +5,12 @@
 closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 2026-09-30 and
 closed 2026-10-04 (`notes/Phase40-exposition.md`); its Stop 1 closed on 2026-10-03, when the PI
 approved the revised sample section, pinned as the exemplar (that log's *Autopilot: for the PI*).
-Rounds 4–5 have not opened. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run
-under autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`,
-`40-docs`. `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are
-done. **The next concrete task** is opening round 4, `40-simplify` (§2 *Round 4*, which now holds
-round 3's build-or-leave recommendations and candidates). It stops for the PI at Stop 2.
+Round 4, `40-simplify`, opened 2026-10-04 (`notes/Phase40-simplify.md`); round 5 has not opened.
+Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this
+order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
+`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done. **The
+next concrete task** is round 4's task 1, the liveness map (`notes/Phase40-simplify.md`
+*Hand-off*). Seven recon tasks, over §2 *Round 4*'s inputs, precede Stop 2.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

@@ -334,9 +334,9 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Round 3 is closed; there is no next step in it.** The next is opening round 4, `40-simplify`,
-the deep recon (`notes/Cleanup40.md` §2 *Round 4*; its work log `notes/Phase40-simplify.md` does
-not exist yet). What carried over, all mirrored into `notes/Cleanup40.md` §2:
+**Round 3 is closed; there is no next step in it.** Round 4, `40-simplify`, the deep recon, opened
+2026-10-04 (`notes/Phase40-simplify.md`); `notes/Cleanup40.md`'s **Status** names the current
+round. What carried over, all mirrored into `notes/Cleanup40.md` §2:
 - round 4's Stop-2 inputs: the eight build-or-leave recommendations and the nine *Candidates for
   `40-simplify`*;
 - the *Moved to a later round* lines: seven for round 4 (six missing `\uses` edges and one node the
