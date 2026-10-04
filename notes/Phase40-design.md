@@ -1234,7 +1234,9 @@ section).
   its design recon's spikes, 2026-09-28), nor by SHORT, ORBIT, SPLITOFF or CONTRACT-A (PI decision
   4(b), 2026-09-27; the design recons of 40j and 40k); the rest, `jointMotions`, `weldedRank` and
   the remaining A2/A3 names included, has no consumer on Phase 40's route through COVERAGE, and a
-  cleanup round pins or leaves it (PI, D5).
+  cleanup round pins or leaves it (PI, D5). **Round 4 (`40-simplify`, task 10b, `r1`) deleted the
+  unpaid debt** — A1, A2, A3, A4/A5, B1/B2, B3/B4, B7 and all of C1ℓ–C4ℓ (`Molecule/Pencil/TwoCut.lean`
+  whole) — keeping only the paid names above and the two B5/B6 pins.
 - [x] **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section):
   **both settled at Phase 40's close.** `thm:pencil-conditional-realization-main-component`'s
   fuller exposition (the main component as a vector bundle over planar pictures, the flat rank,

@@ -24,15 +24,12 @@ Lemma 6.1 block-triangular rank-addition argument (Katoh–Tanigawa 2011 §6.1):
   PinnedPlacementBrick`) — the pinned-placement brick.
 
 The file also carries the **vertex 2-cut layer** (`section TwoCutCarriers`, Phase 39 item 6,
-Layer B): the carriers `relScrews` (`ρ̄_{uv}`), `jointRows`, `jointMotions` (`M_U`) and
-`weldedRank` of the cut-pair rank laws, with the joint's row count `finrank_span_jointRows`, the
-welded-rank identity `weldedRank_eq` (`rank_w = rank + ρ`), the welded codimension
-`weldedRank_add_finrank_jointMotions_bot` (`rank_w + dim M_⊥ = screwDim k·|α|`), the gluing
-identity at a 2-cut `finrank_span_rigidityRows_twoCut_eq_of_isLink` (Phase 40g; at induced sides
+Layer B): the carriers `relScrews` (`ρ̄_{uv}`) and `jointRows` of the cut-pair rank laws, with the
+joint's row count `finrank_span_jointRows`, the gluing identity at a 2-cut
+`finrank_span_rigidityRows_twoCut_eq_of_isLink` (Phase 40g; at induced sides
 `finrank_span_rigidityRows_vertexTwoCut_eq`), and its cut-vertex case
 `finrank_span_rigidityRows_cutVertex_eq` (Phase 40e: the ranks simply add).
-Its own section header is their index; these are the objects the Layer-C losses in
-`Molecule/Pencil/TwoCut.lean` are stated in.
+Its own section header is their index.
 
 These depend only on the core `BodyHingeFramework` API in `RigidityMatrix.lean`; nothing in the
 core depends on them (they were the file's tail), so this is a clean forward-dependency leaf.
@@ -750,18 +747,15 @@ theorem le_finrank_span_rigidityRows_of_pinned_placement_augment [Finite α]
 
 end PinnedPlacementBrick
 
-/-! ## Relative screws, the joint rows, and the welded rank (the vertex 2-cut layer)
+/-! ## Relative screws and the joint rows (the vertex 2-cut layer)
 
 The carriers of the vertex-2-cut rank laws (Phase 39 item 6, Layer B): the objects the gluing
-identity at a vertex 2-cut `{u, v}` and the welded bound are stated in.  The informal statements
-are the PENCIL attack workbook's §§ S7, S10(ii) and S14(i)
-(`notes/pencil/workbook/attack-smark.md`), read against this file's carrier by the item-6 carrier
-recon (`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*, which pins each signature
-below).  `relScrews` and `jointRows` are pinned by `def:relative-screws`, the gluing identity by
-`cor:block-rank-vertex-two-cut` and its edge-partitioned generalization by
-`lem:block-rank-two-cut` (Phase 40g); `jointMotions`, `weldedRank` and their laws carry no
-blueprint node yet (Phase 39's decision D5; their pins move to a first consumer,
-`notes/Phase40g.md`).
+identity at a vertex 2-cut `{u, v}` is stated in.  The informal statements are the PENCIL attack
+workbook's §§ S7, S10(ii) (`notes/pencil/workbook/attack-smark.md`), read against this file's
+carrier by the item-6 carrier recon (`notes/Phase39-design.md` § *Item-6 carrier recon
+(2026-09-16)*, which pins each signature below).  `relScrews` and `jointRows` are pinned by
+`def:relative-screws`, the gluing identity by `cor:block-rank-vertex-two-cut` and its
+edge-partitioned generalization by `lem:block-rank-two-cut` (Phase 40g).
 
 * `relScrews` (`ρ̄_{uv}`) — the space of **relative screw centers** `S v − S u` realized by
   infinitesimal motions of the framework.  Its dimension `ρ` is what the two sides of a vertex
@@ -772,31 +766,21 @@ blueprint node yet (Phase 39's decision D5; their pins move to a first consumer,
   `S u = S v`; general `U` is the body-bar-hinge reading of S7(ii), whose laws are deferred
   (`notes/Phase39.md` *Lemma checklist*, item 6) — the annihilator phrasing makes the weld and
   those profiles one definition.
-* `jointMotions` (`M_U`) — the motions obeying that joint constraint, the motion-side object of
-  S7(i).
-* `weldedRank` — the rigidity-row rank of the framework with `u, v` welded rigidly together, the
-  `rank_w` of S14(i).
 
 `finrank_span_jointRows` is the layer's first fact: at a genuine pair of **distinct** bodies the
 joint contributes exactly `screwDim k − dim U` independent rows — in particular `screwDim k` for
-the weld.  The layer's headline identity is `weldedRank_eq` (B4): welding a **distinct** pair costs
-exactly `dim ρ̄_{uv}`, `rank_w = rank + ρ`.  It turns on B3
-(`inf_span_rigidityRows_span_jointRows_top`) — the weld rows a framework already implies are exactly
-the ones annihilating `ρ̄_{uv}` — with the orientation bookkeeping in `map_screwDiff_comm` and the
-`U = ⊥` unfolding in `span_jointRows_bot`.  The layer's other identity is the **gluing identity at
-a 2-cut** (B5′/B6′): two graphs whose links partition the framework's, each inside a vertex set,
-the two sets overlapping inside a cut pair `{u, v}`, meet, as row spans, exactly in
-`jointRows (ρ̄₁ ⊔ ρ̄₂) u v` (`inf_span_rigidityRows_of_twoCut_of_isLink`), so their ranks sum to
-the whole rank plus the `screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` rows they share
-(`finrank_span_rigidityRows_twoCut_eq_of_isLink`, stated in `ℤ`) — and, unlike its combinatorial
-counterpart `Graph.deficiency_eq_of_vertexTwoCut`, it needs no non-adjacency of the pair.  At the
-induced sides of a vertex 2-cut these are B5/B6 (`inf_span_rigidityRows_of_vertexTwoCut`,
+the weld.  The layer's identity is the **gluing identity at a 2-cut** (B5′/B6′): two graphs whose
+links partition the framework's, each inside a vertex set, the two sets overlapping inside a cut
+pair `{u, v}`, meet, as row spans, exactly in `jointRows (ρ̄₁ ⊔ ρ̄₂) u v`
+(`inf_span_rigidityRows_of_twoCut_of_isLink`), so their ranks sum to the whole rank plus the
+`screwDim k − dim (ρ̄₁ ⊔ ρ̄₂)` rows they share (`finrank_span_rigidityRows_twoCut_eq_of_isLink`,
+stated in `ℤ`) — and it needs no non-adjacency of the pair.  At the induced sides of a vertex
+2-cut these are B5/B6 (`inf_span_rigidityRows_of_vertexTwoCut`,
 `finrank_span_rigidityRows_vertexTwoCut_eq`); the general sides serve an ear whose ends are
-adjacent (`MainComponent/Ear.lean`), where the side induced on the path is not the path.  At a
-cut *vertex* (`u = v`) no relative screw survives and the ranks add outright
-(`finrank_span_rigidityRows_cutVertex_eq`, Phase 40e).
-Keep the `screwDiff v u` orientation of `relScrews` /
-`jointMotions` as written: the whole layer, and the Layer-C losses above it, are stated against
+adjacent (`MainComponent/Ear.lean`), where the side
+induced on the path is not the path.  At a cut *vertex* (`u = v`) no relative screw survives and
+the ranks add outright (`finrank_span_rigidityRows_cutVertex_eq`, Phase 40e).
+Keep the `screwDiff v u` orientation of `relScrews` as written: the whole layer is stated against
 it (it is immaterial to the mathematics — a submodule is closed under negation — but not to the
 `rw`s). -/
 
@@ -807,11 +791,9 @@ section TwoCutCarriers
 evaluation `screwDiff v u : S ↦ S v − S u`, i.e. the subspace of `ScrewSpace K k` of relative screw
 centers that some infinitesimal motion of the framework realizes between the bodies `u` and `v`.
 
-It is the object a vertex 2-cut `{u, v}` couples the two sides through: a side's rank and its welded
-rank differ by exactly `dim ρ̄_{uv}` at a distinct pair (`weldedRank_eq`, the `rank_w = rank + ρ` of
-B4), and the gluing identity at the cut (`finrank_span_rigidityRows_vertexTwoCut_eq`, B6) adds the
-two sides' ranks and subtracts the codimension of the join `ρ̄₁ ⊔ ρ̄₂`.  The two extremes are
-definitional:
+It is the object a vertex 2-cut `{u, v}` couples the two sides through: the gluing identity at the
+cut (`finrank_span_rigidityRows_vertexTwoCut_eq`, B6) adds the two sides' ranks and subtracts the
+codimension of the join `ρ̄₁ ⊔ ρ̄₂`.  The two extremes are definitional:
 `relScrews = ⊥` says every infinitesimal motion moves `u` and `v` as one body, and
 `relScrews = ⊤` that every relative screw center is realized by some motion. -/
 noncomputable def relScrews (F : BodyHingeFramework K k α β) (u v : α) :
@@ -839,50 +821,14 @@ adds to `R(G,p)`.
 
 Two instances matter, and the annihilator phrasing makes them **one** definition.  At `U = ⊥` the
 annihilator is `⊤`, the rows are all of `hingeRow u v '' Module.Dual K (ScrewSpace K k)` and the
-joint is the **rigid weld** `S u = S v` — the instance the welded rank `weldedRank` and the
-consumed welded bound S14(i) use.  At general `U` the joint is S7(ii)'s body-bar-hinge reading
-(`6 − dim U` bars between `u` and `v` along a spanning set of `U^⊥`), whose laws are deferred off
-the consumed path.
+joint is the **rigid weld** `S u = S v`.  At general `U` the joint is S7(ii)'s body-bar-hinge
+reading (`6 − dim U` bars between `u` and `v` along a spanning set of `U^⊥`), whose laws are
+deferred off the consumed path.
 
-This takes no framework: the joint's rows depend only on the pair and on `U`, and they are adjoined
-to a framework's own rows by a union (`weldedRank`). -/
+This takes no framework: the joint's rows depend only on the pair and on `U`. -/
 noncomputable def jointRows (U : Submodule K (ScrewSpace K k)) (u v : α) :
     Set (Module.Dual K (α → ScrewSpace K k)) :=
   (fun r => hingeRow u v r) '' U.dualAnnihilator
-
-/-- The **`U`-constrained motion space** `M_U` at a body pair
-(`notes/pencil/workbook/attack-smark.md` § S7(i)): the infinitesimal motions whose relative screw
-center at `u, v` lies in `U`, i.e. `F.infinitesimalMotions ⊓ comap (screwDiff v u) U`.  S7(ii) reads
-it as the motion space of the body-bar-hinge framework `G ∪ bars(U^⊥)` — the common kernel of
-`F.rigidityRows ∪ jointRows U u v`; the two constraints match because `U` is closed under negation,
-so `S v − S u ∈ U` and `S u − S v ∈ U` say the same thing.
-
-The motion-side companion of `jointRows`: `S7(i)`'s fibre identity
-`M_U(H)/M(H/uv) ≅ ρ̄ ∩ U` reads it against the welded framework.  Motion-side statements over this
-carrier are `|α|`-laden — `infinitesimalMotions` lives over **all** of `α`, not over `V(G)` — which
-is why the item-6 laws are stated rank-side and the one law that cannot be is deferred
-(`notes/Phase39.md` *Lemma checklist*, item 6, *Normalization*). -/
-noncomputable def jointMotions (F : BodyHingeFramework K k α β)
-    (U : Submodule K (ScrewSpace K k)) (u v : α) : Submodule K (α → ScrewSpace K k) :=
-  F.infinitesimalMotions ⊓ Submodule.comap (screwDiff v u) U
-
-/-- The **welded rank** of a framework at a body pair (`notes/pencil/workbook/attack-smark.md`
-§ S14(i)'s `rank_w`): the dimension of the span of the framework's own rigidity rows together with
-the rigid weld's joint rows at `u, v` (`jointRows ⊥ u v`) — the row rank of the framework *with the
-pair welded*, taken on `F`'s own screw-assignment space rather than on a contracted body set.
-
-Stating the weld as *extra rows on the same space* (rather than as the rigidity matrix of the
-contracted graph `G/uv`) is what keeps the welded rank comparable to `F`'s own rank; the fact about
-it is `weldedRank = rank + dim ρ̄_{uv}` at a distinct pair (`weldedRank_eq`), which is the whole
-linear-algebraic content of the transcribed welded bound `ρ ≤ δ + a`.  It is deliberately *not*
-identified with a rank of `R(G/uv, p)` on the contracted body set: the two differ by the weld's own
-rows, and that offset is exactly where the recon's first `weldedLoss` normalization was wrong
-(`notes/Phase39-design.md` § *Item-6 carrier recon*, the loss carriers).  The combinatorial side of
-that comparison is `Graph.deficiencyMerged` (`Molecular/Deficiency.lean`), the deficiency over
-labelings that identify `u` with `v`. -/
-noncomputable def weldedRank (F : BodyHingeFramework K k α β) (u v : α) : ℕ :=
-  Module.finrank K
-    (Submodule.span K (F.rigidityRows ∪ jointRows (⊥ : Submodule K (ScrewSpace K k)) u v))
 
 /-- **The joint rows span the image of the annihilator block under the relative-screw dual map**:
 `span (jointRows U u v) = (U.dualAnnihilator).map (screwDiff u v).dualMap`.  The generating set is
@@ -920,7 +866,7 @@ count fails for every `U ≠ ⊤`.
 The `ℕ` subtraction is honest here rather than truncating: `finrank U ≤ screwDim k` always
 (`U ≤ ⊤` in a space of dimension `screwDim k`), and the additive form
 `finrank U + finrank U^⊥ = screwDim k` is what the proof actually uses.  At `U = ⊥` it says the
-rigid weld contributes a full `screwDim k` rows, the instance `weldedRank` reads. -/
+rigid weld contributes a full `screwDim k` rows. -/
 theorem finrank_span_jointRows {u v : α} (huv : u ≠ v) (U : Submodule K (ScrewSpace K k)) :
     Module.finrank K (Submodule.span K (jointRows (α := α) U u v))
       = screwDim k - Module.finrank K U := by
@@ -954,156 +900,6 @@ theorem map_screwDiff_comm (Z : Submodule K (α → ScrewSpace K k)) (u v : α) 
       = -screwDiff (K := K) (k := k) (α := α) u v := by
     simp only [screwDiff, neg_sub]
   rw [hneg, Submodule.map_neg]
-
-/-- **The rigid weld's rows are exactly the functionals that factor through the relative screw**:
-at `U = ⊥` the annihilator is `⊤`, so `span (jointRows ⊥ u v) = range (screwDiff u v).dualMap` —
-all of `S ↦ r (S u − S v)`, as `r` ranges over the whole of `Module.Dual K (ScrewSpace K k)`.
-
-The `U = ⊥` instance of `span_jointRows_eq_map_dualAnnihilator`, in the range form the weld
-arguments want: it is the shape `inf_span_rigidityRows_span_jointRows_top` intersects the
-framework's own row span against, and the count `finrank_span_jointRows huv ⊥` says this range
-occupies a full `screwDim k` dimensions. -/
-theorem span_jointRows_bot (u v : α) :
-    Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v)
-      = LinearMap.range (screwDiff (K := K) (k := k) u v).dualMap := by
-  rw [span_jointRows_eq_map_dualAnnihilator, Submodule.dualAnnihilator_bot, Submodule.map_top]
-
-/-- **The weld rows a framework already implies are exactly the weld rows that annihilate
-`ρ̄_{uv}`** (Layer B3, `notes/pencil/workbook/attack-smark.md` § S14(i)): the rigidity-row span of
-`F` meets the rigid weld's joint rows precisely in the joint rows of the relative-screw space,
-`span F.rigidityRows ⊓ span (jointRows ⊥ u v) = span (jointRows (F.relScrews u v) u v)`.
-
-This is the layer's pivot, and it reads off two annihilator identities.  A functional in the weld's
-span is `r ∘ₗ screwDiff u v` for some `r` (`span_jointRows_bot`); it lies in
-`span F.rigidityRows = Z.dualAnnihilator`
-(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`, which is where `[Finite α]` is
-needed) exactly when it kills every infinitesimal motion `S ∈ Z`, i.e. exactly when `r` kills every
-relative screw `S u − S v`, i.e. when `r ∈ (ρ̄_{uv})^⊥` — and those `r` are precisely the ones
-`jointRows (F.relScrews u v) u v` is generated by.  The orientation flip between `relScrews`'
-`screwDiff v u` and the rows' `screwDiff u v` is paid by `map_screwDiff_comm`.
-
-Distinctness of `u, v` is *not* needed: it enters the layer only in the row *count*
-(`finrank_span_jointRows`), never in this identity.  Nor is `[Finite β]` (which the carrier recon
-pinned): the route never touches the edge set.  Combined with the count, this gives the
-welded-rank identity `weldedRank_eq`. -/
-theorem inf_span_rigidityRows_span_jointRows_top [Finite α]
-    (F : BodyHingeFramework K k α β) (u v : α) :
-    Submodule.span K F.rigidityRows
-        ⊓ Submodule.span K (jointRows (⊥ : Submodule K (ScrewSpace K k)) u v)
-      = Submodule.span K (jointRows (F.relScrews u v) u v) := by
-  rw [F.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, span_jointRows_bot,
-    span_jointRows_eq_map_dualAnnihilator, relScrews, map_screwDiff_comm]
-  apply le_antisymm
-  · rintro φ ⟨hφZ, r, rfl⟩
-    refine ⟨r, ?_, rfl⟩
-    simp only [SetLike.mem_coe, Submodule.mem_dualAnnihilator] at hφZ ⊢
-    rintro w ⟨S, hS, rfl⟩
-    exact hφZ S hS
-  · rintro φ ⟨r, hr, rfl⟩
-    simp only [SetLike.mem_coe, Submodule.mem_dualAnnihilator] at hr
-    refine ⟨?_, r, rfl⟩
-    simp only [SetLike.mem_coe, Submodule.mem_dualAnnihilator]
-    intro S hS
-    exact hr _ ⟨S, hS, rfl⟩
-
-/-- **Welding a distinct body pair costs exactly the dimension of its relative-screw space**
-(Layer B4, the `rank_w = rank + ρ` of `notes/pencil/workbook/attack-smark.md` § S14(i)): for
-`u ≠ v`, `weldedRank u v = finrank (span F.rigidityRows) + finrank (F.relScrews u v)`.
-
-This single identity is the whole linear-algebraic content of the transcribed welded bound
-`ρ ≤ δ + a` — it is what lets the informal argument read a side's welded rank off its own rank and
-the dimension `ρ` the cut pair exchanges.
-
-The proof is the dimension formula `finrank (P ⊔ Q) + finrank (P ⊓ Q) = finrank P + finrank Q`
-(`Submodule.finrank_sup_add_finrank_inf_eq`) at `P = span F.rigidityRows` and `Q = span (jointRows
-⊥ u v)`, after `Submodule.span_union` turns `weldedRank`'s `span (rows ∪ weld)` into `P ⊔ Q`.  Both
-of the other two terms are instances of the joint count `finrank_span_jointRows` at the *same*
-`u ≠ v`: `finrank Q = screwDim k` at `U = ⊥`, and `finrank (P ⊓ Q) = screwDim k − finrank ρ̄_{uv}`
-through B3 (`inf_span_rigidityRows_span_jointRows_top`).  The two `screwDim k`'s then cancel.  The
-`ℕ` subtraction never truncates because `finrank ρ̄_{uv} ≤ screwDim k` (`Submodule.finrank_le` and
-`screwSpace_finrank`), which is supplied to `omega` explicitly. -/
-theorem weldedRank_eq [Finite α] (F : BodyHingeFramework K k α β) {u v : α} (huv : u ≠ v) :
-    F.weldedRank u v
-      = Module.finrank K (Submodule.span K F.rigidityRows)
-        + Module.finrank K (F.relScrews u v) := by
-  have hbot : Module.finrank K
-      (Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v))
-      = screwDim k := by
-    rw [finrank_span_jointRows huv, finrank_bot, Nat.sub_zero]
-  have hinf : Module.finrank K
-      ↥(Submodule.span K F.rigidityRows
-        ⊓ Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v))
-      = screwDim k - Module.finrank K (F.relScrews u v) := by
-    rw [F.inf_span_rigidityRows_span_jointRows_top u v, finrank_span_jointRows huv]
-  have hle : Module.finrank K (F.relScrews u v) ≤ screwDim k := by
-    have h := Submodule.finrank_le (F.relScrews u v)
-    rwa [screwSpace_finrank] at h
-  have hsup := Submodule.finrank_sup_add_finrank_inf_eq
-    (Submodule.span K F.rigidityRows)
-    (Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v))
-  rw [weldedRank, Submodule.span_union]
-  omega
-
-/-- **The welded rank is a codimension** (Layer B7, `notes/pencil/workbook/attack-smark.md`
-§ S14(i)): at a distinct body pair,
-
-  `weldedRank u v + finrank (jointMotions ⊥ u v) = screwDim k · |α|`,
-
-so the welded row rank counts exactly the directions the welded motion space `M_⊥(H)` leaves out
-of the ambient screw-assignment space.  This is the weld's analogue of the complement brick
-`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`
-(`AlgebraicInduction/GenericityDevice.lean`), and it is what turns a *lower* bound on the welded
-motions into an *upper* bound on `weldedRank` — the pivot of the welded bound `0 ≤ a_w`
-(`BodyHingeFramework.weldedLoss_nonneg`, Layer C2ℓ in `Molecule/Pencil/TwoCut.lean`).
-
-Three annihilator identities and one dimension count.  `Submodule.span_union` splits
-`weldedRank`'s generating set into `span F.rigidityRows ⊔ span (jointRows ⊥ u v)`; the first
-factor is `Z.dualAnnihilator`
-(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`, the only place `[Finite α]` is
-needed), and the second is `(ker (screwDiff u v)).dualAnnihilator` — `span_jointRows_bot` puts it
-in range form and `LinearMap.range_dualMap_eq_dualAnnihilator_ker_of_surjective` converts, which
-is where `u ≠ v` enters (`screwDiff_surjective`).  A join of annihilators is the annihilator of
-the meet (`Subspace.dualAnnihilator_inf_eq`, used right-to-left; it lives in `namespace Subspace`,
-**not** `Submodule`, and needs no finite-dimensionality), and that meet **is** `jointMotions ⊥ u
-v`.  The count is then `Subspace.finrank_add_finrank_dualAnnihilator_eq` against
-`finrank_screwAssignment`.
-
-**The `comap ⊥` / `ker` step needs its own bridge, and `map_screwDiff_comm` does not serve
-there.**  `jointMotions` is defined with `comap (screwDiff v u)` while the weld's rows run on
-`(screwDiff u v).dualMap`; `map_screwDiff_comm` pays that orientation on the *image* side only.
-On the `comap` side the flip is `Submodule.comap_bot` followed by `sub_eq_zero` and one `.symm`
-(`hker` below) — four lines, but not skippable.
-
-No `[Finite β]`: the route never touches the edge set. -/
-theorem weldedRank_add_finrank_jointMotions_bot [Finite α]
-    (F : BodyHingeFramework K k α β) {u v : α} (huv : u ≠ v) :
-    F.weldedRank u v + Module.finrank K (F.jointMotions ⊥ u v)
-      = screwDim k * Nat.card α := by
-  have : Fintype α := Fintype.ofFinite α
-  -- The orientation flip on the `comap` side; `map_screwDiff_comm` does not reach here.
-  have hker : Submodule.comap (screwDiff (K := K) (k := k) (α := α) v u) ⊥
-      = LinearMap.ker (screwDiff (K := K) (k := k) (α := α) u v) := by
-    rw [Submodule.comap_bot]
-    ext S
-    simp only [LinearMap.mem_ker, screwDiff_apply, sub_eq_zero]
-    exact ⟨fun h => h.symm, fun h => h.symm⟩
-  have hj : F.jointMotions ⊥ u v
-      = F.infinitesimalMotions ⊓ LinearMap.ker (screwDiff (K := K) (k := k) (α := α) u v) := by
-    rw [jointMotions, hker]
-  have hspanweld :
-      Submodule.span K (jointRows (α := α) (⊥ : Submodule K (ScrewSpace K k)) u v)
-        = (LinearMap.ker (screwDiff (K := K) (k := k) (α := α) u v)).dualAnnihilator := by
-    rw [span_jointRows_bot, LinearMap.range_dualMap_eq_dualAnnihilator_ker_of_surjective _
-      (screwDiff_surjective huv)]
-  have hsup : Submodule.span K
-        (F.rigidityRows ∪ jointRows (⊥ : Submodule K (ScrewSpace K k)) u v)
-      = (F.jointMotions ⊥ u v).dualAnnihilator := by
-    rw [Submodule.span_union, F.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
-      hspanweld, ← Subspace.dualAnnihilator_inf_eq, hj]
-  rw [weldedRank, hsup]
-  have h := Subspace.finrank_add_finrank_dualAnnihilator_eq (F.jointMotions ⊥ u v)
-  rw [finrank_screwAssignment, ← Nat.card_eq_fintype_card] at h
-  omega
 
 /-- **A functional killing a screw-assignment subspace that already contains the coincidence
 subspace factors through the relative screw**: for `u ≠ v` and any `W` with
@@ -1270,9 +1066,9 @@ the cut.
 
 **Genuinely new against the landed** `le_finrank_span_rigidityRows_of_cut`, which has
 vertex-*disjoint* sides and is an inequality, where this has overlapping sides and both
-directions.  Unlike the combinatorial 2-cut law `Graph.deficiency_eq_of_vertexTwoCut` it needs
-**no** `¬ G.Adj u v`: a cut edge `uv` contributes the *same rows* on either side, so it cannot
-disturb a row-span intersection.  The sides are any two graphs, not induced subgraphs: an ear
+directions.  It needs **no** `¬ G.Adj u v`: a cut edge `uv` contributes the *same rows* on either
+side, so it cannot disturb a row-span intersection.  The sides are any two graphs, not induced
+subgraphs: an ear
 whose ends `a, b` are adjacent has as far side the path, while the subgraph induced on the path's
 bodies also contains the edge `ab` (`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`). -/
 theorem inf_span_rigidityRows_of_twoCut_of_isLink [Finite α] (G₁ G₂ : Graph α β)
@@ -1319,9 +1115,9 @@ joint count `finrank_span_jointRows` at the same `u ≠ v`.  So the two sides sh
 `screwDim k` weld-type rows that the cut pair's relative screws do not already annihilate, and
 that overlap is what the `− screwDim k` corrects for.
 
-The `ℤ` statement (unlike B4's `ℕ`) is what makes the right-hand side a genuine difference; the
+The `ℤ` statement is what makes the right-hand side a genuine difference; the
 `ℕ` subtraction inside the proof never truncates, `dim (ρ̄₁ ⊔ ρ̄₂) ≤ screwDim k` being handed to
-`omega` explicitly — the `weldedRank_eq` skeleton.  No covering of `V(F.graph)` by the sides is
+`omega` explicitly.  No covering of `V(F.graph)` by the sides is
 needed: vertices outside both sides carry no rows. -/
 theorem finrank_span_rigidityRows_twoCut_eq_of_isLink [Finite α]
     (F : BodyHingeFramework K k α β) (G₁ G₂ : Graph α β) {V₁ V₂ : Set α} {u v : α}
@@ -1389,8 +1185,7 @@ in `ℤ`, with `ρ̄ᵢ = (F[Vᵢ]).relScrews u v`.  It is B6′
 (`finrank_span_rigidityRows_twoCut_eq_of_isLink`) at the induced sides, whose links partition
 `F.graph`'s by `hsep`.  The covering `V₁ ∪ V₂ = V(F.graph)` is not needed.
 
-This is the linear-algebraic half of S10(ii)'s attainment criterion, whose combinatorial half is
-`Graph.deficiency_eq_of_vertexTwoCut'`; Layer C's `pencilLoss_vertexTwoCut` differences the two. -/
+This is the linear-algebraic half of S10(ii)'s attainment criterion. -/
 theorem finrank_span_rigidityRows_vertexTwoCut_eq [Finite α]
     (F : BodyHingeFramework K k α β) {V₁ V₂ : Set α} {u v : α} (huv : u ≠ v)
     (hoverlap : V₁ ∩ V₂ = {u, v})

@@ -67,9 +67,8 @@ at any core, and the standing hypotheses at a rigid core, at any `n`.
 * `Graph.isX0Graph_induce_of_deficiency_eq_zero` — a rigid core satisfies the standing hypotheses,
   at any `n` with `bodyBarDim n ≥ 1` (`lem:pencil-contract-standing-rigid`).
 * `Graph.rigidContract_induce_simple`, `Graph.isX0Graph_rigidContract_induce`,
-  `Graph.twoEdgeConnected_rigidContract_induce`, `Graph.three_le_ncard_closedNbhd_rigidContract`,
-  `Graph.connected_rigidContract_induce` — `G/H` satisfies the standing hypotheses and is
-  2-edge-connected (`lem:pencil-contract-standing`, (MC-39)'s side claims).
+  `Graph.three_le_ncard_closedNbhd_rigidContract`, `Graph.connected_rigidContract_induce` —
+  `G/H` satisfies the standing hypotheses (`lem:pencil-contract-standing`, (MC-39)'s side claims).
 
 The general pieces sit beside their definitions: `Graph.weightedLiftingMatrix` (`Carrier.lean`),
 `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval` (`CaseI.lean`) and the
@@ -1203,34 +1202,6 @@ theorem _root_.Graph.connected_rigidContract_induce {G : Graph α β} (hG : G.Co
       rw [← hcd']
       exact ih
     · exact ih.tail ⟨e, Graph.isLink_rigidContract_of_isLink he hboth⟩
-
-/-- **`G/H` is 2-edge-connected** when `G` is (`lem:pencil-contract-standing`): a cut of `G/H` pulls
-back to a cut of `G` crossed by the same edges. -/
-theorem _root_.Graph.twoEdgeConnected_rigidContract_induce [Finite β] {G : Graph α β}
-    (htec : G.TwoEdgeConnected) {W : Set α} {r : α} :
-    (G.rigidContract (G.induce W) r).TwoEdgeConnected := by
-  intro X' hX'ne hX'ss
-  set X : Set α := {a | a ∈ V(G) ∧ Graph.collapseTo r W a ∈ X'} with hXdef
-  have hXne : X.Nonempty := by
-    obtain ⟨_, hx'⟩ := hX'ne
-    obtain ⟨a, ha, rfl⟩ := hX'ss.subset hx'
-    exact ⟨a, ha, hx'⟩
-  have hXss : X ⊂ V(G) := by
-    refine ⟨fun a ha => ha.1, fun hsub => ?_⟩
-    obtain ⟨_, ⟨b, hb, rfl⟩, hbX'⟩ := Set.exists_of_ssubset hX'ss
-    exact hbX' (hsub hb).2
-  have hcut : G.cutEdges X ⊆ (G.rigidContract (G.induce W) r).cutEdges X' := by
-    rintro e ⟨-, x, y, hl, hxX, hyX⟩
-    have hy : y ∈ V(G) := hl.right_mem
-    have hyX' : Graph.collapseTo r W y ∉ X' := fun h => hyX ⟨hy, h⟩
-    have hnot : ¬ (x ∈ W ∧ y ∈ W) := by
-      rintro ⟨hxW, hyW⟩
-      apply hyX'
-      rw [collapseTo_of_mem hyW, ← collapseTo_of_mem (r := r) hxW]
-      exact hxX.2
-    have hl' := Graph.isLink_rigidContract_of_isLink (r := r) hl hnot
-    exact ⟨hl'.edge_mem, _, _, hl', hxX.2, hyX'⟩
-  exact (htec X hXne hXss).trans (Set.ncard_le_ncard hcut (Set.toFinite _))
 
 /-- **`G/H` satisfies the standing hypotheses** (`lem:pencil-contract-standing`; (MC-39)'s side
 claim): simple (`Graph.rigidContract_induce_simple`), connected, and of minimum degree at least two,

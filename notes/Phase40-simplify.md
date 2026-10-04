@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10b (Sonnet, ⚠Z files): `r1`'s deletion, now unstranded by 10a's unpins.
-Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a and 10b landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10c (Sonnet): restate `lem:pencil-condition-linear` and pin the iff;
+`IsMainPicture.exists_mvPolynomial`. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -68,7 +68,37 @@ polynomial's pin `pencilNormalOfPicturePoly` dropped from `def:pencil-configurat
 `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`. Gates:
 `blueprint/verify.sh` (bp + web + checkdecls) and `blueprint/lint.sh` both green; the dep-graph
 spot-check confirms the two new nodes appear and `lem:pencil-selector-independent-scalar` is gone.
-Next is 10b, then each landing in turn, then task 11 closes.
+
+**10b landed** (2026-10-04, Lean only; `r1`'s deletion): `TwoCut.lean` deleted whole (9 names:
+`pencilLoss`, `weldedLoss`, `pencilLoss_nonneg`, `finrank_relScrews_eq`,
+`partitionMotions_le_jointMotions_bot`,
+`screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions`, `weldedLoss_nonneg`,
+`finrank_relScrews_le`, `pencilLoss_vertexTwoCut`) and its import line; `Bricks.lean` loses 6
+(`jointMotions`, `weldedRank`, `span_jointRows_bot`, `inf_span_rigidityRows_span_jointRows_top`,
+`weldedRank_eq`, `weldedRank_add_finrank_jointMotions_bot`), keeping `relScrews`, `jointRows` and
+the two B5/B6 pins; `Deficiency.lean` loses 12 (`deficiency_eq_of_vertexTwoCut(')`, `pairDelta`,
+the private `deficiency_le_deficiencyMerged_add` helper, `deficiency_eq_max`, `deficiencySep`,
+`bddAbove_range_partitionDef_sep`, `partitionDef_le_deficiencySep`, `deficiencySep_le_deficiency`,
+`deficiency_weldPair_eq_deficiencyMerged`, `weldPair`, `pairDelta_le_bodyBarDim`), keeping
+`deficiencyMerged`, `partitionDef_map` and the rest of the D5-paid names; `SplitOffDeficiency.lean`
+loses `deficiency_removeVertex_of_degree_eq_one` and its sole-caller private helper
+`cutEdges_singleton_eq_setOf_isNonloopAt` (A1); `Steer.lean` loses
+`pencilChartWF_standing_ofCoord_toCoord` (`q3b`; its one caller already took the conjuncts as
+explicit hypotheses); and 10a's eight unpinned dead declarations go too
+(`Graph.twoEdgeConnected_rigidContract_induce`, `eq_zero_of_kleinLin_eq_zero`,
+`exists_insertion_ge`, and the `c5`/polynomial cluster in `Configuration.lean`). Every surviving
+docstring naming a deleted declaration is reworded (both module docstrings and the
+`TwoCutCarriers` section intro in `Bricks.lean`; three cross-references in its kept B5′/B6′/B6
+proofs; `Deficiency.lean`'s `deficiencyMerged` section intro and `exists_normalized_labeling`'s
+pointer to the now-gone merged hub; `Steer.lean`'s file/lemma docstrings; `ContractCurve.lean`'s
+stale "2-edge-connected" bullet, already dropped from the blueprint node by 10a; `Lines.lean`'s two
+bullets; `Configuration.lean`'s definitions/statements bullets and `exists_smul_eq_interpolant`'s
+route pointer). `notes/Phase40-design.md` §7's D5-debt bullet records the deletion. Gates:
+whole-project `lake build`, 3002 jobs, 0 `warning:` / 0 `error:`; `lake lint` green;
+`blueprint/verify.sh` and `blueprint/lint.sh` both green (no blueprint TeX touched; `checkdecls`
+confirms no surviving pin names a deleted declaration). `git diff --stat`: −1340 net Lean lines
+across 9 files (task 9's estimate was −1159). Next is 10c, then each landing in turn, then task 11
+closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -193,8 +223,9 @@ verdicts.
   - [x] **10a. Task 3's TeX batch** (Sonnet). `m6`, `m7`, `1c-i`, `c1`, the two-hubs edge, `c8`'s
     four, `c9`'s clauses, `c5`'s node, the polynomial's pins. It unpins first, so 10b strands no
     pin. Landed 2026-10-04; the exact unpinned declarations are in *Current state*.
-  - [ ] **10b. `r1`'s deletion** (Sonnet, ⚠Z files). `TwoCut.lean` and 20 more of D5's names, with
-    `q3b` and the Lean 10a unpinned (the polynomial, `c5`, `c8`'s standing pin, `c9`): −1 159.
+  - [x] **10b. `r1`'s deletion** (Sonnet, ⚠Z files). `TwoCut.lean` and 20 more of D5's names, with
+    `q3b` and the Lean 10a unpinned (the polynomial, `c5`, `c8`'s standing pin, `c9`). Landed
+    2026-10-04: −1 340 net Lean lines (task 9 estimated −1 159).
   - [ ] **10c. `c6` + `c7`** (Sonnet). Restate `lem:pencil-condition-linear` and pin the iff;
     `IsMainPicture.exists_mvPolynomial`, the open pin its corollary: +19.
   - [ ] **10d. `q2b` + `q2c` + `a3`** (Sonnet, not ⚠Z). One perp-dimension lemma, the mirror's
@@ -258,11 +289,11 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a landed; the rest of the landings run.** The smallest next commit is **10b** (Sonnet, ⚠Z
-files): `r1`'s deletion (`TwoCut.lean` and 20 more of D5's names, with `q3b` and the eight dead
-declarations 10a unpinned, listed in *Current state* apart from its live ones); a whole-project
-build confirms the trial deletion. Then 10c–10r in order (task 10), one commit each at its listed rung. 10i is the first to touch ROADMAP
-§40 (its "stays as conditional theorems", marked verbatim). After 10r, task 11 closes the round.
+**10a and 10b landed; the rest of the landings run.** The smallest next commit is **10c** (Sonnet):
+restate `lem:pencil-condition-linear` and pin the iff; `IsMainPicture.exists_mvPolynomial`, the
+open pin its corollary (+19). Then 10d–10r in order (task 10), one commit each at its listed rung.
+10i is the first to touch ROADMAP §40 (its "stays as conditional theorems", marked verbatim). After
+10r, task 11 closes the round.
 
 ## Decisions made during this round
 

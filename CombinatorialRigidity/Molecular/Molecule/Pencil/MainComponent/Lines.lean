@@ -24,8 +24,7 @@ coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
 ## Main statements
 
 * `klein_pointJoin_pointJoin` — `⟨p ∧ q, r ∧ s⟩ = det[p; q; r; s]`; `klein_pointJoin_same` — two
-  lines through a common point pair to zero; `eq_zero_of_kleinLin_eq_zero` — the pairing is
-  nondegenerate (`lem:pencil-line-pairing-join`).
+  lines through a common point pair to zero (`lem:pencil-line-pairing-join`).
 * `linearIndependent_pointJoin_tetra`, `span_pointJoin_tetra_eq_top` — the six joins of four
   independent points are independent, so they span `Λ²K⁴` (`lem:pencil-tetrahedron`, (MC-179)(a)).
 * `linearIndependent_pointJoin_pair` — two joins through a middle point of three independent
@@ -40,9 +39,8 @@ coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
   with every line joining two planes vanishes when the planes differ and is a line of the plane
   when they agree; so a subspace of such screws together with three lines of the plane spans at
   most three dimensions (`lem:pencil-bilinear`, (MC-179)(c)).
-* `exists_insertion_ge`, `exists_insertion_gain` — putting a body back at `y + t u` between `y`
-  and `y′` does not lower the span for some `t ≠ 0`, and raises it by one when `y ∧ u` lies outside
-  it (`lem:pencil-insertion`, (MC-179)(d)).
+* `exists_insertion_gain` — putting a body back at `y + t u` between `y` and `y′` raises the span
+  by one for some `t ≠ 0` when `y ∧ u` lies outside it (`lem:pencil-insertion`, (MC-179)(d)).
 * `exists_notMem_pointJoin_of_not_star_le`, `exists_insertion_of_star_sup_star` — a star outside
   `W` has a line `y ∧ u` outside it with `u` at infinity; so one affine point put back between `y₁`
   and `y₃` raises `W = R + K (y₁ ∧ y₃)` to at least `min(dim W + 1, 6)` once a `W` holding both
@@ -109,22 +107,6 @@ theorem klein_pointJoin_pointJoin (p q r s : Fin 4 → K) :
 theorem klein_pointJoin_same (p u u' : Fin 4 → K) :
     kleinLin (pointJoin p u') (pointJoin p u) = 0 := by
   rw [klein_pointJoin_pointJoin, Matrix.det_zero_of_row_eq (i := 0) (j := 2) (by decide) rfl]
-
-/-- **The pairing is nondegenerate** (`lem:pencil-line-pairing-join`): a screw pairing to zero
-with every screw vanishes. The screws with flat coordinates `(0, e_i)` and `(e_i, 0)` read off the
-coordinates of `σ c` and of `π c`. -/
-theorem eq_zero_of_kleinLin_eq_zero {c : ScrewSpace K 2} (h : ∀ J, kleinLin J c = 0) : c = 0 := by
-  have hσ : ∀ x : (Fin 3 → K) × (Fin 3 → K), flatSigma (flatScrewEquiv.symm x) = x.1 :=
-    fun x => congrArg Prod.fst (flatScrewEquiv.apply_symm_apply x)
-  have hπ : ∀ x : (Fin 3 → K) × (Fin 3 → K), flatPi (flatScrewEquiv.symm x) = x.2 :=
-    fun x => congrArg Prod.snd (flatScrewEquiv.apply_symm_apply x)
-  refine (flatScrewEquiv (K := K)).injective ?_
-  rw [flatScrewEquiv_apply, map_zero, Prod.mk_eq_zero]
-  constructor <;> funext i
-  · simpa [kleinLin_apply, hσ, hπ, dotProduct_single] using
-      h (flatScrewEquiv.symm (0, Pi.single i 1))
-  · simpa [kleinLin_apply, hσ, hπ, single_dotProduct] using
-      h (flatScrewEquiv.symm (Pi.single i 1, 0))
 
 /-! ## The tetrahedron: six independent joins -/
 
@@ -471,27 +453,6 @@ theorem exists_ne_zero_add_smul_notMem [Infinite K] {V : Type*} [AddCommGroup V]
     convert S.sub_mem (h s hs.1) h1 using 1
     rw [sub_smul, one_smul]; abel
   exact hv (by simpa using S.sub_mem h1 hw)
-
-/-- **Putting a body back does not lower the span** (`lem:pencil-insertion`, (MC-179)(d)). Let
-`W = ρ ⊔ span F ⊔ K (y ∧ y')`. For some `t ≠ 0`, the span with the join `y ∧ y'` replaced by the
-two joins `y ∧ (y + t u)` and `(y + t u) ∧ y'` has dimension at least `dim W`. -/
-theorem exists_insertion_ge [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) {n : ℕ}
-    (F : Fin n → ScrewSpace K 2) (y y' u : Fin 4 → K) :
-    ∃ t : K, t ≠ 0 ∧ Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y y')
-      ≤ Module.finrank K ↥(ρ ⊔ Submodule.span K (Set.range F) ⊔
-        Submodule.span K {pointJoin y (y + t • u), pointJoin (y + t • u) y'}) := by
-  set R := ρ ⊔ Submodule.span K (Set.range F)
-  by_cases hR : pointJoin y y' ∈ R
-  · refine ⟨1, one_ne_zero, Submodule.finrank_mono ?_⟩
-    rw [sup_eq_left.mpr ((Submodule.span_singleton_le_iff_mem _ _).mpr hR)]
-    exact le_sup_left
-  · obtain ⟨t, ht, hnot⟩ := exists_ne_zero_add_smul_notMem hR (pointJoin u y')
-    rw [← pointJoin_add_smul_left] at hnot
-    refine ⟨t, ht, ?_⟩
-    rw [Submodule.finrank_sup_span_singleton hR, ← Submodule.finrank_sup_span_singleton hnot]
-    refine Submodule.finrank_mono (sup_le_sup_left ?_ _)
-    rw [Submodule.span_singleton_le_iff_mem]
-    exact Submodule.subset_span (by simp)
 
 /-- **Putting a body back next to a neighbour raises the span** (`lem:pencil-insertion`,
 (MC-179)(d)). Let `W = ρ ⊔ span F ⊔ K (y ∧ y')`, and put the body at `y + t u` between `y` and

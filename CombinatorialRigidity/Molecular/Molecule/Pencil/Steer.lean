@@ -27,9 +27,9 @@ own `fillNbr` and keeps only its point-side data (`hubNormal`, `fillHub`). Becau
 `pencilChartPoint` and `hubSlotNormal` never read `fillNbr`, **the constructed points literally
 coincide with the re-seeded seed's** (`pencilChartPoint_ofCoord_toCoord`), and the four
 `fillNbr`-independent `PencilChartWF` conjuncts (both selector-correctness conjuncts, the hub-slot
-triple independence, and adjacent-point distinctness) transfer verbatim
-(`pencilChartWF_standing_ofCoord_toCoord`) — the "standing WF conditions witnessed at the
-`fillNbr`-free flattening" the composition finding names.
+triple independence, and adjacent-point distinctness) transfer verbatim — the "standing WF
+conditions witnessed at the `fillNbr`-free flattening" the composition finding names; the
+`fillNbr` re-choice lemma below takes them as hypotheses, built directly at each call site.
 
 The one conjunct this bridge does **not** carry is `PencilChartWF`'s fourth — the non-hub
 `nbrSlotPoint` triple independence, the sole conjunct reading `fillNbr` (at the `nbrSel`-unassigned
@@ -109,36 +109,6 @@ theorem pencilChartPoint_ofCoord_toCoord (seed : PencilSeed K α) (hubSel : α �
       = pencilChartPoint seed hubSel v := by
   simp only [pencilChartPoint, hubSlotNormal_ofCoord_toCoord]
 
-/-! ## The standing WF conditions hold at the flattening (Phase 39 W5-L5 L5-cut-v-d) -/
-
-/-- **The standing (`fillNbr`-free) `PencilChartWF` conditions are witnessed at the `fillNbr`-free
-flattening** (Phase 39 W5-L5 L5-cut-v-d, composition finding (3)): a re-seeded seed's four
-`fillNbr`-independent `PencilChartWF` conjuncts — both selector-correctness conjuncts (which are
-seed-independent), the hub-slot triple independence, and adjacent-point distinctness — transfer
-verbatim to its `fillNbr`-free flattening `PencilSeed.ofCoord (seed.toCoord)`, since the point-side
-chart data coincides (`hubSlotNormal_ofCoord_toCoord`, `pencilChartPoint_ofCoord_toCoord`).
-
-This is the steering engine's standing-condition input: it certifies the flattening `seed.toCoord`
-as a seed at which every `PencilChartWF` condition *except* the non-hub `nbrSlotPoint` independence
-already holds, so the rows-polynomial genericity engine can preserve them while steering the demoted
-/ promoted families to independence. The excluded fourth conjunct (the sole `fillNbr`-reader) is
-re-established by the downstream post-steering `fillNbr` re-choice, not here — see the module
-docstring. -/
-theorem pencilChartWF_standing_ofCoord_toCoord {G : Graph α β} {seed : PencilSeed K α}
-    {hubSel nbrSel : α → Fin 3 → Option α} (hWF : PencilChartWF G seed hubSel nbrSel) :
-    (∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) ∧
-    (∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) ∧
-    (∀ v, LinearIndependent K
-      ![hubSlotNormal (PencilSeed.ofCoord seed.toCoord) hubSel v 0,
-        hubSlotNormal (PencilSeed.ofCoord seed.toCoord) hubSel v 1,
-        hubSlotNormal (PencilSeed.ofCoord seed.toCoord) hubSel v 2]) ∧
-    (∀ e u v, G.IsLink e u v → LinearIndependent K
-      ![pencilChartPoint (PencilSeed.ofCoord seed.toCoord) hubSel u,
-        pencilChartPoint (PencilSeed.ofCoord seed.toCoord) hubSel v]) := by
-  refine ⟨hWF.1, hWF.2.1, fun v => ?_, fun e u v hlink => ?_⟩
-  · simpa only [hubSlotNormal_ofCoord_toCoord] using hWF.2.2.1 v
-  · simpa only [pencilChartPoint_ofCoord_toCoord] using hWF.2.2.2.2 e u v hlink
-
 /-! ## The post-steering `fillNbr` re-choice (Phase 39 W5-L5 L5-cut-v-d)
 
 `exists_extend_linearIndependent`, the linear-algebra core this section's re-choice lemma consumes,
@@ -148,7 +118,7 @@ moved to `Pencil/Reseed.lean` in Phase 40o (MOTIVES-EARS, B1): this file still s
 /-- **Re-choosing `fillNbr` post-steering closes `PencilChartWF`'s fourth conjunct** (Phase 39 W5-L5
 L5-cut-v-d, `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v composition finding (3)):
 the last owed piece of the v-d flattening. The four `fillNbr`-free standing conjuncts
-(`pencilChartWF_standing_ofCoord_toCoord`'s output — hub/neighbour selector correctness, hub-slot
+(`hsel_hub`, `hsel_nbr`, `hhub_LI`, `hpt_LI` below — hub/neighbour selector correctness, hub-slot
 triple independence, adjacent-point distinctness) plus the *partial* independence of each non-hub
 body's `nbrSel`-*assigned* `nbrSlotPoint` slots (`hnbr_some`; at a fully-assigned body this IS the
 fourth conjunct, supplied by the steering; at a deg-`≤ 1` body it is the `some`-slot subfamily, its

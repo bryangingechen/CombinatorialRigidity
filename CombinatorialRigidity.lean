@@ -71,7 +71,6 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
-import CombinatorialRigidity.Molecular.Molecule.Pencil.TwoCut
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
 import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
 import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
