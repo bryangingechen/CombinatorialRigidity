@@ -307,8 +307,10 @@ one commit each at its listed rung; after 10r, task 11 closes the round.
 - **2026-10-04, task 4: the verdicts move to their own file** (the coordinator's decision), to stay
   under the ~500-line tripwire: `notes/Phase40-simplify-verdicts.md`, as round 3 moved its exemplar.
 
-- **2026-10-04, Stop 2: the PI's sanction.** Verbatim quote under *Autopilot: for the PI*; the
-  default stands with `7d` (ii), at the corrected rungs, archived in `notes/pencil/adjudications.md`.
+- **2026-10-04, Stop 2: the PI's sanction** (verbatim): "Let's approve your recommendations above
+  except 5. For 5, I think we should restate if it simplifies the exposition." Then: "OK, ii looks
+  good and let's update the adjudications." The default stands with `7d` (ii), at the corrected
+  rungs; archived in `notes/pencil/adjudications.md`.
 - **`7d` (ii): restating simplifies** (the reading the PI accepted). KT's Lemma 6.3 is one lemma,
   for any proper rigid subgraph; its proof takes realizations of the rigid piece (KT Lemma 3.5) and
   of the contracted graph (KT (6.1)) independently and joins them by the block bound (pp. 673–675):
