@@ -408,13 +408,11 @@ zero case where the kernel is everything). -/
 theorem le_finrank_toDualPerp_single (t : Fin 4 → K) :
     3 ≤ Module.finrank K
       (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) : Submodule K (Fin 4 → K)) := by
-  rcases eq_or_ne t 0 with rfl | ht
-  · have htop : LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (0 : Fin 4 → K)) = ⊤ := by
-      ext w
-      simp
-    rw [htop, finrank_top, Module.finrank_fin_fun]
-    omega
-  · rw [finrank_toDualPerp_single_eq ht]
+  have := finrank_toDualPerp_add_finrank_span (fun _ : Unit => t)
+  have h1 := finrank_span_le_card (R := K) ({t} : Set (Fin 4 → K))
+  rw [iInf_const, Set.range_const] at this
+  rw [Set.toFinset_singleton, Finset.card_singleton] at h1
+  omega
 
 /-- **The joint `⬝ᵥ`-perp of any two vectors in `K⁴` has dimension `≥ 2`** (Phase 39 W5-L5
 cut-arm repositioning plumbing): two `≥ 3`-dimensional kernels in a `4`-dimensional space meet in
@@ -424,19 +422,13 @@ theorem le_finrank_toDualPerp_inf (t₁ t₂ : Fin 4 → K) :
     2 ≤ Module.finrank K
       ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
         ⊓ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂)) : Submodule K (Fin 4 → K)) := by
-  have h1 := le_finrank_toDualPerp_single t₁
-  have h2 := le_finrank_toDualPerp_single t₂
-  have hsup := Submodule.finrank_sup_add_finrank_inf_eq
-    (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁))
-    (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂))
-  have hle : Module.finrank K
-      ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
-        ⊔ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂)) : Submodule K (Fin 4 → K))
-      ≤ 4 := by
-    have := Submodule.finrank_le
-      ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
-        ⊔ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂)) : Submodule K (Fin 4 → K))
-    simpa using this
+  have := finrank_toDualPerp_add_finrank_span ![t₁, t₂]
+  have h1 := finrank_range_le_card (R := K) ![t₁, t₂]
+  rw [show (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![t₁, t₂] j)))
+      = LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
+        ⊓ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂) by
+      ext; simp [Fin.forall_fin_two]] at this
+  rw [Set.finrank, Fintype.card_fin] at h1
   omega
 
 /-- **The strengthened cut-arm repositioning automorphism exists** (Phase 39 PENCIL, leaf

@@ -213,43 +213,27 @@ theorem _root_.Graph.IsX0Graph.exists_degree_eq_two_notMem {G : Graph α β} (hG
 theorem _root_.Graph.IsX0Graph.two_mul_ncard_le_ncard_edgeSet {G : Graph α β}
     (hG : G.IsX0Graph) (hhubs : ∀ v w, G.degree v = 2 → G.Adj v w → 3 ≤ G.degree w) :
     2 * ({v ∈ V(G) | G.degree v = 2} : Set α).ncard ≤ E(G).ncard := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  have : Fintype β := Fintype.ofFinite β
-  set D : Finset α := ({v ∈ V(G) | G.degree v = 2} : Set α).toFinset with hD
-  set Ev : α → Finset β := fun v => ({e | G.IsNonloopAt e v} : Set β).toFinset with hEv
-  have hdisj : (D : Set α).PairwiseDisjoint Ev := by
+  set D : Set α := {v ∈ V(G) | G.degree v = 2}
+  have hdisj : D.PairwiseDisjoint fun v => {e | G.IsNonloopAt e v} := by
     intro v hv w hw hvw
-    rw [Function.onFun, Finset.disjoint_left]
-    intro e hev hew
-    simp only [hEv, Set.mem_toFinset, Set.mem_ofPred_eq] at hev hew
-    obtain ⟨y, hyv, hy⟩ := hev
-    obtain ⟨z, hzw, hz⟩ := hew
-    simp only [hD, Set.coe_toFinset, Set.mem_ofPred_eq] at hv hw
-    have hvz : v = z := by
-      rcases hy.left_eq_or_eq hz with h | h
-      · exact absurd h hvw
-      · exact h
-    subst hvz
+    refine Set.disjoint_left.2 fun e ⟨y, hyv, hy⟩ ⟨z, hzw, hz⟩ => ?_
+    obtain rfl : v = z := (hy.left_eq_or_eq hz).resolve_left hvw
     have := hhubs v w hv.2 ⟨e, hz.symm⟩
+    have := hw.2
     omega
-  have hcard : ∀ v ∈ D, (Ev v).card = 2 := by
+  have hcard : ∀ v ∈ D, ({e | G.IsNonloopAt e v} : Set β).ncard = 2 := by
     intro v hv
-    simp only [hD, Set.mem_toFinset, Set.mem_ofPred_eq] at hv
     have h := Graph.degree_eq_ncard_add_ncard G v
     have hl : ({e | G.IsLoopAt e v} : Set β) = ∅ :=
       Set.eq_empty_of_forall_notMem fun e he => hG.simple.toLoopless.not_isLoopAt e v he
     rw [hl, Set.ncard_empty, hv.2] at h
-    simp only [hEv, ← Set.ncard_eq_toFinset_card']
     omega
-  have hsub : D.biUnion Ev ⊆ E(G).toFinset := by
-    intro e he
-    simp only [Finset.mem_biUnion, hEv, Set.mem_toFinset, Set.mem_ofPred_eq] at he
-    obtain ⟨v, -, hv⟩ := he
-    simpa using hv.edge_mem
-  have := Finset.card_le_card hsub
-  rw [Finset.card_biUnion hdisj, Finset.sum_const_nat hcard, ← Set.ncard_eq_toFinset_card',
-    ← Set.ncard_eq_toFinset_card'] at this
+  have hsub : (⋃ v ∈ D, {e | G.IsNonloopAt e v}) ⊆ E(G) := by
+    simp only [Set.iUnion_subset_iff]
+    exact fun v _ e he => he.edge_mem
+  have := Set.ncard_le_ncard hsub (Set.toFinite _)
+  rw [(Set.toFinite D).ncard_biUnion (fun _ _ => Set.toFinite _) hdisj,
+    finsum_mem_congr rfl hcard, finsum_mem_const, smul_eq_mul] at this
   omega
 
 /-- H3 ((MC-80)'s rigid case, all chains of one body): if every body of degree two has only

@@ -448,23 +448,15 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal
 /-- **Finitely many polynomials each nonvanishing somewhere have a common non-root**
 (Phase 39 W5-L3, the product-route workhorse's generic half): over an infinite field, if every
 member of a finite family of polynomials has *some* point where it is nonzero, then some single
-point makes every member nonzero simultaneously. The finite product is nonzero (a product of
-nonzero elements in the integral domain `MvPolynomial σ K`), so it has a non-root
-(`MvPolynomial.exists_eval_ne_zero`); at that point, no factor can vanish (the product would). -/
+point makes every member nonzero simultaneously. The project mirror
+`MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero` is this fact already — a `P i ≠ 0` witness
+from each `h i` is all it needs. -/
 theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*} [Finite ι]
     (P : ι → MvPolynomial σ K) (h : ∀ i, ∃ q : σ → K, MvPolynomial.eval q (P i) ≠ 0) :
-    ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
-  have : Fintype ι := Fintype.ofFinite ι
-  have hPne : ∀ i, P i ≠ 0 := fun i => by
+    ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 :=
+  MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero P fun i h0 => by
     obtain ⟨q, hq⟩ := h i
-    intro h0
-    rw [h0] at hq
-    exact hq (by simp)
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
-    (Finset.prod_ne_zero_iff.mpr fun i _ => hPne i)
-  refine ⟨q, fun i hcontra => hq ?_⟩
-  rw [map_prod]
-  exact Finset.prod_eq_zero (Finset.mem_univ i) hcontra
+    simp [h0] at hq
 
 /-- **The product-route workhorse** (Phase 39 W5-L3, the design doc's L3 bullet (3)): a seed
 `q₀` where a `pencilRow` subfamily is linearly independent, together with finitely many polynomials

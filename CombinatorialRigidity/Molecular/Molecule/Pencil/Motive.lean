@@ -674,34 +674,15 @@ theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y 
 the arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s
 `finrank_toDualPerp_pair_eq`; **moved here 2026-07-25 from `Engine.lean`** — the same L5-cut-v-a
 import-cone reason as `linearIndependent_triple_of_linearIndepOn` above, and the new triangle-hub
-finding below needs it too): the same `toDualEquiv`/dual-annihilator proof pattern, specialized to
-an independent `Fin 3`-indexed family in `K⁴` (perp dimension `4 − 3 = 1`). -/
+finding below needs it too): from `Meet.lean`'s `finrank_toDualPerp_add_finrank_span` and
+`finrank_span_eq_card`, specialized to an independent `Fin 3`-indexed family in `K⁴` (perp
+dimension `4 − 3 = 1`). -/
 theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
     Module.finrank K
         (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
           : Submodule K (Fin 4 → K)) = 1 := by
-  set b := Pi.basisFun K (Fin 4) with hb
-  set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range n) with hS
-  have hQ : (⨅ j : Fin 3, LinearMap.ker (b.toDual.flip (n j)))
-      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
-    ext w
-    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
-      Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
-      Submodule.mem_dualAnnihilator]
-    constructor
-    · intro h v hv
-      have hle : S ≤ LinearMap.ker (b.toDual w) := by
-        rw [hS, Submodule.span_le]
-        rintro _ ⟨j, rfl⟩
-        simpa using h j
-      simpa using hle hv
-    · intro h j
-      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
-  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
-  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
-  have h2 : Module.finrank K S = 3 := by
-    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
-  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  have := finrank_toDualPerp_add_finrank_span n
+  rw [finrank_span_eq_card hn, Fintype.card_fin] at this
   omega
 
 /-! ## Triangle infeasibility (Phase 39 W5-L5, L5-cut-v-a)

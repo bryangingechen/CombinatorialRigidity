@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a, 10b and 10c landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10d (Sonnet, not ⚠Z): one perp-dimension lemma, the mirror's common
-non-root, `two_mul_ncard_le_ncard_edgeSet` by `finsum_mem_const` (−70). Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10d landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10e (Sonnet, not ⚠Z): `Graph.X0Attains.of_openEar_of_cert` by `q1a`,
+about −43. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -56,8 +56,13 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   clause, `lem:pencil-config-distinct-realization`'s statement), and
   `Graph.IsMainPicture.exists_mvPolynomial` added before `Graph.exists_mvPolynomial_isMainPicture`,
   now its 4-line corollary; +23 net Lean lines (task 9 estimated +19).
+- **10d**, Lean only: `Meet.lean`'s new `finrank_toDualPerp_add_finrank_span` feeds the five
+  existing perp-dimension lemmas (`q2b`); `Engine.lean`'s common-non-root lemma by the project
+  mirror `MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero` (`q2c`); `CoverageTheoremS.lean`'s
+  `two_mul_ncard_le_ncard_edgeSet` by `Set.Finite.ncard_biUnion` + `finsum_mem_const` (`a3`); no
+  statement changed. −64 net Lean lines (task 9 estimated about −70).
 
-Next is 10d, then each landing in turn, then task 11 closes.
+Next is 10e, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -188,8 +193,9 @@ verdicts.
   - [x] **10c. `c6` + `c7`** (Sonnet). Restate `lem:pencil-condition-linear` and pin the iff;
     `IsMainPicture.exists_mvPolynomial`, the open pin its corollary: +19. Landed 2026-10-04: +23
     net Lean lines.
-  - [ ] **10d. `q2b` + `q2c` + `a3`** (Sonnet, not ⚠Z). One perp-dimension lemma, the mirror's
-    common non-root, `two_mul_ncard_le_ncard_edgeSet` by `finsum_mem_const`: −70.
+  - [x] **10d. `q2b` + `q2c` + `a3`** (Sonnet, not ⚠Z). One perp-dimension lemma, the mirror's
+    common non-root, `two_mul_ncard_le_ncard_edgeSet` by `finsum_mem_const`. Landed 2026-10-04:
+    −64 net Lean lines (task 9 estimated −70).
   - [ ] **10e. `q1a`** (Sonnet, not ⚠Z). `Graph.X0Attains.of_openEar_of_cert`: −43.
   - [ ] **10f. `r7`'s node** (Sonnet, TeX). `Graph.exists_isMinimalKDof_spanning_subgraph` in
     `deficiency.tex`, beside `lem:subgraph-minimality`; four proofs gain a `\cref`.
@@ -249,11 +255,10 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a, 10b and 10c landed; the rest of the landings run.** The smallest next commit is **10d**
-(Sonnet, not ⚠Z): one perp-dimension lemma, the mirror's common non-root,
-`two_mul_ncard_le_ncard_edgeSet` by `finsum_mem_const` (−70). Then 10e–10r in order (task 10), one
-commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its "stays as conditional
-theorems", marked verbatim). After 10r, task 11 closes the round.
+**10a–10d landed; the rest of the landings run.** The smallest next commit is **10e** (Sonnet,
+not ⚠Z): `Graph.X0Attains.of_openEar_of_cert` by `q1a`, about −43. Then 10f–10r in order (task
+10), one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its "stays as
+conditional theorems", marked verbatim). After 10r, task 11 closes the round.
 
 ## Decisions made during this round
 

@@ -1553,41 +1553,46 @@ theorem piBasisFun_toDual_symm {m : ℕ} (w v : Fin m → K) :
   rw [piBasisFun_toDual_eq_sum, piBasisFun_toDual_eq_sum]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
-/-- **The `toDual`-perp of two independent normals in `K^{m+2}` has dimension `m`, over any
-field** (`def:meet-complement-iso`; replaces `MeetHodge.lean`'s `EuclideanSpace`-transport reproof
-of the same fact — the metric route TACTICS-QUIRKS § 59 quarantined). The perp is the
-`toDualEquiv`-preimage of the dual annihilator of the span, so `finrank(perp) =
-finrank(dualAnnihilator) = (m+2) − finrank(span) = (m+2) − 2 = m` by
-`Subspace.finrank_add_finrank_dualAnnihilator_eq`. No inner product, no orthogonal complement, no
-orderedness, no characteristic hypothesis. -/
-theorem finrank_toDualPerp_pair_eq {m : ℕ} {n : Fin 2 → Fin (m + 2) → K}
-    (hn : LinearIndependent K n) :
+/-- **The joint `toDual`-perp of a family and the span of that family have complementary
+dimension** (`def:meet-complement-iso`; the common dimension count behind
+`finrank_toDualPerp_pair_eq` below and its triple/single/`≤` companions in `Pencil/`, one proof for
+all five). The joint kernel is the `toDualEquiv`-preimage of the dual annihilator of
+`span (range n)`, so `finrank(⨅ perp) + finrank(span) = finrank(dualAnnihilator) + finrank(span) =
+N` by `Subspace.finrank_add_finrank_dualAnnihilator_eq`. No inner product, no orthogonal
+complement, no orderedness, no characteristic hypothesis, and no independence hypothesis on `n`. -/
+theorem finrank_toDualPerp_add_finrank_span {ι : Type*} {N : ℕ} (n : ι → Fin N → K) :
     Module.finrank K
-        (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin (m + 2))).toDual.flip (n j))
-          : Submodule K (Fin (m + 2) → K)) = m := by
-  classical
-  set b := Pi.basisFun K (Fin (m + 2)) with hb
-  set S : Submodule K (Fin (m + 2) → K) := Submodule.span K (Set.range n) with hS
-  have hQ : (⨅ j : Fin 2, LinearMap.ker (b.toDual.flip (n j)))
+        (⨅ j, LinearMap.ker ((Pi.basisFun K (Fin N)).toDual.flip (n j))
+          : Submodule K (Fin N → K)) + Module.finrank K (Submodule.span K (Set.range n)) = N := by
+  set b := Pi.basisFun K (Fin N)
+  set S : Submodule K (Fin N → K) := Submodule.span K (Set.range n) with hS
+  have hQ : (⨅ j, LinearMap.ker (b.toDual.flip (n j)))
       = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
     ext w
     simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
       Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
       Submodule.mem_dualAnnihilator]
-    constructor
-    · intro h v hv
-      have hle : S ≤ LinearMap.ker (b.toDual w) := by
-        rw [hS, Submodule.span_le]
-        rintro _ ⟨j, rfl⟩
-        simpa using h j
-      simpa using hle hv
-    · intro h j
-      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
-  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
-  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
-  have h2 : Module.finrank K S = 2 := by
-    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
-  have h3 : Module.finrank K (Fin (m + 2) → K) = m + 2 := Module.finrank_fin_fun K
+    refine ⟨fun h v hv => ?_, fun h j => h (n j) (Submodule.subset_span ⟨j, rfl⟩)⟩
+    have hle : S ≤ LinearMap.ker (b.toDual w) := by
+      rw [hS, Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      simpa using h j
+    simpa using hle hv
+  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq, add_comm,
+    Subspace.finrank_add_finrank_dualAnnihilator_eq, Module.finrank_fin_fun]
+
+/-- **The `toDual`-perp of two independent normals in `K^{m+2}` has dimension `m`, over any
+field** (`def:meet-complement-iso`; replaces `MeetHodge.lean`'s `EuclideanSpace`-transport reproof
+of the same fact — the metric route TACTICS-QUIRKS § 59 quarantined). From
+`finrank_toDualPerp_add_finrank_span` and `finrank_span_eq_card`: `finrank(perp) = (m+2) −
+finrank(span) = (m+2) − 2 = m`. -/
+theorem finrank_toDualPerp_pair_eq {m : ℕ} {n : Fin 2 → Fin (m + 2) → K}
+    (hn : LinearIndependent K n) :
+    Module.finrank K
+        (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin (m + 2))).toDual.flip (n j))
+          : Submodule K (Fin (m + 2) → K)) = m := by
+  have := finrank_toDualPerp_add_finrank_span n
+  rw [finrank_span_eq_card hn, Fintype.card_fin] at this
   omega
 
 /-! ## The GL-contragredient equivariance of `complementIso` (`def:meet-complement-iso`)

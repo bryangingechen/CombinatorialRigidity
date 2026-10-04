@@ -500,33 +500,15 @@ theorem exists_pencilPanelRealization_parallel_pair
 /-! ## W1 base case: degree-2 concurrency is automatic (KT Lemma 5.4 cycles) -/
 
 /-- **The `⬝ᵥ`-perp of a single nonzero normal in `K⁴` has dimension `3`** (`sec:pencil`, cycle
-plumbing). The single-vector companion of `finrank_toDualPerp_pair_eq` (`Meet.lean`): the kernel of
-the pairing functional `x ↦ x ⬝ᵥ n` is the `toDualEquiv`-preimage of the dual annihilator of
-`span {n}`, so its dimension is `4 − finrank (span {n}) = 4 − 1 = 3` when `n ≠ 0`
-(`Subspace.finrank_add_finrank_dualAnnihilator_eq`, `finrank_span_singleton`). This is the ambient
+plumbing). The single-vector companion of `finrank_toDualPerp_pair_eq` (`Meet.lean`): the constant
+family `fun _ : Unit => n` in `Meet.lean`'s `finrank_toDualPerp_add_finrank_span` gives `4 −
+finrank (span {n}) = 4 − 1 = 3` when `n ≠ 0` (`finrank_span_singleton`). This is the ambient
 panel `n^⊥` in which a body's coplanar hinges live. -/
 theorem finrank_toDualPerp_single_eq {n : Fin 4 → K} (hn : n ≠ 0) :
     Module.finrank K
         (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n) : Submodule K (Fin 4 → K)) = 3 := by
-  set b := Pi.basisFun K (Fin 4) with hb
-  set S : Submodule K (Fin 4 → K) := Submodule.span K {n} with hS
-  have hQ : LinearMap.ker (b.toDual.flip n)
-      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
-    ext w
-    simp only [LinearMap.mem_ker, LinearMap.flip_apply, Submodule.mem_comap, LinearEquiv.coe_coe,
-      Module.Basis.toDualEquiv_apply, Submodule.mem_dualAnnihilator]
-    constructor
-    · intro h v hv
-      have hle : S ≤ LinearMap.ker (b.toDual w) := by
-        rw [hS, Submodule.span_le, Set.singleton_subset_iff]
-        exact h
-      exact hle hv
-    · intro h
-      exact h n (by rw [hS]; exact Submodule.mem_span_singleton_self n)
-  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
-  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
-  have h2 : Module.finrank K S = 1 := by rw [hS]; exact finrank_span_singleton hn
-  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  have := finrank_toDualPerp_add_finrank_span (fun _ : Unit => n)
+  rw [iInf_const, Set.range_const, finrank_span_singleton hn] at this
   omega
 
 /-- **Two coplanar hinges automatically share a concurrency point**
