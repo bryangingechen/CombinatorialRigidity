@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10k landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10l (Opus, ⚠Z): `a5`, one tail for `Pair2.lean`'s #4 and #6. Round
-manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10l landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10m (Opus, ⚠Z): `7a`, the pendant cut by `lem:pencil-generic-steer`,
+one route for every degree. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -85,8 +85,10 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   two nodes gone. −226 net Lean lines (task 9 estimated −171).
 - **10k**, Lean only: each cut case's two branches as one assembly (`a6`, `a6a`), the crossing
   lemmas to `Deficiency.lean`; −261 net Lean lines (task 9 estimated −264); axioms 19 of 19.
+- **10l**, Lean only: #4 and #6 through one shared tail, `..._induce_pendant_of_hubLI` (`a5`, the
+  spike's name and statement); −339 net Lean lines (task 9 estimated −295).
 
-Next is 10l, then each landing in turn, then task 11 closes.
+Next is 10m, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -247,7 +249,8 @@ verdicts.
   - [x] **10k. `a6` + `a6a`** (Opus, ⚠Z; axioms harness, as `a6a` is in 10 of the 19 closures).
     One assembly for each cut case's two branches; the two crossing lemmas to `Deficiency.lean`:
     −264. Landed 2026-10-04: −261 net Lean lines.
-  - [ ] **10l. `a5`** (Opus, ⚠Z). One tail for `Pair2.lean`'s #4 and #6: −295.
+  - [x] **10l. `a5`** (Opus, ⚠Z). One tail for `Pair2.lean`'s #4 and #6: −295. Landed
+    2026-10-04: −339 net Lean lines; 10m keeps the tail as the one pendant route.
   - [ ] **10m. `7a`** (Opus, ⚠Z). The pendant cut by `lem:pencil-generic-steer`, one route for
     every degree (the larger form): −1 470.
   - [ ] **10n. `7b`** (Opus, ⚠Z). One glue for a cut's two sides, four sites: −213 (about −280).
@@ -292,9 +295,12 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10k landed; the rest of the landings run.** The smallest next commit is **10l** (Opus, ⚠Z):
-`a5`, one tail for `Pair2.lean`'s #4 and #6 (the spike is `scratch/40-simplify/6/A5.lean`). Then
-10m–10r in order, one commit each at its listed rung; after 10r, task 11 closes the round.
+**10a–10l landed; the rest of the landings run.** The smallest next commit is **10m** (Opus, ⚠Z):
+`7a`, the pendant cut by `lem:pencil-generic-steer`, one route for every degree, retiring #4, #6
+and the discharge (the spike is `scratch/40-simplify/7/A7aB.lean`). It keeps 10l's
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI` as the one
+pendant route, which the spike reuses verbatim. Then 10n–10r in order, one commit each at its
+listed rung; after 10r, task 11 closes the round.
 
 ## Decisions made during this round
 

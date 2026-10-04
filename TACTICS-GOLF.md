@@ -102,6 +102,12 @@ symptom-indexed and lighter.
 26. **`push_neg` is deprecated — use `push Not`.** The tactic is now a thin wrapper over a
     generic `push <head>` combinator; `push_neg at h` still compiles but rides a deprecation
     warning into the build.
+27. **A `change` that only unfolds a `set`/`let`-bound local or a plain `def`** — write
+    `simp only [F]` / `rw [Def]` with the bare name instead; keep the `change` only for a bundled
+    morphism's structure literal (coe-defeq).
+28. **A set equality consumed only by `.mono` — prove the one inclusion.** When `s = t` only
+    transports a fact antitone in the set (`LinearIndepOn`, finiteness), prove `s ⊆ t` and close
+    with `.mono`; the reverse inclusion is dead weight.
 
 ---
 
@@ -1659,3 +1665,15 @@ display artifact. `dsimp only [F]` unfolds `F` the same way without invoking any
 the literal `if w = c₁ then …` pattern intact for the `rw` chain that follows. (Phase 40-cleanup
 B6c, `Ear.lean`'s `earExtend_mem_liftingSpace`, the piecewise `let z := fun w => if w ∈ V₁ then …
 else if w = x ⟨0, …⟩ then … else if w = x ⟨k - 1, …⟩ then … else if w ∈ Set.range x then … else 0`.)
+
+## 28. A set equality consumed only by a monotone conclusion — prove the one inclusion
+
+When a set equality `s = t` is proved only to carry a fact that is antitone in the set
+(`LinearIndepOn K f t → LinearIndepOn K f s`, `Set.Finite`, an `ncard` upper bound), prove `s ⊆ t`
+and close with `.mono`. The reverse inclusion is dead weight, and it often needs a case analysis of
+its own. `Pair2.lean`'s two pendant producers each proved `G.closedHubNbhd v = (G.induce
+V₁).closedHubNbhd v` by `ext; constructor` and rewrote, about 25 lines a site; `(hnd₁.2.2.1 v
+hv).mono ?_` with the forward inclusion alone takes about 12, and the `deg u_c = 3` producer drops
+an `H`-degree computation only the reverse direction used. The shape is the one in FRICTION *A
+small witness's per-vertex facts, hand-rolled where one global fact restricts* (computing a closed
+neighbourhood exactly, only to restrict an independence to it). (Phase 40-simplify 10l.)

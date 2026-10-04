@@ -3047,6 +3047,17 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Resolution:** `Graph.degree_le_ncard` (Matroid package: `[G.Simple] [G.Finite]`, `degree + 1 ≤ V(G).ncard`; `G.Finite` from `Graph.finite_of_vertexSet_finite`). `LinearIndepOn.mono` with `Graph.closedNbhd_subset_vertexSet`, since the independence holds on all of `V(G)`. `Pi.linearIndependent_single_one` with `convert … using 1; funext i; fin_cases i <;> rfl`, then `.ne_zero i`, `.comp ![i, j] (by decide)`, and `linearIndepOn_range_iff` to carry it to the point map. Heartbeats went from 72 044 to 60 555. Also: `fun w hw ⟨-, h⟩ => …` is a parse error. The `-` clear pattern is `rintro`/`rcases` syntax; write `⟨_, h⟩`.
 - **Status:** idiom. `_four` has the same shapes but feeds neither headline, so it was left for round 4 (`notes/Phase40-cleanup.md` *Candidates*).
 
+### [idiom] A set equality proved by `ext` where the consumer is `LinearIndepOn.mono` (second instance)
+- **Where it bit:** Phase 40-simplify 10l, `Pair2.lean`'s pendant producers
+  (`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and `_deg3`), and the
+  task-6 spike 10l transcribed. Each transferred conjunct 3 by proving `G.closedHubNbhd v =
+  (G.induce V₁).closedHubNbhd v` both ways, then rewriting.
+- **Resolution:** the forward inclusion and `(hnd₁.2.2.1 v hv).mono` halve each transfer, and
+  `_deg3` loses the `H`-degree fact only the reverse direction used. Also: a `by rw [...]` inside
+  `⟨…⟩` whose next tactic starts a new line at a lower column ends the tactic block early
+  ("expected '⟩'"); give it a `refine ⟨?_, …⟩` bullet, or write the term `h ▸ …`.
+- **Status:** idiom. **Lifted to:** `TACTICS-GOLF.md` § 28.
+
 ### [idiom] `if_pos` / `if_neg` are deprecated in this mathlib; write `ite_eq_left` / `ite_eq_right`
 - **Where it bit:** `40-factor`'s open spike for `Graph.exists_normalized_labeling` (`Molecular/Deficiency.lean`, landed in task 1). `fun x hx => if_pos hx`, an `EqOn` on the `if` guard's true branch, and the matching `if_neg` on the false branch each drew a deprecation warning, costing one `lake lean` cycle.
 - **Resolution:** `ite_eq_left hx` and `ite_eq_right hx`: the same statements (`c → ite c a b = a`, `¬c → ite c a b = b`), and the forms the rest of the tree already uses.
