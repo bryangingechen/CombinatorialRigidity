@@ -423,9 +423,9 @@ theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
 The cut-arm route verdict's easiest sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition"
 L5 "Cut-arm route verdict", item 2): with no crossing edge at all, no side ever demotes a hub, so
 the generic conjunct assembles by gluing the two sides' IH-supplied *generic* realizations
-directly (no `Gᵢ⁺` closure, no repositioning, no `[Infinite K]`) — mirroring the bare arm's own
-`|C| = 0` branch (`hasPencilRealization_of_not_twoEdgeConnected`, `Arms.lean`) with the three new
-nondegeneracy conjuncts layered on top via the disjoint-sides structure lemmas
+directly (no `Gᵢ⁺` closure, no repositioning, no `[Infinite K]`) — through the bare arm's glue
+(`exists_hasPencilPanelRealization_glue`, `Arms.lean`), with the three new nondegeneracy conjuncts
+layered on top via the disjoint-sides structure lemmas
 (`Graph.degree_induce_of_forall_isLink_mem` / `Graph.closedHubNbhd_induce_of_forall_isLink_mem` /
 `Graph.closedNbhd_induce_of_forall_isLink_mem`, `Motive.lean`). Landed as a standalone producer
 (rather than folded into the not-yet-built full arm assembly `pencilPair_of_not_twoEdgeConnected`,
@@ -437,13 +437,12 @@ sub-case 2): if `G` is loopless with `V₁` a nonempty proper vertex subset cros
 hypothesis holds at every smaller graph, then `G` has a generic pencil realization. Both sides
 `G.induce V₁`, `G.induce V₂` (`V₂ := V(G) ∖ V₁`) inherit simplicity (`Simple.mono`) and feasibility
 (`PencilNondegFeasible.mono`, no demotion since `Graph.degree_induce_of_forall_isLink_mem` shows
-every `Vᵢ`-vertex keeps its full `G`-degree), so the IH's generic halves fire on both sides; the
-glued realization's bare half is exactly the landed `|C| = 0` assembly, and its three
-nondegeneracy conjuncts transfer wholesale via the disjoint-sides `closedHubNbhd`/`closedNbhd`
-equalities (no exception, unlike the `Gᵢ⁺` boundary identities) composed with the sides' own
-conjuncts through `LinearIndepOn.congr`. The rank closes exactly as the bare arm's `|C| = 0`
-branch, with the IH's *generic* rank equalities (`.ge`) standing in for the bare rank equalities as
-`hlb₁`/`hlb₂`. -/
+every `Vᵢ`-vertex keeps its full `G`-degree), so the IH's generic halves fire on both sides. They
+glue by `exists_hasPencilPanelRealization_glue` (no link crosses, so any nonzero hinge serves),
+which gives the bare half and the rank, with the IH's *generic* rank equalities (`.ge`) as
+`hlb₁`/`hlb₂`. The three nondegeneracy conjuncts transfer wholesale via the disjoint-sides
+`closedHubNbhd`/`closedNbhd` equalities (no exception, unlike the `Gᵢ⁺` boundary identities)
+composed with the sides' own conjuncts through `LinearIndepOn.congr`. -/
 theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} {V₁ : Set α} (hne : V₁.Nonempty) (hssub : V₁ ⊂ V(G))
@@ -452,19 +451,14 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
     HasGenericPencilRealization K n G := by
   classical
   have := hSimple.toLoopless
-  set V₂ := V(G) \ V₁ with hV₂def
+  set V₂ := V(G) \ V₁
   have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hssub.subset
-    have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
-    rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
-  have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
-  have hVeq₂ : V(G.induce V₂).ncard = V₂.ncard := rfl
-  have hV₁ne : V(G.induce V₁).Nonempty := hne
-  have hV₂ne : V(G.induce V₂).Nonempty := hne₂
+    rw [← Set.ncard_union_eq Set.disjoint_sdiff_right (Set.toFinite V₁) (Set.toFinite V₂),
+      Set.union_sdiff_cancel hssub.subset]
   have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
   have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
-    have hV₁pos : 0 < V₁.ncard := hne.ncard_pos; rw [hVeq₂]; omega
+    have hV₁pos : 0 < V₁.ncard := hne.ncard_pos; change V₂.ncard < _; omega
   -- ── Adjacency closure of each side from `hC0`. ───────────────────────────────────────────
   have hAdj₁ : ∀ e x y, G.IsLink e x y → x ∈ V₁ → y ∈ V₁ := by
     intro e x y hl hx
@@ -487,118 +481,22 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
   have hfeas₂ : PencilNondegFeasible K (G.induce V₂) :=
     hfeas.mono (Graph.induce_le Set.sdiff_subset) (fun v hv hGhub => Or.inl ⟨hv, by
       rw [Graph.degree_induce_of_forall_isLink_mem hAdj₂ hv]; exact hGhub.2⟩)
-  -- ── IH's generic halves on both sides. ───────────────────────────────────────────────────
-  obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ :=
-    (hIH (G.induce V₁) hV₁ne hV₁ncard).1 hSimple₁ hfeas₁
-  obtain ⟨F₂, normal₂, point₂, hnd₂, hrank₂⟩ :=
-    (hIH (G.induce V₂) hV₂ne hV₂ncard).1 hSimple₂ hfeas₂
-  obtain ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩ := hnd₁
-  obtain ⟨hreal₂, hadj₂, hhubLI₂, hnbhdLI₂⟩ := hnd₂
-  obtain ⟨⟨hF₁g, hn₁nz, hS₁nz, hpanel₁⟩, hp₁nz, hp₁inc, hthrough₁⟩ := hreal₁
-  obtain ⟨⟨hF₂g, hn₂nz, hS₂nz, hpanel₂⟩, hp₂nz, hp₂inc, hthrough₂⟩ := hreal₂
-  rw [hVeq₁] at hrank₁
-  rw [hVeq₂] at hrank₂
-  -- ── Deficiency split (as the bare arm, minimality-free, KT Lemma 3.6). ───────────────────
-  have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
-  have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
-      + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
-    have hraw := Graph.deficiency_eq_of_cutEdges_ncard_le_one hD1 hne hssub
-      (by rw [hC0]; simp)
-    rw [← hV₂def] at hraw; exact hraw
-  obtain ⟨u₀, hu₀⟩ := hne
-  -- ── Assemble exactly as the bare arm's `|C| = 0` branch. ─────────────────────────────────
-  obtain ⟨C_junk, hCjne, -, -⟩ := exists_extensor_in_two_panels_grade (normal₁ u₀) (normal₁ u₀)
-  set normal : α → Fin 4 → K := fun v =>
-    if v ∈ V₁ then normal₁ v else if v ∈ V₂ then normal₂ v else normal₁ u₀
-  set point : α → Fin 4 → K := fun v =>
-    if v ∈ V₁ then point₁ v else if v ∈ V₂ then point₂ v else point₁ u₀
-  set extF : β → ScrewSpace K 2 := fun e =>
-    if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
-    else if ∃ a b, (G.induce V₂).IsLink e a b then F₂.supportExtensor e
-    else C_junk
-  set F : BodyHingeFramework K 2 α β := ⟨G, extF⟩
-  have hlinks : ∀ e u v, G.IsLink e u v →
-      ExtensorInPanel (extF e) (normal u) ∧ ExtensorInPanel (extF e) (normal v) ∧
-      ExtensorThroughPoint (extF e) (point u) ∧ ExtensorThroughPoint (extF e) (point v) := by
-    intro e u v hl
-    simp only [extF]
-    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
-    · simp only [hE₁, ↓reduceIte]
-      obtain ⟨a, b, hlab⟩ := hE₁
-      have hu₁ : u ∈ V₁ := mem_of_induce_isLink_left hl hlab
-      have hv₁ : v ∈ V₁ := mem_of_induce_isLink_right hl hlab
-      simp only [normal, point, hu₁, hv₁, ↓reduceIte]
-      have hl' : (G.induce V₁).IsLink e u v := (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
-      exact ⟨(hpanel₁ e u v hl').1, (hpanel₁ e u v hl').2,
-             (hthrough₁ e u v hl').1, (hthrough₁ e u v hl').2⟩
-    · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
-      · simp only [hE₁, hE₂, ↓reduceIte]
-        obtain ⟨a, b, hlab⟩ := hE₂
-        have hu₂ : u ∈ V₂ := mem_of_induce_isLink_left hl hlab
-        have hv₂ : v ∈ V₂ := mem_of_induce_isLink_right hl hlab
-        simp only [normal, point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂]
-        have hl' : (G.induce V₂).IsLink e u v :=
-          (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩
-        exact ⟨(hpanel₂ e u v hl').1, (hpanel₂ e u v hl').2,
-               (hthrough₂ e u v hl').1, (hthrough₂ e u v hl').2⟩
-      · exfalso
-        have hu_V := hl.left_mem; have hv_V := hl.right_mem
-        by_cases hu₁ : u ∈ V₁
-        · by_cases hv₁ : v ∈ V₁
-          · exact hE₁ ⟨u, v, (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩
-          · exact absurd (hAdj₁ e u v hl hu₁) hv₁
-        · by_cases hv₁ : v ∈ V₁
-          · exact absurd (hAdj₁ e v u hl.symm hv₁) hu₁
-          · exact hE₂ ⟨u, v, (Graph.induce_isLink G V₂ e u v).mpr
-              ⟨hl, ⟨hu_V, hu₁⟩, ⟨hv_V, hv₁⟩⟩⟩
-  have hnorm_nz : ∀ v ∈ V(G), normal v ≠ 0 := by
-    intro v hv
-    by_cases h₁ : v ∈ V₁
-    · simp only [normal, h₁, ↓reduceIte]; exact hn₁nz v h₁
-    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
-      simp only [normal, h₁, ↓reduceIte, h₂]; exact hn₂nz v h₂
-  have hextF_nz : ∀ e, extF e ≠ 0 := by
-    intro e
-    simp only [extF]
-    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
-    · simp only [hE₁, ↓reduceIte]; exact hS₁nz e
-    · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
-      · simp only [hE₁, hE₂, ↓reduceIte]; exact hS₂nz e
-      · simp only [hE₁, hE₂, ↓reduceIte]; exact hCjne
-  have hpoint_nz : ∀ v ∈ V(G), point v ≠ 0 := by
-    intro v hv
-    by_cases h₁ : v ∈ V₁
-    · simp only [point, h₁, ↓reduceIte]; exact hp₁nz v h₁
-    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
-      simp only [point, h₁, ↓reduceIte, h₂]; exact hp₂nz v h₂
-  have hpoint_inc : ∀ v ∈ V(G), point v ⬝ᵥ normal v = 0 := by
-    intro v hv
-    by_cases h₁ : v ∈ V₁
-    · simp only [point, normal, h₁, ↓reduceIte]; exact hp₁inc v h₁
-    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
-      simp only [point, normal, h₁, ↓reduceIte, h₂]; exact hp₂inc v h₂
-  have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
-    fun e u v hl => by
-      simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]
-  have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂.supportExtensor e :=
-    fun e u v hl => by
-      have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-        fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
-      simp only [extF, hnotE₁, ↓reduceIte,
-        Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
-  have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g hagree₁
-  have hF₂span := span_rigidityRows_eq_of_supportExtensor_agree extF F₂ hF₂g hagree₂
-  have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
-    fun e _ _ _ => hextF_nz e
-  have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
-    intro e he; simp [hC0] at he
-  have hFVne : V(F.graph).Nonempty := ⟨u₀, hssub.subset hu₀⟩
-  have hlb₁ : screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
-      ≤ (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ) := hrank₁.ge
-  have hlb₂ : screwDim 2 * ((V₂.ncard : ℤ) - 1) - (G.induce V₂).deficiency n
-      ≤ (Module.finrank K (Submodule.span K F₂.rigidityRows) : ℤ) := hrank₂.ge
-  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn F rfl hV₂def
-    (by rw [hC0]; simp) hFext hFcut hFVne hVcard hdef hF₁span hF₂span hlb₁ hlb₂
+  -- ── IH's generic halves on both sides, glued. ────────────────────────────────────────────
+  obtain ⟨F₁, normal₁, point₁, ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩, hrank₁⟩ :=
+    (hIH (G.induce V₁) hne hV₁ncard).1 hSimple₁ hfeas₁
+  obtain ⟨F₂, normal₂, point₂, ⟨hreal₂, hadj₂, hhubLI₂, hnbhdLI₂⟩, hrank₂⟩ :=
+    (hIH (G.induce V₂) hne₂ hV₂ncard).1 hSimple₂ hfeas₂
+  obtain ⟨C, hC, -, -⟩ := exists_extensor_in_two_panels_grade (normal₁ hne.some) (normal₁ hne.some)
+  set normal : α → Fin 4 → K := fun v => if v ∈ V₁ then normal₁ v else normal₂ v
+  set point : α → Fin 4 → K := fun v => if v ∈ V₁ then point₁ v else point₂ v
+  obtain ⟨F, hreal, hrank⟩ := exists_hasPencilPanelRealization_glue hD hn hssub hne
+    (by rw [hC0]; simp) (hreal₁.restrict le_rfl) (hreal₂.restrict le_rfl)
+    (by rw [span_rigidityRows_eq_of_supportExtensor_agree _ F₁ hreal₁.1.1 (fun _ _ _ _ => rfl)]
+        exact hrank₁.ge)
+    (by rw [span_rigidityRows_eq_of_supportExtensor_agree _ F₂ hreal₂.1.1 (fun _ _ _ _ => rfl)]
+        exact hrank₂.ge)
+    hC (fun e u v hl hu hv => absurd (show e ∈ G.cutEdges V₁ from ⟨hl.edge_mem, u, v, hl, hu, hv⟩)
+      (by simp [hC0]))
   -- ── The three new nondegeneracy conjuncts, transferred wholesale (no exception). ─────────
   have hadjLI : ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
     intro e u v hl
@@ -610,7 +508,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       have hv₂ : v ∈ V₂ := hAdj₂ e u v hl hu₂
       have hl' : (G.induce V₂).IsLink e u v :=
         (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩
-      simpa only [point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂] using hadj₂ e u v hl'
+      simpa only [point, hu₂.2, hv₂.2, ↓reduceIte] using hadj₂ e u v hl'
   have hhubLI_glued : ∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v) := by
     intro v hv
     by_cases hv₁ : v ∈ V₁
@@ -622,7 +520,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       rw [← Graph.closedHubNbhd_induce_of_forall_isLink_mem Set.sdiff_subset hAdj₂ hv₂]
       refine (hhubLI₂ v hv₂).congr (fun x hx => ?_)
       have hxV₂ : x ∈ V₂ := hx.1.1
-      simp only [normal, hxV₂.2, ↓reduceIte, hxV₂]
+      simp only [normal, hxV₂.2, ↓reduceIte]
   have hnbhdLI_glued : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v) := by
     intro v hv hnothub
     by_cases hv₁ : v ∈ V₁
@@ -650,13 +548,8 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
         rcases hx with rfl | ⟨e, hl⟩
         · exact hv₂
         · exact ((Graph.induce_isLink G V₂ e v x).mp hl).2.2
-      simp only [point, hxV₂.2, ↓reduceIte, hxV₂]
-  exact ⟨F, normal, point,
-    ⟨⟨⟨rfl, hnorm_nz, hextF_nz,
-        fun e u v hl => ⟨(hlinks e u v hl).1, (hlinks e u v hl).2.1⟩⟩,
-      hpoint_nz, hpoint_inc,
-      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
-    hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
+      simp only [point, hxV₂.2, ↓reduceIte]
+  exact ⟨F, normal, point, ⟨hreal, hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank⟩
 
 /-! ## W5-L5 cut arm, sub-case 1 (`|C| = 1`, two-sided): infrastructure (Phase 39 PENCIL)
 
@@ -693,7 +586,7 @@ route verdict" item 1a). Given a nondegenerate realization of the edge-closed si
 `Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` attaining the deficiency-rank target there, dropping the crossing
 edge `e₀`'s rows (`finrank_span_rigidityRows_le_add_of_links_subset`,
 `RigidityMatrix/Bricks.lean`) converts it into exactly the induced-side lower bound
-`finrank_span_rigidityRows_cutEdge_eq` (`Arms.lean`) wants as `hlbᵢ` — the assembled side
+`exists_hasPencilPanelRealization_glue` (`Arms.lean`) wants as `hlbᵢ` — the assembled side
 framework (`extF`, agreeing with `F.supportExtensor` on `V₁`-internal links) inherits the same
 bound via `span_rigidityRows_eq_of_supportExtensor_agree`. The `screwDim 2 − 1 = 5` the drop brick
 costs is exactly what the deficiency bookkeeping's `+ 1`
@@ -779,9 +672,9 @@ two edge-closed sides `G₁⁺ = G.induce (V₁ ∪ {v_c})`, `G₂⁺ = G.induce
 (`V₂ = V(G) ∖ V₁`) attaining their deficiency-rank targets, `G` has a generic pencil realization:
 reposition side 2 along `exists_reposition_cross_incidences_avoiding` (transported by
 `IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv`), take the crossing hinge from
-`exists_extensor_two_pencils`, glue the panels/points/extensors as the bare arm's `|C| = 1` branch
-does, and close the rank by `finrank_span_rigidityRows_cutEdge_eq` with both `hlbᵢ` supplied by
-the rank half `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (once per side).
+`exists_extensor_two_pencils`, and glue by `exists_hasPencilPanelRealization_glue` as the bare arm
+does, with both `hlbᵢ` supplied by the rank half
+`hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (once per side).
 The three nondegeneracy conjuncts transfer via the `Gᵢ⁺` boundary identities
 (`closedHubNbhd`/`closedNbhd_induce_union_singleton`) with a single `LinearIndepOn.insert` at each
 crossing endpoint, fed by the four avoidance conclusions; `G`'s own feasibility witness `hfeas`
@@ -805,7 +698,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
     HasGenericPencilRealization K n G := by
   classical
   have : Nonempty α := ⟨u_c⟩
-  set V₂ := V(G) \ V₁ with hV₂def
+  set V₂ := V(G) \ V₁
   have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
   have hu_notin₂ : u_c ∉ V₂ := fun hmem => hmem.2 hu_c
   have hV₂sub : V₂ ⊆ V(G) := Set.sdiff_subset
@@ -816,9 +709,6 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
   have hssub : V₁ ⊂ V(G) :=
     (Set.ssubset_iff_of_subset hV₁).mpr ⟨v_c, hl_c.right_mem, hv_c⟩
   -- The unique crossing edge, and its endpoint pinning.
-  have hcut_uniq : ∀ e' u' v', G.IsLink e' u' v' → u' ∈ V₁ → v' ∉ V₁ → e' = e_c :=
-    fun e' u' v' hle hu' hv' =>
-      Graph.eq_cutEdge_of_isLink_crossing hl_c hu_c hv_c hcut hle hu' hv'
   have hcross_eq : ∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ →
       e' = e_c ∧ x = u_c ∧ y = v_c :=
     fun e' x y hle hx hy => Graph.eq_and_eq_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
@@ -909,147 +799,31 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         - (G.induce (V₂ ∪ {u_c})).deficiency n := by
     rw [hF₂'def, BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
     exact hrank₂
-  obtain ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩ := id hnd₁
-  obtain ⟨⟨hF₁g, hn₁nz, hS₁nz, hpanel₁⟩, hp₁nz, hp₁inc, hthrough₁⟩ := hreal₁
-  obtain ⟨hreal₂', hadj₂', hhubLI₂', hnbhdLI₂'⟩ := id hnd₂'
-  obtain ⟨⟨hF₂'g, hn₂'nz, hS₂'nz, hpanel₂'⟩, hp₂'nz, hp₂'inc, hthrough₂'⟩ := hreal₂'
-  -- ── The glued data. ────────────────────────────────────────────────────────────────────
-  set normal : α → Fin 4 → K := fun v =>
-    if v ∈ V₁ then normal₁ v else if v ∈ V₂ then h (normal₂ v) else normal₁ u_c
-  set point : α → Fin 4 → K := fun v =>
-    if v ∈ V₁ then point₁ v else if v ∈ V₂ then g (point₂ v) else point₁ u_c
-  have hnorm_uc : normal u_c = normal₁ u_c := by simp only [normal, hu_c, ↓reduceIte]
-  have hnorm_vc : normal v_c = h (normal₂ v_c) := by
-    simp only [normal, hv_c, hv_c₂, ↓reduceIte]
+  obtain ⟨⟨-, -, hp₁inc, -⟩, hadj₁, hhubLI₁, hnbhdLI₁⟩ := id hnd₁
+  obtain ⟨⟨-, -, hp₂'inc, -⟩, hadj₂', hhubLI₂', hnbhdLI₂'⟩ := id hnd₂'
+  -- ── The glued data, the crossing hinge, and the glue. ─────────────────────────────────────
+  set normal : α → Fin 4 → K := fun v => if v ∈ V₁ then normal₁ v else h (normal₂ v)
+  set point : α → Fin 4 → K := fun v => if v ∈ V₁ then point₁ v else g (point₂ v)
   have hpt_uc : point u_c = point₁ u_c := by simp only [point, hu_c, ↓reduceIte]
-  have hpt_vc : point v_c = g (point₂ v_c) := by
-    simp only [point, hv_c, hv_c₂, ↓reduceIte]
-  -- The crossing edge's hinge: in both panels, through both points.
+  have hpt_vc : point v_c = g (point₂ v_c) := by simp only [point, hv_c, ↓reduceIte]
+  have hnorm_uc : normal u_c = normal₁ u_c := by simp only [normal, hu_c, ↓reduceIte]
+  have hnorm_vc : normal v_c = h (normal₂ v_c) := by simp only [normal, hv_c, ↓reduceIte]
   obtain ⟨C_cut, hCne, hCpn_u, hCpn_v, hCth_u, hCth_v⟩ :=
-    exists_extensor_two_pencils (n_u := normal u_c) (n_v := normal v_c)
-      (pt_u := point u_c) (pt_v := point v_c)
-      (by rw [hpt_uc]; exact hp₁ne)
-      (by rw [hpt_uc, hnorm_uc]; exact hp₁inc u_c (Set.mem_union_left _ hu_c))
-      (by rw [hpt_vc, hnorm_vc]; exact hp₂'inc v_c (Set.mem_union_left _ hv_c₂))
-      (by rw [hpt_uc, hnorm_vc]; exact hcross1)
-      (by rw [hpt_vc, hnorm_uc]; exact hcross2)
-  set extF : β → ScrewSpace K 2 := fun e =>
-    if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
-    else if ∃ a b, (G.induce V₂).IsLink e a b then F₂'.supportExtensor e
-    else C_cut
-  set F : BodyHingeFramework K 2 α β := ⟨G, extF⟩
-  -- ── The four link incidences (panels + through-points). ──────────────────────────────────
-  have hlinks : ∀ e u v, G.IsLink e u v →
-      ExtensorInPanel (extF e) (normal u) ∧ ExtensorInPanel (extF e) (normal v) ∧
-      ExtensorThroughPoint (extF e) (point u) ∧ ExtensorThroughPoint (extF e) (point v) := by
-    intro e u v hl
-    simp only [extF]
-    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
-    · simp only [hE₁, ↓reduceIte]
-      obtain ⟨a, b, hlab⟩ := hE₁
-      have hu₁ : u ∈ V₁ := mem_of_induce_isLink_left hl hlab
-      have hv₁ : v ∈ V₁ := mem_of_induce_isLink_right hl hlab
-      simp only [normal, point, hu₁, hv₁, ↓reduceIte]
-      have hl' : (G.induce (V₁ ∪ {v_c})).IsLink e u v :=
-        (Graph.induce_isLink G (V₁ ∪ {v_c}) e u v).mpr
-          ⟨hl, Set.mem_union_left _ hu₁, Set.mem_union_left _ hv₁⟩
-      exact ⟨(hpanel₁ e u v hl').1, (hpanel₁ e u v hl').2,
-             (hthrough₁ e u v hl').1, (hthrough₁ e u v hl').2⟩
-    · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
-      · simp only [hE₁, hE₂, ↓reduceIte]
-        obtain ⟨a, b, hlab⟩ := hE₂
-        have hu₂ : u ∈ V₂ := mem_of_induce_isLink_left hl hlab
-        have hv₂ : v ∈ V₂ := mem_of_induce_isLink_right hl hlab
-        simp only [normal, point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂]
-        have hl' : (G.induce (V₂ ∪ {u_c})).IsLink e u v :=
-          (Graph.induce_isLink G (V₂ ∪ {u_c}) e u v).mpr
-            ⟨hl, Set.mem_union_left _ hu₂, Set.mem_union_left _ hv₂⟩
-        exact ⟨(hpanel₂' e u v hl').1, (hpanel₂' e u v hl').2,
-               (hthrough₂' e u v hl').1, (hthrough₂' e u v hl').2⟩
-      · -- Crossing edge: `extF e = C_cut`; determine sides and match `{u_c, v_c}`.
-        simp only [hE₁, hE₂, ↓reduceIte]
-        have hu_V := hl.left_mem; have hv_V := hl.right_mem
-        have hopp : (u ∈ V₁ ∧ v ∈ V₂) ∨ (u ∈ V₂ ∧ v ∈ V₁) := by
-          by_cases hu₁ : u ∈ V₁
-          · exact Or.inl ⟨hu₁, hv_V, fun hv₁ => hE₁ ⟨u, v,
-              (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩⟩
-          · by_cases hv₁ : v ∈ V₁
-            · exact Or.inr ⟨⟨hu_V, hu₁⟩, hv₁⟩
-            · exact absurd ⟨u, v, (Graph.induce_isLink G V₂ e u v).mpr
-                ⟨hl, ⟨hu_V, hu₁⟩, ⟨hv_V, hv₁⟩⟩⟩ hE₂
-        rcases hopp with ⟨hu₁, hv₂⟩ | ⟨hu₂, hv₁⟩
-        · have heq : e = e_c := hcut_uniq e u v hl hu₁ hv₂.2
-          subst heq
-          rcases hl.eq_and_eq_or_eq_and_eq hl_c with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-          · exact ⟨hCpn_u, hCpn_v, hCth_u, hCth_v⟩
-          · exact ⟨hCpn_v, hCpn_u, hCth_v, hCth_u⟩
-        · have heq : e = e_c := hcut_uniq e v u hl.symm hv₁ hu₂.2
-          subst heq
-          rcases hl.eq_and_eq_or_eq_and_eq hl_c with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-          · exact ⟨hCpn_u, hCpn_v, hCth_u, hCth_v⟩
-          · exact ⟨hCpn_v, hCpn_u, hCth_v, hCth_u⟩
-  -- ── Pointwise nonzero-ness / incidence of the glued data. ────────────────────────────────
-  have hnorm_nz : ∀ v ∈ V(G), normal v ≠ 0 := by
-    intro v hv
-    by_cases h₁ : v ∈ V₁
-    · simp only [normal, h₁, ↓reduceIte]; exact hn₁nz v (Set.mem_union_left _ h₁)
-    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
-      simp only [normal, h₁, ↓reduceIte, h₂]; exact hn₂'nz v (Set.mem_union_left _ h₂)
-  have hextF_nz : ∀ e, extF e ≠ 0 := by
-    intro e
-    simp only [extF]
-    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
-    · simp only [hE₁, ↓reduceIte]; exact hS₁nz e
-    · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
-      · simp only [hE₁, hE₂, ↓reduceIte]; exact hS₂'nz e
-      · simp only [hE₁, hE₂, ↓reduceIte]; exact hCne
-  have hpoint_nz : ∀ v ∈ V(G), point v ≠ 0 := by
-    intro v hv
-    by_cases h₁ : v ∈ V₁
-    · simp only [point, h₁, ↓reduceIte]; exact hp₁nz v (Set.mem_union_left _ h₁)
-    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
-      simp only [point, h₁, ↓reduceIte, h₂]; exact hp₂'nz v (Set.mem_union_left _ h₂)
-  have hpoint_inc : ∀ v ∈ V(G), point v ⬝ᵥ normal v = 0 := by
-    intro v hv
-    by_cases h₁ : v ∈ V₁
-    · simp only [point, normal, h₁, ↓reduceIte]
-      exact hp₁inc v (Set.mem_union_left _ h₁)
-    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
-      simp only [point, normal, h₁, ↓reduceIte, h₂]
-      exact hp₂'inc v (Set.mem_union_left _ h₂)
-  -- ── The rank, by the two rank-half compositions + the landed cut assembly. ───────────────
-  have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
-    fun e u v hl => by
-      simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]
-  have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂'.supportExtensor e :=
-    fun e u v hl => by
-      have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-        fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
-      simp only [extF, hnotE₁, ↓reduceIte,
-        Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
+    exists_extensor_two_pencils (n_u := normal₁ u_c) (n_v := h (normal₂ v_c))
+      (pt_u := point₁ u_c) (pt_v := g (point₂ v_c)) hp₁ne
+      (hp₁inc u_c (Set.mem_union_left _ hu_c)) (hp₂'inc v_c (Set.mem_union_left _ hv_c₂))
+      hcross1 hcross2
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
-  have hlb₁ := hlb_induce_of_isNondegPencilRealization_induce_union_singleton
-    (n := n) hD1 hl_c hu_c hv_c hcut hnd₁ hrank₁ hagree₁
-  have hlb₂ := hlb_induce_of_isNondegPencilRealization_induce_union_singleton
-    (n := n) hD1 hl_c.symm hv_c₂ hu_notin₂ hcut₂ hnd₂' hrank₂' hagree₂
-  have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hV₁
-    have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
-    rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
-  have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
-      + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
-    have hraw := Graph.deficiency_eq_of_cutEdges_ncard_le_one hD1 hne hssub hcut
-    rw [← hV₂def] at hraw; exact hraw
-  have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
-    fun e _ _ _ => hextF_nz e
-  have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
-    intro e he
-    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
-    obtain ⟨-, a, b, hlab, ha, hb⟩ := he
-    exact ⟨a, b, hlab, ha, hb⟩
-  have hFVne : V(F.graph).Nonempty := ⟨u_c, hV₁ hu_c⟩
-  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn F rfl hV₂def hcut hFext hFcut
-    hFVne hVcard hdef rfl rfl hlb₁ hlb₂
+  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hD hn hssub hne hcut
+    (hnd₁.1.restrict ⟨Set.subset_union_left, fun _ _ _ hl => ⟨hl.1, Or.inl hl.2.1, Or.inl hl.2.2⟩⟩)
+    (hnd₂'.1.restrict ⟨Set.subset_union_left, fun _ _ _ hl => ⟨hl.1, Or.inl hl.2.1, Or.inl hl.2.2⟩⟩)
+    (hlb_induce_of_isNondegPencilRealization_induce_union_singleton
+      (n := n) hD1 hl_c hu_c hv_c hcut hnd₁ hrank₁ (fun _ _ _ _ => rfl))
+    (hlb_induce_of_isNondegPencilRealization_induce_union_singleton
+      (n := n) hD1 hl_c.symm hv_c₂ hu_notin₂ hcut₂ hnd₂' hrank₂' (fun _ _ _ _ => rfl))
+    hCne (fun e u v hl hu hv => by
+      obtain ⟨-, rfl, rfl⟩ := hcross_eq e u v hl hu hv
+      exact ⟨hCpn_u, hCpn_v, hCth_u, hCth_v⟩)
   -- ── Conjunct 2: adjacent-point pair-LI. ──────────────────────────────────────────────────
   have hpair_cut : LinearIndependent K ![point₁ u_c, g (point₂ v_c)] := by
     rw [LinearIndependent.pair_iff' hp₁ne]
@@ -1074,9 +848,9 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       · have hu₂ : u ∈ V₂ := ⟨hl.left_mem, hu₁⟩
         have hv₂' : v ∈ V₂ := ⟨hl.right_mem, hv₁⟩
         have hpu : point u = g (point₂ u) := by
-          simp only [point, hu₁, ↓reduceIte, hu₂]
+          simp only [point, hu₁, ↓reduceIte]
         have hpv : point v = g (point₂ v) := by
-          simp only [point, hv₁, ↓reduceIte, hv₂']
+          simp only [point, hv₁, ↓reduceIte]
         rw [hpu, hpv]
         exact hadj₂' e u v ((Graph.induce_isLink G (V₂ ∪ {u_c}) e u v).mpr
           ⟨hl, Set.mem_union_left _ hu₂, Set.mem_union_left _ hv₂'⟩)
@@ -1120,7 +894,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         rw [hId] at hLI
         refine hLI.congr (fun x hx => ?_)
         have hxV₂ : x ∈ V₂ := hmemV₂ hv₂ hx.1.2 hx.2
-        simp only [normal, hxV₂.2, ↓reduceIte, hxV₂]
+        simp only [normal, hxV₂.2, ↓reduceIte]
       by_cases huc_mem : u_c ∈ G.closedHubNbhd v
       · have hu_hub' : G.PencilHub u_c := huc_mem.1
         have hveq : v = v_c := by
@@ -1138,7 +912,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           rintro _ ⟨x, hx, rfl⟩
           have hxV₂ : x ∈ V₂ := hmemV₂ hv₂ hx.1.2 hx.2
           have hnx : normal x = h (normal₂ x) := by
-            simp only [normal, hxV₂.2, ↓reduceIte, hxV₂]
+            simp only [normal, hxV₂.2, ↓reduceIte]
           rw [hnx]
           rcases htcov hu_hub' ⟨x, hveq ▸ hx, rfl⟩ with h1 | h1
           · rw [h1]; exact Set.mem_insert _ _
@@ -1197,7 +971,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         rw [hId] at hLI
         refine (hLI.mono Set.sdiff_subset).congr (fun x hx => ?_)
         have hxV₂ : x ∈ V₂ := hmemV₂ hv₂ hx.1 hx.2
-        simp only [point, hxV₂.2, ↓reduceIte, hxV₂]
+        simp only [point, hxV₂.2, ↓reduceIte]
       by_cases huc_mem : u_c ∈ G.closedNbhd v
       · have hveq : v = v_c := by
           rcases huc_mem with heq | ⟨e, hl⟩
@@ -1214,7 +988,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           rintro _ ⟨x, hx, rfl⟩
           have hxV₂ : x ∈ V₂ := hmemV₂ hv₂ hx.1 hx.2
           have hpx : point x = g (point₂ x) := by
-            simp only [point, hxV₂.2, ↓reduceIte, hxV₂]
+            simp only [point, hxV₂.2, ↓reduceIte]
           rw [hpx]
           rcases hwcov (hveq ▸ hnothub) ⟨x, hveq ▸ hx, rfl⟩ with h1 | h1
           · rw [h1]; exact Set.mem_insert _ _
@@ -1223,11 +997,6 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         exact havoid4 (Submodule.span_mono himg hmem)
       · rw [← Set.sdiff_singleton_eq_self huc_mem]
         exact hbase
-  exact ⟨F, normal, point,
-    ⟨⟨⟨rfl, hnorm_nz, hextF_nz,
-        fun e u v hl => ⟨(hlinks e u v hl).1, (hlinks e u v hl).2.1⟩⟩,
-      hpoint_nz, hpoint_inc,
-      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
-    hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
+  exact ⟨F, normal, point, ⟨hreal, hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
 
 end CombinatorialRigidity.Molecular

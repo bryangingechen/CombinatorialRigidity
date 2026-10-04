@@ -7,9 +7,10 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10m landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10n (Opus, ⚠Z): `7b`, one glue for a cut's two realized sides, four
-sites. Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10n landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10o (Sonnet, ⚠Z, mechanical): `q2a` + `b1`, Theorem55's cut-edge bricks
+under Arms' names and the PanelLayer hub's `ᶜ`, with 10m's caller-less lemma deleted. Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -91,8 +92,11 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   `lem:pencil-generic-steer` at every degree; `dead7aB`'s 11 names gone, and #4's callee
   `Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`) left caller-less, kept per the
   scope-pin; −1593 net Lean lines (task 9 estimated −1 470); axioms 19 of 19.
+- **10n**, Lean only: one glue, `exists_hasPencilPanelRealization_glue` with
+  `HasPencilPanelRealization.restrict` (`Arms.lean`), at all four sites, 10l's pendant tail too;
+  −298 net Lean lines (task 9 estimated about −280); axioms 19 of 19.
 
-Next is 10n, then each landing in turn, then task 11 closes.
+Next is 10o, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -257,7 +261,8 @@ verdicts.
     2026-10-04: −339 net Lean lines; 10m keeps the tail as the one pendant route.
   - [x] **10m. `7a`** (Opus, ⚠Z). The pendant cut by `lem:pencil-generic-steer`, one route for
     every degree (the larger form): −1 470. Landed 2026-10-04: −1593 net Lean lines.
-  - [ ] **10n. `7b`** (Opus, ⚠Z). One glue for a cut's two sides, four sites: −213 (about −280).
+  - [x] **10n. `7b`** (Opus, ⚠Z). One glue for a cut's two sides, four sites: −213 (about −280).
+    Landed 2026-10-04: −298 net Lean lines, all four sites.
   - [ ] **10o. `q2a` + `b1`** (Sonnet, ⚠Z, mechanical). Theorem55's cut-edge bricks published
     under Arms' names; the PanelLayer hub's `ᶜ`: −105.
     Also delete `Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`), which 10m left with no
@@ -301,11 +306,13 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10m landed; the rest of the landings run.** The smallest next commit is **10n** (Opus, ⚠Z):
-`7b`, one glue for a cut's two realized sides at four sites, the `|C| = 0` producer, #5, the core
-and 10l's pendant glue (spike `scratch/40-simplify/7/Glue.lean`; verdict `7b`). Then 10o–10r in
-order, one commit each at its listed rung; after 10r, task 11 closes the round. 10m left
-`Graph.pencilHub_iff_induce_of_degree_ne` caller-less; 10o deletes it (task 10's entry).
+**10a–10n landed; the rest of the landings run.** The smallest next commit is **10o** (Sonnet, ⚠Z,
+mechanical): `q2a` + `b1`, `Theorem55.lean`'s four private cut-edge bricks published under Arms'
+names (Arms' copies deleted) and the PanelLayer hub's `ᶜ` (verdicts `q2a`, `b1`), with
+`Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`), caller-less since 10m, deleted (task
+10's entry). Since 10n, `finrank_span_rigidityRows_cutEdge_eq` has one caller, the glue
+`exists_hasPencilPanelRealization_glue`. Then 10p–10r in order, one commit each at its listed
+rung; after 10r, task 11 closes the round.
 
 ## Decisions made during this round
 
