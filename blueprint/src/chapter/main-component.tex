@@ -2371,42 +2371,72 @@ the coordinates of a join.
 
 This subsection proves the ear steps for an open ear
 $a - x_1 - \cdots - x_k - b$ on $V_1$ with $k = 2, 3, 4$, whose ends may
-be adjacent. With $\rho$ and $\Lambda$ as in
-\cref{sec:main-component-chain}, the rank grows along the ear by
-$5(k + 1) + \dim(\rho + \Lambda) - 6$ (\cref{lem:block-rank-ear}) and the
-target by $6k - \operatorname{def}(\tilde G) + \operatorname{def}(\tilde
-G[V_1])$. So a configuration over a main picture of $G$, with nonzero
-hinges, at which the rank of $G[V_1]$ is its target, has at least the
-target rank of $G$ as soon as
+be adjacent. We follow the scheme of \cref{sec:main-component-cut}, and
+we count with the ear rank formula of \cref{sec:main-component-chain}.
+The target of $G$ exceeds that of $G[V_1]$ by
+$6k - \operatorname{def}(\tilde G) + \operatorname{def}(\tilde G[V_1])$.
+So a configuration of $G$ over a main picture of $G$, at which $G[V_1]$
+has its target, has rank at least $\operatorname{tgt}(G)$ as soon as
 \[
   \dim(\rho + \Lambda) \;\ge\; k + 1 + \operatorname{def}(\tilde G[V_1])
-  - \operatorname{def}(\tilde G), \qquad (\star)
+  - \operatorname{def}(\tilde G). \qquad (\star)
 \]
-and then the general configuration of $G$ attains
-(\cref{lem:pencil-x0-one-witness}). With two interior bodies, three
-independent hinges suffice when the deficiency of $G$ is at least that of
-$G[V_1]$, and the three joins of the ear are independent at a suitable
-flat configuration.
-With three or four interior bodies no bound on the deficiency is assumed.
-Besides $G[V_1]$, the step then uses $G$ with its second interior body
-$x_2$ suppressed, and the count is taken against it: putting $x_2$ back on a
-line through one of its neighbours raises $\dim(\rho + \Lambda)$ by one
-unless the span already contains every line through that neighbour
-(\cref{lem:pencil-insertion}). If it contains every line through $x_1$
-and every line through $x_3$, then with four interior bodies it contains
-the six edges of a tetrahedron. With three, either some relative screw
-pairs to a nonzero value (\cref{def:pencil-line-pairing}) with some line
-joining the planes of the two ends, and then, for a general ear, with
-the line $x_1 x_3$, so that it lies outside the span of the lines through
-$x_1$ and the lines through $x_3$ (\cref{lem:pencil-two-stars}); or every
-relative screw pairs to zero with every such line, and then the whole
-span has dimension at most three (\cref{lem:pencil-bilinear}). The data on
-$V_1$ are fixed first, from one configuration at which both smaller
-graphs attain, and the data of the ear second
-(\cref{def:pencil-ear-data}).
 
-By \cref{lem:pencil-join-flat} every $c \in \Lambda^2 K^4$ has flat
-coordinates $(\sigma(c), \tau(c)) \in K^3 \times K^3$, with
+With two interior bodies we assume
+$\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G)$.
+Then $(\star)$ holds once the three hinges of the ear are linearly
+independent, and the height is found as in the step at five or more
+interior bodies (\cref{thm:pencil-x0-open-ear}). The three joins of the
+ear are independent at one flat configuration, whose picture need not be
+admissible, and the heights $0$ lie in every lifting space.
+
+With three or four interior bodies no bound on the deficiencies is
+assumed. Instead the step also uses the graph $G''$ obtained from $G$ by
+suppressing $x_2$: the splitting-off $G_{x_2}^{x_1 x_3}$ whose new edge
+$x_1 x_3$ carries the label of $x_1 x_2$ (\cref{def:graph-operations}).
+It has the same $G[V_1]$ and an open ear on $V_1$ with $k - 1$ interior
+bodies. Its deficiency is at most that of $G$
+(\cref{lem:splitoff-deficiency-reuse}).
+
+We count against $G''$. Let $W$ be the span of $\rho$ and the hinges of
+the ear of $G''$. Where $G[V_1]$ and $G''$ have their targets, the ear
+rank formula at $G''$ bounds $\dim W$ below, and $(\star)$ asks for at
+most one dimension more. To gain it we put $x_2$ back on a line through
+the point of $x_1$ or of $x_3$. This raises the span by one unless $W$
+already contains every line through that point
+(\cref{lem:pencil-insertion}). It therefore suffices that $W$ be the
+whole screw space whenever it contains every line through the points of
+$x_1$ and of $x_3$. Then $x_2$ is put at the point of $x_1$, and the span
+still contains $W$. With four interior bodies, such a $W$ contains the six
+lines joining the points of $x_1$, $x_3$, $x_4$ and $b$. These span the
+screw space when the four points are linearly independent
+(\cref{lem:pencil-tetrahedron}). With three, the lines through the points
+of $x_1$ and of $x_3$ span at least five dimensions
+(\cref{lem:pencil-two-stars}). At a general ear, either some relative
+screw lies outside their span, and then such a $W$ is the whole screw
+space, or $W$ has dimension at most three and cannot contain them
+(\cref{lem:pencil-bilinear}).
+
+The configuration is chosen in two stages. First, the picture is chosen
+as in the scheme: general for $G[V_1]$ and for $G''$, and a main picture
+of $G$. At it we take one height of $G''$ at which both smaller graphs
+have their targets. Its restriction to $V_1$ fixes the data on $V_1$, and
+with them $\rho$ and the rank of $G[V_1]$. Second, the bodies of the ear
+move with their heights through a polynomial family of configurations of
+$G$ and of $G''$, the ear data (\cref{def:pencil-ear-data}), and we take
+a general member of this family. Each condition that the step needs is
+the non-vanishing of a polynomial in the ear data that is nonzero at one
+member (\cref{lem:pencil-ear-data-picture},
+\cref{lem:pencil-ear-data-open}).
+
+We first collect the geometry of lines that the count uses, then the ear
+data, and then prove the three steps.
+
+The steps with three and four interior bodies compute ranks with the
+joins of the points as hinges (\cref{lem:pencil-config-point-join-rank}),
+in the screw space $\Lambda^2 K^4$. For $c \in \Lambda^2 K^4$ write
+$(\sigma(c), \tau(c)) \in K^3 \times K^3$ for its flat coordinates
+(\cref{lem:pencil-join-flat}), so that
 $\sigma(p \wedge p') = p_z\,\bar p' - p'_z\,\bar p$ and
 $\tau(p \wedge p') = \bar p \times \bar p'$.
 
@@ -2421,9 +2451,7 @@ $\tau(p \wedge p') = \bar p \times \bar p'$.
   \]
 \end{definition}
 
-The pairing is bilinear and symmetric. The \emph{star} of a point
-$y \in K^4$ is the span $\operatorname{star}(y)$ of the joins
-$y \wedge u$, $u \in K^4$, the lines through $y$.
+The pairing is bilinear and symmetric.
 
 \begin{lemma}[The pairing of two joins]
   \label{lem:pencil-line-pairing-join}
@@ -2442,9 +2470,21 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
   \uses{lem:pencil-join-flat}
   Expand both sides in the coordinates of the four points, with the flat
   coordinates of \cref{lem:pencil-join-flat}. For nondegeneracy, pair $c$
-  with the six screws whose flat coordinates are a unit vector and zero:
-  they read off the coordinates of $\tau(c)$ and of $\sigma(c)$.
+  with the six screws whose flat coordinates are a unit vector and zero.
+  They read off the coordinates of $\tau(c)$ and of $\sigma(c)$.
 \end{proof}
+
+Two lines therefore pair to zero exactly when their four points are
+linearly dependent, that is, when the lines meet. The pairing is the
+classical bilinear form of line geometry. In statics, Crapo and Whiteley
+use it as the product of two wrenches, which on two forces is the same
+determinant~\cite[Examples~2.4--2.5, pp.~49--50]{crapoWhiteley1982}.
+
+The next lemma is the case $d = 3$ of KT
+Lemma~2.1~\cite[pp.~651--652]{katohTanigawa2011}
+(\cref{lem:extensor-independence}), for any four linearly independent
+vectors of $K^4$. Its proof is that of KT, with the pairing in place of
+the join with the opposite edge.
 
 \begin{lemma}[The joins of four independent points]
   \label{lem:pencil-tetrahedron}
@@ -2466,6 +2506,10 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
   vanishes. The space $\Lambda^2 K^4$ has dimension six.
 \end{proof}
 
+The \emph{star} of a point $y \in K^4$ is the span
+$\operatorname{star}(y)$ of the joins $y \wedge u$, $u \in K^4$: the lines
+through $y$.
+
 \begin{lemma}[The lines through two points]
   \label{lem:pencil-two-stars}
   \lean{CombinatorialRigidity.Molecular.star,
@@ -2484,15 +2528,21 @@ $y \wedge u$, $u \in K^4$, the lines through $y$.
   \uses{lem:pencil-line-pairing-join, lem:pencil-tetrahedron}
   A line through $y$ or through $y'$ meets the line $y y'$, so the
   pairing vanishes (\cref{lem:pencil-line-pairing-join}). Extend $y, y'$
-  to a basis $y, y', e, e'$ of $K^4$: five of the six joins of
+  to a basis $y, y', e, e'$ of $K^4$. Five of the six joins of
   \cref{lem:pencil-tetrahedron}, all but $e \wedge e'$, lie in the two
   stars.
 \end{proof}
 
-For $h \in K^3$ write $\hat\pi_h = \{(u_1, u_2, h \cdot u, u_3) : u \in
-K^3\} \subseteq K^4$ for the homogeneous points of the plane
-$z = h_1 x + h_2 y + h_3$, and $\Lambda^2 \hat\pi_h$ for the space of
-screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
+At a height of a graph, the points of the closed neighbourhood of a body
+lie on one plane, the plane of that body: the graph of the affine
+function with which the height agrees there
+(\cref{def:pencil-lifting-space}). In the step with three interior
+bodies, the points of $a$ and $x_1$ lie on the plane of $a$, and those of
+$x_3$ and $b$ on the plane of $b$. For $h \in K^3$ write
+$\hat\pi_h = \{(u_1, u_2, h \cdot u, u_3) : u \in K^3\} \subseteq K^4$
+for the homogeneous points of the plane $z = h_1 x + h_2 y + h_3$, and
+$\Lambda^2 \hat\pi_h$ for the space of screws $c$ with
+$\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{lemma}[The lines of a plane]
   \label{lem:pencil-plane-lines}
@@ -2530,17 +2580,40 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
 \begin{proof}
   \leanok
   \uses{lem:pencil-join-flat}
-  Test the hypothesis on the nine joins of the lift of a unit vector
-  $e_i$ of $K^3$ to $\hat\pi_h$ with the lift of $e_j$ to $\hat\pi_{h'}$.
-  The equations at $(i, i)$, and the sums of those at $(i, j)$ and
-  $(j, i)$, are linear in $\tau(c)$ with coefficients $h_i - h'_i$; when
-  $h \neq h'$ some coefficient is nonzero, and they force $\tau(c) = 0$,
-  after which the remaining equations give $\sigma(c) = 0$. When $h = h'$ the equations say
-  $\sigma(c) = -\, h \times \tau(c)$. For the consequence, if $h \neq h'$
-  then $\rho = 0$; if $h = h'$ then $\rho$ and the $f_i$ lie in
-  $\Lambda^2 \hat\pi_h$, of dimension at most three
-  (\cref{lem:pencil-plane-lines}).
+  For $u, v \in K^3$ let $\hat u \in \hat\pi_h$ and $\hat v \in \hat\pi_{h'}$
+  be the points over them. In the flat coordinates of
+  \cref{lem:pencil-join-flat},
+  \[
+    \langle c, \hat u \wedge \hat v \rangle
+    = \sigma(c) \cdot (u \times v) + (h \cdot u)\,\bigl(v \cdot \tau(c)\bigr)
+      - (h' \cdot v)\,\bigl(u \cdot \tau(c)\bigr).
+  \]
+  We test it on the unit vectors $e_1, e_2, e_3$ of $K^3$, and write
+  $\delta = h - h'$ and $\tau = \tau(c)$.
+
+  Suppose $h \neq h'$, say $\delta_i \neq 0$. At $u = v = e_i$ the
+  pairing is $\delta_i \tau_i$, so $\tau_i = 0$. For $j \neq i$, the sum
+  of the pairings at $(e_i, e_j)$ and at $(e_j, e_i)$ is
+  $\delta_i \tau_j + \delta_j \tau_i$, so $\tau_j = 0$. So $\tau = 0$, and
+  the pairing at $(e_j, e_l)$ is $\sigma(c) \cdot (e_j \times e_l)$. These
+  cross products are the unit vectors up to sign, so $\sigma(c) = 0$.
+
+  Suppose $h = h'$. As
+  $(h \cdot u)(\tau \cdot v) - (h \cdot v)(\tau \cdot u) =
+  (h \times \tau) \cdot (u \times v)$, the pairing is
+  $\bigl(\sigma(c) + h \times \tau\bigr) \cdot (u \times v)$, and the
+  cross products $u \times v$ span $K^3$. So
+  $\sigma(c) = -\, h \times \tau(c)$.
+
+  For the consequence, if $h \neq h'$ then $\rho = 0$. If $h = h'$ then
+  $\rho$ and the $f_i$ lie in $\Lambda^2 \hat\pi_h$, of dimension at most
+  three (\cref{lem:pencil-plane-lines}).
 \end{proof}
+
+In the steps, the points $y$ and $y'$ of the next lemma are those of
+$x_1$ and $x_3$, in either order. Then $W$ is the span for $G''$, with the join
+$y \wedge y'$ at its edge $x_1 x_3$, and $W_t$ is the span for $G$ with
+$x_2$ put back at $y + t u$.
 
 \begin{lemma}[Putting a body back next to a neighbour]
   \label{lem:pencil-insertion}
@@ -2561,23 +2634,32 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \leanok
   Write $R = \rho + \operatorname{span} F$. For $t \neq 0$,
   $y \wedge (y + t u) = t\,(y \wedge u)$ and
-  $(y + t u) \wedge y' = v_t$ with $v_t = y \wedge y' + t\,(u \wedge y')$,
-  so $W_t$ contains $R$, $y \wedge u$ and $v_t$. A vector $v$ outside a
+  $(y + t u) \wedge y' = v_t$ with $v_t = y \wedge y' + t\,(u \wedge y')$.
+  So $W_t$ contains $R$, $y \wedge u$ and $v_t$. A vector $v$ outside a
   subspace $S$ has $v + t w \notin S$ for one of any two distinct nonzero
-  values of $t$, since otherwise $S$ contains $w$ and then $v$; as $K$ is
+  values of $t$, since otherwise $S$ contains $w$ and then $v$. As $K$ is
   infinite, two such values exist.
 
-  If $y \wedge y' \in R$, then $W = R \subseteq W_t$, and when
+  If $y \wedge y' \in R$, then $W = R \subseteq W_t$. When moreover
   $y \wedge u \notin W$, $\dim W_t \ge \dim\bigl(R + K\,(y \wedge u)\bigr)
-  = \dim W + 1$ for every $t \neq 0$. Otherwise $\dim W = \dim R + 1$, and
-  some $t \neq 0$ has $v_t \notin R$, so that
-  $\dim W_t \ge \dim(R + K v_t) = \dim W$. If moreover
-  $y \wedge u \notin W$, then $y \wedge y' \notin R + K\,(y \wedge u)$,
-  since a relation $y \wedge y' = r + c\,(y \wedge u)$ with $r \in R$ has
-  $c \neq 0$ and puts $y \wedge u$ in $W$. So some $t \neq 0$ has
+  = \dim W + 1$ for every $t \neq 0$.
+
+  Otherwise $\dim W = \dim R + 1$, and some $t \neq 0$ has
+  $v_t \notin R$, so that $\dim W_t \ge \dim(R + K v_t) = \dim W$. If
+  moreover $y \wedge u \notin W$, then
+  $y \wedge y' \notin R + K\,(y \wedge u)$, since a relation
+  $y \wedge y' = r + c\,(y \wedge u)$ with $r \in R$ has $c \neq 0$ and
+  puts $y \wedge u$ in $W$. So some $t \neq 0$ has
   $v_t \notin R + K\,(y \wedge u)$, and $\dim W_t \ge \dim R + 2 =
   \dim W + 1$.
 \end{proof}
+
+The ear data below parametrize the second stage of the configuration.
+They serve the steps with three and four interior bodies, and the step
+with two interior bodies at non-adjacent ends
+(\cref{thm:pencil-x0-open-ear-two-orbit}). In the steps with three and
+four interior bodies, the same ear data also give configurations of
+$G''$, whose ear has the same first and last interior bodies.
 
 \begin{definition}[The ear data over fixed base data]
   \label{def:pencil-ear-data}
@@ -2589,10 +2671,10 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   data}: a picture $q_1$, heights $z_1 \in L_{G[V_1]}(q_1)$, and $h_a, h_b \in K^3$ with
   $z_1(w) = h_a \cdot (q_1(w), 1)$ on the closed neighbourhood of $a$ in $G[V_1]$, and likewise $h_b$
   at $b$. The \emph{ear data} are a point $s$ giving every body a point of $K^2$ and a value in $K$.
-  They give the picture $q(s)$ (\texttt{earPicture}), equal to $q_1$ on $V_1$ and to the points of
-  $s$ elsewhere, and the height $z(s)$ (\texttt{earHeight}), equal to $z_1$ on $V_1$, to
-  $h_a \cdot (q(s)_{x_1}, 1)$ at $x_1$, to $h_b \cdot (q(s)_{x_k}, 1)$ at $x_k$, to the value of $s$
-  at the other interior bodies, and to $0$ elsewhere. The point $(q(s), z(s))$ is \texttt{earConfig}.
+  They give the picture $q(s)$, equal to $q_1$ on $V_1$ and to the points of $s$ elsewhere, and
+  the height $z(s)$, equal to $z_1$ on $V_1$, to $h_a \cdot (q(s)_{x_1}, 1)$ at $x_1$, to
+  $h_b \cdot (q(s)_{x_k}, 1)$ at $x_k$, to the value of $s$ at the other interior bodies, and to
+  $0$ elsewhere. The configuration of $s$ is $(q(s), z(s))$.
 \end{definition}
 
 \begin{lemma}[An open ear over fixed base data]
@@ -2602,25 +2684,28 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \leanok
   \uses{def:pencil-ear-data, def:pencil-lifting-space, def:pencil-admissible-picture,
         def:pencil-configuration}
-  If $q(s)$ is admissible for $G$, then $z(s) \in L_G(q(s))$
-  (\texttt{Graph.earHeight\_mem\_liftingSpace}). The points of the configuration $(q(s), z(s))$ are
-  polynomial in $s$ (\texttt{eval\_earPointPoly}), and on $V_1$ they are those of $(q_1, z_1)$
-  (\texttt{earConfig\_of\_mem}).
+  If $q(s)$ is admissible for $G$, then $z(s) \in L_G(q(s))$. The points of the configuration
+  $(q(s), z(s))$ are polynomial in $s$, and on $V_1$ they are those of $(q_1, z_1)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-ear-fibre, lem:pencil-picture-local}
-  The lifting space of $G[V_1]$ and the closed neighbourhoods of $a$ and $b$ in $G[V_1]$
-  read the picture only on $V_1$, where $q(s)$ is $q_1$ (\cref{lem:pencil-picture-local}). So
-  $z(s)$ agrees with an affine function of the picture on the closed neighbourhood in $G$ of every
-  body of $V_1$: with $h_a$ at $a$, since the neighbourhood is that in $G[V_1]$ together with $x_1$;
-  with $h_b$ at $b$, likewise with $x_k$, which differs from $x_1$ since $k \ge 2$; and with the
-  affine function of $z_1$ at any other body of $V_1$, whose closed neighbourhood lies in $V_1$.
-  It vanishes off $V(G)$, so \cref{lem:pencil-ear-fibre}(1) applies. Every coordinate of a point
-  of the configuration is a constant, a coordinate of $s$, or, at $x_1$ and $x_k$, affine in the
-  picture coordinates of $s$, which proves the polynomial claim; on $V_1$ they are the coordinates
-  of the base data.
+  The lifting space of $G[V_1]$ and the closed neighbourhoods of $a$ and $b$ in $G[V_1]$ read
+  the picture only on $V_1$, where $q(s)$ is $q_1$ (\cref{lem:pencil-picture-local}). So $z(s)$
+  agrees with an affine function of the picture on the closed neighbourhood in $G$ of every body
+  of $V_1$. At $a$ this neighbourhood is the one in $G[V_1]$ together with $x_1$, and $z(s)$
+  agrees with $h_a$ on it. At $b$ it is the one in $G[V_1]$ together with $x_k$, which differs
+  from $x_1$ as $k \ge 2$, and $z(s)$ agrees with $h_b$ on it. At any other body of $V_1$ it lies
+  inside $V_1$, where $z(s)$ is $z_1$. As $z(s)$ vanishes off $V(G)$,
+  \cref{lem:pencil-ear-fibre}(1) applies.
+
+  Every coordinate of a point of the configuration is a constant, a coordinate of $s$, or, at
+  $x_1$ and $x_k$, affine in the picture coordinates of $s$. This proves the polynomial claim. On
+  $V_1$ the coordinates are those of the base data.
 \end{proof}
+
+The next two lemmas make each condition of the steps a polynomial
+condition on the ear data.
 
 \begin{lemma}[Pictures along the ear data]
   \label{lem:pencil-ear-data-picture}
@@ -2642,23 +2727,21 @@ screws $c$ with $\sigma(c) = -\, h \times \tau(c)$.
   \leanok
   \uses{def:pencil-configuration, def:pencil-x0-attains}
   Let the points of a configuration be polynomial in a parameter $s$. If, at one parameter,
-  every hinge of a graph $H$ is nonzero and the rank is at least $r$, there is a polynomial in
-  $s$, nonzero there, such that the rank is at least $r$ wherever it does not vanish
-  (\texttt{exists\_mvPolynomial\_le\_finrank\_ofNormals\_bind}). If, at one
-  parameter, $\dim(\rho + \operatorname{span} F) \ge n$ for a fixed subspace
-  $\rho \subseteq \Lambda^2 K^4$ and a family $F$ of joins of points of the configuration,
-  the same holds for this bound
-  (\texttt{exists\_mvPolynomial\_le\_finrank\_sup\_span\_pointJoin}).
+  every hinge of a graph $H$ is nonzero and the rank of $H$ is at least $r$, there is a
+  polynomial in $s$, nonzero there, such that the rank of $H$ is at least $r$ wherever it does
+  not vanish. If, at one parameter, $\dim(\rho + \operatorname{span} F) \ge n$ for a fixed
+  subspace $\rho \subseteq \Lambda^2 K^4$ and a family $F$ of joins of points of the
+  configuration, the same holds for this bound.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-polynomial-of-le-finrank, lem:pencil-join-flat}
   For the rank bound, substitute the points into the polynomial of
   \cref{lem:rank-polynomial-of-le-finrank}, which asks for the nonzero hinges. For the span, take a
-  basis of $\rho$ together with $F$: the coordinates of its members are polynomial in $s$
-  (\cref{lem:pencil-join-flat}), $n$ of them are linearly independent at the given parameter, and
-  they stay independent wherever a maximal minor of their coordinate matrix, nonzero there, does not
-  vanish.
+  basis of $\rho$ together with $F$. The coordinates of its members are polynomial in $s$
+  (\cref{lem:pencil-join-flat}), and $n$ of them are linearly independent at the given parameter.
+  They stay independent wherever a maximal minor of their coordinate matrix, nonzero there, does
+  not vanish.
 \end{proof}
 
 \begin{theorem}[An open ear with two interior bodies]

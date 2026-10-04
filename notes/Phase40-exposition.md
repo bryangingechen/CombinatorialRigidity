@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 15 landed (tasks 1–15; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 16 landed (tasks 1–16; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 16, `sec:main-component-short`'s toolkit, against the pinned exemplar
+task 17, the three steps of `sec:main-component-short`, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. Round manual: `CLEANUP.md`.
 
@@ -57,12 +57,13 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–15
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–16
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first six subsections are done; next is task 16,
-the toolkit of `sec:main-component-short`. Items 1, 2, 3, 4, 7 and 8 are written.
+introduction (task 24), and `main-component.tex`'s first six subsections are done, with the opening
+and toolkit of the seventh; next is task 17, the three steps of `sec:main-component-short`. Items 1,
+2, 3, 4, 7 and 8 are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -83,7 +84,6 @@ the toolkit of `sec:main-component-short`. Items 1, 2, 3, 4, 7 and 8 are written
 - **Nodes outside the headline's closure** of `thm:pencil-conjecture`: 21 of `pencil.tex`'s 41
   (placed by tasks 3–8), and `thm:pencil-x0-main-component`, `thm:pencil-x0-closed-ear`. Liveness is
   read in the Lean call chain (`CLEANUP.md` §B) before prose calls anything "off the proof".
-- Lean names in statement blocks: in task 16's entry.
 
 ## Scope and standing rules
 
@@ -182,29 +182,29 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   scheme; the curve, the rescaling, the kernel and the one plane lead; KT §6.2, Lemma 6.3 and Claim
   6.4 checked (pp. 673–675). *(f):* *neighbour of `W`* replaces *attachment*; for task 25, *core*,
   *planar deficiency*.
-- [x] **15. M6 — `sec:main-component-chain`** (this commit). Every diagnosis bullet done:
-  - *The ear rank formula* is displayed in the opening, with `ρ` and `Λ`, why it holds (the path
-    and `G[V₁]` share the joint rows confining the relative screw to `ρ + Λ`), and the count.
-  - *The key idea* is in the opening: one configuration suffices, over a non-admissible picture,
-    if its heights are heights of `G`. The remark after the open ear is cut (default (a)).
-  - *The closed ear* is said to be unused (`lem:pencil-x0-cut-reduces`; no caller in the Lean).
-    `rem:pencil-x0-ear-class` is shortened, and corrected: closed ears need two interior bodies.
-  - Item 1 written. *(f):* standard, *ear*, *interior body*, *join*; in a node, *relative screws*,
-    *joint rows*; for task 25, *flat coordinates*, *structural coverage*. Forward `\cref`s:
-    `sec:main-component-short`, `-orbit`, `lem:pencil-x0-cut-reduces`, `thm:pencil-x0-coverage`.
-- [ ] **16. M7a — `sec:main-component-short`'s toolkit, 1967–2261.** `def:pencil-line-pairing`
-  through `lem:pencil-ear-data-open`; 11 nodes.
-  - The pairing, `⟨p∧q, r∧s⟩ = det(p, q, r, s)`, stars and plane lines are classical line
-    geometry: the Plücker bilinear form, under which two lines meet exactly when they pair to
-    zero. Name it and cite it after checking, or call it classical.
-  - The preamble's case analysis for `k = 3` runs ahead of its definitions.
-  - Move the Lean names out of the ear-data statement blocks.
+- [x] **15. M6 — `sec:main-component-chain`** (`698af66a`; full entry there). The ear rank formula
+  and the one-configuration idea lead the opening; the closed ear is unused; `rem:pencil-x0-ear-class`
+  corrected. Item 1 written. *(f):* in a node, *relative screws*, *joint rows*; for task 25, *flat
+  coordinates*, *structural coverage*.
+- [x] **16. M7a — `sec:main-component-short`'s opening and toolkit** (this commit). All bullets done:
+  - *The pairing* is the classical bilinear form of line geometry: two lines pair to zero exactly
+    when they meet (Crapo–Whiteley Examples 2.4–2.5, pp. 49–50, checked). `lem:pencil-tetrahedron`
+    is KT Lemma 2.1 at `d = 3` (pp. 651–652, checked).
+  - *The preamble* uses only defined terms: `(⋆)`, the count against `G″`, the two stages. Stars and
+    planes come where first used; `lem:pencil-bilinear`'s proof is written out. *Lean names* left
+    the ear-data statements. *(f):* in a node, *pairing*, *ear data*, *base data*; standard, *star*,
+    *suppressing*; local, `σ`, `τ`, `π̂_h`, `Λ²π̂_h`, `W`. Forward `\cref`s: the opening's to the
+    insertion, tetrahedron, two-stars, bilinear and ear-data nodes; `thm:pencil-x0-open-ear-two-orbit`.
 - [ ] **17. M7b — SHORT's three steps, 2262–2583.** `thm:pencil-x0-open-ear-two`, `-four`,
   `-three`, and four remarks.
   - State the idea before the proofs. Count against `G″`, then put `x₂` back on a line through a
     neighbour: this gains a dimension unless `W` holds every line through `x₁` and `x₃`, and then
     `W` is everything (the tetrahedron, or the split on `ρ`).
   - The remark after the four-body step compares with the informal argument: default (a).
+  - From task 16: the opening now states the steps' idea and the configuration's two stages, so
+    bullet 1 is met there; keep one account (F *Once*). The remarks after the two- and three-body
+    steps repeat the opening. "The general assembly of an open-ear step with an antecedent" and
+    "two rounds of ear data", in the proofs, are coinages: use the opening's two stages.
   - **Writes item 5's recommendation.**
 - [ ] **18. M8 — `sec:main-component-orbit`, 2584–2951.**
   - The key ideas sit in the closing remark; lead with them. The one-body ear picks `x₁`'s
@@ -419,6 +419,9 @@ mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
   The first pins a definition with its unfolding, two facts and a polynomial helper with its
   evaluation; the second its step with four path helpers and three counts. Splitting or unpinning
   changes the pins. `lem:pencil-contract-standing` (4 pins, task 14) is of the same kind.
+- **Two toolkit halves have no caller** (task 16, read in the Lean): the pairing's nondegeneracy
+  (`eq_zero_of_kleinLin_eq_zero`, in `lem:pencil-line-pairing-join`) and the no-loss half of
+  `lem:pencil-insertion` (`exists_insertion_ge`). Dropping them changes the statements and pins.
 
 ## Moved to a later round
 
@@ -447,7 +450,7 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 16** (checklist above has its scope); then tasks 17–26 in order, and task 27 closes
+**Next: task 17** (checklist above has its scope); then tasks 18–26 in order, and task 27 closes
 the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
@@ -456,10 +459,11 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
   moved per *Moved to a later round*; (ii) carry the section's (f) coinage list, each coinage
   marked standard, defined in a node, or left for task 25's notation paragraph; (iii) name every
   forward `\cref` it adds.
-- **For tasks 16–19** (from tasks 13 and 15). `sec:main-component-cut`'s opening displays the steps'
-  shared scheme (the picture, the height, the count). Cite it rather than re-derive it, and say how
-  the step varies the height. `sec:main-component-chain`'s opening displays the ear rank formula,
-  with `ρ` and `Λ`: tasks 16–18 cite it there, and keep its claims true.
+- **For tasks 17–19** (from tasks 13, 15 and 16). `sec:main-component-cut`'s opening displays the
+  steps' shared scheme (the picture, the height, the count). Cite it rather than re-derive it, and
+  say how the step varies the height. `sec:main-component-chain`'s opening displays the ear rank
+  formula, with `ρ` and `Λ`, and `sec:main-component-short`'s displays `(⋆)`: tasks 17–18 cite them
+  there, and keep their claims true.
 
 ## Decisions made during this round
 
