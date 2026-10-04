@@ -1177,9 +1177,10 @@ account of the whole induction stays with the Phase-39 entry
 ledger is now **2 pending / 41 done** (of 43).
 
 - **`thm:pencil-x0-open-ear-two-orbit` / `Graph.X0Attains.of_openEar_two_of_splitOff`, with
-  `lem:pencil-insertion-two` and `lem:pencil-one-ear-base`** — [done (the subsection preamble, the
-  nodes' proofs and the remark after the two-body theorem, at the 40i close)] **(b)** the informal
-  proof first proved the `k = 2`, `a ≁ b` open-ear step against `G′ = G[V₁]` alone, through
+  `lem:pencil-insertion-two` and `lem:pencil-one-ear-base`** — [done (the subsection preamble and the
+  nodes' proofs, at the 40i close; round 3 of the post-Phase-40 cleanup folded the remark after the
+  two-body theorem into the preamble)] **(b)** the informal proof first proved the `k = 2`, `a ≁ b`
+  open-ear step against `G′ = G[V₁]` alone, through
   (MC-22)'s reduction. It described the bad subspaces `B₂(r)` of `ρ` by a dimension count over the
   ear's placements, one orbit of the ends' flag pair at a time ((MC-46), with the orbit table
   (MC-138)), and needed `dim U ≠ 1`. The ORBIT recon (2026-09-26) found the shorter route, now
