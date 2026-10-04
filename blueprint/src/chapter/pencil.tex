@@ -42,15 +42,12 @@ without one. At a simple two-edge-connected multigraph both follow from
 two statements (\cref{def:pencil-main-component-statements}), which
 \cref{sec:main-component} proves by lifting pictures of $G$ in the plane.
 
-Three parts of the chapter are not used in the proof of
+Two parts of the chapter are not used in the proof of
 \cref{thm:pencil-conjecture}. \Cref{sec:pencil-duality} shows that the
 polarity of \cref{lem:panel-hinge-dual-molecular} takes a pencil
 realization to one with the panel normals and the points exchanged.
 This chapter uses the polarity nowhere else. \Cref{sec:pencil-cycle}
 realizes the cycles on three and four bodies as pencil realizations.
-\Cref{sec:pencil-girth-chain} derives the shape of a simple
-two-edge-connected multigraph with no proper rigid subgraph around a
-body of degree two.
 
 \subsection{Extensors through a point}
 \label{sec:pencil-through-point}
@@ -283,39 +280,13 @@ Katoh--Tanigawa realize the base of their induction directly, at one
 and two bodies (\cref{lem:theorem-55-base-producer}). Asking the hinges
 at a body to pass through one point has content only at degree three or
 more, so on two bodies it has content only when three or more edges
-join them. The parallel-pair realization below serves every such class:
-each further edge reuses one of its two hinges, and both pass through a
-common point. \cref{lem:pencil-base-case} assembles this with the
-edgeless and single-edge cases into the base case of
-\cref{thm:pencil-reduction}.
-
-\begin{lemma}[Two-body coincident-panel pencil realization]
-  \label{lem:pencil-base-parallel-pair}
-  \lean{CombinatorialRigidity.Molecular.exists_pencilPanelRealization_parallel_pair}
-  \leanok
-  \uses{def:pencil-panel-realization, def:rank-hypothesis}
-  Let $G$ be a two-vertex minimal-$0$-dof multigraph realizing the
-  parallel-pair case (\cref{lem:theorem-55-base-producer-parallel}):
-  $V(G) = \{x, y\}$ with $x \ne y$ and $E(G) = \{e, f\}$ two distinct
-  edges both joining $x$ and $y$. Then $G$ has a pencil realization
-  (\cref{def:pencil-panel-realization}) that is infinitesimally rigid on
-  its two bodies $V(G) = \{x, y\}$ (\cref{def:rank-hypothesis}, the
-  $V(G)$-relative rank $D$ of the $\mathrm{def}(\tilde G) = 0$ case).
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:extensor-pair-through-point, lem:theorem-55-base}
-  Place both bodies on a single panel $n^{\perp}$ at a fixed nonzero
-  normal $n$ with a single shared concurrency point $q \in n^{\perp}$,
-  and assign the two parallel hinges the two independent pencil lines
-  through $q$ of \cref{lem:extensor-pair-through-point}; every edge label
-  off $\{e, f\}$ reuses the first hinge, so all supporting extensors are
-  nonzero. Each hinge lies in the common panel and passes through the
-  common point, so the data is a pencil realization. The two independent
-  supporting extensors give the combined hinge-row blocks full rank on
-  the relative screw $S(x) - S(y)$, so the framework is infinitesimally
-  rigid on $\{x, y\} = V(G)$ (\cref{lem:theorem-55-base}).
-\end{proof}
+join them. \cref{lem:pencil-base-case} handles such a class by placing
+both bodies on a single panel at a fixed normal, with two independent
+hinges through a common point of the panel
+(\cref{lem:extensor-pair-through-point}) making the two bodies rigid
+(\cref{lem:theorem-55-base}); each further edge reuses one of the two
+hinges. It assembles this with the edgeless and single-edge cases into
+the base case of \cref{thm:pencil-reduction}.
 
 \subsection{Pencil cycles: degree-two concurrency is automatic}
 \label{sec:pencil-cycle}
@@ -804,7 +775,7 @@ automorphism.
   \label{lem:pencil-base-case}
   \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_ncard_le_two}
   \leanok
-  \uses{def:pencil-rank-hypothesis, lem:pencil-base-parallel-pair}
+  \uses{def:pencil-rank-hypothesis, lem:extensor-pair-through-point, lem:theorem-55-base}
   Every loopless multigraph with at most two vertices has a pencil
   realization at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
 \end{lemma}
@@ -815,8 +786,8 @@ automorphism.
   $D - 1$, which one nonzero hinge in the panel through $q$ attains.
   With a class of two or more parallel edges it is $D$. Two edges of the
   class get the two independent hinges of
-  \cref{lem:pencil-base-parallel-pair}, which make the two bodies rigid,
-  and every further edge reuses the second hinge.
+  \cref{lem:extensor-pair-through-point}, which make the two bodies rigid
+  (\cref{lem:theorem-55-base}), and every further edge reuses the second hinge.
 \end{proof}
 
 \begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]
@@ -1229,256 +1200,4 @@ from the conditioned pair at smaller multigraphs
   \cref{thm:pencil-conditional-realization-main-component}. The second
   claim is \cref{thm:pencil-conditioned-pair-nonempty}, on which the
   proof of the generic statement rests.
-\end{proof}
-
-\subsection{Girth and degree-two chains under no proper rigid subgraph}
-\label{sec:pencil-girth-chain}
-
-This subsection concerns a vertex $v$ of degree two in a simple
-two-edge-connected multigraph $G$ with no proper rigid subgraph
-(\cref{def:rigid-subgraph}). One neighbour of $v$ is not a pencil hub
-(\cref{def:pencil-nondegenerate}). We prove what these hypotheses imply
-about the shape of $G$ around $v$. The proof of
-\cref{thm:pencil-conjecture} does not use these results.
-
-Let $D = \binom{n+1}{2} \ge 3$. In a multigraph with no proper rigid
-subgraph, a cycle on at most $D$ vertices is rigid, and so it passes
-through every vertex (\cref{lem:pencil-short-cycle-spanning}). Hence the
-girth of $G$ exceeds $D$ once some vertex has degree at least three
-(\cref{lem:pencil-girth-of-hub}). At $n = 3$, where $D = 6$, the girth is
-then at least seven. So the closed neighbourhoods of two distinct
-vertices share at most two vertices
-(\cref{lem:pencil-closed-nbhd-girth-five}).
-
-The neighbour of $v$ that is not a pencil hub has degree two, since $G$ is
-two-edge-connected (\cref{def:cut-edges-2ec}). There are then three cases
-(\cref{lem:pencil-degree-two-chain}). First, $G$ may be a cycle. Second,
-$v$ may lie on a cycle through a single pencil hub whose other vertices
-have degree two; that hub is then a cut vertex of $G$. Third, $v$ may lie
-on a chain $w u_1 \dots u_m w'$ between two distinct pencil hubs, whose
-$m \ge 2$ interior vertices have degree two.
-
-In the third case the interior vertices have no edges off the chain, so
-$\{w, w'\}$ separates them from the rest of $G$. Deleting them leaves a
-connected multigraph, in which $w$ and $w'$ each have one edge fewer
-(\cref{lem:pencil-chain-side-connected}). Across this separation, the
-rank of a realization of $G$ is determined by its restrictions to the two
-sides (\cref{cor:block-rank-vertex-two-cut}). Every path from $w$ to $w'$
-that avoids the interior vertices has at least $D - m$ edges
-(\cref{lem:pencil-chain-side-distance}). In particular, $w$ and $w'$ are
-not adjacent when $m \le D - 2$.
-
-The structural coverage of \cref{sec:main-component-coverage} uses chains
-in the same sense, between two vertices of degree at least three, and
-allows a single interior vertex (\cref{def:pencil-x0-chain}). Where the
-coverage extracts chains, the graph is 2-connected and has a vertex of
-degree other than two, so the first two cases cannot occur. The coverage
-finds its chains directly (\cref{lem:pencil-x0-chain-exists}) and does
-not use this subsection.
-
-\begin{definition}[Girth]
-  \label{def:girth}
-  \lean{Graph.GirthGE, Graph.GirthGE.mono, Graph.GirthGE.anti}
-  \leanok
-  A \emph{cycle on $m$ vertices} of a multigraph $G$, for $m \ge 3$,
-  consists of $m$ distinct vertices $v_0, \dots, v_{m-1}$ and $m$ distinct
-  edges $e_0, \dots, e_{m-1}$ with $e_i$ joining $v_i$ to $v_{i+1}$, indices
-  taken modulo $m$. The multigraph $G$ has \emph{girth at least $g$} when it
-  has no cycle on $m$ vertices for any $3 \le m < g$. In particular, loops
-  and pairs of parallel edges are not cycles.
-\end{definition}
-
-\begin{lemma}[Short cycles are spanning]
-  \label{lem:pencil-short-cycle-spanning}
-  \lean{Graph.range_vtx_eq_vertexSet_of_cycle_of_noRigid}
-  \leanok
-  \uses{def:girth, def:rigid-subgraph}
-  Let $G$ be a multigraph with no proper rigid subgraph and
-  $D = \binom{n+1}{2} \ge 3$. Then every cycle of $G$ on $m$ vertices with
-  $3 \le m \le D$ passes through every vertex of $G$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:chain-cycle-dichotomy, def:rigid-subgraph}
-  Let $H$ be the subgraph formed by the cycle's vertices and edges, and
-  let $P$ be a partition of $V(H)$ into $p \ge 2$ parts. Each part contains
-  a vertex whose successor along the cycle lies in another part, so at
-  least $p$ edges of $H$ join distinct parts. Hence
-  $\operatorname{def}_{\tilde H}(P) \le D(p - 1) - (D - 1)p = p - D \le 0$,
-  as $p \le m \le D$. So $\operatorname{def}(\tilde H) = 0$, and $H$ is
-  rigid, as in the proof of \cref{lem:chain-cycle-dichotomy}. It has at least two vertices, so if its
-  vertex set were a proper subset of $V(G)$ it would be a proper rigid
-  subgraph.
-\end{proof}
-
-\begin{lemma}[Girth exceeds $D$ once some vertex has degree three]
-  \label{lem:pencil-girth-of-hub}
-  \lean{Graph.girthGE_of_noRigid_of_three_le_degree}
-  \leanok
-  \uses{def:girth, def:rigid-subgraph}
-  Let $G$ be a simple multigraph with no proper rigid subgraph,
-  $D = \binom{n+1}{2} \ge 3$, and suppose some vertex of $G$ has degree at
-  least three. Then $G$ has girth at least $D + 1$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-short-cycle-spanning}
-  Suppose $G$ has a cycle $C$ on $m \le D$ vertices. By
-  \cref{lem:pencil-short-cycle-spanning} it passes through every vertex, so
-  $|V(G)| = m$ and the vertex $w$ of degree at least three lies on $C$.
-  Let $g$ be an edge at $w$ other than its two edges on $C$. As $G$ has no
-  loop, $g$ joins $w$ to another vertex $z$ of $C$. As $G$ has no parallel
-  edges, $z$ is not a neighbour of $w$ along $C$, so $g$ is a chord. The
-  two arcs of $C$ between $w$ and $z$ have $a$ and $b$ edges, where
-  $a + b = m$ and $a, b \ge 2$. The arc with $a$ edges, together with $g$,
-  forms a cycle on $a + 1$ vertices, and $3 \le a + 1 \le m - 1$. So that
-  cycle does not pass through every vertex, which contradicts
-  \cref{lem:pencil-short-cycle-spanning}.
-\end{proof}
-
-\begin{lemma}[Closed neighbourhoods at girth five]
-  \label{lem:pencil-closed-nbhd-girth-five}
-  \lean{Graph.ncard_closedNbhd_inter_le_two_of_girthGE}
-  \leanok
-  \uses{def:girth, def:pencil-nondegenerate}
-  Let $G$ be a multigraph of girth at least five and $v \ne h$ two of its
-  vertices. Then the closed neighbourhoods of $v$ and $h$
-  (\cref{def:pencil-nondegenerate}) share at most two vertices.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Suppose they share three vertices. If $v$ and $h$ are adjacent, they
-  have a common neighbour $x$, and $v, h, x$ form a cycle on three
-  vertices. Otherwise they have two common neighbours $x \ne y$, and
-  $v, x, h, y$ form a cycle on four vertices. In either case the edges are
-  distinct, because their pairs of ends are. Both cycles contradict girth
-  at least five.
-\end{proof}
-
-We find the chain through $v$ by extending a path along vertices of degree
-two, first in one direction and then in the other.
-
-\begin{lemma}[Extending a degree-two chain]
-  \label{lem:pencil-chain-walk-extension}
-  \lean{Graph.exists_cycleData_or_closed_or_terminated_of_twoEdgeConnected}
-  \leanok
-  \uses{def:cut-edges-2ec, def:cycle-data}
-  Let $G$ be a simple two-edge-connected multigraph and
-  $P = x_0 x_1 \dots x_k$ a path with $k \ge 1$ whose vertices
-  $x_1, \dots, x_k$ all have degree two. Then one of the following holds:
-  $G$ is a cycle (\cref{def:cycle-data}); $P$ extends to a closed walk
-  $x_0 x_1 \dots x_k \dots x_0$ returning to $x_0$, where $x_0$ has degree
-  at least three and all other vertices of the walk are distinct and of
-  degree two; or $P$ extends to a path $x_0 x_1 \dots x_k \dots x_\ell$
-  whose interior vertices have degree two and whose last vertex $x_\ell$
-  has degree at least three.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{def:cut-edges-2ec, def:cycle-data}
-  We extend $P$ one vertex at a time, by induction on $|V(G)| - k$. This
-  number is positive, as the $k + 1$ vertices of $P$ are distinct. The vertex
-  $x_k$ has degree two, so it has a second edge, to a vertex $y$.
-
-  Suppose first that $y$ is not on $P$. If $y$ has degree at least three,
-  the path $x_0 \dots x_k y$ is the third alternative. Otherwise $y$ has
-  degree two, as every vertex of a two-edge-connected multigraph has
-  degree at least two (\cref{def:cut-edges-2ec}). The path
-  $x_0 \dots x_k y$ then satisfies the hypothesis, and we continue from it.
-
-  Suppose next that $y$ is on $P$. The vertices $x_1, \dots, x_{k-1}$
-  already have both of their edges on $P$, and $y = x_k$ would give a
-  loop. So $y = x_0$, and $k \ge 2$, since for $k = 1$ the second edge of
-  $x_1$ would be parallel to the first. If $x_0$ has degree two, every
-  vertex of the closed walk has both of its edges on the walk. Then no
-  edge leaves the walk's vertex set. As $G$ is connected, the walk is all
-  of $G$, and $G$ is a cycle. Otherwise $x_0$ has degree at least
-  three, and the closed walk is the second alternative.
-\end{proof}
-
-\begin{lemma}[The maximal degree-two chain through the split vertex]
-  \label{lem:pencil-degree-two-chain}
-  \lean{Graph.cycleData_or_hubLollipop_or_hubChain_of_degree_two_pair}
-  \leanok
-  \uses{def:cut-edges-2ec, def:cycle-data, def:pencil-nondegenerate}
-  Let $G$ be a simple two-edge-connected multigraph, $v$ a vertex of degree
-  two whose two edges $e_a \ne e_b$ join it to $a$ and $b$, and suppose $a$
-  or $b$ has degree two. Then one of the following holds:
-  \begin{enumerate}
-    \item $G$ is a cycle (\cref{def:cycle-data});
-    \item there is a closed walk $w u_1 \dots u_m w$ with $m \ge 2$ through
-      a pencil hub $w$, whose vertices $u_1, \dots, u_m$ are distinct, of
-      degree two, and include $v$;
-    \item there is a path $w u_1 \dots u_m w'$ with $m \ge 2$ between two
-      distinct pencil hubs $w \ne w'$, whose interior vertices
-      $u_1, \dots, u_m$ have degree two and include $v$.
-  \end{enumerate}
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-chain-walk-extension}
-  Say $a$ has degree two, and apply \cref{lem:pencil-chain-walk-extension}
-  to the path $v a$. Its closed-walk alternative would return to $v$, which
-  has degree two. So, unless $G$ is a cycle, it gives a path $v a \dots w'$
-  ending at a hub $w'$. Apply the lemma again to the reversed path
-  $w' \dots a v$, extending at $v$ along $e_b$. The closed-walk alternative
-  returns to $w'$ and is case~(2), with $w = w'$. The path alternative ends
-  at a second hub $w$, distinct from $w'$ as a path has distinct ends, and
-  is case~(3). In both cases $v$ and $a$ are interior vertices, so
-  $m \ge 2$.
-\end{proof}
-
-\begin{lemma}[The side of a degree-two chain]
-  \label{lem:pencil-chain-side-connected}
-  \lean{Graph.connected_deleteVerts_interior_of_twoEdgeConnected,
-    Graph.degree_deleteVerts_interior_add_one}
-  \leanok
-  \uses{def:cut-edges-2ec}
-  Let $G$ be a loopless two-edge-connected multigraph and
-  $P = w u_1 \dots u_m w'$ a path with $m \ge 1$ whose interior vertices
-  $u_1, \dots, u_m$ have degree two. Then the multigraph
-  $G - \{u_1, \dots, u_m\}$ is connected, and $w$ and $w'$ each have degree
-  exactly one less in it than in $G$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{def:cut-edges-2ec}
-  Every edge at an interior vertex is one of its two chain edges. Hence a
-  connected component of $G - \{u_1, \dots, u_m\}$ containing neither $w$
-  nor $w'$ is left by no edge of $G$, and a component containing exactly
-  one of $w, w'$, taken together with the chain, is left by exactly one
-  edge; both contradict two-edge-connectivity. So $w$ and $w'$ lie in the
-  same component, which is therefore all of $G - \{u_1, \dots, u_m\}$. The
-  only edge at $w$ into the chain is $w u_1$, as a second one would give
-  some $u_i$ degree three. So exactly one edge at $w$ is lost, and likewise
-  at $w'$.
-\end{proof}
-\begin{fmlnote}
-  \label{fmlnote:pencil-chain-side-connected}
-  The formalization states the degree count only at the end $w$. The
-  count at $w'$ follows by reversing the path, which keeps its interior
-  vertices.
-\end{fmlnote}
-
-\begin{lemma}[Side paths between the chain ends are long]
-  \label{lem:pencil-chain-side-distance}
-  \lean{Graph.le_length_add_length_of_isPath_deleteVerts_interior_of_noRigid,
-    Graph.le_length_add_eDist_deleteVerts_interior_of_noRigid}
-  \leanok
-  \uses{def:girth, def:rigid-subgraph}
-  Let $G$ be a simple multigraph with no proper rigid subgraph,
-  $D = \binom{n+1}{2} \ge 3$, and $P = w u_1 \dots u_m w'$ a path with
-  $m \ge 1$ whose interior vertices have degree two, where $w$ has degree at
-  least three. Then every path from $w$ to $w'$ in $G - \{u_1, \dots, u_m\}$
-  has at least $D - m$ edges; in particular $w$ and $w'$ are not adjacent
-  when $m \le D - 2$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pencil-girth-of-hub}
-  A path $Q$ from $w$ to $w'$ avoiding $u_1, \dots, u_m$ closes with $P$
-  into a cycle on $m + 1 + |E(Q)|$ vertices. That cycle has at least
-  $D + 1$ vertices (\cref{lem:pencil-girth-of-hub}), so
-  $|E(Q)| \ge D - m$. An edge $w w'$ would be such a path with one edge,
-  which needs $m \ge D - 1$.
 \end{proof}

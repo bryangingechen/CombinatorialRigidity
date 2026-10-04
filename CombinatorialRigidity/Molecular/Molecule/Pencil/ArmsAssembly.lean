@@ -6,16 +6,16 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
-# The pencil reduction — the base arm and the bare-motive assembly (Phase 39 PENCIL)
+# The pencil reduction — the base arm (Phase 39 PENCIL)
 
 Split out of `Molecule/Pencil/Arms.lean` (`40-cleanup` task 28b, the `≤1500`-LoC tripwire): the
-last two of the W3 leaf decomposition's four induction arms. The **base arm** `L5`
-(`hasPencilRealization_of_ncard_le_two`) is the last non-wrapper leaf, discharging every loopless
-multigraph on at most two bodies. The **bare-motive wrapper** `L7` (`pencil_conjecture_of_arms`,
-since superseded by `pencil_conjecture_of_arms_pair` and `pencil_conjecture_of_X0`) assembles all
-four arms — this file's base arm plus `Arms.lean`'s loop (`L3`) and cut-edge (`L4`) arms — via
-`Graph.pencil_reduction` (`Induction/ForestSurgery/Reduction.lean`), taking the not-yet-landed
-contraction/split arms as hypotheses.
+**base arm** `L5` of the W3 leaf decomposition's four induction arms
+(`hasPencilRealization_of_ncard_le_two`), the last non-wrapper leaf, discharging every loopless
+multigraph on at most two bodies. The bare-motive wrapper `L7` this file also carried,
+`pencil_conjecture_of_arms`, retired at the `40-simplify` cleanup round's PI sanction (2026-10-04,
+`notes/pencil/adjudications.md`): its conclusion follows from the headline `pencil_conjecture`
+over an infinite field, with no caller left once `pencil_conjecture_of_arms_pair` and
+`pencil_conjecture_of_X0` superseded it.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
@@ -228,97 +228,5 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
           rw [hV2eq, hdef0, hscrew_nat]; norm_num
         rw [htarget]
         exact_mod_cast hB1
-
-/-! ## W3-L7: the provisional bare-motive wrapper (`thm:pencil-conditional-realization`, Phase 39)
-
-Assembles the reduction skeleton `Graph.pencil_reduction` at `n = 3` with the three landed arms
-(loop `W3-L3`, base `W3-L5`, cut `W3-L4`) and the two not-yet-landed arms (contract, split)
-supplied as hypotheses, bridging the resulting `HasPencilRealization`'s span-rank equation to the
-global `RankHypothesis` via the rank-nullity complement identity
-`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`. -/
-
--- `[DecidableEq β]` is unused in the type; it is only threaded to `Graph.pencil_reduction`. The
--- linter's fix (drop it, `classical` in the proof) would change the signature pinned by
--- `thm:pencil-conditional-realization`, so it is a `40-simplify` candidate
--- (`notes/Phase40-cleanup.md`), not applied here.
-set_option linter.unusedDecidableInType false in
-/-- **The pencil conjecture, conditional on the contraction and split cases**
-(`thm:pencil-conditional-realization`; Phase 39 route (b′), W3-L7, the last remaining W3 leaf;
-`notes/Phase39-design.md` §"W3 leaf decomposition"). Assembles `Graph.pencil_reduction` at `n = 3`
-against the bare motive `HasPencilRealization`, discharging the loop/base/cut arms internally from
-the landed leaves (`hasPencilRealization_of_isLoopAt`, `hasPencilRealization_of_ncard_le_two`,
-`hasPencilRealization_of_not_twoEdgeConnected`) and taking the contraction/split arms as hypotheses,
-then bridges the `V(G) = univ` conclusion to the global rank hypothesis via the rank-nullity
-complement identity `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`: from
-`finrank (span rigidityRows) = D(|V|−1) − def` and `finrank (span rigidityRows) + finrank motions =
-D·|V|`, `finrank motions = D + def` falls out linearly.
-
-**Superseded interface, kept as the bare-motive assembly.** This bare-motive wrapper was the
-reduction's first headline shape, and its recorded caveat held: Katoh–Tanigawa's own Theorem 5.5
-motive is a *conditioned pair* — a generic full-rank conjunct alongside the bare panel realization
-(`RankHypothesis`'s own `def:rank-hypothesis` companion) — not a bare existential, and the
-`hcontract`/`hsplit` arms consume in-stratum genericity, not bare existence (the blueprint's
-`sec:pencil-nondegenerate` preamble carries the reasoning). Its successors run the same assembly
-against the conditioned motive `PencilPair` (bare; adjacent-distinct under simplicity; generic under
-simplicity plus nondegeneracy-feasibility): `pencil_conjecture_of_arms_pair`
-(`Molecule/Pencil/Pair2.lean`, `thm:pencil-conditional-realization-pair`) with the two arms still
-carried, and the landed Phase-39 headline `pencil_conjecture_of_X0` (`Molecule/Pencil/X0.lean`,
-`thm:pencil-conditional-realization-main-component`) with both arms discharged from the two
-main-component statements. Neither successor consumes this wrapper; it stays as the blueprint's
-`thm:pencil-conditional-realization`. -/
-theorem pencil_conjecture_of_arms [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
-    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
-      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
-        HasPencilRealization K 3 G') →
-      HasPencilRealization K 3 G)
-    (hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
-      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
-      (∃ v ∈ V(G), G.degree v = 2) →
-      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
-        HasPencilRealization K 3 G') →
-      HasPencilRealization K 3 G)
-    (G : Graph α β) (hspan : V(G) = Set.univ) :
-    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
-      HasPencilPanelRealization G F normal point ∧
-      F.RankHypothesis (G.deficiency 3) := by
-  -- Numerics for `n = 3`, `k = 2`: `bodyBarDim 3 = 6 = screwDim 2`.
-  have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
-  have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by omega
-  have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
-  -- The loop arm: unfold the recursive call on `G ＼ {e}` (same vertex set, one fewer edge).
-  have hloop_arm : ∀ G : Graph α β, (∃ e x, G.IsLoopAt e x) →
-      (∀ G' : Graph α β, V(G').Nonempty →
-        V(G').ncard < V(G).ncard ∨
-          (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) →
-          HasPencilRealization K 3 G') → HasPencilRealization K 3 G := by
-    rintro G ⟨e, x, hloopAt⟩ IH
-    refine hasPencilRealization_of_isLoopAt hloopAt (IH (G ＼ ({e} : Set β)) ?_ (Or.inr ⟨?_, ?_⟩))
-    · rw [Graph.vertexSet_deleteEdges]; exact ⟨x, hloopAt.left_mem⟩
-    · rw [Graph.vertexSet_deleteEdges]
-    · rw [Graph.edgeSet_deleteEdges]
-      exact Set.ncard_sdiff_singleton_lt_of_mem hloopAt.edge_mem
-  have hbase_arm : ∀ G : Graph α β, G.Loopless → V(G).Nonempty → V(G).ncard ≤ 2 →
-      HasPencilRealization K 3 G :=
-    fun G hloop hne hV2 => hasPencilRealization_of_ncard_le_two hloop hne hV2
-  have hcut_arm : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
-      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
-        HasPencilRealization K 3 G') → HasPencilRealization K 3 G :=
-    fun G _ _ hntec hIH => hasPencilRealization_of_not_twoEdgeConnected hD2 hn hntec hIH
-  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
-  obtain ⟨F, normal, point, hreal, hrank⟩ :=
-    Graph.pencil_reduction hD6 hloop_arm hbase_arm hcut_arm hcontract hsplit G hVGne
-  refine ⟨F, normal, point, hreal, ?_⟩
-  -- Bridge: `finrank (span rows) + finrank motions = D·|V|` (rank-nullity), `finrank (span rows)
-  -- = D(|V|−1) − def` (`hrank`, from `HasPencilRealization`) ⟹ `finrank motions = D + def`.
-  have hcardα : Nat.card α = V(G).ncard := by rw [hspan, Set.ncard_univ]
-  have hcompl := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
-  rw [hcardα] at hcompl
-  have hcompl' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-      + (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim 2 * (V(G).ncard : ℤ) := by
-    exact_mod_cast hcompl
-  rw [mul_sub, mul_one] at hrank
-  simp only [BodyHingeFramework.RankHypothesis]
-  linarith [hcompl', hrank]
 
 end CombinatorialRigidity.Molecular

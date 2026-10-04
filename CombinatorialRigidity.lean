@@ -29,9 +29,7 @@ import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.MaximalChain
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
-import CombinatorialRigidity.Molecular.Induction.Girth
 import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Molecule.Application
@@ -41,8 +39,6 @@ import CombinatorialRigidity.Molecular.Molecule.Duality
 import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 import CombinatorialRigidity.Molecular.Molecule.Modelling
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Base
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Escape
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration

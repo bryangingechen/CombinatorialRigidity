@@ -433,70 +433,6 @@ theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 
     funext i; fin_cases i <;> rfl
   rw [hfun]; exact hLI_ext
 
-/-- **The two-body coincident-panel pencil realization** (`lem:pencil-base-parallel-pair`; Phase 39
-PENCIL, leaf W1; the pencil analogue of `theorem_55_base_producer_parallel_pair`, KT Lemma 5.3,
-p. 670). A two-vertex minimal-`0`-dof-graph — a *parallel pair* of edges `e ≠ f` both linking
-`x ≠ y`, with `V(G) = {x, y}` and `E(G) = {e, f}` — carries a **pencil** panel realization
-(`HasPencilPanelRealization`) that is infinitesimally rigid on its two bodies `V(G) = {x, y}`.
-
-Both bodies share one panel `n₀^⊥` and one concurrency point `q₀ ∈ n₀^⊥`; the two parallel hinges
-take the two distinct pencil lines through `q₀` supplied by
-`exists_linearIndependent_extensor_pair_through_point`, and every label off `{e, f}` reuses `Ce` to
-meet `HasCoplanarPanelRealization`'s total-over-`β` nonzero conjunct. The two independent extensors
-give the combined hinge-row blocks full rank `D = 6` on the relative screw `S x − S y`, so
-`theorem_55_base` makes the framework infinitesimally rigid on `{x, y} = V(G)` — the `V(G)`-relative
-`def(G̃) = 0` rank-`D` content of KT's Lemma-5.3 base case, with the pencil pin met for free. The
-spanning-consumer forms (`RankHypothesis`, span rank) follow from this by the landed bridge B1
-(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`); they are not needed here. -/
-theorem exists_pencilPanelRealization_parallel_pair
-    {G : Graph α β} {x y : α} {e f : β}
-    (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
-    (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) :
-    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
-      HasPencilPanelRealization G F normal point ∧ F.IsInfinitesimallyRigidOn V(G) := by
-  classical
-  -- A fixed nonzero panel normal `n₀`; both bodies share the panel `n₀^⊥`.
-  set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀
-  have hn₀_ne : n₀ ≠ 0 := by
-    intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
-  -- The W1 pencil-pair brick: two independent hinges in `n₀^⊥`, both through the point `q₀`.
-  obtain ⟨q₀, Ce, Cf, hq₀_ne, hq₀_perp, hCe_in, hCf_in, hCe_thru, hCf_thru, hCEF_li⟩ :=
-    exists_linearIndependent_extensor_pair_through_point (K := K) n₀
-  -- The two-hinge framework: `e ↦ Ce`, and every other label `↦ Cf` (total-over-`β` nonzero).
-  set F : BodyHingeFramework K 2 α β :=
-    { graph := G
-      supportExtensor := fun e' => if e' = e then Ce else Cf } with hF
-  have hFe : F.supportExtensor e = Ce := by simp [hF]
-  have hFf : F.supportExtensor f = Cf := by simp [hF, hef.symm]
-  have hCe_ne : Ce ≠ 0 := by simpa using hCEF_li.ne_zero 0
-  have hCf_ne : Cf ≠ 0 := by simpa using hCEF_li.ne_zero 1
-  -- Every link of `G` is at `e` or `f` (the parallel pair, `E(G) = {e, f}`).
-  have hlink_cases : ∀ e' u v, G.IsLink e' u v → e' = e ∨ e' = f := by
-    intro e' u v he'
-    have : e' ∈ E(G) := he'.edge_mem
-    rw [hEG] at this
-    simpa [Set.mem_insert_iff] using this
-  refine ⟨F, fun _ => n₀, fun _ => q₀, ⟨⟨rfl, fun _ _ => hn₀_ne, ?_, ?_⟩,
-    fun _ _ => hq₀_ne, fun _ _ => hq₀_perp, ?_⟩, ?_⟩
-  · -- Total-over-`β` nonzero: every label carries `Ce` or `Cf`, both nonzero.
-    intro e'; simp only [hF]; split
-    · exact hCe_ne
-    · exact hCf_ne
-  · -- Per-link in-panel: the two links `e, f` carry `Ce, Cf`, both in `n₀^⊥`.
-    intro e' u v he'
-    rcases hlink_cases e' u v he' with rfl | rfl
-    · rw [hFe]; exact ⟨hCe_in, hCe_in⟩
-    · rw [hFf]; exact ⟨hCf_in, hCf_in⟩
-  · -- Per-link through-point: the two links `e, f` pass through the shared point `q₀`.
-    intro e' u v he'
-    rcases hlink_cases e' u v he' with rfl | rfl
-    · rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
-    · rw [hFf]; exact ⟨hCf_thru, hCf_thru⟩
-  · -- Rigid on `V(G) = {x, y}`, via `theorem_55_base` on the two independent hinges.
-    have hgen : LinearIndependent K ![F.supportExtensor e, F.supportExtensor f] := by
-      rw [hFe, hFf]; exact hCEF_li
-    rw [hVG]; exact F.theorem_55_base hxy hgen hl_e hl_f
-
 /-! ## W1 base case: degree-2 concurrency is automatic (KT Lemma 5.4 cycles) -/
 
 /-- **The `⬝ᵥ`-perp of a single nonzero normal in `K⁴` has dimension `3`** (`sec:pencil`, cycle
@@ -724,32 +660,6 @@ theorem exists_coplanarPanelRealization_cycle
       HasCoplanarPanelRealization G F normal ∧ F.IsInfinitesimallyRigidOn V(G) := by
   obtain ⟨F, normal, _point, hpencil, hrig⟩ := exists_pencilPanelRealization_cycle (K := K) cy hm4
   exact ⟨F, normal, hpencil.1, hrig⟩
-
-/-! ## W1 nonvacuity: a concrete pencil realization instance -/
-
-/-- **Non-vacuity of the pencil realization predicate** (Phase 39 PENCIL, leaf W1; mirrors
-`molecular_conjecture_witness`, `AlgebraicInduction/Nonvacuity.lean`). `HasPencilPanelRealization`
-is inhabited at a concrete `d = 3` instance — the two-vertex *double edge* (parallel pair)
-`(Graph.singleEdge 0 1 0).addEdge 1 0 1 : Graph (Fin 2) (Fin 7)` — together with a framework
-infinitesimally rigid on its two bodies. This is the closed `Prop` whose existence certifies the
-pencil stage is non-empty (there is a genuine pencil realization attaining the two-body rank), the
-same non-vacuity role `molecular_conjecture_witness` plays for the headline theorem. Immediate from
-`exists_pencilPanelRealization_parallel_pair` at the parallel pair; no dedicated blueprint node, as
-with `molecular_conjecture_witness` (a Lean-only certificate, not a dep-graph node). -/
-theorem exists_hasPencilPanelRealization_witness :
-    ∃ (F : BodyHingeFramework ℝ 2 (Fin 2) (Fin 7)) (normal point : Fin 2 → Fin 4 → ℝ),
-      HasPencilPanelRealization
-        ((Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7)).addEdge (1 : Fin 7) 0 1) F normal point ∧
-      F.IsInfinitesimallyRigidOn
-        V((Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7)).addEdge (1 : Fin 7) 0 1) :=
-  exists_pencilPanelRealization_parallel_pair (x := 0) (y := 1) (e := 0) (f := 1)
-    (by decide) (by decide)
-    (by rw [Graph.vertexSet_addEdge, Graph.vertexSet_singleEdge]; ext v; fin_cases v <;> simp)
-    (by
-      rw [Graph.edgeSet_addEdge, Graph.edgeSet_singleEdge]
-      ext e; simp [Set.mem_insert_iff]; tauto)
-    (Graph.addEdge_isLink_of_ne (Graph.singleEdge_isLink_iff.mpr ⟨rfl, rfl⟩) (by decide) 0 1)
-    (Graph.addEdge_isLink _ _ _ _)
 
 /-! ## W2: the two-pencil extension lemma (existence direction) -/
 

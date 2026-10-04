@@ -1153,7 +1153,12 @@ landed (PI, 2026-09-25), then re-decided; MOTIVES landed, the pencil conjecture 
 main-component route, and nothing below is pursued. The landed Lean on that route stays as
 conditional theorems carrying the kernels as hypotheses (`pencilPair_of_splitOff_of_habitat`,
 `pencil_conjecture_of_arms_pair`, `pencil_conjecture_of_hcontract_hK_hbareSplit` and its `_of_card`
-form); reopening any item is the PI's call. The record:
+form); reopening any item is the PI's call. **Round 4 (`40-simplify`, task 10i) retired most of
+this Lean** at the PI's 2026-10-04 Stop-2 sanction (`notes/pencil/adjudications.md`):
+`pencilPair_of_splitOff_of_habitat` and `pencil_conjecture_of_hcontract_hK_hbareSplit` (and its
+`_of_card` form) deleted with `_of_card`'s cluster, the kernel route's two roots, and the girth
+chain; `pencil_conjecture_of_arms_pair` stays, generalized to every nonempty graph (`c3`). The
+record:
 - **The split/contract architecture and its three kernels**, (K-res)/`kres`, (K-c), and
   (K-bare-c) with (α): `notes/pencil/W4-reopen.md` (retired record) and `W4-reopen-archive.md`.
 - **smark's O7e programme** on `hK`/`hbareSplit`: smark is CLOSED (the header line of

@@ -959,13 +959,15 @@ discharge point.
   plus the general upper bound, with the contraction preserving the
   deficiency. Pointer: `notes/Phase39.md` item 0 (L0b).
 - **`sec:pencil-girth-chain` (`lem:pencil-degree-two-chain`,
-  `lem:pencil-chain-side-distance`)** — [done (subsection preamble + nodes)]
+  `lem:pencil-chain-side-distance`)** — [done (subsection preamble + nodes); retired 2026-10-04]
   **(a)** the normal form of the kernel hypotheses' consumed shape was first
   stated as a chain between two hubs; the design pass found a trichotomy (the
   chain can close at a single hub — a cycle through a cut vertex) and that
   the chain's ends are non-adjacent only for `m ≤ D − 2`, the general clause
   being the distance bound `D − m`. Pointer: `notes/Phase39.md` items 1–2;
-  `notes/Phase39-design.md` § *Lean-track design pass* (V3, V4).
+  `notes/Phase39-design.md` § *Lean-track design pass* (V3, V4). The subsection and its eight
+  nodes retired with the kernel route (`notes/Phase40-simplify.md`, `1a`), 2026-10-04; git
+  history keeps the exposited text.
 - **`thm:pencil-conditional-realization-main-component` /
   `pencil_conjecture_of_X0`, with `def:pencil-main-component-statements`** —
   [done (`main-component.tex`, the section introduction, at Phase 40's close,

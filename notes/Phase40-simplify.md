@@ -7,10 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10h landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10i (Sonnet, ⚠Z files): `1a`'s deletion, the Lean whose pins 10h dropped
-(`_of_card`'s cluster with `q3a`, `pencil_conjecture_of_arms`) with `1c-ii` and the girth chain.
-Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10i landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10j (Opus, ⚠Z): `m3` + `7c`, `_three` from `G.Simple`, moved into
+`MainComponent/`. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -78,8 +77,11 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
 - **10h**, TeX + four Lean docstrings: the pair theorem restated to `_of_arms_pair` alone, the new
   `lem:pencil-pair-loop-base-cut` pinning `pencilPair_loop_base_cut`; the kernels and
   `thm:pencil-conditional-realization` left, so no `\lean{}` names 10i's deletions.
+- **10i**, Lean + TeX: `1a`'s deletion — design §6's `_of_card` cluster with `q3a`, `1b`,
+  `1c-ii` and the girth chain's eight nodes gone; ROADMAP §40's "stays as conditional theorems"
+  reworded. −4286 net Lean lines (task 9 estimated −3636).
 
-Next is 10i, then each landing in turn, then task 11 closes.
+Next is 10j, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -228,11 +230,12 @@ verdicts.
     node; the kernel statement leaves (`1a`). The new node pins `pencilPair_loop_base_cut` (10g);
     10g's clause in `fmlnote:pencil-conditional-realization-pair-kernels` (the first pin concludes
     at every multigraph with a body) goes with the rewrite. Landed 2026-10-04: both fmlnotes went.
-  - [ ] **10i. `1a`'s deletion** (Sonnet, ⚠Z files). `_of_card`'s cluster with `q3a`, `1b`,
+  - [x] **10i. `1a`'s deletion** (Sonnet, ⚠Z files). `_of_card`'s cluster with `q3a`, `1b`,
     `1c-ii`, and the girth chain with its eight nodes; ROADMAP §40's verbatim "stays as conditional
-    theorems" goes: −3 636. With the girth chain's nodes go the chapter opening's sentence on
+    theorems" goes. With the girth chain's nodes go the chapter opening's sentence on
     `sec:pencil-girth-chain` ("Three parts" becomes two) and, with `1c-ii`'s node,
-    `lem:pencil-base-case`'s edge to it (re-aimed per `1c-ii`'s verdict).
+    `lem:pencil-base-case`'s edge to it (re-aimed per `1c-ii`'s verdict). Landed 2026-10-04:
+    −4286 net Lean lines (task 9 estimated −3636).
   - [ ] **10j. `m3` + `7c`** (Opus, ⚠Z). `_three` from `G.Simple` by
     `linearIndependent_pointJoin_triangle`, moved into `MainComponent/`; two nodes go: −171.
   - [ ] **10k. `a6` + `a6a`** (Opus, ⚠Z; axioms harness, as `a6a` is in 10 of the 19 closures).
@@ -283,22 +286,15 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10h landed; the rest of the landings run.** The smallest next commit is **10i** (Sonnet, ⚠Z
-files): `1a`'s deletion. 10h left no `\lean{}` naming `pencil_conjecture_of_arms` or the two
-`pencil_conjecture_of_hcontract_hK_hbareSplit` wrappers, so the cluster under them goes with
-`q3a`, `1c-ii` and the girth chain, their TeX nodes too (task 10's entry). 10i is the first to touch
-ROADMAP §40 (its "stays as conditional theorems", marked verbatim). Then 10j–10r in order, one
-commit each at its listed rung; after 10r, task 11 closes the round.
+**10a–10i landed; the rest of the landings run.** The smallest next commit is **10j** (Opus, ⚠Z):
+`m3` + `7c`, moving `_three` into `MainComponent/` and retiring two nodes. Then 10k–10r in order,
+one commit each at its listed rung; after 10r, task 11 closes the round.
 
 ## Decisions made during this round
 
-- **2026-10-04, the open: the granularity.** Seven recon tasks, each one coherent question over a
-  bounded reading surface. The mechanical map comes first, since three tasks' verdicts rest on it.
-  Then come the two blueprint regions whose inputs are statement-against-pin questions, and then
-  the three deeper questions. The write-up is its own commit because it is the stop. A task per
-  input would re-pay a dispatch's reading for each of 36 inputs; fewer tasks would put two of the
-  spike-bearing tasks 4–6, or task 7's long reading, into one sitting. The landings are sliced
-  after Stop 2, once the PI has chosen them.
+- **2026-10-04, the open: the granularity.** Seven recon tasks (the mechanical map first, then the
+  two blueprint-region questions, then the three deeper ones), the write-up its own commit; the
+  landings sliced after Stop 2. Rationale: a task per input over-pays the per-dispatch reading cost.
 - **Probes stay in scratch.** No recon task commits a script. Its figures are tagged *measured,
   script not retained* (`HARNESS.md` *Reproducibility*), as rounds 1 and 3 did for liveness. No
   deletion rests on such a figure: a sanctioned retirement is re-verified at landing by trial
@@ -306,23 +302,13 @@ commit each at its listed rung; after 10r, task 11 closes the round.
 - **The landing order is set at task 9, not now.** It depends on what the PI sanctions, and on
   task 1's map: a retired cluster can moot another verdict, as retiring `TwoCut.lean` would moot
   `b2` and half of `b1`.
-- **2026-10-04, task 1: a pinned cluster goes to the task that reads its node.** The checklist
-  named hand-ons to tasks 2 and 4 only; the map found pinned dead nodes in sections neither reads.
-  Task 2 takes those the reduction layer `\uses`; task 3, which already owns `c5`, `c6`, `c8` and
-  the girth chain's `a1`, takes the rest outside the ears, as one-line verdicts where prior
-  evidence stands (round 3 kept the unused parts the chapter's opening names).
-- **2026-10-04, task 4: the verdicts move to their own file** (the coordinator's decision). At 440
-  lines, with tasks 4–8 still to write, the log would pass its ~500-line tripwire. *Verdicts*,
-  tasks 1–3 verbatim, moved to `notes/Phase40-simplify-verdicts.md`, as round 3 moved its exemplar
-  to `notes/Phase40-exposition-exemplar.md`; *Verdicts* here points there, *Scope* binds it, and
-  each task from 4 on writes its subsection there.
+- **2026-10-04, task 1: a pinned cluster goes to the task that reads its node.** Task 2 takes those
+  the reduction layer `\uses`; task 3 takes the rest outside the ears.
+- **2026-10-04, task 4: the verdicts move to their own file** (the coordinator's decision), to stay
+  under the ~500-line tripwire: `notes/Phase40-simplify-verdicts.md`, as round 3 moved its exemplar.
 
-- **2026-10-04, Stop 2: the PI's sanction** (verbatim under *Autopilot*): "Let's approve your
-  recommendations above except 5. For 5, I think we should restate if it simplifies the
-  exposition." Then: "OK, ii looks good and let's update the adjudications." So the default stands
-  with `7d` (ii): `1a` retired, `r1` deleted, decision 4's statement moves, `a2` last, `c3a`
-  NO-GO, `a7` kept, round 3's `r2`–`r8` as written (`r7` built), at the corrected rungs. Archived
-  in `notes/pencil/adjudications.md`, superseding the 2026-09-29 record's "stays, untouched".
+- **2026-10-04, Stop 2: the PI's sanction.** Verbatim quote under *Autopilot: for the PI*; the
+  default stands with `7d` (ii), at the corrected rungs, archived in `notes/pencil/adjudications.md`.
 - **`7d` (ii): restating simplifies** (the reading the PI accepted). KT's Lemma 6.3 is one lemma,
   for any proper rigid subgraph; its proof takes realizations of the rigid piece (KT Lemma 3.5) and
   of the contracted graph (KT (6.1)) independently and joins them by the block bound (pp. 673–675):
@@ -331,17 +317,13 @@ commit each at its listed rung; after 10r, task 11 closes the round.
   conservation. Stop 2's "(i) keeps KT's order" undersold (ii).
 
 - **2026-10-04, 10e: `span_supportExtensor_eq_top_of_linearIndependent` stays pinned, now with
-  no caller** (the coordinator's call). It pins `lem:pencil-ear-hinge-span`'s "in particular"
-  clause (at `m = 6` the hinges span the screw space); 10e's shared step reads the general bound
-  instead. Kept on task 1's (b) precedent, that a caller-less clause pin stays; the `k ≥ 5` proof
-  still cites the clause.
+  no caller** (the coordinator's call), on task 1's (b) precedent that a caller-less clause pin
+  stays; the `k ≥ 5` proof still cites the clause it pins.
 
 - **2026-10-04, 10g: two `@[nolint unusedArguments]`, deferred by sequencing.** Once
   `_of_arms_pair` dropped `[DecidableEq β]`, the binder became unused in the proofs of
-  `pencil_conjecture_of_X0` (the headline's proof term) and `_hcontract_hK_hbareSplit`, and
-  `lake lint` flagged both. Dropping them is `a2`'s headline move (10r), so each carries the
-  attribute beside its existing silencer, its comment naming the item that deletes it: 10r at
-  `_of_X0`, 10i with the declaration at the other.
+  `pencil_conjecture_of_X0` and `_hcontract_hK_hbareSplit`, each marked with a comment naming the
+  item that deletes it: 10r at `_of_X0`; the other left with `Escape.lean` in 10i's deletion.
 
 ### Not sanctioned, or NO-GO (one line each; wording and evidence in the verdicts file)
 

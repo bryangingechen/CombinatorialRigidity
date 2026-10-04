@@ -12,12 +12,13 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
 `notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
 two of the W3 leaf decomposition's induction arms (loop `L3`, cut-edge `L4` with its transport /
-nondegeneracy / rank-assembly infrastructure). The base arm `L5` and the original bare-motive
-wrapper `L7` (`pencil_conjecture_of_arms`, since superseded by `pencil_conjecture_of_arms_pair` and
-`pencil_conjecture_of_X0`) that assembles all four arms via `Graph.pencil_reduction`
-(`Induction/ForestSurgery/Reduction.lean`) split further into `Molecule/Pencil/ArmsAssembly.lean`
-(`40-cleanup` task 28b, the `≤1500`-LoC tripwire). Builds on the statement layer, transport, and
-two-pencil machinery in `Molecule/Pencil/Statement.lean`.
+nondegeneracy / rank-assembly infrastructure). The base arm `L5` split further into
+`Molecule/Pencil/ArmsAssembly.lean` (`40-cleanup` task 28b, the `≤1500`-LoC tripwire); its original
+bare-motive wrapper `L7`, `pencil_conjecture_of_arms` (which assembled all four arms via
+`Graph.pencil_reduction`, `Induction/ForestSurgery/Reduction.lean`), retired at the
+`40-simplify` cleanup round's PI sanction (2026-10-04, `notes/pencil/adjudications.md`), superseded
+by `pencil_conjecture_of_arms_pair` and `pencil_conjecture_of_X0`. Builds on the statement layer,
+transport, and two-pencil machinery in `Molecule/Pencil/Statement.lean`.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.

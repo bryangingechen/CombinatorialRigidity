@@ -91,8 +91,8 @@ line), and two edges both landing "through" the same two points `pt_u, pt_v` are
 *same* line whenever `pt_u ≠ pt_v` (a decomposable `2`-extensor containing two given independent
 vectors is their span, uniquely) — so two independent hinges through the same pair of bodies force
 `pt_u = pt_v` (up to scale), which is exactly what `IsNondegPencilRealization`'s second conjunct
-(adjacent-point distinctness) forbids. The already-landed
-`exists_pencilPanelRealization_parallel_pair` (W1) confirms this from the other side: its own
+(adjacent-point distinctness) forbids. The base arm's own
+`hasPencilRealization_of_ncard_le_two` (`ArmsAssembly.lean`) confirms this from the other side: its
 full-rank (`D = 6`) parallel-pair construction uses
 `point := fun _ => q₀`, the *same* point at both bodies. So `HasGenericPencilRealization` looks
 unsatisfiable at any `≥ 2`-fold parallel class, while `PencilNondegFeasible` is witnessed there —

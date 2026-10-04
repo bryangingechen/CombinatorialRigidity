@@ -1178,8 +1178,9 @@ smallest), so the generic statement is proved inside the pencil reduction's own 
 ((MC-183)–(MC-193)). Shorter proofs than the informal ones (COVERAGE's partition estimates and
 θ-graphs, the good ear) are recorded in the blueprint proofs. At the close the PI **retired** the
 held fallback, all of the design doc's §6: the kernels (K-res)/`kres`, (K-c) and (K-bare-c) with (α), smark's O7e
-programme, gr10's Part B and Phase 39's four held checklist items; their landed Lean stays as
-conditional theorems (verbatim `notes/pencil/adjudications.md`). The tracked cleanup-round items
+programme, gr10's Part B and Phase 39's four held checklist items; their landed Lean was retired
+by cleanup round 4 (`40-simplify`) at the PI's Stop-2 sanction (2026-10-04,
+`notes/pencil/adjudications.md`). The tracked cleanup-round items
 carried past the close are indexed in the design doc's §7. Headline axioms (the nineteen
 `formalization.yaml` main results) re-verified at the close. Detail → `notes/Phase40p.md` +
 `notes/Phase40-design.md`.
@@ -1220,8 +1221,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04). Its
   Stop 2 was answered on 2026-10-04: the PI sanctioned the recommended package with CONTRACT-R
   restated as CONTRACT-A's corollary (`notes/Phase40-simplify.md` *Autopilot: for the PI*). Tasks
-  1–9 are done; 10a–10h landed 2026-10-04; next is landing 10i of 18 (task 10,
-  `1a`'s deletion, Sonnet), then task 11 closes. Rounds 1,
+  1–9 are done; 10a–10i landed 2026-10-04; next is landing 10j of 18 (task 10,
+  `m3` + `7c`, Opus), then 10k–10r in order, then task 11 closes. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3, `40-exposition`, closed
   2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`).
