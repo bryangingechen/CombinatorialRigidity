@@ -136,6 +136,20 @@ sixteen sub-phases, all written at their sub-phase closes; the last, the good
 ear's shorter count, is 40p's. **Result: 0 pending / 50 done / 1 closed as
 superseded** (of 51).
 
+**Post-Phase-40 cleanup, round 3 (`40-exposition`, closed 2026-10-04).** The round rewrote the
+prose of `pencil.tex` and `main-component.tex`, and `intro.tex`'s reader path into them. No node's
+statement, pins or `\uses` edges changed and no node rerouted, so no entry is added. Under the
+round's default (a) (`notes/Phase40-exposition.md` *Decisions*) the blueprint no longer compares a
+step with the workbook's informal argument; the reason a proof is shaped as it is stays, stated on
+its own. So where a **(b)** entry below records how a step departs from the informal proof, the
+entry, not the blueprint, is now the record. The close checked every pointer of the `pencil.tex`
+and `main-component.tex` sections against the new text. Tasks 5, 6, 18 and 19 had updated theirs.
+The close updated the rest that had gone stale: the Phase-39 main-component entry (the
+introduction is now a roadmap, and the account has three homes), the remarks cut after
+`lem:pencil-bridge-fibre`, `thm:pencil-x0-open-ear`, the two SHORT theorems and
+`thm:pencil-x0-splitoff`, the coverage's cut comparisons, and the 40p note on the introduction.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -955,7 +969,8 @@ discharge point.
 - **`thm:pencil-conditional-realization-main-component` /
   `pencil_conjecture_of_X0`, with `def:pencil-main-component-statements`** —
   [done (`main-component.tex`, the section introduction, at Phase 40's close,
-  2026-09-29)] **(c)** the reduction itself
+  2026-09-29; since round 3 of the post-Phase-40 cleanup, `sec:pencil-main-component-route`'s
+  opening, that introduction and the subsection openings)] **(c)** the reduction itself
   is final and exposited (the three-way case split in the node's proof); what
   is not final is the account of the two main-component statements
   (`X0Dist`/`X0Gen`), hypotheses here and Phase 40's target
@@ -968,14 +983,17 @@ discharge point.
   `X₀` (refuted at two hubs with three common neighbours); it runs inside the
   pencil reduction's induction (route B, (MC-183)–(MC-189)), which this
   entry's account covers at the close; 40n landed its base, 40o its steering and both ear
-  steps, and 40p the good ear and the assembly. *Written at the close:* the section
-  introduction walks the whole argument in order, with pointers into the subsections: the
-  lifting space and the main component as a bundle over the drawings of least `dim L(q)`, with
-  the one-witness principle and the fibre intersection standing in for irreducibility; the flat
-  rank and Jackson–Jordán's equality; the steps of the induction (cut vertex and bridges, ears
-  by the span of their hinges and relative screws, split-off along a curve, contraction at a core
-  along a curve with a rescaled lifting system); the coverage as combinatorics on `def₂`, `def₃`;
-  and route B for the generic statement, with the two-hubs obstruction that forces it.
+  steps, and 40p the good ear and the assembly. *Written at the close* as the section
+  introduction, a walk through the whole argument in order. *Since round 3 of the post-Phase-40
+  cleanup* (task 25) that introduction is a roadmap with a notation list, and the account has
+  three homes. `sec:pencil-main-component-route`'s opening lifts planar pictures to pencil
+  realizations, describes the main component as a bundle over the admissible pictures of least
+  `dim L(q)`, and shows at `K_{2,3}` the two-hubs obstruction that forces route B. The
+  introduction names the one-witness and fibre-intersection lemmas (which stand in for
+  irreducibility, `rem:pencil-x0-main-component`), the flat rank and Jackson–Jordán's equality,
+  the steps of the induction one subsection each, the coverage, and route B for the generic
+  statement. Each subsection's opening states its step's idea; `sec:main-component-cut`'s also
+  states the scheme the steps share.
 - **`thm:pencil-conditional-realization-pair` (kernels (K), (K-bare))** —
   [closed — superseded (Phase 40's close, 2026-09-29): the main-component route proved the
   conjecture and the PI retired the kernels] **(c)** the two kernel hypotheses were held as the
@@ -1061,7 +1079,9 @@ ledger is now **2 pending / 37 done** (of 39).
 
 - **`lem:pencil-bridge-fibre` / `Graph.exists_liftingRestrict_eq_of_bridgePath`, with
   `lem:pencil-cut-fibre`** — [done (the two nodes' proofs and the remark after
-  `lem:pencil-bridge-fibre`, at the 40e close)] **(b)** the informal proof of (MC-53)(iii) derives
+  `lem:pencil-bridge-fibre`, at the 40e close; round 3 of the post-Phase-40 cleanup cut the remark,
+  a comparison with the informal count, and the subsection opening now states the extension)]
+  **(b)** the informal proof of (MC-53)(iii) derives
   the ontoness of both restrictions from the dimension count
   `dim L_G = dim L_{G₁} + dim L_{G₂} + k − 2`, case by case in `k = 0, 1, ≥ 2` and at admissible
   pictures (the case `k = 0` uses `q_a ≠ q_b`); (MC-52)(iii) likewise uses three non-collinear points
@@ -1113,7 +1133,9 @@ Phase-39 entry `thm:pencil-conditional-realization-main-component` above, `[pend
 40's close. The ledger is now **2 pending / 39 done** (of 41).
 
 - **`thm:pencil-x0-open-ear` / `Graph.X0Attains.of_openEar`, with `lem:pencil-ear-fibre`** —
-  [done (the theorem's proof and the remark after it, at the 40g close)] **(b)** the informal step
+  [done (the theorem's proof and the remark after it, at the 40g close; round 3 of the
+  post-Phase-40 cleanup cut the remark, a comparison with the informal step, and the subsection
+  opening now states the one-configuration idea)] **(b)** the informal step
   (MC-20) takes the span `Λ = K⁶` of an open ear with `k ≥ 5` from (MC-19)(b), which holds "for any
   flag pair with `p_a ≠ p_b`": the ends sit wherever `X₀(G′)`'s generic point puts them, and
   (MC-19)(b)'s proof exhibits one placement per projective orbit of flag pairs, over the
@@ -1138,15 +1160,18 @@ insertion half by a shorter proof: a vector off a subspace stays off it along a 
 two nonzero parameters. The two-body step is CHAIN's one-picture route with three joins of the
 closed hexagon. The fixed-base-data order is (MC-180)'s Steps 1–2, and the two deficiency bounds are
 direct per-partition extensions. Where the four-body step departs from (MC-180)'s Steps 3–4 (the
-collision witness, two rounds of genericity) is the remark after `thm:pencil-x0-open-ear-four`, a
-formalization detail, not an entry. The account of the whole induction stays with the Phase-39
+collision witness, two rounds of genericity) was the remark after `thm:pencil-x0-open-ear-four`, a
+formalization detail, not an entry; round 3 of the post-Phase-40 cleanup cut it, and the
+theorem's proof gives its reasons. The account of the whole induction stays with the Phase-39
 entry `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close.
 The ledger is now **2 pending / 40 done** (of 42).
 
 - **`thm:pencil-x0-open-ear-four` / `Graph.X0Attains.of_openEar_four` and
   `thm:pencil-x0-open-ear-three` / `Graph.X0Attains.of_openEar_three`, with
   `lem:pencil-insertion`** — [done (the subsection preamble, the two theorems' proofs and the remark
-  after the three-body theorem, at the 40h close)] **(b)** the informal proof first counted the
+  after the three-body theorem, at the 40h close; round 3 of the post-Phase-40 cleanup cut the
+  remark, a comparison with the informal route, and the count against `G″` now leads the
+  opening)] **(b)** the informal proof first counted the
   `k = 3, 4` open-ear steps against `G′ = G[V₁]` alone, reduced by (MC-22) to two conditions at
   `X₀(G′)`'s generic point: a lower bound on `dim ρ` from the 2-ear gadget (MC-24), a further strong
   induction, and a property of `Λ_k` over the placements, proved in each of the four orbits of the
@@ -1207,13 +1232,16 @@ as in the `pencil.tex` section. The entry below is written in place. The rest la
 two build commits from the design recon's spike. (MC-28) is the informal motion count, (MC-29) is
 two landed deficiency bounds composed, and (MC-30)(i) is the informal dimension count at one
 picture, on the lifting system's kernel. That the flexes of `G′` are that kernel, not `L_{G′}`
-(`G′` may have bodies of degree 1), is a carrier detail recorded in the node's proof. The account of
+(`G′` may have bodies of degree 1), is a carrier detail recorded in the node's proof (since round
+3 of the post-Phase-40 cleanup, in the lead-in to `lem:pencil-splitoff-flexes`). The account of
 the whole induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main-component`
 above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 42 done** (of 44).
 
 - **`thm:pencil-x0-splitoff` / `Graph.X0Attains.of_splitOff`, with `lem:pencil-splitoff-curve` and
   `lem:pencil-curve-limit`** — [done (the subsection preamble, the theorem's proof and the remark
-  after it, at the 40j close)] **(b)** the informal step (MC-31) reaches `X₀(G)` from the special
+  after it, at the 40j close; round 3 of the post-Phase-40 cleanup cut the remark, a comparison
+  with the informal step, and its idea is in the opening and the theorem's proof)]
+  **(b)** the informal step (MC-31) reaches `X₀(G)` from the special
   configuration, which puts `x` on the line `p_a p_b` and has the rank of `G″` plus five but is not
   admissible: (MC-30)(ii) moves `x`'s picture off the line in an arbitrary direction `η`, keeps the
   curve over admissible pictures with `dim L_G` minimal by the formula (★) and (MC-4)(b), lifts it by
@@ -1325,7 +1353,9 @@ MOTIVES. The ledger is now **2 pending / 47 done** (of 49).
 
 - **`thm:pencil-x0-theorem-s` / `Graph.IsX0Graph.exists_additiveCore`, with
   `thm:pencil-x0-coverage` and `rem:pencil-x0-theta`** — [done (the two nodes' proofs and the
-  remark, at 40m's B5 and close)] **(b)** the informal case analysis ((MC-89), step 5) sends
+  remark, at 40m's B5 and close; round 3 of the post-Phase-40 cleanup cut the comparisons with the
+  informal case analysis, and the remark now ends with how the coverage reaches a θ-graph)]
+  **(b)** the informal case analysis ((MC-89), step 5) sends
   θ-graphs to their own step, THETA ((MC-21)(b), covered along the longest path by (MC-139)), and
   states Theorem S ((MC-80)) on the class 𝒮, which excludes them, with the extra conclusion
   `1 ≤ def₂(G[W]) < def₂(G)`. **Stable insight:** with the core produced by maximality, the core
@@ -1387,7 +1417,9 @@ second-read; the PI did not overturn it at the close). The rest landed as scoped
 the conditioned pair at every nonempty graph and both headlines assemble landed pieces, and the
 add-one-body identity is a count. With the phase closed the two entries handed over from Phase 39
 are settled (the `pencil.tex` section above), and the chapter end-to-end re-read found the
-section introduction a list of subsections; it is now the account of the whole argument. The
+section introduction a list of subsections; it became the account of the whole argument (since
+round 3 of the post-Phase-40 cleanup, a roadmap with a notation list: the Phase-39 entry above
+says where the account now is). The
 ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
 
 - **`lem:pencil-rigid-good-ear` / `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, with

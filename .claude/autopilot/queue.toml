@@ -25,7 +25,7 @@ id = "40-exposition"
 title = "Post-Phase-40 cleanup 3/5: the pencil proof explained"
 note = "notes/Phase40-exposition.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "40-simplify"

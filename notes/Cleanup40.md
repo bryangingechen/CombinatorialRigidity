@@ -2,14 +2,14 @@
 
 **Status:** queued by the PI on 2026-09-29, ahead of ORIGAMI. Round 1, `40-cleanup`, opened
 2026-09-29 and closed 2026-09-30 (`notes/Phase40-cleanup.md`). Round 2, `40-factor`, opened and
-closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 2026-09-30
-(`notes/Phase40-exposition.md`); rounds 4–5 have not opened. Five cleanup rounds (`CLEANUP.md`)
-over what Phases 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`,
-`40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
-order and for which rounds are done. Round 3's Stop 1 closed on 2026-10-03: the PI approved the
-revised sample section, pinned as the exemplar (`notes/Phase40-exposition.md` *Autopilot: for the
-PI*). Tasks 1–26 have landed. **The next concrete task** is round 3's task 27, its close, run
-unattended.
+closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 2026-09-30 and
+closed 2026-10-04 (`notes/Phase40-exposition.md`); its Stop 1 closed on 2026-10-03, when the PI
+approved the revised sample section, pinned as the exemplar (that log's *Autopilot: for the PI*).
+Rounds 4–5 have not opened. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run
+under autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`,
+`40-docs`. `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are
+done. **The next concrete task** is opening round 4, `40-simplify` (§2 *Round 4*, which now holds
+round 3's build-or-leave recommendations and candidates). It stops for the PI at Stop 2.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
@@ -146,7 +146,7 @@ node's pinned Lean strength and dependency edges stay as they are (Phase 28's ru
 
 A read-only Opus recon over the pencil surface, looking for bigger simplifications. Where a route
 question comes up, it uses compiler-checked spikes (rescue §6). Its inputs are rounds 1 and 2's
-recorded candidates and round 3's account.
+recorded candidates, and round 3's account, candidates and build-or-leave recommendations.
 
 Round 1's recorded candidates, one line each. The detail, and why each is structural, is in
 `notes/Phase40-cleanup.md` *Candidates for `40-simplify`*, under the task named:
@@ -177,8 +177,8 @@ Round 2's recorded candidates, one line each. The detail is in the log each name
   uses it only for a `Nonempty α` it does not need), but dropping it changes the statement; the
   hub has no blueprint node (`notes/Phase40-factor.md`, task 2).
 
-Round 3's recorded candidates, one line each. The detail is in `notes/Phase40-exposition.md`
-*Moved to a later round*:
+Round 3's *Moved to a later round* lines (six missing `\uses` edges, and one node the graph draws
+unfilled), one line each. The detail is in `notes/Phase40-exposition.md` *Moved to a later round*:
 
 - `def:pencil-nondegenerate`'s hub threshold rests on `lem:coplanar-hinges-concurrent` (since
   task 6 through its lead-in, before in a deleted note), with no `\uses` edge to it (task 4).
@@ -196,6 +196,53 @@ Round 3's recorded candidates, one line each. The detail is in `notes/Phase40-ex
   `\uses` edge to it (task 21).
 - `lem:pencil-generic-steer`'s proof uses both halves of `lem:pencil-feasible-hub-conditions`, which
   its pins call, with no `\uses` edge to it (task 23).
+
+Round 3's structural candidates, one line each, mirrored at its close. The detail is in
+`notes/Phase40-exposition.md` *Candidates for `40-simplify`*, under the task named:
+
+- `lem:pencil-splitoff-curve` bundles three unrelated facts under three pins; splitting it changes
+  the graph (Stop 1; the PI agreed, and expects more such nodes in earlier chapters, an audit
+  queued with **PROSE**).
+- `thm:pencil-reduction` is stronger than its pin: it gives cases (iii)–(v) the property at every
+  lexicographically smaller graph, the pin only at graphs with fewer vertices (task 5).
+- `thm:pencil-conditional-realization-pair` is two results: its first pin is the live reduction,
+  its statement and other two pins the kernel form, off the proof (task 6).
+- …and its statement is stronger than its pins: kernel (K) is assumed only at a
+  nondegeneracy-feasible `G`, while `hK` has no such antecedent; "strictly smaller" gives more than
+  fewer vertices, as in `thm:pencil-conditional-realization` (task 6).
+- `lem:pencil-selector-independent-scalar` assumes an admissible picture, and its pin does not
+  (task 9).
+- `lem:pencil-condition-linear` restates `lem:pencil-config-distinct-realization`'s content, which
+  neither of its pins proves (tasks 9–10).
+- `lem:pencil-x0-main-picture-open` says `U` is Zariski-open, which neither its polynomial nor its
+  pin gives (task 10).
+- Nodes with four or more pins (principle D): `lem:pencil-lifting-restrict` (6),
+  `thm:pencil-x0-bridge` (8), `lem:pencil-contract-standing` (4) and `lem:pencil-generic-steer` (4)
+  (tasks 13, 14 and 23).
+- Two toolkit halves have no caller: `eq_zero_of_kleinLin_eq_zero` (in
+  `lem:pencil-line-pairing-join`) and `exists_insertion_ge` (in `lem:pencil-insertion`) (task 16).
+
+Round 3's build-or-leave recommendations, for Stop 2, one line each. The detail and the evidence
+are in `notes/Phase40-exposition.md` *The build-or-leave items*, under the item's number:
+
+1. The D5 blueprint debt, 31 of design §7's 40 names with no node: **leave** all 31 unpinned. The
+   four live ones are helpers, and the rest serve only the unfinished two-cut composition (task 15).
+2. A6, the welded pendant law, S7(i)–(iii), S7(v) and S9: **leave** unbuilt, with no node. They
+   belong to the two-cut composition, which has no caller, and are not its gap (task 8).
+3. The "only if" halves of (MC-52)/(MC-53): **leave** unbuilt, with no node. With only `G` under
+   the standing hypotheses they are false; with both sides, a corollary no proof needs (task 13).
+4. The edge-restricted, non-spanning generic-normals row rank (design §3 BRIDGE): **leave**
+   unbuilt, with no node. Jackson and Jordán's equality never forms generic normals (task 12).
+5. SHORT's shared assembly (`Graph.X0Attains.of_openEar_splitOff`,
+   `Graph.exists_earBase_splitOff`): **leave** both unpinned. The two step proofs name them
+   (task 17).
+6. The CHAINS pair (`Graph.IsOpenEar.exists_maximal`, `Graph.Connected.induce_of_gate`): **leave**
+   both unpinned. Elementary graph facts, which each pinned caller states and names (task 21).
+7. `Graph.exists_isMinimalKDof_spanning_subgraph`: **give it a node** in `deficiency.tex`, beside
+   `lem:subgraph-minimality`. It is KT's first step for Theorem 5.6, in the closure of
+   `pencil_conjecture` and `molecular_conjecture` (task 12).
+8. `Graph.exists_normalized_labeling`: **leave** unpinned, with no node. It serves the encoding of
+   partitions, as `lem:relative-deficiency-rank-bound`'s proof says (task 11).
 
 The coordinator's starting questions, guessed from file names and sizes (nobody has read the proofs
 for them):

@@ -1,16 +1,14 @@
 # Phase 40 cleanup round 3/5 — `40-exposition`, the pencil proof explained (work log)
 
-**Status:** in progress (opened 2026-09-30). Round 3 of the five post-Phase-40 cleanup rounds. Their
-order, stops and the PI's decisions are in `notes/Cleanup40.md`, and `.claude/autopilot/queue.toml`
-is the authority for which rounds are done. The round rewrites the prose of `pencil.tex` and
-`main-component.tex`, and `intro.tex`'s reader path into them, so that they "explain the
-mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
-§1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
-build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 26 landed (tasks 1–26; tasks 3 and 4 with a corrective each). **Stop 1 is
-closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 27, the round's close (`CLEANUP.md` *Workflow* rule 5; docs only), as its checklist entry
-lists. All eight build-or-leave items are written. Round manual: `CLEANUP.md`.
+**Status:** ✓ closed 2026-10-04 (opened 2026-09-30). Round 3 of the five post-Phase-40 cleanup
+rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
+`.claude/autopilot/queue.toml` is the authority for which rounds are done. The round rewrote the
+prose of `pencil.tex` and `main-component.tex`, and `intro.tex`'s reader path into them, to
+"explain the mathematics clearly" and "the proof and its key ideas in context" (the PI,
+`notes/Cleanup40.md` §1). Pins, `\uses` edges and statement strength are as they were. 27
+one-commit tasks, all landed (tasks 3 and 4 with a corrective each), and eight build-or-leave
+recommendations for round 4's Stop 2. **Next concrete task:** none in this round; the current
+round is named in `notes/Cleanup40.md`'s **Status**. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -56,211 +54,105 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–26
-have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
-the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
-the baseline below (graph fingerprint, pin hash, warning counts). The whole surface is rewritten:
-every subsection of `pencil.tex` and `main-component.tex` (the split-off was task 1), both
-introductions (tasks 24 and 25), and `intro.tex`'s reader path (task 26). Next is the close (task
-27). All eight build-or-leave items are written.
+**Round 3 is closed** (task 27, docs only). All 27 tasks landed, tasks 3 and 4 with a corrective
+each, and each has one line under *Lemma checklist* naming its commit. Nothing is mid-stream. Every
+subsection of `pencil.tex` and `main-component.tex`, both introductions and `intro.tex`'s reader
+path are rewritten, and the dependency graph and the pins are the open's. What carried over: the
+eight build-or-leave recommendations and the nine *Candidates for `40-simplify`*, which are round
+4's Stop-2 inputs, and the *Moved to a later round* lines, seven for round 4 and one for round 5.
+All are mirrored into `notes/Cleanup40.md` §2.
 
-**Verified at the open:**
-- Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
-  `formalization.yaml` main results gives the standard three, through round 2's harness copied to
-  `scratch/40-exposition/Axioms.lean` (gitignored; its names and imports diffed against
-  `formalization.yaml`, identical). Re-run it the same way at the close.
-- **The blueprint baseline** every slice compares against: `lint.sh` and `verify.sh` green
-  (`checkdecls` silent, 9 `WARNING:` lines, all plasTeX notices); 0 `LaTeX Warning` lines and 187
-  overfull boxes in `blueprint/print/print.log`; 1 062 pins, hash `36133299d3fcc3c8`; 668 nodes
-  and 1 308 edges, fingerprint `6c5064b7034feb95`, stable across runs (commands: *Scope*, gate 3).
-- **The surface.** `pencil.tex` 1 411 lines, 10 subsections, 41 nodes; `main-component.tex` 4 858
-  lines, 14 subsections, 123 nodes; `intro.tex` 471 lines. Line numbers below are the open's; the
-  labels are the stable reference.
+**Verified at the close** (task 27; the Lean tree is `0b260626`'s, the blueprint `30e79461`'s):
+- Whole-project `lake build` green, 3003 jobs: 0 `warning:`, 0 `error:` and 0 `failed to cache
+  artifact` lines. `lake lint` green.
+- `#print axioms` on all 19 `formalization.yaml` main results gives `[propext, Classical.choice,
+  Quot.sound]`, and the output is byte-identical to the open's. The harness
+  `scratch/40-exposition/Axioms.lean` (gitignored) was run with `lake lean` after its 19 names (in
+  order) and 14 imports were diffed against `formalization.yaml`'s `declaration:` and `file:`
+  fields: identical.
+- The blueprint is at the open's baseline. `lint.sh` and `verify.sh` are green (`checkdecls`
+  silent, 9 `WARNING:` lines, all plasTeX notices), with 0 `LaTeX Warning` lines; 1 062 pins, hash
+  `36133299d3fcc3c8`; 668 nodes and 1 308 edges, fingerprint `6c5064b7034feb95`. Overfull boxes
+  went from 187 to 181.
+- The surface grew: `pencil.tex` 1 411 → 1 589 lines, `main-component.tex` 4 858 → 5 696,
+  `intro.tex` 471 → 511. The subsections and nodes are the open's: 10 and 41 in `pencil.tex`, 13
+  and 123 in `main-component.tex` (the open recorded 14 subsections; a recount at both commits
+  finds 13).
 
-**What the inventory found** (each task re-derives its own findings):
-- **An unintroduced "informal argument"** in 23 lines of prose; default (a) ruled, and task 25's
-  grep found none left.
-- **Nodes outside the closure** of `thm:pencil-conjecture`'s pins, read in the Lean (`CLEANUP.md`
-  §B): 17 of `pencil.tex`'s 41 and two kernel pins (measured, task 24), and in `main-component.tex`
-  `thm:pencil-x0-main-component`, `thm:pencil-x0-closed-ear`.
+**Verified at the open** (`5f9cbe04`, docs only; its Lean tree is `0b260626`'s): the same build
+(3003 jobs, 0 `warning:` lines) and the same 19 axioms, through round 2's harness copied to
+`scratch/40-exposition/Axioms.lean`; the blueprint baseline above, with 187 overfull boxes.
 
 ## Scope and standing rules
 
-From `notes/Cleanup40.md` §1–§2, restated only as far as a builder needs them:
+From `notes/Cleanup40.md` §1–§2. How each task applied them is in its commit.
 
-- **Surface.** `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (lines
-  44–47, 362–392 and 406–407), all in `blueprint/src/chapter/`. No Lean edits, and no other
-  chapter's TeX: a finding elsewhere goes to *Moved to a later round* or *Candidates*.
-- **Prose only** (Phase 28's rule).
-  - What does not change: every node's `\label`, `\lean{…}` pins, `\leanok` and `\uses` edges,
-    and the strength of its statement. A statement block may be edited for register or
-    anchoring only.
-  - A finding that would change a headline or blueprint statement's strength goes to
-    *Candidates for `40-simplify`*. It is not acted on and it is not a stop.
-  - A dependency edge the graph lacks is not added either: record it under *Moved to a later
-    round*, with target `40-simplify`.
-  - A node may move within its chapter to cure a forward reference, per *Decisions* (d).
-- **Evidence.**
-  - Citations follow `CLAUDE.md` *Referencing prior work*. The primary sources are in `.refs/`,
-    read as `REFS.md` says: KT 2011 (the journal version), Crapo–Whiteley 1982 and Whiteley 1996.
-    For Jackson–Jordán 2008 only the technical report is there (EGRES TR-2006-06, 31 August
-    2006): check against it, and cite `\cite{jacksonJordan2008pin}` with no claim or section
-    number unless the published text has been checked. Name the TR passage in the commit
-    message.
-  - No new bib entry unless it has been verified as `blueprint/AUTHORING.md` *Citations* asks.
-  - A claim about the Lean is read from the declaration's statement and body, never from its
-    docstring or from blueprint prose (`CLAUDE.md` *Docstrings are not evidence*).
-  - The workbook is a source for the argument, never a citation.
-- **Conventions.** `blueprint/CLAUDE.md` (it auto-loads on the TeX) and `blueprint/AUTHORING.md`:
-  principles A–F with the R-task order, and the terminology dictionary. The audience is a
-  rigidity theorist who knows KT and JJ and has not seen the project's notes.
-- **Gates for every section slice** (blueprint commits; this round edits no Lean). Run each in the
-  foreground with an explicit `timeout`.
-  1. `blueprint/lint.sh` green: references, citations, supersession, hanging pins, vocabulary.
-  2. `blueprint/verify.sh` green: `inv bp`, `inv web`, and `lake exe checkdecls` silent.
-  3. **The invariance check**, run from the repository root after `verify.sh`. Both values must
-     equal the open's (*Current state*):
-     ```sh
-     python3 -c "import re,hashlib;g=open('blueprint/web/dep_graph_document.html').read();g=g[g.find('digraph'):];g=g[g.find('{')+1:g.find('}')];s=sorted(filter(None,(re.sub(r'\s+',' ',x).strip() for x in g.split(';'))));print(sum(' -> ' in x for x in s),'edges',hashlib.sha256('\n'.join(s).encode()).hexdigest()[:16])"
-     sort blueprint/lean_decls | shasum -a 256 | cut -c1-16
-     ```
-  4. No new warnings: 0 `LaTeX Warning` lines in `blueprint/print/print.log`, and 9 `WARNING:`
-     lines in the output of `verify.sh`.
-  5. On a commit that edits a phase note, `python3 notes/check-phase-note.py` exits 0. Its pattern
-     does not match this log's name, so this log is kept forward-weighted by hand: under ~500
-     lines, *Decisions* shorter than the forward sections, each entry at most 8 lines.
-
-  Every commit also gets `blueprint/CLAUDE.md`'s friction review and updates this log: its
-  checklist line, *Current state* and *Hand-off*. Where a task names a build-or-leave item, it
-  also fills that item's recommendation.
+- **Surface.** `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them, all in
+  `blueprint/src/chapter/`. No Lean edits, and no other chapter's TeX: a finding elsewhere went to
+  *Moved to a later round* or *Candidates*.
+- **Prose only** (Phase 28's rule). Every node's `\label`, `\lean{…}` pins, `\leanok` and `\uses`
+  edges, and the strength of its statement, stayed as they were; a statement block was edited for
+  register or anchoring only. A finding that would change a statement's strength went to
+  *Candidates*, and an edge the graph lacks to *Moved*. A node could move within its chapter to
+  cure a forward reference (*Decisions*, (d)).
+- **Evidence.** Citations follow `CLAUDE.md` *Referencing prior work*, against the sources in
+  `.refs/` (KT 2011, Crapo–Whiteley 1982, Whiteley 1996; for Jackson–Jordán 2008 the technical
+  report EGRES TR-2006-06, each passage named in the commit that relies on it). Claims about the
+  Lean were read from declarations' statements and bodies, never from docstrings. The workbook is
+  a source for the argument, never a citation.
+- **Gates for every slice**, each in the foreground with an explicit `timeout`: `blueprint/lint.sh`
+  and `blueprint/verify.sh` green (`checkdecls` silent); the invariance check below equal to the
+  open's values; 0 `LaTeX Warning` lines in `blueprint/print/print.log` and 9 `WARNING:` lines from
+  `verify.sh`; this log under ~500 lines, kept by hand (`notes/check-phase-note.py` does not match
+  its name). The invariance check, run from the repository root after `verify.sh`, sees a changed
+  `\uses` edge or `\leanok`, which `checkdecls` and `lint.sh` cannot:
+  ```sh
+  python3 -c "import re,hashlib;g=open('blueprint/web/dep_graph_document.html').read();g=g[g.find('digraph'):];g=g[g.find('{')+1:g.find('}')];s=sorted(filter(None,(re.sub(r'\s+',' ',x).strip() for x in g.split(';'))));print(sum(' -> ' in x for x in s),'edges',hashlib.sha256('\n'.join(s).encode()).hexdigest()[:16])"
+  sort blueprint/lean_decls | shasum -a 256 | cut -c1-16
+  ```
 
 ## Lemma checklist (the round's task list)
 
-One commit per task, in the order given. Each task's diagnosis says what the unit needs in order
-to explain the mathematics and the proof's key ideas in context. The line ranges are the open's.
+One commit per task, in this order. Each line names its commit. The commit, with this log as of
+that commit, carries the task's diagnosis, its (f) coinage list and its forward `\cref`s.
 
-- [x] **1. S — the sample, `sec:main-component-splitoff`** (`806db52e`; pinned by task 2). Its JJ
-  paragraph is checked against the TR (Theorem 6.1, Claim 6.5, Case 1, pp. 15–16).
-- [x] **2. E — pin the exemplar** (attended, with the PI, 2026-10-03; *Autopilot*, *Decisions*).
-- [x] **3. P1 — `pencil.tex`'s opening subsections** (`99a3e639`, then a corrective). The pencil
-  picture and the molecular reading lead in; `lem:pencil-self-dual` is put off the proof. *(f):* for
-  task 25, "the pencil condition" ("the point condition" is left to task 23). Four forward `\cref`s.
-- [x] **4. P2 — base, cycle and extension** (`6bc95de3`, then a corrective). The base case leads;
-  `lem:cycle-coplanar-realization` follows its `\uses` target; `sec:pencil-cycle`'s two lemmas serve
-  no case (edge: *Moved*). *(f):* new, *cross-incidence(s)*. Nine forward `\cref`s. Task 25 set
-  `sec:pencil-base`'s pinpoint for KT Lemma 5.3 to p. 669, where KT state it (it was p. 670, where
-  the proof ends; `panel-layer.tex`'s "cf. … p. 670" cites that proof and stays).
-- [x] **5. P3 — `sec:pencil-reduction`** (`96eda8e2`). A roadmap; the cut-edge reason; loop and base
-  cases live (edges: *Moved*); KT Theorem 5.6's route, its `K_4` failure, KT Lemmas 4.5–4.6. *(f):*
-  in a node, *deficiency rank*. Forward `\cref`s into `sec:main-component`.
-- [x] **6. P4 — `sec:pencil-nondegenerate`** (`58fc3a52`). Conditioning in prose (KT p. 668,
-  Theorem 5.5); the pair theorem's two results in the lead-in (edges, splitting: *Moved*,
-  *Candidates*). *(f):* in a node, *pencil hub*, *nondegenerate*, *adjacent-distinct*, *conditioned
-  pair*, kernels (K), (K-bare) and three more; four removed. Five forward `\cref`s.
-- [x] **7. P5 — `sec:pencil-main-component-route`** (`1010c804`), retitled *Reduction to the main
-  component*: its one idea; `lem:pencil-nonsimple-case` kept (KT Lemma 6.2, p. 673); the JJ paragraph
-  left to task 12. *(f):* for task 25, *main component*. Nine forward `\cref`s.
-- [x] **8. P6 — `sec:pencil-girth-chain`** (`694d892e`). Outside the closure, confirmed in the Lean;
-  kept as results under their hypotheses; the two-cut composition cut (item 2 written);
-  `def:girth`'s false clause cut. Three forward `\cref`s.
-- [x] **9. M1a — the carrier, first half** (`a23508c0`). The lifting idea leads (Whiteley 1996
-  §8.3, checked); one node moved. *(f):* for task 25, *standing hypotheses*; *selector* removed.
-- [x] **10. M1b — the carrier, second half** (`a5f782a5`; full entry there). The one-witness proof;
-  the polynomial section in general. *(f):* for task 25, *main component*, *pencil configuration space*.
-- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; full entry there). Crapo–Whiteley Example
-  4.4. *(f):* in a node, *lifting planes*, *flat rank*; for task 25, *flat configuration*, `def₂`, `def₃`.
-- [x] **12. M3 — `sec:main-component-jj`** (`b805e623`; full entry there). JJ in their terms. *(f):*
-  standard, *pin-collinear body-and-pin framework*, *chart*; in a node, *Jackson and Jordán's equality*.
-- [x] **13. M4 — `sec:main-component-cut`** (`9c931242`; full entry there). The steps' scheme
-  displayed. *(f):* standard, *cut vertex*, *bridge*, *ear*; for task 25, *target*, `tgt`.
-- [x] **14. M5 — `sec:main-component-contract`** (`8248885c`; full entry there). KT §6.2 checked.
-  *(f):* *neighbour of `W`* replaces *attachment*; for task 25, *core*, *planar deficiency*.
-- [x] **15. M6 — `sec:main-component-chain`** (`698af66a`; full entry there). The ear rank formula
-  leads. *(f):* in a node, *relative screws*, *joint rows*; for task 25, *flat coordinates*,
-  *structural coverage*.
-- [x] **16. M7a — SHORT's opening and toolkit** (`18e55da1`; full entry there). The count against
-  `G″` and the two stages lead. *(f):* in a node, *pairing*, *ear data*, *base data*.
-- [x] **17. M7b — SHORT's three steps** (`f6f160f7`; full entry there). Each proof cites the
-  opening's two stages; informal remarks cut (a). Item 5 written. *(f):* for task 25, *planar-rigid set*.
-- [x] **18. M8 — `sec:main-component-orbit`** (`3892f286`; full entry there). The incidence and the
-  tetrahedron lead; the remark cut, `fmlnote:pencil-flag-genericity` deleted. One forward `\cref`.
-- [x] **19. M10 — `sec:main-component-contract-additive`** (`a396d213`; full entry there). The two
-  bounds on `ker M(0)` lead (KT p. 674 checked); the remark cut. *(f):* for task 25, *additive core*
-  (only `≤`), *attaining height*; `ρ` in a node. One forward `\cref` added.
-- [x] **20. M11 — `sec:main-component-sparse`** (`df911478`; full entry there). The singleton count
-  leads; three remarks cut. *(f):* standard, *rigid*, *sparse*, *tight*; for task 25, *value*,
-  *singleton value* (`s_D`, `s`), *planar-rigid* (the TR's *strong*, p. 7), *core*.
-- [x] **21. M12 — `sec:main-component-coverage`** (`5fbe5784`; full entry there). The 13-row case
-  table and Theorem S's overview lead; both "informal" remarks cut (a); item 6 written. *(f):* in a
-  node, *reduces to*, *chain*, *usable*; for task 25, *smaller than*; standard, *2-connected*.
-- [x] **22. M13a — `sec:main-component-statements`, first half** (`d20cf90d`; full entry there). The
-  obstruction worked at `K_{2,3}`; the base case's overview first. *(f):* standard, *pendant
-  triangle*; in a node, `G_{uw}`, *main picture*; removed, *fibre by fibre*, *hub ends*.
-- [x] **23. M13b — the statements' second half** (`ed1b13c0`; full entry there). A lead-in motivates
-  `lem:pencil-generic-steer` (one polynomial parametrization joins the two realizations); the
-  three-body construction is named; the good-ear remark is cut (a). *(f):* removed, *steering*,
-  *chart (point)*, *good ear* and seven more; for task 25, *planar-rigid*, *singleton value*, *target*.
-- [x] **24. F1 — `pencil.tex`'s introduction** (`1432722c`; full entry there). A three-paragraph
-  roadmap that points to the subsection openings; four parts named off the proof, checked against
-  the closure of both headlines in the Lean. *(f):* removed, *concurrency point*, *main component*,
-  *kernel hypotheses*.
-- [x] **25. F2 — `main-component.tex`'s introduction** (`b166f435`; full entry there). A roadmap
-  with a 13-item notation list; the lifting and `K_{2,3}` left to `sec:pencil-main-component-route`
-  (no third account). *(f):* defined in the list; standard, *open ear*. Eleven forward `\cref`s.
-- [x] **26. F3 — `intro.tex`'s reader path** (this commit). The fifth continuation is now five
-  paragraphs: the pencil conjecture; the induction over every multigraph and phase 39's reduction;
-  the lifting and the main component; phase 40's induction and the two statements; dimension two
-  and JJ. Each sentence is checked against both introductions and the nodes it cites.
-  - One paragraph, sentences joining two results: done, split. Lines 44–47: they now say what is
-    strengthened (KT Theorem 5.6 in dimension three). Lines 406–407: the name only. Phase numbers
-    kept. "Appears to be new" is kept once, at 44–47.
-  - False before: the main-component statements are existence statements, not "about the main
-    component"; what the argument uses is the planar case of KT Theorem 5.6's non-spanning form,
-    not "its [the conjecture's] planar rank formula". Read in the Lean: the JJ chart lemma's pin
-    calls `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` at `n = 2`, and `x0Gen`
-    is a corollary of `pencilPair_of_nonempty` (`Statements.lean`).
-  - Task 24's notes: the self-duality is cut (off the proof; the reader path follows the proof).
-    One name, *the pencil conjecture* (the node's title and both introductions); `README.md`,
-    `home_page/index.md` and `formalization.yaml` keep the old one (*Moved*). *Bond-star* is
-    replaced by `sec:pencil-realization`'s reading.
-  - Task 25's notes: *planar drawing* became *picture*; the main component is the notation list's
-    closure over the main pictures; *the space of such realizations* is the pencil configuration
-    space.
-  - JJ checked against the TR: abstract and §1 (pp. 1–3, real frameworks, "a complete solution
-    of the conjecture when d = 2"), Theorems 6.1 (p. 14) and 7.3 (p. 21).
-  - *(f):* removed, *hinge-pencil conjecture*, *bond-star*, *planar drawing*, *least-dimensional
-    family*, *concurrency point*; in a node, *pencil realization*, *nondegenerate*, *main-component
-    statements*, *admissible*, *lifting space*, *deficiency rank*; task 25's list, *pencil
-    configuration space*, *main component*, *main picture*, *general*, *structural coverage*;
-    standard, *closed neighbourhood*, *cut vertex*, *bridge*, *ear*, *pin-collinear body-and-pin
-    framework*.
-  - Forward `\cref`s added: `def:pencil-panel-realization`, `-nondegenerate`,
-    `-main-component-statements`, `-admissible-picture`, `-lifting-space`, `thm:pencil-reduction`,
-    `rem:pencil-x0-main-component`, `thm:pencil-x0-generic-attains`, `-coverage`,
-    `lem:pencil-x0-distinct-statement`, `-two-hubs-obstruction`, `thm:pencil-generic-step`,
-    `sec:main-component-jj`. Two removed: `lem:panel-hinge-dual-molecular`,
-    `sec:pencil-main-component-route`.
-- [ ] **27. X — close the round** (`CLEANUP.md` *Workflow* rule 5; docs only).
-  - **Gates.** `lake build` and `lake lint` green. The harness is re-diffed and re-run: 19 of 19
-    at the standard axioms.
-  - **The blueprint.** `verify.sh` and `lint.sh` green; the invariance fingerprints equal the
-    open's; the warning counts are unchanged.
-  - **Stop 2's inputs.** The build-or-leave table has no *pending* slot. Mirror it, one line per
-    item, and the *Candidates*, into `notes/Cleanup40.md` §2 *Round 4*.
-  - **The ledger.** Check the pointers of `notes/BlueprintExposition.md`'s `pencil.tex` and
-    `main-component.tex` entries against the new text, and add a one-paragraph round note. Its
-    `pencil_conjecture_of_X0` entry says the section introduction "walks the whole argument in
-    order"; since task 25 it is a roadmap with a notation list.
-  - **Status surfaces.** The ROADMAP row reads ✓ Complete. The queued bullet and
-    `notes/Cleanup40.md`'s **Status** name opening round 4.
-  - **The queue.** `40-exposition`'s row in `.claude/autopilot/queue.toml` gets `done = true`,
-    and nothing else there changes.
+- [x] **1. S — the sample, `sec:main-component-splitoff`** (`806db52e`; its JJ paragraph checked
+  against the TR, Theorem 6.1, Claim 6.5, Case 1, pp. 15–16).
+- [x] **2. E — pin the exemplar** (`316fb0f3`; attended, with the PI, 2026-10-03).
+- [x] **3. P1 — `pencil.tex`'s opening subsections** (`99a3e639`, corrective `6c5572fc`).
+- [x] **4. P2 — base, cycle and extension** (`6bc95de3`, corrective `1bd8f6ed`).
+- [x] **5. P3 — `sec:pencil-reduction`** (`96eda8e2`).
+- [x] **6. P4 — `sec:pencil-nondegenerate`** (`58fc3a52`).
+- [x] **7. P5 — `sec:pencil-main-component-route`**, retitled *Reduction to the main component*
+  (`1010c804`).
+- [x] **8. P6 — `sec:pencil-girth-chain`** (`694d892e`; item 2 written).
+- [x] **9. M1a — the carrier, first half** (`a23508c0`).
+- [x] **10. M1b — the carrier, second half** (`a5f782a5`).
+- [x] **11. M2 — `sec:main-component-flat`** (`89c856dd`; item 8 written).
+- [x] **12. M3 — `sec:main-component-jj`** (`b805e623`; items 4 and 7 written).
+- [x] **13. M4 — `sec:main-component-cut`** (`9c931242`; item 3 written).
+- [x] **14. M5 — `sec:main-component-contract`** (`8248885c`).
+- [x] **15. M6 — `sec:main-component-chain`** (`698af66a`; item 1 written).
+- [x] **16. M7a — SHORT's opening and toolkit** (`18e55da1`).
+- [x] **17. M7b — SHORT's three steps** (`f6f160f7`; item 5 written).
+- [x] **18. M8 — `sec:main-component-orbit`** (`3892f286`).
+- [x] **19. M10 — `sec:main-component-contract-additive`** (`a396d213`).
+- [x] **20. M11 — `sec:main-component-sparse`** (`df911478`).
+- [x] **21. M12 — `sec:main-component-coverage`** (`5fbe5784`; item 6 written).
+- [x] **22. M13a — `sec:main-component-statements`, first half** (`d20cf90d`).
+- [x] **23. M13b — the statements' second half** (`ed1b13c0`).
+- [x] **24. F1 — `pencil.tex`'s introduction** (`1432722c`).
+- [x] **25. F2 — `main-component.tex`'s introduction** (`b166f435`).
+- [x] **26. F3 — `intro.tex`'s reader path** (`30e79461`).
+- [x] **27. X — close the round** (this commit; what it verified and carried over is under
+  *Current state*, and its ledger work in `notes/BlueprintExposition.md`'s round note).
 
 ## The build-or-leave items (recommendations for round 4's Stop 2)
 
 From `notes/Cleanup40.md` §2 *Round 3*. Each gets one recommendation: build it, add its blueprint
-node, refactor around it, or leave it with a recorded reason. The task named writes it, once the
-exposition has made the item's role clear. The PI decides at round 4's stop.
+node, refactor around it, or leave it with a recorded reason. The task named wrote it, once the
+exposition had made the item's role clear. The PI decides at round 4's stop. The close (task 27)
+mirrored the eight, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
 
 1. **The D5 blueprint debt.** Of the 40 names in `notes/Phase40-design.md` §7's list, nine are
    pinned; 31 have no node. *Task 8 read all 40 in the Lean* (the closure of both headlines' types
@@ -360,13 +252,13 @@ A node these items might gain would sit in `deficiency.tex`, `rigidity-matrix.te
 ## The pinned exemplar
 
 In its own file, `notes/Phase40-exposition-exemplar.md` (task 2, 2026-10-03). Every builder of
-tasks 3–26 reads it. It is altered only to correct a verified factual error.
+tasks 3–26 read it. It is altered only to correct a verified factual error.
 
 ## Candidates for `40-simplify`
 
 Structural findings, and any finding that would change a headline or blueprint statement. They are
 recorded here and never acted on in this round (`notes/Cleanup40.md` §2). The close (task 27)
-mirrors them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
+mirrored them, one line each, into `notes/Cleanup40.md` §2 *Round 4*.
 
 - **`lem:pencil-splitoff-curve` bundles three unrelated facts** (seen at Stop 1; the PI agreed,
   2026-10-03). They are a linear-algebra lemma, the extension of a height across `x`, and the
@@ -438,48 +330,43 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Blockers / open questions
 
-- None. Stop 1 is closed (2026-10-03). The round's next planned stop is round 4's Stop 2.
+- None. The next planned stop is round 4's Stop 2, where the PI decides the build-or-leave items.
 
 ## Hand-off / next phase
 
-**Next: task 27, the close** (its checklist entry has the scope: gates and the axioms harness, Stop
-2's inputs, the ledger, the status surfaces, the queue). It is docs only and the round's last
-commit; round 4, `40-simplify`, opens after it.
+**Round 3 is closed; there is no next step in it.** The next is opening round 4, `40-simplify`,
+the deep recon (`notes/Cleanup40.md` §2 *Round 4*; its work log `notes/Phase40-simplify.md` does
+not exist yet). What carried over, all mirrored into `notes/Cleanup40.md` §2:
+- round 4's Stop-2 inputs: the eight build-or-leave recommendations and the nine *Candidates for
+  `40-simplify`*;
+- the *Moved to a later round* lines: seven for round 4 (six missing `\uses` edges and one node the
+  graph draws unfilled), and one for round 5 (the README, the home page and `formalization.yaml`
+  still use the reader path's old names).
 
-- **Standing, for every section task (4–26)** (from task 3's corrective). Its return and its
-  checklist entry (i) answer every diagnosis bullet of the task: done, not done with the reason, or
-  moved per *Moved to a later round*; (ii) carry the section's (f) coinage list, each coinage
-  marked standard, defined in a node, or left for task 25's notation paragraph; (iii) name every
-  forward `\cref` it adds.
+No task of this round is left open. A later prose round (**PROSE**, in ROADMAP's queue) can reuse
+the round's defaults (*Decisions*), its exemplar (`notes/Phase40-exposition-exemplar.md`) and the
+invariance check (*Scope*).
 
 ## Decisions made during this round
 
-- **2026-09-30, the open: the sample is `sec:main-component-splitoff`** (a typical step, with a JJ
-  citation).
-- **The task list** (the PI approved it, 2026-10-03). One commit per subsection, split or grouped
-  at natural seams into slices of 150–430 lines, near the sample's 322. The introductions and
-  `intro.tex` come last (principle F): each summarizes what precedes it.
-- **Round-wide default (a), as the PI ruled and amended (2026-10-03; verbatim under *Autopilot*).**
-  Cut every comparison with the workbook's informal argument. A reason the proof is shaped as it
-  is stays, stated on its own. So does an argument that gives more insight but was not formalized
-  for technical reasons (the PI): a short remark or formalization note, with that reason. A
-  stronger fact not proved here is cut unless a reader would expect it; then one sentence says the
-  proof needs only the weaker form. A remark that carries a build-or-leave item is cut only after
-  that item's recommendation records the fact.
+- **The sample** was `sec:main-component-splitoff`, a typical step with a JJ citation (the open).
+- **The task list:** one commit per subsection, in slices of 150–430 lines, the introductions and
+  `intro.tex` last (principle F); the PI approved it, 2026-10-03.
+- **Default (a), as the PI ruled and amended (2026-10-03; verbatim under *Autopilot*).** Cut every
+  comparison with the workbook's informal argument. A reason the proof is shaped as it is stays,
+  stated on its own. So does an argument that gives more insight but was not formalized for
+  technical reasons (the PI): a short remark or formalization note, with that reason. A stronger
+  fact not proved here is cut unless a reader would expect it; then one sentence says the proof
+  needs only the weaker form. A remark that carries a build-or-leave item is cut only after that
+  item's recommendation records the fact.
 - **Defaults (b)–(d)** (the PI approved them as drafted). (b) A formalization note keeps only what
   the Lean does differently. (c) A Lean name never appears in a statement block. (d) A node may
   move within its chapter to cure a forward reference.
-- **(e) The register, and (f) terminology** (the PI, 2026-10-03, Stop 1). Every task follows
-  `blueprint/AUTHORING.md`'s clauses of that date. They are A *Voice and sentences* ("we" as KT
-  write it, one idea per sentence, no unasked questions), C's indexing test limited to proofs, F
-  *Once* (one sketch per subsection, no lead-in that restates a node), and E *Terminology*. Under
-  (f) each task lists its section's project coinages. Each one is replaced by the standard term,
-  or defined in a definition node or in task 25's notation paragraph.
-- **The invariance check** (gate 3). `checkdecls` and `lint.sh` cannot see a changed `\uses` edge
-  or `\leanok`; the sorted hash of `inv web`'s graph can, and ignores node order, so a move passes.
-- **Formalization notes** (task 6's reading of *Scope*, which protects nodes' labels). A note left
-  with no Lean divergence is deleted, label and all, as a note is not a graph node. A note stays on
-  its side of a proof: plasTeX attaches a proof to the environment just before it.
-- **Rungs.** Tasks 3 and 4 ran Sonnet, and each needed an Opus corrective for a gate-invisible
-  claim about other sections. From task 5 every section task runs Opus, fresh per task
-  (coordinator, 2026-10-03; `notes/dispatch-log.md`).
+- **(e) The register and (f) terminology:** promoted to `blueprint/AUTHORING.md`'s clauses of
+  2026-10-03 (A, C, E, F).
+- **The invariance check** (gate 3) sees what `checkdecls` and `lint.sh` cannot, and ignores node
+  order.
+- **Formalization notes:** a note left with no Lean divergence is deleted, label and all; a note
+  stays on its side of a proof, as plasTeX attaches a proof to the environment just before it.
+- **Rungs:** from task 5 every section task ran Opus, fresh per task, after Sonnet's tasks 3 and 4
+  each needed an Opus corrective (`notes/dispatch-log.md`).
