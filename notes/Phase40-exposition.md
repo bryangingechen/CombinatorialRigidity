@@ -7,9 +7,9 @@ is the authority for which rounds are done. The round rewrites the prose of `pen
 mathematics clearly" and "the proof and its key ideas in context" (the PI, `notes/Cleanup40.md`
 §1). Pins, `\uses` edges and statement strength stay as they are. The round also writes a
 build-or-leave recommendation for eight items, which the PI decides at round 4's stop. 27
-one-commit tasks, 14 landed (tasks 1–14; tasks 3 and 4 with a corrective each). **Stop 1 is
+one-commit tasks, 15 landed (tasks 1–15; tasks 3 and 4 with a corrective each). **Stop 1 is
 closed** (the PI, 2026-10-03), and the round runs unattended to its close. **Next concrete task:**
-task 15, `sec:main-component-chain`, against the pinned exemplar
+task 16, `sec:main-component-short`'s toolkit, against the pinned exemplar
 (`notes/Phase40-exposition-exemplar.md`) and defaults (a)–(f), returning per *Hand-off*'s standing
 bullet. Round manual: `CLEANUP.md`.
 
@@ -57,12 +57,12 @@ granularity are under *Decisions*, the introduction's flags are in task 25, and 
 
 ## Current state
 
-**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–14
+**Round 3 is open** (opened at `5f9cbe04`, docs only; its Lean tree is `0b260626`'s). **Tasks 1–15
 have landed**, tasks 3 and 4 with a corrective each, and nothing is mid-stream. Task 2, attended by
 the PI, pinned the exemplar and settled defaults (a)–(f). Every commit so far leaves the gates at
 the baseline below (graph fingerprint, pin hash, warning counts). `pencil.tex` is done but for its
-introduction (task 24), and `main-component.tex`'s first five subsections are done; next is
-task 15, ears and cycles. Items 2, 3, 4, 7 and 8 are written.
+introduction (task 24), and `main-component.tex`'s first six subsections are done; next is task 16,
+the toolkit of `sec:main-component-short`. Items 1, 2, 3, 4, 7 and 8 are written.
 
 **Verified at the open:**
 - Whole-project `lake build` green (3003 jobs, 0 `warning:` lines). `#print axioms` on all 19
@@ -178,28 +178,20 @@ to explain the mathematics and the proof's key ideas in context. The line ranges
   steps' scheme (picture, height, count) with `tgt(G)` defined, and names the three steps where no
   two open conditions meet. Item 3 written; its four remarks cut. *(f):* standard, *cut vertex*,
   *bridge*, *ear*; for task 25, *target*, `tgt`. Forward `\cref`s to the later steps.
-- [x] **14. M5 — `sec:main-component-contract`** (this commit). Every diagnosis bullet done:
-  - *The overview.* Cites task 13's scheme: the height comes from a polynomial family along the
-    curve, and no two open conditions meet. Then the curve, the rescaling (a homothety of ratio `t`
-    about `(q_r, 0)`, undone by the `1/t` frame, so the core's rows are `H`'s at `q`), the kernel not
-    jumping (task 10's section cited), and the one plane (bound on `ker M(0)`, flat core rank).
-  - *KT pinpoints checked:* §6.2 and eq. (6.3), p. 673; Lemma 6.3 and eq. (6.5), p. 674; Claim 6.4,
-    eqs. (6.7), (6.9), p. 675. Corrected: the curve's end is Claim 6.4's choice (all core panels on
-    `r`'s), not "(6.7)'s placement"; `-limit`'s loose Claim-6.4 analogy left that proof.
-  - *Moves done.* `M(0)`'s rows are now read after the definition, curing `-kernel-bound`'s forward
-    reference to `-limit`'s proof. *Remark cut* (default (a)); its reason, two kinds of core, opens.
-  - *(f):* standard, *neighbour of `W`* (replaces *attachment*, also in
-    `thm:pencil-x0-contract-additive`'s statement), *homothety*, *rigid* (KT); in a node, *contraction
-    curve*, *rescaled lifting system*, *collapsed placement*; for task 25, *core*, *planar
-    deficiency*. Forward `\cref`s: `sec:main-component-coverage`, `-contract-additive`.
-- [ ] **15. M6 — `sec:main-component-chain`, 1632–1966.**
-  - The ear rank formula, `lem:block-rank-ear`, organizes all three ear subsections but is stated
-    inline. Display it, with `ρ` and `Λ` explained.
-  - Put the key idea before the proof rather than in a remark: one certifying point suffices, and
-    it may lie over a degenerate picture, provided its heights are heights of `G`.
-  - Keep in view that the coverage never uses `thm:pencil-x0-closed-ear`. The remark after the
-    open-ear theorem falls under default (a).
-  - **Writes item 1's recommendation.** `lem:block-rank-two-cut` lies behind the ear formula.
+- [x] **14. M5 — `sec:main-component-contract`** (`8248885c`; full entry there). Cites task 13's
+  scheme; the curve, the rescaling, the kernel and the one plane lead; KT §6.2, Lemma 6.3 and Claim
+  6.4 checked (pp. 673–675). *(f):* *neighbour of `W`* replaces *attachment*; for task 25, *core*,
+  *planar deficiency*.
+- [x] **15. M6 — `sec:main-component-chain`** (this commit). Every diagnosis bullet done:
+  - *The ear rank formula* is displayed in the opening, with `ρ` and `Λ`, why it holds (the path
+    and `G[V₁]` share the joint rows confining the relative screw to `ρ + Λ`), and the count.
+  - *The key idea* is in the opening: one configuration suffices, over a non-admissible picture,
+    if its heights are heights of `G`. The remark after the open ear is cut (default (a)).
+  - *The closed ear* is said to be unused (`lem:pencil-x0-cut-reduces`; no caller in the Lean).
+    `rem:pencil-x0-ear-class` is shortened, and corrected: closed ears need two interior bodies.
+  - Item 1 written. *(f):* standard, *ear*, *interior body*, *join*; in a node, *relative screws*,
+    *joint rows*; for task 25, *flat coordinates*, *structural coverage*. Forward `\cref`s:
+    `sec:main-component-short`, `-orbit`, `lem:pencil-x0-cut-reduces`, `thm:pencil-x0-coverage`.
 - [ ] **16. M7a — `sec:main-component-short`'s toolkit, 1967–2261.** `def:pencil-line-pairing`
   through `lem:pencil-ear-data-open`; 11 nodes.
   - The pairing, `⟨p∧q, r∧s⟩ = det(p, q, r, s)`, stars and plane lines are classical line
@@ -310,12 +302,20 @@ exposition has made the item's role clear. The PI decides at round 4's stop.
 
 1. **The D5 blueprint debt.** Of the 40 names in `notes/Phase40-design.md` §7's list, nine are
    pinned; 31 have no node. *Task 8 read all 40 in the Lean* (the closure of both headlines' types
-   and values; measured, script not retained). 11 are live: seven pinned names (not the two pins of
-   `cor:block-rank-vertex-two-cut`) and four unpinned helpers (`bddAbove_range_partitionDef_merged`,
-   `span_jointRows_eq_map_dualAnnihilator`, `finrank_span_jointRows`, `map_screwDiff_comm`). The
-   other 29, `TwoCut.lean`'s nine included, feed neither headline; item 2's reason may carry over.
-   Role: task 8 (the two-cut composition) and task 15 (the ear formula). *Recommendation: pending*
-   (task 15).
+   and values; measured, script not retained): 11 are live, seven pinned names (not the two pins of
+   `cor:block-rank-vertex-two-cut`) and four unpinned helpers. The other 29, `TwoCut.lean`'s nine
+   included, feed neither headline. Role: tasks 8 and 15. *Recommendation (task 15): leave all 31
+   unpinned, with no node.* Read in the Lean, three of the live helpers are reached through the ear
+   formula: `lem:block-rank-ear`'s pin calls `lem:block-rank-two-cut`'s second pin, which calls the
+   first and `finrank_span_jointRows`; the first calls `span_jointRows_eq_map_dualAnnihilator` and
+   `map_screwDiff_comm`. Outside `Bricks.lean`, only the ear formula's pin calls the two pins. The
+   three are an unfolding, an orientation flip, and the count `D − dim U` of the joint rows, which
+   `rigidity-matrix.tex` states after `def:relative-screws` and uses in the two-cut proof. The
+   fourth, `bddAbove_range_partitionDef_merged`, bounds a finite supremum. Helpers stay unpinned
+   (principle C); at most a later round names `finrank_span_jointRows` in the two-cut proof, as task
+   43 of `40-cleanup` named item 7. The 29 keep item 2's reason: they serve the unfinished two-cut
+   composition, and a node would pin its shape (D5) with no proof to cite it. Whether to delete them
+   is round 4's question of the Lean that feeds neither headline.
 2. **A6, the welded pendant law, and item 6's other deferred laws.** These are S7(i), S7(ii),
    S7(iii), S7(v) and S9, all unbuilt. Role: task 8. *Recommendation (task 8): leave them unbuilt,
    with no node.* They belong to the two-cut composition, an unfinished attempt at kernel (K-bare):
@@ -447,8 +447,8 @@ target round's plan section in `notes/Cleanup40.md` in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 15** (checklist above has its scope); then tasks 16–26 in order,
-and task 27 closes the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
+**Next: task 16** (checklist above has its scope); then tasks 17–26 in order, and task 27 closes
+the round. Each section task reads the pinned exemplar (`notes/Phase40-exposition-exemplar.md`),
 defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 2026-10-03.
 
 - **Standing, for every section task (4–26)** (from task 3's corrective). Its return and its
@@ -456,9 +456,10 @@ defaults (a)–(f) under *Decisions*, and `blueprint/AUTHORING.md`'s clauses of 
   moved per *Moved to a later round*; (ii) carry the section's (f) coinage list, each coinage
   marked standard, defined in a node, or left for task 25's notation paragraph; (iii) name every
   forward `\cref` it adds.
-- **For tasks 15–19** (from task 13). `sec:main-component-cut`'s opening displays the steps' shared
-  scheme (the picture, the height, the count). Cite it rather than re-derive it, and say how the
-  step varies the height.
+- **For tasks 16–19** (from tasks 13 and 15). `sec:main-component-cut`'s opening displays the steps'
+  shared scheme (the picture, the height, the count). Cite it rather than re-derive it, and say how
+  the step varies the height. `sec:main-component-chain`'s opening displays the ear rank formula,
+  with `ρ` and `Λ`: tasks 16–18 cite it there, and keep its claims true.
 
 ## Decisions made during this round
 
