@@ -56,6 +56,10 @@ themselves are in `MainComponent/Chain.lean`.
 * `span_supportExtensor_comp_eq_map_pointJoin`, `finrank_sup_map_screwComplementIso` — the span of
   the hinges at a family of links is the polar image of the span of the joins, so a bound on
   `dim(ρ + Λ)` is one on a span of joins (Phase 40h SHORT).
+* `Graph.X0Attains.of_openEar_of_cert` — **the shared open-ear certificate step** (Phase
+  40-simplify, `q1a`): `n` ear links independent at one certificate, a height of `G` at every
+  admissible picture, and the count `(⋆)` at `n`, carry attainment from `G[V₁]` to `G`. Both
+  `Chain.lean`'s `of_openEar` and `Short.lean`'s `of_openEar_two` instantiate it.
 
 ## Design
 
@@ -1254,5 +1258,108 @@ theorem card_le_finrank_of_linearIndependent_pointJoin {G : Graph α β} {ends :
   rintro _ ⟨i, rfl⟩
   have hmem := panelSupportExtensor_mem_span_ofNormals hends p (hg i)
   exact (Submodule.span_le.mpr (by rintro _ rfl; exact hT i)) hmem
+
+/-! ## The shared open-ear certificate step (Phase 40-simplify, `q1a`) -/
+
+/-- **The open ear from one certificate** (Phase 40-simplify task 10e, `q1a`): `n` ear links whose
+joins are independent at one certificate `(q₀, zs)`, with `zs` a height of `G` at every admissible
+picture and the count `(⋆)` holding at `n`, carry attainment from `G[V₁]` to `G`. This is the
+shared tail of `Chain.lean`'s `Graph.X0Attains.of_openEar` (`k ≥ 5`, six ear links) and
+`Short.lean`'s `Graph.X0Attains.of_openEar_two` (`k = 2`, three ear links): both instantiate `n`,
+the links and the certificate, and discharge `hzs`/`hcount` at their own configuration. -/
+theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Finite β]
+    {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α}
+    {e : Fin (k + 1) → β} (hk : 2 ≤ k) (hcover : V(G) = V₁ ∪ Set.range x)
+    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hab : a ≠ b)
+    (hpath : ∀ i : Fin (k + 1),
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
+    (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
+    (h₁ : (G.induce V₁).X0Attains K) {n : ℕ} (u v : Fin n → α) (j : Fin n → Fin (k + 1))
+    (hl : ∀ i, G.IsLink (e (j i)) (u i) (v i)) (q₀ : α × Fin 2 → K) (zs : α → K)
+    (hcert : LinearIndependent K
+      (fun i => pointJoin (pencilConfigPoint q₀ zs (u i)) (pencilConfigPoint q₀ zs (v i))))
+    (hzs : ∀ q, G.IsAdmissiblePicture q → zs ∈ G.liftingSpace q)
+    (hcount : (k : ℤ) + 1 + (G.induce V₁).deficiency 3 ≤ n + G.deficiency 3) :
+    G.X0Attains K := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  have hV : V(G).Nonempty := hG.connected.nonempty
+  have : Inhabited α := ⟨a⟩
+  have hle₁ : G.induce V₁ ≤ G := Graph.induce_le (hcover ▸ Set.subset_union_left)
+  obtain ⟨ends₁, P₁, hends₁, hP₁, hgood₁⟩ := h₁
+  obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
+    hG.simple.toLoopless hG.three_le_ncard_closedNbhd
+  set ends := G.endsOf
+  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
+    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hendsI : ∀ f u w, (G.induce V₁).IsLink f u w →
+      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
+    intro f u w hf
+    have hl := hends f u w hf.1
+    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
+    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
+  -- the picture: generic for `G[V₁]`, main for `G`, the joins independent at `zs`
+  obtain ⟨Plam, hPlam₀, hPlam⟩ :=
+    exists_mvPolynomial_linearIndependent_pointJoin_picture zs u v hcert
+  have hPlamne : Plam ≠ 0 := fun h => hPlam₀ (by rw [h, map_zero])
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hPm) hPlamne)
+  rw [map_mul, map_mul] at hq
+  obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
+  have hqmain := hmain q (right_ne_zero_of_mul (left_ne_zero_of_mul hq))
+  have hliq := hPlam q (right_ne_zero_of_mul hq)
+  obtain ⟨Rlam, hRlam₀, hRlam⟩ :=
+    exists_mvPolynomial_linearIndependent_pointJoin_heights q u v hliq
+  -- heights on which `G[V₁]` attains and the joins stay independent
+  have hex₁ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₁ R₁) ≠ 0 := by
+    obtain ⟨z, hz, hzr, -⟩ := G.earExtend_mem_liftingSpace hk hcover hinj hxV₁ ha hb hab
+      hpath hsep hqmain.1 hz₁ 0
+    exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
+  obtain ⟨z, hz, hz₁', hzlam⟩ :=
+    MvPolynomial.exists_mem_eval_ne_zero₂ hex₁ ⟨zs, hzs q hqmain.1, hRlam₀⟩
+  rw [eval_restrictPoly] at hz₁'
+  have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
+  have hli := hRlam z hzlam
+  rw [Graph.vertexSet_induce G V₁] at hr₁
+  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁ hendsI
+    (q' := fun p => pencilConfigPoint q z p.1 p.2)
+    (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
+  -- the ear rank law at `ofNormals G ends`, with `n` independent ear hinges
+  set F := (PanelHingeFramework.ofNormals (k := 2) G ends
+    (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
+  have hC : ∀ i, F.supportExtensor (e i) ≠ 0 :=
+    fun i => hqmain.1.supportExtensor_ne_zero hends z (hpath i)
+  have hear := BodyHingeFramework.finrank_span_rigidityRows_ear_eq F hinj hxV₁ ha hb hab hpath
+    hsep hC
+  have hdim := card_le_finrank_of_linearIndependent_pointJoin hends (pencilConfigPoint q z) u v
+    (e ∘ j) hl hli ((⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews
+      a b ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e)))
+    (fun i => Submodule.mem_sup_right (Submodule.subset_span ⟨j i, rfl⟩))
+  rw [Fintype.card_fin] at hdim
+  -- the body count
+  have hcard : (V(G).ncard : ℤ) = V₁.ncard + k := by
+    rw [hcover, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
+      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
+    · push_cast; ring
+    · refine Set.disjoint_left.mpr ?_
+      rintro _ h ⟨i, rfl⟩
+      exact hxV₁ i h
+  refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
+  have e1 : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce V₁)
+          ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
+        + ((screwDim 2 : ℤ) - 1) * (k + 1)
+        + (Module.finrank K ↥((⟨F.graph.induce V₁, F.supportExtensor⟩ :
+              BodyHingeFramework K 2 α β).relScrews a b
+            ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e))) : ℤ)
+        - (screwDim 2 : ℤ) := hear
+  rw [e1, hr₁, hcard]
+  have hs : (screwDim 2 : ℤ) = 6 := rfl
+  rw [hs]
+  have hdim' : (n : ℤ) ≤ (Module.finrank K ↥((⟨F.graph.induce V₁, F.supportExtensor⟩ :
+      BodyHingeFramework K 2 α β).relScrews a b
+        ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e))) : ℤ) := by exact_mod_cast hdim
+  linarith
 
 end CombinatorialRigidity.Molecular

@@ -93,32 +93,13 @@ theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite �
     (h₁ : (G.induce V₁).X0Attains K)
     (hdef : (G.induce V₁).deficiency 3 ≤ G.deficiency 3) : G.X0Attains K := by
   classical
-  have : Fintype α := Fintype.ofFinite α
-  have hV : V(G).Nonempty := hG.connected.nonempty
-  have : Inhabited α := ⟨a⟩
-  have hV₁G : V₁ ⊆ V(G) := hcover ▸ Set.subset_union_left
-  have hle₁ : G.induce V₁ ≤ G := Graph.induce_le hV₁G
   have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
   have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
   have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
-  obtain ⟨ends₁, P₁, hends₁, hP₁, hgood₁⟩ := h₁
-  obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
-    hG.simple.toLoopless hG.three_le_ncard_closedNbhd
-  set ends := G.endsOf
-  have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
-    fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsI : ∀ f u w, (G.induce V₁).IsLink f u w →
-      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
-    intro f u w hf
-    have hl := hends f u w hf.1
-    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
   -- the three ear links `a x 0, x 0 x 1, x 1 b`
   set u3 : Fin 3 → α := ![a, x 0, x 1]
   set v3 : Fin 3 → α := ![x 0, x 1, b]
-  set f3 : Fin 3 → β := ![e 0, e 1, e 2]
-  have hl3 : ∀ i, G.IsLink (f3 i) (u3 i) (v3 i) := by
+  have hl3 : ∀ i, G.IsLink (e (id i)) (u3 i) (v3 i) := by
     intro i
     fin_cases i
     · exact hpath 0
@@ -152,66 +133,9 @@ theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite �
         rw [hpt, hpt, l1, lb]; rfl
     rw [heq]
     exact linearIndependent_pointJoin_certHexagon.comp _ (by decide)
-  -- the picture: generic for `G[V₁]`, main for `G`, the three joins independent at the heights `0`
-  obtain ⟨Plam, hPlam₀, hPlam⟩ :=
-    exists_mvPolynomial_linearIndependent_pointJoin_picture 0 u3 v3 hcert
-  have hPlamne : Plam ≠ 0 := fun h => hPlam₀ (by rw [h, map_zero])
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hPm) hPlamne)
-  rw [map_mul, map_mul] at hq
-  obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
-  have hqmain := hmain q (right_ne_zero_of_mul (left_ne_zero_of_mul hq))
-  have hliq := hPlam q (right_ne_zero_of_mul hq)
-  obtain ⟨Rlam, hRlam₀, hRlam⟩ :=
-    exists_mvPolynomial_linearIndependent_pointJoin_heights q u3 v3 hliq
-  -- heights on which `G[V₁]` attains and the three joins stay independent
-  have hex₁ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₁ R₁) ≠ 0 := by
-    obtain ⟨z, hz, hzr, -⟩ := G.earExtend_mem_liftingSpace (le_refl 2) hcover hinj hxV₁ ha hb hab
-      hpath hsep hqmain.1 hz₁ 0
-    exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
-  obtain ⟨z, hz, hz₁', hzlam⟩ :=
-    MvPolynomial.exists_mem_eval_ne_zero₂ hex₁ ⟨0, Submodule.zero_mem _, hRlam₀⟩
-  rw [eval_restrictPoly] at hz₁'
-  have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
-  have hli := hRlam z hzlam
-  rw [Graph.vertexSet_induce G V₁] at hr₁
-  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁ hendsI
-    (q' := fun p => pencilConfigPoint q z p.1 p.2)
-    (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
-  -- the ear rank law at `ofNormals G ends`, with three independent ear hinges
-  set F := (PanelHingeFramework.ofNormals (k := 2) G ends
-    (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
-  have hC : ∀ i, F.supportExtensor (e i) ≠ 0 :=
-    fun i => hqmain.1.supportExtensor_ne_zero hends z (hpath i)
-  have hear := BodyHingeFramework.finrank_span_rigidityRows_ear_eq F hinj hxV₁ ha hb hab hpath
-    hsep hC
-  have hdim := card_le_finrank_of_linearIndependent_pointJoin hends (pencilConfigPoint q z) u3 v3
-    f3 hl3 hli ((⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).relScrews a b
-      ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e)))
-    (fun i => Submodule.mem_sup_right (Submodule.subset_span (by fin_cases i <;> exact ⟨_, rfl⟩)))
-  rw [Fintype.card_fin] at hdim
-  -- the body count
-  have hcount : (V(G).ncard : ℤ) = V₁.ncard + 2 := by
-    rw [hcover, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
-    · push_cast; ring
-    · refine Set.disjoint_left.mpr ?_
-      rintro _ h ⟨i, rfl⟩
-      exact hxV₁ i h
-  refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
-  have e1 : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-      = (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce V₁)
-          ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-        + ((screwDim 2 : ℤ) - 1) * (2 + 1)
-        + (Module.finrank K ↥((⟨F.graph.induce V₁, F.supportExtensor⟩ :
-              BodyHingeFramework K 2 α β).relScrews a b
-            ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e))) : ℤ)
-        - (screwDim 2 : ℤ) := hear
-  rw [e1, hr₁, hcount]
-  have hs : (screwDim 2 : ℤ) = 6 := rfl
-  rw [hs]
-  have hdim' : (3 : ℤ) ≤ (Module.finrank K ↥((⟨F.graph.induce V₁, F.supportExtensor⟩ :
-      BodyHingeFramework K 2 α β).relScrews a b
-        ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e))) : ℤ) := by exact_mod_cast hdim
+  refine Graph.X0Attains.of_openEar_of_cert hG le_rfl hcover hinj hxV₁ ha hb hab hpath hsep h₁
+    u3 v3 id hl3 q₀ 0 hcert (fun _ _ => Submodule.zero_mem _) ?_
+  push_cast
   linarith
 
 /-! ## The antecedent `G″`: the ear with its second interior body suppressed -/

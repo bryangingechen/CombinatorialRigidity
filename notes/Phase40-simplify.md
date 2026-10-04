@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10d landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10e (Sonnet, not ⚠Z): `Graph.X0Attains.of_openEar_of_cert` by `q1a`,
-about −43. Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10e landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10f (Sonnet, TeX): `Graph.exists_isMinimalKDof_spanning_subgraph` in
+`deficiency.tex` by `r7`. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -61,8 +61,13 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   mirror `MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero` (`q2c`); `CoverageTheoremS.lean`'s
   `two_mul_ncard_le_ncard_edgeSet` by `Set.Finite.ncard_biUnion` + `finsum_mem_const` (`a3`); no
   statement changed. −64 net Lean lines (task 9 estimated about −70).
+- **10e**, Lean only: `Ear.lean`'s new `Graph.X0Attains.of_openEar_of_cert` (`q1a`) is the shared
+  certificate step; `Chain.lean`'s `of_openEar` (`k ≥ 5`) and `Short.lean`'s `of_openEar_two`
+  (`k = 2`) now call it, statements unchanged. `span_supportExtensor_eq_top_of_linearIndependent`
+  loses its only Lean caller but stays (`lem:pencil-ear-hinge-span`'s pin; no TeX in this commit).
+  −38 net Lean lines (task 9 estimated about −43).
 
-Next is 10e, then each landing in turn, then task 11 closes.
+Next is 10f, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -196,7 +201,8 @@ verdicts.
   - [x] **10d. `q2b` + `q2c` + `a3`** (Sonnet, not ⚠Z). One perp-dimension lemma, the mirror's
     common non-root, `two_mul_ncard_le_ncard_edgeSet` by `finsum_mem_const`. Landed 2026-10-04:
     −64 net Lean lines (task 9 estimated −70).
-  - [ ] **10e. `q1a`** (Sonnet, not ⚠Z). `Graph.X0Attains.of_openEar_of_cert`: −43.
+  - [x] **10e. `q1a`** (Sonnet, not ⚠Z). `Graph.X0Attains.of_openEar_of_cert`: −38 (estimate −43).
+    Landed 2026-10-04.
   - [ ] **10f. `r7`'s node** (Sonnet, TeX). `Graph.exists_isMinimalKDof_spanning_subgraph` in
     `deficiency.tex`, beside `lem:subgraph-minimality`; four proofs gain a `\cref`.
   - [ ] **10g. `c3`'s Lean** (Opus; axioms harness). `_of_arms_pair` over every nonempty graph,
@@ -255,10 +261,11 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10d landed; the rest of the landings run.** The smallest next commit is **10e** (Sonnet,
-not ⚠Z): `Graph.X0Attains.of_openEar_of_cert` by `q1a`, about −43. Then 10f–10r in order (task
-10), one commit each at its listed rung. 10i is the first to touch ROADMAP §40 (its "stays as
-conditional theorems", marked verbatim). After 10r, task 11 closes the round.
+**10a–10e landed; the rest of the landings run.** The smallest next commit is **10f** (Sonnet,
+TeX): `Graph.exists_isMinimalKDof_spanning_subgraph` in `deficiency.tex` by `r7`, beside
+`lem:subgraph-minimality`. Then 10g–10r in order (task 10), one commit each at its listed rung.
+10i is the first to touch ROADMAP §40 (its "stays as conditional theorems", marked verbatim).
+After 10r, task 11 closes the round.
 
 ## Decisions made during this round
 
