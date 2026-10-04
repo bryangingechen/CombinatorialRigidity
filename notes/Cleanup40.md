@@ -8,12 +8,12 @@ approved the revised sample section, pinned as the exemplar (that log's *Autopil
 Round 4, `40-simplify`, opened 2026-10-04 (`notes/Phase40-simplify.md`); round 5 has not opened.
 Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this
 order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
-`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done. **The
-next concrete task** is round 4's task 8, the Stop-2 write-up; tasks 1 (the liveness map), 2 (the
-reduction layer), 3 (node shapes), 4 (the open ears), 5 (re-proofs), 6 (the producers) and 7 (the
-long proofs) are done, their verdicts in `notes/Phase40-simplify-verdicts.md`
-(`notes/Phase40-simplify.md` *Hand-off*). Seven recon tasks, over §2 *Round 4*'s inputs, precede
-Stop 2.
+`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done. Round
+4's seven recon tasks and its Stop-2 write-up (task 8) have landed, and **round 4 is stopped for
+the PI** at Stop 2 (`notes/Phase40-simplify.md` *Autopilot: for the PI*), where the PI decides the
+round's verdicts (`notes/Phase40-simplify-verdicts.md`) and round 3's build-or-leave
+recommendations. **The next concrete task** is round 4's task 9, slicing the sanctioned items,
+once the PI has answered there.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
