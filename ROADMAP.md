@@ -1220,7 +1220,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04). Its
   Stop 2 was answered on 2026-10-04: the PI sanctioned the recommended package with CONTRACT-R
   restated as CONTRACT-A's corollary (`notes/Phase40-simplify.md` *Autopilot: for the PI*). Tasks
-  1–9 are done; 10a and 10b landed 2026-10-04; next is landing 10c of 18 (task 10),
+  1–9 are done; 10a, 10b and 10c landed 2026-10-04; next is landing 10d of 18 (task 10),
   then task 11 closes. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3, `40-exposition`, closed
   2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,

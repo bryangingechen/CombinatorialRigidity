@@ -461,24 +461,20 @@ It also gives the plane of each body explicitly, in the form that
 
 \begin{lemma}[Coplanarity is linear in the heights]
   \label{lem:pencil-condition-linear}
-  \lean{Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar,
+  \lean{Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar,
         Graph.IsAdmissiblePicture.exists_smul_eq_interpolant}
   \leanok
-  \uses{def:pencil-lifting-space, def:pencil-configuration,
-        def:pencil-panel-realization}
+  \uses{def:pencil-lifting-space, def:pencil-configuration}
   Let $q$ be admissible, $z$ a height and $p = (q, z)$. The points of
   every closed neighbourhood of $p$ lie in a plane if and only if
-  $z \in L(q)$. In that case $p$ gives a pencil realization
-  (\cref{def:pencil-panel-realization}) whose adjacent points are
-  distinct, and the plane through the points of the closed neighbourhood
-  of each body $v$ is unique and not vertical: if
+  $z \in L(q)$. In that case the plane through the points of the closed
+  neighbourhood of each body $v$ is unique and not vertical: if
   $z_w = a x_w + b y_w + c$ on that neighbourhood, every nonzero vector
   orthogonal to its points is a multiple of $(a, b, -1, c)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-selector-plane-contains-nbhd,
-        lem:pencil-config-distinct-realization}
+  \uses{lem:pencil-selector-plane-contains-nbhd}
   Suppose that $z \in L(q)$. Admissibility gives at each body $v$ three
   members of its closed neighbourhood with non-collinear picture points.
   Their configuration points are linearly independent, as their picture
@@ -497,9 +493,7 @@ It also gives the plane of each body explicitly, in the form that
   agrees with an affine function of the picture on the closed
   neighbourhood. Hence $z \in L(q)$.
 
-  The pencil realization, with adjacent points distinct, is that of
-  \cref{lem:pencil-config-distinct-realization}. If
-  $z_w = a x_w + b y_w + c$ on the closed neighbourhood of $v$, the
+  If $z_w = a x_w + b y_w + c$ on the closed neighbourhood of $v$, the
   vector $(a, b, -1, c)$ is orthogonal to its points. The points of the
   three members above are linearly independent, so the vectors orthogonal
   to them form a line. Hence every nonzero
@@ -724,7 +718,7 @@ of $G$ at $q$, and the heights of its solutions form $L(q)$.
 \begin{lemma}[The main pictures are nonempty and Zariski-open]
   \label{lem:pencil-x0-main-picture-open}
   \lean{Graph.exists_isAdmissiblePicture, Graph.exists_isMainPicture,
-        Graph.exists_mvPolynomial_isMainPicture}
+        Graph.IsMainPicture.exists_mvPolynomial, Graph.exists_mvPolynomial_isMainPicture}
   \leanok
   \uses{def:pencil-main-picture}
   There is a nonzero polynomial $P$ in the picture coordinates such that
@@ -736,14 +730,18 @@ of $G$ at $q$, and the heights of its solutions form $L(q)$.
   \uses{lem:pencil-x0-one-witness}
   Admissible pictures exist: place the bodies at distinct points of the
   parabola $\{(t, t^2)\}$, as after \cref{def:pencil-admissible-picture}.
-  So $\ell_0$ exists, and it is attained at a main picture $q_0$. Apply the
-  polynomial section of the proof of \cref{lem:pencil-x0-one-witness} to
-  $M(q)$ at $q_0$ and the zero solution. It gives a polynomial $D$,
-  nonzero at $q_0$, such that wherever $D(q) \neq 0$ the solutions of
-  $M(q)$ form a space of dimension at most $\ell_0$. Let $P$ be the
-  product of $D$ and a polynomial nonzero at $q_0$ whose non-roots are
-  admissible, as in that proof. At a non-root $q$ of $P$, $q$ is
-  admissible and $\dim L(q) \le \ell_0$, so $q$ is a main picture.
+  So $\ell_0$ exists, and it is attained at a main picture $q_0$.
+
+  At any main picture $q_0$, apply the polynomial section of the proof of
+  \cref{lem:pencil-x0-one-witness} to $M(q)$ at $q_0$ and the zero
+  solution. It gives a polynomial $D$, nonzero at $q_0$, such that
+  wherever $D(q) \neq 0$ the solutions of $M(q)$ form a space of
+  dimension at most $\dim L(q_0)$. Let $P$ be the product of $D$ and a
+  polynomial nonzero at $q_0$ whose non-roots are admissible, as in that
+  proof. At a non-root $q$ of $P$, $q$ is admissible and
+  $\dim L(q) \le \dim L(q_0)$, so $q$ is a main picture, giving the
+  openness around $q_0$. Taking $q_0$ to be the main picture of the
+  first paragraph, $\dim L(q_0) = \ell_0$, gives the claim.
 \end{proof}
 \begin{fmlnote}
   \label{fmlnote:pencil-x0-main-picture-open}

@@ -51,6 +51,8 @@ renamed or re-stated, so no blueprint `\lean{...}` pin moved.
   `z ↦ t • z + a` for `t ≠ 0` and `a ∈ Aff(q)` (the last clause of (MC-3)).
 * `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` — over an admissible picture, coplanar
   closed neighbourhoods force `z ∈ L(q)` (`lem:pencil-condition-linear`'s converse, CARRIER's C5′).
+* `Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar` — the iff `lem:pencil-condition-linear`
+  pins: `z ∈ L(q)` exactly when every closed neighbourhood is coplanar.
 * `Graph.IsAdmissiblePicture.exists_smul_eq_interpolant` — every nonzero normal of a closed
   neighbourhood is a nonzero scalar multiple of the interpolant `(h₀, h₁, -1, h₂)`
   (`lem:pencil-condition-linear`'s unique non-vertical plane, CARRIER's C5′).
@@ -586,6 +588,25 @@ theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph
   rw [smul_dotProduct, smul_eq_mul]
   field_simp
   linear_combination this
+
+/-- **`z ∈ L(q)` iff every closed neighbourhood is coplanar, over an admissible picture**
+(`lem:pencil-condition-linear`'s iff; Phase 40b CARRIER, informal (MC-1)). The converse is
+`mem_liftingSpace_of_coplanar`; the forward direction reads a selector's normal
+(`pencilNormalOfPicture`) off admissibility, nonzero by
+`linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`, and orthogonal to
+the whole closed neighbourhood by `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`. -/
+theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar {G : Graph α β}
+    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K}
+    (hs : ∀ w ∉ V(G), z w = 0) :
+    z ∈ G.liftingSpace q ↔ ∀ v ∈ V(G), ∃ n : Fin 4 → K, n ≠ 0 ∧
+      ∀ w ∈ G.closedNbhd v, n ⬝ᵥ pencilConfigPoint q z w = 0 := by
+  refine ⟨fun hz v hv => ?_, hq.mem_liftingSpace_of_coplanar hs⟩
+  obtain ⟨t, ht, hli⟩ := hq.2 v hv
+  refine ⟨pencilNormalOfPicture q z (fun _ => t) v, ?_, fun w hw => ?_⟩
+  · exact (pencilNormalOfPicture_ne_zero_iff q z _ v).mpr
+      (linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hli)
+  · exact dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd hz hv (sel := fun _ => t)
+      ht hw
 
 /-- **Every nonzero normal of a closed neighbourhood is the interpolant, up to a nonzero scalar**
 (`lem:pencil-condition-linear`; Phase 40b CARRIER, informal (MC-1)'s "unique, non-vertical plane",

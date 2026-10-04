@@ -1010,41 +1010,43 @@ theorem _root_.Graph.exists_isMainPicture [Infinite K] [Finite α] {G : Graph α
 
 /-! ## `U` is nonempty and Zariski-open -/
 
-/-- **`U` is nonempty and Zariski-open** (`lem:pencil-x0-main-picture-open`; Phase 40b CARRIER
-slice C2). Take a main picture `q_min` (`Graph.exists_isMainPicture`). Admissibility is open
-around it (`Graph.IsAdmissiblePicture.exists_mvPolynomial`, polynomial `Padm`), and the
+/-- **Every main picture's own polynomial section is Zariski-open, and lands in `U`**
+(`lem:pencil-x0-main-picture-open`; Phase 40b CARRIER slice C2, generalized from a fixed minimizer
+to an arbitrary main picture `q₀`). Admissibility is open around `q₀`
+(`Graph.IsAdmissiblePicture.exists_mvPolynomial`, polynomial `Padm`), and the
 `Matrix.exists_mvPolynomial_section_mulVec_eq_zero` mirror at the trivial kernel vector `0` of the
-lifting system gives a second polynomial `D`, nonzero at `q_min`, off whose zero set the kernel of
-the lifting system is no larger than at `q_min` — the semicontinuity half of
-`Graph.x0Attains_of_exists`'s argument, reused here at the flat section instead of one through a
-witness height. Off the zero set of `Padm * D`, `q` is admissible with
-`finrank L(q) ≤ finrank L(q_min)` (`Graph.finrank_ker_liftingMatrix` at both ends), and since
-`q_min` already achieves the global minimum among admissible pictures, `q` does too: `q ∈ U`. -/
+lifting system gives a second polynomial `D`, nonzero at `q₀`, off whose zero set the kernel of the
+lifting system is no larger than at `q₀` — the semicontinuity half of `Graph.x0Attains_of_exists`'s
+argument, reused here at the flat section instead of one through a witness height. Off the zero set
+of `Padm * D`, `q` is admissible with `finrank L(q) ≤ finrank L(q₀)`
+(`Graph.finrank_ker_liftingMatrix` at both ends), and since `q₀` already achieves the global minimum
+among admissible pictures, `q` does too: `q ∈ U`. -/
+theorem _root_.Graph.IsMainPicture.exists_mvPolynomial [Finite α] {G : Graph α β}
+    {q₀ : α × Fin 2 → K} (hq₀ : G.IsMainPicture q₀) :
+    ∃ P : MvPolynomial (α × Fin 2) K, MvPolynomial.eval q₀ P ≠ 0 ∧
+      ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 → G.IsMainPicture q := by
+  have : Fintype α := Fintype.ofFinite α
+  obtain ⟨Padm, hPadm₀, hPadm⟩ := hq₀.1.exists_mvPolynomial
+  obtain ⟨D, Z, hD₀, -, hDrank, -⟩ :=
+    Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.liftingMatrix K)
+      (q₀ := q₀) (z₀ := (0 : α ⊕ (α × Fin 3) → K)) (Matrix.mulVec_zero _)
+  refine ⟨Padm * D, by rw [map_mul]; exact mul_ne_zero hPadm₀ hD₀, fun q hq => ?_⟩
+  rw [map_mul] at hq
+  have hadm : G.IsAdmissiblePicture q := hPadm q (left_ne_zero_of_mul hq)
+  have hle : Module.finrank K (G.liftingSpace q) ≤ Module.finrank K (G.liftingSpace q₀) := by
+    have := hDrank q (right_ne_zero_of_mul hq)
+    rwa [Graph.finrank_ker_liftingMatrix hadm, Graph.finrank_ker_liftingMatrix hq₀.1] at this
+  exact ⟨hadm, fun q' hq' => hle.trans (hq₀.2 q' hq')⟩
+
+/-- **`U` is nonempty and Zariski-open** (`lem:pencil-x0-main-picture-open`; Phase 40b CARRIER
+slice C2), as `Graph.IsMainPicture.exists_mvPolynomial`'s corollary at a main picture
+(`Graph.exists_isMainPicture`). -/
 theorem _root_.Graph.exists_mvPolynomial_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧
       ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 → G.IsMainPicture q := by
-  have : Fintype α := Fintype.ofFinite α
-  obtain ⟨q_min, hq_min⟩ := G.exists_isMainPicture (K := K) hloop h3
-  obtain ⟨Padm, hPadm₀, hPadm⟩ := hq_min.1.exists_mvPolynomial
-  obtain ⟨D, Z, hD₀, -, hDrank, -⟩ :=
-    Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.liftingMatrix K)
-      (q₀ := q_min) (z₀ := (0 : α ⊕ (α × Fin 3) → K)) (Matrix.mulVec_zero _)
-  refine ⟨Padm * D, ?_, fun q hq => ?_⟩
-  · intro h0
-    have h := congrArg (MvPolynomial.eval q_min) h0
-    rw [map_mul, map_zero] at h
-    exact mul_ne_zero hPadm₀ hD₀ h
-  · rw [map_mul] at hq
-    have hadm : G.IsAdmissiblePicture q := hPadm q (left_ne_zero_of_mul hq)
-    have hDq : MvPolynomial.eval q D ≠ 0 := right_ne_zero_of_mul hq
-    have hdim : Module.finrank K
-          (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin) ≤
-        Module.finrank K
-          (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q_min)).mulVecLin) :=
-      hDrank q hDq
-    have hle : Module.finrank K (G.liftingSpace q) ≤ Module.finrank K (G.liftingSpace q_min) := by
-      rwa [Graph.finrank_ker_liftingMatrix hadm, Graph.finrank_ker_liftingMatrix hq_min.1] at hdim
-    exact ⟨hadm, fun q' hq' => hle.trans (hq_min.2 q' hq')⟩
+  obtain ⟨q₀, hq₀⟩ := G.exists_isMainPicture (K := K) hloop h3
+  obtain ⟨P, hP₀, hP⟩ := hq₀.exists_mvPolynomial
+  exact ⟨P, fun h => hP₀ (by rw [h, map_zero]), hP⟩
 
 end CombinatorialRigidity.Molecular
