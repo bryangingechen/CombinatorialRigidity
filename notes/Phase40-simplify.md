@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10o landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10p (Opus, TeX): `7d`'s chapter, CONTRACT-R restated as CONTRACT-A's
-corollary. Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10p landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10q (Sonnet, Lean): `Graph.X0Attains.of_rigidContract` re-proved from
+`of_additiveContract`, and the four declarations 10p unpinned deleted. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -102,8 +102,17 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   `MainComponent/Flat.lean`); `Motive.lean`'s caller-less `Graph.pencilHub_iff_induce_of_degree_ne`
   deleted (the coordinator's addition). −116 net Lean lines (task 9 estimated about −105); axioms
   19 of 19.
+- **10p**, TeX + five Lean docstrings: one section, `sec:main-component-contract` (*Contraction at
+  an additive core*), with CONTRACT-A's argument once and CONTRACT-R its corollary, renamed
+  `cor:pencil-x0-contract-rigid`; at `H` it uses `cor:pencil-jj-flat`, the spike's
+  `x0Attains_of_deficiency_two_eq_three`, not `cor:pencil-flat-x0` as the `7d` (ii) entry reads.
+  That node keeps its attainment clause, now with no in-edge; its pin had no caller already. **10p
+  unpinned, for 10q** (122 lines with section headers): `Graph.exists_core_plane`,
+  `Graph.finrank_ker_contractLiftingMatrix_zero_le`,
+  `Graph.finrank_span_rigidityRows_induce_contractHeight` (`Contract.lean`) and
+  `Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_three` (`Flat.lean`).
 
-Next is 10p, then each landing in turn, then task 11 closes.
+Next is 10q, then 10r, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -275,12 +284,12 @@ verdicts.
     Also delete `Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`), which 10m left with no
     caller (10l had removed its other use); trial deletion confirms (the coordinator's addition).
     Landed 2026-10-04: −116 net Lean lines.
-  - [ ] **10p. `7d`'s chapter, (ii)** (Opus, TeX). CONTRACT-R as CONTRACT-A's corollary, the two
-    contraction sections merged; `-core-plane`, `-core-rank`, `-limit`'s clause (1) and a clause of
-    `cor:pencil-flat-x0` retire, unpinned. The overview's list of steps where no two open
-    conditions meet, and the roadmaps, follow.
+  - [x] **10p. `7d`'s chapter, (ii)** (Opus, TeX). The two contraction sections merged, CONTRACT-R
+    the corollary; four pins retired. Landed 2026-10-04 (*Current state*).
   - [ ] **10q. `7d`'s Lean** (Sonnet, not ⚠Z). `Graph.X0Attains.of_rigidContract` from
-    `of_additiveContract`, 238 → 22 lines, and the 122 lines 10p unpinned: −338.
+    `of_additiveContract`, 238 → 22 lines, and the 122 lines 10p unpinned: −338. The four names are
+    in *Current state*, 10p. Reword the surviving docstrings that name them: `ContractCurve.lean`'s
+    header and four docstrings, and `Contract.lean`'s header.
   - [ ] **10r. `a2`** (Sonnet, last; axioms harness). `[DecidableEq β]` off `pencil_conjecture`
     and the pinned theorems, by `classical`: the two sites left after 10g–10i. At
     `pencil_conjecture_of_X0` this deletes 10g's `@[nolint unusedArguments]` too (*Decisions*).
@@ -314,12 +323,12 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10o landed; the rest of the landings run.** The smallest next commit is **10p** (Opus, TeX):
-`7d`'s chapter restated to (ii), CONTRACT-R as CONTRACT-A's corollary — the two contraction
-sections merged; `-core-plane`, `-core-rank`, `-limit`'s clause (1) and a clause of
-`cor:pencil-flat-x0` retire, unpinned; the overview's list of steps where no two open conditions
-meet, and the roadmaps, follow (task 10's entry). Then 10q–10r in order, one commit each at its
-listed rung; after 10r, task 11 closes the round.
+**10a–10p landed; the rest of the landings run.** The smallest next commit is **10q** (Sonnet,
+Lean, not ⚠Z): `Graph.X0Attains.of_rigidContract` re-proved from `of_additiveContract` as the
+spike `scratch/40-simplify/7/ContractR.lean` does, statement unchanged, and the four declarations
+10p unpinned deleted, confirmed by trial deletion and a whole-project build (task 10's entry; the
+names are in *Current state*, 10p). Then 10r, one commit at its listed rung; after 10r, task 11
+closes the round.
 
 ## Decisions made during this round
 

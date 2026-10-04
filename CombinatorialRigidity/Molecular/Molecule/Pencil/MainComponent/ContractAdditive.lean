@@ -9,7 +9,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCur
 # Contraction at an additive core in the `X₀` induction (Phase 40k CONTRACT-A)
 
 The contraction step of the `X₀` induction at a rigid core whose planar deficiency need not vanish
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract-additive`; informal
+(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract`; informal
 (MC-71), `notes/Phase40k.md`). Let `W ⊊ V(G)` with `|W| ≥ 2` induce a core `H = G[W]` with
 `def₃(H) = 0`, let `r ∈ W`, let `G/H = G.rigidContract (G.induce W) r` be simple (no body outside
 `W` adjacent to two core bodies), and suppose the planar deficiencies add,

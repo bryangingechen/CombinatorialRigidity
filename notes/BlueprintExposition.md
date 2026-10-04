@@ -1109,7 +1109,7 @@ ledger is now **2 pending / 38 done** (of 40).
 
 - **`lem:pencil-contract-core-plane` / `Graph.exists_core_plane`, with
   `lem:pencil-contract-core-rank` and `thm:pencil-x0-contract-rigid`** — [done (the three nodes'
-  proofs, at the 40f close)] **(b)** the informal step (MC-39) takes `X₀(H)` attaining as a
+  proofs, at the 40f close); retired 2026-10-04] **(b)** the informal step (MC-39) takes `X₀(H)` attaining as a
   hypothesis and gets the core's rigidity at `X₀(G)`'s generic point from it, through (MC-38)'s
   core-free condition (restriction onto `L_H`, then dominance of `B_G → B_H`); (MC-37)'s step 3 adds
   a translation-invariance and slice-irreducibility argument for the collapsed picture. **Stable
@@ -1119,7 +1119,10 @@ ledger is now **2 pending / 38 done** (of 40).
   core's rank is then its flat rank `6(|W| − 1)`, from Jackson–Jordán at `H` alone. One ambient
   picture, generic for `G/H` and `H` and main for `G`, collapses at `r`'s own picture point, so no
   translation argument arises either. Pointer: `notes/Phase40f.md`; `notes/Phase40-design.md` §3
-  STEPS (the settled slice item).
+  STEPS (the settled slice item). The flat-core argument left the chapter in round 4 of the
+  post-Phase-40 cleanup (`notes/Phase40-simplify.md`, `7d` (ii)), 2026-10-04: the two core nodes
+  retired, and the theorem became `cor:pencil-x0-contract-rigid`, the 40k entry's corollary; git
+  history keeps the exposited text.
 
 ### `main-component.tex` — Phase 40g (CHAIN: the ear steps and the cycle)
 
@@ -1289,8 +1292,11 @@ induction stays with the Phase-39 entry `thm:pencil-conditional-realization-main
   `t`. The rows of `M(t)` between core bodies do not depend on `t`, so the core heights stay in
   `L_H(q)`, and the configuration of `H` over `q(t)` is a collineation of `K⁴` applied to the one
   over the fixed `q`; the core's rank is read there, where `X₀(H)` attains. At `def₂(H) = 0` the
-  same curve gives CONTRACT-R (the 40f entry above), with the flat core in place of attainment at
-  `H`. Pointer: `notes/Phase40k.md`; `notes/Phase40-design.md` §3 STEPS (*CONTRACT-A done*).
+  core is additive and `X₀(H)` attains by the case of equal deficiencies, so CONTRACT-R is this
+  theorem's corollary (`cor:pencil-x0-contract-rigid`); since round 4 of the post-Phase-40 cleanup
+  (2026-10-04) the chapter gives this argument once, in one contraction section, and no longer the
+  flat-core variant of the 40f entry above. Pointer: `notes/Phase40k.md`;
+  `notes/Phase40-design.md` §3 STEPS (*CONTRACT-A done*).
 
 ### `main-component.tex` — Phase 40l (REDUCE: the one-step interface, the induction and the deficiency layer)
 

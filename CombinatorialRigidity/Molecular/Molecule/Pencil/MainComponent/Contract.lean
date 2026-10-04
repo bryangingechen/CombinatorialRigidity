@@ -37,7 +37,7 @@ re-stated, so no blueprint `\lean{...}` pin moved.
   curve's configuration (`lem:pencil-contract-core-rank`).
 * `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` — a `def₂`-rigid core satisfies the standing
   hypotheses (`lem:pencil-contract-standing`).
-* `Graph.X0Attains.of_rigidContract` — **CONTRACT-R** (`thm:pencil-x0-contract-rigid`).
+* `Graph.X0Attains.of_rigidContract` — **CONTRACT-R** (`cor:pencil-x0-contract-rigid`).
 
 The general pieces sit beside their definitions: `Graph.connected_of_isKDof_zero`
 (`Molecular/Deficiency.lean`) and the block coupling
@@ -193,7 +193,7 @@ theorem _root_.Graph.isX0Graph_induce_of_deficiency_two_eq_zero [Finite α] [Fin
 
 /-! ## The assembly: contraction at a `def₂`-rigid core -/
 
-/-- **Contraction at a `def₂`-rigid core** (`thm:pencil-x0-contract-rigid`; (MC-59)(d) with
+/-- **Contraction at a `def₂`-rigid core** (`cor:pencil-x0-contract-rigid`; (MC-59)(d) with
 (MC-39); Katoh–Tanigawa 2011 §6.2, Lemma 6.3, on configurations). Let `K` be infinite, let `G`
 satisfy the standing hypotheses and be 2-edge-connected, and let `W ⊊ V(G)`, `|W| ≥ 2`, induce a
 core `H = G[W]` with `def₂(H) = 0` and no outside body adjacent to two core bodies (`G/H` simple).

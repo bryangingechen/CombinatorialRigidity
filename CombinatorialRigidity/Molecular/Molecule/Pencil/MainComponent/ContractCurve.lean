@@ -10,8 +10,8 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 
 The rescaled lifting system `M(t)` of the contraction at a core, the curve `q(t)` it moves along,
 and the facts at the two ends of the curve that the contraction steps of the `X₀` induction share
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract` and
-`sec:main-component-contract-additive`; Phase 40f CONTRACT-R and Phase 40k CONTRACT-A,
+(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract`; Phase 40f
+CONTRACT-R and Phase 40k CONTRACT-A,
 `notes/Phase40f.md`, `notes/Phase40k.md`). Split out of `Contract.lean` at the Phase 40k
 `Contract.lean` split (`notes/Phase40k.md`, call 5): the flat-core assembly
 (`Graph.exists_core_plane`, `Graph.finrank_ker_contractLiftingMatrix_zero_le`,
@@ -53,10 +53,10 @@ at any core, and the standing hypotheses at a rigid core, at any `n`.
   (`lem:pencil-contract-magnified-rank`).
 * `Graph.contractLimitMap_mem_liftingSpace`, `Graph.eq_zero_of_contractLimitMap_eq_zero` — given
   one plane on the core, the limit map sends `ker M(0)` into `L_{G/H}(q)` and is injective there
-  (`lem:pencil-contract-limit` (1)'s two halves).
+  (the embedding in the proof of `lem:pencil-contract-kernel-bound` (2)).
 * `Graph.exists_mem_ker_contractLiftingMatrix_zero` — at any core, a height of `G/H` vanishing at
   `r` agrees off the core with the heights of a solution of `M(0)`, the core put on the height's
-  plane at `r` (`lem:pencil-contract-limit` (2); (MC-37) step 2).
+  plane at `r` (`lem:pencil-contract-limit`; (MC-37) step 2).
 * `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`,
   `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` — at any core, `ρ` maps `ker M(t)`
   into `L_H(q)` at every `t`, and `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`
@@ -688,7 +688,7 @@ theorem _root_.Graph.eq_zero_of_contractLimitMap_eq_zero [Fintype α] {G : Graph
   · exact hx_inl w
   · exact hx_inr v i
 
-/-- **The flat-core extension** (`lem:pencil-contract-limit` (2); (MC-37) step 2): at `t = 0`, every
+/-- **The flat-core extension** (`lem:pencil-contract-limit`; (MC-37) step 2): at `t = 0`, every
 height of `L_{G/H}(q)` vanishing at `r` agrees off the core with the heights of a solution of
 `M(0)`. The core is put on the plane of `z` at `r` (KT's panels of the core set to the contracted
 body's panel, Claim 6.4, p. 675); each attachment's constant coefficient is fixed by its one core
