@@ -344,3 +344,56 @@ four in `Pencil/`, not six, and two in Theorem55, not three. For task 7: #5 and 
   saves 18 at Arms' two sites and 9 at Theorem55's (spiked at both): −16. A glued-extensor rank
   lemma would take about 10 of each site's 20–29-line rank block (estimated). Without `a6`/`a6a`,
   roughly −60 (estimated; 1 commit, Sonnet, ⚠Z): re-weigh then. Evidence: spike (`Q2dLemma.lean`).
+
+### Task 7 (G)
+
+**The reading** (*measured, script not retained*; five spikes, kept in `scratch/40-simplify/7/`
+(gitignored) for the landings, run with `lake lean`: 0 errors and 0 warnings, each re-derived
+declaration proving the original's exact statement at the three standard axioms). The re-rank,
+round 1's method at `4039ba02` (the Lean is unchanged): `_four` 852 (`a4`), the normal witness 462,
+#5 443, #4 443 and #6 404 (`a5`), #7 401, the core 376 (`a6`), ORBIT's `k = 2` 368 (task 4),
+`_three` 361, `deficiency_eq_of_vertexTwoCut` 338 (`r1`), the point witness 329, `of_splitOff` 328,
+`of_additiveContract` 302, GenericEar's producer 284, (MC-188) 263, v-f-6 246. Nothing rose; five
+enter the walk as owned proofs leave it. Walked against their blueprint proofs: those ten, task 6's
+hand-on, and CONTRACT-R (222), the case CONTRACT-A generalizes; the eleventh,
+`hasPencilRealization_of_not_simple` (244), was not. Two proofs re-prove Phase 40 lemmas (`7a`,
+1 300 lines; `7c`), one glue is written four times (`7b`), and one theorem is another's special case
+(`7d`). Batching, for task 8: `7a` one ⚠Z commit (its larger form after `a5`); `7b` one ⚠Z commit
+after `a6` (and `a5`); `7c` in `1a`'s deletion with `m3`; `7d` after the PI's call. Task 7 moves no
+statement.
+
+- **`7a`, the pendant cut at degree three by `lem:pencil-generic-steer`: GO.** v-e, v-f-6 and both
+  Witness.lean witnesses are its (a) and (b) at `G − v_c`, as `-pair`'s proof and the one-ear and
+  triangle steps run them: re-derived, the discharge takes 104 lines for 47 and frees 1 300 (−1 240,
+  spike `A7a.lean`). After `a5`, one route for every degree also retires #4, #6 and the discharge:
+  −1 470 more (`A7aB.lean`). 1 commit, ⚠Z, Sonnet transcribing; unpinned, nothing a reader sees.
+- **`7b`, one glue for a cut's two realized sides: GO.** The glued data, links, nonzero facts and
+  rank, written out in the `|C| = 0` producer, #5 and the core, become one lemma (115 lines with
+  `HasPencilPanelRealization.restrict`): 213 → 107, 443 → 324, 227 → 124 after `a6`; −213 (spike
+  `Glue.lean`), and about −70 more at `a5`'s tail (estimated). 1 commit, ⚠Z, Sonnet transcribing
+  the three spiked sites; nothing a reader sees. Depends on `a6` (and `a5` for the fourth site).
+- **`a6b`, `a6`'s shape at `Pair.lean`'s two producers: NO-GO; their shared part is `7b`.** Unlike
+  the core's branches they take the IH at different graphs (`G[Vᵢ]`; `G[Vᵢ ∪ {far}]` with the drop
+  brick) and carry conjuncts 2–4 differently (wholesale; boundary identities and the avoidance), so
+  one theorem would split twice inside. Evidence: read, with the dispatch shell.
+- **`7c`, `_three` re-proves `linearIndependent_pointJoin_triangle`: GO with `1a`.** Its 75-line
+  wedge detector is that lemma once its hinges are `pointJoin`s: 361 → 287 (spike `Three.lean`).
+  The lemma sits downstream; with `1a` retired, `_three`'s one caller is `Statements.lean`, and it
+  moves into `MainComponent/`. In `1a`'s deletion with `m3`, ⚠Z, Sonnet; nothing a reader sees.
+  With `1a` kept: NO-GO (the lemma's chain, `pointJoin` and the Klein pairing, would move up).
+- **`7d`, CONTRACT-R a corollary of CONTRACT-A: GO for the Lean; a PI call for the chapter.** At
+  `def₂(H) = 0`, `X₀(H)` attains by the flat case and additivity is `def₂`'s conservation: 238 → 22,
+  and 122 lines only it reads go (spike `ContractR.lean`; the map). 1 commit, Sonnet, not ⚠Z; the
+  statement stays. The chapter proves KT's Lemma 6.3 first: keep that proof (`-core-plane`,
+  `-core-rank` and a `-limit` clause lose their Lean), or state R as A's corollary and retire them.
+- **`7e`, #7 (`GenericTriangle.lean`): NO-GO.** Length is the argument: seven link cases, three
+  incidences each, the triangle's rigidity and the cut-vertex rank. Its `hinPanel`/`hthruPt`
+  helpers, repeated in GenericEar's producer, are a local golf. Evidence: read.
+- **`7f`, `of_splitOff`: NO-GO.** It follows its proof step for step: counts, picture, flexes,
+  dichotomy, curve, special rank, limit. Evidence: read.
+- **`7g`, `of_additiveContract`: NO-GO.** Length is the argument (two kernel bounds, two open
+  conditions, the section, the collineation, the coupling); with `7d` it serves both contractions.
+- **`7h`, GenericEar's producer: NO-GO.** Length is the argument. A lemma for the `V₁` half that
+  it, #7 and `a5`'s tail share would net roughly 60 lines (estimated from the three, not spiked).
+- **`7i`, (MC-188), `GenericSteer.lean`: NO-GO.** The seed's combinatorics are its argument; its
+  near-copy, the point witness, retires with `7a`; the `w₁`/`w₂` mirror is a local golf.

@@ -7,9 +7,10 @@ surface, looking for bigger simplifications (`notes/Cleanup40.md` §2 *Round 4*)
 each commit GO / NO-GO verdicts with commit estimates, to their own file,
 `notes/Phase40-simplify-verdicts.md`. Task 8 writes Stop 2 (`NEEDS_PI`), the round's one planned
 stop; then the items the PI sanctions land, and task 11 closes. Tasks 1 (the liveness map), 2 (the
-reduction layer), 3 (node shapes), 4 (the open ears), 5 (re-proofs) and 6 (the producers) are done.
-**Next concrete task:** task 7 (G), the remaining long proofs (Opus, docs only). Round manual:
-`CLEANUP.md`.
+reduction layer), 3 (node shapes), 4 (the open ears), 5 (re-proofs), 6 (the producers) and 7 (the
+long proofs) are done.
+**Next concrete task:** task 8 (W), the Stop-2 write-up (Opus, docs only); the autopilot then stops
+for the PI. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -28,7 +29,9 @@ open ears are four arguments, not one; one GO inside the first (`q1a`), `a7` kep
 to retire (*Task 4*). Task 5 (A) has landed: three re-proofs to remove (`q2a`–`q2c`), `b1` after
 `r1`, half of `a3`, and `q2d` handed to task 6 (*Task 5*). Task 6 (P) has landed: one tail for #4
 and #6 (`a5`), each cut case's two branches as one assembly (`a6`, and Theorem55's, `a6a`), and no
-classification lemma (`q2d`) (*Task 6*). Nothing is mid-stream. The task list is
+classification lemma (`q2d`) (*Task 6*). Task 7 (G) has landed: the pendant degree-3 route is the
+steering lemma's (`7a`), one glue for the cut (`7b`), `_three` and CONTRACT-R shorter (`7c`, `7d`,
+the latter a PI call) (*Task 7*). Nothing is mid-stream. The task list is
 complete for the recon (tasks 1–8).
 Task 9 slices the landings after Stop 2, and task 11 closes.
 
@@ -110,7 +113,8 @@ the one question `r1` left open, whether to delete its 29 off-headline names.
 - `q1`–`q3`, the coordinator's starting questions: `q1` the open ears, `q2` `Pencil/` against
   `AlgebraicInduction/`, `q3` the Lean that feeds neither headline.
 - Added by the tasks: `1a`, `1b`, `1c-i` and `1c-ii` are task 1's hand-ons (a)–(c) to task 2. A
-  new finding takes the ID of the input it bears on, with a letter (`q3a`, `c3a`).
+  new finding takes the ID of the input it bears on, with a letter (`q3a`, `c3a`). Task 7's findings
+  on no listed input are `7a`–`7i`.
 
 ## Lemma checklist (the round's task list)
 
@@ -135,15 +139,9 @@ verdicts.
 - [x] **6. P — Phase 39's producers** (`a5`, `a6`, and task 5's `q2d`; Opus, docs; four spikes).
   Whether a recorded cross-proof duplication admits a shared lemma that nets shorter: the reading
   and the verdicts are in the verdicts file, *Task 6*.
-- [ ] **7. G — the remaining long proofs** (round 1's §C screen, now structural; Opus, docs). The
-  question: is any long proof longer than its argument, now that round 3 has written the argument
-  down? Re-rank the surface's proofs by span at the open's tree (round 1's method: header to the
-  next column-0 line). Walk the top ten not owned elsewhere: the open-ear steps (#9 in `Orbit.lean`,
-  and SHORT's two) are task 4's, `_four` task 2's (`a4`), and #4/#6 (`Pair2.lean`) and #8
-  (`Arms.lean`) task 6's. Of round 1's ranking that leaves `_three`, the two `Witness.lean` proofs,
-  #5 (`Pair.lean`) and #7 (`GenericTriangle.lean`); the re-rank adds what has risen since. The
-  blueprint proof is the yardstick. Verdicts only for structural changes; round 1 took the local
-  ones, and settled that `_three` and `_four` do not unify.
+- [x] **7. G — the remaining long proofs** (round 1's §C screen, now structural, and task 6's
+  hand-on; Opus, docs; five spikes). Is any long proof longer than its argument: the re-rank and
+  the verdicts are in the verdicts file, *Task 7*.
 - [ ] **8. W — Stop 2, the write-up** (`r1`–`r8`, and every verdict; Opus, docs; `NEEDS_PI`). One
   entry under *Autopilot: for the PI*, dated and headed `NEEDS_PI: Stop 2`. It holds what tasks
   1–7 found; every verdict as one row (ID, GO or NO-GO, commit estimate and rung, what it changes,
@@ -187,16 +185,14 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**Next: task 7 (G), the remaining long proofs** (Opus, docs only): checklist item 7's question and
-re-rank, one docs commit of verdicts, as `### Task 7 (G)` in `notes/Phase40-simplify-verdicts.md`.
-It skips the open-ear steps, which task 4 walked, and task 6's #4, #6 and #8, which have verdicts
-(`a5`, `a6`). Task 6 hands it #5 and `Pair.lean`'s `|C| = 0` producer: they glue as the core's two
-branches did, so weigh `a6`'s shape there. Then task 8 writes
-Stop 2, and the autopilot stops for the PI. For task 8, the statement moves so far are task 3's
-`c6`, and `c8`'s `-lifting-restrict` and `-contract-standing`, and task 4's `c9` (two clauses
-dropped); task 5's `b1` changes a pinned signature's form, not its strength;
-`sec:pencil-girth-chain` and `a1` follow `1a`; `a7` keeps a PI decision, which the PI may revisit.
-Task 6 moves no statement.
+**Next: task 8 (W), Stop 2's write-up** (Opus, docs only; `NEEDS_PI`): checklist item 8, one entry
+under *Autopilot: for the PI*, from `notes/Phase40-simplify-verdicts.md` (tasks 1–7) and round 3's
+`r1`–`r8`; then the autopilot stops for the PI. Each task's batching note heads its subsection, for
+the landing order. The statement moves so far are task 3's `c6`, and `c8`'s `-lifting-restrict`
+and `-contract-standing`, and task 4's `c9` (two clauses dropped); task 5's `b1` changes a pinned
+signature's form, not its strength; `sec:pencil-girth-chain`, `a1` and `7c` follow `1a`; `a7` keeps
+a PI decision, which the PI may revisit; `7d` asks one (CONTRACT-R's account in the chapter). Tasks
+6 and 7 move no statement.
 
 ## Decisions made during this round
 
