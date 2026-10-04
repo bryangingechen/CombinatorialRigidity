@@ -7,9 +7,9 @@ done. The round is a read-only Opus recon over the pencil surface, looking for b
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10i landed 2026-10-04. Then task 11 closes.
-**Next concrete task:** 10j (Opus, ⚠Z): `m3` + `7c`, `_three` from `G.Simple`, moved into
-`MainComponent/`. Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus). 10a–10j landed 2026-10-04. Then task 11 closes.
+**Next concrete task:** 10k (Opus, ⚠Z; axioms harness): `a6` + `a6a`, one assembly for each cut
+case's two branches. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -80,8 +80,11 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
 - **10i**, Lean + TeX: `1a`'s deletion — design §6's `_of_card` cluster with `q3a`, `1b`,
   `1c-ii` and the girth chain's eight nodes gone; ROADMAP §40's "stays as conditional theorems"
   reworded. −4286 net Lean lines (task 9 estimated −3636).
+- **10j**, Lean + TeX: `pencilPair_of_simple_ncard_eq_three` (from `G.Simple`, hinges by
+  `linearIndependent_pointJoin_triangle`) in `GenericTriangle.lean`; `Base.lean`, two pins and
+  two nodes gone. −226 net Lean lines (task 9 estimated −171).
 
-Next is 10j, then each landing in turn, then task 11 closes.
+Next is 10k, then each landing in turn, then task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -236,8 +239,9 @@ verdicts.
     `sec:pencil-girth-chain` ("Three parts" becomes two) and, with `1c-ii`'s node,
     `lem:pencil-base-case`'s edge to it (re-aimed per `1c-ii`'s verdict). Landed 2026-10-04:
     −4286 net Lean lines (task 9 estimated −3636).
-  - [ ] **10j. `m3` + `7c`** (Opus, ⚠Z). `_three` from `G.Simple` by
+  - [x] **10j. `m3` + `7c`** (Opus, ⚠Z). `_three` from `G.Simple` by
     `linearIndependent_pointJoin_triangle`, moved into `MainComponent/`; two nodes go: −171.
+    Landed 2026-10-04: −226 net Lean lines.
   - [ ] **10k. `a6` + `a6a`** (Opus, ⚠Z; axioms harness, as `a6a` is in 10 of the 19 closures).
     One assembly for each cut case's two branches; the two crossing lemmas to `Deficiency.lean`:
     −264.
@@ -286,9 +290,10 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10i landed; the rest of the landings run.** The smallest next commit is **10j** (Opus, ⚠Z):
-`m3` + `7c`, moving `_three` into `MainComponent/` and retiring two nodes. Then 10k–10r in order,
-one commit each at its listed rung; after 10r, task 11 closes the round.
+**10a–10j landed; the rest of the landings run.** The smallest next commit is **10k** (Opus, ⚠Z;
+axioms harness): `a6` + `a6a`, one assembly for each cut case's two branches, the two crossing
+lemmas to `Deficiency.lean`. Then 10l–10r in order, one commit each at its listed rung; after 10r,
+task 11 closes the round.
 
 ## Decisions made during this round
 

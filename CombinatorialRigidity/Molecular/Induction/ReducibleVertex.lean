@@ -754,71 +754,6 @@ theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq 
       have h2 : ({x, y} : Set α).ncard = 2 := Set.ncard_pair hxy
       rw [heq] at h2; omega
 
-/-! ### Simplicity from looplessness and no proper rigid subgraph (W3-L2a, Phase 39) -/
-
-/-- **A loopless multigraph with `|V| ≥ 3` and no proper rigid subgraph is simple**
-(W3-L2a, `lem:pencil-simple-of-noRigid`) — the minimality-free sibling of
-`simple_of_isMinimalKDof_of_noRigid` above, for the split arm of `Graph.pencil_reduction`
-(Phase 39's reduction on *all* spanning multigraphs, no minimality hypothesis). Identical
-argument: a parallel pair `e₁ ≠ e₂` from `x` to `y` makes the two-vertex induced subgraph
-`G.induce {x, y}` a `0`-dof-graph (`isKDof_zero_of_parallel_pair`) with `2 ≤ |V(H)|` and
-`V(H) ⊊ V(G)` (proper because `3 ≤ |V(G)|`), contradicting `hnp` — only the source of
-looplessness differs (supplied directly instead of derived from `IsMinimalKDof`). -/
-theorem simple_of_loopless_of_noRigid [Finite α]
-    {G : Graph α β} {n : ℕ}
-    (hD : 2 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (hloop : G.Loopless)
-    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) : G.Simple where
-  not_isLoopAt e x hloopAt := hloop.not_isLoopAt e x hloopAt
-  eq_of_isLink := by
-    intro e f x y hle hlf
-    -- Assume `e ≠ f` (parallel edges) and derive contradiction via `hnp`.
-    by_contra hne
-    -- Basic facts.
-    have hxy : x ≠ y := hle.ne
-    have hxG : x ∈ V(G) := hle.left_mem
-    have hyG : y ∈ V(G) := hle.right_mem
-    have hsub : ({x, y} : Set α) ⊆ V(G) := by
-      rintro w (rfl | rfl); exacts [hxG, hyG]
-    -- Construct H = (G.induce {x,y}).restrict {e,f}, a 2-vertex 2-edge subgraph.
-    -- V(H) = {x,y}, E(H) = {e,f}.
-    set H := (G.induce {x, y}).restrict {e, f}
-    have hVH : V(H) = {x, y} := rfl
-    -- The IsLink for H: g ∈ {e,f} ∧ G.IsLink g p q ∧ p ∈ {x,y} ∧ q ∈ {x,y}.
-    have hl₁ : H.IsLink e x y := by
-      simp only [H, restrict_isLink, induce_isLink]
-      exact ⟨Or.inl rfl, hle, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩
-    have hl₂ : H.IsLink f x y := by
-      simp only [H, restrict_isLink, induce_isLink]
-      exact ⟨Or.inr rfl, hlf, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩
-    -- E(H) = {e, f}: H = (G.induce {x,y}).restrict {e,f}, so E(H) = E(G[{x,y}]) ∩ {e,f}.
-    -- Both e,f ∈ E(G[{x,y}]) (since G.IsLink e x y with x,y ∈ {x,y}), so E(H) = {e,f}.
-    have hEH : E(H) = {e, f} := by
-      simp only [H, edgeSet_restrict, edgeSet_induce]
-      apply Set.Subset.antisymm
-      · exact Set.inter_subset_right
-      · apply Set.insert_subset_iff.mpr; constructor
-        · exact ⟨⟨x, y, hle, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩,
-                 Set.mem_insert e _⟩
-        · exact Set.singleton_subset_iff.mpr
-            ⟨⟨x, y, hlf, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩,
-             Set.mem_insert_of_mem e rfl⟩
-    -- H is 0-dof via the parallel-pair lemma.
-    have hHkdof : H.IsKDof n 0 :=
-      isKDof_zero_of_parallel_pair hD hxy hl₁ hl₂ hne hVH hEH
-    -- H ≤ G: H is a subgraph of G.
-    have hHle : H ≤ G := by
-      calc H ≤ G.induce {x, y} := restrict_le
-        _ ≤ G := G.induce_le hsub
-    -- H is a proper rigid subgraph of G, contradicting hnp.
-    refine hnp H ⟨⟨hHle, hHkdof⟩, ?_, ?_⟩
-    · -- 2 ≤ |V(H)| = |{x,y}| = 2.
-      simp [hVH, Set.ncard_pair hxy]
-    · -- V(H) ⊊ V(G): {x,y} ≠ V(G) since |V(G)| ≥ 3 > 2.
-      rw [hVH]
-      refine ssubset_of_subset_of_ne hsub fun heq ↦ ?_
-      have h2 : ({x, y} : Set α).ncard = 2 := Set.ncard_pair hxy
-      rw [heq] at h2; omega
-
 /-! ### Two-vertex minimal `0`-dof graphs are not simple (L5b′, Phase 22h) -/
 
 /-- **A minimal `0`-dof graph with exactly two vertices is not simple**
@@ -870,42 +805,6 @@ theorem not_simple_of_isMinimalKDof_of_ncard_two
       simp [cutLabeling] at hfne
   -- Simplicity collapses e₁ = e₂, contradicting e₁ ≠ e₂.
   exact hne (hSimple.eq_of_isLink (isLink_of_cross e₁ he₁) (isLink_of_cross e₂ he₂))
-
-/-- **Three bodies carry no proper rigid subgraph** (`lem:pencil-three-bodies-no-rigid`; Phase 40n
-MOTIVES M0). A simple multigraph on exactly three bodies has no proper rigid subgraph at `n = 3`: a
-proper rigid subgraph would have exactly two bodies, forcing two crossing edges across their cut
-(`two_le_crossingEdges_of_isKDof_zero`), collapsed to one by simplicity — the same route as
-`not_simple_of_isMinimalKDof_of_ncard_two` just above. -/
-theorem noRigid_of_simple_of_ncard_eq_three [Finite α] [Finite β] {G : Graph α β}
-    (hS : G.Simple) (h3 : V(G).ncard = 3) : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3 := by
-  classical
-  rintro H ⟨⟨hle, hH⟩, h2, hss⟩
-  have hHS : H.Simple := hS.mono hle
-  have hV : V(H).ncard = 2 := by
-    have := Set.ncard_lt_ncard hss (Set.toFinite _); omega
-  obtain ⟨u, v, huv, hVuv⟩ := Set.ncard_eq_two.mp hV
-  have huV : u ∈ V(H) := hVuv ▸ Set.mem_insert u _
-  have hvV : v ∈ V(H) := hVuv ▸ Set.mem_insert_of_mem u rfl
-  have hcross : 2 ≤ (H.crossingEdges (cutLabeling {u} u v)).ncard :=
-    two_le_crossingEdges_of_isKDof_zero (by decide) hH (Set.mem_singleton u) huV hvV
-      (by simpa using fun h : v = u => huv h.symm)
-  rw [show 2 ≤ _ ↔ 1 < _ from Iff.rfl, Set.one_lt_ncard_iff (Set.toFinite _)] at hcross
-  obtain ⟨e₁, e₂, he₁, he₂, hne⟩ := hcross
-  have isLink_of_cross : ∀ e, e ∈ H.crossingEdges (cutLabeling {u} u v) →
-      H.IsLink e u v := by
-    intro e he
-    simp only [crossingEdges, Set.mem_ofPred_eq] at he
-    obtain ⟨_, x, y, hxy, hfne⟩ := he
-    have hxV : x = u ∨ x = v := by
-      have := hxy.left_mem; rw [hVuv] at this; simpa using this
-    have hyV : y = u ∨ y = v := by
-      have := hxy.right_mem; rw [hVuv] at this; simpa using this
-    rcases hxV with rfl | rfl <;> rcases hyV with rfl | rfl
-    · simp [cutLabeling] at hfne
-    · exact hxy
-    · exact hxy.symm
-    · simp [cutLabeling] at hfne
-  exact hne (hHS.eq_of_isLink (isLink_of_cross e₁ he₁) (isLink_of_cross e₂ he₂))
 
 /-! ### Adjacent degree-2 pair in the Case-III `d = 3` regime (G4a-i, Phase 22h)
 

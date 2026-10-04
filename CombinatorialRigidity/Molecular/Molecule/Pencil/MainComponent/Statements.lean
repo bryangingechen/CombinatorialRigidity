@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Base
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
@@ -73,8 +72,7 @@ theorem hasGenericPencilRealization_of_IH [Infinite K] [Finite α] [Finite β] {
   · push Not at hrig
     exact hG.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero hfeas hrig
   by_cases h3 : V(G).ncard = 3
-  · exact (pencilPair_of_habitat_ncard_eq_three hS.toLoopless h3 htec
-      (Graph.noRigid_of_simple_of_ncard_eq_three hS h3)).1 hS hfeas
+  · exact (pencilPair_of_simple_ncard_eq_three hS h3 htec).1 hS hfeas
   obtain ⟨hF1, hF2⟩ := hfeas.hub_conditions
   rcases hG.exists_oneEar_or_pendantTriangle htec (by omega) hF1 hF2 hrig with
     ⟨V₁, x, a, b, e, hear, ha, hb, hdef⟩ |

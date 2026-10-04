@@ -641,6 +641,10 @@ to be re-derived by re-reading entries later.
 - **Status:** idiom (recurs verbatim for the sibling `C₄` base leaf, L7c-4 — a `Fin 4`-family with
   4 wedges, each detected by joining with its own complementary pair of the remaining two basis
   vectors — and for any future small-explicit-witness realization needing hinge independence).
+  Both sites are gone (40-simplify): L7c-4 retired in 10i, and the triangle (now
+  `pencilPair_of_simple_ncard_eq_three`) cites `linearIndependent_pointJoin_triangle` in 10j. For
+  joins of independent points, reach for `linearIndependent_pointJoin_tetra` and its corollaries
+  first; the detector is for wedges no such lemma covers.
 
 ### [idiom] `linearIndependent_fin_cons` is now deprecated (mathlib bump) — use `linearIndependent_finCons`
 - **Where it bit:** Phase 39 (PENCIL) W2 remainder (`Meet.lean`, `extensor_triple_eq_zero_iff`), splitting `LinearIndependent K (Fin.cons x v)` into `LinearIndependent K v ∧ x ∉ span (range v)`.

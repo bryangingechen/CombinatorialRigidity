@@ -5006,21 +5006,6 @@ part of the first is the bound noted after
   and $z$, has dependent normals.
 \end{proof}
 
-\begin{lemma}[Three bodies carry no proper rigid subgraph]
-  \label{lem:pencil-three-bodies-no-rigid}
-  \lean{Graph.noRigid_of_simple_of_ncard_eq_three}
-  \leanok
-  \uses{def:rigid-subgraph}
-  A simple multigraph on exactly three bodies has no proper rigid
-  subgraph (\cref{def:rigid-subgraph}) at $n = 3$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  A proper rigid subgraph has exactly two bodies, and a rigid graph on
-  two bodies has at least two edges across the cut separating them, which
-  simplicity forbids.
-\end{proof}
-
 \begin{lemma}[Two hubs with three common neighbours]
   \label{lem:pencil-x0-two-hubs-obstruction}
   \lean{CombinatorialRigidity.Molecular.not_isNondegPencilRealization_of_two_hubs_three_common,
@@ -5574,23 +5559,24 @@ graphs alone, with the two consequences of nondegeneracy-feasibility in
 \begin{proof}
   \leanok
   \uses{def:pencil-x0-standing, thm:pencil-x0-base-generic,
-        lem:pencil-three-bodies-no-rigid, lem:cycle-realization-rigid,
-        lem:pencil-feasible-hub-conditions, lem:pencil-rigid-good-ear,
-        lem:pencil-generic-one-ear, lem:pencil-generic-pendant-triangle}
+        lem:cycle-realization-rigid, lem:pencil-feasible-hub-conditions,
+        lem:pencil-rigid-good-ear, lem:pencil-generic-one-ear,
+        lem:pencil-generic-pendant-triangle}
   As a simple two-edge-connected graph on at least three bodies, $G$
   satisfies the standing hypotheses (\cref{def:pencil-x0-standing}). If it
   has no planar-rigid set, it has a generic realization
   (\cref{thm:pencil-x0-base-generic}).
 
-  On three bodies $G$ is a triangle, with no proper rigid subgraph
-  (\cref{lem:pencil-three-bodies-no-rigid}). A direct construction gives
-  it a generic realization. The three bodies get linearly independent
-  points and the plane through them as their common panel, and each edge
-  gets the line through the points of its ends. No body is a hub, and the
-  three points are independent, so the realization is nondegenerate. The
-  three hinges are linearly independent, so the framework is
-  infinitesimally rigid (\cref{lem:cycle-realization-rigid}). Its rank is
-  therefore the deficiency rank, as the triangle is rigid.
+  On three bodies $G$ is a triangle: each body has degree at least two
+  and, $G$ being simple, at most one edge to each of the other two. A
+  direct construction gives it a generic realization. The three bodies
+  get linearly independent points and the plane through them as their
+  common panel, and each edge gets the line through the points of its
+  ends. No body is a hub, and the three points are independent, so the
+  realization is nondegenerate. The three hinges are linearly
+  independent, so the framework is infinitesimally rigid
+  (\cref{lem:cycle-realization-rigid}). Its rank is therefore the
+  deficiency rank, as the triangle is rigid.
 
   Otherwise $G$ has at least four bodies. Its closed hub-neighbourhoods
   have at most three members, and no triangle contains two hubs

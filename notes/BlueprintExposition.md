@@ -912,8 +912,8 @@ discharge point.
   degree-two vertex when there is no proper rigid subgraph (KT Lemmas 4.5–4.6);
   a handshake count against the `(D,D)`-sparsity bound shows minimum degree
   ≥ 3 already forces a proper rigid subgraph once `D ≥ 4`, and simplicity in
-  case (v) is free (`lem:pencil-simple-of-noRigid`). Pointer:
-  `notes/Phase39-design.md` § *W3–W5 route recon*.
+  case (v) is free (a parallel pair spans a proper rigid subgraph, KT
+  p. 673). Pointer: `notes/Phase39-design.md` § *W3–W5 route recon*.
 - **`lem:two-pencil-extension-iff` / `exists_extensor_two_pencils_iff`** —
   [done (the `sec:pencil-extension` preamble + proofs)] **(a)** the coplanar
   strip-and-re-add move (KT p. 670) always has a hinge in the meet of two

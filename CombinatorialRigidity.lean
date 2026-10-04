@@ -38,7 +38,6 @@ import CombinatorialRigidity.Molecular.Molecule.Dictionary
 import CombinatorialRigidity.Molecular.Molecule.Duality
 import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 import CombinatorialRigidity.Molecular.Molecule.Modelling
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Base
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration

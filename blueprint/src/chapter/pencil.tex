@@ -604,8 +604,7 @@ statement the induction proves is the following.
   two).
 \end{proof}
 
-We take the five cases in the order of the lemmas below. In case~(v)
-the graph is simple (\cref{lem:pencil-simple-of-noRigid}). The loop
+We take the five cases in the order of the lemmas below. The loop
 case~(i) is \cref{lem:pencil-loop-case}. The cut-edge case~(iii) is
 \cref{lem:pencil-cut-case}, after two lemmas on projective
 automorphisms. The base case~(ii) is \cref{lem:pencil-base-case}. The
@@ -617,25 +616,6 @@ proves both cases by one argument, which rests on
 contract proper rigid subgraphs, using
 \cref{lem:pencil-contraction-deficiency}: contraction leaves the
 deficiency unchanged.
-
-\begin{lemma}[Simplicity from looplessness and no proper rigid subgraph]
-  \label{lem:pencil-simple-of-noRigid}
-  \lean{Graph.simple_of_loopless_of_noRigid}
-  \leanok
-  \uses{def:rigid-subgraph}
-  Let $D \ge 2$, and let $G$ be a loopless multigraph with $|V(G)| \ge 3$
-  and no proper rigid subgraph (\cref{def:rigid-subgraph}). Then $G$ is
-  simple.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Suppose two edges join vertices $x$ and $y$. Their $(D-1)$-fold copies
-  are $2(D-1) \ge D$ parallel edges on $\{x, y\}$, hence $D$
-  edge-disjoint spanning trees, so the subgraph induced on $\{x, y\}$ is
-  rigid, as in the proof of KT Lemma~6.2 (p.~673). It is proper, as
-  $|V(G)| \ge 3$, a contradiction. So $G$ has no parallel edges, and
-  being loopless it is simple.
-\end{proof}
 
 \begin{lemma}[The loop case]
   \label{lem:pencil-loop-case}
@@ -1114,9 +1094,11 @@ from the conditioned pair at smaller multigraphs
   as in \cref{lem:case-I-realization-nonsimple}, for pencil realizations
   and without minimality.
 
-  Let $e$ and $f$ be parallel edges joining bodies $a$ and $b$. They span
-  a proper rigid subgraph $H$ on $\{a, b\}$, as in the proof of
-  \cref{lem:pencil-simple-of-noRigid}. Contracting $H$ removes one body
+  Let $e$ and $f$ be parallel edges joining bodies $a$ and $b$. Their
+  $(D-1)$-fold copies are $2(D-1) \ge D$ parallel edges on $\{a, b\}$,
+  hence $D$ edge-disjoint spanning trees, so $e$ and $f$ span a rigid
+  subgraph $H$ on $\{a, b\}$, as in KT Lemma~6.2 (p.~673). It is proper,
+  as $G$ has at least three bodies. Contracting $H$ removes one body
   and leaves the deficiency unchanged
   (\cref{lem:pencil-contraction-deficiency}). So by the induction
   hypothesis the contraction $G/H$ has a pencil realization at the
