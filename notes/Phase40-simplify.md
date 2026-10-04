@@ -6,9 +6,9 @@ Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 read-only Opus recon over the pencil surface, looking for bigger simplifications
 (`notes/Cleanup40.md` §2 *Round 4*). Seven recon tasks each commit GO / NO-GO verdicts with commit
 estimates to this log. Task 8 writes Stop 2 (`NEEDS_PI`), the round's one planned stop; then the
-items the PI sanctions land, and task 11 closes. Tasks 1 (the liveness map) and 2 (the reduction
-layer) are done (*Verdicts*). **Next concrete task:** task 3 (N), node shapes outside the reduction
-layer, with what tasks 1 and 2 handed it (Opus, docs only). Round manual: `CLEANUP.md`.
+items the PI sanctions land, and task 11 closes. Tasks 1 (the liveness map), 2 (the reduction
+layer) and 3 (node shapes) are done (*Verdicts*). **Next concrete task:** task 4 (E), the open
+ears, with task 1's sizes (Opus, docs only; spikes as needed). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,9 +20,10 @@ PI's answer goes below it, in an entry of the PI's own.
 **Round 4 is open** (2026-10-04, a docs-only commit). Task 1 (L) has landed: the liveness map,
 its verdicts, and the pinned dead clusters handed to tasks 2–4 by name, under *Verdicts* →
 *Task 1*. Task 2 (R) has landed: the reduction layer's shape and fifteen verdicts, two of them PI
-calls (`1a`, design §6's Lean; `a2`, a headline signature), under *Verdicts* → *Task 2*. Nothing
-is mid-stream. The task list is complete for the recon (tasks 1–8). Task 9 slices the landings
-after Stop 2, and task 11 closes.
+calls (`1a`, design §6's Lean; `a2`, a headline signature), under *Verdicts* → *Task 2*. Task 3 (N)
+has landed: eighteen verdicts on the nodes outside that layer, two of them conditioned on `1a`,
+under *Verdicts* → *Task 3*. Nothing is mid-stream. The task list is complete for the recon
+(tasks 1–8). Task 9 slices the landings after Stop 2, and task 11 closes.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -113,18 +114,9 @@ verdicts.
   *Verdicts* → *Task 1*.
 - [x] **2. R — `pencil.tex`'s reduction layer** (`a2`, `a4`, `m1`–`m5`, `c2`–`c4`, design §6,
   task 1's hand-ons; Opus, docs). The shape and the verdicts are under *Verdicts* → *Task 2*.
-- [ ] **3. N — node shapes outside the reduction layer** (`a1`, `m6`, `m7`, `c1`, `c5`–`c8`, and
-  task 1's hand-ons to it; Opus, docs). The question: where a node's statement and its pins
-  disagree, or a node bundles unrelated facts, which side moves? Read the nodes and their pins'
-  statements. In `pencil.tex`:
-  `lem:pencil-chain-side-connected`. In `main-component.tex`:
-  `lem:pencil-selector-independent-scalar`, `lem:pencil-condition-linear` with
-  `lem:pencil-config-distinct-realization`,
-  `lem:pencil-x0-main-picture-open`, `lem:pencil-lifting-restrict`, `thm:pencil-x0-bridge`,
-  `lem:pencil-contract-standing`, `lem:pencil-splitoff-curve`, `thm:pencil-x0-theorem-s` and
-  `lem:pencil-generic-steer`. Verdicts, per node: strengthen the Lean, weaken or restate the node,
-  split it (principle D of `blueprint/AUTHORING.md`, as round 1's task 19 split
-  `lem:pencil-ear-data`), or leave it; and the two graph lines `m6`, `m7`.
+- [x] **3. N — node shapes outside the reduction layer** (`a1`, `m6`, `m7`, `c1`, `c5`–`c8`, task
+  1's hand-ons; Opus, docs). Which side moves where a node and its pins disagree, or a node bundles
+  results: the verdicts are under *Verdicts* → *Task 3*.
 - [ ] **4. E — the open ears** (`q1`, `a7`, `c9`, with task 1's sizes; Opus, docs; spikes as
   needed). SHORT splits the open-ear steps by two, three and four interior bodies, ORBIT by one or
   two at non-adjacent ends, and CHAIN has the cycle and the closed ear. The question: one argument
@@ -209,27 +201,13 @@ another result. Five `rfl` lemmas (four `@[simp]`) could serve `simp` with no tr
 none is retired here, and trial deletion settles them. The 5 963 lines go as follows.
 
 *Handed on (pinned clusters, decided by the task named):*
-- **Task 2, 1 754 lines.** (a) Design §6's cluster under
-  `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`, 1 565: `_hbareSplit` and `_of_card`
-  (`thm:pencil-conditional-realization-pair`), `pencilPair_of_splitOff_of_habitat`, `a4` (879),
-  two more in `Escape.lean`, `Habitat.lean` whole, two in `ReducibleVertex.lean`; it shares 746
-  with `q3a` and 43 with the girth chain. (b) `pencil_conjecture_of_arms`
-  (`thm:pencil-conditional-realization`, 78); `_of_arms_pair` is live. (c) Two nodes the
-  reduction layer `\uses` with no live pin: `lem:two-pencil-extension-iff` (25; by
-  `lem:pencil-cut-case` and `lem:pencil-cut-nondegeneracy`, whose pins never call it; the cut
-  case's calls `lem:two-pencil-extension`'s) and `lem:pencil-base-parallel-pair` (86 with its
-  unpinned root; by `lem:pencil-base-case`, whose pin does not call it).
-- **Task 3, 1 777 lines.** (a) Three of the four parts the chapter's opening calls unused, all pins
-  dead, rewritten and kept by round 3: `sec:pencil-duality` (3 nodes) and `sec:pencil-cycle` (3),
-  366; `sec:pencil-girth-chain` (8), 947 with `MaximalChain.lean` and `Girth.lean` whole. (b)
-  In `main-component.tex`, on `thm:pencil-conjecture`'s `\uses` ancestry with no live pin:
-  `lem:pencil-selector-independent-scalar` (`c5`) and `lem:pencil-x0-two-hubs-obstruction`. One
-  caller-less pin beside live ones (`c9`'s pattern): `lem:pencil-condition-linear` (`c6`),
-  `lem:pencil-contract-standing` (`c8`), `lem:pencil-lifting-space-affine`,
-  `lem:pencil-picture-local`, `def:pencil-configuration`, `thm:pencil-flat-rank`,
-  `cor:pencil-flat-attains`, `cor:pencil-flat-x0`, `thm:pencil-jj-equality`; 337 in all. (c)
-  The same pattern in other chapters, 127: `thm:projective-invariance` (three pins),
-  `lem:panel-hinge-dual-molecular` (two), `thm:theorem-55-6-rows`, `lem:deficiency-cut-vertex`.
+- **Task 2, 1 754 lines** (its `1a`–`1c-ii`): design §6's cluster under `_of_card`, 1 565 (it
+  shares 746 with `q3a` and 43 with the girth chain); `pencil_conjecture_of_arms`, 78; two nodes
+  the reduction layer `\uses` with no live pin, 111.
+- **Task 3, 1 777 lines** (its entries): (a) three of the four parts the chapter's opening calls
+  unused, the duality and cycle sections (366) and the girth chain (947); (b) eleven
+  `main-component.tex` nodes with a caller-less pin, two of them on the headline's `\uses` ancestry
+  with no live pin (337); (c) four nodes in other chapters (127).
 - **Task 4, 153 lines.** `a7` (`thm:pencil-x0-closed-ear`, off the `\uses` ancestry; 118 with
   `pathVertex_shift`); `c9`'s halves, 15 and 20.
 
@@ -339,6 +317,87 @@ and `1b`'s node; one deletion carries `1a`, `1b` and `1c-ii`; `a2` last.
   lemmas this node's proof uses, so it `\uses` them instead. 1 commit, Sonnet, riding with `1a`'s
   deletion; the graph loses a node. Evidence: the map.
 
+### Task 3 (N)
+
+**The reading** (*read, and the pins' signatures `#check`ed; spikes run with `lake lean`, 0 errors,
+0 warnings*). Four nodes disagree with their pins (`a1`, `c5`, `c6`, `c7`); reading the proofs
+found two more (`c8`'s `-lifting-restrict` and `-contract-standing`). Batching, for task 8: one TeX
+commit carries `m6`, `m7` (with `1c-i`), `c1`, the two-hubs edge and `c8`'s re-pins; one Lean
+commit `c6` and `c7`; the 111 lines `c5`, `c8` and the polynomial retire go in `r1`'s deletion.
+
+- **`sec:pencil-duality`, `sec:pencil-cycle` (task 1's (a)): NO-GO, keep.** Prior evidence stands:
+  round 3 rewrote and kept both, and the chapter opening names them as unused (366 lines).
+- **`sec:pencil-girth-chain` (task 1's (a)): with `1a`.** It is kept as a start for a proof of the
+  kernels. *`1a` retires them:* GO, retire its 8 nodes and Lean, 947 lines (`MaximalChain.lean`,
+  `Girth.lean`, `Motive.lean`'s girth-five lemma; 990 with the 43 shared with `_of_card`), in `1a`'s
+  deletion, Sonnet; the graph loses the subsection, and `cor:block-rank-vertex-two-cut` keeps one
+  citing chapter (`r1`'s premise for its 2). *Kept:* NO-GO. Evidence: the map, read.
+- **`a1`, `lem:pencil-chain-side-connected`: with the girth chain.** Retired: moot. Kept: GO,
+  strengthen the Lean. The `w′` count is a 12-line corollary by reversing the path (spike); pin it
+  beside, and the formalization note goes. 1 commit, Sonnet; nothing a reader sees. Spike.
+- **Task 1's (c), dead pins in other chapters: NO-GO, keep (127 lines).** Each is a clause of its
+  node: Crapo–Whiteley's rigidity, genuineness and rescaling invariants, the polarity's dimension,
+  rigidity and genuineness, KT 5.5's conclusion at every simple graph, the cut-vertex equality (its
+  ≥ half is live). Evidence: read, `#check`.
+- **Task 1's (b), six nodes with one caller-less clause: NO-GO, keep (100 lines).** Each dead pin
+  is a clause, 11–27 lines: `-lifting-space-affine`'s `dim L(q) ≥ 3` (`cor:pencil-flat-x0` reads
+  it), `-picture-local`'s admissibility, `thm:pencil-flat-rank`'s bound and equality case, the flat
+  corollaries' second equivalence and vanishing deficiencies, `thm:pencil-jj-equality`'s `ℓ₀`.
+  Evidence: the map, `#check`.
+- **`def:pencil-configuration`'s polynomial (task 1's (b)): GO, retire.**
+  `pencilNormalOfPicturePoly`, its evaluation and two helpers (32 lines) have no caller, and the
+  definition does not state it; its docstring's use in `X0Gen` is false. With `r1`'s deletion,
+  Sonnet; three pins stay; nothing a reader sees. Evidence: the map.
+- **`c5`, `lem:pencil-selector-independent-scalar`: GO, retire.** At an admissible picture it is
+  two lines from `-condition-linear`'s plane clause, its pin has no caller, and that proof cites it
+  only "as in". Retire node and pin (52 lines), with `r1`'s deletion, Sonnet; the headline's
+  `\uses` ancestry loses a node. Or keep it restated to its pin (drop "admissible"). The map, read.
+- **`lem:pencil-x0-two-hubs-obstruction` (task 1's (b)): NO-GO for the node; GO, drop one edge.** A
+  design witness, as `q3c`'s: three chapters cite it as why the generic statement goes through the
+  reduction. Only `thm:pencil-x0-generic-attains`' proof `\uses` it, for that reason; without the
+  edge it leaves the ancestry, as its pins (74 lines) have. TeX, batched. Evidence: the map, read.
+- **`c6`, `lem:pencil-condition-linear`: GO, restate and pin the iff.** Its pencil-realization
+  clause is `-config-distinct-realization`'s statement, and the iff's forward direction has no pin.
+  Drop the clause (cite that node); pin `mem_liftingSpace_iff_coplanar`, 13 lines, whose half is the
+  caller-less converse pin (spike). 1 commit, Sonnet; the node drops a clause another node states.
+  Leave `-config-distinct-realization`. Depends on `c5`. Evidence: spike, `#check`.
+- **`c7`, `lem:pencil-x0-main-picture-open`: GO, strengthen the Lean.** "`U` is Zariski-open" is
+  the pin's proof run at any main picture: `IsMainPicture.exists_mvPolynomial` (nonzero at `q₀`,
+  non-roots main, no `[Infinite K]`) compiles with it, and the pin becomes a 4-line corollary
+  (spike). 1 commit, Sonnet, about +6 lines; pinned beside; no statement moves. Evidence: spike.
+- **`c1`, split `lem:pencil-splitoff-curve`: GO, three one-pin nodes.** (1) keeps the label (two
+  `SplitOff.lean` docstrings cite it); (2), the extension across `x`, follows it; (3), the lifting
+  system's locality, goes after `def:pencil-weighted-lifting-system`, as `-picture-local` precedes
+  the system. 1 commit, Sonnet, as round 1's task 19; graph +2 nodes, the theorem's three citations
+  repointed; no strength change. Evidence: read.
+- **`c8`, `lem:pencil-lifting-restrict` (6 pins): GO, restate to its pins.** Five proofs (the cut,
+  three open-ear steps, the one-ear base) cite it for "a polynomial in the heights of `G′`, read at
+  the restriction, is one in those of `G`" (`eval_restrictPoly`), which it does not state. Add the
+  clause; pin one declaration per clause (three), leaving the map, its unfolding and `restrictPoly`
+  unpinned. TeX, Sonnet; strengthens the node to its pins. Evidence: read.
+- **`c8`, `thm:pencil-x0-bridge` (8 pins): GO, unpin five helpers.** Keep the step and its proof's
+  two counts (`deficiency_induce_union_range_of_bridgePath`, the rank's `add_le_…_of_bridgePath`);
+  the four `pathVertex` lemmas and `cutEdges_union_image_of_bridgePath` encode the path.
+  `lem:pencil-bridge-fibre` keeps its lemma and `pathVertex`. TeX, Sonnet. Evidence: `#check`.
+- **`c8`, `lem:pencil-contract-standing` (4 pins): GO, restate to two pins.** No proof reads
+  "`G/H` is 2-edge-connected" (a smaller graph needs only the standing hypotheses; the pin has no
+  caller, 27 lines), and "if `def₂(G[W]) = 0`, `H` satisfies them" is `-contract-standing-rigid` at
+  `n = 2`, which its one reader can cite, as the additive step does. Drop both, retire the first
+  pin; 1 commit, Sonnet; weakens the node to what its readers use. Evidence: the map, read.
+- **`c8`, `lem:pencil-generic-steer` (4 pins): GO, unpin the helper.**
+  `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` (263 lines) is one step of
+  (a), named there; three pins stay: the parametrization, (a), (b). No split: its two readers cite
+  (a) and (b) by part, and both need the parametrization. TeX, Sonnet. Evidence: read.
+- **`c8a`, seven more nodes with four or more pins: NO-GO here.** `def:pencil-nondegenerate`,
+  `lem:pencil-x0-one-witness`, `thm:pencil-x0-main-component`, `lem:pencil-jj-rescale`,
+  `lem:pencil-jj-embed-edges` (11), `thm:pencil-jj-equality`, `lem:pencil-chain-span-certificates`:
+  mostly one pin per clause. For the principle-D audit queued with **PROSE**. Evidence: measured.
+- **`m6`: GO.** `thm:pencil-x0-theorem-s`'s proof cites `lem:deficiency-zero-connected`, whose pin
+  `two_le_degree_of_isKDof_zero` its pin calls: add the edge. TeX, batched. Evidence: the map, read.
+- **`m7`: GO.** `lem:pencil-generic-steer`'s proof cites `lem:pencil-feasible-hub-conditions`
+  twice, and its helper pin calls both halves of that node's pin: add the edge, with `1c-i`. TeX,
+  batched. Evidence: the map, read.
+
 ## Moved to a later round
 
 Each line gives the task, its target (round 5, `40-docs`, or **PROSE** in ROADMAP's queue) and a
@@ -350,14 +409,13 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**Next: task 3 (N), node shapes outside the reduction layer** (Opus, docs only): checklist item
-3's question and inputs, plus task 1's hand-ons to it (*Verdicts* → *Task 1*). Two bear on task
-2's verdicts. `sec:pencil-girth-chain` opens as an account of the kernels' hypotheses, so its
-verdict depends on `1a`. `1c-i` gives `lem:pencil-feasible-hub-conditions`' proof a `\uses`
-edge, and `m7` would make `lem:pencil-generic-steer` `\uses` that node. `m3` already settles
-`lem:pencil-three-bodies-no-rigid` and `thm:pencil-generic-step`'s triangle; task 3 need not.
-Then tasks 4–7 in order, each one docs commit of verdicts; task 4 takes task 1's other hand-ons.
-Then task 8 writes Stop 2, and the autopilot stops for the PI.
+**Next: task 4 (E), the open ears** (Opus, docs only; spikes as needed): checklist item 4's
+question and inputs (`q1`, `a7`, `c9`), with task 1's sizes (*Verdicts* → *Task 1*, "Task 4, 153
+lines"). Task 3 touched two nodes the ear steps cite, `lem:pencil-lifting-restrict` (`c8`, a clause
+added) and `lem:pencil-picture-local` (kept); neither changes task 4's question. Then tasks 5–7 in
+order, each one docs commit of verdicts. Then task 8 writes Stop 2, and the autopilot stops for the
+PI. For task 8, task 3's statement moves are `c6`, and `c8`'s `-lifting-restrict` and
+`-contract-standing`; `sec:pencil-girth-chain` and `a1` follow `1a`.
 
 ## Decisions made during this round
 

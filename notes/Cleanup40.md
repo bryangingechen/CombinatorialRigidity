@@ -9,8 +9,8 @@ Round 4, `40-simplify`, opened 2026-10-04 (`notes/Phase40-simplify.md`); round 5
 Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this
 order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
 `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done. **The
-next concrete task** is round 4's task 3, node shapes outside the reduction layer; tasks 1 (the
-liveness map) and 2 (the reduction layer) are done (`notes/Phase40-simplify.md` *Hand-off*). Seven
+next concrete task** is round 4's task 4, the open ears; tasks 1 (the liveness map), 2 (the
+reduction layer) and 3 (node shapes) are done (`notes/Phase40-simplify.md` *Hand-off*). Seven
 recon tasks, over §2 *Round 4*'s inputs, precede Stop 2.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
