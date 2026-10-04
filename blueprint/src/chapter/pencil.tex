@@ -948,7 +948,7 @@ statement.
 \begin{proof}
   \leanok
   \uses{lem:pencil-loop-case, lem:pencil-base-case, lem:pencil-cut-case,
-        def:pencil-nondegenerate}
+        def:pencil-nondegenerate, lem:pencil-generic-steer}
   In each case the bare conjunct is \cref{lem:pencil-loop-case},
   \cref{lem:pencil-base-case} or \cref{lem:pencil-cut-case}. In case~(1)
   the first of these applies to $G$ with the loop deleted, which has as
@@ -974,13 +974,14 @@ statement.
   that also avoids finitely many subspaces, and join the two along $uv$.
 
   If one side is a single body, say $v$, we use $G - v$, and give $v$ a
-  point and a panel that avoid finitely many subspaces. When $u$ has
-  degree three, it drops to degree two in $G - v$. Then we first show
-  that $G - v$ is nondegeneracy-feasible, and move its generic
-  realization, at the same rank, to one that also meets the conditions of
-  $G$ on the normals at $u$ and its other two neighbours. Both steps
-  choose a point off the zero set of a nonzero polynomial, which exists
-  because $K$ is infinite.
+  point and a panel that avoid finitely many subspaces. The body $v$ has
+  degree one, so it is not a pencil hub, and it is the only neighbour
+  that a body of $G - v$ loses. By \cref{lem:pencil-generic-steer}(a), $G - v$
+  is then nondegeneracy-feasible, by a realization whose normals are
+  independent on the closed hub-neighbourhood in $G$ of every body. By
+  part~(b) of the same lemma, the generic realization of $G - v$ moves,
+  at the same rank, to one whose normals are independent on these sets,
+  as a realization of $G$ requires.
 \end{proof}
 
 \begin{theorem}[The conditioned pair from the contraction and split cases]

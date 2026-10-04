@@ -386,8 +386,9 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Fi
 /-! ### L5-cut-v-d: the chart-family steering extraction gadget (Phase 39 W5-L5,
 `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v, the v-d leaf)
 
-The steering half of the L5-cut-v discharge: the somewhere-witnesses (`Witness.lean`, v-b/v-c)
-certify the chart's constructed points / normals linearly independent at *one* seed; these two
+The steering half of the L5-cut-v discharge: a somewhere-witness (an explicit seed, or the
+flattening of a re-seeded realization) certifies the chart's constructed points / normals linearly
+independent at *one* seed; these two
 specializations of the maximal-minor engine
 (`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`) turn each such witness into a single
 seed-polynomial, nonzero at the witness seed, whose every non-root keeps the family independent —
@@ -402,8 +403,9 @@ reindexed by `finCongr (Module.finrank_fin_fun K) : Fin (finrank K (Fin 4 → K)
 /-- **Chart-point steering gadget** (Phase 39 W5-L5 L5-cut-v-d): for any endpoint selector
 `ends : ι → α` (finite `ι`) and any subfamily of the chart's constructed points linearly
 independent at a seed `q₀`, a single seed-polynomial nonzero at `q₀` whose non-roots keep that
-subfamily independent. Consumes witness (i) (`Witness.lean`) after transporting its `![·]` family to
-the subtype shape. A direct instance of `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+subfamily independent. The common-seed lemma `exists_common_seed_linearIndepOn_pencilChartPoint`
+(`Steer.lean`) and `lem:pencil-generic-steer`'s T3 (`MainComponent/GenericSteer.lean`) consume it at
+`ends := id`. A direct instance of `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
 with `W := Fin 4 → K`, coordinate polynomials `pencilChartPointPoly`, and identification
 `hg := pencilChartPointPoly_eval`. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
@@ -425,10 +427,10 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
 /-- **Chart-normal steering gadget** (Phase 39 W5-L5 L5-cut-v-d): the `pencilChartNormal`
 companion of the point gadget. For any endpoint selector `ends : ι → α` and any subfamily of the
 chart's constructed normals on `G` linearly independent at a seed `q₀`, a single seed-polynomial
-nonzero at `q₀` whose non-roots keep it independent. Consumes witness (ii) (`Witness.lean`) — its
-`LinearIndepOn K (pencilChartNormal …) (closedHubNbhd v)` conclusion is this shape at `ι := α`,
-`ends := id`, `s := closedHubNbhd v`. A direct instance of the reindexed engine with coordinate
-polynomials `pencilChartNormalPoly` and `hg := pencilChartNormalPoly_eval`. -/
+nonzero at `q₀` whose non-roots keep it independent. `lem:pencil-generic-steer`'s T3
+(`exists_isNondegPencilRealization_steer`) consumes it at `ι := α`, `ends := id`, for each of its
+`LinearIndepOn K (pencilChartNormal …)` conditions. A direct instance of the reindexed engine with
+coordinate polynomials `pencilChartNormalPoly` and `hg := pencilChartNormalPoly_eval`. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal
     {ι : Type*} [Finite ι] (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (ends : ι → α)
     {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
@@ -570,9 +572,9 @@ linearly independent (`linearIndependent_pi_single_triple`, via `Pi.basisFun`'s 
 restricted along an injective `Fin 3 → Fin 4`), and `cross₃` of them is a nonzero multiple of the
 fourth (`exists_smul_cross₃_pi_single`, a direct instance of the arity-`3` sweep above at
 `q := Pi.single d 1`, orthogonal to the other three by `dotProduct_single_one` since distinct
-standard basis vectors are `⬝ᵥ`-orthogonal). No sign/order bookkeeping is needed: the pinned
-witness (i) only asks for `LinearIndependent`, invariant under the per-body nonzero rescaling
-this lemma already produces. -/
+standard basis vectors are `⬝ᵥ`-orthogonal). No sign/order bookkeeping is needed: the explicit
+witnesses ask only for `LinearIndependent`, invariant under the per-body nonzero rescaling this
+lemma already produces. -/
 
 /-- **Three pairwise-distinct standard basis vectors of `K⁴` are linearly independent**
 (Phase 39 W5-L5, L5-cut-v-b infra). -/

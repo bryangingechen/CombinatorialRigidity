@@ -519,8 +519,9 @@ theorem pencilDotPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Gra
   simp only [pencilDotPoly, map_sum, map_mul, pencilChartPointPoly_eval,
     pencilChartNormalPoly_eval, dotProduct]
 
-/-- **The steering in `H`'s chart** ((MC-191), EARS' T3; the pattern of
-`exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`). Two nondegenerate
+/-- **The steering in `H`'s chart** ((MC-191), EARS' T3; the general form of Phase 39's
+L5-cut-v-f-6 steering, whose pendant case now runs through it,
+`hasGenericPencilRealization_pendant_of_IH`). Two nondegenerate
 realizations of `H` — one at the deficiency rank, one carrying finitely many normal-independence
 and point–normal non-orthogonality conditions — give one realization with all of them. Both are
 chart points of one chart of `H` (T1 at the first one's selectors); every condition is the

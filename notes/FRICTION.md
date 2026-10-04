@@ -686,7 +686,7 @@ to be re-derived by re-reading entries later.
 - **Recurred:** Phase 39 W5-L6b-ii (`Molecule/Pencil/WitnessGeneral.lean`, `exists_coord_linearIndepOn_pencilChartPoint_perBody`), the non-hub case-split `(N(G, v)).ncard = 0 ∨ = 1 ∨ = 2` from `hNcard : (N(G, v)).ncard ≤ 2` (`hNcard` extracted via `Set.encard_le_coe_iff_finite_ncard_le` off the `eDegree` chain). Same signature: `omega`'s counterexample allowed the `ncard` atom `≥ 3`, ignoring `hNcard` — because the `encard`-chain `N(G, v)` is a distinct-but-defeq elaboration from the freshly-written goal `N(G, v)`. Worked around by *not* re-deriving the equality with `omega`: split with `Nat.lt_or_ge (N(G, v)).ncard 1`/`… 2` (fresh `<`-hyps about the *goal's* term, which `omega` does read) and close the last leg with `le_antisymm hNcard h'` (term-mode, defeq-bridged), no `omega` on `hNcard`.
 
 ### [idiom] `Module.finrank K (A ⊓ B)` for two `Submodule`-typed terms fails with a baffling `Min (Type u_1)` instance error unless the `⊓`-expression carries an explicit `Submodule K M` ascription
-- **Where it bit:** Phase 39 (PENCIL) W5-L5, L5-cut-iv sub-case 3 (`Molecular/Molecule/Pencil/Pair2.lean`, `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`), stating `have h2dim : 2 ≤ Module.finrank K (ker₁ (point₁ u_c) ⊓ ker₁ point_vc) := le_finrank_toDualPerp_inf …` where `ker₁ : (Fin 4 → K) → Submodule K (Fin 4 → K)` is a local `set`-bound abbreviation (mirroring the already-landed `exists_reposition_cross_incidences_avoiding`, `Arms.lean`).
+- **Where it bit:** Phase 39 (PENCIL) W5-L5, L5-cut-iv sub-case 3 (`Molecular/Molecule/Pencil/Pair2.lean`, `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`; that body is now the pendant glue `…_induce_pendant_of_hubLI`, the producer itself deleted in 40-simplify 10m), stating `have h2dim : 2 ≤ Module.finrank K (ker₁ (point₁ u_c) ⊓ ker₁ point_vc) := le_finrank_toDualPerp_inf …` where `ker₁ : (Fin 4 → K) → Submodule K (Fin 4 → K)` is a local `set`-bound abbreviation (mirroring the already-landed `exists_reposition_cross_incidences_avoiding`, `Arms.lean`).
 - **Friction:** `lake build` reported `failed to synthesize instance of type class Min (Type u_1)` pointing at the `Module.finrank K (…)` call itself — nothing about `Submodule` or `Inf` in the message, and the two operands elaborate fine individually (`ker₁ (point₁ u_c)`, `ker₁ point_vc` both check as `Submodule K (Fin 4 → K)` on their own). Without the ascription, Lean apparently tries to elaborate `⊓` before committing `Module.finrank`'s second (`Type*`) argument to the `↥`-coerced `Submodule` reading, and falls back to a generic `Min`/`Inf` search over `Type u_1` itself. The already-landed sibling `le_finrank_toDualPerp_inf`'s own statement (`Arms.lean`) already carries the fix but the reason was never written down, so it looked like ordinary boilerplate rather than a load-bearing annotation — easy to drop when writing a new call site from scratch.
 - **Fix:** wrap the `⊓`-expression in an explicit type ascription before passing it to `Module.finrank`: `Module.finrank K ((ker₁ (point₁ u_c) ⊓ ker₁ point_vc : Submodule K (Fin 4 → K)))`. General: whenever `Module.finrank K X` (or any `Type*`-expecting `Submodule`-coercion site) takes a *compound* `⊓`/`⊔`-combined submodule expression rather than a single named term, ascribe the compound expression's `Submodule K M` type explicitly — don't rely on the individual operands' pinned types to propagate through the lattice operator.
 - **Recurred:** Phase 39 item-6 Layer B4 (`RigidityMatrix/Bricks.lean`, `weldedRank_eq`, 2026-09-17) — this time on a `have` *restating* mathlib's `Submodule.finrank_sup_add_finrank_inf_eq` for the pair `span F.rigidityRows`, `span (jointRows ⊥ u v)`. A bare `↥` on the compound is the shorter fix and works identically: `Module.finrank K ↥(A ⊓ B)`. (Mathlib's own statement carries the coercion for exactly this reason — a restatement must too.) Same proof also needed `Nat.sub_zero` chained into `rw [finrank_span_jointRows huv, finrank_bot]`: `rw`'s trailing `rfl` does not reduce `screwDim k - 0`.
@@ -3049,9 +3049,9 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 
 ### [idiom] A set equality proved by `ext` where the consumer is `LinearIndepOn.mono` (second instance)
 - **Where it bit:** Phase 40-simplify 10l, `Pair2.lean`'s pendant producers
-  (`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and `_deg3`), and the
-  task-6 spike 10l transcribed. Each transferred conjunct 3 by proving `G.closedHubNbhd v =
-  (G.induce V₁).closedHubNbhd v` both ways, then rewriting.
+  (`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and `_deg3`, both
+  deleted in 10m), and the task-6 spike 10l transcribed. Each transferred conjunct 3 by proving
+  `G.closedHubNbhd v = (G.induce V₁).closedHubNbhd v` both ways, then rewriting.
 - **Resolution:** the forward inclusion and `(hnd₁.2.2.1 v hv).mono` halve each transfer, and
   `_deg3` loses the `H`-degree fact only the reverse direction used. Also: a `by rw [...]` inside
   `⟨…⟩` whose next tactic starts a new line at a lower column ends the tactic block early
@@ -3061,6 +3061,18 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 ### [idiom] `if_pos` / `if_neg` are deprecated in this mathlib; write `ite_eq_left` / `ite_eq_right`
 - **Where it bit:** `40-factor`'s open spike for `Graph.exists_normalized_labeling` (`Molecular/Deficiency.lean`, landed in task 1). `fun x hx => if_pos hx`, an `EqOn` on the `if` guard's true branch, and the matching `if_neg` on the false branch each drew a deprecation warning, costing one `lake lean` cycle.
 - **Resolution:** `ite_eq_left hx` and `ite_eq_right hx`: the same statements (`c → ite c a b = a`, `¬c → ite c a b = b`), and the forms the rest of the tree already uses.
+- **Status:** idiom.
+
+### [idiom] A set family on `V₁` written with `if v ∈ V₁ then … else ∅`, and a singleton unpacked from `ncard = 1` by hand
+- **Where it bit:** Phase 40-simplify 10m, `Pair2.lean`'s `hasGenericPencilRealization_pendant_of_IH`
+  and `pencilPair_of_not_twoEdgeConnected`, transcribing task 7's spike. The spike indexed T3's sets
+  by `α`, `S v := if v ∈ V₁ then G.closedHubNbhd v else ∅`, so each of T3's three set hypotheses
+  needed a `split_ifs` with an empty-set branch; and each pendant branch turned `V₂.ncard = 1`,
+  `v_c ∈ V₂` into `V₂ = {v_c}` through `Set.ncard_eq_one`, an `obtain` and two rewrites.
+- **Resolution:** index the family by the subtype, `fun v : V₁ => G.closedHubNbhd v` (`Finite ↥V₁`
+  is an instance), so each hypothesis is a one-line `fun v => … v.2`; and
+  `(Set.ncard_le_one_iff_subsingleton.mp h.le).eq_singleton_of_mem hx` for the singleton. The pendant
+  route went from 77 to 52 lines, each branch's singleton from 5 lines to 2.
 - **Status:** idiom.
 
 ## Anti-patterns / known dead ends
