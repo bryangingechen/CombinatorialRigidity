@@ -260,6 +260,8 @@ verdicts.
   - [ ] **10n. `7b`** (Opus, ⚠Z). One glue for a cut's two sides, four sites: −213 (about −280).
   - [ ] **10o. `q2a` + `b1`** (Sonnet, ⚠Z, mechanical). Theorem55's cut-edge bricks published
     under Arms' names; the PanelLayer hub's `ᶜ`: −105.
+    Also delete `Graph.pencilHub_iff_induce_of_degree_ne` (`Motive.lean`), which 10m left with no
+    caller (10l had removed its other use); trial deletion confirms (the coordinator's addition).
   - [ ] **10p. `7d`'s chapter, (ii)** (Opus, TeX). CONTRACT-R as CONTRACT-A's corollary, the two
     contraction sections merged; `-core-plane`, `-core-rank`, `-limit`'s clause (1) and a clause of
     `cor:pencil-flat-x0` retire, unpinned. The overview's list of steps where no two open
@@ -303,7 +305,7 @@ one-line reason. The same line goes into the target's plan section in the same c
 `7b`, one glue for a cut's two realized sides at four sites, the `|C| = 0` producer, #5, the core
 and 10l's pendant glue (spike `scratch/40-simplify/7/Glue.lean`; verdict `7b`). Then 10o–10r in
 order, one commit each at its listed rung; after 10r, task 11 closes the round. 10m left
-`Graph.pencilHub_iff_induce_of_degree_ne` caller-less (*Current state*), for the round to dispose.
+`Graph.pencilHub_iff_induce_of_degree_ne` caller-less; 10o deletes it (task 10's entry).
 
 ## Decisions made during this round
 
