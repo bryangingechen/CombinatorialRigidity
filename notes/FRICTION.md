@@ -122,8 +122,8 @@ to be re-derived by re-reading entries later.
   byte-identical between the two), and
   `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton` (`Pair.lean`)
   re-derived an equivalent shape through a named `hcut_uniq` intermediate.
-- **Fix:** `Graph.eq_and_eq_of_isLink_crossing` (`Pencil/Motive.lean`, beside
-  `Graph.eq_cutEdge_of_isLink_crossing`) fuses the `obtain rfl := eq_cutEdge_of_isLink_crossing …`
+- **Fix:** `Graph.eq_and_eq_of_isLink_crossing` (`Molecular/Deficiency.lean` beside `cutEdges`
+  since round 4's 10k, with `Graph.eq_cutEdge_of_isLink_crossing`) fuses the `obtain rfl := eq_cutEdge_of_isLink_crossing …`
   + `rcases hl.eq_and_eq_or_eq_and_eq hl₀ with …` case split into the one lemma the three sites
   needed; each site now calls it directly instead of restating the derivation.
 - **Status:** resolved.

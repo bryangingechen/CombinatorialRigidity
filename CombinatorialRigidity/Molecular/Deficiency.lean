@@ -1265,6 +1265,33 @@ theorem cutEdges_diff_subset (G : Graph α β) (V' : Set α) :
   have hx' : x ∉ V' := fun hx' => hx.2 hx'
   exact ⟨hfE, y, x, hl.symm, hy', hx'⟩
 
+/-- **Under `≤ 1` crossing edge, every crossing link is the pinned cut edge**
+(`def:cut-edges-2ec`; Phase 39 W5-L5): a link `e = xy` with `x ∈ V₁` and `y ∉ V₁` is a member of
+`G.cutEdges V₁`, which contains the pinned `e₀` and has at most one member. The dispatch fact of
+the cut cases: both cut-edge assemblies (`case_cut_edge_realization_gen`,
+`hasPencilRealization_of_not_twoEdgeConnected_core`) and the pencil cut arm's edge-closed sides
+(`Molecule/Pencil/Motive.lean`). -/
+theorem eq_cutEdge_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set α}
+    {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {x y : α}
+    (hl : G.IsLink e x y) (hx : x ∈ V₁) (hy : y ∉ V₁) : e = e₀ := by
+  have he : e ∈ G.cutEdges V₁ := ⟨hl.edge_mem, x, y, hl, hx, hy⟩
+  have he₀ : e₀ ∈ G.cutEdges V₁ := ⟨hl₀.edge_mem, u₀, w₀, hl₀, hu₀, hw₀⟩
+  exact (Set.ncard_le_one (Set.toFinite _)).mp hcut e he e₀ he₀
+
+/-- **Under `≤ 1` crossing edge, a crossing link's endpoints pin to the cut edge's**
+(`def:cut-edges-2ec`): a link `e = xy` with `x ∈ V₁` and `y ∉ V₁` is not just the same edge as the
+pinned `e₀ = u₀w₀` (`Graph.eq_cutEdge_of_isLink_crossing`), its endpoints agree in orientation too
+— the swapped orientation `x = w₀` contradicts `hx : x ∈ V₁` against `hw₀ : w₀ ∉ V₁`. -/
+theorem eq_and_eq_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set α}
+    {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {x y : α}
+    (hl : G.IsLink e x y) (hx : x ∈ V₁) (hy : y ∉ V₁) : e = e₀ ∧ x = u₀ ∧ y = w₀ := by
+  obtain rfl := eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hx hy
+  rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · exact ⟨rfl, rfl, rfl⟩
+  · exact absurd hx hw₀
+
 /-- **A `0`-dof graph is `2`-edge-connected** (`def:cut-edges-2ec`; KT Lemma 3.1 in
 labeling-free form). For a body-hinge-rigid (`0`-dof) graph `G` and `D = bodyBarDim n ≥ 1`,
 the predicate `G.TwoEdgeConnected` holds: given any nonempty proper vertex set `V' ⊊ V(G)`,
