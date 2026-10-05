@@ -973,6 +973,95 @@ Jackson–Jordán 2009 Thm 6.1 (the Prop 1.1 analytic side);
 
 ---
 
+## Genericity without dimension theory: nonzero polynomials and rational parametrizations (Phase 40)
+
+**The rule.** Each delicate "generic" step of an informal argument is
+formalized as an explicit statement of one of two forms, fixed before
+the step is built:
+- a **nonzero polynomial** whose non-vanishing gives the property, on
+  the parameter space, or nonzero *somewhere on* the fibre or subspace
+  the step lives in; or
+- a **rational parametrization**: a polynomial curve or family through a
+  known good point, along which the property is read off at one
+  parameter value or in the limit.
+
+An argument that instead counts dimensions (of an incidence variety, an
+orbit, a fibre, an irreducible component) is rerouted to one of these
+forms, not formalized as written. The *Genericity device* above is
+already of the first form: its lower semicontinuity of rank is a rank
+polynomial, nonzero at one good point, whose non-vanishing forces the
+rank bound (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`,
+`AlgebraicInduction/GenericityDevice.lean`).
+
+**Why: mathlib has no dimension theory to count with.** Phase 40's
+ORBIT recon checked it on 2026-09-26, by compiler witnesses and
+bare-name searches across `.lake/packages`. The date goes with the list,
+since mathlib moves: the mathlib checked is the 2026-08-24 toolchain
+bump's, still the pin on 2026-10-04, so re-check at the next bump.
+- Mathlib **has** `ringKrullDim`,
+  `MvPolynomial.ringKrullDim_of_isNoetherianRing`, `Algebra.trdeg`,
+  Noether normalization (`exists_finite_inj_algHom_of_fg`), Chevalley
+  (`PrimeSpectrum.isConstructible_comap_image`) and the topological
+  `UpperSemicontinuous`.
+- It **lacks** a fibre-dimension theorem, algebraic group actions,
+  orbit–stabilizer dimensions, a tangent-rank orbit bound, a bridge
+  between transcendence degree and Krull dimension
+  (`Algebra.trdeg_eq_ringKrullDim` and `ringKrullDim_eq_trdeg` are
+  unknown identifiers), and any dimension for `K`-points over a
+  non-closed field.
+
+The recon priced building the missing layer at well over 20 builds. The
+two forms need only `[Infinite K]` (a nonzero polynomial over an
+infinite field has a non-root), which is all the project's field-general
+targets assume: Phase 40 proved the pencil conjecture over every
+infinite field, with no `CharZero` and no algebraic closure.
+
+**How Phase 40 applied it.** The design doc named the delicate places
+at the open (`notes/Phase40-design.md` §4 *Genericity*): dominance,
+(MC-18)(b); the two-scale and flat limits in contraction, (MC-37),
+(MC-66), (MC-69); semicontinuity at chord points. As landed:
+- "The general point of `X₀` attains" is `Graph.X0Attains`
+  (`Carrier.lean`): a nonzero polynomial on pictures and, over each
+  picture off its zero set, a polynomial nonzero somewhere on the fibre
+  `L(q)`, off whose zero set the rank is the target. The component `X₀`
+  itself, (MC-2)'s vector bundle and its irreducible closure, is never
+  formed. Two such open conditions meet inside one fibre by restricting
+  both to the line through their witnesses
+  (`MvPolynomial.exists_mem_eval_ne_zero₂`).
+- The contraction's limits run along a polynomial curve in `t`: the
+  picture `q(t)` and its configuration (`contractPicturePoly`,
+  `contractConfigPoly`, `ContractCurve.lean`).
+- **ORBIT, the worked case (2026-09-26).** (MC-46)'s proof of the
+  open-ear cell `k = 2`, `a ≁ b`, `δ₂ ≥ 2`, with (MC-138)'s orbit table,
+  counts dimensions of incidence varieties and orbits, which has no
+  polynomial-level form. The recon weighed (A) re-proving the cell at
+  polynomial level; (B) covering it another way in COVERAGE, refuted by
+  a witness (`K₄` with every edge subdivided twice, whose only covering
+  step is this cell; `w4/orbitlink.py --witness`); and (C) building
+  dimension theory, priced above. (A) won, in a stronger form than
+  posed: a refined degeneration link, (MC-173), by two curve families,
+  and a parametrized incidence, (MC-174), in place of (MC-18)(b)'s
+  divisibility argument for dominance. (MC-174) landed as
+  `exists_incidence` (`Orbit.lean`): a linear map of rank at least two
+  on a subspace, a polynomial nonzero somewhere on it and a nonzero
+  polynomial on `K²` meet at a common point. No orbit is computed
+  anywhere on the route, and the new argument went through the workbook
+  and a second reading before it was built (*New mathematics found by
+  formalization is second-read before it is built on*, below).
+
+**Next consumer.** ORIGAMI's `X`-generic vertex-splitting engine
+(`notes/Origami.md`). Its genericity is relative to a subvariety `X` of
+placements, not to a linear fibre; which of the two forms fits is for
+its opening recon to settle, before any dimension count is planned.
+
+Cross-refs: `notes/Phase40-design.md` §4 (*Genericity*; *ORBIT's
+dimension counting*, the recon's verdict); the ORBIT block of
+`notes/pencil/workbook/K-main-MC13.md`, (MC-173)–(MC-176);
+`notes/pencil/adjudications.md`, 2026-09-26 (PI D1/D2);
+`notes/Phase40i.md`.
+
+---
+
 ## Forward-mode reduction chains: build the keystone first
 
 **The trap.** Forward mode's natural cadence is "one dep-graph node = one
@@ -1798,6 +1887,83 @@ Phase-planning prose (ROADMAP §N, `notes/MolecularConjecture.md`,
 design docs) must not carry "formalize or axiomatize as noted per
 phase"-style framing; a survivor of that wording is a doc bug to fix on
 contact.
+
+## New mathematics found by formalization is second-read before it is built on (Phase 40)
+
+**The rule.** When a recon or a build finds new mathematics (a new
+claim, or a new argument for a step whose written proof the
+formalization cannot use; either way, claims the workbook does not yet
+carry), three things happen, in this order:
+1. it is recorded in the owning workbook step under the next free
+   labels, marked "found by formalization" and "not yet second-read";
+2. a fresh, read-only, adversarial reader second-reads it: re-derives
+   each proof, checks each citation's hypotheses (and, for a Lean-facing
+   claim, the definition bodies, not the docstrings), re-runs each
+   driver, and returns each repair as replacement text keyed by label;
+3. then it is built on.
+
+The pencil corpus's mechanics (the `notes/pencil/labels.md` row, drivers
+ported to `notes/scripts/w4/`, `ledger.py --lint`) are
+`notes/Phase40-design.md` §5 *Landing a mathematical repair*, and the
+reader's brief is that doc's *Appendix — the reusable second-reader
+brief*. This section is the why and the record.
+
+**Why.** Phase 40 was planned as transcription: its design doc indexes
+"the written, second-read mathematics the route consumed", and the PI's
+D1 (2026-09-26) names the rule it keeps, "Phase 40's rule of
+transcribing only second-read mathematics". New mathematics from a
+recon is one writer's, written while looking for a route that closes.
+The kernel checks only the Lean: not the informal claim the workbook and
+the blueprint carry, not its citations, and not a half the spike left as
+`sorry` or never stated. A reading is one read-only dispatch; a build on
+a wrong or under-stated claim costs builds (*Constructibility recon
+before scheduling a producer build*). The rule is `HARNESS.md`
+*Evidence*'s "a `PROVED` tag is a claim by its author" at phase scale.
+
+**The instances.** Every reader was a fresh, read-only opus. None
+refuted a claim; every one repaired something in place.
+- **ORBIT** (the recon `4ade4278`, 2026-09-26; PI D1, "Workbook
+  first"): (MC-173)–(MC-176), Step MC13. The reading (`3caa99c8`)
+  replaced (MC-173)'s chart argument, which failed when `h_a − h_b` is a
+  nonzero constant, by a bihomogeneity argument, with the statement
+  unchanged. Built in 40i (`notes/Phase40i.md`).
+- **SHORT** (`320db4df`, 2026-09-27; PI decision 1, "the ORBIT
+  precedent"): (MC-179)–(MC-182), Step MC13. The reading (`f3c46221`)
+  proved the insertion lemma's "at least `dim W`" half, which the
+  `k = 4` step needs and the recon's spike never stated, filling the
+  spike's one `sorry`; it also repaired a genericity choice over which
+  the attaining heights could be empty, and corrected a citation. Then
+  40h opened (`notes/Phase40h.md`).
+- **Route B** (recorded at 40n's open, `b4226f65`, 2026-09-28; the PI's
+  split call put the reading before the ear builds, and it ran before
+  BASE, the first build to consume a claim): (MC-183)–(MC-187), Step
+  MC19. The reading (`3d1d463f`) made three precision repairs, and its
+  sorry-free spike let 40n's three planned builds land as one. One of
+  its wording repairs over-stated what that spike proves; the next
+  builder, checking each node against its declaration, dropped it
+  (`2f126b5f`; `notes/Phase40n.md`). A reader's repair text is one
+  writer's too.
+- **EARS** (40o, 2026-09-29): (MC-190)–(MC-192), Step MC19, read *after*
+  the four builds, in the close (`4a5a89c5`), because the recon's spikes
+  had closed every leaf sorry-free at the assembly's exact signatures.
+  The reading was a prose-faithfulness check: no Lean rework, but one
+  count restated as sufficient rather than exact and one attribution
+  corrected (`notes/Phase40o.md` *Decisions*). An exception with a
+  stated reason, not the default order.
+
+**The boundary.** A new Lean *proof* of a claim already second-read,
+compiler-checked sorry-free at that claim's statement and adding no
+workbook label, is a proof-level departure, not new mathematics: it is
+recorded in the blueprint node's proof and not second-read. COVERAGE's
+D1–D3 (the PI, 2026-09-28; `notes/Phase40l.md`) and REDUCE+CLOSE's
+N1–N4 (`notes/Phase40p.md` *Architectural choices* 2; not overturned at
+the close) are the instances. A sub-phase whose design recon finds no
+new mathematics opens directly, with no workbook commit and no reading
+(40i, 40j, 40k; `notes/Phase40-design.md` §3 STEPS).
+
+Cross-refs: `notes/pencil/adjudications.md` (the ORBIT, SHORT and
+MOTIVES entries, verbatim); `notes/pencil/labels.md`'s `MC-` row (each
+label's reading date).
 
 ## Choices to revisit
 

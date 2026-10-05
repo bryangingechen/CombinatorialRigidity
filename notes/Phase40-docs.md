@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1 and 2 landed
-2026-10-04. **Next concrete task:** task 3 (L2), `DESIGN.md`'s two cross-phase rationales (Opus,
-docs only). Round manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–3 landed 2026-10-04.
+**Next concrete task:** task 4 (L3), the cleanup-round procedure into `CLEANUP.md` and
+`PHASE-BOUNDARIES.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 3 (L2)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 4 (L3)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -25,8 +25,11 @@ cases added to §55 (a spike's `#print axioms` lines passing the warning-only ga
 40c `Fin (1 + 2)` ℕ/ℤ atom-split); `TACTICS-GOLF.md` §26 widened from `push_neg` to the
 `if_pos`/`if_neg`/`dif_pos`/`LinearEquiv.ofLinear` renames; five FRICTION entries pointed at their
 lift, three flipped to `[resolved]`, and the two `if_pos` entries merged into one — (a) stays
-`[idiom]` as the task said). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no
-commit of its own. Nothing is mid-stream.
+`[idiom]` as the task said). Task 3 (L2) is done (2026-10-04: two new `DESIGN.md` sections,
+*Genericity without dimension theory* after *Genericity device* and *New mathematics found by
+formalization is second-read before it is built on* before *Choices to revisit*; design §4 and §5
+point at them). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no commit of its
+own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -152,7 +155,8 @@ section titles are the stable reference.
     `LinearEquiv.ofLinear` to `LinearEquiv.ofLinearMap`. FRICTION has two entries on it (*`if_pos`
     / `dif_pos` are now deprecated*, 40b C1b and C4; *`if_pos` / `if_neg` are deprecated in this
     mathlib*, the 40-factor open): merge them into one.
-- [ ] **3. L2 — `DESIGN.md`: two cross-phase rationales** (Opus: new rationale sections).
+- [x] **3. L2 — `DESIGN.md`: two cross-phase rationales** (Opus: new rationale sections; landed
+  2026-10-04).
   - (a) **New mathematics found by formalization is second-read before it is built on.** Record it
     in the owning workbook step, under the next free labels, marked "found by formalization"; then
     a fresh, read-only, adversarial reading; then the build. Instances: SHORT (40h, PI decision 1,
@@ -170,6 +174,12 @@ section titles are the stable reference.
     next consumer.
 
   Design §4's and §5's entries get *Promoted to `DESIGN.md`* pointers, which task 9 keeps.
+  Landed: (b) right after *Genericity device*, with `Graph.X0Attains`, the contraction curve and
+  ORBIT as its worked cases; (a) right before *Choices to revisit*, with the four instances by
+  commit and its boundary (a compiler-checked new proof of a second-read claim, adding no label,
+  is not new mathematics: COVERAGE's D1–D3, 40p's N1–N4). §4's (C) mathlib list moved there,
+  dated as checked (the mathlib pin has not moved since the 2026-08-24 bump), and §4's (C) bullet
+  is now its pointer.
 - [ ] **4. L3 — cleanup-round procedure into `CLEANUP.md` and `PHASE-BOUNDARIES.md`** (Sonnet).
   These files, not the plan's three manuals, are the canonical home (*Decisions*).
   - (a) `CLEANUP.md` §C: rank proofs by declaration span, from the header line to the next
@@ -366,14 +376,13 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 3 (L2)**, `DESIGN.md`'s two cross-phase rationales (Opus, docs only): (a) new
-mathematics found by formalization is second-read before it is built on (the design doc's
-*Appendix — the reusable second-reader brief* and §5 stay the home; this is a *Promoted to*
-pointer), and (b) genericity without dimension theory beside *Genericity device (Claim 6.4/6.9)*
-(design §4). Both get *Promoted to `DESIGN.md`* pointers, which task 9 keeps. Then task 4 (L3,
-cleanup-round procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`) and task 5 (L4, round 3's
-defaults into `blueprint/AUTHORING.md`), the FRICTION archive and the standing sweep (6–7), the
-compressions (8–14), the coordinator's grooming (15) and the close (17).
+**Next commit: task 4 (L3)**, the cleanup-round procedure (Sonnet, docs only): into `CLEANUP.md`,
+§C's ranking by declaration span with its one-liner, §A's invariance check verbatim from
+`notes/Phase40-exposition.md` *Scope and standing rules*, and the shared sections of a round's
+work log; into `PHASE-BOUNDARIES.md`'s `formalization.yaml` bullet, the headline-axioms check.
+Then task 5 (L4, round 3's defaults into `blueprint/AUTHORING.md`), the FRICTION archive and the
+standing sweep (6–7), the compressions (8–14; task 9 keeps design §4's and §5's *Promoted to
+`DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 

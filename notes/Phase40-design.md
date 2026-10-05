@@ -1048,6 +1048,8 @@ end.
   - semicontinuity at chord points.
 
   Each must become an explicit nonzero-polynomial or rational-parametrization statement.
+  *Promoted to `DESIGN.md`* *Genericity without dimension theory* (the rule, why, and how it
+  landed).
 - **Fresh edge labels.** `G′ + ab` and split-off add edges inside a fixed `β`. That calls for
   either a `β`-headroom hypothesis like `hcard` or a type-changing induction; the informal proof
   never meets the issue. **If MOTIVES' proof needs headroom**, `X0Dist`/`X0Gen` as L0 pins them
@@ -1078,15 +1080,9 @@ end.
     is this cell. Splitting off a chain vertex gives the cell's own antecedent. The consumers are
     Step MC16's *usable* list, (MC-79)(v), (MC-80), (MC-81), (MC-82)(iii) and (MC-89)'s step 5.
   - **(C), building dimension theory, is not feasible at any sensible cost** (well over 20
-    builds). The claims below were checked by compiler witnesses and bare-name searches across
-    `.lake/packages`.
-    - Mathlib **has** `ringKrullDim`, `MvPolynomial.ringKrullDim_of_isNoetherianRing`,
-      `Algebra.trdeg`, Noether normalization (`exists_finite_inj_algHom_of_fg`), Chevalley
-      (`PrimeSpectrum.isConstructible_comap_image`) and the topological `UpperSemicontinuous`.
-    - It **lacks** a fibre-dimension theorem, algebraic group actions, orbit–stabilizer
-      dimensions, a tangent-rank orbit bound, a trdeg–Krull-dimension bridge
-      (`Algebra.trdeg_eq_ringKrullDim` and `ringKrullDim_eq_trdeg` are unknown identifiers), and
-      any dimension for K-points over a non-closed field.
+    builds). What mathlib has and lacks (compiler witnesses and bare-name searches across
+    `.lake/packages`, 2026-09-26): *Promoted to `DESIGN.md`* *Genericity without dimension
+    theory*.
 - `supportExtensor e ≠ 0` must hold for **every** `e : β`, not only the edges of `G`. This is
   trivial, but it is easy to miss.
 
@@ -1137,7 +1133,9 @@ consumers. What it bought: C4's polar/primal rank equality.
   finder. New claims get the next free `MC-` labels, with a `notes/pencil/labels.md` row in the
   same commit. New drivers are ported to `notes/scripts/w4/` with a `README.md` row
   (`HARNESS.md` *Reproducibility*). Run `python3 notes/ledger.py --lint` before committing. The
-  reusable second-reader brief is the Appendix.
+  reusable second-reader brief is the Appendix. Why new claims are second-read before a build,
+  and the four instances: *Promoted to `DESIGN.md`* *New mathematics found by formalization is
+  second-read before it is built on*.
 - **Files.** smark is closed (PI, 2026-09-29): `notes/attacks/smark/` and
   `notes/pencil/workbook/attack-smark.md` are its record, not edited. `notes/Phase39-design.md` is
   a frozen archive: append only.

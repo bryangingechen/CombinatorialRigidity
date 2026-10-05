@@ -1220,9 +1220,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   stops and the PI's decisions are in `notes/Cleanup40.md`. The autopilot queue is
   `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 5, `40-docs`, project organization, opened 2026-10-04: the task
-  its work log `notes/Phase40-docs.md` names in its **Status** (task 1, the user-facing surfaces,
-  and task 2, the Lean-idiom lifts, landed 2026-10-04; next, task 3, `DESIGN.md`'s two cross-phase
-  rationales). It closes unattended. Rounds 1,
+  its work log `notes/Phase40-docs.md` names in its **Status** (tasks 1–3, the user-facing
+  surfaces, the Lean-idiom lifts and `DESIGN.md`'s two cross-phase rationales, landed 2026-10-04;
+  next, task 4, the cleanup-round procedure into `CLEANUP.md` and `PHASE-BOUNDARIES.md`). It closes
+  unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).
