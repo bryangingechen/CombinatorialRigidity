@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–5 landed 2026-10-04.
-**Next concrete task:** task 6 (F), FRICTION's `[resolved]` entries to
-`FRICTION-archive.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–6 landed 2026-10-04.
+**Next concrete task:** task 7 (S), pointers to what rounds 1–4 deleted or changed (Sonnet, docs
+only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 6 (F)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 7 (S)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -43,8 +43,11 @@ note-placement rule already `blueprint/SETUP-AND-PITFALLS.md`, confirmed and lef
 **PROSE** bullet, its queued-rounds bullet, `notes/BlueprintExposition.md`'s pointer and
 `notes/Cleanup40.md`'s **Status** all now point at `blueprint/AUTHORING.md` instead of this log's
 *Decisions*, whose own (a) and (b)–(d) entries are now one-line *Promoted to* pointers — (e)–(f)
-already were). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no commit of its
-own. Nothing is mid-stream.
+already were). Task 6 (F) is done (2026-10-04: FRICTION's 17 `[resolved]` entries, re-derived at
+HEAD, moved verbatim to `FRICTION-archive.md` — 281 lines, `git diff` multisets equal; the one
+real stale cross-reference, `Phase40-design.md` §3 STEPS' "the open FRICTION entry", left for
+task 8; `[mirror-candidate]` defined in FRICTION's *Entry format* and *Filing rule*). Task 15 (G)
+is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -243,16 +246,27 @@ section titles are the stable reference.
 
 ### FRICTION and the standing sweep
 
-- [ ] **6. F — FRICTION's `[resolved]` entries to `FRICTION-archive.md`** (Sonnet). 14 at the open
-  (the plan's "seven" was the 2026-09-29 count), 232 lines, at lines 101, 117, 145, 190, 208, 292,
-  321, 342, 421, 576, 2480, 2978, 2988 and 3041, plus any entry task 2 flipped. Move each
-  verbatim to the end of the archive's *Resolved (project-internal)*, as `88436c0b` did. Each
-  entry's fix still resolves (checked at the open). One inbound reference was found:
-  `notes/Phase40-design.md` §3 STEPS calls *The three-body step repeats the four-body step* "the
-  open FRICTION entry", which task 8 rewrites; repoint any other a build-time grep finds. Also, the
-  header's *Entry format* and *Filing rule* do not define `[mirror-candidate]`, the tag of 7
-  entries since Phase 39 (`d4f21ee3`): add it, with the meaning those entries give it. Done:
-  `grep -c '^### \[resolved\]' notes/FRICTION.md` is 0.
+- [x] **6. F — FRICTION's `[resolved]` entries to `FRICTION-archive.md`** (Sonnet). Re-derived at
+  build time, since the open's line numbers went stale under tasks 1–5's edits: 17 entries (the
+  open's 14, itself already a revision of the plan's 2026-09-29 count of seven, plus the three
+  `f02c2a9c` flipped), 281 lines (264 content + 17 blank separators). Moved verbatim to the end of
+  the archive's *Resolved (project-internal)*, as `88436c0b` did; the two files' `git diff` `-`/`+`
+  line multisets match exactly, confirming a pure relocation. Cross-reference sweep (each entry's
+  title, and "the open FRICTION entry", across `.md`/`.lean`/`.tex`/`.py`): the one real stale
+  pointer, `notes/Phase40-design.md` §3 STEPS' "the open FRICTION entry *The three-body step
+  repeats…*", is left for task 8 as planned. The other hits (`TACTICS-GOLF.md` §26,
+  `TACTICS-QUIRKS.md` §116 and §58's bare `FRICTION [resolved] *title*` pointers) are the
+  project's established "name the friction-log system by title" convention — both files already
+  tell a reader to grep *both* `FRICTION.md` and `FRICTION-archive.md` — so left unedited, as
+  `88436c0b` did for the same pattern. No Lean doc comment names any of the 17: every
+  `notes/FRICTION.md` mention under `CombinatorialRigidity/` is a generic "see `notes/FRICTION.md`"
+  pointer or names a still-open `[mirror-candidate]`/`[idiom]` entry. `[mirror-candidate]`, the tag
+  of 7 entries since Phase 39 (`d4f21ee3`), is now defined in *Entry format* (added to the STATUS
+  list) and *Filing rule* (a new bullet): an `open` sub-flavor for a general-purpose lemma mathlib
+  (or a project-owned API's own file) doesn't package, proved/worked around locally under a named
+  helper, with a proposed signature and target file stated but deliberately not yet mirrored
+  (import-cone cost, a one-off call site, or awaiting a second consumer) — revisit at a cleanup
+  round or the next file-toucher. Done: `grep -c '^### \[resolved\]' notes/FRICTION.md` is 0.
 - [ ] **7. S — pointers to what rounds 1–4 deleted or changed** (Sonnet; `PHASE-BOUNDARIES.md`
   *Review project organization*). Rounds 1–4 deleted six files (`Pencil/Base.lean`,
   `Escape.lean`, `Habitat.lean`, `TwoCut.lean`, `Induction/Girth.lean`,
@@ -406,10 +420,9 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 6 (F)**, FRICTION's `[resolved]` entries to `FRICTION-archive.md` (Sonnet,
-docs only), then task 7 (S), the standing sweep. Then the compressions (8–14; task 9 keeps design
-§4's and §5's *Promoted to `DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and
-the close (17).
+**Next commit: task 7 (S)**, pointers to what rounds 1–4 deleted or changed (Sonnet, docs only).
+Then the compressions (8–14; task 9 keeps design §4's and §5's *Promoted to `DESIGN.md`* pointers
+from task 3), the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 

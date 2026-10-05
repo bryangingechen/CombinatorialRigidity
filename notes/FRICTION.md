@@ -46,7 +46,7 @@ can see how it was handled before.
 - **Where it bit:** which proof / file
 - **Friction:** what extra work was needed
 - **Proposed fix:** named lemma / tactic / refactor
-- **Status:** open / mirrored / resolved / idiom / wontfix / upstreamed
+- **Status:** open / mirror-candidate / mirrored / resolved / idiom / wontfix / upstreamed
 - **Mirror file (if any):** path under `Mathlib/`
 ```
 
@@ -72,12 +72,25 @@ can see how it was handled before.
   TACTICS-GOLF / TACTICS-QUIRKS § cross-reference).
 
 **Filing rule for new entries.** Pick by what the *next agent* would
-do with it: `open` if you'd act on it; `wontfix` (anti-pattern) if
-you wouldn't but want to warn future agents; `mirrored` if you
-mirrored an upstream lemma. For a friction you *resolved*, split by
-whether the resolution is **indexed elsewhere** — this is the call
-that keeps the archive sweep mechanical:
+do with it: `open` if you'd act on it; `mirror-candidate` if it's an
+`open` item of a specific shape (next bullet); `wontfix`
+(anti-pattern) if you wouldn't but want to warn future agents;
+`mirrored` if you mirrored an upstream lemma. For a friction you
+*resolved*, split by whether the resolution is **indexed elsewhere**
+— this is the call that keeps the archive sweep mechanical:
 
+- `mirror-candidate` — a flavor of `open`: a general-purpose lemma
+  mathlib (or, for a project-owned API like `extensor`, the
+  project's own canonical file) does not package, which you've
+  already proved or worked around **locally** under a named helper.
+  The entry states the **proposed signature and target file**
+  (`Mathlib/<path>` or the project file) so a future mirror is a
+  transcription, not a re-derivation, and gives the **reason it
+  isn't mirrored now** — a one-off call site, a deep import cone a
+  non-module file doesn't want to pull in, or waiting on a second
+  consumer to justify the move. Stays `open` (not `resolved`): lift
+  it at a cleanup round, or when the next toucher of the file (or a
+  second call site) makes the mirror worth its cost.
 - `resolved` — the fix left a greppable artifact: a named mirror
   lemma under `Mathlib/`, a named project helper, or a
   `**Lifted to:** TACTICS-GOLF / TACTICS-QUIRKS § X` pointer. These
@@ -98,36 +111,6 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
-### [resolved] Two-step `ncard`↔`Fintype.card`/`toFinset` bridges, and `.roots.toFinset` for a polynomial's root set, each already have a direct mathlib lemma
-- **Where it bit:** Phase 40-cleanup task 8 (B5, the `Set`/`Finset` and cardinality-coercion sweep):
-  `MainComponent/Flat.lean` (`Graph.finrank_linkConstants`), `Pencil/Motive.lean`
-  (`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`'s neighbourhood
-  bound), `Pencil/WitnessGeneral.lean` (`exists_injOn_mapsTo_of_ncard_le`) each chained
-  `Set.ncard_eq_toFinset_card'` + `Set.toFinset_card` (or `Nat.card_eq_fintype_card` +
-  `Nat.card_coe_set_eq`) to get `Fintype.card s = s.ncard`; `MainComponent/Bridge.lean` and
-  `MainComponent/SplitOff.lean` each built a `Set.Finite` witness for a polynomial's root set via
-  `P.roots.toFinset.finite_toSet`.
-- **Fix:** `Set.fintypeCard_eq_ncard [Fintype s] : Fintype.card s = s.ncard` (`@[simp]`,
-  `Mathlib.Data.Set.Card`) is the direct one-liner for the first shape;
-  `Polynomial.finite_setOfPred_isRoot (hp : p ≠ 0) : Set.Finite {x | p.IsRoot x}` is the direct
-  `Set`-native form for the second, and it also drops the `Multiset.mem_toFinset` /
-  `Polynomial.mem_roots hp` unfold pair at the membership step.
-- **Status:** resolved. **Lifted to:** `TACTICS-GOLF.md` § 2 (two new subsections).
-
-### [resolved] `hcross_eq`'s crossing-endpoint pinning was re-derived from `eq_cutEdge_of_isLink_crossing` at every call site
-- **Where it bit:** Phase 40-cleanup task 26 (C3, the `Pair.lean`/`Pair2.lean` long-proof screen):
-  three cut-arm producers each needed "a crossing link's endpoints pin to the cut edge's, not just
-  the edge itself" — `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` and
-  its `_deg3` sibling (`Pair2.lean`) re-derived the exact same 6–8-line `have hcross_eq` (one
-  byte-identical between the two), and
-  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton` (`Pair.lean`)
-  re-derived an equivalent shape through a named `hcut_uniq` intermediate.
-- **Fix:** `Graph.eq_and_eq_of_isLink_crossing` (`Molecular/Deficiency.lean` beside `cutEdges`
-  since round 4's 10k, with `Graph.eq_cutEdge_of_isLink_crossing`) fuses the `obtain rfl := eq_cutEdge_of_isLink_crossing …`
-  + `rcases hl.eq_and_eq_or_eq_and_eq hl₀ with …` case split into the one lemma the three sites
-  needed; each site now calls it directly instead of restating the derivation.
-- **Status:** resolved.
-
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while
@@ -141,87 +124,6 @@ to be re-derived by re-reading entries later.
   `lean_local_search` is not evidence of absence: search by bare declaration name with
   `grep -rn "theorem <name>"` over the tree and `.lake/packages`.
 - **Status:** open (upstream tool, not a Mathlib mirror)
-
-### [resolved] The three-body step repeats the four-body step: `exists_insertion_three`, `splitOff_ear_three` and the assembly are near-copies
-- **Where it bit:** Phase 40h B7, `exists_insertion_three` (`MainComponent/Lines.lean`),
-  `splitOff_ear_three` and `Graph.X0Attains.of_openEar_three` (`MainComponent/Short.lean`).
-- **Friction:** no build cycle, since the pieces were transcribed, but about 90 lines of
-  `exists_insertion_three` repeat `exists_insertion_four` with two joins in `F` instead of three and
-  the hypothesis "both stars in `W` → `W = Λ²K⁴`" in place of the tetrahedron. `splitOff_ear_three`
-  repeats `splitOff_ear_four` at `Fin 3`. From the ear rank law at `G″` on, about 200 lines of the
-  assembly repeat `of_openEar_four`'s with `k = 3`. Small traps, one `lake lean` round each: the
-  affine witness's `simp only [Matrix.cons_val_one, …]` left `vecHead (vecTail ![0, 1])` until
-  `Matrix.head_cons`, `Matrix.tail_cons` joined it (TACTICS-QUIRKS § 46's "as needed");
-  `Submodule.finrank_lt` takes `s ≠ ⊤`, not `s < ⊤`; `rfl` does not close an `a + b = b + a`
-  goal, where `exact add_comm _ _` checks the rest up to defeq.
-- **Proposed fix:** one insertion lemma over `R ⊔ K ∙ (y₁ ∧ y₃)` with the star hypothesis, of which
-  both `exists_insertion_*` are corollaries; `splitOff_ear_four` and `_three` via `Fin.succAbove 1`;
-  and one assembly lemma from the round-1 point, parametrized by `k`. A cleanup-round item: both
-  steps are green and the close is docs-only.
-- **Part (i) fixed** (40-cleanup task 16): `exists_insertion_of_star_sup_star` (`Lines.lean`), over
-  `W = R ⊔ K ∙ (y₁ ∧ y₃)`, calls `exists_insertion_gain` at `ρ := R` and `F := ![]`
-  (`Matrix.range_empty, Submodule.span_empty, sup_bot_eq`). `exists_insertion_four`/`_three` are
-  its corollaries: `R` is `ρ ⊔ span` of the other joins, and each rearranges its two spans with
-  `sup_assoc, ← Submodule.span_union` and the `Set.insert_union`/`Set.union_comm` family; `_four`
-  keeps only its tetrahedron argument. Names and statements unchanged. With the new lemma, the block
-  is 215 → 105 lines and 21 747 → 6 303 heartbeats (measured, script not retained: each docstring
-  prefixed with `#count_heartbeats in set_option Elab.async false in` in a copy, run by `lake lean`).
-  Traps, one LSP round each: `obtain … := f fun hs => ?_` opens no goal (TACTICS-QUIRKS § 113), and
-  `rw [← finrank_screwSpace_two]` finds no `6`, since it reads `= 3 + 3` (ascribe a `hsix` first).
-- **Part (ii) not adopted** (40-cleanup task 17): a general `x : Fin (k + 3) → α` lemma over
-  `Fin.succAbove` typechecks, and its vertex-set/injective/`pathVertex`-shift pieces prove, but
-  only via ad hoc numeral-vs-symbolic-modulus unfolds at every pivot index; completing the
-  edge/`hsep` conjuncts and the two `![…]` bridge corollaries the same way nets at least as long
-  as the two present proofs. `splitOff_ear_four`/`_three` stay independent. Detail:
-  `notes/Phase40-cleanup.md` task 17.
-- **Part (iii) fixed** (40-cleanup task 18): `Graph.X0Attains.of_openEar_splitOff` (`Short.lean`)
-  is the shared assembly, over the antecedent's ear length `m`. It takes the antecedent's ear data,
-  `def₃(G″) ≤ def₃(G)` and an insertion hypothesis as hypotheses, not a `Fin.succAbove` bridge, so
-  part (ii)'s trap does not arise. `_four`/`_three` keep their statements and supply the
-  tetrahedron, resp. the case split on `ρ`, and their explicit join lists. The two declarations'
-  704 lines (header to last line) are now 461 across the three, and 101 972 heartbeats are 53 749
-  (measured, script not retained; method as in part (i)).
-  Traps: § 112's `simp`-inside-`finrank` failure twice, once as a `simp only … at h` that
-  succeeds and leaves `h` type-incorrect; and a lambda-LHS `rw` whose slot needs an outer bound
-  variable (§ 114).
-- **Lifted to:** TACTICS-QUIRKS § 112 (extended), § 113, § 114 (new).
-- **Status:** resolved: parts (i) and (iii) fixed, part (ii) not adopted.
-
-### [resolved] The certificate-picture glue is written out a third time: `Short.lean` cannot see `Chain.lean`'s `pencilConfigPoint_cert`
-- **Where it bit:** Phase 40h B5, `Graph.X0Attains.of_openEar_two` (`MainComponent/Short.lean`).
-- **Friction:** no build cycle (the template was copied), but the glue is now inline twice: a
-  labelling `lab : α → Fin 6`, the picture `q₀ p = certPt (lab p.1) ⟨p.2, _⟩`, an `hpt :
-  pencilConfigPoint q₀ z w = certPt (lab w)` by `funext`/`fin_cases`/`change`, and one
-  `change …; rw [hpt, hpt, …]; rfl` per join, in `Graph.X0Attains.of_openEar` (`Chain.lean`) and
-  here. `Graph.X0Attains.of_cycle` has it packaged (`certPicture`, `certHeights`,
-  `pencilConfigPoint_cert`, `Chain.lean`), which `Short.lean` does not import.
-- **Fix:** `certPicture`, `certHeights` and a new height-general
-  `pencilConfigPoint_certPicture (lab) (z) (w) (hw : z w = certPt (lab w) 2) :
-  pencilConfigPoint (certPicture lab) z w = certPt (lab w)` moved to `Ear.lean` beside `certPt`
-  (40-cleanup task 5, `lem:pencil-chain-span-certificates`); `pencilConfigPoint_cert` is now a
-  one-line corollary (`pencilConfigPoint_certPicture lab (certHeights lab) w rfl`). `of_openEar`
-  (`Chain.lean`) and `of_openEar_two` (`Short.lean`) both call it in place of their inline
-  `funext`/`fin_cases`/`change` copy; `of_cycle`'s packaging is unchanged since it already used the
-  moved names.
-- **Status:** resolved.
-
-### [resolved] Factoring the four-body step: a one-shot `set` fold, and the ear law's `F.graph[V₁]`
-- **Where it bit:** Phase 40h B6, `MainComponent/Short.lean` (`Graph.exists_earBase_splitOff`,
-  `Graph.X0Attains.of_openEar_four`), refactoring the EARGEN spike's Steps 1–2 into a lemma.
-- **Friction:** (1) after `set cfg := earConfig …`, goals the closing `refine ⟨q', z₁, …⟩`
-  instantiated still read `earConfig …`, so `rw [hcfgstar]` (stated with `cfg`) found nothing; and
-  `rw [earConfig_of_mem …]` found nothing in a folded `cfg stet (b, j)`. (2) Replacing the spike's
-  type-ascribed `hear` by `have hear := finrank_span_rigidityRows_ear_eq (ofNormals …).toBodyHinge …`
-  left `(ofNormals G ends c).toBodyHinge.graph[V₁]` where the base lemma's rank reads
-  `G.induce V₁`, so its `rw` failed. (3) `lake lint` found the base lemma's `[Finite β]` unused.
-  One build cycle each for (1) and (2).
-- **Fix:** (1) `rw [← hcfgdef, …]`, and a local `hcV₁` restating `earConfig_of_mem` against `cfg`;
-  (2) keep the spike's ascription (or, since 40-cleanup task 18, `rw [toBodyHinge_graph,
-  ofNormals_graph] at hear`; TACTICS-QUIRKS § 112); (3) dropped. Also, `Set.range ![a, b, c, d] = {a, b, c, d}` needs
-  no helper: `simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty,
-  Set.singleton_union]` (the spike's `range_fin_four`/`_five` were dropped).
-- **Lifted to:** TACTICS-QUIRKS § 43 (the one-shot fold bullet).
-- **Status:** resolved.
 
 ### [mirror-candidate] No `Set.ncard_range_le` — `(Set.range f).ncard ≤ Nat.card ι` takes `← Nat.card_coe_set_eq` then `Finite.card_range_le`
 - **Where it bit:** Phase 40g build 1, `Graph.deficiency_induce_add_le_of_ear`
@@ -255,29 +157,6 @@ to be re-derived by re-reading entries later.
   **Lifted to:** TACTICS-QUIRKS § 56 (symptom-index line and a *Second instance* paragraph).
 - **Status:** open.
 
-### [resolved] The four certificate eliminations: the `<;>` linter's advice and the flexible `simp … at`
-- **Where it bit:** Phase 40g build 2, `linearIndependent_flat_{triangle,square,pentagon,hexagon}`
-  and `linearIndependent_pointJoin_cert*` (`MainComponent/Ear.lean`).
-- **Friction:** (1) `fin_cases … <;> simp [certPt, planarProj_apply, cross_apply] <;> norm_num` drew
-  *"Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice"* (hexagon, square) and *"`norm_num`
-  does nothing"* (triangle, pentagon). The `;` form fails (*"No goals to be solved"*): `simp`
-  closes most goals. The goals it leaves are `1 + 1 = 2` in `K`. (2) `simp [Fin.sum_univ_succ] at
-  s0 … p2` before `linear_combination` is flexible; `simp?` gives a 30-lemma `simp only` list.
-- **Fix:** (1) one `simp [certPt, planarProj_apply, cross_apply, one_add_one_eq_two]` where the
-  leftover goals appeared, the bare `simp` elsewhere; (2) the `simp?` lists, reflowed to 100
-  columns.
-- **Second instance of (2)** (Phase 40h B1, `klein_liftPlane` in `MainComponent/Lines.lean`): the
-  spike's `simp [liftPlane, dotProduct, …] at e00 … e21` drew thirty flexible warnings under `lake
-  lean`; `lean_code_actions` on a `simp?` gave a 34-lemma list, with no build.
-- **Third instance** (Phase 40n B1, `addTwoEar_isLink_iff` in `MainComponent/GenericBase.lean`): a
-  `<;>`-chained `simp [Graph.addTwoEar]` across 8 `rcases` branches drew 9 flexible warnings, but
-  each warning's own "Try this" is a per-goal *delta* (assumes the other goals already closed) —
-  three different, incomplete lemma sets, none a safe drop-in `simp only` for the whole `<;>` chain.
-  Fix: `simp? [Graph.addTwoEar]` (the Lean LSP MCP's `lean_multi_attempt`) at the tactic's own
-  position gives the FULL per-goal set across all 8 branches at once; the union of those closes
-  every branch identically to the original (goal-for-goal verified before editing).
-- **Status:** resolved. **Lifted to:** `TACTICS-QUIRKS.md` § 116.
-
 ### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
 - **Where it bit:** Phase 40g build 2, `eval_joinPicturePoly` (`MainComponent/Flat.lean`): the
   flat coordinates of a join, as polynomials, evaluate to the join's coordinates.
@@ -288,24 +167,6 @@ to be re-derived by re-reading entries later.
   `Mathlib/LinearAlgebra/CrossProduct.lean` mirror; `eval_crossProduct` is its `MvPolynomial.eval`
   case.
 - **Status:** open (mirror candidate).
-
-### [resolved] `y ∧ (y + t u) = t (y ∧ u)` takes six rewrites: no `pointJoin_add_smul_right`
-- **Where it bit:** Phase 40h B1, `exists_insertion_gain` (`MainComponent/Lines.lean`), the body put
-  back at `y + t u`. `Flat.lean` has only the left-linear `pointJoin_add_smul_left`, so the right
-  argument goes through `pointJoin_swap` twice: `rw [pointJoin_swap (y + t • u),
-  pointJoin_add_smul_left, pointJoin_self, zero_add, ← smul_neg, ← pointJoin_swap]`. The first
-  attempt, a bare `pointJoin_swap`, rewrote the wrong side (one LSP round).
-- **Proposed fix:** `pointJoin_add_smul_right (p p' r : Fin 4 → K) (t : K) : pointJoin p (p' + t •
-  r) = pointJoin p p' + t • pointJoin p r` beside `pointJoin_add_smul_left` in `Flat.lean`; B6 and
-  B7 put `x 1` back at `x 0 + t u` or `x 2 + t u`, so they are its likely next call sites.
-- **Status:** resolved (below). B6 did not call it: `exists_insertion_four` reuses `exists_insertion_gain`, and
-  its own direction lemma needed `pointJoin_add_smul_self_right` (`y ∧ (v + c y) = y ∧ v`, landed
-  beside `pointJoin_add_smul_left`), a different identity.
-  B7 did not either: `exists_insertion_three` reuses `exists_insertion_gain` the same way.
-  **Resolved by 40i B1 (2026-09-28):** the right-linear family `pointJoin_add_right`,
-  `pointJoin_smul_right`, `pointJoin_sub_right` (`Flat.lean`, beside `pointJoin_add_smul_left`)
-  gives the identity in two rewrites; `exists_insertion_two{,_aux}` use them. The six-rewrite call site in
-  `exists_insertion_gain` is unchanged (a cleanup-round golf).
 
 ### [idiom] Two small elaboration traps re-proving the 2-cut layer over link-partitioning sides
 - **Where it bit:** Phase 40g build 1, `RigidityMatrix/Bricks.lean`.
@@ -318,18 +179,6 @@ to be re-derived by re-reading entries later.
 - **Fix:** (1) pass the graphs explicitly; (2) close with `rfl`. One LSP round each, no build.
 - **Status:** idiom.
 
-### [resolved] A spike that is silent under `lake env lean` lands with style-linter warnings
-- **Where it bit:** Phase 40f CONTRACT-R build, `Graph.eq_zero_of_contractLimitMap_eq_zero`
-  (`Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
-  split): the spike's `simp [...] at hrow hgr ⊢` drew six
-  `linter.flexible` warnings at the first `lake build`, and the spike had six lines over 100.
-- **Friction:** one extra build cycle. The spike's check (`lake env lean scratch/…`) printed only
-  the axioms line, since the lakefile's `weak.linter.mathlibStandardSet` does not reach it.
-- **Proposed fix:** `simp only` from `simp?`; reflow by the codepoint script.
-  **Lifted to:** TACTICS-QUIRKS § 55 (*a scratch spike sees neither this linter nor
-  `linter.flexible`*).
-- **Status:** resolved.
-
 ### [idiom] `linear_combination h₁ - h₂` rejected ("argument `h₂` … expected to have type `K`") where `linear_combination h₁ + h₂.symm` works
 - **Where it bit:** Phase 40f CONTRACT-R build, `Graph.eq_zero_of_contractLimitMap_eq_zero`, with
   `hgr : a = 0` and `hrow : 0 = b` in a field `K`.
@@ -338,18 +187,6 @@ to be re-derived by re-reading entries later.
   Cause not isolated; one LSP round-trip.
 - **Proposed fix:** write the combination as a sum (`h₁ + h₂.symm`, or `-h₂ + h₁`).
 - **Status:** idiom.
-
-### [resolved] `exact` of a `Gc.map (collapseTo r V(H))` panel-row lemma against a `G.rigidContract (G.induce W) r` framework times out at `isDefEq`
-- **Where it bit:** Phase 40f CONTRACT-R design spike,
-  `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
-  (`Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
-  split), applying `panelRow_collapseTo_comp_extProj_dualMap`.
-- **Friction:** the two graphs agree by `rfl`, but unifying them inside the heavy
-  `(ofNormals …).toBodyHinge` carrier unfolds `rigidContract` and times out.
-- **Proposed fix:** rewrite to the lemma's shape by `rfl` equations first
-  (`G.rigidContract (G.induce W) r = Gc.map f`, `V(G.induce W) = W`), then `exact`.
-  **Lifted to:** TACTICS-QUIRKS § 38 (*contraction-carrier variant*).
-- **Status:** resolved.
 
 ### [idiom] `rw [eq_top_iff.mpr fun S _ => h S]` fails ("pattern is a metavariable") — use `Submodule.eq_top_iff'.mpr h`
 - **Where it bit:** Phase 40e, `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`
@@ -384,27 +221,6 @@ to be re-derived by re-reading entries later.
   `Module.finrank K ↥(…)` (§ 33's motive), fixed by a `finrank_liftingSpace_embedEdges` corollary
   proved by `rw`.
 
-### [resolved] `if_pos` / `if_neg` / `dif_pos` are deprecated in this mathlib — use `ite_eq_left` / `ite_eq_right` / `dite_eq_left`
-- **Where it bit:** Phase 40b CARRIER C1b (`Graph.IsAdmissiblePicture.exists_mvPolynomial`),
-  `rw [if_pos h] at hl` to open a product factor `if G.Adj u v then … else 1`.
-- **Friction:** compiles with a deprecation warning ("Use `ite_eq_left` instead"), tripping the
-  warning-clean gate. Sibling of the `push_neg` → `push Not` and `linearIndependent_fin_cons`
-  renames below.
-- **Fix:** `rw [ite_eq_left h]` (same statement, `c → ite c a b = a`); `dite_eq_left` for `dif_pos`.
-- **Recurred:** Phase 40b CARRIER C4 (`pencilConfigFramework_supportExtensor_of_{mem,not_mem}_edgeSet`,
-  term-mode `if_pos he`/`if_neg he` → `ite_eq_left he`/`ite_eq_right he`; a `simp only [sel,
-  dif_pos hv]` unfolding a `let`-bound `dite` → `simp only [sel, hv, ↓reduceDIte]`). Same bump:
-  **`LinearEquiv.ofLinear` is deprecated for `LinearEquiv.ofLinearMap`** (same arguments,
-  since 2026-06-23) — the `LinearEquiv.trans`-across-`ScrewSpace` entry below still names the old
-  constant. And a first-draft `fin_cases i <;> simp <;> ring` trips `linter.unnecessarySeqFocus`
-  when only one goal survives the `simp` (write `fin_cases i <;> simp; ring`), and
-  `unusedTactic` when `field_simp` already closed it. Each cost one LSP diagnostics round, no build.
-- **Recurred again:** `40-factor`'s open spike for `Graph.exists_normalized_labeling`
-  (`Molecular/Deficiency.lean`): `fun x hx => if_pos hx`, an `EqOn` on the `if` guard's true
-  branch, and the matching `if_neg` on the false branch, each drew the same deprecation warning —
-  `ite_eq_left hx` / `ite_eq_right hx` again, one `lake lean` cycle, no new shape.
-- **Status:** resolved in-proof (usage note). **Lifted to:** `TACTICS-GOLF.md` § 26.
-
 ### [idiom] `split_ifs` on `if ¬p then a else b` splits on `p` with the branches swapped — the first case carries `h : p`
 - **Where it bit:** Phase 40b CARRIER C1b (`Graph.liftingMatrix_mulVec_eq_zero_iff`), a row value
   `if w ∉ V(G) then x w else 0`.
@@ -421,22 +237,6 @@ to be re-derived by re-reading entries later.
   of ring homs, and a following `funext ⟨w, j⟩` fails to unify with it.
 - **Fix:** `congr 2` (then `funext`).
 - **Status:** resolved in-proof (usage note).
-
-### [resolved] Two Lean style linters cost a build cycle each in one commit: a *no-op* `show`, and `haveI` on a `Prop`-valued class
-- **Where it bit:** Phase 39 checklist item 5 (`Molecule/Pencil/Arms.lean`,
-  `Molecule/Pencil/Pair.lean`). Four `show LinearIndependent K ![point u, point v]` lines
-  written purely to document the goal before a `simp only [point, …]`, and one
-  `haveI := hSimple.toLoopless` inside a term-mode `absurd`.
-- **Friction:** both are **warnings**, so `lake lint` is silent on them and only the build-log
-  `warning:` scan catches them — a second build cycle after an otherwise-green first one. The
-  `show` message reads *"The `show` tactic should only be used to indicate intermediate goal
-  states for readability"* even when the `show` changes nothing, so the existing
-  project advice ("use `change` instead") does not apply: the fix is to delete the line. The
-  `haveI` message is *"The goal is a proposition, so `have` is preferred over `haveI`"*.
-- **Resolution:** deleted the four `show` lines (the `simp only` works on the goal directly)
-  and switched to plain `have := hSimple.toLoopless`, which still registers the instance.
-  **Lifted to:** TACTICS-GOLF § 12 (the `show`-linter paragraph, both triggers plus the
-  `haveI`/`letI` sibling).
 
 ### [idiom] A walk-surgery template older than the `Matroid` package API makes you re-derive three lemmas the package already ships
 - **Where it bit:** Phase 39 (PENCIL) M1
@@ -576,12 +376,6 @@ to be re-derived by re-reading entries later.
   would be more machinery than the problem. File it if a second file needs the same unfolding.
 - **Status:** open (worked around at the only call site; the general rescue pattern is
   TACTICS-QUIRKS § 107).
-
-### [resolved] `induce`-link endpoint-membership helpers are private in `Theorem55.lean` — re-derived in `Pencil.lean`
-- **Where it bit:** Phase 39 (PENCIL) W3-L4 cut-arm assembly (`Molecular/Molecule/Pencil.lean`, `hasPencilRealization_of_not_twoEdgeConnected`). The panel-side sibling `case_cut_edge_realization_gen` (`AlgebraicInduction/Theorem55.lean`) uses `mem_V₁_of_induce_isLink_left`/`_right` — "a `G`-link sharing its edge with `(G.induce V₁).IsLink e a b` has both its endpoints in `V₁`" — but they are `private`, so unavailable across files.
-- **Friction:** re-derived the two one-liners locally as `mem_of_induce_isLink_left`/`_right` (same body: `(G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)`). No build-failure iteration (preemptive), but it's a genuine second copy of a generic induce-API helper with no rigidity content.
-- **Fix:** `40-simplify` task 10o (`q2a`) made Theorem55's two lemmas public under `Pencil/Arms.lean`'s names (`mem_of_induce_isLink_left`/`_right`, same `CombinatorialRigidity.Molecular` namespace, transitively imported) and deleted `Arms.lean`'s copies; `Theorem55.lean`'s own two call sites keep the renamed-but-still-local calls.
-- **Status:** resolved — the same commit also resolved the W3-L4 rank-assembly infra vs Theorem55's private `cutEdge_finrank_assemble` duplication this entry's *Status* line used to point at (`notes/Phase39.md`): that private lemma is now public under the deficiency-hypothesis form, published as `finrank_span_rigidityRows_cutEdge_eq`.
 
 ### [idiom] `unusedDecidableInType` flags a `[DecidableEq β]` the theorem's *type* never uses, even when callees consume it — working as designed; drop the binder and put `classical` in the proof
 - **Where it bit:** Phase 39 (PENCIL) W3-L6a (`Molecular/Induction/Contraction.lean`, `Graph.rigidContract_deficiency_eq`); W5-L6a-safe-exists (`ReducibleVertex.lean`); Phase 40-cleanup task 2 (`5a636c0e`, the pencil tree's seven sites) and its corrective follow-up.
@@ -2481,40 +2275,6 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `Nat.card_unique` fires. (Same "pin the occurrence" lesson as the entry above.)
 - **Status:** resolved (Phase 22h W6d).
 
-### [resolved] `set`-bound `let` is opaque to `simp only`; pass the `with`-named eq (or `change`) to expose inner form
-
-- **Where it bit:** `ofNormals_relabel` / `rigidityRows_ofNormals_relabel` (Phase 22h, CaseI.lean):
-  `set Q := PanelHingeFramework.ofNormals … with hQ_def` introduces `Q` as a `let`-binding opaque to
-  `simp only`; a `simp only [ofNormals_ends, ofNormals_normal, …]` on a goal mentioning
-  `Q.toBodyHinge.supportExtensor` made no progress. Fix: pass the `with`-named definitional equality
-  `hQ_def` (and `hQ'_def`, `hqρ`, `hendsσρ`) into the same `simp only` list — they unfold the
-  `set`-locals to their `ofNormals` bodies so the constructor-projection simp lemmas fire. For a single
-  `exact`/`rw` goal, `change <unfolded form>` is the warning-clean equivalent (`show` trips the style
-  linter).
-- **General pattern:** when `set X := body with hX` then need `X`'s inner structure in `simp only`,
-  include `hX` in the simp set; for `exact`/`rw` use `change body`. Neither `simp only [X]` nor
-  `unfold_let` works.
-- **Correction (Phase 40-cleanup B6a, 2026-09-29):** "neither works" does not generalize to the
-  narrower, far more common need — unfold `X` one step and stop there (the caller then runs its own
-  `rw`/further `simp` separately, rather than needing everything to fire in one `simp only` call).
-  For that shape, **`simp only [X]`** (the bare local name, `set`-bound with or without `with hX`)
-  *does* unfold `X` to its value, structure-eta and iota-reduce a projection-of-literal for free —
-  confirmed by direct `lean_diagnostic_messages` re-verification (not the MCP's own goal display,
-  which pretty-prints an already-reduced goal regardless — see below), across ~10 sites in
-  `Molecule/Pencil/{Base,X0}.lean`. `unfold_let` genuinely doesn't fire (`unknown tactic`: its home
-  `Mathlib.Tactic.DefEqTransformations` isn't transitively imported by this file). This 2026 case's
-  "made no progress" was specifically about `ofNormals`'s *smart-constructor* body needing a *second*
-  round of `ofNormals_*` simp lemmas to reach `Q.toBodyHinge.supportExtensor`'s reduced form in the
-  same pass — `simp only [Q]` alone would have unfolded `Q`, just not far enough for that call's other
-  arguments to then match. **Lifted to:** TACTICS-GOLF § 27 (the general write-up, plus three named
-  bridge lemmas found along the way that remove the need for either form of unfold).
-- **Correction (Phase 40-cleanup B6c, 2026-09-29):** `simp only [X]` itself can go too far when `X`'s
-  body is a piecewise chain comparing the bound argument to itself (`if w = c₁ then … else …`
-  instantiated at `w := c₁`) — its reflexivity simp-proc silently closes that condition to `True`,
-  which then breaks a follow-up `rw […, ite_eq_left rfl]` expecting the literal `if ?a = ?a then …`
-  shape. `dsimp only [X]` unfolds `X` without that extra collapse. **Lifted to:** TACTICS-GOLF § 27.
-- **Status:** resolved (the general shape now has a documented, verified fix; TACTICS-GOLF § 27).
-
 ### [idiom] statement-level `Equiv.swap`/`let` opacity — inline the term in the statement, re-`set` in the proof
 
 - **Where it bit:** `ofNormals_relabel` (Phase 22h, CaseI.lean) names the relabelled construction in
@@ -2979,25 +2739,6 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `exact`, then consume `ha : a • y = x` in span form.
 - **Status:** resolved in-proof (one build cycle).
 
-### [resolved] `obtain ⟨a, haS, b, hbS, …⟩` from a flattened `∃ a b c, P₁ ∧ P₂ ∧ …` silently interleaves witnesses and proofs into the wrong slots
-- **Where it bit:** Phase 39 G4, `Graph.ncard_closedNbhd_inter_le_two_of_girthGE`
-  (`Molecular/Molecule/Pencil/Motive.lean`), destructuring `Set.two_lt_ncard_iff.mp hcon`.
-- **Friction:** `⟨a, haS, b, hbS, c, hcS, hab, hac, hbc⟩` type-checked (right slot count) but
-  `haS`/`hbS` turned out bound to the *next witness*, not the membership proof, surfacing only as
-  a confusing type mismatch several lines later.
-- **Fix:** `⟨a, b, c, haS, hbS, hcS, hab, hac, hbc⟩` — nested `∃`s flatten witnesses-then-
-  propositions, never interleaved.
-- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 109.
-
-### [resolved] `X.mp` dot notation on a bare `autoParam`-guarded `Iff` constant fails as *"Unknown constant"*
-- **Where it bit:** same lemma as above, `Set.two_lt_ncard_iff.mp hcon`.
-- **Friction:** `Set.two_lt_ncard_iff.mp hcon` failed `unknownIdentifier: Unknown constant
-  Set.two_lt_ncard_iff.mp` even though `#check @Set.two_lt_ncard_iff` resolves fine — the bare,
-  unapplied constant's `.mp` tries the whole dotted string as a namespaced lookup before falling
-  back to elaborate-then-project.
-- **Fix:** parenthesize, `(Set.two_lt_ncard_iff).mp hcon`.
-- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 110.
-
 ### [open] `W^⊥ = (map f W)^⊥.map f.dualMap` for a surjective `f` with `ker f ≤ W` — mathlib has only the `comap`-side inclusion
 - **Where it bit:** Phase 39 item-6 Layer B5, `Molecular/RigidityMatrix/Bricks.lean`,
   `inf_span_rigidityRows_of_vertexTwoCut` (the vertex-2-cut gluing identity). Once both sides are
@@ -3036,15 +2777,6 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Friction:** `private` does not make the name local; the declaration fails as already declared.
 - **Resolution:** a distinct name (`flatStdBiv`). Before naming a helper in a namespace as crowded as `CombinatorialRigidity.Molecular`, grep the import closure for the bare name.
 - **Status:** idiom.
-
-### [resolved] `omega` misses a `finrank` atom between a `have` and the goal when the framework term carries `Fin (1 + 2)` — cast the `ℕ` identity to `ℤ` and use `linarith`
-- **Where it bit:** Phase 40c FLAT, `Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint` (grade-1 rank at the normals `(x_v, y_v, 1)`): the complement brick's `ℕ` identity and the `ℤ` goal name the same `finrank … (ofNormals (k := 1) …)`, yet `omega` reports a counterexample treating them as unrelated. The same step at `k = 2` closes by `omega`. Another instance of the omega-atom family (TACTICS-QUIRKS §58/§63/§98).
-- **Resolution:** `have hz := congrArg (Nat.cast : ℕ → ℤ) hc; push_cast at hz; linarith`.
-- **Status:** resolved. **Lifted to:** `TACTICS-QUIRKS.md` § 58.
-
-### [resolved] Two general facts sit downstream of their natural consumers: `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) and the `infinitesimalMotions_eq_of_isLink_*` congruences (`Pinning.lean`)
-- **Where it bit:** Phase 40h B3–B4. `Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`MainComponent/Carrier.lean`) each inline "a closed neighbourhood lies in `V(G)`", because `Graph.closedNbhd_subset_vertexSet` is in `MainComponent/Bridge.lean`, downstream. `BodyHingeFramework.relScrews_congr` (`RigidityMatrix/Bricks.lean`) re-proves the motion-space congruence at links, because `infinitesimalMotions_eq_of_isLink_span_supportExtensor` is in `AlgebraicInduction/Pinning.lean`, which imports `Bricks.lean`.
-- **Resolution:** moved `closedNbhd_subset_vertexSet` to `Molecule/Pencil/Motive.lean` beside `Graph.closedNbhd` (40-cleanup task 21a and its follow-up), dropping all 21 inlined copies across the pencil tree. Moved the `infinitesimalMotions_eq_of_isLink_*` pair (they read only `hingeConstraint`, hence only `Basic.lean`) to `RigidityMatrix/Basic.lean`, beside `mem_infinitesimalMotions` (40-cleanup task 21b), and rewrote `relScrews_congr`'s inline `hZ` as a direct call to the moved lemma. Both moves are rename-free, so no blueprint pin moved.
 
 ### [idiom] A small witness's per-vertex facts, hand-rolled where one global fact restricts
 - **Where it bit:** 40-cleanup task 24 (C1), `pencilPair_of_habitat_ncard_eq_three` (`Pencil/Base.lean`). The proof bounded each of its three degrees by an incidence subset and `Set.ncard_pair` (45 lines). It computed each closed neighbourhood exactly (23 lines), only to restrict the three-point independence to it. It also proved the standard basis independent by `Fintype.linearIndependent_iff` and `congr_fun`.
