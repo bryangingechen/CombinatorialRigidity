@@ -16,20 +16,19 @@ The contraction step of the `X₀` induction at a rigid core whose planar defici
 `def₂(H) + def₂(G/H) ≤ def₂(G)`. If `X₀(H)` and `X₀(G/H)` attain, so does `X₀(G)`.
 
 The step reuses `ContractCurve.lean`'s rescaled lifting system `M(t)` and the curve `q(t)`
-unchanged, but the core is no longer flat, so two of `CONTRACT-R`'s pieces (`Contract.lean`) are
-replaced: the kernel of `M(0)` is bounded above through the core heights of its solutions
-(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`) rather than through a flat plane, and
-below by `3 + def₂(G)` from the same semicontinuity argument at the zero vector. Additivity forces
+unchanged. The core need not be flat: the kernel of `M(0)` is bounded above through the core
+heights of its solutions (`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`), and
+below by `3 + def₂(G)` from a semicontinuity argument at the zero vector. Additivity forces
 the two bounds to meet, so the core heights of the solutions of `M(0)` are all of `L_H(q)`; the
 attainment at `H`, read on the core heights, and the degenerate-rank condition of
 `ContractCurve.lean` then meet as two open conditions inside `ker M(0)`
-(`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the curve the core's rank is no longer its flat
-rank: at `t ≠ 0` the configuration of `H` is the image of one over the fixed picture `q` under an
-invertible linear map of `K⁴`
+(`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the curve the core's rank is read at `t ≠ 0` as
+the image of the configuration over the fixed picture `q` under an invertible linear map of `K⁴`
 (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`,
 `Graph.finrank_span_rigidityRows_induce_contractHeight_eq`), where the general configuration of `H`
-attains. The rest of the argument — the block coupling and `Graph.x0Attains_of_exists` — is as in
-`CONTRACT-R`.
+attains — no collineation to a flat core is needed, unlike CONTRACT-R's retired curve proof
+(`Contract.lean`, Phase 40-simplify task 10q). The rest of the argument — the block coupling and
+`Graph.x0Attains_of_exists` — is shared with CONTRACT-R, now a one-line corollary of this theorem.
 
 ## Main statements
 
@@ -58,8 +57,10 @@ are all of `L_H(q)`. The attainment at `H`, read on the core heights, and the
 degenerate-rank condition of `ContractCurve.lean` then meet as two open conditions inside
 `ker M(0)` (`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the curve the core's rank is read at
 the fixed picture `q` through a collineation
-(`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`), where `X₀(H)` attains; the rest is as
-in `Graph.X0Attains.of_rigidContract`. -/
+(`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`), where `X₀(H)` attains; Cramer's
+section through a kernel vector solving both open conditions then solves `M(t)` off one
+polynomial, and the block coupling with `Graph.x0Attains_of_exists` closes the count
+`tgt(G) = 6(|W| − 1) + tgt(G/H)`. -/
 theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {W : Set α} {r : α}
     (hr : r ∈ W) (hWss : W ⊂ V(G)) (hW2 : 2 ≤ W.ncard) (hdef3 : (G.induce W).deficiency 3 = 0)

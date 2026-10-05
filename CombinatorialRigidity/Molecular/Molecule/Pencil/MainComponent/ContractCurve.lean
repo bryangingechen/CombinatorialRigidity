@@ -13,16 +13,17 @@ and the facts at the two ends of the curve that the contraction steps of the `X�
 (`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract`; Phase 40f
 CONTRACT-R and Phase 40k CONTRACT-A,
 `notes/Phase40f.md`, `notes/Phase40k.md`). Split out of `Contract.lean` at the Phase 40k
-`Contract.lean` split (`notes/Phase40k.md`, call 5): the flat-core assembly
-(`Graph.exists_core_plane`, `Graph.finrank_ker_contractLiftingMatrix_zero_le`,
-`Graph.finrank_span_rigidityRows_induce_contractHeight`,
-`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`) and **CONTRACT-R**
-(`Graph.X0Attains.of_rigidContract`) stay in `Contract.lean`; every other declaration moves here
+`Contract.lean` split (`notes/Phase40k.md`, call 5): the standing hypotheses at the core
+(`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`) and **CONTRACT-R**
+(`Graph.X0Attains.of_rigidContract`) stay in `Contract.lean`; every other declaration moved here
 unchanged, except `Graph.contractLimitMap_mem_liftingSpace` and
 `Graph.eq_zero_of_contractLimitMap_eq_zero`, generalized in place to take one plane on the core as
-a hypothesis (in place of `hqH`/`hLH`) so a later step can supply it from a magnified picture
-instead of `Graph.exists_core_plane`; no declaration is renamed or re-stated otherwise, so no
-blueprint `\lean{...}` pin moves.
+a hypothesis (in place of `hqH`/`hLH`) so a later step can supply it from a magnified picture.
+`Contract.lean`'s own flat-core assembly (`Graph.exists_core_plane`,
+`Graph.finrank_ker_contractLiftingMatrix_zero_le`,
+`Graph.finrank_span_rigidityRows_induce_contractHeight`) was retired at Phase 40-simplify task
+10q, once CONTRACT-R became a one-line corollary of CONTRACT-A below; no declaration here is
+renamed or re-stated, so no blueprint `\lean{...}` pin moves.
 
 CONTRACT-A's own general pieces land here too (Phase 40k B2): the core's rank along the curve at
 any `t ≠ 0` (no flatness needed, by a collineation of `Configuration.lean`), the kernel of `M(0)`
@@ -321,8 +322,8 @@ theorem _root_.Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix [
 heights of the unknowns) under the collineation
 `(x, y, ζ, w) ↦ (t x + (1 − t) x_r w, t y + (1 − t) y_r w, t ζ, w)` of `K⁴`, so
 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` gives the same rank at both:
-unlike `Graph.finrank_span_rigidityRows_induce_contractHeight` (`Contract.lean`), no flatness of
-the core is needed. -/
+no flatness of the core is needed, unlike CONTRACT-R's retired curve proof (`Contract.lean`,
+Phase 40-simplify task 10q), which read the core's rank off one plane instead. -/
 theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Graph α β}
     {W : Set α} {r : α} (q : α × Fin 2 → K) {t : K} (ht : t ≠ 0) (x : α ⊕ (α × Fin 3) → K)
     {ends : β → α × α}
@@ -496,9 +497,11 @@ theorem contractLimitMap_apply (G : Graph α β) (W : Set α) (r : α)
       if w ∈ V(G) ∧ w ∉ W then x (Sum.inl w) + x (Sum.inl r) else 0 := rfl
 
 /-- **The limit map sends a solution of `M(0)` into `L_{G/H}(q)`, given one plane on the core**
-(`Graph.exists_core_plane`'s conclusion, taken as a hypothesis so a later step can supply it from a
-magnified picture instead): after the shift by the height at `r` the plane passes through `r` and
-every attachment. -/
+(the plane taken as a hypothesis, generalized in place from CONTRACT-R's retired `Contract.lean`
+curve proof, which supplied it from a flat core; the kernel bound below
+(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`) supplies the all-zero plane at any
+core instead): after the shift by the height at `r` the plane passes through `r` and every
+attachment. -/
 theorem _root_.Graph.contractLimitMap_mem_liftingSpace [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     {x : α ⊕ (α × Fin 3) → K}
@@ -816,7 +819,7 @@ theorem _root_.Graph.exists_mem_ker_contractLiftingMatrix_zero [Fintype α] {G :
 /-- **The core heights of a solution lie in `L_H(q)`, at every `t`**
 (`lem:pencil-contract-kernel-bound` (1); Phase 40k CONTRACT-A): `contractCoreRestrict` (`ρ` below)
 maps a solution of `M(t)` into `L_H(q)`. The core rows keep the weight `(x_w, y_w, 1)` along the
-curve (the `hmem` step of `Graph.exists_core_plane`), with no flatness of the core needed. -/
+curve, with no flatness of the core needed. -/
 theorem _root_.Graph.liftingRestrict_mem_liftingSpace_induce_of_contract [Fintype α]
     {G : Graph α β} {W : Set α} {r : α} (hW : W ⊆ V(G)) {q : α × Fin 2 → K} {t : K}
     {x : α ⊕ (α × Fin 3) → K}
@@ -840,8 +843,8 @@ theorem contractCoreRestrict_apply (W : Set α) (x : α ⊕ (α × Fin 3) → K)
     contractCoreRestrict W x = Graph.liftingRestrict W (fun w => x (Sum.inl w)) := rfl
 
 /-- **The kernel of `M(0)` at any core** (`lem:pencil-contract-kernel-bound` (2); (MC-69)(a)'s
-upper bound, the general form of `Graph.finrank_ker_contractLiftingMatrix_zero_le`
-(`Contract.lean`), which needs a flat core). With `q` admissible for `H = G[W]` and for `G/H`,
+upper bound, which CONTRACT-A (`ContractAdditive.lean`) uses directly, no flat core needed). With
+`q` admissible for `H = G[W]` and for `G/H`,
 `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`. A solution with zero core heights has zero
 core planes (admissibility at `H`), so the limit map (`Graph.contractLimitMap_mem_liftingSpace`,
 `Graph.eq_zero_of_contractLimitMap_eq_zero`, given the zero plane) embeds those solutions

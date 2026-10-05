@@ -6,7 +6,6 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
 
 /-!
 # The one-step interface of the `X₀` induction (Phase 40l COVERAGE-REDUCE B1)

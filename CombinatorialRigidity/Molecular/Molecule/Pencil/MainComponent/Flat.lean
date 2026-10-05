@@ -688,20 +688,6 @@ theorem _root_.Graph.x0Attains_of_finrank_liftingSpace_eq_three [Finite α] [Fin
   refine ⟨by linarith, by linarith, Graph.x0Attains_of_finrank_liftingSpace_le hG hq ?_⟩
   rw [h3]; push_cast; linarith
 
-/-- **A flat fibre makes the flat configuration rigid** (`cor:pencil-flat-x0`; the rank clause of
-informal (MC-5)(iii)): at `dim L(q) = 3` the flat rank (MC-4)(a) is `6(|V(G)| − 1)`. -/
-theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_three [Finite α]
-    {G : Graph α β} (hG : G.Connected) {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q)
-    {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    (h3 : Module.finrank K (G.liftingSpace q) = 3) :
-    (Module.finrank K (Submodule.span K
-        (PanelHingeFramework.ofNormals (k := 2) G ends
-          (fun p => pencilConfigPoint q 0 p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)
-      = screwDim 2 * ((V(G).ncard : ℤ) - 1) := by
-  rw [Graph.finrank_span_rigidityRows_ofNormals_flat hG hq hends, h3, screwDim_two]
-  push_cast; ring
-
-
 /-! ## Joins of two points in flat coordinates (Phase 40g CHAIN)
 
 The hinge `pointJoinFramework` places at a link is the join of the two configuration points, and
