@@ -150,6 +150,17 @@ introduction is now a roadmap, and the account has three homes), the remarks cut
 `thm:pencil-x0-splitoff`, the coverage's cut comparisons, and the 40p note on the introduction.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**Post-Phase-40 cleanup, round 4 (`40-simplify`, closed 2026-10-04).** The landings the PI
+sanctioned at Stop 2 retired and restated nodes of `pencil.tex` and `main-component.tex`
+(`notes/Phase40-simplify.md` task 10). No entry is added. The one reroute, CONTRACT-R as CONTRACT-A's corollary, is the 40k
+entry's stable insight, which the chapter now gives once. The landings updated the entries whose
+nodes they retired or moved: the kernel theorem (10h), the girth chain (10i), the simplicity node
+in the `thm:pencil-reduction` entry (10j), and the 40f and 40k entries (10p). The close checked
+every entry naming a node the round retired or restated, and added the three clauses still
+missing: `thm:pencil-reduction` (`c2`), `lem:pencil-insertion` (`c9`) and
+`lem:pencil-splitoff-curve` (`c1`). **Result: unchanged, 0 pending / 50 done / 1 closed as
+superseded** (of 51). Two done entries now name retired nodes, and git history keeps their text.
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -899,7 +910,9 @@ discharge point.
 
 - **`thm:pencil-reduction` / `Graph.pencil_reduction`, with
   `lem:pencil-min-degree-rigid`** — [done (`pencil.tex`, the
-  `sec:pencil-reduction` preamble + the two nodes)] **(b)** KT's induction
+  `sec:pencil-reduction` preamble + the two nodes); restated in round 4 of the post-Phase-40
+  cleanup (`c2`, 2026-10-04) to its pin's strength: cases (iii)–(v) get the property only at
+  graphs with fewer vertices] **(b)** KT's induction
   runs over minimal graphs and reaches the others by adding
   deficiency-neutral edges in panel meets (KT Theorem 5.6, p. 670), which
   need no rank. A pencil edge added back needs its two cross-incidences, and
@@ -1176,7 +1189,8 @@ The ledger is now **2 pending / 40 done** (of 42).
   `lem:pencil-insertion`** — [done (the subsection preamble, the two theorems' proofs and the remark
   after the three-body theorem, at the 40h close; round 3 of the post-Phase-40 cleanup cut the
   remark, a comparison with the informal route, and the count against `G″` now leads the
-  opening)] **(b)** the informal proof first counted the
+  opening; since round 4 (`c9`, 2026-10-04) `lem:pencil-insertion` states only the gain half,
+  its no-loss half having had no caller)] **(b)** the informal proof first counted the
   `k = 3, 4` open-ear steps against `G′ = G[V₁]` alone, reduced by (MC-22) to two conditions at
   `X₀(G′)`'s generic point: a lower bound on `dim ρ` from the 2-ear gadget (MC-24), a further strong
   induction, and a property of `Λ_k` over the placements, proved in each of the four orbits of the
@@ -1245,7 +1259,10 @@ above, `[pending]` until Phase 40's close. The ledger is now **2 pending / 42 do
 - **`thm:pencil-x0-splitoff` / `Graph.X0Attains.of_splitOff`, with `lem:pencil-splitoff-curve` and
   `lem:pencil-curve-limit`** — [done (the subsection preamble, the theorem's proof and the remark
   after it, at the 40j close; round 3 of the post-Phase-40 cleanup cut the remark, a comparison
-  with the informal step, and its idea is in the opening and the theorem's proof)]
+  with the informal step, and its idea is in the opening and the theorem's proof; round 4 (`c1`,
+  2026-10-04) split `lem:pencil-splitoff-curve` in three: it keeps the line of solutions, and the
+  extension of a height across `x` and the locality of the lifting system are
+  `lem:pencil-splitoff-ear-extension` and `lem:pencil-weighted-lifting-system-local`)]
   **(b)** the informal step (MC-31) reaches `X₀(G)` from the special
   configuration, which puts `x` on the line `p_a p_b` and has the rank of `G″` plus five but is not
   admissible: (MC-30)(ii) moves `x`'s picture off the line in an arbitrary direction `η`, keeps the

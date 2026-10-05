@@ -5,20 +5,15 @@
 closed 2026-09-30 (`notes/Phase40-factor.md`). Round 3, `40-exposition`, opened 2026-09-30 and
 closed 2026-10-04 (`notes/Phase40-exposition.md`); its Stop 1 closed on 2026-10-03, when the PI
 approved the revised sample section, pinned as the exemplar (that log's *Autopilot: for the PI*).
-Round 4, `40-simplify`, opened 2026-10-04 (`notes/Phase40-simplify.md`); round 5 has not opened.
-Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under autopilot in this
-order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
-`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done. Round
-4's seven recon tasks and its Stop-2 write-up (task 8) have landed, and **its Stop 2 was answered
-on 2026-10-04** (`notes/Phase40-simplify.md` *Autopilot: for the PI*): the PI sanctioned the
-recommended package of the round's verdicts (`notes/Phase40-simplify-verdicts.md`) with CONTRACT-R
-restated, and round 3's build-or-leave recommendations as written; task 9 sliced it into 18
-landings. Landings 10a (task 3's TeX batch), 10b (`r1`'s deletion), 10c (`c6` + `c7`), 10d
-(`q2b` + `q2c` + `a3`), 10e (`q1a`), 10f (`r7`'s node), 10g (`c3`'s Lean), 10h (`c3`'s TeX), 10i
-(`1a`'s deletion), 10j (`m3` + `7c`), 10k (`a6` + `a6a`), 10l (`a5`), 10m (`7a`), 10n (`7b`), 10o
-(`q2a` + `b1`), 10p (`7d`'s chapter, restated to (ii)), 10q (`7d`'s Lean) and 10r (`a2`, the last
-landing) all landed 2026-10-04; task 10 is done. **The next concrete task** is round 4's task 11,
-the close (docs; Opus; that log's task 11).
+Round 4, `40-simplify`, opened and closed 2026-10-04 (`notes/Phase40-simplify.md`); its Stop 2 was
+answered the same day, when the PI sanctioned the recommended package of the round's verdicts
+(`notes/Phase40-simplify-verdicts.md`) with CONTRACT-R restated, and round 3's build-or-leave
+recommendations as written (that log's *Autopilot: for the PI*). Its 18 landings, 10a–10r, took
+8 930 net Lean lines out. Round 5 has not opened. Five cleanup rounds (`CLEANUP.md`) over what
+Phases 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`,
+`40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
+order and for which rounds are done. **The next concrete task** is opening round 5, `40-docs`
+(§2 *Round 5*), which opens and closes unattended.
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

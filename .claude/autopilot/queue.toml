@@ -32,7 +32,7 @@ id = "40-simplify"
 title = "Post-Phase-40 cleanup 4/5: the deep simplification recon"
 note = "notes/Phase40-simplify.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "40-docs"

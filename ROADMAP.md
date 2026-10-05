@@ -162,7 +162,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-40, 1/5: mechanical) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` + Phase 40's other blueprint nodes | ✓ Complete — hygiene only, all 19 main results' axioms unchanged (see `notes/Phase40-cleanup.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 2/5: the shared hub normalization) | `Molecular/Deficiency.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`, `Molecular/Molecule/Pencil/TwoCut.lean` | ✓ Complete — one shared lemma, both hubs' statements unchanged (see `notes/Phase40-factor.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ◐ In progress — all 18 sanctioned landings done; the close next (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ✓ Complete — 18 sanctioned simplifications, −8 930 net Lean lines, all 19 main results' axioms unchanged (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1218,13 +1218,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   and new mathematics change only where the PI sanctions it, at round 4's Stop 2. Scope, order,
   stops and the PI's decisions are in `notes/Cleanup40.md`. The autopilot queue is
   `.claude/autopilot/queue.toml`.
-  **Next concrete task:** round 4, `40-simplify`, the deep recon, is open (opened 2026-10-04). Its
-  Stop 2 was answered on 2026-10-04: the PI sanctioned the recommended package with CONTRACT-R
-  restated as CONTRACT-A's corollary (`notes/Phase40-simplify.md` *Autopilot: for the PI*). Tasks
-  1–10 are done, all 18 landings (10a–10r) in; next is task 11, the close (docs; Opus). Rounds 1,
-  `40-cleanup`, and 2, `40-factor`, closed 2026-09-30, and round 3, `40-exposition`, closed
-  2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
-  `notes/Phase40-exposition.md`).
+  **Next concrete task:** open round 5, `40-docs`, project organization (`notes/Cleanup40.md` §2
+  *Round 5*; its work log `notes/Phase40-docs.md` does not exist yet). It opens and closes
+  unattended. Rounds 1, `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3,
+  `40-exposition`, and 4, `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`,
+  `notes/Phase40-factor.md`, `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

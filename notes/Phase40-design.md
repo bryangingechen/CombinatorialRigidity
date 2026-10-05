@@ -1188,7 +1188,9 @@ section).
   `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). Deferred by the PI's D2
   call (2026-09-16): off the consumed path — S6 is the side-degree-1 reduction, S14's `H′` has
   side-degree ≥ 2 at both ends (S10(iii)) — and it is the only law needing `deficiencySep`. Site
-  `Induction/SplitOffDeficiency.lean`. Build only if STEPS consumes S6's reduction.
+  `Induction/SplitOffDeficiency.lean`. Build only if STEPS consumes S6's reduction. **Left at
+  round 4's close** (2026-10-04): the condition never fired, and round 3's leave (its item 2) was
+  sanctioned at round 4's Stop 2.
 - [x] **The shared hub normalization — a factoring item. Paid by cleanup round 2, `40-factor`**
   (`notes/Phase40-factor.md`, tasks 1 and 2: `080be6a4` and `0b260626`; the round closed
   2026-09-30). The extraction landed as the public `Graph.exists_normalized_labeling`
@@ -1207,6 +1209,8 @@ section).
 - **Item 6's other deferred laws** (all cheap on Layer B): the general-`U` joint count (S7(iii))
   and `finrank_jointMotions_eq` (S7(i)) — motion-side, hence `|α|`-laden; S7(ii) (the bar reading),
   S7(v) (Klein self-duality), S9 (the `ear1` criterion). Build when a STEPS step consumes one.
+  **Left at round 4's close** (2026-10-04): none was consumed, and round 3's leave (its item 2)
+  was sanctioned at round 4's Stop 2.
 - **The D5 blueprint debt.** Item 6's leaves landed with **no blueprint nodes** (PI, D5: a chapter
   without a complete informal proof would pin a shape likely to be reworked), and `checkdecls`
   cannot see a decl with no node. STEPS pins each law when it consumes it (§3's *There is no
@@ -1253,14 +1257,30 @@ section).
 
 **Carried past Phase 40's close — the tracked cleanup-round items** (none is a close gate, none has
 a consumer on the route; a post-Phase-40 cleanup round takes them, or leaves them by a recorded
-call): the wider stand-in audit of `lem:trivial-motions-rank-bound` (§3 FLAT); the edge-restricted
-non-spanning generic-normals row rank (§3 BRIDGE); the "only if" halves of (MC-52)/(MC-53) (§3
-STEPS, CUT/BRIDGE; the remarks after `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` state them informally); the
-40h file-size and readability items, `span_supportExtensor_ofNormals_eq` in `Cut.lean`, and call
-12's corollary rebases (§3 STEPS); CHAINS' `pathVertex` helpers to their definition's file (§3
-COVERAGE); the §4 duplication note (`mapExtensor`/`mapSupport`, settled by `40-cleanup` task 22);
-and the §7 items above (A6; the shared hub normalization, paid by `40-factor`; item 6's other
-laws; the rest of the D5 debt).
+call). At round 4's close (2026-10-04), the last round that edits Lean, each is paid or left:
+- the wider stand-in audit of `lem:trivial-motions-rank-bound` (§3 FLAT): paid by round 1,
+  `40-cleanup`, tasks 23a–23b (`36aa7e10`, `2d3d3818`);
+- the edge-restricted non-spanning generic-normals row rank (§3 BRIDGE): left, unbuilt with no
+  node (round 3's item 4, from its task 12; sanctioned at round 4's Stop 2);
+- the "only if" halves of (MC-52)/(MC-53) (§3 STEPS, CUT/BRIDGE): left, unbuilt with no node
+  (round 3's item 3; sanctioned at Stop 2). Round 3's task 13 (`9c931242`) cut the remarks after
+  `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` that stated them informally;
+- the 40h file-size and readability items (§3 STEPS): paid by round 1. The B2 dedupe is task 15
+  (`289f96c3`), the three-body near-copies tasks 16 and 18 (`d7fea229`, `b8b24c9a`; task 17's
+  general split-off ear, `1080f59c`, netted no shorter and did not land), and `lem:pencil-ear-data`'s
+  pin budget task 19 (`d9acaee8`). The file-size rule never fired: at round 4's close `Short.lean`
+  has 1 063 lines and `Bricks.lean` 1 251;
+- `span_supportExtensor_ofNormals_eq` in `Cut.lean` (§3 STEPS): paid by round 1, task 13
+  (`a0dda000`);
+- call 12's corollary rebases (§3 STEPS): paid by round 1, tasks 14a–14b (`58c4fa28`, blueprint
+  fixup `388e5a18`; `ab2253e1`);
+- CHAINS' `pathVertex` helpers to their definition's file (§3 COVERAGE): paid by round 1, task 20
+  (`473a4a11`);
+- the §4 duplication note (`mapExtensor`/`mapSupport`): paid by round 1, task 22 (`0b5fcd46`);
+- the §7 items above. A6 and item 6's other laws: left, as their build-when-consumed conditions
+  never fired (round 3's item 2; sanctioned at Stop 2). The shared hub normalization: paid by
+  round 2, `40-factor` (`080be6a4`, `0b260626`); its merged-hub caller went with `TwoCut.lean` at
+  round 4's 10b. The rest of the D5 debt: paid by round 4's deletion, 10b (`c48d323e`).
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 
