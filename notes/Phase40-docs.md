@@ -6,8 +6,8 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–11 landed 2026-10-04.
-**Next concrete task:** task 12 (C5), `notes/Phase40i.md`–`Phase40l.md` (Sonnet). Round
+planned stop. The full task list below was populated at the open; tasks 1–12 landed 2026-10-04.
+**Next concrete task:** task 13 (C6), `notes/Phase40m.md`–`Phase40p.md` (Sonnet). Round
 manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 12 (C5)**, `notes/Phase40i.md`–`Phase40l.md`. Of the 17 tasks, 1–11 are done
+**Next commit: task 13 (C6)**, `notes/Phase40m.md`–`Phase40p.md`. Of the 17 tasks, 1–12 are done
 (2026-10-04); each is one or two lines in the checklist below, not duplicated here. Task 15 (G) is
 the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
 
@@ -155,12 +155,11 @@ section titles are the stable reference.
   by number; fixed 40h's *Hand-off*/*Blockers* (rounds 1 and 4 already paid them) and 40f's stale
   open `hatt` TODO (closed at 40l's open) and superseded curve-based proof (round 4's
   restatement).
-- [ ] **12. C5 — `Phase40i.md`–`Phase40l.md`** (Sonnet; 473 lines). As task 10. Preserve 40k's
-  coordinator calls 4, 5 and 8 and its checklist (`ContractCurve.lean` 16, "call 5"; design §3,
-  three places), and 40l's *Architectural choices* with the departures D1–D3
-  (`SparseDeficiency.lean` 20). Bare Lean anchors: 40i `Orbit.lean` 13; 40j `SplitOff.lean` 15;
-  40k `Contract.lean` 36, `ContractAdditive.lean` 13 and 37, `ContractCurve.lean` 15 and 89; 40l
-  `SparseDeficiency.lean` 58.
+- [x] **12. C5 — `Phase40i.md`–`Phase40l.md`** (Sonnet; landed 2026-10-04). 473 lines to 224;
+  preserved 40k's coordinator calls 4, 5, 8 and 12 (the G1/G4/G5 Lean-name mapping) and 40l's
+  departures D1–D3, each findable by number. Fixed two stale cleanup items presented as still open
+  (40j's call 9 and 40k's call 12, both paid by round 1) and 40i's pointer to a friction entry that
+  task 6 had already archived (`notes/FRICTION.md` → `notes/FRICTION-archive.md`).
 - [ ] **13. C6 — `Phase40m.md`–`Phase40p.md`** (Sonnet; 437 lines). As task 10. Preserve 40m's
   *Current state* (design §3) and *Decisions made* (`notes/pencil/adjudications.md`), and 40p's
   *Architectural choices* item 2 (`adjudications.md`) and *Hand-off* (ROADMAP, `notes/Phase39.md`,
@@ -241,13 +240,15 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 12 (C5)**, `notes/Phase40i.md`–`Phase40l.md` (Sonnet; 473 lines), compressed
-the same way tasks 10–11 compressed 40a–40h. Preserve 40k's coordinator calls 4, 5 and 8 and its
-checklist (`ContractCurve.lean` 16, "call 5"; design §3, three places), and 40l's *Architectural
-choices* with the departures D1–D3 (`SparseDeficiency.lean` 20). Bare Lean anchors: 40i
-`Orbit.lean` 13; 40j `SplitOff.lean` 15; 40k `Contract.lean` 36, `ContractAdditive.lean` 13 and 37,
-`ContractCurve.lean` 15 and 89; 40l `SparseDeficiency.lean` 58. Then tasks 13–14 (the remaining
-sub-note groups), the coordinator's grooming (15) and the close (17).
+**Next commit: task 13 (C6)**, `notes/Phase40m.md`–`Phase40p.md` (Sonnet; 437 lines), compressed
+the same way tasks 10–12 compressed 40a–40l. Preserve 40m's *Current state* (design §3) and
+*Decisions made* (`notes/pencil/adjudications.md`), and 40p's *Architectural choices* item 2
+(`adjudications.md`) and *Hand-off* (ROADMAP, `notes/Phase39.md`, `notes/pencil/CLAUDE.md` and
+`notes/MolecularConjecture.md` point at 40p). Bare Lean anchors: 40n `GenericBase.lean` 37 and
+`Statements.lean` 40; 40o `GenericEar.lean` 28, `GenericSteer.lean` 36, `GenericTriangle.lean` 40
+and `Reseed.lean` 29; 40p `GoodEar.lean` 27 and `Statements.lean` 40. Fix 40p's *Decisions*, "the
+landed Lean stays as conditional theorems": round 4 retired it. Then task 14 (the round-1 log),
+the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 
