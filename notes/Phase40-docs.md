@@ -6,8 +6,8 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–9 landed 2026-10-04.
-**Next concrete task:** task 10 (C3), `notes/Phase40a.md`–`Phase40d.md` (Sonnet). Round
+planned stop. The full task list below was populated at the open; tasks 1–10 landed 2026-10-04.
+**Next concrete task:** task 11 (C4), `notes/Phase40e.md`–`Phase40h.md` (Sonnet). Round
 manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 10 (C3)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 11 (C4)**, `notes/Phase40e.md`–`Phase40h.md`. Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -60,7 +60,22 @@ walked after it, nothing repointed). Task 9 (C2) is done (2026-10-04: the rest o
 1 096 lines to 864 — §6 to one verdict paragraph, §7's five items and §3's eight tracked
 cleanup-round items to one line each, the STEPS appendix's 140-line verbatim spike dropped to git;
 §1–§2 and §4–§5 untouched but for the stale §5 "Do not" bullet, fixed; the anchor inventory
-re-derived before the cut (9 Lean, unchanged) and walked after it, nothing repointed). Task 15 (G)
+re-derived before the cut (9 Lean, unchanged) and walked after it, nothing repointed). Task 10 (C3)
+is done (2026-10-04: `Phase40a.md`–`Phase40d.md`, 371 lines to 204 (45, 67, 47, 45), each now a
+**Status** line, one *Current state* paragraph, *Decisions made* as one-line verdicts and a
+*Hand-off* naming the actual next sub-phase in place of the stale "**Next: …** … **not yet
+opened**" every header carried; *Architectural choices* kept only in 40b, where the design doc's
+§3 CARRIER pointer needs it. Preserved: 40b's *Decisions made* entry "2026-09-26 C1a"
+(`Carrier.lean` 90, `Configuration.lean` 75), its slice names C1a, C1b, C2, C3, C4, C5′
+(`Carrier.lean` 16, `Configuration.lean` 15) and DUAL-K (`ProjectiveInvariance.lean` 34). Dropped,
+no anchor needing it and one entry stale: 40a's "What keeps `6 ≤ D`" declaration list, one of
+whose four named siblings, `edgeBound_of_noRigid_of_degree_two`, round 4 task 10i (`1e7d78a9`) had
+already deleted; 40c's and 40d's "Cleanup-round item" checkboxes, both already tracked done in
+`notes/Phase40-design.md` §3 FLAT/BRIDGE; the four files' "project-organization review: no new
+item" sentences, one of which cited `notes/pencil/CLAUDE.md` status-line text that has since moved
+on. Anchor inventory re-derived at HEAD before the cut (0 Lean for 40a and 40d, 5 for 40b, 1 for
+40c — the table's 2026-09-29-era *Other* counts were stale and not used) and walked after it:
+every Lean and non-Lean anchor resolves, none repointed). Task 15 (G)
 is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
@@ -338,14 +353,23 @@ section titles are the stable reference.
   the bare file, `ContractCurve.lean` 1056 into the appendix; all resolve, none repointed); the
   non-Lean citations of §1, §2, §4–§7 and the two appendices checked against their targets, all
   still resolve.
-- [ ] **10. C3 — `notes/Phase40a.md`–`Phase40d.md`** (Sonnet; 371 lines). Make each the archive
-  `notes/CLAUDE.md` *Forward-weighted note* describes: a **Status** line, one *Current state*
-  paragraph (what landed, where), a *Hand-off* naming the next sub-phase, and *Decisions made* as
-  one-line verdicts; *Architectural choices* only where an anchor needs it. A verdict that quotes
-  the PI keeps the words or points at `notes/pencil/adjudications.md`. Preserve 40b's *Decisions
-  made* entry "2026-09-26 C1a" (`Carrier.lean` 90, `Configuration.lean` 75), its slice names C1a,
-  C1b and C2–C5′ (`Carrier.lean` 16, `Configuration.lean` 15) and DUAL-K
-  (`ProjectiveInvariance.lean` 34). Fix: all four headers' "**Next: …** … **not yet opened**".
+- [x] **10. C3 — `notes/Phase40a.md`–`Phase40d.md`** (Sonnet; landed 2026-10-04). 371 lines to 204
+  (45, 67, 47, 45): each now a **Status** line, one *Current state* paragraph, *Decisions made* as
+  one-line verdicts and a *Hand-off* naming the actual next sub-phase, in place of the stale
+  "**Next: …** … **not yet opened**" every header carried (Phase 40 closed 2026-09-29, long after
+  these were written). *Architectural choices* kept only in 40b, where the design doc's §3 CARRIER
+  anchor needs it (line 155's "uncurried pictures, one `X0Attains` carrying a Zariski-open set of
+  attaining heights"). Preserved: the *Decisions made* entry "2026-09-26 C1a" (`Carrier.lean` 90,
+  `Configuration.lean` 75), the slice names C1a, C1b, C2, C3, C4, C5′ (`Carrier.lean` 16,
+  `Configuration.lean` 15) and DUAL-K (`ProjectiveInvariance.lean` 34). Dropped, since no anchor
+  needed it and one entry was stale: 40a's "What keeps `6 ≤ D`" declaration list, one of whose four
+  named siblings (`edgeBound_of_noRigid_of_degree_two`) round 4 task 10i (`1e7d78a9`) had already
+  deleted; 40c's and 40d's "Cleanup-round item" checkboxes, both already tracked done in
+  `notes/Phase40-design.md` §3 FLAT/BRIDGE; the four files' "project-organization review: no new
+  item" sentences, one of which cited `notes/pencil/CLAUDE.md` status-line text that has since
+  moved on. Anchor inventory re-derived at HEAD before the cut (0 Lean for 40a and 40d, 5 for 40b,
+  1 for 40c — the table's 2026-09-29-era *Other* counts were stale and unused) and walked after it:
+  every Lean and non-Lean anchor resolves, none repointed.
 - [ ] **11. C4 — `Phase40e.md`–`Phase40h.md`** (Sonnet; 454 lines). As task 10. Preserve 40e's
   "Build 2, BRIDGE for every `k`" (`Cut.lean` 411). 40f's, 40g's and 40h's PI decisions (1–4, 1–4
   and 1–5) are cited by number: `Chain.lean` 30 ("the PI's decision 3", 40g),
@@ -440,11 +464,14 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 10 (C3)**, `notes/Phase40a.md`–`Phase40d.md` (Sonnet; 371 lines), compressed
-to the archive shape `notes/CLAUDE.md` *Forward-weighted note* describes. Preserve 40b's
-*Decisions made* entry "2026-09-26 C1a", its slice names C1a, C1b and C2–C5′ and DUAL-K; fix all
-four headers' stale "**Next: …** … **not yet opened**". Then tasks 11–14 (the remaining sub-note
-groups), the coordinator's grooming (15) and the close (17).
+**Next commit: task 11 (C4)**, `notes/Phase40e.md`–`Phase40h.md` (Sonnet; 454 lines), compressed
+the same way task 10 compressed 40a–40d. Preserve 40e's "Build 2, BRIDGE for every `k`"
+(`Cut.lean` 411); 40f's, 40g's and 40h's PI decisions (1–4, 1–4 and 1–5), cited by number at
+`Chain.lean` 30, `Configuration.lean` 16, design §3 STEPS and `notes/Phase40-cleanup.md`; check
+their three `adjudication` blocks against `notes/pencil/adjudications.md` before reducing each to
+a pointer plus one line per decision. Fix 40h's *Hand-off* and *Blockers* (rounds 1 and 4 already
+paid the cleanup-round items and resolved the FRICTION entry it calls open). Then tasks 12–14
+(the remaining sub-note groups), the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 

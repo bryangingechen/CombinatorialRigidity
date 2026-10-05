@@ -1231,7 +1231,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
   deleted or changed, also landed 2026-10-04; task 8, `notes/Phase40-design.md` §3 compressed to
   verdicts, also landed 2026-10-04; task 9, the rest of that design doc compressed the same way,
-  also landed 2026-10-04; next, task 10, `Phase40a.md`–`Phase40d.md`). It closes
+  also landed 2026-10-04; task 10, `Phase40a.md`–`Phase40d.md` compressed to the archive shape,
+  also landed 2026-10-04; next, task 11, `Phase40e.md`–`Phase40h.md`). It closes
   unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
