@@ -290,3 +290,63 @@ the $d$-general trivial-motions API) was created mid-phase when the
 material outgrew its inlined slot in `frameworks.tex`. Phase 6
 closed with every blueprint node green; the blueprint and the Lean
 are in sync.
+
+## Static-check calibrations
+
+*(Moved from `blueprint/CLAUDE.md` on 2026-10-05.)* The rules are in
+`blueprint/CLAUDE.md` *Static checks before commit*; these are the cases
+behind them. The honesty gate's other calibrations (case hypotheses, the
+arithmetic and structure halves, definition faithfulness) are root
+`../DESIGN.md`'s *Statement faithfulness to the source*, *Constructibility
+recon before scheduling a producer build* and *Match the source's argument
+structure, not just its conclusion*.
+
+**Hanging-pin gate (Phase 22k L7b).** `lem:case-III-nested-rank-lower`'s
+`h622lb` discharge was folded inline into `case_III_realization`, with no
+standalone declaration to pin; extracting `case_III_nested_rank_lower` fixed
+it, and the case is why `lint.sh` check 4 exists.
+
+**Calibration case (Phase 22c).** Opening 22c to build the Case-II/III
+stratum-1 nodes, the live `lem:case-II-realization` /
+`lem:case-II-realization-placement` *statements* said "M3 / N7b-4
+superseded" while their *proofs* still routed through them — rot that
+had survived since the eq. (6.12) understanding was settled phases
+earlier (KT, `../notes/Phase21b.md` *Finding A*), because the
+superseded prose lived in *red* nodes invisible to the `\leanok`-gated
+honesty gate. Commit `7ba0266` reconciled the prose; this gate + the
+phase-open red-node consistency gate (`../CLAUDE.md` *When this commit
+opens a phase*) keep it from recurring.
+
+**Producer / existence lemmas get extra scrutiny.** A node whose
+statement promises to *produce* something (`∃ p, …`,
+`HasFullRankRealization`, "attains full rank") but whose Lean
+*assumes* the very rank/rigidity/realization it claims to produce is
+the textbook smell — the deliverable smuggled in as a hypothesis.
+Phase 21b's `lem:case-I-realization` shipped green this way (it
+assumed `hHrig`/`hcrig`, the simultaneous-rigid placement it was
+named to construct, with no node tracking that obligation); the fix
+was to drop `\leanok`, keep the proven composition carrier, and add
+the red node `lem:case-I-splice-placement` for the construction. The
+between-phases re-run of this gate is `CLEANUP.md` §A step 1 — but
+this is a *per-commit* gate, run at the moment `\leanok` is added, not
+a debt deferred to a cleanup round.
+
+**Sliced producers — scope the node to the conjunct actually built.**
+When a producer is built one conjunct at a time (the molecular program's
+recurring bare-`HasPanelRealization` / GP-`HasGenericFullRankRealization`
+split — the L3 base producer, the L4 cut-edge producer,
+`theorem_55_all_k`'s `hsplitPos`/`hsplitZero` branches), the *intermediate* commit
+lands only one half. Represent that as a **green node whose statement
+*and* role-prose are scoped to the conjunct actually proven**, plus a
+separate sibling (or red) node for the unbuilt conjunct — **never one
+node claiming the full slot/pair while only half is built.** Two failure
+modes, both seen in Phase 22i: a green node landing at the *weaker*
+conjunct the slot doesn't want (row 89 — the GP conjunct discharged as
+the bare type), and a node honestly green for its *statement* but whose
+**prose overclaims its role** (row 92 — "fills the `hcut` slot" when only
+the bare `HasPanelRealization` conjunct is built; `checkdecls` and the
+hypothesis-honesty gate both pass, so only a design-§ re-read of the
+role-prose catches it). The clean structure (settled at
+`notes/Phase22-realization-design.md` §1.62(e)): green-bare node + a
+sibling for the GP conjunct, mirroring how `theorem_55_all_k` keeps
+`hsplitPos`/`hsplitZero` as separate branches.

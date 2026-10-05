@@ -554,8 +554,11 @@ to be re-derived by re-reading entries later.
   calibration narratives to `blueprint/DESIGN.md`, leaving each rule sentence plus a one-line
   pointer (the `PHASE-BOUNDARIES.md` / `REFS.md` extraction pattern). Not applied at the close: a
   CLAUDE.md-suite edit is the user's to direct, not a closing dispatch's.
-- **Status:** open (a later cleanup round, or a harness review). The post-Phase-40 rounds left
-  it out by their plan (`notes/Cleanup40.md` §2), and `40-docs`' close reported it to the PI.
+- **Status:** in progress, at the PI's request (2026-10-05): a trim of the whole suite, one file
+  per commit, extracting to read-on-demand references. `blueprint/CLAUDE.md` 669 → 335 lines:
+  the retrospective block to `AUTHORING.md`, the calibration narratives to `blueprint/DESIGN.md`
+  *Static-check calibrations* or to the root `DESIGN.md` postmortems that already held them,
+  each rule kept. Next: root `CLAUDE.md`, `CombinatorialRigidity/CLAUDE.md`, `notes/CLAUDE.md`.
 
 ### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
 - **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).

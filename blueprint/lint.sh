@@ -207,7 +207,7 @@ fi
 # chapter/retrospective.tex (the Phase-29 appendix, "Notes on the
 # formalization") is exempt from 5a and 5b for the same reason intro.tex
 # is exempt from 5b: it is the one deliberate, reader-facing exception to
-# this whole gate (blueprint/CLAUDE.md *The retrospective appendix*) ---
+# this whole gate (blueprint/AUTHORING.md *The retrospective appendix*) ---
 # its subject is the project's own process, so "motive"/"producer" and
 # phase numbers are first-class mathematical content there, not leakage
 # into the rest of the blueprint's math prose. 5c is untouched: the

@@ -381,3 +381,98 @@ extend it rather than inventing a parallel list):
 Lean file/section names (e.g. `Bricks.lean`) are invisible to blueprint
 readers and are unaffected by this table.
 
+## The retrospective appendix (Phase 29 exception)
+
+*(Moved from `blueprint/CLAUDE.md` on 2026-10-05; it matters only when editing
+`chapter/retrospective.tex`.)*
+
+`chapter/retrospective.tex` ("Notes on the formalization") is a **deliberate,
+conscious exception** to two standing conventions at once: the top-level
+`CLAUDE.md` rule that process/route-history is deleted from live documents
+(left to git + `notes/FRICTION.md` `[process]` entries + `DESIGN.md`), and
+`AUTHORING.md` principle A's ban on Lean identifiers as prose subjects. Its
+subject *is* the formalization's own wrong turns
+(`../notes/FormalizationRetrospective.md` carries the taxonomy-ordered outline
+and the raw-material inventory; work log `../notes/Phase29.md`), so both
+exceptions are load-bearing rather than accidental drift, and are confined to
+this one file.
+
+**Structural placement.** One appendix chapter, wired in via `\appendix`
+(a plain `article`/`amsart` command — plastex's `Packages/article.py`
+implements it correctly, resetting the section counter and switching
+`\thesection` to `A`, `B`, …; no fallback was needed) in `chapter/main.tex`
+after the last math chapter, so it never sits in the proof's reading path.
+One `\subsection` per failure-mode class (the outline's (ii)–(vi)), episodes
+within a class as `\subsubsection`s.
+
+**Register carve-out.** Otherwise the appendix follows the same flat,
+published-paper register as the rest of the blueprint (`AUTHORING.md`
+principle A: no significance-pointing, no verdict language, no mechanism
+metaphors) — the difference is scope, not tone: Lean declarations, types,
+and short code excerpts are first-class objects here, appearing directly in
+prose and in displayed code blocks, rather than only as parenthetical
+addresses. Two mechanics this requires:
+
+- **Displayed Lean excerpts use `\begin{alltt}...\end{alltt}`** (LaTeX's
+  standard `alltt` package, loaded in `preamble/common.tex` for both
+  builds; plastex has its own Python implementation + an HTML5 template,
+  no fallback needed). **Gotcha:** `alltt` gives `$`, `#`, `%`, `_`, etc.
+  *catcode 12* (literal, like real verbatim) — only `\`, `{`, `}` keep
+  their normal meaning — so a Lean snippet's Unicode (`ℕ`, `∃`, `∧`, `→`,
+  …) cannot be typed as raw Unicode (this project's existing convention
+  anyway: no chapter uses raw Unicode math symbols, always LaTeX macros)
+  nor switched to math with bare `$...$`. Use `\(...\)` for each symbol
+  instead (a control sequence, so it survives `alltt`'s catcode change);
+  `$...$` remains the convention everywhere *outside* an `alltt` block.
+  Keep source lines short enough not to overflow the print build's text
+  width — `alltt` does not wrap; break at a Lean connective with an
+  indented continuation if a line runs long, the same as ordinary
+  code-formatting judgment.
+- **A Lean identifier with a Unicode subscript (`C₁`, `h₂`, …) needs
+  `\(\sb{1}\)`, not `\(_1\)`.** `\(...\)` rescues *control-sequence*
+  symbols (`\to`, `\wedge`, `\neq`, …) because a control sequence's name
+  is read under letter catcodes, which `alltt` does not touch — but `_`
+  itself is one of the characters `alltt` recatcodes to 12 (literal), and
+  catcodes are fixed at tokenization time, before `\(`/`\)` ever run,
+  so `_` stays a plain "other" character even inside `\(...\)`. Writing
+  `C\(_1\)` therefore typesets a literal underscore-and-digit, not a
+  subscript (caught by rendering the print PDF at 300dpi and inspecting
+  the page — `pdftotext` alone won't show the difference, since it
+  extracts the character stream, not the glyph position). The primitive
+  subscript/superscript control sequences `\sb{...}`/`\sp{...}` (plain
+  TeX names for `_`/`^`) are, like `\to`, read by name and so survive
+  the catcode change: `C\(\sb{1}\)` renders a true subscript.
+- **`div.alltt` needed an explicit CSS rule** (`extra_styles.css`): the
+  theme styles `pre`/`pre.verbatim` for whitespace and monospace, but has
+  no rule for plastex's `<div class="alltt">`, so without one a browser
+  collapses the code block's newlines and indentation like ordinary text.
+- **A long `\texttt{...}` Lean identifier in running prose (not an `alltt`
+  block) can overflow the print build's right margin** (Phase 29 W3-1,
+  caught by the 300dpi print-PDF inspection, not by `pdftotext` or the web
+  build — a browser wraps plain text more forgivingly than xelatex's
+  paragraph breaker): a `\texttt{}` group with no interword glue (an
+  identifier's `\_`-escaped underscores don't count) has no legal TeX
+  line-break point, so one long identifier — or several packed onto one
+  line, as this appendix's register invites — can produce an unbroken run
+  wider than the text width. Fix: insert `\allowbreak{}` after selected
+  `\_`s inside the identifier
+  (`exists\_\allowbreak{}shared\_\allowbreak{}redundancy...`), a
+  zero-penalty break point with no visible hyphen (unlike `\-`). Apply
+  only to an identifier that actually overflows at build time, not as a
+  blanket rule on every long `\texttt{}`.
+- **Commit links** via
+  `\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/<sha>}{\texttt{<short-sha>}}`,
+  full-length SHA in the URL (GitHub also accepts an abbreviated prefix,
+  but the full form never risks an ambiguous/rotting short prefix), short
+  8-character form in the visible link text. Post-lift commits only (the
+  2026-05-13 move to a standalone repository rewrote earlier history).
+
+**Vocabulary gate exemption.** `lint.sh`'s checks 5a (banned words:
+brick/motive/producer(s)/stratum/strata/green-modulo) and 5b (phase
+self-description) both exempt `chapter/retrospective.tex` outright, the
+same style as `intro.tex`'s existing 5b-only exemption — see the checks'
+own header comments in `lint.sh` for the mechanics. This is not a loophole:
+the whole point of the register carve-out above is that this vocabulary is
+the appendix's mathematical content, not process leakage into the rest of
+the blueprint's reader-facing prose (which the gate still polices
+normally).

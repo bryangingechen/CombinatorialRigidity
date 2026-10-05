@@ -29,14 +29,14 @@ if ! command -v xelatex >/dev/null 2>&1; then
         export PATH="/Library/TeX/texbin:$PATH"
     else
         echo "verify.sh: xelatex not found on PATH and /Library/TeX/texbin/xelatex does not exist." >&2
-        echo "  See blueprint/CLAUDE.md *One-time setup* for installing BasicTeX (macOS) or your distro's xelatex package." >&2
+        echo "  See blueprint/SETUP-AND-PITFALLS.md *One-time setup* for installing BasicTeX (macOS) or your distro's xelatex package." >&2
         exit 1
     fi
 fi
 
 if [ ! -f "$SCRIPT_DIR/.venv/bin/activate" ]; then
     echo "verify.sh: blueprint/.venv not found." >&2
-    echo "  See blueprint/CLAUDE.md *One-time setup* for venv creation." >&2
+    echo "  See blueprint/SETUP-AND-PITFALLS.md *One-time setup* for venv creation." >&2
     exit 1
 fi
 

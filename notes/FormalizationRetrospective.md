@@ -66,7 +66,8 @@ convention-exception + register-carve-out write-up landing with that commit;
 (b) `lint.sh`'s vocabulary gate extended to exempt the appendix file (needs
 "motive", "producer", `Phase~N`, as `intro.tex` is exempted); (c) the
 commit-link `\href` mechanics above. All three landed with the appendix file
-itself; see `blueprint/CLAUDE.md` *The retrospective appendix* for the write-up.
+itself; see `blueprint/AUTHORING.md` *The retrospective appendix* for the write-up
+(moved there from `blueprint/CLAUDE.md` on 2026-10-05).
 
 ## Outline (taxonomy-ordered, settled W1, 2026-07-09)
 
