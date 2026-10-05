@@ -336,11 +336,6 @@ theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
--- `[DecidableEq β]` is unused, in the type and, since `pencil_conjecture_of_arms_pair` dropped it,
--- in the proof (hence both silencers). Dropping it changes the signature pinned by
--- `thm:pencil-conditional-realization-main-component` and named in `formalization.yaml`'s pencil
--- entry, so it waits for `40-simplify`'s `a2`, which deletes both (`notes/Phase40-simplify.md`).
-set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture from the two main-component statements**
 (`thm:pencil-conditional-realization-main-component`; Phase 39 PENCIL, L0a/L0b). Over an infinite
 field, given `X0Dist` and `X0Gen`, every multigraph on the whole ambient body set satisfies the
@@ -348,8 +343,7 @@ conditioned pair at `n = 3`. Assembles `pencilPair_of_X0` at both arms of
 `pencil_conjecture_of_arms_pair`'s reduction — the contraction and split arms feed it the same
 per-graph argument, since neither the two-edge-connectivity split nor `X0Dist`/`X0Gen` cares which
 arm supplied the induction hypothesis. No fresh edge label is used. -/
-@[nolint unusedArguments]
-theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (hdist : X0Dist K α β) (hgen : X0Gen K α β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G :=

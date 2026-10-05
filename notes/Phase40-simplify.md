@@ -1,15 +1,14 @@
 # Phase 40 cleanup round 4/5 — `40-simplify`, the deep simplification recon (work log)
 
-**Status:** in progress (opened 2026-10-04); Stop 2 answered 2026-10-04, the landings next.
-Round 4 of the five post-Phase-40 cleanup rounds. Their order, stops and the PI's decisions are in
-`notes/Cleanup40.md`, and `.claude/autopilot/queue.toml` is the authority for which rounds are
-done. The round is a read-only Opus recon over the pencil surface, looking for bigger
+**Status:** in progress (opened 2026-10-04); all 18 landings done 2026-10-04, task 11 (the close)
+next. Round 4 of the five post-Phase-40 cleanup rounds. Their order, stops and the PI's decisions
+are in `notes/Cleanup40.md`, and `.claude/autopilot/queue.toml` is the authority for which rounds
+are done. The round is a read-only Opus recon over the pencil surface, looking for bigger
 simplifications (`notes/Cleanup40.md` §2 *Round 4*), then the items the PI sanctions. Tasks 1–7
 wrote 63 verdicts (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the
 recommended package with `7d`'s chapter restated (*Autopilot: for the PI*), and task 9 sliced it
-into 18 landings, 10a–10r (8 Opus). 10a–10q landed 2026-10-04. Then 10r, then task 11 closes.
-**Next concrete task:** 10r (Sonnet, last; axioms harness): drop `[DecidableEq β]` off
-`pencil_conjecture` and the pinned theorems. Round manual: `CLEANUP.md`.
+into 18 landings, 10a–10r (8 Opus), all landed 2026-10-04.
+**Next concrete task:** task 11 (docs; Opus) closes the round. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -115,8 +114,14 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   `of_additiveContract`, still in `Contract.lean` (now importing `ContractAdditive`) beside
   `isX0Graph_induce_of_deficiency_two_eq_zero`; 10p's four unpinned names deleted, docstrings
   reworded. −354 net Lean lines (task 9 estimated −338).
+- **10r**, Lean only, the last landing: `[DecidableEq β]` dropped from `pencil_conjecture`
+  (`Statements.lean`) and `pencil_conjecture_of_X0` (`X0.lean`), with both comment blocks, both
+  `set_option linter.unusedDecidableInType false in` and the `@[nolint unusedArguments]`; the bare
+  term proof compiles (no `classical` needed, since `pencil_conjecture_of_arms_pair` already carries
+  no instance). No caller used the `@`/named-argument form. −13 net Lean lines. Axioms harness
+  re-run: 19 of 19 give `[propext, Classical.choice, Quot.sound]`.
 
-Next is 10r, then task 11 closes.
+Task 10 is done, all 18 landings in. Next is task 11, the close.
 
 **Verified at the open** (the Lean tree is `0b260626`'s and the blueprint `30e79461`'s; neither has
 changed since round 3's close):
@@ -229,7 +234,7 @@ verdicts.
   entry is under *Autopilot: for the PI*; the round waits on the PI.
 - [x] **9. S — slice the sanctioned items** (Opus, docs). The PI's answer is under *Autopilot*
   and *Decisions*, and archived in `notes/pencil/adjudications.md`; `c8a` moved to **PROSE**.
-- [ ] **10. B — the sanctioned items land.** One commit each, in this order, green at every
+- [x] **10. B — the sanctioned items land.** One commit each, in this order, green at every
   commit: whole-project `lake build` warning-clean and `lake lint` green; the blueprint gates
   (`blueprint/CLAUDE.md` *Static checks before commit*) on any TeX edit; and
   `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices* on a changed statement, an additive
@@ -295,9 +300,10 @@ verdicts.
     in *Current state*, 10p. Reword the surviving docstrings that name them: `ContractCurve.lean`'s
     header and four docstrings, and `Contract.lean`'s header. Landed 2026-10-04: −354 net Lean
     lines (*Current state*).
-  - [ ] **10r. `a2`** (Sonnet, last; axioms harness). `[DecidableEq β]` off `pencil_conjecture`
-    and the pinned theorems, by `classical`: the two sites left after 10g–10i. At
-    `pencil_conjecture_of_X0` this deletes 10g's `@[nolint unusedArguments]` too (*Decisions*).
+  - [x] **10r. `a2`** (Sonnet, last; axioms harness). `[DecidableEq β]` off `pencil_conjecture`
+    and the pinned theorems: the two sites left after 10g–10i. At `pencil_conjecture_of_X0` this
+    deletes 10g's `@[nolint unusedArguments]` too (*Decisions*). Landed 2026-10-04: the bare term
+    proof compiled, no `classical` needed (*Current state*).
 - [ ] **11. X — close the round** (`CLEANUP.md` *Workflow* rule 5; docs). Whole-project
   `lake build` and `lake lint` green. The axioms harness re-diffed against `formalization.yaml`
   and re-run with `lake lean`: 19 of 19 at the three standard axioms. The ROADMAP row reads ✓, and
@@ -328,33 +334,40 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10q landed; 10r is the last landing.** The smallest next commit is **10r** (Sonnet, last;
-axioms harness): drop `[DecidableEq β]` off `pencil_conjecture` and the pinned theorems by
-`classical`, at the two sites left after 10g–10i (task 10's entry). After 10r, task 11 closes the
-round.
+**All 18 landings are in (10a–10r); task 10 is done.** The smallest next commit is **task 11**
+(docs; Opus), which closes the round (`CLEANUP.md` *Workflow* rule 5; the checklist item has the
+full gate list). Concretely:
+- Whole-project `lake build` and `lake lint` green — already verified at 10r (*Current state*);
+  re-run once more at the close, since task 11's own gate names it explicitly.
+- The axioms harness re-diffed against `formalization.yaml`'s 19 `declaration:`/`file:` fields and
+  re-run with `lake lean` — also already clean at 10r (*Current state*); re-run once more.
+- ROADMAP's row for this round flips to ✓ and the §40 planning section re-thins;
+  `.claude/autopilot/queue.toml`'s `40-simplify` row gets `done = true` (nothing else there
+  changes).
+- The status surfaces (README, home_page, intro.tex, `formalization.yaml`) name round 5,
+  `40-docs`, as next.
+- *Moved to a later round* mirrors into `notes/Cleanup40.md` §2 *Round 5*, or ROADMAP's **PROSE**
+  bullet (task 3's `c8a` is already there — *Moved to a later round* above).
+- `notes/Cleanup40.md`'s own `**Status:**` header gains round 4's close date, paralleling how it
+  already records rounds 1–3's open/close dates (its line 8).
+- Gate commands: `lake build`, `lake lint`, then `lake lean scratch/40-simplify/Axioms.lean`
+  (never `lake env lean`) with `LAKE_CACHE_DIR` set, each in the foreground with a timeout.
 
-**For 10r** (the coordinator's read at `91755996`): the two sites are
-`MainComponent/Statements.lean`'s `pencil_conjecture` (~133; a comment block and
-`set_option linter.unusedDecidableInType false in` above it) and `X0.lean`'s
-`pencil_conjecture_of_X0` (~352; a comment block, the same `set_option` and
-`@[nolint unusedArguments]`). All three silencers and both comment blocks go. Neither
-`formalization.yaml` nor the TeX mentions `DecidableEq`. Task 2's spike
-`scratch/40-simplify/2/Signatures.lean` has not been re-run since 10g–10i.
 **For task 11's report to the PI**, two kept items: `cor:pencil-flat-x0` and
-`span_supportExtensor_eq_top_of_linearIndependent`, each pinned with no caller (*Decisions*).
+`span_supportExtensor_eq_top_of_linearIndependent`, each pinned with no caller (*Decisions*). Task
+11 is the round's last commit — once it lands, round 5 (`40-docs`) is the next concrete task
+across the whole project, per `notes/Cleanup40.md`.
 
 ## Decisions made during this round
 
-- **2026-10-04, the open: the granularity.** Seven recon tasks (the mechanical map first, then the
-  two blueprint-region questions, then the three deeper ones), the write-up its own commit; the
-  landings sliced after Stop 2. Rationale: a task per input over-pays the per-dispatch reading cost.
-- **Probes stay in scratch.** No recon task commits a script. Its figures are tagged *measured,
-  script not retained* (`HARNESS.md` *Reproducibility*), as rounds 1 and 3 did for liveness. No
-  deletion rests on such a figure: a sanctioned retirement is re-verified at landing by trial
-  deletion and a whole-project build (`CLEANUP.md` *Liveness*).
-- **The landing order is set at task 9, not now.** It depends on what the PI sanctions, and on
-  task 1's map: a retired cluster can moot another verdict, as retiring `TwoCut.lean` would moot
-  `b2` and half of `b1`.
+- **2026-10-04, the open: the granularity.** Seven recon tasks (map, two blueprint-region
+  questions, three deeper ones), the write-up its own commit, landings sliced after Stop 2 —
+  a task per input over-pays the per-dispatch reading cost.
+- **Probes stay in scratch, tagged *measured, script not retained*** (`HARNESS.md`
+  *Reproducibility*); no deletion rests on one alone — each sanctioned retirement is re-verified
+  at landing by trial deletion and a whole-project build (`CLEANUP.md` *Liveness*).
+- **The landing order was set at task 9** from the PI's sanction and task 1's map (a retired
+  cluster moots another verdict, as retiring `TwoCut.lean` mooted `b2` and half of `b1`).
 - **2026-10-04, task 1: a pinned cluster goes to the task that reads its node.** Task 2 takes those
   the reduction layer `\uses`; task 3 takes the rest outside the ears.
 - **2026-10-04, task 4: the verdicts move to their own file** (the coordinator's decision), to stay
@@ -364,21 +377,19 @@ round.
   except 5. For 5, I think we should restate if it simplifies the exposition." Then: "OK, ii looks
   good and let's update the adjudications." The default stands with `7d` (ii), at the corrected
   rungs; archived in `notes/pencil/adjudications.md`.
-- **`7d` (ii): restating simplifies** (the reading the PI accepted). KT's Lemma 6.3 is one lemma,
-  for any proper rigid subgraph; its proof takes realizations of the rigid piece (KT Lemma 3.5) and
-  of the contracted graph (KT (6.1)) independently and joins them by the block bound (pp. 673–675):
-  CONTRACT-A's shape. The chapter runs the curve-and-kernel argument twice, A's section as R's
-  variant. As A's corollary R needs `cor:pencil-flat-x0` at `H`, `def₃ ≤ def₂ = 0` and `def₂`'s
-  conservation. Stop 2's "(i) keeps KT's order" undersold (ii).
+- **`7d` (ii): restating simplifies** (the reading the PI accepted). KT's Lemma 6.3 takes
+  realizations of the rigid piece (KT Lemma 3.5) and of the contracted graph (KT (6.1))
+  independently and joins them by the block bound (pp. 673–675) — CONTRACT-A's shape, which the
+  old chapter ran twice. As A's corollary, R needs `cor:pencil-flat-x0` at `H`, `def₃ ≤ def₂ = 0`
+  and `def₂`'s conservation; Stop 2's "(i) keeps KT's order" undersold (ii).
 
-- **2026-10-04, 10e: `span_supportExtensor_eq_top_of_linearIndependent` stays pinned, now with
-  no caller** (the coordinator's call), on task 1's (b) precedent that a caller-less clause pin
-  stays; the `k ≥ 5` proof still cites the clause it pins.
+- **2026-10-04, 10e: `span_supportExtensor_eq_top_of_linearIndependent` stays pinned, now with no
+  caller** (the coordinator's call, task 1's (b) precedent); the `k ≥ 5` proof still cites the
+  clause it pins.
 
-- **2026-10-04, 10g: two `@[nolint unusedArguments]`, deferred by sequencing.** Once
-  `_of_arms_pair` dropped `[DecidableEq β]`, the binder became unused in the proofs of
-  `pencil_conjecture_of_X0` and `_hcontract_hK_hbareSplit`, each marked with a comment naming the
-  item that deletes it: 10r at `_of_X0`; the other left with `Escape.lean` in 10i's deletion.
+- **2026-10-04, 10g: two `@[nolint unusedArguments]`, deferred by sequencing, now resolved.** Both
+  arose when `_of_arms_pair` dropped `[DecidableEq β]`: `Escape.lean`'s went with 10i's deletion;
+  `pencil_conjecture_of_X0`'s went with 10r (*Current state*).
 
 - **2026-10-04, 10p: `cor:pencil-flat-x0` stays, now with no in-edge** (the coordinator's call).
   Its pin `Graph.x0Attains_of_finrank_liftingSpace_eq_three` had no Lean caller before 10p, and

@@ -124,13 +124,8 @@ theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
   fun G hS hV _ hfeas =>
     (pencilPair_of_nonempty G (Set.nonempty_of_ncard_ne_zero (by omega))).1 hS hfeas
 
--- `[DecidableEq β]` is unused in the type; it is only threaded to `pencil_conjecture_of_X0`. The
--- linter's fix (drop it, `by classical exact` for the term) would change a headline signature
--- (`formalization.yaml`'s pencil entry, `thm:pencil-conjecture`), so it is a `40-simplify`
--- candidate (`notes/Phase40-cleanup.md`), not applied here.
-set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture** (carrying neither statement): `pencil_conjecture_of_X0` verbatim. -/
-theorem pencil_conjecture [Nonempty α] [Finite α] [Finite β] [DecidableEq β] [Infinite K]
+theorem pencil_conjecture [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (G : Graph α β) (hspan : V(G) = Set.univ) : PencilPair K 3 G :=
   pencil_conjecture_of_X0 x0Dist x0Gen G hspan
 
