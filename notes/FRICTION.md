@@ -554,14 +554,13 @@ to be re-derived by re-reading entries later.
   calibration narratives to `blueprint/DESIGN.md`, leaving each rule sentence plus a one-line
   pointer (the `PHASE-BOUNDARIES.md` / `REFS.md` extraction pattern). Not applied at the close: a
   CLAUDE.md-suite edit is the user's to direct, not a closing dispatch's.
-- **Status:** in progress, at the PI's request (2026-10-05): a trim of the whole suite, one file
-  per commit, extracting to read-on-demand references. `blueprint/CLAUDE.md` 669 → 335 lines:
-  the retrospective block to `AUTHORING.md`, the calibration narratives to `blueprint/DESIGN.md`
-  *Static-check calibrations* or to the root `DESIGN.md` postmortems that already held them,
-  each rule kept. `CombinatorialRigidity/CLAUDE.md` 456 → 318: compressed in place, every
-  rule and anchored heading kept. Root `CLAUDE.md` 381 → 264: the citation section's detail
-  (scan, verification bar, cross-check references) to `REFS.md`, the rest compressed in place.
-  Next: `notes/CLAUDE.md`.
+- **Status:** resolved 2026-10-05, at the PI's request: the whole suite trimmed, 1 717 → 1 090
+  lines, one file per commit, by extraction to read-on-demand references with every rule and
+  every cited heading kept. `blueprint/CLAUDE.md` 669 → 335 (the retrospective block to
+  `AUTHORING.md`; the calibration narratives to `blueprint/DESIGN.md` *Static-check
+  calibrations*, or to the root `DESIGN.md` postmortems that already held them); root
+  `CLAUDE.md` 381 → 264 (the citation detail to `REFS.md`); `CombinatorialRigidity/CLAUDE.md`
+  456 → 319 and `notes/CLAUDE.md` 212 → 172 (compressed in place).
 
 ### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
 - **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).

@@ -271,7 +271,8 @@ post-program phases*). Nothing carried over, and no task of this round is left o
   open `[process]` entry on the largest file, `blueprint/CLAUDE.md` (extract two long-form blocks
   to read-on-demand references), said 1 695: the Phase-40a close's figure, stated as current. A
   stale number, so this close updated it to 1 711, dated, keeping the 1 695. Whether and when to
-  trim is the PI's (a later cleanup round, or a harness review, as the entry says).
+  trim is the PI's (a later cleanup round, or a harness review, as the entry says). **Done
+  2026-10-05** at the PI's request: trimmed to 1 090 lines (the FRICTION entry, resolved).
 - **Task 15's grooming** promoted F44–F46 and F1 (the playbook, `CLEANUP.md` §D and
   `notes/CLAUDE.md`) and left two findings open (`notes/dispatch-log.md` *Findings*):
   - **F47**: under a "follow precedent" answer the coordinator settled fifteen recon-flagged calls
