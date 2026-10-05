@@ -111,17 +111,10 @@ gates; the NO-GOs and the items not sanctioned are one-line verdicts under *Deci
   `Graph.finrank_ker_contractLiftingMatrix_zero_le`,
   `Graph.finrank_span_rigidityRows_induce_contractHeight` (`Contract.lean`) and
   `Graph.finrank_span_rigidityRows_ofNormals_flat_of_finrank_eq_three` (`Flat.lean`).
-- **10q**, Lean only: `Graph.X0Attains.of_rigidContract` re-proved from
-  `Graph.X0Attains.of_additiveContract` (the verified route at
-  `scratch/40-simplify/7/ContractR.lean`), 222 → 18 lines (signature through proof), and the four
-  names 10p unpinned deleted (`Contract.lean`'s three, `Flat.lean`'s one, with section headers).
-  `Contract.lean`'s import moves from `ContractCurve` to `ContractAdditive` (the scope-pin: it
-  keeps `isX0Graph_induce_of_deficiency_two_eq_zero`, which `ContractAdditive` doesn't carry);
-  `Coverage.lean` drops its now-redundant `ContractAdditive` import. Docstrings reworded in
-  `Contract.lean` (header, `of_rigidContract`), `ContractCurve.lean` (header + four docstrings)
-  and `ContractAdditive.lean` (header + `of_additiveContract`'s docstring) to name no deleted
-  declaration and to read CONTRACT-R as CONTRACT-A's corollary. −354 net Lean lines (task 9
-  estimated −338); axioms spot check on `of_rigidContract` and `pencil_conjecture`, both 3 of 3.
+- **10q**, Lean only: `Graph.X0Attains.of_rigidContract` an 18-line corollary of
+  `of_additiveContract`, still in `Contract.lean` (now importing `ContractAdditive`) beside
+  `isX0Graph_induce_of_deficiency_two_eq_zero`; 10p's four unpinned names deleted, docstrings
+  reworded. −354 net Lean lines (task 9 estimated −338).
 
 Next is 10r, then task 11 closes.
 
@@ -335,18 +328,18 @@ one-line reason. The same line goes into the target's plan section in the same c
 
 ## Hand-off / next phase
 
-**10a–10q landed; 10r is the last landing.** `Graph.X0Attains.of_rigidContract` is now an
-18-line corollary of `Graph.X0Attains.of_additiveContract` in `Contract.lean` (222 → 18 lines,
-signature through proof; the scope-pin kept the corollary in `Contract.lean`, not
-`ContractAdditive.lean`, since it needs `isX0Graph_induce_of_deficiency_two_eq_zero`), and the
-four names 10p unpinned are deleted (*Current state*, 10q). The smallest next commit is **10r**
-(Sonnet, last; axioms harness): drop `[DecidableEq β]` off `pencil_conjecture` and the pinned
-theorems by `classical`, at the two sites left after 10g–10i; at `pencil_conjecture_of_X0` this
-also deletes 10g's `@[nolint unusedArguments]` comment (*Decisions*). After 10r, task 11 closes
-the round.
+**10a–10q landed; 10r is the last landing.** The smallest next commit is **10r** (Sonnet, last;
+axioms harness): drop `[DecidableEq β]` off `pencil_conjecture` and the pinned theorems by
+`classical`, at the two sites left after 10g–10i (task 10's entry). After 10r, task 11 closes the
+round.
 
-**For 10r**, task 2's spike `scratch/40-simplify/2/Signatures.lean` has not been re-run since
-10g–10i (the Lean tree has moved since; check it with `lake lean` before transcribing).
+**For 10r** (the coordinator's read at `91755996`): the two sites are
+`MainComponent/Statements.lean`'s `pencil_conjecture` (~133; a comment block and
+`set_option linter.unusedDecidableInType false in` above it) and `X0.lean`'s
+`pencil_conjecture_of_X0` (~352; a comment block, the same `set_option` and
+`@[nolint unusedArguments]`). All three silencers and both comment blocks go. Neither
+`formalization.yaml` nor the TeX mentions `DecidableEq`. Task 2's spike
+`scratch/40-simplify/2/Signatures.lean` has not been re-run since 10g–10i.
 **For task 11's report to the PI**, two kept items: `cor:pencil-flat-x0` and
 `span_supportExtensor_eq_top_of_linearIndependent`, each pinned with no caller (*Decisions*).
 

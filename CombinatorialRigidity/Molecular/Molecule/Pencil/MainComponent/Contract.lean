@@ -18,8 +18,8 @@ A `def₂`-rigid core also has `def₃(H) = 0` (`def₃ ≤ def₂` by
 flat case (`Graph.x0Attains_of_deficiency_two_eq_three`, FLAT, `cor:pencil-jj-flat`); contracting
 at a core conserves `def₂` (`Graph.rigidContract_deficiency_eq`), so
 `def₂(H) + def₂(G/H) = def₂(G)` is CONTRACT-A's additivity hypothesis for free, and
-`Graph.X0Attains.of_additiveContract` applies — Katoh–Tanigawa 2011 §6.2, Lemma 6.3 is the source
-for both steps; this one is the case of its proof where the rigid piece is flat.
+`Graph.X0Attains.of_additiveContract` applies. Both steps are after Katoh–Tanigawa 2011 §6.2,
+Lemma 6.3, one lemma for any proper rigid subgraph, whose proof has CONTRACT-A's shape.
 
 The rescaled lifting system, the curve, and CONTRACT-A's own argument through them (which this
 step's retired curve proof duplicated) are in `ContractAdditive.lean` and `ContractCurve.lean`.
@@ -58,7 +58,7 @@ theorem _root_.Graph.isX0Graph_induce_of_deficiency_two_eq_zero [Finite α] [Fin
 /-! ## The assembly: contraction at a `def₂`-rigid core -/
 
 /-- **Contraction at a `def₂`-rigid core** (`cor:pencil-x0-contract-rigid`; (MC-59)(d) with
-(MC-39); Katoh–Tanigawa 2011 §6.2, Lemma 6.3, the flat case). Let `K` be infinite, let `G` satisfy
+(MC-39); after Katoh–Tanigawa 2011 §6.2, Lemma 6.3). Let `K` be infinite, let `G` satisfy
 the standing hypotheses and be 2-edge-connected, and let `W ⊊ V(G)`, `|W| ≥ 2`, induce a core
 `H = G[W]` with `def₂(H) = 0` and no outside body adjacent to two core bodies (`G/H` simple). If
 `X₀(G/H)` attains, `X₀(G)` attains.
