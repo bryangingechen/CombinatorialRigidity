@@ -1255,8 +1255,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **PROSE** — a prose round over the rest of the blueprint (the PI, 2026-10-03: "at some point we
   should also look into doing a rewrite round of the rest of the blueprint too"). It brings the
   chapters outside `pencil.tex` and `main-component.tex` to the register that round 3,
-  `40-exposition`, settled: `blueprint/AUTHORING.md`'s clauses of 2026-10-03 now carry all six of
-  the round's defaults (the exemplar is `notes/Phase40-exposition-exemplar.md`). It also audits
+  `40-exposition`, settled: `blueprint/AUTHORING.md` now carries all six of the round's defaults,
+  in its clauses of 2026-10-03 and its older principles B and D (the exemplar is
+  `notes/Phase40-exposition-exemplar.md`). It also audits
   for nodes that bundle unrelated
   results, which the PI expects in earlier chapters. That audit also takes round 4's `c8a`: seven
   `pencil.tex`/`main-component.tex` nodes with four or more pins, mostly one pin per clause
