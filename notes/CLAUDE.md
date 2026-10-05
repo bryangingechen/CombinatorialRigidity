@@ -111,6 +111,13 @@ since nothing gates it.
   an in-file arc index rather than shorter. Compression then costs repointing
   every anchor in one commit — a deliberate round, never a side errand.
 
+**Count again in the compressing commit itself**, with the heading or
+sub-item each anchor names: an earlier count (an open's inventory, a
+recon's estimate) is a plan, not the contract. The Phase-29 compression
+caught a recon's undercount this way before any anchor broke, and
+`40-docs`' re-counts of `Phase40-design.md` (tasks 8 and 9, one per
+commit) repointed nothing (dispatch-log F1).
+
 A frozen design doc still accepts **appended** new arcs and header/index
 edits; what it does not accept is shrinking, deleting or renaming an anchored
 heading or sub-item.

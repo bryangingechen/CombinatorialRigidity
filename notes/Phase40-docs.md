@@ -6,8 +6,8 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–14 landed 2026-10-04.
-**Next concrete task:** task 15 (G), the dispatch-log grooming — the coordinator's own commit.
+planned stop. The full task list below was populated at the open; tasks 1–15 landed 2026-10-04/05.
+**Next concrete task:** task 17 (X), the close (Opus), which also discharges task 16 (P).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,8 +17,8 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next: task 15 (G)**, the dispatch-log grooming — the coordinator's own commit. Of the 17 tasks,
-1–14 are done (2026-10-04); each is one or two lines in the checklist below, not duplicated here.
+**Next: task 17 (X)**, the close (Opus); its report discharges task 16 (P). Of the 17 tasks,
+1–15 are done (2026-10-04/05); each is one or two lines in the checklist below, not duplicated here.
 Task 16 (P) has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
@@ -176,16 +176,14 @@ section titles are the stable reference.
 
 ### The coordinator's grooming, and the close
 
-- [ ] **15. G — the dispatch log's Phase 40 grooming** (the coordinator's own commit; a builder
-  does not edit the log). 45 rows dated 2026-09-25 to 2026-10-04 (one from Phase 39's close, 34
-  from Phase 40, 10 from rounds 1–4) were never distilled: Phase 40's close left that to the
-  coordinator (`notes/Phase40p.md` *Decisions*), and *Findings* ends at F43. Distill the recurring
-  exceptions into new findings (the rows name gate-invisible defects caught in verification,
-  coordinator-spec defects, recon calls settled under "follow precedent", and Sonnet prose tasks
-  that needed Opus correctives), prune what is distilled, and settle F1: tasks 8–9 are the third
-  `*-design.md` compression, its trigger, so this task follows them. A promotion into
-  `.claude/commands/coordinate-phase.md` is the coordinator's; one beyond its remit goes to the
-  close's *For the PI*.
+- [x] **15. G — the dispatch log's Phase 40 grooming** (the coordinator; the commit after `e5b8eaee`).
+  48 rows (2026-09-25 to 10-04, this round's three included) distilled into F44–F48 and pruned to
+  git history, with a profile; F1 settled, promoted to `notes/CLAUDE.md`. Promoted: F44–F46 into
+  the playbook (*Verification tiers*, the docs-only P calibration, the `hygiene` block, step 3
+  *Resume and land*), F45 also into `CLEANUP.md` §D. For the close's *For the PI*: F47 (the
+  "follow precedent" settlements, a possible change to when the PI is asked) and F48 (two
+  missing gates: proof-level `\leanok` in `blueprint/lint.sh`, cleanup-round logs in
+  `notes/check-phase-note.py`).
 - [ ] **16. P — `.claude/autopilot/system-prompt.md`'s round pointers** (no commit of its own:
   task 17's report discharges it). Line 60 sends a cleanup round's statement-changing finding to
   "a candidate for `40-simplify`", which is closed; line 46 names the rounds' planned stops. Not
@@ -238,26 +236,18 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 15 (G)**, the dispatch-log grooming — the coordinator's own commit (a builder does
-not edit `notes/dispatch-log.md`); then task 16 (P, no commit of its own) and the close (17).
+**Next: task 17 (X)**, the close (Opus), as its checklist entry lists; its *For the PI* report
+discharges task 16 (P) and carries task 15's two open findings, F47 and F48.
 
 ## Decisions made during this round
 
-- **The granularity** (the open): 17 tasks, one commit each. Lifts go one commit per target
-  manual, the design doc in two (§3, then the rest), and the sub-notes in four groups of 371–473
-  lines.
-- **The order** (the open): the surfaces first, as they are independent. Lifts before the archive
-  sweep, since a lifted `[idiom]` can become archive-ready, and before the compressions, so that
-  what is lifted is compressed after. The grooming after the design doc, whose re-derived anchor
-  inventory settles F1.
-- **Homes** (the open): a lesson goes to its content type's canonical home (`notes/CLAUDE.md`
-  *One canonical home*), not only the plan's three manuals. Cleanup-round procedure is
-  `CLEANUP.md`'s, the close's checks `PHASE-BOUNDARIES.md`'s, blueprint conventions
-  `blueprint/AUTHORING.md`'s; round 3's promotion of its defaults (e) and (f) there is the
-  precedent.
-- **Dispositions** (the open, by the test): compress the design doc (9 Lean anchors), all 16
-  sub-notes (6 or fewer each) and the round-1 log; freeze the exemplar and the verdicts; leave the
-  rest, for the reasons in the inventory.
-- **`.claude/autopilot/system-prompt.md` is not edited** (the coordinator's adjudication at the
-  open): the PI's rules file, written only at the PI's setup session. Until the close, a
-  statement-changing finding goes to *Candidates for the PI*.
+- **Granularity and order** (the open): 17 one-commit tasks; the surfaces first, the lifts before
+  the archive sweep and the compressions that read the same notes, the grooming after the design
+  doc.
+- **Homes** (the open): each lesson to its content type's canonical home (`notes/CLAUDE.md` *One
+  canonical home*): cleanup-round procedure to `CLEANUP.md`, the close's checks to
+  `PHASE-BOUNDARIES.md`, blueprint conventions to `blueprint/AUTHORING.md`.
+- **Dispositions** (the open, by the anchor test): compress the design doc, the 16 sub-notes and
+  the round-1 log; freeze the exemplar and the verdicts; leave the rest (the inventory).
+- **`.claude/autopilot/system-prompt.md` is not edited** (the coordinator's call at the open): it
+  is the PI's rules file; a statement-changing finding goes to *Candidates for the PI*.

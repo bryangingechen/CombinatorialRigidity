@@ -128,7 +128,10 @@ first). Three calibrations that repeatedly bit:
 
 - *Docs-only is not automatically P=1*: prose describing an **unbuilt
   argument** (red-node proofs, deferred-route accounts) takes its P
-  from the math content, P ≥ 2.
+  from the math content, P ≥ 2. So does connective prose that makes
+  **cross-section mathematical claims** about built results: rate P by
+  those claims (`40-exposition`: two Sonnet slices needed Opus
+  correctives, then 22 Opus slices ran clean; dispatch-log F44).
 - *A "needs the X-variant of landed lemma Y" flag is P ≥ 2, usually
   P = 3* — it names a genuinely-new sibling, unless a grep confirms
   the variant already exists.
@@ -244,7 +247,8 @@ sonnet and all escalation retries), `scope-pin` (exact file list +
 target signatures), `shape-anchor` (the primary-source page/wording
 to anchor a recon against, plus a required compiler witness in the
 deliverable), `hygiene` (tree-wide deleted-name checklist for
-deletion/retirement slices), `adjudication` (a user decision from
+deletion/retirement slices, with the keep list beside the delete
+list, F45), `adjudication` (a user decision from
 this session passed VERBATIM — it overrides stale phase-note text
 where they conflict, and the dispatch transcribes it into the phase
 docs in the same commit; Phase 29's S1-revision and D1-deviation
@@ -270,7 +274,13 @@ The step-4/5 checks below always run. On top of them, by rung:
   gates can't catch.
 - **below top rung (sonnet builds):** read the **full diff** (not
   `--stat`) before the next dispatch; re-run `lake lint`; sorry-grep
-  the touched `.lean` files.
+  the touched `.lean` files. Read every new docstring and prose
+  sentence against the statement it describes: on a transcription
+  slice that prose is the one part no gate checks (dispatch-log F44).
+  Check each claim the diff makes about the tree's state ("deleted by
+  X", "unpinned", "stays", "all N in commit Y") per name at HEAD, with
+  `git log -S'<name>'` and `git show --stat --diff-filter=D <sha>`
+  (F45).
 - **probe (haiku):** re-run every gate the return names; treat all
   attestations as unverified.
 - **the coordinator's own artifacts** — specs, shaping blocks,
@@ -551,10 +561,12 @@ CLAUDE.md at phase close.
    Resuming also skips the coordinator's re-transcription into builder
    prompts, the loop's largest defect source (dispatch-log profile).
    The cost is the recon's context, re-read on every turn: Phase 40c's
-   build half paid $37, mostly cache reads over 400–624k tokens. When
-   that context is already large and what remains is transcription, a
-   single fresh builder handed the spike file is the untried
-   alternative.
+   build half paid $37, mostly cache reads over 400–624k tokens. So
+   when that context is already large (past ~400k) and what remains is
+   transcription, hand the spike file to a fresh builder instead, with
+   the recon's verdict and the PI's decisions in a scratch file: seven
+   Phase-40 arcs ran this way with zero Lean rework, at 240–440k per
+   build (dispatch-log F46).
 4. Verify the return (`CronDelete` the keepalive job first):
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
      `git branch --show-current`. HEAD advanced past the noted sha;

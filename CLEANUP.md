@@ -248,6 +248,14 @@ has gone unlifted:
 - **Compress** the multi-session plan to a commit-log pointer + a
   brief summary once the phase is closed (the plan stops being
   plan-relevant the moment the phase ships).
+- **Re-verify a source's in-tree claims at HEAD.** A lift or a
+  compression copies text written before later rounds. Each claim it
+  keeps about the tree's state (a declaration exists, was deleted or
+  renamed by commit X, "stays as …", all N in commit Y) is checked per
+  name with `git log -S'<name>'` and `git show --stat --diff-filter=D
+  <sha>`, and a multi-commit outcome cites each commit. Three of
+  `40-docs`' fourteen builder tasks copied such claims wrongly
+  (`notes/dispatch-log.md` F45).
 - **Sweep** `notes/FRICTION.md` — `[resolved]`-tagged entries are
   archive-ready by construction (the `[resolved]` vs `[idiom]` split
   records indexed-vs-inline at filing time), so migrating them to
