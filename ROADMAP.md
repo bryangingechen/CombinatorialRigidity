@@ -1229,8 +1229,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
   `blueprint/AUTHORING.md`, landed 2026-10-04; task 6, FRICTION's `[resolved]` entries archived and
   its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
-  deleted or changed, also landed 2026-10-04; next, task 8, `notes/Phase40-design.md` §3). It
-  closes unattended. Rounds 1,
+  deleted or changed, also landed 2026-10-04; task 8, `notes/Phase40-design.md` §3 compressed to
+  verdicts, also landed 2026-10-04; next, task 9, the rest of that design doc). It closes
+  unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).

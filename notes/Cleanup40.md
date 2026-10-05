@@ -18,7 +18,8 @@ user-facing surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase ration
 cleanup-round procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
 `blueprint/AUTHORING.md`, landed 2026-10-04; task 6, FRICTION's `[resolved]` entries archived and
 its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
-deleted or changed, also landed 2026-10-04; next, task 8, `notes/Phase40-design.md` §3).
+deleted or changed, also landed 2026-10-04; task 8, `notes/Phase40-design.md` §3 compressed to
+verdicts, also landed 2026-10-04; next, task 9, the rest of that design doc).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

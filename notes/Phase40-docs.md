@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–7 landed 2026-10-04.
-**Next concrete task:** task 8 (C1), `notes/Phase40-design.md` §3 (Opus). Round manual:
-`CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–8 landed 2026-10-04.
+**Next concrete task:** task 9 (C2), the rest of `notes/Phase40-design.md` (Sonnet). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 8 (C1)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 9 (C2)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -53,8 +53,11 @@ parenthetical naming the surviving rename or the `40-simplify` task/sha that del
 `f8c6b0d4`, 10i `1e7d78a9`, 10b `c48d323e`, 10o `919486d3`; corrected by the coordinator next); the nine GOLF/QUIRKS worked cases get
 the same, by name, none renumbered; `blueprint/SETUP-AND-PITFALLS.md` 81–83 gets one line noting
 10h moved the notes it describes as left. A grep for all 124 deleted/renamed names and the six
-deleted files over the surfaces found no site the open's inventory missed). Task 15 (G)
-is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
+deleted files over the surfaces found no site the open's inventory missed). Task 8 (C1) is done
+(2026-10-04: design §3 from 928 lines to 553, every heading verbatim, each tracked item a cited
+verdict, the Lean it names brought to HEAD; its anchor inventory re-derived before the cut and
+walked after it, nothing repointed). Task 15 (G) is the coordinator's own commit, and task 16 (P)
+has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -300,33 +303,36 @@ section titles are the stable reference.
 
 ### The compressions (after the lifts)
 
-- [ ] **8. C1 — `notes/Phase40-design.md` §3, the layer plan and proof map** (Opus: what is
-  settled is a judgment, and most anchors land here). Lines 114–1041; STEPS alone is 483 lines.
-  Collapse each closed layer's recon arcs, plan tables and tracked-item lists to cited verdicts,
-  leaving the blow-by-blow to git. Preserve:
-  - the headings and codes the anchors name: §3, SPINE2, CARRIER, FLAT, BRIDGE, STEPS (with SHORT
-    in it), COVERAGE, MOTIVES and *The blueprint chapter*;
-  - the sub-items cited by name: STEPS' *CHAIN done*, *SHORT done*, *SPLITOFF done* and
-    *CONTRACT-A done* (`notes/BlueprintExposition.md`, `notes/pencil/adjudications.md`); STEPS'
-    *Tracked todo, carried past 40f's close (PI decision 2…)* (`ContractCurve.lean` 83);
-    COVERAGE's departures D1–D3 (`BlueprintExposition.md`) and its *Lean reuse*; the PI's dated
-    sub-phase calls;
-  - the Lean anchors (the table above), every source citation, and each (MC-…) label a verdict
-    needs.
-
-  Fix: STEPS' "the open FRICTION entry *The three-body step repeats…*", resolved in round 1 and
-  archived by task 6.
+- [x] **8. C1 — `notes/Phase40-design.md` §3, the layer plan and proof map** (Opus; landed
+  2026-10-04). §3 went from 928 lines to 553 (10 852 words to 6 285), the doc from 1 470 to 1 096.
+  Every heading stays verbatim, and so do the done paragraphs (*CUT/BRIDGE* to *CONTRACT-A done*,
+  the routes the sub-notes and `BlueprintExposition.md` point at), the proof-map tables, the step
+  contract, *The provisional grouping* with the PI's dated calls, COVERAGE's numbered sub-phases,
+  D1–D4 and *Lean reuse*, and every source citation. Each tracked item is now its verdict: paid by
+  round 1 (task, sha), or left by round 3's call sanctioned at round 4's Stop 2. Brought to HEAD,
+  each name grepped and each deletion's commit found by `git log -S`: CONTRACT-R as CONTRACT-A's
+  corollary and the merged contraction section (10p `993b9e74`, 10q `91755996`); `TwoCut.lean`,
+  `deficiency_eq_of_vertexTwoCut`, `jointMotions`, `weldedRank` (10b `c48d323e`);
+  `MaximalChain.lean` and two Phase 39 lemmas (10i `1e7d78a9`);
+  `noRigid_of_simple_of_ncard_eq_three` (10j `8f297c7d`); `rem:pencil-hinge-affine` (round 3,
+  `a5f782a5`). Fixed: the FRICTION pointer, now `notes/FRICTION-archive.md`; the header's size
+  sentence (9 Lean anchors). Dropped labels: (MC-49), (MC-88), (MC-120), which no verdict needs.
+  Anchors: the 6 Lean ones into §3 and every non-Lean one resolve; none repointed.
 - [ ] **9. C2 — `notes/Phase40-design.md`, the rest** (Sonnet). The header, §1–§2, §4–§7 and the
-  appendices: lines 1–113 and 1042–1472. Preserve §1 (`X0.lean` 14), §2, §4 (task 3's entries as
+  appendices: lines 1–114 and, since task 8, 668–1096. Every "§3 …" pointer in them must still
+  resolve to §3 as task 8 left it. Preserve §1 (`X0.lean` 14), §2, §4 (task 3's entries as
   pointers) and §5. §6, the retired fallback, cited about 18 times (`notes/pencil/adjudications.md`,
   the verdicts, ROADMAP, the two attack `state.md`s, `notes/Phase40p.md`, `W4-reopen.md`), becomes
   one verdict paragraph. §7, the carried index (about 18), which round 4 marked paid item by item,
   keeps one line per item. *Appendix — the reusable second-reader brief* stays verbatim (task 3).
   *Appendix — the STEPS recon's tracked spike* (`ContractCurve.lean` 1056, `notes/Phase40e.md`)
   keeps its heading, provenance and where each of the three pieces landed (all three did); the
-  140-line verbatim spike goes to git. Fix: the header's "11 live Lean anchors" (9 at the open;
-  re-count) and its size; §5's "Do not: edit `hK`, `hbareSplit`, … which stay as conditional
-  theorems" (round 4 retired them); the appendix's `lake env lean` re-run recipe, if it stays.
+  140-line verbatim spike goes to git. Fix: the header (task 8 made its size sentence true for §3's
+  cut, with the 9 Lean anchors; re-count and re-state after this cut); §5's "Do not: edit `hK`,
+  `hbareSplit`, … which stay as conditional theorems" (round 4 retired them); §7's "§3's *There is
+  no landed cut-vertex deficiency law* note", a title §3 no longer has (it is *The cut-vertex
+  deficiency law landed in 40e*, under STEPS); the appendix's `lake env lean` re-run recipe, if it
+  stays.
 - [ ] **10. C3 — `notes/Phase40a.md`–`Phase40d.md`** (Sonnet; 371 lines). Make each the archive
   `notes/CLAUDE.md` *Forward-weighted note* describes: a **Status** line, one *Current state*
   paragraph (what landed, where), a *Hand-off* naming the next sub-phase, and *Decisions made* as
@@ -429,9 +435,10 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 8 (C1)**, `notes/Phase40-design.md` §3, the layer plan and proof map (Opus).
-Then the rest of the compressions (9–14; task 9 keeps design §4's and §5's *Promoted to
-`DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and the close (17).
+**Next commit: task 9 (C2)**, the rest of `notes/Phase40-design.md`: the header, §1–§2, §4–§7
+and the appendices (Sonnet). It keeps design §4's and §5's *Promoted to `DESIGN.md`* pointers
+from task 3 and every "§3 …" pointer as task 8 left §3. Then the sub-note compressions (10–14),
+the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 
