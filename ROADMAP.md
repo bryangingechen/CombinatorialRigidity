@@ -1220,11 +1220,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   stops and the PI's decisions are in `notes/Cleanup40.md`. The autopilot queue is
   `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 5, `40-docs`, project organization, opened 2026-10-04: the task
-  its work log `notes/Phase40-docs.md` names in its **Status** (at the open, task 1, the
-  user-facing surfaces). It closes unattended. Rounds 1, `40-cleanup`, and 2, `40-factor`, closed
-  2026-09-30; rounds 3, `40-exposition`, and 4, `40-simplify`, closed 2026-10-04
-  (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`, `notes/Phase40-exposition.md`,
-  `notes/Phase40-simplify.md`).
+  its work log `notes/Phase40-docs.md` names in its **Status** (task 1, the user-facing surfaces,
+  landed 2026-10-04; next, task 2, the Lean-idiom lifts). It closes unattended. Rounds 1,
+  `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
+  `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
+  `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

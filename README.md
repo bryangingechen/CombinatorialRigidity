@@ -125,23 +125,29 @@ equivalence is provably false for the intersection-based panel-hinge
 frameworks the simple-graph statements use. The blueprint dependency graph is
 fully green.
 
-**The hinge-pencil conjecture (phases 39–40, complete).** A further strengthening of the
-hinge-coplanar model asks that each body's hinges also pass through a common point of its panel: a
-pencil of lines through a point in a plane, or, in the molecular reading, a bond-star lying in a
-plane through the atom. Does every multigraph still attain the generic rank this way? It does,
-over every infinite field (`CombinatorialRigidity.Molecular.pencil_conjecture`, with the stronger
-`pencilPair_of_nonempty` for every multigraph with at least one body); the question appears to be
-new. Phase 39 (closed 2026-09-25) reduced it, in Lean, to two statements about the main component
-of the space of such realizations — every simple two-edge-connected multigraph has such a
-realization with adjacent concurrency points distinct, and a generic one whenever a nondegenerate
-realization exists at all. Phase 40 (closed 2026-09-29) proved both, formalizing a proof first
-worked out informally and independently checked. Its first step extended Theorems 5.5 and 5.6 and
-the molecular conjecture from dimension three down to the plane (above), used in place of
-Jackson–Jordán's theorem. Over a fixed planar drawing of the bodies, the heights that lift it into
-three dimensions form a linear space, and the main component of the resulting configuration space
-has a general member attaining the target rank, by an induction through cut, ear, split-off and
-contraction steps; the generic realization, which the planned argument could not reach, is built
-inside the reduction's own induction.
+**The pencil conjecture (phases 39–40, complete).** A further strengthening of the hinge-coplanar
+model asks for a *pencil realization*, in which each body's hinges also pass through a common point
+of its panel: the hinges at a body form a pencil of lines through a point in a plane. In the
+molecular reading, the panel is the plane of an atom's bonds and the point is the atom's centre.
+The *pencil conjecture*, that every spanning multigraph attains the deficiency rank by a pencil
+realization, holds over every infinite field (`CombinatorialRigidity.Molecular.pencil_conjecture`,
+with the stronger `pencilPair_of_nonempty` for every multigraph with at least one body); the
+question appears to be new. Phase 39 (closed 2026-09-25) reduced it, in Lean, to two
+*main-component statements*: every simple two-edge-connected multigraph on at least three bodies
+has a pencil realization at the deficiency rank with the points of adjacent bodies distinct, and a
+nondegenerate one at that rank whenever it has a nondegenerate pencil realization at all. Phase 40
+(closed 2026-09-29) proved both, formalizing a proof first worked out informally and independently
+checked. Its first step extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension
+three down to the plane (above). The proof then lifts pictures of the graph in the plane: a picture
+places each body at a point of the plane, a height lifts that point into space, and the hinge of an
+edge is the line through the lifted points of its ends. The heights at which each body's point lies
+in a plane with its neighbours' points form a linear space, the lifting space, whose dimension at a
+general picture is Jackson–Jordán's rank formula for pin-collinear frameworks, derived here from
+the plane case. The main component is the closure of these lifts over the pictures at which the
+lifting space is smallest. For every simple connected graph of minimum degree at least two, a
+general member of it attains the deficiency rank, by an induction through cut-vertex, bridge,
+cycle, ear, split-off and contraction steps; this gives the first statement. The second does not
+follow this way, and is proved instead inside the reduction's own induction.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

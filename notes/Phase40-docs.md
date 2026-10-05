@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; no fix has landed yet. **Next
-concrete task:** task 1 (U), the user-facing surfaces (Opus, docs only). Round manual:
-`CLEANUP.md`.
+planned stop. The full task list below was populated at the open; task 1 landed 2026-10-04.
+**Next concrete task:** task 2 (L1), the Lean idioms into `TACTICS-QUIRKS.md` and
+`TACTICS-GOLF.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,8 +17,9 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 1 (U)** (*Lemma checklist*). The checklist holds 17 tasks, none started:
-task 15 (G) is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is
+**Next commit: task 2 (L1)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+(2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 15
+(G) is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is
 mid-stream.
 
 **Verified at the open** (this commit, docs only; the Lean tree is `654bae8a`'s, the blueprint
@@ -107,28 +108,15 @@ section titles are the stable reference.
 
 ### The user-facing surfaces
 
-- [ ] **1. U — the user-facing surfaces, aligned with `intro.tex`** (Opus: reader-facing prose,
-  after round 3's rung finding, `notes/Phase40-exposition.md` *Decisions*). Round 3's *Moved to a
-  later round* (task 26). The target is `intro.tex`'s reader path (lines 365–418): *the pencil
-  conjecture*; in the molecular reading, "the panel is the plane of an atom's bonds and the point
-  is the atom's centre"; the two *main-component statements*; realizations built by lifting
-  pictures of the graph in the plane, whose heights form the lifting space. Sites:
-  - `README.md` 128–144, the paragraph **The hinge-pencil conjecture (phases 39–40, complete)**:
-    *hinge-pencil conjecture* (128), *bond-star* (130), "two statements about the main component
-    of the space of such realizations" (134–135), "a fixed planar drawing of the bodies" (140).
-  - `home_page/index.md` 108–124, the same paragraph word for word (the four phrases at 108, 110,
-    114 and 120), and the phase table's rows 39 and 40 (156–157), "the hinge-pencil conjecture".
-  - `formalization.yaml`: *hinge-pencil conjecture* at 243 (`status.scope`), 468 and 484 (the two
-    pencil main results' notes), 558 (`fidelity`) and 715 (a `sources` entry's `source:` title);
-    "two statements about the main component" at 247.
-
-  Re-summarize in each surface's register (`PHASE-BOUNDARIES.md` *When this commit opens a phase*:
-  reader-facing, jargon-free, no blueprint labels). Keep README's and home_page's paragraphs
-  identical, and change no `declaration:`, `file:` or `lean:` field. Done: `git grep -n -i -E
-  'hinge-pencil|bond-star|statements about the main component|fixed planar drawing' -- README.md
-  home_page/index.md formalization.yaml` is empty, and `ruby -ryaml -e
-  'YAML.load_file("formalization.yaml")'` still parses it. Left alone: ROADMAP's Phase-39 title,
-  the phase's name of record, and `RESEARCH-ARC.md`, retired history.
+- [x] **1. U — the user-facing surfaces, aligned with `intro.tex`** (Opus; this commit; round 3's
+  task 26). README's and the home page's paragraph, still identical, is now **The pencil
+  conjecture (phases 39–40, complete)**, re-summarized on `intro.tex`'s reader path: the pencil
+  realization and its molecular reading, the two *main-component statements*, the pictures lifted
+  into space and the lifting space. The home page's rows 39–40 and `formalization.yaml`'s five
+  sites are renamed, its `status.scope` and `fidelity` re-summarized the same way; no
+  `declaration:`, `file:` or `lean:` field changed. Done-check: the `git grep` for the four old
+  phrases over the three files is empty, and `ruby -ryaml` parses the yaml. ROADMAP's Phase-39
+  title and `RESEARCH-ARC.md` left alone.
 
 ### Lifts (before the archive sweep and the compressions that read the same notes)
 
@@ -371,10 +359,11 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 1 (U)**, the user-facing surfaces (Opus, docs only): `README.md`,
-`home_page/index.md` and `formalization.yaml` brought to `intro.tex`'s reader path, with the
-sites listed under the task. Then the lifts (tasks 2–5), the FRICTION archive and the standing
-sweep (6–7), the compressions (8–14), the coordinator's grooming (15) and the close (17).
+**Next commit: task 2 (L1)**, the Lean idioms (Sonnet, docs only): items (a)–(e) under the task,
+each into `TACTICS-QUIRKS.md` or `TACTICS-GOLF.md` with a symptom-index line where the file has
+an index and a **Lifted to:** pointer in its FRICTION entry, and the two `if_pos` FRICTION entries
+merged. Then the other lifts (tasks 3–5), the FRICTION archive and the standing sweep (6–7), the
+compressions (8–14), the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 
