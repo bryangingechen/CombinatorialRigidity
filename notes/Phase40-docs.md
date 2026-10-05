@@ -28,7 +28,7 @@ lift, three flipped to `[resolved]`, and the two `if_pos` entries merged into on
 `[idiom]` as the task said). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no
 commit of its own. Nothing is mid-stream.
 
-**Verified at the open** (this commit, docs only; the Lean tree is `654bae8a`'s, the blueprint
+**Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
 - Whole-project `lake build` green, 2996 jobs: 0 `warning:`, 0 `error:` and 0 `failed to cache
   artifact` lines. `lake lint` green.
@@ -114,7 +114,7 @@ section titles are the stable reference.
 
 ### The user-facing surfaces
 
-- [x] **1. U — the user-facing surfaces, aligned with `intro.tex`** (Opus; this commit; round 3's
+- [x] **1. U — the user-facing surfaces, aligned with `intro.tex`** (Opus; `3dc6f67b`; round 3's
   task 26). README's and the home page's paragraph, still identical, is now **The pencil
   conjecture (phases 39–40, complete)**, re-summarized on `intro.tex`'s reader path: the pencil
   realization and its molecular reading, the two *main-component statements*, the pictures lifted
@@ -126,7 +126,8 @@ section titles are the stable reference.
 
 ### Lifts (before the archive sweep and the compressions that read the same notes)
 
-- [x] **2. L1 — Lean idioms into `TACTICS-QUIRKS.md` and `TACTICS-GOLF.md`** (Sonnet; this commit).
+- [x] **2. L1 — Lean idioms into `TACTICS-QUIRKS.md` and `TACTICS-GOLF.md`** (Sonnet;
+  `f02c2a9c`; §115's precedent and calibration brought to HEAD by the coordinator's next commit).
   Each recurred across two or more sub-phases or rounds. Each gets a section or a worked case, a
   symptom-index line where the file has an index, and a **Lifted to:** pointer in its FRICTION
   entry. An entry whose *Status* carries no open work flips to `[resolved]`, so task 6 archives it.

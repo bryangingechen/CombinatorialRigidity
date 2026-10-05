@@ -4400,8 +4400,8 @@ must supply for nothing, and the linter's own message already names the fix.
 **Fix, in order:**
 1. Drop the binder and open the proof with `classical` (a term proof becomes `by classical exact
    …`; `open scoped Classical in` for a bare term). Rebuild every callee too — they simply stop
-   passing the instance. In-tree precedent: `pencilPair_of_nonempty`
-   (`MainComponent/Statements.lean`) calls `Graph.pencil_reduction`, itself `[DecidableEq β]`-taking,
+   passing the instance. In-tree precedent: `pencil_conjecture_of_arms_pair` (`Pencil/Pair2.lean`,
+   since Phase 40-simplify 10g) calls `Graph.pencil_reduction`, itself `[DecidableEq β]`-taking,
    with `classical` and no binder.
 2. Only if that fails for a **stated** reason (a step computes with the specific instance —
    `decide`, a computational `rfl` — or a callee froze an instance in a `def` body that a later
@@ -4415,9 +4415,11 @@ must supply for nothing, and the linter's own message already names the fix.
 positive distinct from the ordinary `classical`-shadowing shape (a binder threaded only to
 callees that each take their own `[DecidableEq β]`, with no `classical` in the proof); Phase
 40-cleanup task 2 repeated that reading at seven pencil-tree sites. Both readings are superseded
-by the linter's type-only check. The six pinned-or-headline sites among them keep the suppression
-under rule 3; the one unpinned site (`pencilPair_of_splitOff_of_habitat`, `Escape.lean`) took the
-rule-1 fix, since its proof already opened with `classical`.
+by the linter's type-only check. That round's follow-up applied rule 1 at the one unpinned site
+(`pencilPair_of_splitOff_of_habitat`, since deleted with `Escape.lean`) and rule 3 at the six
+pinned-or-headline sites, recording them as `40-simplify` candidates. Round 4 removed all six at
+the PI's Stop-2 sanction, by `a2`'s drops and `1a`'s retirements (the last in 10r, `654bae8a`), so
+the pencil tree carries no suppression now.
 
 FRICTION [idiom] *`unusedDecidableInType` flags a `[DecidableEq β]` the theorem's type never
 uses…*.
