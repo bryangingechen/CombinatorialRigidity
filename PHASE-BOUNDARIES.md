@@ -181,9 +181,23 @@ of* the per-commit checklists above:
   theorem to `status.main_results` and `alignment` (verified with
   `#print axioms`), and record any new `fidelity` divergences —
   backfilling that file at project end loses exactly the per-phase
-  detail it exists to capture. Plus any cross-phase program doc
-  (molecular phases: `notes/MolecularConjecture.md`) — see the
-  phase-open subsection.
+  detail it exists to capture. **The headline-axioms check's harness**
+  (Phase 40's close ran it, and every post-Phase-40 cleanup round's
+  open and close re-ran it against the same main results; round 5's
+  open is the fullest worked description — `notes/Phase40-docs.md`
+  *Current state*, *Verified at the open*): a scratch file, one per
+  session, under `scratch/<phase-or-round>/` (gitignored), that
+  imports every `main_results` entry's `file:` module and prints
+  `#print axioms` for each entry's `declaration:`, in the yaml's own
+  order. First diff its name list and its imports against the yaml's
+  `declaration:` and `file:` fields (they should be identical); then
+  run it with `lake lean` — never `lake env lean`, which skips the
+  lakefile's `[leanOptions]` and so under-reports
+  (`CombinatorialRigidity/CLAUDE.md` *Lean LSP MCP*); then compare its
+  output byte for byte against the last such run's, net of the
+  harness's own path. Plus any cross-phase program doc (molecular
+  phases: `notes/MolecularConjecture.md`) — see the phase-open
+  subsection.
 - **Re-read each new/edited blueprint chapter end-to-end as a domain
   mathematician** and collapse accumulated per-commit formalization
   asides. Forward-mode chapters are written one node at a time by

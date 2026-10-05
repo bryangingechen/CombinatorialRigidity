@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–3 landed 2026-10-04.
-**Next concrete task:** task 4 (L3), the cleanup-round procedure into `CLEANUP.md` and
-`PHASE-BOUNDARIES.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–4 landed 2026-10-04.
+**Next concrete task:** task 5 (L4), round 3's defaults (a) and (d) into
+`blueprint/AUTHORING.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 4 (L3)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 5 (L4)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -28,8 +28,15 @@ lift, three flipped to `[resolved]`, and the two `if_pos` entries merged into on
 `[idiom]` as the task said). Task 3 (L2) is done (2026-10-04: two new `DESIGN.md` sections,
 *Genericity without dimension theory* after *Genericity device* and *New mathematics found by
 formalization is second-read before it is built on* before *Choices to revisit*; design §4 and §5
-point at them). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no commit of its
-own. Nothing is mid-stream.
+point at them). Task 4 (L3) is done (2026-10-04: `CLEANUP.md` §C's long-proof ranking now measures
+declaration span, header line to the next column-0 line, with a one-liner tested against a
+`Pencil/MainComponent/*.lean` file and the manual's own glob; §A gained round 3's invariance check
+verbatim, re-run at HEAD (1 292 edges / `7c7ef987ce81e090`, 1 029 pins / `8225e0a2bc15ccdb`,
+identical to round 4's close — no blueprint drift); a new *Per-round work log* subsection names
+what all five rounds' logs share (the hygiene rule, *Candidates for …* / *Moved to a later round*,
+*Autopilot: for the PI*); `PHASE-BOUNDARIES.md`'s `formalization.yaml` bullet spells out the
+headline-axioms harness as this round's open ran it). Task 15 (G) is the coordinator's own commit,
+and task 16 (P) has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -180,25 +187,36 @@ section titles are the stable reference.
   is not new mathematics: COVERAGE's D1–D3, 40p's N1–N4). §4's (C) mathlib list moved there,
   dated as checked (the mathlib pin has not moved since the 2026-08-24 bump), and §4's (C) bullet
   is now its pointer.
-- [ ] **4. L3 — cleanup-round procedure into `CLEANUP.md` and `PHASE-BOUNDARIES.md`** (Sonnet).
-  These files, not the plan's three manuals, are the canonical home (*Decisions*).
-  - (a) `CLEANUP.md` §C: rank proofs by declaration span, from the header line to the next
-    column-0 line, as rounds 1 (`notes/Phase40-cleanup.md` *Current state*) and 4 (task 7) did. The
-    awk stops at a proof's first blank line past 50 lines and under-counts (`notes/Cleanup40.md`
-    §3). Write the span one-liner in.
-  - (b) `CLEANUP.md` §A: round 3's invariance check, verbatim from `notes/Phase40-exposition.md`
-    *Scope* (the dependency graph's fingerprint and the pins' hash). It sees a changed `\uses` edge
-    or `\leanok`, which `checkdecls` and `lint.sh` cannot; rounds 3 and 4 gated on it.
-  - (c) `CLEANUP.md` *Per-round work log*: what all five rounds' logs share. The hygiene rule (a
-    finding that would change a headline statement or a blueprint statement's strength is recorded
-    for a later round or the PI, not acted on, not a stop); the standing sections *Candidates for
-    …* and *Moved to a later round*, each line mirrored into its target's plan in the same commit;
-    and, for an autopilot round, *Autopilot: for the PI*.
-  - (d) `PHASE-BOUNDARIES.md` *When this commit closes a phase*, the `formalization.yaml` bullet:
-    the headline-axioms check as Phase 40's closes and every round's open and close ran it. A
-    scratch file imports each main result's `file:` and prints `#print axioms` for each
-    `declaration:`; its names (in order) and imports are diffed against the yaml; it runs with
-    `lake lean`, never `lake env lean`; its output is compared byte for byte with the last run's.
+- [x] **4. L3 — cleanup-round procedure into `CLEANUP.md` and `PHASE-BOUNDARIES.md`** (Sonnet).
+  These files, not the plan's three manuals, are now the canonical home.
+  - (a) `CLEANUP.md` §C now ranks by **declaration span** (header line to the next column-0 line,
+    the round 1 / round 4 task 7 (`40b36fda`) method) with a corrected one-liner written in:
+    `/^[^[:space:]]/` (any column-0 line) closes the span instead of the old blank-line-past-50
+    test, which closed early and under-counted whenever a proof's true end was further on
+    (`notes/Cleanup40.md` §3 flags its own figures as low for exactly this). Tested against
+    `Pencil/MainComponent/ContractCurve.lean` (the new one-liner surfaces several mid-sized proofs
+    — e.g. a 39- and a 34-line one — the old awk dropped entirely, since it only ever printed a
+    declaration closed by `end`/`namespace` or one running past 50 lines to a blank line) and
+    against the manual's own `CombinatorialRigidity/*.lean` glob (runs clean, same ranking as
+    before up to the old method's off-by-one).
+  - (b) `CLEANUP.md` §A gained round 3's invariance check, copied verbatim from
+    `notes/Phase40-exposition.md` *Scope and standing rules*. Re-run at HEAD: 1 292 edges, hash
+    `7c7ef987ce81e090`; 1 029 pins, hash `8225e0a2bc15ccdb` — both commands still run, and both
+    figures are identical to round 4's close (`notes/Phase40-simplify.md` *Current state*),
+    confirming no blueprint drift since.
+  - (c) `CLEANUP.md` *Per-round work log* gained a new subsection naming what all five rounds'
+    logs share beyond the template: the hygiene rule (a finding that would change a headline
+    statement or a blueprint statement's strength is recorded, not acted on, not itself a stop);
+    the two standing sections *Candidates for …* and *Moved to a later round*, each line mirrored
+    into its target's own plan in the same commit; and, for a round that is an autopilot-queue
+    row, *Autopilot: for the PI* (present even with no planned stop).
+  - (d) `PHASE-BOUNDARIES.md`'s `formalization.yaml` bullet now spells out the headline-axioms
+    harness, described as round 5's own open ran it (*Current state*, *Verified at the open*,
+    above): a scratch file under `scratch/<phase-or-round>/` (gitignored) imports every
+    `main_results` entry's `file:` module and prints `#print axioms` for each `declaration:`; its
+    name list and imports are diffed against the yaml's fields first; it runs with `lake lean`,
+    never `lake env lean` (which skips `[leanOptions]` and under-reports); its output is compared
+    byte for byte against the last such run's, net of the harness's own path.
 - [ ] **5. L4 — round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`** (Sonnet).
   **PROSE** will apply them, and ROADMAP's **PROSE** bullet points at `notes/Phase40-exposition.md`
   *Decisions* for them. (a): cut every comparison with the informal argument; keep a reason the
@@ -376,13 +394,12 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 4 (L3)**, the cleanup-round procedure (Sonnet, docs only): into `CLEANUP.md`,
-§C's ranking by declaration span with its one-liner, §A's invariance check verbatim from
-`notes/Phase40-exposition.md` *Scope and standing rules*, and the shared sections of a round's
-work log; into `PHASE-BOUNDARIES.md`'s `formalization.yaml` bullet, the headline-axioms check.
-Then task 5 (L4, round 3's defaults into `blueprint/AUTHORING.md`), the FRICTION archive and the
-standing sweep (6–7), the compressions (8–14; task 9 keeps design §4's and §5's *Promoted to
-`DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and the close (17).
+**Next commit: task 5 (L4)**, round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`
+(Sonnet, docs only), then repointing the **PROSE** bullet and `notes/BlueprintExposition.md`'s
+pointer at it and making round 3's *Decisions* entries one-line pointers. Then the FRICTION
+archive and the standing sweep (6–7), the compressions (8–14; task 9 keeps design §4's and §5's
+*Promoted to `DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and the close
+(17).
 
 ## Decisions made during this round
 

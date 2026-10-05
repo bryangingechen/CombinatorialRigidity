@@ -13,10 +13,10 @@ recommendations as written (that log's *Autopilot: for the PI*). Its 18 landings
 closes unattended. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under
 autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
 `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
-**The next concrete task** is the one round 5's log names in its **Status** (tasks 1–3, the
-user-facing surfaces, the Lean-idiom lifts and `DESIGN.md`'s two cross-phase rationales, landed
-2026-10-04; next, task 4, the cleanup-round procedure into `CLEANUP.md` and
-`PHASE-BOUNDARIES.md`).
+**The next concrete task** is the one round 5's log names in its **Status** (tasks 1–4, the
+user-facing surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales and the
+cleanup-round procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, landed 2026-10-04; next, task 5,
+round 3's defaults into `blueprint/AUTHORING.md`).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

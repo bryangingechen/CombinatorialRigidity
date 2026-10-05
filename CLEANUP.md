@@ -88,6 +88,20 @@ commit — build and lint gates*). A cleanup round does not need a
 separate "run checkdecls" task — failures of that gate are caught
 in-commit, not in a post-hoc audit.
 
+**The invariance check** catches what `checkdecls` and `lint.sh` cannot: a changed `\uses` edge or
+a flipped `\leanok` with no accompanying `\lean{...}` change. Round 3 introduced it and gated every
+blueprint commit on it (`notes/Phase40-exposition.md` *Scope and standing rules*); a round with no
+blueprint edits of its own can still run it once, at open and close, as a no-drift check. Run it
+from the repository root after `blueprint/verify.sh`:
+
+```sh
+python3 -c "import re,hashlib;g=open('blueprint/web/dep_graph_document.html').read();g=g[g.find('digraph'):];g=g[g.find('{')+1:g.find('}')];s=sorted(filter(None,(re.sub(r'\s+',' ',x).strip() for x in g.split(';'))));print(sum(' -> ' in x for x in s),'edges',hashlib.sha256('\n'.join(s).encode()).hexdigest()[:16])"
+sort blueprint/lean_decls | shasum -a 256 | cut -c1-16
+```
+
+A clean commit reproduces the same edge count and both hashes as the round's last run; a changed
+`\uses` edge or `\leanok` flips one of them without `checkdecls` or `lint.sh` noticing.
+
 The friction direction matters: we **prefer to shorten the Lean**
 rather than add a prose aside. If a Lean simplification attempt fails,
 the cleanup-round log records *what was tried* so the next round
@@ -141,13 +155,17 @@ as a worked-example node). Diagnose which before acting.
 
 ### C. Long-proof audit
 
-Rank the top ~10 proofs by line count and walk each:
+Rank the top ~10 proofs by **declaration span** — the header line to the next column-0 line
+(round 1, `notes/Phase40-cleanup.md` *Current state*; round 4 task 7, `40b36fda`) — and walk each:
 
 ```sh
-# crude line-count ranking by `theorem`/`lemma` body
-awk '/^(private )?(theorem|lemma) /{name=$0; line=NR}
-     /^(end|namespace) /{ if (line) {print NR-line, line, name; line=0} }
-     /^\s*$/{ if (line && NR-line > 50) {print NR-line, line, name; line=0} }
+# rank by declaration span: header line to the next column-0 line. An earlier version of this
+# ranking instead stopped a proof at its first blank line past 50 lines, which under-counts
+# whenever a proof's true end is further on (`notes/Cleanup40.md` §3 flags its own figures as low
+# for exactly this reason); this version does not stop early.
+awk '/^(private )?(theorem|lemma) /{ if (line) print NR-line, line, name; name=$0; line=NR; next }
+     /^[^[:space:]]/{ if (line) { print NR-line, line, name; line=0 } }
+     END{ if (line) print NR-line+1, line, name }
 ' CombinatorialRigidity/*.lean | sort -rn | head -20
 ```
 
@@ -287,6 +305,28 @@ initial sweep checklist should be comprehensive.
 `ROADMAP.md`'s Status table gets a row for each cleanup round
 between phases, so the existence and scope of the round is visible
 without browsing `notes/`.
+
+**What every round's log shares, beyond the template** (the post-Phase-40 rounds, five logs, are
+the worked example):
+
+- **The hygiene rule.** A cleanup round does not change a headline statement or a blueprint
+  statement's strength on its own authority — only fixes that leave both as they are. State it in
+  the round's own *Scope and standing rules*. A finding that would change one is recorded, not
+  acted on and not itself a stop: under **`## Candidates for <the round that can act on it, or the
+  PI>`** if a later round or the PI can still act on it, under *Moved to a later round* (below) if
+  it's merely out of this round's scope. A recon-shaped round may discharge the same rule through
+  a PI-sanctioned Stop instead of a `Candidates` section (`notes/Phase40-simplify.md`'s GO/NO-GO
+  verdicts and *Autopilot* stops).
+- **Two standing sections, present even when empty** (`- None yet.`): **`## Candidates for …`**
+  (the hygiene rule's findings) and **`## Moved to a later round`** (a task or finding out of this
+  round's scope). Each line goes in *twice*, in the same commit: once here, and once mirrored into
+  its target's own plan — the next round's work log once it exists, or the program's planning
+  note's per-round list (e.g. `notes/Cleanup40.md` §2's *Round N* lists).
+- **`## Autopilot: for the PI`**, for a round that is a row of an autopilot queue
+  (`.claude/autopilot/queue.toml`). Present whether or not the round has a planned stop — a round
+  with none still carries it, stating so, as the place an unplanned `NEEDS_PI` entry goes (newest
+  first). The post-Phase-40 rounds adopted this starting with round 3 (the first with a planned
+  stop); rounds 1–2, opened before the convention existed, carry no such section.
 
 ## What a cleanup round is *not*
 
