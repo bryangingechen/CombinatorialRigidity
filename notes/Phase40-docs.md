@@ -6,8 +6,8 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–12 landed 2026-10-04.
-**Next concrete task:** task 13 (C6), `notes/Phase40m.md`–`Phase40p.md` (Sonnet). Round
+planned stop. The full task list below was populated at the open; tasks 1–13 landed 2026-10-04.
+**Next concrete task:** task 14 (C7), `notes/Phase40-cleanup.md` (Sonnet). Round
 manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 13 (C6)**, `notes/Phase40m.md`–`Phase40p.md`. Of the 17 tasks, 1–12 are done
+**Next commit: task 14 (C7)**, `notes/Phase40-cleanup.md`. Of the 17 tasks, 1–13 are done
 (2026-10-04); each is one or two lines in the checklist below, not duplicated here. Task 15 (G) is
 the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
 
@@ -160,14 +160,13 @@ section titles are the stable reference.
   departures D1–D3, each findable by number. Fixed two stale cleanup items presented as still open
   (40j's call 9 and 40k's call 12, both paid by round 1) and 40i's pointer to a friction entry that
   task 6 had already archived (`notes/FRICTION.md` → `notes/FRICTION-archive.md`).
-- [ ] **13. C6 — `Phase40m.md`–`Phase40p.md`** (Sonnet; 437 lines). As task 10. Preserve 40m's
-  *Current state* (design §3) and *Decisions made* (`notes/pencil/adjudications.md`), and 40p's
-  *Architectural choices* item 2 (`adjudications.md`) and *Hand-off* (ROADMAP, `notes/Phase39.md`,
-  `notes/pencil/CLAUDE.md` and `notes/MolecularConjecture.md` point at 40p). Bare Lean anchors:
-  40n `GenericBase.lean` 37 and `Statements.lean` 40; 40o `GenericEar.lean` 28,
-  `GenericSteer.lean` 36, `GenericTriangle.lean` 40 and `Reseed.lean` 29; 40p `GoodEar.lean` 27
-  and `Statements.lean` 40. Fix 40p's *Decisions*, "the landed Lean stays as conditional
-  theorems": round 4 retired it.
+- [x] **13. C6 — `Phase40m.md`–`Phase40p.md`** (Sonnet; landed 2026-10-04). 437 lines to 294, each
+  to the archive shape; preserved 40m's recon-flags bullet (*Decisions made*, the one
+  `notes/pencil/adjudications.md` names) and 40p's *Architectural choices* item 2 (N1–N4, cited by
+  design §3 and `adjudications.md`) and *Hand-off* (pointed at by ROADMAP, `notes/Phase39.md`,
+  `notes/pencil/CLAUDE.md`, `notes/MolecularConjecture.md`). Fixed 40p's stale *Decisions* line
+  "the landed Lean stays as conditional theorems": round 4 retired it (`1e7d78a9`, `f8c6b0d4`,
+  `654bae8a`), noted in place.
 - [ ] **14. C7 — `notes/Phase40-cleanup.md`** (Sonnet; 491 lines). One line per landed task,
   naming its commit (round 4's log is the model); the §A walk, the §C screen and the close's
   blocks collapse to verdicts. Preserve every task number (`notes/Cleanup40.md` §2 cites tasks 2,
@@ -240,15 +239,11 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 13 (C6)**, `notes/Phase40m.md`–`Phase40p.md` (Sonnet; 437 lines), compressed
-the same way tasks 10–12 compressed 40a–40l. Preserve 40m's *Current state* (design §3) and
-*Decisions made* (`notes/pencil/adjudications.md`), and 40p's *Architectural choices* item 2
-(`adjudications.md`) and *Hand-off* (ROADMAP, `notes/Phase39.md`, `notes/pencil/CLAUDE.md` and
-`notes/MolecularConjecture.md` point at 40p). Bare Lean anchors: 40n `GenericBase.lean` 37 and
-`Statements.lean` 40; 40o `GenericEar.lean` 28, `GenericSteer.lean` 36, `GenericTriangle.lean` 40
-and `Reseed.lean` 29; 40p `GoodEar.lean` 27 and `Statements.lean` 40. Fix 40p's *Decisions*, "the
-landed Lean stays as conditional theorems": round 4 retired it. Then task 14 (the round-1 log),
-the coordinator's grooming (15) and the close (17).
+**Next commit: task 14 (C7)**, `notes/Phase40-cleanup.md` (Sonnet; 491 lines) — round 1's log, one
+line per landed task naming its commit (round 4's log the model); preserve every task number
+`Cleanup40.md` §2 cites (2, 8, 24, 26, 27, 32, 37, 38, 41, 43, FRICTION task 17), task 45's figures
+verbatim, *Candidates for `40-simplify`* whole and *Moved to a later round*. Then the coordinator's
+grooming (15) and the close (17).
 
 ## Decisions made during this round
 

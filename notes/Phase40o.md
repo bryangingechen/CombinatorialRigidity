@@ -12,46 +12,29 @@ sub-phase 40p** (2026-09-29, design-first; work log `notes/Phase40p.md`); see *H
 coordinator's fixup `7f782d79`, then the second read and the close in one commit. All three EARS
 nodes of `main-component.tex` §`sec:main-component-statements` are green and pinned:
 - `lem:pencil-generic-steer` ← `CombinatorialRigidity.Molecular.exists_pencilSeed_of_nondeg_of_selectors`
-  (T1, `Pencil/Reseed.lean`, 386 lines), `…exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`
+  (T1, `Pencil/Reseed.lean`), `…exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`
   ((MC-188)), `…exists_isNondegPencilRealization_restrict_of_demoted` ((a), (MC-190)) and
   `…exists_isNondegPencilRealization_steer` ((b), (MC-191)), in the new
-  `MainComponent/GenericSteer.lean` (776 lines);
+  `MainComponent/GenericSteer.lean`;
 - `lem:pencil-generic-one-ear` ← `Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization`
   ((MC-185)) and `Graph.IsOpenEar.hasGenericPencilRealization_of_one`, in the new
-  `MainComponent/GenericEar.lean` (570 lines);
+  `MainComponent/GenericEar.lean`;
 - `lem:pencil-generic-pendant-triangle` ←
   `CombinatorialRigidity.Molecular.hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization`
   ((MC-192)) and `…hasGenericPencilRealization_of_closedEar_two`, in the new
-  `MainComponent/GenericTriangle.lean` (680 lines).
+  `MainComponent/GenericTriangle.lean`.
 
 All three new files are in the root import.
 
 **The interface REDUCE+CLOSE consumes:** `Graph.IsOpenEar.hasGenericPencilRealization_of_one` (no
 `hnadj`: feasibility excludes the triangle `a x b` with two hubs) and
-`hasGenericPencilRealization_of_closedEar_two` (`4 ≤ G.degree c`, no deficiency hypothesis). Each
-takes `G.Simple`, `PencilNondegFeasible K G` and the smaller graph's induction hypothesis in the
-conditioned form. The five nodes left in `sec:main-component-statements` and `pencil.tex`
-(`lem:pencil-rigid-good-ear`, `thm:pencil-generic-step`, `thm:pencil-conditioned-pair-nonempty`,
-`thm:pencil-x0-generic-attains`, `thm:pencil-conjecture`) stay red and unpinned for REDUCE+CLOSE.
-Their pins are planned in `notes/Phase40p.md`.
+`hasGenericPencilRealization_of_closedEar_two` (`4 ≤ G.degree c`, no deficiency hypothesis). The
+five nodes left in `sec:main-component-statements` and `pencil.tex` stay red and unpinned for
+REDUCE+CLOSE; their pins are planned in `notes/Phase40p.md`.
 
-**Headline axioms, re-verified at the close** on 26 declarations: the eighteen `formalization.yaml`
-main results and the eight 40o pins above. All 26 are exactly `[propext, Classical.choice,
-Quot.sound]`; none uses `sorryAx`. *Measured, script not retained*: one `#print axioms` line per
-declaration under `import CombinatorialRigidity`, run with `lake lean` on the fully built tree (a
-full `lake build` first, after the close's docstring edits: 2 999 jobs, 0 warnings, 0 errors, 0
-cache-write failures).
-
-**The spikes** (gitignored, local to this checkout; builder sources, not evidence). **Keep
-`scratch/ears/`** until 40p closes (its build source is now `scratch/40p/Close.lean`):
-- `Route.lean` (2264 lines), the route-B assembly's source: `Ears.lean` plus
-  `scratch/40n-read/GenBase.lean`'s tail from l.799, with exactly one `sorry`, (MC-129)
-  (`Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, l.2144). Its one-ear call (l.2186) still
-  passes `hnadj`, which the landed step no longer takes. Its tail from l.2139 on is the part to reuse.
-- `Ears.lean` is consumed by B1–B4; `PlaceReseed/Steer/Ear/Tri.lean` are stale at HEAD (they
-  redeclare landed names).
-- The second read's compiler witnesses are in `scratch/ears-read/Witness.lean` (exit 0 at
-  `7f782d79`).
+**Headline axioms, re-verified at the close** on 26 declarations (the eighteen `formalization.yaml`
+main results and the eight 40o pins above): all exactly `[propext, Classical.choice,
+Quot.sound]`; none uses `sorryAx`.
 
 ## Architectural choices made up front
 
@@ -59,50 +42,29 @@ cache-write failures).
   in `Pencil/Reseed.lean`, with `exists_extend_linearIndependent` moved there from `Steer.lean`;
   (MC-188), T2 and T3 in `GenericSteer.lean`; Z1 in `GenericEar.lean`; Z2 in `GenericTriangle.lean`.
 - **Z1 drops `hnadj : ¬ G.Adj a b`** (the coordinator's call): the proof never uses it, and (F2) at a
-  feasible `G` already excludes it. The second read derived it from feasibility alone
-  (`scratch/ears-read/Witness.lean`, W1).
-
-## Lemma checklist
-
-All landed with the standard axioms (*Current state*).
-
-- [x] **B1 = T1** (`e7c80bba`): the reseed at given selectors, into `Pencil/Reseed.lean`.
-- [x] **B2 = T2 + T3** (`45d49861`): the steering lemma, the new `GenericSteer.lean`.
-- [x] **B3 = Z1** (`f62cfd3c`): the one-ear step, the new `GenericEar.lean`, without `hnadj`.
-- [x] **B4 = Z2** (`306dcf15`): the pendant triangle, the new `GenericTriangle.lean`, with the
-  shared `isLink_cases_of_closedEar_two`.
-- [x] **The second read** of (MC-190)–(MC-192) (in the close commit): no gap, repairs in place.
-- [x] **The close**: the three nodes re-read, the headline axioms, the design doc, ROADMAP,
-  `MolecularConjecture.md` and the exposition ledger. The public surfaces are unchanged (the PI's
-  standing call: they update at Phase 40's close).
-
-## Blockers / open questions
-
-- **None for 40o.** REDUCE+CLOSE's one new leaf, (MC-129) at 2EC graphs, has a proof in the workbook
-  (Step MC19) but no spike yet.
-
-## Hand-off / next phase
-
-**40o is closed. REDUCE+CLOSE is open as sub-phase 40p** (`notes/Phase40p.md`): its next step,
-the one build, and the three items the Phase 40 close carries are in that note's *Hand-off*.
+  feasible `G` already excludes it; the second read derived it from feasibility alone.
 
 ## Decisions made during this phase
 
 - **2026-09-29 — the second read and the close** (one commit; opus, fresh, read-only): no gap.
   (MC-190) confirmed; (MC-191) states the rank's upper bound and calls the three-closed-neighbours
   count sufficient, not "exactly" needed; (MC-192) credits Crapo–Whiteley 1982, Prop. 3.4 for the
-  triangle's rigidity (KT Lemma 5.4 asserts existence only); (MC-193) added: the count is the Lean
-  chart's, off the route. Blueprint: the steer node's non-hub wording and (b)'s upper bound; the
-  pendant triangle's nondegeneracy sentence. Lean, docstrings only: claim labels repointed, spike
-  narration dropped, and GenericTriangle's "whose deficiency does not rise" (read as a hypothesis
-  the step does not take).
+  triangle's rigidity (KT Lemma 5.4 asserts existence only); (MC-193) added, off the route: the
+  count is the Lean chart's. Blueprint and docstring fixes only, no Lean rework.
 - **Recorded exception: `#print axioms` in library files.** B2 and B4 carried the spike's
-  `#print axioms` commands into `GenericSteer.lean` and `GenericTriangle.lean`. A warning-only gate
-  does not read `info:` output, so it passed them; the coordinator's fixup `7f782d79` dropped all
-  four. Builders transcribing a spike should strip its `#print axioms` lines.
-- **B4's tidy-up:** the twice-written link case analysis became `isLink_cases_of_closedEar_two`.
-  **B2's:** the unused `hWF₂` is bound as `-`.
+  `#print axioms` commands into `GenericSteer.lean` and `GenericTriangle.lean`; a warning-only gate
+  does not read `info:` output, so it passed them. The coordinator's fixup `7f782d79` dropped all
+  four (promoted to `TACTICS-QUIRKS.md` §55: strip every spike's `#print`/`#check`/`#eval` line
+  before transcribing). B4's twice-written link case analysis became `isLink_cases_of_closedEar_two`.
 - **2026-09-29 — opened design-first** (`9a877a94`) from EARS' pre-build recon (opus, read-only,
   compiler-checked): every leaf closed sorry-free at `GenBase.lean`'s signatures, with no shorter
-  route; its new claims (MC-190)–(MC-192) are in Step MC19. The blueprint restatement: the steer node
-  as (a), any subgraph, and (b), (MC-191)'s scope; the one-ear node without non-adjacency.
+  route; its new claims (MC-190)–(MC-192) are in Step MC19.
+
+## Blockers / open questions
+
+- None for 40o.
+
+## Hand-off / next phase
+
+**40o is closed. REDUCE+CLOSE is open as sub-phase 40p** (`notes/Phase40p.md`): its next step,
+the one build, and the three items the Phase 40 close carries are in that note's *Hand-off*.
