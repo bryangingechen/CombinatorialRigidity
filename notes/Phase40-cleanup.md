@@ -94,7 +94,10 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - [x] **2. B3** (`5a636c0e`, corrected in `244f6613`). 12 sites: 2 silencers stale, 1 fixed at the
   source (`classical` in place of the binder), 6 pinned or headline kept (see *Candidates*), and 2
   `unusedFintypeInType` kept. Heartbeats went from 1000000 to 400000. The FRICTION entry is reframed.
-  **Round 4 (`a2`):** GO, landed — all six dropped (task 10r, `654bae8a`), sanctioned at Stop 2.
+  **Round 4 (`a2`):** GO, sanctioned at Stop 2, and all six are gone: 10r (`654bae8a`) dropped
+  the binder from `pencil_conjecture` and `pencil_conjecture_of_X0`, 10g (`f8c6b0d4`) from
+  `pencil_conjecture_of_arms_pair`, and 10i (`1e7d78a9`) deleted the other three declarations
+  with `1a`/`1b`.
 - [x] **3. B8** (`9bf98a3c`). 32 `show … from rfl`: 29 fixed with `screwDim_one`/`_two`, the moved
   `bodyBarDim_two`/`_three` and `Graph.vertexSet_induce`; 3 kept (structural).
 - [x] **4. B7** (`63aee01d`). `rw` towers: 3 clusters fused (`Graph.mem_ker_liftingMatrix_iff`,
@@ -311,7 +314,10 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
   in-tree precedent. The fix deletes all six silencers. It is deferred because it changes a
   headline signature (`thm:pencil-conjecture`) and pinned ones
   (`thm:pencil-conditional-realization`, `…-pair`, `…-main-component`).
-  **Round 4 (`a2`):** GO, landed — all six dropped (task 10r, `654bae8a`), sanctioned at Stop 2.
+  **Round 4 (`a2`):** GO, sanctioned at Stop 2, and all six are gone: 10r (`654bae8a`) dropped
+  the binder from `pencil_conjecture` and `pencil_conjecture_of_X0`, 10g (`f8c6b0d4`) from
+  `pencil_conjecture_of_arms_pair`, and 10i (`1e7d78a9`) deleted the other three declarations
+  with `1a`/`1b`.
 - **A finsum-native rewrite of `CoverageTheoremS.lean`'s degree-sum pair** (task 8, B5;
   `Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard` and `…two_mul_ncard_le_ncard_edgeSet`, the 17
   kept sites). Both proofs bridge `Set.ncard` to a `Finset` sum (`G.vertexSet_finite.toFinset`, or

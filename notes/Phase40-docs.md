@@ -117,60 +117,62 @@ section titles are the stable reference.
   §115's precedent and calibration brought to HEAD by the coordinator's next commit). Five
   cross-cutting idioms lifted (two new QUIRKS sections, two worked cases, one GOLF section
   widened); five FRICTION entries pointed at their lift, three flipped to `[resolved]`.
-- [x] **3. L2 — `DESIGN.md`: two cross-phase rationales** (Opus; landed 2026-10-04). New sections
+- [x] **3. L2 — `DESIGN.md`: two cross-phase rationales** (Opus; `91258678`). New sections
   *Genericity without dimension theory* and *New mathematics found by formalization is second-read
   before it is built on*; design §4 and §5 point at them.
 - [x] **4. L3 — cleanup-round procedure into `CLEANUP.md` and `PHASE-BOUNDARIES.md`** (Sonnet;
-  landed 2026-10-04). §C's long-proof ranking now measures declaration span; §A gained round 3's
+  `6127b56e`). §C's long-proof ranking now measures declaration span; §A gained round 3's
   invariance check (re-run at HEAD, unchanged); a new *Per-round work log* subsection; the
   `formalization.yaml` bullet spells out the headline-axioms harness.
-- [x] **5. L4 — round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`** (Sonnet; landed
-  2026-10-04). *Proof verbosity* gained default (a) with the PI's amendment verbatim; principle E
-  gained default (d) *Node order*; ROADMAP, `BlueprintExposition.md` and `Cleanup40.md` repointed.
+- [x] **5. L4 — round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`** (Sonnet; `7f3e7fab`,
+  coordinator `f64eb0b9`). *Proof verbosity* gained default (a) with the PI's amendment verbatim;
+  principle E gained default (d) *Node order*; ROADMAP, `BlueprintExposition.md` and `Cleanup40.md`
+  repointed.
 
 ### FRICTION and the standing sweep
 
-- [x] **6. F — FRICTION's `[resolved]` entries to `FRICTION-archive.md`** (Sonnet; landed
-  2026-10-04). 17 entries (281 lines) moved verbatim; `[mirror-candidate]` defined in FRICTION's
-  *Entry format* and *Filing rule*.
-- [x] **7. S — pointers to what rounds 1–4 deleted or changed** (Sonnet; landed 2026-10-04). Every
-  named item in ROADMAP, GOLF, QUIRKS and the blueprint manual got a short parenthetical naming the
-  deleting task and sha; one wrong "(deleted by X)" attribution, from the open's own task text, was
-  the coordinator's fix.
+- [x] **6. F — FRICTION's `[resolved]` entries to `FRICTION-archive.md`** (Sonnet; `fb61351f`). 17
+  entries (281 lines) moved verbatim; `[mirror-candidate]` defined in FRICTION's *Entry format* and
+  *Filing rule*.
+- [x] **7. S — pointers to what rounds 1–4 deleted or changed** (Sonnet; `86ce7faf`, coordinator
+  `30171a9b`). Every named item in ROADMAP, GOLF, QUIRKS and the blueprint manual got a short
+  parenthetical naming the deleting task and sha; two wrong attributions (one from the open's own
+  task text) were the coordinator's fix.
 
 ### The compressions (after the lifts)
 
-- [x] **8. C1 — `notes/Phase40-design.md` §3, the layer plan and proof map** (Opus; landed
-  2026-10-04). §3 928 lines to 553, every heading and done paragraph verbatim, each tracked item
-  now a cited verdict; anchor inventory re-derived and walked, none repointed.
-- [x] **9. C2 — `notes/Phase40-design.md`, the rest** (Sonnet; landed 2026-10-04). The doc 1 096
+- [x] **8. C1 — `notes/Phase40-design.md` §3, the layer plan and proof map** (Opus; `cc376480`). §3
+  928 lines to 553, every heading and done paragraph verbatim, each tracked item now a cited
+  verdict; anchor inventory re-derived and walked, none repointed.
+- [x] **9. C2 — `notes/Phase40-design.md`, the rest** (Sonnet; `84827160`). The doc 1 096
   lines to 864; §6's and §7's items and §3's tracked cleanup-round items collapsed to verdicts; one
   stale §5 bullet fixed; 9 Lean anchors unchanged, all resolve.
-- [x] **10. C3 — `notes/Phase40a.md`–`Phase40d.md`** (Sonnet; landed 2026-10-04). 371 lines to 204,
+- [x] **10. C3 — `notes/Phase40a.md`–`Phase40d.md`** (Sonnet; `cbb729db`). 371 lines to 204,
   each to the archive shape; preserved 40b's "2026-09-26 C1a" entry, its slice names and DUAL-K;
   dropped one stale declaration list (a named sibling already deleted by round 4) and two
   already-resolved cleanup-item checkboxes.
-- [x] **11. C4 — `Phase40e.md`–`Phase40h.md`** (Sonnet; landed 2026-10-04). 454 lines to 213;
+- [x] **11. C4 — `Phase40e.md`–`Phase40h.md`** (Sonnet; `b254ad9b`). 454 lines to 213;
   preserved "BRIDGE for every `k`" and the three `adjudication` blocks' PI decisions, each findable
   by number; fixed 40h's *Hand-off*/*Blockers* (rounds 1 and 4 already paid them) and 40f's stale
   open `hatt` TODO (closed at 40l's open) and superseded curve-based proof (round 4's
   restatement).
-- [x] **12. C5 — `Phase40i.md`–`Phase40l.md`** (Sonnet; landed 2026-10-04). 473 lines to 224;
+- [x] **12. C5 — `Phase40i.md`–`Phase40l.md`** (Sonnet; `96a939e2`). 473 lines to 224;
   preserved 40k's coordinator calls 4, 5, 8 and 12 (the G1/G4/G5 Lean-name mapping) and 40l's
   departures D1–D3, each findable by number. Fixed two stale cleanup items presented as still open
   (40j's call 9 and 40k's call 12, both paid by round 1) and 40i's pointer to a friction entry that
   task 6 had already archived (`notes/FRICTION.md` → `notes/FRICTION-archive.md`).
-- [x] **13. C6 — `Phase40m.md`–`Phase40p.md`** (Sonnet; landed 2026-10-04). 437 lines to 294, each
+- [x] **13. C6 — `Phase40m.md`–`Phase40p.md`** (Sonnet; `3ed587bf`). 437 lines to 294, each
   to the archive shape; preserved 40m's recon-flags bullet (*Decisions made*, the one
   `notes/pencil/adjudications.md` names) and 40p's *Architectural choices* item 2 (N1–N4, cited by
   design §3 and `adjudications.md`) and *Hand-off* (pointed at by ROADMAP, `notes/Phase39.md`,
   `notes/pencil/CLAUDE.md`, `notes/MolecularConjecture.md`). Fixed 40p's stale *Decisions* line
   "the landed Lean stays as conditional theorems": round 4 retired it (`1e7d78a9`, `f8c6b0d4`,
   `654bae8a`), noted in place.
-- [x] **14. C7 — `notes/Phase40-cleanup.md`** (Sonnet; 491 → 448 lines). The §A walk, §C screen
-  and close's blocks collapsed to one-line verdicts; every task number, task 45's table and
-  *Candidates*/*Moved to a later round* kept whole, none repointed. The seven round-1 candidates
-  each got round 4's disposition appended (grep/`git log`-confirmed), nothing rewritten.
+- [x] **14. C7 — `notes/Phase40-cleanup.md`** (Sonnet; `c9419d5e`, coordinator correction next; 491
+  → 448 lines). The §A walk, §C screen and close's blocks collapsed to one-line verdicts; every task
+  number, task 45's table and *Candidates*/*Moved to a later round* kept whole, none repointed. The
+  seven round-1 candidates each got round 4's disposition appended (grep/`git log`-confirmed),
+  nothing rewritten.
 
 ### The coordinator's grooming, and the close
 

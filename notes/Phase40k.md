@@ -38,8 +38,8 @@ session-start "follow precedent"), the design doc cross-references four by numbe
 keeps `hatt`, for parity with CONTRACT-R; **call 5** is option A — the general pieces to the new
 `ContractCurve.lean` (split out of `Contract.lean`), CONTRACT-R untouched (option B, re-proving
 CONTRACT-R through CONTRACT-A and FLAT, was not adopted then — round 4's 10p–10q later did it
-anyway); **call 8** sends (MC-67), (MC-68) and (MC-70) to the design doc's §2 *Not needed*; **call
-12** tracked four corollary rebases as a cleanup item, paid by round 1, tasks 14a–14b
+anyway); **call 8** sends (MC-67), (MC-68) and (MC-70) to the design doc's §2 *Not needed*; **call 12**
+tracked four corollary rebases as a cleanup item, paid by round 1, tasks 14a–14b
 (`58c4fa28`, blueprint fixup `388e5a18`; `ab2253e1`) — the recon's labels, mapped to Lean names:
 G1 `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
 (`lem:pencil-rank-collineation`, `Configuration.lean`), G4
