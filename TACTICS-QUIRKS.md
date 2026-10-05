@@ -31,7 +31,7 @@ failing pattern and the working fix.
 - *"motive is not type correct"* after `simp only` citing a hypothesis not in the goal → § 5
 - *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` / `subst` between two free vars → § 4
 - `interval_cases (Fintype.card V)` won't close by `rfl` → § 7
-- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2) or two `{d}`-vs-numeral elaborations of one term mis-atomized (§ 58)
+- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2) or two `{d}`-vs-numeral elaborations of one term mis-atomized, including a ℕ `have` and a ℤ goal naming the same `finrank` term through a `Fin (1 + 2)` numeral (§ 58)
 - `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
 - `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
 - `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8; *"the environment does not contain `Function.foo`"* on `hc.foo …` (a `def`-headed hypothesis) usually means `foo` is declared *later in the same file* → § 8; the same *"`Function.symm`"* message on a `simp`-destructured `Ne`/`Not` hypothesis (e.g. after `simp only [not_or]`) → § 8 (apply `Ne.symm h` by name instead of `h.symm`); the same shape on an explicitly type-ascribed `(h : T).foo` (e.g. `Eq.foo not found`) → § 8 (call by fully-qualified name, pass `h` positionally instead of via dot notation)
@@ -85,6 +85,7 @@ failing pattern and the working fix.
 - `set F := expr`; theorem applied to `F` returns `F.graph` (or another field) unfolded — downstream `rw [hField]` fails → § 53 (introduce `hFgraph : F.graph = G` explicitly, `rw [hFgraph] at …` first)
 - *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
 - `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
+- A transcribed spike's `#print axioms <name>` lines build warning-free (and sorry-free) inside a library file, with no sign anything is wrong → § 55 (`#print axioms` emits `info:`, which the warning-only gate never reads; strip every `#print`/`#check`/`#eval` line before transcribing a spike, and `grep -rn '^#print' CombinatorialRigidity/` after any spike-sourced build catches a leftover)
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
 - *"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been implemented"* at `M *ᵥ v`, with an `ambiguousOpen` warning on `open scoped Matrix`, inside `namespace CombinatorialRigidity.Molecular` → § 56 (same capture: `RigidityMatrix/Concrete.lean`'s bare `Matrix.`-prefixed theorems made a `Molecular.Matrix` sub-namespace; spell `Matrix.mulVec`, or open before the `namespace`)
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
@@ -144,6 +145,8 @@ failing pattern and the working fix.
 - `obtain ⟨…⟩ := f … fun h => ?_` (or `f ?_`) followed by two bullets fails with *"No goals to be solved"* on the second bullet — or, with no bullet after it, *"don't know how to synthesize placeholder"* at the `?_` → § 113 (`obtain`/`rcases` elaborates its `:=` term completely and never turns a `?_` into a goal; fill the argument with an inline `by` block, or `have h := f ?_` first — `have` does open the goal — and `obtain` from `h`)
 - `simp only [lemma] at h` succeeds on a rank hypothesis `Module.finrank K ↥(… X …)`, and the *next* `rw … at h` fails *"Did not find an occurrence"* with a note that the target *"is not type-correct under the `implicit` transparency level"* and an *"Application type mismatch"* on an `addCommMonoid` instance → § 112 (the `simp` rewrote `X` everywhere but in the instance arguments; use `rw [lemma] at h`)
 - `rw [h]` with `h : ∀ w, (fun j => f (w, j)) = …` finds nothing in `fun i => … (fun j => f (u i, j)) …`, *"Did not find an occurrence of the pattern `fun j ↦ f (?w, j)`"* → § 114 (`?w` would capture the bound `i`; state `h` over index functions `u : ι → α` at the `fun i` level)
+- `linter.unusedDecidableInType` flags a `[DecidableEq β]` (or any `Decidable*` binder) the theorem's *type* never mentions, even though the *proof* threads it to a callee that takes the same instance — and deleting the binder bare breaks every such callee with *"failed to synthesize instance of type class DecidableEq β"* → § 115 (the linter checks only the statement, never the proof; drop the binder and open the proof with `classical`, don't read the callee breakage as proof the binder was needed)
+- A `<;>`-chained flexible `simp`'s `linter.flexible` "Try this: simp only [...]" suggestion, substituted verbatim, leaves some branches of the chain unsolved or makes `norm_num`/a later tactic report *"no goals to be solved"* on others → § 116 (the suggestion is captured against one branch, not their union; run `simp?`/`lean_multi_attempt` at the chain's own position for the full per-goal set across every branch, then union them into one `simp only […]`)
 
 ## Sections
 
@@ -2422,6 +2425,17 @@ errors and 59 warnings under `lake env lean`, and 6 errors (two lemmas binding `
 after their section's `variable` closed) and 323 warnings under `lake lean`. Check every spike
 with `lake lean`, and a handed-over one first, before transcribing.
 
+**A transcribed spike's own `#print axioms` lines pass the warning-only gate too, for the same
+reason.** `#print axioms foo` emits an `info:` message, which neither `lake build`'s nor `lake
+lean`'s warning scan reads, so a builder who transcribes a spike's declarations straight into a
+library file and forgets to drop its `#print axioms` lines gets a silently-clean gate — the line
+just sits there on every future build. Phase 40o's B2 and B4 carried four such lines into
+`GenericSteer.lean` (three) and `GenericTriangle.lean` (one); the coordinator's own axiom check
+caught them only because it listed library files as `#print` sources, and fixed them in `7f782d79`
+(`notes/Phase40o.md` *Decisions*). Strip every `#print`/`#check`/`#eval` line from a spike before
+transcribing it — `grep -rn '^#print' CombinatorialRigidity/` after any spike-sourced build catches
+a leftover.
+
 
 ## 56. A bare-`Graph.`-prefixed decl *inside* `namespace Foo` creates a `Foo.Graph` sub-namespace that captures downstream `open scoped Graph` — `V(G)`/`E(G)`/`↾` stop parsing and `binop%` flips ℕ-sub→ℤ-sub
 
@@ -2505,6 +2519,16 @@ ordered-field / `simp` level where the two finrank views collapse under defeq, t
 atom. (Alternatively, pre-`rw` the goal's term into the `hsum` form so the atoms coincide before
 `omega`.) Phase 23b CHAIN-3 (`Meet.lean`, `finrank_sup_range_wedgeFixedLeft`); see FRICTION [idiom]
 *Generalizing an in-place numeral-pinned `def`…*.
+
+**Worked case: a ℕ `have` and a ℤ goal, not two `{d}` routes (Phase 40c FLAT, `Fin (1 + 2)`).**
+`Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint`'s complement brick has a ℕ `have`
+and a ℤ goal naming the same `finrank … (ofNormals (k := 1) …)` term; `omega` still reports a
+counterexample treating them as unrelated, even though the identical step at `k = 2` closes by
+plain `omega`. At `k = 1` the ambient numeral elaborates through `Fin (1 + 2)` rather than the
+goal's reduced `Fin 3`, so the two sides mis-atomize the same way as the `{d}`-vs-numeral case
+above, this time across the ℕ/ℤ cast rather than within one type. Fix: cast the ℕ identity to ℤ
+and finish with `linarith` instead of `omega` — `have hz := congrArg (Nat.cast : ℕ → ℤ) hc;
+push_cast at hz; linarith`. FRICTION [resolved] *`omega` misses a `finrank` atom … `Fin (1 + 2)`*.
 
 ## 59. A new `Mathlib.Analysis.InnerProductSpace` import regresses a *pre-existing* exterior-algebra proof to `(deterministic) timeout at whnf` — the metric `PiLp`/`EuclideanSpace` instances poison `⋀`-term elaboration
 
@@ -4357,5 +4381,79 @@ lines per site.
 **Worked case:** 40-cleanup task 18, `Graph.X0Attains.of_openEar_splitOff`
 (`Molecule/Pencil/MainComponent/Short.lean`), whose two span bounds (`hNt`, `hspan₀`) come out of
 `exists_mvPolynomial_le_finrank_sup_span_pointJoin` in the evaluated form.
+
+---
+
+## 115. `linter.unusedDecidableInType` flags a `[DecidableEq β]` the theorem's *type* never uses, even when a callee consumes it — drop the binder and open the proof with `classical`
+
+**Symptom.** A theorem or `def` takes `[DecidableEq β]` (or another `Decidable*` instance), and
+`linter.unusedDecidableInType` flags it — even when the *proof* passes that very instance on to a
+callee that itself declares `[DecidableEq β]`. Deleting the binder without also adding `classical`
+then breaks every such callee with *"failed to synthesize instance of type class DecidableEq
+β"*, which looks like evidence the binder was load-bearing. It is really a missing `classical`.
+
+**Cause.** The linter (`Mathlib/Tactic/Linter/UnusedInstancesInType.lean`) checks only whether the
+theorem's **type** — its statement — mentions the binder; whether the *proof* threads it to a
+callee is irrelevant by design. A type-unused decidability binder is a hypothesis every caller
+must supply for nothing, and the linter's own message already names the fix.
+
+**Fix, in order:**
+1. Drop the binder and open the proof with `classical` (a term proof becomes `by classical exact
+   …`; `open scoped Classical in` for a bare term). Rebuild every callee too — they simply stop
+   passing the instance. In-tree precedent: `pencilPair_of_nonempty`
+   (`MainComponent/Statements.lean`) calls `Graph.pencil_reduction`, itself `[DecidableEq β]`-taking,
+   with `classical` and no binder.
+2. Only if that fails for a **stated** reason (a step computes with the specific instance —
+   `decide`, a computational `rfl` — or a callee froze an instance in a `def` body that a later
+   `rw` must match, § 66): keep the binder, suppress with `set_option linter.unusedDecidableInType
+   false in` (before the docstring, § 51), and write the precise reason in the comment.
+3. When the signature is pinned or a headline and the round may not change it: suppress as in 2,
+   naming which callee the binder threads to and that the fix is a deferred candidate — never call
+   it a false positive.
+
+**Calibration.** Phase 39 W3-L6a first read a threaded, non-`classical` binder as a false
+positive distinct from the ordinary `classical`-shadowing shape (a binder threaded only to
+callees that each take their own `[DecidableEq β]`, with no `classical` in the proof); Phase
+40-cleanup task 2 repeated that reading at seven pencil-tree sites. Both readings are superseded
+by the linter's type-only check. The six pinned-or-headline sites among them keep the suppression
+under rule 3; the one unpinned site (`pencilPair_of_splitOff_of_habitat`, `Escape.lean`) took the
+rule-1 fix, since its proof already opened with `classical`.
+
+FRICTION [idiom] *`unusedDecidableInType` flags a `[DecidableEq β]` the theorem's type never
+uses…*.
+
+## 116. A flexible `simp`'s "Try this" under a `<;>` chain is a per-goal delta, not a drop-in — `simp?` at the chain's own position gives the full set
+
+**Symptom.** `tac <;> simp […]` (or any `<;>`-chained flexible tactic) across several goals draws
+one `linter.flexible` *"Try this: simp only [...]"* suggestion per occurrence — but each
+suggestion is captured against the ONE branch the chain happened to report it from, not the union
+of what every branch needs. Phase 40g build 2
+(`linearIndependent_flat_{triangle,square,pentagon,hexagon}`, `MainComponent/Ear.lean`):
+`fin_cases … <;> simp [certPt, planarProj_apply, cross_apply] <;> norm_num` drew *"Used `tac1 <;>
+tac2` where `(tac1; tac2)` would suffice"* on two of the four goals and *"`norm_num` does
+nothing"* on the other two — the `;` form fails outright (*"No goals to be solved"*), because
+`simp` alone already closes most goals, leaving only a residual `1 + 1 = 2` on the rest. Phase 40h
+B1 (`klein_liftPlane`, `MainComponent/Lines.lean`): a `simp […] at e00 … e21` spike drew thirty
+flexible warnings under `lake lean`; `simp?` gave one 34-lemma list — for one position, not all.
+Phase 40n B1 (`addTwoEar_isLink_iff`, `MainComponent/GenericBase.lean`): a `<;>`-chained `simp
+[Graph.addTwoEar]` across 8 `rcases` branches drew 9 flexible warnings, each one's own "Try this" a
+*different, incomplete* lemma set (each assumes the other goals already closed).
+
+**Cause.** `linter.flexible`'s suggestion is computed against whichever goal it last observed;
+under a `<;>` chain that runs the same tactic across N branches, that is one specific branch, not
+their union (§ 107's "Third lesson" is the same trap for a single rigid-closer suggestion, there
+reported against a `refine ⟨?_, ?_, ?_⟩ <;> simp`). Substituting any one branch's suggestion
+verbatim as the whole chain's `simp only` either leaves siblings unsolved, or — the `norm_num`/`;`
+case above — fails outright on a branch the shorter list already closed.
+
+**Fix.** Run `simp?` (the Lean LSP MCP's `lean_multi_attempt`, `["simp?"]`) **at the chain's own
+position**, not per reported warning: this gives the full per-goal set across every branch at
+once. Union those sets into the one `simp only […]` the chain carries, verified goal-for-goal
+before editing — it closes every branch identically to the original. In the leftover-residual
+case, add just the one extra lemma the shorter closer needed (`one_add_one_eq_two`) alongside the
+bare `simp` used everywhere else, rather than reflowing the whole set.
+
+FRICTION [resolved] *The four certificate eliminations: the `<;>` linter's advice and the flexible
+`simp … at`*.
 
 ---

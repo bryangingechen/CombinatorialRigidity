@@ -14,7 +14,8 @@ closes unattended. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 b
 autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
 `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
 **The next concrete task** is the one round 5's log names in its **Status** (task 1, the
-user-facing surfaces, landed 2026-10-04; next, task 2, the Lean-idiom lifts).
+user-facing surfaces, and task 2, the Lean-idiom lifts, landed 2026-10-04; next, task 3,
+`DESIGN.md`'s two cross-phase rationales).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

@@ -255,7 +255,7 @@ to be re-derived by re-reading entries later.
   **Lifted to:** TACTICS-QUIRKS § 56 (symptom-index line and a *Second instance* paragraph).
 - **Status:** open.
 
-### [idiom] The four certificate eliminations: the `<;>` linter's advice and the flexible `simp … at`
+### [resolved] The four certificate eliminations: the `<;>` linter's advice and the flexible `simp … at`
 - **Where it bit:** Phase 40g build 2, `linearIndependent_flat_{triangle,square,pentagon,hexagon}`
   and `linearIndependent_pointJoin_cert*` (`MainComponent/Ear.lean`).
 - **Friction:** (1) `fin_cases … <;> simp [certPt, planarProj_apply, cross_apply] <;> norm_num` drew
@@ -276,7 +276,7 @@ to be re-derived by re-reading entries later.
   Fix: `simp? [Graph.addTwoEar]` (the Lean LSP MCP's `lean_multi_attempt`) at the tactic's own
   position gives the FULL per-goal set across all 8 branches at once; the union of those closes
   every branch identically to the original (goal-for-goal verified before editing).
-- **Status:** idiom.
+- **Status:** resolved. **Lifted to:** `TACTICS-QUIRKS.md` § 116.
 
 ### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
 - **Where it bit:** Phase 40g build 2, `eval_joinPicturePoly` (`MainComponent/Flat.lean`): the
@@ -384,7 +384,7 @@ to be re-derived by re-reading entries later.
   `Module.finrank K ↥(…)` (§ 33's motive), fixed by a `finrank_liftingSpace_embedEdges` corollary
   proved by `rw`.
 
-### [idiom] `if_pos` / `dif_pos` are now deprecated (mathlib bump) — use `ite_eq_left` / `dite_eq_left`
+### [resolved] `if_pos` / `if_neg` / `dif_pos` are deprecated in this mathlib — use `ite_eq_left` / `ite_eq_right` / `dite_eq_left`
 - **Where it bit:** Phase 40b CARRIER C1b (`Graph.IsAdmissiblePicture.exists_mvPolynomial`),
   `rw [if_pos h] at hl` to open a product factor `if G.Adj u v then … else 1`.
 - **Friction:** compiles with a deprecation warning ("Use `ite_eq_left` instead"), tripping the
@@ -399,7 +399,11 @@ to be re-derived by re-reading entries later.
   constant. And a first-draft `fin_cases i <;> simp <;> ring` trips `linter.unnecessarySeqFocus`
   when only one goal survives the `simp` (write `fin_cases i <;> simp; ring`), and
   `unusedTactic` when `field_simp` already closed it. Each cost one LSP diagnostics round, no build.
-- **Status:** resolved in-proof (usage note).
+- **Recurred again:** `40-factor`'s open spike for `Graph.exists_normalized_labeling`
+  (`Molecular/Deficiency.lean`): `fun x hx => if_pos hx`, an `EqOn` on the `if` guard's true
+  branch, and the matching `if_neg` on the false branch, each drew the same deprecation warning —
+  `ite_eq_left hx` / `ite_eq_right hx` again, one `lake lean` cycle, no new shape.
+- **Status:** resolved in-proof (usage note). **Lifted to:** `TACTICS-GOLF.md` § 26.
 
 ### [idiom] `split_ifs` on `if ¬p then a else b` splits on `p` with the branches swapped — the first case carries `h : p`
 - **Where it bit:** Phase 40b CARRIER C1b (`Graph.liftingMatrix_mulVec_eq_zero_iff`), a row value
@@ -587,7 +591,7 @@ to be re-derived by re-reading entries later.
   2. **Only if that fails for a stated reason** (a step computes with the specific instance — `decide`, a computational `rfl` — or a callee froze an instance in a definition body that a later `rw` must match, TACTICS-QUIRKS § 66): keep the binder, suppress with `set_option linter.unusedDecidableInType false in` (before the docstring, TACTICS-QUIRKS § 51), and write that precise reason in the comment.
   3. **When the signature is pinned or a headline and the round may not change it** (Phase 40-cleanup's hygiene-only rule): suppress as in 2, with a comment saying the binder is type-unused, which callee it is threaded to, and that the fix is deferred as a candidate. Never call it a false positive.
 - **Calibration history.** W3-L6a's binder was threaded only to callees that each take their own `[DecidableEq β]` (`contract_matroidMG_deficiency_eq`, `matroidMG_rigidContract_eq_contract`, `Graph.rank_add_deficiency_eq`); the proof had no `classical`. Deleting the binder, which had just worked in the sibling W3-L2a commit, broke those call sites, so the entry was filed as a false positive distinct from W3-L1/W3-L2's "`classical`-shadowing" one (`notes/Phase39.md`), with a delete-and-rebuild check as its fix. Both readings are superseded by the linter's docstring, which checks the type only. That suppression and comment are still in `Contraction.lean`. W5-L6a-safe-exists applied the `classical` fix (`exists_adjacent_degree_two_pair_of_{edgeBound,noRigid_of_deficiency_pos}`, generalized off `IsMinimalKDof`, whose type had carried the instance through `matroidMG`); both closed warning-clean. Phase 40-cleanup task 2 repeated the W3-L6a reading at seven pencil sites and restored all seven silencers as false positives. The follow-up applied the fix at the one unpinned site (`pencilPair_of_splitOff_of_habitat`, `Escape.lean`; its proof already opened with `classical`). The six pinned or headline sites keep the option under rule 3 and are `40-simplify` candidates (`notes/Phase40-cleanup.md`).
-- **Status:** idiom. Suppressions outside the pencil tree still carry "false positive" comments (`Contraction.lean`, `Deficiency.lean`, `Operations.lean`, `ReducibleVertex.lean`, `ForestSurgery/Reduction.lean`) or none (`Theorem55.lean`, `Theorem56.lean`, `Modelling.lean`); `grep -rn 'unusedDecidableInType false'` lists them. Re-examine them under rule 1 when a round covers their files.
+- **Status:** idiom. Suppressions outside the pencil tree still carry "false positive" comments (`Contraction.lean`, `Deficiency.lean`, `Operations.lean`, `ReducibleVertex.lean`, `ForestSurgery/Reduction.lean`) or none (`Theorem55.lean`, `Theorem56.lean`, `Modelling.lean`); `grep -rn 'unusedDecidableInType false'` lists them. Re-examine them under rule 1 when a round covers their files. **Lifted to:** `TACTICS-QUIRKS.md` § 115.
 
 ### [idiom] To turn a product `extensor a * extensor b` into `extensor (Fin.append a b)`, rewrite `← join_def` then `join_extensor` — not `← join_extensor` (which hunts for an absent `Fin.append`)
 - **Where it bit:** Phase 39 (PENCIL) W2 remainder (`Meet.lean`, `span_range_eq_of_extensor_eq`), factorizing the grade-3 triple `extensor ![x, a, b]` through its grade-2 block `extensor ![a, b]`.
@@ -3033,10 +3037,10 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Resolution:** a distinct name (`flatStdBiv`). Before naming a helper in a namespace as crowded as `CombinatorialRigidity.Molecular`, grep the import closure for the bare name.
 - **Status:** idiom.
 
-### [idiom] `omega` misses a `finrank` atom between a `have` and the goal when the framework term carries `Fin (1 + 2)` — cast the `ℕ` identity to `ℤ` and use `linarith`
+### [resolved] `omega` misses a `finrank` atom between a `have` and the goal when the framework term carries `Fin (1 + 2)` — cast the `ℕ` identity to `ℤ` and use `linarith`
 - **Where it bit:** Phase 40c FLAT, `Graph.finrank_span_rigidityRows_ofNormals_pencilPicturePoint` (grade-1 rank at the normals `(x_v, y_v, 1)`): the complement brick's `ℕ` identity and the `ℤ` goal name the same `finrank … (ofNormals (k := 1) …)`, yet `omega` reports a counterexample treating them as unrelated. The same step at `k = 2` closes by `omega`. Another instance of the omega-atom family (TACTICS-QUIRKS §58/§63/§98).
 - **Resolution:** `have hz := congrArg (Nat.cast : ℕ → ℤ) hc; push_cast at hz; linarith`.
-- **Status:** idiom.
+- **Status:** resolved. **Lifted to:** `TACTICS-QUIRKS.md` § 58.
 
 ### [resolved] Two general facts sit downstream of their natural consumers: `Graph.closedNbhd_subset_vertexSet` (`Bridge.lean`) and the `infinitesimalMotions_eq_of_isLink_*` congruences (`Pinning.lean`)
 - **Where it bit:** Phase 40h B3–B4. `Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr` (`MainComponent/Carrier.lean`) each inline "a closed neighbourhood lies in `V(G)`", because `Graph.closedNbhd_subset_vertexSet` is in `MainComponent/Bridge.lean`, downstream. `BodyHingeFramework.relScrews_congr` (`RigidityMatrix/Bricks.lean`) re-proves the motion-space congruence at links, because `infinitesimalMotions_eq_of_isLink_span_supportExtensor` is in `AlgebraicInduction/Pinning.lean`, which imports `Bricks.lean`.
@@ -3057,11 +3061,6 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `⟨…⟩` whose next tactic starts a new line at a lower column ends the tactic block early
   ("expected '⟩'"); give it a `refine ⟨?_, …⟩` bullet, or write the term `h ▸ …`.
 - **Status:** idiom. **Lifted to:** `TACTICS-GOLF.md` § 28.
-
-### [idiom] `if_pos` / `if_neg` are deprecated in this mathlib; write `ite_eq_left` / `ite_eq_right`
-- **Where it bit:** `40-factor`'s open spike for `Graph.exists_normalized_labeling` (`Molecular/Deficiency.lean`, landed in task 1). `fun x hx => if_pos hx`, an `EqOn` on the `if` guard's true branch, and the matching `if_neg` on the false branch each drew a deprecation warning, costing one `lake lean` cycle.
-- **Resolution:** `ite_eq_left hx` and `ite_eq_right hx`: the same statements (`c → ite c a b = a`, `¬c → ite c a b = b`), and the forms the rest of the tree already uses.
-- **Status:** idiom.
 
 ### [idiom] A set family on `V₁` written with `if v ∈ V₁ then … else ∅`, and a singleton unpacked from `ncard = 1` by hand
 - **Where it bit:** Phase 40-simplify 10m, `Pair2.lean`'s `hasGenericPencilRealization_pendant_of_IH`

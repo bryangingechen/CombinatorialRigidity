@@ -1221,7 +1221,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 5, `40-docs`, project organization, opened 2026-10-04: the task
   its work log `notes/Phase40-docs.md` names in its **Status** (task 1, the user-facing surfaces,
-  landed 2026-10-04; next, task 2, the Lean-idiom lifts). It closes unattended. Rounds 1,
+  and task 2, the Lean-idiom lifts, landed 2026-10-04; next, task 3, `DESIGN.md`'s two cross-phase
+  rationales). It closes unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).

@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; task 1 landed 2026-10-04.
-**Next concrete task:** task 2 (L1), the Lean idioms into `TACTICS-QUIRKS.md` and
-`TACTICS-GOLF.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1 and 2 landed
+2026-10-04. **Next concrete task:** task 3 (L2), `DESIGN.md`'s two cross-phase rationales (Opus,
+docs only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,10 +17,16 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 2 (L1)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
-(2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 15
-(G) is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is
-mid-stream.
+**Next commit: task 3 (L2)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+(2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
+(L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
+(a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
+cases added to §55 (a spike's `#print axioms` lines passing the warning-only gate) and §58 (the
+40c `Fin (1 + 2)` ℕ/ℤ atom-split); `TACTICS-GOLF.md` §26 widened from `push_neg` to the
+`if_pos`/`if_neg`/`dif_pos`/`LinearEquiv.ofLinear` renames; five FRICTION entries pointed at their
+lift, three flipped to `[resolved]`, and the two `if_pos` entries merged into one — (a) stays
+`[idiom]` as the task said). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no
+commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (this commit, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -120,8 +126,8 @@ section titles are the stable reference.
 
 ### Lifts (before the archive sweep and the compressions that read the same notes)
 
-- [ ] **2. L1 — Lean idioms into `TACTICS-QUIRKS.md` and `TACTICS-GOLF.md`** (Sonnet). Each
-  recurred across two or more sub-phases or rounds. Each gets a section or a worked case, a
+- [x] **2. L1 — Lean idioms into `TACTICS-QUIRKS.md` and `TACTICS-GOLF.md`** (Sonnet; this commit).
+  Each recurred across two or more sub-phases or rounds. Each gets a section or a worked case, a
   symptom-index line where the file has an index, and a **Lifted to:** pointer in its FRICTION
   entry. An entry whose *Status* carries no open work flips to `[resolved]`, so task 6 archives it.
   - (a) QUIRKS, a new section: `linter.unusedDecidableInType` on a type-unused `[DecidableEq β]`.
@@ -359,10 +365,13 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 2 (L1)**, the Lean idioms (Sonnet, docs only): items (a)–(e) under the task,
-each into `TACTICS-QUIRKS.md` or `TACTICS-GOLF.md` with a symptom-index line where the file has
-an index and a **Lifted to:** pointer in its FRICTION entry, and the two `if_pos` FRICTION entries
-merged. Then the other lifts (tasks 3–5), the FRICTION archive and the standing sweep (6–7), the
+**Next commit: task 3 (L2)**, `DESIGN.md`'s two cross-phase rationales (Opus, docs only): (a) new
+mathematics found by formalization is second-read before it is built on (the design doc's
+*Appendix — the reusable second-reader brief* and §5 stay the home; this is a *Promoted to*
+pointer), and (b) genericity without dimension theory beside *Genericity device (Claim 6.4/6.9)*
+(design §4). Both get *Promoted to `DESIGN.md`* pointers, which task 9 keeps. Then task 4 (L3,
+cleanup-round procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`) and task 5 (L4, round 3's
+defaults into `blueprint/AUTHORING.md`), the FRICTION archive and the standing sweep (6–7), the
 compressions (8–14), the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round

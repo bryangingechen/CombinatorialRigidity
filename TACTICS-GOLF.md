@@ -1588,7 +1588,7 @@ Worked example: `Matrix.exists_mvPolynomial_section_mulVec_eq_zero`
 (`CombinatorialRigidity/Mathlib/LinearAlgebra/Matrix/MvPolynomial.lean`, Phase 40b C1b; FRICTION
 *`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`*).
 
-## 26. `push_neg` is deprecated — use `push Not`
+## 26. This mathlib bump deprecated several familiar names: `push_neg` → `push Not`, `if_pos`/`if_neg`/`dif_pos` → `ite_eq_left`/`ite_eq_right`/`dite_eq_left`, `LinearEquiv.ofLinear` → `LinearEquiv.ofLinearMap`
 
 Mathlib's negation-pushing tactic is now implemented as a thin wrapper: `Mathlib.Tactic.Push`
 defines a generic `push <head> [at loc]` combinator (the same machinery backs `push_cast`), and
@@ -1597,6 +1597,17 @@ but the build then carries a `deprecated` warning — not warning-clean, per the
 `CombinatorialRigidity/CLAUDE.md`. Write `push Not at h` directly (and `push Not` in `conv` mode,
 where `push_neg` is deprecated the same way). (FRICTION *`push_neg` is deprecated…*, Phase 40b
 CARRIER C5′.)
+
+The same bump deprecated the `if`/`dif`-opening lemmas: `if_pos`/`if_neg` (on `ite`) give way to
+`ite_eq_left`/`ite_eq_right`, and `dif_pos` (on `dite`) to `dite_eq_left` — same statements (`c →
+ite c a b = a`, `¬c → ite c a b = b`), each just a rename (`rw [if_pos h] at hl` → `rw [ite_eq_left
+h] at hl`; a `simp only [sel, dif_pos hv]` unfolding a `let`-bound `dite` → `simp only [sel, hv,
+↓reduceDIte]` or `simp only [sel, dite_eq_left hv]`). `LinearEquiv.ofLinear` is deprecated for
+`LinearEquiv.ofLinearMap` too (same arguments, since 2026-06-23). The rename recurred three times
+independently — Phase 40b CARRIER C1b and C4, then `40-factor`'s open spike — before it was worth
+this entry; grep a freshly-bumped file for the old names rather than waiting to hit each call site
+in turn. (FRICTION *`if_pos` / `if_neg` / `dif_pos` are deprecated in this mathlib…*, merged from
+two entries.)
 
 ## 27. `change <verbose unfolded type>` before a `rw` chain — `simp only [localName]` unfolds a `set`/`let`-bound local directly
 
