@@ -1,456 +1,318 @@
 # CombinatorialRigidity/CLAUDE.md — Lean source operating manual
 
-This file is the **agent-facing operating manual** for working with
-the project's Lean source. It auto-loads when an agent reads any
-`.lean` file under this directory.
-
-Top-level `../CLAUDE.md` covers project-wide process (reading order,
-hand-off contract, citations, project history). This file carries
-the Lean-specific discipline: build/lint gates, friction review,
-MCP tool guidance, and the symptom-indexed quirks index.
-
-For the blueprint side (TeX, dep-graph, `checkdecls`, `inv bp`/`inv
-web`), see `../blueprint/CLAUDE.md`. For notes/phase-log discipline,
-see `../notes/CLAUDE.md`.
+The **agent-facing operating manual** for the project's Lean source. It
+auto-loads when an agent reads any `.lean` file under this directory, and
+carries the Lean-specific discipline: build and lint gates, friction review,
+MCP guidance, the quirks index. Root `../CLAUDE.md` covers project-wide
+process, `../blueprint/CLAUDE.md` the blueprint, `../notes/CLAUDE.md` the
+notes.
 
 ## Reading order
 
 In addition to the project-wide reading order in `../CLAUDE.md`:
 
-- **`../TACTICS-QUIRKS.md`** — rescue reference, symptom-indexed.
-  Its **Symptom index** (top of the file) is the first place to skim
-  when a build fails with an unfamiliar Lean error — scan the symptom,
-  jump to the named §. (The *Quirks index* pointer below routes here.)
-- **`../TACTICS-GOLF.md`** — golfing / improvement reference. Read
-  at cleanup time (when the `simplify` skill fires, or when
-  shrinking/polishing a proof before commit), **not** during
-  first-draft writing.
-- **`../notes/FRICTION.md`** — optional skim for an open
-  upstream-eligible item to land alongside the session's main work.
-- **`LEAN-OPS.md`** — read-on-demand Lean-source ops: the module-system
-  conversion how-to and the `apnelson1/Matroid` fork-editing protocol
-  (consult when converting a file or patching the fork — both rare).
+- **`../TACTICS-QUIRKS.md`**: the symptom-indexed rescue reference (*Quirks
+  index* below).
+- **`../TACTICS-GOLF.md`**: golfing and improvement idioms. Read it at cleanup
+  time (the `simplify` skill, or polishing a proof before commit), **not**
+  while writing a first draft.
+- **`../notes/FRICTION.md`**: an optional skim for an open upstream-eligible
+  item to land alongside the session's work.
+- **`LEAN-OPS.md`**: rare Lean-source operations, read on demand
+  (module-system conversion, patching the `Matroid` dependency).
 
 ## Quirks index → `../TACTICS-QUIRKS.md` *Symptom index*
 
-When a `lake build` fails with an unfamiliar Lean error, the
-**symptom → § lookup table** is the first place to skim — it lives at the
-top of `../TACTICS-QUIRKS.md` (*Symptom index*), the read-on-demand rescue
-file the fixes are in. **No match there, or the same issue bites a second
-time in one session? Grep `../notes/FRICTION.md` (and `FRICTION-archive.md`)**
-for a keyword from the error or the API you're fighting before brute-forcing
-another attempt — FRICTION often carries the exact failing pattern and fix.
+When a `lake build` fails with an unfamiliar Lean error, skim the **symptom →
+§ table** at the top of `../TACTICS-QUIRKS.md` first. **No match there, or
+the same issue bites a second time in one session? Grep `../notes/FRICTION.md`
+(and `FRICTION-archive.md`)** for a keyword from the error or the API you're
+fighting before brute-forcing another attempt: FRICTION often carries the
+exact failing pattern and fix.
 
 ## Starting a Lean-touching session
 
-In addition to the universal Starting steps in `../CLAUDE.md`
-(read CLAUDE.md / ROADMAP.md / `notes/PhaseN.md`; `git log
---oneline -20`; identify the active phase):
-
-- `lake build CombinatorialRigidity.Laman` (or the leftmost active
-  phase's file) to confirm the tree still compiles cleanly on its
-  own before touching anything.
-- If that build fails with `failed to cache artifact: operation not
-  permitted`, no Lean is wrong: Lean 4.34's Lake cache defaults to the
-  read-only elan toolchain dir. Set `LAKE_CACHE_DIR` per
-  `../notes/ToolchainBumps.md` *Environment* — session-wide through the
-  gitignored `.claude/settings.local.json` `env` block, so subagents'
-  builds inherit it — and rebuild.
+In addition to the Starting steps in `../CLAUDE.md`, build the leftmost
+active phase's file (or `lake build CombinatorialRigidity.Laman`) to confirm
+the tree compiles before touching anything. A `failed to cache artifact:
+operation not permitted` failure means `LAKE_CACHE_DIR` is unset, not that
+any Lean is wrong (*Build discipline* below).
 
 ## Engineering conventions
 
-Where lemmas live, namespace policy, `Set.ncard` vs `Finset.card`,
-decidability, etc. — the authoritative list is in
-`../ROADMAP.md` "Engineering conventions". Follow it.
+The authoritative list (where lemmas live, namespace policy, `Set.ncard` vs
+`Finset.card`, decidability, …) is `../ROADMAP.md` *Engineering conventions*.
+Follow it. Three more:
 
-- When you add a lemma, put it in the file that introduces the
-  relevant *definition*, not the file that first uses it. (Lemma
-  about `IsSparse` → `Sparsity.lean`, even if first invoked in
-  `Laman.lean`.)
-- **Section files as you author; treat ~1500 LoC as a live tripwire.**
-  Group declarations under `/-! ## …` headers by sub-argument *as you add
-  them* — never let a file accrue as a flat run of decls. When a file nears
-  mathlib's ~1500-LoC soft cap it should *already* be cleanly sectioned, so a
-  split is a mechanical cut along the headers; a flat multi-thousand-line
-  monolith instead forces a full structure-recovery read-pass before it can be
-  split (the post-Phase-22l perf round paid exactly this on the flat 4000-line
-  `CaseIII.lean` and the 2937-line `RigidityMatrix` core, while the already-
-  sectioned files split cheaply). The *when/how* of splitting — the ranking
-  factors and the `Foo/` subdirectory pattern — is in `../notes/PERFORMANCE.md`.
-- The `@[deprecated <general-form> (since := "narrative-bridge")]`
-  attribute carries a **second project meaning**: it marks
-  **narrative-bridge shims** — one-line composition lemmas existing only
-  to anchor a blueprint corollary's `\lean{...}` pin (the warning
-  discourages new callsites). Authoring rule + canonical example
-  (`SimpleGraph.IsLaman.exists_rowIndependent_placement`):
+- Put a lemma in the file that introduces the relevant *definition*, not the
+  file that first uses it (a lemma about `IsSparse` goes in `Sparsity.lean`,
+  even if `Laman.lean` invokes it first).
+- **Section files as you author; treat ~1500 LoC as a live tripwire.** Group
+  declarations under `/-! ## …` headers by sub-argument as you add them, so a
+  file nearing mathlib's soft cap splits mechanically along its headers. A
+  flat monolith forces a structure-recovery read first (the post-Phase-22l
+  perf round paid that on the flat 4000-line `CaseIII.lean`). When and how to
+  split: `../notes/PERFORMANCE.md`.
+- **`@[deprecated <general-form> (since := "narrative-bridge")]`** has a
+  second project meaning: it marks a **narrative-bridge shim**, a one-line
+  composition lemma that exists only to anchor a blueprint corollary's
+  `\lean{...}` pin (the warning discourages new callsites). Authoring rule
+  and canonical example (`SimpleGraph.IsLaman.exists_rowIndependent_placement`):
   `../blueprint/AUTHORING.md` *Narrative-bridge corollaries*. The non-date
-  `"narrative-bridge"` sentinel is deliberate: any present `since`
-  silences the `deprecatedNoSince` linter (Lean checks only presence,
-  sanctioning "date *or library version*"), and a non-date string
-  lex-sorts above any `YYYY-MM-DD` bound, so mathlib's
-  `#clear_deprecations` date-range tooling can never delete the shim.
+  sentinel is deliberate: any `since` silences the `deprecatedNoSince` linter
+  (Lean checks presence only), and a non-date string sorts above every
+  `YYYY-MM-DD`, so mathlib's `#clear_deprecations` date-range tooling never
+  deletes the shim.
 
 ## Module-system conversion → `LEAN-OPS.md`
 
-Project files use Lean's module system (`module` + `public import` +
-`@[expose] public section`); the conversion is **done across all 28
-files**. The how-to — converting a file, the `module`/`@[expose]`/
-`public section` constraints, the zero `backward.privateInPublic` opt-ins
-(do not add one) — is in **`LEAN-OPS.md`** *Module-system conversion*;
-per-file dispositions are in `../notes/PERFORMANCE.md`.
+Every project file uses Lean's module system (`module`, `public import`,
+`@[expose] public section`). Converting a file, its constraints, and the
+rule of zero `backward.privateInPublic` opt-ins (don't add one) are in
+`LEAN-OPS.md` *Module-system conversion*; per-file dispositions are in
+`../notes/PERFORMANCE.md`.
 
 ## Patching the `Matroid` dependency → `LEAN-OPS.md`
 
-⚠️ The `Matroid` dependency is **plain upstream `apnelson1/Matroid`** as of the
-v4.34.0-rc1 bump — the user's editable fork is **retired**
-(`notes/ToolchainBumps.md`). So there is no sanctioned way to patch the
-dependency mid-session: prefer the project-side route (a
-`CombinatorialRigidity/Matroid/` or `Mathlib/<path>` mirror), and **never bump
-its `rev` in `lake-manifest.json`/`lakefile.toml` unprompted** — that is a
-dependency bump, a human decision. If a dependency-side patch looks
-unavoidable, surface it to the user (upstream PR vs re-forking is their call).
-Full mechanics: **`LEAN-OPS.md`** *Patching the Matroid dependency*.
+The `Matroid` dependency is plain upstream `apnelson1/Matroid` (the editable
+fork is retired: `../notes/ToolchainBumps.md`), so there is no sanctioned
+mid-session patch. Prefer a project-side mirror (`CombinatorialRigidity/Matroid/`
+or `Mathlib/<path>`), and **never bump its `rev`** in
+`lake-manifest.json`/`lakefile.toml` unprompted: that is a dependency bump, a
+human decision. If a dependency-side patch looks unavoidable, surface it to
+the user. Mechanics: `LEAN-OPS.md` *Patching the Matroid dependency*.
 
 ## Lean LSP MCP — reach for it
 
-`.mcp.json` at the repo root registers
-[`lean-lsp-mcp`](https://github.com/oOo0oOo/lean-lsp-mcp); approve
-the server on first prompt. File paths resolve against the project
-root. **An MCP call is sub-second; an `edit + lake build` cycle is
-30+ seconds — the cost asymmetry is the whole point.** Whenever you
-would otherwise:
+`.mcp.json` registers [`lean-lsp-mcp`](https://github.com/oOo0oOo/lean-lsp-mcp)
+(approve it on first prompt; paths resolve against the project root). **An
+MCP call is sub-second; an edit + `lake build` cycle is 30+ seconds**, and
+that asymmetry is the point. Instead of:
 
-- guess at a closing tactic — use `lean_multi_attempt` at the proof
-  position to A/B-test several candidates
-  (e.g. `["grind", "omega", "simp", "ring"]`) in one round-trip,
-  instead of editing-and-rebuilding for each guess. Same for
-  finding the right `simp [...]` argument set.
-- hunt for a mathlib lemma via `grep -rn` in
-  `.lake/packages/mathlib` — use `lean_loogle` (type pattern) or
-  `lean_leanfinder` (concept) instead; both are faster and return
-  structured results.
-- open an upstream `.lean` file to read a signature — use
-  `lean_hover_info` at the identifier's start column.
-- insert a `sorry` and rebuild to see what the intermediate goal
-  looks like — use `lean_goal` at the line (omit `column` for
-  before/after; pass `column` for an exact position).
-- check the project's existing API for a name match — use
-  `lean_local_search` instead of `grep -rn` on the project's
-  `.lean` files.
+- guessing a closing tactic or a `simp [...]` argument set, A/B-test
+  candidates with `lean_multi_attempt` at the proof position
+  (e.g. `["grind", "omega", "simp", "ring"]`);
+- grepping `.lake/packages/mathlib` for a lemma, use `lean_loogle` (type
+  pattern) or `lean_leanfinder` (concept);
+- opening an upstream `.lean` file to read a signature, use `lean_hover_info`
+  at the identifier's start column;
+- inserting a `sorry` to see an intermediate goal, use `lean_goal` (omit
+  `column` for before/after; pass it for an exact position);
+- grepping the project's `.lean` files for a name, use `lean_local_search`.
 
-**Scratch and spike files go in `scratch/<phase>/`** (gitignored):
-the MCP refuses a file with no `lean-toolchain` ancestor, so a spike
-in `/tmp` or a session scratchpad cannot be iterated with it. Check a
-scratch file with `lake lean <file>`, never `lake env lean <file>`:
-only `lake lean` applies the lakefile's `[leanOptions]`
-(`autoImplicit = false`, the mathlib linters, `warn.sorry`), so only
-its errors and warnings match what `lake build` will report once the
-code lands (`TACTICS-QUIRKS.md` §55; 2026-09-27 incident).
+**Scratch and spike files go in `scratch/<phase>/`** (gitignored): the MCP
+refuses a file with no `lean-toolchain` ancestor, so a spike in `/tmp` or a
+session scratchpad can't be iterated with it. Check a scratch file with
+`lake lean <file>`, never `lake env lean <file>`: only `lake lean` applies the
+lakefile's `[leanOptions]` (`autoImplicit = false`, the mathlib linters,
+`warn.sorry`), so only its errors and warnings match what `lake build` will
+report once the code lands (`../TACTICS-QUIRKS.md` §55).
 
-Run `lake build` once before the first MCP call (warms `lake
-serve`); skip if you've built recently this session. **Do not call
-`lean_leansearch`** — its endpoint has been down since late 2025;
-use `lean_loogle` / `lean_leanfinder` instead. **`lean_verify`'s
-axiom report can be stale** — it has reported a spurious `sorryAx`
-on a genuinely sorry-free decl (stale LSP cache); a **warning-clean
-`lake build` is authoritative** for "no `sorry`" (Lean always emits
-a `declaration uses 'sorry'` warning for a real one), as is `#print
-axioms` against the freshly-built olean. Full decision tree,
-cold-start details, and `lean_multi_attempt` payload shape in
-`../TACTICS-GOLF.md` § 7.
+Run `lake build` once before the first MCP call (it warms `lake serve`).
+**Don't call `lean_leansearch`**: its endpoint has been down since late 2025.
+**`lean_verify`'s axiom report can be stale** (it has reported a spurious
+`sorryAx` on a sorry-free declaration); a warning-clean `lake build`, or
+`#print axioms` against the freshly built olean, is authoritative for "no
+`sorry`". Decision tree, cold start and the `lean_multi_attempt` payload:
+`../TACTICS-GOLF.md` §7.
 
 ## Forward-mode slices
 
-*(Moved from the top-level `CLAUDE.md` on 2026-09-25; it binds every
-Lean slice in a forward-mode phase.)* **Forward-mode blueprint phases
-(Phase 6 onward by default).** The
-active phase's blueprint chapter — typically a section of
-`blueprint/src/chapter/*.tex` — is the authoritative dep-graph
-and lemma index. Pick the leaf-most red node (no `\leanok`,
-dependencies all `\leanok` or mathlib facts), formalize it in
-Lean, then add/flip `\lean{...}` and `\leanok` on its blueprint
-entry in the same commit. Backfill mode (Phases 1–5) writes the
-blueprint chapter end-to-end after the Lean lands; forward mode
-inverts that so the dep-graph doubles as the live to-do list. See
-`blueprint/CLAUDE.md` for rendering mechanics (`inv bp && inv
-web`), `checkdecls`, dep-graph spot-check, and authoring
-conventions; `blueprint/DESIGN.md` for the workflow-mode
-rationale.
+**Forward-mode blueprint phases** (Phase 6 onward by default): the active
+phase's blueprint chapter is the authoritative dep-graph and lemma index.
+Pick the leaf-most red node (no `\leanok`, its dependencies all `\leanok` or
+mathlib facts), formalize it in Lean, and add or flip its `\lean{...}` and
+`\leanok` in the same commit. Backfill mode (Phases 1–5) wrote each chapter
+after its Lean; forward mode makes the dep-graph the live to-do list
+(rationale: `../blueprint/DESIGN.md`; mechanics: `../blueprint/CLAUDE.md`).
 
-**Structural-edit phases** are the variant for refactor work that
-reshapes existing definitions or signatures rather than adding new
-ones (e.g. Phase 11's `Option` → verdict return-type reshape of
-the Phase 9/10 pebble-game algorithms). No new chapter is opened;
-the blueprint edits restate already-green nodes against the new
-shape in step with the Lean, distributed across the existing
-chapters per Layer. Forward-mode discipline still applies (the
-dep-graph IS the lemma index), but the to-do list lives in
-`notes/PhaseN.md`'s *Layer plan* section rather than a single
-blueprint chapter, and the affected chapters spend a few Layer
-commits with selected nodes red until their Lean catches up.
-Per-slice gate (two misses in enharmonic Phase 17): before
-committing a slice that changes a decl's *statement*, grep
-`blueprint/src/` for that decl — when the `\lean{...}` name
-survives the flip, `checkdecls` cannot catch a node still stating
-the legacy form; restate it in the same commit.
+**Structural-edit phases** reshape existing definitions or signatures rather
+than adding new ones (Phase 11's `Option` → verdict return type for the
+pebble-game algorithms). No chapter opens: the affected chapters' green
+nodes are restated against the new shape in step with the Lean, per Layer,
+spending a few commits red, and the to-do list is `notes/PhaseN.md`'s *Layer
+plan*.
 
-The **additive variant** of the same gate (one miss in enharmonic
-Phase 17, caught only by a later recon): a slice that lands a
-unified *successor* for a node's existing declarations changes no
-statement, so nothing fails — extend that node's `\lean{...}` list
-with the successor name in the same commit, or record the repin
-debt explicitly in the phase notes; otherwise the node silently
-pins only names scheduled for deletion. The **deletion/retirement
-variant** (three misses in one enharmonic sub-phase, repaired by a
-coordinator follow-up): a slice is not complete until the deleted
-declarations' names no longer appear as a *live cross-reference*
-anywhere in the tree — `grep` the whole repo for each deleted name
-and, in the **same commit**, repoint or remove every docstring /
-comment reference. The trap is the rationalization "that reference
-retires later with its own file's legacy": that holds *only* for a
-reference sitting inside another decl that is itself scheduled for
-deletion. A reference inside a **surviving** decl's docstring, or a
-**live mirror lemma**, dangles permanently — repoint it to the
-successor now. (A bare grep gives a false sense of completeness
-here because the build stays green: docstring references don't
-gate, and `checkdecls` only covers `\lean{...}` pins, not prose
-`` `name` `` back-ticks. The only intentional surviving reference
-to a deleted name is a retirement-history note that names it
-precisely *because* it documents the deletion.) These are the
-per-slice author-side view of the coordinator's step-4
-additive-successor / supersession-deletion checks in
-`.claude/commands/coordinate-phase.md`.
+Three per-slice gates that `checkdecls` cannot see, each a precedent from the
+sibling enharmonic repo (they are the author's side of the coordinator's
+step-4 checks in `.claude/commands/coordinate-phase.md`):
+
+- **A changed statement** (missed twice in its Phase 17). Before committing a
+  slice that changes a declaration's statement, grep `blueprint/src/` for it:
+  when the `\lean{...}` name survives, nothing catches a node still stating
+  the old form. Restate it in the same commit.
+- **An additive successor** (missed once there). A slice that lands a unified
+  successor for a node's declarations changes no statement, so nothing fails:
+  extend the node's `\lean{...}` list with the successor in the same commit,
+  or record the repin debt in the phase note. Otherwise the node silently
+  pins only names scheduled for deletion.
+- **A deletion** (missed three times in one sub-phase). A slice is complete
+  only when no deleted name survives as a live cross-reference anywhere: grep
+  the whole repo for each, and in the same commit repoint or remove every
+  docstring and comment reference. "It retires later with its file's legacy"
+  holds only for a reference inside a declaration itself scheduled for
+  deletion; one in a surviving docstring or a live mirror dangles
+  permanently. The build stays green either way (docstrings don't gate;
+  `checkdecls` covers only pins). The one intentional survivor is a
+  retirement note that names the declaration because it documents the
+  deletion.
 
 ## Before each commit — friction review (mandatory)
 
-Before each commit that touches Lean code, do a **friction review**.
-It is what keeps the project's API gaps from accumulating silently.
+Before each commit that touches Lean, do a **friction review**. It is what
+keeps the project's API gaps from accumulating silently.
 
-1. **Re-read the lemmas this commit adds or changes.** For each one:
-   - Did any rewrite chain feel longer than it should have?
-     (Two-rewrite glue lemmas — `coe_X` then `card_X` — are the
-     usual culprit.)
-   - Did `grind` need an unusually long hint list, or fail in a way
-     you worked around rather than understood?
-   - Did you hit a deprecation, missing simp lemma, or awkward
-     typeclass dance?
+1. **Re-read the lemmas this commit adds or changes.** Did a rewrite chain
+   feel longer than it should? Did `grind` need an unusually long hint list,
+   or fail in a way you worked around rather than understood? A deprecation,
+   a missing simp lemma, an awkward typeclass dance?
 
-   **Concrete signals.** Friction almost certainly happened if you
-   wrote any of the following — each is a candidate FRICTION entry,
-   not a "standard idiom" to dismiss:
-   - `change` or `show` to make `rw` / `simp` find a pattern (the
-     un-reduced lambda or `def`-predicate is the gap).
-   - A multi-rewrite chain (3+ `rw` arguments) for one mathematical
-     step — usually a missing fused lemma.
-   - A manual `have h : <unfolded body> := h_predicate` to surface a
-     `def`-predicate's content for `omega` / `grind` / `linarith` (cf.
-     `../TACTICS-GOLF.md` § 4 for the `IsLaman` / `IsTight` cases —
-     `IsInfinitesimallyRigid` joined the club in Phase 4, `IsKDof` /
-     `IsMinimalKDof` in Phase 22i).
+   **Concrete signals.** Friction almost certainly happened if you wrote any
+   of the following; each is a candidate FRICTION entry, not a "standard
+   idiom" to dismiss:
+   - `change` or `show` to make `rw` / `simp` find a pattern (the unreduced
+     lambda or `def`-predicate is the gap);
+   - a chain of 3+ `rw` arguments for one mathematical step (usually a
+     missing fused lemma), or two `rw` lemmas bridging one conversion
+     (`coe_X` then `card_X`; `Set.ncard_eq_toFinset_card'` then
+     `Set.toFinset_card`; usually a one-line mirror);
+   - a manual `have h : <unfolded body> := h_predicate` to expose a
+     `def`-predicate to `omega` / `grind` / `linarith` (`../TACTICS-GOLF.md`
+     §4: `IsLaman`, `IsTight`, `IsInfinitesimallyRigid`, `IsKDof`,
+     `IsMinimalKDof`);
    - `omega` or `nlinarith` failed and you added a numeric hint, a
      `ring`-normalized rewrite, or a manual `mul_comm`.
-   - Two `rw` lemmas to bridge a single conversion (e.g. `coe_X` then
-     `card_X`, or `Set.ncard_eq_toFinset_card'` then
-     `Set.toFinset_card`) — usually a one-line mirror.
 
-   **Bar is low.** Anything that took a build-failure → fix iteration
-   deserves at minimum a one-line FRICTION entry, even if the fix was
-   "obvious in hindsight". Phase 4 closed having logged zero entries
-   on the first pass and six on the second — the lesson is that "this
-   is just a standard mathlib idiom" is not an excuse if you spent a
-   build cycle figuring it out. The next agent doesn't have your
-   hindsight.
+   **The bar is low.** Anything that took a build-failure → fix iteration
+   deserves at least a one-line FRICTION entry, even if the fix was "obvious
+   in hindsight": the next agent doesn't have your hindsight. (Phase 4 logged
+   zero entries on its first pass and six on its second.)
 
 2. For each genuine instance:
-   - If the missing lemma is **upstream-eligible** (a fact about
-     `SimpleGraph`, `Set.ncard`, `Finset`, etc., not specific to
-     rigidity), mirror it under `CombinatorialRigidity/Mathlib/<exact
-     mathlib path>` in this commit. The Lean namespace stays the
-     upstream one. See `../DESIGN.md` "Mirror directory" for the
-     mechanics; refactor the calling proof to use the new mirror
-     lemma.
-   - If it's **project-internal** (about our `edgesIn`, `IsSparse`,
-     etc.), put it in the file that owns the relevant definition.
-   - In all cases, add an entry to `../notes/FRICTION.md` (open or
-     resolved/mirrored as appropriate). Even a one-line entry is
-     valuable.
-   - **If the entry carries a *general lesson*** (a rule that
-     applies beyond this proof — a `subst`-direction trap, an
-     `omega`-atomicity gotcha, a "search before mirroring"
-     reminder, etc.), lift it to `../TACTICS-GOLF.md` (golfing
-     idioms) or `../TACTICS-QUIRKS.md` (build-failure rescue) *in
-     the same commit* and add a `**Lifted to:** TACTICS-GOLF § X`
-     or `**Lifted to:** TACTICS-QUIRKS § X` cross-reference on the
-     FRICTION entry. Don't bury the general rule in a `[resolved]`
-     body — past phases hit recurrent friction because lessons were
-     filed but never promoted (the post-Phase-6 audit lifted 12
-     such buried lessons). The cross-reference rule is what
-     prevents recurrence of the recurrence problem.
+   - **Upstream-eligible** (a fact about `SimpleGraph`, `Set.ncard`,
+     `Finset`, …, not specific to rigidity): mirror it under
+     `CombinatorialRigidity/Mathlib/<exact mathlib path>` in this commit,
+     keeping the upstream namespace (mechanics: `../DESIGN.md` *Mirror
+     directory*), and refactor the calling proof to use it.
+   - **Project-internal** (about our `edgesIn`, `IsSparse`, …): put it in the
+     file that owns the relevant definition.
+   - In all cases, add an entry to `../notes/FRICTION.md` (open, or
+     resolved/mirrored). One line is enough.
+   - **If the entry carries a general lesson** (a rule beyond this proof: a
+     `subst`-direction trap, an `omega`-atomicity gotcha, "search before
+     mirroring"), lift it to `../TACTICS-GOLF.md` (golfing idioms) or
+     `../TACTICS-QUIRKS.md` (build-failure rescue) *in the same commit*, with
+     a `**Lifted to:** TACTICS-GOLF § X` (or `TACTICS-QUIRKS § X`)
+     cross-reference on the FRICTION entry. A lesson buried in a `[resolved]`
+     body recurs (the post-Phase-6 audit lifted 12 of them).
 
-3. **No new entries this commit is fine** — but only after you've
-   walked the *Concrete signals* checklist above. "I didn't hit any"
-   is fine; "I didn't think about it" is the failure mode this rule
-   exists to prevent.
+3. **No new entries this commit is fine**, but only after walking the
+   *Concrete signals* list. "I didn't hit any" is fine; "I didn't think about
+   it" is the failure mode this rule exists to prevent.
 
 ## Before each commit — build and lint gates
 
-**Run both `lake build` and `lake lint`.** Both are CI gates (see
-`../.github/workflows/push_pr.yml`); a failing lint blocks merge as
-surely as a failing build. The full-project linter (`runLinter`)
-catches `simpNF` and `unusedArguments` issues that the compile-time
-`mathlibStandardSet` linter misses, so don't skip it. Both commands
-are exactly as written — `lake lint` takes **no arguments**
-(`lake lint CombinatorialRigidity` fails with `unexpected
-arguments`). If a lake invocation errors on syntax, re-read this
-section or `lake help`; do **not** guess flags.
+**Run both `lake build` and `lake lint`.** Both are CI gates
+(`../.github/workflows/push_pr.yml`), and the full-project linter
+(`runLinter`) catches `simpNF` and `unusedArguments` issues the compile-time
+`mathlibStandardSet` linter misses. Both commands are exactly as written:
+`lake lint` takes **no arguments** (`lake lint CombinatorialRigidity` fails
+with `unexpected arguments`). If a lake invocation errors on syntax, re-read
+this section or `lake help`; do **not** guess flags.
 
 > **`lake lint` needs the full default-target closure built.** `runLinter`
-> loads every olean in the `CombinatorialRigidity` target. If you
-> `touch`ed a **deep-upstream** module (e.g. `Mathlib/.../Rank.lean`,
-> `RigidityMatrix/Concrete.lean`) and then built only *that one module*
-> to re-emit its warnings, the downstream oleans are now stale/missing and
-> `lake lint` dies with `object file '…/Foo.olean' … does not exist`
-> (not a real lint failure). Fix: run a **full `lake build`** (no module
-> arg) to restore the closure *before* `lake lint`. For a leaf-most /
-> downstream touched module this doesn't arise, but Phase-23 work hits it
-> constantly — prefer touch-then-`lake build` (full) when the touched file
-> has many reverse-deps.
+> loads every olean in the `CombinatorialRigidity` target, so after building
+> only a touched deep-upstream module (e.g. `Mathlib/.../Rank.lean`) it dies
+> with `object file '…/Foo.olean' … does not exist`, which is not a lint
+> failure. Run a full `lake build` (no module argument) first.
 
 ### Build discipline — one build, never `lake update`
 
-These rules exist because a session OOM-crashed this machine
-(sibling enharmonic repo, 2026-06-10) when a subagent guessed
-`lake build --update` as "lint syntax", silently rewrote
-`lake-manifest.json` + `lean-toolchain` to mathlib master, then
-piled up concurrent from-source mathlib builds trying to recover.
-A PreToolUse hook (`../.claude/hooks/block-lake-update.sh`, wired
-in `../.claude/settings.json`, both checked in) blocks
-`lake update` / `--update` mechanically; the prose rules are the
-portable layer:
+A PreToolUse hook (`../.claude/hooks/block-lake-update.sh`, wired in
+`../.claude/settings.json`) blocks `lake update` / `--update` mechanically;
+these rules are the portable layer. (They exist because a subagent in the
+sibling enharmonic repo guessed `lake build --update` as lint syntax on
+2026-06-10, which rewrote `lake-manifest.json` and `lean-toolchain` to
+mathlib master, then piled up concurrent from-source mathlib builds until the
+machine ran out of memory.)
 
-- **Never run `lake update` or any lake command with `--update`.**
-  Toolchain and dependency bumps are a human decision and arrive
-  via the hopscotch workflow (*Automated mathlib bumps* below),
-  never mid-session.
+- **Never run `lake update` or any lake command with `--update`.** Toolchain
+  and dependency bumps are a human decision and arrive via hopscotch
+  (*Automated mathlib bumps* below). For a bump the user asked for, the two
+  sanctioned routes are `scripts/bump-mathlib.sh <rev> --apply` (it copies
+  mathlib's own transitive pins and `lean-toolchain` at that rev, leaves
+  `Matroid`, `checkdecls` and `loogle` alone, and is dry by default) and the
+  human running `! lake update`. The toolchain/manifest change is then
+  expected. Full process: `../notes/ToolchainBumps.md` *Playbook*.
+- **`LAKE_CACHE_DIR` is mandatory on this machine** (Lean 4.34+). Lake's
+  artifact cache defaults to a directory under the elan toolchain that the
+  harness cannot write, and **Lake reports the failed cache write as a build
+  failure**, so a build silently stops at the first blocked target and its
+  reverse dependencies (the first v4.34.0-rc1 build compiled 36 of 122
+  modules). Set it session-wide in the gitignored
+  `.claude/settings.local.json` `env` block, so subagents' builds inherit it
+  (`../notes/ToolchainBumps.md` *Environment*), and check that
+  `grep -c 'failed to cache artifact'` is `0`. `--no-cache` does not help: it
+  disables cache downloads, not the local write.
+- **One `lake build` at a time, in the foreground.** Never start a second
+  build while one runs, never poll a slow build by re-running it, never
+  `&`-background one inside a Bash call (it gets orphaned), and never `pkill`
+  lake (it orphans the `lean` workers). Run a slow build once with a generous
+  timeout and wait. **If you background a build with the harness's
+  `run_in_background`, wait for its completion notification** instead of
+  re-reading its output file (one dispatch spent half its tool budget on ~175
+  such re-reads). A full mathlib rebuild is **never** expected: if
+  `lake build` starts compiling thousands of mathlib files, stop and report.
+- **`lean-toolchain` or `lake-manifest.json` modified in `git status`?**
+  Something has gone wrong. Stop, report, and let the human decide; don't
+  build on top of it or commit it.
 
-  **Escape hatch, for a bump the user actually asked for.** The hook
-  has no bypass, and for three months that left a *requested* bump
-  with no sanctioned path — half of why this repo sat four Lean
-  versions behind. Two routes, neither of which runs `lake update`
-  from an agent:
-  1. **`scripts/bump-mathlib.sh <rev> --apply`** — reads mathlib's own
-     `lake-manifest.json` at the target rev and copies its transitive
-     pins (`batteries`, `aesop`, `Qq`, `Cli`, `proofwidgets`,
-     `importGraph`, `plausible`, `LeanSearchClient`) plus its
-     `lean-toolchain` into ours, leaving non-mathlib deps (`Matroid`,
-     `checkdecls`, `loogle`) alone. Deterministic, reviewable in the
-     diff, and it fixes the one thing `lake update mathlib` gets wrong
-     (see *Automated mathlib bumps*). Dry-run first — it is dry by
-     default.
-  2. **The human runs it** — `! lake update` in the Claude Code
-     prompt, or a normal shell. Simplest when a human is present.
+**A green build is not enough; it must be _warning-clean_.** `lake build`
+exits 0 even when it emits compile-time `linter.*` warnings
+(`unusedSimpArgs`, `flexible`, `unusedDecidableInType`,
+`unusedFintypeInType`, …), and `lake lint` does not catch them: the two
+linter families are disjoint. Before each commit, scan the full `lake build`
+output for `warning:` (`lake build <module> 2>&1 | grep -nE 'warning:'`) and
+drive the count to zero. With `LAKE_CACHE_DIR` set, a cache hit
+(`⚠ Replayed <module>`) replays its stored warnings, so a whole-tree count is
+honest without touching any file.
 
-  Either way the `lean-toolchain` / `lake-manifest.json` modification
-  is then *expected*, and the "stop and report" rule below does not
-  apply. Full process: `../notes/ToolchainBumps.md` *Playbook*.
+**A `sorry` never rides in a commit**; Lean's `declaration uses 'sorry'`
+warning is the no-sorry gate's signal. Carry an undischarged crux as an
+explicit `h…` hypothesis instead (the project's standing idiom). A PreToolUse
+hook (`../.claude/hooks/block-sorry-commit.sh`) denies any `git commit` whose
+`.lean` diff adds a `sorry`/`admit`, because prompt-level discipline does not
+survive compaction (`notes/model-experiment.md` row 17).
 
-- **`LAKE_CACHE_DIR` is mandatory on this machine** (Lean 4.34+).
-  Lake's artifact cache defaults to a directory under the elan
-  toolchain that the agent harness cannot write, and **Lake reports the
-  failed cache write as a build failure** — so a build looks like it
-  covered the tree while silently stopping at the first blocked target
-  and its reverse-dependencies (the first v4.34.0-rc1 build compiled 36
-  of 122 modules and reported a correspondingly flattering error
-  count). Run every build as `LAKE_CACHE_DIR=<writable-dir> lake build`
-  and check `grep -c 'failed to cache artifact'` is `0`.
-  `--no-cache` does *not* help — it disables cache *downloads*, not the
-  local write.
-- **One `lake build` at a time, in the foreground.** Never start a
-  second build while one is running, never poll a slow build by
-  re-running it in a loop, never `&`-background a build inside a
-  Bash call (it gets orphaned), and never `pkill` lake (it orphans
-  the `lean` worker processes). If a build is slow, run it once
-  with a generous timeout and wait. **If you do background a build
-  (the harness `run_in_background`, not `&`), wait for its completion
-  notification — do not re-read its output file repeatedly while it
-  runs.** Polling a backgrounded build's output is a real, recurring
-  cost drain (one dispatch logged ~175 redundant re-reads of a
-  backgrounded build's output file — half its tool budget — turning a
-  ~12-min leaf into a ~42-min one). A full mathlib rebuild is
-  **never** expected here — if `lake build` starts compiling
-  thousands of mathlib files, stop immediately and report; do not
-  wait it out or retry.
-- **`lean-toolchain` or `lake-manifest.json` modified in
-  `git status`?** Something has gone wrong. Stop, report, and let
-  the human decide; do not build on top of it and do not commit it.
+**Fix warnings at the source; never paper over them.** In order:
 
-**A green build is not enough — the build must be _warning-clean_.**
-`lake build` exits 0 even when it emits compile-time `linter.*`
-warnings (`unusedSimpArgs`, `flexible`, `unusedDecidableInType`,
-`unusedFintypeInType`, …), and these are **not** caught by `lake lint`
-/ `runLinter` — the two linter families are disjoint. So "build green
-+ `lake lint` clean" can still leave warnings riding in a commit (this
-exact gap shipped warnings into a Phase 12 vendored-port commit before
-the post-commit gate caught them). **Before each commit, scan the full
-`lake build` output for `warning:`** (e.g. `lake build <module> 2>&1 |
-grep -nE 'warning:'`) and drive the count to zero.
+1. **Solve it at the source**: drop the unused simp argument; convert a
+   `flexible` `simp […]` to `simp only […]` (or `suffices`); drop an unused
+   `[Decidable…]`/`[Fintype…]` hypothesis and open the body with `classical` /
+   `haveI := Fintype.ofFinite _` where a step needs it (the WF-recursion
+   variant is `../TACTICS-QUIRKS.md` §16(d)). Almost always the right answer,
+   vendored `Matroid/` ports included.
+2. **`@[nolint …]` / `set_option linter.X false` only for a genuine false
+   positive, with a justification**: the flagged construct is semantically
+   required and the linter can't see why (canonical case: an instance
+   argument a definition's contract requires, `IsInfinitesimallyRigid` in
+   `Framework.lean`). Add a one-line comment saying why the suppression is
+   correct, not merely convenient; one that dodges a real fix is a defect.
+3. **Neither possible** (the fix would meaningfully change a vendored proof,
+   or you don't understand why the warning fires)? **Surface it to the user**
+   rather than committing the warning or silencing it blind.
 
-With `LAKE_CACHE_DIR` set (mandatory, above) a cache hit shows as
-`⚠ Replayed <module>` and **replays the stored warnings**, so a
-whole-tree count is honest without touching anything — the older
-"`touch X.lean` first, cached modules don't re-emit warnings" advice
-is obsolete as of Lean 4.34. A build with **no** writable cache dir is
-the case that under-reports, and it under-reports *errors* too.
+A newly added `@[simp]` is the usual `lake lint` offender: if existing simp
+lemmas reduce its LHS, drop the attribute (the lemma stays callable by name)
+rather than adding `@[nolint simpNF]`.
 
-The `declaration uses 'sorry'` warning is the no-sorry gate's signal —
-**a `sorry` never rides in a commit**; carry an undischarged crux as an
-explicit `h…` hypothesis instead (the project's standing idiom). A
-PreToolUse hook (`../.claude/hooks/block-sorry-commit.sh`, wired in
-`../.claude/settings.json`) mechanically denies any `git commit` whose
-`.lean` diff vs HEAD adds a `sorry`/`admit` — added 2026-06-10 after a
-long context-compacted session committed a sorry'd skeleton with a
-false "gates clean" attestation (`notes/model-experiment.md` row 17);
-prompt-level discipline does not survive compaction, hooks do.
-
-**Fix warnings at the source; never paper over them.** The
-fix-precedence order is:
-1. **Solve it at the source** — drop the genuinely-unused simp arg;
-   convert a `flexible` `simp […]` to `simp only […]` (or `suffices`);
-   drop an unused `[Decidable…]`/`[Fintype…]` hypothesis and open the
-   body with `classical` / `haveI := Fintype.ofFinite _` where a proof
-   step actually needs it (the WF-recursion variant is TACTICS-QUIRKS
-   § 16(d)). This is almost always the right answer, including in
-   vendored `Matroid/` ports — a style sweep there is low-risk and
-   keeps the project warning-clean.
-2. **`@[nolint …]` / `set_option linter.X false` only with a
-   justification _and_ only when the warning is a genuine false
-   positive** — i.e. the flagged construct is semantically required
-   but the linter can't see why (the canonical case is an instance arg
-   required by a definition's contract; see `IsInfinitesimallyRigid` in
-   `Framework.lean`). Always add a one-line comment stating why the
-   suppression is correct, not merely convenient. A suppression used to
-   dodge a real fix is a defect, not a workaround.
-3. **If you can neither fix it at the source nor justify a suppression**
-   — e.g. the fix would meaningfully alter a vendored proof's content,
-   or you don't understand why the warning fires — **surface it to the
-   user** rather than committing the warning or silencing it blind.
-
-Newly-added `@[simp]` attributes are the usual `lake lint` offenders —
-if the LHS is reducible by existing simp lemmas, drop the `@[simp]`
-(the lemma stays callable by name) rather than working around with
-`@[nolint simpNF]`.
-
-> **Blueprint pointer touched?** If the commit also edits any
-> `\lean{...}` pointer in `../blueprint/`, run `checkdecls` per
-> `../blueprint/CLAUDE.md` *Static checks before commit*. CI runs
-> the same check and a missing-declaration failure is a hard merge
-> blocker.
+> **Blueprint pointer touched?** A commit that edits a `\lean{...}` pointer
+> runs `checkdecls` (`../blueprint/CLAUDE.md` *Static checks before commit*).
+> CI runs the same check, and a missing declaration blocks the merge.
 
 ## Automated mathlib bumps
 
-PRs from `../.github/workflows/hopscotch.yml` (daily cron) arrive
-on branches like `hopscotch/bump-mathlib`. Review them like any
-other mathlib bump (the project's lemmas may need fixups if the
-build broke). A tracking issue gets opened instead when the bump
-hits a regression — the issue body identifies the breaking mathlib
-commit via bisection.
+`../.github/workflows/hopscotch.yml` (daily cron) opens PRs on branches like
+`hopscotch/bump-mathlib`. Review them like any mathlib bump (the project's
+lemmas may need fixups). When a bump hits a regression it opens a tracking
+issue instead, naming the breaking mathlib commit by bisection.
