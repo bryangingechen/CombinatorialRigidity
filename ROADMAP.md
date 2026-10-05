@@ -1100,7 +1100,8 @@ shared helper lemmas and unifies duplicate proofs. Motivated by a 4-way
 parallel read of the 10 longest proofs (~3,600 lines) finding their length
 structural, not tactical (the tactic sweeps could not reach it): the dominant
 waste was **near-duplicate proofs that should be one parameterized lemma**.
-Across 9 build slices it extracted the shared engines/glue — `cutEdge_finrank_assemble`,
+Across 9 build slices it extracted the shared engines/glue — `cutEdge_finrank_assemble`
+(renamed `finrank_span_rigidityRows_cutEdge_eq` by `40-simplify` task 10o, `919486d3`),
 `splitOff_reroute_packing`, `exists_directedWalk_of_isCyclicWalk_isLink`, the
 orientation-agnostic `ofNormals_panelRow_eq_hingeRow_of_ends_or_swap`, two
 upstream-eligible `MvPolynomial`/`Set.ncard` mirrors, `IsKDof`/`IsMinimalKDof`
@@ -1134,8 +1135,11 @@ Theorem 4.9's template with the loop, base and cut-edge arms, the cut arm by a p
 repositioning (W3); the in-stratum genericity device, the conditioned-pair motive `PencilPair`
 (bare; adjacent-distinct under simplicity; generic under simplicity plus
 nondegeneracy-feasibility) and its assembly `pencil_conjecture_of_arms_pair` carrying two kernels
-(W5); the girth / degree-two-chain normal form and item 6's deficiency laws (the vertex 2-cut law
-and the gluing identity, `TwoCut.lean`); and the non-simple bare case (W4-A, KT Lemma 6.2 without
+(W5; the kernel-carrying form retired by `40-simplify` task 10h, `528381ef`, once X0Dist/X0Gen
+closed the fallback — the name stays, now over a contraction and a split arm); the girth /
+degree-two-chain normal form and item 6's deficiency laws (the vertex 2-cut law and the gluing
+identity, `TwoCut.lean`; both deleted by `40-simplify`, tasks 10i (`1e7d78a9`) and 10b
+(`c48d323e`)); and the non-simple bare case (W4-A, KT Lemma 6.2 without
 minimality). **The phase closes on the reduction:** the headline `pencil_conjecture_of_X0`
 (`Pencil/X0.lean`) proves `PencilPair K 3 G` for every spanning multigraph over any infinite field
 from two statements about the main component `X₀` of the pencil configuration space — `X0Dist`
@@ -1224,8 +1228,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales, the cleanup-round
   procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
   `blueprint/AUTHORING.md`, landed 2026-10-04; task 6, FRICTION's `[resolved]` entries archived and
-  its `[mirror-candidate]` tag defined, also landed 2026-10-04; next, task 7, pointers to what
-  rounds 1–4 deleted or changed). It closes unattended. Rounds 1,
+  its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
+  deleted or changed, also landed 2026-10-04; next, task 8, `notes/Phase40-design.md` §3). It
+  closes unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).

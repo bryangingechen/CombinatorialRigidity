@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–6 landed 2026-10-04.
-**Next concrete task:** task 7 (S), pointers to what rounds 1–4 deleted or changed (Sonnet, docs
-only). Round manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–7 landed 2026-10-04.
+**Next concrete task:** task 8 (C1), `notes/Phase40-design.md` §3 (Opus). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 7 (S)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 8 (C1)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -46,7 +46,14 @@ note-placement rule already `blueprint/SETUP-AND-PITFALLS.md`, confirmed and lef
 already were). Task 6 (F) is done (2026-10-04: FRICTION's 17 `[resolved]` entries, re-derived at
 HEAD, moved verbatim to `FRICTION-archive.md` — 281 lines, `git diff` multisets equal; the one
 real stale cross-reference, `Phase40-design.md` §3 STEPS' "the open FRICTION entry", left for
-task 8; `[mirror-candidate]` defined in FRICTION's *Entry format* and *Filing rule*). Task 15 (G)
+task 8; `[mirror-candidate]` defined in FRICTION's *Entry format* and *Filing rule*). Task 7 (S)
+is done (2026-10-04: re-derived at HEAD, the open's line numbers having moved under tasks 1–6;
+ROADMAP §39's three *What landed* items and §38's `cutEdge_finrank_assemble` get a short
+parenthetical naming the surviving rename or the `40-simplify` task/sha that deleted it (10h
+`528381ef`, 10i `1e7d78a9`, 10b `c48d323e`, 10o `919486d3`); the nine GOLF/QUIRKS worked cases get
+the same, by name, none renumbered; `blueprint/SETUP-AND-PITFALLS.md` 81–83 gets one line noting
+10h moved the notes it describes as left. A grep for all 124 deleted/renamed names and the six
+deleted files over the surfaces found no site the open's inventory missed). Task 15 (G)
 is the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
@@ -267,27 +274,28 @@ section titles are the stable reference.
   helper, with a proposed signature and target file stated but deliberately not yet mirrored
   (import-cone cost, a one-off call site, or awaiting a second consumer) — revisit at a cleanup
   round or the next file-toucher. Done: `grep -c '^### \[resolved\]' notes/FRICTION.md` is 0.
-- [ ] **7. S — pointers to what rounds 1–4 deleted or changed** (Sonnet; `PHASE-BOUNDARIES.md`
-  *Review project organization*). Rounds 1–4 deleted six files (`Pencil/Base.lean`,
-  `Escape.lean`, `Habitat.lean`, `TwoCut.lean`, `Induction/Girth.lean`,
-  `Induction/ForestSurgery/MaximalChain.lean`) and deleted or renamed 124 declarations. Sites
-  outside Phase 40's notes:
-  - ROADMAP §39, *What landed*: `pencil_conjecture_of_arms_pair` "carrying two kernels", "the
-    girth / degree-two-chain normal form", and item 6's laws in "`TwoCut.lean`". Round 4 retired
-    all three (10h, 10i, 10b); §40 says so only of the design doc's §6. ROADMAP §38:
-    `cutEdge_finrank_assemble`, which 10o published as `finrank_span_rigidityRows_cutEdge_eq`.
-  - Worked cases whose file or declaration is gone. GOLF 528 (`ForestSurgery/MaximalChain.lean`)
-    and 1186–1187 (`girthGE_of_noRigid_of_three_le_degree`, `Girth.lean`). QUIRKS 2101
-    (`Habitat.lean`, `c4_isProperRigidSubgraph`), 2140 (`cutEdge_finrank_assemble`), 2595
-    (`MaximalChain.lean`), 2682 (`hasGenericPencilRealization_of_independent_pencilRow_target`),
-    3401–3404 (`exists_coord_linearIndepOn_pencilChartPoint_perBody`), 3919 and 3944
-    (`Pencil/Base.lean`), 4174 (`Graph.ncard_closedNbhd_inter_le_two_of_girthGE`) and 4238
-    (`weldedRank_eq`). Per site, name the surviving equivalent, or add "(deleted by `40-simplify`,
-    `<sha>`)"; never delete the lesson.
-  - `blueprint/SETUP-AND-PITFALLS.md` 81–83: "moving its notes changes the graph, so that round
-    left them". Round 4 moved them (10h, `m5`).
-  - Left: ROADMAP's round-2 Status row names `TwoCut.lean` as that round's surface, which is
-    history. The stale sites inside Phase 40's notes and design doc belong to tasks 8–13.
+- [x] **7. S — pointers to what rounds 1–4 deleted or changed** (Sonnet; `PHASE-BOUNDARIES.md`
+  *Review project organization*). Re-derived at HEAD by grepping each deleted file and declaration
+  name over the live manuals and surfaces (the open's line numbers had moved under tasks 1–6's
+  edits); found no site the open's inventory missed. Every named item in ROADMAP, GOLF, QUIRKS
+  and the blueprint manual got a short parenthetical, never a deleted lesson:
+  - ROADMAP §39, *What landed*: `pencil_conjecture_of_arms_pair` "carrying two kernels" (the
+    kernel-carrying form retired by `40-simplify` task 10h, `528381ef` — the name stays, now over
+    a contraction and a split arm), "the girth / degree-two-chain normal form" and item 6's laws in
+    `TwoCut.lean` (both deleted, tasks 10i `1e7d78a9` and 10b `c48d323e`). ROADMAP §38:
+    `cutEdge_finrank_assemble`, renamed `finrank_span_rigidityRows_cutEdge_eq` by task 10o,
+    `919486d3`.
+  - The eleven GOLF/QUIRKS worked-case sites (`ForestSurgery/MaximalChain.lean` ×2, `Girth.lean`,
+    `Habitat.lean`/`c4_isProperRigidSubgraph`, `cutEdge_finrank_assemble`,
+    `WitnessGeneral.lean`'s two declarations, `Pencil/Base.lean` ×2, `Motive.lean`'s
+    `ncard_closedNbhd_inter_le_two_of_girthGE`, `weldedRank_eq`) each get the deleting task and sha
+    (all 10i `1e7d78a9` except `cutEdge_finrank_assemble`'s rename, 10o, and `weldedRank_eq`'s
+    deletion with `TwoCut.lean`, 10b `c48d323e`) inline; none renumbered.
+  - `blueprint/SETUP-AND-PITFALLS.md`'s "that round left them" note on
+    `thm:pencil-conditional-realization-pair` gained one line: task 10h (`528381ef`, verdict `m5`)
+    moved the notes, the node now draws filled.
+  - Left as the open said: ROADMAP's round-2 Status row's `TwoCut.lean` mention (history); the
+    stale sites inside Phase 40's notes and design doc (tasks 8–13).
 
 ### The compressions (after the lifts)
 
@@ -420,9 +428,9 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 7 (S)**, pointers to what rounds 1–4 deleted or changed (Sonnet, docs only).
-Then the compressions (8–14; task 9 keeps design §4's and §5's *Promoted to `DESIGN.md`* pointers
-from task 3), the coordinator's grooming (15) and the close (17).
+**Next commit: task 8 (C1)**, `notes/Phase40-design.md` §3, the layer plan and proof map (Opus).
+Then the rest of the compressions (9–14; task 9 keeps design §4's and §5's *Promoted to
+`DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and the close (17).
 
 ## Decisions made during this round
 

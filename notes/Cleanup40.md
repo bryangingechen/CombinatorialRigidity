@@ -17,8 +17,8 @@ autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplif
 user-facing surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales, the
 cleanup-round procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
 `blueprint/AUTHORING.md`, landed 2026-10-04; task 6, FRICTION's `[resolved]` entries archived and
-its `[mirror-candidate]` tag defined, also landed 2026-10-04; next, task 7, pointers to what
-rounds 1–4 deleted or changed).
+its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
+deleted or changed, also landed 2026-10-04; next, task 8, `notes/Phase40-design.md` §3).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

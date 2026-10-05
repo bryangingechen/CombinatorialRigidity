@@ -2101,8 +2101,9 @@ branch against a hypothesis with **no** `Matrix.cons_val_*` and **no** `show …
 consumer like `Simple.eq_of_isLink h₁ he` (or `hpr_nadj _`) typechecks against a still-`![…]`-headed
 `he` because unification sees through the `vecCons`. This sidesteps the per-branch reduction *and*
 the `unusedSimpArgs` warning altogether — prefer it whenever the goal is discharged by a term rather
-than rewritten. Phase 39 W5-L6d (`Habitat.lean`, `c4_isProperRigidSubgraph`): the `4`-cycle links,
-the `range`-membership dispatch, and the induced-edge classification all close this way.
+than rewritten. Phase 39 W5-L6d (`Habitat.lean`, `c4_isProperRigidSubgraph` — both deleted by
+`40-simplify` task 10i, `1e7d78a9`): the `4`-cycle links, the `range`-membership dispatch, and the
+induced-edge classification all close this way.
 
 
 ## 47. ℕ-subtraction in a theorem statement causes `ring` to fail after `push_cast`
@@ -2140,7 +2141,8 @@ silently**: `linarith` treats `↑(a - b)` and `↑a - b` as two *distinct opaqu
 term never cancels and it reports `linarith failed to find a contradiction`. Fix: with `1 ≤ n` in
 hand, post-normalize the casted hypothesis — `rw [Nat.cast_sub h, Nat.cast_one] at hbrickZ` (or
 `zify [h] at hbrickZ`) — so both hypotheses carry the identical `(↑n - 1)` atom before `linarith`.
-Phase 38 T2a (`AlgebraicInduction/Theorem55.lean`, `cutEdge_finrank_assemble`): keeping the
+Phase 38 T2a (`AlgebraicInduction/Theorem55.lean`, `cutEdge_finrank_assemble` — renamed
+`finrank_span_rigidityRows_cutEdge_eq` by `40-simplify` task 10o, `919486d3`): keeping the
 cut-edge count abstract only works once the brick's `↑(screwDim k - 1)` is aligned with `hk_eq`'s
 `(↑(screwDim k) - 1)`.
 
@@ -2616,7 +2618,8 @@ whole *goal* (not a hypothesis you're rewriting into) is `l[k]'h₁ = l[k']'h₂
 lemma" dance above — `simp [hidx]` (not `rw [hidx]`) closes it directly, using `simp`'s
 `getElem`-congruence support to fold the two (index, bounds-proof) pairs together and finish by
 proof irrelevance. Confirmed 2026-09-15 (Phase 39 M3a/M3b,
-`ForestSurgery/MaximalChain.lean`: `P.edge[P.idxOf a] = P.edge[P.length - 1]'_` type goals,
+`ForestSurgery/MaximalChain.lean`, deleted by `40-simplify` task 10i, `1e7d78a9`:
+`P.edge[P.idxOf a] = P.edge[P.length - 1]'_` type goals,
 `P.idxOf a = P.length - 1` in hand). Cheaper than minting a `getElem`-congruence helper lemma
 when the equation is the goal, not an in-place rewrite target.
 
@@ -2703,7 +2706,8 @@ goal text contains `.rank` / `mulVec` on anything other than a bare hypothesis v
 type's `Fintype` belongs in the signature.
 
 **Same shape, a different instance (Phase 39 PENCIL, W5-L7b):** a design-doc-pinned signature for
-`hasGenericPencilRealization_of_independent_pencilRow_target` used `[Nonempty α]` only, but its
+`hasGenericPencilRealization_of_independent_pencilRow_target` (`WitnessGeneral.lean`, both deleted
+by `40-simplify` task 10i, `1e7d78a9`) used `[Nonempty α]` only, but its
 hypothesis `hEsc`'s own *type* — not the proof — reads `pencilRow hubSel G.endsOf q i`, and
 `Graph.endsOf` (`Induction/Operations.lean`) takes `[Inhabited α]` (for its off-`E(G)` junk value).
 `lake build` failed *"failed to synthesize instance of type class `Inhabited α`"* right at that
@@ -3425,7 +3429,8 @@ proof-body `rw` lines — rewrap `p body c,` onto a continuation line.
 exists_coord_linearIndepOn_pencilChartPoint_perBody hcard htf hubSel hHubSel v; …` failed
 *"typeclass instance problem is stuck: `Field ?m.287`"*, even though the enclosing theorem's own
 signature mentions `K` freely (unlike §87's core scenario) — the difference is that
-`exists_coord_linearIndepOn_pencilChartPoint_perBody`'s **explicit arguments** (`hcard`, `htf`,
+`exists_coord_linearIndepOn_pencilChartPoint_perBody`'s (`WitnessGeneral.lean`, both deleted by
+`40-simplify` task 10i, `1e7d78a9`) **explicit arguments** (`hcard`, `htf`,
 `hubSel`, `hHubSel`, `v`) carry no `K`-content at all (they're about `G`/`α`/`β` only), and an
 un-ascribed `obtain ⟨q, hq⟩ := call` doesn't hand the elaborator an expected type to unify against
 before it tries to resolve the call's own `[Field K]` instance — so `K` stays a bare metavariable at
@@ -3940,8 +3945,9 @@ intuition — but matching the *existing* associativity with explicit grouping i
 when the union already appears elsewhere.)
 
 **Worked case:** Phase 39 (PENCIL) W5-L7c-4, the `|V| = 4` base case's degree-bound helpers
-(`Molecular/Molecule/Pencil/Base.lean`, `hdeg_eq2_aux`/`hboth`'s `E(G, v) ⊆ A ∪ B ∪ C` subset
-proofs) — confirmed via a standalone `lean_run_code` repro before patching all five call sites.
+(`Molecular/Molecule/Pencil/Base.lean`, deleted whole by `40-simplify` task 10i, `1e7d78a9`;
+`hdeg_eq2_aux`/`hboth`'s `E(G, v) ⊆ A ∪ B ∪ C` subset proofs) — confirmed via a standalone
+`lean_run_code` repro before patching all five call sites.
 
 ## 104. `¬ ∃ x, P x → Q` parses as `¬ (∃ x, (P x → Q))`, not `(¬ ∃ x, P x) → Q` — a later application reports the wrong hypothesis's type
 
@@ -3965,9 +3971,9 @@ survives to the call site instead of failing at the `have`.
 `¬ ∃ …`/`¬ ∀ …` hypothesis clause embedded mid-statement (not as the final conclusion) always
 needs explicit parens around the whole quantifier — never rely on binder-vs-`¬` precedence.
 
-**Worked case:** Phase 39 (PENCIL) W5-L7c-4, `Molecular/Molecule/Pencil/Base.lean`'s `hboth`
-case-split helper (caught by the very first build attempt's "Application type mismatch" against
-`hboth z x y w hV_zxyw hdeg_z hzw_no`).
+**Worked case:** Phase 39 (PENCIL) W5-L7c-4, `Molecular/Molecule/Pencil/Base.lean`'s (§103: deleted
+whole by `40-simplify` task 10i, `1e7d78a9`) `hboth` case-split helper (caught by the very first
+build attempt's "Application type mismatch" against `hboth z x y w hV_zxyw hdeg_z hzw_no`).
 
 ---
 
@@ -4196,7 +4202,8 @@ off, silently, because the total count still matches.
 and `hab` are used).
 
 **Worked case:** Phase 39 (PENCIL) leaf G4, `Graph.ncard_closedNbhd_inter_le_two_of_girthGE`
-(`Molecular/Molecule/Pencil/Motive.lean`), destructuring `Set.two_lt_ncard_iff`.
+(`Molecular/Molecule/Pencil/Motive.lean`, deleted by `40-simplify` task 10i, `1e7d78a9`),
+destructuring `Set.two_lt_ncard_iff`.
 
 ---
 
@@ -4260,7 +4267,8 @@ that **restates** one of them for a concrete pair must carry it too.
 
 **Worked cases:** Phase 39 (PENCIL) W5-L5 sub-case 3 (`Molecule/Pencil/Pair2.lean`, the ascription
 form) and item-6 Layer B4 (`RigidityMatrix/Bricks.lean`, `weldedRank_eq` — the `↥` form, on a
-restatement of `finrank_sup_add_finrank_inf_eq`). Full friction entry: `notes/FRICTION.md`
+restatement of `finrank_sup_add_finrank_inf_eq`; `weldedRank_eq` deleted with `TwoCut.lean` by
+`40-simplify` task 10b, `c48d323e`). Full friction entry: `notes/FRICTION.md`
 *[idiom] `Module.finrank K (A ⊓ B)` … `Min (Type u_1)`*.
 
 ---

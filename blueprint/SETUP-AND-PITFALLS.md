@@ -81,6 +81,8 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   the proof (`AUTHORING.md` principle D). Found at `40-exposition` task 6
   on `thm:pencil-conditional-realization-pair`, the only case; moving its
   notes changes the graph, so that round left them (`notes/Cleanup40.md`).
+  Moved by `40-simplify` task 10h (`528381ef`, verdict `m5`): the node now
+  draws filled.
 - **A literal `\lean{}` in prose poisons `lean_decls` and fails
   `checkdecls`.** plastex executes the `\lean` macro wherever it
   appears, including inside descriptive prose — e.g. a

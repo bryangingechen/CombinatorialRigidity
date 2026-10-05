@@ -525,8 +525,8 @@ vendored `apnelson1/Matroid` walk API rather than mathlib. A walk-surgery
 proof is normally written line-by-line against an existing template in the
 tree — and a template can be **older than the package API it stands on**, so
 transcribing its hand-rolled steps re-derives lemmas the package now ships.
-Phase 39's M1 (`ForestSurgery/MaximalChain.lean`) copied three such steps
-from the Phase-23 `chainWalk_trichotomy`:
+Phase 39's M1 (`ForestSurgery/MaximalChain.lean`, deleted by `40-simplify` task 10i,
+`1e7d78a9`) copied three such steps from the Phase-23 `chainWalk_trichotomy`:
 
 - the induction cap `|V(P)| = P.length + 1` — `Graph.IsPath.ncard_vertexSet`
   and `Graph.IsPath.length_le_encard` state it outright (the hand-rolled
@@ -1184,7 +1184,8 @@ required to chain the per-step equalities.
 The reverse move — given cyclic data on `Fin m` and a chord from index `i₀`
 to index `j`, present the arc `i₀, i₀+1, …, j` closed by that chord as cyclic
 data on `Fin (a+1)` — is the shape of `girthGE_of_noRigid_of_three_le_degree`
-(`Molecular/Induction/Girth.lean`). Three moves keep it short.
+(`Molecular/Induction/Girth.lean`, deleted whole by `40-simplify` task 10i, `1e7d78a9`). Three
+moves keep it short.
 
 1. **Normalize the far endpoint first**:
    `obtain ⟨c, rfl⟩ : ∃ c : Fin m, j = i₀ + c := ⟨j - i₀, by abel⟩`.
