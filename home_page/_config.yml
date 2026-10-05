@@ -1,7 +1,8 @@
 title: Combinatorial Rigidity
 description: >-
   A Lean 4 / mathlib4 formalization of combinatorial rigidity theory,
-  working toward Laman's theorem (1970).
+  from Laman's theorem to the molecular conjecture and the pencil
+  realization theorem.
 
 baseurl: "/CombinatorialRigidity"
 url: "https://bryangingechen.github.io"

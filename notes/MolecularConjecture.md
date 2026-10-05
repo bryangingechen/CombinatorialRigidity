@@ -770,17 +770,17 @@ log `notes/Phase35.md`) opened and closed 2026-07-18:
 landed on the containment-model predicate
 `HasCoplanarPanelRealization`, all four
 `sec:molecular-coplanar-multigraph` nodes green. **Phase 39** (PENCIL:
-the hinge-pencil molecular conjecture — does a realization generic in
+pencil realizations — does a realization generic in
 the stratum where each body's hinges are both concurrent *and*
 coplanar, a pencil, still achieve the generic body-hinge rank?; work
 log `notes/Phase39.md`) opened 2026-07-23 recon-first — apparently new
-mathematics — and closed 2026-09-25 **as a reduction**: `pencil_conjecture_of_X0`
+mathematics — and closed 2026-09-25 **as a reduction**: `pencil_realization_theorem_of_X0`
 proves the pencil pair for every spanning multigraph from two statements
 about the main component of the pencil configuration space. **Phase 40** (PENCIL-X0,
 `notes/Phase40-design.md`; sixteen sub-phases 40a–40p by stable code, SPINE2, CARRIER, FLAT,
 BRIDGE, STEPS, COVERAGE and MOTIVES) opened the same day and closed 2026-09-29 (`notes/Phase40p.md`),
-discharging both statements and **proving the pencil conjecture outright over every infinite
-field** (`pencil_conjecture`, `pencilPair_of_nonempty`); its first sub-phase extended Theorems
+discharging both statements and **proving the pencil realization theorem outright over every infinite
+field** (`pencil_realization_theorem`, `pencilPair_of_nonempty`); its first sub-phase extended Theorems
 5.5/5.6 and the conjecture to the plane, `n ≥ 2`, and its recons found three new proofs, each
 second-read, among them route B for the generic statement. At the close the PI retired the held
 kernels and the rest of the fallback (§6 of the design doc). Summary: ROADMAP §40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami

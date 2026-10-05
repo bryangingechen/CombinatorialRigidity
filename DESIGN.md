@@ -1013,8 +1013,8 @@ bump's, still the pin on 2026-10-04, so re-check at the next bump.
 The recon priced building the missing layer at well over 20 builds. The
 two forms need only `[Infinite K]` (a nonzero polynomial over an
 infinite field has a non-root), which is all the project's field-general
-targets assume: Phase 40 proved the pencil conjecture over every
-infinite field, with no `CharZero` and no algebraic closure.
+targets assume: Phase 40 proved the pencil realization theorem over
+every infinite field, with no `CharZero` and no algebraic closure.
 
 **How Phase 40 applied it.** The design doc named the delicate places
 at the open (`notes/Phase40-design.md` §4 *Genericity*): dominance,
@@ -1964,6 +1964,38 @@ new mathematics opens directly, with no workbook commit and no reading
 Cross-refs: `notes/pencil/adjudications.md` (the ORBIT, SHORT and
 MOTIVES entries, verbatim); `notes/pencil/labels.md`'s `MC-` row (each
 label's reading date).
+
+## A question the project poses is not a "conjecture" (2026-10-05)
+
+**The rule.** A result whose question the project posed itself is named
+for what it says, never "conjecture". It is "the X theorem" once proved,
+and "the X question" before that, and its prose says who posed it ("posed
+and proved by this project, 2026; no literature source found") with the
+usual "appears to be new" hedge. "Conjecture" stays for literature names
+with an originator, such as the molecular conjecture (Tay–Whiteley) and
+Jacobs' conjecture.
+
+**Why.** In rigidity theory "conjecture" names a published open problem
+with an author. On the user-facing surfaces "the pencil conjecture" sat
+beside the molecular and Jacobs' conjectures, so a reader would look for
+its source and find none: the attribution failure `REFS.md` guards
+against. And the result was proved, so even internally the name was
+wrong.
+
+**The instance.** Phases 39–40's "pencil conjecture" became **the pencil
+realization theorem** (the PI, 2026-10-05). Lean: `pencil_conjecture` →
+`pencil_realization_theorem`, `pencil_conjecture_of_X0` →
+`pencil_realization_theorem_of_X0`, `pencil_conjecture_of_arms_pair` →
+`pencilPair_of_arms`. Blueprint: `thm:pencil-conjecture` →
+`thm:pencil-realization-theorem`. There are no `@[deprecated]` aliases:
+an alias would keep the old name in the published API docs, and
+`@[deprecated]` has a project meaning of its own (the narrative-bridge
+shim, `CombinatorialRigidity/CLAUDE.md`). The user-facing surfaces, the
+blueprint, ROADMAP, `formalization.yaml` and the live program docs were
+renamed. Closed phase logs, `notes/pencil/` and the attack records keep
+the old name as history. The codenames PENCIL and PENCIL-X0 and the
+retired `pencil_conjecture_of_arms` (named in its own retirement note) are
+unchanged.
 
 ## Choices to revisit
 

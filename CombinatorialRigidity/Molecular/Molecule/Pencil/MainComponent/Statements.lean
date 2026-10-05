@@ -11,7 +11,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTria
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
 
 /-!
-# The main-component statements and the pencil conjecture (Phase 40n–40p MOTIVES)
+# The main-component statements and the pencil realization theorem (Phase 40n–40p MOTIVES)
 
 `X0Dist` needs only landed pieces, with no hypothesis on the number of edge labels `β`: the
 covering theorem (`Graph.X0Attains.of_twoEdgeConnected`, `MainComponent/CoverageTheoremS.lean`)
@@ -22,7 +22,7 @@ discharged separately (Phase 40p REDUCE+CLOSE), inside the pencil reduction's ow
 minimal planar-rigid set gives a one-body ear at hub ends or a pendant triangle
 (`GoodEar.lean`), across which the smaller graph's generic realization extends
 (`MainComponent/GenericEar.lean`, `MainComponent/GenericTriangle.lean`); this closes the route-B
-induction and assembles the pencil conjecture.
+induction and assembles the pencil realization theorem.
 
 ## Main statements
 
@@ -34,8 +34,9 @@ induction and assembles the pencil conjecture.
 * `pencilPair_of_nonempty` — the conditioned pair at every nonempty graph
   (`thm:pencil-conditioned-pair-nonempty`).
 * `x0Gen` — the generic main-component statement (`thm:pencil-x0-generic-attains`), a corollary.
-* `pencil_conjecture` — the pencil conjecture (`thm:pencil-conjecture`), `pencil_conjecture_of_X0`
-  verbatim with `x0Dist`/`x0Gen`.
+* `pencil_realization_theorem` — the pencil realization theorem
+  (`thm:pencil-realization-theorem`), `pencil_realization_theorem_of_X0` verbatim with
+  `x0Dist`/`x0Gen`.
 
 See `notes/Phase40n.md`, `notes/Phase40p.md`, `notes/pencil/workbook/K-main-MC19.md` (route B,
 (MC-183)–(MC-192)), and `blueprint/src/chapter/main-component.tex`
@@ -112,11 +113,11 @@ theorem pencilPair_of_IH [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
-/-- **The conditioned pair at every nonempty graph** (`pencil_conjecture_of_arms_pair` with
+/-- **The conditioned pair at every nonempty graph** (`pencilPair_of_arms` with
 `pencilPair_of_IH` at both arms). -/
 theorem pencilPair_of_nonempty [Finite α] [Finite β] [Infinite K] (G : Graph α β)
     (hne : V(G).Nonempty) : PencilPair K 3 G :=
-  pencil_conjecture_of_arms_pair (fun G hloop hV _ hIH => pencilPair_of_IH G hloop hV hIH)
+  pencilPair_of_arms (fun G hloop hV _ hIH => pencilPair_of_IH G hloop hV hIH)
     (fun G hloop hV _ _ _ hIH => pencilPair_of_IH G hloop hV hIH) G hne
 
 /-- **The generic statement**, a corollary. -/
@@ -124,9 +125,10 @@ theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
   fun G hS hV _ hfeas =>
     (pencilPair_of_nonempty G (Set.nonempty_of_ncard_ne_zero (by omega))).1 hS hfeas
 
-/-- **The pencil conjecture** (carrying neither statement): `pencil_conjecture_of_X0` verbatim. -/
-theorem pencil_conjecture [Nonempty α] [Finite α] [Finite β] [Infinite K]
+/-- **The pencil realization theorem** (carrying neither statement):
+`pencil_realization_theorem_of_X0` verbatim. -/
+theorem pencil_realization_theorem [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (G : Graph α β) (hspan : V(G) = Set.univ) : PencilPair K 3 G :=
-  pencil_conjecture_of_X0 x0Dist x0Gen G hspan
+  pencil_realization_theorem_of_X0 x0Dist x0Gen G hspan
 
 end CombinatorialRigidity.Molecular

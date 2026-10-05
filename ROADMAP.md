@@ -1,11 +1,17 @@
 # Combinatorial Rigidity — Roadmap
 
-This directory aims to formalize a slice of **combinatorial rigidity theory**
-in mathlib style, culminating in **Laman's theorem** (1970): a graph on
+This directory formalizes a slice of **combinatorial rigidity theory** in
+mathlib style. Its first target was **Laman's theorem** (1970): a graph on
 `n ≥ 2` vertices is generically rigid in the plane iff it contains a
 spanning subgraph with `2n − 3` edges in which every subgraph on `k ≥ 2`
 vertices has at most `2k − 3` edges. Such graphs are called *Laman graphs*
-or *minimally rigid* graphs in the plane.
+or *minimally rigid* graphs in the plane. Laman's theorem closed with
+Phase 6. The program then ran through the body-bar and body-hinge
+Tay–Whiteley theorems to Katoh–Tanigawa's proof of the **molecular
+conjecture** (Phases 17–26), and on to the **pencil realization theorem**
+(Phases 39–40), a strengthening of the molecular conjecture that this
+project posed and proved. The *Status* table and *Queued post-program
+phases* below give the current state.
 
 The work is expected to span multiple sessions. This file is the canonical
 hand-off document: it carries the directory layout, status, mathematical
@@ -154,11 +160,11 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ✓ Complete — as a reduction: `pencil_conjecture_of_X0` carries only the two main-component statements `X0Dist`/`X0Gen`, which Phase 40 discharged (see `notes/Phase39.md`) |
+| 39. Pencil realizations (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ✓ Complete — as a reduction: `pencil_realization_theorem_of_X0` carries only the two main-component statements `X0Dist`/`X0Gen`, which Phase 40 discharged (see `notes/Phase39.md`) |
 | ⋮ Doc-split / harness move-down / phase-note compression rounds (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive,adjudications}.md` doc set (**pre-split paths**; the set moved to `notes/pencil/` at slice 12/13, 2026-09-09) + `notes/Phase39.md` + `notes/scripts/` layering | ✓ Complete — rounds 1–2 (slices 1–2, 4–5: the two doc splits, the ordinals-1–19 adjudication bullets, the five §2-rule-2 harness move-downs paid with re-exports, no recorded figure moved) and round 3's slice 6, the phase-note compression pass (`Phase39.md` 1 500 → 554; ordinals 20–44's adjudication bullets → `pencil/adjudications.md` verbatim), all LANDED; slice 7 re-thinned this table's own Phase-39 cell (10 109 → 623 chars, a third copy of per-direction narrative; every figure re-verified present in a canonical home first) (see `notes/pencil/structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/pencil/structure.md`) |
 | ⋮ Toolchain bumps to Lean v4.34.0-rc1 → rc2 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ ~36 rc1 proof fixups across 26 files; **zero** for rc2) | ✓ Complete — v4.30.0-rc2 → v4.34.0-rc2, mathlib 2026-05-13 → 2026-08-24, the `bryangingechen/Matroid` fork retired for a plain upstream pin, and `lake lint` green. No mathematical change: all 17 headline declarations re-verified at `[propext, Classical.choice, Quot.sound]`. Pushed and CI-validated — `origin/master`'s *Build & deploy site* run passed at `91fcd24a` (2026-09-29); hopscotch now tracks a genuine mathlib incompatibility, not the old pin-order false positive (see `notes/ToolchainBumps.md`) |
-| 40. The `X₀` formalization of the pencil conjecture (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered, 40a–40p), `main-component.tex` | ✓ Complete — the pencil conjecture proved over every infinite field (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
+| 40. The `X₀` formalization of the pencil realization theorem (post-program) — PENCIL-X0 | `Molecular/` (sub-lettered, 40a–40p), `main-component.tex` | ✓ Complete — the pencil realization theorem proved over every infinite field (see `notes/Phase40p.md`; plan `notes/Phase40-design.md`) |
 | ⋮ Cleanup round (post-Phase-40, 1/5: mechanical) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` + Phase 40's other blueprint nodes | ✓ Complete — hygiene only, all 19 main results' axioms unchanged (see `notes/Phase40-cleanup.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 2/5: the shared hub normalization) | `Molecular/Deficiency.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`, `Molecular/Molecule/Pencil/TwoCut.lean` | ✓ Complete — one shared lemma, both hubs' statements unchanged (see `notes/Phase40-factor.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
@@ -1113,7 +1119,7 @@ against the project's pin-the-set idiom (recorded in `DESIGN.md`), and the
 diffuse ℤ↔ℕ rank-cast pattern had no clean single abstraction. Slice-by-slice
 detail, per-pattern verdicts, and hand-off → `notes/Phase38.md`.
 
-### Phase 39 — The hinge-pencil molecular conjecture (PENCIL, post-program)
+### Phase 39 — Pencil realizations (PENCIL, post-program)
 
 **✓ Complete — as a reduction** (opened 2026-07-23 recon-first, closed 2026-09-25; work log
 `notes/Phase39.md`; planning input `notes/pencil/scope.md`, user-queued 2026-07-23). A
@@ -1134,18 +1140,18 @@ biconditional `exists_extensor_two_pencils_iff` (W1–W2); the minimality-free r
 Theorem 4.9's template with the loop, base and cut-edge arms, the cut arm by a projective
 repositioning (W3); the in-stratum genericity device, the conditioned-pair motive `PencilPair`
 (bare; adjacent-distinct under simplicity; generic under simplicity plus
-nondegeneracy-feasibility) and its assembly `pencil_conjecture_of_arms_pair` carrying two kernels
+nondegeneracy-feasibility) and its assembly `pencilPair_of_arms` carrying two kernels
 (W5; it still takes the two, as its contraction and split hypotheses; `40-simplify` task 10g,
 `f8c6b0d4`, restated it over every nonempty multigraph); the girth /
 degree-two-chain normal form and item 6's deficiency laws (the vertex 2-cut law and the gluing
 identity, `TwoCut.lean`; both deleted by `40-simplify`, tasks 10i (`1e7d78a9`) and 10b
 (`c48d323e`)); and the non-simple bare case (W4-A, KT Lemma 6.2 without
-minimality). **The phase closes on the reduction:** the headline `pencil_conjecture_of_X0`
+minimality). **The phase closes on the reduction:** the headline `pencil_realization_theorem_of_X0`
 (`Pencil/X0.lean`) proves `PencilPair K 3 G` for every spanning multigraph over any infinite field
 from two statements about the main component `X₀` of the pencil configuration space — `X0Dist`
 (every simple two-edge-connected multigraph has an adjacent-distinct pencil realization) and
 `X0Gen` (a generic one when nondegeneracy-feasible) — which **Phase 40** (§40) discharged, proving
-the pencil conjecture outright. Between 2026-08-05 and 09-13 the phase
+the pencil realization theorem outright. Between 2026-08-05 and 09-13 the phase
 ran a docs+scripts-only research arc on the two kernels (127 directions under a coordinator loop,
 retired 2026-09-15 for attack tracks under `HARNESS.md`; standing result: kernel (K) not closer);
 its corpus is `notes/pencil/` (manual `notes/pencil/CLAUDE.md`, record `notes/pencil/structure.md`),
@@ -1155,14 +1161,14 @@ fallback and retired at its close (PI, 2026-09-29; `notes/Phase40-design.md` §6
 items (A6, the hub-normalization factoring, the D5 blueprint debt, two pending exposition entries)
 went to its §7. Hand-off → `notes/Phase39.md`.
 
-### Phase 40 — The `X₀` formalization of the pencil conjecture (PENCIL-X0, post-program; sub-lettered 40a–40p) — ✓ Complete
+### Phase 40 — The `X₀` formalization of the pencil realization theorem (PENCIL-X0, post-program; sub-lettered 40a–40p) — ✓ Complete
 
 **✓ Complete** (opened 2026-09-25 at the user's initiative, ahead of the queue; closed 2026-09-29;
 sixteen sub-phases, work logs `notes/Phase40{a..p}.md`, plan and proof map
 `notes/Phase40-design.md`). It formalized §(K-main)'s proof that the main component of the pencil
 configuration space attains the generic rank, discharged the two statements Phase 39's headline
-carries (`X0Dist`, `X0Gen`, as the theorems `x0Dist`, `x0Gen`), and so **proved the pencil conjecture outright over every infinite
-field**: `pencil_conjecture` (every spanning multigraph, `pencil_conjecture_of_X0 x0Dist x0Gen`) and
+carries (`X0Dist`, `X0Gen`, as the theorems `x0Dist`, `x0Gen`), and so **proved the pencil realization theorem outright over every infinite
+field**: `pencil_realization_theorem` (every spanning multigraph, `pencil_realization_theorem_of_X0 x0Dist x0Gen`) and
 the stronger `pencilPair_of_nonempty` (every multigraph with at least one body), in
 `Molecule/Pencil/MainComponent/Statements.lean`, with the new chapter `main-component.tex`. The
 layers, by stable code: **SPINE2** (40a) weakened the landed Theorem 5.5/5.6 chain, the generic-lift
@@ -1209,7 +1215,7 @@ the queue at the user's initiative (§38 above), and opened and closed as
 Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
 2026-07-23; PENCIL opened as Phase 39 and closed 2026-09-25 as a reduction (§39
 above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day at the user's
-initiative and closed 2026-09-29, proving the pencil conjecture (§40 above). The PI then
+initiative and closed 2026-09-29, proving the pencil realization theorem (§40 above). The PI then
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
 autopilot, so **ORIGAMI opens after them**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,

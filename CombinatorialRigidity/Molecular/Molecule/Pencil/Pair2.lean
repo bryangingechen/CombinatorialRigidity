@@ -570,9 +570,9 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
 
 `Graph.pencil_reduction` at `n = 3` with the conditioned-pair motive `PencilPair K 3`. Its loop,
 base and cut-edge arms hold outright, from the three leaves above and in `Pair.lean`
-(`pencilPair_loop_base_cut`), so `pencil_conjecture_of_arms_pair` takes only the contraction and
+(`pencilPair_loop_base_cut`), so `pencilPair_of_arms` takes only the contraction and
 split arms, and concludes at every nonempty graph. Both headline routes run it:
-`pencil_conjecture_of_X0` and `pencilPair_of_nonempty`. -/
+`pencil_realization_theorem_of_X0` and `pencilPair_of_nonempty`. -/
 
 /-- **The conditioned pair at a loop, on at most two bodies and at a cut edge**
 (`lem:pencil-pair-loop-base-cut`): the loop, base and cut-edge arms of `Graph.pencil_reduction`
@@ -600,12 +600,12 @@ theorem pencilPair_loop_base_cut [Finite α] [Finite β] [Infinite K] :
   · rw [Graph.edgeSet_deleteEdges]
     exact Set.ncard_sdiff_singleton_lt_of_mem hloopAt.edge_mem
 
-/-- **The pencil conjecture, conditional on the contraction and split cases, conditioned-pair
-motive** (`thm:pencil-conditional-realization-pair`). Over an infinite field,
+/-- **The pencil realization theorem, conditional on the contraction and split cases,
+conditioned-pair motive** (`thm:pencil-conditional-realization-pair`). Over an infinite field,
 `Graph.pencil_reduction` at `n = 3` and the motive `PencilPair K 3`, with its loop, base and
 cut-edge arms from `pencilPair_loop_base_cut`, gives the conditioned pair at every nonempty graph
 from the contraction arm `hcontract` and the split arm `hsplit`. -/
-theorem pencil_conjecture_of_arms_pair [Finite α] [Finite β] [Infinite K]
+theorem pencilPair_of_arms [Finite α] [Finite β] [Infinite K]
     (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
       (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →

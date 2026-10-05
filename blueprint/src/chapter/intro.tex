@@ -44,8 +44,9 @@ consequences of the rank formula: Jacobs' conjecture on the
 independence of molecular graphs, and the degree-one rank formula. Two
 later chapters (\cref{sec:pencil}, \cref{sec:main-component}) prove a
 strengthening of Katoh--Tanigawa's Theorem~5.6 in dimension three that
-appears to be new, the pencil conjecture. It asks in addition that the
-hinges at each body pass through a common point of the body's panel.
+appears to be new, the pencil realization theorem, which this project
+posed and proved. Its realizations ask in addition that the hinges at each
+body pass through a common point of the body's panel.
 
 \subsection*{Organization of the blueprint}
 
@@ -375,7 +376,7 @@ deficiency rank of \cref{thm:theorem-55-6-multigraph}. If $G$ is simple,
 the points of adjacent bodies can be chosen projectively distinct. If $G$
 also has a nondegenerate pencil realization
 (\cref{def:pencil-nondegenerate}), it has one of that rank. These claims
-make up the pencil conjecture (\cref{thm:pencil-conjecture}).
+make up the pencil realization theorem (\cref{thm:pencil-realization-theorem}).
 
 Katoh and Tanigawa's induction runs over minimal graphs (KT
 Theorem~4.9). They then add the remaining edges to a realization of a
@@ -383,9 +384,9 @@ minimal spanning subgraph. In a pencil realization of the subgraph at its
 deficiency rank, the added edges may have no hinges in both panels
 through the points of their ends. So the proof runs the induction over
 every multigraph (\cref{thm:pencil-reduction}). Phase~39 reduced the
-pencil conjecture to the two \emph{main-component statements}
+pencil realization theorem to the two \emph{main-component statements}
 (\cref{def:pencil-main-component-statements}). These ask the pencil
-conjecture's last two claims of every simple two-edge-connected
+realization theorem's last two claims of every simple two-edge-connected
 multigraph on at least three bodies.
 
 Phase~40 proved the two statements (\cref{sec:main-component}). The idea
@@ -443,7 +444,7 @@ the independence and rank of molecular graphs (\cref{sec:jacobs}), the
 field generalization, the generic form of the realization theorems
 (\cref{sec:generic-lift}), the multigraph molecular conjecture in
 the hinge-coplanar model (\cref{sec:molecular-coplanar-multigraph}), and
-the pencil conjecture (\cref{sec:pencil}, \cref{sec:main-component})
+the pencil realization theorem (\cref{sec:pencil}, \cref{sec:main-component})
 --- are all complete (every node green). The
 graph is authored \emph{forward} --- a
 chapter's nodes and their dependency edges written before its Lean

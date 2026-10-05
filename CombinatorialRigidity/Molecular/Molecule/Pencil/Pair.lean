@@ -11,7 +11,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 New leaf, opened for the W5-L5 milestone (`notes/Phase39.md` *Hand-off*,
 `notes/Phase39-design.md` §"W5 leaf decomposition" L5): the W3-L7 successor
-`pencil_conjecture_of_arms_pair` (spiked in the design doc; red node
+`pencilPair_of_arms` (spiked in the design doc; red node
 `thm:pencil-conditional-realization-pair` in `pencil.tex`) needs each of
 `Graph.pencil_reduction`'s loop/base/cut arms re-derived against the `PencilPair`
 conditioned-pair motive (`Molecule/Pencil/Motive.lean`), since the bare-motive arms

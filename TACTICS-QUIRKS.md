@@ -4408,7 +4408,7 @@ must supply for nothing, and the linter's own message already names the fix.
 **Fix, in order:**
 1. Drop the binder and open the proof with `classical` (a term proof becomes `by classical exact
    …`; `open scoped Classical in` for a bare term). Rebuild every callee too — they simply stop
-   passing the instance. In-tree precedent: `pencil_conjecture_of_arms_pair` (`Pencil/Pair2.lean`,
+   passing the instance. In-tree precedent: `pencilPair_of_arms` (`Pencil/Pair2.lean`,
    since Phase 40-simplify 10g) calls `Graph.pencil_reduction`, itself `[DecidableEq β]`-taking,
    with `classical` and no binder.
 2. Only if that fails for a **stated** reason (a step computes with the specific instance —

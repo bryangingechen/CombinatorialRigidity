@@ -6,21 +6,48 @@
 > This is an ongoing **experiment** in autoformalization using LLMs.
 > I (Bryan) have not yet fully vetted the prose or Lean code, so take everything you read here with a grain of salt.
 
-A Lean 4 / mathlib4 formalization of combinatorial rigidity theory. Its
-first goal is **Laman's theorem** (1970): for `n ≥ 2`, a graph is
-generically rigid in the plane iff it contains a `(2, 3)`-tight spanning
-subgraph. Beyond Laman's theorem the project formalizes the planar
-rigidity matroid and an executable `(k, ℓ)`-sparsity decision procedure
-(the Lee–Streinu pebble game), the abstract matroid-union machinery, Tay's
-body-bar theorem and the body-hinge / panel-hinge Tay–Whiteley theorem
-(Tay 1984/1989, Whiteley 1988), and — the longest-horizon target —
-Katoh–Tanigawa 2011's proof of the **molecular conjecture**, now fully
-formalized at every dimension together with its molecule application, the
-protein-flexibility rank formula `r(G²) = 3|V| − 6 − def(G̃)`.
+A Lean 4 / mathlib4 formalization of combinatorial rigidity theory. It
+began with **Laman's theorem** (1970): for `n ≥ 2`, a graph is generically
+rigid in the plane iff it contains a `(2, 3)`-tight spanning subgraph.
+Beyond Laman's theorem the project formalizes the planar rigidity matroid
+and an executable `(k, ℓ)`-sparsity decision procedure (the Lee–Streinu
+pebble game), the abstract matroid-union machinery, Tay's body-bar theorem
+and the body-hinge / panel-hinge Tay–Whiteley theorem (Tay 1984/1989,
+Whiteley 1988), and Katoh–Tanigawa 2011's proof of the **molecular
+conjecture**, at every dimension, with its molecule application, the
+protein-flexibility rank formula `r(G²) = 3|V| − 6 − def(G̃)`. Its newest
+result is a strengthening of the molecular conjecture that appears to be
+new, the **pencil realization theorem**.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
 project; commit history is preserved with paths rewritten.
+
+## The pencil realization theorem
+
+A body-hinge framework in space is a set of rigid bodies joined in pairs by
+hinge lines. Katoh and Tanigawa proved Tay and Whiteley's molecular
+conjecture in a rank form: a graph's generic body-hinge rank is already
+attained when the hinges at each body lie in a common plane, the body's
+panel. Dually, it is attained when the hinges at each body pass through a
+common point. The pencil realization theorem asks for both at once. Each
+body gets a panel and a point of that panel, and every hinge at the body
+lies in the panel and passes through the point, so the hinges at a body
+form a *pencil* of lines. In the molecular reading, the panel is the plane
+of an atom's bonds and the point is the atom's centre.
+
+> **Theorem.** Over every infinite field, every multigraph `G` with at
+> least one body has a pencil realization of rank `6(|V(G)| − 1) − def(G̃)`,
+> the rank of a generic body-hinge realization of `G`. If `G` is simple,
+> the points of adjacent bodies can be chosen distinct, and if `G` has a
+> nondegenerate pencil realization at all, it has one of that rank.
+
+The question was posed and proved by this project in 2026 (phases 39–40);
+we know of no earlier statement of it. In Lean,
+`CombinatorialRigidity.Molecular.pencil_realization_theorem` states it for
+a multigraph on the whole body set, and `pencilPair_of_nonempty` for every
+multigraph with at least one body. The proof is outlined under *Project
+status* below, and given in full in the blueprint.
 
 ## Links
 
@@ -125,29 +152,23 @@ equivalence is provably false for the intersection-based panel-hinge
 frameworks the simple-graph statements use. The blueprint dependency graph is
 fully green.
 
-**The pencil conjecture (phases 39–40, complete).** A further strengthening of the hinge-coplanar
-model asks for a *pencil realization*, in which each body's hinges also pass through a common point
-of its panel: the hinges at a body form a pencil of lines through a point in a plane. In the
-molecular reading, the panel is the plane of an atom's bonds and the point is the atom's centre.
-The *pencil conjecture*, that every spanning multigraph attains the deficiency rank by a pencil
-realization, holds over every infinite field (`CombinatorialRigidity.Molecular.pencil_conjecture`,
-with the stronger `pencilPair_of_nonempty` for every multigraph with at least one body); the
-question appears to be new. Phase 39 (closed 2026-09-25) reduced it, in Lean, to two
-*main-component statements*: every simple two-edge-connected multigraph on at least three bodies
-has a pencil realization at the deficiency rank with the points of adjacent bodies distinct, and a
-nondegenerate one at that rank whenever it has a nondegenerate pencil realization at all. Phase 40
-(closed 2026-09-29) proved both, formalizing a proof first worked out informally and independently
-checked. Its first step extended Theorems 5.5 and 5.6 and the molecular conjecture from dimension
-three down to the plane (above). The proof then lifts pictures of the graph in the plane: a picture
-places each body at a point of the plane, a height lifts that point into space, and the hinge of an
-edge is the line through the lifted points of its ends. The heights at which each body's point lies
-in a plane with its neighbours' points form a linear space, the lifting space, whose dimension at a
-general picture is Jackson–Jordán's rank formula for pin-collinear frameworks, derived here from
-the plane case. The main component is the closure of these lifts over the pictures at which the
-lifting space is smallest. For every simple connected graph of minimum degree at least two, a
-general member of it attains the deficiency rank, by an induction through cut-vertex, bridge,
-cycle, ear, split-off and contraction steps; this gives the first statement. The second does not
-follow this way, and is proved instead inside the reduction's own induction.
+**How the pencil realization theorem is proved (phases 39–40).** Phase 39 (closed 2026-09-25)
+reduced it, in Lean, to two *main-component statements*: every simple two-edge-connected multigraph
+on at least three bodies has a pencil realization at the deficiency rank with the points of
+adjacent bodies distinct, and a nondegenerate one at that rank whenever it has a nondegenerate
+pencil realization at all. Phase 40 (closed 2026-09-29) proved both, formalizing a proof first
+worked out informally and independently checked. Its first step extended Theorems 5.5 and 5.6 and
+the molecular conjecture from dimension three down to the plane (above). The proof then lifts
+pictures of the graph in the plane: a picture places each body at a point of the plane, a height
+lifts that point into space, and the hinge of an edge is the line through the lifted points of its
+ends. The heights at which each body's point lies in a plane with its neighbours' points form a
+linear space, the lifting space, whose dimension at a general picture is Jackson–Jordán's rank
+formula for pin-collinear frameworks, derived here from the plane case. The main component is the
+closure of these lifts over the pictures at which the lifting space is smallest. For every simple
+connected graph of minimum degree at least two, a general member of it attains the deficiency rank,
+by an induction through cut-vertex, bridge, cycle, ear, split-off and contraction steps; this gives
+the first statement. The second does not follow this way, and is proved instead inside the
+reduction's own induction.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

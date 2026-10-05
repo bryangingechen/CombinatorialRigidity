@@ -12,7 +12,7 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 (`notes/pencil/adjudications.md`, 2026-09-25): a separate strong induction on the pencil-realization
 configuration space's main component, bypassing both open kernels (retired at Phase 40's close).
 Phase 40 discharges them (`notes/Phase40-design.md` §1). `pencilPair_of_X0` and
-`pencil_conjecture_of_X0` are the carried headline built on top, spike-compiled against
+`pencil_realization_theorem_of_X0` are the carried headline built on top, spike-compiled against
 `22d0f8f8` (`notes/Phase39-design.md` § "X₀ architecture recon") and transcribed here verbatim.
 `hasPencilRealization_of_not_simple` (Phase 39 L0b, KT Lemma 6.2 mirror, minimality-free) is the
 non-simple bare case that used to be carried as the hypothesis `hW4A`; both carried headlines now
@@ -311,7 +311,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     · exact hFcthru e _ _ (hclink e u v hl h1 h2)
 
 /-- **The conditioned pair from the `X₀` statements, one loopless step** (Phase 39 PENCIL, L0a/L0b;
-the per-graph step `pencil_conjecture_of_X0` reuses at both of `pencil_conjecture_of_arms_pair`'s
+the per-graph step `pencil_realization_theorem_of_X0` reuses at both of `pencilPair_of_arms`'s
 arms). Given `X0Dist` and `X0Gen`, a loopless `G` on at least three bodies satisfies
 `PencilPair K 3 G`, given the conditioned pair on every strictly smaller graph (`hIH`): if `G` is
 not two-edge-connected, `pencilPair_of_not_twoEdgeConnected`
@@ -336,18 +336,18 @@ theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
-/-- **The pencil conjecture from the two main-component statements**
+/-- **The pencil realization theorem from the two main-component statements**
 (`thm:pencil-conditional-realization-main-component`; Phase 39 PENCIL, L0a/L0b). Over an infinite
 field, given `X0Dist` and `X0Gen`, every multigraph on the whole ambient body set satisfies the
-conditioned pair at `n = 3`. Assembles `pencilPair_of_X0` at both arms of
-`pencil_conjecture_of_arms_pair`'s reduction — the contraction and split arms feed it the same
-per-graph argument, since neither the two-edge-connectivity split nor `X0Dist`/`X0Gen` cares which
-arm supplied the induction hypothesis. No fresh edge label is used. -/
-theorem pencil_conjecture_of_X0 [Nonempty α] [Finite α] [Finite β] [Infinite K]
+conditioned pair at `n = 3`. Assembles `pencilPair_of_X0` at both arms of `pencilPair_of_arms`'s
+reduction — the contraction and split arms feed it the same per-graph argument, since neither the
+two-edge-connectivity split nor `X0Dist`/`X0Gen` cares which arm supplied the induction hypothesis.
+No fresh edge label is used. -/
+theorem pencil_realization_theorem_of_X0 [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (hdist : X0Dist K α β) (hgen : X0Gen K α β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G :=
-  pencil_conjecture_of_arms_pair
+  pencilPair_of_arms
     (fun G hloop hV _ hIH => pencilPair_of_X0 hdist hgen G hloop hV hIH)
     (fun G hloop hV _ _ _ hIH => pencilPair_of_X0 hdist hgen G hloop hV hIH) G
     (hspan ▸ Set.univ_nonempty)

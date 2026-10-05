@@ -13,9 +13,9 @@ Split out of `Molecule/Pencil/Arms.lean` (`40-cleanup` task 28b, the `≤1500`-L
 (`hasPencilRealization_of_ncard_le_two`), the last non-wrapper leaf, discharging every loopless
 multigraph on at most two bodies. The bare-motive wrapper `L7` this file also carried,
 `pencil_conjecture_of_arms`, retired at the `40-simplify` cleanup round's PI sanction (2026-10-04,
-`notes/pencil/adjudications.md`): its conclusion follows from the headline `pencil_conjecture`
-over an infinite field, with no caller left once `pencil_conjecture_of_arms_pair` and
-`pencil_conjecture_of_X0` superseded it.
+`notes/pencil/adjudications.md`): its conclusion follows from the headline
+`pencil_realization_theorem` over an infinite field, with no caller left once `pencilPair_of_arms`
+and `pencil_realization_theorem_of_X0` superseded it.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.

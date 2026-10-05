@@ -18,7 +18,7 @@ since `40-simplify` task 10o). The base arm `L5` split further into
 bare-motive wrapper `L7`, `pencil_conjecture_of_arms` (which assembled all four arms via
 `Graph.pencil_reduction`, `Induction/ForestSurgery/Reduction.lean`), retired at the
 `40-simplify` cleanup round's PI sanction (2026-10-04, `notes/pencil/adjudications.md`), superseded
-by `pencil_conjecture_of_arms_pair` and `pencil_conjecture_of_X0`. Builds on the statement layer,
+by `pencilPair_of_arms` and `pencil_realization_theorem_of_X0`. Builds on the statement layer,
 transport, and two-pencil machinery in `Molecule/Pencil/Statement.lean`.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`

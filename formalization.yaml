@@ -117,7 +117,7 @@ sources:                                                          # [required] l
       fully formalized, including the molecular conjecture itself (Conjecture 1.2) and the
       molecule application (Corollary 5.7). Since phase 35, Conjecture 1.2 and Theorem 5.6
       are also proved at their full multigraph strength, with the panel side stated in KT's
-      hinge-coplanar panel model. The pencil conjecture (phases 39-40) adapts its Theorem 4.9
+      hinge-coplanar panel model. The pencil realization theorem (phases 39-40) adapts its Theorem 4.9
       induction without minimality and its Lemma 6.2/6.3 contraction cases.
 
   - title: "Pin-collinear body-and-pin frameworks and the molecular conjecture"
@@ -132,8 +132,8 @@ sources:                                                          # [required] l
       panel a line - is proved here as the n = 2 case of the Katoh-Tanigawa chain
       (CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture and its multigraph
       form; phase 40), over any infinite field, not by Jackson-Jordán's own argument.
-      Formalizing that argument as a second proof is a queued item. The pencil conjecture's
-      main-component argument (phase 40) uses their theorem in the form of an equality for the
+      Formalizing that argument as a second proof is a queued item. The pencil realization
+      theorem's main-component argument (phase 40) uses their theorem in the form of an equality for the
       lifting space of a general planar drawing, derived here from the n = 2 rank formula, and
       transfers their splitting-off case.
 
@@ -169,7 +169,7 @@ sources:                                                          # [required] l
     location: "Proposition 3.4; Example 4.4"
     relationship: "formalizes"
     author_endorsement: "not-contacted"
-    note: "Projective invariance of infinitesimal rigidity (phase 25). Example 4.4 (the flat tetrahedron) is an instance of the correspondence between flat panel structures and liftings that the pencil conjecture's flat-rank computation proves (phase 40)."
+    note: "Projective invariance of infinitesimal rigidity (phase 25). Example 4.4 (the flat tetrahedron) is an instance of the correspondence between flat panel structures and liftings that the pencil realization theorem's flat-rank computation proves (phase 40)."
 
   - title: "Some matroids from discrete applied geometry"
     authors: ["W. Whiteley"]
@@ -178,7 +178,7 @@ sources:                                                          # [required] l
     location: "§8.3 (liftings of plane pictures)"
     relationship: "background"
     author_endorsement: "not-contacted"
-    note: "The lifting space of the pencil conjecture's main-component argument (phase 40) is the space of liftings of a planar picture in the sense of scene analysis; the proofs are self-contained."
+    note: "The lifting space of the pencil realization theorem's main-component argument (phase 40) is the space of liftings of a planar picture in the sense of scene analysis; the proofs are self-contained."
 
   - title: "Combinatorial Rigidity: Graphs and Matroids in the Theory of Rigid Frameworks"
     authors: ["T. Jordán"]
@@ -240,11 +240,11 @@ status:
     place of R, multigraphs, "every generic realization" in place of "some realization")
     and drew further consequences of the rank formula. See status.main_results for the
     headline statements and fidelity.divergences for how they differ from their sources.
-    Phases 39-40 (closed 2026-09-25 and 2026-09-29) proved the pencil conjecture, a further
+    Phases 39-40 (closed 2026-09-25 and 2026-09-29) proved the pencil realization theorem, a further
     strengthening in which each body's hinges also pass through a common point of its panel (in
     the molecular reading, the panel is the plane of an atom's bonds and the point is the atom's
     centre): every spanning multigraph attains the deficiency rank by such a realization, over
-    any infinite field (pencil_conjecture; the question appears to be new). Phase 39 reduced it
+    any infinite field (pencil_realization_theorem; the question appears to be new). Phase 39 reduced it
     to two main-component statements. Phase 40 proved them by lifting pictures of the graph in
     the plane into space, the heights of the lifts forming a linear space, the lifting space,
     after extending Theorems 5.5/5.6 and the molecular conjecture to dimension 2, where the
@@ -464,17 +464,17 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
-  - declaration: "CombinatorialRigidity.Molecular.pencil_conjecture"
+  - declaration: "CombinatorialRigidity.Molecular.pencil_realization_theorem"
     file: "CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Statements.lean"
     description: >-
-      The pencil conjecture (phases 39-40, closed 2026-09-29; no literature source - the question
-      appears to be new): over any infinite field, every spanning multigraph satisfies the
-      conditioned pencil pair at n = 3 - a hinge-coplanar realization in which each body's hinges
-      also pass through a common point of its panel, attaining rank D(|V|-1) - def(G~), with the
-      points of adjacent bodies distinct when the multigraph is simple, and a nondegenerate one at
-      that rank when it also has a nondegenerate pencil realization. It is
-      pencil_conjecture_of_X0 (phase 39's reduction to the two main-component statements X0Dist
-      and X0Gen) applied to x0Dist and x0Gen (phase 40).
+      The pencil realization theorem (phases 39-40, closed 2026-09-29; posed and proved by this
+      project, 2026; no literature source found): over any infinite field, every spanning multigraph
+      satisfies the conditioned pencil pair at n = 3 - a hinge-coplanar realization in which each
+      body's hinges also pass through a common point of its panel, attaining rank D(|V|-1) - def(G~),
+      with the points of adjacent bodies distinct when the multigraph is simple, and a nondegenerate
+      one at that rank when it also has a nondegenerate pencil realization. It is
+      pencil_realization_theorem_of_X0 (phase 39's reduction to the two main-component statements
+      X0Dist and X0Gen) applied to x0Dist and x0Gen (phase 40).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -483,9 +483,9 @@ status:
   - declaration: "CombinatorialRigidity.Molecular.pencilPair_of_nonempty"
     file: "CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Statements.lean"
     description: >-
-      The pencil conjecture in its general form (phase 40): over any infinite field, every
+      The pencil realization theorem in its general form (phase 40): over any infinite field, every
       multigraph with at least one body, spanning or not, satisfies the conditioned pencil pair at
-      n = 3. pencil_conjecture and the generic main-component statement x0Gen are corollaries.
+      n = 3. pencil_realization_theorem and the generic main-component statement x0Gen are corollaries.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -557,8 +557,8 @@ fidelity:
     statement. One deliberate method divergence: where Katoh-Tanigawa fix coordinates
     algebraically independent over the rationals (their footnote 6), the formalization chooses
     each inductive seed off the zero locus of the finitely many polynomials that composition
-    tests; the statements proved are the same. The pencil conjecture has no literature source;
-    it is formalized from the project's own informal proof, whose second main-component statement
+    tests; the statements proved are the same. The pencil realization theorem has no literature
+    source; it is formalized from the project's own informal proof, whose second main-component statement
     did not follow as planned (at K_{2,3}, two bodies with three common neighbours, no
     configuration over a general picture is nondegenerate) and is proved instead inside the
     pencil reduction's own induction. Nothing is cited in place of a proof - every
@@ -714,15 +714,15 @@ alignment:
         CombinatorialRigidity.Molecular.HasCoplanarPanelRealization), where coincident-panel
         realizations (KT Lemma 5.3) are expressible; parallel edges and loops admitted (phase 35).
 
-    - source: "The pencil conjecture (this project, 2026; no literature source found)"
-      lean: "CombinatorialRigidity.Molecular.pencil_conjecture, CombinatorialRigidity.Molecular.pencilPair_of_nonempty"
+    - source: "The pencil realization theorem (posed and proved by this project, 2026; no literature source found)"
+      lean: "CombinatorialRigidity.Molecular.pencil_realization_theorem, CombinatorialRigidity.Molecular.pencilPair_of_nonempty"
       module: "CombinatorialRigidity/Molecular/Molecule/Pencil/MainComponent/Statements.lean"
       status: "proved"
       note: >-
         The conclusion is CombinatorialRigidity.Molecular.PencilPair K 3 G, over any infinite
-        field: for every spanning multigraph (pencil_conjecture), and for every multigraph with at
+        field: for every spanning multigraph (pencil_realization_theorem), and for every multigraph with at
         least one body (pencilPair_of_nonempty). The route is phase 39's reduction
-        CombinatorialRigidity.Molecular.pencil_conjecture_of_X0 to the two main-component
+        CombinatorialRigidity.Molecular.pencil_realization_theorem_of_X0 to the two main-component
         statements CombinatorialRigidity.Molecular.X0Dist and CombinatorialRigidity.Molecular.X0Gen,
         which phase 40 proves as CombinatorialRigidity.Molecular.x0Dist and
         CombinatorialRigidity.Molecular.x0Gen. The non-simple bare case is

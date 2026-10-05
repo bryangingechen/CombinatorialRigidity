@@ -14,7 +14,7 @@ $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, the deficiency rank of
 can be chosen with the points of adjacent bodies projectively distinct.
 If moreover $G$ has a nondegenerate pencil realization
 (\cref{def:pencil-nondegenerate}), it has one of that rank. These claims
-make up \cref{thm:pencil-conjecture}. Besides
+make up \cref{thm:pencil-realization-theorem}. Besides
 \cref{sec:molecular-coplanar-multigraph}, the reader needs the
 deficiency and rigid subgraphs of \cref{sec:molecular-deficiency}.
 
@@ -43,7 +43,7 @@ two statements (\cref{def:pencil-main-component-statements}), which
 \cref{sec:main-component} proves by lifting pictures of $G$ in the plane.
 
 Two parts of the chapter are not used in the proof of
-\cref{thm:pencil-conjecture}. \Cref{sec:pencil-duality} shows that the
+\cref{thm:pencil-realization-theorem}. \Cref{sec:pencil-duality} shows that the
 polarity of \cref{lem:panel-hinge-dual-molecular} takes a pencil
 realization to one with the panel normals and the points exchanged.
 This chapter uses the polarity nowhere else. \Cref{sec:pencil-cycle}
@@ -207,7 +207,7 @@ $q$, and lying in that panel into passing through $q$.
 \end{proof}
 
 We record this symmetry for its own sake: the proof of
-\cref{thm:pencil-conjecture} does not use it. It is one reason why
+\cref{thm:pencil-realization-theorem} does not use it. It is one reason why
 \cref{def:pencil-panel-realization} allows the points of a link's two
 endpoints to coincide: requiring them to be projectively distinct would
 break the symmetry. \cref{sec:pencil-nondegenerate} gives a second
@@ -498,7 +498,7 @@ give all four vertices independent panel normals
 \subsection{Reduction on all spanning multigraphs}
 \label{sec:pencil-reduction}
 
-This subsection states the induction behind \cref{thm:pencil-conjecture}
+This subsection states the induction behind \cref{thm:pencil-realization-theorem}
 and proves three of its five cases. Katoh--Tanigawa's induction runs over
 minimal graphs, those from which no edge can be deleted without changing
 the deficiency (\cref{thm:minimal-kdof-reduction-all-k}). They reach any
@@ -865,7 +865,7 @@ algebraic independence of coordinates.
 
 Keeping only the first condition of \cref{def:pencil-nondegenerate} gives
 a weaker notion, which every simple multigraph with at least one body
-satisfies at the deficiency rank (\cref{thm:pencil-conjecture}). We do not
+satisfies at the deficiency rank (\cref{thm:pencil-realization-theorem}). We do not
 add this condition to \cref{def:pencil-panel-realization}, for two reasons.
 It would break the symmetry noted after \cref{lem:pencil-self-dual}. Also,
 some multigraphs would have no pencil realization at the deficiency rank.
@@ -986,7 +986,7 @@ statement.
 
 \begin{theorem}[The conditioned pair from the contraction and split cases]
   \label{thm:pencil-conditional-realization-pair}
-  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms_pair}
+  \lean{CombinatorialRigidity.Molecular.pencilPair_of_arms}
   \leanok
   \uses{thm:pencil-reduction, def:pencil-conditioned-pair, def:rigid-subgraph,
         def:cut-edges-2ec}
@@ -1130,7 +1130,7 @@ from the conditioned pair at smaller multigraphs
 \begin{theorem}[Pencil realization from the two main-component statements]
   \label{thm:pencil-conditional-realization-main-component}
   \lean{CombinatorialRigidity.Molecular.pencilPair_of_X0,
-        CombinatorialRigidity.Molecular.pencil_conjecture_of_X0}
+        CombinatorialRigidity.Molecular.pencil_realization_theorem_of_X0}
   \leanok
   \uses{thm:pencil-reduction, def:pencil-conditioned-pair,
         def:pencil-main-component-statements}
@@ -1161,9 +1161,9 @@ from the conditioned pair at smaller multigraphs
   \end{itemize}
 \end{proof}
 
-\begin{theorem}[The pencil conjecture]
-  \label{thm:pencil-conjecture}
-  \lean{CombinatorialRigidity.Molecular.pencil_conjecture,
+\begin{theorem}[The pencil realization theorem]
+  \label{thm:pencil-realization-theorem}
+  \lean{CombinatorialRigidity.Molecular.pencil_realization_theorem,
         CombinatorialRigidity.Molecular.pencilPair_of_nonempty}
   \leanok
   \uses{def:pencil-conditioned-pair}
