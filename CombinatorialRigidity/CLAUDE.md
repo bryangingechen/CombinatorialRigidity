@@ -141,12 +141,13 @@ step-4 checks in `.claude/commands/coordinate-phase.md`):
   slice that changes a declaration's statement, grep `blueprint/src/` for it:
   when the `\lean{...}` name survives, nothing catches a node still stating
   the old form. Restate it in the same commit.
-- **An additive successor** (missed once there). A slice that lands a unified
-  successor for a node's declarations changes no statement, so nothing fails:
-  extend the node's `\lean{...}` list with the successor in the same commit,
-  or record the repin debt in the phase note. Otherwise the node silently
-  pins only names scheduled for deletion.
-- **A deletion** (missed three times in one sub-phase). A slice is complete
+- **An additive successor** (the additive-successor variant; missed once
+  there). A slice that lands a unified successor for a node's declarations
+  changes no statement, so nothing fails: extend the node's `\lean{...}` list
+  with the successor in the same commit, or record the repin debt in the phase
+  note. Otherwise the node silently pins only names scheduled for deletion.
+- **A deletion** (the deletion/retirement variant; missed three times in one
+  sub-phase). A slice is complete
   only when no deleted name survives as a live cross-reference anywhere: grep
   the whole repo for each, and in the same commit repoint or remove every
   docstring and comment reference. "It retires later with its file's legacy"

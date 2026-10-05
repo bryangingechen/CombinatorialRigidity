@@ -559,7 +559,9 @@ to be re-derived by re-reading entries later.
   the retrospective block to `AUTHORING.md`, the calibration narratives to `blueprint/DESIGN.md`
   *Static-check calibrations* or to the root `DESIGN.md` postmortems that already held them,
   each rule kept. `CombinatorialRigidity/CLAUDE.md` 456 → 318: compressed in place, every
-  rule and anchored heading kept. Next: root `CLAUDE.md`, then `notes/CLAUDE.md`.
+  rule and anchored heading kept. Root `CLAUDE.md` 381 → 264: the citation section's detail
+  (scan, verification bar, cross-check references) to `REFS.md`, the rest compressed in place.
+  Next: `notes/CLAUDE.md`.
 
 ### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
 - **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).

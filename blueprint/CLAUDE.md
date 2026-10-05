@@ -220,8 +220,8 @@ The failure is case (b) *claimed* but not *true*. The gate's clauses:
 - **The arithmetic closes** (the gate's second half). Before a producer is
   scheduled as a build, trace its target rank, count or dimension through the
   construction and confirm it closes, not just that the `\uses` edges
-  type-check; math-first when the math is the hard part (`../DESIGN.md` *Constructibility recon before scheduling a
-  producer build*).
+  type-check; math-first when the math is the hard part (`../DESIGN.md`
+  *Constructibility recon before scheduling a producer build*).
 - **The structure matches** (the third half). A node formalizing a step of a
   published proof reproduces the source's argument *structure*, not just its
   conclusion and count. The tell: the counts line up, but you keep needing

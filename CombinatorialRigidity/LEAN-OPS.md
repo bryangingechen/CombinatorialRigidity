@@ -67,7 +67,7 @@ re-standing-up a fork, and both are the user's call, not a mid-session one.
 
 (All of this is distinct from the *local* vendored mirror under
 `CombinatorialRigidity/Matroid/`, which is plain project source and freely
-editable — see top-level `CLAUDE.md` *Vendored provenance*.)
+editable — see `../DESIGN.md` *Project history* → **Vendored provenance**.)
 
 - **Prefer the project-side route first.** A new lemma in
   `CombinatorialRigidity/Matroid/` or a `Mathlib/<exact path>` mirror travels
