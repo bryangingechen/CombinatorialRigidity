@@ -1224,15 +1224,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   stops and the PI's decisions are in `notes/Cleanup40.md`. The autopilot queue is
   `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 5, `40-docs`, project organization, opened 2026-10-04: the task
-  its work log `notes/Phase40-docs.md` names in its **Status** (tasks 1–5, the user-facing
-  surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales, the cleanup-round
-  procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
-  `blueprint/AUTHORING.md`, landed 2026-10-04; task 6, FRICTION's `[resolved]` entries archived and
-  its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
-  deleted or changed, also landed 2026-10-04; task 8, `notes/Phase40-design.md` §3 compressed to
-  verdicts, also landed 2026-10-04; task 9, the rest of that design doc compressed the same way,
-  also landed 2026-10-04; task 10, `Phase40a.md`–`Phase40d.md` compressed to the archive shape,
-  also landed 2026-10-04; next, task 11, `Phase40e.md`–`Phase40h.md`). It closes
+  its work log `notes/Phase40-docs.md` names in its **Status** (tasks 1–11 landed 2026-10-04; next,
+  task 12, `Phase40i.md`–`Phase40l.md`). It closes
   unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,

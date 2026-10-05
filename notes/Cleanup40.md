@@ -13,15 +13,8 @@ recommendations as written (that log's *Autopilot: for the PI*). Its 18 landings
 closes unattended. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under
 autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
 `.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
-**The next concrete task** is the one round 5's log names in its **Status** (tasks 1–5, the
-user-facing surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales, the
-cleanup-round procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
-`blueprint/AUTHORING.md`, landed 2026-10-04; task 6, FRICTION's `[resolved]` entries archived and
-its `[mirror-candidate]` tag defined, also landed 2026-10-04; task 7, pointers to what rounds 1–4
-deleted or changed, also landed 2026-10-04; task 8, `notes/Phase40-design.md` §3 compressed to
-verdicts, also landed 2026-10-04; task 9, the rest of that design doc compressed the same way,
-also landed 2026-10-04; task 10, `Phase40a.md`–`Phase40d.md` compressed to the archive shape, also
-landed 2026-10-04; next, task 11, `Phase40e.md`–`Phase40h.md`).
+**The next concrete task** is the one round 5's log names in its **Status** (tasks 1–11 landed
+2026-10-04; next, task 12, `Phase40i.md`–`Phase40l.md`).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
