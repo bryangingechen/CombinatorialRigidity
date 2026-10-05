@@ -7,7 +7,8 @@ sub-lettered home in the `notes/PhaseN-design.md` pattern (`notes/CLAUDE.md`): t
 index of work already done, the layer plan by **stable codes**, the proof map, the risks and the
 standing constraints. It is now the phase's closed record, under the ~1500-line tripwire, with 9
 live Lean anchors (into §1, §3 and the appendix, and one to the file); cleanup round 5 compressed
-its §3 to cited verdicts (`notes/Phase40-docs.md`, task 8). The sixteen sub-phases, each with
+its §3 to cited verdicts (`notes/Phase40-docs.md`, task 8) and the rest of the doc the same way
+(task 9), every anchor still resolving. The sixteen sub-phases, each with
 its work log `notes/Phase40x.md`: **SPINE2** = 40a; **CARRIER** = 40b; **FLAT** = 40c; **BRIDGE**
 = 40d; **STEPS** by group, CUT/BRIDGE = 40e, CONTRACT-R = 40f, CHAIN = 40g, SHORT = 40h, ORBIT =
 40i, SPLITOFF = 40j, CONTRACT-A = 40k; **COVERAGE** as REDUCE = 40l and CHAINS + THEOREM-S = 40m;
@@ -765,146 +766,61 @@ consumers. What it bought: C4's polar/primal rank equality.
 - **Files.** smark is closed (PI, 2026-09-29): `notes/attacks/smark/` and
   `notes/pencil/workbook/attack-smark.md` are its record, not edited. `notes/Phase39-design.md` is
   a frozen archive: append only.
-- **Do not:** edit `hK`, `hbareSplit`, `pencilPair_of_splitOff_of_habitat` or the landed Phase 39
-  headlines, which stay as conditional theorems; or treat `workbook/W4.md`'s (K-res) statement or
-  cost estimates as current.
+- **Do not:** edit the landed Phase 39 headlines (`pencilPair_of_X0`, `pencil_conjecture_of_X0`);
+  or treat `workbook/W4.md`'s (K-res) statement or cost estimates as current. `hK`, `hbareSplit`
+  and `pencilPair_of_splitOff_of_habitat` no longer exist to edit: round 4 deleted them (§6).
 
 ## 6. Retired fallback (held 2026-09-25, retired 2026-09-29)
 
-**Retired on the PI's word at Phase 40's close** (2026-09-29, verbatim in
-`notes/pencil/adjudications.md`, the Phase 40 close entry): "All of design §6". Held until MOTIVES
-landed (PI, 2026-09-25), then re-decided; MOTIVES landed, the pencil conjecture is proved by the
-main-component route, and nothing below is pursued. The landed Lean on that route stays as
-conditional theorems carrying the kernels as hypotheses (`pencilPair_of_splitOff_of_habitat`,
-`pencil_conjecture_of_arms_pair`, `pencil_conjecture_of_hcontract_hK_hbareSplit` and its `_of_card`
-form); reopening any item is the PI's call. **Round 4 (`40-simplify`, task 10i) retired most of
-this Lean** at the PI's 2026-10-04 Stop-2 sanction (`notes/pencil/adjudications.md`):
-`pencilPair_of_splitOff_of_habitat` and `pencil_conjecture_of_hcontract_hK_hbareSplit` (and its
-`_of_card` form) deleted with `_of_card`'s cluster, the kernel route's two roots, and the girth
-chain; `pencil_conjecture_of_arms_pair` stays, generalized to every nonempty graph (`c3`). The
-record:
-- **The split/contract architecture and its three kernels**, (K-res)/`kres`, (K-c), and
-  (K-bare-c) with (α): `notes/pencil/W4-reopen.md` (retired record) and `W4-reopen-archive.md`.
-- **smark's O7e programme** on `hK`/`hbareSplit`: smark is CLOSED (the header line of
-  `notes/attacks/smark/state.md`; nothing else in the track edited).
-- **gr10's Part B fallback** (the grid recipe on the tight stratum, `notes/attacks/gr10/brief.md`
-  Part B): retired; gr10 was already closed (2026-09-23).
-- **Phase 39's four held checklist items**, moved here at its close (2026-09-25):
-  - `hK` on the tight stratum from grid vanishing, the colouring statement as hypothesis
-    (decoupling, rank formula, Vandermonde, chart step, descent; the proviso question of
-    `notes/attacks/gr10/brief.md` §2 *Proviso (P)*);
-  - tree-triple ⇒ `dim Z = 0`, with the circular-ladder family (GUNIZERO's uniform instance) as a
-    formal witness;
-  - the rest of the W4 build (`notes/pencil/W4-reopen.md`): T1, the W4 wrapper carrying (K-res);
-    W4-L4b (`exists_degree_two_of_co1_rigid`, pinned and spike-elaborated); W4-L2/L3′/L5; the
-    residual carry `hnoGood'` (W4-L1, W4-A, landed as Phase 39's L0b);
-  - the reverse arms of the W0 transport (a `complementIso` involution lemma; the workbook's
-    §(K-σ) *Step σ6*).
+**Verdict: retired whole**, on the PI's word, at Phase 40's close (2026-09-29, verbatim in
+`notes/pencil/adjudications.md`'s Phase 40 close entry: "All of design §6"), held until MOTIVES
+landed (PI, 2026-09-25) then re-decided once it did — the main-component route proves the pencil
+conjecture, and nothing here is pursued. Retired: the split/contract architecture and its three
+kernels, (K-res)/`kres`, (K-c) and (K-bare-c) with (α) (`notes/pencil/W4-reopen.md`, retired
+record, and `W4-reopen-archive.md`); smark's O7e programme on `hK`/`hbareSplit` (smark CLOSED,
+`notes/attacks/smark/state.md`); gr10's Part B fallback (`notes/attacks/gr10/brief.md` Part B;
+gr10 already closed 2026-09-23); and Phase 39's four held checklist items, moved here at its close
+2026-09-25 (`hK` on the tight stratum from grid vanishing; tree-triple ⇒ `dim Z = 0`; the rest of
+the W4 build; the reverse arms of the W0 transport). **Round 4** (`40-simplify`, task 10i,
+`1e7d78a9`) **retired most of this Lean** at the PI's 2026-10-04 Stop-2 sanction
+(`notes/pencil/adjudications.md`): `pencilPair_of_splitOff_of_habitat` and
+`pencil_conjecture_of_hcontract_hK_hbareSplit` (and its `_of_card` form) deleted with `_of_card`'s
+cluster, the kernel route's two roots, and the girth chain; `pencil_conjecture_of_arms_pair` stays,
+generalized to every nonempty graph (`c3`). Reopening any item is the PI's call.
 
 ## 7. Deferred from Phase 39, and carried past Phase 40's close
 
-Moved here at Phase 39's close (2026-09-25). None was on Phase 40's route; each names the layer or
-round that lands it, and at Phase 40's close (2026-09-29) every one not paid below is carried to a
-post-Phase-40 cleanup round, with the tracked cleanup-round items of §3 (indexed at the end of this
-section).
+Moved here at Phase 39's close (2026-09-25); none was on Phase 40's route. One line per item, each
+its own verdict as of round 4's close (2026-10-04), the last round that edits Lean — detail is
+`notes/Phase40-exposition.md` *The build-or-leave items*, `notes/Cleanup40.md` §2 and
+`notes/Phase40-factor.md`, not repeated here:
 
-- **A6 — C3, the welded pendant law** `g(H) = max(g(H−u), f_sep(H−u) − (D−1))` and
-  `δ(H) = min(δ′+1, D)` (S6(ii)'s remaining clauses; both need `w ≠ v`). Deferred by the PI's D2
-  call (2026-09-16): off the consumed path — S6 is the side-degree-1 reduction, S14's `H′` has
-  side-degree ≥ 2 at both ends (S10(iii)) — and it is the only law needing `deficiencySep`. Site
-  `Induction/SplitOffDeficiency.lean`. Build only if STEPS consumes S6's reduction. **Left at
-  round 4's close** (2026-10-04): the condition never fired, and round 3's leave (its item 2) was
-  sanctioned at round 4's Stop 2.
-- [x] **The shared hub normalization — a factoring item. Paid by cleanup round 2, `40-factor`**
-  (`notes/Phase40-factor.md`, tasks 1 and 2: `080be6a4` and `0b260626`; the round closed
-  2026-09-30). The extraction landed as the public `Graph.exists_normalized_labeling`
-  (`Molecular/Deficiency.lean`), not as a private lemma, because the two hubs are in different
-  files (that log's *Decisions*). It has properties (i)–(v) below, and both hubs are rebuilt on it
-  with their statements unchanged. The item as specified: C2ℓ's merged hub
-  `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (`Molecule/Pencil/TwoCut.lean`)
-  duplicated ~85 lines of `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
-  (`AlgebraicInduction/PanelLayer.lean`); only the attaining labeling's subtype, one `g u = g v`
-  step and the final monotonicity differ. Extract the `ι₀` normalization as one private lemma — for
-  any `f`, some `g` with (i) `g '' V(G) ⊆ V(G)`, (ii) `numParts g = numParts f`,
-  (iii) `crossingEdges g = crossingEdges f`, (iv) `|range g| = numParts f + |V(G)ᶜ|`,
-  (v) `g x = g y ↔ f x = f y` on `V(G)` — and rebuild both hub sites on it. It edits
-  `PanelLayer.lean`, in the defeq-fragile zone, so it gets its own pass with its own verification
-  (Phase 38 is the precedent); a cleanup round or a STEPS slice that touches the hub.
-- **Item 6's other deferred laws** (all cheap on Layer B): the general-`U` joint count (S7(iii))
-  and `finrank_jointMotions_eq` (S7(i)) — motion-side, hence `|α|`-laden; S7(ii) (the bar reading),
-  S7(v) (Klein self-duality), S9 (the `ear1` criterion). Build when a STEPS step consumes one.
-  **Left at round 4's close** (2026-10-04): none was consumed, and round 3's leave (its item 2)
-  was sanctioned at round 4's Stop 2.
-- **The D5 blueprint debt.** Item 6's leaves landed with **no blueprint nodes** (PI, D5: a chapter
-  without a complete informal proof would pin a shape likely to be reworked), and `checkdecls`
-  cannot see a decl with no node. STEPS pins each law when it consumes it (§3's *There is no
-  landed cut-vertex deficiency law* note), or a cleanup round pins the set if the PI reverses D5.
-  The debt, `private` helpers exempt: `deficiency_removeVertex_of_degree_eq_one` (A1);
-  `deficiencyMerged`, `deficiencySep`, `weldPair`, `pairDelta`, `partitionDef_map`,
-  `deficiency_weldPair_eq_deficiencyMerged`, `bddAbove_range_partitionDef_merged`,
-  `partitionDef_le_deficiencyMerged` (A2); `pairDelta_le_bodyBarDim`, `bddAbove_range_partitionDef_sep`,
-  `partitionDef_le_deficiencySep`, `deficiencyMerged_le_deficiency`, `deficiencySep_le_deficiency`,
-  `deficiency_eq_max` (A3; the four middle names added at 40l's open, checked against
-  `Deficiency.lean`'s module docstring);
-  `partitionDef_split_of_vertexTwoCut`, `deficiency_eq_of_vertexTwoCut`, `deficiency_eq_of_vertexTwoCut'`
-  (A4/A5); `relScrews`, `jointRows`, `jointMotions`, `weldedRank`,
-  `span_jointRows_eq_map_dualAnnihilator`, `finrank_span_jointRows` (B1/B2);
-  `inf_span_rigidityRows_span_jointRows_top`, `weldedRank_eq`, `map_screwDiff_comm`,
-  `span_jointRows_bot` (B3/B4); `inf_span_rigidityRows_of_vertexTwoCut`,
-  `finrank_span_rigidityRows_vertexTwoCut_eq` (B5/B6); `weldedRank_add_finrank_jointMotions_bot`,
-  `partitionMotions_le_jointMotions_bot`,
-  `screwDim_mul_compl_add_deficiencyMerged_le_finrank_jointMotions` (B7); `pencilLoss`,
-  `weldedLoss`, `pencilLoss_nonneg`, `finrank_relScrews_eq`, `weldedLoss_nonneg`,
-  `finrank_relScrews_le`, `pencilLoss_vertexTwoCut` (C1ℓ–C4ℓ). **Paid so far:**
-  `partitionDef_split_of_vertexTwoCut` (40e build 1, on `lem:deficiency-cut-vertex`); `relScrews`,
-  `jointRows` (40g's open, on the green `def:relative-screws`); `inf_span_rigidityRows_of_vertexTwoCut`,
-  `finrank_span_rigidityRows_vertexTwoCut_eq` (40g's open; green since 40g build 1, and since 40g's
-  close on their own node `cor:block-rank-vertex-two-cut`, the induced corollary of
-  `lem:block-rank-two-cut`); `deficiencyMerged`, `partitionDef_le_deficiencyMerged` (40i's open, on
-  the green `def:deficiency-merged`); `partitionDef_map` and `deficiencyMerged_le_deficiency`
-  (COVERAGE, at 40l's B3 and B2, on `lem:deficiency-additive-core` and
-  `lem:deficiency-merge-rigid`). No other name of the debt is consumed by COVERAGE (the grep of
-  its design recon's spikes, 2026-09-28), nor by SHORT, ORBIT, SPLITOFF or CONTRACT-A (PI decision
-  4(b), 2026-09-27; the design recons of 40j and 40k); the rest, `jointMotions`, `weldedRank` and
-  the remaining A2/A3 names included, has no consumer on Phase 40's route through COVERAGE, and a
-  cleanup round pins or leaves it (PI, D5). **Round 4 (`40-simplify`, task 10b, `r1`) deleted the
-  unpaid debt** — A1, A2, A3, A4/A5, B1/B2, B3/B4, B7 and all of C1ℓ–C4ℓ (`Molecule/Pencil/TwoCut.lean`
-  whole) — keeping the paid names above, the two B5/B6 pins and four live helpers
-  (`bddAbove_range_partitionDef_merged`, `span_jointRows_eq_map_dualAnnihilator`,
-  `finrank_span_jointRows`, `map_screwDiff_comm`).
-- [x] **Two `[pending]` entries of `notes/BlueprintExposition.md`** (its `pencil.tex` section):
-  **both settled at Phase 40's close.** `thm:pencil-conditional-realization-main-component`'s
-  fuller exposition (the main component as a vector bundle over planar pictures, the flat rank,
-  the induction's cut, ear, split-off and contraction steps, the coverage and route B) is written,
-  as `main-component.tex`'s section introduction; `thm:pencil-conditional-realization-pair` (the
-  kernels) closes as superseded, the kernels retired (§6).
+- **A6, the welded pendant law** (S6(ii)'s remaining clauses; site
+  `Induction/SplitOffDeficiency.lean`), **and item 6's other deferred laws** (S7(i)–(iii), S7(v),
+  S9). Off the consumed path (PI D2, 2026-09-16). **Left at round 4's close:** the
+  build-when-consumed condition never fired for either (round 3's item 2, sanctioned at Stop 2).
+- **The shared hub normalization**, a factoring item. **Paid by cleanup round 2, `40-factor`**
+  (tasks 1–2, `080be6a4`, `0b260626`): the public `Graph.exists_normalized_labeling`
+  (`Molecular/Deficiency.lean`), both hubs rebuilt on it, statements unchanged.
+- **The D5 blueprint debt** (item 6's ~40 unpinned helper names; PI D5: no node without a complete
+  informal proof, since `checkdecls` cannot see a decl with no node). Paid incrementally as STEPS
+  and COVERAGE consumed a name, each on its own node; **the rest paid by round 4's deletion**
+  (task 10b, `c48d323e`, `TwoCut.lean` whole), keeping four live unpinned helpers.
+- **Two `[pending]` entries of `notes/BlueprintExposition.md`** (`pencil.tex`). **Both settled at
+  Phase 40's close:** the main-component headline's fuller exposition is `main-component.tex`'s
+  section introduction; the kernel theorem's entry closes as superseded (kernels retired, §6).
 
-**Carried past Phase 40's close — the tracked cleanup-round items** (none is a close gate, none has
-a consumer on the route; a post-Phase-40 cleanup round takes them, or leaves them by a recorded
-call). At round 4's close (2026-10-04), the last round that edits Lean, each is paid or left:
-- the wider stand-in audit of `lem:trivial-motions-rank-bound` (§3 FLAT): paid by round 1,
-  `40-cleanup`, tasks 23a–23b (`36aa7e10`, `2d3d3818`);
-- the edge-restricted non-spanning generic-normals row rank (§3 BRIDGE): left, unbuilt with no
-  node (round 3's item 4, from its task 12; sanctioned at round 4's Stop 2);
-- the "only if" halves of (MC-52)/(MC-53) (§3 STEPS, CUT/BRIDGE): left, unbuilt with no node
-  (round 3's item 3; sanctioned at Stop 2). Round 3's task 13 (`9c931242`) cut the remarks after
-  `thm:pencil-x0-cut` and `thm:pencil-x0-bridge` that stated them informally;
-- the 40h file-size and readability items (§3 STEPS): paid by round 1. The B2 dedupe is task 15
-  (`289f96c3`), the three-body near-copies tasks 16 and 18 (`d7fea229`, `b8b24c9a`; task 17's
-  general split-off ear, `1080f59c`, netted no shorter and did not land), and `lem:pencil-ear-data`'s
-  pin budget task 19 (`d9acaee8`). The file-size rule never fired: at round 4's close `Short.lean`
-  has 1 063 lines and `Bricks.lean` 1 251;
-- `span_supportExtensor_ofNormals_eq` in `Cut.lean` (§3 STEPS): paid by round 1, task 13
-  (`a0dda000`);
-- call 12's corollary rebases (§3 STEPS): paid by round 1, tasks 14a–14b (`58c4fa28`, blueprint
-  fixup `388e5a18`; `ab2253e1`);
-- CHAINS' `pathVertex` helpers to their definition's file (§3 COVERAGE): paid by round 1, task 20
-  (`473a4a11`);
-- the §4 duplication note (`mapExtensor`/`mapSupport`): paid by round 1, task 22 (`0b5fcd46`);
-- the §7 items above. A6 and item 6's other laws: left, as their build-when-consumed conditions
-  never fired (round 3's item 2; sanctioned at Stop 2). The shared hub normalization: paid by
-  round 2, `40-factor` (`080be6a4`, `0b260626`); its merged-hub caller went with `TwoCut.lean` at
-  round 4's 10b. The rest of the D5 debt: paid by round 4's deletion, 10b (`c48d323e`).
+**The tracked cleanup-round items from §3**, also paid or left at round 4's close: the FLAT
+stand-in audit on `lem:trivial-motions-rank-bound` (paid, round 1, `36aa7e10`/`2d3d3818`); the
+BRIDGE edge-restricted non-spanning generic-normals row rank (left, round 3's item 4, sanctioned
+Stop 2); STEPS' (MC-52)/(MC-53) "only if" halves (left, round 3's item 3, sanctioned Stop 2; the
+informal remarks cut by round 3 task 13, `9c931242`); 40h's file-size/readability items (paid,
+round 1, tasks 15/16/18/19, `289f96c3`/`d7fea229`/`b8b24c9a`/`d9acaee8`; the file-size rule never
+fired — `Short.lean` 1 063 lines, `Bricks.lean` 1 251 at round 4's close); `Cut.lean`'s
+`span_supportExtensor_ofNormals_eq` (paid, round 1 task 13, `a0dda000`); call 12's corollary
+rebases (paid, round 1 tasks 14a–14b, `58c4fa28`/`388e5a18`/`ab2253e1`); CHAINS' `pathVertex`
+helpers (paid, round 1 task 20, `473a4a11`); the §4 duplication note on `mapExtensor`/`mapSupport`
+(paid, round 1 task 22, `0b5fcd46`); and the four items just above.
 
 ## Appendix — the reusable second-reader brief (as used 2026-09-25)
 
@@ -927,10 +843,12 @@ Dispatch a `recon-opus` agent, read-only. The brief says:
   - new claims under placeholder labels, which the coordinator mints as `MC-` labels;
   - the commands re-run, with timings.
 
-## Appendix — the STEPS recon's tracked spike (verbatim, 2026-09-26)
+## Appendix — the STEPS recon's tracked spike (2026-09-26)
 
-The STEPS pre-build recon's scratch file `S40eTracked.lean`, kept verbatim because two of its three
-pieces land with later groups (§3 STEPS, the settled *Tracked* items):
+The STEPS pre-build recon's scratch file `S40eTracked.lean` carried three pieces, all now landed as
+permanent Lean, cited by `ContractCurve.lean` 1056 (`lem:pencil-contract-standing`) as this
+appendix's provenance:
+- (1) `Graph.three_le_ncard_closedNbhd`, landed in 40e build 1 (`Molecule/Pencil/Motive.lean`);
 - (2) `Graph.rigidContract_induce_simple`, with **CONTRACT-R** (landed in 40f's build,
   `Molecule/Pencil/MainComponent/ContractCurve.lean`, moved from `Contract.lean` at the Phase 40k
   split);
@@ -939,158 +857,8 @@ pieces land with later groups (§3 STEPS, the settled *Tracked* items):
   recon, importing `…MainComponent.Orbit`; it landed in 40j's B1, `Bridge.lean`, the helper as the
   mirror `MvPolynomial.polynomial_eval_aeval`).
 
-Piece (1), `Graph.three_le_ncard_closedNbhd`, landed in 40e build 1 (`Molecule/Pencil/Motive.lean`).
-
 **Provenance.** It compiled sorry-free against HEAD `c8319ce0` (the 40e opening commit; toolchain
-`leanprover/lean4:v4.34.0-rc2`); the coordinator re-ran it there: exit 0, no warnings. **To re-run:**
-save it as a `.lean` file and run `lake env lean <file>` from the repository root on a built tree.
-Against a tree after 40e build 1, delete piece (1) first, since it then duplicates the landed
-declaration (the only error). Re-checked at 40e's close, at HEAD `d57672c0`: the file as written
-fails on that duplicate alone, and without piece (1) it exits 0 with no output. Re-checked at 40f's
-close, at HEAD `e267d5fc`: without piece (1) it still exits 0 with no output. Piece (2) does not
-clash with the landed copy, because the file imports `…MainComponent.Bridge`, not `…Contract`.
-
-```lean
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
-
-/-!
-# Phase 40 STEPS pre-build recon — the tracked Lean items (scratch spike)
-
-(1) `h3` from the Lean form of (H);
-(2) the simplicity of `G / G[W]` from "no outside vertex has two neighbours in `W`";
-(3) the curve-limit lemma: the row rank of an `ofNormals` framework is lower semicontinuous
-    along a polynomial curve of normals (the univariate specialization of the landed rank device).
--/
-
-open scoped Graph
-
-namespace CombinatorialRigidity.Molecular
-
-variable {K : Type*} [Field K] {α β : Type*}
-
-/-! ## (1) `h3` from (H) -/
-
-/-- A body of degree at least two in a simple graph has at least three members in its closed
-neighbourhood. -/
-theorem _root_.Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph α β} (hS : G.Simple)
-    {v : α} (hdeg : 2 ≤ G.degree v) : 3 ≤ (G.closedNbhd v).ncard := by
-  have hnot : v ∉ N(G, v) := fun h => by
-    obtain ⟨e, he⟩ := h
-    exact hS.toLoopless.not_isLoopAt e v he
-  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
-  rw [heq, Set.ncard_insert_of_notMem hnot (Set.toFinite _), ← Graph.degree_eq_ncard_adj]
-  omega
-
-/-! ## (2) The simplicity of the contraction at an induced core -/
-
-theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simple) {W : Set α}
-    {r : α} (hr : r ∈ W)
-    (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂) :
-    (G.rigidContract (G.induce W) r).Simple := by
-  classical
-  have hV : V(G.induce W) = W := rfl
-  -- a surviving edge never has both ends in `W`
-  have hsurv : ∀ e x y, (G.deleteEdges E(G.induce W)).IsLink e x y →
-      G.IsLink e x y ∧ ¬ (x ∈ W ∧ y ∈ W) := by
-    intro e x y h
-    rw [Graph.deleteEdges_isLink] at h
-    refine ⟨h.1, fun ⟨hx, hy⟩ => h.2 ?_⟩
-    exact (show (G.induce W).IsLink e x y from ⟨h.1, hx, hy⟩).edge_mem
-  have hcol : ∀ x, Graph.collapseTo r W x = if x ∈ W then r else x := fun _ => rfl
-  -- the collapse is the identity off `W` and sends `W` to `r ∈ W`
-  have hout : ∀ {a b : α}, b ∉ W → Graph.collapseTo r W a = b → a ∉ W ∧ a = b := by
-    intro a b hb h
-    rw [hcol] at h
-    by_cases ha : a ∈ W
-    · rw [ite_eq_left ha] at h; exact absurd (h ▸ hr) hb
-    · rw [ite_eq_right ha] at h; exact ⟨ha, h⟩
-  have hin : ∀ {a : α}, Graph.collapseTo r W a = r → a ∈ W := by
-    intro a h
-    rw [hcol] at h
-    by_cases ha : a ∈ W
-    · exact ha
-    · rw [ite_eq_right ha] at h; exact h ▸ hr
-  have hcolW : ∀ {a : α}, a ∈ W → Graph.collapseTo r W a = r := by
-    intro a ha; rw [hcol, ite_eq_left ha]
-  have hcolO : ∀ {a : α}, a ∉ W → Graph.collapseTo r W a = a := by
-    intro a ha; rw [hcol, ite_eq_right ha]
-  refine Graph.rigidContract_simple (fun e x y h hxy => ?_)
-    (fun e₁ e₂ x₁ y₁ x₂ y₂ h₁ h₂ hx hy => ?_)
-  · obtain ⟨hl, hnW⟩ := hsurv e x y h
-    rw [hV] at hxy
-    by_cases hx : x ∈ W <;> by_cases hy : y ∈ W
-    · exact hnW ⟨hx, hy⟩
-    · rw [hcolW hx, hcolO hy] at hxy; exact hy (hxy ▸ hr)
-    · rw [hcolO hx, hcolW hy] at hxy; exact hx (hxy ▸ hr)
-    · rw [hcolO hx, hcolO hy] at hxy
-      subst hxy
-      exact hS.toLoopless.not_isLoopAt e x hl
-  · obtain ⟨hl₁, hn₁⟩ := hsurv e₁ x₁ y₁ h₁
-    obtain ⟨hl₂, hn₂⟩ := hsurv e₂ x₂ y₂ h₂
-    rw [hV] at hx hy
-    -- one end outside `W` pins the other edge's end there too
-    have key : ∀ {a b c : α}, a ∈ W → b ∉ W → c ∈ W → G.IsLink e₁ a b → G.IsLink e₂ c b →
-        e₁ = e₂ := by
-      intro a b c ha hb hc h1 h2
-      have := hatt b hb a ha c hc ⟨e₁, h1.symm⟩ ⟨e₂, h2.symm⟩
-      subst this
-      exact hS.eq_of_isLink h1 h2
-    by_cases hx₁ : x₁ ∈ W
-    · have hy₁ : y₁ ∉ W := fun h => hn₁ ⟨hx₁, h⟩
-      rw [hcolW hx₁] at hx
-      rw [hcolO hy₁] at hy
-      have hx₂ := hin hx.symm
-      obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
-      exact key hx₁ hy₁ hx₂ hl₁ hl₂
-    · rw [hcolO hx₁] at hx
-      obtain ⟨hx₂, rfl⟩ := hout hx₁ hx.symm
-      by_cases hy₁ : y₁ ∈ W
-      · rw [hcolW hy₁] at hy
-        have hy₂ := hin hy.symm
-        exact key hy₁ hx₁ hy₂ hl₁.symm hl₂.symm
-      · rw [hcolO hy₁] at hy
-        obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
-        exact hS.eq_of_isLink hl₁ hl₂
-
-/-! ## (3) The curve-limit lemma -/
-
-/-- Evaluating a polynomial substitution of univariate polynomials. -/
-theorem polynomial_eval_aeval {σ : Type*} (c : σ → Polynomial K) (Q : MvPolynomial σ K) (t : K) :
-    (MvPolynomial.aeval c Q).eval t = MvPolynomial.eval (fun i => (c i).eval t) Q := by
-  rw [MvPolynomial.aeval_def, ← Polynomial.coe_evalRingHom, MvPolynomial.hom_eval₂]
-  congr 1
-  ext a
-  simp [Polynomial.coe_evalRingHom]
-
-/-- **The curve-limit lemma**: along a polynomial curve `t ↦ c(t)` of normals, the row rank of
-`ofNormals G ends (c t)` is at least its value at `t = 0` for all but finitely many `t`, provided
-every recorded hinge is nonzero at `t = 0`. The univariate specialization of
-`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`. -/
-theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve {k : ℕ} [Finite α] [Finite β]
-    (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    (c : α × Fin (k + 2) → Polynomial K)
-    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
-      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.supportExtensor e
-        ≠ 0)
-    {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K
-      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval 0)).toBodyHinge.rigidityRows)) :
-    {t : K | Module.finrank K (Submodule.span K
-      (PanelHingeFramework.ofNormals G ends (fun p => (c p).eval t)).toBodyHinge.rigidityRows)
-        < N}.Finite := by
-  classical
-  obtain ⟨Q, hQ₀, hQ⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends hne hN
-  set P : Polynomial K := MvPolynomial.aeval c Q with hP
-  have hPt : ∀ t, P.eval t = MvPolynomial.eval (fun p => (c p).eval t) Q :=
-    fun t => polynomial_eval_aeval c Q t
-  have hP0 : P ≠ 0 := fun h => hQ₀ (by rw [← hPt 0, h, Polynomial.eval_zero])
-  refine (P.roots.toFinset.finite_toSet).subset fun t ht => ?_
-  simp only [Set.mem_ofPred_eq] at ht
-  simp only [Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP0,
-    Polynomial.IsRoot.def]
-  by_contra h
-  exact absurd (hQ _ (by rwa [← hPt])) (not_le.mpr ht)
-
-end CombinatorialRigidity.Molecular
-```
+`leanprover/lean4:v4.34.0-rc2`), re-confirmed at 40e's close (`d57672c0`) and 40f's close
+(`e267d5fc`). Cleanup round 5 drops the 140-line verbatim spike here, now that all three pieces are
+landed, permanent Lean: the full text is `notes/Phase40-design.md`'s own history through `cc376480`
+(the commit before this cut).
