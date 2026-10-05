@@ -1220,10 +1220,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   stops and the PI's decisions are in `notes/Cleanup40.md`. The autopilot queue is
   `.claude/autopilot/queue.toml`.
   **Next concrete task:** round 5, `40-docs`, project organization, opened 2026-10-04: the task
-  its work log `notes/Phase40-docs.md` names in its **Status** (tasks 1–4, the user-facing
-  surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales and the cleanup-round
-  procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, landed 2026-10-04; next, task 5, round 3's
-  defaults into `blueprint/AUTHORING.md`). It closes unattended. Rounds 1,
+  its work log `notes/Phase40-docs.md` names in its **Status** (tasks 1–5, the user-facing
+  surfaces, the Lean-idiom lifts, `DESIGN.md`'s two cross-phase rationales, the cleanup-round
+  procedure into `CLEANUP.md`/`PHASE-BOUNDARIES.md`, and round 3's defaults into
+  `blueprint/AUTHORING.md`, landed 2026-10-04; next, task 6, FRICTION's `[resolved]` entries to the
+  archive). It closes unattended. Rounds 1,
   `40-cleanup`, and 2, `40-factor`, closed 2026-09-30; rounds 3, `40-exposition`, and 4,
   `40-simplify`, closed 2026-10-04 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`).
@@ -1254,9 +1255,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **PROSE** — a prose round over the rest of the blueprint (the PI, 2026-10-03: "at some point we
   should also look into doing a rewrite round of the rest of the blueprint too"). It brings the
   chapters outside `pencil.tex` and `main-component.tex` to the register that round 3,
-  `40-exposition`, settled (`blueprint/AUTHORING.md`'s clauses of 2026-10-03; the round's defaults
-  are in `notes/Phase40-exposition.md` *Decisions*, its exemplar in
-  `notes/Phase40-exposition-exemplar.md`). It also audits for nodes that bundle unrelated
+  `40-exposition`, settled: `blueprint/AUTHORING.md`'s clauses of 2026-10-03 now carry all six of
+  the round's defaults (the exemplar is `notes/Phase40-exposition-exemplar.md`). It also audits
+  for nodes that bundle unrelated
   results, which the PI expects in earlier chapters. That audit also takes round 4's `c8a`: seven
   `pencil.tex`/`main-component.tex` nodes with four or more pins, mostly one pin per clause
   (`notes/Phase40-simplify.md` *Moved to a later round*). Its place in the queue is the PI's to set.

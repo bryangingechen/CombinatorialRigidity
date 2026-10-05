@@ -164,6 +164,18 @@ pays for.
   doc-comment). Phase 18's §2.2–2.4 accreted four such asides — don't
   reintroduce them.
 
+**Cut comparisons with the project's own informal argument** (the PI, 2026-10-03,
+at round 3 of the post-Phase-40 cleanup round). A proof never compares itself
+with the project's own prior informal argument — a workbook, a design note, an
+earlier draft — which the reader has not read and should not need to. A reason
+the proof is shaped as it is stays, stated on its own, not as a comparison. So
+does an argument that gives more insight but was not formalized: "In cases
+where the informal argument might give more insight but we decided not to
+formalize it due to technical reasons, it could be worth mentioning as well"
+(the PI) — as a short remark or formalization note, naming that reason. A
+stronger fact the proof does not need is cut unless a reader would expect it;
+then one sentence says the proof needs only the weaker form.
+
 **The carve-out: crux nodes earn full, detailed exposition.**
 Terse-by-default is the rule above; the exception is the project's
 deliverable of a *fully detailed, self-contained exposition* of
@@ -297,6 +309,9 @@ visible to the reader — a term used before (or without) its
 introduction fails even if a correct definition exists elsewhere in
 the corpus. (Failure tells: an unanchored "This is …"; an italicized
 term whose first occurrence is not its introduction.)
+*Node order* (the PI, 2026-10-03). A node may move within its chapter to cure
+a forward reference the backward test catches — the fix is reordering, not
+re-grouping: case structure, titles, and `\uses` edges carry over unchanged.
 *Terminology* (the PI, 2026-10-03). Be skeptical of nonstandard terms.
 Prefer the source's term or the textbook's. Keep a project coinage only
 when no standard term exists, and then define it where the reader cannot

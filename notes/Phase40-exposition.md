@@ -352,16 +352,10 @@ invariance check (*Scope*).
 - **The sample** was `sec:main-component-splitoff`, a typical step with a JJ citation (the open).
 - **The task list:** one commit per subsection, in slices of 150–430 lines, the introductions and
   `intro.tex` last (principle F); the PI approved it, 2026-10-03.
-- **Default (a), as the PI ruled and amended (2026-10-03; verbatim under *Autopilot*).** Cut every
-  comparison with the workbook's informal argument. A reason the proof is shaped as it is stays,
-  stated on its own. So does an argument that gives more insight but was not formalized for
-  technical reasons (the PI): a short remark or formalization note, with that reason. A stronger
-  fact not proved here is cut unless a reader would expect it; then one sentence says the proof
-  needs only the weaker form. A remark that carries a build-or-leave item is cut only after that
-  item's recommendation records the fact.
-- **Defaults (b)–(d)** (the PI approved them as drafted). (b) A formalization note keeps only what
-  the Lean does differently. (c) A Lean name never appears in a statement block. (d) A node may
-  move within its chapter to cure a forward reference.
+- **Default (a):** promoted to `blueprint/AUTHORING.md` *Proof verbosity* (the PI's ruling and
+  2026-10-03 amendment stay verbatim above, under *Autopilot: for the PI*).
+- **Defaults (b)–(d):** (b) and (c) were already `blueprint/AUTHORING.md` principles D and B;
+  (d) promoted to principle E.
 - **(e) The register and (f) terminology:** promoted to `blueprint/AUTHORING.md`'s clauses of
   2026-10-03 (A, C, E, F).
 - **The invariance check** (gate 3) sees what `checkdecls` and `lint.sh` cannot, and ignores node

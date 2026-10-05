@@ -139,7 +139,7 @@ superseded** (of 51).
 **Post-Phase-40 cleanup, round 3 (`40-exposition`, closed 2026-10-04).** The round rewrote the
 prose of `pencil.tex` and `main-component.tex`, and `intro.tex`'s reader path into them. No node's
 statement, pins or `\uses` edges changed and no node rerouted, so no entry is added. Under the
-round's default (a) (`notes/Phase40-exposition.md` *Decisions*) the blueprint no longer compares a
+round's default (a) (`blueprint/AUTHORING.md` *Proof verbosity*) the blueprint no longer compares a
 step with the workbook's informal argument; the reason a proof is shaped as it is stays, stated on
 its own. So where a **(b)** entry below records how a step departs from the informal proof, the
 entry, not the blueprint, is now the record. The close checked every pointer of the `pencil.tex`

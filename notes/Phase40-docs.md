@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–4 landed 2026-10-04.
-**Next concrete task:** task 5 (L4), round 3's defaults (a) and (d) into
-`blueprint/AUTHORING.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–5 landed 2026-10-04.
+**Next concrete task:** task 6 (F), FRICTION's `[resolved]` entries to
+`FRICTION-archive.md` (Sonnet, docs only). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,7 +17,7 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 5 (L4)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
+**Next commit: task 6 (F)** (*Lemma checklist*). Of the 17 tasks, task 1 (U) is done
 (2026-10-04: README, home page and `formalization.yaml` on `intro.tex`'s reader path). Task 2
 (L1) is done (2026-10-04: new `TACTICS-QUIRKS.md` §115 (`unusedDecidableInType`) and §116
 (a `<;>`-chained flexible `simp`'s per-goal "Try this"), both with symptom-index lines; worked
@@ -35,8 +35,16 @@ verbatim, re-run at HEAD (1 292 edges / `7c7ef987ce81e090`, 1 029 pins / `8225e0
 identical to round 4's close — no blueprint drift); a new *Per-round work log* subsection names
 what all five rounds' logs share (the hygiene rule, *Candidates for …* / *Moved to a later round*,
 *Autopilot: for the PI*); `PHASE-BOUNDARIES.md`'s `formalization.yaml` bullet spells out the
-headline-axioms harness as this round's open ran it). Task 15 (G) is the coordinator's own commit,
-and task 16 (P) has no commit of its own. Nothing is mid-stream.
+headline-axioms harness as this round's open ran it). Task 5 (L4) is done (2026-10-04:
+`blueprint/AUTHORING.md`'s *Proof verbosity* gained default (a), with the PI's 2026-10-03 amendment
+quoted verbatim, right before *The carve-out*; principle E gained default (d), *Node order*, right
+after the backward test's failure tells. Defaults (b)–(c) were already principles D and B, and the
+note-placement rule already `blueprint/SETUP-AND-PITFALLS.md`, confirmed and left as is. ROADMAP's
+**PROSE** bullet, its queued-rounds bullet, `notes/BlueprintExposition.md`'s pointer and
+`notes/Cleanup40.md`'s **Status** all now point at `blueprint/AUTHORING.md` instead of this log's
+*Decisions*, whose own (a) and (b)–(d) entries are now one-line *Promoted to* pointers — (e)–(f)
+already were). Task 15 (G) is the coordinator's own commit, and task 16 (P) has no commit of its
+own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -217,17 +225,21 @@ section titles are the stable reference.
     name list and imports are diffed against the yaml's fields first; it runs with `lake lean`,
     never `lake env lean` (which skips `[leanOptions]` and under-reports); its output is compared
     byte for byte against the last such run's, net of the harness's own path.
-- [ ] **5. L4 — round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`** (Sonnet).
-  **PROSE** will apply them, and ROADMAP's **PROSE** bullet points at `notes/Phase40-exposition.md`
-  *Decisions* for them. (a): cut every comparison with the informal argument; keep a reason the
-  proof is shaped as it is, and an argument that gives more insight but was not formalized for a
-  technical reason (the PI's amendment, 2026-10-03, verbatim in that log's *Autopilot: for the
-  PI*); cut a stronger fact not proved here unless a reader would expect it. (d): a node may move
-  within its chapter to cure a forward reference (principle E's backward test). Defaults (b) and
-  (c) are already principles D and B, and the note-placement rule is already
-  `blueprint/SETUP-AND-PITFALLS.md`: check them, do not copy. Then repoint the **PROSE** bullet
-  and `notes/BlueprintExposition.md`'s pointer to default (a) at `AUTHORING.md`, and make round 3's
-  *Decisions* entries one-line *Promoted to* pointers (the ruling's words stay in its Stop-1 entry).
+- [x] **5. L4 — round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`** (Sonnet). (a) is now
+  *Proof verbosity*'s **Cut comparisons with the project's own informal argument**, right before
+  *The carve-out*: cut every comparison with the project's own informal argument; keep a reason the
+  proof is shaped as it is, and the PI's 2026-10-03 amendment verbatim — "In cases where the
+  informal argument might give more insight but we decided not to formalize it due to technical
+  reasons, it could be worth mentioning as well" — as a short remark or formalization note; cut a
+  stronger fact not proved here unless a reader would expect it. (d) is now principle E's *Node
+  order*, right after the backward test's failure tells: a node may move within its chapter to cure
+  a forward reference the test catches. Checked, not copied: defaults (b) and (c) are already
+  principles D and B, and the note-placement rule is already `blueprint/SETUP-AND-PITFALLS.md`
+  (lines 77–83). Repointed: ROADMAP's **PROSE** bullet and its queued-rounds bullet, and
+  `notes/BlueprintExposition.md`'s pointer to default (a), all now name `blueprint/AUTHORING.md`
+  instead of this log's *Decisions*; `notes/Cleanup40.md`'s **Status** likewise. This log's
+  *Decisions* entries for (a) and (b)–(d) are now one-line *Promoted to* pointers (the PI's ruling
+  and amendment stay verbatim in *Autopilot: for the PI*'s Stop-1 entry, untouched).
 
 ### FRICTION and the standing sweep
 
@@ -394,12 +406,10 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 5 (L4)**, round 3's defaults (a) and (d) into `blueprint/AUTHORING.md`
-(Sonnet, docs only), then repointing the **PROSE** bullet and `notes/BlueprintExposition.md`'s
-pointer at it and making round 3's *Decisions* entries one-line pointers. Then the FRICTION
-archive and the standing sweep (6–7), the compressions (8–14; task 9 keeps design §4's and §5's
-*Promoted to `DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and the close
-(17).
+**Next commit: task 6 (F)**, FRICTION's `[resolved]` entries to `FRICTION-archive.md` (Sonnet,
+docs only), then task 7 (S), the standing sweep. Then the compressions (8–14; task 9 keeps design
+§4's and §5's *Promoted to `DESIGN.md`* pointers from task 3), the coordinator's grooming (15) and
+the close (17).
 
 ## Decisions made during this round
 
