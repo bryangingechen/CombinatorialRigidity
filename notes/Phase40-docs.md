@@ -263,7 +263,8 @@ post-program phases*). Nothing carried over, and no task of this round is left o
   cleanup round's statement-changing finding to "a candidate for `40-simplify`", which is closed;
   line 46 names the cleanup rounds' planned stops (`40-exposition`'s sample section,
   `40-simplify`'s verdicts). Not edited: the file is the PI's autopilot rules, and the queue's only
-  remaining row is ORIGAMI, attended. The PI may update or retire those two lines.
+  remaining row is ORIGAMI, attended. The PI may update or retire those two lines. **Done
+  2026-10-05** at the PI's request: both lines, and line 22's, now name no closed round.
 - **The auto-loaded `CLAUDE.md` suite is 1 711 lines** (root 381, `CombinatorialRigidity/` 456,
   `notes/` 210, `blueprint/` 664): 1 704 at the open, the 7 more being task 15's promotion of F1
   into `notes/CLAUDE.md`. Trimming it was outside the rounds (`notes/Cleanup40.md` §2). FRICTION's

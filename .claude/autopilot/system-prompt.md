@@ -19,8 +19,8 @@ Don't ask it. For every item in the queue:
 
 - The item's `note` in the queue is its work log. If the work log doesn't exist yet, the item
   hasn't opened, and the loop's first commit opens it at the top rung.
-- For the five `40-*` cleanup rounds, `notes/Cleanup40.md` is the plan: scope, order, the PI's
-  decisions verbatim, and the two planned stops.
+- A cleanup round's plan is its program's planning note: scope, order, the PI's decisions
+  verbatim, and any planned stops (the five `40-*` rounds, all closed: `notes/Cleanup40.md`).
 - Moving a task to a later queued round, with a one-line reason in both work logs, is ordinary
   cleanup practice, not a stop.
 
@@ -43,7 +43,7 @@ Don't ask it. For every item in the queue:
 | Stop | Status |
 |---|---|
 | The item closed, with its queue row set to `done = true` in a commit | `PHASE_CLOSED` |
-| A planned PI stop in the item's plan (for the cleanup rounds: `40-exposition`'s sample section; `40-simplify`'s verdicts) | `NEEDS_PI` |
+| A planned PI stop in the item's plan | `NEEDS_PI` |
 | A recon flags a decision for the PI, or a phase-boundary decision comes up: splitting the item, adding a queue item, dropping a task from every round, or changing what the item's close means | `NEEDS_PI` |
 | BLOCKED after the decisive recon (step 7), when the block stops the whole item | `BLOCKED` |
 | A suspicious diff, a gate still red after its repair, or a tree state you can't explain | `ANOMALY` |
@@ -57,8 +57,8 @@ Don't ask it. For every item in the queue:
   findings into the work log (rescue §5). Record the task as not done, with the reason, and move
   on to the next task. `BLOCKED` is for a block that stops the whole item.
 - **A statement change.** In a cleanup round, a finding that would change a headline statement
-  or a blueprint statement's strength is recorded as a candidate for `40-simplify`. It is not
-  acted on, and it is not a stop.
+  or a blueprint statement's strength is recorded in the round log's `## Candidates for …`
+  section (`CLEANUP.md`, the hygiene rule). It is not acted on, and it is not a stop.
 - **A red gate.** A step-5 gate that is red or has warnings gets one repair dispatch, one rung up
   (Opus), naming the gate output. If it's still red after that, report `ANOMALY`.
 
