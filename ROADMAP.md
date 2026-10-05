@@ -1135,8 +1135,8 @@ Theorem 4.9's template with the loop, base and cut-edge arms, the cut arm by a p
 repositioning (W3); the in-stratum genericity device, the conditioned-pair motive `PencilPair`
 (bare; adjacent-distinct under simplicity; generic under simplicity plus
 nondegeneracy-feasibility) and its assembly `pencil_conjecture_of_arms_pair` carrying two kernels
-(W5; the kernel-carrying form retired by `40-simplify` task 10h, `528381ef`, once X0Dist/X0Gen
-closed the fallback — the name stays, now over a contraction and a split arm); the girth /
+(W5; it still takes the two, as its contraction and split hypotheses; `40-simplify` task 10g,
+`f8c6b0d4`, restated it over every nonempty multigraph); the girth /
 degree-two-chain normal form and item 6's deficiency laws (the vertex 2-cut law and the gluing
 identity, `TwoCut.lean`; both deleted by `40-simplify`, tasks 10i (`1e7d78a9`) and 10b
 (`c48d323e`)); and the non-simple bare case (W4-A, KT Lemma 6.2 without

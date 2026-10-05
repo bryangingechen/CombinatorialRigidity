@@ -3945,9 +3945,9 @@ intuition — but matching the *existing* associativity with explicit grouping i
 when the union already appears elsewhere.)
 
 **Worked case:** Phase 39 (PENCIL) W5-L7c-4, the `|V| = 4` base case's degree-bound helpers
-(`Molecular/Molecule/Pencil/Base.lean`, deleted whole by `40-simplify` task 10i, `1e7d78a9`;
-`hdeg_eq2_aux`/`hboth`'s `E(G, v) ⊆ A ∪ B ∪ C` subset proofs) — confirmed via a standalone
-`lean_run_code` repro before patching all five call sites.
+(`Molecular/Molecule/Pencil/Base.lean`, the helpers deleted by `40-simplify` task 10i, `1e7d78a9`,
+the file by 10j, `8f297c7d`; `hdeg_eq2_aux`/`hboth`'s `E(G, v) ⊆ A ∪ B ∪ C` subset proofs) —
+confirmed via a standalone `lean_run_code` repro before patching all five call sites.
 
 ## 104. `¬ ∃ x, P x → Q` parses as `¬ (∃ x, (P x → Q))`, not `(¬ ∃ x, P x) → Q` — a later application reports the wrong hypothesis's type
 
@@ -3972,7 +3972,7 @@ survives to the call site instead of failing at the `have`.
 needs explicit parens around the whole quantifier — never rely on binder-vs-`¬` precedence.
 
 **Worked case:** Phase 39 (PENCIL) W5-L7c-4, `Molecular/Molecule/Pencil/Base.lean`'s (§103: deleted
-whole by `40-simplify` task 10i, `1e7d78a9`) `hboth` case-split helper (caught by the very first
+by `40-simplify` tasks 10i and 10j) `hboth` case-split helper (caught by the very first
 build attempt's "Application type mismatch" against `hboth z x y w hV_zxyw hdeg_z hzw_no`).
 
 ---

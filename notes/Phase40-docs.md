@@ -49,8 +49,8 @@ real stale cross-reference, `Phase40-design.md` §3 STEPS' "the open FRICTION en
 task 8; `[mirror-candidate]` defined in FRICTION's *Entry format* and *Filing rule*). Task 7 (S)
 is done (2026-10-04: re-derived at HEAD, the open's line numbers having moved under tasks 1–6;
 ROADMAP §39's three *What landed* items and §38's `cutEdge_finrank_assemble` get a short
-parenthetical naming the surviving rename or the `40-simplify` task/sha that deleted it (10h
-`528381ef`, 10i `1e7d78a9`, 10b `c48d323e`, 10o `919486d3`); the nine GOLF/QUIRKS worked cases get
+parenthetical naming the surviving rename or the `40-simplify` task/sha that deleted it (10g
+`f8c6b0d4`, 10i `1e7d78a9`, 10b `c48d323e`, 10o `919486d3`; corrected by the coordinator next); the nine GOLF/QUIRKS worked cases get
 the same, by name, none renumbered; `blueprint/SETUP-AND-PITFALLS.md` 81–83 gets one line noting
 10h moved the notes it describes as left. A grep for all 124 deleted/renamed names and the six
 deleted files over the surfaces found no site the open's inventory missed). Task 15 (G)
@@ -279,9 +279,9 @@ section titles are the stable reference.
   name over the live manuals and surfaces (the open's line numbers had moved under tasks 1–6's
   edits); found no site the open's inventory missed. Every named item in ROADMAP, GOLF, QUIRKS
   and the blueprint manual got a short parenthetical, never a deleted lesson:
-  - ROADMAP §39, *What landed*: `pencil_conjecture_of_arms_pair` "carrying two kernels" (the
-    kernel-carrying form retired by `40-simplify` task 10h, `528381ef` — the name stays, now over
-    a contraction and a split arm), "the girth / degree-two-chain normal form" and item 6's laws in
+  - ROADMAP §39, *What landed*: `pencil_conjecture_of_arms_pair` "carrying two kernels" (it
+    still takes the two, `hcontract` and `hsplit`; `40-simplify` task 10g, `f8c6b0d4`, restated it
+    over every nonempty multigraph — the open's "retired by 10h" was wrong, the coordinator's fix), "the girth / degree-two-chain normal form" and item 6's laws in
     `TwoCut.lean` (both deleted, tasks 10i `1e7d78a9` and 10b `c48d323e`). ROADMAP §38:
     `cutEdge_finrank_assemble`, renamed `finrank_span_rigidityRows_cutEdge_eq` by task 10o,
     `919486d3`.
@@ -289,8 +289,9 @@ section titles are the stable reference.
     `Habitat.lean`/`c4_isProperRigidSubgraph`, `cutEdge_finrank_assemble`,
     `WitnessGeneral.lean`'s two declarations, `Pencil/Base.lean` ×2, `Motive.lean`'s
     `ncard_closedNbhd_inter_le_two_of_girthGE`, `weldedRank_eq`) each get the deleting task and sha
-    (all 10i `1e7d78a9` except `cutEdge_finrank_assemble`'s rename, 10o, and `weldedRank_eq`'s
-    deletion with `TwoCut.lean`, 10b `c48d323e`) inline; none renumbered.
+    (all 10i `1e7d78a9` except `cutEdge_finrank_assemble`'s rename, 10o, `weldedRank_eq`'s
+    deletion with `TwoCut.lean`, 10b `c48d323e`, and `Pencil/Base.lean` itself, deleted whole by
+    10j `8f297c7d` after 10i removed its two helpers) inline; none renumbered.
   - `blueprint/SETUP-AND-PITFALLS.md`'s "that round left them" note on
     `thm:pencil-conditional-realization-pair` gained one line: task 10h (`528381ef`, verdict `m5`)
     moved the notes, the node now draws filled.
