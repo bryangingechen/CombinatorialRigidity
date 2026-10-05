@@ -17,6 +17,12 @@ twenty-eight pins of the nine nodes and two new pins); forty-four are exactly
 `[propext, Classical.choice, Quot.sound]`, the other four (`pathVertex` and three basic lemmas) use
 a strict subset.
 
+## Architectural choices made up front
+
+The coordinator's adjudication (2026-09-26) of STEPS' pre-build recon, summarized in the first
+entry under *Decisions made*: among them, BRIDGE for `k ≥ 1` by explicit path hypotheses, not a
+chain structure, which `Cut.lean`'s chain-of-bridges section cites under this heading.
+
 ## Decisions made during this phase
 
 - **2026-09-26 — opened design-first from one opus recon** (STEPS' pre-build recon, verdicts in

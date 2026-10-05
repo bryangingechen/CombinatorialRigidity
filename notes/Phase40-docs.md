@@ -1,25 +1,40 @@
 # Phase 40 cleanup round 5/5 — `40-docs`, project organization (work log)
 
-**Status:** in progress (opened 2026-10-04). Round 5, the last of the five post-Phase-40 cleanup
-rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
-`.claude/autopilot/queue.toml` is the authority for which rounds are done. The work is
-`CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
-notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
-user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–15 landed 2026-10-04/05.
-**Next concrete task:** task 17 (X), the close (Opus), which also discharges task 16 (P).
-Round manual: `CLEANUP.md`.
+**Status:** ✓ closed 2026-10-05 (opened 2026-10-04). Round 5, the last of the five post-Phase-40
+cleanup rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
+`.claude/autopilot/queue.toml` is the authority for which rounds are done. Docs only (`CLEANUP.md`
+D over Phase 40 and rounds 1–4): lessons lifted, Phase 40's sub-notes compressed 1 735 → 935 lines
+and its design doc 1 472 → 864 with every anchor kept, FRICTION's `[resolved]` entries archived,
+the user-facing surfaces aligned with `intro.tex`. No stop; all 19 main results' axioms
+unchanged. **Next concrete task:** none in this round; what comes next is in
+`notes/Cleanup40.md`'s **Status**. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
-No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1). An unplanned
-`NEEDS_PI` entry goes here, newest first.
+No planned stop, and none arose: the round opened and closed unattended (`notes/Cleanup40.md`
+§1), with no `NEEDS_PI` entry. The close's report for the PI is under *Hand-off*; it is a report,
+not a stop.
 
 ## Current state
 
-**Next: task 17 (X)**, the close (Opus); its report discharges task 16 (P). Of the 17 tasks,
-1–15 are done (2026-10-04/05); each is one or two lines in the checklist below, not duplicated here.
-Task 16 (P) has no commit of its own. Nothing is mid-stream.
+**Round 5 is closed** (task 17, docs only). All 17 tasks are done: 1–15 landed 2026-10-04/05,
+task 16 (P) was discharged by the close's report, and each is one or two lines in the checklist
+below, not duplicated here. Nothing is mid-stream, and nothing carried over: *Candidates for the
+PI* and *Moved to a later round* stayed empty. The report for the PI is under *Hand-off*.
+
+**Verified at the close** (task 17, 2026-10-05; the Lean tree is still `654bae8a`'s and the
+blueprint TeX `993b9e74`'s, since the round touched neither):
+- Whole-project `lake build` green, 2996 jobs: 0 `warning:`, 0 `error:` and 0 `failed to cache
+  artifact` lines. `lake lint` green.
+- `#print axioms` on all 19 `formalization.yaml` main results gives `[propext, Classical.choice,
+  Quot.sound]`. The open's harness, `scratch/40-docs/Axioms.lean`, was re-diffed against the
+  yaml's `declaration:` and `file:` fields (19 names in order, 14 imports: identical) and run with
+  `lake lean` after the build; its output is the open's byte for byte.
+- The anchors into the 16 sub-notes: every tracked file's `*…*` section name after a sub-note's
+  filename, checked against that note's text. One dangled: `Cut.lean` 411–412 cite
+  `notes/Phase40e.md` *Architectural choices*, a section task 11 folded into *Decisions made*. The
+  close restored the heading in 40e as a three-line pointer (docs only; the Lean is unchanged).
+- This log, by `parse` and `offenders` as below: 300 lines, header 104 words, no offenders.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -184,13 +199,15 @@ section titles are the stable reference.
   "follow precedent" settlements, a possible change to when the PI is asked) and F48 (two
   missing gates: proof-level `\leanok` in `blueprint/lint.sh`, cleanup-round logs in
   `notes/check-phase-note.py`).
-- [ ] **16. P — `.claude/autopilot/system-prompt.md`'s round pointers** (no commit of its own:
-  task 17's report discharges it). Line 60 sends a cleanup round's statement-changing finding to
-  "a candidate for `40-simplify`", which is closed; line 46 names the rounds' planned stops. Not
+- [x] **16. P — `.claude/autopilot/system-prompt.md`'s round pointers** (no commit of its own:
+  task 17's report discharges it; done, the first line of *For the PI* under *Hand-off*). Line 60
+  sends a cleanup round's statement-changing finding to "a candidate for `40-simplify`", which is
+  closed; line 46 names the rounds' planned stops. Not
   edited: the file is the PI's autopilot rules, written at the setup session (`06d175b8`), and
   after this round the queue's only row is ORIGAMI, attended (the coordinator's call at the open).
   Its disposition is one line in the close's *For the PI*.
-- [ ] **17. X — close the round** (Opus). `.claude/autopilot/queue.toml`'s `40-docs` row to
+- [x] **17. X — close the round** (Opus; this commit: what it verified is under *Current state*,
+  its report under *Hand-off*). `.claude/autopilot/queue.toml`'s `40-docs` row to
   `done = true`; the ROADMAP row to ✓, re-thinned; the queued-rounds bullet to all five closed,
   ORIGAMI next and attended; `notes/Cleanup40.md`'s **Status**; the build, `lake lint` and the
   axioms harness as at the open; this log closed as round 4's was. *For the PI*: task 16's line;
@@ -221,14 +238,14 @@ section titles are the stable reference.
 A finding that would change a headline statement or a blueprint statement's strength: one line
 each, with the task that found it. Recorded, not acted on, not a stop; the close lists them.
 
-- None yet.
+- None: no task recorded one.
 
 ## Moved to a later round
 
 Each line gives the task, its target (an entry in ROADMAP's queue, since no cleanup round follows)
 and a one-line reason; the same line goes into the target in the same commit.
 
-- None yet.
+- None.
 
 ## Blockers / open questions
 
@@ -236,8 +253,35 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next: task 17 (X)**, the close (Opus), as its checklist entry lists; its *For the PI* report
-discharges task 16 (P) and carries task 15's two open findings, F47 and F48.
+**Round 5 is closed; there is no next step in it.** All five post-Phase-40 cleanup rounds are
+closed and no round follows (`notes/Cleanup40.md`'s **Status**). The autopilot queue's next row is
+ORIGAMI, which is attended: it opens with the PI, and takes its phase number then (ROADMAP *Queued
+post-program phases*). Nothing carried over, and no task of this round is left open.
+
+**For the PI** (a report, not a stop):
+- **Task 16: `.claude/autopilot/system-prompt.md`'s cleanup-round lines.** Line 60 still sends a
+  cleanup round's statement-changing finding to "a candidate for `40-simplify`", which is closed;
+  line 46 names the cleanup rounds' planned stops (`40-exposition`'s sample section,
+  `40-simplify`'s verdicts). Not edited: the file is the PI's autopilot rules, and the queue's only
+  remaining row is ORIGAMI, attended. The PI may update or retire those two lines.
+- **The auto-loaded `CLAUDE.md` suite is 1 711 lines** (root 381, `CombinatorialRigidity/` 456,
+  `notes/` 210, `blueprint/` 664): 1 704 at the open, the 7 more being task 15's promotion of F1
+  into `notes/CLAUDE.md`. Trimming it was outside the rounds (`notes/Cleanup40.md` §2). FRICTION's
+  open `[process]` entry on the largest file, `blueprint/CLAUDE.md` (extract two long-form blocks
+  to read-on-demand references), said 1 695: the Phase-40a close's figure, stated as current. A
+  stale number, so this close updated it to 1 711, dated, keeping the 1 695. Whether and when to
+  trim is the PI's (a later cleanup round, or a harness review, as the entry says).
+- **Task 15's grooming** promoted F44–F46 and F1 (the playbook, `CLEANUP.md` §D and
+  `notes/CLAUDE.md`) and left two findings open (`notes/dispatch-log.md` *Findings*):
+  - **F47**: under a "follow precedent" answer the coordinator settled fifteen recon-flagged calls
+    in 40i–40k, each checked against its source and recorded as the coordinator's, and none was
+    reversed. Making that a rule would change when the PI is asked, so the PI would decide whether
+    such calls may stay the coordinator's.
+  - **F48**: two checks have no gate: a green node's proof-level `\leanok` (`blueprint/lint.sh`
+    checks only the statement's), and the cleanup-round logs, which `notes/check-phase-note.py`'s
+    name pattern skips, so a round's log is gated only by hand (every task of this round did it).
+    The PI would decide whether to commission the two guards (tooling items, like F40).
+- ***Candidates for the PI*:** none were recorded.
 
 ## Decisions made during this round
 
@@ -251,3 +295,6 @@ discharges task 16 (P) and carries task 15's two open findings, F47 and F48.
   the round-1 log; freeze the exemplar and the verdicts; leave the rest (the inventory).
 - **`.claude/autopilot/system-prompt.md` is not edited** (the coordinator's call at the open): it
   is the PI's rules file; a statement-changing finding goes to *Candidates for the PI*.
+- **The close's report is under *Hand-off*, not *Autopilot: for the PI*** (the coordinator's call
+  at task 17's dispatch, as round 4's close did): an open question there with no PI answer would
+  stall the next autopilot session.

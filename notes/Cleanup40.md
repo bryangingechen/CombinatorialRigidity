@@ -9,12 +9,13 @@ Round 4, `40-simplify`, opened and closed 2026-10-04 (`notes/Phase40-simplify.md
 answered the same day, when the PI sanctioned the recommended package of the round's verdicts
 (`notes/Phase40-simplify-verdicts.md`) with CONTRACT-R restated, and round 3's build-or-leave
 recommendations as written (that log's *Autopilot: for the PI*). Its 18 landings, 10a–10r, took
-8 930 net Lean lines out. Round 5, `40-docs`, opened 2026-10-04 (`notes/Phase40-docs.md`) and
-closes unattended. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under
-autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
-`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
-**The next concrete task** is the one round 5's log names in its **Status** (tasks 1–15 landed
-2026-10-04/05; next, task 17 (X), the close).
+8 930 net Lean lines out. Round 5, `40-docs`, opened 2026-10-04 and closed 2026-10-05, unattended
+and with no stop (`notes/Phase40-docs.md`). Five cleanup rounds (`CLEANUP.md`) over what Phases
+39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`,
+`40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the order and for
+which rounds are done. **All five rounds are closed, and no round follows.** The next item is
+ORIGAMI, the queue's next row, which is attended: it opens with the PI (ROADMAP *Queued
+post-program phases*).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

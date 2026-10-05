@@ -541,9 +541,10 @@ to be re-derived by re-reading entries later.
 
 ### [process] `blueprint/CLAUDE.md`, auto-loaded on every blueprint touch, is 664 lines — extract its long-form blocks to read-on-demand references
 - **Where it bit:** the Phase-40a close's project-organization review (`PHASE-BOUNDARIES.md`
-  *Audit the auto-loaded CLAUDE.md suite for bloat*). The suite is 1 695 lines (root 381,
-  `CombinatorialRigidity/` 447, `notes/` 203, `blueprint/` 664). `blueprint/CLAUDE.md` is the
-  largest, and it loads on *any* read under `blueprint/`, a one-line `\leanok` flip included.
+  *Audit the auto-loaded CLAUDE.md suite for bloat*). The suite was 1 695 lines then; at
+  `40-docs`' close (2026-10-05) it is 1 711 (root 381, `CombinatorialRigidity/` 456, `notes/`
+  210, `blueprint/` 664). `blueprint/CLAUDE.md` is the largest, and it loads on *any* read under
+  `blueprint/`, a one-line `\leanok` flip included.
 - **Friction:** its own header says the prose conventions moved to `AUTHORING.md` "so the
   every-touch manual stays small", yet two long-form blocks remain. *The retrospective appendix
   (Phase 29 exception)* is ~90 lines and matters only when editing `retrospective.tex`. The
@@ -553,7 +554,8 @@ to be re-derived by re-reading entries later.
   calibration narratives to `blueprint/DESIGN.md`, leaving each rule sentence plus a one-line
   pointer (the `PHASE-BOUNDARIES.md` / `REFS.md` extraction pattern). Not applied at the close: a
   CLAUDE.md-suite edit is the user's to direct, not a closing dispatch's.
-- **Status:** open (next cleanup round, or a harness review).
+- **Status:** open (a later cleanup round, or a harness review). The post-Phase-40 rounds left
+  it out by their plan (`notes/Cleanup40.md` §2), and `40-docs`' close reported it to the PI.
 
 ### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
 - **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).

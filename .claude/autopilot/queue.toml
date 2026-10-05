@@ -39,7 +39,7 @@ id = "40-docs"
 title = "Post-Phase-40 cleanup 5/5: project organization"
 note = "notes/Phase40-docs.md"
 attended = false
-done = false
+done = true
 
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.

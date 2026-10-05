@@ -7,8 +7,8 @@ over the pencil surface (`notes/Cleanup40.md` §2 *Round 4*) wrote 63 verdicts i
 (`notes/Phase40-simplify-verdicts.md`). At Stop 2 the PI sanctioned the recommended package with
 `7d`'s chapter restated (*Autopilot: for the PI*). Its 18 landings, 10a–10r, are all in: −8 930
 net Lean lines under `CombinatorialRigidity/`, all 19 main results' axioms unchanged. **Next
-concrete task:** none in this round; the current round is named in `notes/Cleanup40.md`'s
-**Status**. Round manual: `CLEANUP.md`.
+concrete task:** none in this round; what comes next is in `notes/Cleanup40.md`'s **Status**.
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -185,10 +185,10 @@ that ROADMAP's **PROSE** bullet carries it.
 
 ## Hand-off / next phase
 
-**Round 4 is closed; there is no next step in it.** The next round is round 5, `40-docs` (project
-organization), as `notes/Cleanup40.md`'s **Status** says; it opened 2026-10-04 (work log
-`notes/Phase40-docs.md`). What carried over: task 3's `c8a`, in ROADMAP's **PROSE** bullet. No
-task of this round is left open.
+**Round 4 is closed; there is no next step in it.** The next round was round 5, `40-docs` (project
+organization), which opened 2026-10-04 and closed 2026-10-05 (work log `notes/Phase40-docs.md`);
+`notes/Cleanup40.md`'s **Status** says what follows. What carried over: task 3's `c8a`, in
+ROADMAP's **PROSE** bullet. No task of this round is left open.
 
 **For the PI** (a report, not a stop):
 - **Two pinned items are kept with no caller** (*Decisions*). `cor:pencil-flat-x0`'s pin
@@ -204,7 +204,8 @@ task of this round is left open.
   Its axioms are unchanged.
 
 For round 5: `.claude/autopilot/system-prompt.md` still sends a cleanup round's statement-changing
-finding to "a candidate for `40-simplify`", which is now closed.
+finding to "a candidate for `40-simplify`", which is now closed. (Round 5 left the file as it is
+and reported the line to the PI: `notes/Phase40-docs.md` task 16.)
 
 ## Decisions made during this round
 
