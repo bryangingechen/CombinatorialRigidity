@@ -94,6 +94,7 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 - [x] **2. B3** (`5a636c0e`, corrected in `244f6613`). 12 sites: 2 silencers stale, 1 fixed at the
   source (`classical` in place of the binder), 6 pinned or headline kept (see *Candidates*), and 2
   `unusedFintypeInType` kept. Heartbeats went from 1000000 to 400000. The FRICTION entry is reframed.
+  **Round 4 (`a2`):** GO, landed — all six dropped (task 10r, `654bae8a`), sanctioned at Stop 2.
 - [x] **3. B8** (`9bf98a3c`). 32 `show … from rfl`: 29 fixed with `screwDim_one`/`_two`, the moved
   `bodyBarDim_two`/`_three` and `Graph.vertexSet_induce`; 3 kept (structural).
 - [x] **4. B7** (`63aee01d`). `rw` towers: 3 clusters fused (`Graph.mem_ker_liftingMatrix_iff`,
@@ -105,6 +106,8 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   `TACTICS-GOLF.md` §27.
 - [x] **8. B5** (`2f66dff2`; fixup `93ece315`). `Set`/`Finset`: 36 sites, 9 fixed, 27 kept. The
   `CoverageTheoremS.lean` finsum route is structural (see *Candidates*).
+  **Round 4 (`a3`):** GO for `two_mul_ncard_le_ncard_edgeSet` only — landed via `finsum_mem_const` +
+  `Set.Finite.ncard_biUnion` (task 10d, `eff50a5d`); its partner stays unconverted.
 - [x] **9–12. B1a–d** (`6f2d75e5`, `a6c71d1c`, `3faf440e`, `de644285`). Dead `classical` and
   unforced `noncomputable`: 204 + 70 sites, of which 134 `classical` and 7 `noncomputable` were
   removed. Every kept site was forced by a build break.
@@ -150,15 +153,21 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
   stay; both of `generic-lift.tex`'s stand-in citations (23a) also repoint.
 - [x] **24. C1** (`0bdb1681`). `_three` live, 469 → 362 lines (heartbeats 72 044 → 60 555), via
   local substitutions only; `_four` stays off-headline, no split or unification (*Candidates*).
+  **Round 4 (`a4`):** moot — retired with `1a`'s cluster (task 10i, `1e7d78a9`); the surviving
+  `_three` was later renamed `pencilPair_of_simple_ncard_eq_three` and moved to
+  `GenericTriangle.lean` (task 10j, `8f297c7d`).
 - [x] **25. C2** (`c6557860`). Both `Witness.lean` proofs live to their headline nodes; the
   `hPu`/`hP1`/`hP2` triple fused into `Engine.lean`'s
   `exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`, all nine sites collapsed.
 - [x] **26. C3** (`6ff611b0`). `Pair.lean`/`Pair2.lean`'s #4–#6 live; `hcross_eq` fused into
   `Graph.eq_and_eq_of_isLink_crossing` (`Motive.lean`). #4/#6's byte-identical shared tail is a
   candidate (a real sub-lemma design, not a small extraction).
+  **Round 4 (`a5`):** GO, landed — one shared tail for #4 and #6 (task 10l, `bce29f77`).
 - [x] **27. C4** (`a9a141c6`). #7–#9 all live (task 24's `hasGenericPencilRealization_of_IH`
   chain); no local fix, `Arms.lean` unchanged at 1 513 lines; #8's case-split duplication over
   `ScrewSpace`-carrier terms is a candidate.
+  **Round 4 (`a6`+`a6a`):** GO, landed — one assembly for each cut case's two branches (task 10k,
+  `8b4a9120`).
 - [x] **28. S1** (`9a424770`). `Witness.lean` split along its `## The general-position core`
   header into `Witness.lean` (1 109 lines) and `WitnessGeneral.lean` (685 lines); every file
   pointer naming a moved declaration repointed. `Arms.lean` left unchanged, still past ~1500.
@@ -169,125 +178,79 @@ site is either fixed, or kept with a one-word reason recorded under the task's c
 
 ### §C: the long-proof screen (the top ten, walked; screening only)
 
-Each walk asks §C's four questions: API extraction, a missed mathlib lemma, tactic substitution,
-and definitional refactor. Cross-proof unification is §C's fifth bullet; here it goes to
-*Candidates* unless the change is a small local extraction. Local changes land, and structural
-findings are recorded as candidates. First run a cheap liveness check (`lean_references`,
-transitively, to `pencil_conjecture` / `pencilPair_of_nonempty`). A proof that feeds neither
-headline is recorded as off-headline (round 4's third question) and gets no local work.
-
-(Tasks 27–28b, C4/S1, closed above. The ranking's tied tenth, `of_openEar_three`, and the twelfth,
-`of_openEar_four`, are task 18's.)
+Each walk asked §C's four questions (API extraction, a missed mathlib lemma, tactic substitution,
+definitional refactor) plus a liveness check (`lean_references`, transitively, to
+`pencil_conjecture` / `pencilPair_of_nonempty`; off-headline got no local work). Cross-proof
+unification (§C's fifth bullet) went to *Candidates* unless a small local extraction. Tasks
+27–28b (C4/S1) land above. The ranking's tied tenth, `of_openEar_three`, and the twelfth,
+`of_openEar_four`, are task 18's.
 
 ### §A: the blueprint against the Lean (every `\leanok` node, including the laundering walk)
 
-For every node in the range:
-- compare the statement with the pinned Lean signature (hypotheses, conclusion, binders);
-- check that every hypothesis of a `\leanok` node is discharged in the Lean body or is the
-  conclusion of a node it `\uses` (`CLEANUP.md` §A, the laundering walk);
-- read the prose proof for "the Lean does X via Y" oversell, and for formalization asides (the
-  first response to an aside is a Lean simplification).
+Per node: statement vs. pinned Lean signature; every `\leanok` hypothesis discharged in the body or
+by a node it `\uses` (the laundering walk, `CLEANUP.md` §A); prose checked for "the Lean does X via
+Y" oversell and for formalization asides. A conditional theorem stating its kernels as hypotheses
+(as `pencil.tex`'s surviving conditionals do) is honest; laundering hides a load-bearing one. One
+verdict line per task below (nodes walked, divergences fixed); a strength-changing finding goes to
+*Candidates*. Ranges are the open's line numbers.
 
-A conditional theorem that states its kernels as hypotheses, as `pencil.tex`'s surviving
-conditionals do, is honest. Laundering is a load-bearing hypothesis that the statement hides.
-Done: one tally line per task (nodes walked, divergences found, fixes landed), with any
-strength-changing finding under *Candidates*. The ranges are the open's line numbers.
-
-- [x] **29. A-P1: `pencil.tex`, from `sec:pencil-through-point` through `sec:pencil-extension`**
-  (38–468; 13 environments; `9a286917`). 13 nodes walked, 2 divergences found and fixed: the
-  cycle pair's proof `\uses` ran backwards (`lem:cycle-coplanar-realization` narrated as built
-  directly from `lem:cycle-normals`, `lem:cycle-pencil-realization` narrated as built from it,
-  while the Lean does the reverse — the pencil version is primary and the coplanar version is its
-  one-line forgetful corollary); and `lem:two-pencil-extension-iff`'s backward direction rested on
-  `span_range_eq_of_extensor_eq` (Plücker injectivity), pinned nowhere — its own docstring names an
-  intended label (`lem:decomposable-extensor-span-unique`) never added, now minted in `meet.tex`.
-- [x] **30. A-P2: `sec:pencil-reduction`** (469–755; 11; `96197adb`). 11 nodes walked, 2
-  divergences found and fixed, both prose-only: a missing `\uses{lem:screw-map-rows}` on
-  `lem:pencil-projective-transport`'s rank-invariance claim, and a missing proof sentence on
-  `thm:pencil-conditional-realization` narrating its rank–nullity bridge to the pinned
-  `pencil_conjecture_of_arms`'s motion-space conclusion.
-- [x] **31. A-P3: `sec:pencil-nondegenerate` and `sec:pencil-main-component-route`** (756–1196; 9;
-  `33e18446`). 9 nodes walked, 0 divergences: every pin, `\uses` edge and proof matches its Lean,
-  and the held kernels (K)/(K-bare) already read as retired, off-headline, not a live route.
-- [x] **32. A-P4: `sec:pencil-girth-chain` and the chapter introduction** (1197–1412 and 1–37; 8;
-  `a880a888`). 8 nodes walked, 1 divergence fixed (a spurious proof `\uses{lem:chain-cycle-
-  dichotomy}`, never invoked, repointed to `def:cycle-data`); the intro's route summary already
-  matches the unconditional `pencil_conjecture`; 1 strength-changing finding under *Candidates*.
-- [x] **33. A-MC1: `main-component.tex`, `sec:main-component-carrier` and the section
-  introduction** (123–716 and 1–122; 21; `d6e6e201`). 21 environments walked (19 `\leanok`, 2
-  unpinned remarks), 0 divergences: every pin, `\uses` edge and proof paragraph matches its Lean
-  in `Carrier.lean`/`Configuration.lean`, including the round's `mapExtensor` rename and
-  `Graph.closedNbhd_subset_vertexSet`'s move to `Motive.lean` (neither is pinned in this range).
-- [x] **34. A-MC2: `sec:main-component-flat` and `sec:main-component-jj`** (717–1102;
-  `05825fc8`). 15 environments walked (13 `\leanok`, 2 unpinned remarks), 0 divergences: both remarks
-  already document the ambient-off-`V(G)` and fresh-edge-label conventions the range's Lean
-  carries (`Flat.lean`/`Bridge.lean`), and every `\uses` edge — incl. the
-  `lem:relative-deficiency-rank-bound` citation — matches what the Lean calls.
-- [x] **35. A-MC3: `sec:main-component-cut`** (1103–1330; 11; `4e293289`). 11 environments walked
-  (7 `\leanok`, 4 unpinned remarks), 1 divergence found and fixed: `def:pencil-x0-standing`'s
-  spurious `\uses{def:pencil-admissible-picture}` (`Graph.IsX0Graph` cites nothing about pictures;
-  the edge ran backwards — admissibility's own nonemptiness argument needs the closed-neighbourhood
-  bound, not vice versa), dropped.
-- [x] **36. A-MC4: `sec:main-component-contract`** (1331–1636; 9; `c0dffdbb`). 9 environments
-  walked (8 `\leanok`, 1 unpinned remark), 0 divergences, incl. the 14a–14b-rebased
-  `lem:pencil-contract-standing`/`-limit`/`-core-plane` trio, whose `\uses` edges and prose already
-  match their current (post-rebase) Lean bodies.
-- [x] **37. A-MC5: `sec:main-component-chain`** (1637–1967; 11; `4b3c798b`). 11 environments
-  walked (9 `\leanok`, 2 unpinned remarks), 1 divergence found and fixed: `rem:pencil-x0-ear-class`
-  claimed the structural coverage applies `thm:pencil-x0-closed-ear` directly for a closed ear;
-  `notes/Phase40g.md`'s PI decision 2 records that COVERAGE never consumes it (the closed ear
-  routes through the cut-vertex case recursing to `thm:pencil-x0-cycle`), now stated that way.
-- [x] **38. A-MC6: `sec:main-component-short`** (1968–2574; 18; `82e183c1`). 18 environments
-  walked (14 `\leanok`, 4 unpinned remarks), 2 divergences found and fixed: `lem:pencil-plane-lines`'s
-  proof was missing `\uses{lem:pencil-join-flat}` (its Lean genuinely computes in the flat
-  coordinates, like the sibling `lem:pencil-line-pairing-join`/`lem:pencil-bilinear` proofs); and
-  `thm:pencil-x0-open-ear-four`/`-three`'s proofs still narrated each theorem's own base-data/
-  two-round/count derivation as if bespoke, when task 18 (`b8b24c9a`) folded it into the shared
-  `Graph.X0Attains.of_openEar_splitOff` assembly — both proofs now name it, leaving only the
-  reinsertion witness (the tetrahedron / the case split on $\rho$) as theorem-specific. That
-  assembly and `Graph.exists_earBase_splitOff` have no blueprint node (D5-shaped debt, moved to
-  round 3 below).
-- [x] **39. A-MC7: `sec:main-component-orbit` and `sec:main-component-splitoff`** (2585–3273; 14;
-  `741fce7b`). 14 environments walked (11 `\leanok`, 3 unpinned remarks), 0 divergences: every
-  pin and `\uses` edge matches (checked programmatically); task 21b's `relScrews_congr` rewiring
-  (`Orbit.lean` 1052) is still covered by `lem:pencil-rank-congr`.
-- [x] **40. A-MC8: `sec:main-component-contract-additive` and `sec:main-component-sparse`**
-  (3275–3895; 15; `14f1d6ae`). 15 environments walked (14 `\leanok`, 1 unpinned remark), 0
-  divergences: every statement matches its pinned Lean (`ContractAdditive.lean`,
-  `ContractCurve.lean`, `Configuration.lean`, `Induction/SparseDeficiency.lean`), and a
-  programmatic `\cref`-vs-`\uses` diff's four flags are all same-notation/"argument of" pointers to
-  a lemma proved *from* the flagged node (a real `\uses` edge there would cycle), not missing
-  edges; task 22's `mapExtensor` rename is already named correctly in `lem:pencil-rank-collineation`'s
-  Lean docstring and the blueprint prose cites neither old nor new name directly.
-- [x] **41. A-MC9: `sec:main-component-coverage`** (3896–4330; 13; `8800b6e2`). 13 nodes walked
-  (all `\leanok`, no remarks), 0 divergences: every pin, hypothesis and `\uses` edge matches its
-  Lean (`Coverage.lean`, `CoverageChain.lean`, `CoverageCut.lean`, `CoverageTheoremS.lean`), incl.
-  `X0Reduces`'s 13 constructors against the definition's 7 clauses and `thm:pencil-x0-coverage`'s
-  case dispatch; the coverage prose does not invoke `Graph.X0Attains.of_closedEar` (task 37's
-  finding). Two shared assemblies with no blueprint node moved to *Moved to a later round*.
-- [x] **42. A-MC10: `sec:main-component-statements`** (4331–4858; 15; `eea4f89c`). 15 nodes walked
-  (all `\leanok`, no remarks), 0 divergences: every pin, hypothesis, and `\uses` edge matches its
-  Lean; both headline nodes match `formalization.yaml`'s `pencil_conjecture`/`pencilPair_of_nonempty`.
-- [x] **43. A-D: Phase 40's deficiency nodes** (9; `7e7392bf`). 9 nodes walked, all `\leanok`, 0
-  statement/hypothesis divergences (detail in the commit message); fixed one wrong `\uses` edge
-  and one `rem:fresh-edge-supply` enumeration gap in `panel-layer.tex`; D5 debt moved below.
-- [x] **44. A-R: Phase 40's `rigidity-matrix.tex` nodes** (11; `c3b6d83a`). 11 nodes walked, all
-  `\leanok`, 0 statement/hypothesis divergences; fixed one missing proof-level `\uses{lem:rank-
-  polynomial-of-le-finrank}` on `lem:rank-polynomial-proj-eval` (its two siblings duplicate the
-  statement's technique-`\uses` onto the proof block; this one hadn't). `lem:relative-deficiency-
-  rank-bound`'s own proof indeed re-derives the partition count via a sibling helper rather than
-  calling `lem:trivial-motions-rank-bound`'s pinned name (confirmed the task-44 hint) — a
-  legitimate cross-reference like task 43's `lem:deficiency-antitone` finding, not a divergence.
+- [x] **29. A-P1** — `pencil.tex`, `sec:pencil-through-point`–`sec:pencil-extension` (38–468; 13;
+  `9a286917`). 2 fixed: the cycle pair's `\uses` ran backwards (the pencil version is primary, the
+  coplanar version its corollary); `lem:two-pencil-extension-iff`'s backward direction rested on an
+  unpinned Plücker-injectivity lemma, now `lem:decomposable-extensor-span-unique` in `meet.tex`.
+- [x] **30. A-P2** — `sec:pencil-reduction` (469–755; 11; `96197adb`). 2 fixed, both prose-only: a
+  missing `\uses{lem:screw-map-rows}`; a missing proof sentence bridging
+  `thm:pencil-conditional-realization` to `pencil_conjecture_of_arms`'s motion-space conclusion.
+- [x] **31. A-P3** — `sec:pencil-nondegenerate` + `sec:pencil-main-component-route` (756–1196; 9;
+  `33e18446`). 0 divergences; kernels (K)/(K-bare) already read as retired, off-headline.
+- [x] **32. A-P4** — `sec:pencil-girth-chain` + the chapter intro (1197–1412, 1–37; 8; `a880a888`).
+  1 fixed: a spurious `\uses{lem:chain-cycle-dichotomy}` repointed to `def:cycle-data`. 1
+  strength-changing finding to *Candidates* (`lem:pencil-chain-side-connected`; round 4 retired it,
+  see below).
+- [x] **33. A-MC1** — `main-component.tex`, `sec:main-component-carrier` + the section intro
+  (123–716, 1–122; 21; `d6e6e201`). 0 divergences, incl. the round's `mapExtensor` rename and
+  `Graph.closedNbhd_subset_vertexSet`'s move to `Motive.lean`.
+- [x] **34. A-MC2** — `sec:main-component-flat` + `sec:main-component-jj` (717–1102; 15;
+  `05825fc8`). 0 divergences; both unpinned remarks already document the conventions the Lean
+  carries.
+- [x] **35. A-MC3** — `sec:main-component-cut` (1103–1330; 11; `4e293289`). 1 fixed:
+  `def:pencil-x0-standing`'s backwards `\uses{def:pencil-admissible-picture}` dropped.
+- [x] **36. A-MC4** — `sec:main-component-contract` (1331–1636; 9; `c0dffdbb`). 0 divergences, incl.
+  the 14a–14b-rebased `lem:pencil-contract-standing`/`-limit`/`-core-plane` trio.
+- [x] **37. A-MC5** — `sec:main-component-chain` (1637–1967; 11; `4b3c798b`). 1 fixed:
+  `rem:pencil-x0-ear-class` restated per `notes/Phase40g.md` PI decision 2 (the closed ear routes
+  through the cut-vertex case, COVERAGE never consumes it directly).
+- [x] **38. A-MC6** — `sec:main-component-short` (1968–2574; 18; `82e183c1`). 2 fixed: a missing
+  `\uses{lem:pencil-join-flat}`; both open-ear theorems' proofs renamed to task 18's shared
+  `Graph.X0Attains.of_openEar_splitOff` assembly, which (with `Graph.exists_earBase_splitOff`) has
+  no blueprint node (*Moved to a later round*).
+- [x] **39. A-MC7** — `sec:main-component-orbit` + `sec:main-component-splitoff` (2585–3273; 14;
+  `741fce7b`). 0 divergences; task 21b's `relScrews_congr` rewiring still covered by
+  `lem:pencil-rank-congr`.
+- [x] **40. A-MC8** — `sec:main-component-contract-additive` + `sec:main-component-sparse`
+  (3275–3895; 15; `14f1d6ae`). 0 divergences; a programmatic `\cref`-vs-`\uses` diff's four flags
+  are same-notation pointers, not missing edges.
+- [x] **41. A-MC9** — `sec:main-component-coverage` (3896–4330; 13; `8800b6e2`). 0 divergences,
+  incl. `X0Reduces`'s 13 constructors against the definition's 7 clauses; the coverage prose does
+  not invoke `Graph.X0Attains.of_closedEar` (task 37's finding). Two shared assemblies with no
+  blueprint node moved to *Moved to a later round*.
+- [x] **42. A-MC10** — `sec:main-component-statements` (4331–4858; 15; `eea4f89c`). 0 divergences;
+  both headline nodes match `formalization.yaml`.
+- [x] **43. A-D** — Phase 40's deficiency nodes (9; `7e7392bf`). 0 divergences; fixed one wrong
+  `\uses` edge and one `rem:fresh-edge-supply` enumeration gap; D5 debt moved below.
+- [x] **44. A-R** — Phase 40's `rigidity-matrix.tex` nodes (11; `c3b6d83a`). 0 divergences; fixed
+  one missing proof-level `\uses{lem:rank-polynomial-of-le-finrank}` on
+  `lem:rank-polynomial-proj-eval`.
 
 ### The close
 
 - [x] **45. X: close the round** (`CLEANUP.md` *Workflow* rule 5; this commit).
-  - **Re-run the open's §B sweep and record the counts after.** Command: `python3
-    scripts/cleanup-smell-sweep.py --base 'c9d26ef9^' --tree
-    CombinatorialRigidity/Molecular/Molecule/Pencil/ --rev <rev>` (`--by-file` gives the per-file
-    table, `--sites <smell>` the line numbers). Each cell below is pencil tree + other files. The
-    surface was 40 files / 34 363 lines + 26 other files / 2 476 added lines at the open
-    (`--rev 91fcd24a`), and is 42 / 33 757 + 28 / 2 549 at the close (`--rev c3b6d83a`).
+  - **§B sweep, before/after** (`python3 scripts/cleanup-smell-sweep.py --base 'c9d26ef9^' --tree
+    CombinatorialRigidity/Molecular/Molecule/Pencil/ --rev <rev>`; `--rev 91fcd24a` = open,
+    `c3b6d83a` = close; `--by-file`/`--sites <smell>` for detail). Each cell is pencil tree + other
+    files; the surface was 40 files / 34 363 lines + 26 other files / 2 476 added lines at the open,
+    42 / 33 757 + 28 / 2 549 at the close. The counter is `scripts/cleanup-smell-sweep.py`'s own
+    docstring source for these figures — they must not change.
 
     | smell | open | close |
     |---|---|---|
@@ -302,44 +265,25 @@ strength-changing finding under *Candidates*. The ranges are the open's line num
     | `toFinset` (proxy for §B's manual `Set`/`Finset` row) | 24 (24 + 0) | 18 (18 + 0) |
     | `Fintype.card` (proxy for §B's manual coercion row) | 47 (47 + 0) | 44 (44 + 0) |
 
-    How the moved and split files were handled:
-    - `WitnessGeneral.lean` and `ArmsAssembly.lean` (tasks 28, 28b) are in the pencil tree, so
-      every line counts, as it did inside `Witness.lean` and `Arms.lean` at the open.
-    - Outside the tree, the close counts the `+` side of `c9d26ef9^..c3b6d83a`, not
-      `..91fcd24a`: the lines Phase 40 added that survive, plus this round's own. So Lean that the
-      round moved or wrote outside the tree stays counted (in `BodyBar/Framework.lean`, task 3's
-      moved `bodyBarDim_two`/`_three`: 9 → 15 lines counted). This adds two files that Phase 40
-      never touched. One is `RigidityMatrix/Basic.lean`, 84 lines: task 3's new
-      `screwDim_one`/`_two`; task 21b's `infinitesimalMotions_eq_of_isLink_*` pair, out of
-      `AlgebraicInduction/Pinning.lean`, where it predates Phase 40; and task 22's `mapExtensor`,
-      out of `ProjectiveInvariance.lean`'s Phase 40 lines. The other is task 4's mirror
-      `Mathlib/Data/Matrix/Mul.lean`, 43 lines. It also adds the `HingeGeneric.lean` lines that
-      task 22 renamed, which predate Phase 40 (4 → 23 lines counted).
-    - The other-files column's changes come from these additions, not new smells. The `rw`
-      count's +4 is `Mul.lean`'s own two proofs and two renamed `HingeGeneric.lean` lines (817,
-      824). The column's 2 `change`/`show` hits are docstring lines that begin with the word "change"
-      (`HingeGeneric.lean` 458, `Basic.lean` 1111), so grep false positives. The open's 4, in
-      `SparseDeficiency.lean`, are gone.
-    - What stays. Each kept site's reason is on its §B task's line or in its commit (B1's surviving
-      `classical` and `noncomputable` were each forced by a build break). The `rw` count was never
-      a target: task 4 took only the towers that recur three or more times. The 8 silencers are the
-      six `[DecidableEq β]` sites (a candidate) and `GenericBase.lean`'s two `unusedFintypeInType`.
-      The `maxHeartbeats` is `pencilPair_of_habitat_ncard_eq_four`'s (off-headline, a candidate).
-  - **Re-run `#print axioms` on the 19 main results, the open's way.** 19 of 19 give `[propext,
-    Classical.choice, Quot.sound]` (*Current state*).
-  - **Re-measure the file sizes** (`wc -l`). The standing rule did not fire: `Short.lean` went
-    1 366 → 1 139 (task 18) and `RigidityMatrix/Bricks.lean` 1 458 → 1 456, both under ~1500.
-    Tasks 28 and 28b split `Witness.lean` 1 809 → 1 109 + `WitnessGeneral.lean` 686, and
-    `Arms.lean` 1 518 → 1 225 + `ArmsAssembly.lean` 324. No pencil-tree file is past ~1500. The
-    largest are `Motive.lean` at 1 444 (1 428 at the open; tasks 21a and 26 added lemmas to it) and
-    `Engine.lean` at 1 396. `RigidityMatrix/Basic.lean` is under *Blockers*.
-  - **Flip the ROADMAP row, and set `done = true`.** Done: the row reads ✓ Complete, and
-    `40-cleanup`'s row in `.claude/autopilot/queue.toml` has `done = true`.
-  - **Point the status surfaces at round 2.** `notes/Cleanup40.md`'s **Status** and ROADMAP's
-    cleanup-rounds bullet now name round 2, `40-factor`, as next. `notes/Phase40p.md`'s hand-off,
-    which still said round 1 was next, now defers to `notes/Cleanup40.md`'s **Status**.
-  - **Hand *Candidates* to round 4.** All seven are mirrored into `notes/Cleanup40.md` §2
-    *Round 4*, one line each, each naming its task here.
+    Moved/split files (tasks 28, 28b) count in full, as they did pre-move. Outside the tree the
+    close counts the `+` side of `c9d26ef9^..c3b6d83a`, not `..91fcd24a`, so Lean the round moved or
+    wrote outside the tree stays counted: `RigidityMatrix/Basic.lean` (+84: tasks 3, 21b, 22) and
+    the new `Mathlib/Data/Matrix/Mul.lean` (+43, task 4) account for the other-files column's
+    movement, not new smells (its `rw`/`change`-`show` upticks are `Mul.lean`'s own lines and grep
+    false positives on docstrings). What stays is on each §B task's line or commit; the 8 silencers
+    are the six `[DecidableEq β]` sites (*Candidates*, since retired — see above) and
+    `GenericBase.lean`'s two `unusedFintypeInType`; the `maxHeartbeats` was
+    `pencilPair_of_habitat_ncard_eq_four`'s (since retired — see task 24 above).
+  - **Axioms:** 19 of 19 give `[propext, Classical.choice, Quot.sound]` (*Current state*).
+  - **File sizes** (`wc -l`): the standing rule did not fire. `Short.lean` 1 366 → 1 139 (task 18),
+    `Bricks.lean` 1 458 → 1 456; `Witness.lean`/`Arms.lean` split (tasks 28, 28b) into
+    `WitnessGeneral.lean`/`ArmsAssembly.lean`. No pencil-tree file past ~1500.
+    `RigidityMatrix/Basic.lean` is under *Blockers*.
+  - **ROADMAP flipped** to ✓ Complete; `40-cleanup`'s `.claude/autopilot/queue.toml` row
+    `done = true`; `notes/Cleanup40.md`'s **Status** and ROADMAP's cleanup-rounds bullet point at
+    round 2, `40-factor`.
+  - **Candidates handed to round 4:** all seven mirrored into `notes/Cleanup40.md` §2 *Round 4*,
+    one line each, each naming its task here.
 
 ## Candidates for `40-simplify`
 
@@ -356,6 +300,8 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
   (`P.reverse`: same interior set as a predicate, `P.reverse.first = P.last`) but is not yet a Lean
   declaration. Fixing it either strengthens the Lean (add the symmetric corollary) or narrows the
   blueprint statement to one end — both are strength changes, so deferred.
+  **Round 4 (`a1`):** moot — retired with `1a`'s cluster and the girth chain (task 10i, `1e7d78a9`);
+  the lemma and its pin are gone, not fixed.
 - **Six type-unused `[DecidableEq β]` binders on pinned or headline pencil theorems** (task 2, B3).
   They are on `pencil_conjecture`, `pencil_conjecture_of_X0`, `pencil_conjecture_of_arms`,
   `pencil_conjecture_of_arms_pair`, `pencil_conjecture_of_hcontract_hK_hbareSplit` and `…_of_card`.
@@ -365,6 +311,7 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
   in-tree precedent. The fix deletes all six silencers. It is deferred because it changes a
   headline signature (`thm:pencil-conjecture`) and pinned ones
   (`thm:pencil-conditional-realization`, `…-pair`, `…-main-component`).
+  **Round 4 (`a2`):** GO, landed — all six dropped (task 10r, `654bae8a`), sanctioned at Stop 2.
 - **A finsum-native rewrite of `CoverageTheoremS.lean`'s degree-sum pair** (task 8, B5;
   `Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard` and `…two_mul_ncard_le_ncard_edgeSet`, the 17
   kept sites). Both proofs bridge `Set.ncard` to a `Finset` sum (`G.vertexSet_finite.toFinset`, or
@@ -379,6 +326,8 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
   sum still needs converting back to a multiple of `ncard` — the missing step above. A rewrite would
   need new finsum comparison/constant-sum mirror lemmas first, which is a new proof route, not a
   local substitution.
+  **Round 4 (`a3`):** GO for `two_mul_ncard_le_ncard_edgeSet` only — landed via `finsum_mem_const` +
+  `Set.Finite.ncard_biUnion` (task 10d, `eff50a5d`); its partner stays unconverted.
 - **`pencilPair_of_habitat_ncard_eq_four` feeds neither headline** (task 24, C1; round 4's third
   question). Its only caller is `pencil_conjecture_of_hcontract_hK_hbareSplit` (`Escape.lean`),
   and that theorem's only caller, `…_of_card`, has none. The headline reaches `|V| = 4` through
@@ -394,6 +343,9 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
     The shared step is the join-detector rank computation. Its `m`-general form would need a
     standard-basis API for `⋀²K⁴` that the project lacks, which is not worth building for an
     off-headline proof.
+  - **Round 4 (`a4`):** moot — retired with `1a`'s cluster (task 10i, `1e7d78a9`); the surviving
+    `_three` was later renamed `pencilPair_of_simple_ncard_eq_three` and moved to
+    `GenericTriangle.lean` (task 10j, `8f297c7d`).
 - **A #4/#6 cross-proof unification of `Pair2.lean`'s two pendant producers** (task 26,
   C3; `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`, #4, and its
   `_deg3` sibling, #6). Once `hcross_eq` is factored out (landed), the two proofs' shared tail —
@@ -407,6 +359,7 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
   `≤ 2`-generator cover argument in #4; vacuous — `u_c` is always a `G`-hub — in #6). That
   is a real design task (a shared lemma taking the avoidance target and the hub-transfer proof as
   parameters), not a small local extraction — structural, per §C's fifth bullet.
+  **Round 4 (`a5`):** GO, landed — one shared tail for #4 and #6 (task 10l, `bce29f77`).
 - **#8's `|C| = 0`/`|C| = 1` case-split duplication** (task 27, C4;
   `hasPencilRealization_of_not_twoEdgeConnected_core`, `Arms.lean`). The two branches of the case
   split share four near-identical sub-`have`s (`hnorm_nz`/`hextF_nz`/`hpoint_nz`/`hpoint_inc`)
@@ -415,10 +368,14 @@ close (task 45) mirrored them, one line each, into `notes/Cleanup40.md` §2 *Rou
   need to abstract over the assembled `normal`/`point`/`extF` on the `V₂` side (plain vs.
   transported by the repositioning automorphism `(g, h)`) — a real design task, not a small local
   extraction, and squarely in the scope-pin's `ScrewSpace`-carrier caution. Not attempted.
+  **Round 4 (`a6`+`a6a`):** GO, landed — one assembly for each cut case's two branches (task 10k,
+  `8b4a9120`).
 - **`Graph.X0Attains.of_closedEar` feeds neither headline** (task 37, A-MC5; round 4's third
   question). It has zero callers anywhere in the tree — `Coverage.lean`'s `X0Reduces` dispatch
   never consumes it (Phase 40g's PI decision 2, `notes/Phase40g.md`); round 4 decides whether to
   keep, retarget, or retire it.
+  **Round 4 (`a7`):** NO-GO, kept — the PI's own call confirmed; no retarget, the coverage reduces
+  at a cut vertex or bridge chain directly.
 
 ## Moved to a later round
 

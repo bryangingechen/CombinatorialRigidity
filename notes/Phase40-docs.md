@@ -6,9 +6,9 @@ rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, a
 `CLEANUP.md` D over Phase 40 and rounds 1–4: lift their cross-cutting lessons, compress Phase 40's
 notes and design doc with every anchor kept, archive FRICTION's `[resolved]` entries, align the
 user-facing surfaces with `intro.tex`, and run the standing project-organization sweep. No
-planned stop. The full task list below was populated at the open; tasks 1–13 landed 2026-10-04.
-**Next concrete task:** task 14 (C7), `notes/Phase40-cleanup.md` (Sonnet). Round
-manual: `CLEANUP.md`.
+planned stop. The full task list below was populated at the open; tasks 1–14 landed 2026-10-04.
+**Next concrete task:** task 15 (G), the dispatch-log grooming — the coordinator's own commit.
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,9 +17,9 @@ No planned stop: the round opens and closes unattended (`notes/Cleanup40.md` §1
 
 ## Current state
 
-**Next commit: task 14 (C7)**, `notes/Phase40-cleanup.md`. Of the 17 tasks, 1–13 are done
-(2026-10-04); each is one or two lines in the checklist below, not duplicated here. Task 15 (G) is
-the coordinator's own commit, and task 16 (P) has no commit of its own. Nothing is mid-stream.
+**Next: task 15 (G)**, the dispatch-log grooming — the coordinator's own commit. Of the 17 tasks,
+1–14 are done (2026-10-04); each is one or two lines in the checklist below, not duplicated here.
+Task 16 (P) has no commit of its own. Nothing is mid-stream.
 
 **Verified at the open** (`4360ab0e`, docs only; the Lean tree is `654bae8a`'s, the blueprint
 `993b9e74`'s):
@@ -85,7 +85,7 @@ the 16 sub-notes have 1 735 lines (1 734 then); the design doc 1 472 (1 434) and
 | `Phase40e.md`–`40h.md` | 109, 98, 110, 137 | 2, 3, 1, 3 | 5, 7, 10, 8 | compress (task 11) |
 | `Phase40i.md`–`40l.md` | 125, 119, 122, 107 | 1, 1, 6, 2 | 6, 6, 9, 8 | compress (task 12) |
 | `Phase40m.md`–`40p.md` | 121, 129, 108, 79 | 0, 2, 4, 2 | 9, 7, 5, 17 | compress (task 13) |
-| `Phase40-cleanup.md` | 491 | 0 | 14 | compress (task 14): at the tripwire |
+| `Phase40-cleanup.md` | 491 | 0 | 14 | compressed (task 14): 491 → 448 |
 | `Phase40-factor.md` | 227 | 0 | 11 | leave: short, and design §7 cites its tasks 1–2 |
 | `Phase40-exposition.md` | 372 | 0 | 14 | leave, but for task 5: `Cleanup40.md` §2 and the verdicts' IDs cite its long sections |
 | `Phase40-exposition-exemplar.md` | 341 | 0 | 4 | freeze: pinned verbatim at Stop 1; **PROSE** reads it |
@@ -167,13 +167,10 @@ section titles are the stable reference.
   `notes/pencil/CLAUDE.md`, `notes/MolecularConjecture.md`). Fixed 40p's stale *Decisions* line
   "the landed Lean stays as conditional theorems": round 4 retired it (`1e7d78a9`, `f8c6b0d4`,
   `654bae8a`), noted in place.
-- [ ] **14. C7 — `notes/Phase40-cleanup.md`** (Sonnet; 491 lines). One line per landed task,
-  naming its commit (round 4's log is the model); the §A walk, the §C screen and the close's
-  blocks collapse to verdicts. Preserve every task number (`notes/Cleanup40.md` §2 cites tasks 2,
-  8, 24, 26, 27, 32, 37, 38, 41 and 43, FRICTION task 17); task 45's figures verbatim
-  (`scripts/cleanup-smell-sweep.py`'s docstring cites them as round 1's run); *Candidates for
-  `40-simplify`* whole (`Cleanup40.md` §2 points at its detail, the verdicts' `a1`–`a7` are its
-  items, FRICTION cites it); and *Moved to a later round*.
+- [x] **14. C7 — `notes/Phase40-cleanup.md`** (Sonnet; 491 → 448 lines). The §A walk, §C screen
+  and close's blocks collapsed to one-line verdicts; every task number, task 45's table and
+  *Candidates*/*Moved to a later round* kept whole, none repointed. The seven round-1 candidates
+  each got round 4's disposition appended (grep/`git log`-confirmed), nothing rewritten.
 
 ### The coordinator's grooming, and the close
 
@@ -239,11 +236,8 @@ and a one-line reason; the same line goes into the target in the same commit.
 
 ## Hand-off / next phase
 
-**Next commit: task 14 (C7)**, `notes/Phase40-cleanup.md` (Sonnet; 491 lines) — round 1's log, one
-line per landed task naming its commit (round 4's log the model); preserve every task number
-`Cleanup40.md` §2 cites (2, 8, 24, 26, 27, 32, 37, 38, 41, 43, FRICTION task 17), task 45's figures
-verbatim, *Candidates for `40-simplify`* whole and *Moved to a later round*. Then the coordinator's
-grooming (15) and the close (17).
+**Next: task 15 (G)**, the dispatch-log grooming — the coordinator's own commit (a builder does
+not edit `notes/dispatch-log.md`); then task 16 (P, no commit of its own) and the close (17).
 
 ## Decisions made during this round
 
