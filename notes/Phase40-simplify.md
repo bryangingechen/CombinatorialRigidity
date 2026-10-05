@@ -186,9 +186,9 @@ that ROADMAP's **PROSE** bullet carries it.
 ## Hand-off / next phase
 
 **Round 4 is closed; there is no next step in it.** The next round is round 5, `40-docs` (project
-organization), as `notes/Cleanup40.md`'s **Status** says; its work log `notes/Phase40-docs.md`
-does not exist yet. What carried over: task 3's `c8a`, in ROADMAP's **PROSE** bullet. No task of
-this round is left open.
+organization), as `notes/Cleanup40.md`'s **Status** says; it opened 2026-10-04 (work log
+`notes/Phase40-docs.md`). What carried over: task 3's `c8a`, in ROADMAP's **PROSE** bullet. No
+task of this round is left open.
 
 **For the PI** (a report, not a stop):
 - **Two pinned items are kept with no caller** (*Decisions*). `cor:pencil-flat-x0`'s pin

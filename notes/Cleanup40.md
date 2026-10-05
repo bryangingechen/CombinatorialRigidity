@@ -9,11 +9,12 @@ Round 4, `40-simplify`, opened and closed 2026-10-04 (`notes/Phase40-simplify.md
 answered the same day, when the PI sanctioned the recommended package of the round's verdicts
 (`notes/Phase40-simplify-verdicts.md`) with CONTRACT-R restated, and round 3's build-or-leave
 recommendations as written (that log's *Autopilot: for the PI*). Its 18 landings, 10a–10r, took
-8 930 net Lean lines out. Round 5 has not opened. Five cleanup rounds (`CLEANUP.md`) over what
-Phases 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`,
-`40-exposition`, `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the
-order and for which rounds are done. **The next concrete task** is opening round 5, `40-docs`
-(§2 *Round 5*), which opens and closes unattended.
+8 930 net Lean lines out. Round 5, `40-docs`, opened 2026-10-04 (`notes/Phase40-docs.md`) and
+closes unattended. Five cleanup rounds (`CLEANUP.md`) over what Phases 39–40 built, run under
+autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`, `40-simplify`, `40-docs`.
+`.claude/autopilot/queue.toml` is the authority for the order and for which rounds are done.
+**The next concrete task** is the one round 5's log names in its **Status** (at the open, task 1,
+the user-facing surfaces).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 
