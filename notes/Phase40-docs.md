@@ -3,7 +3,7 @@
 **Status:** ✓ closed 2026-10-05 (opened 2026-10-04). Round 5, the last of the five post-Phase-40
 cleanup rounds. Their order, stops and the PI's decisions are in `notes/Cleanup40.md`, and
 `.claude/autopilot/queue.toml` is the authority for which rounds are done. Docs only (`CLEANUP.md`
-D over Phase 40 and rounds 1–4): lessons lifted, Phase 40's sub-notes compressed 1 735 → 935 lines
+D over Phase 40 and rounds 1–4): lessons lifted, Phase 40's sub-notes compressed 1 735 → 941 lines
 and its design doc 1 472 → 864 with every anchor kept, FRICTION's `[resolved]` entries archived,
 the user-facing surfaces aligned with `intro.tex`. No stop; all 19 main results' axioms
 unchanged. **Next concrete task:** none in this round; what comes next is in
