@@ -567,5 +567,8 @@ PI, and F40.
   `NOTE_RE` matches `PhaseN.md` and `PhaseN<letter>.md` only, so each cleanup
   round's log is checked by hand (flagged at `40-exposition`'s open; every
   `40-docs` task did it). F40's lesson again: a written rule does not hold a
-  surface no script reads. Open tooling items, like F40 (`notes/Phase40-docs.md`,
-  the close's report).
+  surface no script reads. **Closed 2026-10-05** at the PI's request: (a) is
+  `blueprint/lint.sh` check 8, whose first run found two more missed proof
+  markers, Phase 34's `thm:bodyhinge-generic-rank` and
+  `cor:bodyhinge-generic-rigid`, fixed in the same commit; (b) is
+  `check-phase-note.py` *Which files* (a suffixed note titled "work log").

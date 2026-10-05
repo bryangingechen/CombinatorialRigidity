@@ -294,7 +294,12 @@ or a supersession marker. It checks:
   reading guide; and a raw Lean hypothesis name (`\mathtt{hfoo}`)
   inside a node's *statement* block. Retained-with-marker superseded
   nodes are not exempt from this gate — see `lint.sh`'s own comment for
-  the rationale.
+  the rationale;
+- the multi-label `\cref{a,b}` and subsubsection-`\cref` guards (both
+  render "??" under plastex);
+- the **proof-level `\leanok` gate**: a node's statement and its proof
+  agree on `\leanok` (the tree has no `sorry`, so a formalized statement
+  has a formalized proof).
 
 It prints the offending names and exits non-zero on failure;
 `blueprint/lint.sh: all static reference checks passed.` is green.

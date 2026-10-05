@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Gate: a phase note (`notes/Phase<N>.md` / `notes/Phase<N><letter>.md`) must
+"""Gate: a phase note (`notes/Phase<N>.md` / `notes/Phase<N><letter>.md`, and a
+suffixed work log such as a cleanup round's -- see *Which files* below) must
 stay forward-weighted, under the ~500-line tripwire, with a word-capped
 `**Status:**` header and no over-long *Decisions made* entry.
 
@@ -122,13 +123,26 @@ on. The landing checklist already requires a landing's *Decisions made* entry
 to be **one line**, which makes a compliant landing roughly net-flat on this
 note -- +26 lines is real room, and a landing that needs more is exactly the
 case this gate exists to stop.
+
+Which files (2026-10-05, dispatch-log F48 (b)). Until then the name pattern
+matched `Phase<N>.md` / `Phase<N><letter>.md` only, so a cleanup round's log
+(`CLEANUP.md` *Per-round work log*: "follows the standard `notes/PhaseN.md`
+template") was gated by hand -- every `40-docs` task ran `parse` and
+`offenders` on it as a module. A suffixed note (`Phase<N>[letter]-<suffix>.md`,
+or CLEANUP.md's ad-hoc `<topic>-cleanup.md`) is now gated when its first line
+calls it a work log, as the template's title does. That takes in the cleanup,
+perf and structure-pass logs, and leaves out the design docs, verdicts and
+exemplar beside them, whose titles say what they are instead.
 """
 import os
 import re
 import subprocess
 import sys
 
-NOTE_RE = re.compile(r"^Phase\d+[a-z]?\.md$")  # NOT -design / -cleanup / -perf
+NOTE_RE = re.compile(r"^Phase\d+[a-z]?\.md$")
+# A suffixed note is gated only if its title says "work log" (*Which files*).
+LOG_RE = re.compile(r"^(Phase\d+[a-z]?-[A-Za-z0-9-]+|[A-Za-z0-9-]+-cleanup)\.md$")
+WORK_LOG_RE = re.compile(r"^#\s.*\bwork log\b", re.I)
 DIRNAME = "notes"
 
 LINE_CAP_DEFAULT = 500  # the `notes/CLAUDE.md` tripwire, verbatim
@@ -309,8 +323,17 @@ def offenders(name, m, base=None, archive=False):
     return bad
 
 
+def is_note(name, text):
+    """A phase note by name, or a suffixed note whose title calls it a work log."""
+    if NOTE_RE.match(name):
+        return True
+    return bool(LOG_RE.match(name) and text is not None
+                and WORK_LOG_RE.match(text.split("\n", 1)[0]))
+
+
 def all_notes():
-    return sorted(f for f in os.listdir(DIRNAME) if NOTE_RE.match(f))
+    return sorted(f for f in os.listdir(DIRNAME)
+                  if NOTE_RE.match(f) or (LOG_RE.match(f) and is_note(f, read_note(f))))
 
 
 def read_note(name):
@@ -340,11 +363,11 @@ def changed(ref_new, ref_old):
             ).stdout.split()
         except Exception:
             listing = []
-        names = {n for n in listing if NOTE_RE.match(n)}
+        names = {n for n in listing if NOTE_RE.match(n) or LOG_RE.match(n)}
     for name in sorted(names):
         new = read_note(name) if ref_new is None else git_show(ref_new, name)
         old = git_show(ref_old, name)
-        if new is not None and new != old:
+        if new is not None and new != old and is_note(name, new):
             out.append(name)
     return out
 

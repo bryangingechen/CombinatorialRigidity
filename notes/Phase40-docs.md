@@ -281,7 +281,8 @@ post-program phases*). Nothing carried over, and no task of this round is left o
   - **F48**: two checks have no gate: a green node's proof-level `\leanok` (`blueprint/lint.sh`
     checks only the statement's), and the cleanup-round logs, which `notes/check-phase-note.py`'s
     name pattern skips, so a round's log is gated only by hand (every task of this round did it).
-    The PI would decide whether to commission the two guards (tooling items, like F40).
+    The PI would decide whether to commission the two guards (tooling items, like F40). **Done
+    2026-10-05** at the PI's request: both built (dispatch-log F48).
 - ***Candidates for the PI*:** none were recorded.
 
 ## Decisions made during this round

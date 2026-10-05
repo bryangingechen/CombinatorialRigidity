@@ -297,7 +297,10 @@ sort near the relevant phase:
   between-phases cadence (e.g. `notes/perf-cleanup.md`).
 
 The log follows the standard `notes/PhaseN.md` template — see
-`PHASE-BOUNDARIES.md` *Template for `notes/PhaseN.md`*. Sub-organisation
+`PHASE-BOUNDARIES.md` *Template for `notes/PhaseN.md`* — and
+`notes/check-phase-note.py` gates it like a phase note, keyed on the
+template's "work log" title (a round named otherwise, like
+`Phase40-docs.md`, is still caught). Sub-organisation
 of *Decisions made* is encouraged when many sweeps happen in one
 round; the cleanup round's "Lemma checklist" is the task list
 across (A)–(D).

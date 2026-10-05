@@ -28,7 +28,8 @@ for *organizing* this directory is here.
   `--archive` also gates closed ones and is red by design). It
   machine-checks four of the *Phase notes* rules below: the ~500-line
   tripwire, the forward-vs-finished ratio, the `**Status:**`-header
-  word cap, and the ≤ 8-line *Decisions made* entry. Caps and
+  word cap, and the ≤ 8-line *Decisions made* entry; it also gates a
+  suffixed work log, e.g. a cleanup round's (its *Which files*). Caps and
   calibration are in its docstring.
 - **`FRICTION.md`** — the active friction log (format and filing rule in
   its header); **`FRICTION-archive.md`** — resolved entries, a search

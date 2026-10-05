@@ -35,6 +35,11 @@
 #      "??" regardless of single/multi-label syntax — a distinct root
 #      cause from check 6's bug, same visible symptom. Name the target in
 #      prose instead of cross-referencing it numerically.
+#   8. Proof-level \leanok gate (dispatch-log F48): a node's statement
+#      and its proof agree on \leanok. The tree carries no `sorry`, so a
+#      formalized statement has a formalized proof, and a proof marked
+#      formalized under an unmarked statement means nothing; either split
+#      is a missed marker (Phase 40i B2 and 40l B3 caught two by hand).
 #
 # Needs no venv / TeX / lake — pure text checks, runs in well under a
 # second. It does NOT replace verify.sh (inv bp + inv web +
@@ -339,6 +344,33 @@ if [ -n "$NONUM_LABELS" ]; then
         echo "$REFS_TO_NONUM" | sed 's/^/  /' >&2
         FAIL=1
     fi
+fi
+
+# --- 8. Proof-level \leanok gate ----------------------------------------
+# A \begin{proof} belongs to the theorem-like node it follows (before the
+# next \begin{env}). Only a line that is \leanok alone counts as the
+# marker, the project's form for it (check 4 notes its own statement-block
+# scope). A node with no proof environment is not checked here.
+# shellcheck disable=SC2086
+awk '
+ /\\begin\{(lemma|theorem|proposition|corollary|definition)\}/{
+   st=1;sok=0;pok=0;lab="";if($0~/\\leanok/)sok=1;next}
+ st==1&&/\\end\{(lemma|theorem|proposition|corollary|definition)\}/{st=2;next}
+ st==1{
+   if($0~/^[ \t]*\\leanok[ \t]*$/)sok=1;
+   if(match($0,/\\label\{[^}]+\}/)){lab=substr($0,RSTART,RLENGTH);gsub(/\\label\{|\}/,"",lab)}
+   next}
+ st==2&&/\\begin\{proof\}/{st=3;pfl=FNR;if($0~/\\leanok/)pok=1;next}
+ st==3&&/\\end\{proof\}/{
+   if(sok!=pok)print FILENAME":"pfl" ["(lab==""?"unlabeled":lab)"] statement " \
+     (sok?"has":"lacks")" \\leanok, proof "(pok?"has":"lacks")" it";
+   st=0;next}
+ st==3{if($0~/^[ \t]*\\leanok[ \t]*$/)pok=1;next}
+ ' $TEXFILES > "$TMP/proof-leanok.txt"
+if [ -s "$TMP/proof-leanok.txt" ]; then
+    echo "lint.sh: a node's statement and proof disagree on \\leanok:" >&2
+    sed 's/^/  /' "$TMP/proof-leanok.txt" >&2
+    FAIL=1
 fi
 
 if [ "$FAIL" -ne 0 ]; then
