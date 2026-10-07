@@ -5,6 +5,7 @@
 # - `id` is the argument of `/coordinate-phase`, and `note` is the item's work log. An item whose
 #   work log doesn't exist yet hasn't opened.
 # The five cleanup rounds' scope, order and stops: notes/Cleanup40.md (PI, 2026-09-29).
+# PROSE's five rounds' scope, order and stop: notes/Prose.md (PI, 2026-10-07).
 
 [[item]]
 id = "40-cleanup"
@@ -40,6 +41,41 @@ title = "Post-Phase-40 cleanup 5/5: project organization"
 note = "notes/Phase40-docs.md"
 attended = false
 done = true
+
+[[item]]
+id = "prose-laman"
+title = "PROSE 1/5: Laman's theorem and the rigidity matroid"
+note = "notes/Prose-laman-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "prose-molecular"
+title = "PROSE 2/5: body-bar, body-hinge and the molecular foundations"
+note = "notes/Prose-molecular-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "prose-algebraic"
+title = "PROSE 3/5: the algebraic induction"
+note = "notes/Prose-algebraic-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "prose-applications"
+title = "PROSE 4/5: applications, continuations and the introduction"
+note = "notes/Prose-applications-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "prose-graph"
+title = "PROSE 5/5: graph repairs and the findings report"
+note = "notes/Prose-graph-cleanup.md"
+attended = false
+done = false
 
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.

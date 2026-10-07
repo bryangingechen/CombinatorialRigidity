@@ -254,9 +254,9 @@ and a one-line reason; the same line goes into the target in the same commit.
 ## Hand-off / next phase
 
 **Round 5 is closed; there is no next step in it.** All five post-Phase-40 cleanup rounds are
-closed and no round follows (`notes/Cleanup40.md`'s **Status**). The autopilot queue's next row is
-ORIGAMI, which is attended: it opens with the PI, and takes its phase number then (ROADMAP *Queued
-post-program phases*). Nothing carried over, and no task of this round is left open.
+closed and no round follows (`notes/Cleanup40.md`'s **Status**). The autopilot queue's next rows are
+**PROSE**'s five rounds (`notes/Prose.md`, queued 2026-10-07), then ORIGAMI, attended (ROADMAP
+*Queued post-program phases*). Nothing carried over, and no task of this round is left open.
 
 **For the PI** (a report, not a stop):
 - **Task 16: `.claude/autopilot/system-prompt.md`'s cleanup-round lines.** Line 60 still sends a

@@ -13,9 +13,9 @@ recommendations as written (that log's *Autopilot: for the PI*). Its 18 landings
 and with no stop (`notes/Phase40-docs.md`). Five cleanup rounds (`CLEANUP.md`) over what Phases
 39–40 built, run under autopilot in this order: `40-cleanup`, `40-factor`, `40-exposition`,
 `40-simplify`, `40-docs`. `.claude/autopilot/queue.toml` is the authority for the order and for
-which rounds are done. **All five rounds are closed, and no round follows.** The next item is
-ORIGAMI, the queue's next row, which is attended: it opens with the PI (ROADMAP *Queued
-post-program phases*).
+which rounds are done. **All five rounds are closed, and no round follows.** The queue's next
+rows are **PROSE**'s five rounds (`notes/Prose.md`, queued 2026-10-07), then ORIGAMI, attended
+(ROADMAP *Queued post-program phases*).
 
 ## 1. The PI's decisions (2026-09-29, verbatim)
 

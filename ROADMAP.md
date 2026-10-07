@@ -1217,7 +1217,8 @@ Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
 above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day at the user's
 initiative and closed 2026-09-29, proving the pencil realization theorem (§40 above). The PI then
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
-autopilot, so **ORIGAMI opens after them**.) A longer **unqueued**
+autopilot, and on 2026-10-07 **PROSE**'s five rounds after them, so **ORIGAMI opens after
+PROSE**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`.
@@ -1233,8 +1234,19 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rounds 3, `40-exposition`, and 4, `40-simplify`, closed 2026-10-04; round 5, `40-docs`, closed
   2026-10-05 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`, `notes/Phase40-docs.md`).
-  **Next concrete task:** opening **ORIGAMI** (below), the autopilot queue's next row. It is
-  attended: it opens with the PI, and takes its phase number then.
+  The autopilot queue's next rows are **PROSE**'s (below), then ORIGAMI.
+- **PROSE** — five `CLEANUP.md` rounds that rewrite the prose of every blueprint chapter outside
+  `pencil.tex` and `main-component.tex`, and record what else they notice. Queued by the PI on
+  2026-10-07, ahead of ORIGAMI, to run under autopilot; plan, the PI's decisions and the one planned
+  stop are in `notes/Prose.md`. Rounds 1–4 (`prose-laman`, `prose-molecular`, `prose-algebraic`,
+  `prose-applications`) take the chapters in reading order to the register `40-exposition` settled
+  (`blueprint/AUTHORING.md`'s clauses of 2026-10-03; the exemplar is
+  `notes/Phase40-exposition-exemplar.md`), with the dependency graph and pins frozen. Round 5,
+  `prose-graph`, adds the missing `\uses` edges, splits the bundled nodes (including `40-simplify`'s
+  `c8a`, `notes/Phase40-simplify.md` *Moved to a later round*) and writes the findings report.
+  Statement strength and the Lean are never changed: such findings go to the ledger
+  `notes/Prose-findings.md`, for the PI. **Next concrete task:** opening round 1, `prose-laman`
+  (`notes/Prose.md` §3), the autopilot queue's next row.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
@@ -1259,16 +1271,6 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **VERSO** — blueprint → `leanprover/verso-blueprint` port. Paused,
   external-gated (resume criteria in `notes/VersoPort.md`); listed so it stays
   visible on the queue.
-- **PROSE** — a prose round over the rest of the blueprint (the PI, 2026-10-03: "at some point we
-  should also look into doing a rewrite round of the rest of the blueprint too"). It brings the
-  chapters outside `pencil.tex` and `main-component.tex` to the register that round 3,
-  `40-exposition`, settled: `blueprint/AUTHORING.md` now carries all six of the round's defaults,
-  in its clauses of 2026-10-03 and its older principles B and D (the exemplar is
-  `notes/Phase40-exposition-exemplar.md`). It also audits
-  for nodes that bundle unrelated
-  results, which the PI expects in earlier chapters. That audit also takes round 4's `c8a`: seven
-  `pencil.tex`/`main-component.tex` nodes with four or more pins, mostly one pin per clause
-  (`notes/Phase40-simplify.md` *Moved to a later round*). Its place in the queue is the PI's to set.
 
 ## Engineering conventions
 
