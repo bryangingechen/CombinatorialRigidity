@@ -5,12 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.11 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.12 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first eleven slices, `sparsity.tex` through `count-matroid.tex`.
-**Next concrete task:** task 5.12, `dfs.tex`, the first carve-out chapter. Round manual:
-`CLEANUP.md`.
+PI*), and the first twelve slices, `sparsity.tex` through `dfs.tex`.
+**Next concrete task:** task 5.13, `pebble-game.tex`'s first part. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -55,14 +54,14 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The eleventh slice has landed** (task 5.11, this commit): all of `count-matroid.tex`, now 1–298
-(306 lines at the parent). Tasks 5.1–5.10 rewrote `sparsity.tex` through `rigidity-matroid.tex`.
-The register is *Scope*'s. Nothing is mid-stream; task 5.12 is next.
+**The twelfth slice has landed** (task 5.12, this commit): all of `dfs.tex`, the first carve-out
+chapter, now 1–204 (179 lines at the parent). Tasks 5.1–5.11 rewrote `sparsity.tex` through
+`count-matroid.tex`. The register is *Scope*'s. Nothing is mid-stream; task 5.13 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (139 overfull boxes, none in
-  `count-matroid.tex`; 144 at `d0178306`). The screens on `count-matroid` read 0 and 0 / 0 (the
-  open's: 0 and 16 / 45).
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (137 overfull boxes, none in
+  `dfs.tex`; 139 at `d6a53778`). The screens on `dfs` read 0 and 0 / 0 (the open's: 2 and
+  14 / 21).
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -289,10 +288,11 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   - [x] **5.10 `rigidity-matroid.tex`, second part and opening** (`d0178306`; 10 nodes; now
     504–827 and 1–39): a roadmap opening crediting Laman; the induction on $|V|$; the matroids on
     $E(K_V)$ in words. Found `F-029`, `F-030`.
-  - [x] **5.11 `count-matroid.tex`** (this commit; 8 nodes; now 1–298): Lee–Streinu's components
+  - [x] **5.11 `count-matroid.tex`** (`d6a53778`; 8 nodes; now 1–298): Lee–Streinu's components
     and $C_G(X)$ for `maxBlock`; the count matroid credited to Lorea and White–Whiteley; a false
     free-edge remark and the $(3,6)$ example dropped. Found `F-031`, `F-032`.
-  - [ ] **5.12 `dfs.tex`** (carve-out): 5 nodes, 179 lines.
+  - [x] **5.12 `dfs.tex`** (this commit; carve-out; 5 nodes; now 1–204): the search's steps as a
+    numbered list, its results in words; Lee–Streinu's reachability region. Found `F-033`.
   - [ ] **5.13 `pebble-game.tex`, state, invariants and the basic algorithm** (carve-out; 61–410):
     10 nodes, 350 lines.
   - [ ] **5.14 `pebble-game.tex`, soundness and completeness** (411–783): 9 nodes, 373 lines.
@@ -374,6 +374,8 @@ one line each naming the ledger ID and the task that found it.
   `LinearRigidityMatroid.lean` that contradict their declarations.
 - `F-032` (L, task 5.11): `countMatroid`'s docstring gives $(3,6)$ as a failure of augmentation;
   $(3,6)$-sparse graphs have no edges.
+- `F-033` (L, task 5.12): the search marks only the current walk, so it is exponential in the
+  worst case; docstrings call the reachability region's cost quadratic.
 
 ## Blockers / open questions
 
@@ -381,17 +383,30 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.12**, the twelfth slice and the first carve-out chapter: `dfs.tex`, 5 nodes and
-179 lines, its opening last (principle F). Its diagnosis is under *Per-chapter diagnosis*, its gates
-under *Scope*, and the register is *Scope*'s. What 5.12 must know:
-- **The carve-out** is read as in *Decisions* ("The carve-out in tasks 5.12–5.16") and
-  `AUTHORING.md` principle A: a step that visits, marks, returns or searches stays plain
-  computational English; a result type in a statement (`some (w, p)`, `none`) is restated as what
-  the search returns, in words; `List V`, `Relation.ReflTransGen` and
-  `DirectedWalk.dropUntilBundle` leave statements, and stay in proofs only as addresses.
-- **Neighbours.** `count-matroid.tex`'s opening (5.11) ends with one sentence pointing at
-  `sec:pebble-game` for Lee–Streinu's pebble game; it no longer describes the game. `dfs.tex`'s
-  opening describes the search the game uses, and `def:tryReachPebble` is its user.
+**Next: task 5.13**, the thirteenth slice: `pebble-game.tex`'s *State and moves*, *Invariants* and
+*The basic algorithm* (carve-out; 61–410, unchanged since the open), 10 nodes and 350 lines. The
+chapter's opening (1–60) waits for task 5.15 (principle F). The diagnosis is under *Per-chapter
+diagnosis*, the gates under *Scope*, and the register is *Scope*'s. What 5.13 must know:
+- **How 5.12 applied the carve-out** (`dfs.tex`; *Decisions*, "The carve-out in tasks 5.12–5.16").
+  The search's definition lists its steps as a numbered list in plain computational English
+  (fails, returns, marks, runs, stops), and the proofs cite the steps ("returns in step~2").
+  Result types are words: the search "returns a vertex $w$ and a walk $p$" or "fails", and
+  completeness says it "does not fail". Lean names left statements, proofs and notation:
+  `reachableFinding` is "the search for $P$ from $v$" (with $S$ marked, in general), `succ` is
+  the out-neighbour list $N^+(a)$, `ReflTransGen` is "reachable from $u$ along $R$" (glossed once
+  as the reflexive-transitive closure), and `reachClosureComputable` is $\mathrm{Reach}_R(v)$, the
+  *reachability region* (Lee–Streinu §4, p. 1432). One `fmlnote` says, in words, why lists and a
+  Boolean predicate (computability). Termination and cost went to the prose after the definition.
+- **To fix in 5.13.** `def:tryReachPebble` uses $\mathrm{reachableFinding}$ as notation, and its
+  last sentence (that $\mathrm{Reach}_D(v)$ "coincides with the visited set of a fully-exhausted
+  search") is false: the search keeps no visited set across branches, only the current walk
+  (`F-033`). $\mathrm{Reach}_D(v)$ is `def:reachClosureComputable`'s $\mathrm{Reach}_R(v)$ for the
+  arc relation of $D$; `dfs.tex`'s opening already says how the game uses the search and the
+  region, so `pebble-game.tex` need not re-describe the search.
+- **For 5.15 and 5.16.** Lee–Streinu's $O(m_a n)$ bound (§3, p. 1430) counts linear-time searches,
+  and this search is exponential in the worst case (`F-033`). `pebble-game.tex`'s *Out of scope*
+  paragraph and `executable.tex`'s polynomial-time sentences must not claim a bound for the formal
+  algorithm that nothing proves.
 - **Terms fixed by 5.11, for 5.13–5.16.** "For $\ell < 2k$" replaces the coinage "the matroidal
   regime". A *component* of a sparse graph is a maximal tight set (Lee–Streinu's term, defined in
   `count-matroid.tex`'s opening), and $C_G(X)$ is the union of the tight sets containing $X$
@@ -400,16 +415,17 @@ under *Scope*, and the register is *Scope*'s. What 5.12 must know:
   phrase for $\mathrm{fromEdgeSet}\,I$). `pebble-game.tex` and `executable.tex` still say
   "matroidal regime" and "$I$-component". The blueprint numbers chapters as sections: write
   "section", not "chapter".
-- **Sources checked by 5.4–5.11:** Jordán pp. 35–39 (§1.2–1.3.1: the rigidity matrix, Lemmas
-  1.2.1–1.2.3 citing Whiteley's 11.1.3, 11.1.1 and 11.1.7; p. 39: the rigidity matroid of a
-  framework, Lemma 1.3.1), pp. 43–45 (Lemmas 2.1.1–2.1.5; Theorems 2.2.1–2.2.2, credited to
-  Laman), pp. 48–49 and 51 (Lovász–Yemini's results, `F-025`). Lee–Streinu 2008: Lemma 1,
-  Theorem 2 (crediting Lorea and White–Whiteley), Theorem 5(1)–(4), Corollaries 6–7. Whiteley 1996
-  (a preprint: cite by number only): Appendix A, Proposition A.1.1. Asimow–Roth is verified only
-  for "rigidity is decided for almost all placements" and "at a generic framework, rigid iff
-  infinitesimally rigid".
+- **Sources checked by 5.4–5.12:** Jordán pp. 35–39 (§1.2–1.3.1; Lemmas 1.2.1–1.2.3 citing
+  Whiteley's 11.1.3, 11.1.1 and 11.1.7; Lemma 1.3.1), pp. 43–45 (Lemmas 2.1.1–2.1.5; Theorems
+  2.2.1–2.2.2, credited to Laman), pp. 48–49 and 51 (`F-025`). Lee–Streinu 2008: Lemma 1, Theorem
+  2 (crediting Lorea and White–Whiteley), Theorem 5(1)–(4), Corollaries 6–7; §3's complexity
+  paragraph (p. 1430: "at most $\ell + 1$ depth-first searches through D"); §4's $\mathrm{Reach}(v)$
+  and Lemma 13 (p. 1432); path reversal in Lemma 10's proof (p. 1432). Whiteley 1996 (a preprint:
+  cite by number only): Appendix A, Proposition A.1.1. Asimow–Roth is verified only for "rigidity
+  is decided for almost all placements" and "at a generic framework, rigid iff infinitesimally
+  rigid".
 - **For the close (task 6):** `notes/BlueprintExposition.md`'s Group-A line still says
-  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.13–5.16 follow in
+  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.14–5.16 follow in
   order, and task 6 closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the

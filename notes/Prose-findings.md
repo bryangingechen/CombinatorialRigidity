@@ -405,6 +405,22 @@ declaration's name as its header writes it:
   *Evidence:* read (the body of `IsSparse`); a `lake lean` witness (every $(3,6)$-sparse
   `SimpleGraph V` is `⊥`; it elaborates with no output).
   *Found:* round 1 task 5.11.
+- **F-033** · L · `CombinatorialRigidity.Search.reachableFinding`, `reachClosureComputable`
+  (`Search/DFS.lean`): the search marks only the vertices of the current walk, since every
+  recursive call from `v` gets the same `insert v visited`. When no vertex satisfies `P` it
+  therefore follows every simple walk from `v`, exponentially many in general, and
+  `reachClosureComputable` runs it once per vertex. The section docstring above
+  `reachClosureComputable` calls this "$O(n)$ DFS invocations — quadratic in the worst case", and
+  calls the search "iterative". Lee–Streinu's $O(m_a n)$ bound for the basic pebble game (§3,
+  p. 1430) counts each search as linear in $|D|$, which a search keeping one marked set across
+  sibling calls would be. `Exec.lean`'s docstrings and `executable.tex` say the pebble game runs in
+  polynomial time; no bound is proved (task 5.16 checks the chapter). `dfs.tex` now describes the
+  per-walk marking (task 5.12).
+  *Evidence:* read (the body of `reachableFindingAux`); measured, script not retained: a `lake
+  lean` file timing `reachableFinding` with `P` false on a chain of $n$ diamonds ($3n + 1$
+  vertices, $4n$ arcs, $2^n$ simple walks end to end) took 2, 6, 29, 128, 631 and 3071 ms at
+  $n = 8, 10, \ldots, 18$.
+  *Found:* round 1 task 5.12.
 
 ## M — mathematics and sources
 
