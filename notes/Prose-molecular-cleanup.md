@@ -5,10 +5,9 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, task 2.1 `F-051`–`F-053`, task 2.2
-`F-054`–`F-055`. 20 one-commit tasks; tasks 1, 2.1 and 2.2 are done, and the round has no planned
-stop. **Next concrete task:** task 2.3, the rest of `body-bar.tex` with its opening, and
-`body-hinge.tex`, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.3 `F-051`–`F-058`. 20
+one-commit tasks; tasks 1 and 2.1–2.3 are done, and the round has no planned stop. **Next concrete
+task:** task 2.4, `extensor.tex`, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,16 +17,17 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.2 has landed** (this commit): `body-bar.tex` 42–452, 14 nodes: the 12 of 42–374 at the
-parent, and `def:graph-sparse` and `thm:unionPow-cycle-indep-iff-sparse`, moved up from *Tree-packing
-as a corollary*, whose opening (453–459) it also rewrote. Every `\label`, `\lean{…}`, `\leanok` and
-`\uses` line is byte-identical. Nothing is mid-stream; task 2.3 is next.
+**Task 2.3 has landed** (this commit): `body-bar.tex`'s opening (1–48) and its last three
+subsections (460–721), and all of `body-hinge.tex` (165 lines), 13 nodes. `thm:tay-witness` moved
+after its two halves. Every `\label`, `\lean{…}`, `\leanok` and `\uses` line is byte-identical. The
+"$D = \delta$" crosswalks of `extensor`, `rigidity-matrix`, `deficiency` and `molecular-induction`
+are gone (one clause each). Nothing is mid-stream; task 2.4 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (110 overfull boxes, three in
-  `body-bar.tex`, all in task 2.3's part). Screens on `body-bar`: register 4 (the open's 5; all four
-  the literal "carries" of the Tay nodes), devices 0 / 6 (26 / 51), forward `\uses` 0. Forward
-  `\uses` within the chapter: 2, both task 2.3's (6 at the parent).
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (105 overfull boxes, none in either
+  chapter). Screens: `body-bar` register 0, devices 0 / 10 (26 / 51), forward `\uses` 0;
+  `body-hinge` 0, 0 / 3, 0; `extensor` devices 0 / 0 (0 / 1). Forward `\uses` within `body-bar`:
+  0 (6 at the open).
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -188,31 +188,14 @@ formalization remarks, Lean names in proofs, repeated connective verdicts, and t
 dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight in
 `rigidity-matrix`).
 
-- **Done:** `matroid-union` (task 2.1) and `body-bar` 42–452 (task 2.2); their open bullets are in
-  this log at `ea058ba8` and `6c26eed5`.
-- **`body-bar`**, the rest (task 2.3): tree packing, frameworks and Tay's theorem (453–661), and the
-  opening (1–41), whose list of ingredients predates task 2.2's order (sparsity and the union count
-  first). "Existence-of-realization form … not pursued here" is said in the opening, before
-  `thm:tay-witness`, and twice in `body-hinge`: once. The Tay converse credits "the Lovász–Yemini
-  rank-upper-bound argument", which round 1 moved to Laman (`F-025`): align. `thm:tay-witness`'s
-  proof `\uses` the later `prop:tay-witness-exists` and `lem:tay-isSparse-of-independent` (principle
-  E, *Node order*). `cor:k-spanning-trees` writes $r(G.\mathrm{cycleMatroid})$ and cites Whiteley's
-  Theorem 13, which is about frameworks on the flat torus (§5.1; its (ii)⇔(iii) is the
-  spanning-tree count). Check Whiteley 1988's Theorem 8, Proposition 6 and §3, and Tay 1984 §5, in
-  `.refs/`. Notation: *Decisions*.
-- **`body-hinge`**: `def:body-hinge-framework` gives each hinge an affine subspace that its pin
-  does not record (`F-048`). Keep the statement; say in a formalization note what the Lean records
-  (the definition-faithfulness gate, `blueprint/CLAUDE.md`), with a `\cref` to `generic-lift.tex`'s
-  `cor:bodyhinge-generic-tree-packing` for the hinge form. "Abbreviate $\delta = d$" gives one
-  number a second name. `lem:edge-multiply-sparse`'s statement carries its count check (principle
-  B), and its title names sparsity while its claim is about frameworks. Tay 1989's title and body
-  name the frameworks differently; `notes/Phase16.md` *Decisions* keeps both, as is.
+- **Done:** `matroid-union` (task 2.1), `body-bar` (tasks 2.2, 2.3) and `body-hinge` (task 2.3);
+  their open bullets are in this log at `ea058ba8`, `6c26eed5` and `7fe65223`.
 - **`extensor`** (crux `lem:extensor-independence`) is near the register. The opening's "genuinely
   metric chapters" and its remark on what mathlib lacks; `def:extensor`'s statement describes
   mathlib's construction and `def:affine-subspace-extensor`'s ends "(Formally, …)" (principles B,
   D). The crux proof's reparametrization $d = e + 1$ is Lean detail for a formalization note, and
-  its last sentence points at round 3's `lem:case-III-claim612-extensor-span`. The notation
-  paragraph of *Homogeneous coordinates* names `\mathrm{bodyBarDim}\,n`.
+  its last sentence points at round 3's `lem:case-III-claim612-extensor-span`. Task 2.3 removed
+  the notation paragraph's `\mathrm{bodyBarDim}\,n` crosswalk (*Homogeneous coordinates*).
 - **`rigidity-matrix`** (phase 18, extended through phase 40).
   - *2.5:* the paragraphs after `def:rigidity-matrix` (121–149) narrate the formalization
     (principle D's basis-free anti-pattern). `def:dof-generic` says "Formalized basis-free" in its
@@ -290,11 +273,11 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 - [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
   - [x] **2.1 `matroid-union.tex`** (`6c26eed5`; now 1–306, 9 nodes). Found `F-051`–`F-053`.
-  - [x] **2.2 `body-bar.tex`, the prerequisites and the $k$-frame matroid** (this commit; now
+  - [x] **2.2 `body-bar.tex`, the prerequisites and the $k$-frame matroid** (`7fe65223`; now
     42–452, 14 nodes, with the two moved up from *Tree-packing*). Found `F-054`, `F-055`.
-  - [ ] **2.3 `body-bar.tex`'s rest and opening, and all of `body-hinge.tex`**: tree packing,
-    frameworks and Tay's theorem (453–661) with the opening (1–41), then `body-hinge.tex`; 13
-    nodes, 394 lines. It applies the round's notation (*Decisions*).
+  - [x] **2.3 `body-bar.tex`'s rest and opening, and all of `body-hinge.tex`** (this commit; now
+    `body-bar` 1–48 and 460–721, `body-hinge` 1–165; 13 nodes). Applied the round's notation
+    (*Decisions*). Found `F-056`–`F-058`.
   - [ ] **2.4 `extensor.tex`**: 7 nodes, 215 lines; crux `lem:extensor-independence`.
   - [ ] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (52–337): 9 nodes, 286
     lines.
@@ -354,6 +337,8 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   formula (Edmonds–Rota, not Edmonds 1970; Nash-Williams and Edmonds, not Edmonds 1965), fixed in
   `matroid-union.tex` and left in `intro.tex`, `deficiency.tex`, `molecular-induction.tex` and the
   Lean docstrings.
+- `F-058` (S, task 2.3): `thm:tay-witness` and `thm:body-hinge-tay` assume $d \ge 2$, which their
+  pins do not; `lem:edge-multiply-sparse`'s proof applies the first for every $d$.
 
 ## Moved to a later round
 
@@ -368,6 +353,10 @@ one line each naming the ledger ID and the task that found it.
   uses their per-set analogues, which have no node.
 - `F-055` (L, task 2.2): `exists_forestPacking_cover_of_isSparse_restrict` repeats the forward half
   of `tutte_nash_williams`, and both its callers repeat that proof's disjointification.
+- `F-056` (T, task 2.3): `generic-lift.tex` and `intro.tex` keep Tay and Whiteley's $n$ and
+  $d = n(n+1)/2$ (and $\delta$) for the body-bar dimension; round 4 rewrites both.
+- `F-057` (L, task 2.3): three `BodyBar/` docstrings disagree with their declarations or sources
+  (Whiteley's Theorem 13; a connectivity hypothesis; "degenerate" standard-basis two-extensors).
 
 ## Blockers / open questions
 
@@ -375,32 +364,31 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.3, `body-bar.tex`'s tree packing, frameworks and Tay's theorem
-(453–661) with its opening (1–41), and all of `body-hinge.tex`, at Opus**, a fresh agent
-(`notes/Prose.md` §2). Its diagnosis is the `body-bar` and `body-hinge` bullets under *Per-chapter
-diagnosis*, its gates and screens under *Scope*. Then tasks 2.4–2.18 in order, and task 3 closes the
-round. For the slices:
+**Next concrete task: task 2.4, `extensor.tex`, at Opus**, a fresh agent (`notes/Prose.md` §2).
+Its diagnosis is the `extensor` bullet under *Per-chapter diagnosis*, its gates and screens under
+*Scope*; its crux `lem:extensor-independence` keeps its full proof. Then tasks 2.5–2.18 in order,
+and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open a new arc; the coordinator reads them in full against the
   exemplars, as it read round 1's 5.1–5.3.
-- **Notation.** Task 2.3 applies *Decisions*' notation call to `body-bar` and `body-hinge`; tasks
-  2.4–2.18 write KT's $d$ and $D$ and drop the "$D = \delta$" crosswalks and the stray $n$.
+- **Notation.** Task 2.3 applied *Decisions*' notation call to `body-bar` and `body-hinge`, and
+  removed the "$D = \delta$" crosswalks and every $\delta$ from the round's other chapters. Tasks
+  2.4–2.18 write KT's $d$ and $D$, drop the stray $n$, and point at `body-hinge`'s $\tilde G$.
 - **Crux nodes** keep their full proofs, in tasks 2.4, 2.12–2.15, 2.17 and 2.18 (*Scope*). Task
   2.5 makes `lem:rank-parallel-full`'s proof and the exposition ledger's 22i verdict agree.
-- **From tasks 2.1 and 2.2.** `body-bar.tex` now opens with *Sparsity and the union of cycle
-  matroids*: the conventions for multigraphs (bodies, bars, $V(E')$, $G \restriction E'$, forests),
-  the cycle matroid in words with rank function $r$ and $r(E') = |V(E')| - c(E')$, a recap of
-  `matroid-union.tex` in task 2.1's terms, then `def:graph-sparse` and
-  `thm:unionPow-cycle-indep-iff-sparse`. The $k$-frame subsection writes $a_e$ (the signed
-  incidence vector), $\rho_e$ (the $k$-frame row), $w^{(j)}$, $W^k$ and $A_Y$, over
-  $R = \Q[X_{e,j}]$ and its fraction field $K$; `lem:tay-isSparse-of-independent`'s proof should
-  use them. Task 2.2 rewrote the tree-packing opening (453–459) only so that it stays true. `F-053`
-  lists the credits left in tasks 2.10 and 2.11–2.12.
-- **The open's findings** are recorded, not acted on. Task 2.3 keeps `def:body-hinge-framework`'s
-  statement (`F-048`); task 2.5 treats `lem:rank-rotation-semicont` under the hygiene rule
-  (`F-049`); tasks 2.5–2.7 and 2.16 give `F-050`'s forward references a sentence each.
+- **From tasks 2.1–2.3.** `body-bar.tex` writes bodies in $\R^d$, $D = \binom{d+1}{2}$, a vector
+  $b_e \in \R^D$ per bar (Tay's model; Whiteley's bars are lines), and the row of a bar as
+  $-\sum_c (b_e)_c\, a_e^{(c)}$, the $D$-frame row at $b$ up to sign; "isostatic" is defined in
+  prose. `thm:tutte-nash-williams` is now *Decomposition into forests*, credited as Whiteley
+  credits it (Tutte, Nash-Williams 1961 and 1964; `nashWilliams1964` is new in the bibliography).
+  `body-hinge.tex` writes $(D-1)\cdot G$ and KT's $\tilde G$; `def:body-hinge-framework`'s
+  formalization note says the Lean records bar bundles (`F-048`) and points at
+  `cor:bodyhinge-generic-tree-packing`. `F-053` lists the credits left in tasks 2.10–2.12.
+- **The open's findings** are recorded, not acted on. Task 2.5 treats `lem:rank-rotation-semicont`
+  under the hygiene rule (`F-049`); tasks 2.5–2.7 and 2.16 give `F-050`'s forward references a
+  sentence each.
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-056`.
+  pins reach. The ledger's next ID is `F-059`.
 
 ## Decisions made during this round
 
@@ -437,3 +425,11 @@ round. For the slices:
   $D$ copies of it. `lem:k-frame-specialize-forest` now assumes $(k,k)$-sparsity, its pin's
   hypothesis, not a forest decomposition (equivalent by `thm:tutte-nash-williams`). Two statements
   lost an "equivalently" gloss that needed other nodes; the first subsection states the equivalence.
+- **Task 2.3, `body-bar.tex` 1–48 and 460–721, and `body-hinge.tex`.** `thm:tay-witness` moved after
+  its proof's two `\uses`, `prop:tay-witness-exists` and `lem:tay-isSparse-of-independent`
+  (principle E, *Node order*). A bar carries any vector of $\R^D$ (Tay 1984's model); after the
+  theorem, Whiteley's p. 243 shows that the witnesses' bars are lines. The existence form is said
+  once, in `body-bar`'s opening. `def:body-hinge-framework` keeps its hinges (`F-048`), with a
+  formalization note on the bar bundles. The old closing paragraph had panel-hinge frameworks
+  covered by `thm:body-hinge-tay`; it now states KT Conjecture 1.2. Glosses that needed other
+  nodes (forests, spanning trees) left the statements for the prose after them.

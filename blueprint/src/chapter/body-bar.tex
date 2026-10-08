@@ -1,43 +1,51 @@
 \section{Body-bar Tay theorem}
 \label{sec:body-bar}
 
-This chapter proves \textbf{Tay's theorem}~\cite{tay1984}: for
-$n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ on $b$ bodies
-is the underlying graph of an infinitesimally rigid independent
-body-bar framework in $\mathbb{R}^n$ if and only if
-$|E| = d(b - 1)$ and every $m$-body sub-multigraph has at most
-$d(m - 1)$ edges; equivalently, by the
-Tutte--Nash-Williams~\cite{tutte1961,nashWilliams1961} tree-packing
-theorem, $G$ is the edge-disjoint union of $d$ spanning trees. The
-abstract matroid-union results this argument uses are developed
-separately in \cref{sec:matroid-union}.
+A body-bar framework consists of rigid bodies joined by bars, each bar
+attached to its two bodies by ball joints. Its graph is the multigraph
+with a vertex for each body and an edge for each bar. This chapter
+proves Tay's theorem~\cite{tay1984}, which characterizes the graphs of
+the independent and infinitesimally rigid body-bar frameworks. Let
+$D = \binom{d+1}{2}$, the dimension of the space of infinitesimal
+motions of a rigid body in $\R^d$. Then a multigraph $G$ is the graph
+of an independent and infinitesimally rigid body-bar framework in
+$\R^d$ if and only if $|E(G)| = D|V(G)| - D$ and every non-empty set
+$E'$ of bars satisfies $|E'| \le D|V(E')| - D$, where $V(E')$ is the
+set of bodies that the bars of $E'$ meet. The graphs of the independent
+body-bar frameworks are the multigraphs that satisfy the inequalities
+(Whiteley~\cite[Theorem~8]{whiteley1988}). Tay and Whiteley write $n$
+for the dimension and $d$ for $n(n+1)/2$. We write $d$ and $D$, as
+Katoh and Tanigawa~\cite{katohTanigawa2011} do, because
+\cref{sec:body-hinge} and the chapters after it follow their paper.
 
-The proof follows Whiteley's matroid-union
-framing~\cite{whiteley1988} (a streamlining of Tay's original
-induction-based proof~\cite{tay1984}, surveyed in modern form
-in~\cite{whiteley1996}). Three ingredients:
-\begin{enumerate}
-  \item The generic $k$-frame matroid on a multigraph is the
-        $k$-fold union of the cycle matroid (Whiteley's
-        Theorem~1).
-  \item Edmonds' matroid-partition theorem~\cite{edmonds1965}
-        characterizes independence in this union by the count
-        $|E'| \le k|V'| - k$ on every non-empty subset.
-        Tutte--Nash-Williams~\cite{tutte1961,nashWilliams1961}
-        follows as a corollary.
-  \item Body-bar realizations are obtained by specializing
-        two-extensor row coefficients to standard-basis
-        Pl\"ucker coordinates (Whiteley's witness
-        construction).
-\end{enumerate}
+Whiteley~\cite{whiteley1988} gave another proof of Tay's theorem, by
+matroid union, and we follow it. \Cref{sec:body-bar-matroid-union}
+shows that a set of bars is independent in the union of $k$ copies of
+the cycle matroid if and only if each of its non-empty subsets $E'$
+satisfies $|E'| \le k|V(E')| - k$. This follows from Edmonds' theorem
+(\cref{sec:matroid-union}). \Cref{sec:body-bar-k-frame} proves
+Whiteley's Theorem~1: the general $k$-frame, a matrix whose nonzero
+entries are indeterminates, represents this union.
+\Cref{sec:body-bar-tree-packing} decomposes the bars of a multigraph
+that satisfies the count into $k$ forests, which are spanning trees
+when the multigraph is connected and has $k|V(G)| - k$ bars.
+\Cref{sec:body-bar-framework} defines body-bar frameworks and shows that
+the rigidity matrix of a framework is the general $D$-frame with each
+indeterminate replaced by a coordinate of a bar. \Cref{sec:body-bar-tay}
+proves Tay's theorem. A decomposition of the bars into $D$ forests gives
+an independent framework, in which each bar of the $j$-th forest gets
+the $j$-th standard basis vector of $\R^D$. Conversely, the rows of an
+independent framework satisfy the count, as those of the general
+$D$-frame do.
 
-Whiteley's full irreducible-variety lift (Proposition~6
-in~\cite{whiteley1988}, lifting independence from the
-indeterminate setting to ``almost all'' body-bar realizations) is
-not pursued here. This chapter proves the existence-of-realization
-form of Tay's theorem only: there exists a body-bar realization in
-$\mathbb{R}^n$ that is infinitesimally rigid (resp. independent)
-if and only if the count holds, witnessed by the standard-basis specialization.
+We prove the theorem in this existence form: some framework on $G$ is
+independent, or independent and infinitesimally rigid. Whiteley also
+requires each bar to be a line. He shows, by an argument on irreducible
+varieties~\cite[\S3.1]{whiteley1988}, that for a general choice of the
+lines the rows have the same independent sets as the rows of the
+general $D$-frame. \Cref{sec:generic-lift} proves a generic form of
+the theorem instead, for bars given by their endpoints, by the
+coordinate argument of Jackson and Jord\'an~\cite{jacksonJordan2009}.
 
 \subsection{Sparsity and the union of cycle matroids}
 \label{sec:body-bar-matroid-union}
@@ -450,101 +458,139 @@ over $R$, which contains the entries of every $k$-frame row.
   $F(G, X)$ is the restriction of that union to $E(G)$.
 \end{fmlnote}
 
-\subsection{Tree-packing as a corollary}
+\subsection{Decompositions into forests and spanning trees}
 \label{sec:body-bar-tree-packing}
 
-Applied to all the bars of $G$,
-\cref{thm:unionPow-cycle-indep-iff-sparse} gives the tree-packing
-theorem of Tutte and Nash-Williams~\cite{tutte1961,nashWilliams1961},
-and for a connected tight multigraph the forests are spanning trees.
+Applied to the set of all bars, \cref{thm:unionPow-cycle-indep-iff-sparse}
+characterizes the multigraphs whose bars form a union of $k$ forests.
+Whiteley~\cite[remark after Corollary~3]{whiteley1988} attributes this
+theorem to Tutte~\cite{tutte1961} and to
+Nash-Williams~\cite{nashWilliams1961,nashWilliams1964}, and its first
+proof by matroid union to Edmonds~\cite{edmonds1965}. Oxley derives it
+from Edmonds' theorem, as we do~\cite[Proposition~11.3.14]{oxley2011}.
 
-\begin{theorem}[Tutte--Nash-Williams tree-packing]
+\begin{theorem}[Decomposition into forests; Tutte, Nash-Williams]
   \label{thm:tutte-nash-williams}
   \lean{Graph.tutte_nash_williams}
   \leanok
   \uses{def:graph-sparse, thm:unionPow-cycle-indep-iff-sparse}
-  A multigraph $G$ is the edge-disjoint union of $k$ forests if and
-  only if $G$ is $(k, k)$-sparse.
+  Let $G$ be a multigraph and let $k$ be a natural number. Then $E(G)$
+  is the union of $k$ pairwise disjoint forests if and only if $G$ is
+  $(k, k)$-sparse.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:unionPow-cycle-indep-iff-sparse, lem:union-indep-iff}
-  Edge-disjoint $k$-forest decomposition is exactly independence of
-  the whole edge set in the cycle-matroid union
-  (\cref{lem:union-indep-iff}, with the forests as the per-copy
-  independent sets), which \cref{thm:unionPow-cycle-indep-iff-sparse}
-  identifies with $(k, k)$-sparsity. The disjointness is free: an
-  acyclic cover disjointifies (subsets of forests are forests), and a
-  disjoint cover is a cover.
+  The set $E(G)$ is a union of $k$ forests if and only if it is
+  independent in the union of $k$ copies of the cycle matroid
+  (\cref{lem:union-indep-iff}). As $G \restriction E(G) = G$, this holds
+  if and only if $G$ is $(k, k)$-sparse
+  (\cref{thm:unionPow-cycle-indep-iff-sparse}). If $E(G)$ is the union
+  of forests $F_1, \dots, F_k$, then it is also the union of the
+  pairwise disjoint sets $F_j \setminus (F_1 \cup \dots \cup F_{j-1})$,
+  and these are forests, since a subset of a forest is a forest.
 \end{proof}
 
-\begin{corollary}[Spanning-tree refinement]
+\begin{corollary}[Tight multigraphs are unions of spanning trees]
   \label{cor:k-spanning-trees}
   \lean{Graph.isSpanningTreePacking_of_isTight}
   \leanok
   \uses{def:graph-sparse, thm:tutte-nash-williams}
-  If $G$ is connected and $(k, k)$-tight then the $k$ edge-disjoint
-  forests of \cref{thm:tutte-nash-williams} are spanning trees. This
-  is the ``union of $d$ spanning trees'' form of Tay's theorem
-  (Whiteley Theorem~13).
+  Let $G$ be a connected $(k, k)$-tight multigraph. Then $E(G)$ is the
+  union of $k$ pairwise disjoint spanning trees of $G$.
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:tutte-nash-williams}
-  Connectivity gives $r(G.\mathrm{cycleMatroid}) = |V| - 1$, so the
-  tight global equality $|E| = k|V| - k$ reads as $|E| = k \cdot r$.
-  The $k$ forests cover $E$ disjointly, so $\sum_{i} |F_i| = |E| = k
-  \cdot r$, while each forest is independent and hence $|F_i| \le r$;
-  equality of the sum with $k \cdot r$ forces $|F_i| = r$ for every
-  $i$, so each $F_i$ is a maximal acyclic set, i.e.\ a spanning tree.
+  By \cref{thm:tutte-nash-williams}, $E(G)$ is the union of pairwise
+  disjoint forests $F_1, \dots, F_k$. Since $G$ is connected,
+  $r(E(G)) = |V(G)| - 1$, so the tightness of $G$ gives
+  $|E(G)| = k\, r(E(G))$. Each $F_i$ is independent in the cycle
+  matroid, so $|F_i| \le r(E(G))$, and the numbers $|F_i|$ sum to
+  $|E(G)|$. Hence $|F_i| = r(E(G))$ for every $i$, so each $F_i$ is a
+  basis of the cycle matroid, that is, a maximal forest of $G$
+  (\texttt{Graph.\allowbreak{}isMaximalAcyclicSet\_\allowbreak{}of\_\allowbreak{}isForestPacking\_\allowbreak{}of\_\allowbreak{}isTight}).
+  A maximal forest of a connected multigraph is a spanning tree.
 \end{proof}
 
 \subsection{Body-bar frameworks and the rigidity matrix}
 \label{sec:body-bar-framework}
 
-Following Whiteley~\cite{whiteley1988} \S3 and Tay~\cite{tay1984}
-\S5, a body-bar framework assigns each bar a two-extensor (Pl\"ucker)
-coordinate in $\mathbb{R}^{d}$, $d = n(n+1)/2$; the rigidity map is
-the bar-constraint linear map analogous to the bar-joint rigidity
-map of \cref{sec:frameworks}.
+An infinitesimal motion of a rigid body in $\R^d$ is a screw. The
+screws form a vector space of dimension $D = \binom{d+1}{2}$, with $d$
+dimensions of translations and $\binom{d}{2}$ of rotations. A bar $e$
+joining bodies $u$ and $v$ imposes one linear condition on their screws
+$m(u)$ and $m(v)$, of the form $\langle b_e, m(u) - m(v) \rangle = 0$
+for a vector $b_e \in \R^D$. Whiteley~\cite[\S3]{whiteley1988} takes
+for $b_e$ the vector of Pl\"ucker coordinates of the line of the bar,
+with the screws written in dual coordinates. Following
+Tay~\cite[Definition~5.1]{tay1984}, we allow an arbitrary vector
+$b_e \in \R^D$ on each bar.
 
 \begin{definition}[Body-bar framework]
   \label{def:body-bar-framework}
   \lean{Graph.bodyBarDim, Graph.BodyBarFramework}
   \leanok
-  A \emph{body-bar framework} in $\mathbb{R}^{n}$ on a multigraph
-  $G$ pairs $G$ with a placement assigning each bar
-  $e \in E(G)$ a two-extensor coordinate in
-  $\mathbb{R}^{d}$, $d = n(n+1)/2$ (a point of the Pl\"ucker
-  embedding of $\mathrm{Gr}(2, n+1)$, with degenerate coordinates
-  permitted).
+  Let $d$ be a natural number and let $D = \binom{d+1}{2}$. A
+  \emph{body-bar framework} in $\R^d$ on a multigraph $G$ is a pair
+  $(G, b)$, where $b$ assigns a vector $b_e \in \R^D$ to each bar $e$
+  of $G$.
 \end{definition}
+\begin{fmlnote}
+  The formalization calls the dimension $n$, as Tay and Whiteley do, and
+  writes $D$ as \texttt{Graph.bodyBarDim}~$n = n(n+1)/2$.
+\end{fmlnote}
 
 \begin{definition}[Body-bar rigidity map]
   \label{def:rigidity-map-body-bar}
   \lean{Graph.BodyBarFramework.rigidityMap}
   \leanok
   \uses{def:body-bar-framework}
-  Fix an orientation of $G$, giving each bar $e$ an ordered pair of
-  endpoints $(u, v)$. The \emph{rigidity map} of a body-bar framework
-  is the linear map from body motions — a velocity $m(v) \in
-  \mathbb{R}^{d}$ assigned to each body $v$ — to bar constraints (one
-  real number per bar), sending $m$ to the family $e \mapsto
-  \langle b_{e},\, m(u) - m(v)\rangle$, with one row per bar (the
-  constraint row of Whiteley~\cite{whiteley1988} \S3; $b_{e}$ is $e$'s
-  two-extensor coordinate). The orientation only fixes the sign of each
-  row; the kernel and rank are orientation-independent.
+  Let $(G, b)$ be a body-bar framework in $\R^d$, and let
+  $D = \binom{d+1}{2}$. Orient each bar $e$ of $G$ from a body $u_e$, its
+  tail, to a body $v_e$, its head. A \emph{motion} of $(G, b)$ assigns a vector $m(v) \in \R^D$ to each
+  body $v$. The \emph{rigidity map} of $(G, b)$ is the linear map from
+  motions to $\R^{E(G)}$ given by
+  \[
+    m \;\longmapsto\;
+    \bigl(\langle b_e,\, m(u_e) - m(v_e) \rangle\bigr)_{e \in E(G)}.
+  \]
 \end{definition}
+
+The \emph{row} of a bar $e$ is the linear functional
+$m \mapsto \langle b_e, m(u_e) - m(v_e) \rangle$. Reversing $e$ changes
+the sign of its row, so the rank of the rigidity map does not depend on
+the orientation. We identify a linear functional on motions with its
+vector of coefficients. This vector has $D$ blocks, one for each
+coordinate of $\R^D$, and each block has one entry for each body. So we
+can use the notation $a_e$ and $w^{(c)}$ of \cref{sec:body-bar-k-frame},
+with $k = D$ and the orientation above. As $a_e$ has $1$ at $v_e$ and
+$-1$ at $u_e$, the row of $e$ is
+\[
+  -\sum_{c = 1}^{D} (b_e)_c\, a_e^{(c)}
+\]
+(\texttt{Graph.\allowbreak{}BodyBarFramework.\allowbreak{}rigidityRow\_\allowbreak{}eq}).
+Up to sign, it is the $D$-frame row $\rho_e$ of
+\cref{def:k-frame-matroid} with each indeterminate $X_{e,c}$ replaced
+by the coordinate $(b_e)_c$. In Whiteley's terms, the rigidity matrix
+of $(G, b)$ is the $D$-frame on $G$ at $b$~\cite[\S3]{whiteley1988}.
+
+Let $G$ have at least one body. A motion that assigns the same vector
+to every body lies in the kernel of the rigidity map, and these
+constant motions form a space of dimension $D$. Whiteley calls them
+trivial: each corresponds to one screw motion of the whole space. The
+motions form a space of dimension $D|V(G)|$, so the rigidity map has
+rank at most $D|V(G)| - D$, with equality exactly when every motion in
+its kernel is constant.
 
 \begin{definition}[Infinitesimal rigidity of a body-bar framework]
   \label{def:infinitesimally-rigid-body-bar}
   \lean{Graph.BodyBarFramework.IsInfinitesimallyRigid}
   \leanok
   \uses{def:rigidity-map-body-bar}
-  A body-bar framework on $b$ bodies is \emph{infinitesimally rigid}
-  when its rigidity map has rank $d \cdot b - d$, i.e.\ its kernel is
-  exactly the $d$-dimensional space of trivial screw motions ---
-  the body-bar analogue of \cref{def:isInfinitesimallyRigid}.
+  Let $D = \binom{d+1}{2}$. A body-bar framework $(G, b)$ in $\R^d$ is
+  \emph{infinitesimally rigid} if its rigidity map has rank
+  $D|V(G)| - D$.
 \end{definition}
 
 \begin{definition}[Independence of a body-bar framework]
@@ -552,61 +598,31 @@ map of \cref{sec:frameworks}.
   \lean{Graph.BodyBarFramework.IsIndependent}
   \leanok
   \uses{def:rigidity-map-body-bar}
-  A body-bar framework is \emph{independent} when its rigidity map has
-  full row rank, $\mathrm{rank} = |E(G)|$ --- equivalently its bar
-  constraints are linearly independent, with no redundant bars. The
-  body-bar analogue of edge-set row independence
-  (\cref{def:edgeSet-rowIndependent}).
+  A body-bar framework $(G, b)$ is \emph{independent} if its rigidity
+  map has rank $|E(G)|$, that is, if the rows of its bars are linearly
+  independent.
 \end{definition}
 
-\subsection{Tay's theorem (existence-of-realization form)}
+Infinitesimal rigidity is the analogue for body-bar frameworks of
+infinitesimal rigidity for bar-joint frameworks
+(\cref{def:isInfinitesimallyRigid}). Independence is the analogue of
+row-independence (\cref{def:edgeSet-rowIndependent}). Following
+Whiteley~\cite[\S2.3]{whiteley1988}, we call a framework that is
+independent and infinitesimally rigid \emph{isostatic}. The rank of its
+rigidity map is then $|E(G)| = D|V(G)| - D$.
+
+\subsection{Tay's theorem}
 \label{sec:body-bar-tay}
 
-The chapter's target, in Whiteley's witness form~\cite{whiteley1988}
-(Theorem~8). We treat only the \emph{existence-of-realization} form:
-there exists an independent (resp.\ isostatic) body-bar framework if and
-only if the count holds, witnessed by the standard-basis specialization.
-Whiteley's stronger ``almost all realizations are rigid'' phrasing,
-via the irreducible-variety lift of Proposition~6
-in~\cite{whiteley1988}, is not pursued here; the generic form is
-instead obtained coordinate-wise, following Jackson and
-Jord\'an~\cite{jacksonJordan2009}, in \cref{sec:generic-lift}.
+For the existence direction we follow Whiteley's proof of his
+Theorem~8~\cite{whiteley1988}. Its framework comes from the
+specialization in the proof of \cref{lem:k-frame-specialize-forest}.
+For the converse, Whiteley derives the count from the independence of
+the rows of the general $D$-frame~\cite[proof of
+Corollary~3]{whiteley1988}. We bound the dimension of the span of the
+rows directly instead, as in \cref{lem:k-frame-nonzero-monomial-forest}.
 
-\begin{theorem}[Tay's theorem, independent form; Whiteley Theorem~8]
-  \label{thm:tay-witness}
-  \lean{Graph.BodyBarFramework.tay_witness}
-  \leanok
-  \uses{def:body-bar-framework, def:infinitesimally-rigid-body-bar,
-    def:independent-body-bar, def:graph-sparse, thm:tutte-nash-williams,
-    cor:k-spanning-trees}
-  Let $n \ge 2$ and $d = n(n+1)/2$. A multigraph $G$ carries an
-  independent body-bar framework in $\mathbb{R}^{n}$ if and only if $G$ is
-  $(d, d)$-sparse (equivalently, by \cref{thm:tutte-nash-williams},
-  $G$ is the union of $d$ edge-disjoint forests). It carries an
-  \emph{isostatic} (independent and infinitesimally rigid) body-bar
-  framework if and only if $G$ is $(d, d)$-tight (equivalently, by
-  \cref{cor:k-spanning-trees}, the union of $d$ spanning trees) ---
-  the count $|E| = d(b - 1)$ of Tay~\cite{tay1984}.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{prop:tay-witness-exists, lem:tay-isSparse-of-independent}
-  The ($\Leftarrow$) directions are \cref{prop:tay-witness-exists};
-  the ($\Rightarrow$) sparsity converse is
-  \cref{lem:tay-isSparse-of-independent}, and the isostatic count
-  follows by substituting independence ($\mathrm{rank} = |E|$) into the
-  infinitesimal-rigidity equality $\mathrm{rank} + d = d \cdot b$ to get
-  $|E| + d = d|V|$, i.e.\ $(d, d)$-tightness.
-\end{proof}
-
-The two halves are formalized separately: the witness ($\Leftarrow$)
-direction as \cref{prop:tay-witness-exists}, and the converse
-($\Rightarrow$, an independent body-bar framework forces
-$(d, d)$-sparsity) as \cref{lem:tay-isSparse-of-independent}, the
-body-bar analogue of the Lov\'asz--Yemini rank-upper-bound argument
-(\cref{lem:isSparse-of-rowIndependent-two}).
-
-\begin{proposition}[Tay witness, existence direction]
+\begin{proposition}[Frameworks on sparse and tight multigraphs]
   \label{prop:tay-witness-exists}
   \lean{Graph.BodyBarFramework.exists_isIndependent_of_isSparse,
     Graph.BodyBarFramework.exists_isIsostatic_of_isTight}
@@ -614,48 +630,87 @@ body-bar analogue of the Lov\'asz--Yemini rank-upper-bound argument
   \uses{def:body-bar-framework, def:independent-body-bar,
     def:infinitesimally-rigid-body-bar, def:graph-sparse,
     thm:tutte-nash-williams}
-  Let $d = n(n+1)/2$. If a multigraph $G$ is $(d, d)$-sparse then it
-  carries an independent body-bar framework in $\mathbb{R}^{n}$, and
-  if $G$ is $(d, d)$-tight then it carries an isostatic one (the count
-  $|E| = d(b - 1)$).
+  Let $D = \binom{d+1}{2}$, and let $G$ be a $(D, D)$-sparse
+  multigraph. Then there is an independent body-bar framework in $\R^d$
+  on $G$. If $G$ is $(D, D)$-tight, then there is a body-bar framework
+  in $\R^d$ on $G$ that is independent and infinitesimally rigid.
 \end{proposition}
 \begin{proof}
   \leanok
   \uses{def:rigidity-map-body-bar, thm:tutte-nash-williams}
-  By \cref{thm:tutte-nash-williams}, $(d, d)$-sparsity gives a
-  disjoint cover of $E(G)$ by $d$ forests; take the standard-basis
-  framework $b_{e} = e_{j(e)}$ for the forest index $j(e)$ of each bar.
-  The block-diagonal rank count makes this framework independent
-  ($\mathrm{rank} = |E(G)|$). For the tight case, independence
-  ($\mathrm{rank} = |E|$) together with the tightness equality
-  $|E| + d = d|V|$ gives the infinitesimal-rigidity count
-  $\mathrm{rank} + d = d \cdot b$ directly, since $b = |V(G)|$.
+  By \cref{thm:tutte-nash-williams}, $E(G)$ is the union of pairwise
+  disjoint forests $F_1, \dots, F_D$. For a bar $e$, let $j(e)$ be the
+  index with $e \in F_{j(e)}$, and let $b_e$ be the $j(e)$-th standard
+  basis vector of $\R^D$. Up to sign, the row of $e$ is then
+  $a_e^{(j(e))}$ (\cref{sec:body-bar-framework}). So the rows of the
+  bars of $F_j$ lie in block $j$, where up to sign they are the signed
+  incidence vectors of the bars of the forest $F_j$, and these are
+  linearly independent over $\R$. Hence all the rows are linearly independent, as
+  in the proof of \cref{lem:k-frame-specialize-li}, and $(G, b)$ is
+  independent
+  (\texttt{Graph.\allowbreak{}BodyBarFramework.\allowbreak{}stdFramework\_\allowbreak{}finrank\_\allowbreak{}range}).
+  If $G$ is $(D, D)$-tight, the rank of the rigidity map is
+  $|E(G)| = D|V(G)| - D$, so $(G, b)$ is also infinitesimally rigid.
 \end{proof}
 
-\begin{lemma}[Tay converse: independent $\Rightarrow$ sparse]
+\begin{lemma}[Independent frameworks have sparse graphs]
   \label{lem:tay-isSparse-of-independent}
   \lean{Graph.BodyBarFramework.isSparse_of_isIndependent}
   \leanok
   \uses{def:body-bar-framework, def:independent-body-bar,
     def:rigidity-map-body-bar, def:graph-sparse, def:k-frame-matroid}
-  Let $d = n(n+1)/2$. If a body-bar framework $F$ on $G$ is independent,
-  then $G$ is $(d, d)$-sparse: every non-empty bar set $E' \subseteq E(G)$
-  spanning $V'$ satisfies $|E'| + d \le d|V'|$.
+  Let $D = \binom{d+1}{2}$, and let $(G, b)$ be an independent body-bar
+  framework in $\R^d$. Then $G$ is $(D, D)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:k-frame-nonzero-monomial-forest}
-  The body-bar analogue of the Lov\'asz--Yemini rank-upper-bound
-  (\cref{lem:isSparse-of-rowIndependent-two}). Independence makes all
-  $|E(G)|$ rigidity rows linearly independent, so on each $E'$ the $|E'|$
-  rows span a subspace of dimension $|E'|$. The row for a bar $e$ is the
-  inner product $m \mapsto \langle b_{e}, m_{u} - m_{v}\rangle$, a
-  real-coefficient combination $\sum_{c} (b_{e})_{c}\cdot(\text{block-}c$
-  incidence row of $e)$ across the $d$ coordinate blocks --- the real
-  specialization of the indeterminate $k$-frame row of
-  \cref{lem:k-frame-nonzero-monomial-forest}. So the rows on $E'$ lie in
-  the block-diagonal product subspace of dimension $d \cdot r(E')$
-  ($r$ the cycle-matroid rank), giving $|E'| \le d\,r(E')$. With
-  $r(E') + 1 \le |V'|$ (a non-empty bar set spans at least one
-  non-trivial component), $|E'| \le d(|V'| - 1)$, i.e.\ $|E'| + d \le d|V'|$.
+  Let $E'$ be a non-empty set of bars. The rows of the bars in $E'$ are
+  linearly independent, so their span has dimension $|E'|$. Let
+  $A_{E'}$ be the span over $\R$ of the vectors $a_e$ with $e \in E'$.
+  Up to sign, the row of a bar $e \in E'$ is
+  $\sum_c (b_e)_c\, a_e^{(c)}$, which lies in $A_{E'}^D$. As in the
+  proof of \cref{lem:k-frame-nonzero-monomial-forest}, with $\R$ in
+  place of $K$, the space $A_{E'}^D$ has dimension $D\, r(E')$
+  (\texttt{Graph.\allowbreak{}BodyBarFramework.\allowbreak{}finrank\_\allowbreak{}rigidityRow\_\allowbreak{}span\_\allowbreak{}le}).
+  Hence $|E'| \le D\, r(E')$. As $E'$ is non-empty, $c(E') \ge 1$, so
+  $r(E') \le |V(E')| - 1$ and $|E'| \le D|V(E')| - D$.
 \end{proof}
+
+\begin{theorem}[Tay's theorem; Whiteley Theorem~8]
+  \label{thm:tay-witness}
+  \lean{Graph.BodyBarFramework.tay_witness}
+  \leanok
+  \uses{def:body-bar-framework, def:infinitesimally-rigid-body-bar,
+    def:independent-body-bar, def:graph-sparse, thm:tutte-nash-williams,
+    cor:k-spanning-trees}
+  Let $d \ge 2$ and $D = \binom{d+1}{2}$, and let $G$ be a multigraph.
+  Then there is an independent body-bar framework in $\R^d$ on $G$ if
+  and only if $G$ is $(D, D)$-sparse. There is a body-bar framework in
+  $\R^d$ on $G$ that is independent and infinitesimally rigid if and
+  only if $G$ is $(D, D)$-tight.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{prop:tay-witness-exists, lem:tay-isSparse-of-independent}
+  If there is an independent framework on $G$, then $G$ is
+  $(D, D)$-sparse by \cref{lem:tay-isSparse-of-independent}. If the
+  framework is also infinitesimally rigid, then the rank of its rigidity
+  map is both $|E(G)|$ and $D|V(G)| - D$, so $G$ is $(D, D)$-tight. The
+  converses are \cref{prop:tay-witness-exists}.
+\end{proof}
+
+The first statement is Whiteley's Theorem~8~\cite{whiteley1988}. The
+second is Tay's Theorem~5.3~\cite{tay1984} in the existence form. By
+\cref{thm:tutte-nash-williams}, the multigraph $G$ is $(D, D)$-sparse if
+and only if $E(G)$ is the union of $D$ disjoint forests. By
+\cref{cor:k-spanning-trees}, the bars of a connected $(D, D)$-tight
+multigraph form the union of $D$ disjoint spanning trees, and Tay
+states his theorem in this form.
+
+Each standard basis vector of $\R^D$ satisfies the quadratic Pl\"ucker
+relations, so it is the vector of Pl\"ucker coordinates of a line in
+projective $d$-space~\cite[proof of Theorem~8]{whiteley1988}. The
+frameworks of \cref{prop:tay-witness-exists} therefore have a line on
+each bar. So the theorem also holds for Whiteley's body-bar frameworks,
+whose bars are lines.

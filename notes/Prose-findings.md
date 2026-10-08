@@ -337,7 +337,15 @@ declaration's name as its header writes it:
 
 ## T — terminology and notation
 
-- None yet.
+- **F-056** · T · the body-bar dimension (`generic-lift.tex`, `intro.tex`): task 2.3 wrote KT's $d$
+  for the dimension and $D = \binom{d+1}{2}$ in `body-bar.tex` and `body-hinge.tex` (round 2's
+  notation call), and tasks 2.4–2.18 align round 2's other chapters. Two chapters outside round 2
+  keep Tay and Whiteley's letters: `generic-lift.tex`'s body-bar section writes bars in $\R^n$ with
+  vectors in $\R^d$, $d = n(n+1)/2$, and $(d, d)$-sparsity (lines 449, 487, 631–724), and
+  `intro.tex`'s Phase-15 and Phase-16 items write $d = n(n+1)/2$, $\delta = n(n+1)/2$,
+  $(\delta-1)\cdot G$ and $(\delta,\delta)$-sparsity (lines 165–195). Round 4 rewrites both.
+  *Evidence:* read (a `grep` for `n(n+1)` and `\delta` over the chapters, at task 2.3).
+  *Found:* round 2 task 2.3.
 
 ## U — status surfaces
 
@@ -503,6 +511,14 @@ declaration's name as its header writes it:
   `adjMap_rk_eq` with `sum'_rk_eq_rk_sum` would give the family form at every $X$, but no
   declaration states it, and none states the criterion for a family.
   *Found:* round 2 task 2.1.
+- **F-058** · S · `thm:tay-witness` (`body-bar.tex`) and `thm:body-hinge-tay` (`body-hinge.tex`):
+  both statements assume $d \ge 2$, and their pins `Graph.BodyBarFramework.tay_witness` and
+  `Graph.BodyHingeFramework.body_hinge_tay` hold for every $d$, so the statements are weaker than
+  the pins. `prop:tay-witness-exists`, `lem:tay-isSparse-of-independent` and
+  `lem:edge-multiply-sparse` assume nothing on $d$, and the proof of `lem:edge-multiply-sparse`
+  applies `thm:tay-witness` to $(D-1)\cdot G$ for every $d$. Task 2.3 kept every hypothesis.
+  *Evidence:* read (the five pins' statements, `BodyBar/TayTheorem.lean` and `BodyHinge.lean`).
+  *Found:* round 2 task 2.3.
 
 ## L — Lean
 
@@ -662,6 +678,17 @@ declaration's name as its header writes it:
   `tutte_nash_williams`'s proof uses. One lemma giving a disjoint cover would serve all three.
   *Evidence:* read (the bodies of the four declarations).
   *Found:* round 2 task 2.2.
+- **F-057** · L · docstrings of `BodyBar/` (`body-bar.tex`'s Tay nodes): three disagree with
+  the declarations or the sources. `Graph.isSpanningTreePacking_of_isTight` credits Whiteley 1988
+  Theorem 13, which is about frameworks on the flat torus (p. 249; only its (ii)⇔(iii) is the
+  count). `exists_isIsostatic_of_isTight`'s docstring assumes a connected multigraph and a
+  spanning-tree packing; its statement assumes tightness only, and its proof uses a forest packing.
+  `Framework.lean`, `TayTheorem.lean` and `BodyHinge.lean` call the standard-basis vectors
+  "degenerate two-extensors" that lie on the Plücker variety "vacuously"; they satisfy the
+  quadratic Plücker relations and are the Plücker vectors of lines (Whiteley 1988, p. 243).
+  *Evidence:* read (the three declarations' statements and bodies; Whiteley 1988 pp. 243, 249, in
+  `.refs/`).
+  *Found:* round 2 task 2.3.
 
 ## M — mathematics and sources
 

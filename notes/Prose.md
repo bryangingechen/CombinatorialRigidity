@@ -11,9 +11,8 @@ round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, 
 PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`. Round 1 wrote the
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
 slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, and
-its first two slices `F-051`–`F-055`. **Next concrete task:** round 2's task 2.3, the rest of
-`body-bar.tex` and all of `body-hinge.tex`, the third of its eighteen slices (the round's log,
-*Lemma checklist*).
+its first three slices `F-051`–`F-058`. **Next concrete task:** round 2's task 2.4,
+`extensor.tex`, the fourth of its eighteen slices (the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 
