@@ -185,6 +185,13 @@ declaration's name as its header writes it:
   `BodyHingeFramework.IsInfinitesimallyRigid` without `\leanok`.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; the built graph at `bca00d3f`).
   *Found:* round 1 task 2.
+- **F-062** · E · `lem:case-II-placement-new-rows` (`algebraic-induction/genericity-and-count.tex`):
+  its statement and proof use `lem:rank-delete-vertex`, which no pin reaches, and its proof cites
+  that node for the dimension $D - 1$ of the hinge-row block, which is `def:hinge-row-block`'s
+  (`finrank_hingeRowBlock`, which the pin reaches through its proof).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-II-placement-new-rows`, at
+  `47eb5225`'s Lean); read (the proof's prose).
+  *Found:* round 2 task 2.5.
 
 ## N — node shape
 
@@ -708,6 +715,22 @@ declaration's name as its header writes it:
   *Evidence:* read (the three declarations' statements and bodies; Whiteley 1988 pp. 243, 249, in
   `.refs/`).
   *Found:* round 2 task 2.3.
+- **F-061** · L · `BodyHingeFramework.linearIndependent_hingeRow_forest` and
+  `exists_independent_rigidityRows_of_forest` (`Molecular/RigidityMatrix/Basic.lean`): the names
+  and docstrings speak of a spanning forest, but the hypothesis `hsep` (no other end of an edge is
+  the private end of any edge) holds only when every component of the edges is a star; a path with
+  three edges fails it. The rows of any forest of nondegenerate hinges are independent (remove a
+  leaf), but no declaration states it. `def:rigidity-matrix`'s prose claimed "any spanning forest";
+  task 2.5 states the hypothesis instead.
+  *Evidence:* read (the two statements and the first body).
+  *Found:* round 2 task 2.5.
+- **F-063** · L · `BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
+  (`Molecular/AlgebraicInduction/PanelLayer.lean`): its hypothesis asks $C(e) \neq 0$ at every
+  edge label, also at labels that are not edges of $G$, where the extensor does not affect the
+  motions. The relative bound `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
+  in the same file asks it only at the edges of $G$.
+  *Evidence:* read (the two statements).
+  *Found:* round 2 task 2.5.
 
 ## M — mathematics and sources
 

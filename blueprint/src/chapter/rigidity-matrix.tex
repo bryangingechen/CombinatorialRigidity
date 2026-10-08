@@ -52,24 +52,60 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
 \subsection{Body-hinge frameworks and the rigidity matrix}
 \label{sec:molecular-rigidity-matrix-def}
 
+This subsection defines the rigidity matrix of a body-hinge framework,
+following Katoh and Tanigawa~\cite[\S\S2.2--2.4]{katohTanigawa2011}.
+They identify an infinitesimal motion of a rigid body in $\R^d$ with a
+vector of $\R^D$, its screw center, where $D = \binom{d+1}{2}$. A hinge
+joining two bodies constrains the difference of their screw centers to
+the span of a $(d-1)$-extensor supporting the hinge. We take this
+constraint as the definition, over a field $K$. Screw centers lie in
+$\bigwedge^{d-1}K^{d+1}$, which has dimension
+$\binom{d+1}{d-1} = D$, and the supporting extensors are those of
+\cref{def:affine-subspace-extensor}.
+
 \begin{definition}[Hinge constraint via the supporting extensor]
   \label{def:hinge-constraint}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework,
     CombinatorialRigidity.Molecular.BodyHingeFramework.hingeConstraint}
   \leanok
   \uses{def:affine-subspace-extensor}
-  A \emph{$d$-dimensional body-hinge framework} $(G,p)$ is a multigraph
-  $G = (V,E)$ together with a map $p$ assigning to each edge $e \in E$ a
-  $(d-2)$-dimensional affine subspace $p(e)$ of $K^{d}$ --- a
-  \emph{hinge}. Identifying an infinitesimal motion of a rigid body with
-  a $D$-dimensional screw center, the hinge $p(e)$ supported on the
-  $(d-1)$-extensor $C(p(e)) \in \bigwedge^{d-1}K^{d+1} \cong K^{D}$
-  (\cref{def:affine-subspace-extensor}) constrains the two screw centers
-  $S(u), S(v) \in K^{D}$ of its endpoints $e = uv$ to satisfy
+  A \emph{body-hinge framework} $(G,p)$ in $K^d$ is a multigraph
+  $G = (V,E)$ together with a map $p$ that assigns to each edge $e$ a
+  $(d-2)$-dimensional affine subspace $p(e)$ of $K^d$, the \emph{hinge}
+  of $e$. Let $C(p(e)) \in \bigwedge^{d-1}K^{d+1}$ be a
+  $(d-1)$-extensor supporting $p(e)$
+  (\cref{def:affine-subspace-extensor}). A \emph{screw assignment} is a
+  map $S \colon V \to \bigwedge^{d-1}K^{d+1}$. It satisfies the
+  \emph{hinge constraint} at an edge $e$ with ends $u$ and $v$ if
   \[
     S(u) - S(v) \in \operatorname{span} C\bigl(p(e)\bigr).
   \]
 \end{definition}
+
+The hinge $p(e)$ is spanned by $d - 1$ affinely independent points, so
+$C(p(e)) \neq 0$, and $p(e)$ determines $C(p(e))$ up to a nonzero
+scalar (the remark after \cref{def:affine-subspace-extensor}). So the
+hinge constraint does not depend on the choice of $C(p(e))$. It is
+symmetric in $u$ and $v$, since $S(v) - S(u) = -(S(u) - S(v))$.
+
+\begin{fmlnote}
+  The formalization records a body-hinge framework by its multigraph
+  and, for each edge $e$, an element $C(e)$ of the screw space in place
+  of $C(p(e))$. It does not require $C(e)$ to be nonzero or to come from
+  points, so the same definitions apply to hinges given as the meet of
+  two panels (\cref{def:panel-hinge-framework}). A lemma that needs
+  $C(e) \neq 0$ assumes it. Screw assignments are defined on a fixed set
+  of bodies, which may contain bodies that lie on no edge of $G$
+  (\cref{lem:relative-deficiency-rank-bound}). The dimension is written
+  $d = k + 1$, so that the screw space is $\bigwedge^k K^{k+2}$.
+\end{fmlnote}
+
+Katoh and Tanigawa write the hinge constraint as linear
+equations~\cite[\S2.4]{katohTanigawa2011}. For this we identify
+$\bigwedge^{d-1}K^{d+1}$ with $K^D$ by the basis of the products
+$e_{i_1} \wedge \cdots \wedge e_{i_{d-1}}$ with
+$i_1 < \cdots < i_{d-1}$ (the remark after \cref{def:plucker-coords}),
+and write $x \cdot y$ for the dot product of $K^D$.
 
 \begin{definition}[Hinge-row block]
   \label{def:hinge-row-block}
@@ -78,18 +114,26 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_hingeRowBlock}
   \leanok
   \uses{def:hinge-constraint}
-  For an edge $e$, fix a basis
-  $\{r_1(p(e)), \dots, r_{D-1}(p(e))\}$ of the orthogonal complement
-  $(\operatorname{span} C(p(e)))^{\perp} \subseteq K^{D}$, and let
-  $r(p(e))$ be the $(D-1)\times D$ matrix with these rows. Then a screw
-  assignment $S$ meets the hinge constraint
-  (\cref{def:hinge-constraint}) at $e = uv$ iff
-  $(S(u) - S(v)) \cdot r_i(p(e)) = 0$ for all $1 \le i \le D-1$, by the
-  double-annihilator identity
-  $(\operatorname{span} C)^{\circ\circ} = \operatorname{span} C$;
-  formalized via the dual annihilator
-  $(\operatorname{span} C(p(e)))^{\circ} \subseteq (K^{D})^{*}$.
+  Let $(G,p)$ be a body-hinge framework and let $e$ be an edge of $G$.
+  Let $r_1(p(e)), \dots, r_{D-1}(p(e))$ be a basis of the orthogonal
+  complement of $\operatorname{span} C(p(e))$ in $K^D$, and let
+  $r(p(e))$ be the $(D-1) \times D$ matrix with these rows. Then a screw
+  assignment $S$ satisfies the hinge constraint at $e$, with ends $u$
+  and $v$, if and only if
+  \[
+    r_i\bigl(p(e)\bigr) \cdot \bigl(S(u) - S(v)\bigr) = 0
+    \qquad (1 \le i \le D-1).
+  \]
 \end{definition}
+
+The orthogonal complement has dimension $D - 1$ because
+$C(p(e)) \neq 0$. The equivalence holds because a subspace of $K^D$ is
+the orthogonal complement of its orthogonal complement, as the dot
+product is nondegenerate. Through the dot product, the rows of
+$r(p(e))$ form a basis of the linear forms on $K^D$ that vanish on
+$C(p(e))$.
+
+The rigidity matrix collects these equations for all the edges.
 
 \begin{definition}[Panel-hinge rigidity matrix]
   \label{def:rigidity-matrix}
@@ -109,61 +153,88 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
     CombinatorialRigidity.Molecular.screwSpace_finrank}
   \leanok
   \uses{def:hinge-row-block}
-  The \emph{rigidity matrix} $R(G,p)$ is the $(D-1)|E| \times D|V|$ block
-  matrix whose block row for the oriented edge $e = uv$ is $r(p(e))$ in
-  the $D$ columns of $u$, $-r(p(e))$ in the $D$ columns of $v$, and zero
-  elsewhere. A screw assignment $S \in K^{D|V|}$ is an infinitesimal
-  motion of $(G,p)$ iff $S \in \ker R(G,p)$; this null space is written
-  $Z(G,p)$, and its dimension is independent of the chosen
-  orthogonal-complement basis.
+  Let $(G,p)$ be a body-hinge framework. Its \emph{rigidity matrix}
+  $R(G,p)$ is the $(D-1)|E| \times D|V|$ matrix with a block of $D - 1$
+  rows for each edge and a block of $D$ columns for each body. Orient
+  each edge $e$ from one end $u$ to the other end $v$. The rows of $e$
+  have $r(p(e))$ in the columns of $u$, $-r(p(e))$ in the columns of
+  $v$, and zeros elsewhere (\cref{def:hinge-row-block}). An
+  \emph{infinitesimal motion} of $(G,p)$ is a screw assignment that
+  satisfies the hinge constraint at every edge, that is, a vector of
+  $\ker R(G,p) \subseteq K^{D|V|}$. We write $Z(G,p)$ for the space of
+  infinitesimal motions.
 \end{definition}
 
-The formalization keeps the screw space the graded-piece element
-$\bigwedge^{d-1}K^{d+1}$ rather than fixing a coordinate matrix: a screw
-assignment $S \colon V \to K^{D}$ is an infinitesimal motion when it
-meets every per-edge hinge constraint $S(u) - S(v) \in \operatorname{span}
-C(p(e))$ --- orientation-independent, since the span is closed under
-negation --- and $Z(G,p)$ is the submodule of all such $S$. The block
-rows of $R(G,p)$ are the \emph{row functionals} $S \mapsto r(S(u) -
-S(v))$, one per oriented edge $e = uv$ and row $r$ of $r(p(e))$; their
-span is the row space of $R(G,p)$, and $Z(G,p)$ is exactly the common
-kernel of the family, the dual coannihilator of that span.
+The space $Z(G,p)$ depends neither on the choice of the rows of the
+matrices $r(p(e))$ nor on the orientation of the
+edges~\cite[p.~654]{katohTanigawa2011}. So neither does the rank of
+$R(G,p)$, which is
+\[
+  \operatorname{rank} R(G,p) \;=\; D|V| - \dim Z(G,p).
+\]
 
-For an edge $e = uv$ with distinct endpoints, the relative-screw map $S
-\mapsto S(u) - S(v)$ is surjective, so the associated row map is
-injective: an independent family of hinge-row-block functionals at a
-single edge gives an independent family of rigidity rows. Combined with
-the $(D-1)$-dimensional hinge-row block of \cref{def:hinge-row-block},
-one edge $e = uv$ with $u \ne v$ and $C(p(e)) \ne 0$ therefore
-contributes exactly $D - 1$ independent rigidity rows. Independent row
-families of \emph{distinct} hinges combine without loss: evaluating a
-vanishing combination at a screw supported on a single endpoint isolates
-that hinge's block, so per-hinge independent families stay jointly
-independent across a star of edges at one body with distinct other
-endpoints, and more generally across any spanning forest of hinges
-(orienting each hinge from a private ``child'' endpoint: the private
-endpoints are distinct, and no hinge's other endpoint coincides with any
-hinge's private endpoint). A spanning forest of $|J|$ transversal hinges thus
-supplies $(D-1)|J|$ independent rows of $R(G,p)$ --- the count a rigid
-subgraph's block-triangular contraction argument later needs to match
-against the contraction's inductive rank.
+\begin{fmlnote}
+  The formalization fixes no basis of the screw space. A row of
+  $R(G,p)$ is the linear form $S \mapsto r(S(u) - S(v))$ on screw
+  assignments, for an edge $e$ with ends $u$ and $v$ and a linear form
+  $r$ on the screw space that vanishes on $C(p(e))$. The rank of
+  $R(G,p)$ is the dimension of the span of these forms, and $Z(G,p)$ is
+  the space on which they all vanish.
+\end{fmlnote}
+
+Two facts about the rows of $R(G,p)$ are used later. First, let $e$ be
+an edge with ends $u \neq v$. Its $D - 1$ rows are the linear forms
+$S \mapsto r_i(p(e)) \cdot (S(u) - S(v))$. The vectors $r_i(p(e))$ are
+linearly independent, and $S \mapsto S(u) - S(v)$ maps the screw
+assignments onto $K^D$, so these rows are linearly independent.
+
+Second, the rows of several edges are jointly independent when each of
+the edges has an end of its own. Let $e_1, \dots, e_m$ be edges such
+that $e_j$ has ends $u_j$ and $w_j$, the bodies $u_1, \dots, u_m$ are
+distinct, and no $w_j$ is equal to any $u_{j'}$. Then the $(D-1)m$ rows
+of $e_1, \dots, e_m$ are linearly independent. Indeed, take a linear
+combination of them that vanishes, and evaluate it at the screw
+assignment with value $x$ at $u_j$ and $0$ elsewhere. Only the rows of
+$e_j$ contribute, and their coefficients $c_i$ give
+$\sum_i c_i\, r_i(p(e_j)) \cdot x = 0$ for every $x \in K^D$, so every
+$c_i$ is zero. For example, the edges of a star at a body $w$ satisfy
+the hypothesis if their other ends are distinct bodies other than $w$.
+
+The next definitions are Katoh and
+Tanigawa's~\cite[\S\S2.3--2.4]{katohTanigawa2011}, who take that of a
+generic framework from Jackson and
+Jord\'an~\cite[\S6]{jacksonJordan2009}. A body-hinge framework on $G$
+is also called a \emph{realization} of $G$.
 
 \begin{definition}[Degree of freedom; generic realization]
   \label{def:dof-generic}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigid}
   \uses{lem:trivial-motions-rank-bound}
-  An infinitesimal motion $S$ is \emph{trivial} when $S(u) = S(v)$ for
-  all $u, v$; $(G,p)$ is \emph{infinitesimally rigid} when all
-  infinitesimal motions are trivial, equivalently
-  $\operatorname{rank} R(G,p) = D(|V|-1)$. The \emph{degree of freedom}
-  of $(G,p)$ is $D(|V|-1) - \operatorname{rank} R(G,p)$. A realization is
-  \emph{generic} when $R(G,p)$ and all its edge-induced submatrices
-  attain their maximum ranks over realizations of $G$. Formalized
-  basis-free as the inclusion $Z(G,p) \subseteq \{\text{trivial motions}\}$
-  (\texttt{IsInfinitesimallyRigid}), the reverse of the always-true
-  $\{\text{trivial}\} \subseteq Z(G,p)$ of
-  \cref{lem:trivial-motions-rank-bound}.
+  Let $(G,p)$ be a body-hinge framework. An infinitesimal motion $S$ of
+  $(G,p)$ is \emph{trivial} if $S(u) = S(v)$ for all bodies $u$ and $v$,
+  and $(G,p)$ is \emph{infinitesimally rigid} if all its infinitesimal
+  motions are trivial. The \emph{degree of freedom} of $(G,p)$ is
+  $D(|V|-1) - \operatorname{rank} R(G,p)$. The framework $(G,p)$ is
+  \emph{generic} if $R(G,p)$ and each of its edge-induced submatrices
+  (the rows of the edges of a subset of $E$) have the largest rank over
+  all realizations of $G$.
 \end{definition}
+
+By the next lemma, the trivial motions form a $D$-dimensional subspace
+of $Z(G,p)$ when $V$ is nonempty. So the degree of freedom is
+$\dim Z(G,p) - D \ge 0$, and it is $0$ if and only if $(G,p)$ is
+infinitesimally rigid.
+
+The lemma also bounds $\dim Z(G,p)$ from below by the deficiency, which
+the next chapter defines (\cref{def:D-deficiency}). We recall it here.
+Let $\tilde G = (D-1)\cdot G$ (\cref{sec:body-hinge-reduction}). For a
+partition $P$ of $V$ into nonempty parts, let $d_G(P)$ be the number of
+edges of $G$ that join different parts. Then
+\[
+  \operatorname{def}_{\tilde G}(P) \;=\; D\,(|P| - 1) - (D-1)\,d_G(P),
+\]
+and $\operatorname{def}(\tilde G)$ is the largest value of
+$\operatorname{def}_{\tilde G}(P)$ over the partitions $P$ of $V$.
 
 \begin{lemma}[The $D$ trivial motions and the rank bound]
   \label{lem:trivial-motions-rank-bound}
@@ -178,46 +249,58 @@ against the contraction's inductive rank.
     CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions}
   \leanok
   \uses{def:rigidity-matrix, def:D-deficiency}
-  For $1 \le i \le D$ let $S^*_i$ be the constant screw assignment with
-  $i$-th coordinate $1$ at every vertex. Each $S^*_i$ lies in $Z(G,p)$
-  and is trivial, and $\{S^*_1, \dots, S^*_D\}$ is linearly independent
-  and spans the space of trivial infinitesimal motions. Hence
-  $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$, with equality iff
-  $(G,p)$ is infinitesimally rigid. More is true, and holds at every
-  realization regardless of genericity: a partition $P$ of $V$
-  contributes its full part-constant freedoms, giving the codimension
-  bound $D + \operatorname{def}(\tilde G) \le \dim Z(G,p)$ --- the
-  lower-bound half of Proposition~1.1
-  (\cref{prop:rigidity-matrix-prop11}).
+  Let $(G,p)$ be a body-hinge framework with $V$ nonempty, and for
+  $1 \le i \le D$ let $S^*_i$ be the screw assignment whose value at
+  every body is the $i$-th basis vector of $K^D$. Then
+  $S^*_1, \dots, S^*_D$ are infinitesimal motions, and they form a
+  basis of the space of trivial motions. Hence
+  $\operatorname{rank} R(G,p) \le D(|V|-1)$, with equality if and only
+  if $(G,p)$ is infinitesimally rigid. Moreover
+  \[
+    \dim Z(G,p) \;\ge\; D + \operatorname{def}(\tilde G),
+  \]
+  that is,
+  $\operatorname{rank} R(G,p) \le D(|V|-1) - \operatorname{def}(\tilde G)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  A constant assignment has $S(u) - S(v) = 0$, which lies in every
-  hinge constraint, so $S^*_i \in Z(G,p)$ and is trivial, giving
-  $\{\text{trivial}\} \subseteq Z(G,p)$; the
-  $\{S^*_i\}$ are linearly independent across the $D$ coordinates and a
-  trivial motion is determined by its single common value, so they span
-  the trivial motions, which are exactly the constant assignments
-  (\texttt{trivialMotions}, the diagonal of $V \to K^{D}$). The
-  constant-assignment map is thus a linear isomorphism
-  $K^{D} \cong \{\text{trivial}\}$ for nonempty $V$, so the trivial
-  kernel has dimension exactly $D$ inside the $D|V|$-dimensional
-  screw-assignment space. The $D$-dimensional trivial kernel therefore
-  forces $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
+  A constant screw assignment $S$ has $S(u) - S(v) = 0$ at every edge,
+  so it is an infinitesimal motion. The trivial motions are exactly the
+  constant assignments. As $V$ is nonempty, sending $x \in K^D$ to the
+  constant assignment with value $x$ is an isomorphism from $K^D$ onto
+  them, and it sends the standard basis to $S^*_1, \dots, S^*_D$. So
+  the trivial motions form a $D$-dimensional subspace of $Z(G,p)$, and
+  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p) \le D(|V|-1)$.
+  Equality holds if and only if $Z(G,p)$ is the space of trivial
+  motions, that is, if and only if $(G,p)$ is infinitesimally rigid.
 
-  For the codimension bound, fix a labeling $f$ whose fibers are the
-  parts of $P$, and consider the part-constant assignments $W_f$ (one
-  screw center per part), of dimension $D \cdot |P|$. Each of the
-  $d_G(P)$ edges crossing $P$ imposes one relative-screw constraint
-  $S(u) - S(v) \in \operatorname{span} C(e)$, cutting the part-constant
-  motions $W_f \cap Z(G,p)$ down by at most $D - 1$ per crossing edge (the
-  hinge is nondegenerate, $C(e) \neq 0$); non-crossing edges impose
-  nothing on a part-constant assignment. Rank-nullity over $W_f$ thus
-  gives $\dim (W_f \cap Z) \ge D|P| - (D-1)\,d_G(P) = D + \operatorname{def}_{\tilde
-  G}(P)$. Maximizing over $P$ (a finite supremum) attains
-  $\operatorname{def}(\tilde G)$, and $W_f \cap Z \subseteq Z$ transfers the
-  bound to $\dim Z(G,p) \ge D + \operatorname{def}(\tilde G)$.
+  For the second bound, let $P$ be a partition of $V$, and let $W_P$ be
+  the space of screw assignments that are constant on each part of $P$.
+  It has dimension $D|P|$. On $W_P$, the hinge constraint at an edge
+  inside a part always holds. At an edge $e$ that joins two parts it
+  consists of $D - 1$ linear equations, since $C(p(e)) \neq 0$
+  (\cref{def:hinge-row-block}). So the infinitesimal motions in $W_P$
+  form a subspace of dimension at least
+  \[
+    D|P| - (D-1)\,d_G(P) \;=\; D + \operatorname{def}_{\tilde G}(P).
+  \]
+  A partition $P$ with
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$
+  gives the bound.
 \end{proof}
+
+The second bound holds at every realization, generic or not, and it is
+one of the two inequalities of the rank formula in
+\cref{prop:rigidity-matrix-prop11}. Jackson and Jord\'an derive its
+rank form from a count of independent
+rows~\cite[\S4]{jacksonJordan2009}; we count motions instead.
+
+Later chapters consider a framework on a subgraph $G$ of a fixed graph
+together with all the bodies of the fixed graph. Its screw assignments
+are maps $B \to \bigwedge^{d-1}K^{d+1}$ on a finite set $B$ of bodies
+that contains $V(G)$, and $R(G,p)$ and $Z(G,p)$ are defined as before.
+A body of $B \setminus V(G)$ lies on no edge of $G$, so no hinge
+constraint involves it.
 
 \begin{lemma}[The relative deficiency bound]
   \label{lem:relative-deficiency-rank-bound}
@@ -225,30 +308,48 @@ against the contraction's inductive rank.
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le}
   \leanok
   \uses{def:rigidity-matrix, def:D-deficiency}
-  Let $(G,p)$ be a body-hinge framework on an ambient body set
-  $B \supseteq V(G)$, with $V(G)$ nonempty and $C(e) \neq 0$ at every
-  edge $e$ of $G$. Then
+  Let $(G,p)$ be a body-hinge framework whose screw assignments are
+  defined on a finite set $B$ of bodies with
+  $\emptyset \neq V(G) \subseteq B$, and suppose that $C(p(e)) \neq 0$
+  at every edge $e$ of $G$. Then
   \[
     D\,(|B \setminus V(G)| + 1) + \operatorname{def}(\tilde G) \;\le\;
       \dim Z(G,p),
   \]
-  equivalently
+  that is,
   $\operatorname{rank} R(G,p) \le D(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:trivial-motions-rank-bound}
-  The bodies outside $V(G)$ carry no hinge and contribute $D$ free
-  dimensions each. On $V(G)$ the partition count of
-  \cref{lem:trivial-motions-rank-bound} applies to a
-  deficiency-attaining partition, relabelled so that its labels are
-  bodies of $G$ and the outside bodies stay separate parts. The rank form
-  is rank--nullity over the $D|B|$-dimensional space of screw
-  assignments.
+  Let $P$ be a partition of $V(G)$ with
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$, and
+  let $P'$ be the partition of $B$ whose parts are those of $P$ and the
+  singletons $\{b\}$ for $b \in B \setminus V(G)$. No edge meets these
+  singletons, so exactly $d_G(P)$ edges join different parts of $P'$.
+  The count in the proof of \cref{lem:trivial-motions-rank-bound},
+  applied to $P'$, gives
+  \[
+    \dim Z(G,p) \;\ge\; D|P'| - (D-1)\,d_G(P) \;=\;
+    D\,|B \setminus V(G)| + D + \operatorname{def}_{\tilde G}(P).
+  \]
+  The rank form follows, as
+  $\operatorname{rank} R(G,p) = D|B| - \dim Z(G,p)$.
 \end{proof}
 
 \subsection{Rank lemmas}
 \label{sec:molecular-rigidity-matrix-rank}
+
+This subsection proves three rank lemmas of Katoh and
+Tanigawa~\cite[\S5]{katohTanigawa2011}. Deleting the columns of one
+body does not change the rank of $R(G,p)$ (KT Lemma~5.1). Two edges
+between the same two bodies, with linearly independent supporting
+extensors, force the two bodies to have the same screw center in every
+infinitesimal motion (KT Lemma~5.3). The last lemma concerns
+panel-hinge frameworks, in which the hinges at each body lie in a
+common hyperplane, the \emph{panel} of the body
+(\cref{sec:body-hinge-tay}): the rank does not drop when a panel
+rotates into a generic position (KT Lemma~5.2).
 
 \begin{lemma}[Deleting one body's columns preserves rank; KT Lemma 5.1]
   \label{lem:rank-delete-vertex}
@@ -257,28 +358,36 @@ against the contraction's inductive rank.
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotions_add_screwDim}
   \leanok
   \uses{def:rigidity-matrix, lem:trivial-motions-rank-bound}
-  Pinning one body (deleting the $D$ columns of a single vertex $v$ from
-  $R(G,p)$) does not change the rank:
-  $\operatorname{rank} R(G,p) = \operatorname{rank} R(G,p; V \setminus v)$.
-  Consequently rank computations may always fix one body, the most
-  reused reduction in the algebraic induction.
+  Let $(G,p)$ be a body-hinge framework, let $v$ be a body, and let
+  $\operatorname{pinned}(v) = \{S \in Z(G,p) : S(v) = 0\}$. Then
+  $Z(G,p)$ is the direct sum of the space of trivial motions and
+  $\operatorname{pinned}(v)$, so
+  $\dim \operatorname{pinned}(v) + D = \dim Z(G,p)$. Equivalently,
+  deleting the $D$ columns of $v$ from $R(G,p)$ does not change its
+  rank.
 \end{lemma}
 \begin{proof}
   \leanok
-  The $D$ trivial motions (\cref{lem:trivial-motions-rank-bound}) let
-  any motion be normalized to vanish on the pinned body, so the column
-  space is unchanged; this is the ``pinning a body preserves the motion
-  space'' fact of White--Whiteley~\cite{whiteWhiteley1987}. Concretely,
-  the null space $Z(G,p)$ is the internal direct sum of the trivial
-  motions and the body-$v$-pinned motions (those vanishing on $v$): any
-  motion $S$ splits as the constant $u \mapsto S(v)$ plus the pinned
-  remainder $u \mapsto S(u) - S(v)$, which is again a motion because the
-  hinge constraint only sees the relative screws $S(u) - S(w)$
-  (\texttt{isInfinitesimalMotion\_sub\_const}); the two summands meet only
-  at $0$. Hence $\operatorname{finrank}(\text{pinned at } v) + D =
-  \operatorname{finrank} Z(G,p)$, the codimension form of
-  rank-preservation.
+  A trivial motion that vanishes at $v$ vanishes everywhere. An
+  infinitesimal motion $S$ is the sum of the trivial motion with value
+  $S(v)$ and the screw assignment $u \mapsto S(u) - S(v)$, which
+  vanishes at $v$. The latter is again an infinitesimal motion, since it
+  has the same differences $S(u) - S(w)$ as $S$. So $Z(G,p)$ is the
+  direct sum, and the trivial motions have dimension $D$
+  (\cref{lem:trivial-motions-rank-bound}).
+
+  Deleting the columns of $v$ leaves the matrix whose null space
+  consists of the restrictions to $V \setminus \{v\}$ of the motions in
+  $\operatorname{pinned}(v)$. Its rank is therefore
+  $D(|V|-1) - \dim \operatorname{pinned}(v) = D|V| - \dim Z(G,p)$, the
+  rank of $R(G,p)$.
 \end{proof}
+
+Katoh and Tanigawa prove the lemma by adding to $R(G,p)$ the $D$ rows
+that tie down the body $v$~\cite[p.~668]{katohTanigawa2011}. They cite
+White and Whiteley~\cite[\S2]{whiteWhiteley1987} for the fact that
+fixing one body does not change the space of nontrivial motions. The
+direct sum above expresses that fact.
 
 \begin{lemma}[Two hinges of parallel edges give the full block; KT Lemma 5.3]
   \label{lem:rank-parallel-full}
@@ -286,22 +395,39 @@ against the contraction's inductive rank.
     CombinatorialRigidity.Molecular.BodyHingeFramework.eq_of_hingeConstraint_two_parallel}
   \leanok
   \uses{def:rigidity-matrix, lem:extensor-independence}
-  If two edges of $G$ join the same pair of bodies with hinges in
-  \emph{general position}, the two $(D-1) \times D$ blocks together have
-  rank $D$ --- the constraint forces the relative screw to zero. The
-  base case $|V| = 2$ of the conjecture's induction is this lemma.
+  Let $(G,p)$ be a body-hinge framework, and let $e$ and $f$ be edges of
+  $G$ that both join the bodies $u \neq v$, with $C(p(e))$ and
+  $C(p(f))$ linearly independent. Then every screw assignment $S$ that
+  satisfies the hinge constraints at $e$ and $f$ has $S(u) = S(v)$.
+  Equivalently, the rows of $R(G,p)$ at $e$ and $f$, restricted to the
+  $D$ columns of $v$, have rank $D$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Each hinge constrains the relative screw to the span of its supporting
-  extensor (\cref{def:rigidity-matrix}); two extensors in general
-  position are linearly independent, by the extensor-independence engine
-  (\cref{lem:extensor-independence}, specialized to two hinges), so their
-  one-dimensional constraint spans meet only at $0$
-  (\texttt{span\_inf\_span\_eq\_bot\_of\_linearIndependent}). Hence a
-  screw satisfying both constraints has zero relative part, the combined
-  block has the full rank $D$.
+  The difference $S(u) - S(v)$ lies in
+  $\operatorname{span} C(p(e)) \cap \operatorname{span} C(p(f))$
+  (\cref{def:hinge-constraint}). Two lines spanned by linearly
+  independent vectors meet only in $0$, so $S(u) = S(v)$. In the
+  columns of $v$, the rows at $e$ and $f$ are $\pm r(p(e))$ and
+  $\pm r(p(f))$. Their common null space in $K^D$ is the same
+  intersection (\cref{def:hinge-row-block}), so they have rank $D$.
 \end{proof}
+
+Katoh and Tanigawa state the lemma for the graph with the two bodies
+$u$ and $v$ and the two edges $e$ and $f$, with distinct hinges
+$p(e) \neq p(f)$, and their proof shows that distinct hinges satisfy
+the hypothesis above~\cite[p.~670]{katohTanigawa2011}. By the remark
+after \cref{def:affine-subspace-extensor}, $C(p(e))$ is nonzero, it is
+determined by $p(e)$ up to a nonzero scalar, and it determines $p(e)$.
+So $C(p(e))$ and $C(p(f))$ are proportional only if $p(e) = p(f)$, and
+two nonzero vectors that are not proportional are linearly
+independent. For example, two hinges spanned by $d - 1$ of $d + 1$
+affinely independent points, omitting different pairs of them, have
+linearly independent extensors by KT Lemma~2.1
+(\cref{lem:extensor-independence}). Distinct hinges can lie in a common
+hyperplane, so the two-body graph has an infinitesimally rigid
+panel-hinge realization. This graph is the base case of the algebraic
+induction (\cref{lem:theorem-55-base}).
 
 \begin{lemma}[Lower-semicontinuity of rank under a panel rotation; KT Lemma 5.2]
   \label{lem:rank-rotation-semicont}
@@ -309,31 +435,45 @@ against the contraction's inductive rank.
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_span_le}
   \leanok
   \uses{def:rigidity-matrix, def:dof-generic}
-  Along a one-parameter family of realizations rotating a single panel,
-  the rank of $R(G,p)$ is lower-semicontinuous: it cannot drop at a
-  generic parameter. Equivalently, if some realization in the family
-  attains rank $\rho$, so does the generic one. In the basis-free
-  monotonicity form: if two realizations $p, p'$ of the same multigraph
-  satisfy $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$
-  at every edge --- $p'$ the more general (generic) realization, with the
-  larger supporting spans --- then $Z(G,p') \subseteq Z(G,p)$ and hence
-  $\operatorname{finrank} Z(G,p') \le \operatorname{finrank} Z(G,p)$, i.e.\
+  Along a one-parameter family of realizations of $G$ in which a single
+  panel rotates, the rank of $R(G,p)$ is lower semicontinuous: its
+  value at a generic parameter is at least its value at every member of
+  the family. In monotone
+  form, let $p$ and $p'$ be realizations of $G$ with
+  $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$
+  at every edge $e$. Then $Z(G,p') \subseteq Z(G,p)$, so
+  $\dim Z(G,p') \le \dim Z(G,p)$ and
   $\operatorname{rank} R(G,p) \le \operatorname{rank} R(G,p')$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The entries of $R(G,p)$ are polynomials in the panel coordinates, so a
-  nonvanishing $\rho \times \rho$ minor at one parameter is a nonzero
-  polynomial and hence nonvanishing at a generic parameter --- the
-  genericity argument is run directly, rather than through an analytic
-  perturbation. The formalization proves the basis-free monotonicity
-  statement: a refinement of the constraint spans ($\operatorname{span}
-  C(p(e)) \subseteq \operatorname{span} C(p'(e))$ for every edge) makes
-  every motion of the more-constrained $p'$ a motion of $p$, so
-  $\operatorname{finrank} Z$ only shrinks under refinement; the generic
-  member of the rotation family has the largest supporting spans and
-  thus the maximal rank.
+  The entries of $R(G,p)$ can be written as polynomials in the
+  coordinates of the panels, as Katoh and
+  Tanigawa~\cite[p.~668]{katohTanigawa2011} note with a reference to
+  Jackson and Jord\'an~\cite[Lemma~7.1]{jacksonJordan2009}. Along the
+  family they are polynomials in the parameter $t$. A $\rho \times \rho$
+  minor that is nonzero at one parameter is then a nonzero polynomial in
+  $t$, so it vanishes at only finitely many parameters, and at every
+  other parameter the rank is at least $\rho$. Katoh and Tanigawa argue by
+  continuity over $\R$ instead~\cite[p.~669]{katohTanigawa2011}; the
+  polynomial argument works over every field.
+
+  In the monotone form, $C(p(e))$ and $C(p'(e))$ are nonzero, as the
+  hinges are $(d-2)$-dimensional, so the hypothesis says that
+  $\operatorname{span} C(p(e)) = \operatorname{span} C(p'(e))$ at every
+  edge. The two realizations then have the same hinge constraints, so
+  $Z(G,p') = Z(G,p)$, and their ranks are equal.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves only the monotone form, for frameworks in
+  which $C(p(e))$ may be zero (\cref{def:hinge-constraint}), and with
+  the inclusion of spans reversed. If
+  $\operatorname{span} C(p'(e)) \subseteq \operatorname{span} C(p(e))$
+  at every edge, then each hinge constraint of $(G,p')$ implies the
+  corresponding one of $(G,p)$, so $Z(G,p') \subseteq Z(G,p)$ and
+  $\dim Z(G,p') \le \dim Z(G,p)$. When all the extensors are nonzero,
+  either inclusion of spans says that the spans are equal.
+\end{fmlnote}
 
 \subsection{Block-rank-addition lemmas for the case analyses}
 \label{sec:molecular-rigidity-matrix-blocks}

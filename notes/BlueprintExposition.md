@@ -1522,8 +1522,8 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
       coincident-panel full rank** (a realization with `Π(u)=Π(v)` but two *distinct*
       hinges `p(e)≠p(f)` still attaining rank `D`) — is **already exposited in full**
       at `lem:rank-parallel-full` (`rigidity-matrix.tex`, "Two hinges of parallel
-      edges give the full block; KT Lemma 5.3"), spelling out the
-      extensor-determined-up-to-scalar argument. KT proves Lemma 5.3 in full (p. 670)
+      edges give the full block; KT Lemma 5.3"), whose proof and the paragraph after it spell
+      out the extensor-determined-up-to-scalar argument. KT proves Lemma 5.3 in full (p. 670)
       — it is among KT's *least* intricate arguments (a two-vertex base), below the
       "most intricate / reasonably compressed" bar — and Lemma 6.2's coincident-panel
       splice reuses it (its eq. (6.3)–(6.5) rank addition is already covered by the

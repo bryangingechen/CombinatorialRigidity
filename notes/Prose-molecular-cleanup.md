@@ -5,9 +5,9 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.4 `F-051`–`F-060`. 20
-one-commit tasks; tasks 1 and 2.1–2.4 are done, and the round has no planned stop. **Next concrete
-task:** task 2.5, `rigidity-matrix.tex` 52–337, at Opus (*Lemma checklist*). Round manual:
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.5 `F-051`–`F-063`. 20
+one-commit tasks; tasks 1 and 2.1–2.5 are done, and the round has no planned stop. **Next concrete
+task:** task 2.6, `rigidity-matrix.tex` 478–739, at Opus (*Lemma checklist*). Round manual:
 `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -18,17 +18,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.4 has landed** (this commit): all of `extensor.tex` (215 lines, now 298), 7 nodes, with
-its crux `lem:extensor-independence` at full depth. No node moved. Every `\label`, `\lean{…}`,
-`\leanok` and `\uses` line is byte-identical. One sentence of `body-hinge.tex` changed: the
-coordinator's scope-pin correction of task 2.3's last sentence (*Decisions*). Nothing is
-mid-stream; task 2.5 is next.
+**Task 2.5 has landed** (this commit): `rigidity-matrix.tex` 52–337 (now 52–477), 9 nodes, its
+two subsections with an orienting paragraph each and three formalization notes. No node moved.
+Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical. Outside the chapter, one
+clause of the exposition ledger's 22i verdict now says where `lem:rank-parallel-full` spells out
+KT's argument. Nothing is mid-stream; task 2.6 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (102 overfull boxes, 105 at the
-  parent; none in `extensor` or `body-hinge`). Screens: `extensor` register 0 (1 at the parent),
-  devices 0 / 7 (0 / 0 at the parent; the seven are addresses, four in prose and three in a
-  formalization note), forward `\uses` 0; cross-chapter forward `\uses` 14, unchanged.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (98 overfull boxes, 102 at the
+  parent; none in the slice). Screens: `rigidity-matrix` register 9 (10 at the parent), devices
+  0 / 1 (1 / 5); cross-chapter forward `\uses` 14, unchanged.
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -193,14 +192,7 @@ dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight
   `extensor` (task 2.4); their open bullets are in this log at `ea058ba8`, `6c26eed5`, `7fe65223`
   and `53ec36db`.
 - **`rigidity-matrix`** (phase 18, extended through phase 40).
-  - *2.5:* the paragraphs after `def:rigidity-matrix` (121–149) narrate the formalization
-    (principle D's basis-free anti-pattern). `def:dof-generic` says "Formalized basis-free" in its
-    statement. `def:rigidity-matrix` (14 pins) and `lem:trivial-motions-rank-bound` (9, the
-    codimension bound beside the trivial motions) are `F-009`'s. `lem:rank-parallel-full` derives
-    the independence of two hinges' extensors from Lemma 2.1 (an "engine"); its pin assumes it, and
-    KT's own argument (an extensor determines its hinge up to scale, p. 670) is what the exposition
-    ledger's 22i verdict says this proof spells out: make the two agree. `lem:rank-rotation-semicont`
-    is `F-049`.
+  - *2.5:* done; its open bullet is in this log at `47eb5225`.
   - *2.6:* the subsection lead-in (341–370) is a roadmap of all its lemmas; "splice" in titles.
   - *2.7:* the contraction-leg lemmas of Case I and the pencil chapters carry Lean in statements
     (`\operatorname{extProj}`, `\operatorname{ofNormals}`, "relabel selector", "parent selector").
@@ -274,16 +266,16 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.3 `body-bar.tex`'s rest and opening, and all of `body-hinge.tex`** (`53ec36db`; now
     `body-bar` 1–48 and 460–721, `body-hinge` 1–165; 13 nodes). Applied the round's notation
     (*Decisions*). Found `F-056`–`F-058`.
-  - [x] **2.4 `extensor.tex`** (this commit; now 1–298, 7 nodes; crux `lem:extensor-independence`
+  - [x] **2.4 `extensor.tex`** (`47eb5225`; now 1–298, 7 nodes; crux `lem:extensor-independence`
     at full depth). Also the coordinator's scope-pin correction to task 2.3: `body-hinge.tex`'s
     last sentence now says we prove the simple-graph case of KT Conjecture 1.2. Found `F-059`,
     `F-060`.
-  - [ ] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (52–337): 9 nodes, 286
-    lines.
-  - [ ] **2.6 `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears** (338–599): 8
-    nodes, 262 lines.
-  - [ ] **2.7 `rigidity-matrix.tex`, the contraction-leg lemmas and the opening** (600–901, 1–51):
-    9 nodes, 353 lines.
+  - [x] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (this commit; now 52–477, 9
+    nodes). Found `F-061`–`F-063`.
+  - [ ] **2.6 `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears** (338–599 at
+    the open, now 478–739): 8 nodes, 262 lines.
+  - [ ] **2.7 `rigidity-matrix.tex`, the contraction-leg lemmas and the opening** (600–901 at the
+    open, now 740–1041; and 1–51): 9 nodes, 353 lines.
   - [ ] **2.8 `deficiency.tex`, the matroid, the deficiency and the cut lemmas** (27–271): 9 nodes,
     245 lines.
   - [ ] **2.9 `deficiency.tex`, cut vertices, ears, restriction and minimality** (272–523): 9
@@ -361,6 +353,12 @@ one line each naming the ledger ID and the task that found it.
   (Whiteley's Theorem 13; a connectivity hypothesis; "degenerate" standard-basis two-extensors).
 - `F-059` (N, task 2.4): `def:plucker-coords`'s pins have no Lean caller, and no declaration
   relates them to the extensor; the expansion the chapter states is unformalized.
+- `F-061` (L, task 2.5): the "forest" row-independence lemmas pinned on `def:rigidity-matrix`
+  assume that every component of the edges is a star.
+- `F-062` (E, task 2.5): `lem:case-II-placement-new-rows` uses and cites `lem:rank-delete-vertex`
+  for the dimension that `def:hinge-row-block` supplies.
+- `F-063` (L, task 2.5): the pin of `lem:trivial-motions-rank-bound`'s deficiency bound asks
+  $C(e) \neq 0$ at every edge label, not only at the edges of $G$.
 
 ## Blockers / open questions
 
@@ -368,18 +366,16 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.5, `rigidity-matrix.tex`, the matrix and KT's rank lemmas (52–337), at
-Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.5* item of the
-`rigidity-matrix` bullet under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then
-tasks 2.6–2.18 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.6, `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears
+(478–739, 338–599 at the open), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
+*2.6* item of the `rigidity-matrix` bullet under *Per-chapter diagnosis*, its gates and screens
+under *Scope*. Then tasks 2.7–2.18 in order, and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
-  understandable"). 2.1–2.3 open a new arc; the coordinator reads them in full against the
-  exemplars, as it read round 1's 5.1–5.3.
+  understandable"): the coordinator has read tasks 2.1–2.3 in full against the exemplars.
 - **Notation.** Task 2.3 applied *Decisions*' notation call to `body-bar` and `body-hinge`, and
   removed the "$D = \delta$" crosswalks and every $\delta$ from the round's other chapters. Tasks
-  2.5–2.18 write KT's $d$ and $D$, drop the stray $n$, and point at `body-hinge`'s $\tilde G$.
-- **Crux nodes** keep their full proofs, in tasks 2.12–2.15, 2.17 and 2.18 (*Scope*). Task 2.5
-  makes `lem:rank-parallel-full`'s proof and the exposition ledger's 22i verdict agree.
+  2.6–2.18 write KT's $d$ and $D$, drop the stray $n$, and point at `body-hinge`'s $\tilde G$.
+- **Crux nodes** keep their full proofs, in tasks 2.12–2.15, 2.17 and 2.18 (*Scope*).
 - **From tasks 2.1–2.3.** `body-bar.tex` writes bodies in $\R^d$, $D = \binom{d+1}{2}$, a vector
   $b_e \in \R^D$ per bar (Tay's model; Whiteley's bars are lines), and the row of a bar as
   $-\sum_c (b_e)_c\, a_e^{(c)}$, the $D$-frame row at $b$ up to sign; "isostatic" is defined in
@@ -393,16 +389,27 @@ tasks 2.6–2.18 in order, and task 3 closes the round. For the slices:
   definition: after `def:extensor`, multilinearity, alternation and "nonzero iff linearly
   independent"; after `def:join`, the concatenation identity and Barnabei–Brini–Rota's
   Propositions 3.4 and 3.5; after `def:affine-subspace-extensor`, $C(p_1, \dots, p_k) \ne 0$ iff
-  affinely independent, and $C(U)$ determined by $U$ up to a scalar and determining $U$ (the fact
-  KT's proof of Lemma 5.3 opens with, p. 670: task 2.5 can cite it). The form of KT Lemma 2.1 for
-  linearly independent vectors is stated after its proof. `rigidity-matrix.tex` (its opening) and
-  `meet.tex` (its opening and two nodes) cite `sec:molecular-homog` for the exterior algebra and
-  the join, which are in `sec:molecular-extensor`: tasks 2.7 and 2.18 repoint them.
-- **The open's findings** are recorded, not acted on. Task 2.5 treats `lem:rank-rotation-semicont`
-  under the hygiene rule (`F-049`); tasks 2.5–2.7 and 2.16 give `F-050`'s forward references a
-  sentence each.
+  affinely independent, and $C(U)$ determined by $U$ up to a scalar and determining $U$.
+  `rigidity-matrix.tex` (its opening) and `meet.tex` (its opening and two nodes) cite
+  `sec:molecular-homog` for the exterior algebra and the join, which are in
+  `sec:molecular-extensor`: tasks 2.7 and 2.18 repoint them.
+- **From task 2.5.** The screw space $\bigwedge^{d-1}K^{d+1}$ is identified with $K^D$ before
+  `def:hinge-row-block`, whose rows are, through the dot product, the linear forms vanishing on
+  $C(p(e))$; $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$ is stated after
+  `def:rigidity-matrix`. Formalization notes: at `def:hinge-constraint`, the Lean records an
+  extensor $C(e)$ per edge label, possibly zero, on a fixed body set, with $d = k + 1$; at
+  `def:rigidity-matrix`, the rows are linear forms $S \mapsto r(S(u) - S(v))$. "Realization" is
+  defined before `def:dof-generic`, the deficiency recalled before
+  `lem:trivial-motions-rank-bound`, $\operatorname{pinned}(v)$ (round 3's notation) in
+  `lem:rank-delete-vertex`, and "panel" in *Rank lemmas*' opening paragraph.
+  `lem:rank-parallel-full` assumes linearly independent extensors (was "general position").
+  For task 2.7's opening: it now repeats both subsections' orienting paragraphs (principle F,
+  *Once*), and its "lower-bound half of Tay–Whiteley's Proposition 1.1" is the rank bound of
+  `prop:rigidity-matrix-prop11`, Jackson and Jordán's formula.
+- **The open's findings** are recorded, not acted on. Tasks 2.6, 2.7 and 2.16 give `F-050`'s
+  forward references a sentence each.
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-061`.
+  pins reach. The ledger's next ID is `F-064`.
 
 ## Decisions made during this round
 
@@ -455,3 +462,11 @@ tasks 2.6–2.18 in order, and task 3 closes the round. For the slices:
   left and the reordering bijection (the exposition ledger's verdict); $d = e + 1$ and the pins'
   roles are a formalization note. Scope pin: KT prove Conjecture 1.2 for multigraphs (p. 648), so
   `body-hinge.tex`'s last sentence now says we prove its simple-graph case.
+- **Task 2.5, `rigidity-matrix.tex` 52–337.** `lem:rank-parallel-full` states its pin's hypothesis,
+  linearly independent extensors, for the undefined "general position"; KT's distinct-hinges
+  argument (p. 670) follows its proof, so the 22i verdict holds. `lem:rank-rotation-semicont` keeps
+  its statement (`F-049`): in the blueprint's model the hinges are nonzero, so its span inclusion
+  is an equality and its proof says so; a formalization note gives the pins' reversed inclusion.
+  `lem:trivial-motions-rank-bound` now assumes $V \neq \emptyset$, its pins' ambient hypothesis.
+  The row-independence prose after `def:rigidity-matrix` claimed any spanning forest; it now
+  states the pins' hypothesis (`F-061`).
