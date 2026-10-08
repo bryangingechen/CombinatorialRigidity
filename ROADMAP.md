@@ -1247,9 +1247,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `c8a`, `notes/Phase40-simplify.md` *Moved to a later round*) and writes the findings report.
   Statement strength and the Lean are never changed: such findings go to the ledger
   `notes/Prose-findings.md`, for the PI. Round 1, `prose-laman`, opened 2026-10-07
-  (`notes/Prose-laman-cleanup.md`). **Next concrete task:** its task 2, the dependency-audit
-  script `scripts/blueprint-deps.py` (`notes/Prose.md` §5); the round stops for the PI after
-  task 3, its sample section.
+  (`notes/Prose-laman-cleanup.md`); its task 2, the dependency-audit script
+  `scripts/blueprint-deps.py` (`notes/Prose.md` §5), has landed. **Next concrete task:** its
+  task 3, the sample section, after which the round stops for the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

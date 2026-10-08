@@ -101,6 +101,8 @@ sort blueprint/lean_decls | shasum -a 256 | cut -c1-16
 
 A clean commit reproduces the same edge count and both hashes as the round's last run; a changed
 `\uses` edge or `\leanok` flips one of them without `checkdecls` or `lint.sh` noticing.
+`python3 scripts/blueprint-deps.py --dump` prints the same two lines, then the sorted graph and
+the label→pins map, for diffing two commits (its docstring has the script's other reports).
 
 The friction direction matters: we **prefer to shorten the Lean**
 rather than add a prose aside. If a Lean simplification attempt fails,
@@ -151,7 +153,9 @@ proof, and the fix was to add the missing `\uses` edge, not to retire the
 section. When both signals fire, the honest outcomes split three ways:
 truly-dead-and-unpinned (delete, as `case_I_dispatch`), live-under-wired
 (add the `\uses` edge), or dead-but-worth-keeping-as-exposition (ground it
-as a worked-example node). Diagnose which before acting.
+as a worked-example node). Diagnose which before acting. `scripts/blueprint-deps.py` computes
+that call-chain closure from `formalization.yaml`'s main results for every pin (its report 2), and
+its `--label` prints what a node's pins reach, against its `\uses`.
 
 ### C. Long-proof audit
 

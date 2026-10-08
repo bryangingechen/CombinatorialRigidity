@@ -5,10 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks, of which task 1 is this open.
-**Next concrete task:** task 2, the dependency-audit script `scripts/blueprint-deps.py`
-(`notes/Prose.md` §5), at Opus, with acceptance tests (a)–(c) (*Lemma checklist*). After task 3,
-the sample, the round stops for the PI (Stop 1). Round manual: `CLEANUP.md`.
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1 (the open) and 2 (the dependency-audit
+script `scripts/blueprint-deps.py`, with its first report in the ledger) are done.
+**Next concrete task:** task 3, the sample: `henneberg.tex`'s *Preservation of the Laman
+property*, at Opus (*Lemma checklist*). The round then stops for the PI (Stop 1). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,9 +20,19 @@ yet.
 
 ## Current state
 
-**Round 1 is open** (task 1, this commit, docs only; the Lean tree and the blueprint TeX are
-`6f4f7afa`'s, which are `64bb9754`'s). Nothing is mid-stream. The next concrete task is task 2,
-the audit script.
+**Task 2 has landed** (this commit: two new scripts and docs; the Lean library and the blueprint
+TeX are still `6f4f7afa`'s, which are `64bb9754`'s). It adds `scripts/blueprint-deps.py` and its
+Lean half `scripts/BlueprintDeps.lean`, with a pointer to the script in `CLEANUP.md` §A and §B. The
+first report is in the ledger as `F-001`–`F-012`, each mirrored under *Moved to a later round*,
+and the Lean baselines are in the ledger's opening section. Nothing is mid-stream. The next
+concrete task is task 3, the sample.
+- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
+  `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
+  and `b53eb8b1cf78cb06`, which `--dump`'s first two lines reproduce; `print.log` 0 `LaTeX
+  Warning` lines.
+- **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
+  reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
+  The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
 
 **Verified at the open** (2026-10-07):
 - Whole-project `lake build` green at `6f4f7afa`: 2996 jobs, all cached (the coordinator's run).
@@ -229,9 +240,9 @@ One commit per task, in this order (`notes/Prose.md` §3). Each line gets its co
 commit, with this log as of that commit, carries the task's diagnosis and findings. Rungs: every
 task at Opus, a fresh agent per task, except the close, which may run at Sonnet (§2).
 
-- [x] **1. O — the open** (this commit; docs only): this log, the ledger skeleton, the baselines,
+- [x] **1. O — the open** (`bca00d3f`; docs only): this log, the ledger skeleton, the baselines,
   the axioms check and the status surfaces.
-- [ ] **2. A — the dependency-audit script** (`notes/Prose.md` §5). `scripts/blueprint-deps.py`,
+- [x] **2. A — the dependency-audit script** (`notes/Prose.md` §5). `scripts/blueprint-deps.py`,
   with a Lean metaprogram it runs through `lake lean`, never `lake env lean`; both committed.
   - *Inputs:* every `\label`, `\lean{…}`, `\leanok` and statement- and proof-level `\uses` in
     `blueprint/src/chapter/**.tex`; the main results of `formalization.yaml`.
@@ -254,6 +265,17 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     script's run time goes in this line.
   - *If still BLOCKED after one escalation:* salvage its route findings here, record it as not
     done, and go on to task 3; the slices read instead. Round 5's open retries it once.
+  - *Done* (its sha goes here at the next commit). **(a)** passes: on a scratch copy with the edge
+    removed, `--tex-root <copy> --label thm:pencil-x0-theorem-s` reports `missing
+    lem:deficiency-zero-connected`, reached in the proof by `Graph.IsX0Graph.exists_additiveCore`
+    calling `Graph.two_le_degree_of_isKDof_zero` directly. **(b)** passes: report (2) lists
+    `cor:pencil-flat-x0 (every pin): Graph.x0Attains_of_finrank_liftingSpace_eq_three`. **(c)** A
+    fresh run took 125 s wall-clock (38 s user), nearly all of it `lake lean` checking the
+    library's 2 996 build jobs; a cached run took 0.55 s. Both of the script's consistency checks
+    pass: the TeX's `\uses`, transitively reduced, are the built graph's 1 292 edges, and the
+    TeX's pins are `lean_decls`' 1 030. The Lean half sees proof bodies and private declarations
+    (*Decisions*): `thm:isSparse-exists-typeI-or-typeII-reverse` reaches
+    `lem:isSparse-typeII-reverse-blocker` through the private `IsSparse.typeII_pair_dispatch_aux`.
 - [ ] **3. S — the sample: `henneberg.tex`'s *Preservation of the Laman property*** (159–273, 115
   lines): `thm:typeI-isLaman`, `thm:typeII-isLaman`, `thm:typeI-reverse-isLaman`,
   `thm:typeI-isLaman-iff`, the lead-in, and the paragraph before the reverse direction. **Stop 1
@@ -343,7 +365,18 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
 `E`, `N`, `T` and `U` findings for round 5, `prose-graph`, and `L` findings for a later Lean round,
 one line each naming the ledger ID and the task that found it.
 
-- None yet.
+- `F-001` (E, task 2): round 1's chapters, 83 missing `\uses` edges at 37 nodes.
+- `F-002` (E, task 2): round 2's chapters, 99 missing edges at 58 nodes.
+- `F-003` (E, task 2): round 3's files, 164 missing edges at 47 nodes.
+- `F-004` (E, task 2): round 4's chapters, 76 missing edges at 42 nodes.
+- `F-005` (E, task 2): `pencil.tex` and `main-component.tex`, 114 missing edges at 58 nodes.
+- `F-006` (E, task 2): 397 unbacked `\uses` across the blueprint, for a check.
+- `F-007` (E, task 2): three `\uses` of the remark `rem:kt-lemma-41`, none drawn.
+- `F-008` (E, task 2): the graph's four unfilled nodes.
+- `F-009` (N, task 2): 28 nodes with four or more pins.
+- `F-010` (N, task 2): six pinned helpers that draw missing in-edges.
+- `F-011` (N, task 2): seven missing edges that would close a cycle.
+- `F-012` (N, task 2): 202 pins outside every main result's closure (liveness).
 
 ## Blockers / open questions
 
@@ -353,12 +386,13 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2, the dependency-audit script `scripts/blueprint-deps.py`, at Opus.**
-Its spec and acceptance tests (a)–(c) are under *Lemma checklist*; `notes/Prose.md` §5 is the
-plan. It writes the script's first report into the ledger's `E` and `N` sections and the Lean
-baselines into its opening section. Then task 3, the sample, and Stop 1; no slice is written
-before the PI's entry. Then task 4 pins the exemplar, tasks 5.1–5.16 follow in order, and task 6
-closes the round.
+**Next concrete task: task 3, the sample, at Opus**: `henneberg.tex`'s *Preservation of the
+Laman property* (159–273), with its diagnosis, choices, limits and evidence bar under *Lemma
+checklist*. Its evidence for what the four pins reach is `python3 scripts/blueprint-deps.py
+--label thm:typeI-isLaman` (and likewise for the other three); the sample changes no `\uses`, and
+whatever the script reports goes to the ledger, not into the TeX. Then Stop 1: the coordinator
+writes its entry under *Autopilot: for the PI*, and no slice is written before the PI's answer.
+Then task 4 pins the exemplar, tasks 5.1–5.16 follow in order, and task 6 closes the round.
 
 ## Decisions made during this round
 
@@ -374,3 +408,14 @@ closes the round.
   rides with `sparsity.tex`'s last slice, as the `(2, 3)` case of that chapter. That gives 16
   slices averaging 306 lines, above `40-exposition`'s 270: these chapters are less dense.
 - **The screens** are recorded under *Scope*, since `notes/Prose.md` §7's regex was not.
+- **Task 2: the Lean half is a non-`module` file importing the library root.** A `module`
+  importer sees the project's theorems as axioms and none of its private declarations, so it
+  cannot see what a proof reaches; measured, and recorded in `scripts/BlueprintDeps.lean`'s
+  docstring. A `module` file also could not import the root, which is not a module.
+- **Task 2: what counts as missing.** A reached node that is already a `\uses` ancestor is
+  *implied*, not missing, since the graph is drawn transitively reduced and would not show the
+  edge. Unbacked `\uses` split into those reached through another pinned node and those with no
+  Lean basis. A missing edge that would close a cycle is flagged as a node-shape finding.
+- **Task 2: the ledger groups the script's findings** (the coordinator's suggestion): one `E` entry
+  per chapter group for missing edges, one for unbacked edges, and one `N` entry per node-shape
+  pattern. The ledger's header states the rule; `--chapter` and `--label` reproduce the detail.
