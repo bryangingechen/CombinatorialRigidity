@@ -1,31 +1,32 @@
 \section{Frameworks and infinitesimal rigidity}
 \label{sec:frameworks}
 
-A $d$-dimensional \emph{framework} on a vertex set $V$ is a placement
-$p : V \to \R^{d}$, where $\R^{d}$ denotes Euclidean $d$-space with its
-standard inner product. The linear-algebraic formulation of
-infinitesimal rigidity developed below --- rigidity map, infinitesimal
-motions, trivial Euclidean motions, and infinitesimal rigidity as a
-kernel-dimension bound --- is due to Asimow and Roth~\cite{asimowRoth1978}.
-Given a graph $G$ on $V$, the \emph{rigidity map} at $p$ is the
-$\R$-linear map sending an infinitesimal motion
-$p' \in \R^{d \cdot |V|}$ to the family of edge-length derivatives
-$e \mapsto \langle p_u - p_v,\, p'_u - p'_v \rangle$ indexed by the
-edges $e = \{u, v\} \in E(G)$. Geometrically this is the differential
-at $p$ of the squared-edge-length map, up to a factor of $2$.
+This section defines the rigidity of a graph placed in Euclidean space,
+and proves the facts about it that Laman's theorem
+(\cref{sec:laman-theorem}) uses. We follow the presentation in
+Jord\'an's survey~\cite{jordan2016} (\S 1.2). A framework places each
+vertex of a graph at a point of $\R^{d}$. Its infinitesimal motions
+assign a velocity to each vertex so that no edge changes length to
+first order. They form the kernel of a linear map, the rigidity map.
+The translations and rotations of $\R^{d}$ give the trivial
+infinitesimal motions, and a framework is infinitesimally rigid when it
+has no others. A graph is generically rigid when some framework of it
+is infinitesimally rigid.
 
-A framework is \emph{infinitesimally rigid} when the kernel of the
-rigidity map has dimension at most $d(d+1)/2$ --- the dimension of the
-space of trivial Euclidean motions (translations and infinitesimal
-rotations). The graph $G$ is \emph{generically rigid} in dimension $d$
-when \emph{some} placement is infinitesimally rigid. The section closes
-with the edge-count bound: every generically rigid graph in dimension
-$d$ on $n$ vertices satisfies $d \cdot n \le |E(G)| + d(d+1)/2$;
-specializing at $d = 2$ recovers the necessary half of Laman's theorem.
+After the definitions we bound the rank of the rigidity map by the
+number of edges. We show that rigidity is preserved by adding edges and
+by isomorphisms, and that infinitesimal rigidity survives a small
+change of the framework. We then prove that a graph on $n$ vertices
+that is generically rigid in $\R^{d}$ has at least $dn - d(d+1)/2$
+edges. The section ends with the complete graph $K_2$, which is
+generically rigid in every dimension and is the base case of the
+induction in \cref{sec:laman-theorem}.
 
-All definitions are stated for a general dimension $d \in \N$; the
-Laman-relevant specialization to $d = 2$ is developed in
-\cref{sec:laman-theorem}.
+Throughout, $G$ is a graph on a set $V$, which is finite where a
+statement says so, and $d \in \N$. We equip $\R^{d}$ with its
+standard inner product $\langle \cdot, \cdot \rangle$. As in
+\cref{sec:henneberg}, we write $uv$ for the edge with endpoints $u$ and
+$v$.
 
 \subsection{Definitions}
 
@@ -33,63 +34,66 @@ Laman-relevant specialization to $d = 2$ is developed in
   \label{def:framework}
   \lean{SimpleGraph.Framework}
   \leanok
-  A $d$-dimensional \emph{framework} on $V$ is a function
-  $p : V \to \R^{d}$.
+  A \emph{framework} on $V$ in $\R^{d}$ is a map $p : V \to \R^{d}$,
+  which places each vertex $v$ at the point $p_v$. The frameworks on
+  $V$ in $\R^{d}$ form the real vector space $(\R^{d})^{V}$.
 \end{definition}
 
-\begin{lemma}[Dimension of the framework space]
+Jord\'an's framework is the pair $(G, p)$ of a graph and such a map.
+Here a framework is the map alone, and the graph enters each notion
+below as a separate argument. We also call a framework a
+\emph{placement} of $V$.
+
+\begin{lemma}[Dimension of the space of frameworks]
   \label{lem:framework-finrank}
   \lean{SimpleGraph.Framework.finrank}
   \leanok
   \uses{def:framework}
-  If $V$ is finite, then
-  $\dim_{\R}\,(\mathrm{Framework}\,V\,d) = |V| \cdot d$.
+  Let $V$ be finite. Then $\dim_{\R} (\R^{d})^{V} = d\,|V|$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The framework space is a product of $|V|$ copies of $\R^{d}$, each of
-  dimension $d$, so its dimension is $|V| \cdot d$
-  ($\mathrm{Module.finrank\_pi\_fintype}$).
+  The space $(\R^{d})^{V}$ is a product of $|V|$ copies of $\R^{d}$,
+  each of dimension $d$.
 \end{proof}
+
+Let $p$ be a framework, and let each vertex $v$ move with velocity
+$p'_v$, along the line $t \mapsto p_v + t\,p'_v$. The squared length
+of an edge $uv$ then has derivative
+$2 \langle p_u - p_v,\, p'_u - p'_v \rangle$ at $t = 0$. The rigidity
+map records these derivatives, without the factor $2$.
 
 \begin{definition}[Rigidity map]
   \label{def:rigidityMap}
   \lean{SimpleGraph.RigidityMap}
   \leanok
   \uses{def:framework}
-  For a graph $G$ on $V$ and a framework $p : V \to \R^{d}$, the
-  \emph{rigidity map} at $p$ is the $\R$-linear map
+  Let $p$ be a framework on $V$ in $\R^{d}$. The \emph{rigidity map}
+  of $G$ at $p$ is the linear map
+  $R(G, p) : (\R^{d})^{V} \to \R^{E(G)}$ given by
   \[
-    \mathrm{RigidityMap}\,G\,p :
-    \mathrm{Framework}\,V\,d \;\to_{\R}\; \bigl(E(G) \to \R\bigr)
+    R(G, p)(p')(uv) \;=\; \langle p_u - p_v,\; p'_u - p'_v \rangle
   \]
-  with
-  \[
-    (\mathrm{RigidityMap}\,G\,p)(p')(\{u, v\})
-    \;=\;
-    \langle p_u - p_v,\; p'_u - p'_v \rangle.
-  \]
+  for $p' \in (\R^{d})^{V}$ and each edge $uv$ of $G$.
 \end{definition}
-The entry formula is symmetric under interchange of $u$ and $v$ (each
-factor changes sign), so it descends from the unordered pair
-$\{u, v\}$ to a single scalar, and it is $\R$-linear in $p'$.
-\begin{fmlnote}
-  The rigidity map is defined directly by the entry formula above,
-  rather than as the differential of the squared-edge-length map, so
-  the rank and kernel arguments below require no differentiability
-  machinery.
-\end{fmlnote}
+The right-hand side is unchanged when $u$ and $v$ are exchanged, since
+both of its factors change sign, so it defines a value at the edge
+$uv$. It is linear in $p'$. In the standard bases, the matrix of
+$R(G, p)$ is Jord\'an's rigidity matrix (p.~36). The kernel of
+$R(G, p)$ is the space of \emph{infinitesimal motions} of $G$ at $p$.
 
-\begin{lemma}[Rigidity-map entry formula]
+We record the defining formula as a lemma, which later proofs cite
+when they evaluate the rigidity map at an edge.
+
+\begin{lemma}[The rigidity map at an edge]
   \label{lem:rigidityMap-apply}
   \lean{SimpleGraph.rigidityMap_apply}
   \leanok
   \uses{def:rigidityMap}
-  For $u, v \in V$ with $\{u, v\} \in E(G)$ and $p, p' : V \to \R^{d}$,
+  Let $uv$ be an edge of $G$, and let $p$ and $p'$ be frameworks on $V$
+  in $\R^{d}$. Then
   \[
-    (\mathrm{RigidityMap}\,G\,p)(p')(\{u, v\})
-    \;=\;
-    \langle p_u - p_v,\; p'_u - p'_v \rangle.
+    R(G, p)(p')(uv) \;=\; \langle p_u - p_v,\; p'_u - p'_v \rangle.
   \]
 \end{lemma}
 \begin{proof}
@@ -97,71 +101,116 @@ $\{u, v\}$ to a single scalar, and it is $\R$-linear in $p'$.
   Immediate from the definition.
 \end{proof}
 
+Each translation and each infinitesimal rotation of $\R^{d}$ gives an
+infinitesimal motion of $G$ at $p$, whatever the graph $G$ is.
+Together they give the motions $p'_v = A p_v + b$, for a
+skew-symmetric $d \times d$ matrix $A$ and a vector $b \in \R^{d}$.
+These are the \emph{trivial} infinitesimal motions (Jord\'an, p.~36;
+\cref{sec:trivial-motions}). The pairs
+$(A, b)$ form a space of dimension $d(d+1)/2$, so the trivial motions
+form a space of dimension at most $d(d+1)/2$. Equality holds when the
+points $p_v$ affinely span $\R^{d}$
+(\cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}). A framework
+is infinitesimally rigid when all of its infinitesimal motions are
+trivial. We state this as a bound on the dimension of the kernel, the
+form that rank--nullity arguments use.
+
 \begin{definition}[Infinitesimally rigid framework]
   \label{def:isInfinitesimallyRigid}
   \lean{SimpleGraph.IsInfinitesimallyRigid}
   \leanok
   \uses{def:rigidityMap}
-  For finite $V$, a framework $p$ is \emph{infinitesimally rigid} for
-  $G$ if
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$. We
+  say that $p$ is \emph{infinitesimally rigid} for $G$ if
   \[
-    \dim_{\R}\,\bigl(\ker (\mathrm{RigidityMap}\,G\,p)\bigr)
-    \;\le\;
-    \frac{d(d+1)}{2}.
+    \dim_{\R} \ker R(G, p) \;\le\; \frac{d(d+1)}{2}.
   \]
 \end{definition}
+\begin{fmlnote}
+  \label{fmlnote:infinitesimal-rigidity}
+  When the points $p_v$ affinely span $\R^{d}$, the kernel contains the
+  trivial motions, a space of dimension $d(d+1)/2$, so the definition
+  says that every infinitesimal motion is trivial. In general, by
+  rank--nullity and \cref{lem:framework-finrank}, it says that
+  $R(G, p)$ has rank at least $d|V| - d(d+1)/2$. Jord\'an (pp.~36--37)
+  asks instead that the rank attain the bound $S(|V|, d)$ of his
+  Lemma~1.2.1. This bound is $d|V| - d(d+1)/2$ when $|V| \ge d + 2$
+  and $|V|(|V| - 1)/2$ when $|V| \le d + 1$; the two expressions agree
+  at $|V| = d$ and at $|V| = d + 1$. The rank never exceeds
+  $S(|V|, d)$, so the two definitions agree when $|V| \ge d$. They
+  also agree when $|V| \le 1$, where both hold for every $p$. In
+  particular they agree for every $V$ in the plane, the case of Laman's
+  theorem. When $2 \le |V| \le d - 1$, which needs
+  $d \ge 3$, the definition above is weaker. For instance, two vertices
+  with no edge between them, placed anywhere in $\R^{3}$, satisfy it,
+  since the kernel has dimension $6$; yet the two vertices can move
+  apart.
+\end{fmlnote}
 
 \begin{definition}[Generically rigid graph]
   \label{def:isGenericallyRigid}
   \lean{SimpleGraph.IsGenericallyRigid}
   \leanok
   \uses{def:isInfinitesimallyRigid}
-  A graph $G$ on finite $V$ is \emph{generically rigid} in dimension
-  $d$ if some framework $p : V \to \R^{d}$ is infinitesimally rigid
-  for $G$.
+  Let $V$ be finite. The graph $G$ is \emph{generically rigid} in
+  dimension $d$ if some framework on $V$ in $\R^{d}$ is infinitesimally
+  rigid for $G$.
 \end{definition}
+Defining generic rigidity through a single framework avoids generic
+frameworks, those whose coordinates are algebraically independent over
+$\Q$. Jord\'an (p.~38) calls $G$ rigid in $\R^{d}$ when its generic
+frameworks are rigid: every continuous motion of the vertices that
+keeps each edge length fixed comes from an isometry of $\R^{d}$. For
+$|V| \ge d$, where infinitesimal rigidity has Jord\'an's meaning
+(\cref{fmlnote:infinitesimal-rigidity}), the two notions agree, for
+two reasons. At a generic framework, rigidity and infinitesimal
+rigidity are equivalent, by a theorem of Asimow and
+Roth~\cite{asimowRoth1978}. And the rigidity map has its largest rank
+at a generic framework, since its entries are polynomials in the
+coordinates with integer coefficients (Jord\'an, pp.~38--39).
 
 \begin{definition}[Generically rigid graph, injective form]
   \label{def:isGenericallyRigidInj}
   \lean{SimpleGraph.IsGenericallyRigidInj}
   \leanok
   \uses{def:isInfinitesimallyRigid}
-  A graph $G$ on finite $V$ is \emph{generically rigid with an
-  injective placement} in dimension $d$ if some framework
-  $p : V \to \R^{d}$ is both infinitesimally rigid for $G$ and
-  injective.
+  Let $V$ be finite. The graph $G$ is \emph{injectively generically
+  rigid} in dimension $d$ if some injective framework on $V$ in
+  $\R^{d}$ is infinitesimally rigid for $G$.
 \end{definition}
-The injective form is strictly stronger than plain generic rigidity
-(\cref{def:isGenericallyRigid}). The Henneberg induction of
-\cref{sec:laman-theorem} maintains an injective placement at each step,
-since the per-move preservation arguments require the two attaching
-vertices to be placed at distinct points, and weakens to plain generic
-rigidity only at the end.
+An injectively generically rigid graph is generically rigid. The
+induction that proves Laman's theorem
+(\cref{thm:isLaman-isGenericallyRigid-two}) keeps an injective
+framework at each step, and weakens to generic rigidity at the end. Its
+step for each Henneberg move places the new vertex using that the
+move's vertices $a$ and $b$ lie at distinct points
+(\cref{sec:henneberg-rigidity}). In positive dimension the two notions
+agree, since an infinitesimally rigid framework can be moved slightly
+to an injective one (\cref{sec:rigidity-openness}).
 
 \subsection{Rank and kernel bounds}
 
-Two estimates on the rigidity map are used in the edge-count bound
-below: its kernel only grows as edges are removed, and its rank is
-bounded by the edge count.
+We compare the kernels of the rigidity maps of two graphs, one of which
+contains the edges of the other, and we bound the rank of the rigidity
+map by the number of edges. The first gives the monotonicity results
+below, and the second gives the edge-count bound.
 
 \begin{lemma}[Kernel monotonicity]
   \label{lem:rigidityMap-ker-mono}
   \lean{SimpleGraph.rigidityMap_ker_mono}
   \leanok
   \uses{def:rigidityMap}
-  If $G \le G'$ then for every framework $p$,
+  Let $G'$ be a graph on $V$ with $E(G) \subseteq E(G')$, and let $p$
+  be a framework on $V$ in $\R^{d}$. Then
   \[
-    \ker (\mathrm{RigidityMap}\,G'\,p)
-    \;\le\;
-    \ker (\mathrm{RigidityMap}\,G\,p).
+    \ker R(G', p) \;\subseteq\; \ker R(G, p).
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  The edges of $G$ are among those of $G'$. An infinitesimal motion in
-  $\ker (\mathrm{RigidityMap}\,G'\,p)$ has rigidity-map value $0$ on
-  every edge of $G'$, hence on every edge of $G$, so it lies in
-  $\ker (\mathrm{RigidityMap}\,G\,p)$.
+  Let $p' \in \ker R(G', p)$. At each edge of $G$, the value of
+  $R(G, p)(p')$ equals the value of $R(G', p)(p')$ at the same edge of
+  $G'$, which is zero.
 \end{proof}
 
 \begin{lemma}[Rank is bounded by edge count]
@@ -169,38 +218,35 @@ bounded by the edge count.
   \lean{SimpleGraph.rigidityMap_finrank_range_le}
   \leanok
   \uses{def:rigidityMap}
-  If $V$ is finite, then for every framework $p$,
-  \[
-    \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr)
-    \;\le\;
-    |E(G)|.
-  \]
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$.
+  Then the rank of $R(G, p)$ is at most $|E(G)|$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The range is a submodule of $E(G) \to \R$, whose dimension is
-  $|E(G)|$ by $\mathrm{Module.finrank\_pi}$.
+  The range of $R(G, p)$ lies in $\R^{E(G)}$, which has dimension
+  $|E(G)|$.
 \end{proof}
 
 \subsection{Graph monotonicity}
 
-Generic rigidity is a monotone property in the graph: adding edges
-preserves rigidity at any fixed placement.
+Adding edges to a graph preserves each form of rigidity, at the same
+framework.
 
 \begin{lemma}[Infinitesimal rigidity is monotone]
   \label{lem:isInfinitesimallyRigid-mono}
   \lean{SimpleGraph.IsInfinitesimallyRigid.mono}
   \leanok
   \uses{def:isInfinitesimallyRigid, lem:rigidityMap-ker-mono}
-  If $G \le G'$ and $p$ is infinitesimally rigid for $G$, then $p$ is
+  Let $V$ be finite, let $G'$ be a graph on $V$ with
+  $E(G) \subseteq E(G')$, and let $p$ be a framework on $V$ in
+  $\R^{d}$. If $p$ is infinitesimally rigid for $G$, then $p$ is
   infinitesimally rigid for $G'$.
 \end{lemma}
 \begin{proof}
   \leanok
-  By \cref{lem:rigidityMap-ker-mono} the kernel of
-  $\mathrm{RigidityMap}\,G'\,p$ is contained in that of
-  $\mathrm{RigidityMap}\,G\,p$, so its dimension is at most the
-  latter's, which is at most $d(d+1)/2$ by hypothesis.
+  The kernel of $R(G', p)$ lies in that of $R(G, p)$
+  (\cref{lem:rigidityMap-ker-mono}), so its dimension is at most
+  $d(d+1)/2$.
 \end{proof}
 
 \begin{lemma}[Generic rigidity is monotone]
@@ -208,13 +254,14 @@ preserves rigidity at any fixed placement.
   \lean{SimpleGraph.IsGenericallyRigid.mono}
   \leanok
   \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-mono}
-  If $G \le G'$ and $G$ is generically rigid in dimension $d$, then so
-  is $G'$.
+  Let $V$ be finite, and let $G'$ be a graph on $V$ with
+  $E(G) \subseteq E(G')$. If $G$ is generically rigid in dimension $d$,
+  then so is $G'$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Apply \cref{lem:isInfinitesimallyRigid-mono} at the same placement
-  witness.
+  A framework that is infinitesimally rigid for $G$ is infinitesimally
+  rigid for $G'$ (\cref{lem:isInfinitesimallyRigid-mono}).
 \end{proof}
 
 \begin{lemma}[Injective generic rigidity is monotone]
@@ -222,44 +269,50 @@ preserves rigidity at any fixed placement.
   \lean{SimpleGraph.IsGenericallyRigidInj.mono}
   \leanok
   \uses{def:isGenericallyRigidInj, lem:isInfinitesimallyRigid-mono}
-  If $G \le G'$ and $G$ is injectively generically rigid in dimension
-  $d$, then so is $G'$.
+  Let $V$ be finite, and let $G'$ be a graph on $V$ with
+  $E(G) \subseteq E(G')$. If $G$ is injectively generically rigid in
+  dimension $d$, then so is $G'$.
 \end{lemma}
 \begin{proof}
   \leanok
-  At the same placement: rigidity transports by
-  \cref{lem:isInfinitesimallyRigid-mono}, and injectivity is a property
-  of the placement alone.
+  An injective framework that is infinitesimally rigid for $G$ is
+  infinitesimally rigid for $G'$ (\cref{lem:isInfinitesimallyRigid-mono}),
+  and it is still injective.
 \end{proof}
 
 \subsection{Transport along graph isomorphism}
 \label{sec:rigidity-iso-transport}
 
-A graph isomorphism $\varphi : G \simeq H$ carries a rigid placement
-of $G$ to a rigid placement of $H$ by precomposition with the
-underlying vertex bijection. The Henneberg induction
-(\cref{sec:laman-theorem}) uses this to work up to graph isomorphism
-rather than on literal equalities of graphs.
+Rigidity is invariant under isomorphism, as sparsity is
+(\cref{lem:isSparse-iso}). The induction in \cref{sec:laman-theorem}
+uses this for graphs that are identified only up to isomorphism, such
+as a Laman graph on two vertices and $K_2$.
 
 \begin{lemma}[Infinitesimal rigidity transports along graph isomorphism]
   \label{lem:isInfinitesimallyRigid-iso}
   \lean{SimpleGraph.IsInfinitesimallyRigid.iso}
   \leanok
   \uses{def:isInfinitesimallyRigid}
-  Let $\varphi : G \simeq H$ be a graph isomorphism and $p$ a
-  framework of $G$. If $p$ is infinitesimally rigid for $G$ then
-  $p \circ \varphi^{-1}$ is infinitesimally rigid for $H$.
+  Let $V$ and $W$ be finite, let $\varphi$ be an isomorphism from $G$
+  to a graph $H$ on $W$, and let $p$ be a framework on $V$ in $\R^{d}$.
+  If $p$ is infinitesimally rigid for $G$, then $p \circ \varphi^{-1}$
+  is infinitesimally rigid for $H$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Precomposition with $\varphi$ (resp.\ $\varphi^{-1}$) gives mutually
-  inverse $\R$-linear maps between the two kernels: on edges, the
-  rigidity-map entry at $\{u, v\}$ for $H$ equals the one at
-  $\{\varphi^{-1} u, \varphi^{-1} v\}$ for $G$ (the inner-product
-  formula is the same, and $\varphi$ preserves adjacency). The
-  resulting $\R$-linear equivalence has the same finite-dimensional
-  rank, so the kernel-dim bound for $G$ at $p$ transports to the
-  one for $H$ at $p \circ \varphi^{-1}$.
+  Composition with $\varphi$ is a linear isomorphism from
+  $(\R^{d})^{W}$ to $(\R^{d})^{V}$, sending $q'$ to $q' \circ \varphi$.
+  Let $uv$ be an edge of $G$, so that $\varphi(u)\varphi(v)$ is an edge
+  of $H$. The value of $R(H, p \circ \varphi^{-1})(q')$ at
+  $\varphi(u)\varphi(v)$ is
+  $\langle p_u - p_v,\, q'_{\varphi(u)} - q'_{\varphi(v)} \rangle$
+  (\cref{lem:rigidityMap-apply}), which is the value of
+  $R(G, p)(q' \circ \varphi)$ at $uv$. Since $\varphi$ maps the edges
+  of $G$ onto those of $H$, the vector $q'$ is an infinitesimal motion
+  of $H$ at $p \circ \varphi^{-1}$ if and only if
+  $q' \circ \varphi$ is an infinitesimal motion of $G$ at $p$. So
+  composition with $\varphi$ maps the one kernel isomorphically onto
+  the other, and the two kernels have the same dimension.
 \end{proof}
 
 \begin{lemma}[Generic rigidity transports along graph isomorphism]
@@ -267,12 +320,14 @@ rather than on literal equalities of graphs.
   \lean{SimpleGraph.IsGenericallyRigid.iso}
   \leanok
   \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-iso}
-  If $\varphi : G \simeq H$ and $G$ is generically rigid in dimension
+  Let $V$ and $W$ be finite, and let $\varphi$ be an isomorphism from
+  $G$ to a graph $H$ on $W$. If $G$ is generically rigid in dimension
   $d$, then so is $H$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Transport the witness placement of $G$ via \cref{lem:isInfinitesimallyRigid-iso}.
+  If $p$ is infinitesimally rigid for $G$, then $p \circ \varphi^{-1}$
+  is infinitesimally rigid for $H$ (\cref{lem:isInfinitesimallyRigid-iso}).
 \end{proof}
 
 \begin{lemma}[Injective generic rigidity transports along graph isomorphism]
@@ -280,60 +335,64 @@ rather than on literal equalities of graphs.
   \lean{SimpleGraph.IsGenericallyRigidInj.iso}
   \leanok
   \uses{def:isGenericallyRigidInj, lem:isInfinitesimallyRigid-iso}
-  If $\varphi : G \simeq H$ and $G$ is injectively generically rigid
+  Let $V$ and $W$ be finite, and let $\varphi$ be an isomorphism from
+  $G$ to a graph $H$ on $W$. If $G$ is injectively generically rigid
   in dimension $d$, then so is $H$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Transport via \cref{lem:isInfinitesimallyRigid-iso}; the new
-  placement $p \circ \varphi^{-1}$ is injective because $p$ is and
+  If $p$ is injective and infinitesimally rigid for $G$, then
+  $p \circ \varphi^{-1}$ is infinitesimally rigid for $H$
+  (\cref{lem:isInfinitesimallyRigid-iso}). It is injective, since
   $\varphi^{-1}$ is a bijection.
 \end{proof}
 
 \subsection{Openness of infinitesimal rigidity}
 \label{sec:rigidity-openness}
 
-Infinitesimal rigidity is an \emph{open} condition on the placement:
-if $p_0$ is infinitesimally rigid then so is every placement in some
-neighborhood of $p_0$. Perturbation therefore strengthens a rigid
-placement to one also satisfying an additional open condition --- for
-instance, a non-collinear triple --- as needed in
-\cref{thm:typeII-isGenericallyRigidInj-two}.
+Infinitesimal rigidity is an open condition on the framework: every
+framework close enough to an infinitesimally rigid one is again
+infinitesimally rigid. So an infinitesimally rigid framework can be
+moved slightly, while staying infinitesimally rigid, to satisfy a
+further condition that holds on a dense open set of frameworks. The
+Type~II step of the Henneberg induction
+(\cref{thm:typeII-isGenericallyRigidInj-two}) moves a point in this
+way, off the line through two others.
 
 \begin{lemma}[Infinitesimal rigidity is an open condition on the placement]
   \label{lem:isInfinitesimallyRigid-eventually}
   \lean{SimpleGraph.IsInfinitesimallyRigid.eventually}
   \leanok
   \uses{def:isInfinitesimallyRigid, lem:rigidityMap-apply}
-  Let $V$ be finite. If $p_0 : V \to \R^{d}$ is infinitesimally rigid
-  for $G$, then there is a neighborhood of $p_0$ in the framework
-  space on which every placement is infinitesimally rigid for $G$.
+  Let $V$ be finite, and let $p_0$ be a framework on $V$ in $\R^{d}$
+  that is infinitesimally rigid for $G$. Then every framework in some
+  neighbourhood of $p_0$ in $(\R^{d})^{V}$ is infinitesimally rigid for
+  $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Set $r = \dim\,(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p_0))$ and
-  pick a basis of the range; lift each basis vector through
-  $\mathrm{RigidityMap}\,G\,p_0$ to preimages
-  $\xi_1, \dots, \xi_r \in \mathrm{Framework}\,V\,d$. The map
-  $p \mapsto \bigl(\mathrm{RigidityMap}\,G\,p\,(\xi_i)\bigr)_{i = 1}^{r}$
-  is continuous in $p$ (each entry expands to an inner product, jointly
-  continuous in $(p, \xi)$, with the $\xi_i$ fixed; cf.\
-  \cref{lem:rigidityMap-apply}), and at $p_0$ the values
-  $\mathrm{RigidityMap}\,G\,p_0\,(\xi_i)$ form a basis of the range,
-  hence are linearly independent. By openness of linear independence
-  in finite-dimensional normed spaces, this remains true on an open
-  neighborhood of $p_0$, giving
-  $r \le \dim\,(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p))$ for $p$
-  in that neighborhood.
+  Let $r$ be the rank of $R(G, p_0)$, and choose
+  $\xi_1, \dots, \xi_r \in (\R^{d})^{V}$ whose images under
+  $R(G, p_0)$ form a basis of its range. The entry of
+  $R(G, p)(\xi_i)$ at an edge $uv$ is the inner product of $p_u - p_v$
+  with $(\xi_i)_u - (\xi_i)_v$ (\cref{lem:rigidityMap-apply}), so
+  $R(G, p)(\xi_i)$ depends continuously on $p$. Linear independence of
+  $r$ vectors in the finite-dimensional space $\R^{E(G)}$ is an open
+  condition. So for every $p$ in some neighbourhood of $p_0$ the
+  vectors $R(G, p)(\xi_1), \dots, R(G, p)(\xi_r)$ are linearly
+  independent, and $R(G, p)$ has rank at least $r$.
 
-  Rank--nullity at both $p_0$ and $p$ now bounds the kernel dimension
-  of $\mathrm{RigidityMap}\,G\,p$ by $d(d+1)/2$.
+  For such $p$, rank--nullity in $(\R^{d})^{V}$ shows that the kernel
+  of $R(G, p)$ has dimension at most that of the kernel of
+  $R(G, p_0)$, which is at most $d(d+1)/2$.
 \end{proof}
 
 \subsection{The edge-count bound}
 
-The rank and kernel estimates above combine through rank--nullity into
-the edge-count bound.
+Rank--nullity gives a lower bound on the number of edges of a
+generically rigid graph. In the plane it says that a graph on $V$ that
+is generically rigid has at least $2|V| - 3$ edges, as many as a Laman
+graph on $V$ (\cref{lem:isGenericallyRigid-card-mul-le-two}).
 
 \begin{theorem}[Edge-count bound for generically rigid graphs]
   \label{thm:isGenericallyRigid-card-mul-le}
@@ -341,39 +400,33 @@ the edge-count bound.
   \leanok
   \uses{def:isGenericallyRigid, lem:framework-finrank,
     lem:rigidityMap-finrank-range-le}
-  Let $V$ be finite and $G$ generically rigid in dimension $d$. Then
+  Let $V$ be finite, and let $G$ be generically rigid in dimension $d$.
+  Then
   \[
-    d \cdot |V| \;\le\; |E(G)| + \frac{d(d+1)}{2}.
+    d\,|V| \;\le\; |E(G)| + \frac{d(d+1)}{2}.
   \]
-  In particular, specializing at $d = 2$ gives
-  $2 |V| \le |E(G)| + 3$, the necessary half of Laman's theorem.
 \end{theorem}
 \begin{proof}
   \leanok
-  Pick an infinitesimally rigid framework $p$ witnessing generic
-  rigidity. Rank--nullity for $\mathrm{RigidityMap}\,G\,p$ reads
-  \[
-    \dim\,\mathrm{Framework}\,V\,d
-    \;=\;
-    \dim\,(\mathrm{range}) + \dim\,(\ker).
-  \]
-  By \cref{lem:framework-finrank} the left-hand side equals $d \cdot |V|$;
-  by \cref{lem:rigidityMap-finrank-range-le} the rank is at most
-  $|E(G)|$; and by definition of infinitesimal rigidity the nullity
-  is at most $d(d+1)/2$. Combining yields the claim.
+  Let $p$ be a framework that is infinitesimally rigid for $G$. By
+  rank--nullity, $\dim (\R^{d})^{V}$ is the rank of $R(G, p)$ plus the
+  dimension of its kernel. Here $\dim (\R^{d})^{V} = d\,|V|$
+  (\cref{lem:framework-finrank}), the rank is at most $|E(G)|$
+  (\cref{lem:rigidityMap-finrank-range-le}), and the kernel has
+  dimension at most $d(d+1)/2$, since $p$ is infinitesimally rigid.
+  Together these give the bound.
 \end{proof}
 \begin{fmlnote}
-  The bound is stated additively, $d \cdot |V| \le |E(G)| + d(d+1)/2$,
-  rather than in the equivalent form
-  $d \cdot |V| - d(d+1)/2 \le |E(G)|$, so that the Lean statement avoids
-  truncated natural-number subtraction.
+  The bound is stated in additive form because the formal statement
+  counts in the natural numbers, in which $d\,|V| - d(d+1)/2$ would be
+  truncated at $0$.
 \end{fmlnote}
 
 \subsection{Worked example: \texorpdfstring{$K_2$}{K2} is generically rigid in every dimension}
 
-As a worked example, and as the base case for the Henneberg induction
-of \cref{sec:laman-theorem}, the complete graph $K_2$ is generically
-rigid --- indeed injectively so --- in every dimension.
+The complete graph $K_2$ on two vertices is the base case of the
+induction in \cref{sec:laman-theorem}, which needs it in the injective
+form.
 
 \begin{theorem}[$K_2$ is injectively generically rigid in every positive dimension]
   \label{thm:top-fin-two-isGenericallyRigidInj}
@@ -381,21 +434,21 @@ rigid --- indeed injectively so --- in every dimension.
   \leanok
   \uses{def:isGenericallyRigidInj, lem:framework-finrank,
     lem:rigidityMap-finrank-range-le, lem:rigidityMap-apply}
-  For every $d \ge 1$, the complete graph on two vertices is
+  Let $d \ge 1$. Then the complete graph $K_2$ on two vertices is
   injectively generically rigid in dimension $d$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Take $p_0 = 0$ and $p_1 = e_0$ (the first standard basis vector);
-  the placement is injective ($p_0 \ne p_1$). The single-edge image
-  evaluates at the swap motion $p' = (e_0, 0)$ to
-  $\langle 0 - e_0,\, e_0 - 0 \rangle = -1 \ne 0$
-  (\cref{lem:rigidityMap-apply}), so the range has dimension at least
-  $1$. The framework space has dimension $2d$
-  (\cref{lem:framework-finrank}), so rank--nullity gives
-  $\dim\,(\ker) \le 2d - 1$. For $d \ge 1$ the elementary inequality
-  $2d - 1 \le d(d+1)/2$ (rewriting as $(d-1)(d-2) \ge 0$) closes the
-  kernel-dimension bound to $d(d+1)/2$.
+  Let $u$ and $v$ be the two vertices, and let $e$ be the first
+  standard basis vector of $\R^{d}$. The framework $p$ with $p_u = 0$
+  and $p_v = e$ is injective. The velocities $p'_u = e$ and $p'_v = 0$
+  give
+  $R(K_2, p)(p')(uv) = \langle 0 - e,\, e - 0 \rangle = -1$
+  (\cref{lem:rigidityMap-apply}), so $R(K_2, p)$ has rank at least
+  $1$. The space of frameworks has dimension $2d$
+  (\cref{lem:framework-finrank}), so by rank--nullity the kernel has
+  dimension at most $2d - 1$. Finally $2d - 1 \le d(d+1)/2$, since the
+  difference is $(d - 1)(d - 2)/2 \ge 0$.
 \end{proof}
 
 \begin{theorem}[$K_2$ is generically rigid in every dimension]
@@ -403,13 +456,13 @@ rigid --- indeed injectively so --- in every dimension.
   \lean{SimpleGraph.top_fin_two_isGenericallyRigid}
   \leanok
   \uses{thm:top-fin-two-isGenericallyRigidInj}
-  For every $d \in \N$, the complete graph on two vertices is
+  Let $d \in \N$. Then the complete graph $K_2$ on two vertices is
   generically rigid in dimension $d$.
 \end{theorem}
 \begin{proof}
   \leanok
-  For $d \ge 1$, weaken \cref{thm:top-fin-two-isGenericallyRigidInj}
-  by forgetting injectivity. For $d = 0$ the framework space itself
-  is $0$-dimensional, so every placement has rigidity-map kernel of
-  dimension $0$ and the bound $0 \le 0$ holds.
+  For $d \ge 1$ this follows from
+  \cref{thm:top-fin-two-isGenericallyRigidInj}. For $d = 0$ the space
+  of frameworks is $\{0\}$, so the kernel of the rigidity map has
+  dimension $0 = d(d+1)/2$.
 \end{proof}

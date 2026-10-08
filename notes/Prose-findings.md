@@ -277,6 +277,18 @@ declaration's name as its header writes it:
   `thm:isTightOn-union-with-bonus` assumes $V$ finite as its pin does.
   *Evidence:* read (the statement of `insert_vertex_with_edges`, `Sparsity.lean`).
   *Found:* round 1 task 5.2.
+- **F-020** · S · `def:isInfinitesimallyRigid` (`frameworks.tex`): `IsInfinitesimallyRigid` asks
+  only $\dim\ker R(G,p) \le d(d+1)/2$, i.e. rank at least $d|V| - d(d+1)/2$, where Jordán (2016,
+  pp. 36–37) asks for rank $S(|V|,d)$. The two agree for $|V| \ge d$ and $|V| \le 1$, so at
+  $d = 2$ always; for $2 \le |V| \le d-1$ the formal notion is strictly weaker (two unjoined
+  vertices in $\R^3$ satisfy it). `IsGenericallyRigid` inherits this. The $d = 3$ results that
+  conclude it (`molecule_generic_rigid`, `molecule_generic_square_packing`) are unaffected: their
+  hypotheses exclude $|V| = 2$. Task 5.4 states the divergence in `fmlnote:infinitesimal-rigidity`;
+  the docstring does not mention it.
+  *Evidence:* read (the body of `IsInfinitesimallyRigid`, `Framework.lean`; the two $d = 3$
+  statements and `shadowGraph`); a `lake lean` witness, every graph on `Fin 2` at every $p$ in
+  $d = 3$, by `Submodule.finrank_le` and `Framework.finrank` ($6 \le 3 \cdot 4 / 2$).
+  *Found:* round 1 task 5.4.
 
 ## L — Lean
 

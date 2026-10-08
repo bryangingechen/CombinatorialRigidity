@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.3 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.4 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first three slices, `sparsity.tex`, `laman.tex` and `henneberg.tex`. **Next concrete
-task:** task 5.4, `frameworks.tex`. Round manual: `CLEANUP.md`.
+PI*), and the first four slices, `sparsity.tex`, `laman.tex`, `henneberg.tex` and `frameworks.tex`.
+**Next concrete task:** task 5.5, `henneberg-rigidity.tex`. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,55 +54,30 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The third slice has landed** (task 5.3, this commit): `henneberg.tex` apart from the sample,
-now 1–161 and 263–378; the sample is 162–261, unchanged. `sparsity.tex` and `laman.tex` are
-tasks 5.1–5.2's (`4657a7fc`, `0a2230a0`). The exemplar `notes/Prose-exemplar.md` and
-`blueprint/AUTHORING.md` principles A–F, with B's *Constructions* clause and the PI's "overriding
-goal" sentence, set the register. Nothing is mid-stream; task 5.4 is next.
+**The fourth slice has landed** (task 5.4, this commit): `frameworks.tex`, all of it, now 1–468.
+Tasks 5.1–5.3 rewrote `sparsity.tex`, `laman.tex` and `henneberg.tex`. The register is *Scope*'s.
+Nothing is mid-stream; task 5.5 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (175 overfull boxes, none in
-  `henneberg.tex`; 176 at `0a2230a0`). The screens on `sparsity`, `laman` and `henneberg` read 0
-  and 0 / 0, 0 and 0 / 0, and 0 and 0 / 7: the 7 are the encoding's names in its one
-  formalization note, `fmlnote:henneberg-new-vertex`.
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (170 overfull boxes, none in
+  `frameworks.tex`; 175 at `690ac764`). The screens on `frameworks` read 0 and 0 / 0 (the open's:
+  1 and 7 / 20).
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
 
-**Verified at the open** (2026-10-07):
-- Whole-project `lake build` green at `6f4f7afa`: 2996 jobs, all cached (the coordinator's run).
-  This commit touches no Lean, so it was not re-run.
-- `#print axioms` on all **19** `formalization.yaml` main results gives `[propext,
-  Classical.choice, Quot.sound]`. The harness is `40-docs`' `scratch/40-docs/Axioms.lean` with one
-  name updated, `pencil_conjecture` → `pencil_realization_theorem` (renamed at `64bb9754`), copied
-  to `scratch/prose-laman/Axioms.lean` (gitignored). Its 19 names (in order) and 14 imports (as a
-  set) were diffed against the yaml's `declaration:` and `file:` fields: identical. Run with `lake
-  lean`, its output equals `40-docs`' close byte for byte apart from the harness's path and that
-  renamed name. The one warning is the harness's own over-long line, as before.
-- **The round's gate values.** Every slice must reproduce them:
-  - `blueprint/lint.sh` green. `blueprint/verify.sh` green: `checkdecls` silent, and **9**
-    `WARNING:` lines, all plasTeX package and renderer notices.
-  - `blueprint/print/print.log`: **0** `LaTeX Warning` lines; **176** overfull boxes, counted at
-    the open and close but not gated. (`latexmk` found the PDF up to date: no `.tex` is newer than
-    the log, so it is HEAD's.)
-  - The built graph: **657** nodes and **1 292** edges, fingerprint **`673e3178d1b3145e`**; pin
-    hash **`b53eb8b1cf78cb06`** (`blueprint/lean_decls`: 1 030 pins, 1 020 distinct names). All
-    of these were identical on a second `verify.sh` run. The commands are under *Scope*, gate 3.
-- **`notes/Prose.md` §7, re-measured at HEAD** (§7 was taken at `64bb9754`, the same blueprint
-  tree):
-  - Rounds 1–4 cover 32 TeX files, 17 664 lines by `wc -l` (§7: 17 663) and 505 nodes. Round 1
-    has 12 files, 5 011 lines, 153 nodes and 181 pins. Out of scope, as in §7: `pencil.tex`
-    (1 186), `main-component.tex` (5 518), `retrospective.tex` (789) and `main.tex`. The whole
-    blueprint has 657 statement environments, the graph's 657 nodes.
-  - Nodes with four or more pins: as in §7, 19 in scope and 9 in `pencil.tex` and
-    `main-component.tex`. Round 1's are `lem:edgesIn-corners` (4) and `pebble-game.tex`'s
-    `def:pebble-counts` (5), `lem:pebble-game-invariants` (5) and `def:tryReachPebble` (4).
-  - The register screen: §7's regex was not recorded, so this log records the round's (*Scope*,
-    *The round's screens*). It is broader, and ranks the same seven chapters highest:
-    `panel-layer` 63, `case-i` 31, `molecular-induction` 29, `case-iii` 24, `generic-lift` 18,
-    `molecule-modelling` and `intro` 12 each. Round 1's chapters score 0–6.
-- In the graph, 152 of round 1's 153 nodes are green and filled. `def:blockingWitness`
-  (`pebble-game.tex`) is blue: it has no `\lean` and no `\leanok`.
+**Verified at the open** (2026-10-07; detail in the log at `bca00d3f`): whole-project `lake build`
+green at `6f4f7afa`; `#print axioms` on the 19 `formalization.yaml` main results gives `[propext,
+Classical.choice, Quot.sound]` (harness `scratch/prose-laman/Axioms.lean`, gitignored);
+`notes/Prose.md` §7 re-measured (round 1: 12 files, 5 011 lines, 153 nodes, 181 pins).
+**The round's gate values**, which every slice must reproduce:
+- `blueprint/lint.sh` green. `blueprint/verify.sh` green: `checkdecls` silent, and **9**
+  `WARNING:` lines, all plasTeX package and renderer notices.
+- `blueprint/print/print.log`: **0** `LaTeX Warning` lines; overfull boxes counted, not gated (176
+  at the open).
+- The built graph: **657** nodes and **1 292** edges, fingerprint **`673e3178d1b3145e`**; pin hash
+  **`b53eb8b1cf78cb06`** (`blueprint/lean_decls`: 1 030 pins, 1 020 distinct names). The commands
+  are under *Scope*, gate 3.
 
 ## Scope and standing rules
 
@@ -228,7 +203,7 @@ style: the register is mostly flat, and the problem is Lean devices in statement
   defined. *To check:* for `|V| ≤ d`, the bound `dim ker ≤ d(d+1)/2` is weaker than Asimow–Roth's
   infinitesimal rigidity. Read from `IsInfinitesimallyRigid`'s body, two unjoined vertices in
   `ℝ³` satisfy it (`6 ≤ 6`); at `d = 2` the two agree. If so: a formalization note, and an `S`
-  entry.
+  entry. *Task 5.4:* confirmed for $2 \le |V| \le d - 1$ only (`F-020`).
 - **`henneberg-rigidity`**: the idea, where to place the new vertex, is in the opening's bullets.
   Statements carry `Option V`, `none`, `some` and `typeI`.
   `thm:typeII-isGenericallyRigidInj-two-of-nonCollinear` uses `p_a, p_b, p_c` before it introduces
@@ -290,49 +265,18 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   159–273 at the open, 159–258 now): the four theorems and the lead-ins. Its three choices are
   Stop 1's item 2, approved. It also fixed a slip in the old Type~I proof and found `F-013`. At
   Stop 1 the PI's session dropped "These facts are classical." (`e9e3f37d`).
-- [x] **4. E — pin the exemplar** (`09106a34`; docs only; the commit after the PI's Stop-1 entry).
-  Transcribe the PI's answer verbatim into *Decisions*; copy the approved sample (159–259, already
-  revised as the PI asked) to `notes/Prose-exemplar.md`, frozen as
-  `notes/Phase40-exposition-exemplar.md` is; land the principle-B amendment in Stop 1's item 4
-  wording (approved). The slice lists stand as proposed (item 6, approved).
-  - *Done* (`09106a34`). The PI's answer is under *Decisions*, the attended session's notes in a
-    separate entry. `notes/Prose-exemplar.md` holds `henneberg.tex` 159–258 at `e9e3f37d`, from the
-    `\subsection` through the iff's `\end{proof}`; 259, counted in "159–259", is the blank line
-    before *Reverse decomposition*. Checked with `cmp` and `diff` against `e9e3f37d`'s lines
-    159–258: identical, 100 lines, 4 322 bytes. `blueprint/AUTHORING.md` gains the amendment as
-    B's *Constructions* clause, and the PI's item-5 sentence before the six principles. Neither it
-    nor `blueprint/CLAUDE.md` names an exemplar file as a register source, so neither gains a
-    pointer.
+- [x] **4. E — pin the exemplar** (`09106a34`; docs only): `notes/Prose-exemplar.md` (checked with
+  `cmp`), the PI's answer under *Decisions*, and principle B's *Constructions* clause.
 - [ ] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [x] **5.1 `sparsity.tex`, first half**: §1's three subsections and §2's *Definitions*, *Basic
-    properties* and *Low-degree* (11–142, 155–301); 15 nodes, 279 lines.
-    - *Done* (this commit; 11–149 and 162–317 now). Statements in KT's "Let … Then" shape, with
-      `⊥`, `G ≤ G'`, `G < H` and "vertex type" restated in words and the `incidenceSet` address
-      cut; lead-ins for *Vertex deletion*, *Basic properties* and *Low-degree*; Jordán's §2.1
-      sparse graphs, critical sets and Lemma 2.1.1 (p. 43) anchored. Found `F-014`.
-  - [x] **5.2 `sparsity.tex`, second half and openings, and all of `laman.tex`**: sparsity's
-    isomorphism transport, tight-subset lattice and per-pair blocker (302–537) with both section
-    openings (1–10, 143–154), and `laman.tex` (114 lines); 14 nodes, 372 lines. It writes
-    `sparsity.tex`'s roadmap and keeps the chapter-model pointers true (*Per-chapter diagnosis*).
-    - *Done* (this commit; `sparsity.tex` 1–20, 160–181 and 338–607, `laman.tex` 1–128). Jordán's
-      *splitting* (p. 44) replaces "per-pair tight-blocker", and $G - v + xy$ the subtype graph; the
-      `sec:intro` pointers and two docs pointers are fixed. Found `F-015`–`F-018`.
-  - [x] **5.3 `henneberg.tex` apart from the sample**: definitions, edge-set counts, the reverse
-    decomposition, the worked example and the opening (1–158 and 260–358); 8 nodes, 257 lines. It
-    carries the sample's notation and terminology into the definitions and the opening's
-    convention paragraph, as Stop 1 settled (3a and 3b adopted; the PI's test is that the result
-    is understandable): `def:typeI` and `def:typeII` define "the Type~I move at $a$ and $b$" and
-    "the Type~II move on $ab$ and $c$", with new vertex $v$ and Jordán's gloss (p. 38); the
-    edge-set lemmas write edges as $ab$; and the reverse decomposition's $G'$, the smaller graph,
-    becomes $G - v$ and $G - v + ab$, since the sample's $G'$ is the larger one. The opening
-    credited the characterization to Henneberg alone, where Nixon–Ross credit Henneberg and Laman
-    (Stop 1's notes on 3c); it now credits both.
-    - *Done* (this commit; 1–161 and 263–378 now, the sample 162–261). The moves are defined in
-      words, with Jordán's gloss and Jordán's conditions (p. 44), and the encoding is explained once,
-      in the new `fmlnote:henneberg-new-vertex`; the reverse decomposition's lead-in says what the
-      sparse form gives and where it is proved. Found `F-019`.
-  - [ ] **5.4 `frameworks.tex`**: 19 nodes, 415 lines.
+  - [x] **5.1 `sparsity.tex`, first half** (`4657a7fc`; 15 nodes): statements in KT's shape, lead-ins,
+    Jordán's §2.1 anchored. Found `F-014`.
+  - [x] **5.2 `sparsity.tex`, second half and openings, and all of `laman.tex`** (`0a2230a0`; 14
+    nodes): Jordán's *splitting*, $G - v + xy$, the roadmap, the docs pointers. Found `F-015`–`F-018`.
+  - [x] **5.3 `henneberg.tex` apart from the sample** (`690ac764`; 8 nodes): the moves defined in
+    words, `fmlnote:henneberg-new-vertex`, $G - v$ and $G - v + ab$. Found `F-019`.
+  - [x] **5.4 `frameworks.tex`** (this commit; 19 nodes; 1–468 now): Lean names out, $R(G, p)$,
+    Asimow–Roth's credit narrowed, `fmlnote:infinitesimal-rigidity`. Found `F-020`.
   - [ ] **5.5 `henneberg-rigidity.tex`**: 5 nodes, 247 lines.
   - [ ] **5.6 `trivial-motions.tex`**: 13 nodes, 280 lines.
   - [ ] **5.7 `laman-theorem.tex`, first part**: the `d = 2` count, the ⇐ direction, and the ⇒
@@ -372,6 +316,8 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
 
 - `F-015` (S, task 5.2): `thm:isTightOn-insert-vertex-with-edges` assumes $V$ finite; its pin
   does not.
+- `F-020` (S, task 5.4): `IsInfinitesimallyRigid` is weaker than Jordán's rank form when
+  $2 \le |V| \le d - 1$; $d = 2$ and the two $d = 3$ headline corollaries are unaffected.
 
 ## Moved to a later round
 
@@ -407,29 +353,39 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.4**, the fourth slice: `frameworks.tex`, all of it; 19 nodes, 415 lines. Its
-diagnosis is under *Per-chapter diagnosis* (including the *To check* on `IsInfinitesimallyRigid`
-for $|V| \le d$), its gates under *Scope*, and the register is *Scope*'s. Left by 5.3 for later
-slices:
-- `henneberg.tex` defines "the Type~I move at $a$ and $b$" and "the Type~II move on $ab$ and $c$",
-  with new vertex $v$, and explains the `Option V` encoding once, in the new
-  `fmlnote:henneberg-new-vertex`. Statements about a move in tasks 5.5 (`henneberg-rigidity.tex`)
-  and 5.9 (`rigidity-matroid.tex`'s lifts) can read "let $G'$ be obtained from $G$ by …" and
-  `\cref` that note rather than explain the encoding again.
-- The Laman reverse decomposition now writes $G - v$ and $G - v + ab$. `laman-theorem.tex`'s ⇐
-  proof (task 5.7) still writes $G[\{w \ne v\}]$ and names `typeI_iso_of_two_neighbors` and
-  `typeII_iso_of_three_neighbors`, which name no declaration: the Lean's are
-  `Henneberg.isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors` (`HennebergReverse.lean`).
-  `rigidity-matroid.tex` names the old pair twice (tasks 5.9–5.10).
+**Next: task 5.5**, the fifth slice: `henneberg-rigidity.tex`, all of it; 5 nodes, 247 lines. Its
+diagnosis is under *Per-chapter diagnosis*, its gates under *Scope*, and the register is *Scope*'s.
+Left by tasks 5.3 and 5.4 for later slices:
+- **Notation** (*Decisions*, task 5.4): $R(G, p)$, $(\R^d)^V$, "injectively generically rigid",
+  edges $uv$. `frameworks.tex` defines the trivial motions in a lead-in and points at
+  `sec:trivial-motions`; its `fmlnote:infinitesimal-rigidity` says where the formal notion
+  diverges (`F-020`), for `trivial-motions.tex` and `laman-theorem.tex` to `\cref` if they discuss
+  general $d$.
+- **The moves:** `henneberg.tex` defines "the Type~I move at $a$ and $b$" and "the Type~II move on
+  $ab$ and $c$", with new vertex $v$, and explains the `Option V` encoding once, in
+  `fmlnote:henneberg-new-vertex`. Statements about a move in tasks 5.5 and 5.9 can read "let $G'$
+  be obtained from $G$ by …" and `\cref` that note.
+- **Sources checked by 5.4:** Jordán pp. 35–39 (§1.2: frameworks, the rigidity matrix, trivial
+  motions, Lemma 1.2.1 on p. 36, infinitesimal rigidity on p. 37; Lemmas 1.2.2–1.2.3 on p. 38,
+  which 5.5 needs; §1.3, generic rigidity, p. 38). Asimow–Roth 1978 is verified only for "rigidity
+  is decided for almost all placements" (its Crossref abstract) and "at a generic framework, rigid
+  iff infinitesimally rigid" (Nixon–Ross, Theorem 2.3). `trivial-motions.tex` (5.6) credits it with
+  the $d(d+1)/2$ count, and `laman-theorem.tex` (5.7) with "the linear-algebraic formulation of
+  infinitesimal rigidity", the claim 5.4 removed from `frameworks.tex`: check both.
+- **Names:** `laman-theorem.tex`'s ⇐ proof (5.7) writes $G[\{w \ne v\}]$ and names
+  `typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`, which name no declaration (the
+  Lean's are `Henneberg.isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors`);
+  `rigidity-matroid.tex` names the old pair twice (5.9–5.10).
 
-For tasks 5.9–5.10, the rigidity-matroid diagnosis now carries two items from 5.2. From 5.1, for
-tasks 5.10–5.11: the critical-set gloss follows `def:isTightOn`. Then tasks 5.4–5.16 follow in
-order, and task 6 closes the round.
+For tasks 5.9–5.10, the rigidity-matroid diagnosis carries two items from 5.2. From 5.1, for tasks
+5.10–5.11: the critical-set gloss follows `def:isTightOn`. Then tasks 5.6–5.16 follow in order, and
+task 6 closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
 result is understandable". For the first few slices (at least 5.1–5.3), the coordinator reads each
 one's rendered text in full against the exemplar, beyond the gates, and tightens the next dispatch
-prompt where the guidelines fall short.
+prompt where the guidelines fall short. The coordinator read 5.1–5.3 in full against the exemplar
+(2026-10-07): understandable, no prompt tightening needed; it keeps reading each slice's text.
 
 ## Decisions made during this round
 
@@ -478,3 +434,7 @@ prompt where the guidelines fall short.
   restated as what the algorithm returns, in words, as choice (i) does for constructions.
   `executable.tex` is about the Lean artefact, so its names stay as addresses; but Lean stops being
   the subject of sentences, changelog prose goes, and Lean syntax leaves its statement blocks.
+- **Task 5.4: the bar-joint notation** for the rest of the round. The rigidity map is $R(G, p)$, as
+  Jordán writes the rigidity matrix and `generic-lift.tex` already does; the space of frameworks is
+  $(\R^d)^V$; a framework is the map $p$ alone (also "placement"); the injective form is
+  "injectively generically rigid". `RigidityMap G p` and `Framework V d` leave statements.
