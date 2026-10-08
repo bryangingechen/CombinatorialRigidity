@@ -158,112 +158,99 @@ is recorded on the right-hand side rather than imposed as a hypothesis.
 
 \subsection{Preservation of the Laman property}
 
-Each move preserves the Laman property under the hypotheses noted
-above. Tightness follows from the edge counts of the previous
-subsection; sparsity is checked by a case analysis on whether the
-fresh vertex $\mathrm{none}$ lies in the tested vertex set.
+We show that both moves preserve the Laman property, and that the
+Type~I move also reflects it. These facts are classical.
+Jord\'an~\cite{jordan2016} proves their sparsity part as Lemmas 2.1.5
+and 2.1.4(a), where the two moves are called the $0$-extension and the
+$1$-extension.
 
-\begin{theorem}[Type~I preserves Laman]
+\begin{theorem}[Type~I preserves the Laman property]
   \label{thm:typeI-isLaman}
   \lean{SimpleGraph.Henneberg.typeI_isLaman}
   \leanok
   \uses{def:typeI, def:isLaman, lem:typeI-edgeSet-ncard}
-  If $V$ is finite, $G$ is Laman, and $a \ne b$, then
-  $\mathrm{typeI}\,G\,a\,b$ is Laman.
+  Let $G$ be a Laman graph and let $a \ne b$ be vertices of $G$. Let
+  $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$. Then
+  $G'$ is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
-  Tightness follows from \cref{lem:typeI-edgeSet-ncard} and
-  $|\mathrm{Option}\,V| = |V| + 1$: starting from
-  $|E(G)| + 3 = 2|V|$, both sides gain $+2$.
+  Let $v$ be the new vertex of $G'$. The graph $G'$ has one more vertex
+  than $G$ and two more edges (\cref{lem:typeI-edgeSet-ncard}), so
+  $|E(G')| + 3 = 2|V(G')|$ follows from $|E(G)| + 3 = 2|V(G)|$.
 
-  For sparsity, fix $s \subseteq \mathrm{Option}\,V$ with
-  $3 \le 2|s|$ and write $s' := s \cap \mathrm{some}[V]$ for the
-  $\mathrm{some}$-preimage. The edge set
-  $\edgesIn[\mathrm{typeI}\,G\,a\,b]{s}$ decomposes as the $G$-edges
-  on $s'$ plus the subset $T$ of the two new edges
-  $\{\mathrm{none}, \mathrm{some}\,a\}$,
-  $\{\mathrm{none}, \mathrm{some}\,b\}$ that lie in $s$. Case-split:
-  \begin{itemize}
-    \item If $\mathrm{none} \notin s$, then $T = \emptyset$ and
-      $|s| = |s'|$, so the sparsity of $G$ at $s'$ transfers directly.
-    \item If $\mathrm{none} \in s$, then $|s| = |s'| + 1$ and
-      $|T| \le 2$. Sub-case on $|s'|$: if $|s'| = 0$ the precondition
-      fails; if $|s'| = 1$, say $s' = \{w\}$, then no $G$-edge lies
-      in $s'$ and $T \subseteq \{\{\mathrm{none}, \mathrm{some}\,w\}\}$
-      so $|T| \le 1$, matching $2|s| - 3 = 0$; if $|s'| \ge 2$, apply
-      sparsity of $G$ at $s'$ and use $|T| \le 2$.
-  \end{itemize}
+  For $(2,3)$-sparsity (\cref{def:isSparse}) we show that every set $X$
+  of at least two vertices of $G'$ spans at most $2|X| - 3$ edges. Let
+  $X_0 = X \setminus \{v\}$. The edges of $G'$ inside $X$ are the edges
+  of $G$ inside $X_0$, together with those of the new edges $va$ and
+  $vb$ that lie inside $X$. If $v \notin X$, then $X = X_0$, and the
+  bound holds because $G$ is sparse. Otherwise $|X| = |X_0| + 1$. If
+  $|X_0| = 1$, then $X_0$ spans no edge and at most one new edge lies
+  inside $X$, so $X$ spans at most $1 = 2|X| - 3$ edges. If
+  $|X_0| \ge 2$, then
+  \[
+    |\edgesIn[G']{X}| \;\le\; |\edgesIn{X_0}| + 2
+    \;\le\; (2|X_0| - 3) + 2 \;=\; 2|X| - 3.
+  \]
 \end{proof}
 
-\begin{theorem}[Type~II preserves Laman]
+\begin{theorem}[Type~II preserves the Laman property]
   \label{thm:typeII-isLaman}
   \lean{SimpleGraph.Henneberg.typeII_isLaman}
   \leanok
   \uses{def:typeII, def:isLaman, lem:typeII-edgeSet-ncard}
-  If $V$ is finite, $G$ is Laman, the three vertices $a, b, c$ are
-  pairwise distinct, and $\{a, b\} \in E(G)$, then
-  $\mathrm{typeII}\,G\,a\,b\,c$ is Laman.
+  Let $G$ be a Laman graph, let $ab$ be an edge of $G$, and let
+  $c \ne a, b$ be a vertex of $G$. Let $G'$ be obtained from $G$ by the
+  Type~II move on $ab$ and $c$. Then $G'$ is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
-  Tightness: by \cref{lem:typeII-edgeSet-ncard} and
-  $\{a, b\} \in E(G)$, the deletion drops the count by exactly $1$
-  and the three new edges add $3$, so $\mathrm{typeII}\,G\,a\,b\,c$
-  has $|E(G)| + 2$ edges on $|V| + 1$ vertices. Then
-  $\bigl(|E(G)| + 2\bigr) + 3 = 2(|V| + 1)$ follows from
-  $|E(G)| + 3 = 2|V|$.
-
-  Sparsity mirrors \cref{thm:typeI-isLaman}. The difference is that
-  the deleted edge $\{a, b\}$ interacts with the (at most) three new
-  edges. In the subcase $\mathrm{none} \in s$ with $|s'| \ge 2$, the
-  net edge gain is again at most $2$: either
-  $\{a, b\} \in \edgesIn{s'}$ (the deletion loses $1$ and the three
-  new edges contribute at most $3$, for a net gain of at most $2$) or
-  $\{a, b\} \notin \edgesIn{s'}$ (the deletion loses $0$; since
-  $\{a, b\} \in E(G)$ this forces $a \notin s'$ or $b \notin s'$, so
-  the corresponding new edge $\{\mathrm{none}, \mathrm{some}\,a\}$ or
-  $\{\mathrm{none}, \mathrm{some}\,b\}$ is also absent, leaving at most
-  two new edges in $s$). The remaining sub-cases
-  ($|s'| \in \{0, 1\}$ and $\mathrm{none} \notin s$) match
+  Let $v$ be the new vertex of $G'$. The move deletes $ab$ and adds
+  $va$, $vb$ and $vc$, so $G'$ has one more vertex than $G$ and two more
+  edges (\cref{lem:typeII-edgeSet-ncard}). The count follows as in
   \cref{thm:typeI-isLaman}.
+
+  For sparsity, let $X$ and $X_0$ be as in the proof of
+  \cref{thm:typeI-isLaman}. The edges of $G'$ inside $X$ are the edges
+  of $G$ inside $X_0$ other than $ab$, together with those of $va$,
+  $vb$ and $vc$ that lie inside $X$. The cases $v \notin X$ and
+  $|X_0| = 1$ go as before. Suppose that $v \in X$ and $|X_0| \ge 2$.
+  If $a$ and $b$ both lie in $X_0$, then $ab$ is an edge of $G$ inside
+  $X_0$ that $G'$ does not have, and at most three new edges lie inside
+  $X$. Otherwise one of $va$ and $vb$ does not lie inside $X$, so at
+  most two new edges do. In both cases
+  $|\edgesIn[G']{X}| \le |\edgesIn{X_0}| + 2 \le 2|X| - 3$.
 \end{proof}
 
-For the Type~I move the implication reverses: $\mathrm{typeI}\,G\,a\,b$
-is Laman if and only if $G$ is. This reverse direction is used in the
-reduction of \cref{thm:isLaman-exists-typeI-or-typeII-reverse} to the
-sparse reverse decomposition: after
-\cref{thm:isSparse-exists-typeI-or-typeII-reverse} produces a
-$(2, 3)$-sparse $G' = G[\{w \ne v\}]$, the equivalence combined with
-$G$'s global edge count raises $G'$ from sparse to Laman.
+The reverse decomposition (\cref{sec:henneberg-decomp}) needs the
+converse of \cref{thm:typeI-isLaman}, to show that removing a vertex of
+degree two from a Laman graph leaves a Laman graph.
 
-\begin{theorem}[Type~I reflects Laman]
+\begin{theorem}[Type~I reflects the Laman property]
   \label{thm:typeI-reverse-isLaman}
   \lean{SimpleGraph.Henneberg.typeI_reverse_isLaman}
   \leanok
   \uses{def:typeI, def:isLaman, lem:typeI-edgeSet-ncard}
-  If $V$ is finite, $a \ne b$, and $\mathrm{typeI}\,G\,a\,b$ is Laman,
-  then $G$ is Laman.
+  Let $G$ be a finite graph and let $a \ne b$ be vertices of $G$. Let
+  $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$. If $G'$
+  is Laman, then $G$ is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
-  Dual to \cref{thm:typeI-isLaman}: lift an arbitrary
-  $s' \subseteq V$ to $s := \mathrm{some}[s'] \subseteq \mathrm{Option}\,V$
-  and apply sparsity of $\mathrm{typeI}\,G\,a\,b$ at $s$. With
-  $\mathrm{none} \notin s$ the fresh-edge contribution collapses to
-  zero, so the $\mathrm{typeI}$-sparsity bound at $s$ collapses to the
-  $G$-sparsity bound at $s'$. Tightness transports via
-  \cref{lem:typeI-edgeSet-ncard} run backwards.
+  Let $v$ be the new vertex of $G'$. Both new edges contain $v$, so a
+  set of vertices of $G$ spans the same edges in $G'$ as in $G$. Hence
+  $G$ is $(2,3)$-sparse because $G'$ is. The count follows from
+  \cref{lem:typeI-edgeSet-ncard}, as in \cref{thm:typeI-isLaman}.
 \end{proof}
 
-\begin{theorem}[Type~I is Laman iff its base is]
+\begin{theorem}[Type~I preserves and reflects the Laman property]
   \label{thm:typeI-isLaman-iff}
   \lean{SimpleGraph.Henneberg.typeI_isLaman_iff}
   \leanok
   \uses{thm:typeI-isLaman, thm:typeI-reverse-isLaman}
-  If $V$ is finite and $a \ne b$, then
-  $(\mathrm{typeI}\,G\,a\,b).\mathrm{IsLaman}
-   \iff G.\mathrm{IsLaman}$.
+  Let $G$ be a finite graph and let $a \ne b$ be vertices of $G$. Let
+  $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$. Then
+  $G'$ is Laman if and only if $G$ is Laman.
 \end{theorem}
 \begin{proof}
   \leanok

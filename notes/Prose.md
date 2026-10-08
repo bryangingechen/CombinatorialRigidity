@@ -7,8 +7,9 @@ opened. These are five `CLEANUP.md` rounds over every blueprint chapter that rou
 post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
 round 1's sample section. Round 1's task 2, the dependency-audit script `scripts/blueprint-deps.py`
-(§5), has landed, with its first report in the ledger. **Next concrete task:** round 1's task 3,
-the sample section; Stop 1 (§6) follows it.
+(§5), has landed, with its first report in the ledger, and so has task 3, the sample section.
+**Next concrete task:** Stop 1 (§6), the coordinator's entry for the PI; round 1's task 4 follows
+the PI's answer.
 
 ## 1. The PI's decisions
 

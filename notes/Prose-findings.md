@@ -239,7 +239,11 @@ declaration's name as its header writes it:
 
 ## L — Lean
 
-- None yet.
+- **F-013** · L · `SimpleGraph.Henneberg.typeII_isLaman` (`Henneberg.lean`): it takes `hab : a ≠ b`
+  beside `hG_ab : G.Adj a b`, which implies it (`SimpleGraph.Adj.ne`). `thm:typeII-isLaman` now
+  states only "$ab$ is an edge". The theorem has no Lean caller, so the binder can go alone.
+  *Evidence:* read (the statement of `typeII_isLaman`; a `grep` finds no caller).
+  *Found:* round 1 task 3.
 
 ## M — mathematics and sources
 

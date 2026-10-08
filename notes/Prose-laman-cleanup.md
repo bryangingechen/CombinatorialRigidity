@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1 (the open) and 2 (the dependency-audit
-script `scripts/blueprint-deps.py`, with its first report in the ledger) are done.
-**Next concrete task:** task 3, the sample: `henneberg.tex`'s *Preservation of the Laman
-property*, at Opus (*Lemma checklist*). The round then stops for the PI (Stop 1). Round manual:
-`CLEANUP.md`.
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1 (the open), 2 (the dependency-audit
+script `scripts/blueprint-deps.py`, with its first report in the ledger) and 3 (the sample,
+`henneberg.tex`'s *Preservation of the Laman property*) are done. **Next concrete task:** the
+coordinator's Stop-1 entry under *Autopilot: for the PI*; no slice is written before the PI
+answers, and task 4 then pins the exemplar. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,16 +20,15 @@ yet.
 
 ## Current state
 
-**Task 2 has landed** (this commit: two new scripts and docs; the Lean library and the blueprint
-TeX are still `6f4f7afa`'s, which are `64bb9754`'s). It adds `scripts/blueprint-deps.py` and its
-Lean half `scripts/BlueprintDeps.lean`, with a pointer to the script in `CLEANUP.md` §A and §B. The
-first report is in the ledger as `F-001`–`F-012`, each mirrored under *Moved to a later round*,
-and the Lean baselines are in the ledger's opening section. Nothing is mid-stream. The next
-concrete task is task 3, the sample.
+**Task 3 has landed** (this commit: `henneberg.tex`'s *Preservation of the Laman property*, now
+lines 159–260; the ledger's `F-013`; this log and the status surfaces; no Lean). Task 2's scripts
+are as they landed. Nothing is mid-stream. The round now stops for the PI: the coordinator writes
+the Stop-1 entry, and no slice is written before the PI answers.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`, which `--dump`'s first two lines reproduce; `print.log` 0 `LaTeX
-  Warning` lines.
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176 overfull boxes, as at the
+  open). The register screen on `henneberg` now reads 1 and 26 / 53 (the open's 1 and 32 / 86);
+  the sample's own lines score 0 and 0.
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -265,7 +264,7 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     script's run time goes in this line.
   - *If still BLOCKED after one escalation:* salvage its route findings here, record it as not
     done, and go on to task 3; the slices read instead. Round 5's open retries it once.
-  - *Done* (its sha goes here at the next commit). **(a)** passes: on a scratch copy with the edge
+  - *Done* (`68bc7ad7`). **(a)** passes: on a scratch copy with the edge
     removed, `--tex-root <copy> --label thm:pencil-x0-theorem-s` reports `missing
     lem:deficiency-zero-connected`, reached in the proof by `Graph.IsX0Graph.exists_additiveCore`
     calling `Graph.two_le_degree_of_isKDof_zero` directly. **(b)** passes: report (2) lists
@@ -276,7 +275,7 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     TeX's pins are `lean_decls`' 1 030. The Lean half sees proof bodies and private declarations
     (*Decisions*): `thm:isSparse-exists-typeI-or-typeII-reverse` reaches
     `lem:isSparse-typeII-reverse-blocker` through the private `IsSparse.typeII_pair_dispatch_aux`.
-- [ ] **3. S — the sample: `henneberg.tex`'s *Preservation of the Laman property*** (159–273, 115
+- [x] **3. S — the sample: `henneberg.tex`'s *Preservation of the Laman property*** (159–273, 115
   lines): `thm:typeI-isLaman`, `thm:typeII-isLaman`, `thm:typeI-reverse-isLaman`,
   `thm:typeI-isLaman-iff`, the lead-in, and the paragraph before the reverse direction. **Stop 1
   follows.**
@@ -304,6 +303,11 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     choices, how the algorithmic carve-out will read in tasks 5.12–5.16 (the sample cannot show
     it), any `AUTHORING.md` amendment it proposes, and the slice lists of rounds 1–4 with their
     granularity judgment.
+  - *Done* (its sha goes here at the next commit): now lines 159–260, 102 lines. *Choices:* (i)
+    "let $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$", new vertex $v$, edges as
+    $ab$, no note; (ii) Type~I/II kept, Jordán's 0- and 1-extensions named once, where his Lemmas
+    2.1.5 and 2.1.4(a) (p. 45, p. 44) are cited; (iii) the Lean's case split, a sentence a case.
+    It also fixes a slip in the old Type~I proof ($2|s| - 3$ is 1 there, not 0), and found `F-013`.
 - [ ] **4. E — pin the exemplar** (docs only; the commit after the PI's Stop-1 entry). Transcribe
   the PI's answer verbatim into *Decisions*; copy the approved sample, revised first if the PI
   asks, to `notes/Prose-exemplar.md`, frozen as `notes/Phase40-exposition-exemplar.md` is; land
@@ -317,9 +321,13 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     openings (1–10, 143–154), and `laman.tex` (114 lines); 14 nodes, 372 lines. It writes
     `sparsity.tex`'s roadmap and keeps the chapter-model pointers true (*Per-chapter diagnosis*).
   - [ ] **5.3 `henneberg.tex` apart from the sample**: definitions, edge-set counts, the reverse
-    decomposition, the worked example and the opening (1–158, 274–372); 8 nodes, 257 lines. It
-    carries the sample's notation and terminology into the definitions and the opening's
-    convention paragraph.
+    decomposition, the worked example and the opening (1–158, 274–372; after task 3, 261–359); 8
+    nodes, 257 lines. It carries the sample's notation and terminology into the definitions and
+    the opening's convention paragraph, as the PI's Stop-1 answer settles it. From the sample:
+    `def:typeI` and `def:typeII` define "the Type~I move at $a$ and $b$" and "the Type~II move on
+    $ab$ and $c$", with new vertex $v$ and Jordán's gloss (p. 38); the edge-set lemmas write edges
+    as $ab$; and the reverse decomposition's $G'$, the smaller graph, could become $G - v$ and
+    $G - v + ab$, since the sample's $G'$ is the larger one.
   - [ ] **5.4 `frameworks.tex`**: 19 nodes, 415 lines.
   - [ ] **5.5 `henneberg-rigidity.tex`**: 5 nodes, 247 lines.
   - [ ] **5.6 `trivial-motions.tex`**: 13 nodes, 280 lines.
@@ -377,22 +385,22 @@ one line each naming the ledger ID and the task that found it.
 - `F-010` (N, task 2): six pinned helpers that draw missing in-edges.
 - `F-011` (N, task 2): seven missing edges that would close a cycle.
 - `F-012` (N, task 2): 202 pins outside every main result's closure (liveness).
+- `F-013` (L, task 3): `typeII_isLaman`'s binder `a ≠ b`, implied by its edge hypothesis.
 
 ## Blockers / open questions
 
-- None blocking. The planned stop is Stop 1, after task 3 (*Autopilot: for the PI*). It asks the
-  PI whether the sample's register, depth and choices (i)–(iii) are the round's, whether any
+- None blocking. Stop 1, the planned stop, is now due (*Autopilot: for the PI*). It asks the PI
+  whether the sample's register, depth and choices (i)–(iii) are the round's, whether any
   `AUTHORING.md` amendment is wanted, and whether the slice lists hold.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3, the sample, at Opus**: `henneberg.tex`'s *Preservation of the
-Laman property* (159–273), with its diagnosis, choices, limits and evidence bar under *Lemma
-checklist*. Its evidence for what the four pins reach is `python3 scripts/blueprint-deps.py
---label thm:typeI-isLaman` (and likewise for the other three); the sample changes no `\uses`, and
-whatever the script reports goes to the ledger, not into the TeX. Then Stop 1: the coordinator
-writes its entry under *Autopilot: for the PI*, and no slice is written before the PI's answer.
-Then task 4 pins the exemplar, tasks 5.1–5.16 follow in order, and task 6 closes the round.
+**Next concrete task: the coordinator's Stop-1 entry** under *Autopilot: for the PI*, with what
+task 3's *Record* asks it to hold (`notes/Prose.md` §6): the sample's commit and rendered text
+(`henneberg.tex` 159–260), choices (i)–(iii), how the algorithmic carve-out will read in tasks
+5.12–5.16, any `AUTHORING.md` amendment, and the slice lists of rounds 1–4 with their granularity
+judgment. No slice is written before the PI answers. Then task 4 pins the exemplar, tasks
+5.1–5.16 follow in order, and task 6 closes the round.
 
 ## Decisions made during this round
 
