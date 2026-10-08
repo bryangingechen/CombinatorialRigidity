@@ -324,7 +324,7 @@ p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
 
 Splitting off the new vertex $v$ of $H_{ab}^v$ gives back $H$.
 
-\subsection{Forest surgery: KT Lemma~4.1}
+\subsection{Forest surgery: KT Lemmas~4.1 and~4.2}
 \label{sec:molecular-induction-forest}
 
 Let $v$ be a vertex of $G$ of degree two, whose edges $e_a$ and $e_b$
@@ -351,7 +351,8 @@ such a partition gives the two conclusions of the lemma
 (\cref{lem:forest-surgery-count}). The second step uses KT Lemma~4.4
 (\cref{lem:removal-deficiency}). We prove that lemma in
 \cref{sec:molecular-induction-dof} by comparing the values of partitions
-of $V(G)$, without forests.
+of $V(G)$, without forests. KT Lemma~4.2 (\cref{lem:edge-splitting}),
+the converse for edge-splitting, ends the subsection.
 
 \begin{remark}[On KT Lemma~4.1]
   \label{rem:kt-lemma-41}
@@ -583,291 +584,317 @@ and~4.2 with such a partition.
 
 We now perform the surgery on a balanced partition of a base.
 
-\begin{lemma}[Reroute step: the $v$-free part of a forest transports verbatim]
+\begin{lemma}[Removing the edges at $v$ from a forest]
   \label{lem:reroute-vfree-transport}
   \lean{Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex}
   \leanok
   \uses{def:graph-operations, def:matroid-MG}
-  Let $F$ be a cycle-matroid-independent fiber set of $\tilde G$ (a forest).
-  Its part avoiding the degree-2 vertex $v$, namely $F$ with $v$'s fibers
-  removed, is again cycle-matroid-independent in the multiplied splitting-off
-  $\widetilde{G_v^{ab}}$.
+  Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
+  join $v$ to vertices $a, b \neq v$, and let $F$ be a forest of
+  $\tilde G$. Then the edges of $F$ that are not incident with $v$ form a
+  forest of $\widetilde{G_v^{ab}}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The splitting-off $G_v^{ab}$ deletes $v$ and its two edges and adds the single
-  edge $ab$, so every edge of $G$ not incident to $v$ --- hence every fiber of
-  the $v$-free part of $F$ --- survives unchanged into $G_v^{ab}$ and its
-  multiplication. Acyclicity transports down this inclusion of the $v$-removed
-  multigraph into the splitting-off.
+  The edges of $\tilde G$ not incident with $v$ are the edges of
+  $\widetilde{G_v}$, where $G_v = G - v$ (\cref{def:graph-operations}).
+  As $G_v$ is a subgraph of $G_v^{ab}$, they are edges of
+  $\widetilde{G_v^{ab}}$ with the same ends. Those of them in $F$
+  contain no cycle, since $F$ contains none.
 \end{proof}
 
-\medskip\noindent This is the entire reroute for a $v$-degree-$1$ forest
-(drop its lone $v$-fiber, keep the rest), and the untouched core of a
-$v$-degree-$2$ forest.
-
-\begin{lemma}[Reroute step: the degree-2 cycle-lift swap]
+\begin{lemma}[Replacing the two edges at $v$ of a forest by a copy of $ab$]
   \label{lem:reroute-cycle-lift}
   \lean{Graph.isAcyclicSet_splitOff_reroute}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:reroute-vfree-transport}
-  Let $F$ be a forest of $\tilde G$ using exactly one $v$--$a$ fiber $pa$ and one
-  $v$--$b$ fiber $pb$ (a $v$-degree-$2$ forest), and let $r$ be a copy of the
-  fresh short-circuit fiber $\widetilde{ab}$. Then $(F \setminus \{pa, pb\}) \cup
-  \{r\}$ is cycle-matroid-independent in $\widetilde{G_v^{ab}}$: the forest may
-  trade its $a$--$v$--$b$ path for the direct $ab$-edge without creating a cycle.
+  Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
+  $e_a$ and $e_b$ join $v$ to vertices $a, b \neq v$. Let $F$ be a forest
+  of $\tilde G$ whose edges incident with $v$ are $p_a \in \tilde e_a$ and
+  $p_b \in \tilde e_b$, and let $r \in \widetilde{ab}$. Then
+  $(F \setminus \{p_a, p_b\}) \cup \{r\}$ is a forest of
+  $\widetilde{G_v^{ab}}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Suppose the rerouted set had a cycle. It must use $r$ (its $v$-free part is a
-  forest, \cref{lem:reroute-vfree-transport}); rotate the cycle so $r = ab$ comes
-  first. Substituting the $v$-traversing $2$-path $a$-$pa$-$v$-$pb$-$b$ of
-  $\tilde G$ for $r$ yields a closed walk inside $F \cup \{pa, pb\} \subseteq F$,
-  which therefore contains a $\tilde G$-cycle --- contradicting that $F$ is a
-  forest.
+  Let $F_0 = F \setminus \{p_a, p_b\}$, the set of edges of $F$ not
+  incident with $v$. By \cref{lem:reroute-vfree-transport}, $F_0$ is a
+  forest of $\widetilde{G_v^{ab}}$, so a cycle $C$ of $F_0 \cup \{r\}$
+  passes through $r$. Then $C - r$ is a path from $a$ to $b$ in $F_0$. Its
+  edges have the same ends in $\tilde G$, and it does not pass through
+  $v$. So together with $p_a$ and $p_b$ it forms a cycle of $\tilde G$ in
+  $F$, which is impossible. Hence $F_0 \cup \{r\}$ contains no cycle.
 \end{proof}
 
-\medskip\noindent This is the genuinely combinatorial step Katoh--Tanigawa's
-proof of Lemma~4.1 omits.
-
-\begin{lemma}[The surgery count: $|I'| = |I| - D$ and $|\widetilde{ab} \cap I'| < D - 1$]
+\begin{lemma}[The surgery on a balanced partition]
   \label{lem:forest-surgery-count}
   \lean{Graph.forest_surgery_count}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport}
-  Let $F_0, \dots, F_{D-1}$ be an edge-disjoint forest packing of a fiber
-  set $I$ of $M(\tilde G)$ ($I = \bigcup_i F_i$) that is \emph{balanced}
-  at the degree-2 vertex $v$ --- every forest meets $v$
-  (\cref{lem:balanced-forest-packing} supplies such a packing when $I$ is
-  a base). Reroute each forest: a $v$-degree-$2$
-  forest trades $\{pa, pb\}$ for one copy of $\widetilde{ab}$, chosen distinct
-  across forests (\cref{lem:reroute-cycle-lift}); a $v$-degree-$1$ forest drops
-  its single $v$-fiber and adds nothing (\cref{lem:reroute-vfree-transport}). The
-  rerouted family $F'_0, \dots, F'_{D-1}$ is an edge-disjoint forest packing of
-  $\widetilde{G_v^{ab}}$ with $\bigl|\bigcup_i F'_i\bigr| = |I| - D$ and, with
-  $I' = \bigcup_i F'_i$, also
-  $\bigl|\widetilde{ab} \cap I'\bigr| < D - 1$ --- KT Lemma~4.1's two conclusions.
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. Let $F_1, \dots, F_D$ be pairwise disjoint forests of
+  $\tilde G$, each of which has an edge incident with $v$, and let $I$ be
+  their union. Then there are pairwise disjoint forests
+  $F'_1, \dots, F'_D$ of $\widetilde{G_v^{ab}}$ whose union $I'$ is
+  independent in $M(\widetilde{G_v^{ab}})$ and satisfies
+  \[
+    |I'| = |I| - D \qquad\text{and}\qquad
+    |\widetilde{ab} \cap I'| < D - 1.
+  \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Every forest has $v$-degree $1$ or $2$: at most one copy of each of $v$'s two
-  parallel edge-bundles (two parallel copies form a $2$-cycle), and at least one
-  by balance. A degree-$2$ forest loses two $v$-fibers and gains one copy
-  ($|F'_i| = |F_i| - 1$); a degree-$1$ forest loses one and gains none ($|F'_i| =
-  |F_i| - 1$). So all $D$ forests shrink by exactly one, and as the packing
-  partitions $I$, $\bigl|\bigcup_i F'_i\bigr| = |I| - D$. (With $h'$ degree-$2$
-  forests this is KT's $2h' + (D - h') = h$: $h$ fibers dropped, $h'$ copies
-  added, net $-D$.) Edge-disjointness: the $v$-free cores are disjoint subsets of
-  the disjoint $F_i$, and the added copies are distinct --- enough exist, since
-  the $h' \le D - 1$ degree-$2$ forests draw on $D - 1$ copies of $\widetilde{ab}$.
-  For the fiber bound, the only $\widetilde{ab}$-copies of $I'$ are the inserted
-  ones (each $v$-free core carries genuine $G$-edges, whose copies avoid the fresh
-  $e_0$), one per degree-$2$ forest; their number $h'$ satisfies $D + h' = h \le
-  |\widetilde{va} \cup \widetilde{vb}| = 2(D - 1)$, so $h' \le D - 2 < D - 1$.
+  Two copies of an edge form a cycle, so each $F_i$ has at most one edge
+  in $\tilde e_a$ and at most one in $\tilde e_b$. These are its only
+  edges incident with $v$, and it has at least one, so it has one or two.
+  Let $h'$ be the number of forests with two, and let
+  $h = |(\tilde e_a \cup \tilde e_b) \cap I|$. As the $F_i$ are disjoint,
+  $h = 2h' + (D - h') = D + h'$. As
+  $|\tilde e_a \cup \tilde e_b| = 2(D - 1)$, also $h \le 2(D - 1)$, so
+  $h' \le D - 2$.
+
+  Since $\widetilde{ab}$ has $D - 1 > h'$ elements, we can choose a
+  different copy $r_i \in \widetilde{ab}$ for each forest $F_i$ with two
+  edges incident with $v$. For such an $i$, let $F'_i$ be obtained from
+  $F_i$ by replacing these two edges by $r_i$. It is a forest of
+  $\widetilde{G_v^{ab}}$ by \cref{lem:reroute-cycle-lift}. For every
+  other $i$, let $F'_i$ be $F_i$ without its edge incident with $v$, a
+  forest of $\widetilde{G_v^{ab}}$ by \cref{lem:reroute-vfree-transport}.
+  In both cases $|F'_i| = |F_i| - 1$.
+
+  The edges of the $F'_i$ other than the $r_i$ lie in the disjoint sets
+  $F_i$, and none of them is a copy of $ab$. So the $F'_i$ are pairwise
+  disjoint, and their union $I'$ has
+  $|I'| = \sum_i |F_i| - D = |I| - D$. Its copies of $ab$ are the $h'$
+  copies $r_i$, so $|\widetilde{ab} \cap I'| = h' < D - 1$. By
+  \cref{lem:forest-packing-decomp}, $I'$ is independent in
+  $M(\widetilde{G_v^{ab}})$, as the union of $D$ forests.
 \end{proof}
 
-\begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
+\begin{lemma}[Splitting off does not increase the deficiency; KT Lemma~4.1]
   \label{lem:forest-surgery-split}
   \lean{Graph.forest_surgery_split}
   \leanok
   \uses{def:graph-operations, def:matroid-MG}
-  Let $v$ be a degree-2 vertex of $G$ with distinct neighbours $a, b$ and
-  $e_0 \notin E(G)$ a fresh edge. Then
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges join $v$ to distinct vertices $a, b \neq v$. Then
   \[
-    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\; \operatorname{def}(\tilde G).
+    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\;
+    \operatorname{def}(\tilde G).
   \]
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{thm:def-eq-corank, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport, lem:forest-surgery-count}
-  Take $I$ to be a base of $M(\tilde G)$, so $|I| = \operatorname{rank}
-  M(\tilde G)$, and reroute a balanced forest packing of $I$ across $v$:
-  degree-$2$ forests swap their $a$--$v$--$b$ path for an
-  $\widetilde{ab}$-copy, degree-$1$ forests drop their $v$-fiber
-  (\cref{lem:forest-surgery-count}). This produces a forest packing of
-  $\widetilde{G_v^{ab}}$ covering an independent set $I' = \bigcup_i
-  F'_i$ with $|I'| = |I| - D$, so $\operatorname{rank}
-  M(\widetilde{G_v^{ab}}) \ge |I| - D = \operatorname{rank} M(\tilde G) - D$.
-  Since $\widetilde{G_v^{ab}}$ has one fewer vertex than $\tilde G$, the
-  def\,$=$\,corank identity (\cref{thm:def-eq-corank}, $\operatorname{def} =
-  D(|V| - 1) - \operatorname{rank}$) gives $\operatorname{def}(\widetilde{G_v^{ab}})
-  = D(|V| - 2) - \operatorname{rank} M(\widetilde{G_v^{ab}}) \le D(|V| - 1) -
-  \operatorname{rank} M(\tilde G) = \operatorname{def}(\tilde G)$.
+  Let $B$ be a base of $M(\tilde G)$. By
+  \cref{lem:balanced-forest-packing}, $B$ is the union of $D$ pairwise
+  disjoint forests of $\tilde G$, each of which has an edge incident with
+  $v$. By \cref{lem:forest-surgery-count}, $M(\widetilde{G_v^{ab}})$ has
+  an independent set $I'$ with $|I'| = |B| - D$. Hence
+  \[
+    \operatorname{rank} M(\widetilde{G_v^{ab}}) \;\ge\; |B| - D.
+  \]
+
+  The vertices of $G_v^{ab}$ are the $|V(G)| - 1$ vertices of $G$ other
+  than $v$, among them $a$. So KT eq.~(2.4) (\cref{thm:def-eq-corank})
+  applies to $G_v^{ab}$ and to $G$, and gives
+  \[
+    \operatorname{def}(\widetilde{G_v^{ab}}) \;=\;
+    D\,(|V(G)| - 2) - \operatorname{rank} M(\widetilde{G_v^{ab}})
+    \;\le\; D\,(|V(G)| - 1) - |B| \;=\; \operatorname{def}(\tilde G).
+  \]
+  Katoh and Tanigawa~\cite[p.~661]{katohTanigawa2011} derive their
+  eq.~(4.1), $\operatorname{def}(\widetilde{G_v^{ab}}) \le k$ for a
+  minimal $k$-dof-graph $G$, from their Lemma~4.1 in the same way.
 \end{proof}
 
-\medskip\noindent This is the assembled repair of the balanced-packing
-gloss (\cref{rem:kt-lemma-41}~(2)) --- Katoh--Tanigawa's own argument for
-Lemma~4.1's conclusion. \Cref{sec:molecular-induction-dof} reaches the
-same bound directly, by a deficiency count with no forests, and that is
-what the proof of Theorem~4.9 actually uses.
+The bound of \cref{lem:forest-surgery-split} is the upper bound of KT
+Lemma~4.3(i). We prove the same bound by comparing the values of
+partitions (\cref{lem:splitoff-deficiency}), for every $D \ge 1$ and
+without assuming $a \neq b$. Here we restate it as a consequence of the
+forest surgery.
 
-\begin{corollary}[Forest surgery reproduces the splitting-off deficiency bound]
+\begin{corollary}[The upper bound of KT Lemma~4.3(i) by forest surgery]
   \label{cor:forest-surgery-deficiency}
   \lean{Graph.splitOff_deficiency_le_of_forest_surgery}
   \leanok
   \uses{lem:forest-surgery-split, lem:splitoff-deficiency}
-  In the setting of \cref{lem:forest-surgery-split},
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges join $v$ to distinct vertices $a, b \neq v$. Then
   \[
-    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\; \operatorname{def}(\tilde G).
+    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\;
+    \operatorname{def}(\tilde G).
   \]
 \end{corollary}
 \begin{proof}
   \leanok
-  Immediate from \cref{lem:forest-surgery-split}, whose conclusion is this bound.
+  This is \cref{lem:forest-surgery-split}.
 \end{proof}
 
-\medskip\noindent This records that the forest surgery reaches exactly
-the bound \cref{lem:splitoff-deficiency} reaches directly; it has no
-downstream use, since the direct deficiency count of
-\cref{sec:molecular-induction-dof} is what Theorem~4.9 consumes.
+We turn to KT Lemma~4.2. Let $H$ be a multigraph with an edge $ab$, and
+let $H_{ab}^v$ be obtained from $H$ by edge-splitting along $ab$
+(\cref{def:graph-operations}). Katoh and
+Tanigawa~\cite[pp.~660--661]{katohTanigawa2011} partition an independent
+set $I'$ of $M(\tilde H)$ into $D$ forests and change each forest at the
+new vertex $v$. When no forest contains a copy of $ab$, each forest
+gains one edge at $v$.
 
-\begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]
+\begin{lemma}[Edge-splitting and forests avoiding $ab$; KT Lemma~4.2(i)]
   \label{lem:forest-surgery-unsplit}
   \uses{def:graph-operations, lem:forest-packing-decomp}
-  Unlike \cref{lem:forest-surgery-split}, this direction is sound --- it
-  carries no balanced-packing gloss. A packing of $\widetilde{H}$ into
-  $D$ forests on $V$ extends across an edge-split $H_{ab}^v$ to a
-  packing of $\widetilde{H_{ab}^v}$ into $D$ forests on $V \cup \{v\}$,
-  matching deficiencies under $(H_{ab}^v)_v^{ab} = H$.
+  Let $H$ be a multigraph with an edge $ab$, and let $H_{ab}^v$ be
+  obtained from $H$ by edge-splitting along $ab$. Let
+  $F'_1, \dots, F'_D$ be pairwise disjoint forests of $\tilde H$, none of
+  which contains a copy of $ab$, and let $I'$ be their union. Then there
+  are pairwise disjoint forests $F_1, \dots, F_D$ of
+  $\widetilde{H_{ab}^v}$ with $F'_i \subseteq F_i$ and
+  $|F_i| = |F'_i| + 1$ for each $i$. In particular, their union $I$ has
+  $|I| = |I'| + D$.
 \end{lemma}
 \begin{proof}
-  The fresh vertex $v$ starts isolated, so adding a single $v$-incident
-  fiber to a forest on $V$ can never close a cycle. KT~4.2(i) at $h' = 0$
-  thus adds one $va$-fiber to each of $D-1$ forests and one $vb$-fiber to
-  the last, lifting the packing of $\widetilde{H}$ to one of
-  $\widetilde{H_{ab}^v}$ with $|I| = |I'| + D$ --- with \emph{no}
-  rerouting across $v$ and \emph{no} appeal to the balanced-packing
-  assumption that obstructs \cref{lem:forest-surgery-split}. (The general
-  $h' > 0$ case does reroute and shares the splitting-off surgery's
-  subtleties.)
+  The forests $F'_i$ contain no copy of $ab$, so they are sets of edges of
+  $\widetilde{H_{ab}^v}$ with the same ends as in $\tilde H$, and none of
+  their edges is incident with $v$. Let $F_i = F'_i \cup \{(va, i)\}$
+  for $i \le D - 1$, and $F_D = F'_D \cup \{(vb, 1)\}$, where $(va, i)$
+  is the $i$th copy of the new edge $va$. Each added edge joins $v$ to a
+  vertex of $H$ and is the only edge of $F_i$ at $v$, so it lies on no
+  cycle of $F_i$. Hence $F_i$ is a forest. The added edges are distinct
+  and are not edges of $\tilde H$, so the $F_i$ are pairwise disjoint.
+  This is Katoh and Tanigawa's construction when no forest contains a
+  copy of $ab$.
 \end{proof}
 
-\medskip\noindent This is the lift Katoh--Tanigawa use to derive
-KT~Lemma~4.4; the removal bound it was thought to gate
-(\cref{lem:removal-deficiency}) is in fact reached, unformalized here,
-by the same deficiency count as \cref{lem:splitoff-deficiency}
-(\cref{rem:kt-lemma-44}), so this lemma stays deferred and
-unformalized.
+Katoh and Tanigawa~\cite[p.~662]{katohTanigawa2011} use this case to
+prove their Lemma~4.4, which we prove without forests
+(\cref{lem:removal-deficiency}). In the form of independent sets, the
+lemma above is the case $h' = 0$ of KT Lemma~4.2(i) below
+(\cref{lem:edge-splitting}), with $G = H_{ab}^v$, for $D \ge 2$ and
+$a \neq b$. So we do not formalize it separately.
 
-The all-$k$ form of the induction does need the edge-splitting
-extension: the reverse forest direction of KT~4.2(i)/(ii) supplies its
-degree-of-freedom transport. The next two lemmas are the reverse
-mirrors of \cref{lem:reroute-cycle-lift} and
-\cref{lem:reroute-vfree-transport}; \cref{lem:edge-splitting} assembles
-them into the count-level extension from $\widetilde{G_v^{ab}}$ back to
-$\tilde G$, covering both the full-fiber branch (KT~4.2(ii)) and the
-partial-fiber branch (KT~4.2(i)).
+We state KT Lemma~4.2 for a vertex $v$ of $G$ of degree two, whose edges
+$e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$. Then $G$ is
+obtained from $G_v^{ab}$ by edge-splitting along $ab$, so the lemma
+applies to $H = G_v^{ab}$. In its proof, a forest of
+$\widetilde{G_v^{ab}}$ that contains a copy of $ab$ loses it and gains a
+copy of $e_a$ and a copy of $e_b$, and some of the other forests gain a
+copy of $e_a$ or of $e_b$. The next two lemmas show that each change
+gives a forest of $\tilde G$.
 
-\begin{lemma}[Reverse reroute step: the degree-2 cycle-lift swap]
+\begin{lemma}[Replacing a copy of $ab$ in a forest by the two edges at $v$]
   \label{lem:reverse-reroute-cycle-lift}
   \lean{Graph.isAcyclicSet_mulTilde_of_splitOff_reroute}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:reroute-cycle-lift}
-  The reverse companion of \cref{lem:reroute-cycle-lift}. Let $F'$ be a
-  forest of $\widetilde{G_v^{ab}}$ containing a copy $r$ of the fresh
-  short-circuit fiber $\widetilde{ab}$, and let $pa$ (a $v$--$a$ copy) and
-  $pb$ (a $v$--$b$ copy) be the two $v$-edges of $\tilde G$. Then $(F'
-  \setminus \{r\}) \cup \{pa, pb\}$ is cycle-matroid-independent in $\tilde
-  G$: the forest may trade the direct $ab$-edge back for the
-  $a$--$v$--$b$ path through $v$ without creating a cycle.
+  Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
+  $e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$. Let $F'$
+  be a forest of $\widetilde{G_v^{ab}}$ that contains a copy $r$ of $ab$,
+  and let $p_a \in \tilde e_a$ and $p_b \in \tilde e_b$. Then
+  $(F' \setminus \{r\}) \cup \{p_a, p_b\}$ is a forest of $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Suppose the reverse-swapped set had a cycle $C$. The only $v$-incident
-  edges available are $pa, pb$ ($F' \setminus \{r\}$ lives in
-  $\widetilde{(G - v)}$, which omits $v$), and a cycle through $v$ uses
-  both. If $C$ avoids both, its edges lie in $F' \setminus \{r\} \subseteq
-  E(\widetilde{(G - v)})$ (a forest holds at most one $\widetilde{ab}$
-  copy, so removing $r$ clears the fresh fiber), so $C$ lifts to a
-  $\widetilde{G_v^{ab}}$-cycle inside $F'$. If $C$ uses both, rotate it so
-  $pa$ is first; its last edge is forced to be $pb$ (the only other
-  $v$-edge, reached because $C$ closes at $v$), so $C = (a\text{-}pa\text
-  {-}v\text{-}pb\text{-}b)\,w_2\,a$ with $w_2 : a \to b$ avoiding $v$.
-  Substituting the short-circuit copy $r$ ($= ab$ in $\widetilde{G_v^
-  {ab}}$) for the $2$-path yields a closed $\widetilde{G_v^{ab}}$-trail
-  inside $F'$, hence a $\widetilde{G_v^{ab}}$-cycle inside $F'$. Either way
-  $F'$ carries a cycle --- contradiction.
+  We reverse the argument of \cref{lem:reroute-cycle-lift}. Two copies
+  of $ab$ form a cycle, so $r$ is the only copy of $ab$ in $F'$. Hence the
+  edges of $F_0 = F' \setminus \{r\}$ are edges of $\widetilde{G_v}$.
+  They have the same ends in $\tilde G$ as in $\widetilde{G_v^{ab}}$,
+  and none of them is incident with $v$. Let $C$ be a cycle of $\tilde G$
+  in $F_0 \cup \{p_a, p_b\}$. If $C$ does not pass through $v$, then $C$
+  lies in $F_0$, and it is a cycle of $\widetilde{G_v^{ab}}$ in $F'$.
+  Otherwise $C$ uses both $p_a$ and $p_b$, the only edges of the set at
+  $v$. Then the rest of $C$ is a path from $b$ to $a$ in $F_0$, and with
+  $r$ it forms a cycle of $\widetilde{G_v^{ab}}$ in $F'$. Both cases are
+  impossible, as $F'$ is a forest.
 \end{proof}
 
-\begin{lemma}[Reverse pendant insert: a split-off forest absorbs a $v$-edge]
+\begin{lemma}[Adding an edge at $v$ to a forest with no copy of $ab$]
   \label{lem:reverse-pendant-insert}
   \lean{Graph.isAcyclicSet_mulTilde_insert_vfiber_of_splitOff}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:reroute-vfree-transport, lem:acyclic-insert-vfiber}
-  The reverse companion of \cref{lem:reroute-vfree-transport}, for the
-  forests that pick up a single $v$-edge. Let $F$ be a forest of
-  $\widetilde{G_v^{ab}}$ avoiding the fresh fiber $\widetilde{ab}$, and let
-  $x$ be a copy of a $v$-incident $G$-edge linking $v$ to a distinct vertex
-  $w$. Then $\operatorname{insert} x\,F$ is a forest of $\tilde G$.
+  Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
+  join $v$ to vertices $a, b \neq v$. Let $F$ be a forest of
+  $\widetilde{G_v^{ab}}$ that contains no copy of $ab$, and let $x$ be an
+  edge of $\tilde G$ that joins $v$ to a vertex $w \neq v$. Then
+  $F \cup \{x\}$ is a forest of $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The fresh-fiber-avoiding $F$ transports down to a forest of $\tilde G$
-  (\cref{lem:reroute-vfree-transport}), where it lives in
-  $\widetilde{(G - v)}$ and so avoids $v$; the $v$-avoiding forest then
-  absorbs $x$ as a pendant (the redistribution kernel
-  \cref{lem:acyclic-insert-vfiber}).
+  As $F$ contains no copy of $ab$, its edges are edges of
+  $\widetilde{G_v}$. As in the proof of
+  \cref{lem:reroute-vfree-transport}, they have the same ends in
+  $\tilde G$ as in $\widetilde{G_v^{ab}}$. So $F$ is a forest of
+  $\tilde G$, and none of its edges is incident with $v$. By
+  \cref{lem:acyclic-insert-vfiber}, $F \cup \{x\}$ is a forest of
+  $\tilde G$.
 \end{proof}
 
-\begin{lemma}[Edge-splitting extension; KT Lemma 4.2(i)/(ii)]
+We add to Katoh and Tanigawa's statement the equation
+$I \setminus (\tilde e_a \cup \tilde e_b) = I' \setminus \widetilde{ab}$,
+which their proof gives. Their proof of Lemma~4.3 relies on it: a
+base of $M(\widetilde{G_v^{ab}})$ with no copy of an edge $e \neq ab$
+extends to a base of $M(\tilde G)$ with no copy of
+$e$~\cite[p.~661]{katohTanigawa2011}. As $|\widetilde{ab}| = D - 1$, the
+two cases of the lemma cover every $I'$.
+
+\begin{lemma}[Independent sets under edge-splitting; KT Lemma~4.2]
   \label{lem:edge-splitting}
   \lean{Graph.splitOff_indep_extend_of_fiber_subset,
     Graph.splitOff_indep_extend_of_fiber_lt}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:forest-packing-decomp,
     lem:reverse-reroute-cycle-lift, lem:reverse-pendant-insert}
-  Let $v$ be a degree-2 vertex of $G$ with distinct neighbours $a \ne b$,
-  incident edges exactly $eₐ \ne e_b$, $e_0 \notin E(G)$ the fresh
-  short-circuit edge, and $D = \operatorname{bodyBarDim} n \ge 2$. Let $I'$
-  be independent in $M(\widetilde{G_v^{ab}})$ and write $h' = |I' \cap
-  \widetilde{ab}|$ for the number of fresh short-circuit copies it carries,
-  where $\widetilde{ab} = \operatorname{edgeFiber} e_0\, n$ ($|\widetilde{ab}|
-  = D - 1$). Then there is an $M(\tilde G)$-independent set $I$ with
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. Let $I'$ be an independent set of
+  $M(\widetilde{G_v^{ab}})$, and let $h' = |\widetilde{ab} \cap I'|$.
+  Then $M(\tilde G)$ has an independent set $I$ with
   \[
-    I \setminus (\widetilde{e_a} \cup \widetilde{e_b}) = I' \setminus \widetilde{ab}
+    I \setminus (\tilde e_a \cup \tilde e_b) \;=\;
+    I' \setminus \widetilde{ab}
   \]
-  (the \emph{survivor conjunct}: $I$ and $I'$ agree off the three special
-  fibers --- the fact a base avoiding $\widetilde e$ extends to a base still
-  avoiding it needs exactly this) and:
-  \begin{itemize}
-    \item \textbf{Full-fiber branch} (KT~4.2(ii), $h' = D - 1$, when
-      $\widetilde{ab} \subseteq I'$): $|I| + 1 = |I'| + D$.
-    \item \textbf{Partial-fiber branch} (KT~4.2(i), $h' < D - 1$): $|I| = |I'| +
-      D$ and $|I \cap \widetilde{e_b}| = h' + 1$.
-  \end{itemize}
+  such that (i) if $h' < D - 1$, then $|I| = |I'| + D$ and
+  $|\tilde e_b \cap I| = h' + 1$, and (ii) if $h' = D - 1$, then
+  $|I| = |I'| + D - 1$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Partition $I'$ into $D$ edge-disjoint forests of $\widetilde{G_v^{ab}}$
-  (\cref{lem:forest-packing-decomp}, disjointified). Each forest holds at most
-  one $\widetilde{ab}$-copy, so exactly $h'$ forests carry one short-circuit
-  copy $r$ each. For each $\widetilde{ab}$-carrying forest, trade $r$ for the
-  two $v$-edges it short-circuited --- a $va$-copy $(eₐ, r.2)$ and a $vb$-copy
-  $(e_b, r.2)$ --- via the reverse cycle-lift
-  (\cref{lem:reverse-reroute-cycle-lift}). The recovered copies share their
-  second coordinate with the distinct $r$'s, so they are distinct across
-  forests; each such forest grows by exactly one ($-1$ for $r$, $+2$ for the
-  two $v$-edges).
+  We follow Katoh and Tanigawa's proof. By
+  \cref{lem:forest-packing-decomp}, $I'$ is the union of $D$ forests of
+  $\widetilde{G_v^{ab}}$, which we make pairwise disjoint as after that
+  lemma. Two copies of $ab$ form a cycle, so exactly $h'$ of the forests
+  contain a copy of $ab$, one each. Renumbering the forests and the
+  copies of $ab$, we call them $F'_1, \dots, F'_D$, where $F'_i$ contains
+  $(ab, i)$ for $i \le h'$ and no copy of $ab$ for $i > h'$.
 
-  In the \emph{full-fiber branch} every forest but one carries a copy, so the
-  remaining $D - h' = 1$ forest is unchanged and the count is
-  $|I| + 1 = |I'| + D$. In the \emph{partial-fiber branch} the $D - h'$ copy-free
-  forests would leave the packing one edge short of size $D$; we add a fresh
-  $v$-edge pendant to each of them (\cref{lem:reverse-pendant-insert}): a
-  $va$-copy $(eₐ, c)$ to $D - 1 - h'$ of them and a $vb$-copy $(e_b, c)$ to the
-  last. The pendant copies draw their second coordinates $c$ from the $D - 1 -
-  h'$ indices not already used by the recovered $(eₐ, r.2)$/$(e_b, r.2)$ copies
-  --- assigned bijectively to the $eₐ$-pendant forests by an order
-  isomorphism onto the unused index pool --- so all $eₐ$-copies (and all
-  $e_b$-copies) carry distinct coordinates and the family stays disjoint. Every
-  forest now grows by exactly one, giving $|I| = |I'| + D$; the $e_b$-copies of
-  $I$ are the $h'$ recovered $(e_b, r.2)$ plus the single pendant, so $|I \cap
-  \widetilde{e_b}| = h' + 1$. Reassembled, the family is again a $D$-forest
-  packing, so $I$ is $M(\tilde G)$-independent; the survivor conjunct holds in
-  both branches because both sides equal the union of the forest cores (each
-  forest minus its short-circuit copy), the construction leaving $I$ with no
-  $\widetilde{ab}$-copy.
+  For $i \le h'$, let $F_i$ be $F'_i$ with $(ab, i)$ replaced by
+  $(e_a, i)$ and $(e_b, i)$, a forest of $\tilde G$ by
+  \cref{lem:reverse-reroute-cycle-lift}. In case~(i), let
+  $F_i = F'_i \cup \{(e_a, i)\}$ for $h' < i \le D - 1$, and
+  $F_D = F'_D \cup \{(e_b, h' + 1)\}$. These are forests of $\tilde G$ by
+  \cref{lem:reverse-pendant-insert}. In case~(ii), let $F_D = F'_D$. It
+  contains no copy of $ab$, so it is a forest of $\tilde G$, as in the
+  proof of \cref{lem:reverse-pendant-insert}.
+
+  The added edges are different copies of $e_a$ and $e_b$, and they are
+  not edges of $\widetilde{G_v^{ab}}$. So $F_1, \dots, F_D$ are pairwise
+  disjoint forests of $\tilde G$, and their union $I$ is independent in
+  $M(\tilde G)$ (\cref{lem:forest-packing-decomp}). Deleting the copies
+  of $e_a$ and $e_b$ from $I$ leaves the union of the $F'_i$ without
+  their copies of $ab$, which is $I' \setminus \widetilde{ab}$. In
+  case~(i) every forest gains one edge, so $|I| = |I'| + D$, and the
+  copies of $e_b$ in $I$ are $(e_b, 1), \dots, (e_b, h' + 1)$. In
+  case~(ii) the forests $F_1, \dots, F_{D-1}$ gain one edge each and
+  $F_D$ none, so $|I| = |I'| + D - 1$.
 \end{proof}
+\begin{fmlnote}
+  The first pin is case~(ii), with $h' = D - 1$ stated as
+  $\widetilde{ab} \subseteq I'$, and the second is case~(i). The formal
+  proof does not renumber the copies of $ab$. A forest that contains the
+  copy $(ab, j)$ receives $(e_a, j)$ and $(e_b, j)$, and the copies added
+  to the other forests take the indices $j$ for which $(ab, j)$ is not in
+  $I'$.
+\end{fmlnote}
 
 \subsection{Degree-of-freedom tracking (via deficiency counting)}
 \label{sec:molecular-induction-dof}

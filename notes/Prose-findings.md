@@ -256,6 +256,19 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1b06def1`); read (the pins'
   statements).
   *Found:* round 2 task 2.11.
+- **F-089** · E · the surgery's lemmas (`molecular-induction.tex`): the statement edges of
+  `lem:reroute-cycle-lift` and `lem:reverse-pendant-insert` to `lem:reroute-vfree-transport`, and
+  of `lem:reverse-reroute-cycle-lift` to `lem:reroute-cycle-lift`, have no Lean basis; the prose
+  proofs use those lemmas, so the edges belong on the proofs. `lem:forest-surgery-count`'s
+  statement edge to `lem:balanced-forest-packing` is unbacked (the statement assumes such a
+  partition). Its proof and `lem:edge-splitting`'s cite `lem:forest-packing-decomp`, which the
+  first pin reaches and no proof `\uses` names. `lem:reverse-reroute-cycle-lift`'s pin reaches
+  `lem:splitoff-edge-substitution` (`case-ii.tex`) through `removeVertex_le`: that node states that
+  $G_v$ is a subgraph of $G$ and of $G_v^{ab}$, which the four reroute proofs use, two chapters
+  later.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`); read (the pins'
+  statements).
+  *Found:* round 2 task 2.13.
 
 ## N — node shape
 
@@ -442,6 +455,24 @@ declaration's name as its header writes it:
   `lem:packing-move`, the edge unbacked at `lem:balanced-forest-packing`); read (the body of
   `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
+- **F-090** · N · `cor:forest-surgery-deficiency` (`molecular-induction.tex`): it restates
+  `lem:forest-surgery-split`. Its pin `splitOff_deficiency_le_of_forest_surgery` is a
+  `@[deprecated]` narrative-bridge shim that applies `forest_surgery_split` to the same hypotheses
+  and has no Lean caller (counted in `F-012`); `AUTHORING.md`'s pattern is for a specialization.
+  Its statement edge to `lem:splitoff-deficiency`, a later node of the chapter, has no Lean basis
+  (the shim names `splitOff_deficiency_le` only in its attribute). Merge it into the lemma, with
+  the comparison as prose, and delete the shim in a later Lean round.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`: a dead pin and an
+  unbacked edge); read (the shim's statement and body).
+  *Found:* round 2 task 2.13.
+- **F-091** · N · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled, `F-008`): in
+  the form of independent sets it is the case $h' = 0$ of `lem:edge-splitting`'s case (i) for
+  $G = H_{ab}^v$ ($D \ge 2$, $a \neq b$), which `splitOff_indep_extend_of_fiber_lt` proves, and no
+  node uses it. Its statement ended "matching deficiencies under $(H_{ab}^v)_v^{ab} = H$"; task
+  2.13 states the forest form its proof gives and the relation in prose. Pin it to that
+  declaration with a note, or delete it and keep KT's use for Lemma 4.4 in `rem:kt-lemma-44`.
+  *Evidence:* read (the pin's statement; KT 2011 pp. 660–662).
+  *Found:* round 2 task 2.13.
 
 ## T — terminology and notation
 
@@ -975,6 +1006,16 @@ declaration's name as its header writes it:
   `matroidMG_indep_iff_exists_forest_packing` credits "Nash-Williams 1966 / Edmonds" (`F-053`).
   *Evidence:* read (the docstrings and sections; the body of `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
+- **F-092** · L · the surgery's pins (`Induction/ForestSurgery/EdgeSplitting.lean`,
+  `Induction/ForestSurgery/Reduction.lean`): `splitOff_indep_extend_of_fiber_subset` and
+  `splitOff_indep_extend_of_fiber_lt` take the degree-two hypothesis `_hdeg2` and do not use it.
+  Docstrings are stale or misaddressed: `isAcyclicSet_splitOff_of_diff_fiberAtVertex`'s calls the
+  second reroute step open, and the section before `fiberAtVertex` calls `lem:forest-surgery-split`
+  red; `forest_surgery_count`'s calls `forest_surgery_split` superseded and vacuous, while it is the
+  assembly that uses it; the two forward reroute lemmas name `lem:forest-surgery-split`, and the two
+  reverse ones `lem:edge-splitting`, not the nodes that pin them.
+  *Evidence:* read (the docstrings; the two wrappers' bodies, which do not pass `_hdeg2` on).
+  *Found:* round 2 task 2.13.
 
 ## M — mathematics and sources
 
