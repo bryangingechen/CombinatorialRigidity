@@ -352,6 +352,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter extensor`, at `53ec36db`: two dead
   pins, two unbacked edges); read (`Molecular/Extensor.lean`; a `grep` for the two names' callers).
   *Found:* round 2 task 2.4.
+- **F-065** · N · `cor:block-rank-vertex-two-cut` (`rigidity-matrix.tex`): its pins
+  `inf_span_rigidityRows_of_vertexTwoCut` and `finrank_span_rigidityRows_vertexTwoCut_eq` have no
+  Lean caller, and no node uses the corollary (outside every main result's closure, counted in
+  `F-012`). The ear lemma and `main-component.tex` use the general `lem:block-rank-two-cut`, whose
+  sides are any two subgraphs. Keep it as exposition of the induced case, or drop it.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `5399e053`: two
+  dead pins); read (a `grep` for the two names' callers and for the label in `blueprint/src/`).
+  *Found:* round 2 task 2.6.
 
 ## T — terminology and notation
 
@@ -731,6 +739,12 @@ declaration's name as its header writes it:
   in the same file asks it only at the edges of $G$.
   *Evidence:* read (the two statements).
   *Found:* round 2 task 2.5.
+- **F-064** · L · `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
+  (`Molecular/RigidityMatrix/Bricks.lean`): its docstring names the node
+  `lem:rigidityRows-cut-rank-add`, which does not exist; the declaration is pinned on
+  `lem:block-rank-cut`.
+  *Evidence:* read (the docstring; a `grep` for the label in `blueprint/src/`).
+  *Found:* round 2 task 2.6.
 
 ## M — mathematics and sources
 

@@ -5,10 +5,10 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.5 `F-051`–`F-063`. 20
-one-commit tasks; tasks 1 and 2.1–2.5 are done, and the round has no planned stop. **Next concrete
-task:** task 2.6, `rigidity-matrix.tex` 478–739, at Opus (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.6 `F-051`–`F-065`. 20
+one-commit tasks; tasks 1 and 2.1–2.6 are done, and the round has no planned stop. **Next concrete
+task:** task 2.7, `rigidity-matrix.tex` 830–1108 and 1–51, at Opus (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,16 +18,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.5 has landed** (this commit): `rigidity-matrix.tex` 52–337 (now 52–477), 9 nodes, its
-two subsections with an orienting paragraph each and three formalization notes. No node moved.
-Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical. Outside the chapter, one
-clause of the exposition ledger's 22i verdict now says where `lem:rank-parallel-full` spells out
-KT's argument. Nothing is mid-stream; task 2.6 is next.
+**Task 2.6 has landed** (this commit): `rigidity-matrix.tex` 478–739 (now 478–829), the first 8
+nodes of the subsection now titled *Rank-addition lemmas*, and `lem:span-rigidityRows-eq-of-motions-eq`,
+moved up from task 2.7's range. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is
+byte-identical. Outside the slice, the opening's "a vertex cut (KT Lemma 6.1" now reads "a cut
+edge". Nothing is mid-stream; task 2.7 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (98 overfull boxes, 102 at the
-  parent; none in the slice). Screens: `rigidity-matrix` register 9 (10 at the parent), devices
-  0 / 1 (1 / 5); cross-chapter forward `\uses` 14, unchanged.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (96 overfull boxes, 98 at the
+  parent; none in the slice). Screens: `rigidity-matrix` register 8 (9 at the parent), devices
+  0 / 0 (0 / 1); cross-chapter forward `\uses` 14, unchanged.
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -192,10 +192,11 @@ dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight
   `extensor` (task 2.4); their open bullets are in this log at `ea058ba8`, `6c26eed5`, `7fe65223`
   and `53ec36db`.
 - **`rigidity-matrix`** (phase 18, extended through phase 40).
-  - *2.5:* done; its open bullet is in this log at `47eb5225`.
-  - *2.6:* the subsection lead-in (341–370) is a roadmap of all its lemmas; "splice" in titles.
+  - *2.5, 2.6:* done; their open bullets are in this log at `47eb5225` and `5399e053`.
   - *2.7:* the contraction-leg lemmas of Case I and the pencil chapters carry Lean in statements
     (`\operatorname{extProj}`, `\operatorname{ofNormals}`, "relabel selector", "parent selector").
+    "Splice" is in `lem:rigidityRows-splice-rank-add`'s title (the open's *2.6* item named it; the
+    node is in this range).
     `lem:rank-polynomial-IH-relabel` is superseded and stays (`blueprint/CLAUDE.md`, the
     supersession gate). The opening (1–51) is long and describes Proposition 1.1's halves:
     KT's Proposition 1.1 (p. 648) is Tay's and Whiteley's tree-packing characterization, and
@@ -270,12 +271,13 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     at full depth). Also the coordinator's scope-pin correction to task 2.3: `body-hinge.tex`'s
     last sentence now says we prove the simple-graph case of KT Conjecture 1.2. Found `F-059`,
     `F-060`.
-  - [x] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (this commit; now 52–477, 9
+  - [x] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (`5399e053`; now 52–477, 9
     nodes). Found `F-061`–`F-063`.
-  - [ ] **2.6 `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears** (338–599 at
-    the open, now 478–739): 8 nodes, 262 lines.
+  - [x] **2.6 `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears** (this commit;
+    now 478–829, 9 nodes with `lem:span-rigidityRows-eq-of-motions-eq` moved in). Found `F-064`,
+    `F-065`.
   - [ ] **2.7 `rigidity-matrix.tex`, the contraction-leg lemmas and the opening** (600–901 at the
-    open, now 740–1041; and 1–51): 9 nodes, 353 lines.
+    open, now 830–1108; and 1–51): 8 nodes, 330 lines.
   - [ ] **2.8 `deficiency.tex`, the matroid, the deficiency and the cut lemmas** (27–271): 9 nodes,
     245 lines.
   - [ ] **2.9 `deficiency.tex`, cut vertices, ears, restriction and minimality** (272–523): 9
@@ -359,6 +361,9 @@ one line each naming the ledger ID and the task that found it.
   for the dimension that `def:hinge-row-block` supplies.
 - `F-063` (L, task 2.5): the pin of `lem:trivial-motions-rank-bound`'s deficiency bound asks
   $C(e) \neq 0$ at every edge label, not only at the edges of $G$.
+- `F-064` (L, task 2.6): the docstring of `lem:block-rank-cut`'s first pin names a node label that
+  does not exist.
+- `F-065` (N, task 2.6): `cor:block-rank-vertex-two-cut` has no Lean caller and no user node.
 
 ## Blockers / open questions
 
@@ -366,15 +371,16 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.6, `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears
-(478–739, 338–599 at the open), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
-*2.6* item of the `rigidity-matrix` bullet under *Per-chapter diagnosis*, its gates and screens
-under *Scope*. Then tasks 2.7–2.18 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.7, `rigidity-matrix.tex`, the contraction-leg lemmas and the opening
+(830–1108 and 1–51; 600–901 at the open), at Opus**, a fresh agent (`notes/Prose.md` §2). Its
+diagnosis is the *2.7* item of the `rigidity-matrix` bullet under *Per-chapter diagnosis*, its gates
+and screens under *Scope*. Then tasks 2.8–2.18 in order, and task 3 closes the round. For the
+slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
   understandable"): the coordinator has read tasks 2.1–2.3 in full against the exemplars.
 - **Notation.** Task 2.3 applied *Decisions*' notation call to `body-bar` and `body-hinge`, and
   removed the "$D = \delta$" crosswalks and every $\delta$ from the round's other chapters. Tasks
-  2.6–2.18 write KT's $d$ and $D$, drop the stray $n$, and point at `body-hinge`'s $\tilde G$.
+  2.7–2.18 write KT's $d$ and $D$, drop the stray $n$, and point at `body-hinge`'s $\tilde G$.
 - **Crux nodes** keep their full proofs, in tasks 2.12–2.15, 2.17 and 2.18 (*Scope*).
 - **From tasks 2.1–2.3.** `body-bar.tex` writes bodies in $\R^d$, $D = \binom{d+1}{2}$, a vector
   $b_e \in \R^D$ per bar (Tay's model; Whiteley's bars are lines), and the row of a bar as
@@ -406,10 +412,18 @@ under *Scope*. Then tasks 2.7–2.18 in order, and task 3 closes the round. For 
   For task 2.7's opening: it now repeats both subsections' orienting paragraphs (principle F,
   *Once*), and its "lower-bound half of Tay–Whiteley's Proposition 1.1" is the rank bound of
   `prop:rigidity-matrix-prop11`, Jackson and Jordán's formula.
-- **The open's findings** are recorded, not acted on. Tasks 2.6, 2.7 and 2.16 give `F-050`'s
-  forward references a sentence each.
+- **From task 2.6.** The subsection is now *Rank-addition lemmas*. Its orienting paragraph already
+  sketches task 2.7's lemmas (contracting a rigid subgraph, KT Lemma 6.2; restoring a body of degree
+  two after splitting off, KT Lemmas 6.8 and 6.10), so task 2.7 adds only a lead-in before
+  `lem:block-rank-contract`. A notation paragraph fixes the subgraph convention ($R(H,p)$, $Z(H,p)$
+  with $p$'s hinges and $G$'s bodies), the row space as a span of linear forms, and $G[V_1]$; the
+  proofs write row spaces $\mathcal R$. `lem:span-rigidityRows-eq-of-motions-eq` now sits before
+  `lem:block-rank-cut-vertex`. `lem:block-rank-cut` is titled for a cut edge, not a vertex cut: the
+  opening (task 2.7) and `molecular-induction.tex`'s "block-rank addition" (task 2.16) follow it.
+- **The open's findings** are recorded, not acted on. Tasks 2.7 and 2.16 give `F-050`'s forward
+  references a sentence each (task 2.6's range had none).
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-064`.
+  pins reach. The ledger's next ID is `F-066`.
 
 ## Decisions made during this round
 
@@ -433,19 +447,14 @@ under *Scope*. Then tasks 2.7–2.18 in order, and task 3 closes the round. For 
   them. `lem:case-III-claim612-line-in-panel-union` (`meet.tex`) has its done entry under the
   `algebraic-induction.tex` heading.
 - **The no-Lean-edit base** is `ac7bd966`, the open's parent; the open touches no Lean.
-- **Task 2.1, `matroid-union.tex`.** `def:matroid-union` states the Lean's construction, the
-  matroid that $\Delta$ induces from the direct sum (Perfect; Oxley Theorem 11.2.12), so that
-  `lem:union-indep-iff` has content and its proof's matching is defined (principle E). The proofs
-  follow Oxley §§11.1–11.3, as the Lean does. The *Provenance* paragraph is now the opening's credit
-  paragraph, which `DESIGN.md` *Attribution / license* relies on; it says that the rank formula's
-  stated forms are the project's. Load-bearing unpinned lemmas are named as addresses (`F-052`).
+- **Task 2.1, `matroid-union.tex`.** `def:matroid-union` states the Lean's construction (Perfect;
+  Oxley Theorem 11.2.12), and the proofs follow Oxley §§11.1–11.3. The opening's credit paragraph,
+  which `DESIGN.md` *Attribution / license* relies on, says the rank formula's stated forms are the
+  project's. Load-bearing unpinned lemmas are named as addresses (`F-052`).
 - **Task 2.2, `body-bar.tex` 42–452.** `def:graph-sparse` and `thm:unionPow-cycle-indep-iff-sparse`
-  moved from *Tree-packing as a corollary* to the first subsection, now *Sparsity and the union of
-  cycle matroids*: four `\uses` of the $k$-frame nodes pointed forward to them (principle E, *Node
-  order*). The cycle matroid gets no symbol, since `deficiency.tex`'s $M(\tilde G)$ is KT's union of
-  $D$ copies of it. `lem:k-frame-specialize-forest` now assumes $(k,k)$-sparsity, its pin's
-  hypothesis, not a forest decomposition (equivalent by `thm:tutte-nash-williams`). Two statements
-  lost an "equivalently" gloss that needed other nodes; the first subsection states the equivalence.
+  moved to the first subsection, now *Sparsity and the union of cycle matroids* (principle E, *Node
+  order*). The cycle matroid gets no symbol: `deficiency.tex`'s $M(\tilde G)$ is KT's union of $D$
+  copies of it. `lem:k-frame-specialize-forest` assumes $(k,k)$-sparsity, its pin's hypothesis.
 - **Task 2.3, `body-bar.tex` 1–48 and 460–721, and `body-hinge.tex`.** `thm:tay-witness` moved after
   its proof's two `\uses`, `prop:tay-witness-exists` and `lem:tay-isSparse-of-independent`
   (principle E, *Node order*). A bar carries any vector of $\R^D$ (Tay 1984's model); after the
@@ -470,3 +479,11 @@ under *Scope*. Then tasks 2.7–2.18 in order, and task 3 closes the round. For 
   `lem:trivial-motions-rank-bound` now assumes $V \neq \emptyset$, its pins' ambient hypothesis.
   The row-independence prose after `def:rigidity-matrix` claimed any spanning forest; it now
   states the pins' hypothesis (`F-061`).
+- **Task 2.6, `rigidity-matrix.tex` 478–739.** `lem:span-rigidityRows-eq-of-motions-eq` moved up
+  from task 2.7's range to before `lem:block-rank-cut-vertex`, curing two forward `\uses`
+  (principle E, *Node order*). `lem:block-rank-cut` keeps "nonempty proper" (its pins need neither;
+  the excluded cases are trivial). It is credited as the rank step of KT Lemma 6.1's proof (p. 672):
+  the old statement said it replaced KT's isometry argument, which places the panels. The 2-cut
+  lemma's lead-in says why its sides are any subgraphs (the ear's path), so its proof lost its
+  "no non-adjacency" remark. "Open ear" points at `sec:main-component-chain` (an ear there has
+  $k \ge 1$ and covers $V(G)$) and is not defined here.
