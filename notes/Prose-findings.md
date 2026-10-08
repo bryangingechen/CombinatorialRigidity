@@ -218,6 +218,19 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter deficiency`, at `27daa953`); read
   (the pins' statements and bodies).
   *Found:* round 2 task 2.8.
+- **F-076** · E · `lem:circuit-rigid`, `lem:two-vertex-trichotomy` and `lem:deficiency-ear`
+  (`deficiency.tex`): edges the pins do not back, and missing edges into later chapters. The
+  statement of `lem:circuit-rigid` uses `def:rigid-subgraph`, which its pin does not reach (the
+  rigidity of $G[V(X)]$ is `lem:circuit-induces-rigid`'s). The statement of
+  `lem:two-vertex-trichotomy` uses `lem:matroid-restrict-subgraph` and `thm:def-eq-corank`, which
+  only the proof of its third pin reaches; that proof also reaches `lem:two-vertex-zero-dof`
+  (`molecular-induction.tex`) through `isKDof_zero_of_parallel_pair`, which no `\uses` names. The
+  proof of `lem:deficiency-ear` reaches `lem:exists-tight-partition` (`jacobs.tex`) for an
+  attaining partition. Task 2.9's prose computes the parallel pair's deficiency and cites the later
+  node in a sentence; either missing edge would be a forward `\uses` across chapters (`F-050`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `86b44e1b`); read (the pins'
+  statements and bodies).
+  *Found:* round 2 task 2.9.
 
 ## N — node shape
 
@@ -841,6 +854,17 @@ declaration's name as its header writes it:
   its (1)–(3) without it, so dropping it makes the three pins match.
   *Evidence:* read (the three statements and bodies).
   *Found:* round 2 task 2.8.
+- **F-077** · L · docstrings and a binder of `deficiency.tex`'s pins (`Molecular/Deficiency.lean`,
+  `MainComponent/Ear.lean`): `isSparse_diff_singleton_of_isCircuit`'s docstring says that the bound
+  $|X| > D(|V(X)| - 1)$ for a circuit $X$ needs the reverse half of `thm:def-eq-corank`, "deferred
+  with that node"; `circuit_ncard_gt` (`Induction/Operations.lean`) proves it from the minimality of
+  $X$ alone, and the theorem is proved. `matroidMG_restrict_mulTilde`'s docstring names
+  `lem:subgraph-minimality` as its node; it is pinned at `lem:matroid-restrict-subgraph`.
+  `deficiency_induce_le_of_ear_of_merge`'s hypothesis `_hinj` (the ear's interior vertices are
+  distinct) is unused.
+  *Evidence:* read (the docstrings; the bodies of `circuit_ncard_gt` and
+  `deficiency_induce_le_of_ear_of_merge`).
+  *Found:* round 2 task 2.9.
 
 ## M — mathematics and sources
 

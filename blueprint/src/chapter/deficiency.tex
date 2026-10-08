@@ -183,14 +183,16 @@ $E(\tilde G) \setminus \tilde e$ (\cref{lem:matroid-restrict-subgraph}).
 
 This subsection proves the properties of $k$-dof-graphs that Katoh and
 Tanigawa establish in their \S3, and some deficiency computations that
-later chapters use. We define rigid subgraphs and show that a
-$0$-dof-graph is $2$-edge-connected (KT Lemma~3.1). Then we compute
-the deficiency of a multigraph from those of its pieces: at a cut of at
-most one edge (KT Lemma~3.6), at a cut vertex, and along an ear. Next we
-show that minimality passes to subgraphs (KT Lemma~3.3), and that every
-multigraph has a minimal spanning subgraph of the same deficiency.
-Finally we treat the circuits of $M(\tilde G)$ (KT Lemma~3.4) and the
-minimal $k$-dof-graphs with at most two vertices.
+later chapters use. We define rigid subgraphs, and show that a
+$0$-dof-graph is $2$-edge-connected (KT Lemma~3.1) and that minimality
+passes to subgraphs (KT Lemma~3.3). Then we compare the deficiency of a
+multigraph with those of its pieces: at a cut of at most one edge (KT
+Lemma~3.6), at a cut vertex, and along an ear. We also define the
+largest value of a partition that keeps two given vertices in one part,
+and show that every multigraph has a minimal spanning subgraph of the
+same deficiency. Finally we treat the circuits of $M(\tilde G)$ (the
+first step of KT Lemma~3.4) and the minimal $k$-dof-graphs with at most
+two vertices.
 
 Katoh and Tanigawa's combinatorial induction contracts proper rigid
 subgraphs (\cref{sec:molecular-induction}).
@@ -295,6 +297,56 @@ $2$-edge-connectivity by the condition of \cref{lem:two-edge-conn}.
   $\emptyset \neq V' \neq V(G)$ and $d_G(V') = 0$.
 \end{proof}
 
+Next we show that minimality passes to subgraphs. If $H$ is a subgraph
+of $G$, then $\tilde H$ is a subgraph of $\tilde G$, and their matroids
+are related as follows.
+
+\begin{lemma}[The matroid of a subgraph is a restriction]
+  \label{lem:matroid-restrict-subgraph}
+  \lean{Graph.matroidMG_restrict_mulTilde}
+  \leanok
+  \uses{def:matroid-MG}
+  Let $H$ be a subgraph of a multigraph $G$. Then $M(\tilde H)$ is the
+  restriction of $M(\tilde G)$ to $E(\tilde H)$:
+  \[
+    M(\tilde G)\,|\,E(\tilde H) \;=\; M(\tilde H).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Both matroids have the ground set $E(\tilde H)$. Let
+  $F \subseteq E(\tilde H)$. By \cref{def:matroid-MG}, $F$ is
+  independent in $M(\tilde G)$ if and only if $\tilde G \restriction F$
+  is $(D, D)$-sparse, and in $M(\tilde H)$ if and only if
+  $\tilde H \restriction F$ is. Each edge of $\tilde H$ has the same ends
+  in $\tilde H$ as in $\tilde G$, and sparsity depends only on the edges
+  and their ends (\cref{def:graph-sparse}). So the two conditions agree.
+\end{proof}
+
+\begin{lemma}[Minimality passes to subgraphs; KT Lemma~3.3]
+  \label{lem:subgraph-minimality}
+  \lean{Graph.subgraph_minimality}
+  \leanok
+  \uses{def:k-dof, lem:matroid-restrict-subgraph}
+  Let $G$ be a minimal $k$-dof-graph, and let $H$ be a subgraph of $G$
+  with $\operatorname{def}(\tilde H) = k'$. Then $H$ is a minimal
+  $k'$-dof-graph. In particular, a rigid subgraph of a minimal
+  $k$-dof-graph is a minimal $0$-dof-graph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  We follow Katoh and Tanigawa's
+  proof~\cite[p.~657]{katohTanigawa2011}. As $H$ is a $k'$-dof-graph,
+  we must show that a base $B'$ of $M(\tilde H)$ meets $\tilde e$ for
+  every edge $e$ of $H$. By
+  \cref{lem:matroid-restrict-subgraph}, $B'$ is a maximal subset of
+  $E(\tilde H)$ that is independent in $M(\tilde G)$. Extend $B'$ to a
+  base $B$ of $M(\tilde G)$. Then $B \cap E(\tilde H)$ is independent
+  and contains $B'$, so it equals $B'$. As $G$ is minimal, $B$ meets
+  $\tilde e$, and $\tilde e \subseteq E(\tilde H)$ because $e$ is an
+  edge of $H$. Hence $B'$ meets $\tilde e$.
+\end{proof}
+
 Katoh and Tanigawa prove their Lemma~3.6 by writing $M(\tilde G)$ as a
 direct sum, using their Lemmas~3.1 and~3.4; we compare partitions
 directly. For
@@ -366,7 +418,7 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
   (2) As $G$ is not $2$-edge-connected, some set $V'$ with
   $\emptyset \neq V' \neq V(G)$ has $d_G(V') \le 1$. The formula for $k$
   is (1), and $G[V']$ and $G[V'']$ are minimal by KT Lemma~3.3
-  (\cref{lem:subgraph-minimality} below). This is the first step of
+  (\cref{lem:subgraph-minimality}). This is the first step of
   Katoh and Tanigawa's proof of their
   Lemma~6.1~\cite[p.~672]{katohTanigawa2011}.
 
@@ -387,14 +439,16 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
   (3).
 \end{fmlnote}
 
-\begin{lemma}[Deficiency adds at a cut vertex]
+\begin{lemma}[The deficiency at a cut vertex]
   \label{lem:deficiency-cut-vertex}
   \lean{Graph.deficiency_add_le_of_cutVertex, Graph.deficiency_eq_add_of_cutVertex,
     Graph.partitionDef_split_of_vertexTwoCut}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be loopless, with $V(G) = V_1 \cup V_2$, $V_1 \cap V_2 = \{v\}$,
-  and every edge of $G$ inside $V_1$ or inside $V_2$. Then for every $n$
+  Let $G$ be a multigraph without loops, and let $V_1$ and $V_2$ be sets
+  of vertices of $G$ with $V_1 \cup V_2 = V(G)$ and
+  $V_1 \cap V_2 = \{v\}$, such that every edge of $G$ lies inside $V_1$
+  or inside $V_2$. Then
   \[
     \operatorname{def}(\tilde G)
     = \operatorname{def}(\tilde G[V_1]) + \operatorname{def}(\tilde G[V_2]).
@@ -403,27 +457,57 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition}
-  For any labeling $f$ of the bodies, the value of $f$ on $G$ is the sum
-  of its values on the two sides plus $D(1 - |I|)$, where $I$ is the set
-  of labels used on both sides: the parts count by inclusion and
-  exclusion, and every edge crosses on exactly one side, since an edge
-  inside both would be a loop at $v$. As $f(v) \in I$, this gives $\le$.
-  For $\ge$, normalize attaining labelings of the two sides into their
-  own sides, as in \cref{lem:cut-edge-decomposition}, with $v$ as the
-  label of its part on both; glued, they form one labeling with
-  $I = \{v\}$, whose value on $G$ is the sum.
+  Let $P$ be a partition of $V(G)$. For $i = 1, 2$, the nonempty sets
+  $Q \cap V_i$ with $Q \in P$ form a partition $P_i$ of $V_i$. Let $I$ be
+  the set of parts of $P$ that meet both $V_1$ and $V_2$, so that
+  $|P_1| + |P_2| = |P| + |I|$. An edge of $G$ inside $V_i$ joins
+  different parts of $P$ if and only if it joins different parts of
+  $P_i$. No edge lies inside both $V_1$ and $V_2$, since it would be a
+  loop at $v$. Hence
+  \[
+    \operatorname{def}_{\tilde G}(P) \;=\;
+    \operatorname{def}_{\tilde G[V_1]}(P_1)
+    + \operatorname{def}_{\tilde G[V_2]}(P_2) + D\,(1 - |I|).
+  \]
+  The part of $P$ that contains $v$ lies in $I$, so $|I| \ge 1$, and the
+  value of $P$ is at most the right-hand side of the lemma.
+
+  Conversely, let $P_1$ and $P_2$ be partitions of $V_1$ and $V_2$ of
+  largest value. Let $P$ consist of the union of their two parts that
+  contain $v$, together with their other parts. Then $P$ is a partition
+  of $V(G)$, the partitions of $V_1$ and $V_2$ that it gives as above are
+  $P_1$ and $P_2$, and $|I| = 1$. By the identity above, the value of $P$
+  is the right-hand side.
 \end{proof}
+\begin{fmlnote}
+  With partitions as labelings (\cref{fmlnote:partition-labeling}), $I$
+  is the set of labels used both on $V_1$ and on $V_2$. The third pin is
+  the identity of the proof for two sets $V_1$ and $V_2$ that meet in two
+  vertices $u$ and $v$ not joined by an edge; a cut vertex is the case
+  $u = v$. The second pin is the lemma, and the first is its inequality
+  $\ge$. The proof of the first renames the labels of two attaining
+  labelings injectively, with the pins of
+  \cref{lem:cut-edge-decomposition} that allow this, so that their sets
+  of labels meet only in the label of $v$.
+\end{fmlnote}
+
+Let $V_1$ be a set of vertices of $G$. A path of $G$ whose ends lie in
+$V_1$, possibly equal, and whose other vertices lie outside $V_1$ is an
+ear on $V_1$; \cref{sec:main-component-chain} calls it open if its ends
+differ and closed otherwise. The next two lemmas compare the deficiency
+of $G$ with that of $G[V_1]$ when $G$ consists of $G[V_1]$ and one ear.
 
 \begin{lemma}[The deficiency along an ear]
   \label{lem:deficiency-ear}
   \lean{Graph.deficiency_induce_add_le_of_ear}
   \leanok
   \uses{def:D-deficiency}
-  Let $V_1 \subseteq V(G)$, and let $a - x_1 - \cdots - x_k - b$
-  ($k \ge 1$) be a path of $G$ with $a, b \in V_1$, possibly $a = b$, and
-  distinct bodies $x_1, \dots, x_k$ outside $V_1$, such that
-  $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ not on the
-  path lies inside $V_1$. Then, at any $D \ge 1$,
+  Let $D \ge 1$, let $G$ be a multigraph, and let $V_1$ be a set of
+  vertices of $G$. Let $a - x_1 - \cdots - x_k - b$ ($k \ge 1$) be a path
+  of $G$ with $a, b \in V_1$, possibly $a = b$, and distinct vertices
+  $x_1, \dots, x_k$ outside $V_1$, such that
+  $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ off the
+  path lies inside $V_1$. Then
   \[
     \operatorname{def}(\tilde G) \;\ge\;
     \operatorname{def}(\tilde G[V_1]) + k + 1 - D.
@@ -432,212 +516,212 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition}
-  Take a partition $P_1$ of $V_1$ attaining
-  $\operatorname{def}(\tilde G[V_1])$ and add each $x_i$ as a part of its
-  own. The value of this partition splits over $V_1$ and the path bodies,
-  as in the proof of \cref{lem:cut-edge-decomposition}. The $k$ new parts
-  are joined to one another by at most $k - 1$ edges of the path, which
-  contributes $D(k - 1) - (D - 1)(k - 1) = k - 1$ at least, and to $V_1$
-  by at most the two end edges of the path, which contributes
-  $D - 2(D - 1) = 2 - D$ at least. The sum is the bound.
+  Let $V'' = \{x_1, \dots, x_k\}$, and let $P''$ be the partition of
+  $V''$ into single vertices. Take a partition $P_1$ of $V_1$ of largest
+  value, and let $P = P_1 \cup P''$. Each part of $P$ lies in $V_1$ or in
+  $V''$, so $P$ is separated in the sense of the proof of
+  \cref{lem:cut-edge-decomposition}, with $V' = V_1$. The identity for
+  separated partitions there gives
+  \[
+    \operatorname{def}_{\tilde G}(P) \;=\;
+    \operatorname{def}(\tilde G[V_1])
+    + \operatorname{def}_{\tilde G[V'']}(P'')
+    + D - (D-1)\,d_G(V_1).
+  \]
+  The edges of $G[V'']$ are among the $k - 1$ edges $x_i x_{i+1}$ of
+  the path. As $D \ge 1$, the value of $P''$ is therefore at least
+  $D(k - 1) - (D - 1)(k - 1) = k - 1$. The edges of $\delta_G(V_1)$ are
+  among the two end edges $a x_1$ and $x_k b$ of the path, so
+  $D - (D-1)\,d_G(V_1) \ge 2 - D$. Since
+  $\operatorname{def}(\tilde G) \ge \operatorname{def}_{\tilde G}(P)$,
+  the bound follows.
 \end{proof}
 
-When the ends of the path lie in one part of a partition attaining the
-deficiency of $G[V_1]$, the path bodies can join that part, and the
-deficiency does not drop.
+In the proof of \cref{lem:deficiency-ear}, the vertices of the ear form
+parts of their own. If they can instead join a part that contains both ends of
+the ear, the deficiency does not drop.
 
 \begin{lemma}[The deficiency along an ear whose ends share a part]
   \label{lem:deficiency-ear-merge}
   \lean{Graph.deficiency_induce_le_of_ear_of_merge}
   \leanok
   \uses{def:D-deficiency}
-  Let $V_1 \subseteq V(G)$, and let $a - x_1 - \cdots - x_k - b$
-  ($k \ge 0$) be a path of $G$ with $a, b \in V_1$, possibly $a = b$, and
-  distinct bodies $x_1, \dots, x_k$ outside $V_1$, such that
-  $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ not on the
-  path lies inside $V_1$. If some partition of $V_1$ attaining
-  $\operatorname{def}(\tilde G[V_1])$ has $a$ and $b$ in one part, then,
-  at any $D$,
+  Let $G$ be a multigraph, and let $V_1$ be a set of vertices of $G$.
+  Let $a - x_1 - \cdots - x_k - b$ ($k \ge 0$) be a path of $G$ with
+  $a, b \in V_1$, possibly $a = b$, and distinct vertices
+  $x_1, \dots, x_k$ outside $V_1$, such that
+  $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ off the
+  path lies inside $V_1$. Suppose that some partition of $V_1$ of value
+  $\operatorname{def}(\tilde G[V_1])$ has $a$ and $b$ in one part. Then
   \[
     \operatorname{def}(\tilde G[V_1]) \;\le\; \operatorname{def}(\tilde G).
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Put every $x_i$ into the part containing $a$ and $b$. The number of
-  parts is unchanged, every edge of the path lies inside that part, and
-  every other edge of $G$ lies inside $V_1$ with its status unchanged, so
-  the value of the partition on $G$ is its value on $G[V_1]$.
+  Let $P_1$ be such a partition, and let $P$ be obtained from it by
+  adding $x_1, \dots, x_k$ to the part that contains $a$ and $b$. Then
+  $|P| = |P_1|$. Every edge of the path lies inside that part. Every
+  other edge of $G$ lies inside $V_1$, where $P$ and $P_1$ agree, so it
+  joins different parts of $P$ if and only if it joins different parts
+  of $P_1$. Hence the value of $P$ is that of $P_1$, which is
+  $\operatorname{def}(\tilde G[V_1])$.
 \end{proof}
 
-The partitions keeping two given bodies in one part have a maximum of
-their own, which measures how much the deficiency depends on separating
-the two bodies.
+The hypothesis of \cref{lem:deficiency-ear-merge} says that the largest
+value of a partition of $V_1$ with $a$ and $b$ in one part is
+$\operatorname{def}(\tilde G[V_1])$. We give this largest value a name.
 
-\begin{definition}[The deficiency with two bodies in one part]
+\begin{definition}[The deficiency with two vertices in one part]
   \label{def:deficiency-merged}
   \lean{Graph.deficiencyMerged, Graph.partitionDef_le_deficiencyMerged}
   \leanok
   \uses{def:D-deficiency}
-  Let $u, v$ be bodies of $G$. The \emph{merged deficiency} of $\tilde G$
-  at $u, v$ is
+  Let $G$ be a multigraph, and let $u$ and $v$ be vertices of $G$. The
+  \emph{merged deficiency} of $\tilde G$ at $u$ and $v$ is
   \[
     \operatorname{def}(\tilde G; u, v) \;=\; \max_{P}\,
       \operatorname{def}_{\tilde G}(P),
   \]
   the maximum over the partitions $P$ of $V(G)$ that have $u$ and $v$ in
-  one part. In particular $\operatorname{def}_{\tilde G}(P) \le
-  \operatorname{def}(\tilde G; u, v)$ for every such partition.
+  one part.
 \end{definition}
 
-\begin{lemma}[Matroid restriction descends to subgraphs]
-  \label{lem:matroid-restrict-subgraph}
-  \lean{Graph.matroidMG_restrict_mulTilde}
-  \leanok
-  \uses{def:matroid-MG}
-  For a subgraph $H \le G$, restricting $M(\tilde G)$ to the edge set
-  $E(\tilde H)$ of the smaller multiplied graph recovers $M(\tilde H)$:
-  \[
-    M(\tilde G)\,|\,E(\tilde H) \;=\; M(\tilde H).
-  \]
-\end{lemma}
-\begin{proof}
-  \leanok
-  Matroid restriction commutes with the $D$-fold cycle-matroid union
-  construction. Both sides are checked equal on independent sets: an
-  edge set $E' \subseteq E(\tilde H)$ is independent in either matroid
-  iff it is $(D,D)$-sparse, and the two sparsity conditions agree
-  because the incidences of an edge of $\tilde H$ coincide with its
-  incidences in $\tilde G$ (the subgraph relation cannot be seen by a
-  restriction to a fiber subset of the smaller graph). This is the
-  identity Katoh--Tanigawa~\cite[Lemma 3.3]{katohTanigawa2011} runs on.
-\end{proof}
+So $\operatorname{def}_{\tilde G}(P) \le \operatorname{def}(\tilde G; u, v)$
+for every partition $P$ with $u$ and $v$ in one part, and
+$\operatorname{def}(\tilde G; u, v) \le \operatorname{def}(\tilde G)$.
+We use the merged deficiency when an edge joining $u$ and $v$ is added:
+the new edge lowers the value of each partition that separates $u$ and
+$v$ by $D - 1$, and leaves the value of every other partition unchanged
+(\cref{lem:splitoff-deficiency-merged}).
 
-\begin{lemma}[Subgraph minimality via restriction; KT Lemma 3.3]
-  \label{lem:subgraph-minimality}
-  \lean{Graph.subgraph_minimality}
-  \leanok
-  \uses{def:k-dof, lem:matroid-restrict-subgraph}
-  Let $G$ be a minimal $k$-dof-graph and let $H \le G$ be a subgraph
-  with $\operatorname{def}(\tilde H) = k'$. Then $H$ is a minimal
-  $k'$-dof-graph. In particular a rigid subgraph ($k' = 0$) of a
-  minimal $k$-dof-graph is a minimal $0$-dof-graph.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The $\operatorname{def}(\tilde H) = k'$ half is the choice of $k'$;
-  the content is the base / fiber-meeting minimality transport. By
-  \cref{lem:matroid-restrict-subgraph}, $M(\tilde H) = M(\tilde
-  G)\,|\,E(\tilde H)$, so any base $B'$ of $M(\tilde H)$ is an
-  $M(\tilde G)$-basis of $E(\tilde H)$ and extends to a base $B$ of
-  $M(\tilde G)$ with $B' = B \cap E(\tilde H)$ by maximality. Each
-  edge-fiber $\tilde e$ of an edge $e \in E(H) \subseteq E(G)$ lies
-  inside $E(\tilde H)$, so $G$'s minimality ($B \cap \tilde e \ne
-  \emptyset$) descends: $B' \cap \tilde e = (B \cap E(\tilde H)) \cap
-  \tilde e = B \cap \tilde e \ne \emptyset$. This is
-  Katoh--Tanigawa~\cite[Lemma 3.3]{katohTanigawa2011}.
-\end{proof}
+Katoh and Tanigawa reduce their Theorem~5.6, on the realizations of an
+arbitrary multigraph, to minimal $k$-dof-graphs, by deleting edges
+while the deficiency stays the same~\cite[p.~670]{katohTanigawa2011}.
 
-\begin{lemma}[A deficiency-preserving minimal spanning subgraph exists; KT Theorem 5.6, first step]
+\begin{lemma}[A minimal spanning subgraph of the same deficiency; KT Theorem~5.6, first step]
   \label{lem:minimal-kdof-spanning-subgraph}
   \lean{Graph.exists_isMinimalKDof_spanning_subgraph}
   \leanok
   \uses{def:k-dof}
-  Let $D = \operatorname{bodyBarDim}\,n \ge 1$ and let $G$ be a graph with
-  $V(G) \ne \emptyset$. Then $G$ has a \emph{spanning} subgraph $G' \le G$
-  ($V(G') = V(G)$) that is a minimal $\operatorname{def}(\tilde G)$-dof-graph:
-  $\operatorname{def}(\tilde{G'}) = \operatorname{def}(\tilde G)$, and no edge
-  of $G'$ can be deleted without raising the deficiency. This is the converse
-  direction to \cref{lem:subgraph-minimality}, which starts from an already
-  minimal graph; here $G$ is arbitrary and the strip removes the
-  deficiency-irrelevant edges.
+  Let $D \ge 1$, and let $G$ be a multigraph with at least one vertex.
+  Then $G$ has a spanning subgraph that is a minimal
+  $\operatorname{def}(\tilde G)$-dof-graph.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:matroid-restrict-subgraph, thm:def-eq-corank}
-  Among the edge subsets $F \subseteq E(G)$ whose restriction $G
-  \restriction F$ keeps $\operatorname{def}(\tilde G)$ --- $F = E(G)$ is one
-  such --- pick $F_0$ of minimal cardinality and set $G' = G \restriction
-  F_0$; then $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
-  \operatorname{def}(\tilde G)$ by the choice of $F_0$. For the minimality:
-  if a base $B$ of $M(\tilde{G'})$ missed the fiber $\tilde e$ of some $e \in
-  E(G')$, the restriction identity (\cref{lem:matroid-restrict-subgraph})
-  would make $B$ independent in $M(\widetilde{G \restriction (F_0 \setminus
-  \{e\})})$ of the full size $D(|V(G)|-1) - \operatorname{def}(\tilde{G'})$
-  (\cref{thm:def-eq-corank}), forcing $F_0 \setminus \{e\}$ to also keep the
-  deficiency --- contradicting the minimality of $|F_0|$. This is
-  Katoh--Tanigawa's first step towards Theorem~5.6
-  \cite[p.~670]{katohTanigawa2011}: delete edges from $G$ while the
-  deficiency is unchanged, until no further edge can be removed.
+  Among the sets $F$ of edges of $G$ with
+  $\operatorname{def}(\widetilde{G \restriction F}) =
+  \operatorname{def}(\tilde G)$, such as $E(G)$, choose one, $F_0$, of
+  least size. Then $G' = G \restriction F_0$ is a spanning subgraph of
+  $G$ with $\operatorname{def}(\widetilde{G'}) = \operatorname{def}(\tilde G)$.
+
+  Suppose that a base $B$ of $M(\widetilde{G'})$ misses $\tilde e$ for
+  some edge $e$ of $G'$, and let
+  $G'' = G \restriction (F_0 \setminus \{e\})$. Then
+  $B \subseteq E(\widetilde{G''})$, so $B$ is independent in
+  $M(\widetilde{G''})$ (\cref{lem:matroid-restrict-subgraph}). The
+  multigraphs $G'$ and $G''$ have the vertices of $G$, so KT
+  eq.~(2.4) (\cref{thm:def-eq-corank}) gives
+  \[
+    \operatorname{def}(\widetilde{G''})
+    \;=\; D\,(|V(G)| - 1) - \operatorname{rank} M(\widetilde{G''})
+    \;\le\; D\,(|V(G)| - 1) - |B|
+    \;=\; \operatorname{def}(\widetilde{G'}).
+  \]
+  As $D \ge 1$, deleting an edge does not lower the value of a
+  partition, so $\operatorname{def}(\widetilde{G''}) \ge
+  \operatorname{def}(\widetilde{G'})$. Hence $F_0 \setminus \{e\}$ keeps
+  the deficiency of $G$, against the choice of $F_0$. So every base of
+  $M(\widetilde{G'})$ meets $\tilde e$ for every edge $e$ of $G'$, and
+  $G'$ is minimal.
 \end{proof}
 
-\begin{lemma}[A circuit minus an edge is a maximal sparse subset; KT Lemma 3.4]
+\begin{lemma}[A circuit minus an edge is a maximal sparse subset; KT Lemma~3.4, first step]
   \label{lem:circuit-rigid}
   \lean{Graph.isSparse_diff_singleton_of_isCircuit}
   \leanok
   \uses{def:rigid-subgraph, def:matroid-MG}
-  Let $X$ be a circuit of $M(\tilde G)$ and let $e \in X$. Then
-  $X - e$ is $(D,D)$-sparse --- equivalently, $X - e$ is an
-  $M(\tilde G)$-basis of $X$: a circuit is exactly one edge short of
-  being independent on its vertex span.
+  Let $G$ be a multigraph, let $X$ be a circuit of $M(\tilde G)$, and
+  let $e \in X$. Then $\tilde G \restriction (X - e)$ is
+  $(D, D)$-sparse, and $X - e$ is a basis of $X$, that is, a maximal
+  subset of $X$ that is independent in $M(\tilde G)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  $X - e$ is independent since $X$ is a minimal dependent set, so by
-  boundary-regime cleanliness (\cref{def:matroid-MG}) it is
-  $(D,D)$-sparse; and $X$ is dependent, so $X - e$ is a maximal
-  independent --- i.e.\ basis --- subset of $X$. This is the
-  upper-bound / maximal-sparse-subset half of
-  Katoh--Tanigawa~\cite[Lemma 3.4]{katohTanigawa2011}. KT's full
-  conclusion --- that the vertex-induced subgraph $G[V(X)]$ is rigid,
-  more precisely that $X - e$ partitions into $D$ edge-disjoint
-  spanning trees on $V(X)$, i.e.\ $|X - e| = D(|V(X)| - 1)$ exactly ---
-  is the separate node \cref{lem:circuit-induces-rigid}, which builds
-  the vertex-induced-subgraph construction this node's statement does
-  not need and combines it with the $\operatorname{def} =
-  \operatorname{corank}$ min--max (\cref{thm:def-eq-corank}).
+  As $X$ is a minimal dependent set, $X - e$ is independent, so
+  $\tilde G \restriction (X - e)$ is $(D, D)$-sparse
+  (\cref{def:matroid-MG}). As $X$ itself is dependent, no larger subset
+  of $X$ is independent.
 \end{proof}
 
-\begin{lemma}[$|V| \le 2$ trichotomy for minimal $k$-dof-graphs; KT p.~671]
+Katoh and Tanigawa's Lemma~3.4 says more: $G[V(X)]$ is a rigid
+subgraph of $G$, and $X - e$ is the union of $D$ edge-disjoint spanning
+trees on $V(X)$~\cite[p.~658]{katohTanigawa2011}. We prove this in
+the next chapter (\cref{lem:circuit-induces-rigid}), using KT
+eq.~(2.4).
+
+Katoh and Tanigawa prove their Theorem~5.5 by induction on the number of
+vertices, from the case of two
+vertices~\cite[p.~671]{katohTanigawa2011}. The next lemma lists the
+minimal $k$-dof-graphs with two vertices, and with one.
+
+\begin{lemma}[The minimal $k$-dof-graphs with at most two vertices; KT p.~671]
   \label{lem:two-vertex-trichotomy}
   \lean{Graph.deficiency_of_edgeSet_empty, Graph.deficiency_of_single_edge,
     Graph.edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two,
     Graph.isMinimalKDof_ncard_le_two_trichotomy}
   \leanok
   \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
-  Let $D = \operatorname{bodyBarDim}\,n \ge 2$ and let $G$ be a minimal
-  $k$-dof-graph with $V(G) \ne \emptyset$ and $|V(G)| \le 2$.  Then
-  exactly one of the following holds: (i) $E(G) = \emptyset$ and
-  $k = D(|V(G)| - 1)$, covering $|V| = 1$ (looplessness forces $E =
-  \emptyset$) and $|V| = 2$; (ii) $|V(G)| = 2$, $|E(G)| = 1$ (a single
-  edge $e$ between the two vertices), and $k = 1$; or (iii) $|V(G)| = 2$,
-  $|E(G)| = 2$ (a parallel pair $e, f$ between the two vertices), and
-  $k = 0$.
+  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with one or two
+  vertices. Then exactly one of the following holds: (i) $G$ has no
+  edge, and $k = D(|V(G)| - 1)$; (ii) $G$ has two vertices and one edge,
+  which joins them, and $k = 1$; (iii) $G$ has two vertices and two
+  edges, each of which joins them, and $k = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
-  The deficiency of an edge-free graph
-  ($\operatorname{def}(\tilde G) = D(|V(G)|-1)$, the discrete partition
-  maximizes the sup) and of a single-edge graph
-  ($\operatorname{def}(\tilde G) = 1$, the two-part cut crosses once,
-  $D - (D-1) = 1$) are direct computations.
+  We first compute three deficiencies. If a multigraph $H$ has no edge,
+  then every partition $P$ of $V(H)$ has value
+  $D(|P| - 1) \le D(|V(H)| - 1)$, with equality for the partition into
+  single vertices, so $\operatorname{def}(\tilde H) = D(|V(H)| - 1)$.
+  Let $H$ have two vertices $x$ and $y$. Its partitions are $\{V(H)\}$,
+  of value $0$, and $\{\{x\}, \{y\}\}$. If $H$ has one edge, joining $x$
+  and $y$, the second has value $D - (D - 1) = 1$, so
+  $\operatorname{def}(\tilde H) = 1$. If $H$ has two edges, each joining
+  $x$ and $y$, the second has value $D - 2(D - 1) = 2 - D \le 0$, so
+  $\operatorname{def}(\tilde H) = 0$. This last computation is also
+  \cref{lem:two-vertex-zero-dof}, in the next chapter.
 
-  At $|V| = 2$ with vertices $\{x, y\}$, every edge links $x$ to $y$
-  (looplessness).  The parallel-class bound ($|E(G)| \le 2$) follows by
-  contradiction: given three distinct edges $e_1, e_2, e_3$, restrict
-  to $H := G \restriction \{e_1, e_2\}$.  Then $H$ is $0$-dof
-  (\cref{def:k-dof}, the parallel-pair criterion), so $M(\tilde H)$ has
-  rank $D$ and a base $B_H$ of size $D$.  By the restriction identity
-  (\cref{lem:matroid-restrict-subgraph}) $B_H$ is $M(\tilde
-  G)$-independent, giving $\operatorname{rank} M(\tilde G) \ge D$.
-  Combined with the corank bridge (\cref{thm:def-eq-corank}) and
-  nonnegativity of $k$, this forces $k = 0$ and $B_H$ a $M(\tilde
-  G)$-base.  But $B_H \subseteq E(\tilde H)$ avoids $\tilde e_3$,
-  contradicting minimality ($B_H \cap \tilde e_3 \ne \emptyset$).
-  With $|E(G)| \le 2$ established, the $k$-values follow from the
-  deficiency computations and the parallel-pair $0$-dof criterion.
+  A minimal $k$-dof-graph has no loops. Indeed, let $p$ be a copy of a
+  loop of $G$. Then $\tilde G \restriction \{p\}$ is not
+  $(D, D)$-sparse, as $1 > D \cdot 1 - D$, so no base of $M(\tilde G)$
+  contains $p$ (\cref{def:matroid-MG}). As every base of $M(\tilde G)$
+  meets the copies of each edge of $G$, $G$ has no loop. Hence if $G$ has
+  one vertex, it has no edge, and (i) holds.
+
+  Let $G$ have two vertices $x$ and $y$, so that every edge of $G$ joins
+  them. Suppose that $G$ had three edges $e_1, e_2, e_3$, and let
+  $H = G \restriction \{e_1, e_2\}$. Then
+  $\operatorname{def}(\tilde H) = 0$, so a base $B_H$ of $M(\tilde H)$
+  has $D$ elements by KT eq.~(2.4) (\cref{thm:def-eq-corank}). It is
+  independent in $M(\tilde G)$ (\cref{lem:matroid-restrict-subgraph}),
+  so $\operatorname{rank} M(\tilde G) \ge D$. By KT eq.~(2.4) for $G$,
+  $k = D - \operatorname{rank} M(\tilde G) \le 0$. As $k \ge 0$, it
+  follows that $k = 0$ and that $B_H$ is a base of $M(\tilde G)$. But
+  $B_H \subseteq E(\tilde H)$ misses $\tilde e_3$, against the
+  minimality of $G$. So $G$ has at most two edges, and the three
+  computations give (i), (ii) and (iii). Katoh and Tanigawa deduce that
+  $G$ has at most two edges from their Lemma~3.2: a minimal
+  $k$-dof-graph is not $3$-edge-connected.
 \end{proof}
+\begin{fmlnote}
+  The first two pins are the deficiencies of a multigraph without edges
+  and of a single edge, the third is the bound on the number of edges at
+  two vertices, and the fourth is the lemma.
+\end{fmlnote}
 
 \subsection{The deficiency \texorpdfstring{$=$}{=} corank bridge}
 \label{sec:molecular-deficiency-bridge}
