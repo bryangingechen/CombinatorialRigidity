@@ -139,8 +139,8 @@ onto the general form or drop the marker (it's genuine API).
 
 Match the carleson style: one to three sentences of English gesturing
 at the argument; a reader wanting the full proof clicks to the Lean.
-(Models in `sparsity.tex`: "Immediate from the definition." up to the
-~10-line `thm:isTightOn-union-inter`.)
+(Models in `sparsity.tex`: the one-sentence proof of `lem:edgesIn-mono`
+up to the two-paragraph proof of `thm:isTightOn-union-inter`.)
 
 **First make Lean as painless as the math; only then add prose asides.**
 When a step is harder to formalize than to state, fix the *Lean* first

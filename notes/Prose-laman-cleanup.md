@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4, 5.1 and 5.2 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first slice, `sparsity.tex`'s first half. **Next concrete task:** task 5.2,
-`sparsity.tex`'s second half and openings, with all of `laman.tex`. Round manual: `CLEANUP.md`.
+PI*), and the first two slices, `sparsity.tex` and `laman.tex`. **Next concrete task:** task 5.3,
+`henneberg.tex` apart from the sample. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,14 +54,15 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The first slice has landed** (task 5.1, this commit): `sparsity.tex`'s first half, now 11–149
-and 162–317. The exemplar `notes/Prose-exemplar.md` (task 4, `09106a34`) and
+**The second slice has landed** (task 5.2, this commit): `sparsity.tex`'s second half and its
+two section openings, now 338–607, 1–20 and 160–181, and all of `laman.tex` (1–128). Task 5.1's
+first half (`4657a7fc`) is now 21–159 and 182–337. The exemplar `notes/Prose-exemplar.md` and
 `blueprint/AUTHORING.md` principles A–F, with B's *Constructions* clause and the PI's "overriding
-goal" sentence, set the register. Nothing is mid-stream; task 5.2 is next.
+goal" sentence, set the register. Nothing is mid-stream; task 5.3 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
   and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176 overfull boxes, none in
-  `sparsity.tex`). The screens on `sparsity` read 0 and 0 / 0 (the open's 0 and 0 / 1). The
+  `sparsity.tex` or `laman.tex`). The screens on `sparsity` and `laman` read 0 and 0 / 0. The
   earlier commits `67525c41` and `e9e3f37d` gave the same values; `henneberg` reads 1 and 26 / 53.
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
@@ -247,7 +248,10 @@ style: the register is mostly flat, and the problem is Lean devices in statement
   `p'_a` or `p'_b` in direction `p'_b − p'_a`: they are one line. The opening's *Terminology*
   repeats `sparsity.tex`'s critical-set gloss, and `count-matroid.tex` gives it a third time. The
   subsection *Linear-matroid framing* puts `Matroid.ofFun`, `Function.extend` and `Subtype.val`
-  in statements and proofs.
+  in statements and proofs. *From task 5.2:* the opening's "Jordán Lemma 2.1.3 is
+  `thm:isTightOn-union-with-bonus` composed twice" is false (`F-016`), and the sparse
+  decomposition's "per-pair tight-blocker" and $G^{u,w}_v$ should match `sparsity.tex`'s
+  *splitting* and $G - v + xy$.
 - **`count-matroid`**: statements use `fromEdgeSet I`, `\mathrm{Sym}_2 V` and `maxBlock X`. The
   *Terminology* paragraph answers a question not asked (Jordán's M-circuits). To check against
   `.refs/`: "introduced by Whiteley", "Whiteley's appendix", "Theorem 5(4)", and that outside
@@ -306,10 +310,13 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
       `⊥`, `G ≤ G'`, `G < H` and "vertex type" restated in words and the `incidenceSet` address
       cut; lead-ins for *Vertex deletion*, *Basic properties* and *Low-degree*; Jordán's §2.1
       sparse graphs, critical sets and Lemma 2.1.1 (p. 43) anchored. Found `F-014`.
-  - [ ] **5.2 `sparsity.tex`, second half and openings, and all of `laman.tex`**: sparsity's
+  - [x] **5.2 `sparsity.tex`, second half and openings, and all of `laman.tex`**: sparsity's
     isomorphism transport, tight-subset lattice and per-pair blocker (302–537) with both section
     openings (1–10, 143–154), and `laman.tex` (114 lines); 14 nodes, 372 lines. It writes
     `sparsity.tex`'s roadmap and keeps the chapter-model pointers true (*Per-chapter diagnosis*).
+    - *Done* (this commit; `sparsity.tex` 1–20, 160–181 and 338–607, `laman.tex` 1–128). Jordán's
+      *splitting* (p. 44) replaces "per-pair tight-blocker", and $G - v + xy$ the subtype graph; the
+      `sec:intro` pointers and two docs pointers are fixed. Found `F-015`–`F-018`.
   - [ ] **5.3 `henneberg.tex` apart from the sample**: definitions, edge-set counts, the reverse
     decomposition, the worked example and the opening (1–158 and 260–358); 8 nodes, 257 lines. It
     carries the sample's notation and terminology into the definitions and the opening's
@@ -358,7 +365,8 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
 `S` and `M` findings, one line each naming the ledger ID (`notes/Prose-findings.md` holds the
 finding). Recorded, never acted on in this round; round 5's report ranks them for the PI.
 
-- None yet.
+- `F-015` (S, task 5.2): `thm:isTightOn-insert-vertex-with-edges` assumes $V$ finite; its pin
+  does not.
 
 ## Moved to a later round
 
@@ -380,6 +388,11 @@ one line each naming the ledger ID and the task that found it.
 - `F-013` (L, task 3): `typeII_isLaman`'s binder `a ≠ b`, implied by its edge hypothesis.
 - `F-014` (N, task 5.1): the sparse reverse decomposition's low-degree lemma has no node; the
   degree-≤ 3 node and its Laman form are outside every main result's closure.
+- `F-016` (N, task 5.2): the degree-three case of the sparse reverse decomposition has no nodes;
+  Jordán's Lemma 2.1.3 is argued only in the Lean.
+- `F-017` (L, task 5.2): two `hF_finite` binders that follow from `hF_sub`.
+- `F-018` (L, task 5.2): `typeII_reverse_blocker`'s docstrings say "distinct"; its statement does
+  not.
 
 ## Blockers / open questions
 
@@ -387,15 +400,23 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.2**, the second slice: `sparsity.tex`'s isomorphism transport, tight-subset lattice
-and per-pair blocker with both section openings (318–553, 1–10 and 150–161 at this commit; the
-checklist gives the open's numbers), and all of `laman.tex`; 14 nodes. Its diagnosis is under
-*Per-chapter diagnosis*, its gates under *Scope*, and the register is *Scope*'s (`AUTHORING.md`
-principles A–F and the two exemplars). Left for it by 5.1: the opening's "vertex type" (line 4);
-the chapter-model pointers, `AUTHORING.md` line 142's quotation among them (*Per-chapter
-diagnosis*); and `F-014`, which bears on `laman.tex`'s *Degree bounds* lead-in. The
-critical-set gloss now follows `def:isTightOn`, for tasks 5.10–5.11 to point at. Then tasks
-5.3–5.16 follow in order, and task 6 closes the round.
+**Next: task 5.3**, the third slice: `henneberg.tex` apart from the sample (1–158 and 260–358 at
+this commit); 8 nodes. Its checklist line carries Stop 1's settled notation, its diagnosis is
+under *Per-chapter diagnosis*, its gates under *Scope*, and the register is *Scope*'s. Left for it
+by 5.2:
+- `sparsity.tex` now writes $G - v + xy$ for the graph obtained from $G$ by deleting $v$ and adding
+  $xy$, and explains the Lean's encoding of it, and of $G - v$, once, in
+  `fmlnote:graph-minus-vertex` (a new label on the existing note). *Reverse decomposition* and its
+  formalization note can `\cref` it rather than explain again.
+- `sparsity.tex` uses Jordán's *splitting* and *suitable* (§2.1, p. 44) where *Reverse
+  decomposition* says "per-pair tight-blocker argument" and "tight-blocker witness". Splitting $v$
+  on the pair $va$, $vb$ reverses the Type~II move on $ab$ and $c$.
+- `laman.tex`'s *The base case* now names the worked example as the user of
+  `thm:top-fin-two-isLaman`, and its opening sends the reader to `sec:henneberg` for the moves.
+
+For tasks 5.9–5.10, the rigidity-matroid diagnosis now carries two items from 5.2. From 5.1, for
+tasks 5.10–5.11: the critical-set gloss follows `def:isTightOn`. Then tasks 5.4–5.16 follow in
+order, and task 6 closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
 result is understandable". For the first few slices (at least 5.1–5.3), the coordinator reads each

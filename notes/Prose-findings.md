@@ -238,6 +238,20 @@ declaration's name as its header writes it:
   `09106a34`).
   *Found:* round 1 task 5.1.
 
+- **F-016** · N · the degree-three case of `thm:isSparse-exists-typeI-or-typeII-reverse`
+  (`rigidity-matroid.tex`): its Lean, `IsSparse.False_of_pairwise_blocker_or_edge`, splits on how
+  many neighbour pairs of $v$ are blocked by a tight set, through `IsSparse.contradiction_one_pair`
+  (which uses `thm:isTightOn-insert-vertex-with-edges`), `_two_pair` (which uses
+  `thm:isTightOn-union-with-bonus`), `_three_pair` and `no_isTightOn_excluding_three_neighbors`.
+  None has a node. Jordán's Lemma 2.1.3 (three critical sets meeting pairwise in one vertex) is
+  argued only inside `_three_pair`, by two supermodularity counts. The chapter's opening says it is
+  `thm:isTightOn-union-with-bonus` composed twice, and so did `notes/BlueprintExposition.md`'s
+  Group-A note until task 5.2 corrected the note.
+  *Evidence:* read (the bodies of `False_of_pairwise_blocker_or_edge` and the three templates,
+  `Sparsity.lean`; `notes/Phase5.md` on the "1-deficient intermediate"); measured
+  (`scripts/blueprint-deps.py --label thm:isSparse-exists-typeI-or-typeII-reverse`, at `4657a7fc`).
+  *Found:* round 1 task 5.2.
+
 ## T — terminology and notation
 
 - None yet.
@@ -248,7 +262,12 @@ declaration's name as its header writes it:
 
 ## S — statement strength
 
-- None yet.
+- **F-015** · S · `thm:isTightOn-insert-vertex-with-edges` (`sparsity.tex`): the statement assumes
+  $V$ finite, which its pin `IsTightOn.insert_vertex_with_edges` does not (it takes only
+  `DecidableEq V`; the set $s$ is finite). The statement is weaker than the pin. Its sibling
+  `thm:isTightOn-union-with-bonus` assumes $V$ finite as its pin does.
+  *Evidence:* read (the statement of `insert_vertex_with_edges`, `Sparsity.lean`).
+  *Found:* round 1 task 5.2.
 
 ## L — Lean
 
@@ -257,6 +276,17 @@ declaration's name as its header writes it:
   states only "$ab$ is an edge". The theorem has no Lean caller, so the binder can go alone.
   *Evidence:* read (the statement of `typeII_isLaman`; a `grep` finds no caller).
   *Found:* round 1 task 3.
+- **F-017** · L · `IsTightOn.union_with_bonus`, `IsTightOn.insert_vertex_with_edges`
+  (`Sparsity.lean`): each takes `hF_finite : F.Finite`, which follows from `hF_sub`, since
+  `edgesIn` of a finite vertex set is finite (`edgesIn_finite`). The blueprint statements no longer
+  name it. The callers pass `Set.toFinite _` or `Set.finite_singleton _`.
+  *Evidence:* read (both statements, and their two callers in `Sparsity.lean`).
+  *Found:* round 1 task 5.2.
+- **F-018** · L · `SimpleGraph.IsSparse.typeII_reverse_blocker` (`Sparsity.lean`): its docstring
+  and the section docstring above it say "distinct vertices `x, y`", but the statement does not
+  assume `x ≠ y`. (At `x = y` the hypothesis fails, since the added pair is a loop and is dropped.)
+  *Evidence:* read (the statement and the two docstrings).
+  *Found:* round 1 task 5.2.
 
 ## M — mathematics and sources
 

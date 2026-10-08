@@ -1574,11 +1574,15 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
       exposited in full**, node-by-node with accurate Jordán citations: critical-
       set (= project *tight subset*) union/intersection closure = Jordán Lemma
       2.1.2 = `thm:isTightOn-union-inter` (`sparsity.tex`, full proof); three-pair
-      critical-set union = Jordán Lemma 2.1.3 = `thm:isTightOn-union-with-bonus`
-      composed twice (full proof); the per-pair blocker characterization
-      ("splitting not suitable ⟺ ∃ critical `X ⊇ {u,w}, ∌ {v,z}`") =
-      `lem:isSparse-typeII-reverse-blocker` (`sparsity.tex` §"Per-pair tight-blocker
-      witness", full proof); the overshoot observation + maximal-set assembly =
+      critical-set union = Jordán Lemma 2.1.3, argued in the Lean's three-blocker
+      case of `thm:isSparse-exists-typeI-or-typeII-reverse`, with no node of its own
+      (`thm:isTightOn-union-with-bonus`, full proof, is the two-set count its
+      two-blocker case uses; this entry's earlier "union-with-bonus composed twice"
+      was wrong: PROSE round 1 task 5.2, `notes/Prose-findings.md` `F-016`); the
+      blocker half of the splitting observation ("splitting not suitable ⟹ ∃
+      critical `X ⊇ {u,w}` with `v ∉ X`") = `lem:isSparse-typeII-reverse-blocker`
+      (`sparsity.tex` §"Splittings and tight sets", full proof); the overshoot
+      observation + maximal-set assembly =
       `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`), whose
       proof reproduces Jordán 2.1.4(b) with the chapter preamble mapping each node
       to its Jordán lemma number; and the non-adjacent-pair existence =

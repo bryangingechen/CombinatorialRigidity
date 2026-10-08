@@ -170,7 +170,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ✓ Complete — 18 sanctioned simplifications, −8 930 net Lean lines, all 19 main results' axioms unchanged (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 5/5: project organization) | Phase 40's notes and design doc, `notes/FRICTION.md`, the tactics, design and cleanup manuals, and the user-facing surfaces (docs only) | ✓ Complete — docs only, lessons lifted and Phase 40's notes compressed with every anchor kept, all 19 main results' axioms unchanged (see `notes/Phase40-docs.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ◐ In progress — exemplar pinned, first slice landed; task 5.2 (`sparsity.tex`'s second half, `laman.tex`) next (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ◐ In progress — exemplar pinned, first two slices landed (`sparsity.tex`, `laman.tex`); task 5.3 (`henneberg.tex` apart from the sample) next (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1250,8 +1250,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   (`notes/Prose-laman-cleanup.md`); its task 2, the dependency-audit script
   `scripts/blueprint-deps.py` (`notes/Prose.md` §5), task 3, the sample section, task 4, its
   pinning as the exemplar `notes/Prose-exemplar.md` after the PI approved it at Stop 1 on
-  2026-10-07 (the log's *Autopilot: for the PI*), and task 5.1, the first slice, have landed.
-  **Next concrete task:** its task 5.2, `sparsity.tex`'s second half with all of `laman.tex`.
+  2026-10-07 (the log's *Autopilot: for the PI*), and tasks 5.1–5.2, the first two slices
+  (`sparsity.tex` and `laman.tex`), have landed. **Next concrete task:** its task 5.3,
+  `henneberg.tex` apart from the sample.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
