@@ -202,6 +202,22 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`); read
   (both pins' statements and bodies).
   *Found:* round 2 task 2.7.
+- **F-071** · E · `def:matroid-MG`, `def:D-deficiency`, `lem:deficiency-antitone` and
+  `lem:cut-edge-decomposition` (`deficiency.tex`): edges the pins do not back, two of them into
+  later nodes of the chapter. `def:matroid-MG` uses `thm:tay-witness`, which its pins do not reach;
+  their step is `thm:unionPow-cycle-indep-iff-sparse` (implied). `def:D-deficiency` uses
+  `def:matroid-MG`, which `partitionDef` and `deficiency` do not reach. The proof of
+  `lem:deficiency-antitone` uses the later `lem:rk-within-parts`, unreached (its third pin is the
+  count the proof needs). The proof of `lem:cut-edge-decomposition` uses the later
+  `thm:def-eq-corank`, unreached (the attaining partitions exist as there are finitely many),
+  while its pins reach the later `lem:subgraph-minimality` (for its (2), through
+  `exists_cut_decomposition_of_not_twoEdgeConnected`) and `lem:two-vertex-trichotomy` (that node's
+  pin `deficiency_of_edgeSet_empty`, for its (3)), which its `\uses` do not name. Task 2.8's prose
+  cites `lem:subgraph-minimality` as a later lemma and computes the one-vertex deficiency directly;
+  moving KT Lemma 3.3's two nodes before KT Lemma 3.6, KT's order, would cure the forward use.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter deficiency`, at `27daa953`); read
+  (the pins' statements and bodies).
+  *Found:* round 2 task 2.8.
 
 ## N — node shape
 
@@ -405,6 +421,24 @@ declaration's name as its header writes it:
   *Evidence:* read (KT pp. 648 and 655; JJ 2009 Theorem 6.1, `.refs/`; a `grep` for
   "Proposition~1.1" over the chapters, at task 2.7).
   *Found:* round 2 task 2.7.
+- **F-072** · T · "boundary regime" (`intro.tex`): the Phase-19 item calls $M(\tilde G)$ the
+  $(D,D)$-count matroid "at the boundary regime $\ell = 2k = D$", not "the matroidal-regime count
+  matroid of Phase~7". The $(D,D)$ count has $\ell = k = D < 2k$; what `count-matroid.tex` does not
+  cover is parallel edges, as its matroid lives on the edges of $K_V$. Task 2.8 dropped the term
+  from `deficiency.tex`'s subsection title and `def:matroid-MG`'s proof; tasks 2.9–2.11 replace
+  "boundary-regime cleanliness" in the proofs of `lem:circuit-rigid`, `lem:rank-matroidMG-le` and
+  `molecular-induction.tex`'s line 77, and round 4 rewrites `intro.tex`.
+  *Evidence:* read (`count-matroid.tex`'s opening; `countMatroid`'s signature, a matroid on
+  `Sym2 V` for `ℓ < 2 * k`, `CountMatroid.lean`).
+  *Found:* round 2 task 2.8.
+- **F-073** · T · the dimension letter (`main-component.tex`, `pencil.tex`): both write the
+  dimension as $n$, the formalization's parameter: "the deficiencies of `def:D-deficiency` at $n = 2$
+  and $n = 3$ ($D = 3$ and $D = 6$)", "the conditioned pair at $n = 3$", about 48 lines in all.
+  Round 2 writes KT's $d$, and task 2.8's `deficiency.tex` writes $\operatorname{def}_d(G)$ for the
+  deficiency at dimension $d$, which agrees with their $\operatorname{def}_2$ and
+  $\operatorname{def}_3$.
+  *Evidence:* read (a `grep` for "$n = 2$" and "$n = 3$" over the two chapters, at task 2.8).
+  *Found:* round 2 task 2.8.
 
 ## U — status surfaces
 
@@ -792,6 +826,21 @@ declaration's name as its header writes it:
   follows from `hKmin` (it is a minimal $k$-dof-graph) by `Graph.loopless_of_isMinimalKDof`.
   *Evidence:* read (the statement and body; `Graph.loopless_of_isMinimalKDof`, `Deficiency.lean`).
   *Found:* round 2 task 2.7.
+- **F-074** · L · docstrings in `Molecular/Deficiency.lean`: `Graph.matroidMG`'s says that
+  $M(\tilde G)$ is "the boundary regime `ℓ = 2k = D`", not "the matroidal regime `ℓ < 2k` of
+  `CountMatroid.lean`". The $(D,D)$ count has $\ell = k$, inside $\ell < 2k$; `countMatroid` does
+  not apply because it is a matroid on `Sym2 V`, with no parallel edges. The docstrings of
+  `matroidMG_indep_iff` and `loopless_of_isMinimalKDof` call the independence criterion
+  "boundary-regime cleanliness".
+  *Evidence:* read (the docstrings; `countMatroid`'s signature, `CountMatroid.lean`).
+  *Found:* round 2 task 2.8.
+- **F-075** · L · `Graph.deficiency_eq_of_cutEdges_ncard_le_one` (`Molecular/Deficiency.lean`): its
+  hypothesis `hD : 1 ≤ bodyBarDim n` is unused (the proof discards it, "part of the public API").
+  `exists_cut_decomposition_of_not_twoEdgeConnected` and `Graph.deficiency_induce_union_singleton`
+  (`Molecule/Pencil/Motive.lean`) take it only to pass it on. `lem:cut-edge-decomposition` states
+  its (1)–(3) without it, so dropping it makes the three pins match.
+  *Evidence:* read (the three statements and bodies).
+  *Found:* round 2 task 2.8.
 
 ## M — mathematics and sources
 

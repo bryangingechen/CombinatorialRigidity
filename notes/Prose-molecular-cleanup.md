@@ -5,9 +5,9 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.7 `F-051`–`F-070`. 20
-one-commit tasks; tasks 1 and 2.1–2.7 are done, and the round has no planned stop. **Next concrete
-task:** task 2.8, `deficiency.tex` 27–271, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.8 `F-051`–`F-075`. 20
+one-commit tasks; tasks 1 and 2.1–2.8 are done, and the round has no planned stop. **Next concrete
+task:** task 2.9, `deficiency.tex` 390–640, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,16 +17,18 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.7 has landed** (this commit): `rigidity-matrix.tex` 830–1108 (now 817–1182), the 8
-block-triangular and Case-I nodes that end *Rank-addition lemmas*, and the chapter's opening (1–51,
-now 1–38). The chapter is done. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical. Nothing is
-mid-stream; task 2.8 is next.
+**Task 2.8 has landed** (this commit): `deficiency.tex` 27–271 (now 27–388), the first
+subsection's 4 nodes and the first 5 of *Rigid subgraphs and structural lemmas*, with both
+subsections' openings. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical; one
+formalization note gained a label (`fmlnote:partition-labeling`). Nothing is mid-stream; task 2.9
+is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (94 overfull boxes, 96 at the parent;
-  none in the slice). Screens: `rigidity-matrix` register 6, all in labels (8 at the parent),
-  devices 0 / 1, one `\texttt` address in a proof (0 / 0 at the parent), `\operatorname` Lean
-  names 0 (7 at the open); cross-chapter forward `\uses` 14, unchanged.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (94 overfull boxes, as at the parent; the
+  chapter's one is in its opening, task 2.10's). Screens: `deficiency` register 1, "routes" in task
+  2.10's range (3 at the open), devices 0 / 1, a `\texttt` address in task 2.10's range (1 / 2 at
+  the open), `\operatorname` Lean names 2, `bodyBarDim` in task 2.9's range (20 at the open);
+  cross-chapter forward `\uses` 14, unchanged.
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms check
@@ -176,18 +178,12 @@ dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight
 `rigidity-matrix`).
 
 - **Done:** `matroid-union` (task 2.1), `body-bar` (tasks 2.2, 2.3), `body-hinge` (task 2.3),
-  `extensor` (task 2.4) and `rigidity-matrix` (tasks 2.5–2.7); their open bullets are in this log at
-  the open, `ea058ba8`.
-- **`deficiency`** (phase 19). `def:matroid-MG` cites `thm:tay-witness` for Tutte–Nash-Williams and
-  "the tree-packing chapter", and has a proof whose "boundary regime" and "boundary-regime
-  cleanliness" recur in three proofs (principle E: define or drop). `def:D-deficiency`'s statement
-  carries the labeling $f \colon V \to V$ (a formalization note) and "genuinely signed".
-  `lem:deficiency-antitone` writes the deficiency "at $m$" and $\operatorname{def}_3$,
-  $\operatorname{def}_2$. Statements carry role clauses: `def:rigid-subgraph` (why $|V(H)| \ge 2$,
-  the circuit definition, Case III), `lem:cut-edge-decomposition` ("Packaged for the reduction
-  principle", a `theorem` with a `lem:` label, 7 pins), `lem:minimal-kdof-spanning-subgraph`;
-  `def:cut-edges-2ec` bundles a definition, a transfer lemma and a corollary (`F-009`).
-  `\operatorname{bodyBarDim}` in three statements. `lem:two-vertex-trichotomy`'s proof cites a
+  `extensor` (task 2.4), `rigidity-matrix` (tasks 2.5–2.7) and `deficiency` 27–388 (task 2.8);
+  their open bullets are in this log at the open, `ea058ba8`.
+- **`deficiency`** (phase 19), what is left for tasks 2.9–2.10. "Boundary-regime cleanliness" in
+  the proofs of `lem:circuit-rigid` and `lem:rank-matroidMG-le` (task 2.8 dropped the term:
+  `F-072`). Role clauses in `lem:minimal-kdof-spanning-subgraph`'s statement;
+  `\operatorname{bodyBarDim}` in two statements. `lem:two-vertex-trichotomy`'s proof cites a
   "parallel-pair criterion" of `def:k-dof` that is `lem:two-vertex-zero-dof`, a later chapter's.
   Check `thm:def-eq-corank`'s credit, "the project framing of … Jackson–Jordán Theorem 6.1",
   against JJ 2009 in `.refs/`. The paragraph after it repeats the opening ("wires", "routes").
@@ -237,15 +233,14 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   `F-048`–`F-050`, and the status surfaces.
 - [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [x] **2.1–2.7, `matroid-union.tex` through `rigidity-matrix.tex`**: 2.1 `6c26eed5`, 2.2
-    `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5 `5399e053`, 2.6 `af438fd1`, 2.7 this commit.
-    Each commit message gives its ranges and findings (`F-051`–`F-070`).
-  - [ ] **2.8 `deficiency.tex`, the matroid, the deficiency and the cut lemmas** (27–271): 9 nodes,
-    245 lines.
-  - [ ] **2.9 `deficiency.tex`, cut vertices, ears, restriction and minimality** (272–523): 9
-    nodes, 252 lines.
-  - [ ] **2.10 `deficiency.tex`, the corank bridge and the opening** (524–712, 1–26): 5 nodes, 215
-    lines.
+  - [x] **2.1–2.8, `matroid-union.tex` through `deficiency.tex`'s first slice**: 2.1 `6c26eed5`,
+    2.2 `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5 `5399e053`, 2.6 `af438fd1`, 2.7
+    `27daa953`, 2.8 this commit. Each commit message gives its ranges and findings
+    (`F-051`–`F-075`).
+  - [ ] **2.9 `deficiency.tex`, cut vertices, ears, restriction and minimality** (272–523 at the
+    open, now 390–640): 9 nodes, 252 lines.
+  - [ ] **2.10 `deficiency.tex`, the corank bridge and the opening** (524–712 at the open, now
+    642–830, and 1–26): 5 nodes, 215 lines.
   - [ ] **2.11 `molecular-induction.tex`, inherited lemmas and graph operations** (43–260): 9
     nodes, 218 lines.
   - [ ] **2.12 `molecular-induction.tex`, KT Lemma 4.1 and the balanced packing** (261–516):
@@ -335,6 +330,16 @@ one line each naming the ledger ID and the task that found it.
 - `F-069` (L, task 2.7): four docstrings of `rigidity-matrix.tex` pins name the wrong node.
 - `F-070` (L, task 2.7): a hypothesis of `lem:rank-polynomial-IH-relabel-proj`'s pin follows from
   another.
+- `F-071` (E, task 2.8): four `deficiency.tex` nodes have edges their pins do not back, and
+  `lem:cut-edge-decomposition`'s pins reach two later nodes of the chapter.
+- `F-072` (T, task 2.8): `intro.tex` calls $M(\tilde G)$ the count matroid "at the boundary regime
+  $\ell = 2k = D$", which is false ($\ell = k$) and no chapter now defines.
+- `F-073` (T, task 2.8): `main-component.tex` and `pencil.tex` write the dimension as $n$ (about
+  48 lines), where round 2 writes KT's $d$.
+- `F-074` (L, task 2.8): `Graph.matroidMG`'s docstring repeats the false "boundary regime
+  $\ell = 2k = D$"; two more call the independence criterion "boundary-regime cleanliness".
+- `F-075` (L, task 2.8): the hypothesis $D \ge 1$ of KT Lemma 3.6's pin is unused, and two pins
+  take it only to pass it on.
 
 ## Blockers / open questions
 
@@ -342,10 +347,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.8, `deficiency.tex` 27–271 (the matroid, the deficiency and the cut
-lemmas), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the `deficiency` bullet
-under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.9–2.18 in order,
-and task 3 closes the round. For the slices:
+**Next concrete task: task 2.9, `deficiency.tex` 390–640 (cut vertices, ears, restriction and
+minimality), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the `deficiency`
+bullet under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.10–2.18 in
+order, and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
   understandable"): the coordinator has read tasks 2.1–2.3 in full against the exemplars.
 - **Notation.** Tasks 2.8–2.18 write KT's $d$ and $D = \binom{d+1}{2}$, drop the stray $n$, and
@@ -356,15 +361,30 @@ and task 3 closes the round. For the slices:
 - **Crux nodes** keep their full proofs, in tasks 2.12–2.15, 2.17 and 2.18 (*Scope*).
 - **What `rigidity-matrix.tex` now says that later tasks lean on.** It recalls the deficiency
   before `lem:trivial-motions-rank-bound`: $d_G(P)$, $\operatorname{def}_{\tilde G}(P) = D(|P|-1) -
-  (D-1)\,d_G(P)$, and $\operatorname{def}(\tilde G)$ the largest value over partitions of $V$;
-  `def:D-deficiency` (task 2.8) should match. Its opening names the generic rank formula Jackson and
+  (D-1)\,d_G(P)$, and $\operatorname{def}(\tilde G)$ the largest value over partitions of $V$, as
+  `def:D-deficiency` now states it. Its opening names the generic rank formula Jackson and
   Jordán's, KT Proposition 2.3, and KT Proposition 1.1 Tay and Whiteley's theorem (`F-067`):
-  `deficiency.tex`'s "matroidal half of Tay–Whiteley's Proposition 1.1" (lines 16, 661) is task
+  `deficiency.tex`'s "matroidal half of Tay–Whiteley's Proposition 1.1" (lines 16, 779) is task
   2.10's. Its subgraph convention ($R(H,p)$ keeps $p$'s hinges and $G$'s bodies), row spaces
   $\mathcal R$, and $\pi_W$ for deleting the columns of $W$ are fixed in *Rank-addition lemmas*.
   `lem:block-rank-cut` is titled for a cut edge: `molecular-induction.tex`'s "block-rank addition"
   (task 2.16) follows it. Task 2.16 gives `F-050`'s molecular-induction edges a sentence each, as
   task 2.7 did for this chapter's.
+- **What `deficiency.tex` 27–388 now fixes (task 2.8).** Notation: $d_G(P)$ (`def:D-deficiency`),
+  $\delta_G(V')$ and $d_G(V')$ (`def:cut-edges-2ec`, KT's), $\operatorname{def}_d(G)$ at dimension
+  $d$ (before `lem:deficiency-antitone`; `main-component.tex`'s $\operatorname{def}_2$,
+  $\operatorname{def}_3$), $G[X]$ and $\tilde G[X] = (D-1)\cdot G[X]$ (before
+  `lem:cut-edge-decomposition`), and $\tilde e$, "the set of the $D-1$ copies of $e$" (`def:k-dof`;
+  "edge-fiber" goes, and the chapter opening's line 24 is task 2.10's). Partitions as labelings are
+  explained once, in `fmlnote:partition-labeling`: `\cref` it. "Boundary regime" is gone (`F-072`):
+  "boundary-regime cleanliness (`\cref{def:matroid-MG}`)" becomes its independence criterion in
+  tasks 2.9–2.11. For task 2.9: the subsection's opening paragraph names its nodes in order (adjust
+  it, and the title if wanted); `lem:cut-edge-decomposition`'s proof now speaks of *separated*
+  partitions and the identity for them, which `lem:deficiency-cut-vertex` and `lem:deficiency-ear`
+  cite as "as in"; its (2) cites `lem:subgraph-minimality` "below", so moving
+  `lem:matroid-restrict-subgraph` and `lem:subgraph-minimality` before it (KT's order) cures a
+  forward reference (`F-071`). For task 2.10: the subsection openings already state KT eq. (2.4)
+  and what each subsection does (principle F, *Once*).
 - **From task 2.4.** `meet.tex` (its opening and two nodes) cites `sec:molecular-homog` for the
   exterior algebra and the join, which are in `sec:molecular-extensor`: task 2.18 repoints them.
   `def:extensor` writes $v_1 \wedge \cdots \wedge v_j$, and $\vee$ arrives with `def:join`. The
@@ -372,7 +392,7 @@ and task 3 closes the round. For the slices:
   Propositions 3.4 and 3.5) and `def:affine-subspace-extensor`.
 - **The open's findings** are recorded, not acted on.
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-071`.
+  pins reach. The ledger's next ID is `F-076`.
 
 ## Decisions made during this round
 
@@ -387,16 +407,18 @@ and task 3 closes the round. For the slices:
 - **The crux list, by label** (the open): `rigidity-matrix.tex` has no crux node (its ledger entry,
   `prop:rigidity-matrix-prop11`, is in round 3's `panel-layer.tex`), so three chapters have them.
 - **The no-Lean-edit base** is `ac7bd966`, the open's parent.
-- **Tasks 2.1–2.6**, settled (detail in each commit): `def:matroid-union` states the Lean's
-  construction (Oxley 11.2.12); two sparsity nodes and `thm:tay-witness` moved for node order;
-  statements say what their pins prove (`lem:affine-indep-iff`, `lem:rank-parallel-full`, $V \neq
-  \emptyset$ in `lem:trivial-motions-rank-bound`); `F-048`/`F-049` keep their statements with a
-  formalization note; `lem:span-rigidityRows-eq-of-motions-eq` moved before its first user. The
-  cycle matroid has no symbol: `deficiency.tex`'s $M(\tilde G)$ is KT's union of $D$ copies of it.
-- **Task 2.7, `rigidity-matrix.tex` 830–1108 and the opening.** `lem:rank-polynomial-proj-eval`
-  moved before `lem:rank-polynomial-IH-relabel-proj`, whose proof uses it, and the superseded
-  `lem:rank-polynomial-IH-relabel` to the end, after its replacement (principle E, *Node order*).
-  The splice lemma's "frameworks on the same bodies and hinges" meant the pin's common body and
-  edge-label types, now "on one set of bodies"; `lem:rank-transport-relabel-of-le-finrank` states
-  its pin's "there are normals". `lem:rank-polynomial-IH-relabel-proj` keeps its statement: its pin's
-  no-loops hypothesis follows from minimality (`F-070`), as its proof says.
+- **Tasks 2.1–2.7**, settled (detail in each commit): `def:matroid-union` states the Lean's
+  construction (Oxley 11.2.12); nodes moved for node order (two sparsity nodes, `thm:tay-witness`,
+  `lem:span-rigidityRows-eq-of-motions-eq`, `lem:rank-polynomial-proj-eval`, the superseded
+  `lem:rank-polynomial-IH-relabel` to the end); statements say what their pins prove
+  (`lem:affine-indep-iff`, `lem:rank-parallel-full`, $V \neq \emptyset$ in
+  `lem:trivial-motions-rank-bound`, "there are normals"); `F-048`/`F-049` keep their statements with
+  a formalization note, and `lem:rank-polynomial-IH-relabel-proj` keeps its pin's redundant no-loops
+  hypothesis (`F-070`). The cycle matroid has no symbol.
+- **Task 2.8, `deficiency.tex` 27–271.** The $D \ge 1$ that `lem:two-edge-conn`'s proof assumed is
+  now in its statement and `def:cut-edges-2ec`'s. `lem:cut-edge-decomposition` omits its pins'
+  unused $D \ge 1$ (`F-075`), keeps its "packaged" existence claim as (2), and is a `lemma`, as KT's
+  Lemma 3.6 is. Its proof compares partitions directly, not by KT's direct sum, nor by
+  $\operatorname{def} = \operatorname{corank}$, which its pins do not use. Minimality is the pin's
+  base condition, with KT's edge-removal form (pp. 656–657) in a remark. "Boundary regime ($\ell =
+  2k$)" was false and goes (`F-072`).

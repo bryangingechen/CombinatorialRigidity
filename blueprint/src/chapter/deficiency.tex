@@ -24,149 +24,226 @@ $\tilde G$ abbreviates the multiplied graph $(D-1)\cdot G$ of
 \cref{sec:body-hinge}, whose edge-fibers $\tilde e$ are the $D-1$
 parallel copies of each edge $e \in E(G)$.
 
-\subsection{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)} at the boundary regime}
+\subsection{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)}, the deficiency and \texorpdfstring{$k$}{k}-dof-graphs}
 \label{sec:molecular-deficiency-matroid}
+
+This subsection follows Katoh and
+Tanigawa~\cite[\S2.5 and the start of \S3]{katohTanigawa2011}. We define
+a matroid $M(\tilde G)$ on the edges of $\tilde G$ and the deficiency
+$\operatorname{def}(\tilde G)$, a maximum over the partitions of
+$V(G)$. Every base $B$ of $M(\tilde G)$ has
+$|B| + \operatorname{def}(\tilde G) = D(|V(G)| - 1)$ (KT eq.~(2.4)),
+which we prove in \cref{sec:molecular-deficiency-bridge}. Then we
+define the $k$-dof-graphs, the multigraphs $G$ with
+$\operatorname{def}(\tilde G) = k$, and the minimal ones.
+
+We use the notation of \cref{sec:body-bar-matroid-union}: $V(F)$ is
+the set of vertices incident with an edge of a set $F$ of edges, and
+$\tilde G \restriction F$ is the multigraph with the vertices of
+$\tilde G$ and the edges of $F$. Katoh and Tanigawa define $M(\tilde G)$
+as the matroid on $E(\tilde G)$ induced by the submodular function
+$F \mapsto D(|V(F)| - 1)$ (\cref{def:ofSubmodular}). A set $F$ is
+independent in it if and only if $\tilde G \restriction F$ is
+$(D, D)$-sparse (\cref{def:graph-sparse}). They remark that this
+matroid is the union of $D$ copies of the cycle
+matroid~\cite[p.~655]{katohTanigawa2011}, and we take the union as the
+definition.
 
 \begin{definition}[The matroid $M(\tilde G)$]
   \label{def:matroid-MG}
   \lean{Graph.matroidMG, Graph.matroidMG_indep_iff}
   \leanok
   \uses{thm:tay-witness}
-  Let $D = \binom{d+1}{2}$. The matroid $M(\tilde G)$ is the
-  \emph{$(D,D)$-count matroid} of the multiplied graph
-  $\tilde G = (D-1)\cdot G$ --- equivalently, the $D$-fold union of the
-  cycle (graphic) matroid of $\tilde G$, restricted to $E(\tilde G)$.
-  Its independent sets are the $(D,D)$-sparse edge subsets of
-  $\tilde G$; by Tutte--Nash-Williams (\cref{thm:tay-witness} and the
-  tree-packing chapter) these are exactly the edge subsets that
-  decompose into $D$ edge-disjoint forests.
+  Let $G$ be a multigraph. The matroid $M(\tilde G)$ is the union of
+  $D$ copies of the cycle matroid of $\tilde G$
+  (\cref{def:matroid-union}). A set $F$ of edges of $\tilde G$ is
+  independent in $M(\tilde G)$ if and only if
+  $\tilde G \restriction F$ is $(D, D)$-sparse.
 \end{definition}
 \begin{proof}
   \leanok
-  This is the \textbf{boundary regime} $\ell = 2k = D$ of the
-  count-matroid family. It is \emph{not} covered by the matroidal-regime
-  construction of \cref{sec:count-matroid} (built for $\ell < 2k$);
-  $M(\tilde G)$ is instead the $D$-fold graphic-matroid union of
-  \cref{sec:body-bar} and \cref{sec:body-hinge}, whose independence
-  characterization is Tutte--Nash-Williams tree-packing.
+  Apply \cref{thm:unionPow-cycle-indep-iff-sparse} to the multigraph
+  $\tilde G$, with $k = D$.
 \end{proof}
+\begin{fmlnote}
+  As for the $k$-frame matroid
+  (\cref{fmlnote:k-frame-union-restriction}), the formal union is a
+  matroid on all pairs $(e, i)$ of an edge label $e$ and an index
+  $1 \le i \le D - 1$, in which a pair outside $E(\tilde G)$ is a loop.
+  The matroid $M(\tilde G)$ is its restriction to $E(\tilde G)$.
+\end{fmlnote}
 
-\begin{definition}[$D$-deficiency]
+So $M(\tilde G)$ is Katoh and Tanigawa's matroid. By
+\cref{lem:union-indep-iff}, its independent sets are the unions of $D$
+forests of $\tilde G$. When $d \ge 2$, they are also the sets $F$ such
+that the multigraph $\tilde G \restriction F$ has an independent
+body-bar framework in $\R^d$, by Tay's theorem (\cref{thm:tay-witness}).
+
+\begin{definition}[The $D$-deficiency]
   \label{def:D-deficiency}
   \lean{Graph.partitionDef, Graph.deficiency}
   \leanok
   \uses{def:matroid-MG}
-  For a partition $P$ of $V(G)$ into nonempty parts, write $d_G(P)$ for
-  the number of edges of $G$ joining distinct parts of $P$. The
-  \emph{$D$-deficiency} of $P$ is
+  Let $G$ be a multigraph. For a partition $P$ of $V(G)$ into nonempty
+  parts, let $d_G(P)$ be the number of edges of $G$ that join different
+  parts of $P$. The \emph{$D$-deficiency} of $P$ is
   \[
     \operatorname{def}_{\tilde G}(P) \;=\; D\,(|P| - 1) \;-\;
       (D-1)\,d_G(P),
   \]
-  and the \emph{deficiency} of $\tilde G$ is
-  $\operatorname{def}(\tilde G) = \max_{P} \operatorname{def}_{\tilde
-  G}(P)$, the maximum over all partitions. The deficiency measures how
-  far $\tilde G$ is from being independently realizable as a rigid
-  body-hinge framework. A partition is encoded by a labeling
-  $f \colon V \to V$ whose fibers are the parts; $|P|$ is the number of
-  distinct labels on $V(G)$ and $d_G(P)$ the number of edges with
-  differently-labeled endpoints. The quantity
-  $\operatorname{def}_{\tilde G}(P)$ is genuinely signed (a fine
-  partition crossing many edges is negative), so it is $\mathbb Z$-valued;
-  the maximum is $\ge 0$, witnessed by the trivial one-part partition.
+  and the \emph{deficiency} $\operatorname{def}(\tilde G)$ is the
+  largest value of $\operatorname{def}_{\tilde G}(P)$ over the
+  partitions $P$ of $V(G)$.
 \end{definition}
+\begin{fmlnote}
+  \label{fmlnote:partition-labeling}
+  In the formalization a partition of $V(G)$ is given by a labeling of
+  the vertices whose labels are again vertices. Its parts are the sets
+  of vertices of $G$ with a common label. So $|P|$ is the number of
+  labels used on $V(G)$, and an edge joins different parts when its
+  ends have different labels. The values of the labelings are integers,
+  and the deficiency is their supremum, which is attained because there
+  are finitely many labelings.
+\end{fmlnote}
 
-\begin{lemma}[The deficiency decreases with the dimension on a connected graph]
+Katoh and Tanigawa~\cite[p.~655]{katohTanigawa2011} write
+$\operatorname{def}_{\tilde G}(P) = D(|P| - 1) - d_{\tilde G}(P)$, where
+$d_{\tilde G}(P) = (D-1)\,d_G(P)$ is the number of edges of $\tilde G$
+that join different parts of $P$. If $V(G)$ is nonempty, then the partition $\{V(G)\}$ has value $0$, so
+$\operatorname{def}(\tilde G) \ge 0$. By the theorem of Tutte and
+Nash-Williams~\cite{tutte1961,nashWilliams1961} (KT
+Proposition~2.2), $\operatorname{def}(\tilde G) = 0$ if and only if
+$\tilde G$ contains $D$ edge-disjoint spanning trees. We prove this for
+$D \ge 2$ in \cref{lem:deficiency-zero-iff-tree-packing}.
+
+The deficiency depends on the dimension $d$ through
+$D = \binom{d+1}{2}$. When $d$ varies, we write
+$\operatorname{def}_d(G)$ for $\operatorname{def}(\tilde G)$ at this
+$D$. So $\operatorname{def}_2(G)$ and $\operatorname{def}_3(G)$ are the
+deficiencies at $D = 3$ and $D = 6$, which \cref{sec:main-component}
+compares.
+
+\begin{lemma}[On a connected graph the deficiency does not increase with the dimension]
   \label{lem:deficiency-antitone}
   \lean{Graph.Connected.deficiency_le_deficiency_of_le,
         Graph.Connected.deficiency_three_le_deficiency_two,
         Graph.Connected.numParts_le_ncard_crossingEdges_add_one}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be connected, and let $n \le m$. Then the deficiency of $G$ at
-  $m$ is at most its deficiency at $n$; in particular
-  $\operatorname{def}_3(G) \le \operatorname{def}_2(G)$.
+  Let $G$ be a connected multigraph, and let $d \le d'$ be natural
+  numbers. Then $\operatorname{def}_{d'}(G) \le \operatorname{def}_d(G)$.
+  In particular $\operatorname{def}_3(G) \le \operatorname{def}_2(G)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rk-within-parts}
-  Partition by partition, with $D \le D'$ the two body dimensions,
-  $[D'(|P| - 1) - (D' - 1)d(P)] - [D(|P| - 1) - (D - 1)d(P)]
-  = (D' - D)(|P| - 1 - d(P)) \le 0$, because the parts of a connected
-  graph are joined by at least $|P| - 1$ crossing edges: deleting the
-  $d(P)$ crossing edges leaves at least $|P|$ components
-  (the count of \cref{lem:rk-within-parts}), and deleting an edge adds
-  at most one.
+  Let $D \le D'$ be the values of $\binom{d+1}{2}$ and
+  $\binom{d'+1}{2}$, and let $P$ be a partition of $V(G)$. At least
+  $|P| - 1$ edges of $G$ join different parts of $P$. Indeed, once these
+  edges are deleted, each component lies in one part, so there are at
+  least $|P|$ components. Deleting an edge raises the number of
+  components by at most one, and $G$ is connected. Hence the value of
+  $P$ at $D'$ minus its value at $D$ is
+  \[
+    (D' - D)\bigl(|P| - 1 - d_G(P)\bigr) \;\le\; 0.
+  \]
+  So the value of $P$ at $D'$ is at most $\operatorname{def}_d(G)$, and
+  the lemma follows.
 \end{proof}
 
-\begin{definition}[$k$-dof and minimal $k$-dof graphs]
+By Jackson and Jord\'an's rank formula (KT Proposition~2.3;
+\cref{prop:rigidity-matrix-prop11}), a generic realization of $G$ has
+$\operatorname{def}(\tilde G)$ degrees of freedom
+(\cref{def:dof-generic}). This is why Katoh and Tanigawa speak of
+$k$-dof-graphs, for $k$ degrees of freedom~\cite[\S3]{katohTanigawa2011}.
+
+\begin{definition}[$k$-dof-graphs and minimal $k$-dof-graphs]
   \label{def:k-dof}
   \lean{Graph.IsKDof, Graph.IsMinimalKDof, Graph.edgeFiber}
   \leanok
   \uses{def:D-deficiency, def:matroid-MG}
-  A multigraph $G$ is a \emph{$k$-dof-graph} when
-  $\operatorname{def}(\tilde G) = k$; the $0$-dof case is exactly the
-  body-hinge-rigid case (\cref{thm:body-hinge-tay}). $G$ is a
-  \emph{minimal $k$-dof-graph} when it is $k$-dof and every base $B$ of
-  $M(\tilde G)$ meets every edge-fiber $\tilde e$ (the $D-1$ parallel
-  copies of $e \in E(G)$) --- i.e.\ no edge of $G$ can be deleted
-  without changing the deficiency. Minimal $k$-dof-graphs are the
-  objects the combinatorial induction of \cref{sec:molecular-induction}
-  (\cref{thm:minimal-kdof-reduction}) reduces to the two-vertex double
-  edge.
+  Let $G$ be a multigraph and let $k$ be an integer. Then $G$ is a
+  \emph{$k$-dof-graph} if $\operatorname{def}(\tilde G) = k$. It is a
+  \emph{minimal} $k$-dof-graph if moreover, for every edge $e$ of $G$,
+  every base of $M(\tilde G)$ meets the set $\tilde e$ of the $D - 1$
+  copies of $e$ in $\tilde G$.
 \end{definition}
+
+Katoh and Tanigawa call a $k$-dof-graph minimal if removing any edge
+gives a graph that is not a $k$-dof-graph, and observe that this is the
+condition above~\cite[pp.~656--657]{katohTanigawa2011}. Indeed,
+removing an edge $e$ of $G$ leaves the deficiency unchanged if and only
+if some base of $M(\tilde G)$ avoids $\tilde e$. This follows from KT
+eq.~(2.4) (\cref{thm:def-eq-corank} below), since
+$M(\widetilde{G - e})$ is the restriction of $M(\tilde G)$ to
+$E(\tilde G) \setminus \tilde e$ (\cref{lem:matroid-restrict-subgraph}).
 
 \subsection{Rigid subgraphs and structural lemmas}
 \label{sec:molecular-deficiency-rigid}
+
+This subsection proves the properties of $k$-dof-graphs that Katoh and
+Tanigawa establish in their \S3, and some deficiency computations that
+later chapters use. We define rigid subgraphs and show that a
+$0$-dof-graph is $2$-edge-connected (KT Lemma~3.1). Then we compute
+the deficiency of a multigraph from those of its pieces: at a cut of at
+most one edge (KT Lemma~3.6), at a cut vertex, and along an ear. Next we
+show that minimality passes to subgraphs (KT Lemma~3.3), and that every
+multigraph has a minimal spanning subgraph of the same deficiency.
+Finally we treat the circuits of $M(\tilde G)$ (KT Lemma~3.4) and the
+minimal $k$-dof-graphs with at most two vertices.
+
+Katoh and Tanigawa's combinatorial induction contracts proper rigid
+subgraphs (\cref{sec:molecular-induction}).
 
 \begin{definition}[Rigid and proper rigid subgraphs]
   \label{def:rigid-subgraph}
   \lean{Graph.IsRigidSubgraph, Graph.IsProperRigidSubgraph}
   \leanok
   \uses{def:k-dof}
-  A subgraph $H \subseteq G$ (the multigraph subgraph order $H \le G$)
-  is \emph{rigid} when it is $0$-dof ($\operatorname{def}(\tilde H) =
-  0$), i.e.\ $\tilde H$ packs $D$ edge-disjoint spanning trees; it is a
-  \emph{proper} rigid subgraph when additionally $2 \le |V(H)|$ and
-  $V(H) \subsetneq V(G)$. The lower bound is Katoh--Tanigawa's $1 <
-  |V'|$ \cite[p.~659]{katohTanigawa2011} and is essential: a
-  single-vertex subgraph is vacuously rigid, so without it every graph
-  on two or more vertices would have a proper rigid subgraph and the
-  ``no proper rigid subgraph'' hypothesis of the splitting-off branch
-  could never be satisfied. A \emph{circuit} of
-  $M(\tilde G)$ is a minimal dependent edge set (mathlib's
-  \texttt{Matroid.IsCircuit}). Two-edge-connectivity of $G$ is the
-  structural hypothesis Case~III of the algebraic induction works
-  under (\cref{lem:two-edge-conn}).
+  Let $H$ be a subgraph of a multigraph $G$. Then $H$ is a \emph{rigid
+  subgraph} of $G$ if $H$ is a $0$-dof-graph. It is a \emph{proper}
+  rigid subgraph if moreover $1 < |V(H)| < |V(G)|$.
 \end{definition}
 
-\begin{lemma}[Two-edge-connectivity, cut form; KT Lemma 3.1]
+These are Katoh and Tanigawa's
+definitions~\cite[pp.~658--659]{katohTanigawa2011}. When $V(H)$ is
+nonempty, $H$ is rigid exactly when $\tilde H$ contains $D$
+edge-disjoint spanning trees (KT Proposition~2.2). A subgraph with one
+vertex is always rigid, as its only partition has one part; the
+condition $|V(H)| > 1$ excludes these.
+
+\begin{lemma}[A $0$-dof-graph is $2$-edge-connected; KT Lemma~3.1]
   \label{lem:two-edge-conn}
   \lean{Graph.two_le_crossingEdges_of_isKDof_zero, Graph.cutLabeling, Graph.numParts_cutLabeling}
   \leanok
   \uses{def:k-dof, def:D-deficiency}
-  A body-hinge-rigid ($0$-dof) graph $G$ is $2$-edge-connected: for any
-  nonempty proper vertex set $V' \subsetneq V(G)$ separating $V(G)$, at
-  least two edges cross the cut $\{V', V \setminus V'\}$, i.e.\
-  $d_G(V') \ge 2$.  The labeling-free form of this statement and its
-  degree corollary are in \cref{def:cut-edges-2ec}.
+  Let $D \ge 1$, let $G$ be a $0$-dof-graph, and let $V'$ be a set of
+  vertices of $G$ with $\emptyset \neq V' \neq V(G)$. Then at least two
+  edges of $G$ join $V'$ to $V(G) \setminus V'$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Were $d_G(V') \le 1$, the two-part cut partition $P = \{V', V
-  \setminus V'\}$ would witness $\operatorname{def}(\tilde G) \ge
-  \operatorname{def}_{\tilde G}(P) = D(|P| - 1) - (D-1)\,d_G(P) \ge D -
-  (D-1) = 1 > 0$, contradicting $\operatorname{def}(\tilde G) = 0$
-  (the deficiency is an upper bound for every partition's deficiency).
-  This is Katoh--Tanigawa~\cite[Lemma 3.1]{katohTanigawa2011}. As
-  mathlib carries no edge-connectivity predicate for multigraphs, the
-  conclusion is phrased directly in the cut form the proof uses; the
-  cut is encoded by the labeling $f$ collapsing $V'$ and its complement
-  to two distinct representatives ($D = \operatorname{bodyBarDim} n \ge
-  1$).
+  Let $P = \{V', V(G) \setminus V'\}$. If at most one edge joined $V'$
+  to $V(G) \setminus V'$, then $d_G(P) \le 1$, and
+  \[
+    \operatorname{def}(\tilde G) \;\ge\; \operatorname{def}_{\tilde G}(P)
+    \;=\; D - (D-1)\,d_G(P) \;\ge\; 1,
+  \]
+  contradicting $\operatorname{def}(\tilde G) = 0$.
 \end{proof}
+\begin{fmlnote}
+  The formal statement fixes $a \in V'$ and $b \in V(G) \setminus V'$,
+  and counts the edges whose ends get different labels under the
+  labeling that sends $V'$ to $a$ and every other vertex to $b$
+  (\cref{fmlnote:partition-labeling}). A second pin defines this
+  labeling, and a third shows that it has two parts.
+\end{fmlnote}
 
-\begin{definition}[Labeling-free cut edges and $2$-edge-connectivity; degree corollary]
+We name the edges of such a cut, with Katoh and Tanigawa's
+notation~\cite[p.~654]{katohTanigawa2011}, and define
+$2$-edge-connectivity by the condition of \cref{lem:two-edge-conn}.
+
+\begin{definition}[Cuts and $2$-edge-connectivity]
   \label{def:cut-edges-2ec}
   \lean{Graph.cutEdges, Graph.TwoEdgeConnected, Graph.cutEdges_eq_crossingEdges_cutLabeling,
     Graph.twoEdgeConnected_of_isKDof_zero, Graph.two_le_degree_of_twoEdgeConnected,
@@ -174,45 +251,57 @@ parallel copies of each edge $e \in E(G)$.
     Graph.crossingEdges_cutLabeling_singleton_ncard_le}
   \leanok
   \uses{def:k-dof}
-  For a multigraph $G$ and a vertex set $V'$, define $\operatorname{cutEdges}(G, V') =
-  \{e \in E(G) \mid e \text{ has one endpoint in } V' \text{ and one outside}\}$, the
-  labeling-free cut.  Say $G$ is \emph{$2$-edge-connected} if every nonempty proper vertex
-  set $V' \subsetneq V(G)$ satisfies $|\operatorname{cutEdges}(G, V')| \ge 2$; connectivity
-  is automatic (a component gives a cut of size $0$).  A single transfer lemma identifies
-  $\operatorname{cutEdges}(G, V') = \operatorname{crossingEdges}(G, \operatorname{cutLabeling}\,V'\,a\,b)$
-  for any $a \in V'$, $b \notin V'$.  Consequently a $0$-dof graph is $2$-edge-connected
-  (\cref{lem:two-edge-conn} in the labeling-free form), and every vertex $v \in V(G)$ of a
-  $2$-edge-connected graph with $|V(G)| \ge 2$ satisfies $\deg_G(v) \ge 2$.
+  Let $G$ be a multigraph. For a set $V'$ of vertices of $G$, let
+  $\delta_G(V')$ be the set of edges of $G$ that join $V'$ to
+  $V(G) \setminus V'$, and let $d_G(V') = |\delta_G(V')|$. Then $G$ is
+  \emph{$2$-edge-connected} if $d_G(V') \ge 2$ for every set $V'$ with
+  $\emptyset \neq V' \neq V(G)$. If $D \ge 1$, every $0$-dof-graph is
+  $2$-edge-connected. If $G$ is $2$-edge-connected and has at least two
+  vertices, then every vertex of $G$ has degree at least $2$.
 \end{definition}
 \begin{proof}
   \leanok
   \uses{lem:two-edge-conn}
-  The $0$-dof case reduces to \cref{lem:two-edge-conn} via the transfer lemma (the strict
-  inclusion $V' \subsetneq V(G)$ supplies the two representatives).  For the degree bound:
-  the singleton cut $\{v\}$ is a nonempty proper vertex set (proper since $|V| \ge 2$), so
-  $2$-edge-connectivity gives $2 \le |\operatorname{cutEdges}(G, \{v\})|$, and the crossing
-  edges of $\{v\}$ are exactly the nonloop edges at $v$, whose count is at most the degree.
+  The first claim is \cref{lem:two-edge-conn}. For the second, let $v$
+  be a vertex of $G$. As $G$ has another vertex,
+  $\emptyset \neq \{v\} \neq V(G)$, so $d_G(\{v\}) \ge 2$. The edges of
+  $\delta_G(\{v\})$ are the edges at $v$ that are not loops, so
+  $d_G(\{v\})$ is at most the degree of $v$.
 \end{proof}
+\begin{fmlnote}
+  The formalization states \cref{lem:two-edge-conn} with a labeling, as
+  its formalization note explains. One pin identifies $\delta_G(V')$
+  with the set of edges whose ends get different labels under that
+  labeling. Two more show that for $V' = \{v\}$ these
+  are the edges at $v$ that are not loops, and bound their number by
+  the degree of $v$.
+\end{fmlnote}
 
-\begin{lemma}[A $0$-dof graph is connected, of minimum degree at least two]
+\begin{lemma}[A $0$-dof-graph is connected, of minimum degree at least two]
   \label{lem:deficiency-zero-connected}
   \lean{Graph.connected_of_isKDof_zero, Graph.two_le_degree_of_isKDof_zero}
   \leanok
   \uses{def:k-dof, def:cut-edges-2ec}
-  Let $G$ be a $0$-dof graph with at least one vertex, at any $D \ge 1$.
-  Then $G$ is connected, and if $|V(G)| \ge 2$, every vertex of $G$ has
-  degree at least $2$.
+  Let $D \ge 1$, and let $G$ be a $0$-dof-graph with at least one
+  vertex. Then $G$ is connected. If $G$ has at least two vertices, then
+  every vertex of $G$ has degree at least $2$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:two-edge-conn}
-  $G$ is $2$-edge-connected (\cref{def:cut-edges-2ec}). A component of a
-  disconnected $G$ would be a nonempty proper vertex set crossed by no
-  edge, and a single vertex $v$ is a vertex set crossed only by the edges
-  at $v$.
+  By \cref{def:cut-edges-2ec}, $G$ is $2$-edge-connected, and this
+  gives the bound on the degrees. If $G$ were disconnected, the vertex
+  set $V'$ of one of its components would have
+  $\emptyset \neq V' \neq V(G)$ and $d_G(V') = 0$.
 \end{proof}
 
-\begin{theorem}[Deficiency splits over a cut of size $\le 1$; KT Lemma 3.6]
+Katoh and Tanigawa prove their Lemma~3.6 by writing $M(\tilde G)$ as a
+direct sum, using their Lemmas~3.1 and~3.4; we compare partitions
+directly. For
+a set $X$ of vertices of $G$, $G[X]$ is the subgraph induced by $X$, and
+$\tilde G[X] = (D-1)\cdot G[X]$.
+
+\begin{lemma}[The deficiency at a cut of at most one edge; KT Lemma~3.6]
   \label{lem:cut-edge-decomposition}
   \lean{Graph.partitionDef_congr, Graph.partitionDef_comp_of_injOn,
     Graph.partitionDef_split_of_sides,
@@ -222,52 +311,81 @@ parallel copies of each edge $e \in E(G)$.
     Graph.deficiency_induce_union_singleton}
   \leanok
   \uses{def:k-dof, def:cut-edges-2ec}
-  Let $G$ be a multigraph, $V' \subsetneq V(G)$ nonempty, and
-  $|\operatorname{cutEdges}(G, V')| \le 1$.  Then
-  \[
-    \operatorname{def}(\tilde G)
-    = \operatorname{def}(\tilde G[V']) + \operatorname{def}(\tilde G[V(G) \setminus V'])
-      + D - (D-1)\,|\operatorname{cutEdges}(G, V')|,
-  \]
-  where $G[V']$ is the vertex-induced subgraph.  The two cases are:
-  $|\operatorname{cutEdges}| = 0$ (the two sides are disconnected,
-  deficiencies add with an extra $+D$) and $|\operatorname{cutEdges}| = 1$
-  (one crossing edge, deficiencies add with $+1$ since $D - (D-1) = 1$).
-  Packaged for the reduction principle: when a minimal $k$-dof-graph $G$
-  fails $2$-edge-connectivity, such a cut $V'$ exists, both induced sides
-  are again minimal dof-graphs (with their own deficiencies $k_1, k_2$ as
-  the dof counts, by minimality descending to subgraphs), and
-  $k = k_1 + k_2 + D - (D-1)\,|\operatorname{cutEdges}(G, V')|$.
-  In particular, if $G$ is loopless and the only edge leaving $V'$ joins
-  it to a body $w$, then
-  $\operatorname{def}(\tilde G[V' \cup \{w\}]) =
-  \operatorname{def}(\tilde G[V']) + 1$.
-\end{theorem}
+  Let $G$ be a multigraph.
+  \begin{enumerate}
+    \item Let $V'$ be a set of vertices of $G$ with
+      $\emptyset \neq V' \neq V(G)$ and $d_G(V') \le 1$, and let
+      $V'' = V(G) \setminus V'$. Then
+      \[
+        \operatorname{def}(\tilde G) \;=\;
+        \operatorname{def}(\tilde G[V']) + \operatorname{def}(\tilde G[V''])
+        + D - (D-1)\,d_G(V').
+      \]
+      So the cut adds $1$ to the sum if $d_G(V') = 1$, and $D$ if
+      $d_G(V') = 0$.
+    \item If $G$ is a minimal $k$-dof-graph that is not
+      $2$-edge-connected, then for some set $V'$ as in (1), $G[V']$ and
+      $G[V'']$ are minimal $k'$- and $k''$-dof-graphs, where
+      $k' = \operatorname{def}(\tilde G[V'])$,
+      $k'' = \operatorname{def}(\tilde G[V''])$, and
+      $k = k' + k'' + D - (D-1)\,d_G(V')$.
+    \item If $G$ has no loops, $V'$ is as in (1), and an edge of $G$
+      joins $V'$ to a vertex $w \notin V'$, then
+      $\operatorname{def}(\tilde G[V' \cup \{w\}]) =
+      \operatorname{def}(\tilde G[V']) + 1$.
+  \end{enumerate}
+\end{lemma}
 \begin{proof}
   \leanok
   \uses{def:D-deficiency, def:cut-edges-2ec, thm:def-eq-corank}
-  The equality has two directions.  For $\le$: given any labeling $f$,
-  apply the side-refinement lemma (replace $f$ by a labeling $g$ that
-  separates the two sides, i.e.\ $g(x) \ne g(y)$ for $x \in V'$,
-  $y \notin V'$) to get $\operatorname{partitionDef}(G,n,f) \le
-  \operatorname{partitionDef}(G,n,g)$.  The refinement increases the
-  part count by one new straddling part per straddle, and each new
-  crossing is a cut edge ($\le 1$ of them), so the net change is
-  $\ge 0$.  Then apply the exact split
-  $\operatorname{partitionDef}(G,n,g) = \operatorname{partitionDef}(G[V'],n,g)
-  + \operatorname{partitionDef}(G[V{\setminus}V'],n,g) + D - (D-1)\,d$
-  (parts decompose over the two sides; cut edges all cross under $g$)
-  and bound each side term by its deficiency.  For $\ge$: take
-  attaining labelings $f_1, f_2$ for the two induced subgraphs (by
-  $\operatorname{def} = \operatorname{corank}$ and finiteness), normalize
-  them into the two sides (injections $\iota_i \colon f_i(V_i) \hookrightarrow V_i$
-  exist by $|f_i(V_i)| \le |V_i|$; use
-  $\operatorname{partitionDef}$-comp-of-injOn), and combine piecewise
-  to get a single labeling of $V(G)$ attaining the right-hand side.
-  For the particular case, split $G[V' \cup \{w\}]$ at $\{w\}$: its only
-  crossing edge is the one joining $w$, the single body $w$ carries no
-  edge and so has deficiency $0$, and the other side is $G[V']$.
+  (1) Call a partition of $V(G)$ \emph{separated} if each of its parts
+  lies in $V'$ or in $V''$. A separated partition $P$ is the union of a
+  partition $P'$ of $V'$ and a partition $P''$ of $V''$. An edge of $G$
+  joins different parts of $P$ if and only if it joins different parts
+  of $P'$, or of $P''$, or lies in $\delta_G(V')$. As
+  $|P| - 1 = (|P'| - 1) + (|P''| - 1) + 1$, it follows that
+  \[
+    \operatorname{def}_{\tilde G}(P) \;=\;
+    \operatorname{def}_{\tilde G[V']}(P')
+    + \operatorname{def}_{\tilde G[V'']}(P'')
+    + D - (D-1)\,d_G(V').
+  \]
+  Taking $P'$ and $P''$ of largest value gives the inequality $\ge$ in
+  (1).
+
+  For $\le$, let $P$ be any partition of $V(G)$, and split each part $Q$
+  that meets both $V'$ and $V''$ into $Q \cap V'$ and $Q \cap V''$. The
+  result is a separated partition. If $s$ parts are split, the number of
+  parts rises by $s$. Let $c$ be the number of edges that join different
+  parts of the new partition but not of $P$. Each of them lies in
+  $\delta_G(V')$, so $c \le 1$, and $c = 0$ if $s = 0$. So the value
+  changes by $Ds - (D-1)c \ge 0$. Hence the value of $P$ is at most that
+  of a separated partition, which by the identity above is at most the
+  right-hand side of (1).
+
+  (2) As $G$ is not $2$-edge-connected, some set $V'$ with
+  $\emptyset \neq V' \neq V(G)$ has $d_G(V') \le 1$. The formula for $k$
+  is (1), and $G[V']$ and $G[V'']$ are minimal by KT Lemma~3.3
+  (\cref{lem:subgraph-minimality} below). This is the first step of
+  Katoh and Tanigawa's proof of their
+  Lemma~6.1~\cite[p.~672]{katohTanigawa2011}.
+
+  (3) Apply (1) to the multigraph $G[V' \cup \{w\}]$ and the set
+  $\{w\}$. Since $d_G(V') \le 1$, the given edge is the only edge of
+  $G[V' \cup \{w\}]$ at $w$. The multigraph $G[\{w\}]$ has no edge, as
+  $G$ has no loops, and its deficiency is $0$, as its only partition has
+  one part. The other side is $G[V']$, and $D - (D-1) = 1$.
 \end{proof}
+\begin{fmlnote}
+  Partitions are labelings in the formalization
+  (\cref{fmlnote:partition-labeling}). Two of the pins say that the
+  value of a labeling depends only on its labels on $V(G)$, and that it
+  does not change when the labels are renamed injectively. The proof of
+  (1) uses them to give the two sides disjoint sets of labels before it
+  combines their partitions. The other pins are the identity for
+  separated partitions, the splitting step, and statements (1), (2) and
+  (3).
+\end{fmlnote}
 
 \begin{lemma}[Deficiency adds at a cut vertex]
   \label{lem:deficiency-cut-vertex}
