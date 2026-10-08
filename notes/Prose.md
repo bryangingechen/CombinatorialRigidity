@@ -6,10 +6,11 @@
 opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
 post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
-round 1's sample section. Round 1's tasks 1–3 have landed: the open, the dependency-audit script
-`scripts/blueprint-deps.py` (§5), with its first report in the ledger, and the sample section.
-The PI answered Stop 1 (§6) on 2026-10-07, in round 1's log under *Autopilot: for the PI*.
-**Next concrete task:** round 1's task 4, pinning the exemplar.
+round 1's sample section. Round 1's tasks 1–4 have landed: the open, the dependency-audit script
+`scripts/blueprint-deps.py` (§5), with its first report in the ledger, the sample section, and,
+after the PI approved it at Stop 1 (§6) on 2026-10-07 (round 1's log, *Autopilot: for the PI*),
+its pinning as the exemplar `notes/Prose-exemplar.md`.
+**Next concrete task:** round 1's task 5.1, the first slice.
 
 ## 1. The PI's decisions
 

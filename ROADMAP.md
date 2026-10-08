@@ -170,7 +170,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ✓ Complete — 18 sanctioned simplifications, −8 930 net Lean lines, all 19 main results' axioms unchanged (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 5/5: project organization) | Phase 40's notes and design doc, `notes/FRICTION.md`, the tactics, design and cleanup manuals, and the user-facing surfaces (docs only) | ✓ Complete — docs only, lessons lifted and Phase 40's notes compressed with every anchor kept, all 19 main results' axioms unchanged (see `notes/Phase40-docs.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ◐ In progress — Stop 1 answered; pinning the exemplar next (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ◐ In progress — exemplar pinned; task 5.1, the first slice (`sparsity.tex`), next (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1241,16 +1241,17 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   2026-10-07, ahead of ORIGAMI, to run under autopilot; plan, the PI's decisions and the one planned
   stop are in `notes/Prose.md`. Rounds 1–4 (`prose-laman`, `prose-molecular`, `prose-algebraic`,
   `prose-applications`) take the chapters in reading order to the register `40-exposition` settled
-  (`blueprint/AUTHORING.md`'s clauses of 2026-10-03; the exemplar is
-  `notes/Phase40-exposition-exemplar.md`), with the dependency graph and pins frozen. Round 5,
-  `prose-graph`, adds the missing `\uses` edges, splits the bundled nodes (including `40-simplify`'s
+  (`blueprint/AUTHORING.md`'s clauses of 2026-10-03 and 2026-10-07; the exemplars are
+  `notes/Phase40-exposition-exemplar.md` and round 1's `notes/Prose-exemplar.md`), with the
+  dependency graph and pins frozen. Round 5, `prose-graph`, adds the missing `\uses` edges, splits the bundled nodes (including `40-simplify`'s
   `c8a`, `notes/Phase40-simplify.md` *Moved to a later round*) and writes the findings report.
   Statement strength and the Lean are never changed: such findings go to the ledger
   `notes/Prose-findings.md`, for the PI. Round 1, `prose-laman`, opened 2026-10-07
   (`notes/Prose-laman-cleanup.md`); its task 2, the dependency-audit script
-  `scripts/blueprint-deps.py` (`notes/Prose.md` §5), and task 3, the sample section, have landed.
-  The PI answered Stop 1, the sample's review, on 2026-10-07 (the log's *Autopilot: for the
-  PI*). **Next concrete task:** its task 4, pinning the exemplar.
+  `scripts/blueprint-deps.py` (`notes/Prose.md` §5), task 3, the sample section, and task 4, its
+  pinning as the exemplar `notes/Prose-exemplar.md` after the PI approved it at Stop 1 on
+  2026-10-07 (the log's *Autopilot: for the PI*), have landed. **Next concrete task:** its task
+  5.1, the first slice, `sparsity.tex`'s first half.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

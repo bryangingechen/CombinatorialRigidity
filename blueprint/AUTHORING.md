@@ -210,7 +210,10 @@ chapters, including inside headline theorem statements; see
 `../notes/Phase23-cleanup.md`.)
 
 **Six principles** govern the prose — when writing new text and when
-revising existing text alike; each carries one mechanical test.
+revising existing text alike; each carries one mechanical test. Above
+them all (the PI, 2026-10-07, at PROSE round 1's Stop 1): "more than
+following rules strictly though, the overriding goal is to make sure the
+result is understandable."
 
 **A. Vocabulary & register.** Match the flat, even prose of a published
 paper, with Katoh–Tanigawa 2011 as the exemplar (read a few pages under
@@ -257,6 +260,12 @@ one plain sentence, never a role clause. *Tests:* (i) *deletion* — cut
 every sentence that is not hypothesis, claim, or gloss; if the
 obligation is unchanged it belonged outside; (ii) *standalone* — read as
 if no other node existed (the failure tell: a trailing "This is …").
+*Constructions* (approved by the PI, 2026-10-07, at PROSE round 1's
+Stop 1). A Lean encoding of a construction in a statement (a vertex type
+such as `Option V`, a constructor applied to its arguments, a
+dot-notation predicate) is restated as the construction in words, 'let
+G′ be obtained from G by …', and the encoding is explained once, in the
+formalization note at the definition.
 
 **C. Proofs.** A proof is a mathematical narrative in KT's vocabulary,
 with `\cref`s as parenthetical anchors, never grammatical subjects; an

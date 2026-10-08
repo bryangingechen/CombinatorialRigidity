@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1 (the open), 2 (the dependency-audit
-script `scripts/blueprint-deps.py`) and 3 (the sample) are done. Stop 1 is answered (PI,
-2026-10-07, under *Autopilot: for the PI*: option B, its one revision already made).
-**Next concrete task:** task 4, pinning the exemplar. No slice is written before it. Round
-manual: `CLEANUP.md`.
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 are done: the open, the
+dependency-audit script `scripts/blueprint-deps.py`, the sample, and, after the PI approved it at
+Stop 1 (2026-10-07, *Autopilot: for the PI*), its pinning as the exemplar `notes/Prose-exemplar.md`.
+**Next concrete task:** task 5.1, the first slice, `sparsity.tex`'s first half. Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,57 +18,20 @@ round's one planned stop; any unplanned `NEEDS_PI` entry goes here too.
 
 ### 2026-10-07 — `NEEDS_PI`: Stop 1, the sample section (planned stop, `notes/Prose.md` §6)
 
-**What happened.** The round opened (`bca00d3f`, 21 tasks), task 2 landed the audit script
-(`68bc7ad7`; its first report is the ledger's `F-001`–`F-012`), and task 3 landed the sample
-(`67525c41`). `henneberg.tex`'s *Preservation of the Laman property* (now 159–260, was 159–273)
-states its four theorems as constructions in words, "Let $G'$ be obtained from $G$ by the Type~I
-move at $a$ and $b$. Then $G'$ is Laman.", with no `Option V`, `none` or `typeI G a b`. It proves
-them by the Lean's case split, one sentence a case. Read it with `git show 67525c41 --
-blueprint/src/chapter/henneberg.tex`, or rendered (`blueprint/web/sec-henneberg.html`, or the PDF)
-after `blueprint/verify.sh`. The coordinator re-ran `lint.sh`, `verify.sh` and the invariance check
-(all the open's values), walked both sparsity case splits, and checked Jordán's Lemmas 2.1.4(a)
-(p. 44) and 2.1.5 (p. 45) and his extension names in `.refs/`. All are as the sample says.
-
-**Asked of the PI:**
-1. **The sample.** Is its register, depth and evidence bar the program's? Task 4 pins it as
-   `notes/Prose-exemplar.md` for rounds 1–4.
-2. **Its three choices** (task 3's line). (i) A Lean device in a statement is restated as the
-   construction in words, with new vertex $v$; the `Option V` encoding is explained once, in task
-   5.3's formalization note at `def:typeI`. (ii) Henneberg's "Type I/II" stays (chapter, labels,
-   Lean), and Jordán's "0-/1-extension" is named once, where his lemmas are cited. (iii) The proofs
-   keep the Lean's case split.
-3. **Four calls the builder flagged** (the coordinator's recommendation after each):
-   a. Edges are written $ab$, as Jordán and `40-exposition`'s exemplar write them; the earlier
-      chapters write $\{a, b\}$, so every round-1 slice would follow. *Adopt $ab$.*
-   b. The sample's $G'$ is the larger graph; the reverse decomposition, `laman-theorem.tex` and
-      `rigidity-matroid.tex` use $G'$ for the smaller one. *Write $G - v$ and $G - v + ab$ there.*
-   c. "These facts are classical" names no originator: Laman 1970 is not in `.refs/`. *Keep it,
-      with Jordán as the presentation followed; task 5.3 checks Laman 1970 against its DOI page
-      and records an `M` finding if it cannot credit it.*
-   d. `thm:typeI-isLaman-iff` only combines the two theorems before it. *Leave it to round 5.*
-4. **An `AUTHORING.md` amendment** (principle B), proposed by the sample's builder: "A Lean
-   encoding of a construction in a statement (a vertex type such as `Option V`, a constructor
-   applied to its arguments, a dot-notation predicate) is restated as the construction in words,
-   'let G′ be obtained from G by …', and the encoding is explained once, in the formalization
-   note at the definition." *Adopt; task 4 lands it.*
-5. **The algorithmic carve-out** (tasks 5.12–5.16; the sample cannot show it). Principle A's
-   carve-out stands: computational verbs (terminates, visits, marks, returns) stay, and Lean
-   tactics are parenthetical addresses. Proposed for `dfs.tex` and `pebble-game.tex`: a result
-   type in a statement (`.inr D`, `some (w, p)`, `PebbleGameResult`) is restated as what the
-   algorithm returns, in words, as choice (i) does for constructions. `executable.tex` is about
-   the Lean artefact, so its names stay as addresses; Lean stops being the subject of sentences,
-   changelog prose goes, and Lean syntax leaves its statement blocks.
-6. **Granularity.** Round 1: tasks 5.1–5.16, 16 slices of 179–428 lines (*Decisions*). Rounds
-   2–4: provisional lists in `notes/Prose.md` §3, of 19, 16 and 13 slices; each round's open
-   re-slices after reading. Approve, or regroup.
-
-**Options** (round 1 only; rounds 2–5 open and close unattended):
-- **A. Approve as is**, with the recommendations in 3 and 4 (the coordinator recommends this).
-  Task 4 pins the exemplar and the amendment (1 docs commit), then 16 slices and the close: ~18
-  commits.
-- **B. Approve with revisions** you name here. Task 4 revises and pins (1–2), then ~17 as in A.
-- **C. Revise and show again.** Task 4 revises (1–2 commits), then Stop 1 repeats.
-- **D. Regroup the slices**, in any of A–C. Each merge saves a commit and enlarges a slice.
+**The question, in short** (answered below; its full text, with the coordinator's checks of the
+sample, is this log at `05100074`). Task 3 (`67525c41`) rewrote `henneberg.tex`'s *Preservation of
+the Laman property*: its four theorems state the moves as constructions in words ("Let $G'$ be
+obtained from $G$ by the Type~I move at $a$ and $b$."), and the proofs follow the Lean's case
+split. The PI was asked about: **1**, the sample's register, depth and evidence bar, to be pinned
+for rounds 1–4; **2**, its three choices: (i) a Lean device in a statement restated as the
+construction in words, with new vertex $v$; (ii) Henneberg's Type~I/II kept, Jordán's
+0-/1-extension named once; (iii) the Lean's case split kept; **3**, four calls the builder flagged:
+(a) edges written $ab$; (b) $G - v$ and $G - v + ab$ where the reverse decomposition and two later
+chapters write $G'$ for the smaller graph; (c) "These facts are classical", which names no
+originator; (d) `thm:typeI-isLaman-iff`, which only combines the two theorems before it; **4**, the
+principle-B amendment for `AUTHORING.md`; **5**, how the algorithmic carve-out reads in tasks
+5.12–5.16; **6**, the slice lists of rounds 1–4. Options: A, approve as is; B, approve with
+revisions; C, revise and show again; D, regroup the slices.
 
 **PI, 2026-10-07:** (transcribed verbatim from the attended session that reviewed the sample)
 - On 1 and 2: "1-2 these look good."
@@ -91,10 +54,13 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**Stop 1 answered** (PI, 2026-10-07; *Autopilot: for the PI*): option B. The answering commit,
-made in the PI's session, records the entry and makes its one revision: the sample drops "These
-facts are classical." (now 159–259). Nothing is mid-stream; task 4 is next.
-- **Gates at `67525c41`**, and again at the answering commit, all the open's values: `lint.sh` green;
+**The exemplar is pinned** (task 4, this commit; docs only). Stop 1 was answered by the PI on
+2026-10-07 (option B, *Autopilot: for the PI*; transcribed under *Decisions*), and the answering
+commit `e9e3f37d` made its one revision. The approved sample, `henneberg.tex` 159–258, is frozen
+in `notes/Prose-exemplar.md`; `blueprint/AUTHORING.md` has principle B's *Constructions* clause
+and the PI's "overriding goal" sentence before principles A–F. Nothing is mid-stream; task 5.1,
+the first slice, is next.
+- **Gates at `67525c41`**, and again at `e9e3f37d`, all the open's values: `lint.sh` green;
   `verify.sh` green, with `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292
   edges 673e3178d1b3145e` and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176
   overfull boxes, as at the open). The register screen on `henneberg` now reads 1 and 26 / 53 (the open's 1 and 32 / 86);
@@ -157,10 +123,12 @@ From `notes/Prose.md` §2, restated only as far as a builder needs them.
   node may move within its chapter to cure a forward reference (`blueprint/AUTHORING.md` principle
   E, *Node order*); a cross-chapter forward reference gets a `\cref` and a sentence instead. A graph
   or node-shape finding becomes a ledger `E` or `N` entry for round 5.
-- **The register.** `blueprint/AUTHORING.md` principles A–F with their 2026-10-03 clauses;
-  `40-exposition`'s exemplar `notes/Phase40-exposition-exemplar.md`; and, from task 4, this
-  round's pinned sample `notes/Prose-exemplar.md`. Principle A's algorithmic carve-out applies in
-  `dfs.tex`, `pebble-game.tex` and `executable.tex`.
+- **The register.** `blueprint/AUTHORING.md` principles A–F with their 2026-10-03 clauses, the
+  2026-10-07 *Constructions* clause of B, and the PI's sentence before them ("the overriding goal
+  is to make sure the result is understandable"); `40-exposition`'s exemplar
+  `notes/Phase40-exposition-exemplar.md`; and this round's pinned sample `notes/Prose-exemplar.md`.
+  Principle A's algorithmic carve-out applies in `dfs.tex`, `pebble-game.tex` and `executable.tex`
+  (*Decisions*: the carve-out in tasks 5.12–5.16).
 - **Crux nodes.** No round-1 node has a *done* entry in `notes/BlueprintExposition.md`: Phase 28
   screened phases 1–16 out (*Retroactive coverage*, Group A). That verdict rests on full proofs of
   `thm:isTightOn-union-inter`, `thm:isTightOn-union-with-bonus`,
@@ -311,79 +279,27 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
 
 - [x] **1. O — the open** (`bca00d3f`; docs only): this log, the ledger skeleton, the baselines,
   the axioms check and the status surfaces.
-- [x] **2. A — the dependency-audit script** (`notes/Prose.md` §5). `scripts/blueprint-deps.py`,
-  with a Lean metaprogram it runs through `lake lean`, never `lake env lean`; both committed.
-  - *Inputs:* every `\label`, `\lean{…}`, `\leanok` and statement- and proof-level `\uses` in
-    `blueprint/src/chapter/**.tex`; the main results of `formalization.yaml`.
-  - *Lean side:* for each pinned declaration, the constants in its type and in its value, followed
-    through unpinned project declarations (every `CombinatorialRigidity` module, the `Mathlib/`
-    mirrors, private and auxiliary `match_`/`proof_` declarations included), stopping at pinned
-    declarations and at constants from outside the project.
-  - *Reports:* (1) per node, the nodes its pins reach through the type and through the value,
-    against its `\uses`: missing edges, and unbacked edges (for a check, not defects); (2) pins
-    outside the closure of every main result; (3) pins per node, four or more flagged; (4)
-    `--dump`: the built graph's sorted edges, parsed as gate 3 parses them, and the label→pins map.
-  - *Into the ledger:* the first report into `E` and `N`; into *Lean baselines*,
-    `scripts/cleanup-smell-sweep.py`'s counts over the whole tree and the top 20 of `CLEANUP.md`
-    §C's ranking.
-  - *Acceptance tests*, in the script's own commit. **(a)** In a scratch copy of the TeX, remove
-    `lem:deficiency-zero-connected` from the proof `\uses` of `thm:pencil-x0-theorem-s`
-    (`40-exposition`'s `m6`, added by `40-simplify`): the script must report that edge missing.
-    **(b)** `Graph.x0Attains_of_finrank_liftingSpace_eq_three`, the pin of `cor:pencil-flat-x0`,
-    has no Lean caller: the script must place it outside every main result's closure. **(c)** The
-    script's run time goes in this line.
-  - *If still BLOCKED after one escalation:* salvage its route findings here, record it as not
-    done, and go on to task 3; the slices read instead. Round 5's open retries it once.
-  - *Done* (`68bc7ad7`). **(a)** passes: on a scratch copy with the edge
-    removed, `--tex-root <copy> --label thm:pencil-x0-theorem-s` reports `missing
-    lem:deficiency-zero-connected`, reached in the proof by `Graph.IsX0Graph.exists_additiveCore`
-    calling `Graph.two_le_degree_of_isKDof_zero` directly. **(b)** passes: report (2) lists
-    `cor:pencil-flat-x0 (every pin): Graph.x0Attains_of_finrank_liftingSpace_eq_three`. **(c)** A
-    fresh run took 125 s wall-clock (38 s user), nearly all of it `lake lean` checking the
-    library's 2 996 build jobs; a cached run took 0.55 s. Both of the script's consistency checks
-    pass: the TeX's `\uses`, transitively reduced, are the built graph's 1 292 edges, and the
-    TeX's pins are `lean_decls`' 1 030. The Lean half sees proof bodies and private declarations
-    (*Decisions*): `thm:isSparse-exists-typeI-or-typeII-reverse` reaches
-    `lem:isSparse-typeII-reverse-blocker` through the private `IsSparse.typeII_pair_dispatch_aux`.
-- [x] **3. S — the sample: `henneberg.tex`'s *Preservation of the Laman property*** (159–273, 115
-  lines): `thm:typeI-isLaman`, `thm:typeII-isLaman`, `thm:typeI-reverse-isLaman`,
-  `thm:typeI-isLaman-iff`, the lead-in, and the paragraph before the reverse direction. **Stop 1
-  follows.**
-  - *Diagnosis.* The statements are the Lean's: the extension is `typeI G a b`, a graph on `Option
-    V`, and the equivalence reads `(typeI G a b).IsLaman ⟺ G.IsLaman`. The proofs count with
-    `none`, `some` and `s ∩ some[V]`. The paragraph before the reverse direction explains it
-    through `G[\{w \ne v\}]` and a theorem of a later chapter, where it should say in words what
-    the reverse decomposition needs and where that is proved.
-  - *Choices it makes, for the PI.* (i) How a Lean device in a statement is restated: the
-    extension as a graph on `V` plus a new vertex, with the `Option` encoding left to a
-    formalization note at `def:typeI` (task 5.3's). (ii) Henneberg's Type I and II against
-    Jordán's 0- and 1-extension: keep one and gloss the other once, where the reader cannot miss
-    it (task 5.3 writes it into the definitions). (iii) The depth of the sparsity case analysis,
-    which stays the pinned Lean's argument.
-  - *Must not change:* any `\label`, `\lean`, `\leanok` or `\uses` line; the statements' strength;
-    the proofs' argument; the node order; anything outside the subsection. A fix needed elsewhere
-    goes as one line into the task that owns it.
-  - *Evidence bar:* the statements and bodies of `SimpleGraph.Henneberg.typeI_isLaman`,
-    `typeII_isLaman`, `typeI_reverse_isLaman` and `typeI_isLaman_iff`. A citation for the
-    preservation facts only once checked (Jordán 2016 §2.1, pp. 43–44; Tay–Whiteley 1985), and no
-    new `\cite` key unless verified as `AUTHORING.md` *Citations* asks.
-  - *Depth:* expect the subsection to change by 20–40 lines; much more is duplication.
-  - *Record:* the sha, a two-line note of the choices, and the new line range. The coordinator's
-    Stop-1 entry (`notes/Prose.md` §6) then holds the sample's commit and rendered text, these
-    choices, how the algorithmic carve-out will read in tasks 5.12–5.16 (the sample cannot show
-    it), any `AUTHORING.md` amendment it proposes, and the slice lists of rounds 1–4 with their
-    granularity judgment.
-  - *Done* (`67525c41`): now lines 159–260, 102 lines. *Choices:* (i)
-    "let $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$", new vertex $v$, edges as
-    $ab$, no note; (ii) Type~I/II kept, Jordán's 0- and 1-extensions named once, where his Lemmas
-    2.1.5 and 2.1.4(a) (p. 45, p. 44) are cited; (iii) the Lean's case split, a sentence a case.
-    It also fixes a slip in the old Type~I proof ($2|s| - 3$ is 1 there, not 0), and found `F-013`.
-    At Stop 1 the PI's session dropped "These facts are classical." (now 159–259, 101 lines).
-- [ ] **4. E — pin the exemplar** (docs only; the commit after the PI's Stop-1 entry). Transcribe
-  the PI's answer verbatim into *Decisions*; copy the approved sample (159–259, already revised as
-  the PI asked) to `notes/Prose-exemplar.md`, frozen as `notes/Phase40-exposition-exemplar.md` is;
-  land the principle-B amendment in Stop 1's item 4 wording (approved). The slice lists stand as
-  proposed (item 6, approved).
+- [x] **2. A — the dependency-audit script** (`68bc7ad7`; `notes/Prose.md` §5):
+  `scripts/blueprint-deps.py` and its Lean half `scripts/BlueprintDeps.lean`, run through `lake
+  lean`. Acceptance tests (a) and (b) pass; a fresh run takes about two minutes, a cached one under
+  a second (detail in the commit). Its first report is the ledger's `F-001`–`F-012`.
+- [x] **3. S — the sample: `henneberg.tex`'s *Preservation of the Laman property*** (`67525c41`;
+  159–273 at the open, 159–258 now): the four theorems and the lead-ins. Its three choices are
+  Stop 1's item 2, approved. It also fixed a slip in the old Type~I proof and found `F-013`. At
+  Stop 1 the PI's session dropped "These facts are classical." (`e9e3f37d`).
+- [x] **4. E — pin the exemplar** (this commit; docs only; the commit after the PI's Stop-1 entry).
+  Transcribe the PI's answer verbatim into *Decisions*; copy the approved sample (159–259, already
+  revised as the PI asked) to `notes/Prose-exemplar.md`, frozen as
+  `notes/Phase40-exposition-exemplar.md` is; land the principle-B amendment in Stop 1's item 4
+  wording (approved). The slice lists stand as proposed (item 6, approved).
+  - *Done* (this commit). The PI's answer is under *Decisions*, the attended session's notes in a
+    separate entry. `notes/Prose-exemplar.md` holds `henneberg.tex` 159–258 at `e9e3f37d`, from the
+    `\subsection` through the iff's `\end{proof}`; 259, counted in "159–259", is the blank line
+    before *Reverse decomposition*. Checked with `cmp` and `diff` against `e9e3f37d`'s lines
+    159–258: identical, 100 lines, 4 322 bytes. `blueprint/AUTHORING.md` gains the amendment as
+    B's *Constructions* clause, and the PI's item-5 sentence before the six principles. Neither it
+    nor `blueprint/CLAUDE.md` names an exemplar file as a register source, so neither gains a
+    pointer.
 - [ ] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
   - [ ] **5.1 `sparsity.tex`, first half**: §1's three subsections and §2's *Definitions*, *Basic
@@ -467,13 +383,15 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 4** (Stop 1 answered, *Autopilot: for the PI*). Task 4 transcribes the PI's answer
-verbatim into *Decisions*, pins the sample (159–259, already revised) as `notes/Prose-exemplar.md`,
-and lands the approved principle-B amendment; the slice lists stand. Then tasks 5.1–5.16 follow in
-order, and task 6 closes the round. **The PI's check on the first slices** (Stop 1, item 5): "the
-overriding goal is to make sure the result is understandable". For the first few slices (at least
-5.1–5.3), the coordinator reads each one's rendered text in full against the exemplar, beyond the
-gates, and tightens the next dispatch prompt where the guidelines fall short.
+**Next: task 5.1**, the first slice: `sparsity.tex`'s §1 (its three subsections) and §2's
+*Definitions*, *Basic properties* and *Low-degree* (11–142 and 155–301; 15 nodes). Its diagnosis is
+under *Per-chapter diagnosis*, its gates under *Scope*. The register is *Scope*'s: `AUTHORING.md`
+principles A–F, B's 2026-10-07 *Constructions* clause included, and the two exemplars,
+`notes/Phase40-exposition-exemplar.md` and `notes/Prose-exemplar.md`. Then tasks 5.2–5.16 follow
+in order, and task 6 closes the round. **The PI's check on the first slices** (Stop 1, item 5):
+"the overriding goal is to make sure the result is understandable". For the first few slices (at
+least 5.1–5.3), the coordinator reads each one's rendered text in full against the exemplar,
+beyond the gates, and tightens the next dispatch prompt where the guidelines fall short.
 
 ## Decisions made during this round
 
@@ -495,3 +413,28 @@ gates, and tightens the next dispatch prompt where the guidelines fall short.
 - **Task 2: the ledger groups the script's findings** (the coordinator's suggestion): one `E` entry
   per chapter group for missing edges, one for unbacked edges, and one `N` entry per node-shape
   pattern. The ledger's header states the rule; `--chapter` and `--label` reproduce the detail.
+- **Stop 1: the PI's answer, verbatim** (2026-10-07; the items are numbered as under *Autopilot:
+  for the PI*). On 1 and 2: "1-2 these look good." On 3: "edge notation, the graph G' names is not
+  a big deal as long as it's understandable; I'm more concerned about the classical attribution:
+  could we omit it or find something to back that up? The iff node also seems natural." On 4: "The
+  amendment looks good." On 5: "I think this is reasonable; more than following rules strictly
+  though, the overriding goal is to make sure the result is understandable. Perhaps the coordinator
+  should pay careful attention to the first few Sonnet dispatches to ensure that the guidelines are
+  working." On 6: "Looks good to me."
+- **Stop 1: the attended session's notes** (not the PI's words; in full under *Autopilot: for the
+  PI*). Option B. **3c:** Jordán credits no one for his Lemmas 2.1.4(a) and 2.1.5, and Nixon–Ross
+  (Theorem 2.5) credit the characterization to Henneberg and Laman, neither of which is in
+  `.refs/`. So `e9e3f37d` dropped "These facts are classical." from the sample, and task 5.3's
+  opening credits Henneberg alone. **5:** every slice runs at Opus (`notes/Prose.md` §2), so "the
+  first few Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check.
+- **Stop 1: what the approval settles** (task 4's reading, not the PI's words). The sample is the
+  exemplar for rounds 1–4, `notes/Prose-exemplar.md`. Choice (i) is now `AUTHORING.md` principle
+  B's *Constructions* clause; (ii) and (iii) hold for every slice. 3a and 3b go to task 5.3, held
+  to the PI's test that the result is understandable. 3d: `thm:typeI-isLaman-iff` stays a node of
+  its own, and no finding is filed. The PI's item-5 sentence stands before `AUTHORING.md`'s six
+  principles. The slice lists stand.
+- **The carve-out in tasks 5.12–5.16** (Stop 1's item 5, approved). In `dfs.tex` and
+  `pebble-game.tex`, a result type in a statement (`.inr D`, `some (w, p)`, `PebbleGameResult`) is
+  restated as what the algorithm returns, in words, as choice (i) does for constructions.
+  `executable.tex` is about the Lean artefact, so its names stay as addresses; but Lean stops being
+  the subject of sentences, changelog prose goes, and Lean syntax leaves its statement blocks.
