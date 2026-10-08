@@ -308,6 +308,20 @@ declaration's name as its header writes it:
   assume `x ≠ y`. (At `x = y` the hypothesis fails, since the added pair is a loop and is dropped.)
   *Evidence:* read (the statement and the two docstrings).
   *Found:* round 1 task 5.2.
+- **F-021** · L · `SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two_of_nonCollinear`
+  (`HennebergRigidity.lean`): it takes `hab : a ≠ b` beside `hLI_abc : LinearIndependent ℝ ![p b -
+  p a, p c - p a]`, which implies it (the first vector is nonzero). The body uses `hab` only to get
+  `p a ≠ p b`. `thm:typeII-isGenericallyRigidInj-two-of-nonCollinear` now states only the
+  non-collinearity. Its one caller, `typeII_isGenericallyRigidInj_two`, passes `hab`.
+  *Evidence:* read (the statement and body; a `grep` finds the one caller).
+  *Found:* round 1 task 5.5.
+- **F-022** · L · `typeI_isInfinitesimallyRigid_extend`, `typeII_isInfinitesimallyRigid_extend`
+  (`HennebergRigidity.lean`): their docstrings contradict their declarations. The first calls
+  itself "the rank-nullity heart of `typeI_isGenericallyRigid_two`", which names no declaration (the
+  caller is `typeI_isGenericallyRigidInj_two`). The second lists `G.Adj a b` among its hypotheses;
+  the statement does not take it, and the proof treats the edge $ab$ only when it is present.
+  *Evidence:* read (both statements and docstrings; a `grep` for `typeI_isGenericallyRigid_two`).
+  *Found:* round 1 task 5.5.
 
 ## M — mathematics and sources
 

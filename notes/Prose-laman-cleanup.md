@@ -5,11 +5,12 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.4 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.5 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first four slices, `sparsity.tex`, `laman.tex`, `henneberg.tex` and `frameworks.tex`.
-**Next concrete task:** task 5.5, `henneberg-rigidity.tex`. Round manual: `CLEANUP.md`.
+PI*), and the first five slices, `sparsity.tex`, `laman.tex`, `henneberg.tex`, `frameworks.tex` and
+`henneberg-rigidity.tex`. **Next concrete task:** task 5.6, `trivial-motions.tex`. Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,14 +55,14 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The fourth slice has landed** (task 5.4, this commit): `frameworks.tex`, all of it, now 1–468.
-Tasks 5.1–5.3 rewrote `sparsity.tex`, `laman.tex` and `henneberg.tex`. The register is *Scope*'s.
-Nothing is mid-stream; task 5.5 is next.
+**The fifth slice has landed** (task 5.5, this commit): `henneberg-rigidity.tex`, all of it, now
+1–273. Tasks 5.1–5.4 rewrote `sparsity.tex`, `laman.tex`, `henneberg.tex` and `frameworks.tex`. The
+register is *Scope*'s. Nothing is mid-stream; task 5.6 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (170 overfull boxes, none in
-  `frameworks.tex`; 175 at `690ac764`). The screens on `frameworks` read 0 and 0 / 0 (the open's:
-  1 and 7 / 20).
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (165 overfull boxes, none in
+  `henneberg-rigidity.tex`; 170 at `6fcabe9c`). The screens on `henneberg-rigidity` read 0 and
+  0 / 0 (the open's: 0 and 11 / 72).
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -275,9 +276,11 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     nodes): Jordán's *splitting*, $G - v + xy$, the roadmap, the docs pointers. Found `F-015`–`F-018`.
   - [x] **5.3 `henneberg.tex` apart from the sample** (`690ac764`; 8 nodes): the moves defined in
     words, `fmlnote:henneberg-new-vertex`, $G - v$ and $G - v + ab$. Found `F-019`.
-  - [x] **5.4 `frameworks.tex`** (this commit; 19 nodes; 1–468 now): Lean names out, $R(G, p)$,
-    Asimow–Roth's credit narrowed, `fmlnote:infinitesimal-rigidity`. Found `F-020`.
-  - [ ] **5.5 `henneberg-rigidity.tex`**: 5 nodes, 247 lines.
+  - [x] **5.4 `frameworks.tex`** (`6fcabe9c`; 19 nodes): Lean names out, $R(G, p)$, Asimow–Roth's
+    credit narrowed, `fmlnote:infinitesimal-rigidity`. Found `F-020`.
+  - [x] **5.5 `henneberg-rigidity.tex`** (this commit; 5 nodes; 1–273 now): the placement idea in
+    the opening, moves in words with $\hat p$, Jordán's Lemmas 1.2.2–1.2.3 and Whiteley's 11.1.1 and
+    11.1.7 credited. Found `F-021`, `F-022`.
   - [ ] **5.6 `trivial-motions.tex`**: 13 nodes, 280 lines.
   - [ ] **5.7 `laman-theorem.tex`, first part**: the `d = 2` count, the ⇐ direction, and the ⇒
     direction from its preamble through the rank bounds (28–306); 9 nodes, 279 lines.
@@ -346,6 +349,10 @@ one line each naming the ledger ID and the task that found it.
   not.
 - `F-019` (N, task 5.3): the sparse reverse decomposition's node is in `rigidity-matroid.tex`,
   after its first user in `henneberg.tex`, though it uses only `sparsity.tex`.
+- `F-021` (L, task 5.5): `typeII_isGenericallyRigidInj_two_of_nonCollinear`'s binder `a ≠ b`,
+  implied by its non-collinearity hypothesis.
+- `F-022` (L, task 5.5): two docstrings in `HennebergRigidity.lean` that contradict their
+  declarations.
 
 ## Blockers / open questions
 
@@ -353,32 +360,41 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.5**, the fifth slice: `henneberg-rigidity.tex`, all of it; 5 nodes, 247 lines. Its
+**Next: task 5.6**, the sixth slice: `trivial-motions.tex`, all of it; 13 nodes, 280 lines. Its
 diagnosis is under *Per-chapter diagnosis*, its gates under *Scope*, and the register is *Scope*'s.
-Left by tasks 5.3 and 5.4 for later slices:
+Left by tasks 5.3–5.5 for later slices:
 - **Notation** (*Decisions*, task 5.4): $R(G, p)$, $(\R^d)^V$, "injectively generically rigid",
   edges $uv$. `frameworks.tex` defines the trivial motions in a lead-in and points at
   `sec:trivial-motions`; its `fmlnote:infinitesimal-rigidity` says where the formal notion
   diverges (`F-020`), for `trivial-motions.tex` and `laman-theorem.tex` to `\cref` if they discuss
-  general $d$.
+  general $d$. Task 5.5 adds: an infinitesimal motion $x$ with velocities $x_u$; $\hat p$ for the
+  framework on $V \cup \{v\}$ that agrees with $p$ on $V$ and places the new vertex $v$ at $q$
+  (`rigidity-matroid.tex` already writes $\hat p$).
 - **The moves:** `henneberg.tex` defines "the Type~I move at $a$ and $b$" and "the Type~II move on
   $ab$ and $c$", with new vertex $v$, and explains the `Option V` encoding once, in
-  `fmlnote:henneberg-new-vertex`. Statements about a move in tasks 5.5 and 5.9 can read "let $G'$
-  be obtained from $G$ by …" and `\cref` that note.
-- **Sources checked by 5.4:** Jordán pp. 35–39 (§1.2: frameworks, the rigidity matrix, trivial
-  motions, Lemma 1.2.1 on p. 36, infinitesimal rigidity on p. 37; Lemmas 1.2.2–1.2.3 on p. 38,
-  which 5.5 needs; §1.3, generic rigidity, p. 38). Asimow–Roth 1978 is verified only for "rigidity
-  is decided for almost all placements" (its Crossref abstract) and "at a generic framework, rigid
-  iff infinitesimally rigid" (Nixon–Ross, Theorem 2.3). `trivial-motions.tex` (5.6) credits it with
-  the $d(d+1)/2$ count, and `laman-theorem.tex` (5.7) with "the linear-algebraic formulation of
-  infinitesimal rigidity", the claim 5.4 removed from `frameworks.tex`: check both.
+  `fmlnote:henneberg-new-vertex`. Statements about a move in task 5.9 can read "let $G'$ be
+  obtained from $G$ by …" and `\cref` that note, as `henneberg-rigidity.tex` now does.
+- **Sources checked by 5.4 and 5.5:** Jordán pp. 35–39 (§1.2: frameworks, the rigidity matrix,
+  trivial motions, Lemma 1.2.1 on p. 36, infinitesimal rigidity on p. 37; Lemmas 1.2.2–1.2.3 on
+  p. 38, rank $+d$ for points in general position, not generic ones; §1.3, generic rigidity,
+  p. 38); p. 44 (extensions as the inverse of Lemma 2.1.4's operations); p. 45 (Theorem 2.2.1,
+  Laman's theorem as independence, proved with Lemmas 1.2.2–1.2.3 and openness: the model for the
+  row-independence lifts of 5.9). Whiteley 1996 (`.refs/` holds a preprint with its own page
+  numbers, so cite by number only): Vertex $d$-Addition Lemma 11.1.1, Edge $d$-Split Theorem
+  11.1.7 (Jordán says "Lemma"), and, before Lemma 11.1.2, the trivial first-order flexes have
+  dimension $\binom{d+1}{2}$ on points affinely spanning a hyperplane, a possible anchor for 5.6's
+  count. Asimow–Roth 1978 is verified only for "rigidity is decided for almost all placements"
+  (its Crossref abstract) and "at a generic framework, rigid iff infinitesimally rigid"
+  (Nixon–Ross, Theorem 2.3). `trivial-motions.tex` (5.6) credits it with the $d(d+1)/2$ count,
+  and `laman-theorem.tex` (5.7) with "the linear-algebraic formulation of infinitesimal rigidity",
+  the claim 5.4 removed from `frameworks.tex`: check both.
 - **Names:** `laman-theorem.tex`'s ⇐ proof (5.7) writes $G[\{w \ne v\}]$ and names
   `typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`, which name no declaration (the
   Lean's are `Henneberg.isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors`);
   `rigidity-matroid.tex` names the old pair twice (5.9–5.10).
 
 For tasks 5.9–5.10, the rigidity-matroid diagnosis carries two items from 5.2. From 5.1, for tasks
-5.10–5.11: the critical-set gloss follows `def:isTightOn`. Then tasks 5.6–5.16 follow in order, and
+5.10–5.11: the critical-set gloss follows `def:isTightOn`. Then tasks 5.7–5.16 follow in order, and
 task 6 closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
