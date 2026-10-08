@@ -1,92 +1,101 @@
 \section{Henneberg moves}
 \label{sec:henneberg}
 
-Henneberg's theorem~\cite{henneberg1911} characterises Laman graphs as
-the graphs obtained from $K_2$ by iterating two combinatorial moves ---
-the \emph{Type~I} and \emph{Type~II} extensions defined below. This
-section introduces the two moves, shows that each preserves the Laman
-property (and that the Type~I move does so in both directions), and
-develops the \emph{reverse decomposition theorem}: every Laman graph on
-$n \ge 3$ vertices admits a degree-$2$ Type~I reverse or a degree-$3$
-Type~II reverse, yielding a Laman graph $G'$ on $n - 1$ vertices
-(\cref{thm:isLaman-exists-typeI-or-typeII-reverse}). This reverse
-decomposition is the induction step for the $\Leftarrow$ direction of
-Laman's theorem in \cref{sec:laman-theorem}.
+This section studies two ways of adding a vertex to a graph, the
+Henneberg moves. The Type~I move adds a vertex of degree two. The
+Type~II move deletes an edge $ab$ and adds a vertex of degree three,
+joined to $a$, $b$ and a third vertex. The Laman graphs are exactly
+the graphs that can be built from $K_2$ by these moves, a
+characterization due to Henneberg~\cite{henneberg1911} and
+Laman~\cite{laman1970}. Jord\'an~\cite{jordan2016} proves it as
+Theorem~2.2.8, for minimally rigid graphs, which are the Laman graphs
+(\cref{sec:laman}).
 
-Throughout, the fresh vertex adjoined by either move is written
-$\mathrm{none} : \mathrm{Option}\,V$, and the vertices of $G$ are
-embedded into $\mathrm{Option}\,V$ by $\mathrm{some}$.
+Each half of this characterization follows by induction on the number
+of vertices, and we prove the two inductive steps. After the
+definitions and a count of the edges that each move adds, we show that
+the moves preserve the Laman property. The other step is the reverse
+decomposition (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}):
+every Laman graph on at least three vertices has a vertex $v$ of
+degree two or three such that deleting $v$, and in degree three
+joining two of its neighbours by an edge, leaves a Laman graph. The
+proof that every Laman graph is generically rigid in the plane
+(\cref{thm:isLaman-isGenericallyRigid-two}) is an induction with this
+step. The section ends with an example.
+
+Throughout, $G$ is a graph on a vertex set $V$, which is finite where
+a statement says so. We write $ab$ for the edge with endpoints $a$ and
+$b$, and $v$ for the vertex that a move adds, so that the graph the
+move produces has vertex set $V \cup \{v\}$.
 
 \subsection{Definitions}
+
+In Jord\'an's survey~\cite{jordan2016} (\S 1.2.1, p.~38) the two moves
+are the $0$-extension and the $1$-extension in the plane, also called
+Henneberg moves of type~I and type~II.
 
 \begin{definition}[Type~I move]
   \label{def:typeI}
   \lean{SimpleGraph.Henneberg.typeI}
   \leanok
-  Given $G : \mathrm{SimpleGraph}\,V$ and two vertices $a, b \in V$, the
-  \emph{Type~I extension} $\mathrm{typeI}\,G\,a\,b$ is the graph on
-  $\mathrm{Option}\,V$ obtained by adding a fresh vertex
-  $w = \mathrm{none}$ adjacent to (the images under $\mathrm{some}$ of)
-  exactly $a$ and $b$. The other adjacencies are those of $G$.
+  Let $a, b \in V$. The \emph{Type~I move at $a$ and $b$} adds to $G$
+  a new vertex $v$ and the edges $va$ and $vb$.
 \end{definition}
-\begin{fmlnote}
-  Adjoining the fresh vertex as the extra element $\mathrm{none}$ of
-  $\mathrm{Option}\,V$ is mathlib's canonical ``add one element''
-  construction; it avoids carrying a freshness side-condition on every
-  move.
-\end{fmlnote}
 
 \begin{definition}[Type~II move]
   \label{def:typeII}
   \lean{SimpleGraph.Henneberg.typeII}
   \leanok
-  Given $G : \mathrm{SimpleGraph}\,V$ and three vertices $a, b, c \in V$,
-  the \emph{Type~II extension} $\mathrm{typeII}\,G\,a\,b\,c$ is the
-  graph on $\mathrm{Option}\,V$ obtained by deleting the edge
-  $\{a, b\}$ from $G$ and adding a fresh vertex $w = \mathrm{none}$
-  adjacent to $a$, $b$, and $c$.
+  Let $a, b, c \in V$. The \emph{Type~II move on $ab$ and $c$} deletes
+  the edge $ab$ from $G$ if it is present, and adds a new vertex $v$
+  and the edges $va$, $vb$ and $vc$.
 \end{definition}
+\begin{fmlnote}
+  \label{fmlnote:henneberg-new-vertex}
+  Both moves are formalized as graphs on $\mathrm{Option}\,V$, which
+  has an element $\mathrm{some}\,u$ for each $u \in V$ and one further
+  element $\mathrm{none}$. The new vertex $v$ is $\mathrm{none}$, and
+  each vertex $u$ of $G$ becomes $\mathrm{some}\,u$. This is the
+  standard way in mathlib to adjoin one element, and it makes $v$ new
+  by construction, so no statement needs a hypothesis saying so. The
+  formal statements about a move, here and in later sections, compare
+  a graph on $V$ with a graph on $\mathrm{Option}\,V$ through the map
+  $u \mapsto \mathrm{some}\,u$, and the text identifies each $u$ with
+  its image.
+\end{fmlnote}
 
-In the Type~I extension the fresh vertex has degree~2 when $a \ne b$;
-if $a = b$ the two new edges coincide and it has degree~1, so the move
-preserves the Laman property only under $a \ne b$. The Type~II
-extension is defined for arbitrary $a, b, c$, and preserves the Laman
-property only when $a \ne b$, $c \ne a$, $c \ne b$, and
-$\{a, b\} \in E(G)$.
+The definitions allow any vertices $a$, $b$ and $c$, but we use the
+moves only under Jord\'an's conditions (p.~44). For the Type~I move at
+$a$ and $b$ we assume $a \ne b$, so that $v$ has degree two; if
+$a = b$, the move adds the single edge $va$. For the Type~II move on
+$ab$ and $c$ we assume that $ab$ is an edge of $G$ and that $c$ is
+neither $a$ nor $b$, so that $v$ has degree three and the number of
+edges grows by two.
 
-\subsection{Edge-set decomposition and counts}
+\subsection{Edge sets and edge counts}
 
-The two moves admit an edge-set decomposition into ``old'' edges (the
-image of $E(G)$ under $\mathrm{some}$, with one edge removed in the
-Type~II case) plus the two or three new edges incident to
-$\mathrm{none}$. The resulting cardinality identities are used in the
-tightness half of the preservation theorems below.
+We describe the edge set of the graph that each move produces, and
+count it. We use the counts to verify the equation $|E| + 3 = 2|V|$
+of a Laman graph in the preservation theorems below and in the reverse
+decomposition.
 
 \begin{lemma}[Edge set of Type~I]
   \label{lem:typeI-edgeSet}
   \lean{SimpleGraph.Henneberg.typeI_edgeSet}
   \leanok
   \uses{def:typeI}
+  Let $a, b \in V$, let $G'$ be obtained from $G$ by the Type~I move
+  at $a$ and $b$, and let $v$ be its new vertex. Then
   \[
-    E(\mathrm{typeI}\,G\,a\,b)
-    \;=\;
-    \mathrm{Sym2.map\;some}\,[E(G)]
-    \;\cup\;
-    \bigl\{\,
-      \{\mathrm{none}, \mathrm{some}\,a\},
-      \;
-      \{\mathrm{none}, \mathrm{some}\,b\}
-    \,\bigr\}.
+    E(G') \;=\; E(G) \cup \{va, vb\}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  By case analysis on the two endpoints of an edge in
-  $\mathrm{Option}\,V$, the only edges incident to $\mathrm{none}$
-  are those joining $\mathrm{none}$ to $\mathrm{some}\,a$ or
-  $\mathrm{some}\,b$ (by definition of $\mathrm{typeI}$); all other
-  edges have both endpoints in $\mathrm{some}\,[V]$ and correspond
-  bijectively to edges of $G$.
+  An edge of $G'$ either contains $v$ or joins two vertices of $G$. By
+  \cref{def:typeI}, the edges of $G'$ at $v$ are $va$ and $vb$, and two
+  vertices of $G$ are adjacent in $G'$ exactly when they are adjacent
+  in $G$.
 \end{proof}
 
 \begin{lemma}[Edge count of Type~I]
@@ -94,17 +103,18 @@ tightness half of the preservation theorems below.
   \lean{SimpleGraph.Henneberg.typeI_edgeSet_ncard}
   \leanok
   \uses{lem:typeI-edgeSet}
-  If $V$ is finite and $a \ne b$, then
+  Let $V$ be finite, let $a \ne b$ be vertices of $G$, and let $G'$ be
+  obtained from $G$ by the Type~I move at $a$ and $b$. Then
   \[
-    |E(\mathrm{typeI}\,G\,a\,b)| \;=\; |E(G)| + 2.
+    |E(G')| \;=\; |E(G)| + 2.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Use \cref{lem:typeI-edgeSet}: the two summands are disjoint (each new
-  edge contains $\mathrm{none}$, which is not in the image of
-  $\mathrm{some}$), $\mathrm{Sym2.map\;some}$ is injective, and the
-  two new edges are distinct because $a \ne b$.
+  The two sets on the right of \cref{lem:typeI-edgeSet} are disjoint,
+  since the edges $va$ and $vb$ contain the new vertex $v$ and the
+  edges of $G$ do not. The edges $va$ and $vb$ are distinct because
+  $a \ne b$.
 \end{proof}
 
 \begin{lemma}[Edge set of Type~II]
@@ -112,25 +122,19 @@ tightness half of the preservation theorems below.
   \lean{SimpleGraph.Henneberg.typeII_edgeSet}
   \leanok
   \uses{def:typeII}
+  Let $a, b, c \in V$, let $G'$ be obtained from $G$ by the Type~II
+  move on $ab$ and $c$, and let $v$ be its new vertex. Then
   \[
-    E(\mathrm{typeII}\,G\,a\,b\,c)
-    \;=\;
-    \mathrm{Sym2.map\;some}\bigl[E(G) \setminus \{\{a,b\}\}\bigr]
-    \;\cup\;
-    \bigl\{\,
-      \{\mathrm{none}, \mathrm{some}\,a\}, \;
-      \{\mathrm{none}, \mathrm{some}\,b\}, \;
-      \{\mathrm{none}, \mathrm{some}\,c\}
-    \,\bigr\}.
+    E(G') \;=\; \bigl(E(G) \setminus \{ab\}\bigr) \cup \{va, vb, vc\}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Case analysis as in \cref{lem:typeI-edgeSet}: edges incident to
-  $\mathrm{none}$ are exactly the three new ones, edges with both
-  endpoints in $\mathrm{some}\,[V]$ correspond bijectively to edges of
-  $G$, and the $\{a, b\}$ edge is explicitly removed by the
-  $s(u, v) \ne s(a, b)$ clause in the definition.
+  As in the proof of \cref{lem:typeI-edgeSet}, an edge of $G'$ either
+  contains $v$ or joins two vertices of $G$. By \cref{def:typeII}, the
+  edges of $G'$ at $v$ are $va$, $vb$ and $vc$, and two vertices of $G$
+  are adjacent in $G'$ exactly when they are adjacent in $G$ and are
+  not $a$ and $b$.
 \end{proof}
 
 \begin{lemma}[Edge count of Type~II]
@@ -138,23 +142,22 @@ tightness half of the preservation theorems below.
   \lean{SimpleGraph.Henneberg.typeII_edgeSet_ncard}
   \leanok
   \uses{lem:typeII-edgeSet}
-  If $V$ is finite and $a \ne b$, $c \ne a$, $c \ne b$, then
+  Let $V$ be finite, let $a$, $b$ and $c$ be distinct vertices of $G$,
+  and let $G'$ be obtained from $G$ by the Type~II move on $ab$ and
+  $c$. Then
   \[
-    |E(\mathrm{typeII}\,G\,a\,b\,c)|
-    \;=\;
-    |E(G) \setminus \{\{a,b\}\}| + 3.
+    |E(G')| \;=\; \bigl|E(G) \setminus \{ab\}\bigr| + 3.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  As in \cref{lem:typeI-edgeSet-ncard}, the two summands of
-  \cref{lem:typeII-edgeSet} are disjoint and the
-  $\mathrm{Sym2.map\;some}$ side is injective; the three new edges
-  are pairwise distinct because $a, b, c$ are.
+  As in the proof of \cref{lem:typeI-edgeSet-ncard}, the two sets on
+  the right of \cref{lem:typeII-edgeSet} are disjoint. The edges $va$,
+  $vb$ and $vc$ are distinct because $a$, $b$ and $c$ are.
 \end{proof}
 
-The identity holds without assuming $\{a, b\} \in E(G)$: the deletion
-is recorded on the right-hand side rather than imposed as a hypothesis.
+When $ab$ is an edge of $G$, as in the preservation theorems, the
+right-hand side is $|E(G)| + 2$.
 
 \subsection{Preservation of the Laman property}
 
@@ -260,22 +263,31 @@ degree two from a Laman graph leaves a Laman graph.
 \subsection{Reverse decomposition}
 \label{sec:henneberg-decomp}
 
-Every Laman graph on $n \ge 3$ vertices admits a Type~I reverse (at
-some degree-$2$ vertex) or a Type~II reverse (at some degree-$3$ vertex
-with a suitable non-adjacent neighbor pair), yielding a Laman graph
-$G'$ on $n - 1$ vertices. This reverse decomposition is the
-combinatorial input to the $\Leftarrow$ direction of Laman's theorem in
-\cref{sec:laman-theorem}.
+Let $v$ be a vertex of $G$. We write $G - v$ for the graph on
+$V \setminus \{v\}$ obtained from $G$ by deleting $v$, and, for
+vertices $a, b \ne v$, we write $G - v + ab$ for the graph obtained
+from $G - v$ by adding the edge $ab$, as in
+\cref{sec:isSparse-typeII-reverse-blocker}. Deleting $v$ reverses a
+move. If $v$ has degree two, with neighbours $a$ and $b$, then the
+Type~I move at $a$ and $b$ applied to $G - v$ gives a copy of $G$. If
+$v$ has degree three, with neighbours $a$, $b$ and $c$, where $a$ and
+$b$ are not adjacent, then the Type~II move on $ab$ and $c$ applied to
+$G - v + ab$ gives a copy of $G$. The theorem below finds a vertex at
+which the smaller graph is again Laman.
 
-The proof reduces the Laman statement to the sparse-graph reverse
-decomposition (\cref{thm:isSparse-exists-typeI-or-typeII-reverse})
-together with an edge-count step raising the resulting sparse graph to
-Laman. The combinatorial work --- the per-pair tight-blocker argument
-that selects the non-adjacent neighbor pair in the Type~II branch ---
-is carried out in \cref{thm:isSparse-exists-typeI-or-typeII-reverse},
-which uses the tight-blocker witness
-(\cref{lem:isSparse-typeII-reverse-blocker}) and the union-closure of
-tight subsets (\cref{thm:isTightOn-union-inter}).
+Most of the work is in the same statement for $(2,3)$-sparse graphs,
+\cref{thm:isSparse-exists-typeI-or-typeII-reverse}, in which $v$ may
+also have degree one. A sparse graph with an edge has a vertex $v$ of
+degree one, two or three, and Jord\'an's Lemma~2.1.4~\cite{jordan2016}
+treats the last two cases. If $v$ has degree two, then $G - v$ is
+sparse. If $v$ has degree three, then $v$ has a suitable splitting
+(\cref{sec:isSparse-typeII-reverse-blocker}): two neighbours $a$ and
+$b$ of $v$ that are not adjacent and make $G - v + ab$ sparse. We
+prove the sparse statement in
+\cref{sec:rigidity-matroid-sparse-reverse}, where it is also the
+inductive step in the proof that the edge set of every $(2,3)$-sparse
+graph is independent in the rigidity matroid. Its proof uses only the
+results of \cref{sec:edgesIn} and \cref{sec:sparsity}.
 
 \begin{theorem}[Laman reverse decomposition]
   \label{thm:isLaman-exists-typeI-or-typeII-reverse}
@@ -286,73 +298,81 @@ tight subsets (\cref{thm:isTightOn-union-inter}).
     thm:typeI-isLaman-iff,
     lem:typeII-edgeSet-ncard,
     lem:isLaman-two-le-degree}
-  Let $G$ be Laman on a finite vertex type $V$ with $|V| \ge 3$. Then
-  there exists $v \in V$ such that either
+  Let $V$ be finite with $|V| \ge 3$, and let $G$ be a Laman graph on
+  $V$. Then $G$ has a vertex $v$ for which one of the following holds.
   \begin{enumerate}
-    \item $\deg_G(v) = 2$, the two neighbors $a, b$ of $v$ are
-      distinct, and the induced subgraph $G' := G[\{w \ne v\}]$ is
-      Laman; or
-    \item $\deg_G(v) = 3$ with three pairwise distinct neighbors
-      $\{a, b, c\}$, the pair $\{a, b\}$ is non-adjacent in $G$, and
-      the bridge-augmented subgraph
-      $G' := G[\{w \ne v\}] \cup \{\{a, b\}\}$ is Laman.
+    \item The vertex $v$ has degree two, with neighbours $a$ and $b$,
+      and $G - v$ is Laman.
+    \item The vertex $v$ has degree three, with neighbours $a$, $b$ and
+      $c$, where $a$ and $b$ are not adjacent, and $G - v + ab$ is
+      Laman.
   \end{enumerate}
+  Here $G - v$ is the graph on $V \setminus \{v\}$ obtained from $G$
+  by deleting $v$, and $G - v + ab$ is obtained from $G - v$ by adding
+  the edge $ab$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Apply \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to the
-  sparsity of $G$ (a Laman graph is $(2, 3)$-sparse with
-  $|E(G)| = 2|V| - 3 \ge 1$). Every vertex of a Laman graph on
-  $|V| \ge 3$ vertices has degree at least $2$
-  (\cref{lem:isLaman-two-le-degree}), so the pendant branch
-  $\deg_G(v) = 1$ of the sparse decomposition cannot occur.
+  Since $G$ is Laman and $|V| \ge 3$, it is $(2,3)$-sparse and has
+  $2|V| - 3 \ge 3$ edges. So
+  \cref{thm:isSparse-exists-typeI-or-typeII-reverse} gives a vertex
+  $v$ of degree one, two or three. Every vertex of $G$ has degree at
+  least two (\cref{lem:isLaman-two-le-degree}), so $v$ has degree two
+  or three.
 
-  In the Type~I branch the sparse decomposition already gives
-  $\deg_G(v) = 2$ and its two neighbors; \cref{thm:typeI-isLaman-iff},
-  applied through the canonical Type~I isomorphism, raises $G'$ from
-  $(2, 3)$-sparse to Laman.
+  Suppose that $v$ has degree two, with neighbours $a$ and $b$. Then
+  $G$ is isomorphic to the graph obtained from $G - v$ by the Type~I
+  move at $a$ and $b$, so that graph is Laman (\cref{lem:isLaman-iso}).
+  Hence $G - v$ is Laman by \cref{thm:typeI-isLaman-iff}.
 
-  In the Type~II branch the Type~II isomorphism transports the Laman
-  property of $G$ to $\mathrm{typeII}\,G'\,a\,b\,c$. Combining
-  \cref{lem:typeII-edgeSet-ncard} with the tight global count
-  $|E(G)| + 3 = 2|V|$ and the presence of the bridge in $G'$ gives
-  $|E(G')| + 3 = 2\,|\{w \ne v\}|$, raising $G'$ from $(2, 3)$-sparse
-  to tight, hence Laman.
+  Suppose that $v$ has degree three. Then the sparse statement gives
+  neighbours $a$, $b$ and $c$ of $v$, where $a$ and $b$ are not
+  adjacent, such that $H = G - v + ab$ is $(2,3)$-sparse. The Type~II
+  move on $ab$ and $c$ deletes from $H$ the edge $ab$ that $H$ adds to
+  $G - v$, and it adds $v$ back. So $G$ is isomorphic to the graph $H'$
+  obtained from $H$ by this move, and $H'$ is Laman
+  (\cref{lem:isLaman-iso}). As $H'$ has $|V|$ vertices,
+  $|E(H')| + 3 = 2|V|$. Since $ab$ is an edge of $H$,
+  \cref{lem:typeII-edgeSet-ncard} gives $|E(H')| = |E(H)| + 2$. Hence
+  $|E(H)| + 3 = 2(|V| - 1)$, and $H$ is Laman.
 \end{proof}
 \begin{fmlnote}
-  The theorem is stated in \emph{flat} form: $G'$ is described by its
-  edges --- the subgraph of $G$ induced on the vertices other than $v$,
-  augmented with the bridge $\{a, b\}$ in the Type~II case --- rather
-  than as the image of a Henneberg constructor, and the chosen vertex's
-  neighborhood data is provided alongside. From that data the
-  isomorphism $G \simeq \mathrm{typeI}\,G'\,a\,b$ (or its Type~II
-  analogue) required by the operation-form preservation theorems is
-  reconstructed through the project's isomorphism constructors. See
-  \cref{fmlnote:reverse-vs-lift-form} for why reverse decompositions
-  take this form.
+  The formal statement builds $G - v$ and $G - v + ab$ on a separate
+  copy of $V \setminus \{v\}$, as in \cref{fmlnote:graph-minus-vertex}.
+  The isomorphisms between $G$ and the moved graphs, in the proof above
+  and in the induction of Laman's theorem
+  (\cref{thm:isLaman-isGenericallyRigid-two}), are built from the
+  neighbours of $v$. \Cref{fmlnote:reverse-vs-lift-form} explains why
+  a reverse decomposition describes the smaller graph directly, and not
+  as a graph to which a move is applied.
 \end{fmlnote}
 
-\subsection{Worked example: \texorpdfstring{$K_4 \setminus e$}{K4 minus e}}
+\subsection{An example: \texorpdfstring{$K_4$}{K4} minus an edge}
 
-As an illustration of the forward moves, we certify a small Laman graph
-by building it from the base case $K_2$.
+We build $K_4$ minus an edge from $K_2$ by two Type~I moves.
 
-\begin{theorem}[$K_4 \setminus e$ is Laman]
+\begin{theorem}[$K_4$ minus an edge is Laman]
   \label{thm:top-fin-four-minus-edge-isLaman}
   \lean{SimpleGraph.top_fin_four_minus_edge_isLaman}
   \leanok
   \uses{thm:typeI-isLaman, thm:top-fin-two-isLaman, lem:isLaman-iso}
-  The graph $K_4$ on the vertex set $\mathrm{Fin}\,4$, minus the single
-  edge $\{2, 3\}$, is Laman.
+  The graph on $\{0, 1, 2, 3\}$ obtained from the complete graph $K_4$
+  by deleting the edge $23$ is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
-  Apply \cref{thm:typeI-isLaman} twice, starting from $K_2$
-  (\cref{thm:top-fin-two-isLaman}): one Type~I move yields a Laman
-  graph on three vertices (a copy of $K_3$), and a second yields a
-  Laman graph on four vertices. This graph, on
-  $\mathrm{Option}\,(\mathrm{Option}\,(\mathrm{Fin}\,2))$, is
-  isomorphic to $K_4 \setminus \{2, 3\}$ on $\mathrm{Fin}\,4$ via an
-  explicit bijection, and \cref{lem:isLaman-iso} transports the Laman
-  property along it.
+  The complete graph on $\{0, 1\}$ is Laman
+  (\cref{thm:top-fin-two-isLaman}). The Type~I move at $0$ and $1$
+  adds a new vertex $2$ and the edges $20$ and $21$. The result is a
+  triangle, which is Laman by \cref{thm:typeI-isLaman}. A second
+  Type~I move at $0$ and $1$ adds a new vertex $3$ and the edges $30$
+  and $31$. The result is Laman by \cref{thm:typeI-isLaman}, and its
+  edges are the pairs from $\{0, 1, 2, 3\}$ other than $23$.
+
+  In the formal proof the two new vertices are not the numbers $2$ and
+  $3$ (\cref{fmlnote:henneberg-new-vertex}). The graph built is
+  therefore isomorphic to the graph of the statement, by the bijection
+  that sends the first new vertex to $2$ and the second to $3$. The
+  Laman property passes along this isomorphism
+  (\cref{lem:isLaman-iso}).
 \end{proof}

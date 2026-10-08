@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4, 5.1 and 5.2 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.3 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first two slices, `sparsity.tex` and `laman.tex`. **Next concrete task:** task 5.3,
-`henneberg.tex` apart from the sample. Round manual: `CLEANUP.md`.
+PI*), and the first three slices, `sparsity.tex`, `laman.tex` and `henneberg.tex`. **Next concrete
+task:** task 5.4, `frameworks.tex`. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,16 +54,17 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The second slice has landed** (task 5.2, this commit): `sparsity.tex`'s second half and its
-two section openings, now 338–607, 1–20 and 160–181, and all of `laman.tex` (1–128). Task 5.1's
-first half (`4657a7fc`) is now 21–159 and 182–337. The exemplar `notes/Prose-exemplar.md` and
+**The third slice has landed** (task 5.3, this commit): `henneberg.tex` apart from the sample,
+now 1–161 and 263–378; the sample is 162–261, unchanged. `sparsity.tex` and `laman.tex` are
+tasks 5.1–5.2's (`4657a7fc`, `0a2230a0`). The exemplar `notes/Prose-exemplar.md` and
 `blueprint/AUTHORING.md` principles A–F, with B's *Constructions* clause and the PI's "overriding
-goal" sentence, set the register. Nothing is mid-stream; task 5.3 is next.
+goal" sentence, set the register. Nothing is mid-stream; task 5.4 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176 overfull boxes, none in
-  `sparsity.tex` or `laman.tex`). The screens on `sparsity` and `laman` read 0 and 0 / 0. The
-  earlier commits `67525c41` and `e9e3f37d` gave the same values; `henneberg` reads 1 and 26 / 53.
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (175 overfull boxes, none in
+  `henneberg.tex`; 176 at `0a2230a0`). The screens on `sparsity`, `laman` and `henneberg` read 0
+  and 0 / 0, 0 and 0 / 0, and 0 and 0 / 7: the 7 are the encoding's names in its one
+  formalization note, `fmlnote:henneberg-new-vertex`.
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -317,7 +318,7 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     - *Done* (this commit; `sparsity.tex` 1–20, 160–181 and 338–607, `laman.tex` 1–128). Jordán's
       *splitting* (p. 44) replaces "per-pair tight-blocker", and $G - v + xy$ the subtype graph; the
       `sec:intro` pointers and two docs pointers are fixed. Found `F-015`–`F-018`.
-  - [ ] **5.3 `henneberg.tex` apart from the sample**: definitions, edge-set counts, the reverse
+  - [x] **5.3 `henneberg.tex` apart from the sample**: definitions, edge-set counts, the reverse
     decomposition, the worked example and the opening (1–158 and 260–358); 8 nodes, 257 lines. It
     carries the sample's notation and terminology into the definitions and the opening's
     convention paragraph, as Stop 1 settled (3a and 3b adopted; the PI's test is that the result
@@ -325,8 +326,12 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     "the Type~II move on $ab$ and $c$", with new vertex $v$ and Jordán's gloss (p. 38); the
     edge-set lemmas write edges as $ab$; and the reverse decomposition's $G'$, the smaller graph,
     becomes $G - v$ and $G - v + ab$, since the sample's $G'$ is the larger one. The opening
-    credits the characterization to Henneberg alone, where Nixon–Ross credit Henneberg and Laman
-    (Stop 1's notes on 3c).
+    credited the characterization to Henneberg alone, where Nixon–Ross credit Henneberg and Laman
+    (Stop 1's notes on 3c); it now credits both.
+    - *Done* (this commit; 1–161 and 263–378 now, the sample 162–261). The moves are defined in
+      words, with Jordán's gloss and Jordán's conditions (p. 44), and the encoding is explained once,
+      in the new `fmlnote:henneberg-new-vertex`; the reverse decomposition's lead-in says what the
+      sparse form gives and where it is proved. Found `F-019`.
   - [ ] **5.4 `frameworks.tex`**: 19 nodes, 415 lines.
   - [ ] **5.5 `henneberg-rigidity.tex`**: 5 nodes, 247 lines.
   - [ ] **5.6 `trivial-motions.tex`**: 13 nodes, 280 lines.
@@ -393,6 +398,8 @@ one line each naming the ledger ID and the task that found it.
 - `F-017` (L, task 5.2): two `hF_finite` binders that follow from `hF_sub`.
 - `F-018` (L, task 5.2): `typeII_reverse_blocker`'s docstrings say "distinct"; its statement does
   not.
+- `F-019` (N, task 5.3): the sparse reverse decomposition's node is in `rigidity-matroid.tex`,
+  after its first user in `henneberg.tex`, though it uses only `sparsity.tex`.
 
 ## Blockers / open questions
 
@@ -400,19 +407,20 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.3**, the third slice: `henneberg.tex` apart from the sample (1–158 and 260–358 at
-this commit); 8 nodes. Its checklist line carries Stop 1's settled notation, its diagnosis is
-under *Per-chapter diagnosis*, its gates under *Scope*, and the register is *Scope*'s. Left for it
-by 5.2:
-- `sparsity.tex` now writes $G - v + xy$ for the graph obtained from $G$ by deleting $v$ and adding
-  $xy$, and explains the Lean's encoding of it, and of $G - v$, once, in
-  `fmlnote:graph-minus-vertex` (a new label on the existing note). *Reverse decomposition* and its
-  formalization note can `\cref` it rather than explain again.
-- `sparsity.tex` uses Jordán's *splitting* and *suitable* (§2.1, p. 44) where *Reverse
-  decomposition* says "per-pair tight-blocker argument" and "tight-blocker witness". Splitting $v$
-  on the pair $va$, $vb$ reverses the Type~II move on $ab$ and $c$.
-- `laman.tex`'s *The base case* now names the worked example as the user of
-  `thm:top-fin-two-isLaman`, and its opening sends the reader to `sec:henneberg` for the moves.
+**Next: task 5.4**, the fourth slice: `frameworks.tex`, all of it; 19 nodes, 415 lines. Its
+diagnosis is under *Per-chapter diagnosis* (including the *To check* on `IsInfinitesimallyRigid`
+for $|V| \le d$), its gates under *Scope*, and the register is *Scope*'s. Left by 5.3 for later
+slices:
+- `henneberg.tex` defines "the Type~I move at $a$ and $b$" and "the Type~II move on $ab$ and $c$",
+  with new vertex $v$, and explains the `Option V` encoding once, in the new
+  `fmlnote:henneberg-new-vertex`. Statements about a move in tasks 5.5 (`henneberg-rigidity.tex`)
+  and 5.9 (`rigidity-matroid.tex`'s lifts) can read "let $G'$ be obtained from $G$ by …" and
+  `\cref` that note rather than explain the encoding again.
+- The Laman reverse decomposition now writes $G - v$ and $G - v + ab$. `laman-theorem.tex`'s ⇐
+  proof (task 5.7) still writes $G[\{w \ne v\}]$ and names `typeI_iso_of_two_neighbors` and
+  `typeII_iso_of_three_neighbors`, which name no declaration: the Lean's are
+  `Henneberg.isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors` (`HennebergReverse.lean`).
+  `rigidity-matroid.tex` names the old pair twice (tasks 5.9–5.10).
 
 For tasks 5.9–5.10, the rigidity-matroid diagnosis now carries two items from 5.2. From 5.1, for
 tasks 5.10–5.11: the critical-set gloss follows `def:isTightOn`. Then tasks 5.4–5.16 follow in
@@ -454,9 +462,11 @@ prompt where the guidelines fall short.
 - **Stop 1: the attended session's notes** (not the PI's words; in full under *Autopilot: for the
   PI*). Option B. **3c:** Jordán credits no one for his Lemmas 2.1.4(a) and 2.1.5, and Nixon–Ross
   (Theorem 2.5) credit the characterization to Henneberg and Laman, neither of which is in
-  `.refs/`. So `e9e3f37d` dropped "These facts are classical." from the sample, and task 5.3's
-  opening credits Henneberg alone. **5:** every slice runs at Opus (`notes/Prose.md` §2), so "the
-  first few Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check.
+  `.refs/`. So `e9e3f37d` dropped "These facts are classical." from the sample. The opening, which
+  credited Henneberg alone, was task 5.3's to fix; it now credits Henneberg and Laman, with
+  Jordán's Theorem 2.2.8 as the pointer. **5:** every slice runs at Opus (`notes/Prose.md` §2),
+  so "the first few Sonnet dispatches" is read as the first few slices; *Hand-off* carries the
+  check.
 - **Stop 1: what the approval settles** (task 4's reading, not the PI's words). The sample is the
   exemplar for rounds 1–4, `notes/Prose-exemplar.md`. Choice (i) is now `AUTHORING.md` principle
   B's *Constructions* clause; (ii) and (iii) hold for every slice. 3a and 3b go to task 5.3, held

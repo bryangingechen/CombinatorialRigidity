@@ -251,6 +251,15 @@ declaration's name as its header writes it:
   `Sparsity.lean`; `notes/Phase5.md` on the "1-deficient intermediate"); measured
   (`scripts/blueprint-deps.py --label thm:isSparse-exists-typeI-or-typeII-reverse`, at `4657a7fc`).
   *Found:* round 1 task 5.2.
+- **F-019** · N · `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`): the node
+  is in §10 of the rendered blueprint, after its first user,
+  `thm:isLaman-exists-typeI-or-typeII-reverse` (`henneberg.tex`, §5). Yet its pin `IsSparse.exists_typeI_or_typeII_reverse` is in
+  `Sparsity.lean` and reaches only nodes of `sparsity.tex`. Prose cannot remove the cross-chapter
+  forward reference; task 5.3 gives it a sentence in *Reverse decomposition*'s lead-in. Moving the
+  node to the end of `sparsity.tex`, after the splitting lemma it uses, would remove it.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label
+  thm:isSparse-exists-typeI-or-typeII-reverse`, at `0a2230a0`); read (the declaration's module).
+  *Found:* round 1 task 5.3.
 
 ## T — terminology and notation
 
