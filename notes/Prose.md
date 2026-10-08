@@ -1,12 +1,13 @@
 # PROSE: the blueprint prose rounds (planning note)
 
 **Status:** planned with the PI on 2026-10-07 and queued ahead of ORIGAMI as five autopilot rows
-(`.claude/autopilot/queue.toml`); none has opened. These are five `CLEANUP.md` rounds over every
-blueprint chapter that round 3 of the post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four
-prose rounds go arc by arc, and a fifth repairs the dependency graph and writes the findings report.
-There is one planned stop, after round 1's sample section. **Next concrete task:** open round 1,
-`prose-laman` (§3). That means its work log `notes/Prose-laman-cleanup.md`, the baselines of §7
-re-measured at HEAD, and its full task list.
+(`.claude/autopilot/queue.toml`). Round 1, `prose-laman`, opened 2026-10-07
+(`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`); rounds 2–5 have not
+opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
+post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
+fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
+round 1's sample section. **Next concrete task:** round 1's task 2, the dependency-audit script
+(§5); its spec and acceptance tests are in the round's log.
 
 ## 1. The PI's decisions
 
@@ -317,8 +318,9 @@ The PI answers in that section. Task 4 pins the approved sample as `notes/Prose-
 
 ## 7. Baseline (2026-10-07, at `64bb9754`)
 
-Round 1's open re-measures these at HEAD, and adds the built graph's node and edge counts and the
-invariance hashes.
+Round 1's open re-measured these at `6f4f7afa` and added the built graph's node and edge counts and
+the invariance hashes (`notes/Prose-laman-cleanup.md` *Current state*). That log also records the
+register screen's regex, which this section's figures did not.
 
 - **Surface.** Rounds 1–4 cover 32 TeX files, 17 663 lines and 505 nodes. Out of scope:
   - `pencil.tex` (1 186 lines) and `main-component.tex` (5 518), which `40-exposition` rewrote;
