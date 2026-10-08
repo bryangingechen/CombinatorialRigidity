@@ -1178,279 +1178,425 @@ The step of the induction uses the two bounds together
   \cref{lem:removal-deficiency}.
 \end{proof}
 
-\begin{lemma}[Base-fiber criterion for the splitting-off dof; KT Lemma 4.3(ii)]
+\begin{lemma}[When splitting off keeps the deficiency; KT Lemma~4.3(ii)]
   \label{lem:splitoff-kdof-criterion}
   \lean{Graph.splitOff_exists_base_inter_fiber_lt,
         Graph.splitOff_isKDof_of_exists_base_inter_fiber_lt}
   \leanok
   \uses{def:k-dof, def:graph-operations, def:matroid-MG, lem:edge-splitting,
         lem:splitoff-deficiency, thm:def-eq-corank}
-  Let $G$ be a $k$-dof-graph with a degree-2 vertex $v$ (distinct neighbours
-  $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$ fresh) and
-  $D \ge 2$. The splitting-off $G_v^{ab}$ is itself a $k$-dof-graph if and
-  only if $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
-  $|\widetilde{ab} \cap B'| < D - 1$. This is the refinement of the
-  two-sided bound of \cref{lem:dof-tracking} that reads off \emph{which}
-  alternative ($k$-dof or $(k-1)$-dof) the splitting-off lands in from the
-  short-circuit count of a base.
+  Let $D \ge 2$, and let $G$ be a $k$-dof-graph with a vertex $v$ of
+  degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. Then $G_v^{ab}$ is a $k$-dof-graph if and only if
+  $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+  $|\widetilde{ab} \cap B'| < D - 1$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:forest-surgery-count, lem:balanced-forest-packing}
-  Forward (a $k$-dof splitting-off has such a base): reroute a balanced
-  $D$-forest packing of a base of $M(\tilde G)$ across $v$
-  (\cref{lem:forest-surgery-count}); the rerouted set $I'$ is
-  $M(\widetilde{G_v^{ab}})$-independent with $|I'| = |\text{base}| - D$ and
-  $|\widetilde{ab} \cap I'| < D - 1$, and since both graphs are $k$-dof the
-  def\,$=$\,corank identity (\cref{thm:def-eq-corank}) makes $|I'|$ the full
-  rank, so $I'$ is the desired base. Reverse: the edge-splitting extension
-  (\cref{lem:edge-splitting}, partial-fiber branch) lifts a base $B'$ with
-  $|\widetilde{ab} \cap B'| < D - 1$ to an $M(\tilde G)$-independent set of
-  size $|B'| + D$; bounding it by $\operatorname{rank} M(\tilde G) =
-  D(|V|-1) - k$ gives $\operatorname{def}(\widetilde{G_v^{ab}}) \ge k$, and
-  the splitting-off deficiency bound (\cref{lem:splitoff-deficiency}) gives
-  the matching $\le k$.
+  The vertices of $G_v^{ab}$ are the $|V(G)| - 1$ vertices of $G$ other
+  than $v$. So KT eq.~(2.4) (\cref{thm:def-eq-corank}) gives
+  \[
+    \operatorname{rank} M(\tilde G) \;=\; D\,(|V(G)| - 1) - k,
+    \qquad
+    \operatorname{rank} M(\widetilde{G_v^{ab}}) \;=\;
+    D\,(|V(G)| - 2) - \operatorname{def}(\widetilde{G_v^{ab}}).
+  \]
+
+  Suppose that $G_v^{ab}$ is a $k$-dof-graph, and let $B$ be a base of
+  $M(\tilde G)$. By \cref{lem:balanced-forest-packing}, $B$ is the union
+  of $D$ pairwise disjoint forests of $\tilde G$, each of which has an
+  edge incident with $v$. The surgery on these forests
+  (\cref{lem:forest-surgery-count}) gives an independent set $I'$ of
+  $M(\widetilde{G_v^{ab}})$ with $|I'| = |B| - D$ and
+  $|\widetilde{ab} \cap I'| < D - 1$. Then
+  $|I'| = D(|V(G)| - 2) - k$, which is the rank of
+  $M(\widetilde{G_v^{ab}})$, so $I'$ is a base. This is Katoh and
+  Tanigawa's argument~\cite[p.~661]{katohTanigawa2011}, with the balanced
+  partition that they assume (\cref{rem:kt-lemma-41}).
+
+  Conversely, let $B'$ be a base of $M(\widetilde{G_v^{ab}})$ with
+  $|\widetilde{ab} \cap B'| < D - 1$. By case~(i) of KT Lemma~4.2
+  (\cref{lem:edge-splitting}), $M(\tilde G)$ has an independent set $I$
+  with $|I| = |B'| + D$. As $|I| \le \operatorname{rank} M(\tilde G)$, we
+  get $|B'| \le D(|V(G)| - 2) - k$, that is,
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \ge k$. The upper bound of KT
+  Lemma~4.3(i) (\cref{lem:splitoff-deficiency}) gives
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \le k$.
 \end{proof}
 
-\begin{lemma}[Edge-count bound with no proper rigid subgraph; KT Lemma 4.5(i)]
+The rest of the subsection follows Katoh and Tanigawa's
+\S4.2~\cite[pp.~663--666]{katohTanigawa2011}, on minimal
+$k$-dof-graphs with no proper rigid subgraph
+(\cref{def:rigid-subgraph}). Katoh and Tanigawa's multigraphs have no
+loops~\cite[\S2.5]{katohTanigawa2011}, and ours may have them. A
+minimal $k$-dof-graph $G$ has none. Indeed, the copies of a loop $e$ of
+$G$ are loops of $\tilde G$. A loop is a cycle, so it lies in no forest,
+and hence in no independent set of $M(\tilde G)$
+(\cref{lem:forest-packing-decomp}). So no base of $M(\tilde G)$ meets
+$\tilde e$, against minimality (\cref{def:k-dof}). Hence every circuit
+$X$ of $M(\tilde G)$ has $|V(X)| \ge 2$. If $G$ also has no proper rigid
+subgraph, then $V(X) = V(G)$, as we noted after
+\cref{lem:circuit-induces-rigid}.
+
+\begin{lemma}[An edge bound with no proper rigid subgraph; KT Lemma~4.5(i)]
   \label{lem:no-rigid-edge-count}
   \lean{Graph.no_rigid_edge_count}
   \leanok
   \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG}
-  Let $G$ be a minimal $k$-dof-graph with no proper rigid subgraph and
-  $D = \binom{d+1}{2} \ge 2$. Then
+  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with at least one
+  vertex and no proper rigid subgraph. Then
   \[
     (D-1)\,|E(G)| \;<\; D\,(|V(G)| - 1) - k + (D-1).
   \]
-  This is the edge bound Katoh--Tanigawa use to force a low-degree vertex
-  (\cref{lem:reducible-vertex}). At $k = 0$ it recovers the original KT form.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{thm:def-eq-corank}
-  Read the graph-level bound through the matroid: $|E(\tilde G)| = (D-1)\,|E(G)|$
-  (each edge of $G$ contributes a fiber $\tilde e$ of size $D-1$, the
-  \texttt{mulTilde}-level count \texttt{Graph.mulTilde\_edgeSet\_ncard}), and a
-  base $B^\ast$ has $|B^\ast| = D(|V(G)| - 1) - k$ since $G$ is $k$-dof
-  (\cref{thm:def-eq-corank}); so the claim is $|E(\tilde G)| < |B^\ast| + (D-1)$.
-  Fix an edge $e$ and let $h^\ast = \min_B |\tilde e \cap
-  B|$ over bases $B$ of $M(\tilde G)$, attained at $B^\ast$; minimality of $G$
-  gives $h^\ast \ge 1$. We show $E(\tilde G) \setminus \tilde e \subseteq B^\ast$
-  (KT eq.~4.3). If some $f \in E(\tilde G) \setminus \tilde e$ were outside
-  $B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(f, B^\ast)$
-  induces, by \cref{lem:circuit-induces-rigid}, a rigid subgraph $G[V(X)]$
-  spanning at least two vertices ($G$ is loopless; \texttt{Graph.loopless\_of\_isMinimalKDof});
-  the no-proper-rigid hypothesis forces $V(X) = V(G)$ (the spanning step
-  \texttt{Graph.fundCircuit\_inducedSpan\_vertexSet\_eq}). Then $X \cap \tilde e
-  \neq \emptyset$: otherwise $X - e_j$ is independent of size $D(|V(G)| - 1)$ for any
-  $e_j \in X$; any base $B'$ containing $X - e_j$ has $|B'| = D(|V(G)| - 1) - k$, so
-  $D(|V(G)| - 1) \le D(|V(G)| - 1) - k$, forcing $k \le 0$, and
-  $\operatorname{def}(G) \ge 0$ then pins $k = 0$.
-  At $k = 0$, $X - e_j$ is itself a base avoiding $\tilde e$, contradicting minimality.
-  Picking $e_j \in X \cap \tilde e$, the base
-  exchange $B = B^\ast + f - e_j$ has $|B \cap \tilde
-  e| = h^\ast - 1 < h^\ast$, contradicting the choice of $B^\ast$. So
-  $E(\tilde G) \setminus \tilde e \subseteq B^\ast$, whence $|E(\tilde G)| =
-  |B^\ast| + (|\tilde e| - h^\ast) = D(|V(G)| - 1) - k + (D - 1 - h^\ast) \le
-  D(|V(G)| - 1) - k + (D - 2)$.
+  We follow Katoh and Tanigawa's proof~\cite[p.~663]{katohTanigawa2011},
+  which they give for $k = 0$. If $G$ has no edge, then the partition of
+  $V(G)$ into single vertices has the largest value, so
+  $k = D(|V(G)| - 1)$, and the bound reads $0 < D - 1$. Otherwise, fix an
+  edge $e$ of $G$. Let $h^*$ be the least value of $|\tilde e \cap B|$
+  over the bases $B$ of $M(\tilde G)$, and let $B^*$ be a base with
+  $|\tilde e \cap B^*| = h^*$. As $G$ is minimal, $h^* \ge 1$. By KT
+  eq.~(2.4) (\cref{thm:def-eq-corank}), every base of $M(\tilde G)$ has
+  $D(|V(G)| - 1) - k$ elements.
+
+  We show that every edge of $\tilde G$ outside $\tilde e$ lies in $B^*$
+  (KT eq.~(4.3)). Suppose that an edge $f \notin \tilde e$ of $\tilde G$
+  is not in $B^*$, and let $X$ be the fundamental circuit of $f$ with
+  respect to $B^*$, the only circuit contained in $B^* + f$. Then
+  $V(X) = V(G)$, as $G$ has no loops and no proper rigid subgraph.
+  Suppose first that $X$ does not meet $\tilde e$, and let $x \in X$. By
+  \cref{lem:circuit-induces-rigid}, $X - x$ is an independent set with
+  $D(|V(G)| - 1)$ elements. It lies in a base, which has
+  $D(|V(G)| - 1) - k$ elements, so $k \le 0$. As $V(G)$ is not empty,
+  $k \ge 0$. So $k = 0$, and $X - x$ is a base of $M(\tilde G)$ that does
+  not meet $\tilde e$, against the minimality of $G$. Hence $X$ contains
+  a copy $e_j \in \tilde e$. Then $B^* + f - e_j$ is a base of
+  $M(\tilde G)$ that meets $\tilde e$ in $h^* - 1$ elements, against the
+  choice of $B^*$.
+
+  So the edges of $\tilde G$ outside $B^*$ are the $D - 1 - h^*$ copies
+  of $e$ outside $B^*$. As $\tilde G$ has $(D-1)\,|E(G)|$ edges,
+  \[
+    (D-1)\,|E(G)| \;=\; |B^*| + (D - 1 - h^*) \;\le\;
+    D\,(|V(G)| - 1) - k + (D - 2).
+  \]
 \end{proof}
 
-\begin{lemma}[Independence of $E(\tilde G)$ at $k > 0$; KT Lemma 4.5(ii)]
+\begin{lemma}[The edges of $\tilde G$ are independent when $k > 0$; KT Lemma~4.5(ii)]
   \label{lem:edge-set-indep-pos}
   \lean{Graph.indep_edgeSet_mulTilde_of_noRigid_of_pos,
         Graph.isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos}
   \leanok
   \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG,
         thm:def-eq-corank}
-  Let $G$ be a minimal $k$-dof-graph with $k > 0$, no proper rigid subgraph, and
-  $D \ge 2$. Then $E(\tilde G)$ is independent in $M(\tilde G)$ and is its unique base.
+  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with $k > 0$ and
+  no proper rigid subgraph. Then $E(\tilde G)$ is independent in
+  $M(\tilde G)$. In particular, $E(\tilde G)$ is the only base of
+  $M(\tilde G)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG,
         thm:def-eq-corank}
-  If $E(\tilde G)$ were dependent, it would contain a circuit $C$; by
-  \cref{lem:circuit-induces-rigid} the induced span $H = G[V(C)]$ is a rigid subgraph
-  of $G$; looplessness gives $|V(H)| \ge 2$; the no-proper-rigid hypothesis forces
-  $V(H) = V(G)$. Then $H$ is rigid and spans all of $V(G)$, so
-  $\operatorname{rank}M(\tilde G) \ge \operatorname{rank}M(\tilde H) = D(|V(G)|-1)$;
-  combined with $\operatorname{rank}M(\tilde G) + \operatorname{def}(G) = D(|V(G)|-1)$
-  and $\operatorname{def}(G) = k > 0$, this is a contradiction.
-  Uniqueness: $E(\tilde G)$ independent and any base $B \subseteq E(\tilde G)$ gives
-  $B = E(\tilde G)$ by \texttt{Matroid.IsBase.eq\_of\_subset\_indep}.
+  Suppose that $E(\tilde G)$ contains a circuit $X$ of $M(\tilde G)$. As
+  $G$ has no loops and no proper rigid subgraph, $V(X) = V(G)$. So
+  $H = G[V(X)]$ is a rigid subgraph of $G$ with the vertices of $G$
+  (\cref{lem:circuit-induces-rigid}). By \cref{lem:rigid-full-rank},
+  $\operatorname{rank} M(\tilde H) = D(|V(G)| - 1)$, and $M(\tilde H)$ is
+  a restriction of $M(\tilde G)$ (\cref{lem:matroid-restrict-subgraph}).
+  So $\operatorname{rank} M(\tilde G) \ge D(|V(G)| - 1)$, and KT
+  eq.~(2.4) (\cref{thm:def-eq-corank}) gives
+  $k = \operatorname{def}(\tilde G) \le 0$, a contradiction. Hence
+  $E(\tilde G)$ is independent. A base of $M(\tilde G)$ is a maximal
+  independent subset of $E(\tilde G)$, so it is $E(\tilde G)$.
 \end{proof}
 
-\begin{lemma}[Strict removal gap; KT Lemma 4.4 (equality clause) and Lemma 4.7]
+Katoh and Tanigawa state part~(ii) of their Lemma~4.5 for every
+$k$-dof-graph with $k > 0$ and no proper rigid subgraph. They use that
+a circuit $X$ has $|V(X)| \ge 2$, which holds as their multigraphs have
+no loops. We assume that $G$ is minimal, which excludes loops. They add that $(D-1)\,|E(G)| = D(|V(G)| - 1) - k$,
+which follows by KT eq.~(2.4).
+
+For $k > 0$, Katoh and Tanigawa derive KT Lemma~4.7 from KT
+Lemma~4.5(ii) and the second assertion of KT Lemma~4.4, which they prove
+with KT Lemma~4.2 (\cref{rem:kt-lemma-44}). The next lemma proves that
+assertion and KT Lemma~4.7.
+
+\begin{lemma}[Removal raises the deficiency; the equality case of KT Lemma~4.4, and KT Lemma~4.7]
   \label{lem:removal-deficiency-strict}
   \lean{Graph.exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof,
         Graph.removeVertex_deficiency_gt_of_noRigid}
   \leanok
   \uses{lem:removal-deficiency, lem:edge-splitting, lem:edge-set-indep-pos,
         def:k-dof, def:rigid-subgraph, thm:def-eq-corank}
-  Let $G$ be a $k$-dof-graph with a degree-2 vertex $v$ (distinct neighbours
-  $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$ fresh). Two
-  sharpenings of the removal bound $\operatorname{def}(\widetilde{G_v}) \ge k$
-  of \cref{lem:removal-deficiency}: (i) \emph{(KT 4.4, equality clause)} if
-  $D \ge 2$ and equality $\operatorname{def}(\widetilde{G_v}) = k$ holds, then
-  $M(\tilde G)$ has a base $B$ with $|\widetilde{vb} \cap B| = 1$;
-  (ii) \emph{(KT 4.7)} if moreover $G$ is a \emph{minimal} $k$-dof-graph with
-  no proper rigid subgraph, $|V(G)| \ge 3$, and $D \ge 3$, the bound is
-  strict: $\operatorname{def}(\widetilde{G_v}) > k$.
+  Let $G$ be a $k$-dof-graph with a vertex $v$ of degree two, whose edges
+  $e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$.
+  \begin{enumerate}
+    \item If $D \ge 2$ and $\operatorname{def}(\widetilde{G_v}) = k$, then
+      $M(\tilde G)$ has a base $B$ with $|\tilde e_b \cap B| = 1$.
+    \item If $D \ge 3$, and $G$ is a minimal $k$-dof-graph with at least
+      three vertices and no proper rigid subgraph, then
+      $\operatorname{def}(\widetilde{G_v}) > k$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
-  (i) A base $B'$ of $M(\widetilde{G_v})$ is independent in
-  $M(\widetilde{G_v^{ab}})$ (matroid restriction along $\widetilde{G_v} \le
-  \widetilde{G_v^{ab}}$) and avoids $\widetilde{ab}$ entirely, so the
-  edge-splitting extension (\cref{lem:edge-splitting}, partial-fiber branch at
-  $h' = 0$) lifts it to an $M(\tilde G)$-independent $I$ of size $|B'| + D =
-  (D(|V|-2) - k) + D = D(|V|-1) - k = \operatorname{rank} M(\tilde G)$ (the
-  def\,$=$\,corank identity on both sides, \cref{thm:def-eq-corank}) --- a
-  base with $|\widetilde{vb} \cap I| = 0 + 1 = 1$. (ii) Suppose
-  $\operatorname{def}(\widetilde{G_v}) = k$. At $k = 0$ the removal $G_v$
-  would be a rigid subgraph of $G$, proper on $|V| - 1 \ge 2$ vertices ---
-  contradicting the no-proper-rigid hypothesis. At $k > 0$, clause (i) gives
-  a base meeting $\widetilde{vb}$ in exactly one copy, but
-  \cref{lem:edge-set-indep-pos} forces every base to equal $E(\tilde G)$,
-  which meets $\widetilde{vb}$ in all $D - 1 \ge 2$ copies ($D \ge 3$ is
-  sharp: at $D = 2$ the contradiction vanishes) --- contradiction.
-\end{proof}
+  For (i) we argue as Katoh and Tanigawa do
+  (\cref{rem:kt-lemma-44}). Let $B'$ be a base of $M(\widetilde{G_v})$.
+  As $G_v$ is a subgraph of $G_v^{ab}$, the set $B'$ is independent in
+  $M(\widetilde{G_v^{ab}})$ (\cref{lem:matroid-restrict-subgraph}), and
+  it contains no copy of $ab$. By case~(i) of KT Lemma~4.2 with $h' = 0$
+  (\cref{lem:edge-splitting}), $M(\tilde G)$ has an independent set $I$
+  with $|I| = |B'| + D$ and $|\tilde e_b \cap I| = 1$. The vertices of
+  $G_v$ are the $|V(G)| - 1$ vertices of $G$ other than $v$. So KT
+  eq.~(2.4) (\cref{thm:def-eq-corank}), for $G_v$ and for $G$, gives
+  \[
+    |I| \;=\; D\,(|V(G)| - 2) - k + D \;=\; D\,(|V(G)| - 1) - k
+    \;=\; \operatorname{rank} M(\tilde G),
+  \]
+  and $I$ is a base.
 
-\begin{lemma}[A low-degree vertex by the average-degree count; KT Lemma 4.6, core]
+  For (ii), KT Lemma~4.4 (\cref{lem:removal-deficiency}) gives
+  $\operatorname{def}(\widetilde{G_v}) \ge k$, and we show that
+  equality fails. Suppose that $\operatorname{def}(\widetilde{G_v}) = k$.
+  If $k = 0$, then $G_v$ is a rigid subgraph of $G$ with
+  $|V(G)| - 1 \ge 2$ vertices, not all of those of $G$, which is
+  impossible. If $k > 0$, then by (i) some base $B$ of $M(\tilde G)$ has
+  $|\tilde e_b \cap B| = 1$. But $B = E(\tilde G)$
+  (\cref{lem:edge-set-indep-pos}), which contains all $D - 1 \ge 2$
+  copies of $e_b$. This is Katoh and Tanigawa's
+  proof~\cite[p.~665]{katohTanigawa2011}.
+\end{proof}
+\begin{fmlnote}
+  The pins also take a label $e_0 \notin E(G)$ for the new edge of
+  $G_v^{ab}$, which the proof of (i) uses
+  (\cref{fmlnote:graph-operations}).
+\end{fmlnote}
+
+KT Lemma~4.6 shows that a $2$-edge-connected minimal $k$-dof-graph with
+no proper rigid subgraph is a cycle on at most $d$ vertices, or contains
+a chain $v_0 v_1 \dots v_d$ of length $d$ whose inner vertices have
+degree two. We prove this for $k = 0$ (\cref{lem:chain-cycle-dichotomy}).
+Katoh and Tanigawa's proof begins with a vertex of degree two, which the
+next two lemmas give.
+
+\begin{lemma}[A vertex of degree at most two; from the proof of KT Lemma~4.6]
   \label{lem:low-degree-vertex}
   \lean{Graph.exists_degree_le_two}
   \leanok
   \uses{lem:no-rigid-edge-count, def:k-dof}
-  Let $G$ be a minimal $k$-dof-graph with no proper rigid subgraph,
-  $V(G) \neq \emptyset$, and $D = \binom{d+1}{2} \ge 3$ (the molecular
-  regime $d \ge 2$). Then some vertex $v \in V(G)$ has multigraph degree
-  $\deg_G(v) \le 2$.
+  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with at least one
+  vertex and no proper rigid subgraph. Then $G$ has a vertex of degree at
+  most two.
 \end{lemma}
 \begin{proof}
   \leanok
-  Average-degree count. The all-$k$ edge bound (\cref{lem:no-rigid-edge-count})
-  gives $(D-1)\,|E| < D\,(|V|-1) - k + (D-1)$; using $k \ge 0$
-  (\texttt{Graph.deficiency\_nonneg}) this implies $(D-1)\,|E| < D|V| - 1$,
-  i.e.\ $2|E| < 3|V|$ (after $D \ge 3$ and $|V| \ge 1$). The multigraph handshake
-  $\sum_v \deg_G(v) = 2|E|$ then forces some vertex to have degree $\le 2$
-  by a finite pigeonhole. The degree function and the handshake are the
-  vendored \texttt{Graph.degree} / \texttt{Graph.handshake\_degree\_subtype}
-  API (Peter Nelson's \texttt{apnelson1/Matroid} \texttt{Graph.incFun}
-  development), reused here rather than re-derived.
+  As $V(G)$ is not empty, $k \ge 0$, so \cref{lem:no-rigid-edge-count}
+  gives
+  \[
+    (D-1)\,|E(G)| \;<\; D\,(|V(G)| - 1) + D - 1 \;<\; D\,|V(G)|.
+  \]
+  The degrees of the vertices of $G$ sum to $2|E(G)|$, so their average
+  is less than $2D/(D-1) = 2 + 2/(D-1)$, which is at most $3$ as
+  $D \ge 3$. Hence some vertex has degree at most two. This is KT
+  eq.~(4.5)~\cite[p.~664]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[Existence of a degree-2 vertex; KT Lemma 4.6]
+\begin{lemma}[A vertex of degree two; from the proof of KT Lemma~4.6]
   \label{lem:reducible-vertex}
   \lean{Graph.exists_degree_eq_two}
   \leanok
   \uses{lem:low-degree-vertex, lem:two-edge-conn, def:k-dof}
-  A minimal $k$-dof-graph $G$ that is $2$-edge-connected, has no proper rigid
-  subgraph, $|V| \ge 2$, and $D = \binom{d+1}{2} \ge 3$ (the molecular regime
-  $d \ge 2$) contains a vertex $v$ of multigraph degree exactly $2$. The
-  $2$-edge-connectivity is supplied at the call site for $k = 0$ by
-  \cref{lem:two-edge-conn}. (This degree-2 vertex is the one whose splitting-off
-  the reduction step (\cref{lem:reduction-step}) shows preserves minimality and
-  the degree of freedom.)
+  Let $D \ge 3$, and let $G$ be a $2$-edge-connected minimal
+  $k$-dof-graph with at least two vertices and no proper rigid subgraph.
+  Then $G$ has a vertex of degree two.
 \end{lemma}
 \begin{proof}
   \leanok
-  The average-degree count (\cref{lem:low-degree-vertex}) supplies a
-  vertex of degree $\le 2$; the $2$-edge-connectivity hypothesis forces
-  $\deg_G(v) \ge 2$ (\texttt{Graph.two\_le\_degree\_of\_twoEdgeConnected}),
-  pinning it to degree exactly $2$. This is the lemma that guarantees the
-  induction can always take a step.
+  By \cref{lem:low-degree-vertex}, $G$ has a vertex of degree at most
+  two. As $G$ is $2$-edge-connected and has at least two vertices, every
+  vertex of $G$ has degree at least two (\cref{def:cut-edges-2ec}).
 \end{proof}
 
-\begin{lemma}[Each reduction strictly shrinks the vertex set; KT Theorem 4.9, measure]
+A $0$-dof-graph is $2$-edge-connected (KT Lemma~3.1,
+\cref{lem:two-edge-conn}). So for $k = 0$ the hypothesis of
+$2$-edge-connectivity holds automatically.
+
+Katoh and Tanigawa prove their Theorem~4.9 by induction on the number of
+vertices~\cite[pp.~666--667]{katohTanigawa2011}.
+
+\begin{lemma}[The reductions lower the number of vertices; from the proof of KT Theorem~4.9]
   \label{lem:reduction-measure}
   \lean{Graph.splitOff_vertexSet_ncard_lt, Graph.rigidContract_vertexSet_ncard_lt}
   \leanok
   \uses{def:graph-operations, def:rigid-contraction}
-  Both reduction operations strictly decrease the number of vertices, the
-  well-founded measure on which Theorem~4.9 inducts. Splitting-off deletes
-  the degree-2 vertex, $V(G_v^{ab}) = V(G) \setminus \{v\}$, so
-  $|V(G_v^{ab})| < |V(G)|$ for $v \in V(G)$. Contraction collapses $V(H)$ to a
-  single representative, so $|V(G / E(H))| \le |V(G)| - |V(H)| + 1 < |V(G)|$
-  whenever $|V(H)| \ge 2$ --- the genuine requirement, since contracting a
-  single-vertex subgraph is a vertex-set no-op; Case~I always contracts a
-  proper rigid subgraph spanning at least two vertices.
+  Let $G$ be a multigraph. If $v$ is a vertex of $G$ of degree two, whose
+  edges join $v$ to vertices $a$ and $b$, then
+  $|V(G_v^{ab})| < |V(G)|$. If $H$ is a subgraph of $G$ with at least two
+  vertices, and $G/E(H)$ is the contraction of $H$ to one of its
+  vertices, then $|V(G/E(H))| < |V(G)|$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Splitting-off: immediate from $V(G_v^{ab}) = V(G) \setminus \{v\}$
-  (\texttt{Graph.vertexSet\_splitOff}) and $v \in V(G)$. Contraction: the
-  image $\operatorname{collapseTo}\,r\,V(H)\,''\,V(G)$ is contained in
-  $(V(G) \setminus V(H)) \cup \{r\}$, of cardinality at most $|V(G)| - |V(H)|
-  + 1$, which is $< |V(G)|$ exactly when $|V(H)| \ge 2$.
+  The vertices of $G_v^{ab}$ are those of $G$ other than $v$
+  (\cref{def:graph-operations}), and $G/E(H)$ has
+  $|V(G)| - |V(H)| + 1$ vertices (\cref{def:rigid-contraction}).
 \end{proof}
 
-\begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]
+\begin{lemma}[Splitting off and contraction keep a minimal $0$-dof-graph minimal; KT Lemmas~4.8(i) and~3.5]
   \label{lem:reduction-step}
   \lean{Graph.splitOff_isMinimalKDof, Graph.contraction_isMinimalKDof}
   \leanok
   \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking, lem:reduction-measure, lem:circuit-induces-rigid}
-  Each reduction --- splitting-off at the degree-2 vertex of
-  \cref{lem:reducible-vertex}, or contraction of a proper rigid
-  subgraph (\cref{lem:contraction-minimality}) --- carries a minimal
-  $0$-dof-graph (with no proper rigid subgraph and $|V| \ge 3$, in the
-  splitting-off case) to a smaller minimal $0$-dof-graph. This is the
-  inductive step of KT Theorem~4.9. ($|V| \ge 3$ is the splitting
-  branch's standing regime and is genuinely needed: the two-vertex
-  double edge splits to a one-vertex loop graph, which is not
-  minimal.)
+  Let $D \ge 2$, and let $G$ be a minimal $0$-dof-graph.
+  \begin{enumerate}
+    \item Suppose that $G$ has at least three vertices and no proper
+      rigid subgraph, and let $v$ be a vertex of $G$ of degree two, whose
+      edges join $v$ to vertices $a, b \neq v$. Then $G_v^{ab}$ is a
+      minimal $0$-dof-graph.
+    \item Let $H$ be a proper rigid subgraph of $G$. Then
+      \[
+        \operatorname{rank}\bigl(M(\tilde G)/E(\tilde H)\bigr) \;=\;
+        D\,(|V(G)| - |V(H)|),
+      \]
+      and every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for
+      every edge $e$ of $G$ that is not an edge of $H$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:circuit-induces-rigid}
-  The contraction branch is \cref{lem:contraction-minimality}. For the
-  splitting-off branch (KT 4.8(i)): $\operatorname{def}(\tilde
-  G_v^{ab}) = 0$ is \cref{lem:dof-tracking} squeezed against
-  $\operatorname{def}(\tilde G) = 0$. For minimality, Katoh--Tanigawa's
-  claim (4.10) --- every circuit of $M(\tilde G_v^{ab})$ meets the fresh
-  short-circuit fiber $\tilde{ab}$ --- is exactly the statement that the
-  surviving ground set $E(\tilde G_v) = E(\tilde G_v^{ab}) \setminus
-  \tilde{ab}$ is independent in $M(\tilde G_v^{ab})$: otherwise a circuit
-  inside it would be a circuit of $M(\tilde G)$ avoiding $v$, inducing a
-  proper rigid subgraph (\cref{lem:circuit-induces-rigid}; it spans at
-  least two vertices since $G$ is loopless --- a loop copy would be a
-  matroid loop inside a base, contradicting minimality;
-  \texttt{Graph.loopless\_of\_isMinimalKDof}). So $E(\tilde
-  G_v)$ is a base of $M(\tilde G_v)$, and KT 4.7 gives
-  $\operatorname{def}(\tilde G_v) > 0$ ($G_v$ is a proper subgraph on
-  $|V(G)| - 1 \ge 2$ vertices, so not rigid). A \emph{rank count} replaces KT's iterated fundamental-circuit
-  swap: any base $B'$ of $M(\tilde G_v^{ab})$ avoiding a fiber $\tilde e$
-  has $|B'| \le |E(\tilde G_v)|$ (split $B'$ across $\tilde{ab}$ and
-  $E(\tilde G_v)$), which through
-  $|B| + \operatorname{def} = D(|V|-1)$ forces $\operatorname{def}(\tilde
-  G_v) \le 0$ --- a contradiction. Hence every base meets every fiber.
+  Part~(ii) is the case $k = 0$ of \cref{lem:contraction-minimality}.
+
+  For (i) we follow Katoh and Tanigawa's
+  proof~\cite[pp.~665--666]{katohTanigawa2011} up to its last step. Let
+  $G' = G_v^{ab}$, and let $G_v = G - v$. Both have the $|V(G)| - 1$
+  vertices of $G$ other than $v$, and the edges of $\widetilde{G'}$ are
+  those of $\widetilde{G_v}$ and the $D - 1$ copies of $ab$. By
+  \cref{lem:dof-tracking},
+  $\operatorname{def}(\widetilde{G'}) \le \operatorname{def}(\tilde G) = 0$,
+  and $\operatorname{def}(\widetilde{G'}) \ge 0$ as $G'$ has a vertex. So
+  $G'$ is a $0$-dof-graph. The subgraph $G_v$ of $G$ has
+  $|V(G)| - 1 \ge 2$ vertices, but not all of those of $G$. As $G$ has
+  no proper rigid subgraph, $G_v$ is not rigid, and so
+  $\operatorname{def}(\widetilde{G_v}) > 0$. This is the case $k = 0$ of
+  KT Lemma~4.7.
+
+  Every circuit $X$ of $M(\widetilde{G'})$ meets $\widetilde{ab}$ (KT
+  eq.~(4.10)). Otherwise $X$ is a set of edges of $\widetilde{G_v}$. As
+  $G_v$ is a subgraph of both $G'$ and $G$, $X$ is then a circuit of
+  $M(\widetilde{G_v})$ and of $M(\tilde G)$
+  (\cref{lem:matroid-restrict-subgraph}). As $G$ has no loops,
+  $|V(X)| \ge 2$, and no edge of $X$ is incident with $v$. So $G[V(X)]$
+  is a proper rigid subgraph of $G$ (\cref{lem:circuit-induces-rigid}),
+  which is impossible. Hence $E(\widetilde{G_v})$ contains no circuit of
+  $M(\widetilde{G'})$, and it is independent in $M(\widetilde{G'})$ and
+  in its restriction $M(\widetilde{G_v})$, whose ground set it is. Thus
+  $E(\widetilde{G_v})$ is the only base of $M(\widetilde{G_v})$, and KT
+  eq.~(2.4) (\cref{thm:def-eq-corank}) gives
+  \[
+    |E(\widetilde{G_v})| \;=\; D\,(|V(G)| - 2) -
+    \operatorname{def}(\widetilde{G_v}) \;<\; D\,(|V(G)| - 2).
+  \]
+
+  Now let $B'$ be a base of $M(\widetilde{G'})$, and let $e$ be an edge
+  of $G'$. By KT eq.~(2.4), $|B'| = D(|V(G)| - 2)$. Suppose that $B'$
+  does not meet $\tilde e$. If $e$ is the new edge $ab$, then $B'$ is a
+  set of edges of $\widetilde{G_v}$. Otherwise $e$ is an edge of $G_v$,
+  and $B'$ consists of at most $D - 1$ copies of $ab$ and of edges of
+  $\widetilde{G_v}$ outside $\tilde e$, of which there are
+  $|E(\widetilde{G_v})| - (D - 1)$. In both cases
+  $|B'| \le |E(\widetilde{G_v})| < D(|V(G)| - 2)$, a contradiction. So
+  every base of $M(\widetilde{G'})$ meets $\tilde e$ for every edge $e$
+  of $G'$, and $G'$ is minimal.
+
+  Katoh and Tanigawa end differently. They start from a base of
+  $M(\widetilde{G'})$ that misses $\tilde e$ for an edge $e \neq ab$, and
+  use KT eq.~(4.10) to exchange its copies of $ab$, one at a time, for
+  copies of $e$. This gives a base of $M(\widetilde{G'})$ with no copy of
+  $ab$, which is a base of $M(\widetilde{G_v})$ with $D(|V(G)| - 2)$
+  elements, against KT Lemma~4.7. We replace this exchange by the count
+  above.
 \end{proof}
 
-\begin{lemma}[Reduction step preserves minimality, positive dof; KT Lemma 4.8(ii)]
+In part~(i) of \cref{lem:reduction-step}, the bound $|V(G)| \ge 3$ is
+needed. The two-vertex double edge is a minimal $0$-dof-graph with no
+proper rigid subgraph, and both of its vertices have degree two.
+Splitting off either of them leaves one vertex with a loop. This graph
+is a $0$-dof-graph, as it has one vertex, but it is not minimal, as the
+only base of its matroid is empty.
+
+By \cref{lem:reduction-measure}, the graphs $G_v^{ab}$ and $G/E(H)$ of
+the lemma have fewer vertices than $G$. For $D \ge 2$, its part~(ii)
+gives Katoh and Tanigawa's form of their Lemma~3.5, as we explained
+after \cref{lem:contraction-minimality}: the graph $G/E(H)$ is again a
+minimal $0$-dof-graph. We prove this in Case~I of the algebraic
+induction (\cref{lem:rigidContract-isMinimalKDof}).
+
+\begin{lemma}[Splitting off when $k > 0$; KT Lemma~4.8(ii)]
   \label{lem:reduction-step-pos}
   \lean{Graph.splitOff_isMinimalKDof_of_pos}
   \leanok
   \uses{lem:dof-tracking, lem:reduction-measure, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
-  Let $G$ be a minimal $k$-dof-graph with $k > 0$, $D \ge 3$, $|V| \ge 3$, and no proper
-  rigid subgraph. Then splitting off at a degree-2 vertex $v$ (with neighbours $a, b$) yields
-  a minimal $(k-1)$-dof-graph $G_v^{ab}$.
+  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with $k > 0$, at
+  least three vertices and no proper rigid subgraph. Let $v$ be a vertex
+  of $G$ of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
+  vertices $a, b \neq v$. Then $G_v^{ab}$ is a minimal
+  $(k-1)$-dof-graph.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
-  \textbf{Step 1 (dof tracking).} \Cref{lem:dof-tracking} gives
-  $\operatorname{def}(G_v^{ab}) \in \{k-1, k\}$. \textbf{Step 2 (ruling out $k$).}
-  If $\operatorname{def}(G_v^{ab}) = k$ then by \cref{lem:splitoff-kdof-criterion} some
-  base $B$ of $M(\tilde{G}_v^{ab})$ meets the fiber $\widetilde{ab}$ in fewer than $D-1$
-  elements. \Cref{lem:edge-set-indep-pos} provides the unique base $E(\tilde{G}_v)$ of
-  $M(\tilde{G}_v^{ab})$; a fundamental-circuit argument then applies
-  \cref{lem:edge-splitting} (KT 4.2(i)) to produce a proper rigid subgraph, contradicting
-  the hypothesis. Hence $\operatorname{def}(G_v^{ab}) = k-1$.
-  \textbf{Step 3 (minimality at $k-1$).} For any proper subgraph $H \le G_v^{ab}$: if
-  $e_0 \notin E(H)$ then \cref{lem:removal-deficiency-strict} and \cref{lem:edge-splitting}
-  (KT 4.2(ii)) show $\operatorname{def}(H) < k-1$; otherwise $H$ lifts to a proper
-  subgraph of $G$ via the commuting square
-  $\mathtt{induce\_insert\_splitOff}$, and \cref{lem:circuit-induces-rigid} forces the
-  deficiency below $k-1$.
+  Let $G' = G_v^{ab}$. Its vertices are the $|V(G)| - 1$ vertices of $G$
+  other than $v$, and by \cref{lem:dof-tracking},
+  $\operatorname{def}(\widetilde{G'})$ is $k - 1$ or $k$.
+
+  We show, as Katoh and Tanigawa do~\cite[p.~666]{katohTanigawa2011},
+  that $\operatorname{def}(\widetilde{G'}) \neq k$. Suppose that
+  $\operatorname{def}(\widetilde{G'}) = k$. By KT Lemma~4.3(ii)
+  (\cref{lem:splitoff-kdof-criterion}), $M(\widetilde{G'})$ has a base
+  $B'$ that misses a copy $p$ of $ab$. Let $X$ be the fundamental circuit
+  of $p$ with respect to $B'$, and let $H = G'[V(X)]$, a rigid subgraph
+  of $G'$ (\cref{lem:circuit-induces-rigid}). If $V(H) = V(G')$, then
+  $\operatorname{rank} M(\widetilde{G'}) \ge \operatorname{rank}
+  M(\tilde H) = D(|V(G')| - 1)$ (\cref{lem:rigid-full-rank}), and KT
+  eq.~(2.4) gives $\operatorname{def}(\widetilde{G'}) \le 0 < k$. So
+  $V(H)$ is a proper subset of $V(G')$. It contains the ends $a$ and $b$
+  of $p$.
+
+  Let $K = G[V(H) \cup \{v\}]$. Then $v$ has degree two in $K$, and
+  $K_v^{ab} = H$. The set $I = X - p$ is independent in $M(\tilde H)$,
+  with $|I| = D(|V(H)| - 1)$ (\cref{lem:circuit-induces-rigid}). As
+  $I \subseteq B'$ and $p \notin B'$, also
+  $|\widetilde{ab} \cap I| < D - 1$. By case~(i) of KT Lemma~4.2
+  (\cref{lem:edge-splitting}) for $K$, $M(\tilde K)$ has an independent
+  set with $|I| + D = D(|V(K)| - 1)$ elements. So
+  $\operatorname{def}(\tilde K) = 0$ by KT eq.~(2.4), and $K$ is a rigid
+  subgraph of $G$. Its vertex set $V(H) \cup \{v\}$ has at least two
+  elements, and it is a proper subset of $V(G)$. This contradicts the
+  hypothesis, and so $\operatorname{def}(\widetilde{G'}) = k - 1$.
+
+  It remains to show that $G'$ is minimal: every base $B'$ of
+  $M(\widetilde{G'})$ meets $\tilde e$ for every edge $e$ of $G'$. This
+  is the minimality clause of KT Lemma~4.3(i). By KT eq.~(2.4),
+  $|B'| = D(|V(G)| - 2) - (k - 1)$. Suppose that $B'$ misses $\tilde e$.
+  If $e = ab$, then $B'$ is an independent set of $M(\widetilde{G_v})$,
+  where $G_v = G - v$. So KT eq.~(2.4) gives
+  $\operatorname{def}(\widetilde{G_v}) \le k - 1$, against KT Lemma~4.7
+  (\cref{lem:removal-deficiency-strict}). If $e \neq ab$, then $e$ is an
+  edge of $G$ other than $e_a$ and $e_b$, and we follow Katoh and
+  Tanigawa's proof~\cite[p.~661]{katohTanigawa2011}. As $G'$ is not a
+  $k$-dof-graph, $B'$ contains all $D - 1$ copies of $ab$
+  (\cref{lem:splitoff-kdof-criterion}). By case~(ii) of KT Lemma~4.2
+  (\cref{lem:edge-splitting}), $M(\tilde G)$ has an independent set $J$
+  with $|J| = |B'| + D - 1 = D(|V(G)| - 1) - k$ and
+  $J \setminus (\tilde e_a \cup \tilde e_b) = B' \setminus \widetilde{ab}$.
+  By KT eq.~(2.4), $J$ is a base of $M(\tilde G)$, and it does not meet
+  $\tilde e$, against the minimality of $G$.
 \end{proof}
 
 \subsection{Theorem 4.9}

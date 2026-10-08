@@ -281,6 +281,24 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `90051e3c`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.14.
+- **F-095** · E · KT Lemmas 4.3(ii)–4.8's nodes (`molecular-induction.tex`): edges the pins do
+  not back, and edges they need. The statement edges of `lem:reduction-step` to
+  `lem:reducible-vertex` and `lem:reduction-measure`, and of `lem:reduction-step-pos` to
+  `lem:reduction-measure`, have no Lean basis; since task 2.15 neither statement names them (the
+  vertex count follows `lem:reduction-step` in prose). `lem:reduction-step-pos` reaches
+  `lem:edge-set-indep-pos` only through `lem:removal-deficiency-strict`. The statement edges of
+  `lem:splitoff-kdof-criterion` and `lem:removal-deficiency-strict` (whose proof has no `\uses`)
+  are their proofs'. Missing: `lem:rigid-full-rank`, which the proofs of `lem:edge-set-indep-pos`
+  and `lem:reduction-step-pos` cite; `lem:splitoff-edge-substitution` (`case-ii.tex`, `F-089`),
+  which the pins of `lem:removal-deficiency-strict` and `lem:reduction-step-pos` reach; and
+  `def:cut-edges-2ec`, whose 2-edge-connectivity the statement of `lem:reducible-vertex` uses.
+  Round 3's pointers: `lem:rigidContract-isMinimalKDof` (`case-i.tex`) uses and cites
+  `lem:reduction-step` for the smaller vertex count, which is `lem:reduction-measure`'s, and the
+  proof of `lem:case-II-realization` (`case-ii.tex`) cites `lem:reduction-step-pos` for the vertex
+  of degree two, which is `lem:reducible-vertex`'s.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `d9b0e96a`); read (the pins'
+  statements and bodies; the two citing passages).
+  *Found:* round 2 task 2.15.
 
 ## N — node shape
 
@@ -485,6 +503,14 @@ declaration's name as its header writes it:
   declaration with a note, or delete it and keep KT's use for Lemma 4.4 in `rem:kt-lemma-44`.
   *Evidence:* read (the pin's statement; KT 2011 pp. 660–662).
   *Found:* round 2 task 2.13.
+- **F-096** · N · `lem:removal-deficiency-strict` and `lem:reduction-step`
+  (`molecular-induction.tex`): each bundles results that KT state separately (principle E). The
+  first is the second assertion of KT Lemma 4.4 and KT Lemma 4.7, one pin each. The second is KT
+  Lemma 4.8(i) and, through `Graph.contraction_isMinimalKDof`, which is also
+  `lem:contraction-minimality`'s pin, KT Lemma 3.5 at $k = 0$ (`F-084`). Split the first; unpin the
+  second's contraction half and keep it a sentence.
+  *Evidence:* read (the four pins' statements; KT 2011 pp. 662, 665–666).
+  *Found:* round 2 task 2.15.
 
 ## T — terminology and notation
 
@@ -741,7 +767,9 @@ declaration's name as its header writes it:
   matroid form and gives the graph form after it, citing `lem:rigidContract-isMinimalKDof`, as
   task 2.4 moved a gloss to the node whose pin proves it. Task 2.15 rewrites `lem:reduction-step`;
   the statement of `lem:case-I` (`case-i.tex`, round 3) also cites `lem:contraction-minimality`
-  for the graph form.
+  for the graph form. Task 2.15 states the pin's matroid form at $k = 0$ as part (ii) of
+  `lem:reduction-step`, and after the node, with `lem:reduction-measure`, the fewer vertices and
+  the graph form (`lem:rigidContract-isMinimalKDof`).
   *Evidence:* read (the statements of the three declarations, `Induction/Contraction.lean`).
   *Found:* round 2 task 2.11.
 - **F-086** · S · `lem:acyclic-insert-vfiber` and `lem:packing-move` (`molecular-induction.tex`):
@@ -1038,6 +1066,20 @@ declaration's name as its header writes it:
   forest surgery "deferred"; `removeVertex_deficiency_ge`'s cites `notes/Phase20.md` *Finding 2*.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.14.
+- **F-097** · L · the pins of KT Lemmas 4.5–4.8 (`Induction/ReducibleVertex.lean`,
+  `Induction/Operations.lean`, `Induction/ForestSurgery/Reduction.lean`): in
+  `splitOff_isMinimalKDof_of_pos`, the case $e = e_0$ of the minimality applies KT 4.7
+  (`removeVertex_deficiency_gt_of_noRigid`). The criterion step of the other case (a base missing a
+  copy of $ab$ would make $G_v^{ab}$ a $k$-dof-graph) settles it, so the proof needs neither KT 4.7
+  nor `lem:edge-set-indep-pos`, and holds for $D \ge 2$. In it and in
+  `removeVertex_deficiency_gt_of_noRigid`, `hV3 : 3 ≤ V(G).ncard` follows from the distinct
+  $v, a, b \in V(G)$. The docstrings of `splitOff_vertexSet_ncard_lt` and
+  `rigidContract_vertexSet_ncard_lt` name `lem:reduction-step`, not `lem:reduction-measure`; the
+  section before `no_rigid_edge_count` states the bound for $k = 0$ only; those before
+  `mulTilde_edgeSet_ncard` and `exists_degree_le_two` call KT 4.5(i) "still to land" and the
+  degree-two step "the remaining `lem:reducible-vertex` work".
+  *Evidence:* read (the bodies and docstrings).
+  *Found:* round 2 task 2.15.
 
 ## M — mathematics and sources
 
