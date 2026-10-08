@@ -273,6 +273,27 @@ declaration's name as its header writes it:
   into forward references instead.
   *Evidence:* read (the `\uses` of both chapters; `main.tex`; `count-matroid.tex`'s opening).
   *Found:* round 1 task 5.10.
+- **F-043** · N · `thm:pebbleGameResult-isAccept-iff` (`pebble-game.tex`): its second pin,
+  `runPebbleGameExec_isAccept_iff` (`Exec.lean`), is a statement about `def:runPebbleGameExec` of
+  `executable.tex`, the next section, and its proof uses that section's sorted lists. The missing
+  edges (counted in `F-001`) would point forward. Prose cannot remove the forward reference; task
+  5.15's statement names the computable pebble game with a `\cref` of `sec:executable`. Moving the
+  pin to a node of `executable.tex`, whose prose after `fmlnote:executable-computable-core` already
+  restates the fact, would remove it.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label thm:pebbleGameResult-isAccept-iff`, at
+  `640505ce`: `def:runPebbleGameExec` missing from the statement; `def:outListSorted`,
+  `def:edgeListSorted`, `lem:mem-outListSorted` and `lem:mem-edgeListSorted` from the proof).
+  *Found:* round 1 task 5.15.
+- **F-044** · N · `runPebbleGameWith_witness_bridges` (`Correctness.lean`): a load-bearing lemma
+  with no node. If the game on a list of edges of $G$, from an orientation of edges of $G$, returns
+  a failure witness, then the witness's pair is an edge of $G$ and its orientation orients only
+  edges of $G$ (by induction on the list). `runPebbleGameWith_correct`, `runPebbleGame.aux` and
+  `runPebbleGameExec.aux` use it to apply `certifies_against`. Task 5.15's proof of
+  `thm:pebble-game-correct` (2) argues it in words, citing `lem:runPebbleGameWith-underline-subset`.
+  *Evidence:* read (its statement and body; a `grep` for its three callers); measured
+  (`scripts/blueprint-deps.py --label thm:pebble-game-correct`, at `640505ce`: every proof chain
+  of the pin runs through it).
+  *Found:* round 1 task 5.15.
 
 ## T — terminology and notation
 
@@ -370,6 +391,30 @@ declaration's name as its header writes it:
   *Evidence:* read (the definition at `db7ff7d6^` and at `db7ff7d6`; `PebbleGameResult`,
   `Correctness.lean`).
   *Found:* round 1 task 5.13; filed by task 5.14 at the coordinator's request.
+- **F-041** · S · `thm:pebble-game-correct` (`pebble-game.tex`): the statement says more than its
+  pin. `runPebbleGameWith_correct` states only the equivalence: $G$ is $(k, \ell)$-sparse if and
+  only if the game on the list returns a partial orientation. The statement adds (1) that a
+  returned $D$ has $\underline{D} = E(G)$, and (2) that the set of a returned failure witness is a
+  blocking witness for $G$, and an "in particular" for the pebble game on $G$. (1) is the pins of
+  `lem:runPebbleGame-underline-eq` and `thm:pebble-game-soundness`. (2) is proved inside the pin's
+  proof and in the bodies of `runPebbleGame.aux` and `runPebbleGameExec.aux`, from
+  `runPebbleGameWith_witness_bridges` and `certifies_against` (`F-044`), but no declaration states
+  it. The old statement ("Concretely: (1) … (2) …") said both, and task 5.15 kept them. As in
+  `F-036`, the old "edge list whose Sym2-image is $E(G)$" did not say that each edge appears once,
+  which the pin requires (`hpairwise`); the statement now says it. Finiteness and $\ell < 2k$
+  match the pin.
+  *Evidence:* read (the statement and body of `runPebbleGameWith_correct`, `Correctness.lean`, and
+  the two `aux` bodies, `Correctness.lean` and `Exec.lean`; `#check` of the four pins of task 5.15
+  through the Lean server).
+  *Found:* round 1 task 5.15.
+- **F-042** · S · `def:pebbleGameResult` (`pebble-game.tex`): the definition takes a finite simple
+  graph $G$ on $V$. Its pin `PebbleGameResult` takes only `[DecidableEq V]` and
+  `[Fintype G.edgeSet]`, so $G$ need only have finitely many edges, as in `F-037`. The definition
+  is narrower than the pin. The other three pins of task 5.15 take `[Fintype V]` and `ℓ < 2 * k`,
+  as their statements say (`runPebbleGameExec_isAccept_iff` also `[LinearOrder V]`).
+  *Evidence:* read (`#check @PebbleGameResult`: the `[Fintype V]` of `Correctness.lean`'s
+  `Verdict` section is not among its binders).
+  *Found:* round 1 task 5.15.
 
 ## L — Lean
 
@@ -488,6 +533,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings named; `grep` for the labels in `blueprint/src/` and for the
   names in the Lean).
   *Found:* round 1 task 5.14.
+- **F-045** · L · `runPebbleGame.aux` and the verdict's docstrings (`PebbleGame/Correctness.lean`):
+  `runPebbleGame.aux`'s docstring says that `certifies_against` "calls
+  `independent_brings_pebble_simpleGraph_form` whose size step uses `ℓ < 2 * k`". The body of
+  `certifies_against` does not call it: it uses `Reachable.pebOn_add_span_add_outOn` and
+  `span_succ_le_edgesIn_ncard_of_subset`, and gets `ℓ ≤ k * V'.card` from `2 ≤ V'.card` itself.
+  The docstrings of `PebbleGameResult`, `PebbleGameResult.isAccept`, `runPebbleGame` and the
+  section header above `runPebbleGameWith_correct` record Phase 11's reshape ("since retired", "the
+  (now-retired) `Sum`-returning `runPebbleGameExec`", "maximally reshapes the previous Phase 11
+  Layer 4 design"), the kind `F-035` records in `Basic.lean` and `Algorithm.lean`.
+  *Evidence:* read (the body of `certifies_against` and the docstrings named).
+  *Found:* round 1 task 5.15.
 
 ## M — mathematics and sources
 

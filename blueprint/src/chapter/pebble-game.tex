@@ -1,62 +1,62 @@
 \section{The \texorpdfstring{$(k, \ell)$}{(k, l)}-pebble game}
 \label{sec:pebble-game}
 
-The $(k, \ell)$-count matroid of \cref{sec:count-matroid} is defined
-combinatorially: a subset of $E(K_V)$ is independent precisely when
-the induced subgraph is $(k, \ell)$-sparse. \Cref{sec:count-matroid}
-established that this collection of subsets satisfies the matroid
-axioms via an augmentation / $I$-component argument, but the proof
-is not constructive: given an arbitrary edge set, it does not
-exhibit a procedure to decide whether the set is independent.
+Lee and Streinu~\cite{leeStreinu2008} decide whether a graph is
+$(k, \ell)$-sparse by an algorithm, the \emph{$(k, \ell)$-pebble game}.
+It generalizes the pebble game of Jacobs and
+Hendrickson~\cite{jacobsHendrickson1997} for rigidity in the plane,
+which in Lee and Streinu's terms is the $(2, 3)$-pebble
+game~\cite[p.~1426]{leeStreinu2008}. The game considers the edges of
+the input graph one at a time. It keeps the accepted edges oriented,
+with pebbles on the vertices, and it accepts an edge when at least
+$\ell + 1$ free pebbles can be gathered on its two endpoints. We
+formalize Lee and Streinu's basic pebble
+game~\cite[\S 3]{leeStreinu2008} on simple graphs, for $\ell < 2k$, the
+range they consider. We prove that it accepts every edge of a graph $G$
+if and only if $G$ is $(k, \ell)$-sparse. When it rejects an edge, it
+returns a set of vertices that shows that $G$ is not $(k, \ell)$-sparse.
 
-The \emph{$(k, \ell)$-pebble game} of
-Lee--Streinu~\cite{leeStreinu2008} (generalising the original
-$(2, 3)$ algorithm of Jacobs--Hendrickson~\cite{jacobsHendrickson1997})
-is the missing algorithmic side. It processes a list of candidate
-edges one at a time, maintaining a partial orientation of the
-accepted edges together with a distribution of \emph{pebbles} on
-the vertices, and decides at each step whether to insert the
-candidate or reject it. We formalise the basic version of the
-algorithm (Lee--Streinu \S 3) and prove its correctness theorem
-(Lee--Streinu \S 4, Theorem 8) in the matroidal regime $\ell < 2k$
-that matches \cref{sec:count-matroid}, in a certificate form: on
-success, the algorithm returns the partial orientation as a
-witness of sparsity; on failure, it returns a vertex subset $V'$
-together with a proof that $|\edgesIn{V'}| > k|V'| - \ell$,
-witnessing non-sparsity.
+In \cref{sec:pebble-game-state} we describe the state of the game, a
+partial orientation from which the free pebbles are counted, and its
+two moves, which reverse a directed path and insert an arc. In
+\cref{sec:pebble-game-invariants} we prove Lee and Streinu's four
+invariants for the orientations that these moves reach. In
+\cref{sec:pebble-game-algorithm} we define the algorithm; it finds
+pebbles with the depth-first search of \cref{sec:dfs}. We prove the two
+directions of correctness in \cref{sec:pebble-game-soundness} and
+\cref{sec:pebble-game-completeness}, and combine them in
+\cref{sec:pebble-game-correctness}. The first direction follows from the
+fourth invariant. For the second, we show that when the game rejects an
+edge, the set $V'$ of vertices reachable from its endpoints spans more
+than $k|V'| - \ell$ edges of $G$. In the formalization, the game
+returns its answer together with these proofs, as a verdict
+(\cref{sec:pebble-game-verdict}). In
+\cref{sec:pebble-game-matroid} we return to the $(k, \ell)$-count
+matroid of \cref{sec:count-matroid}: the game decides whether the edge
+set of a graph is independent in it, and so, at $(k, \ell) = (2, 3)$,
+in the planar rigidity matroid.
 
-\emph{Out of scope.} The \emph{component pebble game} of
-Lee--Streinu \S 5 maintains the $I$-components of the partial
-orientation explicitly to reject dependent edges in $O(1)$ rather
-than $O(n)$ time, achieving an overall $O(n^2)$ bound; the
-underlying data structure (\emph{union pair-find}) was developed
-by Lee--Streinu--Theran~\cite{leeStreinuTheran2005}. The Henneberg-
-sequence application of Lee--Streinu \S 6 generalises the
-Henneberg construction (\cref{sec:henneberg}) from Laman
-graphs to all $(k, \ell)$-tight graphs. Neither is in scope for
-this chapter; both are left to future work.
+Lee and Streinu play the game on multigraphs, which may have loops and
+parallel edges. On simple graphs their invariants simplify
+(\cref{fmlnote:pebble-game-specialisation}). We do not formalize their
+component pebble game (\S 5). It maintains the components of the
+accepted graph (\cref{sec:count-matroid}), rejects an edge at once when
+both its endpoints lie in one component, and runs in time $O(n^2)$ on
+$n$ vertices~\cite[p.~1436]{leeStreinu2008}. For the details of its
+implementation, Lee and Streinu refer to Lee, Streinu and
+Theran~\cite{leeStreinuTheran2005}, who introduce for them a data
+structure problem, union pair-find. Nor do we
+formalize the Henneberg sequences of Lee and Streinu's \S 6, which
+extend the Henneberg construction (\cref{sec:henneberg}) from Laman
+graphs to tight graphs.
 
-\emph{Specialisation to simple graphs.} Lee--Streinu prove the basic
-pebble game correct (\S~3--4, Lemma~10 through Lemma~15) for
-multigraphs with loops and parallel edges. Following the project
-convention (\cref{sec:sparsity}), this chapter works in
-$\mathrm{SimpleGraph}\,V$ and in the matroidal regime $\ell < 2k$.
-The specialisation simplifies the four invariants of Lee--Streinu
-Lemma~10 and merges the two size hypotheses they carry on $V'$ into a
-single premise, without changing the substance of the argument; the
-details are in \cref{fmlnote:pebble-game-specialisation}. The
-per-edge correctness equivalence of Lee--Streinu Lemma~14 is recorded
-in the return type of \cref{def:tryAddEdge}, one constructor per
-outcome: accept, proved $(k, \ell)$-sparse by
-\cref{lem:pebble-game-tryAddEdgeWith-isSparse}, and reject, proved
-non-sparse by \cref{lem:workhorseWitness-certifies}. The input-graph
-classification of Lee--Streinu Lemma~15 (under-, well-, or
-over-constrained as the input is sparse-but-not-tight, tight, or
-spanning) specialises here to the certificate form of
-\cref{thm:pebble-game-correct}; the well- and over-constrained
-sub-classifications, together with the block characterisation of
-Lee--Streinu Corollary~11, need the $I$-component machinery of the
-component pebble game and are deferred along with it.
+Lee and Streinu bound the running time of their basic game by
+$O(m_a n)$, where $m_a$ is the number of accepted edges, counting at
+most $\ell + 1$ depth-first searches for each
+edge~\cite[p.~1430]{leeStreinu2008}. Our pebble search marks only the
+vertices of the walk it follows, so it may visit a vertex once for each
+simple walk to it (\cref{sec:dfs}). Their count therefore does not
+apply to it, and we prove no bound on the running time of our game.
 
 \subsection{State and moves}
 \label{sec:pebble-game-state}
@@ -892,180 +892,183 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
   $|\edgesIn[G]{V'}|$. Hence $G$ is $(k, \ell)$-sparse.
 \end{proof}
 
-\subsection{Correctness of the computable core}
+\subsection{Correctness}
 \label{sec:pebble-game-correctness}
 
-This is the certificate form of Lee--Streinu Theorem~8 in the
-matroidal regime, stated for the computable core: run from the empty
-orientation against an edge list enumerating $E(G)$, the game accepts
-(returns $\mathrm{.inr}\,D$) exactly when $G$ is $(k, \ell)$-sparse,
-and on rejection (the $\mathrm{.inl}\,w$ branch) it carries the
-failure-witness data inline, with the sparsity-violation certificate
-for $G$ recovered by \cref{lem:workhorseWitness-certifies}. The
-convenience forms inherit this through the verdict they return; the
-verdict-form restatement is \cref{thm:pebbleGameResult-isAccept-iff}.
+We now prove the part of Lee and Streinu's
+Theorem~8~\cite[p.~1431]{leeStreinu2008} that concerns sparse graphs:
+the game accepts every edge of $G$, an outcome they call
+well-constrained or under-constrained (\S 3), if and only if $G$ is
+$(k, \ell)$-sparse. One direction is \cref{thm:pebble-game-soundness}.
+Lee and Streinu prove the other from their Lemma~15 (p.~1433); here it
+follows from part~(2) of the theorem below. We state the theorem for
+every list of the edges of $G$ and every choice of the lists
+$N^+_D(a)$, so that it applies to each formal form of the game
+(\cref{fmlnote:pebble-game-computable-core}).
 
-\begin{theorem}[Pebble game correctness, computable-core certificate form]
+\begin{theorem}[Correctness of the pebble game]
   \label{thm:pebble-game-correct}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct}
   \leanok
   \uses{def:runPebbleGame, def:workhorseWitness, def:isSparse,
     thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
     lem:workhorseWitness-certifies}
-  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
-  integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
-  only if there exists a partial orientation $D$ with
-  $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,\ldots =
-  \mathrm{.inr}\,D$ against an edge list whose $\mathrm{Sym}_2$-image
-  is $E(G)$. Concretely:
+  Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$
+  and $\ell$ be non-negative integers with $\ell < 2k$. Let the lists
+  $N^+_D(a)$ be as in \cref{def:tryAddEdge}, and let the pairs
+  $(u_1, v_1), \ldots, (u_m, v_m)$ list the edges of $G$, each once, as
+  $(u, v)$ or as $(v, u)$. Then $G$ is $(k, \ell)$-sparse if and only if
+  the pebble game on this list from the empty orientation returns a
+  partial orientation. More precisely:
   \begin{enumerate}
-    \item If the core returns $\mathrm{.inr}\,D$ (accept), then $G$ is
-      $(k, \ell)$-sparse and $\underline{D} = E(G)$.
-    \item If the core returns $\mathrm{.inl}\,w$ for a failure witness
-      $w : \mathrm{WorkhorseWitness}\,k\,\ell\,V$, then $w.V'$
-      certifies $\ell \le k|w.V'| \wedge k|w.V'| <
-      |\edgesIn[G]{w.V'}| + \ell$ via
-      \cref{lem:workhorseWitness-certifies} --- a blocking witness
-      for $G$.
+    \item if the game returns a partial orientation $D$, then
+      $\underline{D} = E(G)$, and $G$ is $(k, \ell)$-sparse;
+    \item if the game returns a failure witness $(D, V', (u, v))$, then
+      $V'$ is a blocking witness for $G$ (\cref{def:blockingWitness}).
   \end{enumerate}
+  In particular, $G$ is $(k, \ell)$-sparse if and only if the pebble
+  game on $G$ accepts $G$, and if it rejects $G$ with $V'$, then $V'$ is
+  a blocking witness for $G$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
     lem:workhorseWitness-certifies}
-  Part~(1) combines \cref{thm:pebble-game-soundness} (sparsity from
-  Invariant~(4) on the final state) with
-  \cref{lem:runPebbleGame-underline-eq} ($\underline{D} = E(G)$
-  through the fold, in which every candidate is accepted).
+  Part~(1) is \cref{lem:runPebbleGame-underline-eq} and
+  \cref{thm:pebble-game-soundness}.
 
-  Part~(2) extracts the witness directly from the algorithm's
-  structural output: a bridge lemma
-  ($\mathrm{runPebbleGameWith\_witness\_bridges}$) traces the fold's
-  history to establish $\{w.uv_1, w.uv_2\} \in E(G)$ (the pending edge
-  at failure lies in $G$, since it is one of $\mathrm{edges}$ and that
-  list's $\mathrm{Sym}_2$-image is $E(G)$) and $\underline{w.D}
-  \subseteq E(G)$ (the orientation at failure has underlying edge set
-  inside $G$, by accept-step monotonicity from the empty input). Then
-  \cref{lem:workhorseWitness-certifies} turns the witness data into the
-  $G$-shaped sparsity-violation pair.
+  For part~(2), we first show that every partial orientation that the
+  game reaches orients only edges of $G$. We argue by induction on the
+  list, as in the proof of
+  \cref{lem:runPebbleGameWith-underline-subset}~(2). The empty
+  orientation orients no edge. When the game accepts $u_i v_i$, the
+  underlying edge set gains only the edge $u_i v_i$
+  (\cref{lem:runPebbleGameWith-underline-subset}~(1)), and $u_i v_i$ is
+  an edge of $G$.
 
-  The biconditional comes from the dichotomy on the two outcomes:
-  $\mathrm{.inr}$ closes via~(1); $\mathrm{.inl}$ closes via~(2) by
-  contradicting the sparsity hypothesis at the witness $w.V'$. The
-  failure witness is produced directly at the rejection point of
-  \cref{def:tryAddEdge}, so no separate existence-form extraction is
-  needed.
+  Now suppose that the game returns a failure witness
+  $(D, V', (u, v))$. Then for some $i$, processing $u_i v_i$ at a
+  partial orientation $D_{i-1}$ that the game has reached rejects
+  $u_i v_i$. By step~4 of \cref{def:tryAddEdge}, $(u, v) = (u_i, v_i)$,
+  so $uv$ is an edge of $G$. The processing reaches $D$ from $D_{i-1}$ by
+  reversing directed paths in steps~2 and~3. So
+  $\underline{D} = \underline{D_{i-1}}$ (\cref{def:path-reversal}), and
+  every edge in $\underline{D}$ is an edge of $G$. Since $G$ is finite,
+  \cref{lem:workhorseWitness-certifies} shows that $V'$ is a blocking
+  witness for $G$. This is the only step of the proof that uses
+  $\ell < 2k$.
+
+  The game returns either a partial orientation or a failure witness.
+  If $G$ is $(k, \ell)$-sparse, then no set of vertices is a blocking
+  witness for $G$, by \cref{def:isSparse}. So by (2), the game returns a
+  partial orientation. The converse is (1). The pebble game on $G$
+  (\cref{def:runPebbleGame}) runs on a list of the kind above, which
+  gives the last claim.
 \end{proof}
 
-\subsection{User-facing verdict}
+\subsection{The verdict}
 \label{sec:pebble-game-verdict}
 
-The core correctness theorem (\cref{thm:pebble-game-correct}) states
-an equivalence between sparsity and the algorithm's raw accept/reject
-output. The convenience forms re-package that equivalence structurally:
-\cref{def:runPebbleGame} and \cref{def:runPebbleGameExec} return a
-two-constructor inductive type $\mathrm{PebbleGameResult}\,G\,k\,\ell$
-whose constructor \emph{is} the certificate.
+We now define the verdicts that the formal pebble game on $G$ returns
+(see the paragraph after \cref{def:runPebbleGame}), and restate
+\cref{thm:pebble-game-correct} for them. The formal pebble game on $G$
+uses mathlib's lists (\cref{fmlnote:pebble-game-computable-core}). The
+computable pebble game on $G$ of \cref{sec:executable} differs from it
+only in its lists, which are sorted by a linear order on $V$. It also
+returns a verdict.
 
-\begin{definition}[Pebble-game verdict]
+\begin{definition}[Verdict]
   \label{def:pebbleGameResult}
   \lean{CombinatorialRigidity.PebbleGame.PebbleGameResult,
     CombinatorialRigidity.PebbleGame.PebbleGameResult.isAccept}
   \leanok
   \uses{def:partial-orientation, def:reachable-orientation, def:isSparse,
     def:edgesIn, def:workhorseWitness, def:blockingWitness}
-  Fix parameters $k$ and $\ell$ and a finite simple graph
-  $G : \mathrm{SimpleGraph}\,V$. The \emph{pebble-game verdict}
-  $\mathrm{PebbleGameResult}\,G\,k\,\ell$ is the two-constructor
-  inductive type
-  \begin{itemize}
-    \item $\mathrm{.accept}$: carries a partial orientation $D$ with
-      $\underline{D} = E(G)$ that is $(k, \ell)$-reachable
+  Let $G$ be a finite simple graph on $V$, and let $k$ and $\ell$ be
+  non-negative integers. A \emph{verdict} on $G$ is one of the
+  following:
+  \begin{enumerate}
+    \item an \emph{acceptance}, given by a $(k, \ell)$-reachable partial
+      orientation $D$ on $V$ with $\underline{D} = E(G)$
       (\cref{def:reachable-orientation});
-    \item $\mathrm{.reject}$: carries a blocking subset $V' \subseteq V$
-      (\cref{def:blockingWitness}) with the sparsity-violation pair
-      \[
-        \ell \le k|V'| \quad \text{and} \quad k|V'| <
-        |\edgesIn[G]{V'}| + \ell.
-      \]
-  \end{itemize}
-  The Boolean projection $\mathrm{.isAccept} :
-  \mathrm{PebbleGameResult}\,G\,k\,\ell \to \mathbb{B}$ returns
-  $\mathrm{true}$ on $\mathrm{.accept}$ and $\mathrm{false}$ on
-  $\mathrm{.reject}$. The verdict's constructor \emph{is} the
-  certificate: the equivalence between $(k, \ell)$-sparsity of $G$ and
-  acceptance is absorbed into the verdict's type. The two convenience
-  forms \cref{def:runPebbleGame} and \cref{def:runPebbleGameExec} build
-  the verdict from the core's raw output, populating the
-  $\mathrm{.reject}$ proof fields through
-  \cref{lem:workhorseWitness-certifies} (which uses the matroidal-regime
-  hypothesis $\ell < 2k$) and the $\mathrm{.accept}$ fields through the
-  soundness chain above.
+    \item a \emph{rejection}, given by a blocking witness $V'$ for $G$
+      (\cref{def:blockingWitness}).
+  \end{enumerate}
+  A verdict \emph{accepts} $G$ if it is an acceptance.
 \end{definition}
 
-\begin{theorem}[Pebble game correctness, verdict form]
+A verdict on $G$ shows whether $G$ is $(k, \ell)$-sparse. An acceptance
+given by $D$ shows that $G$ is $(k, \ell)$-sparse, as in the proof of
+\cref{thm:pebble-game-soundness}. A rejection shows that $G$ is not
+$(k, \ell)$-sparse (the paragraph after \cref{def:blockingWitness}).
+
+\begin{theorem}[Correctness of the pebble game, for its verdict]
   \label{thm:pebbleGameResult-isAccept-iff}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_isAccept_iff,
     CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_isAccept_iff}
   \leanok
   \uses{def:pebbleGameResult, thm:pebble-game-correct, def:isSparse}
-  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
-  integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
-  only if the verdict-bearing $\mathrm{runPebbleGame}\,G\,k\,\ell$
-  (resp.\ its executable-layer counterpart
-  $\mathrm{runPebbleGameExec}$) returns an $\mathrm{.accept}$ verdict
-  --- equivalently, its $\mathrm{.isAccept}$ Boolean projection is
-  $\mathrm{true}$.
+  Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$
+  and $\ell$ be non-negative integers with $\ell < 2k$. Then $G$ is
+  $(k, \ell)$-sparse if and only if the verdict that the formal pebble
+  game on $G$ returns accepts $G$. If $V$ has a linear order, the same
+  holds for the computable pebble game on $G$ (\cref{sec:executable}).
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-correct}
-  The verdict's $\mathrm{.isAccept}$ projection is $\mathrm{true}$
-  exactly when the underlying core $\mathrm{runPebbleGameWith}$ returned
-  $\mathrm{.inr}\,D$; by \cref{thm:pebble-game-correct} this is
-  equivalent to $(k, \ell)$-sparsity.
+  The formal pebble game on $G$ runs the pebble game from the empty
+  orientation on a list of the edges of $G$ that contains each edge
+  once (\cref{lem:runPebbleGame-underline-eq}). It returns an
+  acceptance when this game returns a partial orientation, and a
+  rejection when it returns a failure witness. So its verdict accepts
+  $G$ if and only if the game returns a partial orientation. By
+  \cref{thm:pebble-game-correct}, this holds if and only if $G$ is
+  $(k, \ell)$-sparse. The computable pebble game lists the edges of $G$
+  by sorting the pairs $(u, v)$ with $u < v$ and $uv \in E(G)$
+  (\cref{def:edgeListSorted}). So it lists each edge once, and the same
+  argument applies.
 \end{proof}
 
-\subsection{Matroidal-independence corollary}
+\subsection{Independence in the count matroid}
 \label{sec:pebble-game-matroid}
 
-Translating the correctness theorem through the $(k, \ell)$-count
-matroid identification of \cref{sec:count-matroid} gives the
-algorithmic characterisation of independence in the count matroid:
-the pebble game decides matroidal independence.
+We restate \cref{thm:pebbleGameResult-isAccept-iff} for the
+$(k, \ell)$-count matroid of \cref{sec:count-matroid}, whose independent
+sets are the $(k, \ell)$-sparse subsets of $E(K_V)$: the pebble game
+decides whether the edge set of a graph is independent in it.
 
-\begin{corollary}[Pebble-game certificate of matroidal independence]
+\begin{corollary}[The pebble game decides independence in the count matroid]
   \label{cor:pebble-game-countMatroid-indep}
   \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame}
   \leanok
   \uses{thm:pebble-game-correct, thm:pebbleGameResult-isAccept-iff,
     def:countMatroid, thm:countMatroid-indep-iff, def:runPebbleGame}
-  Let $V$ be finite and $k, \ell$ integers with $\ell < 2k$. For
-  every $G : \mathrm{SimpleGraph}\,V$, the edge set $E(G)$ is
-  independent in the $(k, \ell)$-count matroid
-  $\mathrm{countMatroid}\,V\,k\,\ell$
-  (\cref{def:countMatroid}) if and only if the verdict-bearing
-  $\mathrm{runPebbleGame}\,G\,k\,\ell$ returns $\mathrm{.accept}$ ---
-  equivalently, its $\mathrm{.isAccept}$ projection is $\mathrm{true}$.
+  Let $V$ be a finite set, let $k$ and $\ell$ be non-negative integers
+  with $\ell < 2k$, and let $G$ be a simple graph on $V$. Then $E(G)$ is
+  independent in the $(k, \ell)$-count matroid on $V$
+  (\cref{def:countMatroid}) if and only if the verdict that the formal
+  pebble game on $G$ returns accepts $G$.
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff,
     thm:pebbleGameResult-isAccept-iff}
-  By \cref{thm:countMatroid-indep-iff}, $E(G)$ is independent in
-  the count matroid if and only if $G$ is $(k, \ell)$-sparse. By
-  \cref{thm:pebbleGameResult-isAccept-iff}, the latter holds if and
-  only if the verdict-bearing $\mathrm{runPebbleGame}$'s
-  $\mathrm{.isAccept}$ projection is $\mathrm{true}$.
+  Since $G$ is simple, $E(G) \subseteq E(K_V)$, and the graph on $V$
+  with edge set $E(G)$ is $G$. So $E(G)$ is independent in the count
+  matroid if and only if $G$ is $(k, \ell)$-sparse
+  (\cref{thm:countMatroid-indep-iff}). By
+  \cref{thm:pebbleGameResult-isAccept-iff}, this holds if and only if
+  the verdict accepts $G$.
 \end{proof}
 
-\emph{Special case: planar rigidity.} At $(k, \ell) = (2, 3)$,
-\cref{cor:pebble-game-countMatroid-indep} composed with the
-matroid identification of \cref{thm:rigidityMatroid-indep-iff-rowIndependent}
-gives an algorithmic decision procedure for membership in the
-planar rigidity matroid $\mathcal{R}(V)$
-(\cref{def:rigidityMatroid}). Restricting further to spanning
-subgraphs $H \subseteq G$ with $|E(H)| = 2|V| - 3$ decides the
-Laman property (\cref{def:isLaman}). This is the Jacobs--Hendrickson
-$(2, 3)$-pebble game~\cite{jacobsHendrickson1997} as the named
-algorithmic specialisation of the present chapter's main theorem.
+At $(k, \ell) = (2, 3)$, the count matroid is the planar rigidity
+matroid $\mathcal{R}(V)$ (\cref{def:rigidityMatroid}). So the pebble
+game decides whether $E(G)$ is independent in $\mathcal{R}(V)$, that
+is, whether $E(G)$ is row-independent at some framework on $V$ in
+$\R^{2}$ (\cref{thm:rigidityMatroid-indep-iff-rowIndependent}). A Laman
+graph is a $(2, 3)$-sparse graph with $2|V| - 3$ edges
+(\cref{def:isLaman}). So the game, together with a count of the edges,
+decides whether $G$ is Laman, and \cref{sec:executable} makes this
+decision computable. This is the setting of Jacobs and Hendrickson's
+pebble game for rigidity in the plane~\cite{jacobsHendrickson1997}.
