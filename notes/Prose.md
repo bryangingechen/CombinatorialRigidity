@@ -1,16 +1,16 @@
 # PROSE: the blueprint prose rounds (planning note)
 
 **Status:** planned with the PI on 2026-10-07 and queued ahead of ORIGAMI as five autopilot rows
-(`.claude/autopilot/queue.toml`). Round 1, `prose-laman`, opened 2026-10-07
+(`.claude/autopilot/queue.toml`). Round 1, `prose-laman`, opened 2026-10-07 and closed 2026-10-08
 (`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`); rounds 2–5 have not
 opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
 post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
-round 1's sample section. Round 1's tasks 1–4 have landed: the open, the dependency-audit script
-`scripts/blueprint-deps.py` (§5), with its first report in the ledger, the sample section, and,
-after the PI approved it at Stop 1 (§6) on 2026-10-07 (round 1's log, *Autopilot: for the PI*),
-its pinning as the exemplar `notes/Prose-exemplar.md`; so have tasks 5.1–5.16, all sixteen
-slices. **Next concrete task:** round 1's task 6, its close.
+round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, *Autopilot: for the
+PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`. Round 1 wrote the
+dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
+slices, and recorded `F-001`–`F-047` in the ledger. **Next concrete task:** round 2,
+`prose-molecular`, opens (§3 *Round 2*).
 
 ## 1. The PI's decisions
 

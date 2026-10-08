@@ -161,6 +161,19 @@ missing: `thm:pencil-reduction` (`c2`), `lem:pencil-insertion` (`c9`) and
 `lem:pencil-splitoff-curve` (`c1`). **Result: unchanged, 0 pending / 50 done / 1 closed as
 superseded** (of 51). Two done entries now name retired nodes, and git history keeps their text.
 
+**PROSE round 1 (`prose-laman`, closed 2026-10-08).** The round rewrote the prose of the twelve
+chapters `sparsity.tex` → `executable.tex` (phases 1–11; `notes/Prose-laman-cleanup.md`). No
+node's statement, pins or `\uses` edges changed and no node rerouted, so no entry is added. None of
+the twelve chapters has an entry: Phase 28 screened phases 1–16 out (*Retroactive coverage*,
+Group A). The close checked that screen against the new text: the six nodes whose full proofs it
+rests on keep them, and its labels, the section *Splittings and tight sets* and the reverse
+decomposition's lead-in to Jordán's lemma numbers are all there. Tasks 5.2 and 5.9 had corrected
+its lines on Jordán's Lemma 2.1.3 and on the case split. The close moved its credit for the
+planar characterization from Lovász–Yemini to Laman, as the chapters now give it (Jordán 2016,
+Theorem 2.2.1, p. 45; `notes/Prose-findings.md` `F-025`), and dropped its unsupported "classical
+Henneberg/Lovász–Yemini" for the degree-three argument, Jordán's Lemma 2.1.4(b) (p. 44).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -1559,9 +1572,9 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
     carry only `\leanok` proofs, no red/`\notready`/TODO nodes). Recorded so the
     no-entry state reads as a deliberate judgment, not an omission.
     - **Phase 5 Laman-theorem blocker argument (the flagged likely-IN candidate)
-      — OUT, source-side kernel already exposited.** Candidate: the classical
-      Henneberg/Lovász–Yemini degree-3 blocker argument (KT is *not* the source
-      here — this is Jordán 2016 Lemma 2.1.4(b), *every degree-3 vertex of a
+      — OUT, source-side kernel already exposited.** Candidate: the degree-3
+      blocker argument (KT is *not* the source here — this is Jordán 2016
+      Lemma 2.1.4(b), *every degree-3 vertex of a
       `(2,3)`-sparse graph is suitable*: if not, three maximal critical sets
       `X_uw, X_uz, X_wz` each holding exactly two neighbours have singleton
       pairwise intersections, so their union is critical and forces `d(v, ·) ≥ 3`,
@@ -1605,11 +1618,12 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
     - **The rest of 1–16 (light screen) — OUT, reuse-heavy / matroid-standard /
       algorithmic, all already exposited.** Phases 1–4 (sparsity API, Laman graphs,
       frameworks/rigidity matrix, trivial motions): definitional API + Asimow–Roth /
-      Maxwell-type counting, self-exposited backfill. Phase 6 (Laman `⇒`): Lovász–
-      Yemini easy direction (Maxwell counting, cited Jordán 1.3.1) at
-      `lem:isSparse-of-rowIndependent-two`. Phase 7 (Lovász–Yemini hard direction +
+      Maxwell-type counting, self-exposited backfill. Phase 6 (Laman `⇒`): the easy
+      half of Laman's characterization of planar independence (Maxwell counting;
+      Jordán 1.3.1, his necessity proof for Theorem 2.2.1) at
+      `lem:isSparse-of-rowIndependent-two`. Phase 7 (the hard half +
       `(k,ℓ)`-count matroid): the Henneberg row-LI-lift induction (Jordán 2.2.1
-      sufficiency) fully exposited in `rigidity-matroid.tex`; the count matroid is
+      sufficiency, p. 45) fully exposited in `rigidity-matroid.tex`; the count matroid is
       an `IndepMatroid.ofFinite` axiom-check. Phase 8 (linear-matroid framing):
       `Matroid.ofFun` plumbing + uniform-genericity perturbation. Phases 9–11
       (pebble game, Lee–Streinu 2008): algorithm / invariants / correctness /

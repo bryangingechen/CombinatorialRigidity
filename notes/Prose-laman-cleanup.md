@@ -1,20 +1,20 @@
 # PROSE round 1/5 — `prose-laman`, Laman's theorem and the rigidity matroid (work log)
 
-**Status:** in progress (opened 2026-10-07). Round 1 of **PROSE**'s five rounds; their plan, the
-PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/autopilot/queue.toml`
-is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
+**Status:** closed 2026-10-08 (opened 2026-10-07). Round 1 of **PROSE**'s five rounds; their
+plan, the PI's decisions and the one planned stop are in `notes/Prose.md`, and
+`.claude/autopilot/queue.toml` is the authority for which rounds are done. The round rewrote the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
-`\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–5 are done: the open, the
+`\uses` edge and statement strength stayed as it was. What else the round noticed is in the ledger
+`notes/Prose-findings.md`, `F-001`–`F-047`. All 21 one-commit tasks landed: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and all sixteen slices, `sparsity.tex` through `executable.tex`. **Next concrete task:**
-task 6, the round's close. Round manual: `CLEANUP.md`.
+PI*), the sixteen slices, `sparsity.tex` through `executable.tex`, and the close. **Next concrete
+task:** round 2, `prose-molecular`, opens (`notes/Prose.md` §3). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
-Newest entry first. The PI answers in an entry that starts `**PI, <date>:**`. Stop 1 is the
-round's one planned stop; any unplanned `NEEDS_PI` entry goes here too.
+Newest entry first. The PI answers in an entry that starts `**PI, <date>:**`. Stop 1 was the
+round's one planned stop, and no unplanned `NEEDS_PI` entry was filed.
 
 ### 2026-10-07 — `NEEDS_PI`: Stop 1, the sample section (planned stop, `notes/Prose.md` §6)
 
@@ -54,17 +54,21 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The sixteenth and last slice has landed** (task 5.16, this commit): `executable.tex`, now 306
-lines, so all twelve chapters are rewritten (tasks 5.1–5.15 did the other eleven). Nothing is
-mid-stream; task 6, the close, is next.
-- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
-  `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (120 overfull boxes, none in
-  `executable.tex`; 128 at `0e1bd105`). The screens on the chapter read 0 and 0 / 29 (the open's
-  4 and 43 / 130); the 29 are Lean addresses in prose, which the carve-out keeps.
-- **The screens on all twelve chapters** at this commit: register 0 everywhere; Lean devices 5 /
-  56, namely `henneberg` 0 / 7, `rigidity-matroid` 0 / 1, `pebble-game` 5 / 19 (every hit
-  `\mathrm{span}`, Lee–Streinu's notation) and `executable` 0 / 29 (the open's 15 and 227 / 648).
+**The round is closed** (task 6, this commit). All twelve chapters are rewritten, and nothing is
+mid-stream.
+- **Gates at the close**, all the open's values: the whole-project `lake build` green (2 996 jobs, 0
+  `warning:` lines); the no-Lean-edit check since `bca00d3f` empty; `lint.sh` green; `verify.sh`
+  green, with `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges
+  673e3178d1b3145e` and `b53eb8b1cf78cb06`, with 657 nodes and 1 030 pins; `print.log` 0 `LaTeX
+  Warning` lines, with 120 overfull boxes (176 at the open). The axioms check is round 5's.
+- **The screens at the close** are beside the open's in *Per-chapter diagnosis*: register 0 in
+  every chapter (15 at the open), Lean devices 5 / 56 (227 / 648). What is left is deliberate:
+  `pebble-game`'s `\mathrm{span}` (Lee–Streinu's notation), `executable`'s Lean addresses (the
+  carve-out), and the formalization notes of `henneberg` (the vertex type $\mathrm{Option}\,V$,
+  explained once, principle B's *Constructions*) and `rigidity-matroid` (`Matroid.ofFun`).
+- **Findings:** `F-001`–`F-047`, each with its line under *Candidates for the PI* (13 `S`, 1 `M`)
+  or *Moved to a later round* (8 `E`, 10 `N`, 15 `L`), and no line without its entry, checked by
+  script at the close. `T` and `U` are empty.
 - **The audit script:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -155,24 +159,25 @@ From `notes/Prose.md` §2, restated only as far as a builder needs them.
 
 ## Per-chapter diagnosis
 
-Seen at the open; line numbers are the open's, and the labels are the stable reference. Each
-slice re-derives its own findings and records them in its commit and the ledger.
+Seen at the open, with the close's re-run of the screens in the last three columns; nodes and
+pins are unchanged at the close. Each slice re-derived its own findings and recorded them in its
+commit and the ledger.
 
-| Chapter | Lines | Nodes | Pins | Register | Lean devices (statements / all) | Task |
-|---|---|---|---|---|---|---|
-| `sparsity` | 537 | 23 | 27 | 0 | 0 / 1 | 5.1, 5.2 |
-| `laman` | 114 | 6 | 6 | 0 | 0 / 0 | 5.2 |
-| `henneberg` | 372 | 12 | 12 | 1 | 32 / 86 | 3, 5.3 |
-| `frameworks` | 415 | 19 | 19 | 1 | 7 / 20 | 5.4 |
-| `henneberg-rigidity` | 247 | 5 | 5 | 0 | 11 / 72 | 5.5 |
-| `trivial-motions` | 280 | 13 | 13 | 0 | 21 / 44 | 5.6 |
-| `laman-theorem` | 477 | 13 | 13 | 0 | 11 / 39 | 5.7, 5.8 |
-| `rigidity-matroid` | 696 | 18 | 18 | 1 | 17 / 95 | 5.9, 5.10 |
-| `count-matroid` | 306 | 8 | 8 | 0 | 16 / 45 | 5.11 |
-| `dfs` | 179 | 5 | 9 | 2 | 14 / 21 | 5.12 |
-| `pebble-game` | 960 | 23 | 43 | 6 | 55 / 95 | 5.13–5.15 |
-| `executable` | 428 | 8 | 8 | 4 | 43 / 130 | 5.16 |
-| **total** | 5 011 | 153 | 181 | 15 | 227 / 648 | |
+| Chapter | Lines | Nodes | Pins | Register | Lean devices (statements / all) | Task | Close: lines | register | devices |
+|---|---|---|---|---|---|---|---|---|---|
+| `sparsity` | 537 | 23 | 27 | 0 | 0 / 1 | 5.1, 5.2 | 607 | 0 | 0 / 0 |
+| `laman` | 114 | 6 | 6 | 0 | 0 / 0 | 5.2 | 128 | 0 | 0 / 0 |
+| `henneberg` | 372 | 12 | 12 | 1 | 32 / 86 | 3, 5.3 | 378 | 0 | 0 / 7 |
+| `frameworks` | 415 | 19 | 19 | 1 | 7 / 20 | 5.4 | 468 | 0 | 0 / 0 |
+| `henneberg-rigidity` | 247 | 5 | 5 | 0 | 11 / 72 | 5.5 | 273 | 0 | 0 / 0 |
+| `trivial-motions` | 280 | 13 | 13 | 0 | 21 / 44 | 5.6 | 287 | 0 | 0 / 0 |
+| `laman-theorem` | 477 | 13 | 13 | 0 | 11 / 39 | 5.7, 5.8 | 513 | 0 | 0 / 0 |
+| `rigidity-matroid` | 696 | 18 | 18 | 1 | 17 / 95 | 5.9, 5.10 | 827 | 0 | 0 / 1 |
+| `count-matroid` | 306 | 8 | 8 | 0 | 16 / 45 | 5.11 | 298 | 0 | 0 / 0 |
+| `dfs` | 179 | 5 | 9 | 2 | 14 / 21 | 5.12 | 204 | 0 | 0 / 0 |
+| `pebble-game` | 960 | 23 | 43 | 6 | 55 / 95 | 5.13–5.15 | 1 074 | 0 | 5 / 19 |
+| `executable` | 428 | 8 | 8 | 4 | 43 / 130 | 5.16 | 306 | 0 | 0 / 29 |
+| **total** | 5 011 | 153 | 181 | 15 | 227 / 648 | | 5 363 | 0 | 5 / 56 |
 
 Phases 1–5 wrote the earliest of these chapters in backfill mode, and phases 6–11 kept their
 style: the register is mostly flat, and the problem is Lean devices in statements and proofs.
@@ -213,10 +218,11 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   - [x] **5.14 `pebble-game.tex`, soundness and completeness** (`640505ce`; 540–893). `F-036`–`F-040`.
   - [x] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (`0e1bd105`).
     `F-041`–`F-045`.
-  - [x] **5.16 `executable.tex`** (this commit; now 1–306, 8 nodes): the computable game and the
+  - [x] **5.16 `executable.tex`** (`23481570`; now 1–306, 8 nodes): the computable game and the
     decision procedures in words; no running-time claim; `decide` does not evaluate the
     procedures; the $K_4$ claim proved; *Runtime and backends* after the procedures. `F-046`, `F-047`.
-- [ ] **6. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
+- [x] **6. X — close the round** (this commit; `CLEANUP.md` *Workflow* 5; docs only). Every gate at
+  the open's values (*Current state*); the exposition ledger's Group-A screen now credits Laman.
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat <open>.. --
     CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
     check runs next at round 5's close, not here (§2).
@@ -327,32 +333,27 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 6, the close** (`CLEANUP.md` *Workflow* 5; docs only; it may run at Sonnet, §2). Its
-checklist item lists the deliverables. What it must know:
-- **Gates.** Whole-project `lake build`, warning-clean. The no-Lean-edit check from the open,
-  `git diff --stat bca00d3f.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json
-  lean-toolchain`, is empty at task 5.16, and so is the same diff of `Main.lean`. The blueprint
-  gates and invariance values are under *Scope*; overfull boxes are counted (176 at the open, 120
-  at task 5.16).
-- **Screens.** At task 5.16 every chapter reads 0 on the register screen, and the device screen
-  reads 5 / 56 (*Current state*; the open's 15 and 227 / 648). What is left is deliberate:
-  `pebble-game`'s `\mathrm{span}` (Lee–Streinu's notation), `executable`'s addresses (the
-  carve-out), and the formalization notes of `henneberg` (the vertex type $\mathrm{Option}\,V$,
-  explained once, principle B's *Constructions*) and `rigidity-matroid` (`Matroid.ofFun`).
-- **Findings.** The ledger has `F-001`–`F-047`; each has its line here (`S`, `M` under
-  *Candidates*; `E`, `N`, `L` under *Moved*), checked by script at task 5.16. `T` and `U` are empty.
-- **The exposition ledger.** `notes/BlueprintExposition.md`'s Group-A screen (*Retroactive
-  coverage*) still says "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two`
-  and "Lovász–Yemini hard direction" for Phase 7 (`F-025`; the chapters now credit Laman). Its
-  pointers to the crux nodes (*Scope*, *Crux nodes*) are to proofs the slices kept full.
-- **Status surfaces.** The ROADMAP row (✓ Complete), ROADMAP's PROSE bullet and
-  `notes/Prose.md`'s **Status** name round 2, `prose-molecular`, as next; the queue row
-  `prose-laman` gets `done = true`, and nothing else in `.claude/autopilot/queue.toml` changes.
-- **Out of scope, recorded:** `DESIGN.md`'s polynomial-time and `decide` claims (`F-047`).
-
-**The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
-result is understandable". The coordinator read 5.1–5.3 in full against the exemplar (2026-10-07):
-understandable, no prompt tightening needed; it keeps reading each slice's text.
+**Next: round 2, `prose-molecular`, opens** (`notes/Prose.md` §3 *Round 2*; an Opus open,
+`CLEANUP.md` *Workflow* 1). It creates `notes/Prose-molecular-cleanup.md` on this log's pattern
+(the full task list, *Autopilot: for the PI* and the two standing sections) and adds its ROADMAP
+Status row. Its eight chapters, `matroid-union` → `meet`, and their 19 provisional slices are in
+`notes/Prose.md` §3; the open re-slices after reading them. What it inherits from this round:
+- **Baselines.** Unless the blueprint changes first, its open reproduces this close's values
+  (*Current state*): 657 nodes, `1292 edges 673e3178d1b3145e`, pin hash `b53eb8b1cf78cb06`, 9
+  `WARNING:` lines, 0 `LaTeX Warning` lines, 120 overfull boxes. It re-measures them, confirms the
+  whole-project build (§2), and takes its own sha as the base of its no-Lean-edit check.
+- **Tools.** The screens under *Scope* give its per-chapter diagnosis (their regexes were tuned
+  on round 1's chapters); `scripts/blueprint-deps.py --chapter <name>` reports what pins reach.
+  The ledger's next ID is `F-048`.
+- **Crux nodes.** Unlike round 1's, four of its chapters (`extensor`, `rigidity-matrix`,
+  `molecular-induction`, `meet`) have *done* entries in `notes/BlueprintExposition.md`, so the
+  crux carve-out binds (§2): those nodes keep their full proofs.
+- **The PI's check** (Stop 1, item 5): "the overriding goal is to make sure the result is
+  understandable". The coordinator read 5.1–5.3 in full against the exemplar (2026-10-07) and
+  needed no prompt tightening; round 2's first slices deserve the same read.
+- **Carried over:** no task. The findings wait in the ledger. Round 5 acts on the `E` and `N`
+  entries and reports the `S`, `M` and `L` entries to the PI; the `L` entries, among them
+  `DESIGN.md`'s polynomial-time and `decide` claims (`F-047`), are for a later Lean round.
 
 ## Decisions made during this round
 
@@ -391,3 +392,6 @@ Settled verdicts, one line each where the slices are done; the detail is in each
   examples* and *CLI binary* stay, since `Main.lean`, `Examples.lean`, `lakefile.toml` and
   `DESIGN.md` point at them. No running-time claim; `decide` does not evaluate the procedures, and
   the $K_4$ rejection set is $V$ because $V$ is $K_4$'s only blocking witness.
+- **Task 6: the close.** The exposition ledger's Group-A screen now credits Laman's
+  characterization as the chapters do (`F-025`), and its degree-three candidate no longer says
+  "classical Henneberg/Lovász–Yemini", which nothing backs (Jordán's Lemma 2.1.4(b), p. 44).

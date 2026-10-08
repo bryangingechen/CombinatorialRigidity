@@ -599,7 +599,8 @@ declaration's name as its header writes it:
   the count matroid to Lorea and to White–Whiteley, as Whiteley 1996 Proposition A.1.1 and Lee–Streinu
   do). Outside round 1's slices: `intro.tex`, the docstrings,
   `formalization.yaml`'s Lovász–Yemini lines, and `notes/BlueprintExposition.md`'s Group-A line
-  "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 checks it).
+  "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 moved its credit,
+  and the Phase-7 line's beside it, to Laman).
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
   and the Lean). Lovász–Yemini 1982 is not in `.refs/`.
   *Found:* round 1 task 5.7.

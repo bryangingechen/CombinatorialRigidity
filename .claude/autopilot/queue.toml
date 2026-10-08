@@ -47,7 +47,7 @@ id = "prose-laman"
 title = "PROSE 1/5: Laman's theorem and the rigidity matroid"
 note = "notes/Prose-laman-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "prose-molecular"
