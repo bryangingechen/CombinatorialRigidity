@@ -25,24 +25,39 @@ are proved separately:
     $(2, 3)$-sparsity of the underlying subgraph.
 \end{itemize}
 
-\subsection{The \texorpdfstring{$d = 2$}{d=2} edge-count corollary}
+\subsection{The edge count in the plane}
+
+In the plane, the edge-count bound
+(\cref{thm:isGenericallyRigid-card-mul-le}) says that a generically
+rigid graph on $V$ has at least $2|V| - 3$ edges, as many as a Laman
+graph on $V$.
 
 \begin{lemma}[Edge-count bound in dimension 2]
   \label{lem:isGenericallyRigid-card-mul-le-two}
   \lean{SimpleGraph.IsGenericallyRigid.card_mul_le_two}
   \leanok
   \uses{thm:isGenericallyRigid-card-mul-le}
-  Let $V$ be finite. If $G$ is generically rigid in dimension $2$, then
+  Let $V$ be finite, and let $G$ be generically rigid in
+  dimension~$2$. Then
   \[
     2 |V| \;\le\; |E(G)| + 3.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Specialize \cref{thm:isGenericallyRigid-card-mul-le} at $d = 2$.
+  Specialize \cref{thm:isGenericallyRigid-card-mul-le} to $d = 2$,
+  where $d(d+1)/2 = 3$.
 \end{proof}
 
 \subsection{The \texorpdfstring{$\Leftarrow$}{<=} direction}
+
+The sufficiency half of Laman's theorem~\cite{laman1970} says that
+every Laman graph is generically rigid in the plane. We prove it by
+induction on the number of vertices, along the reverse decomposition
+of \cref{sec:henneberg-decomp}. The step for each Henneberg move needs
+an injective framework (\cref{sec:henneberg-rigidity}), so the
+induction proves the stronger statement for injective generic
+rigidity.
 
 \begin{theorem}[Every Laman graph is generically rigid in dimension 2]
   \label{thm:isLaman-isGenericallyRigid-two}
@@ -55,191 +70,201 @@ are proved separately:
     thm:top-fin-two-isGenericallyRigidInj,
     lem:isLaman-eq-top-of-card-eq-two,
     lem:isGenericallyRigidInj-iso}
-  If $G$ is a Laman graph on a finite vertex type $V$, then $G$ is
-  generically rigid in dimension $2$.
+  Let $V$ be finite, and let $G$ be a Laman graph on $V$. Then $G$ is
+  generically rigid in dimension~$2$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Strong induction on $|V|$, proving the stronger statement: every
-  Laman graph is injectively generically rigid in dimension $2$
-  (\cref{def:isGenericallyRigidInj}); the actual theorem then weakens
-  to plain generic rigidity at the end.
+  We show by strong induction on $|V|$ that $G$ is injectively
+  generically rigid in dimension~$2$ (\cref{def:isGenericallyRigidInj}).
+  An injectively generically rigid graph is generically rigid.
 
-  \emph{Base case ($|V| \le 2$).} Tightness $|E(G)| + 3 = 2 |V|$ is
-  infeasible in $\N$ for $|V| \le 1$, so $|V| = 2$ and by
-  \cref{lem:isLaman-eq-top-of-card-eq-two} we have $G = K_2$ (on $V$).
-  Transport \cref{thm:top-fin-two-isGenericallyRigidInj} at dimension
-  $2$ along the bijection $V \simeq \mathrm{Fin}\,2$ using
-  \cref{lem:isGenericallyRigidInj-iso}.
+  Since $|E(G)| + 3 = 2|V|$, the set $V$ has at least two elements. If
+  $|V| = 2$, then $G$ is the complete graph on $V$
+  (\cref{lem:isLaman-eq-top-of-card-eq-two}), which is isomorphic to
+  $K_2$. The graph $K_2$ is injectively generically rigid in
+  dimension~$2$ (\cref{thm:top-fin-two-isGenericallyRigidInj}). This
+  property passes along isomorphisms
+  (\cref{lem:isGenericallyRigidInj-iso}), so $G$ has it too.
 
-  \emph{Inductive step ($|V| \ge 3$).}
-  \Cref{thm:isLaman-exists-typeI-or-typeII-reverse} provides a
-  vertex $v$ and a Laman graph $G'$ on $\{w \ne v\}$: either
-  $\deg_G(v) = 2$ with $G' = G[\{w \ne v\}]$, or $\deg_G(v) = 3$ with
-  $G' = G[\{w \ne v\}] \cup \{\{a, b\}\}$ for a non-adjacent neighbor
-  pair $\{a, b\}$. The vertex type $\{w \ne v\}$ has cardinality
-  $|V| - 1$, so the induction hypothesis applies to $G'$: it is
-  injectively generically rigid in dimension $2$. Reconstruct the
-  isomorphism $G \simeq \mathrm{typeI}\,G'\,a\,b$ or
-  $G \simeq \mathrm{typeII}\,G'\,a\,b\,c$ from the neighborhood data
-  (\texttt{typeI\_iso\_of\_two\_neighbors},
-  \texttt{typeII\_iso\_of\_three\_neighbors}), apply the appropriate
-  move-preservation theorem
-  (\cref{thm:typeI-isGenericallyRigidInj-two} or
-  \cref{thm:typeII-isGenericallyRigidInj-two}) to
-  $\mathrm{typeI}\,G'\,a\,b$ or $\mathrm{typeII}\,G'\,a\,b\,c$, and
-  transport the conclusion back to $G$ along that isomorphism
-  (\cref{lem:isGenericallyRigidInj-iso}).
+  Let $|V| \ge 3$. The reverse decomposition
+  (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) gives a vertex
+  $v$ of $G$ of degree two or three. Suppose first that $v$ has degree
+  two, with neighbours $a$ and $b$, and that $G - v$ is Laman. The
+  graph $G - v$ has $|V| - 1$ vertices, so by induction it is
+  injectively generically rigid. Hence so is the graph obtained from
+  $G - v$ by the Type~I move at $a$ and $b$
+  (\cref{thm:typeI-isGenericallyRigidInj-two}). This graph is
+  isomorphic to $G$, by the map that sends its new vertex to $v$ and
+  fixes every other vertex (\cref{sec:henneberg-decomp}). So $G$ is
+  injectively generically rigid (\cref{lem:isGenericallyRigidInj-iso}).
+
+  Otherwise $v$ has degree three, with neighbours $a$, $b$ and $c$,
+  where $a$ and $b$ are not adjacent, and $G - v + ab$ is Laman. By
+  induction, $G - v + ab$ is injectively generically rigid. Hence so is
+  the graph obtained from it by the Type~II move on $ab$ and $c$
+  (\cref{thm:typeII-isGenericallyRigidInj-two}). This move deletes the
+  edge $ab$ again, and the graph it gives is isomorphic to $G$ in the
+  same way. So $G$ is injectively generically rigid, as before.
 \end{proof}
 
 \subsection{The \texorpdfstring{$\Rightarrow$}{=>} direction}
 
-The statement we are proving is the necessary direction of Laman's
-original theorem~\cite{laman1970}: every graph generically rigid in
-the plane contains a Laman spanning subgraph. We work in the
-linear-algebraic formulation of infinitesimal rigidity due to
-Asimow--Roth~\cite{asimowRoth1978}: a row-basis of the rigidity
-matrix at a sufficiently generic placement supports the desired Laman
-subgraph.
+We now prove that every graph that is generically rigid in the plane
+contains a Laman spanning subgraph. This is the necessity half of
+Laman's theorem~\cite{laman1970}. We find the edges of the subgraph
+among the rows of the rigidity map. Let $p$ be a framework on $V$ in
+$\R^{2}$. A set $I$ of edges is row-independent at $p$ when the rows of
+$R(G, p)$ at the edges of $I$ are linearly independent
+(\cref{def:edgeSet-rowIndependent}). We prove two facts about such
+sets.
 
-We isolate the row-independence relation between an edge set and a
-placement, then prove two facts about it: (a)~row-independence implies
-the $(2, 3)$-sparsity required by the Laman definition (a classical
-Maxwell-type counting argument; see Jord\'an~\cite{jordan2016} Lemma
-1.3.1 for the modern presentation we follow); and (b)~a row-basis of
-size $2|V| - 3$ exists whenever $G$ is generically rigid (a rank lower
-bound together with a linear-algebra extension). Combining (a) and (b)
-gives a $(2, 3)$-tight spanning subgraph, i.e.\ a Laman subgraph.
+First, if no three of the points $p_v$ are collinear, then the edges of
+every row-independent set form a $(2,3)$-sparse graph
+(\cref{lem:isSparse-of-rowIndependent-two}). The necessity of this
+count for minimal rigidity goes back to Maxwell~\cite{maxwell1864}.
+Whiteley~\cite{whiteley1996} proves the count in every dimension as his
+$d$-Counting Lemma~11.1.3, and Jord\'an~\cite{jordan2016} as his
+Lemma~1.3.1.
 
-The two facts together amount to the ``easy'' direction of an
-identity due to Lov\'asz--Yemini~\cite{lovaszYemini1982}: in
-dimension $2$, an edge set is row-independent at a generic placement
-if and only if its underlying subgraph is $(2, 3)$-sparse. The harder
-converse direction of that identity --- $(2, 3)$-sparse $\Rightarrow$
-row-independent --- is not needed for the iff itself; it is proved
-separately in \cref{sec:rigidity-matroid}, where, combined with the
-easy direction, it identifies the rigidity matroid with the
-$(2, 3)$-count matroid.
+Second, if $p$ is infinitesimally rigid for $G$, then $R(G, p)$ has
+rank at least $2|V| - 3$. So some $2|V| - 3$ edges are row-independent
+at $p$ (see the proof of \cref{lem:exists-rowIndependent-edge-basis}).
+Infinitesimal rigidity is an open condition
+(\cref{lem:isInfinitesimallyRigid-eventually}). So an infinitesimally
+rigid framework can be moved slightly to one that is still
+infinitesimally rigid and has no three points collinear
+(\cref{lem:exists-affinelySpanning-of-eventually}). There the
+$2|V| - 3$ row-independent edges form a $(2,3)$-sparse graph with
+$2|V| - 3$ edges, which is a Laman graph
+(\cref{thm:isGenericallyRigid-exists-isLaman-le}).
 
-\subsubsection{Row-independence in the rigidity matroid}
+Jord\'an (p.~39) calls the row-independent edge sets of a framework the
+independent sets of its rigidity matroid. For a generic framework in
+the plane, Laman characterized them: an edge set is row-independent if
+and only if it forms a $(2,3)$-sparse graph (Jord\'an,
+Theorem~2.2.1). The first fact above is one half of this
+characterization, and Laman's theorem needs only this half. We prove
+the converse in \cref{sec:rigidity-matroid}, where the two halves
+identify the rigidity matroid in the plane with the $(2,3)$-count
+matroid.
+
+\subsubsection{Row-independent edge sets}
+
+Let $p$ be a framework on $V$ in $\R^{d}$. The row of $R(G, p)$ at an
+edge $e = uv$ is the linear functional
+$p' \mapsto R(G, p)(p')(e) = \langle p_u - p_v,\, p'_u - p'_v \rangle$
+on $(\R^{d})^{V}$. In the standard bases it is the row of Jord\'an's
+rigidity matrix indexed by $e$.
 
 \begin{definition}[Row-independent edge set at a placement]
   \label{def:edgeSet-rowIndependent}
   \lean{SimpleGraph.EdgeSetRowIndependent}
   \leanok
   \uses{def:rigidityMap}
-  Let $G$ be a graph on $V$, let $p : V \to \R^{d}$ be a
-  framework, and let $I \subseteq E(G)$. We say that $I$ is
-  \emph{row-independent at $p$} if the family of edge-rows
-  $\bigl(\mathrm{RigidityMap}\,G\,p\,(\cdot)\,e\bigr)_{e \in I}$,
-  viewed as linear functionals on $\mathrm{Framework}\,V\,d$, is
-  linearly independent over $\R$.
-
-  Equivalently, the composite of $\mathrm{RigidityMap}\,G\,p$ with
-  the restriction map $(E(G) \to \R) \to (I \to \R)$ has rank $|I|$.
+  Let $p$ be a framework on $V$ in $\R^{d}$, and let
+  $I \subseteq E(G)$. We say that $I$ is \emph{row-independent at $p$}
+  if the linear functionals $p' \mapsto R(G, p)(p')(e)$ on
+  $(\R^{d})^{V}$, for $e \in I$, are linearly independent.
 \end{definition}
 
-\begin{remark}
-  The row-independent edge sets form the independent sets of a
-  matroid on $E(G)$, the \emph{rigidity matroid} of $(G, p)$. The
-  $\Rightarrow$ direction of Laman's theorem uses only the
-  independence relation and the two facts about it below; the matroid
-  itself is assembled in \cref{sec:rigidity-matroid}.
-\end{remark}
+\subsubsection{The rows of the rigidity map}
 
-\subsubsection{The rigidity rows as a family in the algebraic dual}
-
-The row-basis extraction (\cref{lem:exists-rowIndependent-edge-basis})
-works throughout in the algebraic dual $(\mathrm{Framework}\,V\,d)^{*}$,
-where the row-rank-equals-column-rank identity
-(\texttt{LinearMap.finrank\_range\_dualMap\_eq\_finrank\_range}) applies
-directly. The function-module presentation of
-\cref{def:edgeSet-rowIndependent} and the dual-module presentation
-agree on linear independence, by linearity and injectivity of the
-forgetful $(M \to_{\R} \R) \to (M \to \R)$ map.
+To find a large row-independent edge set, we use that the row rank of
+a matrix equals its column rank. For this we regard the rows of
+$R(G, p)$ as elements of the dual space $((\R^{d})^{V})^{*}$ of linear
+functionals on $(\R^{d})^{V}$. The \emph{transpose} of $R(G, p)$ is
+the linear map $R(G, p)^{\top}$ from the dual space of $\R^{E(G)}$ to
+$((\R^{d})^{V})^{*}$ that sends a functional $\varphi$ to
+$\varphi \circ R(G, p)$. In the standard bases its matrix is the
+transpose of the rigidity matrix. When $V$ is finite, $R(G, p)^{\top}$
+has the same rank as $R(G, p)$.
 
 \begin{definition}[Rigidity row at a placement]
   \label{def:rigidityRow}
   \lean{SimpleGraph.rigidityRow}
   \leanok
   \uses{def:rigidityMap}
-  The \emph{rigidity row} indexed by an edge $e \in E(G)$ at a
-  placement $p$ is the linear functional
-  $\mathrm{rigidityRow}\,G\,p\,e \in (\mathrm{Framework}\,V\,d)^{*}$
-  obtained by composing $\mathrm{RigidityMap}\,G\,p$ with the
-  evaluation-at-$e$ map $(E(G) \to \R) \to \R$. As a
-  function, $\mathrm{rigidityRow}\,G\,p\,e\,(\dot p) =
-  \mathrm{RigidityMap}\,G\,p\,(\dot p)\,e$.
+  Let $p$ be a framework on $V$ in $\R^{d}$, and let $e$ be an edge of
+  $G$. The \emph{rigidity row} of $G$ at $p$ indexed by $e$ is the
+  linear functional $r_e \in ((\R^{d})^{V})^{*}$ given by
+  $r_e(p') = R(G, p)(p')(e)$.
 \end{definition}
 
-\begin{lemma}[Row span equals dualMap range]
+\begin{lemma}[The rigidity rows span the image of the transpose]
   \label{lem:span-range-rigidityRow}
   \lean{SimpleGraph.span_range_rigidityRow}
   \leanok
   \uses{def:rigidityRow, def:rigidityMap}
-  Let $V$ be finite. The $\R$-linear span of the rigidity rows
-  $\{\mathrm{rigidityRow}\,G\,p\,e\}_{e \in E(G)}$ equals the range of
-  $(\mathrm{RigidityMap}\,G\,p)^{*}$ (the algebraic transpose).
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$.
+  Then the rigidity rows $r_e$, for $e \in E(G)$, span the image of
+  $R(G, p)^{\top}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Each row is the image under
-  $(\mathrm{RigidityMap}\,G\,p)^{*}$ of the dual-basis element
-  $b^{*}_{e}$ of $\R^{E(G)}$, and the dual basis spans the whole
-  dual; hence the image of its range under
-  $(\mathrm{RigidityMap}\,G\,p)^{*}$ is the range of that
-  transpose.
+  For an edge $e$, let $e^{*}$ be the coordinate functional of
+  $\R^{E(G)}$ at $e$. Then
+  $r_e = e^{*} \circ R(G, p) = R(G, p)^{\top}(e^{*})$. Since $E(G)$ is
+  finite, the functionals $e^{*}$ form a basis of the dual space of
+  $\R^{E(G)}$. So their images under $R(G, p)^{\top}$ span its image.
 \end{proof}
 
-\begin{lemma}[Row-independence equals dual-module linear independence]
+\begin{lemma}[Row-independence as linear independence of the rigidity rows]
   \label{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
   \lean{SimpleGraph.edgeSetRowIndependent_iff_linearIndepOn_rigidityRow}
   \leanok
   \uses{def:edgeSet-rowIndependent, def:rigidityRow}
-  An edge set $I \subseteq E(G)$ is row-independent at $p$ if and
-  only if the family
-  $\{\mathrm{rigidityRow}\,G\,p\,e\}_{e \in I}$ is linearly
-  independent in $(\mathrm{Framework}\,V\,d)^{*}$.
+  Let $p$ be a framework on $V$ in $\R^{d}$, and let
+  $I \subseteq E(G)$. Then $I$ is row-independent at $p$ if and only if
+  the rigidity rows $r_e$, for $e \in I$, are linearly independent in
+  $((\R^{d})^{V})^{*}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The forgetful map $(\mathrm{Framework}\,V\,d)^{*} \to
-  (\mathrm{Framework}\,V\,d \to \R)$ is $\R$-linear and injective,
-  so it transports linear independence in both directions; both
-  sides reduce to the same linear-independence statement on the
-  same family of underlying functions.
+  The rigidity row $r_e$ is the functional of
+  \cref{def:edgeSet-rowIndependent} at the edge $e$. So both sides say
+  that the same family of linear functionals is linearly independent.
 \end{proof}
+\begin{fmlnote}
+  The formal definition of row-independence regards the rows as
+  elements of the space of all real functions on $(\R^{d})^{V}$. The
+  rigidity rows are elements of its linear subspace
+  $((\R^{d})^{V})^{*}$, in which the transpose of $R(G, p)$ takes its
+  values. The lemma passes between the two: a family of vectors of a
+  subspace is linearly independent in the subspace exactly when it is
+  linearly independent in the whole space.
+\end{fmlnote}
 
-\subsubsection{Rank of the rigidity map at a generically rigid placement}
+\subsubsection{A lower bound on the rank}
 
-\begin{lemma}[Rank lower bound at a generically rigid placement, general dimension]
+The proof of the edge-count bound
+(\cref{thm:isGenericallyRigid-card-mul-le}) first bounds the rank of
+the rigidity map from below, and then bounds the rank by the number of
+edges. We record the first step.
+
+\begin{lemma}[Rank lower bound for generically rigid graphs]
   \label{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid}
   \lean{SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid}
   \leanok
   \uses{def:isGenericallyRigid, lem:framework-finrank,
     def:isInfinitesimallyRigid}
-  Let $V$ be finite and let $G$ be a graph on $V$. If $G$ is
-  generically rigid in dimension $d$, there exists a framework
-  $p : V \to \R^{d}$ with
+  Let $V$ be finite, and let $G$ be generically rigid in dimension $d$.
+  Then there is a framework $p$ on $V$ in $\R^{d}$ with
   \[
-    d \cdot |V| \;\le\; \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr)
-      + \frac{d(d+1)}{2}.
+    d\,|V| \;\le\; \operatorname{rank} R(G, p) + \frac{d(d+1)}{2}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Pick an infinitesimally rigid framework $p$ witnessing generic
-  rigidity. Rank--nullity for $\mathrm{RigidityMap}\,G\,p$ gives
-  $\dim\,(\mathrm{Framework}\,V\,d) = \dim\,\mathrm{range} + \dim\,\ker$;
-  by \cref{lem:framework-finrank} the left-hand side equals $d \cdot |V|$,
-  and by the definition of infinitesimal rigidity the nullity is at most
-  $d(d+1)/2$, which rearranges to the stated bound. This is the rank-half
-  of the edge-count bound \cref{thm:isGenericallyRigid-card-mul-le},
-  keeping the rank itself in place of its upper bound by the edge count
-  (\cref{lem:rigidityMap-finrank-range-le}).
+  Let $p$ be a framework that is infinitesimally rigid for $G$. By
+  rank--nullity, $\dim (\R^{d})^{V}$ is the rank of $R(G, p)$ plus the
+  dimension of its kernel. Here $\dim (\R^{d})^{V} = d\,|V|$
+  (\cref{lem:framework-finrank}). The kernel has dimension at most
+  $d(d+1)/2$, since $p$ is infinitesimally rigid
+  (\cref{def:isInfinitesimallyRigid}).
 \end{proof}
 
-\begin{lemma}[Row-independent edge basis from rank lower bound]
+\begin{lemma}[A row-independent set of $2|V| - 3$ edges]
   \label{lem:exists-rowIndependent-edge-basis}
   \lean{SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two}
   \leanok
@@ -247,62 +272,58 @@ forgetful $(M \to_{\R} \R) \to (M \to \R)$ map.
     lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid,
     lem:span-range-rigidityRow,
     lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
-  Let $V$ be finite. If $G$ is generically rigid in dimension $2$, then
-  there exists a framework $p$ and an edge set $I \subseteq E(G)$ with
-  $|I| = 2 |V| - 3$ which is row-independent at $p$.
+  Let $V$ be finite, and let $G$ be generically rigid in
+  dimension~$2$. Then there are a framework $p$ on $V$ in $\R^{2}$ and
+  an edge set $I \subseteq E(G)$ with $|I| = \max(2|V| - 3,\, 0)$ that
+  is row-independent at $p$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Pick $p$ realising the rank lower bound
+  Let $p$ be a framework given by
   \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid} at
-  $d = 2$, so
-  $\dim\,\mathrm{range}\,\mathrm{RigidityMap}\,G\,p \ge 2|V| - 3$. By
-  \cref{lem:span-range-rigidityRow} the rigidity rows span the range
-  of the dual map, which has the same dimension as
-  $\mathrm{range}\,\mathrm{RigidityMap}\,G\,p$ by
-  row-rank-equals-column-rank
-  (\texttt{LinearMap.finrank\_range\_dualMap\_eq\_finrank\_range}).
-  Extend $\emptyset$ to a linearly independent spanning subset of the
-  row family (\texttt{exists\_linearIndepOn\_extension}); its
-  cardinality equals the dimension and so is at least $2|V| - 3$.
-  Truncate to size $2|V| - 3$ (\texttt{Set.exists\_subset\_card\_eq})
-  and read $I$ as the edge labels indexing the chosen rows;
-  \cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
-  transports the dual-module linear independence back to
-  \cref{def:edgeSet-rowIndependent}.
+  $d = 2$, so that $R(G, p)$ has rank at least $2|V| - 3$. The rigidity
+  rows span the image of $R(G, p)^{\top}$
+  (\cref{lem:span-range-rigidityRow}). This image has the same
+  dimension as the image of $R(G, p)$, since the transpose has the same
+  rank. So there is a set $B$ of edges whose rigidity rows are linearly
+  independent and span the image of $R(G, p)^{\top}$, and
+  $|B| \ge 2|V| - 3$.
+
+  Let $I$ be a subset of $B$ with $\max(2|V| - 3,\, 0)$ elements. The
+  rigidity rows $r_e$, for $e \in I$, are linearly independent. So $I$
+  is row-independent at $p$
+  (\cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}).
 \end{proof}
 
-\subsubsection{Rank upper bound under affine spanning}
+\subsubsection{An upper bound on the rank}
 
-The kernel of the rigidity map always contains the
-trivial Euclidean motions of the framework (translations plus
-infinitesimal rotations); the unconditional $\le \ker$ inclusion and
-the $d(d+1)/2$ lower bound on $\dim_{\R}\,\ker$ at an affinely-spanning
-placement are developed in \cref{sec:trivial-motions} (specifically
-\cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}). The
-induced rank upper bound $\rk \le d \cdot |V| - d(d+1)/2$ is the
-converse of the rank lower bound; specialised at $d = 2$ it underlies
-the $(2, 3)$-sparsity claim below.
+When the points $p_v$ affinely span $\R^{d}$, the kernel of $R(G, p)$
+contains the space $T(p)$ of trivial motions, of dimension at least
+$d(d+1)/2$ (\cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}).
+By rank--nullity this bounds the rank from above. Jord\'an proves the
+same bound for every framework on at least $d + 2$ vertices, as his
+Lemma~1.2.1~\cite{jordan2016}. In the plane the bound gives the
+sparsity of row-independent edge sets
+(\cref{lem:isSparse-of-rowIndependent-two}).
 
-\begin{lemma}[Rank upper bound from affine spanning, general dimension]
+\begin{lemma}[Rank upper bound for affinely spanning frameworks]
   \label{lem:rigidityMap-finrank-range-le-of-affinelySpanning}
   \lean{SimpleGraph.rigidityMap_finrank_range_le_of_affinelySpanning}
   \leanok
   \uses{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning,
     lem:framework-finrank}
-  Let $V$ be finite, let $G$ be a graph on $V$, and let
-  $p : V \to \R^{d}$ affinely span. Then
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$
+  whose points affinely span $\R^{d}$. Then
   \[
-    \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr)
-      + \frac{d(d+1)}{2} \;\le\; d \cdot |V|.
+    \operatorname{rank} R(G, p) + \frac{d(d+1)}{2} \;\le\; d\,|V|.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Combine
-  \cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning} with
-  rank--nullity and the framework-space dimension
-  \cref{lem:framework-finrank}.
+  By rank--nullity, the rank of $R(G, p)$ plus the dimension of its
+  kernel is $\dim (\R^{d})^{V}$, which is $d\,|V|$
+  (\cref{lem:framework-finrank}). The kernel has dimension at least
+  $d(d+1)/2$ (\cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}).
 \end{proof}
 
 \subsubsection{Sparsity from row-independence (Lov\'asz--Yemini, easy direction)}

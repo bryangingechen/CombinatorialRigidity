@@ -289,6 +289,11 @@ declaration's name as its header writes it:
   statements and `shadowGraph`); a `lake lean` witness, every graph on `Fin 2` at every $p$ in
   $d = 3$, by `Submodule.finrank_le` and `Framework.finrank` ($6 \le 3 \cdot 4 / 2$).
   *Found:* round 1 task 5.4.
+- **F-026** · S · `lem:span-range-rigidityRow` (`laman-theorem.tex`): the statement assumes $V$
+  finite, which its pin `span_range_rigidityRow` does not: it takes only `[Finite G.edgeSet]`. The
+  statement is weaker than the pin, as in `F-015`.
+  *Evidence:* read (the statement of `span_range_rigidityRow`, `RigidityMatroid.lean`).
+  *Found:* round 1 task 5.7.
 
 ## L — Lean
 
@@ -342,4 +347,18 @@ declaration's name as its header writes it:
 
 ## M — mathematics and sources
 
-- None yet.
+- **F-025** · M · the credit for "row-independent iff $(2,3)$-sparse" (`rigidity-matroid.tex`,
+  `laman-theorem.tex`, `intro.tex`; Lean docstrings): the blueprint credits Lovász–Yemini 1982 with
+  the planar identification "an edge set is row-independent at a generic framework iff it is
+  $(2,3)$-sparse": the titles of `thm:edgeSet-rowIndependent-iff-isSparse`,
+  `thm:rigidityMatroid-indep-iff-rowIndependent` and `thm:linearRigidityMatroid-eq-rigidityMatroid`,
+  `rigidity-matroid.tex`'s opening ("the classical strategy of Lovász–Yemini", for Jordán's proof of
+  his Theorem 2.2.1), `intro.tex`, and docstrings in `RigidityMatroid.lean`, `LamanTheorem.lean`,
+  `MatroidIdentification.lean` and `LinearRigidityMatroid.lean`. Jordán (2016, p. 45) credits the
+  characterization to Laman (Theorem 2.2.1, his [43]) and proves it by induction with extensions; he
+  credits Lovász–Yemini with the rank formula (Theorem 2.3.2, p. 49) and with the rigidity of
+  6-connected graphs (Theorem 2.4.1, p. 51). Task 5.7 moved its range's credit to Laman; tasks
+  5.8–5.10 can do so in theirs, but `intro.tex` and the docstrings are outside round 1.
+  *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
+  and the Lean). Lovász–Yemini 1982 is not in `.refs/`.
+  *Found:* round 1 task 5.7.
