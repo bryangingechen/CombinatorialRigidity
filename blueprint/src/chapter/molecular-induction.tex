@@ -324,261 +324,264 @@ p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
 
 Splitting off the new vertex $v$ of $H_{ab}^v$ gives back $H$.
 
-\subsection{Forest surgery: Katoh--Tanigawa Lemma 4.1}
+\subsection{Forest surgery: KT Lemma~4.1}
 \label{sec:molecular-induction-forest}
 
-Katoh--Tanigawa's own argument for the degree-of-freedom bookkeeping a
-splitting-off or a vertex removal induces is a forest surgery at the
-degree-2 vertex. The next remark works out a genuine gap in Lemma~4.1's
-statement and in its proof of the intended case, together with the
-repair; \cref{sec:molecular-induction-dof} then reaches the bookkeeping
-Theorem~4.9 actually needs by a shorter, independent argument that does
-not depend on any of this.
+Let $v$ be a vertex of $G$ of degree two, whose edges $e_a$ and $e_b$
+join it to vertices $a, b \neq v$. For an edge $e$ of $G$, let
+$\tilde e$ be the set of its $D - 1$ copies in $\tilde G$
+(\cref{def:k-dof}). The edges of $\tilde G$ incident with $v$ are the
+$2(D - 1)$ edges of $\tilde e_a \cup \tilde e_b$. We write
+$\widetilde{ab}$ for the set of the $D - 1$ copies of the new edge $ab$
+of $G_v^{ab}$. Katoh and Tanigawa~\cite[p.~660]{katohTanigawa2011}
+compare the independent sets of $M(\tilde G)$ and of
+$M(\widetilde{G_v^{ab}})$ in their Lemma~4.1. They prove it by a
+\emph{forest surgery}: they partition an independent set of
+$M(\tilde G)$ into $D$ forests of $\tilde G$, and change each forest at
+$v$. Their proof assumes that every forest of the partition has an edge
+incident with $v$.
 
-\begin{remark}[On Katoh--Tanigawa Lemma 4.1]
+We discuss the lemma and this assumption in \cref{rem:kt-lemma-41}, and
+then prove the lemma for bases in three steps. The independent sets of
+$M(\tilde G)$ are the unions of $D$ forests
+(\cref{lem:forest-packing-decomp}). A base has a partition into $D$
+forests each of which has an edge incident with $v$
+(\cref{lem:balanced-forest-packing}). When $a \neq b$, the surgery on
+such a partition gives the two conclusions of the lemma
+(\cref{lem:forest-surgery-count}). The second step uses KT Lemma~4.4
+(\cref{lem:removal-deficiency}). We prove that lemma in
+\cref{sec:molecular-induction-dof} by comparing the values of partitions
+of $V(G)$, without forests.
+
+\begin{remark}[On KT Lemma~4.1]
   \label{rem:kt-lemma-41}
-  Formalizing the forest surgery of \cite[Lemma 4.1]{katohTanigawa2011}
-  (p.~660; the 2009 arXiv predecessor, Lemma 5.1, p.~11, is essentially
-  verbatim) surfaced a three-layer subtlety. \emph{The molecular
-  conjecture and Katoh--Tanigawa's proof are not in question}; the value
-  is in stating exactly which layer is which.
+  KT Lemma~4.1~\cite[p.~660]{katohTanigawa2011} states that for any
+  independent set $I$ of $M(\tilde G)$ there is an independent set $I'$
+  of $M(\widetilde{G_v^{ab}})$ with $|I'| = |I| - D$ and
+  $|\widetilde{ab} \cap I'| < D - 1$. The arXiv version of the paper
+  (arXiv:0902.0236, 2009, Lemma~5.1, p.~11) has essentially the same
+  statement and proof. We separate three points.
   \begin{enumerate}
-    \item \emph{Statement-as-quantified --- false.} Both versions read
-      ``for \emph{any} independent set $I$ of $M(\tilde G)$ \dots there
-      exists $I'$ \dots with $|I'| = |I| - D$''. For any independent $I$
-      with $|I| < D$ --- e.g.\ $I = \emptyset$ --- this demands $|I'| =
-      |I| - D < 0$, which is impossible. The intended quantifier is
-      clearly over \emph{bases} of $M(\tilde G)$; the universal-over-$I$
-      reading must be restricted. We record the literal disproof as
-      \cref{ex:kt-41-overquantified}.
-    \item \emph{Proof of the intended (base) case --- the unjustified
-      step.} ``Convert each $F_i$ to $F'_i$ with $|F'_i| = |F_i| - 1$
-      for each $i$'' (2011), and the equation $2h' + (D - h') = h$
-      (2009), rest on an unstated premise about the chosen $D$-forest
-      packing: that it is \emph{balanced at $v$} --- every one of the
-      $D$ forests uses at least one edge at the degree-2 vertex $v$, so
-      that all $D$ forests shrink by one and $|I'| = |I| - D$. Neither
-      version justifies this. \textbf{We resolve it; the step is a gap,
-      not an error}, but the repair has \emph{two} parts, both worked
-      out here since no source supplies them.
+    \item \emph{The statement holds only for bases.} If $|I| < D$, for
+      instance if $I = \emptyset$, then no set $I'$ has
+      $|I'| = |I| - D$ (\cref{ex:kt-41-overquantified}). Katoh and
+      Tanigawa apply the lemma to a base, in the proof of their
+      Lemma~4.3, and we read it for bases.
+    \item \emph{The proof assumes a balanced partition.} Let
+      $F_1, \dots, F_D$ be a partition of $I$ into forests of $\tilde G$
+      (\cref{lem:forest-packing-decomp}). A forest has at most two edges
+      incident with $v$, at most one in $\tilde e_a$ and one in
+      $\tilde e_b$, since two copies of an edge form a cycle. Let
+      $h = |(\tilde e_a \cup \tilde e_b) \cap I|$, and let $h'$ be the
+      number of forests with two edges incident with $v$. Katoh and
+      Tanigawa note that $2h' + (D - h') = h$, and they turn each $F_i$
+      into a forest $F'_i$ of $\widetilde{G_v^{ab}}$ with
+      $|F'_i| = |F_i| - 1$. Both steps assume that every $F_i$ has an
+      edge incident with $v$. We call such a partition \emph{balanced at
+      $v$}. The proof does not show that $I$ has a balanced partition,
+      and if $h < D$, it has none.
 
-      First, a balanced packing \emph{exists} for a base, in two
-      halves: the \emph{counting} half (\cref{lem:base-vfiber-count})
-      shows a base meets $\ge D$ of $v$'s $2(D-1)$ fibers, so the
-      pigeonhole obstruction ``$h < D$'' cannot arise; the
-      \emph{redistribution} half (\cref{lem:acyclic-insert-vfiber})
-      spreads those fibers one per forest --- a forest avoiding $v$ has
-      $v$ isolated (degree~2!), so it absorbs any free $v$-fiber as a
-      \emph{pendant} --- and a finite descent
-      (\cref{lem:packing-move} and \cref{lem:balanced-forest-packing}) makes every
-      forest meet $v$.
+      We show that a base $B$ has one. First, $B$ contains at least $D$
+      edges incident with $v$ (\cref{lem:base-vfiber-count}). Now let
+      $F_j$ be a forest of a partition of $B$ with no edge incident with
+      $v$. The other $D - 1$ forests contain at least $D$ such edges, so
+      one of them contains two. Moving one of these two to $F_j$ gives a
+      new partition of $B$ into forests, as the moved edge is a
+      pendant edge at $v$ of the new $F_j$
+      (\cref{lem:acyclic-insert-vfiber}).
+      Each move lowers the number of forests with no edge incident with
+      $v$, so repeated moves give a balanced partition
+      (\cref{lem:balanced-forest-packing}). So, for bases, this step is a
+      gap in the proof and not an error.
 
-      Second --- the part it is easy to overlook --- the \emph{reroute
-      itself} must convert a balanced packing into a packing of
-      $\widetilde{G_v^{ab}}$ with the right count. Each forest has
-      $v$-degree $1$ or $2$ (at most one copy of each of $v$'s two
-      parallel edge-bundles, since two parallel copies form a $2$-cycle;
-      at least one, by balance). A degree-$2$ forest trades its
-      $a$--$v$--$b$ path for a single short-circuit copy $\widetilde{ab}$
-      (\cref{lem:reroute-cycle-lift}); a degree-$1$ forest simply drops
-      its lone $v$-fiber, keeping the rest
-      (\cref{lem:reroute-vfree-transport}) --- it gains \emph{no}
-      $\widetilde{ab}$-copy, since only $D-1$ such copies exist for the
-      $D$ forests, so not all can be degree-$2$. Because the packing is
-      balanced, all $D$ forests shrink by exactly one, giving $|I'| =
-      |I| - D$ (\cref{lem:forest-surgery-count}); KT's $2h' + (D-h') = h$
-      is precisely this accounting. Assembled
-      (\cref{lem:forest-surgery-split}) this yields
+      On a balanced partition the surgery goes as Katoh and Tanigawa
+      describe it. A forest with two edges $p_a \in \tilde e_a$ and
+      $p_b \in \tilde e_b$ replaces them by one copy of $ab$
+      (\cref{lem:reroute-cycle-lift}). A forest with one edge incident
+      with $v$ loses it and gains nothing
+      (\cref{lem:reroute-vfree-transport}). Each forest loses one edge,
+      so $|I'| = |I| - D$: the $h$ edges incident with $v$ leave, and
+      $h'$ copies of $ab$ enter. This count is the equation
+      $2h' + (D - h') = h$. As $h \le 2(D - 1)$, it gives
+      $h' \le D - 2$. So the $D - 1$ copies of $ab$ suffice for distinct
+      forests to take distinct copies, and
+      $|\widetilde{ab} \cap I'| = h' < D - 1$
+      (\cref{lem:forest-surgery-count}). The count and KT eq.~(2.4)
+      (\cref{thm:def-eq-corank}) give
       $\operatorname{def}(\widetilde{G_v^{ab}}) \le
-      \operatorname{def}(\tilde G)$, KT's intended conclusion.
-    \item \emph{Intended content --- true.} What the induction
-      (\cref{lem:dof-tracking}) actually consumes is the deficiency
-      inequality $\operatorname{def}(\widetilde{G_v^{ab}}) \le
-      \operatorname{def}(\tilde G)$. This is correct, and we establish it
-      directly (\cref{lem:splitoff-deficiency}) by a partition-count
-      comparison through the def\,$=$\,corank bridge
-      (\cref{thm:def-eq-corank}), bypassing the forest surgery entirely.
+      \operatorname{def}(\tilde G)$, which is
+      \cref{lem:forest-surgery-split}.
+    \item \emph{What the induction uses.} The proof of KT Theorem~4.9
+      needs KT Lemma~4.1 only through its consequence
+      $\operatorname{def}(\widetilde{G_v^{ab}}) \le
+      \operatorname{def}(\tilde G)$, the upper bound of KT
+      Lemma~4.3(i). We prove the deficiency bounds of KT Lemmas~4.3(i)
+      and~4.4 in \cref{sec:molecular-induction-dof}, by comparing the
+      values of partitions of $V(G)$, without forests. These bounds
+      (\cref{lem:dof-tracking}) are what our proof of KT Theorem~4.9
+      uses. The surgery also gives the second conclusion of KT Lemma~4.1,
+      $|\widetilde{ab} \cap I'| < D - 1$. From it we derive one half of
+      KT Lemma~4.3(ii) (\cref{lem:splitoff-kdof-criterion}), which the
+      algebraic induction uses in Cases~II and~III. The other half uses
+      KT Lemma~4.2, the converse for edge-splitting, which adds edges at
+      the new vertex and needs no balanced partition
+      (\cref{lem:edge-splitting}).
   \end{enumerate}
-  Accordingly the forest surgery does not enter the proof of
-  Theorem~4.9, though the splitting-off direction is fully formalized as
-  the repair of this gloss: a balanced packing exists
-  (\cref{lem:balanced-forest-packing}), both per-forest reroute steps ---
-  the degree-$2$ cycle-lift (\cref{lem:reroute-cycle-lift}) and the
-  verbatim transport of the $v$-free part
-  (\cref{lem:reroute-vfree-transport}) --- hold, and the cardinality
-  bookkeeping (\cref{lem:forest-surgery-count}) assembles them into the
-  deficiency relation (\cref{lem:forest-surgery-split},
-  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$).
-  The edge-splitting inverse (\cref{lem:forest-surgery-unsplit}), while
-  sound, is not needed by Theorem~4.9 and stays deferred. Both the
-  splitting-off deficiency bound
-  (\cref{lem:splitoff-deficiency}, KT~4.3) \emph{and} the removal bound
-  (\cref{lem:removal-deficiency}, KT~4.4) are reached instead by the
-  direct deficiency count of \cref{sec:molecular-induction-dof}, via the
-  def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) --- the removal bound
-  by exactly the same partition-count comparison as the splitting-off
-  bound, needing only $D \ge 2$ (\cref{rem:kt-lemma-44}).
 \end{remark}
 
-\begin{example}[KT Lemma 4.1's universal quantification is unsatisfiable]
+\begin{example}[KT Lemma~4.1 fails for $I = \emptyset$]
   \label{ex:kt-41-overquantified}
   \lean{Graph.kt_lemma_41_overquantified}
   \leanok
   \uses{def:matroid-MG, rem:kt-lemma-41}
-  Taking $I = \emptyset$ (independent in any matroid), the promised $I'$
-  with $|I'| = |I| - D = -D$ would need $|I'| + D = 0$ in $\mathbb{N}$,
-  impossible for $D = \binom{d+1}{2} \ge 1$. This is layer~(1) of
-  \cref{rem:kt-lemma-41}: the universal-over-$I$ quantification is
-  formally false, witnessing that the intended quantifier ranges over
-  bases.
+  Let $D \ge 1$. The empty set is independent in $M(\tilde G)$, and no
+  set $I'$ has $|I'| + D = |\emptyset| = 0$. So no independent set $I'$
+  of $M(\widetilde{G_v^{ab}})$ has $|I'| = |\emptyset| - D$, and KT
+  Lemma~4.1, stated for every independent set, fails at
+  $I = \emptyset$.
 \end{example}
 
-\begin{lemma}[Forest-packing decomposition of an $M(\tilde G)$-independent set]
+\begin{lemma}[The independent sets of $M(\tilde G)$ are the unions of $D$ forests]
   \label{lem:forest-packing-decomp}
   \lean{Graph.matroidMG_indep_iff_exists_forest_packing}
   \leanok
   \uses{def:matroid-MG}
-  A fiber set $I \subseteq E(\tilde G)$ is independent in $M(\tilde G)$ if and only
-  if it is covered by $D = \binom{d+1}{2}$ cycle-matroid-independent fiber sets
-  $F_0, \dots, F_{D-1}$ --- the \emph{$D$ edge-disjoint forests on $V(\tilde G)$} of
-  Katoh--Tanigawa's surgery: $\bigcup_{i} F_i = I$ with each $F_i$ a forest of
-  $\tilde G$. This is the matroidal reading of ``$I$ partitions into $D$ forests'',
-  fixing the framing of the forest surgery below: a \emph{forest} is a
-  cycle-matroid-independent fiber set, and the $D$-forest partition is the union
-  decomposition of $M(\tilde G)$ --- no hand-rolled acyclicity predicate.
+  Let $G$ be a multigraph. A set $I$ of edges of $\tilde G$ is
+  independent in $M(\tilde G)$ if and only if
+  $I = F_1 \cup \dots \cup F_D$ for some forests $F_1, \dots, F_D$ of
+  $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  $M(\tilde G)$ is the $D$-fold cycle-matroid union restricted to $E(\tilde G)$
-  (\cref{def:matroid-MG}), so independence unfolds through matroid restriction and
-  the matroid-union characterization (Nash--Williams~\cite{nashWilliams1966},
-  Edmonds~\cite{edmonds1965}): independence in $\bigcup_{i < D}
-  \operatorname{cycleMatroid}(\tilde G)$ is exactly a cover by $D$
-  cycle-matroid-independent sets.
+  By \cref{def:matroid-MG}, $M(\tilde G)$ is the union of $D$ copies of
+  the cycle matroid of $\tilde G$. The independent sets of the cycle
+  matroid are the forests (\cref{sec:body-bar-matroid-union}). The
+  independent sets of a union of matroids are the unions of independent
+  sets of the matroids (\cref{lem:union-indep-iff}).
 \end{proof}
 
-\begin{lemma}[A base meets at least $D$ of the fibers at a degree-2 vertex]
+A subset of a forest is a forest. So removing from each $F_i$ the edges
+of $F_1, \dots, F_{i-1}$ gives pairwise disjoint forests with the same
+union. Hence every independent set of $M(\tilde G)$ has a partition
+into $D$ forests. Katoh and Tanigawa begin their proofs of Lemmas~4.1
+and~4.2 with such a partition.
+
+\begin{lemma}[A base contains at least $D$ edges at a vertex of degree two]
   \label{lem:base-vfiber-count}
   \lean{Graph.isBase_vfiber_ncard_ge}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:removal-deficiency, rem:kt-lemma-41}
-  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$ (its only
-  incident edges $e_a, e_b$), and $D = \binom{d+1}{2} \ge 2$. Then every
-  base $B$ of $M(\tilde G)$ contains at least $D$ of the $2(D-1)$ fibers
-  incident to $v$:
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges $e_a$ and $e_b$ join $v$ to vertices $a, b \neq v$.
+  Then every base $B$ of $M(\tilde G)$ contains at least $D$ of the
+  $2(D - 1)$ edges of $\tilde G$ incident with $v$:
   \[
-    \bigl|\, B \cap (\tilde e_a \cup \tilde e_b)\,\bigr| \;\ge\; D .
+    \bigl|\, B \cap (\tilde e_a \cup \tilde e_b)\,\bigr| \;\ge\; D,
   \]
+  where $\tilde e$ is the set of the $D - 1$ copies of $e$ in
+  $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  A rank count, not a forest reroute. Deleting $v$'s fibers from $B$ lands
-  inside $E(\widetilde{G_v})$ --- the only $v$-incident $G$-edges are
-  $e_a, e_b$, so a surviving fiber's underlying edge avoids $v$ --- where the
-  remainder is independent in $M(\widetilde{G_v}) = M(\tilde G) \restriction
-  E(\widetilde{G_v})$ (\cref{lem:matroid-restrict-subgraph}). Hence
-  $|B \setminus (\tilde e_a \cup \tilde e_b)| \le \operatorname{rank}
-  M(\widetilde{G_v})$, and the def\,$=$\,corank bridge
-  (\cref{thm:def-eq-corank}) turns $|B \cap (\tilde e_a \cup \tilde e_b)| =
-  |B| - |B \setminus (\tilde e_a \cup \tilde e_b)|$ into $\ge D +
-  (\operatorname{def}(\widetilde{G_v}) - \operatorname{def}(\tilde G))$,
-  which is $\ge D$ by the removal bound (\cref{lem:removal-deficiency},
-  $\operatorname{def}(\tilde G) \le \operatorname{def}(\widetilde{G_v})$).
+  Let $G_v = G - v$ (\cref{def:graph-operations}), and let
+  $B_0 = B \setminus (\tilde e_a \cup \tilde e_b)$. An edge of $B_0$ is
+  a copy of an edge of $G$ other than $e_a$ and $e_b$, so it is not
+  incident with $v$. Hence $B_0$ is a set of edges of
+  $\widetilde{G_v}$. It is independent in $M(\tilde G)$, and hence in
+  the restriction $M(\widetilde{G_v})$ of $M(\tilde G)$
+  (\cref{lem:matroid-restrict-subgraph}). So
+  $|B_0| \le \operatorname{rank} M(\widetilde{G_v})$.
+
+  The multigraph $G_v$ has the vertex $a$, so KT eq.~(2.4)
+  (\cref{thm:def-eq-corank}) applies to $G$ and to $G_v$:
+  \[
+    |B| = D\,(|V(G)| - 1) - \operatorname{def}(\tilde G), \qquad
+    \operatorname{rank} M(\widetilde{G_v}) = D\,(|V(G)| - 2) -
+    \operatorname{def}(\widetilde{G_v}).
+  \]
+  Hence
+  \[
+    \bigl|\, B \cap (\tilde e_a \cup \tilde e_b)\,\bigr| \;=\;
+    |B| - |B_0| \;\ge\;
+    D + \operatorname{def}(\widetilde{G_v}) - \operatorname{def}(\tilde G)
+    \;\ge\; D.
+  \]
+  The last step is KT Lemma~4.4 (\cref{lem:removal-deficiency}), which
+  uses $D \ge 2$: it gives
+  $\operatorname{def}(\tilde G) \le \operatorname{def}(\widetilde{G_v})$.
 \end{proof}
 
-\medskip\noindent This is the counting half of the balanced-packing
-assumption Katoh--Tanigawa's proof glosses (\cref{rem:kt-lemma-41}~(2)):
-a $D$-forest packing with every forest meeting $v$ needs at least $D$
-$v$-fibers present, and the count above shows they are, so the
-pigeonhole obstruction ``$h < D$'' of \cref{rem:kt-lemma-41}~(2) cannot
-arise. The complementary \emph{redistribution} of these fibers one per
-forest is \cref{lem:acyclic-insert-vfiber}.
-
-\begin{lemma}[A $v$-avoiding forest accepts a $v$-fiber as a pendant]
+\begin{lemma}[A forest with no edge at $v$ accepts an edge at $v$]
   \label{lem:acyclic-insert-vfiber}
   \lean{Graph.acyclicSet_insert_vfiber_of_not_inc}
   \leanok
   \uses{def:matroid-MG, rem:kt-lemma-41, lem:base-vfiber-count}
-  Let $F$ be a cycle-matroid-independent fiber set of $\tilde G$ (a
-  ``forest'') none of whose edges is incident to the degree-2 vertex $v$,
-  and let $x$ be a fiber joining $v$ to a distinct vertex $w \ne v$ (a
-  non-loop copy of a $v$-incident edge --- the shape of a $\tilde e_a$ or
-  $\tilde e_b$ fiber). Then $F \cup \{x\}$ is again cycle-matroid-independent.
-  (The non-loop hypothesis $w \ne v$ is essential: a loop at $v$ is itself a
-  cycle.)
+  Let $G$ be a multigraph with a vertex $v$ of degree two. Let $F$ be a
+  forest of $\tilde G$ none of whose edges is incident with $v$, and let
+  $x$ be an edge of $\tilde G$ that joins $v$ to a vertex $w \neq v$.
+  Then $F \cup \{x\}$ is a forest of $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  By the cycle-matroid/acyclic-set correspondence, it suffices that
-  $\tilde G \restriction (F \cup \{x\})$ is a forest; since
-  $\tilde G \restriction F$ is, it is enough that $x$ is a \emph{bridge}
-  there (adding a bridge to a forest preserves the forest property). And
-  $x$ is a bridge iff $v, w$ are disconnected after deleting $x$. But in
-  $(\tilde G \restriction (F \cup \{x\})) \setminus \{x\}$ the vertex $v$
-  is \emph{isolated}: its only incident edge was $x$ (no edge of $F$ meets
-  $v$), now removed. So any $v$--$w$ path would force $v = w$, contradicting
-  $w \ne v$. This is the single combinatorial step KT's proof glosses; it
-  holds precisely because $v$ has degree~2 (so a $v$-avoiding forest leaves
-  $v$ isolated).
+  In $\tilde G \restriction (F \cup \{x\})$ the only edge incident with
+  $v$ is $x$, and $x$ is not a loop. So deleting $x$ leaves $v$
+  isolated, and in particular separates $v$ from $w$: the edge $x$ is a
+  bridge. A bridge lies on no cycle, and $F$ contains no cycle, so
+  $F \cup \{x\}$ contains none. The argument uses only that no edge of
+  $F$ is incident with $v$, not the degree of $v$.
 \end{proof}
 
-\medskip\noindent This is the redistribution half of the balanced-packing
-assumption (\cref{rem:kt-lemma-41}~(2)): combined with the counting half
-(\cref{lem:base-vfiber-count}), it confirms Katoh--Tanigawa's Lemma~4.1
-has a gap, not an error --- the balanced packing is achievable for a
-base.
-
-\begin{lemma}[One rebalancing move of the forest-packing descent]
+\begin{lemma}[Moving an edge at $v$ into a forest with none]
   \label{lem:packing-move}
   \lean{Graph.exists_packing_move_of_not_inc}
   \leanok
   \uses{def:matroid-MG, lem:acyclic-insert-vfiber, lem:base-vfiber-count}
-  Let $F_0, \dots, F_{D-1}$ be a forest packing covering a fiber set $I$
-  ($\bigcup_i F_i = I$, each $F_i$ cycle-matroid-independent), let $F_j$ be a
-  forest avoiding the degree-2 vertex $v$, and let $x \in I$ be a $v$-fiber
-  (a non-loop copy joining $v$ to some $w \ne v$). Then the re-choice
-  $F_j' = F_j \cup \{x\}$, $F_i' = F_i \setminus \{x\}$ for $i \ne j$, is
-  again a forest packing covering $I$, and the new $F_j'$ \emph{meets} $v$.
+  Let $G$ be a multigraph with a vertex $v$ of degree two, and let
+  $F_1, \dots, F_D$ be forests of $\tilde G$ with union $I$. Suppose
+  that no edge of $F_j$ is incident with $v$, and let $x \in I$ be an
+  edge of $\tilde G$ that joins $v$ to a vertex $w \neq v$. Then there
+  are forests $F'_1, \dots, F'_D$ of $\tilde G$ with union $I$ such that
+  $x \in F'_j$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The recipient $F_j'$ stays acyclic by the redistribution kernel
-  (\cref{lem:acyclic-insert-vfiber}): $x$ is a pendant at the isolated $v$.
-  Every donor $F_i' = F_i \setminus \{x\}$ stays acyclic as a subset of the
-  acyclic $F_i$. The union is unchanged because $x \in I$ is re-added at $j$
-  while removed elsewhere. Finally $x \in F_j'$, so $F_j'$ meets $v$, and a
-  descent driven by the count of $v$-avoiding forests terminates with a
-  balanced packing.
+  Let $F'_j = F_j \cup \{x\}$, and let $F'_i = F_i \setminus \{x\}$ for
+  $i \neq j$. Then $F'_j$ is a forest by
+  \cref{lem:acyclic-insert-vfiber}, and each $F'_i$ with $i \neq j$ is
+  a forest as a subset of $F_i$. The union is still $I$, since $x \in I$
+  moves from the other forests to $F'_j$.
 \end{proof}
 
-\begin{lemma}[The repacking descent: a base admits a balanced forest packing]
+\begin{lemma}[A base has a balanced partition into forests]
   \label{lem:balanced-forest-packing}
   \lean{Graph.exists_balanced_forest_packing}
   \leanok
   \uses{def:matroid-MG, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, rem:kt-lemma-41}
-  A base $B$ of $M(\tilde G)$ admits an edge-disjoint $D$-forest packing
-  --- $D$ pairwise-disjoint cycle-matroid-independent fiber sets covering
-  $B$ --- in which \emph{every} forest meets the degree-2 vertex $v$.
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges join $v$ to vertices $a, b \neq v$. Then every base
+  $B$ of $M(\tilde G)$ is the union of $D$ pairwise disjoint forests of
+  $\tilde G$, each of which has an edge incident with $v$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Disjointify the matroid-union cover of $B$
-  (\cref{lem:forest-packing-decomp}) into a genuine partition, then run a
-  strong induction on the number of $v$-avoiding forests. The base meets
-  $\ge D$ $v$-fibers (\cref{lem:base-vfiber-count}); if some forest $F_j$
-  avoids $v$, those $\ge D$ fibers are partitioned among the other
-  $\le D - 1$ forests, so by pigeonhole one forest $F_i$ ($i \ne j$) holds
-  $\ge 2$ of them. The rebalancing move (\cref{lem:packing-move}) shifts one
-  $v$-fiber from $F_i$ into $F_j$: disjointness guarantees it leaves no other
-  donor, so $F_j$ now meets $v$ while $F_i$ still meets $v$, strictly raising
-  the count of $v$-meeting forests. The induction terminates with a balanced
-  packing.
+  By \cref{lem:forest-packing-decomp}, $B$ is the union of $D$ forests,
+  which we make pairwise disjoint as above. We induct on the number of
+  these forests with no edge incident with $v$. If there is none, we are
+  done. Otherwise let $F_j$ be one. By \cref{lem:base-vfiber-count}, $B$
+  contains at least $D$ edges incident with $v$, and they lie in the
+  $D - 1$ forests other than $F_j$. So one of these, $F_i$, contains two
+  of them. Let $x$ be one of the two. It joins $v$ to $a$ or to $b$.
+
+  Move $x$ from $F_i$ to $F_j$, as in the proof of
+  \cref{lem:packing-move}. The new $F_j$ is a forest
+  (\cref{lem:acyclic-insert-vfiber}), and the forests are still pairwise
+  disjoint with union $B$, since $x$ lay in $F_i$ only. Now $F_j$ has an
+  edge incident with $v$, and $F_i$ keeps its other one. So the number
+  of forests with no edge incident with $v$ drops by one, and the
+  induction hypothesis gives the partition.
 \end{proof}
 
-\medskip\noindent This is exactly the balanced packing Katoh--Tanigawa's
-Lemma~4.1 base-case proof assumes without justification
-(\cref{rem:kt-lemma-41}~(2)); it is achievable, so the missing step is a
-gap, not an error.
+We now perform the surgery on a balanced partition of a base.
 
 \begin{lemma}[Reroute step: the $v$-free part of a forest transports verbatim]
   \label{lem:reroute-vfree-transport}

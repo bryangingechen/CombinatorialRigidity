@@ -433,6 +433,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`: one
   dead pin); read (a `grep` for the two names' callers).
   *Found:* round 2 task 2.7.
+- **F-087** · N · `lem:packing-move` (`molecular-induction.tex`): its pin
+  `exists_packing_move_of_not_inc` has no Lean caller (counted in `F-012`).
+  `exists_balanced_forest_packing` (`lem:balanced-forest-packing`) makes the same move inline,
+  keeping the forests pairwise disjoint, so that node's edge to `lem:packing-move` is unbacked. Keep
+  the node as exposition of the move, or have the descent call the pin (`F-088`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `ce54bf15`'s Lean: one dead pin at
+  `lem:packing-move`, the edge unbacked at `lem:balanced-forest-packing`); read (the body of
+  `exists_balanced_forest_packing`).
+  *Found:* round 2 task 2.12.
 
 ## T — terminology and notation
 
@@ -692,6 +701,15 @@ declaration's name as its header writes it:
   for the graph form.
   *Evidence:* read (the statements of the three declarations, `Induction/Contraction.lean`).
   *Found:* round 2 task 2.11.
+- **F-086** · S · `lem:acyclic-insert-vfiber` and `lem:packing-move` (`molecular-induction.tex`):
+  both statements take $v$ to be a vertex of degree two of $G$, the setting in which
+  `lem:balanced-forest-packing` uses them. Their pins `acyclicSet_insert_vfiber_of_not_inc` and
+  `exists_packing_move_of_not_inc` assume nothing about the degree: at any vertex $v$, a forest of
+  $\tilde G$ with no edge at $v$ stays a forest when an edge from $v$ to some $w \neq v$ is added.
+  Each statement is weaker than its pin, as in `F-015`. Task 2.12 kept the degree, and the first
+  proof says that it is not used.
+  *Evidence:* read (the two statements, `Induction/ReducibleVertex.lean`).
+  *Found:* round 2 task 2.12.
 
 ## L — Lean
 
@@ -944,6 +962,19 @@ declaration's name as its header writes it:
   simp lemmas mention `edgeSplit`.
   *Evidence:* read (the docstrings; a `grep` for `edgeSplit`).
   *Found:* round 2 task 2.11.
+- **F-088** · L · the balanced-partition pins (`Induction/Operations.lean`,
+  `Induction/ReducibleVertex.lean`, `Induction/ForestSurgery/Reduction.lean`):
+  `exists_balanced_forest_packing` repeats the move of `exists_packing_move_of_not_inc` inline, while
+  its docstring says that it uses it. The docstrings, or the sections before them, are stale: the
+  section of `kt_lemma_41_overquantified` says that the balanced packing was neither justified nor
+  recovered and gates "the deferred surgery TODO"; those of `isBase_vfiber_ncard_ge`,
+  `acyclicSet_insert_vfiber_of_not_inc` and `exists_packing_move_of_not_inc` call the descent open
+  or "the remaining surgery work"; `acyclicSet_insert_vfiber_of_not_inc`'s says the step holds
+  because $v$ has degree two, which its statement does not assume. Six of them name
+  `lem:forest-surgery-split`, not the node that pins them, and that of
+  `matroidMG_indep_iff_exists_forest_packing` credits "Nash-Williams 1966 / Edmonds" (`F-053`).
+  *Evidence:* read (the docstrings and sections; the body of `exists_balanced_forest_packing`).
+  *Found:* round 2 task 2.12.
 
 ## M — mathematics and sources
 

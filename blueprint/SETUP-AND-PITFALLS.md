@@ -83,7 +83,9 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   line 10–19pt past the margin when they fell at its end (PROSE round 2,
   task 2.11). Moving the citation earlier in its sentence
   (`Katoh and Tanigawa~\cite[...]{...} prove ...`), or the formula to the
-  start of one, fixed both.
+  start of one, fixed both. A closing `(\cref{...})` is one box too
+  (`(Lemma~21.33)`, 10–19pt over twice in task 2.12): put it after the
+  subject, `These bounds (\cref{...}) are ...`.
 - **Wrapping table cells are justified in the PDF.** A `p{…}` column
   stretches the spaces of every wrapped line, and the `array` package
   (`>{\raggedright\arraybackslash}`) is not loaded. Start each cell with
