@@ -170,7 +170,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-40, 3/5: the pencil proof explained) | `pencil.tex`, `main-component.tex`, and `intro.tex`'s reader path into them (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged (see `notes/Phase40-exposition.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ✓ Complete — 18 sanctioned simplifications, −8 930 net Lean lines, all 19 main results' axioms unchanged (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 5/5: project organization) | Phase 40's notes and design doc, `notes/FRICTION.md`, the tactics, design and cleanup manuals, and the user-facing surfaces (docs only) | ✓ Complete — docs only, lessons lifted and Phase 40's notes compressed with every anchor kept, all 19 main results' axioms unchanged (see `notes/Phase40-docs.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ◐ In progress (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ◐ In progress — stopped for the PI at Stop 1 (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1249,8 +1249,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `notes/Prose-findings.md`, for the PI. Round 1, `prose-laman`, opened 2026-10-07
   (`notes/Prose-laman-cleanup.md`); its task 2, the dependency-audit script
   `scripts/blueprint-deps.py` (`notes/Prose.md` §5), and task 3, the sample section, have landed.
-  **Next concrete task:** the round's planned stop for the PI (Stop 1); task 4 follows the PI's
-  answer.
+  The round is **stopped for the PI** at Stop 1, the sample's review (2026-10-07; the log's
+  *Autopilot: for the PI*). **Next concrete task:** its task 4, pinning the exemplar, once the PI
+  has answered.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

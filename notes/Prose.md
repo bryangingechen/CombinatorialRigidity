@@ -6,10 +6,10 @@
 opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
 post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
-round 1's sample section. Round 1's task 2, the dependency-audit script `scripts/blueprint-deps.py`
-(§5), has landed, with its first report in the ledger, and so has task 3, the sample section.
-**Next concrete task:** Stop 1 (§6), the coordinator's entry for the PI; round 1's task 4 follows
-the PI's answer.
+round 1's sample section. Round 1's tasks 1–3 have landed: the open, the dependency-audit script
+`scripts/blueprint-deps.py` (§5), with its first report in the ledger, and the sample section.
+**Stopped for the PI** at Stop 1 (§6), whose entry is in round 1's log under *Autopilot: for the PI*.
+**Next concrete task:** round 1's task 4, pinning the exemplar, once the PI has answered.
 
 ## 1. The PI's decisions
 
@@ -177,6 +177,13 @@ The round's most bundled nodes go to the ledger for round 5:
 - `lem:case-III-claim612-line-in-panel-union` in `meet.tex` (12);
 - three in `deficiency.tex`.
 
+Provisional slices (Stop 1, 2026-10-07; the open re-slices after reading), 19, each chapter's
+opening in its last slice: `matroid-union`, `body-hinge`, `extensor` and `meet` one each;
+`body-bar` two (42–374, 375–626); `rigidity-matrix` three (52–337, then 338–902 split at a node);
+`deficiency` three (27–118, 119–523, 524–713); `molecular-induction` seven (43–260, 261–802 in two,
+803–1308 in two, 1309–1551, 1552–1678). The long subsections have no subsubsections, so they split
+at node boundaries.
+
 ### Round 3 — `prose-algebraic`: the algebraic induction
 
 The round covers `panel-layer`, `case-i`, `case-ii`, `genericity-and-count` and `case-iii`, and then
@@ -186,6 +193,10 @@ the chapter preamble `algebraic-induction.tex` (KT §5–§6).
   crux carve-out binds.
 - Its prose has the most principle-A flags of any round (§7).
 - Expect the smallest slices of the program.
+
+Provisional slices (Stop 1), 16: `panel-layer` five (1–228, 229–1057 in three, 1058–1353);
+`case-i` three; `case-ii` and `genericity-and-count` one each; `case-iii` five (1–237, 238–501,
+502–1387 in three); then the preamble `algebraic-induction.tex`. Smaller slices are likely here.
 
 ### Round 4 — `prose-applications`: applications, continuations and the introduction
 
@@ -197,6 +208,11 @@ its four-arc *Organization* list, the continuation paragraph and *Reading this b
 
 - the list's phase numbers stay (`lint.sh` check 5b exempts `intro.tex`);
 - its *genuine* (in the panel-hinge item) goes, per `AUTHORING.md`'s terminology dictionary.
+
+Provisional slices (Stop 1), 13: `bar-joint-3d` and `molecule-application` one each;
+`molecule-modelling` two (41–343, 344–477); `jacobs` four (58–275, 276–583, 584–881, 882–1053);
+`generic-lift` three (55–438, 439–734, 735–1148); `intro` two (51–434, then 435–513 with the
+opening).
 
 ### Round 5 — `prose-graph`: graph repairs and the findings report
 
