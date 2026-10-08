@@ -1,0 +1,399 @@
+# PROSE round 2/5 — `prose-molecular`, body-bar, body-hinge and the molecular foundations (work log)
+
+**Status:** in progress (opened 2026-10-08). Round 2 of **PROSE**'s five rounds; their plan and the
+PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the authority for
+which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
+`meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
+`\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
+`notes/Prose-findings.md`; the open recorded `F-048`–`F-050`. 20 one-commit tasks, of which task 1
+is this open; the round has no planned stop. **Next concrete task:** task 2.1, `matroid-union.tex`,
+at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+
+## Autopilot: for the PI
+
+No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md` §1). An unplanned
+`NEEDS_PI` entry goes here, newest first, and the PI answers in an entry that starts `**PI,
+<date>:**`. No entries yet.
+
+## Current state
+
+**Round 2 is open** (task 1, this commit, docs only; the Lean tree and the blueprint TeX are
+`ac7bd966`'s, round 1's close). Nothing is mid-stream. The next concrete task is task 2.1.
+
+**Verified at the open** (2026-10-08, at `ac7bd966`):
+- Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
+  cached; the coordinator's run gave the same). The axioms check does not run at this open
+  (`notes/Prose.md` §2: round 1's open and round 5's close only).
+- **The no-Lean-edit base is `ac7bd966`**, this commit's parent: the close checks that `git diff
+  --stat ac7bd966.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` is
+  empty.
+- **The round's gate values**, round 1's close reproduced exactly (the blueprint has not changed
+  since). Every slice must reproduce them:
+  - `blueprint/lint.sh` green. `blueprint/verify.sh` green (38 s): `checkdecls` silent, and **9**
+    `WARNING:` lines, all plasTeX package and renderer notices.
+  - `blueprint/print/print.log`: **0** `LaTeX Warning` lines; **120** overfull boxes, counted at
+    the open and close but not gated (`latexmk` found the PDF up to date).
+  - The built graph: **657** nodes and **1 292** edges, fingerprint **`673e3178d1b3145e`**; pin
+    hash **`b53eb8b1cf78cb06`** (`blueprint/lean_decls`: 1 030 pins, 1 020 distinct names). The
+    commands are under *Scope*, gate 3.
+- **The surface**, as `notes/Prose.md` §3 has it: 8 files, 4 792 lines, 151 nodes, 273 pins. Seven
+  nodes have four or more pins (§7; `F-009`): `def:rigidity-matrix` (14),
+  `lem:case-III-claim612-line-in-panel-union` (12), `lem:trivial-motions-rank-bound` (9),
+  `def:cut-edges-2ec` and `lem:cut-edge-decomposition` (7 each), `lem:two-vertex-trichotomy` and
+  `def:graph-operations` (4 each).
+- In the graph, 148 of the 151 nodes are green and filled. `def:dof-generic`, `def:induced-span`
+  and `lem:forest-surgery-unsplit` are blue (`F-008`).
+- **The crux nodes, by label:** three chapters have them, not the four round 1's hand-off counted;
+  the list is under *Scope*, and *Decisions* says why.
+- **The open's findings:** `F-048` and `F-049` (S, *Candidates for the PI*) and `F-050` (N, *Moved
+  to a later round*).
+
+## Scope and standing rules
+
+From `notes/Prose.md` §2, restated only as far as a builder needs them.
+
+- **Surface.** The eight chapters, in `blueprint/src/chapter/main.tex` order: `matroid-union`,
+  `body-bar`, `body-hinge`, `extensor`, `rigidity-matrix`, `deficiency`, `molecular-induction`,
+  `meet`. No other chapter's TeX. A docs edit that keeps a pointer into a rewritten chapter true is
+  in scope (`notes/BlueprintExposition.md`'s entries for these chapters, below).
+- **The hygiene rule.** The round does not change a headline statement or the strength of a
+  blueprint statement. A finding that would need such a change becomes a ledger `S` entry and a
+  line under *Candidates for the PI*. It is not acted on, and it is not a stop.
+- **Prose only (rounds 1–4), and no Lean edits (all five rounds).** `CombinatorialRigidity/`,
+  `lakefile.toml`, `lake-manifest.json` and `lean-toolchain` stay untouched; the close checks that
+  their `git diff --stat` since `ac7bd966` is empty. Every node keeps its `\label`, its `\lean{…}`
+  pins, its `\leanok` and its `\uses` edges. A statement block is edited for register and anchoring
+  only. A node may move within its chapter to cure a forward reference (`blueprint/AUTHORING.md`
+  principle E, *Node order*); a cross-chapter forward reference gets a `\cref` and a sentence
+  instead (`F-050` lists fourteen). A graph or node-shape finding becomes a ledger `E` or `N` entry
+  for round 5.
+- **The register.** `blueprint/AUTHORING.md` principles A–F with their 2026-10-03 clauses, the
+  2026-10-07 *Constructions* clause of B, and the PI's sentence before them ("the overriding goal
+  is to make sure the result is understandable"); `40-exposition`'s exemplar
+  `notes/Phase40-exposition-exemplar.md`; and round 1's pinned sample `notes/Prose-exemplar.md`. No
+  chapter of this round is algorithmic, so principle A's carve-out does not apply. From `extensor`
+  on, the reader is *Audience & vocabulary*'s rigidity theorist who knows KT 2011, and its
+  terminology dictionary binds ("genuine" is "nondegenerate"; "splice" and "carry" go).
+- **Crux nodes** keep their full proofs (the crux carve-out, `AUTHORING.md` *Proof verbosity*).
+  These are the nodes with a *done* entry in `notes/BlueprintExposition.md`, checked by label:
+  - `extensor`: `lem:extensor-independence` (KT Lemma 2.1).
+  - `molecular-induction`: `rem:kt-lemma-41`, with the balanced-packing descent
+    `lem:base-vfiber-count`, `lem:acyclic-insert-vfiber`, `lem:packing-move`,
+    `lem:balanced-forest-packing` and the surgery family's `lem:forest-surgery-split`;
+    `rem:kt-lemma-44` and `lem:removal-deficiency`; `lem:reduction-step`;
+    `lem:chain-cycle-dichotomy` and `lem:chain-data-extract`.
+  - `meet`: `def:meet-complement-iso`, and `lem:case-III-claim612-line-in-panel-union` (its entry
+    is under the ledger's `algebraic-induction.tex` heading).
+
+  Ledger verdicts also lean on text in chapters without a crux node; keep them true. The Group-B
+  22i verdict says `lem:rank-parallel-full` spells out KT Lemma 5.3's argument in full;
+  `deficiency.tex`'s scan names the full `thm:def-eq-corank`; the Phase-40c entry names
+  `lem:deficiency-antitone` and `lem:relative-deficiency-rank-bound`. Group A screened phases 12–16
+  (`matroid-union`, `body-bar`, `body-hinge`) out as self-exposited.
+- **Evidence.**
+  - Citations meet `CLAUDE.md` *Referencing prior work*. `.refs/` has every source these chapters
+    cite except Nash-Williams 1966 and Edmonds 1970 (`nashWilliams1966`, `edmonds1970`): Edmonds
+    1965, Nash-Williams 1961, Tutte 1961, Oxley 2011, Tay 1984 and 1989, Whiteley 1988 and 1996,
+    White–Whiteley 1987, Barnabei–Brini–Rota 1985, Crapo–Whiteley 1982, Jackson–Jordán 2009, KT
+    2011 and its 2009 arXiv version, and White 1994, which `meet.tex` does not yet cite. Check the
+    two missing ones against the DOI landing page or publisher metadata, or weaken the claim to
+    "classical" or "see X" (`REFS.md`). The commit that relies on a passage names it.
+  - Claims about the Lean come from declarations' statements and bodies, never from docstrings,
+    and from `scripts/blueprint-deps.py --label` or `--chapter` for what a pin reaches.
+- **Findings.** Each goes to `notes/Prose-findings.md` as one entry in its category (format and IDs
+  in its header), and here as one line naming its ID: `S` and `M` under *Candidates for the PI*;
+  `E`, `N`, `T` and `U` under *Moved to a later round* (round 5); `L` there too (a later Lean
+  round). The ledger entry is the line's mirror (`CLEANUP.md` *Per-round work log*).
+- **Gates for every slice**, each in the foreground with an explicit `timeout`:
+  1. `blueprint/lint.sh` green.
+  2. `blueprint/verify.sh` green: `checkdecls` silent, 9 `WARNING:` lines.
+  3. **The invariance check**, run from the repository root after `verify.sh`. It must print
+     `1292 edges 673e3178d1b3145e` and `b53eb8b1cf78cb06`:
+     ```sh
+     python3 -c "import re,hashlib;g=open('blueprint/web/dep_graph_document.html').read();g=g[g.find('digraph'):];g=g[g.find('{')+1:g.find('}')];s=sorted(filter(None,(re.sub(r'\s+',' ',x).strip() for x in g.split(';'))));print(sum(' -> ' in x for x in s),'edges',hashlib.sha256('\n'.join(s).encode()).hexdigest()[:16])"
+     sort blueprint/lean_decls | shasum -a 256 | cut -c1-16
+     ```
+  4. `blueprint/print/print.log` has 0 `LaTeX Warning` lines.
+  5. `python3 notes/check-phase-note.py` green; it gates this log by its title.
+
+  Every commit also updates this log: its checklist line, *Current state* and *Hand-off*.
+- **The round's screens** (not gates; the open's figures are in *Per-chapter diagnosis*, and the
+  close re-runs them). The first two are round 1's, over this round's files: per chapter, with TeX
+  comments stripped, principle-A register hits, then Lean-device hits inside statement blocks and
+  in the whole chapter. "Carries" is sometimes literal ("$G$ carries a framework"). The device
+  screen misses `\operatorname{…}` Lean names, 34 more at the open (`deficiency` 20,
+  `rigidity-matrix` and `molecular-induction` 7 each: `cutEdges`, `partitionDef`, `bodyBarDim`,
+  `extProj`, …).
+  ```sh
+  python3 - blueprint/src/chapter/{matroid-union,body-bar,body-hinge,extensor,rigidity-matrix,deficiency,molecular-induction,meet}.tex <<'PY'
+  import re,sys
+  E=r'(definition|lemma|theorem|corollary|proposition)'
+  A=re.compile(r'\b(feeds?|drives?|fires?|firing|threads?|carr(?:y|ies|ied)|wired?|wiring|routes?|spine|heart of|crucial(?:ly)?|remarkabl[ey]|brick|motive|producer|strat(?:um|a)|honest|genuine|re-?aim|splice|leaf-most)\b',re.I)
+  D=re.compile(r'\\texttt\{|\\mathtt\{|\\mathrm\{(?:none|some|Option|Sym2|Fin|List|SimpleGraph|fromEdgeSet|maxBlock|decide|span)\}|\\mathrm\{[^}]*(?:[a-z][A-Z]|\.|\\_)[^}]*\}')
+  P=lambda s: re.sub(r'\\(lean|uses|label)\{[^}]*\}','',s)
+  for f in sys.argv[1:]:
+      t=re.sub(r'(?<!\\)%.*','',open(f).read()); B=re.findall(r'\\begin\{'+E+r'\}(.*?)\\end\{\1\}',t,re.S)
+      print(f.split('/')[-1][:-4], len(A.findall(t)), sum(len(D.findall(P(b))) for _,b in B), len(D.findall(P(t))))
+  PY
+  ```
+  The third counts, per chapter, the `\uses` edges (node, target) whose target is a node of a later
+  chapter in `main.tex` order (`F-050`); prose-only slices leave it at the open's 14.
+  ```sh
+  python3 - matroid-union body-bar body-hinge extensor rigidity-matrix deficiency molecular-induction meet <<'PY'
+  import re,sys,glob
+  C=[l.strip()[15:-5] for l in open('blueprint/src/chapter/main.tex') if l.strip().startswith('\\input{chapter/')]
+  W={}
+  for f in glob.glob('blueprint/src/chapter/**/*.tex',recursive=True):
+      c=f[22:-4].split('/')[0]
+      if c in C: W.update({m:C.index(c) for m in re.findall(r'\\label\{([^}]*)\}',open(f).read())})
+  for c in sys.argv[1:]:
+      t=re.sub(r'(?<!\\)%.*','',open(f'blueprint/src/chapter/{c}.tex').read()); E=set()
+      for s in re.split(r'\\begin\{(?:definition|lemma|theorem|corollary|proposition)\}',t)[1:]:
+          s=re.split(r'\\begin\{(?:remark|example|fmlnote)\}',s)[0]; n=re.search(r'\\label\{([^}]*)\}',s).group(1)
+          E|={(n,u.strip()) for x in re.findall(r'\\uses\{([^}]*)\}',s) for u in x.split(',') if W.get(u.strip(),-1)>C.index(c)}
+      print(c,len(E),len({n for n,_ in E}))
+  PY
+  ```
+
+## Per-chapter diagnosis
+
+Seen at the open; line numbers are the open's, and the labels are the stable reference. Each slice
+re-derives its own findings and records them in its commit and the ledger.
+
+| Chapter | Lines | Nodes | Pins | Register | Lean devices (statements / all) | Forward `\uses` | Task |
+|---|---|---|---|---|---|---|---|
+| `matroid-union` | 193 | 9 | 15 | 2 | 0 / 5 | 0 | 2.1 |
+| `body-bar` | 625 | 23 | 32 | 5 | 26 / 51 | 0 | 2.2, 2.3 |
+| `body-hinge` | 144 | 4 | 5 | 3 | 0 / 1 | 0 | 2.3 |
+| `extensor` | 215 | 7 | 12 | 1 | 0 / 1 | 0 | 2.4 |
+| `rigidity-matrix` | 901 | 26 | 65 | 10 | 1 / 5 | 10 | 2.5–2.7 |
+| `deficiency` | 712 | 23 | 54 | 3 | 1 / 2 | 0 | 2.8–2.10 |
+| `molecular-induction` | 1 677 | 49 | 64 | 29 | 6 / 25 | 4 | 2.11–2.17 |
+| `meet` | 325 | 10 | 26 | 3 | 15 / 56 | 0 | 2.18 |
+| **total** | 4 792 | 151 | 273 | 56 | 49 / 146 | 14 | |
+
+The body-bar chapters (phases 12–16) carry their Lean in statements, as round 1's did. The KT
+chapters (phases 17–21a) were rewritten for the rigidity-theorist reader after Phase 23, but
+predate the 2026-10-03 clauses: their problems are statements that bundle role clauses and
+formalization remarks, Lean names in proofs, repeated connective verdicts, and the terminology
+dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight in
+`rigidity-matrix`).
+
+- **`matroid-union`** (vendored from Nelson's `apnelson1/Matroid`; keep the credit, `CLAUDE.md`
+  *Project history*). Close to the register. The *Provenance* paragraph (directory paths,
+  `Matroid.ofFun`, the upstream constructor's history) is a formalization note in all but name.
+  `lem:union-indep-iff`'s proof uses a "transversal realization" of `def:matroid-union` that the
+  definition does not state (principle E). "Rado 1942" is uncited text beside Oxley's Theorem
+  11.2.2: check the number in `.refs/`. "Route" twice.
+- **`body-bar`** has the round's most Lean-shaped statements: `\mathtt{Graph}\,\alpha\,\beta`,
+  `G.\mathrm{cycleMatroid}`, `\mathrm{signedIncMatrix}`, `\mathrm{blockPiSpan}`,
+  `\mathrm{kFrameRow}`, `\mathrm{kFrameRowR}`, `\mathrm{Pi.single}`, `\mathrm{Fin}\,k`,
+  `\texttt{Matroid.ofFun}`; proofs cite mathlib names (`span_le`,
+  `LinearIndependent.iff_fractionRing`, `Matroid.ext_indep`). The *k-frame* lead-in (97–112)
+  restates `lem:k-frame-nonzero-monomial-forest`'s proof, and contrasts its rank count with
+  Whiteley's nonzero-monomial expansion, the name the label keeps (principle C: state the reason,
+  not the comparison). "Existence-of-realization form … not pursued here" is said in the opening,
+  before `thm:tay-witness`, and twice in `body-hinge`: once. "Honest polynomials". The Tay converse
+  credits "the Lovász–Yemini rank-upper-bound argument", which round 1 moved to Laman (`F-025`):
+  align. Check Whiteley 1988's Theorem 1, Corollary 3, Theorem 8, Theorem 13, Proposition 6, §2.1
+  and §3, and Tay 1984 §5, in `.refs/`. Notation: *Decisions*.
+- **`body-hinge`**: `def:body-hinge-framework` gives each hinge an affine subspace that its pin
+  does not record (`F-048`). Keep the statement; say in a formalization note what the Lean records
+  (the definition-faithfulness gate, `blueprint/CLAUDE.md`), with a `\cref` to `generic-lift.tex`'s
+  `cor:bodyhinge-generic-tree-packing` for the hinge form. "Abbreviate $\delta = d$" gives one
+  number a second name. `lem:edge-multiply-sparse`'s statement carries its count check (principle
+  B), and its title names sparsity while its claim is about frameworks. Tay 1989's title and body
+  name the frameworks differently; `notes/Phase16.md` *Decisions* keeps both, as is.
+- **`extensor`** (crux `lem:extensor-independence`) is near the register. The opening's "genuinely
+  metric chapters" and its remark on what mathlib lacks; `def:extensor`'s statement describes
+  mathlib's construction and `def:affine-subspace-extensor`'s ends "(Formally, …)" (principles B,
+  D). The crux proof's reparametrization $d = e + 1$ is Lean detail for a formalization note, and
+  its last sentence points at round 3's `lem:case-III-claim612-extensor-span`. The notation
+  paragraph of *Homogeneous coordinates* names `\mathrm{bodyBarDim}\,n`.
+- **`rigidity-matrix`** (phase 18, extended through phase 40).
+  - *2.5:* the paragraphs after `def:rigidity-matrix` (121–149) narrate the formalization
+    (principle D's basis-free anti-pattern). `def:dof-generic` says "Formalized basis-free" in its
+    statement. `def:rigidity-matrix` (14 pins) and `lem:trivial-motions-rank-bound` (9, the
+    codimension bound beside the trivial motions) are `F-009`'s. `lem:rank-parallel-full` derives
+    the independence of two hinges' extensors from Lemma 2.1 (an "engine"); its pin assumes it, and
+    KT's own argument (an extensor determines its hinge up to scale, p. 670) is what the exposition
+    ledger's 22i verdict says this proof spells out: make the two agree. `lem:rank-rotation-semicont`
+    is `F-049`.
+  - *2.6:* the subsection lead-in (341–370) is a roadmap of all its lemmas; "splice" in titles.
+  - *2.7:* the contraction-leg lemmas of Case I and the pencil chapters carry Lean in statements
+    (`\operatorname{extProj}`, `\operatorname{ofNormals}`, "relabel selector", "parent selector").
+    `lem:rank-polynomial-IH-relabel` is superseded and stays (`blueprint/CLAUDE.md`, the
+    supersession gate). The opening (1–51) is long and describes Proposition 1.1's halves:
+    KT's Proposition 1.1 (p. 648) is Tay's and Whiteley's tree-packing characterization, and
+    `prop:rigidity-matrix-prop11` (round 3) its rank form; check how both chapters name it.
+    Ten `\uses` point forward (`F-050`): each gets a sentence.
+- **`deficiency`** (phase 19). `def:matroid-MG` cites `thm:tay-witness` for Tutte–Nash-Williams and
+  "the tree-packing chapter", and has a proof whose "boundary regime" and "boundary-regime
+  cleanliness" recur in three proofs (principle E: define or drop). `def:D-deficiency`'s statement
+  carries the labeling $f \colon V \to V$ (a formalization note) and "genuinely signed".
+  `lem:deficiency-antitone` writes the deficiency "at $m$" and $\operatorname{def}_3$,
+  $\operatorname{def}_2$. Statements carry role clauses: `def:rigid-subgraph` (why $|V(H)| \ge 2$,
+  the circuit definition, Case III), `lem:cut-edge-decomposition` ("Packaged for the reduction
+  principle", a `theorem` with a `lem:` label, 7 pins), `lem:minimal-kdof-spanning-subgraph`;
+  `def:cut-edges-2ec` bundles a definition, a transfer lemma and a corollary (`F-009`).
+  `\operatorname{bodyBarDim}` in three statements. `lem:two-vertex-trichotomy`'s proof cites a
+  "parallel-pair criterion" of `def:k-dof` that is `lem:two-vertex-zero-dof`, a later chapter's.
+  Check `thm:def-eq-corank`'s credit, "the project framing of … Jackson–Jordán Theorem 6.1",
+  against JJ 2009 in `.refs/`. The paragraph after it repeats the opening ("wires", "routes").
+- **`molecular-induction`** (phase 20, extended through phase 40; the most crux nodes).
+  - *Throughout:* "No graph↔matroid correspondence is needed" three times; the fresh edge
+    $e_0 \notin E(G)$ in five statements (principle D's canonical case for one labeled remark);
+    Lean names in proofs (`Graph.loopless_of_isMinimalKDof`, `Graph.deficiency_nonneg`,
+    `induce_insert_splitOff`, `collapseTo`); `\operatorname{def}(G)` beside
+    `\operatorname{def}(\tilde G)`.
+  - *2.11:* `def:induced-span` (no pin) names `Graph.fiberSpan`, `Graph.inducedSpan`,
+    `Graph.induce`; `def:graph-operations` puts the endpoint selector `ends` ("a genuine link …,
+    junk off $E(G)$") in a statement (principle E's own example; `endsOf` is `F-010`'s).
+  - *2.12–2.13:* connective paragraphs after seven nodes (423–681) restate the remark's verdicts
+    ("a gap, not an error"): once, in `rem:kt-lemma-41`. The remark and 676–690 call
+    edge-splitting "deferred" and "unformalized" beside the formalized `lem:edge-splitting`:
+    reconcile. `cor:forest-surgery-deficiency` repeats `lem:forest-surgery-split`'s conclusion
+    (check its pin). `lem:edge-splitting` has `eₐ` (a Unicode subscript in the source, as in
+    2.14's `lem:splitoff-deficiency`), `\operatorname{edgeFiber} e_0\, n`, "survivor conjunct"
+    and `(eₐ, r.2)`.
+  - *2.14–2.15:* *To check:* `lem:reduction-step-pos`'s step 3 shows "$\operatorname{def}(H) <
+    k-1$" for a proper subgraph, where minimality wants the deficiency to rise: read the pin.
+    `lem:reduction-measure`'s statement says "the genuine requirement".
+  - *2.16–2.17:* `thm:minimal-kdof-reduction`'s statement says "The formalization states this
+    as…" (the induction principle is the pin's content: state it as mathematics). The two KT
+    Lemma 6.1 realization lemmas use round 3's nodes (`F-050`). `lem:chain-cycle-dichotomy`
+    writes $D = \binom{n+1}{2}$ and a length-$n$ chain, as `rem:kt-lemma-44` writes $n$; the
+    opening (1–42) repeats §*Forest surgery*'s verdict.
+- **`meet`** (phase 21a; crux `def:meet-complement-iso`,
+  `lem:case-III-claim612-line-in-panel-union`). The most Lean in statements of the KT chapters:
+  `\mathrm{topEquiv}`, `\mathrm{pairingDualEquiv}`, `\mathrm{complementIso}`,
+  `\mathrm{wedgePairing}`, `\mathrm{toDual}`, `W.\mathrm{subtype}`, `\mathrm{gradedMul}`,
+  `\mathrm{ScrewSpace}\,k`; proofs read as Lean (`Module.Basis.exteriorPower`,
+  `LinearEquiv.funUnique`). It writes $V = K^{N}$, $N = k + 2$, where `extensor` writes
+  $K^{d+1}$. It sits after `molecular-induction` but builds only on `extensor`: the opening says
+  so. The 12-pin node's formalization note lists Case III's realization declarations, its statement
+  uses round 3's panel $\Pi(u)$, and its proof cites `def:meet-complement-iso` for
+  `lem:complement-iso-decomposable-wedge-perp`'s fact. `def:meet`, the chapter's object, comes
+  last. White 1994 is in `.refs/` and uncited.
+
+## Lemma checklist (the round's task list)
+
+One commit per task, in this order (`notes/Prose.md` §3). Each line gets its commit's sha; the
+commit, with this log as of that commit, carries the task's diagnosis and findings. Rungs: every
+slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
+
+- [x] **1. O — the open** (this commit; docs only): this log, the baselines, the open's findings
+  `F-048`–`F-050`, and the status surfaces.
+- [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
+  slice (principle F). The diagnosis of each is its chapter's, above.
+  - [ ] **2.1 `matroid-union.tex`**: 9 nodes, 193 lines.
+  - [ ] **2.2 `body-bar.tex`, the prerequisites and the $k$-frame matroid** (42–374): 12 nodes,
+    333 lines.
+  - [ ] **2.3 `body-bar.tex`'s rest and opening, and all of `body-hinge.tex`**: tree packing,
+    frameworks and Tay's theorem (375–625) with the opening (1–41), then `body-hinge.tex`; 15
+    nodes, 436 lines. It applies the round's notation (*Decisions*).
+  - [ ] **2.4 `extensor.tex`**: 7 nodes, 215 lines; crux `lem:extensor-independence`.
+  - [ ] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (52–337): 9 nodes, 286
+    lines.
+  - [ ] **2.6 `rigidity-matrix.tex`, rank addition at cuts, 2-cuts, paths and ears** (338–599): 8
+    nodes, 262 lines.
+  - [ ] **2.7 `rigidity-matrix.tex`, the contraction-leg lemmas and the opening** (600–901, 1–51):
+    9 nodes, 353 lines.
+  - [ ] **2.8 `deficiency.tex`, the matroid, the deficiency and the cut lemmas** (27–271): 9 nodes,
+    245 lines.
+  - [ ] **2.9 `deficiency.tex`, cut vertices, ears, restriction and minimality** (272–523): 9
+    nodes, 252 lines.
+  - [ ] **2.10 `deficiency.tex`, the corank bridge and the opening** (524–712, 1–26): 5 nodes, 215
+    lines.
+  - [ ] **2.11 `molecular-induction.tex`, inherited lemmas and graph operations** (43–260): 9
+    nodes, 218 lines.
+  - [ ] **2.12 `molecular-induction.tex`, KT Lemma 4.1 and the balanced packing** (261–516):
+    `rem:kt-lemma-41`, its example and 5 nodes, 256 lines; crux throughout.
+  - [ ] **2.13 `molecular-induction.tex`, the reroute, the surgery and edge-splitting** (517–802):
+    9 nodes, 286 lines.
+  - [ ] **2.14 `molecular-induction.tex`, splitting-off and removal by deficiency counting**
+    (803–1032): `rem:kt-lemma-44` and 5 nodes, 230 lines.
+  - [ ] **2.15 `molecular-induction.tex`, the criteria, the degree-2 vertex and the reduction
+    step** (1033–1308): 9 nodes, 276 lines.
+  - [ ] **2.16 `molecular-induction.tex`, Theorem 4.9 and the adjacent degree-2 pair**
+    (1309–1551): 8 nodes, 243 lines.
+  - [ ] **2.17 `molecular-induction.tex`, the chain-or-cycle dichotomy and the opening**
+    (1552–1677, 1–42): 4 nodes, 168 lines.
+  - [ ] **2.18 `meet.tex`**: 10 nodes, 325 lines.
+- [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
+  - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat ac7bd966..
+    -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
+    check runs next at round 5's close, not here (§2).
+  - *The blueprint:* `lint.sh` and `verify.sh` green, the invariance values the open's, the
+    warning counts unchanged, overfull boxes counted; the three screens re-run beside the open's
+    table.
+  - *Findings:* every ledger entry the round found has its line here, and vice versa.
+  - *The exposition ledger:* check the pointers into these chapters (*Scope*, crux nodes and
+    verdicts) against the new text, and add a round note to `notes/BlueprintExposition.md`.
+  - *Status surfaces:* the ROADMAP row reads ✓ Complete; ROADMAP's PROSE bullet and
+    `notes/Prose.md`'s **Status** name round 3's open.
+  - *The queue:* `prose-molecular`'s row in `.claude/autopilot/queue.toml` gets `done = true`, and
+    nothing else there changes.
+
+## Candidates for the PI
+
+`S` and `M` findings, one line each naming the ledger ID (`notes/Prose-findings.md` holds the
+finding). Recorded, never acted on in this round; round 5's report ranks them for the PI.
+
+- `F-048` (S, task 1): `def:body-hinge-framework` gives each hinge an affine subspace that its pin
+  does not record, so the main result `body_hinge_tay` is the bar-bundle form.
+- `F-049` (S, task 1): `lem:rank-rotation-semicont` claims KT Lemma 5.2, which its pins are not,
+  and a monotonicity form whose span inclusion is the reverse of its pins'.
+
+## Moved to a later round
+
+`E`, `N`, `T` and `U` findings for round 5, `prose-graph`, and `L` findings for a later Lean round,
+one line each naming the ledger ID and the task that found it.
+
+- `F-050` (N, task 1): 14 `\uses` edges at 11 nodes of `rigidity-matrix.tex` and
+  `molecular-induction.tex` point at nodes of later chapters.
+
+## Blockers / open questions
+
+- None. The round has no planned stop.
+
+## Hand-off / next phase
+
+**Next concrete task: task 2.1, `matroid-union.tex`, at Opus**, a fresh agent (`notes/Prose.md`
+§2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
+2.2–2.18 in order, and task 3 closes the round. For the slices:
+- **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
+  understandable"). 2.1–2.3 open a new arc; the coordinator reads them in full against the
+  exemplars, as it read round 1's 5.1–5.3.
+- **Notation.** Task 2.3 applies *Decisions*' notation call to `body-bar` and `body-hinge`; tasks
+  2.4–2.18 write KT's $d$ and $D$ and drop the "$D = \delta$" crosswalks and the stray $n$.
+- **Crux nodes** keep their full proofs, in tasks 2.4, 2.12–2.15, 2.17 and 2.18 (*Scope*). Task
+  2.5 makes `lem:rank-parallel-full`'s proof and the exposition ledger's 22i verdict agree.
+- **The open's findings** are recorded, not acted on. Task 2.3 keeps `def:body-hinge-framework`'s
+  statement (`F-048`); task 2.5 treats `lem:rank-rotation-semicont` under the hygiene rule
+  (`F-049`); tasks 2.5–2.7 and 2.16 give `F-050`'s forward references a sentence each.
+- **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
+  pins reach. The ledger's next ID is `F-051`.
+
+## Decisions made during this round
+
+- **The slicing** (the open). Eighteen slices from §3's provisional nineteen, cut at subsection
+  boundaries where those fall in range and otherwise at the node where the argument turns.
+  `body-hinge.tex` (144 lines) rides with `body-bar.tex`'s second slice, which shares its theorem,
+  its existence-form paragraphs and its notation, as `laman.tex` rode with `sparsity.tex`.
+  `deficiency.tex` splits its 405-line *Rigid subgraphs* subsection at `lem:deficiency-cut-vertex`,
+  not §3's 92-line first slice. `molecular-induction.tex` keeps §3's seven, splitting after the
+  balanced-packing descent (516) and after `lem:dof-tracking` (1032). Mean 266 lines (round 1: 306).
+- **One notation for the body count** (the open's call). The chapters write it three ways: Tay's
+  and Whiteley's $n$ and $d = n(n+1)/2$ (`body-bar`; Whiteley 1988 and Tay 1984, `.refs/`), a
+  second name $\delta = d$ (`body-hinge`), and KT's $d$ and $D = \binom{d+1}{2}$ (`extensor` on,
+  with "$D = \delta$" crosswalks). The round writes KT's $d$ and $D$ throughout: later chapters
+  already write $(D-1)\cdot G$ for `body-hinge`'s multiplied graph. Task 2.3 says once that Tay and
+  Whiteley write $n$ and $d$; the Lean's `bodyBarDim n` gets a formalization note. A slice that
+  keeps a source's letters records why here.
+- **The crux list, by label** (the open). The done entry under the exposition ledger's
+  `rigidity-matrix.tex` heading is `prop:rigidity-matrix-prop11`, whose node is in `panel-layer.tex`
+  (round 3); so `rigidity-matrix.tex` has no crux node, and three of the round's chapters have
+  them. `lem:case-III-claim612-line-in-panel-union` (`meet.tex`) has its done entry under the
+  `algebraic-induction.tex` heading.
+- **The no-Lean-edit base** is `ac7bd966`, the open's parent; the open touches no Lean.

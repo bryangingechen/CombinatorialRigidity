@@ -2,15 +2,17 @@
 
 **Status:** planned with the PI on 2026-10-07 and queued ahead of ORIGAMI as five autopilot rows
 (`.claude/autopilot/queue.toml`). Round 1, `prose-laman`, opened 2026-10-07 and closed 2026-10-08
-(`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`); rounds 2–5 have not
+(`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`). Round 2,
+`prose-molecular`, opened 2026-10-08 (`notes/Prose-molecular-cleanup.md`); rounds 3–5 have not
 opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
 post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
 round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, *Autopilot: for the
 PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`. Round 1 wrote the
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
-slices, and recorded `F-001`–`F-047` in the ledger. **Next concrete task:** round 2,
-`prose-molecular`, opens (§3 *Round 2*).
+slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`.
+**Next concrete task:** round 2's task 2.1, `matroid-union.tex`, the first of its eighteen slices
+(the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 
@@ -189,7 +191,9 @@ opening in its last slice: `matroid-union`, `body-hinge`, `extensor` and `meet` 
 `body-bar` two (42–374, 375–626); `rigidity-matrix` three (52–337, then 338–902 split at a node);
 `deficiency` three (27–118, 119–523, 524–713); `molecular-induction` seven (43–260, 261–802 in two,
 803–1308 in two, 1309–1551, 1552–1678). The long subsections have no subsubsections, so they split
-at node boundaries.
+at node boundaries. The open re-sliced these to 18: `body-hinge` rides with `body-bar`'s second
+slice, and `deficiency`'s three run 27–271, 272–523 and 524–712 (`notes/Prose-molecular-cleanup.md`
+*Decisions*).
 
 ### Round 3 — `prose-algebraic`: the algebraic induction
 

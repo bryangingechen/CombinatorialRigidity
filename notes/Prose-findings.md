@@ -294,6 +294,22 @@ declaration's name as its header writes it:
   (`scripts/blueprint-deps.py --label thm:pebble-game-correct`, at `640505ce`: every proof chain
   of the pin runs through it).
   *Found:* round 1 task 5.15.
+- **F-050** · N · `rigidity-matrix.tex` and `molecular-induction.tex`: 14 `\uses` edges at 11
+  nodes point at nodes of later chapters. In `rigidity-matrix.tex`,
+  `lem:trivial-motions-rank-bound` and `lem:relative-deficiency-rank-bound` use `def:D-deficiency`
+  (`deficiency.tex`, the next chapter), and `lem:block-rank-contract`,
+  `lem:rigidityRows-pinned-placement-rank-add` (two edges), `lem:extProj-preserves-rank-of-inter`,
+  `lem:rank-transport-relabel-of-le-finrank`, `lem:rank-polynomial-IH-relabel`,
+  `lem:rank-polynomial-IH-relabel-proj` and `lem:rank-polynomial-proj-eval` use nodes of round 3's
+  `panel-layer`, `genericity-and-count`, `case-i` and `case-iii`. In `molecular-induction.tex`, the
+  KT Lemma 6.1 realization lemmas `lem:case-cut-edge-realization` and
+  `lem:case-cut-edge-realization-gp` use `def:genuine-hinge-realization` (both),
+  `lem:genericity-device` and `lem:rank-polynomial-of-le-finrank`. Prose can only give each a
+  sentence; moving these nodes after the nodes they use, or `def:D-deficiency` before its users,
+  would remove them.
+  *Evidence:* read (each node's statement and proof `\uses` against `main.tex`'s chapter order, at
+  `ac7bd966`; the check is the third screen under `notes/Prose-molecular-cleanup.md` *Scope*).
+  *Found:* round 2 task 1.
 
 ## T — terminology and notation
 
@@ -426,6 +442,32 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check` of the eight pins through `lake lean`, and their bodies in
   `PebbleGame/Exec.lean`).
   *Found:* round 1 task 5.16.
+- **F-048** · S · `def:body-hinge-framework`, `thm:body-hinge-tay` (`body-hinge.tex`): the
+  definition gives each hinge an $(n-2)$-dimensional affine subspace, "equivalently" a
+  $(\delta-1)$-dimensional space of bar coordinates dual to it. Its pin `Graph.BodyHingeFramework`
+  holds only a multigraph and an arbitrary two-extensor coordinate for each of the $\delta - 1$
+  copies of every edge, with no hinge, so the definition is stronger than its pin. The main result
+  `body_hinge_tay` is therefore the bar-bundle statement, and its existence direction produces bar
+  coordinates, not hinges. `generic-lift.tex` calls `thm:body-hinge-tay` "the bar-bundle reduction
+  statement" and proves the hinge form at generic hinge points
+  (`cor:bodyhinge-generic-tree-packing`); `formalization.yaml` and `intro.tex` describe
+  `body_hinge_tay` as the definition reads.
+  *Evidence:* read (the structure `Graph.BodyHingeFramework` and the statement of
+  `body_hinge_tay`, `BodyBar/BodyHinge.lean`; `notes/Phase16.md` *Decisions*).
+  *Found:* round 2 task 1.
+- **F-049** · S · `lem:rank-rotation-semicont` (`rigidity-matrix.tex`): the statement claims KT
+  Lemma 5.2 as the lower-semicontinuity of rank along a panel rotation, then a monotonicity form:
+  if $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$ at every edge, then
+  $Z(G,p') \subseteq Z(G,p)$. Its pins `infinitesimalMotions_mono_of_span_le` and
+  `finrank_infinitesimalMotions_le_of_span_le` assume the reverse inclusion, under which that
+  conclusion holds; under the stated one it fails (a hinge with $C = 0$ welds its two bodies, one
+  with $C \ne 0$ does not). Neither pin is KT Lemma 5.2, which perturbs a realization with one
+  parallel pair of panels into a nonparallel one without losing rank (KT p. 669); `meet.tex`'s
+  formalization note gives that role to
+  `PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals`.
+  *Evidence:* read (the two pins' statements and bodies, `Molecular/RigidityMatrix/Basic.lean`;
+  KT 2011 pp. 668–669, in `.refs/`).
+  *Found:* round 2 task 1.
 
 ## L — Lean
 
