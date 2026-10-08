@@ -343,6 +343,33 @@ declaration's name as its header writes it:
   which needs $\mathrm{out}_D \le k$ without $\ell < 2k$, cites the proof of (1) instead.
   *Evidence:* read (the five statements and the section variables of `PebbleGame/Basic.lean`).
   *Found:* round 1 task 5.13.
+- **F-036** · S · `thm:pebble-game-soundness` (`pebble-game.tex`): the statement assumes
+  $\ell < 2k$, which its pin `runPebbleGameWith_sound` does not take. The statement is weaker than
+  the pin. Neither its proof nor that of `lem:pebble-game-invariants` uses $\ell < 2k$, and task
+  5.14's proof says so. Also, the old statement's "an edge list whose Sym2-image is $E(G)$" did not
+  say that each edge appears once, which the pin requires (`hpairwise`). Task 5.14's statement says
+  it, as `def:runPebbleGame` does for the pebble game on $G$; so does the second part of
+  `lem:runPebbleGame-underline-eq`.
+  *Evidence:* read (the statement and body of `runPebbleGameWith_sound`, `Correctness.lean`;
+  `#check` in a `lake lean` scratch file).
+  *Found:* round 1 task 5.14 (the open's diagnosis saw the first half).
+- **F-037** · S · `lem:workhorseWitness-certifies` (`pebble-game.tex`): the statement takes a finite
+  simple graph $G$ on $V$. Its pin `WorkhorseWitness.certifies_against` assumes only that $G$ has
+  finitely many edges (`[Fintype G.edgeSet]`; nothing on $V$). The statement is weaker than the
+  pin, as in `F-026`. Task 5.13's prose after `def:workhorseWitness` says the same.
+  *Evidence:* read (the statement of `certifies_against`, `Correctness.lean`; `#check`).
+  *Found:* round 1 task 5.14.
+- **F-038** · S · `def:blockingWitness` (`pebble-game.tex`): task 5.13 (`db7ff7d6`) changed the
+  content of this unpinned definition. It said that a blocking witness is a finite $V' \subseteq V$
+  with $|E_G[V']| > k|V'| - \ell$, and "Equivalently, $G$ is not $(k, \ell)$-sparse on $V'$". The
+  two differ when $\ell > k|V'|$: then the first holds (with integer subtraction) and the second
+  fails, since sparsity bounds only the sets with $\ell \le k|V'|$. The definition now also asks
+  $\ell \le k|V'|$: the second sentence's reading, and what the reject verdict carries
+  (`PebbleGameResult.reject`'s `h_size` and `h_lt`). The coordinator checked and accepted the
+  change; it is recorded because the hygiene rule sends a change of statement content to the PI.
+  *Evidence:* read (the definition at `db7ff7d6^` and at `db7ff7d6`; `PebbleGameResult`,
+  `Correctness.lean`).
+  *Found:* round 1 task 5.13; filed by task 5.14 at the coordinator's request.
 
 ## L — Lean
 
@@ -440,6 +467,27 @@ declaration's name as its header writes it:
   11's reshape ("was `some D'`", "was `Option (PartialOrientation V)`").
   *Evidence:* read (the docstrings named, against the two files).
   *Found:* round 1 task 5.13.
+- **F-039** · L · `runPebbleGameWith_sound`, `runPebbleGameWith_underline_eq`,
+  `runPebbleGameWith_correct` (`PebbleGame/Correctness.lean`, `Algorithm.lean`): the binder
+  `hloops : ∀ p ∈ edges, p.1 ≠ p.2` follows from `himg`, since each entry's unordered pair is an
+  edge of `G` and so not a loop. `runPebbleGame_edges_discharges` proves it separately.
+  *Evidence:* read (the three statements); a `lake lean` witness deriving `hloops` from `himg` in
+  three lines (`List.mem_toFinset`, `SimpleGraph.ne_of_adj`).
+  *Found:* round 1 task 5.14.
+- **F-040** · L · `PebbleGame/Correctness.lean`, `Algorithm.lean`: docstrings that name blueprint
+  labels or declarations that do not exist, or describe other states of the code. Three labels do
+  not exist: `lem:pebble-game-tryAddEdge-iff-independent` (`tryAddEdgeWith_isSparse`, "⇒ half of"),
+  `thm:pebble-game-completeness` (the module docstring) and `thm:runPebbleGameWith-correct`
+  (`runPebbleGameWith_underline_eq`). `span_succ_le_edgesIn_ncard_of_subset` and
+  `tryReachPebbleWith_eq_none_imp` name `tryAddEdgeWith_eq_none_imp_exists_witness` and
+  `tryAddEdgeWith_isSome` as their consumers; neither exists. `runPebbleGameWith_sound`'s docstring
+  says its hypothesis is `some D'` (it is `.inr D'`). The *Completeness* section header says the
+  graph form of Lemma 13 is what "the upcoming `tryAddEdgeWith` completeness recursion will
+  iterate"; there is no such recursion, and no main result uses the lemma. `F-035` records the same
+  kind of docstring in `Basic.lean` and `Algorithm.lean`.
+  *Evidence:* read (the docstrings named; `grep` for the labels in `blueprint/src/` and for the
+  names in the Lean).
+  *Found:* round 1 task 5.14.
 
 ## M — mathematics and sources
 

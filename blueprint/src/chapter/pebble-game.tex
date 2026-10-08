@@ -540,61 +540,68 @@ which it uses $\ell < 2k$.
 \subsection{Soundness}
 \label{sec:pebble-game-soundness}
 
-The success branch of $\mathrm{runPebbleGame}$ is a witness of
-sparsity, by Invariant~(4) applied to $\underline{D} = E(G)$. This is
-the easier half of Lee--Streinu Theorem~8 (their Corollary~12). The
-argument relies on two properties of the fold: preservation of
-$(k, \ell)$-reachability (established in
-\cref{lem:pebble-game-invariants}) and the tracking of the underlying
-edge set (\cref{lem:runPebbleGameWith-underline-subset} below).
+We show that if the pebble game on $G$ accepts $G$, then $G$ is
+$(k, \ell)$-sparse. Lee and Streinu prove this direction of their
+Theorem~8 first, as part of their
+Corollary~12~\cite{leeStreinu2008}. Like theirs, our proof rests on
+Invariant~(4) of \cref{lem:pebble-game-invariants}. Suppose that the
+game accepts $G$ with $D$. It runs on a list in which each edge of $G$
+appears once, so it skips no edge, and since it returns $D$, it accepts
+every edge. Hence $\underline{D} = E(G)$
+(\cref{lem:runPebbleGame-underline-eq}). For a set $V'$ of vertices,
+$\mathrm{span}_D(V')$ is then the number of edges of $G$ inside $V'$
+(\cref{lem:span-eq-ncard-edgesIn}), and Invariant~(4) becomes the count
+that defines sparsity.
 
-\begin{lemma}[Underlying-edge tracking through the fold]
+\begin{lemma}[The edges oriented by an accepted run]
   \label{lem:runPebbleGameWith-underline-subset}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_underline,
     CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_underline_subset}
   \leanok
   \uses{def:tryAddEdge, def:runPebbleGame, def:partial-orientation,
     def:path-reversal, def:arc-insertion}
-  Let $D$ be a partial orientation, $k, \ell$ integers, and
-  $\mathit{edges} : \mathrm{List}\,(V \times V)$ a list of candidate
-  ordered pairs. A single accepting step adds exactly one edge: if
-  $\mathrm{tryAddEdge}\,D\,k\,\ell\,u\,v$ accepts, returning $D'$, then
-  $\underline{D'} = \underline{D} \cup \{\{u, v\}\}$. Across the whole
-  fold, if the algorithm accepts the edge list (with a compatible
-  out-neighbour enumeration), returning an accepting orientation $D'$,
-  then
+  Let $V$, $k$, $\ell$ and the lists $N^+_D(a)$ be as in
+  \cref{def:tryAddEdge}, and let $D$ be a $(k, \ell)$-reachable partial
+  orientation on $V$.
   \begin{enumerate}
-    \item $\underline{D} \subseteq \underline{D'}$ (no edge is ever
-      removed by the move sequence); and
-    \item $\underline{D'} \subseteq \underline{D} \cup
-      \{\{u, v\} : (u, v) \in \mathit{edges}\}$ (the only new edges
-      come from list entries that reach the accept branch).
+    \item Let $u \ne v$ be vertices such that the edge $uv$ is not
+      oriented in $D$. If processing $uv$ at $D$ accepts $uv$ and
+      returns $D'$, then $\underline{D'} = \underline{D} \cup \{uv\}$.
+    \item Let $(u_1, v_1), \ldots, (u_m, v_m)$ be a list of pairs of
+      vertices. If the pebble game on this list from $D$ returns a
+      partial orientation $D'$, then
+      $\underline{D} \subseteq \underline{D'}$, and every edge in
+      $\underline{D'} \setminus \underline{D}$ is $u_i v_i$ for some
+      $i$.
   \end{enumerate}
-  In particular, $\underline{D'} \subseteq \underline{D} \cup
-  \mathrm{Sym}_2(\mathit{edges})$, so when $D$ is the empty orientation
-  and $\mathit{edges}$ enumerates $E(G)$ for a simple graph $G$,
-  $\underline{D'} \subseteq E(G)$ at termination.
 \end{lemma}
 \begin{proof}
   \leanok
-  By structural induction on $\mathit{edges}$. For the empty list
-  $D = D'$ and both inclusions are trivial. For $(u, v) :: \mathit{es}$:
-  if the runtime checks fail, the step is a no-op and the induction
-  hypothesis on $\mathit{es}$ gives both inclusions directly (the upper
-  bound's right-hand side only grows as the candidate list widens).
-  Otherwise the step runs $\mathrm{tryAddEdge}$; on acceptance it
-  returns $D_{\mathrm{mid}}$ with $\underline{D_{\mathrm{mid}}} =
-  \underline{D} \cup \{\{u, v\}\}$ --- by induction on the five cases of
-  $\mathrm{tryAddEdge}$'s recursion, the two accept branches closing on
-  \cref{def:arc-insertion}'s underlying-edge equation and the two
-  search-success branches composing reversal-preservation
-  (\cref{def:path-reversal}) with the induction hypothesis, while the
-  both-searches-fail branch cannot arise on an accepting run. The
-  induction hypothesis on $\mathit{es}$ at $D_{\mathrm{mid}}$ then gives
-  both inclusions for the full list.
+  For (1), processing $uv$ at $D$ stops in step~1 or step~4 of
+  \cref{def:tryAddEdge}. Otherwise, in step~2 or step~3, it processes
+  $uv$ again at a partial orientation $D''$ obtained from $D$ by
+  reversing a directed path. We argue by induction along this
+  recursion, which stops, as shown after \cref{def:tryAddEdge}. Step~4
+  rejects $uv$, so it is not reached. Step~1 inserts the arc $(u, v)$
+  or the arc $(v, u)$, and either way the underlying edge set becomes
+  $\underline{D} \cup \{uv\}$ (\cref{def:arc-insertion}). In steps~2
+  and~3, $\underline{D''} = \underline{D}$ (\cref{def:path-reversal}),
+  and processing $uv$ at $D''$ accepts $uv$ and returns $D'$. By
+  induction, $\underline{D'} = \underline{D''} \cup \{uv\} =
+  \underline{D} \cup \{uv\}$.
+
+  For (2) we argue by induction on $m$. If $m = 0$, then $D' = D$. Let
+  $m \ge 1$. If the game skips $(u_1, v_1)$, it plays the rest of the
+  list from $D$, and the claim follows by induction. Otherwise it
+  processes $u_1 v_1$ at $D$. Since the game returns a partial
+  orientation, the processing accepts $u_1 v_1$ and returns a
+  $(k, \ell)$-reachable partial orientation $D_1$, with
+  $\underline{D_1} = \underline{D} \cup \{u_1 v_1\}$ by (1). The game
+  then plays $(u_2, v_2), \ldots, (u_m, v_m)$ from $D_1$ and returns
+  $D'$. The induction hypothesis at $D_1$ gives both claims.
 \end{proof}
 
-\begin{lemma}[Every candidate is accepted; underlying-edge identity]
+\begin{lemma}[An accepted run orients every listed edge]
   \label{lem:runPebbleGame-underline-eq}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_mem_underline,
     CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_underline_eq,
@@ -603,80 +610,71 @@ edge set (\cref{lem:runPebbleGameWith-underline-subset} below).
   \uses{def:partial-orientation, def:tryAddEdge, def:runPebbleGame,
     def:reachable-orientation, lem:runPebbleGameWith-underline-subset,
     lem:pebble-game-invariants}
-  Let $D$ be a $(k, \ell)$-reachable orientation and
-  $\mathit{edges} : \mathrm{List}\,(V \times V)$ a list of ordered
-  pairs satisfying: no entry is a loop ($p_1 \ne p_2$); every
-  $\{p_1, p_2\}$ for $p \in \mathit{edges}$ lies outside $\underline{D}$;
-  and the entries are pairwise distinct as unordered pairs. If
-  the algorithm accepts this list (with a compatible out-neighbour
-  enumeration), returning an accepting orientation $D'$,
-  then every $p \in \mathit{edges}$ satisfies
-  $\{p_1, p_2\} \in \underline{D'}$.
+  Let $V$, $k$, $\ell$ and the lists $N^+_D(a)$ be as in
+  \cref{def:tryAddEdge}, and let $D$ be a $(k, \ell)$-reachable partial
+  orientation on $V$. Let $(u_1, v_1), \ldots, (u_m, v_m)$ be a list of
+  pairs of vertices with $u_i \ne v_i$ and
+  $u_i v_i \notin \underline{D}$ for every $i$, such that the edges
+  $u_1 v_1, \ldots, u_m v_m$ are distinct. If the pebble game on this
+  list from $D$ returns a partial orientation $D'$, then
+  $u_i v_i \in \underline{D'}$ for every $i$.
 
-  In particular, run from the empty orientation against an edge list
-  whose $\mathrm{Sym}_2$-image is $E(G)$ for a simple graph
-  $G : \mathrm{SimpleGraph}\,V$, an accepting run gives $\underline{D'}
-  = E(G)$; the verdict-bearing $\mathrm{runPebbleGame}\,G\,k\,\ell$
-  (\cref{def:runPebbleGame}) uses this identity to establish
-  $\underline{D} = E(G)$ on its accept branch.
+  Moreover, let $G$ be a simple graph on $V$, and let the pairs
+  $(u_i, v_i)$ list the edges of $G$, each once, as $(u, v)$ or as
+  $(v, u)$. If the pebble game on this list from the empty orientation
+  returns $D'$, then $\underline{D'} = E(G)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  By structural induction on $\mathit{edges}$; the empty case is
-  vacuous. For $(u, v) :: \mathit{es}$, the three runtime checks at
-  $(u, v)$ all pass: loop-freeness from the input, and
-  $(u, v), (v, u) \notin D.\mathrm{arcs}$ from $\{u, v\} \notin
-  \underline{D}$ through the membership characterisation of
-  $\underline{D}$. So the step runs $\mathrm{tryAddEdge}$ (the
-  per-vertex out-degree bound $\mathrm{out}_D(\cdot) \le k$ of
-  \cref{lem:pebble-game-invariants}~(1) comes from the reachability
-  hypothesis and is not rechecked per step); on acceptance
-  $\underline{D_{\mathrm{mid}}} = \underline{D} \cup \{\{u, v\}\}$
-  (\cref{lem:runPebbleGameWith-underline-subset}, per accepting step)
-  and $D_{\mathrm{mid}}$ is again $(k, \ell)$-reachable
-  (\cref{lem:pebble-game-invariants}). The remaining entries
-  $\mathit{es}$ inherit the three input hypotheses against
-  $D_{\mathrm{mid}}$: freshness combines the original freshness with
-  pairwise distinctness (each $\{p_1, p_2\}$ for $p \in \mathit{es}$
-  differs from $\{u, v\}$). The induction hypothesis on $\mathit{es}$
-  at $D_{\mathrm{mid}}$ handles every remaining entry, and
-  $\{u, v\} \in \underline{D'}$ follows from the monotonicity
-  inclusion of \cref{lem:runPebbleGameWith-underline-subset}.
+  We argue by induction on $m$; for $m = 0$ there is nothing to prove.
+  Let $m \ge 1$. Since $u_1 \ne v_1$ and $u_1 v_1 \notin \underline{D}$,
+  neither $(u_1, v_1)$ nor $(v_1, u_1)$ is an arc of $D$, so the game
+  does not skip $(u_1, v_1)$. As in the proof of
+  \cref{lem:runPebbleGameWith-underline-subset}~(2), processing
+  $u_1 v_1$ at $D$ accepts it and returns a $(k, \ell)$-reachable
+  partial orientation $D_1$ with
+  $\underline{D_1} = \underline{D} \cup \{u_1 v_1\}$. For $i \ge 2$, the
+  edge $u_i v_i$ is neither in $\underline{D}$ nor equal to $u_1 v_1$,
+  so the rest of the list satisfies the hypotheses at $D_1$. By
+  induction, $u_i v_i \in \underline{D'}$ for $i \ge 2$. Also
+  $u_1 v_1 \in \underline{D_1}$, and
+  $\underline{D_1} \subseteq \underline{D'}$ by
+  \cref{lem:runPebbleGameWith-underline-subset}~(2).
 
-  For the convenience form, the enumeration of $E(G)$ satisfies the
-  three hypotheses: it has no loops (edges of a simple graph are
-  non-diagonal), each edge is fresh against the empty orientation's
-  underlying edge set $\emptyset$, and the entries are pairwise distinct
-  as unordered pairs (a finite set is enumerated without repetition).
-  Combining this converse inclusion with the $\subseteq$ half of
-  \cref{lem:runPebbleGameWith-underline-subset} gives $\underline{D'} =
-  E(G)$.
+  For the second part, the edges of $G$ are not loops, none of them is
+  oriented in the empty orientation, and each is listed once. So the
+  first part gives $E(G) \subseteq \underline{D'}$. Conversely, by
+  \cref{lem:runPebbleGameWith-underline-subset}~(2), every edge in
+  $\underline{D'}$ is one of the $u_i v_i$, and so an edge of $G$.
+
+  The pebble game on $G$ (\cref{def:runPebbleGame}) runs on a list of
+  this kind, since a list of the elements of a finite set has no
+  repetitions (\cref{fmlnote:pebble-game-computable-core}). So if it
+  accepts $G$ with $D$, then $\underline{D} = E(G)$.
 \end{proof}
 
-\begin{lemma}[Span equals $\edgesIn{V'}$-count under the underlying-edge identity]
+\begin{lemma}[Arcs and edges inside a set]
   \label{lem:span-eq-ncard-edgesIn}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.span_eq_ncard_edgesIn}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     lem:runPebbleGame-underline-eq, def:edgesIn}
-  Let $D$ be a partial orientation with $\underline{D} = E(G)$ for some
-  $G : \mathrm{SimpleGraph}\,V$. For every $V' \subseteq V$,
+  Let $D$ be a partial orientation on $V$, and let $G$ be a simple graph
+  on $V$ with $\underline{D} = E(G)$. Then every finite set
+  $V' \subseteq V$ satisfies
   \[
     \mathrm{span}_D(V') = |\edgesIn[G]{V'}|.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  The map $(a, b) \mapsto \{a, b\}$ from the arcs of $D$ with both
-  endpoints in $V'$ to $\edgesIn[G]{V'}$ is a bijection. Injectivity is
-  the no-antiparallel invariant of $D$: if $\{a, b\} = \{a', b'\}$ with
-  both arcs in $D$, then either $(a, b) = (a', b')$ or $(a, b) =
-  (b', a')$, and the second case puts both $(a, b)$ and $(b, a)$ in $D$,
-  violating no-antiparallel. Surjectivity uses the membership
-  characterisation of $\underline{D}$: an edge $\{a, b\} \in
-  \edgesIn[G]{V'}$ lies in $\underline{D} = E(G)$, so one of $(a, b)$,
-  $(b, a)$ is an arc of $D$, and both endpoints lie in $V'$ by the
-  definition of $\edgesIn{V'}$.
+  Map each arc $(a, b)$ of $D$ with both ends in $V'$ to the edge $ab$.
+  This edge lies in $\underline{D} = E(G)$ and inside $V'$, so it is in
+  $\edgesIn[G]{V'}$. The map is injective: two arcs with the same
+  underlying edge are equal or antiparallel, and $D$ has no
+  antiparallel pairs. It is surjective: an edge $ab$ of $G$ inside $V'$
+  lies in $\underline{D}$, so $(a, b)$ or $(b, a)$ is an arc of $D$, and
+  both its ends are in $V'$.
 \end{proof}
 
 \begin{theorem}[Soundness of the pebble game]
@@ -685,93 +683,110 @@ edge set (\cref{lem:runPebbleGameWith-underline-subset} below).
   \leanok
   \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse,
     lem:runPebbleGame-underline-eq, lem:span-eq-ncard-edgesIn}
-  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
-  integers with $\ell < 2k$. If the computable core, run from the empty
-  orientation against an edge list whose $\mathrm{Sym}_2$-image is
-  $E(G)$, accepts (returns an orientation $D$), then $G$ is
-  $(k, \ell)$-sparse. (The claim is stated for the computable core;
-  the convenience forms of \cref{def:runPebbleGame} inherit it through
-  the verdict they return.)
+  Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$
+  and $\ell$ be non-negative integers with $\ell < 2k$. Let the lists
+  $N^+_D(a)$ be as in \cref{def:tryAddEdge}, and let the pairs
+  $(u_1, v_1), \ldots, (u_m, v_m)$ list the edges of $G$, each once, as
+  $(u, v)$ or as $(v, u)$. If the pebble game on this list from the
+  empty orientation returns a partial orientation, then $G$ is
+  $(k, \ell)$-sparse. In particular, $G$ is $(k, \ell)$-sparse if the
+  pebble game on $G$ accepts $G$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-invariants, lem:runPebbleGame-underline-eq,
     lem:span-eq-ncard-edgesIn}
-  By \cref{lem:pebble-game-invariants} Invariant~(4) applied to
-  $D$ at termination, every subset $V' \subseteq V$ in the relevant
-  size range satisfies $\mathrm{span}_D(V') \le k|V'| - \ell$.
-  Since $\underline{D} = E(G)$ (\cref{lem:runPebbleGame-underline-eq}),
-  \cref{lem:span-eq-ncard-edgesIn} rewrites this as
-  $|\edgesIn[G]{V'}| \le k|V'| - \ell$, i.e.\ $G$ is $(k, \ell)$-sparse
-  on $V'$. (The matroidal-regime assumption $\ell < 2k$ is not used
-  formally on the Lean side; the size-range constraint folds into
-  the definition of $(k, \ell)$-sparsity as $\ell \le k|V'|$.)
+  Let $D$ be the partial orientation returned. It is
+  $(k, \ell)$-reachable, since processing an edge returns a
+  $(k, \ell)$-reachable partial orientation when it accepts
+  (\cref{def:tryAddEdge}). By \cref{lem:runPebbleGame-underline-eq},
+  $\underline{D} = E(G)$. Let $V' \subseteq V$ with $\ell \le k|V'|$.
+  Invariant~(4) of \cref{lem:pebble-game-invariants} gives
+  $\mathrm{span}_D(V') \le k|V'| - \ell$. By
+  \cref{lem:span-eq-ncard-edgesIn}, the left-hand side is
+  $|\edgesIn[G]{V'}|$. Hence $G$ is $(k, \ell)$-sparse. The pebble game
+  on $G$ runs on a list of the kind above
+  (\cref{lem:runPebbleGame-underline-eq}), which gives the last claim.
+
+  The first claim holds without the hypothesis $\ell < 2k$: neither
+  this proof nor that of \cref{lem:pebble-game-invariants} uses it.
 \end{proof}
 
 \subsection{Completeness}
 \label{sec:pebble-game-completeness}
 
-The harder direction shows that the algorithm cannot reject any
-edge of a $(k, \ell)$-sparse graph. The argument follows
-Lee--Streinu Lemma~13: if the candidate edge $\{u, v\}$ is
-independent (in the matroid sense), then a free pebble can be
-brought to $u$ or $v$ from within $\mathrm{Reach}_D(u) \cup
-\mathrm{Reach}_D(v)$ without disturbing the other endpoint's count.
-Iterating produces the $\ell + 1$ pebbles needed to insert.
+We now prepare the converse, which \cref{sec:pebble-game-correctness}
+completes: if the pebble game on $G$ rejects $G$ with $V'$, then $V'$
+is a blocking witness for $G$, so $G$ is not $(k, \ell)$-sparse.
 
-\begin{lemma}[Independent edges yield reachable pebbles, algebraic form]
+Following Lee and Streinu~\cite[\S 2]{leeStreinu2008}, we call an edge
+$uv$ that is not oriented in a partial orientation $D$
+\emph{independent} in $D$ if the graph on $V$ with edge set
+$\underline{D} \cup \{uv\}$ is $(k, \ell)$-sparse. Their Lemma~14
+states that the game inserts $uv$ if and only if $uv$ is independent in
+$D$. One direction follows from Invariant~(4): if processing $uv$ at
+$D$ accepts $uv$, then $uv$ is independent in $D$
+(\cref{lem:pebble-game-tryAddEdgeWith-isSparse}).
+For the other, Lee and Streinu apply their Lemma~13 repeatedly. While
+$u$ and $v$ hold at most $\ell$ free pebbles, their Lemma~13 gives a
+free pebble on another vertex reachable from $u$ or from $v$, and
+reversing a directed path brings it to $u$ or to $v$. They remark that
+the vertices reachable from $u$ and from $v$ may change after such a
+move, and that each application of their Lemma~13 needs $uv$ to be
+independent~\cite[p.~1433]{leeStreinu2008}. It is, since reversing a
+path does not change $\underline{D}$.
+
+We prove Lee and Streinu's Lemma~13 as
+\cref{lem:pebble-game-independent-brings-pebble-graph}, from a form
+that does not mention a graph
+(\cref{lem:pebble-game-independent-brings-pebble}). For the correctness
+of the game, however, we argue at the rejection. Processing $uv$ at $D$
+rejects $uv$ only in step~4 of \cref{def:tryAddEdge}. The failure
+witness that it returns there shows that $uv$ is not independent in $D$
+(\cref{lem:workhorseWitness-certifies}). The inequalities are those of
+Lee and Streinu's Lemma~13, read in the contrapositive.
+
+\begin{lemma}[A free pebble for an independent edge, counting form]
   \label{lem:pebble-game-independent-brings-pebble}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.independent_brings_pebble}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:reachable-orientation, lem:pebble-game-invariants}
-  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
-  vertices, and $V' \subseteq V$ a finite subset containing both $u$
-  and $v$ with $\mathrm{out}_D(V') = 0$ (i.e.\ $V'$ is closed under
-  $D$'s outgoing arcs --- the algorithmic instance has $V' =
-  \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$). Suppose
-  \begin{enumerate}
-    \item $\mathrm{span}_D(V') + 1 + \ell \le k|V'|$ (the algebraic
-      form of the post-insertion sparsity bound on $V'$: adding the
-      candidate edge $\{u, v\}$ to $\underline{D}$ keeps the
-      $\le k|V'| - \ell$ count); and
-    \item $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$
-      (the below-threshold condition at which the outer algorithm
-      attempts a search).
-  \end{enumerate}
-  Then there is a vertex $w \in V' \setminus \{u, v\}$ with
-  $\mathrm{peb}_{D, k}(w) \ge 1$.
+  Let $V$ be a set, let $k$ and $\ell$ be non-negative integers, and let
+  $D$ be a $(k, \ell)$-reachable partial orientation on $V$. Let
+  $u \ne v$ be vertices, and let $V' \subseteq V$ be a finite set that
+  contains $u$ and $v$ and that no arc of $D$ leaves, that is,
+  $\mathrm{out}_D(V') = 0$. Suppose that
+  \[
+    \mathrm{span}_D(V') + 1 + \ell \;\le\; k|V'|
+    \qquad\text{and}\qquad
+    \mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \;\le\; \ell.
+  \]
+  Then $\mathrm{peb}_{D, k}(w) \ge 1$ for some vertex $w \in V'$ other
+  than $u$ and $v$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-invariants}
-  Invariant~(2) of \cref{lem:pebble-game-invariants} gives
-  $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') + \mathrm{out}_D(V')
-  = k|V'|$. With $\mathrm{out}_D(V') = 0$ this is
-  $\mathrm{peb}_{D, k}(V') = k|V'| - \mathrm{span}_D(V')$, and the
-  post-insertion sparsity bound rearranges to $\mathrm{peb}_{D, k}(V')
-  \ge \ell + 1$. Subtracting the below-threshold hypothesis
-  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$ leaves
-  $\sum_{w \in V' \setminus \{u, v\}} \mathrm{peb}_{D, k}(w) > 0$, so
-  some $w \in V' \setminus \{u, v\}$ has $\mathrm{peb}_{D, k}(w)
-  \ge 1$.
+  As in the proof of Invariant~(2) of
+  \cref{lem:pebble-game-invariants},
+  \[
+    \mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') + \mathrm{out}_D(V')
+    = k|V'|.
+  \]
+  Since $\mathrm{out}_D(V') = 0$, the first inequality gives
+  $\mathrm{peb}_{D, k}(V') \ge \ell + 1$. By the second, $u$ and $v$
+  hold at most $\ell$ of these pebbles, so another vertex of $V'$ holds
+  one.
 
-  Compare Lee--Streinu Lemma 13. The L-S statement takes
-  $V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ and uses
-  $\mathrm{fromEdgeSet}\,(\underline{D} \cup \{\{u, v\}\})$ being
-  $(k, \ell)$-sparse as the hypothesis: that converts to the present
-  algebraic form via the closure-of-reachability identity
-  $\mathrm{out}_D(\mathrm{Reach}_D(\cdot)) = 0$ and the
-  $\mathrm{span}_D \leftrightarrow |\edgesIn{}|$ bridge of
-  \cref{lem:span-eq-ncard-edgesIn} (adjusted by $+1$ for the added
-  $\{u, v\}$ edge inside $V'$, since $u, v \in V'$ by reflexivity of
-  $\mathrm{Reach}_D$). The L-S proof's appeal to an $I$-component /
-  block argument unfolds in the algebraic form to a direct
-  Invariant~(2) application, since the sparsity bound is the only
-  fact about the post-insertion graph the proof actually uses.
+  In Lee and Streinu's proof of their
+  Lemma~13~\cite{leeStreinu2008}, $V'$ is the set of vertices reachable
+  from $u$ or from $v$, and the first inequality follows from the
+  independence of $uv$, as in the proof of
+  \cref{lem:pebble-game-independent-brings-pebble-graph}.
 \end{proof}
 
-\begin{lemma}[Independent edges yield reachable pebbles, SimpleGraph form]
+\begin{lemma}[A free pebble for an independent edge]
   \label{lem:pebble-game-independent-brings-pebble-graph}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.independent_brings_pebble_simpleGraph_form}
   \leanok
@@ -779,97 +794,102 @@ Iterating produces the $\ell + 1$ pebbles needed to insert.
     def:reachable-orientation, def:isSparse,
     lem:pebble-game-independent-brings-pebble,
     lem:span-eq-ncard-edgesIn}
-  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
-  with $\{u, v\} \notin \underline{D}$, and $G$ a finite simple graph
-  with $E(G) = \underline{D} \cup \{\{u, v\}\}$ that is
-  $(k, \ell)$-sparse. Suppose the matroidal regime $\ell < 2k$ holds
-  and the algorithm's below-threshold condition holds:
-  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$. Then
-  there is a vertex $w \in \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$
-  distinct from $u$ and $v$ with $\mathrm{peb}_{D, k}(w) \ge 1$.
+  Let $V$ be a finite set, let $k$ and $\ell$ be non-negative integers
+  with $\ell < 2k$, and let $D$ be a $(k, \ell)$-reachable partial
+  orientation on $V$. Let $u \ne v$ be vertices such that the edge $uv$
+  is not oriented in $D$ and the graph on $V$ with edge set
+  $\underline{D} \cup \{uv\}$ is $(k, \ell)$-sparse. If
+  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \le \ell$, then
+  $\mathrm{peb}_{D, k}(w) \ge 1$ for some vertex $w \ne u, v$ that is
+  reachable from $u$ or from $v$ along the arcs of $D$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-independent-brings-pebble,
     lem:span-eq-ncard-edgesIn}
-  Instantiate $V' := \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ in
-  \cref{lem:pebble-game-independent-brings-pebble}. The reflexivity of
-  $\mathrm{Reach}_D$ puts $u, v \in V'$, the closure of $V'$ under
-  $D$'s out-arcs gives $\mathrm{out}_D(V') = 0$, and $|V'| \ge 2$
-  combined with $\ell < 2k$ yields the size hypothesis $\ell \le k|V'|$.
-  The sparsity bound $\mathrm{span}_D(V') + 1 + \ell \le k|V'|$ follows
-  from $G$-sparsity at $V'$ together with the inclusion
-  $\{\{a, b\} : (a, b) \in D\text{'s arcs spanning } V'\}
-  \cup \{\{u, v\}\} \subseteq \edgesIn[G]{V'}$, whose cardinality
-  equals $\mathrm{span}_D(V') + 1$ by injectivity of the unordered-pair
-  map on arcs (the injectivity ingredient of
-  \cref{lem:span-eq-ncard-edgesIn}) and freshness of $\{u, v\}$ with
-  respect to $\underline{D}$.
+  Let $G$ be the graph on $V$ with edge set $\underline{D} \cup \{uv\}$,
+  and let $V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ be the set
+  of vertices reachable from $u$ or from $v$ along the arcs of $D$. Then
+  $V'$ contains $u$ and $v$, and no arc of $D$ leaves $V'$, as shown
+  after \cref{def:tryAddEdge}. Since $|V'| \ge 2$ and $\ell < 2k$, we
+  have $\ell \le k|V'|$. As $G$ is $(k, \ell)$-sparse, $V'$ spans at
+  most $k|V'| - \ell$ edges of $G$.
+
+  As in the proof of \cref{lem:span-eq-ncard-edgesIn}, the arcs of $D$
+  inside $V'$ have distinct underlying edges, and these are edges of $G$
+  inside $V'$. The edge $uv$ is one more, since it is not oriented in
+  $D$. Hence
+  \[
+    \mathrm{span}_D(V') + 1 \;\le\; |\edgesIn[G]{V'}| \;\le\;
+    k|V'| - \ell,
+  \]
+  and \cref{lem:pebble-game-independent-brings-pebble} gives the
+  vertex $w$.
 \end{proof}
 
-\begin{lemma}[Failure witness certifies non-sparsity]
+\begin{lemma}[A failure witness gives a blocking witness]
   \label{lem:workhorseWitness-certifies}
   \lean{CombinatorialRigidity.PebbleGame.WorkhorseWitness.certifies_against}
   \leanok
   \uses{def:workhorseWitness, lem:pebble-game-invariants,
     lem:span-eq-ncard-edgesIn}
-  Let $w$ be a failure witness (\cref{def:workhorseWitness}) at
-  parameters $(k, \ell)$ on a vertex type $V$, in the matroidal regime
-  $\ell < 2k$. For any finite simple
-  graph $G : \mathrm{SimpleGraph}\,V$ such that
-  $\{w.uv_1, w.uv_2\} \in E(G)$ and $\underline{w.D} \subseteq E(G)$,
-  the witness's blocking subset $V' := w.V'$ certifies non-sparsity:
+  Let $k$ and $\ell$ be non-negative integers with $\ell < 2k$, and let
+  $(D, V', (u, v))$ be a failure witness (\cref{def:workhorseWitness}).
+  Let $G$ be a finite simple graph on $V$ whose edges include $uv$ and
+  the edges in $\underline{D}$. Then $\ell \le k|V'|$ and
   \[
-    \ell \le k |V'| \quad \text{and} \quad k |V'| < |\edgesIn{V'}| +
-    \ell.
+    |\edgesIn[G]{V'}| + \ell \;>\; k|V'|.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
-  The size hypothesis $\ell \le k |V'|$ follows from $|V'| \ge 2$ (the
-  two distinct endpoints $u, v$ both sit in $V'$) and the matroidal
-  regime $\ell < 2k$. Invariant~(2) of
-  \cref{lem:pebble-game-invariants} on $V'$ with $\mathrm{out}_D(V') =
-  0$ gives $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') = k |V'|$,
-  so the witness's bound $\mathrm{peb}_{D, k}(V') \le \ell$ rearranges
-  to $k |V'| \le \mathrm{span}_D(V') + \ell$. The
-  $+1$ bridge of \cref{lem:span-eq-ncard-edgesIn} (in the variant
-  used by \cref{lem:pebble-game-independent-brings-pebble-graph}'s
-  proof) under freshness of $\{w.uv_1, w.uv_2\}$ with respect to
-  $\underline{D}$ and the subset hypothesis
-  $\underline{D} \subseteq E(G)$ gives $\mathrm{span}_D(V') + 1 \le
-  |\edgesIn{V'}|$. Combining, $k |V'| + 1 \le |\edgesIn{V'}| + \ell$,
-  i.e., $k |V'| < |\edgesIn{V'}| + \ell$.
+  The distinct vertices $u$ and $v$ lie in $V'$, so $|V'| \ge 2$ and
+  $\ell < 2k \le k|V'|$. Since $D$ is $(k, \ell)$-reachable,
+  Invariant~(2) of \cref{lem:pebble-game-invariants} gives
+  \[
+    \mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') + \mathrm{out}_D(V')
+    = k|V'|.
+  \]
+  By the definition of a failure witness, $\mathrm{out}_D(V') = 0$ and
+  $\mathrm{peb}_{D, k}(V') \le \ell$. So
+  $k|V'| \le \mathrm{span}_D(V') + \ell$.
+
+  As in the proof of \cref{lem:span-eq-ncard-edgesIn}, the arcs of $D$
+  inside $V'$ have distinct underlying edges, and these are edges of $G$
+  inside $V'$. The edge $uv$ is one more, since it lies inside $V'$ and
+  is not oriented in $D$. Hence
+  $\mathrm{span}_D(V') + 1 \le |\edgesIn[G]{V'}|$, and so
+  $k|V'| < |\edgesIn[G]{V'}| + \ell$. Thus $V'$ is a blocking witness
+  for $G$ (\cref{def:blockingWitness}).
 \end{proof}
 
-\begin{lemma}[Pebble game accept implies independent]
+\begin{lemma}[An accepted edge is independent]
   \label{lem:pebble-game-tryAddEdgeWith-isSparse}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_isSparse}
   \leanok
   \uses{def:tryAddEdge, def:reachable-orientation, def:isSparse,
     lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
-  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
-  a candidate edge, and $G$ a finite simple graph with
-  $E(G) = \underline{D} \cup \{\{u, v\}\}$. If $\mathrm{tryAddEdge}\,D\,
-  k\,\ell\,u\,v$ accepts (returns $\mathrm{.inr}\,D'$), then $G$ is
+  Let $V$, $k$, $\ell$ and the lists $N^+_D(a)$ be as in
+  \cref{def:tryAddEdge}. Let $D$ be a $(k, \ell)$-reachable partial
+  orientation on $V$, and let $u \ne v$ be vertices such that the edge
+  $uv$ is not oriented in $D$. If processing $uv$ at $D$ accepts $uv$,
+  then the graph on $V$ with edge set $\underline{D} \cup \{uv\}$ is
   $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
-  A successful insertion produces $D'$ with $\underline{D'} =
-  \underline{D} \cup \{\{u, v\}\} = E(G)$ (the underline identity is
-  preserved by path-reversal and grows by the inserted edge on accept).
-  The recursive structure of \cref{def:tryAddEdge} respects
-  \cref{def:reachable-orientation}: each path-reversal and each accept
-  step matches a constructor, so $D'$ is reachable. Invariant~(4) of
-  \cref{lem:pebble-game-invariants} on $D'$ gives
-  $\mathrm{span}_{D'}(V') + \ell \le k|V'|$ for every $V'$ satisfying
-  the size hypothesis; \cref{lem:span-eq-ncard-edgesIn} under the
-  underlying-edge identity rewrites the left-hand side as
-  $|\edgesIn[G]{V'}|$, yielding $(k, \ell)$-sparsity. Compare
-  Lee--Streinu Lemma 14.
+  Let $G$ be this graph, and let $D'$ be the partial orientation that
+  the processing returns. It is $(k, \ell)$-reachable
+  (\cref{def:tryAddEdge}). By
+  \cref{lem:runPebbleGameWith-underline-subset}~(1),
+  $\underline{D'} = \underline{D} \cup \{uv\} = E(G)$. Let
+  $V' \subseteq V$ with $\ell \le k|V'|$. As in the proof of
+  Invariant~(4) of \cref{lem:pebble-game-invariants},
+  $\mathrm{span}_{D'}(V') \le k|V'| - \ell$. By
+  \cref{lem:span-eq-ncard-edgesIn}, the left-hand side is
+  $|\edgesIn[G]{V'}|$. Hence $G$ is $(k, \ell)$-sparse.
 \end{proof}
 
 \subsection{Correctness of the computable core}

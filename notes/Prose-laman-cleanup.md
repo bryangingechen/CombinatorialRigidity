@@ -5,12 +5,12 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.13 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.14 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first thirteen slices, `sparsity.tex` through `pebble-game.tex`'s first part.
-**Next concrete task:** task 5.14, `pebble-game.tex`'s soundness and completeness. Round manual:
-`CLEANUP.md`.
+PI*), and the first fourteen slices, `sparsity.tex` through `pebble-game.tex`'s soundness and
+completeness. **Next concrete task:** task 5.15, the rest of `pebble-game.tex` and its opening.
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -55,15 +55,14 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The thirteenth slice has landed** (task 5.13, this commit): `pebble-game.tex`'s *State and
-moves*, *Invariants* and *The basic algorithm*, now 61–539, with the failure witness moved in from
-*Completeness*. Tasks 5.1–5.12 rewrote `sparsity.tex` through `dfs.tex`. Nothing is mid-stream;
-task 5.14 is next.
+**The fourteenth slice has landed** (task 5.14, this commit): `pebble-game.tex`'s *Soundness* and
+*Completeness*, now 540–893. Tasks 5.1–5.13 rewrote `sparsity.tex` through `pebble-game.tex`'s
+first part. Nothing is mid-stream; task 5.15 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (131 overfull boxes, none in
-  61–539; 137 at `e5dd8256`). The screens on 61–539 read 0 and 3 / 9, every device hit
-  `\mathrm{span}`, Lee–Streinu's own notation (2 and 17 / 30 on the same text at the parent).
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (129 overfull boxes, none in
+  540–893; 131 at `db7ff7d6`). The screens on 540–893 read 0 and 2 / 10, every device hit
+  `\mathrm{span}`, Lee–Streinu's own notation (0 and 12 / 27 on the same text at the parent).
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -179,16 +178,16 @@ style: the register is mostly flat, and the problem is Lean devices in statement
 - **Done chapters.** The open's bullets for `sparsity` through `dfs` were consumed by tasks
   5.1–5.12; they are in this log at `e5dd8256`, and each task's findings are in its commit and the
   ledger.
-- **`pebble-game`** (carve-out) is the largest chapter and the most Lean-shaped. Task 5.13 rewrote
-  61–539. Left for 5.14–5.15: `.inr D`, `.inl w`, `w.uv_1`, `runPebbleGameWith empty k ℓ …`,
-  `WorkhorseWitness` and `PebbleGameResult` in statements, and the coinages "computable core",
-  "convenience form", "verdict-bearing" and "matroidal regime". Bundled nodes (`F-009`, round 5):
-  `def:pebble-counts` (5 pins), `lem:pebble-game-invariants` (5), `def:tryReachPebble` (4); and
-  `def:blockingWitness` has no pin and no `\leanok`. `thm:pebble-game-soundness` assumes `ℓ < 2k`,
-  which its pin `runPebbleGameWith_sound` does not (read in the Lean; the proof says so in a
-  parenthetical): an `S` entry, statement weaker than pin. Check the Lee–Streinu pointers (§§3–6,
-  Theorem 8, Lemmas 13–15, Corollaries 11–12), Jacobs–Hendrickson 1997, and Lee–Streinu–Theran
-  (the bib entry is CCCG 2005; `.refs/` holds a 2008 file).
+- **`pebble-game`** (carve-out) is the largest chapter and the most Lean-shaped. Tasks 5.13 and
+  5.14 rewrote 61–893. Left for 5.15 (895–1071 and 1–60): `.inr D`, `.inl w`, `w.V'`,
+  `runPebbleGameWith empty k ℓ …`, `WorkhorseWitness`, `PebbleGameResult` and its constructors,
+  `runPebbleGameExec` and `countMatroid` in statements; a Lean name in a proof; and the coinages
+  "computable core" (also in a subsection title), "convenience form", "verdict-bearing" and
+  "matroidal regime". Bundled nodes (`F-009`, round 5): `def:pebble-counts` (5 pins),
+  `lem:pebble-game-invariants` (5), `def:tryReachPebble` (4); `def:blockingWitness` has no pin and
+  no `\leanok`. Check the Lee–Streinu pointers (Theorem 8, Lemma 15, Corollary 11, §§5–6),
+  Jacobs–Hendrickson 1997, and Lee–Streinu–Theran (the bib entry is CCCG 2005; `.refs/` holds a
+  2008 file).
 - **`executable`** (carve-out) is about the Lean artefact itself (`#eval`, `decide`,
   `native_decide`, the `Decidable` instances, the CLI), so names stay as addresses. What goes:
   Lean as the subject of sentences, changelog ("was already factored", "no longer needed"), and
@@ -223,11 +222,11 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   - [x] **5.10 `rigidity-matroid.tex`, rest and opening** (`d0178306`). `F-029`, `F-030`.
   - [x] **5.11 `count-matroid.tex`** (`d6a53778`; then 1–298). Found `F-031`, `F-032`.
   - [x] **5.12 `dfs.tex`** (`e5dd8256`; then 1–204). Found `F-033`.
-  - [x] **5.13 `pebble-game.tex`, state, invariants and the basic algorithm** (this commit; now
-    61–539, 11 nodes with the moved failure witness): the moves, the invariants and the procedures
-    in words, the procedures as numbered steps. Found `F-034`, `F-035`.
-  - [ ] **5.14 `pebble-game.tex`, soundness and completeness** (now 540–874): 8 nodes.
-  - [ ] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (now 875–1051,
+  - [x] **5.13 `pebble-game.tex`, first part** (`db7ff7d6`; then 61–539). `F-034`, `F-035`.
+  - [x] **5.14 `pebble-game.tex`, soundness and completeness** (this commit; now 540–893, 8
+    nodes): statements and proofs in words, independence defined, the rejection argument set
+    beside Lee–Streinu's. Filed `F-036`–`F-040`.
+  - [ ] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (now 895–1071,
     1–60): 4 nodes, 237 lines.
   - [ ] **5.16 `executable.tex`** (carve-out): 8 nodes, 428 lines.
 - [ ] **6. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
@@ -265,6 +264,12 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   does not.
 - `F-034` (S, task 5.13): `lem:pebble-game-invariants` assumes $V$ finite and $\ell < 2k$, and
   puts (1)–(2) under $\ell \le k|V'|$; its pins assume none of these.
+- `F-036` (S, task 5.14): `thm:pebble-game-soundness` assumes $\ell < 2k$; its pin does not. Its
+  old wording also left out "each edge once", which the pin requires; the rewrite says it.
+- `F-037` (S, task 5.14): `lem:workhorseWitness-certifies` assumes $G$ finite; its pin assumes only
+  that $G$ has finitely many edges.
+- `F-038` (S, task 5.13, filed by 5.14): `def:blockingWitness` now also asks $\ell \le k|V'|$
+  (`db7ff7d6`), settling its two old sentences on the reject verdict's reading.
 
 ## Moved to a later round
 
@@ -311,6 +316,9 @@ one line each naming the ledger ID and the task that found it.
   worst case; docstrings call the reachability region's cost quadratic.
 - `F-035` (L, task 5.13): docstrings in `PebbleGame/Basic.lean` and `Algorithm.lean` that
   describe later or earlier states of the code; one contradicts its file.
+- `F-039` (L, task 5.14): `hloops` in three pebble-game theorems follows from their `himg`.
+- `F-040` (L, task 5.14): docstrings in `PebbleGame/Correctness.lean` and `Algorithm.lean` that
+  name blueprint labels and declarations that do not exist.
 
 ## Blockers / open questions
 
@@ -318,31 +326,36 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.14**, the fourteenth slice: `pebble-game.tex`'s *Soundness* and *Completeness*
-(carve-out; now 540–874, which was 411–783 at the open less the failure witness that 5.13 moved
-into *The basic algorithm*), 8 nodes. The opening (1–60) and 875–end wait for task 5.15. The
-diagnosis is under *Per-chapter diagnosis*, the gates under *Scope*. What 5.14 must know:
-- **The names 5.13 fixed** (*Decisions*, "Task 5.13: the pebble game's names"). In particular
-  `tryAddEdge D k ℓ u v` returning `.inr D'` is "processing $uv$ at $D$ accepts $uv$ and returns
-  $D'$", and `.inl w` is "rejects $uv$ and returns a failure witness"; `w.uv_1`, `w.uv_2`, `w.D`
-  and `w.V'` are the witness's $u$, $v$, $D$ and $V'$. Where the text says "the computable core",
-  say "for every choice of the lists $N^+_D(a)$", which `fmlnote:pebble-game-computable-core` now
-  explains.
-- **Already written in 61–539, so cite it rather than repeat it.** After `def:tryAddEdge`: each
-  step is defined and keeps $(k, \ell)$-reachability, the termination measure, and why step 4's
-  data form a failure witness ($\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ has no leaving arc,
-  credited to Lee–Streinu's proof of Lemma 13). `lem:runPebbleGameWith-underline-subset`'s proof
-  speaks of "the five cases of tryAddEdge's recursion"; `def:tryAddEdge` now has four numbered
-  steps, step 1 with two insertion branches.
-- **`F-034`.** `lem:pebble-game-invariants` keeps its statement: $V$ finite, $\ell < 2k$, and all
-  four parts under $\ell \le k|V'|$. Where 5.14's proofs use a part without those hypotheses, cite
-  the proof, as 5.13 does for $\mathrm{out}_D \le k$. Check each statement in 540–874 against its
-  pin for `ℓ < 2k` and finiteness (`thm:pebble-game-soundness` is known, under the diagnosis).
-- **`def:blockingWitness`** now asks $\ell \le k|V'|$: its old "Equivalently, $G$ is not sparse on
-  $V'$" did, and its first sentence did not. It has no pin; the reject verdict carries both.
-- **Lee–Streinu for 5.14**, all in `.refs/`: Corollary 12 and the sentence after it (p. 1432,
-  "one direction"), Lemma 13 and its proof (pp. 1432–1433), Lemma 14 and its proof, the remark on
-  Fig. 5, Lemma 15 (p. 1433).
+**Next: task 5.15**, the fifteenth slice: the rest of `pebble-game.tex` (carve-out; now 895–1071,
+*Correctness of the computable core*, *User-facing verdict* and *Matroidal-independence
+corollary*) and its opening (1–60). It has 4 nodes: `thm:pebble-game-correct`,
+`def:pebbleGameResult`, `thm:pebbleGameResult-isAccept-iff` and
+`cor:pebble-game-countMatroid-indep`. The diagnosis is under *Per-chapter diagnosis*, the gates
+under *Scope*. What 5.15 must know:
+- **The names** (*Decisions*, tasks 5.13 and 5.14): the pebble search; processing $uv$ at $D$,
+  which accepts $uv$ and returns $D'$ or rejects it and returns a failure witness $(D, V', (u, v))$;
+  the pebble game on a list from $D_0$, and on $G$, which accepts $G$ with $D$ or rejects it with
+  $V'$; *independent in $D$*. An edge list is "the pairs $(u_1, v_1), \ldots, (u_m, v_m)$ list the
+  edges of $G$, each once, as $(u, v)$ or as $(v, u)$" (the pins' `hloops`, `hpairwise`, `himg`).
+  "For every choice of the lists $N^+_D(a)$" replaces "the computable core".
+- **Already written, so cite it rather than repeat it** (principle F, *Once*). *Soundness*'s
+  opening sketches the accept direction (Lee–Streinu's Corollary 12). *Completeness*'s opening
+  states what the correctness section completes ("if the pebble game on $G$ rejects $G$ with $V'$,
+  then $V'$ is a blocking witness for $G$"), states Lee–Streinu's Lemma 14, and says that
+  correctness argues at the rejection, not by iterating Lemma 13. The opening's sentence on the
+  return type of `def:tryAddEdge` (below) should agree with it.
+- **`thm:pebble-game-correct`.** Its "edge list whose $\mathrm{Sym}_2$-image is $E(G)$" leaves out
+  "each edge once", which its pin requires: write the list as 5.14 did (`F-036`). Part (2)'s step
+  `runPebbleGameWith_witness_bridges` is unpinned: the witness's pair is an entry of the list, so
+  an edge of $G$, and its $D$ orients only edges of $G$ (an induction on the list, like
+  `lem:runPebbleGameWith-underline-subset` (2)). `lem:workhorseWitness-certifies` then applies; it
+  is the only step that uses $\ell < 2k$ (`F-036`), and it assumes $G$ finite (`F-037`).
+- **Statement vs pin.** Check the four statements for $\ell < 2k$ and finiteness: the verdict
+  section's variables are `[DecidableEq V] [Fintype V]`, and `runPebbleGameExec_isAccept_iff` is in
+  `Exec.lean`.
+- **Lee–Streinu for 5.15**, all in `.refs/`: Theorem 8 (p. 1431), Corollary 11 (p. 1432), Lemma 15
+  and "Corollary 12 and Lemma 15 prove Theorem 8" (p. 1433), and §§5–6 (the component pebble game
+  and union pair-find from p. 1433; the Henneberg sequences).
 - **For 5.15 and 5.16.** Lee–Streinu's $O(m_a n)$ bound (§3, p. 1430) counts linear-time searches,
   and this search is exponential in the worst case (`F-033`): no running-time claim for the formal
   algorithm. The opening (1–60) still says "matroidal regime" and "$I$-component", and that the
@@ -353,20 +366,22 @@ diagnosis is under *Per-chapter diagnosis*, the gates under *Scope*. What 5.14 m
   Jacobs–Hendrickson 1997 is cited only in 1–60 and the chapter's last paragraph; Crossref's record
   for DOI `10.1006/jcph.1997.5809` matches the bib entry (title, J. Comput. Phys. 137(2),
   346–365), as does Lee–Streinu's reference [14].
-- **Terms fixed by 5.11, for 5.14–5.16.** "For $\ell < 2k$" replaces "the matroidal regime". A
+- **Terms fixed by 5.11, for 5.15–5.16.** "For $\ell < 2k$" replaces "the matroidal regime". A
   *component* of a sparse graph is a maximal tight set (Lee–Streinu's term, `count-matroid.tex`'s
   opening), and $C_G(X)$ is the union of the tight sets containing $X$; "$I$-component" is gone
   from that chapter. A set $I \subseteq E(K_V)$ is *$(k,\ell)$-sparse* if the graph on $V$ with
   edge set $I$ is. Write "section", not "chapter".
-- **Sources checked by 5.4–5.13:** Jordán pp. 35–39, 43–45, 48–49 and 51; Lee–Streinu 2008:
+- **Sources checked by 5.4–5.14:** Jordán pp. 35–39, 43–45, 48–49 and 51; Lee–Streinu 2008:
   Lemma 1, Theorem 2, Theorem 5(1)–(4), Corollaries 6–7, §3 (p. 1430, and Fig. 4's Algorithm 1,
-  p. 1431), §4 (the functions and Lemma 10, p. 1432; $\mathrm{Reach}(v)$ and Lemma 13,
-  pp. 1432–1433); Whiteley 1996 (a preprint: cite by number only), Proposition A.1.1. Asimow–Roth
-  is verified only for "rigidity is decided for almost all placements" and "at a generic
-  framework, rigid iff infinitesimally rigid". Detail is in each task's commit.
+  p. 1431), §4 (the functions and Lemma 10, p. 1432; Corollary 12 and the sentence after it,
+  p. 1432; $\mathrm{Reach}(v)$, Lemmas 13–14 with their proofs and the remark after Lemma 14,
+  pp. 1432–1433), and the definition of an independent element (§2, p. 1429); Whiteley 1996 (a
+  preprint: cite by number only), Proposition A.1.1. Asimow–Roth is verified only for "rigidity
+  is decided for almost all placements" and "at a generic framework, rigid iff infinitesimally
+  rigid". Detail is in each task's commit.
 - **For the close (task 6):** `notes/BlueprintExposition.md`'s Group-A line still says
-  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.15–5.16 follow in
-  order, and task 6 closes the round.
+  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then task 5.16 follows, and task 6
+  closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
 result is understandable". The coordinator read 5.1–5.3 in full against the exemplar (2026-10-07):
@@ -431,3 +446,9 @@ understandable, no prompt tightening needed; it keeps reading each slice's text.
   $G$ with $D$ or rejects it with $V'$ (`def:runPebbleGame`). Each partial orientation comes with
   out-neighbour lists $N^+_D(a)$; $\mathrm{Reach}_D(x)$ is Lee–Streinu's reachability region. The
   Lean's verdict type is "the formal pebble game on $G$ returns its answer together with proofs".
+- **Task 5.14: independence, and where Lee–Streinu's Lemma 13 sits.** An edge $uv$ not oriented
+  in $D$ is *independent in $D$* if the graph on $V$ with edge set $\underline{D} \cup \{uv\}$ is
+  $(k, \ell)$-sparse (Lee–Streinu §2, p. 1429); *Completeness*'s opening defines it. Correctness
+  argues at the rejection, through the failure witness. The two Lemma 13 nodes stay, proved, and
+  the opening says that correctness does not use them (their pins are dead, `F-012`). A Lean edge
+  list is "the pairs $(u_i, v_i)$ list the edges of $G$, each once, as $(u, v)$ or as $(v, u)$".
