@@ -334,6 +334,17 @@ declaration's name as its header writes it:
   three dead pins); read (the body of `forest_count_of_linearIndepOn_kFrameRow`; a `grep` for the
   three names' callers).
   *Found:* round 2 task 2.2.
+- **F-059** · N · `def:plucker-coords` (`extensor.tex`): its pins `pluckerCoord` and
+  `pluckerVector` have no Lean caller outside `Molecular/Extensor.lean`, and no declaration relates
+  them to `extensor`: the expansion that makes the Plücker coordinate vector the extensor's
+  coordinate vector (KT p. 651's "symbolic version") is not formalized, and the statement's edges
+  to `def:extensor` and `def:join` are unbacked. `generic-lift.tex` cites the node for an
+  extensor's coordinates, which its pin `hingeExtensorPoly` computes without these declarations.
+  Task 2.4 states the expansion in prose and says in a formalization note that it is not
+  formalized. A lemma stating it would make the node index what the chapter uses it for.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter extensor`, at `53ec36db`: two dead
+  pins, two unbacked edges); read (`Molecular/Extensor.lean`; a `grep` for the two names' callers).
+  *Found:* round 2 task 2.4.
 
 ## T — terminology and notation
 
@@ -519,6 +530,14 @@ declaration's name as its header writes it:
   applies `thm:tay-witness` to $(D-1)\cdot G$ for every $d$. Task 2.3 kept every hypothesis.
   *Evidence:* read (the five pins' statements, `BodyBar/TayTheorem.lean` and `BodyHinge.lean`).
   *Found:* round 2 task 2.3.
+- **F-060** · S · `lem:case-III-claim612-extensor-span` (`algebraic-induction/case-iii.tex`): the
+  statement says that the $D$ two-extensors $\bar p_i \vee \bar p_j$ of $k+2$ linearly independent
+  vectors of $K^{k+2}$ span $\bigwedge^k K^{k+2}$, and calls them $k$-extensors. Its pin
+  `span_omitTwoExtensor_eq_top` is about the omit-two extensors, each the join of the other $k$
+  vectors; the two families coincide as sets only at $k = 2$. The proof applies KT Lemma 2.1 in
+  the omit-two form, so it proves the pin's statement, not the node's.
+  *Evidence:* read (the pin's statement, `Molecular/RigidityMatrix/Claim612.lean`).
+  *Found:* round 2 task 2.4.
 
 ## L — Lean
 

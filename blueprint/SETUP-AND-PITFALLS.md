@@ -71,6 +71,13 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   subsection head and then mid-paragraph (PROSE round 1, task 5.16); a
   shorter address fixed it. Count the chapter's `Overfull` lines in
   `print/print.log` after such an edit.
+- **A long environment title does not wrap in the PDF.** The print
+  build set "Lemma 18.8 (Independence of the $(d-1)$-extensors; KT
+  Lemma 2.1)." on one line, 15pt past the margin, rather than break
+  inside the `[...]` note (PROSE round 2, task 2.4); a shorter title
+  fixed it. The log reports it as an `Overfull \hbox` "in paragraph at
+  lines" of the statement's first lines. Check the chapter's
+  `Overfull` lines after retitling a node.
 - **Wrapping table cells are justified in the PDF.** A `p{…}` column
   stretches the spaces of every wrapped line, and the `array` package
   (`>{\raggedright\arraybackslash}`) is not loaded. Start each cell with
