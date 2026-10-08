@@ -322,6 +322,23 @@ declaration's name as its header writes it:
   the statement does not take it, and the proof treats the edge $ab$ only when it is present.
   *Evidence:* read (both statements and docstrings; a `grep` for `typeI_isGenericallyRigid_two`).
   *Found:* round 1 task 5.5.
+- **F-023** · L · `SimpleGraph.trivialMotions` (`TrivialMotions.lean`): its docstring cites
+  `trivialMotions_three_le_finrank_of_affinelySpanning_two`, which no longer exists (only
+  `notes/FRICTION.md` still names it), and the docstring of the section on the $d$-general bound
+  says "The dim-2 case below is its `d = 2` instance", but the file has no such case. The docstring
+  of `rigidityMap_ker_finrank_ge_of_affinelySpanning` credits the count to Asimow–Roth, a credit
+  `trivial-motions.tex` dropped as unverified (task 5.6).
+  *Evidence:* read (the file; a `grep` over the repository for the cited name).
+  *Found:* round 1 task 5.6.
+- **F-024** · L · `SimpleGraph.trivialMotionFamily_linearIndependent` (`TrivialMotions.lean`): its
+  `[Finite V]` is unused. The `@[nolint unusedArguments]` comment calls the linter's report a false
+  positive, but the theorem elaborates without the binder, with the same proof minus its
+  `Fintype.ofFinite` line. `lem:trivialMotionFamily-linearIndependent` states "Let $V$ be finite",
+  as the pin does. Its one caller, `trivialMotions_finrank_ge_of_affinelySpanning`, needs
+  `[Finite V]` for the dimension.
+  *Evidence:* read (the statement and body); a `lake lean` witness (the theorem restated without
+  `[Finite V]`, the proof copied with that line deleted; it elaborates with no output).
+  *Found:* round 1 task 5.6.
 
 ## M — mathematics and sources
 

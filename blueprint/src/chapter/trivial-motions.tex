@@ -1,235 +1,246 @@
 \section{Trivial infinitesimal motions}
 \label{sec:trivial-motions}
 
-The \emph{trivial infinitesimal motions} of a framework
-$p : V \to \R^{d}$ (\cref{def:framework}) are the motions arising from a
-global Euclidean rigid motion of $\R^{d}$: translations and infinitesimal
-rotations. They form a finite-dimensional subspace of
-$\mathrm{Framework}\,V\,d$ which always lies in the kernel of the
-rigidity map $\mathrm{RigidityMap}\,G\,p$ (\cref{def:rigidityMap}),
-regardless of the graph $G$ or the placement $p$. The classical
-dimension count is $d(d+1)/2$, achieved at an affinely-spanning
-placement (Asimow--Roth~\cite{asimowRoth1978}); the $(\Rightarrow)$
-direction of Laman's theorem uses this at $d = 2$, where $d(d+1)/2 = 3$.
+The translations and rotations of $\R^{d}$ give infinitesimal motions
+of every framework in $\R^{d}$, whatever the graph
+(\cref{sec:frameworks}). In this section we define the space $T(p)$ of
+these trivial motions at a framework $p$, and we show that it lies in
+the kernel of the rigidity map $R(G, p)$ for every graph $G$. We then
+show that $T(p)$ has dimension at least $d(d+1)/2$ when the points
+$p_v$ affinely span $\R^{d}$, so that the kernel of $R(G, p)$ has at
+least this dimension too. By rank--nullity, the rank of $R(G, p)$ is
+then at most $d|V| - d(d+1)/2$. The proof of Laman's theorem uses this
+bound in the plane, where $d(d+1)/2 = 3$
+(\cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning}).
 
-This chapter works in general dimension $d$. It defines the translation
-and rotation motions, proves the unconditional inclusion
-$\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$, and
-establishes the $d(d+1)/2$ lower bound on
-$\dim_{\R}\,\mathrm{trivialMotions}\,p$ (hence on
-$\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p)$) at an
-affinely-spanning placement.
+We define the translations first, and then the infinitesimal
+rotations, which apply a skew-symmetric linear map to every point. The
+trivial motions are the linear combinations of the two. For the
+dimension bound we exhibit $d(d+1)/2$ trivial motions that are
+linearly independent: the translations along the $d$ coordinate axes,
+and one infinitesimal rotation in each of the $d(d-1)/2$ coordinate
+planes. Whiteley~\cite{whiteley1996} (\S 11.1, before Lemma~11.1.2)
+generates the trivial motions in the same way, and notes that these
+generators are linearly independent once the points affinely span a
+hyperplane of $\R^{d}$. Jord\'an~\cite{jordan2016} (p.~36) states the
+resulting dimension, $d(d+1)/2$. Our proof uses the stronger
+assumption that the points affinely span $\R^{d}$. We prove only the
+lower bound, since the rank bound needs no more; the upper bound is
+the count in \cref{sec:frameworks}.
+
+Throughout, $G$ is a graph on a set $V$, and $d \in \N$. An element
+$x$ of $(\R^{d})^{V}$ gives each vertex $v$ a velocity
+$x_v \in \R^{d}$. It is an infinitesimal motion of $G$ at a framework
+$p$ when $R(G, p)(x) = 0$ (\cref{def:rigidityMap}). We write
+$e_1, \dots, e_d$ for the standard basis of $\R^{d}$, and $y_i$ for
+the $i$-th coordinate of a vector $y \in \R^{d}$. We identify a linear
+map of $\R^{d}$ with its matrix in this basis, and we write $E_{ij}$
+for the matrix with entry $1$ in row $i$ and column $j$ and all other
+entries $0$. A linear map $A$ of $\R^{d}$ is \emph{skew-symmetric} if
+$\langle y, A y \rangle = 0$ for every $y \in \R^{d}$. Applying this
+to $y + z$ shows that it holds exactly when
+$\langle y, A z \rangle = -\langle A y, z \rangle$ for all
+$y, z \in \R^{d}$, that is, when $A^{\top} = -A$.
 
 \subsection{Translations}
 
-The translations are the constant motions: every vertex moves by the
-same vector.
+A translation of $\R^{d}$ moves every point with the same velocity.
 
 \begin{definition}[Translation motion]
   \label{def:translationMotion}
   \lean{SimpleGraph.translationMotion}
   \leanok
   \uses{def:framework}
-  For $t \in \R^{d}$, the \emph{translation motion} by $t$ is the constant
-  framework
-  $\mathrm{translationMotion}\,t : V \to \R^{d}, \; v \mapsto t$.
+  Let $b \in \R^{d}$. The \emph{translation} by $b$ is the element
+  $\tau_b$ of $(\R^{d})^{V}$ with $(\tau_b)_v = b$ for every vertex
+  $v$.
 \end{definition}
 
-\begin{lemma}[Translations are in the rigidity-map kernel]
+\begin{lemma}[Translations are infinitesimal motions]
   \label{lem:translationMotion-mem-ker}
   \lean{SimpleGraph.translationMotion_mem_ker}
   \leanok
   \uses{def:translationMotion, def:rigidityMap}
-  For every graph $G$, framework $p$, and translation vector $t$,
-  $\mathrm{translationMotion}\,t \in \ker\,(\mathrm{RigidityMap}\,G\,p)$.
+  Let $p$ be a framework on $V$ in $\R^{d}$, and let $b \in \R^{d}$.
+  Then $\tau_b \in \ker R(G, p)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  At every edge $\{u, v\}$ the entry
-  $\langle p_u - p_v,\, t - t \rangle = \langle p_u - p_v,\, 0 \rangle = 0$.
+  At each edge $uv$ of $G$, the entry of $R(G, p)(\tau_b)$ is
+  $\langle p_u - p_v,\, b - b \rangle = 0$
+  (\cref{lem:rigidityMap-apply}).
 \end{proof}
 
 \subsection{Infinitesimal rotations}
 
-An infinitesimal rotation applies a fixed linear map to the placement;
-the resulting motion lies in the rigidity-map kernel when that map is
-skew-adjoint.
+Let $A$ be a skew-symmetric linear map of $\R^{d}$. The maps
+$e^{tA}$, for $t \in \R$, are rotations of $\R^{d}$, and the point
+$e^{tA} p_v$ has velocity $A p_v$ at $t = 0$. So the velocities
+$A p_v$ describe a rotation of the framework to first order.
 
-\begin{definition}[Infinitesimal rotation motion]
+\begin{definition}[Infinitesimal rotation]
   \label{def:infinitesimalRotation}
   \lean{SimpleGraph.infinitesimalRotation}
   \leanok
   \uses{def:framework}
-  For a linear map $A : \R^{d} \to_{\R} \R^{d}$ and a framework
-  $p : V \to \R^{d}$, the \emph{infinitesimal-rotation motion} at $p$
-  associated to $A$ is the framework
-  $\mathrm{infinitesimalRotation}\,A\,p : V \to \R^{d}, \;
-   v \mapsto A(p_v)$.
+  Let $A$ be a linear map of $\R^{d}$, and let $p$ be a framework on
+  $V$ in $\R^{d}$. We write $A \circ p$ for the element of
+  $(\R^{d})^{V}$ with $(A \circ p)_v = A p_v$ for every vertex $v$.
+  When $A$ is skew-symmetric, $A \circ p$ is an \emph{infinitesimal
+  rotation} at $p$.
 \end{definition}
 
-\begin{lemma}[Skew-adjoint rotations are in the rigidity-map kernel]
+\begin{lemma}[Infinitesimal rotations are infinitesimal motions]
   \label{lem:infinitesimalRotation-mem-ker}
   \lean{SimpleGraph.infinitesimalRotation_mem_ker}
   \leanok
   \uses{def:infinitesimalRotation, def:rigidityMap}
-  Let $A : \R^{d} \to_{\R} \R^{d}$ satisfy
-  $\langle x, A x \rangle = 0$ for every $x \in \R^{d}$ (i.e.\ $A$ is
-  skew-adjoint with respect to the inner product). Then for every graph
-  $G$ and framework $p$,
-  $\mathrm{infinitesimalRotation}\,A\,p \in \ker\,(\mathrm{RigidityMap}\,G\,p)$.
+  Let $A$ be a skew-symmetric linear map of $\R^{d}$, and let $p$ be a
+  framework on $V$ in $\R^{d}$. Then $A \circ p \in \ker R(G, p)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  At every edge $\{u, v\}$ the entry expands as
-  $\langle p_u - p_v,\, A(p_u) - A(p_v) \rangle =
-   \langle p_u - p_v,\, A(p_u - p_v) \rangle$
-  by linearity, and the latter vanishes by the skew-adjoint
-  hypothesis.
+  At each edge $uv$ of $G$, the entry of $R(G, p)(A \circ p)$ is
+  $\langle p_u - p_v,\, A p_u - A p_v \rangle$
+  (\cref{lem:rigidityMap-apply}). By linearity it equals
+  $\langle p_u - p_v,\, A (p_u - p_v) \rangle$, which is zero since $A$
+  is skew-symmetric.
 \end{proof}
 
-\subsection{The submodule of trivial motions}
+\subsection{The space of trivial motions}
 
-The trivial motions form the $\R$-span of the translations together with
-the skew-adjoint infinitesimal rotations.
+In \cref{sec:frameworks} the trivial motions at $p$ are the motions
+$v \mapsto A p_v + b$, with $A$ skew-symmetric and $b \in \R^{d}$. We
+define them as a span.
 
-\begin{definition}[Trivial motions submodule]
+\begin{definition}[Trivial motions]
   \label{def:trivialMotions}
   \lean{SimpleGraph.trivialMotions}
   \leanok
   \uses{def:translationMotion, def:infinitesimalRotation}
-  For a framework $p : V \to \R^{d}$, the submodule of
-  \emph{trivial infinitesimal motions} at $p$ is
-  \[
-    \mathrm{trivialMotions}\,p \;=\;
-    \mathrm{span}_{\R}\,
-    \bigl(\{\mathrm{translationMotion}\,t : t \in \R^{d}\}
-      \;\cup\;
-      \{\mathrm{infinitesimalRotation}\,A\,p :
-        A \;\text{skew-adjoint}\}\bigr)
-  \]
-  inside $\mathrm{Framework}\,V\,d$.
+  Let $p$ be a framework on $V$ in $\R^{d}$. The space $T(p)$ of
+  \emph{trivial infinitesimal motions} at $p$ is the linear span in
+  $(\R^{d})^{V}$ of the translations $\tau_b$, for $b \in \R^{d}$, and
+  the infinitesimal rotations $A \circ p$, for skew-symmetric linear
+  maps $A$ of $\R^{d}$.
 \end{definition}
+The translations form a linear subspace of $(\R^{d})^{V}$, and so do
+the infinitesimal rotations at $p$. So $T(p)$ is their sum, which
+consists of the motions $v \mapsto A p_v + b$ above.
 
-\begin{lemma}[Trivial motions lie in the rigidity-map kernel]
+\begin{lemma}[Trivial motions are infinitesimal motions]
   \label{lem:trivialMotions-le-ker}
   \lean{SimpleGraph.trivialMotions_le_ker}
   \leanok
   \uses{def:trivialMotions, def:rigidityMap,
     lem:translationMotion-mem-ker, lem:infinitesimalRotation-mem-ker}
-  For every graph $G$ and framework $p$,
-  $\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$.
+  Let $p$ be a framework on $V$ in $\R^{d}$. Then
+  $T(p) \subseteq \ker R(G, p)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Combine \cref{lem:translationMotion-mem-ker} and
-  \cref{lem:infinitesimalRotation-mem-ker}: both generating sets of
-  $\mathrm{trivialMotions}\,p$ are contained in the kernel, hence so
-  is their span.
+  The translations lie in $\ker R(G, p)$
+  (\cref{lem:translationMotion-mem-ker}), and so do the infinitesimal
+  rotations at $p$ (\cref{lem:infinitesimalRotation-mem-ker}). The
+  kernel is a linear subspace, so it contains their span $T(p)$.
 \end{proof}
 
-\subsection{The dimension lower bound at an affinely-spanning placement}
+\subsection{A lower bound on the dimension}
 \label{sec:trivial-motions-d-general}
 
-We exhibit an explicit family of $d + d(d-1)/2 = d(d+1)/2$ trivial
-motions and show it is linearly independent at any affinely-spanning
-placement, recovering the textbook dimension count.
+The points $p_v$ affinely span $\R^{d}$ when their affine hull is all
+of $\R^{d}$, or equivalently when $V$ is nonempty and the differences
+$p_v - p_w$, for $v, w \in V$, span $\R^{d}$. Under this condition we
+exhibit $d(d+1)/2$ linearly independent trivial motions. The rotations
+among them come from the following linear maps.
 
-\begin{definition}[Elementary skew-adjoint linear map]
+\begin{definition}[Elementary skew-symmetric map]
   \label{def:elemSkewMap}
   \lean{SimpleGraph.elemSkewMap}
   \leanok
-  For indices $i, j \in \{0, \dots, d-1\}$, the \emph{elementary
-  skew-adjoint linear map}
-  $\mathrm{elemSkewMap}\,i\,j : \R^{d} \to_{\R} \R^{d}$ is
-  $x \mapsto x_{j} e_{i} - x_{i} e_{j}$, where $e_{k}$ is the $k$-th
-  standard basis vector.
+  Let $1 \le i, j \le d$. The \emph{elementary skew-symmetric map}
+  $E_{ij} - E_{ji}$ is the linear map of $\R^{d}$ that sends $y$ to
+  $y_j e_i - y_i e_j$.
 \end{definition}
+For $i \ne j$, the map $E_{ij} - E_{ji}$ sends $e_j$ to $e_i$ and
+$e_i$ to $-e_j$, and it vanishes on the other basis vectors. So the
+maps $e^{t(E_{ij} - E_{ji})}$ rotate the plane spanned by $e_i$ and
+$e_j$, and they fix the other basis vectors. The map is zero when
+$i = j$, and exchanging $i$ and $j$ changes its sign.
 
-This map is anti-symmetric in $(i, j)$ and vanishes when $i = j$; for
-$i \neq j$ it is the elementary skew-symmetric matrix
-$E_{i, j} - E_{j, i}$.
-
-\begin{lemma}[$\mathrm{elemSkewMap}\,i\,j$ is skew-adjoint]
+\begin{lemma}[$E_{ij} - E_{ji}$ is skew-symmetric]
   \label{lem:inner-elemSkewMap-self}
   \lean{SimpleGraph.inner_elemSkewMap_self}
   \leanok
   \uses{def:elemSkewMap}
-  For every $i, j$ and every $x \in \R^{d}$,
-  $\langle x,\, \mathrm{elemSkewMap}\,i\,j\,x \rangle = 0$.
+  Let $1 \le i, j \le d$. Then
+  $\langle y, (E_{ij} - E_{ji}) y \rangle = 0$ for every
+  $y \in \R^{d}$, that is, $E_{ij} - E_{ji}$ is skew-symmetric.
 \end{lemma}
 \begin{proof}
   \leanok
-  When $i = j$ the map is zero; otherwise the only nonzero coordinates
-  of $\mathrm{elemSkewMap}\,i\,j\,x$ are coordinate $i$ (value $x_{j}$)
-  and coordinate $j$ (value $-x_{i}$), so the inner product reduces to
-  $x_{i} \cdot x_{j} + x_{j} \cdot (-x_{i}) = 0$.
+  For $y \in \R^{d}$, we have
+  $\langle y,\, y_j e_i - y_i e_j \rangle = y_j y_i - y_i y_j = 0$.
 \end{proof}
 
-\begin{definition}[Trivial-motion family]
+Since exchanging $i$ and $j$ only changes the sign of
+$E_{ij} - E_{ji}$, we use the pairs with $j < i$.
+
+\begin{definition}[Elementary trivial motions]
   \label{def:trivialMotionFamily}
   \lean{SimpleGraph.trivialMotionFamily}
   \leanok
   \uses{def:translationMotion, def:infinitesimalRotation, def:elemSkewMap}
-  At a placement $p : V \to \R^{d}$, the \emph{trivial-motion family} is
-  indexed by the $d$ coordinate directions together with the ordered
-  pairs $(i, j)$ with $0 \le j < i \le d - 1$. It sends the direction $i$
-  to the coordinate translation $\mathrm{translationMotion}\,e_{i}$ and
-  the pair $(i, j)$ to the rotation
-  $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j)\,p$.
+  Let $p$ be a framework on $V$ in $\R^{d}$. The \emph{elementary
+  trivial motions} at $p$ are the translations $\tau_{e_i}$, for
+  $1 \le i \le d$, and the motions $(E_{ij} - E_{ji}) \circ p$, for
+  $1 \le j < i \le d$.
 \end{definition}
 
-\begin{fmlnote}
-  The index set is formalized as the disjoint union
-  $\mathrm{Fin}\,d \sqcup \Sigma_{i : \mathrm{Fin}\,d}\,\mathrm{Fin}\,i$:
-  the left summand indexes the translations, and the dependent sum
-  indexes the pairs $j < i$, with the second component
-  $j : \mathrm{Fin}\,i$ re-embedded into $\mathrm{Fin}\,d$ before it is
-  passed to $\mathrm{elemSkewMap}$.
-\end{fmlnote}
-
-\begin{lemma}[Trivial-motion family lies in the trivial-motions submodule]
+\begin{lemma}[The elementary trivial motions lie in $T(p)$]
   \label{lem:trivialMotionFamily-mem-trivialMotions}
   \lean{SimpleGraph.trivialMotionFamily_mem_trivialMotions}
   \leanok
   \uses{def:trivialMotionFamily, def:trivialMotions,
     lem:inner-elemSkewMap-self}
-  Each value of the trivial-motion family lies in
-  $\mathrm{trivialMotions}\,p$.
+  Let $p$ be a framework on $V$ in $\R^{d}$. Then every elementary
+  trivial motion at $p$ lies in $T(p)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Each translation is a generator of $\mathrm{trivialMotions}\,p$; each
-  rotation $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j)\,p$
-  is a generator because $\mathrm{elemSkewMap}\,i\,j$ is skew-adjoint
-  (\cref{lem:inner-elemSkewMap-self}).
+  The translations $\tau_{e_i}$ are among the generators of $T(p)$. So
+  are the motions $(E_{ij} - E_{ji}) \circ p$, since
+  $E_{ij} - E_{ji}$ is skew-symmetric (\cref{lem:inner-elemSkewMap-self}).
 \end{proof}
 
-\begin{lemma}[Joint linear independence of the trivial-motion family]
+\begin{lemma}[Linear independence of the elementary trivial motions]
   \label{lem:trivialMotionFamily-linearIndependent}
   \lean{SimpleGraph.trivialMotionFamily_linearIndependent}
   \leanok
   \uses{def:trivialMotionFamily}
-  Let $V$ be finite and let $p : V \to \R^{d}$ be affinely spanning. Then
-  the trivial-motion family is linearly independent in
-  $\mathrm{Framework}\,V\,d$.
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$
+  whose points affinely span $\R^{d}$. Then the elementary trivial
+  motions at $p$ are linearly independent in $(\R^{d})^{V}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  A vanishing linear combination of the family takes the form
-  $t + S(p_{v}) = 0$ at every vertex $v$, where
-  $t = \sum_{i} c_{i}\, e_{i} \in \R^{d}$ collects the translation
-  coefficients and
-  $S = \sum_{j < i} c_{i, j}\, \mathrm{elemSkewMap}\,i\,j :
-   \R^{d} \to_{\R} \R^{d}$ collects the rotation coefficients.
+  Suppose that a linear combination of the elementary trivial motions
+  vanishes, with coefficient $c_i$ at $\tau_{e_i}$ and coefficient
+  $c_{ij}$ at $(E_{ij} - E_{ji}) \circ p$. Let
+  $b = \sum_{i} c_i e_i$ and
+  $S = \sum_{j < i} c_{ij} (E_{ij} - E_{ji})$. The combination is the
+  motion $v \mapsto b + S p_v$, so $b + S p_v = 0$ for every vertex
+  $v$.
 
-  Subtracting this identity at two vertices cancels $t$ and gives
-  $S(p_{v} - p_{w}) = 0$ for all $v, w$. Since $p$ is affinely spanning,
-  the differences $p_{v} - p_{w}$ span $\R^{d}$, so $S = 0$, and then
-  $t = 0$. Reading off the coordinates of $t$ recovers each translation
-  coefficient $c_{i}$, and reading off the entry $(S\,e_{j})_{i}$ recovers
-  each rotation coefficient $c_{i, j}$ (the remaining cross-terms vanish
-  because the pairs range over $j < i$ only). Hence every coefficient is
-  zero.
+  Subtracting this equation at two vertices $v$ and $w$ gives
+  $S (p_v - p_w) = 0$. Since the points affinely span $\R^{d}$, these
+  differences span $\R^{d}$, so $S = 0$. For the same reason $V$ is
+  nonempty, and $b = -S p_v = 0$ for any vertex $v$. The coordinates of
+  $b$ are the $c_i$, so every $c_i$ is zero.
+
+  Let $j < i$. Among the matrices $E_{kl} - E_{lk}$ with $l < k$, only
+  $E_{ij} - E_{ji}$ has a nonzero entry in row $i$ and column $j$. So
+  this entry of $S$ is $c_{ij}$, and it is zero since $S = 0$.
 \end{proof}
 
 \begin{lemma}[Dimension lower bound for trivial motions]
@@ -238,22 +249,21 @@ $E_{i, j} - E_{j, i}$.
   \leanok
   \uses{def:trivialMotions, lem:trivialMotionFamily-mem-trivialMotions,
     lem:trivialMotionFamily-linearIndependent}
-  Let $V$ be finite and let $p : V \to \R^{d}$ be affinely spanning. Then
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$
+  whose points affinely span $\R^{d}$. Then
   \[
-    \dim_{\R}\,(\mathrm{trivialMotions}\,p) \;\ge\; \frac{d(d+1)}{2}.
+    \dim T(p) \;\ge\; \frac{d(d+1)}{2}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  The trivial-motion family (\cref{def:trivialMotionFamily}) lies in
-  $\mathrm{trivialMotions}\,p$
-  (\cref{lem:trivialMotionFamily-mem-trivialMotions}) and is linearly
-  independent there (\cref{lem:trivialMotionFamily-linearIndependent}).
-  Its index set has cardinality
-  $d + \sum_{i < d} i = \sum_{i \le d} i = d(d+1)/2$, so a linearly
-  independent family of that size forces
-  $\dim_{\R}\,(\mathrm{trivialMotions}\,p) \ge d(d+1)/2$
-  ($\mathrm{LinearIndependent.fintype\_card\_le\_finrank}$).
+  The elementary trivial motions at $p$ lie in $T(p)$
+  (\cref{lem:trivialMotionFamily-mem-trivialMotions}). They are
+  linearly independent (\cref{lem:trivialMotionFamily-linearIndependent}),
+  so $\dim T(p)$ is at least their number. There are $d$ translations,
+  and for each $i$ there are $i - 1$ pairs $(i, j)$ with $j < i$. So
+  there are $d + \sum_{i=1}^{d} (i - 1) = d + d(d-1)/2 = d(d+1)/2$
+  elementary trivial motions.
 \end{proof}
 
 \begin{lemma}[Dimension lower bound for the rigidity-map kernel]
@@ -262,19 +272,16 @@ $E_{i, j} - E_{j, i}$.
   \leanok
   \uses{lem:trivialMotions-le-ker,
     lem:trivialMotions-finrank-ge-of-affinelySpanning}
-  Let $V$ be finite, let $G$ be a graph on $V$, and let
-  $p : V \to \R^{d}$ be affinely spanning. Then
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$
+  whose points affinely span $\R^{d}$. Then
   \[
-    \dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \;\ge\; \frac{d(d+1)}{2}.
+    \dim \ker R(G, p) \;\ge\; \frac{d(d+1)}{2}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  The trivial motions always lie in the kernel
-  (\cref{lem:trivialMotions-le-ker}), and under affine spanning they have
-  dimension at least $d(d+1)/2$
+  The kernel of $R(G, p)$ contains $T(p)$
+  (\cref{lem:trivialMotions-le-ker}). Since the points affinely span
+  $\R^{d}$, the dimension of $T(p)$ is at least $d(d+1)/2$
   (\cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}).
-  Monotonicity of dimension under submodule inclusion
-  ($\mathrm{Submodule.finrank\_mono}$) gives
-  $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \ge d(d+1)/2$.
 \end{proof}
