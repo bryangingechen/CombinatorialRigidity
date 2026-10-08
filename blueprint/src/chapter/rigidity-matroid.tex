@@ -1,38 +1,42 @@
 \section{The planar rigidity matroid}
 \label{sec:rigidity-matroid}
 
-\Cref{sec:laman-theorem} proved the ``easy direction'' of
-Lov\'asz--Yemini~\cite{lovaszYemini1982}: in dimension $2$, a
-row-independent (\cref{def:edgeSet-rowIndependent}) edge set is
-automatically $(2, 3)$-sparse
-(\cref{lem:isSparse-of-rowIndependent-two}). This chapter completes
-the matroid identification by proving the harder converse --- every
-$(2, 3)$-sparse edge set is row-independent at some placement --- and
-packages the resulting independence structure as a matroid on the
-off-diagonal symmetric pairs over $V$.
+In \cref{sec:laman-theorem} we proved one half of
+Laman's~\cite{laman1970} characterization of the independent sets of
+the rigidity matroid in the plane: an edge set that is row-independent
+at a framework in the plane with no three points collinear forms a
+$(2,3)$-sparse graph (\cref{lem:isSparse-of-rowIndependent-two}). In
+this section we prove the other half: the edge set of every
+$(2,3)$-sparse graph is row-independent at some framework in the
+plane. The two halves together are Jord\'an's~\cite{jordan2016}
+Theorem~2.2.1, which he credits to Laman, and we follow his proof
+(p.~45). We then describe the rigidity matroid in the plane as a
+matroid on the edges of a complete graph.
 
-The proof follows the classical strategy of Lov\'asz--Yemini, in the
-modern presentation of Jord\'an~\cite{jordan2016}~\S 2.2 (Theorem
-2.2.1): induction on $|E|$, with each Henneberg move on a sparse graph
-lifting row-independence to a fresh placement of the larger graph by
-placing the new vertex generically. The combinatorial reverse step
-(Jord\'an Lemma 2.1.4) --- a sparse graph on $|V| \ge 1$ with $|E| \ge 1$
-admits either a Type~I reverse (delete a degree-${\le}2$ vertex) or a
-Type~II reverse (split a degree-$3$ vertex) yielding a smaller sparse
-graph --- is the sparse-graph analogue of the Laman reverse decomposition
-(\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) and reuses the same
-tight-subset machinery (\cref{thm:isTightOn-union-inter}).
+The proof is an induction that removes a vertex and puts it back by a
+Henneberg move (\cref{sec:henneberg}). We find a vertex whose removal
+leaves a smaller $(2,3)$-sparse graph in
+\cref{sec:rigidity-matroid-sparse-reverse}. We show in
+\cref{sec:rigidity-matroid-lifts} that putting it back preserves
+row-independence at a suitable framework, and we complete the induction
+in \cref{sec:rigidity-matroid-hard-direction}.
 
-\emph{Terminology.} Throughout this chapter we use the project's
-\emph{$(2, 3)$-tight subset} (\cref{def:isTightOn}) in place of
-Jord\'an's \emph{critical set}. The two are interchangeable: a
-critical set in a $(2, 3)$-sparse graph $G$ is exactly a subset
-$X \subseteq V$ with $\bigl|\edgesIn{X}\bigr| = 2|X| - 3$. Likewise
-Jord\'an's Lemma~2.1.2
-(critical sets are union/intersection-closed when intersections have
-$\ge 2$ vertices) is our \cref{thm:isTightOn-union-inter}; the
-three-pair tight-union (Jord\'an Lemma~2.1.3) is
-\cref{thm:isTightOn-union-with-bonus} composed twice.
+For a finite set $V$, let $K_V$ be the complete graph on $V$. In
+\cref{sec:rigidity-matroid-instance} we define the planar rigidity
+matroid $\mathcal{R}(V)$ by counting: its independent sets are the sets
+of edges of $K_V$ that form $(2,3)$-sparse graphs. By the
+characterization, these are the edge sets that are row-independent at
+some framework in the plane. In
+\cref{sec:rigidity-matroid-linear-framing} we show that
+$\mathcal{R}(V)$ is the rigidity matroid of a suitable framework of
+$K_V$.
+
+Throughout, frameworks and the rigidity map $R(G, p)$ are as in
+\cref{sec:frameworks}, and we write $uv$ for the edge with endpoints
+$u$ and $v$. The rows $r_e$ of $R(G, p)$ and row-independent edge sets
+are defined in \cref{sec:laman-theorem}. Tight sets are as in
+\cref{sec:sparsity}, where the paragraph after \cref{def:isTightOn}
+relates them to Jord\'an's critical sets.
 
 \subsection{Sparse-graph reverse decomposition}
 \label{sec:rigidity-matroid-sparse-reverse}
@@ -198,19 +202,8 @@ Lemma~2.1.3 that we need within the proof of the theorem.
 \subsection{Lifting row-independence through Henneberg moves}
 \label{sec:rigidity-matroid-lifts}
 
-By \cref{lem:isSparse-of-rowIndependent-two}, an edge set that is
-row-independent at a framework in the plane with no three points
-collinear forms a $(2,3)$-sparse graph. In
-\cref{sec:rigidity-matroid-hard-direction} we prove the converse: the
-edge set of every $(2,3)$-sparse graph is row-independent at some
-framework in the plane. The two together characterize the
-independent sets of the rigidity matroid in the plane. This is
-Jord\'an's~\cite{jordan2016} Theorem~2.2.1, which he credits to
-Laman~\cite{laman1970}. We follow his proof (p.~45), an induction that
-removes a vertex by \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
-and puts it back by a Henneberg move.
-
-In this subsection we prove the inductive step: if $E(G)$ is
+In this subsection we prove the inductive step of the induction in
+\cref{sec:rigidity-matroid-hard-direction}: if $E(G)$ is
 row-independent at a framework $p$, and $G'$ is obtained from $G$ by a
 move, then $E(G')$ is row-independent at some framework. For the
 Type~I move at $a$ and $b$ we assume that $p_a \ne p_b$. In Jord\'an's
@@ -508,10 +501,14 @@ isomorphisms, as we did for infinitesimal rigidity
   that extends $p$ by placing $v$ at $q$.
 \end{proof}
 
-\subsection{The hard direction}
+\subsection{Row-independent edge sets in the plane}
 \label{sec:rigidity-matroid-hard-direction}
 
-\begin{theorem}[$(2, 3)$-sparse $\Rightarrow$ row-independent at some placement]
+We now complete the induction. Together with
+\cref{lem:isSparse-of-rowIndependent-two}, its result characterizes the
+edge sets that are row-independent at some framework in the plane.
+
+\begin{theorem}[Every $(2, 3)$-sparse graph has a row-independent framework in the plane]
   \label{thm:isSparse-exists-rowIndependent-placement}
   \lean{SimpleGraph.IsSparse.exists_rowIndependent_placement}
   \leanok
@@ -521,8 +518,8 @@ isomorphisms, as we did for infinitesimal rigidity
     lem:typeI-rowIndependent-lift,
     lem:typeII-rowIndependent-lift,
     lem:edgeSet-rowIndependent-iso}
-  Let $H$ be a $(2, 3)$-sparse graph on a finite vertex set $V$. Then
-  there exists a placement $p : V \to \R^{2}$ at which $E(H)$ is
+  Let $V$ be finite, and let $G$ be a $(2, 3)$-sparse graph on $V$.
+  Then there is a framework $p$ on $V$ in $\R^{2}$ at which $E(G)$ is
   row-independent.
 \end{theorem}
 \begin{proof}
@@ -533,34 +530,52 @@ isomorphisms, as we did for infinitesimal rigidity
     lem:typeII-rowIndependent-lift,
     lem:edgeSet-rowIndependent-iso,
     lem:edgeSet-rowIndependent-eventually}
-  Strong induction on $|V|$ (each Henneberg reverse strictly decreases
-  $|V|$, and the base case below covers $|E(H)| = 0$ uniformly). In the
-  base case, when $E(H)$ is empty (in particular when $|V| \le 1$), the
-  empty family of rows is linearly independent at any placement.
+  We use induction on $|V|$; Jord\'an's proof inducts on the number of
+  edges instead. If $G$ has no edges, for instance if $|V| \le 1$, then
+  $E(G)$ is row-independent at every framework, since the empty family
+  of rows is linearly independent.
 
-  For the inductive step,
-  \cref{thm:isSparse-exists-typeI-or-typeII-reverse} supplies a
-  vertex $v$ with $d_H(v) \in \{1, 2, 3\}$ and a smaller sparse graph
-  $H'$ on $V \setminus \{v\}$ via one of three reverses (pendant,
-  Type~I, or Type~II); the induction hypothesis gives a row-independent
-  placement $p'$ of $H'$. The corresponding lift
-  (\cref{lem:pendant-rowIndependent-lift},
-  \cref{lem:typeI-rowIndependent-lift}, or
-  \cref{lem:typeII-rowIndependent-lift}) reconstructs a row-independent
-  placement of the Henneberg extension $\mathrm{typeI}\,H'\,a\,a$,
-  $\mathrm{typeI}\,H'\,a\,b$, or $\mathrm{typeII}\,H'\,x\,y\,c$, which
-  is graph-isomorphic to $H$ via
-  \texttt{typeI\_iso\_of\_two\_neighbors} /
-  \texttt{typeII\_iso\_of\_three\_neighbors} (project-internal);
-  \cref{lem:edgeSet-rowIndependent-iso} transports row-independence
-  back to $H$. The Type~I branch additionally applies a small
-  perturbation to $p'$ (combining a step-along-$\delta a$ deformation
-  with \cref{lem:edgeSet-rowIndependent-eventually}) to ensure
-  $p'(a) \ne p'(b)$, the linear-independence input of
-  \cref{lem:typeI-rowIndependent-lift}.
+  Suppose that $G$ has an edge. By
+  \cref{thm:isSparse-exists-typeI-or-typeII-reverse}, $G$ has a vertex
+  $v$ of degree one, two or three for which the following graph $H$ on
+  $V \setminus \{v\}$ is $(2,3)$-sparse. If $v$ has degree one or two,
+  with neighbour $a$ or neighbours $a$ and $b$, then $H = G - v$. If
+  $v$ has degree three, with neighbours $a$, $b$ and $c$, where $a$ and
+  $b$ are not adjacent, then $H = G - v + ab$. By induction, $E(H)$ is
+  row-independent at some framework $p$ on $V \setminus \{v\}$ in
+  $\R^{2}$.
+
+  Let $H'$ be obtained from $H$ by the move that puts $v$ back: the
+  Type~I move at $a$ and $a$ if $v$ has degree one, the Type~I move at
+  $a$ and $b$ if $v$ has degree two, and the Type~II move on $ab$ and
+  $c$ if $v$ has degree three. The map $\varphi$ that sends $v$ to the
+  new vertex of $H'$ and fixes every other vertex is an isomorphism
+  from $G$ to $H'$ (\cref{fmlnote:reverse-vs-lift-form}). If $E(H')$ is
+  row-independent at a framework $\hat p$, then $E(G)$ is
+  row-independent at $\hat p \circ \varphi$
+  (\cref{lem:edgeSet-rowIndependent-iso}). So it remains to find such a
+  framework $\hat p$.
+
+  If $v$ has degree one, then \cref{lem:pendant-rowIndependent-lift}
+  gives $\hat p$. If $v$ has degree three, then $ab$ is an edge of $H$
+  and $c$ is distinct from $a$ and $b$, so
+  \cref{lem:typeII-rowIndependent-lift} gives $\hat p$.
+
+  Let $v$ have degree two. If $p_a \ne p_b$, then
+  \cref{lem:typeI-rowIndependent-lift} gives $\hat p$. Otherwise we
+  first move the point $p_a$. Choose a nonzero vector $w \in \R^{2}$,
+  and for $t \in \R$ let $p^{t}$ be the framework that agrees with $p$
+  except at $a$, where $p^{t}_a = p_a + t\,w$. The map
+  $t \mapsto p^{t}$ is continuous, and $p^{0} = p$. So $E(H)$ is
+  row-independent at $p^{t}$ for every $t$ close enough to $0$
+  (\cref{lem:edgeSet-rowIndependent-eventually}). Since $a \ne b$, we
+  have $p^{t}_a - p^{t}_b = t\,w$, which is not zero for $t \ne 0$.
+  Choose $t \ne 0$ close enough to $0$. Then
+  \cref{lem:typeI-rowIndependent-lift} applies to $p^{t}$ and gives
+  $\hat p$.
 \end{proof}
 
-\begin{theorem}[Lov\'asz--Yemini: row-independence iff sparse, dimension $2$]
+\begin{theorem}[Row-independence in the plane is $(2, 3)$-sparsity (Laman)]
   \label{thm:edgeSet-rowIndependent-iff-isSparse}
   \lean{SimpleGraph.edgeSet_rowIndependent_iff_isSparse_dim_two}
   \leanok
@@ -569,10 +584,10 @@ isomorphisms, as we did for infinitesimal rigidity
     lem:isSparse-of-rowIndependent-two,
     lem:exists-affinelySpanning-of-eventually,
     lem:edgeSet-rowIndependent-eventually}
-  Let $G$ be a graph on a finite vertex set $V$. An edge set
-  $I \subseteq E(G)$ is row-independent at some placement
-  $p : V \to \R^{2}$ if and only if the spanning subgraph of $G$ with
-  edge set $I$ is $(2, 3)$-sparse.
+  Let $V$ be finite, let $G$ be a graph on $V$, and let
+  $I \subseteq E(G)$. Then $I$ is row-independent at some framework on
+  $V$ in $\R^{2}$ if and only if the spanning subgraph of $G$ with edge
+  set $I$ is $(2, 3)$-sparse.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -580,216 +595,211 @@ isomorphisms, as we did for infinitesimal rigidity
     lem:isSparse-of-rowIndependent-two,
     lem:exists-affinelySpanning-of-eventually,
     lem:edgeSet-rowIndependent-eventually}
-  $(\Rightarrow)$ is the easy direction
-  \cref{lem:isSparse-of-rowIndependent-two}, after perturbing the
-  witness placement to one that affinely spans every triple via
-  \cref{lem:exists-affinelySpanning-of-eventually} specialised at
-  row-independence (using \cref{lem:edgeSet-rowIndependent-eventually}
-  as the openness witness).
+  Suppose first that $I$ is row-independent at a framework $p_0$. Then
+  $I$ is row-independent at every framework in some neighbourhood of
+  $p_0$ (\cref{lem:edgeSet-rowIndependent-eventually}). So there is a
+  framework $p$ at which $I$ is row-independent and no three of the
+  points $p_v$ are collinear
+  (\cref{lem:exists-affinelySpanning-of-eventually} at $d = 2$). Hence
+  the spanning subgraph of $G$ with edge set $I$ is $(2, 3)$-sparse
+  (\cref{lem:isSparse-of-rowIndependent-two}).
 
-  $(\Leftarrow)$ is
-  \cref{thm:isSparse-exists-rowIndependent-placement} applied to the
-  spanning subgraph $H = \mathrm{fromEdgeSet}(I)$, bridged back to a
-  row-independent placement of $E(G)$ on $I$ via the per-edge equality
-  of rigidity rows: both reduce to $\langle p u - p v, \mathrm{motion}\,u
-  - \mathrm{motion}\,v\rangle$ on the same $\mathrm{Sym}_{2}$-value, so
-  the equality is definitional.
+  Conversely, let $H$ be the spanning subgraph of $G$ with edge set
+  $I$, and suppose that $H$ is $(2, 3)$-sparse. Then $E(H) = I$ is
+  row-independent at some framework $p$
+  (\cref{thm:isSparse-exists-rowIndependent-placement}). For an edge
+  $e = uv$ in $I$, the rigidity rows of $H$ and of $G$ at $p$ indexed
+  by $e$ are the same functional
+  $x \mapsto \langle p_u - p_v,\, x_u - x_v \rangle$
+  (\cref{lem:rigidityMap-apply}). So $I$, as a set of edges of $G$, is
+  row-independent at $p$.
 \end{proof}
 
-\begin{corollary}[Every Laman graph admits a row-independent placement]
+\begin{corollary}[Every Laman graph has a row-independent framework in the plane]
   \label{cor:isLaman-exists-rowIndependent}
   \lean{SimpleGraph.IsLaman.exists_rowIndependent_placement}
   \leanok
   \uses{def:isLaman, def:edgeSet-rowIndependent,
     thm:isSparse-exists-rowIndependent-placement}
-  Let $H$ be a Laman graph on a finite vertex set $V$. Then there
-  exists a placement $p : V \to \R^{2}$ at which $E(H)$ is
+  Let $V$ be finite, and let $G$ be a Laman graph on $V$. Then there is
+  a framework $p$ on $V$ in $\R^{2}$ at which $E(G)$ is
   row-independent.
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:isSparse-exists-rowIndependent-placement}
-  Laman implies $(2, 3)$-sparse, and
-  \cref{thm:isSparse-exists-rowIndependent-placement} applies directly.
+  A Laman graph is $(2, 3)$-sparse (\cref{def:isLaman}), so
+  \cref{thm:isSparse-exists-rowIndependent-placement} applies.
 \end{proof}
-\begin{fmlnote}
-  The Lean witness specialises
-  \cref{thm:isSparse-exists-rowIndependent-placement} in one line; it is
-  marked deprecated in favour of that general sparse-level form and
-  exists only as the formal anchor for this corollary.
-\end{fmlnote}
 
-\subsection{The rigidity matroid (dimension $2$)}
+\subsection{The rigidity matroid as a count matroid}
 \label{sec:rigidity-matroid-instance}
 
-We are now in a position to define the planar rigidity matroid and
-identify its independent sets with the $(2, 3)$-sparse edge subsets
-of the complete graph $K_{V}$ on $V$
-(Lov\'asz--Yemini~\cite{lovaszYemini1982}). The matroid structure
-itself --- the four matroid axioms --- is delegated to the abstract
-$(k, \ell)$-count matroid (\cref{sec:count-matroid}): the rigidity
-matroid is the $(k, \ell) = (2, 3)$ specialisation, and
-Lov\'asz--Yemini becomes the statement that this combinatorial matroid
-coincides with the relation ``$I$ is row-independent at some
-placement''. The linear-matroid framing --- building the same matroid
-directly from the rigidity-row function at a generic placement via
-\texttt{Matroid.ofFun}, with Lov\'asz--Yemini as a matroid equality ---
-is the subject of \cref{sec:rigidity-matroid-linear-framing} below.
+Let $V$ be finite. For $\ell < 2k$, the sets of edges of $K_V$ that
+form $(k, \ell)$-sparse graphs are the independent sets of a matroid on
+$E(K_V)$, the $(k, \ell)$-count matroid. We prove this in the next
+section (\cref{sec:count-matroid}), and use it here for
+$(k, \ell) = (2, 3)$, where $3 < 4$. We take the $(2, 3)$-count matroid
+as the definition of the rigidity matroid in the plane, and then
+identify its independent sets with the edge sets that are
+row-independent at some framework.
 
 \begin{definition}[Planar rigidity matroid]
   \label{def:rigidityMatroid}
   \lean{SimpleGraph.rigidityMatroid}
   \leanok
   \uses{def:countMatroid}
-  For finite $V$, the \emph{planar rigidity matroid}
-  $\mathcal{R}(V)$ is the $(2, 3)$-count matroid on $V$ of
-  \cref{def:countMatroid} (which is a matroid since $3 < 4 = 2k$ at
-  $k = 2$). Equivalently, its independent sets are exactly the
-  $(2, 3)$-sparse edge subsets of $K_{V}$.
+  Let $V$ be finite. The \emph{planar rigidity matroid} $\mathcal{R}(V)$
+  is the $(2, 3)$-count matroid on $V$ (\cref{def:countMatroid}): the
+  matroid on $E(K_V)$ whose independent sets are the sets
+  $I \subseteq E(K_V)$ for which the graph on $V$ with edge set $I$ is
+  $(2, 3)$-sparse.
 \end{definition}
 
-\begin{theorem}[Lov\'asz--Yemini, matroid form]
+\begin{theorem}[Independent sets of the planar rigidity matroid]
   \label{thm:rigidityMatroid-indep-iff-rowIndependent}
   \lean{SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent}
   \leanok
   \uses{def:rigidityMatroid, def:edgeSet-rowIndependent,
     thm:edgeSet-rowIndependent-iff-isSparse}
-  Let $V$ be finite and $I \subseteq E(K_{V})$. Then the image of $I$
-  in $\mathrm{Sym}_{2}V$ is independent in the planar rigidity
-  matroid $\mathcal{R}(V)$ if and only if there exists a placement
-  $p : V \to \R^{2}$ at which $I$ is row-independent.
+  Let $V$ be finite, and let $I \subseteq E(K_V)$. Then $I$ is
+  independent in $\mathcal{R}(V)$ if and only if $I$ is row-independent
+  at some framework on $V$ in $\R^{2}$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:countMatroid-indep-iff,
     thm:edgeSet-rowIndependent-iff-isSparse}
-  By \cref{thm:countMatroid-indep-iff}, the image of $I$ is
-  independent in $\mathcal{R}(V) = \mathrm{countMatroid}\,V\,2\,3$
-  iff it is contained in $E(K_{V})$ (automatic, since $I \subseteq
-  E(K_{V})$ already) and $\mathrm{fromEdgeSet}\,I$ is
-  $(2, 3)$-sparse. By \cref{thm:edgeSet-rowIndependent-iff-isSparse}
-  at $G = K_{V}$, the latter holds iff $I$ is row-independent at some
-  placement.
+  Since $I \subseteq E(K_V)$, the set $I$ is independent in
+  $\mathcal{R}(V)$ if and only if the graph on $V$ with edge set $I$ is
+  $(2, 3)$-sparse (\cref{thm:countMatroid-indep-iff}). This graph is
+  the spanning subgraph of $K_V$ with edge set $I$. So the claim is
+  \cref{thm:edgeSet-rowIndependent-iff-isSparse} at $G = K_V$.
 \end{proof}
 
-\subsection{Linear-matroid framing}
+\subsection{The rigidity matroid of a framework}
 \label{sec:rigidity-matroid-linear-framing}
 
-The matroid identification of the previous subsection packages
-$\mathcal{R}(V)$ as the $(2, 3)$-count matroid on $\mathrm{Sym}_2 V$ ---
-a combinatorial object whose independence is defined purely in terms of
-edge-counts on subsets of $V$. An alternative presentation builds the
-\emph{same matroid} directly as a \emph{linear} matroid on the
-rigidity-row function at a chosen placement, via the
-\texttt{Matroid.ofFun} construction of the
-\texttt{apnelson1/Matroid} library.
+Jord\'an (p.~39) defines the rigidity matroid of a framework $(G, p)$
+as the matroid on $E(G)$ whose independent sets are the edge sets that
+are row-independent at $p$, and notes that all generic frameworks of
+$G$ have the same rigidity matroid. By
+\cref{thm:rigidityMatroid-indep-iff-rowIndependent}, a set of edges of
+$K_V$ is independent in $\mathcal{R}(V)$ exactly when it is
+row-independent at some framework, which may depend on the set. Rather
+than define genericity, we find a single framework $p$ at which every
+independent set of $\mathcal{R}(V)$ is row-independent. This
+identifies $\mathcal{R}(V)$ with the rigidity matroid of the framework
+$(K_V, p)$.
 
-\begin{definition}[Extended rigidity-row function on $\mathrm{Sym}_2 V$]
+We now define the rigidity matroid of a framework of $K_V$, in any
+dimension. Its formal construction starts from the rigidity rows of
+$K_V$, extended to all unordered pairs of vertices.
+
+\begin{definition}[The rigidity rows extended to all pairs of vertices]
   \label{def:linearRigidityRow}
   \lean{SimpleGraph.linearRigidityRow}
   \leanok
   \uses{def:rigidityRow}
-  Let $p : V \to \R^{d}$ be a placement. Extend
-  $\mathrm{rigidityRow}\,K_V\,p : E(K_V) \to \mathrm{Hom}_\R(\mathrm{Framework}\,V\,d, \R)$
-  by zero off $E(K_V)$ to obtain
-  $\widetilde{\mathrm{row}}_p : \mathrm{Sym}_2 V \to \mathrm{Hom}_\R(\mathrm{Framework}\,V\,d, \R)$.
+  Let $p$ be a framework on $V$ in $\R^{d}$, and let $r_e$, for
+  $e \in E(K_V)$, be the rigidity rows of $K_V$ at $p$
+  (\cref{def:rigidityRow}). The \emph{extended rigidity rows} at $p$ are
+  the functionals $\tilde r_e \in ((\R^{d})^{V})^{*}$, for unordered
+  pairs $e$ of elements of $V$, given by $\tilde r_e = r_e$ if
+  $e \in E(K_V)$ and $\tilde r_e = 0$ if $e = \{v, v\}$ for some
+  $v \in V$.
 \end{definition}
 \begin{fmlnote}
-  The extension is formalised with \texttt{Function.extend} along the
-  subtype embedding $E(K_V) \hookrightarrow \mathrm{Sym}_2 V$. Its values
-  off $E(K_V)$ do not affect the linear rigidity matroid below, whose
-  ground set is $E(K_V)$.
+  The extension is needed only for the formal construction of the
+  matroid in the next definition. That construction,
+  \texttt{Matroid.ofFun} in Nelson's matroid library, takes a function
+  defined on all unordered pairs of vertices, together with a ground
+  set. The pairs $\{v, v\}$ lie outside the ground set $E(K_V)$, so
+  the values $\tilde r_{\{v, v\}} = 0$ do not affect the matroid.
 \end{fmlnote}
 
-\begin{definition}[Linear rigidity matroid at a placement]
+\begin{definition}[Linear rigidity matroid at a framework]
   \label{def:linearRigidityMatroid}
   \lean{SimpleGraph.linearRigidityMatroid}
   \leanok
   \uses{def:linearRigidityRow}
-  Let $p : V \to \R^{d}$ be a placement. The \emph{linear rigidity matroid
-  at $p$} is
-  $\mathcal{L}_p(V) := \mathtt{Matroid.ofFun}\,\R\,E(K_V)\,\widetilde{\mathrm{row}}_p$,
-  the matroid on $\mathrm{Sym}_2 V$ with ground set $E(K_V)$ whose
-  independent sets are the linearly independent restrictions of
-  $\widetilde{\mathrm{row}}_p$.
+  Let $p$ be a framework on $V$ in $\R^{d}$. The \emph{linear rigidity
+  matroid} $\mathcal{L}_p(V)$ at $p$ is the matroid on $E(K_V)$
+  represented by the extended rigidity rows at $p$: a set
+  $I \subseteq E(K_V)$ is independent if the functionals $\tilde r_e$,
+  for $e \in I$, are linearly independent.
 \end{definition}
 
-\begin{lemma}[Linear-matroid independence iff row-independence]
+\begin{lemma}[Independent sets of the linear rigidity matroid]
   \label{lem:linearRigidityMatroid-indep-iff}
   \lean{SimpleGraph.linearRigidityMatroid_indep_iff_edgeSetRowIndependent}
   \leanok
   \uses{def:linearRigidityMatroid, def:edgeSet-rowIndependent}
-  Let $p : V \to \R^{d}$ and $I \subseteq E(K_V)$. Then $I$ is independent
-  in $\mathcal{L}_p(V)$ if and only if $I$ is row-independent at $p$ (in
-  the sense of \cref{def:edgeSet-rowIndependent} at $G = K_V$).
+  Let $p$ be a framework on $V$ in $\R^{d}$, and let
+  $I \subseteq E(K_V)$. Then $I$ is independent in $\mathcal{L}_p(V)$
+  if and only if $I$ is row-independent at $p$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Unfolding the \texttt{Matroid.ofFun} construction
-  (\texttt{Matroid.ofFun\_indep\_iff}), the LHS says $I \subseteq E(K_V)$
-  (automatic for an $I$ already typed as a subset of $E(K_V)$) together
-  with linear independence of $\widetilde{\mathrm{row}}_p|_I$.
-  Composing with the injective subtype embedding
-  $E(K_V) \hookrightarrow \mathrm{Sym}_2 V$, and noting the agreement
-  $\widetilde{\mathrm{row}}_p \circ \mathrm{Subtype.val} =
-  \mathrm{rigidityRow}\,K_V\,p$ on $E(K_V)$, rewrites the
-  linear-independence condition as
-  $\mathrm{LinearIndepOn}\,\R\,(\mathrm{rigidityRow}\,K_V\,p)\,I$;
-  the dual-module / function-module bridge
-  \texttt{edgeSet\_rowIndependent\_iff\_linearIndepOn\_rigidityRow}
-  identifies this with $K_V.\mathrm{EdgeSetRowIndependent}\,p\,I$.
+  For $e \in E(K_V)$, the extended row $\tilde r_e$ is the rigidity row
+  $r_e$ of $K_V$ at $p$. So $I$ is independent in $\mathcal{L}_p(V)$ if
+  and only if the rows $r_e$, for $e \in I$, are linearly independent,
+  that is, if and only if $I$ is row-independent at $p$
+  (\cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}).
 \end{proof}
 
-\begin{lemma}[Uniformly generic placement, dimension $2$]
+So $\mathcal{L}_p(V)$ is the rigidity matroid of the framework
+$(K_V, p)$, and it remains to choose $p$.
+
+\begin{lemma}[A framework at which every $(2, 3)$-sparse edge set is row-independent]
   \label{lem:exists-uniform-rowIndependent-placement}
   \lean{SimpleGraph.exists_uniform_rowIndependent_placement_dim_two}
   \leanok
   \uses{def:edgeSet-rowIndependent,
     thm:isSparse-exists-rowIndependent-placement}
-  Let $V$ be finite. There exists a placement $p : V \to \R^{2}$ at
-  which \emph{every} $(2, 3)$-sparse edge subset of $K_V$ is
-  simultaneously row-independent: for every $I \subseteq E(K_V)$ with
-  $\mathrm{fromEdgeSet}\,I$ $(2, 3)$-sparse, $I$ is row-independent at $p$.
+  Let $V$ be finite. Then there is a framework $p$ on $V$ in $\R^{2}$
+  such that every $I \subseteq E(K_V)$ is row-independent at $p$
+  whenever the graph on $V$ with edge set $I$ is $(2, 3)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
-  Induction on the cardinality of the finite family
-  \[
-    \mathcal{S} := \{I \subseteq E(K_V) \mid
-      \mathrm{fromEdgeSet}\,I\;\text{is}\;(2, 3)\text{-sparse}\}.
-  \]
-  The base case $\mathcal{S} = \emptyset$ picks any placement. For the
-  inductive step, given $p_0$ row-independent on every set in an
-  $n$-element subfamily $\mathcal{S}_n \subseteq \mathcal{S}$, and a new
-  set $I_0 \in \mathcal{S} \setminus \mathcal{S}_n$,
-  \cref{thm:isSparse-exists-rowIndependent-placement} yields a
-  placement $q$ row-independent on $I_0$.
+  Let $\mathcal{S}$ be the family of sets $I \subseteq E(K_V)$ for
+  which the graph on $V$ with edge set $I$ is $(2, 3)$-sparse. It is
+  finite, since $E(K_V)$ is. We show, by induction on $n$, that for any
+  $n$ sets in $\mathcal{S}$ there is a framework at which all of them
+  are row-independent; for $n = |\mathcal{S}|$ this is the lemma. For
+  $n = 0$ any framework will do.
 
-  Form the linear-interpolation family
-  $p_t := (1 - t)\,p_0 + t\,q = p_0 + t\,(q - p_0)$ for $t \in \R$. The
-  rigidity row $\mathrm{row}_{p_t}(e) \in
-  \mathrm{Hom}_\R(\mathrm{Framework}\,V\,2, \R)$ is \emph{affine in $t$}
-  at each edge $e$ (\texttt{rigidityRow\_add\_smul}: linearity of
-  $\mathrm{row}$ in $p$). Hence for each $S \subseteq E(K_V)$, ``$S$ is
-  row-independent at $p_t$'' is the non-vanishing of a one-variable
-  polynomial in $\R[t]$ (the Gram determinant
-  $\det((A + t \cdot B)(A + t \cdot B)^\top)$ of the rigidity-row
-  matrices $A, B$ for $p_0$ and $q - p_0$ in a chosen basis of
-  $\mathrm{Framework}\,V\,2$). For $S \in \mathcal{S}_n$ this polynomial
-  is nonzero at $t = 0$ (the induction hypothesis); for $S = I_0$ it is
-  nonzero at $t = 1$.
+  Let $\mathcal{F} \subseteq \mathcal{S}$ have $n$ elements, let $p_0$
+  be a framework at which every set in $\mathcal{F}$ is row-independent,
+  and let $I_0 \in \mathcal{S} \setminus \mathcal{F}$. Then $I_0$ is
+  row-independent at some framework $q$
+  (\cref{thm:edgeSet-rowIndependent-iff-isSparse} at $G = K_V$). For
+  $t \in \R$, let $p^{t} = p_0 + t\,(q - p_0)$, so that $p^{0} = p_0$
+  and $p^{1} = q$. The rigidity row of an edge $uv$ at a framework $p'$
+  is $x \mapsto \langle p'_u - p'_v,\, x_u - x_v \rangle$
+  (\cref{lem:rigidityMap-apply}), which depends linearly on $p'$. So the
+  row $r^{t}_e$ of an edge $e$ at $p^{t}$ is $r^{0}_e + t\,s_e$, where
+  $s_e$ is the row of $e$ at $q - p_0$.
 
-  Each nonzero polynomial in $\R[t]$ has finitely many roots, so the
-  union of bad-$t$ values across $\mathcal{S}_n \cup \{I_0\}$ is finite;
-  pick $t$ outside this union and $p_t$ is row-independent on the
-  enlarged subfamily. The rectangular linear-independence /
-  Gram-determinant equivalence and the cofiniteness-along-an-affine-line
-  step are the mirror lemmas
-  \texttt{Matrix.linearIndependent\_rows\_iff\_det\_mul\_transpose\_ne\_zero}
-  and \texttt{LinearIndependent.finite\_setOf\_not\_along\_affine\_path}.
+  Let $I$ be a set in $\mathcal{F}$, or $I_0$, and let $t_0$ be $0$ or
+  $1$ accordingly, so that the rows $r^{t_0}_e$, for $e \in I$, are
+  linearly independent. Fix a basis of $((\R^{2})^{V})^{*}$. The
+  coordinate vectors of the rows $r^{t}_e$, for $e \in I$, are the rows
+  of a matrix $A + t\,B$, where $A$ and $B$ do not depend on $t$. Since
+  the rows of $A + t_0 B$ are linearly independent, some
+  $|I| \times |I|$ submatrix of $A + t_0 B$ has nonzero determinant. The
+  determinant of the same submatrix of $A + t\,B$ is a polynomial in $t$
+  that is nonzero at $t_0$, so it has finitely many roots. At every
+  other $t$, the rows $r^{t}_e$, for $e \in I$, are linearly independent.
+
+  Hence there are only finitely many $t \in \R$ at which some set in
+  $\mathcal{F}$, or $I_0$, fails to be row-independent at $p^{t}$.
+  Choose $t$ outside these finitely many values. Then every set in
+  $\mathcal{F}$, and $I_0$, is row-independent at $p^{t}$.
 \end{proof}
 
-\begin{theorem}[Lov\'asz--Yemini, linear-matroid form, dimension $2$]
+\begin{theorem}[The planar rigidity matroid as a linear matroid]
   \label{thm:linearRigidityMatroid-eq-rigidityMatroid}
   \lean{SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid}
   \leanok
@@ -797,24 +807,21 @@ rigidity-row function at a chosen placement, via the
     thm:rigidityMatroid-indep-iff-rowIndependent,
     lem:linearRigidityMatroid-indep-iff,
     lem:exists-uniform-rowIndependent-placement}
-  Let $V$ be finite. There exists a placement $p : V \to \R^{2}$ at
-  which the linear rigidity matroid coincides with the combinatorial
-  planar rigidity matroid: $\mathcal{L}_p(V) = \mathcal{R}(V)$.
+  Let $V$ be finite. Then there is a framework $p$ on $V$ in $\R^{2}$
+  such that $\mathcal{L}_p(V) = \mathcal{R}(V)$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Take $p$ from
-  \cref{lem:exists-uniform-rowIndependent-placement}: every
-  $(2, 3)$-sparse edge subset of $K_V$ is row-independent at $p$. The
-  two matroids share the ground set
-  ($\mathcal{L}_p(V).E = E(K_V) = \mathcal{R}(V).E$), so by
-  \texttt{Matroid.ext\_indep} it suffices to identify their
-  independent sets. An edge set $I \subseteq E(K_V)$ is independent
-  in $\mathcal{L}_p(V)$ iff $I$ is row-independent at $p$
-  (\cref{lem:linearRigidityMatroid-indep-iff}); it is independent in
-  $\mathcal{R}(V)$ iff $I$ is row-independent at \emph{some} placement
-  (\cref{thm:rigidityMatroid-indep-iff-rowIndependent}). The
-  $(\Rightarrow)$ direction collapses by taking ``some placement''
-  to be $p$; the $(\Leftarrow)$ direction collapses by uniform
-  genericity, since every $(2, 3)$-sparse $I$ is row-independent at $p$.
+  Let $p$ be a framework as in
+  \cref{lem:exists-uniform-rowIndependent-placement}. Both matroids have
+  ground set $E(K_V)$, so it suffices to show that they have the same
+  independent sets. Let $I \subseteq E(K_V)$. If $I$ is independent in
+  $\mathcal{L}_p(V)$, then $I$ is row-independent at $p$
+  (\cref{lem:linearRigidityMatroid-indep-iff}), and so $I$ is
+  independent in $\mathcal{R}(V)$
+  (\cref{thm:rigidityMatroid-indep-iff-rowIndependent}). Conversely, if
+  $I$ is independent in $\mathcal{R}(V)$, then the graph on $V$ with
+  edge set $I$ is $(2, 3)$-sparse (\cref{def:rigidityMatroid}). So $I$
+  is row-independent at $p$, by the choice of $p$, and it is
+  independent in $\mathcal{L}_p(V)$.
 \end{proof}

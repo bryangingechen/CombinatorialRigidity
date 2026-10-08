@@ -245,9 +245,9 @@ declaration's name as its header writes it:
   `thm:isTightOn-union-with-bonus`), `_three_pair` and `no_isTightOn_excluding_three_neighbors`.
   None has a node. Jordán's Lemma 2.1.3 (three critical sets meeting pairwise in one vertex) is
   argued inside `_three_pair`, by two supermodularity counts; since task 5.9 the theorem's prose
-  proof follows the same split and argues it in its three-pair case. The chapter's opening says it
-  is `thm:isTightOn-union-with-bonus` composed twice (task 5.10's to fix), and so did
-  `notes/BlueprintExposition.md`'s Group-A note until task 5.2 corrected the note.
+  proof follows the same split and argues it in its three-pair case. The chapter's opening said it
+  was `thm:isTightOn-union-with-bonus` composed twice until task 5.10 removed the sentence, and so
+  did `notes/BlueprintExposition.md`'s Group-A note until task 5.2 corrected the note.
   *Evidence:* read (the bodies of `False_of_pairwise_blocker_or_edge` and the three templates,
   `Sparsity.lean`; `notes/Phase5.md` on the "1-deficient intermediate"); measured
   (`scripts/blueprint-deps.py --label thm:isSparse-exists-typeI-or-typeII-reverse`, at `4657a7fc`).
@@ -261,6 +261,17 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label
   thm:isSparse-exists-typeI-or-typeII-reverse`, at `0a2230a0`); read (the declaration's module).
   *Found:* round 1 task 5.3.
+- **F-029** · N · `def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-rowIndependent`
+  (`rigidity-matroid.tex`, §10) use `def:countMatroid` and `thm:countMatroid-indep-iff` of
+  `count-matroid.tex`, which is §11. `count-matroid.tex` uses only nodes of `sparsity.tex` and its
+  own, and its opening reads as if it came first ("Before packaging that result as a matroid in
+  `sec:rigidity-matroid-instance`, we record the abstract object it realises"). Prose cannot remove
+  the cross-section forward reference; task 5.10 gives it a sentence in the lead-in of *The rigidity
+  matroid as a count matroid*. Moving `count-matroid.tex` before `rigidity-matroid.tex` in
+  `main.tex` would remove it, and would turn that opening's `\cref`s into `rigidity-matroid.tex`
+  into forward references instead.
+  *Evidence:* read (the `\uses` of both chapters; `main.tex`; `count-matroid.tex`'s opening).
+  *Found:* round 1 task 5.10.
 
 ## T — terminology and notation
 
@@ -364,6 +375,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body); a `lake lean` witness (the theorem restated without
   `[Finite V]`, the proof copied with that line deleted; it elaborates with no output).
   *Found:* round 1 task 5.6.
+- **F-030** · L · `MatroidIdentification.lean`, `LinearRigidityMatroid.lean`: docstrings that
+  contradict the declarations. In the first, the section header "`|E|`-induction: every sparse
+  graph has a row-independent placement" and the docstring of
+  `exists_distinct_rowIndependent_placement_dim_two` ("Phase 7's `|E|`-induction") call the
+  induction one on edges, while `IsSparse.exists_rowIndependent_placement` inducts on
+  `Fintype.card V`, as the header's own body says. In the second, the module docstring calls the
+  identification `linearRigidityMatroid V 2 p = rigidityMatroid V` "the eventual Phase 8 target"
+  of a file that lands only "the definition skeleton plus the independence bridge", and
+  `linearRigidityMatroid`'s docstring calls it "the Phase 8 target"; the file proves it
+  (`linearRigidityMatroid_eq_rigidityMatroid`).
+  *Evidence:* read (the bodies of `IsSparse.exists_rowIndependent_placement` and
+  `linearRigidityMatroid_eq_rigidityMatroid`, and the docstrings named).
+  *Found:* round 1 task 5.10.
 
 ## M — mathematics and sources
 
@@ -380,7 +404,11 @@ declaration's name as its header writes it:
   6-connected graphs (Theorem 2.4.1, p. 51). Tasks 5.7 and 5.8 moved `laman-theorem.tex`'s credit
   to Laman (5.8: the opening, and the title *Sparsity from row-independence*). Task 5.9 credited
   Laman in `rigidity-matroid.tex`'s lifts lead-in and dropped "the pendant attachment used by
-  Lovász–Yemini"; the opening and the three titles are task 5.10's. Outside round 1's slices: `intro.tex`, the docstrings,
+  Lovász–Yemini". Task 5.10 moved that credit into the chapter's new opening (Jordán's Theorem
+  2.2.1, credited to Laman, and his proof, p. 45) and retitled the three nodes (*Row-independence
+  in the plane is $(2,3)$-sparsity (Laman)*, *Independent sets of the planar rigidity matroid*,
+  *The planar rigidity matroid as a linear matroid*), so `rigidity-matroid.tex` no longer names
+  Lovász–Yemini. Outside round 1's slices: `intro.tex`, the docstrings,
   `formalization.yaml`'s Lovász–Yemini lines, and `notes/BlueprintExposition.md`'s Group-A line
   "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 checks it).
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
