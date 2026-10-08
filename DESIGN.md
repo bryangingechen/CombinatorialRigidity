@@ -278,10 +278,10 @@ would have to manually re-verify vertex / neighborhood conditions
 that are tautological from the operation. Each form fits its
 category; the categories are different.
 
-The full rationale, including the K_{1,5} obstruction and a few more
-mathlib analogues, lives in the *Statement-form aside* in
-`blueprint/src/chapter/rigidity-matroid.tex` (just before
-\S\,\emph{Lifting row-independence through Henneberg moves}).
+The blueprint states the split for the reader in the formalization
+note `fmlnote:reverse-vs-lift-form` (`blueprint/src/chapter/rigidity-matroid.tex`,
+just before *Lifting row-independence through Henneberg moves*); the
+rationale above is this section's.
 
 ---
 

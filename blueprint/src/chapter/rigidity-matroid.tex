@@ -37,136 +37,240 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
 \subsection{Sparse-graph reverse decomposition}
 \label{sec:rigidity-matroid-sparse-reverse}
 
+In the induction of \cref{sec:rigidity-matroid-hard-direction} we
+remove a vertex from a $(2,3)$-sparse graph at each step, leaving a
+smaller $(2,3)$-sparse graph. We show here that such a vertex exists.
+The theorem is the $(2,3)$-sparse form of the reverse decomposition of
+\cref{sec:henneberg-decomp}, in which the vertex may also have degree
+one, and we use the notation $G - v$ and $G - v + ab$ of that
+section.
+
+Jord\'an~\cite{jordan2016} finds a vertex of degree one, two or three
+in his proof of Theorem~2.2.1 (p.~45). He proves the cases of degree
+two and three as his Lemma~2.1.4 (p.~44): if $v$ has degree two, then
+$G - v$ is sparse, and if $v$ has degree three, then $v$ has a
+suitable splitting (\cref{sec:isSparse-typeII-reverse-blocker}). His
+proof of the second part uses two facts about critical sets, which are
+our $(2,3)$-tight sets. The first is his Lemma~2.1.2, and the part of
+it that we use is \cref{thm:isTightOn-union-inter} at
+$(k,\ell) = (2,3)$. The second is his Lemma~2.1.3, which says in part
+that if three tight sets meet pairwise in exactly one vertex and have
+no vertex in common, then their union is tight. We prove the case of
+Lemma~2.1.3 that we need within the proof of the theorem.
+
 \begin{theorem}[Sparse-graph reverse decomposition]
   \label{thm:isSparse-exists-typeI-or-typeII-reverse}
   \lean{SimpleGraph.IsSparse.exists_typeI_or_typeII_reverse}
   \leanok
   \uses{def:isSparse, def:typeI, def:typeII}
-  Let $G$ be a $(2, 3)$-sparse graph on a finite vertex set $V$ with at
-  least one edge. Then there exists $v \in V$ with
-  $d_{G}(v) \in \{1, 2, 3\}$ admitting one of three reverses:
+  Let $V$ be finite, and let $G$ be a $(2,3)$-sparse graph on $V$ with
+  at least one edge. Then $G$ has a vertex $v$ for which one of the
+  following holds.
   \begin{enumerate}
-    \item ($d_{G}(v) = 1$, \emph{pendant reverse}) $v$ has a unique
-      neighbour $a$, and $G - v$ is $(2, 3)$-sparse.
-    \item ($d_{G}(v) = 2$, \emph{Type~I reverse}) $v$ has two distinct
-      neighbours $a \ne b$, and $G - v$ is $(2, 3)$-sparse.
-    \item ($d_{G}(v) = 3$, \emph{Type~II reverse}) $v$ has three
-      neighbours $\{u, w, z\} = N_{G}(v)$ with a non-adjacent pair
-      (say $\{u, w\}$) such that the graph $G^{u,w}_{v}$ obtained by
-      deleting $v$ and adding the edge $\{u, w\}$ is $(2, 3)$-sparse.
+    \item The vertex $v$ has degree one, with neighbour $a$, and
+      $G - v$ is $(2,3)$-sparse.
+    \item The vertex $v$ has degree two, with neighbours $a$ and $b$,
+      and $G - v$ is $(2,3)$-sparse.
+    \item The vertex $v$ has degree three, with neighbours $a$, $b$ and
+      $c$, where $a$ and $b$ are not adjacent, and $G - v + ab$ is
+      $(2,3)$-sparse.
   \end{enumerate}
+  Here $G - v$ is the graph on $V \setminus \{v\}$ obtained from $G$
+  by deleting $v$, and $G - v + ab$ is obtained from $G - v$ by adding
+  the edge $ab$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter,
     lem:isSparse-typeII-reverse-blocker,
     lem:isSparse-exists-nonadj-among-three-neighbors}
-  Restrict attention to $V_{+} := \{v \in V : d_{G}(v) \ge 1\}$; the
-  endpoints of any edge lie in $V_{+}$, so $|V_{+}| \ge 2$ and
-  $E(G[V_{+}]) = E(G)$. Since $G[V_{+}]$ is sparse (subgraph of
-  sparse) with $|V_{+}| \ge 2$ vertices and the same edge set, the
-  handshake / sparsity bound on $G[V_{+}]$ supplies a vertex $v$ with
-  $d_{G[V_{+}]}(v) \le 3$, hence the same $d_{G}(v) \le 3$ (no edges
-  to isolated vertices). In particular $d_{G}(v) \in \{1, 2, 3\}$.
+  We find $v$ by the argument of
+  \cref{lem:isSparse-exists-degree-le-three}, applied to the vertices
+  of positive degree. Let $U$ be the set of these vertices. Every edge
+  of $G$ has both ends in $U$. So $U$ spans every edge of $G$, and
+  $|U| \ge 2$, since $G$ has an edge. Sparsity at $U$ gives
+  $|E(G)| + 3 \le 2|U|$. If every vertex in $U$ had degree at least
+  four, the handshake identity would give
+  $2|E(G)| = \sum_{u \in U} \deg_G(u) \ge 4|U|$, a contradiction. So
+  some vertex $v$ has degree one, two or three.
 
-  The case $d_{G}(v) \le 2$ yields a pendant or Type~I reverse:
-  deleting $v$ removes $d_{G}(v)$ edges and sparsity is preserved
-  (sparse minus edges is sparse); the neighbour data is read off from
-  $|N_{G}(v)| = d_{G}(v)$ by cardinality.
+  If $v$ has degree one or two, then a set of vertices of $G - v$
+  spans the same edges in $G - v$ as in $G$, so $G - v$ is
+  $(2,3)$-sparse. For degree two this is Jord\'an's Lemma~2.1.4(a).
 
-  The case $d_{G}(v) = 3$
-  requires a suitable splitting on a non-adjacent pair of neighbours
-  (one exists by \cref{lem:isSparse-exists-nonadj-among-three-neighbors};
-  Jord\'an Lemma 2.1.4(b)): if no splitting at $v$ is suitable then the
-  per-pair tight-blocker (\cref{lem:isSparse-typeII-reverse-blocker})
-  yields three maximal
-  $(2, 3)$-tight sets $X_{uw}, X_{uz}, X_{wz} \subseteq V \setminus
-  \{v\}$ each containing exactly two neighbours of $v$, with pairwise
-  singleton intersections; the tight-union closure
-  (\cref{thm:isTightOn-union-inter}) and the three-pair tight-union
-  analogue (Jord\'an Lemma 2.1.3) make $X_{uw} \cup X_{uz} \cup
-  X_{wz}$ tight, forcing $d_{G}(v, X_{uw} \cup X_{uz} \cup X_{wz})
-  \ge 3$, which then contradicts the sparsity bound on $X_{uw} \cup
-  X_{uz} \cup X_{wz} \cup \{v\}$.
+  Let $v$ have degree three, with neighbours $a$, $b$ and $c$. We must
+  show that $v$ has a suitable splitting, that is, two neighbours $x$
+  and $y$ that are not adjacent and for which $G - v + xy$ is
+  $(2,3)$-sparse. Suppose that it has none. We use an observation from
+  Jord\'an's proof: no $(2,3)$-tight set $T$ with $v \notin T$ contains
+  all three neighbours of $v$. Otherwise
+  $T \cup \{v\}$ spans the edges inside $T$ and the edges $va$, $vb$
+  and $vc$, so that
+  \[
+    \bigl|\edgesIn{T \cup \{v\}}\bigr|
+    \;\ge\; \bigl|\edgesIn{T}\bigr| + 3
+    \;=\; 2|T| \;=\; 2\,|T \cup \{v\}| - 2,
+  \]
+  against sparsity. We derive a contradiction by constructing such a
+  set $T$.
+
+  If two neighbours of $v$ are not adjacent, the splitting of $v$ on
+  them is not suitable, so some tight set that does not contain $v$
+  contains both of them (\cref{lem:isSparse-typeII-reverse-blocker}).
+  At least one pair of neighbours of $v$ is not adjacent
+  (\cref{lem:isSparse-exists-nonadj-among-three-neighbors}). Jord\'an's
+  proof takes such a tight set for each of the three pairs; for an
+  adjacent pair, the pair itself is such a set. We follow the formal
+  proof instead, which distinguishes how many pairs are not adjacent.
+
+  Suppose first that only one pair is not adjacent, say $a$ and $b$.
+  Let $S$ be a tight set with $a, b \in S$ and $v \notin S$. If
+  $c \in S$, let $T = S$. Otherwise the edges $ca$ and $cb$ join $c$ to
+  $S$, and $T = S \cup \{c\}$ is tight by
+  \cref{thm:isTightOn-insert-vertex-with-edges} with $k = 2$.
+
+  Suppose next that exactly two pairs are not adjacent, say $a, c$ and
+  $b, c$, so that $ab$ is an edge. Let $S_1$ and $S_2$ be tight sets
+  that do not contain $v$, with $a, c \in S_1$ and $b, c \in S_2$, and
+  let $T = S_1 \cup S_2$. If $|S_1 \cap S_2| \ge 2$, then $T$ is tight
+  by \cref{thm:isTightOn-union-inter}. Otherwise
+  $S_1 \cap S_2 = \{c\}$, so $a \notin S_2$ and $b \notin S_1$. Then
+  the edge $ab$ lies inside $T$ but in neither $\edgesIn{S_1}$ nor
+  $\edgesIn{S_2}$. So \cref{thm:isTightOn-union-with-bonus} applies with
+  $F = \{ab\}$, where its hypothesis reads $0 + 3 \le 2 \cdot 1 + 1$,
+  and $T$ is tight.
+
+  Suppose finally that no two of $a$, $b$ and $c$ are adjacent. Let
+  $S_{ab}$, $S_{ac}$ and $S_{bc}$ be tight sets that do not contain
+  $v$, each containing the two vertices in its index. If two of them
+  meet in at least two vertices, then their union contains $a$, $b$
+  and $c$, and it is tight by \cref{thm:isTightOn-union-inter}; let $T$
+  be this union. Otherwise
+  \[
+    S_{ab} \cap S_{ac} = \{a\}, \qquad
+    S_{ab} \cap S_{bc} = \{b\}, \qquad
+    S_{ac} \cap S_{bc} = \{c\}.
+  \]
+  This is the configuration of Jord\'an's Lemma~2.1.3. We show that
+  $T = S_{ab} \cup S_{ac} \cup S_{bc}$ is tight by applying
+  supermodularity (\cref{lem:edgesIn-ncard-add-le}) twice. The set
+  $S_{ab} \cap S_{ac} = \{a\}$ spans no edge, so
+  \[
+    \bigl|\edgesIn{S_{ab}}\bigr| + \bigl|\edgesIn{S_{ac}}\bigr|
+    \;\le\; \bigl|\edgesIn{S_{ab} \cup S_{ac}}\bigr|.
+  \]
+  The set $(S_{ab} \cup S_{ac}) \cap S_{bc} = \{b, c\}$ spans no edge
+  either, since $b$ and $c$ are not adjacent, so
+  \[
+    \bigl|\edgesIn{S_{ab} \cup S_{ac}}\bigr| + \bigl|\edgesIn{S_{bc}}\bigr|
+    \;\le\; \bigl|\edgesIn{T}\bigr|.
+  \]
+  The three sets are tight, and
+  $|T| = |S_{ab}| + |S_{ac}| + |S_{bc}| - 3$. Hence
+  \[
+    \bigl|\edgesIn{T}\bigr|
+    \;\ge\; (2|S_{ab}| - 3) + (2|S_{ac}| - 3) + (2|S_{bc}| - 3)
+    \;=\; 2|T| - 3,
+  \]
+  and $T$ is tight by \cref{lem:isSparse-isTightOn-of-le}.
+
+  In each case $T$ is a tight set that contains $a$, $b$ and $c$ but
+  not $v$, which is impossible. So $v$ has a suitable splitting.
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:reverse-vs-lift-form}
-  The reverse decomposition above and the forward lifts below are
-  stated in complementary forms. The reverse is \emph{flat}: it
-  describes the smaller graph directly by its edges (``$G - v$ is
-  sparse'', ``$G^{u,w}_v$ is sparse''), without naming a Henneberg
-  constructor, because it takes an arbitrary $G$ and produces a
-  smaller witness --- the named operation is incidental. Each forward
-  lift is instead a statement \emph{about} a named extension: that
-  $\mathrm{typeI}\,G'\,a\,b$ or $\mathrm{typeII}\,G'\,a\,b\,c$
-  preserves row-independence, so the operation belongs in the
-  statement. The same split governs the rigidity-preservation lemmas
-  (\cref{thm:typeI-isGenericallyRigidInj-two},
-  \cref{thm:typeII-isGenericallyRigidInj-two}), stated in operation
-  form, and the Laman reverse decomposition
-  (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}), stated flat.
-  The two forms meet at callsites combining a reverse decomposition
-  with a forward lift: the flat reverse produces a
-  vertex-with-neighbourhood witness, from which the corresponding
-  $\mathrm{typeI}$ / $\mathrm{typeII}$ extension and its isomorphism
-  to $G$ are reconstructed by the project's isomorphism constructors
-  (\texttt{typeI\_iso\_of\_two\_neighbors},
-  \texttt{typeII\_iso\_of\_three\_neighbors}).
+  The theorem describes the smaller graphs $G - v$ and $G - v + ab$
+  directly, and not as graphs from which a move rebuilds $G$. In the
+  formalization the difference matters. A move produces a graph on a
+  new vertex set (\cref{fmlnote:henneberg-new-vertex}), so the move
+  applied to $G - v$ gives a graph isomorphic to $G$, not $G$ itself.
+  A reverse decomposition starts from $G$, and it is stated in terms of
+  $G$. The lifts of \cref{sec:rigidity-matroid-lifts}, like the results
+  of \cref{sec:henneberg-rigidity}, are statements about what a move
+  does, and they are stated for the graph that the move produces. Where
+  a proof uses both kinds of result, as in
+  \cref{thm:isSparse-exists-rowIndependent-placement}, we pass between
+  them by an isomorphism from $G$ to the graph obtained by the move,
+  built from the neighbours of $v$.
 \end{fmlnote}
 
 \subsection{Lifting row-independence through Henneberg moves}
 \label{sec:rigidity-matroid-lifts}
 
-The two Henneberg lifts are the inductive step of the converse. Each
-states: given a placement $p'$ of a smaller graph $G'$ at which the
-edge set is row-independent, the larger graph $G$ obtained by a
-Henneberg move admits a placement at which its edge set is
-row-independent.
+By \cref{lem:isSparse-of-rowIndependent-two}, an edge set that is
+row-independent at a framework in the plane with no three points
+collinear forms a $(2,3)$-sparse graph. In
+\cref{sec:rigidity-matroid-hard-direction} we prove the converse: the
+edge set of every $(2,3)$-sparse graph is row-independent at some
+framework in the plane. The two together characterize the
+independent sets of the rigidity matroid in the plane. This is
+Jord\'an's~\cite{jordan2016} Theorem~2.2.1, which he credits to
+Laman~\cite{laman1970}. We follow his proof (p.~45), an induction that
+removes a vertex by \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
+and puts it back by a Henneberg move.
 
-\begin{lemma}[Type~I row-independence: conditional core]
+In this subsection we prove the inductive step: if $E(G)$ is
+row-independent at a framework $p$, and $G'$ is obtained from $G$ by a
+move, then $E(G')$ is row-independent at some framework. For the
+Type~I move at $a$ and $b$ we assume that $p_a \ne p_b$. In Jord\'an's
+proof the step is his Lemmas~1.2.2 and~1.2.3 (p.~38): if the points
+involved are in general position, a $0$-extension or a $1$-extension
+in the plane raises the rank of the rigidity matrix by two. As in
+\cref{sec:henneberg-rigidity}, we first prove the statement for the
+framework $\hat p$ that extends a given framework $p$ by placing the
+new vertex $v$ at a given point $q$, and then choose $q$.
+
+\begin{lemma}[Row-independence under the Type~I move]
   \label{lem:typeI-rowIndependent-extend}
   \lean{SimpleGraph.Henneberg.typeI_edgeSetRowIndependent_extend}
   \leanok
   \uses{def:typeI, def:edgeSet-rowIndependent}
-  Let $G'$ be a graph on a finite vertex set $V$ and $p' : V \to \R^{2}$
-  a placement at which $E(G')$ is row-independent. Let $a, b \in V$ and
-  $q \in \R^{2}$, and suppose $q - p'_a$ and $q - p'_b$ are linearly
-  independent. Then the extended placement
-  $\hat p : \mathrm{Option}\,V \to \R^{2}$ with
-  $\hat p(\mathrm{none}) = q$ and $\hat p(\mathrm{some}\,u) = p'_u$ makes
-  $E(\mathrm{typeI}\,G'\,a\,b)$ row-independent.
+  Let $G$ be a graph on a finite set $V$, and let $p$ be a framework on
+  $V$ in $\R^{2}$ at which $E(G)$ is row-independent. Let $a, b \in V$,
+  and let $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$,
+  with new vertex $v$. Let $q \in \R^{2}$ be a point such that
+  $q - p_a$ and $q - p_b$ are linearly independent, and let $\hat p$ be
+  the framework on $V \cup \{v\}$ that agrees with $p$ on $V$ and
+  places $v$ at $q$. Then $E(G')$ is row-independent at $\hat p$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Row-independence analogue of
-  \cref{thm:typeI-isInfinitesimallyRigid-extend}. Partition
-  $E(\mathrm{typeI}\,G'\,a\,b)$ into the image of $E(G')$ under
-  $\mathrm{some}$ (``old'' edges) and the two new edges
-  $\{\mathrm{none}, \mathrm{some}\,a\}$, $\{\mathrm{none}, \mathrm{some}\,b\}$.
-  The old rigidity-rows at $\hat p$ are pullbacks under the restriction
-  $(\cdot \circ \mathrm{some}) : \mathrm{Framework}\,(\mathrm{Option}\,V)\,2
-  \to \mathrm{Framework}\,V\,2$ of the $G'$ rigidity-rows at $p'$;
-  surjectivity of this restriction makes its dual injective, so the
-  row-independence of the $G'$ family transfers.
+  For an edge $e$ of $G$, let $r_e$ be the rigidity row of $G$ at $p$
+  indexed by $e$, and for an edge $e$ of $G'$, let $\hat r_e$ be the
+  rigidity row of $G'$ at $\hat p$ indexed by $e$
+  (\cref{def:rigidityRow}). Since $q - p_a$ and $q - p_b$ are linearly
+  independent, $a \ne b$. So the edges of $G'$ are the edges of $G$ and
+  the two new edges $va$ and $vb$ (\cref{lem:typeI-edgeSet}). Suppose
+  that
+  \[
+    \sum_{e \in E(G)} c_e\, \hat r_e + c_a\, \hat r_{va}
+      + c_b\, \hat r_{vb} \;=\; 0.
+  \]
+  We show that every coefficient is zero.
 
-  The remaining linear-independence and disjointness facts both follow
-  from a parametric \emph{test motion} $x_\alpha : \mathrm{Option}\,V
-  \to \R^{2}$ defined by $x_\alpha(\mathrm{none}) = \alpha$ and
-  $x_\alpha \circ \mathrm{some} = 0$. Evaluating any new row at
-  $x_\alpha$ produces $\langle q - p'_a, \alpha \rangle$ or
-  $\langle q - p'_b, \alpha \rangle$; old rows evaluate to zero (their
-  inner-product arguments only see $x_\alpha \circ \mathrm{some} = 0$),
-  and the latter property extends to the entire old-row span by
-  linearity. For linear independence of the new rows, a vanishing
-  combination $c \cdot \mathrm{row}_a + d \cdot \mathrm{row}_b$ evaluated
-  at $x_\alpha$ reads $c \langle q - p'_a, \alpha\rangle + d \langle q -
-  p'_b, \alpha \rangle = 0$ for all $\alpha$, forcing $c(q - p'_a) + d(q -
-  p'_b) = 0$ and hence $c = d = 0$ by hypothesis. For disjointness of the
-  spans, a joint element with new-row representation $c \cdot
-  \mathrm{row}_a + d \cdot \mathrm{row}_b$ vanishes on every $x_\alpha$
-  (because it lies in the old-row span), so the same
-  coefficient-extraction forces $c = d = 0$ and the element is zero.
+  For $\alpha \in \R^{2}$, let $x^{\alpha} \in (\R^{2})^{V \cup \{v\}}$
+  give $v$ the velocity $\alpha$ and every vertex of $G$ the velocity
+  zero. If $e$ is an edge of $G$, then $\hat r_e(x^{\alpha}) = 0$,
+  since both ends of $e$ have velocity zero
+  (\cref{lem:rigidityMap-apply}). At a new edge,
+  $\hat r_{va}(x^{\alpha}) = \langle q - p_a,\, \alpha \rangle$.
+  Evaluating the relation at $x^{\alpha}$ therefore gives
+  $\langle c_a (q - p_a) + c_b (q - p_b),\, \alpha \rangle = 0$ for
+  every $\alpha$. Hence $c_a (q - p_a) + c_b (q - p_b) = 0$, and
+  $c_a = c_b = 0$, since $q - p_a$ and $q - p_b$ are linearly
+  independent.
+
+  It remains to show that $\sum_e c_e\, \hat r_e = 0$ forces every
+  $c_e$ to be zero. Let $\rho : (\R^{2})^{V \cup \{v\}} \to (\R^{2})^{V}$
+  be the restriction $x \mapsto x|_V$. If $e = uw$ is an edge of $G$,
+  then both $\hat r_e(x)$ and $r_e(\rho(x))$ equal
+  $\langle p_u - p_w,\, x_u - x_w \rangle$, so
+  $\hat r_e = r_e \circ \rho$. Hence
+  $\bigl(\sum_e c_e\, r_e\bigr) \circ \rho = 0$. Since $\rho$ is
+  surjective, $\sum_e c_e\, r_e = 0$. So every $c_e$ is zero, because
+  $E(G)$ is row-independent at $p$
+  (\cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}).
 \end{proof}
 
 \begin{lemma}[Type~I lift of row-independence]
@@ -175,148 +279,157 @@ row-independent.
   \leanok
   \uses{def:typeI, def:edgeSet-rowIndependent,
     lem:typeI-rowIndependent-extend}
-  Let $G'$ be a graph on a finite vertex set $V$ and $p' : V \to \R^{2}$
-  a placement at which $E(G')$ is row-independent. Let $a, b \in V$ be
-  two old vertices with $p'_a \ne p'_b$. Then there exists a placement
-  $p : \mathrm{Option}\,V \to \R^{2}$ with $p \circ \mathrm{some} = p'$
-  such that $E(\mathrm{typeI}\,G'\,a\,b)$ is row-independent at $p$.
+  Let $G$ be a graph on a finite set $V$, and let $p$ be a framework on
+  $V$ in $\R^{2}$ at which $E(G)$ is row-independent. Let $a, b \in V$
+  with $p_a \ne p_b$, and let $G'$ be obtained from $G$ by the Type~I
+  move at $a$ and $b$, with new vertex $v$. Then there is a framework
+  $\hat p$ on $V \cup \{v\}$ that agrees with $p$ on $V$ and at which
+  $E(G')$ is row-independent.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:typeI-rowIndependent-extend}
-  Pick $q$ off both the lines through $p'_a$ and through $p'_b$ in the
-  direction $p'_b - p'_a$ (equivalently, $q - p'_a$ and $q - p'_b$
-  linearly independent); the bad set is a finite union of one or two
-  lines in $\R^{2}$, so a generic $q$ works.
-  \Cref{lem:typeI-rowIndependent-extend} applies and gives
-  row-independence of $E(\mathrm{typeI}\,G'\,a\,b)$ at the extended
-  placement.
+  Since $p_a \ne p_b$, there is a unique line through $p_a$ and $p_b$.
+  Choose a point $q$ off this line. Then
+  $q - p_a$ and $q - p_b$ are linearly independent. Let $\hat p$ extend
+  $p$ by placing $v$ at $q$. Then $E(G')$ is row-independent at
+  $\hat p$ (\cref{lem:typeI-rowIndependent-extend}).
 \end{proof}
 
-The pendant reverse of a degree-$1$ vertex is handled by the
-degenerate Type~I move $\mathrm{typeI}\,G'\,a\,a$ ($b = a$), which
-joins the new vertex to the single old vertex $a$ --- the pendant
-attachment used by Lov\'asz--Yemini.
+A vertex of degree one, a pendant vertex, is put back by the Type~I
+move at $a$ and $a$, which adds a new vertex $v$ and the single edge
+$va$ (\cref{def:typeI}). Jord\'an's proof treats this case together
+with the Type~I move.
 
 \begin{lemma}[Pendant lift of row-independence]
   \label{lem:pendant-rowIndependent-lift}
   \lean{SimpleGraph.Henneberg.typeI_pendant_edgeSetRowIndependent_lift}
   \leanok
   \uses{def:edgeSet-rowIndependent}
-  Let $G'$ be a graph on a finite vertex set $V$ and $p' : V \to
-  \R^{2}$ a placement at which $E(G')$ is row-independent. Let
-  $a \in V$ be an old vertex. Then there exists a placement
-  $p : \mathrm{Option}\,V \to \R^{2}$ with $p \circ \mathrm{some} = p'$
-  such that $E(\mathrm{typeI}\,G'\,a\,a)$ is row-independent at $p$.
+  Let $G$ be a graph on a finite set $V$, let $p$ be a framework on $V$
+  in $\R^{2}$ at which $E(G)$ is row-independent, and let $a \in V$.
+  Let $G'$ be obtained from $G$ by the Type~I move at $a$ and $a$, with
+  new vertex $v$. Then there is a framework $\hat p$ on $V \cup \{v\}$
+  that agrees with $p$ on $V$ and at which $E(G')$ is row-independent.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:edgeSet-rowIndependent}
-  Pick $q \in \R^{2}$ with $q \ne p'_{a}$ (such $q$ exists since
-  $\R^{2}$ is uncountable). The edge set of $\mathrm{typeI}\,G'\,a\,a$
-  partitions into the image of $E(G')$ under $\mathrm{some}$ and the
-  single new edge $\{\mathrm{none}, \mathrm{some}\,a\}$. The old
-  rigidity-rows at the extended $\hat p$ pull back under the restriction
-  $(\cdot \circ \mathrm{some})$, whose dual map is injective (the
-  restriction is surjective), so the old rows' row-independence
-  transfers. The single new row is non-zero (witnessed by the motion
-  $\mathrm{none} \mapsto q - p'_{a}, \mathrm{some}\,u \mapsto 0$, which
-  evaluates the new row to $\|q - p'_{a}\|^2 > 0$). Disjointness of the
-  spans uses the same test motion $x_\alpha(\mathrm{none}) = \alpha,
-  x_\alpha \circ \mathrm{some} = 0$ as in
-  \cref{lem:typeI-rowIndependent-extend}: any joint element vanishes
-  at $x_\alpha$, forcing $c \cdot \langle q - p'_{a}, \alpha \rangle
-  = 0$ for all $\alpha$, hence $c = 0$.
+  Choose a point $q \ne p_a$, and let $\hat p$ extend $p$ by placing
+  $v$ at $q$. Let $r_e$, $\hat r_e$ and $x^{\alpha}$ be as in the proof
+  of \cref{lem:typeI-rowIndependent-extend}. The edges of $G'$ are the
+  edges of $G$ and the new edge $va$. Suppose that
+  $\sum_{e \in E(G)} c_e\, \hat r_e + c_a\, \hat r_{va} = 0$.
+  Evaluating this relation at $x^{\alpha}$ with $\alpha = q - p_a$
+  gives $c_a |q - p_a|^{2} = 0$, so $c_a = 0$. Then
+  $\sum_e c_e\, \hat r_e = 0$, and every $c_e$ is zero, as in the proof
+  of \cref{lem:typeI-rowIndependent-extend}.
 \end{proof}
 
-\begin{lemma}[Type~II row-independence: conditional core]
+\begin{lemma}[Row-independence under the Type~II move]
   \label{lem:typeII-rowIndependent-extend}
   \lean{SimpleGraph.Henneberg.typeII_edgeSetRowIndependent_extend}
   \leanok
   \uses{def:typeII, def:edgeSet-rowIndependent}
-  Let $G'$ be a graph on a finite vertex set $V$ with
-  $\{a, b\} \in E(G')$, and $p' : V \to \R^{2}$ a placement at which
-  $E(G')$ is row-independent. Let $a, b, c \in V$ and
-  $q \in \R^{2}$ with $q$ collinear with $p'_a, p'_b$ but distinct
-  from both --- that is, $q - p'_a = s \cdot (p'_b - p'_a)$ for some
-  $s \ne 0, 1$ --- and suppose $q - p'_a, q - p'_c$ are linearly
-  independent. Then the extended placement
-  $\hat p : \mathrm{Option}\,V \to \R^{2}$ with $\hat p(\mathrm{none})
-  = q$ and $\hat p(\mathrm{some}\,u) = p'_u$ makes
-  $E(\mathrm{typeII}\,G'\,a\,b\,c)$ row-independent.
+  Let $G$ be a graph on a finite set $V$, let $ab$ be an edge of $G$,
+  and let $p$ be a framework on $V$ in $\R^{2}$ at which $E(G)$ is
+  row-independent. Let $c \in V$, and let $G'$ be obtained from $G$ by
+  the Type~II move on $ab$ and $c$, with new vertex $v$. Let
+  $q = p_a + s\,(p_b - p_a)$ for a real number $s \ne 0, 1$, suppose
+  that $q - p_a$ and $q - p_c$ are linearly independent, and let
+  $\hat p$ be the framework on $V \cup \{v\}$ that agrees with $p$ on
+  $V$ and places $v$ at $q$. Then $E(G')$ is row-independent at
+  $\hat p$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Row-independence analogue of
-  \cref{thm:typeII-isInfinitesimallyRigid-extend}. The edge set of
-  $\mathrm{typeII}\,G'\,a\,b\,c$ partitions into the image of
-  $E(G') \setminus \{\{a, b\}\}$ under $\mathrm{some}$ (``old'' edges)
-  and the three new edges $\{\mathrm{none}, \mathrm{some}\,a\}$,
-  $\{\mathrm{none}, \mathrm{some}\,b\}$,
-  $\{\mathrm{none}, \mathrm{some}\,c\}$. The two new rows for
-  $\{\mathrm{none}, \mathrm{some}\,a\}$ and
-  $\{\mathrm{none}, \mathrm{some}\,b\}$ are scalar multiples of
-  $p'_b - p'_a$ in their $\mathrm{some}\,a$- and
-  $\mathrm{some}\,b$-columns: collinearity of $q$ with $p'_a, p'_b$
-  forces $q - p'_a = s(p'_b - p'_a)$ and $q - p'_b = (s-1)(p'_b -
-  p'_a)$. A direct computation gives the identity
-  \[ s \cdot \mathrm{row}_b - (s-1) \cdot \mathrm{row}_a
-      = -s(s-1) \cdot T(\mathrm{row}_{G'}\{a, b\}), \]
-  where $T$ is the dual (pullback) of the restriction
-  $\cdot \circ \mathrm{some}$ (injective since $\mathrm{some}$ is, so
-  its dual map is injective via surjectivity of the restriction).
-  Thus $\mathrm{span}\{\mathrm{row}_a, \mathrm{row}_b\}$ contains
-  $T(\mathrm{row}_{G'}\{a, b\})$, recovering the deleted $G'$-row.
+  Let $r_e$, $\hat r_e$, $x^{\alpha}$ and $\rho$ be as in the proof of
+  \cref{lem:typeI-rowIndependent-extend}. The vertices $a$, $b$ and $c$
+  are distinct: $a \ne b$ since $ab$ is an edge, and $c \ne a, b$ since
+  $q - p_a$ and $q - p_c$ are linearly independent. So the edges of
+  $G'$ are the edges of $G$ other than $ab$ and the three new edges
+  $va$, $vb$ and $vc$ (\cref{lem:typeII-edgeSet}). Suppose that
+  \[
+    \sum_{e} c_e\, \hat r_e + c_a\, \hat r_{va} + c_b\, \hat r_{vb}
+      + c_c\, \hat r_{vc} \;=\; 0,
+  \]
+  where $e$ runs over the edges of $G$ other than $ab$.
 
-  Linear independence of the three new rows uses two test motions:
-  the $\mathrm{none}$-only motion $x_\alpha$ pins
-  $sc_a + (s-1)c_b = 0$ and $c_c = 0$; a motion with
-  $\mathrm{some}\,a \mapsto q - p'_a$ and all other coordinates zero
-  pins $c_a = 0$ (using $s \ne 0$ and $q \ne p'_a$).
+  Let $\delta = p_b - p_a$, so that $q - p_a = s\,\delta$ and
+  $q - p_b = (s - 1)\,\delta$. Evaluating the relation at $x^{\alpha}$
+  gives
+  \[
+    \bigl\langle (s c_a + (s - 1) c_b)\,\delta + c_c\,(q - p_c),\;
+      \alpha \bigr\rangle \;=\; 0
+  \]
+  for every $\alpha$, so
+  $(s c_a + (s - 1) c_b)\,\delta + c_c\,(q - p_c) = 0$. Since
+  $s \ne 0$, the vector $\delta$ is a multiple of $q - p_a$, and
+  $q - p_a$ and $q - p_c$ are linearly independent. Hence
+  $s c_a + (s - 1) c_b = 0$ and $c_c = 0$.
 
-  Disjointness between the lifted-old span (the image of $T$ on the
-  rows of $E(G') \setminus \{\{a, b\}\}$) and the new-row span runs the
-  same test-motion argument to produce $sc_a + (s-1)c_b = 0$ and
-  $c_c = 0$; the surviving combination $c_a \cdot \mathrm{row}_a +
-  c_b \cdot \mathrm{row}_b$ then equals $s c_a \cdot
-  T(\mathrm{row}_{G'}\{a, b\})$ by the identity above. If
-  $s c_a \ne 0$, dividing recovers $T(\mathrm{row}_{G'}\{a, b\})$ from
-  the lifted-old span, hence (by injectivity of $T$)
-  $\mathrm{row}_{G'}\{a, b\}$ from the $G'$-row span on
-  $E(G') \setminus \{\{a, b\}\}$, contradicting the row-independence of
-  $E(G')$. So $c_a = 0$, then $c_b = 0$ by the first equation, and the
-  entire combination vanishes.
+  We use the first equation to recover the row of the deleted edge
+  $ab$, as in the proof of
+  \cref{thm:typeII-isInfinitesimallyRigid-extend}. For every $x$ we
+  have, by \cref{lem:rigidityMap-apply} and the first equation,
+  \[
+    c_a\, \hat r_{va}(x) + c_b\, \hat r_{vb}(x)
+    \;=\; s c_a \langle \delta,\, x_v - x_a \rangle
+      + (s - 1) c_b \langle \delta,\, x_v - x_b \rangle
+    \;=\; s c_a \langle \delta,\, x_b - x_a \rangle,
+  \]
+  and $\langle \delta,\, x_b - x_a \rangle
+  = \langle p_a - p_b,\, x_a - x_b \rangle = r_{ab}(\rho(x))$. So
+  $c_a\, \hat r_{va} + c_b\, \hat r_{vb} = s c_a\, (r_{ab} \circ \rho)$.
+  The other rows satisfy $\hat r_e = r_e \circ \rho$, so the relation
+  becomes
+  \[
+    \Bigl(\sum_{e} c_e\, r_e + s c_a\, r_{ab}\Bigr) \circ \rho \;=\; 0.
+  \]
+  Since $\rho$ is surjective, $\sum_e c_e\, r_e + s c_a\, r_{ab} = 0$.
+  As $E(G)$ is row-independent at $p$, every $c_e$ is zero and
+  $s c_a = 0$. So $c_a = 0$, since $s \ne 0$, and then $c_b = 0$, since
+  $s \ne 1$.
 \end{proof}
 
-\begin{lemma}[Row-independence is open in the placement]
+For the Type~II move we move one point of the framework slightly, as
+in the proof of \cref{thm:typeII-isGenericallyRigidInj-two}. This
+needs row-independence to be an open condition on the framework, as
+infinitesimal rigidity is (\cref{lem:isInfinitesimallyRigid-eventually}).
+In the induction we also transport row-independence along graph
+isomorphisms, as we did for infinitesimal rigidity
+(\cref{lem:isInfinitesimallyRigid-iso}).
+
+\begin{lemma}[Row-independence is an open condition on the framework]
   \label{lem:edgeSet-rowIndependent-eventually}
   \lean{SimpleGraph.EdgeSetRowIndependent.eventually}
   \leanok
   \uses{def:edgeSet-rowIndependent, def:rigidityRow,
     lem:isInfinitesimallyRigid-eventually}
-  Let $G$ be a graph on a finite vertex set $V$. If
-  $p_0 : V \to \R^{d}$ makes an edge subset $I \subseteq E(G)$
-  row-independent, then so does every placement in some neighborhood
-  of $p_0$.
+  Let $G$ be a graph on a finite set $V$, let $I \subseteq E(G)$, and
+  let $p_0$ be a framework on $V$ in $\R^{d}$ at which $I$ is
+  row-independent. Then $I$ is row-independent at every framework in
+  some neighbourhood of $p_0$ in $(\R^{d})^{V}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Row-independence analogue of
-  \cref{lem:isInfinitesimallyRigid-eventually}. Since
-  $\mathrm{Module.Dual}\,\R\,(\mathrm{Framework}\,V\,d)$ carries no
-  canonical norm, transport the linear-independence assertion to
-  $\R^{n}$ (with $n = \dim\,\mathrm{Framework}\,V\,d$) along the basis
-  isomorphism $\psi : \mathrm{Dual} \to \R^{n}$, $\psi\,l\,i = l(b\,i)$
-  for a fixed basis $b$ of $\mathrm{Framework}\,V\,d$.
+  Fix a basis $\xi_1, \dots, \xi_n$ of $(\R^{d})^{V}$. A linear
+  functional $\ell$ on $(\R^{d})^{V}$ is determined by the vector
+  $(\ell(\xi_1), \dots, \ell(\xi_n)) \in \R^{n}$, and the map sending
+  $\ell$ to this vector is a linear isomorphism. For a framework $p$,
+  let $r_e$ be the rigidity row of $G$ at $p$ indexed by $e$
+  (\cref{def:rigidityRow}). By
+  \cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow} and
+  this isomorphism, $I$ is row-independent at $p$ if and only if the
+  vectors $(r_e(\xi_1), \dots, r_e(\xi_n))$, for $e \in I$,
+  are linearly independent in $\R^{n}$.
 
-  The matrix family
-  $p \mapsto (i, k) \mapsto \mathrm{rigidityRow}\,G\,p\,i\,(b\,k)$ is
-  continuous in $p$ (each entry is an inner product, jointly continuous
-  in $(p, b\,k)$ with $b\,k$ fixed) and equals the $\psi$-image of a
-  linearly independent family at $p_0$; linear independence is open in a
-  finite-dimensional normed space, so it persists on a neighborhood, and
-  transporting back along $\psi^{-1}$ (a linear equivalence preserves
-  linear independence in both directions) gives the claim.
+  For $e = uw$, the entry $r_e(\xi_k)$ is the inner product of
+  $p_u - p_w$ with $(\xi_k)_u - (\xi_k)_w$
+  (\cref{lem:rigidityMap-apply}), so it depends continuously on $p$.
+  Linear independence of finitely many vectors in $\R^{n}$ is an open
+  condition. Hence it holds for every $p$ in some neighbourhood of
+  $p_0$.
 \end{proof}
 
 \begin{lemma}[Row-independence transports along a graph isomorphism]
@@ -324,25 +437,28 @@ attachment used by Lov\'asz--Yemini.
   \lean{SimpleGraph.EdgeSetRowIndependent.iso}
   \leanok
   \uses{def:edgeSet-rowIndependent, def:rigidityRow}
-  Let $\varphi : G \simeq H$ be a graph isomorphism between finite
-  graphs and $q$ a framework of $H$. If every edge of $H$ is
-  row-independent at $q$, then every edge of $G$ is row-independent at
-  the pulled-back placement $q \circ \varphi$.
+  Let $G$ and $H$ be graphs on finite sets $V$ and $W$, let $\varphi$
+  be an isomorphism from $G$ to $H$, and let $q$ be a framework on $W$
+  in $\R^{d}$. If $E(H)$ is row-independent at $q$, then $E(G)$ is
+  row-independent at $q \circ \varphi$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Row-independence analogue of \cref{lem:isInfinitesimallyRigid-iso}.
-  Precomposition with $\varphi^{-1}$ is an $\R$-linear equivalence
-  $L_\varphi : \mathrm{Framework}\,V\,d \xrightarrow{\sim}
-  \mathrm{Framework}\,W\,d$, $m \mapsto m \circ \varphi^{-1}$. A direct
-  computation on $e = \{u, w\} \in E(G)$ gives
-  $\mathrm{rigidityRow}\,G\,(q \circ \varphi)\,e =
-  L_\varphi^{*}\bigl(\mathrm{rigidityRow}\,H\,q\,(\varphi\,e)\bigr)$,
-  where $\varphi$ acts on edges via $\mathrm{Sym2.map}$. The $H$-row
-  family is linearly independent by hypothesis; reindexing along the
-  edge-set bijection $\varphi_E : E(G) \xrightarrow{\sim} E(H)$ and
-  applying the dual of a linear equivalence (an injective linear map)
-  both preserve linear independence.
+  Let $L : (\R^{d})^{V} \to (\R^{d})^{W}$ be the linear isomorphism
+  $x \mapsto x \circ \varphi^{-1}$. For an edge $e = uv$ of $G$, let
+  $r_e$ be the rigidity row of $G$ at $q \circ \varphi$ indexed by $e$,
+  and let $r^{H}_{\varphi(e)}$ be the rigidity row of $H$ at $q$
+  indexed by the edge $\varphi(u)\varphi(v)$ (\cref{def:rigidityRow}).
+  Both $r_e(x)$ and $r^{H}_{\varphi(e)}(L(x))$ equal
+  $\langle q_{\varphi(u)} - q_{\varphi(v)},\, x_u - x_v \rangle$, so
+  $r_e = r^{H}_{\varphi(e)} \circ L$.
+
+  Suppose that $\sum_e c_e\, r_e = 0$. Then
+  $\bigl(\sum_e c_e\, r^{H}_{\varphi(e)}\bigr) \circ L = 0$, and so
+  $\sum_e c_e\, r^{H}_{\varphi(e)} = 0$, since $L$ is surjective. The
+  map $e \mapsto \varphi(e)$ is a bijection from the edges of $G$ to
+  those of $H$, and $E(H)$ is row-independent at $q$. So every $c_e$
+  is zero.
 \end{proof}
 
 \begin{lemma}[Type~II lift of row-independence]
@@ -351,37 +467,45 @@ attachment used by Lov\'asz--Yemini.
   \leanok
   \uses{def:typeII, def:edgeSet-rowIndependent,
     lem:typeII-rowIndependent-extend}
-  Let $G'$ be a graph on a finite vertex set $V$, $\{u, w\} \in E(G')$,
-  and $z \in V$ a third vertex distinct from $u$ and $w$. Let $p' :
-  V \to \R^{2}$ be a placement at which $E(G')$ is row-independent.
-  Let $G$ be the Type~II extension of $G'$ deleting $\{u, w\}$ and
-  adding a fresh vertex $\star$ adjacent to $u, w, z$. Then there
-  exists a placement $p$ of $V \sqcup \{\star\}$ at which $E(G)$ is
-  row-independent.
+  Let $G$ be a graph on a finite set $V$, let $ab$ be an edge of $G$,
+  and let $c \in V$ be distinct from $a$ and $b$. Let $p$ be a
+  framework on $V$ in $\R^{2}$ at which $E(G)$ is row-independent, and
+  let $G'$ be obtained from $G$ by the Type~II move on $ab$ and $c$,
+  with new vertex $v$. Then there is a framework on $V \cup \{v\}$ at
+  which $E(G')$ is row-independent.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:typeII-rowIndependent-extend,
     lem:edgeSet-rowIndependent-eventually}
-  Apply \cref{lem:typeII-rowIndependent-extend} to a placement $p'$
-  perturbed to make $p'(u), p'(w), p'(z)$ non-collinear (otherwise
-  the third new row $\{\star, z\}$ would collapse into the span of
-  the first two). The perturbation translates $p'(z)$ along a
-  direction outside the line through $p'(u), p'(w)$;
-  \cref{lem:edgeSet-rowIndependent-eventually} permits the
-  perturbation magnitude to be taken arbitrarily small, preserving
-  row-independence of $E(G')$.
+  We shall place $v$ on the line through $p_a$ and $p_b$, which needs
+  $p_c$ off this line (\cref{lem:typeII-rowIndependent-extend}). So we
+  first move $p$, keeping $E(G)$ row-independent, until $p_a$, $p_b$
+  and $p_c$ are not collinear. The row $r_{ab}$ of $R(G, p)$ is not
+  zero, since $E(G)$ is row-independent at $p$. Hence $p_a \ne p_b$
+  (\cref{lem:rigidityMap-apply}). If $p_b - p_a$ and $p_c - p_a$ are
+  linearly independent, we keep $p$.
 
-  With the non-collinear placement in hand, set
-  $s := 1/2$ and place $p(\star) := p(u) + s \cdot (p(w) - p(u))$.
-  Then $s \ne 0, 1$ and the auxiliary linear independence
-  $p(\star) - p(u), p(\star) - p(z)$ follows from non-collinearity
-  (row operations on $(s \cdot (p(w) - p(u)), s \cdot (p(w) - p(u))
-  - (p(z) - p(u)))$ produce $(p(w) - p(u), p(z) - p(u))$).
-  \Cref{lem:typeII-rowIndependent-extend} then applies. The
-  $p'(u) \ne p'(w)$ requirement of the perpendicular direction is
-  supplied by the row-independence of $E(G')$: a zero rigidity row at
-  the edge $\{u, w\}$ would contradict linear independence.
+  Otherwise $p_c - p_a = \gamma\,(p_b - p_a)$ for some $\gamma \in \R$.
+  Choose a vector $w \in \R^{2}$ such that $w$ and $p_b - p_a$ are
+  linearly independent. For $t \in \R$, let $p^{t}$ be the framework
+  that agrees with $p$ except at $c$, where $p^{t}_c = p_c + t\,w$. The
+  map $t \mapsto p^{t}$ is continuous, and $p^{0} = p$. So $E(G)$ is
+  row-independent at $p^{t}$ for every $t$ close enough to $0$
+  (\cref{lem:edgeSet-rowIndependent-eventually}). Since $c$ is neither
+  $a$ nor $b$, we have $p^{t}_b - p^{t}_a = p_b - p_a$ and
+  $p^{t}_c - p^{t}_a = \gamma\,(p_b - p_a) + t\,w$. For $t \ne 0$ these
+  two vectors are linearly independent, because $w$ and $p_b - p_a$
+  are. Choose $t \ne 0$ close enough to $0$, and replace $p$ by
+  $p^{t}$.
+
+  Now let $q = p_a + \tfrac{1}{2}(p_b - p_a)$, the midpoint of $p_a$
+  and $p_b$. Then $q - p_a = \tfrac{1}{2}(p_b - p_a)$ and
+  $q - p_c = \tfrac{1}{2}(p_b - p_a) - (p_c - p_a)$. These two vectors
+  are linearly independent, because $p_b - p_a$ and $p_c - p_a$ are.
+  So \cref{lem:typeII-rowIndependent-extend} applies with
+  $s = \tfrac{1}{2}$, and $E(G')$ is row-independent at the framework
+  that extends $p$ by placing $v$ at $q$.
 \end{proof}
 
 \subsection{The hard direction}

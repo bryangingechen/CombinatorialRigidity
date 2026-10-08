@@ -1574,22 +1574,25 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
       exposited in full**, node-by-node with accurate Jordán citations: critical-
       set (= project *tight subset*) union/intersection closure = Jordán Lemma
       2.1.2 = `thm:isTightOn-union-inter` (`sparsity.tex`, full proof); three-pair
-      critical-set union = Jordán Lemma 2.1.3, argued in the Lean's three-blocker
-      case of `thm:isSparse-exists-typeI-or-typeII-reverse`, with no node of its own
+      critical-set union = Jordán Lemma 2.1.3, argued (the case it needs) in the
+      three-blocker case of `thm:isSparse-exists-typeI-or-typeII-reverse`'s proof,
+      Lean and prose alike, with no node of its own
       (`thm:isTightOn-union-with-bonus`, full proof, is the two-set count its
       two-blocker case uses; this entry's earlier "union-with-bonus composed twice"
       was wrong: PROSE round 1 task 5.2, `notes/Prose-findings.md` `F-016`); the
       blocker half of the splitting observation ("splitting not suitable ⟹ ∃
       critical `X ⊇ {u,w}` with `v ∉ X`") = `lem:isSparse-typeII-reverse-blocker`
       (`sparsity.tex` §"Splittings and tight sets", full proof); the overshoot
-      observation + maximal-set assembly =
+      observation + the assembly =
       `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`), whose
-      proof reproduces Jordán 2.1.4(b) with the chapter preamble mapping each node
-      to its Jordán lemma number; and the non-adjacent-pair existence =
-      `lem:isSparse-exists-nonadj-among-three-neighbors` (full proof). The argument
-      is followable end-to-end across these green nodes. (ii) The **un-exposited
-      residual is project-side Lean bookkeeping** — the contradiction-template
-      organization (`IsSparse.contradiction_{one,two,three}_pair`,
+      proof gives Jordán 2.1.4(b) in full, split as the Lean is by the number of
+      non-adjacent neighbour pairs, with its subsection's lead-in mapping the steps
+      to Jordán's lemma numbers (PROSE round 1 task 5.9); and the non-adjacent-pair
+      existence = `lem:isSparse-exists-nonadj-among-three-neighbors` (full proof).
+      The argument is followable end-to-end across these green nodes. (ii) The
+      **residual beyond Jordán's argument is project-side Lean bookkeeping** — the
+      contradiction-template organization (which the prose proof follows as its
+      case split since task 5.9; `IsSparse.contradiction_{one,two,three}_pair`,
       `False_of_pairwise_blocker_or_edge`), the LoC budget, the "1-deficient
       intermediate" primitive-shape mismatch (`notes/Phase5.md` *Appendix*) — the
       header's Lean-modelling / "mathematical difficulty, not Lean verbosity"

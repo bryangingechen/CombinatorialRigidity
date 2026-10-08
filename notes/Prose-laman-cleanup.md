@@ -5,11 +5,12 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.8 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.9 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first eight slices, `sparsity.tex` through `laman-theorem.tex`. **Next concrete
-task:** task 5.9, the first part of `rigidity-matroid.tex`. Round manual: `CLEANUP.md`.
+PI*), and the first nine slices, `sparsity.tex` through the first part of `rigidity-matroid.tex`.
+**Next concrete task:** task 5.10, the rest of `rigidity-matroid.tex` and its opening. Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,15 +55,15 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The eighth slice has landed** (task 5.8, this commit): the rest of `laman-theorem.tex`, now
-331–513, and its opening, now 1–28, so the chapter is done (5.7's text is now 30–329). Tasks
-5.1–5.7 rewrote `sparsity.tex` through the first part of `laman-theorem.tex`. The register is
-*Scope*'s. Nothing is mid-stream; task 5.9 is next.
+**The ninth slice has landed** (task 5.9, this commit): `rigidity-matroid.tex`'s sparse reverse
+decomposition and Henneberg lifts, now 37–509; the rest of the chapter is now 511–820. Tasks
+5.1–5.8 rewrote `sparsity.tex` through `laman-theorem.tex`. The register is *Scope*'s. Nothing
+is mid-stream; task 5.10 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (153 overfull boxes, none in
-  `laman-theorem.tex`; 155 at `2e09aae1`). The screens on `laman-theorem` read 0 and 0 / 0 (the
-  open's: 0 and 11 / 39).
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (151 overfull boxes, none in
+  37–509; 153 at `318020da`). The screens on `rigidity-matroid` read 0 and 3 / 28 (the open's: 1
+  and 17 / 95), all of them in 5.10's part; 37–509 reads 0 and 0 / 0.
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -280,13 +281,14 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   - [x] **5.7 `laman-theorem.tex`, first part** (`2e09aae1`; 9 nodes; 30–329 now): the rows as
     functionals $r_e$ with the transpose; mathlib names out; the count credited to Maxwell (new key
     `maxwell1864`), the characterization to Laman. Found `F-025`, `F-026`.
-  - [x] **5.8 `laman-theorem.tex`, second part and opening** (this commit; 4 nodes; 331–513 and
-    1–28 now): a roadmap opening crediting Laman (Jordán's Theorem 2.2.2); the perturbation and
+  - [x] **5.8 `laman-theorem.tex`, second part and opening** (`318020da`; 4 nodes; 331–513 and
+    1–28): a roadmap opening crediting Laman (Jordán's Theorem 2.2.2); the perturbation and
     sparsity proofs in words, with $r_e = r'_e \circ \rho$. Found `F-027`.
-  - [ ] **5.9 `rigidity-matroid.tex`, first part**: the sparse reverse decomposition and the
-    Henneberg lifts (37–386); 8 nodes, 350 lines.
+  - [x] **5.9 `rigidity-matroid.tex`, first part** (this commit; 8 nodes; 37–386, now 37–509):
+    the degree-three case in the Lean's split by non-adjacent pairs, Jordán's 2.1.3 argued inline;
+    the lifts as moves in words ($v$, $\hat p$, $\hat r_e = r_e \circ \rho$). Found `F-028`.
   - [ ] **5.10 `rigidity-matroid.tex`, second part and opening**: the hard direction, the matroid
-    and the linear framing (387–696), and the opening (1–36); 10 nodes, 346 lines.
+    and the linear framing (511–820), and the opening (1–36); 10 nodes, 346 lines.
   - [ ] **5.11 `count-matroid.tex`**: 8 nodes, 306 lines.
   - [ ] **5.12 `dfs.tex`** (carve-out): 5 nodes, 179 lines.
   - [ ] **5.13 `pebble-game.tex`, state, invariants and the basic algorithm** (carve-out; 61–410):
@@ -324,6 +326,8 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   finitely many edges.
 - `F-027` (S, task 5.8): `lem:isSparse-of-rowIndependent-two` assumes $V$ finite; its pin does
   not.
+- `F-028` (S, task 5.9): five lift and transport nodes of `rigidity-matroid.tex` assume their
+  vertex sets finite; their pins do not.
 
 ## Moved to a later round
 
@@ -367,53 +371,53 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.9**, the ninth slice: `rigidity-matroid.tex`'s first part, the sparse reverse
-decomposition and the Henneberg lifts (37–386); 8 nodes, 350 lines. The chapter's opening (1–36)
-is task 5.10's. Its diagnosis is under *Per-chapter diagnosis*, its gates under *Scope*, and the
-register is *Scope*'s. What 5.9 must know:
-- **The new vertex.** The lifts write $\hat p : \mathrm{Option}\,V \to \R^2$ with $\mathrm{none}$
-  and $\mathrm{some}$ (136–272), and $V \sqcup \{\star\}$ (358–378); one notation should hold
-  chapter-wide. The round's: "let $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$" (or
-  "the Type~II move on $ab$ and $c$"), new vertex $v$, and $\hat p$ for $p$ extended by placing $v$
-  at $q$ (`henneberg-rigidity.tex`); the encoding is explained once, in
-  `fmlnote:henneberg-new-vertex`, which a statement can `\cref`. Jordán's proof of his Theorem
-  2.2.1 (p. 45), an induction with Lemmas 1.2.2–1.2.3 and openness, is the model for the lifts.
-- **Names and credits.** The chapter names `typeI_iso_of_two_neighbors` and
+**Next: task 5.10**, the tenth slice: the rest of `rigidity-matroid.tex`, the hard direction, the
+matroid and the linear framing (511–820), and then the chapter's opening (1–36), last (principle
+F); 10 nodes, 346 lines. Its diagnosis is under *Per-chapter diagnosis*, its gates under *Scope*,
+and the register is *Scope*'s. What 5.10 must know:
+- **Notation fixed by 5.9** (37–509). The lifts state the moves in words: $G$ on $V$ with
+  framework $p$, "$G'$ obtained from $G$ by the Type~I move at $a$ and $b$, with new vertex $v$",
+  and $\hat p$ extending $p$ by placing $v$ at $q$; the pendant move is "the Type~I move at $a$
+  and $a$". The rows are $r_e$ of $G$ at $p$ and $\hat r_e$ of $G'$ at $\hat p$, with the
+  restriction $\rho : x \mapsto x|_V$ and $\hat r_e = r_e \circ \rho$ (proof of
+  `lem:typeI-rowIndependent-extend`). The decomposition's cases are degree one, two and three,
+  with $G - v$ and $G - v + ab$. The hard direction's proof still writes $H'$, $p'$,
+  $\mathrm{typeI}\,H'\,a\,a$ and $\mathrm{typeII}\,H'\,x\,y\,c$: restate it in this notation.
+  Jordán inducts on $|E|$, the Lean on $|V|$; the proof should name the one it runs on.
+- **Names and credits.** The hard direction names `typeI_iso_of_two_neighbors` and
   `typeII_iso_of_three_neighbors`, which name no declaration (the Lean's are
-  `Henneberg.isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors`). Line 199's "attachment used
-  by Lovász–Yemini" is `F-025`'s. `lem:typeI-rowIndependent-lift`'s "one or two lines" are one
-  line. From 5.2: the decomposition's "per-pair tight-blocker" and $G^{u,w}_v$ should match
-  `sparsity.tex`'s *splitting* and $G - v + xy$.
-- **The rows, from 5.7–5.8.** The row of $R(G, p)$ at $e$ is the functional
-  $r_e \in ((\R^d)^V)^*$ (`def:rigidityRow`), with the transpose $R(G, p)^{\top}$. The proof of
-  `lem:isSparse-of-rowIndependent-two` writes the restriction $\rho : x \mapsto x|_S$ and
-  $r_e = r'_e \circ \rho$; the lifts' transport rests on the same identity, with $\rho$ the
-  restriction to the old vertices (`rigidityRow_lift_eq_funLeft_dualMap`). "The spanning subgraph
-  of $G$ with edge set $I$" replaces $\mathrm{fromEdgeSet}(I)$. In the plane, "no three of the
-  points $p_v$ are collinear" glosses the affine-span condition the pins state.
-- **For 5.10** (387–696 and 1–36): the proof of `thm:edgeSet-rowIndependent-iff-isSparse` should
-  word the perturbation lemma (now *A perturbation making every $d + 1$ points affinely span
-  $\R^d$*) and $\mathrm{fromEdgeSet}$ as above. The opening's "classical strategy of Lovász–Yemini"
-  and three node titles are `F-025`'s. From 5.1, for 5.10–5.11: the critical-set gloss follows
-  `def:isTightOn`.
-- **Left by 5.3–5.6 for later slices.** Notation (*Decisions*, task 5.4): $R(G, p)$, $(\R^d)^V$,
-  "injectively generically rigid", edges $uv$; an infinitesimal motion $x$ with velocities $x_u$;
-  $T(p)$, $\tau_b$, $A \circ p$, $E_{ij}$; "the points $p_v$ affinely span $\R^d$" (glossed at
-  `sec:trivial-motions-d-general`). `fmlnote:infinitesimal-rigidity` says where the formal notion
+  `Henneberg.isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors`); `henneberg.tex`'s note and
+  `fmlnote:reverse-vs-lift-form` say the isomorphism is "built from the neighbours of $v$". Its
+  Type~I branch moves $p'$ to get $p'_a \ne p'_b$, the hypothesis of
+  `lem:typeI-rowIndependent-lift`. The opening's "classical strategy of Lovász–Yemini" and three
+  node titles are `F-025`'s; the lifts' lead-in (199–222) now credits the characterization to
+  Laman, as Jordán's Theorem 2.2.1 does.
+- **The opening (1–36).** Its *Terminology* paragraph repeats `sparsity.tex`'s critical-set gloss
+  and says Jordán's Lemma 2.1.3 is `thm:isTightOn-union-with-bonus` composed twice, which is false
+  (`F-016`) and now contradicts the lead-in of *Sparse-graph reverse decomposition* (40–59). That
+  lead-in maps Jordán's Lemmas 2.1.2–2.1.4 and his proof of Theorem 2.2.1 onto the nodes, so the
+  paragraph can go; the opening becomes a roadmap, not a second map.
+- **From 5.7–5.8, still open:** the proof of `thm:edgeSet-rowIndependent-iff-isSparse` should word
+  the perturbation lemma (now *A perturbation making every $d + 1$ points affinely span $\R^d$*)
+  and replace $\mathrm{fromEdgeSet}(I)$ by "the spanning subgraph of $G$ with edge set $I$"; in the
+  plane, "no three of the points $p_v$ are collinear" glosses the affine-span condition. From 5.1,
+  for 5.10–5.11: the critical-set gloss follows `def:isTightOn`.
+- **Notation from 5.3–5.6** (*Decisions*, task 5.4): $R(G, p)$, $(\R^d)^V$, "injectively
+  generically rigid", edges $uv$; an infinitesimal motion $x$ with velocities $x_u$; $T(p)$; "the
+  points $p_v$ affinely span $\R^d$". `fmlnote:infinitesimal-rigidity` says where the formal notion
   diverges for general $d$ (`F-020`).
-- **Sources checked by 5.4–5.8:** Jordán pp. 35–39 (§1.2: the rigidity matrix; trivial motions and
-  their dimension, p. 36; Lemma 1.2.1, p. 36, citing Whiteley's Lemma 11.1.3; infinitesimal
-  rigidity, p. 37; Lemmas 1.2.2–1.2.3, p. 38, for points in general position; §1.3.1, p. 39: the
-  rigidity matroid, and Lemma 1.3.1, derived from Lemma 1.2.1 and credited to no one); p. 44
-  (extensions); p. 45 (Theorems 2.2.1–2.2.2, both credited to Laman; 2.2.1's necessity "follows
-  from Lemma 1.3.1"); p. 49 (Theorem 2.3.2, the rank formula, Lovász–Yemini); p. 51 (Theorem
-  2.4.1, Lovász–Yemini). Whiteley 1996 (a preprint in `.refs/`; cite by number only): 11.1.1,
-  11.1.3, 11.1.7, §11.1 before 11.1.2. Asimow–Roth is verified only for "rigidity is decided for
-  almost all placements" and "at a generic framework, rigid iff infinitesimally rigid".
+- **Sources checked by 5.4–5.9:** Jordán pp. 35–39 (§1.2: the rigidity matrix, trivial motions,
+  Lemma 1.2.1 citing Whiteley's 11.1.3, infinitesimal rigidity, Lemmas 1.2.2–1.2.3 citing
+  Whiteley's 11.1.1 and 11.1.7; §1.3.1, p. 39: the rigidity matroid, Lemma 1.3.1); pp. 43–45
+  (Lemmas 2.1.1–2.1.5, splittings, p. 44; Theorems 2.2.1–2.2.2, both credited to Laman, his [43],
+  and the proof of 2.2.1, p. 45); p. 49 (Theorem 2.3.2, Lovász–Yemini); p. 51 (Theorem 2.4.1,
+  Lovász–Yemini). Whiteley 1996 (a preprint in `.refs/`; cite by number only). Asimow–Roth is
+  verified only for "rigidity is decided for almost all placements" and "at a generic framework,
+  rigid iff infinitesimally rigid".
 - **For the close (task 6):** `notes/BlueprintExposition.md`'s Group-A line still calls
-  `lem:isSparse-of-rowIndependent-two` the "Lovász–Yemini easy direction" (`F-025`); the node keeps
-  its full proof, credited through Jordán's Lemma 1.3.1 and the ⇒ preamble's Maxwell credit. Then
-  tasks 5.9–5.16 follow in order, and task 6 closes the round.
+  `lem:isSparse-of-rowIndependent-two` the "Lovász–Yemini easy direction" (`F-025`); 5.9 updated
+  its pointers to the reverse decomposition. Then tasks 5.11–5.16 follow in order, and task 6
+  closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
 result is understandable". For the first few slices (at least 5.1–5.3), the coordinator reads each

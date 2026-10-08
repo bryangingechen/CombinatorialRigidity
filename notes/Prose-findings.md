@@ -244,9 +244,10 @@ declaration's name as its header writes it:
   (which uses `thm:isTightOn-insert-vertex-with-edges`), `_two_pair` (which uses
   `thm:isTightOn-union-with-bonus`), `_three_pair` and `no_isTightOn_excluding_three_neighbors`.
   None has a node. Jordán's Lemma 2.1.3 (three critical sets meeting pairwise in one vertex) is
-  argued only inside `_three_pair`, by two supermodularity counts. The chapter's opening says it is
-  `thm:isTightOn-union-with-bonus` composed twice, and so did `notes/BlueprintExposition.md`'s
-  Group-A note until task 5.2 corrected the note.
+  argued inside `_three_pair`, by two supermodularity counts; since task 5.9 the theorem's prose
+  proof follows the same split and argues it in its three-pair case. The chapter's opening says it
+  is `thm:isTightOn-union-with-bonus` composed twice (task 5.10's to fix), and so did
+  `notes/BlueprintExposition.md`'s Group-A note until task 5.2 corrected the note.
   *Evidence:* read (the bodies of `False_of_pairwise_blocker_or_edge` and the three templates,
   `Sparsity.lean`; `notes/Phase5.md` on the "1-deficient intermediate"); measured
   (`scripts/blueprint-deps.py --label thm:isSparse-exists-typeI-or-typeII-reverse`, at `4657a7fc`).
@@ -301,6 +302,18 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement of `isSparse_of_edgeSetRowIndependent_dim_two`, and the body of
   `EdgeSetRowIndependent`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.8.
+- **F-028** · S · five nodes of `rigidity-matroid.tex`'s *Lifting row-independence through
+  Henneberg moves*: `lem:typeI-rowIndependent-extend`, `lem:typeI-rowIndependent-lift`,
+  `lem:pendant-rowIndependent-lift`, `lem:typeII-rowIndependent-extend` and
+  `lem:edgeSet-rowIndependent-iso` assume their vertex sets finite, which their pins
+  (`typeI_edgeSetRowIndependent_extend`, `typeI_edgeSetRowIndependent_lift`,
+  `typeI_pendant_edgeSetRowIndependent_lift`, `typeII_edgeSetRowIndependent_extend`,
+  `EdgeSetRowIndependent.iso`) do not. Each statement is weaker than its pin, as in `F-015`. The
+  other two pins of the subsection, `EdgeSetRowIndependent.eventually` and
+  `typeII_edgeSetRowIndependent_lift`, take `[Finite V]` as their statements do.
+  *Evidence:* read (the seven statements, `MatroidIdentification.lean` and `RigidityMatroid.lean`,
+  whose only section variable is `{V : Type*}`).
+  *Found:* round 1 task 5.9.
 
 ## L — Lean
 
@@ -365,8 +378,9 @@ declaration's name as its header writes it:
   characterization to Laman (Theorem 2.2.1, his [43]) and proves it by induction with extensions; he
   credits Lovász–Yemini with the rank formula (Theorem 2.3.2, p. 49) and with the rigidity of
   6-connected graphs (Theorem 2.4.1, p. 51). Tasks 5.7 and 5.8 moved `laman-theorem.tex`'s credit
-  to Laman (5.8: the opening, and the title *Sparsity from row-independence*); tasks 5.9–5.10 can
-  do so in `rigidity-matroid.tex`. Outside round 1's slices: `intro.tex`, the docstrings,
+  to Laman (5.8: the opening, and the title *Sparsity from row-independence*). Task 5.9 credited
+  Laman in `rigidity-matroid.tex`'s lifts lead-in and dropped "the pendant attachment used by
+  Lovász–Yemini"; the opening and the three titles are task 5.10's. Outside round 1's slices: `intro.tex`, the docstrings,
   `formalization.yaml`'s Lovász–Yemini lines, and `notes/BlueprintExposition.md`'s Group-A line
   "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 checks it).
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
