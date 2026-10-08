@@ -1,49 +1,64 @@
 \section{Matroid union and Edmonds' partition theorem}
 \label{sec:matroid-union}
 
-This chapter formalizes the classical \textbf{matroid-union theorem}
-of Nash-Williams~\cite{nashWilliams1966} and Edmonds, together with
-the matroid-from-submodular-function construction and polymatroid
-rank formula of Edmonds~\cite{edmonds1970} on which it rests, and
-\textbf{Edmonds' matroid-partition theorem}~\cite{edmonds1965}. These
-are the abstract-matroid prerequisites of the body-bar route
-(\cref{sec:body-bar}): the $k$-frame matroid is identified with a
-$k$-fold matroid union, and the count characterization underlying
-Tutte--Nash-Williams tree-packing follows from the partition rank
-formula. For a textbook treatment see Oxley~\cite{oxley2011}.
+This chapter defines the union of finitely many matroids on a common
+finite set, describes its independent sets, and computes its rank. The
+rank formula is the matroid-union theorem of
+Nash-Williams~\cite{nashWilliams1966} and Edmonds. For $k$ copies of
+one matroid $M$, its independence criterion is Edmonds'
+matroid-partition theorem~\cite[Theorem~1]{edmonds1965}: a set can be
+partitioned into $k$ independent sets of $M$ if and only if every
+subset $Y$ of it has at most $k\, r_M(Y)$ elements. We follow Oxley's
+presentation~\cite[\S\S11.1--11.3]{oxley2011}.
 
-\paragraph{Provenance.}
-The Lean development of this chapter is ported from Peter Nelson's
-\href{https://github.com/apnelson1/Matroid}{\texttt{apnelson1/Matroid}}
-package (the same package that supplies \texttt{Matroid.ofFun} in
-\cref{sec:rigidity-matroid} and \texttt{Graph.cycleMatroid} in
-\cref{sec:body-bar}), whose shelved development already contains
-complete proofs of all the results below. Those proofs rest on a
-matroid constructor that has since been superseded upstream, so this
-project vendors them into \texttt{CombinatorialRigidity/Matroid/},
-rebased onto the package's current constructor and retaining Nelson's
-authorship. The package is Apache-2.0 licensed (as are this project
-and mathlib); the per-file headers under
-\texttt{CombinatorialRigidity/Matroid/} record the attribution and the
-list of modifications.
+In \cref{sec:matroid-union-submodular} we show that a non-decreasing
+integer-valued submodular function $f$ on the subsets of a finite set
+$E$ induces a matroid $M_f$ on $E$, and we compute the rank function of
+$M_f$ when $f(\emptyset) = 0$. In \cref{sec:matroid-union-union} we
+define the union $\bigcup_j M_j$ of matroids $M_1, \dots, M_k$ on $E$
+as the matroid induced from their direct sum by a bipartite graph. Its
+independent sets are the sets $I_1 \cup \dots \cup I_k$ with each $I_j$
+independent in $M_j$. By Rado's theorem on independent transversals,
+the union is the matroid $M_f$ of the function
+$f(Y) = \sum_j r_{M_j}(Y)$, and the rank formula for $M_f$ gives its
+rank.
+
+In \cref{sec:body-bar} we apply these results to $k$ copies of the
+cycle matroid of a multigraph. There the independence criterion becomes
+$(k, k)$-sparsity, and it gives the tree-packing theorem of Tutte and
+Nash-Williams~\cite{tutte1961,nashWilliams1961}.
+
+The formal proofs of this chapter come from Peter Nelson's matroid
+package for Lean,
+\href{https://github.com/apnelson1/Matroid}{\texttt{apnelson1/Matroid}},
+which, like this project, is licensed under Apache-2.0. In the package
+they rest on a matroid constructor that it has since replaced. We port
+them onto its current constructor, keeping his authorship, and add the
+forms of the rank formula proved for \cref{thm:matroid-partition-rank}.
+The header of each ported file lists the changes.
 
 \subsection{Matroids from submodular functions}
 \label{sec:matroid-union-submodular}
 
-The union theorem realizes a matroid union as the matroid induced by a
-submodular function, so we begin with that construction and its rank
-formula, following Edmonds~\cite{edmonds1970}. A non-decreasing
-submodular function on a finite ground set induces a matroid; on a
-polymatroid rank function the rank of any set is given by a
-minimization formula.
+Let $E$ be a finite set. The rank function $r$ of a matroid on $E$ is
+non-decreasing and submodular, and the circuits of the matroid are the
+minimal non-empty sets $C$ with $r(C) < |C|$. By a result of Edmonds
+and Rota, every non-decreasing integer-valued submodular function $f$
+defines a matroid $M_f$ in the same way, and when $f(\emptyset) = 0$
+the rank function of $M_f$ is given by a minimization
+formula~\cite[\S11.1]{oxley2011}. We follow Oxley's proofs. For $M_f$,
+the circuit elimination axiom follows from the submodularity of
+$f$~\cite[Proposition~11.1.1]{oxley2011}. Edmonds~\cite{edmonds1970}
+studies these functions and the polyhedra they define.
 
 \begin{definition}[Submodular function]
   \label{def:submodular}
   \lean{Matroid.Submodular}
   \leanok
-  An integer-valued set function $f$ on the subsets of a finite
-  ground set $E$ is \emph{submodular} if
-  $f(X \cap Y) + f(X \cup Y) \le f(X) + f(Y)$ for all $X, Y$.
+  Let $E$ be a finite set. A function $f$ from the subsets of $E$ to
+  the integers is \emph{submodular} if
+  $f(X \cap Y) + f(X \cup Y) \le f(X) + f(Y)$ for all
+  $X, Y \subseteq E$.
 \end{definition}
 
 \begin{definition}[Polymatroid rank function]
@@ -51,9 +66,9 @@ minimization formula.
   \lean{Matroid.PolymatroidFn}
   \leanok
   \uses{def:submodular}
-  A \emph{polymatroid (rank) function} on $E$ is a non-decreasing
-  submodular function $f$ with $f(\emptyset) = 0$
-  (Edmonds~\cite{edmonds1970}).
+  A \emph{polymatroid rank function} on a finite set $E$ is a
+  non-decreasing submodular function $f$ on the subsets of $E$ with
+  $f(\emptyset) = 0$.
 \end{definition}
 
 \begin{definition}[Matroid of a submodular function]
@@ -62,20 +77,24 @@ minimization formula.
     Matroid.indep_ofSubmodular_iff}
   \leanok
   \uses{def:submodular}
-  For a non-decreasing submodular $f$, the \emph{induced matroid}
-  $M_f$ on $E$ has as its circuits the minimal non-empty sets $C$
-  with $f(C) < |C|$; equivalently, a set $I$ is independent in $M_f$
-  if and only if $|I'| \le f(I')$ for every non-empty $I' \subseteq I$
-  (Edmonds~\cite{edmonds1970}).
+  Let $f$ be a non-decreasing submodular function on the subsets of a
+  finite set $E$. The matroid \emph{induced} by $f$ is the matroid
+  $M_f$ on $E$ whose circuits are the minimal non-empty sets
+  $C \subseteq E$ with $f(C) < |C|$. Equivalently, a set
+  $I \subseteq E$ is independent in $M_f$ if and only if
+  $|I'| \le f(I')$ for every non-empty $I' \subseteq I$.
 \end{definition}
 
-\begin{definition}[Matroid of a polymatroid function]
+\begin{definition}[Matroid of a polymatroid rank function]
   \label{def:ofPolymatroidFn}
   \lean{Matroid.ofPolymatroidFn, Matroid.indep_ofPolymatroidFn_iff}
   \leanok
   \uses{def:ofSubmodular, def:polymatroidFn}
-  The matroid $M_f$ of \cref{def:ofSubmodular} specialized to a
-  polymatroid rank function $f$.
+  Let $f$ be a polymatroid rank function on a finite set $E$. The
+  matroid $M_f$ is the matroid on $E$ induced by $f$
+  (\cref{def:ofSubmodular}). Its independent sets are the sets
+  $I \subseteq E$ with $|I'| \le f(I')$ for every non-empty
+  $I' \subseteq I$.
 \end{definition}
 
 \begin{lemma}[Polymatroid rank formula]
@@ -83,8 +102,8 @@ minimization formula.
   \lean{Matroid.polymatroid_rank_eq}
   \leanok
   \uses{def:ofPolymatroidFn}
-  For a polymatroid rank function $f$ and any $X \subseteq E$, the
-  rank of $X$ in $M_f$ is
+  Let $f$ be a polymatroid rank function on a finite set $E$, and let
+  $X \subseteq E$. Then the rank of $X$ in $M_f$ is
   \[
     r_{M_f}(X) \;=\; \min_{Y \subseteq X}\bigl(f(Y) + |X \setminus Y|\bigr).
   \]
@@ -92,102 +111,196 @@ minimization formula.
 \begin{proof}
   \leanok
   \uses{def:ofSubmodular}
-  Edmonds~\cite{edmonds1970}. The lower bound holds since any
-  independent subset of $X$ meets each $Y$ in at most $f(Y)$ elements
-  and $X \setminus Y$ in at most $|X \setminus Y|$; a basis of $X$
-  attains the minimum at the $Y$ on which it is ``tight''.
+  Let $B$ be a basis of $X$ in $M_f$, so that $r_{M_f}(X) = |B|$. Let
+  $Y \subseteq X$. The set $B \cap Y$ is independent, so
+  $|B \cap Y| \le f(B \cap Y)$ (\cref{def:ofSubmodular}; if
+  $B \cap Y$ is empty, because $f(\emptyset) = 0$). As $f$ is
+  non-decreasing, $f(B \cap Y) \le f(Y)$. Also
+  $|B \setminus Y| \le |X \setminus Y|$. Hence
+  $|B| \le f(Y) + |X \setminus Y|$.
+
+  For the reverse inequality we follow Oxley's
+  proof~\cite[Proposition~11.1.7]{oxley2011}. If $X$ is independent,
+  then $Y = \emptyset$ attains $|B|$. Otherwise, for each
+  $e \in X \setminus B$ the set $B \cup \{e\}$ is dependent, so it
+  contains a circuit $C_e$ of $M_f$, and $e \in C_e$. The set
+  $I_e = C_e \setminus \{e\}$ is an independent subset of $B$, and
+  $f(C_e) \le |C_e| - 1 = |I_e|$ (\cref{def:ofSubmodular}). Let $Y$ be
+  the union of the sets $C_e$.
+
+  We show that $f(Y) \le |Y \cap B|$, adding the sets $C_e$ one at a
+  time. A single $C_e$ satisfies it, as $C_e \cap B = I_e$. Let $A$ be a
+  union of some of them with $f(A) \le |A \cap B|$, and let $C_a$ be
+  another. Each $C_e$ lies in $B \cup \{e\}$, so $a \notin A$. Hence
+  $A \cap C_a$ lies in the independent set $I_a$, and
+  $f(A \cap C_a) \ge |A \cap I_a|$. By submodularity,
+  \[
+    f(A \cup C_a) \;\le\; f(A) + f(C_a) - f(A \cap C_a)
+    \;\le\; |A \cap B| + |I_a| - |A \cap I_a|
+    \;=\; |(A \cup C_a) \cap B|.
+  \]
+  Finally, $Y$ contains $X \setminus B$, so
+  $X \setminus Y = B \setminus Y$, and
+  $f(Y) + |X \setminus Y| \le |Y \cap B| + |B \setminus Y| = |B|$.
 \end{proof}
 
 \subsection{Matroid union}
 \label{sec:matroid-union-union}
 
-The union of a finite family of matroids on a common ground set is
-again a matroid --- the Nash-Williams--Edmonds union
-theorem~\cite{nashWilliams1966}. It is realized in two ways: as the
-transversal matroid of a bipartite matching between $E$ and the direct
-sum of the $M_{j}$, and as the induced matroid $M_f$ of the submodular
-function $f(X) = \sum_{j} r_{M_{j}}(X)$ (\cref{def:ofPolymatroidFn}).
-The first realization gives the decomposition characterization of the
-union's independent sets; the second gives Edmonds' matroid-partition
-rank formula.
+Let $M_1, \dots, M_k$ be matroids on a finite set $E$. Their direct
+sum $M_1 \oplus \dots \oplus M_k$ is a matroid on
+$\{1, \dots, k\} \times E$, in which $M_j$ lives on the copy
+$\{j\} \times E$ of $E$.
 
-\begin{definition}[Matroid union of an indexed family]
+A bipartite graph \emph{matches} a set $I$ of vertices on one side onto
+a set $I'$ on the other if some bijection from $I$ to $I'$ sends each
+element of $I$ to a neighbour. Let $N$ be a matroid on one side of a
+bipartite graph, and let $S$ be the other side. Perfect showed that the
+subsets of $S$ that the graph matches onto independent sets of $N$ are
+the independent sets of a matroid on $S$, the matroid \emph{induced}
+from $N$ by the graph~\cite[Theorem~11.2.12]{oxley2011}. The union of
+the $M_j$ is the matroid on $E$ induced from their direct sum by the
+graph that joins each element of $E$ to its copies. We show that its
+independent sets are the unions of independent sets of the $M_j$. Then
+we prove Rado's theorem, and from it the rank of the union.
+
+\begin{definition}[Matroid union]
   \label{def:matroid-union}
   \lean{Matroid.Union, Matroid.union}
   \leanok
   \uses{def:ofPolymatroidFn, lem:polymatroid-rank}
-  Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$ on a
-  common ground set $E$, their \emph{union} $\bigcup_{j} M_{j}$ is the
-  matroid on $E$ whose independent sets are the unions
-  $I_{1} \cup \dots \cup I_{k}$ of sets $I_{j}$ independent in $M_{j}$.
+  Let $M_1, \dots, M_k$ be matroids on a finite set $E$, and let
+  $\Delta$ be the bipartite graph that joins each $e \in E$ to its
+  copies $(1, e), \dots, (k, e)$ in the ground set of the direct sum
+  $M_1 \oplus \dots \oplus M_k$. The \emph{union} $\bigcup_j M_j$ is
+  the matroid on $E$ induced from $M_1 \oplus \dots \oplus M_k$ by
+  $\Delta$: a set $I \subseteq E$ is independent in $\bigcup_j M_j$ if
+  and only if $\Delta$ matches $I$ onto an independent set of
+  $M_1 \oplus \dots \oplus M_k$. For two matroids we write
+  $M_1 \cup M_2$.
 \end{definition}
+\begin{fmlnote}
+  Nelson's package proves that a bipartite graph induces a matroid by
+  checking the augmentation axiom. In the formalization the $M_j$ need
+  not have the same ground set: each is a matroid on a subset of $E$,
+  and the union is a matroid on all of $E$. An element of $E$ outside
+  the ground set of $M_j$ has no independent copy in the direct sum, so
+  in the union it behaves as a loop of $M_j$. This is how Oxley defines
+  the union of matroids on different ground
+  sets~\cite[\S11.3]{oxley2011}.
+\end{fmlnote}
 
-\begin{lemma}[Union independence by decomposition]
+\begin{lemma}[Independent sets of a matroid union]
   \label{lem:union-indep-iff}
   \lean{Matroid.union_indep_iff, Matroid.union_indep_iff'}
   \leanok
   \uses{def:matroid-union}
-  A set $I$ is independent in $\bigcup_{j} M_{j}$ if and only if it
-  decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$ independent
-  in $M_{j}$.
+  Let $M_1, \dots, M_k$ be matroids on a finite set $E$. A set
+  $I \subseteq E$ is independent in $\bigcup_j M_j$ if and only if
+  $I = I_1 \cup \dots \cup I_k$ for some sets $I_j$ independent in
+  $M_j$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The transversal realization (\cref{def:matroid-union}) matches the
-  ground set $E$ into the direct sum of the $M_{j}$, and a set is
-  independent exactly when it admits such a matching. Reading off the
-  factor of each matched element gives a decomposition
-  $I = \bigcup_{j} I_{j}$ with $I_{j}$ independent in $M_{j}$, and
-  conversely any such decomposition matches; discarding elements shared
-  between factors makes the $I_{j}$ pairwise disjoint.
+  Let $I$ be independent in $\bigcup_j M_j$, so that $\Delta$ matches
+  $I$ onto an independent set of the direct sum. The matching sends each
+  $e \in I$ to a copy $(j(e), e)$. Its image is independent, so each
+  set $I_j = \{e \in I : j(e) = j\}$ is independent in $M_j$, and the
+  union of these sets is $I$.
+
+  Conversely, let $I = I_1 \cup \dots \cup I_k$ with each $I_j$
+  independent in $M_j$. For each $e \in I$ choose one index $j(e)$ with
+  $e \in I_{j(e)}$. Each set $\{e \in I : j(e) = j\}$ is a subset of
+  $I_j$, so $e \mapsto (j(e), e)$ matches $I$ onto an independent set of
+  the direct sum.
 \end{proof}
+
+The rank of the union rests on Rado's theorem, which Rado proved in 1942
+(see~\cite[Theorem~11.2.2]{oxley2011}). A \emph{transversal} of a
+family $(A_i : i \in J)$ of sets is a family $(e_i : i \in J)$ of
+distinct elements with $e_i \in A_i$ for every $i$.
 
 \begin{lemma}[Rado's theorem]
   \label{lem:rado}
   \lean{Matroid.rado}
   \leanok
   \uses{lem:polymatroid-rank}
-  Let $M$ be a matroid on a ground set $\alpha$, and
-  $(A_i)_{i \in \iota}$ a finite family of finite subsets of $\alpha$.
-  Some injective transversal $i \mapsto e_i$ with $e_i \in A_i$ for
-  every $i$ has range independent in $M$ if and only if
+  Let $M$ be a matroid on a set $S$, and let $(A_i : i \in J)$ be a
+  finite family of finite subsets of $S$. Then the family has a
+  transversal $(e_i : i \in J)$ such that $\{e_i : i \in J\}$ is
+  independent in $M$ if and only if
   $|K| \le r_M\bigl(\bigcup_{i \in K} A_i\bigr)$ for every
-  $K \subseteq \iota$.
+  $K \subseteq J$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:polymatroid-rank}
-  This is Rado's theorem~\cite[Thm 11.2.2]{oxley2011} (Rado 1942). Apply
-  the submodular generalization of Hall's marriage condition to the rank
-  function $f(S) = r_M(S)$, which is monotone and submodular; the
-  representative-existence half of that condition yields the independent
-  transversal, while the rank-condition side is exactly the hypothesis.
+  If such a transversal exists, then for $K \subseteq J$ the set
+  $\{e_i : i \in K\}$ is an independent subset of
+  $\bigcup_{i \in K} A_i$ with $|K|$ elements, so the rank of
+  $\bigcup_{i \in K} A_i$ is at least $|K|$.
+
+  For the converse we follow Oxley, who derives Rado's theorem from a
+  theorem of Welsh~\cite[Theorem~11.2.3]{oxley2011}
+  (\texttt{Matroid.\allowbreak{}generalized\_\allowbreak{}halls\_\allowbreak{}marriage}). Let $f$ be a
+  non-negative, integer-valued, non-decreasing submodular function on
+  the subsets of $S$, and let the sets $A_i$ be non-empty. Suppose that
+  $f\bigl(\bigcup_{i \in K} A_i\bigr) \ge |K|$ for every
+  $K \subseteq J$. Then Welsh's theorem gives elements $e_i \in A_i$,
+  not necessarily distinct, with $f(\{e_i : i \in K\}) \ge |K|$ for
+  every $K \subseteq J$.
+
+  We apply it to $f = r_M$. The sets $A_i$ are non-empty, since the
+  hypothesis at $K = \{i\}$ gives $r_M(A_i) \ge 1$. For $i \ne i'$, the
+  case $K = \{i, i'\}$ gives $r_M(\{e_i, e_{i'}\}) \ge 2$, so
+  $e_i \ne e_{i'}$. The case $K = J$ then shows that the $|J|$ elements
+  $e_i$ form an independent set.
 \end{proof}
 
-\begin{theorem}[Edmonds' matroid-partition rank formula]
+\begin{theorem}[The rank of a matroid union]
   \label{thm:matroid-partition-rank}
   \lean{Matroid.Union_rank_eq, Matroid.Union_pow_rk_eq}
   \leanok
   \uses{def:matroid-union, lem:union-indep-iff, lem:polymatroid-rank}
-  Let $M_{1}, \dots, M_{k}$ be matroids on a common finite ground set
-  $E$, and $E' \subseteq E$. The rank of $E'$ in the union
-  $\bigcup_{j} M_{j}$ equals
-  $\min_{X \subseteq E'} \bigl(|E' \setminus X| + \sum_{j}
-  r_{M_{j}}(X)\bigr)$. In particular, $E'$ is independent in the union
-  if and only if $|E''| \le \sum_{j} r_{M_{j}}(E'')$ for every
-  $E'' \subseteq E'$.
+  Let $M_1, \dots, M_k$ be matroids on a finite set $E$, with rank
+  functions $r_1, \dots, r_k$, and let $X \subseteq E$. Then the rank
+  of $X$ in $\bigcup_j M_j$ is
+  \[
+    \min_{Y \subseteq X} \Bigl(|X \setminus Y| + \sum_{j} r_j(Y)\Bigr).
+  \]
+  In particular, $X$ is independent in $\bigcup_j M_j$ if and only if
+  $|Y| \le \sum_j r_j(Y)$ for every $Y \subseteq X$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{lem:polymatroid-rank, lem:rado}
-  Apply the polymatroid rank formula (\cref{lem:polymatroid-rank}) to
-  $f(X) = \sum_{j} r_{M_{j}}(X)$, which realizes the union
-  (\cref{def:matroid-union}); the matching that exhibits the union's
-  independent sets is furnished by Rado's theorem (\cref{lem:rado}).
-  This is Edmonds' matroid-partition theorem~\cite{edmonds1965}.
-\end{proof}
+  Let $\Delta$ be as in \cref{def:matroid-union}. The neighbours in
+  $\Delta$ of a set $Y \subseteq E$ form the set
+  $\{1, \dots, k\} \times Y$, whose rank in the direct sum is
+  $f(Y) = \sum_j r_j(Y)$. As a sum of matroid rank
+  functions, $f$ is a polymatroid rank function
+  (\cref{def:polymatroidFn}).
 
-Specializing this formula is the entry point for the body-bar route:
-taking the $M_{j}$ to be $k$ copies of a graphic matroid turns the
-independence count into $(k, k)$-sparsity, the matroid-side input to
-the Tutte--Nash-Williams tree-packing count (\cref{sec:body-bar}).
+  We show that $\bigcup_j M_j$ is the matroid $M_f$
+  (\cref{def:ofPolymatroidFn}; \texttt{Matroid.\allowbreak{}polymatroid\_\allowbreak{}of\_\allowbreak{}adjMap}).
+  Let $I \subseteq E$, and apply Rado's theorem (\cref{lem:rado}) to the
+  direct sum and the family of the sets $\{1, \dots, k\} \times \{e\}$
+  for $e \in I$. A transversal of this family that is independent in
+  the direct sum is a matching of $I$ onto an independent set. The
+  condition of Rado's theorem says that $|Y| \le f(Y)$ for every
+  $Y \subseteq I$. So $I$ is independent in $\bigcup_j M_j$ if and only
+  if it is independent in $M_f$. The polymatroid rank formula
+  (\cref{lem:polymatroid-rank}) now gives the rank of $X$. This is
+  Oxley's proof~\cite[Lemma~11.2.13 and Theorem~11.3.1]{oxley2011}.
+
+  The set $X$ is independent exactly when its rank is $|X|$. For
+  $Y \subseteq X$ we have $|X \setminus Y| = |X| - |Y|$, so the rank
+  formula gives the independence criterion.
+\end{proof}
+\begin{fmlnote}
+  The formalization states the rank formula for an arbitrary family
+  only at $X = E$, and for every $X \subseteq E$ when
+  $M_1 = \dots = M_k$. It proves the independence criterion in the
+  second case (\texttt{Matroid.\allowbreak{}Union\_\allowbreak{}pow\_\allowbreak{}indep\_\allowbreak{}iff\_\allowbreak{}count}), which is
+  the only case used later.
+\end{fmlnote}

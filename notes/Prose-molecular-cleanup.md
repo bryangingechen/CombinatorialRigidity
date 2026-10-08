@@ -5,9 +5,10 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`; the open recorded `F-048`–`F-050`. 20 one-commit tasks, of which task 1
-is this open; the round has no planned stop. **Next concrete task:** task 2.1, `matroid-union.tex`,
-at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, task 2.1 `F-051`–`F-053`. 20
+one-commit tasks; tasks 1 and 2.1 are done, and the round has no planned stop. **Next concrete
+task:** task 2.2, `body-bar.tex`'s prerequisites and $k$-frame matroid (42–374), at Opus (*Lemma
+checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,14 +18,20 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Round 2 is open** (task 1, this commit, docs only; the Lean tree and the blueprint TeX are
-`ac7bd966`'s, round 1's close). Nothing is mid-stream. The next concrete task is task 2.1.
+**Task 2.1 has landed** (this commit): `matroid-union.tex`, 193 → 306 lines, 9 nodes, every
+`\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and in order. Nothing is mid-stream;
+task 2.2 is next.
+- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
+  silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (119 overfull boxes, none in
+  `matroid-union.tex`). Screens on the chapter: register 0, devices 0 / 4 (the open's 2 and
+  0 / 5), forward `\uses` 0; the 4 are the package name and three proof addresses.
 
-**Verified at the open** (2026-10-08, at `ac7bd966`):
+**Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
   cached; the coordinator's run gave the same). The axioms check does not run at this open
   (`notes/Prose.md` §2: round 1's open and round 5's close only).
-- **The no-Lean-edit base is `ac7bd966`**, this commit's parent: the close checks that `git diff
+- **The no-Lean-edit base is `ac7bd966`**, the open's parent: the close checks that `git diff
   --stat ac7bd966.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` is
   empty.
 - **The round's gate values**, round 1's close reproduced exactly (the blueprint has not changed
@@ -179,12 +186,7 @@ formalization remarks, Lean names in proofs, repeated connective verdicts, and t
 dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight in
 `rigidity-matrix`).
 
-- **`matroid-union`** (vendored from Nelson's `apnelson1/Matroid`; keep the credit, `CLAUDE.md`
-  *Project history*). Close to the register. The *Provenance* paragraph (directory paths,
-  `Matroid.ofFun`, the upstream constructor's history) is a formalization note in all but name.
-  `lem:union-indep-iff`'s proof uses a "transversal realization" of `def:matroid-union` that the
-  definition does not state (principle E). "Rado 1942" is uncited text beside Oxley's Theorem
-  11.2.2: check the number in `.refs/`. "Route" twice.
+- **Done:** `matroid-union` (task 2.1; its open bullet is in this log at `ea058ba8`).
 - **`body-bar`** has the round's most Lean-shaped statements: `\mathtt{Graph}\,\alpha\,\beta`,
   `G.\mathrm{cycleMatroid}`, `\mathrm{signedIncMatrix}`, `\mathrm{blockPiSpan}`,
   `\mathrm{kFrameRow}`, `\mathrm{kFrameRowR}`, `\mathrm{Pi.single}`, `\mathrm{Fin}\,k`,
@@ -286,7 +288,7 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   `F-048`–`F-050`, and the status surfaces.
 - [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [ ] **2.1 `matroid-union.tex`**: 9 nodes, 193 lines.
+  - [x] **2.1 `matroid-union.tex`** (this commit; now 1–306, 9 nodes). Found `F-051`–`F-053`.
   - [ ] **2.2 `body-bar.tex`, the prerequisites and the $k$-frame matroid** (42–374): 12 nodes,
     333 lines.
   - [ ] **2.3 `body-bar.tex`'s rest and opening, and all of `body-hinge.tex`**: tree packing,
@@ -344,6 +346,13 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   does not record, so the main result `body_hinge_tay` is the bar-bundle form.
 - `F-049` (S, task 1): `lem:rank-rotation-semicont` claims KT Lemma 5.2, which its pins are not,
   and a monotonicity form whose span inclusion is the reverse of its pins'.
+- `F-051` (S, task 2.1): `thm:matroid-partition-rank` states the rank of every subset for any
+  family, and the independence criterion; its pins give the first at $X = E$ only, and both for
+  copies of one matroid.
+- `F-053` (M, task 2.1): the credits for $M_f$, the polymatroid rank formula and the union's rank
+  formula (Edmonds–Rota, not Edmonds 1970; Nash-Williams and Edmonds, not Edmonds 1965), fixed in
+  `matroid-union.tex` and left in `intro.tex`, `deficiency.tex`, `molecular-induction.tex` and the
+  Lean docstrings.
 
 ## Moved to a later round
 
@@ -352,6 +361,8 @@ one line each naming the ledger ID and the task that found it.
 
 - `F-050` (N, task 1): 14 `\uses` edges at 11 nodes of `rigidity-matrix.tex` and
   `molecular-induction.tex` point at nodes of later chapters.
+- `F-052` (N, task 2.1): Welsh's theorem, the induced-matroid-is-$M_f$ lemma and the $k$-copies
+  independence criterion are load-bearing lemmas with no node.
 
 ## Blockers / open questions
 
@@ -359,9 +370,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.1, `matroid-union.tex`, at Opus**, a fresh agent (`notes/Prose.md`
-§2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
-2.2–2.18 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.2, `body-bar.tex`'s prerequisites and the $k$-frame matroid
+(42–374), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the `body-bar` bullet
+under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.3–2.18 in order, and
+task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open a new arc; the coordinator reads them in full against the
   exemplars, as it read round 1's 5.1–5.3.
@@ -369,11 +381,17 @@ one line each naming the ledger ID and the task that found it.
   2.4–2.18 write KT's $d$ and $D$ and drop the "$D = \delta$" crosswalks and the stray $n$.
 - **Crux nodes** keep their full proofs, in tasks 2.4, 2.12–2.15, 2.17 and 2.18 (*Scope*). Task
   2.5 makes `lem:rank-parallel-full`'s proof and the exposition ledger's 22i verdict agree.
+- **From task 2.1.** `matroid-union.tex` now defines the union as the matroid the bipartite graph
+  $\Delta$ induces from the direct sum, and `thm:matroid-partition-rank` is titled *The rank of a
+  matroid union*, with the $k$-copies criterion credited to Edmonds 1965 (Theorem 1). Task 2.2's
+  *Matroid-union prerequisites* (42–52) should point at it in those terms; its credit
+  "Edmonds' matroid-partition theorem~\cite{edmonds1965}" for $k$ copies is right. `F-053` lists
+  the credits left in tasks 2.10 and 2.11–2.12.
 - **The open's findings** are recorded, not acted on. Task 2.3 keeps `def:body-hinge-framework`'s
   statement (`F-048`); task 2.5 treats `lem:rank-rotation-semicont` under the hygiene rule
   (`F-049`); tasks 2.5–2.7 and 2.16 give `F-050`'s forward references a sentence each.
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-051`.
+  pins reach. The ledger's next ID is `F-054`.
 
 ## Decisions made during this round
 
@@ -397,3 +415,9 @@ one line each naming the ledger ID and the task that found it.
   them. `lem:case-III-claim612-line-in-panel-union` (`meet.tex`) has its done entry under the
   `algebraic-induction.tex` heading.
 - **The no-Lean-edit base** is `ac7bd966`, the open's parent; the open touches no Lean.
+- **Task 2.1, `matroid-union.tex`.** `def:matroid-union` states the Lean's construction, the
+  matroid that $\Delta$ induces from the direct sum (Perfect; Oxley Theorem 11.2.12), so that
+  `lem:union-indep-iff` has content and its proof's matching is defined (principle E). The proofs
+  follow Oxley §§11.1–11.3, as the Lean does. The *Provenance* paragraph is now the opening's credit
+  paragraph, which `DESIGN.md` *Attribution / license* relies on; it says that the rank formula's
+  stated forms are the project's. Load-bearing unpinned lemmas are named as addresses (`F-052`).

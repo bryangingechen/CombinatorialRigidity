@@ -310,6 +310,17 @@ declaration's name as its header writes it:
   *Evidence:* read (each node's statement and proof `\uses` against `main.tex`'s chapter order, at
   `ac7bd966`; the check is the third screen under `notes/Prose-molecular-cleanup.md` *Scope*).
   *Found:* round 2 task 1.
+- **F-052** · N · `matroid-union.tex`: three load-bearing lemmas with no node.
+  `Matroid.generalized_halls_marriage` is Welsh's theorem (Oxley 2011, Theorem 11.2.3), the core of
+  `Matroid.rado` and `Matroid.rado_v2`. `Matroid.polymatroid_of_adjMap` is Oxley's Lemma 11.2.13
+  (the matroid a bipartite graph induces from $M$ is $M_f$ for $f(Y) = r_M(N(Y))$, by Rado), the
+  core of `adjMap_rank_eq` and `adjMap_rk_eq` and so of `thm:matroid-partition-rank`'s pins.
+  `Matroid.Union_pow_indep_iff_count` is the independence criterion for $k$ copies of one matroid
+  (`F-051`), used by `BodyBar/KFrame.lean`, `BodyBar/TreePacking.lean` and
+  `Molecular/Induction/Contraction.lean`. Task 2.1 names each as an address in the proof it
+  supports. A node for the third, or a pin on `thm:matroid-partition-rank`, would index it.
+  *Evidence:* read (their statements and bodies; a `grep` for their callers).
+  *Found:* round 2 task 2.1.
 
 ## T — terminology and notation
 
@@ -468,6 +479,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the two pins' statements and bodies, `Molecular/RigidityMatrix/Basic.lean`;
   KT 2011 pp. 668–669, in `.refs/`).
   *Found:* round 2 task 1.
+- **F-051** · S · `thm:matroid-partition-rank` (`matroid-union.tex`): the statement gives the rank
+  of every $X \subseteq E$ in the union of any finite family $M_1, \dots, M_k$, and the
+  independence criterion for any family. Its pins prove less: `Matroid.Union_rank_eq` gives the
+  rank for any family at $X = E$ only, and `Matroid.Union_pow_rk_eq` the rank of every $X$ when
+  all $M_j$ are one matroid. The criterion is proved only in that case, by the unpinned
+  `Matroid.Union_pow_indep_iff_count` (`F-052`), the only case used later. Task 2.1 kept the
+  statement and says this in a formalization note after the proof.
+  *Evidence:* read (the three statements and bodies, `Matroid/Constructions/Union.lean`).
+  `adjMap_rk_eq` with `sum'_rk_eq_rk_sum` would give the family form at every $X$, but no
+  declaration states it, and none states the criterion for a family.
+  *Found:* round 2 task 2.1.
 
 ## L — Lean
 
@@ -646,3 +668,22 @@ declaration's name as its header writes it:
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
   and the Lean). Lovász–Yemini 1982 is not in `.refs/`.
   *Found:* round 1 task 5.7.
+- **F-053** · M · the credit for the matroid of a submodular function, the polymatroid rank formula
+  and the union's rank formula (`matroid-union.tex`, `intro.tex`, `deficiency.tex`,
+  `molecular-induction.tex`; Lean docstrings). The blueprint credited the first two to Edmonds 1970.
+  Oxley (2011, §11.1, pp. 404–407) credits Proposition 11.1.1, Corollary 11.1.2 and Proposition
+  11.1.7 to Edmonds and Rota (1966, an abstract), and Schrijver (*Combinatorial Optimization*,
+  §44.6a, p. 775) says the result was "announced by Edmonds and Rota [1966] and proved by Pym and
+  Perfect [1970]"; both cite Edmonds 1970 for polymatroids. Edmonds 1965's Theorem 1 is the
+  partition criterion for $k$ copies of one matroid (p. 69), not a rank formula; Oxley (§11.3, p.
+  427) credits the union to Nash-Williams 1966, and Schrijver (§42.1, pp. 725–726) its rank formula
+  to Nash-Williams [1967] and, for several matroids, Edmonds [1968]. Task 2.1 moved the chapter's
+  credits accordingly, with Oxley as the pointer, and retitled `thm:matroid-partition-rank` *The
+  rank of a matroid union*. Outside the slice: `intro.tex`'s Phase-12 item (round 4);
+  `deficiency.tex`'s "Edmonds matroid-partition rank formula" and `molecular-induction.tex`'s
+  "(Nash--Williams, Edmonds [edmonds1965])" (tasks 2.10 and 2.11–2.12); the docstrings of
+  `Submodular.lean`, which cite Oxley's numbers and page 406 as Edmonds 1970's, and of `Union.lean`,
+  which credit Edmonds 1965 with the rank formulas.
+  *Evidence:* read (Oxley 2011 pp. 404–407, 411–412, 416, 427–430; Schrijver pp. 725–726, 775;
+  Edmonds 1965 p. 69; all in `.refs/`). Edmonds 1970 and Nash-Williams 1966 are not in `.refs/`.
+  *Found:* round 2 task 2.1.
