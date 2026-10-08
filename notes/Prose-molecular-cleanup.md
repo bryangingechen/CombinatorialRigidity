@@ -242,7 +242,8 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 ## Candidates for the PI
 
 `S` and `M` findings, one line each naming the ledger ID (`notes/Prose-findings.md` holds the
-finding). Recorded, never acted on in this round; round 5's report ranks them for the PI.
+finding). Recorded, not acted on in this round (`F-084` is the one exception); round 5's report
+ranks them for the PI.
 
 - `F-048` (S, task 1): `def:body-hinge-framework` gives each hinge an affine subspace that its pin
   does not record, so the main result `body_hinge_tay` is the bar-bundle form.
@@ -267,9 +268,11 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   `intro.tex`, `formalization.yaml` and the Lean docstrings.
 - `F-083` (S, task 2.11): `lem:circuit-induces-rigid` states KT Lemma 3.4's partition of $X - e$
   into $D$ spanning trees, which no declaration states; its pins give the count and the rigidity.
-- `F-084` (S, task 2.11): `lem:reduction-step` claimed that contraction gives a minimal
-  $0$-dof-graph; its pin is the matroid form, which task 2.15 states, and the graph form is
-  `lem:rigidContract-isMinimalKDof`'s.
+- `F-084` (S, task 2.11): `lem:contraction-minimality` and `lem:reduction-step` claimed KT Lemma
+  3.5's graph form (the contraction is a minimal $k$-dof-graph); their pin proves the matroid form.
+  **Acted on, the round's one exception:** tasks 2.11 and 2.15 narrowed both statements to the
+  matroid form and moved the graph form, `lem:rigidContract-isMinimalKDof`'s ($D \ge 2$), into the
+  prose after them. The PI may restore the graph-form statements (*Decisions*).
 - `F-086` (S, task 2.12): `lem:acyclic-insert-vfiber` and `lem:packing-move` assume that $v$ has
   degree two; their pins hold at every vertex.
 
@@ -437,6 +440,9 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
   facts other nodes cite are in the prose after `def:extensor`, `def:join` (Barnabei–Brini–Rota's
   Propositions 3.4 and 3.5) and `def:affine-subspace-extensor`.
 - **The open's findings** are recorded, not acted on.
+- **Statement strength.** A statement that claims more than its pins is an `S` finding, and it
+  keeps its claim; only a degenerate-case hypothesis the pin states ($D \ge 1$, $V \neq \emptyset$)
+  is added. `F-084`'s narrowing is not a precedent (*Decisions*).
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
   pins reach. The ledger's next ID is `F-098`.
 
@@ -469,3 +475,9 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
   4.3(i)'s minimality clause as the pin does (KT 4.7 for $ab$, KT 4.3(ii) and 4.2(ii) otherwise),
   and the square $K_v^{ab} = H$ is step 2's. `lem:no-rigid-edge-count` states its pin's
   $V \neq \emptyset$. No node moved: KT 4.6's pair stays after KT 4.7's node, as at the open.
+- **`F-084` accepted as acted on** (coordinator, after task 2.15). The two narrowings change what
+  a statement block claims, which the hygiene rule leaves to the PI. They are kept because each
+  block now states its pin, and the graph form stays in the prose, cited to the node that proves
+  it. This is not a precedent: from task 2.16 on, a statement claiming more than its pins is an `S`
+  finding and keeps its claim. Adding the hypothesis a pin states for a degenerate case
+  ($D \ge 1$, $V \neq \emptyset$) is anchoring.
