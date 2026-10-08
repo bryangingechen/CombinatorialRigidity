@@ -6,10 +6,10 @@ is the authority for which rounds are done. The round rewrites the prose of the 
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
 `notes/Prose-findings.md`. 21 one-commit tasks; tasks 1 (the open), 2 (the dependency-audit
-script `scripts/blueprint-deps.py`) and 3 (the sample) are done. **Stopped for the PI** at Stop 1
-(2026-10-07), whose open question is under *Autopilot: for the PI*.
-**Next concrete task:** task 4, pinning the exemplar, once the PI's entry is there. No slice is
-written before it. Round manual: `CLEANUP.md`.
+script `scripts/blueprint-deps.py`) and 3 (the sample) are done. Stop 1 is answered (PI,
+2026-10-07, under *Autopilot: for the PI*: option B, its one revision already made).
+**Next concrete task:** task 4, pinning the exemplar. No slice is written before it. Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -70,12 +70,31 @@ after `blueprint/verify.sh`. The coordinator re-ran `lint.sh`, `verify.sh` and t
 - **C. Revise and show again.** Task 4 revises (1–2 commits), then Stop 1 repeats.
 - **D. Regroup the slices**, in any of A–C. Each merge saves a commit and enlarges a slice.
 
+**PI, 2026-10-07:** (transcribed verbatim from the attended session that reviewed the sample)
+- On 1 and 2: "1-2 these look good."
+- On 3: "edge notation, the graph G' names is not a big deal as long as it's understandable; I'm
+  more concerned about the classical attribution: could we omit it or find something to back that
+  up? The iff node also seems natural."
+- On 4: "The amendment looks good."
+- On 5: "I think this is reasonable; more than following rules strictly though, the overriding goal
+  is to make sure the result is understandable. Perhaps the coordinator should pay careful
+  attention to the first few Sonnet dispatches to ensure that the guidelines are working."
+- On 6: "Looks good to me."
+
+*The attended session's notes* (not the PI's words). **3c:** Jordán credits no one for Lemmas
+2.1.4(a) and 2.1.5; both "follow easily" from his count (pp. 44–45). Nixon–Ross (`.refs/`, arXiv
+1203.6623v2, Theorem 2.5) credit the characterization they are the easy half of to Henneberg and
+Laman, neither of which is in `.refs/`. So option B: at the PI's request this entry's commit drops
+"These facts are classical." from the sample (now 159–259); for task 5.3, the opening (line 4)
+credits Henneberg alone. **5:** every slice runs at Opus (`notes/Prose.md` §2), so "the first few
+Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check.
+
 ## Current state
 
-**Stopped for the PI at Stop 1** (2026-10-07; *Autopilot: for the PI*). Task 3 landed at
-`67525c41`, and the coordinator's commit after it writes the Stop-1 entry; docs only. Nothing is
-mid-stream. No slice is written before the PI's entry.
-- **Gates at `67525c41`**, all the open's values, and re-run by the coordinator: `lint.sh` green;
+**Stop 1 answered** (PI, 2026-10-07; *Autopilot: for the PI*): option B. The answering commit,
+made in the PI's session, records the entry and makes its one revision: the sample drops "These
+facts are classical." (now 159–259). Nothing is mid-stream; task 4 is next.
+- **Gates at `67525c41`**, and again at the answering commit, all the open's values: `lint.sh` green;
   `verify.sh` green, with `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292
   edges 673e3178d1b3145e` and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176
   overfull boxes, as at the open). The register screen on `henneberg` now reads 1 and 26 / 53 (the open's 1 and 32 / 86);
@@ -359,10 +378,12 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     $ab$, no note; (ii) Type~I/II kept, Jordán's 0- and 1-extensions named once, where his Lemmas
     2.1.5 and 2.1.4(a) (p. 45, p. 44) are cited; (iii) the Lean's case split, a sentence a case.
     It also fixes a slip in the old Type~I proof ($2|s| - 3$ is 1 there, not 0), and found `F-013`.
+    At Stop 1 the PI's session dropped "These facts are classical." (now 159–259, 101 lines).
 - [ ] **4. E — pin the exemplar** (docs only; the commit after the PI's Stop-1 entry). Transcribe
-  the PI's answer verbatim into *Decisions*; copy the approved sample, revised first if the PI
-  asks, to `notes/Prose-exemplar.md`, frozen as `notes/Phase40-exposition-exemplar.md` is; land
-  any `AUTHORING.md` amendment the PI makes; settle the slice list as the PI rules.
+  the PI's answer verbatim into *Decisions*; copy the approved sample (159–259, already revised as
+  the PI asked) to `notes/Prose-exemplar.md`, frozen as `notes/Phase40-exposition-exemplar.md` is;
+  land the principle-B amendment in Stop 1's item 4 wording (approved). The slice lists stand as
+  proposed (item 6, approved).
 - [ ] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
   - [ ] **5.1 `sparsity.tex`, first half**: §1's three subsections and §2's *Definitions*, *Basic
@@ -372,13 +393,15 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     openings (1–10, 143–154), and `laman.tex` (114 lines); 14 nodes, 372 lines. It writes
     `sparsity.tex`'s roadmap and keeps the chapter-model pointers true (*Per-chapter diagnosis*).
   - [ ] **5.3 `henneberg.tex` apart from the sample**: definitions, edge-set counts, the reverse
-    decomposition, the worked example and the opening (1–158, 274–372; after task 3, 261–359); 8
-    nodes, 257 lines. It carries the sample's notation and terminology into the definitions and
-    the opening's convention paragraph, as the PI's Stop-1 answer settles it. From the sample:
-    `def:typeI` and `def:typeII` define "the Type~I move at $a$ and $b$" and "the Type~II move on
-    $ab$ and $c$", with new vertex $v$ and Jordán's gloss (p. 38); the edge-set lemmas write edges
-    as $ab$; and the reverse decomposition's $G'$, the smaller graph, could become $G - v$ and
-    $G - v + ab$, since the sample's $G'$ is the larger one.
+    decomposition, the worked example and the opening (1–158 and 260–358); 8 nodes, 257 lines. It
+    carries the sample's notation and terminology into the definitions and the opening's
+    convention paragraph, as Stop 1 settled (3a and 3b adopted; the PI's test is that the result
+    is understandable): `def:typeI` and `def:typeII` define "the Type~I move at $a$ and $b$" and
+    "the Type~II move on $ab$ and $c$", with new vertex $v$ and Jordán's gloss (p. 38); the
+    edge-set lemmas write edges as $ab$; and the reverse decomposition's $G'$, the smaller graph,
+    becomes $G - v$ and $G - v + ab$, since the sample's $G'$ is the larger one. The opening
+    credits the characterization to Henneberg alone, where Nixon–Ross credit Henneberg and Laman
+    (Stop 1's notes on 3c).
   - [ ] **5.4 `frameworks.tex`**: 19 nodes, 415 lines.
   - [ ] **5.5 `henneberg-rigidity.tex`**: 5 nodes, 247 lines.
   - [ ] **5.6 `trivial-motions.tex`**: 13 nodes, 280 lines.
@@ -440,30 +463,26 @@ one line each naming the ledger ID and the task that found it.
 
 ## Blockers / open questions
 
-- **Open: Stop 1** (2026-10-07), the PI's review of the sample, under *Autopilot: for the PI*.
-  Nothing is done past it until the PI's entry is there.
+- None. Stop 1 was answered on 2026-10-07 (*Autopilot: for the PI*).
 
 ## Hand-off / next phase
 
-**Next: task 4, once the PI has answered Stop 1** (*Autopilot: for the PI*). Task 4 transcribes the
-answer verbatim into *Decisions*, pins the approved sample as `notes/Prose-exemplar.md`, lands any
-`AUTHORING.md` amendment the PI makes, and settles the slice lists as the PI rules. Then tasks
-5.1–5.16 follow in order, and task 6 closes the round. While the question has no `**PI, <date>:**`
-entry, the round does nothing past it.
+**Next: task 4** (Stop 1 answered, *Autopilot: for the PI*). Task 4 transcribes the PI's answer
+verbatim into *Decisions*, pins the sample (159–259, already revised) as `notes/Prose-exemplar.md`,
+and lands the approved principle-B amendment; the slice lists stand. Then tasks 5.1–5.16 follow in
+order, and task 6 closes the round. **The PI's check on the first slices** (Stop 1, item 5): "the
+overriding goal is to make sure the result is understandable". For the first few slices (at least
+5.1–5.3), the coordinator reads each one's rendered text in full against the exemplar, beyond the
+gates, and tightens the next dispatch prompt where the guidelines fall short.
 
 ## Decisions made during this round
 
-- **2026-10-07, the open: the sample is `notes/Prose.md` §3's default**, `henneberg.tex`'s
-  *Preservation of the Laman property*. It is typical of phases 1–6 (four nodes, Lean devices in
-  every statement, case-analysis proofs) and poses this round's two new questions: how a Lean
-  device in a statement is restated, and Henneberg's names against Jordán's. It cannot show the
-  algorithmic carve-out, which the Stop-1 entry describes instead. Considered: `sparsity.tex`
-  (already near the register), `frameworks.tex`'s definitions (few devices).
-- **The slicing.** Slices of 150–430 lines (`40-exposition`'s range) cut at subsection
-  boundaries; a chapter of at most 430 lines is one slice, and the openings go last. `sparsity`,
-  `laman-theorem` and `rigidity-matroid` split in two, `pebble-game` in three. `laman.tex` (114)
-  rides with `sparsity.tex`'s last slice, as the `(2, 3)` case of that chapter. That gives 16
-  slices averaging 306 lines, above `40-exposition`'s 270: these chapters are less dense.
+- **The sample** (the open; approved at Stop 1): `notes/Prose.md` §3's default, `henneberg.tex`'s
+  *Preservation of the Laman property*, typical of phases 1–6. Considered: `sparsity.tex`,
+  `frameworks.tex`'s definitions.
+- **The slicing** (approved at Stop 1): 150–430-line slices cut at subsection boundaries, openings
+  last, `laman.tex` with `sparsity.tex`'s last slice; 16 slices averaging 306 lines, above
+  `40-exposition`'s 270, since these chapters are less dense.
 - **The screens** are recorded under *Scope*, since `notes/Prose.md` §7's regex was not.
 - **Task 2: the Lean half is a non-`module` file importing the library root.** A `module`
   importer sees the project's theorems as axioms and none of its private declarations, so it

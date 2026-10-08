@@ -8,8 +8,8 @@ post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go ar
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
 round 1's sample section. Round 1's tasks 1–3 have landed: the open, the dependency-audit script
 `scripts/blueprint-deps.py` (§5), with its first report in the ledger, and the sample section.
-**Stopped for the PI** at Stop 1 (§6), whose entry is in round 1's log under *Autopilot: for the PI*.
-**Next concrete task:** round 1's task 4, pinning the exemplar, once the PI has answered.
+The PI answered Stop 1 (§6) on 2026-10-07, in round 1's log under *Autopilot: for the PI*.
+**Next concrete task:** round 1's task 4, pinning the exemplar.
 
 ## 1. The PI's decisions
 
@@ -50,6 +50,12 @@ What follows from these decisions:
 - The rounds follow the blueprint's reading order. A chapter's backward anchor sweep (principle E)
   then checks against earlier chapters that are already in their final register. Introductions come
   last (principle F).
+
+**2026-10-07**, at round 1's Stop 1 (verbatim in `notes/Prose-laman-cleanup.md` *Autopilot: for the
+PI*): the sample approved as the exemplar for rounds 1–4, with the principle-B amendment and the
+slice lists, and "These facts are classical." dropped from it. On the carve-out: "more than
+following rules strictly though, the overriding goal is to make sure the result is
+understandable."
 
 ## 2. Standing rules (all five rounds)
 
