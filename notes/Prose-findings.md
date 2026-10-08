@@ -231,6 +231,18 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `86b44e1b`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.9.
+- **F-078** · E · `thm:def-eq-corank`, `lem:rk-within-parts` and
+  `lem:deficiency-zero-iff-tree-packing` (`deficiency.tex`): edges the pins do not back, and one
+  missing. The statement of `thm:def-eq-corank` uses `lem:rank-matroidMG-le`, which none of its
+  three pins reaches and its proof does not need: the bound is `lem:weak-duality` at the
+  partition $\{V(G)\}$. `rank_matroidMG_le` is reached only from `lem:circuit-induces-rigid`
+  (`molecular-induction.tex`). The statement of `lem:rk-within-parts` uses `def:matroid-MG` and
+  `def:D-deficiency`, which its pin does not reach; it is about the cycle matroid of $\tilde G$
+  and a partition. The pin of `lem:deficiency-zero-iff-tree-packing` reaches `def:k-dof`, which
+  its `\uses` do not name, through the unpinned `IsKDof.exists_isBase_isForestPacking`.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `22317b88`); read (the pins'
+  statements and bodies).
+  *Found:* round 2 task 2.10.
 
 ## N — node shape
 
@@ -633,6 +645,15 @@ declaration's name as its header writes it:
   the omit-two form, so it proves the pin's statement, not the node's.
   *Evidence:* read (the pin's statement, `Molecular/RigidityMatrix/Claim612.lean`).
   *Found:* round 2 task 2.4.
+- **F-079** · S · `lem:rk-within-parts` (`deficiency.tex`): the statement bounds $r(Y) + |P|$
+  for the set $Y$ of all edges of $\tilde G$ whose ends lie in one part of $P$. Its pin
+  `rk_cycleMatroid_within_parts_le` proves the bound for every $Y \subseteq E(\tilde G)$ whose
+  edges have both ends in one part, so the statement is weaker than the pin. The formal proof of
+  `thm:def-eq-corank` uses the general form, at the optimal set $Y_0$ (the private
+  `rk_add_numParts_componentLabel`). Task 2.10 kept the statement and says this in a formalization
+  note.
+  *Evidence:* read (the statements of both, `Molecular/Deficiency.lean`).
+  *Found:* round 2 task 2.10.
 
 ## L — Lean
 
@@ -865,6 +886,15 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; the bodies of `circuit_ncard_gt` and
   `deficiency_induce_le_of_ear_of_merge`).
   *Found:* round 2 task 2.9.
+- **F-080** · L · docstrings in `Molecular/Deficiency.lean` around `thm:def-eq-corank`:
+  `isBase_ncard_add_deficiency_eq`'s says that it "closes" `prop:rigidity-matrix-prop11`, which
+  `rigidityMatrix_prop11` (`AlgebraicInduction/PanelHinge.lean`) proves; `rank_add_deficiency_le`'s
+  calls the reverse inequality "the remaining JJ09 min–max content", which `le_rank_add_deficiency`
+  proves; `rk_cycleMatroid_within_parts_le`'s and its section's call it "`thm:def-eq-corank`, piece
+  1", and it is pinned at `lem:rk-within-parts`; `IsKDof.exists_isBase_isForestPacking`'s calls a
+  Phase-22 construction "the remaining Track-A obstruction". Their credits are `F-081`'s.
+  *Evidence:* read (the docstrings and the four statements).
+  *Found:* round 2 task 2.10.
 
 ## M — mathematics and sources
 
@@ -913,3 +943,17 @@ declaration's name as its header writes it:
   *Evidence:* read (Oxley 2011 pp. 404–407, 411–412, 416, 427–430; Schrijver pp. 725–726, 775;
   Edmonds 1965 p. 69; all in `.refs/`). Edmonds 1970 and Nash-Williams 1966 are not in `.refs/`.
   *Found:* round 2 task 2.1.
+- **F-081** · M · the credit for KT eq. (2.4), $\operatorname{rank} M(\tilde G) +
+  \operatorname{def}(\tilde G) = D(|V|-1)$ (`thm:def-eq-corank`): the blueprint credited it to
+  Jackson and Jordán's Theorem 6.1, "whose Corollary 6.2" is the deficiency-zero case. JJ 2009's
+  Theorem 6.1 (p. 582) is the maximum rank of a body–bar-and-hinge realization and Corollary 6.2
+  (p. 583) its infinitesimally rigid case. The identity is their Theorem 4.1(a) (pp. 580–581, the
+  largest union of $k$ forests, given as well known with Nash-Williams 1961 and 1964 and Tutte
+  1961) applied to $\tilde G$; KT observe it from their Proposition 2.3 (pp. 655–656). Task 2.10
+  credits `deficiency.tex` accordingly. Outside the slice: `intro.tex`'s Phase-19 item (round 4);
+  `formalization.yaml`'s JJ 2009 reference and main-results row ("Thm 6.1 / Cor 6.2 (def = corank
+  bridge)"); the docstrings of `rank_add_deficiency_eq`, `isBase_ncard_add_deficiency_eq`,
+  `le_rank_add_deficiency`, and `deficiency_eq_zero_iff_exists_spanningTrees` (JJ Corollaries 6.2
+  and 6.3, about realizations, for KT Proposition 2.2 at $\tilde G$).
+  *Evidence:* read (JJ 2009 pp. 580–583; KT 2011 pp. 655–656; both in `.refs/`; the docstrings).
+  *Found:* round 2 task 2.10.

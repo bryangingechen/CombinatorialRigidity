@@ -5,10 +5,10 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.9 `F-051`–`F-077`. 20
-one-commit tasks; tasks 1 and 2.1–2.9 are done, and the round has no planned stop. **Next concrete
-task:** task 2.10, `deficiency.tex` 726–914 and 1–26, at Opus (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.10 `F-051`–`F-081`. 20
+one-commit tasks; tasks 1 and 2.1–2.10 are done, and the round has no planned stop. **Next
+concrete task:** task 2.11, `molecular-induction.tex` 43–260, at Opus (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,18 +18,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.9 has landed** (this commit): `deficiency.tex` 272–523 at the open (390–640 at its
-parent), the other 9 nodes of *Rigid subgraphs and structural lemmas* and its opening; the
-subsection is done. Two nodes moved before `lem:cut-edge-decomposition` (*Decisions*), so the
-slice is now 300–347 and 442–724. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is
-byte-identical; two formalization notes are new. Nothing is mid-stream; task 2.10 is next.
+**Task 2.10 has landed** (this commit): `deficiency.tex`'s last slice, the 5 nodes of the
+corank subsection (524–712 at the open, 726–914 at its parent) and the chapter's opening; the
+chapter is done. The subsection moved to second place, KT's order (*Decisions*), so it is now
+190–394. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical; two formalization
+notes are new. Nothing is mid-stream; task 2.11 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (94 overfull boxes, as at the parent; the
-  chapter's one is in its opening, task 2.10's). Screens: `deficiency` register 1, "routes" in task
-  2.10's range (3 at the open), devices 0 / 1, a `\texttt` address in task 2.10's range (1 / 2 at
-  the open), `\operatorname` Lean names 0 (20 at the open); cross-chapter forward `\uses` 14,
-  unchanged.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (93 overfull boxes, 94 at the parent;
+  `deficiency` now has none). Screens: `deficiency` register 0 (3 at the open), devices 0 / 0 (1 /
+  2), `\operatorname` Lean names 0 (20); cross-chapter forward `\uses` 14, unchanged.
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms check
@@ -179,12 +177,8 @@ dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight
 `rigidity-matrix`).
 
 - **Done:** `matroid-union` (task 2.1), `body-bar` (tasks 2.2, 2.3), `body-hinge` (task 2.3),
-  `extensor` (task 2.4), `rigidity-matrix` (tasks 2.5–2.7) and `deficiency` 27–724 (tasks 2.8,
-  2.9); their open bullets are in this log at the open, `ea058ba8`.
-- **`deficiency`** (phase 19), what is left for task 2.10. "Boundary-regime cleanliness" in the
-  proof of `lem:rank-matroidMG-le` (task 2.8 dropped the term: `F-072`). Check
-  `thm:def-eq-corank`'s credit, "the project framing of … Jackson–Jordán Theorem 6.1", against JJ
-  2009 in `.refs/`. The paragraph after it repeats the opening ("wires", "routes").
+  `extensor` (task 2.4), `rigidity-matrix` (tasks 2.5–2.7) and `deficiency` (tasks 2.8–2.10);
+  their open bullets are in this log at the open, `ea058ba8`.
 - **`molecular-induction`** (phase 20, extended through phase 40; the most crux nodes).
   - *Throughout:* "No graph↔matroid correspondence is needed" three times; the fresh edge
     $e_0 \notin E(G)$ in five statements (principle D's canonical case for one labeled remark);
@@ -231,12 +225,10 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   `F-048`–`F-050`, and the status surfaces.
 - [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [x] **2.1–2.9, `matroid-union.tex` through `deficiency.tex`'s second slice**: 2.1 `6c26eed5`,
-    2.2 `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5 `5399e053`, 2.6 `af438fd1`, 2.7
-    `27daa953`, 2.8 `86b44e1b`, 2.9 this commit. Each commit message gives its ranges and findings
-    (`F-051`–`F-077`).
-  - [ ] **2.10 `deficiency.tex`, the corank bridge and the opening** (524–712 at the open, now
-    726–914, and 1–26): 5 nodes, 215 lines.
+  - [x] **2.1–2.10, `matroid-union.tex` through `deficiency.tex`**: 2.1 `6c26eed5`, 2.2
+    `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5 `5399e053`, 2.6 `af438fd1`, 2.7 `27daa953`, 2.8
+    `86b44e1b`, 2.9 `22317b88`, 2.10 this commit. Each commit message gives its ranges and findings
+    (`F-051`–`F-081`).
   - [ ] **2.11 `molecular-induction.tex`, inherited lemmas and graph operations** (43–260): 9
     nodes, 218 lines.
   - [ ] **2.12 `molecular-induction.tex`, KT Lemma 4.1 and the balanced packing** (261–516):
@@ -288,6 +280,11 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
 - `F-060` (S, task 2.4): `lem:case-III-claim612-extensor-span` (round 3) states that the
   two-extensors $\bar p_i \vee \bar p_j$ span $\bigwedge^k K^{k+2}$; its pin is about the omit-two
   extensors, the same family only at $k = 2$.
+- `F-079` (S, task 2.10): `lem:rk-within-parts` bounds the rank of all the edges inside the parts;
+  its pin bounds every set of such edges, the form the formal proof of KT eq. (2.4) uses.
+- `F-081` (M, task 2.10): KT eq. (2.4) was credited to Jackson and Jordán's Theorem 6.1 (the
+  generic rank); it is their Theorem 4.1(a) at $\tilde G$. Fixed in `deficiency.tex`, left in
+  `intro.tex`, `formalization.yaml` and the Lean docstrings.
 
 ## Moved to a later round
 
@@ -340,6 +337,10 @@ one line each naming the ledger ID and the task that found it.
   pins reach nodes of `molecular-induction.tex` and `jacobs.tex` that no `\uses` names.
 - `F-077` (L, task 2.9): two docstrings of `deficiency.tex` pins are stale or name the wrong node,
   and an ear lemma's pin has an unused hypothesis.
+- `F-078` (E, task 2.10): `thm:def-eq-corank` and `lem:rk-within-parts` have edges their pins do
+  not back, and `lem:deficiency-zero-iff-tree-packing`'s pin reaches `def:k-dof`.
+- `F-080` (L, task 2.10): four docstrings around KT eq. (2.4)'s pins are stale or name the wrong
+  node.
 
 ## Blockers / open questions
 
@@ -347,46 +348,41 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.10, `deficiency.tex` 726–914 (the corank bridge) and 1–26 (the
-chapter's opening), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
-`deficiency` bullet under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
-2.11–2.18 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.11, `molecular-induction.tex` 43–260 (inherited lemmas and graph
+operations), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
+`molecular-induction` bullet's *Throughout* and *2.11* items under *Per-chapter diagnosis*, its
+gates and screens under *Scope*. Then tasks 2.12–2.18 in order, and task 3 closes the round. For
+the slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
   understandable"): the coordinator has read tasks 2.1–2.3 in full against the exemplars.
 - **Notation.** Tasks 2.8–2.18 write KT's $d$ and $D = \binom{d+1}{2}$, drop the stray $n$, and
   point at `body-hinge`'s $\tilde G = (D-1)\cdot G$ (*Decisions*). `body-bar.tex` writes bodies in
   $\R^d$ and a vector $b_e \in \R^D$ per bar (Tay's model); `thm:tutte-nash-williams` is
   *Decomposition into forests* (Tutte, Nash-Williams 1961 and 1964). `F-053` lists the credits left
-  in tasks 2.10–2.12.
+  in tasks 2.11–2.12 ("(Nash--Williams, Edmonds [edmonds1965])", line 389 at the open).
 - **Crux nodes** keep their full proofs, in tasks 2.12–2.15, 2.17 and 2.18 (*Scope*).
 - **What `rigidity-matrix.tex` now says that later tasks lean on.** It recalls the deficiency
-  before `lem:trivial-motions-rank-bound`: $d_G(P)$, $\operatorname{def}_{\tilde G}(P) = D(|P|-1) -
-  (D-1)\,d_G(P)$, and $\operatorname{def}(\tilde G)$ the largest value over partitions of $V$, as
-  `def:D-deficiency` now states it. Its opening names the generic rank formula Jackson and
-  Jordán's, KT Proposition 2.3, and KT Proposition 1.1 Tay and Whiteley's theorem (`F-067`):
-  `deficiency.tex`'s "matroidal half of Tay–Whiteley's Proposition 1.1" (lines 16, 862) is task
-  2.10's. Its subgraph convention ($R(H,p)$ keeps $p$'s hinges and $G$'s bodies), row spaces
-  $\mathcal R$, and $\pi_W$ for deleting the columns of $W$ are fixed in *Rank-addition lemmas*.
-  `lem:block-rank-cut` is titled for a cut edge: `molecular-induction.tex`'s "block-rank addition"
-  (task 2.16) follows it. Task 2.16 gives `F-050`'s molecular-induction edges a sentence each, as
-  task 2.7 did for this chapter's.
-- **What `deficiency.tex` 27–724 now fixes (tasks 2.8, 2.9).** Notation: $d_G(P)$
-  (`def:D-deficiency`), $\delta_G(V')$ and $d_G(V')$ (`def:cut-edges-2ec`, KT's),
-  $\operatorname{def}_d(G)$ at dimension $d$ (before `lem:deficiency-antitone`;
-  `main-component.tex`'s $\operatorname{def}_2$, $\operatorname{def}_3$), $G[X]$ and
-  $\tilde G[X] = (D-1)\cdot G[X]$ (before `lem:cut-edge-decomposition`), $\tilde e$, "the set of
-  the $D-1$ copies of $e$" (`def:k-dof`; "edge-fiber" goes, and the opening's line 24 is task
-  2.10's), the "value" of a partition, $M(\tilde G)\,|\,E(\tilde H)$ for restriction, and
-  $\operatorname{def}(\tilde G; u, v)$. The chapter says *vertices* of a multigraph, as KT do,
-  where `main-component.tex` says bodies. Partitions as labelings are explained once, in
-  `fmlnote:partition-labeling`: `\cref` it. "Boundary regime" is gone (`F-072`): "boundary-regime
-  cleanliness (`\cref{def:matroid-MG}`)" becomes its independence criterion in tasks 2.10–2.11.
-  The chapter's KT eq. (2.4) is `thm:def-eq-corank`, which task 2.9's proofs cite in its rank form
-  $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde G) = D(|V(G)| - 1)$. For task 2.10:
-  the subsection openings already state KT eq. (2.4) and what each subsection does (principle F,
-  *Once*); `thm:def-eq-corank`'s statement and the opening's line 16 keep their strength.
-  `molecular-induction.tex`'s `lem:circuit-induces-rigid` (task 2.11) restates KT Lemma 3.4 in
-  full, which `lem:circuit-rigid` now announces in a sentence.
+  before `lem:trivial-motions-rank-bound`, as `def:D-deficiency` states it. Its opening names the
+  generic rank formula Jackson and Jordán's, KT Proposition 2.3, and KT Proposition 1.1 Tay and
+  Whiteley's theorem (`F-067`). Its subgraph convention ($R(H,p)$ keeps $p$'s hinges and $G$'s
+  bodies), row spaces $\mathcal R$, and $\pi_W$ for deleting the columns of $W$ are fixed in
+  *Rank-addition lemmas*. `lem:block-rank-cut` is titled for a cut edge:
+  `molecular-induction.tex`'s "block-rank addition" (task 2.16) follows it. Task 2.16 gives
+  `F-050`'s molecular-induction edges a sentence each, as task 2.7 did for this chapter's.
+- **What `deficiency.tex` now fixes (tasks 2.8–2.10).** Its subsections run: $M(\tilde G)$, the
+  deficiency and $k$-dof-graphs; KT eq. (2.4) (`sec:molecular-deficiency-bridge`, moved second);
+  rigid subgraphs and KT's §3 lemmas. Notation: $d_G(P)$ (`def:D-deficiency`), $\delta_G(V')$ and
+  $d_G(V')$ (`def:cut-edges-2ec`), $\operatorname{def}_d(G)$ at dimension $d$, $G[X]$ and
+  $\tilde G[X] = (D-1)\cdot G[X]$, $\tilde e$, "the set of the $D-1$ copies of $e$" (`def:k-dof`;
+  "edge-fiber" and "fiber" go), the "value" of a partition, $M(\tilde G)\,|\,E(\tilde H)$,
+  $\operatorname{def}(\tilde G; u, v)$, and the *corank* $D(|V(G)|-1) - \operatorname{rank}
+  M(\tilde G)$ (the subsection's opening). It says *vertices* of a multigraph, as KT do. Partitions
+  as labelings are explained once, in `fmlnote:partition-labeling`: `\cref` it. "Boundary-regime
+  cleanliness (`\cref{def:matroid-MG}`)" (line 77) becomes the independence criterion (`F-072`).
+  `molecular-induction.tex`'s "def\,$=$\,corank bridge" or "identity" (eleven times) becomes KT
+  eq. (2.4) (`\cref{thm:def-eq-corank}`), credited as `F-081` says; `lem:deficiency-zero-iff-tree-packing`
+  is KT Proposition 2.2 at $\tilde G$. `lem:circuit-induces-rigid` (task 2.11) restates KT Lemma 3.4
+  in full, which `lem:circuit-rigid` announces, and is the one user of `lem:rank-matroidMG-le`.
 - **From task 2.4.** `meet.tex` (its opening and two nodes) cites `sec:molecular-homog` for the
   exterior algebra and the join, which are in `sec:molecular-extensor`: task 2.18 repoints them.
   `def:extensor` writes $v_1 \wedge \cdots \wedge v_j$, and $\vee$ arrives with `def:join`. The
@@ -394,7 +390,7 @@ chapter's opening), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnos
   Propositions 3.4 and 3.5) and `def:affine-subspace-extensor`.
 - **The open's findings** are recorded, not acted on.
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-078`.
+  pins reach. The ledger's next ID is `F-082`.
 
 ## Decisions made during this round
 
@@ -417,14 +413,16 @@ chapter's opening), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnos
   `lem:trivial-motions-rank-bound`, "there are normals"); `F-048`/`F-049` keep their statements with
   a formalization note, and `lem:rank-polynomial-IH-relabel-proj` keeps its pin's redundant no-loops
   hypothesis (`F-070`). The cycle matroid has no symbol.
-- **Task 2.8, `deficiency.tex` 27–271.** $D \ge 1$ is in `lem:two-edge-conn`'s statement, and
-  `lem:cut-edge-decomposition` (a `lemma`, as KT's is) omits its pins' unused one (`F-075`); its
-  proof compares partitions directly. Minimality is the pin's base condition, KT's edge-removal
-  form in a remark. "Boundary regime ($\ell = 2k$)" was false and goes (`F-072`).
-- **Task 2.9, `deficiency.tex` 272–523.** KT Lemma 3.3's two nodes moved before KT Lemma 3.6, KT's
-  order (`F-071`). The proofs argue with partitions, where the pins use labelings (two new notes
-  say so), and compute the two-vertex deficiencies rather than cite the later
-  `lem:two-vertex-zero-dof` (`F-076`); $|E(G)| \le 2$ is proved with the matroid, where KT cite
-  their Lemma 3.2. `def:deficiency-merged`'s "in particular" bound moved after the definition
-  (principle B). `lem:circuit-rigid` and `lem:minimal-kdof-spanning-subgraph` are titled as first
-  steps of KT Lemma 3.4 and Theorem 5.6, which later nodes complete.
+- **Tasks 2.8–2.9, `deficiency.tex` 27–523.** $D \ge 1$ and $D \ge 2$ are stated where the pins
+  assume them; `lem:cut-edge-decomposition` (a `lemma`, as KT's is) omits its pins' unused one
+  (`F-075`). Minimality is the pin's base condition, KT's edge-removal form in a remark. "Boundary
+  regime" was false and goes (`F-072`). KT Lemma 3.3's two nodes moved before KT Lemma 3.6, KT's
+  order (`F-071`). The proofs argue with partitions where the pins use labelings (notes say so),
+  and compute the two-vertex deficiencies rather than cite the later `lem:two-vertex-zero-dof`.
+- **Task 2.10, `deficiency.tex`'s corank subsection and opening.** The subsection moved second,
+  KT's order (eq. (2.4) is in their §2.5), so the §3 proofs cite an earlier theorem.
+  `thm:def-eq-corank` states the $D \ge 1$ its pins assume, as `lem:weak-duality` did; its credit
+  is KT eq. (2.4) and JJ Theorem 4.1(a), not JJ Theorem 6.1 (`F-081`), and the "matroidal half of
+  KT Proposition 1.1" goes (`F-067`). Its proof stays full, with the partition into components
+  taken directly (the Lean's labeling count is a note); "corank" is defined in the subsection's
+  opening. `lem:rk-within-parts` keeps its statement, weaker than its pin (`F-079`).

@@ -1,28 +1,37 @@
 \section{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)}, deficiency, and \texorpdfstring{$k$}{k}-dof graphs}
 \label{sec:molecular-deficiency}
 
-This chapter builds the combinatorial substrate of the molecular
-conjecture, Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}. Where
-\cref{sec:molecular-rigidity-matrix} built the \emph{analytic} side (the
-rigidity matrix $R(G,p)$, its rank, and the three rank lemmas), this
-chapter builds the \emph{matroidal} side.
-\Cref{sec:molecular-deficiency-matroid} constructs the matroid
-$M(\tilde G)$, the $D$-deficiency $\operatorname{def}(\tilde G)$, and
-the $k$-degree-of-freedom hierarchy; \cref{sec:molecular-deficiency-rigid}
-develops rigid subgraphs and KT's structural Lemmas 3.1, 3.3, and 3.4;
-and \cref{sec:molecular-deficiency-bridge} proves the bridge
-$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
-(\cref{thm:def-eq-corank}) that ties the two sides together. This bridge
-is the matroidal half of Tay--Whiteley's Proposition~1.1, reconciling
-the rank form of \cref{sec:molecular-rigidity-matrix} with the
-body-hinge existence form of \cref{sec:body-hinge}; the remaining
-analytic half (the generic-rank theorem $\operatorname{rank} R(G,p) =
-D(|V|-1) - \operatorname{def}(\tilde G)$) is presented with the
-algebraic induction (\cref{sec:molecular-algebraic-induction}).
-Throughout $D = \binom{d+1}{2}$ is the body-bar dimension and
-$\tilde G$ abbreviates the multiplied graph $(D-1)\cdot G$ of
-\cref{sec:body-hinge}, whose edge-fibers $\tilde e$ are the $D-1$
-parallel copies of each edge $e \in E(G)$.
+This chapter develops the combinatorics of Katoh and Tanigawa's
+proof~\cite[\S2.5 and \S3]{katohTanigawa2011}. Throughout, $G$ is a
+multigraph, $D = \binom{d+1}{2}$, and $\tilde G = (D-1)\cdot G$ is the
+multigraph of \cref{sec:body-hinge}, in which each edge of $G$ is
+repeated $D - 1$ times. We study two numbers attached to $\tilde G$: the
+rank of a matroid $M(\tilde G)$ on its edges, the union of $D$ copies of
+its cycle matroid, and the deficiency $\operatorname{def}(\tilde G)$, a
+maximum over the partitions of $V(G)$. Katoh and Tanigawa's
+Proposition~2.3, which they credit to Jackson and
+Jord\'an~\cite{jacksonJordan2009}, relates both to the rank of the
+rigidity matrix $R(G,p)$ of a generic body-hinge framework $(G,p)$
+(\cref{sec:molecular-rigidity-matrix}):
+\[
+  \operatorname{rank} R(G,p) \;=\;
+  D\,(|V(G)| - 1) - \operatorname{def}(\tilde G) \;=\;
+  \operatorname{rank} M(\tilde G).
+\]
+This chapter proves the second equality, KT eq.~(2.4). The first is the
+rank formula of Jackson and Jord\'an. We prove it after the algebraic
+induction (\cref{prop:rigidity-matrix-prop11}).
+
+\Cref{sec:molecular-deficiency-matroid} defines $M(\tilde G)$, the
+deficiency, and the $k$-dof-graphs, the multigraphs with
+$\operatorname{def}(\tilde G) = k$. \Cref{sec:molecular-deficiency-bridge}
+proves KT eq.~(2.4) from the rank of a matroid union
+(\cref{sec:matroid-union}), and characterizes deficiency zero by $D$
+edge-disjoint spanning trees (KT Proposition~2.2).
+\Cref{sec:molecular-deficiency-rigid} proves Katoh and Tanigawa's
+lemmas on $k$-dof-graphs from their \S3, and computes the deficiency at
+cuts, cut vertices and ears. The combinatorial induction of the next
+chapter (\cref{sec:molecular-induction}) uses these results.
 
 \subsection{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)}, the deficiency and \texorpdfstring{$k$}{k}-dof-graphs}
 \label{sec:molecular-deficiency-matroid}
@@ -177,6 +186,215 @@ if some base of $M(\tilde G)$ avoids $\tilde e$. This follows from KT
 eq.~(2.4) (\cref{thm:def-eq-corank} below), since
 $M(\widetilde{G - e})$ is the restriction of $M(\tilde G)$ to
 $E(\tilde G) \setminus \tilde e$ (\cref{lem:matroid-restrict-subgraph}).
+
+\subsection{The deficiency and the rank of \texorpdfstring{$M(\tilde G)$}{M(G~)}}
+\label{sec:molecular-deficiency-bridge}
+
+This subsection proves KT eq.~(2.4). Let $D \ge 1$, and let $G$ have at
+least one vertex. Every base of $M(\tilde G)$ has
+$\operatorname{rank} M(\tilde G)$ elements, so eq.~(2.4) says that
+\[
+  \operatorname{def}(\tilde G) \;=\;
+  D\,(|V(G)| - 1) - \operatorname{rank} M(\tilde G).
+\]
+We call the right-hand side the \emph{corank} of $M(\tilde G)$. Katoh
+and Tanigawa observe eq.~(2.4) from the equivalence of (ii) and (iii)
+in their Proposition~2.3. They note that the deficiency is the corank
+$|E(\tilde G)| - \operatorname{rank} M(\tilde G)$ in the usual sense
+when $\tilde G$ has $D(|V(G)| - 1)$
+edges~\cite[pp.~655--656]{katohTanigawa2011}.
+
+Since the independent sets of $M(\tilde G)$ are the unions of $D$
+forests of $\tilde G$, eq.~(2.4) is the classical formula for the
+largest size of such a union, applied to $\tilde G$ (see Jackson and
+Jord\'an~\cite[Theorem~4.1(a)]{jacksonJordan2009}). We derive it from
+the rank of a matroid union (\cref{thm:matroid-partition-rank}). For a
+partition $P$ of $V(G)$, the edges of $\tilde G$ inside the parts of
+$P$ give
+$\operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P)
+\le D(|V(G)| - 1)$ (\cref{lem:weak-duality}). Conversely, let $Y$ be a
+set of edges at which the rank formula attains its minimum. Then
+equality holds at the partition of $V(G)$ into the vertex sets of the
+components of $\tilde G \restriction Y$ (\cref{thm:def-eq-corank}). We
+begin with an upper bound on the rank that follows from sparsity alone.
+Finally we characterize deficiency zero by spanning trees.
+
+\begin{lemma}[An upper bound on the rank of $M(\tilde G)$]
+  \label{lem:rank-matroidMG-le}
+  \lean{Graph.rank_matroidMG_le}
+  \leanok
+  \uses{def:matroid-MG}
+  Let $G$ be a multigraph with at least one vertex. Then
+  \[
+    \operatorname{rank} M(\tilde G) \;\le\; D\,(|V(G)| - 1).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $B$ be a base of $M(\tilde G)$. Then $\tilde G \restriction B$ is
+  $(D, D)$-sparse (\cref{def:matroid-MG}). If $B$ is empty, the bound
+  holds as $|V(G)| \ge 1$. Otherwise sparsity, applied to $B$ itself,
+  gives $|B| \le D\,|V(B)| - D \le D\,(|V(G)| - 1)$.
+\end{proof}
+
+For a set $Y$ of edges of $\tilde G$, the multigraph
+$\tilde G \restriction Y$ has all the vertices of $G$, and each vertex
+outside $V(Y)$ is a component of its own. So the rank of $Y$ in the
+cycle matroid of $\tilde G$ is $|V(G)| - c$, where $c$ is the number of
+components of $\tilde G \restriction Y$
+(\cref{sec:body-bar-matroid-union}).
+
+\begin{lemma}[The rank of the edges inside the parts of a partition]
+  \label{lem:rk-within-parts}
+  \lean{Graph.rk_cycleMatroid_within_parts_le}
+  \leanok
+  \uses{def:matroid-MG, def:D-deficiency}
+  Let $G$ be a multigraph, and let $r$ be the rank function of the cycle
+  matroid of $\tilde G$. Let $P$ be a partition of $V(G)$, and let $Y$
+  be the set of edges of $\tilde G$ whose ends lie in one part of $P$.
+  Then $r(Y) + |P| \le |V(G)|$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The ends of each edge of $Y$ lie in one part of $P$, so each
+  component of $\tilde G \restriction Y$ lies in one part. Each part is
+  nonempty, so it contains a component, and $\tilde G \restriction Y$
+  has at least $|P|$ components. Hence $r(Y) \le |V(G)| - |P|$.
+\end{proof}
+\begin{fmlnote}
+  The formalization proves the bound, by the same argument, for every
+  set $Y$ of edges of $\tilde G$ such that the ends of each edge of $Y$
+  lie in one part of $P$. The formal proof of \cref{thm:def-eq-corank}
+  uses it in this form.
+\end{fmlnote}
+
+\begin{lemma}[Weak duality: $\operatorname{def}(\tilde G) \le \operatorname{corank} M(\tilde G)$]
+  \label{lem:weak-duality}
+  \lean{Graph.rank_add_partitionDef_le, Graph.rank_add_deficiency_le}
+  \leanok
+  \uses{def:D-deficiency, def:matroid-MG, lem:rk-within-parts}
+  Let $D \ge 1$, and let $G$ be a multigraph with at least one vertex.
+  Then every partition $P$ of $V(G)$ satisfies
+  \[
+    \operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P)
+      \;\le\; D\,(|V(G)| - 1).
+  \]
+  In particular,
+  $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde G) \le
+  D\,(|V(G)| - 1)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $r$ and $Y$ be as in \cref{lem:rk-within-parts}. The edges of
+  $\tilde G$ outside $Y$ are the $D - 1$ copies of each of the $d_G(P)$
+  edges of $G$ that join different parts of $P$. The matroid
+  $M(\tilde G)$ is the union of $D$ copies of the cycle matroid of
+  $\tilde G$ (\cref{def:matroid-MG}). So the rank of a matroid union
+  (\cref{thm:matroid-partition-rank}) gives the first inequality of
+  \[
+    \operatorname{rank} M(\tilde G) \;\le\;
+    |E(\tilde G) \setminus Y| + D\,r(Y) \;\le\;
+    (D-1)\,d_G(P) + D\,(|V(G)| - |P|).
+  \]
+  The second holds by \cref{lem:rk-within-parts}. As
+  $\operatorname{def}_{\tilde G}(P) = D(|P| - 1) - (D-1)\,d_G(P)$, this
+  is the inequality at $P$. Taking $P$ of largest value gives the
+  inequality for $\operatorname{def}(\tilde G)$.
+\end{proof}
+
+\begin{theorem}[The deficiency is the corank of $M(\tilde G)$; KT eq.~(2.4)]
+  \label{thm:def-eq-corank}
+  \lean{Graph.rank_add_deficiency_eq, Graph.isBase_ncard_add_deficiency_eq, Graph.le_rank_add_deficiency}
+  \leanok
+  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts, lem:weak-duality}
+  Let $D \ge 1$, and let $G$ be a multigraph with at least one vertex.
+  Then every base $B$ of $M(\tilde G)$ satisfies
+  \[
+    |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V(G)| - 1).
+  \]
+  That is,
+  $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde G) =
+  D\,(|V(G)| - 1)$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  By \cref{lem:weak-duality},
+  $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde G) \le
+  D\,(|V(G)| - 1)$. For the reverse inequality we find a partition $P$
+  of $V(G)$ with
+  $\operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P)
+  \ge D\,(|V(G)| - 1)$.
+
+  Let $r$ be the rank function of the cycle matroid of $\tilde G$. By the
+  rank of a matroid union (\cref{thm:matroid-partition-rank}), applied
+  to the $D$ copies of this matroid, some set $Y_0$ of edges of
+  $\tilde G$ satisfies
+  \[
+    \operatorname{rank} M(\tilde G) \;=\;
+    |E(\tilde G) \setminus Y_0| + D\,r(Y_0).
+  \]
+  Let $P$ be the partition of $V(G)$ into the vertex sets of the
+  components of $\tilde G \restriction Y_0$. Then
+  $r(Y_0) = |V(G)| - |P|$, as before \cref{lem:rk-within-parts}. The
+  ends of an edge of $Y_0$ lie in one component of
+  $\tilde G \restriction Y_0$, so in one part of $P$. Hence the $D - 1$
+  copies of each of the $d_G(P)$ edges of $G$ that join different parts
+  of $P$ lie in $E(\tilde G) \setminus Y_0$, and
+  \[
+    \operatorname{rank} M(\tilde G) \;\ge\;
+    (D-1)\,d_G(P) + D\,(|V(G)| - |P|) \;=\;
+    D\,(|V(G)| - 1) - \operatorname{def}_{\tilde G}(P).
+  \]
+  As $\operatorname{def}_{\tilde G}(P) \le \operatorname{def}(\tilde G)$,
+  the reverse inequality follows. Every base $B$ of $M(\tilde G)$ has
+  $|B| = \operatorname{rank} M(\tilde G)$.
+\end{proof}
+\begin{fmlnote}
+  The first pin is the identity for the rank, the second the identity
+  for a base, and the third the reverse inequality. In the third, the
+  partition into components is the labeling that sends each vertex to a
+  chosen vertex of its component (\cref{fmlnote:partition-labeling}).
+  By \cref{lem:rk-within-parts}, in the form of its formalization note,
+  this labeling has at most as many parts as there are components. It
+  has at least as many, as different components get different labels.
+\end{fmlnote}
+
+The characterization of deficiency zero announced in
+\cref{sec:molecular-deficiency-matroid} follows from KT eq.~(2.4).
+
+\begin{lemma}[Deficiency zero and $D$ edge-disjoint spanning trees; KT Proposition~2.2]
+  \label{lem:deficiency-zero-iff-tree-packing}
+  \lean{Graph.deficiency_eq_zero_iff_exists_spanningTrees}
+  \leanok
+  \uses{def:D-deficiency, def:matroid-MG}
+  Let $D \ge 2$, and let $G$ be a multigraph with at least one vertex.
+  Then $\operatorname{def}(\tilde G) = 0$ if and only if $\tilde G$
+  contains $D$ edge-disjoint spanning trees.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{thm:def-eq-corank, thm:tutte-nash-williams,
+    cor:k-spanning-trees}
+  Suppose that $\tilde G$ contains $D$ edge-disjoint spanning trees.
+  Each has $|V(G)| - 1$ edges, so their union $F$ has $D(|V(G)| - 1)$
+  edges. As a union of $D$ forests, $F$ is independent in $M(\tilde G)$
+  (\cref{lem:union-indep-iff}). As $\operatorname{def}(\tilde G) \ge 0$,
+  KT eq.~(2.4) (\cref{thm:def-eq-corank}) gives
+  $\operatorname{rank} M(\tilde G) \le D(|V(G)| - 1)$. So $F$ is a base,
+  and KT eq.~(2.4) gives $\operatorname{def}(\tilde G) = 0$.
+
+  Conversely, let $\operatorname{def}(\tilde G) = 0$, and let $B$ be a
+  base of $M(\tilde G)$. Then $|B| = D(|V(G)| - 1)$ by KT eq.~(2.4). The
+  multigraph $H = \tilde G \restriction B$ is $(D, D)$-sparse
+  (\cref{def:matroid-MG}), so it is $(D, D)$-tight. It is also
+  connected. Otherwise $V(G)$ is the union of two disjoint nonempty sets
+  $V_1$ and $V_2$ with no edge of $H$ between them. For $i = 1, 2$, the
+  edges of $H$ inside $V_i$ number at most $D|V_i| - D$: by sparsity if
+  there are any, and as $|V_i| \ge 1$ if there are none. So
+  $|B| \le D|V(G)| - 2D$, against $|B| = D|V(G)| - D$. By
+  \cref{cor:k-spanning-trees}, $B$ is the union of $D$ disjoint spanning
+  trees of $H$, and these are spanning trees of $\tilde G$.
+\end{proof}
 
 \subsection{Rigid subgraphs and structural lemmas}
 \label{sec:molecular-deficiency-rigid}
@@ -722,193 +940,3 @@ minimal $k$-dof-graphs with two vertices, and with one.
   and of a single edge, the third is the bound on the number of edges at
   two vertices, and the fourth is the lemma.
 \end{fmlnote}
-
-\subsection{The deficiency \texorpdfstring{$=$}{=} corank bridge}
-\label{sec:molecular-deficiency-bridge}
-
-\begin{lemma}[Rank upper bound for $M(\tilde G)$]
-  \label{lem:rank-matroidMG-le}
-  \lean{Graph.rank_matroidMG_le}
-  \leanok
-  \uses{def:matroid-MG}
-  For a multigraph $G$ with $V(G) \ne \emptyset$,
-  \[
-    \operatorname{rank} M(\tilde G) \;\le\; D\,(|V(G)| - 1).
-  \]
-\end{lemma}
-\begin{proof}
-  \leanok
-  Every base $B$ of $M(\tilde G)$ is independent, hence (boundary-regime
-  cleanliness, \cref{def:matroid-MG}) the bar set $B$ is $(D,D)$-sparse
-  in $\tilde G$. Applying sparsity to $B$ itself gives $|B| + D \le D
-  \cdot |V'|$, where $V' \subseteq V(\tilde G) = V(G)$ are the vertices
-  $B$ spans; since $|V'| \le |V(G)|$ and $|V(G)| \ge 1$, this rearranges
-  to $|B| \le D\,(|V(G)| - 1)$. This is the matroidal upper-bound half of
-  \cref{thm:def-eq-corank} (the codimension fact $\operatorname{rank} R
-  \le D(|V|-1)$ on the analytic side,
-  \cref{sec:molecular-rigidity-matrix}).
-\end{proof}
-
-\begin{lemma}[Partition-respecting cycle-matroid rank bound]
-  \label{lem:rk-within-parts}
-  \lean{Graph.rk_cycleMatroid_within_parts_le}
-  \leanok
-  \uses{def:matroid-MG, def:D-deficiency}
-  Let $P$ be a partition of $V(G)$ and let $Y \subseteq E(\tilde G)$ be the set
-  of fibers of $\tilde G$ whose two endpoints lie in the same part of $P$
-  (the non-crossing fibers). Then the cycle-matroid rank of $Y$ satisfies
-  \[
-    \operatorname{r}_{\mathrm{cycle}}(Y) + |P| \;\le\; |V(G)|,
-  \]
-  i.e.\ $\operatorname{r}_{\mathrm{cycle}}(Y) \le |V(G)| - |P|$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  By the cycle-matroid rank--component identity
-  $\operatorname{r}_{\mathrm{cycle}}(Y) + c(\tilde G \restriction Y) = |V(G)|$
-  (the edge-restriction $\tilde G \restriction Y$ keeps every vertex, so
-  $V(\tilde G \restriction Y) = V(\tilde G) = V(G)$). It remains to see
-  $c(\tilde G \restriction Y) \ge |P|$. A fiber of $Y$ joins two
-  equally-labelled vertices, so along any walk of $\tilde G \restriction Y$ the
-  part label is constant; hence the part containing a vertex is a connected-
-  component invariant, and the map sending each part to the component of one of
-  its vertices is injective. Thus the number of components is at least the
-  number $|P|$ of parts.
-\end{proof}
-
-\begin{lemma}[Weak duality: $\operatorname{def}(\tilde G) \le \operatorname{corank} M(\tilde G)$]
-  \label{lem:weak-duality}
-  \lean{Graph.rank_add_partitionDef_le, Graph.rank_add_deficiency_le}
-  \leanok
-  \uses{def:D-deficiency, def:matroid-MG, lem:rk-within-parts}
-  For a multigraph $G$ with $V(G) \ne \emptyset$ and $D \ge 1$, and every
-  partition $P$ of $V(G)$,
-  \[
-    \operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P)
-      \;\le\; D\,(|V(G)| - 1);
-  \]
-  maximising over $P$ gives
-  $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde G) \le
-  D\,(|V(G)| - 1)$, i.e.\ $\operatorname{def}(\tilde G) \le
-  \operatorname{corank} M(\tilde G)$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Fix $P$, encoded by $f$, and let $Y \subseteq E(\tilde G)$ be the
-  non-crossing fibers (those whose underlying edge does not cross $P$). The
-  Edmonds matroid-partition rank formula (\cref{sec:matroid-union},
-  \texttt{Union\_pow\_rk\_eq}) applied to the $D$-fold cycle-matroid union on
-  $X = E(\tilde G)$ with the witness $Y$ gives
-  $\operatorname{rank} M(\tilde G) \le D \cdot
-  \operatorname{r}_{\mathrm{cycle}}(Y) + |E(\tilde G) \setminus Y|$. By
-  \cref{lem:rk-within-parts}, $D \cdot \operatorname{r}_{\mathrm{cycle}}(Y)
-  \le D(|V| - |P|)$; and the crossing fibers $E(\tilde G) \setminus Y$ number
-  exactly $(D-1)\,d_G(P)$ (each of the $d_G(P)$ crossing edges of $G$
-  contributes its $D-1$ parallel copies). Substituting,
-  $\operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P) =
-  \operatorname{rank} M(\tilde G) + D(|P|-1) - (D-1)\,d_G(P) \le D(|V| - 1)$.
-  Maximising over $P$ (a conditionally-complete supremum, bounded by the
-  per-partition bound) gives the deficiency form.
-\end{proof}
-
-\begin{theorem}[$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$; Jackson--Jord\'an]
-  \label{thm:def-eq-corank}
-  \lean{Graph.rank_add_deficiency_eq, Graph.isBase_ncard_add_deficiency_eq, Graph.le_rank_add_deficiency}
-  \leanok
-  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts, lem:weak-duality}
-  For a multigraph $G$ with $V(G) \ne \emptyset$ and any base $B$ of
-  $M(\tilde G)$,
-  \[
-    |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V| - 1),
-  \]
-  i.e.\ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde
-  G)$ inside the rank-$D(|V|-1)$ ambient. This is the project framing of
-  the generic-rank identity of Jackson--Jord\'an~\cite[Theorem
-  6.1]{jacksonJordan2009}, whose Corollary~6.2 reads off rigidity
-  ($\operatorname{def} = 0$) as $\tilde G$ packing $D$ edge-disjoint
-  spanning trees.
-\end{theorem}
-\begin{proof}
-  \leanok
-  The rank of the $D$-fold graphic-matroid union is the partition
-  formula of Edmonds (\cref{sec:matroid-union}); the corank against the
-  ambient $D(|V|-1)$ is exactly the deficiency maximised over
-  partitions. One inequality is weak duality (\cref{lem:weak-duality}):
-  $\operatorname{def}(\tilde G) \le \operatorname{corank} M(\tilde G)$,
-  from the Edmonds rank formula and the partition-respecting bound
-  \cref{lem:rk-within-parts}, alongside the rank upper bound
-  \cref{lem:rank-matroidMG-le} (matching, on the matroidal side, the
-  body-hinge reduction of \cref{thm:body-hinge-tay}). The reverse
-  inequality $\operatorname{def}(\tilde G) \ge \operatorname{corank}
-  M(\tilde G)$ --- the substantive Jackson--Jord\'an~\cite{jacksonJordan2009}
-  min--max content --- exhibits a vertex-partition attaining the rank: the
-  existence half of the Edmonds formula provides an optimal edge set
-  $Y_0 \subseteq E(\tilde G)$ with $D\cdot
-  \operatorname{r}_{\mathrm{cycle}}(Y_0) + |E(\tilde G) \setminus Y_0| \le
-  \operatorname{rank} M(\tilde G)$, and the partition $P$ into the connected
-  components of $\tilde G \restriction Y_0$ is then attaining. For that $P$
-  every fiber of $Y_0$ joins same-component (so equally-labelled) vertices,
-  whence $\operatorname{r}_{\mathrm{cycle}}(Y_0) + |P| = |V|$ exactly (the
-  $\le$ is \cref{lem:rk-within-parts}, the $\ge$ the rank--component
-  identity together with the components-refine-the-partition map run in
-  reverse); and every crossing edge has all $D-1$ of its fibers outside
-  $Y_0$, so $(D-1)\,d_G(P) \le |E(\tilde G) \setminus Y_0|$. Substituting,
-  $\operatorname{rank} M(\tilde G) \ge D(|V| - |P|) + (D-1)\,d_G(P) =
-  D(|V|-1) - \operatorname{def}_{\tilde G}(P)$, so
-  $\operatorname{def}(\tilde G) \ge \operatorname{corank} M(\tilde G)$. The
-  two inequalities give the equality.
-\end{proof}
-
-This bridge is the matroidal half of Tay--Whiteley's
-Proposition~1.1, which equates the rank form
-$\operatorname{rank} R(G,p) = D(|V|-1)$ of
-\cref{sec:molecular-rigidity-matrix} with the standard-basis existence
-form (\cref{thm:body-hinge-tay}) of \cref{sec:body-hinge}. The
-reconciliation routes through $\operatorname{def}(\tilde G) =
-\operatorname{corank} M(\tilde G)$ (\cref{thm:def-eq-corank}); the
-remaining \emph{analytic} link --- the generic-rank theorem
-$\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$
-(Jackson--Jord\'an Thm 6.1, geometric side) --- wires the
-rigidity-matrix rank to the matroid corank and is presented with the
-algebraic induction (\cref{sec:molecular-algebraic-induction}).
-
-The deficiency-zero condition has a classical combinatorial
-reformulation, the packing form in which the body-and-hinge
-realization theorems are usually stated.
-
-\begin{lemma}[Deficiency zero is a spanning-tree packing]
-  \label{lem:deficiency-zero-iff-tree-packing}
-  \lean{Graph.deficiency_eq_zero_iff_exists_spanningTrees}
-  \leanok
-  \uses{def:D-deficiency, def:matroid-MG}
-  For a multigraph $G$ with nonempty vertex set and $D \ge 2$,
-  $\operatorname{def}(\tilde G) = 0$ if and only if
-  $\tilde G = (D-1) \cdot G$ contains $D$ pairwise edge-disjoint
-  spanning trees.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{thm:def-eq-corank, thm:tutte-nash-williams,
-    cor:k-spanning-trees}
-  If $\tilde G$ contains $D$ edge-disjoint spanning trees, their
-  union is an independent set of size $D(|V|-1)$ in $M(\tilde G)$:
-  each tree is acyclic and the trees are edge-disjoint, and
-  independence in the $D$-fold cycle-matroid union is exactly a
-  decomposition into $D$ forests
-  (\cref{thm:tutte-nash-williams}). Since the deficiency is
-  nonnegative, $\operatorname{rank} M(\tilde G) \le D(|V|-1)$
-  (\cref{thm:def-eq-corank}), so this independent set is a base and
-  $\operatorname{def}(\tilde G) = 0$ --- the argument of
-  \cref{cor:molecule-generic-square-packing}, at general $D$.
-  Conversely, if $\operatorname{def}(\tilde G) = 0$ then any base
-  $B$ of $M(\tilde G)$ has $|B| = D(|V|-1)$
-  (\cref{thm:def-eq-corank}); being independent in the union, the
-  restriction $\tilde G \restriction B$ is $(D,D)$-sparse and
-  decomposes into $D$ edge-disjoint forests
-  (\cref{thm:tutte-nash-williams}). The edge count makes the
-  restriction $(D,D)$-tight, and a tight graph is connected --- were
-  it disconnected, summing the sparsity bound over two unions of
-  components would give $|B| \le D|V| - 2D$, short of the tight
-  count --- so each forest of the packing is a spanning tree
-  (\cref{cor:k-spanning-trees}).
-\end{proof}
