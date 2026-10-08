@@ -269,6 +269,18 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`); read (the pins'
   statements).
   *Found:* round 2 task 2.13.
+- **F-093** · E · `lem:splitoff-deficiency` and `lem:removal-deficiency`
+  (`molecular-induction.tex`): edges the pins do not back. The statement of
+  `lem:splitoff-deficiency` uses `def:matroid-MG` and `thm:def-eq-corank`, which neither of its
+  pins reaches: both bounds compare partition values (`def:D-deficiency`, implied), and the prose
+  said "through the def = corank bridge" until task 2.14. The statement of
+  `lem:removal-deficiency` uses `lem:splitoff-deficiency`, which `removeVertex_deficiency_ge` does
+  not call; its proof argues as that lemma's does. The proof edge of
+  `lem:splitoff-deficiency-reuse` to `lem:splitoff-deficiency` is likewise unbacked (both pins apply
+  a private shared core), and stands for the same argument.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `90051e3c`); read (the pins'
+  statements and bodies).
+  *Found:* round 2 task 2.14.
 
 ## N — node shape
 
@@ -1016,6 +1028,16 @@ declaration's name as its header writes it:
   reverse ones `lem:edge-splitting`, not the nodes that pin them.
   *Evidence:* read (the docstrings; the two wrappers' bodies, which do not pass `_hdeg2` on).
   *Found:* round 2 task 2.13.
+- **F-094** · L · the deficiency bounds' pins (`Induction/SplitOffDeficiency.lean`): the private
+  `splitOff_deficiency_le_aux` takes `heab : eₐ ≠ e_b` and does not use it, so
+  `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left` take it only to pass it on.
+  Docstrings misattribute or are stale: the file header, the section before `dof_tracking` and its
+  docstring credit KT Lemmas 4.3–4.5 (KT Lemma 4.5 is `lem:no-rigid-edge-count`'s; the lemma is KT
+  4.3(i) with 4.4); the section before `splitOff_deficiency_ge` says KT 4.3(ii) and its docstring
+  "4.3(i)/(ii) refinement" (the lower bound is part of KT 4.3(i)), and that section calls the
+  forest surgery "deferred"; `removeVertex_deficiency_ge`'s cites `notes/Phase20.md` *Finding 2*.
+  *Evidence:* read (the bodies and docstrings).
+  *Found:* round 2 task 2.14.
 
 ## M — mathematics and sources
 
