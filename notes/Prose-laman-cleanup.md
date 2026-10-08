@@ -437,8 +437,17 @@ prompt where the guidelines fall short. The coordinator read 5.1–5.3 in full a
 - **Task 2: the ledger groups the script's findings** (the coordinator's suggestion): one `E` entry
   per chapter group for missing edges, one for unbacked edges, and one `N` entry per node-shape
   pattern. The ledger's header states the rule; `--chapter` and `--label` reproduce the detail.
-- **Stop 1: the PI's answer and the attended session's notes** are under *Autopilot: for the PI*,
-  their one home: option B; "These facts are classical." dropped (`e9e3f37d`); every slice at Opus.
+- **Stop 1: the PI's answer, verbatim** (2026-10-07; the items are numbered as under *Autopilot:
+  for the PI*). On 1 and 2: "1-2 these look good." On 3: "edge notation, the graph G' names is not
+  a big deal as long as it's understandable; I'm more concerned about the classical attribution:
+  could we omit it or find something to back that up? The iff node also seems natural." On 4: "The
+  amendment looks good." On 5: "I think this is reasonable; more than following rules strictly
+  though, the overriding goal is to make sure the result is understandable. Perhaps the coordinator
+  should pay careful attention to the first few Sonnet dispatches to ensure that the guidelines are
+  working." On 6: "Looks good to me."
+- **Stop 1: the attended session's notes** (not the PI's words) are under *Autopilot: for the PI*:
+  option B; "These facts are classical." dropped (`e9e3f37d`); every slice at Opus. The verbatim
+  answer above stays in this section (the project rule), whatever later compression does.
 - **Stop 1: what the approval settles** (task 4's reading, not the PI's words). The sample is the
   exemplar for rounds 1–4, `notes/Prose-exemplar.md`. Choice (i) is now `AUTHORING.md` principle
   B's *Constructions* clause; (ii) and (iii) hold for every slice. 3a and 3b go to task 5.3, held
