@@ -78,6 +78,12 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   fixed it. The log reports it as an `Overfull \hbox` "in paragraph at
   lines" of the statement's first lines. Check the chapter's
   `Overfull` lines after retitling a node.
+- **A `\cite` note, or a formula with nothing to break at, is one box.**
+  `[KT11, pp. 658–659]` and `$M(\tilde G)/E(\tilde H)$` each pushed a
+  line 10–19pt past the margin when they fell at its end (PROSE round 2,
+  task 2.11). Moving the citation earlier in its sentence
+  (`Katoh and Tanigawa~\cite[...]{...} prove ...`), or the formula to the
+  start of one, fixed both.
 - **Wrapping table cells are justified in the PDF.** A `p{…}` column
   stretches the spaces of every wrapped line, and the `array` package
   (`>{\raggedright\arraybackslash}`) is not loaded. Start each cell with

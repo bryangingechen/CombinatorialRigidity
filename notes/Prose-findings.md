@@ -243,6 +243,19 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `22317b88`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.10.
+- **F-082** · E · `def:induced-span`, `def:rigid-contraction` and the contraction lemmas
+  (`molecular-induction.tex`): `def:induced-span` has no pin (`F-008`); its statement named
+  `Graph.fiberSpan` and `Graph.inducedSpan` (`Induction/Operations.lean`), which define $V(X)$ and
+  $G[V(X)]$ and which the two pins of `lem:circuit-induces-rigid` use, so pinning them would back
+  that node's edge to it. The statements of `lem:contract-rank-bridge` and
+  `lem:contract-minimality-transport` use `def:rigid-contraction`, which their pins, about the
+  matroid contraction $M(\tilde G)/E(\tilde H)$, do not reach; the graph $G/E(H)$ enters with
+  `lem:rigidContract-isMinimalKDof` (`case-i.tex`). The statement of `lem:contraction-minimality`
+  uses `lem:rigid-full-rank` and `lem:contract-rank-bridge`, which only its proof's two nodes use.
+  `def:rigid-contraction` stood after the three nodes that use it; task 2.11 moved it before them.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1b06def1`); read (the pins'
+  statements).
+  *Found:* round 2 task 2.11.
 
 ## N — node shape
 
@@ -654,6 +667,31 @@ declaration's name as its header writes it:
   note.
   *Evidence:* read (the statements of both, `Molecular/Deficiency.lean`).
   *Found:* round 2 task 2.10.
+- **F-083** · S · `lem:circuit-induces-rigid` (`molecular-induction.tex`): the statement says, as KT
+  Lemma 3.4 does, that $X - e$ is the union of $D$ edge-disjoint spanning trees on $V(X)$. Its pins
+  `circuit_induces_isTight` (the count $|X - e| + D = D\,|V(X)|$) and
+  `circuit_induces_isRigidSubgraph` (the rigidity of $G[V(X)]$) do not state it, and no
+  declaration applies `isSpanningTreePacking_of_isTight` (`cor:k-spanning-trees`) to a circuit.
+  Task 2.11 kept the statement. Its proof derives the partition from the count by
+  `cor:k-spanning-trees` and the connectivity count of `lem:deficiency-zero-iff-tree-packing`,
+  which no `\uses` names, and a formalization note says that the partition is not formalized.
+  *Evidence:* read (the two pins' statements, `Induction/Operations.lean`; the callers of
+  `isSpanningTreePacking_of_isTight`).
+  *Found:* round 2 task 2.11.
+- **F-084** · S · `lem:reduction-step` (`molecular-induction.tex`): the statement says that
+  contracting a proper rigid subgraph (`lem:contraction-minimality`) carries a minimal $0$-dof-graph
+  to a smaller one. Its pin for that branch, `Graph.contraction_isMinimalKDof` (also
+  `lem:contraction-minimality`'s), states the deficiency and minimality of the matroid
+  $M(\tilde G)/E(\tilde H)$, not of the graph $G/E(H)$. The graph form is
+  `Graph.rigidContract_isMinimalKDof` (`lem:rigidContract-isMinimalKDof`, `case-i.tex`), which
+  assumes $D \ge 2$ and that the new vertex lies in $H$. `lem:contraction-minimality`'s statement
+  claimed the graph form too, beside "stated on the matroid side"; task 2.11 states its pin's
+  matroid form and gives the graph form after it, citing `lem:rigidContract-isMinimalKDof`, as
+  task 2.4 moved a gloss to the node whose pin proves it. Task 2.15 rewrites `lem:reduction-step`;
+  the statement of `lem:case-I` (`case-i.tex`, round 3) also cites `lem:contraction-minimality`
+  for the graph form.
+  *Evidence:* read (the statements of the three declarations, `Induction/Contraction.lean`).
+  *Found:* round 2 task 2.11.
 
 ## L — Lean
 
@@ -895,6 +933,17 @@ declaration's name as its header writes it:
   Phase-22 construction "the remaining Track-A obstruction". Their credits are `F-081`'s.
   *Evidence:* read (the docstrings and the four statements).
   *Found:* round 2 task 2.10.
+- **F-085** · L · docstrings of `molecular-induction.tex`'s first pins (`Induction/Operations.lean`,
+  `Induction/ReducibleVertex.lean`): `inducedSpan`'s names `def:graph-operations` for
+  `def:induced-span`. Those of `rank_matroidMG_of_isKDof_zero`, `contract_matroidMG_rank` and
+  `contract_matroidMG_deficiency_eq` name `lem:contraction-minimality`, while they are pinned at
+  `lem:rigid-full-rank`, `lem:contract-rank-bridge` and `lem:contract-deficiency-conservation`; the
+  section before the third calls the minimality half "scheduled next" (it is
+  `contract_minimality_transport`, `Induction/Contraction.lean`). `edgeSplit`'s says that splitting
+  off its new vertex gives back $H$, "established later"; no declaration states it, and only two
+  simp lemmas mention `edgeSplit`.
+  *Evidence:* read (the docstrings; a `grep` for `edgeSplit`).
+  *Found:* round 2 task 2.11.
 
 ## M — mathematics and sources
 

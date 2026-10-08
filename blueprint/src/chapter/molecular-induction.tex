@@ -40,80 +40,142 @@ with no proper rigid subgraph: an adjacent degree-2 pair at $d = 3$
 (\cref{sec:simplicity-and-adjacent-pair}), and, at general $d$, the
 length-$d$ chain-or-cycle dichotomy of KT Lemma~4.6.
 
-\subsection{Inherited structural lemmas (KT 3.4 full form, KT 3.5)}
+\subsection{Circuits and the contraction of a rigid subgraph}
 \label{sec:molecular-induction-inherited}
 
-\begin{definition}[Vertex-induced subgraph from a fiber set]
+This subsection proves Katoh and Tanigawa's Lemmas~3.4
+and~3.5~\cite[\S3.2]{katohTanigawa2011}. By KT Lemma~3.4, the ends of
+the edges of a circuit of $M(\tilde G)$ induce a rigid subgraph.
+\Cref{lem:circuit-rigid} is its first step, and we complete it with KT
+eq.~(2.4). By KT Lemma~3.5, contracting a rigid subgraph of a minimal
+$k$-dof-graph gives a minimal $k$-dof-graph. We define the contraction,
+and prove the deficiency and minimality statements of KT Lemma~3.5 for
+the corresponding contraction of the matroid $M(\tilde G)$. We prove the
+form for the graph in the algebraic induction, where it is used.
+
+\begin{definition}[The subgraph induced by the ends of a set of edges]
   \label{def:induced-span}
-  For a fiber set $X$ of the multiplied graph $\tilde G = (D-1)\cdot G$,
-  the \emph{vertex span} $V(X)$ is the set of vertices of $G$ incident to
-  some fiber of $X$ (\texttt{Graph.fiberSpan}), and the
-  \emph{vertex-induced subgraph} $G[V(X)]$ is the induced subgraph of $G$
-  on $V(X)$ (\texttt{Graph.inducedSpan}, mathlib's \texttt{Graph.induce}
-  on $V(X)$). This is the induced-from-an-edge-set construction
-  \cref{lem:circuit-induces-rigid} and the graph operations consume.
+  Let $G$ be a multigraph, let $X$ be a set of edges of $\tilde G$, and
+  let $V(X)$ be the set of vertices incident with an edge of $X$. Then
+  $G[V(X)]$ is the subgraph of $G$ induced by $V(X)$. Its vertices are
+  those of $V(X)$, and its edges are the edges of $G$ with both ends in
+  $V(X)$.
 \end{definition}
 
-\begin{lemma}[A circuit induces a rigid subgraph; KT Lemma 3.4, full form]
+\begin{lemma}[A circuit induces a rigid subgraph; KT Lemma~3.4]
   \label{lem:circuit-induces-rigid}
   \lean{Graph.circuit_induces_isTight, Graph.circuit_induces_isRigidSubgraph}
   \leanok
   \uses{lem:circuit-rigid, def:induced-span, def:rigid-subgraph, thm:def-eq-corank}
-  Let $X$ be a circuit of $M(\tilde G)$ and $e \in X$. Then $X - e$ is
-  $(D,D)$-tight on its vertex span: $|X - e| = D(|V(X)| - 1)$, so $X - e$
-  packs $D$ edge-disjoint spanning trees on $V(X)$ and the vertex-induced
-  subgraph $G[V(X)]$ is a \emph{rigid subgraph} of $G$:
-  $\operatorname{def}(\widetilde{G[V(X)]}) = 0$.
+  Let $D \ge 1$, let $G$ be a multigraph, let $X$ be a circuit of
+  $M(\tilde G)$, and let $e \in X$. Then $|X - e| = D(|V(X)| - 1)$, and
+  $X - e$ is the union of $D$ edge-disjoint spanning trees on $V(X)$.
+  Moreover, $G[V(X)]$ is a rigid subgraph of $G$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:matroid-MG, lem:rank-matroidMG-le, lem:matroid-restrict-subgraph, thm:def-eq-corank}
-  By \cref{lem:circuit-rigid}, $X - e$ is independent, hence $(D,D)$-sparse,
-  giving the upper bound $|X - e| \le D(|V(X - e)| - 1) \le D(|V(X)| - 1)$.
-  The matching lower bound $|X| > D(|V(X)| - 1)$ is forced by $X$ being a
-  circuit: a circuit is a \emph{minimal} dependent set, so every proper
-  subset of $X$ is independent (\,$(D,D)$-sparse\,), whence the sparsity
-  failure of the dependent $X$ can only occur at $X$ itself
-  (\cref{def:matroid-MG}, the boundary-regime cleanliness of $M(\tilde G)$).
-  Together they give the tightness equality $|X - e| = D(|V(X)| - 1)$. To
-  read off $\operatorname{def}(\widetilde{G[V(X)]}) = 0$: the rank of
-  $M(\widetilde{G[V(X)]})$ is pinned to $D(|V(X)| - 1)$ from both sides ---
-  the upper bound is the generic rank bound (\cref{lem:rank-matroidMG-le}),
-  and the lower bound is the independent set $X - e$, which is independent in
-  $M(\widetilde{G[V(X)]}) = M(\tilde G) \restriction E(\widetilde{G[V(X)]})$
-  (\cref{lem:matroid-restrict-subgraph}, since every fiber of $X$ joins two
-  vertices of $V(X)$, so $X \subseteq E(\widetilde{G[V(X)]})$) and has the
-  tight size. The def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) then
-  forces the deficiency to $0$.
+  For the count we follow Katoh and
+  Tanigawa~\cite[p.~658]{katohTanigawa2011}. As $X$ is a circuit, $X - e$
+  is independent, so $\tilde G \restriction (X - e)$ is $(D, D)$-sparse
+  (\cref{lem:circuit-rigid}). If $X - e$ is not empty, sparsity applied
+  to $X - e$ itself gives
+  \[
+    |X - e| \;\le\; D\,(|V(X - e)| - 1) \;\le\; D\,(|V(X)| - 1).
+  \]
+  If $X - e$ is empty, the bound holds as $V(X)$ is not empty.
+  Conversely, $X$ is dependent, so some nonempty $F \subseteq X$ has
+  $|F| > D(|V(F)| - 1)$ (\cref{def:matroid-MG}). If $F$ were a proper
+  subset of $X$, it would miss some $f \in X$ and lie in the independent
+  set $X - f$, whose sparsity gives $|F| \le D(|V(F)| - 1)$. Hence
+  $F = X$, and $|X| > D(|V(X)| - 1)$, that is,
+  $|X - e| \ge D(|V(X)| - 1)$. So $|X - e| = D(|V(X)| - 1)$.
+
+  If $X - e$ is empty, then $|V(X)| = 1$, and the $D$ spanning trees are
+  empty. Otherwise both inequalities above are equalities, so
+  $V(X - e) = V(X)$, and the multigraph on $V(X)$ with the edges $X - e$
+  is $(D, D)$-tight. It is connected, by the count in the proof of
+  \cref{lem:deficiency-zero-iff-tree-packing}. By
+  \cref{cor:k-spanning-trees}, $X - e$ is the union of $D$ edge-disjoint
+  spanning trees on $V(X)$.
+
+  Let $H = G[V(X)]$. The ends of each edge of $X$ lie in $V(X)$, so
+  $X \subseteq E(\tilde H)$. Hence $X - e$ is independent in
+  $M(\tilde G)\,|\,E(\tilde H)$, which is $M(\tilde H)$
+  (\cref{lem:matroid-restrict-subgraph}). So
+  $\operatorname{rank} M(\tilde H) \ge |X - e| = D(|V(H)| - 1)$, and the
+  reverse inequality is \cref{lem:rank-matroidMG-le}. By KT eq.~(2.4)
+  (\cref{thm:def-eq-corank}), $\operatorname{def}(\tilde H) = 0$. As $H$
+  is a subgraph of $G$, it is a rigid subgraph of $G$.
 \end{proof}
+\begin{fmlnote}
+  The first pin is the count, and the second says that $G[V(X)]$ is a
+  rigid subgraph. The partition of $X - e$ into spanning trees is not
+  formalized.
+\end{fmlnote}
 
-\medskip\noindent This is the form Katoh--Tanigawa's Lemmas~4.5(i) and~4.8
-invoke: Lemma~3.4 says that whenever a circuit forces $G[V(X)]$ to span
-all of $V(G)$, that induced subgraph is a (proper) rigid subgraph.
+If $G$ has no proper rigid subgraph (\cref{def:rigid-subgraph}), the
+lemma shows that every circuit $X$ of $M(\tilde G)$ with
+$|V(X)| \ge 2$ has $V(X) = V(G)$. Katoh and Tanigawa use it in this
+form in the proofs of their Lemmas~4.5 and~4.8~\cite[pp.~663
+and~666]{katohTanigawa2011}.
 
-\begin{lemma}[A rigid subgraph attains full rank; KT Lemma 3.5, rank core]
+Katoh and Tanigawa's induction also contracts proper rigid
+subgraphs~\cite[p.~659]{katohTanigawa2011}. We define the contraction
+for any subgraph, which we contract to one of its vertices.
+
+\begin{definition}[Contracting a subgraph]
+  \label{def:rigid-contraction}
+  \lean{Graph.rigidContract}
+  \leanok
+  \uses{def:rigid-subgraph}
+  Let $H$ be a subgraph of a multigraph $G$, and let $r$ be a vertex of
+  $H$. The \emph{contraction} $G/E(H)$ of $H$ to $r$ is obtained from
+  $G$ by deleting the edges of $H$ and identifying every vertex of $H$
+  with $r$. Its vertices are $r$ and the vertices of $G$ not in $H$. Its
+  edges are the edges of $G$ not in $H$, and each end of such an edge
+  that lies in $V(H)$ is replaced by $r$.
+\end{definition}
+
+So $G/E(H)$ has $|V(G)| - |V(H)| + 1$ vertices, and
+\[
+  D\,\bigl(|V(G/E(H))| - 1\bigr) \;=\; D\,\bigl(|V(G)| - |V(H)|\bigr).
+\]
+
+Katoh and Tanigawa~\cite[pp.~658--659]{katohTanigawa2011} prove their
+Lemma~3.5 with partitions of bases into forests. We work instead with
+the contraction of $M(\tilde G)$ by $E(\tilde H)$. For a matroid $M$ on
+a set $E$ and a set $T \subseteq E$, the contraction $M/T$ is the
+matroid on $E \setminus T$ whose rank function is
+$X \mapsto r_M(X \cup T) - r_M(T)$~\cite[\S3.1 and
+Proposition~3.1.6]{oxley2011}. The ground set of
+$M(\tilde G)/E(\tilde H)$ consists of the copies of the edges of $G$
+not in $H$, which are the edges of $\widetilde{G/E(H)}$. We first
+compute its rank.
+
+\begin{lemma}[The rank of a rigid subgraph; KT Lemma~3.5, first step]
   \label{lem:rigid-full-rank}
   \lean{Graph.rank_matroidMG_of_isKDof_zero}
   \leanok
   \uses{def:rigid-subgraph, thm:def-eq-corank, def:matroid-MG}
-  For a rigid subgraph $H$ (so $\operatorname{def}(\tilde H) = 0$) with
-  $V(H) \ne \emptyset$ and $D \ge 1$, the matroid $M(\tilde H)$ has full
-  rank $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$.
+  Let $D \ge 1$, and let $H$ be a rigid subgraph of a multigraph $G$,
+  with at least one vertex. Then
+  $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Immediate from the def\,$=$\,corank bridge (\cref{thm:def-eq-corank},
-  $\operatorname{rank} M(\tilde H) + \operatorname{def}(\tilde H) = D(|V(H)|
-  - 1)$) with $\operatorname{def}(\tilde H) = 0$ from rigidity.
+  By KT eq.~(2.4) (\cref{thm:def-eq-corank}),
+  $\operatorname{rank} M(\tilde H) + \operatorname{def}(\tilde H) =
+  D(|V(H)| - 1)$, and $\operatorname{def}(\tilde H) = 0$ as $H$ is
+  rigid.
 \end{proof}
 
-\begin{lemma}[Contraction rank bridge; KT Lemma 3.5, contraction arithmetic]
+\begin{lemma}[The rank of $M(\tilde G)/E(\tilde H)$]
   \label{lem:contract-rank-bridge}
   \lean{Graph.contract_matroidMG_rank}
   \leanok
   \uses{def:rigid-contraction, def:matroid-MG, lem:matroid-restrict-subgraph}
-  For a subgraph $H \le G$, contracting the edge-fibers $E(\tilde H)$ in
-  $M(\tilde G)$ removes exactly $\operatorname{rank} M(\tilde H)$:
+  Let $H$ be a subgraph of a multigraph $G$. Then
   \[
     \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr)
       + \operatorname{rank} M(\tilde H)
@@ -122,141 +184,145 @@ all of $V(G)$, that induced subgraph is a (proper) rigid subgraph.
 \end{lemma}
 \begin{proof}
   \leanok
-  The standard matroid identity $\operatorname{rank}(M / C) =
-  \operatorname{rank} M - \operatorname{rank}_M(C)$ in additive form, on
-  $M = M(\tilde G)$ and $C = E(\tilde H)$. The restriction $M(\tilde G)
-  \restriction E(\tilde H)$ is $M(\tilde H)$
-  (\cref{lem:matroid-restrict-subgraph}), whose rank is
-  $\operatorname{rank}_{M(\tilde G)}(E(\tilde H))$.
+  A matroid $M$ on $E$ and a set $T \subseteq E$ satisfy
+  $\operatorname{rank}(M/T) = \operatorname{rank} M - r_M(T)$, by
+  Proposition~3.1.6 of Oxley~\cite{oxley2011} at $X = E \setminus T$.
+  Take $M = M(\tilde G)$ and $T = E(\tilde H)$. Then $r_M(T)$ is the
+  rank of $M(\tilde G)\,|\,E(\tilde H)$, which is $M(\tilde H)$
+  (\cref{lem:matroid-restrict-subgraph}).
 \end{proof}
 
-\begin{lemma}[Contracting a rigid subgraph conserves the deficiency; KT Lemma 3.5]
+\begin{lemma}[Contracting a rigid subgraph keeps the deficiency; KT Lemma~3.5]
   \label{lem:contract-deficiency-conservation}
   \lean{Graph.contract_matroidMG_deficiency_eq}
   \leanok
   \uses{lem:rigid-full-rank, lem:contract-rank-bridge, thm:def-eq-corank}
-  For a rigid subgraph $H \le G$ (so $\operatorname{def}(\tilde H) = 0$) with $V(H) \ne
-  \emptyset$ and $D \ge 1$, the corank of the matroid contraction $M(\tilde G) / E(\tilde
-  H)$ at the reduced ambient $D(|V(G)| - |V(H)|)$ --- the trivial-motion count of the
-  contracted graph, which has $|V(G)| - |V(H)| + 1$ vertices --- equals
-  $\operatorname{def}(\tilde G)$:
+  Let $D \ge 1$, and let $H$ be a rigid subgraph of a multigraph $G$,
+  with at least one vertex. Then
   \[
-    D\bigl(|V(G)| - |V(H)|\bigr) - \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr)
+    D\bigl(|V(G)| - |V(H)|\bigr) -
+    \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr)
       = \operatorname{def}(\tilde G).
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Pure matroid bookkeeping. \Cref{lem:contract-rank-bridge} with the rank core
-  \cref{lem:rigid-full-rank} ($\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$) gives
-  $\operatorname{rank}(M(\tilde G) / E(\tilde H)) = \operatorname{rank} M(\tilde G) -
-  D(|V(H)| - 1)$. Substituting into the def\,$=$\,corank bridge
-  (\cref{thm:def-eq-corank}, $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde
-  G) = D(|V(G)| - 1)$) and cancelling the $D(|V(H)| - 1)$ between the rank drop and the
-  ambient drop leaves $\operatorname{def}(\tilde G)$. No graph$\leftrightarrow$matroid
-  correspondence is needed --- the statement is against the matroid contraction directly.
+  By \cref{lem:contract-rank-bridge} and \cref{lem:rigid-full-rank},
+  \[
+    \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr) \;=\;
+    \operatorname{rank} M(\tilde G) - D\,(|V(H)| - 1).
+  \]
+  The vertex set of $G$ contains that of $H$, so it is not empty, and
+  KT eq.~(2.4) (\cref{thm:def-eq-corank}) gives
+  $\operatorname{rank} M(\tilde G) = D(|V(G)| - 1) -
+  \operatorname{def}(\tilde G)$. Substituting this into the first
+  identity gives the lemma. This is Katoh and Tanigawa's
+  count~\cite[p.~658]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[Minimality transports along a contraction; KT Lemma 3.5, second half]
+The next lemma is the analogue of \cref{lem:subgraph-minimality} for
+the contraction.
+
+\begin{lemma}[Minimality passes to the contraction; KT Lemma~3.5]
   \label{lem:contract-minimality-transport}
   \lean{Graph.contract_minimality_transport}
   \leanok
   \uses{lem:subgraph-minimality, def:k-dof, def:rigid-contraction}
-  Let $G$ be a minimal $k$-dof-graph and $H$ a subgraph. Then every base
-  $B'$ of the matroid contraction $M(\tilde G) / E(\tilde H)$ meets every
-  \emph{surviving} edge-fiber $\tilde e$ of an edge $e \in E(G) \setminus
-  E(H)$: $B' \cap \tilde e \ne \emptyset$. This is the contraction analogue
-  of the restriction transport \cref{lem:subgraph-minimality}.
+  Let $G$ be a minimal $k$-dof-graph, and let $H$ be a subgraph of $G$.
+  Then every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for every
+  edge $e$ of $G$ that is not an edge of $H$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:matroid-MG}
-  A base $B'$ of $M(\tilde G) / E(\tilde H)$ lies in the contraction's
-  ground $E(\tilde G) \setminus E(\tilde H)$, so it is disjoint from
-  $E(\tilde H)$. Pick an $M(\tilde G)$-basis $J$ of $E(\tilde H)$; then
-  $B' \cup J$ is a base of $M(\tilde G)$ (the deleted part $E(\tilde H)
-  \setminus J$ consists of loops of the contraction $M(\tilde G) / J$, so
-  $B'$ is a base there and \cref{def:matroid-MG}'s independence lifts). By
-  $G$'s minimality, $(B' \cup J) \cap \tilde e \ne \emptyset$; the surviving
-  fiber $\tilde e$ ($e \notin E(H)$) is disjoint from $E(\tilde H) \supseteq
-  J$, so the witness lands in $B'$. No graph$\leftrightarrow$matroid
-  correspondence is needed.
+  Let $B'$ be a base of $M(\tilde G)/E(\tilde H)$, and let $J$ be a
+  maximal subset of $E(\tilde H)$ that is independent in $M(\tilde G)$.
+  By Corollary~3.1.8 of Oxley~\cite{oxley2011}, $B' \cup J$ is a base of
+  $M(\tilde G)$. Let $e$ be an edge of $G$ that is not an edge of $H$.
+  As $G$ is minimal, $B' \cup J$ meets $\tilde e$. The copies of $e$ are
+  not in $E(\tilde H)$, which contains $J$, so $B'$ meets $\tilde e$.
+  This is Katoh and Tanigawa's argument~\cite[p.~659]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[Rigid-subgraph contraction preserves minimality; KT Lemma 3.5]
+\begin{lemma}[The contraction of a proper rigid subgraph; KT Lemma~3.5]
   \label{lem:contraction-minimality}
   \lean{Graph.contraction_isMinimalKDof}
   \leanok
   \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank, lem:contract-rank-bridge, lem:contract-deficiency-conservation, lem:contract-minimality-transport}
-  Let $G$ be a minimal $k$-dof-graph and let $H$ be a proper rigid
-  subgraph of $G$. Then the contraction $G / E(H)$ (collapse $V(H)$ to
-  a single vertex, keeping the edges of $G$ incident to $V(H)$ from
-  outside) is again a minimal $k$-dof-graph, with the same deficiency.
-  Stated on the matroid side --- the matroid contraction $M(\tilde G) /
-  E(\tilde H)$ is a minimal $k$-dof matroid at the reduced ambient
-  $D(|V(G)| - |V(H)|)$ --- so no graph$\leftrightarrow$matroid
-  correspondence is needed.
+  Let $D \ge 1$, let $G$ be a minimal $k$-dof-graph, and let $H$ be a
+  proper rigid subgraph of $G$. Then
+  \[
+    D\bigl(|V(G)| - |V(H)|\bigr) -
+    \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr) = k,
+  \]
+  and every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for every
+  edge $e$ of $G$ that is not an edge of $H$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:contract-deficiency-conservation, lem:contract-minimality-transport}
-  The deficiency is unchanged by
-  \cref{lem:contract-deficiency-conservation}: contracting a rigid
-  subgraph removes $D(|V(H)| - 1)$ from both the rank of $M(\tilde G)$
-  and the ambient $D(|V| - 1)$, so the corank --- hence the deficiency
-  --- is conserved. Minimality (every base of the contracted matroid
-  meets every edge-fiber) transports from $G$ along the contraction,
-  using the subgraph-minimality machinery of
-  \cref{lem:subgraph-minimality}.
+  As $H$ is proper, it has at least two vertices, and
+  $\operatorname{def}(\tilde G) = k$ as $G$ is a $k$-dof-graph. So the
+  identity is \cref{lem:contract-deficiency-conservation}, and the
+  second claim is \cref{lem:contract-minimality-transport}.
 \end{proof}
 
-\medskip\noindent Contraction of a proper rigid subgraph is the
-operation Case~I of the algebraic induction
-(\cref{sec:molecular-algebraic-induction}) realizes at the
-rigidity-matrix rank.
+Katoh and Tanigawa state their Lemma~3.5 for the graph $G/E(H)$. It
+follows from \cref{lem:contraction-minimality} and KT eq.~(2.4) for
+$G/E(H)$ if the matroid $M(\widetilde{G/E(H)})$ is
+$M(\tilde G)/E(\tilde H)$. The two matroids have the same ground set,
+and they are equal because $H$ is rigid. The reason is Katoh and
+Tanigawa's (3.1)~\cite[p.~658]{katohTanigawa2011}. Let a base of
+$M(\tilde G)$ contain a base of $M(\tilde H)$, and let it be the union
+of $D$ disjoint forests. Then each of these forests meets $E(\tilde H)$
+in a spanning tree on $V(H)$. The algebraic induction applies its
+induction hypothesis to $G/E(H)$, and we prove the identity there, for
+$D \ge 2$ (\cref{lem:rigidContract-isMinimalKDof}).
 
-\subsection{Graph operations}
+\subsection{Removal, splitting off and edge-splitting}
 \label{sec:molecular-induction-operations}
 
-\begin{definition}[Vertex removal, splitting-off, edge-splitting, canonical endpoint choice]
+The other operation of the induction acts at a vertex of degree two.
+Katoh and Tanigawa define splitting off at a vertex $v$ as the removal
+of $v$ followed by the insertion of new edges between neighbours of
+$v$, and they use it only when $v$ has degree two~\cite[\S4.1,
+p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
+(p.~660), and the removal of $v$ alone (p.~662).
+
+\begin{definition}[Removal, splitting off and edge-splitting]
   \label{def:graph-operations}
   \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit, Graph.endsOf}
   \leanok
   \uses{def:k-dof}
-  For a multigraph $G$ and a vertex $v$ of degree~2 with the two
-  incident edges joining $v$ to $a$ and $b$:
+  Let $G$ be a multigraph, and let $v$ be a vertex of $G$ of degree two,
+  whose two edges join $v$ to vertices $a$ and $b$.
   \begin{itemize}
-    \item \emph{Removal} $G_v := G - v$ deletes $v$ and its incident
-      edges.
-    \item \emph{Splitting-off} $G_v^{ab}$ deletes $v$ and adds the new
-      edge $ab$ (the two edges through $v$ are short-circuited into a
-      single edge between its neighbours).
-    \item \emph{Edge-splitting} $H_{ab}^v$ is the inverse: subdivide an
-      edge $ab$ of $H$ by a fresh degree-2 vertex $v$, replacing $ab$
-      with the path $a$--$v$--$b$. It satisfies $(H_{ab}^v)_v^{ab} = H$.
+    \item The \emph{removal} of $v$ gives $G_v = G - v$, obtained from
+      $G$ by deleting $v$ and its two edges.
+    \item The \emph{splitting off} at $v$ gives $G_v^{ab}$, obtained from
+      $G$ by deleting $v$ and its two edges and adding a new edge $ab$.
   \end{itemize}
-  We also fix a \emph{canonical endpoint choice}
-  $\mathrm{ends} : \beta \to \alpha \times \alpha$ assigning to each edge
-  an ordered pair of its ends (a genuine link $G.\mathrm{IsLink}\,e\,x\,y$
-  on every $e \in E(G)$, junk off $E(G)$).
+  Let $H$ be a multigraph with an edge $ab$. The \emph{edge-splitting}
+  along $ab$ gives $H_{ab}^v$, obtained from $H$ by deleting $ab$ and
+  adding a new vertex $v$ and two new edges $va$ and $vb$.
 \end{definition}
+\begin{fmlnote}
+  \label{fmlnote:graph-operations}
+  In the formalization the edges of a multigraph are elements of a fixed
+  set of labels. An operation that adds an edge takes the label of the
+  new edge as an argument: the label $e_0$ of the edge $ab$ of
+  $G_v^{ab}$, and the labels of $va$ and $vb$ in $H_{ab}^v$. The formal
+  splitting off deletes every edge with the label $e_0$ before it adds
+  $ab$. So it gives $G_v^{ab}$ when no edge of $G - v$ has the label
+  $e_0$, for instance when $e_0 \notin E(G)$. A label outside $E(G)$
+  exists when there are enough labels (\cref{rem:fresh-edge-supply}).
+  The fourth pin fixes, for each edge of $G$, an ordered pair of its
+  ends, the \emph{endpoint choice} of $G$. The realizations of Cases~I
+  and~II of the algebraic induction take the ends of the edges of $G$
+  from it (\cref{fmlnote:panel-hinge-nondegenerate}).
+\end{fmlnote}
 
-\medskip\noindent The from-scratch panel-hinge realization of
-\cref{lem:case-I} orients the rigid block's spanning forest along this
-endpoint choice.
-
-\begin{definition}[Rigid-subgraph contraction]
-  \label{def:rigid-contraction}
-  \lean{Graph.rigidContract}
-  \leanok
-  \uses{def:rigid-subgraph}
-  For a rigid subgraph $H \le G$, the \emph{contraction} $G / E(H)$
-  collapses the vertex set $V(H)$ to a single vertex and discards the
-  edges of $H$, retaining every other edge of $G$ (with endpoints in
-  $V(H)$ redirected to the collapsed vertex). On the matroid side this
-  is the matroid contraction $M(\tilde G) / E(\tilde H)$ restricted to
-  the surviving fibers.
-\end{definition}
+Splitting off the new vertex $v$ of $H_{ab}^v$ gives back $H$.
 
 \subsection{Forest surgery: Katoh--Tanigawa Lemma 4.1}
 \label{sec:molecular-induction-forest}
