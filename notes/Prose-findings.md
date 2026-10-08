@@ -415,6 +415,17 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check @PebbleGameResult`: the `[Fintype V]` of `Correctness.lean`'s
   `Verdict` section is not among its binders).
   *Found:* round 1 task 5.15.
+- **F-046** · S · `def:outListSorted`, `lem:mem-outListSorted`, `def:edgeListSorted`,
+  `lem:mem-edgeListSorted` (`executable.tex`): the two out-neighbour nodes assume $V$ finite, and
+  the two edge-list nodes take a finite simple graph $G$. The pins `outListSorted` and
+  `mem_outListSorted` take only `[DecidableEq V]` and `[LinearOrder V]`; `edgeListSorted` and
+  `mem_edgeListSorted` take `[LinearOrder V]` and `[Fintype G.edgeSet]`, so $G$ need only have
+  finitely many edges, as in `F-042`. The four statements are narrower than their pins. The other
+  four pins of task 5.16 take `[LinearOrder V]` and `[Fintype V]`, and all but
+  `instDecidableIsLaman` take $\ell < 2k$, as their statements say.
+  *Evidence:* read (`#check` of the eight pins through `lake lean`, and their bodies in
+  `PebbleGame/Exec.lean`).
+  *Found:* round 1 task 5.16.
 
 ## L — Lean
 
@@ -544,6 +555,26 @@ declaration's name as its header writes it:
   Layer 4 design"), the kind `F-035` records in `Basic.lean` and `Algorithm.lean`.
   *Evidence:* read (the body of `certifies_against` and the docstrings named).
   *Found:* round 1 task 5.15.
+- **F-047** · L · `Main.lean`, `PebbleGame/Examples.lean`, `lakefile.toml`; `DESIGN.md` *One
+  `Decidable` instance per project predicate*: running-time and `decide` claims beyond `F-033`'s.
+  `Main.lean`'s module docstring and `lakefile.toml`'s comment on the `pebble-game` target say that
+  the classification runs in polynomial time, and `Examples.lean`'s module docstring cites "the
+  polynomial-time guarantee of `lake exe pebble-game`" and "a sub-second bytecode-interpreter
+  run". No bound is proved (`F-033`). `DESIGN.md`'s section says the same, and that `decide`
+  unfolds the instances' bodies. It does not: `reachableFindingAux` and `tryAddEdgeWith` are
+  defined by well-founded recursion and are irreducible. `Main.lean` also points at a "three-row
+  matrix" in `executable.tex` *Runtime and backends*, which task 5.16 made a list of three ways to
+  run a decision procedure. `Main.lean` and the comment call the input "whitespace-separated", but
+  `parsePair` splits on spaces only, so a tab makes a line malformed; and the comment says the
+  classification goes through `instDecidableIsLaman` and `instDecidableIsSparse`, where
+  `classify` calls `runPebbleGameExec` directly.
+  *Evidence:* read (the docstrings, the comment and the section named; the bodies of `parsePair`
+  and `classify`); measured, script not retained: `by decide` fails on
+  `(⊤ : SimpleGraph (Fin 2)).IsLaman` and on `Examples.k4MinusE.IsLaman`, its reduction stuck at
+  `runPebbleGameExec`; `decide +kernel` succeeds on the first and fails on the second;
+  `getReducibilityStatus` reports both definitions `irreducible`; `native_decide` proves
+  `k4MinusE.IsLaman` and `¬ k4.IsLaman`; `"3\t4".splitOn` is one token.
+  *Found:* round 1 task 5.16.
 
 ## M — mathematics and sources
 

@@ -1,109 +1,46 @@
 \section{Executable pebble game}
 \label{sec:executable}
 
-The previous chapter (\cref{sec:pebble-game}) formalises the basic
-$(k, \ell)$-pebble game and proves its certificate-form correctness
-theorem \cref{thm:pebble-game-correct}: in the matroidal regime
-$\ell < 2k$, a finite simple graph $G$ is $(k, \ell)$-sparse if and
-only if the pebble game accepts. But the convenience form
-\texttt{runPebbleGame} is \texttt{noncomputable}
-(\cref{fmlnote:pebble-game-computable-core}): its body enumerates the
-finite sets it works over as lists through mathlib operations
-(\texttt{Finset.toList} on a partial orientation's out-neighbours,
-\texttt{Quot.out} on the edge set) that reduce only through
-\texttt{Classical} choice, so it can be neither evaluated by
-\texttt{\#eval} nor reduced by \texttt{native\_decide}.
+The formal pebble game on a graph $G$ (\cref{sec:pebble-game-verdict})
+cannot be computed, since it uses mathlib's lists of finite sets
+(\cref{fmlnote:pebble-game-computable-core}). In this section we define
+the computable pebble game on $G$, which uses lists sorted by a linear
+order on $V$ instead. With it we define procedures that decide, for
+$\ell < 2k$, whether a finite graph is $(k, \ell)$-sparse or
+$(k, \ell)$-tight, and whether it is Laman. These procedures can be run
+in Lean, and a command-line program uses the computable pebble game to
+decide whether a graph read from a file is Laman.
 
-This chapter closes the gap. The pebble game was already factored into
-the computable core (\texttt{tryReachPebbleWith} /
-\texttt{tryAddEdgeWith} / \texttt{runPebbleGameWith}) of
-\cref{fmlnote:pebble-game-computable-core}; here the core is run
-through a computable form \texttt{runPebbleGameExec} that replaces the
-two noncomputable list enumerations with \texttt{Finset.sort}-based
-analogues under a linear order on $V$. The certificate-form
-correctness theorem lifts to \texttt{runPebbleGameExec} with no new
-mathematical content; on top of it we register $\mathrm{Decidable}$
-instances for the project predicates $\mathrm{IsSparse}\,k\,\ell$,
-$\mathrm{IsTight}\,k\,\ell$, and $\mathrm{IsLaman}$. The instances
-reduce in polynomial time; they decide the same propositions a
-brute-force iteration over all finite subsets of $V$ would decide, but
-choose a faster reduction.
+In \cref{sec:executable-list-views} we define the sorted lists, and in
+\cref{sec:executable-wrapper} the computable pebble game. It needs no
+new correctness argument: its verdict accepts $G$ if and only if $G$ is
+$(k, \ell)$-sparse (\cref{thm:pebbleGameResult-isAccept-iff}). We define
+the three decision procedures in \cref{sec:executable-decidable}, and
+describe three ways to run them in \cref{sec:executable-backends}. We
+list the examples on which they are run in
+\cref{sec:executable-examples}, and describe the command-line program in
+\cref{sec:executable-cli}. As for the formal pebble game, we prove no
+bound on the running time of the computable one (\cref{sec:pebble-game}).
 
-A small \texttt{lake exe pebble-game} CLI built on the same
-\texttt{Decidable} instance reads an edge-list file and prints
-$\mathrm{LAMAN}$ / $\mathrm{SPARSE\_NOT\_TIGHT}$ /
-$\mathrm{NOT\_SPARSE}$.
-
-\subsection{Runtime and backends}
-\label{sec:executable-backends}
-
-The same function body can be run through three
-syntactically-different invocations, each executed by a different
-runtime. The three invocations that reduce
-\texttt{runPebbleGameExec}'s compiled body are:
-
-\begin{itemize}
-  \item \texttt{\#eval (decide (G.IsSparse 2 3))} (top-level
-    elaborator command). Reduces $\mathrm{decide}\,P$ through the
-    registered $\mathrm{Decidable}$ instance, whose body is the
-    pebble game; runs in the bytecode interpreter. Fast in practice
-    (polynomial in $|V| + |E|$, no kernel small-step overhead).
-  \item \texttt{lake exe pebble-game input.txt} (built CLI binary).
-    Same compiled body, but executed by Lean's native-code backend
-    rather than the bytecode interpreter. Strictly faster constant
-    factor; identical big-$O$.
-  \item \texttt{by decide} (tactic, inside a proof of the form
-    \texttt{theorem foo : G.IsLaman := by decide}). Reduces the
-    \emph{same} $\mathrm{Decidable}$ instance, but through the
-    Lean kernel's small-step reducer, not the compiled backend.
-    Polynomially many small-step reductions per pebble-game
-    operation $\Rightarrow$ impractically slow on any
-    realistic graph. The tactic
-    \texttt{native\_decide} compiles and runs the same body
-    natively, paying a trust-the-compiled-binary axiom (Lean's
-    \texttt{nativeDecide}); its trust footprint is identical to
-    the CLI's.
-\end{itemize}
-
-Only \texttt{\#eval} and \texttt{lake exe pebble-game} are polynomial
-and end-to-end on real graphs; \texttt{by decide} stays formally
-correct but its runtime is academic. The worked examples
-(\cref{sec:executable-examples}) use \texttt{\#eval} or
-\texttt{native\_decide} accordingly.
-
-For \texttt{\#eval} and \texttt{native\_decide} to reduce, the
-registered $\mathrm{Decidable}$ instance body must be free of
-noncomputable primitives; this is why \texttt{runPebbleGameExec} is
-built afresh rather than reused from \texttt{runPebbleGame}
-(\cref{fmlnote:executable-computable-core}).
-
-\subsection{Computable list views}
+\subsection{Sorted lists}
 \label{sec:executable-list-views}
 
-The two noncomputable list enumerations in \texttt{runPebbleGame} are
-localised: an out-neighbour list of a partial orientation $D$ at a
-vertex $v$ (the input to the verified depth-first search
-\texttt{reachableFinding}), and an enumeration of the input graph's
-edges as ordered pairs (the input to the \texttt{runPebbleGameWith}
-fold). Both are made computable by $\mathrm{Finset.sort}$ under a
-linear order on $V$.
+The formal pebble game uses mathlib's lists in two places. The pebble
+search follows the arcs of $D$ along the lists $N^+_D(a)$ of
+out-neighbours (\cref{def:tryReachPebble}), and the pebble game on $G$
+runs on a list of the edges of $G$ (\cref{def:runPebbleGame}). We
+replace both with lists sorted by a linear order on $V$.
 
 \begin{definition}[Sorted out-neighbour list]
   \label{def:outListSorted}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.outListSorted}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts}
-  Let $V$ be a finite type with a linear order and decidable
-  equality, and let $D$ be a partial orientation on $V$
-  (\cref{def:partial-orientation}). For $v \in V$, define
-  \[
-    \mathrm{outListSorted}_D(v)
-    \;:=\; (D.\mathrm{outNbhd}\,v).\mathrm{sort}\,(\cdot \le \cdot)
-    \quad : \quad \mathrm{List}\,V,
-  \]
-  the out-neighbours of $v$ in $D$ listed in increasing order. It is
-  the computable replacement for the noncomputable $\mathrm{outList}$
-  of $D$.
+  Let $V$ be a finite set with a linear order, and let $D$ be a partial
+  orientation on $V$ (\cref{def:partial-orientation}). For $v \in V$,
+  the \emph{sorted out-neighbour list} of $v$ in $D$ is the list of the
+  out-neighbours of $v$ in $D$, the vertices $u$ with $(v, u) \in D$, in
+  increasing order.
 \end{definition}
 
 \begin{lemma}[Membership in the sorted out-neighbour list]
@@ -111,318 +48,259 @@ linear order on $V$.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.mem_outListSorted}
   \leanok
   \uses{def:outListSorted}
-  Under the hypotheses of \cref{def:outListSorted}, for all $v, u
-  \in V$,
-  \[
-    u \in \mathrm{outListSorted}_D(v) \;\iff\; (v, u) \in D.\mathrm{arcs}.
-  \]
+  Let $V$ and $D$ be as in \cref{def:outListSorted}, and let
+  $u, v \in V$. Then $u$ is an entry of the sorted out-neighbour list of
+  $v$ in $D$ if and only if $(v, u) \in D$.
 \end{lemma}
 \begin{proof}
   \leanok
-  $\mathrm{Finset.sort}$ preserves membership; the result follows
-  from $D.\mathrm{mem\_outNbhd}$.
+  Sorting a finite set lists each of its elements, and nothing else.
 \end{proof}
 
-\begin{definition}[Sorted edge enumeration]
+So the sorted out-neighbour lists are lists $N^+_D(a)$ as in
+\cref{sec:pebble-game-algorithm}.
+
+\begin{definition}[Sorted edge list]
   \label{def:edgeListSorted}
   \lean{SimpleGraph.edgeListSorted}
   \leanok
   \uses{def:partial-orientation}
-  Let $V$ have a linear order and decidable equality, and let $G$ be a
-  finite simple graph on $V$. Define
-  \[
-    \mathrm{edgeListSorted}\,G
-    \;:=\; \mathrm{ofLex}\,\circ\,
-      \big((G.\mathrm{edgeFinset}.\mathrm{image}\,(e \mapsto
-        \mathrm{toLex}\,(e.\inf, e.\sup))).\mathrm{sort}\,(\cdot \le \cdot)\big)
-    \quad : \quad \mathrm{List}\,(V \times V),
-  \]
-  where each edge $e$ is first imaged to its lex-smaller-first ordered
-  pair $(e.\inf, e.\sup)$ viewed as $\mathrm{Lex}\,(V \times V)$, then
-  sorted under $\mathrm{Prod.Lex}$'s linear order, and finally untagged
-  via $\mathrm{ofLex}$ to recover $V \times V$. It is the computable
-  replacement for the noncomputable enumeration of $E(G)$ used by
-  \texttt{runPebbleGame}.
+  Let $V$ be a set with a linear order, and let $G$ be a finite simple
+  graph on $V$. The \emph{sorted edge list} of $G$ is the list of the
+  pairs $(\min e, \max e)$, for the edges $e$ of $G$, in lexicographic
+  order. Here $\min e$ and $\max e$ are the smaller and the larger end
+  of $e$.
 \end{definition}
-
-\begin{fmlnote}
-  Sorting the edge set $G.\mathrm{edgeFinset}$ directly by
-  $(\cdot \le \cdot)$ is not available: mathlib already fixes the order
-  on $\mathrm{Sym}_2 V$ to be the non-total subset order coming from
-  its set-like structure, so there is no total order on
-  $\mathrm{Sym}_2 V$ to sort against. Sorting the projection
-  $(e.\inf, e.\sup)$ under the lexicographic order on $V \times V$ is
-  the idiomatic alternative and needs no new order instance.
-\end{fmlnote}
 
 \begin{lemma}[Membership in the sorted edge list]
   \label{lem:mem-edgeListSorted}
   \lean{SimpleGraph.mem_edgeListSorted}
   \leanok
   \uses{def:edgeListSorted}
-  Under the hypotheses of \cref{def:edgeListSorted}, for all
-  $u, v \in V$,
-  \[
-    (u, v) \in \mathrm{edgeListSorted}\,G \;\iff\;
-      u \le v \;\wedge\; \{u, v\} \in G.\mathrm{edgeFinset}.
-  \]
+  Let $V$ and $G$ be as in \cref{def:edgeListSorted}, and let
+  $u, v \in V$. Then $(u, v)$ is an entry of the sorted edge list of $G$
+  if and only if $u \le v$ and $uv \in E(G)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Forward: an entry $(u, v) \in \mathrm{edgeListSorted}\,G$ is
-  $\mathrm{ofLex}(\mathrm{toLex}\,(e.\inf, e.\sup))$ for some
-  $e = \{a, b\} \in G.\mathrm{edgeFinset}$, so $(u, v) = (e.\inf,
-  e.\sup)$; splitting on whether $a \le b$ or $b \le a$ identifies
-  $\{u, v\} = e$, whence $\{u, v\} \in G.\mathrm{edgeFinset}$.
-  Backward: given $u \le v$ and $\{u, v\} \in G.\mathrm{edgeFinset}$,
-  take $e := \{u, v\}$; then $e.\inf = u$ and $e.\sup = v$ since
-  $u \le v$.
+  Sorting a finite set lists each of its elements, and nothing else. So
+  the entries are the pairs $(\min e, \max e)$ for $e \in E(G)$. Such a
+  pair $(u, v)$ has $u \le v$ and $e = uv$. Conversely, if $u \le v$ and
+  $uv \in E(G)$, then $(u, v) = (\min uv, \max uv)$.
 \end{proof}
 
-\subsection{Computable form}
+\subsection{The computable pebble game}
 \label{sec:executable-wrapper}
 
-The algorithm was already factored into the computable core
-\texttt{runPebbleGameWith}, parametrised over a caller-supplied
-out-neighbour enumeration and edge list; the convenience form
-\texttt{runPebbleGame} supplies the noncomputable enumerations
-$\mathrm{outList}$ and \texttt{G.edgeFinset.toList.map Quot.out}. We
-now add a computable sibling that supplies \cref{def:outListSorted}
-and \cref{def:edgeListSorted} instead.
+With the sorted lists, the pebble game on a list
+(\cref{def:runPebbleGame}) gives a pebble game on $G$ that can be
+computed.
 
-\begin{definition}[Computable verdict-bearing pebble game]
+\begin{definition}[The computable pebble game]
   \label{def:runPebbleGameExec}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec}
   \leanok
   \uses{def:runPebbleGame, def:outListSorted, def:edgeListSorted,
     def:pebbleGameResult, thm:pebble-game-correct,
     lem:workhorseWitness-certifies}
-  Let $V$ be a finite type with a linear order and decidable equality,
-  let $G$ be a finite simple graph on $V$, and let $\ell < 2k$. Define
-  \[
-    \mathrm{runPebbleGameExec}\,G\,k\,\ell : \mathrm{PebbleGameResult}\,G\,k\,\ell
-  \]
-  by running the computable core $\mathrm{runPebbleGameWith}$ from the
-  empty orientation with the sorted list views \cref{def:outListSorted}
-  and \cref{def:edgeListSorted}, then packaging its $\mathrm{Sum}$
-  output as a $\mathrm{PebbleGameResult}$ verdict
-  (\cref{def:pebbleGameResult}): an accepting orientation $D$ (the
-  $\mathrm{.inr}$ branch) becomes $\mathrm{.accept}\,D$, and a failure
-  witness $w$ (the $\mathrm{.inl}$ branch, \cref{def:workhorseWitness})
-  becomes $\mathrm{.reject}\,w.V'$. It is computable end-to-end and has
-  no $\mathrm{Classical}$ dependencies.
+  Let $V$ be a finite set with a linear order, let $G$ be a simple graph
+  on $V$, and let $k$ and $\ell$ be non-negative integers with
+  $\ell < 2k$. The \emph{computable pebble game on $G$} runs the pebble
+  game on the sorted edge list of $G$ (\cref{def:edgeListSorted}) from
+  the empty orientation, with the sorted out-neighbour lists
+  (\cref{def:outListSorted}) as the lists $N^+_D(a)$. It returns the
+  verdict on $G$ (\cref{def:pebbleGameResult}) that is an acceptance,
+  given by $D$, if the game returns a partial orientation $D$, and a
+  rejection, given by $V'$, if the game returns a failure witness whose
+  set is $V'$.
 \end{definition}
 
 \begin{fmlnote}
   \label{fmlnote:executable-computable-core}
-  The convenience form $\mathrm{runPebbleGame}$ is noncomputable
-  because it enumerates finite sets as lists through mathlib operations
-  that reduce only through $\mathrm{Classical}$ choice
-  (\cref{fmlnote:pebble-game-computable-core}): $\mathrm{Finset.toList}$
-  on the out-neighbours and $\mathrm{Quot.out}$ on the edge set.
-  Rebuilding the same algorithm on the $\mathrm{Finset.sort}$-based
-  views \cref{def:outListSorted} and \cref{def:edgeListSorted} removes
-  both, so $\mathrm{runPebbleGameExec}$ reduces with no
-  $\mathrm{Classical}$ dependency --- the requirement for
-  $\mathrm{\#eval}$ and $\mathrm{native\_decide}$ to run its registered
-  $\mathrm{Decidable}$ instance.
-
-  The verdict repackaging carries proofs but adds no computational
-  content: on the accept branch the two obligations of
-  \cref{def:pebbleGameResult} --- that the orientation's underlying
-  edge set is $E(G)$ and that it is $(k, \ell)$-reachable --- are
-  discharged by \cref{thm:pebble-game-correct}, and on the reject
-  branch the size and strict-inequality obligations by
-  \cref{lem:workhorseWitness-certifies}. The verdict is thus structural
-  metadata over the core's raw output, and the compiled body that
-  $\mathrm{\#eval}$ reduces is the pebble game itself.
+  The computable pebble game is formalized as the forms of the pebble
+  game that take the lists as an argument
+  (\cref{fmlnote:pebble-game-computable-core}), applied to the sorted
+  lists. Sorting a finite set by a linear order needs no choice, so the
+  sorted lists, and with them the game, can be computed. Only a
+  definition that can be computed can be run by \texttt{\#eval} or
+  \texttt{native\_decide}. A verdict consists of a partial orientation
+  or a set of vertices together with proofs, and proofs are erased in
+  compiled code. So the compiled program computes only the pebble game.
 \end{fmlnote}
 
-The computable form inherits the correctness theorem
-\cref{thm:pebble-game-correct} with no new mathematical content. That
-theorem is parametrised over the out-neighbour enumeration and the
-candidate edge list; the only step specific to \cref{def:edgeListSorted}
-is checking that it meets the theorem's three side conditions on the
-edge list --- loop-freeness, pairwise distinctness of the underlying
-unordered edges, and that their $\mathrm{Sym}_2$-image is exactly
-$G.\mathrm{edgeFinset}$ --- which the accompanying discharge lemmas
-establish. Its verdict-form analog
-\cref{thm:pebbleGameResult-isAccept-iff} restates it with the
-certificate equivalence absorbed into the verdict's type.
+The verdict is well defined, as for the formal pebble game (the
+paragraph after \cref{def:runPebbleGame}). The sorted edge list lists
+each edge of $G$ once (the proof of
+\cref{thm:pebbleGameResult-isAccept-iff}), so
+\cref{thm:pebble-game-correct} applies to it. By its part~(1), a
+returned $D$ has $\underline{D} = E(G)$, and $D$ is
+$(k, \ell)$-reachable, as is every orientation that the game reaches.
+By its part~(2), whose proof uses \cref{lem:workhorseWitness-certifies}
+and $\ell < 2k$, a returned $V'$ is a blocking witness for $G$. By
+\cref{thm:pebbleGameResult-isAccept-iff}, the verdict that the
+computable pebble game on $G$ returns accepts $G$ if and only if $G$ is
+$(k, \ell)$-sparse.
 
-\subsection{Decidability of sparsity, tightness, and Laman}
+\subsection{Deciding sparsity, tightness and the Laman property}
 \label{sec:executable-decidable}
 
-\begin{definition}[\texttt{Decidable} instance for sparsity]
+A \emph{decision procedure} for a proposition $P$ returns either a
+proof of $P$ or a proof of its negation. In Lean it is an instance of
+\texttt{Decidable}~$P$, and a command or a tactic that decides $P$ uses
+the one registered for $P$ (\cref{sec:executable-backends}). We
+register decision procedures for three properties of a finite graph
+with a linear order on its vertices. The one for $(k, \ell)$-sparsity
+runs the computable pebble game. Those for $(k, \ell)$-tightness and
+the Laman property add a count of the edges.
+
+\begin{definition}[Deciding sparsity]
   \label{def:isSparse-decidable}
   \lean{SimpleGraph.instDecidableIsSparse}
   \leanok
   \uses{def:runPebbleGameExec, def:isSparse,
     thm:pebbleGameResult-isAccept-iff}
-  Let $V$ be a finite type with a linear order and decidable equality,
-  and let $G$ be a finite simple graph on $V$. In the matroidal regime
-  $\ell < 2k$ --- carried in the formalisation as a
-  $\mathrm{Fact}\,(\ell < 2k)$ instance for typeclass synthesis --- the
-  proposition $G.\mathrm{IsSparse}\,k\,\ell$ is decidable via the rule
-  \[
-    \mathrm{decide}\,(G.\mathrm{IsSparse}\,k\,\ell)
-    \;=\;
-    (\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isAccept},
-  \]
-  the accepting-verdict projection of the computable pebble game. It is
-  the canonical $\mathrm{Decidable}$ instance for
-  $\mathrm{IsSparse}\,k\,\ell$; because the verdict is structural
-  metadata (\cref{fmlnote:executable-computable-core}), the compiled
-  body it reduces is the pebble game itself.
+  Let $V$ be a finite set with a linear order, let $G$ be a simple graph
+  on $V$, and let $k$ and $\ell$ be non-negative integers with
+  $\ell < 2k$. The decision procedure for the $(k, \ell)$-sparsity of
+  $G$ runs the computable pebble game on $G$
+  (\cref{def:runPebbleGameExec}). If the verdict accepts $G$, it returns
+  a proof that $G$ is $(k, \ell)$-sparse, and otherwise a proof that $G$
+  is not, both by \cref{thm:pebbleGameResult-isAccept-iff}.
 \end{definition}
 
-\begin{remark}[Polynomial vs.\ exponential reduction]
+\begin{fmlnote}
+  The procedure takes the hypothesis $\ell < 2k$ as a registered fact,
+  so that a command or a tactic finds the procedure without being given
+  a proof. The fact $3 < 2 \cdot 2$ is registered, so at
+  $(k, \ell) = (2, 3)$ the procedures of this subsection apply with no
+  hypothesis given.
+\end{fmlnote}
+
+\begin{remark}[One decision procedure for each property]
   \label{rem:decidable-runtime}
-  $G.\mathrm{IsSparse}\,k\,\ell$ quantifies over all finite subsets of
-  $V$, so it also admits a brute-force decision procedure that iterates
-  over all $2^{|V|}$ subsets (via
-  $\mathrm{Fintype.decidableForallFintype}$). Both procedures decide the
-  \emph{same} proposition and produce a valid $\mathrm{Decidable}$
-  instance; they differ only in the instance body, which is what
-  $\mathrm{\#eval}$ and $\mathrm{decide}$ reduce. The pebble-game
-  instance reduces in polynomial time, the brute-force instance in
-  exponential time. To keep typeclass search from selecting the slow
-  path, the project registers exactly one $\mathrm{Decidable}$ instance
-  per predicate.
+  Since $V$ is finite, whether $G$ is $(k, \ell)$-sparse can also be
+  decided by checking the inequality of \cref{def:isSparse} for each of
+  the $2^{|V|}$ subsets of $V$. A procedure of this kind decides the same
+  proposition, but on a sparse graph it checks all $2^{|V|}$ subsets. We
+  register only the procedure of \cref{def:isSparse-decidable} for
+  sparsity, and build the procedures for tightness and the Laman
+  property on it. So a command or a tactic that decides one of these
+  properties runs the pebble game.
 \end{remark}
 
-\begin{definition}[\texttt{Decidable} instance for tightness]
+\begin{definition}[Deciding tightness]
   \label{def:isTight-decidable}
   \lean{SimpleGraph.instDecidableIsTight}
   \leanok
   \uses{def:isSparse-decidable, def:isTight}
-  Under the hypotheses of \cref{def:isSparse-decidable},
-  $G.\mathrm{IsTight}\,k\,\ell$ is decidable: it is the conjunction of
-  $G.\mathrm{IsSparse}\,k\,\ell$ (\cref{def:isSparse-decidable}) with
-  the edge-count equation $|E(G)| + \ell = k|V|$, and the latter is
-  decidable as an equality of natural numbers. (The definition of
-  $\mathrm{IsTight}$ states this equation with cardinalities as
-  $\mathrm{Set.ncard}$ and $\mathrm{Nat.card}$; the formalisation
-  rewrites it to the $\mathrm{Finset.card}$ and $\mathrm{Fintype.card}$
-  form that reduces, a step with no algorithmic content.)
+  Let $V$, $G$, $k$ and $\ell$ be as in \cref{def:isSparse-decidable}.
+  The decision procedure for the $(k, \ell)$-tightness of $G$ decides
+  whether $G$ is $(k, \ell)$-sparse by \cref{def:isSparse-decidable},
+  and whether $|E(G)| + \ell = k|V|$ by computing both sides. It returns
+  a proof that $G$ is $(k, \ell)$-tight if both hold, and otherwise a
+  proof that $G$ is not (\cref{def:isTight}).
 \end{definition}
 
-\begin{definition}[\texttt{Decidable} instance for Laman]
+\begin{definition}[Deciding the Laman property]
   \label{def:isLaman-decidable}
   \lean{SimpleGraph.instDecidableIsLaman}
   \leanok
   \uses{def:isTight-decidable, def:isLaman}
-  Under the hypotheses of \cref{def:isSparse-decidable} at
-  $(k, \ell) = (2, 3)$, $G.\mathrm{IsLaman}$ is decidable: it is
-  $G.\mathrm{IsTight}\,2\,3$ (\cref{def:isTight-decidable}) unfolded.
-  The formalisation registers the matroidal-regime witness
-  $\mathrm{Fact}\,(3 < 2 \cdot 2)$ as a top-level instance, so the
-  Laman case is zero-hypothesis at the call site:
-  $\mathrm{\#eval}\,(\mathrm{decide}\,G.\mathrm{IsLaman})$ runs without
-  any caller-supplied hypothesis.
+  Let $V$ be a finite set with a linear order, and let $G$ be a simple
+  graph on $V$. The decision procedure for the Laman property of $G$ is
+  the decision procedure for the $(2, 3)$-tightness of $G$
+  (\cref{def:isTight-decidable}), since $3 < 2 \cdot 2$ and a graph is
+  Laman if and only if it is $(2, 3)$-tight (\cref{def:isLaman}).
 \end{definition}
+
+\subsection{Runtime and backends}
+\label{sec:executable-backends}
+
+A decision procedure registered for a proposition $P$, such as
+``$G$ is Laman'' for a given graph $G$, can be run in three ways.
+\begin{itemize}
+  \item The command \texttt{\#eval decide}~$P$ runs the procedure in
+    Lean's interpreter, and prints its answer, \texttt{true} or
+    \texttt{false}. The examples of \cref{sec:executable-examples} are
+    run in this way.
+  \item The command-line program \texttt{lake exe pebble-game} of
+    \cref{sec:executable-cli} runs the computable pebble game, compiled
+    to native code.
+  \item The tactic \texttt{native\_decide} proves $P$ by running the
+    compiled procedure. The proof rests on an axiom, added for it, that
+    states the program's answer. So it trusts Lean's compiler, and
+    mathlib does not accept such proofs. The tactic \texttt{decide}
+    would instead prove $P$ by evaluating the procedure by reduction,
+    trusting only Lean's type checker. It does not evaluate these
+    procedures. The processing of an edge (\cref{def:tryAddEdge}) and the
+    search of \cref{def:reachable-finding} are defined by well-founded
+    recursion, which \texttt{decide} does not unfold.
+\end{itemize}
 
 \subsection{Worked examples}
 \label{sec:executable-examples}
 
-The end-to-end-executability target is exercised by a small set of
-$\mathrm{Fin}\,n$ examples in
-\texttt{CombinatorialRigidity/PebbleGame/Examples.lean}. Each is a
-$\mathrm{\#eval}$ of $\mathrm{decide}\,G.\mathrm{IsLaman}$ on a
-concrete graph; the output should match the well-known
-classification.
-
+We run the decision procedures with \texttt{\#eval} on four graphs,
+each on the vertices $\{0, \ldots, n - 1\}$ for some $n$. The file that
+does so, \texttt{PebbleGame/Examples.lean} in the Lean library, records
+the expected answer beside each evaluation, and the procedures return
+it.
 \begin{enumerate}
-  \item \textbf{$K_4 \setminus e$} on $\mathrm{Fin}\,4$. Laman: 4
-    vertices, 5 edges, $2 \cdot 4 - 3 = 5$. The worked example of
-    \cref{thm:top-fin-four-minus-edge-isLaman}; verifies
-    the minimal non-trivial accept path.
-  \item \textbf{Moser spindle.} A 7-vertex 11-edge Laman graph
-    ($2 \cdot 7 - 3 = 11$). Verifies the accept path on a graph
-    large enough for the depth-first search to run non-trivially.
-  \item \textbf{$K_4$ on $\mathrm{Fin}\,4$.} Not Laman, globally
-    over-constrained: 4 vertices, 6 edges, $6 > 2 \cdot 4 - 3 = 5$.
-    The pebble game rejects on the full-vertex subset at the
-    sparsity step; the blocking witness
-    (\cref{def:blockingWitness}) $V' = V$ violates Invariant~(4).
-  \item \textbf{A sparse-but-not-tight example.} A path on 5
-    vertices: $(2, 3)$-sparse but $|E| = 4 < 2 \cdot 5 - 3 = 7$,
-    so not tight, hence not Laman. The pebble game accepts; the
-    \cref{def:isTight-decidable} edge-count check rejects.
+  \item The graph on $\{0, 1, 2, 3\}$ obtained from $K_4$ by deleting
+    the edge $23$ has $4$ vertices and $5 = 2 \cdot 4 - 3$ edges, and it
+    is Laman (\cref{thm:top-fin-four-minus-edge-isLaman}). The procedure
+    for the Laman property answers \texttt{true}.
+  \item The Moser spindle on $\{0, \ldots, 6\}$ consists of the
+    triangles $012$ and $034$, a vertex $5$ adjacent to $1$ and $2$, a
+    vertex $6$ adjacent to $3$ and $4$, and the edge $56$. It has $7$
+    vertices and $11 = 2 \cdot 7 - 3$ edges, and the procedure for the
+    Laman property answers \texttt{true}.
+  \item The complete graph $K_4$ on $\{0, 1, 2, 3\}$ has $6$ edges, more
+    than $2 \cdot 4 - 3 = 5$, so it is not $(2, 3)$-sparse. The
+    procedures for sparsity and for the Laman property answer
+    \texttt{false}. So the computable pebble game rejects $K_4$
+    (\cref{thm:pebbleGameResult-isAccept-iff}), and its blocking witness
+    is $\{0, 1, 2, 3\}$. Indeed a blocking witness has at least two
+    vertices (\cref{def:blockingWitness}), and a set $X$ of two or three
+    vertices spans $2|X| - 3$ edges of $K_4$.
+  \item The path on $\{0, \ldots, 4\}$ with the edges $01$, $12$, $23$
+    and $34$ is $(2, 3)$-sparse, since a set of $s \ge 2$ of its
+    vertices spans at most $s - 1 \le 2s - 3$ edges. It
+    has $4$ edges, fewer than $2 \cdot 5 - 3 = 7$, so it is not
+    $(2, 3)$-tight and not Laman. The procedure for sparsity answers
+    \texttt{true}, and those for tightness and the Laman property answer
+    \texttt{false}.
 \end{enumerate}
-
-These examples additionally demonstrate the
-$\mathrm{\#eval}$ / $\mathrm{native\_decide}$ runtime claim of
-\cref{sec:executable-backends}: the reduction completes in
-sub-second wall time on a developer laptop.
 
 \subsection{CLI binary}
 \label{sec:executable-cli}
 
-A \texttt{lake exe pebble-game} entry point reads a simple
-edge-list file and prints the classification together with the
-inline witness data carried by the \cref{def:pebbleGameResult}
-verdict. Input format: a leading line
-\texttt{n m} giving vertex count and edge count, followed by $m$
-lines of two whitespace-separated integers $0 \le u, v < n$. Output
-schema:
-\begin{center}
-\begin{tabular}{lll}
-$\mathrm{LAMAN}$           & $\mathrm{SPARSE\_NOT\_TIGHT}$ & $\mathrm{NOT\_SPARSE}$ \\
-$\mathrm{ARCS}\ u_0\ v_0$  & $\mathrm{ARCS}\ u_0\ v_0$     & $\mathrm{BLOCKING}\ |V'|$ \\
-$\mathrm{ARCS}\ u_1\ v_1$  & $\mathrm{ARCS}\ u_1\ v_1$     & $\mathrm{VERTEX}\ w_0$ \\
-$\vdots$                   & $\vdots$                      & $\mathrm{VERTEX}\ w_1$ \\
-                           &                               & $\vdots$ \\
-\end{tabular}
-\end{center}
-i.e.\ a verdict label on the first line, then witness lines: on
-$\mathrm{LAMAN}$ / $\mathrm{SPARSE\_NOT\_TIGHT}$, one
-$\mathrm{ARCS}\ u\ v$ line per arc $(u, v) \in D.\mathrm{arcs}$ of
-the accepting partial orientation, in lexicographic order on $(u, v)$;
-on $\mathrm{NOT\_SPARSE}$, a $\mathrm{BLOCKING}\ |V'|$ line giving the
-blocking subset's size followed by $|V'|$ lines $\mathrm{VERTEX}\ w$,
-one per $w \in V'$, in increasing order.
+The command \texttt{lake exe pebble-game}~\emph{file} runs a program that
+reads a graph from a file and decides whether it is Laman. The first
+line of the file is $n$~$m$, the numbers of vertices and of edges. Each
+of the next $m$ lines is $u$~$v$, for an edge between the vertices $u$
+and $v$, where $0 \le u, v < n$. Numbers on a line are separated by
+spaces, and blank lines and lines that start with \texttt{\#} are
+skipped. If the file does not have this form, the program prints an
+error message.
 
-The binary is a thin \texttt{IO} program:
-\begin{enumerate}
-  \item Parse the input file; reject malformed input with a
-    diagnostic.
-  \item Construct $G : \mathrm{SimpleGraph}\,(\mathrm{Fin}\,n)$
-    from the parsed edge list via $\mathrm{fromEdgeSet}$.
-  \item Invoke $\mathrm{runPebbleGameExec}\,G\,2\,3$ directly to
-    obtain a \cref{def:pebbleGameResult} verdict (the
-    \cref{def:isLaman-decidable} instance is no longer needed at the
-    CLI's entry point --- the Boolean projection it derives via
-    \cref{thm:pebbleGameResult-isAccept-iff} is recovered from the
-    verdict's constructor name).
-  \item Pattern-match on the verdict and print the schema above.
-    The trichotomy label distinguishes $\mathrm{LAMAN}$ from
-    $\mathrm{SPARSE\_NOT\_TIGHT}$ on the $\mathrm{.accept}$
-    constructor via the constant-time edge-count equation
-    $|E(G)| + 3 = 2|V|$.
-\end{enumerate}
-
-No blueprint nodes for the binary itself --- it is not Lean-formal
-content but the natural delivery vehicle for the runtime claim of
-\cref{sec:executable-backends}. The
-\cref{def:pebbleGameResult} verdict makes the accepting orientation $D$
-and the blocking subset $V'$ structurally available at the CLI's
-entry point: $D$ from the verdict's $\mathrm{.accept}\,D$
-constructor (its $\mathrm{arcs}$ field is the witness data on the
-accept branches) and $V'$ from $\mathrm{.reject}\,V'$ (whose proof
-fields are unused at $\mathrm{IO}$-time but carry the structural
-certificate). Sample
-input files live under \texttt{examples/} with the expected output
-schema documented as a comment block at the top of each file.
-
-\emph{Special case: planar rigidity (continued).} The CLI binary
-at the default parameters $(k, \ell) = (2, 3)$ is, by
-\cref{thm:pebble-game-correct} composed with
-\cref{thm:rigidityMatroid-indep-iff-rowIndependent}, an
-algorithmic decision procedure for membership in the planar
-rigidity matroid $\mathcal{R}(V)$
-(\cref{def:rigidityMatroid}), specialised to spanning
-subgraphs of edge count $2|V| - 3$ to decide the Laman property
-(\cref{def:isLaman}). This is the Jacobs--Hendrickson
-$(2, 3)$-pebble game~\cite{jacobsHendrickson1997} as a
-formally-verified, end-user-executable program.
+The program takes for $G$ the simple graph on $\{0, \ldots, n - 1\}$
+whose edges are the pairs read, leaving out a pair with $u = v$. It runs
+the computable pebble game on $G$ with $(k, \ell) = (2, 3)$, and prints
+the following.
+\begin{itemize}
+  \item If the verdict is an acceptance, given by $D$: the line
+    \texttt{LAMAN} if $|E(G)| + 3 = 2n$, and \texttt{SPARSE\_NOT\_TIGHT}
+    otherwise; then a line \texttt{ARCS}~$u$~$v$ for each arc $(u, v)$
+    of $D$, in lexicographic order.
+  \item If the verdict is a rejection, given by $V'$: the line
+    \texttt{NOT\_SPARSE}, then the line \texttt{BLOCKING}~$|V'|$, then a
+    line \texttt{VERTEX}~$w$ for each $w \in V'$, in increasing order.
+\end{itemize}
+By \cref{thm:pebbleGameResult-isAccept-iff} and \cref{def:isLaman}, the
+first line is \texttt{LAMAN} if $G$ is Laman, \texttt{SPARSE\_NOT\_TIGHT}
+if $G$ is $(2, 3)$-sparse but not Laman, and \texttt{NOT\_SPARSE} if $G$
+is not $(2, 3)$-sparse. The reading of the file and the printing are not
+verified. The directory \texttt{examples/} holds the four graphs of
+\cref{sec:executable-examples} as input files, each with its expected
+output in a comment at the top.

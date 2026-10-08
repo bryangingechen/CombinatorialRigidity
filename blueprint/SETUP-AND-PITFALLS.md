@@ -64,6 +64,13 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
 - **`_` in `\texttt{...}`.** LaTeX still treats `_` as a subscript
   inside `\texttt{...}`. Escape as `\_` (e.g.
   `\texttt{mk\_mem\_edgesIn}`) or use `\verb|...|`.
+- **`\allowbreak{}` may not save a long `\texttt{}` path.** When the
+  line a break would end has few spaces to stretch, xelatex can still
+  set the path overfull. A 47-character file path in `executable.tex`
+  stayed overfull with breaks after its slashes, first after a run-in
+  subsection head and then mid-paragraph (PROSE round 1, task 5.16); a
+  shorter address fixed it. Count the chapter's `Overfull` lines in
+  `print/print.log` after such an edit.
 - **Wrapping table cells are justified in the PDF.** A `p{…}` column
   stretches the spaces of every wrapped line, and the `array` package
   (`>{\raggedright\arraybackslash}`) is not loaded. Start each cell with

@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.15 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–5 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first fifteen slices, `sparsity.tex` through `pebble-game.tex`. **Next concrete
-task:** task 5.16, `executable.tex`, the last slice. Round manual: `CLEANUP.md`.
+PI*), and all sixteen slices, `sparsity.tex` through `executable.tex`. **Next concrete task:**
+task 6, the round's close. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,16 +54,18 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The fifteenth slice has landed** (task 5.15, this commit): `pebble-game.tex`'s opening (1–60)
-and its *Correctness*, *The verdict* and *Independence in the count matroid* (now 895–1074), so
-the chapter is done. Tasks 5.1–5.14 rewrote `sparsity.tex` through the rest of `pebble-game.tex`.
-Nothing is mid-stream; task 5.16 is next.
+**The sixteenth and last slice has landed** (task 5.16, this commit): `executable.tex`, now 306
+lines, so all twelve chapters are rewritten (tasks 5.1–5.15 did the other eleven). Nothing is
+mid-stream; task 6, the close, is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (128 overfull boxes, none in
-  `pebble-game.tex`; 129 at `640505ce`). The screens on the whole chapter read 0 and 5 / 19,
-  every device hit `\mathrm{span}`, Lee–Streinu's notation (4 and 31 / 57 at the parent).
-- **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (120 overfull boxes, none in
+  `executable.tex`; 128 at `0e1bd105`). The screens on the chapter read 0 and 0 / 29 (the open's
+  4 and 43 / 130); the 29 are Lean addresses in prose, which the carve-out keeps.
+- **The screens on all twelve chapters** at this commit: register 0 everywhere; Lean devices 5 /
+  56, namely `henneberg` 0 / 7, `rigidity-matroid` 0 / 1, `pebble-game` 5 / 19 (every hit
+  `\mathrm{span}`, Lee–Streinu's notation) and `executable` 0 / 29 (the open's 15 and 227 / 648).
+- **The audit script:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
 
@@ -175,14 +177,9 @@ slice re-derives its own findings and records them in its commit and the ledger.
 Phases 1–5 wrote the earliest of these chapters in backfill mode, and phases 6–11 kept their
 style: the register is mostly flat, and the problem is Lean devices in statements and proofs.
 
-- **Done chapters.** The open's bullets for `sparsity` through `pebble-game` were consumed by
-  tasks 5.1–5.15; they are in this log at `e5dd8256` and (`pebble-game`'s, as 5.14 left it) at
-  `640505ce`, and each task's findings are in its commit and the ledger.
-- **`executable`** (carve-out) is about the Lean artefact itself (`#eval`, `decide`,
-  `native_decide`, the `Decidable` instances, the CLI), so names stay as addresses. What goes:
-  Lean as the subject of sentences, changelog ("was already factored", "no longer needed"), and
-  Lean syntax in statement blocks (`(D.outNbhd v).sort (·≤·)`, `ofLex ∘ …`). Unverified claims:
-  "sub-second wall time on a developer laptop", "polynomial time", and where `K₄` is rejected.
+- **Done chapters.** The open's bullets were consumed by tasks 5.1–5.16; they are in this log at
+  `e5dd8256`, `640505ce` (`pebble-game`'s, as 5.14 left it) and `0e1bd105` (`executable`'s), and
+  each task's findings are in its commit and the ledger.
 
 ## Lemma checklist (the round's task list)
 
@@ -198,7 +195,7 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   approved at Stop 1, which dropped "These facts are classical." (`e9e3f37d`). Found `F-013`.
 - [x] **4. E — pin the exemplar** (`09106a34`): `notes/Prose-exemplar.md` and principle B's
   *Constructions* clause.
-- [ ] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
+- [x] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
   - [x] **5.1 `sparsity.tex`, first half** (`4657a7fc`; 15 nodes). Found `F-014`.
   - [x] **5.2 `sparsity.tex`, rest and openings, `laman.tex`** (`0a2230a0`). `F-015`–`F-018`.
@@ -214,10 +211,11 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   - [x] **5.12 `dfs.tex`** (`e5dd8256`; then 1–204). Found `F-033`.
   - [x] **5.13 `pebble-game.tex`, first part** (`db7ff7d6`; then 61–539). `F-034`, `F-035`.
   - [x] **5.14 `pebble-game.tex`, soundness and completeness** (`640505ce`; 540–893). `F-036`–`F-040`.
-  - [x] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (this commit; now
-    1–60 and 895–1074, 4 nodes): verdicts defined in words; the formal and the computable pebble
-    game named; the opening a roadmap with the scope and no running-time claim. `F-041`–`F-045`.
-  - [ ] **5.16 `executable.tex`** (carve-out): 8 nodes, 428 lines.
+  - [x] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (`0e1bd105`).
+    `F-041`–`F-045`.
+  - [x] **5.16 `executable.tex`** (this commit; now 1–306, 8 nodes): the computable game and the
+    decision procedures in words; no running-time claim; `decide` does not evaluate the
+    procedures; the $K_4$ claim proved; *Runtime and backends* after the procedures. `F-046`, `F-047`.
 - [ ] **6. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat <open>.. --
     CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
@@ -263,6 +261,8 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   is all its pin states; no declaration states (2). "Each edge once" is now written, as in `F-036`.
 - `F-042` (S, task 5.15): `def:pebbleGameResult` takes a finite graph; its pin asks only finitely
   many edges.
+- `F-046` (S, task 5.16): the sorted-list nodes of `executable.tex` assume $V$ finite or $G$ finite;
+  their pins assume a linear order, and for the edge list finitely many edges.
 
 ## Moved to a later round
 
@@ -318,6 +318,8 @@ one line each naming the ledger ID and the task that found it.
   node.
 - `F-045` (L, task 5.15): `runPebbleGame.aux`'s docstring names a call `certifies_against` does
   not make; the verdict docstrings record Phase 11's reshape.
+- `F-047` (L, task 5.16): `Main.lean`, `Examples.lean`, `lakefile.toml` and `DESIGN.md` claim
+  polynomial time; `DESIGN.md` says `decide` unfolds the instances; tabs do not separate input.
 
 ## Blockers / open questions
 
@@ -325,58 +327,28 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.16**, the sixteenth and last slice: `executable.tex` (carve-out; 428 lines). Its 8
-nodes are `def:outListSorted`, `lem:mem-outListSorted`, `def:edgeListSorted`,
-`lem:mem-edgeListSorted`, `def:runPebbleGameExec` and the three `Decidable` definitions; it also
-has `rem:decidable-runtime` and `fmlnote:executable-computable-core`. The diagnosis is under
-*Per-chapter diagnosis*, the gates under *Scope*. What 5.16 must know:
-- **The unverified claims.** "Polynomial in $|V| + |E|$", "identical big-$O$", "reduce in
-  polynomial time" (the opening, *Runtime and backends*, `rem:decidable-runtime`): the search
-  marks only the current walk and can follow exponentially many walks (`F-033`; `dfs.tex` after
-  `def:reachable-finding`), and no bound is proved. `pebble-game.tex`'s opening now says so; no
-  running-time claim for the formal algorithm. "Sub-second wall time on a developer laptop":
-  measure it with a committed script, or cut it. $K_4$ "rejects on the full-vertex subset": the
-  rejected edge's set is $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ (`def:tryAddEdge`, step 4),
-  which depends on the edge order and the lists; check it on the example or weaken it.
-- **The names** (*Decisions*, tasks 5.13–5.15). *The formal pebble game on $G$* uses mathlib's
-  lists; *the computable pebble game on $G$* (`def:runPebbleGameExec`) uses the sorted lists. Both
-  return a *verdict*: an *acceptance* given by $D$, or a *rejection* given by a blocking witness
-  $V'$; it *accepts* $G$ if it is an acceptance. "For every choice of the lists $N^+_D(a)$"
-  replaces "the computable core". `executable.tex` cites `fmlnote:pebble-game-computable-core`
-  for "the computable core" and "the convenience form", which neither the note nor
-  `pebble-game.tex` says any more (the note: the forms with the lists as an argument, whose names
-  end in "With", and the forms with mathlib's lists).
-- **Already written, so cite it rather than repeat it** (principle F, *Once*).
-  `thm:pebbleGameResult-isAccept-iff` states the computable game's half, and its proof says why
-  the sorted list has each edge once (`F-043`); the paragraph after
-  `fmlnote:executable-computable-core` restates it. The paragraph after `def:pebbleGameResult`
-  says that an acceptance shows $G$ sparse and a rejection shows it is not. `pebble-game.tex`'s
-  last paragraph has the case $(2, 3)$: $\mathcal{R}(V)$, row-independence, the Laman property by
-  an edge count, Jacobs–Hendrickson. `executable.tex`'s closing *Special case: planar rigidity
-  (continued)* repeats it, continues a heading that paragraph no longer has, and composes
-  `thm:pebble-game-correct` where the composition is `cor:pebble-game-countMatroid-indep`'s.
-- **What else goes** (the diagnosis): Lean as the subject of sentences, changelog ("was already
-  factored", "is no longer needed"), Lean syntax in statement blocks (`(D.outNbhd v).sort (·≤·)`,
-  `ofLex ∘ …`, `Fact (ℓ < 2k)`), "matroidal regime", "the previous chapter" (write "section").
-  Names stay as addresses (*Decisions*, the carve-out).
-- **Statement vs pin.** Check the 8 statements for $\ell < 2k$, finiteness (`[Fintype V]`,
-  `[Fintype G.edgeSet]`) and `[LinearOrder V]`.
-- **Terms fixed by 5.11.** "For $\ell < 2k$" replaces "the matroidal regime". A *component* of a
-  sparse graph is a maximal tight set (`count-matroid.tex`'s opening). A set
-  $I \subseteq E(K_V)$ is *$(k,\ell)$-sparse* if the graph on $V$ with edge set $I$ is.
-- **Sources checked by 5.4–5.15:** Jordán pp. 35–39, 43–45, 48–49 and 51; Lee–Streinu 2008:
-  pp. 1426–1433 (Jacobs–Hendrickson's game as their $(2, 3)$ game and the range $[0, 2k)$, p. 1426;
-  Lemma 1, Theorems 2, 5 and 8, Corollaries 6–7 and 11–12, independent elements, §3 with its
-  $O(m_a n)$ bound and Fig. 4, Lemmas 10 and 13–15 with the remark after 14), pp. 1433–1436 (§5,
-  the $O(n^2)$ bound, the reference to Lee–Streinu–Theran) and §6; Lee–Streinu–Theran (`.refs/`, the CCCG 2005 paper:
-  union pair-find; its pages 219–222 from the CCCG'05 proceedings page, now in the bib entry);
-  Jacobs–Hendrickson (Crossref, DOI `10.1006/jcph.1997.5809`); Whiteley 1996 (a preprint: cite by
-  number only), Proposition A.1.1. Asimow–Roth is verified only for "rigidity is decided for
-  almost all placements" and "at a generic framework, rigid iff infinitesimally rigid". Detail is
-  in each task's commit.
-- **For the close (task 6):** `notes/BlueprintExposition.md`'s Group-A line still says
-  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). After task 5.16, task 6 closes
-  the round.
+**Next: task 6, the close** (`CLEANUP.md` *Workflow* 5; docs only; it may run at Sonnet, §2). Its
+checklist item lists the deliverables. What it must know:
+- **Gates.** Whole-project `lake build`, warning-clean. The no-Lean-edit check from the open,
+  `git diff --stat bca00d3f.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json
+  lean-toolchain`, is empty at task 5.16, and so is the same diff of `Main.lean`. The blueprint
+  gates and invariance values are under *Scope*; overfull boxes are counted (176 at the open, 120
+  at task 5.16).
+- **Screens.** At task 5.16 every chapter reads 0 on the register screen, and the device screen
+  reads 5 / 56 (*Current state*; the open's 15 and 227 / 648). What is left is deliberate:
+  `pebble-game`'s `\mathrm{span}` (Lee–Streinu's notation), `executable`'s addresses (the
+  carve-out), and the formalization notes of `henneberg` (the vertex type $\mathrm{Option}\,V$,
+  explained once, principle B's *Constructions*) and `rigidity-matroid` (`Matroid.ofFun`).
+- **Findings.** The ledger has `F-001`–`F-047`; each has its line here (`S`, `M` under
+  *Candidates*; `E`, `N`, `L` under *Moved*), checked by script at task 5.16. `T` and `U` are empty.
+- **The exposition ledger.** `notes/BlueprintExposition.md`'s Group-A screen (*Retroactive
+  coverage*) still says "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two`
+  and "Lovász–Yemini hard direction" for Phase 7 (`F-025`; the chapters now credit Laman). Its
+  pointers to the crux nodes (*Scope*, *Crux nodes*) are to proofs the slices kept full.
+- **Status surfaces.** The ROADMAP row (✓ Complete), ROADMAP's PROSE bullet and
+  `notes/Prose.md`'s **Status** name round 2, `prose-molecular`, as next; the queue row
+  `prose-laman` gets `done = true`, and nothing else in `.claude/autopilot/queue.toml` changes.
+- **Out of scope, recorded:** `DESIGN.md`'s polynomial-time and `decide` claims (`F-047`).
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
 result is understandable". The coordinator read 5.1–5.3 in full against the exemplar (2026-10-07):
@@ -384,24 +356,14 @@ understandable, no prompt tightening needed; it keeps reading each slice's text.
 
 ## Decisions made during this round
 
-- **The sample** (the open; approved at Stop 1): `notes/Prose.md` §3's default, `henneberg.tex`'s
-  *Preservation of the Laman property*, typical of phases 1–6. Considered: `sparsity.tex`,
-  `frameworks.tex`'s definitions.
-- **The slicing** (approved at Stop 1): 150–430-line slices cut at subsection boundaries, openings
-  last, `laman.tex` with `sparsity.tex`'s last slice; 16 slices averaging 306 lines, above
-  `40-exposition`'s 270, since these chapters are less dense.
-- **The screens** are recorded under *Scope*, since `notes/Prose.md` §7's regex was not.
-- **Task 2: the Lean half is a non-`module` file importing the library root.** A `module`
-  importer sees the project's theorems as axioms and none of its private declarations, so it
-  cannot see what a proof reaches; measured, and recorded in `scripts/BlueprintDeps.lean`'s
-  docstring. A `module` file also could not import the root, which is not a module.
-- **Task 2: what counts as missing.** A reached node that is already a `\uses` ancestor is
-  *implied*, not missing, since the graph is drawn transitively reduced and would not show the
-  edge. Unbacked `\uses` split into those reached through another pinned node and those with no
-  Lean basis. A missing edge that would close a cycle is flagged as a node-shape finding.
-- **Task 2: the ledger groups the script's findings** (the coordinator's suggestion): one `E` entry
-  per chapter group for missing edges, one for unbacked edges, and one `N` entry per node-shape
-  pattern. The ledger's header states the rule; `--chapter` and `--label` reproduce the detail.
+Settled verdicts, one line each where the slices are done; the detail is in each task's commit.
+
+- **The sample and the slicing** (the open; approved at Stop 1): `henneberg.tex`'s *Preservation of
+  the Laman property*; 16 slices at subsection boundaries, openings last. The screens are under
+  *Scope*, since `notes/Prose.md` §7's regex was not recorded.
+- **Task 2: the audit script** (`68bc7ad7`): its Lean half is a non-`module` file importing the
+  library root (a `module` importer sees no proofs); a reached `\uses` ancestor is *implied*, not
+  missing; the ledger groups its findings by chapter group and node-shape pattern.
 - **Stop 1: the PI's answer, verbatim** (2026-10-07; the items are numbered as under *Autopilot:
   for the PI*). On 1 and 2: "1-2 these look good." On 3: "edge notation, the graph G' names is not
   a big deal as long as it's understandable; I'm more concerned about the classical attribution:
@@ -413,44 +375,19 @@ understandable, no prompt tightening needed; it keeps reading each slice's text.
 - **Stop 1: the attended session's notes** (not the PI's words) are under *Autopilot: for the PI*:
   option B; "These facts are classical." dropped (`e9e3f37d`); every slice at Opus. The verbatim
   answer above stays in this section (the project rule), whatever later compression does.
-- **Stop 1: what the approval settles** (task 4's reading, not the PI's words). The sample is the
-  exemplar for rounds 1–4, `notes/Prose-exemplar.md`. Choice (i) is now `AUTHORING.md` principle
-  B's *Constructions* clause; (ii) and (iii) hold for every slice. 3a and 3b go to task 5.3, held
-  to the PI's test that the result is understandable. 3d: `thm:typeI-isLaman-iff` stays a node of
-  its own, and no finding is filed. The PI's item-5 sentence stands before `AUTHORING.md`'s six
-  principles. The slice lists stand.
-- **The carve-out in tasks 5.12–5.16** (Stop 1's item 5, approved). In `dfs.tex` and
-  `pebble-game.tex`, a result type in a statement (`.inr D`, `some (w, p)`, `PebbleGameResult`) is
-  restated as what the algorithm returns, in words, as choice (i) does for constructions.
-  `executable.tex` is about the Lean artefact, so its names stay as addresses; but Lean stops being
-  the subject of sentences, changelog prose goes, and Lean syntax leaves its statement blocks.
-- **Task 5.4: the bar-joint notation** for the rest of the round. The rigidity map is $R(G, p)$, as
-  Jordán writes the rigidity matrix and `generic-lift.tex` already does; the space of frameworks is
-  $(\R^d)^V$; a framework is the map $p$ alone (also "placement"); the injective form is
-  "injectively generically rigid". `RigidityMap G p` and `Framework V d` leave statements.
-- **Task 5.7: the rows and the credit for the count.** The rows of $R(G, p)$ are the functionals
-  $r_e$ in $((\R^d)^V)^*$, with the transpose $R(G, p)^{\top}$; the function/dual-space split of
-  the Lean is one `fmlnote`. The $(2,3)$ count of row-independent sets is credited to Maxwell, with
-  Whiteley's 11.1.3 and Jordán's 1.3.1, and "row-independent iff sparse" to Laman, as Jordán does
-  (`F-025` records where the blueprint says Lovász–Yemini). A truncated `2 * card V - 3` in a pin
-  is written $\max(2|V| - 3, 0)$: the pin's meaning, which the real-number reading made false.
-- **Task 5.13: the pebble game's names**, for 5.14–5.16. The procedures are "the pebble search for
-  $P$ from $v$ in $D$" (`def:tryReachPebble`), "processing $uv$ at $D$", which accepts $uv$ and
-  returns $D'$ or rejects it and returns a *failure witness* $(D, V', (u, v))$ (`def:tryAddEdge`,
-  `def:workhorseWitness`), and "the pebble game on a list from $D_0$" and "on $G$", which accepts
-  $G$ with $D$ or rejects it with $V'$ (`def:runPebbleGame`). Each partial orientation comes with
-  out-neighbour lists $N^+_D(a)$; $\mathrm{Reach}_D(x)$ is Lee–Streinu's reachability region. The
-  Lean's verdict type is "the formal pebble game on $G$ returns its answer together with proofs".
-- **Task 5.14: independence, and where Lee–Streinu's Lemma 13 sits.** An edge $uv$ not oriented
-  in $D$ is *independent in $D$* if the graph on $V$ with edge set $\underline{D} \cup \{uv\}$ is
-  $(k, \ell)$-sparse (Lee–Streinu §2, p. 1429); *Completeness*'s opening defines it. Correctness
-  argues at the rejection, through the failure witness. The two Lemma 13 nodes stay, proved, and
-  the opening says that correctness does not use them (their pins are dead, `F-012`). A Lean edge
-  list is "the pairs $(u_i, v_i)$ list the edges of $G$, each once, as $(u, v)$ or as $(v, u)$".
-- **Task 5.15: the verdict and the two formal games**, for 5.16. A *verdict* on $G$ is an
-  *acceptance*, given by a $(k, \ell)$-reachable $D$ with $\underline{D} = E(G)$, or a *rejection*,
-  given by a blocking witness $V'$; it *accepts* $G$ if it is an acceptance (`def:pebbleGameResult`).
-  *The formal pebble game on $G$* uses mathlib's lists, *the computable pebble game on $G$* sorted
-  lists (`sec:executable`); both return verdicts. `thm:pebble-game-correct` keeps its parts (1)–(2)
-  (`F-041`), and its proof argues the unpinned witness step in words (`F-044`). The opening makes no
-  running-time claim, and says why Lee–Streinu's $O(m_a n)$ does not apply (`F-033`).
+- **Stop 1: what the approval settles** (task 4's reading, not the PI's words): the sample is the
+  exemplar for rounds 1–4; choice (i) is principle B's *Constructions* clause, and (ii) and (iii)
+  hold for every slice; `thm:typeI-isLaman-iff` stays a node; the PI's item-5 sentence heads
+  `AUTHORING.md`'s principles.
+- **The carve-out in tasks 5.12–5.16** (Stop 1's item 5): a result type in a `dfs.tex` or
+  `pebble-game.tex` statement is what the algorithm returns, in words; in `executable.tex` Lean
+  names stay as addresses, but Lean is not a subject, and no Lean syntax stays in a statement.
+- **The slices' terms** (each defined in its chapter): $R(G, p)$ and frameworks as maps $p$ (5.4);
+  the rows $r_e$, Maxwell's count, Laman's credit for "row-independent iff sparse" (5.7); the
+  pebble search, processing an edge, the failure witness and $N^+_D(a)$ (5.13); *independent in
+  $D$* (5.14); the verdict, and the formal and the computable pebble game (5.15).
+- **Task 5.16: the executable chapter.** A `Decidable` instance is a *decision procedure*, defined
+  in words; *Runtime and backends* moved after the procedures it runs, and its title, *Worked
+  examples* and *CLI binary* stay, since `Main.lean`, `Examples.lean`, `lakefile.toml` and
+  `DESIGN.md` point at them. No running-time claim; `decide` does not evaluate the procedures, and
+  the $K_4$ rejection set is $V$ because $V$ is $K_4$'s only blocking witness.
