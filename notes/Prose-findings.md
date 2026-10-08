@@ -294,6 +294,13 @@ declaration's name as its header writes it:
   statement is weaker than the pin, as in `F-015`.
   *Evidence:* read (the statement of `span_range_rigidityRow`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.7.
+- **F-027** · S · `lem:isSparse-of-rowIndependent-two` (`laman-theorem.tex`): the statement assumes
+  $V$ finite, which its pin `isSparse_of_edgeSetRowIndependent_dim_two` does not (it takes no
+  finiteness; the sets of at least three vertices it quantifies over are finite). The statement is
+  weaker than the pin, as in `F-015` and `F-026`.
+  *Evidence:* read (the statement of `isSparse_of_edgeSetRowIndependent_dim_two`, and the body of
+  `EdgeSetRowIndependent`, `RigidityMatroid.lean`).
+  *Found:* round 1 task 5.8.
 
 ## L — Lean
 
@@ -357,8 +364,11 @@ declaration's name as its header writes it:
   `MatroidIdentification.lean` and `LinearRigidityMatroid.lean`. Jordán (2016, p. 45) credits the
   characterization to Laman (Theorem 2.2.1, his [43]) and proves it by induction with extensions; he
   credits Lovász–Yemini with the rank formula (Theorem 2.3.2, p. 49) and with the rigidity of
-  6-connected graphs (Theorem 2.4.1, p. 51). Task 5.7 moved its range's credit to Laman; tasks
-  5.8–5.10 can do so in theirs, but `intro.tex` and the docstrings are outside round 1.
+  6-connected graphs (Theorem 2.4.1, p. 51). Tasks 5.7 and 5.8 moved `laman-theorem.tex`'s credit
+  to Laman (5.8: the opening, and the title *Sparsity from row-independence*); tasks 5.9–5.10 can
+  do so in `rigidity-matroid.tex`. Outside round 1's slices: `intro.tex`, the docstrings,
+  `formalization.yaml`'s Lovász–Yemini lines, and `notes/BlueprintExposition.md`'s Group-A line
+  "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 checks it).
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
   and the Lean). Lovász–Yemini 1982 is not in `.refs/`.
   *Found:* round 1 task 5.7.

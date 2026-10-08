@@ -1,29 +1,31 @@
 \section{Laman's theorem}
 \label{sec:laman-theorem}
 
-For $n \ge 2$ vertices, a simple graph is generically rigid in the
-plane iff it contains a Laman spanning subgraph (\cref{def:isLaman}):
-a $(2, 3)$-tight subgraph on the same vertex set. The two directions
-are proved separately:
+In this section we prove Laman's theorem~\cite{laman1970} in the form
+stated in \cref{sec:laman}: a graph on at least two vertices is
+generically rigid in the plane if and only if it has a spanning
+subgraph that is Laman
+(\cref{thm:isGenericallyRigid-two-iff-exists-isLaman-le}).
+Jord\'an~\cite{jordan2016} states it in an equivalent form as his
+Theorem~2.2.2: a graph is generically minimally rigid in the plane if
+and only if it is Laman.
 
-\begin{itemize}
-  \item \emph{$\Leftarrow$ (every Laman graph is generically rigid in dimension 2).}
-    A Henneberg induction on $|V|$. Base case $|V| = 2$: $K_2$ is
-    generically rigid (\cref{thm:top-fin-two-isGenericallyRigidInj}).
-    Inductive step: peel off a Type~I or Type~II move via
-    \cref{thm:isLaman-exists-typeI-or-typeII-reverse} and apply the
-    move-rigidity-preservation theorem
-    (\cref{thm:typeI-isGenericallyRigidInj-two} or
-    \cref{thm:typeII-isGenericallyRigidInj-two}). The induction
-    maintains the strong predicate \emph{injectively} generically rigid
-    (\cref{def:isGenericallyRigidInj}), then weakens at the end.
-  \item \emph{$\Rightarrow$ (every generically rigid graph contains a
-    Laman spanning subgraph).} The Lov\'asz--Yemini~\cite{lovaszYemini1982}
-    direction, which uses the easy half of the identification of the
-    rigidity matroid in dimension 2 with the $(2, 3)$-count matroid:
-    row-independence of an edge set at a generic placement implies
-    $(2, 3)$-sparsity of the underlying subgraph.
-\end{itemize}
+We first specialize the edge count of \cref{sec:frameworks} to the
+plane, and then prove the two directions in turn. That every Laman
+graph is generically rigid in the plane is proved by induction on the
+number of vertices, with the Henneberg moves of \cref{sec:henneberg}
+and the fact that they preserve rigidity
+(\cref{sec:henneberg-rigidity}). For the converse we study the rows of
+the rigidity map of a generically rigid graph $G$ at a suitable
+framework. Some $2|V| - 3$ edges of $G$ have linearly independent
+rows. A bound on the rank of the rigidity map, which comes from the
+trivial motions of \cref{sec:trivial-motions}, shows that these edges
+form a Laman graph. The last subsection combines the two directions.
+
+Throughout, $G$ is a graph on a set $V$, which is finite where a
+statement says so. Frameworks, the rigidity map $R(G, p)$, and
+infinitesimal and generic rigidity are as in \cref{sec:frameworks}. As
+there, we write $uv$ for the edge with endpoints $u$ and $v$.
 
 \subsection{The edge count in the plane}
 
@@ -326,74 +328,73 @@ sparsity of row-independent edge sets
   $d(d+1)/2$ (\cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}).
 \end{proof}
 
-\subsubsection{Sparsity from row-independence (Lov\'asz--Yemini, easy direction)}
+\subsubsection{A perturbation lemma}
 
-The sparsity claim transports the rank upper bound from the induced
-subframework $H[S]$ at $p|_{S}$ back to the row count of the
-$H[S]$-rows in $\mathrm{RigidityMap}\,G\,p$. The two sides match
-exactly because edges in $H[S]$ have both endpoints in $S$, so the
-corresponding rows are supported on the columns indexed by $S$.
-We need the witness placement to affinely span on every
-size-$\ge 3$ subset; \cref{lem:exists-affinelySpanning-of-eventually}
-below provides one at any dimension $d$ (used here at $d = 2$).
+The following lemma gives the framework that the beginning of this
+subsection asks for, one that is still infinitesimally rigid and has no
+three points collinear. We state it in any dimension~$d$ and for any
+property that holds at all frameworks near a given one, since
+\cref{sec:rigidity-matroid} applies it also to row-independence
+(\cref{lem:edgeSet-rowIndependent-eventually}).
 
-\begin{lemma}[Affinely-spanning perturbation of an eventually-true property, dimension $d$]
+\begin{lemma}[A perturbation making every $d + 1$ points affinely span $\R^{d}$]
   \label{lem:exists-affinelySpanning-of-eventually}
   \lean{SimpleGraph.exists_affinelySpanning_of_eventually}
   \leanok
-  Let $V$ be finite and $d \in \N$. Suppose $P$ is a property of
-  placements $V \to \R^{d}$ that holds on a neighbourhood of some
-  placement $p_{0}$. Then there exists a placement $p : V \to \R^{d}$
-  satisfying $P$ such that the restriction $p|_{S}$ affinely spans
-  $\R^{d}$ for every $S \subseteq V$ with $|S| \ge d + 1$.
+  Let $V$ be finite, let $d \in \N$, and let $P$ be a property of
+  frameworks on $V$ in $\R^{d}$ that holds at every framework in some
+  neighbourhood of a framework $p_0$. Then there is a framework $p$ on
+  $V$ in $\R^{d}$ with property $P$ such that, for every set $S$ of at
+  least $d + 1$ vertices, the points $p_v$, $v \in S$, affinely span
+  $\R^{d}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Choose an injection $\phi : V \to \R$ via the finite-type bijection
-  $V \simeq \mathrm{Fin}\,|V|$ composed with the natural injection
-  $\mathrm{Fin}\,n \hookrightarrow \R$, and set the moment-curve
-  direction $w(v) := (\phi(v), \phi(v)^{2}, \ldots, \phi(v)^{d})
-  \in \R^{d}$. For $t \in \R$ define the perturbed placement
-  $p_{t} := p_{0} + t \cdot w$.
+  Choose an injective map $\varphi : V \to \R$, for instance a
+  numbering of the vertices by $0, 1, \dots, |V| - 1$. Let
+  $w \in (\R^{d})^{V}$ place each vertex $v$ on the moment curve, at
+  $w_v = (\varphi(v), \varphi(v)^{2}, \dots, \varphi(v)^{d})$. For
+  $t \in \R$, let $p(t) = p_0 + t\,w$ be the framework that places $v$
+  at $p(t)_v = (p_0)_v + t\,w_v$. The map $t \mapsto p(t)$ is continuous
+  and $p(0) = p_0$, so there is an $\varepsilon > 0$ such that $p(t)$
+  has property $P$ whenever $|t| < \varepsilon$.
 
-  The neighbourhood hypothesis on $P$, pulled back along the
-  continuous map $t \mapsto p_{t}$, supplies an $\varepsilon > 0$
-  such that $P(p_{t})$ holds for every $|t| < \varepsilon$.
-
-  For each ordered $(d+1)$-tuple $(v_{0}, \ldots, v_{d})$ of distinct
-  vertices, the affine-dependence determinant of the perturbed
-  difference matrix
+  Let $v_0, \dots, v_d$ be distinct vertices. The points
+  $p(t)_{v_0}, \dots, p(t)_{v_d}$ are affinely independent if and only
+  if the $d \times d$ matrix with rows $p(t)_{v_i} - p(t)_{v_0}$, for
+  $1 \le i \le d$, has nonzero determinant. This determinant is a
+  polynomial $f(t)$ in $t$ of degree at most $d$. Its coefficient of
+  $t^{d}$ is the determinant of the matrix with rows
+  $w_{v_i} - w_{v_0}$, whose entry in row $i$ and column $j$ is
+  $\varphi(v_i)^{j} - \varphi(v_0)^{j}$. Subtract the first row of the
+  Vandermonde matrix of $\varphi(v_0), \dots, \varphi(v_d)$ from the
+  other rows, and expand along the first column. This shows that the
+  coefficient of $t^{d}$ is the Vandermonde determinant
   \[
-    \det\bigl(p_{t}(v_{1}) - p_{t}(v_{0}),\, \ldots,\,
-      p_{t}(v_{d}) - p_{t}(v_{0})\bigr)
+    \prod_{0 \le i < j \le d} \bigl(\varphi(v_j) - \varphi(v_i)\bigr),
   \]
-  is a polynomial in $t$ of degree at most $d$
-  (\texttt{Polynomial.natDegree\_det\_X\_add\_C\_le}) whose top
-  coefficient (\texttt{Polynomial.coeff\_det\_X\_add\_C\_card}) is the
-  Vandermonde-difference determinant
-  $\prod_{0 \le i < j \le d} (\phi(v_{j}) - \phi(v_{i}))$
-  (\texttt{Matrix.det\_powerDifferences}), nonzero by injectivity of
-  $\phi$. The per-tuple bad-$t$ set is therefore finite
-  (\texttt{Polynomial.finite\_setOf\_isRoot}). The global bad set is
-  the finite union of finitely many finite sets, hence finite, so any
-  point of the (uncountable) interval $(0, \varepsilon)$ outside the
-  bad set is a valid choice of $t$. The resulting $p_{t}$ satisfies
-  $P$, and for every $S$ with $|S| \ge d + 1$ any $d + 1$ distinct
-  elements of $S$ give an affinely-independent tuple under $p_{t}$,
-  so $p_{t}|_{S}$ affinely spans $\R^{d}$.
+  which is nonzero because $\varphi$ is injective. So $f$ is a nonzero
+  polynomial, and it has finitely many roots.
+
+  There are finitely many tuples $(v_0, \dots, v_d)$ of distinct
+  vertices, so only finitely many $t$ are roots of one of their
+  polynomials. The interval $(0, \varepsilon)$ is infinite, so we can
+  choose $t$ in it that is a root of none of them. Let $p = p(t)$. Then
+  $p$ has property $P$. Let $S$ be a set of at least $d + 1$ vertices,
+  and let $v_0, \dots, v_d$ be distinct elements of $S$. The points
+  $p_{v_0}, \dots, p_{v_d}$ are affinely independent, so they affinely
+  span $\R^{d}$, and hence so do the points $p_v$, $v \in S$.
 \end{proof}
-\begin{fmlnote}
-  The moment-curve perturbation preserves any open property of the
-  starting placement, so the lemma is stated for an arbitrary open
-  property $P$ rather than for a fixed one. It is specialized twice:
-  here to infinitesimal rigidity (with
-  \cref{lem:isInfinitesimallyRigid-eventually} as the openness
-  witness), and, for the $(\Rightarrow)$ direction of the matroid
-  identification (\cref{thm:edgeSet-rowIndependent-iff-isSparse}), to
-  row-independence (with \cref{lem:edgeSet-rowIndependent-eventually}).
-  The single polymorphic statement avoids proving the moment-curve /
-  Vandermonde-determinant construction twice.
-\end{fmlnote}
+
+\subsubsection{Sparsity from row-independence}
+
+We now prove the first of the two facts stated at the beginning of
+this subsection. Jord\'an derives his Lemma~1.3.1 from his rank bound,
+Lemma~1.2.1, and we argue in the same way: we apply the rank upper
+bound (\cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning}) to
+the subgraph induced on each set of vertices. That bound needs the
+points of the framework to affinely span the plane, which is why we
+assume that no three of them are collinear.
 
 \begin{lemma}[$(2, 3)$-sparsity from row-independence, dimension $2$]
   \label{lem:isSparse-of-rowIndependent-two}
@@ -402,45 +403,55 @@ below provides one at any dimension $d$ (used here at $d = 2$).
   \uses{def:isSparse, def:edgeSet-rowIndependent,
     lem:rigidityMap-finrank-range-le-of-affinelySpanning,
     lem:exists-affinelySpanning-of-eventually}
-  Let $V$ be finite, let $G$ be a graph on $V$, and let $p$ be a
-  framework on $V$ in dimension $2$ such that $p|_{S}$ affinely spans
-  for every $S \subseteq V$ with $|S| \ge 3$. If $I \subseteq E(G)$ is
-  row-independent at $p$, then the spanning subgraph $H \le G$ with
-  edge set $I$ is $(2, 3)$-sparse.
+  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{2}$ such
+  that no three of the points $p_v$ are collinear, that is, for every
+  set $S$ of at least three vertices the points $p_v$, $v \in S$,
+  affinely span $\R^{2}$. Let $I \subseteq E(G)$ be row-independent at
+  $p$. Then the spanning subgraph of $G$ with edge set $I$ is
+  $(2, 3)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
-  Fix $S \subseteq V$. The edges of $H$ with both endpoints in $S$
-  correspond bijectively to the edges of the induced subgraph $H[S]$;
-  we show $|\edgesIn[H]{S}| + 3 \le 2 |S|$.
+  Let $H$ be the spanning subgraph of $G$ with edge set $I$. By
+  \cref{def:isSparse}, we must show that
+  $|\edgesIn[H]{S}| + 3 \le 2|S|$ for every set $S$ of at least two
+  vertices. If $|S| = 2$, then $S$ spans at most one edge, and
+  $1 + 3 \le 4$.
 
-  For $|S| \le 1$ the proviso $3 \le 2|S|$ in $(2, 3)$-sparsity
-  (\cref{def:isSparse}) is false, so the bound holds vacuously. For
-  $|S| = 2$ the induced subgraph $H[S]$ has at most one edge (a simple
-  graph on two vertices has at most one edge,
-  \texttt{card\_edgeFinset\_le\_card\_choose\_two}), and
-  $1 + 3 \le 4 = 2 |S|$.
+  Let $|S| \ge 3$. Let $H[S]$ be the subgraph of $H$ induced on $S$,
+  whose edges are the edges in $\edgesIn[H]{S}$, and let $p|_S$ be the
+  framework on $S$ that places each $v \in S$ at $p_v$. For an edge $e$
+  of $H[S]$, let $r_e$ be the rigidity row of $G$ at $p$ indexed by
+  $e$, and let $r'_e$ be the rigidity row of $H[S]$ at $p|_S$ indexed
+  by $e$ (\cref{def:rigidityRow}). Let
+  $\rho : (\R^{2})^{V} \to (\R^{2})^{S}$ be the restriction
+  $x \mapsto x|_S$. If $e = uv$, then $u, v \in S$, and both $r_e(x)$
+  and $r'_e(\rho(x))$ equal $\langle p_u - p_v,\, x_u - x_v \rangle$.
+  So $r_e = r'_e \circ \rho$.
 
-  For $|S| \ge 3$: the rows of $\mathrm{RigidityMap}\,G\,p$ indexed
-  by $\edgesIn[H]{S}$ are supported on the columns indexed by $S$
-  (each row's nonzero entries are at the two endpoints of the
-  corresponding edge, both of which lie in $S$). Hence row-independence
-  of these rows in the full matrix transports through the
-  framework-restriction map $\mathrm{Framework}\,V\,2 \to
-  \mathrm{Framework}\,S\,2$ to row-independence of the
-  $S$-indexed-column matrix, which is exactly the rigidity
-  matrix $\mathrm{RigidityMap}\,(H[S])\,(p|_{S})$. The transport uses
-  \texttt{LinearIndependent.of\_comp} on the dual-map side. By
-  \cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning} at
-  $d = 2$ applied to $H[S]$ at the affinely-spanning placement
-  $p|_{S}$, the rank of that matrix is at most $2 |S| - 3$. Since
-  row-independence forces the row count $|\edgesIn[H]{S}|$ to equal
-  the rank, $|\edgesIn[H]{S}| \le 2 |S| - 3$.
+  The rows $r_e$, for $e \in \edgesIn[H]{S}$, are linearly independent,
+  since $\edgesIn[H]{S} \subseteq I$ and $I$ is row-independent at $p$
+  (\cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}).
+  Suppose that $\sum_e c_e r'_e = 0$. Composing with $\rho$ gives
+  $\sum_e c_e r_e = 0$, so every $c_e$ is zero. Hence the rows $r'_e$
+  are linearly independent. They span the image of
+  $R(H[S], p|_S)^{\top}$ (\cref{lem:span-range-rigidityRow}), which has
+  the same dimension as the image of $R(H[S], p|_S)$. So their number
+  is the rank of $R(H[S], p|_S)$:
+  \[
+    |\edgesIn[H]{S}| \;=\; \operatorname{rank} R(H[S], p|_S).
+  \]
+  By hypothesis the points $p_v$, $v \in S$, affinely span $\R^{2}$. So
+  this rank is at most $2|S| - 3$
+  (\cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning} at
+  $d = 2$), and $|\edgesIn[H]{S}| + 3 \le 2|S|$.
 \end{proof}
 
-\subsubsection{Assembly}
+\subsubsection{The Laman subgraph}
 
-\begin{theorem}[Every generically rigid graph contains a Laman subgraph]
+We now combine the two facts with the perturbation lemma.
+
+\begin{theorem}[Every generically rigid graph in the plane has a spanning Laman subgraph]
   \label{thm:isGenericallyRigid-exists-isLaman-le}
   \lean{SimpleGraph.IsGenericallyRigid.exists_isLaman_le}
   \leanok
@@ -450,29 +461,34 @@ below provides one at any dimension $d$ (used here at $d = 2$).
     lem:isSparse-of-rowIndependent-two,
     lem:exists-affinelySpanning-of-eventually,
     lem:isInfinitesimallyRigid-eventually}
-  Let $V$ be finite with $|V| \ge 2$. If $G$ is generically rigid in
-  dimension $2$, then there exists a Laman spanning subgraph
-  $H \le G$.
+  Let $V$ be finite with $|V| \ge 2$, and let $G$ be generically rigid
+  in dimension~$2$. Then $G$ has a spanning subgraph that is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
-  Choose a framework $p$ that is both infinitesimally rigid for $G$
-  and affinely spanning on every subset of size $\ge 3$: apply
-  \cref{lem:exists-affinelySpanning-of-eventually} to the open property
-  of infinitesimal rigidity (\cref{lem:isInfinitesimallyRigid-eventually}),
-  starting from an infinitesimally rigid placement supplied by the
-  generic rigidity of $G$. At this $p$ the rank lower bound
-  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid} gives
-  $\dim\,\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p) \ge 2 |V| - 3$, so
-  as in \cref{lem:exists-rowIndependent-edge-basis} there is an edge set
-  $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ that is row-independent at
-  $p$. Let $H \le G$ be the spanning subgraph with edge set $I$. By
-  \cref{lem:isSparse-of-rowIndependent-two}, $H$ is $(2, 3)$-sparse;
-  together with $|E(H)| = 2 |V| - 3$ this makes $H$ $(2, 3)$-tight,
-  i.e.\ Laman.
+  Since $G$ is generically rigid, some framework $p_0$ on $V$ in
+  $\R^{2}$ is infinitesimally rigid for $G$
+  (\cref{def:isGenericallyRigid}). Every framework in some neighbourhood
+  of $p_0$ is infinitesimally rigid for $G$ too
+  (\cref{lem:isInfinitesimallyRigid-eventually}). So there is a
+  framework $p$ that is infinitesimally rigid for $G$ and has no three
+  of its points collinear
+  (\cref{lem:exists-affinelySpanning-of-eventually} at $d = 2$).
+
+  By rank--nullity, as in the proof of
+  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid}, the
+  rank of $R(G, p)$ is at least $2|V| - 3$. As in the proof of
+  \cref{lem:exists-rowIndependent-edge-basis}, it follows that some set
+  $I$ of $2|V| - 3$ edges of $G$ is row-independent at $p$; this number
+  is positive, since $|V| \ge 2$. Let $H$ be the spanning subgraph of
+  $G$ with edge set $I$. Then $H$ is $(2, 3)$-sparse
+  (\cref{lem:isSparse-of-rowIndependent-two}), and
+  $|E(H)| + 3 = 2|V|$. So $H$ is Laman (\cref{def:isLaman}).
 \end{proof}
 
 \subsection{Laman's theorem}
+
+The two directions combine into Laman's theorem.
 
 \begin{theorem}[Laman's theorem]
   \label{thm:isGenericallyRigid-two-iff-exists-isLaman-le}
@@ -481,18 +497,17 @@ below provides one at any dimension $d$ (used here at $d = 2$).
   \uses{thm:isLaman-isGenericallyRigid-two,
     thm:isGenericallyRigid-exists-isLaman-le,
     lem:isGenericallyRigid-mono}
-  Let $V$ be finite with $|V| \ge 2$ and let $G$ be a graph on $V$.
-  Then $G$ is generically rigid in dimension $2$ if and only if it
-  contains a Laman spanning subgraph, i.e.\ there is a spanning
-  subgraph $H \le G$ that is Laman.
+  Let $V$ be finite with $|V| \ge 2$, and let $G$ be a graph on $V$.
+  Then $G$ is generically rigid in dimension~$2$ if and only if it has
+  a spanning subgraph that is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
-  The $\Rightarrow$ direction is
-  \cref{thm:isGenericallyRigid-exists-isLaman-le}. For $\Leftarrow$:
-  given $H \le G$ with $H$ Laman,
-  \cref{thm:isLaman-isGenericallyRigid-two} shows $H$ is generically
-  rigid in dimension $2$, and monotonicity
-  (\cref{lem:isGenericallyRigid-mono}) along $H \le G$ extends
-  rigidity from $H$ to $G$.
+  If $G$ is generically rigid in dimension~$2$, then it has a spanning
+  subgraph that is Laman
+  (\cref{thm:isGenericallyRigid-exists-isLaman-le}). Conversely, let
+  $H$ be a spanning subgraph of $G$ that is Laman. Then $H$ is
+  generically rigid in dimension~$2$
+  (\cref{thm:isLaman-isGenericallyRigid-two}). Since
+  $E(H) \subseteq E(G)$, so is $G$ (\cref{lem:isGenericallyRigid-mono}).
 \end{proof}
