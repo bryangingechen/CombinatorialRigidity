@@ -1253,8 +1253,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `notes/Prose-exemplar.md` after the PI approved it at Stop 1 on 2026-10-07, rewrote the twelve
   chapters `sparsity.tex` through `executable.tex` in sixteen slices, and recorded 47 findings in
   the ledger. Round 2, `prose-molecular`, opened 2026-10-08 (`notes/Prose-molecular-cleanup.md`);
-  its task 2.1 rewrote `matroid-union.tex`. **Next concrete task:** its task 2.2, `body-bar.tex`'s
-  prerequisites and $k$-frame matroid, the second of its eighteen slices.
+  its tasks 2.1 and 2.2 rewrote `matroid-union.tex` and the first part of `body-bar.tex`. **Next
+  concrete task:** its task 2.3, the rest of `body-bar.tex` and all of `body-hinge.tex`, the third
+  of its eighteen slices.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

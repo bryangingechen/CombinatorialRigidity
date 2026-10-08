@@ -5,10 +5,10 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, task 2.1 `F-051`–`F-053`. 20
-one-commit tasks; tasks 1 and 2.1 are done, and the round has no planned stop. **Next concrete
-task:** task 2.2, `body-bar.tex`'s prerequisites and $k$-frame matroid (42–374), at Opus (*Lemma
-checklist*). Round manual: `CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, task 2.1 `F-051`–`F-053`, task 2.2
+`F-054`–`F-055`. 20 one-commit tasks; tasks 1, 2.1 and 2.2 are done, and the round has no planned
+stop. **Next concrete task:** task 2.3, the rest of `body-bar.tex` with its opening, and
+`body-hinge.tex`, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,14 +18,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.1 has landed** (this commit): `matroid-union.tex`, 193 → 306 lines, 9 nodes, every
-`\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and in order. Nothing is mid-stream;
-task 2.2 is next.
+**Task 2.2 has landed** (this commit): `body-bar.tex` 42–452, 14 nodes: the 12 of 42–374 at the
+parent, and `def:graph-sparse` and `thm:unionPow-cycle-indep-iff-sparse`, moved up from *Tree-packing
+as a corollary*, whose opening (453–459) it also rewrote. Every `\label`, `\lean{…}`, `\leanok` and
+`\uses` line is byte-identical. Nothing is mid-stream; task 2.3 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (119 overfull boxes, none in
-  `matroid-union.tex`). Screens on the chapter: register 0, devices 0 / 4 (the open's 2 and
-  0 / 5), forward `\uses` 0; the 4 are the package name and three proof addresses.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (110 overfull boxes, three in
+  `body-bar.tex`, all in task 2.3's part). Screens on `body-bar`: register 4 (the open's 5; all four
+  the literal "carries" of the Tay nodes), devices 0 / 6 (26 / 51), forward `\uses` 0. Forward
+  `\uses` within the chapter: 2, both task 2.3's (6 at the parent).
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -186,19 +188,18 @@ formalization remarks, Lean names in proofs, repeated connective verdicts, and t
 dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight in
 `rigidity-matrix`).
 
-- **Done:** `matroid-union` (task 2.1; its open bullet is in this log at `ea058ba8`).
-- **`body-bar`** has the round's most Lean-shaped statements: `\mathtt{Graph}\,\alpha\,\beta`,
-  `G.\mathrm{cycleMatroid}`, `\mathrm{signedIncMatrix}`, `\mathrm{blockPiSpan}`,
-  `\mathrm{kFrameRow}`, `\mathrm{kFrameRowR}`, `\mathrm{Pi.single}`, `\mathrm{Fin}\,k`,
-  `\texttt{Matroid.ofFun}`; proofs cite mathlib names (`span_le`,
-  `LinearIndependent.iff_fractionRing`, `Matroid.ext_indep`). The *k-frame* lead-in (97–112)
-  restates `lem:k-frame-nonzero-monomial-forest`'s proof, and contrasts its rank count with
-  Whiteley's nonzero-monomial expansion, the name the label keeps (principle C: state the reason,
-  not the comparison). "Existence-of-realization form … not pursued here" is said in the opening,
-  before `thm:tay-witness`, and twice in `body-hinge`: once. "Honest polynomials". The Tay converse
-  credits "the Lovász–Yemini rank-upper-bound argument", which round 1 moved to Laman (`F-025`):
-  align. Check Whiteley 1988's Theorem 1, Corollary 3, Theorem 8, Theorem 13, Proposition 6, §2.1
-  and §3, and Tay 1984 §5, in `.refs/`. Notation: *Decisions*.
+- **Done:** `matroid-union` (task 2.1) and `body-bar` 42–452 (task 2.2); their open bullets are in
+  this log at `ea058ba8` and `6c26eed5`.
+- **`body-bar`**, the rest (task 2.3): tree packing, frameworks and Tay's theorem (453–661), and the
+  opening (1–41), whose list of ingredients predates task 2.2's order (sparsity and the union count
+  first). "Existence-of-realization form … not pursued here" is said in the opening, before
+  `thm:tay-witness`, and twice in `body-hinge`: once. The Tay converse credits "the Lovász–Yemini
+  rank-upper-bound argument", which round 1 moved to Laman (`F-025`): align. `thm:tay-witness`'s
+  proof `\uses` the later `prop:tay-witness-exists` and `lem:tay-isSparse-of-independent` (principle
+  E, *Node order*). `cor:k-spanning-trees` writes $r(G.\mathrm{cycleMatroid})$ and cites Whiteley's
+  Theorem 13, which is about frameworks on the flat torus (§5.1; its (ii)⇔(iii) is the
+  spanning-tree count). Check Whiteley 1988's Theorem 8, Proposition 6 and §3, and Tay 1984 §5, in
+  `.refs/`. Notation: *Decisions*.
 - **`body-hinge`**: `def:body-hinge-framework` gives each hinge an affine subspace that its pin
   does not record (`F-048`). Keep the statement; say in a formalization note what the Lean records
   (the definition-faithfulness gate, `blueprint/CLAUDE.md`), with a `\cref` to `generic-lift.tex`'s
@@ -284,16 +285,16 @@ One commit per task, in this order (`notes/Prose.md` §3). Each line gets its co
 commit, with this log as of that commit, carries the task's diagnosis and findings. Rungs: every
 slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 
-- [x] **1. O — the open** (this commit; docs only): this log, the baselines, the open's findings
+- [x] **1. O — the open** (`ea058ba8`; docs only): this log, the baselines, the open's findings
   `F-048`–`F-050`, and the status surfaces.
 - [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [x] **2.1 `matroid-union.tex`** (this commit; now 1–306, 9 nodes). Found `F-051`–`F-053`.
-  - [ ] **2.2 `body-bar.tex`, the prerequisites and the $k$-frame matroid** (42–374): 12 nodes,
-    333 lines.
+  - [x] **2.1 `matroid-union.tex`** (`6c26eed5`; now 1–306, 9 nodes). Found `F-051`–`F-053`.
+  - [x] **2.2 `body-bar.tex`, the prerequisites and the $k$-frame matroid** (this commit; now
+    42–452, 14 nodes, with the two moved up from *Tree-packing*). Found `F-054`, `F-055`.
   - [ ] **2.3 `body-bar.tex`'s rest and opening, and all of `body-hinge.tex`**: tree packing,
-    frameworks and Tay's theorem (375–625) with the opening (1–41), then `body-hinge.tex`; 15
-    nodes, 436 lines. It applies the round's notation (*Decisions*).
+    frameworks and Tay's theorem (453–661) with the opening (1–41), then `body-hinge.tex`; 13
+    nodes, 394 lines. It applies the round's notation (*Decisions*).
   - [ ] **2.4 `extensor.tex`**: 7 nodes, 215 lines; crux `lem:extensor-independence`.
   - [ ] **2.5 `rigidity-matrix.tex`, the matrix and KT's rank lemmas** (52–337): 9 nodes, 286
     lines.
@@ -363,6 +364,10 @@ one line each naming the ledger ID and the task that found it.
   `molecular-induction.tex` point at nodes of later chapters.
 - `F-052` (N, task 2.1): Welsh's theorem, the induced-matroid-is-$M_f$ lemma and the $k$-copies
   independence criterion are load-bearing lemmas with no node.
+- `F-054` (N, task 2.2): `lem:k-frame-span-le-pi`'s three pins have no Lean caller; the rank count
+  uses their per-set analogues, which have no node.
+- `F-055` (L, task 2.2): `exists_forestPacking_cover_of_isSparse_restrict` repeats the forward half
+  of `tutte_nash_williams`, and both its callers repeat that proof's disjointification.
 
 ## Blockers / open questions
 
@@ -370,10 +375,11 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.2, `body-bar.tex`'s prerequisites and the $k$-frame matroid
-(42–374), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the `body-bar` bullet
-under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.3–2.18 in order, and
-task 3 closes the round. For the slices:
+**Next concrete task: task 2.3, `body-bar.tex`'s tree packing, frameworks and Tay's theorem
+(453–661) with its opening (1–41), and all of `body-hinge.tex`, at Opus**, a fresh agent
+(`notes/Prose.md` §2). Its diagnosis is the `body-bar` and `body-hinge` bullets under *Per-chapter
+diagnosis*, its gates and screens under *Scope*. Then tasks 2.4–2.18 in order, and task 3 closes the
+round. For the slices:
 - **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open a new arc; the coordinator reads them in full against the
   exemplars, as it read round 1's 5.1–5.3.
@@ -381,17 +387,20 @@ task 3 closes the round. For the slices:
   2.4–2.18 write KT's $d$ and $D$ and drop the "$D = \delta$" crosswalks and the stray $n$.
 - **Crux nodes** keep their full proofs, in tasks 2.4, 2.12–2.15, 2.17 and 2.18 (*Scope*). Task
   2.5 makes `lem:rank-parallel-full`'s proof and the exposition ledger's 22i verdict agree.
-- **From task 2.1.** `matroid-union.tex` now defines the union as the matroid the bipartite graph
-  $\Delta$ induces from the direct sum, and `thm:matroid-partition-rank` is titled *The rank of a
-  matroid union*, with the $k$-copies criterion credited to Edmonds 1965 (Theorem 1). Task 2.2's
-  *Matroid-union prerequisites* (42–52) should point at it in those terms; its credit
-  "Edmonds' matroid-partition theorem~\cite{edmonds1965}" for $k$ copies is right. `F-053` lists
-  the credits left in tasks 2.10 and 2.11–2.12.
+- **From tasks 2.1 and 2.2.** `body-bar.tex` now opens with *Sparsity and the union of cycle
+  matroids*: the conventions for multigraphs (bodies, bars, $V(E')$, $G \restriction E'$, forests),
+  the cycle matroid in words with rank function $r$ and $r(E') = |V(E')| - c(E')$, a recap of
+  `matroid-union.tex` in task 2.1's terms, then `def:graph-sparse` and
+  `thm:unionPow-cycle-indep-iff-sparse`. The $k$-frame subsection writes $a_e$ (the signed
+  incidence vector), $\rho_e$ (the $k$-frame row), $w^{(j)}$, $W^k$ and $A_Y$, over
+  $R = \Q[X_{e,j}]$ and its fraction field $K$; `lem:tay-isSparse-of-independent`'s proof should
+  use them. Task 2.2 rewrote the tree-packing opening (453–459) only so that it stays true. `F-053`
+  lists the credits left in tasks 2.10 and 2.11–2.12.
 - **The open's findings** are recorded, not acted on. Task 2.3 keeps `def:body-hinge-framework`'s
   statement (`F-048`); task 2.5 treats `lem:rank-rotation-semicont` under the hygiene rule
   (`F-049`); tasks 2.5–2.7 and 2.16 give `F-050`'s forward references a sentence each.
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-054`.
+  pins reach. The ledger's next ID is `F-056`.
 
 ## Decisions made during this round
 
@@ -421,3 +430,10 @@ task 3 closes the round. For the slices:
   follow Oxley §§11.1–11.3, as the Lean does. The *Provenance* paragraph is now the opening's credit
   paragraph, which `DESIGN.md` *Attribution / license* relies on; it says that the rank formula's
   stated forms are the project's. Load-bearing unpinned lemmas are named as addresses (`F-052`).
+- **Task 2.2, `body-bar.tex` 42–452.** `def:graph-sparse` and `thm:unionPow-cycle-indep-iff-sparse`
+  moved from *Tree-packing as a corollary* to the first subsection, now *Sparsity and the union of
+  cycle matroids*: four `\uses` of the $k$-frame nodes pointed forward to them (principle E, *Node
+  order*). The cycle matroid gets no symbol, since `deficiency.tex`'s $M(\tilde G)$ is KT's union of
+  $D$ copies of it. `lem:k-frame-specialize-forest` now assumes $(k,k)$-sparsity, its pin's
+  hypothesis, not a forest decomposition (equivalent by `thm:tutte-nash-williams`). Two statements
+  lost an "equivalently" gloss that needed other nodes; the first subsection states the equivalence.

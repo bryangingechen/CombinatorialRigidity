@@ -321,6 +321,19 @@ declaration's name as its header writes it:
   supports. A node for the third, or a pin on `thm:matroid-partition-rank`, would index it.
   *Evidence:* read (their statements and bodies; a `grep` for their callers).
   *Found:* round 2 task 2.1.
+- **F-054** · N · `lem:k-frame-span-le-pi` (`body-bar.tex`): its three pins, `Graph.blockPiSpan`,
+  `kFrameRow_mem_blockPiSpan` and `span_kFrameRow_le_blockPiSpan`, state the form for all bars, and
+  none has a Lean caller (outside every main result's closure, counted in `F-012`). The rank count
+  of `lem:k-frame-nonzero-monomial-forest`, `forest_count_of_linearIndepOn_kFrameRow`, uses their
+  per-set analogues `blockPiSpanOn`, `kFrameRow_mem_blockPiSpanOn`,
+  `span_kFrameRowOn_le_blockPiSpanOn` and `finrank_blockPiSpanOn`, which have no node, and the
+  statement edge from `lem:k-frame-pi-finrank` to this node is unbacked. Task 2.2's proof names
+  `span_kFrameRowOn_le_blockPiSpanOn` as an address. Pinning the per-set forms here would index the
+  proof, and the forms for all bars could then go.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:k-frame-span-le-pi`, at `6c26eed5`:
+  three dead pins); read (the body of `forest_count_of_linearIndepOn_kFrameRow`; a `grep` for the
+  three names' callers).
+  *Found:* round 2 task 2.2.
 
 ## T — terminology and notation
 
@@ -639,6 +652,16 @@ declaration's name as its header writes it:
   `getReducibilityStatus` reports both definitions `irreducible`; `native_decide` proves
   `k4MinusE.IsLaman` and `¬ k4.IsLaman`; `"3\t4".splitOn` is one token.
   *Found:* round 1 task 5.16.
+- **F-055** · L · `Graph.exists_forestPacking_cover_of_isSparse_restrict` (`BodyBar/KFrame.lean`;
+  `lem:k-frame-forest-packing-of-sparse`): it derives the forward half of `Graph.tutte_nash_williams`
+  (`TreePacking.lean`, which `KFrame.lean` imports) again, at $G \restriction E'$ and without
+  disjointness, through `unionPow_cycleMatroid_indep_iff_isSparse_restrict` and
+  `Matroid.union_indep_iff`. Both its callers, `linearIndepOn_kFrameRow_of_isSparse_restrict` and
+  `exists_endpoints_linearIndependent_rigidityRow` (`GenericLift.lean`), then
+  disjointify the cover with `Fintype.exists_disjointed_le` in the same five lines that
+  `tutte_nash_williams`'s proof uses. One lemma giving a disjoint cover would serve all three.
+  *Evidence:* read (the bodies of the four declarations).
+  *Found:* round 2 task 2.2.
 
 ## M — mathematics and sources
 
