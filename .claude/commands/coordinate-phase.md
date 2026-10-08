@@ -78,10 +78,14 @@ this file, they win.
 - **Usage.** The driver's pacing gate runs before every `Agent` and
   `SendMessage` in the main session. It denies with `AUTOPILOT-PAUSE`
   when:
-  - the 5-hour window is at 85% or more and resets over an hour away;
-  - an account-wide weekly limit is at 95% or more and resets over an
-    hour away;
-  - any limit is at 99%.
+  - the 5-hour window is at 85% or more and resets over an hour away, or
+    is at 99%;
+  - an account-wide weekly limit is at 95% or more and resets over 6
+    hours away, or is at 99% then;
+  - an account-wide weekly limit is at 100%.
+
+  Within 6 hours of a weekly reset, a dispatch can therefore be killed
+  by the limit mid-run; the driver resumes with `AUTOPILOT-RECOVER:`.
 
   So serial dispatches need no check. A fan-out still runs *Session-budget
   check*. A per-model weekly limit (`weekly_scoped` in
