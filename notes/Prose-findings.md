@@ -192,6 +192,16 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-II-placement-new-rows`, at
   `47eb5225`'s Lean); read (the proof's prose).
   *Found:* round 2 task 2.5.
+- **F-066** · E · `lem:rank-transport-relabel-of-le-finrank` and
+  `lem:rank-polynomial-IH-relabel-proj` (`rigidity-matrix.tex`): edges that name the wrong node.
+  The first uses `def:genuine-hinge-realization`, which its pin does not reach; its hypothesis is
+  `HasGenericFullRankRealization`, `def:rank-hypothesis`'s pin (implied), and it reaches
+  `def:panel-general-position` (missing). The second uses `lem:rank-polynomial-of-le-finrank`,
+  which its pin does not reach; it goes through the pin of `lem:rank-polynomial-proj-eval` and
+  `lem:general-position-support-nonzero` (both missing). Task 2.7's prose cites the reached nodes.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`); read
+  (both pins' statements and bodies).
+  *Found:* round 2 task 2.7.
 
 ## N — node shape
 
@@ -360,6 +370,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `5399e053`: two
   dead pins); read (a `grep` for the two names' callers and for the label in `blueprint/src/`).
   *Found:* round 2 task 2.6.
+- **F-068** · N · `lem:rigidityRows-pinned-placement-rank-add` (`rigidity-matrix.tex`): its second
+  pin, `le_finrank_span_rigidityRows_of_pinned_placement_augment` (the count with one more row,
+  KT eq. (6.29)), has no Lean caller (counted in `F-012`); Case III uses the block-level
+  `linearIndependent_sum_pinned_block_augment_block` directly. The node's edge to
+  `lem:case-III-conditional-block` rests on that pin. Unpin it, or keep it as exposition of KT
+  eq. (6.29).
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`: one
+  dead pin); read (a `grep` for the two names' callers).
+  *Found:* round 2 task 2.7.
 
 ## T — terminology and notation
 
@@ -372,6 +391,20 @@ declaration's name as its header writes it:
   $(\delta-1)\cdot G$ and $(\delta,\delta)$-sparsity (lines 165–195). Round 4 rewrites both.
   *Evidence:* read (a `grep` for `n(n+1)` and `\delta` over the chapters, at task 2.3).
   *Found:* round 2 task 2.3.
+- **F-067** · T · KT Proposition 1.1 (`panel-layer.tex`, `algebraic-induction.tex`,
+  `deficiency.tex`, `case-i.tex`, `intro.tex`): KT's Proposition 1.1 (p. 648) is Tay and
+  Whiteley's theorem, that $G$ has an infinitesimally rigid body-hinge realization if and only if
+  $\tilde G$ contains $D$ edge-disjoint spanning trees. The generic rank formula
+  $\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$ is KT's Proposition 2.3
+  (p. 655), which KT credit to Jackson and Jordán (JJ 2009, Theorem 6.1). `panel-layer.tex` titles
+  `prop:rigidity-matrix-prop11` and its subsection "KT Proposition 1.1, analytic half", and
+  `deficiency.tex` calls $\operatorname{def} = \operatorname{corank}$ its "matroidal half" (lines
+  16, 661); `algebraic-induction.tex` (15, 52), `case-i.tex` (332), `intro.tex` (222, 277),
+  `panel-layer.tex`'s other mentions and `notes/BlueprintExposition.md`'s `rigidity-matrix.tex`
+  entry follow. Task 2.7's opening names both as KT does; task 2.10 and rounds 3 and 4 can follow.
+  *Evidence:* read (KT pp. 648 and 655; JJ 2009 Theorem 6.1, `.refs/`; a `grep` for
+  "Proposition~1.1" over the chapters, at task 2.7).
+  *Found:* round 2 task 2.7.
 
 ## U — status surfaces
 
@@ -745,6 +778,20 @@ declaration's name as its header writes it:
   `lem:block-rank-cut`.
   *Evidence:* read (the docstring; a `grep` for the label in `blueprint/src/`).
   *Found:* round 2 task 2.6.
+- **F-069** · L · docstrings of four pins in `rigidity-matrix.tex`'s Case I lemmas name the wrong
+  node: `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`,
+  `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` and
+  `finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`
+  (`AlgebraicInduction/Coupling.lean`) name `lem:rigidityRows-splice-rank-add`, and are pinned on
+  `lem:extProj-preserves-rank-of-inter`; `finrank_span_rigidityRows_ofNormals_relabel_eq`
+  (`CaseI.lean`) names `lem:case-I-realization-all-k`, which does not exist.
+  *Evidence:* read (the docstrings; a `grep` for the labels in `blueprint/src/`).
+  *Found:* round 2 task 2.7.
+- **F-070** · L · `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj`
+  (`AlgebraicInduction/CaseI.lean`): its hypothesis `hcLoop` (the contraction has no loops)
+  follows from `hKmin` (it is a minimal $k$-dof-graph) by `Graph.loopless_of_isMinimalKDof`.
+  *Evidence:* read (the statement and body; `Graph.loopless_of_isMinimalKDof`, `Deficiency.lean`).
+  *Found:* round 2 task 2.7.
 
 ## M — mathematics and sources
 
