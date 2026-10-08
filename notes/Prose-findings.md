@@ -264,10 +264,11 @@ declaration's name as its header writes it:
 - **F-029** · N · `def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-rowIndependent`
   (`rigidity-matroid.tex`, §10) use `def:countMatroid` and `thm:countMatroid-indep-iff` of
   `count-matroid.tex`, which is §11. `count-matroid.tex` uses only nodes of `sparsity.tex` and its
-  own, and its opening reads as if it came first ("Before packaging that result as a matroid in
+  own, and its opening read as if it came first ("Before packaging that result as a matroid in
   `sec:rigidity-matroid-instance`, we record the abstract object it realises"). Prose cannot remove
   the cross-section forward reference; task 5.10 gives it a sentence in the lead-in of *The rigidity
-  matroid as a count matroid*. Moving `count-matroid.tex` before `rigidity-matroid.tex` in
+  matroid as a count matroid*, and task 5.11 rewrote `count-matroid.tex`'s opening to refer back to
+  that subsection and to `thm:linearRigidityMatroid-eq-rigidityMatroid`. Moving `count-matroid.tex` before `rigidity-matroid.tex` in
   `main.tex` would remove it, and would turn that opening's `\cref`s into `rigidity-matroid.tex`
   into forward references instead.
   *Evidence:* read (the `\uses` of both chapters; `main.tex`; `count-matroid.tex`'s opening).
@@ -325,6 +326,13 @@ declaration's name as its header writes it:
   *Evidence:* read (the seven statements, `MatroidIdentification.lean` and `RigidityMatroid.lean`,
   whose only section variable is `{V : Type*}`).
   *Found:* round 1 task 5.9.
+- **F-031** · S · `lem:exists-isTightOn-of-insert-not-sparse` (`count-matroid.tex`): the statement
+  assumes $V$ finite, which its pin `IsSparse.exists_isTightOn_of_insert_not_sparse` does not (its
+  only section variable is `{V : Type*}`; the tight set it produces is a finite set). The statement
+  is weaker than the pin, as in `F-015`. The chapter's other seven pins take `[Finite V]`, as their
+  statements say.
+  *Evidence:* read (the statement, `Sparsity.lean`; `#check` in a `lake lean` scratch file).
+  *Found:* round 1 task 5.11.
 
 ## L — Lean
 
@@ -388,6 +396,15 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `IsSparse.exists_rowIndependent_placement` and
   `linearRigidityMatroid_eq_rigidityMatroid`, and the docstrings named).
   *Found:* round 1 task 5.10.
+- **F-032** · L · `SimpleGraph.countMatroid` (`CountMatroid.lean`): its docstring says that outside
+  $\ell < 2k$ "the augmentation axiom can fail (e.g. `(3, 6)` in 3-dimensional rigidity)". By
+  `IsSparse`'s definition a $(3,6)$-sparse graph has no edges (a pair $s$ has $6 \le 3|s|$, so it
+  spans none), and the $(3,6)$-sparse edge sets form a matroid in which no edge is independent.
+  `count-matroid.tex` made the same claim ("the bases need not have equal cardinality, for instance
+  $(3, 6)$-tight graphs"), which task 5.11 dropped.
+  *Evidence:* read (the body of `IsSparse`); a `lake lean` witness (every $(3,6)$-sparse
+  `SimpleGraph V` is `⊥`; it elaborates with no output).
+  *Found:* round 1 task 5.11.
 
 ## M — mathematics and sources
 
@@ -408,7 +425,9 @@ declaration's name as its header writes it:
   2.2.1, credited to Laman, and his proof, p. 45) and retitled the three nodes (*Row-independence
   in the plane is $(2,3)$-sparsity (Laman)*, *Independent sets of the planar rigidity matroid*,
   *The planar rigidity matroid as a linear matroid*), so `rigidity-matroid.tex` no longer names
-  Lovász–Yemini. Outside round 1's slices: `intro.tex`, the docstrings,
+  Lovász–Yemini. `count-matroid.tex` never named them, and task 5.11 added no such credit (it credits
+  the count matroid to Lorea and to White–Whiteley, as Whiteley 1996 Proposition A.1.1 and Lee–Streinu
+  do). Outside round 1's slices: `intro.tex`, the docstrings,
   `formalization.yaml`'s Lovász–Yemini lines, and `notes/BlueprintExposition.md`'s Group-A line
   "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 checks it).
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint

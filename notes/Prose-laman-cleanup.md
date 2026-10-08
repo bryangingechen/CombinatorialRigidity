@@ -5,11 +5,12 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.10 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.11 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first ten slices, `sparsity.tex` through `rigidity-matroid.tex`.
-**Next concrete task:** task 5.11, `count-matroid.tex`. Round manual: `CLEANUP.md`.
+PI*), and the first eleven slices, `sparsity.tex` through `count-matroid.tex`.
+**Next concrete task:** task 5.12, `dfs.tex`, the first carve-out chapter. Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,15 +55,14 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The tenth slice has landed** (task 5.10, this commit): the rest of `rigidity-matroid.tex` and its
-opening, now 504–827 and 1–39; the lifts lead-in (205–215) lost the paragraph the opening took
-over. Tasks 5.1–5.9 rewrote `sparsity.tex` through the first part of `rigidity-matroid.tex`. The
-register is *Scope*'s. Nothing is mid-stream; task 5.11 is next.
+**The eleventh slice has landed** (task 5.11, this commit): all of `count-matroid.tex`, now 1–298
+(306 lines at the parent). Tasks 5.1–5.10 rewrote `sparsity.tex` through `rigidity-matroid.tex`.
+The register is *Scope*'s. Nothing is mid-stream; task 5.12 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (144 overfull boxes, none in
-  `rigidity-matroid.tex`; 151 at `537db294`). The screens on `rigidity-matroid` read 0 and 0 / 1
-  (the open's: 1 and 17 / 95); the one hit is `Matroid.ofFun`, an address in a formalization note.
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (139 overfull boxes, none in
+  `count-matroid.tex`; 144 at `d0178306`). The screens on `count-matroid` read 0 and 0 / 0 (the
+  open's: 0 and 16 / 45).
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -286,10 +286,12 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   - [x] **5.9 `rigidity-matroid.tex`, first part** (`537db294`; 8 nodes; now 41–502): the
     degree-three case in the Lean's split, Jordán's 2.1.3 argued inline; the lifts as moves in
     words. Found `F-028`.
-  - [x] **5.10 `rigidity-matroid.tex`, second part and opening** (this commit; 10 nodes; 511–820
-    and 1–36, now 504–827 and 1–39): a roadmap opening crediting Laman; the induction in 5.9's
-    notation, on $|V|$; the matroids on $E(K_V)$ in words. Found `F-029`, `F-030`.
-  - [ ] **5.11 `count-matroid.tex`**: 8 nodes, 306 lines.
+  - [x] **5.10 `rigidity-matroid.tex`, second part and opening** (`d0178306`; 10 nodes; now
+    504–827 and 1–39): a roadmap opening crediting Laman; the induction on $|V|$; the matroids on
+    $E(K_V)$ in words. Found `F-029`, `F-030`.
+  - [x] **5.11 `count-matroid.tex`** (this commit; 8 nodes; now 1–298): Lee–Streinu's components
+    and $C_G(X)$ for `maxBlock`; the count matroid credited to Lorea and White–Whiteley; a false
+    free-edge remark and the $(3,6)$ example dropped. Found `F-031`, `F-032`.
   - [ ] **5.12 `dfs.tex`** (carve-out): 5 nodes, 179 lines.
   - [ ] **5.13 `pebble-game.tex`, state, invariants and the basic algorithm** (carve-out; 61–410):
     10 nodes, 350 lines.
@@ -328,6 +330,8 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   not.
 - `F-028` (S, task 5.9): five lift and transport nodes of `rigidity-matroid.tex` assume their
   vertex sets finite; their pins do not.
+- `F-031` (S, task 5.11): `lem:exists-isTightOn-of-insert-not-sparse` assumes $V$ finite; its pin
+  does not.
 
 ## Moved to a later round
 
@@ -368,6 +372,8 @@ one line each naming the ledger ID and the task that found it.
   comes after it.
 - `F-030` (L, task 5.10): docstrings in `MatroidIdentification.lean` and
   `LinearRigidityMatroid.lean` that contradict their declarations.
+- `F-032` (L, task 5.11): `countMatroid`'s docstring gives $(3,6)$ as a failure of augmentation;
+  $(3,6)$-sparse graphs have no edges.
 
 ## Blockers / open questions
 
@@ -375,35 +381,35 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.11**, the eleventh slice: `count-matroid.tex`, 8 nodes and 306 lines, its opening
-last (principle F). Its diagnosis is under *Per-chapter diagnosis*, its gates under *Scope*, and
-the register is *Scope*'s. What 5.11 must know:
-- **Notation fixed by 5.10** (`rigidity-matroid.tex`). $K_V$ is the complete graph on $V$ (that
-  chapter's opening). For $I \subseteq E(K_V)$, "the graph on $V$ with edge set $I$" replaces
-  $\mathrm{fromEdgeSet}\,I$, and for $I \subseteq E(G)$ "the spanning subgraph of $G$ with edge set
-  $I$". $\mathcal{R}(V)$, the planar rigidity matroid, is "the matroid on $E(K_V)$";
-  `def:countMatroid`'s "off-diagonal symmetric pairs" and $\mathrm{Sym}_2 V$ are the Lean's
-  encoding. The blueprint numbers chapters as sections: write "section", not "chapter".
-- **The critical-set gloss** has one home, the paragraph after `def:isTightOn` (`sparsity.tex`).
-  This commit pointed `count-matroid.tex`'s *Terminology* at it (line 30), in place of the deleted
-  *Terminology* aside of `rigidity-matroid.tex`; the rest of that paragraph is 5.11's to judge.
-- **Order (`F-029`).** `rigidity-matroid.tex`'s *The rigidity matroid as a count matroid* uses
-  `def:countMatroid` and says "We prove this in the next section". `count-matroid.tex`'s opening
-  ("Before packaging that result as a matroid in `sec:rigidity-matroid-instance` …") reads as if
-  it came first, and it says the linear identification is `thm:edgeSet-rowIndependent-iff-isSparse`
-  (it is `thm:linearRigidityMatroid-eq-rigidityMatroid`): reword both for its place.
-- **Credits.** Jordán credits "row-independent iff sparse" to Laman (Theorem 2.2.1, p. 45), and
-  Lovász–Yemini only with the rank formula (Theorem 2.3.2, p. 49) and the rigidity of 6-connected
-  graphs (Theorem 2.4.1, p. 51); `rigidity-matroid.tex` no longer names them (`F-025`). The
-  chapter's own citations to check are in its diagnosis.
-- **Sources checked by 5.4–5.10:** Jordán pp. 35–39 (§1.2–1.3.1: the rigidity matrix, Lemmas
+**Next: task 5.12**, the twelfth slice and the first carve-out chapter: `dfs.tex`, 5 nodes and
+179 lines, its opening last (principle F). Its diagnosis is under *Per-chapter diagnosis*, its gates
+under *Scope*, and the register is *Scope*'s. What 5.12 must know:
+- **The carve-out** is read as in *Decisions* ("The carve-out in tasks 5.12–5.16") and
+  `AUTHORING.md` principle A: a step that visits, marks, returns or searches stays plain
+  computational English; a result type in a statement (`some (w, p)`, `none`) is restated as what
+  the search returns, in words; `List V`, `Relation.ReflTransGen` and
+  `DirectedWalk.dropUntilBundle` leave statements, and stay in proofs only as addresses.
+- **Neighbours.** `count-matroid.tex`'s opening (5.11) ends with one sentence pointing at
+  `sec:pebble-game` for Lee–Streinu's pebble game; it no longer describes the game. `dfs.tex`'s
+  opening describes the search the game uses, and `def:tryReachPebble` is its user.
+- **Terms fixed by 5.11, for 5.13–5.16.** "For $\ell < 2k$" replaces the coinage "the matroidal
+  regime". A *component* of a sparse graph is a maximal tight set (Lee–Streinu's term, defined in
+  `count-matroid.tex`'s opening), and $C_G(X)$ is the union of the tight sets containing $X$
+  (`def:isSparse-maxBlock`); "$I$-component" and `maxBlock` are gone from that chapter. A set
+  $I \subseteq E(K_V)$ is *$(k,\ell)$-sparse* if the graph on $V$ with edge set $I$ is (5.10's
+  phrase for $\mathrm{fromEdgeSet}\,I$). `pebble-game.tex` and `executable.tex` still say
+  "matroidal regime" and "$I$-component". The blueprint numbers chapters as sections: write
+  "section", not "chapter".
+- **Sources checked by 5.4–5.11:** Jordán pp. 35–39 (§1.2–1.3.1: the rigidity matrix, Lemmas
   1.2.1–1.2.3 citing Whiteley's 11.1.3, 11.1.1 and 11.1.7; p. 39: the rigidity matroid of a
-  framework, generic frameworks share it, Lemma 1.3.1), pp. 43–45 (Lemmas 2.1.1–2.1.5, splittings;
-  Theorems 2.2.1–2.2.2, credited to Laman, his [43]), pp. 48–49 and 51 (as above). Whiteley 1996
-  is a preprint in `.refs/`: cite by number only. Asimow–Roth is verified only for "rigidity is
-  decided for almost all placements" and "at a generic framework, rigid iff infinitesimally rigid".
+  framework, Lemma 1.3.1), pp. 43–45 (Lemmas 2.1.1–2.1.5; Theorems 2.2.1–2.2.2, credited to
+  Laman), pp. 48–49 and 51 (Lovász–Yemini's results, `F-025`). Lee–Streinu 2008: Lemma 1,
+  Theorem 2 (crediting Lorea and White–Whiteley), Theorem 5(1)–(4), Corollaries 6–7. Whiteley 1996
+  (a preprint: cite by number only): Appendix A, Proposition A.1.1. Asimow–Roth is verified only
+  for "rigidity is decided for almost all placements" and "at a generic framework, rigid iff
+  infinitesimally rigid".
 - **For the close (task 6):** `notes/BlueprintExposition.md`'s Group-A line still says
-  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.12–5.16 follow in
+  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.13–5.16 follow in
   order, and task 6 closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
