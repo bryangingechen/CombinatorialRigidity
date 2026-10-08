@@ -333,6 +333,16 @@ declaration's name as its header writes it:
   statements say.
   *Evidence:* read (the statement, `Sparsity.lean`; `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.11.
+- **F-034** · S · `lem:pebble-game-invariants` (`pebble-game.tex`): the statement assumes $V$
+  finite and $\ell < 2k$, and states all four invariants for a vertex $v$ and a set $V'$ with
+  $\ell \le k|V'|$. Its five pins (`Reachable.out_le`, `Reachable.peb_add_out_eq`,
+  `Reachable.pebOn_add_span_add_outOn`, `Reachable.pebOn_add_outOn_ge`, `Reachable.span_add_le`)
+  assume neither of the first two (the section's variables are `{V : Type*} [DecidableEq V]` and
+  `{k ℓ : ℕ}`); (1) and (2) hold for every vertex and every finite $V'$, and only (3) and (4) take
+  $\ell \le k|V'|$. The statement is weaker than the pins. Task 5.13's prose after `def:tryAddEdge`,
+  which needs $\mathrm{out}_D \le k$ without $\ell < 2k$, cites the proof of (1) instead.
+  *Evidence:* read (the five statements and the section variables of `PebbleGame/Basic.lean`).
+  *Found:* round 1 task 5.13.
 
 ## L — Lean
 
@@ -421,6 +431,15 @@ declaration's name as its header writes it:
   vertices, $4n$ arcs, $2^n$ simple walks end to end) took 2, 6, 29, 128, 631 and 3071 ms at
   $n = 8, 10, \ldots, 18$.
   *Found:* round 1 task 5.12.
+- **F-035** · L · `PebbleGame/Basic.lean`, `PebbleGame/Algorithm.lean`: docstrings that describe
+  other states of the code. Basic.lean's *Path reversal* section header says the lemmas about
+  `out`, `peb`, `span` and `outOn` "follow in a subsequent commit"; they are in that section.
+  Algorithm.lean's *Try-reach-pebble* header and `tryReachPebbleWith`'s docstring say soundness and
+  completeness theorems "will live" or "will land" on `tryReachPebbleWith`. The docstrings of
+  `tryAddEdgeWith`, `tryAddEdge`, `tryAddEdgeWith_reachable` and `runPebbleGameWith` record Phase
+  11's reshape ("was `some D'`", "was `Option (PartialOrientation V)`").
+  *Evidence:* read (the docstrings named, against the two files).
+  *Found:* round 1 task 5.13.
 
 ## M — mathematics and sources
 

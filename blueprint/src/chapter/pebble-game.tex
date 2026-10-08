@@ -61,32 +61,42 @@ component pebble game and are deferred along with it.
 \subsection{State and moves}
 \label{sec:pebble-game-state}
 
-The pebble game maintains a partial orientation of a subset of
-$E(K_V)$ together with a non-negative integer of \emph{free
-pebbles} at each vertex. Both pieces of data are determined by
-the orientation: the pebbles record the per-vertex out-degree
-budget still available.
+Lee and Streinu play the pebble game on a directed graph $D$ on $V$,
+which starts with no edges and with $k$ pebbles on each
+vertex~\cite[\S 3]{leeStreinu2008}. An edge is inserted into $D$
+oriented away from an endpoint that holds a pebble, and that pebble is
+removed. On a simple graph, $D$ has no loops and at most one arc
+between two vertices, so it is a partial orientation
+(\cref{def:partial-orientation}). By Lee and Streinu's
+Invariant~(1)~\cite[Lemma~10]{leeStreinu2008}, the number of free
+pebbles at a vertex is then $k$ minus its out-degree. So we do not keep
+the pebbles separately, and define them from $D$
+(\cref{def:pebble-counts}). The game changes $D$ by two moves. It
+reverses a directed path, which moves a pebble from the end of the
+path to its start (\cref{def:path-reversal}). It also inserts arcs
+(\cref{def:arc-insertion}).
 
 \begin{definition}[Partial orientation]
   \label{def:partial-orientation}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation,
     CombinatorialRigidity.PebbleGame.PartialOrientation.underline}
   \leanok
-  Let $V$ be a finite type with decidable equality. A
-  \emph{partial orientation} on $V$ is a finite set
-  $D \subseteq V \times V$ of ordered pairs such that:
+  Let $V$ be a set. A \emph{partial orientation} on $V$ is a finite set
+  $D \subseteq V \times V$ such that:
   \begin{enumerate}
-    \item (no loops) $(v, v) \notin D$ for all $v \in V$;
-    \item (no antiparallel pairs) $(u, v) \in D$ implies
+    \item (no loops) $(v, v) \notin D$ for every $v \in V$;
+    \item (no antiparallel pairs) if $(u, v) \in D$, then
       $(v, u) \notin D$.
   \end{enumerate}
-  An edge $\{u, v\} \in \mathrm{Sym}_2 V$ is \emph{oriented in $D$}
-  if either $(u, v) \in D$ or $(v, u) \in D$. The
-  \emph{underlying edge set} of $D$, written $\underline{D} \subseteq
-  E(K_V)$, is the set of oriented edges.
+  The elements of $D$ are its \emph{arcs}, and an arc $(u, v)$ has
+  \emph{tail} $u$ and \emph{head} $v$. An edge $uv$ of the complete
+  graph $K_V$ is \emph{oriented} in $D$ if $(u, v) \in D$ or
+  $(v, u) \in D$. The \emph{underlying edge set}
+  $\underline{D} \subseteq E(K_V)$ is the set of edges oriented in $D$.
+  The \emph{empty orientation} has no arcs.
 \end{definition}
 
-\begin{definition}[Out-degree, pebble count, span]
+\begin{definition}[Out-degree, free pebbles and span]
   \label{def:pebble-counts}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.out,
     CombinatorialRigidity.PebbleGame.PartialOrientation.peb,
@@ -95,101 +105,123 @@ budget still available.
     CombinatorialRigidity.PebbleGame.PartialOrientation.pebOn}
   \leanok
   \uses{def:partial-orientation}
-  Fix a partial orientation $D$ and an integer $k \ge 0$. For a
-  vertex $v \in V$, write
+  Let $D$ be a partial orientation on $V$, and let $k$ be a
+  non-negative integer. For a vertex $v$, the \emph{out-degree}
+  $\mathrm{out}_D(v)$ is the number of arcs of $D$ with tail $v$, and
+  the number of \emph{free pebbles} at $v$ is
   \[
-    \mathrm{out}_D(v) := |\{u : (v, u) \in D\}|,
-    \qquad
-    \mathrm{peb}_{D,k}(v) := k - \mathrm{out}_D(v).
+    \mathrm{peb}_{D,k}(v) = \max\bigl(k - \mathrm{out}_D(v), 0\bigr).
   \]
-  Extend additively to subsets $V' \subseteq V$:
-  $\mathrm{peb}_{D,k}(V') := \sum_{v \in V'} \mathrm{peb}_{D, k}(v)$,
-  and write
-  \[
-    \mathrm{span}_D(V') := |\{(u, w) \in D : u, w \in V'\}|,
-    \qquad
-    \mathrm{out}_D(V') := |\{(u, w) \in D : u \in V',\ w \notin V'\}|.
-  \]
+  For a finite set $V' \subseteq V$, let
+  \begin{itemize}
+    \item $\mathrm{peb}_{D,k}(V') = \sum_{v \in V'}
+      \mathrm{peb}_{D,k}(v)$;
+    \item $\mathrm{span}_D(V')$ be the number of arcs of $D$ with both
+      ends in $V'$;
+    \item $\mathrm{out}_D(V')$ be the number of arcs of $D$ with tail in
+      $V'$ and head outside $V'$.
+  \end{itemize}
 \end{definition}
 
-The pebble count is a truncated subtraction, hence non-negative. The
-orientations the algorithm builds keep $\mathrm{out}_D(v) \le k$ at
-every vertex (\cref{lem:pebble-game-invariants}, item~(1)), so the
-subtraction never truncates on them.
+These are Lee and Streinu's functions $\mathrm{peb}$, $\mathrm{span}$
+and $\mathrm{out}$~\cite[\S 4]{leeStreinu2008}, for a graph without
+loops. The maximum with $0$ matters only when $\mathrm{out}_D(v) > k$.
+This does not happen at the orientations the game reaches, the
+$(k, \ell)$-reachable ones of \cref{def:reachable-orientation}, as the
+proof of Invariant~(1) in \cref{lem:pebble-game-invariants} shows.
 
-\begin{definition}[Path-reversal move]
+\begin{definition}[Path reversal]
   \label{def:path-reversal}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.reverse,
     CombinatorialRigidity.PebbleGame.PartialOrientation.underline_reverse_eq}
   \leanok
   \uses{def:partial-orientation}
-  Let $D$ be a partial orientation and $u_0 \to u_1 \to \cdots \to
-  u_m$ a directed path in $D$ (a sequence of distinct vertices with
-  $(u_i, u_{i+1}) \in D$ for $0 \le i < m$). The \emph{reversal} of
-  this path replaces $D$ by
-  $D \setminus \{(u_i, u_{i+1}) : 0 \le i < m\} \cup
-  \{(u_{i+1}, u_i) : 0 \le i < m\}$. The result is again a partial
-  orientation: no loops are introduced (the path is simple), and the
-  no-antiparallel-pairs invariant is preserved by induction on $m$.
-  Reversal preserves the underlying edge set $\underline{D}$ and
-  leaves $\mathrm{out}_D(v)$ unchanged for every $v \ne u_0, u_m$; it
-  decreases $\mathrm{out}_D(u_0)$ by $1$ and, given the precondition
-  $\mathrm{out}_D(u_m) < k$ that leaves $u_m$ room for the incoming
-  arc, increases $\mathrm{out}_D(u_m)$ by $1$. Equivalently, the
-  pebble count $\mathrm{peb}_{D, k}$ rises by $1$ at $u_0$ and drops
-  by $1$ at $u_m$: the move transports a free pebble from $u_m$ to
-  $u_0$ along the path.
+  Let $D$ be a partial orientation on $V$. A \emph{directed path} in
+  $D$ from $u_0$ to $u_m$ is a simple directed walk
+  $u_0, u_1, \ldots, u_m$ along the arcs of $D$
+  (\cref{def:directed-walk}): the vertices $u_i$ are distinct, and
+  $(u_{i-1}, u_i) \in D$ for $1 \le i \le m$. \emph{Reversing} the
+  path replaces $D$ by the partial orientation
+  \[
+    D' = \bigl(D \setminus \{(u_{i-1}, u_i) : 1 \le i \le m\}\bigr)
+      \cup \{(u_i, u_{i-1}) : 1 \le i \le m\}.
+  \]
+  The underlying edge sets of $D'$ and $D$ are equal.
 \end{definition}
 
-\begin{definition}[Arc-insertion move]
+The set $D'$ is a partial orientation. It has no loops, since the
+vertices of the path are distinct. Each arc of $D'$ is either an arc
+of $D$ off the path or the reverse $(u_i, u_{i-1})$ of an arc of the
+path. Two arcs of $D$ off the path are not antiparallel, since $D$ has
+no antiparallel pairs. The arc $(u_i, u_{i-1})$
+is not antiparallel to an arc of $D$ off the path, since
+$(u_{i-1}, u_i)$ is on the path. Nor is it antiparallel to the reverse
+of another arc of the path, since a path with distinct vertices does
+not use the edge $u_{i-1} u_i$ twice.
+
+Let $m \ge 1$. Reversing the path lowers $\mathrm{out}_D(u_0)$ by $1$,
+raises $\mathrm{out}_D(u_m)$ by $1$, and leaves every other
+out-degree unchanged: an inner vertex $u_i$ loses the arc
+$(u_i, u_{i+1})$ and gains the arc $(u_i, u_{i-1})$. Suppose that
+$\mathrm{out}_D(u_0) \le k$ and $\mathrm{out}_D(u_m) < k$. Then $u_0$
+gains a free pebble and $u_m$ loses one, so the move takes a pebble
+from $u_m$ to $u_0$. This is the move by which Lee and Streinu collect
+a pebble~\cite[\S 3, Fig.~4]{leeStreinu2008}.
+
+\begin{definition}[Arc insertion]
   \label{def:arc-insertion}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.addArc,
     CombinatorialRigidity.PebbleGame.PartialOrientation.underline_addArc}
   \leanok
   \uses{def:partial-orientation}
-  Let $D$ be a partial orientation and $(u, v)$ an ordered pair with
-  $u \ne v$ and $(v, u) \notin D$. The \emph{arc-insertion} of
-  $(u, v)$ replaces $D$ by $D \cup \{(u, v)\}$. The result is again
-  a partial orientation: $u \ne v$ rules out a self-loop, and
-  $(v, u) \notin D$ rules out an antiparallel pair. When the arc is
-  new ($(u, v) \notin D$), the insertion raises $\mathrm{out}_D(u)$
-  by $1$ and leaves $\mathrm{out}_D(x)$ unchanged for every
-  $x \ne u$, so the pebble count $\mathrm{peb}_{D, k}(u)$ drops by
-  $1$; the move requires $\mathrm{out}_D(u) < k$, so that $u$ has
-  room for the new arc.
+  Let $D$ be a partial orientation on $V$, and let $u \ne v$ be
+  vertices with $(v, u) \notin D$. \emph{Inserting} the arc $(u, v)$
+  replaces $D$ by the partial orientation $D \cup \{(u, v)\}$. Its
+  underlying edge set is $\underline{D} \cup \{uv\}$.
 \end{definition}
+
+The set $D \cup \{(u, v)\}$ is a partial orientation, since $u \ne v$
+rules out a loop and $(v, u) \notin D$ rules out an antiparallel pair.
+If the arc is new, that is, if $(u, v) \notin D$, the insertion raises
+$\mathrm{out}_D(u)$ by $1$ and leaves every other out-degree
+unchanged. If moreover $\mathrm{out}_D(u) < k$, then $u$ loses a free
+pebble. This is Lee and Streinu's edge
+insertion~\cite[\S 3, Fig.~4]{leeStreinu2008}.
 
 \subsection{Invariants}
 \label{sec:pebble-game-invariants}
 
-The four invariants of Lee--Streinu Lemma~10 hold at every partial
-orientation reachable from the empty orientation through arc
-insertions and path reversals. Invariant~(4) gives the sparsity of
-$\underline{D}$ directly; the algorithm's soundness
-(\cref{sec:pebble-game-soundness}) rests on it.
+Lee and Streinu~\cite[Lemma~10]{leeStreinu2008} prove four invariants
+of their game. We prove them for the
+orientations obtained from the empty one by the two moves, each made
+under the conditions the game imposes on it
+(\cref{def:reachable-orientation}). Invariant~(4) bounds the number of
+underlying edges inside a set of vertices by the sparsity count, and
+the soundness of the game (\cref{sec:pebble-game-soundness}) follows
+from it.
 
-\begin{definition}[Reachable orientation]
+\begin{definition}[$(k, \ell)$-reachable orientation]
   \label{def:reachable-orientation}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:path-reversal, def:arc-insertion}
-  Fix integers $k, \ell \ge 0$. The set of $(k, \ell)$-\emph{reachable}
-  partial orientations on $V$ is the smallest collection containing the
-  empty orientation and closed under:
-  \begin{itemize}
-    \item \emph{Path reversal} along a simple directed path
-      $u_0 \to \cdots \to u_m$ in $D$ with $\mathrm{out}_D(u_m) < k$
-      (\cref{def:path-reversal}).
-    \item \emph{Accepted arc insertion} of an ordered pair $(u, v)$
-      with $u \ne v$, $(u, v) \notin D$, $(v, u) \notin D$,
-      $\mathrm{out}_D(u) < k$, and the threshold condition
+  Let $k$ and $\ell$ be non-negative integers. The
+  \emph{$(k, \ell)$-reachable} partial orientations on $V$ form the
+  smallest set of partial orientations that contains the empty
+  orientation and is closed under the following two moves, applied to
+  a member $D$:
+  \begin{enumerate}
+    \item reversing a directed path in $D$ from $u_0$ to $u_m$ with
+      $\mathrm{out}_D(u_m) < k$ (\cref{def:path-reversal});
+    \item inserting an arc $(u, v)$ with $u \ne v$, $(u, v) \notin D$,
+      $(v, u) \notin D$, $\mathrm{out}_D(u) < k$ and
       $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \ge \ell + 1$
       (\cref{def:arc-insertion}).
-  \end{itemize}
+  \end{enumerate}
 \end{definition}
 
-\begin{lemma}[Pebble-game invariants]
+\begin{lemma}[Invariants of the pebble game]
   \label{lem:pebble-game-invariants}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.out_le,
     CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.peb_add_out_eq,
@@ -199,15 +231,15 @@ $\underline{D}$ directly; the algorithm's soundness
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:reachable-orientation, def:arc-insertion, def:path-reversal}
-  Let $V$ be a finite type, $k, \ell$ integers with $\ell < 2k$,
-  and $D$ a $(k, \ell)$-reachable partial orientation on $V$
-  (\cref{def:reachable-orientation}). Then for every $v \in V$ and
-  every $V' \subseteq V$ with $\ell \le k|V'|$:
+  Let $V$ be a finite set, let $k$ and $\ell$ be non-negative integers
+  with $\ell < 2k$, and let $D$ be a $(k, \ell)$-reachable partial
+  orientation on $V$. Let $v \in V$, and let $V' \subseteq V$ with
+  $\ell \le k|V'|$. Then:
   \begin{enumerate}
-    \item $\mathrm{peb}_{D, k}(v) + \mathrm{out}_D(v) = k$.
+    \item $\mathrm{peb}_{D, k}(v) + \mathrm{out}_D(v) = k$;
     \item $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') +
-      \mathrm{out}_D(V') = k|V'|$.
-    \item $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$.
+      \mathrm{out}_D(V') = k|V'|$;
+    \item $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$;
     \item $\mathrm{span}_D(V') \le k|V'| - \ell$.
   \end{enumerate}
 \end{lemma}
@@ -215,62 +247,89 @@ $\underline{D}$ directly; the algorithm's soundness
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:reachable-orientation, def:arc-insertion, def:path-reversal}
-  Invariant~(1) reduces to $\mathrm{out}_D(v) \le k$ under the
-  truncated subtraction $\mathrm{peb}_{D, k}(v) := k -
-  \mathrm{out}_D(v)$, and $\mathrm{out}_D(v) \le k$ follows by
-  induction on the move sequence from the per-vertex shifts
-  (\cref{def:path-reversal}, \cref{def:arc-insertion}) and the
-  $\mathrm{out}_D(\cdot) < k$ preconditions of
-  \cref{def:reachable-orientation}. Invariant~(2) is the
-  unconditional identity $\sum_{v \in V'}(\mathrm{peb}_{D, k}(v) +
-  \mathrm{out}_D(v)) = k|V'|$ combined with the partition
-  $\sum_{v \in V'} \mathrm{out}_D(v) = \mathrm{span}_D(V') +
-  \mathrm{out}_D(V')$ (\texttt{sum\_out\_eq\_span\_add\_outOn}), and
-  Invariant~(4) rearranges (2) using (3).
+  We argue by induction on the moves that produce $D$ from the empty
+  orientation (\cref{def:reachable-orientation}).
 
-  Invariant~(3) is the substantive claim, proved by induction on the
-  move sequence. The empty orientation has
-  $\mathrm{peb}_{\emptyset, k}(V') + \mathrm{out}_{\emptyset}(V') =
-  k|V'| \ge \ell$. Path reversals leave the sum
-  $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$ invariant
-  (\texttt{pebOn\_add\_outOn\_reverse\_eq}). An accepted insertion
-  shifts the sum by $-1$ exactly when both endpoints lie in $V'$
-  (\texttt{pebOn\_add\_outOn\_addArc\_add}); on that branch the
-  threshold $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \ge
-  \ell + 1$, together with the pairwise bound $\mathrm{peb}_{D, k}(u)
-  + \mathrm{peb}_{D, k}(v) \le \mathrm{peb}_{D, k}(V')$, supplies the
-  extra unit. Compare Lee--Streinu Lemma~10.
+  For (1) it suffices to show that $\mathrm{out}_D(v) \le k$, by the
+  definition of $\mathrm{peb}_{D, k}(v)$. All out-degrees are $0$ at the
+  empty orientation. Reversing a path raises no out-degree other than
+  that of its last vertex $u_m$, which it raises by at most $1$, and
+  the move requires $\mathrm{out}_D(u_m) < k$. Inserting an arc raises
+  no out-degree other than that of its tail $u$, which it raises by
+  $1$, and the move requires $\mathrm{out}_D(u) < k$.
+
+  For (2) we need no induction. Summing (1) over $V'$ gives
+  \[
+    \mathrm{peb}_{D, k}(V') + \sum_{v \in V'} \mathrm{out}_D(v) = k|V'|.
+  \]
+  An arc with tail in $V'$ has its head either in $V'$ or outside it.
+  So the sum of the out-degrees over $V'$ is
+  $\mathrm{span}_D(V') + \mathrm{out}_D(V')$.
+
+  For (3), at the empty orientation the left-hand side is
+  $k|V'| \ge \ell$. Reversing a path does not change
+  $\mathrm{span}_D(V')$, since it replaces each arc of the path by an
+  arc with the same ends. By (2), before and after the move, it does not
+  change $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$ either.
+  Inserting a new arc $(u, v)$ with $\mathrm{out}_D(u) < k$ lowers
+  $\mathrm{peb}_{D, k}(V')$ by $1$ if $u \in V'$, and leaves it
+  unchanged otherwise. It raises
+  $\mathrm{out}_D(V')$ by $1$ if $u \in V'$ and $v \notin V'$, and
+  leaves it unchanged otherwise. So the insertion lowers the left-hand
+  side of (3) by $1$ if $u, v \in V'$, and leaves it unchanged
+  otherwise. If $u, v \in V'$, then before the move
+  \[
+    \mathrm{peb}_{D, k}(V') \;\ge\; \mathrm{peb}_{D, k}(u) +
+    \mathrm{peb}_{D, k}(v) \;\ge\; \ell + 1,
+  \]
+  so the left-hand side is at least $\ell$ after it.
+
+  Part~(4) follows from (2) and (3).
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:pebble-game-specialisation}
-  Two features of the simple-graph, matroidal-regime setting simplify
-  Lee--Streinu Lemma~10. First, a simple graph has no loops, so
-  $\mathrm{span}_D(\{v\}) = 0$ at every vertex, and Lee--Streinu's
-  per-vertex invariant $\mathrm{peb}_{D, k}(v) + \mathrm{span}_D(\{v\})
-  + \mathrm{out}_D(v) = k$ collapses to Invariant~(1) above. Second,
-  Lee--Streinu carry two size hypotheses on $V'$ --- $|V'| \ge 1$ in
-  the range $\ell \le k$ and $|V'| \ge 2$ in $k < \ell < 2k$ --- both
-  ensuring $\ell \le k|V'|$; that single premise is stated here
-  instead, since $|V'| \ge 1$ with $\ell \le k$ gives it and
-  $|V'| \ge 2$ with $k < \ell < 2k$ gives $\ell < 2k \le k|V'|$.
-  Invariant~(4) is stated additively as $\mathrm{span}_D(V') + \ell
-  \le k|V'|$, avoiding truncated subtraction on $\mathbb{N}$.
+  Lee and Streinu state their Lemma~10 for multigraphs, and the
+  setting here simplifies it in two ways. First, a simple graph has no
+  loops. Their invariant $\mathrm{peb}(v) + \mathrm{span}(v) +
+  \mathrm{out}(v) = k$, in which $\mathrm{span}(v)$ counts the loops at
+  $v$, therefore becomes (1). Second, they assume $|V'| \ge 1$ when
+  $\ell \le k$ and $|V'| \ge 2$ when $k < \ell < 2k$. Both give
+  $\ell \le k|V'|$, which is the hypothesis used here. The formal
+  statement of (4) is $\mathrm{span}_D(V') + \ell \le k|V'|$, which
+  avoids the truncated subtraction of natural numbers. Under
+  $\ell \le k|V'|$ the two forms agree.
 \end{fmlnote}
 
 \subsection{The basic algorithm}
 \label{sec:pebble-game-algorithm}
 
-The algorithm processes a list of candidate edges one at a time.
-For each edge it attempts to redirect pebbles in $D$ until both
-endpoints together hold at least $\ell + 1$ free pebbles, then
-inserts the edge and uses up one free pebble. If the pebble target
-cannot be reached, the edge is rejected and the algorithm halts with a
-failure witness. All three procedures below are formalized as a
-computable core paired with a convenience form; the split is
-described once in \cref{fmlnote:pebble-game-computable-core}.
+Lee and Streinu's basic pebble game~\cite[\S 3, Fig.~4]{leeStreinu2008}
+considers the edges of the input graph one at a time. An edge $uv$ is
+accepted, and inserted as an arc, when $u$ and $v$ together hold at
+least $\ell + 1$ free pebbles. While they hold fewer, the game searches
+$D$ for a free pebble on another vertex, reachable from $u$ or from
+$v$, and brings it to $u$ or $v$ by reversing a directed path. If there
+is no such pebble, the edge is rejected. Lee and Streinu go on after a
+rejected edge, in order to classify the input graph. Our game stops at
+the first rejected edge, and returns a set of vertices which shows that
+the graph is not $(k, \ell)$-sparse.
 
-\begin{definition}[Try-reach-pebble: depth-first search with path reversal]
+We define the algorithm in three levels. The pebble search
+(\cref{def:tryReachPebble}) looks for a vertex with a given property,
+here a free pebble, and reverses the path to it. Processing an edge (\cref{def:tryAddEdge})
+repeats pebble searches until it can insert the edge or must reject it.
+The pebble game (\cref{def:runPebbleGame}) processes a list of edges in
+turn.
+
+The search of \cref{sec:dfs} visits the out-neighbours of a vertex in
+the order of a list. In this subsection, each partial orientation $D$
+on $V$ comes with a list $N^+_D(a)$ for each vertex $a$, whose entries
+are the out-neighbours of $a$ in $D$, that is, the vertices $b$ with
+$(a, b) \in D$. Every result below holds for every choice of these
+lists.
+
+\begin{definition}[Pebble search]
   \label{def:tryReachPebble}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebbleWith,
     CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebble,
@@ -279,133 +338,203 @@ described once in \cref{fmlnote:pebble-game-computable-core}.
   \leanok
   \uses{def:partial-orientation, def:pebble-counts, def:path-reversal,
     thm:reachable-finding-correct}
-  Given a partial orientation $D$, a predicate $P$ on $V$, and a
-  source vertex $v$, the procedure $\mathrm{tryReachPebble}\,D\,P\,v$
-  runs $\mathrm{reachableFinding}$ (\cref{def:reachable-finding}) with
-  the relation $R$ taken to be the outgoing-arc relation of $D$. On
-  success it receives a witness walk $p$ from $v$ to a vertex $w$ with
-  $P(w)$ (\cref{thm:reachable-finding-correct}) and reverses every arc
-  of $p$ in $D$ via \cref{def:path-reversal}, returning the updated
-  pair $(D', w)$; on failure it returns nothing. The reachability
-  closure $\mathrm{Reach}_D(v)$ used in later lemmas coincides with the
-  visited set of a fully-exhausted search.
+  Let $D$ be a partial orientation on a finite set $V$, and let each
+  vertex $a$ have a list $N^+_D(a)$ whose entries are the
+  out-neighbours of $a$ in $D$. Let $P$ be a predicate on $V$, and let
+  $v \in V$. The \emph{pebble search for $P$ from $v$ in $D$} runs the
+  search for $P$ from $v$ (\cref{def:reachable-finding}) with these
+  lists, so that the search follows the arcs of $D$.
+  \begin{enumerate}
+    \item If the search returns a vertex $w$ and a walk $p$, then $p$
+      is a directed path in $D$ from $v$ to $w$, and $P(w)$ holds
+      (\cref{thm:reachable-finding-correct}). The pebble search returns
+      $w$, $p$, and the partial orientation obtained from $D$ by
+      reversing $p$ (\cref{def:path-reversal}).
+    \item If the search fails, the pebble search fails.
+  \end{enumerate}
 \end{definition}
 
-\begin{definition}[Try-add-edge]
+When the processing of an edge $uv$ cannot gather $\ell + 1$ free
+pebbles on $u$ and $v$, it rejects $uv$ and returns the following data.
+
+\begin{definition}[Failure witness]
+  \label{def:workhorseWitness}
+  \lean{CombinatorialRigidity.PebbleGame.WorkhorseWitness}
+  \leanok
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:reachable-orientation}
+  Let $V$ be a set, and let $k$ and $\ell$ be non-negative integers. A
+  \emph{failure witness} consists of a partial orientation $D$ on $V$,
+  a finite set $V' \subseteq V$, and a pair $(u, v)$ of distinct
+  vertices in $V'$, such that:
+  \begin{enumerate}
+    \item $D$ is $(k, \ell)$-reachable
+      (\cref{def:reachable-orientation});
+    \item the edge $uv$ is not oriented in $D$;
+    \item no arc of $D$ has its tail in $V'$ and its head outside $V'$,
+      that is, $\mathrm{out}_D(V') = 0$;
+    \item $\mathrm{peb}_{D, k}(V') \le \ell$.
+  \end{enumerate}
+\end{definition}
+
+A failure witness does not mention a graph. Let $\ell < 2k$, and let
+$G$ be a finite simple graph on $V$ whose edges include $uv$ and the
+edges in $\underline{D}$. Then $\ell \le k|V'|$, and $V'$ spans more
+than $k|V'| - \ell$ edges of $G$
+(\cref{lem:workhorseWitness-certifies}).
+
+\begin{definition}[Processing an edge]
   \label{def:tryAddEdge}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith,
     CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdge}
   \leanok
   \uses{def:tryReachPebble, def:partial-orientation, def:arc-insertion}
-  Given a partial orientation $D$, parameters $k, \ell$, and a
-  candidate edge $\{u, v\} \notin \underline{D}$ (with $u \neq v$),
-  the procedure $\mathrm{tryAddEdge}\,D\,k\,\ell\,u\,v$ sets the target
-  predicate $P(w) := \mathrm{peb}_{D,k}(w) > 0 \wedge w \neq u \wedge
-  w \neq v$ (a free pebble at $w$, with $w$ neither of the two
-  endpoints --- otherwise the path-reversal step would be trivial or
-  would move a pebble between the two endpoints without increasing
-  $\mathrm{peb}_{D,k}(u) + \mathrm{peb}_{D,k}(v)$) and repeatedly calls
-  $\mathrm{tryReachPebble}\,D\,P\,u$ and $\mathrm{tryReachPebble}\,D\,P\,v$.
-  Each successful search at $u$ (resp.\ $v$) reverses a path so as to
-  raise $\mathrm{peb}_{D,k}(u)$ (resp.\ $\mathrm{peb}_{D,k}(v)$) by $1$,
-  and the procedure recurses on the updated orientation. The loop
-  terminates as soon as either:
-  \begin{itemize}
-    \item (accept) $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v)
-      \ge \ell + 1$ is reached; insert the directed arc, choosing
-      $(u, v)$ when $\mathrm{peb}_{D,k}(u) > 0$ and $(v, u)$ otherwise
-      (at least one endpoint has a free pebble since the sum is
-      $\ge 1$), and return the updated orientation $D'$; or
-    \item (reject) both searches fail simultaneously (no free
-      pebble reachable from $u$ or $v$).
-  \end{itemize}
-  The outer loop terminates because $(\ell + 1) - (\mathrm{peb}_{D,k}(u)
-  + \mathrm{peb}_{D, k}(v))$ strictly decreases at each successful
-  reversal: the predicate's $w \neq u, v$ clauses make each reversed
-  path run from its source to a vertex other than $u$ and $v$, so the
-  reversal raises the source endpoint's pebble count by $1$ and leaves
-  the other endpoint's unchanged.
-
-  The procedure also takes a proof that $D$ is $(k, \ell)$-reachable
-  (\cref{def:reachable-orientation}), which supplies the per-vertex
-  out-degree bound $\mathrm{out}_D(\cdot) \le k$ used throughout. The
-  result is one of two outcomes: \emph{accept}, returning the extended
-  orientation $D'$; or \emph{reject}, returning a failure witness $w$
-  (\cref{def:workhorseWitness}) whose subset is the reachability union
-  $V' := \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$
-  (\cref{def:reachClosureComputable}). The witness records the
-  invariants $\mathrm{out}_D(V') = 0$ and $\mathrm{peb}_{D, k}(V') \le
-  \ell$ holding at the rejection point; these certify that the ambient
-  graph fails $(k, \ell)$-sparsity on $V'$
-  (\cref{lem:workhorseWitness-certifies}), which \cref{def:runPebbleGame}
-  turns into the reject branch's certificate.
+  Let $V$ be a finite set, and let $k$ and $\ell$ be non-negative
+  integers. Let each partial orientation on $V$ come with lists
+  $N^+_D(a)$ as in \cref{def:tryReachPebble}. Let $D$ be a
+  $(k, \ell)$-reachable partial orientation on $V$, and let $u \ne v$
+  be vertices such that the edge $uv$ is not oriented in $D$. Let $P_D$
+  be the predicate that holds at a vertex $w$ when $w \ne u$, $w \ne v$
+  and $\mathrm{peb}_{D, k}(w) > 0$. \emph{Processing $uv$ at $D$} runs
+  as follows.
+  \begin{enumerate}
+    \item If $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \ge
+      \ell + 1$, it accepts $uv$. It inserts the arc $(u, v)$ if
+      $\mathrm{peb}_{D, k}(u) > 0$, and the arc $(v, u)$ otherwise
+      (\cref{def:arc-insertion}), and returns the result.
+    \item Otherwise, it runs the pebble search for $P_D$ from $u$ in
+      $D$. If this search does not fail, it processes $uv$ at the
+      partial orientation $D'$ that the search returns.
+    \item Otherwise, it runs the pebble search for $P_D$ from $v$ in
+      $D$. If this search does not fail, it processes $uv$ at the
+      partial orientation $D'$ that the search returns.
+    \item Otherwise it rejects $uv$. It returns the failure witness
+      made of $D$, the set $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$
+      and the pair $(u, v)$. Here $\mathrm{Reach}_D(x)$ is the
+      reachability region of $x$ in $D$, the set of vertices reachable
+      from $x$ along the arcs of $D$ (\cref{def:reachClosureComputable}).
+  \end{enumerate}
 \end{definition}
+
+We check that each step is defined and that the processing stops. In
+step~1 the inserted arc is new, and its tail has a free pebble, since
+$\mathrm{peb}_{D, k}(v) \ge \ell + 1 \ge 1$ when
+$\mathrm{peb}_{D, k}(u) = 0$. So the insertion is a move of
+\cref{def:reachable-orientation}, and the result is
+$(k, \ell)$-reachable.
+
+In step~2, the pebble search returns a directed path from $u$ to a
+vertex $w$ with $w \ne u, v$ and $\mathrm{peb}_{D, k}(w) > 0$. So the
+path has at least one arc, and $\mathrm{out}_D(w) < k$. Hence $D'$ is
+$(k, \ell)$-reachable, and $uv$ is not oriented in $D'$, since the
+reversal keeps the underlying edge set. Since $D$ is
+$(k, \ell)$-reachable, $\mathrm{out}_D(u) \le k$, as in the proof of
+Invariant~(1) in \cref{lem:pebble-game-invariants}. So the reversal
+raises $\mathrm{peb}_{D, k}(u)$ by $1$. It leaves
+$\mathrm{peb}_{D, k}(v)$ unchanged, since $v$ is not an end of the
+path. Step~3 is the same with $u$ and $v$ exchanged. Hence
+$\ell + 1 - \mathrm{peb}_{D, k}(u) - \mathrm{peb}_{D, k}(v)$ drops by
+$1$ each time the processing starts again, so step~1 or step~4 is
+reached.
+
+Lee and Streinu mark $u$ and $v$ before the search, so that it neither
+passes through them nor moves their
+pebbles~\cite[\S 3, Fig.~4]{leeStreinu2008}. Here the predicate $P_D$
+only excludes $u$ and $v$ as ends of the path. A search may pass
+through $u$ or $v$, but reversing a path does not change the
+out-degrees of its inner vertices.
+
+The data returned in step~4 form a failure witness. By hypothesis, $D$
+is $(k, \ell)$-reachable and $uv$ is not oriented in $D$. The set
+$V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ contains $u$ and
+$v$. No arc of $D$ leaves $V'$, since the head of an arc whose tail is
+reachable from $u$ is reachable from $u$, and likewise for $v$. Both
+pebble searches failed, so no vertex reachable from $u$ or from $v$
+satisfies $P_D$ (\cref{thm:reachable-finding-correct}, part~(2)).
+Hence every vertex of $V'$ other than $u$ and $v$ has no free pebble,
+and
+\[
+  \mathrm{peb}_{D, k}(V') \;=\; \mathrm{peb}_{D, k}(u) +
+  \mathrm{peb}_{D, k}(v) \;\le\; \ell.
+\]
+The set $V'$, and the argument that no arc leaves it, are from Lee and
+Streinu's proof of their Lemma~13~\cite{leeStreinu2008}.
+
+When the game rejects a graph, it returns a set of vertices of the
+following kind.
 
 \begin{definition}[Blocking witness]
   \label{def:blockingWitness}
   \uses{def:isSparse}
-  Given a simple graph $G : \mathrm{SimpleGraph}\,V$ and parameters
-  $k, \ell$, a \emph{blocking witness} for $G$ is a finite subset
-  $V' \subseteq V$ together with a proof that
-  $|\edgesIn[G]{V'}| > k|V'| - \ell$. Equivalently, $G$ is not
-  $(k, \ell)$-sparse on $V'$.
+  Let $G$ be a simple graph on $V$, and let $k$ and $\ell$ be
+  non-negative integers. A \emph{blocking witness} for $G$ is a finite
+  set $V' \subseteq V$ with $\ell \le k|V'|$ that spans more than
+  $k|V'| - \ell$ edges of $G$, that is,
+  $|\edgesIn[G]{V'}| + \ell > k|V'|$.
 \end{definition}
 
-\begin{definition}[Run-pebble-game]
+A blocking witness shows that $G$ is not $(k, \ell)$-sparse
+(\cref{def:isSparse}).
+
+\begin{definition}[The pebble game]
   \label{def:runPebbleGame}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith,
     CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame}
   \leanok
   \uses{def:tryAddEdge, def:workhorseWitness, def:partial-orientation}
-  Let $G$ be a simple graph on a finite vertex set $V$, and $k, \ell$
-  integers with $\ell < 2k$. The procedure $\mathrm{runPebbleGame}\,G\,
-  k\,\ell$ returns a verdict $\mathrm{PebbleGameResult}\,G\,k\,\ell$
-  (\cref{def:pebbleGameResult}): it folds $\mathrm{tryAddEdge}$ over an
-  arbitrary enumeration of $E(G)$, starting from the empty partial
-  orientation. On success it returns $\mathrm{.accept}$, carrying a
-  partial orientation $D$ with $\underline{D} = E(G)$ that satisfies the
-  four invariants of \cref{lem:pebble-game-invariants}; on failure it
-  returns $\mathrm{.reject}$, carrying a blocking subset $V'$
-  (\cref{def:blockingWitness}) and its $G$-shaped sparsity-violation
-  pair, recovered from the underlying failure witness
-  (\cref{def:workhorseWitness}) by \cref{lem:workhorseWitness-certifies}.
-  The fold terminates because the number of unprocessed edges strictly
-  decreases at each iteration.
+  Let $V$, $k$, $\ell$ and the lists $N^+_D(a)$ be as in
+  \cref{def:tryAddEdge}. Let $D_0$ be a $(k, \ell)$-reachable partial
+  orientation on $V$, and let $(u_1, v_1), \ldots, (u_m, v_m)$ be a
+  list of pairs of vertices. The \emph{pebble game on this list from
+  $D_0$} starts with $D = D_0$, and for $i = 1, \ldots, m$ in turn
+  runs as follows.
+  \begin{enumerate}
+    \item If $u_i = v_i$, or $(u_i, v_i) \in D$, or
+      $(v_i, u_i) \in D$, it skips the pair.
+    \item Otherwise it processes $u_i v_i$ at $D$. If this rejects
+      $u_i v_i$, the game stops and returns the failure witness. If it
+      accepts $u_i v_i$ and returns $D'$, the game sets $D = D'$.
+  \end{enumerate}
+  If no pair is rejected, the game returns the final orientation $D$.
 
-  Each fold step first checks that the candidate is well-formed --- not
-  a loop, and not already oriented in either direction in $D$ --- and
-  skips it as a no-op otherwise; on a well-formed candidate it invokes
-  $\mathrm{tryAddEdge}$ and recurses on the result. The reachability
-  property of the orientation is maintained across the fold, so it
-  need not be rechecked at each step.
+  Now let $G$ be a simple graph on $V$, and let $\ell < 2k$. The
+  \emph{pebble game on $G$} is the pebble game from the empty
+  orientation on a list of the edges of $G$ in which each edge $uv$
+  appears once, as $(u, v)$ or as $(v, u)$. It \emph{accepts} $G$ if
+  this game returns a partial orientation $D$. It \emph{rejects} $G$,
+  with the set $V'$, if the game returns a failure witness whose set is
+  $V'$.
 \end{definition}
+
+The game is defined at every step, since processing an edge returns a
+$(k, \ell)$-reachable orientation when it accepts. It stops, since the
+list is finite. In \cref{sec:pebble-game-soundness} we show that if the
+game accepts $G$ with $D$, then $\underline{D} = E(G)$, and $G$ is
+$(k, \ell)$-sparse. In \cref{sec:pebble-game-correctness} we show that
+if it rejects $G$ with $V'$, then $V'$ is a blocking witness for $G$.
+The formal pebble game on $G$ returns its answer together with proofs
+(\cref{def:pebbleGameResult}). With $D$ it returns proofs that
+$\underline{D} = E(G)$ and that $D$ is $(k, \ell)$-reachable. With
+$V'$ it returns a proof that $V'$ is a blocking witness for $G$, for
+which it uses $\ell < 2k$.
 
 \begin{fmlnote}
   \label{fmlnote:pebble-game-computable-core}
-  Each of the three procedures --- $\mathrm{tryReachPebble}$,
-  $\mathrm{tryAddEdge}$, and $\mathrm{runPebbleGame}$ --- is formalized
-  as a computable core (its name carries a $\mathrm{With}$ suffix)
-  together with a convenience form. The core takes, as an extra
-  argument, a caller-supplied enumeration of each vertex's
-  out-neighbours as a list --- one per intermediate orientation, since
-  path reversal changes the arc set --- with a proof that the list
-  agrees with the arc relation; the convenience form supplies the
-  orientation's own out-neighbour list. The convenience form is
-  noncomputable only because mathlib's $\mathrm{Finset.toList}$ is; the
-  computability gap is closed in \cref{sec:executable}, and a caller
-  that needs to run the algorithm invokes the core directly. Every
-  soundness and completeness claim below is proved for the core and
-  inherits to the convenience form.
-
-  The core is also graph-free: it never refers to an ambient graph $G$,
-  so on acceptance it returns the extended orientation and on rejection
-  only the failure witness of \cref{def:workhorseWitness}. The
-  verdict-bearing $\mathrm{runPebbleGame}$ repackages this raw output as
-  the $\mathrm{PebbleGameResult}\,G\,k\,\ell$ of
-  \cref{def:pebbleGameResult}, discharging the $G$-dependent proof
-  fields through \cref{lem:workhorseWitness-certifies} on the reject
-  side and the soundness chain of \cref{sec:pebble-game-soundness} on
-  the accept side.
+  The pebble search, the processing of an edge and the pebble game on
+  a list are formalized with the lists $N^+_D(a)$ as an argument, one
+  for each partial orientation $D$ and vertex $a$, together with a
+  proof that the entries of $N^+_D(a)$ are the out-neighbours of $a$
+  in $D$. These forms (the declarations whose names end in ``With'')
+  can be computed whenever the lists can, and the results below are
+  proved for them. A second form of each procedure takes for
+  $N^+_D(a)$ mathlib's list of the elements of the finite set of
+  out-neighbours, so it is the first form with particular lists. The
+  pebble game on $G$ lists the edges of $G$ in the same way, and writes
+  each edge as an ordered pair by a choice. As in \cref{sec:dfs},
+  mathlib lists the elements of a finite set by a choice that cannot be
+  computed, so the second forms cannot be computed. In
+  \cref{sec:executable} we use lists sorted by a linear order on $V$
+  instead, which can be computed.
 \end{fmlnote}
 
 \subsection{Soundness}
@@ -677,44 +806,6 @@ Iterating produces the $\ell + 1$ pebbles needed to insert.
   \cref{lem:span-eq-ncard-edgesIn}) and freshness of $\{u, v\}$ with
   respect to $\underline{D}$.
 \end{proof}
-
-\begin{definition}[Algorithm-level failure witness]
-  \label{def:workhorseWitness}
-  \lean{CombinatorialRigidity.PebbleGame.WorkhorseWitness}
-  \leanok
-  \uses{def:partial-orientation, def:pebble-counts,
-    def:reachable-orientation}
-  Fix parameters $k$ and $\ell$ and a vertex type $V$. A
-  \emph{failure witness} $w = (D, V', (u, v), \dots)$ packages the data
-  extracted at the rejection point of $\mathrm{tryAddEdge}$ (both
-  searches fail) into a record of the following fields, all defined
-  relative to the partial orientation $D$ at the failure point:
-  \begin{itemize}
-    \item $D$ — the partial orientation at the failure point;
-    \item $V' \subseteq V$ — the blocking subset (the algorithmic
-      instance has $V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$);
-    \item the pending edge $(u, v)$ with $u \ne v$, $u, v \in V'$;
-    \item $\mathrm{out}_D(V') = 0$ — $V'$ is closed under $D$'s
-      outgoing arcs;
-    \item $\mathrm{peb}_{D, k}(V') \le \ell$ — the subset-level pebble
-      bound, strictly stronger than the per-vertex below-threshold
-      $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \le \ell$:
-      combined with the failure assertion ``no free pebble outside
-      $\{u, v\}$ in $V'$'', every other vertex of $V'$ has zero pebble
-      count and the subset sum collapses;
-    \item $\{u, v\} \notin \underline{D}$ — the candidate edge is fresh
-      against the running orientation's underlying edge set; and
-    \item $D$ is $(k, \ell)$-reachable
-      (\cref{def:reachable-orientation}).
-  \end{itemize}
-  The witness is deliberately $G$-free: the algorithm never references
-  an ambient graph $G : \mathrm{SimpleGraph}\,V$, so the witness records
-  only algorithm-side data. The $G$-shaped sparsity-violation
-  certificate (\cref{def:blockingWitness}) is recovered at the verdict
-  layer by \cref{lem:workhorseWitness-certifies} once the bridge
-  hypotheses $\{u, v\} \in E(G)$ and $\underline{D} \subseteq E(G)$ are
-  supplied.
-\end{definition}
 
 \begin{lemma}[Failure witness certifies non-sparsity]
   \label{lem:workhorseWitness-certifies}

@@ -5,11 +5,12 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.12 are done: the open, the
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1–5.13 are done: the open, the
 dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
 `notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
-PI*), and the first twelve slices, `sparsity.tex` through `dfs.tex`.
-**Next concrete task:** task 5.13, `pebble-game.tex`'s first part. Round manual: `CLEANUP.md`.
+PI*), and the first thirteen slices, `sparsity.tex` through `pebble-game.tex`'s first part.
+**Next concrete task:** task 5.14, `pebble-game.tex`'s soundness and completeness. Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,23 +55,22 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The twelfth slice has landed** (task 5.12, this commit): all of `dfs.tex`, the first carve-out
-chapter, now 1–204 (179 lines at the parent). Tasks 5.1–5.11 rewrote `sparsity.tex` through
-`count-matroid.tex`. The register is *Scope*'s. Nothing is mid-stream; task 5.13 is next.
+**The thirteenth slice has landed** (task 5.13, this commit): `pebble-game.tex`'s *State and
+moves*, *Invariants* and *The basic algorithm*, now 61–539, with the failure witness moved in from
+*Completeness*. Tasks 5.1–5.12 rewrote `sparsity.tex` through `dfs.tex`. Nothing is mid-stream;
+task 5.14 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
   `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
-  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (137 overfull boxes, none in
-  `dfs.tex`; 139 at `d6a53778`). The screens on `dfs` read 0 and 0 / 0 (the open's: 2 and
-  14 / 21).
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (131 overfull boxes, none in
+  61–539; 137 at `e5dd8256`). The screens on 61–539 read 0 and 3 / 9, every device hit
+  `\mathrm{span}`, Lee–Streinu's own notation (2 and 17 / 30 on the same text at the parent).
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
 
-**Verified at the open** (2026-10-07; detail in the log at `bca00d3f`): whole-project `lake build`
-green at `6f4f7afa`; `#print axioms` on the 19 `formalization.yaml` main results gives `[propext,
-Classical.choice, Quot.sound]` (harness `scratch/prose-laman/Axioms.lean`, gitignored);
-`notes/Prose.md` §7 re-measured (round 1: 12 files, 5 011 lines, 153 nodes, 181 pins).
-**The round's gate values**, which every slice must reproduce:
+**The round's gate values**, which every slice must reproduce (verified at the open, 2026-10-07,
+with the whole-project `lake build` and the axioms of the 19 main results; detail in the log at
+`bca00d3f`):
 - `blueprint/lint.sh` green. `blueprint/verify.sh` green: `checkdecls` silent, and **9**
   `WARNING:` lines, all plasTeX package and renderer notices.
 - `blueprint/print/print.log`: **0** `LaTeX Warning` lines; overfull boxes counted, not gated (176
@@ -176,73 +176,19 @@ slice re-derives its own findings and records them in its commit and the ledger.
 Phases 1–5 wrote the earliest of these chapters in backfill mode, and phases 6–11 kept their
 style: the register is mostly flat, and the problem is Lean devices in statements and proofs.
 
-- **`sparsity`** is the chapter model (`blueprint/CLAUDE.md`, `blueprint/DESIGN.md`;
-  `AUTHORING.md` lines 104 and 142, whose quoted "Immediate from the definition." is
-  `frameworks.tex`'s, not this chapter's). The register is already close; there is no roadmap,
-  only two section openings, the second sending the reader to `sec:intro` for the Laman case. The
-  last subsection's "bridge-augmented candidate `G[\{w \ne v\}] \cup \{\{x, y\}\}`" is a subtype
-  standing for `G − v + xy`, and its proof works through "the inclusion of `G'`'s vertices".
-  "Tight-blocker" and "per-pair" are coinages; Jordán's term is a *suitable* splitting. Line 59
-  names `SimpleGraph.incidenceSet` in prose. `lem:edgesIn-corners` (4 pins) is principle D's
-  corner-case grouping.
-- **`laman`** is short and clean. Its opening and *The base case* send the reader to `sec:intro`
-  for the Henneberg induction, which is in `laman-theorem.tex`. A statement writes the complete
-  graph as `⊤`. *Degree bounds*' "(so we cannot reverse a Type~I move at a vertex of degree~1)"
-  is muddled.
-- **`henneberg`** has the most Lean-shaped statements of the round. Its opening fixes "the fresh
-  vertex is `none : Option V`", and statements read `typeI G a b`, `Sym2.map some` and
-  `(typeI G a b).IsLaman ⟺ G.IsLaman`. Henneberg's Type I and II moves are Jordán's 0- and
-  1-extensions (Jordán 2016 p. 38, which glosses the first as "a Henneberg move of type I";
-  Lemmas 1.2.2–1.2.3, and p. 44). The opening's "Henneberg's theorem characterises Laman graphs"
-  needs a source check, since Henneberg 1911 predates Laman 1970. The reverse decomposition is
-  stated with `G[\{w \ne v\}]` and rests on `rigidity-matroid.tex`'s sparse form, a later
-  chapter.
-- **`frameworks`**: statements name `Framework V d` and `RigidityMap G p`, and proofs cite mathlib
-  lemma names. "Generically rigid" is defined as "some placement is infinitesimally rigid", and
-  the injective form is a device the Henneberg induction needs; each wants a sentence where it is
-  defined. *To check:* for `|V| ≤ d`, the bound `dim ker ≤ d(d+1)/2` is weaker than Asimow–Roth's
-  infinitesimal rigidity. Read from `IsInfinitesimallyRigid`'s body, two unjoined vertices in
-  `ℝ³` satisfy it (`6 ≤ 6`); at `d = 2` the two agree. If so: a formalization note, and an `S`
-  entry. *Task 5.4:* confirmed for $2 \le |V| \le d - 1$ only (`F-020`).
-- **`henneberg-rigidity`**: the idea, where to place the new vertex, is in the opening's bullets.
-  Statements carry `Option V`, `none`, `some` and `typeI`.
-  `thm:typeII-isGenericallyRigidInj-two-of-nonCollinear` uses `p_a, p_b, p_c` before it introduces
-  `a, b, c`. The chapter cites nothing: Jordán's Lemmas 1.2.2–1.2.3 (p. 38) state the rank
-  preservation, citing Whiteley 1996 Lemmas 11.1.1 and 11.1.7; check and attribute. "Strengthened
-  decomposition" is stale.
-- **`trivial-motions`** uses the Lean names as notation in its statements (`translationMotion t`,
-  `infinitesimalRotation A p`, `trivialMotions p`, `elemSkewMap i j`), and its proofs cite mathlib
-  names. The index-set formalization note may fail principle D's deletion test.
-- **`laman-theorem`**: the ⇐ proof names `typeI_iso_of_two_neighbors`. The subsubsection *The
-  rigidity rows as a family in the algebraic dual* is a Lean presentation, and the ⇒ proofs cite
-  about ten mathlib names. "A classical Maxwell-type counting argument; see Jordán Lemma 1.3.1" is
-  the attribution shape root `CLAUDE.md` warns about: check Jordán 1.3.1 and credit Maxwell's
-  count. "Is not needed for the iff itself" is garbled (it is not needed for Laman's theorem).
-- **`rigidity-matroid`**: the new vertex is `none : Option V` in the Type I lemmas and `\star`,
-  with `V \sqcup \{\star\}`, in `lem:typeII-rowIndependent-lift`; one notation should hold
-  chapter-wide. `lem:typeI-rowIndependent-lift`'s proof speaks of "one or two lines", both through
-  `p'_a` or `p'_b` in direction `p'_b − p'_a`: they are one line. The opening's *Terminology*
-  repeats `sparsity.tex`'s critical-set gloss, and `count-matroid.tex` gives it a third time. The
-  subsection *Linear-matroid framing* puts `Matroid.ofFun`, `Function.extend` and `Subtype.val`
-  in statements and proofs. *From task 5.2:* the opening's "Jordán Lemma 2.1.3 is
-  `thm:isTightOn-union-with-bonus` composed twice" is false (`F-016`), and the sparse
-  decomposition's "per-pair tight-blocker" and $G^{u,w}_v$ should match `sparsity.tex`'s
-  *splitting* and $G - v + xy$.
-- **`count-matroid`**: statements use `fromEdgeSet I`, `\mathrm{Sym}_2 V` and `maxBlock X`. The
-  *Terminology* paragraph answers a question not asked (Jordán's M-circuits). To check against
-  `.refs/`: "introduced by Whiteley", "Whiteley's appendix", "Theorem 5(4)", and that outside
-  `ℓ < 2k` "the bases need not have equal cardinality". `IndepMatroid.ofFinite` is named in prose.
-- **`dfs`** (carve-out) is close already. `List V`, `some (w, p)`, `none`,
-  `Relation.ReflTransGen` and `DirectedWalk.dropUntilBundle` appear in statements and proofs.
-- **`pebble-game`** (carve-out) is the largest chapter and the most Lean-shaped. Statements carry
-  `.inr D`, `.inl w`, `w.uv_1`, `runPebbleGameWith empty k ℓ …`, `WorkhorseWitness` and
-  `PebbleGameResult`. Coinages: "computable core", "convenience form", "verdict-bearing". Bundled
-  nodes: `def:pebble-counts` (5 pins), `lem:pebble-game-invariants` (5), `def:tryReachPebble` (4);
-  and `def:blockingWitness` has no pin and no `\leanok`. `thm:pebble-game-soundness` assumes
-  `ℓ < 2k`, which its pin `runPebbleGameWith_sound` does not take (read in the Lean; the proof
-  says so in a parenthetical): an `S` entry, statement weaker than pin. Check the Lee–Streinu
-  pointers (§§3–6, Theorem 8, Lemmas 10–15, Corollaries 11–12), Jacobs–Hendrickson 1997, and
-  Lee–Streinu–Theran (the bib entry is CCCG 2005; `.refs/` holds a 2008 file).
+- **Done chapters.** The open's bullets for `sparsity` through `dfs` were consumed by tasks
+  5.1–5.12; they are in this log at `e5dd8256`, and each task's findings are in its commit and the
+  ledger.
+- **`pebble-game`** (carve-out) is the largest chapter and the most Lean-shaped. Task 5.13 rewrote
+  61–539. Left for 5.14–5.15: `.inr D`, `.inl w`, `w.uv_1`, `runPebbleGameWith empty k ℓ …`,
+  `WorkhorseWitness` and `PebbleGameResult` in statements, and the coinages "computable core",
+  "convenience form", "verdict-bearing" and "matroidal regime". Bundled nodes (`F-009`, round 5):
+  `def:pebble-counts` (5 pins), `lem:pebble-game-invariants` (5), `def:tryReachPebble` (4); and
+  `def:blockingWitness` has no pin and no `\leanok`. `thm:pebble-game-soundness` assumes `ℓ < 2k`,
+  which its pin `runPebbleGameWith_sound` does not (read in the Lean; the proof says so in a
+  parenthetical): an `S` entry, statement weaker than pin. Check the Lee–Streinu pointers (§§3–6,
+  Theorem 8, Lemmas 13–15, Corollaries 11–12), Jacobs–Hendrickson 1997, and Lee–Streinu–Theran
+  (the bib entry is CCCG 2005; `.refs/` holds a 2008 file).
 - **`executable`** (carve-out) is about the Lean artefact itself (`#eval`, `decide`,
   `native_decide`, the `Decidable` instances, the CLI), so names stay as addresses. What goes:
   Lean as the subject of sentences, changelog ("was already factored", "no longer needed"), and
@@ -266,38 +212,23 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
 - [ ] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
   - [x] **5.1 `sparsity.tex`, first half** (`4657a7fc`; 15 nodes). Found `F-014`.
-  - [x] **5.2 `sparsity.tex`, second half and openings, and `laman.tex`** (`0a2230a0`; 14 nodes):
-    Jordán's *splitting*, $G - v + xy$. Found `F-015`–`F-018`.
-  - [x] **5.3 `henneberg.tex` apart from the sample** (`690ac764`; 8 nodes): the moves in words,
-    `fmlnote:henneberg-new-vertex`. Found `F-019`.
-  - [x] **5.4 `frameworks.tex`** (`6fcabe9c`; 19 nodes): $R(G, p)$,
-    `fmlnote:infinitesimal-rigidity`. Found `F-020`.
-  - [x] **5.5 `henneberg-rigidity.tex`** (`a9bde8de`; 5 nodes): $\hat p$; Jordán's Lemmas
-    1.2.2–1.2.3 and Whiteley's 11.1.1 and 11.1.7 credited. Found `F-021`, `F-022`.
-  - [x] **5.6 `trivial-motions.tex`** (`0ac690f4`; 13 nodes): $T(p)$, $\tau_b$, $A \circ p$; the
-    count credited to Whiteley §11.1 and Jordán p. 36. Found `F-023`, `F-024`.
-  - [x] **5.7 `laman-theorem.tex`, first part** (`2e09aae1`; 9 nodes; 30–329 now): the rows as
-    functionals $r_e$ with the transpose; mathlib names out; the count credited to Maxwell (new key
-    `maxwell1864`), the characterization to Laman. Found `F-025`, `F-026`.
-  - [x] **5.8 `laman-theorem.tex`, second part and opening** (`318020da`; 4 nodes; 331–513 and
-    1–28): a roadmap opening crediting Laman (Jordán's Theorem 2.2.2); the perturbation and
-    sparsity proofs in words, with $r_e = r'_e \circ \rho$. Found `F-027`.
-  - [x] **5.9 `rigidity-matroid.tex`, first part** (`537db294`; 8 nodes; now 41–502): the
-    degree-three case in the Lean's split, Jordán's 2.1.3 argued inline; the lifts as moves in
-    words. Found `F-028`.
-  - [x] **5.10 `rigidity-matroid.tex`, second part and opening** (`d0178306`; 10 nodes; now
-    504–827 and 1–39): a roadmap opening crediting Laman; the induction on $|V|$; the matroids on
-    $E(K_V)$ in words. Found `F-029`, `F-030`.
-  - [x] **5.11 `count-matroid.tex`** (`d6a53778`; 8 nodes; now 1–298): Lee–Streinu's components
-    and $C_G(X)$ for `maxBlock`; the count matroid credited to Lorea and White–Whiteley; a false
-    free-edge remark and the $(3,6)$ example dropped. Found `F-031`, `F-032`.
-  - [x] **5.12 `dfs.tex`** (this commit; carve-out; 5 nodes; now 1–204): the search's steps as a
-    numbered list, its results in words; Lee–Streinu's reachability region. Found `F-033`.
-  - [ ] **5.13 `pebble-game.tex`, state, invariants and the basic algorithm** (carve-out; 61–410):
-    10 nodes, 350 lines.
-  - [ ] **5.14 `pebble-game.tex`, soundness and completeness** (411–783): 9 nodes, 373 lines.
-  - [ ] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (784–960, 1–60):
-    4 nodes, 237 lines.
+  - [x] **5.2 `sparsity.tex`, rest and openings, `laman.tex`** (`0a2230a0`). `F-015`–`F-018`.
+  - [x] **5.3 `henneberg.tex` apart from the sample** (`690ac764`; 8 nodes). Found `F-019`.
+  - [x] **5.4 `frameworks.tex`** (`6fcabe9c`; 19 nodes). Found `F-020`.
+  - [x] **5.5 `henneberg-rigidity.tex`** (`a9bde8de`; 5 nodes). Found `F-021`, `F-022`.
+  - [x] **5.6 `trivial-motions.tex`** (`0ac690f4`; 13 nodes). Found `F-023`, `F-024`.
+  - [x] **5.7 `laman-theorem.tex`, first part** (`2e09aae1`; then 30–329). `F-025`, `F-026`.
+  - [x] **5.8 `laman-theorem.tex`, rest and opening** (`318020da`; 331–513, 1–28). `F-027`.
+  - [x] **5.9 `rigidity-matroid.tex`, first part** (`537db294`; then 41–502). Found `F-028`.
+  - [x] **5.10 `rigidity-matroid.tex`, rest and opening** (`d0178306`). `F-029`, `F-030`.
+  - [x] **5.11 `count-matroid.tex`** (`d6a53778`; then 1–298). Found `F-031`, `F-032`.
+  - [x] **5.12 `dfs.tex`** (`e5dd8256`; then 1–204). Found `F-033`.
+  - [x] **5.13 `pebble-game.tex`, state, invariants and the basic algorithm** (this commit; now
+    61–539, 11 nodes with the moved failure witness): the moves, the invariants and the procedures
+    in words, the procedures as numbered steps. Found `F-034`, `F-035`.
+  - [ ] **5.14 `pebble-game.tex`, soundness and completeness** (now 540–874): 8 nodes.
+  - [ ] **5.15 `pebble-game.tex`, correctness, verdict, corollary and opening** (now 875–1051,
+    1–60): 4 nodes, 237 lines.
   - [ ] **5.16 `executable.tex`** (carve-out): 8 nodes, 428 lines.
 - [ ] **6. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat <open>.. --
@@ -332,6 +263,8 @@ finding). Recorded, never acted on in this round; round 5's report ranks them fo
   vertex sets finite; their pins do not.
 - `F-031` (S, task 5.11): `lem:exists-isTightOn-of-insert-not-sparse` assumes $V$ finite; its pin
   does not.
+- `F-034` (S, task 5.13): `lem:pebble-game-invariants` assumes $V$ finite and $\ell < 2k$, and
+  puts (1)–(2) under $\ell \le k|V'|$; its pins assume none of these.
 
 ## Moved to a later round
 
@@ -376,6 +309,8 @@ one line each naming the ledger ID and the task that found it.
   $(3,6)$-sparse graphs have no edges.
 - `F-033` (L, task 5.12): the search marks only the current walk, so it is exponential in the
   worst case; docstrings call the reachability region's cost quadratic.
+- `F-035` (L, task 5.13): docstrings in `PebbleGame/Basic.lean` and `Algorithm.lean` that
+  describe later or earlier states of the code; one contradicts its file.
 
 ## Blockers / open questions
 
@@ -383,56 +318,59 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.13**, the thirteenth slice: `pebble-game.tex`'s *State and moves*, *Invariants* and
-*The basic algorithm* (carve-out; 61–410, unchanged since the open), 10 nodes and 350 lines. The
-chapter's opening (1–60) waits for task 5.15 (principle F). The diagnosis is under *Per-chapter
-diagnosis*, the gates under *Scope*, and the register is *Scope*'s. What 5.13 must know:
-- **How 5.12 applied the carve-out** (`dfs.tex`; *Decisions*, "The carve-out in tasks 5.12–5.16").
-  The search's definition lists its steps as a numbered list in plain computational English
-  (fails, returns, marks, runs, stops), and the proofs cite the steps ("returns in step~2").
-  Result types are words: the search "returns a vertex $w$ and a walk $p$" or "fails", and
-  completeness says it "does not fail". Lean names left statements, proofs and notation:
-  `reachableFinding` is "the search for $P$ from $v$" (with $S$ marked, in general), `succ` is
-  the out-neighbour list $N^+(a)$, `ReflTransGen` is "reachable from $u$ along $R$" (glossed once
-  as the reflexive-transitive closure), and `reachClosureComputable` is $\mathrm{Reach}_R(v)$, the
-  *reachability region* (Lee–Streinu §4, p. 1432). One `fmlnote` says, in words, why lists and a
-  Boolean predicate (computability). Termination and cost went to the prose after the definition.
-- **To fix in 5.13.** `def:tryReachPebble` uses $\mathrm{reachableFinding}$ as notation, and its
-  last sentence (that $\mathrm{Reach}_D(v)$ "coincides with the visited set of a fully-exhausted
-  search") is false: the search keeps no visited set across branches, only the current walk
-  (`F-033`). $\mathrm{Reach}_D(v)$ is `def:reachClosureComputable`'s $\mathrm{Reach}_R(v)$ for the
-  arc relation of $D$; `dfs.tex`'s opening already says how the game uses the search and the
-  region, so `pebble-game.tex` need not re-describe the search.
+**Next: task 5.14**, the fourteenth slice: `pebble-game.tex`'s *Soundness* and *Completeness*
+(carve-out; now 540–874, which was 411–783 at the open less the failure witness that 5.13 moved
+into *The basic algorithm*), 8 nodes. The opening (1–60) and 875–end wait for task 5.15. The
+diagnosis is under *Per-chapter diagnosis*, the gates under *Scope*. What 5.14 must know:
+- **The names 5.13 fixed** (*Decisions*, "Task 5.13: the pebble game's names"). In particular
+  `tryAddEdge D k ℓ u v` returning `.inr D'` is "processing $uv$ at $D$ accepts $uv$ and returns
+  $D'$", and `.inl w` is "rejects $uv$ and returns a failure witness"; `w.uv_1`, `w.uv_2`, `w.D`
+  and `w.V'` are the witness's $u$, $v$, $D$ and $V'$. Where the text says "the computable core",
+  say "for every choice of the lists $N^+_D(a)$", which `fmlnote:pebble-game-computable-core` now
+  explains.
+- **Already written in 61–539, so cite it rather than repeat it.** After `def:tryAddEdge`: each
+  step is defined and keeps $(k, \ell)$-reachability, the termination measure, and why step 4's
+  data form a failure witness ($\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ has no leaving arc,
+  credited to Lee–Streinu's proof of Lemma 13). `lem:runPebbleGameWith-underline-subset`'s proof
+  speaks of "the five cases of tryAddEdge's recursion"; `def:tryAddEdge` now has four numbered
+  steps, step 1 with two insertion branches.
+- **`F-034`.** `lem:pebble-game-invariants` keeps its statement: $V$ finite, $\ell < 2k$, and all
+  four parts under $\ell \le k|V'|$. Where 5.14's proofs use a part without those hypotheses, cite
+  the proof, as 5.13 does for $\mathrm{out}_D \le k$. Check each statement in 540–874 against its
+  pin for `ℓ < 2k` and finiteness (`thm:pebble-game-soundness` is known, under the diagnosis).
+- **`def:blockingWitness`** now asks $\ell \le k|V'|$: its old "Equivalently, $G$ is not sparse on
+  $V'$" did, and its first sentence did not. It has no pin; the reject verdict carries both.
+- **Lee–Streinu for 5.14**, all in `.refs/`: Corollary 12 and the sentence after it (p. 1432,
+  "one direction"), Lemma 13 and its proof (pp. 1432–1433), Lemma 14 and its proof, the remark on
+  Fig. 5, Lemma 15 (p. 1433).
 - **For 5.15 and 5.16.** Lee–Streinu's $O(m_a n)$ bound (§3, p. 1430) counts linear-time searches,
-  and this search is exponential in the worst case (`F-033`). `pebble-game.tex`'s *Out of scope*
-  paragraph and `executable.tex`'s polynomial-time sentences must not claim a bound for the formal
-  algorithm that nothing proves.
-- **Terms fixed by 5.11, for 5.13–5.16.** "For $\ell < 2k$" replaces the coinage "the matroidal
-  regime". A *component* of a sparse graph is a maximal tight set (Lee–Streinu's term, defined in
-  `count-matroid.tex`'s opening), and $C_G(X)$ is the union of the tight sets containing $X$
-  (`def:isSparse-maxBlock`); "$I$-component" and `maxBlock` are gone from that chapter. A set
-  $I \subseteq E(K_V)$ is *$(k,\ell)$-sparse* if the graph on $V$ with edge set $I$ is (5.10's
-  phrase for $\mathrm{fromEdgeSet}\,I$). `pebble-game.tex` and `executable.tex` still say
-  "matroidal regime" and "$I$-component". The blueprint numbers chapters as sections: write
-  "section", not "chapter".
-- **Sources checked by 5.4–5.12:** Jordán pp. 35–39 (§1.2–1.3.1; Lemmas 1.2.1–1.2.3 citing
-  Whiteley's 11.1.3, 11.1.1 and 11.1.7; Lemma 1.3.1), pp. 43–45 (Lemmas 2.1.1–2.1.5; Theorems
-  2.2.1–2.2.2, credited to Laman), pp. 48–49 and 51 (`F-025`). Lee–Streinu 2008: Lemma 1, Theorem
-  2 (crediting Lorea and White–Whiteley), Theorem 5(1)–(4), Corollaries 6–7; §3's complexity
-  paragraph (p. 1430: "at most $\ell + 1$ depth-first searches through D"); §4's $\mathrm{Reach}(v)$
-  and Lemma 13 (p. 1432); path reversal in Lemma 10's proof (p. 1432). Whiteley 1996 (a preprint:
-  cite by number only): Appendix A, Proposition A.1.1. Asimow–Roth is verified only for "rigidity
-  is decided for almost all placements" and "at a generic framework, rigid iff infinitesimally
-  rigid".
+  and this search is exponential in the worst case (`F-033`): no running-time claim for the formal
+  algorithm. The opening (1–60) still says "matroidal regime" and "$I$-component", and that the
+  per-edge equivalence is "recorded in the return type of `def:tryAddEdge`, one constructor per
+  outcome". `executable.tex` cites `fmlnote:pebble-game-computable-core` for "the computable
+  core" and "the convenience form", names the note no longer uses (it says: the forms with the
+  lists as an argument, names ending in "With", and the forms with mathlib's lists).
+  Jacobs–Hendrickson 1997 is cited only in 1–60 and the chapter's last paragraph; Crossref's record
+  for DOI `10.1006/jcph.1997.5809` matches the bib entry (title, J. Comput. Phys. 137(2),
+  346–365), as does Lee–Streinu's reference [14].
+- **Terms fixed by 5.11, for 5.14–5.16.** "For $\ell < 2k$" replaces "the matroidal regime". A
+  *component* of a sparse graph is a maximal tight set (Lee–Streinu's term, `count-matroid.tex`'s
+  opening), and $C_G(X)$ is the union of the tight sets containing $X$; "$I$-component" is gone
+  from that chapter. A set $I \subseteq E(K_V)$ is *$(k,\ell)$-sparse* if the graph on $V$ with
+  edge set $I$ is. Write "section", not "chapter".
+- **Sources checked by 5.4–5.13:** Jordán pp. 35–39, 43–45, 48–49 and 51; Lee–Streinu 2008:
+  Lemma 1, Theorem 2, Theorem 5(1)–(4), Corollaries 6–7, §3 (p. 1430, and Fig. 4's Algorithm 1,
+  p. 1431), §4 (the functions and Lemma 10, p. 1432; $\mathrm{Reach}(v)$ and Lemma 13,
+  pp. 1432–1433); Whiteley 1996 (a preprint: cite by number only), Proposition A.1.1. Asimow–Roth
+  is verified only for "rigidity is decided for almost all placements" and "at a generic
+  framework, rigid iff infinitesimally rigid". Detail is in each task's commit.
 - **For the close (task 6):** `notes/BlueprintExposition.md`'s Group-A line still says
-  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.14–5.16 follow in
+  "Lovász–Yemini easy direction" and "hard direction" (`F-025`). Then tasks 5.15–5.16 follow in
   order, and task 6 closes the round.
 
 **The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
-result is understandable". For the first few slices (at least 5.1–5.3), the coordinator reads each
-one's rendered text in full against the exemplar, beyond the gates, and tightens the next dispatch
-prompt where the guidelines fall short. The coordinator read 5.1–5.3 in full against the exemplar
-(2026-10-07): understandable, no prompt tightening needed; it keeps reading each slice's text.
+result is understandable". The coordinator read 5.1–5.3 in full against the exemplar (2026-10-07):
+understandable, no prompt tightening needed; it keeps reading each slice's text.
 
 ## Decisions made during this round
 
@@ -486,3 +424,10 @@ prompt where the guidelines fall short. The coordinator read 5.1–5.3 in full a
   Whiteley's 11.1.3 and Jordán's 1.3.1, and "row-independent iff sparse" to Laman, as Jordán does
   (`F-025` records where the blueprint says Lovász–Yemini). A truncated `2 * card V - 3` in a pin
   is written $\max(2|V| - 3, 0)$: the pin's meaning, which the real-number reading made false.
+- **Task 5.13: the pebble game's names**, for 5.14–5.16. The procedures are "the pebble search for
+  $P$ from $v$ in $D$" (`def:tryReachPebble`), "processing $uv$ at $D$", which accepts $uv$ and
+  returns $D'$ or rejects it and returns a *failure witness* $(D, V', (u, v))$ (`def:tryAddEdge`,
+  `def:workhorseWitness`), and "the pebble game on a list from $D_0$" and "on $G$", which accepts
+  $G$ with $D$ or rejects it with $V'$ (`def:runPebbleGame`). Each partial orientation comes with
+  out-neighbour lists $N^+_D(a)$; $\mathrm{Reach}_D(x)$ is Lee–Streinu's reachability region. The
+  Lean's verdict type is "the formal pebble game on $G$ returns its answer together with proofs".
