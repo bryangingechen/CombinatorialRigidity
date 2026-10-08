@@ -9,8 +9,8 @@ fifth repairs the dependency graph and writes the findings report. There is one 
 round 1's sample section. Round 1's tasks 1–4 have landed: the open, the dependency-audit script
 `scripts/blueprint-deps.py` (§5), with its first report in the ledger, the sample section, and,
 after the PI approved it at Stop 1 (§6) on 2026-10-07 (round 1's log, *Autopilot: for the PI*),
-its pinning as the exemplar `notes/Prose-exemplar.md`.
-**Next concrete task:** round 1's task 5.1, the first slice.
+its pinning as the exemplar `notes/Prose-exemplar.md`; so has task 5.1, the first slice.
+**Next concrete task:** round 1's task 5.2, the second slice.
 
 ## 1. The PI's decisions
 

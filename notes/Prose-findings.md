@@ -224,6 +224,19 @@ declaration's name as its header writes it:
   diagnosis (delete, wire in, or keep as exposition), not a reflex deletion.
   *Evidence:* measured (`scripts/blueprint-deps.py` report 2, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
+- **F-014** · N · `lem:isSparse-exists-degree-le-three` (`sparsity.tex`): the low-degree step of
+  the sparse reverse decomposition, `IsSparse.exists_one_le_degree_le_three` (a vertex of degree
+  1, 2 or 3 in a $(2,3)$-sparse graph with an edge), has no node; the proof of
+  `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`) argues it inline. This
+  node pins the weaker `IsSparse.exists_degree_le_three`, whose one Lean caller,
+  `IsLaman.exists_two_le_degree_le_three` (`lem:isLaman-exists-two-le-degree-le-three`,
+  `laman.tex`), has no caller and no node using it. Both pins lie outside every main result's
+  closure (F-012), though `laman.tex`'s *Degree bounds* counts the Laman form among the degree
+  conditions the Henneberg induction uses.
+  *Evidence:* read (the body of `IsSparse.exists_typeI_or_typeII_reverse`, `Sparsity.lean`; a
+  `grep` for both lemmas' callers); measured (`scripts/blueprint-deps.py --label`, dead pins, at
+  `09106a34`).
+  *Found:* round 1 task 5.1.
 
 ## T — terminology and notation
 

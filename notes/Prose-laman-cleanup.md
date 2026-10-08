@@ -5,11 +5,11 @@ PI's decisions and the one planned stop are in `notes/Prose.md`, and `.claude/au
 is the authority for which rounds are done. The round rewrites the prose of the twelve chapters
 `sparsity.tex` → `executable.tex` to `40-exposition`'s register. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 are done: the open, the
-dependency-audit script `scripts/blueprint-deps.py`, the sample, and, after the PI approved it at
-Stop 1 (2026-10-07, *Autopilot: for the PI*), its pinning as the exemplar `notes/Prose-exemplar.md`.
-**Next concrete task:** task 5.1, the first slice, `sparsity.tex`'s first half. Round manual:
-`CLEANUP.md`.
+`notes/Prose-findings.md`. 21 one-commit tasks; tasks 1–4 and 5.1 are done: the open, the
+dependency-audit script `scripts/blueprint-deps.py`, the sample, its pinning as the exemplar
+`notes/Prose-exemplar.md` after the PI approved it at Stop 1 (2026-10-07, *Autopilot: for the
+PI*), and the first slice, `sparsity.tex`'s first half. **Next concrete task:** task 5.2,
+`sparsity.tex`'s second half and openings, with all of `laman.tex`. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -54,17 +54,15 @@ Sonnet dispatches" is read as the first few slices; *Hand-off* carries the check
 
 ## Current state
 
-**The exemplar is pinned** (task 4, this commit; docs only). Stop 1 was answered by the PI on
-2026-10-07 (option B, *Autopilot: for the PI*; transcribed under *Decisions*), and the answering
-commit `e9e3f37d` made its one revision. The approved sample, `henneberg.tex` 159–258, is frozen
-in `notes/Prose-exemplar.md`; `blueprint/AUTHORING.md` has principle B's *Constructions* clause
-and the PI's "overriding goal" sentence before principles A–F. Nothing is mid-stream; task 5.1,
-the first slice, is next.
-- **Gates at `67525c41`**, and again at `e9e3f37d`, all the open's values: `lint.sh` green;
-  `verify.sh` green, with `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292
-  edges 673e3178d1b3145e` and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176
-  overfull boxes, as at the open). The register screen on `henneberg` now reads 1 and 26 / 53 (the open's 1 and 32 / 86);
-  the sample's own lines score 0 and 0.
+**The first slice has landed** (task 5.1, this commit): `sparsity.tex`'s first half, now 11–149
+and 162–317. The exemplar `notes/Prose-exemplar.md` (task 4, `09106a34`) and
+`blueprint/AUTHORING.md` principles A–F, with B's *Constructions* clause and the PI's "overriding
+goal" sentence, set the register. Nothing is mid-stream; task 5.2 is next.
+- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, with
+  `checkdecls` silent and 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e`
+  and `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (176 overfull boxes, none in
+  `sparsity.tex`). The screens on `sparsity` read 0 and 0 / 0 (the open's 0 and 0 / 1). The
+  earlier commits `67525c41` and `e9e3f37d` gave the same values; `henneberg` reads 1 and 26 / 53.
 - **For the slices:** `python3 scripts/blueprint-deps.py --label <label>` prints what a node's pins
   reach, each with its chain of constants, against its `\uses`; `--chapter <name>` does a chapter.
   The first run after a Lean or pin change takes about two minutes, and later runs read the cache.
@@ -287,12 +285,12 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
   159–273 at the open, 159–258 now): the four theorems and the lead-ins. Its three choices are
   Stop 1's item 2, approved. It also fixed a slip in the old Type~I proof and found `F-013`. At
   Stop 1 the PI's session dropped "These facts are classical." (`e9e3f37d`).
-- [x] **4. E — pin the exemplar** (this commit; docs only; the commit after the PI's Stop-1 entry).
+- [x] **4. E — pin the exemplar** (`09106a34`; docs only; the commit after the PI's Stop-1 entry).
   Transcribe the PI's answer verbatim into *Decisions*; copy the approved sample (159–259, already
   revised as the PI asked) to `notes/Prose-exemplar.md`, frozen as
   `notes/Phase40-exposition-exemplar.md` is; land the principle-B amendment in Stop 1's item 4
   wording (approved). The slice lists stand as proposed (item 6, approved).
-  - *Done* (this commit). The PI's answer is under *Decisions*, the attended session's notes in a
+  - *Done* (`09106a34`). The PI's answer is under *Decisions*, the attended session's notes in a
     separate entry. `notes/Prose-exemplar.md` holds `henneberg.tex` 159–258 at `e9e3f37d`, from the
     `\subsection` through the iff's `\end{proof}`; 259, counted in "159–259", is the blank line
     before *Reverse decomposition*. Checked with `cmp` and `diff` against `e9e3f37d`'s lines
@@ -302,8 +300,12 @@ task at Opus, a fresh agent per task, except the close, which may run at Sonnet 
     pointer.
 - [ ] **5. The slices**, one commit each, in `main.tex` order, each chapter's openings in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [ ] **5.1 `sparsity.tex`, first half**: §1's three subsections and §2's *Definitions*, *Basic
+  - [x] **5.1 `sparsity.tex`, first half**: §1's three subsections and §2's *Definitions*, *Basic
     properties* and *Low-degree* (11–142, 155–301); 15 nodes, 279 lines.
+    - *Done* (this commit; 11–149 and 162–317 now). Statements in KT's "Let … Then" shape, with
+      `⊥`, `G ≤ G'`, `G < H` and "vertex type" restated in words and the `incidenceSet` address
+      cut; lead-ins for *Vertex deletion*, *Basic properties* and *Low-degree*; Jordán's §2.1
+      sparse graphs, critical sets and Lemma 2.1.1 (p. 43) anchored. Found `F-014`.
   - [ ] **5.2 `sparsity.tex`, second half and openings, and all of `laman.tex`**: sparsity's
     isomorphism transport, tight-subset lattice and per-pair blocker (302–537) with both section
     openings (1–10, 143–154), and `laman.tex` (114 lines); 14 nodes, 372 lines. It writes
@@ -376,6 +378,8 @@ one line each naming the ledger ID and the task that found it.
 - `F-011` (N, task 2): seven missing edges that would close a cycle.
 - `F-012` (N, task 2): 202 pins outside every main result's closure (liveness).
 - `F-013` (L, task 3): `typeII_isLaman`'s binder `a ≠ b`, implied by its edge hypothesis.
+- `F-014` (N, task 5.1): the sparse reverse decomposition's low-degree lemma has no node; the
+  degree-≤ 3 node and its Laman form are outside every main result's closure.
 
 ## Blockers / open questions
 
@@ -383,15 +387,20 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next: task 5.1**, the first slice: `sparsity.tex`'s §1 (its three subsections) and §2's
-*Definitions*, *Basic properties* and *Low-degree* (11–142 and 155–301; 15 nodes). Its diagnosis is
-under *Per-chapter diagnosis*, its gates under *Scope*. The register is *Scope*'s: `AUTHORING.md`
-principles A–F, B's 2026-10-07 *Constructions* clause included, and the two exemplars,
-`notes/Phase40-exposition-exemplar.md` and `notes/Prose-exemplar.md`. Then tasks 5.2–5.16 follow
-in order, and task 6 closes the round. **The PI's check on the first slices** (Stop 1, item 5):
-"the overriding goal is to make sure the result is understandable". For the first few slices (at
-least 5.1–5.3), the coordinator reads each one's rendered text in full against the exemplar,
-beyond the gates, and tightens the next dispatch prompt where the guidelines fall short.
+**Next: task 5.2**, the second slice: `sparsity.tex`'s isomorphism transport, tight-subset lattice
+and per-pair blocker with both section openings (318–553, 1–10 and 150–161 at this commit; the
+checklist gives the open's numbers), and all of `laman.tex`; 14 nodes. Its diagnosis is under
+*Per-chapter diagnosis*, its gates under *Scope*, and the register is *Scope*'s (`AUTHORING.md`
+principles A–F and the two exemplars). Left for it by 5.1: the opening's "vertex type" (line 4);
+the chapter-model pointers, `AUTHORING.md` line 142's quotation among them (*Per-chapter
+diagnosis*); and `F-014`, which bears on `laman.tex`'s *Degree bounds* lead-in. The
+critical-set gloss now follows `def:isTightOn`, for tasks 5.10–5.11 to point at. Then tasks
+5.3–5.16 follow in order, and task 6 closes the round.
+
+**The PI's check on the first slices** (Stop 1, item 5): "the overriding goal is to make sure the
+result is understandable". For the first few slices (at least 5.1–5.3), the coordinator reads each
+one's rendered text in full against the exemplar, beyond the gates, and tightens the next dispatch
+prompt where the guidelines fall short.
 
 ## Decisions made during this round
 

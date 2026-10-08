@@ -14,10 +14,13 @@ the way the construction interacts with intersection and union.
   \label{def:edgesIn}
   \lean{SimpleGraph.edgesIn}
   \leanok
-  Define
+  For $S \subseteq V$, let
   \[
-    \edgesIn{S} \;:=\; \{\,e \in E(G) : e \subseteq S\,\}.
+    \edgesIn{S} \;:=\; \{\,e \in E(G) : e \subseteq S\,\}
   \]
+  be the set of edges of $G$ with both endpoints in $S$, that is, the
+  edge set of the subgraph of $G$ induced on $S$. We say that $S$
+  \emph{spans} these edges.
 \end{definition}
 
 \begin{lemma}[Monotonicity]
@@ -25,7 +28,8 @@ the way the construction interacts with intersection and union.
   \lean{SimpleGraph.edgesIn_mono}
   \leanok
   \uses{def:edgesIn}
-  If $S \subseteq T$ then $\edgesIn{S} \subseteq \edgesIn{T}$.
+  Let $S \subseteq T \subseteq V$. Then
+  $\edgesIn{S} \subseteq \edgesIn{T}$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -37,43 +41,46 @@ the way the construction interacts with intersection and union.
   \lean{SimpleGraph.edgesIn_univ, SimpleGraph.edgesIn_empty, SimpleGraph.edgesIn_singleton, SimpleGraph.edgesIn_bot}
   \leanok
   \uses{def:edgesIn}
-  $\edgesIn{V} = E(G)$, $\edgesIn{\emptyset} = \emptyset$, and
-  $\edgesIn{\{v\}} = \emptyset$ for every $v \in V$. Moreover, the empty
-  graph has no edges in any vertex set: $\edgesIn[\bot]{S} = \emptyset$.
+  Let $v \in V$ and $S \subseteq V$. Then $\edgesIn{V} = E(G)$,
+  $\edgesIn{\emptyset} = \emptyset$ and $\edgesIn{\{v\}} = \emptyset$.
+  If $G$ has no edges, then $\edgesIn{S} = \emptyset$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The first two are immediate from the definition. The singleton case
-  uses that $G$ is a simple graph, hence loopless: no edge has both
-  endpoints equal to a fixed $v$.
+  All but the third are immediate from the definition. A singleton
+  $\{v\}$ contains no edge, since $G$ has no loops and so the two
+  endpoints of an edge are distinct.
 \end{proof}
 
 \subsection{Vertex deletion}
 
-The next two lemmas describe what happens to $\edgesIn{S}$ when $S$ is
-obtained by removing a single vertex $v$. Together they yield the
-edge-count identity used in the minimum-degree argument for Laman
-graphs in later chapters.
+Let $v \in V$, and write $\{v\}^c = V \setminus \{v\}$. The set
+$\edgesIn{\{v\}^c}$ consists of the edges of $G$ that remain when $v$
+is deleted. Let $I_G(v) := \{\,e \in E(G) : v \in e\,\}$ be the set of
+edges of $G$ incident to $v$. When $V$ is finite, $|I_G(v)|$ is the
+degree of $v$. The next two lemmas show that deleting $v$ removes
+exactly the edges of $I_G(v)$, and count what remains. The count is
+used in \cref{lem:isLaman-two-le-degree} to show that every vertex of a
+Laman graph on at least three vertices has degree at least two.
 
-Write $I_G(v) := \{\,e \in E(G) : v \in e\,\}$ for the set of edges of
-$G$ incident to $v$ (mathlib's \texttt{SimpleGraph.incidenceSet}).
-
-\begin{lemma}[Edges missing a vertex]
+\begin{lemma}[Edges avoiding a vertex]
   \label{lem:mem-edgesIn-compl-singleton}
   \lean{SimpleGraph.mem_edgesIn_compl_singleton, SimpleGraph.edgesIn_compl_singleton}
   \leanok
   \uses{def:edgesIn}
-  For every $v \in V$,
+  Let $v \in V$. Then
   \[
-    \edgesIn{\{v\}^{c}} \;=\; E(G) \,\setminus\, I_G(v).
+    \edgesIn{\{v\}^{c}} \;=\; E(G) \,\setminus\, I_G(v);
   \]
-  Equivalently, an edge $e$ avoids $v$ iff $e \in E(G)$ and $v \notin e$.
+  that is, a pair $e$ of vertices lies in $\edgesIn{\{v\}^c}$ if and
+  only if $e \in E(G)$ and $v \notin e$.
 \end{lemma}
 \begin{proof}
   \leanok
   An edge has both endpoints in $\{v\}^c$ exactly when neither
-  endpoint equals $v$, i.e.\ when $v \notin e$. The set form follows by
-  taking the complement of the incidence set in $E(G)$.
+  endpoint is $v$, that is, when $v \notin e$. So
+  $\edgesIn{\{v\}^c}$ consists of the edges of $G$ not incident to $v$,
+  which is $E(G) \setminus I_G(v)$.
 \end{proof}
 
 \begin{lemma}[Vertex-deletion partition of edges]
@@ -81,37 +88,41 @@ $G$ incident to $v$ (mathlib's \texttt{SimpleGraph.incidenceSet}).
   \lean{SimpleGraph.ncard_edgesIn_compl_singleton_add_ncard_incidenceSet}
   \leanok
   \uses{lem:mem-edgesIn-compl-singleton}
-  If $V$ is finite then, for every $v \in V$,
+  Let $V$ be finite and let $v \in V$. Then
   \[
     \bigl|\edgesIn{\{v\}^{c}}\bigr| \;+\; |I_G(v)| \;=\; |E(G)|.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  By \cref{lem:mem-edgesIn-compl-singleton} the edge set partitions
-  as $\edgesIn{\{v\}^c} \sqcup I_G(v)$, so the cardinalities add.
+  By \cref{lem:mem-edgesIn-compl-singleton}, $E(G)$ is the disjoint
+  union of $\edgesIn{\{v\}^c}$ and $I_G(v)$, so the cardinalities add.
 \end{proof}
 
 \subsection{Modularity: intersection, union, and supermodular counts}
 
-The map $\edgesIn{\cdot}$ distributes exactly over intersection, but
-only sub-distributes over union: a crossing edge with one endpoint in
-$S \setminus T$ and the other in $T \setminus S$ lies in
-$\edgesIn{S \cup T}$ but in neither $\edgesIn{S}$ nor $\edgesIn{T}$. The
-cardinality consequence is the supermodular bound below, used for the
-tight-subset lattice in \cref{thm:isTightOn-union-inter}.
+The map $S \mapsto \edgesIn{S}$ commutes with intersection but not with
+union. An edge with one endpoint in $S \setminus T$ and the other in
+$T \setminus S$ lies in $\edgesIn{S \cup T}$ but in neither
+$\edgesIn{S}$ nor $\edgesIn{T}$. Counting edges therefore gives an
+inequality (\cref{lem:edgesIn-ncard-add-le}). It becomes an identity,
+Jord\'an's Lemma~2.1.1~\cite{jordan2016}, when the number of these
+crossing edges is added to its left side. We need only the inequality,
+which is the counting step in the proof that tight sets are closed
+under union and intersection (\cref{thm:isTightOn-union-inter}).
 
 \begin{lemma}[Distribution over intersection]
   \label{lem:edgesIn-inter}
   \lean{SimpleGraph.edgesIn_inter}
   \leanok
   \uses{def:edgesIn}
+  Let $S, T \subseteq V$. Then
   $\edgesIn{S \cap T} = \edgesIn{S} \cap \edgesIn{T}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  An edge has both endpoints in $S \cap T$ iff both endpoints lie in
-  $S$ \emph{and} both endpoints lie in $T$.
+  An edge has both endpoints in $S \cap T$ if and only if both
+  endpoints lie in $S$ and both lie in $T$.
 \end{proof}
 
 \begin{lemma}[Supermodularity of edge counts]
@@ -119,7 +130,7 @@ tight-subset lattice in \cref{thm:isTightOn-union-inter}.
   \lean{SimpleGraph.edgesIn_ncard_add_le}
   \leanok
   \uses{lem:edgesIn-mono, lem:edgesIn-inter}
-  If $V$ is finite, then for all $S, T \subseteq V$,
+  Let $V$ be finite and let $S, T \subseteq V$. Then
   \[
     \bigl|\edgesIn{S}\bigr| + \bigl|\edgesIn{T}\bigr|
     \;\le\;
@@ -128,16 +139,12 @@ tight-subset lattice in \cref{thm:isTightOn-union-inter}.
 \end{lemma}
 \begin{proof}
   \leanok
-  By monotonicity (\cref{lem:edgesIn-mono}) we have
-  $\edgesIn{S} \cup \edgesIn{T} \subseteq \edgesIn{S \cup T}$, while
-  $\edgesIn{S} \cap \edgesIn{T} = \edgesIn{S \cap T}$ by
-  \cref{lem:edgesIn-inter}. Substituting these into the inclusion--%
-  exclusion identity
-  $|A| + |B| = |A \cup B| + |A \cap B|$ for $A = \edgesIn{S}$ and
-  $B = \edgesIn{T}$ gives
-  $|\edgesIn{S}| + |\edgesIn{T}| = |\edgesIn{S} \cup \edgesIn{T}|
-    + |\edgesIn{S \cap T}|
-    \le |\edgesIn{S \cup T}| + |\edgesIn{S \cap T}|$.
+  Let $A = \edgesIn{S}$ and $B = \edgesIn{T}$, so that
+  $|A| + |B| = |A \cup B| + |A \cap B|$. By \cref{lem:edgesIn-inter},
+  $A \cap B = \edgesIn{S \cap T}$. By monotonicity
+  (\cref{lem:edgesIn-mono}), $A \cup B \subseteq \edgesIn{S \cup T}$, so
+  $|A \cup B| \le |\edgesIn{S \cup T}|$. Together these give the
+  inequality.
 \end{proof}
 
 \section{\texorpdfstring{$(k,\ell)$}{(k,l)}-sparsity and \texorpdfstring{$(k,\ell)$}{(k,l)}-tightness}
@@ -159,19 +166,17 @@ in \cref{sec:intro}).
   \lean{SimpleGraph.IsSparse}
   \leanok
   \uses{def:edgesIn}
-  $G$ is \emph{$(k,\ell)$-sparse} if for every finite $s \subseteq V$
-  with $\ell \le k\,|s|$ one has
+  $G$ is \emph{$(k,\ell)$-sparse} if every finite set $s \subseteq V$
+  with $\ell \le k\,|s|$ spans at most $k\,|s| - \ell$ edges, that is,
   \[
     \bigl|\edgesIn{s}\bigr| + \ell \;\le\; k\,|s|.
   \]
 \end{definition}
 \begin{fmlnote}
-  The bound is stated additively, as
-  $\bigl|\edgesIn{s}\bigr| + \ell \le k\,|s|$ under the hypothesis
-  $\ell \le k\,|s|$, rather than as
-  $\bigl|\edgesIn{s}\bigr| \le k\,|s| - \ell$. The two forms agree
-  exactly when $\ell \le k\,|s|$, and the additive one avoids truncated
-  subtraction over $\mathbb{N}$.
+  The formal definition states the bound in the additive form displayed
+  above. Edge counts there are natural numbers, in which
+  $k\,|s| - \ell$ would be truncated at $0$. Under the hypothesis
+  $\ell \le k\,|s|$ the two forms agree.
 \end{fmlnote}
 
 \begin{definition}[$(k,\ell)$-tight]
@@ -179,8 +184,8 @@ in \cref{sec:intro}).
   \lean{SimpleGraph.IsTight}
   \leanok
   \uses{def:isSparse}
-  $G$ is \emph{$(k,\ell)$-tight} if it is $(k,\ell)$-sparse and, on the
-  full finite vertex type, the global bound is met with equality:
+  Let $V$ be finite. The graph $G$ is \emph{$(k,\ell)$-tight} if it is
+  $(k,\ell)$-sparse and
   \[
     |E(G)| + \ell \;=\; k\,|V|.
   \]
@@ -198,28 +203,35 @@ in \cref{sec:intro}).
   \]
 \end{definition}
 
-Tightness of a subset is the local counterpart of $(k,\ell)$-tightness
-of the whole graph (\cref{def:isTight}): the graph is tight when
-equality holds on the full vertex set, and $s$ is tight when it holds on
-$s$. In a $(2, 3)$-sparse graph, a $(2, 3)$-tight subset is what
-Jord\'an~\cite{jordan2016}~\S 2.1 calls a \emph{critical set}; the two
-terms are interchangeable, and we use ``tight'' throughout.
+Tightness of a set is the local form of tightness of the graph. Since
+$\edgesIn{V} = E(G)$ (\cref{lem:edgesIn-corners}), a $(k,\ell)$-sparse
+graph $G$ on a finite set $V$ is $(k,\ell)$-tight exactly when $V$ is a
+$(k,\ell)$-tight set in $G$. At $(k,\ell) = (2,3)$ the hypothesis
+$\ell \le k\,|s|$ of \cref{def:isSparse} says that $|s| \ge 2$. So a
+finite simple graph is $(2,3)$-sparse exactly when it is sparse in the
+sense of Jord\'an~\cite{jordan2016}~\S 2.1, and its $(2,3)$-tight sets
+are what he calls \emph{critical sets}. We use ``tight'' throughout.
 
 \subsection{Basic properties and the global edge bound}
+
+Sparsity passes to subgraphs. Applied to the whole vertex set, it
+bounds the number of edges of $G$, so that a tight graph has as many
+edges as a sparse graph on $V$ can have.
 
 \begin{lemma}[Subgraphs of sparse graphs are sparse]
   \label{lem:isSparse-mono-left}
   \lean{SimpleGraph.IsSparse.mono_left}
   \leanok
   \uses{def:isSparse}
-  If $G \le G'$ and $G'$ is $(k,\ell)$-sparse, so is $G$.
+  Let $G'$ be a graph on $V$ with $E(G) \subseteq E(G')$. If $G'$ is
+  $(k,\ell)$-sparse, then so is $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  For any vertex set $s$, every edge of $G$ supported on $s$ is also
-  an edge of $G'$ supported on $s$, so
-  $|\edgesIn[G]{s}| \le |\edgesIn[G']{s}|$; the sparsity bound for
-  $G'$ then bounds the count for $G$.
+  For a finite set $s \subseteq V$, every edge of $G$ with both
+  endpoints in $s$ is an edge of $G'$ with both endpoints in $s$, so
+  $|\edgesIn[G]{s}| \le |\edgesIn[G']{s}|$. The sparsity bound for
+  $G'$ at $s$ therefore bounds $|\edgesIn[G]{s}|$.
 \end{proof}
 
 \begin{lemma}[Global edge bound]
@@ -227,8 +239,8 @@ terms are interchangeable, and we use ``tight'' throughout.
   \lean{SimpleGraph.IsSparse.edgeSet_ncard_add_le}
   \leanok
   \uses{def:isSparse}
-  If $V$ is finite, $G$ is $(k,\ell)$-sparse, and $\ell \le k\,|V|$,
-  then
+  Let $V$ be finite, and let $G$ be $(k,\ell)$-sparse with
+  $\ell \le k\,|V|$. Then
   \[
     |E(G)| + \ell \;\le\; k\,|V|.
   \]
@@ -239,46 +251,47 @@ terms are interchangeable, and we use ``tight'' throughout.
   (\cref{lem:edgesIn-corners}).
 \end{proof}
 
-\begin{lemma}[A proper extension of a tight graph is not sparse]
+\begin{lemma}[A proper supergraph of a tight graph is not sparse]
   \label{lem:isTight-not-isSparse-of-lt}
   \lean{SimpleGraph.IsTight.not_isSparse_of_lt}
   \leanok
   \uses{def:isTight, lem:isSparse-edgeSet-bound}
-  If $V$ is finite, $G$ is $(k,\ell)$-tight, and $G < H$, then $H$ is
-  not $(k,\ell)$-sparse.
+  Let $V$ be finite, let $G$ be $(k,\ell)$-tight, and let $H$ be a
+  graph on $V$ with $E(G) \subsetneq E(H)$. Then $H$ is not
+  $(k,\ell)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
-  By tightness $|E(G)| + \ell = k\,|V|$. Since $G < H$ we have
+  By tightness $|E(G)| + \ell = k\,|V|$; in particular
+  $\ell \le k\,|V|$. Since $E(G)$ is a proper subset of $E(H)$, we have
   $|E(G)| < |E(H)|$, and so $|E(H)| + \ell > k\,|V|$. By
-  \cref{lem:isSparse-edgeSet-bound} this rules out
-  $(k,\ell)$-sparsity of $H$.
+  \cref{lem:isSparse-edgeSet-bound}, $H$ is not $(k,\ell)$-sparse.
 \end{proof}
 
 \subsection{Low-degree vertex and non-adjacency consequences}
 
-Two specializations of the global edge bound at $(k, \ell) = (2, 3)$
-are used in the Henneberg constructions for Laman graphs and for
-arbitrary $(2,3)$-sparse graphs in later chapters. The first uses the
-handshake identity to show that some vertex has degree at most $3$; the
-second applies the sparsity bound at a $4$-vertex subset to show that
-any three neighbors of a vertex contain a non-adjacent pair.
+Both lemmas below concern $(2,3)$-sparse graphs. The first is applied
+to Laman graphs in \cref{lem:isLaman-exists-two-le-degree-le-three}.
+The second is used in the reverse decomposition of a $(2,3)$-sparse
+graph, at a vertex of degree three
+(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}).
 
 \begin{lemma}[A vertex of degree at most 3]
   \label{lem:isSparse-exists-degree-le-three}
   \lean{SimpleGraph.IsSparse.exists_degree_le_three}
   \leanok
   \uses{def:isSparse, lem:isSparse-edgeSet-bound}
-  Let $V$ be finite with $|V| \ge 2$ and let $G$ be $(2,3)$-sparse. Then
-  there exists $v \in V$ with $G$-degree at most $3$.
+  Let $V$ be finite with $|V| \ge 2$, and let $G$ be $(2,3)$-sparse.
+  Then some vertex of $G$ has degree at most $3$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Suppose every vertex had degree at least $4$. Then the handshake
-  identity gives $2|E(G)| = \sum_v \deg_G(v) \ge 4|V|$. But the
-  global edge bound (\cref{lem:isSparse-edgeSet-bound} at
-  $(k, \ell) = (2, 3)$, valid because $|V| \ge 2$) rewrites the
-  left-hand side as $2|E(G)| \le 4|V| - 6 < 4|V|$, a contradiction.
+  Suppose that every vertex has degree at least $4$. By the handshake
+  identity, $2|E(G)| = \sum_v \deg_G(v) \ge 4|V|$. The global edge
+  bound (\cref{lem:isSparse-edgeSet-bound}) applies at
+  $(k, \ell) = (2, 3)$, since $3 \le 2|V|$ when $|V| \ge 2$. It gives
+  $|E(G)| + 3 \le 2|V|$, so $2|E(G)| \le 4|V| - 6 < 4|V|$, a
+  contradiction.
 \end{proof}
 
 \begin{lemma}[Non-adjacent pair among three neighbors]
@@ -286,17 +299,20 @@ any three neighbors of a vertex contain a non-adjacent pair.
   \lean{SimpleGraph.IsSparse.exists_nonadj_among_three_neighbors}
   \leanok
   \uses{def:isSparse}
-  Let $V$ be finite and let $G$ be $(2,3)$-sparse. Suppose $v \in V$ has
-  three pairwise distinct neighbors $a, b, c$. Then at least one of the
-  pairs $\{a, b\}$, $\{a, c\}$, $\{b, c\}$ is non-adjacent in $G$.
+  Let $V$ be finite and let $G$ be $(2,3)$-sparse. Suppose that
+  $v \in V$ has three pairwise distinct neighbors $a, b, c$. Then at
+  least one of the pairs $\{a, b\}$, $\{a, c\}$, $\{b, c\}$ is
+  non-adjacent in $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Suppose all three pairs were adjacent. Then the 4-set $\{v, a, b, c\}$
-  would span the 6 edges
-  $\{v\text{-}a, v\text{-}b, v\text{-}c, a\text{-}b, a\text{-}c, b\text{-}c\}$,
-  so $|\edgesIn{\{v, a, b, c\}}| \ge 6$. But $(2,3)$-sparsity at the
-  4-set gives $|\edgesIn{\{v, a, b, c\}}| \le 2 \cdot 4 - 3 = 5$.
+  Suppose that all three pairs are adjacent, and let
+  $X = \{v, a, b, c\}$. The vertices $a$, $b$ and $c$ are distinct, and
+  each differs from $v$ because $G$ has no loops, so $|X| = 4$. The set
+  $X$ spans the six distinct edges $va$, $vb$, $vc$, $ab$, $ac$ and
+  $bc$, so $|\edgesIn{X}| \ge 6$. But $(2,3)$-sparsity applies at $X$,
+  since $3 \le 2 \cdot 4$, and gives
+  $|\edgesIn{X}| \le 2 \cdot 4 - 3 = 5$, a contradiction.
 \end{proof}
 
 \subsection{Transport along graph isomorphism}
