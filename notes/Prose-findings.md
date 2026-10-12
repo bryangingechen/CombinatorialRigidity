@@ -333,6 +333,20 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1d455ed9`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.17.
+- **F-109** · E · `meet.tex`'s nodes: edges the pins do not back, and edges they need. The
+  statement edge of `def:meet-pairing-dual` to `def:meet-top-equiv` has no Lean basis, nor have
+  those of `lem:complement-iso-line-one-dim` to `def:join` and `def:extensor` (its pins are about
+  an abstract $2$-dimensional space) and of `lem:complement-iso-exterior-map-injective` to
+  `def:meet-complement-iso`. The edges of `lem:case-III-claim612-line-in-panel-union` to those two
+  lemmas have none either: its first pin proves the proportionality through a $5$-dimensional count
+  and a Gram determinant (`F-111`), as its proof has said since task 2.18. Its nine realization pins
+  draw 20 missing edges: 14 to round 3's nodes, four to `rigidity-matrix.tex`'s, and one each to
+  `def:D-deficiency` and `lem:extensor-independence` (`F-110`).
+  `def:meet-complement-iso` and `lem:complement-iso-toDual` miss `def:join` and `def:extensor`,
+  which `complementIso` reaches through the wedge product.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (the
+  pins' statements and bodies).
+  *Found:* round 2 task 2.18.
 
 ## N — node shape
 
@@ -584,6 +598,36 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `1d455ed9`); read (a
   `grep` for the callers of `vertexSet_ncard` and `range_vtx`).
   *Found:* round 2 task 2.17.
+- **F-110** · N · `lem:case-III-claim612-line-in-panel-union` (`meet.tex`; twelve pins, `F-009`):
+  the first three pins are the lemma, at $d = 3$. The other nine are a realization of Case III at
+  $d = 3$ that applies it, and the last of them, `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+  (the bare-to-generic upgrade, KT's use of Lemma 5.2), is the one `lem:cycle-realization`
+  (`case-i.tex`) cites this node for. All but that upgrade lie outside every main result's closure
+  (counted in `F-012`). The form for every $d$, `extensor_join_proportional_complementIso_meet`
+  (with `complementIso_extensor_mem_range_map_subtype` and `complementIso_map_contragredient_eq`),
+  has no node, though `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` and
+  `exists_extensor_eq_panelSupportExtensor_gen` call it; `lem:case-III-chain-discriminator`
+  (`case-iii.tex`) cites the $d = 3$ node as "the general" duality. Give the general form a node,
+  and move the nine pins to the Case I and Case III nodes that use them.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, dead pins, at `d5db0e0c`); read
+  (the pins' statements and bodies; a `grep` for the general form's callers).
+  *Found:* round 2 task 2.18.
+- **F-111** · N · `meet.tex`'s step nodes. `lem:complement-iso-line-one-dim` and
+  `lem:complement-iso-exterior-map-injective` have no Lean caller (`finrank_exteriorPower_two_eq_one`
+  is used only by the other pin of the first): the formal proof of
+  `lem:case-III-claim612-line-in-panel-union` does not take their route through $\bigwedge^2 W$.
+  The steps it does take have no node: the dimension $5$ of the span of the $n_i \vee v$
+  (`finrank_sup_range_wedgeFixedLeft`, with `inf_range_wedgeFixedLeft` and
+  `finrank_range_wedgeFixedLeft`) and the coordinate pairing of $2$-extensors as a Gram determinant
+  (`exteriorPower_basis_toDual_eq_pairingDual_comp_map`, `extensor_toDual_extensor_eq_zero_of_perp`).
+  `def:meet-pairing-dual` has no user node and its pins have no caller; the Gram determinant uses
+  mathlib's `exteriorPower.pairingDual` itself. `def:meet`'s pin has no caller and no lemma about
+  it exists (`F-112`). The basis formula `complementIso_exteriorPower_basis_eq_smul_compl` and the
+  transformation law `complementIso_map_contragredient_eq`, on which the prose after `def:meet`
+  rests since task 2.18, have no node.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (a `grep`
+  for each pin's callers).
+  *Found:* round 2 task 2.18.
 
 ## T — terminology and notation
 
@@ -898,6 +942,24 @@ declaration's name as its header writes it:
   exactly when $d \ge 4$. The dichotomy itself keeps KT's strength.
   *Evidence:* read (the three pins' statements).
   *Found:* round 2 task 2.17.
+- **F-112** · S · `def:meet` (`meet.tex`): at the open the definition also said that the meet of
+  the supporting extensors of two subspaces is the supporting extensor of their intersection, and
+  that for $a = b = 1$ the meet of two hyperplane normals supports their codimension-$2$
+  intersection. No declaration states a property of `meet`. Task 2.18 moved the sentence to prose
+  after the definition, as principle B moves a definition's consequences. That prose keeps the
+  claim and proves it, for subspaces $X$ and $Y$ with $X + Y = V$, from the formalized formula for
+  $*e_S$ and transformation law of the complement isomorphism. The formalization proves the case of
+  two hyperplanes in the form $*(n_A \vee n_B)$, for every $d$
+  (`extensor_join_proportional_complementIso_meet`), and not the general case.
+  *Evidence:* read (a `grep` for `meet` in the Lean; the statements of the cited declarations).
+  *Found:* round 2 task 2.18.
+- **F-113** · S · `lem:complement-iso-decomposable-wedge-perp` (`meet.tex`): the statement says that
+  $*(n_1 \vee n_2)$ is orthogonal to every $2$-extensor $n \vee c$ with $n \in \{n_1, n_2\}$, for
+  linearly independent $n_1, n_2$. The second and third pins state only $n = n_1$, and assume no
+  independence; the case $n = n_2$ follows from the first pin by alternation, which the formal proof
+  of `complementIso_smul_eq_extensor_join` does inline. Task 2.18 kept the statement, with a note.
+  *Evidence:* read (the three pins' statements; the body of `complementIso_smul_eq_extensor_join`).
+  *Found:* round 2 task 2.18.
 
 ## L — Lean
 
@@ -1223,6 +1285,19 @@ declaration's name as its header writes it:
   `CycleData.vertexSet_ncard`'s names a use that no caller makes.
   *Evidence:* read (the bodies and docstrings; KT 2011 pp. 664 and 692).
   *Found:* round 2 task 2.17.
+- **F-114** · L · the pins of `meet.tex` (`Molecular/Meet.lean`): the file's header lists
+  `meet_ne_zero_iff` and "the geometric reading" as deliverables, which no declaration provides, and
+  narrates phases, commits and design codes ("this commit", "route (ii)", "N3b-2b-α", "CHAIN-3",
+  "OD-8"); the header and `screwAlgebraPairingDualEquiv`'s docstring say Phase 25's projective
+  invariance reuses it, which nothing does; `screwAlgebraTopEquiv_map_eq_det_smul`'s describes an
+  O(n)-equivariance of `complementIso` that the file replaced by `complementIso_map_contragredient_eq`;
+  the wedge-pairing lemmas call the diagonal sign "the open sign subproblem … deferred"; the duality
+  lemmas call `n_u, n'` "the two panel normals of a panel Π(u)" (a panel has one normal, and `n'`
+  is a second plane through the line); the docstrings of `finrank_exteriorPower_two_eq_one` and
+  `exteriorPower_finrank_eq_one_proportional` call them the duality's payoff, which does not use
+  them, and the second and `exteriorPower_map_subtype_injective` have no caller (`F-111`).
+  *Evidence:* read (the bodies and docstrings; a `grep` for the callers).
+  *Found:* round 2 task 2.18.
 
 ## M — mathematics and sources
 

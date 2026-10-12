@@ -12,8 +12,8 @@ PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`.
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
 slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, its
 first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
-and tasks 2.16–2.17 `F-100`–`F-108`. **Next concrete task:** round 2's task 2.18, `meet.tex`, the
-last of its eighteen slices (the round's log, *Lemma checklist*).
+and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices are done. **Next concrete task:** round
+2's task 3, its close (the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 
@@ -219,8 +219,8 @@ Provisional slices (Stop 1), 16: `panel-layer` five (1–228, 229–1057 in thre
 `case-i` three; `case-ii` and `genericity-and-count` one each; `case-iii` five (1–237, 238–501,
 502–1387 in three); then the preamble `algebraic-induction.tex`. Smaller slices are likely here.
 
-Carried in from round 2 (the PI, 2026-10-12; `F-084`, `F-095`; task 2.16, `F-100`), as `\cref`
-repoints only, since the edges wait for round 5:
+Carried in from round 2 (the PI, 2026-10-12; `F-084`, `F-095`; task 2.16, `F-100`; task 2.18), as
+`\cref` repoints and one notation alignment, since the edges wait for round 5:
 
 - `lem:case-I`'s statement cites `lem:contraction-minimality` for $G/E(H)$ being a smaller minimal
   $k$-dof-graph. That node now states the matroid form: the graph form is
@@ -234,6 +234,12 @@ repoints only, since the edges wait for round 5:
   `lem:rigidContract-isMinimalKDof` calls it "the reduction theorem". `thm:theorem-55` runs on
   `thm:minimal-kdof-reduction-all-k`, and no pin reaches `Graph.minimal_kdof_reduction` (task
   2.16, `F-100`; principle E: cite the induction principle the proof runs on).
+- `lem:case-III-chain-discriminator`'s proof cites `lem:case-III-claim612-line-in-panel-union` as
+  "the general point-join ↔ panel-meet duality". That node is the case $d = 3$; the form for every
+  $d$ is stated after `def:meet` (task 2.18, `F-110`).
+- Notation (task 2.18): `meet.tex` writes the join of two normals $n_1 \vee n_2$, $\bigwedge^k$,
+  $\wedge$ for the meet and $*$ for the complement isomorphism; `panel-layer.tex` and `case-i.tex`
+  write $n_1 \wedge n_2$ and $\Lambda^k$.
 
 ### Round 4 — `prose-applications`: applications, continuations and the introduction
 

@@ -6,9 +6,9 @@ which rounds are done. The round rewrites the prose of the eight chapters `matro
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
 `notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.15 `F-051`–`F-097`, the
-PI's review of `F-084` `F-098`–`F-099`, and tasks 2.16–2.17 `F-100`–`F-108`. 20 one-commit tasks;
-tasks 1 and 2.1–2.17 are done, and the round has no planned stop. **Next concrete task:** task
-2.18, `meet.tex` (325 lines, 10 nodes), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+PI's review of `F-084` `F-098`–`F-099`, and tasks 2.16–2.18 `F-100`–`F-114`. 20 one-commit tasks;
+tasks 1 and 2.1–2.18 are done, and the round has no planned stop. **Next concrete task:** task 3,
+the close, docs only (*Lemma checklist*; *Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -32,17 +32,17 @@ round 3 repoints `case-i.tex`'s citations. These and the second point are in `no
 
 ## Current state
 
-**Task 2.17 has landed** (this commit): `molecular-induction.tex` 1552–1677 and 1–42 at the
-open (1995–2214 and 1–52 now), KT Lemma 4.6's subsection, 4 nodes, and the chapter's opening;
-`molecular-induction.tex` is done. Both openings are rewritten, and four formalization notes are
-new. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical; no node moved. Nothing
-is mid-stream; task 2.18 is next.
-- **Gates at task 2.17**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
+**Task 2.18 has landed** (this commit): `meet.tex`, 10 nodes, with its opening (325 lines at the
+open, 503 now); all eighteen slices are done. The chapter has two unlabeled subsections, five
+formalization notes and a new citation, White 1994 (`white1994`, added to the bibliography).
+`def:meet` moved before the duality lemmas (principle E); every `\label`, `\lean{…}`, `\leanok`
+and `\uses` is byte-identical. Nothing is mid-stream; task 3 is next.
+- **Gates at task 2.18**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (82 overfull boxes, as at the parent;
-  none in the chapter). Screens: `molecular-induction` register 4 (29 at the open; all four are
-  the label `def:genuine-hinge-realization`), devices 0 / 0 (6 / 25), `\operatorname` Lean names
-  0 (7); cross-chapter forward `\uses` 14, unchanged.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (72 overfull boxes, 82 at the parent;
+  none in the chapter). Screens: `meet` register 0 (3 at the open), devices 0 / 6 (15 / 56; the six
+  are parenthetical `\texttt` addresses), `\operatorname` Lean names 0; cross-chapter forward
+  `\uses` 14, unchanged.
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms check
@@ -191,18 +191,7 @@ dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight
   `extensor` (task 2.4), `rigidity-matrix` (tasks 2.5–2.7) and `deficiency` (tasks 2.8–2.10);
   their open bullets are in this log at the open, `ea058ba8`. `molecular-induction` (tasks
   2.11–2.17; its open items are in this log at `1b06def1`, `90051e3c`, `d9b0e96a`, `a2df0ed3` and
-  `1d455ed9`).
-- **`meet`** (phase 21a; crux `def:meet-complement-iso`,
-  `lem:case-III-claim612-line-in-panel-union`). The most Lean in statements of the KT chapters:
-  `\mathrm{topEquiv}`, `\mathrm{pairingDualEquiv}`, `\mathrm{complementIso}`,
-  `\mathrm{wedgePairing}`, `\mathrm{toDual}`, `W.\mathrm{subtype}`, `\mathrm{gradedMul}`,
-  `\mathrm{ScrewSpace}\,k`; proofs read as Lean (`Module.Basis.exteriorPower`,
-  `LinearEquiv.funUnique`). It writes $V = K^{N}$, $N = k + 2$, where `extensor` writes
-  $K^{d+1}$. It sits after `molecular-induction` but builds only on `extensor`: the opening says
-  so. The 12-pin node's formalization note lists Case III's realization declarations, its statement
-  uses round 3's panel $\Pi(u)$, and its proof cites `def:meet-complement-iso` for
-  `lem:complement-iso-decomposable-wedge-perp`'s fact. `def:meet`, the chapter's object, comes
-  last. White 1994 is in `.refs/` and uncited.
+  `1d455ed9`) and `meet` (task 2.18; its open bullet is in this log at `d5db0e0c`).
 
 ## Lemma checklist (the round's task list)
 
@@ -212,14 +201,12 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 
 - [x] **1. O — the open** (`ea058ba8`; docs only): this log, the baselines, the open's findings
   `F-048`–`F-050`, and the status surfaces.
-- [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
-  slice (principle F). The diagnosis of each is its chapter's, above.
-  - [x] **2.1–2.17, `matroid-union.tex` through `molecular-induction.tex`**: 2.1 `6c26eed5`, 2.2
-    `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5 `5399e053`, 2.6 `af438fd1`, 2.7 `27daa953`,
-    2.8 `86b44e1b`, 2.9 `22317b88`, 2.10 `1b06def1`, 2.11 `ce54bf15`, 2.12 `01aec968`, 2.13
-    `90051e3c`, 2.14 `d9b0e96a`, 2.15 `4bbd8cf0`, 2.16 `1d455ed9`, 2.17 this commit. Each commit
-    message gives its ranges and findings (`F-051`–`F-097`, `F-100`–`F-108`).
-  - [ ] **2.18 `meet.tex`**: 10 nodes, 325 lines.
+- [x] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
+  slice (principle F): 2.1 `6c26eed5`, 2.2 `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5
+  `5399e053`, 2.6 `af438fd1`, 2.7 `27daa953`, 2.8 `86b44e1b`, 2.9 `22317b88`, 2.10 `1b06def1`,
+  2.11 `ce54bf15`, 2.12 `01aec968`, 2.13 `90051e3c`, 2.14 `d9b0e96a`, 2.15 `4bbd8cf0`, 2.16
+  `1d455ed9`, 2.17 `d5db0e0c`, 2.18 (`meet.tex`) this commit. Each commit message gives its
+  ranges and findings (`F-051`–`F-097`, `F-100`–`F-114`).
 - [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat ac7bd966..
     -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
@@ -275,6 +262,10 @@ ranks them for the PI.
   hypothesis also asks nondegenerate-hinge realizations, unused.
 - `F-107` (S, task 2.17): `lem:chain-cycle-dichotomy` also said that both branches occur, which no
   pin states; the sentence moved to prose after the lemma (principle B), its claim kept, proved.
+- `F-112` (S, task 2.18): `def:meet` also said that the meet supports the intersection; no
+  declaration states a property of the meet. Moved to prose after it (principle B), kept, proved.
+- `F-113` (S, task 2.18): `lem:complement-iso-decomposable-wedge-perp` covers both vectors of
+  $n_1 \vee n_2$; two of its pins state only the first, and none assumes independence.
 
 ## Moved to a later round
 
@@ -374,6 +365,14 @@ one line each naming the ledger ID and the task that found it.
   the dichotomy's third pin, is a load-bearing lemma with no node.
 - `F-108` (L, task 2.17): derivable hypotheses in `chainData_extract`, unused ones in
   `chainWalk_charging`, a duplicated triangle count, and stale or misattributing docstrings.
+- `F-109` (E, task 2.18): `meet.tex`'s edges without a Lean basis (among them the line lemma's to
+  its two step lemmas), and missing ones; the line lemma's nine realization pins draw 20.
+- `F-110` (N, task 2.18): the line lemma's twelve pins are the lemma, a $d = 3$ Case III
+  realization and the bare-to-generic upgrade; the lemma's form for every $d$ has no node.
+- `F-111` (N, task 2.18): `meet.tex`'s two step lemmas and `def:meet-pairing-dual` have no Lean
+  caller; the steps the line lemma's proof takes, and the basis and contragredient laws, no node.
+- `F-114` (L, task 2.18): `Meet.lean`'s header and docstrings promise absent lemmas, narrate
+  phases and codes, describe retired routes, and misdescribe the panel normals.
 
 ## Blockers / open questions
 
@@ -381,35 +380,25 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.18, `meet.tex` (325 lines, 10 nodes, the chapter's opening in the
-same slice), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the `meet` bullet
-under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then task 3 closes the round.
-For the slice:
-- **The PI's check** ("the overriding goal is to make sure the result is understandable"): done.
-- **Notation.** Tasks 2.8–2.18 write KT's $d$ and $D = \binom{d+1}{2}$, drop the stray $n$, and
-  point at `body-hinge`'s $\tilde G = (D-1)\cdot G$ (*Decisions*). `body-bar.tex` writes bodies in
-  $\R^d$ and a vector $b_e \in \R^D$ per bar (Tay's model); `thm:tutte-nash-williams` is
-  *Decomposition into forests* (Tutte, Nash-Williams 1961 and 1964).
-- **Crux nodes** keep their full proofs: `def:meet-complement-iso` and
-  `lem:case-III-claim612-line-in-panel-union` in task 2.18 (*Scope*).
-- **What `rigidity-matrix.tex`, `deficiency.tex` and `molecular-induction.tex` fix** (their
-  notation and conventions): this log's *Hand-off* at `1d455ed9`. `meet.tex` builds only on
-  `extensor.tex` (*From task 2.4*).
-- **For task 3.** The exposition ledger's KT 4.1 entry says (3) "through def = corank"; its KT 4.4
-  entry says `rem:kt-lemma-44` "spells out the partition-count comparison"; its
-  `lem:reduction-step` entry quotes "a rank count replaces KT's iterated fundamental-circuit swap",
-  now "We replace this exchange by the count above"; its KT 4.6 entry writes $n$ for KT's $d$
-  (the linking identity, "length-$n$"), where the chapter now writes $d$. Task 3 aligns all four.
-- **From task 2.4.** `meet.tex` (its opening and two nodes) cites `sec:molecular-homog` for the
-  exterior algebra and the join, which are in `sec:molecular-extensor`: task 2.18 repoints them.
-  `def:extensor` writes $v_1 \wedge \cdots \wedge v_j$, and $\vee$ arrives with `def:join`. The
-  facts other nodes cite are in the prose after `def:extensor`, `def:join` (Barnabei–Brini–Rota's
-  Propositions 3.4 and 3.5) and `def:affine-subspace-extensor`.
-- **Statement strength.** A statement that claims more than its pins is an `S` finding, and it
-  keeps its claim; only a degenerate-case hypothesis the pin states ($D \ge 1$, $V \neq \emptyset$)
-  is added. `F-084`'s narrowing is not a precedent (*Decisions*).
-- **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-109`.
+**Next concrete task: task 3, the close** (`CLEANUP.md` *Workflow* 5; docs only; it may run at
+Sonnet, `notes/Prose.md` §2). Its pinned list is item 3 of the *Lemma checklist*; the gates,
+screens and the open's figures are under *Scope* and in the *Per-chapter diagnosis* table. For the
+close:
+- **The exposition ledger** (`notes/BlueprintExposition.md`). Its KT 4.1 entry says (3) "through
+  def = corank"; its KT 4.4 entry says `rem:kt-lemma-44` "spells out the partition-count
+  comparison"; its `lem:reduction-step` entry quotes "a rank count replaces KT's iterated
+  fundamental-circuit swap", now "We replace this exchange by the count above"; its KT 4.6 entry
+  writes $n$ for KT's $d$ (the linking identity, "length-$n$"), where the chapter now writes $d$;
+  its `def:meet-complement-iso` entry quotes the proof's last sentence "the exact grade-swap sign
+  is not needed for the isomorphism and is deferred to where an oriented meet consumes it", now
+  "The argument needs only $\varepsilon_S \neq 0$." Task 3 aligns all five. Its Phase-33 note's
+  "(exposited in place in `meet.tex`, Slice 0)" for the contragredient law is true since task 2.18
+  (the prose after `def:meet`).
+- **Carry-ins.** Round 3's are in `notes/Prose.md` §3 (task 2.18 added a `\cref` repoint and a
+  notation item), round 5's in the ledger.
+- **Findings.** Every ledger entry the round found (`F-048`–`F-114`) has its line under
+  *Candidates* or *Moved*; the close checks both directions. The ledger's next ID is `F-115`.
+- **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>`.
 
 ## Decisions made during this round
 
@@ -436,6 +425,13 @@ For the slice:
   order and cases (Lemma 4.2's (i)/(ii), §6's four); looplessness is shown once, before
   `lem:no-rigid-edge-count`; `thm:minimal-kdof-reduction` states KT's sequence as (i) and its
   pin's principle as (ii); fresh labels and record detail go to notes. No node moved in 2.15–2.17.
+- **Task 2.18, `meet.tex`** (detail in its commit): `def:meet` moved before the duality lemmas,
+  whose titles and statements name the panel-meet (principle E); the meet's geometric reading left
+  the definition for prose, kept and proved (`F-112`). The chapter writes $V = K^{d+1}$, $\vee$ for
+  the join, $\wedge$ for the meet and $*$ for the complement isomorphism. The crux proof of
+  `lem:case-III-claim612-line-in-panel-union` follows its pin's route (the line $\Omega$ cut out by
+  the coordinate pairing); the $\bigwedge^2 W$ picture of its two step lemmas follows the proof.
+  White 1994 is cited (bibliography entry checked against Crossref).
 - **`F-084` kept** (the coordinator after task 2.15; the PI, 2026-10-12, *Autopilot: for the
   PI*). Not a precedent: from task 2.16 on, a statement claiming more than its pins is an `S`
   finding and keeps its claim. Adding the hypothesis a pin states for a degenerate case

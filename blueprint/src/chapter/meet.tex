@@ -1,184 +1,330 @@
 \section{Grassmann--Cayley meet and projective duality}
 \label{sec:molecular-meet}
 
-This chapter develops the dual half of the Grassmann--Cayley algebra of
-Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}: the \emph{meet} (regressive
-product) and the projective-duality dictionary it rests on, built on the
-homogeneous-coordinate carrier of \cref{sec:molecular-homog}. That chapter
-built the \emph{join} (the progressive product $A \vee B$, the symbolic
-exterior product on $\bigwedge[K] K^{k+2}$) and a coordinatized Plücker
-bridge; here we build its projective dual. The meet is the device the
-panel-hinge realizations of \cref{sec:molecular-algebraic-induction}, the
-cycle realization (\cref{lem:cycle-realization}, KT Lemma~5.4, due to
-Crapo--Whiteley~\cite{crapoWhiteley1982}), and Katoh--Tanigawa's later
-projective-invariance argument all build on.
+This chapter defines the meet, the operation of the Grassmann--Cayley
+algebra dual to the join, and proves that for $d = 3$ the meet of two
+planes is a scalar multiple of the join of two points of their line of
+intersection. Katoh and Tanigawa use the join and not the meet. For the
+Grassmann--Cayley algebra they refer to Barnabei, Brini and
+Rota~\cite{barnabeiBriniRota1985} and to White~\cite{white1994}, among
+others~\cite[\S2.1]{katohTanigawa2011}. They define the extensor of an
+affine subspace through points that span it, and in a nonparallel
+panel-hinge framework the hinge of an edge $uv$ is the intersection
+$\Pi(u) \cap \Pi(v)$ of the panels of its ends~\cite[\S5.1]{katohTanigawa2011}.
+The formalization records such a hinge by the meet of the two panels
+(\cref{def:panel-support-extensor}). For $d = 3$,
+\cref{lem:case-III-claim612-line-in-panel-union} shows that this meet
+agrees with the join of two points of the hinge up to a scalar. This is
+what lets the proof of KT Lemma~6.10, which spans $\bigwedge^2 \R^4$ by
+joins of points in KT eq.~(6.45)~\cite[p.~691]{katohTanigawa2011}, apply
+to hinges given by panels.
 
-The construction is \textbf{metric-free}: projective geometry needs no
-inner product, only the top-power volume form (an orientation) --- so, like
-\cref{sec:molecular-homog}, it is stated over an arbitrary field $K$, no
-characteristic hypothesis needed; Katoh--Tanigawa's original argument is
-the $K = \R$ specialization the later, genuinely metric chapters
-(\cref{sec:molecular-rigidity-matrix} onward) instantiate. Write $N = k+2$
-and $V = K^{N}$ for the homogeneous-coordinate carrier; the top
-graded piece $\bigwedge^{N} V$ is free of rank $\binom{N}{N} = 1$, hence
-canonically $\cong K$. In order: the volume-form isomorphism
-(\cref{def:meet-top-equiv}) gives the perfect wedge pairing below its
-codomain; the duality-pairing isomorphism (\cref{def:meet-pairing-dual}) is
-the projective-duality dictionary entry; the complement isomorphism
-(\cref{def:meet-complement-iso}), built from that pairing, is the
-chapter's central construction; and the meet itself (\cref{def:meet}) is
-the join conjugated by the complement isomorphism. The chapter closes with
-the point-join $\leftrightarrow$ panel-meet duality
-(\cref{lem:case-III-claim612-line-in-panel-union}, KT eq.~(6.45)), the
-identity the $d = 3$ Case-III realization of
-\cref{sec:molecular-algebraic-induction} is built on.
+The chapter builds only on \cref{sec:molecular-extensor}: the exterior
+algebra of $V = K^{d+1}$, its extensors, and the join. As there, $K$ is
+an arbitrary field. The constructions use the standard basis of $V$,
+through a volume form and a coordinate pairing, and no order on $K$ or
+hypothesis on its characteristic. We write $\vee$ for the product of an
+exterior algebra, as in \cref{def:join}, and $\wedge$ for the meet, as
+Barnabei, Brini and Rota and White do.
 
-\begin{definition}[Top-power volume form $\bigwedge^{N} V \cong K$]
+The first subsection defines the volume form (\cref{def:meet-top-equiv}).
+It then defines the duality between the exterior powers of $V$ and of its
+dual space (\cref{def:meet-pairing-dual}). The pairing
+$(X, Y) \mapsto \operatorname{vol}(X \vee Y)$ is nondegenerate, and it
+gives the complement isomorphism $*$ (\cref{def:meet-complement-iso}),
+whose defining property is \cref{lem:complement-iso-toDual}. The meet is
+then $A \wedge B = *({*A} \vee {*B})$ (\cref{def:meet}). The second
+subsection takes $d = 3$ and proves the agreement of meet and join
+(\cref{lem:case-III-claim612-line-in-panel-union}). It ends with the
+converse fact that a nonzero $2$-extensor determines its plane
+(\cref{lem:decomposable-extensor-span-unique}).
+
+\subsection{The complement isomorphism and the meet}
+
+Let $V = K^{d+1}$, with standard basis $e_1, \dots, e_{d+1}$. For a set
+$S = \{s_1 < \cdots < s_i\} \subseteq \{1, \dots, d+1\}$ we write
+$e_S = e_{s_1} \vee \cdots \vee e_{s_i}$. The products $e_S$ over the
+$i$-element sets $S$ form a basis of $\bigwedge^i V$ (the remark after
+\cref{def:plucker-coords}), and $X_S$ denotes the coordinate of
+$X \in \bigwedge^i V$ at $e_S$. For $i = d+1$ there is one such product.
+
+\begin{definition}[The volume form $\bigwedge^{d+1} V \cong K$]
   \label{def:meet-top-equiv}
   \lean{CombinatorialRigidity.Molecular.screwAlgebraTopEquiv,
     exteriorPower.topEquiv}
   \leanok
-  The $N$-th exterior power of a free module of rank $N$ is free of rank
-  $\binom{N}{N} = 1$, hence canonically isomorphic to the base ring. On
-  the standard carrier $V = K^{N}$ this is the \emph{volume
-  form}: the linear isomorphism
-  \[
-    \mathrm{topEquiv} : \bigwedge^{N} V \xrightarrow{\ \sim\ } K,
-  \]
-  sending the wedge $\mathbf{e}_1 \wedge \cdots \wedge \mathbf{e}_N$ of all
-  standard basis vectors to $1$. It carries an orientation, not a metric:
-  the meet is built from it without any inner-product structure.
+  The \emph{volume form}
+  $\operatorname{vol} \colon \bigwedge^{d+1} V \to K$ is the linear
+  isomorphism with $\operatorname{vol}(e_1 \vee \cdots \vee e_{d+1}) = 1$.
 \end{definition}
 \begin{proof}
   \leanok
-  Built from the standard-basis top-power basis
-  $\mathrm{Module.Basis.exteriorPower}\,(\mathrm{Pi.basisFun}\ K\ (\mathrm{Fin}\ N))$,
-  whose index set $\mathrm{powersetCard}\,(\mathrm{Fin}\ N)\ N$ is a
-  singleton (the full set is the unique $N$-element subset of an
-  $N$-element type), composed with the unique-index evaluation
-  $\mathrm{LinearEquiv.funUnique}$. The general fact (over any commutative
-  ring, on $\mathrm{Fin}\ n \to R$) is the mirror lemma
-  $\mathrm{exteriorPower.topEquiv}$; $\mathrm{screwAlgebraTopEquiv}$ is the
-  $N = k+2$ specialization on the screw-algebra carrier of
-  \cref{sec:molecular-homog}.
+  The space $\bigwedge^{d+1} V$ has dimension $\binom{d+1}{d+1} = 1$,
+  with basis $e_1 \vee \cdots \vee e_{d+1}$. The volume form takes an
+  element to its coordinate in this basis.
 \end{proof}
+\begin{fmlnote}
+  The second pin is the same isomorphism for $R^n$ over a commutative
+  ring $R$, and the first is its case $R = K$, $n = d+1$. As in
+  \cref{sec:molecular-rigidity-matrix}, the formalization writes
+  $d = k + 1$, so that $V = K^{k+2}$.
+\end{fmlnote}
 
-\begin{definition}[Exterior-power duality iso $\bigwedge^{j} V^{*} \cong (\bigwedge^{j} V)^{*}$]
+By the expansion after \cref{def:plucker-coords},
+$\operatorname{vol}(v_1 \vee \cdots \vee v_{d+1})$ is the determinant of
+the matrix with rows $v_1, \dots, v_{d+1}$.
+
+The exterior powers of $V$ and of its dual space $V^*$ are dual to each
+other through determinants.
+
+\begin{definition}[Duality of exterior powers $\bigwedge^{j} V^{*} \cong (\bigwedge^{j} V)^{*}$]
   \label{def:meet-pairing-dual}
   \lean{CombinatorialRigidity.Molecular.screwAlgebraPairingDualEquiv,
     exteriorPower.pairingDualEquiv}
   \leanok
   \uses{def:meet-top-equiv}
-  The natural pairing map $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$,
-  sending a dual-exterior-power element to the functional it induces on
-  $\bigwedge^{j} V$, is for free finite $V$ an isomorphism
+  Let $j \ge 0$. The linear map
+  $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$ that sends
+  $\varphi_1 \vee \cdots \vee \varphi_j$ to the linear form
   \[
-    \mathrm{pairingDualEquiv} : \bigwedge^{j} V^{*}
-      \xrightarrow{\ \sim\ } (\bigwedge^{j} V)^{*}.
+    v_1 \vee \cdots \vee v_j \;\longmapsto\;
+    \det\bigl(\varphi_a(v_b)\bigr)_{a,b = 1}^{j}
   \]
+  is an isomorphism.
 \end{definition}
 \begin{proof}
   \leanok
-  Fix an ordered basis $b$ of $V$. The map $\mathrm{pairingDual}$ carries
-  the exterior-power basis $\bigwedge^{j} b^{*}$ built from the dual basis
-  onto the dual basis of the exterior-power basis $\bigwedge^{j} b$: the
-  identification $b^{*} = b.\mathrm{coord}$ together with the coordinate
-  computation $\mathrm{exteriorPower.basis\_coord}$ shows the image of each
-  basis vector is the corresponding coordinate form. Hence
-  $\mathrm{pairingDual}$ sends a basis to a basis and is an isomorphism;
-  the mirror lemma $\mathrm{exteriorPower.pairingDualEquiv}$ packages this
-  as a $\mathrm{Basis.equiv}$ and $\mathrm{coe\_pairingDualEquiv}$ identifies
-  it with $\mathrm{pairingDual}$ in place.
-  $\mathrm{screwAlgebraPairingDualEquiv}$ is the specialization at the
-  standard basis of the screw-algebra carrier.
+  Let $\varphi_1, \dots, \varphi_{d+1}$ be the basis of $V^*$ dual to
+  $e_1, \dots, e_{d+1}$, and let $\varphi_S$ be the products of its
+  elements, as for $e_S$. For $j$-element sets $S$ and $T$, the matrix
+  $(\varphi_{s_a}(e_{t_b}))$ is the identity if $S = T$, and it has a
+  zero row otherwise. So the map sends $\varphi_S$ to the linear form
+  $X \mapsto X_S$. It takes the basis $(\varphi_S)$ of
+  $\bigwedge^j V^*$ to the basis of $(\bigwedge^j V)^*$ dual to
+  $(e_S)$, and is therefore an isomorphism.
 \end{proof}
+\begin{fmlnote}
+  The second pin is the isomorphism for a finite free module with an
+  ordered basis over a commutative ring, built from that basis as in the
+  proof, and the first is its case $V = K^{d+1}$ with the standard
+  basis.
+\end{fmlnote}
 
-\begin{definition}[Complement iso $\bigwedge^{j} V \cong \bigwedge^{N-j} V$]
+The complement isomorphism compares two pairings. For each $i$, the
+\emph{coordinate pairing} on $\bigwedge^i V$ is the bilinear form
+$\langle X, Y \rangle = \sum_S X_S Y_S$, for which the basis $(e_S)$ is
+orthonormal. On $V = \bigwedge^1 V$ it is the dot product. It identifies
+$\bigwedge^i V$ with its dual, as $Z \mapsto \langle Z, \cdot \rangle$
+is an isomorphism $\bigwedge^i V \to (\bigwedge^i V)^*$. The second
+pairing uses the volume form. For $0 \le j \le d+1$, the join of
+$X \in \bigwedge^j V$ and $Y \in \bigwedge^{d+1-j} V$ lies in
+$\bigwedge^{d+1} V$, and the \emph{wedge pairing} of $X$ and $Y$ is
+$\operatorname{vol}(X \vee Y)$.
+
+\begin{definition}[The complement isomorphism $\bigwedge^{j} V \cong \bigwedge^{d+1-j} V$]
   \label{def:meet-complement-iso}
   \lean{CombinatorialRigidity.Molecular.complementIso}
   \leanok
   \uses{def:meet-top-equiv}
-  The perfect wedge pairing
-  $\bigwedge^{j} V \times \bigwedge^{N-j} V \to \bigwedge^{N} V
-  \cong K$ (the join of \cref{sec:molecular-homog} followed by the
-  volume form of \cref{def:meet-top-equiv}) is nondegenerate for free $V$,
-  inducing a linear isomorphism
-  $\mathrm{complementIso} : \bigwedge^{j} V \cong \bigwedge^{N-j} V$.
+  Let $0 \le j \le d+1$. The wedge pairing
+  $\bigwedge^{j} V \times \bigwedge^{d+1-j} V \to K$ is nondegenerate,
+  so $X \mapsto \operatorname{vol}(X \vee \cdot)$ is an isomorphism
+  $\bigwedge^{j} V \to (\bigwedge^{d+1-j} V)^*$. The \emph{complement
+  isomorphism} $* \colon \bigwedge^{j} V \to \bigwedge^{d+1-j} V$ is this
+  isomorphism followed by the inverse of the coordinate identification
+  of $\bigwedge^{d+1-j} V$ with its dual.
 \end{definition}
 \begin{proof}
   \leanok
-  Nondegeneracy is checked on the standard exterior-power basis, whose
-  vectors are indexed by the $j$- and $(N-j)$-element subsets $S$ and $T$ of
-  $\{1, \dots, N\}$. The pairing of $\mathbf{e}_S$ and $\mathbf{e}_T$ is the
-  volume form applied to the join $\mathbf{e}_S \vee \mathbf{e}_T$, i.e.\ the
-  extensor of the concatenated index family. If $S$ and $T$ overlap (which,
-  for complementary cardinalities, is exactly $T \ne S^{c}$) the family
-  repeats a basis vector and the extensor vanishes by alternation. If
-  $T = S^{c}$ the family is a permutation of all $N$ standard basis vectors,
-  so it is linearly independent and its extensor is nonzero. Hence the pairing
-  matrix on the standard basis is a signed-permutation matrix, so the pairing
-  $\mathrm{wedgePairing} : \bigwedge^{j} V \to (\bigwedge^{N-j} V)^{*}$ is
-  injective; as $\bigwedge^{j} V$ and $\bigwedge^{N-j} V$ have equal dimension
-  $\binom{N}{j} = \binom{N}{N-j}$, injectivity makes it a linear isomorphism
-  onto the dual. Post-composing with the dual-evaluation iso of
-  $\bigwedge^{N-j} V$ lands $\mathrm{complementIso}$ in $\bigwedge^{N-j} V$
-  itself. The exact grade-swap sign is not needed for the isomorphism and is
-  deferred to where an oriented meet consumes it.
+  Let $S$ be a $j$-element set and $T$ a $(d+1-j)$-element set in
+  $\{1, \dots, d+1\}$. The join $e_S \vee e_T$ is the extensor of the
+  family that lists $e_s$ for $s \in S$ and then $e_t$ for $t \in T$
+  (\cref{def:join}). If $S$ and $T$ meet, this family repeats a vector,
+  and $e_S \vee e_T = 0$ (the remark after \cref{def:extensor}). Since
+  $|S| + |T| = d+1$, the sets $S$ and $T$ are disjoint exactly when $T$
+  is the complement $S^c$ of $S$. In that case the family lists each
+  standard basis vector once. It is linearly independent, so
+  $e_S \vee e_{S^c} \neq 0$, and
+  $\varepsilon_S = \operatorname{vol}(e_S \vee e_{S^c}) \neq 0$, as the
+  volume form is injective. In the bases $(e_S)$ and $(e_T)$, the matrix
+  of the wedge pairing therefore has exactly one nonzero entry in each row
+  and each column: $\varepsilon_S$, in row $S$ and column $S^c$.
+
+  Hence $X \mapsto \operatorname{vol}(X \vee \cdot)$ is injective. If
+  $\operatorname{vol}(X \vee Y) = 0$ for every $Y$, then $Y = e_{S^c}$
+  gives $\varepsilon_S X_S = 0$, so $X_S = 0$ for every $S$, and $X = 0$.
+  The spaces $\bigwedge^{j} V$ and $(\bigwedge^{d+1-j} V)^*$ both have
+  dimension $\binom{d+1}{j} = \binom{d+1}{d+1-j}$, so this injective
+  linear map is an isomorphism. The coordinate identification of
+  $\bigwedge^{d+1-j} V$ with its dual is an isomorphism because the basis
+  $(e_T)$ is orthonormal, and $*$ is the first isomorphism followed by
+  the inverse of the second.
+
+  In fact $\varepsilon_S = \pm 1$ is the sign of the permutation that
+  lists the elements of $S$ and then those of $S^c$, each in increasing
+  order. The argument needs only $\varepsilon_S \neq 0$.
 \end{proof}
 
-\begin{lemma}[Defining wedge-pairing property of the complement iso]
+\begin{lemma}[The defining property of the complement isomorphism]
   \label{lem:complement-iso-toDual}
   \lean{CombinatorialRigidity.Molecular.complementIso_toDual}
   \leanok
   \uses{def:meet-complement-iso, def:meet-top-equiv}
-  Pairing $\mathrm{complementIso}\,X \in \bigwedge^{N-j} V$ against any
-  $B \in \bigwedge^{N-j} V$ through the standard exterior-power basis's
-  $\mathrm{toDual}$ reproduces the wedge pairing of $X$ with $B$:
+  Let $0 \le j \le d+1$, $X \in \bigwedge^{j} V$ and
+  $Y \in \bigwedge^{d+1-j} V$. Then
   \[
-    \langle \mathrm{complementIso}\,X,\ B \rangle
-      = \mathrm{wedgePairing}(X, B)
-      = \mathrm{vol}\,(X \vee B).
+    \langle *X, Y \rangle = \operatorname{vol}(X \vee Y).
   \]
-  This is the characterizing identity of the complement iso.
 \end{lemma}
 \begin{proof}
   \leanok
-  By construction $\mathrm{complementIso} = (\mathrm{wedgePairing}\text{ as an
-  equiv}) \mathbin{\circ} \mathrm{toDualEquiv}^{-1}$; applying $\mathrm{toDualEquiv}$
-  undoes the second factor (\texttt{LinearEquiv.apply\_symm\_apply}) and leaves
-  $\mathrm{wedgePairing}\,X$.
+  The coordinate identification sends $*X$ to the linear form
+  $\langle *X, \cdot \rangle$, which is
+  $\operatorname{vol}(X \vee \cdot)$ by \cref{def:meet-complement-iso}.
 \end{proof}
 
-\begin{lemma}[Complement of a decomposable lies in the wedge-orthogonal complement]
+Taking $X = e_S$ and $Y = e_T$ shows that
+$\langle *e_S, e_T \rangle$ is $\varepsilon_S$ if $T = S^c$ and $0$
+otherwise. So $*e_S = \varepsilon_S\, e_{S^c}$
+(\texttt{complementIso\_\allowbreak{}exteriorPower\_\allowbreak{}basis\_\allowbreak{}eq\_\allowbreak{}smul\_\allowbreak{}compl}),
+and $*$ is the Hodge star operator of the standard basis, which Barnabei,
+Brini and Rota use to state the duality between join and
+meet~\cite[p.~146]{barnabeiBriniRota1985}.
+
+The meet is the join transported by the complement isomorphism.
+
+\begin{definition}[The meet (regressive product)]
+  \label{def:meet}
+  \lean{CombinatorialRigidity.Molecular.meet}
+  \leanok
+  \uses{def:meet-complement-iso}
+  Let $a, b \ge 0$ with $a + b \le d+1$, and let
+  $A \in \bigwedge^{d+1-a} V$ and $B \in \bigwedge^{d+1-b} V$. The
+  \emph{meet} of $A$ and $B$ is
+  \[
+    A \wedge B \;=\; *\bigl({*A} \vee {*B}\bigr)
+    \;\in\; \textstyle\bigwedge^{d+1-a-b} V,
+  \]
+  where ${*A} \in \bigwedge^{a} V$ and ${*B} \in \bigwedge^{b} V$, so
+  that their join lies in $\bigwedge^{a+b} V$.
+\end{definition}
+\begin{fmlnote}
+  The formalization proves no property of the meet itself. It proves the
+  formula for $*e_S$ and the transformation law below, and the case of
+  two hyperplanes in the form $*(n_A \vee n_B)$, which is how the later
+  chapters use the meet (\cref{def:panel-support-extensor}). The
+  statements below for a general subspace $U$ and for general subspaces
+  $X$ and $Y$ are not formalized.
+\end{fmlnote}
+
+The meet of extensors of two subspaces is an extensor of their
+intersection. Let $U$ be a subspace of $V$, and let $U^\perp$ be its
+orthogonal complement for the dot product. The complement isomorphism
+sends a nonzero extensor of $U$ to a nonzero extensor of $U^\perp$. For
+$U = U_S$, the span of the $e_i$ with $i \in S$, this is
+$*e_S = \varepsilon_S\, e_{S^c}$. In general, write $U = g(U_S)$ for a
+linear automorphism $g$ of $V$, and let $h$ be its inverse transpose, so
+that $h(x) \cdot g(y) = x \cdot y$. The extensors of $U$ are the
+multiples of $g(e_{s_1}) \vee \cdots \vee g(e_{s_i})$, and
+\[
+  *\bigl(g(e_{s_1}) \vee \cdots \vee g(e_{s_i})\bigr)
+  \;=\; \det(g)\, \varepsilon_S\;
+  h(e_{t_1}) \vee \cdots \vee h(e_{t_{d+1-i}}),
+\]
+where $S^c = \{t_1 < \cdots < t_{d+1-i}\}$
+(\texttt{complementIso\_\allowbreak{}map\_\allowbreak{}contragredient\_\allowbreak{}eq}).
+The right side is a nonzero extensor of $h(U_{S^c})$. This is $U^\perp$,
+since $h(e_t) \cdot g(e_s) = e_t \cdot e_s = 0$ for $t \in S^c$ and
+$s \in S$, and the two spaces have the same dimension.
+
+Now let $A$ and $B$ be nonzero extensors of subspaces $X$ and $Y$ of $V$
+with $X + Y = V$. Then ${*A}$ and ${*B}$ are nonzero extensors of
+$X^\perp$ and $Y^\perp$, and $X^\perp \cap Y^\perp = (X + Y)^\perp = 0$.
+So ${*A} \vee {*B}$ is a nonzero extensor of
+$X^\perp + Y^\perp = (X \cap Y)^\perp$ (the remark after \cref{def:join}),
+and $A \wedge B$ is a nonzero extensor of $X \cap Y$. Barnabei, Brini and
+Rota define the meet by a sum over the splits of $A$ and prove this
+property for it~\cite[\S4, Proposition~4.3]{barnabeiBriniRota1985}.
+White gives the same definition as a sum over
+shuffles~\cite[\S4]{white1994}.
+
+The later chapters use the case of two distinct hyperplanes $H_A$ and
+$H_B$, where $a = b = 1$. Then $n_A = {*A}$ spans $H_A^\perp$, so it is a
+normal of $H_A$, and likewise $n_B = {*B}$ for $H_B$. The meet
+$A \wedge B = *(n_A \vee n_B)$ is a nonzero extensor of $H_A \cap H_B$.
+The formalization proves this last statement for every $d$
+(\texttt{extensor\_\allowbreak{}join\_\allowbreak{}proportional\_\allowbreak{}complementIso\_\allowbreak{}meet}),
+and \cref{lem:case-III-claim612-line-in-panel-union} below proves it for
+$d = 3$.
+
+\subsection{Lines in projective three-space}
+
+In this subsection $d = 3$ and $V = K^4$, except in the first statement
+of \cref{lem:complement-iso-decomposable-wedge-perp} and in
+\cref{lem:decomposable-extensor-span-unique}, which hold for every $d$.
+A point $p \in K^3$ has the homogeneous coordinate vector
+$\bar p = (p, 1) \in K^4$ (\cref{def:homogeneous-coords}). The plane
+$\{x \in K^3 : a \cdot x + a_0 = 0\}$ has the normal
+$n = (a, a_0) \in K^4$, and a point $p$ lies on it exactly when
+$\bar p \cdot n = 0$. Let $L$ be the line in which two nonparallel planes
+meet, and let $n_1$ and $n_2$ be their normals, which are linearly
+independent. Let
+\[
+  W = \{x \in K^4 : x \cdot n_1 = x \cdot n_2 = 0\},
+\]
+a $2$-dimensional subspace that contains $\bar p$ for every $p \in L$.
+The extensor of $L$ is $\bar p \vee \bar q$ for distinct points $p$ and
+$q$ of $L$ (\cref{def:affine-subspace-extensor}). The meet of the two
+planes (two panels, in a panel-hinge framework) is a scalar multiple of
+$*(n_1 \vee n_2)$, a nonzero extensor of $W$ by the remarks after
+\cref{def:meet}. \Cref{lem:case-III-claim612-line-in-panel-union} proves
+that the two extensors agree up to a scalar, by a count of dimensions in
+$\bigwedge^2 K^4$. It states the agreement in the form that the
+algebraic induction applies: a linear form on $\bigwedge^2 K^4$ that
+vanishes on the meet vanishes on the join.
+
+The proof finds a line of $\bigwedge^2 K^4$ that contains both
+extensors, cut out by the coordinate pairing. The first lemma shows that
+the meet lies on it.
+
+\begin{lemma}[The complement of a $2$-extensor is orthogonal to the $2$-extensors sharing a vector with it]
   \label{lem:complement-iso-decomposable-wedge-perp}
   \lean{CombinatorialRigidity.Molecular.complementIso_toDual_eq_zero_of_wedgeProd_eq_zero,
         CombinatorialRigidity.Molecular.wedgeProd_extensor_eq_zero_of_shared_vector,
         CombinatorialRigidity.Molecular.complementIso_toDual_extensor_eq_zero_of_shared_vector}
   \leanok
   \uses{def:meet-complement-iso, lem:complement-iso-toDual, def:join, def:extensor}
-  The first of two steps toward the point-join $\leftrightarrow$ panel-meet
-  duality (\cref{lem:case-III-claim612-line-in-panel-union}). Let $n_u, n'$
-  be two independent vectors of $K^4$ --- in the application below, two
-  normals of a panel $\Pi(u)$ in the sense of
-  \cref{sec:molecular-algebraic-induction} --- and $W = \{n_u, n'\}^{\perp}$.
-  The complement $\mathrm{complementIso}(n_u \wedge n')$ of the grade-$2$
-  decomposable $n_u \wedge n'$ lies in $\bigwedge^{2} W$, in the operational
-  dual sense that it is annihilated by every $2$-extensor sharing a vector
-  with $n_u \wedge n'$: through the dictionary entry
-  \cref{lem:complement-iso-toDual}, a vanishing wedge has vanishing
-  complement pairing ($X \vee B = 0 \Rightarrow \langle
-  \mathrm{complementIso}\,X, B\rangle = \mathrm{vol}(X \vee B) = 0$), and at
-  $d = 3$ ($N = 4$) the wedge of two $2$-extensors sharing a vector vanishes
-  by alternation (the concatenated family repeats the shared vector).
+  \begin{enumerate}
+    \item[(i)] Let $d \ge 1$ and $0 \le j \le d+1$, and let
+      $X \in \bigwedge^{j} K^{d+1}$ and $Y \in \bigwedge^{d+1-j} K^{d+1}$
+      with $X \vee Y = 0$. Then $\langle *X, Y \rangle = 0$.
+    \item[(ii)] Let $n_1, n_2 \in K^4$ be linearly independent, and let
+      $Y = n \vee c$ with $n \in \{n_1, n_2\}$ and $c \in K^4$. Then
+      $(n_1 \vee n_2) \vee Y = 0$ and
+      $\langle *(n_1 \vee n_2), Y \rangle = 0$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
-  The dictionary half is immediate from \cref{lem:complement-iso-toDual} and linearity of the volume
-  form ($\mathrm{vol}\,0 = 0$). The concrete half writes the underlying element of the graded wedge
-  as the join $\mathrm{extensor}\,n \vee \mathrm{extensor}\,c = \mathrm{extensor}(\mathrm{append}\,n\,
-  c)$ (\cref{def:join}); a shared vector makes the appended family non-injective, so the extensor
-  vanishes by the alternating law (\cref{def:extensor}).
+  For (i), \cref{lem:complement-iso-toDual} gives
+  $\langle *X, Y \rangle = \operatorname{vol}(X \vee Y) =
+  \operatorname{vol}(0) = 0$. For (ii), $(n_1 \vee n_2) \vee (n \vee c)$
+  is the extensor of the family $n_1, n_2, n, c$ (\cref{def:join}). This
+  family repeats $n$, so its extensor is zero (the remark after
+  \cref{def:extensor}). The second claim follows by (i), with
+  $X = n_1 \vee n_2$ and $j = 2$.
 \end{proof}
+\begin{fmlnote}
+  The first pin is (i). The second and third pins are (ii) for
+  $n = n_1$, without the hypothesis that $n_1$ and $n_2$ are linearly
+  independent. The formal proof of
+  \cref{lem:case-III-claim612-line-in-panel-union} obtains the case
+  $n = n_2$ from the first pin, as above.
+\end{fmlnote}
+
+Geometrically, the line in the proof below is the image of
+$\bigwedge^2 W$ in $\bigwedge^2 K^4$. The next two lemmas give the facts
+that identify it, which we use after the proof.
 
 \begin{lemma}[The exterior square of a $2$-dimensional space is a line]
   \label{lem:complement-iso-line-one-dim}
@@ -186,42 +332,32 @@ identity the $d = 3$ Case-III realization of
         CombinatorialRigidity.Molecular.exteriorPower_finrank_eq_one_proportional}
   \leanok
   \uses{def:join, def:extensor}
-  The second step toward the point-join $\leftrightarrow$ panel-meet duality
-  (\cref{lem:case-III-claim612-line-in-panel-union}): for a $2$-dimensional
-  space $W$, the exterior square $\bigwedge^{2} W$ is $1$-dimensional,
-  \[
-    \dim \bigwedge^{2} W = \binom{\dim W}{2} = \binom{2}{2} = 1.
-  \]
-  Consequently any two members of $\bigwedge^{2} W$, one of them nonzero,
-  are scalar multiples of one another.
+  Let $W$ be a $2$-dimensional vector space over $K$. Then
+  $\dim \bigwedge^{2} W = \binom{2}{2} = 1$. Consequently, every element
+  of $\bigwedge^{2} W$ is a scalar multiple of any nonzero one.
 \end{lemma}
 \begin{proof}
   \leanok
-  The dimension count is $\mathrm{exteriorPower.finrank\_eq}$ ($\dim \bigwedge^{n} W = \binom{\dim
-  W}{n}$) at $\dim W = 2$, $n = 2$: $\binom{2}{2} = 1$. A space of dimension $1$ with a fixed nonzero
-  vector $x$ has every vector a multiple of $x$ ($\mathrm{finrank\_eq\_one\_iff\_of\_nonzero}'$).
+  The exterior power $\bigwedge^{n} W$ has dimension
+  $\binom{\dim W}{n}$, which is $1$ for $n = \dim W = 2$. A space of
+  dimension $1$ is spanned by each of its nonzero elements.
 \end{proof}
 
-\begin{lemma}[The exterior square of a subspace includes into $\bigwedge^{2} K^4$ injectively]
+\begin{lemma}[The exterior square of a subspace embeds in $\bigwedge^{2} K^4$]
   \label{lem:complement-iso-exterior-map-injective}
   \lean{CombinatorialRigidity.Molecular.exteriorPower_map_subtype_injective}
   \leanok
   \uses{def:meet-complement-iso}
-  A further step toward the point-join $\leftrightarrow$ panel-meet duality
-  (\cref{lem:case-III-claim612-line-in-panel-union}), on top of
-  \cref{lem:complement-iso-decomposable-wedge-perp} and
-  \cref{lem:complement-iso-line-one-dim}. For a subspace $W \subseteq K^4$,
-  the exterior-power map $\bigwedge^{2}(W.\mathrm{subtype}) : \bigwedge^{2}
-  W \to \bigwedge^{2} K^4$ induced by the inclusion $W \hookrightarrow K^4$
-  is injective.
+  Let $W$ be a subspace of $K^4$. The linear map
+  $\bigwedge^{2} W \to \bigwedge^{2} K^4$ induced by the inclusion of $W$
+  in $K^4$ is injective.
 \end{lemma}
 \begin{proof}
   \leanok
-  Over a field, an injective linear map induces an injective exterior power
-  ($\mathrm{exteriorPower.map\_injective\_field}$); the inclusion $W.\mathrm{subtype}$ is injective
-  ($\mathrm{Submodule.injective\_subtype}$). (No retraction is needed: the $\mathrm{CommRing}$-level
-  injectivity of $\bigwedge^{n} f$ requires an explicit left inverse of $f$, but over a field
-  injectivity of $f$ alone suffices.)
+  Extend a basis $w_1, \dots, w_m$ of $W$ to a basis of $K^4$. The map
+  sends the basis of $\bigwedge^2 W$ formed by the $w_a \vee w_b$ with
+  $a < b$ to part of the corresponding basis of $\bigwedge^2 K^4$, so it
+  is injective.
 \end{proof}
 
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality; KT eq.~(6.45)]
@@ -241,85 +377,127 @@ identity the $d = 3$ Case-III realization of
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
-  At $d = 3$ ($\bigwedge^{2}K^4$), let $n_u, n'$ be two independent panel normals of a panel
-  $\Pi(u)$ and $p_i, p_j$ two points whose connecting line $L = p_i p_j$ lies in $\Pi(u)$ (each
-  point orthogonal to both normals). Then the point-join $\bar{p_i} \vee \bar{p_j} =
-  \mathrm{extensor}\,[p_i, p_j]$ is a scalar multiple of the panel-meet $C(L) =
-  \mathrm{complementIso}(n_u \wedge n')$ --- both are the Plücker vector of the line $L$, up to the
-  projective scale. Consequently a screw functional $r$ annihilating $C(L)$ also annihilates
-  $\bar{p_i} \vee \bar{p_j}$. This is the duality Katoh--Tanigawa use implicitly in reading
-  eq.~(6.45): the spanning point-joins and the annihilated panel-meets of the lines in a panel
-  union $\Pi(a) \cup \Pi(b) \cup \Pi(c)$ are the \emph{same} extensors.
+  Let $n_1, n_2 \in K^4$ be linearly independent, and let
+  $x, y \in K^4$ satisfy $x \cdot n_i = y \cdot n_i = 0$ for $i = 1, 2$.
+  Then $x \vee y$ is a scalar multiple of $*(n_1 \vee n_2)$. In
+  particular, every linear form $r$ on $\bigwedge^2 K^4$ with
+  $r(*(n_1 \vee n_2)) = 0$ satisfies $r(x \vee y) = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Both members lie in the common line $\bigwedge^{2}W$ for $W = \{n_u, n'\}^\perp$ (the
-  wedge-orthogonal complement of the two independent normals, of dimension $4 - 2 = 2$): the
-  point-join lies there because each of $p_i, p_j$ is orthogonal to both normals, and the
-  panel-meet lies there by the decomposable-of-orthogonal-complement fact
-  (\cref{def:meet-complement-iso}). Since $\dim W = 2$, $\bigwedge^{2}W$ is
-  $1$-dimensional (\cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}K^4$-internal form
-  via the injective pull-back of \cref{lem:complement-iso-exterior-map-injective}), and the
-  panel-meet is nonzero (the normals are independent), so it spans the line and the point-join is
-  its multiple, $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then
-  immediate: $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda \cdot r(C(L)) = 0$.
+  Let $\Phi$ be the subspace of $\bigwedge^2 K^4$ spanned by the
+  $2$-extensors $n_1 \vee v$ and $n_2 \vee v$ for $v \in K^4$, and let
+  \[
+    \Omega = \{Z \in \textstyle\bigwedge^2 K^4 :
+      \langle Z, F \rangle = 0 \text{ for every } F \in \Phi\}.
+  \]
+  We show that $\Omega$ has dimension $1$ and contains both $x \vee y$
+  and $*(n_1 \vee n_2)$.
+
+  First, $\Phi$ has dimension $5$. For $n \neq 0$, the map
+  $v \mapsto n \vee v$ has kernel $\operatorname{span}\{n\}$, since
+  $n \vee v = 0$ exactly when $n$ and $v$ are linearly dependent (the
+  remark after \cref{def:extensor}). So its image $n \vee K^4$ has
+  dimension $3$. The images for $n_1$ and $n_2$ meet in the line spanned
+  by $n_1 \vee n_2$. This line lies in both, as
+  $n_1 \vee n_2 = n_2 \vee (-n_1)$. Conversely, let
+  $n_1 \vee v = n_2 \vee w$. The join with $n_2$ on the left gives
+  $n_2 \vee n_1 \vee v = n_2 \vee n_2 \vee w = 0$, so $n_2$, $n_1$ and
+  $v$ are linearly dependent. As $n_1$ and $n_2$ are independent,
+  $v = \alpha n_1 + \beta n_2$ for some $\alpha, \beta \in K$, and
+  $n_1 \vee v = \beta\, (n_1 \vee n_2)$. Hence
+  $\dim \Phi = 3 + 3 - 1 = 5$
+  (\texttt{finrank\_\allowbreak{}sup\_\allowbreak{}range\_\allowbreak{}wedgeFixedLeft}).
+  The coordinate pairing is nondegenerate on the $6$-dimensional space
+  $\bigwedge^2 K^4$, so $\dim \Omega = 6 - 5 = 1$.
+
+  Next, $x \vee y \in \Omega$. It suffices to show that
+  $\langle x \vee y, n_i \vee v \rangle = 0$ for $i = 1, 2$ and
+  $v \in K^4$. Identify $V$ with $V^*$ by the dot product. Then the
+  coordinate pairing of two $2$-extensors is the determinant of
+  \cref{def:meet-pairing-dual}
+  (\texttt{exteriorPower\_\allowbreak{}basis\_\allowbreak{}toDual\_\allowbreak{}eq\_\allowbreak{}pairingDual\_\allowbreak{}comp\_\allowbreak{}map}):
+  \[
+    \langle x \vee y, n_i \vee v \rangle
+    = \det \begin{pmatrix} x \cdot n_i & x \cdot v \\
+                           y \cdot n_i & y \cdot v \end{pmatrix}.
+  \]
+  Its first column is zero by hypothesis, so it vanishes
+  (\texttt{extensor\_\allowbreak{}toDual\_\allowbreak{}extensor\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}perp}).
+
+  The meet lies in $\Omega$ as well: by
+  \cref{lem:complement-iso-decomposable-wedge-perp}(ii), the pairing
+  $\langle *(n_1 \vee n_2), n_i \vee v \rangle$ vanishes for $i = 1, 2$
+  and $v \in K^4$.
+
+  Finally, $n_1 \vee n_2 \neq 0$, as $n_1$ and $n_2$ are linearly
+  independent, and so $*(n_1 \vee n_2) \neq 0$, as $*$ is an isomorphism.
+  So $*(n_1 \vee n_2)$ spans $\Omega$, and
+  $x \vee y = \lambda\, {*(n_1 \vee n_2)}$ for some $\lambda \in K$. For a
+  linear form $r$ with $r(*(n_1 \vee n_2)) = 0$, it follows that
+  $r(x \vee y) = \lambda\, r(*(n_1 \vee n_2)) = 0$.
 \end{proof}
 \begin{fmlnote}
-  The declaration list also carries the $d = 3$ Case-III realization built on this duality
-  (\cref{sec:molecular-algebraic-induction}): reading the identity in the row-independence test's
-  own coordinates (\texttt{panelSupportExtensor\_join\_eq\_zero\_of\_eq\_zero}), transporting it
-  along a sheared candidate normal (\texttt{panelSupportExtensor\_add\_smul\_left\_ne\_zero\_of\_join\_ne\_zero},
-  \texttt{exists\_shear\_linearIndependent\_pair}), assembling the resulting independent row family
-  into a full-rank realization (\texttt{case\_III\_old\_new\_blocks\_of\_line},
-  \texttt{case\_III\_full\_family\_of\_line}, \texttt{case\_III\_realization\_of\_line},
-  \texttt{exists\_line\_data\_of\_homogeneousIncidence},
-  \texttt{exists\_complementIso\_ne\_zero\_of\_homogeneousIncidence}), and upgrading that bare
-  realization to a generic one (\texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}, KT's
-  Lemma~5.2 "convert to a nonparallel realization without decreasing rank"). The last of these is a
-  general-purpose upgrade, not specific to Case III: it is also what \cref{lem:cycle-realization}
-  cites for its own bare-to-generic step.
+  The first three pins are the lemma. The first is its first statement,
+  and the second and third are its second statement, with the
+  orthogonality written through the coordinate pairing of $K^4$ and
+  through the dot product. The other nine belong to a realization of
+  Case~III of the algebraic induction at $d = 3$ that applies the lemma
+  (\cref{sec:molecular-algebraic-induction-caseIII}). The fourth
+  restates the second statement for the hinge extensor of two panels
+  (\cref{def:panel-support-extensor}), and the fifth, in contrapositive
+  form, for the hinge extensor of the normals $n_1 + t n_2$ and $n_1$
+  with $t \neq 0$. The sixth chooses such a $t$ for which $n_1 + t n_2$
+  is independent of a given normal, over an infinite field. The seventh
+  to ninth build, from a line in a panel, an independent family of rows
+  of the rigidity matrix and a realization of full rank. The tenth gives,
+  for each pair of four points in the position of KT eq.~(6.45), one of
+  the three panels that contains the line through the pair and a second
+  plane through that line. The eleventh finds such a line on whose meet
+  $*(n_1 \vee n_2)$ a given nonzero linear form does not vanish. The
+  twelfth turns an infinitesimally rigid realization with nonzero hinge
+  extensors into a generic one of full rank, the step for which Katoh and
+  Tanigawa cite their Lemma~5.2 (KT p.~691).
+  \Cref{lem:cycle-realization} uses it as well.
 \end{fmlnote}
 
-\begin{lemma}[Equal nonzero decomposable extensors span the same plane; Plücker injectivity]
+The line $\Omega$ is the image of $\bigwedge^2 W$. The inclusion of $W$
+in $K^4$ induces an injective map $\bigwedge^2 W \to \bigwedge^2 K^4$
+(\cref{lem:complement-iso-exterior-map-injective}). Its image is
+therefore a line, as $\bigwedge^2 W$ is one
+(\cref{lem:complement-iso-line-one-dim}). It is spanned
+by $x \vee y$ for any basis $x, y$ of $W$, and $x \vee y$ lies in
+$\Omega$ by the proof. So $*(n_1 \vee n_2)$ is a nonzero extensor of
+$W$, and the meet of the two planes is an extensor of their line of
+intersection. For
+lines in $3$-space this is White's theorem that the Plücker coordinates
+of a subspace and its dual Plücker coordinates, computed from hyperplanes
+that contain it, agree up to a common scalar after a reordering with
+signs~\cite[\S2]{white1994}. By the formula for $*e_S$ after
+\cref{lem:complement-iso-toDual}, the complement isomorphism performs the
+reordering.
+
+Conversely, a nonzero $2$-extensor determines the plane spanned by its
+vectors. This is the case $j = 2$ of the proposition of Barnabei, Brini
+and Rota recalled after \cref{def:join}, here for every $d$.
+
+\begin{lemma}[Equal nonzero $2$-extensors span the same plane]
   \label{lem:decomposable-extensor-span-unique}
   \lean{CombinatorialRigidity.Molecular.span_range_eq_of_extensor_eq}
   \leanok
   \uses{def:extensor, def:join}
-  If two pairs $p_0, p_1, p_0', p_1' \in K^{d+1}$ have the same nonzero extensor,
-  $\mathrm{extensor}\,[p_0,p_1] = \mathrm{extensor}\,[p_0',p_1'] \ne 0$, then they span the same
-  plane, $\mathrm{span}\{p_0,p_1\} = \mathrm{span}\{p_0',p_1'\}$. This is the converse of the
-  point-pair proportionality of \cref{lem:case-III-claim612-line-in-panel-union}: there, a common
-  $1$-dimensional line forces proportional extensors; here, equal nonzero decomposable extensors
-  force a common $2$-dimensional plane.
+  Let $p_0, p_1, p_0', p_1' \in K^{d+1}$ with
+  $p_0 \vee p_1 = p_0' \vee p_1' \neq 0$. Then
+  $\operatorname{span}\{p_0, p_1\} = \operatorname{span}\{p_0', p_1'\}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  For any $x \in K^{d+1}$, the join factorization $\mathrm{extensor}\,[x,a,b] =
-  \mathrm{extensor}\,[x] \vee \mathrm{extensor}\,[a,b]$ (\cref{def:join}) makes the grade-$3$
-  extensor of $x$ against either pair depend only on their shared grade-$2$ extensor, so
-  $\mathrm{extensor}\,[x,p_0,p_1] = \mathrm{extensor}\,[x,p_0',p_1']$ for every $x$. A decomposable
-  triple vanishes exactly when its first vector lies in the span of the (independent) remaining
-  pair, so $x \in \mathrm{span}\{p_0',p_1'\}$ iff $\mathrm{extensor}\,[x,p_0,p_1] = 0$ iff
-  $x \in \mathrm{span}\{p_0,p_1\}$, and the two spans coincide.
+  Let $x \in K^{d+1}$. The join $x \vee p_0 \vee p_1$ depends on $p_0$
+  and $p_1$ only through $p_0 \vee p_1$ (\cref{def:join}), so
+  $x \vee p_0 \vee p_1 = x \vee p_0' \vee p_1'$. The vectors $p_0$ and
+  $p_1$ are linearly independent, as their join is nonzero, so
+  $x \vee p_0 \vee p_1 = 0$ exactly when
+  $x \in \operatorname{span}\{p_0, p_1\}$ (the remark after
+  \cref{def:extensor}). The same holds for $p_0'$ and $p_1'$. So the two
+  spans have the same elements.
 \end{proof}
-
-\begin{definition}[The regressive product (meet)]
-  \label{def:meet}
-  \lean{CombinatorialRigidity.Molecular.meet}
-  \leanok
-  \uses{def:meet-complement-iso}
-  The \emph{meet} (regressive product) $A \wedge B$ of two extensors is the
-  Grassmann--Cayley dual of the join: writing $*$ for the complement iso
-  $\bigwedge^{j} V \to \bigwedge^{N-j} V$ of \cref{def:meet-complement-iso}, the
-  meet of $A \in \bigwedge^{N-a} V$ and $B \in \bigwedge^{N-b} V$ (with
-  $a + b \le N$) is $*(*A \vee *B)$, landing in $\bigwedge^{N-(a+b)} V$: the
-  complements $*A \in \bigwedge^{a} V$ and $*B \in \bigwedge^{b} V$ are joined to a
-  $\bigwedge^{a+b} V$ element (the graded product $\mathrm{gradedMul}$, the
-  general-grade form of $\mathrm{wedgeProd}$), and a third $*$ returns the result to
-  $\bigwedge^{N-(a+b)} V$. Geometrically, when $A$, $B$ are the supporting extensors
-  of two subspaces of $V$, the meet is the supporting extensor of their
-  codimension-$(a+b)$ intersection; for $a = b = 1$ the meet of two hyperplane
-  normals is the supporting $(N-2) = k$-extensor of their codimension-2
-  intersection, landing in the screw space $\mathrm{ScrewSpace}\,k$ of
-  \cref{sec:molecular-rigidity-matrix}.
-\end{definition}
