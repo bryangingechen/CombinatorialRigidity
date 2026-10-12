@@ -4,7 +4,8 @@
 plan and the PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the
 authority for which rounds are done. The round rewrote the prose of the eight chapters
 `matroid-union.tex` → `meet.tex` to `40-exposition`'s register and round 1's exemplar, in eighteen
-slices. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength is as it was. The ledger
+slices. Every `\label`, pin, `\leanok` and `\uses` edge is as it was, and every statement keeps its
+strength except the two that `F-084` narrowed, which the PI kept. The ledger
 `notes/Prose-findings.md` holds the round's 67 findings, `F-048`–`F-114`. All 20 one-commit tasks
 are done. **Next concrete task:** round 3, `prose-algebraic`, opens (*Hand-off*). Round manual:
 `CLEANUP.md`.

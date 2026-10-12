@@ -176,8 +176,10 @@ Henneberg/Lovász–Yemini" for the degree-three argument, Jordán's Lemma 2.1.4
 
 **PROSE round 2 (`prose-molecular`, closed 2026-10-12).** The round rewrote the prose of the eight
 chapters `matroid-union.tex` → `meet.tex` (phases 12–21a; `notes/Prose-molecular-cleanup.md`). No
-node's statement strength, pins or `\uses` edges changed and no node rerouted, so no entry is
-added. The close checked every pointer into these chapters against the new text. The crux nodes
+node's pins or `\uses` edges changed and no node rerouted, so no entry is added. Statement strength
+changed only at `F-084`: `lem:contraction-minimality` and `lem:reduction-step` state KT Lemma 3.5
+for the matroid contraction their pin proves, with the graph form in prose (the PI kept this,
+2026-10-12). The close checked every pointer into these chapters against the new text. The crux nodes
 named under *Ledger* (`lem:extensor-independence`; the balanced-packing descent, `rem:kt-lemma-41`,
 `rem:kt-lemma-44`, `lem:removal-deficiency`, `lem:reduction-step`, `lem:chain-cycle-dichotomy` and
 `lem:chain-data-extract`; `def:meet-complement-iso` and
