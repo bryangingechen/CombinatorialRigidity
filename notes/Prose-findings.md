@@ -320,6 +320,19 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `a2df0ed3`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.16.
+- **F-105** · E · KT Lemma 4.6's nodes, `def:chain-data` to `lem:chain-data-extract`
+  (`molecular-induction.tex`): edges the pins do not back, and edges they need. The statement
+  edges of `def:chain-data` and `def:cycle-data` to `def:graph-operations` have no Lean basis: the
+  records use links only, and the label the first records is used only by
+  `lem:chain-data-extract`'s splitting off. The statement edges of `lem:chain-cycle-dichotomy` to
+  `lem:two-edge-conn`, `lem:no-rigid-edge-count` and `lem:simple-minimal-noRigid` are its
+  proof's, and it misses `lem:deficiency-zero-connected` (`two_le_degree_of_isKDof_zero`, which
+  its proof cites since task 2.17), `def:cut-edges-2ec` and `def:edge-multiply`. The statement
+  edges of `lem:chain-data-extract` to its four lemmas are its proof's, and its pin reaches
+  `lem:simple-minimal-noRigid` only through the dichotomy's, as it assumes that $G$ is simple.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1d455ed9`); read (the pins'
+  statements and bodies).
+  *Found:* round 2 task 2.17.
 
 ## N — node shape
 
@@ -560,6 +573,17 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `a2df0ed3`); read (a
   `grep` for the two names' callers).
   *Found:* round 2 task 2.16.
+- **F-106** · N · `def:cycle-data` and `lem:chain-cycle-dichotomy` (`molecular-induction.tex`):
+  `def:cycle-data`'s third pin `CycleData.vertexSet_ncard` has no Lean caller and lies outside
+  every main result's closure; like the second, it is immediate from the definition. The
+  dichotomy's third pin `isKDof_zero_of_cycle` (a cycle on $m$ vertices, $3 \le m \le D$, is a
+  $0$-dof-graph) is a load-bearing lemma with no node of its own. Since task 2.17 the dichotomy's
+  proof proves it as a first step, and the proof of `lem:chain-data-extract` (the triangle of KT
+  Lemma 6.7(ii), whose pin uses `isKDof_zero_of_triangle`, `F-108`) and the prose after the
+  dichotomy cite that step. Give it a node that both lemmas use, and unpin `vertexSet_ncard`.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `1d455ed9`); read (a
+  `grep` for the callers of `vertexSet_ncard` and `range_vtx`).
+  *Found:* round 2 task 2.17.
 
 ## T — terminology and notation
 
@@ -863,6 +887,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement and body, `Molecular/AlgebraicInduction/Theorem55.lean`,
   and its call in `theorem_55_minimalKDof_gen`).
   *Found:* round 2 task 2.16.
+- **F-107** · S · `lem:chain-cycle-dichotomy` (`molecular-induction.tex`): at the open the
+  statement also said that both branches occur: for $d \ge 4$, minimal $0$-dof cycle graphs on
+  $4 \le m \le d$ vertices have no chain of length $d$. No pin states this. `isKDof_zero_of_cycle`
+  gives only that such a cycle is a $0$-dof-graph, and no declaration states that it is minimal,
+  that it has no proper rigid subgraph, or that it has no chain. Task 2.17 moved the sentence out
+  of the statement, as principle B moves an essentiality remark, to the prose after the lemma.
+  That paragraph keeps the claim, for every $d \ge 3$ and $3 \le m \le d$, proves it, and says
+  that under the bound $|V(G)| \ge 4$ of `lem:chain-data-extract` the cycle branch occurs
+  exactly when $d \ge 4$. The dichotomy itself keeps KT's strength.
+  *Evidence:* read (the three pins' statements).
+  *Found:* round 2 task 2.17.
 
 ## L — Lean
 
@@ -1176,6 +1211,18 @@ declaration's name as its header writes it:
   `d = 3` regime", which is $d \ge 3$.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.16.
+- **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
+  `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
+  `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
+  `simple_of_isMinimalKDof_of_noRigid` derives from its other hypotheses. `chainWalk_charging`
+  takes three hypotheses it does not use (`_hG0`, `_hD`, `_hV2`). `isKDof_zero_of_triangle`
+  proves again, by its own count, the case $m = 3$ of `isKDof_zero_of_cycle`. Docstrings:
+  `ChainExtraction.lean`'s header says "This commit lands **E3**" and that E5 "is next", and
+  narrates design-note sections; `ChainData`'s cite KT eq. (6.46) for the chain and its label,
+  where (6.46) is the rank of $(G_1, q_1)$ and the chain is KT Lemma 4.6's;
+  `CycleData.vertexSet_ncard`'s names a use that no caller makes.
+  *Evidence:* read (the bodies and docstrings; KT 2011 pp. 664 and 692).
+  *Found:* round 2 task 2.17.
 
 ## M — mathematics and sources
 

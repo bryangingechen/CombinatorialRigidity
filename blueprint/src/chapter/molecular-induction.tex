@@ -1,44 +1,55 @@
-\section{The combinatorial induction: graph operations and Theorem 4.9}
+\section{The combinatorial induction: graph operations and KT Theorem~4.9}
 \label{sec:molecular-induction}
 
-This chapter proves Katoh--Tanigawa's Theorem~4.9
-\cite[\S3--\S4]{katohTanigawa2011}: every minimal $0$-dof-graph on at
-least two vertices reduces to the two-vertex double edge by a sequence
-of two graph operations, splitting-off at a degree-2 vertex and
-contraction of a proper rigid subgraph. This is the \emph{combinatorial}
-half of the molecular conjecture's proof; the algebraic induction of
-\cref{sec:molecular-algebraic-induction} realizes each reduction step at
-the rigidity-matrix rank.
+This chapter proves Katoh and Tanigawa's Lemmas~3.4 and~3.5 and the
+results of their \S4~\cite{katohTanigawa2011} on minimal
+$k$-dof-graphs, with the induction and some lemmas of their \S6. Two
+operations reduce a minimal $k$-dof-graph $G$ with at least three
+vertices to a smaller one. If $G$ has a proper rigid subgraph,
+contracting it gives a minimal $k$-dof-graph (KT Lemma~3.5). If $G$ has
+none, splitting off at a vertex of degree two gives a minimal
+$0$-dof-graph when $k = 0$, and a minimal $(k-1)$-dof-graph when $k > 0$
+(KT Lemma~4.8). Such a vertex exists when $G$ is $2$-edge-connected
+(KT Lemma~4.6), and every $0$-dof-graph is $2$-edge-connected. So every
+minimal $0$-dof-graph with at least two vertices reduces to the
+two-vertex double edge, which is KT Theorem~4.9. Katoh and Tanigawa
+prove their Theorem~5.5 by an induction on the number of vertices over
+minimal $k$-dof-graphs of every deficiency $k$. The algebraic induction
+(\cref{sec:molecular-algebraic-induction}) constructs the panel-hinge
+realizations that this induction needs.
 
-Throughout $D = \binom{d+1}{2}$ is the body-bar dimension and
-$\tilde G = (D-1) \cdot G$ is the multiplied graph of
-\cref{sec:body-hinge}.
+Throughout, $D = \binom{d+1}{2}$, and $\tilde G = (D-1)\cdot G$ is the
+multigraph of \cref{sec:body-hinge}, in which each edge of $G$ is
+repeated $D - 1$ times. The matroid $M(\tilde G)$, the deficiency,
+$k$-dof-graphs and rigid subgraphs are those of
+\cref{sec:molecular-deficiency}.
 
-\medskip
-\noindent\textbf{The argument.}
-\Cref{sec:molecular-induction-inherited} sharpens two structural facts
-from \cref{sec:molecular-deficiency} (KT Lemmas~3.4 and~3.5) to the form
-the reduction needs: a circuit of $M(\tilde G)$ induces a rigid
-subgraph, and contracting a rigid subgraph conserves the deficiency.
-\Cref{sec:molecular-induction-operations} defines the graph operations
-themselves. \Cref{sec:molecular-induction-forest} works out the
-degree-of-freedom bookkeeping a splitting-off or a vertex removal
-induces: Katoh--Tanigawa's own argument is a forest surgery (Lemma~4.1)
-whose base case is over-quantified as stated, and whose proof of the
-intended case glosses an unstated balanced-packing assumption
-(\cref{rem:kt-lemma-41} works out both the disproof and the repair) ---
-but the bookkeeping Theorem~4.9 actually needs is reached instead by a
-direct deficiency-count argument (\cref{sec:molecular-induction-dof}),
-so the splitting-off surgery, though fully formalized as the repair, and
-its edge-splitting inverse (KT Lemma~4.2), never enter the proof of
-Theorem~4.9. \Cref{sec:molecular-induction-thm49} assembles Theorem~4.9
-itself, by strong induction on the vertex count, dispatching on whether
-$G$ has a proper rigid subgraph (contraction) or not (a reducible
-degree-2 vertex, via KT Lemma~4.6). The closing sections extract the
-finer degree-2 structure the algebraic induction consumes from a graph
-with no proper rigid subgraph: an adjacent degree-2 pair at $d = 3$
-(\cref{sec:simplicity-and-adjacent-pair}), and, at general $d$, the
-length-$d$ chain-or-cycle dichotomy of KT Lemma~4.6.
+\Cref{sec:molecular-induction-inherited} proves KT Lemmas~3.4 and~3.5.
+By the first, the ends of the edges of a circuit of $M(\tilde G)$ induce
+a rigid subgraph. We prove the second for the corresponding contraction
+of the matroid $M(\tilde G)$. \Cref{sec:molecular-induction-operations}
+defines removal, splitting off and edge-splitting at a vertex of degree
+two. \Cref{sec:molecular-induction-forest} proves KT Lemmas~4.1
+and~4.2, which compare the independent sets of $M(\tilde G)$ before and
+after splitting off and edge-splitting. We prove KT Lemma~4.1 for
+bases, and show that a base has the partition into forests that its
+proof assumes (\cref{rem:kt-lemma-41}).
+\Cref{sec:molecular-induction-dof} proves KT Lemmas~4.3 to~4.8. We bound
+the deficiency after splitting off and after removal by comparing
+partitions of $V(G)$, and find a vertex of degree two when $G$ has no
+proper rigid subgraph. \Cref{sec:molecular-induction-thm49} proves KT
+Theorem~4.9, the induction over all deficiencies, and KT Lemma~6.1,
+which realizes a graph that is not $2$-edge-connected.
+
+The last two subsections concern a minimal $0$-dof-graph $G$ with at
+least three vertices and no proper rigid subgraph.
+\Cref{sec:simplicity-and-adjacent-pair} shows that $G$ is simple, and
+that it has two adjacent vertices of degree two when $d \ge 3$. The last
+subsection proves KT Lemma~4.6 for $G$
+(\cref{lem:chain-cycle-dichotomy}): $G$ is a cycle on at most $d$
+vertices, or it has a chain of length $d$ whose interior vertices have
+degree two. Case~III of the algebraic induction starts from this
+dichotomy.
 
 \subsection{Circuits and the contraction of a rigid subgraph}
 \label{sec:molecular-induction-inherited}
@@ -1379,7 +1390,7 @@ assertion and KT Lemma~4.7.
 
 KT Lemma~4.6 shows that a $2$-edge-connected minimal $k$-dof-graph with
 no proper rigid subgraph is a cycle on at most $d$ vertices, or contains
-a chain $v_0 v_1 \dots v_d$ of length $d$ whose inner vertices have
+a chain $v_0 v_1 \dots v_d$ of length $d$ whose interior vertices have
 degree two. We prove this for $k = 0$ (\cref{lem:chain-cycle-dichotomy}).
 Katoh and Tanigawa's proof begins with a vertex of degree two, which the
 next two lemmas give.
@@ -1981,55 +1992,59 @@ induction uses neither: it extracts a chain of length $d$ at every $d$
   (\cref{def:rigid-subgraph}), which is impossible. Hence $b \neq c$.
 \end{proof}
 
-\subsection{The general-$d$ chain extraction (KT Lemma 4.6)}
+\subsection{A chain or a short cycle: KT Lemma~4.6}
 
-The $d = 3$ pair above (\cref{lem:adjacent-degree-two-pair} and
-\cref{lem:chain-data-of-noRigid}) is superseded by the general form
-developed here. At general $d$, KT
-Lemma~4.6 \cite[pp.~664--665]{katohTanigawa2011} is stronger: a minimal
-$0$-dof-graph with no proper rigid subgraph either contains a
-\emph{length-$d$ chain} (interior vertices all of degree $2$) or
-\emph{is} a short cycle. Both branches matter for the general-$d$
-Case~III: the chain supplies the splitting-off recursion, and the cycle
-supplies the Lemma-5.4 realization (\cref{lem:cycle-realization});
-the extraction is accordingly packaged as the two records and the
-dichotomy below.
+We now prove KT Lemma~4.6 for $k = 0$, which we stated before
+\cref{lem:low-degree-vertex}. Katoh and Tanigawa use it in the proof of
+their Lemma~6.13~\cite[p.~692]{katohTanigawa2011}, which is Case~III of
+the algebraic induction at general $d$. If $G$ is a cycle on at most $d$
+vertices, they realize it by their Lemma~5.4
+(\cref{lem:cycle-realization}). Otherwise they split off at the interior
+vertices of a chain $v_0 v_1 \dots v_d$, beginning with
+$G_{v_1}^{v_0 v_2}$, which is a minimal $0$-dof-graph by KT Lemma~4.8.
+We define chains and cycles, and prove the dichotomy
+(\cref{lem:chain-cycle-dichotomy}). Then we show that
+$G_{v_1}^{v_0 v_2}$ is also simple and smaller than $G$ when $G$ has at
+least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
 
-\begin{definition}[Chain data; KT eq.~6.46]
+\begin{definition}[A chain of length $d$; KT Lemma~4.6]
   \label{def:chain-data}
   \lean{Graph.ChainData}
   \leanok
   \uses{def:graph-operations}
-  Length-$n$ chain data on a multigraph $G$: pairwise-distinct vertices
-  $v_0, \dots, v_n$ (KT eq.~6.46), pairwise-distinct edges $e_i$ genuinely
-  linking $v_i$ to $v_{i+1}$, a fresh short-circuit label $e_0 \notin E(G)$
-  (for the splitting-off), and the \emph{interior degree-2 closure}: every
-  $G$-edge at an interior vertex $v_i$ ($1 \le i \le n-1$) is one of the two
-  chain edges there. The record carries the chain length \emph{exactly}
-  equal to $n$ (KT Lemma~4.6 builds the chain to length exactly $d$; the $d$
-  Case-III candidate frameworks are the $d$ panels of the chain, and the
-  panel-discriminator index alignment $d = k+1$ is recovered from the
-  ambient dimension identity at the use sites).
+  Let $G$ be a multigraph, and let $d \ge 1$. A \emph{chain of length
+  $d$} in $G$, written $v_0 v_1 \dots v_d$, consists of distinct vertices
+  $v_0, \dots, v_d$ of $G$ and, for $0 \le i \le d - 1$, an edge $f_i$ of
+  $G$ joining $v_i$ and $v_{i+1}$, such that for $1 \le i \le d - 1$ the
+  only edges of $G$ at the \emph{interior} vertex $v_i$ are $f_{i-1}$ and
+  $f_i$.
 \end{definition}
+\begin{fmlnote}
+  The formal chain also records a label $e_0 \notin E(G)$, which
+  \cref{lem:chain-data-extract} uses for the new edge of
+  $G_{v_1}^{v_0 v_2}$ (\cref{fmlnote:graph-operations}). So the
+  declarations that give a chain, pinned on
+  \cref{lem:chain-cycle-dichotomy} and \cref{lem:chain-data-extract},
+  assume that a label outside $E(G)$ exists.
+\end{fmlnote}
 
-\begin{definition}[Cycle data; KT Lemma 4.6, cycle branch]
+\begin{definition}[Cycle graphs; KT Lemma~4.6]
   \label{def:cycle-data}
   \lean{Graph.CycleData, Graph.CycleData.range_vtx, Graph.CycleData.vertexSet_ncard}
   \leanok
   \uses{def:graph-operations}
-  Cycle-graph data on a multigraph $G$, packaging the cycle branch of the
-  dichotomy: an integer $m \ge 3$, injective
-  cyclically-indexed families $\mathrm{vtx} \colon \Z/m \to V(G)$ and
-  $\mathrm{edge} \colon \Z/m \to E(G)$ with $\mathrm{edge}\,i$ a genuine
-  $G$-link from $\mathrm{vtx}\,i$ to the cyclic successor
-  $\mathrm{vtx}\,(i+1)$, covering all of $V(G)$ and $E(G)$ --- so $G$
-  \emph{is} the cycle $\mathrm{vtx}\,0 - \mathrm{vtx}\,1 - \dots -
-  \mathrm{vtx}\,(m-1) - \mathrm{vtx}\,0$. In particular the cycle vertices
-  are exactly $V(G)$ (\texttt{range\_vtx}) and $|V(G)| = m$
-  (\texttt{vertexSet\_ncard}).
+  Let $G$ be a multigraph, and let $m \ge 3$. Then $G$ is a \emph{cycle}
+  on $m$ vertices, or a cycle graph, if it has distinct vertices
+  $v_0, \dots, v_{m-1}$ and, for $0 \le i \le m - 1$, an edge $f_i$
+  joining $v_i$ and $v_{i+1}$, with indices modulo $m$, such that every
+  vertex and every edge of $G$ is among them.
 \end{definition}
+\begin{fmlnote}
+  The second and third pins say that $V(G) = \{v_0, \dots, v_{m-1}\}$
+  and that $|V(G)| = m$.
+\end{fmlnote}
 
-\begin{lemma}[Chain-or-cycle dichotomy; KT Lemma 4.6]
+\begin{lemma}[A short cycle or a chain; KT Lemma~4.6]
   \label{lem:chain-cycle-dichotomy}
   \lean{Graph.chainData_or_cycleData_of_noRigid,
         Graph.cycle_isProperRigidSubgraph,
@@ -2037,73 +2052,163 @@ dichotomy below.
   \leanok
   \uses{def:chain-data, def:cycle-data, def:k-dof, def:rigid-subgraph,
         lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid}
-  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
-  $D = \binom{n+1}{2} \ge 3$, $|V(G)| \ge 3$, and some edge name unused by
-  $G$ (the fresh short-circuit label). Then $G$ contains a length-$n$ chain
-  (\cref{def:chain-data}) or $G$ \emph{is} a cycle on $m \le n$ vertices
-  (\cref{def:cycle-data}). Both branches occur: at $n \ge 4$ there are
-  minimal $0$-dof cycle graphs on $4 \le m \le n$ vertices admitting no
-  length-$n$ chain, so the cycle disjunct cannot be strengthened away.
+  Let $D \ge 3$, and let $G$ be a minimal $0$-dof-graph with at least
+  three vertices and no proper rigid subgraph. Then $G$ is a cycle on at
+  most $d$ vertices (\cref{def:cycle-data}), or $G$ has a chain of length
+  $d$ (\cref{def:chain-data}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid,
         def:rigid-subgraph}
-  KT pp.~664--665, by contradiction: assume neither branch. Minimality
-  forces min-degree $\ge 2$ and connectivity (both from the crossing-edge
-  count of \cref{lem:two-edge-conn} at singleton and component cuts). From
-  every vertex-edge incidence, extend a walk whose interior vertices have
-  degree exactly $2$, capped at length $n$. Reaching the cap would yield the
-  chain; closing up into a cycle would make $G$ itself a cycle on $\le n$
-  vertices (an all-degree-$2$ closed walk spans a connected graph); and a
-  \emph{lollipop} --- the walk revisiting an earlier vertex whose degree is
-  $\ge 3$ --- is absurd, since its loop is a cycle on $\le n \le D$ vertices
-  hanging strictly inside $G$, and a cycle on at most $D$ vertices is a
-  $0$-dof subgraph (the deficiency count: every partition class of the cyclic
-  index set has a boundary index, injecting parts into crossing edges), i.e.\
-  a proper rigid subgraph, contradicting the hypothesis. So under the
-  contradiction assumption every such walk terminates at both ends in
-  degree-$\ge 3$ vertices after at most $n-1$ edges. Walks are deterministic
-  (two walks sharing their first vertex and edge are prefix-comparable), so
-  charging each degree-$2$ vertex to the terminated walks through it double
-  counts as $2|X_2| \le (n-2) \sum_{\deg \ge 3} \deg v$ --- KT's
-  (4.6)+(4.7). Combined with the KT~4.5(i) edge bound
-  (\cref{lem:no-rigid-edge-count}), the handshake identity, and the linking
-  identity $i(n-2) + 2 \le (D-1)(i-2)$ for $i \ge 3$ (an arithmetic
-  consequence of $D = \binom{n+1}{2}$, KT's display above (4.9)), this
-  yields the numeric contradiction of KT (4.8)/(4.9).
-\end{proof}
+  We follow Katoh and Tanigawa's
+  proof~\cite[pp.~664--665]{katohTanigawa2011}, and give its count in
+  full. As $D \ge 3$, we have $d \ge 2$, and $d \le D$. By KT Lemma~3.1
+  (\cref{lem:two-edge-conn}), $G$ is $2$-edge-connected. So it is
+  connected, and each of its vertices has degree at least two
+  (\cref{lem:deficiency-zero-connected}). By
+  \cref{lem:simple-minimal-noRigid}, $G$ is simple.
 
-\begin{lemma}[The general-$d$ chain extractor; KT Lemmas 4.6 + 4.8]
+  First, a cycle $C$ on $m$ vertices with $3 \le m \le D$ is a
+  $0$-dof-graph. Let $P$ be a partition of $V(C)$ into at least two
+  parts. Each part is a proper subset of $V(C)$, so it has a vertex whose
+  successor along $C$ lies in another part. The edge between them joins
+  two parts, and different parts give different edges. So at least $|P|$
+  edges join different parts, and the value of $P$
+  (\cref{def:D-deficiency}) is at most
+  $D(|P| - 1) - (D-1)|P| = |P| - D \le 0$, as $|P| \le m \le D$. The
+  partition into one part has value $0$, so
+  $\operatorname{def}(\tilde C) = 0$.
+
+  Now let $u_0$ be a vertex of $G$, and let $g_1$ be an edge at $u_0$,
+  joining it to $u_1$. We extend the path $u_0 u_1$ one edge at a time.
+  While its last vertex $u_j$ has degree two and $j < d$, let $g_{j+1}$
+  be the edge at $u_j$ other than $g_j$, and let $u_{j+1}$ be its other
+  end. The vertices $u_1, \dots, u_{j-1}$ have degree two and both of
+  their edges are on the path, so $u_{j+1}$ is not one of them. As $G$ is
+  simple, $u_{j+1} \neq u_j$, and $u_2 \neq u_0$. So $u_{j+1}$ is a new
+  vertex, or $u_{j+1} = u_0$ with $j \ge 2$. We call the path so obtained
+  the \emph{walk} from $u_0$ along $g_1$. It ends in one of three ways.
+
+  If the walk reaches length $d$, then $u_0 u_1 \dots u_d$ is a chain of
+  length $d$ (\cref{def:chain-data}).
+
+  If the walk closes up, with $u_{j+1} = u_0$, then $u_0, \dots, u_j$ and
+  $g_1, \dots, g_{j+1}$ form a cycle $C$ on $m = j + 1$ vertices, where
+  $3 \le m \le d$. If $u_0$ has degree two, then no edge of $G$ leaves
+  $C$. As $G$ is connected, $G = C$ is a cycle on at most $d$ vertices
+  (\cref{def:cycle-data}). If $u_0$ has degree at least three, then $C$
+  is a $0$-dof-graph, as $m \le d \le D$. A third edge at $u_0$ has its
+  other end outside $C$, since the other vertices of $C$ have degree two.
+  So $C$ is a proper rigid subgraph of $G$ (\cref{def:rigid-subgraph}),
+  which is impossible. Katoh and Tanigawa's maximal chains may begin and
+  end at the same vertex. A closed one of length $d$ has only $d$
+  distinct vertices, and this case excludes it.
+
+  Otherwise the walk stops at a vertex $u_j$ of degree at least three,
+  with $1 \le j \le d - 1$.
+
+  Suppose now that $G$ is not a cycle on at most $d$ vertices and has no
+  chain of length $d$. Then every walk stops at a vertex of degree at
+  least three, after at most $d - 1$ edges. So a walk that starts at a
+  vertex of degree at least three has at most $d - 2$ interior vertices,
+  all of degree two. For $i \ge 2$, let $X_i$ be the set of vertices of
+  $G$ of degree $i$. Let $v \in X_2$, and let $e$ be an edge at $v$. The
+  walk from $v$ along $e$ stops at a vertex $u$ of degree at least three.
+  Read backwards, it is a path that leaves $u$ along an edge $g$ and
+  passes through vertices of degree two up to $v$. At a vertex of degree
+  two, a walk leaves by the edge by which it did not arrive. So this path
+  is the beginning of the walk from $u$ along $g$, and $v$, of degree
+  two, is an interior vertex of that walk. The pair $(u, g)$ and the
+  position of $v$ on its walk determine $v$. They also determine $e$, as
+  the edge by which that walk arrives at $v$. There are
+  $\sum_{i \ge 3} i\,|X_i|$ pairs $(u, g)$ with $u$ of degree at least
+  three, and so
+  \[
+    2\,|X_2| \;\le\; (d-2) \sum_{i \ge 3} i\,|X_i|.
+  \]
+  Katoh and Tanigawa obtain this inequality from their eqs.~(4.6)
+  and~(4.7), by counting maximal chains.
+
+  As every vertex of $G$ has degree at least two,
+  $|V(G)| = \sum_{i \ge 2} |X_i|$. Adding $2|X_i|$ for each $i \ge 3$ to
+  both sides of the inequality gives KT eq.~(4.8),
+  \[
+    2\,|V(G)| \;\le\; \sum_{i \ge 3} \bigl(i(d-2) + 2\bigr)|X_i|.
+  \]
+  For $i \ge 3$ we have $i(d-2) + 2 \le (D-1)(i-2)$, the inequality
+  before KT eq.~(4.9). Indeed, at $i = 3$ twice the right side minus
+  twice the left side is $(d-2)(d-3) \ge 0$, as $D = d(d+1)/2$. Each step
+  from $i$ to $i + 1$ adds $d - 2$ to the left side and $D - 1 \ge d - 2$
+  to the right side. The degrees of $G$ sum to $2|E(G)|$, so
+  $\sum_{i \ge 3} (i-2)|X_i| = 2|E(G)| - 2|V(G)|$, and KT eq.~(4.9) reads
+  \[
+    2\,|V(G)| \;\le\; (D-1) \sum_{i \ge 3} (i-2)|X_i|
+    \;=\; (D-1)\bigl(2|E(G)| - 2|V(G)|\bigr).
+  \]
+  Hence $D\,|V(G)| \le (D-1)\,|E(G)|$. But KT Lemma~4.5(i)
+  (\cref{lem:no-rigid-edge-count}, at $k = 0$) gives
+  $(D-1)\,|E(G)| < D(|V(G)| - 1) + D - 1 < D\,|V(G)|$, a contradiction.
+\end{proof}
+\begin{fmlnote}
+  The first pin is the lemma. The second is the case of a walk that
+  closes up at a vertex of degree at least three, in a simple
+  multigraph: the cycle is a proper rigid subgraph. The third is the
+  first step of the proof, the deficiency of a cycle on $m$ vertices
+  with $3 \le m \le D$.
+\end{fmlnote}
+
+The cycle alternative cannot be dropped. Let $3 \le m \le d$, and let
+$C$ be a cycle on $m$ vertices. It is a $0$-dof-graph, as we showed in
+the proof. A subgraph of $C$ that misses an edge or a vertex has no cycle,
+so its partition into single vertices has positive value when it has at
+least two vertices. So removing an edge of $C$ raises the deficiency,
+and $C$ is minimal, as we noted after \cref{def:k-dof}. Also, $C$ has
+no proper rigid subgraph. A chain of length $d$ has $d + 1 > m$
+vertices, so $C$ has none. Hence the cycle alternative occurs for every
+$d \ge 3$. Under the bound $|V(G)| \ge 4$ of the next lemma, it occurs
+exactly when $d \ge 4$.
+
+\begin{lemma}[The chain and its splitting off; KT Lemmas~4.6, 4.8 and~6.7]
   \label{lem:chain-data-extract}
   \lean{Graph.chainData_extract,
         Graph.splitOff_simple_of_noRigid_of_card}
   \leanok
   \uses{def:chain-data, def:cycle-data, lem:chain-cycle-dichotomy,
         lem:reduction-step, lem:reduction-measure, lem:simple-minimal-noRigid}
-  Let $G$ be a simple minimal $0$-dof-graph with no proper rigid subgraph,
-  $D \ge 3$, $|V(G)| \ge 4$, with a fresh edge name available for $G$ (an
-  unused label outside $E(G)$). Then either
-  $G$ carries a length-$n$ chain (\cref{def:chain-data}) whose
-  $v_1$-split $G_{v_1}^{v_0 v_2}$ is again a \emph{simple} minimal
-  $0$-dof-graph on at least two and strictly fewer vertices --- the data the
-  general-$d$ Case~III argument recurses on --- or $G$ is a cycle on
-  $m \le n$ vertices (\cref{def:cycle-data}). This is the general-$d$ form
-  of the $d = 3$ extraction pair (\cref{lem:adjacent-degree-two-pair},
-  \cref{lem:chain-data-of-noRigid}, which need $D \ge 6$), with the cycle
-  branch genuinely reachable and the floor $D \ge 3$ including the planar case
-  $n = 2$.
+  Let $D \ge 3$, and let $G$ be a simple minimal $0$-dof-graph with at
+  least four vertices and no proper rigid subgraph. Then $G$ is a cycle
+  on at most $d$ vertices, or $G$ has a chain $v_0 v_1 \dots v_d$ of
+  length $d$ such that $G_{v_1}^{v_0 v_2}$ is a simple minimal
+  $0$-dof-graph with at least two and fewer than $|V(G)|$ vertices.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:chain-cycle-dichotomy, lem:reduction-step, lem:reduction-measure,
         lem:simple-minimal-noRigid}
-  The dichotomy (\cref{lem:chain-cycle-dichotomy}) yields a chain or a
-  cycle; the cycle disjunct forwards unchanged. On the chain disjunct, the
-  interior vertex $v_1$ has degree $2$ with its two chain edges oriented
-  toward $v_0$ and $v_2$, so the KT Lemma-4.8 splitting-off stack applies at
-  $v_1$: the split is minimal $0$-dof (\cref{lem:reduction-step}), simple at
-  $|V(G)| \ge 4$ (\texttt{splitOff\_simple\_of\_noRigid\_of\_card}, KT
-  Lemma~6.7(ii)), and strictly smaller with at least two vertices
-  (\cref{lem:reduction-measure}).
+  By \cref{lem:chain-cycle-dichotomy}, $G$ is a cycle on at most $d$
+  vertices, or it has a chain $v_0 v_1 \dots v_d$ of length $d$. Suppose
+  the second. As $D \ge 3$, we have $d \ge 2$, so $v_1$ is an interior
+  vertex of the chain. Its only edges are $f_0$ and $f_1$, which join it
+  to $v_0$ and to $v_2$, and $v_0, v_1, v_2$ are distinct. As $G$ has at
+  least three vertices and no proper rigid subgraph, $G_{v_1}^{v_0 v_2}$
+  is a minimal $0$-dof-graph by KT Lemma~4.8(i) (part~(i) of
+  \cref{lem:reduction-step}). Its vertices are the $|V(G)| - 1 \ge 3$
+  vertices of $G$ other than $v_1$ (\cref{lem:reduction-measure}).
+
+  It remains to show that $G_{v_1}^{v_0 v_2}$ is simple. This is KT
+  Lemma~6.7(ii)~\cite[p.~677]{katohTanigawa2011}, and we follow its
+  proof. The graph $G$ is simple, by hypothesis and also by
+  \cref{lem:simple-minimal-noRigid}, and the new edge $v_0 v_2$ is not a
+  loop. So if $G_{v_1}^{v_0 v_2}$ were not simple, $G$ would have an edge
+  $g$ joining $v_0$ and $v_2$. Then $v_0, v_1, v_2$ and $f_0, f_1, g$
+  form a cycle on three vertices in $G$. As $3 \le D$, this cycle is a
+  $0$-dof-graph, by the first step of the proof of
+  \cref{lem:chain-cycle-dichotomy}. As $|V(G)| \ge 4$, it is a proper
+  rigid subgraph of $G$, which is impossible.
 \end{proof}
+\begin{fmlnote}
+  The first pin is the lemma. The second pin is KT Lemma~6.7(ii), for
+  every simple multigraph with at least four vertices and no proper
+  rigid subgraph.
+\end{fmlnote}

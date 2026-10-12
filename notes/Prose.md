@@ -12,9 +12,8 @@ PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`.
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
 slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, its
 first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
-and task 2.16 `F-100`–`F-104`. **Next concrete task:** round 2's task 2.17, the last slice of
-`molecular-induction.tex` with the chapter's opening, the seventeenth of its eighteen (the round's
-log, *Lemma checklist*).
+and tasks 2.16–2.17 `F-100`–`F-108`. **Next concrete task:** round 2's task 2.18, `meet.tex`, the
+last of its eighteen slices (the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 
