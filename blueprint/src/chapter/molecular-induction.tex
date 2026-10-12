@@ -1599,115 +1599,204 @@ induction (\cref{lem:rigidContract-isMinimalKDof}).
   $\tilde e$, against the minimality of $G$.
 \end{proof}
 
-\subsection{Theorem 4.9}
+\subsection{KT Theorem~4.9 and the induction for KT Theorem~5.5}
 \label{sec:molecular-induction-thm49}
 
-\begin{theorem}[Reduction of minimal $0$-dof-graphs; KT Theorem 4.9]
+Katoh and Tanigawa combine their Lemmas~3.5, 4.6 and~4.8 into their
+Theorem~4.9: a minimal $0$-dof-graph with at least two vertices reduces
+to the two-vertex double edge by splitting off at vertices of degree two
+and contracting proper rigid
+subgraphs~\cite[pp.~666--667]{katohTanigawa2011}. We state it with an
+induction principle on the number of vertices, from which it follows
+(\cref{thm:minimal-kdof-reduction}). Katoh and Tanigawa prove their
+Theorem~5.5 by a second induction on the number of vertices, over
+minimal $k$-dof-graphs of every deficiency $k$, with four
+cases~\cite[p.~671]{katohTanigawa2011}. This induction is
+\cref{thm:minimal-kdof-reduction-all-k}. In its first case the graph is
+not $2$-edge-connected. Katoh and Tanigawa realize such a graph in their
+Lemma~6.1, which ends the subsection in two forms.
+
+\begin{theorem}[Reduction of minimal $0$-dof-graphs; KT Theorem~4.9]
   \label{thm:minimal-kdof-reduction}
   \lean{Graph.minimal_kdof_reduction}
   \leanok
   \uses{lem:reduction-step, lem:reducible-vertex, lem:contraction-minimality, def:graph-operations, lem:reduction-measure}
-  Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ reduces to the
-  two-vertex double edge by a sequence of splitting-off and
-  proper-rigid-subgraph contraction operations. Equivalently, $G$ is
-  generated from the two-vertex double edge by the inverse operations
-  (edge-splitting and rigid-subgraph expansion). The formalization
-  states this as the well-founded induction principle the reduction
-  dichotomy and the vertex-count measure (\cref{lem:reduction-measure})
-  drive: a property $P$ closed under the two-vertex base case, under
-  splitting off a reducible degree-2 vertex, and under contracting a
-  proper rigid subgraph (with the induction hypothesis on every
-  strictly-smaller minimal $0$-dof-graph) holds of every minimal
-  $0$-dof-graph with $|V| \ge 2$.
+  Let $D \ge 3$.
+
+  \textup{(i)} Let $G$ be a minimal $0$-dof-graph with at least two
+  vertices. Then there are minimal $0$-dof-graphs
+  $G = G_1, G_2, \dots, G_m$ such that $G_m$ has two vertices and two
+  edges, each joining them, and for $1 \le i < m$, $G_{i+1}$ is obtained
+  from $G_i$ by splitting off at a vertex of degree two or by contracting
+  a proper rigid subgraph.
+
+  \textup{(ii)} Let $P$ be a property of multigraphs such that for every
+  minimal $0$-dof-graph $G$: (a) $P(G)$ holds if $G$ has two vertices;
+  (b) if $G$ has no proper rigid subgraph, and $v$ is a vertex of $G$ of
+  degree two whose edges join it to vertices $a, b \neq v$, then
+  $P(G_v^{ab})$ implies $P(G)$; (c) if $G$ has at least three vertices
+  and a proper rigid subgraph, and $P$ holds for every minimal
+  $0$-dof-graph with at least two and fewer than $|V(G)|$ vertices, then
+  $P(G)$ holds. Then $P$ holds for every minimal $0$-dof-graph with at
+  least two vertices.
 \end{theorem}
 \begin{proof}
   \leanok
-  Strong induction on $|V|$. The base case $|V| = 2$ is the two-vertex
-  double edge. For $|V| \ge 3$: if $G$ has a proper rigid subgraph, the
-  contraction step applies (\cref{lem:contraction-minimality}); otherwise
-  \cref{lem:reducible-vertex} supplies a reducible degree-2 vertex, whose
-  two incident edges are recovered as the distinct nonloop edges at $v$
-  (the $0$-dof two-edge-connectivity rules out a single loop), and
-  splitting it off yields a strictly smaller minimal $0$-dof-graph
-  (\cref{lem:reduction-step} and \cref{lem:reduction-measure}) on which the induction
-  hypothesis applies. The contraction branch is handed the induction
-  hypothesis rather than recursing internally: Case~I of the algebraic
-  induction genuinely consumes the induction hypothesis at \emph{two}
-  objects (the rigid block and the contraction), so the principle exposes
-  the full hypothesis rather than a single recursive call; the
-  splitting-off branch carries an unused-edge-label premise for the
-  fresh short-circuit edge, quantified over exactly the minimal
-  $0$-dof-graphs the induction visits (the unconditioned form over every
-  graph on the edge-label type is unsatisfiable --- an
-  all-loops-at-one-vertex graph exhausts it). This is
-  Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011}; it is the
-  combinatorial skeleton the algebraic induction
-  (\cref{sec:molecular-algebraic-induction}) realizes at the
-  rigidity-matrix rank. A companion form of the induction principle
-  hands the no-rigid-subgraph branch the same full hypothesis as the
-  contraction branch, instead of a supplied degree-2 vertex, for use
-  where the degree-2 vertex is more naturally re-extracted after the
-  case split than received from it.
-\end{proof}
+  We prove (ii) by induction on $|V(G)|$. If $G$ has two vertices, then
+  $P(G)$ holds by (a). Let $G$ have at least three vertices, and suppose
+  that $P$ holds for every minimal $0$-dof-graph with at least two and
+  fewer than $|V(G)|$ vertices. If $G$ has a proper rigid subgraph, then
+  $P(G)$ holds by (c).
 
-\begin{theorem}[All-$k$ induction skeleton for Theorem~5.5]
+  Otherwise, $G$ is $2$-edge-connected, as it is a $0$-dof-graph
+  (\cref{def:cut-edges-2ec}). So $G$ has a vertex $v$ of degree two
+  (\cref{lem:reducible-vertex}). As we showed before
+  \cref{lem:no-rigid-edge-count}, $G$ has no loops. So the two edges at
+  $v$ join it to vertices $a, b \neq v$. By part~(i) of
+  \cref{lem:reduction-step}, $G_v^{ab}$ is a minimal $0$-dof-graph. Its
+  vertices are the $|V(G)| - 1 \ge 2$ vertices of $G$ other than $v$
+  (\cref{lem:reduction-measure}). So $P(G_v^{ab})$ holds by the induction
+  hypothesis, and $P(G)$ holds by (b).
+
+  Part~(i) is Katoh and Tanigawa's statement. As in their proof, it
+  follows from (ii), with $P(G)$ the existence of such a sequence for
+  $G$. A minimal $0$-dof-graph with two vertices has two edges, each
+  joining them (\cref{lem:two-vertex-trichotomy}), which gives (a). A
+  sequence for $G_v^{ab}$ extends to one for $G$, which gives (b).
+
+  For (c), let $H$ be a proper rigid subgraph of $G$, and let $G/E(H)$ be its
+  contraction to a vertex of $H$. It has $|V(G)| - |V(H)| + 1$ vertices,
+  at least two and fewer than $|V(G)|$ (\cref{lem:reduction-measure}).
+  By KT Lemma~3.5, $G/E(H)$ is a minimal $0$-dof-graph. We prove this
+  lemma for the matroid $M(\tilde G)/E(\tilde H)$
+  (\cref{lem:contraction-minimality}), and for the graph $G/E(H)$ in
+  Case~I of the algebraic induction
+  (\cref{lem:rigidContract-isMinimalKDof}). So $G/E(H)$ has a sequence,
+  which extends to one for $G$.
+\end{proof}
+\begin{fmlnote}
+  The formalization proves part~(ii), and no declaration states
+  part~(i). The declaration also assumes that every minimal
+  $0$-dof-graph has an edge label outside its edge set, and in (b) it
+  forms $G_v^{ab}$ with such a label for the new edge
+  (\cref{fmlnote:graph-operations}).
+\end{fmlnote}
+
+In~(c), $P$ is assumed for every smaller graph, and not only for
+$G/E(H)$. In Katoh and Tanigawa's proof of their Theorem~5.5, the case of
+a proper rigid subgraph $H$ needs it for both $H$ and
+$G/E(H)$~\cite[p.~673]{katohTanigawa2011}. That proof is the following
+induction over all deficiencies. In each case it assumes the induction
+hypothesis KT eq.~(6.1), which we state for a property $P$.
+
+\begin{theorem}[Induction over all deficiencies; KT p.~671]
   \label{thm:minimal-kdof-reduction-all-k}
   \lean{Graph.minimal_kdof_reduction_all_k}
   \leanok
   \uses{def:k-dof, def:cut-edges-2ec, def:rigid-subgraph}
-  A property $P$ of graphs that is closed under four cases holds of every
-  nonempty minimal $k$-dof-graph.  The four cases are: \textup{(i)} $|V| \le 2$
-  (base region); \textup{(ii)} $|V| \ge 3$ and $G$ is not $2$-edge-connected
-  (cut-edge decomposition, \cref{def:cut-edges-2ec}); \textup{(iii)} $|V| \ge 3$
-  and $G$ has a proper rigid subgraph (\cref{def:rigid-subgraph}); \textup{(iv)}
-  $|V| \ge 3$, $G$ is $2$-edge-connected, has no proper rigid subgraph, with
-  the split $k > 0$ vs $k = 0$.  Each case is handed the full conditioned
-  induction hypothesis over every strictly-smaller nonempty minimal $k'$-dof-graph
-  (IH (6.1) of Katoh--Tanigawa~\cite[Sect.~6]{katohTanigawa2011}).
+  Let $P$ be a property of multigraphs. Suppose that $P(G)$ holds for
+  every minimal $k$-dof-graph $G$ with one or two vertices, for every
+  $k$. Suppose also that $P(G)$ holds for every minimal $k$-dof-graph
+  $G$ with at least three vertices, in each of the following cases,
+  provided that $P$ holds for every minimal $k'$-dof-graph with at least
+  one and fewer than $|V(G)|$ vertices, for every $k'$: \textup{(i)} $G$
+  is not $2$-edge-connected; \textup{(ii)} $G$ has a proper rigid
+  subgraph; \textup{(iii)} $G$ is $2$-edge-connected, has no proper rigid
+  subgraph, and $k > 0$; \textup{(iv)} $G$ is $2$-edge-connected, has no
+  proper rigid subgraph, and $k = 0$. Then $P$ holds for every minimal
+  $k$-dof-graph with at least one vertex, for every $k$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Strong induction on $|V|$, generalizing over $k$.  At $|V| \le 2$ the base
-  case applies.  At $|V| \ge 3$: $0 \le k$ from \texttt{deficiency\_nonneg};
-  three nested case splits on $2$-edge-connectivity, proper-rigid-subgraph
-  existence, and $k = 0$ vs $k > 0$ dispatch to the four cases.
+  We argue by induction on $|V(G)|$, for all $k$ at once. Let $G$ be a
+  minimal $k$-dof-graph with at least one vertex, and suppose that $P$
+  holds for every minimal $k'$-dof-graph with at least one and fewer than
+  $|V(G)|$ vertices. If $G$ has one or two vertices, then $P(G)$ holds by
+  hypothesis. Otherwise one of the four cases applies. Indeed, if $G$ is
+  $2$-edge-connected and has no proper rigid subgraph, then $k \ge 0$, as
+  the partition of $V(G)$ into one part has value $0$
+  (\cref{def:D-deficiency}). In each case $P(G)$ holds by hypothesis.
 \end{proof}
 
-\begin{lemma}[Nondegenerate-hinge realization at a cut edge; KT Lemma 6.1]
+Katoh and Tanigawa's Lemma~6.1~\cite[p.~672]{katohTanigawa2011} gives
+the realization in case~(i). Its hypothesis is KT eq.~(6.1): every
+minimal $k'$-dof-graph $H$ with fewer vertices than $G$ has a
+panel-hinge realization $(H, p_H)$ with
+$\operatorname{rank} R(H, p_H) = D(|V(H)| - 1) - k'$, nonparallel if $H$
+is simple. The algebraic induction states KT eq.~(6.1) for two kinds of
+realization, and we state KT Lemma~6.1 for each. A
+nondegenerate-hinge panel realization of $G$
+(\cref{def:genuine-hinge-realization}) is a body-hinge framework $(G,p)$
+with a nonzero normal $n_v \in K^{d+1}$ at each body $v$, such that
+$\operatorname{rank} R(G,p) = D(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
+Its hinge $C(p(e))$ at each edge $e$ with ends $u$ and $v$ is nonzero,
+and it is $x_1 \wedge \dots \wedge x_{d-1}$ for some vectors $x_i$ in
+both panels $n_u^\perp$ and $n_v^\perp$. A multigraph is \emph{simple}
+if it has no loops and no two of its edges join the same pair of
+vertices~\cite[p.~668]{katohTanigawa2011}. A generic full-rank
+realization of $G$ (\cref{def:rank-hypothesis}) is a panel-hinge
+framework on $G$ (\cref{def:panel-hinge-framework}) of the same rank
+whose normals are pairwise linearly independent
+(\cref{def:panel-general-position}). This is the form of Katoh and
+Tanigawa's nonparallel realizations that the algebraic induction uses
+(\cref{fmlnote:generic-full-rank}).
+
+\begin{lemma}[Nondegenerate-hinge realization at a cut of at most one edge; KT Lemma~6.1]
   \label{lem:case-cut-edge-realization}
   \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gen}
   \leanok
   \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
         thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
         lem:relative-deficiency-rank-bound}
-  Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is not
-  $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
-  $k'$-dof-graph has a nondegenerate-hinge panel realization
-  \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
-  nondegenerate-hinge panel realization.
+  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with at least
+  three vertices that is not $2$-edge-connected. Suppose that for every
+  $k'$, every minimal $k'$-dof-graph with at least one and fewer than
+  $|V(G)|$ vertices has a nondegenerate-hinge panel realization. Then $G$
+  has a nondegenerate-hinge panel realization.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
         lem:relative-deficiency-rank-bound}
-  Apply \cref{lem:cut-edge-decomposition} to obtain $V_1$, $V_2 = V(G)\setminus V_1$
-  with $|C| \le 1$ and $k = k_1 + k_2 + D - (D-1)|C|$.  Apply the induction
-  hypothesis on each side to get frameworks $F_1, F_2$ at their target ranks.
-  Assemble $F$ by inheriting $F_1$'s and $F_2$'s extensors for non-cut edges; for
-  the at-most-one cut edge assign a nonzero extensor lying in both endpoint panels
-  (from \texttt{exists\_extensor\_in\_two\_panels}).  The rank lower bound is the
-  block-rank addition \cref{lem:block-rank-cut}; the upper bound is the
-  genericity-free bound of \cref{lem:relative-deficiency-rank-bound}; the deficiency
-  arithmetic $k = k_1 + k_2 + D - (D-1)|C|$ and $|V| = |V_1| + |V_2|$ close
-  equality.
+  Part~(2) of \cref{lem:cut-edge-decomposition} (KT Lemmas~3.3
+  and~3.6) applies, as $G$ is not $2$-edge-connected. It gives a set
+  $V_1$ of vertices with $\emptyset \neq V_1 \neq V(G)$ and the
+  following properties. Let $V_2 = V(G) \setminus V_1$. At most one edge
+  joins $V_1$ to $V_2$; let $C$ be the set of such edges. Then $G[V_1]$
+  and $G[V_2]$ are minimal $k_1$- and $k_2$-dof-graphs, with
+  $k = k_1 + k_2 + D - (D-1)\,|C|$. Both have fewer vertices than $G$.
+  So by hypothesis they have nondegenerate-hinge panel realizations
+  $(G[V_1], p_1)$ and $(G[V_2], p_2)$, with
+  $\operatorname{rank} R(G[V_i], p_i) = D(|V_i| - 1) - k_i$.
+
+  Let $p$ have the normals of $p_i$ at the bodies of $V_i$, and the
+  hinges of $p_i$ at the edges of $G[V_i]$. Suppose that $C = \{e\}$,
+  where $e$ joins $u \in V_1$ to $v \in V_2$. The subspace
+  $n_u^\perp \cap n_v^\perp$ of $K^{d+1}$ has dimension at least
+  $d - 1$, so it contains linearly independent vectors
+  $x_1, \dots, x_{d-1}$. Let $p$ have the hinge
+  $x_1 \wedge \dots \wedge x_{d-1} \neq 0$ (\cref{def:extensor}) at $e$.
+  Katoh and Tanigawa take the intersection of the two panels as this
+  hinge, after they move $p_2$ so that the panels are not parallel. Here
+  any nonzero extensor of vectors in both panels serves. So $(G,p)$ has
+  nonzero normals, and each of its hinges is nonzero and lies in the
+  panels of the ends of its edge.
+
+  The hinges of $p$ at the edges of $G[V_i]$ are those of $p_i$, so
+  $\operatorname{rank} R(G[V_i], p) = D(|V_i| - 1) - k_i$. By
+  \cref{lem:block-rank-cut},
+  \[
+    \operatorname{rank} R(G,p) \;\ge\;
+    D(|V_1| - 1) - k_1 + (D-1)\,|C| + D(|V_2| - 1) - k_2
+    \;=\; D(|V(G)| - 1) - k,
+  \]
+  by the formula for $k$ and as $|V(G)| = |V_1| + |V_2|$. As every hinge
+  of $p$ is nonzero and $\operatorname{def}(\tilde G) = k$,
+  \cref{lem:relative-deficiency-rank-bound} gives
+  $\operatorname{rank} R(G,p) \le D(|V(G)| - 1) - k$.
 \end{proof}
 
-\medskip\noindent This produces the nondegenerate-hinge conjunct of the
-cut-edge case of the all-$k$ induction (\cref{thm:minimal-kdof-reduction-all-k},
-case~(ii)); \cref{lem:case-cut-edge-realization-gp} supplies the companion
-generic conjunct for simple graphs.
-
-\begin{lemma}[Generic full-rank realization at a cut edge; KT Lemma 6.1]
+\begin{lemma}[Generic full-rank realization at a cut of at most one edge; KT Lemma~6.1]
   \label{lem:case-cut-edge-realization-gp}
   \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gp_gen}
   \leanok
@@ -1715,131 +1804,181 @@ generic conjunct for simple graphs.
         thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
         lem:relative-deficiency-rank-bound, lem:rank-polynomial-of-le-finrank,
         lem:genericity-device}
-  Let $G$ be a minimal $k$-dof simple graph with $|V(G)| \ge 3$ that is not
-  $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
-  $k'$-dof simple graph has a generic full-rank realization
-  \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
-  generic full-rank realization.
+  Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph with at
+  least three vertices that is not $2$-edge-connected. Suppose that for
+  every $k'$, every simple minimal $k'$-dof-graph with at least one and
+  fewer than $|V(G)|$ vertices has a generic full-rank realization. Then
+  $G$ has a generic full-rank realization.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
         lem:relative-deficiency-rank-bound, lem:rank-polynomial-of-le-finrank,
         lem:genericity-device}
-  Cut decomposition as in \cref{lem:case-cut-edge-realization}, yielding sides
-  $V_1$, $V_2 = V(G)\setminus V_1$.  Each side is a simple induced subgraph, so
-  the conditioned induction hypothesis supplies, on each side, a generic
-  full-rank framework $Q_i$ at full rank for $G[V_i]$.  Apply
-  \cref{lem:rank-polynomial-of-le-finrank} per side to produce rational rank
-  polynomials $Q_{1,\mathrm{rank}}$, $Q_{2,\mathrm{rank}}$ transferring each
-  side's rank bound.  Apply \cref{lem:genericity-device} for the combined
-  generic-position polynomial $Q_{\mathrm{gp}}$.  Choose a seed $q_0$ that is a simultaneous non-root of
-  $Q_{1,\mathrm{rank}} \cdot Q_{2,\mathrm{rank}} \cdot Q_{\mathrm{gp}}$
-  (the product is a nonzero polynomial over the infinite field $K$); take
-  $QF$ to be the framework on $G$ built at seed $q_0$ from the canonical
-  endpoint choice (\cref{def:graph-operations}).  General position of $QF$
-  follows from the non-vanishing of $Q_{\mathrm{gp}}$.  The per-side rank
-  bounds at $q_0$ follow from the non-vanishing of the rank polynomials; the
-  block-rank addition \cref{lem:block-rank-cut} plus arithmetic give the
-  combined lower bound; \cref{lem:relative-deficiency-rank-bound} gives the upper
-  bound; antisymmetry closes rank equality.
-\end{proof}
+  Let $V_1$, $V_2$, $C$, $k_1$ and $k_2$ be as in the proof of
+  \cref{lem:case-cut-edge-realization}. As $G$ is simple, so are
+  $G[V_1]$ and $G[V_2]$. By hypothesis they have generic full-rank
+  realizations, with normals $q_1$ and $q_2$. For $i = 1, 2$, there is a
+  polynomial $Q_i$ in the normals with $Q_i(q_i) \neq 0$ such that
+  $\operatorname{rank} R(G[V_i], q) \ge D(|V_i| - 1) - k_i$ at all
+  normals $q$ with $Q_i(q) \neq 0$
+  (\cref{lem:rank-polynomial-of-le-finrank}). Let $Q_0$ be the product,
+  over the pairs of distinct bodies $u$ and $v$, of the $2 \times 2$
+  minor of the first two coordinates of $n_u$ and $n_v$. Where $Q_0$
+  does not vanish, the normals are pairwise linearly independent. At
+  normals on the moment curve each of these minors is a nonzero
+  Vandermonde determinant (\cref{lem:moment-curve-general-position}), so
+  $Q_0$ is not the zero polynomial. Hence the product $Q_1 Q_2 Q_0$ of
+  three nonzero polynomials is not the zero polynomial. Since $K$ is
+  infinite, there are normals $q_0$ at which it does not vanish. This is
+  the argument of KT Claim~6.4 (\cref{lem:genericity-device}).
 
-\subsection{Simplicity and the adjacent-degree-2-pair lemma ($d=3$)}
+  Let $(G, q_0)$ be the panel-hinge framework on $G$ with the normals
+  $q_0$, whose hinge at each edge is the intersection of the panels of
+  its ends (\cref{def:panel-hinge-framework}). Its normals are pairwise
+  linearly independent, so its hinges are nonzero
+  (\cref{lem:general-position-support-nonzero}), and
+  $\operatorname{rank} R(G[V_i], q_0) \ge D(|V_i| - 1) - k_i$ for
+  $i = 1, 2$. As in the proof of \cref{lem:case-cut-edge-realization},
+  \cref{lem:block-rank-cut} and \cref{lem:relative-deficiency-rank-bound}
+  give $\operatorname{rank} R(G, q_0) = D(|V(G)| - 1) - k$.
+\end{proof}
+\begin{fmlnote}
+  A generic full-rank realization also records the two ends of each edge,
+  in some order (\cref{fmlnote:generic-full-rank}). The framework
+  $(G, q_0)$ takes them from the endpoint choice of $G$
+  (\cref{fmlnote:graph-operations}). The polynomial $Q_i$ is formed at
+  the framework on $G[V_i]$ with the normals $q_i$ and these ends. Its
+  rank is that of the given realization, as reversing the ends of an
+  edge does not change the space of infinitesimal motions. The
+  hypothesis of the formal statement also asks that every minimal
+  $k'$-dof-graph with at least one and fewer than $|V(G)|$ vertices have
+  a nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}). With it, the hypothesis is
+  that of \cref{thm:minimal-kdof-reduction-all-k} for both kinds of
+  realization at once. The proof does not use it.
+\end{fmlnote}
+
+\subsection{Simplicity, and two adjacent vertices of degree two}
 \label{sec:simplicity-and-adjacent-pair}
 
-\begin{lemma}[Two-vertex double edge is $0$-dof]
+Katoh and Tanigawa remark that a minimal $k$-dof-graph with at least
+three vertices and no proper rigid subgraph is simple, as two edges that
+join the same pair of vertices form a proper rigid
+subgraph~\cite[p.~677]{katohTanigawa2011}. We prove this remark
+(\cref{lem:simple-minimal-noRigid}) after a computation for the
+two-vertex double edge. For $d = 3$, Katoh and Tanigawa derive from KT
+Lemma~4.6 that such a graph with $k = 0$ has two adjacent vertices $v$
+and $a$ of degree two, and they write $N_G(v) = \{a, b\}$ and
+$N_G(a) = \{v, c\}$~\cite[p.~680]{katohTanigawa2011}.
+We prove the first fact for $d \ge 3$ by a count of degrees
+(\cref{lem:adjacent-degree-two-pair}), and derive the chain $b\,v\,a\,c$
+from it (\cref{lem:chain-data-of-noRigid}). Case~III of the algebraic
+induction uses neither: it extracts a chain of length $d$ at every $d$
+(\cref{lem:chain-data-extract}).
+
+\begin{lemma}[The two-vertex double edge is a $0$-dof-graph]
   \label{lem:two-vertex-zero-dof}
   \lean{Graph.isKDof_zero_of_parallel_pair}
   \leanok
   \uses{def:k-dof}
-  Let $H$ be a two-vertex multigraph with vertex set $\{x, y\}$ ($x \ne y$) and
-  exactly two edges $e_1, e_2$ (with $e_1 \ne e_2$), both linking $x$ to $y$,
-  and $D = \binom{d+1}{2} \ge 2$. Then $\operatorname{def}(\tilde H) = 0$, i.e.\ $H$
-  is a $0$-dof-graph.
+  Let $D \ge 2$, and let $H$ be a multigraph with two vertices
+  $x \neq y$ and two edges $e_1 \neq e_2$, each joining $x$ and $y$.
+  Then $H$ is a $0$-dof-graph.
 \end{lemma}
 \begin{proof}
   \leanok
-  For the single-part partition ($f(x) = f(y)$) the deficiency contribution is $0$.
-  For the two-part partition ($f(x) \ne f(y)$) both edges cross, giving $D \cdot 1 -
-  (D-1) \cdot 2 = 2 - D \le 0$. Since the deficiency is also $\ge 0$
-  (\texttt{Graph.deficiency\_nonneg}), the supremum equals $0$.
+  The partitions of $V(H)$ are $\{V(H)\}$, of value $0$, and
+  $\{\{x\}, \{y\}\}$. Both edges join the two parts of the second, so
+  its value is $D - 2(D - 1) = 2 - D \le 0$ (\cref{def:D-deficiency}).
+  Hence $\operatorname{def}(\tilde H) = 0$. This is the computation in
+  the proof of \cref{lem:two-vertex-trichotomy}.
 \end{proof}
 
-\begin{lemma}[Simplicity from minimality and no proper rigid subgraph; KT p.~682]
+\begin{lemma}[A minimal $k$-dof-graph with no proper rigid subgraph is simple; KT p.~677]
   \label{lem:simple-minimal-noRigid}
   \lean{Graph.simple_of_isMinimalKDof_of_noRigid}
   \leanok
   \uses{def:k-dof, def:rigid-subgraph, lem:two-vertex-zero-dof}
-  Let $G$ be a minimal $k$-dof-graph with no proper rigid subgraph, $|V(G)| \ge 3$,
-  and $D = \binom{d+1}{2} \ge 2$. Then $G$ is simple (loopless and no parallel
-  edges). The proof is $k$-independent.
+  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with at least
+  three vertices and no proper rigid subgraph. Then $G$ is simple.
 \end{lemma}
 \begin{proof}
   \leanok
-  Looplessness is \texttt{Graph.loopless\_of\_isMinimalKDof}. A parallel pair
-  $e \ne f$ between vertices $x, y$ makes the two-vertex subgraph
-  $H = (G[\{x,y\}])|_{\{e,f\}}$ a $0$-dof-graph
-  (\cref{lem:two-vertex-zero-dof}), with $|V(H)| = 2$ and
-  $V(H) \subsetneq V(G)$ (since $|V(G)| \ge 3$), contradicting the
-  no-proper-rigid-subgraph hypothesis.
+  As we showed before \cref{lem:no-rigid-edge-count}, $G$ has no loops.
+  Suppose that two edges $e \neq f$ join vertices $x$ and $y$, so that
+  $x \neq y$. The subgraph $H$ of $G$ with the vertices $x$, $y$ and the
+  edges $e$, $f$ is a $0$-dof-graph (\cref{lem:two-vertex-zero-dof}),
+  and $1 < |V(H)| = 2 < |V(G)|$. So $H$ is a proper rigid subgraph of
+  $G$ (\cref{def:rigid-subgraph}), which is impossible.
 \end{proof}
 
-\begin{lemma}[Adjacent degree-2 pair; KT Lemma 4.6 at $d = 3$]
+\begin{lemma}[Two adjacent vertices of degree two; from KT Lemma~4.6, for $d \ge 3$]
   \label{lem:adjacent-degree-two-pair}
   \lean{Graph.exists_adjacent_degree_two_pair}
   \leanok
   \uses{lem:no-rigid-edge-count, lem:two-edge-conn, def:k-dof, def:rigid-subgraph}
-  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph, $|V(G)| \ge 3$,
-  and $D = \binom{d+1}{2} \ge 6$ (the $d = 3$ regime). Then there exist adjacent
-  vertices $v, a \in V(G)$ both of degree exactly $2$.
+  Let $D \ge 6$, that is, $d \ge 3$, and let $G$ be a minimal
+  $0$-dof-graph with at least three vertices and no proper rigid
+  subgraph. Then $G$ has two adjacent vertices of degree two.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:two-vertex-zero-dof, lem:simple-minimal-noRigid}
-  By contradiction: assume no two adjacent degree-$2$ vertices. Partition $V(G)$ as
-  $X_2 = \{v \mid \deg v = 2\}$ and $X_{\ge 3} = V(G) \setminus X_2$.
-  For each edge~$e$, the number of $X_2$-endpoints of $e$ is at most $1$: if both
-  endpoints were in $X_2$ they would form an adjacent degree-$2$ pair, contradicting
-  the assumption. Summing over all edges via the incidence function and swapping the
-  order of summation gives $\sum_{v \in X_2} \deg v \le \sum_{w \in X_{\ge 3}} \deg w$.
-  Combined with the KT 4.5(i) edge bound (\cref{lem:no-rigid-edge-count}), the
-  handshake identity, and $D \ge 6$, this forces $4|X_2| \le 2|E| < 2D|V|/(D-1)$,
-  which together with $3|X_{\ge 3}| \le \sum_{X_{\ge 3}} \deg$ yields a numeric
-  contradiction via $|X_2| + |X_{\ge 3}| = |V| \ge 3$.
+  Suppose not. As we showed before \cref{lem:no-rigid-edge-count}, $G$
+  has no loops. As $G$ is a $0$-dof-graph with at least two vertices,
+  every vertex of $G$ has degree at least two (\cref{def:cut-edges-2ec}).
+  Let $X_2$ be the set of vertices of degree two, and let $X_3$ be the
+  set of the other vertices, which have degree at least three. No edge
+  joins two vertices of $X_2$, so every edge at a vertex of $X_2$ has its
+  other end in $X_3$. Hence
+  \[
+    \sum_{v \in X_2} \deg v \;\le\; \sum_{w \in X_3} \deg w.
+  \]
+  The degrees of the vertices of $G$ sum to $2|E(G)|$. So
+  $2|E(G)| \ge 2\sum_{v \in X_2} \deg v = 4|X_2|$, and
+  $2|E(G)| \ge 2|X_2| + 3|X_3|$. Adding the first inequality to four
+  times the second gives $10|E(G)| \ge 12(|X_2| + |X_3|)$, that is,
+  $5|E(G)| \ge 6|V(G)|$.
+
+  On the other hand, KT Lemma~4.5(i) (\cref{lem:no-rigid-edge-count}) at
+  $k = 0$ gives $(D-1)\,|E(G)| < D\,|V(G)| - 1$. So
+  \[
+    5|E(G)| \;<\; \frac{5D}{D-1}\,|V(G)| \;\le\; 6|V(G)|,
+  \]
+  as $D \ge 6$. This is a contradiction. Katoh and Tanigawa prove their
+  Lemma~4.6 with maximal chains~\cite[pp.~664--665]{katohTanigawa2011};
+  for two adjacent vertices of degree two, the count above suffices.
 \end{proof}
 
-\begin{lemma}[A four-vertex chain from an adjacent degree-2 pair ($d = 3$; superseded)]
+\begin{lemma}[A chain $b\,v\,a\,c$ with inner vertices of degree two; KT p.~680 (superseded)]
   \label{lem:chain-data-of-noRigid}
   \lean{Graph.exists_chain_data_of_noRigid}
   \leanok
   \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph, def:k-dof}
-  \emph{Superseded; no live consumer.} \Cref{lem:case-III} now runs the
-  general-$d$ extractor \cref{lem:chain-data-extract} directly, uniformly
-  at every grade, so this $d = 3$-only extraction is no longer on the
-  live argument; the statement below is retained for the record.
-
-  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
-  $D = \binom{d+1}{2} \ge 6$ (the $d = 3$ regime), and $|V(G)| \ge 4$.
-  Then there exist distinct vertices $v, a, b, c$ and edges $e_a, e_b, e_c$
-  forming the chain $b - v - a - c$: $G$ links $e_a$ from $v$ to $a$,
-  $e_b$ from $v$ to $b$, and $e_c$ from $a$ to $c$; every $v$-incident
-  edge is $e_a$ or $e_b$; every $a$-incident edge is $e_a$ or $e_c$;
-  $e_a \ne e_b$, $e_a \ne e_c$; and $b \ne c$.
+  Let $D \ge 6$, and let $G$ be a minimal $0$-dof-graph with at least
+  four vertices and no proper rigid subgraph. Then $G$ has distinct
+  vertices $v$, $a$, $b$, $c$ and edges $e_a = va$, $e_b = vb$ and
+  $e_c = ac$, such that $e_a$ and $e_b$ are the only edges at $v$, and
+  $e_a$ and $e_c$ are the only edges at $a$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph}
-  \cref{lem:adjacent-degree-two-pair} supplies adjacent degree-$2$ vertices
-  $v, a$ with shared edge $e_a$.  Simplicity
-  (\cref{lem:simple-minimal-noRigid}) ensures the degree-$2$ closure at $v$
-  identifies two distinct edges $e_a, e_b$ (linking $v$ to $a$ and $b$), and
-  the closure at $a$ identifies two distinct edges $e_a, e_c$ (linking $a$ to
-  $v$ and $c$).  The shared edge $e_a$ pins the companion at each vertex
-  (the other endpoint of $e_a$ at $v$ is $a$, and at $a$ is $v$).
-  If $b = c$ then $G[\{v, a, b\}]$ with the three edges $e_a, e_b, e_c$ is a
-  triangle, hence a proper rigid subgraph of $G$ (since $|V(G)| \ge 4$),
-  contradicting the hypothesis.
+  By \cref{lem:adjacent-degree-two-pair}, $G$ has adjacent vertices $v$
+  and $a$ of degree two. Let $e_a$ be an edge that joins them. By
+  \cref{lem:simple-minimal-noRigid}, $G$ is simple. So the other edge
+  $e_b$ at $v$ joins $v$ to a vertex $b \notin \{v, a\}$, and the other
+  edge $e_c$ at $a$ joins $a$ to a vertex $c \notin \{v, a\}$.
+
+  Suppose that $b = c$. Then the subgraph $T$ of $G$ with the vertices
+  $v$, $a$, $b$ and the edges $e_a$, $e_b$, $e_c$ is a triangle. It is a
+  $0$-dof-graph. Indeed, two edges of $T$ join the parts of a partition
+  of $V(T)$ into two parts, of value $D - 2(D-1) \le 0$, and three join
+  those of the partition into three parts, of value
+  $2D - 3(D-1) \le 0$ (\cref{def:D-deficiency}). As
+  $1 < |V(T)| = 3 < |V(G)|$, $T$ is a proper rigid subgraph of $G$
+  (\cref{def:rigid-subgraph}), which is impossible. Hence $b \neq c$.
 \end{proof}
 
 \subsection{The general-$d$ chain extraction (KT Lemma 4.6)}

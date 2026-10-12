@@ -299,6 +299,27 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `d9b0e96a`); read (the pins'
   statements and bodies; the two citing passages).
   *Found:* round 2 task 2.15.
+- **F-100** · E · KT Theorem 4.9 to `lem:chain-data-of-noRigid` (`molecular-induction.tex`): edges
+  the pins do not back, and edges they need. `thm:minimal-kdof-reduction` has its five `\uses` on
+  its statement and none on its proof. Its edge to `lem:contraction-minimality` has no Lean basis:
+  the pin hands case (c) the induction hypothesis and forms no contraction (its part (i), which no
+  declaration states, needs the graph form `lem:rigidContract-isMinimalKDof`, `case-i.tex`;
+  `F-101`). It misses `def:cut-edges-2ec` (`twoEdgeConnected_of_isKDof_zero`). No node's pins
+  reach `Graph.minimal_kdof_reduction`: `lem:case-I` (`case-i.tex`) uses the node all the same,
+  and `algebraic-induction.tex`'s opening says that KT Theorem 5.5 is proved with it, while
+  `thm:theorem-55` runs on `thm:minimal-kdof-reduction-all-k`. The statement edges of both KT
+  Lemma 6.1 nodes to `thm:minimal-kdof-reduction-all-k` have no Lean basis (their hypotheses have
+  the shape of its induction hypothesis). `lem:case-cut-edge-realization-gp`'s edge to
+  `lem:genericity-device` has none (its pin takes a non-root of a product of polynomials by
+  `MvPolynomial.exists_eval_ne_zero`, the device's argument), and the node misses
+  `def:panel-general-position`, `lem:general-position-support-nonzero` and `def:graph-operations`
+  (the endpoint choice), which its pin reaches. The proof edges of `lem:adjacent-degree-two-pair`
+  to `lem:two-vertex-zero-dof` and `lem:simple-minimal-noRigid` have no Lean basis (the count uses
+  only that $G$ has no loops and minimum degree two), and it misses `def:cut-edges-2ec`; its
+  statement edges are its proof's.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `a2df0ed3`); read (the pins'
+  statements and bodies).
+  *Found:* round 2 task 2.16.
 
 ## N — node shape
 
@@ -528,6 +549,17 @@ declaration's name as its header writes it:
   statements of `contraction_isMinimalKDof`, `rigidContract_isMinimalKDof` and
   `minimal_kdof_reduction`).
   *Found:* round 2, the PI's review of `F-084` (2026-10-12).
+- **F-103** · N · `lem:adjacent-degree-two-pair` and `lem:chain-data-of-noRigid`
+  (`molecular-induction.tex`): the $d = 3$ extraction is a dead route. Both pins lie outside every
+  main result's closure (counted in `F-012`). The only caller of `exists_adjacent_degree_two_pair`
+  is `exists_chain_data_of_noRigid`, which has none, and neither node has a user outside the pair:
+  Case III extracts its chain by `lem:chain-data-extract`. Only the second node's title carries the
+  superseded marker. Collapse the pair to a remark (`blueprint/CLAUDE.md`, a whole dead route), or
+  mark the first too. `thm:minimal-kdof-reduction`'s pin also lies outside every main result's
+  closure; it stays, as KT's theorem.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `a2df0ed3`); read (a
+  `grep` for the two names' callers).
+  *Found:* round 2 task 2.16.
 
 ## T — terminology and notation
 
@@ -809,6 +841,28 @@ declaration's name as its header writes it:
   proof says that it is not used.
   *Evidence:* read (the two statements, `Induction/ReducibleVertex.lean`).
   *Found:* round 2 task 2.12.
+- **F-101** · S · `thm:minimal-kdof-reduction` (`molecular-induction.tex`): the statement claims KT
+  Theorem 4.9 as KT state it, a sequence of minimal $0$-dof-graphs from $G$ to the two-vertex
+  double edge, each obtained from the one before by splitting off or by contracting a proper rigid
+  subgraph. Its pin `minimal_kdof_reduction` states only an induction principle, and no declaration
+  states the sequence. The sequence follows from the pin with the two-vertex classification
+  (`isMinimalKDof_ncard_le_two_trichotomy`) and the graph form of KT Lemma 3.5
+  (`rigidContract_isMinimalKDof`, $D \ge 2$). At the open the statement gave the sequence and
+  called the principle "the form the formalization states". Task 2.16 kept the claim as part (i),
+  states the principle as part (ii), derives (i) from (ii) in the proof, and says in a
+  formalization note that (i) is not formalized.
+  *Evidence:* read (the statements of the three declarations).
+  *Found:* round 2 task 2.16.
+- **F-102** · S · `lem:case-cut-edge-realization-gp` (`molecular-induction.tex`): the statement
+  assumes that every smaller simple minimal $k'$-dof-graph has a generic full-rank realization. Its
+  pin `case_cut_edge_realization_gp_gen` also assumes that every smaller minimal $k'$-dof-graph has
+  a nondegenerate-hinge panel realization: its hypothesis is the conjunction that
+  `theorem_55_minimalKDof_k_all_k` inducts on, which passes it on whole. The proof uses only the
+  first conjunct, so the statement is stronger than the pin; dropping the second conjunct from the
+  pin would align them. Task 2.16 kept the statement, with a formalization note.
+  *Evidence:* read (the pin's statement and body, `Molecular/AlgebraicInduction/Theorem55.lean`,
+  and its call in `theorem_55_minimalKDof_gen`).
+  *Found:* round 2 task 2.16.
 
 ## L — Lean
 
@@ -1108,6 +1162,20 @@ declaration's name as its header writes it:
   degree-two step "the remaining `lem:reducible-vertex` work".
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.15.
+- **F-104** · L · the pins of KT Theorem 4.9, KT Lemma 6.1 and the $d = 3$ pair
+  (`Induction/ForestSurgery/Reduction.lean`, `Induction/ReducibleVertex.lean`,
+  `AlgebraicInduction/Theorem55.lean`, `AlgebraicInduction/PanelHinge.lean`):
+  `case_cut_edge_realization_gen` and `case_cut_edge_realization_gp_gen` take
+  `_hV3 : 3 ≤ V(G).ncard` and do not use it (KT Lemma 6.1 has no such hypothesis), and the second
+  does not use the second conjunct of its hypothesis (`F-102`). Docstrings: both say that
+  `theorem_55_minimalKDof_gen` applies them at `k := 2`, where it applies them at every grade;
+  `Reduction.lean`'s header and `PanelHinge.lean`'s section on Theorem 5.5 say that the algebraic
+  induction realizes or runs `minimal_kdof_reduction`, which nothing calls;
+  `minimal_kdof_reduction`'s narrates Phases 20–22h and cites two notes;
+  `exists_adjacent_degree_two_pair`'s and `exists_chain_data_of_noRigid`'s call $D \ge 6$ "the
+  `d = 3` regime", which is $d \ge 3$.
+  *Evidence:* read (the bodies and docstrings).
+  *Found:* round 2 task 2.16.
 
 ## M — mathematics and sources
 

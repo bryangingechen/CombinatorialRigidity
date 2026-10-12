@@ -10,11 +10,11 @@ fifth repairs the dependency graph and writes the findings report. There is one 
 round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, *Autopilot: for the
 PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`. Round 1 wrote the
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
-slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, and
-its first fifteen slices `F-051`–`F-097`; the PI's review of `F-084` added `F-098`–`F-099`
-(2026-10-12, §1). **Next concrete task:** round 2's task 2.16, the
-sixth slice of `molecular-induction.tex`, the sixteenth of its eighteen (the round's log, *Lemma
-checklist*).
+slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, its
+first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
+and task 2.16 `F-100`–`F-104`. **Next concrete task:** round 2's task 2.17, the last slice of
+`molecular-induction.tex` with the chapter's opening, the seventeenth of its eighteen (the round's
+log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 
@@ -220,8 +220,8 @@ Provisional slices (Stop 1), 16: `panel-layer` five (1–228, 229–1057 in thre
 `case-i` three; `case-ii` and `genericity-and-count` one each; `case-iii` five (1–237, 238–501,
 502–1387 in three); then the preamble `algebraic-induction.tex`. Smaller slices are likely here.
 
-Carried in from round 2 (the PI, 2026-10-12; `F-084`, `F-095`), as `\cref` repoints only, since
-the edges wait for round 5:
+Carried in from round 2 (the PI, 2026-10-12; `F-084`, `F-095`; task 2.16, `F-100`), as `\cref`
+repoints only, since the edges wait for round 5:
 
 - `lem:case-I`'s statement cites `lem:contraction-minimality` for $G/E(H)$ being a smaller minimal
   $k$-dof-graph. That node now states the matroid form: the graph form is
@@ -230,6 +230,11 @@ the edges wait for round 5:
   `lem:reduction-measure`'s.
 - The proof of `lem:case-II-realization` cites `lem:reduction-step-pos` for the vertex of degree
   two, which is `lem:reducible-vertex`'s.
+- `algebraic-induction.tex`'s opening says twice that KT Theorem 5.5 is proved with
+  `thm:minimal-kdof-reduction` (KT Theorem 4.9, $k = 0$), and the proof of
+  `lem:rigidContract-isMinimalKDof` calls it "the reduction theorem". `thm:theorem-55` runs on
+  `thm:minimal-kdof-reduction-all-k`, and no pin reaches `Graph.minimal_kdof_reduction` (task
+  2.16, `F-100`; principle E: cite the induction principle the proof runs on).
 
 ### Round 4 — `prose-applications`: applications, continuations and the introduction
 

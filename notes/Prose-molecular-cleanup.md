@@ -5,11 +5,11 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.15 `F-051`–`F-097`, and
-the PI's review of `F-084` `F-098`–`F-099`. 20
-one-commit tasks; tasks 1 and 2.1–2.15 are done, and the round has no planned stop. **Next
-concrete task:** task 2.16, `molecular-induction.tex` 1309–1551 at the open (1602–1844 now), at
-Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.15 `F-051`–`F-097`, the
+PI's review of `F-084` `F-098`–`F-099`, and task 2.16 `F-100`–`F-104`. 20 one-commit tasks; tasks
+1 and 2.1–2.16 are done, and the round has no planned stop. **Next concrete task:** task 2.17,
+`molecular-induction.tex` 1552–1677 and 1–42 at the open (1982–2107 and 1–42 now), at Opus
+(*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -33,17 +33,17 @@ round 3 repoints `case-i.tex`'s citations. These and the second point are in `no
 
 ## Current state
 
-**Task 2.15 has landed** (`4bbd8cf0`): `molecular-induction.tex` 1033–1308 at the open (1181–1600
-now), KT Lemmas 4.3(ii) and 4.5–4.8 and the vertex-count lemma, 9 nodes; the crux
-`lem:reduction-step` keeps its full proof. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is
-byte-identical; no node moved; one formalization note is new. **The PI reviewed `F-084`** (this
-commit, attended, docs only; *Autopilot: for the PI*). Nothing is mid-stream; task 2.16 is next.
-- **Gates at task 2.15**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
+**Task 2.16 has landed** (this commit): `molecular-induction.tex` 1309–1551 at the open
+(1602–1980 now), KT Theorem 4.9, the all-deficiency induction, KT Lemma 6.1's two realization
+lemmas and the $d = 3$ pair, 8 nodes; two subsection openings and two formalization notes are new.
+Every `\label`, `\lean{…}`, `\leanok` and `\uses` is byte-identical; no node moved. Nothing is
+mid-stream; task 2.17 is next.
+- **Gates at task 2.16**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (82 overfull boxes, 86 at the parent;
-  none in the slice). Screens: `molecular-induction` register 9 (29 at the open), devices 2 / 7
-  (6 / 25), `\operatorname` Lean names 0 (7); the slice has none of the three; cross-chapter
-  forward `\uses` 14, unchanged.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (82 overfull boxes, as at the parent;
+  none in the chapter). Screens: `molecular-induction` register 7 (29 at the open; all four left
+  in the slice are the label `def:genuine-hinge-realization`), devices 2 / 3 (6 / 25),
+  `\operatorname` Lean names 0 (7); cross-chapter forward `\uses` 14, unchanged.
 
 **Verified at the open** (2026-10-08, at `ac7bd966`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms check
@@ -190,19 +190,19 @@ dictionary's words ("genuine" ten times in `molecular-induction`, "splice" eight
 
 - **Done:** `matroid-union` (task 2.1), `body-bar` (tasks 2.2, 2.3), `body-hinge` (task 2.3),
   `extensor` (task 2.4), `rigidity-matrix` (tasks 2.5–2.7) and `deficiency` (tasks 2.8–2.10);
-  their open bullets are in this log at the open, `ea058ba8`. `molecular-induction` 43–1308 (tasks
-  2.11–2.15; their open items are in this log at `1b06def1`, `90051e3c` and `d9b0e96a`).
+  their open bullets are in this log at the open, `ea058ba8`. `molecular-induction` 43–1551 (tasks
+  2.11–2.16; their open items are in this log at `1b06def1`, `90051e3c`, `d9b0e96a` and
+  `a2df0ed3`).
 - **`molecular-induction`** (phase 20, extended through phase 40; the most crux nodes). Line
-  numbers below are the open's; from 1309 on, add 293 for the current text.
+  numbers below are the open's; from 1552 on, add 430 for the current text.
   - *Throughout:* the fresh edge label in three statements left (`def:chain-data`,
     `lem:chain-cycle-dichotomy`, `lem:chain-data-extract`; principle D: the labels are explained
-    once, in `fmlnote:graph-operations`, with `rem:fresh-edge-supply`); Lean names in proofs
-    (`Graph.loopless_of_isMinimalKDof`, `Graph.deficiency_nonneg`, `exists_extensor_in_two_panels`).
-  - *2.16–2.17:* `thm:minimal-kdof-reduction`'s statement says "The formalization states this
-    as…" (the induction principle is the pin's content: state it as mathematics). The two KT
-    Lemma 6.1 realization lemmas use round 3's nodes (`F-050`). `lem:chain-cycle-dichotomy`
-    writes $D = \binom{n+1}{2}$ and a length-$n$ chain, as `rem:kt-lemma-44` writes $n$; the
-    opening (1–42) repeats §*Forest surgery*'s verdict.
+    once, in `fmlnote:graph-operations`, with `rem:fresh-edge-supply`); Lean names in
+    `def:cycle-data` (`range_vtx`, `vertexSet_ncard`) and in a proof
+    (`splitOff_simple_of_noRigid_of_card`).
+  - *2.17:* `lem:chain-cycle-dichotomy` writes $D = \binom{n+1}{2}$ and a length-$n$ chain, as
+    `rem:kt-lemma-44` writes $n$; "genuine(ly)" three times; the opening (1–42) repeats §*Forest
+    surgery*'s verdict.
 - **`meet`** (phase 21a; crux `def:meet-complement-iso`,
   `lem:case-III-claim612-line-in-panel-union`). The most Lean in statements of the KT chapters:
   `\mathrm{topEquiv}`, `\mathrm{pairingDualEquiv}`, `\mathrm{complementIso}`,
@@ -225,13 +225,11 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   `F-048`–`F-050`, and the status surfaces.
 - [ ] **2. The slices**, one commit each, in `main.tex` order, each chapter's opening in its last
   slice (principle F). The diagnosis of each is its chapter's, above.
-  - [x] **2.1–2.15, `matroid-union.tex` through `molecular-induction.tex` 43–1308**: 2.1
+  - [x] **2.1–2.16, `matroid-union.tex` through `molecular-induction.tex` 43–1551**: 2.1
     `6c26eed5`, 2.2 `7fe65223`, 2.3 `53ec36db`, 2.4 `47eb5225`, 2.5 `5399e053`, 2.6 `af438fd1`, 2.7
     `27daa953`, 2.8 `86b44e1b`, 2.9 `22317b88`, 2.10 `1b06def1`, 2.11 `ce54bf15`, 2.12 `01aec968`,
-    2.13 `90051e3c`, 2.14 `d9b0e96a`, 2.15 this commit. Each commit message gives its ranges and
-    findings (`F-051`–`F-097`). The ranges below are the open's.
-  - [ ] **2.16 `molecular-induction.tex`, Theorem 4.9 and the adjacent degree-2 pair**
-    (1309–1551): 8 nodes, 243 lines.
+    2.13 `90051e3c`, 2.14 `d9b0e96a`, 2.15 `4bbd8cf0`, 2.16 this commit. Each commit message gives
+    its ranges and findings (`F-051`–`F-097`, `F-100`–`F-104`). The ranges below are the open's.
   - [ ] **2.17 `molecular-induction.tex`, the chain-or-cycle dichotomy and the opening**
     (1552–1677, 1–42): 4 nodes, 168 lines.
   - [ ] **2.18 `meet.tex`**: 10 nodes, 325 lines.
@@ -284,6 +282,10 @@ ranks them for the PI.
   and 2.15 narrowed both to it, the graph form in prose after them. The PI kept this (2026-10-12).
 - `F-086` (S, task 2.12): `lem:acyclic-insert-vfiber` and `lem:packing-move` assume that $v$ has
   degree two; their pins hold at every vertex.
+- `F-101` (S, task 2.16): `thm:minimal-kdof-reduction` claims KT 4.9's sequence; its pin is the
+  induction principle, from which the sequence follows with KT 3.5's graph form.
+- `F-102` (S, task 2.16): `lem:case-cut-edge-realization-gp` assumes less than its pin, whose
+  hypothesis also asks nondegenerate-hinge realizations, unused.
 
 ## Moved to a later round
 
@@ -371,6 +373,12 @@ one line each naming the ledger ID and the task that found it.
   `lem:contraction-minimality`, once the vertex count pinned in `main-component.tex` is re-homed.
 - `F-099` (U, the PI's review): `formalization.yaml` on `body_hinge_tay` (`F-048`), the union's rank
   formula (`F-051`, `F-053`) and KT eq. (2.4)'s credit (`F-081`).
+- `F-100` (E, task 2.16): KT Theorem 4.9 to `lem:chain-data-of-noRigid` have edges their pins do
+  not back, and miss `def:cut-edges-2ec` and three general-position nodes; no pin reaches KT 4.9's.
+- `F-103` (N, task 2.16): the $d = 3$ pair `lem:adjacent-degree-two-pair` and
+  `lem:chain-data-of-noRigid` is a dead route; only the second is marked superseded.
+- `F-104` (L, task 2.16): an unused `_hV3` in KT Lemma 6.1's two pins, and stale docstrings on the
+  pins of KT 4.9, KT 6.1 and the $d = 3$ pair.
 
 ## Blockers / open questions
 
@@ -378,74 +386,57 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.16, `molecular-induction.tex` 1309–1551 at the open (1602–1844
-now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pair lemma*,
-`thm:minimal-kdof-reduction` through `lem:chain-data-of-noRigid`), at Opus**, a fresh agent
-(`notes/Prose.md` §2). Its diagnosis is the `molecular-induction` bullet's *Throughout* and
-*2.16–2.17* items under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
-2.17–2.18 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.17, `molecular-induction.tex` 1552–1677 and 1–42 at the open
+(1982–2107 and 1–42 now: the subsection *The general-$d$ chain extraction*, `def:chain-data`
+through `lem:chain-data-extract`, and the chapter's opening), at Opus**, a fresh agent
+(`notes/Prose.md` §2). Its diagnosis is the `molecular-induction` bullet's *Throughout* and *2.17*
+items under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then task 2.18, and
+task 3 closes the round. For the slices:
 - **The PI's check** ("the overriding goal is to make sure the result is understandable"): done.
 - **Notation.** Tasks 2.8–2.18 write KT's $d$ and $D = \binom{d+1}{2}$, drop the stray $n$, and
   point at `body-hinge`'s $\tilde G = (D-1)\cdot G$ (*Decisions*). `body-bar.tex` writes bodies in
   $\R^d$ and a vector $b_e \in \R^D$ per bar (Tay's model); `thm:tutte-nash-williams` is
   *Decomposition into forests* (Tutte, Nash-Williams 1961 and 1964).
-- **Crux nodes** keep their full proofs, in tasks 2.17 and 2.18 (*Scope*).
-- **What `rigidity-matrix.tex` now says that later tasks lean on.** It recalls the deficiency
-  before `lem:trivial-motions-rank-bound`, as `def:D-deficiency` states it. Its opening names the
-  generic rank formula Jackson and Jordán's, KT Proposition 2.3, and KT Proposition 1.1 Tay and
-  Whiteley's theorem (`F-067`). Its subgraph convention ($R(H,p)$ keeps $p$'s hinges and $G$'s
-  bodies), row spaces $\mathcal R$, and $\pi_W$ for deleting the columns of $W$ are fixed in
-  *Rank-addition lemmas*. `lem:block-rank-cut` is titled for a cut edge:
-  `molecular-induction.tex`'s "block-rank addition" (task 2.16) follows it. Task 2.16 gives
-  `F-050`'s molecular-induction edges a sentence each, as task 2.7 did for this chapter's.
-- **What `deficiency.tex` now fixes (tasks 2.8–2.10).** Its subsections run: $M(\tilde G)$, the
+- **Crux nodes** keep their full proofs: `lem:chain-cycle-dichotomy` and `lem:chain-data-extract`
+  in task 2.17, two nodes in task 2.18 (*Scope*).
+- **What `rigidity-matrix.tex` fixes.** Its opening names the generic rank formula Jackson and
+  Jordán's, KT Proposition 2.3, and KT Proposition 1.1 Tay and Whiteley's theorem (`F-067`).
+  *Rank-addition lemmas* fixes the subgraph convention ($R(H,p)$ keeps $p$'s hinges and $G$'s
+  bodies), row spaces $\mathcal R$, $\pi_W$, and panel normals $n_v \in K^{d+1}$ with panels
+  $n_v^\perp$.
+- **What `deficiency.tex` fixes (tasks 2.8–2.10).** Its subsections run: $M(\tilde G)$, the
   deficiency and $k$-dof-graphs; KT eq. (2.4) (`sec:molecular-deficiency-bridge`, moved second);
   rigid subgraphs and KT's §3 lemmas. Notation: $d_G(P)$ (`def:D-deficiency`), $\delta_G(V')$ and
   $d_G(V')$ (`def:cut-edges-2ec`), $\operatorname{def}_d(G)$ at dimension $d$, $G[X]$ and
   $\tilde G[X] = (D-1)\cdot G[X]$, $\tilde e$, "the set of the $D-1$ copies of $e$" (`def:k-dof`;
   "edge-fiber" and "fiber" go), the "value" of a partition, $M(\tilde G)\,|\,E(\tilde H)$,
   $\operatorname{def}(\tilde G; u, v)$, and the *corank* $D(|V(G)|-1) - \operatorname{rank}
-  M(\tilde G)$ (the subsection's opening). It says *vertices* of a multigraph, as KT do. Partitions
-  as labelings are explained once, in `fmlnote:partition-labeling`: `\cref` it. "Boundary-regime
-  cleanliness (`\cref{def:matroid-MG}`)" (line 77) becomes the independence criterion (`F-072`).
-  KT eq. (2.4) is `\cref{thm:def-eq-corank}`, credited as `F-081` says;
-  `lem:deficiency-zero-iff-tree-packing` is KT Proposition 2.2 at $\tilde G$.
-- **What `molecular-induction.tex` now fixes (task 2.11).** Its first subsection (*Circuits and
-  the contraction of a rigid subgraph*) proves KT Lemma 3.4 in full and defines the contraction
-  $G/E(H)$ of a subgraph $H$ to a vertex $r$ (`def:rigid-contraction`, moved there); KT Lemma 3.5
-  is proved for the matroid contraction $M(\tilde G)/E(\tilde H)$ (Oxley §3.1, Proposition 3.1.6,
-  Corollary 3.1.8), and the graph form is `lem:rigidContract-isMinimalKDof`'s, in Case I
-  (`F-084`). The second (*Removal, splitting off and edge-splitting*) has `def:graph-operations`
-  with KT's $G_v$, $G_v^{ab}$, $H_{ab}^v$ and pages; `fmlnote:graph-operations` explains the edge
-  labels (the label $e_0$ of the new edge, `rem:fresh-edge-supply`) and the *endpoint choice*,
-  which `lem:case-cut-edge-realization-gp` (task 2.16) and `case-i.tex` cite at
-  `def:graph-operations`. The chapter's opening (task 2.17) still calls the first subsection
-  inherited lemmas and the second the graph operations.
-- **What the subsection on KT Lemmas 4.1 and 4.2 now fixes (tasks 2.12, 2.13).** Its opening
-  fixes $v$, $e_a = va$, $e_b = vb$ ($a, b \neq v$), $\tilde e$, $\widetilde{ab}$ and "incident
-  with $v$" ("$v$-fiber" goes); forests are `body-bar.tex`'s, a family is $F_1, \dots, F_D$ (KT's
-  indexing), a copy is $(e, i)$ (`def:edge-multiply`). `rem:kt-lemma-41` defines *balanced at $v$*
-  and gives its three points once: (3) says the deficiency bounds of KT Lemmas 4.3(i) and 4.4
-  compare partition values, without KT eq. (2.4), and the surgery gives KT Lemma 4.3(ii), used in
-  Cases II and III (the chapter's opening, task 2.17, says it never enters). The surgery needs
-  $a \neq b$. `lem:edge-splitting` has KT's cases (i) $h' < D - 1$ and (ii) $h' = D - 1$. The
-  ledger's KT 4.1 entry says (3) "through def = corank": task 3 aligns it.
-- **What the subsection on KT Lemmas 4.3–4.8 now fixes (tasks 2.14, 2.15).** Its title is
-  *Splitting off and removal: KT Lemmas 4.3–4.8*, and its opening sketches it. The deficiency
-  bounds are KT 4.3(i) (`lem:splitoff-deficiency`, $D \ge 1$) and KT 4.4
-  (`lem:removal-deficiency`, $D \ge 2$), together `lem:dof-tracking`. `rem:kt-lemma-44` follows
-  the lemma's proof; the ledger's KT 4.4 entry says it "spells out the partition-count
-  comparison": task 3 aligns it. The paragraph before `lem:no-rigid-edge-count` shows once that a
-  minimal $k$-dof-graph has no loops (KT's multigraphs have none, KT §2.5): task 2.16's
-  `lem:simple-minimal-noRigid` can point there. `lem:no-rigid-edge-count` is KT 4.5(i) for every
-  $k$. `lem:low-degree-vertex` and `lem:reducible-vertex` are "from the proof of KT Lemma 4.6";
-  the lead-in before them states KT 4.6 with KT's $d$ and a chain $v_0 v_1 \dots v_d$, proved for
-  $k = 0$ in `lem:chain-cycle-dichotomy` (task 2.17 aligns its $n$). `lem:reduction-step` is (i) KT
-  4.8(i) for $D \ge 2$ and (ii) KT 3.5's matroid form at $k = 0$; the prose after it gives the
-  fewer vertices and the graph form, which `thm:minimal-kdof-reduction` (task 2.16) uses. Proofs
-  write $G' = G_v^{ab}$, $G_v = G - v$ and "the fundamental circuit of $f$ with respect to $B$".
-  The ledger's `lem:reduction-step` entry quotes "a rank count replaces KT's iterated
-  fundamental-circuit swap", now "We replace this exchange by the count above": task 3 aligns it.
+  M(\tilde G)$. It says *vertices* of a multigraph, as KT do. Partitions as labelings are
+  explained once, in `fmlnote:partition-labeling`: `\cref` it. KT eq. (2.4) is
+  `\cref{thm:def-eq-corank}`, credited as `F-081` says; `lem:deficiency-zero-iff-tree-packing` is
+  KT Proposition 2.2 at $\tilde G$.
+- **What `molecular-induction.tex` fixes (tasks 2.11–2.16).** Its subsections: *Circuits and the
+  contraction of a rigid subgraph* (KT 3.4 in full; KT 3.5 for the matroid
+  $M(\tilde G)/E(\tilde H)$, its graph form `lem:rigidContract-isMinimalKDof`'s, `F-084`);
+  *Removal, splitting off and edge-splitting* (`def:graph-operations`; `fmlnote:graph-operations`
+  explains the edge labels, with `rem:fresh-edge-supply`, and the endpoint choice); *Forest
+  surgery: KT Lemmas 4.1 and 4.2* (`rem:kt-lemma-41`'s point (3): the surgery gives KT 4.3(ii),
+  used in Cases II and III); *Splitting off and removal: KT Lemmas 4.3–4.8*; *KT Theorem 4.9 and
+  the induction for KT Theorem 5.5*; *Simplicity, and two adjacent vertices of degree two*, whose
+  opening says that Case III uses neither $d = 3$ lemma but `lem:chain-data-extract`. Notation:
+  $v$, $e_a = va$, $e_b = vb$, $\tilde e$, $\widetilde{ab}$; families $F_1, \dots, F_D$; a copy
+  is $(e, i)$; "simple" (no loops, no parallel edges; KT p. 668) is glossed before KT Lemma 6.1's
+  nodes; proofs cite looplessness "as we showed before `lem:no-rigid-edge-count`".
+  - *For task 2.17.* The lead-in before `lem:low-degree-vertex` states KT 4.6 with KT's $d$ and a
+    chain $v_0 v_1 \dots v_d$, proved for $k = 0$ in `lem:chain-cycle-dichotomy`, whose $n$ task
+    2.17 aligns. The next subsection's opening need not repeat that the $d = 3$ pair is unused.
+    The chapter's opening still calls the first subsection inherited lemmas and the second the
+    graph operations, says the surgery never enters, and omits the all-deficiency induction and
+    KT Lemma 6.1's realizations.
+  - *For task 3.* The exposition ledger's KT 4.1 entry says (3) "through def = corank"; its KT
+    4.4 entry says `rem:kt-lemma-44` "spells out the partition-count comparison"; its
+    `lem:reduction-step` entry quotes "a rank count replaces KT's iterated fundamental-circuit
+    swap", now "We replace this exchange by the count above". Task 3 aligns all three.
 - **From task 2.4.** `meet.tex` (its opening and two nodes) cites `sec:molecular-homog` for the
   exterior algebra and the join, which are in `sec:molecular-extensor`: task 2.18 repoints them.
   `def:extensor` writes $v_1 \wedge \cdots \wedge v_j$, and $\vee$ arrives with `def:join`. The
@@ -455,7 +446,7 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
   keeps its claim; only a degenerate-case hypothesis the pin states ($D \ge 1$, $V \neq \emptyset$)
   is added. `F-084`'s narrowing is not a precedent (*Decisions*).
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-100`.
+  pins reach. The ledger's next ID is `F-105`.
 
 ## Decisions made during this round
 
@@ -475,17 +466,13 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
   `F-049`, `F-070`, `F-079`); KT's order (`F-071`); "boundary regime" goes (`F-072`); eq. (2.4) is
   credited to KT and JJ Theorem 4.1(a) (`F-081`); partitions in proofs, labelings in notes; the
   cycle matroid has no symbol.
-- **Tasks 2.11–2.14, `molecular-induction.tex` 43–1032** (detail in each commit):
+- **Tasks 2.11–2.16, `molecular-induction.tex` 43–1551** (detail in each commit):
   `def:rigid-contraction` and `rem:kt-lemma-44` moved (node order; principle F); statements say
-  what their pins prove (`F-083`, `F-084`) or keep a degree two their pins drop (`F-086`); KT's
-  order and KT's (i)/(ii) of Lemma 4.2; the `F-090` and `F-091` nodes stay; the pencil variants
-  state their constructions in words, with a note each on $e_0$.
-- **Task 2.15, `molecular-induction.tex` 1033–1308.** `lem:reduction-step` states its pins: (i) KT
-  4.8(i) for $D \ge 2$, (ii) KT 3.5's matroid form at $k = 0$, the graph form after it (`F-084`,
-  as task 2.11 did). `lem:reduction-step-pos`'s step 3 was not its pin's: the proof now gives KT
-  4.3(i)'s minimality clause as the pin does (KT 4.7 for $ab$, KT 4.3(ii) and 4.2(ii) otherwise),
-  and the square $K_v^{ab} = H$ is step 2's. `lem:no-rigid-edge-count` states its pin's
-  $V \neq \emptyset$. No node moved: KT 4.6's pair stays after KT 4.7's node, as at the open.
+  what their pins prove (`F-083`, `F-084`) or keep a claim their pins do not make, with a note
+  (`F-086`, `F-101`, `F-102`); KT's order, KT's (i)/(ii) of Lemma 4.2 and KT's four cases of §6;
+  a paragraph before `lem:no-rigid-edge-count` shows once that a minimal $k$-dof-graph has no
+  loops; `thm:minimal-kdof-reduction` states KT's sequence as (i) and its pin's induction
+  principle as (ii). No node moved in tasks 2.15–2.16.
 - **`F-084` kept** (the coordinator after task 2.15; the PI, 2026-10-12, *Autopilot: for the
   PI*). Not a precedent: from task 2.16 on, a statement claiming more than its pins is an `S`
   finding and keeps its claim. Adding the hypothesis a pin states for a degenerate case
