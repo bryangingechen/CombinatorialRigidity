@@ -5,7 +5,8 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the eight chapters `matroid-union.tex` →
 `meet.tex` to `40-exposition`'s register and round 1's exemplar. Every `\label`, pin, `\leanok`,
 `\uses` edge and statement strength stays as it is. What else the round notices goes to the ledger
-`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.15 `F-051`–`F-097`. 20
+`notes/Prose-findings.md`: the open recorded `F-048`–`F-050`, tasks 2.1–2.15 `F-051`–`F-097`, and
+the PI's review of `F-084` `F-098`–`F-099`. 20
 one-commit tasks; tasks 1 and 2.1–2.15 are done, and the round has no planned stop. **Next
 concrete task:** task 2.16, `molecular-induction.tex` 1309–1551 at the open (1602–1844 now), at
 Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
@@ -14,16 +15,30 @@ Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md` §1). An unplanned
 `NEEDS_PI` entry goes here, newest first, and the PI answers in an entry that starts `**PI,
-<date>:**`. No entries yet.
+<date>:**`. None has been filed.
+
+### 2026-10-12 — the PI's review of `F-084` (named in the paused session's status; not a stop)
+
+**PI, 2026-10-12:** (transcribed verbatim from the attended session that reviewed `F-084`)
+"The plan you suggest sounds reasonable. However, I think there might still be value in pointing
+out the divergences between blueprint and formal text that survived even after the formalization
+was declared complete. Part of the purpose of this project is to learn what the limits of
+autoformalization are and these give examples of things to look out for. We should perhaps do more
+thinking about this at the end of round 5 though."
+
+*The attended session's notes* (not the PI's words). The plan: keep both narrowings, since KT 3.5's
+graph form is proved (`lem:rigidContract-isMinimalKDof`) and only Case I uses it; round 5 moves
+that node after `lem:contraction-minimality` (`F-098`) and aligns `formalization.yaml` (`F-099`);
+round 3 repoints `case-i.tex`'s citations. These and the second point are in `notes/Prose.md` §3.
 
 ## Current state
 
-**Task 2.15 has landed** (this commit): `molecular-induction.tex` 1033–1308 at the open (1181–1600
+**Task 2.15 has landed** (`4bbd8cf0`): `molecular-induction.tex` 1033–1308 at the open (1181–1600
 now), KT Lemmas 4.3(ii) and 4.5–4.8 and the vertex-count lemma, 9 nodes; the crux
 `lem:reduction-step` keeps its full proof. Every `\label`, `\lean{…}`, `\leanok` and `\uses` is
-byte-identical; no node moved; one formalization note is new. Nothing is mid-stream; task 2.16 is
-next.
-- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
+byte-identical; no node moved; one formalization note is new. **The PI reviewed `F-084`** (this
+commit, attended, docs only; *Autopilot: for the PI*). Nothing is mid-stream; task 2.16 is next.
+- **Gates at task 2.15**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
   `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (82 overfull boxes, 86 at the parent;
   none in the slice). Screens: `molecular-induction` register 9 (29 at the open), devices 2 / 7
@@ -39,12 +54,8 @@ next.
   `print.log` **0** `LaTeX Warning` lines and **120** overfull boxes (counted, not gated); the
   built graph **657** nodes and **1 292** edges, fingerprint **`673e3178d1b3145e`**, pin hash
   **`b53eb8b1cf78cb06`** (1 030 pins, 1 020 distinct names; the commands are under *Scope*, gate 3).
-- **The surface** (`notes/Prose.md` §3): 8 files, 4 792 lines, 151 nodes, 273 pins. Seven nodes have
-  four or more pins (`F-009`): `def:rigidity-matrix` (14), `lem:case-III-claim612-line-in-panel-union`
-  (12), `lem:trivial-motions-rank-bound` (9), `def:cut-edges-2ec`, `lem:cut-edge-decomposition` (7
-  each), `lem:two-vertex-trichotomy`, `def:graph-operations` (4 each). 148 nodes are green;
-  `def:dof-generic`, `def:induced-span` and `lem:forest-surgery-unsplit` are blue (`F-008`).
-- **The open's findings:** `F-048`, `F-049` (S) and `F-050` (N). The crux nodes are under *Scope*.
+- **The surface** (`notes/Prose.md` §3): 8 files, 4 792 lines, 151 nodes, 273 pins; seven nodes
+  have four or more pins (`F-009`), and three are blue (`F-008`). The open's findings: `F-048`–`F-050`.
 
 ## Scope and standing rules
 
@@ -269,10 +280,8 @@ ranks them for the PI.
 - `F-083` (S, task 2.11): `lem:circuit-induces-rigid` states KT Lemma 3.4's partition of $X - e$
   into $D$ spanning trees, which no declaration states; its pins give the count and the rigidity.
 - `F-084` (S, task 2.11): `lem:contraction-minimality` and `lem:reduction-step` claimed KT Lemma
-  3.5's graph form (the contraction is a minimal $k$-dof-graph); their pin proves the matroid form.
-  **Acted on, the round's one exception:** tasks 2.11 and 2.15 narrowed both statements to the
-  matroid form and moved the graph form, `lem:rigidContract-isMinimalKDof`'s ($D \ge 2$), into the
-  prose after them. The PI may restore the graph-form statements (*Decisions*).
+  3.5's graph form; their pin proves the matroid form. **Acted on, the one exception:** tasks 2.11
+  and 2.15 narrowed both to it, the graph form in prose after them. The PI kept this (2026-10-12).
 - `F-086` (S, task 2.12): `lem:acyclic-insert-vfiber` and `lem:packing-move` assume that $v$ has
   degree two; their pins hold at every vertex.
 
@@ -358,6 +367,10 @@ one line each naming the ledger ID and the task that found it.
   `lem:reduction-step` (KT 4.8(i) and, by a shared pin, KT 3.5) bundle what KT state separately.
 - `F-097` (L, task 2.15): KT 4.8(ii)'s pin needs neither KT 4.7 nor $D \ge 3$; a derivable
   `hV3`; docstrings naming `lem:reduction-step` or stale.
+- `F-098` (N, the PI's review): move `lem:rigidContract-isMinimalKDof` after
+  `lem:contraction-minimality`, once the vertex count pinned in `main-component.tex` is re-homed.
+- `F-099` (U, the PI's review): `formalization.yaml` on `body_hinge_tay` (`F-048`), the union's rank
+  formula (`F-051`, `F-053`) and KT eq. (2.4)'s credit (`F-081`).
 
 ## Blockers / open questions
 
@@ -371,8 +384,7 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
 (`notes/Prose.md` §2). Its diagnosis is the `molecular-induction` bullet's *Throughout* and
 *2.16–2.17* items under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
 2.17–2.18 in order, and task 3 closes the round. For the slices:
-- **The PI's check** (round 1's Stop 1, item 5: "the overriding goal is to make sure the result is
-  understandable"): the coordinator has read tasks 2.1–2.3 in full against the exemplars.
+- **The PI's check** ("the overriding goal is to make sure the result is understandable"): done.
 - **Notation.** Tasks 2.8–2.18 write KT's $d$ and $D = \binom{d+1}{2}$, drop the stray $n$, and
   point at `body-hinge`'s $\tilde G = (D-1)\cdot G$ (*Decisions*). `body-bar.tex` writes bodies in
   $\R^d$ and a vector $b_e \in \R^D$ per bar (Tay's model); `thm:tutte-nash-williams` is
@@ -439,12 +451,11 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
   `def:extensor` writes $v_1 \wedge \cdots \wedge v_j$, and $\vee$ arrives with `def:join`. The
   facts other nodes cite are in the prose after `def:extensor`, `def:join` (Barnabei–Brini–Rota's
   Propositions 3.4 and 3.5) and `def:affine-subspace-extensor`.
-- **The open's findings** are recorded, not acted on.
 - **Statement strength.** A statement that claims more than its pins is an `S` finding, and it
   keeps its claim; only a degenerate-case hypothesis the pin states ($D \ge 1$, $V \neq \emptyset$)
   is added. `F-084`'s narrowing is not a precedent (*Decisions*).
 - **Tools.** The three screens under *Scope*; `scripts/blueprint-deps.py --chapter <name>` for what
-  pins reach. The ledger's next ID is `F-098`.
+  pins reach. The ledger's next ID is `F-100`.
 
 ## Decisions made during this round
 
@@ -475,9 +486,7 @@ now: the subsections *Theorem 4.9* and *Simplicity and the adjacent-degree-2-pai
   4.3(i)'s minimality clause as the pin does (KT 4.7 for $ab$, KT 4.3(ii) and 4.2(ii) otherwise),
   and the square $K_v^{ab} = H$ is step 2's. `lem:no-rigid-edge-count` states its pin's
   $V \neq \emptyset$. No node moved: KT 4.6's pair stays after KT 4.7's node, as at the open.
-- **`F-084` accepted as acted on** (coordinator, after task 2.15). The two narrowings change what
-  a statement block claims, which the hygiene rule leaves to the PI. They are kept because each
-  block now states its pin, and the graph form stays in the prose, cited to the node that proves
-  it. This is not a precedent: from task 2.16 on, a statement claiming more than its pins is an `S`
+- **`F-084` kept** (the coordinator after task 2.15; the PI, 2026-10-12, *Autopilot: for the
+  PI*). Not a precedent: from task 2.16 on, a statement claiming more than its pins is an `S`
   finding and keeps its claim. Adding the hypothesis a pin states for a degenerate case
   ($D \ge 1$, $V \neq \emptyset$) is anchoring.

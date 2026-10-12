@@ -511,6 +511,23 @@ declaration's name as its header writes it:
   second's contraction half and keep it a sentence.
   *Evidence:* read (the four pins' statements; KT 2011 pp. 662, 665–666).
   *Found:* round 2 task 2.15.
+- **F-098** · N · `lem:rigidContract-isMinimalKDof` (`case-i.tex`) and
+  `lem:pencil-contract-standing` (`main-component.tex`): KT state Lemma 3.5 for the graph $G/E(H)$
+  in their §3, where `molecular-induction.tex` now states only the matroid form (`F-084`) and gives
+  the graph form in prose. Its node, `lem:rigidContract-isMinimalKDof`, sits in `case-i.tex`
+  because Case I is its one consumer; `Graph.minimal_kdof_reduction` (KT Theorem 4.9) hands its
+  contraction branch the induction hypothesis and needs no graph form. Move the node to follow
+  `lem:contraction-minimality`: its pin is in `Induction/Contraction.lean` beside the matroid
+  form's, and every node it reaches comes earlier, except `lem:reduction-step`, reached only
+  through the pin `F-096` unpins, and `lem:pencil-contract-standing`, whose second pin
+  `Graph.rigidContract_vertexSet_ncard` is the general count $|V(G/E(H))| = |V(G)| - |V(H)| + 1$,
+  not a pencil fact. Re-home that pin first, to `lem:reduction-measure` (which pins the strict
+  form) or `def:rigid-contraction`; the moved node's statement edge to `lem:reduction-step` is
+  then `lem:reduction-measure`'s (`F-095`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `ddc4a8fc`); read (the
+  statements of `contraction_isMinimalKDof`, `rigidContract_isMinimalKDof` and
+  `minimal_kdof_reduction`).
+  *Found:* round 2, the PI's review of `F-084` (2026-10-12).
 
 ## T — terminology and notation
 
@@ -558,7 +575,18 @@ declaration's name as its header writes it:
 
 ## U — status surfaces
 
-- None yet.
+- **F-099** · U · `formalization.yaml`: three places contradict round 2's rewritten chapters. (1)
+  The main result `Graph.BodyHingeFramework.body_hinge_tay` and its alignment row describe a
+  framework with hinges; the declaration's structure has none. `body-hinge.tex`'s formalization
+  note says it is proved for bundles of bars, `generic-lift.tex` calls it the bar-bundle reduction
+  statement, and the form with hinges is `cor:bodyhinge-generic-tree-packing` (`F-048`). (2) The alignment row "matroid union & partition
+  rank formula" (proved): `matroid-union.tex` now says the family form is proved only at the whole
+  ground set (`F-051`), with its credits (`F-053`). (3) JJ 2009's `location` and the alignment row
+  "Thm 6.1 / Cor 6.2 (def = corank bridge)": `deficiency.tex` credits KT eq. (2.4) to KT and to JJ
+  Theorem 4.1(a) (`F-081`). The `S` and `M` entries stay for the report.
+  *Evidence:* read (`formalization.yaml`'s JJ 2009 reference and its `status.main_results` and
+  alignment entries named; the chapters named).
+  *Found:* round 2, the PI's review of `F-084` (2026-10-12).
 
 ## S — statement strength
 

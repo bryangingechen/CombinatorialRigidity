@@ -11,7 +11,8 @@ round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, 
 PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`. Round 1 wrote the
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
 slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, and
-its first fifteen slices `F-051`–`F-097`. **Next concrete task:** round 2's task 2.16, the
+its first fifteen slices `F-051`–`F-097`; the PI's review of `F-084` added `F-098`–`F-099`
+(2026-10-12, §1). **Next concrete task:** round 2's task 2.16, the
 sixth slice of `molecular-induction.tex`, the sixteenth of its eighteen (the round's log, *Lemma
 checklist*).
 
@@ -60,6 +61,15 @@ PI*): the sample approved as the exemplar for rounds 1–4, with the principle-B
 slice lists, and "These facts are classical." dropped from it. On the carve-out: "more than
 following rules strictly though, the overriding goal is to make sure the result is
 understandable."
+
+**2026-10-12**, reviewing round 2's `F-084` (verbatim in `notes/Prose-molecular-cleanup.md`
+*Autopilot: for the PI*): its two narrowings stay, round 5 moves the graph-form node (`F-098`) and
+aligns `formalization.yaml` (`F-099`), and round 3 repoints the citations (§3, round 3). On the
+`S` findings: "there might still be value in pointing out the divergences between blueprint and
+formal text that survived even after the formalization was declared complete. Part of the purpose
+of this project is to learn what the limits of autoformalization are and these give examples of
+things to look out for. We should perhaps do more thinking about this at the end of round 5
+though." (§3, round 5, task R.)
 
 ## 2. Standing rules (all five rounds)
 
@@ -210,6 +220,17 @@ Provisional slices (Stop 1), 16: `panel-layer` five (1–228, 229–1057 in thre
 `case-i` three; `case-ii` and `genericity-and-count` one each; `case-iii` five (1–237, 238–501,
 502–1387 in three); then the preamble `algebraic-induction.tex`. Smaller slices are likely here.
 
+Carried in from round 2 (the PI, 2026-10-12; `F-084`, `F-095`), as `\cref` repoints only, since
+the edges wait for round 5:
+
+- `lem:case-I`'s statement cites `lem:contraction-minimality` for $G/E(H)$ being a smaller minimal
+  $k$-dof-graph. That node now states the matroid form: the graph form is
+  `lem:rigidContract-isMinimalKDof`'s, and the vertex count `lem:reduction-measure`'s.
+- `lem:rigidContract-isMinimalKDof` cites `lem:reduction-step` for the vertex count, which is
+  `lem:reduction-measure`'s.
+- The proof of `lem:case-II-realization` cites `lem:reduction-step-pos` for the vertex of degree
+  two, which is `lem:reducible-vertex`'s.
+
 ### Round 4 — `prose-applications`: applications, continuations and the introduction
 
 The round covers `bar-joint-3d`, `molecule-modelling` and `molecule-application` (phases 24–26),
@@ -249,6 +270,10 @@ expected diff.
 - **R, the findings report.** The `S`, `L` and `M` entries are grouped, deduplicated and ranked.
   Each gets its evidence, a suggested disposition and a commit estimate. The task proposes a
   follow-up program as an unqueued ROADMAP bullet, which the PI queues. The report is not a stop.
+  It also presents the `S` entries as one group, statements whose blueprint and formal texts
+  disagreed after the formalization was declared complete, so the PI can take up after the close
+  what they show about the limits of autoformalization (§1, 2026-10-12). ORIGAMI is attended, so
+  the driver stops there anyway.
 - **X, the close.** The axioms check, the no-Lean-edit check, the queue row, ROADMAP, and this
   note's **Status**.
 
