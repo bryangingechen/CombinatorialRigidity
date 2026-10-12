@@ -1025,6 +1025,45 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/GenericityDevice.lean` and
   `CaseI.lean`).
   *Found:* round 3 task 1.
+- **F-121** · S · `prop:rigidity-matrix-prop11` (`algebraic-induction/panel-layer.tex`): the
+  statement is KT Proposition 2.3's rank formula, Jackson and Jordán's Theorem 6.1, at a generic
+  panel-hinge realization with nondegenerate hinges. Its pin `rigidityMatrix_prop11` takes any
+  body-hinge framework with every supporting extensor nonzero, assumes the generic bound
+  $\dim Z(G,p) \le D + \operatorname{def}(\tilde G)$ (`hgen`), and closes by `omega` from the
+  genericity-free bound (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`). No pin shows
+  that a generic realization meets `hgen`: the formalization has no generic realization in the
+  sense of `def:dof-generic` (which carries no `\leanok`), and the pin reaches none of the nodes
+  the proof cites for it. Its callers (`thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`,
+  `cor:theorem-55-d3-spanning`) prove `hgen` for the realizations they build. The formula at every
+  generic realization is formalized in `generic-lift.tex`, for simple spanning graphs on at least
+  two bodies (`thm:panel-generic-rank`, `thm:bodyhinge-generic-rank`); no `\uses` edge joins those
+  nodes to this one. Task 2.1 kept the statement, and its note says this. The proof now takes the
+  lower bound from KT Theorem 5.5 and the maximality of a generic rank, so the statement's edge to
+  `lem:genericity-device` has no sentence behind it (`F-118`).
+  *Evidence:* read (the statement and body of `rigidityMatrix_prop11`,
+  `Molecular/AlgebraicInduction/PanelHinge.lean`); measured (`scripts/blueprint-deps.py --label
+  prop:rigidity-matrix-prop11` at `efa7ed2b`: `thm:theorem-55`, `lem:motions-mono-of-graph-le`,
+  `def:dof-generic` and `lem:genericity-device` unbacked).
+  *Found:* round 3 task 2.1.
+- **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
+  (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
+  edge label, an ordered pair of bodies (`ends`), and computes the hinge from their normals;
+  nothing ties the pair to the ends of the edge. So `IsHingeCoplanar F`
+  (`∃ P, P.toBodyHinge = F`) holds whenever each hinge of `F` is the meet of the panels of some
+  two bodies, not necessarily its ends (for instance, whenever every hinge is zero). That is
+  broader than KT's hinge-coplanarity (KT p. 648), and the predicate has no Lean consumer. And the
+  panel side of `PanelHingeFramework.molecular_conjecture`, `∃ Q, Q.graph = G ∧` (every hinge
+  nonzero) `∧` (rigid), states no condition on `Q.ends`, so it asserts less than a rigid
+  panel-hinge realization of $G$. The link-recording form is proved
+  (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, the second pin of
+  `thm:theorem-55-6-genuine`). Task 2.1 states `def:panel-hinge-framework` with the edges' ends,
+  as the round decided, and `fmlnote:panel-hinge-nondegenerate` and the note after
+  `def:hinge-coplanar` say that the formal selector is unconstrained.
+  *Evidence:* read (the structure `PanelHingeFramework`, `toBodyHinge` and `IsHingeCoplanar`,
+  `Molecular/AlgebraicInduction/PanelHinge.lean`; the statements of `molecular_conjecture` and
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, `Theorem55.lean`; a `grep` for
+  `IsHingeCoplanar`).
+  *Found:* round 3 task 2.1.
 
 ## L — Lean
 
@@ -1363,6 +1402,18 @@ declaration's name as its header writes it:
   them, and the second and `exteriorPower_map_subtype_injective` have no caller (`F-111`).
   *Evidence:* read (the bodies and docstrings; a `grep` for the callers).
   *Found:* round 2 task 2.18.
+- **F-123** · L · the docstrings of `panel-layer.tex`'s first pins
+  (`Molecular/AlgebraicInduction/PanelHinge.lean`): the field `ends` of `PanelHingeFramework` is
+  documented as "the two bodies `e` joins", which nothing enforces (`F-122`);
+  `rigidityMatrix_prop11`'s section header and docstring call it KT Proposition 1.1's analytic half
+  "for a generic panel-hinge realization", while it assumes the generic bound for any body-hinge
+  framework (`F-121`, `F-067`), and narrate "GREEN-modulo the Phase-21b genericity device",
+  "honest" and "From Phase 21b (cited)"; the docstrings of `withMomentNormals`, `ofParam` and
+  their general-position lemmas call them the construction the Case-I rigid block needs, but both
+  pins of `lem:moment-curve-general-position` lie outside every main result's closure (`F-118`).
+  *Evidence:* read (the docstrings and bodies); measured (`scripts/blueprint-deps.py --label` at
+  `efa7ed2b`, dead pins).
+  *Found:* round 3 task 2.1.
 
 ## M — mathematics and sources
 

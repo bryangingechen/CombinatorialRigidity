@@ -5,10 +5,10 @@ PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is th
 which rounds are done. The round rewrites the prose of the chapter `algebraic-induction.tex` and
 its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
-else the round notices goes to the ledger `notes/Prose-findings.md`; the open recorded
-`F-115`–`F-120`. 18 one-commit tasks, of which task 1 is this open; the round has no planned stop.
-**Next concrete task:** task 2.1, `panel-layer.tex`'s panel-hinge frameworks and KT
-Proposition 2.3, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
+`F-115`–`F-120`, task 2.1 `F-121`–`F-123`. 18 one-commit tasks; tasks 1 and 2.1 are done, and the
+round has no planned stop. **Next concrete task:** task 2.2, `panel-layer.tex`'s realization
+hypothesis and KT Theorem 5.5, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,14 +18,22 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Round 3 is open** (task 1, this commit, docs only; the Lean tree and the blueprint TeX are
-`ef57b401`'s, round 2's close). Nothing is mid-stream. The next concrete task is task 2.1.
+**Task 2.1 has landed** (this commit): `panel-layer.tex` 1–228 at the open, now 1–328, 7 nodes,
+every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and in order; the file's later
+lines have moved by +100 (task 2.2's range, 240–497 at the open, is now 340–597). Nothing is
+mid-stream; task 2.2 is next.
+- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
+  silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (70 overfull boxes, the open's 72, none
+  in lines 1–328). Screens on `panel-layer`: register 61 / 12, devices 0 / 16, `\operatorname` 1,
+  vocabulary 41, forward `\uses` 10 / 5 (the open's 63 / 15, 0 / 17, 1, 44, 10 / 5). In lines
+  1–328: register 0 in prose, one `\texttt` address in prose, "endpoint selector" twice in notes.
 
-**Verified at the open** (2026-10-12, at `ef57b401`):
+**Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
-  cached; the coordinator's run gave the same). The axioms check does not run at this open
+  cached; the coordinator's run gave the same). The axioms check does not run at the open
   (`notes/Prose.md` §2: round 1's open and round 5's close only).
-- **The no-Lean-edit base is `ef57b401`**, this commit's parent: the close checks that `git diff
+- **The no-Lean-edit base is `ef57b401`**, the open's parent: the close checks that `git diff
   --stat ef57b401.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` is
   empty.
 - **The round's gate values**, round 2's close reproduced exactly (the blueprint has not changed
@@ -221,15 +229,7 @@ induction, nodes whose pins no main result uses (`F-118`).
    (2.1, 2.7, 2.16).
 
 - **`panel-layer`.**
-  - *2.1 (1–228):* the opening's "carries free hinges" and "no affine-subspace-intersection
-    machinery"; $n_1 \wedge n_2$, $\Lambda^k K^{k+2}$ and "complement iso" (carry-in 6);
-    $\mathrm{panel}(v)$ beside KT's $\Pi(v)$; `def:panel-hinge-framework`'s statement names the
-    endpoint selector (principle E's own example; its note explains it). `def:panel-general-position`
-    is KT's *nonparallel*: gloss it there. The note after `lem:moment-curve-general-position` lists
-    pins (principle D); "Standard-basis normals would cover only …" is a comparison. The Proposition
-    1.1 subsection, its title and `prop:rigidity-matrix-prop11`'s title say "KT Proposition 1.1,
-    analytic half" (carry-in 7: KT Proposition 2.3; keep the crux's two-halves account); its proof's
-    "dimension identity $n = k+1$" is the Lean's.
+  - *Done:* 2.1 (task 2.1; its open bullet is in this log at `efa7ed2b`).
   - *2.2 (240–497):* `def:rank-hypothesis`'s note names two Lean predicates; `thm:theorem-55` and
     `thm:theorem-55-d3-instance` state "dimension $n \ge 2$" and the endpoint selector (link
     recording is a conjunct of the pin: say it mathematically, principle B *Constructions*).
@@ -333,9 +333,9 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 - [ ] **2. The slices**, one commit each, in `\input` order. Each section's own opening goes in its
   file's last slice and the chapter's opening last (principle F). The diagnosis of each is above;
   the carry-ins are numbered as there.
-  - [ ] **2.1 `panel-layer.tex`, panel-hinge frameworks and KT Proposition 2.3** (1–228): 7 nodes,
-    228 lines; crux `prop:rigidity-matrix-prop11`; carry-ins 6 and 7. It applies the round's
-    notation (*Decisions*).
+  - [x] **2.1 `panel-layer.tex`, panel-hinge frameworks and KT Proposition 2.3** (this commit; 1–228
+    at the open, now 1–328, 7 nodes). Applied the round's notation and wrote its note. Found
+    `F-121`–`F-123`.
   - [ ] **2.2 `panel-layer.tex`, the realization hypothesis and KT Theorem 5.5** (240–497): 6 nodes,
     258 lines; crux `thm:theorem-55` and the note after `thm:theorem-55-d3-instance`.
   - [ ] **2.3 `panel-layer.tex`, KT Theorem 5.6 and the molecular conjecture** (498–777): 5 nodes,
@@ -394,6 +394,11 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
 - `F-118` (M, task 1): the prose of Cases I–III presents as steps of the induction nodes that no
   main result's proof takes (the genericity device, Claim 6.4, the Case II accounting, the
   candidate completion, the relabel lemmas).
+- `F-121` (S, task 2.1): `prop:rigidity-matrix-prop11` states the rank formula at a generic
+  realization; its pin assumes the generic bound, and the formalization has no generic realization.
+- `F-122` (S, task 2.1): the formal panel-hinge framework's endpoint selector is unconstrained, so
+  `IsHingeCoplanar` is broader than KT's notion and the molecular conjecture's panel side states
+  no link-recording condition.
 
 ## Moved to a later round
 
@@ -404,6 +409,8 @@ one line each naming the ledger ID and the task that found it.
   at 7 nodes at later nodes of their own section.
 - `F-120` (N, task 1): two of the blueprint's ten doubly pinned declarations are round 3's; the
   $d = 3$ point choice's pins have no Lean caller.
+- `F-123` (L, task 2.1): the docstrings of `PanelHinge.lean`'s first pins (the selector field,
+  `rigidityMatrix_prop11`, the moment-curve constructions) misdescribe their bodies or callers.
 
 ## Blockers / open questions
 
@@ -411,14 +418,26 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.1, `panel-layer.tex` 1–228, at Opus**, a fresh agent (`notes/Prose.md`
-§2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
-2.2–2.16 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.2, `panel-layer.tex`'s realization hypothesis and KT Theorem 5.5
+(240–497 at the open, now 340–597), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis
+is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.3–2.16 in order,
+and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open the round; the coordinator reads them in full against the
   exemplars, as round 2's hand-off asked for its first three.
-- **Notation and terms.** 2.1 applies *Decisions*' notation and writes its note; every later slice
-  follows it and the terminology entry.
+- **Notation and terms.** 2.1 applied *Decisions*' notation; its note on $d = k + 1$, and on the
+  separate dimension parameter of the deficiency, follows `def:panel-support-extensor`. Every later
+  slice follows it and the terminology entry. The chapter's opening still writes $n$ until 2.16.
+- **From task 2.1.** The prose after `def:panel-hinge-framework` defines a *nondegenerate* hinge
+  ($C(p(e)) \neq 0$) for every body-hinge framework, and identifies a panel-hinge framework with
+  its *body-hinge interpretation*; `fmlnote:panel-hinge-nondegenerate` names the *endpoint
+  selector* and says that "each edge gets its ends" is a separate formal condition. Later
+  statements say "realization of $G$" and `\cref` that note where a pin's selector condition is
+  missing or differs (`F-122`: the molecular conjecture's panel side, 2.3). 2.2's
+  `cor:theorem-55-d3-spanning` (title and proof), and 2.3's paragraph before `thm:theorem-55-6` and
+  its proof, still say "KT Proposition 1.1" for the rank formula: carry-in 7 applies there, as in 2.1's subsection *The generic rank
+  formula (KT Proposition 2.3)*. The note after `prop:rigidity-matrix-prop11` is the one place that
+  says its pin assumes the generic bound (`F-121`).
 - **Crux nodes** keep their full proofs: tasks 2.1–2.3 and 2.7–2.15 (*Scope*).
 - **Carry-ins** 1–7 are under *Per-chapter diagnosis*, each with its task.
 - **The open's findings** are recorded, not acted on: 2.6 keeps `lem:cycle-realization`'s
@@ -428,7 +447,7 @@ one line each naming the ledger ID and the task that found it.
   script; the edges wait for round 5. 2.1–2.4, 2.6–2.10, 2.12 and 2.14 give `F-119`'s forward
   references a sentence or a move within the file.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-121`.
+  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-124`.
 
 ## Decisions made during this round
 
@@ -450,3 +469,11 @@ one line each naming the ledger ID and the task that found it.
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`).
 - **The no-Lean-edit base** is `ef57b401`, the open's parent.
+- **Task 2.1, `panel-layer.tex` 1–228.** The subsection opens on KT's panel-hinge frameworks and
+  their nonparallel realizations built from panels (KT p. 648, §5.1). A paragraph shows that KT's
+  hinge extensor is a nonzero multiple of $*(n_1 \vee n_2)$, through the unpinned
+  `extensor_join_proportional_complementIso_meet`. `lem:moment-curve-general-position` states
+  the moment-curve construction that its pins and three other chapters use, with the old existence claim
+  as its "in particular"; its pin-listing note is gone. KT Proposition 2.3's two halves and the
+  two inequalities are the subsection's opening and the proof's backbone; the lower bound follows
+  KT's proof of Theorem 5.6 (p. 670). `F-121`–`F-123` are recorded.

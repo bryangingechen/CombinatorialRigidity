@@ -1,41 +1,81 @@
 \subsection{Panel-hinge frameworks}
 \label{sec:molecular-algebraic-induction-panel}
 
-Katoh--Tanigawa's \emph{panel-hinge} framework is a hinge-coplanar
-body-hinge framework: at each body all incident hinges lie in a common
-hyperplane \cite[p.\,648]{katohTanigawa2011}. The molecular conjecture
-asserts that this coplanarity can be imposed without losing rigidity. The
-body-hinge framework of \cref{def:hinge-constraint} carries free hinges
-with no coplanarity constraint, so the constructions below fix the
-coplanarity through explicit panel data. A panel realization assigns each
-body $v$ a hyperplane normal $n_v \in K^{k+2}$, and the hinge at an edge
-$e = uv$ is the codimension-$2$ intersection $\mathrm{panel}(u) \cap
-\mathrm{panel}(v)$. Its supporting $k$-extensor --- the screw-space element
-of \cref{def:hinge-constraint} that the rigidity matrix constrains --- is
-the Grassmann--Cayley meet (\cref{def:meet}) of the two panels, equivalently
-the complement iso (\cref{def:meet-complement-iso}) of the join
-(\cref{def:join}) of the two normals. Both coplanarity and transversality are
-then expressed in the extensor algebra, so no affine-subspace-intersection
-machinery is needed.
+As recalled in \cref{sec:body-hinge-tay}, Katoh and Tanigawa call a
+body-hinge framework a panel-hinge framework if the hinges at each body
+lie in a common hyperplane, the panel of the
+body~\cite[p.~648]{katohTanigawa2011}. Their realizations of simple
+graphs are built from the panels: each body $v$ has a panel $\Pi(v)$,
+and the hinge of an edge $uv$ is the intersection
+$\Pi(u) \cap \Pi(v)$~\cite[\S5.1]{katohTanigawa2011}. We build
+panel-hinge frameworks in the same way, in homogeneous coordinates. A
+panel is given by a normal vector in $K^{d+1}$. The hinge of $uv$ is
+recorded by the meet of the two panels (\cref{def:meet}), which we
+compute from their normals. The hinges at a body then lie in its panel by
+construction, and the extensor of a hinge is nonzero exactly when the
+normals at its ends are linearly independent.
+
+This subsection defines these frameworks
+(\cref{def:panel-hinge-framework}). It then gives a condition on the
+normals under which every hinge between two distinct bodies has a nonzero
+extensor (\cref{def:panel-general-position}). Normals on the moment curve
+satisfy it (\cref{lem:moment-curve-general-position}).
 
 \begin{definition}[Panel support extensor]
   \label{def:panel-support-extensor}
   \lean{CombinatorialRigidity.Molecular.panelSupportExtensor}
   \leanok
   \uses{def:join, def:meet-complement-iso, def:hinge-constraint}
-  For two panel normals $n_1, n_2 \in K^{k+2}$, the \emph{panel support
-  extensor} $C(n_1, n_2) \in \Lambda^k K^{k+2}$ is the complement iso
-  (\cref{def:meet-complement-iso}) of the grade-$2$ join $n_1 \wedge n_2 \in
-  \Lambda^2 K^{k+2}$ (\cref{def:join}). For an edge $e = uv$ we write
-  $C(p(e)) = C(n_u, n_v)$ for the support extensor at its two endpoint normals.
+  Let $n_1, n_2 \in K^{d+1}$. The \emph{panel support extensor} of $n_1$
+  and $n_2$ is
+  \[
+    C(n_1, n_2) \;=\; *(n_1 \vee n_2)
+    \;\in\; \textstyle\bigwedge^{d-1} K^{d+1},
+  \]
+  the image of the join $n_1 \vee n_2$ (\cref{def:join}) under the
+  complement isomorphism $*$ (\cref{def:meet-complement-iso}).
 \end{definition}
 
-Its grade is $(k+2) - 2 = k$, the screw-space grade of
-\cref{def:hinge-constraint}, so it is the supporting $k$-extensor of the
-codimension-$2$ intersection of the two panels. It is nonzero exactly when the
-two normals are linearly independent, the algebraic form of the two panels
-meeting transversally in a nondegenerate hinge, and this is the only general-position
-condition the panel constructions require.
+\begin{fmlnote}
+  As in \cref{sec:molecular-rigidity-matrix} and \cref{sec:molecular-meet},
+  the formalization writes $d = k + 1$, so that normals lie in $K^{k+2}$
+  and $C(n_1, n_2)$ lies in $\bigwedge^{k} K^{k+2}$. Several pinned
+  theorems of this chapter also take the dimension that determines $D$ in
+  the deficiency $\operatorname{def}(\tilde G)$ as a separate parameter,
+  with a hypothesis that forces it to equal $k + 1$.
+\end{fmlnote}
+
+The extensor $C(n_1, n_2)$ lies in the screw space
+$\bigwedge^{d-1} K^{d+1}$ of \cref{def:hinge-constraint}, and
+$C(n_2, n_1) = -C(n_1, n_2)$. It is nonzero if and only if $n_1$ and
+$n_2$ are linearly independent, since $*$ is an isomorphism and
+$n_1 \vee n_2 \neq 0$ exactly in that case (the remark after
+\cref{def:extensor}). If they are, then $C(n_1, n_2)$ is the meet of the
+hyperplanes $n_1^\perp$ and $n_2^\perp$ of $K^{d+1}$, a nonzero extensor
+of their intersection, which has dimension $d - 1$ (the remarks after
+\cref{def:meet}).
+
+The panel support extensor describes the hinge of two panels. As in
+\cref{sec:molecular-meet} for $d = 3$, the hyperplane
+$\{x \in K^d : a \cdot x + a_0 = 0\}$ has the normal
+$n = (a, a_0) \in K^{d+1}$, and a point $x$ lies on it exactly when
+$\bar x \cdot n = 0$, where $\bar x = (x, 1)$
+(\cref{def:homogeneous-coords}). Katoh and Tanigawa's panel
+$\{x : x \cdot c(v) + 1 = 0\}$ has the normal
+$(c(v), 1)$~\cite[\S5.1]{katohTanigawa2011}. Suppose that the hyperplanes
+with normals $n_1$ and $n_2$ meet in a $(d-2)$-dimensional affine
+subspace $H$, spanned by affinely independent points
+$p_1, \dots, p_{d-1}$. The two hyperplanes are distinct, so $n_1$ and
+$n_2$ are linearly independent. The vectors
+$\bar p_1, \dots, \bar p_{d-1}$ are linearly independent
+(\cref{lem:affine-indep-iff}) and orthogonal to $n_1$ and $n_2$. Let
+$C(H) = \bar p_1 \vee \cdots \vee \bar p_{d-1}$ be the extensor of $H$
+(\cref{def:affine-subspace-extensor}). It is a nonzero multiple of
+$C(n_1, n_2)$
+(\texttt{extensor\_\allowbreak{}join\_\allowbreak{}proportional\_\allowbreak{}complementIso\_\allowbreak{}meet}),
+so the two give the same hinge constraint.
+
+A panel-hinge framework takes the normals as its data.
 
 \begin{definition}[Panel-hinge framework]
   \label{def:panel-hinge-framework}
@@ -43,49 +83,54 @@ condition the panel constructions require.
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge}
   \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint}
-  A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
-  per-body panel normal $n_v \in K^{k+2}$, the pole of body $v$'s hyperplane
-  $\mathrm{panel}(v)$, and an assignment to each edge of the ordered pair of
-  bodies it joins --- its \emph{endpoint selector}. The hinge at an edge $e$
-  with endpoints $(u,v)$ is the codimension-$2$ intersection
-  $\mathrm{panel}(u) \cap \mathrm{panel}(v)$, with supporting $k$-extensor the
-  panel support extensor $C(p(e)) = C(n_u, n_v)$
+  A \emph{panel-hinge framework} $(G, n)$ is a multigraph $G = (V, E)$
+  together with a vector $n_v \in K^{d+1}$ for each body $v$, the normal
+  of its panel $\Pi(v)$. Its \emph{body-hinge interpretation} is the
+  body-hinge framework $(G, p)$ (\cref{def:hinge-constraint}) whose hinge
+  at an edge $e$ with ends $u$ and $v$ has the supporting extensor
+  \[
+    C(p(e)) \;=\; C(n_u, n_v)
+  \]
   (\cref{def:panel-support-extensor}).
 \end{definition}
 
-Its \emph{body-hinge interpretation} is the body-hinge framework
-(\cref{def:hinge-constraint}) on $G$ carrying exactly these supporting
-extensors, so the rigidity-matrix rank theory of
-\cref{sec:molecular-rigidity-matrix} applies to a panel-hinge framework
-through it. Katoh--Tanigawa's body-hinge framework (KT \S2.3) requires each
-hinge $p(e)$ to be a $(d-2)$-dimensional affine subspace, so
-nondegeneracy is part of the definition; the framework here instead carries
-the supporting extensor $C(p(e))$ as a free datum, and imposes nondegeneracy
-separately where it is needed
-(\cref{fmlnote:panel-hinge-nondegenerate}).
+Since $C(n_v, n_u) = -C(n_u, n_v)$, the hinge constraint at $e$ does not
+depend on the order of its ends. We identify a panel-hinge framework
+with its body-hinge interpretation, and write $R(G,p)$ and $Z(G,p)$ for
+its rigidity matrix and its space of infinitesimal motions
+(\cref{def:rigidity-matrix}). The hinge at an edge $e$ of a body-hinge
+framework is \emph{nondegenerate} if $C(p(e)) \neq 0$. In a panel-hinge
+framework this means that the normals at the ends of $e$ are linearly
+independent. For Katoh and Tanigawa a hinge is a $(d-2)$-dimensional
+affine subspace, and its extensor is nonzero (the remark after
+\cref{def:hinge-constraint}). Here a hinge may be degenerate. If
+$C(p(e)) = 0$, the hinge constraint at $e$ is $S(u) = S(v)$, and it welds
+the two bodies together.
 
 \begin{fmlnote}
   \label{fmlnote:panel-hinge-nondegenerate}
-  In KT's definition (KT \S2.3) the map $p$ sends each edge to a
-  $(d-2)$-dimensional affine subspace, so a hinge is nondegenerate by
-  definition. Here the supporting extensor $C(p(e))$ is a free datum that may
-  vanish --- a degenerate, welded hinge with $C(p(e)) = 0$ --- so
-  nondegeneracy, the nonvanishing $C(p(e)) \ne 0$, appears as an explicit
-  hypothesis wherever KT's definition would supply it. In particular it is a
-  conjunct on both sides of the molecular characterization
-  (\cref{thm:molecular-conjecture}).
-
-  In Katoh--Tanigawa an edge carries its endpoints intrinsically; the
-  formalization's multigraph keeps incidence relational, so the framework
-  records the endpoint selector explicitly, a function total on the
-  edge-label type $\beta$: on an edge of $G$ it selects the edge's actual
-  endpoints, and on a label outside $E(G)$ it is unconstrained.
+  In the formalization a multigraph records which bodies an edge joins as
+  a relation. A panel-hinge framework therefore also records, for every
+  edge label $e$, an ordered pair of bodies, and the hinge at $e$ is the
+  panel support extensor of their normals. We call this record the
+  \emph{endpoint selector}. The definition does not tie it to $G$: the
+  pair at an edge of $G$ need not be the ends of the edge, and a label
+  outside $E(G)$ also gets a pair, which does not affect $R(G,p)$. The
+  frameworks of \cref{def:panel-hinge-framework} are those whose selector
+  assigns each edge of $G$ its two ends, in either order. In the
+  formalization this is a separate condition on the selector, which a
+  result states as a hypothesis or as part of its conclusion. The
+  endpoint choice of $G$ (\cref{fmlnote:graph-operations}) satisfies it.
+  Likewise, a result that needs nondegenerate hinges assumes them. The
+  molecular conjecture (\cref{thm:molecular-conjecture}) assumes them at
+  every edge label, on both of its sides.
 \end{fmlnote}
 
-Every hinge incident to a body $v$ has $n_v$ as a join factor, so it lies in
-the single hyperplane $\mathrm{panel}(v)$. A panel-hinge framework is therefore
-hinge-coplanar by construction; a body-hinge framework is called hinge-coplanar
-when it arises this way.
+A nondegenerate hinge at a body $v$ lies in the panel of $v$, since its
+extensor $C(n_v, n_w)$ is an extensor of $n_v^\perp \cap n_w^\perp$. So
+the body-hinge interpretation of a panel-hinge framework meets Katoh and
+Tanigawa's condition~\cite[p.~648]{katohTanigawa2011}, and we use their
+name for the body-hinge frameworks that arise in this way.
 
 \begin{definition}[Hinge-coplanar body-hinge framework]
   \label{def:hinge-coplanar}
@@ -93,42 +138,63 @@ when it arises this way.
         CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge}
   \leanok
   \uses{def:panel-hinge-framework, def:hinge-constraint}
-  A body-hinge framework is \emph{hinge-coplanar} when it is the body-hinge
+  A body-hinge framework is \emph{hinge-coplanar} if it is the body-hinge
   interpretation of a panel-hinge framework.
 \end{definition}
 
-The Case~I construction needs its hinges nondegenerate and transversal, which
-the following general-position condition on the normals supplies.
+\begin{fmlnote}
+  The formal predicate inherits the endpoint selector of
+  \cref{fmlnote:panel-hinge-nondegenerate}. It holds for a body-hinge
+  framework each of whose hinges is the panel support extensor of the
+  normals of some two bodies, not necessarily the ends of its edge.
+\end{fmlnote}
+
+Katoh and Tanigawa's condition asks only that the hinges at each body lie
+in a common hyperplane. It also admits two bodies with the same panel,
+joined by any $(d-2)$-dimensional hinge in that panel. The meet of two
+equal panels is zero, so under \cref{def:hinge-coplanar} the hinge
+between two bodies with the same panel is degenerate. The containment form
+of \cref{def:coplanar-panel-realization}, later in this chapter, admits
+such a hinge.
+
+A condition on the normals alone makes every hinge between two distinct
+bodies nondegenerate.
 
 \begin{definition}[Panel normals in general position]
   \label{def:panel-general-position}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.IsGeneralPosition}
   \leanok
   \uses{def:panel-hinge-framework}
-  The panel normals of a panel-hinge framework are in \emph{general position}
-  when any two normals at distinct bodies are linearly independent.
+  The normals of a panel-hinge framework $(G, n)$ are in \emph{general
+  position} if $n_u$ and $n_v$ are linearly independent for any two
+  distinct bodies $u$ and $v$.
 \end{definition}
+
+Katoh and Tanigawa call a panel-hinge framework on a simple graph
+nonparallel if the panels of any two distinct bodies meet in a
+$(d-2)$-dimensional affine subspace~\cite[\S5.1]{katohTanigawa2011}. Its
+normals are then in general position, since any two of its panels are
+distinct. The converse fails for two parallel panels, which meet only at
+infinity. Katoh and Tanigawa avoid parallel panels by a projective
+transformation, under which infinitesimal rigidity is
+invariant~\cite[p.~670]{katohTanigawa2011}.
 
 \begin{lemma}[General position gives nondegenerate hinges]
   \label{lem:general-position-support-nonzero}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition}
   \leanok
   \uses{def:panel-general-position, def:panel-support-extensor}
-  If the panel normals are in general position, then every hinge joining two
-  distinct bodies has a nonzero supporting extensor.
+  Let the normals of a panel-hinge framework $(G, n)$ be in general
+  position. Then every edge of $G$ with two distinct ends has a
+  nondegenerate hinge.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:panel-support-extensor}
-  The supporting extensor is the complement iso of the join of the two endpoint
-  normals (\cref{def:panel-support-extensor}), which is nonzero exactly when
-  those normals are linearly independent; general position supplies that
-  independence at distinct bodies.
+  Let $e$ have ends $u \neq v$. Then $n_u$ and $n_v$ are linearly
+  independent, so $C(p(e)) = C(n_u, n_v) \neq 0$ (the remark after
+  \cref{def:panel-support-extensor}).
 \end{proof}
-
-This nonvanishing is the transversality the block-triangular gluing of Case~I
-(\cref{lem:case-I}) requires of the hinges spanning a rigid block. A
-general-position assignment exists in every dimension.
 
 \begin{lemma}[Moment-curve normals are in general position]
   \label{lem:moment-curve-general-position}
@@ -136,95 +202,129 @@ general-position assignment exists in every dimension.
         CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_ofParam}
   \leanok
   \uses{def:panel-general-position}
-  A general-position assignment of panel normals exists for any number of
-  bodies and any dimension.
+  Let $(t_v)_{v \in V}$ be distinct elements of $K$, and let
+  $n_v = (1, t_v, t_v^2, \dots, t_v^{d})$ be the point of the moment
+  curve at $t_v$. Then the normals $n_v$ are in general position. In
+  particular, if $K$ is infinite and $V$ is finite, then there are
+  normals in general position.
 \end{lemma}
 \begin{proof}
   \leanok
-  Set each body's normal to a point $(1, t, t^2, \dots, t^{k+1})$ on the moment
-  curve at a distinct parameter $t$. Distinct parameters give distinct
-  moment-curve points whose first two coordinates span a $2$-dimensional space:
-  the $2 \times 2$ Vandermonde minor has determinant $t' - t \ne 0$, so any two
-  normals at distinct bodies are linearly independent. An injective assignment
-  of parameters gives distinct parameters at distinct bodies.
+  Let $u \neq v$. The first two coordinates of $n_u$ and $n_v$ form the
+  matrix with rows $(1, t_u)$ and $(1, t_v)$, whose determinant
+  $t_v - t_u$ is not zero. So $n_u$ and $n_v$ are linearly independent.
+  An infinite field has $|V|$ distinct elements for every finite $V$.
 \end{proof}
 
-\begin{fmlnote}
-  Two forms are pinned: the injective-parameter form
-  (\texttt{isGeneralPosition\_withMomentNormals}) and the form running directly
-  from a bare graph and endpoint selector (\texttt{isGeneralPosition\_ofParam}),
-  which the Case~I construction uses.
-\end{fmlnote}
-
-Standard-basis normals would cover only $|V| \le k+2$ bodies; the moment curve
-places arbitrarily many.
-
-\subsection{The generic-rank reconciliation (KT Proposition 1.1, analytic half)}
+\subsection{The generic rank formula (KT Proposition 2.3)}
 \label{sec:molecular-algebraic-induction-prop11}
 
-KT Proposition~1.1 has two halves. The matroidal half --- the bridge
-$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ between
-combinatorial deficiency and matroid corank --- is \cref{thm:def-eq-corank}.
-The analytic half below is the one this chapter needs: it connects the
-rigidity-matrix rank of $R(G,p)$ (\cref{sec:molecular-rigidity-matrix}) to
-that corank, and so identifies the graphs a generic panel realization can make
-rigid. Its one nonelementary input is the generic-rank argument (KT
-Claim~6.4), used throughout the induction.
+Katoh and Tanigawa's Proposition~2.3, which they credit to Jackson and
+Jord\'an~\cite{jacksonJordan2009}, relates the rank of the rigidity matrix
+of a generic realization of a multigraph $G$ to the deficiency
+$\operatorname{def}(\tilde G)$ and to the rank of the matroid
+$M(\tilde G)$~\cite[p.~655]{katohTanigawa2011}. It has two halves of
+different kinds. The matroidal half is KT eq.~(2.4),
+$\operatorname{rank} M(\tilde G) = D(|V|-1) - \operatorname{def}(\tilde G)$,
+which \cref{thm:def-eq-corank} proves. The analytic half is Jackson and
+Jord\'an's rank formula
+\[
+  \operatorname{rank} R(G,p) \;=\; D(|V|-1) - \operatorname{def}(\tilde G)
+\]
+at a generic realization $(G,p)$. We prove it for panel-hinge
+realizations with nondegenerate hinges
+(\cref{prop:rigidity-matrix-prop11}).
 
-\begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
+The analytic half is in turn two inequalities of different kinds. The
+upper bound on the rank holds at every realization with nondegenerate
+hinges. The lower bound needs one realization that attains the rank, as a
+generic realization has the largest rank. Jackson and Jord\'an build such
+a realization from $D$ edge-disjoint forests in $\tilde G$ with
+$D(|V|-1) - \operatorname{def}(\tilde G)$ edges in
+all~\cite[Theorem~6.1]{jacksonJordan2009}. We take it instead from KT
+Theorem~5.5, which this chapter proves by induction
+(\cref{thm:theorem-55}), as Katoh and Tanigawa do in their proof of
+Theorem~5.6~\cite[p.~670]{katohTanigawa2011}.
+
+\begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}(\tilde G)$; KT Proposition 2.3]
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
   \leanok
   \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic, lem:genericity-device}
-  For a generic panel-hinge realization $(G,p)$ whose hinges are all
-  nondegenerate ($C(p(e)) \ne 0$ for every edge $e$),
+  Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$, and let
+  $(G,p)$ be a generic panel-hinge realization of $G$
+  (\cref{def:dof-generic}) whose hinges are all nondegenerate. Then
   \[
-    \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G).
+    \operatorname{rank} R(G,p) \;=\; D(|V|-1) - \operatorname{def}(\tilde G).
   \]
-  This rank formula is due to Jackson--Jord\'an (Theorem~6.1,
-  \cite{jacksonJordan2009}).
+  This is Jackson and Jord\'an's rank
+  formula~\cite[Theorem~6.1]{jacksonJordan2009}.
 \end{proposition}
-
-The equation reconciles the two descriptions of rigidity used in this
-development. A graph $G$ has a rigid panel-hinge realization if and only if
-$\operatorname{def}(\tilde G) = 0$, that is, if and only if $\tilde G =
-(D-1)\cdot G$ contains $D$ edge-disjoint spanning trees. So the rank
-form of \cref{sec:molecular-rigidity-matrix} agrees with the body-hinge
-existence form (\cref{thm:body-hinge-tay}).
-
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:trivial-motions-rank-bound,
         lem:motions-mono-of-graph-le}
-  The deficiency is the corank of $M(\tilde G)$ (\cref{thm:def-eq-corank}), so
-  the claim is that a generic realization attains the maximum rank $D(|V|-1) -
-  \operatorname{corank}$, equivalently that it realizes the rank hypothesis
-  (\cref{def:rank-hypothesis}) at $k' = \operatorname{def}$. The equality
-  follows from two inequalities, one of which needs no genericity and one of
-  which does.
+  Let $k = \operatorname{def}(\tilde G)$. Since
+  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$
+  (\cref{def:rigidity-matrix}), the claim is that
+  $\dim Z(G,p) = D + k$.
 
-  The upper bound $\operatorname{rank} R(G,p) \le D(|V|-1) -
-  \operatorname{def}$ holds for every realization. It combines the codimension
-  bound (\cref{lem:trivial-motions-rank-bound}) with a partition count: a
-  partition $P$ attaining $\operatorname{def}(\tilde G)$ contributes
-  $\operatorname{def}$ independent motions beyond the $D$ trivial ones, with no
-  genericity needed.
+  \emph{The upper bound on the rank.} By
+  \cref{lem:trivial-motions-rank-bound}, $\dim Z(G,p) \ge D + k$. These
+  motions come from a partition $P$ of $V$ with
+  $\operatorname{def}_{\tilde G}(P) = k$. The screw assignments that are
+  constant on each part of $P$ form a space of dimension $D|P|$. On this
+  space, each edge that joins two parts imposes $D - 1$ linear conditions,
+  because its hinge is nondegenerate, and the other edges impose none. So
+  at least $D|P| - (D-1)\,d_G(P) = D + k$ dimensions of motions remain.
 
-  The reverse bound $\operatorname{rank} R(G,p) \ge D(|V|-1) -
-  \operatorname{def}$, equivalently $\dim Z(G,p) \le D + \operatorname{def}$,
-  holds at a generic realization. Delete edges from $G$ to reach a minimal
-  $k$-dof spanning subgraph, realize that subgraph at full generic rank by KT
-  Theorem~5.5 (\cref{thm:theorem-55}, whose KT Claim~6.4 argument selects the
-  coordinates attaining the rank), then re-add the deleted edges, which only
-  grows the rank (\cref{lem:motions-mono-of-graph-le}). The remaining inputs
-  are the dimension identity $n = k+1$ and the nondegenerate-hinge condition $C(p(e))
-  \ne 0$ that the partition cut needs. This bound at every deficiency, not just
-  the one a minimal spanning subgraph attains, is KT Theorem~5.6
-  (\cref{thm:theorem-55-6}; $d = 3$ specialization \cref{thm:theorem-55-6-d3}).
-  For a spanning $G$ ($V(G) = V_\alpha$) the $V(G)$-relative rank form of
-  \cref{def:rank-hypothesis} coincides with the absolute $\dim Z = D +
-  \operatorname{def}$.
+  \emph{The lower bound on the rank.} If $|V| = 1$, every edge of $G$ is a
+  loop, whose rows vanish, and both sides of the formula are $0$. Let
+  $|V| \ge 2$. We follow Katoh and Tanigawa's proof of their
+  Theorem~5.6 (KT p.~670). The graph $G$ has a spanning subgraph $G'$ that is a
+  minimal $k$-dof-graph (\cref{lem:minimal-kdof-spanning-subgraph}). By
+  KT Theorem~5.5 (\cref{thm:theorem-55}), $G'$ has a panel-hinge
+  realization $(G', q)$ with
+  $\operatorname{rank} R(G', q) = D(|V|-1) - k$, that is, with
+  $\dim Z(G', q) = D + k$. Extend $q$ to a realization $(G, q)$ of $G$ by
+  giving each edge of $G$ that is not in $G'$ any hinge. Adding edges can
+  only shrink the space of motions (\cref{lem:motions-mono-of-graph-le},
+  below), so $\dim Z(G, q) \le D + k$. A generic realization has the
+  largest rank over all realizations of $G$ (\cref{def:dof-generic}).
+  Hence
+  \[
+    \operatorname{rank} R(G,p) \;\ge\; \operatorname{rank} R(G,q)
+    \;\ge\; D(|V|-1) - k.
+  \]
 \end{proof}
+
+\begin{fmlnote}
+  The formalization has no notion of a generic realization in the sense
+  of \cref{def:dof-generic}. The pinned theorem is stated for a
+  body-hinge framework whose supporting extensors are nonzero at every
+  edge label. It assumes the lower bound on the rank,
+  $\dim Z(G,p) \le D + \operatorname{def}(\tilde G)$, and derives
+  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$ from the upper bound.
+  Its screw assignments are defined on the whole body set, so this is the
+  rank formula when $G$ spans the body set. The theorems that apply it,
+  such as \cref{thm:theorem-55-6-genuine}, take $G$ spanning and prove the
+  lower bound on the rank for the realization they construct, by the
+  argument of the proof above. For simple spanning graphs on at least two
+  bodies, the formula at every generic realization is formalized for
+  generic normals (\cref{thm:panel-generic-rank}). It is also formalized
+  for generic hinge points (\cref{thm:bodyhinge-generic-rank}).
+\end{fmlnote}
+
+At deficiency zero the formula reads
+$\operatorname{rank} R(G,p) = D(|V|-1)$. So a generic realization with
+nondegenerate hinges is infinitesimally rigid if and only if
+$\operatorname{def}(\tilde G) = 0$, by
+\cref{lem:trivial-motions-rank-bound}. By KT Proposition~2.2
+(\cref{lem:deficiency-zero-iff-tree-packing}), this holds if and only if
+$\tilde G$ contains $D$ edge-disjoint spanning trees. This is Tay and
+Whiteley's theorem in the form of KT Proposition~1.1
+(\cref{sec:body-hinge-tay}), for the rigidity matrix of
+\cref{sec:molecular-rigidity-matrix}.
 
 \subsection{The induction skeleton and base case}
 \label{sec:molecular-algebraic-induction-base}
