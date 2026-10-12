@@ -346,15 +346,18 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/Phase22-realization-design.md` §1.5–1.6; `notes/Phase22a.md`.
 - **conditioned motive `Pc := (G.Simple → GP) ∧ bare` (`theorem_55_generic`;
   folds into `lem:case-I-realization` prose)** — [done (`panel-layer.tex`
-  `thm:theorem-55` statement + `fmlnote` at line ~441; R1 readability rewrite
-  `a85e849c`)] **(a)** G2a (`f35be5d`). **Stable insight:** the generic motive
+  `thm:theorem-55`'s statement and the paragraph before it, since PROSE round 3
+  task 2.2; R1 readability rewrite `a85e849c`)] **(a)** G2a (`f35be5d`).
+  **Stable insight:** the generic motive
   must be *conditioned on simplicity* — KT's "nonparallel, if `G` is simple"
-  (printed p.669); unconditional general position is *false* at the
+  (printed p. 670); unconditional general position is *false* at the
   parallel-`K₂` base. **Written** (R1, 2026-07-03; found by the D2a
   reconciliation 2026-07-07): `thm:theorem-55`'s statement carries the
   "moreover, if `G` is simple, generic" conjunction, and the following
   `fmlnote` states the parallel-`K₂` base admits no generic realization
-  explicitly. Pointer: `notes/Phase22-realization-design.md` §1.6.
+  explicitly; since PROSE round 3 task 2.2 the paragraph before the theorem
+  does, with the rank $D - 1$ that general position forces there. Pointer:
+  `notes/Phase22-realization-design.md` §1.6.
 - **contraction simplicity `rigidContract_simple` / `map_simple` (folds into
   `lem:case-I-realization` prose)** — [done (`case-i.tex`, Phase-27 C1 exposition)]
   **(a)** G2b (`b9000ef`). **Stable

@@ -344,52 +344,73 @@ base-region trichotomy at which the induction terminates.
         CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization}
   \leanok
   \uses{def:rigidity-matrix, def:k-dof}
-  For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, KT's realization
-  hypothesis (KT eq.~(6.1)) asserts the existence of a panel-hinge
-  realization $(G,p)$ whose rigidity rows span the maximal dimension
+  Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$. A panel-hinge
+  realization $(G,p)$ of $G$ (\cref{def:panel-hinge-framework}) is
+  \emph{at the target rank} if
   \[
-    \dim \operatorname{span}\bigl(\text{rigidity rows of } (G,p)\bigr)
-      \;=\; D\,(|V(G)| - 1) - k.
+    \operatorname{rank} R(G,p) \;=\; D(|V| - 1) - \operatorname{def}(\tilde G).
   \]
+  A \emph{generic full-rank realization} of $G$ is a panel-hinge
+  realization at the target rank whose normals are in general position
+  (\cref{def:panel-general-position}). For a minimal $k$-dof-graph,
+  $\operatorname{def}(\tilde G) = k$ (\cref{def:k-dof}), and the target
+  rank is the rank $D(|V| - 1) - k$ of KT eq.~(6.1).
 \end{definition}
 
 \begin{fmlnote}
   \label{fmlnote:generic-full-rank}
-  Two Lean predicates express this hypothesis. The bare predicate
-  \texttt{HasFullRankRealization} asserts only that some realization attains
-  the rank; over a nonempty $V(G)$ this is the rank equality above, and it is
-  what KT Theorem~5.5 establishes by induction on $|V(G)|$. It is deliberately
-  weaker than KT's hypothesis, which requires nondegenerate hinges: a
-  degenerate framework whose panels are all welded shut satisfies it on any
-  connected $0$-dof graph, so the induction is restated in the
-  nondegenerate-hinge form (\cref{def:genuine-hinge-realization}). The
-  strengthened predicate \texttt{HasGenericFullRankRealization} additionally
-  records that the panel normals are in general position and that the
-  endpoint selector records every link, the form KT Theorem~5.5 produces
-  when $G$ is simple. KT additionally takes the inductive realization's
-  coordinates algebraically independent over $\Q$ (KT footnote~6), so that
-  one seed is a non-root of every rational rank polynomial at once; the
-  formalization instead chooses, at each composition that re-uses an
-  inductive realization, a seed off the zero locus of the finitely many
-  polynomials that composition actually tests (a product of determinant and
-  rank polynomials fixed before the seed), so no algebraic-independence
-  clause is carried in the predicate.
+  In the formalization every framework has the same set of bodies, and a
+  graph need not have all of them as vertices. So the hypothesis is
+  stated for the rank (\cref{rem:rank-hypothesis-relative}). The first
+  pinned predicate is the rank form at deficiency zero: a panel-hinge
+  framework on $G$ whose infinitesimal motions are all constant on
+  $V(G)$, that is, of rank $D(|V(G)| - 1)$. Its endpoint selector is
+  unconstrained (\cref{fmlnote:panel-hinge-nondegenerate}), and no main
+  result uses this predicate. The second pinned predicate is the generic
+  full-rank realization, whose selector assigns each edge of $G$ its two
+  ends.
+
+  Katoh and Tanigawa call a nonparallel realization generic if the
+  coordinates of the vectors $c(v)$ that define its panels are
+  algebraically independent over $\Q$~\cite[p.~668]{katohTanigawa2011}.
+  A generic realization has the largest rank of all nonparallel
+  realizations of its graph, and their proof uses this for the
+  realizations given by the induction hypothesis (KT footnote~6, p.~684).
+  A generic full-rank realization asks only that the normals be in
+  general position. Where the formal proof needs a realization given by
+  the induction hypothesis to attain a rank, it chooses the normals off
+  the zero set of the finitely many polynomials that this step tests, a
+  product of determinants and rank polynomials
+  (\cref{lem:rank-polynomial-of-le-finrank}) fixed before the choice.
 \end{fmlnote}
 
 \begin{remark}[Why the target is a rank equality]
   \label{rem:rank-hypothesis-relative}
-  The rigidity rows of $R(G,p)$ come only from the edges of $G$, so their span,
-  and hence $\operatorname{rank} R(G,p)$, depends only on $V(G)$ and is blind to
-  any ambient bodies outside $V(G)$. The target is therefore stated as a rank
-  equality rather than as the null-space equality $\dim Z(G,p) = D + k$ over the
-  whole screw-assignment space $K^{D|V_\alpha|}$ of the ambient body type. That
-  null space is not ambient-independent: an inductive subgraph does not span the
-  ambient bodies, so its null space always carries the free motions of the
-  omitted ones. Only the rank form is stable under an induction that shrinks $G$
-  one vertex at a time. The two forms agree exactly when $G$ spans, the case
-  used in \cref{prop:rigidity-matrix-prop11}. When $k = 0$ the rank equality
-  reads: every infinitesimal motion is constant on $V(G)$.
+  The rows of $R(G,p)$ involve only the bodies of $G$. Let $W$ be a set
+  of bodies that contains $V(G)$, and regard $(G,p)$ as a framework on
+  $W$ in which the bodies outside $V(G)$ lie on no edge. Its rank does
+  not change, and each body of $W \setminus V(G)$ adds $D$ dimensions to
+  its space of motions. So the target rank does not depend on $W$, and
+  it is equivalent to
+  \[
+    \dim Z(G,p) \;=\; D + \operatorname{def}(\tilde G)
+    + D\,|W \setminus V(G)|.
+  \]
+  For $W = V(G)$ this is $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$,
+  as in the proof of \cref{prop:rigidity-matrix-prop11}. When
+  $\operatorname{def}(\tilde G) = 0$, the target rank says that every
+  infinitesimal motion is constant on $V(G)$.
 \end{remark}
+
+A panel-hinge realization at the target rank may have degenerate hinges.
+If all the normals are equal, then every hinge is degenerate and welds
+its two bodies together, so every connected $0$-dof-graph has a
+panel-hinge realization at the target rank. Katoh and Tanigawa's hinges
+are nondegenerate (the remark after \cref{def:hinge-constraint}). A
+generic full-rank realization has a nondegenerate hinge at every edge
+with two distinct ends (\cref{lem:general-position-support-nonzero}). The
+second form of the hypothesis asks for nondegenerate hinges directly,
+each in the panels of the two ends of its edge.
 
 \begin{definition}[Realization hypothesis, nondegenerate-hinge form; KT eq.\ (6.1)]
   \label{def:genuine-hinge-realization}
@@ -397,38 +418,85 @@ base-region trichotomy at which the induction terminates.
     CombinatorialRigidity.Molecular.ExtensorInPanel}
   \leanok
   \uses{def:rank-hypothesis, def:panel-hinge-framework, def:D-deficiency}
-  A graph $G$ \emph{has a nondegenerate-hinge panel realization} at grade $k$,
-  in dimension $n = k+1$, when there exist a body-hinge framework on $G$ and a
-  panel-normal assignment $v \mapsto n_v \in K^{k+2}$ such that: every
-  body has a nonzero normal; every link's supporting $k$-extensor is nonzero and
-  lies in both endpoint panels (each endpoint's hyperplane $n_v^\perp$ contains
-  $k$ points spanning the extensor); and the rigidity-row span attains the
-  target rank $D(|V(G)|-1) - \operatorname{def}(\tilde G)$ (KT eq.~(6.1)).
+  Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$. An extensor
+  \emph{lies in the panel} with normal $n \in K^{d+1}$ if it is
+  $x_1 \vee \cdots \vee x_{d-1}$ for some $x_1, \dots, x_{d-1} \in n^\perp$.
+  A \emph{nondegenerate-hinge panel realization} of $G$ is a body-hinge
+  framework $(G,p)$ at the target rank
+  $D(|V| - 1) - \operatorname{def}(\tilde G)$
+  (\cref{def:rank-hypothesis}), together with a nonzero normal
+  $n_v \in K^{d+1}$ for each body $v$, such that the hinge $C(p(e))$ at
+  each edge $e$ with ends $u$ and $v$ is nonzero and lies in the panels
+  with normals $n_u$ and $n_v$.
 \end{definition}
 
-This is the realization hypothesis in the form KT actually uses. Its hinges are
-nondegenerate: nonzero, transversal, and contained in the panels they support, a
-condition no welded degeneracy meets.
+This is the form of the hypothesis in Katoh and Tanigawa's proof. Their
+panel-hinge frameworks are body-hinge frameworks whose hinges at each
+body lie in a common hyperplane, the panel of the
+body~\cite[p.~668]{katohTanigawa2011}, and their hinges are
+nondegenerate. Here the hinge at an edge need not be the meet of the
+two panels. When the two panels coincide, it can be any nonzero extensor
+in their common panel, as in KT Lemma~5.3 (p.~669). A generic full-rank
+realization gives a nondegenerate-hinge one.
 
-\begin{lemma}[A generic realization is nondegenerate-hinge]
+\begin{lemma}[A generic full-rank realization has nondegenerate hinges]
   \label{lem:generic-yields-genuine-hinge}
   \lean{CombinatorialRigidity.Molecular.hasPanelRealization_of_generic}
   \leanok
   \uses{def:genuine-hinge-realization, def:rank-hypothesis}
-  Every graph on $\ge 2$ bodies with a generic full-rank realization
-  (the strengthened form of \cref{def:rank-hypothesis},
-  \cref{fmlnote:generic-full-rank}) has a nondegenerate-hinge panel realization
+  Let $d \ge 2$, and let $G = (V, E)$ be a multigraph with $|V| \ge 2$.
+  If $G$ has a generic full-rank realization (\cref{def:rank-hypothesis}),
+  then $G$ has a nondegenerate-hinge panel realization
   (\cref{def:genuine-hinge-realization}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:general-position-support-nonzero}
-  General position gives each link a nonzero supporting extensor
-  (\cref{lem:general-position-support-nonzero}); the panel support extensor is
-  the meet of the two endpoint panels, so it lies in both; and an
-  infinitesimally rigid framework attains the rank count of the rank hypothesis
-  at the framework's deficiency.
+  Let $(G,p)$ be a generic full-rank realization with normals $n_v$. It
+  is at the target rank. Each normal $n_v$ is nonzero, since $|V| \ge 2$
+  gives a body $w \neq v$, and $n_v$ and $n_w$ are linearly independent.
+  Let $e$ be an edge with ends $u \neq v$. Its hinge $C(n_u, n_v)$ is
+  nonzero (\cref{lem:general-position-support-nonzero}). It is the meet
+  of the hyperplanes $n_u^\perp$ and $n_v^\perp$, so it is
+  $x_1 \vee \cdots \vee x_{d-1}$ for a basis $x_1, \dots, x_{d-1}$ of
+  $n_u^\perp \cap n_v^\perp$ (the remark after
+  \cref{def:panel-support-extensor}). So it lies in both panels. A loop
+  at a body $u$ gives no row of $R(G,p)$, since its constraint involves
+  only $S(u) - S(u) = 0$. So we may replace its hinge by
+  $x_1 \vee \cdots \vee x_{d-1}$ for any linearly independent
+  $x_1, \dots, x_{d-1} \in n_u^\perp$, without changing the rank.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem assumes that $G$ has no loops, and it keeps every
+  hinge of the generic realization. The theorems that apply it do so for
+  simple graphs.
+\end{fmlnote}
+
+Katoh and Tanigawa's Theorem~5.5~\cite[p.~670]{katohTanigawa2011} gives
+a minimal $k$-dof-graph $G$ with $|V| \ge 2$ a panel-hinge realization
+of rank $D(|V| - 1) - k$, nonparallel if $G$ is simple. We state it as
+two claims: a nondegenerate-hinge panel realization of every such $G$,
+and a generic full-rank realization of a simple one. For simple $G$ the
+second gives the first (\cref{lem:generic-yields-genuine-hinge}).
+
+The second claim needs simplicity. Let $G$ have two vertices $u$ and
+$v$, and two edges $e$ and $f$ that join them. Then $G$ is a
+$0$-dof-graph (\cref{lem:two-vertex-zero-dof}), and its target rank is
+$D$. In a panel-hinge realization of $G$ with $n_u$ and $n_v$ linearly
+independent, the hinges at $e$ and $f$ are both $\pm C(n_u, n_v)$. So
+the two edges impose the same $D - 1$ conditions, and the rank is
+$D - 1$. Katoh and Tanigawa realize $G$ at rank $D$ with two coincident
+panels and two distinct hinges in them (KT Lemma~5.3, p.~669). They
+define nonparallel realizations only for simple graphs (KT \S5.1,
+p.~668), and their induction hypothesis, KT eq.~(6.1), asks for a
+nonparallel realization only of a simple graph.
+
+The proof is by induction on $|V|$, as in KT \S6. It uses the base cases
+later in this subsection, and Cases~I, II and~III, which
+\cref{sec:molecular-algebraic-induction-caseI},
+\cref{sec:molecular-algebraic-induction-caseII} and
+\cref{sec:molecular-algebraic-induction-caseIII} prove.
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
@@ -440,16 +508,14 @@ condition no welded degeneracy meets.
         lem:case-cut-edge-realization, lem:case-cut-edge-realization-gp,
         lem:case-I, lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
-  Let $G$ be a minimal $k$-dof-graph with $|V| \ge 2$, at any dimension
-  $n \ge 2$ (equivalently $D = \binom{n+1}{2} \ge 3$) and over any infinite
-  field $K$, of any characteristic. Then $G$ admits a
-  nondegenerate-hinge panel realization $(G,p)$
-  (\cref{def:genuine-hinge-realization}) whose rigidity matrix attains rank
-  $D(|V(G)|-1) - k$ (\cref{def:rank-hypothesis} at $k' = k$). Moreover, if $G$
-  is simple, the realization may be chosen generic: panel normals in general
-  position, with the endpoint selector recording every link. In particular, a
-  minimal $0$-dof-graph admits a nondegenerate-hinge realization at the
-  maximal rank $D(|V(G)|-1)$.
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
+  minimal $k$-dof-graph with $|V| \ge 2$. Then $G$ has a
+  nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}), of rank $D(|V| - 1) - k$. If
+  $G$ is simple, then $G$ also has a generic full-rank realization
+  (\cref{def:rank-hypothesis}). In particular, a minimal $0$-dof-graph
+  with at least two vertices has an infinitesimally rigid
+  nondegenerate-hinge panel realization.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -458,142 +524,161 @@ condition no welded degeneracy meets.
         lem:case-cut-edge-realization-gp, lem:case-I, lem:case-II,
         lem:case-I-realization, lem:case-I-dispatch, lem:case-II-realization,
         lem:case-III, lem:case-III-nested-rank-lower, lem:chain-data-extract}
-  The proof is an induction on $|V(G)|$, following the all-deficiency reduction
-  skeleton (KT \S6, \cref{thm:minimal-kdof-reduction-all-k}): a minimal
-  $k'$-dof-graph on at least three vertices is either not $2$-edge-connected, or
-  has a proper rigid subgraph, or is $2$-edge-connected with no proper rigid
-  subgraph, the last case split on whether its deficiency $k'$ is positive or
-  zero. The base region $|V(G)| \le 2$ is realized by the trichotomy dispatch
-  (\cref{lem:theorem-55-base-producer}), whose parallel-edge case is the
-  two-vertex double edge (\cref{lem:theorem-55-base}).
+  For a multigraph $H$, let $P(H)$ say that $H$ has a nondegenerate-hinge
+  panel realization, and also a generic full-rank realization if $H$ is
+  simple. We prove $P(G)$ for every minimal $k$-dof-graph $G$ with at
+  least one vertex, for all $k$ at once, by induction on $|V(G)|$
+  (\cref{thm:minimal-kdof-reduction-all-k}). The induction hypothesis is
+  KT eq.~(6.1): $P(H)$ holds for every minimal $k'$-dof-graph $H$ with
+  at least one and fewer than $|V(G)|$ vertices, for every $k'$.
 
-  Each of KT's four cases is realized at the target rank. A cut edge, when $G$
-  is not $2$-edge-connected, is realized by KT Lemma~6.1
-  (\cref{lem:case-cut-edge-realization}, with
-  \cref{lem:case-cut-edge-realization-gp} for the generic conjunct). A proper
-  rigid subgraph is contracted by Case~I (KT \S6.2; \cref{lem:case-I-dispatch},
-  \cref{lem:case-I-realization}). When $G$ is $2$-edge-connected with no proper
-  rigid subgraph, a positive-deficiency splitting-off is realized by Case~II (KT
-  Lemma~6.8; \cref{lem:case-II-realization}), and a zero-deficiency
-  splitting-off, the most difficult case, by Case~III (KT \S6.4;
-  \cref{lem:case-III}).
+  \emph{The base.} If $G$ has one or two vertices, then $P(G)$ holds
+  (\cref{lem:theorem-55-base-producer}). A minimal $k$-dof-graph with
+  two vertices has no edge, one edge, or two parallel edges, and the last
+  case is KT Lemma~5.3 (\cref{lem:theorem-55-base}).
 
-  Throughout, the induction hypothesis is quantified over \emph{all}
-  deficiencies $k'$, not only $k' = 0$ (this is the strength of KT eq.~(6.1)):
-  Case~III applies the statement to an auxiliary minimal $k''$-dof graph with
-  $0 \le k'' \le D - 2$ (KT Claim~6.11, KT eq.~(6.22)), using the stronger
-  hypothesis in its nested rank bound (\cref{lem:case-III-nested-rank-lower}).
-  At general dimension Case~III proceeds by a chain-length dispatch together
-  with a chain-realization argument valid for cycles of any length
-  (\cref{lem:chain-data-extract}); the $d = 3$ specialization of the whole
-  induction is \cref{thm:theorem-55-d3-instance}.
+  \emph{The four cases.} Let $|V(G)| \ge 3$. We follow Katoh and
+  Tanigawa's four cases (KT p.~671). If $G$ is not $2$-edge-connected,
+  then KT Lemma~6.1 gives $P(G)$. \Cref{lem:case-cut-edge-realization}
+  gives the nondegenerate-hinge realization, and
+  \cref{lem:case-cut-edge-realization-gp} gives the generic one when $G$
+  is simple. If $G$ has a proper rigid subgraph, then Case~I gives $P(G)$
+  (KT \S6.2; \cref{lem:case-I-dispatch}, \cref{lem:case-I-realization}).
+  It uses KT Lemma~6.2 when $G$ is not simple, KT Lemma~6.3 when $G$ is
+  simple and has a proper rigid subgraph $H$ with $G/E(H)$ simple, and
+  KT Lemma~6.5 otherwise.
+
+  In the remaining two cases $G$ is $2$-edge-connected and has no proper
+  rigid subgraph, so $G$ is simple (\cref{lem:simple-minimal-noRigid}).
+  If $k > 0$, then Case~II gives a generic full-rank realization of $G$
+  (KT Lemma~6.8; \cref{lem:case-II-realization}). If $k = 0$, then
+  Case~III does (KT Lemmas~6.10 and~6.13; \cref{lem:case-III}). In both
+  cases this realization is also a nondegenerate-hinge one
+  (\cref{lem:generic-yields-genuine-hinge}), so $P(G)$ holds.
+
+  \emph{The deficiencies.} The induction hypothesis is used at
+  deficiencies other than $k$, even when $k = 0$. KT Lemma~6.1 applies
+  it to the two sides of a cut of at most one edge, at deficiencies
+  smaller than $k$. Case~I applies it to a proper rigid subgraph $H$, a
+  minimal $0$-dof-graph, and to the contraction $G/E(H)$, a minimal
+  $k$-dof-graph. In Case~II, splitting off a vertex of degree two gives a
+  minimal $(k-1)$-dof-graph. Case~III applies it to a minimal
+  $k'$-dof-graph with $k' \le D - 2$ (KT Claim~6.11, eq.~(6.22);
+  \cref{lem:case-III-nested-rank-lower}). For general $d$, Case~III also
+  distinguishes whether $G$ is a cycle on at most $d$ vertices or has a
+  chain of length $d$ (KT Lemma~6.13; \cref{lem:chain-data-extract}). The
+  case $d = 3$, $k = 0$ of the theorem is
+  \cref{thm:theorem-55-d3-instance}.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem also assumes that every minimal $k'$-dof-graph, for
+  every $k'$, has an edge label outside its edge set
+  (\cref{rem:fresh-edge-supply}).
+\end{fmlnote}
 
 \begin{remark}[The fresh-edge-label convention]
   \label{rem:fresh-edge-supply}
-  The Lean development fixes a single ambient type of edge labels once and for
-  all, a formalization convention with no analogue in Katoh--Tanigawa. The
-  edge-adding surgery of the induction (splitting off a vertex, re-inserting an
-  edge) needs a supply of labels not already in use. The supply is always
-  available: a minimal $k$-dof-graph has at most $D(|V|-1) -
-  \operatorname{def}(\tilde G)$ edges
-  (\texttt{Graph.edgeSet\_ncard\_add\_deficiency\_le\_of\_isMinimalKDof}), so
-  any edge-label type larger than that bound has a spare label
-  (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}). A single unconditioned supply,
-  one fresh label for every graph on the label type, would not be available,
-  since an all-loops-at-one-vertex graph already uses every label; this is why
-  the supply is conditioned on minimality. The induction uses this per-graph
-  supply at every minimal-dof-graph it visits. In the formalization the Lean
-  declarations replace it by an explicit label-headroom bound
-  $D(|\alpha|-1) < |\beta|$ ($\alpha$ the body type, $\beta$ the edge-label
-  type), a closed arithmetic condition a caller can check directly; the
-  reader-facing statements of this chapter elide this bound as a formalization
-  artifact. It is carried by the pinned declarations of
-  \cref{thm:theorem-55-d3-instance}, \cref{thm:theorem-55-6},
+  The formalization takes the bodies of every framework from one fixed
+  set $W$, and the edges of every multigraph from one fixed set $L$ of
+  labels (\cref{fmlnote:graph-operations}). Katoh and Tanigawa's
+  argument has no analogue of $L$. An operation of the induction that
+  adds an edge, such as splitting off a vertex, needs a label that the
+  graph does not use. Every minimal $k$-dof-graph $G$ has one when $L$ is
+  large enough. Indeed, every base of $M(\tilde G)$ meets the copies of
+  each edge of $G$ (\cref{def:k-dof}), and it has
+  $D(|V(G)| - 1) - \operatorname{def}(\tilde G)$ elements
+  (\cref{thm:def-eq-corank}). So $G$ has at most that many edges
+  (\texttt{edgeSet\_\allowbreak{}ncard\_\allowbreak{}add\_\allowbreak{}deficiency\_\allowbreak{}le\_\allowbreak{}of\_\allowbreak{}isMinimalKDof}).
+  As $\operatorname{def}(\tilde G) \ge 0$, a label outside $E(G)$ exists
+  whenever $D(|W| - 1) < |L|$
+  (\texttt{freshEdgeSupply\_\allowbreak{}of\_\allowbreak{}card\_\allowbreak{}lt}).
+  Minimality is needed here: a graph whose edges are loops at one body
+  can use every label.
+
+  The pinned theorems assume one of two forms of this condition, and the
+  statements of this chapter omit it. The bound $D(|W| - 1) < |L|$ is
+  assumed by \cref{thm:theorem-55-d3-instance}, \cref{thm:theorem-55-6},
   \cref{thm:theorem-55-6-d3}, \cref{thm:molecular-conjecture},
-  \cref{cor:theorem-55-6-multigraph-d3}, and
-  \cref{thm:molecular-conjecture-multigraph}, and by the second (consumer)
-  declaration pinned on \cref{thm:theorem-55-6-multigraph}; the exceptions
-  are \cref{thm:theorem-55}, \cref{thm:theorem-55-6-genuine},
-  \cref{thm:theorem-55-6-rows}, and \cref{thm:theorem-55-6-multigraph}'s
-  first pinned declaration, which take the supply directly, in the
-  per-graph form described above.
-  \Cref{rem:molecular-conjecture-nonvacuous} exhibits a concrete instance
-  satisfying it.
+  \cref{cor:theorem-55-6-multigraph-d3} and
+  \cref{thm:molecular-conjecture-multigraph}, and by the second theorem
+  pinned on \cref{thm:theorem-55-6-multigraph}. The supply itself, a
+  label outside $E(H)$ for every minimal $k'$-dof-graph $H$ and every
+  $k'$, is assumed by \cref{thm:theorem-55},
+  \cref{thm:theorem-55-6-genuine}, \cref{thm:theorem-55-6-rows} and the
+  first theorem pinned on \cref{thm:theorem-55-6-multigraph}.
+  \Cref{rem:molecular-conjecture-nonvacuous} gives an instance that meets
+  the bound.
 \end{remark}
 
-\begin{fmlnote}
-  The pinned declaration \texttt{theorem\_55\_minimalKDof\_gen} is both the
-  statement of this theorem and the statement the induction runs on, matching
-  KT eq.~(6.1) exactly at every deficiency; it takes the fresh-edge supply as
-  a hypothesis, elided from the statement above per the reader-facing
-  convention of \cref{rem:fresh-edge-supply}. The molecular conjecture does
-  not consume this theorem directly: it routes through the nondegenerate-hinge
-  witness form of KT Theorem~5.6 (\cref{thm:theorem-55-6-genuine}), whose
-  construction realizes a minimal spanning subgraph by this theorem.
-\end{fmlnote}
+We record the case of the molecular conjecture, $d = 3$ and $k = 0$.
 
-\begin{theorem}[Theorem 5.5 at $d = 3$; KT Theorem 5.5]
+\begin{theorem}[KT Theorem 5.5 at $d = 3$ and deficiency zero]
   \label{thm:theorem-55-d3-instance}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_d3}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization}
-  Let $G$ be a minimal $0$-dof-graph with $|V| \ge 2$. Then $G$ admits a
-  nondegenerate-hinge panel realization $(G,p)$
-  (\cref{def:genuine-hinge-realization}) in dimension $3$ whose rigidity matrix
-  attains the maximal rank $D(|V|-1)$, where $D = 6$. Moreover, if $G$ is simple,
-  the realization may be chosen generic: panel normals in general position, with
-  the endpoint selector recording every link.
+  Let $d = 3$, so that $D = 6$, let $K$ be an infinite field, and let
+  $G = (V, E)$ be a minimal $0$-dof-graph with $|V| \ge 2$. Then $G$ has
+  a nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}), of rank $6(|V| - 1)$. If $G$ is
+  simple, then $G$ also has a generic full-rank realization
+  (\cref{def:rank-hypothesis}).
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:theorem-55}
-  Specialize KT Theorem~5.5 (\cref{thm:theorem-55}) to $n = 3$ and deficiency
-  $k = 0$, where $D = \binom{4}{2} = 6$.
+  This is \cref{thm:theorem-55} at $d = 3$ and $k = 0$.
 \end{proof}
 
 \begin{fmlnote}
-  The general-position conjunct is conditioned on simplicity: KT's nonparallel
-  (generic) realizations (KT \S5.1 --- the panels of two distinct bodies meet in
-  a $(d-2)$-dimensional hinge) are defined only for simple graphs, and the
-  non-simple base of two parallel edges on one body pair admits none. The Lean
-  statement is the conjunction of the theorem's two claims.
+  The pinned theorem assumes $6(|W| - 1) < |L|$ in place of the supply of
+  fresh labels that the pinned theorem of \cref{thm:theorem-55} assumes
+  (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
 
-\begin{corollary}[KT Theorem 5.5 yields KT Proposition 1.1 at deficiency zero]
+At deficiency zero the realization is infinitesimally rigid. We record
+this in the form $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$, as in
+the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
+
+\begin{corollary}[KT Proposition 2.3 at deficiency zero from KT Theorem 5.5 ($d = 3$)]
   \label{cor:theorem-55-d3-spanning}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
   \leanok
   \uses{thm:theorem-55-d3-instance, def:rank-hypothesis}
-  Let $G$ be a simple, spanning minimal $0$-dof-graph on $\ge 2$ bodies in
-  dimension $3$. Then $G$ admits a generic realization $(G,p)$
-  (\cref{thm:theorem-55-d3-instance}) realizing the rank hypothesis
-  (\cref{def:rank-hypothesis}) at $G$'s own deficiency
-  $\operatorname{def}(\tilde G) = 0$; equivalently $\dim Z(G,p) = D = D +
-  \operatorname{def}(\tilde G)$.
+  Let $d = 3$, so that $D = 6$, and let $G = (V, E)$ be a simple minimal
+  $0$-dof-graph with $|V| \ge 2$. Then $G$ has a generic full-rank
+  realization $(G,p)$ (\cref{def:rank-hypothesis}) with
+  \[
+    \dim Z(G,p) \;=\; D \;=\; D + \operatorname{def}(\tilde G).
+  \]
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-d3-instance, prop:rigidity-matrix-prop11}
-  Adjust the endpoint selector (\cref{def:panel-hinge-framework}) so that
-  every edge label --- including those outside $E(G)$ --- is assigned a
-  fixed pair of distinct bodies, which $|V| \ge 2$ supplies. Then every edge,
-  link or not, carries a nondegenerate, transversal hinge, and the KT
-  Proposition~1.1 rank count (\cref{prop:rigidity-matrix-prop11}) applies.
+  By \cref{thm:theorem-55-d3-instance}, $G$ has a generic full-rank
+  realization $(G,p)$, of rank $D(|V| - 1)$. So
+  $\dim Z(G,p) = D|V| - \operatorname{rank} R(G,p) = D$
+  (\cref{def:rigidity-matrix}). As $\operatorname{def}(\tilde G) = 0$,
+  this is the formula of KT Proposition~2.3 at $(G,p)$
+  (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:endpoint-selector-totality}
-  The corollary's construction uses the endpoint selector's totality
-  (\cref{fmlnote:panel-hinge-nondegenerate}) to re-point every label outside
-  $E(G)$ to a fixed pair of distinct bodies, leaving no ambient label with a
-  degenerate hinge.
+  The pinned theorem assumes that $G$ spans the set of bodies, and it
+  takes the generic full-rank realization of
+  \cref{thm:theorem-55-d3-instance} as a hypothesis. It derives the
+  formula from the pinned theorem of \cref{prop:rigidity-matrix-prop11},
+  which asks for a nonzero hinge at every edge label. So it first changes
+  the endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}) at
+  each label outside $E(G)$ to a fixed pair of distinct bodies, which
+  changes no hinge at an edge of $G$. Its conclusion is a panel-hinge
+  framework on $G$ with $\dim Z = D$. It does not record that the normals
+  are in general position, or that the selector assigns each edge of $G$
+  its two ends. A framework whose hinges are all degenerate also meets
+  this conclusion, since a $0$-dof-graph is connected.
 \end{fmlnote}
-
-This is the deficiency-zero case of the construction that proves KT
-Theorem~5.6 at $d = 3$ (\cref{thm:theorem-55-6-d3}) --- remove edges to a
-minimal spanning subgraph, realize it, and re-add the deleted edges: here $G$
-already attains the target rank, so no edge is removed.
 
 KT Theorem~5.6 lifts KT Theorem~5.5's minimal-graph realization
 (\cref{thm:theorem-55}) to every simple spanning multigraph, minimal or not:

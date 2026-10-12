@@ -700,6 +700,15 @@ declaration's name as its header writes it:
   $\operatorname{def}_3$.
   *Evidence:* read (a `grep` for "$n = 2$" and "$n = 3$" over the two chapters, at task 2.8).
   *Found:* round 2 task 2.8.
+- **F-127** · T · the extensor of vectors (`molecular-induction.tex`, `main-component.tex`):
+  `extensor.tex` writes the extensor of $v_1, \dots, v_j$ as the join $v_1 \vee \cdots \vee v_j$
+  "from now on", and `meet.tex` writes $\wedge$ for the meet. `molecular-induction.tex` writes a
+  hinge in two panels as $x_1 \wedge \dots \wedge x_{d-1}$ (twice, in the paragraph before
+  `lem:case-cut-edge-realization` and in that proof), and `main-component.tex` writes
+  $p_a \wedge x_1$ in one display. `def:genuine-hinge-realization` writes
+  $x_1 \vee \cdots \vee x_{d-1}$ since task 2.2.
+  *Evidence:* read (a `grep` for `\wedge` products of vectors over the chapters, at task 2.2).
+  *Found:* round 3 task 2.2.
 
 ## U — status surfaces
 
@@ -1064,6 +1073,30 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, `Theorem55.lean`; a `grep` for
   `IsHingeCoplanar`).
   *Found:* round 3 task 2.1.
+- **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
+  statement gives every multigraph with at least two vertices that has a generic full-rank
+  realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
+  assumes `[G.Loopless]` and returns the generic framework itself, whose hinge at a loop is
+  $C(n_u, n_u) = 0$. The claim holds with loops, since a loop gives no row and its hinge can be
+  replaced by a nonzero extensor in its panel, and the pin's three callers apply it to simple
+  graphs. Task 2.2 kept the statement; its proof treats loops, and its note says the pin assumes
+  none.
+  *Evidence:* read (the statement and body of `hasPanelRealization_of_generic`,
+  `Molecular/AlgebraicInduction/GenericityDevice.lean`; its callers in `Theorem55.lean`).
+  *Found:* round 3 task 2.2.
+- **F-125** · S · `cor:theorem-55-d3-spanning` (`algebraic-induction/panel-layer.tex`): the
+  statement gives a simple minimal $0$-dof-graph at $d = 3$ a generic full-rank realization with
+  $\dim Z(G,p) = D$. Its pin `rankHypothesis_deficiency_of_theorem_55_d3` takes the generic
+  realization as a hypothesis (the conclusion of `thm:theorem-55-d3-instance`, a `\uses`'d node)
+  and concludes only `∃ Q, Q.graph = G ∧ Q.toBodyHinge.RankHypothesis (G.deficiency 3)`: no general
+  position, no condition on `Q.ends`, and no nonzero hinge. A framework whose normals are all equal
+  meets that conclusion for every spanning $0$-dof-graph $G$, without the hypothesis: each hinge
+  is zero and welds its ends, and a $0$-dof-graph is connected. The construction's nonzero hinges (`hC`) are not exported. The pin has
+  no caller. Task 2.2 kept the statement, and the note after the proof says this (`F-122`).
+  *Evidence:* read (the statement and body, `Molecular/AlgebraicInduction/Theorem55.lean`;
+  `RankHypothesis`, `Pinning.lean`); measured (`scripts/blueprint-deps.py --label
+  cor:theorem-55-d3-spanning` at `db237dfd`, dead pin).
+  *Found:* round 3 task 2.2.
 
 ## L — Lean
 
@@ -1414,6 +1447,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies); measured (`scripts/blueprint-deps.py --label` at
   `efa7ed2b`, dead pins).
   *Found:* round 3 task 2.1.
+- **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
+  (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
+  `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run
+  against", and `RankHypothesis`'s "the predicate Katoh–Tanigawa's Theorem 5.5 establishes by
+  induction"; the induction runs on `HasPanelRealization` and `HasGenericFullRankRealization`, and
+  `HasFullRankRealization` lies outside every main result's closure. `HasGenericFullRankRealization`'s
+  docstring places KT Theorem 5.5's "nonparallel, if G is simple" on "printed p. 669" (it is p. 670)
+  and narrates phases and retired routes. The comments in `theorem_55_minimalKDof_k_all_k`'s
+  signature call four of its hypotheses "`d = 3`-pinned in the landed tree", which its docstring
+  denies. `rankHypothesis_deficiency_of_theorem_55_d3`'s binder `_hSimple` is unused.
+  *Evidence:* read (the docstrings, signatures and bodies; KT 2011 p. 670); measured
+  (`scripts/blueprint-deps.py --label def:rank-hypothesis` at `db237dfd`, dead pin).
+  *Found:* round 3 task 2.2.
 
 ## M — mathematics and sources
 
