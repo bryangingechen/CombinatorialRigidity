@@ -347,6 +347,18 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (the
   pins' statements and bodies).
   *Found:* round 2 task 2.18.
+- **F-129** · E · `thm:theorem-55-6` (`algebraic-induction/panel-layer.tex`): its statement and
+  proof `\uses` `lem:subgraph-minimality` (a subgraph of a minimal $k$-dof-graph with deficiency
+  $k'$ is a minimal $k'$-dof-graph), which the argument does not use. Its step is
+  `lem:minimal-kdof-spanning-subgraph`'s (a spanning subgraph that is a minimal
+  $\operatorname{def}(\tilde G)$-dof-graph), which the pin reaches through
+  `thm:theorem-55-6-genuine`'s pin and which neither `\uses` names; the proof cites it since task
+  2.3. `thm:theorem-55-6-multigraph`'s statement and proof have the same edge to
+  `lem:subgraph-minimality` (task 2.5's), and its proof also uses
+  `lem:minimal-kdof-spanning-subgraph`.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label thm:theorem-55-6` and `--label
+  lem:minimal-kdof-spanning-subgraph`, at `5c65ea52`); read (the pins' bodies).
+  *Found:* round 3 task 2.3.
 
 ## N — node shape
 
@@ -1097,6 +1109,23 @@ declaration's name as its header writes it:
   `RankHypothesis`, `Pinning.lean`); measured (`scripts/blueprint-deps.py --label
   cor:theorem-55-d3-spanning` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
+- **F-128** · S · `thm:theorem-55-6`, `thm:theorem-55-6-d3`, `thm:theorem-55-6-genuine`
+  (`algebraic-induction/panel-layer.tex`): the statements give a simple graph a panel-hinge
+  realization at the target rank (with nondegenerate hinges in the third), whose hinge at each edge
+  is, since task 2.1, the meet of the panels of the edge's ends. Their pins
+  `rankHypothesis_of_theorem_55_gen`, `rankHypothesis_of_theorem_55_d3` and
+  `rankHypothesis_genuine_of_theorem_55_gen` conclude `∃ Q, Q.graph = G ∧ …` with no condition on
+  `Q.ends`, and the framework they build (`reaimSub`) gives each edge of $G$ outside the minimal
+  subgraph $G'$ the selector pair $(x_0, y_0)$, so its hinge there is $C(n_{x_0}, n_{y_0})$
+  (`F-122`'s gap, at KT Theorem 5.6). The second pin of `thm:theorem-55-6-genuine`
+  (`reaimSubLink`) and the first of `thm:theorem-55-6-rows` record the ends;
+  `molecular_conjecture` calls the first form. At deficiency zero the first two pins' conclusion
+  is also met by the framework with all normals zero, for every spanning $0$-dof-graph (as `F-125`
+  found for the $d = 3$ corollary); the blueprint statements allow degenerate hinges too. Task 2.3
+  kept the statements, and their notes say this.
+  *Evidence:* read (the statements and bodies, `reaimSub` and `reaimSubLink`,
+  `Molecular/AlgebraicInduction/Theorem55.lean`).
+  *Found:* round 3 task 2.3.
 
 ## L — Lean
 
@@ -1460,6 +1489,18 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; KT 2011 p. 670); measured
   (`scripts/blueprint-deps.py --label def:rank-hypothesis` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
+- **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
+  pins (`Molecular/AlgebraicInduction/Theorem55.lean`): `molecular_conjecture`'s says that dropping
+  the nonzero-hinge conjunct "makes the statement false"; dropped from both sides, each side holds
+  exactly when $G$ is connected (a zero hinge welds its ends, `IsInfinitesimalMotion`), so the
+  equivalence still holds. `rankHypothesis_genuine_of_theorem_55_gen`'s names `thm:theorem-55-6`
+  as its node; it is pinned on `thm:theorem-55-6-genuine`. `rankHypothesis_of_theorem_55_gen`'s
+  and `rankHypothesis_of_theorem_55_d3`'s call them "the `def > 0` feed of `rigidityMatrix_prop11`
+  (KT Prop 1.1)" and "Theorem 5.5 → Proposition 1.1" (`F-067`), and narrate phases and
+  adjudications.
+  *Evidence:* read (the docstrings and bodies; `IsInfinitesimalMotion`,
+  `Molecular/RigidityMatrix/Basic.lean`).
+  *Found:* round 3 task 2.3.
 
 ## M — mathematics and sources
 

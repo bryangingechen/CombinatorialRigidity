@@ -6,10 +6,10 @@ which rounds are done. The round rewrites the prose of the chapter `algebraic-in
 its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
 else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-115`–`F-120`, task 2.1 `F-121`–`F-123`, task 2.2 `F-124`–`F-127`. 18 one-commit tasks; tasks 1,
-2.1 and 2.2 are done, and the round has no planned stop. **Next concrete task:** task 2.3,
-`panel-layer.tex`'s KT Theorem 5.6 and the molecular conjecture, at Opus (*Lemma checklist*). Round
-manual: `CLEANUP.md`.
+`F-115`–`F-120`, task 2.1 `F-121`–`F-123`, task 2.2 `F-124`–`F-127`, task 2.3 `F-128`–`F-130`. 18
+one-commit tasks; tasks 1 and 2.1–2.3 are done, and the round has no planned stop. **Next concrete
+task:** task 2.4, `panel-layer.tex`'s base region and cycle seeds, at Opus (*Lemma checklist*).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,18 +19,18 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.2 has landed** (this commit): `panel-layer.tex` 240–497 at the open, 341–596 at its
-parent, now 341–681, 6 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and in
-order; the file's later lines have moved by +85 more (task 2.3's range, 498–777 at the open, is now
-683–962; 2.4's 963–1242 and the lead 329–339; 2.5's 1243–1537). Nothing is mid-stream; task 2.3 is
-next.
+**Task 2.3 has landed** (this commit): `panel-layer.tex` 498–777 at the open, 683–962 at its
+parent, now 683–1003, 5 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and
+in order; three formalization notes were added, and the file's later lines have moved by +42 more
+(task 2.4's range, 778–1057 at the open, is now 1005–1284, with the lead 329–339; 2.5's
+1285–1579). Nothing is mid-stream; task 2.4 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (69 overfull boxes, the open's 72, none
-  in lines 1–681). Screens on `panel-layer`: register 56 / 7, devices 0 / 13, `\operatorname` 1,
-  vocabulary 32, forward `\uses` 10 / 5 (the open's 63 / 15, 0 / 17, 1, 44, 10 / 5). In lines
-  341–681: register 0 in prose, two `\texttt` addresses in `rem:fresh-edge-supply`, "endpoint
-  selector" twice in notes.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (67 overfull boxes, the open's 72, none
+  in lines 1–1003). Screens on `panel-layer`: register 56 / 5, devices 0 / 13, `\operatorname` 1,
+  vocabulary 31, forward `\uses` 10 / 5 (the open's 63 / 15, 0 / 17, 1, 44, 10 / 5). In lines
+  683–1003: register 0 in prose, one `\texttt` address (the witness, in
+  `rem:molecular-conjecture-nonvacuous`), "endpoint selector" four times in notes.
 
 **Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -93,8 +93,9 @@ From `notes/Prose.md` §2, restated only as far as a builder needs them.
   rewrite changes their register, not their depth. These are the done entries of
   `notes/BlueprintExposition.md`, checked by label (most sit under its `algebraic-induction.tex`
   heading; the first under `rigidity-matrix.tex`'s):
-  - `panel-layer` (2.1–2.3): `prop:rigidity-matrix-prop11` with `thm:theorem-55-6-d3` (the two
-    halves); `thm:theorem-55` and the account of the motive conditioned on simplicity (a note after
+  - `panel-layer` (2.1–2.3): `prop:rigidity-matrix-prop11` with `thm:theorem-55-6` (the two
+    halves; the ledger named `thm:theorem-55-6-d3`, now its case $d = 3$, until task 2.3);
+    `thm:theorem-55` and the account of the motive conditioned on simplicity (a note after
     `thm:theorem-55-d3-instance` at the open; since task 2.2 the paragraph before the theorem).
   - `case-i` (2.7, 2.8): `lem:case-I` (KT eq. (6.3)'s rank addition); `lem:rigidContract-isMinimalKDof`
     (union against contraction); `lem:claim-6-4`; the passage after `lem:case-I-splice-seed` (the
@@ -232,12 +233,7 @@ induction, nodes whose pins no main result uses (`F-118`).
    (2.1, 2.7, 2.16).
 
 - **`panel-layer`.**
-  - *Done:* 2.1 and 2.2 (their open bullets are in this log at `efa7ed2b`).
-  - *2.3 (498–777):* KT Theorem 5.6's four forms state "$n \ge 2$", "$K^{n}$" and the endpoint
-    selector; `thm:theorem-55-6`'s proof ends on the "$n = k+1$ premise".
-    `rem:molecular-conjecture-essential`'s second paragraph is about the formal statement's
-    edge-label type, and `rem:molecular-conjecture-nonvacuous` names a Lean witness: formalization
-    remarks in remark environments.
+  - *Done:* 2.1–2.3 (their open bullets are in this log at `efa7ed2b`).
   - *2.4 (229–239, 778–1057):* the base-region statements say "minimal-$k$-dof-graph", "generic
     companion", and give "$D - 1 = 5$ (at $d = 3$)" and "$D \cdot 1 = 6$" in a statement for every
     $D$ (check the pins); proofs carry "bare conjunct", "per-link conjunct", $\mathtt{ofNormals}$,
@@ -336,8 +332,9 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.2 `panel-layer.tex`, the realization hypothesis and KT Theorem 5.5** (this commit;
     240–497 at the open, now 341–681, 6 nodes). Crux `thm:theorem-55`, its simplicity account now
     before it. Found `F-124`–`F-127`.
-  - [ ] **2.3 `panel-layer.tex`, KT Theorem 5.6 and the molecular conjecture** (498–777): 5 nodes,
-    280 lines; crux `thm:theorem-55-6-d3`.
+  - [x] **2.3 `panel-layer.tex`, KT Theorem 5.6 and the molecular conjecture** (this commit;
+    498–777 at the open, now 683–1003, 5 nodes). Crux `thm:theorem-55-6`'s two halves. Found
+    `F-128`–`F-130`.
   - [ ] **2.4 `panel-layer.tex`, the base region and the cycle seeds** (778–1057, and the
     subsection's lead 229–239): 9 nodes, 291 lines.
   - [ ] **2.5 `panel-layer.tex`, the framework operations and the multigraph conjecture**
@@ -401,6 +398,9 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   assumes no loops.
 - `F-125` (S, task 2.2): `cor:theorem-55-d3-spanning` states a generic realization with
   $\dim Z = D$; its pin's conclusion, a framework on $G$ with $\dim Z = D$, holds with welded hinges.
+- `F-128` (S, task 2.3): the spanning forms of KT Theorem 5.6 (`thm:theorem-55-6`, its $d = 3$ case,
+  the first pin of `thm:theorem-55-6-genuine`) state no selector condition; off $G'$ their hinges
+  are those of a fixed pair of bodies.
 
 ## Moved to a later round
 
@@ -417,6 +417,10 @@ one line each naming the ledger ID and the task that found it.
   induction's, misplace KT p. 670, and contradict a signature's comments; one binder is unused.
 - `F-127` (T, task 2.2): `molecular-induction.tex` and `main-component.tex` write the extensor of
   vectors with $\wedge$, the meet's symbol since `meet.tex`.
+- `F-129` (E, task 2.3): `thm:theorem-55-6` uses `lem:subgraph-minimality`; its step is
+  `lem:minimal-kdof-spanning-subgraph`'s, which no `\uses` of it names.
+- `F-130` (L, task 2.3): the docstrings of the KT Theorem 5.6 and molecular-conjecture pins: dropping
+  the nonzero-hinge conjunct does not falsify the equivalence; a wrong node; "KT Prop 1.1".
 
 ## Blockers / open questions
 
@@ -424,30 +428,32 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.3, `panel-layer.tex`'s KT Theorem 5.6 and the molecular conjecture
-(498–777 at the open, now 683–962), at Opus**, a fresh agent (`notes/Prose.md` §2); crux
-`thm:theorem-55-6-d3`. Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under
-*Scope*. Then tasks 2.4–2.16 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.4, `panel-layer.tex`'s base region and cycle seeds (778–1057 at the
+open, now 1005–1284, and the subsection's lead 329–339), at Opus**, a fresh agent (`notes/Prose.md`
+§2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then
+tasks 2.5–2.16 in order, and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open the round; the coordinator reads them in full against the
   exemplars, as round 2's hand-off asked for its first three.
 - **Notation and terms.** 2.1 applied *Decisions*' notation; its note on $d = k + 1$, and on the
   separate dimension parameter of the deficiency, follows `def:panel-support-extensor`. Every later
   slice follows it and the terminology entry. The chapter's opening still writes $n$ until 2.16.
-- **From tasks 2.1 and 2.2.** The prose after `def:panel-hinge-framework` defines a
-  *nondegenerate* hinge and identifies a panel-hinge framework with its body-hinge interpretation;
-  `fmlnote:panel-hinge-nondegenerate` names the *endpoint selector*. A note `\cref`s it where a
-  pin's selector condition is missing (`F-122`: the molecular conjecture's panel side, 2.3).
-  `def:rank-hypothesis` defines *at the target rank* and *generic full-rank realization*;
-  `def:genuine-hinge-realization` defines *lies in the panel* and *nondegenerate-hinge panel
-  realization*. Statements say these, not "realizing the rank hypothesis at $k'$". A pin's
-  "$G$ spans the body set" goes to its note, not the statement (`rem:rank-hypothesis-relative`
-  names the body set $W$; `cor:theorem-55-d3-spanning`'s note); `rem:fresh-edge-supply` writes
-  $W$ and $L$, and each carrying node's note cites it in one sentence. 2.3's paragraph before
-  `thm:theorem-55-6` and its proof still say "KT Proposition 1.1" for the rank formula (carry-in
-  7); that paragraph now follows `cor:theorem-55-d3-spanning` directly and is the one place that
-  links KT Theorem 5.6 to deficiency zero (2.2 dropped its own closing sentence). The note after
-  `prop:rigidity-matrix-prop11` says its pin assumes the generic bound (`F-121`).
+- **From tasks 2.1–2.3.** The prose after `def:panel-hinge-framework` defines a *nondegenerate*
+  hinge and identifies a panel-hinge framework with its body-hinge interpretation;
+  `fmlnote:panel-hinge-nondegenerate` names the *endpoint selector*, and a note `\cref`s it where a
+  pin's selector condition is missing (`F-122`, `F-128`). `def:rank-hypothesis` defines *at the
+  target rank* and *generic full-rank realization*; `def:genuine-hinge-realization` defines *lies
+  in the panel* and *nondegenerate-hinge panel realization*. Statements say these, not "realizing
+  the rank hypothesis at $k'$", and a pin's "$G$ spans the body set" goes to its note
+  (`rem:rank-hypothesis-relative` names the body set $W$). Two labeled remarks hold the recurring
+  encoding artifacts, each cited in one sentence by a carrying node's note: `rem:fresh-edge-supply`
+  ($W$, $L$ and the label bound) and, since 2.3, `rem:molecular-conjecture-essential` (a nonzero
+  hinge at every label of $L$; the reason the formal molecular conjecture needs $|V| \ge 2$).
+- **For 2.4 and 2.5.** `fmlnote:molecular-conjecture-multigraph` cites `lem:theorem-55-base` (2.4)
+  for the double edge's rigid body-hinge realization. 2.5's `thm:theorem-55-6-multigraph` still
+  says "KT Proposition 1.1 rank bridge" (carry-in 7) and cites `lem:subgraph-minimality` for the
+  step that is `lem:minimal-kdof-spanning-subgraph`'s (`F-129`); its `\cref`s to 2.3's remark and
+  note stay true.
 - **Crux nodes** keep their full proofs: tasks 2.1–2.3 and 2.7–2.15 (*Scope*).
 - **Carry-ins** 1–7 are under *Per-chapter diagnosis*, each with its task.
 - **The open's findings** are recorded, not acted on: 2.6 keeps `lem:cycle-realization`'s
@@ -457,7 +463,7 @@ one line each naming the ledger ID and the task that found it.
   script; the edges wait for round 5. 2.1–2.4, 2.6–2.10, 2.12 and 2.14 give `F-119`'s forward
   references a sentence or a move within the file.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-128`.
+  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-131`.
 
 ## Decisions made during this round
 
@@ -479,15 +485,15 @@ one line each naming the ledger ID and the task that found it.
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`).
 - **The no-Lean-edit base** is `ef57b401`, the open's parent.
-- **Task 2.1, `panel-layer.tex` 1–228.** KT's panel-hinge frameworks open the subsection (KT
-  p. 648, §5.1), with KT's hinge a nonzero multiple of $*(n_1 \vee n_2)$;
-  `lem:moment-curve-general-position` states the construction its pins and three other chapters
-  use; KT Proposition 2.3's two halves and two inequalities are the backbone, the lower bound by
-  KT's proof of Theorem 5.6 (p. 670).
-- **Task 2.2, `panel-layer.tex` 240–497.** `def:rank-hypothesis` defines the target rank and the
-  generic full-rank realization, `def:genuine-hinge-realization` the nondegenerate-hinge one; the
-  shared formal body set is one remark and one note. The simplicity account moved from the note
-  after `thm:theorem-55-d3-instance` to the paragraph before `thm:theorem-55`, with the double
-  edge's rank $D - 1$ under general position (KT Lemma 5.3, p. 669); the exposition ledger's
-  pointer follows. The proof's backbone is KT's four cases (p. 671) and the induction over all
-  deficiencies. `F-124` and `F-125` keep their statements, each with a note.
+- **Tasks 2.1 and 2.2, `panel-layer.tex` 1–681.** KT's panel-hinge frameworks (KT p. 648, §5.1)
+  open the subsection; KT Proposition 2.3's two halves are `prop:rigidity-matrix-prop11`'s
+  backbone; `def:rank-hypothesis` and `def:genuine-hinge-realization` define the two realization
+  forms; the simplicity account is the paragraph before `thm:theorem-55` (KT Lemma 5.3, p. 669),
+  whose proof follows KT's four cases (p. 671).
+- **Task 2.3, `panel-layer.tex` 683–1003.** `thm:theorem-55-6`'s proof is KT's (p. 670), in the
+  crux's two halves; the generic normals of a minimal spanning subgraph serve for $G$, so KT's
+  projective move is not needed. That theorem allows degenerate hinges, `-genuine` is KT's
+  nondegenerate form, `-rows` the generic one. The molecular conjecture's lead-in says why both
+  sides need nondegenerate hinges (welded, rigid means connected).
+  `rem:molecular-conjecture-essential` became principle D's labeled remark for a nonzero hinge at
+  every label; both remarks stay remarks, as 2.2's and 2.5's text cite them as such.

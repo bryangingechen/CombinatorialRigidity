@@ -244,8 +244,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   re-add monotonicity — a generic point attains at most that many). The
   `def > 0` feed (`thm:theorem-55-6-d3`, 22k) is the one that needed the
   spanning-strip lift; the `def = 0` feed landed in 22h. The full two-by-two
-  account is in the `prop:rigidity-matrix-prop11` and `thm:theorem-55-6-d3` prose
-  of `panel-layer.tex`. Pointer: `notes/Phase18.md` / `notes/Phase19.md`
+  account is in the `prop:rigidity-matrix-prop11` and `thm:theorem-55-6` proofs
+  of `panel-layer.tex` (`thm:theorem-55-6-d3` is the latter's case $d = 3$; PROSE
+  round 3, task 2.3). Pointer: `notes/Phase18.md` / `notes/Phase19.md`
   *Hand-off*; `notes/Phase22k.md`.
 
 ### `deficiency.tex` — Phase 19 (M(G̃), deficiency, k-dof)
