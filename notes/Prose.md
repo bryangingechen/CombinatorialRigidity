@@ -3,8 +3,9 @@
 **Status:** planned with the PI on 2026-10-07 and queued ahead of ORIGAMI as five autopilot rows
 (`.claude/autopilot/queue.toml`). Round 1, `prose-laman`, opened 2026-10-07 and closed 2026-10-08
 (`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`). Round 2,
-`prose-molecular`, opened 2026-10-08 and closed 2026-10-12 (`notes/Prose-molecular-cleanup.md`);
-rounds 3–5 have not opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
+`prose-molecular`, opened 2026-10-08 and closed 2026-10-12 (`notes/Prose-molecular-cleanup.md`).
+Round 3, `prose-algebraic`, opened 2026-10-12 (`notes/Prose-algebraic-cleanup.md`); rounds 4–5
+have not opened. These are five `CLEANUP.md` rounds over every blueprint chapter that round 3 of the
 post-Phase-40 cleanup (`40-exposition`) did not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
 round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, *Autopilot: for the
@@ -12,8 +13,10 @@ PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`.
 dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
 slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, its
 first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
-and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. **Next concrete
-task:** round 3, `prose-algebraic`, opens (§3 *Round 3*; its carry-ins from round 2 are there).
+and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. Round 3's open
+recorded `F-115`–`F-120`. **Next concrete task:** round 3's task 2.1, `panel-layer.tex`'s
+panel-hinge frameworks and KT Proposition 2.3, the first of its sixteen slices (the round's log,
+*Lemma checklist*).
 
 ## 1. The PI's decisions
 
@@ -218,6 +221,9 @@ the chapter preamble `algebraic-induction.tex` (KT §5–§6).
 Provisional slices (Stop 1), 16: `panel-layer` five (1–228, 229–1057 in three, 1058–1353);
 `case-i` three; `case-ii` and `genericity-and-count` one each; `case-iii` five (1–237, 238–501,
 502–1387 in three); then the preamble `algebraic-induction.tex`. Smaller slices are likely here.
+The open kept these 16, numbered 2.1–2.16, with each section's opening in its file's last slice
+and the carry-ins below assigned to slices (`notes/Prose-algebraic-cleanup.md` *Per-chapter
+diagnosis* and *Decisions*).
 
 Carried in from round 2 (the PI, 2026-10-12; `F-084`, `F-095`; task 2.16, `F-100`; task 2.18), as
 `\cref` repoints and one notation alignment, since the edges wait for round 5:

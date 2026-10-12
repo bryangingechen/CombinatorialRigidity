@@ -628,6 +628,34 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (a `grep`
   for each pin's callers).
   *Found:* round 2 task 2.18.
+- **F-119** · N · node order in `algebraic-induction.tex`'s five sections: 18 `\uses` edges at 10
+  nodes point at nodes of later sections. `thm:theorem-55` uses seven Case I–III nodes;
+  `prop:rigidity-matrix-prop11` uses `lem:genericity-device`; `lem:triangle-normals` and
+  `lem:cycle-normals` (`panel-layer.tex`) use `case-i.tex`'s `lem:panel-support-extensor-independence`;
+  and five `case-i.tex` nodes and `lem:case-II-realization` use `genericity-and-count.tex`'s
+  `lem:genericity-device`, `lem:isInfRigidOn-of-relative-count` and
+  `lem:rank-polynomial-of-le-finrank`. 12 more edges at 7 nodes point at later nodes of their own
+  section, among them `lem:case-II-realization-placement`'s four at the four lemmas after it. No
+  edge points at a later chapter. The slices cure a reference within a section by moving a node
+  (principle E, *Node order*) and give the others a sentence, as for `F-050`; moving nodes or
+  groups between sections, such as the genericity argument before Case I, is round 5's.
+  *Evidence:* measured (the second screen under `notes/Prose-algebraic-cleanup.md` *Scope*, at
+  `ef57b401`).
+  *Found:* round 3 task 1.
+- **F-120** · N · round 3's doubly pinned declarations (`algebraic-induction/case-iii.tex`): ten
+  names in `blueprint/lean_decls` are pinned on two nodes, two of them here.
+  `Graph.splitOff_exists_base_inter_fiber_lt` is the first pin of `lem:splitoff-kdof-criterion`
+  (`molecular-induction.tex`, KT Lemma 4.3(ii)) and the only pin of `lem:case-III-claim-6-11-base`,
+  which restates that lemma's forward half and does not use it.
+  `exists_affineIndependent_panel_incidence` is the pin of both
+  `lem:case-III-claim612-points-affineIndep-witness` and `lem:case-III-claim612-points-affineIndep`.
+  It has no Lean caller, and neither have the pins of `lem:case-III-claim612-points-affineIndep-producer`
+  and `lem:case-III-claim612-detpoly`, whose route the second node's proof says "would also work".
+  The other eight doubles are `Graph.contraction_isMinimalKDof` (`F-096`) and seven in `pencil.tex`
+  and `main-component.tex`.
+  *Evidence:* measured (`sort blueprint/lean_decls | uniq -d` and each name's nodes, at
+  `ef57b401`); read (a `grep` for the three pins' callers, which finds only docstrings).
+  *Found:* round 3 task 1.
 
 ## T — terminology and notation
 
@@ -960,6 +988,43 @@ declaration's name as its header writes it:
   of `complementIso_smul_eq_extensor_join` does inline. Task 2.18 kept the statement, with a note.
   *Evidence:* read (the three pins' statements; the body of `complementIso_smul_eq_extensor_join`).
   *Found:* round 2 task 2.18.
+- **F-115** · S · `lem:cycle-realization` (`algebraic-induction/case-i.tex`): the statement is KT
+  Lemma 5.4 at KT's range, a cycle graph on $3 \le m \le D$ vertices (KT p. 670). Its pin
+  `PanelHingeFramework.cycle_realization` assumes `cy.m ≤ n + 1` beside
+  `bodyBarDim n = screwDim k`, so $n$ is the dimension $d$ and the pin covers $3 \le m \le d + 1$,
+  fewer vertices than $D = \binom{d+1}{2}$ once $d \ge 3$. The formalization note after the lemma
+  gives the formalized range as $m \le d$, one less than the pin's. KT's one use, in the proof of
+  their Lemma 6.13 (p. 692), needs cycles of length at most $d$.
+  *Evidence:* read (the pin's statement and the step `hnk` of its body,
+  `Molecular/AlgebraicInduction/CaseIII/Arms.lean`; KT 2011 pp. 670 and 692, `.refs/`).
+  *Found:* round 3 task 1.
+- **F-116** · S · `lem:case-I` (`algebraic-induction/case-i.tex`): the statement is KT eq. (6.3)'s
+  rank addition: for a minimal $k$-dof-graph $G$ with a proper rigid subgraph $H$, $(G,p)$
+  attains the target rank if and only if $\operatorname{rank} R(G,p) = D(|V(H)|-1) +
+  \operatorname{rank} R(G/E(H), p_2)$. No pin mentions the contraction, minimality or that
+  identity. The three pins are block-pin criteria for any framework and nonempty $s$: when every
+  motion is constant on $s \subseteq t$, rigidity on $t$ is $Z_s \le Z_t$
+  (`isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le`); and under the bound
+  $\dim Z \le D + \dim Z_s$, the rank hypothesis at $k'$ is $\dim Z_s = k'$
+  (`rankHypothesis_iff_finrank_pinnedMotionsOn` and its panel form, both outside every main
+  result's closure). Both `lem:case-I` and `lem:case-I-realization` are crux nodes of the
+  exposition ledger's KT eq. (6.3) entry; the second's proof argues the rank addition in full.
+  *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/Pinning.lean` and
+  `PanelHinge.lean`); measured (dead pins, `scripts/blueprint-deps.py --label lem:case-I`, at
+  `ef57b401`).
+  *Found:* round 3 task 1.
+- **F-117** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): the
+  statement says that each locus $\{p : \operatorname{rank} R(G,p) \ge r\}$ is Zariski-open, so
+  the rank is lower semicontinuous and maximal on a dense set, and dually that $\dim Z(G,p)$ is
+  minimized generically. Its pins state less. `exists_good_realization` gives a point $p$ with
+  $\#s + \dim Z(F\,p) \le D|V|$ when the rows indexed by $s$ are independent at $p_0$; its own
+  hypotheses at $p_0$ already give that bound at $p = p_0$. `exists_good_realization_const` gives
+  the bound at one framework. The open-locus form is the pin of
+  `lem:rank-polynomial-of-le-finrank`, `exists_rankPolynomial_of_le_finrank_linking`: a
+  polynomial, nonzero at $q_0$, off whose zeros the rank bound holds.
+  *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/GenericityDevice.lean` and
+  `CaseI.lean`).
+  *Found:* round 3 task 1.
 
 ## L — Lean
 
@@ -1360,3 +1425,23 @@ declaration's name as its header writes it:
   and 6.3, about realizations, for KT Proposition 2.2 at $\tilde G$).
   *Evidence:* read (JJ 2009 pp. 580–583; KT 2011 pp. 655–656; both in `.refs/`; the docstrings).
   *Found:* round 2 task 2.10.
+- **F-118** · M · the route of Cases I–III (`algebraic-induction/case-i.tex` … `case-iii.tex`): the
+  prose presents as steps of the induction several nodes that no main result's proof takes. Every
+  pin of these nodes lies outside every main result's closure, and the pins of the live nodes that
+  cite them do not reach them. Seven proofs use and cite `lem:genericity-device` (`F-117`) as the
+  step that re-realizes a rank at a general-position seed; the pins of `lem:case-I-realization`,
+  `lem:case-I-realization-h65` and `lem:case-II-realization` reach the rank polynomials instead
+  (`lem:rank-polynomial-IH-relabel-proj`, `lem:rank-polynomial-of-le-finrank`), and
+  `lem:case-III-chain-dispatch`'s through `lem:case-III-chain-discriminator`.
+  `lem:case-I-dispatch` cites KT Lemma 6.2's `lem:case-I-realization-nonsimple`, and
+  `thm:theorem-55` the Case II accounting `lem:case-II`; neither pin reaches them.
+  `lem:case-III-chain-dispatch`'s proof cites the eq. (6.12) placement
+  `lem:case-II-realization-placement` and the relabel lemmas `lem:splitOff-ofNormals-relabel` and
+  `lem:splitOff-rigidityRows-relabel`; its pin reaches none of them, nor the candidate completion
+  `lem:case-III-candidate-row`, through which the subsection says Case III supplies its missing
+  row. Case I's crux accounts run through two more such nodes, `lem:claim-6-4` and
+  `lem:case-I-splice-seed`. Of the 48 nodes in these files with every pin dead (`F-012`), the
+  $d = 3$ instances and the off-route worked cases are dead by design; these are not.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter` and `--label`, dead pins and edges
+  with no Lean basis; TeX and Lean at `ef57b401`).
+  *Found:* round 3 task 1.
