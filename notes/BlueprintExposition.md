@@ -174,6 +174,25 @@ Theorem 2.2.1, p. 45; `notes/Prose-findings.md` `F-025`), and dropped its unsupp
 Henneberg/Lovász–Yemini" for the degree-three argument, Jordán's Lemma 2.1.4(b) (p. 44).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**PROSE round 2 (`prose-molecular`, closed 2026-10-12).** The round rewrote the prose of the eight
+chapters `matroid-union.tex` → `meet.tex` (phases 12–21a; `notes/Prose-molecular-cleanup.md`). No
+node's statement strength, pins or `\uses` edges changed and no node rerouted, so no entry is
+added. The close checked every pointer into these chapters against the new text. The crux nodes
+named under *Ledger* (`lem:extensor-independence`; the balanced-packing descent, `rem:kt-lemma-41`,
+`rem:kt-lemma-44`, `lem:removal-deficiency`, `lem:reduction-step`, `lem:chain-cycle-dichotomy` and
+`lem:chain-data-extract`; `def:meet-complement-iso` and
+`lem:case-III-claim612-line-in-panel-union`) all exist under their labels and keep full proofs. Five
+entries quoted text the round replaced, and the close aligned them: the KT 4.1 entry's third point
+(the partition comparison needs neither forests nor `def = corank`), the KT 4.4 entry (the remark
+now also shows KT's forest argument correct, for `D ≥ 2`), the `lem:reduction-step` quotation, the
+KT 4.6 entry's dimension (KT's `d`, where it wrote `n`) and the `def:meet-complement-iso`
+quotation. The Group-B 22i verdict still holds (`lem:rank-parallel-full`'s proof and the paragraph
+after it carry KT Lemma 5.3's argument); `deficiency.tex`'s scan still names the full
+`thm:def-eq-corank`; the Phase-40c entry's two nodes, `lem:deficiency-antitone` and
+`lem:relative-deficiency-rank-bound`, are in place; and the Phase-33 note's "exposited in place in
+`meet.tex`" is true since task 2.18 (the contragredient law, in the prose after `def:meet`).
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -246,8 +265,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `v`* (every forest meets `v`), unjustified in KT; recovered via a
   pendant/bridge finite-descent (no `D ≥ 3` counterexample — a gap, not an
   error). (3) The induction needs only `def(G̃ᵥᵃᵇ) ≤ def(G̃)`, by
-  partition-count through `def = corank`, routing around the surgery
-  entirely. **Written** (Phase 20; found by the D2a reconciliation
+  comparing the values of partitions of `V(G)` (`lem:splitoff-deficiency`;
+  neither forests nor `def = corank`), routing around the surgery entirely. **Written** (Phase 20; found by the D2a reconciliation
   2026-07-07): `rem:kt-lemma-41`'s three-layer enumeration states exactly
   this, and the balanced-packing descent (`lem:base-vfiber-count` through
   `lem:balanced-forest-packing`) spells out the gap's repair in full.
@@ -261,8 +280,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   and in the part-losing case `v`'s two neighbours are *forced* into distinct
   blocks, so `c=2` — the `+2(D−1)` crossing-drop pays for the `−D` part-loss
   exactly when `D ≥ 2`. **Written** (Phase 20; found by the D2a reconciliation
-  2026-07-07): `rem:kt-lemma-44` spells out the partition-count comparison and
-  the forced-`c=2` argument in full. Pointer: `notes/Phase20.md` *Findings*.
+  2026-07-07): `rem:kt-lemma-44` shows KT's forest argument correct (it needs
+  `D ≥ 2`), then spells out the comparison of partition values and the forced
+  crossing of `e_a` and `e_b` (`c = 2`, a change of `D − 2 ≥ 0`) in full. Pointer: `notes/Phase20.md` *Findings*.
 - **`lem:reduction-step` (KT 4.7–4.8, `splitOff_isMinimalKDof`)** — [done
   (`molecular-induction.tex` `lem:reduction-step`; landed Phase 20, polished by
   the R5 readability rewrite `d589fa64`)] **(b)** *(borderline toward
@@ -272,7 +292,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   contradicts `isBase_ncard_add_deficiency_eq`; no matroid minor, no swap
   induction. **Written** (Phase 20; found by the D2a reconciliation
   2026-07-07): the lemma's proof spells out the rank-count argument
-  ("a rank count replaces KT's iterated fundamental-circuit swap …") in full.
+  ("We replace this exchange by the count above", after KT's one-at-a-time
+  exchange by eq. (4.10)) in full.
   Pointer: `notes/Phase20.md`; FRICTION *[matroid] Transporting circuits …*.
 - **`lem:chain-cycle-dichotomy` (KT Lemma 4.6, `chainData_or_cycleData_of_noRigid`)** —
   [done (23g-close, the node's proof prose)] **(a)** (Phase 23g E2 / design §(4.107),
@@ -285,7 +306,7 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   argument over capped interior-degree-2 walks: walk determinism (two walks sharing their first
   vertex + edge are prefix-comparable) makes the per-incidence charge well-defined, the lollipop
   case is excluded by "a cycle on `≤ D` vertices is `0`-dof" (the boundary-index injection of
-  partition classes into crossing edges), and the linking identity `i(n−2)+2 ≤ (D−1)(i−2)`
+  partition classes into crossing edges), and the linking identity `i(d−2)+2 ≤ (D−1)(i−2)`
   (KT's display above (4.9)) is the *entire* chain-length↔dimension relation — no hidden floor.
   **Written** (23g-close): the `lem:chain-cycle-dichotomy` / `lem:chain-data-extract` proof
   prose (`molecular-induction.tex`). Pointer: `notes/Phase23-design.md` §(4.107)/(4.107.G);
@@ -301,9 +322,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   "diagonal ≠ 0"; the orientation/sign bookkeeping KT carries is deferrable to
   a consumer that actually reads an oriented meet. **Written** (R8, 2026-07-05;
   found by the D2a reconciliation 2026-07-07): the `def:meet-complement-iso`
-  proof spells out the signed-permutation-matrix argument, ending "the exact
-  grade-swap sign is not needed for the isomorphism and is deferred to where an
-  oriented meet consumes it." Pointer: `notes/Phase21a.md` *Decisions* +
+  proof spells out the signed-permutation-matrix argument, ending "The argument
+  needs only `ε_S ≠ 0`" (`ε_S = ±1`, the sign of the permutation taking `S` then
+  `S^c` to increasing order; the sign bookkeeping is not carried). Pointer: `notes/Phase21a.md` *Decisions* +
   *Blockers*.
 
 ### `algebraic-induction.tex` — Phases 21 / 21b / 22a (Thm 5.5, Cases I/II/III, genericity device)

@@ -171,7 +171,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-40, 4/5: the deep simplification recon) | `Molecular/Molecule/Pencil/**` + Phase 40's other Lean edits; `pencil.tex`, `main-component.tex` (a read-only recon, then the items the PI sanctions) | ✓ Complete — 18 sanctioned simplifications, −8 930 net Lean lines, all 19 main results' axioms unchanged (see `notes/Phase40-simplify.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (post-Phase-40, 5/5: project organization) | Phase 40's notes and design doc, `notes/FRICTION.md`, the tactics, design and cleanup manuals, and the user-facing surfaces (docs only) | ✓ Complete — docs only, lessons lifted and Phase 40's notes compressed with every anchor kept, all 19 main results' axioms unchanged (see `notes/Phase40-docs.md`; plan `notes/Cleanup40.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 47 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (PROSE 2/5: body-bar, body-hinge and the molecular foundations) | the eight chapters `matroid-union.tex` → `meet.tex` (prose only) | ◐ In progress (see `notes/Prose-molecular-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (PROSE 2/5: body-bar, body-hinge and the molecular foundations) | the eight chapters `matroid-union.tex` → `meet.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 67 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-molecular-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1252,9 +1252,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `scripts/blueprint-deps.py` (`notes/Prose.md` §5), pinned its sample section as the exemplar
   `notes/Prose-exemplar.md` after the PI approved it at Stop 1 on 2026-10-07, rewrote the twelve
   chapters `sparsity.tex` through `executable.tex` in sixteen slices, and recorded 47 findings in
-  the ledger. Round 2, `prose-molecular`, opened 2026-10-08 (`notes/Prose-molecular-cleanup.md`);
-  its tasks 2.1–2.18 rewrote its eight chapters, `matroid-union.tex` through `meet.tex`.
-  **Next concrete task:** its task 3, the round's close.
+  the ledger. Round 2, `prose-molecular`, opened 2026-10-08 and closed 2026-10-12
+  (`notes/Prose-molecular-cleanup.md`): it rewrote its eight chapters, `matroid-union.tex` through
+  `meet.tex`, in eighteen slices, and recorded 67 findings in the ledger (`F-048`–`F-114`).
+  **Next concrete task:** round 3, `prose-algebraic`, opens (its chapters and provisional slices
+  are in `notes/Prose.md` §3).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

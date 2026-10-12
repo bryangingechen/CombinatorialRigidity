@@ -54,7 +54,7 @@ id = "prose-molecular"
 title = "PROSE 2/5: body-bar, body-hinge and the molecular foundations"
 note = "notes/Prose-molecular-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "prose-algebraic"
