@@ -1,65 +1,68 @@
 \section{Independence and rank of molecular graphs}
 \label{sec:jacobs}
 
-With the molecule rank formula
-$r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-(\cref{cor:molecule-rank-formula}) in place, this chapter derives two
-further results of Jackson--Jord\'an~\cite{jacksonJordan2008} on squares
-of graphs. The first is a conjecture of Jacobs~\cite{jacobs1998} on the
-independence of molecular graphs, stated as Conjecture~5.1
-of~\cite{jacksonJordan2008} and derived there from the rank formula
-(their Theorem~5.4); with the rank formula a theorem, it holds
-unconditionally: \emph{the square $G^2$ of a graph is independent in the
-three-dimensional generic rigidity matroid if and only if $G^2$
-satisfies the three-dimensional Laman counting condition}
-(\cref{thm:jacobs}). The second is the degree-one rank formula
-(Lemma~4.2 of~\cite{jacksonJordan2008}; the tree case is due to
-Franzblau~\cite{franzblau2000}): an explicit formula for $r(G^2)$ for
-connected graphs with vertices of degree one --- where the rank
-formula's minimum-degree hypothesis fails --- by reduction to the
+This chapter proves two results of Jackson and
+Jord\'an~\cite{jacksonJordan2008} on squares of graphs. We cite their
+paper as JJ, as we cite Katoh and Tanigawa's as KT. The first result is
+a conjecture of Jacobs~\cite{jacobs1998}: the square $G^2$ of a graph
+$G$ is independent in the three-dimensional generic rigidity matroid if
+and only if $G^2$ satisfies JJ's three-dimensional Laman condition
+(\cref{thm:jacobs}). JJ state it as their Conjecture~5.1. They note that
+Jacobs states it as a result, but that his proof assumes an observation
+for which no proof was known (JJ~\S5). JJ derive the conjecture (their
+Theorem~5.4) from their Conjecture~2.2, the rank formula
+\[
+  r(G^2) \;=\; 3|V| - 6 - \operatorname{def}(\tilde G)
+\]
+for graphs $G = (V, E)$ of minimum degree at least two. This formula is
+KT Corollary~5.7 (\cref{cor:molecule-rank-formula}), so the conjecture
+holds.
+
+The second result is the degree-one rank formula, JJ's Lemma~4.2. It
+concerns connected graphs with vertices of degree one, to which the rank
+formula does not apply. For a tree $G$ it gives $r(G^2)$ explicitly
+(\cref{thm:degree-one-rank-tree}). For any other connected graph $G$,
+it gives $r(G^2)$ through the rank of the square of the core of $G$, its
 maximal subgraph of minimum degree at least two
-(\cref{thm:degree-one-rank}).
+(\cref{thm:degree-one-rank}). JJ prove it to show that the rank
+formula, applied to the core, determines $r(G^2)$ for every graph.
 
-The development runs as follows. The three-dimensional Laman condition
-and its first consequence --- a graph with Laman square has maximum
-degree at most three (Jackson--Jord\'an Lemma~5.2) --- open the chapter.
-The substantial combinatorial input is Jackson--Jord\'an's
-Theorem~5.3, the counting bound
-$|E(G^2)| \le 3|V| - 6 - \operatorname{def}(\tilde G)$ for graphs of
-minimum degree at least two with Laman square
-(\cref{thm:laman-square-count}); its proof classifies the edges of
-$G^2$ against a partition of $V$ attaining the deficiency, using
-structural facts about such \emph{tight} partitions proved by
-Jackson--Jord\'an in a companion paper (Lemma~3.2
-of~\cite{jacksonJordan2008}). Combined with the rank formula, the
-counting bound forces $r(G^2) = |E(G^2)|$ for such graphs. The easy
-direction of Jacobs' conjecture (independence implies the Laman
-condition) is the three-dimensional form of the count bound already
-used for Laman's theorem in the plane
-(\cref{lem:isSparse-of-rowIndependent-two}). The passage from minimum
-degree at least two to arbitrary graphs, and the whole of the
-degree-one rank formula, rest on the classical \emph{$0$-extension}
-(vertex-addition) lemma in dimension three
-(Whiteley~\cite[Lemma~9.1.3]{whiteley1996}; Lemma~3.3
-of~\cite{jacksonJordan2008}): attaching a new vertex by at most three
-edges to distinct vertices adds exactly that many to the generic rank.
+The hard direction of Jacobs' conjecture rests on JJ's counting bound
+(their Theorem~5.3): if $G$ has minimum degree at least two and $G^2$
+satisfies the Laman condition, then
+$|E(G^2)| \le 3|V| - 6 - \operatorname{def}(\tilde G)$. By the rank
+formula the right-hand side is $r(G^2)$, so $E(G^2)$ is independent.
+\Cref{sec:jacobs-laman3} defines the Laman condition, and shows that if
+$G^2$ satisfies it, then $G$ has maximum degree at most three.
+\Cref{sec:jacobs-tight-partitions} studies the partitions of $V$ that
+attain the deficiency. \Cref{sec:jacobs-counting} proves the counting
+bound by counting the edges of $G^2$ against one of them.
+\Cref{sec:jacobs-easy} proves the easy direction of the conjecture, for
+every graph. \Cref{sec:jacobs-zero-extension} proves the
+$0$-extension lemma in the form we use: adding a vertex joined to at
+most three vertices raises the rank by the number of new edges. \Cref{sec:jacobs-theorem}
+proves the conjecture, deleting vertices of degree one by this lemma
+until the minimum degree is at least two. \Cref{sec:jacobs-degree-one}
+proves the degree-one rank formula in the same way.
 
-Throughout, $V$ is a finite vertex set, $G$ a simple graph on $V$,
-$r = r_3$ the rank function of the three-dimensional generic rigidity
-matroid $\mathcal{R}_3(V)$ (\cref{def:genericRank}), and
-$\operatorname{def}(\tilde G)$ the $D$-deficiency of
-\cref{def:D-deficiency} at $D = 6$, i.e.\
-$\operatorname{def}(\tilde G) = \max_P \bigl(6(|P|-1) - 5\,d_G(P)\bigr)$
-over partitions $P$ of $V$. An edge set is \emph{independent} when it is
-independent in $\mathcal{R}_3(V)$; by
-\cref{lem:genericRigidityMatroid-indep-iff} this is row independence at
-some (equivalently, any generic) placement.
+Throughout, $V$ is a finite set, and a graph on $V$ is a simple graph
+with vertex set $V$. We write $r = r_3$ for the rank function of the
+generic rigidity matroid $\mathcal{R}_3(V)$ (\cref{def:genericRank}). We
+call a graph $H$ on $V$ independent when $E(H)$ is independent in
+$\mathcal{R}_3(V)$, that is, row-independent at some placement of $V$ in
+$\R^3$ (\cref{lem:genericRigidityMatroid-indep-iff}). For a partition
+$P$ of $V$, let $d_G(P)$ be the number of edges of $G$ that join
+different parts of $P$. The value of $P$ is
+\[
+  \operatorname{def}_{\tilde G}(P) \;=\; 6(|P| - 1) - 5\,d_G(P),
+\]
+and the deficiency $\operatorname{def}(\tilde G)$ is the largest value
+over the partitions of $V$. This is \cref{def:D-deficiency} at
+$D = 6$, for the multigraph $\tilde G = 5 \cdot G$.
 
 \subsection{The three-dimensional Laman condition}
 \label{sec:jacobs-laman3}
 
-Throughout this chapter, JJ stands for Jackson and
-Jord\'an~\cite{jacksonJordan2008}, as KT stands for Katoh and Tanigawa.
 This subsection defines JJ's counting condition for graphs in three
 dimensions (JJ~\S5) and proves its first consequence for squares (JJ
 Lemma~5.2): if $G^2$ satisfies the condition, then every vertex of $G$
@@ -1110,6 +1113,15 @@ The reduction also uses four facts about squares and induced subgraphs.
 \subsection{Jacobs' conjecture}
 \label{sec:jacobs-theorem}
 
+In the proof of their Theorem~5.4, JJ treat graphs of minimum degree
+at least two, and reduce the general case to them in a single sentence:
+if $G$ has maximum degree at most three, then $G^2$ is independent if
+and only if the square of its maximal subgraph of minimum degree at
+least two is. We prove this reduction by induction on the number of
+edges, for the graphs whose square is Laman (\cref{thm:jacobs}). These
+graphs have maximum degree at most three
+(\cref{lem:isLaman3-degree-le-three}).
+
 \begin{theorem}[Jacobs' conjecture, minimum degree two]
   \label{thm:jacobs-min-degree-two}
   \lean{SimpleGraph.jacobs_min_degree_two}
@@ -1122,13 +1134,14 @@ The reduction also uses four facts about squares and induced subgraphs.
 \begin{proof}
   \leanok
   \uses{thm:laman-square-count, cor:molecule-rank-formula}
-  By \cref{thm:laman-square-count} and the rank formula
-  (\cref{cor:molecule-rank-formula}),
+  The rank of a finite set is at most its size, with equality if and
+  only if the set is independent. By \cref{thm:laman-square-count} and
+  the rank formula (\cref{cor:molecule-rank-formula}),
   \[
     |E(G^2)| \;\le\; 3|V| - 6 - \operatorname{def}(\tilde G)
-    \;=\; r(G^2) \;\le\; |E(G^2)|,
+    \;=\; r(G^2) \;\le\; |E(G^2)|.
   \]
-  so $r(G^2) = |E(G^2)|$, which is independence.
+  So $r(G^2) = |E(G^2)|$, and $E(G^2)$ is independent.
 \end{proof}
 
 \begin{theorem}[Jacobs' conjecture; JJ Conjecture 5.1, Theorem 5.4]
@@ -1147,55 +1160,86 @@ The reduction also uses four facts about squares and induced subgraphs.
     lem:square-delete-degree-le-one, lem:square-leaf-neighborhood,
     lem:square-induce-support, lem:isLaman3-induce}
   Independence implies the Laman condition by
-  \cref{cor:genericMatroid-indep-isLaman3}. For the converse, induct on
-  the number of edges of $G$. If $G$ has a vertex $v$ of degree one
-  with neighbor $u$, let $G' = G - E_G(v)$; then
-  $G'^2 = G^2 - E_{G^2}(v)$ (\cref{lem:square-delete-degree-le-one}),
-  $G'^2$ is Laman (\cref{lem:isLaman3-mono}), and $v$ has degree
-  $d_G(u) \le 3$ in $G^2$ (\cref{lem:square-leaf-neighborhood},
-  \cref{lem:isLaman3-degree-le-three}), so
-  \cref{cor:zero-extension-degree-le-three} reduces the independence
-  of $E(G^2)$ to that of $E(G'^2)$, which holds by induction.
-  Otherwise every vertex has degree zero or at least two. If $G$ has
-  no edges, $E(G^2)$ is empty. Else restrict to the support $S$ of
-  $G$: squaring commutes with the restriction
-  (\cref{lem:square-induce-support}), the Laman condition restricts
-  (\cref{lem:isLaman3-induce}), and the restricted graph has minimum
-  degree at least two on $S$, so \cref{thm:jacobs-min-degree-two}
-  applies; \cref{lem:genericMatroid-induce-transport} transports the
-  resulting independence back to $V$. This makes Jackson--Jord\'an's
-  conditional Theorem~5.4 unconditional; the passage from maximum
-  degree three to the minimum-degree-two core, asserted
-  in~\cite{jacksonJordan2008} without proof, is the degree-one
-  induction above.
+  \cref{cor:genericMatroid-indep-isLaman3}. For the converse, suppose
+  that $G^2$ is Laman. We show that $E(G^2)$ is independent, by
+  induction on the number of edges of $G$.
+
+  Suppose first that $G$ has a vertex $v$ of degree one, with neighbor
+  $u$, and let $G' = G - E_G(v)$. Then $G'^2 = G^2 - E_{G^2}(v)$
+  (\cref{lem:square-delete-degree-le-one}). So $G'^2$ is Laman
+  (\cref{lem:isLaman3-mono}), and $E(G'^2)$ is independent by
+  induction, as $G'$ has one edge fewer than $G$. In $G^2$ the vertex
+  $v$ has degree $d_G(u)$ (\cref{lem:square-leaf-neighborhood}), and
+  $d_G(u) \le 3$ (\cref{lem:isLaman3-degree-le-three}). So $E(G^2)$ is
+  independent because $E(G'^2)$ is
+  (\cref{cor:zero-extension-degree-le-three}).
+
+  Otherwise every vertex of $G$ has degree zero or at least two. If $G$
+  has no edges, then $G^2$ has none either, and the empty set is
+  independent. Else let $S$ be the set of non-isolated vertices of $G$.
+  Every edge of $G^2$ lies inside $S$, and the square of the induced
+  subgraph $G[S]$ is the subgraph of $G^2$ induced on $S$
+  (\cref{lem:square-induce-support}). So $G[S]^2$ is Laman
+  (\cref{lem:isLaman3-induce}). A vertex of $S$ has the same neighbors
+  in $G[S]$ as in $G$, so $G[S]$ has minimum degree at least two. Hence
+  $E(G[S]^2)$ is independent in $\mathcal{R}_3(S)$
+  (\cref{thm:jacobs-min-degree-two}, on the nonempty set $S$). Its image
+  under the inclusion $S \hookrightarrow V$ is $E(G^2)$, which is
+  therefore independent in $\mathcal{R}_3(V)$
+  (\cref{lem:genericMatroid-induce-transport}).
 \end{proof}
 
 \subsection{The degree-one rank formula}
 \label{sec:jacobs-degree-one}
 
-The rank formula requires minimum degree at least two, and is false
-without it: a single edge has $r(G^2) = 1$ while
-$3|V| - 6 - \operatorname{def}(\tilde G) \le 0$. The correct statement
-for graphs with vertices of degree one, due to
-Franzblau~\cite{franzblau2000} for trees and Jackson--Jord\'an
-(Lemma~4.2 of~\cite{jacksonJordan2008}) in general, reduces $r(G^2)$ to
-the square of the \emph{core}, the maximal subgraph of minimum degree at
-least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
+The rank formula (\cref{cor:molecule-rank-formula}) assumes minimum
+degree at least two, and it fails without this assumption. For a single
+edge, $r(G^2) = 1$, while $3|V| - 6 - \operatorname{def}(\tilde G) = -1$,
+as the partition of the two vertices into singletons has value one.
+JJ's Lemma~4.2 gives $r(G^2)$ for every connected graph $G$ on at least
+two vertices. Its part~(a) gives it explicitly for trees. Its part~(b)
+gives it, for the other graphs, through the rank of the square of the
+core of $G$, its maximal subgraph of minimum degree at least two.
+JJ prove both parts by deleting a vertex of degree one, and cite their
+Lemma~3.3 for the change in rank. Here that step is
+\cref{cor:zero-extension-clique-rank}, as the deleted vertex may have
+more than three neighbors in $G^2$.
+
+We write $V_1(G)$ for the set of vertices of degree one of a graph $G$,
+and call the set of its non-isolated vertices its \emph{support}. A
+graph on a subset $S$ of $V$ is also a graph on $V$, in which the
+vertices outside $S$ are isolated, and its rank is the same in both
+readings (\cref{lem:genericMatroid-induce-transport}). So for a vertex
+$v$ of $G$ we write $G - v$ for the graph obtained by deleting $v$, and
+read its rank either way. In the definition of the core, the minimum
+degree of a subgraph is taken over its support.
 
 \begin{definition}[The core]
   \label{def:two-core}
   \lean{SimpleGraph.twoCore, SimpleGraph.twoCore_le, SimpleGraph.le_twoCore,
     SimpleGraph.twoCore_minDegree}
   \leanok
-  The \emph{core} $G^{\mathrm{core}}$ of a graph $G$ is its maximal
-  subgraph of minimum degree at least two: the join of all subgraphs
-  $H \le G$ in which every vertex of the support of $H$ has
-  $H$-degree at least two.
+  Let $G$ be a graph on $V$. The \emph{core} $G^{\mathrm{core}}$ of $G$
+  is its maximal subgraph of minimum degree at least two: the graph on
+  $V$ whose edges are those of all subgraphs $H$ of $G$ in which every
+  vertex of the support of $H$ has degree at least two in $H$.
 \end{definition}
 
-For a connected graph on at least two vertices the core is empty
-exactly when the graph is a tree~\cite{jacksonJordan2008}; the
-development below does not use this fact.
+The core is itself one of these subgraphs $H$. Indeed, a vertex of its
+support lies on an edge of some such $H$. So it has at least two
+neighbors in $H$, and hence in the core. Thus the core is the largest
+subgraph of $G$ in which every vertex of the support has degree at
+least two.
+
+As JJ note, the core of a connected graph on at least two vertices has
+no edges if and only if the graph is a tree. Indeed, a subgraph of a
+tree that has an edge is a forest with an edge, so it has a vertex of
+degree one. A connected graph that is not a tree contains a cycle, in
+which every vertex has degree two. For a tree, the core has empty
+support, and the right-hand side of the formula of
+\cref{thm:degree-one-rank} would be $2|V| + |V_1(G)|$. This is five more
+than $r(G^2)$ (\cref{thm:degree-one-rank-tree}), so trees are treated
+separately.
 
 \begin{theorem}[The degree-one rank formula for trees; JJ Lemma 4.2(a)]
   \label{thm:degree-one-rank-tree}
@@ -1206,26 +1250,35 @@ development below does not use this fact.
   \[
     r(G^2) \;=\; 2|V| - 5 + |V_1(G)| .
   \]
-  This case is due to Franzblau~\cite{franzblau2000}.
+  JJ credit the formula to Franzblau~\cite{franzblau2000}.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{cor:zero-extension-clique-rank, cor:zero-extension-degree-le-three,
     lem:square-delete-degree-le-one, lem:square-leaf-neighborhood}
-  Induction on $|V|$, with base case a single edge:
-  $r(K_2^2) = r(K_2) = 1 = 2\cdot 2 - 5 + 2$
-  (\cref{cor:zero-extension-degree-le-three} at either endpoint). For
-  $|V| \ge 3$, pick a leaf $v$ with neighbor $u$; here $d_G(u) \ge 2$,
-  since $d_G(u) = 1$ would make $\{u, v\}$ a connected component of
-  the tree $G$. Remove the edges at $v$: squaring commutes with the
-  removal (\cref{lem:square-delete-degree-le-one}), and $v$ has
-  $G^2$-degree $d_G(u)$ with square-neighborhood a clique
-  (\cref{lem:square-leaf-neighborhood}), so the rank drops by
-  $\min(3, d_G(u))$ (\cref{cor:zero-extension-clique-rank}). If
-  $d_G(u) \ge 3$ the drop is $3$ and $|V_1|$ drops by one; if
-  $d_G(u) = 2$ the drop is $2$ and $|V_1|$ is unchanged ($u$ becomes
-  the new leaf). In both cases the right-hand side, evaluated for the
-  tree $G - v$ on $|V| - 1$ vertices, drops by the same amount.
+  We induct on $|V|$. If $|V| = 2$, then $G$ is a single edge, and
+  $G^2 = G$. Deleting the edge at one of its ends leaves no edge, so
+  $r(G^2) = 1$ (\cref{cor:zero-extension-degree-le-three}). And
+  $2 \cdot 2 - 5 + 2 = 1$.
+
+  Let $|V| \ge 3$, and let $v$ be a vertex of degree one, with neighbor
+  $u$. Then $d_G(u) \ge 2$, as otherwise $\{u, v\}$ would be a connected
+  component of $G$. The graph $G - v$ is a tree on $|V| - 1$ vertices,
+  and its square is $G^2 - v$ (\cref{lem:square-delete-degree-le-one}).
+  In $G^2$ the vertex $v$ has $d_G(u)$ neighbors, and they form a clique
+  (\cref{lem:square-leaf-neighborhood}). So
+  \[
+    r(G^2) \;=\; r\bigl((G - v)^2\bigr) + \min\bigl(3, d_G(u)\bigr)
+  \]
+  (\cref{cor:zero-extension-clique-rank}).
+
+  The term $2|V|$ is two less for $G - v$ than for $G$. If
+  $d_G(u) \ge 3$, then $V_1(G - v) = V_1(G) \setminus \{v\}$, so the
+  right-hand side of the formula is three less for $G - v$. If
+  $d_G(u) = 2$, then $V_1(G - v)$ is $V_1(G)$ with $u$ in place of $v$,
+  so the right-hand side is two less. In both cases it falls by
+  $\min(3, d_G(u))$, as the rank does. So the formula for $G - v$, which
+  holds by induction, gives the formula for $G$.
 \end{proof}
 
 \begin{theorem}[The degree-one rank formula; JJ Lemma 4.2(b)]
@@ -1246,35 +1299,45 @@ development below does not use this fact.
   \leanok
   \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
     lem:square-leaf-neighborhood}
-  Induction on $|V|$, as in \cref{thm:degree-one-rank-tree}: if
-  $V_1(G) = \emptyset$ then $G = G^{\mathrm{core}}$ and both sides
-  agree; otherwise remove the edges at a vertex $v$ of degree one with
-  neighbor $u$ (here $d_G(u) \ge 2$, since $d_G(u) = 1$ would make the
-  connected $G$ a single edge, a tree). The removed vertex has
-  $G^2$-degree $d_G(u)$ with square-neighborhood a clique
-  (\cref{lem:square-leaf-neighborhood}), so the rank drops by
-  $\min(3, d_G(u))$ (\cref{cor:zero-extension-clique-rank};
-  \cref{lem:square-delete-degree-le-one}). The core is unchanged in
-  both cases; if $d_G(u) \ge 3$ the drop is $3$, matching a drop of
-  one in $|V_1|$ and one non-core vertex fewer; if $d_G(u) = 2$ the
-  drop is $2$, matching one non-core vertex fewer with $|V_1|$
-  unchanged ($u$ becomes the new degree-one vertex). The induction
-  closes at $V_1 = \emptyset$.
+  We induct on $|V|$. If $V_1(G)$ is empty, then every vertex of $G$
+  has degree at least two, as $G$ is connected and $|V| \ge 2$. So $G$
+  is its own core, its support is $V$, and both sides equal $r(G^2)$.
+
+  Otherwise let $v$ be a vertex of degree one, with neighbor $u$. Then
+  $d_G(u) \ge 2$, as otherwise $G$ would be the single edge $uv$, a
+  tree. A connected graph is a tree exactly when it has one edge fewer
+  than vertices, so $G$ has at least as many edges as vertices. Deleting
+  $v$ removes one vertex and one edge. So $G - v$ is connected, has at
+  least two vertices, and is not a tree. As in the proof of
+  \cref{thm:degree-one-rank-tree},
+  $r(G^2) = r((G - v)^2) + \min(3, d_G(u))$.
+
+  Deleting $v$ does not change the core. Indeed, a subgraph of $G$ in
+  which every vertex of the support has degree at least two has no edge
+  at $v$, as $v$ has degree one. So $G$ and $G - v$ have the same such
+  subgraphs. In particular $v$ is not in $V(G^{\mathrm{core}})$, and
+  $|V \setminus V(G^{\mathrm{core}})|$ is one less for $G - v$ than for
+  $G$. The set $V_1$ changes as in the proof of
+  \cref{thm:degree-one-rank-tree}. So the right-hand side falls by
+  $2 + 1 = 3$ if $d_G(u) \ge 3$, and by $2$ if $d_G(u) = 2$. In both
+  cases it falls by $\min(3, d_G(u))$, as the rank does, and the formula
+  for $G - v$, which holds by induction, gives the formula for $G$.
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:degree-one-fixed-carrier}
-  Both inductions are formalized over a fixed vertex set: deleting the
-  edges at the leaf keeps the vertex in $V$ as an isolated vertex, and
-  the induction runs on strengthened statements in which $|V|$ is read
-  as the size of the support of $G$, connectivity as reachability
-  between support vertices, and, for \cref{thm:degree-one-rank}, the
-  hypothesis that $G$ is not a tree as the edge count
-  $|E(G)| \ge |V(G)|$. The core is likewise carried as a graph on the
-  same vertex set, with $V(G^{\mathrm{core}})$ its support. No
-  restriction of the ambient vertex set --- and hence no transport of
-  ranks along an inclusion
-  (\cref{lem:genericMatroid-induce-transport}) --- is needed. The tree
-  formula is formalized in the subtraction-free form
-  $r(G^2) + 5 = 2|V| + |V_1(G)|$.
+  The two inductions are formalized on the number of edges, over a fixed
+  vertex set. Deleting the edge at $v$ leaves $v$ in $V$ as an isolated
+  vertex, so the formal proofs do not change the vertex set of the
+  matroid, and they do not use \cref{lem:genericMatroid-induce-transport}.
+  They prove stronger statements, in which $|V|$ is the size of the
+  support of $G$, connectivity is asked only between vertices of the
+  support, and, for \cref{thm:degree-one-rank}, ``not a tree'' is the
+  bound $|E(G)| \ge |V(G)|$, with $V(G)$ the support of $G$. The core is
+  a graph on $V$, and $V(G^{\mathrm{core}})$ is its support. The formal
+  statement of \cref{thm:degree-one-rank} does not assume $|V| \ge 2$,
+  which follows from its other hypotheses, as a connected graph on one
+  vertex is a tree. The tree formula is formalized as
+  $r(G^2) + 5 = 2|V| + |V_1(G)|$, which avoids a subtraction of natural
+  numbers.
 \end{fmlnote}

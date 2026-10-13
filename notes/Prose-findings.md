@@ -603,6 +603,18 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `723c460d`); read
   (the bodies of `zero_extension_edgeSetRowIndependent_lift` and `dep_k5`).
   *Found:* round 4 task 2.7.
+- **F-201** · E · `jacobs.tex`'s last five nodes, task 2.8's (`jacobs.tex`): one missing edge and
+  none unbacked. Missing: the proof of `thm:degree-one-rank-tree` to `lem:square-induce-support`
+  (`square_support_subset`, in the base case). Implied through another node: those of
+  `thm:jacobs-min-degree-two` to `def:D-deficiency`, `def:genericRank` and
+  `lem:molecule-graph-carrier`, of `thm:jacobs` to `def:edgesIn`, and of
+  `thm:degree-one-rank-tree` to `def:genericRigidityMatroid`. The pin `degree_one_rank_tree` is
+  dead (`F-012`). Task 2.8's proofs cite no node without an edge. The lead of
+  `sec:jacobs-degree-one` cites `lem:genericMatroid-induce-transport` for reading the rank of
+  $G - v$ on either vertex set; the formal proofs keep $V$ fixed and do not use it
+  (`fmlnote:degree-one-fixed-carrier`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `0e8d7546`).
+  *Found:* round 4 task 2.8.
 
 ## N — node shape
 
@@ -1132,6 +1144,18 @@ declaration's name as its header writes it:
   `IsSquareTightPartition.sum_perPart_le`, `JacobsCounting.lean`); measured
   (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`).
   *Found:* round 4 task 2.6.
+- **F-202** · N · `def:two-core` (`jacobs.tex`; four pins, `F-009`): the definition pins three of
+  its consequences, `twoCore_le`, `le_twoCore` and `twoCore_minDegree` (the core is a subgraph of
+  $G$, contains every subgraph of minimum degree two, and has minimum degree two), which task 2.8
+  proves in the prose after it. The facts about the core that `thm:degree-one-rank`'s proof uses
+  are unpinned and have no node: `twoCore_eq_self_of_minDegree` (a graph of minimum degree two is
+  its own core), `notMem_support_twoCore` and `twoCore_deleteIncidenceSet` (deleting the edge at a
+  vertex of degree one leaves the core unchanged). A lemma node for these, and the definition
+  pinning `twoCore` alone, are the candidates.
+  *Evidence:* read (`TwoCore.lean`; the body of `degree_one_rank_of_ncard`,
+  `JacobsDegreeOne.lean`); measured (`scripts/blueprint-deps.py --label def:two-core`, at
+  `0e8d7546`).
+  *Found:* round 4 task 2.8.
 
 ## T — terminology and notation
 
@@ -1185,6 +1209,15 @@ declaration's name as its header writes it:
   $x_1 \vee \cdots \vee x_{d-1}$ since task 2.2.
   *Evidence:* read (a `grep` for `\wedge` products of vectors over the chapters, at task 2.2).
   *Found:* round 3 task 2.2.
+- **F-203** · T · "core" (`jacobs.tex`, `main-component.tex`): the word names two objects.
+  `def:two-core` is JJ's $G^{\mathrm{core}}$, the maximal subgraph of minimum degree at least two.
+  `main-component.tex` calls the induced subgraph $H = G[W]$ of a contraction step "the core"
+  (its notation list, and `sec:main-component-contract`), with "additive" cores. Neither chapter
+  mentions the other's use. A different word for the contracted set in `main-component.tex`, or a
+  sentence there that distinguishes it from JJ's core, is the candidate.
+  *Evidence:* read (`sec:jacobs-degree-one`; `main-component.tex`'s notation list and
+  `sec:main-component-contract`).
+  *Found:* round 4 task 2.8.
 
 ## U — status surfaces
 
@@ -1212,6 +1245,16 @@ declaration's name as its header writes it:
   entries named; KT pp. 648, 655 and 671); measured (`scripts/blueprint-deps.py --label
   thm:theorem-55` at `889ebc08`).
   *Found:* round 3 task 2.16.
+- **F-204** · U · `README.md`, `home_page/index.md`, `formalization.yaml`: two places contradict
+  or lag the rewritten opening of `jacobs.tex`. (1) `README.md` and the home page call Jacobs'
+  conjecture and the degree-one rank formula "two further Jackson–Jordán 2008 consequences of the
+  rank formula". The second does not use the rank formula: JJ prove their Lemma 4.2 from their
+  Lemma 3.3, to show that the rank formula, applied to the core, determines $r(G^2)$ for every
+  graph. (2) `formalization.yaml`'s entry for Jacobs 1998 has no DOI. It is
+  `10.1088/0305-4470/31/31/012` (Crossref), which task 2.8 added to `bibliography.bib`.
+  *Evidence:* read (`README.md`'s and the home page's paragraph on phase 32; `formalization.yaml`'s
+  literature entry; JJ 2008 §4; Crossref's record for the DOI).
+  *Found:* round 4 task 2.8.
 
 ## S — statement strength
 
@@ -2621,6 +2664,16 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 16 pins, of
   `zero_extension_edgeSetRowIndependent_extend` and of the three `K₅` lemmas).
   *Found:* round 4 task 2.7.
+- **F-205** · L · the docstrings of task 2.8's pins (`JacobsTheorem.lean`, `JacobsDegreeOne.lean`,
+  `TwoCore.lean`). They agree with their bodies, but narrate process: the three file headers
+  ("Phase 32", "Phase 26", "the L2 slice plan, T1", "T3–T4", "This file lands", "the rank glue",
+  pointers to `notes/Phase32.md`) and `degree_one_rank_tree_of_ncard`'s "the T2 maintenance
+  identities". `twoCore`'s docstring credits the core to "Jackson–Jordán 2008 Lemma 4.2"; JJ
+  define it in the paragraph before that lemma (JJ §4).
+  *Evidence:* read (the docstrings and bodies of the eight pins and of
+  `jacobs_of_isLaman3_of_ncard`, `degree_one_rank_tree_of_ncard` and `degree_one_rank_of_ncard`;
+  JJ 2008 §4).
+  *Found:* round 4 task 2.8.
 
 ## M — mathematics and sources
 

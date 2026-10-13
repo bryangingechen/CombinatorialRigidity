@@ -7,10 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and tasks 2.1–2.7 `F-175`–`F-200`. 16 one-commit tasks; tasks 1 and 2.1–2.7 are done,
-and the round has no planned stop. **Next concrete task:** task 2.8, `jacobs.tex`, Jacobs'
-conjecture, the degree-one rank formula and the opening (882–1052 and 1–57 at the open, 1110–1280
-and 1–57 now), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-174`, and tasks 2.1–2.8 `F-175`–`F-205`. 16 one-commit tasks; tasks 1 and 2.1–2.8 are done,
+and the round has no planned stop. **Next concrete task:** task 2.9, `generic-lift.tex`,
+abundance, squares and panel-and-hinge (55–438, unchanged since the open), at Opus (*Lemma
+checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,15 +20,17 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.7 has landed** (this commit): `jacobs.tex`'s easy direction of Jacobs' conjecture and its
-0-extensions are done, now 712–1109. No node moved; every one keeps its `\label`, `\lean{…}`,
-`\leanok` and `\uses` byte-identical. No note is new, and no statement changed beyond register and
-anchoring. Nothing is mid-stream; 2.8 is next.
+**Task 2.8 has landed** (this commit): `jacobs.tex` is done; its last slice is now 1113–1343 and
+its opening 4–61, and `sec:jacobs-laman3`'s lead lost its JJ sentence to the opening. No node
+moved; every one keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. No note is
+new, and no statement changed beyond register and anchoring. `bibliography.bib`'s `jacobs1998`
+gained its DOI (Crossref). Nothing is mid-stream; 2.9 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
   `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (49 overfull boxes, none in the chapter).
-  Screens on the slice (712–1109): register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 0;
-  forward `\uses` 0 / 0 for `jacobs`. The open's (584–881): 0 / 0, 0 / 0, 0, 1 ("package"), 0 / 0.
+  Screens on the slice (1113–1343, 1–62): register 0 / 0, devices 0 / 0, `\operatorname` 0,
+  vocabulary 0; forward `\uses` 0 / 0 for `jacobs`. The open's (1110–1280, 1–57): 1 / 1
+  ("carried"), 0 / 0, 0, 0, 0 / 0.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -251,15 +253,9 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 13. `F-121`: `panel-layer.tex`'s note on `prop:rigidity-matrix-prop11` points at
     `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9, 2.12).
 
-- **`bar-joint-3d`, `molecule-modelling`, `molecule-application`.** *Done:* 2.1–2.4 (the open
-  bullets are in this log at `69bc7afb`, `67d44583`, `db71b408` and `302cc117`).
-- **`jacobs`.**
-  - *2.5–2.7:* done; the open bullets are in this log at `9c97fecc`, `bc6573b9` and `723c460d`.
-  - *2.8 (882–1052, 1–57):* `thm:jacobs`'s proof says JJ 2008 asserts the degree-one passage
-    "without proof" (check). After `def:two-core` (4 pins), "the development below does not use
-    this fact" (a negative remark). `fmlnote:degree-one-fixed-carrier`. The opening: Jacobs 1998's
-    bib entry has no DOI (check against the publisher), Franzblau 2000, JJ's numbering; its second
-    paragraph lists the chapter's steps (principle F *Once*).
+- **`bar-joint-3d`, `molecule-modelling`, `molecule-application`, `jacobs`.** *Done:* 2.1–2.8 (the
+  open bullets are in this log at `69bc7afb`, `67d44583`, `db71b408`, `302cc117`, `9c97fecc`,
+  `bc6573b9`, `723c460d` and `0e8d7546`).
 - **`generic-lift`.**
   - *2.9 (55–438):* `cor:molecule-generic-square-packing`'s proof says "shadowing carrier" (2.4's
     term). The panel section writes $K^{k+2}$, $d = k + 1$, a grade $k$ and, in
@@ -330,11 +326,13 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     3.4 and 5.3; one note for the formal forms. Found `F-191`–`F-194`.
   - [x] **2.6 `jacobs.tex`, the counting bound (JJ Theorem 5.3)** (`723c460d`): cross edges defined
     in the lead after JJ; the theorem's proof counts as its pin does. Found `F-195`–`F-198`.
-  - [x] **2.7 `jacobs.tex`, independence implies the Laman condition, and 0-extensions** (this
-    commit): JJ §5 and Lemma 3.3 and Whiteley's Lemma 9.1.3 credited as they state them; the lead's
+  - [x] **2.7 `jacobs.tex`, independence implies the Laman condition, and 0-extensions**
+    (`0e8d7546`): JJ §5 and Lemma 3.3 and Whiteley's Lemma 9.1.3 credited as they state them; the lead's
     $K_{1,4}$ and quotation kept; the $K_5$ examples argued. Found `F-199`–`F-200`.
-  - [ ] **2.8 `jacobs.tex`, Jacobs' conjecture, the degree-one rank formula and the opening**
-    (882–1052, 1–57): 5 nodes, 228 lines.
+  - [x] **2.8 `jacobs.tex`, Jacobs' conjecture, the degree-one rank formula and the opening**
+    (this commit): JJ introduced in the opening; leads for both subsections; JJ's one-sentence
+    reduction to the core credited as stated; the core's maximality and trees argued in prose.
+    Found `F-201`–`F-205`.
   - [ ] **2.9 `generic-lift.tex`, abundance, squares and panel-and-hinge** (55–438): 11 nodes, 384
     lines; carry-ins 10, 11 and 13.
   - [ ] **2.10 `generic-lift.tex`, body-and-bar** (439–734): 9 nodes, 296 lines; carry-in 1.
@@ -424,6 +422,14 @@ one line each naming the ledger ID and the task that found it.
 - `F-199` (E, task 2.7): the easy direction's and 0-extensions' ten nodes: 12 missing edges, none
   unbacked, one dead pin (`genericRank_eq_rk_image`), and the nodes the proofs cite without an edge.
 - `F-200` (L, task 2.7): the docstrings of its pins (process narration only).
+- `F-201` (E, task 2.8): its five nodes: one missing edge, none unbacked, one dead pin
+  (`degree_one_rank_tree`).
+- `F-202` (N, task 2.8): `def:two-core` pins three consequences; the core facts its theorem uses
+  are unpinned.
+- `F-203` (T, task 2.8): "core" names JJ's core here and a contracted set in `main-component.tex`.
+- `F-204` (U, task 2.8): README and the home page call the degree-one formula a consequence of the
+  rank formula; `formalization.yaml` lacks Jacobs 1998's DOI.
+- `F-205` (L, task 2.8): the docstrings of its pins (process narration, a loose credit).
 
 ## Blockers / open questions
 
@@ -431,11 +437,11 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.8, `jacobs.tex`, Jacobs' conjecture, the degree-one rank formula and
-the opening (882–1052 and 1–57 at the open, 1110–1280 and 1–57 now), at Opus**, a fresh agent
-(`notes/Prose.md` §2). Its diagnosis is the *2.8* item under *`jacobs`* in *Per-chapter
-diagnosis*, its gates and screens under *Scope*. Then tasks 2.9–2.14 in order, and task 3 closes
-the round. For the slices:
+**Next concrete task: task 2.9, `generic-lift.tex`, abundance, squares and panel-and-hinge (55–438,
+unchanged since the open), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
+*2.9* item under *`generic-lift`* in *Per-chapter diagnosis*, with carry-ins 10, 11 and 13; its
+gates and screens are under *Scope*. Then tasks 2.10–2.14 in order, and task 3 closes the round.
+For the slices:
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
   true: 2.9's JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
@@ -443,29 +449,24 @@ the round. For the slices:
   `lem:panel-hinge-dual-molecular` (over $\R$); `thm:projective-invariance` is over $K$; $\bar c = (c, 1)$.
 - **From task 2.4.** `molecule-application.tex`'s opening credits JJ 2008's Conjecture 2.2 (the
   formula), Theorem 4.1 ($\le$) and Theorem 4.3 (its equivalence with their Conjecture 2.1, the
-  bar-joint molecular conjecture), and KT p. 671 for KT's deduction: 2.8, 2.13 and 2.14 agree with
-  it. "Shadowing carrier" is now the multigraph $G'$ of `lem:molecule-graph-carrier` (*Simple graphs
+  bar-joint molecular conjecture), and KT p. 671 for KT's deduction: 2.13 and 2.14 agree with it. "Shadowing carrier" is now the multigraph $G'$ of `lem:molecule-graph-carrier` (*Simple graphs
   as multigraphs*), whose deficiency is JJ's $\operatorname{def}(G)$: 2.9 rewrites the term in
   `cor:molecule-generic-square-packing`'s proof. The chapter ends on generic rigidity of squares
   (JJ Conjecture 2.1, KT §7), citing `cor:molecule-generic-rigid`; the intro's "protein-flexibility"
   and "capstone" (2.13, 2.14) have no counterpart in it.
-- **For task 2.8, from 2.5–2.7.** `sec:jacobs-laman3`'s lead introduces JJ; 2.8 may move it to
-  the opening's notation paragraph. The opening's "companion paper (Lemma 3.2 …)" is off: JJ take
-  Lemma 3.2 from their [10], their companion paper is [8], and its \emph{tight} precedes
-  `lem:exists-tight-partition`; $\operatorname{def}_{\tilde G}(P)$ is the value of $P$, as in
-  `deficiency.tex`. The opening describes as the leads now do: the counting bound
-  (`sec:jacobs-counting`: cross edges, $d_G(A)$), the easy direction (JJ §5, from their eq. (1)),
-  and the 0-extension (`sec:jacobs-zero-extension`: JJ Lemma 3.3, $s \in \{1, 2, 3\}$, independence
-  both ways, citing Whiteley's Vertex 3-Addition Lemma 9.1.3, a fixed-placement form with the
-  rank; that lead defines $E_H(v)$). JJ's proof of their Lemma 4.2 cites Lemma 3.3 for the rank
-  steps that `cor:zero-extension-clique-rank` gives.
+- **From task 2.8.** `jacobs.tex`'s opening credits Jacobs' conjecture to Jacobs 1998 (JJ
+  Conjecture 5.1; JJ §5 note that Jacobs states it as a result with an incomplete proof) and the
+  degree-one rank formula to JJ Lemma 4.2, part (a) by JJ to Franzblau 2000. That formula does not
+  use the rank formula: JJ prove it to show that the rank formula, applied to the core, gives
+  $r(G^2)$ for every graph. So the intro's "two further Jackson--Jordán consequences of the rank
+  formula" (lines 42–43 and 332–333) is false for the second (2.13, 2.14; `F-204`).
 - **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 10–13 under *Per-chapter
   diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
   the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
   readings** (*Scope*) bind 2.12.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
   `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-201`.
+  deficiency zero"). The ledger's next ID is `F-206`.
 
 ## Decisions made during this round
 
@@ -486,10 +487,8 @@ the round. For the slices:
   Whiteley's 2004 manuscript, via JJ §2.1 and KT pp. 650, 671; `thm:panel-hinge-iff-molecular` moved.
 - **`molecule-application`** (2.4): "shadowing carrier" is replaced, not defined (*Simple graphs as
   multigraphs*; the label bound to a note, `F-187`); the opening's credits are in *Hand-off*.
-- **`jacobs`' first two slices** (2.5, 2.6): JJ introduced once; the tight-partition lemmas credited
-  to JJ Lemma 3.2 (their [10]) and the proofs of their Theorems 3.4 and 5.3; cross edges defined
-  after JJ §5; the count's proof no longer cites `lem:singleton-part-converse` (`F-196`); one note
-  per subsection (`F-191`, `F-195`).
-- **`jacobs`' third slice** (2.7): JJ Lemma 3.3 and Whiteley's Lemma 9.1.3 credited as each states
-  it; $E_H(v)$ defined in the lead, which keeps its $K_{1,4}$ and JJ's quotation; the two $K_5$
-  examples argued; the lift's proof is the test-motion argument of `lem:typeI-rowIndependent-extend`.
+- **`jacobs`** (2.5–2.8): JJ introduced once, in the opening. Each JJ result is credited as JJ
+  state it: Lemma 3.2 from their [10], Lemma 3.3 beside Whiteley's Lemma 9.1.3, the reduction to
+  the core in Theorem 5.4's proof, Lemma 4.2(a) to Franzblau by JJ. Cross edges, $E_H(v)$ and the
+  support are defined in leads; one note per subsection (`F-191`, `F-195`); the $K_5$ examples, the
+  core's maximality and the tree case are argued in prose.
