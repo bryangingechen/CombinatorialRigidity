@@ -173,14 +173,66 @@ consecutive hinges share a normal. For a cycle, the normals of
   the lemma as stated.
 \end{fmlnote}
 
+The formal realization of a cycle ends by choosing its normals once
+more, in general position, without decreasing the rank (the note after
+\cref{lem:cycle-realization}). Katoh and Tanigawa take a step of this
+kind in the proof of KT Lemma~6.10, where they turn realizations of
+full rank whose panels are not nonparallel into nonparallel ones, by
+rotating a panel slightly without decreasing the rank (KT Lemma~5.2,
+KT p.~691). The formalization takes such steps by the next lemma.
+
+\begin{lemma}[A rigid realization gives a generic one]
+  \label{lem:generic-realization-of-rigid}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals}
+  \leanok
+  \uses{def:rank-hypothesis}
+  Let $K$ be an infinite field, and let $G$ be a multigraph with
+  $V(G) \neq \emptyset$ and $\operatorname{def}(\tilde G) = 0$. Suppose
+  that some panel-hinge realization $(G, q_0)$ of $G$ has a
+  nondegenerate hinge at every edge and is infinitesimally rigid on
+  $V(G)$. Then $G$ has a generic full-rank realization.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:panel-general-position, lem:case-II-placement-old-rows-extract,
+        lem:isInfRigidOn-of-relative-count}
+  The normals $q_0$ need not be in general position. As $(G, q_0)$ is
+  infinitesimally rigid on $V(G)$ and its hinges are nondegenerate, some
+  $D(|V(G)| - 1)$ rows of $R(G, q_0)$ are linearly independent
+  (\cref{lem:case-II-placement-old-rows-extract} and the note after it).
+  As in the proof of \cref{lem:rank-polynomial-of-le-finrank}, there is
+  a polynomial $Q$ in the normals with $Q(q_0) \neq 0$ such that the same
+  rows are linearly independent at every $q$ with $Q(q) \neq 0$. Off the
+  zero set of another nonzero polynomial, the normals are in general
+  position (\cref{def:panel-general-position}). As $K$ is infinite, some
+  normals $q$ are a non-root of both.
+
+  Then $R(G, q)$ has $D(|V(G)| - 1)$ linearly independent rows. Let $W$
+  be the set of bodies. The screw assignments form a space of dimension
+  $D|W|$, so
+  $\dim Z(G, q) \le D|W| - D(|V(G)| - 1) = D(|W \setminus V(G)| + 1)$,
+  and $(G, q)$ is infinitesimally rigid on $V(G)$
+  (\cref{lem:isInfRigidOn-of-relative-count}). Its rank is then
+  $D(|V(G)| - 1)$, as in the proof of
+  \cref{lem:case-II-placement-old-rows-extract}. As
+  $\operatorname{def}(\tilde G) = 0$, it is at the target rank
+  (\cref{rem:rank-hypothesis-relative}), and its normals are in general
+  position. So it is a generic full-rank realization of $G$.
+\end{proof}
+\begin{fmlnote}
+  The pinned theorem takes the framework $(G, q_0)$ with an endpoint
+  selector that assigns each edge of $G$ its two ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}), and it gives the generic
+  full-rank realization the same selector.
+\end{fmlnote}
+
 \begin{lemma}[Realizing a cycle; KT Lemma 5.4]
   \label{lem:cycle-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.cycle_realization}
   \leanok
   \uses{def:rigidity-matrix, def:rank-hypothesis, def:cycle-data, def:k-dof,
         lem:cycle-realization-base, lem:cycle-realization-dim-bound,
-        lem:cycle-realization-rigid, lem:cycle-normals,
-        lem:case-III-claim612-line-in-panel-union, lem:genericity-device}
+        lem:cycle-realization-rigid, lem:cycle-normals, lem:genericity-device}
   Let $K$ be an infinite field, let $3 \le m \le D$, and let $G$ be a
   cycle on $m$ vertices (\cref{def:cycle-data}) that is a minimal
   $0$-dof-graph. Then $G$ has a generic full-rank realization
@@ -189,7 +241,7 @@ consecutive hinges share a normal. For a cycle, the normals of
 \begin{proof}
   \leanok
   \uses{lem:cycle-realization-rigid,
-        lem:cycle-normals, lem:case-III-claim612-line-in-panel-union}
+        lem:cycle-normals, lem:generic-realization-of-rigid}
   We give the proof for $m \le d + 1$, the range of the formalization;
   the note after the proof compares this range with Katoh and Tanigawa's.
   Let
@@ -231,9 +283,7 @@ consecutive hinges share a normal. For a cycle, the normals of
   set of a nonzero polynomial in the normals. This is the argument of
   \cref{lem:genericity-device}, later in this chapter
   (\cref{sec:molecular-algebraic-induction-genericity}), for one
-  realization. The step is the last theorem pinned on
-  \cref{lem:case-III-claim612-line-in-panel-union}
-  (\texttt{hasGenericFullRankRealization\_\allowbreak{}of\_\allowbreak{}rigidOn\_\allowbreak{}ofNormals}).
+  realization, and the step is \cref{lem:generic-realization-of-rigid}.
 \end{fmlnote}
 
 Katoh and Tanigawa's Case~I contracts a proper rigid subgraph $H$ of $G$
@@ -424,7 +474,7 @@ $G/E(H)$ are simple.
   We derive the identity from this equality. A set $X$ is independent in
   the union of $D$ copies of a matroid with rank function $\rho$ if and
   only if $|Y| \le D\,\rho(Y)$ for every $Y \subseteq X$
-  (\cref{thm:matroid-partition-rank}). Let
+  (\cref{thm:matroid-partition}). Let
   $C = E(\tilde H)$, let $J$ be a base of $C$ in $M(\tilde G)$, so that
   $|J| = D\, r_c(C)$, and let $I$ be a set of copies of edges not in
   $H$. Then $I$ is independent in $M(\tilde G)/C$ if and only if

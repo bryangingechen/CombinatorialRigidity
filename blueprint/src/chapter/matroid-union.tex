@@ -6,9 +6,10 @@ finite set, describes its independent sets, and computes its rank. The
 rank formula is the matroid-union theorem of
 Nash-Williams~\cite{nashWilliams1966} and Edmonds. For $k$ copies of
 one matroid $M$, its independence criterion is Edmonds'
-matroid-partition theorem~\cite[Theorem~1]{edmonds1965}: a set can be
-partitioned into $k$ independent sets of $M$ if and only if every
-subset $Y$ of it has at most $k\, r_M(Y)$ elements. We follow Oxley's
+matroid-partition theorem~\cite[Theorem~1]{edmonds1965}
+(\cref{thm:matroid-partition}): a set can be partitioned into $k$
+independent sets of $M$ if and only if every subset $Y$ of it has at
+most $k\, r_M(Y)$ elements. We follow Oxley's
 presentation~\cite[\S\S11.1--11.3]{oxley2011}.
 
 In \cref{sec:matroid-union-submodular} we show that a non-decreasing
@@ -301,6 +302,33 @@ distinct elements with $e_i \in A_i$ for every $i$.
   The formalization states the rank formula for an arbitrary family
   only at $X = E$, and for every $X \subseteq E$ when
   $M_1 = \dots = M_k$. It proves the independence criterion in the
-  second case (\texttt{Matroid.\allowbreak{}Union\_\allowbreak{}pow\_\allowbreak{}indep\_\allowbreak{}iff\_\allowbreak{}count}), which is
-  the only case used later.
+  second case, which is the only case used later
+  (\cref{thm:matroid-partition}).
 \end{fmlnote}
+
+By \cref{lem:union-indep-iff}, a set is independent in the union of
+$k$ copies of a matroid $M$ exactly when it is the union of $k$
+independent sets of $M$, which can be taken disjoint. So for $k$ copies
+of one matroid the independence criterion is Edmonds' matroid-partition
+theorem~\cite[Theorem~1]{edmonds1965}.
+
+\begin{theorem}[Edmonds' matroid-partition theorem]
+  \label{thm:matroid-partition}
+  \lean{Matroid.Union_pow_indep_iff_count}
+  \leanok
+  \uses{def:matroid-union}
+  Let $M$ be a matroid on a finite set $E$, and let $k$ be a natural
+  number. A set $X \subseteq E$ is independent in the union of $k$
+  copies of $M$ if and only if $|Y| \le k\, r_M(Y)$ for every
+  $Y \subseteq X$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:matroid-partition-rank}
+  The set $X$ is independent exactly when its rank is $|X|$. By
+  \cref{thm:matroid-partition-rank} with $M_1 = \dots = M_k = M$, this
+  rank is the minimum of $|X \setminus Y| + k\, r_M(Y)$ over the sets
+  $Y \subseteq X$. For such $Y$ we have
+  $|X \setminus Y| = |X| - |Y|$, so the minimum is $|X|$ if and only if
+  $|Y| \le k\, r_M(Y)$ for every $Y \subseteq X$.
+\end{proof}

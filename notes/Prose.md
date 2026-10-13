@@ -25,9 +25,9 @@ tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
 Round 5's open re-ran the script, which still gives round 1's counts, and triaged the ledger's 97
 `E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*); its task 2 added each node's
-`\uses` to the gate's dump, and its task 3.1 reshaped round 1's chapters' nodes. **Next concrete
-task:** round 5's task 3.2, the node shapes of `matroid-union.tex` through `meet.tex`
-(`notes/Prose-graph-cleanup.md` *Hand-off*).
+`\uses` to the gate's dump, and its tasks 3.1 and 3.2 reshaped the nodes of round 1's chapters and
+of `matroid-union.tex` through `meet.tex`. **Next concrete task:** round 5's task 3.3, the node
+shapes of `rigidity-matrix.tex` (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 

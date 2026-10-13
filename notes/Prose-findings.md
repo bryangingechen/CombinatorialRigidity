@@ -831,6 +831,7 @@ declaration's name as its header writes it:
   supports. A node for the third, or a pin on `thm:matroid-partition-rank`, would index it.
   *Evidence:* read (their statements and bodies; a `grep` for their callers).
   *Found:* round 2 task 2.1.
+  *Disposition:* done (task 3.2).
 - **F-054** · N · `lem:k-frame-span-le-pi` (`body-bar.tex`): its three pins, `Graph.blockPiSpan`,
   `kFrameRow_mem_blockPiSpan` and `span_kFrameRow_le_blockPiSpan`, state the form for all bars, and
   none has a Lean caller (outside every main result's closure, counted in `F-012`). The rank count
@@ -844,6 +845,7 @@ declaration's name as its header writes it:
   three dead pins); read (the body of `forest_count_of_linearIndepOn_kFrameRow`; a `grep` for the
   three names' callers).
   *Found:* round 2 task 2.2.
+  *Disposition:* done (task 3.2).
 - **F-059** · N · `def:plucker-coords` (`extensor.tex`): its pins `pluckerCoord` and
   `pluckerVector` have no Lean caller outside `Molecular/Extensor.lean`, and no declaration relates
   them to `extensor`: the expansion that makes the Plücker coordinate vector the extensor's
@@ -855,6 +857,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter extensor`, at `53ec36db`: two dead
   pins, two unbacked edges); read (`Molecular/Extensor.lean`; a `grep` for the two names' callers).
   *Found:* round 2 task 2.4.
+  *Disposition:* left (no declaration states the expansion; a lemma stating it is a Lean round's).
 - **F-065** · N · `cor:block-rank-vertex-two-cut` (`rigidity-matrix.tex`): its pins
   `inf_span_rigidityRows_of_vertexTwoCut` and `finrank_span_rigidityRows_vertexTwoCut_eq` have no
   Lean caller, and no node uses the corollary (outside every main result's closure, counted in
@@ -960,6 +963,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, dead pins, at `d5db0e0c`); read
   (the pins' statements and bodies; a `grep` for the general form's callers).
   *Found:* round 2 task 2.18.
+  *Disposition:* done (task 3.2).
 - **F-111** · N · `meet.tex`'s step nodes. `lem:complement-iso-line-one-dim` and
   `lem:complement-iso-exterior-map-injective` have no Lean caller (`finrank_exteriorPower_two_eq_one`
   is used only by the other pin of the first): the formal proof of
@@ -976,6 +980,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (a `grep`
   for each pin's callers).
   *Found:* round 2 task 2.18.
+  *Disposition:* left (the steps of a route the formal proof does not take; the live steps are
+  addresses, the transformation law in the prose after `def:meet` and the proof of
+  `lem:meet-two-hyperplanes`).
 - **F-119** · N · node order in `algebraic-induction.tex`'s five sections: 18 `\uses` edges at 10
   nodes point at nodes of later sections. `thm:theorem-55` uses seven Case I–III nodes;
   `prop:rigidity-matrix-prop11` uses `lem:genericity-device`; `lem:triangle-normals` and
@@ -3039,6 +3046,21 @@ declaration's name as its header writes it:
   *Evidence:* read (the three docstrings; a `grep` for the two old labels in
   `CombinatorialRigidity/`).
   *Found:* round 5 task 3.1.
+- **F-232** · L · the declarations round 5's task 3.2 moved or unpinned
+  (`Molecular/Meet.lean`, `Molecular/AlgebraicInduction/`, `Molecular/RigidityMatrix/Claim612.lean`,
+  `BodyBar/KFrame.lean`). The docstrings of `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+  and `extensor_join_proportional_complementIso_meet` name
+  `lem:case-III-claim612-line-in-panel-union`, and their nodes are now
+  `lem:generic-realization-of-rigid` and `lem:meet-two-hyperplanes`; the first also names
+  `lem:case-III-realization`, which is no label. Seven of the eight declarations unpinned from that
+  lemma name it too. Of the eight, `exists_line_data_of_homogeneousIncidence` and
+  `exists_complementIso_ne_zero_of_homogeneousIncidence` serve the $d = 3$ dispatch; the other six
+  have no caller outside themselves (`case_III_realization_of_line` none at all). `blockPiSpan`,
+  `kFrameRow_mem_blockPiSpan` and `span_kFrameRow_le_blockPiSpan` have no caller, and the latter
+  two's docstrings place them in the rank count of `lem:k-frame-nonzero-monomial-forest`, which
+  uses the per-set forms.
+  *Evidence:* read (the docstrings; a `grep` for each name's callers in `CombinatorialRigidity/`).
+  *Found:* round 5 task 3.2.
 
 ## M — mathematics and sources
 

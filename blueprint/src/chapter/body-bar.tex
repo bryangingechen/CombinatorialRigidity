@@ -79,9 +79,9 @@ $I_1 \cup \dots \cup I_k$ of sets $I_j$ independent in $M_j$
 rank of the union (\cref{thm:matroid-partition-rank}) shows that a set
 $X$ is independent in the union if and only if $|Y| \le k\, r_M(Y)$
 for every $Y \subseteq X$. This is Edmonds' matroid-partition
-theorem~\cite[Theorem~1]{edmonds1965}. We apply these results to $k$
-copies of the cycle matroid of $G$, whose independent sets are the
-unions of $k$ forests.
+theorem~\cite[Theorem~1]{edmonds1965} (\cref{thm:matroid-partition}).
+We apply these results to $k$ copies of the cycle matroid of $G$, whose
+independent sets are the unions of $k$ forests.
 
 The count compares each non-empty set of bars with the bodies it meets.
 For simple graphs, \cref{def:isSparse} instead bounds the number of
@@ -106,8 +106,7 @@ Corollary~3~\cite{whiteley1988} that we use, and we follow his proof.
   \label{thm:unionPow-cycle-indep-iff-sparse}
   \lean{Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict}
   \leanok
-  \uses{def:graph-sparse, thm:matroid-partition-rank,
-    lem:union-indep-iff}
+  \uses{def:graph-sparse, lem:union-indep-iff}
   Let $G$ be a multigraph, let $k$ be a natural number, and let
   $E' \subseteq E(G)$. Then $E'$ is independent in the union of $k$
   copies of the cycle matroid of $G$ if and only if
@@ -115,9 +114,9 @@ Corollary~3~\cite{whiteley1988} that we use, and we follow his proof.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:matroid-partition-rank, lem:union-indep-iff}
-  By Edmonds' theorem (\cref{thm:matroid-partition-rank};
-  \texttt{Matroid.\allowbreak{}Union\_\allowbreak{}pow\_\allowbreak{}indep\_\allowbreak{}iff\_\allowbreak{}count}),
+  \uses{thm:matroid-partition, lem:union-indep-iff}
+  By Edmonds' matroid-partition theorem
+  (\cref{thm:matroid-partition}),
   $E'$ is independent in the union if and only if $|Y| \le k\, r(Y)$
   for every $Y \subseteq E'$. On the other hand, $G \restriction E'$ is
   $(k, k)$-sparse if and only if $|Y| \le k\,|V(Y)| - k$ for every
@@ -210,8 +209,8 @@ $U^k$ of the vectors whose $k$ blocks all lie in $W$.
 
 \begin{lemma}[The $k$-frame rows lie in a product of incidence spans]
   \label{lem:k-frame-span-le-pi}
-  \lean{Graph.span_kFrameRow_le_blockPiSpan, Graph.kFrameRow_mem_blockPiSpan,
-    Graph.blockPiSpan}
+  \lean{Graph.span_kFrameRowOn_le_blockPiSpanOn, Graph.kFrameRow_mem_blockPiSpanOn,
+    Graph.blockPiSpanOn}
   \leanok
   \uses{def:k-frame-matroid}
   Let $A$ be the span over $K$ of the signed incidence vectors of the
@@ -222,6 +221,15 @@ $U^k$ of the vectors whose $k$ blocks all lie in $W$.
   \leanok
   Block $j$ of $\rho_e$ is $X_{e,j}\, a_e$, which lies in $A$.
 \end{proof}
+\begin{fmlnote}
+  The formalization proves the lemma for every set $Y$ of bars, with
+  the span $A_Y$ of $\{a_e : e \in Y\}$ in place of $A$: the $k$-frame
+  row of every bar of $Y$ lies in $A_Y^k$, and so does the span of
+  these rows. The statement is the case $Y = E(G)$, and the proof of
+  \cref{lem:k-frame-nonzero-monomial-forest} uses the general case. The
+  first pinned theorem is the second statement, the second is the first,
+  and the third pin defines $A_Y^k$.
+\end{fmlnote}
 
 \begin{lemma}[The dimension of a product subspace]
   \label{lem:k-frame-pi-finrank}
@@ -275,9 +283,9 @@ $U^k$ of the vectors whose $k$ blocks all lie in $W$.
     lem:k-frame-incidence-finrank-rk}
   Let $Y \subseteq E'$, and let $A_Y$ be the span over $K$ of
   $\{a_e : e \in Y\}$. The $|Y|$ rows $\rho_e$ with $e \in Y$ are
-  linearly independent. They lie in $A_Y^k$, by the argument of
-  \cref{lem:k-frame-span-le-pi} with $Y$ in place of $E(G)$
-  (\texttt{Graph.\allowbreak{}span\_\allowbreak{}kFrameRowOn\_\allowbreak{}le\_\allowbreak{}blockPiSpanOn}).
+  linearly independent. They lie in $A_Y^k$, by
+  \cref{lem:k-frame-span-le-pi} with $Y$ in place of $E(G)$ (the note
+  after it).
   By \cref{lem:k-frame-pi-finrank} and
   \cref{lem:k-frame-incidence-finrank-rk},
   $\dim A_Y^k = k \dim A_Y = k\, r(Y)$. Hence $|Y| \le k\, r(Y)$.
@@ -422,9 +430,10 @@ over $R$, which contains the entries of every $k$-frame row.
   rows are linearly independent over $K$. If they are, then
   $|Y| \le k\, r(Y)$ for every $Y \subseteq E'$
   (\cref{lem:k-frame-nonzero-monomial-forest}). So $E'$ is independent
-  in the union of $k$ copies of the cycle matroid, by Edmonds' theorem
-  (\cref{thm:matroid-partition-rank}). Then $G \restriction E'$ is
-  $(k, k)$-sparse by \cref{thm:unionPow-cycle-indep-iff-sparse}. The
+  in the union of $k$ copies of the cycle matroid, by Edmonds'
+  matroid-partition theorem (\cref{thm:matroid-partition}). Then
+  $G \restriction E'$ is $(k, k)$-sparse by
+  \cref{thm:unionPow-cycle-indep-iff-sparse}. The
   converse is \cref{lem:k-frame-specialize-forest}.
 \end{proof}
 

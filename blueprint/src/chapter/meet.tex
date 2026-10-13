@@ -33,7 +33,9 @@ dual space (\cref{def:meet-pairing-dual}). The pairing
 $(X, Y) \mapsto \operatorname{vol}(X \vee Y)$ is nondegenerate, and it
 gives the complement isomorphism $*$ (\cref{def:meet-complement-iso}),
 whose defining property is \cref{lem:complement-iso-toDual}. The meet is
-then $A \wedge B = *({*A} \vee {*B})$ (\cref{def:meet}). The second
+then $A \wedge B = *({*A} \vee {*B})$ (\cref{def:meet}), and the meet of
+two hyperplanes is an extensor of their intersection
+(\cref{lem:meet-two-hyperplanes}). The second
 subsection takes $d = 3$ and proves the agreement of meet and join
 (\cref{lem:case-III-claim612-line-in-panel-union}). It ends with the
 converse fact that a nonzero $2$-extensor determines its plane
@@ -211,8 +213,9 @@ The meet is the join transported by the complement isomorphism.
 \begin{fmlnote}
   The formalization proves no property of the meet itself. It proves the
   formula for $*e_S$ and the transformation law below, and the case of
-  two hyperplanes in the form $*(n_A \vee n_B)$, which is how the later
-  chapters use the meet (\cref{def:panel-support-extensor}). The
+  two hyperplanes in the form $*(n_A \vee n_B)$
+  (\cref{lem:meet-two-hyperplanes}), which is how the later chapters use
+  the meet (\cref{def:panel-support-extensor}). The
   statements below for a general subspace $U$ and for general subspaces
   $X$ and $Y$ are not formalized.
 \end{fmlnote}
@@ -252,10 +255,59 @@ The later chapters use the case of two distinct hyperplanes $H_A$ and
 $H_B$, where $a = b = 1$. Then $n_A = {*A}$ spans $H_A^\perp$, so it is a
 normal of $H_A$, and likewise $n_B = {*B}$ for $H_B$. The meet
 $A \wedge B = *(n_A \vee n_B)$ is a nonzero extensor of $H_A \cap H_B$.
-The formalization proves this last statement for every $d$
-(\texttt{extensor\_\allowbreak{}join\_\allowbreak{}proportional\_\allowbreak{}complementIso\_\allowbreak{}meet}),
-and \cref{lem:case-III-claim612-line-in-panel-union} below proves it for
-$d = 3$.
+The next lemma states this for every $d$, in the form the formalization
+proves, and \cref{lem:case-III-claim612-line-in-panel-union} below
+proves it for $d = 3$ by a count of dimensions.
+
+\begin{lemma}[The meet of two hyperplanes is an extensor of their intersection]
+  \label{lem:meet-two-hyperplanes}
+  \lean{CombinatorialRigidity.Molecular.complementIso_extensor_mem_range_map_subtype,
+        CombinatorialRigidity.Molecular.extensor_join_proportional_complementIso_meet}
+  \leanok
+  \uses{def:meet-complement-iso, def:join}
+  Let $d \ge 1$, let $n_1, n_2 \in V$, and let $W$ be a
+  $(d-1)$-dimensional subspace of $V$ whose vectors are orthogonal to
+  $n_1$ and $n_2$. Then $*(n_1 \vee n_2)$ lies in the image of the map
+  $\bigwedge^{d-1} W \to \bigwedge^{d-1} V$ induced by the inclusion of
+  $W$ in $V$. If moreover $n_1$ and $n_2$ are linearly independent, and
+  $p_1, \dots, p_{d-1} \in V$ are linearly independent and orthogonal to
+  $n_1$ and $n_2$, then
+  $p_1 \vee \cdots \vee p_{d-1} = c\, {*(n_1 \vee n_2)}$ for some
+  $c \in K$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:complement-iso-toDual}
+  If $n_1$ and $n_2$ are linearly dependent, then $n_1 \vee n_2 = 0$
+  (the remark after \cref{def:extensor}), and the first statement holds
+  as $*0 = 0$. Otherwise there is a linear automorphism $g$ of $V$ with
+  $g(e_1) = n_1$ and $g(e_2) = n_2$. Let $h$ be its inverse transpose.
+  By the formula displayed after \cref{def:meet}, with $S = \{1, 2\}$,
+  which follows from \cref{lem:complement-iso-toDual},
+  \[
+    *(n_1 \vee n_2) \;=\; \det(g)\, \varepsilon_S\;
+    h(e_3) \vee \cdots \vee h(e_{d+1}).
+  \]
+  For $t \ge 3$ and $i = 1, 2$ we have
+  $h(e_t) \cdot n_i = h(e_t) \cdot g(e_i) = e_t \cdot e_i = 0$. So the
+  vectors $h(e_t)$ lie in the orthogonal complement of $n_1$ and $n_2$.
+  This complement has dimension $d - 1$ and contains $W$, so it is $W$,
+  and $*(n_1 \vee n_2)$ is a multiple of a join of $d - 1$ vectors of
+  $W$. Hence it lies in the image of $\bigwedge^{d-1} W$.
+
+  For the second statement, let $W$ be the orthogonal complement of
+  $n_1$ and $n_2$, of dimension $d - 1$. The space $\bigwedge^{d-1} W$
+  has dimension $\binom{d-1}{d-1} = 1$, so its image in
+  $\bigwedge^{d-1} V$ has dimension at most $1$. The vectors $p_i$ lie in
+  $W$, so their join lies in this image, and it is nonzero, as they are
+  linearly independent. The meet $*(n_1 \vee n_2)$ lies in the image by
+  the first statement. So it is a multiple $\mu\, (p_1 \vee \cdots \vee
+  p_{d-1})$, and $\mu \neq 0$, as $n_1 \vee n_2 \neq 0$ and $*$ is an
+  isomorphism. Then $c = \mu^{-1}$ will do.
+\end{proof}
+\begin{fmlnote}
+  The first pin is the first statement, and the second pin the second.
+\end{fmlnote}
 
 \subsection{Lines in projective three-space}
 
@@ -277,7 +329,8 @@ The extensor of $L$ is $\bar p \vee \bar q$ for distinct points $p$ and
 $q$ of $L$ (\cref{def:affine-subspace-extensor}). The meet of the two
 planes (two panels, in a panel-hinge framework) is a scalar multiple of
 $*(n_1 \vee n_2)$, a nonzero extensor of $W$ by the remarks after
-\cref{def:meet}. \Cref{lem:case-III-claim612-line-in-panel-union} proves
+\cref{def:meet} and by \cref{lem:meet-two-hyperplanes}.
+\Cref{lem:case-III-claim612-line-in-panel-union} proves
 that the two extensors agree up to a scalar, by a count of dimensions in
 $\bigwedge^2 K^4$. It states the agreement in the form that the
 algebraic induction applies: a linear form on $\bigwedge^2 K^4$ that
@@ -364,16 +417,7 @@ that identify it, which we use after the proof.
   \label{lem:case-III-claim612-line-in-panel-union}
   \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero,
-        CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct,
-        CombinatorialRigidity.Molecular.panelSupportExtensor_join_eq_zero_of_eq_zero,
-        CombinatorialRigidity.Molecular.panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero,
-        CombinatorialRigidity.Molecular.exists_shear_linearIndependent_pair,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_old_new_blocks_of_line,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_full_family_of_line,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_of_line,
-        CombinatorialRigidity.Molecular.exists_line_data_of_homogeneousIncidence,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.exists_complementIso_ne_zero_of_homogeneousIncidence,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals}
+        CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
@@ -438,27 +482,13 @@ that identify it, which we use after the proof.
   $r(x \vee y) = \lambda\, r(*(n_1 \vee n_2)) = 0$.
 \end{proof}
 \begin{fmlnote}
-  The first three pins are the lemma. The first is its first statement,
-  and the second and third are its second statement, with the
-  orthogonality written through the coordinate pairing of $K^4$ and
-  through the dot product. The other nine belong to a realization of
-  Case~III of the algebraic induction at $d = 3$ that applies the lemma
-  (\cref{sec:molecular-algebraic-induction-caseIII}). The fourth
-  restates the second statement for the hinge extensor of two panels
-  (\cref{def:panel-support-extensor}), and the fifth, in contrapositive
-  form, for the hinge extensor of the normals $n_1 + t n_2$ and $n_1$
-  with $t \neq 0$. The sixth chooses such a $t$ for which $n_1 + t n_2$
-  is independent of a given normal, over an infinite field. The seventh
-  to ninth build, from a line in a panel, an independent family of rows
-  of the rigidity matrix and a realization of full rank. The tenth gives,
-  for each pair of four points in the position of KT eq.~(6.45), one of
-  the three panels that contains the line through the pair and a second
-  plane through that line. The eleventh finds such a line on whose meet
-  $*(n_1 \vee n_2)$ a given nonzero linear form does not vanish. The
-  twelfth turns an infinitesimally rigid realization with nonzero hinge
-  extensors into a generic one of full rank, the step for which Katoh and
-  Tanigawa cite their Lemma~5.2 (KT p.~691).
-  \Cref{lem:cycle-realization} uses it as well.
+  The first pin is the first statement, and the second and third are
+  the second statement, with the orthogonality written through the
+  coordinate pairing of $K^4$ and through the dot product. The formal
+  proof of Case~III at $d = 3$
+  (\cref{lem:case-III-candidate-dispatch-d3}) applies the third, in the
+  step from a join to a line of the proof of \cref{lem:case-III-claim612}.
+  The general case applies \cref{lem:meet-two-hyperplanes} instead.
 \end{fmlnote}
 
 The line $\Omega$ is the image of $\bigwedge^2 W$. The inclusion of $W$

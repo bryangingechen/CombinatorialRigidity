@@ -1632,8 +1632,9 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
   \cref{lem:case-III-claim612-extensor-span} in place of the joins. The
   general case uses it in this form
   (\cref{lem:case-III-chain-discriminator}). The step from a join to a
-  line in the second paragraph is pinned on
-  \cref{lem:case-III-claim612-line-in-panel-union}.
+  line in the second paragraph is
+  \texttt{BodyHingeFramework.\allowbreak{}exists\_\allowbreak{}complementIso\_\allowbreak{}ne\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}homogeneousIncidence},
+  which applies \cref{lem:case-III-claim612-line-in-panel-union}.
 \end{fmlnote}
 
 We now prove the case $d = 3$ of Case~III. The lemma assumes a generic
@@ -1890,7 +1891,7 @@ builds the framework for this panel.
   \uses{lem:case-III-claim-6-11, lem:case-III-nested-rank-lower,
         lem:case-III-claim612-extensor-span,
         lem:case-III-claim612-orthseq-vanish, lem:case-III-claim612,
-        lem:case-III-claim612-line-in-panel-union}
+        lem:meet-two-hyperplanes}
   We follow Katoh and Tanigawa~\cite[pp.~692--698]{katohTanigawa2011}.
   As $d \ge 2$, the vertex $v_1$ is interior, so its only edges join it
   to $v_0$ and to $v_2$ (\cref{def:chain-data}). The vertices
@@ -1950,9 +1951,10 @@ builds the framework for this panel.
   $n'$ be a vector of this complement that is linearly independent of
   $q(u_i)$. Then the $d - 1$ vectors are orthogonal to $q(u_i)$ and to
   $n'$, so $E_{lm}$ is a nonzero multiple of $C(q(u_i), n')$ (the
-  remarks after \cref{def:panel-support-extensor} and after
-  \cref{def:meet}; \cref{lem:case-III-claim612-line-in-panel-union} is
-  the case $d = 3$). Hence $r(C(q(u_i), n')) \neq 0$.
+  remarks after \cref{def:panel-support-extensor}, and
+  \cref{lem:meet-two-hyperplanes}, of which
+  \cref{lem:case-III-claim612-line-in-panel-union} is the case $d = 3$).
+  Hence $r(C(q(u_i), n')) \neq 0$.
 \end{proof}
 \begin{fmlnote}
   The pinned theorem gives more than the statement, and
