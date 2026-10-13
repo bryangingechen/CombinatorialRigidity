@@ -1,7 +1,7 @@
 \section{Executable pebble game}
 \label{sec:executable}
 
-The formal pebble game on a graph $G$ (\cref{sec:pebble-game-verdict})
+The formal pebble game on a graph $G$ (\cref{def:runPebbleGame-verdict})
 cannot be computed, since it uses mathlib's lists of finite sets
 (\cref{fmlnote:pebble-game-computable-core}). In this section we define
 the computable pebble game on $G$, which uses lists sorted by a linear
@@ -14,7 +14,7 @@ decide whether a graph read from a file is Laman.
 In \cref{sec:executable-list-views} we define the sorted lists, and in
 \cref{sec:executable-wrapper} the computable pebble game. It needs no
 new correctness argument: its verdict accepts $G$ if and only if $G$ is
-$(k, \ell)$-sparse (\cref{thm:pebbleGameResult-isAccept-iff}). We define
+$(k, \ell)$-sparse (\cref{thm:runPebbleGameExec-isAccept-iff}). We define
 the three decision procedures in \cref{sec:executable-decidable}, and
 describe three ways to run them in \cref{sec:executable-backends}. We
 list the examples on which they are run in
@@ -129,17 +129,41 @@ computed.
 \end{fmlnote}
 
 The verdict is well defined, as for the formal pebble game (the
-paragraph after \cref{def:runPebbleGame}). The sorted edge list lists
-each edge of $G$ once (the proof of
-\cref{thm:pebbleGameResult-isAccept-iff}), so
-\cref{thm:pebble-game-correct} applies to it. By its part~(1), a
-returned $D$ has $\underline{D} = E(G)$, and $D$ is
+paragraph after \cref{def:runPebbleGame-verdict}). The sorted edge list
+lists the pairs $(u, v)$ with $u < v$ and $uv \in E(G)$, in increasing
+order (\cref{lem:mem-edgeListSorted}). So it lists each edge of $G$
+once, and \cref{thm:pebble-game-correct} applies to it. By its
+part~(1), a returned $D$ has $\underline{D} = E(G)$, and $D$ is
 $(k, \ell)$-reachable, as is every orientation that the game reaches.
 By its part~(2), whose proof uses \cref{lem:workhorseWitness-certifies}
-and $\ell < 2k$, a returned $V'$ is a blocking witness for $G$. By
-\cref{thm:pebbleGameResult-isAccept-iff}, the verdict that the
-computable pebble game on $G$ returns accepts $G$ if and only if $G$ is
-$(k, \ell)$-sparse.
+and $\ell < 2k$, a returned $V'$ is a blocking witness for $G$.
+
+\begin{theorem}[Correctness of the computable pebble game]
+  \label{thm:runPebbleGameExec-isAccept-iff}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_isAccept_iff}
+  \leanok
+  \uses{def:runPebbleGameExec}
+  Let $V$ be a finite set with a linear order, let $G$ be a simple graph
+  on $V$, and let $k$ and $\ell$ be non-negative integers with
+  $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and only if the verdict
+  that the computable pebble game on $G$ returns accepts $G$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:pebble-game-correct, lem:mem-edgeListSorted,
+    lem:mem-outListSorted, def:reachClosureComputable,
+    lem:mem-reachClosureComputable}
+  The computable pebble game returns an acceptance when the pebble game
+  on the sorted edge list returns a partial orientation, and a
+  rejection when it returns a failure witness
+  (\cref{def:runPebbleGameExec}). So its verdict accepts $G$ if and only
+  if this game returns a partial orientation. The entries of the sorted
+  out-neighbour list of a vertex are its out-neighbours
+  (\cref{lem:mem-outListSorted}). The sorted edge list lists each edge
+  of $G$ once (\cref{lem:mem-edgeListSorted}). So
+  \cref{thm:pebble-game-correct} applies, and the game returns a partial
+  orientation if and only if $G$ is $(k, \ell)$-sparse.
+\end{proof}
 
 \subsection{Deciding sparsity, tightness and the Laman property}
 \label{sec:executable-decidable}
@@ -158,14 +182,14 @@ the Laman property add a count of the edges.
   \lean{SimpleGraph.instDecidableIsSparse}
   \leanok
   \uses{def:runPebbleGameExec, def:isSparse,
-    thm:pebbleGameResult-isAccept-iff}
+    thm:runPebbleGameExec-isAccept-iff}
   Let $V$ be a finite set with a linear order, let $G$ be a simple graph
   on $V$, and let $k$ and $\ell$ be non-negative integers with
   $\ell < 2k$. The decision procedure for the $(k, \ell)$-sparsity of
   $G$ runs the computable pebble game on $G$
   (\cref{def:runPebbleGameExec}). If the verdict accepts $G$, it returns
   a proof that $G$ is $(k, \ell)$-sparse, and otherwise a proof that $G$
-  is not, both by \cref{thm:pebbleGameResult-isAccept-iff}.
+  is not, both by \cref{thm:runPebbleGameExec-isAccept-iff}.
 \end{definition}
 
 \begin{fmlnote}
@@ -178,7 +202,7 @@ the Laman property add a count of the edges.
 
 \begin{remark}[One decision procedure for each property]
   \label{rem:decidable-runtime}
-  Since $V$ is finite, whether $G$ is $(k, \ell)$-sparse can also be
+  As $V$ is finite, whether $G$ is $(k, \ell)$-sparse can also be
   decided by checking the inequality of \cref{def:isSparse} for each of
   the $2^{|V|}$ subsets of $V$. A procedure of this kind decides the same
   proposition, but on a sparse graph it checks all $2^{|V|}$ subsets. We
@@ -259,7 +283,7 @@ it.
     than $2 \cdot 4 - 3 = 5$, so it is not $(2, 3)$-sparse. The
     procedures for sparsity and for the Laman property answer
     \texttt{false}. So the computable pebble game rejects $K_4$
-    (\cref{thm:pebbleGameResult-isAccept-iff}), and its blocking witness
+    (\cref{thm:runPebbleGameExec-isAccept-iff}), and its blocking witness
     is $\{0, 1, 2, 3\}$. Indeed a blocking witness has at least two
     vertices (\cref{def:blockingWitness}), and a set $X$ of two or three
     vertices spans $2|X| - 3$ edges of $K_4$.
@@ -297,7 +321,7 @@ the following.
     \texttt{NOT\_SPARSE}, then the line \texttt{BLOCKING}~$|V'|$, then a
     line \texttt{VERTEX}~$w$ for each $w \in V'$, in increasing order.
 \end{itemize}
-By \cref{thm:pebbleGameResult-isAccept-iff} and \cref{def:isLaman}, the
+By \cref{thm:runPebbleGameExec-isAccept-iff} and \cref{def:isLaman}, the
 first line is \texttt{LAMAN} if $G$ is Laman, \texttt{SPARSE\_NOT\_TIGHT}
 if $G$ is $(2, 3)$-sparse but not Laman, and \texttt{NOT\_SPARSE} if $G$
 is not $(2, 3)$-sparse. The reading of the file and the printing are not

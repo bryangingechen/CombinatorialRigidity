@@ -743,6 +743,7 @@ declaration's name as its header writes it:
   `grep` for both lemmas' callers); measured (`scripts/blueprint-deps.py --label`, dead pins, at
   `09106a34`).
   *Found:* round 1 task 5.1.
+  *Disposition:* done (task 3.1).
 
 - **F-016** · N · the degree-three case of `thm:isSparse-exists-typeI-or-typeII-reverse`
   (`rigidity-matroid.tex`): its Lean, `IsSparse.False_of_pairwise_blocker_or_edge`, splits on how
@@ -758,6 +759,7 @@ declaration's name as its header writes it:
   `Sparsity.lean`; `notes/Phase5.md` on the "1-deficient intermediate"); measured
   (`scripts/blueprint-deps.py --label thm:isSparse-exists-typeI-or-typeII-reverse`, at `4657a7fc`).
   *Found:* round 1 task 5.2.
+  *Disposition:* done (task 3.1).
 - **F-019** · N · `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`): the node
   is in §10 of the rendered blueprint, after its first user,
   `thm:isLaman-exists-typeI-or-typeII-reverse` (`henneberg.tex`, §5). Yet its pin `IsSparse.exists_typeI_or_typeII_reverse` is in
@@ -790,6 +792,7 @@ declaration's name as its header writes it:
   `640505ce`: `def:runPebbleGameExec` missing from the statement; `def:outListSorted`,
   `def:edgeListSorted`, `lem:mem-outListSorted` and `lem:mem-edgeListSorted` from the proof).
   *Found:* round 1 task 5.15.
+  *Disposition:* done (task 3.1).
 - **F-044** · N · `runPebbleGameWith_witness_bridges` (`Correctness.lean`): a load-bearing lemma
   with no node. If the game on a list of edges of $G$, from an orientation of edges of $G$, returns
   a failure witness, then the witness's pair is an edge of $G$ and its orientation orients only
@@ -800,6 +803,7 @@ declaration's name as its header writes it:
   (`scripts/blueprint-deps.py --label thm:pebble-game-correct`, at `640505ce`: every proof chain
   of the pin runs through it).
   *Found:* round 1 task 5.15.
+  *Disposition:* done (task 3.1).
 - **F-050** · N · `rigidity-matrix.tex` and `molecular-induction.tex`: 14 `\uses` edges at 11
   nodes point at nodes of later chapters. In `rigidity-matrix.tex`,
   `lem:trivial-motions-rank-bound` and `lem:relative-deficiency-rank-bound` use `def:D-deficiency`
@@ -3018,6 +3022,15 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the seven pins and of `screwEquivOfLinearEquiv`;
   JJ 2010 §§6–7, pp. 582–584).
   *Found:* round 4 task 2.12.
+
+- **F-230** · L · `runPebbleGame`, `runPebbleGame.aux` (`PebbleGame/Correctness.lean`) and
+  `runPebbleGameExec_isAccept_iff` (`PebbleGame/Exec.lean`): their docstrings name the nodes their
+  pins left in round 5's task 3.1. The first two say `def:runPebbleGame`, and `runPebbleGame` is
+  now `def:runPebbleGame-verdict`'s pin; the third says `thm:pebbleGameResult-isAccept-iff`, and it
+  is now `thm:runPebbleGameExec-isAccept-iff`'s.
+  *Evidence:* read (the three docstrings; a `grep` for the two old labels in
+  `CombinatorialRigidity/`).
+  *Found:* round 5 task 3.1.
 
 ## M — mathematics and sources
 

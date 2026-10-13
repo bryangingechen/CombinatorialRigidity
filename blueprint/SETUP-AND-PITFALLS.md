@@ -78,6 +78,12 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   fixed it. The log reports it as an `Overfull \hbox` "in paragraph at
   lines" of the statement's first lines. Check the chapter's
   `Overfull` lines after retitling a node.
+- **A new node renumbers the environments after it.** A theorem added to
+  `executable.tex` made Remark 14.9 into Remark 14.10, and the remark's
+  first line, one digit wider, went 4pt past the margin (PROSE round 5,
+  task 3.1); "As" for "Since" in its first sentence fixed it. After
+  adding or removing a node, count the whole chapter's `Overfull` lines,
+  not only the new node's.
 - **A `\cite` note, or a formula with nothing to break at, is one box.**
   `[KT11, pp. 658–659]` and `$M(\tilde G)/E(\tilde H)$` each pushed a
   line 10–19pt past the margin when they fell at its end (PROSE round 2,

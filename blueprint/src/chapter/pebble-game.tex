@@ -130,6 +130,12 @@ This does not happen at the orientations the game reaches, the
 $(k, \ell)$-reachable ones of \cref{def:reachable-orientation}, as the
 proof of Invariant~(1) in \cref{lem:pebble-game-invariants} shows.
 
+\begin{fmlnote}
+  In order, the five pins define $\mathrm{out}_D(v)$,
+  $\mathrm{peb}_{D,k}(v)$, $\mathrm{span}_D(V')$, $\mathrm{out}_D(V')$
+  and $\mathrm{peb}_{D,k}(V')$.
+\end{fmlnote}
+
 \begin{definition}[Path reversal]
   \label{def:path-reversal}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.reverse,
@@ -298,7 +304,9 @@ from it.
   $\ell \le k|V'|$, which is the hypothesis used here. The formal
   statement of (4) is $\mathrm{span}_D(V') + \ell \le k|V'|$, which
   avoids the truncated subtraction of natural numbers. Under
-  $\ell \le k|V'|$ the two forms agree.
+  $\ell \le k|V'|$ the two forms agree. The first two pins are (1), in
+  the equivalent form $\mathrm{out}_D(v) \le k$ and as stated, and the
+  other three are (2) to (4).
 \end{fmlnote}
 
 \subsection{The basic algorithm}
@@ -333,7 +341,6 @@ lists.
   \label{def:tryReachPebble}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebbleWith,
     CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebble,
-    CombinatorialRigidity.PebbleGame.PartialOrientation.TryReachPebbleResult,
     CombinatorialRigidity.PebbleGame.PartialOrientation.TryReachPebbleResult.newOrient}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts, def:path-reversal,
@@ -353,6 +360,14 @@ lists.
     \item If the search fails, the pebble search fails.
   \end{enumerate}
 \end{definition}
+
+\begin{fmlnote}
+  The first two pins are the pebble search, with the lists $N^+_D(a)$
+  as an argument and with mathlib's lists
+  (\cref{fmlnote:pebble-game-computable-core}). The third computes the
+  partial orientation obtained from $D$ by reversing $p$, from the data
+  that the search returns.
+\end{fmlnote}
 
 When the processing of an edge $uv$ cannot gather $\ell + 1$ free
 pebbles on $u$ and $v$, it rejects $uv$ and returns the following data.
@@ -478,8 +493,7 @@ A blocking witness shows that $G$ is not $(k, \ell)$-sparse
 
 \begin{definition}[The pebble game]
   \label{def:runPebbleGame}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith,
-    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith}
   \leanok
   \uses{def:tryAddEdge, def:workhorseWitness, def:partial-orientation}
   Let $V$, $k$, $\ell$ and the lists $N^+_D(a)$ be as in
@@ -512,8 +526,8 @@ list is finite. In \cref{sec:pebble-game-soundness} we show that if the
 game accepts $G$ with $D$, then $\underline{D} = E(G)$, and $G$ is
 $(k, \ell)$-sparse. In \cref{sec:pebble-game-correctness} we show that
 if it rejects $G$ with $V'$, then $V'$ is a blocking witness for $G$.
-The formal pebble game on $G$ returns its answer together with proofs
-(\cref{def:pebbleGameResult}). With $D$ it returns proofs that
+The formal pebble game on $G$ (\cref{def:runPebbleGame-verdict})
+returns its answer together with proofs. With $D$ it returns proofs that
 $\underline{D} = E(G)$ and that $D$ is $(k, \ell)$-reachable. With
 $V'$ it returns a proof that $V'$ is a blocking witness for $G$, for
 which it uses $\ell < 2k$.
@@ -528,9 +542,10 @@ which it uses $\ell < 2k$.
   can be computed whenever the lists can, and the results below are
   proved for them. A second form of each procedure takes for
   $N^+_D(a)$ mathlib's list of the elements of the finite set of
-  out-neighbours, so it is the first form with particular lists. The
-  pebble game on $G$ lists the edges of $G$ in the same way, and writes
-  each edge as an ordered pair by a choice. As in \cref{sec:dfs},
+  out-neighbours, so it is the first form with particular lists. For
+  the pebble game, the second form is the formal pebble game on $G$. It
+  also lists the edges of $G$ in this way, and writes each edge as an
+  ordered pair by a choice. As in \cref{sec:dfs},
   mathlib lists the elements of a finite set by a choice that cannot be
   computed, so the second forms cannot be computed. In
   \cref{sec:executable} we use lists sorted by a linear order on $V$
@@ -953,7 +968,9 @@ $N^+_D(a)$, so that it applies to each formal form of the game
   so $uv$ is an edge of $G$. The processing reaches $D$ from $D_{i-1}$ by
   reversing directed paths in steps~2 and~3. So
   $\underline{D} = \underline{D_{i-1}}$ (\cref{def:path-reversal}), and
-  every edge in $\underline{D}$ is an edge of $G$. Since $G$ is finite,
+  every edge in $\underline{D}$ is an edge of $G$
+  (\texttt{runPebbleGameWith\_\allowbreak{}witness\_\allowbreak{}bridges}).
+  Since $G$ is finite,
   \cref{lem:workhorseWitness-certifies} shows that $V'$ is a blocking
   witness for $G$. This is the only step of the proof that uses
   $\ell < 2k$.
@@ -969,13 +986,14 @@ $N^+_D(a)$, so that it applies to each formal form of the game
 \subsection{The verdict}
 \label{sec:pebble-game-verdict}
 
-We now define the verdicts that the formal pebble game on $G$ returns
-(see the paragraph after \cref{def:runPebbleGame}), and restate
-\cref{thm:pebble-game-correct} for them. The formal pebble game on $G$
-uses mathlib's lists (\cref{fmlnote:pebble-game-computable-core}). The
-computable pebble game on $G$ of \cref{sec:executable} differs from it
-only in its lists, which are sorted by a linear order on $V$. It also
-returns a verdict.
+We now define the verdicts and the formal pebble game on $G$, which
+returns one, and restate \cref{thm:pebble-game-correct} for them. The
+formal pebble game on $G$ uses mathlib's lists
+(\cref{fmlnote:pebble-game-computable-core}). The computable pebble
+game on $G$ of \cref{sec:executable} differs from it only in its lists,
+which are sorted by a linear order on $V$. It also returns a verdict,
+for which the restated theorem holds as well
+(\cref{thm:runPebbleGameExec-isAccept-iff}).
 
 \begin{definition}[Verdict]
   \label{def:pebbleGameResult}
@@ -1002,17 +1020,48 @@ given by $D$ shows that $G$ is $(k, \ell)$-sparse, as in the proof of
 \cref{thm:pebble-game-soundness}. A rejection shows that $G$ is not
 $(k, \ell)$-sparse (the paragraph after \cref{def:blockingWitness}).
 
+\begin{definition}[The formal pebble game]
+  \label{def:runPebbleGame-verdict}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame}
+  \leanok
+  \uses{def:runPebbleGame, def:pebbleGameResult,
+    lem:runPebbleGame-underline-eq, lem:workhorseWitness-certifies,
+    def:reachClosureComputable, lem:mem-reachClosureComputable}
+  Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$
+  and $\ell$ be non-negative integers with $\ell < 2k$. The
+  \emph{formal pebble game on $G$} runs the pebble game from the empty
+  orientation on mathlib's list of the edges of $G$, with mathlib's
+  lists of out-neighbours as the lists $N^+_D(a)$
+  (\cref{fmlnote:pebble-game-computable-core}). It returns the verdict
+  on $G$ (\cref{def:pebbleGameResult}) that is an acceptance, given by
+  $D$, if the game returns a partial orientation $D$, and a rejection,
+  given by $V'$, if the game returns a failure witness whose set is
+  $V'$.
+\end{definition}
+
+The verdict is well defined. Mathlib's list of the edges of $G$ lists
+each edge once, as $(u, v)$ or as $(v, u)$
+(\cref{lem:runPebbleGame-underline-eq}). So the game is the pebble game
+on $G$ (\cref{def:runPebbleGame}). If it returns $D$, then
+$\underline{D} = E(G)$ by the same lemma, and $D$ is
+$(k, \ell)$-reachable, since processing an edge returns a
+$(k, \ell)$-reachable orientation when it accepts. If it returns a
+failure witness, then the witness's pair is an edge of $G$, and every
+edge oriented by its partial orientation is an edge of $G$, as in the
+proof of \cref{thm:pebble-game-correct}~(2). Since $\ell < 2k$, the
+witness's set $V'$ is then a blocking witness for $G$
+(\cref{lem:workhorseWitness-certifies}).
+
 \begin{theorem}[Correctness of the pebble game, for its verdict]
   \label{thm:pebbleGameResult-isAccept-iff}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_isAccept_iff,
-    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_isAccept_iff}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_isAccept_iff}
   \leanok
-  \uses{def:pebbleGameResult, thm:pebble-game-correct, def:isSparse}
+  \uses{def:pebbleGameResult, thm:pebble-game-correct, def:isSparse,
+    def:runPebbleGame-verdict}
   Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$
   and $\ell$ be non-negative integers with $\ell < 2k$. Then $G$ is
   $(k, \ell)$-sparse if and only if the verdict that the formal pebble
-  game on $G$ returns accepts $G$. If $V$ has a linear order, the same
-  holds for the computable pebble game on $G$ (\cref{sec:executable}).
+  game on $G$ returns accepts $G$.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -1021,13 +1070,11 @@ $(k, \ell)$-sparse (the paragraph after \cref{def:blockingWitness}).
   orientation on a list of the edges of $G$ that contains each edge
   once (\cref{lem:runPebbleGame-underline-eq}). It returns an
   acceptance when this game returns a partial orientation, and a
-  rejection when it returns a failure witness. So its verdict accepts
-  $G$ if and only if the game returns a partial orientation. By
+  rejection when it returns a failure witness
+  (\cref{def:runPebbleGame-verdict}). So its verdict accepts $G$ if and
+  only if the game returns a partial orientation. By
   \cref{thm:pebble-game-correct}, this holds if and only if $G$ is
-  $(k, \ell)$-sparse. The computable pebble game lists the edges of $G$
-  by sorting the pairs $(u, v)$ with $u < v$ and $uv \in E(G)$
-  (\cref{def:edgeListSorted}). So it lists each edge once, and the same
-  argument applies.
+  $(k, \ell)$-sparse.
 \end{proof}
 
 \subsection{Independence in the count matroid}
@@ -1043,7 +1090,7 @@ decides whether the edge set of a graph is independent in it.
   \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame}
   \leanok
   \uses{thm:pebble-game-correct, thm:pebbleGameResult-isAccept-iff,
-    def:countMatroid, thm:countMatroid-indep-iff, def:runPebbleGame}
+    def:countMatroid, thm:countMatroid-indep-iff, def:runPebbleGame-verdict}
   Let $V$ be a finite set, let $k$ and $\ell$ be non-negative integers
   with $\ell < 2k$, and let $G$ be a simple graph on $V$. Then $E(G)$ is
   independent in the $(k, \ell)$-count matroid on $V$

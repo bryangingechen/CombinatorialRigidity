@@ -96,7 +96,8 @@ Lemma~2.1.3 that we need within the proof of the theorem.
   $|E(G)| + 3 \le 2|U|$. If every vertex in $U$ had degree at least
   four, the handshake identity would give
   $2|E(G)| = \sum_{u \in U} \deg_G(u) \ge 4|U|$, a contradiction. So
-  some vertex $v$ has degree one, two or three.
+  some vertex $v$ has degree one, two or three
+  (\texttt{IsSparse.\allowbreak{}exists\_\allowbreak{}one\_\allowbreak{}le\_\allowbreak{}degree\_\allowbreak{}le\_\allowbreak{}three}).
 
   If $v$ has degree one or two, then a set of vertices of $G - v$
   spans the same edges in $G - v$ as in $G$, so $G - v$ is
@@ -107,7 +108,9 @@ Lemma~2.1.3 that we need within the proof of the theorem.
   and $y$ that are not adjacent and for which $G - v + xy$ is
   $(2,3)$-sparse. Suppose that it has none. We use an observation from
   Jord\'an's proof: no $(2,3)$-tight set $T$ with $v \notin T$ contains
-  all three neighbours of $v$. Otherwise
+  all three neighbours of $v$
+  (\texttt{IsSparse.\allowbreak{}no\_\allowbreak{}isTightOn\_\allowbreak{}excluding\_\allowbreak{}three\_\allowbreak{}neighbors}).
+  Otherwise
   $T \cup \{v\}$ spans the edges inside $T$ and the edges $va$, $vb$
   and $vc$, so that
   \[
@@ -125,16 +128,20 @@ Lemma~2.1.3 that we need within the proof of the theorem.
   (\cref{lem:isSparse-exists-nonadj-among-three-neighbors}). Jord\'an's
   proof takes such a tight set for each of the three pairs; for an
   adjacent pair, the pair itself is such a set. We follow the formal
-  proof instead, which distinguishes how many pairs are not adjacent.
+  proof instead, which distinguishes how many pairs are not adjacent
+  (\texttt{IsSparse.\allowbreak{}False\_\allowbreak{}of\_\allowbreak{}pairwise\_\allowbreak{}blocker\_\allowbreak{}or\_\allowbreak{}edge}).
 
-  Suppose first that only one pair is not adjacent, say $a$ and $b$.
+  Suppose first that exactly one pair is not adjacent, say $a$ and $b$
+  (\texttt{IsSparse.\allowbreak{}contradiction\_\allowbreak{}one\_\allowbreak{}pair}).
   Let $S$ be a tight set with $a, b \in S$ and $v \notin S$. If
   $c \in S$, let $T = S$. Otherwise the edges $ca$ and $cb$ join $c$ to
   $S$, and $T = S \cup \{c\}$ is tight by
   \cref{thm:isTightOn-insert-vertex-with-edges} with $k = 2$.
 
   Suppose next that exactly two pairs are not adjacent, say $a, c$ and
-  $b, c$, so that $ab$ is an edge. Let $S_1$ and $S_2$ be tight sets
+  $b, c$, so that $ab$ is an edge
+  (\texttt{IsSparse.\allowbreak{}contradiction\_\allowbreak{}two\_\allowbreak{}pair}).
+  Let $S_1$ and $S_2$ be tight sets
   that do not contain $v$, with $a, c \in S_1$ and $b, c \in S_2$, and
   let $T = S_1 \cup S_2$. If $|S_1 \cap S_2| \ge 2$, then $T$ is tight
   by \cref{thm:isTightOn-union-inter}. Otherwise
@@ -144,7 +151,9 @@ Lemma~2.1.3 that we need within the proof of the theorem.
   $F = \{ab\}$, where its hypothesis reads $0 + 3 \le 2 \cdot 1 + 1$,
   and $T$ is tight.
 
-  Suppose finally that no two of $a$, $b$ and $c$ are adjacent. Let
+  Suppose finally that no two of $a$, $b$ and $c$ are adjacent
+  (\texttt{IsSparse.\allowbreak{}contradiction\_\allowbreak{}three\_\allowbreak{}pair}).
+  Let
   $S_{ab}$, $S_{ac}$ and $S_{bc}$ be tight sets that do not contain
   $v$, each containing the two vertices in its index. If two of them
   meet in at least two vertices, then their union contains $a$, $b$

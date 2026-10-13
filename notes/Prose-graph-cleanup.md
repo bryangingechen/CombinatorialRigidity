@@ -6,8 +6,9 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its 132 `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump. No task edits the Lean or
-changes a statement's strength. **Next concrete task:** task 3.1, round 1's chapters' node shapes
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and task 3.1 reshaped round
+1's chapters' nodes. No task edits the Lean or changes a statement's strength. **Next concrete
+task:** task 3.2, the node shapes of `matroid-union`, `body-bar`, `extensor` and `meet`
 (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -19,24 +20,20 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 2 has landed** (this commit; `scripts/blueprint-deps.py` and docs, no TeX). Nothing is
-mid-stream; the next task is task 3.1, round 1's chapters' node shapes.
+**Task 3.1 has landed** (this commit; four chapters, the ledger and docs, no Lean). Nothing is
+mid-stream; the next task is task 3.2.
 
-**The gate's baseline, at task 2** (2026-10-13; every value the open's, below, but the dump's):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 274 lines**, sha256 prefix
-  **`4015eeb0fed12738`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit). Its first 2 614 lines are the open's dump, byte for byte; then
-  the `## uses:` header and 659 lines (657 nodes, and `ex:kt-41-overquantified` and
-  `rem:kt-lemma-44`, the labelled non-nodes with a `\uses`), 2 455 targets. The same bytes under
-  `PYTHONHASHSEED` 0, 1 and 12345.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1292 edges
-  673e3178d1b3145e`** and **`b53eb8b1cf78cb06`**; `print.log` 0 `LaTeX Warning` lines (latexmk up
-  to date); `--summary` exits 0, both consistency checks OK, every count the open's.
-- **Acceptance** (a scratch copy of the TeX, read with `--tex-root`; measured, script not
-  retained): moving `def:graph-sparse` from `cor:bodybar-generic-tay`'s statement to its proof,
-  dropping `lem:typeI-rowIndependent-lift`'s statement edge that its proof repeats, and adding the
-  implied `def:hinge-constraint` to `cor:bodyhinge-generic-tree-packing`'s proof leave the TeX's
-  reduced edges the built graph's 1 292, and change exactly those three lines of the dump.
+**The gate's baseline, at task 3.1** (2026-10-13):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 286 lines**, sha256 prefix
+  **`1df3c3a7996203cf`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+  regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
+  against task 2's (3 274 lines, `4015eeb0fed12738`) is task 3.1's *Expected*, its 36 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1298 edges
+  8c15c9f272b4319a`** and **`256c6105b5132fbb`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 659 nodes,
+  1 028 pins (1 018 distinct; `lean_decls` 1 029), 524 missing, 2 059 implied, 87 + 310
+  unbacked, 202 dead, 27 nodes with four or more pins. The forward screen gives the open's table.
+- Task 2's acceptance test is in its commit message (`18400dc9`).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -178,29 +175,47 @@ the disposition `left`, with the reason given here. "Expected" gives the open's 
 gate's diff, which each task makes exact before editing.
 
 - [x] **1. Open** (`44e09c12`; docs only): this log, the baselines, the triage.
-- [x] **2. G — the gate's tooling** (this commit; `scripts/blueprint-deps.py`). `--dump` gains a
-  third section: each node's `\uses` targets read from the TeX, statement and proof apart, sorted, a
-  target that is not a node included (`rem:kt-lemma-41`, `F-007`). The drawn graph is a
-  transitive reduction, so a removal, an implied addition or a move between statement and proof
-  may change no drawn edge; this section shows each. The docstring follows. *Expected* (exact,
-  written before editing): the open's 2 614 lines byte-identical, then the new section, a header
-  and 659 lines, one per node (657) and one per other labelled environment with a `\uses`
-  (`ex:kt-41-overquantified`, `rem:kt-lemma-44`; the pins section lists the example likewise);
-  both hashes unchanged; no TeX, edge or pin change.
+- [x] **2. G — the gate's tooling** (`18400dc9`; `scripts/blueprint-deps.py`): `--dump` gains the
+  `## uses:` section, each node's `\uses` read from the TeX, statement and proof apart; no TeX,
+  edge or pin change (its *Expected* is in its commit).
 - [ ] **3. N — node shape**, chapter by chapter. N before E: an N fix changes what the report calls
   missing (`F-010`'s six helpers alone draw 97 missing in-edges).
-  - [ ] **3.1 Round 1's chapters** (`F-009`'s four, `F-011`'s three pebble-game edges, `F-014`,
-    `F-016`, `F-043`, `F-044`; `F-008`'s `def:blockingWitness`). `def:pebble-counts`: leave, one
-    pin per defined quantity. `lem:pebble-game-invariants`: leave, one pin per part, with
-    `Reachable.out_le` unpinned if no part states it. `def:tryReachPebble`: unpin the result
-    record `TryReachPebbleResult` and its `newOrient`. `lem:edgesIn-corners`: leave (principle D's
-    corner cases). `F-011`: leave, since a definition's termination lemmas follow it. `F-043`: a
-    node in `executable.tex` for the computable game's acceptance, which the prose after
-    `fmlnote:executable-computable-core` states, takes `runPebbleGameExec_isAccept_iff` from
-    `thm:pebbleGameResult-isAccept-iff`. `F-014`, `F-016`, `F-044`: leave (no node recommended;
-    their proofs name the declarations). `def:blockingWitness`: leave unfilled, as no declaration
-    defines it. *Expected:* +1 node; pins −2 or −3 and one moved (hash changes); the new node's
-    edges and the moved pin's in-edges.
+  - [x] **3.1 Round 1's chapters** (this commit; `F-009`'s four, `F-011`'s three pebble-game edges,
+    `F-014`, `F-016`, `F-043`, `F-044`; `F-008`'s `def:blockingWitness`). The open's choices, four
+    *revised* after reading, each tried on a scratch copy of the TeX with `--tex-root`.
+    `def:pebble-counts`, `lem:edgesIn-corners`: leave, with a one-line role map in a note.
+    `lem:pebble-game-invariants`: leave all five pins, with a role map (*revised*: by the definition
+    of $\mathrm{peb}$, part (1) is equivalent to `Reachable.out_le`'s bound; unpinned, the bound
+    left `lem:runPebbleGame-underline-eq`'s edge with no Lean basis and vanished from
+    `def:tryAddEdge`, whose prose cites it). `def:tryReachPebble`: unpin only the result record
+    `TryReachPebbleResult`, with a role map (*revised*: `newOrient` is the statement's "returns ...
+    the orientation obtained by reversing $p$"; unpinned, it left `def:path-reversal` with no Lean
+    basis). `F-011` (*revised* from leave: the three are the proofs the formal game's verdict
+    carries, not termination lemmas): `def:runPebbleGame`'s pin `runPebbleGame` moves to a new
+    `def:runPebbleGame-verdict` after `def:pebbleGameResult`, as `def:runPebbleGameExec` follows the
+    correctness results; the game on a list and on $G$ keep their node and statement. `F-043`:
+    `thm:runPebbleGameExec-isAccept-iff`, after `fmlnote:executable-computable-core`'s paragraph,
+    takes `runPebbleGameExec_isAccept_iff` with the statement's last sentence. `F-014`, `F-016`,
+    `F-044`: no node; the proofs of `thm:isSparse-exists-typeI-or-typeII-reverse` and
+    `thm:pebble-game-correct` now name the six and the one declarations (*revised*: they did not).
+    `def:blockingWitness`: left unfilled (no declaration defines it). Retargets by reach:
+    `cor:pebble-game-countMatroid-indep` and `thm:pebbleGameResult-isAccept-iff` to the new
+    definition, `def:isSparse-decidable` to the new theorem; of the old labels' 15 `\cref`s, eight
+    repointed or rewritten and seven kept. New: `F-230`.
+    *Expected* (exact, before editing; the drawn edges by the script's reduction, measured, script
+    not retained): +2 nodes; pins 1 030 → 1 029, two moved and `TryReachPebbleResult` gone (hash
+    changes); `## uses:` +2 lines (`def:runPebbleGame-verdict`: statement `def:pebbleGameResult`,
+    `def:reachClosureComputable`, `def:runPebbleGame`, `lem:mem-reachClosureComputable`,
+    `lem:runPebbleGame-underline-eq`, `lem:workhorseWitness-certifies`;
+    `thm:runPebbleGameExec-isAccept-iff`: statement `def:runPebbleGameExec`, proof
+    `def:reachClosureComputable`, `lem:mem-edgeListSorted`, `lem:mem-outListSorted`,
+    `lem:mem-reachClosureComputable`, `thm:pebble-game-correct`) and three changed (the retargets);
+    1 292 → 1 298 drawn edges: −3 (`def:pebbleGameResult` → `thm:pebbleGameResult-isAccept-iff`;
+    `def:runPebbleGameExec`, `thm:pebbleGameResult-isAccept-iff` → `def:isSparse-decidable`), +9
+    (`def:pebbleGameResult`, `lem:mem-reachClosureComputable`, `lem:workhorseWitness-certifies` →
+    `def:runPebbleGame-verdict` → `thm:pebbleGameResult-isAccept-iff`; `def:runPebbleGameExec`, the
+    three `lem:mem-…` → `thm:runPebbleGameExec-isAccept-iff` → `def:isSparse-decidable`); +2 node
+    lines; 3 286 lines.
   - [ ] **3.2 `matroid-union`, `body-bar`, `extensor`, `meet`** (`F-052`, `F-054`, `F-059`,
     `F-110`, `F-111`). `F-052`: a lemma node for `Matroid.Union_pow_indep_iff_count` (independence
     in $k$ copies of one matroid); Welsh's theorem and Oxley's Lemma 11.2.13 stay addresses.
@@ -421,7 +436,7 @@ gate's diff, which each task makes exact before editing.
 `L` findings this round makes (a later Lean round), one line each naming the ledger ID. The
 ledger's earlier `L` entries are task 8.2's.
 
-- None yet.
+- `F-230` (task 3.1): three pebble-game docstrings name the nodes their pins left.
 
 ## Blockers / open questions
 
@@ -429,11 +444,13 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.1, round 1's chapters' node shapes** (Opus, a fresh agent). The
-parent's dump is task 2's (3 274 lines, `4015eeb0fed12738`; *Current state*): regenerate it on the
-parent after `verify.sh` if the scratch copy is gone. Before editing, read each named node with
-`--label` and make 3.1's *Expected* exact in its line, its `## uses:` lines included (gate 3 (b));
-then edit, and diff the after-dump against it. Then task 3.2.
+**Next concrete task: task 3.2, the node shapes of `matroid-union`, `body-bar`, `extensor` and
+`meet`** (Opus, a fresh agent). The parent's dump is task 3.1's (3 286 lines, `1df3c3a7996203cf`;
+*Current state*): regenerate it on the parent after `verify.sh` if the scratch copy is gone.
+Before editing, read each named node, its pins' statements and its `--label` report, try the
+change on a scratch copy of the TeX (*Decisions*, task 3.1), and make 3.2's *Expected* exact in
+its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the after-dump against
+it. Then task 3.3.
 
 ## Decisions made during this round
 
@@ -458,3 +475,9 @@ then edit, and diff the after-dump against it. Then task 3.2.
   and `deficiency.tex`. A path's vertex sequence is notation, not a result, so it is unpinned.
 - **The report's home** is `notes/Prose-report.md`: the ledger keeps each finding, and the report
   ranks them for the PI (`notes/CLAUDE.md` *One canonical home*).
+- **Try each N fix on a scratch copy first** (task 3.1). Copy `blueprint/src`, edit the copy, and
+  read its `--tex-root` report: an unpin that leaves a `\uses` of the node or of its users with no
+  Lean basis strands a clause the pin states, so the pin is not a helper (task 3.1 kept
+  `Reachable.out_le` and `newOrient` so). The drawn edges follow from the copy's `\uses` by the
+  script's `ancestors_map` and `transitive_reduction`; an edge is dashed when its source is in the
+  user's statement `\uses`. On the parent this reproduced the built graph's 1 292 edges exactly.
