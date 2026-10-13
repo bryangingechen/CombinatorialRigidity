@@ -465,6 +465,30 @@ declaration's name as its header writes it:
   proof, among them `lem:rank-rotation-semicont` and `lem:rows-polynomial-in-normals`.
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eight nodes, at `9190873a`).
   *Found:* round 3 task 2.14.
+- **F-170** · E · `case-iii.tex`'s general case: the triangle, KT Lemma 6.13 and the chain
+  (`algebraic-induction/case-iii.tex`, five nodes): 24 missing edges and 13 unbacked. Missing:
+  `def:edge-multiply` and `lem:rigid-full-rank` at `lem:triangle-third-edge`; `def:graph-operations`
+  and `lem:case-III-claim612-line-in-panel-union` at `lem:triangle-realization`; nine at
+  `lem:case-III-chain-discriminator` (`def:genuine-hinge-realization`, `def:panel-general-position`,
+  `lem:case-II-placement-old-rows-extract`, `lem:case-III-claim612-block-iff-perp`,
+  `lem:general-position-support-nonzero`, `lem:isInfRigidOn-of-relative-count`,
+  `lem:rank-polynomial-of-le-finrank`, `lem:relative-deficiency-rank-bound`,
+  `lem:span-rigidityRows-eq-of-motions-eq`); eight at `lem:case-III-chain-dispatch` (two definitions,
+  `lem:case-III-claim612-block-iff-perp`, `lem:case-III-claim612-eq644`, `lem:case-III-columnop`,
+  `lem:case-III-transport-collapse`, `lem:general-position-support-nonzero`,
+  `lem:isInfRigidOn-of-relative-count`); and `def:cut-edges-2ec`, `def:genuine-hinge-realization`
+  and `lem:deficiency-zero-connected` at `lem:case-III`. No Lean basis (6): `lem:genericity-device`
+  at the triangle realization and the dispatch, `lem:case-III-claim612-line-in-panel-union` at the
+  discriminator, and `lem:case-II-realization-placement` and the two relabel lemmas at the dispatch;
+  seven more are reached only through other nodes. Task 2.15's proofs also cite without an edge:
+  `lem:rigid-full-rank` (the triangle); `lem:case-III-candidate-row-construction`,
+  `lem:case-III-redundant-decomposition`, `lem:case-III-claim612-points-affineIndep-real-normals`,
+  `lem:rank-polynomial-of-le-finrank` and `lem:relative-deficiency-rank-bound` (the discriminator);
+  `lem:case-III-candidate-row`, `lem:case-III-claim612-p2-placement`, `lem:case-III-claim612-eq644`,
+  `lem:rank-rotation-semicont`, `lem:case-II-realization` and `lem:case-III-candidate-dispatch-d3`
+  (the dispatch); and `lem:two-edge-conn` (`lem:case-III`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `c3586784`).
+  *Found:* round 3 task 2.15.
 
 ## N — node shape
 
@@ -953,6 +977,24 @@ declaration's name as its header writes it:
   `linearIndependent_sum_p2_candidateRow`/`_p3_`; a `grep` of `blueprint/lean_decls` and of the
   Lean for the unpinned names and the callers).
   *Found:* round 3 task 2.14.
+- **F-171** · N · `case-iii.tex`'s general case (`algebraic-induction/case-iii.tex`): the formal
+  route of KT Lemma 6.13 below the three live pins has no node. The choice of $q$ off four factors
+  (`chainData_split_w6b_gates`, with the $d \times d$ minor `exists_tupleLI_polynomial`), KT's
+  isomorphism $\rho_i$ as a permutation of the bodies (`Graph.ChainData.shiftPerm`), KT eq. (6.66)
+  and the renamed redundancy (`interior_hρe₀_of_baseWidening`, `chainData_relabel_arm_hρGv`,
+  `chainData_bottom_relabel`), the two branches (`chainData_dispatch_floor_of_discriminator`,
+  `chainData_dispatch_interior_of_discriminator`), the arm theorem at three roles
+  (`case_III_arm_realization`, `_M2`; `F-167`) and the producer `case_III_hsplit_producer_all_k`
+  are unpinned; the dispatch's proof `\uses` the $d = 3$ relabel nodes, whose pins it does not reach
+  (`F-118`). `lem:triangle-realization`'s pin is dead and is the case $m = 3$ of
+  `lem:cycle-realization`'s construction; `lem:case-III`'s second pin `case_III_realization` (the
+  $d = 3$ form) is dead. Nodes for KT eq. (6.66) and the renaming, or a repin of the relabel
+  nodes to their general forms, are the candidates.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, dead pins, at
+  `c3586784`); read (the bodies of `chainData_dispatch`, its two branches,
+  `chainData_dispatch_interior` and `case_III_hsplit_producer_all_k`; a `grep` of
+  `blueprint/lean_decls` for the unpinned names).
+  *Found:* round 3 task 2.15.
 
 ## T — terminology and notation
 
@@ -1580,6 +1622,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies of the two pins, of `case_III_arm_realization`,
   `_M2` and `_M3`, and of `caseIIICandidate`; KT 2011 pp. 682 and 686–691, `.refs/`).
   *Found:* round 3 task 2.14.
+- **F-169** · S · `lem:case-III-chain-discriminator` (`algebraic-induction/case-iii.tex`): the
+  statement claims less than its pin and than its consumer uses. It asks for some normals $q$, a
+  nonzero form $r$ vanishing on $C(q(v_0), q(v_2))$, and $r(C(q(u_i), n')) \neq 0$ for some panel
+  index $i$ and some $n'$ independent of $q(u_i)$; with $q(v_0) = q(v_2)$ this holds for any
+  graph, so the hypotheses play no role. The pin `chainData_fire_discriminator` also gives $q$ in
+  general position, that $S \mapsto r(S(v_0) - S(v_2))$ lies in the row space of
+  $R(G - v_1, q)$ (KT eq. (6.52), with $r = \sum_j \lambda_j r_j$ and the relation grouped by
+  edge), and $D(|V(G)| - 2)$ independent rows of $R(G_1, q)$, all of which
+  `lem:case-III-chain-dispatch`'s pin uses. Task 2.15 kept the claim; its proof derives the rest,
+  and the note says that the pin gives it.
+  *Evidence:* read (the statement and body of `chainData_fire_discriminator`, and of
+  `exists_shared_redundancy_and_matched_candidate` and `chainData_dispatch`).
+  *Found:* round 3 task 2.15.
 
 ## L — Lean
 
@@ -2144,6 +2199,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; the signatures of `theorem_55_minimalKDof_k_all_k`
   and `case_III_hsplit_producer_all_k`; KT 2011 pp. 682 and 686, `.refs/`).
   *Found:* round 3 task 2.14.
+- **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
+  (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
+  `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
+  both are pinned. `case_III_realization_all_k`'s cites KT §6.4.1 and Lemma 6.10 for the all-$k$
+  form, whose route is KT Lemma 6.13. `exists_isLink_of_isMinimalKDof_card_three`'s cites "KT §6.4
+  §1.48(1)" and KT p. 659, which has no triangle (KT Lemma 6.7(i) is p. 677). They carry process
+  codes (CHAIN-2c-iii, LEAF-3 and LEAF-5, RELAX, W6b, C.0–C.6, T1–T4, PROSPECT S1, Phases
+  22h–40a) and the words "producer", "device", "seed", "motive", "brick" and "genuinely".
+  *Evidence:* read (the docstrings and statements of the six pins; KT 2011 pp. 659, 677 and
+  692, `.refs/`).
+  *Found:* round 3 task 2.15.
 
 ## M — mathematics and sources
 

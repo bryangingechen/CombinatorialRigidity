@@ -741,7 +741,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   prose carry the existential form and the why-not-three-fixed dimension count). Pointer: KT
   p. 691, eq. (6.45); `notes/Phase22-realization-design.md` §1.38–§1.39; `notes/Phase22g.md`.
 - **`lem:case-III` `|V|=3` base — the `k=0` split recursion bottoms on a *direct* triangle
-  realization** — [done (`case-iii.tex` *The triangle floor*, 22h-close)] **(a)** (Phase 22g
+  realization** — [done (`case-iii.tex` *The triangle floor*, 22h-close; since PROSE round 3 task
+  2.15 the opening of its subsubsection *The case of general `d`*, which says that KT Lemma 6.7(i)
+  (p. 677) treats the triangle as a case of its own)] **(a)** (Phase 22g
   capture, §1.46–§1.48). **Stable insight:** the `d=3` Case-III induction
   genuinely reaches the triangle (`|V|=3`), and there the split-off graph `G_v^{ab}` is the
   *non-simple* double-edge `K₂` (the surviving `ab`-edge plus the fresh `e₀`) — so the inductive
@@ -759,7 +761,12 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/Phase22g.md`; `notes/Phase31.md`.
 - **`lem:case-III` general `d` (Lemma 6.13) — the `d`-chain dispatch + the `⋀^{d−1}(ℝ^{d+1})`
   duality finish (eq. 6.67)** — [done (`case-iii.tex` *The general-`d` chain dispatch* narrative +
-  the restated `lem:case-III`, Phase-23 close)] **(c)** (Phase 23b/CHAIN-open capture 2026-06-17,
+  the restated `lem:case-III`, Phase-23 close; since PROSE round 3 task 2.15 the subsubsection *The
+  case of general `d`*: its opening, and the proofs of `lem:case-III-chain-discriminator` and
+  `lem:case-III-chain-dispatch`, KT eq. (6.66) as the relation of eq. (6.52) read at `vᵢvᵢ₊₁`; the
+  span is of the `D` joins of `d − 1` of `d + 1` points built from the `d` panel normals (KT p.
+  698), not of "the `d+1` chain-panel normals" as in (ii) below)] **(c)**
+  (Phase 23b/CHAIN-open capture 2026-06-17,
   sharpened across 23b–23f; owner-flagged 2026-06-18 "this exposition must be absolutely clear" —
   the Lean economizes, the prose must not). **Stable insight** (source-verified against KT §6.4.2
   eqs. (6.46)–(6.67)): KT's "exactly the same as `d=3`" (p. 692) compresses two genuinely-hard
@@ -1088,7 +1095,8 @@ The triangle-base repair, a single degree-2 vertex in place of the `d = 3`-only 
 non-spanning row-rank form serves Phase 40's consumer, not a step of KT's proof. The done
 triangle-floor entry above (`lem:case-III` `|V|=3` base) stays done: `case-iii.tex`'s *The triangle
 floor* now reads `d ≤ 3` for the vacuous cycle disjunct, and `lem:case-III`'s proof names the single
-degree-2 vertex. The ledger stays at **2 pending / 36 done** (of 38).
+degree-2 vertex (since PROSE round 3 task 2.15 the first is in the opening of *The case of general
+`d`*). The ledger stays at **2 pending / 36 done** (of 38).
 
 ### `main-component.tex` — Phase 40b (CARRIER: planar pictures, the lifting space, `X₀`)
 
