@@ -556,6 +556,18 @@ declaration's name as its header writes it:
   `lem:genericRank-eq-finrank-span`. No pin of these nodes is dead.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-application`, at `302cc117`).
   *Found:* round 4 task 2.4.
+- **F-193** · E · `jacobs.tex`'s first ten nodes, task 2.5's (`jacobs.tex`): two missing edges and
+  three unbacked. Missing: `lem:tight-partition-parts`'s to `lem:exists-tight-partition`
+  (`IsTightPartition`, in its statement) and to `lem:cut-edge-decomposition`
+  (`partitionDef_congr`, in its proof). Unbacked: the proof of `lem:isLaman3-mono` to
+  `lem:edgesIn-mono` (no Lean basis; that lemma is monotonicity in the vertex set, while the proof
+  needs monotonicity in the graph, and task 2.5's prose no longer cites it);
+  `lem:tight-partition-cross-pair-mult`'s and `lem:tight-partition-cross-pair-nbr`'s to
+  `def:D-deficiency` (through another node). Task 2.5's prose cites no node without an edge. No
+  pin of these nodes is dead.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`); read (the
+  body of `IsLaman3.mono_left`).
+  *Found:* round 4 task 2.5.
 
 ## N — node shape
 
@@ -1062,6 +1074,16 @@ declaration's name as its header writes it:
   `chainData_dispatch_interior` and `case_III_hsplit_producer_all_k`; a `grep` of
   `blueprint/lean_decls` for the unpinned names).
   *Found:* round 3 task 2.15.
+- **F-192** · N · `lem:exists-tight-partition`, `lem:partitionDef-merge` (`jacobs.tex`): each
+  lemma pins a definition beside its claim. The first pins `IsTightPartition`, and its statement
+  defines "tight" in a closing sentence; the second pins `crossingEdgesWithin`, the count
+  $e_G(Q)$, which its statement introduces and `lem:tight-partition-subfamily` restates. The
+  missing statement edge of `lem:tight-partition-parts` (`F-193`) is the symptom: a lemma that
+  only uses the definition reaches the existence lemma. Definition nodes for the tight partition
+  and for $e_G(Q)$, or the two definitions unpinned, are the candidates.
+  *Evidence:* read (the two definitions, `Molecular/Deficiency.lean`); measured
+  (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`).
+  *Found:* round 4 task 2.5.
 
 ## T — terminology and notation
 
@@ -1860,6 +1882,20 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of both declarations, `GenericRigidityMatroid.lean`; the body of
   `molecule_rank_lower_bound`).
   *Found:* round 4 task 2.4.
+- **F-191** · S · `lem:exists-tight-partition`, `lem:partitionDef-merge`,
+  `lem:tight-partition-cross-pair-mult`, `lem:tight-partition-cross-pair-nbr` (`jacobs.tex`): four
+  statements assume a hypothesis that their pins do not. The first asks $V(G)$ nonempty;
+  `exists_isTightPartition` holds on every finite vertex type (the empty set's one partition has
+  value $-D$). The second asks $|Q| \ge 2$; `partitionDef_merge` asks only a member of $Q$, and at
+  $|Q| = 1$ both sides agree. `main-component.tex` reads it for $m \ge 1$ parts, in the proof of
+  `lem:deficiency-merge-rigid`, which the pin covers. The third asks $G$ simple;
+  `crossingEdgesWithin_pair_le_one` holds for every multigraph. The fourth asks the two vertices
+  nonadjacent, as JJ's cross edges are; `eq_of_common_nbr` asks only that they lie in distinct
+  parts. Task 2.5 kept each claim, with one note at the end of the subsection
+  (`fmlnote:tight-partition-consumed-forms`). No edit.
+  *Evidence:* read (the statements of the four pins, `Molecular/Deficiency.lean`; JJ 2008 §§3
+  and 5).
+  *Found:* round 4 task 2.5.
 
 ## L — Lean
 
@@ -2482,6 +2518,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the eight pins in these files, and of
   `finrank_span_rigidityRow_le_genericRank`; JJ 2008 §§2 and 4, `.refs/`).
   *Found:* round 4 task 2.4.
+- **F-194** · L · the docstrings of task 2.5's pins (`Jacobs.lean`, `EdgesIn.lean`,
+  `Molecular/Deficiency.lean`). In `Deficiency.lean` the header of the tight-partition section and
+  the docstring of `IsTightPartition` name `lem:tight-partition-cross-pair`, a label that no
+  longer exists (it is `-mult` and `-nbr`). The header calls Lemma 3.2 that of JJ's "companion
+  paper on partitions into maximal zero-deficiency subgraphs"; it is JJ 2008's Lemma 3.2, which
+  they take from their reference [10], *Brick partitions of graphs*, and their companion paper is
+  [8]. The header and docstrings narrate process ("This slice adds", "follows in a later
+  commit", `partitionDef_merge`'s "a later commit", "JJ Lemma 3.2 bricks"; `Jacobs.lean`'s "Phase
+  32" and "Thm 5.3 assembly infrastructure"), and `exists_fresh_label`'s says "genuinely" and
+  "Feeds". The other docstrings agree with their bodies.
+  *Evidence:* read (the docstrings and bodies of the twelve pins and of `exists_fresh_label`; JJ
+  2008 §3, its closing remarks and its references).
+  *Found:* round 4 task 2.5.
 
 ## M — mathematics and sources
 

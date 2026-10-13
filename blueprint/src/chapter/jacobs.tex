@@ -58,6 +58,16 @@ some (equivalently, any generic) placement.
 \subsection{The three-dimensional Laman condition}
 \label{sec:jacobs-laman3}
 
+Throughout this chapter, JJ stands for Jackson and
+Jord\'an~\cite{jacksonJordan2008}, as KT stands for Katoh and Tanigawa.
+This subsection defines JJ's counting condition for graphs in three
+dimensions (JJ~\S5) and proves its first consequence for squares (JJ
+Lemma~5.2): if $G^2$ satisfies the condition, then every vertex of $G$
+has degree at most three. Following JJ, we call a graph that satisfies
+the condition Laman. The condition is the three-dimensional analogue of
+$(2,3)$-sparsity (\cref{def:isSparse}). Unlike the planar Laman graphs
+of \cref{def:isLaman}, it asks for no equality on the number of edges.
+
 \begin{definition}[The three-dimensional Laman condition]
   \label{def:isLaman3}
   \lean{SimpleGraph.IsLaman3}
@@ -73,16 +83,17 @@ some (equivalently, any generic) placement.
 
 \begin{fmlnote}
   \label{fmlnote:isLaman3-guard}
-  The condition is not an instance of the $(k,\ell)$-sparsity family of
-  \cref{def:isSparse} at $(k, \ell) = (3, 6)$. That predicate quantifies
-  over all $X$ with $\ell \le k|X|$, which at $(3,6)$ includes
-  $|X| = 2$, where the bound $3|X| - 6 = 0$ fails on every graph with an
-  edge --- while the Laman condition of \cite[\S5]{jacksonJordan2008}
-  constrains only $|X| \ge 3$ and holds, for instance, vacuously on
-  $K_2$. (At $(2,3)$ the two guards agree, which is why the planar
-  \cref{def:isLaman} could be an instance of the family.) The condition
-  is therefore formalized as a standalone predicate with the $|X| \ge 3$
-  guard; the $(k,\ell)$-sparsity API is unchanged.
+  The condition is not the $(k,\ell)$-sparsity of \cref{def:isSparse}
+  at $(k, \ell) = (3, 6)$. That predicate bounds every set $X$ with
+  $\ell \le k|X|$, and at $(3, 6)$ these include the sets with
+  $|X| = 2$. For such a set the bound $3|X| - 6 = 0$ fails as soon as
+  $X$ spans an edge, so no graph with an edge is $(3,6)$-sparse. The
+  Laman condition bounds only the sets with $|X| \ge 3$, and $K_2$, for
+  instance, satisfies it. At $(2, 3)$ the two guards agree, as
+  $3 \le 2|X|$ means $|X| \ge 2$, and the planar Laman graphs of
+  \cref{def:isLaman} are defined through $(2,3)$-sparsity. So the
+  condition is formalized as a predicate of its own, which bounds only
+  the sets with $|X| \ge 3$.
 \end{fmlnote}
 
 \begin{lemma}[Monotonicity]
@@ -95,7 +106,10 @@ some (equivalently, any generic) placement.
 \begin{proof}
   \leanok
   \uses{lem:edgesIn-mono}
-  The edge counts $\bigl|\edgesIn[H]{X}\bigr|$ only decrease.
+  Let $H$ be a subgraph of a Laman graph $H'$. Every edge of $H$ inside
+  a set $X \subseteq V$ is an edge of $H'$ inside $X$, so
+  $\bigl|\edgesIn[H]{X}\bigr| \le \bigl|\edgesIn[H']{X}\bigr|
+  \le 3|X| - 6$ whenever $|X| \ge 3$.
 \end{proof}
 
 \begin{lemma}[Edge count of a clique]
@@ -103,13 +117,14 @@ some (equivalently, any generic) placement.
   \lean{SimpleGraph.IsClique.ncard_edgesIn}
   \leanok
   \uses{def:edgesIn}
-  If $X \subseteq V$ is a clique of a graph $H$ (every two distinct
-  vertices of $X$ adjacent), then
+  Let $H$ be a graph on $V$, and let $X \subseteq V$ be a clique of $H$,
+  that is, a set of pairwise adjacent vertices. Then
   $\bigl|\edgesIn[H]{X}\bigr| = \binom{|X|}{2}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The edges inside $X$ are exactly the two-element subsets of $X$.
+  The edges of $H$ inside $X$ are exactly the two-element subsets of
+  $X$.
 \end{proof}
 
 \begin{lemma}[Maximum degree three; JJ Lemma 5.2]
@@ -123,37 +138,48 @@ some (equivalently, any generic) placement.
 \begin{proof}
   \leanok
   \uses{lem:square-cliques, lem:clique-edgesIn-count}
-  For a vertex $v$, the closed neighborhood $N_G[v]$ is a clique of
-  $G^2$ (\cref{lem:square-cliques}) on $d_G(v) + 1$ vertices. A clique
-  on five vertices spans $\binom{5}{2} = 10 > 3\cdot 5 - 6$ edges
-  (\cref{lem:clique-edgesIn-count}), violating the Laman condition, so
-  $d_G(v) + 1 \le 4$.
+  Let $v$ be a vertex of $G$. Its closed neighborhood $N_G[v]$ is a
+  clique of $G^2$ on $d_G(v) + 1$ vertices (\cref{lem:square-cliques}).
+  If $d_G(v) \ge 4$, five of these vertices form a clique of $G^2$,
+  which spans $\binom{5}{2} = 10 > 3 \cdot 5 - 6$ edges of $G^2$
+  (\cref{lem:clique-edgesIn-count}). Then $G^2$ is not Laman. So
+  $d_G(v) \le 3$.
 \end{proof}
 
 \subsection{Tight partitions}
 \label{sec:jacobs-tight-partitions}
 
-The counting bound is proved against a partition of $V$ attaining the
-deficiency. This subsection collects the structural facts about such
-partitions that the count uses; they are due to Jackson--Jord\'an
-(Lemma~3.2 of~\cite{jacksonJordan2008}, proved in their companion paper
-on partitions into maximal subgraphs of zero deficiency). The statements
-are given for the $D$-deficiency of \cref{def:D-deficiency} at a general
-$D$, matching the formalization; the chapter consumes them at $D = 6$.
+The counting bound of \cref{sec:jacobs-counting} is proved against a
+partition of $V$ that attains the deficiency. This subsection proves
+the facts about such partitions that the count uses. They come from JJ
+Lemma~3.2, which JJ take from their paper on the partition of a graph
+into its maximal subgraphs of deficiency zero. We prove its part~(a), a
+consequence of its part~(b), and two consequences of part~(a) that JJ
+draw in the proofs of their Theorems~3.4 and~5.3: two parts are joined
+by at most one edge, and two nonadjacent vertices in distinct parts
+have at most one common neighbor. Apart from the existence of these
+partitions, all of this follows from one identity, which gives the
+change in the value $\operatorname{def}_{\tilde G}(P)$ when several
+parts of $P$ are merged into one (\cref{lem:partitionDef-merge}). The
+arguments are the same for every $D$. So we state the lemmas for the
+$D$-deficiency of \cref{def:D-deficiency} at every $D$, and each lemma
+names the bound on $D$ that it needs. The chapter applies them at
+$D = 6$.
 
 \begin{lemma}[Tight partitions exist]
   \label{lem:exists-tight-partition}
   \lean{Graph.IsTightPartition, Graph.exists_isTightPartition}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be a multigraph on a finite nonempty vertex set. Some
-  partition $P$ of $V(G)$ attains the deficiency:
+  Let $G$ be a multigraph whose vertex set is finite and nonempty. Then
+  some partition $P$ of $V(G)$ attains the deficiency, that is,
   $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
-  Such a partition is called \emph{tight}.
+  Following JJ~\S2, we call such a partition \emph{tight}.
 \end{lemma}
 \begin{proof}
   \leanok
-  The maximum of finitely many values is attained.
+  A finite set has finitely many partitions, so the maximum that
+  defines $\operatorname{def}(\tilde G)$ is attained.
 \end{proof}
 
 \begin{lemma}[Deficiency under coarsening]
@@ -161,10 +187,11 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   \lean{Graph.crossingEdgesWithin, Graph.partitionDef_merge}
   \leanok
   \uses{def:D-deficiency}
-  Let $P$ be a partition of $V(G)$, let $Q \subseteq P$ with
-  $|Q| \ge 2$, and let $P'$ be the partition obtained from $P$ by
-  merging the members of $Q$ into a single part. Write $e_G(Q)$ for the
-  number of edges of $G$ joining distinct members of $Q$. Then
+  Let $G$ be a multigraph, let $P$ be a partition of $V(G)$, and let
+  $Q \subseteq P$ with $|Q| \ge 2$. Let $P'$ be the partition obtained
+  from $P$ by merging the members of $Q$ into a single part, and let
+  $e_G(Q)$ be the number of edges of $G$ that join distinct members of
+  $Q$. Then
   \[
     \operatorname{def}_{\tilde G}(P') \;=\;
     \operatorname{def}_{\tilde G}(P)
@@ -173,65 +200,70 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Merging removes $|Q| - 1$ parts, and the edges that stop crossing are
-  exactly those joining distinct members of $Q$. Read right to left,
-  the identity also computes the deficiency change under refining one
-  part into several.
+  The partition $P'$ has $|Q| - 1$ fewer parts than $P$. An edge joins
+  different parts of $P'$ exactly when it joins different parts of $P$
+  and does not join two members of $Q$, so
+  $d_G(P') = d_G(P) - e_G(Q)$. The identity follows from the definition
+  of the value (\cref{def:D-deficiency}). Read from right to left, it
+  gives the change in value when a part is split into several: if a
+  part of $P'$ is split into the members of $Q$, the value rises by
+  $D(|Q| - 1) - (D-1)\,e_G(Q)$.
 \end{proof}
+
+JJ state their Lemma~3.2(a), with $D = 6$, for the subgraph $H$ of $G$
+induced by the union of the members of $Q$: as a partition of $V(H)$,
+$Q$ has $\operatorname{def}_{\tilde H}(Q) \ge 0$. An edge of $H$ joins
+two members of $Q$ exactly when it is an edge of $G$ that does, so this
+is the following inequality.
 
 \begin{lemma}[Subfamilies of a tight partition; JJ Lemma 3.2(a)]
   \label{lem:tight-partition-subfamily}
   \lean{Graph.IsTightPartition.subfamily_le}
   \leanok
   \uses{def:D-deficiency, lem:exists-tight-partition}
-  Let $P$ be a tight partition of $V(G)$ and $Q \subseteq P$ with
-  $|Q| \ge 2$. Then
+  Let $G$ be a multigraph, let $P$ be a tight partition of $V(G)$, and
+  let $Q \subseteq P$ with $|Q| \ge 2$. Then
   \[
-    (D-1)\,e_G(Q) \;\le\; D\,(|Q| - 1).
+    (D-1)\,e_G(Q) \;\le\; D\,(|Q| - 1),
   \]
+  where $e_G(Q)$ is the number of edges of $G$ that join distinct
+  members of $Q$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:partitionDef-merge}
-  Merging $Q$ (\cref{lem:partitionDef-merge}) changes the deficiency by
-  $(D-1)\,e_G(Q) - D(|Q|-1)$; tightness of $P$ makes every change
-  nonpositive.
+  Merging the members of $Q$ changes the value of $P$ by
+  $(D-1)\,e_G(Q) - D(|Q| - 1)$ (\cref{lem:partitionDef-merge}). The
+  merged partition has value at most $\operatorname{def}(\tilde G)$,
+  which is the value of $P$ because $P$ is tight. So the change is at
+  most zero.
 \end{proof}
 
-\begin{fmlnote}
-  \label{fmlnote:tight-partition-consumed-forms}
-  Jackson--Jord\'an state Lemma~3.2(a) as the nonnegativity
-  $\operatorname{def}_H(Q) \ge 0$ of the subfamily's deficiency inside
-  the induced subgraph $H = G[\bigcup Q]$, and Lemma~3.2(b) as ``each
-  part induces a subgraph of zero deficiency''. The chapter formalizes
-  only the forms actually consumed downstream:
-  \cref{lem:tight-partition-subfamily} is 3.2(a) rewritten as an
-  inequality about $G$ itself (no induced-subgraph object is needed),
-  and \cref{lem:tight-partition-parts} is the part-structure dichotomy
-  that 3.2(b) is used for, proved directly by splitting a single vertex
-  off its part rather than through the zero-deficiency statement.
-\end{fmlnote}
+JJ's Lemma~3.2(b) says that every part of a tight partition induces a
+subgraph of deficiency zero. This chapter needs only the following
+consequence, which JJ draw in the proof of their Theorem~5.3, and we
+prove it directly.
 
-\begin{lemma}[Parts of a tight partition; JJ Lemma 3.2(b), consumed form]
+\begin{lemma}[Parts of a tight partition; a consequence of JJ Lemma 3.2(b)]
   \label{lem:tight-partition-parts}
   \lean{Graph.IsTightPartition.parts}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be a simple graph, $D \ge 2$, and $P$ a tight partition of
-  $V$. Then every part of $P$ is either a singleton or has at least
-  three vertices, and in the latter case every vertex of the part has
-  at least two neighbors inside its own part.
+  Let $D \ge 2$, let $G$ be a simple graph, and let $P$ be a tight
+  partition of $V(G)$. Then every part of $P$ is a singleton or has at
+  least three vertices. In the latter case every vertex of the part has
+  at least two neighbors in the part.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:partitionDef-merge}
-  Let $A \in P$ with $|A| \ge 2$ and $v \in A$. Refining $P$ by
-  splitting $v$ off as a singleton changes the deficiency by
-  $D - (D-1)\,d$, where $d$ is the number of neighbors of $v$ inside
-  $A$ (\cref{lem:partitionDef-merge}, read as a refinement); tightness
-  forces $D \le (D-1)\,d$, hence $d \ge 2$. A two-vertex part is then
-  impossible: each of its vertices would need two neighbors inside the
-  part, but a simple graph has at most one edge on two vertices.
+  Let $A \in P$ with $|A| \ge 2$, let $v \in A$, and let $m$ be the
+  number of neighbors of $v$ in $A$. Splitting $v$ off $A$ as a part of
+  its own raises the value of $P$ by $D - (D-1)\,m$
+  (\cref{lem:partitionDef-merge}, read from right to left with
+  $Q = \{A \setminus \{v\}, \{v\}\}$). As $P$ is tight, the value does
+  not rise, so $D \le (D-1)\,m$. Since $D \ge 2$, this forces $m \ge 2$.
+  So $A$ contains $v$ and at least two neighbors of $v$.
 \end{proof}
 
 \begin{lemma}[Edge multiplicity between parts of a tight partition]
@@ -239,39 +271,63 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   \lean{Graph.IsTightPartition.crossingEdgesWithin_pair_le_one}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be a simple graph and $P$ a tight partition of $V$ with
-  $D \ge 3$. Then any two distinct parts of $P$ are joined by at most
-  one edge of $G$.
+  Let $D \ge 3$, let $G$ be a simple graph, and let $P$ be a tight
+  partition of $V(G)$. Then two distinct parts of $P$ are joined by at
+  most one edge of $G$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:tight-partition-subfamily}
-  An instance of \cref{lem:tight-partition-subfamily}: two edges
-  between parts $A \ne B$ give $e_G(Q) \ge 2$ for $Q = \{A, B\}$,
-  contradicting $(D-1)\cdot 2 \le D$ for $D \ge 3$.
+  Let $A \ne B$ be parts of $P$. For $Q = \{A, B\}$,
+  \cref{lem:tight-partition-subfamily} gives $(D-1)\,e_G(Q) \le D$. If
+  $e_G(Q) \ge 2$, then $2(D-1) \le D$, that is, $D \le 2$, against
+  $D \ge 3$.
 \end{proof}
 
-\begin{lemma}[Uniqueness of the common neighbor of a cross pair]
+\begin{lemma}[The common neighbor of two vertices in distinct parts]
   \label{lem:tight-partition-cross-pair-nbr}
   \lean{Graph.IsTightPartition.eq_of_common_nbr}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be a simple graph and $P$ a tight partition of $V$ with
-  $D \ge 5$. Then any two nonadjacent vertices lying in distinct parts
-  have at most one common neighbor.
+  Let $D \ge 5$, let $G$ be a simple graph, and let $P$ be a tight
+  partition of $V(G)$. Then two nonadjacent vertices in distinct parts
+  of $P$ have at most one common neighbor.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:tight-partition-subfamily, lem:tight-partition-cross-pair-mult}
-  Let $u, w$ be nonadjacent in distinct parts with common
-  neighbors $v \ne v'$; the four edges $uv, vw, uv', v'w$ join the at
-  most four parts containing $u, v, w, v'$, and a case analysis on
-  which of these parts coincide produces, in every case, a subfamily
-  $Q$ with either two edges between two of its members (excluded by
-  \cref{lem:tight-partition-cross-pair-mult}) or $e_G(Q) \ge |Q|$ with
-  $|Q| \le 4$, contradicting \cref{lem:tight-partition-subfamily} for
-  $D \ge 5$.
+  Let $u$ and $w$ lie in distinct parts of $P$, and suppose that they
+  have two common neighbors $v \ne v'$. The vertices $u, v, w, v'$ are
+  distinct, as $u \ne w$ and adjacent vertices are distinct. So $uv$,
+  $vw$, $wv'$ and $v'u$ are four distinct edges of $G$, and they form a
+  closed walk.
+
+  Let $Q$ be the set of parts of $P$ that meet $\{u, v, w, v'\}$, so
+  that $2 \le |Q| \le 4$. The walk meets at least two parts, so it
+  enters every member of $Q$ from another member at least once. These
+  entries use distinct edges, each joining two members of $Q$, so
+  $e_G(Q) \ge |Q|$. Now \cref{lem:tight-partition-subfamily} gives
+  $(D-1)\,|Q| \le D(|Q| - 1)$, that is, $D \le |Q| \le 4$, a
+  contradiction. When $|Q| = 2$, two of the four edges join the same two
+  parts, which \cref{lem:tight-partition-cross-pair-mult} excludes
+  directly.
 \end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:tight-partition-consumed-forms}
+  As in \cref{fmlnote:partition-labeling}, a partition is a labeling of
+  the vertices, and a tight partition is a labeling whose value is the
+  deficiency. Merging the members of $Q$ gives all their vertices one of
+  their labels. Four of the formal statements assume less than the
+  lemmas above. \Cref{lem:exists-tight-partition} does not need $V(G)$
+  nonempty: the empty set has one partition, with no parts and value
+  $-D$. \Cref{lem:partitionDef-merge} needs only $Q$ nonempty, as for
+  $|Q| = 1$ merging changes nothing and $e_G(Q) = 0$.
+  \Cref{lem:tight-partition-cross-pair-mult} holds for every multigraph,
+  with parallel edges counted. \Cref{lem:tight-partition-cross-pair-nbr}
+  does not assume the two vertices nonadjacent, and its proof above does
+  not use this.
+\end{fmlnote}
 
 \subsection{The counting bound}
 \label{sec:jacobs-counting}

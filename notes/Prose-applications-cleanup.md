@@ -7,10 +7,9 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, task 2.1 `F-175`–`F-177`, task 2.2 `F-178`–`F-182`, task 2.3 `F-183`–`F-186` and task
-2.4 `F-187`–`F-190`. 16 one-commit tasks; tasks 1 and 2.1–2.4 are done, and the round has no
-planned stop. **Next concrete task:** task 2.5, `jacobs.tex`, the Laman condition and tight
-partitions (58–275), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-174`, and tasks 2.1–2.5 `F-175`–`F-194`. 16 one-commit tasks; tasks 1 and 2.1–2.5 are done,
+and the round has no planned stop. **Next concrete task:** task 2.6, `jacobs.tex`, the counting
+bound (276–583 at the open, 332–639 now), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,17 +19,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.4 has landed** (this commit): `molecule-application.tex` is done, now 251 lines, its
-subsections retitled; "shadowing carrier" is gone (the multigraph of `lem:molecule-graph-carrier`).
-No node moved; every one keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. Three
-notes are new (no label). The coordinator's anchor of "at the target rank" in
-`molecule-modelling.tex` (`def:rank-hypothesis`) rides here. Nothing is mid-stream; 2.5 is next.
+**Task 2.5 has landed** (this commit): `jacobs.tex`'s first slice, the Laman condition and tight
+partitions, is done, now 58–331. No node moved; every one keeps its `\label`, `\lean{…}`,
+`\leanok` and `\uses` byte-identical. `fmlnote:tight-partition-consumed-forms` moved to the end of
+its subsection and gives the formal forms of four statements (`F-191`). Nothing is mid-stream; 2.6
+is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
   `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (49 overfull boxes, none in the chapter).
-  Screens on `molecule-application`: register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 1
-  (the endpoint selector in a note), forward `\uses` 0 / 0; the open's were 1 / 1, 1 / 6, 0, 12
-  and 0 / 0.
+  Screens on the slice (58–331): register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 0;
+  forward `\uses` 0 / 0 for `jacobs`. The open's (58–275) were 0 / 0, 0 / 0, 0, 3 and 0 / 0.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -256,12 +254,7 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 - **`bar-joint-3d`, `molecule-modelling`, `molecule-application`.** *Done:* 2.1–2.4 (the open
   bullets are in this log at `69bc7afb`, `67d44583`, `db71b408` and `302cc117`).
 - **`jacobs`.**
-  - *2.5 (58–275):* `fmlnote:isLaman3-guard` is a ledger pointer (keep).
-    `lem:exists-tight-partition` defines "tight" inside a lemma and pins the definition
-    `IsTightPartition`; `lem:partitionDef-merge` pins `crossingEdgesWithin` and is read by
-    `main-component.tex` (*Scope*). The lead's "proved … in a companion paper" beside "Lemma 3.2
-    of [JJ 2008]" and "matching the formalization"; `fmlnote:tight-partition-consumed-forms`'s
-    "consumed". Titles say "JJ Lemma 5.2": introduce "JJ" once, as "KT".
+  - *2.5:* done; the open bullet is in this log at `9c97fecc`.
   - *2.6 (276–583):* `lem:square-cross-classification` (9 pins) and
     `lem:normal-cross-count-partition` (4). `lem:normal-cross-count-producer` writes $f u = f v$
     before `def:g-cut-edges` introduces the labeling $f$ (principle E). `thm:laman-square-count`'s
@@ -344,10 +337,11 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.3 `molecule-modelling.tex`, general position, the rank-carrying equivalence, the
     square-graph dictionary and the opening** (`e5adefe1`): the node move; the crux at full depth;
     `F-174` anchored; carry-in 9. Found `F-183`–`F-186`.
-  - [x] **2.4 `molecule-application.tex`** (this commit): the coinage "shadowing carrier" replaced;
+  - [x] **2.4 `molecule-application.tex`** (`9c97fecc`): the coinage "shadowing carrier" replaced;
     the opening points at `molecule-modelling`'s for the argument. Found `F-187`–`F-190`.
-  - [ ] **2.5 `jacobs.tex`, the Laman condition and tight partitions** (58–275): 10 nodes, 218
-    lines.
+  - [x] **2.5 `jacobs.tex`, the Laman condition and tight partitions** (this commit): JJ introduced
+    once; the tight-partition lemmas credited to JJ's Lemma 3.2 and the proofs of their Theorems
+    3.4 and 5.3; one note for the formal forms. Found `F-191`–`F-194`.
   - [ ] **2.6 `jacobs.tex`, the counting bound (JJ Theorem 5.3)** (276–583): 11 nodes, 308 lines.
   - [ ] **2.7 `jacobs.tex`, independence implies the Laman condition, and 0-extensions** (584–881):
     10 nodes, 298 lines.
@@ -402,6 +396,8 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
 - `F-187` (S, task 2.4): `lem:molecule-graph-carrier`'s label bound left the statement for its note,
   though one of its pins states it (two readings).
 - `F-188` (S, task 2.4): `lem:square-rank-le-genericRank`'s rank form is unpinned; kept, with a note.
+- `F-191` (S, task 2.5): four tight-partition statements assume what their pins do not ($V(G)$
+  nonempty, $|Q| \ge 2$, $G$ simple, the two vertices nonadjacent); kept, with one note.
 
 ## Moved to a later round
 
@@ -424,6 +420,11 @@ one line each naming the ledger ID and the task that found it.
   nodes the rewritten proofs cite without an edge.
 - `F-190` (L, task 2.4): the docstrings of its pins (a false count in `Carrier.lean`, a loose credit,
   process narration).
+- `F-192` (N, task 2.5): `lem:exists-tight-partition` and `lem:partitionDef-merge` pin the
+  definitions of a tight partition and of $e_G(Q)$ beside their claims.
+- `F-193` (E, task 2.5): the first ten nodes of `jacobs.tex`: two missing edges and three unbacked.
+- `F-194` (L, task 2.5): the docstrings of its pins (a label that no longer exists, a misdescribed
+  source, process narration).
 
 ## Blockers / open questions
 
@@ -431,12 +432,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.5, `jacobs.tex`, the Laman condition and tight partitions (58–275),
-at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.5* item under *`jacobs`* in
-*Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.6–2.14 in order, and
-task 3 closes the round. For the slices:
-- **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
-  understandable"): the coordinator reads 2.1–2.3 in full against the exemplars, as rounds 2–3 did.
+**Next concrete task: task 2.6, `jacobs.tex`, the counting bound (276–583 at the open, 332–639
+now), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.6* item under
+*`jacobs`* in *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.7–2.14 in
+order, and task 3 closes the round. For the slices:
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
   true: 2.9's JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
@@ -450,20 +449,24 @@ task 3 closes the round. For the slices:
   `cor:molecule-generic-square-packing`'s proof. The chapter ends on generic rigidity of squares
   (JJ Conjecture 2.1, KT §7), citing `cor:molecule-generic-rigid`; the intro's "protein-flexibility"
   and "capstone" (2.13, 2.14) have no counterpart in it.
+- **From task 2.5.** `sec:jacobs-laman3`'s lead introduces JJ ("JJ stands for Jackson and
+  Jordán"), so 2.6–2.8 may write JJ in prose; 2.8 may move the sentence to the opening's notation
+  paragraph. The opening's "proved … in a companion paper (Lemma 3.2 …)" is off: JJ take Lemma 3.2
+  from their reference [10], and their companion paper is [8]; its \emph{tight} precedes
+  `lem:exists-tight-partition` (2.8). The slice calls $\operatorname{def}_{\tilde G}(P)$ the value
+  of $P$, as `deficiency.tex` does.
 - **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 10–13 under *Per-chapter
   diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
   the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
-  readings** (*Scope*) bind 2.5 and 2.12.
+  readings** (*Scope*) bind 2.12.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
   `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-191`.
+  deficiency zero"). The ledger's next ID is `F-195`.
 
 ## Decisions made during this round
 
-- **The slicing** (the open): fourteen slices, one more than §3's thirteen, numbered 2.1–2.14
-  (task 1 the open, task 3 the close). `generic-lift`'s body-and-hinge section with its opening
-  would make 467 lines, so it splits before `lem:screw-map-rows`; `thm:panel-hinge-iff-molecular`
-  rides with 2.3, where it moves. 113–384 lines, mean 254.
+- **The slicing** (the open): fourteen slices, 2.1–2.14, one more than §3's thirteen, as
+  `generic-lift`'s body-and-hinge section splits before `lem:screw-map-rows` (467 lines whole).
 - **One notation** (round 3's, carried; carry-in 1). KT's $d$ for the dimension (the bar-joint
   chapters' $d$ already), $D = \binom{d+1}{2}$, $K^{d+1}$, $\bigwedge^{d-1} K^{d+1}$, $\vee$ for
   the join, $\wedge$ for the meet, $*$ for the complement isomorphism; $k$ is only the dof.
@@ -472,25 +475,22 @@ task 3 closes the round. For the slices:
   and the fresh-label supply leave statements, `\cref`ing round 3's note at
   `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate". 2.4
   replaced the coinage "shadowing carrier" (below).
-- **`intro.tex`'s parts** (the open's call; *Scope*): the lists, the continuation paragraph and
-  *Reading* are rewritten; the Caution paragraph and `40-exposition`'s pencil text stay.
-- **The crux list, by label** (the open): three entries, in 2.3 with a pointer in 2.2. The
-  no-Lean-edit base is `baa224cc`, the open's parent.
-- **`bar-joint-3d`'s opening** (2.1): the title drops "in dimension three", which the chapter's
-  every-$d$ content contradicted; the sentence that $3|V| - 6$ is the largest rank of a graph on $V$
-  (false below $|V| = d$; Jordán's Lemma 1.2.1) is cut, not repaired, as the formula's reading
-  belongs to `molecule-application.tex`; the opening sketches the chapter once, with no node list.
+- **`bar-joint-3d`'s opening** (2.1): the title drops "in dimension three"; the false sentence on
+  $3|V| - 6$ (Jordán's Lemma 1.2.1) is cut, its reading left to `molecule-application.tex`.
 - **`molecule-modelling`'s first slice** (2.2): `thm:projective-invariance` over $K$, as `pencil.tex`
   reads it (`F-178`); the polarity defined once, before its lemma, over every field, the lemma over
   $\R$ (both later chapters' readings); claims beside their pins kept, with notes (`F-180`).
 - **`molecule-modelling`'s second slice** (2.3): `F-174` anchored (`F-183`): the realizability
-  sentence asks nondegenerate hinges and says "Moreover"; the dictionary's proof proves it from KT
-  Theorem 5.6, the deficiency bound and genericity, and a note says it is unpinned. The equivalence
-  is Whiteley's 2004 manuscript, credited through JJ §2.1 and KT pp. 650, 671 (no bib entry: no
-  primary source). `thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position`,
-  whose subsection is retitled; the opening keeps the crux account, naming JJ's Theorems 4.1, 4.3.
+  sentence asks nondegenerate hinges, is proved and is unpinned (a note). The equivalence is
+  Whiteley's 2004 manuscript, credited through JJ §2.1 and KT pp. 650, 671 (no bib entry).
+  `thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position`.
 - **`molecule-application`** (2.4): "shadowing carrier" is replaced, not defined: *Simple graphs as
   multigraphs* reads $G$ as a multigraph $G'$ whose deficiency is JJ's $\operatorname{def}(G)$,
   and the label bound goes to a note (`F-187`). The opening credits JJ's Conjecture 2.2 and
   Theorems 4.1 and 4.3, and points at `molecule-modelling`'s opening for the argument; the closing
   remark is prose on generic rigidity of squares (JJ Conjecture 2.1, KT §7).
+- **`jacobs`' first slice** (2.5): JJ is introduced once, in the slice's first lead, as the
+  chapter's titles use it. The tight-partition lemmas are credited to JJ's Lemma 3.2 (which JJ take
+  from their reference [10]) and to the proofs of their Theorems 3.4 and 5.3. JJ's forms of 3.2(a)
+  and (b) are lead-ins; the one note, at the subsection's end, gives the formal forms (`F-191`). The
+  common-neighbor proof counts entries along the closed walk $uvwv'u$, not a case analysis.
