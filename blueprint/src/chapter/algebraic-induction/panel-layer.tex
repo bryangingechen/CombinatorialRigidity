@@ -538,7 +538,7 @@ later in this subsection, and Cases~I, II and~III, which
         thm:minimal-kdof-reduction-all-k,
         lem:theorem-55-base-producer, lem:theorem-55-base,
         lem:case-cut-edge-realization, lem:case-cut-edge-realization-gp,
-        lem:case-I, lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
+        lem:case-I, lem:case-II, lem:case-I-realization, lem:case-I-all-k,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
   minimal $k$-dof-graph with $|V| \ge 2$. Then $G$ has a
@@ -554,7 +554,7 @@ later in this subsection, and Cases~I, II and~III, which
   \uses{thm:minimal-kdof-reduction-all-k, lem:theorem-55-base-producer,
         lem:theorem-55-base, lem:case-cut-edge-realization,
         lem:case-cut-edge-realization-gp, lem:case-I, lem:case-II,
-        lem:case-I-realization, lem:case-I-dispatch, lem:case-II-realization,
+        lem:case-I-realization, lem:case-I-all-k, lem:case-II-realization,
         lem:case-III, lem:case-III-nested-rank-lower, lem:chain-data-extract}
   For a multigraph $H$, let $P(H)$ say that $H$ has a nondegenerate-hinge
   panel realization, and also a generic full-rank realization if $H$ is
@@ -575,9 +575,9 @@ later in this subsection, and Cases~I, II and~III, which
   gives the nondegenerate-hinge realization, and
   \cref{lem:case-cut-edge-realization-gp} gives the generic one when $G$
   is simple. If $G$ has a proper rigid subgraph, then Case~I gives $P(G)$
-  (KT \S6.2; \cref{lem:case-I-dispatch}, \cref{lem:case-I-realization}).
-  It uses KT Lemma~6.2 when $G$ is not simple, KT Lemma~6.3 when $G$ is
-  simple and has a proper rigid subgraph $H$ with $G/E(H)$ simple, and
+  (KT \S6.2; \cref{lem:case-I-all-k}). It uses KT Lemma~6.2 when $G$ is
+  not simple, KT Lemma~6.3 when $G$ is simple and has a proper rigid
+  subgraph $H$ with $G/E(H)$ simple (\cref{lem:case-I-realization}), and
   KT Lemma~6.5 otherwise.
 
   In the remaining two cases $G$ is $2$-edge-connected and has no proper

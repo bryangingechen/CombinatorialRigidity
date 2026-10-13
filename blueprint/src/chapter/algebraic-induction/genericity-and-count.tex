@@ -164,13 +164,15 @@ the four lemmas on rows before it.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem takes $q$ from the pinned theorem of
-  \cref{lem:rows-polynomial-in-normals}. That theorem applies the
-  genericity argument of \cref{lem:genericity-device} to these rows, and
-  gives normals $q$ with $m + \dim Z(G,q) \le D|W|$. It then substitutes
-  $|W| = |V(G)| + |W \setminus V(G)|$, as above. It assumes that every
-  edge label is an edge of $G$, whose ends the endpoint selector gives
-  (\cref{fmlnote:panel-hinge-nondegenerate}). No main result uses it.
+  The pinned theorem applies the genericity argument of
+  \cref{lem:genericity-device} to the rows of
+  \cref{lem:rows-polynomial-in-normals}
+  (\texttt{exists\_\allowbreak{}good\_\allowbreak{}realization\_\allowbreak{}ofParam}),
+  which gives normals $q$ with $m + \dim Z(G,q) \le D|W|$. It then
+  substitutes $|W| = |V(G)| + |W \setminus V(G)|$, as above. It assumes
+  that every edge label is an edge of $G$, whose ends the endpoint
+  selector gives (\cref{fmlnote:panel-hinge-nondegenerate}). No main
+  result uses it.
 \end{fmlnote}
 
 \begin{lemma}[Rigidity on $V(G)$ from a bound on the motions]
@@ -238,7 +240,7 @@ the four lemmas on rows before it.
   \label{lem:rank-polynomial-of-le-finrank}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking}
   \leanok
-  \uses{lem:rows-polynomial-in-normals}
+  \uses{def:panel-hinge-framework, lem:rows-polynomial-in-normals}
   Let $G$ be a multigraph, and let $q_0$ be normals at which every hinge
   of the panel-hinge framework $(G,q_0)$ is nondegenerate. If
   $\operatorname{rank} R(G,q_0) \ge N$, then there is a polynomial $Q$ in

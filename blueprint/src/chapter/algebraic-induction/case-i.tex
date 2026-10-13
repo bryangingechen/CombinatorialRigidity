@@ -17,8 +17,8 @@ the block pin, which pins all the bodies of a set at once. We then
 follow KT \S6.2, which applies KT Lemma~3.5 to the contraction
 (\cref{lem:rigidContract-isMinimalKDof}): the rank count of KT
 eq.~(6.3) and its form for infinitesimal motions, KT Claim~6.4, and
-finally KT Lemmas~6.3, 6.2 and~6.5, with the case split that combines
-them (\cref{lem:case-I-dispatch}).
+finally KT Lemmas~6.3, 6.2 and~6.5, with KT Claim~6.6 and the case
+split that combines them (\cref{lem:case-I-all-k}).
 
 KT Lemma~5.4 states that a cycle on $m$ vertices, for $3 \le m \le D$,
 has an infinitesimally rigid nonparallel panel-hinge
@@ -133,12 +133,9 @@ consecutive hinges share a normal. For a cycle, the normals of
 
 \begin{lemma}[A cycle with independent hinges is rigid]
   \label{lem:cycle-realization-rigid}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_zero_of_cycle,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isTrivialMotion_of_isInfinitesimalMotion_cycle,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_cycle}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_cycle}
   \leanok
-  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:cycle-realization-base}
+  \uses{def:rank-hypothesis, lem:cycle-realization-base}
   Let $(G,p)$ be a body-hinge framework, let $m \ge 1$, and let
   $v_0, \dots, v_{m-1}$ be bodies, not necessarily distinct. Let
   $f_0, \dots, f_{m-1}$ be edges of $G$ such that $f_i$ joins $v_i$ and
@@ -165,14 +162,6 @@ consecutive hinges share a normal. For a cycle, the normals of
   every $i$. If $v_0, \dots, v_{m-1}$ are all the bodies, then $S$ is
   trivial (\cref{def:trivial-motions-rigid}).
 \end{proof}
-
-\begin{fmlnote}
-  The first three pinned theorems are the case in which the bodies are
-  $0, 1, \dots, m - 1$ and $v_i = i$: for a panel-hinge framework in the
-  form $\dim Z(G,p) = D$, and for a body-hinge framework in that form and
-  in the form that every infinitesimal motion is trivial. The fourth is
-  the lemma as stated.
-\end{fmlnote}
 
 The formal realization of a cycle ends by choosing its normals once
 more, in general position, without decreasing the rank (the note after
@@ -617,9 +606,11 @@ and \cref{lem:claim-6-4} states the claim.
 
 \begin{lemma}[Rows polynomial in the normals; KT Claim~6.4]
   \label{lem:rows-polynomial-in-normals}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_good_realization_ofParam}
+  \lean{CombinatorialRigidity.Molecular.annihRowPoly_eval,
+        CombinatorialRigidity.Molecular.annihRowPoly_totalDegree_le,
+        CombinatorialRigidity.Molecular.span_annihRow_eq_dualAnnihilator}
   \leanok
-  \uses{def:panel-support-extensor, def:rigidity-matrix, lem:genericity-device}
+  \uses{def:panel-support-extensor, def:rigidity-matrix}
   Let $G$ be a multigraph, and let $e$ be an edge of $G$. There is a
   finite family of linear forms on screw assignments, depending on the
   normals $n = (n_v)$, whose coordinates in the standard basis are
@@ -659,16 +650,15 @@ and \cref{lem:claim-6-4} states the claim.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem applies the genericity argument
-  (\cref{lem:genericity-device}, in
-  \cref{sec:molecular-algebraic-induction-genericity}) to these forms,
-  with the ends of each edge read from the endpoint selector
-  (\cref{fmlnote:panel-hinge-nondegenerate}). Let $K$ be infinite, and
-  let $W$ be the finite set of all bodies. If some $m$ of the forms are
-  linearly independent at normals $q_0$, then there are normals $q$ with
-  $m + \dim Z(G,q) \le D|W|$. The normals $q_0$ already satisfy this
-  bound. The polynomial coordinates are a step of the proof, and no
-  pinned theorem states them.
+  The pinned theorems state the lemma for the forms in $x$. The first
+  gives the coordinate of the form $x \mapsto C_t x_{t'} - C_{t'} x_t$ at
+  each standard basis vector as the value at the normals of a polynomial
+  in the normals of $u$ and $v$, and the second bounds the degree of that
+  polynomial by two. The coordinates of the form in $S$ are these, up to
+  sign, at the columns of $u$ and $v$. The third is the spanning: for
+  $C \neq 0$, the forms in $x$ span the forms that vanish at $C$. The
+  pinned theorem of \cref{lem:relative-device-count} applies the
+  genericity argument of \cref{lem:genericity-device} to these forms.
 \end{fmlnote}
 
 \begin{lemma}[The rows outside $H$ at generic normals; KT Claim~6.4 and eq.~(6.9)]
@@ -771,8 +761,9 @@ rigid subgraph has a simple contraction, then KT Lemma~6.5 removes a
 vertex $v$ of degree two instead (\cref{lem:case-I-realization-h65}).
 The graph $G_v$ is a subgraph of $G$, so it is simple, and the induction
 hypothesis gives a generic full-rank realization of it. By KT
-Claim~6.6, this last case occurs only for $k = 0$. We prove KT
-Lemma~6.3 first, and then KT Lemmas~6.2 and~6.5.
+Claim~6.6 (\cref{lem:claim-6-6}), this last case occurs only for
+$k = 0$. We prove KT Lemma~6.3 first, then KT Lemma~6.2, KT Claim~6.6
+and KT Lemma~6.5, and finally the case split.
 
 \begin{lemma}[Case~I with a simple contraction; KT Lemma~6.3]
   \label{lem:case-I-realization}
@@ -865,6 +856,9 @@ Lemma~6.3 first, and then KT Lemmas~6.2 and~6.5.
   infinitesimal rigidity of that realization on $V(H)$ from its rank by
   the relative count of \cref{lem:isInfRigidOn-of-relative-count}, later
   in this chapter, as the formal framework has bodies outside $V(H)$.
+  Given $Q_2$, the choice of $q_0$ and the count of the rows are one
+  step of its proof
+  (\texttt{hasGenericFullRankRealization\_\allowbreak{}of\_\allowbreak{}couple\_\allowbreak{}blockTriangular\_\allowbreak{}ofNormals\_\allowbreak{}set\_\allowbreak{}kdof}).
 \end{fmlnote}
 
 \medskip\noindent\emph{Rank and general position.} The normals $q_0$
@@ -908,7 +902,7 @@ Lemma~6.5 below uses the same product with a factor of a third kind.
 
 \begin{lemma}[Case~I for a graph that is not simple; KT Lemma~6.2]
   \label{lem:case-I-realization-nonsimple}
-  \lean{CombinatorialRigidity.Molecular.case_I_realization_nonsimple}
+  \lean{CombinatorialRigidity.Molecular.case_I_realization_nonsimple_gen}
   \leanok
   \uses{def:genuine-hinge-realization, lem:case-I, lem:two-vertex-zero-dof,
         lem:rigidContract-isMinimalKDof}
@@ -966,34 +960,37 @@ Lemma~6.5 below uses the same product with a factor of a third kind.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem is the case $d = 3$. The theorem for every
-  $d \ge 2$, of which it is an instance, is the one that the formal proof
-  of KT Theorem~5.5 uses, and it is not pinned. The pinned theorem
-  assumes of the graphs with fewer vertices only that they have
-  nondegenerate-hinge panel realizations.
+  The pinned theorem proves more than the statement, which keeps the
+  induction hypothesis in the form that Case~I has. It assumes of the
+  graphs with fewer vertices only that they have nondegenerate-hinge
+  panel realizations, as the proof above uses no other. It is the form
+  that the formal proof of KT Theorem~5.5 uses
+  (\cref{lem:case-I-dispatch}, \cref{lem:case-I-all-k}).
 \end{fmlnote}
 
-\begin{lemma}[Case~I with no simple contraction; KT Lemma~6.5 and Claim~6.6]
-  \label{lem:case-I-realization-h65}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65_gen}
+The third case rests on KT Claim~6.6 (p.~676), which Katoh and Tanigawa
+state under the hypotheses of KT Lemma~6.5, for every $k$.
+
+\begin{lemma}[A vertex of degree two; KT Claim~6.6]
+  \label{lem:claim-6-6}
+  \lean{Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction,
+        Graph.exists_degree_two_removeVertex_of_no_simple_contraction}
   \leanok
-  \uses{def:rank-hypothesis, lem:genericity-device}
-  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
-  minimal $0$-dof-graph with $|V(G)| \ge 3$ in which no proper rigid
-  subgraph $H$ has a simple contraction $G/E(H)$. Suppose that every
-  minimal $0$-dof-graph with at least one and fewer than $|V(G)|$
-  vertices has a nondegenerate-hinge panel realization, and a generic
-  full-rank realization if it is simple. Then $G$ has a generic
-  full-rank realization (\cref{def:rank-hypothesis}).
+  \uses{def:k-dof, def:rigid-subgraph, def:rigid-contraction,
+        def:graph-operations}
+  Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph with
+  $|V(G)| \ge 3$ that has a proper rigid subgraph, and in which no proper
+  rigid subgraph $H$ has a simple contraction $G/E(H)$
+  (\cref{def:rigid-contraction}). Then $k = 0$, and $G$ has a vertex $v$
+  of degree two, joined to two distinct vertices, such that $G_v$
+  (\cref{def:graph-operations}) is a simple minimal $0$-dof-graph.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:genericity-device}
-  As in KT Lemma~6.5, we assume that $G$ has a proper rigid subgraph (the
-  note after the proof). We first prove KT Claim~6.6: $G$ has a vertex
-  $v$ of degree two such that $G_v$ is a minimal $0$-dof-graph. Let $G'$
-  be a proper rigid subgraph of $G$ whose vertex set is maximal under
-  inclusion. The subgraph of $G$ induced on $V(G')$ contains $G'$ and
+  \uses{def:D-deficiency, def:edge-multiply, lem:removal-deficiency,
+        lem:subgraph-minimality}
+  Let $G'$ be a proper rigid subgraph of $G$ whose vertex set is maximal
+  under inclusion. The subgraph of $G$ induced on $V(G')$ contains $G'$ and
   has the same vertices, so its deficiency is at most that of $G'$,
   which is zero (\cref{def:D-deficiency}). So we may take $G'$ induced.
   Then an edge of $G$ not in $G'$ has at most one end in $V(G')$, and
@@ -1012,19 +1009,44 @@ Lemma~6.5 below uses the same product with a factor of a third kind.
   $\operatorname{def}(\tilde G'') \le \operatorname{def}(\tilde G') = 0$,
   by KT Lemma~4.4 (\cref{lem:removal-deficiency}). So $G''$ is a rigid
   subgraph of $G$ with more vertices than $G'$. By the choice of $G'$ it
-  is not proper, so $V(G'') = V(G)$. Let $e'$ be an edge of $G$ not in
+  is not proper, so $V(G'') = V(G)$. As $G$ contains $G''$ and has the
+  same vertices,
+  $k = \operatorname{def}(\tilde G) \le \operatorname{def}(\tilde G'') = 0$
+  (\cref{def:D-deficiency}), so $k = 0$. Let $e'$ be an edge of $G$ not in
   $G''$. Then $G - e'$ contains $G''$ and has the same vertices, so its
   deficiency is zero, as is that of $G$. This contradicts the minimality
   of $G$ (the remark after \cref{def:k-dof}), so $G = G''$. Hence $v$
-  has degree two in $G$, and $G_v = G'$ is a minimal $0$-dof-graph (KT
-  Lemma~3.3, \cref{lem:subgraph-minimality}). For a minimal
-  $k$-dof-graph $G$, the same argument gives
-  $\operatorname{def}(\tilde G) \le \operatorname{def}(\tilde G'') = 0$
-  (\cref{def:D-deficiency}), so $k = 0$. This is the first assertion of
-  KT Claim~6.6.
+  has degree two in $G$, with the neighbours $a \neq b$, and $G_v = G'$
+  is a minimal $0$-dof-graph (KT Lemma~3.3,
+  \cref{lem:subgraph-minimality}). It is simple, as a subgraph of $G$.
+\end{proof}
 
-  The graph $G_v$ is simple, as a subgraph of $G$, and has
-  $|V(G)| - 1 \ge 2$ vertices. So it has a generic full-rank realization,
+\begin{fmlnote}
+  The first pinned theorem gives $k = 0$, and the second, for $k = 0$,
+  the vertex $v$.
+\end{fmlnote}
+
+\begin{lemma}[Case~I with no simple contraction; KT Lemma~6.5]
+  \label{lem:case-I-realization-h65}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65_gen}
+  \leanok
+  \uses{def:rank-hypothesis, lem:genericity-device}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
+  minimal $0$-dof-graph with $|V(G)| \ge 3$ in which no proper rigid
+  subgraph $H$ has a simple contraction $G/E(H)$. Suppose that every
+  minimal $0$-dof-graph with at least one and fewer than $|V(G)|$
+  vertices has a nondegenerate-hinge panel realization, and a generic
+  full-rank realization if it is simple. Then $G$ has a generic
+  full-rank realization (\cref{def:rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:claim-6-6, lem:genericity-device}
+  As in KT Lemma~6.5, we assume that $G$ has a proper rigid subgraph (the
+  note after the proof). By KT Claim~6.6 (\cref{lem:claim-6-6}), $G$ has
+  a vertex $v$ of degree two, joined to two distinct vertices $a$ and
+  $b$, such that $G_v$ is a simple minimal $0$-dof-graph. It has
+  $|V(G)| - 1 \ge 2$ vertices, so it has a generic full-rank realization,
   of rank $D(|V(G)| - 2)$. Katoh and Tanigawa keep this realization, and
   give $v$ a panel $\Pi^\circ$ that is nonparallel to the other panels
   and does not contain $\Pi(a) \cap \Pi(b)$. Then the hinges
@@ -1080,10 +1102,10 @@ Lemma~6.5 below uses the same product with a factor of a third kind.
 \begin{fmlnote}
   The pinned theorem assumes that $G$ has a proper rigid subgraph, as KT
   Lemma~6.5 does, and the statement omits this hypothesis. The proof
-  above uses it to choose $G'$. Without a proper rigid subgraph, the
-  statement would be the case $k = 0$ of Case~III
-  (\cref{sec:molecular-algebraic-induction-caseIII}), whose proof also
-  needs the induction hypothesis at positive deficiencies (KT
+  above uses it for KT Claim~6.6 (\cref{lem:claim-6-6}). Without a
+  proper rigid subgraph, the statement would be the case $k = 0$ of
+  Case~III (\cref{sec:molecular-algebraic-induction-caseIII}), whose
+  proof also needs the induction hypothesis at positive deficiencies (KT
   Claim~6.11).
 \end{fmlnote}
 
@@ -1123,9 +1145,41 @@ Lemma~6.5 below uses the same product with a factor of a third kind.
   The pinned theorem assumes the induction hypothesis, for every $k'$
   and every minimal $k'$-dof-graph with at least one and fewer than
   $|V(G)|$ vertices, and the statement omits it. The pinned theorem is
-  Case~I for $k = 0$. For $k > 0$ the formal proof of KT Theorem~5.5
-  makes the same case split, and its third case does not occur, by the
-  first assertion of KT Claim~6.6 (the proof of
-  \cref{lem:case-I-realization-h65}). No pinned theorem states that case
-  split or KT Claim~6.6.
+  Case~I for $k = 0$; the next lemma is Case~I for every $k$.
 \end{fmlnote}
+
+Case~I for every $k$ makes the same case split, and for $k > 0$ its
+third case does not occur, by the first assertion of KT Claim~6.6.
+
+\begin{lemma}[Case~I; KT \S6.2]
+  \label{lem:case-I-all-k}
+  \lean{CombinatorialRigidity.Molecular.case_I_hcontract_gen}
+  \leanok
+  \uses{def:genuine-hinge-realization, def:rank-hypothesis}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a minimal
+  $k$-dof-graph with $|V(G)| \ge 3$ that has a proper rigid subgraph.
+  Suppose that for every $k'$, every minimal $k'$-dof-graph with at
+  least one and fewer than $|V(G)|$ vertices has a nondegenerate-hinge
+  panel realization, and a generic full-rank realization if it is
+  simple. Then $G$ has a nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}), and if $G$ is simple, a
+  generic full-rank realization (\cref{def:rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-I-dispatch, lem:case-I-realization-nonsimple,
+        lem:case-I-realization, lem:claim-6-6,
+        lem:generic-yields-genuine-hinge}
+  For $k = 0$ this is \cref{lem:case-I-dispatch}. Let $k > 0$. If $G$ is
+  not simple, then KT Lemma~6.2 gives a nondegenerate-hinge panel
+  realization (\cref{lem:case-I-realization-nonsimple}). Let $G$ be
+  simple. Suppose that some proper rigid subgraph $H$ has a simple
+  contraction $G/E(H)$. Then $H$ is a simple minimal $0$-dof-graph and
+  $G/E(H)$ a simple minimal $k$-dof-graph, both with fewer vertices than
+  $G$ (KT Lemmas~3.3 and~3.5). The hypothesis gives generic full-rank
+  realizations of both, and KT Lemma~6.3 gives one of $G$
+  (\cref{lem:case-I-realization}), which is also a nondegenerate-hinge
+  panel realization (\cref{lem:generic-yields-genuine-hinge}). Otherwise
+  no proper rigid subgraph of $G$ has a simple contraction, and KT
+  Claim~6.6 gives $k = 0$ (\cref{lem:claim-6-6}), a contradiction.
+\end{proof}

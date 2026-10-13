@@ -1059,7 +1059,7 @@ declaration's name as its header writes it:
   *Disposition:* done (task 3.6) for the three base cases, repinned on the five `_gen` forms with
   their statements kept and a note on what the pins prove beyond them; left for
   `lem:extensor-pair-in-panel` (it states $K^4$, as its pin does); `lem:case-I-realization-nonsimple`
-  is `F-143`'s (task 3.7).
+  repinned by task 3.7 (`F-143`).
 - **F-134** · N · `lem:cycle-realization-base`, `lem:cycle-realization-dim-bound`,
   `lem:exists-independent-panel-extensor`, `lem:pinned-motions-on-mono`,
   `lem:pinned-motions-on-rank-bound`, `lem:pinned-motions-on-rigid-iff`
@@ -1081,6 +1081,10 @@ declaration's name as its header writes it:
   unbacked edges, and the closure of `formalization.yaml`'s main results over its cache, at
   `8cfa4531`); read (a `grep` for each pin's callers).
   *Found:* round 3 task 2.6.
+  *Disposition:* done (task 3.7) for `lem:cycle-realization-rigid`, which pins `theorem_55_cycle`
+  alone (its three `Fin m` forms unpinned, `F-238`); left for the six dead nodes, kept as
+  exposition (merging the first into `lem:theorem-55-base` is not among principle D's fixes;
+  task 8.2).
 - **F-139** · N · `lem:claim-6-4`, `lem:rows-polynomial-in-normals`, `lem:case-I-splice-seed`,
   `lem:case-I` (`algebraic-induction/case-i.tex`): every pin of the first three, and the second and
   third pins of `lem:case-I`, lie outside every main result's closure. Their callers are dead too:
@@ -1097,6 +1101,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the slice's five nodes and
   `lem:case-I-realization`, at `9a465598`); read (a `grep` for each pin's callers).
   *Found:* round 3 task 2.7.
+  *Disposition:* done (task 3.7) for `lem:rows-polynomial-in-normals`, repinned on its polynomial
+  coordinates, their degree bound and the spanning, a pin per clause (`F-137`); left for
+  `lem:claim-6-4` (merging it into `lem:rank-polynomial-IH-relabel-proj` is not a D fix; task
+  8.2) and for the dead pins of `lem:case-I-splice-seed` and `lem:case-I` (deadness alone is no
+  reason to unpin).
 - **F-143** · N · `lem:case-I-realization-nonsimple`, `lem:case-I-dispatch`
   (`algebraic-induction/case-i.tex`): the pin of the first, `case_I_realization_nonsimple`, lies
   outside every main result's closure and has no caller, so the second's `\uses` edge to it has no
@@ -1113,6 +1122,10 @@ declaration's name as its header writes it:
   `666f05f9`); read (a `grep` for each declaration's callers and for its pins in
   `blueprint/src`).
   *Found:* round 3 task 2.8.
+  *Disposition:* done (task 3.7): `lem:case-I-realization-nonsimple` repinned on
+  `case_I_realization_nonsimple_gen`; `lem:claim-6-6` pins KT Claim 6.6 and its first assertion,
+  and `lem:case-I-all-k` the case split for every $k$, to which `thm:theorem-55`'s edge moved;
+  `lem:case-I-realization`'s note names the coupler of KT Lemma 6.3 (principle C).
 - **F-147** · N · `lem:case-II-rank-lift`, `lem:splitoff-edge-substitution`, `lem:case-II`
   (`algebraic-induction/case-ii.tex`): every pin of the first and third nodes, and the third pin
   of the second, `isLink_incident_of_not_removeVertex`, lie outside every main result's closure.
@@ -1887,6 +1900,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/GenericityDevice.lean`,
   `PanelLayer.lean` and `Pinning.lean`).
   *Found:* round 3 task 2.7.
+  *Disposition:* done (task 3.7): the node is repinned on `annihRowPoly_eval`,
+  `annihRowPoly_totalDegree_le` and `span_annihRow_eq_dualAnnihilator`, which prove its three
+  clauses (`F-139`), and `exists_good_realization_ofParam` is unpinned; the statement is unchanged.
 - **F-138** · S · `lem:claim-6-4` (`algebraic-induction/case-i.tex`): the statement takes a simple
   minimal $0$-dof-graph $G$ whose contraction $G/E(H)$ has a generic full-rank realization, and
   gives a nonzero polynomial $Q$ in the normals off whose zeros the rows of $G \setminus E(H)$, with
@@ -1927,6 +1943,9 @@ declaration's name as its header writes it:
   statement, with a note.
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.8.
+  *Disposition:* done (task 3.7): the node is repinned on `case_I_realization_nonsimple_gen`,
+  which matches the statement's dimension; its note says that the pin, assuming less of the
+  smaller graphs, proves more than the statement (`F-143`).
 - **F-145** · S · `lem:case-II`, `lem:splitoff-edge-substitution` (`algebraic-induction/case-ii.tex`):
   the second assertion of `lem:case-II` holds vacuously for $d \ge 2$. Its hypothesis, as in its
   pin `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (`hspan`), asks that every
@@ -3154,6 +3173,20 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_of_theorem_55_gen` (`F-011`).
   *Evidence:* read (the docstrings and bodies; a `grep` for the callers).
   *Found:* round 5 task 3.6.
+- **F-238** · L · the declarations round 5's task 3.7 unpinned or pinned
+  (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `PanelLayer.lean`,
+  `GenericityDevice.lean`, `Theorem55.lean`; `Molecular/Induction/Contraction.lean`). The three
+  `Fin m` cycle forms `isTrivialMotion_of_isInfinitesimalMotion_cycle`,
+  `rankHypothesis_zero_of_cycle` and `toBodyHinge_rankHypothesis_zero_cycle`, now unpinned, have
+  no caller but one another (`F-134`), and their docstrings name `lem:cycle-realization`. The
+  pinned `annihRowPoly_totalDegree_le` has no caller, and the $d = 3$ wrapper
+  `case_I_realization_nonsimple`, now unpinned, has none either (`F-131`). The docstrings of
+  `exists_good_realization_ofParam` and `case_I_realization_h65_gen` name
+  `lem:rows-polynomial-in-normals` and `lem:case-I-dispatch`, which are not their nodes, and
+  those of `case_I_hcontract_gen` and the two theorems of KT Claim 6.6 name none (now
+  `lem:case-I-all-k` and `lem:claim-6-6`).
+  *Evidence:* read (the docstrings; a `grep` for the callers).
+  *Found:* round 5 task 3.7.
 
 ## M — mathematics and sources
 
