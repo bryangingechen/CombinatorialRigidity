@@ -1266,8 +1266,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `bar-joint-3d.tex` through `generic-lift.tex`, then `intro.tex`, in fourteen slices, and recorded
   56 findings in the ledger (`F-174`–`F-229`). Round 5, `prose-graph`, opened 2026-10-13
   (`notes/Prose-graph-cleanup.md`): it triaged the ledger's edge, node-shape, terminology and
-  status-surface findings into 31 one-commit tasks. **Next concrete task:** round 5's task 2, the
-  gate's tooling (its hand-off).
+  status-surface findings into 31 one-commit tasks, and its task 2 added each node's `\uses` to the
+  gate's dump. **Next concrete task:** round 5's task 3.1, round 1's chapters' node shapes (its
+  hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

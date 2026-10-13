@@ -6,8 +6,9 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its 132 `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks. No task edits the Lean or changes a statement's strength. **Next concrete
-task:** task 2, the gate's tooling (*Hand-off*). Round manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump. No task edits the Lean or
+changes a statement's strength. **Next concrete task:** task 3.1, round 1's chapters' node shapes
+(*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,8 +19,24 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Opened** (task 1, this commit, docs only). Nothing is mid-stream; the next task is task 2, the
-gate's tooling.
+**Task 2 has landed** (this commit; `scripts/blueprint-deps.py` and docs, no TeX). Nothing is
+mid-stream; the next task is task 3.1, round 1's chapters' node shapes.
+
+**The gate's baseline, at task 2** (2026-10-13; every value the open's, below, but the dump's):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 274 lines**, sha256 prefix
+  **`4015eeb0fed12738`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+  regenerate it on this commit). Its first 2 614 lines are the open's dump, byte for byte; then
+  the `## uses:` header and 659 lines (657 nodes, and `ex:kt-41-overquantified` and
+  `rem:kt-lemma-44`, the labelled non-nodes with a `\uses`), 2 455 targets. The same bytes under
+  `PYTHONHASHSEED` 0, 1 and 12345.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1292 edges
+  673e3178d1b3145e`** and **`b53eb8b1cf78cb06`**; `print.log` 0 `LaTeX Warning` lines (latexmk up
+  to date); `--summary` exits 0, both consistency checks OK, every count the open's.
+- **Acceptance** (a scratch copy of the TeX, read with `--tex-root`; measured, script not
+  retained): moving `def:graph-sparse` from `cor:bodybar-generic-tay`'s statement to its proof,
+  dropping `lem:typeI-rowIndependent-lift`'s statement edge that its proof repeats, and adding the
+  implied `def:hinge-constraint` to `cor:bodyhinge-generic-tree-packing`'s proof leave the TeX's
+  reduced edges the built graph's 1 292, and change exactly those three lines of the dump.
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -33,8 +50,8 @@ gate's tooling.
   unfilled (`F-008`).
 - **The baseline dump.** `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: 2 614
   lines, sha256 prefix **`00604279e922bb0f`**, kept as `scratch/prose-graph/dump-216e0702.txt`
-  (gitignored; generated, so not committed). This commit changes no TeX, so its own dump is the
-  same; task 2 extends the dump and records the new baseline.
+  (gitignored; generated, so not committed). The open (`44e09c12`) changed no TeX: its dump,
+  regenerated at task 2, is the same bytes.
 - **The script's report** (a fresh `--no-cache` run, 75 s, equal line for line to the cached
   one; both consistency checks OK): every count equals round 1's (`F-001`–`F-012`), since rounds
   1–4 changed no edge or pin. Per group, with the forward-`\uses` screen (*Scope*):
@@ -81,7 +98,8 @@ From `notes/Prose.md` §2–§4, restated as far as a builder needs them.
      removed; whether the `lean_decls` hash changes (a move keeps it; an added or removed pin
      changes it). (c) After: `verify.sh`, the dump again, and `diff` the two: the diff is exactly
      the listed changes, with the drawn edges those changes imply (the graph is a transitive
-     reduction). (d) `python3 scripts/blueprint-deps.py --summary` exits 0, both consistency
+     reduction); the `## uses:` section (task 2) shows every `\uses` change, drawn or not, a line
+     per changed node. (d) `python3 scripts/blueprint-deps.py --summary` exits 0, both consistency
      checks OK. Tasks 5–9 change no edge or pin: their dump is byte-identical.
   4. `blueprint/print/print.log` has 0 `LaTeX Warning` lines.
   5. `python3 notes/check-phase-note.py` green; it gates this log by its title.
@@ -159,13 +177,16 @@ of that commit, carries the task's exact list. A task's findings are named by ID
 the disposition `left`, with the reason given here. "Expected" gives the open's estimate of the
 gate's diff, which each task makes exact before editing.
 
-- [x] **1. Open** (this commit; docs only): this log, the baselines, the triage.
-- [ ] **2. G — the gate's tooling** (`scripts/blueprint-deps.py`). `--dump` gains a third
-  section: each node's `\uses` targets read from the TeX, statement and proof apart, sorted, a
+- [x] **1. Open** (`44e09c12`; docs only): this log, the baselines, the triage.
+- [x] **2. G — the gate's tooling** (this commit; `scripts/blueprint-deps.py`). `--dump` gains a
+  third section: each node's `\uses` targets read from the TeX, statement and proof apart, sorted, a
   target that is not a node included (`rem:kt-lemma-41`, `F-007`). The drawn graph is a
   transitive reduction, so a removal, an implied addition or a move between statement and proof
-  may change no drawn edge; this section shows each. The docstring follows. *Expected:* the open's
-  2 614 lines byte-identical, then the new section, one line per node; both hashes unchanged.
+  may change no drawn edge; this section shows each. The docstring follows. *Expected* (exact,
+  written before editing): the open's 2 614 lines byte-identical, then the new section, a header
+  and 659 lines, one per node (657) and one per other labelled environment with a `\uses`
+  (`ex:kt-41-overquantified`, `rem:kt-lemma-44`; the pins section lists the example likewise);
+  both hashes unchanged; no TeX, edge or pin change.
 - [ ] **3. N — node shape**, chapter by chapter. N before E: an N fix changes what the report calls
   missing (`F-010`'s six helpers alone draw 97 missing in-edges).
   - [ ] **3.1 Round 1's chapters** (`F-009`'s four, `F-011`'s three pebble-game edges, `F-014`,
@@ -408,11 +429,11 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2, the gate's tooling** (Opus, a fresh agent). Extend
-`scripts/blueprint-deps.py --dump` with a third section, each node's `\uses` targets from the TeX,
-statement and proof apart; check that the open's 2 614 lines come first, byte-identical
-(`scratch/prose-graph/dump-216e0702.txt`, or regenerate it on this commit); record the new
-baseline's line count and hash here. Then task 3.1, round 1's chapters' node shapes.
+**Next concrete task: task 3.1, round 1's chapters' node shapes** (Opus, a fresh agent). The
+parent's dump is task 2's (3 274 lines, `4015eeb0fed12738`; *Current state*): regenerate it on the
+parent after `verify.sh` if the scratch copy is gone. Before editing, read each named node with
+`--label` and make 3.1's *Expected* exact in its line, its `## uses:` lines included (gate 3 (b));
+then edit, and diff the after-dump against it. Then task 3.2.
 
 ## Decisions made during this round
 
@@ -427,6 +448,10 @@ baseline's line count and hash here. Then task 3.1, round 1's chapters' node sha
   report calls missing; E's additions and removals change which `\uses` point forward.
 - **The tooling first** (task 2): the drawn graph is a transitive reduction, so the open's dump
   cannot show a removal or an implied addition, and the gate would not be exact without it.
+- **The `## uses:` section's lines** (task 2): every node, and every other labelled environment
+  with a `\uses` (the example and `rem:kt-lemma-44`), as the pins section lists the example, so
+  an edit of either's `\uses` (task 4.3's `F-007`) shows too. Targets are raw: each part sorted,
+  duplicates kept, a non-node target included, `-` for an empty part.
 - **`pathVertex`** (task 3.13): `40-simplify`'s `c8` unpinned the bridge step's four `pathVertex`
   lemmas and left `lem:pencil-bridge-fibre`'s `pathVertex` (`notes/Phase40-simplify-verdicts.md`).
   `F-010` measures 30 missing in-edges through it, five of them forward from `rigidity-matrix.tex`

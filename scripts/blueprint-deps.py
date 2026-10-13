@@ -71,8 +71,13 @@ note.
    rounds' invariance check (`CLEANUP.md` §A) parses it, so its first line is that check's first
    line (`<edges> edges <fingerprint>`) and its second is the check's `lean_decls` hash. Then
    every sorted graph statement (edges, nodes and graph attributes, the list the fingerprint
-   hashes), then the label→pins map read from the TeX, sorted by label. Round 5's expected-diff
-   gate diffs two dumps.
+   hashes), then the label→pins map read from the TeX, sorted by label, then the label→`\\uses`
+   map read from the TeX: per node, its statement's targets and its proof's apart, each sorted,
+   a target that is not a node included (a labelled environment that is not a node gets a line
+   when it has a `\\uses`). The drawn graph is a transitive reduction, so removing an edge,
+   adding an implied one or moving one between statement and proof can leave every drawn edge as
+   it was; the `\\uses` section shows each. Round 5's expected-diff gate diffs two dumps
+   (`notes/Prose-graph-cleanup.md`, whose task 2 added the `\\uses` section).
 
 **Consistency checks**, run with the default `--tex-root` when the built graph and
 `blueprint/lean_decls` exist and are not older than the TeX: the TeX's `\\uses` edges between
@@ -562,6 +567,15 @@ def main():
         pinned = {e["label"]: e["pins"] for e in envs if e["label"] and e["pins"]}
         for x in sorted(set(nodes) | set(pinned)):
             print(f"{x}: {', '.join(pinned.get(x, []))}")
+        print("## uses: label -> \\uses targets, from the TeX, statement and proof apart, each "
+              "sorted, sorted by label (every node, and every other labelled environment with a "
+              "\\uses; a target that is not a node included)")
+        using = {e["label"]: e for e in envs
+                 if e["label"] and (e["stmt_uses"] or e["proof_uses"])}
+        for x in sorted(set(nodes) | set(using)):
+            e = nodes[x] if x in nodes else using[x]
+            print(f"{x}: statement {', '.join(sorted(e['stmt_uses'])) or '-'}; "
+                  f"proof {', '.join(sorted(e['proof_uses'])) or '-'}")
         return 0
 
     for x in a.label:

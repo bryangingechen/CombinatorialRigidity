@@ -24,8 +24,9 @@ tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 `F-191`–`F-205`, its tasks 2.9–2.12, `generic-lift.tex`'s four slices, `F-206`–`F-225`, and its
 tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
 Round 5's open re-ran the script, which still gives round 1's counts, and triaged the ledger's 97
-`E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*). **Next concrete task:**
-round 5's task 2, the gate's tooling (`notes/Prose-graph-cleanup.md` *Hand-off*).
+`E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*); its task 2 added each node's
+`\uses` to the gate's dump. **Next concrete task:** round 5's task 3.1, round 1's chapters' node
+shapes (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 
@@ -309,7 +310,8 @@ expected diff.
 **The expected-diff gate** replaces the invariance check in this round:
 
 1. Run `verify.sh`.
-2. Take the script's `--dump` of the built graph's sorted edges and the label→pins map.
+2. Take the script's `--dump` of the built graph's sorted edges, the label→pins map and each
+   node's `\uses` from the TeX (round 5's task 2).
 3. Diff it against the previous commit's dump. The diff must be exactly the task's listed changes. A
    split that only moves pins leaves the `lean_decls` hash unchanged; unpinning a helper changes it.
 
@@ -378,7 +380,7 @@ declarations. It stops at pinned declarations and at constants from outside the 
    call chain.
 3. Pins per node, with four or more flagged (principle D).
 4. `--dump`: the built graph's sorted edges, parsed as the invariance check parses them, and the
-   label→pins map. This is round 5's gate.
+   label→pins map; round 5's task 2 added each node's `\uses`. This is round 5's gate.
 
 **Acceptance tests**, run in the script's own commit:
 - **(a) A seeded defect.** In a scratch copy of the TeX, remove `lem:deficiency-zero-connected` from
