@@ -379,6 +379,45 @@ $d = 3$, where $D = 6$, and repeat it for every $d$ in KT
 eqs.~(6.50)--(6.52) (p.~693). We follow the first, with $D$ in place
 of $6$.
 
+The formal proof builds $(G, p_1)$ as a member of a family of
+body-hinge frameworks, with the hinge of $va$ given by a second normal.
+
+\begin{definition}[The frameworks $F_t$ and $(G, p_1)$; KT eq.~(6.12)]
+  \label{def:case-III-candidate}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.caseIIICandidate}
+  \leanok
+  \uses{def:panel-hinge-framework}
+  Let $G$ be a multigraph with normals $q$, let $e_c$ and $e_r$ be edge
+  labels, and let $n_1, n', n_2 \in K^{d+1}$. For $t \in K$, let $F_t$
+  be the body-hinge framework on $G$ (\cref{def:hinge-constraint}) whose
+  supporting extensor is $C(n_1 + t\,n', n_2)$ at $e_r$, is
+  $C(n_1, n')$ at $e_c$ if $e_c \neq e_r$
+  (\cref{def:panel-support-extensor}), and at every other edge label is
+  its extensor in the panel-hinge framework $(G, q)$
+  (\cref{def:panel-hinge-framework}). For a vertex $v$ of $G$ whose
+  edges $va$ and $vb$ join it to vertices $a$ and $b$, we write
+  $(G, p_1)$ for $F_0$ with $e_c = va$, $e_r = vb$, $n_1 = q(a)$ and
+  $n_2 = q(b)$.
+\end{definition}
+
+Let $v$, $a$, $b$ and $(G_v^{ab}, q)$ be as above. In $(G, p_1)$ the
+hinge of $vb$ has the extensor $C(q(a), q(b))$ of the hinge $q(ab)$ of
+$ab$ in $(G_v^{ab}, q)$, and an edge $e$ of $G_v$ has the same ends in
+$G$ as in $G_v^{ab}$, so it keeps its hinge $q(e)$. A
+$(d-2)$-dimensional affine subspace $L$ of the panel $\Pi(a)$ is the
+meet of $\Pi(a)$ and a hyperplane, with normal $n'$ say. Then $q(a)$
+and $n'$ are linearly independent, and $C(q(a), n')$ is a nonzero
+multiple of the extensor of $L$ (the remarks after
+\cref{def:panel-support-extensor}). So $(G, p_1)$ is Katoh and
+Tanigawa's framework of KT eq.~(6.12) for this
+$L$~\cite[p.~678]{katohTanigawa2011}. For $t \neq 0$, the extensor
+$C(q(a), n')$ at $va$ is $-t^{-1}\,C(q(a) + t\,n', q(a))$. So $F_t$ has
+the rows of the panel-hinge framework in which $v$ has the normal
+$q(a) + t\,n'$, a panel through $L$, and every other body keeps its
+normal. This is how the formal proof rotates the panel of $v$ about $L$
+(the proof of \cref{lem:case-III-candidate-dispatch-d3}), as Katoh and
+Tanigawa do to make $(G, p_1)$ nonparallel (KT p.~678 and Lemma~5.2).
+
 The redundant row of KT Claim~6.11 gives a linear relation among the
 rows of $R(G_v^{ab}, q)$ in which a row $(ab)i^*$ at $ab$ has the
 coefficient $1$ (KT eqs.~(6.24) and~(6.25)). The rows of $R(G, p_1)$ at
@@ -554,6 +593,66 @@ choice.
   \cref{lem:case-III-claim-6-11}, the pinned theorem holds for any two
   multigraphs whose edges, with their ends, agree except for one edge
   $ab$ of the first.
+\end{fmlnote}
+
+In the formal proof of Case~III, the normals $q$ are chosen so that KT
+eqs.~(6.18) and~(6.22) hold (the remark on KT footnote~6): the motions
+of $(G_v^{ab}, q)$ are constant on its vertex set, and the bound of
+\cref{lem:case-III-nested-rank-lower} holds. The next lemma derives the
+relation of KT eqs.~(6.24) and~(6.25) at such normals.
+
+\begin{lemma}[The relation of KT eqs.~(6.24) and~(6.25) when $(G_v^{ab}, q)$ is rigid]
+  \label{lem:case-III-redundant-combination}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn}
+  \leanok
+  Let $d \ge 2$, let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges join $v$ to distinct vertices $a, b \neq v$, and let
+  $G_v = G - v$. Let $q$ be normals at which the hinge of the new edge
+  $ab$ of $(G_v^{ab}, q)$ is nondegenerate, and every infinitesimal
+  motion of $(G_v^{ab}, q)$ is constant on $V(G_v^{ab})$. Suppose that
+  \[
+    \operatorname{rank} R(G_v, q) \;\ge\; D\,(|V(G_v^{ab})| - 1) - (D - 2).
+  \]
+  Then there are linearly independent forms $r_1, \dots, r_{D-1}$ that
+  span the same space as the rows of $R(G_v^{ab}, q)$ at $ab$, an index
+  $i^*$ and scalars $\lambda_1, \dots, \lambda_{D-1}$ with
+  $\lambda_{i^*} = 1$, such that the form $\sum_j \lambda_j r_j$ is not
+  zero and lies in the row space of $R(G_v, q)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-II-placement-old-rows-extract, lem:splitoff-edge-substitution,
+        lem:rows-polynomial-in-normals, lem:case-III-redundant-decomposition}
+  We follow Katoh and Tanigawa~\cite[pp.~682--685]{katohTanigawa2011}.
+  Let $m = |V(G_v^{ab})|$, which is at least $1$, as $a$ is a vertex of
+  $G_v^{ab}$. As the motions of $(G_v^{ab}, q)$ are constant on its
+  vertex set, $\operatorname{rank} R(G_v^{ab}, q) = D(m - 1)$, as in the
+  proof of \cref{lem:case-II-placement-old-rows-extract}. This is KT
+  eq.~(6.18). The edges of $G_v$ are edges of $G_v^{ab}$ with the same
+  ends (\cref{lem:splitoff-edge-substitution}), and so with the same rows
+  (\cref{lem:rows-polynomial-in-normals}). So the row space of
+  $R(G_v, q)$ lies in that of $R(G_v^{ab}, q)$, and
+  $\operatorname{rank} R(G_v, q) \le D(m - 1)$. Let
+  $k' = D(m - 1) - \operatorname{rank} R(G_v, q)$. Then
+  $\operatorname{rank} R(G_v, q) = D(m - 1) - k'$, which is KT
+  eq.~(6.22), and the hypothesis gives $k' \le D - 2$. As $G_v$ and
+  $G_v^{ab}$ have the same vertices, the hypotheses of
+  \cref{lem:case-III-claim-6-11} hold.
+
+  So \cref{lem:case-III-redundant-decomposition} gives the forms, the
+  index $i^*$ and the scalars of KT eqs.~(6.24) and~(6.25), where $r_j$
+  is the row $S \mapsto r'_j(S(a) - S(b))$ for the linear forms $r'_j$
+  on $K^D$ of that lemma. The form $\sum_j \lambda_j r_j$ is not zero,
+  as the $r_j$ are linearly independent and $\lambda_{i^*} = 1$.
+\end{proof}
+
+\begin{fmlnote}
+  As for \cref{lem:case-III-claim-6-11}, the pinned theorem holds for
+  any two multigraphs whose edges, with their ends, agree except for one
+  edge $ab$ of the first, here with $|V(G_v^{ab})| \ge 1$, and their
+  frameworks share one endpoint selector, which assigns $ab$ its ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}). It takes $D \ge 2$ in
+  place of $d \ge 2$.
 \end{fmlnote}
 
 Katoh and Tanigawa use one more consequence of KT eq.~(6.24), in the
@@ -831,10 +930,13 @@ arbitrary subspace $L$.
   proves the rank bound for $(G, p_1)$, with $L$ the meet of $\Pi(a)$ and
   a second panel, in Katoh and Tanigawa's form: after the column
   operation, $D(|V(G)| - 2)$ rows at $vb$ and at the edges of $G_v$ are
-  linearly independent outside the columns of $v$. No node pins that
-  theorem. Of the theorems pinned in this subsubsection, the
-  proofs of the main results use only those of \cref{lem:case-III-columnop}
-  and \cref{lem:case-III-redundant-decomposition}, and the identity of
+  linearly independent outside the columns of $v$
+  (\cref{lem:case-III-rank-certification}, in the next subsubsection). Of
+  the theorems pinned in this subsubsection, the proofs of the main
+  results use only the definition of $(G, p_1)$
+  (\cref{def:case-III-candidate}), the theorems of
+  \cref{lem:case-III-columnop}, \cref{lem:case-III-redundant-decomposition}
+  and \cref{lem:case-III-redundant-combination}, and the identity of
   \cref{lem:case-III-transport-collapse}. At the normals $q_0$ of
   \cref{lem:case-III-candidate-row-construction}, if $q_0(a) = q(a)$ and
   $t \neq 0$, the hinge of $va$ is $-t\,C(q(a), q(b))$. This is the case
@@ -1426,9 +1528,7 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
   \label{lem:case-III-claim612-eq644}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_off,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_off}
   \leanok
   \uses{lem:case-III-acolumn-zero, lem:case-III-redundant-decomposition}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
@@ -1466,15 +1566,18 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
   assignments that vanish off $a$. The second and third give the
   restriction of a form $S \mapsto x(S(u) - S(w))$ to these screw
   assignments: it is $x$ if $u = a \neq w$, and $0$ if
-  $a \notin \{u, w\}$. The fourth is the form of the lemma that the
-  formal proof of the case $d = 3$ uses. Let $ac$ be the only edge at $a$
-  of a body-hinge framework, and let $f$ be a form in the span of its
-  rows. Then the restriction of $f$ to the screw assignments that vanish
-  off $a$, a linear form $x$ on $K^D$, vanishes on the hinge of $ac$. The
-  fifth adds that $S \mapsto x(S(a) - S(c))$ lies in the span of the
-  rows. For the framework $(G_v, q)$ and the form
-  $f \colon S \mapsto r(S(a) - S(b))$, the fourth says that $r$ vanishes
-  on $C(q(a), q(c))$, as KT eq.~(6.44) shows.
+  $a \notin \{u, w\}$. The formal proof of the case $d = 3$ uses the
+  lemma in a span form,
+  \texttt{BodyHingeFramework.\allowbreak{}acolumn\_\allowbreak{}mem\_\allowbreak{}hingeRowBlock\_\allowbreak{}of\_\allowbreak{}span\_\allowbreak{}rigidityRows}.
+  Let $ac$ be the only edge at $a$ of a body-hinge framework, and let $f$
+  be a form in the span of its rows. Then the restriction of $f$ to the
+  screw assignments that vanish off $a$, a linear form $x$ on $K^D$,
+  vanishes on the hinge of $ac$, and $S \mapsto x(S(a) - S(c))$ lies in
+  the span of the rows
+  (\texttt{BodyHingeFramework.\allowbreak{}hingeRow\_\allowbreak{}acolumn\_\allowbreak{}mem\_\allowbreak{}span\_\allowbreak{}rigidityRows}).
+  For the framework $(G_v, q)$ and the form
+  $f \colon S \mapsto r(S(a) - S(b))$, the span form says that $r$
+  vanishes on $C(q(a), q(c))$, as KT eq.~(6.44) shows.
 \end{fmlnote}
 
 \begin{lemma}[The third framework; KT eqs.\ (6.31)--(6.41)]
@@ -1637,6 +1740,107 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
   which applies \cref{lem:case-III-claim612-line-in-panel-union}.
 \end{fmlnote}
 
+The formal proofs of KT Lemmas~6.10 and~6.13 obtain the rank of every
+framework from one theorem: the count of KT eq.~(6.29) at $(G, p_1)$,
+in Katoh and Tanigawa's form, with the bottom rows of KT eq.~(6.29)
+linearly independent outside the columns of $v$. It uses the block
+criterion of \cref{lem:case-III-claim612-block-iff-perp} and the
+restrictions of rows in the proof of \cref{lem:case-III-claim612-eq644}.
+
+\begin{lemma}[The rank of $R(G, p_1)$ from the bottom rows of KT eq.~(6.29); from the proof of KT Lemma~6.10]
+  \label{lem:case-III-rank-certification}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_rank_certification}
+  \leanok
+  \uses{def:case-III-candidate, def:rigidity-matrix}
+  Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
+  $va$ and $vb$ join $v$ to distinct vertices $a, b \neq v$, and let
+  $G_v = G - v$. Let $q$ be normals, let $n' \in K^{d+1}$ be linearly
+  independent of $q(a)$, and let $(G, p_1)$ be the framework of
+  \cref{def:case-III-candidate} for $n'$. Let $r$ be a linear form on
+  $\bigwedge^{d-1} K^{d+1}$ that vanishes on $C(q(a), q(b))$, such that
+  the form $S \mapsto r(S(a) - S(b))$ lies in the row space of
+  $R(G_v, q)$. Suppose that some $D(|V(G_v)| - 1)$ linearly independent
+  forms are each a row of $R(G_v, q)$ or a form
+  $S \mapsto r'(S(a) - S(b))$, for a linear form $r'$ that vanishes on
+  $C(q(a), q(b))$. If $r(C(q(a), n')) \neq 0$, then
+  \[
+    \operatorname{rank} R(G, p_1) \;\ge\; D\,(|V(G)| - 1).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:splitoff-edge-substitution, lem:case-III-columnop,
+        lem:case-II-placement-new-rows, lem:case-III-claim612-block-iff-perp,
+        lem:case-III-claim612-eq644, lem:case-III-transport-collapse}
+  We follow Katoh and Tanigawa~\cite[pp.~684--686]{katohTanigawa2011},
+  in the form of their count: the rows of $R(G, p_1)$ in the bottom-right
+  block of KT eq.~(6.29) are linearly independent outside the columns of
+  $v$. The edges of $G_v$ are the edges of $G$ without the end $v$, with
+  the same ends (\cref{lem:splitoff-edge-substitution}). So they keep
+  their hinges in $(G, p_1)$ (\cref{def:case-III-candidate}), and the row
+  space of $R(G_v, q)$ lies in that of $R(G, p_1)$. The hinge of $vb$ is
+  $C(q(a), q(b))$, so for a linear form $r'$ that vanishes on it,
+  $S \mapsto r'(S(v) - S(b))$ is a row of $R(G, p_1)$ at $vb$.
+
+  Let $\Phi$ be the column operation of \cref{lem:case-III-columnop},
+  and let $P$ be the map on screw assignments that sets the value at $v$
+  to $0$ and keeps the others. Composing a form $f$ with $\Phi$ and then
+  with $P$ keeps its entries outside the columns of $v$ after the column
+  operation, and drops those in the columns of $v$. For each of the
+  given forms $w$ we choose a form $\tilde w$ in the row space of
+  $R(G, p_1)$ with $\tilde w \circ \Phi \circ P = w$. If $w$ is a row of
+  $R(G_v, q)$, we take $\tilde w = w$: it does not read $S(v)$, as no
+  edge of $G_v$ has the end $v$ (as in the proof of
+  \cref{lem:case-III-claim612-eq644}), and $\Phi(P(S))$ agrees with $S$
+  off $v$. If $w$ is the form $S \mapsto r'(S(a) - S(b))$, we take the
+  row $\tilde w \colon S \mapsto r'(S(v) - S(b))$ at $vb$: as
+  $\Phi(P(S))(v) = S(a)$, we get $\tilde w(\Phi(P(S))) = w(S)$. This is
+  KT eq.~(6.16): outside the columns of $v$, $R(G, p_1)$ has the rows of
+  $R(G_v^{ab}, q)$. The forms $\tilde w \circ \Phi \circ P$, which are
+  the given forms, are linearly independent.
+
+  The hinge of $va$ has the extensor $C(q(a), n') \neq 0$, so some
+  $D - 1$ rows of $R(G, p_1)$ at $va$ are linearly independent
+  (\cref{lem:case-II-placement-new-rows}). They are the forms
+  $S \mapsto r'_i(S(v) - S(a))$ for a basis $r'_1, \dots, r'_{D-1}$ of
+  the linear forms that vanish on $C(q(a), n')$. Let $w_r$ be the form
+  $S \mapsto r(S(v) - S(a))$, the row of KT eq.~(6.27). After the column
+  operation, the rows of $va$ and $w_r$ are the forms
+  $S \mapsto r'_i(S(v))$ and $S \mapsto r(S(v))$, the top-left block of
+  KT eq.~(6.29), and they vanish where $S(v) = 0$. As
+  $r(C(q(a), n')) \neq 0$, $r$ is not a combination of the $r'_i$, so
+  these forms are linearly independent
+  (\cref{lem:case-III-claim612-block-iff-perp}). Now suppose that a
+  combination of the rows of $va$, $w_r$ and the forms $\tilde w$ is
+  zero. Composed with $\Phi$ and then with $P$, the rows of $va$ and
+  $w_r$ vanish, as $P(S)(v) = 0$. What remains is a combination of the given forms, so
+  its coefficients are $0$. The rest of the combination, composed with
+  $\Phi$, is a combination of the forms $S \mapsto r'_i(S(v))$ and
+  $S \mapsto r(S(v))$, so its coefficients are $0$ too. Hence the
+  $(D - 1) + 1 + D(|V(G_v)| - 1)$ forms are linearly independent.
+
+  Each lies in the row space of $R(G, p_1)$. For the rows of $va$ and the
+  forms $\tilde w$ this was shown above. The form $w_r$ is the row
+  $S \mapsto r(S(v) - S(b))$ at $vb$ minus the form
+  $S \mapsto r(S(a) - S(b))$ (\cref{lem:case-III-transport-collapse}),
+  which lies in the row space of $R(G_v, q)$. As
+  $|V(G)| = |V(G_v)| + 1$, there are $D(|V(G)| - 1)$ of them, and
+  $\operatorname{rank} R(G, p_1) \ge D(|V(G)| - 1)$.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem holds for any multigraph $G_v$ without $v$ whose
+  edges are edges of $G$, which has $a$ and $b$ among its vertices and
+  one vertex fewer than $G$. It needs neither that $v$ has degree two nor
+  that $a \neq b$. It assumes that the endpoint selector
+  (\cref{fmlnote:panel-hinge-nondegenerate}) orients $va$ and $vb$ away
+  from $v$. In the formal proof of Case~III, $r$ comes from
+  \cref{lem:case-III-redundant-combination}, and the forms are chosen
+  among the rows of $R(G_v, q)$ and the forms $r_j$ with $j \neq i^*$ of
+  that lemma, which span the row space of $R(G_v^{ab}, q)$, as in KT
+  eq.~(6.23).
+\end{fmlnote}
+
 We now prove the case $d = 3$ of Case~III. The lemma assumes a generic
 full-rank realization of $G_v^{ab}$, as the induction hypothesis gives.
 It also assumes the bound of KT eq.~(6.22), as
@@ -1704,8 +1908,8 @@ It also assumes the bound of KT eq.~(6.22), as
   $L$. For $t \in K$, let $F_t$ be the body-hinge framework on $G$ whose
   hinges have the extensors $C(q(a), n')$ at $va$,
   $C(q(a) + t\,n', q(b))$ at $vb$, and those of $(G_v^{ab}, q)$ at the
-  edges of $G_v$. Then $F_0$ has the rank of $(G, p_1)$. Let $q_t$ agree
-  with $q$ except that $q_t(v) = q(a) + t\,n'$, whose panel contains
+  edges of $G_v$ (\cref{def:case-III-candidate}). Then $F_0$ has the
+  rank of $(G, p_1)$. Let $q_t$ agree with $q$ except that $q_t(v) = q(a) + t\,n'$, whose panel contains
   $L$. For $t \neq 0$, the extensor of the hinge of $va$ in $(G, q_t)$ is
   $C(q(a) + t\,n', q(a)) = -t\,C(q(a), n')$, so $(G, q_t)$ has the rank
   of $F_t$. The rows of $F_t$ can be chosen polynomial in $t$, as in the
@@ -1729,13 +1933,14 @@ It also assumes the bound of KT eq.~(6.22), as
 
 \begin{fmlnote}
   The formal proof treats the three cases by one theorem: the rank bound
-  for $(G, p_1)$ (the note after \cref{lem:case-III-candidate-row}),
-  followed by the rotation. For $u = b$ it applies this theorem with $a$
-  and $b$ exchanged. For $u = c$ it applies it with $a$, $c$ and $v$ in
+  for $(G, p_1)$ (\cref{lem:case-III-rank-certification}), followed by
+  the rotation. It takes $r$ and the bottom rows from
+  \cref{lem:case-III-redundant-combination}. For $u = b$ it applies this
+  theorem with $a$ and $b$ exchanged. For $u = c$ it applies it with $a$, $c$ and $v$ in
   the roles of $v$, $a$ and $b$, to the normals $q_\rho$ of
   \cref{lem:splitOff-ofNormals-relabel} and the form $-r$, with $G - a$
-  in place of $G_v$. There it uses the fourth pinned theorem of
-  \cref{lem:case-III-claim612-eq644}. So it does not use
+  in place of $G_v$. There it uses the span form of KT eq.~(6.44) (the
+  note after \cref{lem:case-III-claim612-eq644}). So it does not use
   \cref{lem:case-III-claim612-p2-placement} and
   \cref{lem:case-III-claim612-p3-placement}. The pinned theorem also
   assumes that the label of the new edge $ab$ lies outside $E(G)$
@@ -1963,8 +2168,9 @@ builds the framework for this panel.
   row space of $R(G - v_1, q)$, and it is a combination of the rows of
   the edges of $G - v_1$, grouped by edge. The form $r$ is
   $\sum_j \lambda_j r_j$ for forms $r_j$ that give the rows of
-  $v_0 v_2$. The pinned theorem also gives $D(|V(G)| - 2)$ linearly
-  independent rows of $R(G_1, q)$, and an endpoint selector that assigns
+  $v_0 v_2$, as \cref{lem:case-III-redundant-combination} gives them.
+  The pinned theorem also gives $D(|V(G)| - 2)$ linearly independent
+  rows of $R(G_1, q)$, and an endpoint selector that assigns
   each edge of $G_1$ its ends
   (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
@@ -2077,9 +2283,8 @@ builds the framework for this panel.
 \begin{fmlnote}
   As for \cref{lem:case-III-candidate-dispatch-d3}, the formal proof
   treats every framework by one theorem: the rank bound for the
-  framework of KT eq.~(6.12) (the note after
-  \cref{lem:case-III-candidate-row}), followed by the rotation. For
-  $i = 1$ it applies this theorem with $v_0$ and $v_2$ exchanged. For
+  framework of KT eq.~(6.12) (\cref{lem:case-III-rank-certification}),
+  followed by the rotation. For $i = 1$ it applies this theorem with $v_0$ and $v_2$ exchanged. For
   $i \ge 2$ it applies it with $v_i$, $v_{i+1}$ and $v_{i-1}$ in the
   roles of $v$, $a$ and $b$, to the normals $q_i$ and the form $-r$, with
   $G - v_i$ in place of $G_v$. So it does not use

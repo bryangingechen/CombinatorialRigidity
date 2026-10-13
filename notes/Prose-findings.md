@@ -1183,6 +1183,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the five declarations, `Molecular/AlgebraicInduction/CaseIII/
   Candidate.lean` and `Realization.lean`; a `grep` for each in `blueprint/src`).
   *Found:* round 3 task 2.11.
+  *Disposition:* done (task 3.9): `lem:case-III-redundant-combination` pins
+  `exists_redundant_panelRow_ab_lam_of_rigidOn`, KT eqs. (6.24) and (6.25) at normals where
+  $(G_v^{ab}, q)$ is rigid and KT eq. (6.22) holds as a bound; the notes of
+  `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-discriminator` say that their $r$
+  comes from it. Its edges to the users are task 4.6's missing edges.
 - **F-159** · N · `case-iii.tex`'s row operations of KT eqs. (6.24)–(6.29)
   (`algebraic-induction/case-iii.tex`): six of the nine nodes have every pin dead
   (`lem:case-III-vanish-off-column`, `lem:case-III-seam`, `lem:case-III-acolumn-zero`,
@@ -1205,6 +1210,13 @@ declaration's name as its header writes it:
   statements and bodies, `Molecular/AlgebraicInduction/CaseIII/Candidate.lean`,
   `Molecular/RigidityMatrix/Basic.lean`; a `grep` for each in `blueprint/src`).
   *Found:* round 3 task 2.12.
+  *Disposition:* done (task 3.9) for the live path: `def:case-III-candidate` pins
+  `caseIIICandidate` (KT's $(G, p_1)$ at $t = 0$), and `lem:case-III-rank-certification` pins
+  `case_III_rank_certification` (the rank bound of KT eq. (6.29) in KT's count), placed after
+  `lem:case-III-claim612-eq644`, whose pins it reaches; the notes that described the theorem cite
+  it. Left: the six dead nodes, kept as KT's exposition (retiring or merging them is not among
+  principle D's fixes, task 8.2; `F-158` is the report's), and `lem:case-III-transport-collapse`,
+  whose three pins state its two claims and the identity, a role map in its note.
 - **F-163** · N · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`): six of the ten nodes have every pin dead
   (`lem:case-III-claim612-points-affineIndep-producer`, `lem:case-III-claim612-detpoly`,
@@ -3226,6 +3238,14 @@ declaration's name as its header writes it:
   name no node (now `lem:splitoff-simple` and `lem:independent-rows-of-rank`).
   *Evidence:* read (the docstrings and the section header).
   *Found:* round 5 task 3.8.
+- **F-241** · L · the declarations round 5's task 3.9 pinned (`CaseIII/Candidate.lean`). The
+  docstrings of `exists_redundant_panelRow_ab_lam_of_rigidOn` and of its caller
+  `exists_candidateRow_bottomRows_of_rigidOn` name `lem:case-III-claim612-r`, a label the blueprint
+  does not have; that of `case_III_rank_certification` names `lem:case-III`, and that of
+  `caseIIICandidate` no node (now `lem:case-III-redundant-combination`,
+  `lem:case-III-rank-certification` and `def:case-III-candidate`).
+  *Evidence:* read (the docstrings; a `grep` for the label in `blueprint/src`).
+  *Found:* round 5 task 3.9.
 
 ## M — mathematics and sources
 
