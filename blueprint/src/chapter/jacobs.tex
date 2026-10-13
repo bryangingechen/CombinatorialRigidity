@@ -712,35 +712,49 @@ in $\{v\}$, so $d_G(\{v\})$ is the degree $d_G(v)$ of $v$.
 \subsection{Independence implies the Laman condition}
 \label{sec:jacobs-easy}
 
-The easy direction of Jacobs' conjecture holds for every graph on $V$,
-square or not, by the same argument as in the plane
-(\cref{lem:isSparse-of-rowIndependent-two}): a row-independent edge set
-cannot exceed the rank of any framework containing it.
+This subsection proves the easy direction of Jacobs' conjecture: if
+$E(H)$ is independent in $\mathcal{R}_3(V)$, then $H$ is Laman
+(\cref{cor:genericMatroid-indep-isLaman3}). It holds for every graph $H$
+on $V$, square or not. JJ (\S5) derive it from their eq.~(1), the bound
+$\operatorname{rank} R(H, p) \le 3|V| - 6$ for frameworks on at least
+three vertices, applied to the subgraph induced on each set of at least
+three vertices. Our proof is that of the plane
+(\cref{lem:isSparse-of-rowIndependent-two}), one dimension up. The rank
+bound we use needs the points to affinely span the space
+(\cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning}). So we
+first prove the count at a placement at which every set of at least four
+points affinely spans $\R^3$, and then choose such a placement that is
+also generic.
 
 \begin{lemma}[The Laman condition from row independence, dimension three]
   \label{lem:isLaman3-of-rowIndependent}
   \lean{SimpleGraph.isLaman3_of_edgeSetRowIndependent_dim_three}
   \leanok
   \uses{def:isLaman3, def:edgeSet-rowIndependent}
-  Let $p : V \to \R^3$ be a placement whose restriction to every subset
-  of at least four vertices affinely spans $\R^3$, and let $H$ be a
-  graph on $V$ whose edge set is row-independent at $p$. Then $H$ is
-  Laman.
+  Let $p$ be a placement of $V$ in $\R^3$ such that, for every set $S$
+  of at least four vertices, the points $p(v)$, $v \in S$, affinely
+  span $\R^3$. Let $H$ be a graph on $V$ whose edge set is
+  row-independent at $p$. Then $H$ is Laman.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rigidityMap-finrank-range-le-of-affinelySpanning}
-  Fix $X \subseteq V$ with $|X| \ge 3$. For $|X| = 3$ the claim is the
-  trivial count $\binom{3}{2} = 3 = 3\cdot 3 - 6$. For $|X| \ge 4$,
-  transport the rows of the edges inside $X$ to the induced subgraph
-  $H[X]$ at the restricted placement, as in
-  \cref{lem:isSparse-of-rowIndependent-two}; row independence gives
-  $\bigl|\edgesIn[H]{X}\bigr| =
-  \operatorname{rank} R(H[X], p|_X)$, and since $p|_X$ affinely spans,
-  the kernel of the rigidity map contains the six-dimensional space of
-  infinitesimal rigid motions
-  (\cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning}), so the
-  rank is at most $3|X| - 6$.
+  Let $X \subseteq V$ with $|X| \ge 3$. If $|X| = 3$, then $X$ spans at
+  most $3 = 3|X| - 6$ edges. Let $|X| \ge 4$, let $H[X]$ be the subgraph
+  of $H$ induced on $X$, and let $p|_X$ be the restriction of $p$ to
+  $X$. The row of an edge of $H[X]$ at $p|_X$, composed with the
+  restriction $(\R^3)^V \to (\R^3)^X$, is the row of $H$ at $p$ indexed
+  by the same edge. The rows of $H$ at $p$ are linearly independent, so
+  the rows of $H[X]$ at $p|_X$ are too, and their number is the rank of
+  $R(H[X], p|_X)$, as in the proof of
+  \cref{lem:isSparse-of-rowIndependent-two}:
+  \[
+    \bigl|\edgesIn[H]{X}\bigr| \;=\; \operatorname{rank} R(H[X], p|_X).
+  \]
+  The points $p(v)$, $v \in X$, affinely span $\R^3$, so this rank is at
+  most $3|X| - 6$
+  (\cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning}, at
+  $d = 3$).
 \end{proof}
 
 \begin{corollary}[Independent edge sets are Laman]
@@ -756,42 +770,62 @@ cannot exceed the rank of any framework containing it.
   \uses{lem:genericRigidityMatroid-indep-iff,
     lem:isLaman3-of-rowIndependent, lem:exists-generic-general-position,
     def:general-position-placement}
-  Choose a placement simultaneously generic for row independence and in
-  general position up to order four
-  (\cref{lem:exists-generic-general-position}). Independence makes
-  $E(H)$ row-independent at it
-  (\cref{lem:genericRigidityMatroid-indep-iff}), and general position
-  makes every subset of at least four points affinely spanning
-  (\cref{def:general-position-placement}: four of them are affinely
-  independent), so \cref{lem:isLaman3-of-rowIndependent} applies.
+  Choose a placement $p$ of $V$ in $\R^3$ that is generic for row
+  independence and in general position up to order four
+  (\cref{lem:exists-generic-general-position}). As $E(H)$ is
+  independent, it is row-independent at some placement
+  (\cref{lem:genericRigidityMatroid-indep-iff}), and hence at $p$, since
+  $p$ is generic. A set of at least four vertices contains four whose
+  points are affinely independent
+  (\cref{def:general-position-placement}), and four affinely independent
+  points affinely span $\R^3$. So \cref{lem:isLaman3-of-rowIndependent}
+  applies at $p$.
 \end{proof}
 
 \subsection{Zero-extensions in dimension three}
 \label{sec:jacobs-zero-extension}
 
-The reduction of Jacobs' conjecture to the minimum-degree-two case, and
-the degree-one rank formula, both run on the classical $0$-extension
-lemma. Whiteley's form (\cite[Lemma~9.1.3]{whiteley1996}) is a
-fixed-placement statement: attaching a new vertex on three edges,
-placed non-coplanar with its three neighbors, preserves row
-independence and adds exactly three to the rank; Jackson--Jord\'an
-(Lemma~3.3 of~\cite{jacksonJordan2008}) cite the independence statement
-for a new vertex joined to $s \le 3$ distinct old vertices. On a fixed
-vertex type the operation compares a graph $H$ with the graph
-$H - E_H(v)$ obtained by deleting the edges at a vertex $v$. Two
-corollaries below package the generic consequences. At $d_H(v) \le 3$
-the rank grows by exactly $d_H(v)$, and independence is preserved in
-both directions, with no further hypothesis. At arbitrary degree the
-rank addition $\min(3, d_H(v))$ requires the neighborhood $N_H(v)$ to
-be a clique of $H$. The hypothesis is not removable: $K_{1,4}$ has rank
-four, not three, since each of its four rows has a coordinate block, at
-its own leaf, met by no other row. It is also the hypothesis
-Jackson--Jord\'an invoke where they apply the lemma at unbounded
-degree: ``the neighbour sets \dots\ induce complete (and hence rigid)
-subgraphs'' (proof of Theorem~4.3 of~\cite{jacksonJordan2008}). Both
-applications below have it, since the square-neighborhood of a
-degree-one vertex lies in a closed neighborhood of $G$, a clique of
-$G^2$ (\cref{lem:square-leaf-neighborhood}).
+The reduction of Jacobs' conjecture to graphs of minimum degree at least
+two (\cref{sec:jacobs-theorem}) and the degree-one rank formula
+(\cref{sec:jacobs-degree-one}) both use the $0$-extension lemma. JJ
+state it as their Lemma~3.3, citing Whiteley's Vertex 3-Addition
+Lemma~9.1.3~\cite{whiteley1996}: if a graph is obtained from $H$ by
+adding a new vertex joined to $s \in \{1, 2, 3\}$ distinct vertices of
+$H$, then it is independent if and only if $H$ is. They call this
+operation a \emph{$0$-extension}. Whiteley's lemma is stated at a fixed
+placement, for a new vertex joined to three vertices: if the point of
+the new vertex and the points of its three neighbors are not coplanar,
+then the new framework is independent if and only if the old one is, and
+its rank is larger by three.
+
+Since $\mathcal{R}_3(V)$ is defined on a fixed vertex set, we keep $V$
+fixed. For a vertex $v$ of a graph $H$ on $V$, let $E_H(v)$ be the
+set of edges of $H$ at $v$, and let $H - E_H(v)$ be the graph obtained
+from $H$ by deleting them. Then $v$ is isolated in $H - E_H(v)$, and if
+$1 \le d_H(v) \le 3$, then $H$ is obtained from $H - E_H(v)$ by a
+$0$-extension at $v$. We prove the lemma at a fixed placement
+(\cref{lem:zero-extension-rowIndependent}) and derive two corollaries
+for the generic rank. If $d_H(v) \le 3$, then the rank of $H$ exceeds
+that of $H - E_H(v)$ by $d_H(v)$, and $H$ is independent if and only if
+$H - E_H(v)$ is (\cref{cor:zero-extension-degree-le-three}). At a vertex
+of any degree, the rank grows by $\min(3, d_H(v))$ if the neighborhood
+$N_H(v)$ is a clique of $H$ (\cref{cor:zero-extension-clique-rank}).
+
+The clique hypothesis cannot be dropped. The star $K_{1,4}$ with center
+$v$ has rank four, not $0 + \min(3, 4) = 3$: at a generic placement,
+each of its four rows is the only row with nonzero entries in the
+columns of its leaf. JJ invoke the same hypothesis in the proof of their
+Theorem~4.3, where they apply their Lemma~3.3 at vertices whose degree
+may exceed three: ``the neighbour sets \dots\ induce complete (and hence
+rigid) subgraphs''. Both applications below, the degree-one rank
+formulas of \cref{sec:jacobs-degree-one}, satisfy it. There the vertex
+removed has degree one in $G$, and its neighbors in $G^2$ lie in a
+closed neighborhood of $G$, which is a clique of $G^2$
+(\cref{lem:square-leaf-neighborhood}).
+
+The subsection ends with the restriction of the generic rigidity matroid
+to a subset of the vertices, and with four facts about squares and
+induced subgraphs. The reduction of Jacobs' conjecture uses them all.
 
 \begin{lemma}[Row-independence lift for a vertex of degree at most three]
   \label{lem:zero-extension-rowIndependent}
@@ -800,41 +834,71 @@ $G^2$ (\cref{lem:square-leaf-neighborhood}).
   \uses{def:edgeSet-rowIndependent}
   Let $H$ be a graph on $V$, let $v$ be a vertex of $H$ of degree
   $s \le 3$ with neighbors $u_1, \dots, u_s$, and let
-  $H' = H - E_H(v)$. Suppose $E(H')$ is row-independent at a placement
-  $p' : V \to \R^3$ whose images $p'(u_1), \dots, p'(u_s)$ are affinely
-  independent. Then there is a placement $p$, agreeing with $p'$ away
-  from $v$, at which $E(H)$ is row-independent.
+  $H' = H - E_H(v)$. Suppose that $E(H')$ is row-independent at a
+  placement $p'$ of $V$ in $\R^3$ at which the points
+  $p'(u_1), \dots, p'(u_s)$ are affinely independent. Then there is a
+  placement $p$ that agrees with $p'$ away from $v$ and at which $E(H)$
+  is row-independent.
 \end{lemma}
 \begin{proof}
   \leanok
-  Move only $v$: the rows of $E(H')$ do not involve $v$'s coordinates
-  and stay independent. Choose $p(v)$ outside the affine hull of
-  $p'(u_1), \dots, p'(u_s)$, a proper affine subspace by the affine
-  independence; then the $s + 1$ points $p(v), p'(u_1), \dots, p'(u_s)$
-  are affinely independent, so the difference vectors $p(v) - p'(u_i)$
-  are linearly independent. The $s$ new rows are then independent from
-  each other and from the old ones, by the test-motion argument of the
-  planar lifts (\cref{lem:typeI-rowIndependent-lift},
-  \cref{lem:pendant-rowIndependent-lift}): a motion supported at $v$
-  annihilates every row of $E(H')$, and evaluating a dependence at such
-  motions forces the new coefficients to vanish.
+  The points $p'(u_1), \dots, p'(u_s)$ are affinely independent and
+  $s \le 3$, so their affine hull is a proper affine subspace of $\R^3$.
+  Choose a point $q$ outside it, and let $p$ place $v$ at $q$ and agree
+  with $p'$ elsewhere. The vectors $q - p'(u_i)$ are linearly
+  independent. Indeed, let $\sum_i c_i \bigl(q - p'(u_i)\bigr) = 0$. If
+  $\sum_i c_i \ne 0$, then $q$ is an affine combination of the points
+  $p'(u_i)$, which it is not. So $\sum_i c_i = 0$, the relation reads
+  $\sum_i c_i\, p'(u_i) = 0$, and every $c_i$ is zero by affine
+  independence.
+
+  The edges of $H$ are the edges of $H'$ and the edges $vu_i$. Neither
+  end of an edge of $H'$ is $v$, so its row at $p$ is its row at $p'$
+  (\cref{lem:rigidityMap-apply}). Suppose that a linear combination of
+  the rows of $E(H)$ at $p$ vanishes, with coefficient $c_i$ at the row
+  of $vu_i$. For $\alpha \in \R^3$, let $x^{\alpha}$ give $v$ the
+  velocity $\alpha$ and every other vertex the velocity zero, as in the
+  proof of \cref{lem:typeI-rowIndependent-extend}. The rows of the edges
+  of $H'$ vanish at $x^{\alpha}$, and the row of $vu_i$ takes the value
+  $\langle q - p'(u_i),\, \alpha \rangle$. Evaluating the relation at
+  every $x^{\alpha}$ gives $\sum_i c_i \bigl(q - p'(u_i)\bigr) = 0$, so
+  every $c_i$ is zero. What remains is a vanishing combination of the
+  rows of $E(H')$ at $p'$, and its coefficients are zero, as $E(H')$ is
+  row-independent at $p'$.
 \end{proof}
 
-The affine-independence hypothesis is likewise not removable: $K_5$
-minus an edge $u_1u_2$ admits a row-independent placement with
-$p'(u_1) = p'(u_2)$, and after adjoining a vertex $v$ joined to $u_1$
-and $u_2$, every placement agreeing with $p'$ away from $v$ is
-row-dependent. The corollaries below discharge the hypothesis by taking
-$p'$ simultaneously generic for row independence and in general
-position (\cref{lem:exists-generic-general-position}).
+The hypothesis that $p'(u_1), \dots, p'(u_s)$ are affinely independent
+cannot be dropped either. On the six vertices $v, u_1, u_2, a, b, c$,
+let $H$ consist of the complete graph on $u_1, u_2, a, b, c$ minus the
+edge $u_1u_2$, together with the edges $vu_1$ and $vu_2$, and let
+$H' = H - E_H(v)$. Let $p'$ place $a$, $b$ and $c$ at three
+non-collinear points, and both $u_1$ and $u_2$ at one point off their
+plane. Then $E(H')$ is row-independent at $p'$, but $E(H)$ is
+row-dependent at every placement that agrees with $p'$ away from $v$.
 
-\begin{corollary}[$0$-extension at degree at most three]
+Indeed, the rows of the three edges of $H'$ at $u_1$ are the only ones
+with nonzero entries in the columns of $u_1$, and there their entries
+$p'(u_1) - p'(x)$, $x \in \{a, b, c\}$, are linearly independent. The
+same holds at $u_2$, and the rows of the triangle $abc$ are independent.
+So the nine rows of $E(H')$ are independent, and the infinitesimal
+motions of $H'$ at $p'$, restricted to $u_1, u_2, a, b, c$, form a space
+of dimension $15 - 9 = 6$. They are the trivial motions, as these five
+points affinely span $\R^3$. At a placement that agrees with $p'$ away
+from $v$, the difference of the rows of $vu_1$ and $vu_2$ involves only
+the velocities of $u_1$ and $u_2$. It vanishes on the trivial motions,
+which give $u_1$ and $u_2$ the same velocity. So it vanishes on every
+infinitesimal motion of $H'$ at $p'$, and it lies in the span of the
+rows of $E(H')$. The corollaries below meet the hypothesis by taking
+$p'$ generic for row independence and in general position up to order
+four (\cref{lem:exists-generic-general-position}).
+
+\begin{corollary}[$0$-extension at a vertex of degree at most three; JJ Lemma 3.3]
   \label{cor:zero-extension-degree-le-three}
   \lean{SimpleGraph.zero_extension_genericRank_add_degree,
     SimpleGraph.zero_extension_indep_iff_of_degree_le_three}
   \leanok
   \uses{def:genericRank, def:genericRigidityMatroid}
-  Let $H$ be a graph on $V$ and $v$ a vertex of $H$ with
+  Let $H$ be a graph on $V$ and let $v$ be a vertex of $H$ with
   $d_H(v) \le 3$. Then
   \[
     r(H) \;=\; r\bigl(H - E_H(v)\bigr) + d_H(v),
@@ -847,19 +911,29 @@ position (\cref{lem:exists-generic-general-position}).
   \uses{lem:zero-extension-rowIndependent,
     lem:genericRigidityMatroid-indep-iff,
     lem:exists-generic-general-position, def:general-position-placement}
-  For the lower bound, a maximal independent subset of
-  $E(H - E_H(v))$ is row-independent at a placement simultaneously
-  generic for row independence and in general position
-  (\cref{lem:exists-generic-general-position}); general position makes
-  the images of the $d_H(v) \le 3$ neighbors of $v$ affinely
-  independent (\cref{def:general-position-placement}), so
-  \cref{lem:zero-extension-rowIndependent}, applied to the subgraph
-  carrying that subset and the edges at $v$, adjoins the edges at $v$
-  (\cref{lem:genericRigidityMatroid-indep-iff}). For the upper bound,
-  adjoining $d_H(v)$ edges raises the rank by at most $d_H(v)$. The
-  independence equivalence follows since
-  $|E(H)| = |E(H - E_H(v))| + d_H(v)$ and independence of a finite
-  edge set is the equality of its rank with its cardinality.
+  Let $H' = H - E_H(v)$ and $s = d_H(v)$. The edges of $H$ are the
+  edges of $H'$ and the $s$ edges at $v$. Adding $s$ elements to a set
+  raises its rank by at most $s$, so $r(H) \le r(H') + s$.
+
+  For the reverse inequality, choose a placement $p'$ of $V$ in $\R^3$
+  that is generic for row independence and in general position up to
+  order four (\cref{lem:exists-generic-general-position}). Let $J$ be a
+  maximal independent subset of $E(H')$, so that $|J| = r(H')$, and let
+  $H_J$ be the graph whose edges are those of $J$ and the $s$ edges at
+  $v$. Then $H_J - E_{H_J}(v)$ has edge set $J$. As $p'$ is generic,
+  $J$ is row-independent at $p'$
+  (\cref{lem:genericRigidityMatroid-indep-iff}). The neighbors of $v$ in
+  $H_J$ are its $s \le 3$ neighbors in $H$, and their points are
+  affinely independent, as $p'$ is in general position
+  (\cref{def:general-position-placement}). So $E(H_J)$ is
+  row-independent at some placement
+  (\cref{lem:zero-extension-rowIndependent}), that is, independent in
+  $\mathcal{R}_3(V)$. It is a subset of $E(H)$ with $r(H') + s$
+  elements, so $r(H) \ge r(H') + s$.
+
+  Finally, $|E(H)| = |E(H')| + s$, and a finite edge set is independent
+  exactly when its rank equals its size. So $E(H)$ is independent if and
+  only if $E(H')$ is.
 \end{proof}
 
 \begin{corollary}[Rank of a $0$-extension at a clique neighborhood]
@@ -868,8 +942,8 @@ position (\cref{lem:exists-generic-general-position}).
     SimpleGraph.zero_extension_genericRank_add_min_of_isClique}
   \leanok
   \uses{def:genericRank}
-  Let $H$ be a graph on $V$ and $v$ a vertex of $H$ whose neighborhood
-  $N_H(v)$ is a clique of $H$. Then
+  Let $H$ be a graph on $V$ and let $v$ be a vertex of $H$ whose
+  neighborhood $N_H(v)$ is a clique of $H$. Then
   \[
     r(H) \;=\; r\bigl(H - E_H(v)\bigr) + \min\bigl(3,\, d_H(v)\bigr).
   \]
@@ -878,31 +952,41 @@ position (\cref{lem:exists-generic-general-position}).
   \leanok
   \uses{cor:zero-extension-degree-le-three,
     cor:genericMatroid-indep-isLaman3}
-  The lower bound holds with no hypothesis on $N_H(v)$: for
-  $d_H(v) \le 3$ it is \cref{cor:zero-extension-degree-le-three}, and
-  for $d_H(v) \ge 4$, restricting the star at $v$ to three of its
-  edges gives a degree-three $0$-extension $H_3 \le H$ with
-  $r(H_3) = r(H - E_H(v)) + 3$ by
-  \cref{cor:zero-extension-degree-le-three}, so
-  $r(H - E_H(v)) + 3 \le r(H_3) \le r(H)$ by monotonicity of the rank.
-  For the matching upper bound, $d_H(v) \le 3$ is again
-  \cref{cor:zero-extension-degree-le-three}. For $d_H(v) \ge 4$, fix
-  three neighbors $u_1, u_2, u_3$ and let $H_3$ be $H - E_H(v)$
-  together with the edges $vu_1, vu_2, vu_3$, so
-  $r(H_3) = r(H - E_H(v)) + 3$ as above; it suffices that every
-  further edge $vw$, $w \in N_H(v) \setminus \{u_1, u_2, u_3\}$, lies
-  in the closure of $E(H_3)$. The five vertices $v, u_1, u_2, u_3, w$
-  span a $K_5$ in $H$ whose edges other than $vw$ all lie in
-  $E(H_3)$: the six edges among $u_1, u_2, u_3, w$ are edges of the
-  clique $N_H(v)$, none of them incident to $v$. That $K_5$ minus
-  $vw$ is independent — starting from the empty graph, add its nine
-  edges vertex by vertex, each step a $0$-extension of degree at
-  most three (\cref{cor:zero-extension-degree-le-three}) — while the
-  full $K_5$ is dependent, since ten edges on five vertices violate
-  the Laman count (\cref{cor:genericMatroid-indep-isLaman3}). Hence
-  $vw$ lies in the closure of the other nine edges, and
-  $r(H) \le r(H_3) = r(H - E_H(v)) + 3$.
+  Let $H' = H - E_H(v)$ and $s = d_H(v)$. If $s \le 3$, the claim is
+  \cref{cor:zero-extension-degree-le-three}. Let $s \ge 4$, fix three
+  neighbors $u_1, u_2, u_3$ of $v$, and let $H_3$ be $H'$ together with
+  the edges $vu_1$, $vu_2$ and $vu_3$. Then $H_3 - E_{H_3}(v) = H'$ and
+  $d_{H_3}(v) = 3$, so $r(H_3) = r(H') + 3$
+  (\cref{cor:zero-extension-degree-le-three}). As
+  $E(H_3) \subseteq E(H)$, this gives $r(H) \ge r(H') + 3$. This lower
+  bound holds without the clique hypothesis.
+
+  For the upper bound we show that every further edge $vw$, with
+  $w \in N_H(v) \setminus \{u_1, u_2, u_3\}$, lies in the closure of
+  $E(H_3)$ in $\mathcal{R}_3(V)$. Then $E(H)$ lies in this closure, and
+  $r(H) \le r(H_3) = r(H') + 3$. As $N_H(v)$ is a clique, the five
+  vertices $v, u_1, u_2, u_3, w$ span a complete graph $K_5$ in $H$. Its
+  edges other than $vw$ lie in $E(H_3)$: the edges $vu_i$ by
+  construction, and the six edges among $u_1, u_2, u_3, w$ because they
+  are edges of $H$ not at $v$.
+
+  These nine edges are independent. Indeed, starting from the graph with
+  no edges, join $u_2$ to $u_1$, then $u_3$ to $u_1$ and $u_2$, then $w$
+  to $u_1$, $u_2$ and $u_3$, and last $v$ to $u_1$, $u_2$ and $u_3$.
+  Each step is a $0$-extension at a vertex of degree at most three, which
+  preserves independence (\cref{cor:zero-extension-degree-le-three}).
+  All ten edges of the $K_5$ are dependent. Otherwise the graph they
+  form would be Laman (\cref{cor:genericMatroid-indep-isLaman3}). But
+  its five vertices form a clique, which spans
+  $\binom{5}{2} = 10 > 3 \cdot 5 - 6$ edges
+  (\cref{lem:clique-edgesIn-count}). Hence $vw$ lies in the closure of
+  the other nine edges, and so in the closure of $E(H_3)$.
 \end{proof}
+
+The reduction of Jacobs' conjecture restricts a graph to its
+non-isolated vertices, and so changes the vertex set of the matroid. The
+next lemma compares the generic rigidity matroids of a set and of a
+subset. Its proof is the same in every dimension.
 
 \begin{lemma}[Independence and rank under vertex-set restriction]
   \label{lem:genericMatroid-induce-transport}
@@ -910,28 +994,34 @@ position (\cref{lem:exists-generic-general-position}).
     SimpleGraph.genericRank_eq_rk_image}
   \leanok
   \uses{def:genericRigidityMatroid, def:genericRank}
-  Let $d \ge 0$, let $S \subseteq V$ and let $H$ be a graph on $S$.
+  Let $d \in \N$, let $S \subseteq V$, and let $H$ be a graph on $S$.
   Then $E(H)$ is independent in $\mathcal{R}_d(S)$ if and only if its
   image under the inclusion $S \hookrightarrow V$ is independent in
-  $\mathcal{R}_d(V)$, and the rank of $E(H)$ in $\mathcal{R}_d(S)$
-  equals the rank of its image in $\mathcal{R}_d(V)$.
+  $\mathcal{R}_d(V)$. The rank of $E(H)$ in $\mathcal{R}_d(S)$ equals
+  the rank of its image in $\mathcal{R}_d(V)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:genericRigidityMatroid-indep-iff}
-  Both independences say the edge set is row-independent at some
-  placement (\cref{lem:genericRigidityMatroid-indep-iff}). A placement
-  of $S$ extends to one of $V$ arbitrarily, and a placement of $V$
-  restricts to one of $S$; in either direction the rows of the edges
-  inside $S$ are unchanged up to the coordinate inclusion, as in the
-  row transport of \cref{lem:isSparse-of-rowIndependent-two}. The rank
-  identity follows: the image of a maximal independent subset of
-  $E(H)$ is independent of the same cardinality, and every independent
-  subset of the image pulls back.
+  Let $q$ be a placement of $S$ in $\R^d$, and let $p$ be a placement of
+  $V$ that agrees with $q$ on $S$. The row at $p$ of an edge of $H$ is
+  its row at $q$ composed with the restriction
+  $\rho \colon (\R^d)^V \to (\R^d)^S$, as in the proof of
+  \cref{lem:isSparse-of-rowIndependent-two}. Since $\rho$ is surjective,
+  the rows of the edges of $H$ at $p$ are linearly independent if and
+  only if their rows at $q$ are. Every placement of $S$ extends to one
+  of $V$, and every placement of $V$ restricts to one of $S$. By
+  \cref{lem:genericRigidityMatroid-indep-iff}, this proves the first
+  claim.
+
+  The inclusion maps the subsets of $E(H)$ bijectively onto the subsets
+  of its image, preserving their size. By the first claim, applied to
+  the subgraphs of $H$, it also preserves independence. The rank of a
+  set is the largest size of an independent subset, so the two ranks
+  are equal.
 \end{proof}
 
-The reduction also uses three facts about squares and induced
-subgraphs.
+The reduction also uses four facts about squares and induced subgraphs.
 
 \begin{lemma}[Deleting the edges at a vertex of degree at most one
   commutes with squaring]
@@ -939,17 +1029,20 @@ subgraphs.
   \lean{SimpleGraph.square_deleteIncidenceSet_of_degree_le_one}
   \leanok
   \uses{def:square-graph}
-  Let $G$ be a graph and $v$ a vertex of degree at most one in $G$.
-  Then
+  Let $G$ be a graph on $V$, and let $v$ be a vertex of degree at most
+  one in $G$. Then
   \[
     \bigl(G - E_G(v)\bigr)^2 \;=\; G^2 - E_{G^2}(v).
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  A path of length two between vertices $x, y \ne v$ cannot pass
-  through $v$, which has at most one neighbor; so the squares agree
-  away from $v$, and both sides have no edge at $v$.
+  Neither side has an edge at $v$. Let $x \ne y$ be vertices other than
+  $v$. If $v$ were a common neighbor of $x$ and $y$, it would have two
+  neighbors. So $x$ and $y$ are adjacent or have a common neighbor in
+  $G$ if and only if they do in $G - E_G(v)$. That is, $xy$ is an edge
+  of $G^2$ if and only if it is an edge of $(G - E_G(v))^2$
+  (\cref{def:square-graph}).
 \end{proof}
 
 \begin{lemma}[The square-neighborhood of a degree-one vertex]
@@ -959,20 +1052,24 @@ subgraphs.
     SimpleGraph.isClique_neighborSet_square_of_degree_eq_one}
   \leanok
   \uses{def:square-graph}
-  Let $v$ be a vertex of degree one in $G$, with neighbor $u$. Then
+  Let $G$ be a graph on $V$, and let $v$ be a vertex of degree one in
+  $G$, with neighbor $u$. Then
   \[
-    N_{G^2}(v) \;=\; \bigl(N_G(u) \cup \{u\}\bigr) \setminus \{v\},
+    N_{G^2}(v) \;=\; N_G[u] \setminus \{v\},
   \]
-  so $d_{G^2}(v) = d_G(u)$, and $N_{G^2}(v)$ is a clique of $G^2$.
+  where $N_G[u] = N_G(u) \cup \{u\}$ is the closed neighborhood of $u$.
+  Moreover, $d_{G^2}(v) = d_G(u)$, and $N_{G^2}(v)$ is a clique of
+  $G^2$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:square-cliques}
-  A vertex $w \ne v$ is a square-neighbor of $v$ exactly when it is
-  adjacent to $v$ — so $w = u$ — or shares a common neighbor with
-  $v$, which can only be $u$; conversely $u$ and every other neighbor
-  of $u$ are within distance two of $v$. The set is contained in the
-  closed neighborhood $N_G[u]$, a clique of $G^2$
+  Let $w \ne v$. If $w$ is adjacent to $v$, then $w = u$. If $w$ and $v$
+  have a common neighbor, then it is $u$, so $w \in N_G(u)$. Conversely,
+  $u$ is adjacent to $v$, and every vertex of $N_G(u)$ other than $v$
+  has the common neighbor $u$ with $v$. This proves the identity. As
+  $v \in N_G(u)$, the set $N_G[u] \setminus \{v\}$ has $d_G(u)$
+  elements. It lies in $N_G[u]$, which is a clique of $G^2$
   (\cref{lem:square-cliques}).
 \end{proof}
 
@@ -981,16 +1078,19 @@ subgraphs.
   \lean{SimpleGraph.square_induce_of_support_subset, SimpleGraph.square_support_subset}
   \leanok
   \uses{def:square-graph}
-  Let $S \subseteq V$ contain every non-isolated vertex of $G$. Then
-  the square of the induced subgraph $G[S]$ is the induced subgraph of
-  $G^2$ on $S$, and every edge of $G^2$ has both endpoints in $S$.
+  Let $G$ be a graph on $V$, and let $S \subseteq V$ contain every
+  non-isolated vertex of $G$. Then the square of the induced subgraph
+  $G[S]$ is the subgraph of $G^2$ induced on $S$, and every edge of
+  $G^2$ has both ends in $S$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Both endpoints of an edge of $G^2$ have an edge of $G$, so lie in
-  $S$; and a path of length at most two between vertices of $S$ has
-  its middle vertex non-isolated, hence in $S$, so adjacency in $G^2$
-  and in $G[S]^2$ agree on $S$.
+  Each end of an edge of $G^2$ lies on an edge of $G$, so it lies in
+  $S$. Let $x \ne y$ lie in $S$. An edge $xy$ of $G$ is an edge of
+  $G[S]$. A common neighbor of $x$ and $y$ in $G$ lies on an edge of
+  $G$, so it lies in $S$, and it is a common neighbor of $x$ and $y$ in
+  $G[S]$. So $xy$ is an edge of $G[S]^2$ if and only if it is an edge of
+  $G^2$.
 \end{proof}
 
 \begin{lemma}[The Laman condition restricts to induced subgraphs]
@@ -998,13 +1098,13 @@ subgraphs.
   \lean{SimpleGraph.IsLaman3.induce}
   \leanok
   \uses{def:isLaman3}
-  Let $G$ be Laman and $S \subseteq V$. Then the induced subgraph
-  $G[S]$ is Laman.
+  Let $G$ be a Laman graph on $V$, and let $S \subseteq V$. Then the
+  induced subgraph $G[S]$ is Laman.
 \end{lemma}
 \begin{proof}
   \leanok
-  A set $X \subseteq S$ of at least three vertices spans in $G[S]$
-  exactly the edges it spans in $G$.
+  A set $X \subseteq S$ of at least three vertices spans the same edges
+  in $G[S]$ as in $G$, and so at most $3|X| - 6$ of them.
 \end{proof}
 
 \subsection{Jacobs' conjecture}

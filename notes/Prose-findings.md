@@ -586,6 +586,23 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`, and the same
   report on task 2.6's tree).
   *Found:* round 4 task 2.6.
+- **F-199** · E · `jacobs.tex`'s easy direction and $0$-extensions, task 2.7's ten nodes
+  (`jacobs.tex`): 12 missing edges and none unbacked. Missing: the proof of
+  `lem:isLaman3-of-rowIndependent` to `def:rigidityRow`,
+  `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, `lem:rigidityMap-apply` and
+  `lem:span-range-rigidityRow`; that of `lem:zero-extension-rowIndependent` to the first three of
+  these (through the unpinned `zero_extension_edgeSetRowIndependent_extend`); those of
+  `cor:zero-extension-degree-le-three` and `lem:genericMatroid-induce-transport` to the second and
+  third; that of `cor:zero-extension-clique-rank` to `lem:clique-edgesIn-count`
+  (`IsClique.ncard_edgesIn`, through the unpinned `dep_k5`). The pin `genericRank_eq_rk_image` is
+  dead (`F-012`): `thm:jacobs` uses only the independence half. In task 2.7's prose, cited without
+  an edge: `lem:rigidityMap-apply` (missing) and, for the argument, `lem:typeI-rowIndependent-extend`
+  (no Lean basis) in the lift's proof; `lem:isSparse-of-rowIndependent-two`, for the argument, in
+  the proofs of `lem:isLaman3-of-rowIndependent` and `lem:genericMatroid-induce-transport`;
+  `lem:clique-edgesIn-count` (missing) in the clique corollary's proof.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `723c460d`); read
+  (the bodies of `zero_extension_edgeSetRowIndependent_lift` and `dep_k5`).
+  *Found:* round 4 task 2.7.
 
 ## N — node shape
 
@@ -2593,6 +2610,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 25 pins and of the unpinned lemmas of
   `laman_square_count`'s proof; JJ 2008 §§2, 3 and 5, `.refs/`).
   *Found:* round 4 task 2.6.
+- **F-200** · L · the docstrings of task 2.7's pins (`JacobsZeroExtension.lean`,
+  `RigidityMatroid.lean`, `SquareGraph.lean`, `GenericRigidityMatroid.lean`,
+  `GeneralPositionPlacement.lean`, `Jacobs.lean`). They agree with their bodies, but narrate
+  process: `JacobsZeroExtension.lean`'s header ("Phase 32 (`sec:jacobs-zero-extension`, S3)", "the
+  S2 row-independence lift", "crux fact", "the K₅-closure assembly"), the zero-extension section
+  of `RigidityMatroid.lean` ("the fixed-`V` analogue of Phase 7's", "the corollaries downstream")
+  and two section headers of `SquareGraph.lean` ("Phase 32", "package what squaring does under
+  that peel").
+  *Evidence:* read (the docstrings and bodies of the 16 pins, of
+  `zero_extension_edgeSetRowIndependent_extend` and of the three `K₅` lemmas).
+  *Found:* round 4 task 2.7.
 
 ## M — mathematics and sources
 
