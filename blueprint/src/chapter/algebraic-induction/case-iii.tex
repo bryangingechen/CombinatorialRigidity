@@ -12,228 +12,340 @@ redundant. This subsection proves Claim~6.11; the candidate-completion
 then rewrites the redundant row into the missing full-rank row, and
 Claim~6.12 discharges the one remaining conditional.
 
-The realizations throughout Case~III are \emph{free-normal} panel frameworks: a
-panel-hinge framework (\cref{def:panel-hinge-framework}) whose body normals are
-read directly off a seed $q$, with $n_v = q(v, \cdot) \in K^{k+2}$, together
-with an endpoint selector $\mathit{ends}$ recording each edge's two endpoints.
+\subsubsection{KT Claim~6.11: a redundant row at the new edge}
 
-Claim~6.11 is proved in three steps, in dependency order. The first is pure
-matroid theory in $M(\tilde G)$: the matroid-base form of KT Lemma~4.3(ii) at
-$k = 0$.
+In Katoh and Tanigawa's proof, the induction hypothesis gives a generic
+realization $(G_v^{ab}, q)$ of $G_v^{ab}$ of rank $D(|V(G)| - 2)$ (KT
+eq.~(6.18), p.~682). They call a row of $R(G_v^{ab}, q)$ redundant if
+removing it does not lower the rank. KT Claim~6.11 says that one of the
+$D - 1$ rows at the new edge $ab$ is
+redundant~\cite[p.~684]{katohTanigawa2011}. Its proof finds the
+redundancy first in the matroid $M(\widetilde{G_v^{ab}})$ and then in
+the rows, in three steps. First, $M(\widetilde{G_v^{ab}})$ has a base
+that does not contain every copy of $ab$
+(\cref{lem:case-III-claim-6-11-base}). Second, it follows that the
+graph $G_v = G - v$, which is $G_v^{ab}$ without the edge $ab$, is a
+minimal $k'$-dof-graph with $k' \le D - 2$
+(\cref{lem:case-III-gap3-minimalKDof}). So the induction hypothesis
+gives $\operatorname{rank} R(G_v, q) \ge D(|V(G)| - 2) - (D - 2)$ (KT
+eq.~(6.22), \cref{lem:case-III-nested-rank-lower}). Third, the rows of
+$R(G_v^{ab}, q)$ are those of $R(G_v, q)$ and the rows at $ab$. The rows
+at $ab$ therefore raise the rank by at most $D - 2$, and one of them is
+redundant (KT eq.~(6.23), \cref{lem:case-III-claim-6-11}).
 
-\begin{lemma}[Matroid-base form of KT Lemma~4.3(ii), forward half; KT Claim 6.11, step 1]
+The first step is the forward half of KT Lemma~4.3(ii), which
+\cref{lem:splitoff-kdof-criterion} states with its converse. We state it
+on its own, as Katoh and Tanigawa use it here.
+
+\begin{lemma}[A base of $M(\widetilde{G_v^{ab}})$ without some copy of $ab$; KT Lemma~4.3(ii)]
   \label{lem:case-III-claim-6-11-base}
   \lean{Graph.splitOff_exists_base_inter_fiber_lt}
   \leanok
   \uses{def:k-dof, def:matroid-MG, thm:def-eq-corank, lem:forest-surgery-count, lem:splitoff-deficiency}
-  Let $G$ be a $k$-dof-graph with a degree-$2$ vertex $v$ with distinct
-  neighbours $a, b$, incident to exactly the two edges $e_a \ne e_b$, and let
-  $e_0 \notin E(G)$ be a fresh edge. Suppose the splitting-off $G_v^{ab}$ is
-  again a $k$-dof-graph. Then $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+  Let $D \ge 2$, and let $G$ be a $k$-dof-graph with a vertex $v$ of
+  degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. Let $\widetilde{ab}$ be the set of the $D - 1$ copies
+  in $\widetilde{G_v^{ab}}$ of the new edge $ab$ of $G_v^{ab}$. If
+  $G_v^{ab}$ is a $k$-dof-graph, then $M(\widetilde{G_v^{ab}})$ has a
+  base $B'$ with
   \[
-    \bigl|\widetilde{ab} \cap B'\bigr| \;<\; D - 1,
+    \bigl|\widetilde{ab} \cap B'\bigr| \;<\; D - 1.
   \]
-  where $\widetilde{ab}$ denotes the $D - 1$ copies of the split-off edge $ab$
-  in $\widetilde{G_v^{ab}}$; that is, $\widetilde{ab} \not\subseteq B'$, so one
-  copy of $ab$ is redundant.
 \end{lemma}
 \begin{proof}
   \leanok
-  Reroute a balanced $D$-forest packing of a base $B$ of $M(\tilde G)$ across
-  $v$ (\cref{lem:forest-surgery-count}): this yields an
-  $M(\widetilde{G_v^{ab}})$-independent set $I'$ with $|I'| = |B| - D$ and
-  $|\widetilde{ab} \cap I'| < D - 1$ (the two conclusions of KT Lemma~4.1). Both
-  graphs are $k$-dof, so the $\operatorname{def} = \operatorname{corank}$
-  identity (\cref{thm:def-eq-corank}) gives $\operatorname{rank}
-  M(\widetilde{G_v^{ab}}) = D(|V \setminus \{v\}| - 1) - k = |B| - D = |I'|$. An
-  independent set of full rank is a base, so $I'$ is the required base.
+  We recall Katoh and Tanigawa's
+  proof~\cite[p.~661]{katohTanigawa2011}, which
+  \cref{lem:splitoff-kdof-criterion} also gives. Let $B$ be a base of
+  $M(\tilde G)$. By \cref{lem:balanced-forest-packing}, $B$ is the union
+  of $D$ pairwise disjoint forests of $\tilde G$, each of which has an
+  edge incident with $v$, as the proof of KT Lemma~4.1 assumes
+  (\cref{rem:kt-lemma-41}). The surgery of KT Lemma~4.1 on these forests
+  (\cref{lem:forest-surgery-count}) gives an independent set $I'$ of
+  $M(\widetilde{G_v^{ab}})$ with $|I'| = |B| - D$ and
+  $|\widetilde{ab} \cap I'| < D - 1$.
+
+  The vertices of $G_v^{ab}$ are the $|V(G)| - 1$ vertices of $G$ other
+  than $v$. Both graphs are $k$-dof-graphs, so KT eq.~(2.4)
+  (\cref{thm:def-eq-corank}) gives $|B| = D(|V(G)| - 1) - k$ and
+  \[
+    \operatorname{rank} M(\widetilde{G_v^{ab}})
+    \;=\; D\,(|V(G)| - 2) - k \;=\; |B| - D \;=\; |I'|.
+  \]
+  So $I'$ is a base, and we take $B' = I'$. A copy of $ab$ outside $B'$
+  can be removed from $\widetilde{G_v^{ab}}$ without lowering the rank of
+  its matroid. Katoh and Tanigawa call such a copy a redundant edge
+  (p.~684).
 \end{proof}
 
-The second step is KT's nested induction. The vertex-removal $G_v := G - v =
-G_v^{ab} - ab$ is itself a \emph{minimal} $k'$-dof-graph for $k' :=
-\operatorname{def}(\tilde G_v)$, with $k' \le D - 2$. Its minimality and the
-deficiency bound are pure matroid theory in $M(\tilde G)$; the analytic step
-they set up --- applying the geometric induction hypothesis to $G_v$ at the
-inductively-fixed seed (KT eq.\ (6.22)) --- is
-\cref{lem:case-III-nested-rank-lower} below.
+\begin{fmlnote}
+  The pinned theorem is also the first pinned theorem of
+  \cref{lem:splitoff-kdof-criterion}. It assumes that the label of the
+  new edge $ab$ lies outside $E(G)$ (\cref{fmlnote:graph-operations}).
+\end{fmlnote}
 
-\begin{lemma}[$G - v$ is minimal $k'$-dof with $k' \le D - 2$; KT Lemma~4.3(ii)/nested IH, Claim~6.11 prerequisite]
+In the second step, $G$ is a minimal $0$-dof-graph, as in Case~III.
+
+\begin{lemma}[The graph $G - v$ is a minimal $k'$-dof-graph with $k' \le D - 2$; from the proof of KT Claim~6.11]
   \label{lem:case-III-gap3-minimalKDof}
   \lean{Graph.splitOff_removeVertex_minimalKDof}
   \leanok
   \uses{def:k-dof, def:graph-operations, lem:subgraph-minimality, thm:def-eq-corank,
         lem:splitoff-deficiency, lem:case-III-claim-6-11-base}
-  Let $G$ be a minimal $0$-dof-graph with a degree-2 vertex $v$ (distinct
-  neighbours $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$
-  fresh). Then the vertex-removal $G_v := G - v$ is a minimal
-  $k'$-dof-graph for $k' = \operatorname{def}(\tilde G_v)$, with
+  Let $D \ge 2$, and let $G$ be a minimal $0$-dof-graph with a vertex $v$
+  of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
+  vertices $a, b \neq v$. Let $G_v = G - v$ and
+  $k' = \operatorname{def}(\tilde G_v)$. Then $G_v$ is a minimal
+  $k'$-dof-graph, and
   \[
     0 \;\le\; k' \;\le\; D - 2.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Minimality transports along $G_v \le G$ by \cref{lem:subgraph-minimality}: a
-  subgraph of a minimal $k$-dof-graph is minimal at its own deficiency. For the
-  bound, take the base $B'$ of $M(\widetilde{G_v^{ab}})$ with
-  $h := |\widetilde{ab} \cap B'| < D - 1$
-  (\cref{lem:case-III-claim-6-11-base}). Its surviving part $B' \setminus
-  \widetilde{ab}$ lands in $E(\tilde G_v)$ and is independent in $M(\tilde G_v) =
-  M(\widetilde{G_v^{ab}}) \restriction E(\tilde G_v)$ (matroid restriction along
-  $\tilde G_v \le \widetilde{G_v^{ab}}$), so $\operatorname{rank} M(\tilde G_v)
-  \ge |B'| - h$. At $k = 0$ the splitting off is $0$-dof
-  (\cref{lem:splitoff-deficiency}), so $|B'| = D(|V \setminus \{v\}| - 1)$; the
-  def\,$=$\,corank identity (\cref{thm:def-eq-corank}, same vertex set $V(G)
-  \setminus \{v\}$) then gives $\operatorname{def}(\tilde G_v) = D(|V \setminus
-  \{v\}| - 1) - \operatorname{rank} M(\tilde G_v) \le h < D - 1$, i.e.\
-  $k' \le D - 2$. The lower bound $0 \le k'$ is the nonnegativity of deficiency.
+  We follow Katoh and Tanigawa~\cite[p.~684]{katohTanigawa2011}. The
+  graph $G_v$ is a subgraph of $G$, so it is a minimal $k'$-dof-graph by
+  KT Lemma~3.3 (\cref{lem:subgraph-minimality}). It has the vertex $a$,
+  so the partition of $V(G_v)$ into one part shows that $k' \ge 0$
+  (\cref{def:D-deficiency}). For the same reason
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \ge 0$. By KT Lemma~4.3(i)
+  (\cref{lem:splitoff-deficiency}),
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G) = 0$,
+  so $G_v^{ab}$ is a $0$-dof-graph.
+
+  By \cref{lem:case-III-claim-6-11-base}, at $k = 0$,
+  $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+  $h = |\widetilde{ab} \cap B'| < D - 1$. As $G_v^{ab}$ has the
+  $|V(G)| - 1$ vertices of $G$ other than $v$, KT eq.~(2.4)
+  (\cref{thm:def-eq-corank}) gives $|B'| = D(|V(G)| - 2)$. The graph
+  $G_v$ is $G_v^{ab}$ without the edge $ab$
+  (\cref{lem:splitoff-edge-substitution}). So $M(\tilde G_v)$ is the
+  restriction of $M(\widetilde{G_v^{ab}})$ to $E(\tilde G_v)$
+  (\cref{lem:matroid-restrict-subgraph}), in which
+  $B' \setminus \widetilde{ab}$ is an independent set of $|B'| - h$
+  elements. As $G_v$ and $G_v^{ab}$ have the same vertices, KT
+  eq.~(2.4) gives
+  \[
+    k' \;=\; D\,(|V(G)| - 2) - \operatorname{rank} M(\tilde G_v)
+    \;\le\; |B'| - \bigl(|B'| - h\bigr) \;=\; h \;\le\; D - 2.
+  \]
 \end{proof}
 
-The third step is the analytic content of KT's footnote~6. KT fix the nested
-induction's realizing seed with algebraically-independent coordinates, so
-that the inductively-fixed seed --- not merely \emph{some} generic seed ---
-attains the matroid-predicted rank of each subgraph, both at the $0$-dof
-level (eq.~(6.18): the split-off $G_v^{ab}$ is $0$-dof, so its generic
-realization is rigid) and at the nested level (eq.~(6.22): the rank of the
-nested subgraph $G_v = G_v^{ab} - ab$).
+\begin{fmlnote}
+  The pinned theorem also assumes that some edge label lies outside
+  $E(G)$, the label of the new edge $ab$ of $G_v^{ab}$, which the proof
+  uses (\cref{rem:fresh-edge-supply}).
+\end{fmlnote}
 
-The formalization instead certifies each of these two rank facts directly,
-at the point of use, from a rank polynomial supplied by the relevant
-induction-hypothesis realization: a seed off the zero locus of the finitely
-many rank polynomials a given composition tests attains the predicted rank
-(\cref{fmlnote:generic-full-rank}), with no separate lemma taking an
-algebraically-independent seed as a standing hypothesis. Eq.~(6.18) is
-re-derived at each point of use from the rank-polynomial lower bound of the
-corresponding induction-hypothesis realization meeting the deficiency upper
-bound (\cref{prop:rigidity-matrix-prop11}) at $\operatorname{def} = 0$.
-Eq.~(6.22) is recorded below as a standalone lemma, since the induction
-hypothesis (6.1) it invokes is shared across every composition.
+Katoh and Tanigawa prove KT eq.~(6.22) at the normals $q$ of KT
+eq.~(6.18), from the genericity of $q$ (the remark below). As
+explained after \cref{lem:case-I-realization}, we replace genericity by
+the non-vanishing of polynomials in the normals. So we state KT
+eq.~(6.22) as a bound off the zeros of a polynomial.
 
-\medskip\noindent\emph{KT's original seed-rank transfer.} The formalization's
-earlier route followed KT's footnote-6 transfer directly: a lemma carrying
-rigidity at one seed over to every algebraically-independent seed (the
-$\operatorname{def} = 0$ case, eq.~(6.18)); a matching upper bound on the
-null space at every algebraically-independent seed for the
-$\operatorname{def} > 0$ case (eq.~(6.22)); and their combination, via the
-genericity-free lower bound (\cref{lem:trivial-motions-rank-bound}), into the
-rank attained at the inductively-fixed seed. All three are superseded by the
-per-composition route above and no longer appear in the formalization; see
-the git history for the earlier route.
-
-\begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
+\begin{lemma}[The rank of $G - v$ off the zeros of a polynomial; KT eq.~(6.22)]
   \label{lem:case-III-nested-rank-lower}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k}
   \leanok
   \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
-  Let $G$ be a minimal $0$-dof-graph with a degree-$2$ vertex $v$ (neighbours
-  $a, b$, fresh edge $e_0$), and let $\mathit{ends}$ be an endpoint selector
-  recording every link of the splitting-off $G_v^{ab}$. Then there is a
-  nonzero polynomial $P$ in the seed coordinates such that at every
-  seed $q$ off its zero locus, the rigidity rows of the free-normal panel
-  framework on the vertex-removal $G_v = G - v$ at $(\mathit{ends}, q)$
-  satisfy
+  Let $d \ge 2$, let $G$ be a minimal $0$-dof-graph with a vertex $v$ of
+  degree two, whose edges join $v$ to distinct vertices $a, b \neq v$,
+  and let $G_v = G - v$. Then there is a nonzero polynomial $P$ in the
+  normals such that
   \[
-    D\,\bigl(|V(G_v^{ab})| - 1\bigr) - (D - 2)
-    \;\le\; \dim \operatorname{span}\bigl(\text{rigidity rows of }(G_v, q)\bigr):
+    \operatorname{rank} R(G_v, q) \;\ge\; D\,(|V(G_v)| - 1) - (D - 2)
   \]
-  the nested subgraph $G_v$ --- minimal $k'$-dof with $k' \le D - 2$
-  (\cref{lem:case-III-gap3-minimalKDof}) --- attains at $q$ at least the rank
-  $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1) predicts for it.
+  for all normals $q$ with $P(q) \neq 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The all-$k$ induction hypothesis gives a generic full-rank realization of
-  $G_v$ (minimal $k'$-dof, simple, nonempty, and strictly smaller than $G$).
-  From it, a rank-polynomial extractor produces a nonzero polynomial
-  $P$ in the seed coordinates with $N \le \dim \operatorname{span}(\text{rows at
-  }q')$ for every $q'$ off its zero locus, where $N = D(|V_v| - 1) - k'$. The
-  bounds $k' \le D - 2$ and $|V(G_v^{ab})| = |V_v|$ close the arithmetic.
+  We assume, as in Case~III, that $G$ is simple and that the induction
+  hypothesis KT eq.~(6.1) holds for the graphs with fewer vertices than
+  $G$ (the note after the proof). By
+  \cref{lem:case-III-gap3-minimalKDof}, $G_v$ is a minimal
+  $k'$-dof-graph with $k' = \operatorname{def}(\tilde G_v) \le D - 2$.
+  It is simple, as a subgraph of $G$, and it has at least one and fewer
+  than $|V(G)|$ vertices. So the induction hypothesis gives a generic
+  full-rank realization $(G_v, q_0)$ (\cref{def:rank-hypothesis}), with
+  \[
+    \operatorname{rank} R(G_v, q_0) \;=\; D\,(|V(G_v)| - 1) - k'.
+  \]
+  Its normals are in general position and $G_v$ has no loops, so its
+  hinges are nondegenerate (\cref{lem:general-position-support-nonzero}).
+  By \cref{lem:rank-polynomial-of-le-finrank}, there is a polynomial $P$
+  in the normals with $P(q_0) \neq 0$ such that
+  $\operatorname{rank} R(G_v, q) \ge D(|V(G_v)| - 1) - k'$ wherever
+  $P(q) \neq 0$. In particular $P \neq 0$. As $k' \le D - 2$, this is
+  the bound of the lemma.
 \end{proof}
 
-The two rank attainments (eq.~(6.18) for $G_v^{ab}$, eq.~(6.22) for $G_v =
-G_v^{ab} - ab$) combine into KT's eq.~(6.23). The $D - 1$ rows of $R(G_v^{ab},
-q)$ at the edge $ab$ raise the rank of $R(G_v, q)$ by only $k' \le D - 2 < D -
-1$ (the smaller graph $G_v$ already realizes all but $k'$ of the full rank), so
-one of those $ab$-rows is a linear combination of the others together with the
-$R(G_v, q)$ rows. The pure linear-algebra pigeonhole
-(\cref{lem:case-III-claim-6-11-redundant-row}) applies at KT's two graphs
-through the row-set identity
-\[
-  \operatorname{span}(R(G_v^{ab})\text{-rows}) =
-  \operatorname{span}(R(G_v)\text{-rows}) + \operatorname{span}(ab\text{-block}):
-\]
-since $G_v = G_v^{ab} - ab$ and both frameworks share the seed $q$ and endpoint
-selector $\mathit{ends}$ (hence the same supporting extensors), the only
-rigidity rows of $R(G_v^{ab})$ not already in $R(G_v)$ are the $ab$-rows, which
-span the $ab$-block. Combining the two rank attainments through it discharges
-the corank gap and yields KT's redundant $ab$-row (\cref{lem:case-III-claim-6-11}).
+\begin{fmlnote}
+  The pinned theorem assumes that $G$ is simple, and the induction
+  hypothesis for every $k'$ and every minimal $k'$-dof-graph with at
+  least one and fewer than $|V(G)|$ vertices. The statement omits both.
+  The pinned theorem also assumes that some edge label lies outside
+  $E(G)$ (\cref{rem:fresh-edge-supply}). It fixes an endpoint selector
+  that assigns each edge of $G_v^{ab}$ its ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}) before it gives $P$.
+\end{fmlnote}
 
-\begin{lemma}[Redundant $ab$-row from a small corank over the $ab$-block; KT Claim 6.11, eq.\ (6.23)]
+The lemma needs $G$ to be simple. Let $d = 2$, so that $D = 3$, and let
+$G$ have the vertices $v, a, b, c$, the edges $va$, $vb$ and $cb$, and
+two edges $ac$. Comparing the partitions of $V(G)$
+(\cref{def:D-deficiency}) shows that $\operatorname{def}(\tilde G) = 0$.
+Removing an edge $ac$ gives the value $1$ to the partition into
+singletons. Removing $va$ or $vb$ gives it to the partition
+$\{\{v\}, \{a, b, c\}\}$, and removing $cb$ to
+$\{\{b\}, \{a, c, v\}\}$. So $G$ is a minimal $0$-dof-graph, and $v$ has
+degree two. In $(G_v, q)$ the two edges $ac$ have the same hinge, and so
+the same rows. Let $Q$ be the product of a $2 \times 2$ minor of the
+normals at $a$ and $c$ and one of the normals at $c$ and $b$. Where
+$Q(q) \neq 0$, the hinges of $(G_v, q)$ are nondegenerate, and
+\[
+  \operatorname{rank} R(G_v, q) \;\le\; 2(D - 1) \;=\; 4
+  \;<\; 5 \;=\; D\,(|V(G_v)| - 1) - (D - 2).
+\]
+Over an infinite field, $PQ$ has a non-root for every nonzero
+polynomial $P$, so no polynomial $P$ as in the lemma exists. The two
+edges $ac$ form a proper rigid subgraph of $G$, so this graph falls under
+Case~I.
+
+\begin{remark}[KT eq.~(6.22) and KT footnote~6]
+  We recall Katoh and Tanigawa's proof of KT
+  eq.~(6.22)~\cite[pp.~684--685]{katohTanigawa2011}. The realization
+  $(G_v^{ab}, q)$ of KT eq.~(6.18) is generic: the coordinates of the
+  vectors $c(u)$ that define its panels are algebraically independent
+  over $\Q$ (KT \S5.1, p.~668; the passage after
+  \cref{lem:case-I-realization}). By KT
+  eq.~(6.1), the simple minimal $k'$-dof-graph $G_v$ has a nonparallel
+  realization of rank $D(|V(G_v)| - 1) - k'$. A generic nonparallel
+  realization of $G_v$ has the largest rank of all nonparallel
+  realizations of $G_v$ (KT \S5.1). No realization with nondegenerate
+  hinges has a rank larger than $D(|V(G_v)| - 1) - k'$
+  (\cref{lem:relative-deficiency-rank-bound}). So every
+  generic nonparallel realization of $G_v$ has rank
+  $D(|V(G_v)| - 1) - k'$ (KT footnote~6, p.~684). The realization
+  $(G_v, q)$ has the bodies and the panels of $(G_v^{ab}, q)$, so it is a
+  generic nonparallel realization of $G_v$. Hence
+  $\operatorname{rank} R(G_v, q) = D(|V(G_v)| - 1) - k'$.
+
+  In our proof the normals of KT eq.~(6.18) are not given first. Case~III
+  chooses them off the zeros of a product of nonzero polynomials, fixed
+  before the choice (the proof of \cref{lem:case-III-chain-discriminator},
+  later in this subsection). One factor is the polynomial $P$ of
+  \cref{lem:case-III-nested-rank-lower}. Another is the polynomial that
+  \cref{lem:rank-polynomial-of-le-finrank} gives for the realization of
+  $G_v^{ab}$ from the induction hypothesis, and a third puts the normals
+  in general position. Off the zeros of the second,
+  $\operatorname{rank} R(G_v^{ab}, q) \ge D(|V(G_v)| - 1)$. Off those of
+  the third, the hinges are nondegenerate, and as
+  $\operatorname{def}(\widetilde{G_v^{ab}}) = 0$, the rank is at most
+  $D(|V(G_v)| - 1)$ (\cref{lem:relative-deficiency-rank-bound}). So KT
+  eqs.~(6.18) and~(6.22) hold at the same normals, as in Katoh and
+  Tanigawa's proof. They hold by the choice of the normals, not by their
+  genericity.
+\end{remark}
+
+The third step is a count in linear algebra, which we state for one
+hinge of any body-hinge framework.
+
+\begin{lemma}[A redundant row at a hinge; from the proof of KT Claim~6.11]
   \label{lem:case-III-claim-6-11-redundant-row}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt}
   \leanok
   \uses{lem:case-III-gap3-minimalKDof, lem:case-II-placement-new-rows}
-  Let $F$ be a body-hinge framework with a nondegenerate hinge $e$ (distinct
-  endpoints, $C(e) \ne 0$), and let $W$ be any subspace of the dual row space.
-  The $e$-block --- the span of the panel rows at $e$ --- has dimension $D - 1$.
-  If it raises the dimension of $W$ by strictly fewer than $D - 1$,
+  Let $(G, p)$ be a body-hinge framework, let $e$ be an edge of $G$ with
+  distinct ends whose hinge is nondegenerate, and let $R_e$ be the span
+  of the rows of $R(G, p)$ at $e$. Let $W$ be a space of linear forms on
+  the screw assignments such that
   \[
-    \dim\bigl(W + \operatorname{span}(e\text{-block})\bigr) \;<\; \dim W + (D - 1),
+    \dim (W + R_e) \;<\; \dim W + (D - 1).
   \]
-  then there is a $(D-1)$-element linearly independent family $r$ spanning the
-  $e$-block with one redundant member:
-  \[
-    r\,i_0 \in W + \operatorname{span}\bigl(r \restriction \{j \ne i_0\}\bigr).
-  \]
+  Then $R_e$ has a basis $r_1, \dots, r_{D-1}$ with
+  $r_i \in W + \operatorname{span}\{r_j : j \neq i\}$ for some $i$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The $e$-block is $(D - 1)$-dimensional and is spanned by the $D - 1$
-  independent panel rows a nondegenerate hinge contributes
-  (\cref{lem:case-II-placement-new-rows}). The dimension hypothesis is exactly
-  the abstract pigeonhole's input at this $(D-1)$-element family: a family
-  raising $\dim W$ by fewer than its cardinality has a member lying in $W$ plus
-  the span of the rest, and that member is the redundant $ab$-row.
+  By \cref{lem:case-II-placement-new-rows}, $R_e$ contains $D - 1$
+  linearly independent forms $r_1, \dots, r_{D-1}$. The space $R_e$ has
+  dimension $D - 1$, as in the proof of that lemma, so they form a basis
+  of $R_e$. Suppose that no $r_i$ lies in
+  $W + \operatorname{span}\{r_j : j \neq i\}$. If
+  $\sum_j c_j r_j \in W$ with $c_i \neq 0$, then dividing by $c_i$
+  puts $r_i$ in $W + \operatorname{span}\{r_j : j \neq i\}$. So
+  $\sum_j c_j r_j \in W$ only if every $c_j$ is $0$, and the images of
+  the $r_j$ in the quotient by $W$ are linearly independent. Then
+  $\dim (W + R_e) = \dim W + (D - 1)$, contrary to the hypothesis.
 \end{proof}
 
-\begin{lemma}[KT Claim 6.11, eq.\ (6.23): the deleted $ab$-edge has a redundant row]
+\begin{fmlnote}
+  As for \cref{lem:case-II-placement-new-rows}, the pinned theorem holds
+  for every body-hinge framework, and it reads the ends of $e$ from the
+  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}).
+\end{fmlnote}
+
+We apply this count at the edge $ab$ of $G_v^{ab}$, where $W$ is the row
+space of $R(G_v, q)$.
+
+\begin{lemma}[KT Claim~6.11: a redundant row at $ab$; KT eq.~(6.23)]
   \label{lem:case-III-claim-6-11}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq}
   \leanok
   \uses{lem:case-III-claim-6-11-redundant-row, lem:case-III-gap3-minimalKDof}
-  Let $G_{ab} = G_v^{ab}$ be the split-off graph and $G_v = G_v^{ab} - ab$ its
-  single-edge deletion, both realized as free-normal panel frameworks at the
-  same inductively-fixed seed $q$ and endpoint selector $\mathit{ends}$, with
-  $e_0 = ab$ the deleted nondegenerate hinge ($C(e_0) \ne 0$). Given the two
-  rank attainments --- eq.~(6.18)
+  Let $d \ge 2$, let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges join $v$ to distinct vertices $a, b \neq v$, and let
+  $G_v = G - v$. Let $q$ be normals at which the hinge of the new edge
+  $ab$ of $(G_v^{ab}, q)$ is nondegenerate. Suppose that, for some
+  $k' \le D - 2$,
   \[
-    \dim \operatorname{span}(R(G_{ab}, q)\text{-rows}) = D(m - 1)
+    \operatorname{rank} R(G_v^{ab}, q) = D\,(|V(G_v)| - 1)
+    \quad\text{and}\quad
+    \operatorname{rank} R(G_v, q) = D\,(|V(G_v)| - 1) - k',
   \]
-  (the $0$-dof full rank, $m = |V(G_{ab})| = |V(G_v)|$) and eq.~(6.22)
-  \[
-    \dim \operatorname{span}(R(G_v, q)\text{-rows}) = D(m - 1) - k', \qquad k'
-    \le D - 2
-  \]
-  --- one of the $D - 1$ rows of $R(G_{ab}, q)$ at the edge $ab$ is redundant
-  modulo $\operatorname{span}(R(G_v, q)\text{-rows})$ and the other $ab$-rows:
-  KT's eq.~(6.23). This redundant row is the $+1$ that the candidate-completion
-  converts into the missing full-rank row.
+  as in KT eqs.~(6.18) and~(6.22). Then one of the $D - 1$ rows of
+  $R(G_v^{ab}, q)$ at $ab$ lies in the span of the rows of $R(G_v, q)$
+  and the other rows at $ab$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The two frameworks differ only by the edge $e_0 = ab$ (their links agree off
-  $e_0$, and they share the same supporting extensors), so the row-set identity
+  We follow Katoh and Tanigawa~\cite[p.~685]{katohTanigawa2011}. The
+  edges of $G_v^{ab}$ are those of $G_v$, with the same ends, and the
+  new edge $ab$ (\cref{lem:splitoff-edge-substitution}). The two
+  frameworks have the same normals, so an edge of $G_v$ has the same
+  hinge, and the same rows, in both. Let $W$ be the row space of
+  $R(G_v, q)$, and let $R_{ab}$ be the span of the rows of
+  $R(G_v^{ab}, q)$ at $ab$. Then the row space of $R(G_v^{ab}, q)$ is
+  $W + R_{ab}$, and the two rank equations give
   \[
-    \operatorname{span}(R(G_{ab})\text{-rows}) =
-    \operatorname{span}(R(G_v)\text{-rows}) + \operatorname{span}(ab\text{-block})
+    \dim (W + R_{ab}) \;=\; D\,(|V(G_v)| - 1) \;=\; \dim W + k'.
   \]
-  holds. Writing $W = \operatorname{span}(R(G_v)\text{-rows})$, eq.~(6.18) reads
-  $\dim\bigl(W + \operatorname{span}(ab\text{-block})\bigr) = D(m - 1)$ while
-  eq.~(6.22) gives $\dim W = D(m - 1) - k'$; so the $ab$-block raises $\dim W$ by
-  only $k' \le D - 2 < D - 1$. This is the corank gap that the redundant-row
-  pigeonhole (\cref{lem:case-III-claim-6-11-redundant-row}) turns into the
-  redundant $ab$-row.
+  As $k' \le D - 2 < D - 1$, the rows at $ab$ raise $\dim W$ by fewer
+  than $D - 1$.
+
+  The $D - 1$ rows $r_1, \dots, r_{D-1}$ of $R(G_v^{ab}, q)$ at $ab$
+  form a basis of $R_{ab}$ (\cref{def:hinge-row-block}). The proof of
+  \cref{lem:case-III-claim-6-11-redundant-row} applies to every basis of
+  $R_{ab}$. So some $r_i$ lies in
+  $W + \operatorname{span}\{r_j : j \neq i\}$.
+  The rows of $R(G_v, q)$ and the $r_j$ with $j \neq i$ then span
+  $W + R_{ab}$. So removing the row $r_i$ does not lower the rank of
+  $R(G_v^{ab}, q)$, which is KT eq.~(6.23).
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem gives a basis of the span of the rows at $ab$, one
+  member of which lies in the span of the rows of $R(G_v, q)$ and the
+  other members. This is the lemma for one choice of the rows at $ab$
+  (\cref{def:hinge-row-block}). The pinned theorem holds for any two
+  multigraphs whose edges, with their ends, agree except for one edge
+  $ab$ of the first, and with any number in place of $|V(G_v)|$. Their
+  frameworks share one endpoint selector, which assigns $ab$ its ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}). The formal proof of
+  Case~III applies it with
+  $k' = D(|V(G_v)| - 1) - \operatorname{rank} R(G_v, q)$, for which the
+  second rank equation holds by definition, and
+  \cref{lem:case-III-nested-rank-lower} gives $k' \le D - 2$.
+\end{fmlnote}
 
 \subsubsection{The candidate-completion: the redundant row becomes the missing row
 (KT eqs.\ (6.24)--(6.29))}

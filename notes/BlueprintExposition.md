@@ -441,8 +441,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `lem:case-III-seed-rank-bridge`/`-seed-rank-upper`/`-rank-attainment` chain named above is
   deleted, each composition now taking a device-chosen seed off a finite polynomial product's
   zero locus. `case-iii.tex` states the eq.-(6.22) bound in rank-polynomial form
-  (`lem:case-III-nested-rank-lower`) with KT's original transfer summarized in a short
-  remark; the Gap-2→3→1 exposition otherwise stands, and the KT-side insight above is
+  (`lem:case-III-nested-rank-lower`); since PROSE round 3 (task 2.11) the remark after it
+  states KT's footnote-6 argument (pp. 684–685) and the formal choice of normals beside it; the
+  Gap-2→3→1 exposition otherwise stands, and the KT-side insight above is
   unchanged — footnote 6 is KT's actual argument.]** What stays *open* (deferred successor) is
   not Claim 6.11 but the **candidate-completion** that converts its redundant `ab`-row into
   the missing `+1` full-rank row (eq. (6.24)→(6.29)) + the Claim-6.12 disjunction. Pointer:

@@ -396,6 +396,20 @@ declaration's name as its header writes it:
   `lem:splitoff-edge-substitution` and `lem:rigidityRows-pinned-placement-rank-add`.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter genericity-and-count`, at `120eca58`).
   *Found:* round 3 task 2.10.
+- **F-155** · E · `case-iii.tex`'s KT Claim 6.11 group (`algebraic-induction/case-iii.tex`, five
+  nodes): 12 missing edges, `lem:case-III-claim-6-11-base`'s and `lem:case-III-gap3-minimalKDof`'s to
+  `def:edge-multiply`, the latter's to `lem:splitoff-edge-substitution`, and nine of
+  `lem:case-III-nested-rank-lower`'s (among them `def:panel-hinge-framework`,
+  `lem:general-position-support-nonzero`, `lem:rank-polynomial-of-le-finrank`). Three edges have no
+  Lean basis: `lem:case-III-claim-6-11-base`'s to `lem:splitoff-deficiency`, and those of
+  `lem:case-III-claim-6-11-redundant-row` and `lem:case-III-claim-6-11` to
+  `lem:case-III-gap3-minimalKDof`. The proofs as task 2.11 wrote them also cite nodes that no
+  `\uses` names: `lem:splitoff-kdof-criterion` and `lem:balanced-forest-packing` (the base),
+  `def:D-deficiency`, `lem:splitoff-edge-substitution` and `lem:matroid-restrict-subgraph` (the
+  bound on $k'$), `lem:general-position-support-nonzero` and `lem:rank-polynomial-of-le-finrank`
+  (KT eq. (6.22)), and `lem:splitoff-edge-substitution` and `def:hinge-row-block` (Claim 6.11).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `fe05a812`).
+  *Found:* round 3 task 2.11.
 
 ## N — node shape
 
@@ -811,6 +825,21 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eleven nodes, at `120eca58`);
   read (a `grep` for each dead pin's callers).
   *Found:* round 3 task 2.10.
+- **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
+  Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
+  `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
+  one edge, at any vertex count $m$. Its live callers have no node: they obtain KT eq. (6.18) at
+  the chosen normals from rigidity, and set $k' = D(m - 1) - \operatorname{rank} R(G_v, q)$, so
+  that KT eq. (6.22) holds by definition and `lem:case-III-nested-rank-lower` gives
+  $k' \le D - 2$ (`exists_redundant_panelRow_ab_lam_of_rigidOn`, through
+  `exists_redundant_panelRow_ab_lam` and `exists_redundant_panelRow_ab_decomposition`). With
+  `exists_candidateRow_bottomRows_of_rigidOn`, `chainData_split_w6b_gates` and
+  `exists_shared_redundancy_and_matched_candidate`, they are the path from Claim 6.11 to
+  `lem:case-III-chain-discriminator`'s pin, which the blueprint does not show. A node for that step,
+  or Claim 6.11 stated in its general form, are the candidates.
+  *Evidence:* read (the bodies of the five declarations, `Molecular/AlgebraicInduction/CaseIII/
+  Candidate.lean` and `Realization.lean`; a `grep` for each in `blueprint/src`).
+  *Found:* round 3 task 2.11.
 
 ## T — terminology and notation
 
@@ -1390,6 +1419,20 @@ declaration's name as its header writes it:
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
   `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`.
   *Found:* round 3 task 2.10.
+- **F-154** · S · `lem:case-III-nested-rank-lower` (`algebraic-induction/case-iii.tex`): the
+  statement omits two hypotheses of its pin `exists_nested_rankPolynomial_lower_all_k`, that $G$ is
+  simple (`hSimple`) and the induction hypothesis for every $k'$ (`hIH`). Without simplicity it
+  fails. For $d = 2$ ($D = 3$), the graph with the edges $va$, $vb$, $cb$ and two edges $ac$ is a
+  minimal $0$-dof-graph in which $v$ has degree two. Parallel edges of a panel-hinge framework
+  share one hinge, so wherever the two hinges of $(G_v, q)$ are nondegenerate its rank is at most
+  $4 < 5 = D(|V(G_v)| - 1) - (D - 2)$, and over an infinite field no nonzero $P$ exists. For a
+  simple $G$ the statement follows from KT Theorem 5.5 at $G_v$ (`thm:theorem-55`), so the omitted
+  induction hypothesis loses no truth. Task 2.11 kept the statement; its proof assumes both and says
+  so, the note gives them, and the paragraph after the note gives the example.
+  *Evidence:* read (the statement and body of `exists_nested_rankPolynomial_lower_all_k`,
+  `Molecular/AlgebraicInduction/CaseIII/Realization.lean`; `def:panel-hinge-framework`); the
+  example's deficiencies by hand, over the fifteen partitions of its four vertices.
+  *Found:* round 3 task 2.11.
 
 ## L — Lean
 
@@ -1893,6 +1936,20 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; a `grep` for `lem:case-I-splice-placement` in
   `blueprint/src`).
   *Found:* round 3 task 2.10.
+- **F-156** · L · the docstrings of `case-iii.tex`'s KT Claim 6.11 pins
+  (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/AlgebraicInduction/CaseIII/
+  Candidate.lean`, `Realization.lean`). `splitOff_exists_base_inter_fiber_lt`'s places KT Lemma 4.3
+  on p. 660 (it is on p. 661). `splitOff_removeVertex_minimalKDof`'s calls the KT eq. (6.22) step
+  "the next, deferred sub-phase", which `exists_nested_rankPolynomial_lower_all_k` has since
+  proved; that one's points at "the collapsed remark at `case-iii.tex`", which task 2.11 replaced by
+  KT's footnote-6 argument. `exists_redundant_panelRow_ab_of_finrank_eq`'s says that `h622` comes
+  from the nested bound, where its live caller `exists_redundant_panelRow_ab_lam_of_rigidOn` makes it
+  hold by definition, and calls the candidate completion deferred; the caller's own docstring calls
+  `h622lb` an adjudicated carry awaiting a successor sub-phase. They carry process codes (Gap 1–3,
+  Phases 22d, 22i, 22k, 23a and 30, RELAX, L7a, B2) and the words "brick", "stratum", "motive" and
+  "seed".
+  *Evidence:* read (the docstrings and bodies; KT 2011 p. 661, `.refs/`).
+  *Found:* round 3 task 2.11.
 
 ## M — mathematics and sources
 
