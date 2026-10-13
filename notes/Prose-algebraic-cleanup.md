@@ -7,9 +7,10 @@ its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s re
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
 else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
 `F-115`–`F-120`, task 2.1 `F-121`–`F-123`, task 2.2 `F-124`–`F-127`, task 2.3 `F-128`–`F-130`,
-task 2.4 `F-131`–`F-132`, task 2.5 `F-133`. 18 one-commit tasks; tasks 1 and 2.1–2.5 are done, and
-the round has no planned stop. **Next concrete task:** task 2.6, `case-i.tex`'s KT Lemma 5.4 and
-the block pin, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+task 2.4 `F-131`–`F-132`, task 2.5 `F-133`, task 2.6 `F-134`–`F-135`. 18 one-commit tasks; tasks 1
+and 2.1–2.6 are done, and the round has no planned stop. **Next concrete task:** task 2.7,
+`case-i.tex`'s KT eq. (6.3), the contraction and KT Claim 6.4, at Opus (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,16 +20,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.5 has landed** (this commit): `panel-layer.tex` 1058–1352 at the open, 1290–1584 at its
-parent, now 1290–1653, 8 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and
-in order; both subsections are retitled, and six formalization notes were added. `panel-layer.tex`
-is done (2.1–2.5). Nothing is mid-stream; task 2.6 is next.
+**Task 2.6 has landed** (this commit): `case-i.tex` 18–291 at the open and at its parent, now
+18–332, 10 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and in order; no
+node moved. One formalization note was added (after `lem:cycle-realization-rigid`), and
+`lem:cycle-realization`'s was rewritten (`F-115`). Nothing is mid-stream; task 2.7 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
   `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (63 overfull boxes, the open's 72; none in
-  `panel-layer.tex`). Screens on `panel-layer`: register 54 / 0, devices 0 / 7, `\operatorname` 0,
-  vocabulary 9, forward `\uses` 10 / 5 (the open's 63 / 15, 0 / 17, 1, 44, 10 / 5). The vocabulary
-  hits are "endpoint selector" in notes; the devices are `\texttt` addresses.
+  18–332). Screens on `case-i`: register 29 / 18, devices 0 / 2, `\operatorname` 0, vocabulary 46,
+  forward `\uses` 6 / 0 (the open's 31 / 20, 0 / 1, 0, 49, 6 / 0). In 18–332 they are 0 / 0,
+  0 / 1, 0 and 0; the device is a `\texttt` address in a note.
 
 **Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -233,12 +234,8 @@ induction, nodes whose pins no main result uses (`F-118`).
 - **`panel-layer`.**
   - *Done:* 2.1–2.5 (their open bullets are in this log at `efa7ed2b`).
 - **`case-i`.**
-  - *2.6 (18–291):* `lem:cycle-realization-rigid` indexes the cycle by $\mathrm{vtx} \colon \Z/m \to
-    V$ in its statement (principle B *Constructions*). `lem:cycle-realization` is `F-115`: keep the
-    statement; its note misstates the pin's range ($m \le d$; the pin's is $m \le d+1$), and its
-    attribution (Crapo–Whiteley Prop. 3.4, Whiteley 1999 Prop. 3: KT's [4] and [34], p. 670)
-    belongs in the title or one sentence. Its proof cites the line lemma as "the bare-to-generic
-    upgrade" (`F-110`). "parallel-hinges-full"; the block pin's lead-ins narrate Case I.
+  - *Done:* 2.6 (its open bullet is in this log at `8cfa4531`). Since 2.6 the file runs 41 lines
+    longer: the open's 292 is now 333.
   - *2.7 (292–588):* `lem:case-I`'s statement carries role clauses ("framework-side carrier",
     "supplied the induction hypothesis") and claims a rank identity its pins do not state (`F-116`;
     keep it); carry-ins 1, 2, 4, 7. The exposition ledger's KT eq. (6.3) entry says `lem:case-I`'s
@@ -330,7 +327,8 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.5 `panel-layer.tex`, the framework operations and the multigraph conjecture** (this
     commit; 1058–1352 at the open, now 1290–1653, 8 nodes). KT p. 670's proof for multigraphs; both
     subsections retitled. Found `F-133`.
-  - [ ] **2.6 `case-i.tex`, KT Lemma 5.4 and the block pin** (18–291): 10 nodes, 274 lines.
+  - [x] **2.6 `case-i.tex`, KT Lemma 5.4 and the block pin** (this commit; 18–291 at the open, now
+    18–332, 10 nodes). KT p. 670 and Crapo–Whiteley in the lead-in. Found `F-134`–`F-135`.
   - [ ] **2.7 `case-i.tex`, KT eq. (6.3), the contraction and KT Claim 6.4** (292–588): 5 nodes,
     297 lines; crux throughout; carry-ins 1, 2, 4 and 7.
   - [ ] **2.8 `case-i.tex`, KT Lemmas 6.2, 6.3 and 6.5, and the opening** (589–832, 1–17): 4
@@ -372,7 +370,7 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 finding). Recorded, not acted on in this round; round 5's report ranks them for the PI.
 
 - `F-115` (S, task 1): `lem:cycle-realization` states KT Lemma 5.4 for $3 \le m \le D$; its pin
-  covers $m \le d + 1$, and its note says $m \le d$.
+  covers $m \le d + 1$, and its note said $m \le d$ (corrected by task 2.6).
 - `F-116` (S, task 1): `lem:case-I` states KT eq. (6.3)'s rank addition through the contraction;
   its three pins are block-pin criteria that mention no contraction.
 - `F-117` (S, task 1): `lem:genericity-device` states Zariski-open rank loci; its pins give one
@@ -418,6 +416,10 @@ one line each naming the ledger ID and the task that found it.
   theorem lacks, and stale callers.
 - `F-133` (L, task 2.5): the docstrings of the framework operations' pins name Cases I and II as
   users, and dead or misdescribed callers; the multigraph pins' docstrings use process codes.
+- `F-134` (N, task 2.6): six of `case-i.tex`'s first ten nodes have every pin dead and uncalled
+  outside the node; one restates `lem:theorem-55-base`.
+- `F-135` (L, task 2.6): the docstrings of the cycle and block-pin pins name dead routes (generic
+  extensors for the cycle, Case I's gluing) and a binder the signature lacks.
 
 ## Blockers / open questions
 
@@ -425,10 +427,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.6, `case-i.tex`'s KT Lemma 5.4 and the block pin (18–291, unchanged
-since the open), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is under *Per-chapter
-diagnosis*, its gates and screens under *Scope*. Then tasks 2.7–2.16 in order, and task 3 closes the
-round. For the slices:
+**Next concrete task: task 2.7, `case-i.tex`'s KT eq. (6.3), the contraction and KT Claim 6.4
+(292–588 at the open, now 333–629), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is
+under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.8–2.16 in order, and
+task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open the round; the coordinator reads them in full against the
   exemplars, as round 2's hand-off asked for its first three.
@@ -449,23 +451,24 @@ round. For the slices:
   2.5, `def:framework-with-graph` writes the framework on a new graph $(G', p)$, the *restriction*
   when $G'$ is a subgraph; `lem:with-normal-preserves` says "a body that lies on no edge" and
   `\cref`s `lem:rank-delete-vertex` for $\operatorname{pinned}(w)$.
-- **For 2.6 and later.** Since 2.4, the form of `lem:extensor-pair-in-panel` for $K^{d+1}$ is the
-  paragraph after it (`F-131`; `lem:case-I-realization-nonsimple`, 2.8, uses it), and
-  `lem:cycle-normals` gives normals, not a "seed" (2.6's `lem:cycle-realization`, 2.15's triangle
-  floor). `lem:pinned-motions-on-mono` and `lem:case-I-splice-seed` (2.6, 2.7) say "keeping the
-  hinge data" and "$F$ restricted to $H$": write the restriction. Their pins lie outside the main
-  results' closure, and no live proof of Case I or II uses the operation on graphs (`F-118`,
-  `F-133`). Case II's "unhinged" (2.9) is now "lies on no edge".
+- **For 2.7 and later.** Since 2.6, `def:pinned-motions-on` defines the *block pin* $Z_s(G,p)$,
+  and one sentence before it anchors Case I's contraction at KT §6.2 (p. 673); 2.7's account of KT
+  eq. (6.3) says the rest. The block-pin lemmas are dead (`F-134`), and the live Case I reaches the
+  block pin only through the relative count, so 2.7 does not present them as its steps (`F-118`).
+  `lem:case-I-splice-seed` (2.7) says "$F$ restricted to $H$": write the restriction. Since 2.4 the
+  form of `lem:extensor-pair-in-panel` for $K^{d+1}$ is the paragraph after it (`F-131`; 2.8's
+  `lem:case-I-realization-nonsimple`), and `lem:cycle-normals` gives normals, not a "seed" (2.15).
+  `lem:exists-independent-panel-extensor` states pairs $(a_i, b_i)$; Case II's prose (2.9, 2.10)
+  cites it with no Lean basis (`F-134`). Case II's "unhinged" (2.9) is now "lies on no edge".
 - **Crux nodes** keep their full proofs: tasks 2.1–2.3 and 2.7–2.15 (*Scope*).
 - **Carry-ins** 1–7 are under *Per-chapter diagnosis*, each with its task.
-- **The open's findings** are recorded, not acted on: 2.6 keeps `lem:cycle-realization`'s
-  statement and corrects its note's range (`F-115`); 2.7 keeps `lem:case-I`'s (`F-116`); 2.10
-  keeps `lem:genericity-device`'s (`F-117`). Where a proof cites a node its pin does not reach
-  (`F-118`), a slice may name in prose the node the pin does reach, after checking it with the
-  script; the edges wait for round 5. 2.6–2.10, 2.12 and 2.14 give `F-119`'s forward references a
-  sentence or a move within the file.
+- **The open's findings** are recorded, not acted on: 2.7 keeps `lem:case-I`'s statement
+  (`F-116`); 2.10 keeps `lem:genericity-device`'s (`F-117`). Where a proof cites a node its pin
+  does not reach (`F-118`), a slice may name in prose the node the pin does reach, after checking it
+  with the script; the edges wait for round 5. 2.7–2.10, 2.12 and 2.14 give `F-119`'s forward
+  references a sentence or a move within the file.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-134`.
+  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-136`.
 
 ## Decisions made during this round
 
@@ -487,11 +490,10 @@ round. For the slices:
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`).
 - **The no-Lean-edit base** is `ef57b401`, the open's parent.
-- **Tasks 2.1–2.5, `panel-layer.tex` (done).** KT's panel-hinge frameworks (KT p. 648, §5.1) open
-  the file; KT Proposition 2.3's two halves are `prop:rigidity-matrix-prop11`'s backbone; the
-  simplicity account (KT Lemma 5.3, p. 669) precedes `thm:theorem-55`, whose proof follows KT's four
-  cases (p. 671). `thm:theorem-55-6` and `-multigraph` are KT's proof (p. 670) without the
-  projective move; `-genuine` is KT's nondegenerate form, `-rows` the generic one. The base follows
-  KT p. 671's three cases over $d = 3$ pins (`F-131`). Labeled remarks stay remarks. Retitled:
-  *KT Theorems 5.5 and 5.6 and the molecular conjecture*, *Two operations on frameworks*, *KT
-  Theorem 5.6 and the molecular conjecture for multigraphs*.
+- **Tasks 2.1–2.6 (done).** `panel-layer.tex` follows KT §5 and p. 671: KT Proposition 2.3's two
+  halves, the simplicity account (KT Lemma 5.3, p. 669) before `thm:theorem-55` and KT's four
+  cases, KT's proof of Theorem 5.6 (p. 670) without the projective move, the base by KT p. 671's
+  three cases over $d = 3$ pins (`F-131`); labeled remarks stay remarks; three subsections
+  retitled. In `case-i.tex` (2.6), KT Lemma 5.4 is proved for $m \le d + 1$ with standard-basis
+  normals, after KT p. 670 and Crapo–Whiteley Prop. 3.4; its note gives the formal range and the
+  general-position step (`F-115`, `F-110`). The block pin keeps its name, defined in its node.

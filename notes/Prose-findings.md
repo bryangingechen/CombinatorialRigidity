@@ -688,6 +688,27 @@ declaration's name as its header writes it:
   unbacked); read (the wrappers' bodies, one-line specializations; a `grep` for their callers,
   which finds only docstrings).
   *Found:* round 3 task 2.4.
+- **F-134** · N · `lem:cycle-realization-base`, `lem:cycle-realization-dim-bound`,
+  `lem:exists-independent-panel-extensor`, `lem:pinned-motions-on-mono`,
+  `lem:pinned-motions-on-rank-bound`, `lem:pinned-motions-on-rigid-iff`
+  (`algebraic-induction/case-i.tex`): every pin of these six nodes lies outside every main result's
+  closure, and no declaration outside the node calls one, except
+  `screwDim_add_finrank_pinnedMotionsOn_le` (called by `rankHypothesis_iff_finrank_pinnedMotionsOn`,
+  a dead pin of `lem:case-I`, `F-116`) and `pinnedMotionsOn_le_withGraph_of_le` (by two unpinned
+  dead declarations). The first node restates
+  `lem:theorem-55-base` for panel-hinge frameworks: its pin is `theorem_55_base` applied to
+  `P.toBodyHinge`. The first three are used only by `\uses` edges with no Lean basis
+  (`lem:cycle-realization-rigid` and `lem:cycle-realization`; `lem:case-II` and
+  `lem:case-II-realization-placement`); the realization of KT Lemma 5.4 takes its normals from
+  `lem:cycle-normals`, and the pairs of the third share no normals. No node uses the fourth or the
+  sixth. The first three pins of `lem:cycle-realization-rigid`, its `Fin m`-body forms, likewise have
+  no caller outside the node; the fourth, `theorem_55_cycle`, is the live one. Each wants `F-012`'s
+  three-way diagnosis; merging the first node into `lem:theorem-55-base` and unpinning the `Fin m`
+  forms are the obvious candidates.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the slice's ten nodes, dead pins and
+  unbacked edges, and the closure of `formalization.yaml`'s main results over its cache, at
+  `8cfa4531`); read (a `grep` for each pin's callers).
+  *Found:* round 3 task 2.6.
 
 ## T — terminology and notation
 
@@ -1556,6 +1577,32 @@ declaration's name as its header writes it:
   results over the `scripts/blueprint-deps.py` cache, and `--label` for the slice's nodes, at
   `708f4443`).
   *Found:* round 3 task 2.5.
+- **F-135** · L · the docstrings of `case-i.tex`'s first pins
+  (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
+  `CaseIII/Arms.lean`). `toBodyHinge_rankHypothesis_zero`'s calls
+  it the brick the general cycle realization is built from, with its independent extensors "supplied
+  generically (Claim 6.4/6.9, deferred)", and its section header says the general cycle remains red;
+  `cycle_realization` uses `theorem_55_cycle` instead, and takes the extensors from
+  `exists_cycle_normals`, a basis choice. `card_le_screwDim_of_supportExtensor_linearIndependent`'s
+  calls that choice "the remaining red content of `lem:cycle-realization`".
+  `exists_independent_normalsJoin`'s and `exists_independent_panelSupportExtensor`'s call them the
+  genericity-device half of `lem:cycle-realization`, giving the extensors that KT Lemma 5.4 "feeds
+  into" the cycle realization; their pairs share no normals, and nothing outside the two calls
+  them.
+  `toBodyHinge_rankHypothesis_zero_cycle`'s and `rankHypothesis_zero_of_cycle`'s say that with
+  `exists_independent_panelSupportExtensor` they give KT Lemma 5.4 for $3 \le m \le D$ (the formal
+  range is $m \le d + 1$, `F-115`). `cycle_realization`'s says a `[G.Simple]` binder is kept unused;
+  the signature has none, and the docstring carries process codes (E5, GAP-2, design sections). The
+  block-pin pins' docstrings call `screwDim_add_finrank_pinnedMotionsOn_le` "the lower-bound brick of
+  Case I's block-triangular gluing", `pinnedMotionsOn_le_withGraph_of_le` "the direction Case I's
+  block-triangular gluing travels", `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` its
+  "framework-side core", and `pinnedMotionsOn_eq_iInf` "the form Case I's block-triangular
+  accounting uses"; the live Case I (`case_I_realization_all_k_gen`) reaches none of them, and
+  reaches the block pin only through the relative count
+  (`finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn`).
+  *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers); measured (the
+  main results' closure over the `scripts/blueprint-deps.py` cache, at `8cfa4531`).
+  *Found:* round 3 task 2.6.
 
 ## M — mathematics and sources
 
