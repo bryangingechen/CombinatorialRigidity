@@ -793,7 +793,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   mechanism inline.
 - **`lem:case-III-candidate-dispatch-d3` / `case_III_candidate_dispatch` — the `d = 3` Case-III
   worked concrete case (Lemma 6.10) as an accessible entry point to the general Lemma 6.13** —
-  [done (`case-iii.tex`, Phase-27 A2-x worked-case exposition)] **(b)**, a *worked-case*
+  [done (`case-iii.tex`, Phase-27 A2-x worked-case exposition; since PROSE round 3 task 2.13 the
+  lead says that KT use Lemmas 4.6 and 4.8 at `d = 3` (p. 680), and that only the short-cycle case,
+  with Lemma 5.4, does not arise once `|V| ≥ 4` (KT Lemma 6.7, p. 682))] **(b)**, a *worked-case*
   deliverable (a sibling to the reroute-triggered entries, not one of them): KT's own
   concrete-first pedagogy (§6.4.1 before §6.4.2), presented as the accessible instance of the
   general argument. **Stable insight:** the `d = 3` case is *genuinely* simpler than the general

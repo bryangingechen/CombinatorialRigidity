@@ -827,324 +827,406 @@ arbitrary subspace $L$.
   $L = q(ab)$, where $r$ vanishes on $C(L)$ and the block is singular.
 \end{fmlnote}
 
-\subsubsection{The three candidates and Claim 6.12: the \texorpdfstring{$d = 3$}{d = 3} worked case (KT \S6.4.1, eqs.\ (6.30)--(6.45))}
+\subsubsection{The case \texorpdfstring{$d = 3$}{d = 3}: three frameworks and KT Claim~6.12 (KT \S6.4.1)}
 \label{sec:molecular-algebraic-induction-claim612}
 
-The remainder of this subsection works out Katoh--Tanigawa's three-dimensional case
-(KT \S6.4.1, Lemma~6.10) in full, as the accessible instance of the general argument. The
-general Lemma~6.13 (\cref{lem:case-III}, KT \S6.4.2) applies the same three-candidate idea
-along a length-$d$ chain, but at $d = 3$ each of its moving parts reduces to something
-concrete, so the three-dimensional case carries the whole idea --- three candidate
-placements, one of them full rank by a six-join span --- without the chain, dichotomy, and
-block scaffolding the general form otherwise asks the reader to absorb at once.
+Katoh and Tanigawa prove Case~III first for $d = 3$, where $D = 6$
+(KT Lemma~6.10), and then for every $d$ (KT
+Lemma~6.13)~\cite[\S6.4]{katohTanigawa2011}. The formal proof of KT
+Theorem~5.5 uses the general case at every $d$, including $d = 3$
+(\cref{lem:case-III}). We give the case $d = 3$ in full as well, as it
+has the same idea with fewer parts.
 
-Several reductions make the $d = 3$ case self-contained. The redundant $ab$-row is tested
-against three \emph{fixed} candidates by a case split over three panels, rather than by a
-discriminator ranging over the interior vertices of a length-$d$ chain. The third candidate
-is reached by a single vertex relabel exchanging $v$ and $a$
-(\cref{lem:splitOff-ofNormals-relabel}), rather than by transporting the redundancy along
-the chain one column operation per interior vertex. Each candidate is certified by a direct
-three-panel rank count, rather than by the block certificate with the moving-vertex
-bookkeeping the general chain needs. The base triangle supplies the three candidate panels
-directly, so the chain-versus-short-cycle dichotomy (KT Lemmas~4.6/4.8) and the cycle family
-(KT Lemma~5.4) --- present in the general proof --- play no part at $d = 3$. And the closing
-span argument runs on the six joins of four points in $\bigwedge^2 K^4$, a six-dimensional
-space small enough to picture, rather than on the $\binom{k+2}{2}$ joins of
-$\bigwedge^k K^{k+2}$.
+Let $G$ be a $2$-edge-connected minimal $0$-dof-graph with no proper
+rigid subgraph, as in KT Lemma~6.10. If $|V(G)| = 3$, then $G$ is a
+triangle, which KT Lemma~6.7(i) realizes by KT Lemma~5.4 (p.~677). So
+let $|V(G)| \ge 4$, as Katoh and Tanigawa do (p.~682). At $d = 3$, KT
+Lemma~4.6 then gives two adjacent vertices $v$ and $a$ of degree two,
+with $N_G(v) = \{a, b\}$ and $N_G(a) = \{v, c\}$ (KT p.~680). The
+vertices $v$, $a$, $b$ and $c$ are distinct, as otherwise $v$, $a$ and
+$b$ would span a triangle, a proper rigid subgraph, as in the proof of
+KT Lemma~6.7(ii). By KT Lemma~4.8, the graph $G_v^{ab}$ and the graph
+$G_a^{vc}$ obtained by splitting off at $a$ along $vc$ are both minimal
+$0$-dof-graphs.
 
-The candidate-completion above lifts a
-\emph{single} degenerate placement $p_1$ to full rank $D(|V|-1)$ \emph{provided} its top-left
-$D \times D$ block (eq.~(6.29)) is full rank for some line choice (Claim~6.12,
-\cref{lem:case-III-claim612}). At $d = 2$ KT
-show this holds for $p_1$ or its symmetric partner $p_2$; \emph{at $d = 3$ it may fail for both}, so
-the conditional is genuinely an existential over a free choice of lines. KT introduce a third candidate $p_3$ ---
-splitting off at the \emph{other} degree-2 vertex $a$ along $vc$, whose split-off graph $G_a^{vc}$ is
-isomorphic to $G_v^{ab}$ (eqs.~(6.31)--(6.41)) --- and prove Claim~6.12: at least one of the three
-top-left blocks $M_1, M_2, M_3$ (of eqs.~(6.29), (6.30), (6.41)) has full rank, for some choice of
-lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$ (writing $\Pi(u) := \Pi_{G_v^{ab},
-q}(u)$). The argument is a contrapositive: if all three fail, a single nonzero $r \in K^D$
-$\bigl(r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))\bigr)$ is orthogonal to every supporting extensor in
-the union~(6.45), which Lemma~2.1 forces to span all of $K^D$, so $r = 0$ --- a contradiction.
+The argument then has fewer parts than for general $d$. The case of a
+short cycle in KT Lemma~4.6, which KT Lemma~6.13 treats with KT
+Lemma~5.4, does not arise. There are three frameworks, one for each of
+the panels of $a$, $b$ and $c$, in place of $d$ frameworks along a
+chain of length $d$. The third is built on $G_a^{vc}$, through one
+isomorphism $G_a^{vc} \cong G_v^{ab}$ that sends $v$ to $a$ (KT
+p.~686, \cref{lem:splitOff-isLink-relabel}). For general $d$ there are
+$d - 2$ such isomorphisms, and the rows are matched along the chain
+(KT eqs.~(6.54) and~(6.62)). The rank of each of the three frameworks
+is read off its block form (KT eqs.~(6.29), (6.30) and~(6.41)). The
+last step is the span of the six joins of four points in
+$\bigwedge^2 K^4$, in place of the $D$ joins of $d - 1$ of $d + 1$
+points in $\bigwedge^{d-1} K^{d+1}$ (KT eq.~(6.67), p.~698).
 
-\begin{lemma}[The $D$ panel-support extensors of $k+2$ linearly-independent homogeneous vectors span $K^D$; KT eq.\ (6.45) via Lemma 2.1]
+Let $(G_v^{ab}, q)$ and the linear form $r = \sum_j \lambda_j r_j$ on
+$K^D$ be as in \cref{lem:case-III-candidate-row-construction}, and let
+$\Pi(u)$ be the panel of a vertex $u$ in $(G_v^{ab}, q)$. The first
+framework is $(G, p_1)$ of KT eq.~(6.12), with a line
+$L \subset \Pi(a)$ at $va$. By \cref{lem:case-III-candidate-row},
+$\operatorname{rank} R(G, p_1) \ge D(|V(G)| - 1)$ if the top-left
+block $M_1$ of KT eq.~(6.29) is nonsingular. The second framework,
+$(G, p_2)$, exchanges the roles of $a$ and $b$, with a line
+$L' \subset \Pi(b)$ at $vb$ (KT eqs.~(6.19) and~(6.30)). For $d = 2$,
+one of $M_1$ and $M_2$ is nonsingular for some choice of $L$ and $L'$,
+but for $d \ge 3$ this may fail (KT p.~686). The third framework,
+$(G, p_3)$, has a line $L'' \subset \Pi(c)$ at $ac$ (KT eqs.~(6.31)
+to~(6.41)). KT Claim~6.12 says that for some choice of $L$, $L'$ and
+$L''$, at least one of the three blocks $M_1$, $M_2$, $M_3$ is
+nonsingular (KT p.~690).
+
+Katoh and Tanigawa prove the claim by
+contradiction~\cite[pp.~690--691]{katohTanigawa2011}. The form $r$ is
+not zero (\cref{lem:case-III-claim612-r-nonzero}). The block $M_1$ is
+singular if and only if $r$ vanishes on $C(L)$
+(\cref{lem:case-III-claim612-block-iff-perp}), and likewise $M_2$ for
+$L'$. The last row of $M_3$ is $-r$ (KT eq.~(6.44)), so $M_3$ is
+singular if and only if $r$ vanishes on $C(L'')$. If no choice makes a
+block nonsingular, then $r$ vanishes on the extensors of all lines in
+$\Pi(a)$, $\Pi(b)$ and $\Pi(c)$, the set of KT eq.~(6.45). Four points
+with suitable incidences with the three panels show that these
+extensors span $K^D$, by KT Lemma~2.1. So $r = 0$, a contradiction.
+The rest of this subsubsection proves the span and chooses the points.
+It then gives the three frameworks and Claim~6.12
+(\cref{lem:case-III-claim612}). The case $d = 3$ of Case~III follows
+(\cref{lem:case-III-candidate-dispatch-d3}), and then the general
+case.
+
+The proof of KT Claim~6.12 ends with KT Lemma~2.1
+(\cref{lem:extensor-independence}), which holds for any linearly
+independent vectors (the remark after it).
+
+\begin{lemma}[The joins of $d + 1$ linearly independent vectors span $\bigwedge^{d-1} K^{d+1}$; from KT Lemma~2.1]
   \label{lem:case-III-claim612-extensor-span}
   \lean{CombinatorialRigidity.Molecular.span_omitTwoExtensor_eq_top}
   \leanok
   \uses{lem:extensor-independence, def:rigidity-matrix}
-  Let $\bar p_1, \dots, \bar p_{k+2} \in K^{k+2}$ be linearly independent homogeneous vectors. The
-  $\binom{k+2}{2} = D$ panel-support $k$-extensors $C(\bar p_i \bar p_j) = \bar p_i \vee \bar p_j$ ---
-  one per pair, the codim-2 panel through each pair --- span $\bigwedge^k K^{k+2}$:
-  \[
-    \operatorname{span}\{\, \bar p_i \vee \bar p_j \mid 1 \le i < j \le k+2 \,\} = \bigwedge^k K^{k+2}
-    \quad (\operatorname{finrank} D).
-  \]
-  At $d = 3$ this is the $k = 2$ case ($D = 6$, $\bigwedge^2 K^4$), the form used in the $d = 3$
-  case below.
+  Let $\bar p_1, \dots, \bar p_{d+1} \in K^{d+1}$ be linearly
+  independent. Then the $D$ joins $\bar p_i \vee \bar p_j$
+  ($1 \le i < j \le d + 1$) span $\bigwedge^{d-1} K^{d+1}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  By Lemma~2.1 (\cref{lem:extensor-independence}), applied at grade $e = k$ to any $k+2$ linearly
-  independent (not necessarily affinely independent) vectors in $K^{k+2}$, the $D$ omit-two
-  extensors $\bar p_i \vee \bar p_j$ are linearly independent in $\bigwedge^k K^{k+2}$. The
-  strictly-increasing index pairs number $\binom{k+2}{2} = D = \operatorname{finrank} \bigwedge^k
-  K^{k+2}$, so this linearly independent family is a basis, hence spans.
+  For $i < j$, let $E_{ij}$ be the join of the $\bar p_l$ with
+  $l \neq i, j$, in increasing order of $l$, as in
+  \cref{lem:extensor-independence}. By the remark after that lemma, the
+  $D$ extensors $E_{ij}$ form a basis of $\bigwedge^{d-1} K^{d+1}$. At
+  $d = 3$, $E_{ij} = \bar p_k \vee \bar p_l$, where $k < l$ and
+  $\{k, l\} = \{1, 2, 3, 4\} \setminus \{i, j\}$. So the six joins are
+  the six $E_{ij}$, and they span $\bigwedge^2 K^4$.
+
+  For $d \neq 3$ the join $\bar p_i \vee \bar p_j$ lies in
+  $\bigwedge^2 K^{d+1}$, not in $\bigwedge^{d-1} K^{d+1}$. The argument
+  then proves the claim with the $E_{ij}$ in place of the joins, the
+  form that the general case uses
+  (\cref{lem:case-III-chain-discriminator}).
 \end{proof}
 
-\begin{lemma}[A functional annihilating a spanning set is zero]
+\begin{fmlnote}
+  The pinned theorem states the lemma for every $d$, with $E_{ij}$ in
+  place of $\bar p_i \vee \bar p_j$.
+\end{fmlnote}
+
+\begin{lemma}[A linear form that vanishes on a spanning set is zero; from the proof of KT Claim~6.12]
   \label{lem:case-III-claim612-orthseq-vanish}
   \lean{CombinatorialRigidity.Molecular.eq_zero_of_annihilates_span_top}
   \leanok
   \uses{lem:case-III-claim612-extensor-span}
-  If a functional $r \in (K^D)^* = (\bigwedge^k K^{k+2})^*$ on the screw space $\bigwedge^k
-  K^{k+2}$ vanishes on every element of a set $S$ whose span is all of $K^D$, then $r = 0$. (The
-  non-degeneracy of the dual pairing on $K^D$: a functional vanishing on a spanning set vanishes
-  everywhere.)
+  Let $S$ be a subset of $\bigwedge^{d-1} K^{d+1}$ that spans it, and
+  let $r$ be a linear form on $\bigwedge^{d-1} K^{d+1}$ that vanishes on
+  $S$. Then $r = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Two linear maps agreeing on a spanning set are equal; $r$ agrees with the zero functional on
-  $S$, and $\operatorname{span} S = K^D$, so $r = 0$.
+  The linear forms $r$ and $0$ agree on $S$, hence on its span, which
+  is $\bigwedge^{d-1} K^{d+1}$.
 \end{proof}
 
-The contrapositive needs the union of eq.~(6.45) to span $K^D$, which rests on two facts: first,
-four \emph{affinely independent} points $p_1, \dots, p_4$ realizing the $\Pi(a)/\Pi(b)/\Pi(c)$
-incidence pattern, so that Lemma~2.1 (\cref{lem:case-III-claim612-extensor-span}) forces their six
-joins to span; and second, the \emph{point-join $\leftrightarrow$ panel-meet duality}, which turns
-the hypothesis ``$r \perp C(L)$ for every line $L$ in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$'' into ``$r$
-annihilates each spanning join $p_i \vee p_j$''. The first is an existence fact --- one seed
-realizing the projective construction suffices --- proved by the same non-root argument the
-Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
+Katoh and Tanigawa take four points of $K^3$ with
+\begin{align*}
+  p_1 &\in \Pi(a) \cap \Pi(b) \cap \Pi(c), &
+  p_2 &\in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \\
+  p_3 &\in \Pi(b) \cap \Pi(c) \setminus \Pi(a), &
+  p_4 &\in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
+\end{align*}
+which they can choose affinely independent, as $(G_v^{ab}, q)$ is
+generic and nonparallel (KT p.~691). The points $p_i$ are not the
+frameworks $(G, p_i)$; we keep Katoh and Tanigawa's notation. Any two
+of the points lie on a common panel. So the line through them lies in
+$\Pi(a) \cup \Pi(b) \cup \Pi(c)$, and its extensor
+$\bar p_i \vee \bar p_j$ (\cref{def:affine-subspace-extensor}) is in
+the set of KT eq.~(6.45). By
+\cref{lem:case-III-claim612-extensor-span}, the six joins span $K^D$.
 
-\begin{lemma}[The intersection of fewer than $d+1$ panels has a homogeneous representative; KT eq.\ (6.45), existence half]
+For $d$ generic panels in $K^d$, Katoh and Tanigawa use that any $j$
+of them meet in an affine subspace of dimension $d - j$ (KT p.~698).
+The point $p_1$ is the case $j = d = 3$. A point $x$ lies on the panel
+with normal $n$ if and only if $\bar x \cdot n = 0$ (the remarks
+after \cref{def:panel-support-extensor}). In homogeneous coordinates,
+fewer than $d + 1$ panels always have a common nonzero vector.
+
+\begin{lemma}[A common nonzero vector of at most $d$ panels; from the proof of KT Claim~6.12]
   \label{lem:case-III-claim612-panel-point-exists}
   \lean{CombinatorialRigidity.Molecular.exists_ne_zero_dotProduct_eq_zero}
   \leanok
   \uses{def:panel-hinge-framework}
-  Given $m < d + 1$ panel normals $n \colon \mathrm{Fin}\,m \to K^{d+1}$, the homogeneous incidence
-  system $\langle \bar p, n_i \rangle = 0$ ($1 \le i \le m$) has a \emph{nonzero} solution
-  $\bar p \in K^{d+1}$: the $m \times (d+1)$ coefficient matrix has strictly more columns than rows,
-  so its null space is nontrivial. This is the existence half of KT eq.~(6.67) (p.~698): the
-  intersection of any $j$ of the panels is a genuine $(d + 1 - j)$-dimensional affine subspace, and
-  hence carries a homogeneous representative incident to all $j$.
+  Let $m < d + 1$, and let $n_1, \dots, n_m \in K^{d+1}$. Then there is
+  a nonzero $x \in K^{d+1}$ with $x \cdot n_i = 0$ for
+  $1 \le i \le m$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The incidence system is the linear map $K^{d+1} \to K^m$, $\bar p \mapsto (\langle \bar p, n_i
-  \rangle)_i$, whose source dimension $d + 1$ strictly exceeds its target dimension $m$. By
-  rank--nullity its kernel has dimension $\ge (d + 1) - m > 0$, so the kernel is nontrivial and
-  contains a nonzero vector --- a homogeneous point orthogonal to every $n_i$.
+  The map $K^{d+1} \to K^m$ that sends $x$ to
+  $(x \cdot n_1, \dots, x \cdot n_m)$ is linear, and $m < d + 1$. By
+  rank--nullity its kernel has dimension at least $d + 1 - m > 0$, so
+  it contains a nonzero vector.
 \end{proof}
 
-\begin{lemma}[A nonzero determinant polynomial in the seed yields an affinely-independent realization; KT eq.\ (6.45), the closure step]
+The next four lemmas concern the affine choice of the points. The
+formal proof does not use them: it chooses vectors of $K^4$ in place
+of the points
+(\cref{lem:case-III-claim612-points-affineIndep-real-normals}). If the
+determinant of four points that depend on some variables is a nonzero
+polynomial in them, the points are affinely independent for some
+values of the variables
+(\cref{lem:case-III-claim612-points-affineIndep-producer}). The
+determinant is a polynomial in the variables when the coordinates of
+the points are (\cref{lem:case-III-claim612-detpoly}). The coordinate planes of $K^3$
+give an example of four affinely independent points with the
+incidences above
+(\cref{lem:case-III-claim612-points-affineIndep-witness}). So three
+planes with such points exist
+(\cref{lem:case-III-claim612-points-affineIndep}).
+
+\begin{lemma}[Affine independence off the zeros of a polynomial; for the points of KT Claim~6.12]
   \label{lem:case-III-claim612-points-affineIndep-producer}
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_of_det_polynomial_ne_zero}
   \leanok
   \uses{lem:affine-indep-iff}
-  Suppose the four candidate points are built as functions $p \colon (\sigma \to K) \to
-  \mathrm{Fin}\,4 \to K^3$ of a panel-coordinate seed $q \colon \sigma \to K$, and their
-  affine-independence determinant --- the homogenization determinant
-  $\det(\overline{p(q)}) = \det(\mathrm{homogenize} \circ p(q))$ of \cref{lem:affine-indep-iff} ---
-  equals a \emph{nonzero} multivariate polynomial $P \in K[\sigma]$ evaluated at $q$. Then there is
-  a seed $q$ at which the four points $p(q)$ are affinely independent.
+  Let $K$ be infinite, and let $\sigma$ be a set of variables. For each
+  $t \in K^\sigma$, let $p_1(t), \dots, p_4(t)$ be points of $K^3$.
+  Suppose that a nonzero polynomial $P \in K[\sigma]$ satisfies
+  $P(t) = \det\bigl(\bar p_1(t), \dots, \bar p_4(t)\bigr)$, the
+  determinant of the matrix with these rows, for every $t$. Then
+  $p_1(t), \dots, p_4(t)$ are affinely independent for some $t$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Over the infinite field $K$ a nonzero polynomial does not vanish identically, so $P$ has a
-  non-root $q$, at which $\det(\overline{p(q)}) = P(q) \ne 0$; the determinant characterization
-  (\cref{lem:affine-indep-iff}) turns this into affine independence of $p(q)$. This is the closure
-  half of \cref{lem:case-III-claim612-points-affineIndep}: it isolates the existence-bearing content
-  ($P \ne 0$) from the surrounding linear algebra, exactly as the dimension count
-  (\cref{lem:case-III-claim612-panel-point-exists}) isolates the existence half of the argument.
+  As $K$ is infinite and $P \neq 0$, there is a $t \in K^\sigma$ with
+  $P(t) \neq 0$. At this $t$ the vectors
+  $\bar p_1(t), \dots, \bar p_4(t)$ have a nonzero determinant, so the
+  points are affinely independent (\cref{lem:affine-indep-iff}).
 \end{proof}
 
-\begin{lemma}[The affine-independence determinant of polynomial-valued candidate points is a polynomial in the seed; KT eq.\ (6.45), determinant-polynomial bridge]
+\begin{lemma}[The determinant of points with polynomial coordinates; for the points of KT Claim~6.12]
   \label{lem:case-III-claim612-detpoly}
   \lean{CombinatorialRigidity.Molecular.exists_detPolynomial_of_pointPolynomial}
   \leanok
   \uses{lem:affine-indep-iff}
-  Suppose the four candidate points are built coordinate-by-coordinate as multivariate polynomials
-  in the panel-coordinate seed: a family $pp \colon \mathrm{Fin}\,4 \to K^3[\sigma]$ of polynomial
-  entries, with realized point $p(q)_i := \mathrm{eval}_q(pp_i)$. Then the affine-independence
-  determinant of $p(q)$ --- the homogenization determinant $\det(\mathrm{homogenize} \circ p(q))$
-  of \cref{lem:affine-indep-iff} --- is the evaluation at $q$ of a single polynomial
-  $P \in K[\sigma]$: the determinant of the $(d+1) \times (d+1)$ polynomial matrix with rows
-  $\overline{pp_i} := (pp_i, 1)$.
+  Let $\sigma$ be a set of variables, and let $P_{ij} \in K[\sigma]$ for
+  $1 \le i \le 4$ and $1 \le j \le 3$. For $t \in K^\sigma$, let
+  $p_i(t) = \bigl(P_{i1}(t), P_{i2}(t), P_{i3}(t)\bigr) \in K^3$. Then
+  some $P \in K[\sigma]$ satisfies
+  $P(t) = \det\bigl(\bar p_1(t), \dots, \bar p_4(t)\bigr)$ for every
+  $t \in K^\sigma$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Take $P$ to be the determinant of the polynomial matrix with rows $\overline{pp_i} = (pp_i, 1)$.
-  Evaluation $\mathrm{eval}_q$ is a ring homomorphism, so it commutes with the determinant and with
-  appending the constant coordinate $1$; hence $\mathrm{eval}_q(P)$ equals the determinant of the
-  matrix of homogenized evaluated points $\mathrm{homogenize}(p(q)_i)$, which is exactly
-  $\det(\overline{p(q)})$. This supplies the determinant hypothesis of
-  \cref{lem:case-III-claim612-points-affineIndep-producer}, isolating the polynomial-in-the-seed
-  structure of the determinant from the genericity-bearing fact that $P$ is nonzero.
+  Let $P$ be the determinant of the $4 \times 4$ matrix of polynomials
+  with the rows $(P_{i1}, P_{i2}, P_{i3}, 1)$. Evaluation at $t$ is a
+  ring homomorphism $K[\sigma] \to K$, so it commutes with the
+  determinant. It takes the row
+  $(P_{i1}, P_{i2}, P_{i3}, 1)$ to $(p_i(t), 1) = \bar p_i(t)$
+  (\cref{def:homogeneous-coords}). So $P(t)$ is the determinant of
+  $\bar p_1(t), \dots, \bar p_4(t)$.
 \end{proof}
 
-\begin{lemma}[The explicit good seed: four affinely-independent points realizing the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45), the $P \ne 0$ witness]
+\begin{fmlnote}
+  The pinned theorems of this lemma and of
+  \cref{lem:case-III-claim612-points-affineIndep-producer} hold for
+  $d + 1$ points of $K^d$, for every $d$.
+\end{fmlnote}
+
+\begin{lemma}[An example of the points of KT Claim~6.12, at the coordinate planes]
   \label{lem:case-III-claim612-points-affineIndep-witness}
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
   \leanok
   \uses{lem:affine-indep-iff}
-  There exist three panel normals $n \colon \mathrm{Fin}\,3 \to K^4$ in nonparallel position
-  (linearly independent) and four \emph{affinely-independent} points $p \colon \mathrm{Fin}\,4 \to
-  K^3$ realizing the triple-intersection incidence pattern of KT eq.~(6.45):
-  $p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c)$, $p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c)$,
-  $p_3 \in \Pi(b) \cap \Pi(c) \setminus \Pi(a)$, $p_4 \in \Pi(c) \cap \Pi(a) \setminus \Pi(b)$, where
-  panel incidence is $p_i \in \Pi(u) \Leftrightarrow \langle \bar{p_i}, n_u \rangle = 0$ on the
-  homogenization $\bar{p_i}$.
+  There are linearly independent $n_a, n_b, n_c \in K^4$ and affinely
+  independent points $p_1, \dots, p_4 \in K^3$ such that
+  \begin{align*}
+    p_1 &\in \Pi(a) \cap \Pi(b) \cap \Pi(c), &
+    p_2 &\in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \\
+    p_3 &\in \Pi(b) \cap \Pi(c) \setminus \Pi(a), &
+    p_4 &\in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
+  \end{align*}
+  where $\Pi(u)$ is the plane $\{x \in K^3 : \bar x \cdot n_u = 0\}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Take the coordinate-aligned seed: panel normals $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ (the first
-  three standard covectors of $K^4$, hence linearly independent, satisfying the nonparallel
-  hypothesis), and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $K^3$ (the origin
-  plus three axis points). The incidence pattern is immediate from the coordinates: each
-  $\bar{p_i}$ vanishes against exactly the panel covectors whose coordinate it is zero at. The
-  $4 \times 4$ homogenization determinant is $\pm 1 \ne 0$ (a direct cofactor expansion), so by
-  \cref{lem:affine-indep-iff} the four points are affinely independent.
+  Let $n_a, n_b, n_c$ be the first three standard basis vectors of
+  $K^4$, so that $\Pi(a)$, $\Pi(b)$ and $\Pi(c)$ are the coordinate
+  planes $x_1 = 0$, $x_2 = 0$ and $x_3 = 0$ of $K^3$. Let $p_1 = 0$,
+  $p_2 = e_3$, $p_3 = e_1$ and $p_4 = e_2$, where $e_1, e_2, e_3$ is
+  the standard basis of $K^3$. The point $p_1$ lies on the three
+  planes. The point $e_3$ lies on $\Pi(a)$ and $\Pi(b)$ but not on
+  $\Pi(c)$, and $e_1$ and $e_2$ have the incidences required of $p_3$
+  and $p_4$ in the same way. Subtracting $\bar p_1 = (0, 0, 0, 1)$ from
+  the other rows of the matrix with the rows
+  $\bar p_1, \dots, \bar p_4$ leaves a permutation matrix, so its
+  determinant is $\pm 1$. Hence the points are affinely independent
+  (\cref{lem:affine-indep-iff}).
 \end{proof}
 
-\begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
+\begin{lemma}[Three planes with the points of KT Claim~6.12]
   \label{lem:case-III-claim612-points-affineIndep}
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework,
         lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer,
         lem:case-III-claim612-detpoly, lem:case-III-claim612-points-affineIndep-witness}
-  At $d = 3$ there is a nonparallel arrangement of three panels --- three normals
-  $n \colon \mathrm{Fin}\,3 \to K^4$ in nonparallel position (linearly independent), spanning
-  panels $\Pi(a), \Pi(b), \Pi(c) \subset K^3$ --- together with four \emph{affinely-independent}
-  points $p \colon \mathrm{Fin}\,4 \to K^3$ realizing the triple-intersection incidence pattern
-  \[
-    p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c), \quad
-    p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \quad
-    p_3 \in \Pi(b) \cap \Pi(c) \setminus \Pi(a), \quad
-    p_4 \in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
-  \]
-  where membership is the panel-incidence relation $p_i \in \Pi(u) \Leftrightarrow
-  \langle \bar{p_i}, n_u \rangle = 0$ on the homogenization $\bar{p_i}$. The four points span an
-  affine $3$-simplex, so they are exactly the affinely-independent input
-  \cref{lem:case-III-claim612-extensor-span} needs (their six joins $\bar{p_i} \vee \bar{p_j}$ then
-  span $K^D$).
+  There are linearly independent $n_a, n_b, n_c \in K^4$ and affinely
+  independent points $p_1, \dots, p_4 \in K^3$ such that
+  \begin{align*}
+    p_1 &\in \Pi(a) \cap \Pi(b) \cap \Pi(c), &
+    p_2 &\in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \\
+    p_3 &\in \Pi(b) \cap \Pi(c) \setminus \Pi(a), &
+    p_4 &\in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
+  \end{align*}
+  where $\Pi(u)$ is the plane $\{x \in K^3 : \bar x \cdot n_u = 0\}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  This is an existence fact, like the Case~I/II realizations: it needs only that \emph{one} seed
-  work, not that the inductive seed itself be generic. The explicit witness
-  (\cref{lem:case-III-claim612-points-affineIndep-witness}) supplies it directly: the
-  coordinate-aligned normals $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ are linearly independent in
-  $K^4$, hence nonparallel, and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $K^3$
-  has homogenization determinant $\pm 1 \ne 0$ (\cref{lem:affine-indep-iff}), with the incidence
-  pattern read straight off the coordinates.
-
-  The general argument --- constructing the four points as polynomials in an arbitrary normal
-  arrangement $n$ and showing the resulting determinant polynomial is nonzero
-  (\cref{lem:case-III-claim612-points-affineIndep-producer} and
-  \cref{lem:case-III-claim612-detpoly}, together
-  with the dimension count \cref{lem:case-III-claim612-panel-point-exists}) --- would also work, by
-  the equivalence between a nonzero determinant polynomial and one seed at which the constructed
-  points are affinely independent; the explicit witness above makes it unnecessary by fixing the
-  arrangement outright.
-
-  The panel normals are existentially quantified because the Case~III realization is itself being
-  constructed: the candidate placements $p_1, p_2, p_3$
-  (\cref{lem:case-II-realization-placement}, \cref{lem:case-III-claim612-p2-placement}, and
-  \cref{lem:case-III-claim612-p3-placement}) realize $G_v^{ab}$ at a panel-coordinate seed $q$ that
-  \cref{lem:case-III-claim612} is free to choose, so the points and the panels they are incident to
-  come from one chosen realization, not from a fixed external normal arrangement.
+  The normals and the points of
+  \cref{lem:case-III-claim612-points-affineIndep-witness} have these
+  properties.
 \end{proof}
 
-The witness of \cref{lem:case-III-claim612-points-affineIndep-witness} fixes the three panel
-normals to the coordinate frame $e_0, e_1, e_2$, but \cref{lem:case-II-realization} reads its
-three panel normals $n_a, n_b, n_c$ off the split-leg realization $q$ it is handed --- nonparallel,
-but otherwise arbitrary --- and needs a witness relative to \emph{those} normals. The following
-lemma supplies one directly, in homogeneous coordinates rather than by de-homogenizing to affine
-points: the two later uses --- the span \cref{lem:case-III-claim612-extensor-span} (via Lemma~2.1,
-which needs only linear independence of the four homogeneous vectors, not affine independence of
-the underlying points) and the point-join/panel-meet transfer
-\cref{lem:case-III-claim612-line-in-panel-union} (which reads the joins as bare vectors with
-$\langle \cdot, n_u \rangle = 0$ incidence) --- both need only a linearly independent family in
-$K^4$.
+The formal proof of the case $d = 3$ chooses the normals $q$ of
+$(G_v^{ab}, q)$ off the zeros of a product of polynomials, as in the
+passage after \cref{lem:case-I-realization}. One factor makes $q(a)$,
+$q(b)$ and $q(c)$ linearly independent
+(\cref{lem:case-III-candidate-dispatch-d3}, below). The proof needs
+the four points for these normals. It takes them in homogeneous
+coordinates: vectors $\bar p_i \in K^4$, whose last coordinate need
+not be $1$, with $\bar p_i \cdot q(u) = 0$ exactly for the panels
+$\Pi(u)$ that contain $p_i$. The span of
+\cref{lem:case-III-claim612-extensor-span} needs only that these
+vectors are linearly independent. A line in the panel $\Pi(u)$ is
+given in the formal proof as the intersection of $\Pi(u)$ with a
+second plane, and its extensor as their panel support extensor. If
+$\bar p_i$ and $\bar p_j$ are orthogonal to both normals, this
+extensor is a multiple of $\bar p_i \vee \bar p_j$
+(\cref{lem:case-III-claim612-line-in-panel-union}). The vectors exist
+for any three linearly independent normals.
 
-\begin{lemma}[The witness points, parameterized by the actual split-leg panel normals; KT eq.\ (6.45)]
+\begin{lemma}[The points of KT Claim~6.12 in homogeneous coordinates, for given normals]
   \label{lem:case-III-claim612-points-affineIndep-real-normals}
   \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals}
   \leanok
   \uses{lem:case-III-claim612-panel-point-exists, lem:affine-indep-iff}
-  For any linearly independent panel normals $n \colon \mathrm{Fin}\,3 \to K^4$, there exist four
-  linearly independent homogeneous vectors $\bar p \colon \mathrm{Fin}\,4 \to K^4$ realizing the
-  same triple-intersection incidence pattern relative to $n$: $\langle \bar p_1, n_u \rangle = 0$
-  for every $u$, and each $\bar p_{i+1}$ orthogonal to two of the $n_u$ and nonorthogonal to the
-  third.
+  Let $n_a, n_b, n_c \in K^4$ be linearly independent. Then there are
+  linearly independent $\bar p_1, \dots, \bar p_4 \in K^4$ with
+  $\bar p_1 \cdot n_a = \bar p_1 \cdot n_b = \bar p_1 \cdot n_c = 0$ and
+  \begin{align*}
+    \bar p_2 \cdot n_a &= \bar p_2 \cdot n_b = 0 \neq \bar p_2 \cdot n_c, \\
+    \bar p_3 \cdot n_b &= \bar p_3 \cdot n_c = 0 \neq \bar p_3 \cdot n_a, \\
+    \bar p_4 \cdot n_c &= \bar p_4 \cdot n_a = 0 \neq \bar p_4 \cdot n_b.
+  \end{align*}
 \end{lemma}
 \begin{proof}
   \leanok
-  The pairing map $x \mapsto (u \mapsto \langle x, n_u\rangle)$ is the $\mathrm{mulVecLin}$ of the
-  row matrix whose rows are the $n_u$; its rows are linearly independent, so the matrix has full row
-  rank $3$ and the map is \emph{surjective}. Hence for any prescribed pairing target $t \in K^3$
-  there is a preimage $x$ with $\langle x, n_u\rangle = t_u$. Take $\bar p_2, \bar p_3, \bar p_4$ as
-  the preimages of $(0,0,1), (1,0,0), (0,1,0)$ (giving exactly the off-one-panel incidence), and
-  $\bar p_1$ as the nonzero common-perp vector of all three normals
-  (\cref{lem:case-III-claim612-panel-point-exists}, $3 < 4$). Linear independence of the four
-  $\bar p_i$ is the triangular argument on the incidence matrix: pairing
-  $\sum_i g_i \bar p_i = 0$ against $n_0$ kills all but $\bar p_3 \Rightarrow g_3 = 0$; against $n_1
-  \Rightarrow g_4 = 0$; against $n_2 \Rightarrow g_2 = 0$; then $g_1 \bar p_1 = 0$ with
-  $\bar p_1 \ne 0 \Rightarrow g_1 = 0$. No genericity of $n$ beyond linear independence is used.
+  The linear map $K^4 \to K^3$ that sends $x$ to
+  $(x \cdot n_a, x \cdot n_b, x \cdot n_c)$ has the linearly
+  independent rows $n_a$, $n_b$, $n_c$, so it has rank $3$ and is onto.
+  Let $\bar p_2$, $\bar p_3$ and $\bar p_4$ be vectors that it sends to
+  $(0, 0, 1)$, $(1, 0, 0)$ and $(0, 1, 0)$. Let $\bar p_1$ be a nonzero
+  vector orthogonal to $n_a$, $n_b$ and $n_c$
+  (\cref{lem:case-III-claim612-panel-point-exists}, with $m = 3$). These
+  vectors have the incidences of the claim.
+
+  Suppose that $\sum_i g_i \bar p_i = 0$. The dot product with $n_a$
+  gives $g_3 = 0$, that with $n_b$ gives $g_4 = 0$, and that with $n_c$
+  gives $g_2 = 0$. Then $g_1 \bar p_1 = 0$, and $g_1 = 0$ as
+  $\bar p_1 \neq 0$. So the four vectors are linearly independent.
 \end{proof}
 
-The point-join $\leftrightarrow$ panel-meet duality itself --- that for two points
-$p_i, p_j$ on a line $L$ lying in a panel $\Pi(u)$, the point-join $\bar{p_i} \vee \bar{p_j}$ and
-the panel-meet supporting extensor of $L$ are scalar multiples of one another, so a functional
-annihilating every panel-meet of a line in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$ also annihilates every
-such spanning join --- is proved once, at the level of the Grassmann--Cayley meet, as
-\cref{lem:case-III-claim612-line-in-panel-union}.
+\begin{fmlnote}
+  The pinned theorem is the case $d = 3$ of a form for $d$ linearly
+  independent normals in $K^{d+1}$, which has no node. The formal proof
+  of the general case uses that form
+  (\cref{lem:case-III-chain-discriminator}).
+\end{fmlnote}
 
-\begin{lemma}[Block full rank $\Leftrightarrow$ $\hat r \notin (\operatorname{span} C)^\perp$; KT (6.42) row-space criterion]
+By the proof of \cref{lem:case-III-candidate-row}, the block $M_1$ of
+KT eq.~(6.42) has the rows $r'_1, \dots, r'_{D-1}$ and $r$, where the
+$r'_i$ are $D - 1$ linearly independent linear forms on $K^D$ that
+vanish on $C(L)$ (\cref{def:hinge-row-block}). A nondegenerate hinge of
+a panel-hinge framework gives such forms
+(\cref{lem:case-II-placement-new-rows}). Katoh and Tanigawa test the
+singularity of the blocks by the extensors of the lines (KT p.~690).
+
+\begin{lemma}[When the blocks of KT eq.\ (6.42) are nonsingular]
   \label{lem:case-III-claim612-block-iff-perp}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff,
         CombinatorialRigidity.Molecular.BodyHingeFramework.mem_hingeRowBlock_iff}
   \leanok
   \uses{def:rigidity-matrix, def:hinge-row-block, lem:case-II-placement-new-rows}
-  Let the $D - 1$ rows of a candidate's hinge block span $(\operatorname{span} C)^\perp = r(p(e))$
-  (the $D-1$-dimensional orthogonal complement of the line $\operatorname{span} C$ supporting the
-  candidate's $(d-2)$-affine subspace $L$; \cref{lem:case-II-placement-new-rows}), and let
-  $\hat r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ be the candidate row. The augmented $D$-functional
-  family ($D - 1$ block rows plus $\hat r$) is linearly independent iff
-  \[
-    \hat r \notin (\operatorname{span} C)^\perp \quad\Longleftrightarrow\quad \hat r(C) \ne 0,
-  \]
-  i.e.\ the candidate's top-left $D \times D$ block has full rank iff $\hat r$ is not orthogonal to
-  the supporting extensor $C$.
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be
+  the linear form of \cref{lem:case-III-candidate-row-construction}.
+  Let $L$ be a $(d-2)$-dimensional affine subspace of the panel of a
+  vertex of $(G_v^{ab}, q)$, and let $r'_1, \dots, r'_{D-1}$ be linearly
+  independent linear forms on $K^D$ that vanish on $C(L)$. Then
+  $r'_1, \dots, r'_{D-1}, r$ are linearly independent if and only if
+  $r(C(L)) \neq 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The $D - 1$ block rows already span the hyperplane $(\operatorname{span} C)^\perp$; appending
-  $\hat r$ raises the dimension to $D$ iff $\hat r$ is fresh, i.e.\ $\hat r \notin
-  (\operatorname{span} C)^\perp$ (else the family stays inside the $(D-1)$-dimensional span).
-  Freshness off the hinge-row block is exactly $\hat r(C) \ne 0$, by the dual-annihilator
-  correspondence $\hat r \in (\operatorname{span} C)^\perp = r(p(e)) \Leftrightarrow \hat r(C) = 0$
-  (the annihilator evaluated at the spanning vector $C$).
+  The extensor $C(L)$ is not zero (\cref{def:affine-subspace-extensor}).
+  So the linear forms on $K^D$ that vanish on $C(L)$ form a space of
+  dimension $D - 1$ (\cref{def:hinge-row-block}), and
+  $r'_1, \dots, r'_{D-1}$ is a basis of it. A form vanishes on
+  $\operatorname{span} C(L)$ if and only if it vanishes at $C(L)$. So
+  $r(C(L)) = 0$ if and only if $r$ is a linear combination of the
+  $r'_i$, that is, if and only if the $D$ forms are linearly
+  dependent.
 \end{proof}
 
-\begin{lemma}[The common vector $r$ is nonzero; KT (6.42)]
+\begin{fmlnote}
+  The pinned theorems hold for every linear form $r$ and every edge of
+  a body-hinge framework, with any linearly independent forms that span
+  the forms vanishing on its extensor. The first is the lemma. The
+  second is the step that a form vanishes on the span of the extensor
+  if and only if it vanishes at the extensor.
+\end{fmlnote}
+
+\begin{lemma}[The form $r$ is not zero; from the proof of KT Claim~6.12]
   \label{lem:case-III-claim612-r-nonzero}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ne_zero}
   \leanok
   \uses{lem:case-III-redundant-decomposition, lem:case-II-placement-new-rows}
-  The common vector of the disjunction, $r := \sum_{1 \le j \le 5} \lambda_{(ab)j}\, r_j(q(ab))
-  \in K^D$, is nonzero. (The $r_j(q(ab))$ are the $D - 1$ linearly independent rows of the $ab$-hinge
-  block, and the coefficient $\lambda_{(ab)i^*} = 1$ from the redundant-row decomposition of
-  eq.~(6.25); a combination with a unit coefficient on a member of a linearly independent family is
-  nonzero.)
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, let the forms
+  $r_j$ and the scalars $\lambda_j$ be as in
+  \cref{lem:case-III-redundant-decomposition}. Then the linear form
+  $r = \sum_j \lambda_j r_j$ on $K^D$ is not zero.
 \end{lemma}
 \begin{proof}
   \leanok
-  The $r_j(q(ab))$ ($1 \le j \le 5$, i.e.\ $D - 1$ of them) are linearly independent
-  (\cref{lem:case-II-placement-new-rows}); by \cref{lem:case-III-redundant-decomposition} the
-  coefficient $\lambda_{(ab)i^*} = 1$ (eq.~(6.25)). A linear combination of a linearly independent
-  family with a nonzero coefficient on one member is nonzero.
+  We follow Katoh and Tanigawa~\cite[p.~690]{katohTanigawa2011}. The
+  forms $r_1, \dots, r_{D-1}$ are linearly independent, and
+  $\lambda_{i^*} = 1$ (KT eq.~(6.25),
+  \cref{lem:case-III-redundant-decomposition}). A linear combination of
+  linearly independent vectors with a nonzero coefficient is not zero.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem holds for any linearly independent family and any
+  scalars with $\lambda_{i^*} = 1$.
+\end{fmlnote}
 
 \begin{lemma}[The $p_2$ placement: the symmetric $va \leftrightarrow vb$ candidate; KT eqs.\ (6.19)/(6.30)]
   \label{lem:case-III-claim612-p2-placement}

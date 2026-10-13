@@ -14,9 +14,9 @@ dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve ch
 slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, its
 first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
 and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. Round 3's open
-recorded `F-115`–`F-120`, and its first twelve slices `F-121`–`F-161`. **Next concrete task:**
-round 3's task 2.13, `case-iii.tex`'s case $d = 3$: the span and the point choice, the thirteenth
-of its sixteen slices (the round's log, *Lemma checklist*).
+recorded `F-115`–`F-120`, and its first thirteen slices `F-121`–`F-164`. **Next concrete task:**
+round 3's task 2.14, `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12, the
+fourteenth of its sixteen slices (the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 

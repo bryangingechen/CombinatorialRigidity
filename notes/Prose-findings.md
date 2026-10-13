@@ -430,6 +430,19 @@ declaration's name as its header writes it:
   `lem:rigidityRows-pinned-placement-rank-add` (the rank of KT eq. (6.29)).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `ba79d703`).
   *Found:* round 3 task 2.12.
+- **F-162** · E · `case-iii.tex`'s case $d = 3$: the span and the point choice
+  (`algebraic-induction/case-iii.tex`, ten nodes): no missing edge, and 13 edges with no Lean
+  basis: `lem:case-III-claim612-orthseq-vanish`'s to `lem:case-III-claim612-extensor-span`,
+  `lem:case-III-claim612-panel-point-exists`'s to `def:panel-hinge-framework`, those of
+  `lem:case-III-claim612-detpoly` and `lem:case-III-claim612-points-affineIndep-real-normals` to
+  `lem:affine-indep-iff`, all six of `lem:case-III-claim612-points-affineIndep`'s (three of them for
+  an alternative argument that the open's proof named and task 2.13's does not),
+  `lem:case-III-claim612-block-iff-perp`'s to `lem:case-II-placement-new-rows`, and both of
+  `lem:case-III-claim612-r-nonzero`'s. The new proofs also cite `def:homogeneous-coords`
+  (`lem:case-III-claim612-detpoly`, already an ancestor) and `def:affine-subspace-extensor`
+  (`lem:case-III-claim612-block-iff-perp`) without an edge.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `4502f035`).
+  *Found:* round 3 task 2.13.
 
 ## N — node shape
 
@@ -882,6 +895,26 @@ declaration's name as its header writes it:
   statements and bodies, `Molecular/AlgebraicInduction/CaseIII/Candidate.lean`,
   `Molecular/RigidityMatrix/Basic.lean`; a `grep` for each in `blueprint/src`).
   *Found:* round 3 task 2.12.
+- **F-163** · N · `case-iii.tex`'s case $d = 3$: the span and the point choice
+  (`algebraic-induction/case-iii.tex`): six of the ten nodes have every pin dead
+  (`lem:case-III-claim612-points-affineIndep-producer`, `lem:case-III-claim612-detpoly`,
+  `lem:case-III-claim612-points-affineIndep-witness`, `lem:case-III-claim612-points-affineIndep`,
+  `lem:case-III-claim612-points-affineIndep-real-normals`, `lem:case-III-claim612-r-nonzero`). The
+  first four are an affine form of KT's choice of points (KT p. 691) that no proof uses; the
+  witness and `lem:case-III-claim612-points-affineIndep` share one pin and one statement (`F-120`),
+  which asks for some three planes, not for the panels of $(G_v^{ab}, q)$. The point choice the formal proofs use has no live node:
+  `exists_homogeneousIncidence_of_normals_gen` (every $d$; called by
+  `exists_chainData_discriminator_pick_of_LI` under `lem:case-III-chain-discriminator`) is
+  unpinned, and `lem:case-III-claim612-points-affineIndep-real-normals` pins its $d = 3$ wrapper;
+  `exists_tripleLI_polynomial`, the factor that makes $q(a)$, $q(b)$, $q(c)$ independent in the
+  $d = 3$ dispatch, has no node. On the live path $r \neq 0$ comes with
+  `exists_redundant_panelRow_ab_lam` (`F-159`). A repin of the real-normals node to the general
+  form, and merging or retiring the affine nodes, are the candidates (`F-118`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `4502f035`);
+  read (`Molecular/RigidityMatrix/Claim612.lean`; the bodies of
+  `PanelHingeFramework.case_III_candidate_dispatch` and `exists_chainData_discriminator_pick_of_LI`,
+  `CaseIII/Realization.lean`; a `grep` of `blueprint/src` for the unpinned names).
+  *Found:* round 3 task 2.13.
 
 ## T — terminology and notation
 
@@ -2030,6 +2063,19 @@ declaration's name as its header writes it:
   "producer", "genuine", "seed", "green", "feeds", "threads" and "heart".
   *Evidence:* read (the docstrings and bodies; KT 2011 pp. 679 and 685–686, `.refs/`).
   *Found:* round 3 task 2.12.
+- **F-164** · L · the docstrings of the pins of `case-iii.tex`'s span and point choice
+  (`Molecular/RigidityMatrix/Claim612.lean`). Those of `exists_ne_zero_dotProduct_eq_zero`,
+  `exists_affineIndependent_of_det_polynomial_ne_zero`, `exists_detPolynomial_of_pointPolynomial`,
+  `exists_homogeneousIncidence_of_normals_gen` and `exists_homogeneousIncidence_of_normals` name
+  `lem:case-III-claim612-points-affineIndep` for their own nodes. The first calls that node "still
+  red", and it and the next two tie the nonvanishing of the determinant to `lem:genericity-device`,
+  which no proof here uses. `span_omitTwoExtensor_eq_top`'s calls each omit-two extensor "the join
+  `pᵢ ∨ pⱼ`" (`F-060`), and `exists_affineIndependent_panel_incidence`'s calls its coordinate
+  normals "the nonparallel hypothesis the framework supplies". They carry process codes (Phases
+  22d–23b, N3a, R1, OD-4, CHAIN-4a, `hnewpinaug`) and the words "brick", "producer", "genuine",
+  "seed", "leaf" and "feeding".
+  *Evidence:* read (the docstrings and bodies).
+  *Found:* round 3 task 2.13.
 
 ## M — mathematics and sources
 
