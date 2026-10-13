@@ -1535,6 +1535,27 @@ declaration's name as its header writes it:
   conditioned motive", "carry" and phases.
   *Evidence:* read (the docstrings and signatures; a `grep` for the callers).
   *Found:* round 3 task 2.4.
+- **F-133** · L · the docstrings of `panel-layer.tex`'s framework-operation and multigraph pins
+  (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `Theorem55.lean`):
+  `BodyHingeFramework.withGraph`'s calls it "the carrier for the inductive constructions of Cases I
+  and II"; its users in the main results' closure are the pins of `lem:motions-mono-of-graph-le`
+  and the KT Theorem 5.6 forms (`rankHypothesis_genuine_of_theorem_55_gen`, two siblings and their
+  private helpers, `theorem_55_6_multigraph_of_two_le`), none in Case I or II.
+  `PanelHingeFramework.withGraph`'s calls it "the shared carrier both inductive cases of Theorem 5.5
+  need" and says that every hinge of `P.withGraph G'` at a body lies in that body's panel; it lies
+  outside every main result's closure, and the claim fails when the kept endpoint selector does not
+  record the links of `G'`. `toBodyHinge_withGraph`'s names the
+  same uses ("the green ... machinery"). `finrank_infinitesimalMotions_le_of_graph_le`'s names
+  `prop:rigidity-matrix-prop11`'s step as its use; `rigidityMatrix_prop11` assumes that bound
+  (`F-121`). `toBodyHinge_withNormal_pinnedMotions_eq`'s says it "carries the inductive realization
+  of the splitting-off"; it lies outside every main result's closure, and
+  `case_II_realization_all_k` uses the motion-space form. `HasCoplanarPanelRealization`'s and
+  `theorem_55_6_multigraph_of_two_le`'s carry process codes ("W1", "M2", "the honest bare motive",
+  "`hgen`"), and the latter calls `rigidityMatrix_prop11` "KT Prop 1.1" (`F-067`).
+  *Evidence:* read (the docstrings and bodies); measured (the closure of `formalization.yaml`'s main
+  results over the `scripts/blueprint-deps.py` cache, and `--label` for the slice's nodes, at
+  `708f4443`).
+  *Found:* round 3 task 2.5.
 
 ## M — mathematics and sources
 
