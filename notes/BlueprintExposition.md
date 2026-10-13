@@ -471,7 +471,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (`case-ii.tex` / `case-iii.tex`, prose final since 22h; markers flipped 22k-close; since PROSE
   round 3 task 2.9 the proof of `lem:case-II-realization` gives KT's construction, then
   eq. (6.12) with `L = q(ab)`, which the panel model forces, and the row form of KT's column
-  operation)] **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
+  operation; since task 2.10 `lem:case-II-realization-placement`'s proof gives that count at a
+  rigid `G_v^{ab}`, one row short, and its note says that its pin assumes a rigid subgraph of `G`
+  avoiding `v` instead)] **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
   hinge *at the* `e₀=ab` *hinge of the inductive realization*, so column ops make
   `R(G,p1)` block-triangular with the `vb`-row reproducing the `e₀`-row; a slight
@@ -640,7 +642,7 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   writes "general position" (0 occurrences), and footnote 4 (p. 668) shows the
   algebraic-independence definition is a *deliberate* fusion ("to make our proof
   simpler"). The formalization is forced to separate them: the genericity device
-  certifies only the rank/corank (Gram-determinant) polynomial, while general
+  certifies only the rank/corank (maximal-minor) polynomial, while general
   position is the *separate* `(G2)` factor `exists_generalPosition_polynomial`
   (off-diagonal product of leading `2×2` minors), and the coupling
   `hasFullRankRealization_of_couple_ofNormals` takes a shared non-root of the

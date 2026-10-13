@@ -1257,8 +1257,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   (`notes/Prose-molecular-cleanup.md`): it rewrote its eight chapters, `matroid-union.tex` through
   `meet.tex`, in eighteen slices, and recorded 67 findings in the ledger (`F-048`–`F-114`).
   Round 3, `prose-algebraic`, opened 2026-10-12 (`notes/Prose-algebraic-cleanup.md`).
-  **Next concrete task:** its task 2.10, `genericity-and-count.tex`, the tenth of its sixteen
-  slices.
+  **Next concrete task:** its task 2.11, `case-iii.tex`'s KT Claim 6.11, the eleventh of its
+  sixteen slices.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

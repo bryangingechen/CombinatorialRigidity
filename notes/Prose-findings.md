@@ -375,6 +375,27 @@ declaration's name as its header writes it:
   `def:rank-hypothesis` has none; `lem:splitoff-edge-substitution` misses `def:graph-operations`.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter case-ii`, at `5e9e329c`).
   *Found:* round 3 task 2.9.
+- **F-151** · E · `genericity-and-count.tex`'s eleven nodes
+  (`algebraic-induction/genericity-and-count.tex`): one missing edge, from the proof of
+  `lem:genericity-device` to `lem:trivial-motions-rank-bound` (`finrank_screwAssignment`), and 18
+  edges the pins do not back, two of them only transitively. They are `lem:genericity-device`'s to
+  `def:panel-hinge-framework`; `lem:relative-screw-split`'s to `def:rank-hypothesis`;
+  `lem:relative-device-count`'s to `lem:relative-screw-split` and, transitively,
+  `lem:genericity-device`; `lem:realization-of-independent-rows`'s to
+  `lem:rows-polynomial-in-normals`, transitively; `lem:rank-polynomial-of-le-finrank`'s to
+  `lem:rows-polynomial-in-normals`; `lem:case-II-realization-placement`'s to `lem:case-II`,
+  `lem:exists-independent-panel-extensor` and `lem:genericity-device`;
+  `lem:case-II-placement-old-rows`'s to `lem:case-II`, `lem:case-II-placement-old-rows-extract` and
+  `lem:rows-polynomial-in-normals`; and those of `lem:case-II-placement-new-rows`,
+  `lem:case-II-placement-old-rows-extract` and `lem:case-II-placement-block-independent` to
+  `def:panel-hinge-framework`, `def:rank-hypothesis` and `lem:rank-delete-vertex`. The proofs as
+  task 2.10 wrote them also cite nodes that no `\uses` names: `lem:rows-polynomial-in-normals`
+  (`lem:genericity-device`, `lem:case-II-placement-new-rows`), `def:panel-support-extensor`,
+  `def:hinge-row-block` (`lem:rank-polynomial-of-le-finrank`), and for the count of
+  `lem:case-II-realization-placement` (`F-150`) `lem:with-normal-preserves`,
+  `lem:splitoff-edge-substitution` and `lem:rigidityRows-pinned-placement-rank-add`.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter genericity-and-count`, at `120eca58`).
+  *Found:* round 3 task 2.10.
 
 ## N — node shape
 
@@ -772,6 +793,24 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the four nodes, at `5e9e329c`);
   read (a `grep` for each pin's callers and for the three declarations in `blueprint/src`).
   *Found:* round 3 task 2.9.
+- **F-152** · N · `lem:genericity-device`, `lem:relative-device-count`,
+  `lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
+  `lem:case-II-realization-placement` (`algebraic-induction/genericity-and-count.tex`): every pin of
+  these five nodes, and the first pin of `lem:case-II-placement-old-rows-extract`, lie outside every
+  main result's closure, seven of the file's fourteen pins. `lem:relative-device-count` and
+  `lem:realization-of-independent-rows` hold at the given normals with no genericity step, as
+  `F-117` found for `lem:genericity-device`. The used content is `lem:relative-screw-split`,
+  `lem:isInfRigidOn-of-relative-count`, `lem:rank-polynomial-of-le-finrank` (the open-set form of
+  `lem:genericity-device`, a subsection later), `lem:case-II-placement-new-rows`,
+  `lem:case-II-placement-block-independent` and the second pin of
+  `lem:case-II-placement-old-rows-extract`. That node is stated for a split-off and the block lemma
+  for rows of a framework; their pins hold for every graph and every pair of families of forms, and
+  `generic-lift.tex` and `rigidity-matrix.tex` cite them so. Retiring the dead nodes, joining
+  `lem:genericity-device` to `lem:rank-polynomial-of-le-finrank`, and stating the two general lemmas
+  generally are the candidates.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eleven nodes, at `120eca58`);
+  read (a `grep` for each dead pin's callers).
+  *Found:* round 3 task 2.10.
 
 ## T — terminology and notation
 
@@ -1316,6 +1355,41 @@ declaration's name as its header writes it:
   witness: under `hspan`, with no link of the smaller graph at $v$ and a new edge from $v$ to
   $w \neq v$, every screw lies in the span of that edge's extensor.
   *Found:* round 3 task 2.9.
+- **F-149** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): read
+  with the rigidity matrix of `def:rigidity-matrix`, the statement fails at normals with a
+  degenerate hinge. There the hinge constraint welds the two ends (the remark after
+  `def:panel-hinge-framework`), and the rows of the edge have rank $D$. For the graph with one edge
+  the rank is $D$ on the Zariski-closed set of dependent normals and $D - 1$ elsewhere, so
+  $\{\operatorname{rank} \ge D\}$ is not open, the largest rank is attained only on that closed set,
+  and $\dim Z$ is not upper semicontinuous. The statement holds for the matrix of the forms of
+  `lem:rows-polynomial-in-normals`, which vanish at a degenerate hinge, and for $R(G,q)$ on the open
+  set of normals with nondegenerate hinges, KT §5.1's nonparallel realizations;
+  `lem:rank-polynomial-of-le-finrank`, which assumes them, is the open-set form. Task 2.10 kept the
+  statement (`F-117`); its proof assumes nondegenerate hinges and says so, and the remark after the
+  proof gives the example.
+  *Evidence:* read (`def:panel-hinge-framework` and the definitions `hingeConstraint` and
+  `IsInfinitesimalMotion`, `Molecular/RigidityMatrix/Basic.lean`; KT 2011 p. 668, `.refs/`); a `lake
+  lean` witness: at an edge with a zero supporting extensor every motion has $S(u) = S(v)$.
+  *Found:* round 3 task 2.10.
+- **F-150** · S · `lem:case-II-realization-placement`
+  (`algebraic-induction/genericity-and-count.tex`): the statement starts from a realization of the
+  splitting-off $G_v^{ab}$, with nondegenerate hinges and every motion constant on its vertices. Its
+  pin `case_II_placement_eq612` assumes instead a realization of a subgraph `Gv ≤ G` with `v ∉
+  V(Gv)` and `V(Gv).ncard = V(G).ncard - 1` (`hGv`, `hvVc`, `hVcard`), rigid on `V(Gv)` with
+  nondegenerate hinges (`hrig`, `hne_Gv`), whose rows are rows of $G$ (the transport with `f :=
+  id`); it assumes no degree for $v$, and also concludes that the hinge of $va$ is nondegenerate.
+  Such a subgraph has deficiency zero, so for $|V(G)| \ge 3$ it is a proper rigid subgraph of $G$,
+  and no framework of Cases II and III meets the pin's hypotheses; the pin lies outside every main
+  result's closure. The statement holds: task 2.10's proof gives the count of
+  `lem:case-II-realization`'s proof at a rigid $G_v^{ab}$, with no pin behind it. At the open the
+  proof transported $D(|V(G)| - 2)$ rows of $G_v^{ab}$ through $G_v$, which the remark after it said
+  do not exist. Task 2.10 kept the statement, and its note says this.
+  *Evidence:* read (the statement and body of `case_II_placement_eq612`,
+  `Molecular/AlgebraicInduction/CaseII.lean`; KT 2011 pp. 678--680, `.refs/`); a `lake lean`
+  witness: the pin's hypotheses on `Gv` give `Gv.deficiency n ≤ 0`, through
+  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
+  `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`.
+  *Found:* round 3 task 2.10.
 
 ## L — Lean
 
@@ -1800,6 +1874,25 @@ declaration's name as its header writes it:
   "producer", "brick" and "stratum".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.9.
+- **F-153** · L · the docstrings of `genericity-and-count.tex`'s pins
+  (`Molecular/AlgebraicInduction/GenericityDevice.lean`, `CaseI.lean`, `CaseII.lean`,
+  `Pinning.lean`; `Molecular/RigidityMatrix/Basic.lean`). The file header and
+  `exists_good_realization`'s credit the device to KT Claims 6.4 and 6.9 (Claim 6.9, p. 678, is that
+  $(G, p_1)$ is a panel-hinge realization) and name consumers `hglue`, `hspan` and `hgen`; the
+  section docstring describes "the remaining gap to per-consumer wiring".
+  `exists_rankPolynomial_of_le_finrank_linking`'s calls its coordinatization the Gram determinant,
+  where the body takes a maximal minor (`exists_polynomial_ne_zero_of_linearIndependent_at`).
+  `case_II_placement_eq612`'s calls `Gv` the split-off $G_v^{ab}$, which `hGv : Gv ≤ G` excludes
+  (`F-150`), and the lemma a brick toward the "still red" `lem:case-II-realization`.
+  `exists_independent_panelRow_transport`'s says that the transported rows are the $D(|V(G)| - 2)$
+  rows of $G_v^{ab}$ without $e_0$; `exists_independent_panelRow_of_edge`'s that
+  `exists_independent_panelSupportExtensor` supplies the nondegenerate hinge;
+  `hasFullRankRealization_of_independent_panelRow`'s names a node `lem:case-I-splice-placement` that
+  does not exist. They carry process codes (N1–N3, N7a, N7b-0 to N7b-3, B0, Phase 21b, stratum 1)
+  and the words "producer", "brick", "motive", "glue", "splice" and "seed".
+  *Evidence:* read (the docstrings and bodies; a `grep` for `lem:case-I-splice-placement` in
+  `blueprint/src`).
+  *Found:* round 3 task 2.10.
 
 ## M — mathematics and sources
 
