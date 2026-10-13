@@ -1427,6 +1427,14 @@ declaration's name as its header writes it:
   *Evidence:* read (the lines named; the built graph's 653 green and 4 blue nodes at this task's
   tree; KT p. 671).
   *Found:* round 4 task 2.14.
+- **F-231** · U · `formalization.yaml`: the alignment row "Lee-Streinu 2008 pebble-game
+  correctness" lists `SimpleGraph.PartialOrientation.runPebbleGame_isAccept_iff` in its `lean:`,
+  but no declaration has that name. The theorem is
+  `CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_isAccept_iff`, the name
+  `thm:pebbleGameResult-isAccept-iff` pins.
+  *Evidence:* read (`formalization.yaml` line 598; `PebbleGame/Correctness.lean`, the theorem at
+  line 835 inside `namespace CombinatorialRigidity.PebbleGame` and `namespace PartialOrientation`).
+  *Found:* round 5, the coordinator, verifying task 3.1.
 
 ## S — statement strength
 

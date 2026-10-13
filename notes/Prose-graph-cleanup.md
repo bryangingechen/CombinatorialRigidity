@@ -20,14 +20,15 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.1 has landed** (this commit; four chapters, the ledger and docs, no Lean). Nothing is
+**Task 3.1 has landed** (`7b2a8272`; four chapters, the ledger and docs, no Lean). The commit
+after it, the coordinator's (docs only, no TeX), filed `F-231` (U, task 7's). Nothing is
 mid-stream; the next task is task 3.2.
 
 **The gate's baseline, at task 3.1** (2026-10-13):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 286 lines**, sha256 prefix
-  **`1df3c3a7996203cf`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 2's (3 274 lines, `4015eeb0fed12738`) is task 3.1's *Expected*, its 36 lines.
+  **`1df3c3a7996203cf`**, kept as `scratch/prose-graph/dump-7b2a8272.txt` (gitignored;
+  regenerate it on `7b2a8272` or a later commit with no TeX change), the same bytes under
+  `PYTHONHASHSEED` 0, 1 and 12345. Its diff against task 2's (3 274 lines, `4015eeb0fed12738`) is task 3.1's *Expected*, its 36 lines.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1298 edges
   8c15c9f272b4319a`** and **`256c6105b5132fbb`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 659 nodes,
@@ -180,7 +181,7 @@ gate's diff, which each task makes exact before editing.
   edge or pin change (its *Expected* is in its commit).
 - [ ] **3. N — node shape**, chapter by chapter. N before E: an N fix changes what the report calls
   missing (`F-010`'s six helpers alone draw 97 missing in-edges).
-  - [x] **3.1 Round 1's chapters** (this commit; `F-009`'s four, `F-011`'s three pebble-game edges,
+  - [x] **3.1 Round 1's chapters** (`7b2a8272`; `F-009`'s four, `F-011`'s three pebble-game edges,
     `F-014`, `F-016`, `F-043`, `F-044`; `F-008`'s `def:blockingWitness`). The open's choices, four
     *revised* after reading, each tried on a scratch copy of the TeX with `--tex-root`.
     `def:pebble-counts`, `lem:edgesIn-corners`: leave, with a one-line role map in a note.
@@ -401,8 +402,9 @@ gate's diff, which each task makes exact before editing.
   different word for `main-component.tex`'s contracted "core", or a sentence there that
   distinguishes it from JJ's. `F-227`: `meet.tex`'s `\item[(i)]`. *Expected:* the dump
   byte-identical.
-- [ ] **7. U — status surfaces** (`F-099`, `F-173`, `F-204`, `F-226`, `F-229`). `formalization.yaml`:
-  `F-099`'s three places (the PI, 2026-10-12), `F-173`'s (2) and `F-204`'s (2), Jacobs 1998's DOI.
+- [ ] **7. U — status surfaces** (`F-099`, `F-173`, `F-204`, `F-226`, `F-229`, `F-231`).
+  `formalization.yaml`: `F-099`'s three places (the PI, 2026-10-12), `F-173`'s (2) and `F-204`'s
+  (2), Jacobs 1998's DOI, and `F-231`'s declaration name in an alignment row's `lean:`.
   `README.md` and `home_page/index.md`: `F-173`'s (1), `F-204`'s (1), `F-226` and `F-229`. Each is
   aligned with the chapter it names; no main result's `declaration:` changes. *Expected:* the dump
   byte-identical.
