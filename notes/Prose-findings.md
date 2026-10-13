@@ -641,6 +641,25 @@ declaration's name as its header writes it:
   (the bodies of the twelve pins).
   *Found:* round 4 task 2.9.
 
+- **F-213** · E · `generic-lift.tex`'s nine body-and-bar nodes, task 2.10's (`generic-lift.tex`):
+  one missing edge, three unbacked, three dead pins. Missing: the proof of `lem:endpoint-witness`
+  to `lem:k-frame-specialize-li` (`specRow_linearIndependent`, through
+  `stdFramework_rigidityRow_linearIndependent_restrict`). Unbacked, with no Lean basis: the
+  witness's proof to `prop:tay-witness-exists`, and the proofs of
+  `thm:bodybar-generic-independence` and `cor:bodybar-generic-tay` to
+  `lem:tay-isSparse-of-independent` (the theorem's pin uses the restricted form
+  `isSparse_of_isIndependent_restrict`, the corollary's pins the theorem). Through another node:
+  edges to `def:body-bar-framework` and `def:rigidity-map-body-bar` from five nodes, the witness's
+  to `def:two-extensor`, and the theorem's to `lem:k-frame-pi-finrank` and
+  `lem:k-frame-incidence-finrank-rk`. Dead pins (`F-012`): `twoExtensorPoly`,
+  `exists_isGenericEndpoints_abundance` and `exists_isGenericEndpoints`. The rewritten proofs
+  cite without an edge `def:rigidity-map-body-bar` and `lem:generic-placement-abundance` (the
+  abundance lemma), `lem:k-frame-specialize-forest` and `lem:k-frame-specialize-li` (the
+  witness), and `lem:k-frame-pi-finrank` and `lem:k-frame-incidence-finrank-rk` (the theorem).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `c8f1f0f1`);
+  read (the bodies of the twelve pins).
+  *Found:* round 4 task 2.10.
+
 ## N — node shape
 
 - **F-009** · N · 28 nodes with four or more pins (principle D), exactly `notes/Prose.md` §7's
@@ -1199,6 +1218,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the two pins; a `grep` for the callers of the extraction and of
   the minor lemma); measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`).
   *Found:* round 4 task 2.9.
+
+- **F-214** · N · `def:two-extensor`, `lem:coordinate-extensor-basis`, `lem:extensor-map-rows`
+  (`generic-lift.tex`): pinned helpers. `def:two-extensor` pins the bijection `pairIdxEquiv` (any
+  bijection serves) and the polynomial form `twoExtensorPoly` (dead) beside `twoExtensor`, but not
+  the evaluation identity `twoExtensorPoly_eval`, which the abundance pin uses. The two lemmas pin
+  the definitions `coordPoint` and `mapPlacement` beside their claims. Task 2.10 added a role map
+  for the three pins in a note. Candidates: pin `twoExtensor` alone, with the polynomial form and
+  its evaluation identity on `lem:generic-endpoints-abundance` or a lemma node (as `F-209` asks
+  for the panel rows), and the two lemmas on their theorems alone.
+  *Evidence:* read (`BodyBar/GenericLift.lean`: the twelve pins and the body of
+  `exists_isGenericEndpoints_abundance`); measured (`scripts/blueprint-deps.py --label
+  def:two-extensor`, at `c8f1f0f1`).
+  *Found:* round 4 task 2.10.
 
 ## T — terminology and notation
 
@@ -2083,6 +2115,34 @@ declaration's name as its header writes it:
   copies are independent in $M(\tilde G)$, the only base, and $\operatorname{def}(\tilde G) = 1$.
   *Found:* round 4 task 2.9.
 
+- **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
+  moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
+  ended "The direction coordinates $(0, j)$ equal $p'_j - p_j$, polynomials of degree one in the
+  $2n$ endpoint coordinates; the moment coordinates $(i, j)$ with $i \ge 1$ equal
+  $p_i p'_j - p_j p'_i$, of degree two", and `def:generic-endpoints` fixed its orientation with
+  "(…; the orientation fixes row signs only)". Task 2.10 moved both to the prose after the
+  definitions, where the coordinates are named and computed and the independence of the orientation
+  is argued. The definitions now introduce $T(p, p')$, the endpoint realization and genericity, and
+  end; "Fix an enumeration of the pairs" became "Index the coordinates by the pairs, through a fixed
+  bijection" (register). Two readings: principle B, the pins unchanged (the note after the
+  definition names `twoExtensorPoly` as the polynomial form); or the definition drops the degree
+  claim that its third pin carries.
+  *Evidence:* read (the bodies of `twoExtensor`, `twoExtensorPoly`, `twoExtensorPoly_eval` and
+  `IsGenericEndpoints`, `BodyBar/GenericLift.lean`).
+  *Found:* round 4 task 2.10.
+- **F-212** · S · `def:generic-endpoints`, `lem:generic-endpoints-abundance`
+  (`generic-lift.tex`): the statements give an endpoint pair to each bar of $G$, and a polynomial
+  "in the $2d\,|E(G)|$ endpoint coordinates". The pins give a pair to every edge label
+  (`q : β × Bool × Fin n → ℝ`, with the body and label types finite), and the abundance
+  polynomial has $2n$ variables for each label (`MvPolynomial (β × Bool × Fin n) ℝ`). The rows read
+  only the bars' pairs, so the two forms of every statement of the section are equivalent, but the
+  pinned lemma does not state that its polynomial involves only the bars' coordinates. Unchanged
+  since the open; task 2.10 kept the statements, with the note after the definition. Candidate:
+  index the assignments by $E(G)$ in the Lean, or keep the note.
+  *Evidence:* read (the statements of `ofEndpoints`, `IsGenericEndpoints` and
+  `exists_isGenericEndpoints_abundance`, and the body of the last).
+  *Found:* round 4 task 2.10.
+
 ## L — Lean
 
 - **F-013** · L · `SimpleGraph.Henneberg.typeII_isLaman` (`Henneberg.lean`): it takes `hab : a ≠ b`
@@ -2768,6 +2828,21 @@ declaration's name as its header writes it:
   eight; it is 2010 (task 2.9 corrected the bibliography).
   *Evidence:* read (the docstrings and bodies of the twelve pins; `grep` for the year).
   *Found:* round 4 task 2.9.
+
+- **F-215** · L · the docstrings of task 2.10's pins (`BodyBar/GenericLift.lean`).
+  `exists_isGenericEndpoints_abundance` calls its polynomial one "in the `2n|E(G)|` endpoint
+  coordinates"; its type has $2n$ variables for each label (`F-212`). `coordPoint` names the
+  origin "$c_0$ in the paper's naming"; Jackson and Jordán write $p_0$ (JJ 2010 §5). The private
+  `twoExtensor_coordPoint_zero` and `_succ` call their vectors rows of the entry table in the proof
+  of JJ's Lemma 5.1, which has the opposite signs on the direction coordinates (JJ put the
+  coordinate 1 last). The rest narrates process: the file header ("Layer BB", "Phase 34 (PROSPECT
+  G3 …)", "the definition-plus-abundance leaf group of the chapter extension", "`notes/Phase34.md`
+  adjudication item 3", "This closes Layer BB"), `IsGenericEndpoints` ("The Phase-24 transfer
+  form", "the R0-era witness claim refuted"), "Phase 34" in thirteen more docstrings, and "feeding"
+  twice.
+  *Evidence:* read (the docstrings and bodies of the twelve pins and the private lemmas; JJ 2010
+  §5, pp. 581–582).
+  *Found:* round 4 task 2.10.
 
 ## M — mathematics and sources
 

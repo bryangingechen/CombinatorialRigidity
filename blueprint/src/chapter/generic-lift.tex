@@ -550,41 +550,36 @@ which it shows to be necessary.
 \subsection{Every generic body-and-bar realization}
 \label{sec:generic-lift-bodybar}
 
-A body-and-bar realization of a multigraph places each bar $e$ as a
-line segment between two endpoints $p_e, p'_e \in \R^n$, and the
-constraint row of $e$ pairs the two-extensor of that segment
-against the relative velocity of the two bodies it
-joins~\cite[\S5]{jacksonJordan2009}. The body-bar chapter works
-with a more permissive model: a framework of
-\cref{def:body-bar-framework} carries an arbitrary vector of
-$\R^d$, $d = n(n+1)/2$, on each bar. The realization parameters of
-this section are instead the $2n$ endpoint coordinates of each bar,
-so that ``almost all'' quantifies over bar endpoint choices, as in
-Jackson and Jord\'an. The two-extensor of a segment is a polynomial
-map of its endpoints (\cref{def:two-extensor}), so the rigidity
-rows are polynomial in the endpoint coordinates and the abundance
-argument of \cref{lem:generic-placement-abundance} applies
-unchanged.
+As in \cref{sec:body-bar}, $d$ is the dimension, $D = \binom{d+1}{2}$,
+and the vertices and edges of a multigraph are its bodies and bars.
+Jackson and Jord\'an realize each bar $e$ as a line segment of $\R^d$,
+with distinct endpoints $p_e$ and
+$p'_e$~\cite[\S\S2.1 and 3]{jacksonJordan2009}. A bar $e$ that joins
+the bodies $u$ and $v$ imposes one linear condition on their screws
+$S(u), S(v) \in \R^D$: the difference $S(u) - S(v)$ is orthogonal to
+the vector of $2 \times 2$ minors of the matrix with rows $(p_e, 1)$
+and $(p'_e, 1)$. So their realization is a body-bar framework
+(\cref{def:body-bar-framework}) with this vector on each bar, while
+Tay's frameworks allow any vector of $\R^D$. In this section the
+realization parameters are the $2d$ coordinates of the endpoints of
+each bar. So ``almost all realizations'' refers to the choice of the
+endpoints, as in Jackson and Jord\'an's paper.
 
-Not every framework of \cref{def:body-bar-framework} arises from
-endpoints: a two-extensor whose direction block vanishes but whose
-moment block does not --- a line at infinity --- is the two-extensor
-of no segment, since a segment with zero direction has equal
-endpoints and zero moment as well. In particular the standard-basis
-witness frameworks of \cref{prop:tay-witness-exists} are not
-endpoint realizations, and the existence theorems do not lift into
-the endpoint parameter space by specialization alone. The witness
-inside the endpoint space is Jackson and Jord\'an's Lemma~5.1: bars
-placed on segments between the origin and the standard basis points
-of $\R^n$. We obtain it from the standard-basis witness by a change
-of coordinates on the extensor space
-(\cref{lem:coordinate-extensor-basis} and
-\cref{lem:extensor-map-rows}), the route Jackson and Jord\'an
-attribute to Whiteley: the coordinate-segment two-extensors are the
-image of the standard basis of $\R^d$ under a single invertible
-linear map, and applying a fixed invertible map to the extensor
-coordinate of every bar preserves independence of the
-rows~\cite[\S5, Remark]{jacksonJordan2009}.
+The coordinates of this vector are polynomials in the coordinates of
+the endpoints. So, as for placements
+(\cref{sec:generic-lift-abundance}), generic choices of endpoints
+exist, and the choices that are not generic lie in the zero set of a
+nonzero polynomial. The generic form of Tay's theorem then needs a
+witness. For a finite multigraph $G$ and a set $E'$ of bars such that
+$G \restriction E'$ is $(D, D)$-sparse, we need endpoints at which the
+rows of the bars in $E'$ are linearly independent. This is Jackson and
+Jord\'an's Lemma~5.1. We derive it from the framework of
+\cref{prop:tay-witness-exists} by a change of coordinates of $\R^D$,
+following Whiteley. Genericity then gives Tay's theorem at every
+generic choice of endpoints (\cref{cor:bodybar-generic-tay}).
+
+We put the coordinate $1$ of the rows first, and call the vector of
+minors the two-extensor of the segment.
 
 \begin{definition}[The two-extensor of a segment]
   \label{def:two-extensor}
@@ -592,22 +587,57 @@ rows~\cite[\S5, Remark]{jacksonJordan2009}.
     Graph.BodyBarFramework.twoExtensorPoly}
   \leanok
   \uses{def:body-bar-framework}
-  For $p \in \R^n$ let $h(p) = (1, p) \in \R^{n+1}$ be its
-  homogeneous lift, with coordinates indexed by $0, 1, \dots, n$.
-  Fix an enumeration of the pairs $0 \le i < j \le n$ by the
-  $d = n(n+1)/2$ coordinates of the extensor space $\R^d$ of
-  \cref{def:body-bar-framework}. The \emph{two-extensor} of an
-  ordered pair of points $p, p' \in \R^n$ is the vector
-  $T(p, p') \in \R^d$ of $2 \times 2$ minors
+  For $p \in \R^d$ let $h(p) = (1, p) \in \R^{d+1}$, with coordinates
+  indexed by $0, 1, \dots, d$. Index the $D$ coordinates of $\R^D$ by
+  the pairs $(i, j)$ with $0 \le i < j \le d$, through a fixed
+  bijection. The \emph{two-extensor} of an ordered pair of points
+  $p, p' \in \R^d$ is the vector $T(p, p') \in \R^D$ with
   \[
     T(p, p')_{(i,j)} \;=\; h(p)_i\, h(p')_j - h(p)_j\, h(p')_i,
-    \qquad 0 \le i < j \le n.
+    \qquad 0 \le i < j \le d.
   \]
-  The \emph{direction} coordinates $(0, j)$ equal $p'_j - p_j$,
-  polynomials of degree one in the $2n$ endpoint coordinates; the
-  \emph{moment} coordinates $(i, j)$ with $i \ge 1$ equal
-  $p_i p'_j - p_j p'_i$, of degree two.
 \end{definition}
+
+We call the coordinates $(0, j)$ of $T(p, p')$ its \emph{direction
+coordinates} and the others its \emph{moment coordinates}. As
+$h(p)_0 = 1$, they are
+\[
+  T(p, p')_{(0,j)} \;=\; p'_j - p_j
+  \qquad\text{and}\qquad
+  T(p, p')_{(i,j)} \;=\; p_i\, p'_j - p_j\, p'_i \quad (i \ge 1),
+\]
+polynomials of degree one and two in the $2d$ coordinates of $p$ and
+$p'$. The vector $T(p, p')$ is the coordinate vector of the join
+$h(p) \vee h(p')$ (\cref{def:join}), whence its name. Its coordinates
+are taken in the basis of $\bigwedge^2 \R^{d+1}$ formed by the products
+of two standard basis vectors in increasing order, as in the remarks
+after \cref{def:plucker-coords}. Jackson and Jord\'an's vector of
+minors puts the coordinate $1$ last, as \cref{def:homogeneous-coords}
+does. It has the same coordinates as $T(p, p')$ up to their order,
+with the direction coordinates negated. Such a change of the
+coordinates of $\R^D$ does not change which sets of rows are linearly
+independent (\cref{lem:extensor-map-rows} below).
+
+Not every vector of $\R^D$ is the two-extensor of a segment. If the
+direction coordinates of $T(p, p')$ vanish, then $p = p'$, and the
+moment coordinates vanish too. So the standard basis vector of $\R^D$
+at a moment coordinate $(i, j)$ is the two-extensor of no pair of
+points. It is the coordinate vector of the product of the $i$-th and
+$j$-th standard basis vectors of $\R^{d+1}$, the line at infinity
+through the points at infinity of the $i$-th and $j$-th coordinate
+axes. Hence the framework of \cref{prop:tay-witness-exists}, which
+puts standard basis vectors on the bars, does not in general come
+from a choice of endpoints.
+
+\begin{fmlnote}
+  The formalization calls the dimension $n$, as in the note after
+  \cref{def:body-bar-framework}. The first pin is the bijection of the
+  pairs $(i, j)$ with the coordinates of $\R^D$, and the second is
+  $T(p, p')$. The third writes each coordinate of $T(p_e, p'_e)$ as a
+  polynomial in the coordinates of an endpoint assignment
+  (\cref{def:generic-endpoints}), the form that
+  \cref{lem:generic-endpoints-abundance} uses.
+\end{fmlnote}
 
 \begin{definition}[Endpoint realization; generic endpoint
   assignment]
@@ -616,53 +646,65 @@ rows~\cite[\S5, Remark]{jacksonJordan2009}.
   \leanok
   \uses{def:two-extensor, def:body-bar-framework,
     def:rigidity-map-body-bar}
-  Fix a multigraph $G$ and an orientation of $G$
-  (\cref{def:rigidity-map-body-bar}; the orientation fixes row
-  signs only). An \emph{endpoint assignment} $q$ gives each bar an
-  ordered pair of points of $\R^n$; its \emph{endpoint realization}
-  is the body-bar framework placing each bar $e \in E(G)$ at the
-  two-extensor of its assigned pair. The assignment $q$ is
-  \emph{generic for row independence} if every set of bars whose
-  rigidity rows are linearly independent at the endpoint
-  realization of some assignment has linearly independent rows at
-  the endpoint realization of $q$.
+  Let $G$ be a multigraph, and fix an orientation of its bars
+  (\cref{def:rigidity-map-body-bar}). An \emph{endpoint assignment}
+  $q$ of $G$ gives each bar $e$ an ordered pair $(p_e, p'_e)$ of
+  points of $\R^d$. Its \emph{endpoint realization} is the body-bar
+  framework $(G, b)$ in $\R^d$ with $b_e = T(p_e, p'_e)$ for every bar
+  $e$. The assignment $q$ is \emph{generic for row independence} if
+  every set of bars whose rows are linearly independent at the
+  endpoint realization of some endpoint assignment has linearly
+  independent rows at the endpoint realization of $q$.
 \end{definition}
 
-As in the preceding sections, a generic assignment attains the
-maximum, over all endpoint assignments, of the rank of the rigidity
-matrix and of every edge-induced submatrix, which is Jackson and
-Jord\'an's definition of a generic body-and-bar
-realization~\cite[\S5]{jacksonJordan2009}. The transfer runs over
-endpoint assignments only: independence witnessed by a framework
-outside the endpoint parameter space does not transfer, which is
-why the witness lemma below re-places the standard-basis witness
-inside that space.
+Reversing a bar changes only the sign of its row
+(\cref{sec:body-bar-framework}), so genericity does not depend on the
+orientation.
+
+\begin{fmlnote}
+  The formalization gives a pair of endpoints to every edge label, not
+  only to the bars of $G$: an endpoint assignment is a real function of
+  a label, one of its two ends and a coordinate. The pairs at labels
+  that are not bars of $G$ do not enter the rows. The bodies and the
+  labels are drawn from two fixed sets, which the pinned lemmas below
+  assume finite. So the polynomial of
+  \cref{lem:generic-endpoints-abundance} has $2d$ variables for each
+  label, not only for each bar. The first pin is the endpoint
+  realization, and the second is genericity.
+\end{fmlnote}
 
 \begin{lemma}[Abundance of generic endpoint assignments]
   \label{lem:generic-endpoints-abundance}
   \lean{Graph.BodyBarFramework.exists_isGenericEndpoints_abundance}
   \leanok
   \uses{def:generic-endpoints}
-  There is a nonzero polynomial $P$ in the $2n\,|E(G)|$ endpoint
-  coordinates such that every endpoint assignment $q$ with
-  $P(q) \ne 0$ is generic for row independence. In particular the
-  non-generic assignments are contained in the zero set of a
-  nonzero polynomial.
+  Let $G$ be a finite multigraph. Then there is a nonzero polynomial
+  $P$ in the $2d\,|E(G)|$ endpoint coordinates such that every
+  endpoint assignment $q$ of $G$ with $P(q) \neq 0$ is generic for row
+  independence. In particular, the endpoint assignments that are not
+  generic lie in the zero set of a nonzero polynomial.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:two-extensor}
-  Each coordinate of the rigidity row of a bar at an endpoint
-  realization is, up to an incidence sign, a coordinate of the
-  two-extensor of its assigned pair, hence a polynomial of degree
-  at most two in the endpoint coordinates (\cref{def:two-extensor}).
-  The proof of \cref{lem:generic-placement-abundance} applies
-  verbatim: for each subfamily of bars whose rows are independent
-  at some assignment, a maximal square minor of the row-coordinate
-  matrix, chosen nonsingular there, is a nonzero polynomial whose
-  non-vanishing at an assignment suffices for independence, and $P$
-  is the product of these witnessing minors over the finitely many
-  such subfamilies.
+  The row of a bar $e$ has the coefficient $-(b_e)_c\,(a_e)_v$ at a
+  body $v$ and a coordinate $c$ of $\R^D$, where $a_e$ is the signed
+  incidence vector of $e$ (the remarks after
+  \cref{def:rigidity-map-body-bar}). So each coefficient is $0$ or
+  $\pm (b_e)_c$. At the endpoint realization of $q$, it is $0$ or
+  $\pm$ a coordinate of $T(p_e, p'_e)$, a polynomial of degree at most
+  two in the coordinates of $q$ (the remarks after
+  \cref{def:two-extensor}).
+
+  The argument of \cref{lem:generic-placement-abundance} now applies.
+  There are finitely many sets of bars, as $E(G)$ is finite. Let $F$
+  be a set of bars whose rows are linearly independent at some
+  endpoint assignment $q^F$. Some $|F| \times |F|$ minor of the
+  coefficient matrix of these rows is nonzero at $q^F$. As a
+  polynomial $P_F$ in the coordinates of $q$, it is nonzero, and the
+  rows of $F$ are linearly independent at every $q$ with
+  $P_F(q) \neq 0$. The product $P$ of the polynomials $P_F$ is
+  nonzero, and every $q$ with $P(q) \neq 0$ is generic.
 \end{proof}
 
 \begin{lemma}[Existence of generic endpoint assignments]
@@ -670,15 +712,50 @@ inside that space.
   \lean{Graph.BodyBarFramework.exists_isGenericEndpoints}
   \leanok
   \uses{def:generic-endpoints}
-  Generic endpoint assignments exist.
+  Let $G$ be a finite multigraph. Then some endpoint assignment of $G$
+  is generic for row independence.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:generic-endpoints-abundance}
-  A nonzero real polynomial has a non-root, and every non-root of
-  the polynomial of \cref{lem:generic-endpoints-abundance} is
-  generic.
+  The polynomial $P$ of \cref{lem:generic-endpoints-abundance} is
+  nonzero. As $\R$ is infinite, $P$ has a non-root, and every non-root
+  of $P$ is generic.
 \end{proof}
+
+Each bar has one row. So if $q$ is generic for row independence, then
+for every set $F$ of bars the rows of $F$ have at $q$ the largest rank
+over all endpoint assignments. Indeed, a subset of $F$ whose rows are
+linearly independent at some assignment has linearly independent rows
+at $q$. Conversely, an assignment with this property is generic.
+Jackson and Jord\'an call a body-and-bar realization generic if its
+rigidity matrix and the submatrices formed by its rows at sets of bars
+have the largest rank over all realizations of the
+multigraph~\cite[\S5]{jacksonJordan2009}. Their bars have distinct
+endpoints. Let $d \ge 1$, and let $G$ be finite and without loops.
+Then the row of each bar is nonzero at some endpoint assignment, so a
+generic assignment gives every bar distinct endpoints. As a generic
+assignment exists (\cref{lem:exists-generic-endpoints}), the largest
+ranks over their realizations are those over all endpoint assignments.
+So the two notions of genericity agree.
+
+Let $c_0 = 0$, and let $c_1, \dots, c_d$ be the standard basis vectors
+of $\R^d$, the vertices of a simplex. Jackson and Jord\'an put the
+bars of each of $D$ disjoint forests $F_{ij}$, $0 \le i < j \le d$, on
+the edge from $c_i$ to $c_j$. They prove that the rows of these bars
+are linearly independent by an elimination on the coordinates of the
+two-extensors of the edges. Whiteley pointed out that their lemma
+follows from the framework in his proof of Theorem~8, which is that of
+\cref{prop:tay-witness-exists}~\cite[Remark after
+Lemma~5.1]{jacksonJordan2009}. This framework places the bars on the
+edges of a projective simplex with one vertex at the origin and the
+others at infinity on the coordinate axes. A projective
+transformation, which preserves independence, takes this simplex to
+the one with vertices $c_0, \dots, c_d$. We use a linear form of the
+argument. The two-extensors of the edges of the simplex form a basis
+of $\R^D$ (\cref{lem:coordinate-extensor-basis}). An invertible linear
+map of $\R^D$, applied to the vectors on all the bars, preserves
+linear independence of rows (\cref{lem:extensor-map-rows}).
 
 \begin{lemma}[The coordinate-segment two-extensors form a basis]
   \label{lem:coordinate-extensor-basis}
@@ -686,90 +763,94 @@ inside that space.
     Graph.BodyBarFramework.linearIndependent_twoExtensor_coordPoint}
   \leanok
   \uses{def:two-extensor}
-  Let $c_0 = 0 \in \R^n$ and let $c_i$ be the $i$-th standard basis
-  point of $\R^n$ for $1 \le i \le n$. The $d$ two-extensors
-  $T(c_i, c_j)$, $0 \le i < j \le n$, are linearly independent, and
-  hence form a basis of $\R^d$.
+  Let $c_0 = 0 \in \R^d$, and for $1 \le i \le d$ let $c_i$ be the
+  $i$-th standard basis vector of $\R^d$. Then the $D$ two-extensors
+  $T(c_i, c_j)$, $0 \le i < j \le d$, are linearly independent, and so
+  form a basis of $\R^D$.
 \end{lemma}
 \begin{proof}
   \leanok
-  From the minor formula, $T(c_0, c_k)$ is the coordinate vector
-  supported at the direction coordinate $(0, k)$, while for
-  $1 \le h < k \le n$ the two-extensor $T(c_h, c_k)$ has exactly
-  three nonzero coordinates: $+1$ at the moment coordinate
-  $(h, k)$, $+1$ at $(0, k)$ and $-1$ at $(0, h)$ --- the entry
-  table in the proof of Lemma~5.1
-  of~\cite[\S5]{jacksonJordan2009}. Every standard basis vector of
-  $\R^d$ is therefore a combination of the two-extensors: the
-  direction-coordinate vector at $(0, k)$ is $T(c_0, c_k)$ itself,
-  and the moment-coordinate vector at $(h, k)$ is
-  $T(c_h, c_k)$ plus the already-available direction vector at
-  $(0, h)$ minus the one at $(0, k)$. So the two-extensors span
-  $\R^d$; a spanning family of $d$ vectors in the
-  $d$-dimensional $\R^d$ is a basis, hence linearly independent.
+  Let $u_{ij}$ be the standard basis vector of $\R^D$ at $(i, j)$. By
+  \cref{def:two-extensor}, $T(c_0, c_k) = u_{0k}$ for
+  $1 \le k \le d$, and
+  \[
+    T(c_h, c_k) \;=\; u_{hk} + u_{0k} - u_{0h},
+    \qquad 1 \le h < k \le d.
+  \]
+  Jackson and Jord\'an list these entries in the proof of their
+  Lemma~5.1, with the signs of the direction coordinates reversed. So
+  every $u_{0k}$ is one of the two-extensors, and
+  $u_{hk} = T(c_h, c_k) - u_{0k} + u_{0h}$ is a linear combination of
+  them. Hence the $D$ two-extensors span $\R^D$, and $D$ vectors that
+  span $\R^D$ form a basis.
 \end{proof}
 
-\begin{lemma}[Row independence under a change of extensor
-  coordinates]
+\begin{lemma}[Row independence under an invertible map of $\R^D$]
   \label{lem:extensor-map-rows}
   \lean{Graph.BodyBarFramework.mapPlacement,
     Graph.BodyBarFramework.linearIndependent_rigidityRow_mapPlacement}
   \leanok
   \uses{def:body-bar-framework, def:rigidity-map-body-bar}
-  Let $F$ be a body-bar framework and $M$ an invertible linear map
-  of the extensor space $\R^d$. Applying $M$ to the extensor
-  coordinate of every bar preserves linear independence of every
-  subfamily of rigidity rows.
+  Let $(G, b)$ be a body-bar framework in $\R^d$, and let $M$ be an
+  invertible linear map of $\R^D$. Let $(G, Mb)$ be the framework with
+  the vector $M b_e$ on each bar $e$. If the rows of a set of bars are
+  linearly independent in $(G, b)$, then they are linearly independent
+  in $(G, Mb)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The row of a bar $e$ at the transformed framework evaluates a
-  motion $m$ to $\langle M b_e,\, m_u - m_v\rangle
-  = \langle b_e,\, M^{*} m_u - M^{*} m_v\rangle$, where $M^{*}$ is
-  the adjoint of $M$: the transformed row is the original row
-  precomposed with the invertible change of motion coordinates
-  applying $M^{*}$ bodywise. Precomposition with a fixed invertible
-  map is an injective linear map of the dual of the motion space,
-  and so preserves linear independence.
+  Let $M^{\top}$ be the transpose of $M$. In $(G, Mb)$ the row of a
+  bar $e$ takes a motion $m$ to
+  \[
+    \langle M b_e,\, m(u_e) - m(v_e) \rangle
+    \;=\; \langle b_e,\, M^{\top} m(u_e) - M^{\top} m(v_e) \rangle.
+  \]
+  So it is the row of $e$ in $(G, b)$, composed with the map $\Phi$ of
+  motions that applies $M^{\top}$ to the vector of every body. As
+  $M^{\top}$ is invertible, so is $\Phi$. Hence composition with
+  $\Phi$ is an injective linear map of the space of linear functionals
+  on motions, and it preserves linear independence.
 \end{proof}
 
-\begin{lemma}[Coordinate-segment witness; Jackson--Jord\'an]
+\begin{lemma}[Independent rows at the coordinate segments;
+  Jackson--Jord\'an Lemma~5.1]
   \label{lem:endpoint-witness}
   \lean{Graph.BodyBarFramework.exists_endpoints_linearIndependent_rigidityRow}
   \leanok
   \uses{def:generic-endpoints, def:graph-sparse}
-  Let $E' \subseteq E(G)$ be a bar set whose edge-restriction
-  $G \restriction E'$ is $(d, d)$-sparse. Then there is an endpoint
-  assignment whose rigidity rows indexed by $E'$ are linearly
-  independent.
+  Let $G$ be a finite multigraph, and let $E' \subseteq E(G)$ be a set
+  of bars such that $G \restriction E'$ is $(D, D)$-sparse. Then there
+  is an endpoint assignment of $G$ at whose endpoint realization the
+  rows of the bars in $E'$ are linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:k-frame-forest-packing-of-sparse,
     lem:coordinate-extensor-basis, lem:extensor-map-rows,
     prop:tay-witness-exists}
-  If $E' = \emptyset$ the claim is vacuous; assume $E'$ nonempty.
-  Sparsity decomposes $E'$ into $d$ disjoint forests
-  (\cref{lem:k-frame-forest-packing-of-sparse}, disjointified),
-  re-indexed by the pairs $0 \le i < j \le n$; assign each bar of
-  the $(i, j)$-th forest the segment from $c_i$ to $c_j$, and
-  extend the forest-index map arbitrarily off $E'$. The resulting
-  endpoint realization places bar $e$ at $T(c_{i(e)}, c_{j(e)})$,
-  the image of the standard-basis placement at the pair-valued
-  forest-index map under the change of extensor coordinates
-  carrying the standard basis of $\R^d$ to the coordinate-segment
-  two-extensors (\cref{lem:coordinate-extensor-basis}). The
-  standard-basis rows indexed by $E'$ are linearly independent by
-  the block-diagonal count in the proof of
-  \cref{prop:tay-witness-exists}, restricted to the subfamily
-  indexed by $E'$: each row is supported in the coordinate block of
-  its forest, where it is the signed incidence row of its bar, and
-  a forest's incidence rows are independent.
-  \Cref{lem:extensor-map-rows} transports this independence to the
-  coordinate-segment rows. (Jackson and Jord\'an prove the lemma by
-  a staged elimination on the entries of the $T(c_i, c_j)$; the
-  change-of-coordinates route is the one they attribute to
-  Whiteley~\cite[\S5, Remark]{jacksonJordan2009}.)
+  If $E'$ is empty there is nothing to prove, so let $E'$ be
+  non-empty. By \cref{lem:k-frame-forest-packing-of-sparse}, $E'$ is
+  the union of $D$ forests. We may take them pairwise disjoint, as in
+  the proof of \cref{lem:k-frame-specialize-forest}, and index them by
+  the pairs, as $F_{ij}$ for $0 \le i < j \le d$. Give each bar $e$ a
+  pair $\iota(e)$: the pair $(i, j)$ with $e \in F_{ij}$ if
+  $e \in E'$, and any pair otherwise.
+
+  Let $b_e$ be the standard basis vector of $\R^D$ at $\iota(e)$, as
+  in \cref{prop:tay-witness-exists}. In $(G, b)$ the rows of the bars
+  in $E'$ are linearly independent. Indeed, up to sign the row of $e$
+  is $a_e^{(\iota(e))}$ (\cref{sec:body-bar-framework}). The vectors
+  $a_e^{(ij)}$ with $e \in F_{ij}$ are linearly independent over $\R$,
+  as the sets $F_{ij}$ are forests, by the argument of
+  \cref{lem:k-frame-specialize-li}.
+
+  Let $M$ be the linear map of $\R^D$ that sends the standard basis
+  vector at $(i, j)$ to $T(c_i, c_j)$. It is invertible, by
+  \cref{lem:coordinate-extensor-basis}. Let $q$ give each bar $e$ with
+  $\iota(e) = (i, j)$ the endpoints $c_i$ and $c_j$. Then
+  $M b_e = T(c_i, c_j)$ for every bar $e$, so $(G, Mb)$ is the
+  endpoint realization of $q$. Its rows at the bars of $E'$ are
+  linearly independent, by \cref{lem:extensor-map-rows}.
 \end{proof}
 
 \begin{theorem}[Independence at a generic endpoint assignment]
@@ -777,24 +858,30 @@ inside that space.
   \lean{Graph.BodyBarFramework.linearIndependent_rigidityRow_ofEndpoints_iff}
   \leanok
   \uses{def:generic-endpoints, def:graph-sparse}
-  Let $q$ be an endpoint assignment generic for row independence.
-  Then for every bar set $E' \subseteq E(G)$, the rigidity rows of
-  the endpoint realization of $q$ indexed by $E'$ are linearly
-  independent if and only if the edge-restriction
-  $G \restriction E'$ is $(d, d)$-sparse.
+  Let $G$ be a finite multigraph, and let $q$ be an endpoint
+  assignment of $G$ that is generic for row independence. Let
+  $E' \subseteq E(G)$. Then the rows of the bars in $E'$ at the
+  endpoint realization of $q$ are linearly independent if and only if
+  $G \restriction E'$ is $(D, D)$-sparse.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{lem:endpoint-witness, lem:tay-isSparse-of-independent}
-  If $G \restriction E'$ is sparse, some endpoint assignment has
-  independent rows on $E'$ (\cref{lem:endpoint-witness}), so the
-  generic $q$ does. Conversely, independent rows on $E'$ force
-  sparsity of $G \restriction E'$ with no genericity: as in the
-  proof of \cref{lem:tay-isSparse-of-independent}, restricted to
-  $E'$, every non-empty $E'' \subseteq E'$ has its $|E''|$
-  independent rows inside the block-diagonal product subspace of
-  dimension $d \cdot r(E'')$, and $r(E'') + 1 \le |V''|$ gives the
-  sparsity count $|E''| + d \le d\,|V''|$.
+  If $G \restriction E'$ is $(D, D)$-sparse, then the rows of $E'$ are
+  linearly independent at some endpoint assignment
+  (\cref{lem:endpoint-witness}), and so at $q$, as $q$ is generic.
+
+  By the argument of \cref{lem:tay-isSparse-of-independent}, the
+  converse holds at every endpoint assignment. Suppose that the rows of
+  $E'$ are linearly independent, and let $E''$ be a non-empty subset
+  of $E'$. Let $A_{E''}$ be the span of the vectors $a_e$ with
+  $e \in E''$. Up to sign, the row of a bar $e \in E''$ is
+  $\sum_c (b_e)_c\, a_e^{(c)}$, which lies in $A_{E''}^D$. This space
+  has dimension $D\, r(E'')$ (\cref{lem:k-frame-pi-finrank} and
+  \cref{lem:k-frame-incidence-finrank-rk}), and it contains the
+  $|E''|$ linearly independent rows of $E''$. As
+  $r(E'') \le |V(E'')| - 1$, we get $|E''| \le D|V(E'')| - D$. So
+  $G \restriction E'$ is $(D, D)$-sparse.
 \end{proof}
 
 \begin{corollary}[Tay's theorem at every generic endpoint
@@ -805,43 +892,58 @@ inside that space.
   \leanok
   \uses{def:generic-endpoints, def:independent-body-bar,
     def:infinitesimally-rigid-body-bar, def:graph-sparse}
-  Let $q$ be an endpoint assignment generic for row independence.
-  The endpoint realization of $q$ is independent if and only if $G$
-  is $(d, d)$-sparse, and it is isostatic --- independent and
-  infinitesimally rigid --- if and only if $G$ is $(d, d)$-tight.
+  Let $G$ be a finite multigraph, and let $q$ be an endpoint
+  assignment of $G$ that is generic for row independence. Then the
+  endpoint realization of $q$ is independent if and only if $G$ is
+  $(D, D)$-sparse. It is isostatic, that is, independent and
+  infinitesimally rigid, if and only if $G$ is $(D, D)$-tight.
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:bodybar-generic-independence,
     lem:tay-isSparse-of-independent}
-  Take $E' = E(G)$ in \cref{thm:bodybar-generic-independence}:
-  sparsity of $G$ makes all $|E(G)|$ rows independent, and
-  $|E(G)|$ independent rows are full row rank, i.e.\ independence;
-  the converse is \cref{lem:tay-isSparse-of-independent} directly,
-  with no genericity. For the isostatic form, independence gives
-  $\operatorname{rank} = |E|$, under which the tightness count
-  $|E| + d = d\,|V|$ and the rigidity count
-  $\operatorname{rank} + d = d\,|V|$ coincide, as in the proof of
-  \cref{thm:tay-witness}.
+  Take $E' = E(G)$ in \cref{thm:bodybar-generic-independence}. As
+  $G \restriction E(G) = G$, the rows of all the bars are linearly
+  independent, that is, the realization is independent
+  (\cref{def:independent-body-bar}), if and only if $G$ is
+  $(D, D)$-sparse. If the realization is independent, the rank of its
+  rigidity map is $|E(G)|$. Then it is infinitesimally rigid if and
+  only if $|E(G)| = D|V(G)| - D$
+  (\cref{def:infinitesimally-rigid-body-bar}). So it is isostatic if
+  and only if $G$ is $(D, D)$-sparse with $|E(G)| = D|V(G)| - D$, that
+  is, $(D, D)$-tight (\cref{def:graph-sparse}).
 \end{proof}
 
-This upgrades the existence quantifiers of \cref{thm:tay-witness}
-to every generic endpoint assignment, the generic form of Tay's
-theorem~\cite{tay1984}, proved coordinate-wise as
-in~\cite[\S5]{jacksonJordan2009}. Two consequences worth recording
-in prose. First, every generic endpoint realization of a multigraph
-containing $d$ edge-disjoint spanning trees is infinitesimally
-rigid: the union of the trees is a bar set whose edge-restriction
-is $(d, d)$-tight, so its $d(|V| - 1)$ rows are independent at $q$
-by \cref{thm:bodybar-generic-independence}, while the
-block-diagonal bound caps the rank of any body-bar rigidity matrix
-at $d(|V| - 1)$, forcing the rigidity count. Second,
-\cref{thm:bodybar-generic-independence} identifies the bar sets
-with independent rows at a generic assignment with the independent
-sets of the $d$-fold union of the cycle matroid
-(\cref{thm:unionPow-cycle-indep-iff-sparse}); the rank formula of
-Jackson and Jord\'an's Theorem~5.2 (which they attribute to Tay) is
-the rank of that union.
+So Tay's theorem (\cref{thm:tay-witness}) holds at every generic
+endpoint assignment. So does rigidity from spanning trees. Let $G$ be
+a finite multigraph that has at least one body and contains $D$
+edge-disjoint spanning trees, and let $F$ be their union. Then $F$ has
+$D(|V(G)| - 1)$ bars. As $F$ is a union of $D$ forests,
+$G \restriction F$ is $(D, D)$-sparse (\cref{lem:union-indep-iff} and
+\cref{thm:unionPow-cycle-indep-iff-sparse}). By
+\cref{thm:bodybar-generic-independence}, the rows of $F$ are linearly
+independent at every generic endpoint assignment. So the rank of the
+rigidity map there is at least $D|V(G)| - D$. It is at most
+$D|V(G)| - D$ (the remarks after \cref{def:rigidity-map-body-bar}), so
+every generic endpoint realization of $G$ is infinitesimally rigid.
+
+By \cref{thm:bodybar-generic-independence} and
+\cref{thm:unionPow-cycle-indep-iff-sparse}, a set of bars has linearly
+independent rows at a generic endpoint assignment if and only if it is
+independent in the union of $D$ copies of the cycle matroid of $G$.
+Tay proved this for his generic frameworks, in which the vectors on
+the bars are independent indeterminates~\cite[Corollary~5.4]{tay1984}.
+So the rank of the rigidity map at a generic endpoint assignment is
+the rank of this union. For bars that are segments, Jackson and
+Jord\'an's Theorem~5.2, which they credit to Tay, gives this rank as
+\[
+  D\,(|V(G)| - 1) - \max_P \bigl( D\,(|P| - 1) - e_G(P) \bigr),
+\]
+where $P$ ranges over the partitions of $V(G)$, and $e_G(P)$ is the
+number of bars that join different parts of
+$P$~\cite[\S5]{jacksonJordan2009}. That the rank of the union has
+this value is their Theorem~4.1(a), which they credit to Tutte and
+Nash-Williams.
 
 \subsection{Every generic body-and-hinge realization}
 \label{sec:generic-lift-bodyhinge}
