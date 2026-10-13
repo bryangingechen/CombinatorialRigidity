@@ -331,7 +331,128 @@ A block pin also detects infinitesimal rigidity.
   trivial.
 \end{proof}
 
-\begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
+We now follow Katoh and Tanigawa's sketch of Case~I at the start of KT
+\S6.2 (p.~673). Let $G$ be a minimal $k$-dof-graph, let $H$ be a proper
+rigid subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex
+$r$ of $H$ (\cref{def:rigid-contraction}). Then $H$ is a minimal
+$0$-dof-graph (KT Lemma~3.3, \cref{lem:subgraph-minimality}), and
+$G/E(H)$ is a minimal $k$-dof-graph with fewer vertices than $G$ (KT
+Lemma~3.5). So the induction hypothesis, KT eq.~(6.1), gives a
+realization $(H, p_1)$ of rank $D(|V(H)| - 1)$ and a realization
+$(G/E(H), p_2)$ of rank $D(|V(G)| - |V(H)|) - k$. Katoh and Tanigawa
+replace the body $r$ of $(G/E(H), p_2)$ by the rigid framework
+$(H, p_1)$. They show that the rank of the resulting realization of $G$
+is the sum of the two ranks, which is $D(|V(G)| - 1) - k$. We first
+prove KT Lemma~3.5 for the graph $G/E(H)$; its matroid form is
+\cref{lem:contraction-minimality}. Then we prove the rank count, KT
+eq.~(6.3), and KT Claim~6.4, which Katoh and Tanigawa use when $G$ and
+$G/E(H)$ are simple.
+
+\begin{lemma}[The contraction is a minimal $k$-dof-graph; KT Lemma~3.5]
+  \label{lem:rigidContract-isMinimalKDof}
+  \lean{Graph.rigidContract_isMinimalKDof}
+  \leanok
+  \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-step}
+  Let $D \ge 2$, let $G$ be a minimal $k$-dof-graph, let $H$ be a proper
+  rigid subgraph of $G$, and let $G/E(H)$ be the contraction of $H$ to a
+  vertex of $H$ (\cref{def:rigid-contraction}). Then $G/E(H)$ is a
+  minimal $k$-dof-graph with fewer vertices than $G$
+  (\cref{lem:reduction-measure}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn,
+        def:matroid-MG, lem:rigid-full-rank, thm:tutte-nash-williams}
+  By \cref{lem:contraction-minimality},
+  \[
+    D\bigl(|V(G)| - |V(H)|\bigr)
+      - \operatorname{rank}\bigl(M(\tilde G)/E(\tilde H)\bigr) \;=\; k,
+  \]
+  and every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for every
+  edge $e$ of $G$ not in $H$. These edges are the edges of $G/E(H)$, and
+  their copies form the common ground set of $M(\tilde G)/E(\tilde H)$
+  and $M(\widetilde{G/E(H)})$. We show below that
+  \[
+    M\bigl(\widetilde{G/E(H)}\bigr) \;=\; M(\tilde G)/E(\tilde H).
+  \]
+  Then every base of $M(\widetilde{G/E(H)})$ meets the copies of every
+  edge of $G/E(H)$. The graph $G/E(H)$ has $|V(G)| - |V(H)| + 1$
+  vertices (\cref{def:rigid-contraction}), so KT eq.~(2.4)
+  (\cref{thm:def-eq-corank}) gives
+  \[
+    \operatorname{def}\bigl(\widetilde{G/E(H)}\bigr)
+    \;=\; D\bigl(|V(G)| - |V(H)|\bigr)
+      - \operatorname{rank} M\bigl(\widetilde{G/E(H)}\bigr) \;=\; k.
+  \]
+  Hence $G/E(H)$ is a minimal $k$-dof-graph.
+
+  The identity is not a renaming of edges. Let $M_c$ be the cycle matroid
+  of $\tilde G$, so that $M(\tilde G)$ is the union of $D$ copies of
+  $M_c$ (\cref{def:matroid-MG}). As $H$ is rigid, it is connected
+  (\cref{lem:two-edge-conn}), and so is $\tilde H$, since $D \ge 2$ gives
+  every edge of $H$ a copy in $\tilde H$. So contracting the edges of
+  $\tilde H$ in $\tilde G$ identifies all the vertices of $H$, and gives
+  $\widetilde{G/E(H)}$. The cycle matroid of $\widetilde{G/E(H)}$ is
+  therefore $M_c/E(\tilde H)$~\cite[Proposition~3.2.1]{oxley2011}. So
+  $M(\widetilde{G/E(H)})$ is the union of $D$ copies of $M_c/E(\tilde H)$,
+  while $M(\tilde G)/E(\tilde H)$ is the contraction of the union of $D$
+  copies of $M_c$. In general a union of matroids does not commute with
+  contraction. Let $M$ be the matroid of rank one on two elements $a$ and
+  $c$, neither of which is a loop. Then $a$ is independent in the
+  contraction by $c$ of the union of two copies of $M$, but $a$ is a loop
+  of $M/c$, and so of the union of two copies of $M/c$.
+
+  The two matroids coincide here because the union attains $D$ times the
+  cycle rank on $E(\tilde H)$. Let $r_c$ be the rank function of $M_c$.
+  The rank of $E(\tilde H)$ in $M(\tilde G)$ is the rank of $M(\tilde H)$
+  (\cref{lem:matroid-restrict-subgraph}), which is $D(|V(H)| - 1)$ as $H$
+  is rigid (\cref{lem:rigid-full-rank}). The connected graph $\tilde H$
+  has $r_c(E(\tilde H)) = |V(H)| - 1$. So
+  \[
+    \operatorname{rank}_{M(\tilde G)} E(\tilde H) \;=\;
+    D\, r_c\bigl(E(\tilde H)\bigr).
+  \]
+  Hence a base of $E(\tilde H)$ in $M(\tilde G)$ has $D(|V(H)| - 1)$
+  elements. It is the union of $D$ disjoint forests in $\tilde H$
+  (\cref{thm:tutte-nash-williams}), each with at most $|V(H)| - 1$
+  edges, and so each of them is a spanning tree on $V(H)$. This is Katoh and Tanigawa's (3.1)~\cite[p.~658]{katohTanigawa2011}, on
+  which their proof of Lemma~3.5 rests.
+
+  We derive the identity from this equality. A set $X$ is independent in
+  the union of $D$ copies of a matroid with rank function $\rho$ if and
+  only if $|Y| \le D\,\rho(Y)$ for every $Y \subseteq X$
+  (\cref{thm:matroid-partition-rank}). Let
+  $C = E(\tilde H)$, let $J$ be a base of $C$ in $M(\tilde G)$, so that
+  $|J| = D\, r_c(C)$, and let $I$ be a set of copies of edges not in
+  $H$. Then $I$ is independent in $M(\tilde G)/C$ if and only if
+  $I \cup J$ is independent in
+  $M(\tilde G)$~\cite[Proposition~3.1.7]{oxley2011}, that is, if and only
+  if $|Z| \le D\, r_c(Z)$ for every $Z \subseteq I \cup J$. The rank
+  function of $M_c/C$ is $Y \mapsto r_c(Y \cup C) - r_c(C)$~\cite[Proposition~3.1.6]{oxley2011}.
+  So $I$ is independent in the union of $D$ copies of $M_c/C$ if and only
+  if $|Y| \le D\,\bigl(r_c(Y \cup C) - r_c(C)\bigr)$ for every
+  $Y \subseteq I$.
+
+  Suppose this second condition, and let $Z \subseteq I \cup J$. Write
+  $Z = Y \cup W$ with $Y \subseteq I$ and $W \subseteq J$. Since
+  $W \subseteq C$, submodularity gives
+  $r_c(Y \cup C) + r_c(W) \le r_c(Y \cup W) + r_c(C)$. Also
+  $|W| \le D\, r_c(W)$, as $J$ is independent in $M(\tilde G)$. Adding
+  these two bounds to the bound for $Y$ gives $|Z| \le D\, r_c(Z)$.
+  Conversely, suppose the first condition, and let $Y \subseteq I$. Then
+  \[
+    |Y| + D\, r_c(C) \;=\; |Y \cup J| \;\le\; D\, r_c(Y \cup J)
+    \;\le\; D\, r_c(Y \cup C).
+  \]
+  So the two matroids have the same independent sets. The converse used
+  $|J| = D\, r_c(C)$, and it fails without it, as in the example above.
+\end{proof}
+
+The target rank of $G$ is therefore the sum of the target ranks of $H$
+and $G/E(H)$. Katoh and Tanigawa's eq.~(6.3) shows how a realization of
+$G$ attains this sum.
+
+\begin{lemma}[Case~I: the rank adds over the contraction; KT eq.~(6.3)]
   \label{lem:case-I}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
@@ -340,292 +461,338 @@ A block pin also detects infinitesimal rigidity.
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, def:pinned-motions-on,
         lem:pinned-motions-on-rank-bound, lem:genericity-device}
-  Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$ on
-  the (nonempty) body set $s = V(H)$. Contracting $H$ to a single pinned
-  body is the block pin $Z_s(G,p)$ (\cref{def:pinned-motions-on}), the
-  framework-side carrier of the contraction $G/E(H)$ (a smaller minimal
-  $k$-dof-graph by \cref{lem:contraction-minimality}, supplied the
-  induction hypothesis). Then $(G,p)$ realizes the $V(G)$-relative target
-  rank at $k'$ (\cref{def:rank-hypothesis}) \emph{iff} the rigid block $H$
-  contributes its full $D(|V(H)|-1)$ rows and the residual contraction
-  contributes the rest --- the block-triangular rank addition of
-  KT~(6.3): $\operatorname{rank} R(G,p) = D(|V(H)|-1) +
-  \operatorname{rank} R(G/E(H), p_2)$, glued via the pin-a-body
-  Lemma~5.1 (\cref{lem:rank-delete-vertex}).
+  Let $G$ be a minimal $k$-dof-graph, let $H$ be a proper rigid subgraph
+  of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of $H$.
+  Let $(G,p)$ be a body-hinge framework, and let $(G/E(H), p_2)$ be a
+  realization of $G/E(H)$ at the target rank
+  (\cref{def:rank-hypothesis}). Then $(G,p)$ is at the target rank if and
+  only if
+  \[
+    \operatorname{rank} R(G,p) \;=\; D\bigl(|V(H)| - 1\bigr)
+      + \operatorname{rank} R\bigl(G/E(H), p_2\bigr).
+  \]
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound,
         lem:genericity-device}
-  Pin the rigid block $H$ and place the contraction $G/E(H)$ at its
-  inductive rank. The block pin and the $D$-dimensional trivial motions
-  are disjoint, giving the genericity-free lower bound
-  (\cref{lem:pinned-motions-on-rank-bound}). The combined rigidity matrix
-  is block-triangular --- the $H$-rows occupy only the $V(H)$ columns,
-  the contraction rows the rest --- so at a generic point the ranks add
-  and the reverse bound holds (the entries are polynomials in the panel
-  coordinates, so a common non-root of the relevant minors attains
-  the maximal rank, KT's Claim~6.4, \cref{lem:genericity-device}). The
-  two bounds together pin the parent rank to $D(|V(G)|-1) - k$. This
-  accounting depends only on $s, t \subseteq V(G)$, not on the ambient
-  body type, so it composes through the vertex-reducing induction; the
-  companion nullity form (relating $\dim Z(G,p)$ to the ambient body
-  type) remains available for the deficiency and Proposition~1.1 path.
+  By KT Lemma~3.5 (\cref{lem:rigidContract-isMinimalKDof}), $G/E(H)$ is
+  a minimal $k$-dof-graph. It has $|V(G)| - |V(H)| + 1$ vertices
+  (\cref{def:rigid-contraction}), so
+  $\operatorname{rank} R(G/E(H), p_2) = D(|V(G)| - |V(H)|) - k$. The
+  right side of the identity is therefore $D(|V(G)| - 1) - k$, the
+  target rank of $G$. This proves the lemma.
+
+  Katoh and Tanigawa attain the right side in their Lemmas~6.2 and~6.3
+  (pp.~673--675). There $(H, p_1)$ is a realization of $H$ of rank
+  $D(|V(H)| - 1)$, and $p$ has the hinges of $p_1$ at the edges of $H$
+  (KT eqs.~(6.2) and~(6.6)). Put the columns of the bodies of $H$ first.
+  The hinge constraint at an edge of $H$ involves only the screws at
+  bodies of $H$, so $R(G,p)$ has the block form of KT eq.~(6.3):
+  \[
+    R(G,p) \;=\;
+    \begin{pmatrix}
+      R(H, p_1) & 0 \\
+      \ast & R_{V(H)}\bigl(G \setminus E(H), p\bigr)
+    \end{pmatrix}.
+  \]
+  The first block row consists of the rows of the edges of $H$, and the
+  second of the rows of the other edges. Its right block
+  $R_{V(H)}(G \setminus E(H), p)$ consists of these rows with the
+  columns of $V(H)$ deleted. Suppose that some rows of the first block
+  row are linearly independent, and that some rows of the second are
+  linearly independent after the columns of $V(H)$ are deleted. Then all
+  of them together are linearly independent. Indeed, in a vanishing
+  linear combination only the rows of the second block row have nonzero
+  entries in the columns of $V(G) \setminus V(H)$, so their coefficients
+  vanish, and then so do the others. Hence
+  \[
+    \operatorname{rank} R(G,p) \;\ge\; D\bigl(|V(H)| - 1\bigr)
+      + \operatorname{rank} R_{V(H)}\bigl(G \setminus E(H), p\bigr)
+  \]
+  (\cref{lem:block-rank-contract}).
+
+  When the rows of $H$ have rank $D(|V(H)| - 1)$, as here, this bound is
+  an equality. A screw assignment that vanishes on $V(H)$ satisfies the
+  hinge constraints at the edges of $H$. It satisfies those at the other
+  edges exactly when its values at the other bodies lie in the null space
+  of $R_{V(H)}(G \setminus E(H), p)$. So the block pin $Z_{V(H)}(G,p)$
+  (\cref{def:pinned-motions-on}) has dimension
+  $D(|V(G)| - |V(H)|) - \operatorname{rank} R_{V(H)}(G \setminus E(H), p)$.
+  Since $\operatorname{rank} R(G,p) = D|V(G)| - \dim Z(G,p)$, the bound
+  $D + \dim Z_{V(H)}(G,p) \le \dim Z(G,p)$
+  (\cref{lem:pinned-motions-on-rank-bound}) is the reverse inequality.
+
+  It remains to compare the second block with $R(G/E(H), p_2)$. The
+  bodies of $G/E(H)$ meet $V(H)$ only in $r$, so deleting the columns of
+  $V(H)$ from $R(G/E(H), p_2)$ deletes those of $r$. By KT Lemma~5.1
+  (\cref{lem:rank-delete-vertex}), this does not change the rank. Katoh
+  and Tanigawa note this at eq.~(6.5), and
+  \cref{lem:extProj-preserves-rank-of-inter} states it in this form. In
+  KT Lemma~6.2, $p$ has the hinges of $p_2$ at the edges not in $H$. The
+  row of such an edge in $R(G,p)$ then differs from its row in $R(G/E(H), p_2)$ only in the
+  columns of $V(H)$ (KT eq.~(6.4)). So the second block has the rank of
+  $R(G/E(H), p_2)$, and the identity holds.
+
+  In KT Lemma~6.3, $G$ and $G/E(H)$ are simple, and $p$ changes the
+  hinges at the edges between $V(H)$ and the other bodies (KT
+  eq.~(6.6)). With KT Lemma~5.1, KT Claim~6.4 shows that the second
+  block still has at least the rank of $R(G/E(H), p_2)$ (KT eq.~(6.9);
+  \cref{lem:claim-6-4}, below). The proof of the claim uses that $p_1$
+  and $p_2$ are generic, so that the rank is the largest over all choices
+  of the panels.
+  The general form of this argument is \cref{lem:genericity-device}, in
+  \cref{sec:molecular-algebraic-induction-genericity}. Hence the rank of
+  $R(G,p)$ is at least the target rank. It is also at most the target
+  rank, as the hinges are nondegenerate
+  (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
-\begin{lemma}[Panel-coordinate row coordinatization; KT Claim 6.4]
-  \label{lem:rows-polynomial-in-normals}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_good_realization_ofParam}
-  \leanok
-  \uses{def:panel-support-extensor, def:rigidity-matrix, lem:genericity-device}
-  Regard a panel-hinge realization of a fixed graph $G$ as a point of
-  panel-coordinate space: an assignment $q \colon V_\alpha \times \{1,
-  \dots, k+2\} \to K$ of a normal $n_v = q(v, -) \in K^{k+2}$ to each
-  body. Then the rigidity rows of $R(G,q)$ form a finite family of
-  functionals on $K^{D|V_\alpha|}$ whose coordinates, in the standard
-  basis, are degree-$2$ polynomials in the entries of $q$ --- exactly the
-  input shape the genericity device (\cref{lem:genericity-device}) needs
-  to be applied to a \emph{varying} panel realization, rather than a
-  constant one.
-\end{lemma}
-\begin{proof}
-  \leanok
-  A coordinate of the grade-$2$ join $n_u \wedge n_v$ against the
-  standard dual basis of $\Lambda^2 K^{k+2}$ is the $2 \times 2$ minor
-  $n_u(i)\,n_v(j) - n_u(j)\,n_v(i)$, a determinant of the two normals'
-  coordinates and hence bilinear, so it is a degree-$2$ polynomial in the
-  panel coordinates $q$. The supporting extensor $C(p(e)) =
-  \mathrm{complementIso}(n_u \wedge n_v)$ (\cref{def:panel-support-extensor})
-  is a fixed linear image of the join, so its coordinates stay degree-$2$.
-  Each rigidity row spans the annihilator of its edge's supporting
-  extensor in $(K^{k+2})^*$, and its coordinates are in turn a fixed
-  linear combination of the extensor's coordinates at the two endpoints,
-  so they too are degree-$2$ in $q$. Applying the genericity device to
-  this family, with the witnessed independent subfamily supplied by the
-  general-position seed (\cref{lem:exists-independent-panel-extensor}),
-  produces a normal assignment attaining the codimension bound
-  $\#s + \dim Z(G,q) \le D|V_\alpha|$ at the same corank.
-\end{proof}
+\begin{fmlnote}
+  No pinned theorem mentions the contraction. The second and third state
+  the lemma with the block pin in place of $R(G/E(H), p_2)$, for
+  panel-hinge and for body-hinge frameworks. Let $s$ be a nonempty set of
+  bodies, and suppose that $\dim Z(G,p) \le D + \dim Z_s(G,p)$. Then
+  $\dim Z(G,p) = D + k'$, the form of the target rank in
+  \cref{rem:rank-hypothesis-relative}, if and only if
+  $\dim Z_s(G,p) = k'$. For $s = V(H)$, the hypothesis holds when the rows
+  of $H$ have rank $D(|V(H)| - 1)$, by the proof above, and
+  $\dim Z_s(G,p) = k$ says that the second block has the rank of
+  $R(G/E(H), p_2)$. The first pinned theorem assumes that every
+  infinitesimal motion of $(G,p)$ is constant on $s$, and lets
+  $s \subseteq t$. Then every infinitesimal motion is constant on $t$ if
+  and only if $Z_s(G,p) \subseteq Z_t(G,p)$. It is the one used
+  elsewhere, with $s$ a single body, in
+  \cref{lem:isInfRigidOn-of-relative-count}, later in this chapter.
+\end{fmlnote}
 
-\begin{lemma}[Case I splice glue; KT eq.\ (6.3)]
+For $k = 0$ the rank count has a form in terms of infinitesimal motions.
+In it the contraction has the hinges of $p$: it is the framework
+$(G/E(H), p)$ of \cref{def:framework-with-graph}. Katoh and Tanigawa's
+framework of eq.~(6.7) is of this kind.
+
+\begin{lemma}[Rigidity from $H$ and the contraction; KT eq.~(6.3)]
   \label{lem:case-I-splice-seed}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_of_splice}
   \leanok
   \uses{def:framework-with-graph, def:rank-hypothesis, lem:case-I}
-  Let $H$ (on $s_H = V(H)$) be a proper rigid subgraph and $G/E(H)$ (on
-  $s_c$) its contraction, both subgraphs of $G$ sharing the contracted
-  body $c \in s_H \cap s_c$ and covering $V(G) \subseteq s_H \cup s_c$.
-  If $F$ restricted to $H$ (\cref{def:framework-with-graph}) is
-  infinitesimally rigid on $s_H$, and $F$ restricted to $G/E(H)$ is
-  infinitesimally rigid on $s_c$, then $F$ is infinitesimally rigid on
-  $V(G)$.
+  Let $(G,p)$ be a body-hinge framework, let $H$ be a proper rigid
+  subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of
+  $H$, with vertex set $s_c = (V(G) \setminus V(H)) \cup \{r\}$. Suppose
+  that every infinitesimal motion of the restriction $(H,p)$ is constant
+  on $V(H)$, and that every infinitesimal motion of $(G/E(H), p)$ is
+  constant on $s_c$. Then every infinitesimal motion of $(G,p)$ is
+  constant on $V(G)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:motions-mono-of-graph-le}
-  Each leg transports to the parent by the monotonicity that re-adding
-  edges only shrinks the motion space (\cref{lem:motions-mono-of-graph-le},
-  since $H, G/E(H) \le G$), so a parent motion is already constant on
-  $s_H$ and on $s_c$. The two constants agree at the shared contracted
-  body $c$, so every motion is constant across $s_H \cup s_c \supseteq
-  V(G)$.
+  Let $S$ be an infinitesimal motion of $(G,p)$. As $H$ is a subgraph of
+  $G$, $S$ is an infinitesimal motion of $(H,p)$
+  (\cref{lem:motions-mono-of-graph-le}), so $S$ is constant on $V(H)$.
+  Let $f$ map every vertex of $H$ to $r$ and fix the other bodies. Then
+  $S(f(w)) = S(w)$ for every body $w$, as $r \in V(H)$. An edge $e$ of
+  $G/E(H)$ is an edge of $G$ not in $H$. If its ends in $G$ are $u$ and
+  $v$, then its ends in $G/E(H)$ are $f(u)$ and $f(v)$
+  (\cref{def:rigid-contraction}), and
+  $S(f(u)) - S(f(v)) = S(u) - S(v)$. So $S$ satisfies the hinge
+  constraint of $(G/E(H), p)$ at $e$, because it satisfies that of
+  $(G,p)$ (\cref{def:hinge-constraint}). Hence $S$ is an infinitesimal
+  motion of $(G/E(H), p)$, and it is constant on $s_c$. The sets $V(H)$
+  and $s_c$ share the body $r$ and cover $V(G)$, so $S$ is constant on
+  $V(G)$.
 \end{proof}
 
-This is Katoh--Tanigawa's block-triangular splice (KT eq.~(6.3)), read as
-two overlapping rigid pieces glued along a shared body. What the eq.~(6.3)
-block form records --- and the reason it keeps the two blocks apart rather
-than working on the parent body set $V(G)$ throughout --- is that the two
-pieces are rigid on two \emph{different} body sets. Write $V' = V(H)$ for the
-rigid subgraph's bodies and $r$ for the single body the contraction
-identifies $V'$ to (KT's $v^*$), so that the contraction $G/E(H)$ lives on
-$s_c = (V(G) \setminus V(H)) \cup \{r\}$. The rigid block --- KT's
-$R(G',p_1)$ with $G' = H$ --- occupies the $V'$ columns at rank $D(|V'|-1)$;
-the surviving block is KT's $R(G,p;\, E \setminus E',\, V \setminus V')$, the
-parent rigidity matrix cut to the surviving edges $E(G) \setminus E(H)$ and
-the surviving-body columns $V(G) \setminus V(H)$. That surviving block is at
-the contraction realization's own rank $D(|s_c|-1) - k$: deleting the one
-column of the contracted body $r$ loses no rank (the pin-a-body Lemma~5.1,
-\cref{lem:rank-delete-vertex}; KT eqs.~(6.5) and (6.9)), so its rank on the
-$V \setminus V'$ columns equals the contraction's rank on all of $s_c$.
+\begin{fmlnote}
+  The pinned theorem joins the restrictions of $(G,p)$ to two subgraphs
+  $G_1$ and $G_2$ of $G$. Let $s_1$ and $s_2$ be sets of bodies with a
+  common body, and suppose that every infinitesimal motion of $(G_i, p)$
+  is constant on $s_i$ for $i = 1, 2$. Then every infinitesimal motion of
+  $(G,p)$ is constant on every set $t \subseteq s_1 \cup s_2$. Its proof
+  is the first and the last step of the proof above. The contraction
+  $G/E(H)$ is not a subgraph of $G$ when an edge not in $H$ has an end in
+  $V(H) \setminus \{r\}$. So the lemma is not an instance of the pinned
+  theorem, and no pinned theorem gives the step from $(G,p)$ to
+  $(G/E(H), p)$. No main result uses the pinned theorem.
+\end{fmlnote}
 
-The contraction leg is rigid on $s_c$ and not on any larger set --- in
-particular not on the whole parent body set $V(G)$. Contracting $H$
-identifies the whole of $V(H)$ to the single body $r$, so the interior bodies
-$V(H) \setminus \{r\}$ are not bodies of $G/E(H)$ at all; its only edges are
-the surviving edges $E(G) \setminus E(H)$, each with its $V(H)$ endpoints sent
-to $r$, so they run among the surviving bodies $V(G) \setminus V(H)$ and $r$
-and touch no interior body. Nothing in the contraction leg constrains
-$V(H) \setminus \{r\}$: those bodies are held rigid only by the subgraph's own
-edges $E(H)$, which the contraction leg does not include, so an infinitesimal
-motion of that leg may move them freely, and its rigidity holds on $s_c$
-alone. This is why the splice glue (\cref{lem:case-I-splice-seed}) takes a
-body set for each leg, $s_H = V(H)$ for the rigid block and $s_c$ for the
-contraction, in place of asserting rigidity of both on $V(G)$. Among all the
-pieces the induction assembles the contraction is the first that is rigid on
-a proper subset of the ambient body set rather than on the whole of it.
+The lemma takes a different set of bodies for each of its two
+frameworks, and the contraction needs this. Contracting $H$ identifies
+all of $V(H)$ with $r$, so the bodies of $V(H) \setminus \{r\}$ are not
+vertices of $G/E(H)$. Each edge of $G/E(H)$ is an edge of $G$ not in
+$H$, and each of its ends in $V(H)$ is replaced by $r$, so both of its
+ends lie in $s_c$. Hence no hinge constraint of $(G/E(H), p)$ involves a
+body of $V(H) \setminus \{r\}$, and an infinitesimal motion of
+$(G/E(H), p)$ may take any values there. So the lemma can ask that the
+infinitesimal motions of $(G/E(H), p)$ be constant on $s_c$, but on no
+larger set, and in particular not on $V(G)$. The bodies of
+$V(H) \setminus \{r\}$ are held by the edges of $H$, which are the
+edges of the restriction $(H, p)$.
 
-The body-set split is what closes the rank count. After projecting away the
-$V'$ columns the rigid block's rows vanish (KT's top-right zero block), so the
-two row families are disjoint and their ranks add,
+The same two sets of bodies appear in the rank count of
+\cref{lem:case-I}. The first block of KT eq.~(6.3) has the columns of
+$V(H)$, and its rank is $D(|V(H)| - 1)$. The second has the columns of
+$V(G) \setminus V(H) = s_c \setminus \{r\}$. In KT Lemma~6.2 its rank
+is $\operatorname{rank} R(G/E(H), p_2) = D(|s_c| - 1) - k$, since
+deleting the columns of the one body $r$ does not change the rank, and
+in KT Lemma~6.3 it is at least this. The two sets share exactly the body
+$r$, so
+$|V(H)| + |s_c| = |V(G)| + 1$ and
 \[
-  D(|V'|-1) + \bigl(D(|s_c|-1) - k\bigr) = D(|V(G)|-1) - k,
+  D\bigl(|V(H)| - 1\bigr) + D\bigl(|s_c| - 1\bigr) - k
+  \;=\; D\bigl(|V(G)| - 1\bigr) - k,
 \]
-the target rank for $G$ (KT eq.~(6.3), closing line of Lemma~6.3). The
-arithmetic balances because the two body sets overlap in exactly the one body
-$r$: with $s_H \cap s_c = \{r\}$ one has $|V'| + |s_c| = |V(G)| + 1$, so the
-two ``$-1$'' corrections absorb that single shared body,
-$(|V'|-1) + (|s_c|-1) = |V(G)|-1$. Counting $r$ once from each side is what
-lets a rigid piece on $V(H)$ and a rigid piece on $s_c$ glue to a rigid parent
-on all of $V(G)$.
+the target rank of $G$ (KT p.~675).
 
-The splice itself is genericity-free: the genericity device
-(\cref{lem:genericity-device}) enters only at the realization lemma
-\cref{lem:case-I-realization}, where the two legs must be realized at a single
-generic placement --- a point in the intersection of the two legs'
-Zariski-open rigid loci. The hypotheses of \cref{lem:case-I-splice-seed} are
-the satisfiable inductive facts, relative rigidity of each piece on a common
-placement $F$, not the parent rank they conclude.
+In KT Lemma~6.3 the graphs $G$ and $G/E(H)$ are simple, and the
+realizations $(H, p_1)$ and $(G/E(H), p_2)$ are nonparallel. Katoh and
+Tanigawa give an edge of $G$ from a body $u \notin V(H)$ to a body
+$v \in V(H)$ the hinge in which the panel of $u$ in $p_2$ meets the panel
+of $v$ in $p_1$ (KT eq.~(6.6)). On the edges not in $H$, these hinges
+form a body-hinge framework $(G/E(H), p')$ on the contraction, in which
+every body other than $r$ is a panel and $r$ need not be one (KT
+eq.~(6.7), where $p'$ is written $p_{E \setminus E'}$). KT Claim~6.4
+states that
+$\operatorname{rank} R(G/E(H), p') \ge \operatorname{rank} R(G/E(H), p_2)$
+(p.~675). Its proof has two steps. First, as Katoh and Tanigawa note
+after Jackson and Jord\'an~\cite{jacksonJordan2009}, the entries of
+$R(G/E(H), p')$ can be written in terms of the coefficients of the
+equations of the panels of $p_1$ and $p_2$. Second, if every body of $H$
+is given the panel of $r$ in $p_2$, then $p'$ becomes $p_2$. As the
+coefficients of $p_1$ and $p_2$ are algebraically independent,
+$R(G/E(H), p')$ has the largest rank over all these choices, which is at
+least $\operatorname{rank} R(G/E(H), p_2)$. With KT Lemma~5.1 the claim
+gives KT eq.~(6.9), the bound on the second block in the proof of
+\cref{lem:case-I}. For panel normals, the first step is the next lemma,
+and \cref{lem:claim-6-4} states the claim.
 
-\begin{lemma}[Graph-level minimality of the rigid-subgraph contraction]
-  \label{lem:rigidContract-isMinimalKDof}
-  \lean{Graph.rigidContract_isMinimalKDof}
+\begin{lemma}[Rows polynomial in the normals; KT Claim~6.4]
+  \label{lem:rows-polynomial-in-normals}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_good_realization_ofParam}
   \leanok
-  \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-step}
-  Contracting a proper rigid subgraph $H$ of a minimal $k$-dof-graph $G$
-  again yields a minimal $k$-dof-graph: $(G/E(H))$ is minimal $k$-dof,
-  with strictly fewer vertices (\cref{lem:reduction-step}).
+  \uses{def:panel-support-extensor, def:rigidity-matrix, lem:genericity-device}
+  Let $G$ be a multigraph, and let $e$ be an edge of $G$. There is a
+  finite family of linear forms on screw assignments, depending on the
+  normals $n = (n_v)$, whose coordinates in the standard basis are
+  polynomials of degree two in the coordinates of the normals. For every
+  panel-hinge framework $(G, n)$ whose hinge at $e$ is nondegenerate, the
+  family at $n$ spans the same space as the rows of $R(G,n)$ at $e$
+  (\cref{def:hinge-row-block}).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn,
-        def:matroid-MG, lem:rigid-full-rank, thm:tutte-nash-williams}
-  The reduction theorem (\cref{thm:minimal-kdof-reduction}) supplies only
-  the existence of a rigid subgraph together with the induction hypothesis
-  for the reduction, leaving the contraction's own minimality to be
-  established here. On the matroid side it is already settled --- the
-  matroid contraction $M(\tilde G) / E(\tilde H)$ is a minimal $k$-dof
-  matroid at the reduced ambient $D(|V(G)| - |V(H)|)$
-  (\cref{lem:contraction-minimality}). What remains is the passage to the
-  \emph{graph}: that the count matroid of the graph contraction is that
-  matroid contraction,
+  Let $u$ and $v$ be the ends of $e$, and let $C = C(n_u, n_v)$
+  (\cref{def:panel-support-extensor}). For $x \in \bigwedge^{d-1} K^{d+1}$,
+  write $x_t$ for its coordinate at the $t$-th standard basis vector. The
+  family consists of the forms
   \[
-    M\bigl(\widetilde{G / E(H)}\bigr) \;=\; M(\tilde G) / E(\tilde H).
+    S \;\mapsto\; C_t\, x_{t'} - C_{t'}\, x_t,
+    \qquad \text{where } x = S(u) - S(v),
   \]
-  Granting this identity, both halves of minimality transport. Its bases
-  are the bases of $M(\tilde G) / E(\tilde H)$, and every edge of $G/E(H)$
-  is a surviving parent edge $e \in E(G) \setminus E(H)$, so the
-  base-meets-every-surviving-fiber condition carries over verbatim; the
-  deficiency transports through the def-equals-corank bridge
-  (\cref{thm:def-eq-corank}) on $G/E(H)$, whose collapsed vertex-count
-  $|V(G/E(H))| = |V(G)| - |V(H)| + 1$ makes its ambient $D(|V(G)| -
-  |V(H)|)$, so its corank equals that of $M(\tilde G) / E(\tilde H)$ --- a
-  corank \cref{lem:contraction-minimality} has already conserved at
-  $\operatorname{def}(\tilde G) = k$.
+  for all pairs of indices $t$ and $t'$. As a form in $x$, each of them
+  vanishes at $x = C$. If $C \neq 0$, say $C_{t_0} \neq 0$, then the
+  forms $x \mapsto C_{t_0} x_{t'} - C_{t'} x_{t_0}$ with $t' \neq t_0$ are
+  $D - 1$ linearly independent forms that vanish at $C$. So they span the
+  space of forms that vanish at $C$, which has dimension $D - 1$. Hence
+  the family spans the same space as the rows of $R(G,n)$ at $e$
+  (\cref{def:hinge-row-block}).
 
-  The identity reads like a bookkeeping rename --- contract the fibers,
-  relabel the collapsed vertices --- but it is not, and it holds only
-  because $H$ is rigid. Here $M(\tilde G)$ is the $(D,D)$-count matroid,
-  equivalently the $D$-fold union of the cycle matroid of $\tilde G$
-  (\cref{def:matroid-MG}; Tutte--Nash-Williams,
-  \cref{thm:tutte-nash-williams}), and contraction does not distribute over
-  a matroid union: for matroids $M_1, \dots, M_D$ and a set $C$, the
-  contraction of the union $\bigl(\bigcup_i M_i\bigr) / C$ and the union of
-  the contractions $\bigcup_i (M_i / C)$ share a ground set but not, in
-  general, their independent sets --- a base of $C$ in the union need not
-  restrict to a base of $C$ in each factor. The graph contraction $G/E(H)$
-  produces exactly the union-of-contracted-factors on the surviving fibers
-  $E(\tilde G) \setminus E(\tilde H)$, whereas $M(\tilde G) / E(\tilde H)$
-  is the contraction-of-the-union; the identity asserts these coincide,
-  which for a general subgraph they do not.
-
-  They coincide here because the contracted-out fibers $E(\tilde H)$
-  \emph{rank-saturate} the union. Since $H$ is rigid --- $0$-dof, so
-  $\operatorname{def}(\tilde H) = 0$ --- its count matroid attains the top
-  rank $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$
-  (\cref{lem:rigid-full-rank}), while the single cycle matroid of the
-  connected $\tilde H$ (\cref{lem:two-edge-conn}) ranks $E(\tilde H)$ at
-  $|V(H)| - 1$. So the $D$-fold union ranks $E(\tilde H)$ at exactly $D$
-  times the single-factor rank, and a base of $E(\tilde H)$ splits into one
-  cycle-matroid base per factor: the fibers pack into $D$ edge-disjoint
-  spanning trees on $V(H)$. This packing is the pivot of
-  Katoh--Tanigawa's own proof of Lemma~3.5 (their equation~(3.1),
-  \cite[p.~658]{katohTanigawa2011}): a base of $M(\tilde G)$ containing a
-  base of the fibers restricts, within $E(\tilde H)$, to a spanning tree on
-  $V(H)$ in each of the $D$ forests packing it. Under this saturation ---
-  and only under it --- the per-factor bases of $C = E(\tilde H)$ line up,
-  so the two matroids have the same independent sets. For a non-rigid $H$
-  the fibers fall short of the packing, and collapsing $V(H)$ to a single
-  body over-identifies --- it presumes $V(H)$ fully rigidified, which the
-  fibers no longer certify --- so the identity fails.
-
-  What forces the coincidence is a rank count, not a matching of the two
-  matroids' decompositions: an arbitrary splitting into $D$ factors of a
-  set $I \cup J$ --- surviving fibers $I$ together with a fiber-basis $J$
-  of $E(\tilde H)$ --- need not keep $J$'s part factor-aligned, so a naive
-  factor-by-factor matching does not go through. Instead both sides are
-  read through the $(D,D)$-count condition ($E'$ is independent iff $|Y|
-  \le D \cdot \operatorname{rank}_{\mathrm{cyc}}(Y)$ for every $Y \subseteq
-  E'$), and equality falls out of the submodularity and monotonicity of the
-  cycle rank once the saturation $|J| = D(|V(H)| - 1)$ is in hand.
+  The coordinates of these forms are linear in those of $C$. The
+  coordinates of the join $n_u \vee n_v$ (\cref{def:join}) are the
+  $2 \times 2$ minors $n_u(i)\, n_v(j) - n_u(j)\, n_v(i)$ with $i < j$,
+  which are polynomials of degree two in the normals. The complement
+  isomorphism $*$ maps each standard basis vector of
+  $\bigwedge^2 K^{d+1}$ to a nonzero multiple of one of
+  $\bigwedge^{d-1} K^{d+1}$ (the proof of
+  \cref{def:meet-complement-iso}). So the coordinates of
+  $C = *(n_u \vee n_v)$ are polynomials of degree two in the normals, and
+  so are those of the forms.
 \end{proof}
 
-\begin{lemma}[KT Claim 6.4: the surviving block attains its rank at a generic placement (eq.\ (6.9))]
+\begin{fmlnote}
+  The pinned theorem applies the genericity argument
+  (\cref{lem:genericity-device}, in
+  \cref{sec:molecular-algebraic-induction-genericity}) to these forms,
+  with the ends of each edge read from the endpoint selector
+  (\cref{fmlnote:panel-hinge-nondegenerate}). Let $K$ be infinite, and
+  let $W$ be the finite set of all bodies. If some $m$ of the forms are
+  linearly independent at normals $q_0$, then there are normals $q$ with
+  $m + \dim Z(G,q) \le D|W|$. The normals $q_0$ already satisfy this
+  bound. The polynomial coordinates are a step of the proof, and no
+  pinned theorem states them.
+\end{fmlnote}
+
+\begin{lemma}[The rows outside $H$ at generic normals; KT Claim~6.4 and eq.~(6.9)]
   \label{lem:claim-6-4}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidContract_exterior_rank_transport_htransport}
   \leanok
   \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex,
         lem:contraction-minimality}
-  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph
-  $H$ on $s = V(H)$, and write $s_c = (V(G) \setminus V(H)) \cup \{r\}$
-  for the surviving body set with representative $r$. Given the
-  contraction $G/E(H)$ realized at its inductive rank, the surviving-edge
-  block of the rigidity matrix --- restricted to the edges $E(G)
-  \setminus E(H)$ and to the columns outside $V(H)$ --- attains rank
-  $D(|s_c|-1)$ at a generic placement: at a Zariski-open locus of panel
-  coordinates, the surviving rows are linearly independent after
-  projecting away the columns of $V(H)$ (KT's bottom-right block,
-  eq.~(6.9); the row-count companion of the pin-a-body Lemma~5.1,
-  \cref{lem:rank-delete-vertex}).
+  Let $G$ be a simple minimal $0$-dof-graph, let $H$ be a proper rigid
+  subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of
+  $H$, with vertex set $s_c = (V(G) \setminus V(H)) \cup \{r\}$. Suppose
+  that $G/E(H)$ has a generic full-rank realization
+  (\cref{def:rank-hypothesis}). Then there is a nonzero polynomial $Q$ in
+  the panel normals such that at every $q$ with $Q(q) \neq 0$, the rows of
+  $R(G \setminus E(H), q)$ with the columns of $V(H)$ deleted have rank
+  $D(|s_c| - 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:contraction-minimality}
-  The argument transports the contraction's rank across the collapse map
-  $f$ sending every body of $V(H)$ to $r$ and fixing the rest, from a
-  generic realization of the abstract relabelled graph $G/E(H)$ to the
-  surviving-edge block of the parent.
+  Let $N = D(|s_c| - 1)$, and let $f$ map every body of $V(H)$ to $r$ and
+  fix the other bodies. By KT Lemma~3.5
+  (\cref{lem:rigidContract-isMinimalKDof}), $G/E(H)$ is a minimal
+  $0$-dof-graph, so its target rank is $N$. Its
+  generic full-rank realization has normals $n$ in general position at
+  which $R(G/E(H), n)$ has rank $N$. The bodies of $G/E(H)$ meet $V(H)$
+  only in $r$. So deleting the columns of $V(H)$ from $R(G/E(H), n)$
+  deletes those of the one body $r$, and by KT Lemma~5.1
+  (\cref{lem:rank-delete-vertex}) the rank stays $N$.
 
-  First, the contraction's generic realization is transported to the
-  endpoint selector recording the links of $G/E(H)$ through $f$: since
-  both selectors record the same links, they agree up to swap and the two
-  realizations have the same rigidity and motion space. This gives a
-  free-normal panel framework on $G/E(H)$ in general position, rigid on
-  its whole vertex set $s_c$.
+  Now give each body $v$ the normal $q_0(v) = n_{f(v)}$, so that the
+  bodies of $V(H)$ get the normal of $r$. This is the choice in Katoh and
+  Tanigawa's proof of Claim~6.4 that turns $p'$ into $p_2$. Let $e$ be an
+  edge of $G \setminus E(H)$ with ends $u$ and $v$. At $q_0$ its hinge is
+  $C(n_{f(u)}, n_{f(v)})$, the hinge of $e$ in $G/E(H)$ at $n$, as the
+  ends of $e$ in $G/E(H)$ are $f(u)$ and $f(v)$. Its two rows differ only
+  in the columns of the bodies of $V(H)$. So after the columns of $V(H)$
+  are deleted, the rows of
+  $R(G \setminus E(H), q_0)$ are those of $R(G/E(H), n)$, and they have
+  rank $N$.
 
-  Second --- the genuine content of the claim --- the exterior-column
-  projection that drops exactly the $V(H)$-columns loses no rank on this
-  framework's rigidity-row span. Because the framework is rigid on $s_c$
-  and $s_c \cap V(H) = \{r\}$, the trivial motions and the projection's
-  kernel together span everything, so the projected rows stay
-  independent, of size at least $D(|s_c|-1)$: KT's bottom-right block,
-  the pin-a-body content (\cref{lem:rank-delete-vertex}) at the row
-  level.
-
-  Third, the witness placement is KT's degenerate seed (eq.~(6.7)): the
-  collapsed normal field $n \circ f$ on $G \setminus E(H)$. A per-edge
-  identity --- both framings read the same support extensor, the
-  projection reconciling their differing endpoints --- carries the
-  projected independence of the relabelled contraction's rows back to
-  the projected independence of the parent's surviving-edge rows at this
-  seed.
-
-  This discharges what KT \S5.1/Claim~6.4 states under the simplifying
-  assumption that the panel coordinates are algebraically independent
-  over $\Q$, realizing that genericity as the contraction's inductive
-  general-position realization, the transport as the endpoint-selector
-  agreement, and the rank preservation as the zero-rank-loss of the
-  exterior-column projection on a rigid block.
+  Finally, $G/E(H)$ has no loops, since every base of
+  $M(\widetilde{G/E(H)})$ meets the copies of every edge (as in the proof
+  of \cref{lem:rank-polynomial-IH-relabel-proj}). As $n$ is in general
+  position, the hinges of $G/E(H)$ at $n$, and so those of
+  $G \setminus E(H)$ at $q_0$, are nondegenerate
+  (\cref{lem:general-position-support-nonzero}). So the forms of
+  \cref{lem:rows-polynomial-in-normals} at $q_0$ span the rows of every
+  edge of $G \setminus E(H)$, and some $N$ of them are linearly
+  independent after the deletion. Their $N \times N$ minors are
+  polynomials in the normals, and one of them, $Q$, satisfies
+  $Q(q_0) \neq 0$. Wherever $Q(q) \neq 0$, the same $N$ forms are linearly
+  independent after the deletion (\cref{lem:rank-polynomial-proj-eval}),
+  and they lie in the row space of $R(G \setminus E(H), q)$. After the
+  deletion the rows have only the $N$ columns of $V(G) \setminus V(H)$,
+  so their rank is then $N$.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem stops at $q_0$. It gives the normals $q_0$ and
+  $D(|s_c| - 1)$ rows of $R(G \setminus E(H), q_0)$ that are linearly
+  independent after the columns of $V(H)$ are deleted. It assumes that
+  $G/E(H)$ is simple and has deficiency zero, and that the endpoint
+  selector gives each edge of $G \setminus E(H)$ its two ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}). It assumes neither that
+  $G$ is simple nor that $G$ is minimal. Its proof first orients each
+  edge of $G/E(H)$ as the same edge of $G \setminus E(H)$, as in
+  \cref{lem:rank-transport-relabel-of-le-finrank}, so that the rows of
+  the two graphs can be compared edge by edge. The polynomial $Q$, for every
+  deficiency, is \cref{lem:rank-polynomial-IH-relabel-proj}, whose proof
+  takes the same steps. The formal proof of Case~I uses that lemma, and
+  not this one.
+\end{fmlnote}
 
 The three realization lemmas that follow discharge Case~I in its three
 sub-cases \cite[pp.~673--676]{katohTanigawa2011}, and that three-way split

@@ -709,6 +709,22 @@ declaration's name as its header writes it:
   unbacked edges, and the closure of `formalization.yaml`'s main results over its cache, at
   `8cfa4531`); read (a `grep` for each pin's callers).
   *Found:* round 3 task 2.6.
+- **F-139** · N · `lem:claim-6-4`, `lem:rows-polynomial-in-normals`, `lem:case-I-splice-seed`,
+  `lem:case-I` (`algebraic-induction/case-i.tex`): every pin of the first three, and the second and
+  third pins of `lem:case-I`, lie outside every main result's closure. Their callers are dead too:
+  `case_I_realization` alone calls the pin of `lem:claim-6-4`; `exists_relative_full_count_ofParam`
+  (the pin of `lem:relative-device-count`) alone calls that of `lem:rows-polynomial-in-normals`; four
+  unpinned splice lemmas (`GenericityDevice.lean`, `Coupling.lean`) call that of
+  `lem:case-I-splice-seed`; and the panel form of `rankHypothesis_iff_finrank_pinnedMotionsOn` calls
+  the body form, and only the unpinned
+  `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` calls the panel form.
+  `lem:claim-6-4` states at $k = 0$ the claim of `lem:rank-polynomial-IH-relabel-proj`
+  (`rigidity-matrix.tex`), whose pin the formal Case I reaches, and its pin is the degenerate-point
+  step of that lemma's proof. Merging the two nodes, and repinning
+  `lem:rows-polynomial-in-normals` on its polynomial declarations (`F-137`), are the candidates.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the slice's five nodes and
+  `lem:case-I-realization`, at `9a465598`); read (a `grep` for each pin's callers).
+  *Found:* round 3 task 2.7.
 
 ## T — terminology and notation
 
@@ -1167,6 +1183,46 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `reaimSub` and `reaimSubLink`,
   `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.3.
+- **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
+  statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
+  a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
+  replaced by $r$. The pin `isInfinitesimallyRigidOn_of_splice` glues the restrictions of a
+  framework to two subgraphs $G_1, G_2 \le G$ whose body sets share a body, so the lemma is not an
+  instance of it. Task 2.7 kept the contraction, stated with the hinges of $p$
+  (`def:framework-with-graph`; KT eq. (6.7)), and dropped the false gloss. The statement then
+  holds, because a motion of $(G,p)$ that is constant on $V(H)$ is a motion of $(G/E(H), p)$; no
+  pin states that step, and the note after the lemma says so.
+  *Evidence:* read (the statement and body, `Molecular/AlgebraicInduction/Pinning.lean`;
+  `def:rigid-contraction`); measured (dead pin, `scripts/blueprint-deps.py --label`, at
+  `9a465598`).
+  *Found:* round 3 task 2.7.
+- **F-137** · S · `lem:rows-polynomial-in-normals` (`algebraic-induction/case-i.tex`): the statement
+  says that the rows of $R(G,n)$ at an edge can be chosen with coordinates that are polynomials of
+  degree two in the normals. Task 2.7 added that the hinge at the edge be nondegenerate: the
+  formal family is zero at a zero extensor. The pin `exists_good_realization_ofParam` states no
+  polynomial. If $m$ of these rows are linearly independent at normals $q_0$, it gives normals $q$
+  with $m + \dim Z(G,q) \le D|W|$, which $q_0$ itself satisfies (`F-117`'s pattern for the
+  constant family). The polynomial coordinates (`annihRowPoly_eval`,
+  `annihRowPoly_totalDegree_le`) and the spanning (`span_panelRow_eq_rigidityRows`) are steps of
+  its proof with no node; `rigidity-matrix.tex` cites this node for them, in
+  `lem:rank-polynomial-proj-eval` and the note after `lem:rank-polynomial-IH-relabel-proj`.
+  *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/GenericityDevice.lean`,
+  `PanelLayer.lean` and `Pinning.lean`).
+  *Found:* round 3 task 2.7.
+- **F-138** · S · `lem:claim-6-4` (`algebraic-induction/case-i.tex`): the statement takes a simple
+  minimal $0$-dof-graph $G$ whose contraction $G/E(H)$ has a generic full-rank realization, and
+  gives a nonzero polynomial $Q$ in the normals off whose zeros the rows of $G \setminus E(H)$, with
+  the columns of $V(H)$ deleted, have rank $D(|s_c| - 1)$. The pin
+  `rigidContract_exterior_rank_transport_htransport` gives one point, KT's choice in the proof of
+  Claim 6.4 (every body of $H$ with the normal of $r$). It assumes that $G/E(H)$ is simple and of
+  deficiency zero, and of $G$ only that $V(H) \subseteq V(G)$. The statement's hypotheses do not make $G/E(H)$ simple;
+  the proof needs only that it has no loops, which its minimality gives. The open-set form, for
+  every $k$, is `lem:rank-polynomial-IH-relabel-proj` (`rigidity-matrix.tex`), whose pin the
+  formal Case I reaches. Task 2.7 kept the statement, with a note.
+  *Evidence:* read (the statement and body, `Molecular/AlgebraicInduction/CaseI.lean`; KT 2011
+  p. 675, `.refs/`); measured (`scripts/blueprint-deps.py --label lem:claim-6-4` and
+  `lem:case-I-realization`, at `9a465598`).
+  *Found:* round 3 task 2.7.
 
 ## L — Lean
 
@@ -1603,6 +1659,24 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers); measured (the
   main results' closure over the `scripts/blueprint-deps.py` cache, at `8cfa4531`).
   *Found:* round 3 task 2.6.
+- **F-140** · L · the docstrings of `case-i.tex`'s KT eq. (6.3) and Claim 6.4 pins
+  (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `GenericityDevice.lean`,
+  `CaseI.lean`). `rankHypothesis_iff_finrank_pinnedMotionsOn`'s calls the node "GREEN-modulo-21b",
+  cites the matroid form `lem:contraction-minimality` for the graph $G/E(H)$, and calls its
+  hypothesis `hglue` KT's Claim 6.4; that hypothesis is the lower bound of KT eq. (6.3) in motion
+  form, and Claim 6.4 bounds the second block (KT p. 675). Its panel form's calls the block pin
+  "the framework-side carrier of the contraction". `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le`'s
+  says the Case I realization consumes it; its callers are the relative-count lemmas, at one body.
+  `isInfinitesimallyRigidOn_of_splice`'s calls $H$ and $G/E(H)$ "both subgraphs of `F.graph`"
+  (`F-136`) and the seed "honest". `exists_good_realization_ofParam`'s names a hypothesis `hne`
+  that the signature lacks, says `exists_independent_panelSupportExtensor` supplies `hindep` (no
+  caller does, `F-135`), and calls it the device leg of the Case I and II realizations.
+  `rigidContract_exterior_rank_transport_htransport` states its conclusion under
+  `∀ Q, Q.graph = G.rigidContract H r → Q.IsGeneralPosition → Q.toBodyHinge.IsInfinitesimallyRigidOn
+  _ → …`, three hypotheses its proof discards (`intro _ _ _ _`); its docstring carries process codes
+  (U1–U4, "Phase 22b route (i) Commit 5") and calls the dead `case_I_realization` the composer.
+  *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers).
+  *Found:* round 3 task 2.7.
 
 ## M — mathematics and sources
 
