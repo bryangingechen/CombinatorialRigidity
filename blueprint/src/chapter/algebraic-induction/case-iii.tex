@@ -1228,165 +1228,187 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
   scalars with $\lambda_{i^*} = 1$.
 \end{fmlnote}
 
-\begin{lemma}[The $p_2$ placement: the symmetric $va \leftrightarrow vb$ candidate; KT eqs.\ (6.19)/(6.30)]
+The form $r$ serves for the second framework as well, as it depends
+only on $(G_v^{ab}, q)$ (KT p.~686).
+
+\begin{lemma}[The second framework; KT eqs.\ (6.19) and~(6.30)]
   \label{lem:case-III-claim612-p2-placement}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p2_candidateRow}
   \leanok
   \uses{lem:case-II-realization-placement, lem:case-III-columnop,
         lem:case-III-claim612-block-iff-perp}
-  The second candidate $p_2$: split off at $v$ along $vb$ (rather than $va$), the symmetric image of
-  $p_1$ under $a \leftrightarrow b$. It reuses the eq.~(6.12) degenerate placement
-  (\cref{lem:case-II-realization-placement}) with the roles of $a, b$ exchanged, and the column
-  operation at $(v, b)$ (\cref{lem:case-III-columnop}) in place of $(v, a)$. By the same
-  candidate-completion assembly (\cref{lem:case-III-candidate-row}, applied at the swapped roles),
-  \emph{if} its top-left $D \times D$ block $M_2$ (eq.~(6.30)) is full rank --- equivalently
-  $r \notin (\operatorname{span} C(L'))^\perp$, i.e.\ $r(C(L')) \ne 0$ for the line $L' \subset
-  \Pi(b)$ (the row-space criterion \cref{lem:case-III-claim612-block-iff-perp}) --- then $R(G, p_2)$
-  attains the full $D(|V|-1)$-size independent family. The same $\lambda_{(ab)j}$ and index $i^*$
-  appear in $M_1$ and $M_2$ (they are determined by $(G_v^{ab}, q)$, independent of $p_1, p_2$).
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be the
+  linear form of \cref{lem:case-III-candidate-row-construction}. Let $L'$
+  be a $(d-2)$-dimensional affine subspace of the panel $\Pi(b)$ of
+  $(G_v^{ab}, q)$, and let $(G, p_2)$ be the body-hinge framework with
+  the hinge $q(ab)$ at $va$, the hinge $L'$ at $vb$, and the hinge $q(e)$
+  at each edge $e$ of $G_v$ (KT eq.~(6.19)). If $r$ does not vanish on
+  $C(L')$, that is, if the top-left $D \times D$ block $M_2$ of KT
+  eq.~(6.30) is nonsingular, then
+  $\operatorname{rank} R(G, p_2) \ge D(|V(G)| - 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Verbatim symmetric to the $p_1$ construction under $a \leftrightarrow b$. The candidate-completion
-  assembly (\cref{lem:case-III-candidate-row}) applies abstractly to the splitting body, its two
-  endpoints, and the candidate functional, so taking the splitting body to be $v$ and the column
-  operation to be $\Phi = \mathrm{col}_b \mathrel{+}= \mathrm{col}_v$ for the edge $vb$, in place of
-  $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ for $va$, is the same lemma. Its one hypothesis ---
-  the operated, $v$-pinned top-left block being full rank --- is supplied by the row-space criterion
-  (\cref{lem:case-III-claim612-block-iff-perp}) at the $vb$-hinge once the operated candidate row is
-  identified with $\rho$ itself (the column operation makes it pure $v$-column with value
-  $\rho(S_v)$), which holds iff $\rho(C) \ne 0$. The redundant-row combination is unchanged: it
-  lives in $R(G_v^{ab}, q)$, common to both candidates.
+  We argue as in the proof of \cref{lem:case-III-candidate-row}, with
+  the roles of $a$ and $b$ exchanged (KT pp.~682 and~686). Let $W$ be the
+  row space of $R(G_v, q)$, which lies in the row space of $R(G, p_2)$.
+  The hinge of $va$ is $q(ab)$, on which $r$ vanishes, so the form
+  $S \mapsto r(S(v) - S(a))$ is a row at $va$. By KT eq.~(6.24), the
+  form $S \mapsto r(S(a) - S(b))$ lies in $W$. So their sum, the form
+  $S \mapsto r(S(v) - S(b))$, lies in the row space of $R(G, p_2)$.
+
+  Let $r'_1, \dots, r'_{D-1}$ be linearly independent forms that vanish
+  on $C(L')$, so that the rows of $vb$ are the forms
+  $S \mapsto r'_i(S(v) - S(b))$. Katoh and Tanigawa add the columns of
+  $v$ to those of $b$ (KT p.~682). By \cref{lem:case-III-columnop}, with
+  $b$ in place of $a$, this turns the rows of $vb$ and the form
+  $S \mapsto r(S(v) - S(b))$ into the forms $S \mapsto r'_i(S(v))$ and
+  $S \mapsto r(S(v))$. These make up the block $M_2$, with the rows
+  $r'_1, \dots, r'_{D-1}$ and $r$, which is nonsingular exactly when
+  $r(C(L')) \neq 0$ (\cref{lem:case-III-claim612-block-iff-perp}). The
+  count in the proof of \cref{lem:case-III-candidate-row}, with $b$ in
+  place of $a$, then gives the bound.
 \end{proof}
 
-\begin{lemma}[Link correspondence under the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
+\begin{fmlnote}
+  The pinned theorem is the independence of the last step of the count,
+  for any finite families of forms in place of the rows of $vb$ and of
+  $R(G_v^{ab}, q)$, any form in place of $r$, and any hinge in place of
+  $L'$. It combines the pinned theorems of
+  \cref{lem:case-III-candidate-row}, with $b$ in place of $a$, and of
+  \cref{lem:case-III-claim612-block-iff-perp}. It does not mention $G$,
+  $p_2$ or the rank.
+\end{fmlnote}
+
+The next three lemmas give Katoh and Tanigawa's realization of
+$G_a^{vc}$ with the panels of $(G_v^{ab}, q)$, in which the panel of $a$
+becomes that of $v$ (KT pp.~686--687). The third framework is built on
+it. The formal proof of the case $d = 3$ does not use these lemmas.
+
+\begin{lemma}[The isomorphism from $G_a^{vc}$ to $G_v^{ab}$; KT p.~686]
   \label{lem:splitOff-isLink-relabel}
   \lean{Graph.splitOff_isLink_relabel}
   \leanok
   \uses{def:graph-operations}
-  Let $v, a, b, c$ and $e_a, e_b, e_c$ be the vertices and edges of the chain $b$--$v$--$a$--$c$
-  introduced above: $e_a$ links $v$ to $a$, $e_b$ links $v$ to $b$, $e_c$ links $a$ to $c$, every
-  $G$-edge at $v$ is $e_a$ or $e_b$, and every $G$-edge at $a$ is $e_a$ or $e_c$. Fix fresh edges
-  $e_0, e_1 \notin E(G)$ with $e_1 \ne e_0$, and write $\rho = (a\,v)$ for the transposition of $a$
-  and $v$, and $\sigma = (e_b\,e_0)(e_1\,e_c)$ for the product of the two edge transpositions.
-  Then an edge $e$ links $x$ to $y$ in the $a$-split $G_a^{vc}$ if and only if $\sigma e$ links
-  $\rho x$ to $\rho y$ in the $v$-split $G_v^{ab}$. This is KT eq.~(6.31): the graph isomorphism $G_a^{vc} \cong
-  G_v^{ab}$ sends $e_b \mapsto e_0$ (the surviving $v$--$b$ edge becomes the fresh $a$--$b$ edge)
-  and $e_1 \mapsto e_c$ (the fresh $v$--$c$ edge becomes the surviving $a$--$c$ edge).
+  Let $G$ be a multigraph, and let $v$, $a$, $b$ and $c$ be distinct
+  vertices of $G$ such that the edges of $G$ at $v$ are $va$ and $vb$,
+  and those at $a$ are $va$ and $ac$. Let
+  $\rho \colon V(G) \setminus \{a\} \to V(G) \setminus \{v\}$ be the
+  bijection with $\rho(v) = a$ and $\rho(u) = u$ for $u \neq v$. Then
+  $\rho$ is an isomorphism from $G_a^{vc}$ to $G_v^{ab}$ that maps the
+  edge $vb$ to the new edge $ab$, the new edge $vc$ to the edge $ac$, and
+  every other edge to itself.
 \end{lemma}
 \begin{proof}
   \leanok
-  Expand the link relation of each split-off graph and match cases using the degree-2 closures at
-  $v$ and $a$. Surviving edges $e \notin \{e_b, e_1\}$ have both endpoints away from $v$ and $a$
-  (by the two closures), so $\sigma$ and $\rho$ fix them. The $e_b$-case maps to the fresh
-  $e_0$-edge (endpoints $v \mapsto a$, $b \mapsto b$); the $e_1$-case maps to the surviving
-  $e_c$-edge (endpoints $v \mapsto a$, $c \mapsto c$).
+  The edges of $G_a^{vc}$ are $vb$, the new edge $vc$, and the edges of
+  $G$ that meet neither $v$ nor $a$. Those of $G_v^{ab}$ are $ac$, the
+  new edge $ab$, and the same edges of $G$ (\cref{def:graph-operations}).
+  The bijection $\rho$ fixes the ends of an edge that meets neither $v$
+  nor $a$. It maps the ends $v, b$ of $vb$ to $a, b$, and the ends $v, c$
+  of $vc$ to $a, c$.
 \end{proof}
 
-\begin{lemma}[Fixed-seed realization transport across the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
+\begin{fmlnote}
+  In the formalization the edges of a multigraph are labels
+  (\cref{fmlnote:graph-operations}). The pinned theorem takes labels
+  $e_0 \neq e_1$ outside $E(G)$ for the new edges $ab$ of $G_v^{ab}$ and
+  $vc$ of $G_a^{vc}$. It replaces $\rho$ by the transposition of $a$ and
+  $v$ on all bodies, and the map on edges by the permutation of the
+  labels that exchanges the label of $vb$ with $e_0$ and that of $ac$
+  with $e_1$. It states that an edge joins $x$ and $y$ in $G_a^{vc}$ if
+  and only if its image joins the images of $x$ and $y$ in $G_v^{ab}$.
+\end{fmlnote}
+
+\begin{lemma}[A realization of $G_a^{vc}$; KT eq.\ (6.31)]
   \label{lem:splitOff-ofNormals-relabel}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.ofNormals_relabel,
         CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Because the eq.~(6.44) argument below tests the same vector $\hat r$ against all three candidate
-  panels, the $a$-split realization must share the $v$-split's seed via $\rho$, rather than being
-  reconstructed independently (an independent realization would carry a different seed, hence
-  different coefficients $\lambda$, collapsing the trichotomy); so the transport below is stated at
-  the level of the free-normal panel framework itself, not merely as an implication between
-  existence claims.
-
-  The induction hypothesis realizes the $v$-split $G_v^{ab}$ as a free-normal panel framework with
-  some endpoint selector $\mathrm{ends}_0$ and seed $q_0$, satisfying three conjuncts: general
-  position, rigidity on $V(G) \setminus \{v\}$, and link-recording (every link of $G_v^{ab}$ is
-  among the selector's pairs). Under the hypotheses of
-  \cref{lem:splitOff-isLink-relabel}, the $a$-split $G_a^{vc}$ satisfies the same three conjuncts
-  for the free-normal panel framework with the transported selector $\mathrm{ends}_{\sigma\rho}(e) :=
-  (\rho\,(\mathrm{ends}_0(\sigma e))_1,\, \rho\,(\mathrm{ends}_0(\sigma e))_2)$ and the transported
-  seed $q_\rho(x, i) := q_0(\rho x, i)$, where $\rho = (a\,v)$ and $\sigma = (e_b\,e_0)(e_1\,e_c)$
-  as in \cref{lem:splitOff-isLink-relabel}. The bare existential form ($G_v^{ab}$ has a generic full-rank
-  realization $\Rightarrow$ so does $G_a^{vc}$, at the seed $q_0 \circ \rho$) is recorded as a
-  short corollary.
+  Let $G$, $v$, $a$, $b$ and $c$ be as in
+  \cref{lem:splitOff-isLink-relabel}, and let $q$ be normals. Let
+  $q_\rho$ be the normals with $q_\rho(v) = q(a)$, $q_\rho(a) = q(v)$, and
+  $q_\rho(u) = q(u)$ for every other body $u$. Suppose that the normals
+  $q$ are in general position and that every infinitesimal motion of
+  $(G_v^{ab}, q)$ is constant on $V(G_v^{ab})$. Then the normals $q_\rho$
+  are in general position, and every infinitesimal motion of
+  $(G_a^{vc}, q_\rho)$ is constant on $V(G_a^{vc})$. In particular, if
+  $G_v^{ab}$ and $G_a^{vc}$ are $0$-dof-graphs and $G_v^{ab}$ has a
+  generic full-rank realization, then so has $G_a^{vc}$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Each of the three conjuncts transports along the vertex-swap $\rho$ and edge-permutation $\sigma$
-  (an involution, since its two transpositions have disjoint supports). General position: the
-  $\rho$-reindexed seed $q_\rho$ is in general position because $\rho$ is injective and $q_0$ is.
-  Rigidity: any motion $S$ of the $a$-split framework pulls back to a motion $S \circ \rho$ of the
-  $v$-split framework, using \cref{lem:splitOff-isLink-relabel} to move each $a$-split link to a
-  $v$-split link and matching the two frameworks' supporting extensors; the $v$-split's rigidity on
-  $V(G) \setminus \{v\}$ then forces $S \circ \rho$ constant, hence $S$ constant on
-  $V(G) \setminus \{a\}$, since $\rho$ maps $V(G) \setminus \{a\}$ to $V(G) \setminus \{v\}$
-  bijectively ($\rho \circ \rho = \mathrm{id}$). Link-recording: \cref{lem:splitOff-isLink-relabel}
-  translates each $a$-split link forward to a $v$-split link whose endpoints $\mathrm{ends}_0$
-  records, transported back through $\rho$ to $\mathrm{ends}_{\sigma\rho}$.
+  The normals $q_\rho$ are those of $q$, permuted, so they are in general
+  position (\cref{def:panel-general-position}). By
+  \cref{lem:splitOff-isLink-relabel}, an edge of $G_a^{vc}$ with ends $u$
+  and $w$ corresponds to an edge of $G_v^{ab}$ with ends $\rho(u)$ and
+  $\rho(w)$. The two edges have the same hinge
+  $C(q(\rho(u)), q(\rho(w)))$, which is KT eq.~(6.31).
+
+  For a screw assignment $S$, let $S_\rho$ agree with $S$ except that
+  $S_\rho(a) = S(v)$ and $S_\rho(v) = S(a)$. Then
+  $S_\rho(\rho(u)) - S_\rho(\rho(w)) = S(u) - S(w)$ for all vertices
+  $u, w$ of $G_a^{vc}$. So if $S$ is an infinitesimal motion of
+  $(G_a^{vc}, q_\rho)$, then $S_\rho$ is one of $(G_v^{ab}, q)$. Then
+  $S_\rho$ is constant on $V(G_v^{ab})$, which is the image of
+  $V(G_a^{vc})$ under $\rho$, and so $S$ is constant on $V(G_a^{vc})$.
+  The last claim follows, as a realization of a $0$-dof-graph is at the
+  target rank exactly when its infinitesimal motions are constant on the
+  vertices (\cref{rem:rank-hypothesis-relative}).
 \end{proof}
 
-\begin{lemma}[Row-space correspondence under the $\rho = (a\,v)$ relabel; KT eqs.\ (6.31)/(6.44)]
+\begin{fmlnote}
+  The first pinned theorem is the first claim. It replaces $\rho$ by the
+  transposition of $a$ and $v$, so that $q_\rho$ is $q$ composed with it.
+  It also transports the endpoint selector of $(G_v^{ab}, q)$
+  (\cref{fmlnote:panel-hinge-nondegenerate}) along this transposition and
+  the permutation of the labels of \cref{lem:splitOff-isLink-relabel}. It
+  assumes that the selector assigns each edge of $G_v^{ab}$ its ends, and
+  concludes the same for the transported selector and $G_a^{vc}$. The
+  second pinned theorem is the last claim.
+\end{fmlnote}
+
+\begin{lemma}[The rows of the realization of $G_a^{vc}$; KT eq.\ (6.31)]
   \label{lem:splitOff-rigidityRows-relabel}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidityRows_ofNormals_relabel}
   \leanok
   \uses{lem:splitOff-isLink-relabel, lem:splitOff-ofNormals-relabel}
-  This is the row-space correspondence the $M_3$ candidate row (\cref{lem:case-III-claim612-p3-placement})
-  needs. Write $\Psi_\rho$ for the relabeling map on screw assignments, $\Psi_\rho(S) := S \circ
-  \rho$, and $\Psi_\rho^*$ for its dual on functionals, $\Psi_\rho^*(\phi) := \phi \circ \Psi_\rho$.
-  Under $\Psi_\rho^*$, the rigidity rows of the relabelled framework on $G_a^{vc}$ (endpoint
-  selector $\mathrm{ends}_{\sigma\rho}$, seed $q_\rho$, as in \cref{lem:splitOff-ofNormals-relabel})
-  are exactly the image of the $v$-split framework's rigidity rows: the $a$-split row at endpoints
-  $u, w$ with functional $r$ --- $S \mapsto r(S_u - S_w)$ --- is $\Psi_\rho^*$ of the $v$-split row
-  at endpoints $\rho u, \rho w$ with the same $r$.
+  Let $G$, $v$, $a$, $b$, $c$, $q$ and $q_\rho$ be as in
+  \cref{lem:splitOff-ofNormals-relabel}. For a screw assignment $S$, let
+  $S_\rho$ agree with $S$ except that $S_\rho(a) = S(v)$ and
+  $S_\rho(v) = S(a)$. Then the rows of $R(G_a^{vc}, q_\rho)$ are the
+  forms $S \mapsto f(S_\rho)$ for the rows $f$ of $R(G_v^{ab}, q)$, where
+  the rows at an edge with ends $u$ and $w$ are all the forms
+  $S \mapsto x(S(u) - S(w))$ for the linear forms $x$ on $K^D$ that
+  vanish on its hinge. In particular, the two matrices have the same
+  rank.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  A direct computation using $\rho \circ \rho = \mathrm{id}$ shows $\Psi_\rho^*$ sends the
-  $v$-split row at $(\rho u, \rho w, r)$ to the $a$-split row at $(u, w, r)$: evaluated at a screw
-  assignment $S$, both sides read $r(S_u - S_w)$. \Cref{lem:splitOff-isLink-relabel} puts the two
-  graphs' links in $\rho$-correspondence, and the hinge-row blocks at corresponding edges coincide
-  (the same supporting extensor, via the same seed reindex as in
-  \cref{lem:splitOff-ofNormals-relabel}, since $\sigma$ is an involution). Hence the two
-  rigidity-row sets correspond exactly under $\Psi_\rho^*$, by mutual inclusion.
+  Let $uw$ be an edge of $G_a^{vc}$. As in the proof of
+  \cref{lem:splitOff-ofNormals-relabel}, the edge $\rho(u)\rho(w)$ of
+  $G_v^{ab}$ has the same hinge, and every
+  edge of $G_v^{ab}$ arises in this way. For a form $x$ that vanishes on
+  this hinge, the row $f \colon S \mapsto x(S(\rho(u)) - S(\rho(w)))$ of
+  $R(G_v^{ab}, q)$ satisfies $f(S_\rho) = x(S(u) - S(w))$. This proves
+  the first claim. The map $S \mapsto S_\rho$ is a linear automorphism,
+  so $f \mapsto (S \mapsto f(S_\rho))$ is injective, and the two row
+  spaces have the same dimension.
 \end{proof}
 
-\begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]
-  \label{lem:case-III-claim612-p3-placement}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p3_candidateRow}
-  \leanok
-  \uses{lem:case-II-realization-placement, lem:case-III-columnop,
-        lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644}
-  The third candidate $p_3$, available because $a$ too is a degree-2 vertex: split off at $a$ along
-  $vc$. The resulting graph $G_a^{vc}$ is isomorphic to $G_v^{ab}$ by $\rho \colon V \setminus \{a\}
-  \to V \setminus \{v\}$, $\rho(v) = a$, $\rho(u) = u$ otherwise; the induced placement
-  $q_\rho$ satisfies $p_3(va) = q(ac)$, $p_3(vb) = q(ab)$, $p_3(ac) = L''$, $p_3(e) = q(e)$ otherwise
-  (eq.~(6.33)). The column operation at $(a, c)$ ($\mathrm{col}_a \mathrel{+}= \mathrm{col}_c$,
-  eq.~(6.35)) block-triangularizes $R(G, p_3)$ to eq.~(6.41), whose top-left $D \times D$ block is
-  $M_3$ with rows $r(p_3(ac)) = r(L'')$ and $\sum_j \lambda_{(ac)j}\, r_j(q(ac))$, full rank iff
-  $r \notin (\operatorname{span} C(L''))^\perp$ for $L'' \subset \Pi(c)$ --- using eq.~(6.44)
-  (\cref{lem:case-III-claim612-eq644}) to identify the $M_3$ row with the same $r$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The isomorphism $\rho$ identifies $(G_a^{vc}, q_\rho)$ with $(G_v^{ab}, q)$ as panel-hinge
-  frameworks (eq.~(6.31)), so $\Pi_{G_a^{vc}, q_\rho}(u) = \Pi(u)$ for $u \ne v, a$ and
-  $\Pi_{G_a^{vc}, q_\rho}(v) = \Pi(a)$. The argument is then verbatim symmetric to the $p_2$
-  construction (\cref{lem:case-III-claim612-p2-placement}) under the role change $v, b \mapsto a,
-  c$: the candidate-completion assembly (\cref{lem:case-III-candidate-row}) applies abstractly to
-  the splitting body, its two endpoints, and the candidate functional, so taking the splitting
-  body to be $a$ and the column operation to be $\Phi = \mathrm{col}_a \mathrel{+}= \mathrm{col}_c$
-  is the same lemma; no separate isomorphism step is needed. Its one hypothesis --- the operated,
-  $a$-pinned top-left block being full rank --- is supplied by the row-space criterion
-  (\cref{lem:case-III-claim612-block-iff-perp}) at the $ac$-hinge once the operated candidate row is
-  identified with $\rho$ itself (the column operation makes it pure $a$-column with value
-  $\rho(S_a)$), which holds iff $\rho(C) \ne 0$. The column operation at $(a,c)$ (eqs.~(6.35)--(6.36))
-  and the substitutions $p_3(va) = q(ac)$, $p_3(vb) = q(ab)$ (eq.~(6.34)) reduce $R(G, p_3)$ to
-  eq.~(6.41) by the same row operations as for $R(G, p_1)$ (eq.~(6.40)). The eq.~(6.44) identity
-  (\cref{lem:case-III-claim612-eq644}) gives $M_3$'s row as $-\sum_j \lambda_{(ac)j}\, r_j(q(ac)) =
-  r$ (up to sign), so the full-rank criterion for $M_3$ reads off the same common vector $r$.
-\end{proof}
+\begin{fmlnote}
+  The pinned theorem is the first claim, for the transported endpoint
+  selector of \cref{lem:splitOff-ofNormals-relabel} and for every
+  endpoint selector of $(G_v^{ab}, q)$.
+\end{fmlnote}
 
-\begin{lemma}[Eq.\ (6.44): the $M_3$ row equals $-r$; KT eq.\ (6.44)]
+We now turn to the third framework. The last row of its block $M_3$
+comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
+
+\begin{lemma}[The last row of $M_3$; KT eq.\ (6.44)]
   \label{lem:case-III-claim612-eq644}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
@@ -1395,121 +1417,316 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows}
   \leanok
   \uses{lem:case-III-acolumn-zero, lem:case-III-redundant-decomposition}
-  In $G_v^{ab}$ only $ab$ and $ac$ are incident to the body $a$, so the $a$-column block of the
-  eq.~(6.24) vanishing combination (\cref{lem:case-III-acolumn-zero}, eq.~(6.43)) reads
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
+  the edges of $G$ at $a$ are $va$ and $ac$, where $v$, $a$, $b$ and $c$
+  are distinct. Let the forms $r_j$ and the scalars $\lambda_j$ and
+  $\lambda_{ej}$ be as in \cref{lem:case-III-redundant-decomposition},
+  and let $r = \sum_j \lambda_j r_j$. Write the rows
+  $R(G_v^{ab}, q; (ac)j)$ at $ac$ as the forms
+  $S \mapsto s_j(S(a) - S(c))$. Then
   \[
-    0 = \sum_{1 \le j \le 5} \lambda_{(ab)j}\, r_j(q(ab)) + \sum_{1 \le j \le 5} \lambda_{(ac)j}\,
-        r_j(q(ac)),
+    r \;=\; -\sum_{1 \le j \le D-1} \lambda_{(ac)j}\, s_j .
   \]
-  which, with $r = \sum_j \lambda_{(ab)j}\, r_j(q(ab))$, gives KT's eq.~(6.44):
-  \[
-    r = -\sum_{1 \le j \le 5} \lambda_{(ac)j}\, r_j(q(ac)).
-  \]
-  Hence the $M_3$ candidate row $\sum_j \lambda_{(ac)j}\, r_j(q(ac))$ equals $-r$, so the third
-  candidate's full-rank criterion reads off the \emph{same} common vector $r$ as $M_1, M_2$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Eq.~(6.43) (\cref{lem:case-III-acolumn-zero}) is the $a$-column restriction of the eq.~(6.24)
-  vanishing combination; since only the $ab$- and $ac$-edges are incident to $a$ in $G_v^{ab}$,
-  every other row's $a$-column entry vanishes by the rigidity-matrix definition, and only the
-  $ab$- and $ac$-terms survive the restriction. Rearranging $\sum_j \lambda_{(ab)j}\, r_j(q(ab)) +
-  \sum_j \lambda_{(ac)j}\, r_j(q(ac)) = 0$ for $r$ is eq.~(6.44).
+  We follow Katoh and Tanigawa~\cite[pp.~690--691]{katohTanigawa2011}.
+  By KT eq.~(6.43) (\cref{lem:case-III-acolumn-zero}), the combination
+  of the rows of $R(G_v^{ab}, q)$ in KT eq.~(6.24) vanishes on the screw
+  assignments that vanish off $a$. Let $S$ be such a screw assignment,
+  with $S(a) = y$. A row $S \mapsto x(S(u) - S(w))$ at an edge with ends
+  $u, w \neq a$ vanishes at $S$. As the edges of $G$ at $a$ are $va$ and
+  $ac$, the edges of $G_v^{ab}$ at $a$ are $ab$ and $ac$
+  (\cref{def:graph-operations}). Their rows take the values $r_j(y)$ and
+  $s_j(y)$ at $S$. So
+  \[
+    0 \;=\; \sum_j \lambda_j\, r_j(y) + \sum_j \lambda_{(ac)j}\, s_j(y)
+    \;=\; r(y) + \sum_j \lambda_{(ac)j}\, s_j(y)
+  \]
+  for every $y \in K^D$, which is KT eq.~(6.44).
 \end{proof}
 
-\begin{lemma}[Claim 6.12: for some line choice the candidate block has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
+\begin{fmlnote}
+  The first pinned theorem is the computation of the proof, for any forms
+  at $ab$ and at $ac$ and any further form that vanishes on the screw
+  assignments that vanish off $a$. The second and third give the
+  restriction of a form $S \mapsto x(S(u) - S(w))$ to these screw
+  assignments: it is $x$ if $u = a \neq w$, and $0$ if
+  $a \notin \{u, w\}$. The fourth is the form of the lemma that the
+  formal proof of the case $d = 3$ uses. Let $ac$ be the only edge at $a$
+  of a body-hinge framework, and let $f$ be a form in the span of its
+  rows. Then the restriction of $f$ to the screw assignments that vanish
+  off $a$, a linear form $x$ on $K^D$, vanishes on the hinge of $ac$. The
+  fifth adds that $S \mapsto x(S(a) - S(c))$ lies in the span of the
+  rows. For the framework $(G_v, q)$ and the form
+  $f \colon S \mapsto r(S(a) - S(b))$, the fourth says that $r$ vanishes
+  on $C(q(a), q(c))$, as KT eq.~(6.44) shows.
+\end{fmlnote}
+
+\begin{lemma}[The third framework; KT eqs.\ (6.31)--(6.41)]
+  \label{lem:case-III-claim612-p3-placement}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p3_candidateRow}
+  \leanok
+  \uses{lem:case-II-realization-placement, lem:case-III-columnop,
+        lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644}
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
+  the edges of $G$ at $a$ are $va$ and $ac$, where $v$, $a$, $b$ and $c$
+  are distinct. Let $r$ be the linear form of
+  \cref{lem:case-III-candidate-row-construction}. Let $L''$ be a
+  $(d-2)$-dimensional affine subspace of the panel $\Pi(c)$ of
+  $(G_v^{ab}, q)$, and let $(G, p_3)$ be the body-hinge framework with
+  the hinge $q(ac)$ at $va$, the hinge $q(ab)$ at $vb$, the hinge $L''$
+  at $ac$, and the hinge $q(e)$ at every other edge $e$ (KT
+  eq.~(6.33)). If $r$ does not vanish on $C(L'')$, that is, if the
+  top-left $D \times D$ block $M_3$ of KT eq.~(6.41) is nonsingular, then
+  $\operatorname{rank} R(G, p_3) \ge D(|V(G)| - 1)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  We follow Katoh and Tanigawa~\cite[pp.~686--689]{katohTanigawa2011}.
+  Let $(G_a^{vc}, q_\rho)$ be the panel-hinge framework of
+  \cref{lem:splitOff-ofNormals-relabel}. In it the panel of $v$ is
+  $\Pi(a)$, the hinge of $vb$ is $q(ab)$, the hinge of the new edge $vc$
+  is $q(ac)$, and the other edges keep their hinges (KT eq.~(6.31)).
+  Katoh and Tanigawa obtain $(G, p_3)$ from $(G_a^{vc}, q_\rho)$ as
+  $(G, p_1)$ from $(G_v^{ab}, q)$, with $a$, $c$ and $v$ in the roles of
+  $v$, $a$ and $b$. So $va$ gets the hinge $q(ac)$ of $vc$, and $ac$ gets
+  $L''$ (KT eqs.~(6.32) and~(6.33)).
+
+  Write the rows of $R(G_v^{ab}, q)$ at $ab$ and at $ac$ as the forms
+  $S \mapsto r_j(S(a) - S(b))$ and $S \mapsto s_j(S(a) - S(c))$, as in
+  \cref{lem:case-III-claim612-eq644}. The rows of $R(G, p_3)$ at $vb$ and
+  at $va$ are then the forms $S \mapsto r_j(S(v) - S(b))$ and
+  $S \mapsto s_j(S(v) - S(a))$. The edges of $G$ other than $va$, $vb$
+  and $ac$ have the same rows in both matrices (KT eq.~(6.34)). Katoh and
+  Tanigawa add to the row $(vb)i^*$ the other terms of KT eq.~(6.24),
+  with the rows at $vb$ and $va$ in place of those at $ab$ and $ac$ (KT
+  eq.~(6.40)). Call the result $w_3$. For a screw assignment $S$, let
+  $S'$ agree with $S$ except that $S'(a) = S(v)$. The edges of $G_v$
+  other than $ac$ do not meet $a$, so KT eq.~(6.24) at $S'$ reads
+  \[
+    \sum_j \lambda_j\, r_j\bigl(S(v) - S(b)\bigr)
+    + \sum_j \lambda_{(ac)j}\, s_j\bigl(S(v) - S(c)\bigr)
+    + \sum_{e \neq ac} \sum_j \lambda_{ej}\, R\bigl(G_v^{ab}, q; e_j\bigr)(S)
+    \;=\; 0 ,
+  \]
+  where $e$ runs over the edges of $G_v$. Subtracting this from $w_3(S)$
+  leaves
+  \[
+    \sum_j \lambda_{(ac)j}\, s_j\bigl(S(c) - S(a)\bigr)
+    \;=\; r\bigl(S(a) - S(c)\bigr),
+  \]
+  by KT eq.~(6.44) (\cref{lem:case-III-claim612-eq644}). So $w_3$ is the
+  form $S \mapsto r(S(a) - S(c))$.
+
+  Let $r'_1, \dots, r'_{D-1}$ be linearly independent forms that vanish
+  on $C(L'')$, so that the rows of $ac$ are the forms
+  $S \mapsto r'_i(S(a) - S(c))$. Katoh and Tanigawa add the columns of
+  $a$ to those of $c$ (KT eqs.~(6.35) and~(6.36)). By
+  \cref{lem:case-III-columnop}, with $a$ and $c$ in place of $v$ and $a$,
+  this turns the rows of $ac$ and $w_3$ into the forms
+  $S \mapsto r'_i(S(a))$ and $S \mapsto r(S(a))$. These make up the
+  top-left block $M_3$ of KT eq.~(6.41), with the rows
+  $r'_1, \dots, r'_{D-1}$ and $r$, up to sign. Katoh and Tanigawa write
+  its last row as $\sum_j \lambda_{(ac)j} s_j$, which is $-r$. The block
+  is nonsingular exactly when $r(C(L'')) \neq 0$
+  (\cref{lem:case-III-claim612-block-iff-perp}).
+
+  Now suppose that $r(C(L'')) \neq 0$. Then the $r'_i$ and $r$ span the
+  linear forms on $K^D$. So for every linear form $x$ on $K^D$, the form
+  $S \mapsto x(S(a) - S(c))$ lies in the row space of $R(G, p_3)$. Hence
+  so does every row of $R(G_a^{vc}, q_\rho)$. Its rows at $vb$ and at the
+  edges of $G$ that meet neither $v$ nor $a$ are rows of $R(G, p_3)$. Its
+  rows at $vc$ are the forms
+  \[
+    s_j\bigl(S(v) - S(c)\bigr) \;=\; s_j\bigl(S(v) - S(a)\bigr)
+      + s_j\bigl(S(a) - S(c)\bigr),
+  \]
+  sums of a row of $va$ and a form of this kind. By
+  \cref{lem:splitOff-rigidityRows-relabel}, $R(G_a^{vc}, q_\rho)$ has the
+  rank $D(|V(G)| - 2)$ of $R(G_v^{ab}, q)$, and we choose
+  $D(|V(G)| - 2)$ linearly independent rows of it. They vanish on the screw
+  assignments that vanish off $a$, as $a$ is not a vertex of $G_a^{vc}$.
+  On these screw assignments the rows of $ac$ and $w_3$ are the forms
+  $S \mapsto r'_i(S(a))$ and $S \mapsto r(S(a))$, which are linearly
+  independent. By \cref{lem:case-III-conditional-block}, the
+  $(D - 1) + 1 + D(|V(G)| - 2) = D(|V(G)| - 1)$ forms are linearly
+  independent. They lie in the row space of $R(G, p_3)$, which gives the
+  bound. Katoh and Tanigawa read the same bound off KT eq.~(6.41), as $D$
+  plus the rank of the block below $M_3$, which KT eq.~(6.23) gives.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem is the independence of the last step, for any
+  finite families of forms in place of the rows of $ac$ and of
+  $R(G_a^{vc}, q_\rho)$, any form in place of $r$, and any hinge in place
+  of $L''$. It is the pinned theorem of
+  \cref{lem:case-III-claim612-p2-placement} with $a$ and $c$ in place of
+  $v$ and $b$, and it does not mention $G$, $p_3$ or the rank.
+\end{fmlnote}
+
+\begin{lemma}[KT Claim~6.12: $r$ does not vanish on all six joins]
   \label{lem:case-III-claim612}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_claim612_gen}
   \leanok
   \uses{lem:case-III-claim612-points-affineIndep-real-normals, lem:case-III-claim612-r-nonzero}
-  At $d = 3$, let $r \ne 0$ be the common candidate row and let $\bar p_1, \bar p_2, \bar p_3,
-  \bar p_4 \in K^4$ be four linearly independent homogeneous vectors
-  (\cref{lem:case-III-claim612-points-affineIndep-real-normals}). Then for some pair $(i, j)$ the
-  join $r(\bar p_i \vee \bar p_j) \ne 0$. Since a candidate's hinge support is the panel-meet of
-  its (freely chosen) line, and the panel-meet of a line through two of the four points is exactly
-  their join $p_i \vee p_j$, this is KT's Claim~6.12: for some choice of $(d-2)$-affine line, the
-  corresponding candidate's top-left $D \times D$ block (one of $M_1, M_2, M_3$ of eqs.~(6.29),
-  (6.30), (6.41)) has full rank, equivalently $R(G, p_i)$ attains the desired rank $D(|V| - 1)$ ---
-  discharging the one conditional the candidate-completion above leaves open.
+  Let $d = 3$. Under the hypotheses of \cref{lem:case-III-claim-6-11},
+  let $r$ be the linear form of
+  \cref{lem:case-III-candidate-row-construction}, and let
+  $\bar p_1, \dots, \bar p_4 \in K^4$ be linearly independent. Then
+  $r(\bar p_i \vee \bar p_j) \neq 0$ for some $1 \le i < j \le 4$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish}
-  Contrapositive of the existential claim. Suppose $r$ annihilated every one of the six joins
-  $\bar p_i \vee \bar p_j$. (This is precisely KT's eq.~(6.45) hypothesis ``for every choice of
-  lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$'', once each join is
-  identified with the panel-meet $C(L)$ of the line through that pair via the point-join
-  $\leftrightarrow$ panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}, with
-  eq.~(6.44) placing all three candidate blocks' failure conditions on the same $r$); the argument
-  works directly with the joins.) But the six joins of four linearly independent homogeneous
-  vectors span $K^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1), so $r$ would
-  annihilate a spanning set and hence be $0$ (\cref{lem:case-III-claim612-orthseq-vanish}),
-  contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}). Therefore
-  $r(\bar p_i \vee \bar p_j) \ne 0$ for some pair.
+  We follow Katoh and Tanigawa~\cite[pp.~690--691]{katohTanigawa2011}.
+  The form $r$ is not zero (\cref{lem:case-III-claim612-r-nonzero}). For
+  $d = 3$, the screw space $K^D$ is $\bigwedge^2 K^4$, and the six joins
+  $\bar p_i \vee \bar p_j$ span it
+  (\cref{lem:case-III-claim612-extensor-span}, from KT Lemma~2.1). If $r$
+  vanished on all of them, then $r$ would be zero
+  (\cref{lem:case-III-claim612-orthseq-vanish}).
 
-  The claim is genuinely an existential over a free choice of lines, not a disjunction over three
-  fixed supports: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions of
-  $\bigwedge^2 K^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; only the full six-join
-  span of eq.~(6.45) does. The realization is then built to exploit the witness pair directly: its
-  candidate placement takes the hinge line to \emph{be} the witness join's line
-  $L = \bar p_i \bar p_j$.
+  This gives KT Claim~6.12: for some choice of the lines
+  $L \subset \Pi(a)$, $L' \subset \Pi(b)$ and $L'' \subset \Pi(c)$, one
+  of $M_1$, $M_2$ and $M_3$ is nonsingular. Indeed, let $c$ be as at the
+  start of this subsubsection, with $q(a)$, $q(b)$ and $q(c)$ linearly
+  independent. Let $\bar p_1, \dots, \bar p_4$ be the vectors of
+  \cref{lem:case-III-claim612-points-affineIndep-real-normals} for these
+  normals. Any two of them are orthogonal to a common normal $q(u)$, with
+  $u \in \{a, b, c\}$. Let $\bar p_i \vee \bar p_j$ be a join on which
+  $r$ does not vanish,
+  and let $n'$ be a vector orthogonal to $\bar p_i$ and $\bar p_j$ and
+  linearly independent of $q(u)$. Then $\bar p_i \vee \bar p_j$ is a
+  multiple of $C(q(u), n')$
+  (\cref{lem:case-III-claim612-line-in-panel-union}), so $r$ does not
+  vanish on $C(q(u), n')$. This is a nonzero multiple of the extensor of
+  the line in which $\Pi(u)$ meets the plane with normal $n'$ (the
+  remarks after \cref{def:panel-support-extensor}). So the block $M_1$,
+  $M_2$ or $M_3$ for this line is nonsingular, by
+  \cref{lem:case-III-claim612-block-iff-perp} and, for $M_3$, KT
+  eq.~(6.44).
+
+  The lines are chosen after $r$, and the proof needs this freedom. The
+  extensors of three fixed lines span at most three of the six dimensions
+  of $\bigwedge^2 K^4$, so a nonzero $r$ can vanish on all three.
 \end{proof}
 
-Assembling the pieces gives the three-dimensional case directly. Claim~6.12
-(\cref{lem:case-III-claim612}) names one of the three candidates whose top-left block is
-full rank; the candidate-completion (\cref{lem:case-III-candidate-row}) then realizes $G$ at
-that candidate's degenerate placement. This is the concrete counterpart of the general chain
-dispatch (\cref{lem:case-III-chain-dispatch}, below): where the general argument transports a
-single redundancy along a chain to reach the discriminating panel, the $d = 3$ case
-dispatches it to one of three fixed candidates.
+\begin{fmlnote}
+  The pinned theorem holds for every $d$ and every nonzero linear form
+  $r$ on $\bigwedge^{d-1} K^{d+1}$, with the $D$ extensors $E_{ij}$ of
+  \cref{lem:case-III-claim612-extensor-span} in place of the joins. The
+  general case uses it in this form
+  (\cref{lem:case-III-chain-discriminator}). The step from a join to a
+  line in the second paragraph is pinned on
+  \cref{lem:case-III-claim612-line-in-panel-union}.
+\end{fmlnote}
 
-\begin{lemma}[The $d = 3$ three-candidate dispatch; KT Lemma 6.10, eqs.\ (6.24)--(6.44)]
+We now prove the case $d = 3$ of Case~III. The lemma assumes a generic
+full-rank realization of $G_v^{ab}$, as the induction hypothesis gives.
+It also assumes the bound of KT eq.~(6.22), as
+\cref{lem:case-III-nested-rank-lower} gives.
+
+\begin{lemma}[The case $d = 3$ of Case~III; KT Lemma~6.10]
   \label{lem:case-III-candidate-dispatch-d3}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_candidate_dispatch}
   \leanok
   \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:case-III-nested-rank-lower}
-  Fix $d = 3$ ($k = 2$, $D = 6$). Let $G$ be a simple $0$-dof-graph with an adjacent pair of
-  degree-$2$ vertices --- $v$ with neighbours $a, b$ (incident edges $e_a \ne e_b$) and $a$
-  with neighbours $v, c$ (incident edges $e_a \ne e_c$) --- and a fresh edge $e_0 \notin
-  E(G)$. Suppose the split-off $G_v^{ab}$ is $0$-dof and carries a generic full-rank
-  realization (the induction hypothesis at the smaller graph), and the eq.~(6.22) nested
-  rank bound holds at the vertex-removal $G - v$
-  (\cref{lem:case-III-nested-rank-lower}). Then $G$ carries a generic full-rank realization
-  at rank $D(|V| - 1)$.
+  Let $d = 3$, so that $D = 6$, and let $K$ be an infinite field. Let $G$
+  be a simple $0$-dof-graph, and let $v$, $a$, $b$ and $c$ be distinct
+  vertices of $G$ such that the edges of $G$ at $v$ are $va$ and $vb$,
+  and those at $a$ are $va$ and $ac$. Suppose that $G_v^{ab}$ is a
+  $0$-dof-graph with a generic full-rank realization
+  (\cref{def:rank-hypothesis}), and that there is a
+  nonzero polynomial $P$ in the normals with
+  \[
+    \operatorname{rank} R(G_v, q) \;\ge\; D\,(|V(G_v)| - 1) - (D - 2)
+  \]
+  wherever $P(q) \neq 0$, as in \cref{lem:case-III-nested-rank-lower}.
+  Then $G$ has a generic full-rank realization, of rank
+  $D(|V(G)| - 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-III-claim-6-11, lem:case-III-candidate-row, lem:case-III-claim612,
         lem:case-III-claim612-p2-placement, lem:case-III-claim612-p3-placement,
         lem:case-II-realization-placement, lem:genericity-device}
-  From the generic realization of the split-off $G_v^{ab}$ at a seed $q$, Claim~6.11
-  (\cref{lem:case-III-claim-6-11}) and the eq.~(6.22) nested rank bound
-  (\cref{lem:case-III-nested-rank-lower}) produce the shared redundancy: a nonzero
-  functional $\rho$ annihilating the $e_0$-extensor $C(q(ab))$, whose $ab$-hinge row lies in
-  $\operatorname{span}(R(G_v, q)\text{-rows})$, together with the $D(|V_v| - 1)$ independent
-  bottom rows the candidate-completion needs (\cref{lem:case-III-candidate-row}). Reading the
-  three candidate panels $\Pi(a), \Pi(b), \Pi(c)$ off $q$, Claim~6.12
-  (\cref{lem:case-III-claim612}) selects a panel and a transversal direction at which $\rho$
-  is not annihilated. A case split over the three panels realizes $G$ at the matched
-  candidate: the $a$-side candidate is the eq.~(6.12) degenerate placement
-  (\cref{lem:case-II-realization-placement}) completed by \cref{lem:case-III-candidate-row};
-  the $b$-side candidate is its symmetric image under $a \leftrightarrow b$
-  (\cref{lem:case-III-claim612-p2-placement}); and the $c$-side candidate is the third
-  placement obtained through the relabel $G_v^{ab} \cong G_a^{vc}$
-  (\cref{lem:case-III-claim612-p3-placement}). Each attains rank $D(|V| - 1)$ at a degenerate
-  placement, and the genericity device (\cref{lem:genericity-device}) re-realizes that rank
-  at a general-position seed.
+  We follow Katoh and Tanigawa's proof of KT Lemma~6.10 (pp.~682--691).
+  We choose the normals off the zeros of a product of polynomials fixed
+  before the choice, as explained after \cref{lem:case-I-realization}.
+  The first factor comes from the generic full-rank realization of
+  $G_v^{ab}$ (\cref{lem:rank-polynomial-of-le-finrank}). The second is
+  $P$, the third puts the normals in general position, and the fourth
+  makes $q(a)$, $q(b)$ and $q(c)$ linearly independent. As $K$ is
+  infinite, the product has a non-root $q$. The first factor gives
+  $\operatorname{rank} R(G_v^{ab}, q) \ge D(|V(G)| - 2)$. This is also
+  an upper bound (\cref{lem:relative-deficiency-rank-bound}), so
+  equality holds, which is KT eq.~(6.18). The second factor gives KT
+  eq.~(6.22), $\operatorname{rank} R(G_v, q) \ge D(|V(G_v)| - 1) - (D - 2)$.
+
+  So the hypotheses of \cref{lem:case-III-claim-6-11} hold, where
+  $k' \le D - 2$ is the difference between $D(|V(G_v)| - 1)$ and
+  $\operatorname{rank} R(G_v, q)$. Let $r$ be the linear form of
+  \cref{lem:case-III-candidate-row-construction}. It is not zero, it vanishes on $C(q(a), q(b))$, and the form
+  $S \mapsto r(S(a) - S(b))$ lies in the row space of $R(G_v, q)$ (KT
+  eqs.~(6.24) and~(6.25), \cref{lem:case-III-redundant-decomposition}).
+  Let $\bar p_1, \dots, \bar p_4$ be the vectors of
+  \cref{lem:case-III-claim612-points-affineIndep-real-normals}. By the
+  proof of KT Claim~6.12 (\cref{lem:case-III-claim612}), there are
+  $u \in \{a, b, c\}$ and a vector $n'$, linearly independent of $q(u)$,
+  such that $r$ does not vanish on $C(q(u), n')$. This is a nonzero
+  multiple of the extensor of the line $L$ in which $\Pi(u)$ meets the
+  plane with normal $n'$.
+
+  If $u = a$, then $\operatorname{rank} R(G, p_1) \ge D(|V(G)| - 1)$ for
+  this $L$ (\cref{lem:case-III-candidate-row}). If $u = b$, the same
+  holds for $(G, p_2)$ with $L' = L$
+  (\cref{lem:case-III-claim612-p2-placement}). If $u = c$, it holds for
+  $(G, p_3)$ with $L'' = L$ (\cref{lem:case-III-claim612-p3-placement}).
+
+  Let $u = a$. Katoh and Tanigawa rotate the panel of $v$ slightly (KT
+  Lemma~5.2, \cref{lem:rank-rotation-semicont}), and we rotate it about
+  $L$. For $t \in K$, let $F_t$ be the body-hinge framework on $G$ whose
+  hinges have the extensors $C(q(a), n')$ at $va$,
+  $C(q(a) + t\,n', q(b))$ at $vb$, and those of $(G_v^{ab}, q)$ at the
+  edges of $G_v$. Then $F_0$ has the rank of $(G, p_1)$. Let $q_t$ agree
+  with $q$ except that $q_t(v) = q(a) + t\,n'$, whose panel contains
+  $L$. For $t \neq 0$, the extensor of the hinge of $va$ in $(G, q_t)$ is
+  $C(q(a) + t\,n', q(a)) = -t\,C(q(a), n')$, so $(G, q_t)$ has the rank
+  of $F_t$. The rows of $F_t$ can be chosen polynomial in $t$, as in the
+  proof of \cref{lem:rows-polynomial-in-normals}. So the rank
+  $D(|V(G)| - 1)$ at $t = 0$ persists for all but finitely many $t$, as
+  in the proof of \cref{lem:rank-rotation-semicont}. For all but at most
+  one $t$, the normals $q(a) + t\,n'$ and $q(b)$ are linearly
+  independent. As $K$ is infinite, some $t \neq 0$ gives a panel-hinge
+  framework $(G, q_t)$ with nondegenerate hinges and rank at least
+  $D(|V(G)| - 1)$. For $u = b$ we rotate the panel of $v$ from $\Pi(b)$
+  about $L$. For $u = c$ the panel of $v$ is $\Pi(a)$, and we rotate the
+  panel of $a$ from $\Pi(c)$ about $L$.
+
+  Finally, as in the proof of \cref{lem:case-II-realization}, there are
+  normals in general position at which the rank is at least
+  $D(|V(G)| - 1)$ (\cref{lem:rank-polynomial-of-le-finrank}). The rank
+  there is at most $D(|V(G)| - 1)$
+  (\cref{lem:relative-deficiency-rank-bound}). So $G$ has a generic
+  full-rank realization of this rank.
 \end{proof}
+
 \begin{fmlnote}
-  The eq.~(6.22) nested rank bound rides here as an explicit hypothesis, discharged by
-  \cref{lem:case-III-nested-rank-lower}; the general \cref{lem:case-III} derives the same
-  bound internally from its induction hypothesis. This is a worked concrete case: the general
-  induction runs the chain dispatch (\cref{lem:case-III-chain-dispatch}) rather than this
-  three-candidate specialization, so the pinned declaration and its supporting placements
-  sit off the proof's live path. They are retained deliberately, in the Lean as in this
-  chapter, not as a superseded draft: the fixed three-candidate dispatch is simpler than
-  the chain transport, it is the form KT themselves give for $d = 3$ (\S6.4.1), and it is
-  kept as the accessible worked instance of the general argument.
+  The formal proof treats the three cases by one theorem: the rank bound
+  for $(G, p_1)$ (the note after \cref{lem:case-III-candidate-row}),
+  followed by the rotation. For $u = b$ it applies this theorem with $a$
+  and $b$ exchanged. For $u = c$ it applies it with $a$, $c$ and $v$ in
+  the roles of $v$, $a$ and $b$, to the normals $q_\rho$ of
+  \cref{lem:splitOff-ofNormals-relabel} and the form $-r$, with $G - a$
+  in place of $G_v$. There it uses the fourth pinned theorem of
+  \cref{lem:case-III-claim612-eq644}. So it does not use
+  \cref{lem:case-III-claim612-p2-placement} and
+  \cref{lem:case-III-claim612-p3-placement}. The pinned theorem also
+  assumes that the label of the new edge $ab$ lies outside $E(G)$
+  (\cref{rem:fresh-edge-supply}). It asks for $P$ for every endpoint
+  selector that assigns each edge of $G_v^{ab}$ its ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
 \medskip\noindent\emph{The triangle floor.} The Case-III recursion needs a floor

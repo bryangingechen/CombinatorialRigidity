@@ -443,6 +443,28 @@ declaration's name as its header writes it:
   (`lem:case-III-claim612-block-iff-perp`) without an edge.
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `4502f035`).
   *Found:* round 3 task 2.13.
+- **F-166** · E · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
+  (`algebraic-induction/case-iii.tex`, eight nodes): 23 missing edges and 16 with no Lean basis.
+  Missing: `lem:case-III-candidate-row` at both `lem:case-III-claim612-p2-placement` and
+  `lem:case-III-claim612-p3-placement`; nine at `lem:splitOff-ofNormals-relabel` (six definitions,
+  `lem:case-II-placement-old-rows-extract`, `lem:isInfRigidOn-of-relative-count` and
+  `lem:trivial-motions-rank-bound`); five definitions at `lem:splitOff-rigidityRows-relabel`; and
+  seven at `lem:case-III-candidate-dispatch-d3` (`def:panel-general-position`,
+  `lem:case-III-claim612-line-in-panel-union`, `lem:general-position-support-nonzero`,
+  `lem:isInfRigidOn-of-relative-count`, `lem:rank-polynomial-of-le-finrank`,
+  `lem:relative-deficiency-rank-bound`, `lem:span-rigidityRows-eq-of-motions-eq`). No Lean basis:
+  `lem:case-II-realization-placement` at the two placements and the dispatch,
+  `lem:case-III-claim612-eq644` at the third framework, `lem:splitOff-ofNormals-relabel` at the rows
+  lemma, both edges of `lem:case-III-claim612-eq644` and of `lem:case-III-claim612`, and seven more
+  of the dispatch's (two of them reached only through other nodes). Task 2.14's proofs also cite
+  without an edge: `lem:case-III-candidate-row` (the second framework), `def:panel-general-position`
+  and `rem:rank-hypothesis-relative` (the realization of $G_a^{vc}$), `def:graph-operations` (KT eq.
+  (6.44)), `lem:case-III-conditional-block` and the two relabel lemmas (the third framework),
+  `def:panel-support-extensor`, `lem:case-III-claim612-block-iff-perp` and
+  `lem:case-III-claim612-line-in-panel-union` (KT Claim 6.12), and nine nodes in the dispatch's
+  proof, among them `lem:rank-rotation-semicont` and `lem:rows-polynomial-in-normals`.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eight nodes, at `9190873a`).
+  *Found:* round 3 task 2.14.
 
 ## N — node shape
 
@@ -915,6 +937,22 @@ declaration's name as its header writes it:
   `PanelHingeFramework.case_III_candidate_dispatch` and `exists_chainData_discriminator_pick_of_LI`,
   `CaseIII/Realization.lean`; a `grep` of `blueprint/src` for the unpinned names).
   *Found:* round 3 task 2.13.
+- **F-167** · N · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
+  (`algebraic-induction/case-iii.tex`): ten of the thirteen pins of its eight nodes are dead, all
+  but `case_III_claim612_gen` and `lem:case-III-claim612-eq644`'s `hingeRow_comp_single_tail` and
+  `hingeRow_comp_single_off`. `hingeRow_acolumn_mem_span_rigidityRows` has no caller, and
+  `acolumn_mem_hingeRowBlock_of_span_rigidityRows` is used only by the dispatch. The dispatch is
+  dead by design (the subsubsection's lead says so), but its own route has no node: one theorem at
+  three roles (`case_III_arm_realization`, `_M2`, `_M3`, through the unpinned
+  `case_III_rank_certification` and `case_III_realization_of_rank`) gives the three frameworks'
+  ranks and the rotation, and `exists_candidateRow_bottomRows_of_rigidOn` gives $r$. It uses
+  neither placement pin and no relabel lemma; the two placement pins are one theorem at two roles.
+  `lem:case-III-claim612-eq644` bundles five pins (`F-009`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eight nodes, at `9190873a`);
+  read (the bodies of `case_III_candidate_dispatch`, the three arms and
+  `linearIndependent_sum_p2_candidateRow`/`_p3_`; a `grep` of `blueprint/lean_decls` and of the
+  Lean for the unpinned names and the callers).
+  *Found:* round 3 task 2.14.
 
 ## T — terminology and notation
 
@@ -1529,6 +1567,19 @@ declaration's name as its header writes it:
   `C(n_a + t • n_b, n_a)` (`panelSupportExtensor_add_smul_left`); and
   `hingeRow a b φ = hingeRow v b φ - hingeRow v a φ`.
   *Found:* round 3 task 2.12.
+- **F-165** · S · `lem:case-III-claim612-p2-placement`, `lem:case-III-claim612-p3-placement`
+  (`algebraic-induction/case-iii.tex`): the statements are KT's counts at $(G, p_2)$ and
+  $(G, p_3)$ (KT pp. 686–689): if the block $M_2$ of KT eq. (6.30), or $M_3$ of KT eq. (6.41), is
+  nonsingular, the rank is at least $D(|V(G)| - 1)$. Their pins are
+  `linearIndependent_sum_augment_candidateRow` at the roles $(v, b)$ and $(a, c)$, with the
+  criterion of `lem:case-III-claim612-block-iff-perp`: linear algebra on families of forms, with no
+  graph, framework or rank (as `F-158`). The graph-level counts are the unpinned
+  `case_III_rank_certification` at the roles of $(G, p_2)$ and, with the relabelled normals on
+  $G - a$, of $(G, p_3)$, which the formal proof of the case $d = 3$ uses (`F-167`). Task 2.14 kept
+  the claims; the notes say that the pins do not mention $G$, $p_2$, $p_3$ or the rank.
+  *Evidence:* read (the statements and bodies of the two pins, of `case_III_arm_realization`,
+  `_M2` and `_M3`, and of `caseIIICandidate`; KT 2011 pp. 682 and 686–691, `.refs/`).
+  *Found:* round 3 task 2.14.
 
 ## L — Lean
 
@@ -2076,6 +2127,23 @@ declaration's name as its header writes it:
   "seed", "leaf" and "feeding".
   *Evidence:* read (the docstrings and bodies).
   *Found:* round 3 task 2.13.
+- **F-168** · L · the docstrings of the pins of `case-iii.tex`'s three frameworks and KT Claim 6.12
+  (`Molecular/RigidityMatrix/Claim612.lean`, `CaseIII/Relabel/Basic.lean`, `Relabel/Chain.lean`,
+  `CaseIII/Realization.lean`, `Molecular/Induction/Operations.lean`).
+  `linearIndependent_sum_p2_candidateRow`'s says that $p_2$ splits off at $v$ along $vb$ (KT's
+  $(G, p_2)$ is built on the same $G_v^{ab}$), and `linearIndependent_sum_p3_candidateRow`'s that
+  $p_3$ splits off at $a$ along $ac$ (KT: along $vc$). `ofNormals_relabel`'s transports four
+  conjuncts, one an algebraic independence that its statement lacks.
+  `hasGenericFullRankRealization_of_splitOff_relabel`'s names a `hsplitZero` branch of
+  `theorem_55_minimalKDof_k_all_k`, which has no such hypothesis, and an $M_3$ arm that it says
+  needs the lemma and that does not use it. `case_III_candidate_dispatch`'s names
+  `lem:case-II-realization` and `lem:case-III` as its nodes, says that it discharges the `hcand`
+  parameter of `case_III_hsplit_producer_all_k`, whose `hcand` now takes chain data, and then that
+  it has no caller. They carry process codes (Phases 22e–30, N1–N7, G4c-i to G4d-ii, W6b–W10b,
+  GAP-6, RELAX) and the words "producer", "seed", "brick", "device" and "leaf".
+  *Evidence:* read (the docstrings and bodies; the signatures of `theorem_55_minimalKDof_k_all_k`
+  and `case_III_hsplit_producer_all_k`; KT 2011 pp. 682 and 686, `.refs/`).
+  *Found:* round 3 task 2.14.
 
 ## M — mathematics and sources
 

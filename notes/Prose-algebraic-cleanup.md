@@ -6,9 +6,9 @@ which rounds are done. The round rewrites the prose of the chapter `algebraic-in
 its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
 else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-115`–`F-120`, and tasks 2.1–2.13 `F-121`–`F-164`. 18 one-commit tasks; tasks 1 and 2.1–2.13
-are done, and the round has no planned stop. **Next concrete task:** task 2.14, `case-iii.tex`'s
-case $d = 3$: the three frameworks and KT Claim 6.12 (now 1231–1514), at Opus (*Lemma
+`F-115`–`F-120`, and tasks 2.1–2.14 `F-121`–`F-168`. 18 one-commit tasks; tasks 1 and 2.1–2.14
+are done, and the round has no planned stop. **Next concrete task:** task 2.15, `case-iii.tex`'s
+triangle floor, KT Lemma 6.13 and the opening (now 1732–2013 and 1–13), at Opus (*Lemma
 checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -19,16 +19,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.13 has landed** (this commit): `case-iii.tex`'s case $d = 3$, the span and the point
-choice, the open's 502–820 (830–1148 at the parent), now 830–1230 under the retitled subsubsection
-*The case $d = 3$: three frameworks and KT Claim 6.12* (its label unchanged). Its 10 nodes keep
-every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and in order; five formalization
-notes are new. Nothing is mid-stream; task 2.14 is next.
+**Task 2.14 has landed** (this commit): `case-iii.tex`'s case $d = 3$, the three frameworks and KT
+Claim 6.12, the open's 821–1104 (1231–1514 at the parent), now 1231–1730. Its 8 nodes keep every
+`\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical; `lem:case-III-claim612-eq644` moved
+before `lem:case-III-claim612-p3-placement` (`F-119`). Seven formalization notes are new. Nothing is
+mid-stream; task 2.15 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (57 overfull boxes, none in the
-  slice). Screens on the slice: register 7 / 3 → 4 / 0 (label words), devices 9 / 10 → 0 / 0,
-  `\operatorname` 0, vocabulary 16 → 0; `case-iii`'s forward `\uses` 0 / 2.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (54 overfull boxes, none in the
+  slice). Screens on the slice: register 3 / 3 → 0 / 0, devices 0 / 0, `\operatorname` 0,
+  vocabulary 23 → 2 ("endpoint selector", in notes); `case-iii`'s forward `\uses` 0 / 2 → 0 / 1.
 
 **Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms
@@ -91,7 +91,7 @@ From `notes/Prose.md` §2, restated only as far as a builder needs them.
     induced, is in the proof of `lem:case-I-realization-h65`).
   - `case-ii` (2.9, done), with `genericity-and-count`'s `lem:case-II-realization-placement` (2.10,
     done): `lem:case-II-realization` (KT eq. (6.12)'s degenerate placement).
-  - `case-iii` (2.11–2.13 done; 2.14–2.15): Claim 6.11's chain `lem:case-III-claim-6-11-base`,
+  - `case-iii` (2.11–2.14 done; 2.15): Claim 6.11's chain `lem:case-III-claim-6-11-base`,
     `lem:case-III-gap3-minimalKDof`, `lem:case-III-nested-rank-lower`, `lem:case-III-claim-6-11`
     and the remark on KT footnote 6 (2.11); `lem:case-III-columnop`,
     `lem:case-III-candidate-row-construction`, `lem:case-III-candidate-row`; the $d = 3$ worked
@@ -206,14 +206,8 @@ for the dimension, the Lean's realization record and role clauses in statements,
 - **`panel-layer` … `genericity-and-count`.** *Done:* 2.1–2.10 (their open bullets are in this
   log at `efa7ed2b`, the last at `120eca58`).
 - **`case-iii`.**
-  - *Done:* 2.11–2.13 (their open bullets are in this log at `fe05a812`, `ba79d703` and
-    `4502f035`). The line numbers below are the open's; since 2.13, add 411 (*Hand-off*).
-  - *2.14 (821–1104):* $\rho$ is KT's relabel (KT eq. (6.31)) and also the hinge-row functional in
-    the proofs of the $p_2$ and $p_3$ lemmas: keep KT's, rename the other.
-    `lem:splitOff-ofNormals-relabel`'s statement opens on a justification and states the Lean record
-    ($\mathrm{ends}_0$, "three conjuncts", "recorded as a short corollary");
-    `lem:splitOff-rigidityRows-relabel` and `lem:case-III-claim612` carry role clauses; the note
-    after `lem:case-III-candidate-dispatch-d3` "rides" and names the "live path".
+  - *Done:* 2.11–2.14 (their open bullets are in this log at `fe05a812`, `ba79d703`, `4502f035`
+    and `9190873a`). The line numbers below are the open's; since 2.14, add 627 (*Hand-off*).
   - *2.15 (1105–1386, 1–14):* the two crux narratives ("the formalization must do visible work",
     "genuinely", "bare conjunct"); carry-in 5. The discriminator's and `lem:case-III`'s statements
     carry "general-position, link-recording realization" and "bare full-rank realization";
@@ -246,13 +240,12 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.9–2.10 `case-ii.tex`, `genericity-and-count.tex`** (`120eca58`, `fe05a812`): KT Lemma
     6.8 and putting back a body (carry-in 3); the rank at generic normals, the relative counts and
     KT eq. (6.12) at $k = 0$ (two nodes moved). Found `F-145`–`F-153`.
-  - [x] **2.11–2.13 `case-iii.tex`, KT Claim 6.11, the candidate completion, and the case $d = 3$:
-    the span and the point choice** (`ba79d703`, `e5f16b29`, this commit; 15–820, now 14–1230):
-    KT's three steps (pp. 684–685) and KT footnote 6; KT's row and column operations (pp. 685–686)
-    at $(G, p_1)$ with its subspace $L$ (KT eq. (6.12)); KT pp. 680–691 for $d = 3$, KT's four
-    points in homogeneous coordinates. Found `F-154`–`F-164`.
-  - [ ] **2.14 `case-iii.tex`, the case $d = 3$: the three candidates and KT Claim 6.12**
-    (821–1104): 8 nodes, 284 lines; crux from `lem:case-III-claim612-p3-placement` on.
+  - [x] **2.11–2.14 `case-iii.tex`, KT Claim 6.11, the candidate completion, and the case $d = 3$**
+    (`ba79d703`, `e5f16b29`, `9190873a`, this commit; 15–1104, now 14–1730): KT's three steps (pp.
+    684–685) and KT footnote 6; KT's row and column operations (pp. 685–686) at $(G, p_1)$ with
+    its subspace $L$ (KT eq. (6.12)); KT pp. 680–691 for $d = 3$, KT's four points in homogeneous
+    coordinates, the third framework as the first at $(G_a^{vc}, q_\rho)$, the rotation of KT Lemma
+    5.2. Found `F-154`–`F-168`.
   - [ ] **2.15 `case-iii.tex`, the triangle floor, KT Lemma 6.13 and the opening** (1105–1386,
     1–14): 5 nodes, 296 lines; crux throughout; carry-in 5.
   - [ ] **2.16 `algebraic-induction.tex`, the chapter's opening** (1–91): no node, 91 lines;
@@ -322,6 +315,8 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   hypothesis, both assumed by its pin; it fails for a $G$ that is not simple.
 - `F-158` (S, task 2.12): `lem:case-III-candidate-row` states KT's rank bound at $(G, p_1)$; its pin
   is linear algebra on forms whose old block KT's bottom rows do not satisfy.
+- `F-165` (S, task 2.14): the second and third frameworks' lemmas state KT's rank bounds; their pins
+  are the linear algebra of the last step, and the graph-level counts have no node.
 
 ## Moved to a later round
 
@@ -390,6 +385,12 @@ one line each naming the ledger ID and the task that found it.
   (`exists_homogeneousIncidence_of_normals_gen`) has no node.
 - `F-164` (L, task 2.13): the docstrings of its pins name a wrong node for five pins, call a green
   node red, and carry process codes.
+- `F-166` (E, task 2.14): the three frameworks and Claim 6.12's 23 missing and 16 unbacked edges,
+  and the nodes its new proofs cite without an edge.
+- `F-167` (N, task 2.14): ten of its thirteen pins are dead; the formal $d = 3$ route (one theorem at
+  three roles, the choice of $r$) has no node.
+- `F-168` (L, task 2.14): the docstrings of its pins misname KT's splittings, a conjunct, a branch
+  and a caller, and carry process codes.
 
 ## Blockers / open questions
 
@@ -397,13 +398,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.14, `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim
-6.12 (821–1104 at the open, now 1231–1514), at Opus**, a fresh agent (`notes/Prose.md` §2). Its
-diagnosis is the *2.14* item under *Per-chapter diagnosis*, its gates and screens under *Scope*.
-Then tasks 2.15–2.16 in order, and task 3 closes the round. For the slices:
-- **Line numbers.** 2.11–2.13 added 411 lines to `case-iii.tex`: 2.14 is now 1231–1514 (from
-  `lem:case-III-claim612-p2-placement` to the note after `lem:case-III-candidate-dispatch-d3`), and
-  2.15 is 1515–1796 and the opening 1–13.
+**Next concrete task: task 2.15, `case-iii.tex`'s triangle floor, KT Lemma 6.13 and the opening
+(1105–1386 and 1–14 at the open, now 1732–2013 and 1–13), at Opus**, a fresh agent
+(`notes/Prose.md` §2). Its diagnosis is the *2.15* item under *Per-chapter diagnosis*, its gates and
+screens under *Scope*. Then task 2.16, and task 3 closes the round. For the slices:
 - **Notation and terms.** *Decisions*' notation (2.1; the note on $d = k + 1$ follows
   `def:panel-support-extensor`); the opening writes $n$ until 2.16. After
   `def:panel-hinge-framework`: *nondegenerate* hinges, the framework identified with its body-hinge
@@ -417,46 +415,44 @@ Then tasks 2.15–2.16 in order, and task 3 closes the round. For the slices:
   statement that omits a hypothesis its pin assumes keeps its claim; its proof assumes it and says
   so, and a note gives it (`F-141`, `F-154`). The passage after `lem:case-I-realization` explains
   KT's genericity by the non-roots of a product of polynomials; cite it (principle F).
-  `lem:cycle-normals` gives normals, not a "seed" (2.15).
-- **From tasks 2.9–2.10.** `lem:case-II-realization-placement` (`F-150`, `F-118`) is cited as a
-  step at `case-iii.tex` 7, 1239, 1495 and 1718: cite KT eq. (6.12) and the proof of
-  `lem:case-II-realization` instead (as 2.12 did). KT Claim 6.9 (p. 678) is only that $(G, p_1)$
-  is a panel-hinge realization. `lem:genericity-device` is *the rank at generic normals* (KT §5.1,
-  p. 668), used as `lem:rank-polynomial-of-le-finrank` (`F-149`); "the genericity device
-  re-realizes" (1500, 1592, 1727) and the opening's "Claim 6.4, `lem:genericity-device`" (2.16)
-  follow this.
-- **From task 2.11.** Later slices still say "free-normal" and "seed" (25 hits): write the
-  panel-hinge framework $(G, q)$ with normals $q$. Statements write $G_v = G - v$, $|V(G_v)|$ and
-  the "new edge $ab$" (the opening, 2.15, still says "deleted edge"). The remark after
-  `lem:case-III-nested-rank-lower` cites the proof of `lem:case-III-chain-discriminator` for the
-  product that fixes $q$: 2.15 keeps the two consistent.
-- **From task 2.12.** The general-$d$ form of eqs. (6.24)–(6.29) is KT eqs. (6.50)–(6.52), p. 693.
-  The rows at $ab$ are $S \mapsto r_j(S(a) - S(b))$ for forms $r_j$ on $K^D$; $r = \sum_j \lambda_j
-  r_j$ (KT p. 690); the new row $w$ is $S \mapsto r(S(v) - S(a))$. `lem:case-III-candidate-row`
-  states KT's bound at $(G, p_1)$ for a subspace $L \subset \Pi(a)$ with $r$ not vanishing on
-  $C(L)$; at the normals $q(a) + t\,q(b)$ at $v$ the block is singular (`F-158`), so the $p_2$,
-  $p_3$ nodes cite its argument with their own $L$. The coinage "candidate completion" remains at
-  1241, 1250, 1375, 1433, 1460 and 1490 (2.14) and 11 (2.15).
-- **From task 2.13.** The lead (830–897) sets up KT's case $d = 3$ (pp. 680–691): $|V(G)| \ge 4$
-  (KT Lemma 6.7, p. 682), adjacent $v$, $a$ of degree two with $N_G(v) = \{a, b\}$,
-  $N_G(a) = \{v, c\}$, the four distinct; $\Pi(u)$ the panel of $u$ in $(G_v^{ab}, q)$; KT's
-  frameworks (not "candidates") $(G, p_1)$–$(G, p_3)$ with lines $L$, $L'$, $L''$ and blocks
-  $M_1$–$M_3$ (KT eq. (6.42)). It sketches Claim 6.12 once and says that the formal proof uses only
-  the general case: the note after `lem:case-III-candidate-dispatch-d3` need not repeat it
-  (principle F *Once*). KT's points are the vectors $\bar p_i$ of
-  `lem:case-III-claim612-points-affineIndep-real-normals`, with $x \cdot n$ the dot product; KT's
-  $\rho$ is left to 2.14. The new title says "the case $d = 3$": 2.15 decides whether the general
-  case gets its own subsubsection. *The triangle floor*'s "KT never treat the triangle as a
-  separate case" contradicts KT Lemma 6.7(i) (p. 677), which the lead cites.
-- **Crux nodes** keep their full proofs: those of tasks 2.14–2.15 remain (*Scope*).
+  `lem:cycle-normals` gives normals, not a "seed".
+- **From tasks 2.9–2.11.** `lem:case-II-realization-placement` (`F-150`, `F-118`) is cited as a
+  step at `case-iii.tex` 7 and 1935: cite KT eq. (6.12) and the proof of `lem:case-II-realization`
+  instead. KT Claim 6.9 (p. 678) is only that $(G, p_1)$ is a panel-hinge realization.
+  `lem:genericity-device` is *the rank at generic normals* (KT §5.1, p. 668), used as
+  `lem:rank-polynomial-of-le-finrank` (`F-149`): "the genericity device re-realizes" (1809, 1944)
+  and the opening's "Claim 6.4, `lem:genericity-device`" (2.16) follow this. 2.15's text says
+  "seed" 11 times: write the normals $q$. Statements write $G_v = G - v$, $|V(G_v)|$ and the "new
+  edge $ab$" (2.15 still says "deleted edge" once, and "candidate-completion" at 11). The remark
+  after `lem:case-III-nested-rank-lower` cites the proof of `lem:case-III-chain-discriminator` for
+  the product that fixes $q$: 2.15 keeps the two consistent.
+- **From tasks 2.12–2.13.** The general-$d$ form of eqs. (6.24)–(6.29) is KT eqs. (6.50)–(6.52),
+  p. 693. The rows at $ab$ are $S \mapsto r_j(S(a) - S(b))$, $r = \sum_j \lambda_j r_j$ (KT
+  p. 690), and KT's frameworks are $(G, p_1)$–$(G, p_3)$ (not "candidates") with lines $L$, $L'$,
+  $L''$ and blocks $M_1$–$M_3$. The lead (830–897) sketches Claim 6.12 once and says that the formal
+  proof uses only the general case (principle F *Once*). Its title says "the case $d = 3$": 2.15
+  decides whether the general case gets its own subsubsection. *The triangle floor*'s "KT never
+  treat the triangle as a separate case" contradicts KT Lemma 6.7(i) (p. 677), which the lead cites.
+- **From task 2.14.** $\rho$ is KT's $V(G) \setminus \{a\} \to V(G) \setminus \{v\}$
+  (`lem:splitOff-isLink-relabel`), $q_\rho$ and $S_\rho$ its relabelled normals and screw
+  assignments; the general case's functional $\rho_0$ (1872–1941) clashes with it: write $r$. The
+  proof of `lem:case-III-candidate-dispatch-d3` gives the formal route of KT Lemma 6.10: four
+  polynomial factors fix $q$; Claim 6.12 gives a line $L$ through
+  `lem:case-III-claim612-line-in-panel-union`; the rank of the framework for $L$; the rotation of KT Lemma 5.2
+  (`lem:rank-rotation-semicont`) about $L$, by $q(a) + t\,n'$ at $v$; then general position as in
+  Case II. The chain dispatch can cite it for the last two steps. The relabel lemmas are the case
+  $d = 3$ and their pins are dead: the general case's citations of them (1854, 1938) and of its
+  isomorphisms $\rho_i$ need checking against what `chainData_dispatch` reaches (`F-118`, `F-167`).
+  `F-119`'s last forward edge in the file, `lem:case-III-candidate-row` to `lem:case-III-claim612`
+  (2.12), needs no sentence: the statement no longer cites it.
+- **Crux nodes** keep their full proofs: those of task 2.15 remain (*Scope*).
 - **Carry-ins** 1–7 are under *Per-chapter diagnosis*, each with its task.
 - **The open's findings** are recorded, not acted on: `lem:genericity-device` kept its statement
   (`F-117`, `F-149`). Where a proof cites a node its pin does not reach (`F-118`), a slice may name
   in prose the node the pin does reach, after checking it with the script; the edges wait for
-  round 5. 2.14 gives `F-119`'s forward reference (`lem:case-III-claim612-p3-placement`) a sentence
-  or a move within the file.
+  round 5.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>` (e.g. `--chapter case-iii`). The ledger's next ID is `F-165`.
+  `--chapter <section>` (e.g. `--chapter case-iii`). The ledger's next ID is `F-169`.
 
 ## Decisions made during this round
 
@@ -475,11 +471,11 @@ Then tasks 2.15–2.16 in order, and task 3 closes the round. For the slices:
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`). The
   no-Lean-edit base is `ef57b401`, the open's parent.
-- **Tasks 2.1–2.13 (done).** `panel-layer.tex` follows KT §5 and p. 671 (Proposition 2.3's halves,
+- **Tasks 2.1–2.14 (done).** `panel-layer.tex` follows KT §5 and p. 671 (Proposition 2.3's halves,
   KT Lemma 5.3 before `thm:theorem-55`, Theorem 5.6 without the projective move, the base by KT's
   three cases, `F-131`); `case-i.tex` KT Lemma 5.4 for $m \le d + 1$ (`F-115`) and KT §6.2;
   `case-ii.tex` KT §6.3; `genericity-and-count.tex` KT §5.1 and p. 680; `case-iii.tex` KT pp.
-  680–691 (KT's $(G, p_1)$ with its subspace $L$; KT's points in homogeneous coordinates). A
-  statement that claims more than its pins, is vacuous or fails in a degenerate case keeps the
-  claim, with a note; its proof assumes what it needs and says so (`F-136`–`F-138`, `F-141`,
-  `F-142`, `F-145`, `F-149`, `F-150`, `F-154`, `F-158`; `F-060`'s span, 2.13).
+  680–691 ($(G, p_1)$ with its subspace $L$, $(G, p_3)$ as $(G, p_1)$ at $(G_a^{vc}, q_\rho)$, the
+  points in homogeneous coordinates). A statement that claims more than its pins, is vacuous or
+  fails in a degenerate case keeps the claim, with a note; its proof assumes what it needs and says
+  so (`F-136`–`F-138`, `F-141`, `F-142`, `F-145`, `F-149`, `F-150`, `F-154`, `F-158`, `F-165`).

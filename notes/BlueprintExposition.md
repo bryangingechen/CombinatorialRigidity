@@ -670,7 +670,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   *Decisions* — (G2) / N6b–N6c.
 - **`lem:case-III-claim612-p3-placement` — the third candidate via the graph iso
   `Gᵥᵃᵇ ≅ Gₐᵛᶜ` (KT eqs. (6.31)–(6.41))** — [done (`case-iii.tex`, prose final since 22h;
-  marker flipped 22k-close)] **(a)** (Phase 22e capture). **Stable
+  marker flipped 22k-close; since PROSE round 3 task 2.14 the proof says that KT add the columns of
+  `a` to those of `c` (p. 687), as the pin's column operation does, not `col_a += col_c` as below,
+  and builds `(G, p₃)` from `(Gₐᵛᶜ, q_ρ)` as `(G, p₁)` from `(Gᵥᵃᵇ, q)`)] **(a)** (Phase 22e
+  capture). **Stable
   insight:** Claim 6.12's third candidate `p₃` exists *because `a` is also a degree-2 vertex* — KT
   splits off at `a` along `vc`, and `Gₐᵛᶜ` is isomorphic to `Gᵥᵃᵇ` (via `ρ(v)=a`, `ρ(u)=u`), so the
   whole eq.-(6.29) candidate-completion machine reruns at the swapped roles. KT compresses this into a
