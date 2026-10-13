@@ -1261,10 +1261,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   (`notes/Prose-algebraic-cleanup.md`): it rewrote the chapter `algebraic-induction.tex` and its
   five sections, `panel-layer.tex` through `case-iii.tex`, in sixteen slices, and recorded 59
   findings in the ledger (`F-115`–`F-173`). Round 4, `prose-applications`, opened 2026-10-13
-  (`notes/Prose-applications-cleanup.md`); its tasks 2.1–2.10, `bar-joint-3d.tex`,
-  `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and the first two slices of
-  `generic-lift.tex`, are done. **Next concrete task:** its task 2.11, `generic-lift.tex`'s
-  generic hinge-point assignments.
+  (`notes/Prose-applications-cleanup.md`); its tasks 2.1–2.11, `bar-joint-3d.tex`,
+  `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and the first three slices of
+  `generic-lift.tex`, are done. **Next concrete task:** its task 2.12, the last slice of
+  `generic-lift.tex` (the body-and-hinge rank theorem, the section's lead and the chapter's
+  opening).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

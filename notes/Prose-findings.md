@@ -660,6 +660,21 @@ declaration's name as its header writes it:
   read (the bodies of the twelve pins).
   *Found:* round 4 task 2.10.
 
+- **F-218** · E · `generic-lift.tex`'s five hinge-point nodes, task 2.11's (`generic-lift.tex`):
+  one missing edge, three unbacked, no dead pin. Missing: the statement of
+  `lem:hinge-rows-polynomial-in-points` to `def:rigidity-matrix` (the screw space, through
+  `hingeExtensorPoly_eval`). Unbacked: that statement's edge to `def:plucker-coords`, with no Lean
+  basis (`F-059`); the edges of the abundance lemma's statement and the nondegeneracy proof to
+  `lem:affine-indep-iff`, transitive (both pins use the criterion
+  `affineSubspaceExtensor_ne_zero_iff` of `def:affine-subspace-extensor` and the library's passage
+  from linear to affine independence). Through another node: `def:extensor` and
+  `def:homogeneous-coords` from the definition, the abundance lemma and the nondegeneracy lemma, and
+  `def:rigidity-matrix` from the last two. The rewritten proofs cite without an edge
+  `lem:generic-placement-abundance` (the abundance lemma; the minor lemma is `F-209`'s).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `dc58265b`);
+  read (the bodies of the seven pins).
+  *Found:* round 4 task 2.11.
+
 ## N — node shape
 
 - **F-009** · N · 28 nodes with four or more pins (principle D), exactly `notes/Prose.md` §7's
@@ -1231,6 +1246,18 @@ declaration's name as its header writes it:
   `exists_isGenericEndpoints_abundance`); measured (`scripts/blueprint-deps.py --label
   def:two-extensor`, at `c8f1f0f1`).
   *Found:* round 4 task 2.10.
+
+- **F-219** · N · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`
+  (`generic-lift.tex`): pinned helpers. The definition pins the identity
+  `hingePointRow_eq_panelRow` (true by definition; the witness and rank pins call it) beside the
+  family `hingePointRow` and genericity `IsGenericHingePoints`; the lemma pins the definition
+  `hingeExtensorPoly` beside its evaluation identity. Task 2.11 maps the pins in two notes.
+  Candidates: pin the family and genericity alone on the definition, and the lemma on its
+  evaluation identity (with the degree bound, `F-217`).
+  *Evidence:* read (`GenericLift/HingeGeneric.lean`: the seven pins and the callers of
+  `hingePointRow_eq_panelRow`); measured (`scripts/blueprint-deps.py --label
+  def:generic-hinge-points`, at `dc58265b`).
+  *Found:* round 4 task 2.11.
 
 ## T — terminology and notation
 
@@ -2143,6 +2170,37 @@ declaration's name as its header writes it:
   `exists_isGenericEndpoints_abundance`, and the body of the last).
   *Found:* round 4 task 2.10.
 
+- **F-216** · S · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`,
+  `lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points`,
+  `lem:generic-hinge-points-nondegenerate` (`generic-lift.tex`): the endpoint selector and the
+  label sets left the statements, task 2.11's hygiene-rule reading. At the open the definition read
+  "Fix finite body and edge label sets and an endpoint selector", its family "of rigidity rows …
+  indexed by an edge label together with a pair of grade-$k$ exterior basis indices"; the
+  polynomial lemma began "Fix a finite edge label set. For each edge label $e$"; the abundance lemma
+  had no setup, and the existence lemma "Over an infinite field"; the nondegeneracy lemma took
+  "$k \ge 1$ (so $D \ge 2$), and … a loopless multigraph each of whose edge labels links its
+  selector pair". Task 2.11 states them for a multigraph $G = (V, E)$ (finite where the pins ask;
+  $d \ge 2$ and no loops for the last). The definition now introduces the hinge-point assignment
+  and its framework $(G, q)$, and writes the family out over the edges of $G$, the ends in a fixed
+  order. The selector, the label sets, the points at every label and "every label is an edge" are
+  in the note after it. Principle B moved the abundance lemma's gloss "— a genuine hinge" and the
+  parenthetical "(so $D \ge 2$)" to the prose and the proof ($D \ge 3$); "every supporting extensor
+  nonzero" is "every hinge nondegenerate", the term of `def:panel-hinge-framework`'s remarks. Two
+  readings, as for `F-206` and `F-212`: principle E and the round's *Terms*, the pins unchanged; or
+  the statements drop hypotheses the pins carry. Only the nondegeneracy pin takes `hends`, and no
+  pin of the slice takes `hfresh`, so `F-207`'s vacuity does not arise here.
+  *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`).
+  *Found:* round 4 task 2.11.
+- **F-217** · S · `lem:hinge-rows-polynomial-in-points` (`generic-lift.tex`): the statement claims a
+  polynomial "of degree at most $d - 1$" ("at most $k$" at the open), and no pin states a degree
+  bound. `hingeExtensorPoly` is the $k \times k$ minor of a matrix whose entries are indeterminates
+  or $1$, so the bound can be read off it, and `hingeExtensorPoly_eval` gives its value; the
+  docstrings assert the bound. Nothing uses it: the abundance argument needs only that the
+  coordinates are polynomials. Kept, with the note after the proof. Candidate: prove the bound (the
+  total degree of the determinant), or drop it from the statement.
+  *Evidence:* read (the bodies of the two pins; no degree lemma in `HingeGeneric.lean`).
+  *Found:* round 4 task 2.11.
+
 ## L — Lean
 
 - **F-013** · L · `SimpleGraph.Henneberg.typeII_isLaman` (`Henneberg.lean`): it takes `hab : a ≠ b`
@@ -2843,6 +2901,20 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and the private lemmas; JJ 2010
   §5, pp. 581–582).
   *Found:* round 4 task 2.10.
+
+- **F-220** · L · the docstrings of task 2.11's pins (`GenericLift/HingeGeneric.lean`). Six credit
+  their construction to "Jackson–Jordán 2010 §6", which has neither hinge points nor the row
+  family: JJ give a body-and-hinge realization by its hinge subspaces (§3.3, p. 578) and define its
+  genericity by maximum rank (p. 583). The file header and the docstrings of `hingeExtensorPoly`
+  and the abundance lemma assert a degree bound that no declaration proves (`F-217`).
+  `supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints` places its reference family on $e$
+  "(any values elsewhere)"; its body places it on every label. The rest narrates process: the
+  header ("Layer BH", "Phase 34 (PROSPECT G3 …)", "This file opens the body-and-hinge layer"),
+  "Phase 34" in six docstrings, "the Phase-24 transfer form", "subsequent Layer-BH work", "the
+  consumers", "packaging", "seeded", and "genuine" five times.
+  *Evidence:* read (the docstrings and bodies of the seven pins; JJ 2010 §§3.3 and 6, pp. 578 and
+  583).
+  *Found:* round 4 task 2.11.
 
 ## M — mathematics and sources
 

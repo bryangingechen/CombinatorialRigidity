@@ -7,10 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and tasks 2.1–2.10 `F-175`–`F-215`. 16 one-commit tasks; tasks 1 and 2.1–2.10 are
-done, and the round has no planned stop. **Next concrete task:** task 2.11, `generic-lift.tex`,
-body-and-hinge: generic hinge-point assignments (the open's 785–927, now 998–1140), at Opus
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-174`, and tasks 2.1–2.11 `F-175`–`F-220`. 16 one-commit tasks; tasks 1 and 2.1–2.11 are
+done, and the round has no planned stop. **Next concrete task:** task 2.12, `generic-lift.tex`,
+body-and-hinge: the witness and the rank, the section's lead and the chapter's opening (now
+1223–1442, 949–998 and 1–54), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,17 +20,17 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.10 has landed** (this commit): `generic-lift.tex`'s 550–845 is now 550–947, so its later
-slices start 213 lines below the open's numbers. No node moved; every one keeps its `\label`,
-`\lean{…}`, `\leanok` and `\uses` byte-identical. Two notes are new, unlabelled. Two definitions
-moved a consequence and an aside to the prose (`F-211`); the statements assign endpoints to the
-bars, the pins to every label (`F-212`). Nothing is mid-stream.
+**Task 2.11 has landed** (this commit): `generic-lift.tex`'s 998–1140 is now 999–1222 (a Whiteley
+citation at the body-bar witness lead-in adds a line). `lem:hinge-rows-polynomial-in-points` moved
+after `def:generic-hinge-points`, which now defines the hinge-point assignment (principle E *Node
+order*); every node keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. Two
+notes are new, unlabelled. Nothing is mid-stream.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (49 overfull boxes, none in the slice).
-  Screens on the slice (550–947): register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 0;
-  forward `\uses` 0 / 0 for `generic-lift`. The open's (439–734): 3 / 3 ("carries", "route"
-  twice), 0 / 0, 0, 0, 0 / 0.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (48 overfull boxes, none in the slice).
+  Screens on the slice (999–1222): register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 1
+  (the selector, in a note); forward `\uses` 0 / 0 for `generic-lift`. The open's (785–927): 2 / 2
+  ("genuine" twice), 0 / 0, 0, 4, 0 / 0.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -210,12 +210,11 @@ re-derives its own findings and records them in its commit and the ledger.
 | **total** | 3 640 | 95 | 152 | 56 / 41 | 2 / 66 | 0 | 56 | 0 / 2 | |
 
 The register's 15 other hits are label words. In prose: "carry" and its forms 19, "genuine(ly)"
-12, "route" 5, "capstone" 3, "feed" 1, and "leaf-most" 1 (in the introduction's graph note, where
-it may stay). Vocabulary: "endpoint selector" 12, "link-recording" 9, "carrier" 7, "shadowing" 5,
-"seed" 5, "consume"/"package" 12. The introduction's 57 devices are its per-phase Lean file names
-and identifiers. These chapters (Phases 24–26, 32, 34) predate the 2026-10-03 clauses and round
-3's notation: the Lean's realization record and label supply in statements, Lean names as
-instruments, three letters for the dimension in `generic-lift`, and role clauses.
+12, "route" 5, "capstone" 3, "feed" 1, "leaf-most" 1 (the introduction's graph note, where it may
+stay). Vocabulary: "endpoint selector" 12, "link-recording" 9, "carrier" 7, "shadowing" 5, "seed"
+5, "consume"/"package" 12. The introduction's 57 devices are its per-phase Lean file names and
+identifiers. These chapters (Phases 24–26, 32, 34) predate the 2026-10-03 clauses and round 3's
+notation.
 
 **Carried in** (the ledger's findings addressed to these files, and round 3's carry-in 4):
 1. `F-056`: KT's $d$ and $D$ for the body-bar dimension, as round 2 wrote `body-bar.tex`:
@@ -235,13 +234,12 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 8. Round 3's carry-in 4 (`F-100`, `F-173`): the Phase-20 and -21 items say the algebraic induction
    realizes KT Theorem 4.9's reduction (`thm:minimal-kdof-reduction`); it runs on
    `thm:minimal-kdof-reduction-all-k`, as `algebraic-induction.tex` says (principle E; 2.13).
-9. `F-117`, `F-118`: done in 2.3 (`lem:theorem-56-general-position`'s proof names the nodes its pin
-   reaches). The Phase-21 item's "generic-max-rank device underpinning the induction" (2.13).
+9. `F-117`, `F-118`: done in 2.3; the Phase-21 item's "generic-max-rank device underpinning the
+   induction" (2.13).
 10. `F-137`, `F-139`: done in 2.9 (the abundance proof argues from the definitions; `F-209`).
 11. `F-152`: say so where `lem:case-II-placement-old-rows-extract` (a split-off) is cited for its
     general form. Done in 2.9; `lem:hinge-point-witness`, `cor:bodyhinge-generic-rigid` are 2.12's.
-12. `F-059`: `lem:hinge-rows-polynomial-in-points` cites `def:plucker-coords`, whose declarations
-    its pin does not use; `extensor.tex` states the expansion as unformalized (2.11).
+12. `F-059`: done in 2.11 (the note after `lem:hinge-rows-polynomial-in-points`).
 13. `F-121`: `panel-layer.tex`'s note on `prop:rigidity-matrix-prop11` points at
     `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9 kept
     the first: simple, at least two bodies, spanning in its note; 2.12).
@@ -249,11 +247,8 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 - **`bar-joint-3d`, `molecule-modelling`, `molecule-application`, `jacobs`.** *Done:* 2.1–2.8 (the
   open bullets are in this log at `69bc7afb`, `67d44583`, `db71b408`, `302cc117`, `9c97fecc`,
   `bc6573b9`, `723c460d` and `0e8d7546`).
-- **`generic-lift`** (the open's line numbers; add 111 for 439–734 and 213 after 734). *Done:* 2.9
-  and 2.10 (their open bullets are in this log at `7c268bce` and `c8f1f0f1`).
-  - *2.11 (785–927):* carry-in 12; a grade $k$ ($k$ points of $K^{k+1}$, $k(k+1)|E|$ parameters).
-    `def:generic-hinge-points` pins a lemma; the selector in its statement; "a genuine hinge"; the
-    comparison closing `lem:generic-hinge-points-nondegenerate`'s proof.
+- **`generic-lift`** (the open's line numbers; add 214 for 735–784 and 295 after 927). *Done:*
+  2.9–2.11 (their open bullets are in this log at `7c268bce`, `c8f1f0f1` and `dc58265b`).
   - *2.12 (928–1147, 735–784, 1–54):* `lem:screw-map-rows` is read by `pencil.tex` and
     `main-component.tex` (*Scope*); "carried". `lem:hinge-point-witness`: carry-in 11,
     "link-recording", "genuine". `thm:bodyhinge-generic-rank`: $n \ge 2$ and the selector in the
@@ -299,10 +294,8 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.5–2.8 `jacobs.tex`**: the Laman condition and tight partitions; the counting bound; the
     easy direction and 0-extensions; Jacobs' conjecture, the degree-one formula and the opening
     (`bc6573b9`, `723c460d`, `0e8d7546`, `7c268bce`): found `F-191`–`F-205`.
-  - [x] **2.9–2.10 `generic-lift.tex`**: abundance, squares and panel-and-hinge; body-and-bar
-    (`c8f1f0f1`, this commit): found `F-206`–`F-215`.
-  - [ ] **2.11 `generic-lift.tex`, body-and-hinge: generic hinge-point assignments** (785–927): 5
-    nodes, 143 lines; carry-in 12.
+  - [x] **2.9–2.11 `generic-lift.tex`**: abundance, squares and panel-and-hinge; body-and-bar;
+    generic hinge-point assignments (`c8f1f0f1`, `dc58265b`, this commit): found `F-206`–`F-220`.
   - [ ] **2.12 `generic-lift.tex`, body-and-hinge: the witness and the rank, the section's lead and
     the opening** (928–1147, 735–784, 1–54): 7 nodes, 324 lines; carry-ins 7, 11 and 13.
   - [ ] **2.13 `intro.tex`, *Organization of the blueprint* and the continuation paragraph**
@@ -359,6 +352,10 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   and degrees) and `def:generic-endpoints` (the orientation aside), to the prose after them.
 - `F-212` (S, task 2.10): the statements assign endpoints to the bars, the polynomial in
   $2d\,|E(G)|$ coordinates; the pins to every edge label. Kept, with a note.
+- `F-216` (S, task 2.11): the selector and the label sets left five hinge-point statements, as in
+  `F-206`; "a genuine hinge" and "(so $D \ge 2$)" left too (principle B). Two readings.
+- `F-217` (S, task 2.11): `lem:hinge-rows-polynomial-in-points`' degree bound is unpinned and
+  unused; kept, with a note.
 
 ## Moved to a later round
 
@@ -415,6 +412,12 @@ one line each naming the ledger ID and the task that found it.
   evaluation identity the abundance pin uses; two lemmas pin definitions beside their claims.
 - `F-215` (L, task 2.10): the docstrings of its pins (a false count, JJ's notation and signs,
   process narration).
+- `F-218` (E, task 2.11): its five nodes: one missing edge, three unbacked, no dead pin, and the
+  node the abundance proof cites without an edge.
+- `F-219` (N, task 2.11): `def:generic-hinge-points` pins a definitional identity, and
+  `lem:hinge-rows-polynomial-in-points` a definition, beside their claims.
+- `F-220` (L, task 2.11): the docstrings of its pins (JJ §6 credited for constructions JJ do not
+  make, an unproved degree bound, process narration).
 
 ## Blockers / open questions
 
@@ -422,11 +425,12 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.11, `generic-lift.tex`, body-and-hinge: generic hinge-point
-assignments (the open's 785–927, now 998–1140), at Opus**, a fresh agent (`notes/Prose.md` §2). Its
-diagnosis is the *2.11* item under *`generic-lift`* in *Per-chapter diagnosis*, with carry-in 12;
-its gates and screens are under *Scope*. Then tasks 2.12–2.14 in order, and task 3 closes the
-round. For the slices:
+**Next concrete task: task 2.12, `generic-lift.tex`, body-and-hinge: the witness and the rank, the
+section's lead and the chapter's opening (the open's 928–1147, 735–784 and 1–54, now 1223–1442,
+949–998 and 1–54), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.12*
+item under *`generic-lift`* in *Per-chapter diagnosis*, with carry-ins 7, 11 and 13; its gates
+and screens are under *Scope*. Then tasks 2.13–2.14 in order, and task 3 closes the round. For the
+slices:
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
   true: the intro's "in dimension 3" and line 486 (2.13, 2.14).
@@ -439,31 +443,29 @@ round. For the slices:
   `cor:molecule-generic-rigid`; the intro's "protein-flexibility" and "capstone" (2.13, 2.14) have
   no counterpart in it.
 - **From task 2.8.** `jacobs.tex`'s opening credits Jacobs' conjecture to Jacobs 1998 (JJ
-  Conjecture 5.1; JJ §5 note that Jacobs states it as a result with an incomplete proof) and the
-  degree-one rank formula to JJ Lemma 4.2, part (a) by JJ to Franzblau 2000. That formula does not
-  use the rank formula: JJ prove it to show that the rank formula, applied to the core, gives
-  $r(G^2)$ for every graph. So the intro's "two further Jackson--Jordán consequences of the rank
-  formula" (lines 42–43 and 332–333) is false for the second (2.13, 2.14; `F-204`).
-- **From task 2.9.** `sec:generic-lift-panel` writes round 3's $d$ and $D$, normals
-  $q_v \in K^{d+1}$, a *normal assignment* and its *annihilator-row family* (over the edges of $G$,
-  indexed by pairs $(t, t')$ of standard basis indices of $\bigwedge^{d-1}K^{d+1}$); the selector
-  is in `fmlnote:generic-normals-selector`, for 2.11–2.12 to cite. Generic normals attain the
-  largest rank only among nondegenerate hinges (a degenerate hinge welds), so the opening's "generic
-  in the sense of Jackson and Jordán" (lines 21–29) needs that caveat (2.12). `F-207` holds for
-  2.12's four pins; `lem:hinge-point-witness`'s "rank-input form" reads true. JJ 2009 renders [JJ10].
-- **From task 2.10.** `sec:generic-lift-bodybar` writes $d$, $D$, bars in $\R^d$ and
-  $(D, D)$-sparsity. Its two-extensor lifts $p$ to $(1, p)$, where JJ and `def:homogeneous-coords`
-  append the 1 (the prose after `def:two-extensor`). It keeps the "line at infinity" that the
-  body-hinge lead cites, and `lem:extensor-map-rows` keeps rows member to member, as
-  `lem:screw-map-rows`' proof says. For bars our genericity and JJ's agree ($d \ge 1$, no loops),
-  as the opening's lines 28–29 say.
-- **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 11–13 under *Per-chapter
+  Conjecture 5.1; JJ §5: stated as a result, with an incomplete proof) and the degree-one rank
+  formula to JJ Lemma 4.2, part (a) by JJ to Franzblau 2000. That formula does not use the rank
+  formula (JJ prove it so that the rank formula at the core gives $r(G^2)$ for every graph), so the
+  intro's "two further Jackson--Jordán consequences of the rank formula" (lines 42–43, 332–333) is
+  false for the second (2.13, 2.14; `F-204`).
+- **From tasks 2.9–2.11** (`generic-lift.tex`). Round 3's $d$ and $D$ up to the hinge-point nodes;
+  `def:generic-hinge-points` defines $q_e$ ($d - 1$ points of $K^d$), $C(q_e)$ and $(G, q)$, while
+  the lead (949–998) and 1223– still write $k$, $n$, an italic "hinge-point assignments", and an
+  "endpoint selector" now in `fmlnote:generic-normals-selector` and the note after the definition.
+  Extensor coordinates are minors, Plücker coordinates only up to sign (965–968); JJ §6 has hinge
+  subspaces, not points (`F-220`). JJ's genericity: over nondegenerate hinges (panels), the same
+  (bars, $d \ge 1$, no loops), implied (hinge points, `def:dof-generic`, $d \ge 2$, no loops): the
+  opening's 21–29 needs the caveat. `F-207` holds for 2.12's four pins; `lem:hinge-point-witness`'s
+  "rank-input form" reads true. Keep true: the body-bar "line at infinity", the hinge-point remark's
+  "as the opening of this subsection explains" (the hinge at infinity), `lem:screw-map-rows`'
+  comparison with `lem:extensor-map-rows`. JJ 2009 renders [JJ10].
+- **Notation and terms** (*Decisions*); **carry-ins** 1–8, 11 and 13 under *Per-chapter
   diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
   the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
   readings** (*Scope*) bind 2.12.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
   `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-216`.
+  deficiency zero"). The ledger's next ID is `F-221`.
 
 ## Decisions made during this round
 
@@ -472,28 +474,25 @@ round. For the slices:
 - **One notation** (round 3's, carried; carry-in 1). KT's $d$ for the dimension (the bar-joint
   chapters' $d$ already), $D = \binom{d+1}{2}$, $K^{d+1}$, $\bigwedge^{d-1} K^{d+1}$, $\vee$ for
   the join, $\wedge$ for the meet, $*$ for the complement isomorphism; $k$ is only the dof.
-  `generic-lift`'s panel and body-bar sections have it (2.9, 2.10); its body-hinge section writes
-  $k + 1$ and a grade $k$ now.
+  `generic-lift` has it up to its hinge-point nodes (2.9–2.11); the rest of its body-hinge section
+  writes $k + 1$ and a grade $k$ now.
 - **Terms** (round 3's, carried). The realization record (the endpoint selector, link-recording)
   and the fresh-label supply leave statements, `\cref`ing round 3's note at
-  `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate". 2.4
-  replaced the coinage "shadowing carrier" (below).
+  `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate".
 - **`bar-joint-3d`'s opening** (2.1): the title drops "in dimension three"; the false sentence on
   $3|V| - 6$ (Jordán's Lemma 1.2.1) is cut, its reading left to `molecule-application.tex`.
-- **`molecule-modelling`** (2.2, 2.3): `thm:projective-invariance` over $K$ (`F-178`); the polarity
-  over every field, its lemma over $\R$ (*Hand-off*); `F-174` anchored (`F-183`); the equivalence is
-  Whiteley's 2004 manuscript, via JJ §2.1 and KT pp. 650, 671; `thm:panel-hinge-iff-molecular` moved.
-- **`molecule-application`** (2.4): "shadowing carrier" is replaced, not defined (*Simple graphs as
-  multigraphs*; the label bound to a note, `F-187`); the opening's credits are in *Hand-off*.
-- **`jacobs`** (2.5–2.8): JJ introduced once, in the opening. Each JJ result is credited as JJ
-  state it: Lemma 3.2 from their [10], Lemma 3.3 beside Whiteley's Lemma 9.1.3, the reduction to
-  the core in Theorem 5.4's proof, Lemma 4.2(a) to Franzblau by JJ. Cross edges, $E_H(v)$ and the
-  support are defined in leads; one note per subsection (`F-191`, `F-195`); the $K_5$ examples, the
-  core's maximality and the tree case are argued in prose.
-- **`generic-lift`** (2.9, 2.10): the selector and "every label is an edge" go to
-  `fmlnote:generic-normals-selector` and the panel theorem's note (`F-206`, `F-207`). JJ's
-  genericity holds over nondegenerate hinges, and for bars without loops. The body-bar witness is JJ
-  Lemma 5.1, by Whiteley's argument (JJ's Remark after it) in linear form; the prose relates our
-  lift $(1, p)$ to JJ's $(p, 1)$. `jacksonJordan2009` says 2010, the volume's year (*Eur. J.
-  Combin.* 31(2), 574–588; Crossref, `.refs/` p. 574); it renders [JJ10]. The key stays: no reader
-  sees it, and renaming it edits files beyond the round.
+- **`molecule-modelling`** (2.2, 2.3): `thm:projective-invariance` over $K$ (`F-178`); `F-174`
+  anchored (`F-183`); the equivalence is Whiteley's 2004 manuscript, via JJ §2.1 and KT pp. 650, 671.
+- **`molecule-application`** (2.4): "shadowing carrier" replaced, not defined (`F-187`).
+- **`jacobs`** (2.5–2.8): JJ introduced once, in the opening, and each JJ result credited as JJ
+  state it (Lemma 3.2 from their [10], Lemma 3.3 beside Whiteley's Lemma 9.1.3, Lemma 4.2(a) to
+  Franzblau). One note per subsection (`F-191`, `F-195`); the $K_5$ examples, the core's
+  maximality and the tree case are argued in prose.
+- **`generic-lift`** (2.9–2.11): the selector and "every label is an edge" go to
+  `fmlnote:generic-normals-selector`, the panel theorem's note and the note after
+  `def:generic-hinge-points` (`F-206`, `F-207`, `F-216`), which defines the hinge-point assignment,
+  so the polynomial lemma follows it (principle E *Node order*). JJ's genericity holds over
+  nondegenerate hinges, for bars without loops, and at generic hinge points. The body-bar witness is
+  JJ Lemma 5.1, by Whiteley's argument (JJ's Remark after it) in linear form, with our lift
+  $(1, p)$ against JJ's $(p, 1)$. `jacksonJordan2009` says 2010 (*Eur. J. Combin.* 31(2); Crossref,
+  `.refs/` p. 574) and renders [JJ10]; the key stays, as renaming it edits files beyond the round.
