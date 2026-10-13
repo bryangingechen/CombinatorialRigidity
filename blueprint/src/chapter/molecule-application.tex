@@ -172,15 +172,14 @@ vertex of $G$ to have degree at least two.
   \lean{SimpleGraph.molecule_rank_upper_bound}
   \leanok
   \uses{lem:exists-generic-general-position, lem:genericRank-eq-finrank-span,
-    thm:molecular-iff-square-bar-joint, lem:trivial-motions-rank-bound,
-    lem:molecule-graph-carrier}
+    thm:molecular-iff-square-bar-joint, lem:molecule-graph-carrier}
   Let $G$ be a simple graph of minimum degree at least two on a finite,
   nonempty vertex set $V$. Then
   $r(G^2) \le 3|V| - 6 - \operatorname{def}(\tilde G)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:square-graph, def:hinge-concurrent}
+  \uses{def:square-graph, def:hinge-concurrent, lem:deficiency-rank-bound}
   Regard $G$ as a multigraph, as in \cref{lem:molecule-graph-carrier}.
   Let $p \colon V \to \R^3$ be a placement that is generic for row
   independence and in general position up to order four
@@ -194,14 +193,14 @@ vertex of $G$ to have degree at least two.
   As $p$ is in general position, the centres $p(v)$ are distinct, so the
   hinges of the molecular framework on $(G, p)$ are nondegenerate. Hence
   $\dim Z_{\mathrm{mol}}(G, p) \ge 6 + \operatorname{def}(\tilde G)$
-  (\cref{lem:trivial-motions-rank-bound}), and the bound follows.
+  (\cref{lem:deficiency-rank-bound}), and the bound follows.
 \end{proof}
 
 \begin{fmlnote}
   The pinned form of the dictionary takes the molecular framework with an
   endpoint selector that assigns each edge its two ends
   (\cref{fmlnote:panel-hinge-nondegenerate}). The pinned form of the
-  bound of \cref{lem:trivial-motions-rank-bound} asks for a nonzero hinge
+  bound of \cref{lem:deficiency-rank-bound} asks for a nonzero hinge
   at every label, not only at every edge. The pinned lemma builds a selector with both properties. It
   assigns each edge of the multigraph of \cref{lem:molecule-graph-carrier}
   its two ends, and every other label one fixed pair of adjacent vertices

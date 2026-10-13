@@ -866,6 +866,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `5399e053`: two
   dead pins); read (a `grep` for the two names' callers and for the label in `blueprint/src/`).
   *Found:* round 2 task 2.6.
+  *Disposition:* left (exposition of the induced case; deadness alone is no reason to unpin).
 - **F-068** · N · `lem:rigidityRows-pinned-placement-rank-add` (`rigidity-matrix.tex`): its second
   pin, `le_finrank_span_rigidityRows_of_pinned_placement_augment` (the count with one more row,
   KT eq. (6.29)), has no Lean caller (counted in `F-012`); Case III uses the block-level
@@ -875,6 +876,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`: one
   dead pin); read (a `grep` for the two names' callers).
   *Found:* round 2 task 2.7.
+  *Disposition:* left (the pin states the lemma's "in particular", KT eq. (6.29)).
 - **F-087** · N · `lem:packing-move` (`molecular-induction.tex`): its pin
   `exists_packing_move_of_not_inc` has no Lean caller (counted in `F-012`).
   `exists_balanced_forest_packing` (`lem:balanced-forest-packing`) makes the same move inline,
@@ -3061,6 +3063,23 @@ declaration's name as its header writes it:
   uses the per-set forms.
   *Evidence:* read (the docstrings; a `grep` for each name's callers in `CombinatorialRigidity/`).
   *Found:* round 5 task 3.2.
+- **F-233** · L · the declarations round 5's task 3.3 moved or unpinned
+  (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`). Their
+  docstrings name the nodes their pins left: `screwSpace_finrank` and the five row-independence
+  lemmas say `def:rigidity-matrix` (now `def:screw-space`, `lem:edge-rows-independent` and
+  `lem:own-end-rows-independent`), `IsTrivialMotion` and `trivialMotions` say
+  `lem:trivial-motions-rank-bound` and `IsInfinitesimallyRigid` says `def:dof-generic` (now
+  `def:trivial-motions-rigid`), and `screwDim_add_deficiency_le_finrank_infinitesimalMotions` says
+  `lem:trivial-motions-rank-bound` (now `lem:deficiency-rank-bound`). `IsInfinitesimallyRigid`'s
+  also says that the equality form of the rank bound waits on the coordinatization
+  `⋀^k K^(k+2) ≅ K^D`, which `screwSpace_finrank` and `finrank_trivialMotions` supply.
+  `exists_finite_spanning_rigidityRows`, `linearIndependent_hingeRow_forest`,
+  `linearIndependent_hingeRow_star` and `exists_independent_rigidityRows_of_forest` lie outside
+  every main result's closure (`F-012`); the first and last have callers only in dead
+  `Molecular/AlgebraicInduction/CaseI.lean` code.
+  *Evidence:* read (the docstrings and statements; a `grep` for each name's callers);
+  measured (`scripts/blueprint-deps.py --label`, dead pins).
+  *Found:* round 5 task 3.3.
 
 ## M — mathematics and sources
 

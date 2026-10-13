@@ -6,10 +6,11 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its 132 `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1 and 3.2
-reshaped the nodes of round 1's chapters and of `matroid-union` to `meet`. No task edits the Lean
-or changes a statement's strength. **Next concrete task:** task 3.3, the node shapes of
-`rigidity-matrix.tex` (*Hand-off*). Round manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.3
+reshaped the nodes of round 1's chapters, of `matroid-union` to `meet` and of `rigidity-matrix`. No
+task edits the Lean or changes a statement's strength. **Next concrete task:** task 3.4, the node
+shapes of `deficiency.tex` and of `molecular-induction.tex`'s operations (*Hand-off*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,26 +21,27 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.2 has landed** (this commit; six chapters, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.3.
+**Task 3.3 has landed** (this commit; eight chapters, the ledger and docs, no Lean). Nothing is
+mid-stream; the next task is task 3.4.
 
-**The gate's baseline, at task 3.2** (2026-10-13):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 300 lines**, sha256 prefix
-  **`731a21a2756c46c4`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 3.3** (2026-10-13):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 322 lines**, sha256 prefix
+  **`9e02c8f68bf13099`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.1's (3 286 lines, `1df3c3a7996203cf`) is task 3.2's *Expected*, its 77 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1303 edges
-  d56898291333cd1c`** and **`eea72b4e717e6bb8`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 662 nodes,
-  1 023 pins (1 013 distinct; `lean_decls` 1 024), 506 missing, 2 052 implied, 86 + 306
-  unbacked, 191 dead, 26 nodes with four or more pins. The forward screen gives the open's table
-  but `case-i` 8/6 (task 3.2's upgrade node, two edges into `genericity-and-count.tex`).
-- Task 3.2's new nodes draw these missing in-edges (task 4's): `lem:generic-realization-of-rigid`
-  from `lem:case-I-realization-h65`, `lem:triangle-realization`, `lem:case-III-chain-dispatch`
-  and `lem:case-III-candidate-dispatch-d3`; `lem:meet-two-hyperplanes` from
-  `lem:cycle-pencil-realization`, `lem:generic-yields-genuine-hinge` and
-  `lem:pencil-lifting-planes-motions` (each replaces an edge the parent called missing, except the
-  chain dispatch's and the $d = 3$ dispatch's).
+  against task 3.2's (3 300 lines, `731a21a2756c46c4`) is task 3.3's *Expected*, its 156 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1310 edges
+  7d49700fb4cfb499`** and **`c230f601f4c9cc61`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 667 nodes,
+  1 019 pins (1 009 distinct; `lean_decls` 1 020), 490 missing, 2 217 implied, 86 + 310
+  unbacked, 190 dead, 25 nodes with four or more pins, one cycle-closing missing edge (`F-011`'s
+  last, task 3.6). The forward screen gives the open's table but `case-i` 8/6 (task 3.2) and
+  `rigidity-matrix` 10/9 0/0.
+- Missing in-edges that tasks 3.2–3.3 drew (task 4's, which the script's report lists; their
+  commits name them): to `lem:generic-realization-of-rigid` 4, `lem:meet-two-hyperplanes` 3,
+  `def:screw-space` 9 (five in `case-iii.tex` implied once their missing edges to
+  `def:rigidity-matrix` are added), `def:trivial-motions-rigid` 3 and `lem:edge-rows-independent`
+  2 (`pencil.tex`). Two proofs in `case-i.tex` and one in `molecule-modelling.tex` cite
+  `def:trivial-motions-rigid` without an edge, as they cited `def:dof-generic`.
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -51,10 +53,8 @@ mid-stream; the next task is task 3.3.
   **`b53eb8b1cf78cb06`** (1 030 pins, 1 020 distinct); `print.log` **0** `LaTeX Warning` lines
   (31 overfull boxes, counted at the open and close, not gated); 657 nodes, 653 green and 4
   unfilled (`F-008`).
-- **The baseline dump.** `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: 2 614
-  lines, sha256 prefix **`00604279e922bb0f`**, kept as `scratch/prose-graph/dump-216e0702.txt`
-  (gitignored; generated, so not committed). The open (`44e09c12`) changed no TeX: its dump,
-  regenerated at task 2, is the same bytes.
+- **The baseline dump** (`--dump` after `verify.sh`): 2 614 lines, **`00604279e922bb0f`**; the
+  open (`44e09c12`) changed no TeX, and its dump, regenerated at task 2, is the same bytes.
 - **The script's report** (a fresh `--no-cache` run, 75 s, equal line for line to the cached
   one; both consistency checks OK): every count equals round 1's (`F-001`–`F-012`), since rounds
   1–4 changed no edge or pin. Per group, with the forward-`\uses` screen (*Scope*):
@@ -190,59 +190,54 @@ gate's diff, which each task makes exact before editing.
     `F-014`, `F-016`, `F-043`, `F-044`; `F-008`'s `def:blockingWitness`): `def:runPebbleGame-verdict`
     and `thm:runPebbleGameExec-isAccept-iff` split off, four of the open's choices *revised*; its
     exact list and *Expected* (36 lines) are in its commit.
-  - [x] **3.2 `matroid-union`, `body-bar`, `extensor`, `meet`** (this commit; `F-052`, `F-054`,
-    `F-059`, `F-110`, `F-111`), each fix tried on a scratch copy with `--tex-root`. `F-052`:
-    `thm:matroid-partition` (Edmonds' matroid-partition theorem) after `thm:matroid-partition-rank`
-    takes `Matroid.Union_pow_indep_iff_count`, the case of that theorem's "in particular" for $k$
-    copies of one matroid (`F-051` is unchanged); Welsh's theorem and Oxley's Lemma 11.2.13 stay
-    addresses. Its one `\uses`-user, `thm:unionPow-cycle-indep-iff-sparse`, is retargeted: its pin
-    now reaches only the new node, its prose no claim left there. `F-054`: `lem:k-frame-span-le-pi`
-    pins `blockPiSpanOn`, `kFrameRow_mem_blockPiSpanOn` and `span_kFrameRowOn_le_blockPiSpanOn`
-    (`finrank_blockPiSpanOn` stays a step), its statement the case $Y = E(G)$ with a note, as
-    `F-163`'s; the three forms for all bars unpinned. `F-110`: the lemma keeps its three pins.
-    *Revised:* `lem:meet-two-hyperplanes` after `def:meet` pins `complementIso_extensor_mem_range_map_subtype`
-    and `extensor_join_proportional_complementIso_meet`, its two statements;
-    `complementIso_map_contragredient_eq` (the transformation law, for every $j$) is a proof step,
-    the address the prose after `def:meet` gives. The upgrade goes to
-    `lem:generic-realization-of-rigid` before `lem:cycle-realization`; its two proof edges point
-    forward to `genericity-and-count.tex` (task 5's). No node's statement states the eight dead
-    realization pins: unpinned, and `lem:case-III-claim612`'s note names the one the $d = 3$
-    dispatch uses. Retargets by reach: `lem:cycle-realization` to the upgrade (proof only);
-    `lem:case-III-chain-discriminator` and the two pencil transport lemmas to
-    `lem:meet-two-hyperplanes`. Of the three old labels' 22 `\cref`s in scope, ten repointed or
-    rewritten and twelve kept (claims at $d = 3$, the rank formula, comparisons). `F-059`, `F-111`: left.
-    New: `F-232` (L).
-    *Expected* (exact, before editing; the graph section predicted from the copy's TeX by
-    `scratch/prose-graph/predict.py`, which reproduces the parent's byte for byte): +3 nodes, each
-    `#1CAC78`; pins 1 029 → 1 024 (+1, +2, −9 with one moved to the upgrade node, three repinned;
-    hash changes); `## pins:` 3 lines added and 2 changed; `## uses:` 3 added (the new nodes:
-    statement `def:matroid-union`, proof `thm:matroid-partition-rank`; statement `def:join`,
-    `def:meet-complement-iso`, proof `lem:complement-iso-toDual`; statement `def:rank-hypothesis`,
-    proof `def:panel-general-position`, `lem:case-II-placement-old-rows-extract`,
-    `lem:isInfRigidOn-of-relative-count`) and 5 changed (the five retargets); 1 298 → 1 303 drawn
-    edges: −6 (the $d = 3$ lemma → `lem:case-III-chain-discriminator`, `lem:cycle-realization`
-    and the two pencil transports; `lem:genericity-device` → `lem:cycle-realization`, now implied;
-    `thm:matroid-partition-rank` → `thm:unionPow-cycle-indep-iff-sparse`), +11 (`def:join`,
-    `lem:complement-iso-toDual` → `lem:meet-two-hyperplanes` → its three users;
-    `def:panel-general-position`, `lem:case-II-placement-old-rows-extract`,
-    `lem:isInfRigidOn-of-relative-count` → `lem:generic-realization-of-rigid` →
-    `lem:cycle-realization`; `thm:matroid-partition-rank` → `thm:matroid-partition` →
-    `thm:unionPow-cycle-indep-iff-sparse`); +3 node lines; 3 300 lines, the diff 77 lines.
-  - [ ] **3.3 `rigidity-matrix.tex`** (`F-009`'s two, `F-010`'s `ScrewSpace` and
-    `finrank_screwAssignment`, `F-011`'s three, `F-008`'s `def:dof-generic`, `F-065`, `F-068`).
-    `def:rigidity-matrix` (14): the screw space (`ScrewSpace`, `screwDim`,
-    `screwSpace_finrank`) moves to `def:hinge-constraint`, which introduces it (two cycles of
-    `F-011` go); the two facts that the prose after it proves, the independence of an edge's rows
-    and of the rows of edges with ends of their own (five pins), split into a lemma; the motions
-    and rows stay; a pin no clause states is unpinned.
-    `lem:trivial-motions-rank-bound` (9) with `def:dof-generic`: a definition node before the
-    lemma for trivial motions and infinitesimal rigidity takes `IsTrivialMotion`, `trivialMotions`
-    and `def:dof-generic`'s `IsInfinitesimallyRigid` with their sentences (the third cycle goes);
-    `def:dof-generic` keeps the degree of freedom and genericity, unpinned and unfilled (left: no
-    declaration defines them as stated); `finrank_screwAssignment` is unpinned; the deficiency
-    bound splits off if KT state it separately. `F-065`, `F-068`: leave (exposition of the
-    induced case and of KT eq. (6.29)). *Expected:* +2 or +3 nodes; pins moved, about −3 (hash
-    changes); new edges; the screw space's in-edges become `def:hinge-constraint`'s.
+  - [x] **3.2 `matroid-union`, `body-bar`, `extensor`, `meet`** (`56fb8b8c`; `F-052`, `F-054`,
+    `F-059`, `F-110`, `F-111`): `thm:matroid-partition`, `lem:meet-two-hyperplanes` and
+    `lem:generic-realization-of-rigid` added, `F-110`'s choice *revised*; its exact list and
+    *Expected* (77 lines) are in its commit.
+  - [x] **3.3 `rigidity-matrix.tex`** (this commit; `F-009`'s two, `F-010`'s `ScrewSpace` and
+    `finrank_screwAssignment`, `F-011`'s three, `F-008`'s `def:dof-generic`, `F-065`, `F-068`), each
+    fix tried on a scratch copy with `--tex-root`. `def:rigidity-matrix` keeps its five motion and
+    row pins (KT §2.4's one definition) with a role map; `exists_finite_spanning_rigidityRows`,
+    which no clause states, is unpinned. *Revised:* the screw space (`ScrewSpace`, `screwDim`,
+    `screwSpace_finrank`) gets a node of its own, `def:screw-space` before `def:hinge-constraint`
+    (`F-010`'s third choice: many nodes use the space without frameworks), and the two facts after
+    the definition become `lem:edge-rows-independent` (`linearIndependent_hingeRow`,
+    `exists_independent_rigidityRows_of_edge`, which later chapters use) and
+    `lem:own-end-rows-independent` (the forest and star forms, dead). `def:trivial-motions-rigid`,
+    before `def:dof-generic`, takes `IsTrivialMotion`, `trivialMotions` and `IsInfinitesimallyRigid`;
+    `def:dof-generic` keeps the degree of freedom and genericity, unpinned and unfilled (no
+    declaration defines them), `\uses` `def:rigidity-matrix` and gets a note. *Revised:* the
+    deficiency bound splits off as `lem:deficiency-rank-bound`; KT state it only inside their
+    Proposition 2.3, but three nodes use it apart from the trivial motions. The trivial-motions lemma
+    keeps three pins; `finrank_screwAssignment`, `trivialMotions_le_infinitesimalMotions` and
+    `trivialMotions_eq_range_const` are unpinned and named in its proof. `F-011`'s three cycles go.
+    `F-065`, `F-068`: left (the induced case; KT eq. (6.29), the lemma's "in particular").
+    Retargets: `def:extensor-through-point`'s and `lem:case-III-claim612-extensor-span`'s statement
+    edges `def:rigidity-matrix` -> `def:screw-space`; those of `def:framework-with-graph`,
+    `lem:cycle-realization-dim-bound` and `lem:case-III-claim612-block-iff-perp` removed (only the
+    screw space backed them, implied now), and `lem:motions-mono-of-graph-le`, which reached
+    `def:rigidity-matrix` through the first, gains it; `lem:rank-parallel-full`'s stays (its
+    statement states rows). `def:dof-generic` -> `def:trivial-motions-rigid` in the two
+    molecular-conjecture statements; `lem:trivial-motions-rank-bound` -> `lem:deficiency-rank-bound`
+    in the proofs of `prop:rigidity-matrix-prop11` and `lem:relative-deficiency-rank-bound` and,
+    from the statement, of `lem:molecule-rank-upper-bound`, and beside it in the two
+    molecular-conjecture proofs; `+lem:edge-rows-independent` in the proofs of
+    `lem:case-II-placement-new-rows` (reach), `lem:block-rank-cut` and
+    `lem:theorem-55-base-producer-single` (they cite the moved fact). `\cref`s repointed:
+    `def:dof-generic` 5 of 10, `lem:trivial-motions-rank-bound` 5 of 18 (2 more split in two),
+    `def:rigidity-matrix` 2 of 16. New: `F-233` (L).
+    *Expected* (exact, before editing the tree; the copy's after-dump predicted by `predict.py`):
+    +5 nodes (`def:screw-space`, `def:trivial-motions-rigid` `#B0ECA3`; the three lemmas `#1CAC78`);
+    pins 1 023 -> 1 019 (12 moved, 4 unpinned; `lean_decls` 1 024 -> 1 020, hash `eea72b4e717e6bb8`
+    -> `c230f601f4c9cc61`); `## pins:` 5 added, 3 changed; `## uses:` 5 added, 17 changed; drawn
+    edges 1 303 -> 1 310 (`7d49700fb4cfb499`), -10 (`def:rigidity-matrix` ->
+    `def:extensor-through-point`, `def:framework-with-graph`, `lem:block-rank-cut`,
+    `lem:case-III-claim612-extensor-span`, `lem:cycle-realization-dim-bound` and
+    `lem:trivial-motions-rank-bound`; `def:D-deficiency` -> the last; the last -> `def:dof-generic`,
+    `lem:molecule-rank-upper-bound` and `lem:relative-deficiency-rank-bound`), +17 (14 into and out
+    of the new nodes; `def:extensor` -> `def:extensor-through-point`; `def:rigidity-matrix` ->
+    `def:dof-generic` and `lem:motions-mono-of-graph-le`); +5 node lines; 3 322 lines
+    (`9e02c8f68bf13099`), the diff 156 lines.
   - [ ] **3.4 `deficiency.tex`; `molecular-induction.tex`'s operations, induced subgraph and
     forest surgery** (`F-009`'s four, `F-010`'s `endsOf`, `F-082`, `F-087`, `F-090`, `F-091`;
     `F-008`'s two). `def:cut-edges-2ec` (7): its two claims (a $0$-dof-graph is
@@ -435,6 +430,7 @@ ledger's earlier `L` entries are task 8.2's.
 
 - `F-230` (task 3.1): three pebble-game docstrings name the nodes their pins left.
 - `F-232` (task 3.2): docstrings of moved or unpinned declarations, and the dead code among them.
+- `F-233` (task 3.3): the same for `rigidity-matrix.tex`'s moved pins, and a stale docstring claim.
 
 ## Blockers / open questions
 
@@ -442,31 +438,25 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.3, the node shapes of `rigidity-matrix.tex`** (Opus, a fresh
-agent). The parent's dump is task 3.2's (3 300 lines, `731a21a2756c46c4`; *Current state*):
+**Next concrete task: task 3.4, the node shapes of `deficiency.tex` and of
+`molecular-induction.tex`'s operations, induced subgraph and forest surgery** (Opus, a fresh
+agent). The parent's dump is task 3.3's (3 322 lines, `9e02c8f68bf13099`; *Current state*):
 regenerate it on the parent after `verify.sh` if the scratch copy is gone. Before editing, read
 each named node, its pins' statements and its `--label` report, try the change on a scratch copy
-of the TeX (*Decisions*, tasks 3.1 and 3.2), and make 3.3's *Expected* exact in its line, its
+of the TeX (*Decisions*, tasks 3.1–3.3), and make 3.4's *Expected* exact in its line, its
 `## uses:` lines included (gate 3 (b)); then edit, and diff the after-dump against it. Then task
-3.4.
+3.5.
 
 ## Decisions made during this round
 
-- **The slicing** (the open): 31 tasks against §3's ~15, which predates the script's counts. The
-  ledger holds 536 missing and 397 unbacked edges, and an E task reads the prose of each unbacked
-  one. It has 45 `N` entries, most of which propose a new node, a split, a move or a change of
-  pins. N goes by chapter (14 tasks) and E by chapter group (9, split where a group has more than
-  about 90 edges); the report takes two commits, since it ranks 132 entries.
+- **The slicing** (the open): 31 tasks, not §3's ~15 (it predates the script's 536 missing and
+  397 unbacked edges): N by chapter (14), E by chapter group (9), the report in two commits.
 - **The honesty gate for a new node, the retargeting rule, and the node-shape and edge
   policies** (§3 *N*, *E*): settled at the open, under *Scope*.
-- **The order:** N, then E, then the node order, then T, U, R and X. An N fix changes what the
-  report calls missing; E's additions and removals change which `\uses` point forward.
-- **The tooling first** (task 2): the drawn graph is a transitive reduction, so the open's dump
-  cannot show a removal or an implied addition, and the gate would not be exact without it.
-- **The `## uses:` section's lines** (task 2): every node, and every other labelled environment
-  with a `\uses` (the example and `rem:kt-lemma-44`), as the pins section lists the example, so
-  an edit of either's `\uses` (task 4.3's `F-007`) shows too. Targets are raw: each part sorted,
-  duplicates kept, a non-node target included, `-` for an empty part.
+- **The order:** the tooling (task 2: the drawn graph is a transitive reduction, so the dump
+  alone hides removals), N, E, the node order, then T, U, R and X; N changes what is missing.
+- **The `## uses:` section's lines** (task 2): every node and every other labelled environment
+  with a `\uses` (task 4.3's `F-007`); targets raw, each part sorted, `-` for an empty part.
 - **`pathVertex`** (task 3.13): `40-simplify`'s `c8` unpinned the bridge step's four `pathVertex`
   lemmas and left `lem:pencil-bridge-fibre`'s `pathVertex` (`notes/Phase40-simplify-verdicts.md`).
   `F-010` measures 30 missing in-edges through it, five of them forward from `rigidity-matrix.tex`
@@ -480,11 +470,15 @@ of the TeX (*Decisions*, tasks 3.1 and 3.2), and make 3.3's *Expected* exact in 
   script's `ancestors_map` and `transitive_reduction`; an edge is dashed when its source is in the
   user's statement `\uses`. On the parent this reproduced the built graph's 1 292 edges exactly.
 - **Predict the whole dump** (task 3.2). A probe applying those two functions and leanblueprint's
-  colorizers to the copy's TeX reproduced the parent's dump byte for byte and task 3.2's
-  after-dump exactly (measured; `scratch/prose-graph/predict.py` and `predict-dump.sh`,
-  gitignored, not retained in the repo). Its one subtlety: a node with a remark among its `\uses`
-  ancestors (`rem:kt-lemma-41`) is not fully proved, so it is drawn `#9CEC8B`.
+  colorizers to the copy's TeX reproduces the after-dump exactly (tasks 3.2, 3.3; measured,
+  `scratch/prose-graph/predict.py` and `predict-dump.sh`, gitignored). A node with a remark among
+  its `\uses` ancestors (`rem:kt-lemma-41`) is not fully proved, so it is drawn `#9CEC8B`.
 - **A new node's `\uses`** (task 3.2): every node its pins reach, less those implied by its other
   `\uses`; the statement takes those whose terms it states. A node whose prose follows an argument
   its pins do not reach gets no edge to it (`lem:generic-realization-of-rigid`,
   `lem:genericity-device`).
+- **Retargets beyond reach** (task 3.3). A proof whose edge to the old node backed its citation of
+  a claim that moved gains an edge to the new node (`lem:block-rank-cut` cites the rows of an
+  edge). A removed edge that a downstream node's reach went through is restored at that node
+  (`lem:motions-mono-of-graph-le`). Diffing the copy's `--tex-root` report against the parent's,
+  node by node, lists every missing or unbacked edge a move changes (*Current state*).

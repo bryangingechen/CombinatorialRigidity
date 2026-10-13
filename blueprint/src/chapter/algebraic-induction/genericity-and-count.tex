@@ -296,15 +296,15 @@ they span the rows of the edge.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:hinge-row-block, lem:rank-delete-vertex}
+  \uses{def:hinge-row-block, lem:rank-delete-vertex, lem:edge-rows-independent}
   Let $u$ and $w$ be the ends of $e$, and let $C \neq 0$ be its hinge.
   The linear forms on $K^D$ that vanish on $C$ form a space of dimension
   $D - 1$ (\cref{def:hinge-row-block}). The map $S \mapsto S(u) - S(w)$
   takes the screw assignments onto $K^D$, as $u \neq w$. So composing
   with it gives a space of linear forms on the screw assignments of
-  dimension $D - 1$. The rows of $R(G,q)$ at $e$ span this space
-  (\cref{lem:rows-polynomial-in-normals}), and $D - 1$ of them are
-  linearly independent.
+  dimension $D - 1$ (\cref{lem:edge-rows-independent}). The rows of
+  $R(G,q)$ at $e$ span this space (\cref{lem:rows-polynomial-in-normals}),
+  and $D - 1$ of them are linearly independent.
 \end{proof}
 
 \begin{fmlnote}

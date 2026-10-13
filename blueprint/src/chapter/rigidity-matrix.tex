@@ -46,24 +46,40 @@ vector of $\R^D$, its screw center, where $D = \binom{d+1}{2}$. A hinge
 joining two bodies constrains the difference of their screw centers to
 the span of a $(d-1)$-extensor supporting the hinge. We take this
 constraint as the definition, over a field $K$. Screw centers lie in
-$\bigwedge^{d-1}K^{d+1}$, which has dimension
-$\binom{d+1}{d-1} = D$, and the supporting extensors are those of
+the following space, as do the supporting extensors of
 \cref{def:affine-subspace-extensor}.
+
+\begin{definition}[Screw space]
+  \label{def:screw-space}
+  \lean{CombinatorialRigidity.Molecular.ScrewSpace,
+    CombinatorialRigidity.Molecular.screwDim,
+    CombinatorialRigidity.Molecular.screwSpace_finrank}
+  \leanok
+  The \emph{screw space} is $\bigwedge^{d-1}K^{d+1}$. It has dimension
+  $\binom{d+1}{d-1} = D$, where $D = \binom{d+1}{2}$.
+\end{definition}
+
+\begin{fmlnote}
+  The dimension is written $d = k + 1$, so that the screw space is
+  $\bigwedge^k K^{k+2}$. The pins are the screw space, the number $D$
+  and the dimension of the screw space.
+\end{fmlnote}
 
 \begin{definition}[Hinge constraint via the supporting extensor]
   \label{def:hinge-constraint}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework,
     CombinatorialRigidity.Molecular.BodyHingeFramework.hingeConstraint}
   \leanok
-  \uses{def:affine-subspace-extensor}
+  \uses{def:affine-subspace-extensor, def:screw-space}
   A \emph{body-hinge framework} $(G,p)$ in $K^d$ is a multigraph
   $G = (V,E)$ together with a map $p$ that assigns to each edge $e$ a
   $(d-2)$-dimensional affine subspace $p(e)$ of $K^d$, the \emph{hinge}
   of $e$. Let $C(p(e)) \in \bigwedge^{d-1}K^{d+1}$ be a
   $(d-1)$-extensor supporting $p(e)$
   (\cref{def:affine-subspace-extensor}). A \emph{screw assignment} is a
-  map $S \colon V \to \bigwedge^{d-1}K^{d+1}$. It satisfies the
-  \emph{hinge constraint} at an edge $e$ with ends $u$ and $v$ if
+  map $S$ from $V$ to the screw space $\bigwedge^{d-1}K^{d+1}$. It
+  satisfies the \emph{hinge constraint} at an edge $e$ with ends $u$
+  and $v$ if
   \[
     S(u) - S(v) \in \operatorname{span} C\bigl(p(e)\bigr).
   \]
@@ -83,8 +99,7 @@ symmetric in $u$ and $v$, since $S(v) - S(u) = -(S(u) - S(v))$.
   two panels (\cref{def:panel-hinge-framework}). A lemma that needs
   $C(e) \neq 0$ assumes it. Screw assignments are defined on a fixed set
   of bodies, which may contain bodies that lie on no edge of $G$
-  (\cref{lem:relative-deficiency-rank-bound}). The dimension is written
-  $d = k + 1$, so that the screw space is $\bigwedge^k K^{k+2}$.
+  (\cref{lem:relative-deficiency-rank-bound}).
 \end{fmlnote}
 
 Katoh and Tanigawa write the hinge constraint as linear
@@ -128,16 +143,7 @@ The rigidity matrix collects these equations for all the edges.
     CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions,
     CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow,
     CombinatorialRigidity.Molecular.BodyHingeFramework.rigidityRows,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_dualCoannihilator,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_finite_spanning_rigidityRows,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_edge,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_star,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_forest,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_forest,
-    CombinatorialRigidity.Molecular.ScrewSpace,
-    CombinatorialRigidity.Molecular.screwDim,
-    CombinatorialRigidity.Molecular.screwSpace_finrank}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_dualCoannihilator}
   \leanok
   \uses{def:hinge-row-block}
   Let $(G,p)$ be a body-hinge framework. Its \emph{rigidity matrix}
@@ -166,26 +172,81 @@ $R(G,p)$, which is
   assignments, for an edge $e$ with ends $u$ and $v$ and a linear form
   $r$ on the screw space that vanishes on $C(p(e))$. The rank of
   $R(G,p)$ is the dimension of the span of these forms, and $Z(G,p)$ is
-  the space on which they all vanish.
+  the space on which they all vanish. The first two pins are the
+  infinitesimal motions and $Z(G,p)$, the next two the rows of
+  $R(G,p)$, and the last the description of $Z(G,p)$ by the rows.
 \end{fmlnote}
 
-Two facts about the rows of $R(G,p)$ are used later. First, let $e$ be
-an edge with ends $u \neq v$. Its $D - 1$ rows are the linear forms
-$S \mapsto r_i(p(e)) \cdot (S(u) - S(v))$. The vectors $r_i(p(e))$ are
-linearly independent, and $S \mapsto S(u) - S(v)$ maps the screw
-assignments onto $K^D$, so these rows are linearly independent.
+We record two facts about the rows of $R(G,p)$. First, the rows of an
+edge with distinct ends are linearly independent.
+
+\begin{lemma}[The rows of an edge are independent]
+  \label{lem:edge-rows-independent}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_edge}
+  \leanok
+  \uses{def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework, let $u \neq v$ be bodies, and
+  let $r_1, \dots, r_n \in K^D$ be linearly independent. Then the linear
+  forms $S \mapsto r_i \cdot (S(u) - S(v))$ on screw assignments are
+  linearly independent. In particular, if $e$ is an edge with ends $u$
+  and $v$ and $C(p(e)) \neq 0$, then the $D - 1$ rows of $e$ are
+  linearly independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The map $S \mapsto S(u) - S(v)$ takes the screw assignments onto
+  $K^D$, as $u \neq v$. So a linear relation among the forms gives the
+  same relation among the $r_i$, and its coefficients are zero. If
+  $C(p(e)) \neq 0$, the rows of $e$ are the forms for $r_i = r_i(p(e))$,
+  $1 \le i \le D - 1$, which are linearly independent
+  (\cref{def:hinge-row-block}).
+\end{proof}
+
+\begin{fmlnote}
+  The first pin is the claim for linear forms, and the second its form
+  for rows.
+\end{fmlnote}
 
 Second, the rows of several edges are jointly independent when each of
-the edges has an end of its own. Let $e_1, \dots, e_m$ be edges such
-that $e_j$ has ends $u_j$ and $w_j$, the bodies $u_1, \dots, u_m$ are
-distinct, and no $w_j$ is equal to any $u_{j'}$. Then the $(D-1)m$ rows
-of $e_1, \dots, e_m$ are linearly independent. Indeed, take a linear
-combination of them that vanishes, and evaluate it at the screw
-assignment with value $x$ at $u_j$ and $0$ elsewhere. Only the rows of
-$e_j$ contribute, and their coefficients $c_i$ give
-$\sum_i c_i\, r_i(p(e_j)) \cdot x = 0$ for every $x \in K^D$, so every
-$c_i$ is zero. For example, the edges of a star at a body $w$ satisfy
-the hypothesis if their other ends are distinct bodies other than $w$.
+the edges has an end of its own.
+
+\begin{lemma}[Independent rows at edges with ends of their own]
+  \label{lem:own-end-rows-independent}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_forest,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_forest,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_star}
+  \leanok
+  \uses{def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework. Let $u_1, \dots, u_m$ be
+  distinct bodies, and let $w_1, \dots, w_m$ be bodies none of which is
+  equal to any $u_j$. For each $j$, let
+  $r_{j,1}, \dots, r_{j,n_j} \in K^D$ be linearly independent. Then the
+  linear forms $S \mapsto r_{j,i} \cdot (S(u_j) - S(w_j))$ on screw
+  assignments are linearly independent. In particular, if $e_j$ is an
+  edge with ends $u_j$ and $w_j$ and $C(p(e_j)) \neq 0$ for each $j$,
+  then the $(D-1)m$ rows of $e_1, \dots, e_m$ are linearly independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Take a linear combination of the forms that vanishes, and evaluate it
+  at the screw assignment with value $x$ at $u_j$ and $0$ elsewhere. A
+  form of index $j' \neq j$ vanishes there, as $u_{j'} \neq u_j$ and
+  $w_{j'} \neq u_j$. So the coefficients $c_i$ of the forms of index $j$
+  give $\sum_i c_i\, r_{j,i} \cdot x = 0$ for every $x \in K^D$, and
+  every $c_i$ is zero, as the $r_{j,i}$ are linearly independent. If
+  $C(p(e_j)) \neq 0$, the rows of $e_j$ are the forms for
+  $r_{j,i} = r_i(p(e_j))$, $1 \le i \le D - 1$, which are linearly
+  independent (\cref{def:hinge-row-block}).
+\end{proof}
+
+For example, the edges of a star at a body $w$ satisfy the hypothesis
+if their other ends are distinct bodies other than $w$.
+
+\begin{fmlnote}
+  The first pin is the claim for linear forms, the second its form for
+  rows, and the third the case of a star.
+\end{fmlnote}
 
 The next definitions are Katoh and
 Tanigawa's~\cite[\S\S2.3--2.4]{katohTanigawa2011}, who take that of a
@@ -193,26 +254,88 @@ generic framework from Jackson and
 Jord\'an~\cite[\S6]{jacksonJordan2009}. A body-hinge framework on $G$
 is also called a \emph{realization} of $G$.
 
+\begin{definition}[Trivial motions; infinitesimal rigidity]
+  \label{def:trivial-motions-rigid}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsTrivialMotion,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigid}
+  \leanok
+  \uses{def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework. A screw assignment $S$ is
+  \emph{trivial} if $S(u) = S(v)$ for all bodies $u$ and $v$, and the
+  trivial screw assignments form the space of \emph{trivial motions}.
+  The framework $(G,p)$ is \emph{infinitesimally rigid} if all its
+  infinitesimal motions are trivial.
+\end{definition}
+
+Katoh and Tanigawa call an infinitesimal motion trivial under the same
+condition~\cite[\S2.3]{katohTanigawa2011}. By
+\cref{lem:trivial-motions-rank-bound} below, every trivial screw
+assignment is an infinitesimal motion.
+
 \begin{definition}[Degree of freedom; generic realization]
   \label{def:dof-generic}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigid}
-  \uses{lem:trivial-motions-rank-bound}
-  Let $(G,p)$ be a body-hinge framework. An infinitesimal motion $S$ of
-  $(G,p)$ is \emph{trivial} if $S(u) = S(v)$ for all bodies $u$ and $v$,
-  and $(G,p)$ is \emph{infinitesimally rigid} if all its infinitesimal
-  motions are trivial. The \emph{degree of freedom} of $(G,p)$ is
-  $D(|V|-1) - \operatorname{rank} R(G,p)$. The framework $(G,p)$ is
-  \emph{generic} if $R(G,p)$ and each of its edge-induced submatrices
-  (the rows of the edges of a subset of $E$) have the largest rank over
-  all realizations of $G$.
+  \uses{def:rigidity-matrix}
+  Let $(G,p)$ be a body-hinge framework. The \emph{degree of freedom}
+  of $(G,p)$ is $D(|V|-1) - \operatorname{rank} R(G,p)$. The framework
+  $(G,p)$ is \emph{generic} if $R(G,p)$ and each of its edge-induced
+  submatrices (the rows of the edges of a subset of $E$) have the
+  largest rank over all realizations of $G$.
 \end{definition}
+
+\begin{fmlnote}
+  The formalization defines neither notion. Its statements give the
+  rank of $R(G,p)$ directly, and the note after
+  \cref{prop:rigidity-matrix-prop11} says how they replace genericity.
+\end{fmlnote}
 
 By the next lemma, the trivial motions form a $D$-dimensional subspace
 of $Z(G,p)$ when $V$ is nonempty. So the degree of freedom is
 $\dim Z(G,p) - D \ge 0$, and it is $0$ if and only if $(G,p)$ is
 infinitesimally rigid.
 
-The lemma also bounds $\dim Z(G,p)$ from below by the deficiency, which
+\begin{lemma}[The $D$ trivial motions and the rank bound]
+  \label{lem:trivial-motions-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimalMotion_of_isTrivialMotion,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_trivialMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff}
+  \leanok
+  \uses{def:rigidity-matrix, def:trivial-motions-rigid}
+  Let $(G,p)$ be a body-hinge framework with $V$ nonempty, and for
+  $1 \le i \le D$ let $S^*_i$ be the screw assignment whose value at
+  every body is the $i$-th basis vector of $K^D$. Then
+  $S^*_1, \dots, S^*_D$ are infinitesimal motions, and they form a
+  basis of the space of trivial motions. Hence
+  $\operatorname{rank} R(G,p) \le D(|V|-1)$, with equality if and only
+  if $(G,p)$ is infinitesimally rigid.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A constant screw assignment $S$ has $S(u) - S(v) = 0$ at every edge,
+  so it is an infinitesimal motion. The trivial motions are the
+  constant assignments (\cref{def:trivial-motions-rigid}). Hence they
+  form a subspace of $Z(G,p)$
+  (\texttt{trivialMotions\_\allowbreak{}le\_\allowbreak{}infinitesimalMotions}).
+  As $V$ is nonempty, sending $x \in K^D$ to the constant assignment
+  with value $x$ is an isomorphism from $K^D$ onto them
+  (\texttt{trivialMotions\_\allowbreak{}eq\_\allowbreak{}range\_\allowbreak{}const}),
+  and it sends the standard basis to $S^*_1, \dots, S^*_D$. So the
+  trivial motions form a $D$-dimensional subspace of $Z(G,p)$. The
+  screw assignments form a space of dimension $D|V|$
+  (\texttt{finrank\_\allowbreak{}screwAssignment}), so
+  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p) \le D(|V|-1)$.
+  Equality holds if and only if $Z(G,p)$ is the space of trivial
+  motions, that is, if and only if $(G,p)$ is infinitesimally rigid.
+\end{proof}
+
+\begin{fmlnote}
+  The first pin says that the trivial screw assignments are
+  infinitesimal motions, the second that they form a space of dimension
+  $D$, and the third that $Z(G,p)$ is this space exactly when $(G,p)$ is
+  infinitesimally rigid.
+\end{fmlnote}
+
+The next lemma bounds $\dim Z(G,p)$ from below by the deficiency, which
 the next chapter defines (\cref{def:D-deficiency}). We recall it here.
 Let $\tilde G = (D-1)\cdot G$ (\cref{sec:body-hinge-reduction}). For a
 partition $P$ of $V$ into nonempty parts, let $d_G(P)$ be the number of
@@ -223,26 +346,12 @@ edges of $G$ that join different parts. Then
 and $\operatorname{def}(\tilde G)$ is the largest value of
 $\operatorname{def}_{\tilde G}(P)$ over the partitions $P$ of $V$.
 
-\begin{lemma}[The $D$ trivial motions and the rank bound]
-  \label{lem:trivial-motions-rank-bound}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsTrivialMotion,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimalMotion_of_isTrivialMotion,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_le_infinitesimalMotions,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_eq_range_const,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_trivialMotions,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_screwAssignment,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions}
+\begin{lemma}[The deficiency bound]
+  \label{lem:deficiency-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions}
   \leanok
   \uses{def:rigidity-matrix, def:D-deficiency}
-  Let $(G,p)$ be a body-hinge framework with $V$ nonempty, and for
-  $1 \le i \le D$ let $S^*_i$ be the screw assignment whose value at
-  every body is the $i$-th basis vector of $K^D$. Then
-  $S^*_1, \dots, S^*_D$ are infinitesimal motions, and they form a
-  basis of the space of trivial motions. Hence
-  $\operatorname{rank} R(G,p) \le D(|V|-1)$, with equality if and only
-  if $(G,p)$ is infinitesimally rigid. Moreover
+  Let $(G,p)$ be a body-hinge framework with $V$ nonempty. Then
   \[
     \dim Z(G,p) \;\ge\; D + \operatorname{def}(\tilde G),
   \]
@@ -251,23 +360,13 @@ $\operatorname{def}_{\tilde G}(P)$ over the partitions $P$ of $V$.
 \end{lemma}
 \begin{proof}
   \leanok
-  A constant screw assignment $S$ has $S(u) - S(v) = 0$ at every edge,
-  so it is an infinitesimal motion. The trivial motions are exactly the
-  constant assignments. As $V$ is nonempty, sending $x \in K^D$ to the
-  constant assignment with value $x$ is an isomorphism from $K^D$ onto
-  them, and it sends the standard basis to $S^*_1, \dots, S^*_D$. So
-  the trivial motions form a $D$-dimensional subspace of $Z(G,p)$, and
-  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p) \le D(|V|-1)$.
-  Equality holds if and only if $Z(G,p)$ is the space of trivial
-  motions, that is, if and only if $(G,p)$ is infinitesimally rigid.
-
-  For the second bound, let $P$ be a partition of $V$, and let $W_P$ be
-  the space of screw assignments that are constant on each part of $P$.
-  It has dimension $D|P|$. On $W_P$, the hinge constraint at an edge
-  inside a part always holds. At an edge $e$ that joins two parts it
-  consists of $D - 1$ linear equations, since $C(p(e)) \neq 0$
-  (\cref{def:hinge-row-block}). So the infinitesimal motions in $W_P$
-  form a subspace of dimension at least
+  Let $P$ be a partition of $V$, and let $W_P$ be the space of screw
+  assignments that are constant on each part of $P$. It has dimension
+  $D|P|$. On $W_P$, the hinge constraint at an edge inside a part always
+  holds. At an edge $e$ that joins two parts it consists of $D - 1$
+  linear equations, since $C(p(e)) \neq 0$ (\cref{def:hinge-row-block}).
+  So the infinitesimal motions in $W_P$ form a subspace of dimension at
+  least
   \[
     D|P| - (D-1)\,d_G(P) \;=\; D + \operatorname{def}_{\tilde G}(P).
   \]
@@ -276,7 +375,7 @@ $\operatorname{def}_{\tilde G}(P)$ over the partitions $P$ of $V$.
   gives the bound.
 \end{proof}
 
-The second bound holds at every realization, generic or not, and it is
+This bound holds at every realization, generic or not, and it is
 one of the two inequalities of the rank formula in
 \cref{prop:rigidity-matrix-prop11}. Jackson and Jord\'an derive its
 rank form from a count of independent
@@ -308,13 +407,13 @@ constraint involves it.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:trivial-motions-rank-bound}
+  \uses{lem:deficiency-rank-bound}
   Let $P$ be a partition of $V(G)$ with
   $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$, and
   let $P'$ be the partition of $B$ whose parts are those of $P$ and the
   singletons $\{b\}$ for $b \in B \setminus V(G)$. No edge meets these
   singletons, so exactly $d_G(P)$ edges join different parts of $P'$.
-  The count in the proof of \cref{lem:trivial-motions-rank-bound},
+  The count in the proof of \cref{lem:deficiency-rank-bound},
   applied to $P'$, gives
   \[
     \dim Z(G,p) \;\ge\; D|P'| - (D-1)\,d_G(P) \;=\;
@@ -520,7 +619,7 @@ subgraph of $G$ induced on $V_1$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:rigidity-matrix, def:hinge-row-block}
+  \uses{def:rigidity-matrix, def:hinge-row-block, lem:edge-rows-independent}
   Let $\mathcal R_1$, $\mathcal R_2$ and $\mathcal R$ be the row spaces of
   $R(G[V_1],p)$, $R(G[V_2],p)$ and $R(G,p)$. The rows of $G[V_1]$ and of
   $G[V_2]$ are rows of $G$, so $\mathcal R_1 + \mathcal R_2 \subseteq
@@ -534,9 +633,9 @@ subgraph of $G$ induced on $V_1$.
   the bound when $C$ is empty.
 
   Otherwise $C = \{e\}$, where $e$ has ends $u \in V_1$ and $v \in V_2$.
-  By the first of the two facts after \cref{def:rigidity-matrix}, the
-  rows of $e$ span a subspace $\mathcal R_e$ of $\mathcal R$ of dimension
-  $D - 1$. Its members are the forms $S \mapsto r(S(u) - S(v))$, where
+  By \cref{lem:edge-rows-independent}, the rows of $e$ span a
+  subspace $\mathcal R_e$ of $\mathcal R$ of dimension $D - 1$. Its
+  members are the forms $S \mapsto r(S(u) - S(v))$, where
   $r$ is a linear form on $K^D$ that vanishes on $C(p(e))$
   (\cref{def:hinge-row-block}). For $x \in K^D$, let $S^x$ be the screw
   assignment equal to $x$ on $V_1$ and to $0$ elsewhere. A row of an edge

@@ -68,7 +68,7 @@ frameworks. For panel-hinge frameworks it reads as follows.
   \lean{CombinatorialRigidity.Molecular.card_le_screwDim_of_linearIndependent,
         CombinatorialRigidity.Molecular.PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent}
   \leanok
-  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  \uses{def:panel-hinge-framework}
   Let $(G,p)$ be a panel-hinge framework, and let $e_1, \dots, e_m$ be
   edges of $G$ with $C(p(e_1)), \dots, C(p(e_m))$ linearly independent.
   Then $m \le D$.
@@ -162,7 +162,7 @@ consecutive hinges share a normal. For a cycle, the normals of
   zero. Hence $\sum_i \lambda_i C(p(f_i)) = 0$, and by the linear
   independence every $\lambda_i$ is zero. So $S(v_i) = S(v_{i+1})$ for
   every $i$. If $v_0, \dots, v_{m-1}$ are all the bodies, then $S$ is
-  trivial (\cref{def:dof-generic}).
+  trivial (\cref{def:trivial-motions-rigid}).
 \end{proof}
 
 \begin{fmlnote}
@@ -374,8 +374,8 @@ A block pin also detects infinitesimal rigidity.
 \begin{proof}
   \leanok
   Let $(G,p)$ be infinitesimally rigid, and let $S \in Z_s(G,p)$. Then
-  $S$ is trivial, that is, constant (\cref{def:dof-generic}), and it
-  vanishes at a body of $s$. So $S = 0$.
+  $S$ is trivial, that is, constant (\cref{def:trivial-motions-rigid}),
+  and it vanishes at a body of $s$. So $S = 0$.
 
   Conversely, let $S$ be an infinitesimal motion, let $v \in s$, and let
   $T$ be the trivial motion with the value $S(v)$ at every body. Then

@@ -262,7 +262,7 @@ Theorem~5.6~\cite[p.~670]{katohTanigawa2011}.
 \end{proposition}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55, lem:trivial-motions-rank-bound,
+  \uses{thm:theorem-55, lem:deficiency-rank-bound,
         lem:motions-mono-of-graph-le}
   Let $k = \operatorname{def}(\tilde G)$. Since
   $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$
@@ -270,7 +270,7 @@ Theorem~5.6~\cite[p.~670]{katohTanigawa2011}.
   $\dim Z(G,p) = D + k$.
 
   \emph{The upper bound on the rank.} By
-  \cref{lem:trivial-motions-rank-bound}, $\dim Z(G,p) \ge D + k$. These
+  \cref{lem:deficiency-rank-bound}, $\dim Z(G,p) \ge D + k$. These
   motions come from a partition $P$ of $V$ with
   $\operatorname{def}_{\tilde G}(P) = k$. The screw assignments that are
   constant on each part of $P$ form a space of dimension $D|P|$. On this
@@ -914,17 +914,18 @@ condition, both sides would hold exactly when $G$ is connected.
   \label{thm:molecular-conjecture}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture}
   \leanok
-  \uses{def:dof-generic, def:panel-hinge-framework}
+  \uses{def:trivial-motions-rigid, def:panel-hinge-framework}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
   simple graph with $|V| \ge 2$. Then $G$ has an infinitesimally rigid
-  body-hinge realization (\cref{def:dof-generic}) with nondegenerate hinges
-  if and only if $G$ has an infinitesimally rigid panel-hinge realization
-  (\cref{def:panel-hinge-framework}) with nondegenerate hinges.
+  body-hinge realization (\cref{def:trivial-motions-rigid}) with
+  nondegenerate hinges if and only if $G$ has an infinitesimally rigid
+  panel-hinge realization (\cref{def:panel-hinge-framework}) with
+  nondegenerate hinges.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-6-genuine, lem:trivial-motions-rank-bound, def:rank-hypothesis,
-        def:D-deficiency}
+  \uses{thm:theorem-55-6-genuine, lem:trivial-motions-rank-bound,
+        lem:deficiency-rank-bound, def:rank-hypothesis, def:D-deficiency}
   We follow Katoh and Tanigawa (KT p.~670). Suppose first that $G$ has an
   infinitesimally rigid panel-hinge realization with nondegenerate hinges.
   Its body-hinge interpretation (\cref{def:panel-hinge-framework}) is an
@@ -933,9 +934,10 @@ condition, both sides would hold exactly when $G$ is connected.
 
   Conversely, let $(G, p)$ be an infinitesimally rigid body-hinge
   realization of $G$ with nondegenerate hinges. As it is infinitesimally
-  rigid, $\dim Z(G, p) = D$. As its hinges are nondegenerate,
-  $\dim Z(G, p) \ge D + \operatorname{def}(\tilde G)$. Both facts are in
-  \cref{lem:trivial-motions-rank-bound}. Hence
+  rigid, $\dim Z(G, p) = D$ (\cref{lem:trivial-motions-rank-bound}). As
+  its hinges are nondegenerate,
+  $\dim Z(G, p) \ge D + \operatorname{def}(\tilde G)$
+  (\cref{lem:deficiency-rank-bound}). Hence
   $\operatorname{def}(\tilde G) \le 0$, and so
   $\operatorname{def}(\tilde G) = 0$ (\cref{def:D-deficiency}). By KT
   Theorem~5.6 with nondegenerate hinges (\cref{thm:theorem-55-6-genuine}),
@@ -981,8 +983,8 @@ their result in this form~\cite[p.~647]{katohTanigawa2011}.
   \cref{prop:rigidity-matrix-prop11}, \cref{thm:theorem-55-6-genuine},
   \cref{thm:theorem-55-6-rows} and \cref{thm:molecular-conjecture} ask for
   a nonzero hinge $C(p(e))$ at every label $e \in L$, not only at the edges
-  of $G$. So do the lower bound of \cref{lem:trivial-motions-rank-bound}
-  and the predicate of \cref{def:coplanar-panel-realization}.
+  of $G$. So do the bound of \cref{lem:deficiency-rank-bound} and the
+  predicate of \cref{def:coplanar-panel-realization}.
   A label outside $E(G)$ imposes no constraint. A body-hinge framework can
   give it any nonzero extensor. A panel-hinge framework gives it the meet
   of the panels of two bodies (\cref{fmlnote:panel-hinge-nondegenerate}),
@@ -1114,12 +1116,12 @@ generic full-rank realization. The graph of case (iii) is not simple.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:extensor-pair-in-panel, def:rigidity-matrix}
+  \uses{lem:extensor-pair-in-panel, def:rigidity-matrix, lem:edge-rows-independent}
   Let the edge $e$ of $G$ join $x$ and $y$. As
   $\operatorname{def}(\tilde G) = 1$, the target rank is
   $D(2 - 1) - 1 = D - 1$. The rows of $R(G,p)$ are the $D - 1$ rows of
   $e$, and they are linearly independent when the hinge at $e$ is
-  nondegenerate (the remark after \cref{def:rigidity-matrix}). So each
+  nondegenerate (\cref{lem:edge-rows-independent}). So each
   realization needs only a nondegenerate hinge at $e$. For the first,
   give $x$ and $y$ the same nonzero normal $n$, and give $e$ the extensor
   $v_1 \vee \cdots \vee v_{d-1}$ of the paragraph after
@@ -1313,7 +1315,7 @@ realization of $G$ with one of a spanning subgraph.
         CombinatorialRigidity.Molecular.PanelHingeFramework.withGraph,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph}
   \leanok
-  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  \uses{def:panel-hinge-framework}
   Let $(G,p)$ be a body-hinge framework, and let $G'$ be a multigraph on
   the same set of bodies. The framework $(G',p)$ has the multigraph $G'$
   and the hinge $p(e)$ at each edge $e$ of $G'$. If $G'$ is a subgraph of
@@ -1388,7 +1390,7 @@ to $G'$ is the panel-hinge framework $(G', n)$
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_le_withGraph_of_le,
         CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_graph_le}
   \leanok
-  \uses{def:framework-with-graph}
+  \uses{def:framework-with-graph, def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework, and let $G'$ be a subgraph of
   $G$. Then $Z(G,p) \subseteq Z(G',p)$. In particular,
   $\dim Z(G,p) \le \dim Z(G',p)$, that is,
@@ -1598,18 +1600,18 @@ p.~648). In the present form it follows from
   \label{thm:molecular-conjecture-multigraph}
   \lean{CombinatorialRigidity.Molecular.molecular_conjecture_multigraph}
   \leanok
-  \uses{def:coplanar-panel-realization, def:dof-generic, def:hinge-constraint}
+  \uses{def:coplanar-panel-realization, def:trivial-motions-rigid, def:hinge-constraint}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
   multigraph, possibly with loops, with $V \neq \emptyset$. Then $G$ has
   an infinitesimally rigid body-hinge realization
-  (\cref{def:dof-generic}) with nondegenerate hinges if and only if $G$
-  has an infinitesimally rigid hinge-coplanar panel realization
-  (\cref{def:coplanar-panel-realization}).
+  (\cref{def:trivial-motions-rigid}) with nondegenerate hinges if and
+  only if $G$ has an infinitesimally rigid hinge-coplanar panel
+  realization (\cref{def:coplanar-panel-realization}).
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-6-multigraph, lem:trivial-motions-rank-bound,
-        def:rank-hypothesis, def:D-deficiency}
+        lem:deficiency-rank-bound, def:rank-hypothesis, def:D-deficiency}
   We argue as for \cref{thm:molecular-conjecture}. A hinge-coplanar
   panel realization of $G$ is a body-hinge realization of $G$ whose
   hinges are nondegenerate. So if $G$ has an infinitesimally rigid one,
@@ -1618,9 +1620,10 @@ p.~648). In the present form it follows from
 
   Conversely, let $(G, p)$ be an infinitesimally rigid body-hinge
   realization of $G$ with nondegenerate hinges. As it is infinitesimally
-  rigid, $\dim Z(G, p) = D$. As its hinges are nondegenerate,
-  $\dim Z(G, p) \ge D + \operatorname{def}(\tilde G)$. Both facts are in
-  \cref{lem:trivial-motions-rank-bound}. Hence
+  rigid, $\dim Z(G, p) = D$ (\cref{lem:trivial-motions-rank-bound}). As
+  its hinges are nondegenerate,
+  $\dim Z(G, p) \ge D + \operatorname{def}(\tilde G)$
+  (\cref{lem:deficiency-rank-bound}). Hence
   $\operatorname{def}(\tilde G) \le 0$, and so
   $\operatorname{def}(\tilde G) = 0$ (\cref{def:D-deficiency}). By KT
   Theorem~5.6 (\cref{thm:theorem-55-6-multigraph}), $G$ has a
