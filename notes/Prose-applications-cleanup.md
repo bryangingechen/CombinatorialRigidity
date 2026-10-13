@@ -7,10 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and tasks 2.1–2.8 `F-175`–`F-205`. 16 one-commit tasks; tasks 1 and 2.1–2.8 are done,
-and the round has no planned stop. **Next concrete task:** task 2.9, `generic-lift.tex`,
-abundance, squares and panel-and-hinge (55–438, unchanged since the open), at Opus (*Lemma
-checklist*). Round manual: `CLEANUP.md`.
+`F-174`, and tasks 2.1–2.9 `F-175`–`F-210`. 16 one-commit tasks; tasks 1 and 2.1–2.9 are done,
+and the round has no planned stop. **Next concrete task:** task 2.10, `generic-lift.tex`,
+body-and-bar (the open's 439–734, now 550–845), at Opus (*Lemma checklist*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,17 +20,18 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.8 has landed** (this commit): `jacobs.tex` is done; its last slice is now 1113–1343 and
-its opening 4–61, and `sec:jacobs-laman3`'s lead lost its JJ sentence to the opening. No node
-moved; every one keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. No note is
-new, and no statement changed beyond register and anchoring. `bibliography.bib`'s `jacobs1998`
-gained its DOI (Crossref). Nothing is mid-stream; 2.9 is next.
+**Task 2.9 has landed** (this commit): `generic-lift.tex`'s 55–438 is now 55–549, so its later
+slices start 111 lines lower. No node moved; every one keeps its `\label`, `\lean{…}`, `\leanok`
+and `\uses` byte-identical. Three notes are new, one labelled (`fmlnote:generic-normals-selector`).
+Five statements lost the endpoint selector (`F-206`); a note records two pins vacuous at minimal
+graphs (`F-207`). `bibliography.bib`'s `jacksonJordan2009` says 2010 (*Decisions*). Nothing is
+mid-stream.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (49 overfull boxes, none in the chapter).
-  Screens on the slice (1113–1343, 1–62): register 0 / 0, devices 0 / 0, `\operatorname` 0,
-  vocabulary 0; forward `\uses` 0 / 0 for `jacobs`. The open's (1110–1280, 1–57): 1 / 1
-  ("carried"), 0 / 0, 0, 0, 0 / 0.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (49 overfull boxes; the slice's one is
+  the parent's, a corollary title). Screens on the slice (55–549): register 4 / 0 (label words),
+  devices 0 / 0, `\operatorname` 0, vocabulary 1 (the selector, in a note); forward `\uses` 0 / 0
+  for `generic-lift`. The open's (55–438): 4 / 1 ("carry"), 0 / 0, 0, 16, 0 / 0.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -44,16 +45,12 @@ gained its DOI (Crossref). Nothing is mid-stream; 2.9 is next.
   fingerprint **`673e3178d1b3145e`**, and the pin hash **`b53eb8b1cf78cb06`** (1 030 pins, 1 020
   distinct names; the commands under *Scope*, gate 3).
 - **The surface** (`notes/Prose.md` §3): 6 files, 3 640 lines, 95 nodes, 152 pins, all green and
-  filled, no title `superseded`. Six nodes have four or more pins (§7; `F-009`):
-  `lem:square-cross-classification` (9), `lem:normal-cross-count-partition` and `def:two-core` (4
-  each), `lem:panel-hinge-dual-molecular` (8), `thm:projective-invariance` (7) and
-  `lem:molecule-graph-carrier` (5).
+  filled, no title `superseded`; six nodes have four or more pins (§7; `F-009`; listed at `69bc7afb`).
 - `scripts/blueprint-deps.py --summary` (0.3 s) agrees with the built graph and `lean_decls`. Here
   76 edges are missing (`F-004`) and 43 unbacked, 22 through another node (`F-006`); 22 pins lie
   outside every main result's closure, every pin of 13 nodes (`F-012`), ten of them in
   `generic-lift` (its whole panel-and-hinge section and three abundance and existence lemmas).
-- **The crux nodes** (*Scope*): in task 2.3, with one pointer in 2.2; both done. **The open's
-  finding:** `F-174` (S), under *Candidates for the PI*; 2.3 anchored it (`F-183`).
+- **The crux nodes** (*Scope*): done in 2.2–2.3. The open's finding `F-174` (S): 2.3 anchored it.
 
 ## Scope and standing rules
 
@@ -243,28 +240,21 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
    `thm:minimal-kdof-reduction-all-k`, as `algebraic-induction.tex` says (principle E; 2.13).
 9. `F-117`, `F-118`: done in 2.3 (`lem:theorem-56-general-position`'s proof names the nodes its pin
    reaches). The Phase-21 item's "generic-max-rank device underpinning the induction" (2.13).
-10. `F-137`, `F-139`: the panel section of `generic-lift` cites `lem:rows-polynomial-in-normals`
-    for rows quadratic in the normals; that pin states no polynomial, and
-    `lem:generic-normals-abundance`'s pin does not reach it: name what it reaches (2.9).
+10. `F-137`, `F-139`: done in 2.9 (the abundance proof argues from the definitions; `F-209`).
 11. `F-152`: `generic-lift` cites `lem:case-II-placement-old-rows-extract`, stated for a split-off,
-    for its general form: say so (2.9, 2.12).
+    for its general form: say so. Done in 2.9; `lem:hinge-point-witness` and
+    `cor:bodyhinge-generic-rigid` are 2.12's.
 12. `F-059`: `lem:hinge-rows-polynomial-in-points` cites `def:plucker-coords`, whose declarations
     its pin does not use; `extensor.tex` states the expansion as unformalized (2.11).
 13. `F-121`: `panel-layer.tex`'s note on `prop:rigidity-matrix-prop11` points at
-    `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9, 2.12).
+    `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9 kept
+    the first: simple, at least two bodies, spanning in its note; 2.12).
 
 - **`bar-joint-3d`, `molecule-modelling`, `molecule-application`, `jacobs`.** *Done:* 2.1–2.8 (the
   open bullets are in this log at `69bc7afb`, `67d44583`, `db71b408`, `302cc117`, `9c97fecc`,
   `bc6573b9`, `723c460d` and `0e8d7546`).
-- **`generic-lift`.**
-  - *2.9 (55–438):* `cor:molecule-generic-square-packing`'s proof says "shadowing carrier" (2.4's
-    term). The panel section writes $K^{k+2}$, $d = k + 1$, a grade $k$ and, in
-    `thm:panel-generic-rank`, $n \ge 2$: round 3's notation (*Decisions*). Its lead defines the
-    endpoint selector and "link-recording" (`\cref` round 3's note at `def:panel-hinge-framework`),
-    and statements carry them (*Terms*). Carry-ins 10, 11, 13. "Seed", "transplants". JJ 2009's bib
-    entry says 2009; the paper is *Eur. J. Combin.* 31 (2010) 574–588, online 2009 (`.refs/`,
-    p. 574): a correction changes the `amsalpha` label in every chapter that cites it, so the slice
-    decides and records the call.
+- **`generic-lift`** (the open's line numbers; add 111 after 438). *Done:* 2.9 (its open bullet is
+  in this log at `7c268bce`).
   - *2.10 (439–734):* carry-in 1 ($\R^n$, $d = n(n+1)/2$, $(d,d)$-sparsity; lines 449, 487,
     631–724). `def:two-extensor` (3 pins; `twoExtensorPoly` dead). `lem:coordinate-extensor-basis`
     and `lem:endpoint-witness` are a ledger pointer (keep the entry table and Whiteley's change of
@@ -311,30 +301,16 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 - [ ] **2. The slices**, one commit each, in `chapter/main.tex` order. Each chapter's opening goes
   in its last slice, and `intro.tex` comes last (principle F). The diagnosis of each is above; the
   carry-ins are numbered as there.
-  - [x] **2.1 `bar-joint-3d.tex`** (`67d44583`): generic placements, $\mathcal{R}_d(V)$ and its
-    rank function; the title loses "in dimension three". Found `F-175`–`F-177`.
-  - [x] **2.2 `molecule-modelling.tex`, the square, molecular frameworks, projective invariance,
-    the polarity and screw velocities** (`db71b408`): leads for the three subsections; the
-    polarity named before its lemma; the crux pointer kept. Found `F-178`–`F-182`.
-  - [x] **2.3 `molecule-modelling.tex`, general position, the rank-carrying equivalence, the
-    square-graph dictionary and the opening** (`e5adefe1`): the node move; the crux at full depth;
-    `F-174` anchored; carry-in 9. Found `F-183`–`F-186`.
-  - [x] **2.4 `molecule-application.tex`** (`9c97fecc`): the coinage "shadowing carrier" replaced;
-    the opening points at `molecule-modelling`'s for the argument. Found `F-187`–`F-190`.
-  - [x] **2.5 `jacobs.tex`, the Laman condition and tight partitions** (`bc6573b9`): JJ introduced
-    once; the tight-partition lemmas credited to JJ's Lemma 3.2 and the proofs of their Theorems
-    3.4 and 5.3; one note for the formal forms. Found `F-191`–`F-194`.
-  - [x] **2.6 `jacobs.tex`, the counting bound (JJ Theorem 5.3)** (`723c460d`): cross edges defined
-    in the lead after JJ; the theorem's proof counts as its pin does. Found `F-195`–`F-198`.
-  - [x] **2.7 `jacobs.tex`, independence implies the Laman condition, and 0-extensions**
-    (`0e8d7546`): JJ §5 and Lemma 3.3 and Whiteley's Lemma 9.1.3 credited as they state them; the lead's
-    $K_{1,4}$ and quotation kept; the $K_5$ examples argued. Found `F-199`–`F-200`.
-  - [x] **2.8 `jacobs.tex`, Jacobs' conjecture, the degree-one rank formula and the opening**
-    (this commit): JJ introduced in the opening; leads for both subsections; JJ's one-sentence
-    reduction to the core credited as stated; the core's maximality and trees argued in prose.
-    Found `F-201`–`F-205`.
-  - [ ] **2.9 `generic-lift.tex`, abundance, squares and panel-and-hinge** (55–438): 11 nodes, 384
-    lines; carry-ins 10, 11 and 13.
+  - [x] **2.1 `bar-joint-3d.tex`** (`67d44583`): found `F-175`–`F-177`.
+  - [x] **2.2–2.3 `molecule-modelling.tex`**, the square to screw velocities, then general position
+    to the opening (`db71b408`, `e5adefe1`): found `F-178`–`F-186`.
+  - [x] **2.4 `molecule-application.tex`** (`9c97fecc`): found `F-187`–`F-190`.
+  - [x] **2.5–2.8 `jacobs.tex`**: the Laman condition and tight partitions; the counting bound; the
+    easy direction and 0-extensions; Jacobs' conjecture, the degree-one formula and the opening
+    (`bc6573b9`, `723c460d`, `0e8d7546`, `7c268bce`): found `F-191`–`F-205`.
+  - [x] **2.9 `generic-lift.tex`, abundance, squares and panel-and-hinge** (this commit): round
+    3's $d$; the selector to two notes; the panel proofs argue from what their pins reach (carry-ins
+    10, 11, 13); JJ's genericity holds over nondegenerate hinges. Found `F-206`–`F-210`.
   - [ ] **2.10 `generic-lift.tex`, body-and-bar** (439–734): 9 nodes, 296 lines; carry-in 1.
   - [ ] **2.11 `generic-lift.tex`, body-and-hinge: generic hinge-point assignments** (785–927): 5
     nodes, 143 lines; carry-in 12.
@@ -386,6 +362,10 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   nonempty, $|Q| \ge 2$, $G$ simple, the two vertices nonadjacent); kept, with one note.
 - `F-195` (S, task 2.6): `thm:laman-square-count` asks $V$ nonempty, the lemmas the subsection's $G$,
   and two claims are not in their nodes' pins; kept, with one note.
+- `F-206` (S, task 2.9): the endpoint selector, the label set and the spanning left five panel
+  statements for two notes (two readings).
+- `F-207` (S, task 2.9): `thm:panel-generic-rank`'s and `cor:panel-generic-rigid`'s pins are vacuous
+  at minimal $k$-dof-graphs (`hends` against `hfresh`); kept, with a note; also 2.12's four pins.
 
 ## Moved to a later round
 
@@ -430,6 +410,12 @@ one line each naming the ledger ID and the task that found it.
 - `F-204` (U, task 2.8): README and the home page call the degree-one formula a consequence of the
   rank formula; `formalization.yaml` lacks Jacobs 1998's DOI.
 - `F-205` (L, task 2.8): the docstrings of its pins (process narration, a loose credit).
+- `F-208` (E, task 2.9): its eleven nodes: eight missing edges, six unbacked, nine dead pins, and
+  the nodes the rewritten proofs cite without an edge.
+- `F-209` (N, task 2.9): the rank-form row extraction and the polynomial coordinates of the panel
+  rows are unpinned and load-bearing.
+- `F-210` (L, task 2.9): the docstrings of its pins (a false claim on JJ's genericity, stale
+  blueprint text, process narration, JJ's year).
 
 ## Blockers / open questions
 
@@ -437,36 +423,44 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.9, `generic-lift.tex`, abundance, squares and panel-and-hinge (55–438,
-unchanged since the open), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
-*2.9* item under *`generic-lift`* in *Per-chapter diagnosis*, with carry-ins 10, 11 and 13; its
-gates and screens are under *Scope*. Then tasks 2.10–2.14 in order, and task 3 closes the round.
-For the slices:
+**Next concrete task: task 2.10, `generic-lift.tex`, body-and-bar (the open's 439–734, now
+550–845), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.10* item under
+*`generic-lift`* in *Per-chapter diagnosis*, with carry-in 1; its gates and screens are under
+*Scope*. Then tasks 2.11–2.14 in order, and task 3 closes the round. For the slices:
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
-  true: 2.9's JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
+  true: the intro's "in dimension 3" and line 486 (2.13, 2.14).
 - **From task 2.2.** The polarity $*$ is defined over every field before
   `lem:panel-hinge-dual-molecular` (over $\R$); `thm:projective-invariance` is over $K$; $\bar c = (c, 1)$.
 - **From task 2.4.** `molecule-application.tex`'s opening credits JJ 2008's Conjecture 2.2 (the
   formula), Theorem 4.1 ($\le$) and Theorem 4.3 (its equivalence with their Conjecture 2.1, the
-  bar-joint molecular conjecture), and KT p. 671 for KT's deduction: 2.13 and 2.14 agree with it. "Shadowing carrier" is now the multigraph $G'$ of `lem:molecule-graph-carrier` (*Simple graphs
-  as multigraphs*), whose deficiency is JJ's $\operatorname{def}(G)$: 2.9 rewrites the term in
-  `cor:molecule-generic-square-packing`'s proof. The chapter ends on generic rigidity of squares
-  (JJ Conjecture 2.1, KT §7), citing `cor:molecule-generic-rigid`; the intro's "protein-flexibility"
-  and "capstone" (2.13, 2.14) have no counterpart in it.
+  bar-joint molecular conjecture), and KT p. 671 for KT's deduction: 2.13 and 2.14 agree with it.
+  The chapter ends on generic rigidity of squares (JJ Conjecture 2.1, KT §7), citing
+  `cor:molecule-generic-rigid`; the intro's "protein-flexibility" and "capstone" (2.13, 2.14) have
+  no counterpart in it.
 - **From task 2.8.** `jacobs.tex`'s opening credits Jacobs' conjecture to Jacobs 1998 (JJ
   Conjecture 5.1; JJ §5 note that Jacobs states it as a result with an incomplete proof) and the
   degree-one rank formula to JJ Lemma 4.2, part (a) by JJ to Franzblau 2000. That formula does not
   use the rank formula: JJ prove it to show that the rank formula, applied to the core, gives
   $r(G^2)$ for every graph. So the intro's "two further Jackson--Jordán consequences of the rank
   formula" (lines 42–43 and 332–333) is false for the second (2.13, 2.14; `F-204`).
-- **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 10–13 under *Per-chapter
+- **From task 2.9.** `sec:generic-lift-panel` writes round 3's $d$ and $D$, normals
+  $q_v \in K^{d+1}$, and defines a *normal assignment* and its *annihilator-row family* (written
+  out over the edges of $G$, indexed by pairs $(t, t')$ of standard basis indices of
+  $\bigwedge^{d-1}K^{d+1}$); the selector is in `fmlnote:generic-normals-selector`, for 2.11 and
+  2.12 to cite. A generic assignment attains the largest rank only over assignments with
+  nondegenerate hinges (a degenerate hinge welds): the opening's "in particular generic in the
+  sense of Jackson and Jordán" (lines 21–29) needs that caveat for panels and hinges (2.12).
+  `F-207`'s vacuity holds for 2.12's four pins. `lem:panel-witness-transplant`'s proof states the
+  rank form of `lem:case-II-placement-old-rows-extract`'s last step, so `lem:hinge-point-witness`'s
+  "rank-input form" reads true. JJ 2009's entry says 2010, key unchanged; it renders [JJ10].
+- **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 11–13 under *Per-chapter
   diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
   the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
   readings** (*Scope*) bind 2.12.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
   `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-206`.
+  deficiency zero"). The ledger's next ID is `F-211`.
 
 ## Decisions made during this round
 
@@ -475,7 +469,8 @@ For the slices:
 - **One notation** (round 3's, carried; carry-in 1). KT's $d$ for the dimension (the bar-joint
   chapters' $d$ already), $D = \binom{d+1}{2}$, $K^{d+1}$, $\bigwedge^{d-1} K^{d+1}$, $\vee$ for
   the join, $\wedge$ for the meet, $*$ for the complement isomorphism; $k$ is only the dof.
-  `generic-lift` writes $n$, $k + 1$, a grade $k$ and $d = n(n+1)/2$ now.
+  `generic-lift`'s panel section has it (2.9); its body-bar and body-hinge sections write $n$,
+  $k + 1$, a grade $k$ and $d = n(n+1)/2$ now.
 - **Terms** (round 3's, carried). The realization record (the endpoint selector, link-recording)
   and the fresh-label supply leave statements, `\cref`ing round 3's note at
   `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate". 2.4
@@ -492,3 +487,9 @@ For the slices:
   the core in Theorem 5.4's proof, Lemma 4.2(a) to Franzblau by JJ. Cross edges, $E_H(v)$ and the
   support are defined in leads; one note per subsection (`F-191`, `F-195`); the $K_5$ examples, the
   core's maximality and the tree case are argued in prose.
+- **`generic-lift`** (2.9): the selector and "every label is an edge" go to
+  `fmlnote:generic-normals-selector` and the panel theorem's note (`F-206`), which also records
+  `F-207`'s vacuity. JJ's genericity is stated over assignments with nondegenerate hinges.
+- **JJ 2009's year** (2.9): `jacksonJordan2009` says 2010, the volume's year (*Eur. J. Combin.*
+  31(2), 2010, 574–588; Crossref, and `.refs/` p. 574, online 28 April 2009); it renders [JJ10] in
+  all nine citing files. The key stays: no reader sees it, and renaming it edits files beyond the round.

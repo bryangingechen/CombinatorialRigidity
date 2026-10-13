@@ -615,6 +615,31 @@ declaration's name as its header writes it:
   (`fmlnote:degree-one-fixed-carrier`).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `0e8d7546`).
   *Found:* round 4 task 2.8.
+- **F-208** · E · `generic-lift.tex`'s first eleven nodes, task 2.9's (`generic-lift.tex`): eight
+  missing edges and six unbacked. Missing: the proof of `lem:generic-placement-abundance` to
+  `def:rigidityRow`, `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` and
+  `lem:rigidityMap-apply`; the proofs of `cor:molecule-generic-rigid` and
+  `cor:molecule-generic-square-packing` to `lem:framework-finrank`; the latter's to
+  `lem:deficiency-zero-connected` (`two_le_degree_of_isKDof_zero`) and its statement to
+  `def:edge-multiply`; the statement of `lem:panel-witness-transplant` to `def:generic-normals`.
+  Unbacked, with no Lean basis: `def:generic-normals` to `def:panel-hinge-framework`; the proofs of
+  `lem:generic-normals-abundance` to `lem:rows-polynomial-in-normals` (`F-137`),
+  `lem:generic-normals-nondegenerate` to `lem:moment-curve-general-position` (the pin uses the
+  unpinned pair lemma `momentCurve_pair_linearIndependent`) and `lem:panel-witness-transplant` to
+  `lem:case-II-placement-old-rows-extract` (`F-209`). Through another node: the square corollary's
+  to `def:cut-edges-2ec`, and `thm:panel-generic-rank`'s to `def:rank-hypothesis`. Nine pins at
+  eight nodes are dead (`F-012`): every pin but those of the three molecule nodes. The rewritten
+  proofs cite without an edge `lem:rigidityMap-apply` and
+  `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` (the abundance of placements),
+  `lem:framework-finrank` (both molecule corollaries), `lem:union-indep-iff`,
+  `lem:deficiency-zero-iff-tree-packing`, `lem:molecule-graph-carrier`, `def:k-dof` and
+  `lem:deficiency-zero-connected` (the square corollary), `def:join`, `def:plucker-coords`,
+  `def:meet-complement-iso` and `lem:generic-placement-abundance` (the abundance of normals; the
+  minor formula is the unpinned `panelSupportPoly_eval`),
+  `lem:rows-polynomial-in-normals` (the witness lemma) and `def:hinge-row-block` (the theorem).
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`); read
+  (the bodies of the twelve pins).
+  *Found:* round 4 task 2.9.
 
 ## N — node shape
 
@@ -1156,6 +1181,24 @@ declaration's name as its header writes it:
   `JacobsDegreeOne.lean`); measured (`scripts/blueprint-deps.py --label def:two-core`, at
   `0e8d7546`).
   *Found:* round 4 task 2.8.
+- **F-209** · N · `lem:panel-witness-transplant`, `lem:generic-normals-abundance`
+  (`generic-lift.tex`): two load-bearing steps of the panel section have no node. The witness
+  lemma's pin extracts its rows with
+  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.lean`),
+  which takes a bound on the rank in place of rigidity and is unpinned;
+  the pins of `lem:hinge-point-witness` and of results in `CaseII.lean`, `CaseIII/Arms.lean`,
+  `Coupling.lean`, `Pencil/Steer.lean` and `MainComponent/ContractCurve.lean` call it too. The node
+  cites `lem:case-II-placement-old-rows-extract`, stated for a split-off and with pins its pin does
+  not reach. The abundance lemma's pin uses the polynomial coordinates `annihRowPoly` and
+  `annihRowPoly_eval` (`F-137`'s unpinned steps of `lem:rows-polynomial-in-normals`) and the
+  unpinned minor lemma `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`), which every abundance pin of the chapter calls.
+  Candidates: pin the rank form of the extraction, stated for every framework, on
+  `lem:case-II-placement-old-rows-extract` or a node of its own; repin
+  `lem:rows-polynomial-in-normals` on its polynomial declarations (`F-139`).
+  *Evidence:* read (the bodies of the two pins; a `grep` for the callers of the extraction and of
+  the minor lemma); measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`).
+  *Found:* round 4 task 2.9.
 
 ## T — terminology and notation
 
@@ -2003,6 +2046,42 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the slice's 25 pins, `JacobsCounting.lean`, `Jacobs.lean`,
   `SquareGraph.lean`; the body of `laman_square_count`).
   *Found:* round 4 task 2.6.
+- **F-206** · S · `def:generic-normals`, `lem:generic-normals-nondegenerate`,
+  `lem:panel-witness-transplant`, `thm:panel-generic-rank`, `cor:panel-generic-rigid`
+  (`generic-lift.tex`): the endpoint selector, the label set and the spanning left the statements.
+  At the open the definition read "Fix finite body and edge label sets and an endpoint selector",
+  its family indexed "by an edge label together with a pair of grade-$k$ exterior basis indices";
+  the lemma took "a loopless multigraph each of whose edge labels links its selector pair"; the
+  witness lemma that, and a realization "whose own endpoint selector also records a link of every
+  edge"; the theorem "a simple spanning multigraph on at least two bodies, at any dimension
+  $n \ge 2$ (equivalently $D = \binom{n+1}{2} \ge 3$) … with a link-recording endpoint selector";
+  the corollary "In the setting of" the theorem, rigid "on $V(G)$". Task 2.9 states them for a
+  multigraph $G = (V, E)$ (for the last two a simple graph with $|V| \ge 2$, and $d \ge 2$), with
+  the family written out over the edges of $G$. The selector, "every label is an edge" and the
+  spanning are in `fmlnote:generic-normals-selector` and the note after the corollary; the
+  nondegeneracy lemma's parenthetical on the values of $D$ left (principle B). Two readings, as
+  for `F-184` and `F-187`: principle E's "a Lean-side device … stays out of statements" and the
+  round's *Terms*, the pins unchanged; or the statements drop hypotheses that the pins carry,
+  which `F-207` shows are not innocuous.
+  *Evidence:* read (the statements of the eight pins, `GenericLift/PanelGeneric.lean`).
+  *Found:* round 4 task 2.9.
+- **F-207** · S · `thm:panel-generic-rank`, `cor:panel-generic-rigid` (`generic-lift.tex`): the
+  pins hold vacuously at every graph that is itself a minimal $k$-dof-graph. Both take `hends`
+  (every edge label links its selector pair in $G$, so $E(G)$ is the whole label set) and `hfresh`
+  (every minimal $k'$-dof-graph on the bodies misses some label). At $G' = G$ these contradict each
+  other whenever $G$ is minimal: a single edge, a tree. The statements claim every simple graph
+  with $|V| \ge 2$. The pins are not vacuous: $|E(G)| > D(|V| - 1)$ gives `hfresh`
+  (`rem:fresh-edge-supply`), for instance $K_7$ at $d = 2$ ($21 > 18$). Task 2.9 kept the claims,
+  with the note after the corollary. The same pair is in the pins of `lem:hinge-point-witness`,
+  `thm:bodyhinge-generic-rank` and its two corollaries (task 2.12); README names the last as the
+  generic body-hinge theorem. Candidate: index the family by the edges of $G$, so that the label
+  set may exceed $E(G)$.
+  *Evidence:* read (the statements of the six pins, `PanelGeneric.lean`, `HingeGeneric.lean`; the
+  body of `IsMinimalKDof`, `Deficiency.lean`); a `lake lean` witness, script not retained: from
+  `hends`, `hfresh` and `hmin : G.IsMinimalKDof n (G.deficiency n)`, `hfresh _ G hmin` gives
+  `e₀ ∉ E(G)` and `(hends e₀).edge_mem` gives `e₀ ∈ E(G)`. A single edge is minimal: its $D - 1$
+  copies are independent in $M(\tilde G)$, the only base, and $\operatorname{def}(\tilde G) = 1$.
+  *Found:* round 4 task 2.9.
 
 ## L — Lean
 
@@ -2674,6 +2753,21 @@ declaration's name as its header writes it:
   `jacobs_of_isLaman3_of_ncard`, `degree_one_rank_tree_of_ncard` and `degree_one_rank_of_ncard`;
   JJ 2008 §4).
   *Found:* round 4 task 2.8.
+- **F-210** · L · the docstrings of task 2.9's pins (`GenericLift/PanelGeneric.lean`,
+  `GenericRigidityMatroid.lean`, `Molecule/Application.lean`). `IsGenericNormals` "subsumes
+  Jackson and Jordán's edge-induced-submatrix maximum-rank condition": not over all normal
+  assignments, as a degenerate hinge welds its bodies and raises the rank; over those with
+  nondegenerate hinges it does (task 2.9's paragraph after `lem:generic-normals-nondegenerate`).
+  `supportExtensor_ofNormals_ne_zero_of_isGenericNormals` quotes blueprint text that no longer
+  exists ("dimension at least two, so `D ≥ 3`"). `molecule_generic_rank` and the docstrings of
+  task 2.4's pins in its file (`F-190`) write "`G̃ = G.shadowGraph`": `G.shadowGraph` is the
+  multigraph $G'$ of `lem:molecule-graph-carrier`, and $\tilde G = 5 \cdot G'$. The rest narrates
+  process: `PanelGeneric.lean`'s header ("Phase 34 (PROSPECT G3 …)", "Layer P"),
+  "W6e", "OUR", "genuine", "producer", and `molecule_generic_square_packing`'s "existing
+  Phase-19/22i machinery". The Lean dates Jackson–Jordán's paper 2009 in three files and 2010 in
+  eight; it is 2010 (task 2.9 corrected the bibliography).
+  *Evidence:* read (the docstrings and bodies of the twelve pins; `grep` for the year).
+  *Found:* round 4 task 2.9.
 
 ## M — mathematics and sources
 
