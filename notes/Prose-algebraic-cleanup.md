@@ -6,9 +6,9 @@ which rounds are done. The round rewrites the prose of the chapter `algebraic-in
 its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
 else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-115`–`F-120`, tasks 2.1–2.7 `F-121`–`F-140` and task 2.8 `F-141`–`F-144`. 18 one-commit tasks;
-tasks 1 and 2.1–2.8 are done, and the round has no planned stop. **Next concrete task:** task 2.9,
-`case-ii.tex`, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-115`–`F-120`, tasks 2.1–2.8 `F-121`–`F-144` and task 2.9 `F-145`–`F-148`. 18 one-commit tasks;
+tasks 1 and 2.1–2.9 are done, and the round has no planned stop. **Next concrete task:** task
+2.10, `genericity-and-count.tex`, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,17 +18,17 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.8 has landed** (this commit), and `case-i.tex` is done: 589–832 and 1–17 at the open,
-797–1040 and 1–17 at the parent, now 797–1185 and 1–20 (the next sentence, KT Lemma 5.4's
-lead-in, lost its "We first prove"), 4 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses`
-byte-identical; no node moved, and four notes are new. Nothing is mid-stream; task 2.9 is next.
+**Task 2.9 has landed** (this commit), and `case-ii.tex` is done: 1–173 at the open and the
+parent, now 1–321, 4 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical; no
+node moved, and three notes are new. `panel-layer.tex`'s `rem:fresh-edge-supply` now lists the
+third form of the label condition (`lem:case-II-realization`, `lem:case-III`). Nothing is
+mid-stream; task 2.10 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
   `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (62 overfull boxes, the open's 72; none in
-  `case-i`). Screens on `case-i`: register 9 / 0 (labels), devices 0 / 1 (the `\texttt` after
-  `lem:cycle-realization`), `\operatorname` 0, vocabulary 1 (the "endpoint selector" of 2.7's note
-  after `lem:rows-polynomial-in-normals`), forward `\uses` 6 / 0; the open's were 31 / 20, 0 / 1,
-  0, 49 and 6 / 0.
+  `case-ii`). Screens on `case-ii`: register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 1
+  (the "endpoint selector" of the note after `lem:case-II-rank-lift`), forward `\uses` 2 / 0 (both
+  with their sentence); the open's were 1 / 1, 0 / 0, 0, 3 and 2 / 0.
 
 **Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -205,9 +205,7 @@ statements; route history ("see the git history" twice); and prose that cites, a
 induction, nodes whose pins no main result uses (`F-118`).
 
 **Carried in** (`notes/Prose.md` §3 *Round 3*; the ledger's `F-067`):
-1. and 2. Done (2.7).
-3. `lem:case-II-realization`'s proof cites `lem:reduction-step-pos` for the vertex of degree two:
-   `lem:reducible-vertex`'s (2.9).
+1.–3. Done (2.7, 2.9).
 4. The opening says twice that KT Theorem 5.5 is proved with `thm:minimal-kdof-reduction`: the
    induction runs on `thm:minimal-kdof-reduction-all-k` (2.16; 2.7's "reduction theorem" is gone).
 5. `lem:case-III-chain-discriminator`'s proof cites the line lemma as "the general" duality; it is
@@ -218,14 +216,8 @@ induction, nodes whose pins no main result uses (`F-118`).
    2.3 (Jackson–Jordán's Theorem 6.1), as `rigidity-matrix.tex` and `deficiency.tex` now say
    (2.16; the parts of 2.1 and 2.7 are done).
 
-- **`panel-layer`, `case-i`.** *Done:* 2.1–2.8 (their open bullets are in this log at `efa7ed2b`,
-  the last at `666f05f9`).
-- **`case-ii` (2.9).** The opening's "Whiteley's bar-joint 1-extension" has no citation (the
-  chapter's opening cites Whiteley 1996, Theorem 2.2.2). `lem:case-II-rank-lift` and
-  `lem:splitoff-edge-substitution` carry role clauses and proof material in their statements;
-  `lem:case-II` bundles a body-level and a panel-level equivalence, writes "(KT~4.6)", and its
-  proof $\operatorname{insert} v\ t$. `lem:case-II-realization` (crux): carry-in 3, and "One
-  hypothesis rides explicitly: a fresh edge name" (principle D: `\cref` `rem:fresh-edge-supply`).
+- **`panel-layer`, `case-i`, `case-ii`.** *Done:* 2.1–2.9 (their open bullets are in this log at
+  `efa7ed2b`, the last at `5e9e329c`).
 - **`genericity-and-count` (2.10).** "Genericity device" is a coinage for KT Claims 6.4 and 6.9
   (title and fourteen `\cref`s). `lem:genericity-device` is `F-117` (keep the statement) and
   `F-118`; its proof's "the minor's Gram determinant", and `lem:rank-polynomial-of-le-finrank`'s
@@ -288,15 +280,12 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     `8cfa4531`): panel-hinge frameworks and KT Proposition 2.3; KT Theorem 5.5; KT Theorem 5.6 and
     the molecular conjecture; the base and the cycle normals; the operations and the multigraph
     conjecture. Found `F-121`–`F-133`.
-  - [x] **2.6 `case-i.tex`, KT Lemma 5.4 and the block pin** (`9a465598`; 18–291 at the open, 10
-    nodes). Found `F-134`–`F-135`.
-  - [x] **2.7 `case-i.tex`, KT eq. (6.3), the contraction and KT Claim 6.4** (`85e0e4f8`; 292–588 at
-    the open, 5 nodes, two moved within the file). Found `F-136`–`F-140`.
-  - [x] **2.8 `case-i.tex`, KT Lemmas 6.2, 6.3 and 6.5, and the opening** (this commit; 589–832 and
-    1–17 at the open, now 797–1185 and 1–20, 4 nodes, four new notes). KT pp. 668 and 673–677.
-    Found `F-141`–`F-144`.
-  - [ ] **2.9 `case-ii.tex`** (1–173): 4 nodes, 173 lines; crux `lem:case-II-realization`;
-    carry-in 3.
+  - [x] **2.6–2.8 `case-i.tex`** (`9a465598`, `85e0e4f8`, `5e9e329c`): KT Lemma 5.4 and the block
+    pin; KT eq. (6.3), the contraction and KT Claim 6.4 (two nodes moved within the file); KT
+    Lemmas 6.2, 6.3 and 6.5, and the opening. Found `F-134`–`F-144`.
+  - [x] **2.9 `case-ii.tex`** (this commit; 1–173 at the open, now 1–321, 4 nodes, three new
+    notes, carry-in 3). KT pp. 650 and 677–680; Whiteley 1996, Theorem 2.2.2. Found
+    `F-145`–`F-148`.
   - [ ] **2.10 `genericity-and-count.tex`** (1–387): 11 nodes, 387 lines.
   - [ ] **2.11 `case-iii.tex`, KT Claim 6.11** (15–237): 5 nodes, 223 lines; crux throughout.
   - [ ] **2.12 `case-iii.tex`, the candidate completion** (238–501): 9 nodes, 264 lines; crux
@@ -363,6 +352,9 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   `lem:case-I-realization` assumes two realizations where its pin assumes the induction hypothesis.
 - `F-142` (S, task 2.8): `lem:case-I-realization-nonsimple` is stated for every $d \ge 2$; its pin
   is the case $d = 3$ of an unpinned general form.
+- `F-145` (S, task 2.9): the panel assertion of `lem:case-II` holds vacuously for $d \ge 2$ (no
+  framework meets its hypothesis, once called KT Claim 6.9's general position); its body assertion
+  is weaker than its pin.
 
 ## Moved to a later round
 
@@ -401,6 +393,12 @@ one line each naming the ledger ID and the task that found it.
   every $k$, KT Claim 6.6 and KT Lemma 6.3's combination step have no node.
 - `F-144` (L, task 2.8): the docstrings of the last four Case I pins name a `case_I_dispatch` that
   does not exist and a wrong node; three `d = 3` wrappers have no caller.
+- `F-146` (E, task 2.9): `case-ii.tex`'s 15 missing edges (`lem:reducible-vertex` among them) and
+  its unbacked ones.
+- `F-147` (N, task 2.9): `case-ii.tex`'s first three nodes are off the formal Case II, their pins
+  dead; KT Lemma 6.7 has no node.
+- `F-148` (L, task 2.9): the docstrings of the Case II pins say KT Claim 6.9 supplies a hypothesis
+  that holds nowhere, and name wrong nodes and callers.
 
 ## Blockers / open questions
 
@@ -408,9 +406,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.9, `case-ii.tex` (1–173 at the open and now), at Opus**, a fresh
-agent (`notes/Prose.md` §2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens
-under *Scope*. Then tasks 2.9–2.16 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.10, `genericity-and-count.tex` (1–387 at the open and now), at
+Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is under *Per-chapter diagnosis*, its
+gates and screens under *Scope*. Then tasks 2.11–2.16 in order, and task 3 closes the round. For
+the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open the round; the coordinator reads them in full against the
   exemplars, as round 2's hand-off asked for its first three.
@@ -431,7 +430,7 @@ under *Scope*. Then tasks 2.9–2.16 in order, and task 3 closes the round. For 
   2.5, `def:framework-with-graph` writes the framework on a new graph $(G', p)$, the *restriction*
   when $G'$ is a subgraph; `lem:with-normal-preserves` says "a body that lies on no edge" and
   `\cref`s `lem:rank-delete-vertex` for $\operatorname{pinned}(w)$.
-- **For 2.9 and later.** `case-i.tex` is done. It follows KT §6.2 with $p_1$, $p_2$, $p'$ (KT's
+- **For 2.10 and later.** `case-i.tex` is done. It follows KT §6.2 with $p_1$, $p_2$, $p'$ (KT's
   $p_{E \setminus E'}$), $s_c$, the map $f$ onto $r$, $R_{V(H)}(G \setminus E(H), p)$ as in
   `rigidity-matrix.tex`, $G_v$ for the removal (`def:graph-operations`), the block pin $Z_s(G,p)$
   of `def:pinned-motions-on`, and "every infinitesimal motion is constant on $s$" for the formal
@@ -439,29 +438,34 @@ under *Scope*. Then tasks 2.9–2.16 in order, and task 3 closes the round. For 
   field", as `panel-layer.tex`'s do, and states the induction hypothesis as "for every $k'$, every
   minimal $k'$-dof-graph with at least one and fewer than $|V(G)|$ vertices has a
   nondegenerate-hinge panel realization, and a generic full-rank realization if it is simple"
-  (`lem:case-cut-edge-realization`'s form); `case-ii.tex` says "Given the induction hypothesis".
-  A statement that omits a hypothesis its pin assumes keeps its claim; its proof assumes the
-  hypothesis and says so, and a note gives it (`F-141`, as `lem:cycle-realization` does).
+  (`lem:case-cut-edge-realization`'s form). A statement that omits a hypothesis its pin assumes
+  keeps its claim; its proof assumes the hypothesis and says so, and a note gives it (`F-141`).
   `lem:case-I-realization`'s proof defines the general-position polynomial $P$ and takes one
   non-root of $Q_1 Q_2 P$; the passage after it explains KT's one hypothesis against our two
   conditions; `lem:case-I-realization-h65` adds a $3 \times 3$ minor $\Delta$. Later slices cite
-  these rather than repeat them (principle F). `genericity-and-count.tex` (lines 18, 66 and 85 at
-  the open) says that `lem:case-I-realization` reads rigidity off the genericity device and the
-  relative count: since 2.8 its proof bounds the rank from below and above
-  (`lem:relative-deficiency-rank-bound`), and 2.10 corrects those sentences. The formal Case I
-  does not reach `lem:case-I`, `lem:claim-6-4`, `lem:rows-polynomial-in-normals` or
-  `lem:genericity-device` (`F-118`, `F-139`). `lem:cycle-normals` gives normals, not a "seed"
-  (2.15); Case II's prose cites `lem:exists-independent-panel-extensor`'s pairs with no Lean basis
-  (2.9, 2.10; `F-134`), and its "unhinged" (2.9) is now "lies on no edge".
-- **Crux nodes** keep their full proofs: those of tasks 2.9–2.15 remain (*Scope*).
+  these rather than repeat them (principle F). The formal Case I does not reach `lem:case-I`,
+  `lem:claim-6-4`, `lem:rows-polynomial-in-normals` or `lem:genericity-device` (`F-118`,
+  `F-139`). `lem:cycle-normals` gives normals, not a "seed" (2.15).
+- **From task 2.9.** `lem:case-II-realization`'s proof gives KT eq. (6.12) with $L = q(ab)$ (the
+  panel model forces it), $v$'s normal $n_a + n_b$, the row form of KT's column operation, and
+  Case I's non-root of $QP$ and upper bound. `lem:case-II`'s panel assertion is vacuous (`F-145`):
+  no prose may present it, or `lem:exists-independent-panel-extensor`, as supplying anything. KT
+  Claim 6.9 (p. 678) is only that $(G, p_1)$ is a panel-hinge realization for every $L$; 2.10's
+  title, `lem:genericity-device`'s title and proof, and its opening misattribute it. 2.10 also
+  corrects lines 18, 66 and 85 at the open: both realization proofs bound the rank from below and
+  above (`lem:relative-deficiency-rank-bound`), not by the genericity device and the relative
+  count. `rem:fresh-edge-supply` now lists `lem:case-II-realization` and `lem:case-III` (for
+  2.15's note).
+- **Crux nodes** keep their full proofs: those of tasks 2.10–2.15 remain (*Scope*).
 - **Carry-ins** 1–7 are under *Per-chapter diagnosis*, each with its task.
 - **The open's findings** are recorded, not acted on: 2.10 keeps `lem:genericity-device`'s
   statement (`F-117`). Where a proof cites a node its pin does not reach (`F-118`), a slice may name
   in prose the node the pin does reach, after checking it with the script; the edges wait for
-  round 5. 2.9, 2.10, 2.12 and 2.14 give `F-119`'s forward references a sentence or a move within
-  the file.
+  round 5. 2.10, 2.12 and 2.14 give `F-119`'s forward references a sentence or a move within the
+  file.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>` (e.g. `--chapter case-ii`). The ledger's next ID is `F-145`.
+  `--chapter <section>` (e.g. `--chapter genericity-and-count`). The ledger's next ID is
+  `F-149`.
 
 ## Decisions made during this round
 
@@ -480,10 +484,10 @@ under *Scope*. Then tasks 2.9–2.16 in order, and task 3 closes the round. For 
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`). The
   no-Lean-edit base is `ef57b401`, the open's parent.
-- **Tasks 2.1–2.8 (done).** `panel-layer.tex` follows KT §5 and p. 671: KT Proposition 2.3's two
+- **Tasks 2.1–2.9 (done).** `panel-layer.tex` follows KT §5 and p. 671: KT Proposition 2.3's two
   halves, the simplicity account (KT Lemma 5.3) before `thm:theorem-55` and KT's four cases, KT's
   proof of Theorem 5.6 without the projective move, the base by KT's three cases (`F-131`).
-  `case-i.tex` proves KT Lemma 5.4 for $m \le d + 1$ (`F-115`) and follows KT §6.2: Lemma 3.5,
-  eq. (6.3), its motion form, Claim 6.4, then Lemmas 6.3, 6.2 and 6.5 (with Claim 6.6, $G'$
-  induced) in the file's order. A statement that claims more than its pins keeps the claim, with a
-  note (`F-136`–`F-138`, `F-141`, `F-142`).
+  `case-i.tex` proves KT Lemma 5.4 for $m \le d + 1$ (`F-115`) and follows KT §6.2 in the file's
+  order; `case-ii.tex` follows KT §6.3 (p. 650's credit to Whiteley 1996). A statement that claims
+  more than its pins, or is vacuous, keeps the claim, with a note (`F-136`–`F-138`, `F-141`,
+  `F-142`, `F-145`).

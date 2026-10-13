@@ -1,85 +1,105 @@
-\subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
+\subsection{Case II: no proper rigid subgraph and \texorpdfstring{$k > 0$}{k > 0}}
 \label{sec:molecular-algebraic-induction-caseII}
 
-This subsection proves Katoh--Tanigawa's Case~II: a minimal $k$-dof-graph
-with $k > 0$ and a reducible degree-$2$ vertex $v$ realizes its target
-rank by re-inserting $v$, with its two hinges, onto a realization of the
-smaller splitting-off graph $G_v^{ab}$ (KT Lemmas~6.7, 6.8) --- the
-panel-hinge analogue of Whiteley's bar-joint $1$-extension. Two pieces of
-shared infrastructure come first: the $+D$ rank-lift accounting for
-pinning a single body (\cref{lem:case-II-rank-lift}) and the
-edge-substitution relating the splitting-off graph to its parent
-(\cref{lem:splitoff-edge-substitution}). The accounting itself
-(\cref{lem:case-II}) is genericity-free; it assembles, together with the
-inductive hypothesis, into the realization lemma
-\cref{lem:case-II-realization}, which discharges KT Lemma~6.8 at every
-deficiency $k > 0$. Genericity enters only through KT Claim~6.9, the
-general-position choice of $v$'s two new hinges
-(\cref{lem:exists-independent-panel-extensor}).
+This subsection proves Case~II of KT Theorem~5.5, in which the minimal
+$k$-dof-graph $G$ is $2$-edge-connected, has at least three vertices
+and no proper rigid subgraph, and $k > 0$ (KT \S6.3). Katoh and
+Tanigawa split off a vertex $v$ of degree two, whose edges join it to
+vertices $a$ and $b$. The graph $G_v^{ab}$ is a minimal
+$(k-1)$-dof-graph with fewer vertices, and the induction hypothesis
+realizes it. They then put $v$ back, with the hinge of the edge $vb$
+equal to that of the new edge $ab$, and the rank rises by $D - 1$ (KT
+Lemma~6.8). Katoh and Tanigawa note that this is essentially the idea
+of Whiteley's proof that the $1$-extension preserves the infinitesimal
+rigidity of bar-joint frameworks~\cite[Theorem~2.2.2]{whiteley1996}
+(KT p.~650).
 
-\begin{lemma}[Case II rank-lift accounting; the $+D$ core of KT Lemma 6.8]
+The first three lemmas concern putting back the body $v$: pinning one
+body (\cref{lem:case-II-rank-lift}), the subgraph $G_v$ that $G$ and
+$G_v^{ab}$ share (\cref{lem:splitoff-edge-substitution}), and the
+motions of a framework on $G$ obtained from one on $G_v$
+(\cref{lem:case-II}). The proof of KT Lemma~6.8
+(\cref{lem:case-II-realization}) counts rows instead, and does not use
+them.
+
+By \cref{rem:rank-hypothesis-relative}, a realization of $G$ whose
+bodies are the vertices of $G$ is at the target rank
+(\cref{def:rank-hypothesis}) exactly when
+$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The next three lemmas
+state the rank in this form.
+
+\begin{lemma}[Pinning one body]
   \label{lem:case-II-rank-lift}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions}
   \leanok
   \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-normal,
         lem:with-normal-preserves}
-  In the codimension form of \cref{sec:molecular-rigidity-matrix}, pinning
-  a body $v$ shifts the realization count by exactly $D$: a body-hinge
-  framework $F$ on $G$ realizes the rank hypothesis at $k'$
-  (\cref{def:rank-hypothesis}, $\dim Z(G,p) = D + k'$) \emph{iff} its
-  body-$v$-pinned motion subspace has dimension $k'$. This is the
-  algebraic $+D$ core of the panel-hinge $1$-extension:
-  $\operatorname{pinned}(v)$ is the null space of the rigidity matrix with
-  $v$'s $D$ columns deleted, and $\dim \operatorname{pinned}(v) + D = \dim
-  Z(G,p)$ by the pin-a-body Lemma~5.1 (\cref{lem:rank-delete-vertex}). The
-  same equivalence holds on the panel layer for a panel-hinge framework
-  $P$ in which $v$ is unhinged, after choosing any panel normal for $v$
-  (\cref{def:framework-with-normal}): replacing an unhinged body's normal
-  changes no pinned-motion subspace (\cref{lem:with-normal-preserves}), so
-  the extended framework realizes the rank hypothesis at $k'$ exactly when
-  $P$ itself has body-$v$-pinned motion dimension $k'$.
+  Let $(G,p)$ be a body-hinge framework, let $v$ be a body, and let
+  $k'$ be an integer. Then $\dim Z(G,p) = D + k'$ if and only if the
+  space $\operatorname{pinned}(v)$ of the infinitesimal motions $S$ with
+  $S(v) = 0$ has dimension $k'$ (\cref{lem:rank-delete-vertex}). Let
+  $(G,n)$ be a panel-hinge framework in which $v$ lies on no edge, and
+  let $(G,n')$ be obtained by replacing the normal of $v$
+  (\cref{def:framework-with-normal}). Then $\dim Z(G,n') = D + k'$ if
+  and only if $\operatorname{pinned}(v)$ has dimension $k'$ in $(G,n)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:with-normal-preserves}
-  Immediate from the pin-a-body identity $\dim \operatorname{pinned}(v) +
-  D = \dim Z(G,p)$ (\cref{lem:rank-delete-vertex}): substitute it into the
-  rank hypothesis $\dim Z(G,p) = D + k'$ and cancel the $D$ term. For the
-  panel form, apply the body-level equivalence to the re-normaled
-  framework, then identify its body-$v$-pinned motions with $P$'s own
-  (\cref{lem:with-normal-preserves}, valid since $v$ is unhinged in $P$).
+  By \cref{lem:rank-delete-vertex},
+  $\dim Z(G,p) = D + \dim \operatorname{pinned}(v)$, which gives the
+  first assertion. If $v$ lies on no edge of $G$, then $(G,n)$ and
+  $(G,n')$ have the same subspace $\operatorname{pinned}(v)$
+  (\cref{lem:with-normal-preserves}). So the second assertion is the
+  first, applied to $(G,n')$.
 \end{proof}
 
-\begin{lemma}[Edge-substitution bridge for splitting-off]
+\begin{fmlnote}
+  The first pinned theorem is the assertion for body-hinge frameworks,
+  and the second the one for panel-hinge frameworks. As in
+  \cref{lem:with-normal-preserves}, the second assumes that the pair of
+  bodies that the endpoint selector assigns to each edge of $G$ does
+  not contain $v$ (\cref{fmlnote:panel-hinge-nondegenerate}).
+\end{fmlnote}
+
+\begin{lemma}[The common subgraph of $G$ and $G_v^{ab}$]
   \label{lem:splitoff-edge-substitution}
   \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
         Graph.isLink_incident_of_not_removeVertex}
   \leanok
-  The splitting-off $G_v^{ab}$ is \emph{not} a subgraph of $G$: it deletes
-  the two $v$-incident edges $v a$, $v b$ but adds a fresh short-circuit
-  edge $e_0 \notin E(G)$ joining $a$ and $b$. The two graphs are instead an
-  \emph{edge substitution} of one another, sharing the common subgraph
-  $G - v$ (all of $G$ away from $v$): $G - v \le G$ and
-  $G - v \le G_v^{ab}$. The second inclusion holds because every edge of
-  $G - v$ is an edge of $G$, hence $\neq e_0$, so it survives into
-  $G_v^{ab}$. Conversely, every link of $G$ \emph{lost} by passing to
-  $G - v$ is incident to $v$: the re-added edges over the common lower
-  bound are exactly the $v$-incident ones, which is what lets the
-  splitting-off accounting (\cref{lem:case-II}) collapse each re-added
-  hinge constraint on a $v$-pinned motion to a single span membership at
-  its non-$v$ endpoint.
+  Let $G$ be a multigraph, let $v$ be a vertex of $G$ of degree two,
+  whose edges $e_a$ and $e_b$ join it to vertices $a$ and $b$, and let
+  $G_v$ and $G_v^{ab}$ be obtained by removing $v$ and by splitting off
+  $v$ (\cref{def:graph-operations}). Then $G_v$ is a subgraph of $G$ and of
+  $G_v^{ab}$, while $G_v^{ab}$, whose edge $ab$ is new, is not a
+  subgraph of $G$. Every edge of $G$ that is not an edge of $G_v$ has
+  $v$ as an end.
 \end{lemma}
 \begin{proof}
   \leanok
-  Both inclusions are the definition of $\le$ on multigraphs (vertex-set
-  and link inclusion). For $G - v \le G_v^{ab}$, a link of $G - v$ is a
-  link $e\,x\,y$ of $G$ with $x, y \neq v$; since $e \in E(G)$ and
-  $e_0 \notin E(G)$ we have $e \neq e_0$, so $e$ lands in $G_v^{ab}$'s
-  $v$-avoiding branch.
+  The graphs $G_v$ and $G_v^{ab}$ both have the vertices of $G$ other
+  than $v$. An edge of $G_v$ is an edge of $G$ whose ends differ from
+  $v$, with the same ends. It is not the new edge $ab$, which is not an
+  edge of $G$, so it is an edge of $G_v^{ab}$ with the same ends. Hence
+  $G_v$ is a subgraph of both graphs, and the new edge $ab$ is an edge
+  of $G_v^{ab}$ but not of $G$. An edge of $G$ whose ends both differ
+  from $v$ is an edge of $G_v$, which gives the last assertion.
 \end{proof}
 
-\begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
+\begin{fmlnote}
+  The three pinned theorems state the two inclusions and the last
+  assertion, for every vertex $v$. The second assumes that the label of
+  the new edge $ab$ lies outside $E(G)$ (\cref{fmlnote:graph-operations}).
+  No pinned theorem states that $G_v^{ab}$ is not a subgraph of $G$.
+\end{fmlnote}
+
+In Case~II, $G_v^{ab}$ is a minimal $(k-1)$-dof-graph (KT
+Lemma~4.8(ii), \cref{lem:reduction-step-pos}), and a realization of it
+restricts to one of $G_v$. The next lemma puts $v$ back into a
+panel-hinge framework on $G_v$.
+
+\begin{lemma}[Putting back a body of degree two]
   \label{lem:case-II}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
@@ -87,87 +107,215 @@ general-position choice of $v$'s two new hinges
   \uses{def:rank-hypothesis, def:framework-with-normal, lem:reduction-step-pos,
         lem:case-II-rank-lift, lem:splitoff-edge-substitution,
         lem:exists-independent-panel-extensor}
-  Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible degree-$2$
-  vertex $v$ with neighbours $a$, $b$ (KT~4.6), and write
-  $t = V(G) \setminus \{v\}$. For any body-hinge framework $F$ on $G$, $F$
-  is rigid on $V(G)$ \emph{iff} $F$ is rigid on $t$ and every infinitesimal
-  motion satisfies $Sv = Sw$ for each $w \in t$ --- the
-  $1$-extension accounting stated purely in terms of $V(G)$.
+  Let $G$ be a minimal $k$-dof-graph with $k > 0$, let $v$ be a vertex
+  of $G$ of degree two, whose edges $e_a$ and $e_b$ join it to $a$ and
+  $b$, and let $t = V(G) \setminus \{v\}$. Then every infinitesimal
+  motion of a body-hinge framework $(G,p)$ is constant on $V(G)$ if and
+  only if every infinitesimal motion $S$ is constant on $t$ and
+  satisfies $S(v) = S(w)$ for every $w \in t$.
 
-  On the panel layer, restrict $F$ to the common subgraph $G - v$ of $G$
-  and the splitting-off $G_v^{ab}$ (\cref{lem:splitoff-edge-substitution};
-  $G_v^{ab}$ is a smaller minimal $(k-1)$-dof-graph,
-  \cref{lem:reduction-step-pos}). Choosing any panel normal for the
-  unhinged $v$ (\cref{def:framework-with-normal}) and passing back up to
-  $G$ realizes the target rank at $k'$ (\cref{def:rank-hypothesis})
-  \emph{iff} $F$ itself has body-$v$-pinned motion dimension $k'$
-  (\cref{lem:case-II-rank-lift}), \emph{provided} every base-$v$-pinned
-  motion of $F$ already clears the two new hinge constraints,
-  $Sa \in \operatorname{span} C(e_a)$, $Sb \in \operatorname{span}
-  C(e_b)$. That proviso is exactly KT Claim~6.9's general position,
-  supplied by placing the two new supporting extensors in general
-  position (\cref{lem:exists-independent-panel-extensor}).
+  Let $k'$ be an integer, let $(G_v, n)$ be a panel-hinge framework, and
+  let $(G, n')$ be the panel-hinge framework on $G$
+  (\cref{def:framework-with-graph}) whose normals are those of
+  $(G_v, n)$ except at $v$ (\cref{def:framework-with-normal}). Suppose
+  that every $S \in \operatorname{pinned}(v)$ of $(G_v, n)$ satisfies
+  $S(a) \in \operatorname{span} C(e_a)$ and
+  $S(b) \in \operatorname{span} C(e_b)$, where $C(e_a)$ and $C(e_b)$ are
+  the hinges of $(G, n')$. Then $\dim Z(G,n') = D + k'$ if and only if
+  $\operatorname{pinned}(v)$ has dimension $k'$ in $(G_v, n)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-II-rank-lift, lem:splitoff-edge-substitution,
         lem:exists-independent-panel-extensor}
-  The $V(G)$-relative form is a direct case split on membership in
-  $\operatorname{insert} v\ t$: both endpoints in $t$ reduce to rigidity
-  of $F$ on $t$, and an endpoint equal to $v$ reduces to the hypothesis
-  $Sv = Sw$. For the panel form, the $\le$ direction is unconditional ---
-  re-adding $v$'s two edges over the common subgraph $G - v$ can only
-  shrink the body-$v$-pinned motions (\cref{lem:splitoff-edge-substitution});
-  the reverse $\ge$ is exactly the general-position hypothesis, since a
-  base-$v$-pinned motion has $Sv = 0$, so each new edge's hinge constraint
-  $Sv - Sw \in \operatorname{span} C(e)$ collapses to the span membership
-  $Sw \in \operatorname{span} C(e)$ at its non-$v$ endpoint --- precisely
-  what the two general-position conditions above supply. Composing with
-  the rank-lift accounting (\cref{lem:case-II-rank-lift}) then reads the
-  target rank off $F$'s own pinned dimension.
+  The first assertion holds for every set $t$ of bodies and every body
+  $v$. A screw assignment $S$ is constant on $t \cup \{v\}$ if and
+  only if it is constant on $t$ and $S(v) = S(w)$ for every $w \in t$.
+
+  For the second, the graph $G_v$ is a subgraph of $G$
+  (\cref{lem:splitoff-edge-substitution}). So every infinitesimal motion
+  of $(G, n')$ is one of the restriction $(G_v, n')$
+  (\cref{lem:motions-mono-of-graph-le}). As $v$ lies on no edge of
+  $G_v$, the frameworks $(G_v, n')$ and $(G_v, n)$ have the same subspace
+  $\operatorname{pinned}(v)$ (\cref{lem:with-normal-preserves}). Hence
+  $\operatorname{pinned}(v)$ of $(G, n')$ lies in that of $(G_v, n)$.
+
+  Conversely, let $S$ lie in $\operatorname{pinned}(v)$ of $(G_v, n)$.
+  The edges of $G$ that are not edges of $G_v$ are $e_a$ and $e_b$
+  (\cref{lem:splitoff-edge-substitution}). As $S(v) = 0$, their hinge
+  constraints $S(v) - S(a) \in \operatorname{span} C(e_a)$ and
+  $S(v) - S(b) \in \operatorname{span} C(e_b)$ are the hypothesis. So
+  $S$ is an infinitesimal motion of $(G, n')$, and the two subspaces
+  $\operatorname{pinned}(v)$ are equal. The equivalence now follows from
+  \cref{lem:case-II-rank-lift}, applied to $(G, n')$.
 \end{proof}
 
-\begin{lemma}[Case II realization: splitting off a degree-two vertex, $k > 0$; KT Lemma 6.8]
+\begin{fmlnote}
+  The two pinned theorems are the two assertions. When $d \ge 2$, no
+  framework satisfies the hypothesis of the second, so the second
+  assertion holds vacuously, as does its pin on $G_v$. Indeed, let $c$
+  be a screw, and let $S$ take the value $c$ at every body other than
+  $v$ and the value $0$ at $v$. As $v$ lies on no edge of $G_v$, $S$
+  lies in $\operatorname{pinned}(v)$ of $(G_v, n)$. The hypothesis asks
+  that $S(a) = c$ lie in $\operatorname{span} C(e_a)$, which has
+  dimension at most one, for every screw $c$, while the screws form a
+  space of dimension $D \ge 3$.
+  So no choice of the hinges, such as the linearly independent extensors
+  of \cref{lem:exists-independent-panel-extensor}, meets it.
+\end{fmlnote}
+
+\begin{lemma}[Case~II: splitting off a vertex of degree two; KT Lemma~6.8]
   \label{lem:case-II-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_realization_all_k}
   \leanok
   \uses{def:rank-hypothesis, lem:reduction-step-pos,
         lem:rank-polynomial-of-le-finrank}
-  Let $G$ be a $2$-edge-connected minimal $k$-dof-graph with $k > 0$ and no
-  proper rigid subgraph, $|V(G)| \ge 3$. Given the induction hypothesis
-  for every minimal $k'$-dof-graph with fewer vertices, $G$ carries a
-  generic realization at rank $D(|V(G)|-1) - k$
-  (\cref{def:rank-hypothesis}).
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a
+  $2$-edge-connected minimal $k$-dof-graph with $k > 0$, $|V(G)| \ge 3$
+  and no proper rigid subgraph. Suppose that for every $k'$, every
+  minimal $k'$-dof-graph with at least one and fewer than $|V(G)|$
+  vertices has a nondegenerate-hinge panel realization, and a generic
+  full-rank realization if it is simple. Then $G$ has a generic
+  full-rank realization (\cref{def:rank-hypothesis}), of rank
+  $D(|V(G)| - 1) - k$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:reduction-step-pos, lem:with-normal-preserves,
         lem:rank-polynomial-of-le-finrank, lem:genericity-device}
-  By \cref{lem:reduction-step-pos}, $G$ has a reducible degree-$2$ vertex
-  $v$ with distinct neighbours $a$, $b$ (the $2$-edge-connected,
-  no-proper-rigid-subgraph hypotheses rule out the other two branches of
-  the KT~4.6 trichotomy), and the splitting-off $G_v^{ab}$ is minimal
-  $(k-1)$-dof with fewer vertices than $G$. The induction hypothesis
-  supplies a generic realization $Q$ of $G_v^{ab}$ attaining rank
-  $D(|V(G_v^{ab})|-1) - (k-1)$, with panel normals $n_a$, $n_b$ at $a$,
-  $b$ linearly independent. Re-insert $v$ at the sheared normal
-  $n_a + n_b$: since $v \notin V(G_v^{ab})$, this only assigns $v$'s
-  (previously absent) normal and disturbs neither $Q$'s rigidity rows nor
-  its motion space (\cref{lem:with-normal-preserves}). At this placement
-  the new edge $vb$ reproduces the panel support extensor of $a, b$ up to
-  sign and the new edge $va$ reproduces its negative, so a family of
-  $D - 1$ rows independent through $v$'s screw column, together with the
-  $D(|V(G_v^{ab})|-1) - (k-1)$ independent rows transported from $Q$
-  through the common subgraph $G - v$, gives
-  $D(|V(G)|-1) - k$ independent rigidity rows of $G$ at this placement ---
-  the rank target exactly, with no residual gap to fill (unlike the
-  deficiency-$0$ Case~III, where the analogous count is one row short).
-  Unlike \cref{lem:case-II}'s bridge, this construction is direct and does
-  not need the genericity-gated equality of the $1$-extension inclusion.
-  The genericity device (\cref{lem:genericity-device}), via the
-  rank-polynomial lift (\cref{lem:rank-polynomial-of-le-finrank}),
-  re-realizes this rank at a general-position
-  seed. One hypothesis rides explicitly: a fresh edge name for $G$ itself
-  (an unused label outside $E(G)$, needed for the splitting-off's
-  short-circuit edge $e_0$).
+  We follow Katoh and Tanigawa's proof of KT Lemma~6.8
+  (pp.~677--679). The graph $G$ is simple
+  (\cref{lem:simple-minimal-noRigid}). As $d \ge 2$, we have $D \ge 3$,
+  so $G$ has a vertex $v$ of degree two (\cref{lem:reducible-vertex};
+  KT Lemma~4.6). Its edges $e_a$ and $e_b$ join it to vertices $a$ and
+  $b$, and $a \neq b$ as $G$ is simple.
+
+  Next, $G$ has no edge that joins $a$ and $b$, as in the proof of KT
+  Lemma~6.7. Otherwise this edge, $e_a$ and $e_b$ form a cycle on three
+  vertices, which is a $0$-dof-graph as $D \ge 3$ (the first step of the
+  proof of \cref{lem:chain-cycle-dichotomy}). If $|V(G)| \ge 4$, the
+  cycle is a proper rigid subgraph of $G$. If $|V(G)| = 3$, the simple
+  graph $G$ has no further edge, so it is the cycle, and $k = 0$. Both
+  contradict the hypotheses. Hence $G_v^{ab}$ is simple: its new edge
+  $ab$ is not a loop, and its other edges are edges of the simple graph
+  $G$ (\cref{def:graph-operations}), none of which joins $a$ and $b$.
+
+  By KT Lemma~4.8(ii) (\cref{lem:reduction-step-pos}), $G_v^{ab}$ is a
+  minimal $(k-1)$-dof-graph. Its vertices are the $|V(G)| - 1 \ge 2$
+  vertices of $G$ other than $v$ (\cref{lem:reduction-measure}). So the
+  induction hypothesis gives a generic full-rank realization
+  $(G_v^{ab}, q)$, with
+  \[
+    \operatorname{rank} R(G_v^{ab}, q) \;=\;
+      D\bigl(|V(G)| - 2\bigr) - (k - 1),
+  \]
+  which is KT eq.~(6.11). Its normals are in general position, so the
+  normals $n_a = q(a)$ and $n_b = q(b)$ are linearly independent.
+
+  Katoh and Tanigawa keep the hinges of $(G_v^{ab}, q)$ at the edges of
+  $G_v$. They give the edge $vb$ the hinge $q(ab)$ of the edge $ab$, and
+  the edge $va$ a $(d-2)$-dimensional affine subspace $L$ of the panel
+  $\Pi(a)$ (KT eq.~(6.12)). With the panel $\Pi(a)$ also at $v$, this is
+  a panel-hinge realization $(G, p_1)$ for every such $L$ (KT
+  Claim~6.9). They add the columns of $v$ to those of $a$ (KT
+  eqs.~(6.14) and~(6.15)). As $p_1(vb) = q(ab)$, the rows of $vb$ and of
+  the edges of $G_v$ then have, outside the columns of $v$, the entries
+  of $R(G_v^{ab}, q)$ (KT eqs.~(6.16) and~(6.17)). The rows of $va$
+  vanish outside the columns of $v$, and they have rank $D - 1$ there.
+  So
+  \[
+    \operatorname{rank} R(G, p_1) \;\ge\;
+      (D - 1) + \operatorname{rank} R(G_v^{ab}, q)
+    \;=\; D\bigl(|V(G)| - 1\bigr) - k.
+  \]
+  Finally they rotate the panel of $v$ slightly, which does not lower
+  the rank, to make the realization nonparallel (KT Lemma~5.2,
+  \cref{lem:rank-rotation-semicont}).
+
+  In a panel-hinge framework the hinge of an edge is the meet of the
+  panels of its ends (\cref{def:panel-hinge-framework}), while Katoh and
+  Tanigawa ask only that it lie in both panels. For the hinge of $vb$
+  to be $q(ab) = \Pi(a) \cap \Pi(b)$, the panel $\Pi(v)$ must contain
+  $\Pi(a) \cap \Pi(b)$. It must also differ from $\Pi(a)$, as otherwise
+  the hinge of $va$ would be degenerate. Then the hinge
+  $\Pi(v) \cap \Pi(a)$ of $va$ is again $\Pi(a) \cap \Pi(b)$, so that
+  $L = q(ab)$.
+
+  The normal $n_a + n_b$ gives such a panel, as $n_a$ and $n_b$ are
+  linearly independent. Let $q_0$ be the normals with
+  $q_0(v) = n_a + n_b$ and $q_0(w) = q(w)$ for every body $w \neq v$,
+  and let $(G, q_0)$ be the panel-hinge framework on $G$ with these
+  normals. As $C$ is bilinear and $C(n,n) = 0$
+  (\cref{def:panel-support-extensor}),
+  \[
+    C(n_a + n_b,\, n_b) \;=\; C(n_a, n_b),
+    \qquad
+    C(n_a + n_b,\, n_a) \;=\; -C(n_a, n_b).
+  \]
+  So, up to sign, the edges $vb$ and $va$ of $(G, q_0)$ have the hinge
+  $C = C(n_a, n_b)$ of the edge $ab$ of $(G_v^{ab}, q)$, and it is
+  nonzero. Replacing the normal of $v$ in $(G_v^{ab}, q)$ by
+  $n_a + n_b$ changes no hinge, as $v$ lies on no edge of $G_v^{ab}$
+  (\cref{lem:with-normal-preserves}). So each edge of $G_v$ has the same
+  hinge in $(G, q_0)$ as in $(G_v^{ab}, q)$, and this hinge is nonzero
+  (\cref{lem:general-position-support-nonzero}).
+
+  We now count rows as Katoh and Tanigawa do, with a row operation in
+  place of their column operation. Let $r_1, \dots, r_{D-1}$ be a basis
+  of the linear forms on the screws that vanish on $C$
+  (\cref{def:hinge-row-block}). As the hinges of $vb$, $va$ and $ab$
+  agree up to sign, we may take this basis for all three. Up to sign,
+  the rows of $R(G, q_0)$ at $vb$ and at $va$ are the forms
+  $S \mapsto r_i(S(v) - S(b))$ and $S \mapsto r_i(S(v) - S(a))$. The
+  rows of $R(G_v^{ab}, q)$ at $ab$ are their differences:
+  \[
+    r_i\bigl(S(a) - S(b)\bigr) \;=\;
+      r_i\bigl(S(v) - S(b)\bigr) - r_i\bigl(S(v) - S(a)\bigr).
+  \]
+  The rows of $R(G_v^{ab}, q)$ at the other edges are, up to sign, rows
+  of $R(G, q_0)$. So every row of $R(G_v^{ab}, q)$ lies in the row space
+  of $R(G, q_0)$.
+
+  Choose $D(|V(G)| - 2) - (k - 1)$ linearly independent rows of
+  $R(G_v^{ab}, q)$. As no edge of $G_v^{ab}$ has $v$ as an end, they
+  vanish on every screw assignment that is zero at the bodies other
+  than $v$. On these assignments the rows of $vb$ are, up to sign, the
+  forms $S \mapsto r_i(S(v))$, which are linearly independent. By
+  \cref{lem:rigidityRows-pinned-placement-rank-add},
+  \[
+    \operatorname{rank} R(G, q_0) \;\ge\;
+      (D - 1) + D\bigl(|V(G)| - 2\bigr) - (k - 1)
+    \;=\; D\bigl(|V(G)| - 1\bigr) - k.
+  \]
+  For $k = 0$, the graph $G_v^{ab}$ would be a minimal $0$-dof-graph,
+  and the same count would give one row less than the target rank (KT
+  p.~680).
+  Case~III supplies the missing row
+  (\cref{sec:molecular-algebraic-induction-caseIII}).
+
+  The normals $q_0$ need not be in general position. Instead of
+  rotating a panel, we choose all the normals at once, as in the proof
+  of \cref{lem:case-I-realization} and the passage after it. Every hinge
+  of $(G, q_0)$ is nonzero, and $R(G, q_0)$ has the rank above. So there
+  is a polynomial $Q$ in the normals with $Q(q_0) \neq 0$ such that
+  $\operatorname{rank} R(G, q) \ge D(|V(G)| - 1) - k$ wherever
+  $Q(q) \neq 0$. This is \cref{lem:rank-polynomial-of-le-finrank}, later
+  in this chapter. It is the genericity argument of
+  \cref{lem:genericity-device}, in the form that the proof uses. Let $P$
+  be the polynomial of the proof of \cref{lem:case-I-realization}, so
+  that the normals $q$ are in general position wherever $P(q) \neq 0$.
+  As $K$ is infinite, the nonzero polynomial $QP$ has a non-root $q'$.
+
+  The rank of $R(G, q')$ is then at least $D(|V(G)| - 1) - k$, and the
+  normals $q'$ are in general position. As $G$ has no loops, every hinge
+  of $(G, q')$ is nondegenerate
+  (\cref{lem:general-position-support-nonzero}). So the rank is at most
+  $D(|V(G)| - 1) - k$ (\cref{lem:relative-deficiency-rank-bound}), and
+  $(G, q')$ is a generic full-rank realization of $G$.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem also assumes that some edge label lies outside
+  $E(G)$, the label of the new edge $ab$ of $G_v^{ab}$
+  (\cref{rem:fresh-edge-supply}).
+\end{fmlnote}

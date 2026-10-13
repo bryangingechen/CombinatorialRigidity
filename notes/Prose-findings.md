@@ -359,6 +359,22 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label thm:theorem-55-6` and `--label
   lem:minimal-kdof-spanning-subgraph`, at `5c65ea52`); read (the pins' bodies).
   *Found:* round 3 task 2.3.
+- **F-146** · E · `case-ii.tex`'s four nodes (`algebraic-induction/case-ii.tex`): `F-003`'s 15
+  missing edges, and the edges the pins do not back. `lem:case-II-realization`'s statement edges to
+  `lem:reduction-step-pos` and `lem:rank-polynomial-of-le-finrank` are its proof's; it misses
+  `def:cut-edges-2ec` and `def:genuine-hinge-realization` (statement) and, in its proof,
+  `lem:simple-minimal-noRigid`, `lem:reducible-vertex` (the vertex of degree two, which the proof
+  cites since task 2.9, carry-in 3), `lem:rigidityRows-pinned-placement-rank-add`,
+  `lem:case-II-placement-new-rows`, `lem:relative-deficiency-rank-bound`,
+  `lem:general-position-support-nonzero`, `def:panel-general-position`,
+  `lem:span-rigidityRows-eq-of-motions-eq` and `lem:case-III-transport-collapse` (the row
+  identity, `hingeRow_sub_hingeRow_eq`); its proof's edge to `lem:genericity-device` has no Lean
+  basis (`F-118`). `lem:case-II`'s edges to `def:rank-hypothesis`, `lem:reduction-step-pos`,
+  `lem:splitoff-edge-substitution` and `lem:exists-independent-panel-extensor` have no Lean basis,
+  and it misses `def:framework-with-graph`; `lem:case-II-rank-lift`'s edge to
+  `def:rank-hypothesis` has none; `lem:splitoff-edge-substitution` misses `def:graph-operations`.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter case-ii`, at `5e9e329c`).
+  *Found:* round 3 task 2.9.
 
 ## N — node shape
 
@@ -741,6 +757,21 @@ declaration's name as its header writes it:
   `666f05f9`); read (a `grep` for each declaration's callers and for its pins in
   `blueprint/src`).
   *Found:* round 3 task 2.8.
+- **F-147** · N · `lem:case-II-rank-lift`, `lem:splitoff-edge-substitution`, `lem:case-II`
+  (`algebraic-induction/case-ii.tex`): every pin of the first and third nodes, and the third pin
+  of the second, `isLink_incident_of_not_removeVertex`, lie outside every main result's closure.
+  The body form of the first is called only by the two panel forms, and nothing calls those,
+  `isInfinitesimallyRigidOn_insert_iff` or `isLink_incident_of_not_removeVertex`; the formal Case II
+  (`case_II_realization_all_k`) uses none of the three nodes. The third bundles a body-hinge and a
+  panel-hinge assertion, and the second is vacuous (`F-145`).
+  KT Lemma 6.7 has no node of its own: the pin of `lem:case-II-realization` proves $G_v^{ab}$
+  simple with `splitOff_simple_of_noRigid`, `triangle_isProperRigidSubgraph` ($|V| \ge 4$) and
+  `isKDof_zero_of_triangle` ($|V| = 3$, part (i)), all unpinned, while
+  `lem:chain-data-extract`'s second pin is the form for $|V| \ge 4$. Retiring or merging the three
+  nodes, and a node for KT Lemma 6.7 that both lemmas use, are the candidates.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the four nodes, at `5e9e329c`);
+  read (a `grep` for each pin's callers and for the three declarations in `blueprint/src`).
+  *Found:* round 3 task 2.9.
 
 ## T — terminology and notation
 
@@ -1265,6 +1296,26 @@ declaration's name as its header writes it:
   statement, with a note.
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.8.
+- **F-145** · S · `lem:case-II`, `lem:splitoff-edge-substitution` (`algebraic-induction/case-ii.tex`):
+  the second assertion of `lem:case-II` holds vacuously for $d \ge 2$. Its hypothesis, as in its
+  pin `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (`hspan`), asks that every
+  motion $S$ of the framework on $G_v$ with $S(v) = 0$ have $S(a) \in \operatorname{span} C(e_a)$.
+  When $v$ lies on no edge of that framework, the assignment $c$ off $v$ and $0$ at $v$ is such a
+  motion for every screw $c$, so the hypothesis makes a line the whole screw space, of dimension
+  $D \ge 3$. At the open the statement called the hypothesis KT Claim 6.9's general position,
+  supplied by `lem:exists-independent-panel-extensor`; KT Claim 6.9 (p. 678) says only that
+  $(G, p_1)$ is a panel-hinge realization for every $L$. The first assertion's pin
+  `isInfinitesimallyRigidOn_insert_iff` holds for every framework, set $t$ and body $v$, so the
+  statement, with its minimal $k$-dof-graph, is weaker than the pin; the title named KT Lemmas 6.7
+  and 6.8, which neither assertion is. `lem:splitoff-edge-substitution` states that $G_v^{ab}$ is
+  not a subgraph of $G$, which no pin states. Task 2.9 kept both statements (register only, the
+  gloss dropped, the titles corrected), and the notes say this.
+  *Evidence:* read (the pins' statements and bodies, `Molecular/AlgebraicInduction/PanelHinge.lean`,
+  `Pinning.lean`, `Molecular/Induction/Operations.lean`; the definitions of `pinnedMotions`,
+  `IsInfinitesimalMotion` and `hingeConstraint`; KT 2011 pp. 677--679, `.refs/`); a `lake lean`
+  witness: under `hspan`, with no link of the smaller graph at $v$ and a new edge from $v$ to
+  $w \neq v$, every screw lies in the span of that edge's extensor.
+  *Found:* round 3 task 2.9.
 
 ## L — Lean
 
@@ -1732,6 +1783,23 @@ declaration's name as its header writes it:
   "producer", "motive", "seed" and "brick".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.8.
+- **F-148** · L · the docstrings of `case-ii.tex`'s pins (`Molecular/AlgebraicInduction/Pinning.lean`,
+  `PanelHinge.lean`, `CaseII.lean`; `Molecular/Induction/Operations.lean`). Those of
+  `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
+  `toBodyHinge_pinnedMotions_withGraph_eq` and `toBodyHinge_hnew_of_isLink_incident` say that
+  `hspan` holds at the general-position normals of KT Claim 6.9, supplied by
+  `exists_independent_panelSupportExtensor`; it holds at none for $k \ge 1$ (`F-145`).
+  `isInfinitesimallyRigidOn_insert_iff`'s calls $S v = S w$ Claim 6.9's content and says it
+  grounds two placement nodes; it has no caller. The docstrings of
+  `rankHypothesis_iff_finrank_pinnedMotions`, `rankHypothesis_withNormal_iff_finrank_pinnedMotions`
+  and `isLink_incident_of_not_removeVertex` give `lem:case-II` as their node, which is
+  `lem:case-II-rank-lift`'s or `lem:splitoff-edge-substitution`'s; `removeVertex_le_splitOff`'s
+  calls it the piece Case II's 1-extension needs, and its callers are KT Lemma 4.8's
+  (`ForestSurgery/Reduction.lean`). They and `case_II_realization_all_k`'s carry process codes
+  (Phase 21b, GREEN-modulo-21b, Phase 22i L6b, `hsplitPos`, W-suite, Brick A) and the words
+  "producer", "brick" and "stratum".
+  *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
+  *Found:* round 3 task 2.9.
 
 ## M — mathematics and sources
 

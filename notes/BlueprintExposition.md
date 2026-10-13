@@ -468,8 +468,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   Pointer: `notes/Phase22e.md` *Decisions*; KT pp. 683–686 (eqs. 6.14–6.16); `lem:case-III-columnop`
   + `lem:case-III-candidate-row` proof + `lem:case-III-candidate-row-construction`.
 - **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [done
-  (`case-ii.tex` / `case-iii.tex`, prose final since 22h; markers flipped 22k-close)]
-  **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
+  (`case-ii.tex` / `case-iii.tex`, prose final since 22h; markers flipped 22k-close; since PROSE
+  round 3 task 2.9 the proof of `lem:case-II-realization` gives KT's construction, then
+  eq. (6.12) with `L = q(ab)`, which the panel model forces, and the row form of KT's column
+  operation)] **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
   hinge *at the* `e₀=ab` *hinge of the inductive realization*, so column ops make
   `R(G,p1)` block-triangular with the `vb`-row reproducing the `e₀`-row; a slight
