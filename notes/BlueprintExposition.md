@@ -195,6 +195,53 @@ after it carry KT Lemma 5.3's argument); `deficiency.tex`'s scan still names the
 `meet.tex`" is true since task 2.18 (the contragredient law, in the prose after `def:meet`).
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**PROSE round 3 (`prose-algebraic`, closed 2026-10-13).** The round rewrote the prose of the
+chapter `algebraic-induction.tex` and its five sections, `panel-layer.tex` → `case-iii.tex` (phases
+21–27; `notes/Prose-algebraic-cleanup.md`). No node's pins or `\uses` edges changed and no node
+rerouted, so no entry is added. Statements changed only in register and anchoring, and where
+`notes/dispatch-log.md` records a hygiene-rule reading the coordinator accepted (2026-10-12 and
+2026-10-13: tasks 2.7, 2.10 and 2.12–2.14); a statement that claims more or less than its pins
+keeps its claim, with a note and an `S` finding. Every label that the `algebraic-induction.tex` section names exists, except the
+seed-rank chain that its Phase-30 note records as deleted, and the crux nodes keep full proofs.
+Tasks 2.2, 2.3 and 2.8–2.15 updated the entries for the text they rewrote. The close checked every
+pointer into these files against the new text and aligned five entries:
+`prop:rigidity-matrix-prop11` (KT Proposition 2.3, not 1.1, and the bound on the motions at
+nondegenerate hinges), the quoted
+statements of the N6-composer and conditioned-motive entries, the Claim 6.4 entry (the proof's
+four steps) and the general-`d` entry's R2 note (its paragraph is now in the opening of *The case
+of general `d`*). The KT eq. (6.3) entry's pointer to `lem:case-I`'s proof, the Claim 6.11 entry's
+remark, the triangle-floor entry, the Phase-40a note and the Phase-33 note's *Field generality*
+paragraph hold as written. The slices corrected these crux proofs and texts, against KT or against
+their own statements (each slice's commit message has the evidence):
+- 2.3: the note after `thm:theorem-55-6` called its restriction to simple graphs intrinsic, which is
+  false for a statement that allows degenerate hinges (the double edge has a welded realization at
+  its target rank).
+- 2.8: `lem:case-I-realization`'s proof read rigidity off the row count, which is false for
+  `k > 0`; it now bounds the rank above by `lem:relative-deficiency-rank-bound`.
+- 2.10: `lem:case-II-realization-placement`'s proof moved `D(|V(G)| − 2)` independent rows of
+  `G_v^{ab}` to `G` through `G − v`, rows that its own remark said do not exist; it now gives the
+  count at a rigid `G_v^{ab}`, the rows at `ab` being differences of rows at `vb` and `va` (KT eqs.
+  (6.14)–(6.16)).
+- 2.11: `lem:case-III-nested-rank-lower`'s proof used that `G` is simple and the induction
+  hypothesis without saying so (the statement fails without simplicity, `F-154`); it now says so,
+  and the remark after it gives KT's footnote-6 argument (pp. 684–685).
+- 2.12: `lem:case-III-candidate-row`'s proof did not prove its statement, as it never put the rows
+  of `ab` in the row space of `R(G, p₁)`; it now does, by KT's row operation that clears the block
+  `*` of eq. (6.29) (p. 686).
+- 2.13: the lead of the case `d = 3` said that KT Lemmas 4.6 and 4.8 play no part there; KT use both
+  (p. 680), and only Lemma 4.6's short-cycle case drops out once `|V| ≥ 4` (KT Lemma 6.7, p. 682).
+- 2.14: `lem:case-III-claim612-p3-placement` had KT's column operation the wrong way round (KT add
+  the columns of `a` to those of `c`, p. 687); the proof of `lem:case-III-candidate-dispatch-d3`
+  lacked KT Lemma 5.2's rotation before the rank polynomial (p. 691); `lem:case-III-claim612`'s
+  statement glossed the claim with a false "equivalently".
+- 2.15: `lem:case-III-chain-discriminator`'s proof took `d + 1` chain panels and the joins of their
+  normals (KT have `d` panels, and the joins of `d − 1` of the `d + 1` points built from the normals,
+  p. 698); `lem:case-III-chain-dispatch`'s proof lacked KT Lemma 5.2's rotation (p. 694);
+  `lem:case-III`'s proof claimed an induction it does not make; *The triangle floor* said that KT
+  never treat the triangle as a case, which KT Lemma 6.7(i) does (p. 677).
+
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -231,23 +278,27 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 
 ### `rigidity-matrix.tex` — Phase 18 (R(G,p), rank Lemmas 5.1–5.3)
 
-- **`prop:rigidity-matrix-prop11` (KT Prop 1.1)** — [done (`panel-layer.tex`,
+- **`prop:rigidity-matrix-prop11` (KT Prop 2.3)** — [done (`panel-layer.tex`,
   22k-close)] **(a)** scoped to 18 → deferred to 19 → relocated forward to 21+.
-  **Stable insight:** Prop 1.1 is *two genuinely separate halves* KT presents
+  **Stable insight:** Prop 2.3 is *two genuinely separate halves* KT presents
   as one — the **matroidal** `def = corank M(G̃)` (combinatorial, JJ09 min–max)
   and the **analytic** `rank R(G,p) = D(|V|−1) − def(G̃)` (generic, needs the
   genericity device). Closing the matroidal half does not touch the analytic
   half. The analytic half is *itself* pinned by two inequalities of opposite
   character: a **genericity-free** lower bound on the motion space (`hub`, the
-  Phase-19 partition machinery — *every* realization has at least `D + def`
-  motions) and a **generic** upper bound (`hgen`, supplied by Theorem 5.5 +
-  re-add monotonicity — a generic point attains at most that many). The
+  Phase-19 partition machinery — *every* realization with nondegenerate hinges
+  has at least `D + def` motions) and a **generic** upper bound (`hgen`,
+  supplied by Theorem 5.5 + re-add monotonicity — a generic point attains at
+  most that many). The
   `def > 0` feed (`thm:theorem-55-6-d3`, 22k) is the one that needed the
   spanning-strip lift; the `def = 0` feed landed in 22h. The full two-by-two
   account is in the `prop:rigidity-matrix-prop11` and `thm:theorem-55-6` proofs
   of `panel-layer.tex` (`thm:theorem-55-6-d3` is the latter's case $d = 3$; PROSE
-  round 3, task 2.3). Pointer: `notes/Phase18.md` / `notes/Phase19.md`
-  *Hand-off*; `notes/Phase22k.md`.
+  round 3, task 2.3). The formula is KT Proposition 2.3 (p. 655), as the
+  blueprint names it since PROSE round 3 task 2.1; this entry said Prop 1.1,
+  which is Tay and Whiteley's theorem (p. 648), until that round's close.
+  Pointer: `notes/Phase18.md` / `notes/Phase19.md` *Hand-off*;
+  `notes/Phase22k.md`.
 
 ### `deficiency.tex` — Phase 19 (M(G̃), deficiency, k-dof)
 
@@ -343,7 +394,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   induction threads only the bare motive). **Written** (R6, 2026-07-05; found
   by the D2a reconciliation 2026-07-07): `lem:case-I-dispatch`'s proof narrates
   the three-way case split verbatim, and `lem:case-I-realization`'s statement
-  requires "generic realizations of both" inductive legs explicitly. Pointer:
+  requires generic realizations of both inductive legs explicitly (since PROSE
+  round 3 task 2.8, "suppose that `H` and `G/E(H)` have generic full-rank
+  realizations"). Pointer:
   `notes/Phase22-realization-design.md` §1.5–1.6; `notes/Phase22a.md`.
 - **conditioned motive `Pc := (G.Simple → GP) ∧ bare` (`theorem_55_generic`;
   folds into `lem:case-I-realization` prose)** — [done (`panel-layer.tex`
@@ -354,7 +407,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (printed p. 670); unconditional general position is *false* at the
   parallel-`K₂` base. **Written** (R1, 2026-07-03; found by the D2a
   reconciliation 2026-07-07): `thm:theorem-55`'s statement carries the
-  "moreover, if `G` is simple, generic" conjunction, and the following
+  conjunct for simple `G` (since PROSE round 3 task 2.2, "If `G` is simple,
+  then `G` also has a generic full-rank realization"), and the following
   `fmlnote` states the parallel-`K₂` base admits no generic realization
   explicitly; since PROSE round 3 task 2.2 the paragraph before the theorem
   does, with the rank $D - 1$ that general position forces there. Pointer:
@@ -577,7 +631,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   this commit):** the `lem:claim-6-4` blueprint proof now spells out the three-brick assembly
   (U3a alignment / U3b zero-rank-loss / U2-at-U1 collapse-relabel reproduction) — `done`. The first
   exposition to land, so the *Proof verbosity* write-stage codification (lines 57–63) can now be
-  revisited.
+  revisited. Since PROSE round 3 task 2.7 the proof gives the assembly in four steps, in KT's
+  terms: the contraction's rank; the deletion of the columns of `r` by KT Lemma 5.1; KT's normals
+  `q₀`, which give the bodies of `H` the normal of `r` (p. 675); and the polynomial `Q`. The
+  passage before `lem:rows-polynomial-in-normals` gives KT's two-step proof of the claim.
 - **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
   body sets, `V′` and `V∖V′ ∪ {v∗}`** — [done (`case-i.tex`, Phase-27 C2 exposition)]
   **(a)** thought "pure green-brick
@@ -796,7 +853,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   which steps lift verbatim vs. which are genuinely new at general `d`) landed in the
   `case-iii.tex` connective paragraph opening *The general-`d` chain dispatch*: Claim 6.11 and
   Lemma 2.1's span argument are named as the verbatim-lifted pieces, the `±`-carry transport across
-  the chain's `d` panels as the genuinely new bridge between them. The narrative also promoted (S3,
+  the chain's `d` panels as the genuinely new bridge between them. (Since PROSE round 3 task 2.15
+  that paragraph is part of the opening of the subsubsection *The case of general `d`*, which
+  gives Claim 6.11 and the span of KT eq. (6.67) "as for `d = 3`", and between them the
+  isomorphisms that rename the one realization and KT eq. (6.66).) The narrative also promoted (S3,
   `notes/Phase23-cleanup.md`) into two blueprint nodes — `lem:case-III-chain-discriminator`
   (`chainData_fire_discriminator`) and `lem:case-III-chain-dispatch` (`chainData_dispatch`) — with
   `lem:case-III`'s own proof shortened to cite the dispatch node rather than re-narrate the

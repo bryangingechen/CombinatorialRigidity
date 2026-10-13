@@ -61,7 +61,7 @@ id = "prose-algebraic"
 title = "PROSE 3/5: the algebraic induction"
 note = "notes/Prose-algebraic-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "prose-applications"

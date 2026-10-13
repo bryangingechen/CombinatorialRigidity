@@ -1,14 +1,16 @@
 # PROSE round 3/5 — `prose-algebraic`, the algebraic induction (work log)
 
-**Status:** in progress (opened 2026-10-12). Round 3 of **PROSE**'s five rounds; their plan and the
-PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the authority for
-which rounds are done. The round rewrites the prose of the chapter `algebraic-induction.tex` and
-its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
-exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
-else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-115`–`F-120`, and tasks 2.1–2.16 `F-121`–`F-173`. 18 one-commit tasks; tasks 1 and 2.1–2.16
-(every slice) are done, and the round has no planned stop. **Next concrete task:** task 3, the
-round's close, docs only and may run at Sonnet (*Lemma checklist*). Round manual: `CLEANUP.md`.
+**Status:** closed (opened 2026-10-12, closed 2026-10-13). Round 3 of **PROSE**'s five rounds;
+their plan and the PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the
+authority for which rounds are done. The round rewrote the prose of the chapter
+`algebraic-induction.tex` and its five sections, `panel-layer.tex` → `case-iii.tex`, to
+`40-exposition`'s register and round 1's exemplar, in sixteen slices. Every `\label`, pin,
+`\leanok` and `\uses` edge is as it was. Statements changed only in register and anchoring, and
+where `notes/dispatch-log.md` records a hygiene-rule reading the coordinator accepted (2026-10-12
+and 2026-10-13: tasks 2.7, 2.10 and 2.12–2.14); a statement that claims more or less than its pins
+keeps its claim, with a note and an `S` finding. The ledger `notes/Prose-findings.md` holds the round's 59 findings,
+`F-115`–`F-173`. All 18 one-commit tasks are done. **Next concrete task:** round 4,
+`prose-applications`, opens (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,16 +20,32 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.16 has landed** (this commit): the chapter's opening `algebraic-induction.tex`, 1–86 of
-its 91 lines (the five `\input`s unchanged), now 1–88 of 93. It has no node. Carry-ins 4 and 7 are
-done, so every slice of the round is done. Nothing is mid-stream; task 3, the close, is next.
-- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
-  silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (51 overfull boxes, none in the
-  opening). Screens on the opening: register 1 / 1 → 0 / 0, devices 0 / 0, `\operatorname` 0,
-  vocabulary 0; forward `\uses` 0 / 0.
+**The round is closed** (task 3, docs only). Nothing is mid-stream.
+- **Gates at the close**, all the open's values: whole-project `lake build` green (2 996 jobs, 0
+  `warning:`, 0 `error:`); `git diff --stat ef57b401.. -- CombinatorialRigidity/ lakefile.toml
+  lake-manifest.json lean-toolchain` empty; `lint.sh` green; `verify.sh` green, `checkdecls` silent,
+  9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and `b53eb8b1cf78cb06`;
+  `print.log` 0 `LaTeX Warning` lines and 51 overfull boxes (72 at the open). The axioms check is
+  round 5's (`notes/Prose.md` §2).
+- **The screens, beside the open's table** (*Per-chapter diagnosis*): 5 931 lines (4 221), 106
+  nodes and 152 pins (unchanged). Register 0 in prose in all six files (66); the script's 67 hits in
+  all the text (129) are `\label`, `\lean`, `\uses` and `\cref` arguments, kept by the label rule.
+  Lean devices 0 in statements (10) and 8 in the whole text (30), all `\texttt` Lean names;
+  `\operatorname` Lean names 0 (1); vocabulary 23 (217), each "endpoint selector" in a formalization
+  note. Forward `\uses` to later sections 18 at 10 nodes, unchanged; to later nodes of the same
+  file 6 at 4 nodes (12 at 7), after the moves of tasks 2.10 and 2.14 (`F-119`).
+- **The findings check**, by script: each of `F-115`–`F-173` has exactly one line here, with the
+  ledger's category and the task of its *Found:* line (21 under *Candidates for the PI*: 20 `S`,
+  1 `M`; 38 under *Moved to a later round*: 8 `E`, 13 `N`, 15 `L`, 1 `T`, 1 `U`), and every line
+  here has an entry. The ledger's next ID is `F-174`.
+- **The exposition ledger** (`notes/BlueprintExposition.md`): every pointer into these files
+  checked against the new text; five entries aligned (`prop:rigidity-matrix-prop11` names KT
+  Proposition 2.3; the N6-composer and conditioned-motive quotations; Claim 6.4's four steps; the
+  general-`d` entry's R2 note); a round note added, with the crux proofs and texts that tasks 2.3,
+  2.8 and 2.10–2.15 corrected. Result unchanged: 0 pending / 50 done / 1 closed as superseded.
 
-**Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
+**Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only), the baselines the close
+matched:
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms
   check does not run at the open (`notes/Prose.md` §2: round 1's open and round 5's close only).
 - **The no-Lean-edit base is `ef57b401`**, the open's parent: the close checks that `git diff
@@ -228,11 +246,11 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     (pp. 685–686) at $(G, p_1)$ (KT eq. (6.12)); KT pp. 680–691 for $d = 3$, its points in
     homogeneous coordinates and the rotation of KT Lemma 5.2; KT pp. 692–698 for every $d$, with
     the triangle of KT Lemma 6.7(i) and KT eq. (6.66). Found `F-154`–`F-172`.
-  - [x] **2.16 `algebraic-induction.tex`, the chapter's opening** (this commit; 1–86, now 1–88):
+  - [x] **2.16 `algebraic-induction.tex`, the chapter's opening** (`c766f589`; 1–86, now 1–88):
     what is proved (KT Theorems 5.5 and 5.6, the molecular conjecture, KT Proposition 2.3's rank
     formula), the field, KT's induction and four cases (KT p. 671), and the order of the ten
     subsections; carry-ins 4 and 7. Found `F-173`.
-- [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
+- [x] **3. X — close the round** (this commit; `CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat ef57b401..
     -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
     check runs at round 5's close, not here (§2).
@@ -386,22 +404,16 @@ one line each naming the ledger ID and the task that found it.
 
 ## Blockers / open questions
 
-- None. The round has no planned stop.
+- None. The round is closed.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3, the round's close** (`CLEANUP.md` *Workflow* 5; docs only; it may run
-at Sonnet, `notes/Prose.md` §2). Its checklist is item 3 of the *Lemma checklist*. The values it
-reproduces are under *Current state* (the open's) and *Scope* (gate 3, the two screens), and the
-open's screen figures are the table under *Per-chapter diagnosis*. For the close:
-- **The exposition ledger.** Check the pointers that *Scope*'s crux list and ledger notes name
-  against the new text. 2.15 added notes to the triangle-floor, general-case and Phase-40a entries
-  of `notes/BlueprintExposition.md`, whose pointers moved into *The case of general $d$*; the
-  Phase-33 note's *Field generality* paragraph keeps its heading (2.16). Then add the round note.
-- **Findings.** The round recorded `F-115`–`F-173`, 59 entries, each with its line under
-  *Candidates* (`S`, `M`) or *Moved* (`E`, `N`, `L`, `T`, `U`) as of this commit.
-- **Tools.** `scripts/blueprint-deps.py --label <label>` or `--chapter <section>`. The ledger's
-  next ID is `F-174`.
+**Next concrete task: round 4, `prose-applications`, opens** (`notes/Prose.md` §3 *Round 4*;
+`CLEANUP.md` *Workflow* for the open, an Opus task that creates
+`notes/Prose-applications-cleanup.md`). Round 3 carries nothing into round 4: its findings wait in
+the ledger `notes/Prose-findings.md` for round 5 (`E`, `N`, `T`, `U`), a later Lean round (`L`) and
+the PI (`S`, `M`). The round-3 gate values above are the baselines for round 4's open to
+re-verify. The ledger's next ID is `F-174`.
 
 ## Decisions made during this round
 
