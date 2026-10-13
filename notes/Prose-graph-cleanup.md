@@ -6,12 +6,11 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its 132 `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.4
-reshaped the nodes of round 1's chapters, of `matroid-union` to `meet`, of `rigidity-matrix`, and
-of `deficiency` with `molecular-induction`'s operations. No task edits the Lean or changes a
-statement's strength. **Next concrete task:** task 3.5, the node shapes of
-`molecular-induction.tex`'s KT Lemmas 4.4–4.9 and the carry-in `F-098` (*Hand-off*). Round manual:
-`CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.5
+reshaped the nodes of round 1's chapters, of `matroid-union` to `meet`, of `rigidity-matrix`, of
+`deficiency`, and of `molecular-induction` (with `F-098`'s move from `case-i`). No task edits the
+Lean or changes a statement's strength. **Next concrete task:** task 3.6, the node shapes of
+`panel-layer.tex` (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -22,30 +21,38 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.4 has landed** (this commit; four chapters, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.5.
+**Task 3.5 has landed** (this commit; four chapters, the ledger and docs, no Lean). Nothing is
+mid-stream; the next task is task 3.6.
 
-**The gate's baseline, at task 3.4** (2026-10-13):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 334 lines**, sha256 prefix
-  **`a1ac36f392cc046b`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 3.5** (2026-10-13):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 347 lines**, sha256 prefix
+  **`0429a0287c3cde9a`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.3's (3 322 lines, `9e02c8f68bf13099`) is task 3.4's *Expected*, its 117 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1316 edges
-  2336c6df5ff83f75`** and **`c5a418472970a00c`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 669 nodes,
-  1 011 pins (1 001 distinct; `lean_decls` 1 012), 459 missing, 2 226 implied, 87 + 309
-  unbacked, 190 dead, 21 nodes with four or more pins, one cycle-closing missing edge (`F-011`'s
-  last, task 3.6). The forward screen gives the open's table but `case-i` 8/6 (task 3.2) and
-  `rigidity-matrix` 10/9 0/0.
-- Missing in-edges that tasks 3.2–3.4 drew (task 4's, which the script's report lists; their
+  against task 3.4's (3 334 lines, `a1ac36f392cc046b`) is task 3.5's *Expected*, its 98 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1323 edges
+  ea10e60f91fff951`** and **`2a50e86a8bbf8aed`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 671 nodes,
+  1 010 pins (1 000 distinct; `lean_decls` 1 011), 452 missing, 2 226 implied, 88 + 310
+  unbacked, 189 dead, 21 nodes with four or more pins, one cycle-closing missing edge (`F-011`'s
+  last, task 3.6). The forward screen gives the open's table but `case-i` 8/6 (task 3.2),
+  `rigidity-matrix` 10/9 0/0, and `molecular-induction` 5/3 3/3: task 3.5's
+  `lem:removal-deficiency-equality` uses `lem:splitoff-edge-substitution` (`case-ii.tex`, its
+  pin's reach), and the moved `lem:rigidContract-isMinimalKDof` uses `lem:reduction-measure`,
+  later in its file (task 5).
+- Missing in-edges that tasks 3.2–3.5 drew (task 4's, which the script's report lists; their
   commits name them): to `lem:generic-realization-of-rigid` 4, `lem:meet-two-hyperplanes` 3,
   `def:screw-space` 9 (five in `case-iii.tex` implied once their missing edges to
   `def:rigidity-matrix` are added), `def:trivial-motions-rigid` 3, `lem:edge-rows-independent`
-  2 (`pencil.tex`), `lem:two-edge-connected-degree` 3 and `def:induced-span` 1. Proofs that cite
-  a node without an edge, as they cited the node it left: two in `case-i.tex` and one in
-  `molecule-modelling.tex` (`def:trivial-motions-rigid`), `lem:reducible-vertex` and
-  `thm:minimal-kdof-reduction` (`lem:two-edge-connected-degree`), `lem:adjacent-degree-two-pair`
-  (`lem:deficiency-zero-connected`).
+  2 (`pencil.tex`), `lem:two-edge-connected-degree` 3 and `def:induced-span` 1; task 3.5's
+  `def:edge-multiply` -> `lem:rigidContract-isMinimalKDof` (its edge to `lem:reduction-step`
+  went) and `lem:reduction-measure` -> `lem:pencil-contraction-deficiency` (it was to
+  `lem:pencil-contract-standing`). Proofs that cite a node without an edge, as they cited the
+  node it left: two in `case-i.tex` and one in `molecule-modelling.tex`
+  (`def:trivial-motions-rigid`), `lem:reducible-vertex` and `thm:minimal-kdof-reduction`
+  (`lem:two-edge-connected-degree`), `lem:adjacent-degree-two-pair`
+  (`lem:deficiency-zero-connected`), `lem:case-II-realization` (`lem:cycle-zero-dof`). Since task
+  3.5, `thm:minimal-kdof-reduction`'s proof cites `lem:rigidContract-isMinimalKDof` from earlier in
+  its file (task 4.3).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -204,55 +211,43 @@ gate's diff, which each task makes exact before editing.
     `def:trivial-motions-rigid` and `lem:deficiency-rank-bound` added, two of the open's choices
     *revised*; its exact list and *Expected* (156 lines) are in its commit.
   - [x] **3.4 `deficiency.tex`; `molecular-induction.tex`'s operations, induced subgraph and
-    forest surgery** (this commit; `F-009`'s four, `F-010`'s `endsOf`, `F-082`, `F-087`,
-    `F-090`, `F-091`; `F-008`'s two), each fix tried on a scratch copy with `--tex-root`.
-    `def:cut-edges-2ec` keeps `cutEdges` and `TwoEdgeConnected`; its two claims split off after it
-    as `lem:two-edge-connected-degree` (`twoEdgeConnected_of_isKDof_zero`,
-    `two_le_degree_of_twoEdgeConnected`), whose note names the three `cutLabeling` helpers,
-    unpinned; its `\uses{def:k-dof}` moves with them. `lem:cut-edge-decomposition` keeps one pin
-    per part; `partitionDef_congr`, `partitionDef_comp_of_injOn` and
-    `exists_sides_separated_partitionDef_le` are unpinned and named. *Revised:* the identity for
-    separated partitions (`partitionDef_split_of_sides`) splits off before it as
-    `lem:separated-partition-value`, since `lem:deficiency-ear`, `lem:deficiency-singleton-bound`
-    and `lem:deficiency-one-body-chain` use it apart (their pins reach it, their proofs cite it).
-    `lem:two-vertex-trichotomy` keeps the trichotomy, which states the values of $k$; its three
-    steps are unpinned and named. `def:graph-operations`: `endsOf` unpinned, named in its note.
-    `F-082`: `def:induced-span` pinned on `Graph.fiberSpan` and `Graph.inducedSpan` and filled by
-    the gate (its witness read with `lake lean`), `\uses` `def:edge-multiply` and
-    `def:body-bar-framework` (its reach).
-    `F-091`: left, unfilled: clause (i) fails, as `splitOff_indep_extend_of_fiber_lt` proves the
-    independent-set form for $D \ge 2$ and $a \neq b$, not the forest form, which also needs
-    $D \ge 2$ (new `F-234`, S). `F-087`, `F-090`: left. Retargets:
-    `+lem:two-edge-connected-degree` in the proofs of `lem:deficiency-zero-connected`,
-    `thm:pencil-reduction`, `thm:pencil-x0-coverage` (reach) and `lem:pencil-x0-distinct-statement`
-    (it cites the moved claim); `lem:cut-edge-decomposition` -> `lem:separated-partition-value` in
-    the three proofs above, and added to its own; `lem:deficiency-cut-vertex`'s removed (only the
-    relabeling helpers backed it). `\cref`s: `def:cut-edges-2ec` 4 of 9 repointed, 2 split in two;
-    `lem:cut-edge-decomposition` 3 of 7 repointed, 1 an address. New: `F-234` (S), `F-235` (L).
-    *Expected* (exact, before editing the tree; the copy's after-dump predicted by `predict.py`):
-    +2 nodes (`lem:separated-partition-value`, `lem:two-edge-connected-degree`, `#1CAC78`);
-    `def:induced-span` `#A3D6FF` -> `#B0ECA3`; pins 1 019 -> 1 011 (3 moved, 10 unpinned, 2 added;
-    `lean_decls` 1 020 -> 1 012, hash `c230f601f4c9cc61` -> `c5a418472970a00c`); `## pins:` 2
-    added, 5 changed; `## uses:` 2 added, 11 changed; drawn edges 1 310 -> 1 316
-    (`2336c6df5ff83f75`), -7 (`def:cut-edges-2ec` -> `lem:cut-edge-decomposition`,
-    `lem:deficiency-zero-connected` and `thm:pencil-reduction`; `lem:cut-edge-decomposition` ->
-    `lem:deficiency-cut-vertex`, `lem:deficiency-ear` and `lem:deficiency-singleton-bound`;
-    `lem:two-edge-conn` -> `def:cut-edges-2ec`), +13 (9 into and out of the new nodes;
-    `def:edge-multiply` and `def:body-bar-framework` -> `def:induced-span`; `def:D-deficiency` ->
-    `lem:deficiency-cut-vertex`; `def:k-dof` -> `lem:cut-edge-decomposition`); +2 node lines, 1
-    changed; 3 334 lines (`a1ac36f392cc046b`), the diff 117 lines.
-  - [ ] **3.5 `molecular-induction.tex`, KT Lemmas 4.4–4.9, and the carry-in `F-098`** (`F-096`,
-    `F-098`, `F-103`, `F-106`). `F-096`: split `lem:removal-deficiency-strict` into KT Lemma 4.4's
-    second assertion and KT Lemma 4.7, one pin each; unpin `Graph.contraction_isMinimalKDof` from
-    `lem:reduction-step` if no clause states KT Lemma 3.5 (one of `F-120`'s doubles). `F-098`
-    (the PI, 2026-10-12): first re-home `Graph.rigidContract_vertexSet_ncard` from
-    `lem:pencil-contract-standing` to `lem:reduction-measure` or `def:rigid-contraction`; then move
-    `lem:rigidContract-isMinimalKDof` from `case-i.tex` to follow `lem:contraction-minimality`. Its
-    statement edge to `lem:reduction-step` becomes `lem:reduction-measure`'s (`F-095`), and its
-    `\cref`s keep their label. `F-103`: mark `lem:adjacent-degree-two-pair` superseded (the
-    supersession gate). `F-106`: the dichotomy's third pin `isKDof_zero_of_cycle` goes to a node
-    that the dichotomy and `lem:chain-data-extract` use; `CycleData.vertexSet_ncard` is unpinned.
-    *Expected:* +2 nodes; pins moved, −1 or −2 (hash changes); new edges and `F-098`'s retargets.
+    forest surgery** (`8e6786d3`; `F-009`'s four, `F-010`'s `endsOf`, `F-082`, `F-087`, `F-090`,
+    `F-091`; `F-008`'s two): `lem:two-edge-connected-degree` and `lem:separated-partition-value`
+    split off, `def:induced-span` filled, `F-091` left (new `F-234`, S); its exact list and
+    *Expected* (117 lines) are in its commit.
+  - [x] **3.5 `molecular-induction.tex`, KT Lemmas 4.4–4.9, and the carry-in `F-098`** (this
+    commit; `F-096`, `F-098`, `F-103`, `F-106`), each fix tried on a scratch copy.
+    `F-096`: `lem:removal-deficiency-strict` keeps KT Lemma 4.7
+    (`removeVertex_deficiency_gt_of_noRigid`); the second assertion of KT Lemma 4.4
+    (`exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`) splits off before it as
+    `lem:removal-deficiency-equality`, taking `lem:edge-splitting` and `thm:def-eq-corank`, and
+    the strict lemma's proof `\uses` it. `lem:reduction-step` is *left*: its part (ii) states KT
+    Lemma 3.5 at $k = 0$ (the narrowing the PI kept, `F-084`), so its second pin proves a clause.
+    `F-098` (the PI's route): `rigidContract_vertexSet_ncard` re-homed with its count to
+    `lem:reduction-measure` (`lem:pencil-contract-standing` drops both, and its proof edge to
+    `lem:reduction-measure`); `lem:rigidContract-isMinimalKDof` moved from `case-i.tex` to follow
+    `lem:contraction-minimality`, its statement edge to `lem:reduction-step` now
+    `lem:reduction-measure`'s. `F-103`: `lem:adjacent-degree-two-pair`'s title marked superseded.
+    `F-106`: `isKDof_zero_of_cycle` to a new `lem:cycle-zero-dof` after `def:cycle-data`, which the
+    proofs of the dichotomy and `lem:chain-data-extract` use; `CycleData.vertexSet_ncard`
+    unpinned, named in the note. Retargets: `+lem:reduction-measure` in the proofs of
+    `thm:pencil-x0-contract-additive` (reach), `lem:pencil-x0-planar-rigid-reduces` and
+    `thm:pencil-x0-coverage` (they cite the count). `\cref`s: `lem:removal-deficiency-strict` 1 of 2
+    repointed; the dichotomy's first step, 4 citations (one in `case-ii.tex`), to the new node;
+    the moved node's keep their label (6 of 7; the one in its new lead-in dropped, 2 added in
+    `case-i.tex`'s). New: `F-236` (L).
+    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +2 nodes
+    (`lem:cycle-zero-dof` `#1CAC78`, `lem:removal-deficiency-equality` `#9CEC8B`); pins 1 011 ->
+    1 010 (3 moved, 1 unpinned; `lean_decls` 1 012 -> 1 011, hash `c5a418472970a00c` ->
+    `2a50e86a8bbf8aed`); `## pins:` 2 added, 5 changed; `## uses:` 2 added, 8 changed; drawn edges
+    1 316 -> 1 323 (`ea10e60f91fff951`), -5 (`def:cycle-data` -> the dichotomy;
+    `lem:edge-splitting` -> `lem:removal-deficiency-strict`; `lem:reduction-measure` ->
+    `lem:pencil-contract-standing`; `lem:reduction-step` -> `lem:rigidContract-isMinimalKDof`;
+    `lem:splitoff-edge-substitution` -> `lem:case-II`, now implied), +12 (7 into and out of the
+    new nodes; `def:rigid-contraction` -> `lem:pencil-contract-standing`; `lem:reduction-measure`
+    -> `lem:pencil-x0-planar-rigid-reduces`; `lem:contraction-minimality`, `lem:two-edge-conn` and
+    `lem:reduction-measure` -> `lem:rigidContract-isMinimalKDof`); +2 node lines; 3 347 lines
+    (`0429a0287c3cde9a`), the diff 98 lines.
   - [ ] **3.6 `panel-layer.tex`** (`F-011`'s last, `F-131`, `F-224`'s meet decomposition).
     `F-011`: the Lean proves `thm:theorem-55-6` from `thm:theorem-55-6-genuine`, and the blueprint
     derives the second from the first; reverse the derivation, in node order and in both proofs
@@ -424,6 +419,7 @@ ledger's earlier `L` entries are task 8.2's.
 - `F-232` (task 3.2): docstrings of moved or unpinned declarations, and the dead code among them.
 - `F-233` (task 3.3): the same for `rigidity-matrix.tex`'s moved pins, and a stale docstring claim.
 - `F-235` (task 3.4): the same for task 3.4's moved and unpinned pins, and `inducedSpan`'s.
+- `F-236` (task 3.5): the same for task 3.5's moved pins, and `CycleData.vertexSet_ncard`'s.
 
 ## Blockers / open questions
 
@@ -431,13 +427,13 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.5, the node shapes of `molecular-induction.tex`'s KT Lemmas 4.4–4.9,
-and the carry-in `F-098`** (Opus, a fresh agent). The parent's dump is task 3.4's (3 334 lines,
-`a1ac36f392cc046b`; *Current state*): regenerate it on the parent after `verify.sh` if the
+**Next concrete task: task 3.6, the node shapes of `panel-layer.tex`** (`F-011`'s last, `F-131`,
+`F-224`'s meet decomposition; Opus, a fresh agent). The parent's dump is task 3.5's (3 347 lines,
+`0429a0287c3cde9a`; *Current state*): regenerate it on the parent after `verify.sh` if the
 scratch copy is gone. Before editing, read each named node, its pins' statements and its `--label`
-report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.4), and make 3.5's
+report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.5), and make 3.6's
 *Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the
-after-dump against it. Then task 3.6.
+after-dump against it. Then task 3.7.
 
 ## Decisions made during this round
 
@@ -479,3 +475,9 @@ after-dump against it. Then task 3.6.
   task 3.3's deficiency bound did (`lem:separated-partition-value`). A labeling or relabeling
   helper that no prose cites as a claim is unpinned and named in a note, and an edge that only it
   backed is removed (`lem:deficiency-cut-vertex`).
+- **A doubled pin that proves a stated clause stays** (task 3.5). `lem:reduction-step`'s part
+  (ii) is `lem:contraction-minimality` at $k = 0$, on the same pin (`F-120`); it states KT Lemma
+  3.5, so the pin is no helper, and unpinning it would drop the clause, a statement change (task
+  3.13's rule agrees: a node keeps the doubles that state its claim). A pin re-homed with its
+  clause goes to the node that states it in general (`F-098`'s count, to `lem:reduction-measure`),
+  and the proofs that cite the clause cite that node.

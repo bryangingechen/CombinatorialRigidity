@@ -14,7 +14,8 @@ subgraph has one (KT Lemma~6.5).
 
 We first prove KT Lemma~5.4 on cycles, which Case~III uses, and define
 the block pin, which pins all the bodies of a set at once. We then
-follow KT \S6.2: KT Lemma~3.5 for the contraction, the rank count of KT
+follow KT \S6.2, which applies KT Lemma~3.5 to the contraction
+(\cref{lem:rigidContract-isMinimalKDof}): the rank count of KT
 eq.~(6.3) and its form for infinitesimal motions, KT Claim~6.4, and
 finally KT Lemmas~6.3, 6.2 and~6.5, with the case split that combines
 them (\cref{lem:case-I-dispatch}).
@@ -390,120 +391,15 @@ rigid subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex
 $r$ of $H$ (\cref{def:rigid-contraction}). Then $H$ is a minimal
 $0$-dof-graph (KT Lemma~3.3, \cref{lem:subgraph-minimality}), and
 $G/E(H)$ is a minimal $k$-dof-graph with fewer vertices than $G$ (KT
-Lemma~3.5). So the induction hypothesis, KT eq.~(6.1), gives a
-realization $(H, p_1)$ of rank $D(|V(H)| - 1)$ and a realization
-$(G/E(H), p_2)$ of rank $D(|V(G)| - |V(H)|) - k$. Katoh and Tanigawa
-replace the body $r$ of $(G/E(H), p_2)$ by the rigid framework
-$(H, p_1)$. They show that the rank of the resulting realization of $G$
-is the sum of the two ranks, which is $D(|V(G)| - 1) - k$. We first
-prove KT Lemma~3.5 for the graph $G/E(H)$; its matroid form is
-\cref{lem:contraction-minimality}. Then we prove the rank count, KT
-eq.~(6.3), and KT Claim~6.4, which Katoh and Tanigawa use when $G$ and
-$G/E(H)$ are simple.
-
-\begin{lemma}[The contraction is a minimal $k$-dof-graph; KT Lemma~3.5]
-  \label{lem:rigidContract-isMinimalKDof}
-  \lean{Graph.rigidContract_isMinimalKDof}
-  \leanok
-  \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-step}
-  Let $D \ge 2$, let $G$ be a minimal $k$-dof-graph, let $H$ be a proper
-  rigid subgraph of $G$, and let $G/E(H)$ be the contraction of $H$ to a
-  vertex of $H$ (\cref{def:rigid-contraction}). Then $G/E(H)$ is a
-  minimal $k$-dof-graph with fewer vertices than $G$
-  (\cref{lem:reduction-measure}).
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn,
-        def:matroid-MG, lem:rigid-full-rank, thm:tutte-nash-williams}
-  By \cref{lem:contraction-minimality},
-  \[
-    D\bigl(|V(G)| - |V(H)|\bigr)
-      - \operatorname{rank}\bigl(M(\tilde G)/E(\tilde H)\bigr) \;=\; k,
-  \]
-  and every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for every
-  edge $e$ of $G$ not in $H$. These edges are the edges of $G/E(H)$, and
-  their copies form the common ground set of $M(\tilde G)/E(\tilde H)$
-  and $M(\widetilde{G/E(H)})$. We show below that
-  \[
-    M\bigl(\widetilde{G/E(H)}\bigr) \;=\; M(\tilde G)/E(\tilde H).
-  \]
-  Then every base of $M(\widetilde{G/E(H)})$ meets the copies of every
-  edge of $G/E(H)$. The graph $G/E(H)$ has $|V(G)| - |V(H)| + 1$
-  vertices (\cref{def:rigid-contraction}), so KT eq.~(2.4)
-  (\cref{thm:def-eq-corank}) gives
-  \[
-    \operatorname{def}\bigl(\widetilde{G/E(H)}\bigr)
-    \;=\; D\bigl(|V(G)| - |V(H)|\bigr)
-      - \operatorname{rank} M\bigl(\widetilde{G/E(H)}\bigr) \;=\; k.
-  \]
-  Hence $G/E(H)$ is a minimal $k$-dof-graph.
-
-  The identity is not a renaming of edges. Let $M_c$ be the cycle matroid
-  of $\tilde G$, so that $M(\tilde G)$ is the union of $D$ copies of
-  $M_c$ (\cref{def:matroid-MG}). As $H$ is rigid, it is connected
-  (\cref{lem:two-edge-conn}), and so is $\tilde H$, since $D \ge 2$ gives
-  every edge of $H$ a copy in $\tilde H$. So contracting the edges of
-  $\tilde H$ in $\tilde G$ identifies all the vertices of $H$, and gives
-  $\widetilde{G/E(H)}$. The cycle matroid of $\widetilde{G/E(H)}$ is
-  therefore $M_c/E(\tilde H)$~\cite[Proposition~3.2.1]{oxley2011}. So
-  $M(\widetilde{G/E(H)})$ is the union of $D$ copies of $M_c/E(\tilde H)$,
-  while $M(\tilde G)/E(\tilde H)$ is the contraction of the union of $D$
-  copies of $M_c$. In general a union of matroids does not commute with
-  contraction. Let $M$ be the matroid of rank one on two elements $a$ and
-  $c$, neither of which is a loop. Then $a$ is independent in the
-  contraction by $c$ of the union of two copies of $M$, but $a$ is a loop
-  of $M/c$, and so of the union of two copies of $M/c$.
-
-  The two matroids coincide here because the union attains $D$ times the
-  cycle rank on $E(\tilde H)$. Let $r_c$ be the rank function of $M_c$.
-  The rank of $E(\tilde H)$ in $M(\tilde G)$ is the rank of $M(\tilde H)$
-  (\cref{lem:matroid-restrict-subgraph}), which is $D(|V(H)| - 1)$ as $H$
-  is rigid (\cref{lem:rigid-full-rank}). The connected graph $\tilde H$
-  has $r_c(E(\tilde H)) = |V(H)| - 1$. So
-  \[
-    \operatorname{rank}_{M(\tilde G)} E(\tilde H) \;=\;
-    D\, r_c\bigl(E(\tilde H)\bigr).
-  \]
-  Hence a base of $E(\tilde H)$ in $M(\tilde G)$ has $D(|V(H)| - 1)$
-  elements. It is the union of $D$ disjoint forests in $\tilde H$
-  (\cref{thm:tutte-nash-williams}), each with at most $|V(H)| - 1$
-  edges, and so each of them is a spanning tree on $V(H)$. This is Katoh and Tanigawa's (3.1)~\cite[p.~658]{katohTanigawa2011}, on
-  which their proof of Lemma~3.5 rests.
-
-  We derive the identity from this equality. A set $X$ is independent in
-  the union of $D$ copies of a matroid with rank function $\rho$ if and
-  only if $|Y| \le D\,\rho(Y)$ for every $Y \subseteq X$
-  (\cref{thm:matroid-partition}). Let
-  $C = E(\tilde H)$, let $J$ be a base of $C$ in $M(\tilde G)$, so that
-  $|J| = D\, r_c(C)$, and let $I$ be a set of copies of edges not in
-  $H$. Then $I$ is independent in $M(\tilde G)/C$ if and only if
-  $I \cup J$ is independent in
-  $M(\tilde G)$~\cite[Proposition~3.1.7]{oxley2011}, that is, if and only
-  if $|Z| \le D\, r_c(Z)$ for every $Z \subseteq I \cup J$. The rank
-  function of $M_c/C$ is $Y \mapsto r_c(Y \cup C) - r_c(C)$~\cite[Proposition~3.1.6]{oxley2011}.
-  So $I$ is independent in the union of $D$ copies of $M_c/C$ if and only
-  if $|Y| \le D\,\bigl(r_c(Y \cup C) - r_c(C)\bigr)$ for every
-  $Y \subseteq I$.
-
-  Suppose this second condition, and let $Z \subseteq I \cup J$. Write
-  $Z = Y \cup W$ with $Y \subseteq I$ and $W \subseteq J$. Since
-  $W \subseteq C$, submodularity gives
-  $r_c(Y \cup C) + r_c(W) \le r_c(Y \cup W) + r_c(C)$. Also
-  $|W| \le D\, r_c(W)$, as $J$ is independent in $M(\tilde G)$. Adding
-  these two bounds to the bound for $Y$ gives $|Z| \le D\, r_c(Z)$.
-  Conversely, suppose the first condition, and let $Y \subseteq I$. Then
-  \[
-    |Y| + D\, r_c(C) \;=\; |Y \cup J| \;\le\; D\, r_c(Y \cup J)
-    \;\le\; D\, r_c(Y \cup C).
-  \]
-  So the two matroids have the same independent sets. The converse used
-  $|J| = D\, r_c(C)$, and it fails without it, as in the example above.
-\end{proof}
-
-The target rank of $G$ is therefore the sum of the target ranks of $H$
-and $G/E(H)$. Katoh and Tanigawa's eq.~(6.3) shows how a realization of
-$G$ attains this sum.
+Lemma~3.5, \cref{lem:rigidContract-isMinimalKDof}). So the induction
+hypothesis, KT eq.~(6.1), gives a realization $(H, p_1)$ of rank
+$D(|V(H)| - 1)$ and a realization $(G/E(H), p_2)$ of rank
+$D(|V(G)| - |V(H)|) - k$. Katoh and Tanigawa replace the body $r$ of
+$(G/E(H), p_2)$ by the rigid framework $(H, p_1)$. They show that the
+rank of the resulting realization of $G$ is the sum of the two ranks,
+which is $D(|V(G)| - 1) - k$, the target rank of $G$. We prove this rank
+count, KT eq.~(6.3), and then KT Claim~6.4, which Katoh and Tanigawa use
+when $G$ and $G/E(H)$ are simple.
 
 \begin{lemma}[Case~I: the rank adds over the contraction; KT eq.~(6.3)]
   \label{lem:case-I}

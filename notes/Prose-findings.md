@@ -921,6 +921,11 @@ declaration's name as its header writes it:
   second's contraction half and keep it a sentence.
   *Evidence:* read (the four pins' statements; KT 2011 pp. 662, 665–666).
   *Found:* round 2 task 2.15.
+  *Disposition:* done (task 3.5) for `lem:removal-deficiency-strict`, which keeps KT Lemma 4.7,
+  the second assertion of KT Lemma 4.4 split off as `lem:removal-deficiency-equality`; left for
+  `lem:reduction-step` (its part (ii) states KT Lemma 3.5 at $k = 0$, the narrowing the PI kept at
+  `F-084`, so its second pin proves a clause; dropping the clause is a statement change, and
+  folding it into `lem:contraction-minimality` a merge: task 8.2, with `F-120`'s doubles).
 - **F-098** · N · `lem:rigidContract-isMinimalKDof` (`case-i.tex`) and
   `lem:pencil-contract-standing` (`main-component.tex`): KT state Lemma 3.5 for the graph $G/E(H)$
   in their §3, where `molecular-induction.tex` now states only the matroid form (`F-084`) and gives
@@ -938,6 +943,8 @@ declaration's name as its header writes it:
   statements of `contraction_isMinimalKDof`, `rigidContract_isMinimalKDof` and
   `minimal_kdof_reduction`).
   *Found:* round 2, the PI's review of `F-084` (2026-10-12).
+  *Disposition:* done (task 3.5): the count re-homed with its pin to `lem:reduction-measure`, and
+  the node moved after `lem:contraction-minimality`, its statement edge now `lem:reduction-measure`'s.
 - **F-103** · N · `lem:adjacent-degree-two-pair` and `lem:chain-data-of-noRigid`
   (`molecular-induction.tex`): the $d = 3$ extraction is a dead route. Both pins lie outside every
   main result's closure (counted in `F-012`). The only caller of `exists_adjacent_degree_two_pair`
@@ -949,6 +956,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `a2df0ed3`); read (a
   `grep` for the two names' callers).
   *Found:* round 2 task 2.16.
+  *Disposition:* done (task 3.5): the first node's title marked superseded too.
 - **F-106** · N · `def:cycle-data` and `lem:chain-cycle-dichotomy` (`molecular-induction.tex`):
   `def:cycle-data`'s third pin `CycleData.vertexSet_ncard` has no Lean caller and lies outside
   every main result's closure; like the second, it is immediate from the definition. The
@@ -960,6 +968,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `1d455ed9`); read (a
   `grep` for the callers of `vertexSet_ncard` and `range_vtx`).
   *Found:* round 2 task 2.17.
+  *Disposition:* done (task 3.5): `lem:cycle-zero-dof`, which the two lemmas' proofs use;
+  `vertexSet_ncard` unpinned and named in `def:cycle-data`'s note.
 - **F-110** · N · `lem:case-III-claim612-line-in-panel-union` (`meet.tex`; twelve pins, `F-009`):
   the first three pins are the lemma, at $d = 3$. The other nine are a realization of Case III at
   $d = 3$ that applies it, and the last of them, `hasGenericFullRankRealization_of_rigidOn_ofNormals`
@@ -3113,6 +3123,16 @@ declaration's name as its header writes it:
   says `def:graph-operations`, though its pin is at `def:induced-span`.
   *Evidence:* read (the docstrings).
   *Found:* round 5 task 3.4.
+- **F-236** · L · the declarations round 5's task 3.5 moved or unpinned
+  (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/Induction/ReducibleVertex.lean`,
+  `Molecular/Induction/Operations.lean`). The section header before
+  `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` names `lem:removal-deficiency-strict`
+  (now `lem:removal-deficiency-equality`). `rigidContract_vertexSet_ncard` and
+  `rigidContract_vertexSet_ncard_lt` call themselves forms of `lem:reduction-step`; their node is
+  `lem:reduction-measure`. `CycleData.vertexSet_ncard`'s says that the `d = 3` binder reshape uses
+  it, but it has no caller (`F-106`).
+  *Evidence:* read (the docstrings; a `grep` for the callers).
+  *Found:* round 5 task 3.5.
 
 ## M — mathematics and sources
 

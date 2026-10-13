@@ -1697,19 +1697,19 @@ at $n = 2$.
 
 \begin{lemma}[The contraction satisfies the standing hypotheses]
   \label{lem:pencil-contract-standing}
-  \lean{Graph.isX0Graph_rigidContract_induce, Graph.rigidContract_vertexSet_ncard}
+  \lean{Graph.isX0Graph_rigidContract_induce}
   \leanok
   \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction,
         def:D-deficiency}
   Let $G$ satisfy the standing hypotheses and be $2$-edge-connected. Let
   $W \subsetneq V(G)$ with $|W| \ge 2$, such that no body outside $W$ is
   adjacent to two bodies of $W$, and let $G/H$ be the contraction of
-  $H = G[W]$ to a body $r \in W$. Then $G/H$ is simple, satisfies the
-  standing hypotheses, and $|V(G/H)| = |V(G)| - |W| + 1$.
+  $H = G[W]$ to a body $r \in W$. Then $G/H$ is simple and satisfies the
+  standing hypotheses.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-zero-connected, lem:reduction-measure}
+  \uses{lem:deficiency-zero-connected}
   An edge of $G/H$ is an edge of $G$ not inside $W$. Two such edges with
   the same ends in $G/H$ would give a body outside $W$ adjacent to two
   bodies of $W$, or two parallel edges of $G$, so $G/H$ is simple. A path
@@ -1719,9 +1719,7 @@ at $n = 2$.
   end of both would be adjacent to two bodies of $W$, or joined to one by
   two parallel edges. At a body outside $W$ the contraction is injective
   on the closed neighbourhood. So every closed neighbourhood of $G/H$ has
-  at least three members, and $G/H$ has minimum degree at least two. The
-  contraction sends $W$ to $r$ and fixes every other body, which gives the
-  body count (as in \cref{lem:reduction-measure}).
+  at least three members, and $G/H$ has minimum degree at least two.
 \end{proof}
 
 The curve and the rescaled system are defined for every $W$ and every
@@ -1949,7 +1947,7 @@ of the rank, so the step works over every infinite field.
         lem:pencil-contract-degenerate-rank,
         lem:pencil-x0-fibre-intersection,
         lem:pencil-contract-magnified-rank, lem:pencil-rank-congr,
-        lem:block-rank-contract}
+        lem:block-rank-contract, lem:reduction-measure}
   \emph{The pieces.} $H$ satisfies the standing hypotheses
   (\cref{lem:pencil-contract-standing-rigid}, at $n = 3$). By
   \cref{lem:pencil-contract-standing}, $G/H$ is simple and satisfies them
@@ -2030,7 +2028,8 @@ of the rank, so the step works over every infinite field.
   $\operatorname{tgt}(G/H)$. By \cref{lem:block-rank-contract} the rank of
   $G$ at $(q(t), z(t))$ is at least
   $6(|W| - 1) + \operatorname{tgt}(G/H) = \operatorname{tgt}(G)$, since
-  $|V(G/H)| = |V(G)| - |W| + 1$ and $G/H$ has the deficiency of $G$. So
+  $|V(G/H)| = |V(G)| - |W| + 1$ (\cref{lem:reduction-measure}) and $G/H$
+  has the deficiency of $G$. So
   \cref{lem:pencil-x0-one-witness} applies.
 \end{proof}
 
@@ -4608,12 +4607,13 @@ The next two lemmas settle the first three cases of the table.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-add-body, lem:pencil-contract-standing}
+  \uses{lem:deficiency-add-body, lem:pencil-contract-standing,
+        lem:reduction-measure}
   By the contraction clause at a maximal planar-rigid set $W$. It is
   proper, since $\operatorname{def}_2(G) > 0$. A body outside $W$ with
   two neighbours in $W$ would enlarge it (\cref{lem:deficiency-add-body},
   at $n = 2$). So no such body exists, and $G/G[W]$ is smaller than $G$
-  (\cref{lem:pencil-contract-standing}).
+  (\cref{lem:pencil-contract-standing}, \cref{lem:reduction-measure}).
 \end{proof}
 
 The proof of \cref{thm:pencil-x0-theorem-s} counts edges at the bodies
@@ -4740,7 +4740,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
         lem:pencil-x0-chain-exists, lem:pencil-x0-chain-reduces,
         thm:pencil-x0-theorem-s, lem:deficiency-sparse,
         lem:deficiency-antitone, lem:pencil-contract-standing,
-        lem:pencil-contract-standing-rigid, lem:two-edge-connected-degree}
+        lem:pencil-contract-standing-rigid, lem:two-edge-connected-degree,
+        lem:reduction-measure}
   Let $G$ satisfy the standing hypotheses. We take the cases of the
   table in order. If $G$ is not 2-edge-connected, or $G - v$ is
   disconnected for some body $v$, then $G$ reduces by
@@ -4759,8 +4760,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
   none, \cref{thm:pencil-x0-theorem-s} gives a core $W$. Then $G[W]$ and
   $G/G[W]$ are smaller than $G$
   (\cref{lem:pencil-contract-standing-rigid},
-  \cref{lem:pencil-contract-standing}), and $G$ reduces by clause (7) at
-  $W$.
+  \cref{lem:pencil-contract-standing}, \cref{lem:reduction-measure}), and
+  $G$ reduces by clause (7) at $W$.
 
   The rest is \cref{thm:pencil-x0-reduction-attains}. A simple
   2-edge-connected graph on at least three bodies is connected

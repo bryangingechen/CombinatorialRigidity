@@ -61,8 +61,8 @@ the edges of a circuit of $M(\tilde G)$ induce a rigid subgraph.
 eq.~(2.4). By KT Lemma~3.5, contracting a rigid subgraph of a minimal
 $k$-dof-graph gives a minimal $k$-dof-graph. We define the contraction,
 and prove the deficiency and minimality statements of KT Lemma~3.5 for
-the corresponding contraction of the matroid $M(\tilde G)$. We prove the
-form for the graph in the algebraic induction, where it is used.
+the corresponding contraction of the matroid $M(\tilde G)$, then for the
+graph, the form that the algebraic induction uses.
 
 \begin{definition}[The subgraph induced by the ends of a set of edges]
   \label{def:induced-span}
@@ -290,8 +290,108 @@ Tanigawa's (3.1)~\cite[p.~658]{katohTanigawa2011}. Let a base of
 $M(\tilde G)$ contain a base of $M(\tilde H)$, and let it be the union
 of $D$ disjoint forests. Then each of these forests meets $E(\tilde H)$
 in a spanning tree on $V(H)$. The algebraic induction applies its
-induction hypothesis to $G/E(H)$, and we prove the identity there, for
-$D \ge 2$ (\cref{lem:rigidContract-isMinimalKDof}).
+induction hypothesis to $G/E(H)$. For $D \ge 2$ we prove the identity,
+and with it Katoh and Tanigawa's form of their Lemma~3.5.
+
+\begin{lemma}[The contraction is a minimal $k$-dof-graph; KT Lemma~3.5]
+  \label{lem:rigidContract-isMinimalKDof}
+  \lean{Graph.rigidContract_isMinimalKDof}
+  \leanok
+  \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-measure}
+  Let $D \ge 2$, let $G$ be a minimal $k$-dof-graph, let $H$ be a proper
+  rigid subgraph of $G$, and let $G/E(H)$ be the contraction of $H$ to a
+  vertex of $H$ (\cref{def:rigid-contraction}). Then $G/E(H)$ is a
+  minimal $k$-dof-graph with fewer vertices than $G$
+  (\cref{lem:reduction-measure}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn,
+        def:matroid-MG, lem:rigid-full-rank, thm:tutte-nash-williams}
+  By \cref{lem:contraction-minimality},
+  \[
+    D\bigl(|V(G)| - |V(H)|\bigr)
+      - \operatorname{rank}\bigl(M(\tilde G)/E(\tilde H)\bigr) \;=\; k,
+  \]
+  and every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for every
+  edge $e$ of $G$ not in $H$. These edges are the edges of $G/E(H)$, and
+  their copies form the common ground set of $M(\tilde G)/E(\tilde H)$
+  and $M(\widetilde{G/E(H)})$. We show below that
+  \[
+    M\bigl(\widetilde{G/E(H)}\bigr) \;=\; M(\tilde G)/E(\tilde H).
+  \]
+  Then every base of $M(\widetilde{G/E(H)})$ meets the copies of every
+  edge of $G/E(H)$. The graph $G/E(H)$ has $|V(G)| - |V(H)| + 1$
+  vertices (\cref{lem:reduction-measure}), so KT eq.~(2.4)
+  (\cref{thm:def-eq-corank}) gives
+  \[
+    \operatorname{def}\bigl(\widetilde{G/E(H)}\bigr)
+    \;=\; D\bigl(|V(G)| - |V(H)|\bigr)
+      - \operatorname{rank} M\bigl(\widetilde{G/E(H)}\bigr) \;=\; k.
+  \]
+  Hence $G/E(H)$ is a minimal $k$-dof-graph.
+
+  The identity is not a renaming of edges. Let $M_c$ be the cycle matroid
+  of $\tilde G$, so that $M(\tilde G)$ is the union of $D$ copies of
+  $M_c$ (\cref{def:matroid-MG}). As $H$ is rigid, it is connected
+  (\cref{lem:two-edge-conn}), and so is $\tilde H$, since $D \ge 2$ gives
+  every edge of $H$ a copy in $\tilde H$. So contracting the edges of
+  $\tilde H$ in $\tilde G$ identifies all the vertices of $H$, and gives
+  $\widetilde{G/E(H)}$. The cycle matroid of $\widetilde{G/E(H)}$ is
+  therefore $M_c/E(\tilde H)$~\cite[Proposition~3.2.1]{oxley2011}. So
+  $M(\widetilde{G/E(H)})$ is the union of $D$ copies of $M_c/E(\tilde H)$,
+  while $M(\tilde G)/E(\tilde H)$ is the contraction of the union of $D$
+  copies of $M_c$. In general a union of matroids does not commute with
+  contraction. Let $M$ be the matroid of rank one on two elements $a$ and
+  $c$, neither of which is a loop. Then $a$ is independent in the
+  contraction by $c$ of the union of two copies of $M$, but $a$ is a loop
+  of $M/c$, and so of the union of two copies of $M/c$.
+
+  The two matroids coincide here because the union attains $D$ times the
+  cycle rank on $E(\tilde H)$. Let $r_c$ be the rank function of $M_c$.
+  The rank of $E(\tilde H)$ in $M(\tilde G)$ is the rank of $M(\tilde H)$
+  (\cref{lem:matroid-restrict-subgraph}), which is $D(|V(H)| - 1)$ as $H$
+  is rigid (\cref{lem:rigid-full-rank}). The connected graph $\tilde H$
+  has $r_c(E(\tilde H)) = |V(H)| - 1$. So
+  \[
+    \operatorname{rank}_{M(\tilde G)} E(\tilde H) \;=\;
+    D\, r_c\bigl(E(\tilde H)\bigr).
+  \]
+  Hence a base of $E(\tilde H)$ in $M(\tilde G)$ has $D(|V(H)| - 1)$
+  elements. It is the union of $D$ disjoint forests in $\tilde H$
+  (\cref{thm:tutte-nash-williams}), each with at most $|V(H)| - 1$
+  edges, and so each of them is a spanning tree on $V(H)$. This is Katoh and Tanigawa's (3.1)~\cite[p.~658]{katohTanigawa2011}, on
+  which their proof of Lemma~3.5 rests.
+
+  We derive the identity from this equality. A set $X$ is independent in
+  the union of $D$ copies of a matroid with rank function $\rho$ if and
+  only if $|Y| \le D\,\rho(Y)$ for every $Y \subseteq X$
+  (\cref{thm:matroid-partition}). Let
+  $C = E(\tilde H)$, let $J$ be a base of $C$ in $M(\tilde G)$, so that
+  $|J| = D\, r_c(C)$, and let $I$ be a set of copies of edges not in
+  $H$. Then $I$ is independent in $M(\tilde G)/C$ if and only if
+  $I \cup J$ is independent in
+  $M(\tilde G)$~\cite[Proposition~3.1.7]{oxley2011}, that is, if and only
+  if $|Z| \le D\, r_c(Z)$ for every $Z \subseteq I \cup J$. The rank
+  function of $M_c/C$ is $Y \mapsto r_c(Y \cup C) - r_c(C)$~\cite[Proposition~3.1.6]{oxley2011}.
+  So $I$ is independent in the union of $D$ copies of $M_c/C$ if and only
+  if $|Y| \le D\,\bigl(r_c(Y \cup C) - r_c(C)\bigr)$ for every
+  $Y \subseteq I$.
+
+  Suppose this second condition, and let $Z \subseteq I \cup J$. Write
+  $Z = Y \cup W$ with $Y \subseteq I$ and $W \subseteq J$. Since
+  $W \subseteq C$, submodularity gives
+  $r_c(Y \cup C) + r_c(W) \le r_c(Y \cup W) + r_c(C)$. Also
+  $|W| \le D\, r_c(W)$, as $J$ is independent in $M(\tilde G)$. Adding
+  these two bounds to the bound for $Y$ gives $|Z| \le D\, r_c(Z)$.
+  Conversely, suppose the first condition, and let $Y \subseteq I$. Then
+  \[
+    |Y| + D\, r_c(C) \;=\; |Y \cup J| \;\le\; D\, r_c(Y \cup J)
+    \;\le\; D\, r_c(Y \cup C).
+  \]
+  So the two matroids have the same independent sets. The converse used
+  $|J| = D\, r_c(C)$, and it fails without it, as in the example above.
+\end{proof}
 
 \subsection{Removal, splitting off and edge-splitting}
 \label{sec:molecular-induction-operations}
@@ -1144,7 +1244,7 @@ obtained from it by adding an edge.
   If equality holds, then $I$ is a base of $M(\tilde G)$ with
   $|\tilde e_b \cap I| = 1$. This is the second assertion of KT
   Lemma~4.4, and we prove it in this way
-  (\cref{lem:removal-deficiency-strict}).
+  (\cref{lem:removal-deficiency-equality}).
 
   Katoh and Tanigawa's argument is correct. It also needs $D \ge 2$,
   since KT Lemma~4.2(i) at $h' = 0$ asks that $0 < D - 1$. Our proof of
@@ -1338,33 +1438,28 @@ which follows by KT eq.~(2.4).
 
 For $k > 0$, Katoh and Tanigawa derive KT Lemma~4.7 from KT
 Lemma~4.5(ii) and the second assertion of KT Lemma~4.4, which they prove
-with KT Lemma~4.2 (\cref{rem:kt-lemma-44}). The next lemma proves that
-assertion and KT Lemma~4.7.
+with KT Lemma~4.2 (\cref{rem:kt-lemma-44}). The next two lemmas prove
+that assertion and KT Lemma~4.7.
 
-\begin{lemma}[Removal raises the deficiency; the equality case of KT Lemma~4.4, and KT Lemma~4.7]
-  \label{lem:removal-deficiency-strict}
-  \lean{Graph.exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof,
-        Graph.removeVertex_deficiency_gt_of_noRigid}
+\begin{lemma}[When removal keeps the deficiency; the second assertion of KT Lemma~4.4]
+  \label{lem:removal-deficiency-equality}
+  \lean{Graph.exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof}
   \leanok
-  \uses{lem:removal-deficiency, lem:edge-splitting, lem:edge-set-indep-pos,
-        def:k-dof, def:rigid-subgraph, thm:def-eq-corank}
-  Let $G$ be a $k$-dof-graph with a vertex $v$ of degree two, whose edges
-  $e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$.
-  \begin{enumerate}
-    \item If $D \ge 2$ and $\operatorname{def}(\widetilde{G_v}) = k$, then
-      $M(\tilde G)$ has a base $B$ with $|\tilde e_b \cap B| = 1$.
-    \item If $D \ge 3$, and $G$ is a minimal $k$-dof-graph with at least
-      three vertices and no proper rigid subgraph, then
-      $\operatorname{def}(\widetilde{G_v}) > k$.
-  \end{enumerate}
+  \uses{def:k-dof, def:graph-operations, def:matroid-MG}
+  Let $D \ge 2$, and let $G$ be a $k$-dof-graph with a vertex $v$ of
+  degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. If $\operatorname{def}(\widetilde{G_v}) = k$, then
+  $M(\tilde G)$ has a base $B$ with $|\tilde e_b \cap B| = 1$.
 \end{lemma}
 \begin{proof}
   \leanok
-  For (i) we argue as Katoh and Tanigawa do
-  (\cref{rem:kt-lemma-44}). Let $B'$ be a base of $M(\widetilde{G_v})$.
-  As $G_v$ is a subgraph of $G_v^{ab}$, the set $B'$ is independent in
-  $M(\widetilde{G_v^{ab}})$ (\cref{lem:matroid-restrict-subgraph}), and
-  it contains no copy of $ab$. By case~(i) of KT Lemma~4.2 with $h' = 0$
+  \uses{lem:edge-splitting, thm:def-eq-corank, lem:matroid-restrict-subgraph,
+        lem:splitoff-edge-substitution, def:edge-multiply}
+  We argue as Katoh and Tanigawa do (\cref{rem:kt-lemma-44}). Let $B'$ be
+  a base of $M(\widetilde{G_v})$. As $G_v$ is a subgraph of $G_v^{ab}$,
+  the set $B'$ is independent in $M(\widetilde{G_v^{ab}})$
+  (\cref{lem:matroid-restrict-subgraph}), and it contains no copy of
+  $ab$. By case~(i) of KT Lemma~4.2 with $h' = 0$
   (\cref{lem:edge-splitting}), $M(\tilde G)$ has an independent set $I$
   with $|I| = |B'| + D$ and $|\tilde e_b \cap I| = 1$. The vertices of
   $G_v$ are the $|V(G)| - 1$ vertices of $G$ other than $v$. So KT
@@ -1374,21 +1469,40 @@ assertion and KT Lemma~4.7.
     \;=\; \operatorname{rank} M(\tilde G),
   \]
   and $I$ is a base.
+\end{proof}
+\begin{fmlnote}
+  The pin also takes a label $e_0 \notin E(G)$ for the new edge of
+  $G_v^{ab}$, which the proof uses (\cref{fmlnote:graph-operations}).
+\end{fmlnote}
 
-  For (ii), KT Lemma~4.4 (\cref{lem:removal-deficiency}) gives
+\begin{lemma}[Removal raises the deficiency; KT Lemma~4.7]
+  \label{lem:removal-deficiency-strict}
+  \lean{Graph.removeVertex_deficiency_gt_of_noRigid}
+  \leanok
+  \uses{lem:removal-deficiency, lem:edge-set-indep-pos, def:k-dof,
+        def:rigid-subgraph}
+  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with at least
+  three vertices and no proper rigid subgraph. Let $v$ be a vertex of $G$
+  of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
+  vertices $a, b \neq v$. Then $\operatorname{def}(\widetilde{G_v}) > k$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:removal-deficiency-equality}
+  KT Lemma~4.4 (\cref{lem:removal-deficiency}) gives
   $\operatorname{def}(\widetilde{G_v}) \ge k$, and we show that
   equality fails. Suppose that $\operatorname{def}(\widetilde{G_v}) = k$.
   If $k = 0$, then $G_v$ is a rigid subgraph of $G$ with
   $|V(G)| - 1 \ge 2$ vertices, not all of those of $G$, which is
-  impossible. If $k > 0$, then by (i) some base $B$ of $M(\tilde G)$ has
-  $|\tilde e_b \cap B| = 1$. But $B = E(\tilde G)$
-  (\cref{lem:edge-set-indep-pos}), which contains all $D - 1 \ge 2$
-  copies of $e_b$. This is Katoh and Tanigawa's
+  impossible. If $k > 0$, then by \cref{lem:removal-deficiency-equality}
+  some base $B$ of $M(\tilde G)$ has $|\tilde e_b \cap B| = 1$. But
+  $B = E(\tilde G)$ (\cref{lem:edge-set-indep-pos}), which contains all
+  $D - 1 \ge 2$ copies of $e_b$. This is Katoh and Tanigawa's
   proof~\cite[p.~665]{katohTanigawa2011}.
 \end{proof}
 \begin{fmlnote}
-  The pins also take a label $e_0 \notin E(G)$ for the new edge of
-  $G_v^{ab}$, which the proof of (i) uses
+  The pin also takes a label $e_0 \notin E(G)$ for the new edge of
+  $G_v^{ab}$, which the case $k > 0$ of the proof uses
   (\cref{fmlnote:graph-operations}).
 \end{fmlnote}
 
@@ -1447,20 +1561,23 @@ vertices~\cite[pp.~666--667]{katohTanigawa2011}.
 
 \begin{lemma}[The reductions lower the number of vertices; from the proof of KT Theorem~4.9]
   \label{lem:reduction-measure}
-  \lean{Graph.splitOff_vertexSet_ncard_lt, Graph.rigidContract_vertexSet_ncard_lt}
+  \lean{Graph.splitOff_vertexSet_ncard_lt, Graph.rigidContract_vertexSet_ncard,
+        Graph.rigidContract_vertexSet_ncard_lt}
   \leanok
   \uses{def:graph-operations, def:rigid-contraction}
   Let $G$ be a multigraph. If $v$ is a vertex of $G$ of degree two, whose
   edges join $v$ to vertices $a$ and $b$, then
-  $|V(G_v^{ab})| < |V(G)|$. If $H$ is a subgraph of $G$ with at least two
-  vertices, and $G/E(H)$ is the contraction of $H$ to one of its
-  vertices, then $|V(G/E(H))| < |V(G)|$.
+  $|V(G_v^{ab})| < |V(G)|$. If $H$ is a subgraph of $G$, and $G/E(H)$ is
+  the contraction of $H$ to one of its vertices, then
+  $|V(G/E(H))| = |V(G)| - |V(H)| + 1$, which is less than $|V(G)|$ if
+  $H$ has at least two vertices.
 \end{lemma}
 \begin{proof}
   \leanok
   The vertices of $G_v^{ab}$ are those of $G$ other than $v$
-  (\cref{def:graph-operations}), and $G/E(H)$ has
-  $|V(G)| - |V(H)| + 1$ vertices (\cref{def:rigid-contraction}).
+  (\cref{def:graph-operations}). The vertices of $G/E(H)$ are the chosen
+  vertex of $H$ and the vertices of $G$ not in $H$
+  (\cref{def:rigid-contraction}), which gives the count.
 \end{proof}
 
 \begin{lemma}[Splitting off and contraction keep a minimal $0$-dof-graph minimal; KT Lemmas~4.8(i) and~3.5]
@@ -1550,8 +1667,7 @@ By \cref{lem:reduction-measure}, the graphs $G_v^{ab}$ and $G/E(H)$ of
 the lemma have fewer vertices than $G$. For $D \ge 2$, its part~(ii)
 gives Katoh and Tanigawa's form of their Lemma~3.5, as we explained
 after \cref{lem:contraction-minimality}: the graph $G/E(H)$ is again a
-minimal $0$-dof-graph. We prove this in Case~I of the algebraic
-induction (\cref{lem:rigidContract-isMinimalKDof}).
+minimal $0$-dof-graph (\cref{lem:rigidContract-isMinimalKDof}).
 
 \begin{lemma}[Splitting off when $k > 0$; KT Lemma~4.8(ii)]
   \label{lem:reduction-step-pos}
@@ -1685,8 +1801,7 @@ Lemma~6.1, which ends the subsection in two forms.
   at least two and fewer than $|V(G)|$ (\cref{lem:reduction-measure}).
   By KT Lemma~3.5, $G/E(H)$ is a minimal $0$-dof-graph. We prove this
   lemma for the matroid $M(\tilde G)/E(\tilde H)$
-  (\cref{lem:contraction-minimality}), and for the graph $G/E(H)$ in
-  Case~I of the algebraic induction
+  (\cref{lem:contraction-minimality}), and for the graph $G/E(H)$
   (\cref{lem:rigidContract-isMinimalKDof}). So $G/E(H)$ has a sequence,
   which extends to one for $G$.
 \end{proof}
@@ -1929,7 +2044,7 @@ induction uses neither: it extracts a chain of length $d$ at every $d$
   $G$ (\cref{def:rigid-subgraph}), which is impossible.
 \end{proof}
 
-\begin{lemma}[Two adjacent vertices of degree two; from KT Lemma~4.6, for $d \ge 3$]
+\begin{lemma}[Two adjacent vertices of degree two; from KT Lemma~4.6, for $d \ge 3$ (superseded)]
   \label{lem:adjacent-degree-two-pair}
   \lean{Graph.exists_adjacent_degree_two_pair}
   \leanok
@@ -2008,7 +2123,8 @@ vertices, they realize it by their Lemma~5.4
 (\cref{lem:cycle-realization}). Otherwise they split off at the interior
 vertices of a chain $v_0 v_1 \dots v_d$, beginning with
 $G_{v_1}^{v_0 v_2}$, which is a minimal $0$-dof-graph by KT Lemma~4.8.
-We define chains and cycles, and prove the dichotomy
+We define chains and cycles, show that a short cycle is a
+$0$-dof-graph, and prove the dichotomy
 (\cref{lem:chain-cycle-dichotomy}). Then we show that
 $G_{v_1}^{v_0 v_2}$ is also simple and smaller than $G$ when $G$ has at
 least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
@@ -2036,7 +2152,7 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
 
 \begin{definition}[Cycle graphs; KT Lemma~4.6]
   \label{def:cycle-data}
-  \lean{Graph.CycleData, Graph.CycleData.range_vtx, Graph.CycleData.vertexSet_ncard}
+  \lean{Graph.CycleData, Graph.CycleData.range_vtx}
   \leanok
   \uses{def:graph-operations}
   Let $G$ be a multigraph, and let $m \ge 3$. Then $G$ is a \emph{cycle}
@@ -2046,15 +2162,40 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
   vertex and every edge of $G$ is among them.
 \end{definition}
 \begin{fmlnote}
-  The second and third pins say that $V(G) = \{v_0, \dots, v_{m-1}\}$
-  and that $|V(G)| = m$.
+  The second pin says that $V(G) = \{v_0, \dots, v_{m-1}\}$. So
+  $|V(G)| = m$, as the $v_i$ are distinct
+  (\texttt{CycleData.\allowbreak{}vertexSet\_\allowbreak{}ncard}).
+\end{fmlnote}
+
+\begin{lemma}[A short cycle is a $0$-dof-graph]
+  \label{lem:cycle-zero-dof}
+  \lean{Graph.isKDof_zero_of_cycle}
+  \leanok
+  \uses{def:cycle-data, def:k-dof}
+  Let $C$ be a cycle on $m$ vertices (\cref{def:cycle-data}), with
+  $3 \le m \le D$. Then $C$ is a $0$-dof-graph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:D-deficiency}
+  Let $P$ be a partition of $V(C)$ into at least two parts. Each part is
+  a proper subset of $V(C)$, so it has a vertex whose successor along
+  $C$ lies in another part. The edge between them joins two parts, and
+  different parts give different edges. So at least $|P|$ edges join
+  different parts, and the value of $P$ (\cref{def:D-deficiency}) is at
+  most $D(|P| - 1) - (D-1)|P| = |P| - D \le 0$, as $|P| \le m \le D$.
+  The partition into one part has value $0$, so
+  $\operatorname{def}(\tilde C) = 0$.
+\end{proof}
+\begin{fmlnote}
+  The pin takes the vertices and the edges of $C$ as two maps on
+  $\{0, \dots, m-1\}$, and it does not ask that the vertices be distinct.
 \end{fmlnote}
 
 \begin{lemma}[A short cycle or a chain; KT Lemma~4.6]
   \label{lem:chain-cycle-dichotomy}
   \lean{Graph.chainData_or_cycleData_of_noRigid,
-        Graph.cycle_isProperRigidSubgraph,
-        Graph.isKDof_zero_of_cycle}
+        Graph.cycle_isProperRigidSubgraph}
   \leanok
   \uses{def:chain-data, def:cycle-data, def:k-dof, def:rigid-subgraph,
         lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid}
@@ -2066,7 +2207,7 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
 \begin{proof}
   \leanok
   \uses{lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid,
-        def:rigid-subgraph}
+        def:rigid-subgraph, lem:cycle-zero-dof}
   We follow Katoh and Tanigawa's
   proof~\cite[pp.~664--665]{katohTanigawa2011}, and give its count in
   full. As $D \ge 3$, we have $d \ge 2$, and $d \le D$. By KT Lemma~3.1
@@ -2075,18 +2216,7 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
   (\cref{lem:deficiency-zero-connected}). By
   \cref{lem:simple-minimal-noRigid}, $G$ is simple.
 
-  First, a cycle $C$ on $m$ vertices with $3 \le m \le D$ is a
-  $0$-dof-graph. Let $P$ be a partition of $V(C)$ into at least two
-  parts. Each part is a proper subset of $V(C)$, so it has a vertex whose
-  successor along $C$ lies in another part. The edge between them joins
-  two parts, and different parts give different edges. So at least $|P|$
-  edges join different parts, and the value of $P$
-  (\cref{def:D-deficiency}) is at most
-  $D(|P| - 1) - (D-1)|P| = |P| - D \le 0$, as $|P| \le m \le D$. The
-  partition into one part has value $0$, so
-  $\operatorname{def}(\tilde C) = 0$.
-
-  Now let $u_0$ be a vertex of $G$, and let $g_1$ be an edge at $u_0$,
+  Let $u_0$ be a vertex of $G$, and let $g_1$ be an edge at $u_0$,
   joining it to $u_1$. We extend the path $u_0 u_1$ one edge at a time.
   While its last vertex $u_j$ has degree two and $j < d$, let $g_{j+1}$
   be the edge at $u_j$ other than $g_j$, and let $u_{j+1}$ be its other
@@ -2104,10 +2234,10 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
   $3 \le m \le d$. If $u_0$ has degree two, then no edge of $G$ leaves
   $C$. As $G$ is connected, $G = C$ is a cycle on at most $d$ vertices
   (\cref{def:cycle-data}). If $u_0$ has degree at least three, then $C$
-  is a $0$-dof-graph, as $m \le d \le D$. A third edge at $u_0$ has its
-  other end outside $C$, since the other vertices of $C$ have degree two.
-  So $C$ is a proper rigid subgraph of $G$ (\cref{def:rigid-subgraph}),
-  which is impossible. Katoh and Tanigawa's maximal chains may begin and
+  is a $0$-dof-graph, as $m \le d \le D$ (\cref{lem:cycle-zero-dof}).
+  A third edge at $u_0$ has its other end outside $C$, since the other
+  vertices of $C$ have degree two. So $C$ is a proper rigid subgraph of
+  $G$ (\cref{def:rigid-subgraph}), which is impossible. Katoh and Tanigawa's maximal chains may begin and
   end at the same vertex. A closed one of length $d$ has only $d$
   distinct vertices, and this case excludes it.
 
@@ -2159,21 +2289,19 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
 \begin{fmlnote}
   The first pin is the lemma. The second is the case of a walk that
   closes up at a vertex of degree at least three, in a simple
-  multigraph: the cycle is a proper rigid subgraph. The third is the
-  first step of the proof, the deficiency of a cycle on $m$ vertices
-  with $3 \le m \le D$.
+  multigraph: the cycle is a proper rigid subgraph.
 \end{fmlnote}
 
 The cycle alternative cannot be dropped. Let $3 \le m \le d$, and let
-$C$ be a cycle on $m$ vertices. It is a $0$-dof-graph, as we showed in
-the proof. A subgraph of $C$ that misses an edge or a vertex has no cycle,
-so its partition into single vertices has positive value when it has at
-least two vertices. So removing an edge of $C$ raises the deficiency,
-and $C$ is minimal, as we noted after \cref{def:k-dof}. Also, $C$ has
-no proper rigid subgraph. A chain of length $d$ has $d + 1 > m$
-vertices, so $C$ has none. Hence the cycle alternative occurs for every
-$d \ge 3$. Under the bound $|V(G)| \ge 4$ of the next lemma, it occurs
-exactly when $d \ge 4$.
+$C$ be a cycle on $m$ vertices. It is a $0$-dof-graph
+(\cref{lem:cycle-zero-dof}). A subgraph of $C$ that misses an edge or a
+vertex has no cycle, so its partition into single vertices has positive
+value when it has at least two vertices. So removing an edge of $C$
+raises the deficiency, and $C$ is minimal, as we noted after
+\cref{def:k-dof}. Also, $C$ has no proper rigid subgraph. A chain of
+length $d$ has $d + 1 > m$ vertices, so $C$ has none. Hence the cycle
+alternative occurs for every $d \ge 3$. Under the bound $|V(G)| \ge 4$
+of the next lemma, it occurs exactly when $d \ge 4$.
 
 \begin{lemma}[The chain and its splitting off; KT Lemmas~4.6, 4.8 and~6.7]
   \label{lem:chain-data-extract}
@@ -2191,7 +2319,7 @@ exactly when $d \ge 4$.
 \begin{proof}
   \leanok
   \uses{lem:chain-cycle-dichotomy, lem:reduction-step, lem:reduction-measure,
-        lem:simple-minimal-noRigid}
+        lem:simple-minimal-noRigid, lem:cycle-zero-dof}
   By \cref{lem:chain-cycle-dichotomy}, $G$ is a cycle on at most $d$
   vertices, or it has a chain $v_0 v_1 \dots v_d$ of length $d$. Suppose
   the second. As $D \ge 3$, we have $d \ge 2$, so $v_1$ is an interior
@@ -2209,9 +2337,8 @@ exactly when $d \ge 4$.
   loop. So if $G_{v_1}^{v_0 v_2}$ were not simple, $G$ would have an edge
   $g$ joining $v_0$ and $v_2$. Then $v_0, v_1, v_2$ and $f_0, f_1, g$
   form a cycle on three vertices in $G$. As $3 \le D$, this cycle is a
-  $0$-dof-graph, by the first step of the proof of
-  \cref{lem:chain-cycle-dichotomy}. As $|V(G)| \ge 4$, it is a proper
-  rigid subgraph of $G$, which is impossible.
+  $0$-dof-graph (\cref{lem:cycle-zero-dof}). As $|V(G)| \ge 4$, it is a
+  proper rigid subgraph of $G$, which is impossible.
 \end{proof}
 \begin{fmlnote}
   The first pin is the lemma. The second pin is KT Lemma~6.7(ii), for

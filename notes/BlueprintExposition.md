@@ -698,7 +698,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/Phase22-realization-design.md` §1.8; `notes/Phase22a.md` *Decisions*;
   KT pp. 673--675, eq. (6.3).
 - **`lem:case-I-realization` N4 union↔contraction crux
-  (`rigidContract_isMinimalKDof`)** — [done (`case-i.tex`, Phase-27 C3 exposition)]
+  (`rigidContract_isMinimalKDof`)** — [done (`case-i.tex`, Phase-27 C3 exposition; the node
+  follows `lem:contraction-minimality` in `molecular-induction.tex` since PROSE round 5)]
   **(a), model-induced**. **Stable
   insight:** `Matroid.Union` does *not* commute with contraction, so
   `M((G/E(H))̃) = M(G̃)/E(H̃)` is not a rename — it holds only because the `D`-fold
