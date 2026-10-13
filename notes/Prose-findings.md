@@ -675,6 +675,23 @@ declaration's name as its header writes it:
   read (the bodies of the seven pins).
   *Found:* round 4 task 2.11.
 
+- **F-223** · E · `generic-lift.tex`'s seven body-and-hinge nodes, task 2.12's (`generic-lift.tex`):
+  four missing edges, three unbacked, no dead pin. Missing: the statement of `lem:screw-map-rows`
+  and the proof of `lem:hinge-point-witness` to `thm:projective-invariance` (both pins reach its pin
+  `mapExtensor`); the proof of `lem:screw-map-rows` to `lem:case-III-claim612-block-iff-perp` (its
+  pin `mem_hingeRowBlock_iff`); the statement of `cor:bodyhinge-generic-tree-packing` to
+  `def:edge-multiply`. Unbacked, transitive: the witness's proof to `def:genuine-hinge-realization`
+  and to `lem:case-II-placement-old-rows-extract` (the pin uses the unpinned extraction of `F-209`),
+  and the tree-packing statement to `def:matroid-MG`. Through another node: 37 edges, among them
+  `def:hinge-row-block` from the screw-map lemma, the witness and the rank theorem. The rewritten
+  text cites without an edge `def:hinge-row-block` (the screw-map lemma and the rank theorem),
+  `lem:rows-polynomial-in-normals` and `lem:panel-witness-transplant` (the witness, for their
+  arguments), `lem:extensor-map-rows` (a comparison in the screw-map proof) and
+  `thm:projective-invariance` (the lead-in to the screw-map lemma, its case $d = 3$).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the seven nodes, at `ac88bd18`);
+  read (the bodies of the seven pins).
+  *Found:* round 4 task 2.12.
+
 ## N — node shape
 
 - **F-009** · N · 28 nodes with four or more pins (principle D), exactly `notes/Prose.md` §7's
@@ -1258,6 +1275,22 @@ declaration's name as its header writes it:
   `hingePointRow_eq_panelRow`); measured (`scripts/blueprint-deps.py --label
   def:generic-hinge-points`, at `dc58265b`).
   *Found:* round 4 task 2.11.
+
+- **F-224** · N · `lem:hinge-point-witness` (`generic-lift.tex`): two load-bearing steps of the
+  witness have no node. The automorphism of the screw space induced by a linear map $g$ of
+  $K^{d+1}$, `screwEquivOfLinearEquiv` with its extensor identity
+  `screwEquivOfLinearEquiv_mk_extensor` (`GenericLift/HingeGeneric.lean`), is unpinned; the
+  witness's pin uses it, and so do `Pencil/Arms.lean`, `Pair.lean`, `Motive.lean` and
+  `MainComponent/Configuration.lean` (`pencil.tex` pins three lemmas about it), while
+  `molecule-modelling.tex` describes it for $d = 3$ before `thm:projective-invariance`. The meet
+  decomposition `exists_extensor_eq_panelSupportExtensor_gen` (`PanelLayer.lean`: a nonzero
+  $C(n_1, n_2)$ is the join of a basis of $n_1^\perp \cap n_2^\perp$) is unpinned and stated only in
+  the remark after `def:panel-support-extensor`; the witness, `GenericityDevice.lean` and
+  `Pencil/MainComponent/Flat.lean` use it. Candidates: a lemma node for each, or pins on
+  `thm:projective-invariance` and `def:panel-support-extensor`.
+  *Evidence:* read (the body of `exists_hingePoints_independent_hingePointRow`; a `grep` for the
+  callers of the two declarations).
+  *Found:* round 4 task 2.12.
 
 ## T — terminology and notation
 
@@ -2201,6 +2234,26 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the two pins; no degree lemma in `HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
 
+- **F-221** · S · `lem:hinge-point-witness`, `thm:bodyhinge-generic-rank`,
+  `cor:bodyhinge-generic-rigid`, `cor:bodyhinge-generic-tree-packing` (`generic-lift.tex`): the
+  endpoint selector, the spanning and the second form of the dimension left four statements, task
+  2.12's hygiene-rule reading. At the open the lemma and the theorem took "a simple spanning
+  multigraph on at least two bodies, at any dimension $n \ge 2$ … and over any infinite field $K$,
+  with a link-recording endpoint selector", the theorem adding "(equivalently
+  $D = \binom{n+1}{2} \ge 3$)"; the corollaries read "In the setting of" the theorem, rigid "on
+  $V(G)$". Task 2.12 states all four for $d \ge 2$, an infinite field $K$ and a simple graph
+  $G = (V, E)$ with $V$ finite and $|V| \ge 2$, as task 2.9 stated the panel theorem. The selector,
+  "every label is an edge", the spanning, the separate dimension parameter and rigidity on $V(G)$
+  are in the note after `cor:bodyhinge-generic-tree-packing`. Two readings, as for `F-206`:
+  principle E's "a Lean-side device … stays out of statements" and the round's *Terms*, the pins
+  unchanged; or the statements drop hypotheses the pins carry. The four pins take `hends` and
+  `hfresh`, so `F-207`'s vacuity at minimal $k$-dof-graphs holds for them, as `F-207` records; the
+  note says so. The three lemmas before the witness changed in notation only ($d - 1$ vectors of
+  $K^{d+1}$; $\Lambda$; $\operatorname{rank} R(G, \Lambda p)$ for the dimension of the row span).
+  *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`,
+  `Extensor.lean`).
+  *Found:* round 4 task 2.12.
+
 ## L — Lean
 
 - **F-013** · L · `SimpleGraph.Henneberg.typeII_isLaman` (`Henneberg.lean`): it takes `hab : a ≠ b`
@@ -2916,6 +2969,23 @@ declaration's name as its header writes it:
   583).
   *Found:* round 4 task 2.11.
 
+- **F-225** · L · the docstrings of task 2.12's pins (`GenericLift/HingeGeneric.lean`,
+  `Extensor.lean`). Six credit "Jackson–Jordán 2010 §6": right for the rank theorem and its
+  rigidity corollary (JJ Theorem 6.1 and their generic realizations, pp. 582–583), not for the
+  change of screw coordinates, the affine points, the simultaneous move or the witness assembly,
+  which JJ do not make (`F-220`). `exists_linearEquiv_forall_last_ne_zero` attributes its
+  "coordinate-choice device" to JJ's Lemma 7.1, which is in §7.
+  `exists_hingePoints_independent_hingePointRow` says that it realizes "a generic hinge-point
+  assignment `q₀`"; its statement claims no genericity for `q₀`. `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` calls its upper
+  bound "the dual form of `prop:rigidity-matrix-prop11`'s bound"; it is the second pin of
+  `lem:relative-deficiency-rank-bound`. The rest narrates process: "Phase 34" in all seven,
+  "Route:", "producer", "Layer-P", "Layer-BH", "W6e", "OUR", "subsequent Layer-BH work", "the
+  Layer-BH hand-off flagged" (`screwEquivOfLinearEquiv`), "genuine" four times, "deficiency-graded
+  rank".
+  *Evidence:* read (the docstrings and bodies of the seven pins and of `screwEquivOfLinearEquiv`;
+  JJ 2010 §§6–7, pp. 582–584).
+  *Found:* round 4 task 2.12.
+
 ## M — mathematics and sources
 
 - **F-025** · M · the credit for "row-independent iff $(2,3)$-sparse" (`rigidity-matroid.tex`,
@@ -2997,3 +3067,19 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter` and `--label`, dead pins and edges
   with no Lean basis; TeX and Lean at `ef57b401`).
   *Found:* round 3 task 1.
+
+- **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
+  `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT
+  Proposition 1.1's form (a multigraph $G$ has an infinitesimally rigid body-hinge framework if and
+  only if $\tilde G$ contains $D$ edge-disjoint spanning trees) "is" the corollary, and the note
+  after `def:body-hinge-framework` calls it "the rigidity statement for frameworks with hinges".
+  The corollary and its pin are for simple graphs with $|V| \ge 2$, $d \ge 2$ and an infinite
+  field, at generic hinge-point assignments; for multigraphs the formalization has only the
+  existence form for bundles of bars (`F-048`). The chapter is round 2's, outside this round's
+  surface. Candidates: add "for simple graphs" there, or prove the multigraph form (JJ Theorem 6.1
+  holds for multigraphs; the formal witness, KT Theorem 5.6 with nondegenerate hinges, is for
+  simple graphs).
+  *Evidence:* read (`body-hinge.tex`, the note after `def:body-hinge-framework` and the paragraph
+  after `thm:body-hinge-tay`; the statement of
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`; JJ 2010 §6, p. 582).
+  *Found:* round 4 task 2.12.

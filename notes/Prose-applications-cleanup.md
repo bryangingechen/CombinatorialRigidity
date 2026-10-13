@@ -7,10 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and tasks 2.1–2.11 `F-175`–`F-220`. 16 one-commit tasks; tasks 1 and 2.1–2.11 are
-done, and the round has no planned stop. **Next concrete task:** task 2.12, `generic-lift.tex`,
-body-and-hinge: the witness and the rank, the section's lead and the chapter's opening (now
-1223–1442, 949–998 and 1–54), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-174`, and tasks 2.1–2.12 `F-175`–`F-225`. 16 one-commit tasks; tasks 1 and 2.1–2.12 (the five
+chapters) are done, and the round has no planned stop. **Next concrete task:** task 2.13,
+`intro.tex`, *Organization of the blueprint* and the continuation paragraph (51–364), at Opus
+(*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,17 +20,19 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.11 has landed** (this commit): `generic-lift.tex`'s 998–1140 is now 999–1222 (a Whiteley
-citation at the body-bar witness lead-in adds a line). `lem:hinge-rows-polynomial-in-points` moved
-after `def:generic-hinge-points`, which now defines the hinge-point assignment (principle E *Node
-order*); every node keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. Two
-notes are new, unlabelled. Nothing is mid-stream.
+**Task 2.12 has landed** (this commit), the last of the five chapters: `generic-lift.tex`'s
+opening is now 1–77, the lead of `sec:generic-lift-bodyhinge` 972–1031, and its last seven nodes
+with the closing paragraph 1256–1546 (were 1–54, 949–998 and 1223–1442). Every node keeps its
+`\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical, in the same order; one note is new,
+unlabelled. `intro.tex` is unchanged since the open, so its line numbers hold. Nothing is
+mid-stream.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (48 overfull boxes, none in the slice).
-  Screens on the slice (999–1222): register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 1
-  (the selector, in a note); forward `\uses` 0 / 0 for `generic-lift`. The open's (785–927): 2 / 2
-  ("genuine" twice), 0 / 0, 0, 4, 0 / 0.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (45 overfull boxes, none in the slice).
+  Screens on the slice: register 0 in prose, devices 0 / 0, `\operatorname` 0, vocabulary 0;
+  forward `\uses` 0 / 0 for `generic-lift`. The open's (1–54, 735–784, 928–1147): register 4 in
+  prose ("carry" and its forms), devices 0 / 0, `\operatorname` 0, vocabulary 7 (the selector twice,
+  "link-recording" five times), 0 / 0.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -229,32 +231,17 @@ notation.
    2.2.1), as `rigidity-matroid.tex` now says, not Lovász–Yemini's (Phase-6, -7, -8 items; 2.13).
 6. `F-053`: the Phase-12 item's credits follow `matroid-union.tex`'s, after Oxley (2.13).
 7. `F-048`: `thm:body-hinge-tay` is formalized for bundles of bars; the form with hinges is
-   `cor:bodyhinge-generic-tree-packing`. The Phase-16 item, the phase-34 sentence (2.13) and
-   `generic-lift`'s opening (2.12) describe it as the definition reads.
+   `cor:bodyhinge-generic-tree-packing`, for simple graphs. `generic-lift`'s opening says so (2.12);
+   the Phase-16 item and the phase-34 sentence (2.13) follow it.
 8. Round 3's carry-in 4 (`F-100`, `F-173`): the Phase-20 and -21 items say the algebraic induction
    realizes KT Theorem 4.9's reduction (`thm:minimal-kdof-reduction`); it runs on
    `thm:minimal-kdof-reduction-all-k`, as `algebraic-induction.tex` says (principle E; 2.13).
 9. `F-117`, `F-118`: done in 2.3; the Phase-21 item's "generic-max-rank device underpinning the
    induction" (2.13).
-10. `F-137`, `F-139`: done in 2.9 (the abundance proof argues from the definitions; `F-209`).
-11. `F-152`: say so where `lem:case-II-placement-old-rows-extract` (a split-off) is cited for its
-    general form. Done in 2.9; `lem:hinge-point-witness`, `cor:bodyhinge-generic-rigid` are 2.12's.
-12. `F-059`: done in 2.11 (the note after `lem:hinge-rows-polynomial-in-points`).
-13. `F-121`: `panel-layer.tex`'s note on `prop:rigidity-matrix-prop11` points at
-    `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9 kept
-    the first: simple, at least two bodies, spanning in its note; 2.12).
+10. `F-137`, `F-139`, `F-152`, `F-059`, `F-121`: done in 2.9–2.12.
 
-- **`bar-joint-3d`, `molecule-modelling`, `molecule-application`, `jacobs`.** *Done:* 2.1–2.8 (the
-  open bullets are in this log at `69bc7afb`, `67d44583`, `db71b408`, `302cc117`, `9c97fecc`,
-  `bc6573b9`, `723c460d` and `0e8d7546`).
-- **`generic-lift`** (the open's line numbers; add 214 for 735–784 and 295 after 927). *Done:*
-  2.9–2.11 (their open bullets are in this log at `7c268bce`, `c8f1f0f1` and `dc58265b`).
-  - *2.12 (928–1147, 735–784, 1–54):* `lem:screw-map-rows` is read by `pencil.tex` and
-    `main-component.tex` (*Scope*); "carried". `lem:hinge-point-witness`: carry-in 11,
-    "link-recording", "genuine". `thm:bodyhinge-generic-rank`: $n \ge 2$ and the selector in the
-    statement. The closing paragraph's credits (Tay 1989, Whiteley 1988, JJ 2009 Corollary 6.3,
-    Theorem 6.1). The section's lead (735–784): $K^d$ with $d = k + 1$. The chapter's opening:
-    carry-in 7; "the body-bar and body-hinge chapters left aside" (check those chapters' text).
+- **The five chapters.** *Done:* 2.1–2.12 (the open bullets are in this log at `69bc7afb`, and each
+  slice's own at its parent).
 - **`intro.tex`.**
   - *2.13 (51–364):* the per-phase list runs 2–28 lines an item, where `PHASE-BOUNDARIES.md` asks
     for one terse line. LaTeX numbers its last three items 22–24, but they are phases 24–26 (item
@@ -287,17 +274,12 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 - [ ] **2. The slices**, one commit each, in `chapter/main.tex` order. Each chapter's opening goes
   in its last slice, and `intro.tex` comes last (principle F). The diagnosis of each is above; the
   carry-ins are numbered as there.
-  - [x] **2.1 `bar-joint-3d.tex`** (`67d44583`): found `F-175`–`F-177`.
-  - [x] **2.2–2.3 `molecule-modelling.tex`**, the square to screw velocities, then general position
-    to the opening (`db71b408`, `e5adefe1`): found `F-178`–`F-186`.
-  - [x] **2.4 `molecule-application.tex`** (`9c97fecc`): found `F-187`–`F-190`.
-  - [x] **2.5–2.8 `jacobs.tex`**: the Laman condition and tight partitions; the counting bound; the
-    easy direction and 0-extensions; Jacobs' conjecture, the degree-one formula and the opening
-    (`bc6573b9`, `723c460d`, `0e8d7546`, `7c268bce`): found `F-191`–`F-205`.
-  - [x] **2.9–2.11 `generic-lift.tex`**: abundance, squares and panel-and-hinge; body-and-bar;
-    generic hinge-point assignments (`c8f1f0f1`, `dc58265b`, this commit): found `F-206`–`F-220`.
-  - [ ] **2.12 `generic-lift.tex`, body-and-hinge: the witness and the rank, the section's lead and
-    the opening** (928–1147, 735–784, 1–54): 7 nodes, 324 lines; carry-ins 7, 11 and 13.
+  - [x] **2.1–2.8** `bar-joint-3d.tex`, `molecule-modelling.tex` (2), `molecule-application.tex`,
+    `jacobs.tex` (4) (`67d44583`, `db71b408`, `e5adefe1`, `9c97fecc`, `bc6573b9`, `723c460d`,
+    `0e8d7546`, `7c268bce`): found `F-175`–`F-205`.
+  - [x] **2.9–2.12 `generic-lift.tex`**: abundance, squares and panel-and-hinge; body-and-bar;
+    generic hinge-point assignments; body-and-hinge, its lead and the opening (`c8f1f0f1`,
+    `dc58265b`, `ac88bd18`, this commit): found `F-206`–`F-225`.
   - [ ] **2.13 `intro.tex`, *Organization of the blueprint* and the continuation paragraph**
     (51–364): no node, 314 lines; carry-ins 1–8.
   - [ ] **2.14 `intro.tex`, *Reading this blueprint* and the opening** (435–512, 9–44): no node,
@@ -356,68 +338,52 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   `F-206`; "a genuine hinge" and "(so $D \ge 2$)" left too (principle B). Two readings.
 - `F-217` (S, task 2.11): `lem:hinge-rows-polynomial-in-points`' degree bound is unpinned and
   unused; kept, with a note.
+- `F-221` (S, task 2.12): the selector, the spanning and "(equivalently $D \ge 3$)" left the four
+  body-hinge statements, as in `F-206` (two readings); `F-207` holds for their pins.
+- `F-222` (M, task 2.12): `body-hinge.tex` presents `cor:bodyhinge-generic-tree-packing` as KT
+  Proposition 1.1's form for hinges; it is for simple graphs.
 
 ## Moved to a later round
 
 `E`, `N`, `T` and `U` findings for round 5, `prose-graph`, and `L` findings for a later Lean round,
 one line each naming the ledger ID and the task that found it.
 
-- `F-175` (E, task 2.1): `bar-joint-3d.tex`'s six missing edges and one unbacked; the planar
-  argument its existence proof cites wants no edge.
-- `F-176` (L, task 2.1): the docstrings of `GenericRigidityMatroid.lean` (process narration; the
-  abundance lemma's "Gram-determinant sketch", which no chapter has now).
-- `F-181` (E, task 2.2): the first eight nodes of `molecule-modelling.tex`: eight missing edges and
-  three unbacked.
-- `F-182` (L, task 2.2): the docstrings of its pins (the swapped $\omega$/$t$ gloss in
-  `ScrewVelocity.lean`, a stale `Dictionary.lean` header, process narration).
-- `F-185` (E, task 2.3): the last five nodes: nine missing edges and five unbacked, and the nodes
-  the rewritten proofs cite without an edge.
-- `F-186` (L, task 2.3): the docstrings of its pins (a misattribution in `Modelling.lean`, process
-  narration).
-- `F-189` (E, task 2.4): `molecule-application.tex`'s six missing edges and two unbacked, and the
-  nodes the rewritten proofs cite without an edge.
-- `F-190` (L, task 2.4): the docstrings of its pins (a false count in `Carrier.lean`, a loose credit,
-  process narration).
-- `F-192` (N, task 2.5): `lem:exists-tight-partition` and `lem:partitionDef-merge` pin the
-  definitions of a tight partition and of $e_G(Q)$ beside their claims.
-- `F-193` (E, task 2.5): the first ten nodes of `jacobs.tex`: two missing edges and three unbacked.
-- `F-194` (L, task 2.5): the docstrings of its pins (a label that no longer exists, a misdescribed
-  source, process narration).
-- `F-196` (E, task 2.6): the counting bound's eleven nodes: 18 missing edges and 14 unbacked, among
-  them the theorem's to `lem:singleton-part-converse`, whose pin is dead.
-- `F-197` (N, task 2.6): `lem:normal-cross-count-rooted` and `-partition` pin definitions beside
-  their claims; the converse's pin is dead, the count using an unpinned rooting of special edges.
-- `F-198` (L, task 2.6): the docstrings of its pins (the labels of the split-off nodes, the note's
-  old content, JJ's $e_G(P)$ credited to them as $d_G(P)$, process narration).
-- `F-199` (E, task 2.7): the easy direction's and 0-extensions' ten nodes: 12 missing edges, none
-  unbacked, one dead pin (`genericRank_eq_rk_image`), and the nodes the proofs cite without an edge.
+- `F-175` (E, task 2.1): `bar-joint-3d.tex`'s six missing edges and one unbacked.
+- `F-176` (L, task 2.1): the docstrings of `GenericRigidityMatroid.lean` (process, a stale sketch).
+- `F-181` (E, task 2.2): the first eight nodes of `molecule-modelling.tex`: eight missing, three
+  unbacked.
+- `F-182` (L, task 2.2): the docstrings of its pins (a swapped $\omega$/$t$ gloss, a stale header).
+- `F-185` (E, task 2.3): its last five nodes: nine missing edges, five unbacked, uncited edges.
+- `F-186` (L, task 2.3): the docstrings of its pins (a misattribution, process narration).
+- `F-189` (E, task 2.4): `molecule-application.tex`'s six missing edges and two unbacked.
+- `F-190` (L, task 2.4): the docstrings of its pins (a false count, a loose credit).
+- `F-192` (N, task 2.5): two lemmas pin the definitions of a tight partition and of $e_G(Q)$.
+- `F-193` (E, task 2.5): the first ten nodes of `jacobs.tex`: two missing edges, three unbacked.
+- `F-194` (L, task 2.5): the docstrings of its pins (a dead label, a misdescribed source).
+- `F-196` (E, task 2.6): the counting bound's eleven nodes: 18 missing, 14 unbacked, a dead pin.
+- `F-197` (N, task 2.6): two lemmas pin definitions beside their claims; the converse's pin is dead.
+- `F-198` (L, task 2.6): the docstrings of its pins (split-off labels, JJ's $e_G(P)$ as $d_G(P)$).
+- `F-199` (E, task 2.7): its ten nodes: 12 missing edges, one dead pin (`genericRank_eq_rk_image`).
 - `F-200` (L, task 2.7): the docstrings of its pins (process narration only).
-- `F-201` (E, task 2.8): its five nodes: one missing edge, none unbacked, one dead pin
-  (`degree_one_rank_tree`).
-- `F-202` (N, task 2.8): `def:two-core` pins three consequences; the core facts its theorem uses
-  are unpinned.
+- `F-201` (E, task 2.8): its five nodes: one missing edge, one dead pin (`degree_one_rank_tree`).
+- `F-202` (N, task 2.8): `def:two-core` pins three consequences; the core facts used are unpinned.
 - `F-203` (T, task 2.8): "core" names JJ's core here and a contracted set in `main-component.tex`.
-- `F-204` (U, task 2.8): README and the home page call the degree-one formula a consequence of the
-  rank formula; `formalization.yaml` lacks Jacobs 1998's DOI.
+- `F-204` (U, task 2.8): README and the home page on the degree-one formula; Jacobs 1998's DOI.
 - `F-205` (L, task 2.8): the docstrings of its pins (process narration, a loose credit).
-- `F-208` (E, task 2.9): its eleven nodes: eight missing edges, six unbacked, nine dead pins, and
-  the nodes the rewritten proofs cite without an edge.
-- `F-209` (N, task 2.9): the rank-form row extraction and the polynomial coordinates of the panel
-  rows are unpinned and load-bearing.
-- `F-210` (L, task 2.9): the docstrings of its pins (a false claim on JJ's genericity, stale
-  blueprint text, process narration, JJ's year).
-- `F-213` (E, task 2.10): its nine nodes: one missing edge, three unbacked, three dead pins, and the
-  nodes the rewritten proofs cite without an edge.
-- `F-214` (N, task 2.10): `def:two-extensor` pins a bijection and a dead polynomial form, not the
-  evaluation identity the abundance pin uses; two lemmas pin definitions beside their claims.
-- `F-215` (L, task 2.10): the docstrings of its pins (a false count, JJ's notation and signs,
+- `F-208` (E, task 2.9): its eleven nodes: eight missing edges, six unbacked, nine dead pins.
+- `F-209` (N, task 2.9): the rank-form row extraction and the panel rows' polynomials: no node.
+- `F-210` (L, task 2.9): the docstrings of its pins (JJ's genericity, stale text, JJ's year).
+- `F-213` (E, task 2.10): its nine nodes: one missing edge, three unbacked, three dead pins.
+- `F-214` (N, task 2.10): `def:two-extensor` pins a bijection and a dead polynomial form.
+- `F-215` (L, task 2.10): the docstrings of its pins (a false count, JJ's notation and signs).
+- `F-218` (E, task 2.11): its five nodes: one missing edge, three unbacked, no dead pin.
+- `F-219` (N, task 2.11): two nodes pin a definitional identity or a definition beside a claim.
+- `F-220` (L, task 2.11): the docstrings of its pins (JJ §6 credits, an unproved degree bound).
+- `F-223` (E, task 2.12): its seven nodes: four missing edges, three unbacked, no dead pin, and the
+  nodes the rewritten text cites without an edge.
+- `F-224` (N, task 2.12): the induced screw automorphism and the panel meet decomposition: no node.
+- `F-225` (L, task 2.12): the docstrings of its pins (JJ §6 credits, a genericity claim for $q_0$,
   process narration).
-- `F-218` (E, task 2.11): its five nodes: one missing edge, three unbacked, no dead pin, and the
-  node the abundance proof cites without an edge.
-- `F-219` (N, task 2.11): `def:generic-hinge-points` pins a definitional identity, and
-  `lem:hinge-rows-polynomial-in-points` a definition, beside their claims.
-- `F-220` (L, task 2.11): the docstrings of its pins (JJ §6 credited for constructions JJ do not
-  make, an unproved degree bound, process narration).
 
 ## Blockers / open questions
 
@@ -425,12 +391,12 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.12, `generic-lift.tex`, body-and-hinge: the witness and the rank, the
-section's lead and the chapter's opening (the open's 928–1147, 735–784 and 1–54, now 1223–1442,
-949–998 and 1–54), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.12*
-item under *`generic-lift`* in *Per-chapter diagnosis*, with carry-ins 7, 11 and 13; its gates
-and screens are under *Scope*. Then tasks 2.13–2.14 in order, and task 3 closes the round. For the
-slices:
+**Next concrete task: task 2.13, `intro.tex`, *Organization of the blueprint* and the continuation
+paragraph (51–364; the file is unchanged since the open), at Opus**, a fresh agent
+(`notes/Prose.md` §2). Its diagnosis is the *2.13* item under *`intro.tex`* in *Per-chapter
+diagnosis*, with carry-ins 1–9; `intro.tex`'s kept parts and rules, the gates and the screens are
+under *Scope*. Then task 2.14, and task 3 closes the round. What the five rewritten chapters say,
+which 2.13 and 2.14 must agree with:
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
   true: the intro's "in dimension 3" and line 486 (2.13, 2.14).
@@ -448,24 +414,19 @@ slices:
   formula (JJ prove it so that the rank formula at the core gives $r(G^2)$ for every graph), so the
   intro's "two further Jackson--Jordán consequences of the rank formula" (lines 42–43, 332–333) is
   false for the second (2.13, 2.14; `F-204`).
-- **From tasks 2.9–2.11** (`generic-lift.tex`). Round 3's $d$ and $D$ up to the hinge-point nodes;
-  `def:generic-hinge-points` defines $q_e$ ($d - 1$ points of $K^d$), $C(q_e)$ and $(G, q)$, while
-  the lead (949–998) and 1223– still write $k$, $n$, an italic "hinge-point assignments", and an
-  "endpoint selector" now in `fmlnote:generic-normals-selector` and the note after the definition.
-  Extensor coordinates are minors, Plücker coordinates only up to sign (965–968); JJ §6 has hinge
-  subspaces, not points (`F-220`). JJ's genericity: over nondegenerate hinges (panels), the same
-  (bars, $d \ge 1$, no loops), implied (hinge points, `def:dof-generic`, $d \ge 2$, no loops): the
-  opening's 21–29 needs the caveat. `F-207` holds for 2.12's four pins; `lem:hinge-point-witness`'s
-  "rank-input form" reads true. Keep true: the body-bar "line at infinity", the hinge-point remark's
-  "as the opening of this subsection explains" (the hinge at infinity), `lem:screw-map-rows`'
-  comparison with `lem:extensor-map-rows`. JJ 2009 renders [JJ10].
-- **Notation and terms** (*Decisions*); **carry-ins** 1–8, 11 and 13 under *Per-chapter
-  diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
-  the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
-  readings** (*Scope*) bind 2.12.
+- **From tasks 2.9–2.12.** `generic-lift.tex`'s opening lists the generic forms it proves: the
+  molecule rank formula at every generic placement, with the six-trees consequence JJ noted (JJ
+  2010 p. 586); the rank formula (KT Proposition 2.3, JJ 2010 Theorem 6.1) at generic normals of a
+  simple graph, whose corollary contains JJ Theorem 7.2; Tay's theorem at generic endpoints (JJ
+  Lemma 5.1, from Whiteley's framework); the rank formula and Tay and Whiteley's theorem at generic
+  hinge points of a simple graph (JJ prove the formula for multigraphs). Genericity is the transfer
+  of row independence; it agrees with JJ's maximum-rank genericity for placements and bars and
+  implies it for hinge points ($d \ge 2$, no loops), for panels only over nondegenerate hinges.
+  `jacksonJordan2009` is JJ 2010 and renders [JJ10].
+- **Notation and terms** (*Decisions*); **carry-ins** 1–9 under *Per-chapter diagnosis*.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
   `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-221`.
+  deficiency zero"). The ledger's next ID is `F-226`.
 
 ## Decisions made during this round
 
@@ -474,8 +435,8 @@ slices:
 - **One notation** (round 3's, carried; carry-in 1). KT's $d$ for the dimension (the bar-joint
   chapters' $d$ already), $D = \binom{d+1}{2}$, $K^{d+1}$, $\bigwedge^{d-1} K^{d+1}$, $\vee$ for
   the join, $\wedge$ for the meet, $*$ for the complement isomorphism; $k$ is only the dof.
-  `generic-lift` has it up to its hinge-point nodes (2.9–2.11); the rest of its body-hinge section
-  writes $k + 1$ and a grade $k$ now.
+  `generic-lift` has it throughout (2.9–2.12); its notes say where the formalization writes
+  $d = k + 1$.
 - **Terms** (round 3's, carried). The realization record (the endpoint selector, link-recording)
   and the fresh-label supply leave statements, `\cref`ing round 3's note at
   `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate".
@@ -488,11 +449,11 @@ slices:
   state it (Lemma 3.2 from their [10], Lemma 3.3 beside Whiteley's Lemma 9.1.3, Lemma 4.2(a) to
   Franzblau). One note per subsection (`F-191`, `F-195`); the $K_5$ examples, the core's
   maximality and the tree case are argued in prose.
-- **`generic-lift`** (2.9–2.11): the selector and "every label is an edge" go to
-  `fmlnote:generic-normals-selector`, the panel theorem's note and the note after
-  `def:generic-hinge-points` (`F-206`, `F-207`, `F-216`), which defines the hinge-point assignment,
-  so the polynomial lemma follows it (principle E *Node order*). JJ's genericity holds over
-  nondegenerate hinges, for bars without loops, and at generic hinge points. The body-bar witness is
-  JJ Lemma 5.1, by Whiteley's argument (JJ's Remark after it) in linear form, with our lift
-  $(1, p)$ against JJ's $(p, 1)$. `jacksonJordan2009` says 2010 (*Eur. J. Combin.* 31(2); Crossref,
-  `.refs/` p. 574) and renders [JJ10]; the key stays, as renaming it edits files beyond the round.
+- **`generic-lift`** (2.9–2.12): the selector and "every label is an edge" go to
+  `fmlnote:generic-normals-selector` and three unlabelled notes (`F-206`, `F-207`, `F-216`,
+  `F-221`); `def:generic-hinge-points` defines the hinge-point assignment, so the polynomial lemma
+  follows it (principle E *Node order*). The opening compares the two genericities, with the
+  caveats of the three section paragraphs. Witnesses: for bars JJ Lemma 5.1 by Whiteley's argument
+  (JJ's Remark) in linear form, our lift $(1, p)$ against JJ's $(p, 1)$; for hinge points KT 5.6's
+  realization moved off infinity (JJ Lemma 7.1's choice of coordinates; JJ Theorem 6.4 unused).
+  `jacksonJordan2009` says 2010 (*Eur. J. Combin.* 31(2)); the key stays.
