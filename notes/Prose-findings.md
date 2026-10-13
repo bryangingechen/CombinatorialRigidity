@@ -724,6 +724,10 @@ declaration's name as its header writes it:
   `thm:theorem-55-6-genuine`'s, which the blueprint derives from it.
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 3.1, 3.3 and 3.6): the pebble game's three (task 3.1), the two
+  hinge definitions' and `lem:trivial-motions-rank-bound`'s (task 3.3), and KT Theorem 5.6's, whose
+  derivation now runs from `thm:theorem-55-6-genuine` to `thm:theorem-55-6`, as the Lean's does
+  (task 3.6). No missing edge closes a cycle.
 - **F-012** · N · liveness (`CLEANUP.md` §B): 202 pins at 153 nodes lie outside the closure of
   every main result, among them every pin of 112 nodes. Per group (pins / nodes with every pin
   outside): round 1 33/27, round 2 48/15, round 3 80/48, round 4 22/13,
@@ -1052,6 +1056,10 @@ declaration's name as its header writes it:
   unbacked); read (the wrappers' bodies, one-line specializations; a `grep` for their callers,
   which finds only docstrings).
   *Found:* round 3 task 2.4.
+  *Disposition:* done (task 3.6) for the three base cases, repinned on the five `_gen` forms with
+  their statements kept and a note on what the pins prove beyond them; left for
+  `lem:extensor-pair-in-panel` (it states $K^4$, as its pin does); `lem:case-I-realization-nonsimple`
+  is `F-143`'s (task 3.7).
 - **F-134** · N · `lem:cycle-realization-base`, `lem:cycle-realization-dim-bound`,
   `lem:exists-independent-panel-extensor`, `lem:pinned-motions-on-mono`,
   `lem:pinned-motions-on-rank-bound`, `lem:pinned-motions-on-rigid-iff`
@@ -3133,6 +3141,19 @@ declaration's name as its header writes it:
   it, but it has no caller (`F-106`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.5.
+- **F-237** · L · the declarations round 5's task 3.6 pinned or unpinned
+  (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`). The five $d = 3$ base wrappers
+  `theorem_55_base_producer_empty`, `_empty_gp`, `_single_edge`, `_single_edge_gp` and
+  `_parallel_pair`, now unpinned, have no caller (`F-131`), and the `_gen` forms' docstrings call
+  themselves their lifts. `exists_extensor_eq_panelSupportExtensor_gen`'s docstring names
+  `def:genuine-hinge-realization` (its node is `lem:panel-support-extensor-join`), and that of its
+  $d = 3$ wrapper `exists_extensor_eq_panelSupportExtensor` says that it is kept while
+  `hasPanelRealization_of_generic` is at `k = 2`, which that theorem no longer is (it takes
+  `[NeZero k]` and calls the `_gen` form). `rankHypothesis_of_theorem_55_gen`'s docstring gives the
+  strip-realize-re-add assembly as its proof; its body takes the case $|V| \ge 2$ from
+  `rankHypothesis_genuine_of_theorem_55_gen` (`F-011`).
+  *Evidence:* read (the docstrings and bodies; a `grep` for the callers).
+  *Found:* round 5 task 3.6.
 
 ## M — mathematics and sources
 

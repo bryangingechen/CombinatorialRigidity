@@ -51,9 +51,36 @@ $C(n_2, n_1) = -C(n_1, n_2)$. It is nonzero if and only if $n_1$ and
 $n_2$ are linearly independent, since $*$ is an isomorphism and
 $n_1 \vee n_2 \neq 0$ exactly in that case (the remark after
 \cref{def:extensor}). If they are, then $C(n_1, n_2)$ is the meet of the
-hyperplanes $n_1^\perp$ and $n_2^\perp$ of $K^{d+1}$, a nonzero extensor
-of their intersection, which has dimension $d - 1$ (the remarks after
-\cref{def:meet}).
+hyperplanes $n_1^\perp$ and $n_2^\perp$ of $K^{d+1}$ (the remarks after
+\cref{def:meet}). Their intersection has dimension $d - 1$, and
+$C(n_1, n_2)$ is a nonzero extensor of it.
+
+\begin{lemma}[The panel support extensor as a join]
+  \label{lem:panel-support-extensor-join}
+  \lean{CombinatorialRigidity.Molecular.exists_extensor_eq_panelSupportExtensor_gen}
+  \leanok
+  \uses{def:panel-support-extensor}
+  Let $d \ge 2$, and let $n_1, n_2 \in K^{d+1}$ be linearly independent.
+  Then there are $x_1, \dots, x_{d-1} \in n_1^\perp \cap n_2^\perp$ with
+  \[
+    C(n_1, n_2) \;=\; x_1 \vee \cdots \vee x_{d-1}.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:meet-two-hyperplanes}
+  The subspace $n_1^\perp \cap n_2^\perp$ has dimension $d - 1$, as $n_1$
+  and $n_2$ are linearly independent. Let $q_1, \dots, q_{d-1}$ be a basis
+  of it. By \cref{lem:meet-two-hyperplanes},
+  $q_1 \vee \cdots \vee q_{d-1} = c\, C(n_1, n_2)$ for some $c \in K$. The
+  vectors $q_i$ are linearly independent, so their join is nonzero (the
+  remark after \cref{def:extensor}), and $c \neq 0$. Take
+  $x_1 = c^{-1} q_1$ and $x_i = q_i$ for $2 \le i \le d - 1$.
+\end{proof}
+
+As $C(n_1, n_2) \neq 0$, the vectors $x_1, \dots, x_{d-1}$ of the lemma
+are linearly independent, so they form a basis of
+$n_1^\perp \cap n_2^\perp$.
 
 The panel support extensor describes the hinge of two panels. As in
 \cref{sec:molecular-meet} for $d = 3$, the hyperplane
@@ -127,7 +154,8 @@ the two bodies together.
 \end{fmlnote}
 
 A nondegenerate hinge at a body $v$ lies in the panel of $v$, since its
-extensor $C(n_v, n_w)$ is an extensor of $n_v^\perp \cap n_w^\perp$. So
+extensor $C(n_v, n_w)$ is an extensor of $n_v^\perp \cap n_w^\perp$
+(\cref{lem:panel-support-extensor-join}). So
 the body-hinge interpretation of a panel-hinge framework meets Katoh and
 Tanigawa's condition~\cite[p.~648]{katohTanigawa2011}, and we use their
 name for the body-hinge frameworks that arise in this way.
@@ -463,8 +491,8 @@ realization gives a nondegenerate-hinge one.
   nonzero (\cref{lem:general-position-support-nonzero}). It is the meet
   of the hyperplanes $n_u^\perp$ and $n_v^\perp$, so it is
   $x_1 \vee \cdots \vee x_{d-1}$ for a basis $x_1, \dots, x_{d-1}$ of
-  $n_u^\perp \cap n_v^\perp$ (the remark after
-  \cref{def:panel-support-extensor}). So it lies in both panels. A loop
+  $n_u^\perp \cap n_v^\perp$ (\cref{lem:panel-support-extensor-join} and
+  the remark after it). So it lies in both panels. A loop
   at a body $u$ gives no row of $R(G,p)$, since its constraint involves
   only $S(u) - S(u) = 0$. So we may replace its hinge by
   $x_1 \vee \cdots \vee x_{d-1}$ for any linearly independent
@@ -702,48 +730,48 @@ at the target rank with nondegenerate hinges: the two-vertex double edge
 has none (the paragraph before \cref{thm:theorem-55}). The multigraph form,
 with hinges that need only lie in the panels, is
 \cref{thm:theorem-55-6-multigraph} in
-\cref{sec:molecular-coplanar-multigraph}. We state the theorem first for
-panel-hinge realizations, whose hinges may be degenerate, and then with
-nondegenerate hinges, as Katoh and Tanigawa's are
-(\cref{thm:theorem-55-6-genuine}).
+\cref{sec:molecular-coplanar-multigraph}. We state the theorem first with
+nondegenerate hinges, as Katoh and Tanigawa's are, for graphs with at least
+two vertices. The molecular conjecture (\cref{thm:molecular-conjecture})
+uses this form. We then derive the form for every simple graph with at
+least one vertex, in which the hinges may be degenerate
+(\cref{thm:theorem-55-6}).
 
-\begin{theorem}[Realization of a simple graph at the target rank; KT Theorem 5.6]
-  \label{thm:theorem-55-6}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen}
+\begin{theorem}[KT Theorem 5.6 with nondegenerate hinges]
+  \label{thm:theorem-55-6-genuine}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen}
   \leanok
-  \uses{thm:theorem-55, lem:motions-mono-of-graph-le,
-        lem:subgraph-minimality, def:rank-hypothesis}
+  \uses{lem:general-position-support-nonzero, def:rank-hypothesis}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
-  simple graph with $V \neq \emptyset$. Then $G$ has a panel-hinge
-  realization $(G, p)$ at the target rank (\cref{def:rank-hypothesis}),
-  that is, with
-  \[
-    \operatorname{rank} R(G,p) \;=\; D(|V| - 1) - \operatorname{def}(\tilde G).
-  \]
+  simple graph with $|V| \ge 2$. Then $G$ has a panel-hinge realization at
+  the target rank (\cref{def:rank-hypothesis}) all of whose hinges are
+  nondegenerate.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55, lem:motions-mono-of-graph-le,
-        lem:subgraph-minimality, prop:rigidity-matrix-prop11}
+  \uses{thm:theorem-55, lem:minimal-kdof-spanning-subgraph,
+        lem:general-position-support-nonzero, lem:motions-mono-of-graph-le,
+        prop:rigidity-matrix-prop11}
   We follow Katoh and Tanigawa's proof (KT p.~670). Let
-  $c = \operatorname{def}(\tilde G)$. If $|V| = 1$, then $G$ has no edge,
-  as it is simple, and $c = 0$. So every realization of $G$ has rank
-  $0 = D(|V| - 1) - c$. Let $|V| \ge 2$.
+  $c = \operatorname{def}(\tilde G)$.
 
   \emph{The realization.} By \cref{lem:minimal-kdof-spanning-subgraph},
   $G$ has a spanning subgraph $G'$ that is a minimal $c$-dof-graph. It is
-  simple, as a subgraph of $G$. By KT Theorem~5.5 (\cref{thm:theorem-55}),
-  $G'$ has a generic full-rank realization $(G', q)$
-  (\cref{def:rank-hypothesis}). Its normals $n_v$ are in general position,
-  and $\operatorname{rank} R(G', q) = D(|V| - 1) - c$. Let $(G, p)$ be the
+  simple, as a subgraph of $G$, and it has the $|V| \ge 2$ vertices of
+  $G$. By KT Theorem~5.5 (\cref{thm:theorem-55}), $G'$ has a generic
+  full-rank realization $(G', q)$ (\cref{def:rank-hypothesis}). Its
+  normals $n_v$ are in general position, and
+  $\operatorname{rank} R(G', q) = D(|V| - 1) - c$. Let $(G, p)$ be the
   panel-hinge framework on $G$ with the same normals. At each edge of $G'$
   it has the hinge of $(G', q)$. Katoh and Tanigawa first apply a
   projective transformation so that the panels of any two bodies meet in a
   $(d-2)$-dimensional affine subspace. Infinitesimal rigidity is invariant
   under such a transformation. They then give each edge of $G$
   outside $G'$ a hinge in the intersection of the panels of its ends. Here
-  no transformation is needed. The normals are in general position, so the
-  hinge $C(n_u, n_v)$ of every edge $uv$ of $G$ is nonzero
+  no transformation is needed. The normals are in general position, and
+  each edge of $G$ has two distinct ends, as $G$ is simple. So the hinge
+  $C(n_u, n_v)$ of every edge $uv$ of $G$ is nonzero
   (\cref{lem:general-position-support-nonzero}).
 
   \emph{The rank.} The restriction of $(G, p)$ to the edges of $G'$ is
@@ -761,16 +789,55 @@ nondegenerate hinges, as Katoh and Tanigawa's are
 \end{proof}
 
 \begin{fmlnote}
+  Both pinned theorems assume that $G$ spans the set $W$ of bodies, state
+  the target rank as $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
+  (\cref{rem:rank-hypothesis-relative}), and assume the supply of fresh
+  labels (\cref{rem:fresh-edge-supply}). The first places no condition on
+  the endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}). The
+  framework that it constructs gives each edge of $G$ outside $G'$ the
+  hinge of one fixed pair of distinct bodies, which need not be the ends
+  of the edge. The second states that the selector assigns each edge of
+  $G$ its two ends. Both ask for a nonzero hinge at every edge label, not
+  only at the edges of $G$ (\cref{rem:molecular-conjecture-essential}). A
+  label outside $E(G)$ gets the hinge of two distinct bodies, which is why
+  they assume $|V| \ge 2$.
+\end{fmlnote}
+
+Without the nondegeneracy, the theorem holds for every simple graph with
+at least one vertex.
+
+\begin{theorem}[Realization of a simple graph at the target rank; KT Theorem 5.6]
+  \label{thm:theorem-55-6}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen}
+  \leanok
+  \uses{def:rank-hypothesis}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
+  simple graph with $V \neq \emptyset$. Then $G$ has a panel-hinge
+  realization $(G, p)$ at the target rank (\cref{def:rank-hypothesis}),
+  that is, with
+  \[
+    \operatorname{rank} R(G,p) \;=\; D(|V| - 1) - \operatorname{def}(\tilde G).
+  \]
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:theorem-55-6-genuine}
+  Let $c = \operatorname{def}(\tilde G)$. If $|V| = 1$, then $G$ has no
+  edge, as it is simple, and $c = 0$. So every realization of $G$ has rank
+  $0 = D(|V| - 1) - c$. If $|V| \ge 2$, then the realization of
+  \cref{thm:theorem-55-6-genuine} is at the target rank.
+\end{proof}
+
+\begin{fmlnote}
   The pinned theorem assumes that $G$ spans the set $W$ of bodies, and it
   states the target rank as
   $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
   (\cref{rem:rank-hypothesis-relative}). It places no condition on the
-  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}). The
-  framework that it constructs gives each edge of $G$ outside $G'$ the
-  hinge of one fixed pair of distinct bodies, which need not be the ends of
-  the edge. The second pinned theorem of \cref{thm:theorem-55-6-genuine}
-  records the ends. The pinned theorem also assumes $D(|W| - 1) < |L|$
-  (\cref{rem:fresh-edge-supply}).
+  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}). For
+  $|V| \ge 2$, its framework is that of the first pinned theorem of
+  \cref{thm:theorem-55-6-genuine}. It assumes $D(|W| - 1) < |L|$, which
+  gives the supply of fresh labels that \cref{thm:theorem-55-6-genuine}
+  assumes (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
 
 We record the case $d = 3$.
@@ -797,48 +864,8 @@ We record the case $d = 3$.
   It assumes $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
 
-The molecular conjecture (\cref{thm:molecular-conjecture}) uses the
-theorem with nondegenerate hinges.
-
-\begin{theorem}[KT Theorem 5.6 with nondegenerate hinges]
-  \label{thm:theorem-55-6-genuine}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen}
-  \leanok
-  \uses{thm:theorem-55-6, lem:general-position-support-nonzero, def:rank-hypothesis}
-  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
-  simple graph with $|V| \ge 2$. Then $G$ has a panel-hinge realization at
-  the target rank (\cref{def:rank-hypothesis}) all of whose hinges are
-  nondegenerate.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:theorem-55-6, lem:general-position-support-nonzero,
-        lem:minimal-kdof-spanning-subgraph}
-  Let $(G, p)$ be the realization constructed in the proof of
-  \cref{thm:theorem-55-6}, from a spanning subgraph of $G$ that is a
-  minimal $\operatorname{def}(\tilde G)$-dof-graph
-  (\cref{lem:minimal-kdof-spanning-subgraph}). It is at the target rank,
-  and its normals are in general position. Each edge of $G$ has two
-  distinct ends, as $G$ is simple. So every hinge of $(G, p)$ is
-  nondegenerate (\cref{lem:general-position-support-nonzero}).
-\end{proof}
-
-\begin{fmlnote}
-  The first pinned theorem places no condition on the endpoint selector
-  (\cref{fmlnote:panel-hinge-nondegenerate}), as for
-  \cref{thm:theorem-55-6}. The second states that the selector assigns
-  each edge of $G$ its two ends. Both assume that $G$ spans the set of
-  bodies, state the target rank as
-  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$, and assume the supply
-  of fresh labels (\cref{rem:fresh-edge-supply}). Both ask for a nonzero
-  hinge at every edge label, not only at the edges of $G$
-  (\cref{rem:molecular-conjecture-essential}). A label outside $E(G)$ gets
-  the hinge of two distinct bodies, which is why they assume $|V| \ge 2$.
-\end{fmlnote}
-
-The realization in the proof of \cref{thm:theorem-55-6} is a generic
-full-rank realization (\cref{def:rank-hypothesis}). So the generic
+The realization in the proof of \cref{thm:theorem-55-6-genuine} is a
+generic full-rank realization (\cref{def:rank-hypothesis}). So the generic
 conclusion of KT Theorem~5.5 holds for every simple graph with at least two
 vertices, minimal or not. A later chapter uses its case $d = 2$ for a
 graph whose bodies are part of a larger set (\cref{sec:main-component-jj}).
@@ -1079,8 +1106,8 @@ generic full-rank realization. The graph of case (iii) is not simple.
 
 \begin{lemma}[The base of KT Theorem 5.5: no edge]
   \label{lem:theorem-55-base-producer-empty}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty,
-        CombinatorialRigidity.Molecular.theorem_55_base_producer_empty_gp}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty_gen,
+        CombinatorialRigidity.Molecular.theorem_55_base_producer_empty_gp_gen}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy}
   Let $K$ be an infinite field, and let $G$ be a minimal $k$-dof-graph
@@ -1103,8 +1130,8 @@ generic full-rank realization. The graph of case (iii) is not simple.
 
 \begin{lemma}[The base of KT Theorem 5.5: one edge]
   \label{lem:theorem-55-base-producer-single}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge,
-        CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gp}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gen,
+        CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gp_gen}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
         lem:extensor-pair-in-panel, def:rigidity-matrix}
@@ -1135,7 +1162,7 @@ generic full-rank realization. The graph of case (iii) is not simple.
 
 \begin{lemma}[The base of KT Theorem 5.5: the double edge; KT Lemma 5.3]
   \label{lem:theorem-55-base-producer-parallel}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair_gen}
   \leanok
   \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy, lem:theorem-55-base,
         lem:extensor-pair-in-panel}
@@ -1161,12 +1188,20 @@ generic full-rank realization. The graph of case (iii) is not simple.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorems of \cref{lem:theorem-55-base-producer-empty},
-  \cref{lem:theorem-55-base-producer-single} and this lemma are their
-  cases $d = 3$. Each is the specialization of a theorem for general $d$
-  whose name adds the suffix \texttt{\_gen}, with the proof above. The
-  pinned theorem of \cref{lem:theorem-55-base-producer} uses these
-  general forms.
+  The pinned theorems prove more than the statements of
+  \cref{lem:theorem-55-base-producer-empty},
+  \cref{lem:theorem-55-base-producer-single} and this lemma, which are
+  the cases that \cref{lem:theorem-55-base-producer} needs. Those of
+  \cref{lem:theorem-55-base-producer-empty} hold for every $d \ge 1$ and
+  any number of vertices, and the first over every field. The first
+  pinned theorem of \cref{lem:theorem-55-base-producer-single} holds over
+  every field, and the second for every $d \ge 1$. The pinned theorem of
+  this lemma holds over every field, and it assumes
+  $\operatorname{def}(\tilde G) = 0$ in place of minimality. The pinned
+  theorems of the last two lemmas take the dimension that determines $D$
+  in $\operatorname{def}(\tilde G)$ as a separate parameter (the note
+  after \cref{def:panel-support-extensor}), with no hypothesis that it
+  equals $d$.
 \end{fmlnote}
 
 \begin{lemma}[The base of KT Theorem 5.5]
@@ -1508,7 +1543,7 @@ We first prove KT Theorem~5.6.
         prop:rigidity-matrix-prop11, def:genuine-hinge-realization,
         lem:minimal-kdof-spanning-subgraph}
   We follow Katoh and Tanigawa's proof (KT p.~670), as for
-  \cref{thm:theorem-55-6}. Let $c = \operatorname{def}(\tilde G)$.
+  \cref{thm:theorem-55-6-genuine}. Let $c = \operatorname{def}(\tilde G)$.
 
   \emph{One body.} Let $|V| = 1$. Every edge of $G$ is a loop, and the
   only partition of $V$ has one part, so $c = 0$. The rows of a loop

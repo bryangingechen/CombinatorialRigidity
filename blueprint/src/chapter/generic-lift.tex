@@ -1365,6 +1365,7 @@ in every dimension, by comparing the rows.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-6-genuine, def:panel-support-extensor,
+    lem:panel-support-extensor-join,
     def:genuine-hinge-realization, lem:simultaneous-affine-position,
     lem:extensor-affine-representation, lem:screw-map-rows,
     lem:case-II-placement-old-rows-extract}
@@ -1375,8 +1376,9 @@ in every dimension, by comparing the rows.
   Let $n_v$ be its normals, and let $e$ be an edge with ends $u$ and
   $v$. The hinge of $e$ is $C(n_u, n_v) \neq 0$, so it is
   $w_{e,1} \vee \cdots \vee w_{e,d-1}$ for a basis
-  $w_{e,1}, \dots, w_{e,d-1}$ of $n_u^\perp \cap n_v^\perp$ (the remark
-  after \cref{def:panel-support-extensor}). In particular
+  $w_{e,1}, \dots, w_{e,d-1}$ of $n_u^\perp \cap n_v^\perp$
+  (\cref{lem:panel-support-extensor-join} and the remark after it). In
+  particular
   $w_{e,1} \neq 0$.
 
   By \cref{lem:simultaneous-affine-position}, there is an invertible

@@ -321,9 +321,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   most that many). The
   `def > 0` feed (`thm:theorem-55-6-d3`, 22k) is the one that needed the
   spanning-strip lift; the `def = 0` feed landed in 22h. The full two-by-two
-  account is in the `prop:rigidity-matrix-prop11` and `thm:theorem-55-6` proofs
-  of `panel-layer.tex` (`thm:theorem-55-6-d3` is the latter's case $d = 3$; PROSE
-  round 3, task 2.3). The formula is KT Proposition 2.3 (p. 655), as the
+  account is in the `prop:rigidity-matrix-prop11` and `thm:theorem-55-6-genuine`
+  proofs of `panel-layer.tex` (`thm:theorem-55-6-d3` is the case $d = 3$ of
+  `thm:theorem-55-6`, which follows from the latter; PROSE round 3, task 2.3, and
+  round 5, task 3.6). The formula is KT Proposition 2.3 (p. 655), as the
   blueprint names it since PROSE round 3 task 2.1; this entry said Prop 1.1,
   which is Tay and Whiteley's theorem (p. 648), until that round's close.
   Pointer: `notes/Phase18.md` / `notes/Phase19.md` *Hand-off*;

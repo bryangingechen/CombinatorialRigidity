@@ -1267,10 +1267,12 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   56 findings in the ledger (`F-174`–`F-229`). Round 5, `prose-graph`, opened 2026-10-13
   (`notes/Prose-graph-cleanup.md`): it triaged the ledger's edge, node-shape, terminology and
   status-surface findings into 31 one-commit tasks, its task 2 added each node's `\uses` to the
-  gate's dump, and its tasks 3.1–3.5 reshaped the nodes of round 1's chapters, of
-  `matroid-union.tex` through `meet.tex`, of `rigidity-matrix.tex`, of `deficiency.tex`, and of
-  `molecular-induction.tex`, into which the graph form of KT Lemma 3.5 moved from `case-i.tex`.
-  **Next concrete task:** round 5's task 3.6, the node shapes of `panel-layer.tex` (its hand-off).
+  gate's dump, and its tasks 3.1–3.6 reshaped the nodes of round 1's chapters, of
+  `matroid-union.tex` through `meet.tex`, of `rigidity-matrix.tex`, of `deficiency.tex`, of
+  `molecular-induction.tex`, into which the graph form of KT Lemma 3.5 moved from `case-i.tex`,
+  and of `panel-layer.tex`, where KT Theorem 5.6 with nondegenerate hinges now comes first, as in
+  the formal proof. **Next concrete task:** round 5's task 3.7, the node shapes of `case-i.tex`
+  (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
