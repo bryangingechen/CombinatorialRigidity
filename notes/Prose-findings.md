@@ -568,6 +568,24 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`); read (the
   body of `IsLaman3.mono_left`).
   *Found:* round 4 task 2.5.
+- **F-196** · E · `jacobs.tex`'s counting bound, task 2.6's eleven nodes (`jacobs.tex`): 18
+  missing edges and 14 unbacked. Missing: ten to `lem:molecule-graph-carrier` (every node but
+  `def:g-cut-edges`, through `IsSquareTightPartition`, a tight partition of `shadowGraph`); five to
+  `lem:normal-cross-count-rooted` (the statements of the producer, fiber, partition and count
+  lemmas, and the theorem's proof, use `squareNormalCrossEdgesRootedAt`);
+  `lem:normal-cross-count-local`'s statement to `lem:exists-tight-partition`; the producer's proof to
+  `lem:singleton-part-neighborhood` (`isClique_neighborSet_square`); the theorem's proof to
+  `lem:edgesIn-corners` (`edgesIn_singleton`). Unbacked, with no Lean basis: the converse's proof to
+  `lem:singleton-part-neighborhood`; `lem:normal-cross-count-rooted`'s proof to
+  `lem:square-cross-classification` (`F-195`); `def:g-cut-edges` to `def:D-deficiency`; the
+  theorem's proof to `lem:singleton-part-converse`, whose pin is dead (`F-012`, `F-197`). Ten more
+  are unbacked through another node. In task 2.6's prose the converse's proof no longer cites
+  `lem:singleton-part-neighborhood`, nor the theorem's `lem:singleton-part-converse`, and the
+  theorem's proof cites without an edge `lem:tight-partition-cross-pair-nbr` (implied) and
+  `lem:normal-cross-count-rooted` (missing).
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`, and the same
+  report on task 2.6's tree).
+  *Found:* round 4 task 2.6.
 
 ## N — node shape
 
@@ -1084,6 +1102,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the two definitions, `Molecular/Deficiency.lean`); measured
   (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`).
   *Found:* round 4 task 2.5.
+- **F-197** · N · `lem:normal-cross-count-rooted`, `lem:normal-cross-count-partition`,
+  `lem:singleton-part-converse` (`jacobs.tex`): the first two pin a definition beside their claims,
+  `squareNormalCrossEdgesRootedAt` (whose statement defines "rooted") and `squareCutPairs`, as
+  `F-192`'s two do; the five missing edges to the first (`F-196`) are the symptom. The third's pin
+  is dead: `laman_square_count` counts the special cross edges by the part of their common
+  neighbor, through the unpinned `squareSpecialCrossEdgesRootedAt` and its lemmas
+  (`IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet` is the converse
+  in the form the count uses). A definition node for rooting, normal and special cross edges alike,
+  and a repin or an unpinned converse, are the candidates.
+  *Evidence:* read (the bodies of `laman_square_count`, `IsSquareTightPartition.perPart_le` and
+  `IsSquareTightPartition.sum_perPart_le`, `JacobsCounting.lean`); measured
+  (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`).
+  *Found:* round 4 task 2.6.
 
 ## T — terminology and notation
 
@@ -1896,6 +1927,22 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the four pins, `Molecular/Deficiency.lean`; JJ 2008 §§3
   and 5).
   *Found:* round 4 task 2.5.
+- **F-195** · S · `thm:laman-square-count`, `lem:normal-cross-count-rooted`,
+  `lem:normal-cross-count-partition` and the lemmas of `sec:jacobs-counting` (`jacobs.tex`):
+  statements that assume more, or claim more, than their pins. The theorem asks $V$ nonempty;
+  `laman_square_count` holds on every finite vertex type (at $V = \emptyset$ both sides are $0$, the
+  empty partition having value $-6$). The lemmas assume the subsection's $G$ (minimum degree two,
+  $G^2$ Laman): of their 23 pins only `ncard_edgesIn_neighborSet_square` asks the minimum degree (at
+  $v$), and only those that use the degree bound ask the Laman condition.
+  `lem:normal-cross-count-local` asks $|A| \ge 3$ where its pin asks $|A| \ge 2$, the same for a
+  tight partition. `lem:normal-cross-count-rooted`'s "this part has at least three vertices" is not
+  in its pins: it is `squareNormalCrossEdges_part_three_le`, a pin of
+  `lem:square-cross-classification`. `lem:normal-cross-count-partition`'s bijection is
+  `ncard_squareCutPairs_eq_gCutEdges`, an equality of counts. Task 2.6 kept each claim, with one
+  note at the end of the subsection (`fmlnote:normal-cross-split`). No edit.
+  *Evidence:* read (the statements of the slice's 25 pins, `JacobsCounting.lean`, `Jacobs.lean`,
+  `SquareGraph.lean`; the body of `laman_square_count`).
+  *Found:* round 4 task 2.6.
 
 ## L — Lean
 
@@ -2531,6 +2578,21 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and of `exists_fresh_label`; JJ
   2008 §3, its closing remarks and its references).
   *Found:* round 4 task 2.5.
+- **F-198** · L · the docstrings of task 2.6's pins (`JacobsCounting.lean`, `Jacobs.lean`,
+  `SquareGraph.lean`). Five name `lem:normal-cross-count` for declarations pinned at the nodes split
+  from it (`rootedAt_inj`, `ncard_inPartNeighbors_eq_two`, `mk_mem_squareNormalCrossEdgesRootedAt`,
+  `squareNormalCrossEdgesRootedAt_eq_biUnion`, `squareCutPairs_pairwiseDisjoint`). Two, and a
+  section header, name `fmlnote:normal-cross-split` for the count's split into four lemmas, which
+  that note no longer describes (task 2.6 made it the subsection's note on the formal statements).
+  `squareGCrossEdges` and `squareGCrossEdges_ncard_eq_crossingEdges` call the crossing count
+  "Jackson–Jordán's `d_G(P)`"; JJ write $e_G(P)$, and $d_G(X)$ for the degree of a set (JJ §§2–3).
+  The header and docstrings narrate process ("Phase 32", "in later commits", "This commit lands", "a
+  later slice", "the closing slice", "item 5 of the hand-off", "superseded, see *Decisions made*",
+  "encoding decision (a)", "Thm 5.3 assembly") and say "shadow carrier", "shadowing multigraph",
+  "bricks", "consumes", "fed" and "producer". The other docstrings agree with their bodies.
+  *Evidence:* read (the docstrings and bodies of the 25 pins and of the unpinned lemmas of
+  `laman_square_count`'s proof; JJ 2008 §§2, 3 and 5, `.refs/`).
+  *Found:* round 4 task 2.6.
 
 ## M — mathematics and sources
 

@@ -332,17 +332,40 @@ prove it directly.
 \subsection{The counting bound}
 \label{sec:jacobs-counting}
 
-Fix now a simple graph $G$ of minimum degree at least two whose square
-is Laman, and a tight partition $P$ of $V$ at $D = 6$. By
-\cref{lem:isLaman3-degree-le-three} every vertex has degree two or
-three, and by \cref{lem:tight-partition-parts} every part of $P$ is a
-singleton or has at least three vertices with minimum in-part degree
-two. Following \cite[\S5]{jacksonJordan2008}, call an edge
-$uw \in E(G^2)$ joining distinct parts a \emph{cross edge} if
-$uw \notin E(G)$; its endpoints have a unique common neighbor $v$
-(\cref{lem:tight-partition-cross-pair-nbr}), and the cross edge is
-\emph{normal} if $v$ lies in the same part as $u$ or as $w$, and
-\emph{special} otherwise.
+This subsection proves JJ Theorem~5.3: if $G$ has minimum degree at
+least two and $G^2$ is Laman, then
+$|E(G^2)| \le 3|V| - 6 - \operatorname{def}(\tilde G)$
+(\cref{thm:laman-square-count}). We follow JJ's proof, which counts the
+edges of $G^2$ part by part against a tight partition of $V$. Inside a
+part $A$ with $|A| \ge 3$, the Laman condition bounds them by
+$3|A| - 6$. The endpoints of an edge of $G^2$ that joins two parts and
+is not an edge of $G$ have a unique common neighbor, and the edge is
+counted at the part that contains it. A part $A$ with $|A| \ge 3$
+receives $2\,d_G(A)$ of these edges (JJ eq.~(6)), where $d_G(A)$ is the
+number of edges of $G$ with exactly one endpoint in $A$. A singleton
+part $\{v\}$ receives $2\,d_G(v) - 3$ of them (JJ eqs.~(5) and~(7)).
+Summing over the parts gives the bound.
+
+For the rest of this subsection, let $G$ be a simple graph of minimum
+degree at least two whose square is Laman, and let $P$ be a tight
+partition of $V$ at $D = 6$ (\cref{lem:exists-tight-partition}). Then
+every vertex of $G$ has degree two or three
+(\cref{lem:isLaman3-degree-le-three}). Every part of $P$ is a singleton
+or has at least three vertices, and in the latter case each of its
+vertices has at least two neighbors in the part
+(\cref{lem:tight-partition-parts}). As in \cref{def:D-deficiency},
+$d_G(P)$ is the number of edges of $G$ that join distinct parts.
+
+Let $uw$ be an edge of $G^2$ whose endpoints lie in distinct parts.
+Following JJ, we call $uw$ a \emph{cross edge} if it is not an edge of
+$G$. Then $u$ and $w$ are at distance two in $G$
+(\cref{def:square-graph}), so they have a common neighbor $v$. It is
+unique (\cref{lem:tight-partition-cross-pair-nbr}), and we call it the
+common neighbor of the cross edge. At least one of the edges $uv$ and
+$vw$ joins two parts, as $u$ and $w$ lie in distinct parts. JJ call the
+cross edge \emph{normal} if exactly one of them does, and
+\emph{special} if both do. So $uw$ is normal if $v$ lies in the part of
+$u$ or in that of $w$, and special otherwise.
 
 \begin{lemma}[Classification of the edges of the square]
   \label{lem:square-cross-classification}
@@ -355,32 +378,37 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
     SimpleGraph.squareNormalCrossEdges_part_three_le}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above. Then $E(G^2)$ is the disjoint union of four
-  classes: the edges inside a part; the edges of $G$ joining distinct
-  parts (numbering $d_G(P)$); the normal cross edges; and the special
-  cross edges. Moreover the common neighbor of a special cross edge
-  forms a singleton part, and the common neighbor of a normal cross
-  edge lies in a part of at least three vertices, together with exactly
-  one endpoint of the edge.
+  Let $G$ and $P$ be as above. Then $E(G^2)$ is the disjoint union of
+  four classes: the edges inside a part, the $d_G(P)$ edges of $G$ that
+  join distinct parts, the normal cross edges, and the special cross
+  edges. Moreover, the common neighbor of a special cross edge forms a
+  singleton part. The common neighbor of a normal cross edge lies in a
+  part of at least three vertices, together with exactly one endpoint of
+  the edge.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:tight-partition-cross-pair-nbr, lem:isLaman3-degree-le-three,
     lem:tight-partition-parts}
-  An edge of $G^2$ either lies inside a part or joins distinct parts,
-  and in the latter case is an edge of $G$ or a cross edge; the
-  normal/special dichotomy is well defined because the common neighbor
-  is unique (\cref{lem:tight-partition-cross-pair-nbr}). For a special
-  cross edge $uw$ with common neighbor $v$: both $u$ and $w$ lie
-  outside $v$'s part, so $v$ has two neighbors outside its part; if
-  that part were not a singleton, $v$ would also have two neighbors
-  inside it (\cref{lem:tight-partition-parts}), exceeding the degree
-  bound three (\cref{lem:isLaman3-degree-le-three}). For a normal
-  cross edge, the common neighbor shares a part with exactly one
-  endpoint (the endpoints lie in distinct parts), and a part
-  containing two adjacent vertices is not a singleton, hence has at
-  least three vertices (\cref{lem:tight-partition-parts}).
+  An edge of $G^2$ lies inside a part or joins two parts. In the latter
+  case it is an edge of $G$ or a cross edge, and a cross edge is normal
+  or special. The first three classes are disjoint by definition. The
+  last two are disjoint because the common neighbor of a cross edge is
+  unique (\cref{lem:tight-partition-cross-pair-nbr}).
+
+  Let $uw$ be a special cross edge with common neighbor $v$. Then $u$ and
+  $w$ are two neighbors of $v$ outside its part. If the part of $v$ were
+  not a singleton, $v$ would also have two neighbors inside it
+  (\cref{lem:tight-partition-parts}), and so degree at least four. This
+  contradicts the degree bound (\cref{lem:isLaman3-degree-le-three}).
+  Now let $uw$ be a normal cross edge with common neighbor $v$. As $u$
+  and $w$ lie in distinct parts, $v$ shares its part with exactly one of
+  them. This part contains two adjacent vertices, so it is not a
+  singleton, and it has at least three vertices
+  (\cref{lem:tight-partition-parts}).
 \end{proof}
+
+We first count the special cross edges.
 
 \begin{lemma}[Special cross edges at a singleton part; JJ eq.\ (5), (7)]
   \label{lem:singleton-part-neighborhood}
@@ -389,9 +417,9 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
     SimpleGraph.IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above and let $\{v\} \in P$ be a singleton part.
-  The neighborhood $N_G(v)$ is a clique of $G^2$ all of whose edges are
-  special cross edges with common neighbor $v$, and
+  Let $G$ and $P$ be as above, and let $\{v\}$ be a singleton part of
+  $P$. Then the neighborhood $N_G(v)$ is a clique of $G^2$, all of whose
+  edges are special cross edges with common neighbor $v$, and
   \[
     \bigl|\edgesIn[G^2]{N_G(v)}\bigr| \;=\; 2\,d_G(v) - 3 .
   \]
@@ -401,164 +429,185 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   \uses{lem:square-cliques, lem:clique-edgesIn-count,
     lem:isLaman3-degree-le-three, lem:tight-partition-cross-pair-mult,
     lem:tight-partition-cross-pair-nbr, lem:tight-partition-subfamily}
-  $N_G(v)$ is a clique of $G^2$ (\cref{lem:square-cliques}). Two
-  neighbors $u, w$ of $v$ lie in parts distinct from $\{v\}$ and from
-  each other --- two neighbors in one part $A$ would put two edges
-  between $A$ and $\{v\}$ (\cref{lem:tight-partition-cross-pair-mult}) ---
-  and are nonadjacent in $G$: a triangle $uvw$ would give a three-part
-  subfamily with three edges between its members, excluded by
-  \cref{lem:tight-partition-subfamily} for $D \ge 4$. So each pair is a
-  cross edge with common neighbor $v$ (unique
-  by \cref{lem:tight-partition-cross-pair-nbr}), special because $v$'s
-  part $\{v\}$ contains neither endpoint. Since
-  $d_G(v) \in \{2, 3\}$ (\cref{lem:isLaman3-degree-le-three}, minimum
-  degree two), the clique count $\binom{d_G(v)}{2}$
-  (\cref{lem:clique-edgesIn-count}) equals $2\,d_G(v) - 3$ in both
-  cases.
+  The neighborhood $N_G(v)$ is a clique of $G^2$
+  (\cref{lem:square-cliques}). Let $u \ne w$ be neighbors of $v$.
+  Neither lies in the part $\{v\}$. They do not lie in one part $A$, as
+  then $vu$ and $vw$ would be two edges between $A$ and $\{v\}$
+  (\cref{lem:tight-partition-cross-pair-mult}). They are not adjacent in
+  $G$. Otherwise the triangle $uvw$ would put three edges between the
+  three parts that contain $u$, $v$ and $w$. Then $3(D - 1) \le 2D$
+  (\cref{lem:tight-partition-subfamily}), that is, $D \le 3$, while
+  $D = 6$. So $uw$ is a cross edge with common neighbor $v$. It is
+  special, as the part $\{v\}$ contains neither $u$ nor $w$.
+
+  Finally, $v$ has degree two or three
+  (\cref{lem:isLaman3-degree-le-three}). So the clique has
+  $\binom{d_G(v)}{2} = 2\,d_G(v) - 3$ edges
+  (\cref{lem:clique-edgesIn-count}).
 \end{proof}
+
+JJ also state the converse.
 
 \begin{lemma}[Special cross edges arise from a unique singleton part]
   \label{lem:singleton-part-converse}
   \lean{SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above. Every special cross edge arises, as in
-  \cref{lem:singleton-part-neighborhood}, from exactly one singleton
-  part.
+  Let $G$ and $P$ be as above. Then every special cross edge is an edge
+  of $G^2$ inside $N_G(v)$ for exactly one singleton part $\{v\}$ of
+  $P$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:singleton-part-neighborhood, lem:square-cross-classification,
     lem:tight-partition-cross-pair-nbr}
-  A special cross edge's common neighbor is a singleton part
-  (\cref{lem:square-cross-classification}), and it is unique
-  (\cref{lem:tight-partition-cross-pair-nbr}), so the assignment of
-  \cref{lem:singleton-part-neighborhood} is a partition of the special
-  cross edges.
+  Let $uw$ be a special cross edge with common neighbor $v$. Then
+  $\{v\}$ is a part of $P$ (\cref{lem:square-cross-classification}), and
+  $u, w \in N_G(v)$. If also $u, w \in N_G(v')$ for a singleton part
+  $\{v'\}$, then $v'$ is a common neighbor of $u$ and $w$, so $v' = v$
+  (\cref{lem:tight-partition-cross-pair-nbr}).
 \end{proof}
 
-\begin{lemma}[The root of a normal cross edge; JJ eq.\ (6) setup]
+We now count the normal cross edges, following JJ's proof of their
+eq.~(6). Let $uw$ be a normal cross edge with common neighbor $v$.
+Exactly one of the edges $uv$ and $vw$ lies inside a part, and JJ root
+$uw$ at that part, which is the part of $v$.
+
+\begin{lemma}[The root of a normal cross edge]
   \label{lem:normal-cross-count-rooted}
   \lean{SimpleGraph.squareNormalCrossEdgesRootedAt,
     SimpleGraph.IsSquareTightPartition.rootedAt_inj}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above. Say a normal cross edge is \emph{rooted} at
-  the part containing its common neighbor. Every normal cross edge is
-  rooted at exactly one part, and that part has at least three vertices.
+  Let $G$ and $P$ be as above. We say that a normal cross edge is
+  \emph{rooted} at the part of $P$ that contains its common neighbor.
+  Then every normal cross edge is rooted at exactly one part, and this
+  part has at least three vertices.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:square-cross-classification, lem:tight-partition-cross-pair-nbr}
-  The common neighbor is unique
-  (\cref{lem:tight-partition-cross-pair-nbr}), so the root is well
-  defined; and by the classification (\cref{lem:square-cross-classification})
-  the common neighbor of a normal cross edge lies in a part of at least
-  three vertices, together with exactly one endpoint of the edge.
+  The common neighbor of a normal cross edge is unique
+  (\cref{lem:tight-partition-cross-pair-nbr}), so the edge is rooted at
+  exactly one part. This part has at least three vertices by
+  \cref{lem:square-cross-classification}.
 \end{proof}
 
-\begin{lemma}[The local count; JJ eq.\ (6), local half]
+Let $A$ be a part with $|A| \ge 3$. We show in the next three lemmas
+that each edge $vw$ of $G$ with $v \in A$ and $w \notin A$ gives exactly
+two normal cross edges rooted at $A$: the edges $uw$, for the two
+neighbors $u$ of $v$ in $A$.
+
+\begin{lemma}[Two neighbors in the part]
   \label{lem:normal-cross-count-local}
   \lean{SimpleGraph.IsSquareTightPartition.ncard_inPartNeighbors_eq_two}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above, let $A$ be a part with $|A| \ge 3$, and let
-  $v \in A$ lie on a crossing edge $vw$ of $G$ (an edge with
-  $w \notin A$). Then $v$ has exactly two neighbors inside $A$.
+  Let $G$ and $P$ be as above, let $A$ be a part of $P$ with
+  $|A| \ge 3$, and let $v \in A$ have a neighbor outside $A$. Then $v$
+  has exactly two neighbors in $A$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:isLaman3-degree-le-three, lem:tight-partition-parts}
-  The in-part degree of $v$ is at least two
-  (\cref{lem:tight-partition-parts}) and its total degree at most three
-  (\cref{lem:isLaman3-degree-le-three}); the neighbors of $v$ split into
-  those inside $A$ and those outside, and $w$ witnesses that the outside
-  set is nonempty, so exactly two neighbors of $v$ lie inside $A$.
+  By \cref{lem:tight-partition-parts}, $v$ has at least two neighbors in
+  $A$. It has at most three neighbors
+  (\cref{lem:isLaman3-degree-le-three}), and one of them lies outside
+  $A$. So exactly two lie in $A$.
 \end{proof}
 
-\begin{lemma}[Producing a normal cross edge; JJ eq.\ (6), construction]
+\begin{lemma}[A normal cross edge from two edges at a vertex]
   \label{lem:normal-cross-count-producer}
   \lean{SimpleGraph.IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above, and let $v$ have an in-part neighbor $u$
-  ($f u = f v$) and an out-of-part neighbor $w$ ($f w \ne f v$). Then
-  $uw$ is a normal cross edge rooted at $v$'s part, and $v$ is its
-  unique common neighbor.
+  Let $G$ and $P$ be as above, let $v$ be a vertex of $G$, and let $u$
+  and $w$ be neighbors of $v$ with $u$ in the part of $v$ and $w$
+  outside it. Then $uw$ is a normal cross edge rooted at the part of
+  $v$, and $v$ is the only common neighbor of $u$ and $w$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:square-cliques, lem:tight-partition-cross-pair-mult,
     lem:tight-partition-cross-pair-nbr}
-  Both $u, w \in N_G(v)$, so $uw \in E(G^2)$
-  (\cref{lem:square-cliques}); it joins distinct parts
-  ($f u = f v \ne f w$) and is not an edge of $G$ --- otherwise $vw$ and
-  $uw$ would be two edges between $v$'s part and $w$'s
-  (\cref{lem:tight-partition-cross-pair-mult}). Its common neighbor $v$
-  lies in $u$'s part, so the edge is normal and rooted there, and the
-  common neighbor is unique (\cref{lem:tight-partition-cross-pair-nbr}).
+  The vertices $u$ and $w$ lie in distinct parts, and both are neighbors
+  of $v$. So $uw$ is an edge of $G^2$ (\cref{lem:square-cliques}) that
+  joins two parts. It is not an edge of $G$. Otherwise $vw$ and $uw$
+  would be two edges between the part of $v$ and that of $w$
+  (\cref{lem:tight-partition-cross-pair-mult}). So $uw$ is a cross edge, and $v$ is its common neighbor
+  (\cref{lem:tight-partition-cross-pair-nbr}). As $v$ lies in the part
+  of $u$, the cross edge is normal and rooted at the part of $v$.
 \end{proof}
 
-\begin{lemma}[Two rooted normal cross edges per crossing edge; JJ eq.\ (6), fiber]
+\begin{lemma}[Two normal cross edges for each edge leaving a part]
   \label{lem:normal-cross-count-fiber}
   \lean{SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two}
   \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above, let $A$ be a part with $|A| \ge 3$, and let
-  $vw$ be a crossing edge of $G$ with $v \in A$, $w \notin A$. Then the
-  normal cross edges $uw$ produced from $vw$ by the in-part neighbors
-  $u \in N_G(v) \cap A$ (\cref{lem:normal-cross-count-producer}) number
-  exactly two.
+  Let $G$ and $P$ be as above, let $A$ be a part of $P$ with
+  $|A| \ge 3$, and let $vw$ be an edge of $G$ with $v \in A$ and
+  $w \notin A$. Then the edges $uw$ with $u \in N_G(v) \cap A$, which
+  are normal cross edges rooted at $A$
+  (\cref{lem:normal-cross-count-producer}), number exactly two.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:normal-cross-count-producer, lem:normal-cross-count-local}
-  The map $u \mapsto uw$ is injective on $N_G(v) \cap A$ (the endpoint
-  $w$ is shared and $u \ne w$, as $u \in A \not\ni w$), so its image has
-  the same size as $N_G(v) \cap A$, which is two
-  (\cref{lem:normal-cross-count-local}); each image edge is a rooted
-  normal cross edge by \cref{lem:normal-cross-count-producer}.
+  The map $u \mapsto uw$ is injective on $N_G(v) \cap A$, as no vertex of
+  $A$ is $w$. So there are as many edges $uw$ as neighbors of $v$ in $A$,
+  that is, two (\cref{lem:normal-cross-count-local}). Each is a normal
+  cross edge rooted at $A$ (\cref{lem:normal-cross-count-producer}).
 \end{proof}
 
-\begin{definition}[Edges cut by a part]
+It remains to show that every normal cross edge rooted at $A$ arises in
+this way, and from only one edge of $G$. We count these edges of $G$ by
+the degree of $A$, in the sense of JJ~\S3.
+
+\begin{definition}[The degree of a part]
   \label{def:g-cut-edges}
   \lean{SimpleGraph.gCutEdges}
   \leanok
   \uses{def:D-deficiency}
-  For a partition $P$ of $V$ (a labeling $f$) and a part $A$, write
-  $d_G(A)$ for the number of edges of $G$ with \emph{exactly one}
-  endpoint in $A$: edges $xy \in E(G)$ with $x \in A$ and $y \notin A$.
+  Let $P$ be a partition of $V$, and let $A$ be a part of $P$. We write
+  $d_G(A)$ for the number of edges $xy$ of $G$ with $x \in A$ and
+  $y \notin A$, that is, with exactly one endpoint in $A$.
 \end{definition}
 
-\begin{lemma}[The rooted normal cross edges partition over the crossing edges; JJ eq.\ (6)]
+For a singleton part $\{v\}$, every edge at $v$ has exactly one endpoint
+in $\{v\}$, so $d_G(\{v\})$ is the degree $d_G(v)$ of $v$.
+
+\begin{lemma}[The normal cross edges rooted at a part, by the edges leaving it]
   \label{lem:normal-cross-count-partition}
   \lean{SimpleGraph.squareCutPairs, SimpleGraph.ncard_squareCutPairs_eq_gCutEdges,
     SimpleGraph.IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion,
     SimpleGraph.IsSquareTightPartition.squareCutPairs_pairwiseDisjoint}
   \leanok
   \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
-  Let $G$, $P$ be as above and $A$ a part. Index the \emph{oriented}
-  crossing edges of $A$ by the pairs $(v, w)$ with $v \in A$,
-  $w \notin A$, $vw \in E(G)$; the map $(v, w) \mapsto vw$ is a bijection
-  onto the $d_G(A)$ cut edges of $A$ (\cref{def:g-cut-edges}). The normal
-  cross edges rooted at $A$ are the union, over these oriented crossing
-  edges, of the fibers $\{uw : u \in N_G(v) \cap A\}$, and fibers over
-  distinct oriented crossing edges are disjoint.
+  Let $G$ and $P$ be as above, and let $A$ be a part of $P$. Then
+  $(v, w) \mapsto vw$ is a bijection from the pairs $(v, w)$ with
+  $v \in A$, $w \notin A$ and $vw \in E(G)$ onto the $d_G(A)$ edges of
+  $G$ with exactly one endpoint in $A$. The normal cross edges rooted at
+  $A$ are the union, over these pairs $(v, w)$, of the sets
+  $\{uw : u \in N_G(v) \cap A\}$, and the sets of two distinct pairs are
+  disjoint.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:normal-cross-count-producer, lem:square-cross-classification,
     lem:tight-partition-cross-pair-nbr}
-  The bijection with cut edges holds because a cut edge has a unique
-  endpoint in $A$, fixing the orientation. Each fiber edge $uw$ is a
-  rooted normal cross edge (\cref{lem:normal-cross-count-producer});
-  conversely a rooted normal cross edge has a common neighbor $v \in A$
-  and, by the classification (\cref{lem:square-cross-classification}),
-  exactly one endpoint in $A$, so it lies in the fiber of
-  $(v, \text{other endpoint})$. Disjointness: an edge in two fibers has
-  the same common neighbor (\cref{lem:tight-partition-cross-pair-nbr})
-  and the same out-of-part endpoint, so the oriented crossing edges
-  coincide.
+  An edge of $G$ with exactly one endpoint in $A$ is $vw$ for exactly one
+  of these pairs, the one with $v \in A$. By
+  \cref{lem:normal-cross-count-producer}, every edge $uw$ with
+  $u \in N_G(v) \cap A$ is a normal cross edge rooted at $A$. Conversely,
+  let $e$ be a normal cross edge rooted at $A$, with common neighbor
+  $v \in A$. Exactly one endpoint $u$ of $e$ lies in $A$
+  (\cref{lem:square-cross-classification}). Let $w$ be the other. Then
+  $(v, w)$ is one of the pairs, and $e = uw$ with $u \in N_G(v) \cap A$.
+
+  Finally, let $uw$, with $u \in A$, lie in the sets of two pairs
+  $(v, w)$ and $(v', w')$. Then $w' = w$, as $w$ is the endpoint outside
+  $A$. So $v$ and $v'$ are common neighbors of $u$ and $w$, and $v = v'$
+  (\cref{lem:tight-partition-cross-pair-nbr}).
 \end{proof}
 
 \begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
@@ -566,37 +615,18 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   \lean{SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges}
   \leanok
   \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
-  Let $G$, $P$ be as above. For each part $A$ with $|A| \ge 3$ the
-  normal cross edges rooted at $A$ (\cref{lem:normal-cross-count-rooted})
-  number exactly $2\,d_G(A)$ (\cref{def:g-cut-edges}).
+  Let $G$ and $P$ be as above, and let $A$ be a part of $P$ with
+  $|A| \ge 3$. Then the normal cross edges rooted at $A$
+  (\cref{lem:normal-cross-count-rooted}) number exactly $2\,d_G(A)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:normal-cross-count-partition, lem:normal-cross-count-fiber}
-  By \cref{lem:normal-cross-count-partition} the rooted normal cross
-  edges are a disjoint union of fibers, one per oriented crossing edge,
-  and there are $d_G(A)$ oriented crossing edges; each fiber has exactly
-  two elements (\cref{lem:normal-cross-count-fiber}). Summing the
-  constant $2$ over the $d_G(A)$ fibers gives $2\,d_G(A)$.
+  By \cref{lem:normal-cross-count-partition}, the normal cross edges
+  rooted at $A$ are the disjoint union of $d_G(A)$ sets, one for each
+  edge of $G$ with exactly one endpoint in $A$. Each of these sets has
+  exactly two elements (\cref{lem:normal-cross-count-fiber}).
 \end{proof}
-
-\begin{fmlnote}
-  \label{fmlnote:normal-cross-split}
-  The formalization separates this count into four
-  pieces: the well-definedness of the root
-  (\cref{lem:normal-cross-count-rooted}); the local count --- each
-  crossing edge at $A$ contributes exactly two pairs, i.e.\ its endpoint
-  in $A$ has exactly two in-part neighbors
-  (\cref{lem:normal-cross-count-local}); the construction of a rooted
-  normal cross edge from such a pair
-  (\cref{lem:normal-cross-count-producer}), the map $(vw, u) \mapsto uw$;
-  and the disjoint partition of the rooted normal cross edges into the
-  fibers over $A$'s $d_G(A)$ crossing edges
-  (\cref{lem:normal-cross-count-partition}). The residual arithmetic in
-  \cref{lem:normal-cross-count} --- the disjoint-union count, summing
-  the constant fiber size $2$ over the $d_G(A)$ fibers --- closes the
-  node directly.
-\end{fmlnote}
 
 \begin{theorem}[The counting bound for Laman squares; JJ Theorem 5.3]
   \label{thm:laman-square-count}
@@ -614,28 +644,70 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   \uses{lem:exists-tight-partition, lem:square-cross-classification,
     lem:singleton-part-neighborhood, lem:singleton-part-converse,
     lem:normal-cross-count, lem:tight-partition-parts}
-  Let $P = \{P_1, \dots, P_t\}$ be a tight partition
-  (\cref{lem:exists-tight-partition}) --- the argument below is uniform
-  in $P$, with no separate case for $\operatorname{def}(\tilde G) = 0$.
-  Summing the classification of \cref{lem:square-cross-classification}
-  with the counts of \cref{lem:singleton-part-neighborhood} and
-  \cref{lem:normal-cross-count}, and bounding the edges of $G^2$ inside
-  a part $P_i$ with $|P_i| \ge 3$ by the Laman condition (a singleton
-  part spans none):
+  Let $P$ be a tight partition of $V$
+  (\cref{lem:exists-tight-partition}), and let $t$ be its number of
+  parts. Let $C_n$ and $C_s$ be the numbers of normal and of special
+  cross edges. By \cref{lem:square-cross-classification},
   \[
-    |E(G^2)| \;\le\; \sum_{i=1}^{t} \bigl(3|P_i| - 6\bigr)
-      + d_G(P) + \sum_{i=1}^{t} 2\,d_G(P_i),
+    |E(G^2)| \;=\; \sum_{A \in P} \bigl|\edgesIn[G^2]{A}\bigr|
+      + d_G(P) + C_n + C_s .
   \]
-  where for a singleton part the two summands
-  $(3\cdot 1 - 6) + 2\,d_G(P_i) = 2\,d_G(P_i) - 3$ reproduce the
-  special-edge count of \cref{lem:singleton-part-neighborhood} (using
-  $d_G(P_i) = \deg_G(v)$ for the singleton part $P_i = \{v\}$, since
-  every edge at $v$ crosses). Since $\sum_i |P_i| = |V|$ and
-  $\sum_i d_G(P_i) = 2\,d_G(P)$ (each crossing edge is counted from
-  both sides), the right-hand side is
-  $3|V| - 6t + 5\,d_G(P) = 3|V| - 6 - \operatorname{def}_{\tilde G}(P)
-  = 3|V| - 6 - \operatorname{def}(\tilde G)$.
+  Each part has one vertex or at least three
+  (\cref{lem:tight-partition-parts}). A singleton part spans no edge,
+  and a part $A$ with $|A| \ge 3$ spans at most $3|A| - 6$ edges of
+  $G^2$, as $G^2$ is Laman.
+
+  We count each cross edge at the part that contains its common
+  neighbor, which is unique (\cref{lem:tight-partition-cross-pair-nbr}).
+  The normal cross edges counted at a part $A$ are those rooted at $A$,
+  and there are none unless $|A| \ge 3$
+  (\cref{lem:normal-cross-count-rooted}). So $C_n$ is the sum of
+  $2\,d_G(A)$ over the parts $A$ with $|A| \ge 3$
+  (\cref{lem:normal-cross-count}), which is JJ eq.~(6).
+
+  The special cross edges are counted at singleton parts
+  (\cref{lem:square-cross-classification}). Those counted at $\{v\}$
+  have common neighbor $v$, so they lie inside $N_G(v)$. Conversely, the
+  edges of $G^2$ inside $N_G(v)$ are special cross edges with common
+  neighbor $v$, and there are $2\,d_G(v) - 3$ of them
+  (\cref{lem:singleton-part-neighborhood}). So $C_s$ is the sum of
+  $2\,d_G(v) - 3$ over the singleton parts $\{v\}$, which is JJ
+  eqs.~(5) and~(7).
+
+  For a singleton part $A = \{v\}$ we have $d_G(A) = d_G(v)$, so
+  $2\,d_G(v) - 3 = (3|A| - 6) + 2\,d_G(A)$. Hence, for each part $A$,
+  the edges of $G^2$ inside $A$ and the cross edges counted at $A$
+  number at most $3|A| - 6 + 2\,d_G(A)$, and
+  \[
+    |E(G^2)| \;\le\; \sum_{A \in P} \bigl(3|A| - 6 + 2\,d_G(A)\bigr)
+      + d_G(P) \;=\; 3|V| - 6t + 5\,d_G(P).
+  \]
+  Here $\sum_A |A| = |V|$, and $\sum_A d_G(A) = 2\,d_G(P)$, as an edge
+  that joins two parts has one endpoint in each. The right-hand side is
+  $3|V| - 6 - \operatorname{def}_{\tilde G}(P)$
+  (\cref{def:D-deficiency}, at $D = 6$), and
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$, as
+  $P$ is tight.
 \end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:normal-cross-split}
+  Formally, the classes of \cref{lem:square-cross-classification} are
+  defined for every partition, and a cross edge is normal or special
+  according to some common neighbor of its endpoints. These two classes
+  are disjoint because the partition is tight, which makes the common
+  neighbor unique. The formal statements of this subsection assume of
+  $G$ and $P$ only what their proofs use. So only those whose proofs use
+  the degree bound assume that $G^2$ is Laman, and among the lemmas only
+  the count of \cref{lem:singleton-part-neighborhood} assumes the
+  minimum degree, at $v$. The theorem does not assume $V$ nonempty: for
+  $V = \emptyset$ both sides of its bound are $0$, as the empty
+  partition has value $-6$. The last claim of
+  \cref{lem:normal-cross-count-rooted} is one of the formal statements of
+  \cref{lem:square-cross-classification}, and the bijection of
+  \cref{lem:normal-cross-count-partition} is stated formally as the
+  equality of the two counts.
+\end{fmlnote}
 
 \subsection{Independence implies the Laman condition}
 \label{sec:jacobs-easy}
